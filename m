@@ -2,136 +2,158 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BFEAF6124E6
-	for <lists+linux-omap@lfdr.de>; Sat, 29 Oct 2022 20:27:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB047612AA5
+	for <lists+linux-omap@lfdr.de>; Sun, 30 Oct 2022 14:01:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229718AbiJ2S1B (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 29 Oct 2022 14:27:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52664 "EHLO
+        id S229867AbiJ3NBB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 30 Oct 2022 09:01:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229616AbiJ2S1B (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 29 Oct 2022 14:27:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80F0730541;
-        Sat, 29 Oct 2022 11:27:00 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1FB6C60B95;
-        Sat, 29 Oct 2022 18:27:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B39FC433C1;
-        Sat, 29 Oct 2022 18:26:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667068019;
-        bh=T6AeQnqwmiCfQHwNRX1h7E9TLa+6NVNkHRBqVTGWtLY=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=Bw+HRVSXCWTvsdAtrhL4WXRyTiJXkOjfKULx9ohs73TaapHVliI7paJtZQtJTud+3
-         uUvVEvtnfQ7/d4jHdG97jJPyu4nlVqL1KFQdjmOPh9Qc5IyFfvKEhOSFy/ZJequ0/m
-         uHfLQQk3bd/8BS7HrcGVDvaydVkeCw4it8hzzsVQEYuXIUUkVqnSJQK3emDgKD1Zmz
-         swRIUxqwIjqGt09eyMAsNc7tQJ9ESW5GrtzcLCZIFPBmohxW6hIHShlB3RaGmYRDty
-         AzeezlUNCPIiMPfPKSPbvS41IhZ21ETx0JunDCksivqZgCn7/cqaBE36yWERiJcyLw
-         FC4ueKsQTVrrQ==
-Message-ID: <dd37a216-855e-44d4-7ab1-6ecde620312e@kernel.org>
-Date:   Sat, 29 Oct 2022 21:26:55 +0300
+        with ESMTP id S229651AbiJ3NBA (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 30 Oct 2022 09:01:00 -0400
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6475B7DA
+        for <linux-omap@vger.kernel.org>; Sun, 30 Oct 2022 06:00:58 -0700 (PDT)
+Received: by mail-ej1-x633.google.com with SMTP id kt23so23349257ejc.7
+        for <linux-omap@vger.kernel.org>; Sun, 30 Oct 2022 06:00:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=amarulasolutions.com; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=cnm35rG8dnbniH3bAdsis2He6cISe2Pf5wrYV6j4Yuo=;
+        b=cBXwkIsKoN24vWlka5PMTG3c035GP+NNP31VTvKk/ovhdAguA9PbpUp6uDFTpc+1c6
+         3gnedIZ6l+tDi611G64eg4QQ5ceCfjHFuJAnoIllowDtcEyxO+RWGugtPxtISGjYjtpS
+         FGySmk4Q6UXqEnpwpOsb6BNHeeoT8Hh6DNIvc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=cnm35rG8dnbniH3bAdsis2He6cISe2Pf5wrYV6j4Yuo=;
+        b=zSDtR5mX0ueBZwOmroqagvtT52X7v/Si9xPbQsW+x+HIIqoOLw8jO+iJMoOTIFZgZk
+         UX5BVBgmArNkz6zzLEBgKOi/ViIvbXrAjlEYmJM18m2vRLmA2UU+DyNvVoJXeD6czuxV
+         A+N+FeUALGTq4fOlnEeBfOJ7fUNnFTBo6byyMLCLfqa3Q6i6/4JOWp42FQqgaFM1dA27
+         3jgiwqhbHZDUlxHxfs/zz4Kvi0fMx6AmBJHuyWgCcYTetLUnHl1ojuxgRSl/s0iOQkoK
+         DjSg+5jy+OAeRwrcO6/3qwXGTXrNIBUcfD+eXvUoqzs+AEP+KhdmXEIhKHvu3awGjGvy
+         32xg==
+X-Gm-Message-State: ACrzQf2DeyVn1NBFcPrEIDltoSxjB5jY1e1EMGTo7BEftuAa29f3Afv2
+        wb6m2dKF4ZFeEOiAU57Q7WooKv0fMr2aTJ+z/HA+RA==
+X-Google-Smtp-Source: AMsMyM4NetBq4ut/QzVWMIts/JGh74r3MvWVZbbPWGZD2uBgHT+KD14ty4JVz9cs6pVTghOuapmPpBHAw0T1nDpVIoc=
+X-Received: by 2002:a17:906:4c4b:b0:7ad:a197:b58e with SMTP id
+ d11-20020a1709064c4b00b007ada197b58emr8190502ejw.203.1667134857432; Sun, 30
+ Oct 2022 06:00:57 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCH v8 0/2] gpmc wait pin additions
-Content-Language: en-US
-To:     "B. Niedermayr" <benedikt.niedermayr@siemens.com>,
-        devicetree@vger.kernel.org, linux-omap@vger.kernel.org
-Cc:     krzysztof.kozlowski@linaro.org, robh+dt@kernel.org,
-        tony@atomide.com
-References: <20221021081612.591613-1-benedikt.niedermayr@siemens.com>
-From:   Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <20221021081612.591613-1-benedikt.niedermayr@siemens.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20221018160352.1591428-1-dario.binacchi@amarulasolutions.com> <20221028002710.89A81C43470@smtp.kernel.org>
+In-Reply-To: <20221028002710.89A81C43470@smtp.kernel.org>
+From:   Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Date:   Sun, 30 Oct 2022 14:00:46 +0100
+Message-ID: <CABGWkvp1iMN-4XDN_ifg6uyvQbpRzNyat_eDziWY75Cf_hCpQw@mail.gmail.com>
+Subject: Re: [PATCH v2] clk: ti: dra7-atl: don't allocate `parent_names' variable
+To:     Stephen Boyd <sboyd@kernel.org>
+Cc:     linux-kernel@vger.kernel.org,
+        Amarula patchwork <linux-amarula@amarulasolutions.com>,
+        michael@amarulasolutions.com, kernel test robot <lkp@intel.com>,
+        Allison Randal <allison@lohutok.net>,
+        Miaoqian Lin <linmq006@gmail.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Tero Kristo <kristo@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tony Lindgren <tony@atomide.com>, linux-clk@vger.kernel.org,
+        linux-omap@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Hi Stephen,
+
+On Fri, Oct 28, 2022 at 2:27 AM Stephen Boyd <sboyd@kernel.org> wrote:
+>
+> Quoting Dario Binacchi (2022-10-18 09:03:52)
+> > diff --git a/drivers/clk/ti/clk-dra7-atl.c b/drivers/clk/ti/clk-dra7-atl.c
+> > index ff4d6a951681..78482d1a4a33 100644
+> > --- a/drivers/clk/ti/clk-dra7-atl.c
+> > +++ b/drivers/clk/ti/clk-dra7-atl.c
+> > @@ -188,24 +188,17 @@ static void __init of_dra7_atl_clock_setup(struct device_node *node)
+> >                 goto cleanup;
+> >         }
+> >
+> > -       parent_names = kzalloc(sizeof(char *), GFP_KERNEL);
+> > -
+> > -       if (!parent_names)
+> > -               goto cleanup;
+> > -
+> >         parent_names[0] = of_clk_get_parent_name(node, 0);
+>
+> Can you use struct clk_parent_data instead and assign index to 0? Then
+> we don't even need to use of_clk_get_parent_name() here.
+
+I tried to test your suggestions on another platform (I don't have the
+hw to test the driver change) but if I
+don't add pdata.name = of_clk_get_parent_name () the board boot up fails.
+
+As far I can see from the clk_core_populate_parent_map()
+
+....
+/* Copy everything over because it might be __initdata */
+for (i = 0, parent = parents; i < num_parents; i++, parent++) {
+    parent->index = -1;
+    if (parent_names) {
+        /* throw a WARN if any entries are NULL */
+       WARN(!parent_names[i],
+            "%s: invalid NULL in %s's .parent_names\n",
+            __func__, core->name);
+        ret = clk_cpy_name(&parent->name, parent_names[i],
+                                        true);
+    } else if (parent_data) {
+        parent->hw = parent_data[i].hw;
+        parent->index = parent_data[i].index;
+        ret = clk_cpy_name(&parent->fw_name,
+                                         parent_data[i].fw_name, false);
+        if (!ret)
+            ret = clk_cpy_name(&parent->name,
+                                            parent_data[i].name,
+                                            false);
+...
 
 
-On 21/10/2022 11:16, B. Niedermayr wrote:
-> From: Benedikt Niedermayr <benedikt.niedermayr@siemens.com>
-> 
-> Currently it is not possible to configure the WAIT0PINPOLARITY and
-> WAIT1PINPOLARITY bits of the GPMC_CONFIG register directly via
-> device tree properties.
-> 
-> It is also not possible to use the same wait-pin for different
-> cs-regions.
-> 
-> While the current implementation may fullfill most usecases, it may not
-> be sufficient for more complex setups (e.g. FPGA/ASIC interfaces), where
-> more complex interfacing options where possible.
-> 
-> For example interfacing an ASIC which offers multiple cs-regions but
-> only one waitpin the current driver and dt-bindings are not sufficient.
-> 
-> While using the same waitpin for different cs-regions worked for older
-> kernels (4.14) the omap-gpmc.c driver refused to probe (-EBUSY) with
-> newer kernels (>5.10).
-> 
-> Changes since v1:
->   * Rebase against recent 6.0.0-rc3 kernel
->   * Updated eMail recipients list
-> Changes since v2:
->   * Remove the gpmc register configuration out of the gpiochip
->     callbacks. In this case the memory interface configuration
->     is not done via gpio bindings.
->   * Some minor code fixes
->   * Changed git commit descriptions
-> Change since v3:
->   * Use a uint32 dt-property instean a boolean one
->   * If the dt-property is not set, then don't touch the
->     GPMC_CONFIG register
->   * Changed git commit descriptions
-> Changes since v4:
->   * Use checkpatch with "--strict" option
->   * Moved wait-pin sanity checks to gpmc_read_settings_dt()
->   * Always assign WAITPINPOLARITY_DEFAULT on error cases
->   * Track waitpin allocation within gpmc for determine
->     allocation origin
-> Changes since v5:
->   * Tracking of wait-pin allocations with polarity change detection
->     * Introduced a new struct gpmc_waitpin
->   * Add GPMC_* to global header definitions
->   * Don't allow GPMC_WAITPINPOLARITY_DEFAULT when parsing dt-properties
->   * Squashed wait-pin-polarity and shared-wait-pin patches, since they
->     should not be separated
-> Changes since v6:
->   * Move wait-pin allocation into gpmc_probe()
->   * Fix s/gpmc/GPMC/ in commit description
->   * use ti,wait-pin-polarity instead of gpmc,wait-pin-polarity
->   * Refactored if clause in gpmc_alloc_waitpin()
->   * Revert values for GPMC_WAITPINPOLARITY_ACTIVE_LOW and
->     GPMC_WAITPINPOLARITY_ACTIVE_HIGH.
->     Use the exact same values which are written into the register.
-> Changes since v7:
->   * Renamed GPMC_WAITPINPOLARITY_DEFAULT to GPMC_WAITPINPOLARITY_INVALID
->   * Call gpiochip_request_own_desc() only on first wait-pin allocation
->   * Fixed use of old "gpmc,wait-pin-polarity" property.
-> 
-> Benedikt Niedermayr (2):
->   memory: omap-gpmc: wait pin additions
->   dt-bindings: memory-controllers: gpmc-child: add wait-pin polarity
-> 
->  .../memory-controllers/ti,gpmc-child.yaml     |   7 +
->  drivers/memory/omap-gpmc.c                    | 122 ++++++++++++++++--
->  include/linux/platform_data/gpmc-omap.h       |   8 ++
->  3 files changed, 124 insertions(+), 13 deletions(-)
+The function clk_cpy_name() is called with the parameter "mus_exist"
+to true in the path "parent_names" and false
+in the path "parent_data". Therefore, in the path "parent_data" it is
+allowed that parent-> name is not set.
+In doing so, therefore, the change would not even be backward compatible.
 
-for this series
+So, IMHO, there are 2 possible options:
+ 1 okay to use parent_data, but we keep using of_clk_get_parent_name
+() to set parent_data::name.
+ 2 okay to use the version v2 of the patch.
 
-Reviewed-by: Roger Quadros <rogerq@kernel.org>
+What do you think?
 
-cheers,
--roger
+Thanks and regards,
+Dario
+
+-- 
+
+Dario Binacchi
+
+Embedded Linux Developer
+
+dario.binacchi@amarulasolutions.com
+
+__________________________________
+
+
+Amarula Solutions SRL
+
+Via Le Canevare 30, 31100 Treviso, Veneto, IT
+
+T. +39 042 243 5310
+info@amarulasolutions.com
+
+www.amarulasolutions.com
