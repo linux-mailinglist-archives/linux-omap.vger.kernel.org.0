@@ -2,241 +2,126 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E79206139CC
-	for <lists+linux-omap@lfdr.de>; Mon, 31 Oct 2022 16:14:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A58CB613A42
+	for <lists+linux-omap@lfdr.de>; Mon, 31 Oct 2022 16:40:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231394AbiJaPOr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 31 Oct 2022 11:14:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44894 "EHLO
+        id S231567AbiJaPkD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 31 Oct 2022 11:40:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230462AbiJaPOq (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 31 Oct 2022 11:14:46 -0400
-Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B0C111450
-        for <linux-omap@vger.kernel.org>; Mon, 31 Oct 2022 08:14:44 -0700 (PDT)
-Received: by mail-wr1-x42b.google.com with SMTP id z14so16408328wrn.7
-        for <linux-omap@vger.kernel.org>; Mon, 31 Oct 2022 08:14:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=cq37D+aG9RuZDRpw1wGP0MX3DtBta7wQtRmL2GXhPb4=;
-        b=jhEY/rH4R0H5Jw0+aK8ofpuUTm3LequKrN89nkw9m8UyuCrWEncYeG/MIC/Q/BcJ5C
-         cZKWafPttdd+RzhHys+cQ8ZAj3iGC66Dkv4ARaCytE7fJTKjvWXxGfzY48cJu0pstmcV
-         vYvmGW2kM3V3ddY4K+BVFcwZoXyjhW8nxnr2ohaYqK2JQHDzbwpac7Fh/4DP9fgAPZoK
-         iuWerTIRtLWjRoIiJCMV1xeLuWXbxb5ptIDs0apbFK56Gh3HpVh1yvsEYVyD7qfOu5K5
-         p6zU1TsGQwlyeSAQvBLe/NH3p7WWW97glUweqVvCakFYISidN6j7cHLmcN1SBI+y05Sr
-         qKhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cq37D+aG9RuZDRpw1wGP0MX3DtBta7wQtRmL2GXhPb4=;
-        b=2PnHIO0ekmQsQM6YDtwr30ZdiYbLljl6tJid9jiHfrYjoXhXscS9YVdHb1oKGRX1Kj
-         sNxiq4cGX0Ce6MCRIA3/Vdp23fYJLRhbg8n9takcb0JC7JU5k+kG5RJ24TBd2/6FnQqp
-         bN/goW534sGDwtWOUhEn6K+DzIzgEs2Fg7iZxEJJ7COBm47ptfKLsOEPOFfVcPiKB4q6
-         QL1DCix2bggzucAY+FNAwA9yz5/J6mSoRJ3xuj2IaM5Ypta1BbEHAZck6r9wNdiXZ+Y/
-         5R5JXg/u4zlxhWqJ0MsDexAgliEtMVtMSTOvPHMVJK0vVsc4TMjsBLOmwhaqj/mXIRhC
-         PeBA==
-X-Gm-Message-State: ACrzQf0BBigwslNCDiv7IUfAk3iYyPXzakIW363JgbK1QCpMz9wz4oE1
-        iSkkq+73PoKrJe31dZqksEQcmA==
-X-Google-Smtp-Source: AMsMyM4sXtzCevkx80TqZWjZyuYqrrzcc02J3pYnVDrKqdj1012o/P1qJje9tqqi88CEhob6+59a8g==
-X-Received: by 2002:a05:6000:54e:b0:236:5818:d432 with SMTP id b14-20020a056000054e00b002365818d432mr8582721wrf.37.1667229282996;
-        Mon, 31 Oct 2022 08:14:42 -0700 (PDT)
-Received: from [192.168.1.47] (242.155.4.93.rev.sfr.net. [93.4.155.242])
-        by smtp.gmail.com with ESMTPSA id t16-20020adff610000000b0023538fb27c1sm7398137wrp.85.2022.10.31.08.14.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 31 Oct 2022 08:14:42 -0700 (PDT)
-Message-ID: <b251290f-d490-97f2-5642-9f801f6c68af@baylibre.com>
-Date:   Mon, 31 Oct 2022 16:14:38 +0100
+        with ESMTP id S230175AbiJaPkB (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 31 Oct 2022 11:40:01 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F947647C;
+        Mon, 31 Oct 2022 08:40:01 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BFC4E612BB;
+        Mon, 31 Oct 2022 15:40:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9E88C433D6;
+        Mon, 31 Oct 2022 15:39:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1667230800;
+        bh=TRH6TIzTeBtUUYfj015oHC/R+NopKv1SaiciTdGHOko=;
+        h=From:To:Cc:Subject:Date:From;
+        b=gBpe/EbWifFcqhZ5BfRCBjri8ndaXtmIESwYRZe0ZJ/9QH9yy43OtvvIPJ84QuRsJ
+         qVblgIXNCeupWoDgfDRLD4sck8pombdDoeizoKGqhqlscyYPs1rJkUfCQG4MdNPZIQ
+         yAf5JPUuETdzsUBeVKU79ABam7BGmVbLXj20/7GmPUPjZ/M2IfEUXZFATexoA4Smaq
+         CQ6K94+0hZWszeCNqHZU7WW8Qj4zVQNZz5DTKAD5rA4KIiJuVJyWaBIznzyfE86ljD
+         FuiFCdMTQRTBI7IxLbavbOxp3k0//rn3wkSegSXlN51xFdxjfPPHNjAIQ6Aj0KX1EF
+         k/xrwa/o+K15A==
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc:     Kishon Vijay Abraham I <kishon@kernel.org>,
+        Tom Joseph <tjoseph@cadence.com>,
+        Rob Herring <robh@kernel.org>,
+        =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+        Minghuan Lian <minghuan.Lian@nxp.com>,
+        Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Toan Le <toan@os.amperecomputing.com>,
+        Joyce Ooi <joyce.ooi@intel.com>, Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        Conor Dooley <conor.dooley@microchip.com>,
+        Daire McNamara <daire.mcnamara@microchip.com>,
+        Shawn Lin <shawn.lin@rock-chips.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Bharat Kumar Gogada <bharat.kumar.gogada@amd.com>,
+        Michal Simek <michal.simek@amd.com>,
+        bcm-kernel-feedback-list@broadcom.com, linux-omap@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-tegra@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-rockchip@lists.infradead.org,
+        Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH v3 0/5] PCI: Remove unnecessary <linux/of_irq.h> includes
+Date:   Mon, 31 Oct 2022 10:39:49 -0500
+Message-Id: <20221031153954.1163623-1-helgaas@kernel.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.2
-Subject: Re: [PATCH v5 4/6] mfd: tps65219: Add driver for TI TPS65219 PMIC
-Content-Language: en-US
-To:     Biju Das <biju.das.jz@bp.renesas.com>,
-        "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>, "nm@ti.com" <nm@ti.com>,
-        "kristo@kernel.org" <kristo@kernel.org>,
-        "dmitry.torokhov@gmail.com" <dmitry.torokhov@gmail.com>,
-        "krzysztof.kozlowski+dt@linaro.org" 
-        <krzysztof.kozlowski+dt@linaro.org>,
-        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
-        "will@kernel.org" <will@kernel.org>,
-        "lee.jones@linaro.org" <lee.jones@linaro.org>,
-        "tony@atomide.com" <tony@atomide.com>,
-        "vigneshr@ti.com" <vigneshr@ti.com>,
-        "bjorn.andersson@linaro.org" <bjorn.andersson@linaro.org>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "geert+renesas@glider.be" <geert+renesas@glider.be>,
-        "dmitry.baryshkov@linaro.org" <dmitry.baryshkov@linaro.org>,
-        "marcel.ziswiler@toradex.com" <marcel.ziswiler@toradex.com>,
-        "vkoul@kernel.org" <vkoul@kernel.org>,
-        "arnd@arndb.de" <arnd@arndb.de>,
-        "jeff@labundy.com" <jeff@labundy.com>
-Cc:     "afd@ti.com" <afd@ti.com>,
-        "khilman@baylibre.com" <khilman@baylibre.com>,
-        "narmstrong@baylibre.com" <narmstrong@baylibre.com>,
-        "msp@baylibre.com" <msp@baylibre.com>,
-        "j-keerthy@ti.com" <j-keerthy@ti.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
-        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>
-References: <20220914140758.7582-1-jneanne@baylibre.com>
- <20220914140758.7582-5-jneanne@baylibre.com>
- <OS0PR01MB59221A8415766E7E3615F39E86379@OS0PR01MB5922.jpnprd01.prod.outlook.com>
- <a2000dfa-6872-fdf5-c636-755ae5a82728@baylibre.com>
- <OS0PR01MB59225CD0FF691E169F25F56886379@OS0PR01MB5922.jpnprd01.prod.outlook.com>
-From:   jerome Neanne <jneanne@baylibre.com>
-In-Reply-To: <OS0PR01MB59225CD0FF691E169F25F56886379@OS0PR01MB5922.jpnprd01.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-8.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+From: Bjorn Helgaas <bhelgaas@google.com>
 
+Many host controller drivers #include <linux/of_irq.h> even though they
+don't need it.  Remove the unnecessary #includes.
 
-On 31/10/2022 15:48, Biju Das wrote:
->> Subject: Re: [PATCH v5 4/6] mfd: tps65219: Add driver for TI TPS65219
->> PMIC
->>
->>
->>
->> On 31/10/2022 12:13, Biju Das wrote:
->>> Hi,
->>>
->>>> Subject: [PATCH v5 4/6] mfd: tps65219: Add driver for TI TPS65219
->>>> PMIC
->>>>
->>>> The TPS65219 is a power management IC PMIC designed to supply a
->> wide
->>>> range of SoCs in both portable and stationary applications. Any SoC
->>>> can control
->>>> TPS65219 over a standard I2C interface.
->>>>
->>>> It contains the following components:
->>>> - Regulators.
->>>> - Over Temperature warning and Shut down.
->>>> - GPIOs
->>>> - Multi Function Pins (MFP)
->>>> - power-button
->>>>
->>>> This patch adds support for tps65219 PMIC. At this time only the
->>>> functionalities listed below are made available:
->>>>
->>>> - Regulators probe and functionalities
->>>> - warm and cold reset support
->>>> - SW shutdown support
->>>> - Regulator warnings via IRQs
->>>> - Power-button via IRQ
->>>>
->>>> Signed-off-by: Jerome Neanne <jneanne@baylibre.com>
->>>> Signed-off-by: Markus Schneider-Pargmann <msp@baylibre.com>
->>>> ---
->>>>    MAINTAINERS                  |   1 +
->>>>    drivers/mfd/Kconfig          |  14 ++
->>>>    drivers/mfd/Makefile         |   1 +
->>>>    drivers/mfd/tps65219.c       | 320
->> ++++++++++++++++++++++++++++++++
->>>>    include/linux/mfd/tps65219.h | 345
->> +++++++++++++++++++++++++++++++++++
->>>>    5 files changed, 681 insertions(+)
->>>>    create mode 100644 drivers/mfd/tps65219.c  create mode 100644
->>>> include/linux/mfd/tps65219.h
->>>>
->>>> diff --git a/MAINTAINERS b/MAINTAINERS index
->>>> f35b29ffd5fb..960df879c635 100644
->>>> --- a/MAINTAINERS
->>>> +++ b/MAINTAINERS
->>>> @@ -14926,6 +14926,7 @@ F:	drivers/mfd/menelaus.c
->>>>    F:	drivers/mfd/palmas.c
->>>>    F:	drivers/mfd/tps65217.c
->>>>    F:	drivers/mfd/tps65218.c
->>>> +F:	drivers/mfd/tps65219.c
->>>>    F:	drivers/mfd/tps65910.c
->>>>    F:	drivers/mfd/twl-core.[ch]
->>>>    F:	drivers/mfd/twl4030*.c
->>>> diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig index
->>>> abb58ab1a1a4..1a846c7dd0c2 100644
->>>> --- a/drivers/mfd/Kconfig
->>>> +++ b/drivers/mfd/Kconfig
->>>> @@ -1576,6 +1576,20 @@ config MFD_TPS65218
->>>>    	  This driver can also be built as a module.  If so, the module
->>>>    	  will be called tps65218.
->>>>
->>>> +config MFD_TPS65219
->>>> +	tristate "TI TPS65219 Power Management IC"
->>>> +	depends on I2C && OF
->>>> +	select MFD_CORE
->>>> +	select REGMAP_I2C
->>>> +	select REGMAP_IRQ
->>>> +	help
->>>> +	  If you say yes here you get support for the TPS65219 series of
->>>> Power
->>>> +	  Management ICs. These include voltage regulators, GPIOs and
->>>> +	  push/power button that are often used in portable devices.
->>>> +
->>>> +	  This driver can also be built as a module. If so, the module
->>>> +	  will be called tps65219.
->>>> +
->>>>    config MFD_TPS6586X
->>>>    	bool "TI TPS6586x Power Management chips"
->>>>    	depends on I2C=y
->>>> diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile index
->>>> 858cacf659d6..a8ff3d6ea3ab 100644
->>>> --- a/drivers/mfd/Makefile
->>>> +++ b/drivers/mfd/Makefile
->>>> @@ -101,6 +101,7 @@ obj-$(CONFIG_TPS6507X)		+= tps6507x.o
->>>>    obj-$(CONFIG_MFD_TPS65086)	+= tps65086.o
->>>>    obj-$(CONFIG_MFD_TPS65217)	+= tps65217.o
->>>>    obj-$(CONFIG_MFD_TPS65218)	+= tps65218.o
->>>> +obj-$(CONFIG_MFD_TPS65219)	+= tps65219.o
->>>>    obj-$(CONFIG_MFD_TPS65910)	+= tps65910.o
->>>>    obj-$(CONFIG_MFD_TPS65912)	+= tps65912-core.o
->>>>    obj-$(CONFIG_MFD_TPS65912_I2C)	+= tps65912-i2c.o
->>>> diff --git a/drivers/mfd/tps65219.c b/drivers/mfd/tps65219.c new
->> file
->>>> mode
->>>> 100644 index 000000000000..c1638483e069
->>>> --- /dev/null
->>>> +++ b/drivers/mfd/tps65219.c
->>>> @@ -0,0 +1,320 @@
->>>> +// SPDX-License-Identifier: GPL-2.0
->>>> +//
->>>> +// Driver for TPS65219 Integrated Power Management Integrated
->> Chips
->>>> +(PMIC) // // Copyright (C) 2022 BayLibre Incorporated -
->>>> +
->>>> +
->>>> +static int tps65219_restart(struct notifier_block *this,
->>>> +			    unsigned long reboot_mode, void *cmd) {
->>>> +	struct tps65219 *tps;
->>>> +
->>>> +	tps = container_of(this, struct tps65219, nb);
->>>> +	if (!tps) {
->>>> +		pr_err("tps65219: Restarting failed because the pointer to
->>>> tps65219 is invalid\n");
->>> Why not dev_error?
->> Because I can't get correct device then: if !tps, I can't get tps->dev
->> Then can't reference device in dev_error. Do you have a better
->> suggestion than this pr_err?
-> 
-> How container_of can fail?
->
-Good point. This check sounds useless. I'll just remove then...
+v2: https://lore.kernel.org/r/20221025185147.665365-1-helgaas@kernel.org/
+v1: https://lore.kernel.org/r/20221019195452.37606-1-helgaas@kernel.org/
 
-Thanks for highlighting this.
+Changes from v2 to v3:
+  - Include <linux/irqdomain.h> explicitly in xgene-msi, which doesn't need
+    <linux/of_irq.h> itself, but relied on it to include
+    <linux/irqdomain.h>.  On x86, this was covered up by the fact that
+    <linux/msi.h> includes <asm/msi.h>, which includes <asm/irqdomain.h>,
+    which includes <linux/irqdomain.h>.  But on parisc, <asm/msi.h> is
+    actually asm-generic/msi.h, which does *not* include
+    <linux/irqdomain.h>
+  - Pick up tags from Conor Dooley and Thomas Petazzoni
 
-Jerome.
+Changes from v1 to v2:
+  - Include <linux/irqdomain.h> explicitly in altera-msi and microchip,
+    which don't need <linux/of_irq.h> itself, but relied on it to include
+    <linux/irqdomain.h>
+  - Include <linux/irqdomain.h> explicitly in mvebu, which needs both it
+    and <linux/of_irq.h>
+
+Bjorn Helgaas (5):
+  PCI: altera-msi: Include <linux/irqdomain.h> explicitly
+  PCI: microchip: Include <linux/irqdomain.h> explicitly
+  PCI: mvebu: Include <linux/irqdomain.h> explicitly
+  PCI: xgene-msi: Include <linux/irqdomain.h> explicitly
+  PCI: Remove unnecessary <linux/of_irq.h> includes
+
+ drivers/pci/controller/cadence/pci-j721e.c   | 1 -
+ drivers/pci/controller/dwc/pci-layerscape.c  | 1 -
+ drivers/pci/controller/dwc/pcie-armada8k.c   | 1 -
+ drivers/pci/controller/dwc/pcie-tegra194.c   | 1 -
+ drivers/pci/controller/pci-mvebu.c           | 1 +
+ drivers/pci/controller/pci-v3-semi.c         | 1 -
+ drivers/pci/controller/pci-xgene-msi.c       | 2 +-
+ drivers/pci/controller/pci-xgene.c           | 1 -
+ drivers/pci/controller/pcie-altera-msi.c     | 2 +-
+ drivers/pci/controller/pcie-iproc-platform.c | 1 -
+ drivers/pci/controller/pcie-iproc.c          | 1 -
+ drivers/pci/controller/pcie-microchip-host.c | 2 +-
+ drivers/pci/controller/pcie-rockchip-host.c  | 1 -
+ drivers/pci/controller/pcie-xilinx-cpm.c     | 1 -
+ drivers/pci/controller/pcie-xilinx-nwl.c     | 1 -
+ 15 files changed, 4 insertions(+), 14 deletions(-)
+
+-- 
+2.25.1
+
