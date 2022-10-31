@@ -2,120 +2,191 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 44AF461341F
-	for <lists+linux-omap@lfdr.de>; Mon, 31 Oct 2022 12:01:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 36B34613440
+	for <lists+linux-omap@lfdr.de>; Mon, 31 Oct 2022 12:13:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230283AbiJaLBC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 31 Oct 2022 07:01:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49778 "EHLO
+        id S229452AbiJaLNu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 31 Oct 2022 07:13:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229787AbiJaLBA (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 31 Oct 2022 07:01:00 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BF1865AD;
-        Mon, 31 Oct 2022 04:00:54 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id BEFB9B815DA;
-        Mon, 31 Oct 2022 11:00:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48F4AC433D6;
-        Mon, 31 Oct 2022 11:00:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667214051;
-        bh=oe52KmRAKiUPs37/+XSeVSdnVohHwzo299SLBQkw8/0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ugI3HBGXaVTd6MUKyBYRaFc4Ig5vhpvNIQUd8qNo9gx9bwn5G302mxGt6mKQzFUnJ
-         l2T00isAU9tioqIazAWFjd3OgZ7ve+IPQddQ5m/BLCgikLdneHZTGvavxvpezcYw+e
-         CForyxzyNIzKTXM9oNL55H2Nrk8CBJPk4P7g8Ig1RnOHTkb5wt98mwzNPW5Jy5M6fD
-         cSkrMtSFaML6HdR2XESXREAY/yxtu9ecFv7ACKJfmKrbrIT4xDieTUGMjOHfVQEpOW
-         BISmBJ5/PHMd/KmYFkVYCYa55t0jFrVtBAm6yyLn2ZxUddpxFbaMEPTiM7wXytmOMi
-         QlUTjfdrEvBDw==
-Date:   Mon, 31 Oct 2022 11:00:41 +0000
-From:   Lee Jones <lee@kernel.org>
-To:     Jerome Neanne <jneanne@baylibre.com>
-Cc:     lgirdwood@gmail.com, broonie@kernel.org, robh+dt@kernel.org,
-        nm@ti.com, kristo@kernel.org, dmitry.torokhov@gmail.com,
-        krzysztof.kozlowski+dt@linaro.org, catalin.marinas@arm.com,
-        will@kernel.org, tony@atomide.com, vigneshr@ti.com,
-        bjorn.andersson@linaro.org, shawnguo@kernel.org,
-        geert+renesas@glider.be, dmitry.baryshkov@linaro.org,
-        marcel.ziswiler@toradex.com, vkoul@kernel.org,
-        biju.das.jz@bp.renesas.com, arnd@arndb.de, jeff@labundy.com,
-        afd@ti.com, khilman@baylibre.com, narmstrong@baylibre.com,
-        msp@baylibre.com, j-keerthy@ti.com, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-input@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: Re: [PATCH v6 4/6] mfd: tps65219: Add driver for TI TPS65219 PMIC
-Message-ID: <Y1+q2Usm9ecicXqp@google.com>
-References: <20221011140549.16761-1-jneanne@baylibre.com>
- <20221011140549.16761-5-jneanne@baylibre.com>
+        with ESMTP id S229477AbiJaLNs (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 31 Oct 2022 07:13:48 -0400
+Received: from JPN01-OS0-obe.outbound.protection.outlook.com (mail-os0jpn01on2110.outbound.protection.outlook.com [40.107.113.110])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20595DEF2;
+        Mon, 31 Oct 2022 04:13:46 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=MyTrDoyIdgMIIqonbzlKhAaOi76h0b45KvKEzvfefjj3Vm+BMO97us1ayDPeBhZLXuuEC/PX9SxnRlZyjTpQnrYbR+v1Ge4bG0tZTwXrDBEqIMj0nGrywh8vNQwiq6f+nIRteoYnhg56yRg8CWdlzyoRrPYsdi/QQPUlbbTQaKIaGxhBhKnqq3ud01PKJN120/PRafZ5h11/gMegSshd29cyUQWTSWvUjaRHgvhHf09b4AiODc6EqG/DSPJiB8pFnQL6YpfFDzLW1Z+4FGb0qlkypj3go///NvAN2/u3RwCXFZUlVwPCjZO1/zIWD+I5D0vLhh68tITtyHxNTlB88w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2skmIrDLeRjx3XFqxvzNfuFedOydxHo1vPj2i9nqtss=;
+ b=mOmt/ShuDDh/WjINh9Je74leVf9NFqstNldrSKcgv+TbZvtgWTIjuTCxzyvAog+TgYCE/VoNTRedx8jzpGiIU/uoAjYrQBEWTMtvtPaSHhxUk+aG/CAYFImt51AUDUPfc5sSZBOWDkJWdrS4FqA1CNm6EoiVtrQh91e7KyaUUHAg54mH2Ow11yi0H1qg59/En6aEMYKagnrcJ2V3z0Ektzf+MGujUqqFv2iMaUCanzSG70LIu7q+Zmb49mOhYebrQziWRiYwMvQtnW9T7rkcmzoZFLKowmSnAYq3oe3rOro3O9NQiFSfS9tiNktU48NjNGNkCrbP9gzIwUOBlfyYEQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=bp.renesas.com; dmarc=pass action=none
+ header.from=bp.renesas.com; dkim=pass header.d=bp.renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bp.renesas.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2skmIrDLeRjx3XFqxvzNfuFedOydxHo1vPj2i9nqtss=;
+ b=Ra52r4jPWoF82f84J+/nrfiOG98YnslYnwUIKtKy6NEt0kg5dhuvav0u4TaOKKfxKwZIqDTTtPM4Mz8bc4tskWvrx53mM1ESa/DjlJo08W1bpuGihAwyZRG0JeJFYQxjFgS51BFHO/kj3Y5sEWDmME7qxaG3ha9aamvj/1FM/48=
+Received: from OS0PR01MB5922.jpnprd01.prod.outlook.com (2603:1096:604:bb::5)
+ by OS3PR01MB5925.jpnprd01.prod.outlook.com (2603:1096:604:c0::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5769.19; Mon, 31 Oct
+ 2022 11:13:43 +0000
+Received: from OS0PR01MB5922.jpnprd01.prod.outlook.com
+ ([fe80::5b24:f581:85bd:6ce2]) by OS0PR01MB5922.jpnprd01.prod.outlook.com
+ ([fe80::5b24:f581:85bd:6ce2%3]) with mapi id 15.20.5769.019; Mon, 31 Oct 2022
+ 11:13:43 +0000
+From:   Biju Das <biju.das.jz@bp.renesas.com>
+To:     Jerome Neanne <jneanne@baylibre.com>,
+        "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>, "nm@ti.com" <nm@ti.com>,
+        "kristo@kernel.org" <kristo@kernel.org>,
+        "dmitry.torokhov@gmail.com" <dmitry.torokhov@gmail.com>,
+        "krzysztof.kozlowski+dt@linaro.org" 
+        <krzysztof.kozlowski+dt@linaro.org>,
+        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+        "will@kernel.org" <will@kernel.org>,
+        "lee.jones@linaro.org" <lee.jones@linaro.org>,
+        "tony@atomide.com" <tony@atomide.com>,
+        "vigneshr@ti.com" <vigneshr@ti.com>,
+        "bjorn.andersson@linaro.org" <bjorn.andersson@linaro.org>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "geert+renesas@glider.be" <geert+renesas@glider.be>,
+        "dmitry.baryshkov@linaro.org" <dmitry.baryshkov@linaro.org>,
+        "marcel.ziswiler@toradex.com" <marcel.ziswiler@toradex.com>,
+        "vkoul@kernel.org" <vkoul@kernel.org>,
+        "arnd@arndb.de" <arnd@arndb.de>,
+        "jeff@labundy.com" <jeff@labundy.com>
+CC:     "afd@ti.com" <afd@ti.com>,
+        "khilman@baylibre.com" <khilman@baylibre.com>,
+        "narmstrong@baylibre.com" <narmstrong@baylibre.com>,
+        "msp@baylibre.com" <msp@baylibre.com>,
+        "j-keerthy@ti.com" <j-keerthy@ti.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
+        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>
+Subject: RE: [PATCH v5 4/6] mfd: tps65219: Add driver for TI TPS65219 PMIC
+Thread-Topic: [PATCH v5 4/6] mfd: tps65219: Add driver for TI TPS65219 PMIC
+Thread-Index: AQHYyENwfeSoLjmHiU+cGdhL0pREk64ooH3w
+Date:   Mon, 31 Oct 2022 11:13:43 +0000
+Message-ID: <OS0PR01MB59221A8415766E7E3615F39E86379@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+References: <20220914140758.7582-1-jneanne@baylibre.com>
+ <20220914140758.7582-5-jneanne@baylibre.com>
+In-Reply-To: <20220914140758.7582-5-jneanne@baylibre.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=bp.renesas.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: OS0PR01MB5922:EE_|OS3PR01MB5925:EE_
+x-ms-office365-filtering-correlation-id: 5b2b8e70-3491-4ab9-e3e2-08dabb30f8b3
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: GB+H+oeefoimU/3uBoT7/dT6elHMQPlz1QOW8e89CTlODSCW9T97EnxoNBRHG2cma7jEkw6vMq9zvSuYb6uSUNFLBzZgkMtZlWyhm9tcbPX2hG3pFrqeWhvL0T5mNs7dvGlrvw5x/Saz9zWX5KYqGrB8esmC8HucLvGZjSlWnwffrTjerqVZN31DMfZFuWisNyWkArSW4Ve6L/bjNbb6yKu/N1LbvryfEjI1G2reKcvwHCuXBlPvdlfx3hVk4uvwR1IjkGPt2F+cwmIWGPsdEGeULQ+XxaLBYKHvCK3QM1kCz2OtxumETibPUAZVbUjY2IvIVPawVQgvr1O5R9Cyl1d4zotfR3RL1GVvNsFFdRao0SFrjFtGRo1nXEpkpK2ghZYhVO/nZRLg5iGlTHn9SBsKGM+eGvOsL28gFA4X6xOMMy31VPISP1VzKI03lfU8HhhmQjVZfGniREfJPEMfMQB0JDJW8sWL1OfqbI3aWD0oSRTUjp4B+7T8pRgOAIKRu0doOYzyf4xgaChcFup/LazkAAMuDDJOYlO3f9T6jQAmxeTmWNDxx8syveF4wvT8+1b42Apl9G/zdiR6NhKWandbX0181Og9v7ml0+bqUCOreYI85Bi6o6u8yAUgUhN8O/BUGfe5ML0EGAQZz47N9bm9gacgRZV87a2ImmkKr7OKas18/ZhHk3YnO+4hTIMtuZqeSfBMtR7DW82vhTD21YMVV3DSeIeCAPwH1f18AinuXEHt1JrumyvK8XkEz0NmGQgx1gq3Y9juJVqzXk5G/QCdIk3wef2DB+sTDPPhOXoMwJQ9VVdo4CH6wlFEJosA
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:OS0PR01MB5922.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(39860400002)(366004)(136003)(346002)(396003)(376002)(451199015)(921005)(122000001)(38070700005)(38100700002)(55016003)(86362001)(33656002)(71200400001)(2906002)(30864003)(478600001)(66946007)(4326008)(7406005)(316002)(66476007)(66446008)(66556008)(8676002)(7416002)(110136005)(45080400002)(64756008)(5660300002)(54906003)(7696005)(6506007)(41300700001)(52536014)(8936002)(76116006)(186003)(9686003)(26005)(83380400001)(579004)(559001);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?T3eMj+m3PytBSlEE39Lo4EFMqf+PoRYalYreyLTwIE2wvfwACLKhaSdum84D?=
+ =?us-ascii?Q?HbRpKfAFeqpPFuvPGaXowdyqYa7+UA9DDUmLOA4/z/FbbMWWUpfbg4lv1kFE?=
+ =?us-ascii?Q?s9p6YN5Z5x+9ha4aP03Z/5Zj/sibqK3Br5Zkfgl+8pQLqU9BEiCpoPXCDK/4?=
+ =?us-ascii?Q?tq9x2bIc4fy6Wo8voidDWLE3qgZHS4Y2qN0Dw9hSOQOMxQceZtWFSmCidqsG?=
+ =?us-ascii?Q?tPNczBGblnh6DXrX9s04GZQMBbEZFWeCk0bslXL0hhfFqx+WHmsX/6D5fcHp?=
+ =?us-ascii?Q?aUbsKmsJ1/GsD/auwm4AjhsbJvsCZcGl93dgfjNxieY6L5h6jNx44bIQ8vwG?=
+ =?us-ascii?Q?uBePVsf+X7kbq8Lrdset2UXnj8QKO8jB+loPUtg04IXOLlsgJhIu2uK6GrBf?=
+ =?us-ascii?Q?Q68tSVtfFKiIOmINWKAPE+KphpuiWLMR+ak3McOYCrZrJjNMcwJbHOUnRx8R?=
+ =?us-ascii?Q?ol7UDw/uP6XrJcqw9cIHPfm74fzq6jk6kdseJFwW+r0DcAeqLfPYgvDHtK3o?=
+ =?us-ascii?Q?pDKD/BN5Id98AO5drrqU69Ymr/6nNFd31ss/dX5kg/Dqv0nSEk1roJAXwk1g?=
+ =?us-ascii?Q?1LfG071UbkggOKJmuFEEnDABFTqQZCpf1OM1pGyf78rQ5zq5PZZVr5mS8RtK?=
+ =?us-ascii?Q?qLLkkrbjA9PCu8Qr71jbMXJX6e0qq7BSqgc7WmnDvytk086QBSAhqgbTdhGH?=
+ =?us-ascii?Q?YNKW9okPwHfpDbj+mlaw2lILGZSXC1EVJGu+wSkW1oigi5ZnggUNLiFZ0EWU?=
+ =?us-ascii?Q?6H8gpROH0pTjWXU05k8JC4GWtdY1wrGDrIq1J2910+Skt8FXXZtAkBoJOWWJ?=
+ =?us-ascii?Q?PvYtUN7uQvbGSi3vQ53QajqNK3Am9c4ybnibtgSPS/x8lKhGfwHnebHRnl8g?=
+ =?us-ascii?Q?pDBBlCfIzB8nBBLgnrjC4JXaYV6o7sEUpTKzYU9k0ysm8qgXYdTirLfSauaO?=
+ =?us-ascii?Q?XevDx/FxX3OoU1HXrIw/s81chVK4QA4/K/JnCbcQoWTZsZsadUEvqL0M802l?=
+ =?us-ascii?Q?XNZR7ybVMxC76nXFskWtnVXJ+7d+p1EBdYyTohFT1pT32ClqlzGQgpzQ/yag?=
+ =?us-ascii?Q?nKhOa3rfvytY9x+9X4jw2BEU6wtp171f7F8rPl9yGDzChQ6v8rz2L/zMTgiT?=
+ =?us-ascii?Q?KnDxVDMDX5NRlDLv9eiExh0GGTSGYvidwLrtnwNWOhJ7fou1zM8v/lYEJ2fM?=
+ =?us-ascii?Q?R/bmftEslSnew5Jt0b+z/MiKNWAo+ZCGwo0Jnc4SYg9GhZkdjrA6Tlo+qAtm?=
+ =?us-ascii?Q?6+xtxC5jsxDPsmumbHLb6OPG05rt8TpMvDbgIg1tJgX/ZjcECCTcB47wwgjG?=
+ =?us-ascii?Q?cA/MQAxcpS2yZa/M7c/P8djBAxu8XvTzIcVRYJryqpeoI8Ylg77mAHyP2cRP?=
+ =?us-ascii?Q?cOrKLdujg66cTvFYYMiHruGGk9ZiqpdtdPAqLa97z8eeLVhA7Isv+BGop/MJ?=
+ =?us-ascii?Q?Nod7xbSVPTrhnKi6vXMuITiBz4g5arfSS+7rrm4r+e1kNja8BLgvwRTk5hO7?=
+ =?us-ascii?Q?TP3qnhPyjWVDCMwDn1nSIcqpW80lfWAQrzGmqxJPnkkHUYyurLCNwdwMrCXi?=
+ =?us-ascii?Q?aIEfruIGPAx48vaECxPH0/uI5olnu27nUNqoUbR3BOHwFjyjwNOh4K9OZBKZ?=
+ =?us-ascii?Q?yA=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20221011140549.16761-5-jneanne@baylibre.com>
-X-Spam-Status: No, score=-8.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-OriginatorOrg: bp.renesas.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: OS0PR01MB5922.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5b2b8e70-3491-4ab9-e3e2-08dabb30f8b3
+X-MS-Exchange-CrossTenant-originalarrivaltime: 31 Oct 2022 11:13:43.1397
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: LoQVy7GIaghEOsFoXCajwQvV3nQeqwuVEZxefM48J+9C5jX5MDizJ4w+8/OvUKaEcLDzzyZTzjgVo1EHBdNQx8ttOdl7Rmt8P8TdiMYZYGE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS3PR01MB5925
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, 11 Oct 2022, Jerome Neanne wrote:
+Hi,
 
-> The TPS65219 is a power management IC PMIC designed to supply a wide
-> range of SoCs in both portable and stationary applications. Any SoC can
-> control TPS65219 over a standard I2C interface.
-> 
+> Subject: [PATCH v5 4/6] mfd: tps65219: Add driver for TI TPS65219 PMIC
+>=20
+> The TPS65219 is a power management IC PMIC designed to supply a wide rang=
+e
+> of SoCs in both portable and stationary applications. Any SoC can control
+> TPS65219 over a standard I2C interface.
+>=20
 > It contains the following components:
 > - Regulators.
 > - Over Temperature warning and Shut down.
 > - GPIOs
 > - Multi Function Pins (MFP)
 > - power-button
-> 
-> This patch adds support for tps65219 PMIC. At this time only
-> the functionalities listed below are made available:
-> 
+>=20
+> This patch adds support for tps65219 PMIC. At this time only the
+> functionalities listed below are made available:
+>=20
 > - Regulators probe and functionalities
 > - warm and cold reset support
 > - SW shutdown support
 > - Regulator warnings via IRQs
 > - Power-button via IRQ
-> 
+>=20
 > Signed-off-by: Jerome Neanne <jneanne@baylibre.com>
 > Signed-off-by: Markus Schneider-Pargmann <msp@baylibre.com>
 > ---
-
-v6 and no change-log?  Please ensure you keep a change-log here in the
-future.  Else reviewers are essentially forced to conduct full reviews
-over and over.
-
 >  MAINTAINERS                  |   1 +
 >  drivers/mfd/Kconfig          |  14 ++
 >  drivers/mfd/Makefile         |   1 +
 >  drivers/mfd/tps65219.c       | 320 ++++++++++++++++++++++++++++++++
 >  include/linux/mfd/tps65219.h | 345 +++++++++++++++++++++++++++++++++++
 >  5 files changed, 681 insertions(+)
->  create mode 100644 drivers/mfd/tps65219.c
->  create mode 100644 include/linux/mfd/tps65219.h
-
-Just a few nits going forward.  It's shaping up nicely.
-
-Once fixed, please submit with this added:
-
-For my own reference (apply this as-is to your sign-off block):
-
-  Acked-for-MFD-by: Lee Jones <lee@kernel.org>
-
+>  create mode 100644 drivers/mfd/tps65219.c  create mode 100644
+> include/linux/mfd/tps65219.h
+>=20
 > diff --git a/MAINTAINERS b/MAINTAINERS
-> index 14edacfeb1d4..f89e77959536 100644
+> index f35b29ffd5fb..960df879c635 100644
 > --- a/MAINTAINERS
 > +++ b/MAINTAINERS
-> @@ -14931,6 +14931,7 @@ F:	drivers/mfd/menelaus.c
+> @@ -14926,6 +14926,7 @@ F:	drivers/mfd/menelaus.c
 >  F:	drivers/mfd/palmas.c
 >  F:	drivers/mfd/tps65217.c
 >  F:	drivers/mfd/tps65218.c
@@ -123,14 +194,14 @@ For my own reference (apply this as-is to your sign-off block):
 >  F:	drivers/mfd/tps65910.c
 >  F:	drivers/mfd/twl-core.[ch]
 >  F:	drivers/mfd/twl4030*.c
-> diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
-> index abb58ab1a1a4..1a846c7dd0c2 100644
+> diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig index
+> abb58ab1a1a4..1a846c7dd0c2 100644
 > --- a/drivers/mfd/Kconfig
 > +++ b/drivers/mfd/Kconfig
 > @@ -1576,6 +1576,20 @@ config MFD_TPS65218
 >  	  This driver can also be built as a module.  If so, the module
 >  	  will be called tps65218.
->  
+>=20
 > +config MFD_TPS65219
 > +	tristate "TI TPS65219 Power Management IC"
 > +	depends on I2C && OF
@@ -138,41 +209,39 @@ For my own reference (apply this as-is to your sign-off block):
 > +	select REGMAP_I2C
 > +	select REGMAP_IRQ
 > +	help
-> +	  If you say yes here you get support for the TPS65219 series of Power
+> +	  If you say yes here you get support for the TPS65219 series of
+> Power
 > +	  Management ICs. These include voltage regulators, GPIOs and
 > +	  push/power button that are often used in portable devices.
-
-Nit: buttons
-
+> +
 > +	  This driver can also be built as a module. If so, the module
 > +	  will be called tps65219.
 > +
 >  config MFD_TPS6586X
 >  	bool "TI TPS6586x Power Management chips"
->  	depends on I2C=y
-> diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
-> index 858cacf659d6..a8ff3d6ea3ab 100644
+>  	depends on I2C=3Dy
+> diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile index
+> 858cacf659d6..a8ff3d6ea3ab 100644
 > --- a/drivers/mfd/Makefile
 > +++ b/drivers/mfd/Makefile
-> @@ -101,6 +101,7 @@ obj-$(CONFIG_TPS6507X)		+= tps6507x.o
->  obj-$(CONFIG_MFD_TPS65086)	+= tps65086.o
->  obj-$(CONFIG_MFD_TPS65217)	+= tps65217.o
->  obj-$(CONFIG_MFD_TPS65218)	+= tps65218.o
-> +obj-$(CONFIG_MFD_TPS65219)	+= tps65219.o
->  obj-$(CONFIG_MFD_TPS65910)	+= tps65910.o
->  obj-$(CONFIG_MFD_TPS65912)	+= tps65912-core.o
->  obj-$(CONFIG_MFD_TPS65912_I2C)	+= tps65912-i2c.o
-> diff --git a/drivers/mfd/tps65219.c b/drivers/mfd/tps65219.c
-> new file mode 100644
-> index 000000000000..c1638483e069
+> @@ -101,6 +101,7 @@ obj-$(CONFIG_TPS6507X)		+=3D tps6507x.o
+>  obj-$(CONFIG_MFD_TPS65086)	+=3D tps65086.o
+>  obj-$(CONFIG_MFD_TPS65217)	+=3D tps65217.o
+>  obj-$(CONFIG_MFD_TPS65218)	+=3D tps65218.o
+> +obj-$(CONFIG_MFD_TPS65219)	+=3D tps65219.o
+>  obj-$(CONFIG_MFD_TPS65910)	+=3D tps65910.o
+>  obj-$(CONFIG_MFD_TPS65912)	+=3D tps65912-core.o
+>  obj-$(CONFIG_MFD_TPS65912_I2C)	+=3D tps65912-i2c.o
+> diff --git a/drivers/mfd/tps65219.c b/drivers/mfd/tps65219.c new file mod=
+e
+> 100644 index 000000000000..c1638483e069
 > --- /dev/null
 > +++ b/drivers/mfd/tps65219.c
 > @@ -0,0 +1,320 @@
 > +// SPDX-License-Identifier: GPL-2.0
 > +//
-> +// Driver for TPS65219 Integrated Power Management Integrated Chips (PMIC)
-> +//
-> +// Copyright (C) 2022 BayLibre Incorporated - https://www.baylibre.com/
+> +// Driver for TPS65219 Integrated Power Management Integrated Chips
+> +(PMIC) // // Copyright (C) 2022 BayLibre Incorporated -
 > +
 > +#include <linux/device.h>
 > +#include <linux/err.h>
@@ -188,65 +257,64 @@ Nit: buttons
 > +#include <linux/reboot.h>
 > +#include <linux/regmap.h>
 > +#include <linux/slab.h>
+
+Do you need all the includes??
+
 > +
 > +#include <linux/mfd/core.h>
 > +#include <linux/mfd/tps65219.h>
 > +
-> +static int tps65219_warm_reset(struct tps65219 *tps)
-> +{
+> +static int tps65219_warm_reset(struct tps65219 *tps) {
 > +	return regmap_update_bits(tps->regmap, TPS65219_REG_MFP_CTRL,
 > +				  TPS65219_MFP_WARM_RESET_I2C_CTRL_MASK,
 > +				  TPS65219_MFP_WARM_RESET_I2C_CTRL_MASK);
 > +}
 > +
-> +static int tps65219_cold_reset(struct tps65219 *tps)
-> +{
+> +static int tps65219_cold_reset(struct tps65219 *tps) {
 > +	return regmap_update_bits(tps->regmap, TPS65219_REG_MFP_CTRL,
 > +				  TPS65219_MFP_COLD_RESET_I2C_CTRL_MASK,
 > +				  TPS65219_MFP_COLD_RESET_I2C_CTRL_MASK);
 > +}
 > +
-> +static int tps65219_soft_shutdown(struct tps65219 *tps)
-> +{
+> +static int tps65219_soft_shutdown(struct tps65219 *tps) {
 > +	return regmap_update_bits(tps->regmap, TPS65219_REG_MFP_CTRL,
 > +				  TPS65219_MFP_I2C_OFF_REQ_MASK,
 > +				  TPS65219_MFP_I2C_OFF_REQ_MASK);
 > +}
 > +
 > +static int tps65219_restart(struct notifier_block *this,
-> +			    unsigned long reboot_mode, void *cmd)
-> +{
+> +			    unsigned long reboot_mode, void *cmd) {
 > +	struct tps65219 *tps;
 > +
-> +	tps = container_of(this, struct tps65219, nb);
+> +	tps =3D container_of(this, struct tps65219, nb);
 > +	if (!tps) {
-> +		pr_err("tps65219: Restarting failed because the pointer to tps65219 is invalid\n");
+> +		pr_err("tps65219: Restarting failed because the pointer to
+> tps65219 is invalid\n");
+Why not dev_error?
+
+Cheers,
+Biju
 > +		return -ENODEV;
 > +	}
-
-Nit: '\n'
-
-> +	if (reboot_mode == REBOOT_WARM)
+> +	if (reboot_mode =3D=3D REBOOT_WARM)
 > +		tps65219_warm_reset(tps);
 > +	else
 > +		tps65219_cold_reset(tps);
-
-Nit: '\n'
-
 > +	return NOTIFY_DONE;
 > +}
 > +
-> +static struct notifier_block pmic_rst_restart_nb = {
-> +	.notifier_call = tps65219_restart,
-> +	.priority = 200,
+> +static struct notifier_block pmic_rst_restart_nb =3D {
+> +	.notifier_call =3D tps65219_restart,
+> +	.priority =3D 200,
 > +};
 > +
-> +static const struct resource tps65219_pwrbutton_resources[] = {
-> +	DEFINE_RES_IRQ_NAMED(TPS65219_INT_PB_FALLING_EDGE_DETECT, "falling"),
+> +static const struct resource tps65219_pwrbutton_resources[] =3D {
+> +	DEFINE_RES_IRQ_NAMED(TPS65219_INT_PB_FALLING_EDGE_DETECT,
+> "falling"),
 > +	DEFINE_RES_IRQ_NAMED(TPS65219_INT_PB_RISING_EDGE_DETECT, "rising"),
-> +};
+> };
 > +
-> +static const struct resource tps65219_regulator_resources[] = {
+> +static const struct resource tps65219_regulator_resources[] =3D {
 > +	DEFINE_RES_IRQ_NAMED(TPS65219_INT_LDO3_SCG, "LDO3_SCG"),
 > +	DEFINE_RES_IRQ_NAMED(TPS65219_INT_LDO3_OC, "LDO3_OC"),
 > +	DEFINE_RES_IRQ_NAMED(TPS65219_INT_LDO3_UV, "LDO3_UV"),
@@ -293,52 +361,58 @@ Nit: '\n'
 > +	DEFINE_RES_IRQ_NAMED(TPS65219_INT_SENSOR_3_HOT, "SENSOR_3_HOT"),
 > +	DEFINE_RES_IRQ_NAMED(TPS65219_INT_SENSOR_2_HOT, "SENSOR_2_HOT"),
 > +	DEFINE_RES_IRQ_NAMED(TPS65219_INT_SENSOR_1_HOT, "SENSOR_1_HOT"),
-> +	DEFINE_RES_IRQ_NAMED(TPS65219_INT_SENSOR_0_HOT, "SENSOR_0_HOT"),
-> +};
+> +	DEFINE_RES_IRQ_NAMED(TPS65219_INT_SENSOR_0_HOT, "SENSOR_0_HOT"), };
 > +
-> +static const struct mfd_cell tps65219_cells[] = {
+> +static const struct mfd_cell tps65219_cells[] =3D {
 > +	{
-> +		.name = "tps65219-regulator",
-> +		.resources = tps65219_regulator_resources,
-> +		.num_resources = ARRAY_SIZE(tps65219_regulator_resources),
+> +		.name =3D "tps65219-regulator",
+> +		.resources =3D tps65219_regulator_resources,
+> +		.num_resources =3D ARRAY_SIZE(tps65219_regulator_resources),
 > +	}, {
-> +		.name = "tps65219-gpios",
+> +		.name =3D "tps65219-gpios",
 > +	},
-
-Nit: Like this please:
-
-     { .name = "tps65219-gpios", },
-
 > +};
 > +
-> +static const struct mfd_cell tps65219_pwrbutton_cell = {
-> +	.name = "tps65219-pwrbutton",
-> +	.resources = tps65219_pwrbutton_resources,
-> +	.num_resources = ARRAY_SIZE(tps65219_pwrbutton_resources),
+> +static const struct mfd_cell tps65219_pwrbutton_cell =3D {
+> +	.name =3D "tps65219-pwrbutton",
+> +	.resources =3D tps65219_pwrbutton_resources,
+> +	.num_resources =3D ARRAY_SIZE(tps65219_pwrbutton_resources),
 > +};
 > +
-> +static const struct regmap_config tps65219_regmap_config = {
-> +	.reg_bits = 8,
-> +	.val_bits = 8,
-> +	.max_register = TPS65219_REG_FACTORY_CONFIG_2,
-> +};
+> +static const struct regmap_config tps65219_regmap_config =3D {
+> +	.reg_bits =3D 8,
+> +	.val_bits =3D 8,
+> +	.max_register =3D TPS65219_REG_FACTORY_CONFIG_2, };
 > +
 > +/*
-> + * Mapping of main IRQ register bits to sub-IRQ register offsets so that we can
-> + * access corect sub-IRQ registers based on bits that are set in main IRQ
+> + * Mapping of main IRQ register bits to sub-IRQ register offsets so
+> +that we can
+> + * access corect sub-IRQ registers based on bits that are set in main
+> +IRQ
 > + * register.
 > + */
-> +/* Timeout Residual Voltage Shutdown */
-> +static unsigned int bit0_offsets[] = { TPS65219_REG_INT_TO_RV_POS };
-> +static unsigned int bit1_offsets[] = { TPS65219_REG_INT_RV_POS };	/* Residual Voltage */
-> +static unsigned int bit2_offsets[] = { TPS65219_REG_INT_SYS_POS };	/* System */
-> +static unsigned int bit3_offsets[] = { TPS65219_REG_INT_BUCK_1_2_POS };	/* Buck 1-2 */
-> +static unsigned int bit4_offsets[] = { TPS65219_REG_INT_BUCK_3_POS };	/* Buck 3 */
-> +static unsigned int bit5_offsets[] = { TPS65219_REG_INT_LDO_1_2_POS };	/* LDO 1-2 */
-> +static unsigned int bit6_offsets[] = { TPS65219_REG_INT_LDO_3_4_POS };	/* LDO 3-4 */
-> +static unsigned int bit7_offsets[] = { TPS65219_REG_INT_PB_POS };	/* Power Button */
+> +/* Timeout Residual Voltage Shutdown */ static unsigned int
+> +bit0_offsets[] =3D { TPS65219_REG_INT_TO_RV_POS };
+> +static unsigned int bit1_offsets[] =3D { TPS65219_REG_INT_RV_POS };	/*
+> Residual Voltage */
+> +static unsigned int bit2_offsets[] =3D { TPS65219_REG_INT_SYS_POS };	/*
+> System */
+> +static unsigned int bit3_offsets[] =3D { TPS65219_REG_INT_BUCK_1_2_POS }=
+;
+> 	/* Buck 1-2 */
+> +static unsigned int bit4_offsets[] =3D { TPS65219_REG_INT_BUCK_3_POS };	=
+/*
+> Buck 3 */
+> +static unsigned int bit5_offsets[] =3D { TPS65219_REG_INT_LDO_1_2_POS };=
+	/*
+> LDO 1-2 */
+> +static unsigned int bit6_offsets[] =3D { TPS65219_REG_INT_LDO_3_4_POS };=
+	/*
+> LDO 3-4 */
+> +static unsigned int bit7_offsets[] =3D { TPS65219_REG_INT_PB_POS };	/*
+> Power Button */
 > +
-> +static struct regmap_irq_sub_irq_map tps65219_sub_irq_offsets[] = {
+> +static struct regmap_irq_sub_irq_map tps65219_sub_irq_offsets[] =3D {
 > +	REGMAP_IRQ_MAIN_REG_OFFSET(bit0_offsets),
 > +	REGMAP_IRQ_MAIN_REG_OFFSET(bit1_offsets),
 > +	REGMAP_IRQ_MAIN_REG_OFFSET(bit2_offsets),
@@ -352,107 +426,155 @@ Nit: Like this please:
 > +#define TPS65219_REGMAP_IRQ_REG(int_name, register_position) \
 > +	REGMAP_IRQ_REG(int_name, register_position, int_name##_MASK)
 > +
-> +static struct regmap_irq tps65219_irqs[] = {
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO3_SCG, TPS65219_REG_INT_LDO_3_4_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO3_OC, TPS65219_REG_INT_LDO_3_4_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO3_UV, TPS65219_REG_INT_LDO_3_4_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO4_SCG, TPS65219_REG_INT_LDO_3_4_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO4_OC, TPS65219_REG_INT_LDO_3_4_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO4_UV, TPS65219_REG_INT_LDO_3_4_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO1_SCG, TPS65219_REG_INT_LDO_1_2_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO1_OC, TPS65219_REG_INT_LDO_1_2_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO1_UV, TPS65219_REG_INT_LDO_1_2_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO2_SCG, TPS65219_REG_INT_LDO_1_2_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO2_OC, TPS65219_REG_INT_LDO_1_2_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO2_UV, TPS65219_REG_INT_LDO_1_2_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK3_SCG, TPS65219_REG_INT_BUCK_3_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK3_OC, TPS65219_REG_INT_BUCK_3_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK3_NEG_OC, TPS65219_REG_INT_BUCK_3_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK3_UV, TPS65219_REG_INT_BUCK_3_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK2_SCG, TPS65219_REG_INT_BUCK_1_2_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK2_OC, TPS65219_REG_INT_BUCK_1_2_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK2_NEG_OC, TPS65219_REG_INT_BUCK_1_2_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK2_UV, TPS65219_REG_INT_BUCK_1_2_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK1_SCG, TPS65219_REG_INT_BUCK_1_2_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK1_OC, TPS65219_REG_INT_BUCK_1_2_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK1_NEG_OC, TPS65219_REG_INT_BUCK_1_2_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK1_UV, TPS65219_REG_INT_BUCK_1_2_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_SENSOR_3_WARM, TPS65219_REG_INT_SYS_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_SENSOR_2_WARM, TPS65219_REG_INT_SYS_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_SENSOR_1_WARM, TPS65219_REG_INT_SYS_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_SENSOR_0_WARM, TPS65219_REG_INT_SYS_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_SENSOR_3_HOT, TPS65219_REG_INT_SYS_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_SENSOR_2_HOT, TPS65219_REG_INT_SYS_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_SENSOR_1_HOT, TPS65219_REG_INT_SYS_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_SENSOR_0_HOT, TPS65219_REG_INT_SYS_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK1_RV, TPS65219_REG_INT_RV_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK2_RV, TPS65219_REG_INT_RV_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK3_RV, TPS65219_REG_INT_RV_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO1_RV, TPS65219_REG_INT_RV_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO2_RV, TPS65219_REG_INT_RV_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO3_RV, TPS65219_REG_INT_RV_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO4_RV, TPS65219_REG_INT_RV_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK1_RV_SD, TPS65219_REG_INT_TO_RV_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK2_RV_SD, TPS65219_REG_INT_TO_RV_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK3_RV_SD, TPS65219_REG_INT_TO_RV_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO1_RV_SD, TPS65219_REG_INT_TO_RV_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO2_RV_SD, TPS65219_REG_INT_TO_RV_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO3_RV_SD, TPS65219_REG_INT_TO_RV_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO4_RV_SD, TPS65219_REG_INT_TO_RV_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_TIMEOUT, TPS65219_REG_INT_TO_RV_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_PB_FALLING_EDGE_DETECT, TPS65219_REG_INT_PB_POS),
-> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_PB_RISING_EDGE_DETECT, TPS65219_REG_INT_PB_POS),
-> +};
+> +static struct regmap_irq tps65219_irqs[] =3D {
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO3_SCG,
+> TPS65219_REG_INT_LDO_3_4_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO3_OC,
+> TPS65219_REG_INT_LDO_3_4_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO3_UV,
+> TPS65219_REG_INT_LDO_3_4_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO4_SCG,
+> TPS65219_REG_INT_LDO_3_4_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO4_OC,
+> TPS65219_REG_INT_LDO_3_4_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO4_UV,
+> TPS65219_REG_INT_LDO_3_4_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO1_SCG,
+> TPS65219_REG_INT_LDO_1_2_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO1_OC,
+> TPS65219_REG_INT_LDO_1_2_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO1_UV,
+> TPS65219_REG_INT_LDO_1_2_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO2_SCG,
+> TPS65219_REG_INT_LDO_1_2_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO2_OC,
+> TPS65219_REG_INT_LDO_1_2_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO2_UV,
+> TPS65219_REG_INT_LDO_1_2_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK3_SCG,
+> TPS65219_REG_INT_BUCK_3_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK3_OC,
+> TPS65219_REG_INT_BUCK_3_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK3_NEG_OC,
+> TPS65219_REG_INT_BUCK_3_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK3_UV,
+> TPS65219_REG_INT_BUCK_3_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK2_SCG,
+> TPS65219_REG_INT_BUCK_1_2_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK2_OC,
+> TPS65219_REG_INT_BUCK_1_2_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK2_NEG_OC,
+> TPS65219_REG_INT_BUCK_1_2_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK2_UV,
+> TPS65219_REG_INT_BUCK_1_2_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK1_SCG,
+> TPS65219_REG_INT_BUCK_1_2_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK1_OC,
+> TPS65219_REG_INT_BUCK_1_2_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK1_NEG_OC,
+> TPS65219_REG_INT_BUCK_1_2_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK1_UV,
+> TPS65219_REG_INT_BUCK_1_2_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_SENSOR_3_WARM,
+> TPS65219_REG_INT_SYS_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_SENSOR_2_WARM,
+> TPS65219_REG_INT_SYS_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_SENSOR_1_WARM,
+> TPS65219_REG_INT_SYS_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_SENSOR_0_WARM,
+> TPS65219_REG_INT_SYS_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_SENSOR_3_HOT,
+> TPS65219_REG_INT_SYS_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_SENSOR_2_HOT,
+> TPS65219_REG_INT_SYS_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_SENSOR_1_HOT,
+> TPS65219_REG_INT_SYS_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_SENSOR_0_HOT,
+> TPS65219_REG_INT_SYS_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK1_RV,
+> TPS65219_REG_INT_RV_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK2_RV,
+> TPS65219_REG_INT_RV_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK3_RV,
+> TPS65219_REG_INT_RV_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO1_RV,
+> TPS65219_REG_INT_RV_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO2_RV,
+> TPS65219_REG_INT_RV_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO3_RV,
+> TPS65219_REG_INT_RV_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO4_RV,
+> TPS65219_REG_INT_RV_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK1_RV_SD,
+> TPS65219_REG_INT_TO_RV_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK2_RV_SD,
+> TPS65219_REG_INT_TO_RV_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK3_RV_SD,
+> TPS65219_REG_INT_TO_RV_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO1_RV_SD,
+> TPS65219_REG_INT_TO_RV_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO2_RV_SD,
+> TPS65219_REG_INT_TO_RV_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO3_RV_SD,
+> TPS65219_REG_INT_TO_RV_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO4_RV_SD,
+> TPS65219_REG_INT_TO_RV_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_TIMEOUT,
+> TPS65219_REG_INT_TO_RV_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_PB_FALLING_EDGE_DETECT,
+> TPS65219_REG_INT_PB_POS),
+> +	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_PB_RISING_EDGE_DETECT,
+> +TPS65219_REG_INT_PB_POS), };
 > +
-> +static struct regmap_irq_chip tps65219_irq_chip = {
-> +	.name = "tps65219_irq",
-> +	.main_status = TPS65219_REG_INT_SOURCE,
-> +	.num_main_regs = 1,
-> +	.num_main_status_bits = 8,
-> +	.irqs = tps65219_irqs,
-> +	.num_irqs = ARRAY_SIZE(tps65219_irqs),
-> +	.status_base = TPS65219_REG_INT_LDO_3_4,
-> +	.ack_base = TPS65219_REG_INT_LDO_3_4,
-> +	.clear_ack = 1,
-> +	.num_regs = 8,
-> +	.sub_reg_offsets = tps65219_sub_irq_offsets,
-> +};
+> +static struct regmap_irq_chip tps65219_irq_chip =3D {
+> +	.name =3D "tps65219_irq",
+> +	.main_status =3D TPS65219_REG_INT_SOURCE,
+> +	.num_main_regs =3D 1,
+> +	.num_main_status_bits =3D 8,
+> +	.irqs =3D tps65219_irqs,
+> +	.num_irqs =3D ARRAY_SIZE(tps65219_irqs),
+> +	.status_base =3D TPS65219_REG_INT_LDO_3_4,
+> +	.ack_base =3D TPS65219_REG_INT_LDO_3_4,
+> +	.clear_ack =3D 1,
+> +	.num_regs =3D 8,
+> +	.sub_reg_offsets =3D tps65219_sub_irq_offsets, };
 > +
-> +static int tps65219_probe(struct i2c_client *client)
-> +{
+> +static int tps65219_probe(struct i2c_client *client) {
 > +	struct tps65219 *tps;
 > +	unsigned int chipid;
 > +	bool pwr_button;
 > +	int ret;
 > +
-> +	tps = devm_kzalloc(&client->dev, sizeof(*tps), GFP_KERNEL);
+> +	tps =3D devm_kzalloc(&client->dev, sizeof(*tps), GFP_KERNEL);
 > +	if (!tps)
 > +		return -ENOMEM;
 > +
 > +	i2c_set_clientdata(client, tps);
 > +
-> +	tps->dev = &client->dev;
+> +	tps->dev =3D &client->dev;
 > +
-> +	tps->regmap = devm_regmap_init_i2c(client, &tps65219_regmap_config);
+> +	tps->regmap =3D devm_regmap_init_i2c(client, &tps65219_regmap_config);
 > +	if (IS_ERR(tps->regmap)) {
-> +		ret = PTR_ERR(tps->regmap);
-> +		dev_err(tps->dev, "Failed to allocate register map: %d\n", ret);
+> +		ret =3D PTR_ERR(tps->regmap);
+> +		dev_err(tps->dev, "Failed to allocate register map: %d\n",
+> ret);
 > +		return ret;
 > +	}
 > +
-> +	ret = devm_regmap_add_irq_chip(&client->dev, tps->regmap, client->irq,
+> +	ret =3D devm_regmap_add_irq_chip(&client->dev, tps->regmap, client-
+> >irq,
 > +				       IRQF_ONESHOT, 0, &tps65219_irq_chip,
 > +				       &tps->irq_data);
 > +	if (ret)
 > +		return ret;
 > +
-> +	ret = regmap_read(tps->regmap, TPS65219_REG_TI_DEV_ID, &chipid);
+> +	ret =3D regmap_read(tps->regmap, TPS65219_REG_TI_DEV_ID, &chipid);
 > +	if (ret) {
 > +		dev_err(tps->dev, "Failed to read device ID: %d\n", ret);
 > +		return ret;
 > +	}
 > +
-> +	ret = devm_mfd_add_devices(tps->dev, PLATFORM_DEVID_AUTO,
+> +	ret =3D devm_mfd_add_devices(tps->dev, PLATFORM_DEVID_AUTO,
 > +				   tps65219_cells, ARRAY_SIZE(tps65219_cells),
 > +				   NULL, 0, regmap_irq_get_domain(tps->irq_data));
 > +	if (ret) {
@@ -460,39 +582,42 @@ Nit: Like this please:
 > +		return ret;
 > +	}
 > +
-> +	pwr_button = of_property_read_bool(tps->dev->of_node, "ti,power-button");
+> +	pwr_button =3D of_property_read_bool(tps->dev->of_node, "ti,power-
+> button");
 > +	if (pwr_button) {
-> +		ret = devm_mfd_add_devices(tps->dev, PLATFORM_DEVID_AUTO,
+> +		ret =3D devm_mfd_add_devices(tps->dev, PLATFORM_DEVID_AUTO,
 > +					   &tps65219_pwrbutton_cell, 1, NULL, 0,
 > +					   regmap_irq_get_domain(tps->irq_data));
 > +		if (ret) {
-> +			dev_err(tps->dev, "Failed to add power-button: %d\n", ret);
+> +			dev_err(tps->dev, "Failed to add power-button: %d\n",
+> ret);
 > +			return ret;
 > +		}
 > +	}
 > +
-> +	tps->nb = pmic_rst_restart_nb;
-> +	ret = register_restart_handler(&tps->nb);
+> +	tps->nb =3D pmic_rst_restart_nb;
+> +	ret =3D register_restart_handler(&tps->nb);
 > +	if (ret) {
-> +		dev_err(tps->dev, "cannot register restart handler, %d\n", ret);
+> +		dev_err(tps->dev, "cannot register restart handler, %d\n",
+> ret);
 > +		return ret;
 > +	}
 > +
 > +	return 0;
 > +}
 > +
-> +static const struct of_device_id of_tps65219_match_table[] = {
-> +	{ .compatible = "ti,tps65219", },
+> +static const struct of_device_id of_tps65219_match_table[] =3D {
+> +	{ .compatible =3D "ti,tps65219", },
 > +	{}
 > +};
 > +MODULE_DEVICE_TABLE(of, of_tps65219_match_table);
 > +
-> +static struct i2c_driver tps65219_driver = {
-> +	.driver		= {
-> +		.name	= "tps65219",
-> +		.of_match_table = of_tps65219_match_table,
+> +static struct i2c_driver tps65219_driver =3D {
+> +	.driver		=3D {
+> +		.name	=3D "tps65219",
+> +		.of_match_table =3D of_tps65219_match_table,
 > +	},
-> +	.probe_new	= tps65219_probe,
+> +	.probe_new	=3D tps65219_probe,
 > +};
 > +module_i2c_driver(tps65219_driver);
 > +
@@ -500,18 +625,24 @@ Nit: Like this please:
 > +MODULE_DESCRIPTION("TPS65219 power management IC driver");
 > +MODULE_LICENSE("GPL");
 > diff --git a/include/linux/mfd/tps65219.h b/include/linux/mfd/tps65219.h
-> new file mode 100644
-> index 000000000000..2c1cf92e92ac
+> new file mode 100644 index 000000000000..2c1cf92e92ac
 > --- /dev/null
 > +++ b/include/linux/mfd/tps65219.h
 > @@ -0,0 +1,345 @@
 > +/* SPDX-License-Identifier: GPL-2.0 */
 > +/*
 > + * Functions to access TPS65219 power management IC.
-
-Nit: Power Management IC
-
-> + * Copyright (C) 2022 BayLibre Incorporated - https://www.baylibre.com/
+> + *
+> + * Copyright (C) 2022 BayLibre Incorporated -
+> +https://jpn01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fwww.=
+b
+> +aylibre.com%2F&amp;data=3D05%7C01%7Cbiju.das.jz%40bp.renesas.com%7C13cf6=
+2
+> +f23ce0455a0cb108da965a913f%7C53d82571da1947e49cb4625a166a4a2a%7C0%7C0%7
+> +C637987612976950969%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjo
+> +iV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&amp;sdata=3DQnc1=
+a
+> +xUPdLWQwakr2eqFbc1IS7KeQY23oMJjMwc0A44%3D&amp;reserved=3D0
 > + */
 > +
 > +#ifndef MFD_TPS65219_H
@@ -625,7 +756,8 @@ Nit: Power Management IC
 > +/* power ON-OFF sequence slot */
 > +#define TPS65219_BUCKS_LDOS_SEQUENCE_OFF_SLOT_MASK	GENMASK(3, 0)
 > +#define TPS65219_BUCKS_LDOS_SEQUENCE_ON_SLOT_MASK	GENMASK(7, 4)
-> +/* TODO: Not needed, same mapping as TPS65219_ENABLE_REGNAME_EN, factorize */
+> +/* TODO: Not needed, same mapping as TPS65219_ENABLE_REGNAME_EN,
+> factorize */
 > +#define TPS65219_STBY1_BUCK1_STBY_EN_MASK		BIT(0)
 > +#define TPS65219_STBY1_BUCK2_STBY_EN_MASK		BIT(1)
 > +#define TPS65219_STBY1_BUCK3_STBY_EN_MASK		BIT(2)
@@ -818,7 +950,8 @@ Nit: Power Management IC
 > +/* Number of LDO voltage regulators available */
 > +#define TPS65219_NUM_LDO		4
 > +/* Number of total regulators available */
-> +#define TPS65219_NUM_REGULATOR		(TPS65219_NUM_DCDC + TPS65219_NUM_LDO)
+> +#define TPS65219_NUM_REGULATOR		(TPS65219_NUM_DCDC +
+> TPS65219_NUM_LDO)
 > +
 > +/* Define the TPS65219 IRQ numbers */
 > +enum tps65219_irqs {
@@ -841,14 +974,7 @@ Nit: Power Management IC
 > + * @dev MFD device
 > + * @regmap Regmap for accessing the device registers
 > + * @irq_data Regmap irq data used for the irq chip
-> + * @nb notifier block for the restart handler
-> + */
-
-This header needs work.
-
-Can you try an compile with W=1 please.
-
-> +struct tps65219 {
+> + * @nb notifier block for the restart handler  */ struct tps65219 {
 > +	struct device *dev;
 > +	struct regmap *regmap;
 > +
@@ -857,8 +983,6 @@ Can you try an compile with W=1 please.
 > +};
 > +
 > +#endif /*  MFD_TPS65219_H */
+> --
+> 2.17.1
 
-Superfluous " ".
-
--- 
-Lee Jones [李琼斯]
