@@ -2,42 +2,69 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A3CDA61542B
-	for <lists+linux-omap@lfdr.de>; Tue,  1 Nov 2022 22:22:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 526F06154A7
+	for <lists+linux-omap@lfdr.de>; Tue,  1 Nov 2022 23:04:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230000AbiKAVW5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 1 Nov 2022 17:22:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43292 "EHLO
+        id S230502AbiKAWER (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 1 Nov 2022 18:04:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229648AbiKAVWy (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 1 Nov 2022 17:22:54 -0400
-X-Greylist: delayed 452 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 01 Nov 2022 14:22:53 PDT
-Received: from smtp.smtpout.orange.fr (smtp-16.smtpout.orange.fr [80.12.242.16])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id AAC95B30
-        for <linux-omap@vger.kernel.org>; Tue,  1 Nov 2022 14:22:53 -0700 (PDT)
-Received: from pop-os.home ([86.243.100.34])
-        by smtp.orange.fr with ESMTPA
-        id pyanoKD2rsfCIpybOoWfJm; Tue, 01 Nov 2022 22:15:19 +0100
-X-ME-Helo: pop-os.home
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Tue, 01 Nov 2022 22:15:19 +0100
-X-ME-IP: 86.243.100.34
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     Helge Deller <deller@gmx.de>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org
-Subject: [PATCH 15/30] video: fbdev: omapfb: Use kstrtobool() instead of strtobool()
-Date:   Tue,  1 Nov 2022 22:14:03 +0100
-Message-Id: <49e4f12b45470c02e4b7c64cc20939667690f948.1667336095.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <cover.1667336095.git.christophe.jaillet@wanadoo.fr>
-References: <cover.1667336095.git.christophe.jaillet@wanadoo.fr>
+        with ESMTP id S231248AbiKAWD7 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 1 Nov 2022 18:03:59 -0400
+Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 309DDBCAC;
+        Tue,  1 Nov 2022 15:03:48 -0700 (PDT)
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 2A1M3hJ5080000;
+        Tue, 1 Nov 2022 17:03:43 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1667340223;
+        bh=idqkIaxfM0hYGMULOZ4YM5a3jmDlrjLVq7FFd478qm0=;
+        h=Date:Subject:To:References:From:In-Reply-To;
+        b=nRdH6yX9K4i1UPy6X+dW483oscPvb90Pi2QuF27xlLLvuEPOb/3JevZO4TxDP/U7G
+         5U4/hptUQCpw97cKDmRQNOsRTErzMSqk79/27vXGfOehDpCueURfww20TLQNOd+Fxb
+         +IJKBAl2dUkT55A+GiOWYmHe9vDU3DWNdUHWjGAc=
+Received: from DLEE102.ent.ti.com (dlee102.ent.ti.com [157.170.170.32])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 2A1M3hJQ098295
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 1 Nov 2022 17:03:43 -0500
+Received: from DLEE113.ent.ti.com (157.170.170.24) by DLEE102.ent.ti.com
+ (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.6; Tue, 1 Nov
+ 2022 17:03:43 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE113.ent.ti.com
+ (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.6 via
+ Frontend Transport; Tue, 1 Nov 2022 17:03:43 -0500
+Received: from [10.250.35.234] (ileaxei01-snat2.itg.ti.com [10.180.69.6])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 2A1M3gDC008535;
+        Tue, 1 Nov 2022 17:03:42 -0500
+Message-ID: <781a97eb-ac7f-2986-9915-76f8543c61fe@ti.com>
+Date:   Tue, 1 Nov 2022 17:03:42 -0500
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=unavailable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.2
+Subject: Re: [PATCH 1/2] ARM: dts: ti: Add AM57xx GP EVM board support
+Content-Language: en-US
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>, Nishanth Menon <nm@ti.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        <linux-omap@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+References: <20221014152643.28745-1-afd@ti.com>
+ <20221014152643.28745-2-afd@ti.com>
+ <c2fce6e4-6292-0d5a-7f16-b2a4fd06a185@linaro.org>
+From:   Andrew Davis <afd@ti.com>
+In-Reply-To: <c2fce6e4-6292-0d5a-7f16-b2a4fd06a185@linaro.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -45,152 +72,190 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-strtobool() is the same as kstrtobool().
-However, the latter is more used within the kernel.
+On 10/15/22 10:21 AM, Krzysztof Kozlowski wrote:
+> On 14/10/2022 11:26, Andrew Davis wrote:
+>> The AM57xx GP EVM boards are built on top the AM57xx BeagleBoard-X15.
+>> The EVM extends the BeagleBoard by adding a touchscreen, some buttons,
+>> and a handful of peripheral extension slots.
+>>
+>> Being a plugin extension of an existing standalone board; we define
+>> the am57xx-evm as a composite-DTB of the base am57xx-beagle-x15
+>> and a new am57xx-evm overlay.
+>>
+>> Signed-off-by: Tero Kristo <t-kristo@ti.com>
+>> Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
+>> Signed-off-by: Suman Anna <s-anna@ti.com>
+>> Signed-off-by: Andrew Davis <afd@ti.com>
+>> ---
+>>   arch/arm/boot/dts/Makefile        |   2 +
+>>   arch/arm/boot/dts/am57xx-evm.dtso | 127 ++++++++++++++++++++++++++++++
+>>   2 files changed, 129 insertions(+)
+>>   create mode 100644 arch/arm/boot/dts/am57xx-evm.dtso
+>>
+>> diff --git a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
+>> index 6aa7dc4db2fc..767220502021 100644
+>> --- a/arch/arm/boot/dts/Makefile
+>> +++ b/arch/arm/boot/dts/Makefile
+>> @@ -984,10 +984,12 @@ dtb-$(CONFIG_SOC_OMAP5) += \
+>>   	omap5-igep0050.dtb \
+>>   	omap5-sbc-t54.dtb \
+>>   	omap5-uevm.dtb
+>> +am57xx-evm-dtbs := am57xx-beagle-x15.dtb am57xx-evm.dtbo
+>>   dtb-$(CONFIG_SOC_DRA7XX) += \
+>>   	am57xx-beagle-x15.dtb \
+>>   	am57xx-beagle-x15-revb1.dtb \
+>>   	am57xx-beagle-x15-revc.dtb \
+>> +	am57xx-evm.dtb \
+>>   	am5729-beagleboneai.dtb \
+>>   	am57xx-cl-som-am57x.dtb \
+>>   	am57xx-sbc-am57x.dtb \
+>> diff --git a/arch/arm/boot/dts/am57xx-evm.dtso b/arch/arm/boot/dts/am57xx-evm.dtso
+>> new file mode 100644
+>> index 000000000000..6678aaef66ee
+>> --- /dev/null
+>> +++ b/arch/arm/boot/dts/am57xx-evm.dtso
+>> @@ -0,0 +1,127 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +/*
+>> + * DT overlay for AM57xx GP EVM boards
+>> + *
+>> + * Copyright (C) 2020-2022 Texas Instruments Incorporated - https://www.ti.com/
+>> + */
+>> +
+>> +/dts-v1/;
+>> +/plugin/;
+>> +
+>> +#include <dt-bindings/interrupt-controller/irq.h>
+>> +#include <dt-bindings/gpio/gpio.h>
+>> +#include <dt-bindings/input/input.h>
+>> +
+>> +&{/} {
+>> +	compatible = "ti,am5728-evm", "ti,am572x-beagle-x15", "ti,am5728", "ti,dra742", "ti,dra74", "ti,dra7";
+> 
+> You should start documenting these...
+> 
 
-In order to remove strtobool() and slightly simplify kstrtox.h, switch to
-the other function name.
+There are some odd bindings in the current txt based docs, will
+need some time the fixup:
 
-While at it, include the corresponding header file (<linux/kstrtox.h>)
+https://www.kernel.org/doc/Documentation/devicetree/bindings/arm/omap/omap.txt
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-This patch is part of a serie that axes all usages of strtobool().
-Each patch can be applied independently from the other ones.
+I'll try converting this over to yaml after this series.
 
-The last patch of the serie removes the definition of strtobool().
+>> +	model = "TI AM5728 EVM";
+>> +
+>> +	aliases {
+>> +		display0 = "/display";
+>> +		display1 = "/connector"; // Fixme: &lcd0 and &hdmi0 could be
+>> +					 // resolved here correcly based on
+>> +					 // information in the base dtb symbol
+>> +					 // table with a fix in dtc
+>> +	};
+>> +
+>> +	gpio-keys {
+>> +		compatible = "gpio-keys";
+>> +
+>> +		button-user1 {
+>> +			gpios = <&gpio2 23 GPIO_ACTIVE_LOW>;
+>> +			label = "USER1";
+>> +			linux,code = <BTN_1>;
+>> +		};
+>> +
+>> +		button-user2 {
+>> +			gpios = <&gpio2 25 GPIO_ACTIVE_LOW>;
+>> +			label = "USER2";
+>> +			linux,code = <BTN_2>;
+>> +		};
+>> +
+>> +		button-user3 {
+>> +			gpios = <&gpio2 28 GPIO_ACTIVE_LOW>;
+>> +			label = "USER3";
+>> +			linux,code = <BTN_3>;
+>> +		};
+>> +
+>> +		button-user4 {
+>> +			gpios = <&gpio2 24 GPIO_ACTIVE_LOW>;
+>> +			label = "USER4";
+>> +			linux,code = <BTN_4>;
+>> +		};
+>> +
+>> +		button-user5 {
+>> +			gpios = <&gpio2 20 GPIO_ACTIVE_LOW>;
+>> +			label = "USER5";
+>> +			linux,code = <BTN_5>;
+>> +		};
+>> +	};
+>> +
+>> +	lcd0: display {
+>> +		compatible = "osddisplays,osd070t1718-19ts", "panel-dpi";
+>> +		backlight = <&lcd_bl>;
+>> +		enable-gpios = <&gpio2 5 GPIO_ACTIVE_HIGH>;
+>> +		label = "lcd";
+>> +
+>> +		port {
+>> +			lcd_in: endpoint {
+>> +				remote-endpoint = <&dpi_out>;
+>> +			};
+>> +		};
+>> +	};
+>> +
+>> +	lcd_bl: backlight {
+>> +		compatible = "pwm-backlight";
+>> +		brightness-levels = <0 243 245 247 249 251 252 253 255>;
+>> +		default-brightness-level = <8>;
+>> +		pwms = <&ehrpwm1 0 50000 0>;
+> 
+> Don't you have here PWM flag?
+> 
 
-You may not be in copy of the cover letter. So, if needed, it is available
-at [1].
+The invert flag? Nope, this is not inverted. And there is no
+define for none, just 0.
 
-[1]: https://lore.kernel.org/all/cover.1667336095.git.christophe.jaillet@wanadoo.fr/
----
- drivers/video/fbdev/omap2/omapfb/dss/display-sysfs.c | 7 ++++---
- drivers/video/fbdev/omap2/omapfb/dss/manager-sysfs.c | 7 ++++---
- drivers/video/fbdev/omap2/omapfb/dss/overlay-sysfs.c | 3 ++-
- drivers/video/fbdev/omap2/omapfb/omapfb-sysfs.c      | 3 ++-
- 4 files changed, 12 insertions(+), 8 deletions(-)
+>> +	};
+>> +};
+>> +
+>> +&ehrpwm1 {
+>> +	status = "okay";
+>> +};
+>> +
+>> +&epwmss1 {
+>> +	status = "okay";
+>> +};
+>> +
+>> +&i2c5 {
+>> +	status = "okay";
+>> +	clock-frequency = <400000>;
+>> +
+>> +	#address-cells = <1>;
+>> +	#size-cells = <0>;
+>> +
+>> +	pixcir_ts@5c {
+> 
+> No underscores in node names.
+> 
+> Node names should be generic.
+> https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
+> 
 
-diff --git a/drivers/video/fbdev/omap2/omapfb/dss/display-sysfs.c b/drivers/video/fbdev/omap2/omapfb/dss/display-sysfs.c
-index bc5a44c2a144..ae937854403b 100644
---- a/drivers/video/fbdev/omap2/omapfb/dss/display-sysfs.c
-+++ b/drivers/video/fbdev/omap2/omapfb/dss/display-sysfs.c
-@@ -10,6 +10,7 @@
- #define DSS_SUBSYS_NAME "DISPLAY"
- 
- #include <linux/kernel.h>
-+#include <linux/kstrtox.h>
- #include <linux/module.h>
- #include <linux/platform_device.h>
- #include <linux/sysfs.h>
-@@ -36,7 +37,7 @@ static ssize_t display_enabled_store(struct omap_dss_device *dssdev,
- 	int r;
- 	bool enable;
- 
--	r = strtobool(buf, &enable);
-+	r = kstrtobool(buf, &enable);
- 	if (r)
- 		return r;
- 
-@@ -73,7 +74,7 @@ static ssize_t display_tear_store(struct omap_dss_device *dssdev,
- 	if (!dssdev->driver->enable_te || !dssdev->driver->get_te)
- 		return -ENOENT;
- 
--	r = strtobool(buf, &te);
-+	r = kstrtobool(buf, &te);
- 	if (r)
- 		return r;
- 
-@@ -183,7 +184,7 @@ static ssize_t display_mirror_store(struct omap_dss_device *dssdev,
- 	if (!dssdev->driver->set_mirror || !dssdev->driver->get_mirror)
- 		return -ENOENT;
- 
--	r = strtobool(buf, &mirror);
-+	r = kstrtobool(buf, &mirror);
- 	if (r)
- 		return r;
- 
-diff --git a/drivers/video/fbdev/omap2/omapfb/dss/manager-sysfs.c b/drivers/video/fbdev/omap2/omapfb/dss/manager-sysfs.c
-index ba21c4a2633d..1b644be5fe2e 100644
---- a/drivers/video/fbdev/omap2/omapfb/dss/manager-sysfs.c
-+++ b/drivers/video/fbdev/omap2/omapfb/dss/manager-sysfs.c
-@@ -10,6 +10,7 @@
- #define DSS_SUBSYS_NAME "MANAGER"
- 
- #include <linux/kernel.h>
-+#include <linux/kstrtox.h>
- #include <linux/slab.h>
- #include <linux/module.h>
- #include <linux/platform_device.h>
-@@ -246,7 +247,7 @@ static ssize_t manager_trans_key_enabled_store(struct omap_overlay_manager *mgr,
- 	bool enable;
- 	int r;
- 
--	r = strtobool(buf, &enable);
-+	r = kstrtobool(buf, &enable);
- 	if (r)
- 		return r;
- 
-@@ -290,7 +291,7 @@ static ssize_t manager_alpha_blending_enabled_store(
- 	if(!dss_has_feature(FEAT_ALPHA_FIXED_ZORDER))
- 		return -ENODEV;
- 
--	r = strtobool(buf, &enable);
-+	r = kstrtobool(buf, &enable);
- 	if (r)
- 		return r;
- 
-@@ -329,7 +330,7 @@ static ssize_t manager_cpr_enable_store(struct omap_overlay_manager *mgr,
- 	if (!dss_has_feature(FEAT_CPR))
- 		return -ENODEV;
- 
--	r = strtobool(buf, &enable);
-+	r = kstrtobool(buf, &enable);
- 	if (r)
- 		return r;
- 
-diff --git a/drivers/video/fbdev/omap2/omapfb/dss/overlay-sysfs.c b/drivers/video/fbdev/omap2/omapfb/dss/overlay-sysfs.c
-index 601c0beb6de9..1da4fb1c77b4 100644
---- a/drivers/video/fbdev/omap2/omapfb/dss/overlay-sysfs.c
-+++ b/drivers/video/fbdev/omap2/omapfb/dss/overlay-sysfs.c
-@@ -13,6 +13,7 @@
- #include <linux/err.h>
- #include <linux/sysfs.h>
- #include <linux/kobject.h>
-+#include <linux/kstrtox.h>
- #include <linux/platform_device.h>
- 
- #include <video/omapfb_dss.h>
-@@ -210,7 +211,7 @@ static ssize_t overlay_enabled_store(struct omap_overlay *ovl, const char *buf,
- 	int r;
- 	bool enable;
- 
--	r = strtobool(buf, &enable);
-+	r = kstrtobool(buf, &enable);
- 	if (r)
- 		return r;
- 
-diff --git a/drivers/video/fbdev/omap2/omapfb/omapfb-sysfs.c b/drivers/video/fbdev/omap2/omapfb/omapfb-sysfs.c
-index 06dc41aa0354..831b2c2fbdf9 100644
---- a/drivers/video/fbdev/omap2/omapfb/omapfb-sysfs.c
-+++ b/drivers/video/fbdev/omap2/omapfb/omapfb-sysfs.c
-@@ -15,6 +15,7 @@
- #include <linux/uaccess.h>
- #include <linux/platform_device.h>
- #include <linux/kernel.h>
-+#include <linux/kstrtox.h>
- #include <linux/mm.h>
- #include <linux/omapfb.h>
- 
-@@ -96,7 +97,7 @@ static ssize_t store_mirror(struct device *dev,
- 	int r;
- 	struct fb_var_screeninfo new_var;
- 
--	r = strtobool(buf, &mirror);
-+	r = kstrtobool(buf, &mirror);
- 	if (r)
- 		return r;
- 
--- 
-2.34.1
+ACK
 
+>> +		compatible = "pixcir,pixcir_tangoc";
+>> +		attb-gpio = <&gpio2 4 GPIO_ACTIVE_HIGH>;
+>> +		interrupt-parent = <&gpio2>;
+>> +		interrupts = <4 0>;
+> 
+> Use proper flags (and not NONE).
+> 
+
+ACK, will fix.
+
+Thanks,
+Andrew
+
+>> +		reg = <0x5c>;
+>> +		reset-gpio = <&gpio2 6 GPIO_ACTIVE_HIGH>;
+>> +		touchscreen-size-x = <1024>;
+>> +		touchscreen-size-y = <600>;
+> Best regards,
+> Krzysztof
+> 
