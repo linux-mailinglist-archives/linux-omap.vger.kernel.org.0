@@ -2,121 +2,195 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3018261519D
-	for <lists+linux-omap@lfdr.de>; Tue,  1 Nov 2022 19:35:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A3CDA61542B
+	for <lists+linux-omap@lfdr.de>; Tue,  1 Nov 2022 22:22:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230196AbiKASfS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 1 Nov 2022 14:35:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51188 "EHLO
+        id S230000AbiKAVW5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 1 Nov 2022 17:22:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229919AbiKASfR (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 1 Nov 2022 14:35:17 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 761BB1C93D;
-        Tue,  1 Nov 2022 11:35:16 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 2CCAEB81EB7;
-        Tue,  1 Nov 2022 18:35:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C63E4C433C1;
-        Tue,  1 Nov 2022 18:35:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667327713;
-        bh=tP9v1fJaDtSk4ggL7MfdFf2595PWE1zeGgz3m0lWxww=;
-        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-        b=I28UVGphwA58whsoZYhoyBnIgNW8RRUJXjw27JWh04PkOCXwK6mf812iENfpja8zQ
-         S25YivMSryWjlZBhUJhUF34zYQXf+pbxA1omOrite234ioSgm6be0n7noCz/DlilFE
-         L0M7XFDWlttv+O4t+UzoRNI+aTGOk50hSuwAS0pDrN0IXUdGZIKLkARB0+QeNY0VKh
-         1xBmtj0NvU88rkBe34FPlCBNNtDYF05FhjHjFGJEAKCgaP1BmzkdHwAO6RSQF8zhyh
-         /6HWrZn4c1/FkAglvUhe5c0OtFuzvgbZbsuDiBrjCSoghR3X/Jr/O1VWtXQfbrSFQz
-         b9nx8JGWcOjKw==
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S229648AbiKAVWy (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 1 Nov 2022 17:22:54 -0400
+X-Greylist: delayed 452 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 01 Nov 2022 14:22:53 PDT
+Received: from smtp.smtpout.orange.fr (smtp-16.smtpout.orange.fr [80.12.242.16])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id AAC95B30
+        for <linux-omap@vger.kernel.org>; Tue,  1 Nov 2022 14:22:53 -0700 (PDT)
+Received: from pop-os.home ([86.243.100.34])
+        by smtp.orange.fr with ESMTPA
+        id pyanoKD2rsfCIpybOoWfJm; Tue, 01 Nov 2022 22:15:19 +0100
+X-ME-Helo: pop-os.home
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Tue, 01 Nov 2022 22:15:19 +0100
+X-ME-IP: 86.243.100.34
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     Helge Deller <deller@gmx.de>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org
+Subject: [PATCH 15/30] video: fbdev: omapfb: Use kstrtobool() instead of strtobool()
+Date:   Tue,  1 Nov 2022 22:14:03 +0100
+Message-Id: <49e4f12b45470c02e4b7c64cc20939667690f948.1667336095.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <cover.1667336095.git.christophe.jaillet@wanadoo.fr>
+References: <cover.1667336095.git.christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <CABGWkvp1iMN-4XDN_ifg6uyvQbpRzNyat_eDziWY75Cf_hCpQw@mail.gmail.com>
-References: <20221018160352.1591428-1-dario.binacchi@amarulasolutions.com> <20221028002710.89A81C43470@smtp.kernel.org> <CABGWkvp1iMN-4XDN_ifg6uyvQbpRzNyat_eDziWY75Cf_hCpQw@mail.gmail.com>
-Subject: Re: [PATCH v2] clk: ti: dra7-atl: don't allocate `parent_names' variable
-From:   Stephen Boyd <sboyd@kernel.org>
-Cc:     linux-kernel@vger.kernel.org,
-        Amarula patchwork <linux-amarula@amarulasolutions.com>,
-        michael@amarulasolutions.com, kernel test robot <lkp@intel.com>,
-        Allison Randal <allison@lohutok.net>,
-        Miaoqian Lin <linmq006@gmail.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Tero Kristo <kristo@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tony Lindgren <tony@atomide.com>, linux-clk@vger.kernel.org,
-        linux-omap@vger.kernel.org
-To:     Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Date:   Tue, 01 Nov 2022 11:35:11 -0700
-User-Agent: alot/0.10
-Message-Id: <20221101183513.C63E4C433C1@smtp.kernel.org>
-X-Spam-Status: No, score=-8.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Quoting Dario Binacchi (2022-10-30 06:00:46)
->=20
-> I tried to test your suggestions on another platform (I don't have the
-> hw to test the driver change) but if I
-> don't add pdata.name =3D of_clk_get_parent_name () the board boot up fail=
-s.
->=20
-> As far I can see from the clk_core_populate_parent_map()
->=20
-> ....
-> /* Copy everything over because it might be __initdata */
-> for (i =3D 0, parent =3D parents; i < num_parents; i++, parent++) {
->     parent->index =3D -1;
->     if (parent_names) {
->         /* throw a WARN if any entries are NULL */
->        WARN(!parent_names[i],
->             "%s: invalid NULL in %s's .parent_names\n",
->             __func__, core->name);
->         ret =3D clk_cpy_name(&parent->name, parent_names[i],
->                                         true);
->     } else if (parent_data) {
->         parent->hw =3D parent_data[i].hw;
->         parent->index =3D parent_data[i].index;
->         ret =3D clk_cpy_name(&parent->fw_name,
->                                          parent_data[i].fw_name, false);
->         if (!ret)
->             ret =3D clk_cpy_name(&parent->name,
->                                             parent_data[i].name,
->                                             false);
-> ...
->=20
->=20
-> The function clk_cpy_name() is called with the parameter "mus_exist"
-> to true in the path "parent_names" and false
-> in the path "parent_data". Therefore, in the path "parent_data" it is
-> allowed that parent-> name is not set.
-> In doing so, therefore, the change would not even be backward compatible.
->=20
-> So, IMHO, there are 2 possible options:
->  1 okay to use parent_data, but we keep using of_clk_get_parent_name
-> () to set parent_data::name.
->  2 okay to use the version v2 of the patch.
->=20
-> What do you think?
+strtobool() is the same as kstrtobool().
+However, the latter is more used within the kernel.
 
-I am confused.
+In order to remove strtobool() and slightly simplify kstrtox.h, switch to
+the other function name.
 
-The struct clk_parent_data::name being used is whatever string is
-returned by of_clk_get_parent_name(node, 0). That is the same as setting
-struct clk_parent_data::index to 0, and not assigning the 'name' or
-'fw_name' field of the parent data structure. This is a compatible
-change because of_clk_get_parent_name() is getting the name of the clk
-in 'clocks' for 'node' at index 0. Using the index 0 in clk_parent_data
-tells clk framework that the parent of the clk being registered is the
-clk in 'clocks' for the 'dev->node' that is passed in during
-clk_register(). If you don't have a device pointer, use
-of_clk_hw_register() to pass 'node' directly. It looks like you will
-have to do that in this case to get the node pointer registered with
-this clk.
+While at it, include the corresponding header file (<linux/kstrtox.h>)
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+This patch is part of a serie that axes all usages of strtobool().
+Each patch can be applied independently from the other ones.
+
+The last patch of the serie removes the definition of strtobool().
+
+You may not be in copy of the cover letter. So, if needed, it is available
+at [1].
+
+[1]: https://lore.kernel.org/all/cover.1667336095.git.christophe.jaillet@wanadoo.fr/
+---
+ drivers/video/fbdev/omap2/omapfb/dss/display-sysfs.c | 7 ++++---
+ drivers/video/fbdev/omap2/omapfb/dss/manager-sysfs.c | 7 ++++---
+ drivers/video/fbdev/omap2/omapfb/dss/overlay-sysfs.c | 3 ++-
+ drivers/video/fbdev/omap2/omapfb/omapfb-sysfs.c      | 3 ++-
+ 4 files changed, 12 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/display-sysfs.c b/drivers/video/fbdev/omap2/omapfb/dss/display-sysfs.c
+index bc5a44c2a144..ae937854403b 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/display-sysfs.c
++++ b/drivers/video/fbdev/omap2/omapfb/dss/display-sysfs.c
+@@ -10,6 +10,7 @@
+ #define DSS_SUBSYS_NAME "DISPLAY"
+ 
+ #include <linux/kernel.h>
++#include <linux/kstrtox.h>
+ #include <linux/module.h>
+ #include <linux/platform_device.h>
+ #include <linux/sysfs.h>
+@@ -36,7 +37,7 @@ static ssize_t display_enabled_store(struct omap_dss_device *dssdev,
+ 	int r;
+ 	bool enable;
+ 
+-	r = strtobool(buf, &enable);
++	r = kstrtobool(buf, &enable);
+ 	if (r)
+ 		return r;
+ 
+@@ -73,7 +74,7 @@ static ssize_t display_tear_store(struct omap_dss_device *dssdev,
+ 	if (!dssdev->driver->enable_te || !dssdev->driver->get_te)
+ 		return -ENOENT;
+ 
+-	r = strtobool(buf, &te);
++	r = kstrtobool(buf, &te);
+ 	if (r)
+ 		return r;
+ 
+@@ -183,7 +184,7 @@ static ssize_t display_mirror_store(struct omap_dss_device *dssdev,
+ 	if (!dssdev->driver->set_mirror || !dssdev->driver->get_mirror)
+ 		return -ENOENT;
+ 
+-	r = strtobool(buf, &mirror);
++	r = kstrtobool(buf, &mirror);
+ 	if (r)
+ 		return r;
+ 
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/manager-sysfs.c b/drivers/video/fbdev/omap2/omapfb/dss/manager-sysfs.c
+index ba21c4a2633d..1b644be5fe2e 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/manager-sysfs.c
++++ b/drivers/video/fbdev/omap2/omapfb/dss/manager-sysfs.c
+@@ -10,6 +10,7 @@
+ #define DSS_SUBSYS_NAME "MANAGER"
+ 
+ #include <linux/kernel.h>
++#include <linux/kstrtox.h>
+ #include <linux/slab.h>
+ #include <linux/module.h>
+ #include <linux/platform_device.h>
+@@ -246,7 +247,7 @@ static ssize_t manager_trans_key_enabled_store(struct omap_overlay_manager *mgr,
+ 	bool enable;
+ 	int r;
+ 
+-	r = strtobool(buf, &enable);
++	r = kstrtobool(buf, &enable);
+ 	if (r)
+ 		return r;
+ 
+@@ -290,7 +291,7 @@ static ssize_t manager_alpha_blending_enabled_store(
+ 	if(!dss_has_feature(FEAT_ALPHA_FIXED_ZORDER))
+ 		return -ENODEV;
+ 
+-	r = strtobool(buf, &enable);
++	r = kstrtobool(buf, &enable);
+ 	if (r)
+ 		return r;
+ 
+@@ -329,7 +330,7 @@ static ssize_t manager_cpr_enable_store(struct omap_overlay_manager *mgr,
+ 	if (!dss_has_feature(FEAT_CPR))
+ 		return -ENODEV;
+ 
+-	r = strtobool(buf, &enable);
++	r = kstrtobool(buf, &enable);
+ 	if (r)
+ 		return r;
+ 
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/overlay-sysfs.c b/drivers/video/fbdev/omap2/omapfb/dss/overlay-sysfs.c
+index 601c0beb6de9..1da4fb1c77b4 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/overlay-sysfs.c
++++ b/drivers/video/fbdev/omap2/omapfb/dss/overlay-sysfs.c
+@@ -13,6 +13,7 @@
+ #include <linux/err.h>
+ #include <linux/sysfs.h>
+ #include <linux/kobject.h>
++#include <linux/kstrtox.h>
+ #include <linux/platform_device.h>
+ 
+ #include <video/omapfb_dss.h>
+@@ -210,7 +211,7 @@ static ssize_t overlay_enabled_store(struct omap_overlay *ovl, const char *buf,
+ 	int r;
+ 	bool enable;
+ 
+-	r = strtobool(buf, &enable);
++	r = kstrtobool(buf, &enable);
+ 	if (r)
+ 		return r;
+ 
+diff --git a/drivers/video/fbdev/omap2/omapfb/omapfb-sysfs.c b/drivers/video/fbdev/omap2/omapfb/omapfb-sysfs.c
+index 06dc41aa0354..831b2c2fbdf9 100644
+--- a/drivers/video/fbdev/omap2/omapfb/omapfb-sysfs.c
++++ b/drivers/video/fbdev/omap2/omapfb/omapfb-sysfs.c
+@@ -15,6 +15,7 @@
+ #include <linux/uaccess.h>
+ #include <linux/platform_device.h>
+ #include <linux/kernel.h>
++#include <linux/kstrtox.h>
+ #include <linux/mm.h>
+ #include <linux/omapfb.h>
+ 
+@@ -96,7 +97,7 @@ static ssize_t store_mirror(struct device *dev,
+ 	int r;
+ 	struct fb_var_screeninfo new_var;
+ 
+-	r = strtobool(buf, &mirror);
++	r = kstrtobool(buf, &mirror);
+ 	if (r)
+ 		return r;
+ 
+-- 
+2.34.1
+
