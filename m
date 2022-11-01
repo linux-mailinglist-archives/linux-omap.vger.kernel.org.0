@@ -2,144 +2,66 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BEC4F613BCD
-	for <lists+linux-omap@lfdr.de>; Mon, 31 Oct 2022 17:58:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C99F6147B5
+	for <lists+linux-omap@lfdr.de>; Tue,  1 Nov 2022 11:29:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231876AbiJaQ6r (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 31 Oct 2022 12:58:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47734 "EHLO
+        id S229995AbiKAK3z (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 1 Nov 2022 06:29:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57146 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231991AbiJaQ6m (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 31 Oct 2022 12:58:42 -0400
-Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2079.outbound.protection.outlook.com [40.107.104.79])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01BAB11A08;
-        Mon, 31 Oct 2022 09:58:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=CNqzhBeeSBeE3WoJHNC9AqhGAPYU/73G3tEPjtct35ZghXB0/j//k/0TBljiBg65sVfX0f47ppqD7S/DLZb9+Hbl/NQ1KGcPxUYa9M7KYs4vCXLStMi83s2kJPWP/BvJVuvoOrEvcLIA2GgHdJmfG05eOKlmMaj0PwvsAAwBcPVMqGznsViy9fR/cfddKM4GuiJCSAJUmqhowdJm9dmjRfqmYX/sws6vnrc4+Xod18WTxVYlOaJ8VyIQjPbEK8c3g9sGuxm0CsxyBSrfE/tu4oGIvrS12vwByp1sbTzFx4msAOoo7zOJO8m3uEI+yOb05RS3zrpr088xk5qGziRJug==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qjdmRa4hwfk1IW36GLjw5p1LKOlQHLRRwhelWoKcgg8=;
- b=nBHAKVXMETZp4yN67stjDQXrJbhh/VIDkmE8rGfdCjVv4Q+DO0gMqoP1dDdKWuP0covbn6tj/5/bT0SjWbL6ONfRur8B/+2ECb7MHOvXril5NohCYYLoAqwJ0+ER01sVjiSy/Oyw1pAnT8sJAo+wOEf4bCoTbkV3E5wHPN2csPjv8qTGRR7KgItdX4KUlLn2wHe2EwktqJkRn/xkdgGNEQl4U2YVXH1OBfjl80i1DkVyWO8VbuEku7mMXTriplLuM7JgUm4mov+mdZuWRH71LvH1pIJBKrHd/41vhvTKIdEFjoWo6Vjq3fD7PjPVIYwpsNDavqScK+qa2lxycjORtQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qjdmRa4hwfk1IW36GLjw5p1LKOlQHLRRwhelWoKcgg8=;
- b=ff6BweGlVyhrd9T/u4oYQ2NMCaY2E3CM+2AoaU553rrq2xIjeyd195cI9SX8QQMZKh/CHXefhzw5fMoAcfHfxy0LmkGvsm2Vx1vdM+CoIKhzsXXnmQ2aE+qHpBRP7A081KP/8RRSSA5ib/Vt928yqQAuo7G/BBJRMTa1dhU7+Z4=
-Received: from VI1PR04MB5967.eurprd04.prod.outlook.com (2603:10a6:803:cc::27)
- by AM8PR04MB7377.eurprd04.prod.outlook.com (2603:10a6:20b:1de::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5769.16; Mon, 31 Oct
- 2022 16:58:38 +0000
-Received: from VI1PR04MB5967.eurprd04.prod.outlook.com
- ([fe80::8bad:8bfc:e078:f403]) by VI1PR04MB5967.eurprd04.prod.outlook.com
- ([fe80::8bad:8bfc:e078:f403%4]) with mapi id 15.20.5769.019; Mon, 31 Oct 2022
- 16:58:38 +0000
-From:   Roy Zang <roy.zang@nxp.com>
-To:     Bjorn Helgaas <helgaas@kernel.org>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>
-CC:     Kishon Vijay Abraham I <kishon@kernel.org>,
-        Tom Joseph <tjoseph@cadence.com>,
-        Rob Herring <robh@kernel.org>,
-        =?iso-8859-2?Q?Krzysztof_Wilczy=F1ski?= <kw@linux.com>,
-        "M.H. Lian" <minghuan.lian@nxp.com>,
-        Mingkai Hu <mingkai.hu@nxp.com>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Toan Le <toan@os.amperecomputing.com>,
-        Joyce Ooi <joyce.ooi@intel.com>, Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Conor Dooley <conor.dooley@microchip.com>,
-        Daire McNamara <daire.mcnamara@microchip.com>,
-        Shawn Lin <shawn.lin@rock-chips.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Bharat Kumar Gogada <bharat.kumar.gogada@amd.com>,
-        Michal Simek <michal.simek@amd.com>,
-        "bcm-kernel-feedback-list@broadcom.com" 
-        <bcm-kernel-feedback-list@broadcom.com>,
-        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
-        "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
-        "linux-rockchip@lists.infradead.org" 
-        <linux-rockchip@lists.infradead.org>,
-        Bjorn Helgaas <bhelgaas@google.com>
-Subject: RE: [PATCH v3 5/5] PCI: Remove unnecessary <linux/of_irq.h> includes
-Thread-Topic: [PATCH v3 5/5] PCI: Remove unnecessary <linux/of_irq.h> includes
-Thread-Index: AQHY7T8RqoJVzoqIkkOemdfdOjjY4a4ouT/A
-Date:   Mon, 31 Oct 2022 16:58:38 +0000
-Message-ID: <VI1PR04MB596765E30FEC4F2E867FEE878B379@VI1PR04MB5967.eurprd04.prod.outlook.com>
-References: <20221031153954.1163623-1-helgaas@kernel.org>
- <20221031153954.1163623-6-helgaas@kernel.org>
-In-Reply-To: <20221031153954.1163623-6-helgaas@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: VI1PR04MB5967:EE_|AM8PR04MB7377:EE_
-x-ms-office365-filtering-correlation-id: 8d730c5c-f8ee-4355-0201-08dabb612822
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: pUAHJWR2lfXf43QnvJJ3kN9oR6uAE9FBorIsryB1mccwGlFpWDT8HWCjBqhKL69lBPxVKk/+HJjIPyfJ3xJ7Vqz1O5HrrT7kYVybwgAIdsABO90NmbbDoKd7yPqMQz23KRa+yqUTdMHKAU4/AhxlabxhlA5aGwZ78tIXskC2r8sAnu6U7CBDUQV/YG3KZDnaYvZGqPlPyF2ZJp9ACuPBeR1pFNxPwGLIyaPogiNAaB49xY0W9L8LQErHEAHhV5MLvYkz0M3eXgN/gHa04GLPqcTbPQdGFSZ6MHMyC73eLcOsgWVoZ25S9n2QVq8M0PzkfVRtisnNAQKyrWdWLoKGiQUpdsBtfUlaVIos94ZLzQHEGiuXzvwN81pWhGhAmM19a1W11a0TvTc79FBaSB1VsdbB5dHwqdOPRLtXB+ltqUZyx8j6Al2Q8O5tEi2Zy3tdHb8PZ38W5EzXqMlY/rhfrrR9feZillPrHa9xxdBeShMVLEOwq51+7DLvQUGty/pJ9NdxRTAo1ANXL+ZL6cUZyip+1druf5CTTwZpv2txpBgsYPsvZMYkYoOpRemTxj6HvL/ZlNLu3Pk9ZDKXEtSVNF23Tzz3CMHNMXH4EJyqdf2wTtkaquRT7N4EPqHuFKB9nC3jpUp42Y3aa7llJL62cm+YoWEyGJBnLgAkkjugQk4ZemAtAfiG9wpBSiVIPJoE335FZPScjXyMteBSVDQI29U2xcwND4UuWb0bu1qjH7SwwZYsfE+TxuPbEdZlGYqpJuRRJaiOrhQl72ZcpT9h3w==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR04MB5967.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(376002)(136003)(39860400002)(346002)(366004)(396003)(451199015)(38070700005)(44832011)(66556008)(66476007)(55016003)(4326008)(64756008)(8676002)(66946007)(66446008)(76116006)(316002)(33656002)(110136005)(54906003)(7416002)(8936002)(9686003)(7406005)(52536014)(5660300002)(7696005)(26005)(55236004)(86362001)(41300700001)(186003)(6506007)(71200400001)(38100700002)(2906002)(83380400001)(122000001)(478600001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-2?Q?0pIHWk4Xst9MAiv65H1Y7FFSVfBr3vARzlWeupsbsTpq7OK9cb7ecPPtpC?=
- =?iso-8859-2?Q?dcQN0QFld8RLXNerRqwVE3KeSvDmyc//ATx27A3ZTRk5DANuz82zysbJj4?=
- =?iso-8859-2?Q?rsl16B4xB9MkYIbDL3SodGN5p/qExAl6Vfqne8rtPWt9T+3FPMwsfgflNr?=
- =?iso-8859-2?Q?n3n+VeZAiaUyXbxIMVnTlcWydm4BTRfUEsYKya+/r6AaX+xBiy3gHbF0pK?=
- =?iso-8859-2?Q?HUG2w1N5/QKmnsngtF5UiMHkUqgTR6NYDAeM14XYjIhrECmYNODv5uVIbv?=
- =?iso-8859-2?Q?diXoTWHuLP3Cql/dkn3xOaNfy7rCIYZOzi5REa++OaMfIxe+CpEjtA/Ecl?=
- =?iso-8859-2?Q?S11cMv37mADxrj8udc7N89zG4PTNtHG7eHke65ecnwQM69dDv5B8arZLS/?=
- =?iso-8859-2?Q?IZQBXRJXm8HOegGe2+Ps/zMKrTcdBj5NUGYR/fNmyKuQ5X/MXeAxj2wGEu?=
- =?iso-8859-2?Q?bDARFdociO7QJve9IBbjFEtqtgtTXMiP47N5+SVohwplYw1nS8qaAUaDHW?=
- =?iso-8859-2?Q?5Z//YIbupGaAYDgzUvQySqxDbu36MboEhTWAfc/NVVM1yfoLCb+1mnKhuA?=
- =?iso-8859-2?Q?VMSlgbYO05likKU1eIpLMdXB4iagSWZrPsit6jjXc7SDRJTU04iZrndx6z?=
- =?iso-8859-2?Q?DxWmA8TzTlMxqQzj6WQnGKrCsQwJDxB2eKn/aTGzmKZN2oT04AHQJgsmKQ?=
- =?iso-8859-2?Q?fiek6qqtrqXKWp8vDTVkb5ho69t9dLmDHXQmn2N3Sdkr62Oq10C7mqzpsj?=
- =?iso-8859-2?Q?kvTCWUm9yv/3K4dsxBijkUBrrn6XP1GqiZxMSlMB2luSsOEe/Jpr3y4LGS?=
- =?iso-8859-2?Q?EjqUpCwXbJhp/w8P/EFv4rFZ7j1QczViW7XChwXclvURCASwaeTZD92OBB?=
- =?iso-8859-2?Q?X9K/PxFcPKjlo9ut6kvOppwK1CKzAO3szFeu4lv4PApDxCkytUGT+XatlZ?=
- =?iso-8859-2?Q?hGjbTkyXUaPrn7vMUB7FQRQYrgeXxwT6q+4aCh2UPMwaa2mrdLcz2WX+5p?=
- =?iso-8859-2?Q?ZU8gKFzPJOXShmde+krvJmCAU2XfejnQ/FQZbzQ+KLsL2xKw3dYoe0hG2y?=
- =?iso-8859-2?Q?Z90j76yqVYHWb7lU87esugDOlSl6RYDgJwJmmnOYZxVFjHn1hT2asU0gxN?=
- =?iso-8859-2?Q?dyQ+N8YuSxrt034/JzcCx6wAJPV8N4nHVbNDVQ6x41ssPrnt1z5yB0LMGL?=
- =?iso-8859-2?Q?z549AeWuP1nuEjTXPpFYkAFliVvpXJprhd4OCGSjDqA7xl4PHn0qXeBVAi?=
- =?iso-8859-2?Q?R6JjYfo5GOh6A3XW8/s0GCe7V1GG7iiF/P8kCQeLCe/qcP3lh3IBay5IBs?=
- =?iso-8859-2?Q?5zuVlgQNL4WQjthaHgFeelh3g+g1TpmZjcHvHBLyWxXjBYgCp9CTTMBp6g?=
- =?iso-8859-2?Q?YlrD2O6D8bpaIeLxMfKrTT8ECOaEtJJWYAKzUmvokIX7it0hdtI1Bm7w14?=
- =?iso-8859-2?Q?nFw4gnYNugFIm4XVJwzvBDx+Z+bavIFLPwuYvC8J4bUmnun5dSDfQZNhBq?=
- =?iso-8859-2?Q?1eOnFWJgl7KA0tcrjIMqFvKHNsHRUTM3fyzEAdQtGHxK51h4rT5XnnGQRe?=
- =?iso-8859-2?Q?lSjdvY3Rq/wHUrWUZwAk0icHYBvtbIBnGKaX02VRMkOl7PRulTCquePk5B?=
- =?iso-8859-2?Q?c4PqcG6IrlMhY=3D?=
-Content-Type: text/plain; charset="iso-8859-2"
-Content-Transfer-Encoding: quoted-printable
+        with ESMTP id S229511AbiKAK3y (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 1 Nov 2022 06:29:54 -0400
+Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD40E18B38;
+        Tue,  1 Nov 2022 03:29:50 -0700 (PDT)
+Received: by mail-wr1-x42c.google.com with SMTP id z14so19480796wrn.7;
+        Tue, 01 Nov 2022 03:29:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=N2+PF9plcSy2ATWJiPecwWooFcxaUwfoTFa4mF3SLg4=;
+        b=o7VSw37luCk1txJUxzqGQMkFhWqPrkJ/Xe4dZxvAF9K2NLZee08637+m3uU3zEBMD8
+         bFO4nxwVEdbyrKqJly8BfZ4hWbE3+grDvZdJlZ3q9qPOcgAUJ59XiFJ3BbU149QiwV/7
+         P6oI8ORxdxlYwPKtwapsFoBp/qyk00T9LJq9ctjEF87jRgCoMec0FV3ZFXt3rNp6ANKp
+         UTLiY1KkIG6lcSKnnBfk95DYCakxEpX58/xK7SZgBaLPB0R6qV3LehugPLa+KaAv/7LJ
+         LsDY6ETq96leRawKoZTv4IjoR86J5X00p7uloSGefTQn2z3a+f60lCUKVmeRVCiwUzo8
+         t8xg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=N2+PF9plcSy2ATWJiPecwWooFcxaUwfoTFa4mF3SLg4=;
+        b=xeoKtjNtVT1EhgFhLPXYjMzLl/8/iFCKIc9BI8XOEVlLD5ayu/iqSTjea5wblp0mNq
+         Hc4WkYnUGsTik7v5g+1wUi4hzkvw4tAGfKsZK0k6dRVhkIvjQurINDG+IppgxzlWueFQ
+         GhIEQTf7w/85AwnemYqSsW225RCNVaNlaGZ+qJdAavdHOAiDT3HmATzuZBsCDZ/ntRY5
+         kiMWZrj/HiJ7EK82ckf2kzGWJC5CvDSAWJTqfMjnnKSmHr4imnOXVZEGV9sWzKCgK2Xz
+         Xb9rBektvOYE+4RLM5I31rP4QHPBv12Oot8AvbE1QGxRgqDl3W5ImW5oNJl/JM5+9H95
+         y5qw==
+X-Gm-Message-State: ACrzQf0DpS8hImHpcvmE53bSyEz5M8UiQByB27ceDVXfOt1vWYm9Zn9e
+        rJY+Rn/Lhb6AOyBqSGmGIdeFM0pWvpo2CYpN
+X-Google-Smtp-Source: AMsMyM6AaaZkGwEBkHo0F9rE7Xc/JyFXaDjj/Nj1mXN0rOHNFWvZVdKnRcqhCbJgXxu8mE3QnxWurg==
+X-Received: by 2002:a5d:4ecb:0:b0:236:be56:1a6 with SMTP id s11-20020a5d4ecb000000b00236be5601a6mr8691097wrv.252.1667298589374;
+        Tue, 01 Nov 2022 03:29:49 -0700 (PDT)
+Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
+        by smtp.gmail.com with ESMTPSA id n44-20020a05600c502c00b003cf537ec2efsm132921wmr.36.2022.11.01.03.29.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Nov 2022 03:29:48 -0700 (PDT)
+From:   Colin Ian King <colin.i.king@gmail.com>
+To:     Helge Deller <deller@gmx.de>, linux-omap@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] video: fbdev: omapfb: remove redundant variable checksum
+Date:   Tue,  1 Nov 2022 10:29:47 +0000
+Message-Id: <20221101102947.27524-1-colin.i.king@gmail.com>
+X-Mailer: git-send-email 2.37.3
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: VI1PR04MB5967.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8d730c5c-f8ee-4355-0201-08dabb612822
-X-MS-Exchange-CrossTenant-originalarrivaltime: 31 Oct 2022 16:58:38.5260
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: /1BSGBupK0MCKDCpeljjAj/ma0ZlTYiJ8kDab7CmiNjRxVfhVFmwQrklYdCYSfjAnF+iVFYYXrFBfYvT+VXVUg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7377
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -147,34 +69,35 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Variable checksum is being used to accumulate values however
+it is never read or used afterwards. It is redundant and can
+be removed.
 
-> -----Original Message-----
-> From: Bjorn Helgaas <helgaas@kernel.org>
-> Subject: [PATCH v3 5/5] PCI: Remove unnecessary <linux/of_irq.h> includes
->=20
-> From: Bjorn Helgaas <bhelgaas@google.com>
->=20
-> Many host controller drivers #include <linux/of_irq.h> even though they
-> don't need it.  Remove the unnecessary #includes.
->=20
-> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-> ---
->  drivers/pci/controller/cadence/pci-j721e.c   | 1 -
->  drivers/pci/controller/dwc/pci-layerscape.c  | 1 -
->  drivers/pci/controller/dwc/pcie-armada8k.c   | 1 -
->  drivers/pci/controller/dwc/pcie-tegra194.c   | 1 -
->  drivers/pci/controller/pci-v3-semi.c         | 1 -
->  drivers/pci/controller/pci-xgene-msi.c       | 1 -
->  drivers/pci/controller/pci-xgene.c           | 1 -
->  drivers/pci/controller/pcie-altera-msi.c     | 1 -
->  drivers/pci/controller/pcie-iproc-platform.c | 1 -
->  drivers/pci/controller/pcie-iproc.c          | 1 -
->  drivers/pci/controller/pcie-microchip-host.c | 1 -  drivers/pci/controll=
-er/pcie-
-> rockchip-host.c  | 1 -
->  drivers/pci/controller/pcie-xilinx-cpm.c     | 1 -
->  drivers/pci/controller/pcie-xilinx-nwl.c     | 1 -
->  14 files changed, 14 deletions(-)
-Acked-by: Roy Zang <roy.zang@nxp.com>
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+---
+ drivers/video/fbdev/omap2/omapfb/dss/hdmi5_core.c | 2 --
+ 1 file changed, 2 deletions(-)
 
--R
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/hdmi5_core.c b/drivers/video/fbdev/omap2/omapfb/dss/hdmi5_core.c
+index cb63bc0e92ca..b33f62c5cb22 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/hdmi5_core.c
++++ b/drivers/video/fbdev/omap2/omapfb/dss/hdmi5_core.c
+@@ -129,7 +129,6 @@ static int hdmi_core_ddc_edid(struct hdmi_core_data *core, u8 *pedid, u8 ext)
+ {
+ 	void __iomem *base = core->base;
+ 	u8 cur_addr;
+-	char checksum = 0;
+ 	const int retries = 1000;
+ 	u8 seg_ptr = ext / 2;
+ 	u8 edidbase = ((ext % 2) * 0x80);
+@@ -178,7 +177,6 @@ static int hdmi_core_ddc_edid(struct hdmi_core_data *core, u8 *pedid, u8 ext)
+ 		}
+ 
+ 		pedid[cur_addr] = REG_GET(base, HDMI_CORE_I2CM_DATAI, 7, 0);
+-		checksum += pedid[cur_addr];
+ 	}
+ 
+ 	return 0;
+-- 
+2.37.3
+
