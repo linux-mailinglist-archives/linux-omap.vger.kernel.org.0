@@ -2,52 +2,38 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 35B7E616DBE
-	for <lists+linux-omap@lfdr.de>; Wed,  2 Nov 2022 20:21:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 481CE616E88
+	for <lists+linux-omap@lfdr.de>; Wed,  2 Nov 2022 21:23:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231163AbiKBTVa (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 2 Nov 2022 15:21:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46950 "EHLO
+        id S229570AbiKBUX5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 2 Nov 2022 16:23:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52608 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230509AbiKBTVZ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 2 Nov 2022 15:21:25 -0400
-Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EF8B64F4
-        for <linux-omap@vger.kernel.org>; Wed,  2 Nov 2022 12:21:25 -0700 (PDT)
-Received: by mail-pg1-x532.google.com with SMTP id e129so17068636pgc.9
-        for <linux-omap@vger.kernel.org>; Wed, 02 Nov 2022 12:21:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=B8Kb3FDF2ltCser6k2Boeu2/HvGG8fHolSWZaqKpuWo=;
-        b=fCn72FEK7JqsX/hjTC/1QNdSlH+bbHzR/GBepixStWXFturm+bTiBoBMndtGCZnb5M
-         XsraYqE4sBX2oDxyjcP35OrO6FQDiukWe1SSPop+KaAnoJgDPAy/i9zrWuLR4Ta6mVxW
-         84EA7ip0h1VgQ0i6pTx8biZigeWK/OyGC6HfA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=B8Kb3FDF2ltCser6k2Boeu2/HvGG8fHolSWZaqKpuWo=;
-        b=1UAzPK5XZ3+s/5GHQWYzNCibvSXPG0niLualanwMtpkFBT2y48GzL0TYPjON5kUIbD
-         aDgacjjAtTzxbkIpzuo6pa3kn+D5zi42TeH8K75qc71cO8FjGkzaOeDazfi+jCCjhUFW
-         6JYCkLK0e7LKTooA66QtB2miTvlNA2vC/THfiDaPdHPNu49xmGXNQQaubnqcVP+0svAV
-         01Wwf7fajXNYkTlmBX//1UiEBBXsoURRun9kJ1Hq/JpIDHGCLE1bnCIOi5MopxCh3ztK
-         XyrnYGwpm5UfkIQ/h/gzEubZip4EP4+4SF32/b5diXAX07ygatw/sysp2kYJo7DK4/j0
-         /qmA==
-X-Gm-Message-State: ACrzQf23lA+404LWTJYSq3qQejMUZlmjMMHNYVoMjcMd0Bz+i8ET9Cf2
-        sEtXNjPkr+Tp9b6kt8oxkauZRA==
-X-Google-Smtp-Source: AMsMyM7YtHQImySKSXB+BJJLch8eWsN4QnSQHsUF3i5EKgm8DFqzAM89xVOPYsJc4pOM1Kic66vX+A==
-X-Received: by 2002:a63:d845:0:b0:44b:d074:97d with SMTP id k5-20020a63d845000000b0044bd074097dmr23393938pgj.32.1667416884681;
-        Wed, 02 Nov 2022 12:21:24 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id k28-20020aa7999c000000b0056bfebfa6e4sm8733255pfh.190.2022.11.02.12.21.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Nov 2022 12:21:24 -0700 (PDT)
-Date:   Wed, 2 Nov 2022 12:21:23 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Nathan Chancellor <nathan@kernel.org>
+        with ESMTP id S229531AbiKBUXz (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 2 Nov 2022 16:23:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F645195;
+        Wed,  2 Nov 2022 13:23:55 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C988F61BB6;
+        Wed,  2 Nov 2022 20:23:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31530C433C1;
+        Wed,  2 Nov 2022 20:23:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1667420634;
+        bh=SoPxowNL2wQMY8yb7AJeEyGxnbtrkZim847pUvBQbwE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=LfjPqEtYXiCdkBLiD6Mb9K3XA51IVPUzGRUTvms6p8otl6PuFvxWJt1eNfolnsfMh
+         8dOIiVYrNAvWUbc0eNesbhfxuTxND9PyOfr87g31Ntyy1O1D+CTiL0Ie98zFKhuL6L
+         pQ6P5NPg9O9EYdY94YsL2yXqg36H/b9HAt0cdMS0OgSSvy64YmI0vtfYhObAcu3zvz
+         dNfsvy2LS2sTnLtx58wwVQmNFpMeTJG42JD4GtztqHso9Ufxk1sH8tTONFs9g9eRjR
+         Xm+yRgTchmBGh4Sk8fbw4WKFDXV+G1cCqTlkngWQBtrxjrVSY5vsGgYa9I9w0HKA3v
+         fRU/uLjxEBNqQ==
+Date:   Wed, 2 Nov 2022 13:23:51 -0700
+From:   Nathan Chancellor <nathan@kernel.org>
+To:     Kees Cook <keescook@chromium.org>
 Cc:     William Breathitt Gray <william.gray@linaro.org>,
         linux-iio@vger.kernel.org,
         Nick Desaulniers <ndesaulniers@google.com>,
@@ -67,14 +53,15 @@ Cc:     William Breathitt Gray <william.gray@linaro.org>,
         linux-omap@vger.kernel.org
 Subject: Re: [PATCH 1/4] counter: Adjust final parameter type in function and
  signal callbacks
-Message-ID: <202211021216.FF49E84C69@keescook>
+Message-ID: <Y2LR13xrrauVmeXP@dev-arch.thelio-3990X>
 References: <20221102172217.2860740-1-nathan@kernel.org>
+ <202211021216.FF49E84C69@keescook>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20221102172217.2860740-1-nathan@kernel.org>
-X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+In-Reply-To: <202211021216.FF49E84C69@keescook>
+X-Spam-Status: No, score=-8.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -82,24 +69,60 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Nov 02, 2022 at 10:22:14AM -0700, Nathan Chancellor wrote:
-> The ->signal_u32_read(), ->count_u32_read(), and ->count_u32_write()
-> callbacks in 'struct counter_comp' expect the final parameter to have a
-> type of 'u32' or 'u32 *' but the ops functions that are being assigned
-> to those callbacks have an enumerated type as the final parameter. While
-> these are compatible from an ABI perspective, they will fail the
-> aforementioned CFI checks.
+On Wed, Nov 02, 2022 at 12:21:23PM -0700, Kees Cook wrote:
+> On Wed, Nov 02, 2022 at 10:22:14AM -0700, Nathan Chancellor wrote:
+> > The ->signal_u32_read(), ->count_u32_read(), and ->count_u32_write()
+> > callbacks in 'struct counter_comp' expect the final parameter to have a
+> > type of 'u32' or 'u32 *' but the ops functions that are being assigned
+> > to those callbacks have an enumerated type as the final parameter. While
+> > these are compatible from an ABI perspective, they will fail the
+> > aforementioned CFI checks.
+> > 
+> > Adjust the type of the final parameter in the ->signal_read(),
+> > ->function_read(), and ->function_write() callbacks in 'struct
+> > counter_ops' and their implementations to match the prototypes in
+> > 'struct counter_comp' to clear up these warnings and CFI failures.
 > 
-> Adjust the type of the final parameter in the ->signal_read(),
-> ->function_read(), and ->function_write() callbacks in 'struct
-> counter_ops' and their implementations to match the prototypes in
-> 'struct counter_comp' to clear up these warnings and CFI failures.
+> I don't understand these changes. Where do 'struct counter_comp'
+> and 'struct counter_ops' get confused? I can only find matching
+> ops/assignments/calls, so I must be missing something. This looks like
+> a loss of CFI granularity instead of having wrappers added if there is
+> an enum/u32 conversion needed somewhere.
 
-I don't understand these changes. Where do 'struct counter_comp'
-and 'struct counter_ops' get confused? I can only find matching
-ops/assignments/calls, so I must be missing something. This looks like
-a loss of CFI granularity instead of having wrappers added if there is
-an enum/u32 conversion needed somewhere.
+Right, I am not the biggest fan of this change myself and it is entirely
+possible that I am misreading the warnings from the commit message but I
+do not see how
 
--- 
-Kees Cook
+        comp_node.comp.signal_u32_read = counter->ops->signal_read;
+
+and
+
+        comp_node.comp.count_u32_read = counter->ops->function_read;
+
+in counter_add_watch(),
+
+        comp.signal_u32_read = counter->ops->signal_read;
+
+in counter_signal_attrs_create(), and
+
+        comp.count_u32_read = counter->ops->function_read;
+        comp.count_u32_write = counter->ops->function_write;
+
+in counter_count_attrs_create() are currently safe under kCFI, since the
+final parameter type of the prototypes in 'struct counter_ops' does not
+match the final parameter type of the prototypes in 'struct
+counter_comp'. I would expect the indirect calls in counter_get_data()
+and counter_comp_u32_show() to fail currently.
+
+I briefly looked at making the 'struct counter_comp' callbacks match the
+'struct counter_ops' ones but the COUNTER_COMP macros in
+include/linux/counter.h made it seem like these callbacks might be used
+by implementations that might use different enumerated types as the
+final parameter. I can look a little closer to see if we can make
+everything match.
+
+I am not sure how wrappers would work here, I can take a look into how
+feasible that is.
+
+Cheers,
+Nathan
