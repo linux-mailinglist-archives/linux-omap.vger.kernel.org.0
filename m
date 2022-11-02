@@ -2,55 +2,79 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB61D616A87
-	for <lists+linux-omap@lfdr.de>; Wed,  2 Nov 2022 18:22:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 35B7E616DBE
+	for <lists+linux-omap@lfdr.de>; Wed,  2 Nov 2022 20:21:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231347AbiKBRWo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 2 Nov 2022 13:22:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47822 "EHLO
+        id S231163AbiKBTVa (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 2 Nov 2022 15:21:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231334AbiKBRWl (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 2 Nov 2022 13:22:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E481248D2;
-        Wed,  2 Nov 2022 10:22:41 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A17EB61ACE;
-        Wed,  2 Nov 2022 17:22:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D909C4347C;
-        Wed,  2 Nov 2022 17:22:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667409760;
-        bh=foDU0kOGB3Y9bXEW8iH6cIhgf/I30VbPYNdf7dmOjzY=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VrKllPQPByJ1N/zF9Dh6x2gj5Mig3NCL28wytBkURpeSdUcqa550up1Ur2N6emiyu
-         Fp1w/T8tr/7XadiZuhbAMLWuL7BRejXRjswOzbAVmUyK8YDnF5EYvjQ7Q/Q5hZEMBW
-         HIcf/vA+phrgUBpnlLfKuPQSUZdjiNzJDXiW61SKwXjICgpK3T4nLOxo2cEPcbIBYF
-         vZXf4DRGljvyqC99CLhzoU9TYKrMTCEHpuV4cZOSBGt7kAmRu8eu+BSEw5Qtq8ovS3
-         9JZcTo6voD7BE3Z5W4yus0HCEdieagzOVwNEV0XvtMDYOnVJmgc6cBMN+UH6tqPN7s
-         N3G2N7sQ6ucNQ==
-From:   Nathan Chancellor <nathan@kernel.org>
-To:     William Breathitt Gray <william.gray@linaro.org>
-Cc:     linux-iio@vger.kernel.org,
+        with ESMTP id S230509AbiKBTVZ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 2 Nov 2022 15:21:25 -0400
+Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EF8B64F4
+        for <linux-omap@vger.kernel.org>; Wed,  2 Nov 2022 12:21:25 -0700 (PDT)
+Received: by mail-pg1-x532.google.com with SMTP id e129so17068636pgc.9
+        for <linux-omap@vger.kernel.org>; Wed, 02 Nov 2022 12:21:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=B8Kb3FDF2ltCser6k2Boeu2/HvGG8fHolSWZaqKpuWo=;
+        b=fCn72FEK7JqsX/hjTC/1QNdSlH+bbHzR/GBepixStWXFturm+bTiBoBMndtGCZnb5M
+         XsraYqE4sBX2oDxyjcP35OrO6FQDiukWe1SSPop+KaAnoJgDPAy/i9zrWuLR4Ta6mVxW
+         84EA7ip0h1VgQ0i6pTx8biZigeWK/OyGC6HfA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=B8Kb3FDF2ltCser6k2Boeu2/HvGG8fHolSWZaqKpuWo=;
+        b=1UAzPK5XZ3+s/5GHQWYzNCibvSXPG0niLualanwMtpkFBT2y48GzL0TYPjON5kUIbD
+         aDgacjjAtTzxbkIpzuo6pa3kn+D5zi42TeH8K75qc71cO8FjGkzaOeDazfi+jCCjhUFW
+         6JYCkLK0e7LKTooA66QtB2miTvlNA2vC/THfiDaPdHPNu49xmGXNQQaubnqcVP+0svAV
+         01Wwf7fajXNYkTlmBX//1UiEBBXsoURRun9kJ1Hq/JpIDHGCLE1bnCIOi5MopxCh3ztK
+         XyrnYGwpm5UfkIQ/h/gzEubZip4EP4+4SF32/b5diXAX07ygatw/sysp2kYJo7DK4/j0
+         /qmA==
+X-Gm-Message-State: ACrzQf23lA+404LWTJYSq3qQejMUZlmjMMHNYVoMjcMd0Bz+i8ET9Cf2
+        sEtXNjPkr+Tp9b6kt8oxkauZRA==
+X-Google-Smtp-Source: AMsMyM7YtHQImySKSXB+BJJLch8eWsN4QnSQHsUF3i5EKgm8DFqzAM89xVOPYsJc4pOM1Kic66vX+A==
+X-Received: by 2002:a63:d845:0:b0:44b:d074:97d with SMTP id k5-20020a63d845000000b0044bd074097dmr23393938pgj.32.1667416884681;
+        Wed, 02 Nov 2022 12:21:24 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id k28-20020aa7999c000000b0056bfebfa6e4sm8733255pfh.190.2022.11.02.12.21.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Nov 2022 12:21:24 -0700 (PDT)
+Date:   Wed, 2 Nov 2022 12:21:23 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Nathan Chancellor <nathan@kernel.org>
+Cc:     William Breathitt Gray <william.gray@linaro.org>,
+        linux-iio@vger.kernel.org,
         Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>, Kees Cook <keescook@chromium.org>,
+        Tom Rix <trix@redhat.com>,
         Sami Tolvanen <samitolvanen@google.com>, llvm@lists.linux.dev,
         linux-kernel@vger.kernel.org, patches@lists.linux.dev,
-        Nathan Chancellor <nathan@kernel.org>,
+        Patrick Havelange <patrick.havelange@essensium.com>,
+        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+        Oleksij Rempel <linux@rempel-privat.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
         Vignesh Raghavendra <vigneshr@ti.com>,
-        Julien Panis <jpanis@baylibre.com>, linux-omap@vger.kernel.org
-Subject: [PATCH 3/4] counter: ti-ecap-capture: Adjust final parameter type of ecap_cnt_pol_{read,write}()
-Date:   Wed,  2 Nov 2022 10:22:16 -0700
-Message-Id: <20221102172217.2860740-3-nathan@kernel.org>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20221102172217.2860740-1-nathan@kernel.org>
+        Julien Panis <jpanis@baylibre.com>,
+        David Lechner <david@lechnology.com>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-omap@vger.kernel.org
+Subject: Re: [PATCH 1/4] counter: Adjust final parameter type in function and
+ signal callbacks
+Message-ID: <202211021216.FF49E84C69@keescook>
 References: <20221102172217.2860740-1-nathan@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-8.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221102172217.2860740-1-nathan@kernel.org>
+X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,68 +82,24 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-With clang's kernel control flow integrity (kCFI, CONFIG_CFI_CLANG),
-indirect call targets are validated against the expected function
-pointer prototype to make sure the call target is valid to help mitigate
-ROP attacks. If they are not identical, there is a failure at run time,
-which manifests as either a kernel panic or thread getting killed. A
-proposed warning in clang aims to catch these at compile time, which
-reveals:
+On Wed, Nov 02, 2022 at 10:22:14AM -0700, Nathan Chancellor wrote:
+> The ->signal_u32_read(), ->count_u32_read(), and ->count_u32_write()
+> callbacks in 'struct counter_comp' expect the final parameter to have a
+> type of 'u32' or 'u32 *' but the ops functions that are being assigned
+> to those callbacks have an enumerated type as the final parameter. While
+> these are compatible from an ABI perspective, they will fail the
+> aforementioned CFI checks.
+> 
+> Adjust the type of the final parameter in the ->signal_read(),
+> ->function_read(), and ->function_write() callbacks in 'struct
+> counter_ops' and their implementations to match the prototypes in
+> 'struct counter_comp' to clear up these warnings and CFI failures.
 
-  drivers/counter/ti-ecap-capture.c:384:2: error: incompatible function pointer types initializing 'int (*)(struct counter_device *, struct counter_signal *, size_t, u32 *)' (aka 'int (*)(struct counter_device *, struct counter_signal *, unsigned long, unsigned int *)') with an expression of type 'int (struct counter_device *, struct counter_signal *, size_t, enum counter_signal_polarity *)' (aka 'int (struct counter_device *, struct counter_signal *, unsigned long, enum counter_signal_polarity *)') [-Werror,-Wincompatible-function-pointer-types-strict]
-          COUNTER_COMP_ARRAY_POLARITY(ecap_cnt_pol_read, ecap_cnt_pol_write, ecap_cnt_pol_array),
-          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  ./include/linux/counter.h:627:27: note: expanded from macro 'COUNTER_COMP_ARRAY_POLARITY'
-          .signal_array_u32_read = (_read), \
-                                  ^~~~~~~
-  drivers/counter/ti-ecap-capture.c:384:2: error: incompatible function pointer types initializing 'int (*)(struct counter_device *, struct counter_signal *, size_t, u32)' (aka 'int (*)(struct counter_device *, struct counter_signal *, unsigned long, unsigned int)') with an expression of type 'int (struct counter_device *, struct counter_signal *, size_t, enum counter_signal_polarity)' (aka 'int (struct counter_device *, struct counter_signal *, unsigned long, enum counter_signal_polarity)') [-Werror,-Wincompatible-function-pointer-types-strict]
-          COUNTER_COMP_ARRAY_POLARITY(ecap_cnt_pol_read, ecap_cnt_pol_write, ecap_cnt_pol_array),
-          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  ./include/linux/counter.h:628:28: note: expanded from macro 'COUNTER_COMP_ARRAY_POLARITY'
-          .signal_array_u32_write = (_write), \
-                                    ^~~~~~~~
-  2 errors generated.
+I don't understand these changes. Where do 'struct counter_comp'
+and 'struct counter_ops' get confused? I can only find matching
+ops/assignments/calls, so I must be missing something. This looks like
+a loss of CFI granularity instead of having wrappers added if there is
+an enum/u32 conversion needed somewhere.
 
-->signal_array_u32_read() and ->signal_array_u32_write() in 'struct
-counter_comp' expect a final parameter type of 'u32 *' and 'u32'
-respectively, not 'enum counter_signal_polarity *' and 'enum
-counter_signal_polarity'. Adjust the final parameter type of
-ecap_cnt_pol_{read,write}() to match the prototype's to resolve the
-warning and CFI failure.
-
-Link: https://github.com/ClangBuiltLinux/linux/issues/1750
-Reported-by: Sami Tolvanen <samitolvanen@google.com>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
----
-Cc: Vignesh Raghavendra <vigneshr@ti.com>
-Cc: Julien Panis <jpanis@baylibre.com>
-Cc: linux-omap@vger.kernel.org
----
- drivers/counter/ti-ecap-capture.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/counter/ti-ecap-capture.c b/drivers/counter/ti-ecap-capture.c
-index 96e5d1f271b8..49e349680884 100644
---- a/drivers/counter/ti-ecap-capture.c
-+++ b/drivers/counter/ti-ecap-capture.c
-@@ -234,7 +234,7 @@ static int ecap_cnt_clk_get_freq(struct counter_device *counter,
- 
- static int ecap_cnt_pol_read(struct counter_device *counter,
- 			     struct counter_signal *signal,
--			     size_t idx, enum counter_signal_polarity *pol)
-+			     size_t idx, u32 *pol)
- {
- 	struct ecap_cnt_dev *ecap_dev = counter_priv(counter);
- 	int bitval;
-@@ -250,7 +250,7 @@ static int ecap_cnt_pol_read(struct counter_device *counter,
- 
- static int ecap_cnt_pol_write(struct counter_device *counter,
- 			      struct counter_signal *signal,
--			      size_t idx, enum counter_signal_polarity pol)
-+			      size_t idx, u32 pol)
- {
- 	struct ecap_cnt_dev *ecap_dev = counter_priv(counter);
- 
 -- 
-2.38.1
-
+Kees Cook
