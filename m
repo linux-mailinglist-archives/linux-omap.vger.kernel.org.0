@@ -2,38 +2,61 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF83561988E
-	for <lists+linux-omap@lfdr.de>; Fri,  4 Nov 2022 14:57:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CC7B6198B7
+	for <lists+linux-omap@lfdr.de>; Fri,  4 Nov 2022 15:05:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231775AbiKDN47 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 4 Nov 2022 09:56:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46828 "EHLO
+        id S230333AbiKDOE7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 4 Nov 2022 10:04:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51628 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229700AbiKDN4k (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 4 Nov 2022 09:56:40 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E2522F001;
-        Fri,  4 Nov 2022 06:56:39 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 9DA7EB82E28;
-        Fri,  4 Nov 2022 13:56:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24E0BC433D6;
-        Fri,  4 Nov 2022 13:56:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667570196;
-        bh=f+kfsg5vhO3DMtcWUBeGsDvS+k5oJCSMEawyOO9HqgI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Yy1N37+9MPg01JnN4z4Gd+ER/gLzZnHihM2HkralT5v4DhrIPs3Tfz/iDSlRINpB4
-         EXzEW3Irt7Rdu7JF+t9RDmde3T5cjVG5ywdo0ZFAGyBxqH26SX8AKbgK2BfksfTK9Z
-         rOHUUufNuVuj0PEXuG0fAuGg9cTe6ZQi1haVTBaTCaOrbs1i5oE1aEl8DQpRu2+LxY
-         /7J4OTf9D/owPMsMSE8q954RwatBjGNn3El1d3RiwRWH2xKY43hh6G991iryuJGSzi
-         NC+q/iU5C1KkCfRTAu8La5r4ztxehv5Rl4OS1SO/Z+YeE6BDJPEuQmvwkzL0wceGkW
-         ypqTTfQWglutg==
-Date:   Fri, 4 Nov 2022 13:56:26 +0000
-From:   Lee Jones <lee@kernel.org>
-To:     jerome Neanne <jneanne@baylibre.com>
+        with ESMTP id S231253AbiKDOE5 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 4 Nov 2022 10:04:57 -0400
+Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E298324949
+        for <linux-omap@vger.kernel.org>; Fri,  4 Nov 2022 07:04:55 -0700 (PDT)
+Received: by mail-wm1-x336.google.com with SMTP id 5so3107095wmo.1
+        for <linux-omap@vger.kernel.org>; Fri, 04 Nov 2022 07:04:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=WrEOdMf1GMkeq1OQaiBOBbaVxySuKCCitXKqPe1eQto=;
+        b=KGXICG13fLDFm+7bgCOZWXNar1xBVbaxRtiz6EPXDpBfWd38sj2NDk1kIe0pVd5hIg
+         W9ursfTmfTA3AJO093ue/+AukqBaTCMKmURvA5eTz9XrNRPk34tu8mDZupfZY16b9Iwn
+         zBKLEtqNLOELjpUcA5xA3h46yGwp8Oo5soQyhyPGEHHYpOQzGHuAbEOlAu66We4zONog
+         53o7hruoSqu6fy6QWl+QCJCtVxn60sMc7BrEQd9djr6t/n0tNmgDZlC4Iq21iiLY95Yl
+         SK7131s+znheqj3IbPzeyHxZ979BDPZKx0cRLmLSRnRFJoajA4FPebofk21ha2ont9om
+         79vw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WrEOdMf1GMkeq1OQaiBOBbaVxySuKCCitXKqPe1eQto=;
+        b=01BbBLHQ9+TKfnRkKXuVJtgRSbd6GprHVHnfw0Bw4ooSGYjMR1mQ0CmHkUH1G0hMCt
+         IF/zdvkOE5qF00iv1TsS9eD4ZCF+KUHoBWAgCVQ38Cnwz/CaGYhWkJM0Q7V05xBZkEJi
+         OfZxmpzoMD36Fh5DhA2ebRExb6AjmUQ7hlvXEhGuhPxpXuGhBIIkl1l9om3OOB3dPNDH
+         Tzy/IpjoYja7pR37MK/prbDDkoJKqJyoUTjVAQDIJVXKbmbN9WaCxPndQQExDosz6pKm
+         XFbK37kgnkSMwA92RUTVuogoYY6nS9a/AEmufHmnJ71uCrPUIuNwmEVJGZyW2qC50/Nx
+         ltBg==
+X-Gm-Message-State: ACrzQf3DAAXUg9SXdpfa5+TQiSpjvhTim2+YPH7oOiZGcTuxtZwlD80W
+        AhMVNMO9v0yXyiw1TclZg8dmQA==
+X-Google-Smtp-Source: AMsMyM5/Tel7T8Pg26XJyrSPh1iMst0IIxFHJJStp9WKC67bo+jAc3KoL4hvw99NGNuI6el3zC3Y4Q==
+X-Received: by 2002:a05:600c:4587:b0:3c6:f645:dbc2 with SMTP id r7-20020a05600c458700b003c6f645dbc2mr34442198wmo.83.1667570694310;
+        Fri, 04 Nov 2022 07:04:54 -0700 (PDT)
+Received: from [10.101.1.4] (laubervilliers-658-1-213-31.w90-63.abo.wanadoo.fr. [90.63.244.31])
+        by smtp.gmail.com with ESMTPSA id z18-20020a5d44d2000000b002365254ea42sm3626048wrr.1.2022.11.04.07.04.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 04 Nov 2022 07:04:53 -0700 (PDT)
+Message-ID: <6af9d462-885a-df77-2c83-588363026e7f@baylibre.com>
+Date:   Fri, 4 Nov 2022 15:04:49 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.2
+Subject: Re: [PATCH v6 4/6] mfd: tps65219: Add driver for TI TPS65219 PMIC
+Content-Language: en-US
+To:     Lee Jones <lee@kernel.org>
 Cc:     lgirdwood@gmail.com, broonie@kernel.org, robh+dt@kernel.org,
         nm@ti.com, kristo@kernel.org, dmitry.torokhov@gmail.com,
         krzysztof.kozlowski+dt@linaro.org, catalin.marinas@arm.com,
@@ -46,85 +69,82 @@ Cc:     lgirdwood@gmail.com, broonie@kernel.org, robh+dt@kernel.org,
         msp@baylibre.com, j-keerthy@ti.com, linux-kernel@vger.kernel.org,
         devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-input@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: Re: [PATCH v6 4/6] mfd: tps65219: Add driver for TI TPS65219 PMIC
-Message-ID: <Y2UaCq+EL0f2mJ3p@google.com>
 References: <20221011140549.16761-1-jneanne@baylibre.com>
- <20221011140549.16761-5-jneanne@baylibre.com>
- <Y1+q2Usm9ecicXqp@google.com>
+ <20221011140549.16761-5-jneanne@baylibre.com> <Y1+q2Usm9ecicXqp@google.com>
  <1383fd22-c720-811e-a2bb-be2151675089@baylibre.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+ <Y2UaCq+EL0f2mJ3p@google.com>
+From:   jerome Neanne <jneanne@baylibre.com>
+In-Reply-To: <Y2UaCq+EL0f2mJ3p@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <1383fd22-c720-811e-a2bb-be2151675089@baylibre.com>
-X-Spam-Status: No, score=-8.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, 04 Nov 2022, jerome Neanne wrote:
 
+
+On 04/11/2022 14:56, Lee Jones wrote:
+> On Fri, 04 Nov 2022, jerome Neanne wrote:
 > 
+>>
+>>
+>> On 31/10/2022 12:00, Lee Jones wrote:
+>>>> diff --git a/include/linux/mfd/tps65219.h b/include/linux/mfd/tps65219.h
+>>>> new file mode 100644
+>>>> index 000000000000..2c1cf92e92ac
+>>>> --- /dev/null
+>>>> +++ b/include/linux/mfd/tps65219.h
+>>
+>>>> +/**
+>>>> + * struct tps65219 - tps65219 sub-driver chip access routines
+>>>> + *
+>>>> + * Device data may be used to access the TPS65219 chip
+>>>> + *
+>>>> + * @dev MFD device
+>>>> + * @regmap Regmap for accessing the device registers
+>>>> + * @irq_data Regmap irq data used for the irq chip
+>>>> + * @nb notifier block for the restart handler
+>>>> + */
+>>>
+>>> This header needs work.
+>> I'm not sure to get your point here. Just something like below to match
+>> format or do you expect more:
+>>
+>> /**
+>>   * struct tps65219 - tps65219 sub-driver chip access routines
+>>   *
+>>   * Device data may be used to access the TPS65219 chip
+>>   *
+>>   * @dev: MFD device
+>>   * @regmap: Regmap for accessing the device registers
+>>   * @irq_data: Regmap irq data used for the irq chip
+>>   * @nb: notifier block for the restart handler
+>>   */
+>>
+>>>
+>>> Can you try an compile with W=1 please.
+>> This raise one warning on mfd:
 > 
-> On 31/10/2022 12:00, Lee Jones wrote:
-> > > diff --git a/include/linux/mfd/tps65219.h b/include/linux/mfd/tps65219.h
-> > > new file mode 100644
-> > > index 000000000000..2c1cf92e92ac
-> > > --- /dev/null
-> > > +++ b/include/linux/mfd/tps65219.h
+> Is that before or after the header was fixed-up?
+After the header was fixed-up.
 > 
-> > > +/**
-> > > + * struct tps65219 - tps65219 sub-driver chip access routines
-> > > + *
-> > > + * Device data may be used to access the TPS65219 chip
-> > > + *
-> > > + * @dev MFD device
-> > > + * @regmap Regmap for accessing the device registers
-> > > + * @irq_data Regmap irq data used for the irq chip
-> > > + * @nb notifier block for the restart handler
-> > > + */
-> > 
-> > This header needs work.
-> I'm not sure to get your point here. Just something like below to match
-> format or do you expect more:
+>> drivers/mfd/tps65219.c:28:12: warning: ‘tps65219_soft_shutdown’ defined but
+>> not used [-Wunused-function]
+>>     28 | static int tps65219_soft_shutdown(struct tps65219 *tps)
+>>        |            ^~~~~~~~~~~~~~~~~~~~~~
+>> soft_shutdown has been validated and is used in TI baseline even if not
+>> hooked in upstream version further to this review:
+>> https://lore.kernel.org/lkml/20220825150224.826258-5-msp@baylibre.com/
 > 
-> /**
->  * struct tps65219 - tps65219 sub-driver chip access routines
->  *
->  * Device data may be used to access the TPS65219 chip
->  *
->  * @dev: MFD device
->  * @regmap: Regmap for accessing the device registers
->  * @irq_data: Regmap irq data used for the irq chip
->  * @nb: notifier block for the restart handler
->  */
+> Will tps65219_soft_shutdown() be used?
 > 
-> > 
-> > Can you try an compile with W=1 please.
-> This raise one warning on mfd:
-
-Is that before or after the header was fixed-up?
-
-> drivers/mfd/tps65219.c:28:12: warning: ‘tps65219_soft_shutdown’ defined but
-> not used [-Wunused-function]
->    28 | static int tps65219_soft_shutdown(struct tps65219 *tps)
->       |            ^~~~~~~~~~~~~~~~~~~~~~
-> soft_shutdown has been validated and is used in TI baseline even if not
-> hooked in upstream version further to this review:
-> https://lore.kernel.org/lkml/20220825150224.826258-5-msp@baylibre.com/
-
-Will tps65219_soft_shutdown() be used?
-
-I think it should be removed until it's utilised in Mainline.
-
-> It was a TI requirement to implement it...
-> Let me know if you want me to remove this function or if we can keep it like
-> this.
+> I think it should be removed until it's utilised in Mainline.
 > 
+I'll remove then
 
--- 
-Lee Jones [李琼斯]
+Thanks for your feedback
