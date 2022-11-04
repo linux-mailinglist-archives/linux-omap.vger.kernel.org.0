@@ -2,140 +2,113 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 98E57619F18
-	for <lists+linux-omap@lfdr.de>; Fri,  4 Nov 2022 18:45:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7616061A110
+	for <lists+linux-omap@lfdr.de>; Fri,  4 Nov 2022 20:33:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231822AbiKDRpF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 4 Nov 2022 13:45:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51420 "EHLO
+        id S229619AbiKDTdG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 4 Nov 2022 15:33:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232003AbiKDRol (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 4 Nov 2022 13:44:41 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5B3F4B985;
-        Fri,  4 Nov 2022 10:44:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-        t=1667583843; bh=hsor/wOC9QP+wvCDpPP8vR/aKg0wBQ2dFS2kRMlXc7Q=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=r68CyPUOjpTyY0vgUJ+l6U0aaRLFYPCDPNTvJePUKZtc8VjQuP2/omJJTiXPN4rew
-         bsoQXRNPr4mcm2LqVqaRrFM3hcBKdB88uE8DDSvZSwLBVnSasifHYEKxd+hs+nqNWa
-         dYyHcVoDoCe72blwEHIJA/2NPKC3Lk9bfXn8G9rb7wgFaobYpEPb/Zffglpb6OgynL
-         lJWqa7I7UJ9CEUE3mduAv5x0H0YPwd2SWnBMOxWpTZZzqE9n6qI6IldVOWf+Jcqjtv
-         28COiEbbKzRmC6oKPFvOwjzKs0uHFcbuaIxWayS/qaH0aKQWC1c2bloq3xBESvrKi6
-         nLpQ1U4rFlVng==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([92.116.190.95]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1M5fMY-1oyAPZ1fdC-007Ft2; Fri, 04
- Nov 2022 18:44:03 +0100
-Message-ID: <54ac309d-2cec-0c8a-1c05-8f6c72d6d207@gmx.de>
-Date:   Fri, 4 Nov 2022 18:44:02 +0100
+        with ESMTP id S229576AbiKDTdE (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 4 Nov 2022 15:33:04 -0400
+Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62D1143AF8
+        for <linux-omap@vger.kernel.org>; Fri,  4 Nov 2022 12:33:01 -0700 (PDT)
+Received: by mail-pf1-x42b.google.com with SMTP id k22so5354522pfd.3
+        for <linux-omap@vger.kernel.org>; Fri, 04 Nov 2022 12:33:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=content-disposition:mime-version:message-id:subject:cc:to:date:from
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=qGzpjn13dVlcuHa3QfKLMJS0aiybXjJ4fJgb8JKEdS0=;
+        b=iEpoNfjUSPmVInj+LqC03wXnbIzcRmhgeZwez+hMwOhChOZJiBRq1S5KF7dMUzdhRs
+         TyZtq+Iautgmig3VjOBjK5N+qtPcRucs5Pnz6722c6ahsdN0q3KtKaVo4h/ffyDrOnmQ
+         1+NqMwX5+Gai6f6NTzw8VnZqzwpHHkzEdI//U=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-disposition:mime-version:message-id:subject:cc:to:date:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qGzpjn13dVlcuHa3QfKLMJS0aiybXjJ4fJgb8JKEdS0=;
+        b=XNnwiBkMK8hCKnoi/wL+wsHAanrN+cNZzM+Ao6dBW/n8F/bRLvFAa6u48YcSD7lY5w
+         wlngG9toY0gveyYGycHHB7RJj2l3K3A0cagWO0HrNjrJutxPUa1YDRaHzzPEuMgyq9XB
+         W+XZO2D7G7ZKxgpGj653WIvMfhSRcXKm2TuNksfJQfHLMw1+EDixW0nzsOfsP4Qtlh9S
+         N99gWcBDMF3rksCfYNMZdbzaYLWY6vMe/ChMqKdcPhyPXnMzz1jH37wXsGACJIyM168R
+         BFe5/x/i7neR9ipFPZNIrqCQIHYtZjGyL5XSvcnc13JBFt/r3T90xt5GNpKVL0GXBLay
+         oceg==
+X-Gm-Message-State: ACrzQf1ad98sLDaTxmtYzFIamndH7VdYA3OeLZwsENVmSEnn5BB6NdTB
+        SVvIRPxsR34o9yiiRdgChbA/1w==
+X-Google-Smtp-Source: AMsMyM5FVrooXJN4dw9eC1GsB+jA3C1bDK2l4NoOTcLVgrzfxIY3HF8QnF9dZnGI1NjpBiY+EHAnTQ==
+X-Received: by 2002:a05:6a00:1309:b0:535:d421:1347 with SMTP id j9-20020a056a00130900b00535d4211347mr37370950pfu.5.1667590381090;
+        Fri, 04 Nov 2022 12:33:01 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id n4-20020a63e044000000b0044e8d66ae05sm105054pgj.22.2022.11.04.12.33.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Nov 2022 12:33:00 -0700 (PDT)
+From:   coverity-bot <keescook@chromium.org>
+X-Google-Original-From: coverity-bot <keescook+coverity-bot@chromium.org>
+Date:   Fri, 4 Nov 2022 12:33:00 -0700
+To:     Benedikt Niedermayr <benedikt.niedermayr@siemens.com>
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        linux-kernel@vger.kernel.org, Tony Lindgren <tony@atomide.com>,
+        Roger Quadros <rogerq@kernel.org>, linux-omap@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+        linux-next@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: Coverity: gpmc_is_valid_waitpin(): Control flow issues
+Message-ID: <202211041233.4D45359E7@keescook>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.0
-Subject: Re: [PATCH RESEND 00/13] Convert omapfb drivers to gpiod API
-Content-Language: en-US
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-        Sebastian Reichel <sre@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org
-References: <20221103-omapfb-gpiod-v1-0-cba1fae5a77c@gmail.com>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <20221103-omapfb-gpiod-v1-0-cba1fae5a77c@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:uah/+7j3t78kIizsD5k3ZQiaLKDPN+MvbZWOAxDFarA9H3KB3AJ
- 1aI4iEW0KPdFfKhYhQfIYs3/sFLfIDnHATQ+G6OWGHJgZ0VK1riHfzqEj+GBCD5GjCfEnVR
- JL8i6e7vdM8ZyqpBbh9lfG6Onge423M+zJNQvGpYxLa06GhY3lulLVVGrBomzw1Kdx69EYd
- az7i0JcIIluUYZ5lbb+lw==
-UI-OutboundReport: notjunk:1;M01:P0:YF3hyeAaIPA=;fEdf3YhfIjCAOzggQQTcDEevHOk
- reN8CM4tPeEw2G3gexX66NZwZf3pw0pnd/Msonqj7We8r2UuN9z/7cnHRUMllE5fHI805TYgL
- KDbpxaYvlOZcv2vGoi+4KUtK+6rkbediapNL2v4WjYGhhV7tTuYRYH7UX+khIciAfRvRmQtbD
- S4k6NmNoQ4qzfhmW5LYkwIEVqFIzgRZmz9uqVBZXXN0C0auK5vkQg1iv1zsieYi7KB3uL53DE
- CkeVqcuh9iq0dWE3gOKV1PxRoaSmvHAMvzneIDtJHTpM/z/eDkSVmTsrDvIX3EPc+7qY0Vzvq
- nKp65gD5dD9aVC0Er/Jbb9iX1/8nJJ2w7tvteSqGT0UV1kjfZrrgqlzbc0fJOyhqn5ivuXi/t
- onh/4sbP56LiPSIDkMctsdnSgHwR9J8f1FXR3AwWT+6zZc/fev4zsFpVJPx1mV2S2E9PsVQ6k
- iAYpa6BlrYeIFs0akPX3Gb5KoynACsBjraTygBTmlp7wNV02P2mfX/jvUc57xNVM3oKwruysp
- gNnuRMmu069eihCO3jBZze7EkAN516KSqpGG//Jgfk+QB38S09f5pvxL0fSChTzGA3bAhfTyj
- kzAgajor218fP4g7wMffOeAN/aXlIqAuaAHDkMhDXxWcCTLOYZGsLaAykcXK74DGUyGuO7Nl+
- 2B6skJiLL/RP9DFC/1QqClPKVXM5oAQ4eFTeeTEA0yi36CRkKuwl0coNCFd0HpuIAflvSg2hy
- 19LlKZye7F4YppPP4JO6VtJnge1AWO+pWK5tG5yPN6D4M57BSFoYRxgRkgOs38dUurs1K30ND
- AR7TXaL4uXnK0Lv6ix3+snrP5Jx+hp8t1WkhZh26utNNucej48r3WSy+fclMaPdY+XmSbmDPQ
- yHMAOmRsfkCdbF53JusbHUipJQoK9acrmVsnaKcD15m5awBAALB5n3BZZbdSfEthAIVpcIpw5
- HpOLYKjn9eDPrSyNXwR1JbEUhEk=
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 11/4/22 04:16, Dmitry Torokhov wrote:
-> This series converts various OMAPFB drivers to use the newer gpiod API
-> that respects line polarity specified in DTS.
->
-> Unfortunately existing DTS files specify incorrect (active high) polarit=
-y
-> for reset lines. As discussed in [1] we will not try to correct existing
-> DTSes, but instead follow the path established by DRM drivers for the sa=
-me
-> components, and continue using inverted polarity in the FB drivers.
->
-> [1] https://lore.kernel.org/all/20221004213503.848262-1-dmitry.torokhov@=
-gmail.com/
->
-> To: Helge Deller <deller@gmx.de>
-> To: Tony Lindgren <tony@atomide.com>
-> To: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-> To: Sebastian Reichel <sre@kernel.org>
-> Cc: linux-omap@vger.kernel.org
-> Cc: linux-fbdev@vger.kernel.org
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: linux-kernel@vger.kernel.org
->
-> ---
-> Dmitry Torokhov (13):
->        omapfb: connector-hdmi: switch to using gpiod API
->        omapfb: panel-sony-acx565akm: remove support for platform data
->        omapfb: panel-sony-acx565akm: switch to using gpiod API
->        omapfb: encoder-tfp410: switch to using gpiod API
->        omapfb: panel-dsi-cm: switch to using gpiod API
->        omapfb: panel-tpo-td043mtea1: switch to using gpiod API
->        omapfb: panel-nec-nl8048hl11: switch to using gpiod API
->        omapfb: panel-dpi: remove support for platform data
->        omapfb: connector-analog-tv: remove support for platform data
->        omapfb: encoder-opa362: fix included headers
->        omapfb: panel-lgphilips-lb035q02: remove backlight GPIO handling
->        omapfb: panel-tpo-td028ttec1: stop including gpio.h
->        omapfb: panel-sharp-ls037v7dw01: fix included headers
->
->   .../omap2/omapfb/displays/connector-analog-tv.c    |  60 ++---------
->   .../fbdev/omap2/omapfb/displays/connector-hdmi.c   |  49 +++------
->   .../fbdev/omap2/omapfb/displays/encoder-opa362.c   |   4 +-
->   .../fbdev/omap2/omapfb/displays/encoder-tfp410.c   |  67 ++++--------
->   .../video/fbdev/omap2/omapfb/displays/panel-dpi.c  |  83 ++-----------=
---
->   .../fbdev/omap2/omapfb/displays/panel-dsi-cm.c     | 116 ++++++++-----=
---------
->   .../omapfb/displays/panel-lgphilips-lb035q02.c     |  21 +---
->   .../omap2/omapfb/displays/panel-nec-nl8048hl11.c   |  72 ++++---------
->   .../omapfb/displays/panel-sharp-ls037v7dw01.c      |   3 +-
->   .../omap2/omapfb/displays/panel-sony-acx565akm.c   | 105 ++++++-------=
-------
->   .../omap2/omapfb/displays/panel-tpo-td028ttec1.c   |   1 -
->   .../omap2/omapfb/displays/panel-tpo-td043mtea1.c   |  59 +++--------
->   include/video/omap-panel-data.h                    |  71 -------------
->   13 files changed, 170 insertions(+), 541 deletions(-)
-> ---
-> base-commit: 61c3426aca2c71052ddcd06c32e29d92304990fd
-> change-id: 20221103-omapfb-gpiod-87ca2550bd90
+Hello!
 
-series applied to fbdev git tree.
+This is an experimental semi-automated report about issues detected by
+Coverity from a scan of next-20221104 as part of the linux-next scan project:
+https://scan.coverity.com/projects/linux-next-weekly-scan
 
-Thanks!
-Helge
+You're getting this email because you were associated with the identified
+lines of code (noted below) that were touched by commits:
 
+  Wed Nov 2 10:02:39 2022 -0400
+    89aed3cd5cb9 ("memory: omap-gpmc: wait pin additions")
+
+Coverity reported the following:
+
+*** CID 1527139:  Control flow issues  (NO_EFFECT)
+drivers/memory/omap-gpmc.c:1048 in gpmc_is_valid_waitpin()
+1042     	spin_unlock(&gpmc_mem_lock);
+1043     }
+1044     EXPORT_SYMBOL(gpmc_cs_free);
+1045
+1046     static bool gpmc_is_valid_waitpin(u32 waitpin)
+1047     {
+vvv     CID 1527139:  Control flow issues  (NO_EFFECT)
+vvv     This greater-than-or-equal-to-zero comparison of an unsigned value is always true. "waitpin >= 0U".
+1048     	return waitpin >= 0 && waitpin < gpmc_nr_waitpins;
+1049     }
+1050
+1051     static int gpmc_alloc_waitpin(struct gpmc_device *gpmc,
+1052     			      struct gpmc_settings *p)
+1053     {
+
+If this is a false positive, please let us know so we can mark it as
+such, or teach the Coverity rules to be smarter. If not, please make
+sure fixes get into linux-next. :) For patches fixing this, please
+include these lines (but double-check the "Fixes" first):
+
+Reported-by: coverity-bot <keescook+coverity-bot@chromium.org>
+Addresses-Coverity-ID: 1527139 ("Control flow issues")
+Fixes: 89aed3cd5cb9 ("memory: omap-gpmc: wait pin additions")
+
+Thanks for your attention!
+
+-- 
+Coverity-bot
