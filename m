@@ -2,149 +2,136 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CC7B6198B7
-	for <lists+linux-omap@lfdr.de>; Fri,  4 Nov 2022 15:05:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 008D3619B5F
+	for <lists+linux-omap@lfdr.de>; Fri,  4 Nov 2022 16:23:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230333AbiKDOE7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 4 Nov 2022 10:04:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51628 "EHLO
+        id S230145AbiKDPXY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 4 Nov 2022 11:23:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34740 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231253AbiKDOE5 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 4 Nov 2022 10:04:57 -0400
-Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E298324949
-        for <linux-omap@vger.kernel.org>; Fri,  4 Nov 2022 07:04:55 -0700 (PDT)
-Received: by mail-wm1-x336.google.com with SMTP id 5so3107095wmo.1
-        for <linux-omap@vger.kernel.org>; Fri, 04 Nov 2022 07:04:55 -0700 (PDT)
+        with ESMTP id S231476AbiKDPXW (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 4 Nov 2022 11:23:22 -0400
+Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E45311FCE1
+        for <linux-omap@vger.kernel.org>; Fri,  4 Nov 2022 08:23:19 -0700 (PDT)
+Received: by mail-wm1-x335.google.com with SMTP id p16so3228243wmc.3
+        for <linux-omap@vger.kernel.org>; Fri, 04 Nov 2022 08:23:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=baylibre-com.20210112.gappssmtp.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=WrEOdMf1GMkeq1OQaiBOBbaVxySuKCCitXKqPe1eQto=;
-        b=KGXICG13fLDFm+7bgCOZWXNar1xBVbaxRtiz6EPXDpBfWd38sj2NDk1kIe0pVd5hIg
-         W9ursfTmfTA3AJO093ue/+AukqBaTCMKmURvA5eTz9XrNRPk34tu8mDZupfZY16b9Iwn
-         zBKLEtqNLOELjpUcA5xA3h46yGwp8Oo5soQyhyPGEHHYpOQzGHuAbEOlAu66We4zONog
-         53o7hruoSqu6fy6QWl+QCJCtVxn60sMc7BrEQd9djr6t/n0tNmgDZlC4Iq21iiLY95Yl
-         SK7131s+znheqj3IbPzeyHxZ979BDPZKx0cRLmLSRnRFJoajA4FPebofk21ha2ont9om
-         79vw==
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ffzbfhF3JArv7StgArm/RAFAqMlZRvQlnFlIWw7AfHE=;
+        b=u9WdLqJ7Y3Il1XZzawnfIogEzoT2KbWmJgZrl4NV5G82E3vrA85NkOLlEXuzyRGFr3
+         RihCxDkNrspkw0QbcklMFaFzNg7gsE1LS4YsXr8KGyjLe4gV6n/D3GoXOOMrCBbRk8cJ
+         g9lbLIK6YjwTkNnj8mYV0mVhvMtazHkScwLA9hh8kuPdcrssApjroi5DsFQq43efJ97n
+         ZIqMZX9iCBlvK4VCnDYrma7ECAp3qGzE/K2hzrSffcpTIkweNxvfyXb4ITE350tP23Ly
+         cJcMx3JL77Wwf7OdjQwVbPkoQqxBeglYDyvqIRqSEkrqtdOOVPFhgQxVPxM704fjGRo6
+         JAVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WrEOdMf1GMkeq1OQaiBOBbaVxySuKCCitXKqPe1eQto=;
-        b=01BbBLHQ9+TKfnRkKXuVJtgRSbd6GprHVHnfw0Bw4ooSGYjMR1mQ0CmHkUH1G0hMCt
-         IF/zdvkOE5qF00iv1TsS9eD4ZCF+KUHoBWAgCVQ38Cnwz/CaGYhWkJM0Q7V05xBZkEJi
-         OfZxmpzoMD36Fh5DhA2ebRExb6AjmUQ7hlvXEhGuhPxpXuGhBIIkl1l9om3OOB3dPNDH
-         Tzy/IpjoYja7pR37MK/prbDDkoJKqJyoUTjVAQDIJVXKbmbN9WaCxPndQQExDosz6pKm
-         XFbK37kgnkSMwA92RUTVuogoYY6nS9a/AEmufHmnJ71uCrPUIuNwmEVJGZyW2qC50/Nx
-         ltBg==
-X-Gm-Message-State: ACrzQf3DAAXUg9SXdpfa5+TQiSpjvhTim2+YPH7oOiZGcTuxtZwlD80W
-        AhMVNMO9v0yXyiw1TclZg8dmQA==
-X-Google-Smtp-Source: AMsMyM5/Tel7T8Pg26XJyrSPh1iMst0IIxFHJJStp9WKC67bo+jAc3KoL4hvw99NGNuI6el3zC3Y4Q==
-X-Received: by 2002:a05:600c:4587:b0:3c6:f645:dbc2 with SMTP id r7-20020a05600c458700b003c6f645dbc2mr34442198wmo.83.1667570694310;
-        Fri, 04 Nov 2022 07:04:54 -0700 (PDT)
-Received: from [10.101.1.4] (laubervilliers-658-1-213-31.w90-63.abo.wanadoo.fr. [90.63.244.31])
-        by smtp.gmail.com with ESMTPSA id z18-20020a5d44d2000000b002365254ea42sm3626048wrr.1.2022.11.04.07.04.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 04 Nov 2022 07:04:53 -0700 (PDT)
-Message-ID: <6af9d462-885a-df77-2c83-588363026e7f@baylibre.com>
-Date:   Fri, 4 Nov 2022 15:04:49 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.2
-Subject: Re: [PATCH v6 4/6] mfd: tps65219: Add driver for TI TPS65219 PMIC
-Content-Language: en-US
-To:     Lee Jones <lee@kernel.org>
-Cc:     lgirdwood@gmail.com, broonie@kernel.org, robh+dt@kernel.org,
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ffzbfhF3JArv7StgArm/RAFAqMlZRvQlnFlIWw7AfHE=;
+        b=pgBP7nTlkOTi8NPIz9oU8pWu5EmFPZFp2c7LFZ6TVZQGCZmdfXWFCxVX/zwSYpm0pp
+         o/zSWIns+erazfBCS//d6ddK5ItDx93wu+nCw5c4+JZcXYohCc5OyOoM8SHecZesWKix
+         G19BfRjmdy79UdmMf+NImpwj/Gl0Wiv7eCfZgzSInxZdDdOt1cqE3YeLdleJHwuzTjQC
+         4SL/qGEuAermDdhNbf2F85qXwAbXWM3yl2BidSQyEeviroGL+2qEiXy9Ggr9XXsqhrsL
+         TLur2qIsaVAtHTTRQJtQKMMW+beewUdC9JK3Xzy53mXPVbyz/RsmUJZQd+gh1mENFKqR
+         oZqg==
+X-Gm-Message-State: ACrzQf3rTBG1pele/QuAsfozRQ68GVsgp4vQbDKyo7K3+WkMZ6sIaRGL
+        hp8aMoWSjT3wo4Kia8OJpfNcOA==
+X-Google-Smtp-Source: AMsMyM45TVc9nPqMJY2z6TPt7mcR5KZMm/yEkKf6aLpRWwtO/5VCzvKONKn6EGt02j+W+L5GApDM2w==
+X-Received: by 2002:a05:600c:3c8e:b0:3b4:d224:addf with SMTP id bg14-20020a05600c3c8e00b003b4d224addfmr34469845wmb.132.1667575398358;
+        Fri, 04 Nov 2022 08:23:18 -0700 (PDT)
+Received: from localhost.localdomain (laubervilliers-658-1-213-31.w90-63.abo.wanadoo.fr. [90.63.244.31])
+        by smtp.gmail.com with ESMTPSA id l41-20020a05600c08a900b003b4935f04a4sm3689764wmp.5.2022.11.04.08.23.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Nov 2022 08:23:17 -0700 (PDT)
+From:   Jerome Neanne <jneanne@baylibre.com>
+To:     lgirdwood@gmail.com, broonie@kernel.org, robh+dt@kernel.org,
         nm@ti.com, kristo@kernel.org, dmitry.torokhov@gmail.com,
         krzysztof.kozlowski+dt@linaro.org, catalin.marinas@arm.com,
-        will@kernel.org, tony@atomide.com, vigneshr@ti.com,
-        bjorn.andersson@linaro.org, shawnguo@kernel.org,
-        geert+renesas@glider.be, dmitry.baryshkov@linaro.org,
-        marcel.ziswiler@toradex.com, vkoul@kernel.org,
-        biju.das.jz@bp.renesas.com, arnd@arndb.de, jeff@labundy.com,
-        afd@ti.com, khilman@baylibre.com, narmstrong@baylibre.com,
-        msp@baylibre.com, j-keerthy@ti.com, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-input@vger.kernel.org, linux-omap@vger.kernel.org
-References: <20221011140549.16761-1-jneanne@baylibre.com>
- <20221011140549.16761-5-jneanne@baylibre.com> <Y1+q2Usm9ecicXqp@google.com>
- <1383fd22-c720-811e-a2bb-be2151675089@baylibre.com>
- <Y2UaCq+EL0f2mJ3p@google.com>
-From:   jerome Neanne <jneanne@baylibre.com>
-In-Reply-To: <Y2UaCq+EL0f2mJ3p@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+        will@kernel.org, lee@kernel.org, tony@atomide.com, vigneshr@ti.com,
+        shawnguo@kernel.org, geert+renesas@glider.be,
+        dmitry.baryshkov@linaro.org, marcel.ziswiler@toradex.com,
+        vkoul@kernel.org, biju.das.jz@bp.renesas.com, arnd@arndb.de,
+        jeff@labundy.com
+Cc:     afd@ti.com, khilman@baylibre.com, narmstrong@baylibre.com,
+        msp@baylibre.com, j-keerthy@ti.com, jneanne@baylibre.com,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-input@vger.kernel.org,
+        linux-omap@vger.kernel.org
+Subject: [PATCH v7 0/6] Add support for TI TPS65219 PMIC.
+Date:   Fri,  4 Nov 2022 16:23:05 +0100
+Message-Id: <20221104152311.1098603-1-jneanne@baylibre.com>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+From: Jerome NEANNE <jneanne@baylibre.com>
 
+Hi everyone,
 
-On 04/11/2022 14:56, Lee Jones wrote:
-> On Fri, 04 Nov 2022, jerome Neanne wrote:
-> 
->>
->>
->> On 31/10/2022 12:00, Lee Jones wrote:
->>>> diff --git a/include/linux/mfd/tps65219.h b/include/linux/mfd/tps65219.h
->>>> new file mode 100644
->>>> index 000000000000..2c1cf92e92ac
->>>> --- /dev/null
->>>> +++ b/include/linux/mfd/tps65219.h
->>
->>>> +/**
->>>> + * struct tps65219 - tps65219 sub-driver chip access routines
->>>> + *
->>>> + * Device data may be used to access the TPS65219 chip
->>>> + *
->>>> + * @dev MFD device
->>>> + * @regmap Regmap for accessing the device registers
->>>> + * @irq_data Regmap irq data used for the irq chip
->>>> + * @nb notifier block for the restart handler
->>>> + */
->>>
->>> This header needs work.
->> I'm not sure to get your point here. Just something like below to match
->> format or do you expect more:
->>
->> /**
->>   * struct tps65219 - tps65219 sub-driver chip access routines
->>   *
->>   * Device data may be used to access the TPS65219 chip
->>   *
->>   * @dev: MFD device
->>   * @regmap: Regmap for accessing the device registers
->>   * @irq_data: Regmap irq data used for the irq chip
->>   * @nb: notifier block for the restart handler
->>   */
->>
->>>
->>> Can you try an compile with W=1 please.
->> This raise one warning on mfd:
-> 
-> Is that before or after the header was fixed-up?
-After the header was fixed-up.
-> 
->> drivers/mfd/tps65219.c:28:12: warning: ‘tps65219_soft_shutdown’ defined but
->> not used [-Wunused-function]
->>     28 | static int tps65219_soft_shutdown(struct tps65219 *tps)
->>        |            ^~~~~~~~~~~~~~~~~~~~~~
->> soft_shutdown has been validated and is used in TI baseline even if not
->> hooked in upstream version further to this review:
->> https://lore.kernel.org/lkml/20220825150224.826258-5-msp@baylibre.com/
-> 
-> Will tps65219_soft_shutdown() be used?
-> 
-> I think it should be removed until it's utilised in Mainline.
-> 
-I'll remove then
+bindings and regulator are already there, it has been rebased on master
+6.1:
+git@github.com:torvalds/linux.git
+commit 8f71a2b3f435f29b787537d1abedaa7d8ebe6647
 
-Thanks for your feedback
+All review feedback have been integrated.
+
+Changes in v7:
+- defconfig: change commit message to indicate why (Krzysztof Kozlowski).
+- mfd: integrate all feedback from Lee Jones and Biju Das.  
+
+Regards,
+Jerome
+
+Previous versions:i
+v6 - https://lore.kernel.org/all/20221011140549.16761-1-jneanne@baylibre.com/
+v5 - https://lore.kernel.org/lkml/20220913121419.15420-1-jneanne@baylibre.com/
+v4 - https://lore.kernel.org/lkml/20220825150224.826258-1-msp@baylibre.com/
+v3 - https://lore.kernel.org/lkml/20220805121852.21254-1-jneanne@baylibre.com/
+v2 - https://lore.kernel.org/lkml/20220726103355.17684-1-jneanne@baylibre.com/
+v1 - https://lore.kernel.org/lkml/20220719091742.3221-1-jneanne@baylibre.com/
+
+Jerome NEANNE (1):
+  DONOTMERGE: arm64: dts: ti: Add TI TPS65219 PMIC support for AM642 SK
+    board.
+
+Jerome Neanne (4):
+  DONOTMERGE: arm64: dts: ti: Add pinmux and irq mapping for TPS65219
+    external interrupts
+  DONOTMERGE: arm64: dts: ti: k3-am642-sk: Enable tps65219 power-button
+  mfd: tps65219: Add driver for TI TPS65219 PMIC
+  arm64: defconfig: Add tps65219 as modules
+
+Markus Schneider-Pargmann (1):
+  Input: Add tps65219 interrupt driven powerbutton
+
+ MAINTAINERS                             |   1 +
+ arch/arm64/boot/dts/ti/k3-am642-sk.dts  | 115 ++++++++
+ arch/arm64/configs/defconfig            |   3 +
+ drivers/input/misc/Kconfig              |  10 +
+ drivers/input/misc/Makefile             |   1 +
+ drivers/input/misc/tps65219-pwrbutton.c | 148 ++++++++++
+ drivers/mfd/Kconfig                     |  14 +
+ drivers/mfd/Makefile                    |   1 +
+ drivers/mfd/tps65219.c                  | 299 ++++++++++++++++++++
+ include/linux/mfd/tps65219.h            | 345 ++++++++++++++++++++++++
+ 10 files changed, 937 insertions(+)
+ create mode 100644 drivers/input/misc/tps65219-pwrbutton.c
+ create mode 100644 drivers/mfd/tps65219.c
+ create mode 100644 include/linux/mfd/tps65219.h
+
+-- 
+2.25.1
+
