@@ -2,103 +2,135 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 66DB4618ED5
-	for <lists+linux-omap@lfdr.de>; Fri,  4 Nov 2022 04:18:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 95F806196B2
+	for <lists+linux-omap@lfdr.de>; Fri,  4 Nov 2022 13:58:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231386AbiKDDSx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 3 Nov 2022 23:18:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51768 "EHLO
+        id S229749AbiKDM60 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 4 Nov 2022 08:58:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231255AbiKDDSD (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 3 Nov 2022 23:18:03 -0400
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2018B26133;
-        Thu,  3 Nov 2022 20:17:11 -0700 (PDT)
-Received: by mail-pj1-x1033.google.com with SMTP id d59-20020a17090a6f4100b00213202d77e1so7052205pjk.2;
-        Thu, 03 Nov 2022 20:17:11 -0700 (PDT)
+        with ESMTP id S230035AbiKDM6Y (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 4 Nov 2022 08:58:24 -0400
+Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 701E02E68F
+        for <linux-omap@vger.kernel.org>; Fri,  4 Nov 2022 05:58:19 -0700 (PDT)
+Received: by mail-wm1-x32f.google.com with SMTP id l39-20020a05600c1d2700b003cf93c8156dso1602997wms.4
+        for <linux-omap@vger.kernel.org>; Fri, 04 Nov 2022 05:58:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=g6PAgha9awLqLasM2SZBLhBWQgufb9o8aM2Y2mLLZh0=;
-        b=Yc66T/C43UfEpUcqxFl5/KtvvWxdKjjseUpHDw3Zky+25MC+fBsWw2ozPEZuES4kvK
-         HKE67+vkfo9MYjWn+7/ot3l9RHt6HWq1g7/9WytwbtBrriBjNEViAnnsvPwvnyQgrP/N
-         KF9Ob5cfsOPDPIsbZdBcjxjKdFE1q5m1hx1Va8lO9Am8eqiLwFDmIXE6upHp94Bcl9TJ
-         gjrtAeuLLuAXpjO/5XengO2wiWYdw4kMLpOTWdEOoNIxUgAy+y8VRp9cioPjm/5A96oS
-         Sir2Y38f9lQg6EjePLvvUIGCq6iF/dPvghZWbisu+x0NDR0CZe2gB1mIjjYxowyYTbOe
-         DSNQ==
+        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ZwyHad34mlqqMFn53iMCM8+Gqhzyvbyy9wGcSB66m8s=;
+        b=neP1+M2g3j63Zk6HSrC43BrOUyCjmbe3/+IvveBVBi7gFujI/d+PxhgurHM3X/AWLP
+         on484xeONjUN3C9AolgI+T10FS8j8TopMXBAWO14HZuYKvgO+eycy2CHuIVgGsjBsj7g
+         2kurz8SrJM1ePJrlnrfcMAM7ZH5JyzdEaaw8uCXdV5U9EjrNc/yUX4lYJXYRLBMhNI8P
+         FvWZYCEUmwfcwmQUGEJI8WrkGqvfdKiqJ1OUHYs4EhJQOzi0INPeOvoLxoO8Lgg/yLNQ
+         8O8srjXkSmkuXFCQ59OJG1nXKFKtfI1xxMqqwlm+ryU15Z7qxmhTysmN8vSxZh0lNuQB
+         jAkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=g6PAgha9awLqLasM2SZBLhBWQgufb9o8aM2Y2mLLZh0=;
-        b=4HWBcsXBCOTfqmpFLLVTmSPM1DU5fTC0yUOljRHlSJ/CpLN0QZxZm4lGv7QWTzSG1A
-         VxRZexK2Mm/0O/q4WqfAaY5uV3GtsKrjuMUwygpcUiGKlJmBMdQpzJyim6le64pREz+i
-         V04DvPkfcqLhf7XhAtECm11uog1uKxDhGLTa4j4U7HGSwQ5KC9hyraWVKIueqUSsFVIu
-         Jk9HGjYUDwHPCi/+B+Rq1LGhIMN55d00mJyLTYgcv4EBT2njFcwiSmoZdIrV9tWMRDaf
-         OZcTEX9jBoQfgaWxEJrjPfPgPZ/NcKGcR1KkOBP4r4Nm3NbwvzehOyh5n5ced3qQLCs9
-         omBA==
-X-Gm-Message-State: ACrzQf2a4veNfdFWpf9gxKv9ekRHyXlqM81sXagEoJGGPWZtwqmNQO5R
-        wWftkIDqwEnJHuuViUzYM6w=
-X-Google-Smtp-Source: AMsMyM64tXvt/mZih/5xOGONanOKPX+R66cULAJlCmjnRjUYkHYQrQu4rLsZLjxE/l1ilhdz95A/NA==
-X-Received: by 2002:a17:90b:4d07:b0:1ef:521c:f051 with SMTP id mw7-20020a17090b4d0700b001ef521cf051mr52794390pjb.164.1667531830375;
-        Thu, 03 Nov 2022 20:17:10 -0700 (PDT)
-Received: from dtor-ws.mtv.corp.google.com ([2620:15c:9d:2:a6ae:11ff:fe11:fcc3])
-        by smtp.gmail.com with ESMTPSA id s3-20020a63ff43000000b004702eca61fcsm1078655pgk.36.2022.11.03.20.17.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Nov 2022 20:17:09 -0700 (PDT)
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Helge Deller <deller@gmx.de>, Tony Lindgren <tony@atomide.com>,
-        Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-        Sebastian Reichel <sre@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org
-Subject: [PATCH RESEND 13/13] omapfb: panel-sharp-ls037v7dw01: fix included headers
-Date:   Thu,  3 Nov 2022 20:16:42 -0700
-Message-Id: <20221103-omapfb-gpiod-v1-13-cba1fae5a77c@gmail.com>
-X-Mailer: git-send-email 2.38.1.431.g37b22c650d-goog
-In-Reply-To: <20221103-omapfb-gpiod-v1-0-cba1fae5a77c@gmail.com>
-References: <20221103-omapfb-gpiod-v1-0-cba1fae5a77c@gmail.com>
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZwyHad34mlqqMFn53iMCM8+Gqhzyvbyy9wGcSB66m8s=;
+        b=zFp4za6/zNJQ0NgYDUSrYmc5zvefOzRxPAPp2l23NDTyCvJa93F0kAW3q8iGekPAoN
+         NyzRnN0AGNp49vJ5J0klmDRAFnfG5m8MrohEdgZVL7JVxE8UuA9UMN1e7rNNnVKWK7rD
+         vJofTh4lLgf7Hra4Nqf8Ho3MmPUKxsQO5LkQwSKPVSSzPNR+XNQu7oYoBvqQId/Btemy
+         HxTTqrtL3dX7dl3XwQBEw5PDlhq1HVmLQ82IszRGbgINZgKPFAQQqjO5Rsg7SFnN9Quf
+         LGk58r0ncb3f3BpB9QuzjzssVXuUEj/HmNQtHfeCrgo9nCXyioBxy9LUcOfU0rzDTgPp
+         EsDw==
+X-Gm-Message-State: ACrzQf1IYU73WqwZOL/AZKWYJjFv7bXhviPdwhzx9L22a/7NjJyMFqcH
+        WN6Hk7jOjEuQECUUvgbLbFeukw==
+X-Google-Smtp-Source: AMsMyM4PSqJTDG/ErJjBhO/AmAS5cO82QRykgTTHga1nzb8GnNE2KHwmgXPc7rwm6thvlMQoPRjSCA==
+X-Received: by 2002:a05:600c:1819:b0:3cf:63fe:944a with SMTP id n25-20020a05600c181900b003cf63fe944amr23041803wmp.17.1667566697875;
+        Fri, 04 Nov 2022 05:58:17 -0700 (PDT)
+Received: from [10.101.1.4] (laubervilliers-658-1-213-31.w90-63.abo.wanadoo.fr. [90.63.244.31])
+        by smtp.gmail.com with ESMTPSA id p10-20020a05600c1d8a00b003c6bd91caa5sm2941833wms.17.2022.11.04.05.58.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 04 Nov 2022 05:58:17 -0700 (PDT)
+Message-ID: <1383fd22-c720-811e-a2bb-be2151675089@baylibre.com>
+Date:   Fri, 4 Nov 2022 13:58:13 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Mailer: b4 0.11.0-dev-28747
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.2
+Subject: Re: [PATCH v6 4/6] mfd: tps65219: Add driver for TI TPS65219 PMIC
+Content-Language: en-US
+To:     Lee Jones <lee@kernel.org>
+Cc:     lgirdwood@gmail.com, broonie@kernel.org, robh+dt@kernel.org,
+        nm@ti.com, kristo@kernel.org, dmitry.torokhov@gmail.com,
+        krzysztof.kozlowski+dt@linaro.org, catalin.marinas@arm.com,
+        will@kernel.org, tony@atomide.com, vigneshr@ti.com,
+        bjorn.andersson@linaro.org, shawnguo@kernel.org,
+        geert+renesas@glider.be, dmitry.baryshkov@linaro.org,
+        marcel.ziswiler@toradex.com, vkoul@kernel.org,
+        biju.das.jz@bp.renesas.com, arnd@arndb.de, jeff@labundy.com,
+        afd@ti.com, khilman@baylibre.com, narmstrong@baylibre.com,
+        msp@baylibre.com, j-keerthy@ti.com, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-input@vger.kernel.org, linux-omap@vger.kernel.org
+References: <20221011140549.16761-1-jneanne@baylibre.com>
+ <20221011140549.16761-5-jneanne@baylibre.com> <Y1+q2Usm9ecicXqp@google.com>
+From:   jerome Neanne <jneanne@baylibre.com>
+In-Reply-To: <Y1+q2Usm9ecicXqp@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The driver is using gpiod API so it should include gpio/consumer.h and
-not gpio.gh or of_gpio.h.
 
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
----
- drivers/video/fbdev/omap2/omapfb/displays/panel-sharp-ls037v7dw01.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/video/fbdev/omap2/omapfb/displays/panel-sharp-ls037v7dw01.c b/drivers/video/fbdev/omap2/omapfb/displays/panel-sharp-ls037v7dw01.c
-index f1072c319de8..cc30758300e2 100644
---- a/drivers/video/fbdev/omap2/omapfb/displays/panel-sharp-ls037v7dw01.c
-+++ b/drivers/video/fbdev/omap2/omapfb/displays/panel-sharp-ls037v7dw01.c
-@@ -7,10 +7,9 @@
+On 31/10/2022 12:00, Lee Jones wrote:
+>> diff --git a/include/linux/mfd/tps65219.h b/include/linux/mfd/tps65219.h
+>> new file mode 100644
+>> index 000000000000..2c1cf92e92ac
+>> --- /dev/null
+>> +++ b/include/linux/mfd/tps65219.h
+
+>> +/**
+>> + * struct tps65219 - tps65219 sub-driver chip access routines
+>> + *
+>> + * Device data may be used to access the TPS65219 chip
+>> + *
+>> + * @dev MFD device
+>> + * @regmap Regmap for accessing the device registers
+>> + * @irq_data Regmap irq data used for the irq chip
+>> + * @nb notifier block for the restart handler
+>> + */
+> 
+> This header needs work.
+I'm not sure to get your point here. Just something like below to match 
+format or do you expect more:
+
+/**
+  * struct tps65219 - tps65219 sub-driver chip access routines
+  *
+  * Device data may be used to access the TPS65219 chip
+  *
+  * @dev: MFD device
+  * @regmap: Regmap for accessing the device registers
+  * @irq_data: Regmap irq data used for the irq chip
+  * @nb: notifier block for the restart handler
   */
- 
- #include <linux/delay.h>
--#include <linux/gpio.h>
-+#include <linux/gpio/consumer.h>
- #include <linux/module.h>
- #include <linux/of.h>
--#include <linux/of_gpio.h>
- #include <linux/platform_device.h>
- #include <linux/slab.h>
- #include <linux/regulator/consumer.h>
 
--- 
-b4 0.11.0-dev-28747
+> 
+> Can you try an compile with W=1 please.
+This raise one warning on mfd:
+drivers/mfd/tps65219.c:28:12: warning: ‘tps65219_soft_shutdown’ defined 
+but not used [-Wunused-function]
+    28 | static int tps65219_soft_shutdown(struct tps65219 *tps)
+       |            ^~~~~~~~~~~~~~~~~~~~~~
+soft_shutdown has been validated and is used in TI baseline even if not 
+hooked in upstream version further to this review:
+https://lore.kernel.org/lkml/20220825150224.826258-5-msp@baylibre.com/
+
+It was a TI requirement to implement it...
+Let me know if you want me to remove this function or if we can keep it 
+like this.
+
