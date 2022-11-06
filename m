@@ -2,73 +2,86 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C985161DA5A
-	for <lists+linux-omap@lfdr.de>; Sat,  5 Nov 2022 13:40:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 793FD61E088
+	for <lists+linux-omap@lfdr.de>; Sun,  6 Nov 2022 07:25:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229700AbiKEMkF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 5 Nov 2022 08:40:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40840 "EHLO
+        id S229562AbiKFGZu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 6 Nov 2022 01:25:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38714 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229962AbiKEMju (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 5 Nov 2022 08:39:50 -0400
-Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33FF31B1F0
-        for <linux-omap@vger.kernel.org>; Sat,  5 Nov 2022 05:39:48 -0700 (PDT)
-Received: by mail-pj1-x1034.google.com with SMTP id v4-20020a17090a088400b00212cb0ed97eso6660969pjc.5
-        for <linux-omap@vger.kernel.org>; Sat, 05 Nov 2022 05:39:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=c8XA1N0uaxkLO/wKHErNWHaSuu64k5Pjb5u9dmcZrOc=;
-        b=mu8m7znM9duu/MEuox3wxE9uI+enJzfHDrHCiCJ0dxXEnbtqlugP30RV4pUA4LaD8D
-         DTqzL6R3iJdygnN0tebcl2jKMC1xnk2qmH9yHj5ZpYJsig0zgAkFbQEJMtQOsyMS9E9+
-         9mZsd+BXbCYizoNZILloIeJgVKBYQDDlfcxWmhtehgP0gShVz6QbysTuA73O0zNW89oN
-         M95vp9qd39mlLDduLYXTQkqHXtcuCB6sr4c0ysKpoCTw5s/vT8zmw06SHC/DLusZ9o66
-         sNkDbmLIhAcJBtA+VmbRSjB+l+4rXBDt3pKOG75zF9L+vjSBjo5n2zZjo+rRsufLH5jZ
-         6xmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=c8XA1N0uaxkLO/wKHErNWHaSuu64k5Pjb5u9dmcZrOc=;
-        b=le5TBW/jzdja77jW4nTiDdl7fteopqYMSu8V5/qF7yorZ7UxB0qmb7nSBIbWrU5099
-         ly8ziGaEgKcM99q3Ng9gZGFZVfUWbWCH+hd8XeXg7UlsTN8+EMiKPqDDfk0yc7Goqpbj
-         8FcPSgAsQ4l+mo0AZ6UYB+Ygc5cfRFdtXaBcy1GT2aKt+nU+m/KbYH/g4tgi20edYEBd
-         lziEytY0TNa5/u/DGWntqD0Y4ykOb/7OQLd1Hd30+OyWrwtz8VWnAE9v6PRI83jioHSP
-         jdUJpKxPM9GylytRxczaKc25uke5t5CC/OojggcwiawFpyXYJ3/hthZt1AvImE/V5F7O
-         fowQ==
-X-Gm-Message-State: ACrzQf0enosI4ve/LMh9G0rmSzj3e0XixEPUEC6a0X60+iFIv9MqNfgt
-        Jhh6hhj2kGkRM6ttl9WBsVqeyQQSO2MK25A0LoU=
-X-Google-Smtp-Source: AMsMyM5GFe2gsiMaHXHXvp99K7JeNN2UuK6dELDyLpsoJjIUkQcn4q3aD74FbKEapmwctM2YF8x1D4LMLHeg4fM3LVk=
-X-Received: by 2002:a17:90b:4ac3:b0:213:3918:f276 with SMTP id
- mh3-20020a17090b4ac300b002133918f276mr57022678pjb.19.1667651987563; Sat, 05
- Nov 2022 05:39:47 -0700 (PDT)
+        with ESMTP id S229556AbiKFGZt (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 6 Nov 2022 01:25:49 -0500
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 221C3DF59;
+        Sat,  5 Nov 2022 23:25:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+        Content-Description:In-Reply-To:References;
+        bh=5SDRXSxMWlUUbPkDm/PxbafoOSGwgChTiTX8o4kcnFs=; b=OtHvTeo+vzTRfVCnhEJDuEKv1/
+        wV69kB36ag1cN6N67bOEKgN9X9koB+S2VWXL3eBOnzdvqpSeDPSxrWI7T7fWvlOhjUgOLJZS8+LN/
+        dMCVzDce7fZeTobLxQcy8JVI2IMJ3YeFFCs64bmKIGTIJaDnkIHJEYSh/jhsla/ygVlsWOp6iON7v
+        UEH/laLwCPmvF+ZSAz9NqVD3pYUkOSRny2IWBlV43UEbvigmZvsONWUmxkl61W6jmx0QmzOoHcIW8
+        WMjCEK2oXyXPePRd/clLr1cv6gAikUeQghlPyjZ0dABCsCUUwmnS/ZvIbqkry5jvh2X7pwYZYAsHN
+        nmokIXcQ==;
+Received: from [2601:1c2:d80:3110::a2e7] (helo=casper.infradead.org)
+        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1orZ6J-008eYA-0p; Sun, 06 Nov 2022 06:25:47 +0000
+From:   Randy Dunlap <rdunlap@infradead.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        kernel test robot <lkp@intel.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Arnd Bergmann <arnd@arndb.de>,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org
+Subject: [PATCH] ARM: omap1: set ARCH_OMAP1_ANY for ARCH_OMAP1
+Date:   Sat,  5 Nov 2022 23:25:36 -0700
+Message-Id: <20221106062536.26369-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.38.0
 MIME-Version: 1.0
-Received: by 2002:a05:7301:2e91:b0:83:922d:c616 with HTTP; Sat, 5 Nov 2022
- 05:39:47 -0700 (PDT)
-Reply-To: stefanopessia755@hotmail.com
-From:   Stefano Pessina <wamathaibenard@gmail.com>
-Date:   Sat, 5 Nov 2022 15:39:47 +0300
-Message-ID: <CAN7bvZKO8GxFn7CG_EtS_Of+AZ+KsuqTkq40Mq-yJDNrEHyakg@mail.gmail.com>
-Subject: Geldspende
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=4.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
---=20
-Die Summe von 500.000,00 =E2=82=AC wurde Ihnen von STEFANO PESSINA gespende=
-t.
-Bitte kontaktieren Sie uns f=C3=BCr weitere Informationen =C3=BCber
-stefanopessia755@hotmail.com
+Fix a build error by setting ARCH_OMAP1_ANY Kconfig symbol.
+Fixes this build error:
+
+arm-linux-gnueabi-ld: drivers/video/backlight/omap1_bl.o: in function `omapbl_probe':
+omap1_bl.c:(.text+0x1b4): undefined reference to `omap_cfg_reg'
+
+Fixes: 7036440eab3e ("ARM: omap1: enable multiplatform")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
+Cc: Janusz Krzysztofik <jmkrzyszt@gmail.com>
+Cc: Tony Lindgren <tony@atomide.com>
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-omap@vger.kernel.org
+---
+ arch/arm/mach-omap1/Kconfig |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff -- a/arch/arm/mach-omap1/Kconfig b/arch/arm/mach-omap1/Kconfig
+--- a/arch/arm/mach-omap1/Kconfig
++++ b/arch/arm/mach-omap1/Kconfig
+@@ -47,7 +47,8 @@ config ARCH_OMAP16XX
+ 
+ config ARCH_OMAP1_ANY
+ 	select ARCH_OMAP
+-	def_bool ARCH_OMAP730 || ARCH_OMAP850 || ARCH_OMAP15XX || ARCH_OMAP16XX
++	def_bool ARCH_OMAP730 || ARCH_OMAP850 || ARCH_OMAP15XX || \
++		ARCH_OMAP16XX || ARCH_OMAP1
+ 
+ config ARCH_OMAP
+ 	bool
