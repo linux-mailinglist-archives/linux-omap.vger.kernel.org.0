@@ -2,141 +2,148 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 39DF261E1DB
-	for <lists+linux-omap@lfdr.de>; Sun,  6 Nov 2022 12:33:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 42CA661E313
+	for <lists+linux-omap@lfdr.de>; Sun,  6 Nov 2022 16:46:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229692AbiKFLcz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 6 Nov 2022 06:32:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48900 "EHLO
+        id S230099AbiKFPqT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 6 Nov 2022 10:46:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229668AbiKFLcy (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 6 Nov 2022 06:32:54 -0500
-Received: from out4-smtp.messagingengine.com (out4-smtp.messagingengine.com [66.111.4.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CAF760FF;
-        Sun,  6 Nov 2022 03:32:53 -0800 (PST)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailout.nyi.internal (Postfix) with ESMTP id E10B35C00A7;
-        Sun,  6 Nov 2022 06:32:52 -0500 (EST)
-Received: from imap51 ([10.202.2.101])
-  by compute3.internal (MEProxy); Sun, 06 Nov 2022 06:32:52 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-        :cc:content-type:date:date:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to; s=fm3; t=1667734372; x=1667820772; bh=6K0BZfyujf
-        PvdESd1MNR55uYVKBC/EjiiOjPL9t318M=; b=eCva6IXGFYWLkOq1nPPfb+0iSo
-        N3am0kneMy6ZrfVDBf6ZR/mhAmJnJD/U+WZwyE1SX9dvFTt8VeviXPK3/qBQ65il
-        rt9wY5k5S/UDgF8km5juupldtL3qtU7JauZp03WwoE+qIgUGRMgrn5CEAzf267vd
-        yYHKylKKDj/ed1inIRQ/1MQuCztxgsVn3JqO1tWvhbmDa8BdrbhuJEmOPVXFS0Zm
-        4LJIqAmybUIaugMvKHfSSsVKLGj0Cu6c5WcAdZQwpVIVnxq6lRwSNDwoa6lJyony
-        MyR7SbdjSF0cfvhtwikS2XyQGln4t7Qe8DNxfHZLak6ipJCQg7zGA/Y70p0A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
-        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
-        :mime-version:references:reply-to:sender:subject:subject:to:to
-        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-        fm3; t=1667734372; x=1667820772; bh=6K0BZfyujfPvdESd1MNR55uYVKBC
-        /EjiiOjPL9t318M=; b=uAVmre9CnWD//kUvLxf7OYvOxd131jHlr4xSEEa8cH7B
-        Y3Tz0JS5DK2yFbYJRWVcxWeT1DZwgzVk33bHwJ6qufgCTuUT8LBbOADL4Wr3bLMC
-        dfMtMsYFnCNxeiofK7WAIxGhnszF+9gxdhfbkDx2HTW+61iCKHq937oBcw7bLwU+
-        51jQm/2oo4ycAhUsK7lTz7rY+gQFih6runMQ9+xbAgqr8D8sbdbKimEqBa6UwB4M
-        1HWSfjgpZPgN6rlayt8loCFiUJbNPcZlfy9wq57fEl00qnNTucvLfZb8cUhRSJno
-        ukIUTdOCr7NJS5Y3yoDX/UZDIQnou/lAVesfSyR+Fw==
-X-ME-Sender: <xms:Y5tnY7jPxwNpns1UF46fQnwZRbvBgJa8OHAS7ZVpj3xq8UVXMgp2vg>
-    <xme:Y5tnY4DdSHYTzinI1SbTb_70aayy4DmHkQp80qRYBmbzhdOGQgkcDLdPctGf8oBOx
-    C3hYjLSQDXXzGP_o_Q>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvgedrvdeigddvfecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdetrhhn
-    ugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtth
-    gvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedtkeet
-    ffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrh
-    hnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:Y5tnY7GnZ_2FpOOp9-VNBVhhVRJ9QfqunHGZGKy0JBHIGa4xJLzWQg>
-    <xmx:Y5tnY4TY2l9bIxlJDIkA9W1mV1G9iwr0Nq4D6zDj1EFgV3k51Cmf-Q>
-    <xmx:Y5tnY4yMqLzrtEVFypa9nLyak-pCxY0L-ihIh6wFdIt24XNjCt16-g>
-    <xmx:ZJtnY_mSKFCovXAr9Nu9BdTHDtBo1oPm-nEuaO8nCEnV5KF_GdkSqw>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id DF47FB603ED; Sun,  6 Nov 2022 06:32:51 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.7.0-alpha0-1087-g968661d8e1-fm-20221021.001-g968661d8
-Mime-Version: 1.0
-Message-Id: <b764ed1f-263a-47f4-962c-286fcf38fc32@app.fastmail.com>
-In-Reply-To: <ab965f39-94b7-4962-a53e-46b88fd6ecae@app.fastmail.com>
-References: <20221106062536.26369-1-rdunlap@infradead.org>
- <62f5b747-4c65-46a6-b04d-1d0fcbadf5c9@app.fastmail.com>
- <Y2eLuf4SCrZ5X+ui@shell.armlinux.org.uk>
- <ab965f39-94b7-4962-a53e-46b88fd6ecae@app.fastmail.com>
-Date:   Sun, 06 Nov 2022 12:32:36 +0100
-From:   "Arnd Bergmann" <arnd@arndb.de>
-To:     "Russell King" <linux@armlinux.org.uk>
-Cc:     "Randy Dunlap" <rdunlap@infradead.org>,
-        linux-kernel@vger.kernel.org, "kernel test robot" <lkp@intel.com>,
-        "Aaro Koskinen" <aaro.koskinen@iki.fi>,
-        "Janusz Krzysztofik" <jmkrzyszt@gmail.com>,
-        "Tony Lindgren" <tony@atomide.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Linux-OMAP <linux-omap@vger.kernel.org>
-Subject: Re: [PATCH] ARM: omap1: set ARCH_OMAP1_ANY for ARCH_OMAP1
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229823AbiKFPqS (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 6 Nov 2022 10:46:18 -0500
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C6C0D2E7
+        for <linux-omap@vger.kernel.org>; Sun,  6 Nov 2022 07:46:17 -0800 (PST)
+Received: by mail-ej1-x62e.google.com with SMTP id b2so24375603eja.6
+        for <linux-omap@vger.kernel.org>; Sun, 06 Nov 2022 07:46:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=amarulasolutions.com; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=IESrdIGOIZAm+SZQoTxRhJ5XsZQ5NE5GBRmcNiJagyU=;
+        b=F2cbbEOvg/pHLRp+l7YZGXVwAhe6m49SvHaqxvpPII2/ZU/hnCFzeTyOcT4rjzfRjC
+         5Sufm6GvLr1SU6ugGLBIobRlxXsGPdKq5Fo/7HTy3oThl7o0HsUnCy7zv19liqqVz/LQ
+         tt9CiBfEZIVR/6fuKdwAXIIj3lK2g8XuAqIYI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=IESrdIGOIZAm+SZQoTxRhJ5XsZQ5NE5GBRmcNiJagyU=;
+        b=wgn8+qE+P6DUasEaCbn5e3Fmu8Bbk4bD/DDcaU5izCodiZ48/BNJwuEdWw7eeY1a0J
+         PZ6vb62PdTmBLgwU/yx0wcfef4C9d6meZsy6JwDvDZ3jrDcYbZ2oqJYYKaKWIMKPdo0r
+         Dd/UVn+pYA4Fm/C0JSmid8wca1zM5EnPdXCHx9MjHA0buSL16TT4DaPwEFbfn+teIbbP
+         DrAcb8yNVDMi2dII8LTwZf+DQvsgXePPqYy9s/UgQbeIHPgiKD0QP1wrZmBX1tqVpAzw
+         65XnWWucSazR1nKc+S7Kxak3LBJNw+oh0M3HYwZJSXuaqs4NV912WfQ2KZQuuQR4TkzO
+         FcFg==
+X-Gm-Message-State: ACrzQf1aHbY3wnS3q2hSK/YsdJKXUaOglPwCljRWGt1yxJvss9g3A3lT
+        YXkNcAfGocfWwOckrufIYgLpKQ==
+X-Google-Smtp-Source: AA0mqf4NwJutTjNjlc5CwEQu295TG49ixdJix/uHZHyLRtAfyvfT3OC1G/evCQM4vJFh4EtZwHv6yQ==
+X-Received: by 2002:a17:906:99c1:b0:6fe:b01d:134 with SMTP id s1-20020a17090699c100b006feb01d0134mr8027170ejn.598.1667749576127;
+        Sun, 06 Nov 2022 07:46:16 -0800 (PST)
+Received: from dario-ThinkPad-T14s-Gen-2i.homenet.telecomitalia.it (host-95-232-76-31.retail.telecomitalia.it. [95.232.76.31])
+        by smtp.gmail.com with ESMTPSA id kz20-20020a17090777d400b00772061034dbsm2204139ejc.182.2022.11.06.07.46.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 06 Nov 2022 07:46:15 -0800 (PST)
+From:   Dario Binacchi <dario.binacchi@amarulasolutions.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     michael@amarulasolutions.com,
+        Amarula patchwork <linux-amarula@amarulasolutions.com>,
+        Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+        Allison Randal <allison@lohutok.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Liang He <windhl@126.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Tero Kristo <kristo@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tony Lindgren <tony@atomide.com>, linux-clk@vger.kernel.org,
+        linux-omap@vger.kernel.org
+Subject: [PATCH v3 1/2] clk: ti: add of_ti_clk_register() helper
+Date:   Sun,  6 Nov 2022 16:46:11 +0100
+Message-Id: <20221106154612.3474940-1-dario.binacchi@amarulasolutions.com>
+X-Mailer: git-send-email 2.32.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sun, Nov 6, 2022, at 11:37, Arnd Bergmann wrote:
-> On Sun, Nov 6, 2022, at 11:26, Russell King (Oracle) wrote:
->> On Sun, Nov 06, 2022 at 08:43:50AM +0100, Arnd Bergmann wrote:
->>> --- a/arch/arm/mach-omap1/Kconfig
->>> +++ b/arch/arm/mach-omap1/Kconfig
->>> @@ -49,7 +49,7 @@ config ARCH_OMAP1_ANY
->>>         select ARCH_OMAP
->>>         def_bool ARCH_OMAP730 || ARCH_OMAP850 || ARCH_OMAP15XX || ARCH_OMAP16XX
->>>  
->>> -config ARCH_OMAP
->>> +config ARCH_OMAP1_ANY
->>
->> This patch can't be right - look at the first line of context above, you
->> have symbols that select ARCH_OMAP and you've just removed the
->> definition of ARCH_OMAP.
->
-> Right, I misread this, I thought this was an 'if ARCH_OMAP' block
-> instead of the Kconfig symbol. Part of the problem is now is
-> possibly that there are two symbols with that name now, I'll have
-> to try to reproduce the problem first and then see what caused it
-> originally.
+The ti_clk_register() function is always called with the parameter of
+type struct device set to NULL, since the functions from which it is
+called always have a parameter of type struct device_node. Adding this
+helper will allow you to register a TI clock to the common clock
+framework by taking advantage of the facilities provided by the
+struct device_node type.
 
-It seems the root cause was actually 804f7f19c2e2 ("fbdev: omap:
-avoid using mach/*.h files"), where I started allowing building with
-CONFIG_COMPILE_TEST, but this fails when ARCH_OMAP1_ANY is disabled,
-as Randy correctly found.
+Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+---
 
-We could tighten this gain by adding something like
+(no changes since v1)
 
-     depends on ARCH_OMAP1_ANY || !OMAP_MUX
+ drivers/clk/ti/clk.c   | 30 ++++++++++++++++++++++++++++++
+ drivers/clk/ti/clock.h |  2 ++
+ 2 files changed, 32 insertions(+)
 
-to still allow compile-testing but specifically avoiding the
-broken case. I think we have the same problem in the pcmcia and
-spi-uwire drivers, so maybe something like this would be
-a better approach:
-
---- a/include/linux/soc/ti/omap1-mux.h
-+++ b/include/linux/soc/ti/omap1-mux.h
-@@ -302,7 +302,7 @@ enum omap1xxx_index {
+diff --git a/drivers/clk/ti/clk.c b/drivers/clk/ti/clk.c
+index 1dc2f15fb75b..e29b5c7c0dc8 100644
+--- a/drivers/clk/ti/clk.c
++++ b/drivers/clk/ti/clk.c
+@@ -560,6 +560,36 @@ int ti_clk_add_alias(struct device *dev, struct clk *clk, const char *con)
+ 	return 0;
+ }
  
- };
++/**
++ * of_ti_clk_register - register a TI clock to the common clock framework
++ * @node: device node for the clock
++ * @hw: hardware clock handle
++ * @con: connection ID for this clock
++ *
++ * Registers a TI clock to the common clock framework, and adds a clock
++ * alias for it. Returns a handle to the registered clock if successful,
++ * ERR_PTR value in failure.
++ */
++struct clk *of_ti_clk_register(struct device_node *node, struct clk_hw *hw,
++			       const char *con)
++{
++	struct clk *clk;
++	int ret;
++
++	ret = of_clk_hw_register(node, hw);
++	if (ret)
++		return ERR_PTR(ret);
++
++	clk = hw->clk;
++	ret = ti_clk_add_alias(NULL, clk, con);
++	if (ret) {
++		clk_unregister(clk);
++		return ERR_PTR(ret);
++	}
++
++	return clk;
++}
++
+ /**
+  * ti_clk_register - register a TI clock to the common clock framework
+  * @dev: device for this clock
+diff --git a/drivers/clk/ti/clock.h b/drivers/clk/ti/clock.h
+index 37ab53339a9b..a75fcf775de0 100644
+--- a/drivers/clk/ti/clock.h
++++ b/drivers/clk/ti/clock.h
+@@ -199,6 +199,8 @@ extern const struct omap_clkctrl_data dm816_clkctrl_data[];
  
--#ifdef CONFIG_OMAP_MUX
-+#if defined(CONFIG_OMAP_MUX) && defined(CONFIG_ARCH_OMAP1_ANY)
- extern int omap_cfg_reg(unsigned long reg_cfg);
- #else
- static inline int omap_cfg_reg(unsigned long reg_cfg) { return 0; }
+ typedef void (*ti_of_clk_init_cb_t)(void *, struct device_node *);
+ 
++struct clk *of_ti_clk_register(struct device_node *node, struct clk_hw *hw,
++			       const char *con);
+ struct clk *ti_clk_register(struct device *dev, struct clk_hw *hw,
+ 			    const char *con);
+ struct clk *ti_clk_register_omap_hw(struct device *dev, struct clk_hw *hw,
+-- 
+2.32.0
 
-
-      Arnd
