@@ -2,85 +2,59 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC27661E0A4
-	for <lists+linux-omap@lfdr.de>; Sun,  6 Nov 2022 08:44:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DF83361E18F
+	for <lists+linux-omap@lfdr.de>; Sun,  6 Nov 2022 11:26:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229564AbiKFHoJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 6 Nov 2022 02:44:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48848 "EHLO
+        id S229694AbiKFK0Q (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 6 Nov 2022 05:26:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229463AbiKFHoJ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 6 Nov 2022 02:44:09 -0500
-Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 012E6E0C6;
-        Sun,  6 Nov 2022 00:44:07 -0700 (PDT)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailout.nyi.internal (Postfix) with ESMTP id 34FC15C00AB;
-        Sun,  6 Nov 2022 02:44:07 -0500 (EST)
-Received: from imap51 ([10.202.2.101])
-  by compute3.internal (MEProxy); Sun, 06 Nov 2022 02:44:07 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-        :cc:content-type:date:date:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to; s=fm3; t=1667720647; x=1667807047; bh=VLPb0XhoJH
-        DKIMD03zLBtdHS2WjO54ue2wQf5CHEj7Q=; b=QTBbLYe9LHVOQFPZgOoC/EzY76
-        nEgB6GFCAsWGNJajZif4XsBEqIDK4TcuMcQeqd++WoB5oEajfU7edJCDF8Bsd105
-        UoqJKkQzo0ijVchrqQN9fn0Y9g32oD2hw7O6e/bbc8ZOfWUiwPFPZYOrPjmQkTkP
-        quyg9cIdX/qFevMQJyT6MCMMWI4M0lftvTsNO+TFIOOaB4Plzos7iBBAL5mHNIYu
-        jTx07MOHyYCtV2iIulrR2HqIpQk6SoSPO+5bNAGJp6gC0tqY+c2IVWOIsZ3/XvrE
-        +RsXlUodJb1yCXl+7FxdNM2VSiFt7NHPvbNCl3I94qAewB8LnJf0DKjKNGuw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
-        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
-        :mime-version:references:reply-to:sender:subject:subject:to:to
-        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-        fm3; t=1667720647; x=1667807047; bh=VLPb0XhoJHDKIMD03zLBtdHS2WjO
-        54ue2wQf5CHEj7Q=; b=XjfIuBwQysDxWpBgvIvTVgp0rbDymlovAUhsIZL+nYUp
-        lW9fPdXpRnBYizXf14W9BT0YGOWXQgzQx3Blouj8hHgm26o/x/IN66kAYUqiji/I
-        XzId0muOKiO/K+LwmbrF0xw0boOkh1kYGq1tJxhXTLt7k2uGoFAiuu+ZNaz0/IZD
-        6bdzP1u/wHtSj15V0Sff031TWr4axZL7ypWMlNlpa7G/bTdbHGUM4twc4JTQOlog
-        lVEkJbIcQPjFFxuWuoz0Yy4abZtwe7rQPhIR7zixNClcCu2hhU9sgEmpqsTq7tWi
-        +Q6J4YLvc1GEsgxghAiQIYF1hqAqO4RbYEQp8mE2Og==
-X-ME-Sender: <xms:xWVnY6LX4_eaxib6nZoS43PTl_blc6DqeISlM9V1P7extdoBcYDy3A>
-    <xme:xWVnYyJ4DM1-jAiYZ7M-ifZVf_XHhhwxtRGul4Hy-ZAfWGGAE7elSiVVGmDrxxax1
-    v1aGa2iBXrWb4n4mBM>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvgedrvdehgddutdefucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:xWVnY6sK9rQYFKaAEozwEKHAXOT_6Ebrm0HZPajxuytKDVv_46YRrQ>
-    <xmx:xWVnY_aY3350NLAGLfgrqzkklD9Gd_ojSBFZW255NJsdy_TGnuzH_A>
-    <xmx:xWVnYxbprHtarLKHaVqoZe0DlwD5WTDScroaayZZBpRt9N2Me45rXA>
-    <xmx:x2VnY2NpXtlcjoxHBt26qFe2EdxKSmwqC5isjtBSPiQzPYsUHJggGA>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id B6A57B603ED; Sun,  6 Nov 2022 02:44:05 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.7.0-alpha0-1087-g968661d8e1-fm-20221021.001-g968661d8
-Mime-Version: 1.0
-Message-Id: <62f5b747-4c65-46a6-b04d-1d0fcbadf5c9@app.fastmail.com>
-In-Reply-To: <20221106062536.26369-1-rdunlap@infradead.org>
-References: <20221106062536.26369-1-rdunlap@infradead.org>
-Date:   Sun, 06 Nov 2022 08:43:50 +0100
-From:   "Arnd Bergmann" <arnd@arndb.de>
-To:     "Randy Dunlap" <rdunlap@infradead.org>,
-        linux-kernel@vger.kernel.org
-Cc:     "kernel test robot" <lkp@intel.com>,
-        "Aaro Koskinen" <aaro.koskinen@iki.fi>,
-        "Janusz Krzysztofik" <jmkrzyszt@gmail.com>,
-        "Tony Lindgren" <tony@atomide.com>,
-        "Russell King" <linux@armlinux.org.uk>,
+        with ESMTP id S229589AbiKFK0P (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 6 Nov 2022 05:26:15 -0500
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DDA864D3;
+        Sun,  6 Nov 2022 02:26:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=UKfx5EDKe7Y95qjbgdGSuy0MyrmHB1us0iqYRSxqv6Y=; b=PitKdNRbTpvsQcXZFcbxM9r6MQ
+        ags2I3J4Fe0iJ1Q8WKMs6TrOoD1t9sng93589ad9uO4M8+6KDarp11iYsVckEO1TI6fenLh1rfuho
+        rZM85euief7xd9whJFXZK5uf/bER9DSDboQn1eZJ8tAB5q+TeQDh4sSbTT2Y2rXD8765CctCmhVnA
+        XtBd25tveSaujacjMywDhIFP1CbaKb4J1Pip7bTHTI6fY+k45xkg3DzJEkHGCIj/V5XtCc5A9TtUD
+        T0rBAPZXsHOgkKhSbMo0m5pgQe4vVnbF6MYnJEybOKoGPxNXZUhRZYs5LIKS/pnDOUcHItwt9qw8M
+        HXyGeUZg==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:35136)
+        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <linux@armlinux.org.uk>)
+        id 1orcqr-0000o7-8n; Sun, 06 Nov 2022 10:26:05 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+        (envelope-from <linux@shell.armlinux.org.uk>)
+        id 1orcqo-0002m8-2i; Sun, 06 Nov 2022 10:26:02 +0000
+Date:   Sun, 6 Nov 2022 10:26:01 +0000
+From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org,
+        kernel test robot <lkp@intel.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+        Tony Lindgren <tony@atomide.com>,
         linux-arm-kernel@lists.infradead.org,
         Linux-OMAP <linux-omap@vger.kernel.org>
 Subject: Re: [PATCH] ARM: omap1: set ARCH_OMAP1_ANY for ARCH_OMAP1
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+Message-ID: <Y2eLuf4SCrZ5X+ui@shell.armlinux.org.uk>
+References: <20221106062536.26369-1-rdunlap@infradead.org>
+ <62f5b747-4c65-46a6-b04d-1d0fcbadf5c9@app.fastmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <62f5b747-4c65-46a6-b04d-1d0fcbadf5c9@app.fastmail.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -88,63 +62,20 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sun, Nov 6, 2022, at 07:25, Randy Dunlap wrote:
-> Fix a build error by setting ARCH_OMAP1_ANY Kconfig symbol.
-> Fixes this build error:
->
-> arm-linux-gnueabi-ld: drivers/video/backlight/omap1_bl.o: in function 
-> `omapbl_probe':
-> omap1_bl.c:(.text+0x1b4): undefined reference to `omap_cfg_reg'
->
-> Fixes: 7036440eab3e ("ARM: omap1: enable multiplatform")
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-> Reported-by: kernel test robot <lkp@intel.com>
-> Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
-> Cc: Janusz Krzysztofik <jmkrzyszt@gmail.com>
-> Cc: Tony Lindgren <tony@atomide.com>
-> Cc: Russell King <linux@armlinux.org.uk>
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-omap@vger.kernel.org
-> ---
->  arch/arm/mach-omap1/Kconfig |    3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff -- a/arch/arm/mach-omap1/Kconfig b/arch/arm/mach-omap1/Kconfig
+On Sun, Nov 06, 2022 at 08:43:50AM +0100, Arnd Bergmann wrote:
 > --- a/arch/arm/mach-omap1/Kconfig
 > +++ b/arch/arm/mach-omap1/Kconfig
-> @@ -47,7 +47,8 @@ config ARCH_OMAP16XX
-> 
->  config ARCH_OMAP1_ANY
->  	select ARCH_OMAP
-> -	def_bool ARCH_OMAP730 || ARCH_OMAP850 || ARCH_OMAP15XX || ARCH_OMAP16XX
-> +	def_bool ARCH_OMAP730 || ARCH_OMAP850 || ARCH_OMAP15XX || \
-> +		ARCH_OMAP16XX || ARCH_OMAP1
+> @@ -49,7 +49,7 @@ config ARCH_OMAP1_ANY
+>         select ARCH_OMAP
+>         def_bool ARCH_OMAP730 || ARCH_OMAP850 || ARCH_OMAP15XX || ARCH_OMAP16XX
+>  
+> -config ARCH_OMAP
+> +config ARCH_OMAP1_ANY
 
-I think this would introduce other build failures, because it
-makes ARCH_OMAP1_ANY the same as ARCH_OMAP1, bringing back the
-problems I solved with 615dce5bf736 ("ARM: omap1: fix build with
-no SoC selected").
+This patch can't be right - look at the first line of context above, you
+have symbols that select ARCH_OMAP and you've just removed the
+definition of ARCH_OMAP.
 
-What you probably see here is a preexisting bug that bisects
-to 7036440eab3e because of the contents of your .config file
-that no longer enable ARCH_OMAP1 without 7036440eab3e.
-
-I have not tested it, but I suspect what we want instead is
-the change below, limiting OMAP_MUX and related symbols to
-configs that enable at least one of the OMAP1 variants.
-
-     Arnd
-
---- a/arch/arm/mach-omap1/Kconfig
-+++ b/arch/arm/mach-omap1/Kconfig
-@@ -49,7 +49,7 @@ config ARCH_OMAP1_ANY
-        select ARCH_OMAP
-        def_bool ARCH_OMAP730 || ARCH_OMAP850 || ARCH_OMAP15XX || ARCH_OMAP16XX
- 
--config ARCH_OMAP
-+config ARCH_OMAP1_ANY
-        bool
- 
- comment "OMAP Feature Selections"
-
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
