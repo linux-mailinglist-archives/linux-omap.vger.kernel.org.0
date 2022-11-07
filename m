@@ -2,124 +2,128 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB97861EDE2
-	for <lists+linux-omap@lfdr.de>; Mon,  7 Nov 2022 09:56:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BEC3161F073
+	for <lists+linux-omap@lfdr.de>; Mon,  7 Nov 2022 11:24:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229541AbiKGI4j (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 7 Nov 2022 03:56:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56404 "EHLO
+        id S231995AbiKGKY3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 7 Nov 2022 05:24:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229586AbiKGI4i (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 7 Nov 2022 03:56:38 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1BBF15836;
-        Mon,  7 Nov 2022 00:56:37 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 9B85FB80E59;
-        Mon,  7 Nov 2022 08:56:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51FF3C433D6;
-        Mon,  7 Nov 2022 08:56:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667811395;
-        bh=mRQqDDo7h2WtOH56vRgwnhYTYbCXcOsZBM0uKXEWQ+Y=;
-        h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-        b=HIRQu2IRF9Jddq2VZbtwVA7irRrBf0ivmSk6B0iqHD9LnZkrTxqOhB9w7cDYRxxeG
-         UEjoq8H95pL9q8mW9zfyeAxwF3Qf0HezTTcaC744Z2i7FPBKs+w2nS9uPlwfdMopN2
-         XjpVI1Xf0cFru/UxK8Aeetl1LPAy9wdw9xSxg1HwZzqgvdzPdDEFgIZcFYjnwEFj7X
-         R/2yQvK+mNv9SG5Tw0g7lfkwr2jc6/V/Xq0+I4Wmaw58YknBNYf0rkSBOlbNPQKnJZ
-         SXDONxBn2MnRMiyAcm6x56dl+NrEKlioY0X/NdogX6+pFsvT6Q7JkCIDiYaNv8rlZn
-         pOinaR69fud9w==
-Message-ID: <e4e4c4f0-782b-9f89-d7a2-859c7759ca66@kernel.org>
-Date:   Mon, 7 Nov 2022 10:56:30 +0200
+        with ESMTP id S231942AbiKGKYS (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 7 Nov 2022 05:24:18 -0500
+Received: from mail-qv1-xf44.google.com (mail-qv1-xf44.google.com [IPv6:2607:f8b0:4864:20::f44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C73D18E26
+        for <linux-omap@vger.kernel.org>; Mon,  7 Nov 2022 02:24:03 -0800 (PST)
+Received: by mail-qv1-xf44.google.com with SMTP id c8so7752331qvn.10
+        for <linux-omap@vger.kernel.org>; Mon, 07 Nov 2022 02:24:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=AOmtRIzmF5dcnWrT0j3skK83MYTC+QvduwZ6ndeN2Ks=;
+        b=Zv++OJ/ncK2pWuUWAQT+z52+cIoHK/WVJU4bVze52hunD5wDL4D5XJdl5mW2VbRjhi
+         PKA0tQ/z42/ONfUnPJoBfdYRGEG2gwiyoDRW7hecaxcg+/0t0u3g44ISFlpe+B9l1fvu
+         TmkNgtKOyak6WThRMAIvY+g5IgPZxvnz63e21BpajeaX9653GP4qpHUHyfV7BL4cSNb4
+         pCU1fNGxZBn7NlKzWZCMHMxM9LSs8sKofgpQ0FSoeb/qTDQ+CPP+tvlBe/vGQ8T8hOyn
+         vdUZr48/zTuwVxtBDF6IrOR7pT19nf73qD9i1Q8QUWEzM8dVJjwmGS+xVbVCXqFaE09J
+         SKzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=AOmtRIzmF5dcnWrT0j3skK83MYTC+QvduwZ6ndeN2Ks=;
+        b=tqjOxekfMroDLE9L6lJUoUhebNNThc3KIhA0HCDwPiF6gsllho7zzSHL8VY7XXdDNk
+         nl0xPFFFk/k06Wf8Qj0oxgm56gQCsLitdKimF2NhbMm5P60rnkuwYbwgFyDolwQuheio
+         ElK6qKKNkM2YJlTktGj0WWzcrJWHuMgZS7HflF0Fy/UobTn2bXyHe4NWZKBJilgpXwDq
+         TCrUdH3GladcaLfm8DuWI2OGCtnCMwFXqHTom5ntK/jvOcsaAMjxfe2DPOnelfVPbu2n
+         RMKJedfuFj9Wcwd3aDhLeZTFXrijRBM0Rpg7m5wdVFYKS0Gj/ZFM6EeIk+zscFGAVy8O
+         GhNA==
+X-Gm-Message-State: ACrzQf1pmJ0EAhjTt1Wr86Z/FXzX7XKEmET2Eifmu1qs9vM44RoTsMI7
+        2vbejj9xG9lz+DBVcrml4ttdrEX4YxuZRQOkXlKioTgq3Qk=
+X-Google-Smtp-Source: AMsMyM7DPjaK7bSeUBIcMTkNZUaqK+NSwCEUfp88ZZDLY5TXShnQ2+B86xH3ryBKqTyGQWW3ozA/96x60VupsK8qo34=
+X-Received: by 2002:a17:902:8a90:b0:186:b145:f5ec with SMTP id
+ p16-20020a1709028a9000b00186b145f5ecmr50774476plo.103.1667816632274; Mon, 07
+ Nov 2022 02:23:52 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: Coverity: gpmc_is_valid_waitpin(): Control flow issues
-Content-Language: en-US
-From:   Roger Quadros <rogerq@kernel.org>
-To:     coverity-bot <keescook@chromium.org>,
-        Benedikt Niedermayr <benedikt.niedermayr@siemens.com>
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        linux-kernel@vger.kernel.org, Tony Lindgren <tony@atomide.com>,
-        linux-omap@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        linux-next@vger.kernel.org, linux-hardening@vger.kernel.org
-References: <202211041233.4D45359E7@keescook>
- <7cdf3d14-3f1b-7cd4-e8b9-e94b5359bf82@kernel.org>
-In-Reply-To: <7cdf3d14-3f1b-7cd4-e8b9-e94b5359bf82@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Received: by 2002:a05:6a06:925:b0:587:19e0:c567 with HTTP; Mon, 7 Nov 2022
+ 02:23:51 -0800 (PST)
+Reply-To: contact@ammico.it
+From:   =?UTF-8?Q?Mrs=2E_Monika_Everenov=C3=A1?= <977638ib@gmail.com>
+Date:   Mon, 7 Nov 2022 11:23:51 +0100
+Message-ID: <CAHAXD+bPNCns8Ez=7iXmPLADMtJgZj3-mFTk3NMhWC-Ca1b9rw@mail.gmail.com>
+Subject: Re:
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: Yes, score=5.8 required=5.0 tests=ADVANCE_FEE_2_NEW_MONEY,
+        BAYES_20,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FREEMAIL_FROM,FROM_STARTS_WITH_NUMS,LOTS_OF_MONEY,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,UNDISC_MONEY autolearn=no
         autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:f44 listed in]
+        [list.dnswl.org]
+        * -0.0 BAYES_20 BODY: Bayes spam probability is 5 to 20%
+        *      [score: 0.1775]
+        *  0.7 FROM_STARTS_WITH_NUMS From: starts with several numbers
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [977638ib[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        *  3.3 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+        *  2.0 ADVANCE_FEE_2_NEW_MONEY Advance Fee fraud and lots of money
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-
-
-On 07/11/2022 10:53, Roger Quadros wrote:
-> Hi Benedikt,
-> 
-> On 04/11/2022 21:33, coverity-bot wrote:
->> Hello!
->>
->> This is an experimental semi-automated report about issues detected by
->> Coverity from a scan of next-20221104 as part of the linux-next scan project:
->> https://scan.coverity.com/projects/linux-next-weekly-scan
->>
->> You're getting this email because you were associated with the identified
->> lines of code (noted below) that were touched by commits:
->>
->>   Wed Nov 2 10:02:39 2022 -0400
->>     89aed3cd5cb9 ("memory: omap-gpmc: wait pin additions")
->>
->> Coverity reported the following:
->>
->> *** CID 1527139:  Control flow issues  (NO_EFFECT)
->> drivers/memory/omap-gpmc.c:1048 in gpmc_is_valid_waitpin()
->> 1042     	spin_unlock(&gpmc_mem_lock);
->> 1043     }
->> 1044     EXPORT_SYMBOL(gpmc_cs_free);
->> 1045
->> 1046     static bool gpmc_is_valid_waitpin(u32 waitpin)
-> 
-> We will need to change this waitpin argument to int.
-> In addition we will also need to change
-> struct gpmc_waitpin->pin and struct gpmc_setting->wait_pin
-> to int as in the code we are relying on GPMC_WAITPIN_INVALID logic which is -1.
-
-Another alternative with less churn is to leave them as u32
-but make GPMC_WAITPIN_INVALID set to a large positive number.
-
-> 
->> 1047     {
->> vvv     CID 1527139:  Control flow issues  (NO_EFFECT)
->> vvv     This greater-than-or-equal-to-zero comparison of an unsigned value is always true. "waitpin >= 0U".
->> 1048     	return waitpin >= 0 && waitpin < gpmc_nr_waitpins;
->> 1049     }
->> 1050
->> 1051     static int gpmc_alloc_waitpin(struct gpmc_device *gpmc,
->> 1052     			      struct gpmc_settings *p)
->> 1053     {
->>
->> If this is a false positive, please let us know so we can mark it as
->> such, or teach the Coverity rules to be smarter. If not, please make
->> sure fixes get into linux-next. :) For patches fixing this, please
->> include these lines (but double-check the "Fixes" first):
->>
->> Reported-by: coverity-bot <keescook+coverity-bot@chromium.org>
->> Addresses-Coverity-ID: 1527139 ("Control flow issues")
->> Fixes: 89aed3cd5cb9 ("memory: omap-gpmc: wait pin additions")
->>
->> Thanks for your attention!
->>
-> 
-
-cheers,
--roger
+Hei ja miten voit?
+Nimeni on rouva Evereen, l=C3=A4het=C3=A4n t=C3=A4m=C3=A4n viestin suurella=
+ toivolla
+v=C3=A4lit=C3=B6n vastaus, koska minun on teht=C3=A4v=C3=A4 uusi syd=C3=A4n=
+leikkaus
+t=C3=A4ll=C3=A4 hetkell=C3=A4 huonokuntoinen ja v=C3=A4h=C3=A4iset mahdolli=
+suudet selviyty=C3=A4.
+Mutta ennen kuin min=C3=A4
+Tee toinen vaarallinen operaatio, annan sen sinulle
+Minulla on 6 550 000 dollaria yhdysvaltalaisella pankkitilill=C3=A4
+sijoittamista, hallinnointia ja k=C3=A4ytt=C3=B6=C3=A4 varten
+voittoa hyv=C3=A4ntekev=C3=A4isyysprojektin toteuttamiseen. Tarkoitan saira=
+iden auttamista
+ja k=C3=B6yh=C3=A4t ovat viimeinen haluni maan p=C3=A4=C3=A4ll=C3=A4, sill=
+=C3=A4 minulla ei ole niit=C3=A4
+kenelt=C3=A4 perii rahaa.
+Vastaa minulle nopeasti
+terveisi=C3=A4
+Rouva Monika Evereen
+Florida, Amerikan Yhdysvallat
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+Hi and how are you?
+My name is Mrs. Evereen, I am sending this message with great hope for
+an immediate response, as I have to undergo heart reoperation in my
+current poor health with little chance of survival. But before I
+undertake the second dangerous operation, I will give you the
+$6,550,000 I have in my US bank account to invest well, manage and use
+the profits to run a charity project for me. I count helping the sick
+and the poor as my last wish on earth, because I have no one to
+inherit money from.
+Please give me a quick reply
+regards
+Mrs. Monika Evereen
+Florida, United States of America
