@@ -2,128 +2,130 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BEC3161F073
-	for <lists+linux-omap@lfdr.de>; Mon,  7 Nov 2022 11:24:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 456716200E4
+	for <lists+linux-omap@lfdr.de>; Mon,  7 Nov 2022 22:18:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231995AbiKGKY3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 7 Nov 2022 05:24:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35588 "EHLO
+        id S233070AbiKGVS2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 7 Nov 2022 16:18:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231942AbiKGKYS (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 7 Nov 2022 05:24:18 -0500
-Received: from mail-qv1-xf44.google.com (mail-qv1-xf44.google.com [IPv6:2607:f8b0:4864:20::f44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C73D18E26
-        for <linux-omap@vger.kernel.org>; Mon,  7 Nov 2022 02:24:03 -0800 (PST)
-Received: by mail-qv1-xf44.google.com with SMTP id c8so7752331qvn.10
-        for <linux-omap@vger.kernel.org>; Mon, 07 Nov 2022 02:24:03 -0800 (PST)
+        with ESMTP id S233557AbiKGVSE (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 7 Nov 2022 16:18:04 -0500
+Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 566C7317FE
+        for <linux-omap@vger.kernel.org>; Mon,  7 Nov 2022 13:14:53 -0800 (PST)
+Received: by mail-pf1-x42a.google.com with SMTP id m6so11880529pfb.0
+        for <linux-omap@vger.kernel.org>; Mon, 07 Nov 2022 13:14:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=AOmtRIzmF5dcnWrT0j3skK83MYTC+QvduwZ6ndeN2Ks=;
-        b=Zv++OJ/ncK2pWuUWAQT+z52+cIoHK/WVJU4bVze52hunD5wDL4D5XJdl5mW2VbRjhi
-         PKA0tQ/z42/ONfUnPJoBfdYRGEG2gwiyoDRW7hecaxcg+/0t0u3g44ISFlpe+B9l1fvu
-         TmkNgtKOyak6WThRMAIvY+g5IgPZxvnz63e21BpajeaX9653GP4qpHUHyfV7BL4cSNb4
-         pCU1fNGxZBn7NlKzWZCMHMxM9LSs8sKofgpQ0FSoeb/qTDQ+CPP+tvlBe/vGQ8T8hOyn
-         vdUZr48/zTuwVxtBDF6IrOR7pT19nf73qD9i1Q8QUWEzM8dVJjwmGS+xVbVCXqFaE09J
-         SKzA==
+        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:references
+         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5sT7hyCzk9AIqzLbGef+IZ6oJ71RYXWRSZsmUSzO4Yg=;
+        b=P39f7quD853DqM9BBAZi7j1TweO0zXhBFPBLff8eSw0GyPIz2vlyw2NVWhiVuCc9on
+         ZwVgJzNNqjm3e5FZtd6E7iux1mqK/TfXu9YuFK8up7u7ux+VO6b7VNSQk7Mxs3rH6eJN
+         Z7Cd+eLOaD6B3EbEqKVnzXjDCYTHNRcGg43OpYLgICerBRLns7ZVbqpDb5gute1wLruH
+         aJHq2V7yN1f0vRjwa8TwiapmnSZxbOB6B8/GOHUq+PQL/5p6MgBTnMuWz+FCYu+JieUH
+         VbiIsg7WjXHu8Wws2UzTZvODI36Ihj6SCAykvT91K+3xGAQfxqn/5jCOFNzwwPHzMu4L
+         goTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=AOmtRIzmF5dcnWrT0j3skK83MYTC+QvduwZ6ndeN2Ks=;
-        b=tqjOxekfMroDLE9L6lJUoUhebNNThc3KIhA0HCDwPiF6gsllho7zzSHL8VY7XXdDNk
-         nl0xPFFFk/k06Wf8Qj0oxgm56gQCsLitdKimF2NhbMm5P60rnkuwYbwgFyDolwQuheio
-         ElK6qKKNkM2YJlTktGj0WWzcrJWHuMgZS7HflF0Fy/UobTn2bXyHe4NWZKBJilgpXwDq
-         TCrUdH3GladcaLfm8DuWI2OGCtnCMwFXqHTom5ntK/jvOcsaAMjxfe2DPOnelfVPbu2n
-         RMKJedfuFj9Wcwd3aDhLeZTFXrijRBM0Rpg7m5wdVFYKS0Gj/ZFM6EeIk+zscFGAVy8O
-         GhNA==
-X-Gm-Message-State: ACrzQf1pmJ0EAhjTt1Wr86Z/FXzX7XKEmET2Eifmu1qs9vM44RoTsMI7
-        2vbejj9xG9lz+DBVcrml4ttdrEX4YxuZRQOkXlKioTgq3Qk=
-X-Google-Smtp-Source: AMsMyM7DPjaK7bSeUBIcMTkNZUaqK+NSwCEUfp88ZZDLY5TXShnQ2+B86xH3ryBKqTyGQWW3ozA/96x60VupsK8qo34=
-X-Received: by 2002:a17:902:8a90:b0:186:b145:f5ec with SMTP id
- p16-20020a1709028a9000b00186b145f5ecmr50774476plo.103.1667816632274; Mon, 07
- Nov 2022 02:23:52 -0800 (PST)
+        h=content-transfer-encoding:mime-version:message-id:date:references
+         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5sT7hyCzk9AIqzLbGef+IZ6oJ71RYXWRSZsmUSzO4Yg=;
+        b=ffeEvf6B3TptH9I8l7q1fRiUFZVWKffbtyW/KkInZLTbxItOvqrnjYqro++EQHov4O
+         1ORrRvDwBKqCS7QwbcGQ/zTQTndJueQMV2muD5ozPi1lCDwji3jJC9iJf7D+FJfbTkHW
+         0lAZTlXloB9NW56o1miQMSYvnR8qsEqy7Zl6nyPTszBMCEhgdK4KkUCH1/Hkz7DnGM16
+         FQ+AaXIZoTrASKDcjyj2R9rfvl+TimrOXvQj5FDW9q+9PyuxyBfEfIN/x4nfPWLmnTx9
+         8muKomDBxyNiFVSExSsIN1d+lo/9mYZ+Mdap4Xi9UPDlyb1xcfsAmi58FvZeAzekPzDO
+         RyPA==
+X-Gm-Message-State: ACrzQf3PU8f+PD3T343hD/MqQqudwLrsHqy9cQrCuYDq2WalAvg2XZuk
+        +SSv0WVh/OVmBMUC7Tjq8zvtyw==
+X-Google-Smtp-Source: AMsMyM4fNroJ8un5Wi3EJ604VEP8sq2WlbsGxu3Ax4KtJVEcz4IY0/3AIrVFwaBzallESNsw1/AyxQ==
+X-Received: by 2002:a63:5811:0:b0:46f:a710:1b77 with SMTP id m17-20020a635811000000b0046fa7101b77mr39853531pgb.392.1667855692494;
+        Mon, 07 Nov 2022 13:14:52 -0800 (PST)
+Received: from localhost ([75.172.139.56])
+        by smtp.gmail.com with ESMTPSA id a10-20020a63cd4a000000b0043941566481sm4624005pgj.39.2022.11.07.13.14.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Nov 2022 13:14:52 -0800 (PST)
+From:   Kevin Hilman <khilman@baylibre.com>
+To:     Nishanth Menon <nm@ti.com>, jerome Neanne <jneanne@baylibre.com>
+Cc:     Lee Jones <lee@kernel.org>, lgirdwood@gmail.com,
+        broonie@kernel.org, robh+dt@kernel.org, kristo@kernel.org,
+        dmitry.torokhov@gmail.com, krzysztof.kozlowski+dt@linaro.org,
+        catalin.marinas@arm.com, will@kernel.org, tony@atomide.com,
+        vigneshr@ti.com, bjorn.andersson@linaro.org, shawnguo@kernel.org,
+        geert+renesas@glider.be, dmitry.baryshkov@linaro.org,
+        marcel.ziswiler@toradex.com, vkoul@kernel.org,
+        biju.das.jz@bp.renesas.com, arnd@arndb.de, jeff@labundy.com,
+        afd@ti.com, narmstrong@baylibre.com, msp@baylibre.com,
+        j-keerthy@ti.com, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-input@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCH v6 4/6] mfd: tps65219: Add driver for TI TPS65219 PMIC
+In-Reply-To: <20221105000104.rtj3r6ufqwqmepon@keenly>
+References: <20221011140549.16761-1-jneanne@baylibre.com>
+ <20221011140549.16761-5-jneanne@baylibre.com>
+ <Y1+q2Usm9ecicXqp@google.com>
+ <1383fd22-c720-811e-a2bb-be2151675089@baylibre.com>
+ <20221105000104.rtj3r6ufqwqmepon@keenly>
+Date:   Mon, 07 Nov 2022 13:14:51 -0800
+Message-ID: <7heduewjp0.fsf@baylibre.com>
 MIME-Version: 1.0
-Received: by 2002:a05:6a06:925:b0:587:19e0:c567 with HTTP; Mon, 7 Nov 2022
- 02:23:51 -0800 (PST)
-Reply-To: contact@ammico.it
-From:   =?UTF-8?Q?Mrs=2E_Monika_Everenov=C3=A1?= <977638ib@gmail.com>
-Date:   Mon, 7 Nov 2022 11:23:51 +0100
-Message-ID: <CAHAXD+bPNCns8Ez=7iXmPLADMtJgZj3-mFTk3NMhWC-Ca1b9rw@mail.gmail.com>
-Subject: Re:
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=5.8 required=5.0 tests=ADVANCE_FEE_2_NEW_MONEY,
-        BAYES_20,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FREEMAIL_FROM,FROM_STARTS_WITH_NUMS,LOTS_OF_MONEY,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,UNDISC_MONEY autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:f44 listed in]
-        [list.dnswl.org]
-        * -0.0 BAYES_20 BODY: Bayes spam probability is 5 to 20%
-        *      [score: 0.1775]
-        *  0.7 FROM_STARTS_WITH_NUMS From: starts with several numbers
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [977638ib[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        *  3.3 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-        *  2.0 ADVANCE_FEE_2_NEW_MONEY Advance Fee fraud and lots of money
-X-Spam-Level: *****
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hei ja miten voit?
-Nimeni on rouva Evereen, l=C3=A4het=C3=A4n t=C3=A4m=C3=A4n viestin suurella=
- toivolla
-v=C3=A4lit=C3=B6n vastaus, koska minun on teht=C3=A4v=C3=A4 uusi syd=C3=A4n=
-leikkaus
-t=C3=A4ll=C3=A4 hetkell=C3=A4 huonokuntoinen ja v=C3=A4h=C3=A4iset mahdolli=
-suudet selviyty=C3=A4.
-Mutta ennen kuin min=C3=A4
-Tee toinen vaarallinen operaatio, annan sen sinulle
-Minulla on 6 550 000 dollaria yhdysvaltalaisella pankkitilill=C3=A4
-sijoittamista, hallinnointia ja k=C3=A4ytt=C3=B6=C3=A4 varten
-voittoa hyv=C3=A4ntekev=C3=A4isyysprojektin toteuttamiseen. Tarkoitan saira=
-iden auttamista
-ja k=C3=B6yh=C3=A4t ovat viimeinen haluni maan p=C3=A4=C3=A4ll=C3=A4, sill=
-=C3=A4 minulla ei ole niit=C3=A4
-kenelt=C3=A4 perii rahaa.
-Vastaa minulle nopeasti
-terveisi=C3=A4
-Rouva Monika Evereen
-Florida, Amerikan Yhdysvallat
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-Hi and how are you?
-My name is Mrs. Evereen, I am sending this message with great hope for
-an immediate response, as I have to undergo heart reoperation in my
-current poor health with little chance of survival. But before I
-undertake the second dangerous operation, I will give you the
-$6,550,000 I have in my US bank account to invest well, manage and use
-the profits to run a charity project for me. I count helping the sick
-and the poor as my last wish on earth, because I have no one to
-inherit money from.
-Please give me a quick reply
-regards
-Mrs. Monika Evereen
-Florida, United States of America
+Nishanth Menon <nm@ti.com> writes:
+
+> On 13:58-20221104, jerome Neanne wrote:
+>>=20
+> [...]
+>
+>>=20
+>> >=20
+>> > Can you try an compile with W=3D1 please.
+>> This raise one warning on mfd:
+>> drivers/mfd/tps65219.c:28:12: warning: =E2=80=98tps65219_soft_shutdown=
+=E2=80=99 defined but
+>> not used [-Wunused-function]
+>>    28 | static int tps65219_soft_shutdown(struct tps65219 *tps)
+>>       |            ^~~~~~~~~~~~~~~~~~~~~~
+>> soft_shutdown has been validated and is used in TI baseline even if not
+>> hooked in upstream version further to this review:
+>> https://lore.kernel.org/lkml/20220825150224.826258-5-msp@baylibre.com/
+>>=20
+>> It was a TI requirement to implement it...
+>> Let me know if you want me to remove this function or if we can keep it =
+like
+>> this.
+>
+> There are platforms without psci, correct? I think the comment was to
+> drop the force override with system-power-controller property,
+>
+> if (!pm_power_off) {
+> 	tps65219_i2c_client =3D client;
+> 	pm_power_off =3D &tps65219_pm_power_off;
+> }
+>
+> Could still be valid for such platforms, no? I do see that the
+> capability that the PMIC has - which is software shutdown is a valid
+> feature that we support in many different PMIC drivers. Is'nt the job of
+> the driver to introduce the functionality in a manner that is
+> appropriate to the OS framework?
+
+Yeah, I think Nishanth is right here.
+
+We should probably keep the `if (!pm_power_off)` part so the PMIC will
+be used if PSCI is not, but it also allows an easy way to test/use the PMIC
+shutdown functionality downstream if needed.
+
+Kevin
