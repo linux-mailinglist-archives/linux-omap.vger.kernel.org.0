@@ -2,102 +2,105 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 32B6F620C7C
-	for <lists+linux-omap@lfdr.de>; Tue,  8 Nov 2022 10:40:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 537B8620EC1
+	for <lists+linux-omap@lfdr.de>; Tue,  8 Nov 2022 12:22:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233767AbiKHJku (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 8 Nov 2022 04:40:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54198 "EHLO
+        id S233641AbiKHLWu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 8 Nov 2022 06:22:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233817AbiKHJki (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 8 Nov 2022 04:40:38 -0500
-Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 401F6317DE
-        for <linux-omap@vger.kernel.org>; Tue,  8 Nov 2022 01:40:36 -0800 (PST)
-Received: by mail-lj1-x229.google.com with SMTP id s24so20215533ljs.11
-        for <linux-omap@vger.kernel.org>; Tue, 08 Nov 2022 01:40:36 -0800 (PST)
+        with ESMTP id S233787AbiKHLWK (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 8 Nov 2022 06:22:10 -0500
+Received: from mail-yw1-x112a.google.com (mail-yw1-x112a.google.com [IPv6:2607:f8b0:4864:20::112a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C3324D5E9
+        for <linux-omap@vger.kernel.org>; Tue,  8 Nov 2022 03:22:08 -0800 (PST)
+Received: by mail-yw1-x112a.google.com with SMTP id 00721157ae682-367b8adf788so130752707b3.2
+        for <linux-omap@vger.kernel.org>; Tue, 08 Nov 2022 03:22:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=nwGH3xncezy8aE+xydBamp1X2UzAG0+D2pQxSdjT3Go=;
-        b=PguF6LnLRQ/cpoVLZlxFFNefduNiIZHPgBoSTGmze3dAN+AliIFf9pQcwZzBAdrJs+
-         bT4oyiQjoIIApKKZOQWKdEqeMyMEW3JoLlrVuHXITZgB0NkyBzyEGfyBz/CPJBBSqZXi
-         KNj22sWWhCl2xPc0pPLBw0D/wR1jp2xksw1JazMlcvaHQTS0eAbELD3pwm/Ob7EcxfNS
-         O0k8jjEUg2eOCJvJgyGpDm7NVALcKS/4qOhxrLMlosDiZrSmoEtx0eIeVRXcSB7jtY8r
-         uOCvGB64HPdapt+WCwWGecQctc1t0p+Wt8JHyRfbRFa//ys8PO6jHc5Ocsq1hrynOebU
-         7VQQ==
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jD/YBCtOhOa1ipEyheDVa6geA3XolzkSqDbroMLmTEw=;
+        b=er+01UyBqq5yALeXUhYkq20dCtPK4kfDEL6xwUd6OX1xLy20ztdFPVUugdF8WeS456
+         ZvzRIryPtmZtJc0G6cu7K3LGZR/jUnBGwQt38Fo0Zyp+6Y7YNKVjd4doeEcfpjMsbwPJ
+         CkH35bEJZIQkk6cH2lrAcGUwgGT/dZwuulJmut9hSxO2vVsdEtYc6PnOC7QV3kwPzVbf
+         DtqybJ42ilZgEHLvrkJKAJ2+crLKaWld7jOJaW8IBlByFPabKfwbq21HGZ4nPcf1lOvQ
+         P/aCnwLExgaFT7m6JMzmF1kmfhR9x+iMji55oKg2VHAJS7wmkGekUnwZDvzQovIU3u9o
+         u+wA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        h=to:subject:message-id:date:from:reply-to:mime-version
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nwGH3xncezy8aE+xydBamp1X2UzAG0+D2pQxSdjT3Go=;
-        b=ccs9FCHDLRecliFb/5WXgd/rfTSo67ZFgVmazWcZufKBs3uM4S4LftmLyAyskpEgRg
-         o1ibhKVx6y0PR/DFUWKuGIkKe+gjcH40XchgnQZBDoCI6S3eLgXfYVe1b6qOxqqc/Ryc
-         ft8REqcyc1ckS/oYsE4n+5/tZ+8Qji3D0R4pJ6SEC75+7pG4h9/kYYGtKBBmsFPJ+Koi
-         x9obnEm9wVTKYzjgMcVCtJozvxHTAUZ5kIiNng1DqRrSZodqGY/CKavdsz9NU73nbIMw
-         +3daYfQb7+wdJvkcMy3MwnnDdXuQ1brZtgwxOKD0SUIagfXbouH5SL6lFp7Spcp78Mlm
-         mY4Q==
-X-Gm-Message-State: ACrzQf2w9sFQyG5F+10qh2cNl4qcZYMHo6aIhv/Ul7L0WN9aB1kgyyYr
-        R84xj0Zkitj3DBqtIBZQb4Th9ovy6sn+cQ==
-X-Google-Smtp-Source: AMsMyM6g0IjhpvwW0iRhgu1Nh1ZcIdl7Lok+Zjry8sEZS7v3Grs0teipqFv3tlbCkRt6UTvGImC4Vg==
-X-Received: by 2002:a2e:978a:0:b0:277:107:725f with SMTP id y10-20020a2e978a000000b002770107725fmr17989655lji.417.1667900434663;
-        Tue, 08 Nov 2022 01:40:34 -0800 (PST)
-Received: from [192.168.0.20] (088156142199.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.199])
-        by smtp.gmail.com with ESMTPSA id u28-20020a2eb81c000000b0026dc7b59d8esm1658719ljo.22.2022.11.08.01.40.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 08 Nov 2022 01:40:34 -0800 (PST)
-Message-ID: <5791ab49-debf-53d6-f076-0e46c4f392ea@linaro.org>
-Date:   Tue, 8 Nov 2022 10:40:33 +0100
+        bh=jD/YBCtOhOa1ipEyheDVa6geA3XolzkSqDbroMLmTEw=;
+        b=XNJcSzmyTMlW74T2B+ICt4jXyisgf+bgt50l24xexjxk8NDkrYOKwHhx4tuw4fNfrr
+         Br8qK+5f3GPi3S6/nUABySJPjXR0DNl+0TBYnCcPyH6DW5io0s7Gl3O2mT15MjY/FMAO
+         KldT5WEuCSHSPNRd1zjf7UwmHn6obB2ekl5Vpu1Q7PuRh6/Af2rUIot7FgrzvjDNCevf
+         xH9L/xD7tyFsGgdhKazsoDazjCapd3W3yjYswupN5//k/37h6gAzWv25jtEB3zZxVh63
+         bxQK7GNx3QbrI6Qew6lHC6ZMUpQuyP0eNnRB/bhsTxm5F3efyvJcstGznl6/raaLTQde
+         KAlQ==
+X-Gm-Message-State: ANoB5pnj1bpPMFJnzPz9tsKmE6a/qCy3OqFbii99KUK+t/BAf4ui3mbi
+        Wk6TgNPgEwPZcA6MNiU9KDs9ykL31TQycJx6eDI=
+X-Google-Smtp-Source: AA0mqf7s6cLMJ+jFWr1acfH8YtYExw8f3XjIKRBz7jsUlZXoKoLcbLartm0vx3oZfg7AKKmi6fwvspQ61yzbB26sDsQ=
+X-Received: by 2002:a81:9845:0:b0:374:ae5f:a5be with SMTP id
+ p66-20020a819845000000b00374ae5fa5bemr5049661ywg.177.1667906528181; Tue, 08
+ Nov 2022 03:22:08 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: Coverity: gpmc_is_valid_waitpin(): Control flow issues
-Content-Language: en-US
-To:     "Niedermayr, BENEDIKT" <benedikt.niedermayr@siemens.com>,
-        "rogerq@kernel.org" <rogerq@kernel.org>,
-        "keescook@chromium.org" <keescook@chromium.org>
-Cc:     "gustavo@embeddedor.com" <gustavo@embeddedor.com>,
-        "tony@atomide.com" <tony@atomide.com>,
-        "linux-next@vger.kernel.org" <linux-next@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
-        "linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>
-References: <202211041233.4D45359E7@keescook>
- <7cdf3d14-3f1b-7cd4-e8b9-e94b5359bf82@kernel.org>
- <e4e4c4f0-782b-9f89-d7a2-859c7759ca66@kernel.org>
- <b18cddde778ada5030f6a80308854cf9c0dc4d23.camel@siemens.com>
- <57664014384bae015d593a7c6c6b7715fda3e89d.camel@siemens.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <57664014384bae015d593a7c6c6b7715fda3e89d.camel@siemens.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Received: by 2002:a05:7010:a38a:b0:313:c983:1d7e with HTTP; Tue, 8 Nov 2022
+ 03:22:07 -0800 (PST)
+Reply-To: mrinvest1010@gmail.com
+From:   "K. A. Mr. Kairi" <ctocik2@gmail.com>
+Date:   Tue, 8 Nov 2022 03:22:07 -0800
+Message-ID: <CAC9COZe_rZeJQQ2HU7v7uriYCoON1Xu_vFc68+RNzupoN9+uUQ@mail.gmail.com>
+Subject: Re: My Response..
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:112a listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [mrinvest1010[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [ctocik2[at]gmail.com]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [ctocik2[at]gmail.com]
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  2.9 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 08/11/2022 09:15, Niedermayr, BENEDIKT wrote:
+-- 
+Hi
 
->>> Another alternative with less churn is to leave them as u32
->>> but make GPMC_WAITPIN_INVALID set to a large positive number.
->> Ok, I will fix that. 
->> Do I need to send a new fix-patch on top the current patch series? 
->> Or should I just send only the bugfix-patch for the coverity-bot? 
->>
-> Sorry, another Question: 
-> Is it somehow possible to check locally if the bugfix actually fixed the bug, before I submit the patch?
+How are you with your family, I have a serious client, whom will be
+interested to invest in your country, I got your Details through the
+Investment Network and world Global Business directory.
 
-I think only if you have Coverity somewhere in your company set for
-testing kernel...
+If you are interested for more details.....
 
-Best regards,
-Krzysztof
-
+Sincerely,
+Kairi Andrew
