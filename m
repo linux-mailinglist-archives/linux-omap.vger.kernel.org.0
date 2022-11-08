@@ -2,97 +2,70 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 33FE26216A7
-	for <lists+linux-omap@lfdr.de>; Tue,  8 Nov 2022 15:31:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BA2E3621A48
+	for <lists+linux-omap@lfdr.de>; Tue,  8 Nov 2022 18:19:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234089AbiKHObV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 8 Nov 2022 09:31:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36298 "EHLO
+        id S233702AbiKHRTI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 8 Nov 2022 12:19:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53088 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234179AbiKHOay (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 8 Nov 2022 09:30:54 -0500
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48C9554B0D
-        for <linux-omap@vger.kernel.org>; Tue,  8 Nov 2022 06:30:45 -0800 (PST)
-Received: by mail-pj1-x1031.google.com with SMTP id b1-20020a17090a7ac100b00213fde52d49so13507361pjl.3
-        for <linux-omap@vger.kernel.org>; Tue, 08 Nov 2022 06:30:45 -0800 (PST)
+        with ESMTP id S233882AbiKHRTI (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 8 Nov 2022 12:19:08 -0500
+Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1300A25E8
+        for <linux-omap@vger.kernel.org>; Tue,  8 Nov 2022 09:19:07 -0800 (PST)
+Received: by mail-wr1-x42b.google.com with SMTP id y16so21971213wrt.12
+        for <linux-omap@vger.kernel.org>; Tue, 08 Nov 2022 09:19:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SzBlYeGeT15Xra75w9IZDBjQ7Da3XKSmRdlnDJDYrko=;
-        b=WDX8jESP5o0hYsqTRNV0E33I+UiuXo6QrBUYHK2m8yjd+yVsSQJ670MLuInnJ00AAn
-         lBBWrOntbuVMAue0wE2TrwsZKXEfFDNMqC5R6tCWqKEgGFxQxkRlJNdbKjRsJjGNfBru
-         KH2TG+ATlAWpLsgkVeBpn6IJJwDTPIZ2HiIrsZ0Wc9Fh2CfiYZRH2JVCtla2mAhfrDcv
-         WfczoRhEaDFduiY4E6NZmxTOoipjt0njg7MBnJjMGOYDxF1sJVrs/1Vd3642UyDZ3J2M
-         wtJ+Kd2QePZiVLlJxgLdMXSB8gNW9u9/Dkv2pwXgXMeRUPq+88NYf11ItH6tmWpWacMI
-         UUsw==
+        d=newflow-co-uk.20210112.gappssmtp.com; s=20210112;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=GFf56fXHcN5swktvY+aK0n5WX8IgDNtgChpp7Zn/EMw=;
+        b=LZMzqP8OhgAalFg41YjuQEN/hi06EX3F9dRAqZ1u3mSJ6u9jA4wLIE2oOZ6seXnmku
+         7mzHOseABc++gWBA7DUwRzIRI68A6mgdGZuJQKzcd1mSUtTEs5rijiRX3pQTybsIpgFa
+         NUyD82SmKVrKzRm/Jp1PcD7faXGL4EjoRQnFnRl8aw3qkdjsk3xwm1F882I4LKGT47GR
+         hNQUTChfpzwtJiJ+dol3gjpiZg1m0intCt4g9IHnKLLkSXkdJK0kxANh72y9VsEOeXIA
+         8k9HvWs+Sa3djYZpo+LilxIt+32lXTRshYrrEGO3zWtD4n4a5x2P9Y3ri4mam0UrTyYt
+         jreA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SzBlYeGeT15Xra75w9IZDBjQ7Da3XKSmRdlnDJDYrko=;
-        b=h1CAxvqPsCEH6iI+UK06conAEAeKQSlXZdniOnuQHLiBDM2xBH9kap/sqvnSxxlU7F
-         b4zO30ZVSe9e0wqXtZ/q82C56dMoFe8rW/YxdlWV2PcyiSNxTnc6ZQs1FAhp3/L1jCNT
-         OxOWQ9CGhWUgwmQmAUae3xu6uTT8NVJqojrR7ZMs6tyxVnwohpQGCPA1oqe9ID1uEnEw
-         DH7xXNLsHDqyMHKc+Mda7omV1x1FHqpj8NIJAmvB638eb0pV/ohlst1AxleCWIg6ygFR
-         O89lnJ7wbV80bwUCGIFKSMkHKs9chKBhOKgg4S8vlfBbHfIRzXzlFFnKmPXFFKb52d2d
-         UEKg==
-X-Gm-Message-State: ACrzQf1oTVeOWEfLJ50LjOfIxecP6hlD6Zp5HD2iBCsYFHMIiwNz8oW2
-        P1cX795+GR442EsqqjK8hj+JU1TnAD+EoWT6Wj4=
-X-Google-Smtp-Source: AMsMyM4L9V3t32r7uko+t8YxF1/SxpO/2u5BqPtEP2fFULrP29Yi88sG/7O0kyMBFpxPmDfBvPymU/6htrkybSwddAw=
-X-Received: by 2002:a17:90a:77c1:b0:214:2921:41c9 with SMTP id
- e1-20020a17090a77c100b00214292141c9mr35377782pjs.104.1667917844700; Tue, 08
- Nov 2022 06:30:44 -0800 (PST)
+        bh=GFf56fXHcN5swktvY+aK0n5WX8IgDNtgChpp7Zn/EMw=;
+        b=WRxY1Ve2C6yRR/VfCYMiXwwxdOpxjKvD47woiXI2QjvjYugP/GqQLi0E1uq29NQB14
+         vHgrolkhKeVnIlvjeZp/BuqTyg0w9H7y67ssKJHRn3ncUcFhj3Uht6B4ovaX/5LkJvEN
+         gqLyYBdzfvo5KFBrROseiD/ZUnf/1TX/Z6QiwS7HYD2folaZ3Cm6grDcR0oI1caWQ5Gf
+         d/9dL8sGGcF6LN6XZNJaMgGgCCxqDqRG/GOPjyPYTyfhAfE8188xsTT45d4iqb78awLE
+         oFG+dxH7ZhJLpzEpaJLRFJwt3cv1r+MDdQdVp3JTheJKp0R8YukX/EGWsEIDDdPAEMYo
+         IJqw==
+X-Gm-Message-State: ACrzQf2yVfaXeJB/YaNQg2OplFjyBCtfLYrVy5oros05ji/Bw+tiPWF0
+        xI8UGIEnn1/1HBC15ey3lePYNKBDTgcfA2EPlSuWiw==
+X-Google-Smtp-Source: AMsMyM7Jkn0gWL5gs0/xf6bPZllJz9C5ZuFICxylcZ1ZTH0lc04ZzghM3sDGh/E7Ux3hMxpwSdZCpit2TagIefqQTm0=
+X-Received: by 2002:adf:f88b:0:b0:236:7134:d4ec with SMTP id
+ u11-20020adff88b000000b002367134d4ecmr34382445wrp.669.1667927945417; Tue, 08
+ Nov 2022 09:19:05 -0800 (PST)
 MIME-Version: 1.0
-Received: by 2002:ac4:c8c2:0:b0:56a:d900:eb11 with HTTP; Tue, 8 Nov 2022
- 06:30:43 -0800 (PST)
-Reply-To: mr.abraham022@gmail.com
-From:   "Mr.Abraham" <davidbraddy01@gmail.com>
-Date:   Tue, 8 Nov 2022 14:30:43 +0000
-Message-ID: <CAHGOU4PbuaQmBHRnRdx0u3UurwX2NABaxQZ3A0KbDYPAmYk7uQ@mail.gmail.com>
-Subject: Greeting
-To:     undisclosed-recipients:;
+References: <20221004143901.130935-1-mpfj@newflow.co.uk>
+In-Reply-To: <20221004143901.130935-1-mpfj@newflow.co.uk>
+From:   Mark Jackson <mpfj@newflow.co.uk>
+Date:   Tue, 8 Nov 2022 17:18:54 +0000
+Message-ID: <CAAbcLfiCoa=-20cydPG9=42G9npaeBOCRXPPPTwkNFU-3yGoCg@mail.gmail.com>
+Subject: Re: [PATCH] Update Nanobone
+To:     linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        tony@atomide.com, mpfj@newflow.co.uk
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.4960]
-        * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:1031 listed in]
-        [list.dnswl.org]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [mr.abraham022[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [davidbraddy01[at]gmail.com]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [davidbraddy01[at]gmail.com]
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
-        *  2.9 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-My Greeting, Did you receive the letter i sent to you. Please answer me.
-Regard, Mr.Abraham
+Any update on this patch ?
+Did it ever get through ?
+Do I need to re-submit for some reason ?
+
+Regards
+Mark J.
