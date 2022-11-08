@@ -2,47 +2,47 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 46E8F621415
-	for <lists+linux-omap@lfdr.de>; Tue,  8 Nov 2022 14:57:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CF419621375
+	for <lists+linux-omap@lfdr.de>; Tue,  8 Nov 2022 14:50:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234835AbiKHN5I (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 8 Nov 2022 08:57:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58956 "EHLO
+        id S234640AbiKHNu1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 8 Nov 2022 08:50:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234832AbiKHN5H (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 8 Nov 2022 08:57:07 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEC1E60EB1;
-        Tue,  8 Nov 2022 05:57:06 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 9E0FAB816DD;
-        Tue,  8 Nov 2022 13:57:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA918C433D7;
-        Tue,  8 Nov 2022 13:57:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667915824;
-        bh=tQ72T7lQxJkgX/x3mTSKvAAkisGq4na2N+MSF2k1IYY=;
-        h=From:To:Cc:Subject:Date:From;
-        b=rarAumq7Os55EgdCMr4oiL1ZaPvjcTFkoRgoClYflI+J2eso3fj/gOs/7NcFtEBuR
-         tCnrMEOMpCrrK/vXxMdSco0tIDtJ0nh8Z3vefWysV/jc2j20LwVAFk1YczIPHWhzqx
-         2tPmVqNlJiAgL0kejIhO9igqnHwNBk5CQDMREI6vTkT87uj5q/OWOxiljk008e6DJm
-         Wyc6NPHblK6OkQA2eqoXvfA8T+wNMRvqUjrr6KiM6UhfUrkcHS+Fn3DvPKyuRUygYP
-         cBbHJpibmvWk92v0BX5xiv55xz/kVaFJOnuTlQFqd1a08xJvZ1kkQe/A/5wh9XRPks
-         Qcv0qINm1Y9Vw==
-From:   Roger Quadros <rogerq@kernel.org>
-To:     davem@davemloft.net
-Cc:     edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        vigneshr@ti.com, srk@ti.com, linux-omap@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Roger Quadros <rogerq@kernel.org>
-Subject: [PATCH] net: ethernet: ti: cpsw_ale: optimize cpsw_ale_restore()
-Date:   Tue,  8 Nov 2022 15:56:43 +0200
-Message-Id: <20221108135643.15094-1-rogerq@kernel.org>
+        with ESMTP id S234643AbiKHNu0 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 8 Nov 2022 08:50:26 -0500
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D06CC101E5;
+        Tue,  8 Nov 2022 05:50:24 -0800 (PST)
+Received: from dggpemm500020.china.huawei.com (unknown [172.30.72.53])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4N68c715sfzHvbL;
+        Tue,  8 Nov 2022 21:49:59 +0800 (CST)
+Received: from dggpemm500008.china.huawei.com (7.185.36.136) by
+ dggpemm500020.china.huawei.com (7.185.36.49) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Tue, 8 Nov 2022 21:50:23 +0800
+Received: from huawei.com (10.67.174.191) by dggpemm500008.china.huawei.com
+ (7.185.36.136) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Tue, 8 Nov
+ 2022 21:50:22 +0800
+From:   Chen Hui <judy.chenhui@huawei.com>
+To:     <tony@atomide.com>, <linux@armlinux.org.uk>,
+        <santosh.shilimkar@ti.com>
+CC:     <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <judy.chenhui@huawei.com>,
+        <yusongping@huawei.com>
+Subject: [PATCH] arch: arm: Fix memory leak in realtime_counter_init()
+Date:   Tue, 8 Nov 2022 22:19:17 +0800
+Message-ID: <20221108141917.46796-1-judy.chenhui@huawei.com>
 X-Mailer: git-send-email 2.17.1
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [10.67.174.191]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ dggpemm500008.china.huawei.com (7.185.36.136)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -50,39 +50,27 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-If an entry was FREE then we don't have to restore it.
+The "sys_clk" resource is malloced by clk_get(),
+it is not released when the function return.
 
-Signed-off-by: Roger Quadros <rogerq@kernel.org>
+Fixes: fa6d79d27614 ("ARM: OMAP: Add initialisation for the real-time counter.")
+Signed-off-by: Chen Hui <judy.chenhui@huawei.com>
 ---
+ arch/arm/mach-omap2/timer.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Patch depends on
-https://lore.kernel.org/netdev/20221104132310.31577-3-rogerq@kernel.org/T/
-
- drivers/net/ethernet/ti/cpsw_ale.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
-index 0c5e783e574c..41bcf34a22f8 100644
---- a/drivers/net/ethernet/ti/cpsw_ale.c
-+++ b/drivers/net/ethernet/ti/cpsw_ale.c
-@@ -1452,12 +1452,15 @@ void cpsw_ale_dump(struct cpsw_ale *ale, u32 *data)
+diff --git a/arch/arm/mach-omap2/timer.c b/arch/arm/mach-omap2/timer.c
+index 620ba69c8f11..5677c4a08f37 100644
+--- a/arch/arm/mach-omap2/timer.c
++++ b/arch/arm/mach-omap2/timer.c
+@@ -76,6 +76,7 @@ static void __init realtime_counter_init(void)
  	}
- }
  
-+/* ALE table should be cleared (ALE_CLEAR) before cpsw_ale_restore() */
- void cpsw_ale_restore(struct cpsw_ale *ale, u32 *data)
- {
--	int i;
-+	int i, type;
+ 	rate = clk_get_rate(sys_clk);
++	clk_put(sys_clk);
  
- 	for (i = 0; i < ale->params.ale_entries; i++) {
--		cpsw_ale_write(ale, i, data);
-+		type = cpsw_ale_get_entry_type(data);
-+		if (type != ALE_TYPE_FREE)
-+			cpsw_ale_write(ale, i, data);
- 		data += ALE_ENTRY_WORDS;
- 	}
- }
+ 	if (soc_is_dra7xx()) {
+ 		/*
 -- 
 2.17.1
 
