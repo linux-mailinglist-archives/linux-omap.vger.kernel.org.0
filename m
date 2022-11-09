@@ -2,53 +2,53 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C91F622FB8
-	for <lists+linux-omap@lfdr.de>; Wed,  9 Nov 2022 17:09:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8633C622FB4
+	for <lists+linux-omap@lfdr.de>; Wed,  9 Nov 2022 17:09:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231512AbiKIQJf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 9 Nov 2022 11:09:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55158 "EHLO
+        id S231499AbiKIQJe (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 9 Nov 2022 11:09:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231794AbiKIQJX (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 9 Nov 2022 11:09:23 -0500
-Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C59BFD7
-        for <linux-omap@vger.kernel.org>; Wed,  9 Nov 2022 08:09:22 -0800 (PST)
-Received: by mail-wr1-x42d.google.com with SMTP id o4so26506113wrq.6
-        for <linux-omap@vger.kernel.org>; Wed, 09 Nov 2022 08:09:22 -0800 (PST)
+        with ESMTP id S231478AbiKIQJY (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 9 Nov 2022 11:09:24 -0500
+Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40848101C9
+        for <linux-omap@vger.kernel.org>; Wed,  9 Nov 2022 08:09:23 -0800 (PST)
+Received: by mail-wr1-x42c.google.com with SMTP id a14so26487116wru.5
+        for <linux-omap@vger.kernel.org>; Wed, 09 Nov 2022 08:09:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=newflow-co-uk.20210112.gappssmtp.com; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=uQX/z0Y84XYNMSAACNl+rS33XaUw6j8xDZvxptKeil4=;
-        b=L7D6YyDZ0MHtIQ+EDbTTj4jYmcZjGVoSIBZc+gvwub7Ftfg6CgOO79X23AKCMWZJU7
-         8qnXePWDD1btaK4k166zgi/jENxXTRjggDVG4P08Jy/tV+ZFIe2VfpcGee1yeZbAKoKq
-         I4TtIV8wSp6+F5YAsU9Ff7hd056JlFc3qURb3nifPQvCpK3yI0GobIIdTY2LyYp5nM8z
-         Mfvv2jbRVE5uFAhqzANI9IGtxNg2/UgNjHLo4xZoUHCNiVbdlOW2SJqDvyVy6Sxnj/UG
-         0V04RXbKwq1kedTsAgQI5XaeqqrKZCJW01mPZ/86yDzn/8ZbrkVKzyJAaQ02eNZBida6
-         /PYw==
+        bh=qy2f8+NzXqqh+hHluSqYA8rs21AngxEcIYG3EwxYgis=;
+        b=XPHxngsFSQWue5/ZKwoWGPpRSKFXWSnBa+6is4ftxGzhgzZYsXOceU9y1WN5JtVn1B
+         aUiiZwBBdtB41SEVfqzVa/PikXsXGL1DrArg8Wv69qjCeaX8lirPnjTb0ASfilOtraGy
+         2EI8ckjZXxgHO+ndRxlRY1JuCfJ8MfSuOtzIuSRvvOZN4/Tbi7Ca2fLNVMOAlbe5auY1
+         aqXuIGSemPtRn7gTm2BiU3i3V6pem2ToV6TF8q1WiPWNYfDhdj6cK1Z23+c2UpASLvQv
+         i3iplUkCgb7oFZjHTmRTsIsFXPLboquP5m8L3JeS+GntDH7zb+pWOuXMKzyV4yKf5eu9
+         O3Fw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=uQX/z0Y84XYNMSAACNl+rS33XaUw6j8xDZvxptKeil4=;
-        b=hIk7BcJw5FsjOjSIGrUCTrzGoVErfWcbT7vUoYkdX1lKNJkD5Pb3bJ4lTMzgQ0Cs8/
-         UruKwVvJqKzZhesbTY87ar4y0hXxC14ElizTconnSw4eQswKdihHfctuT1Du12cV0MvP
-         wbPiFlK95IRAcOjs33ZyEz6WUnfgnZYDxuBE336L+5igj93tdXuXZ8H/mIFasggKxBlj
-         bfOW0NVnQL4LA0P+puVcQLw7ZIWfEfv0oZnPyYsx4+IJCAVRqpS3p3X4ZozCWAanY3B0
-         pO8M8xZ8y3gYTtpb3QttOfowmPbRk9phb4luIPYKOZQLqSxYrm6vx1tHEdczpm7iGd50
-         CYSA==
-X-Gm-Message-State: ACrzQf0cZZkluke054oy7HHVqpURi+k4VGfIKklXd9X62BBRqcwvz7n5
-        9dVCH/cvRfcG5kf8NDQkMAo+MA==
-X-Google-Smtp-Source: AMsMyM4gnHex2vkxMUDXbBTqNPq0ESTI+JIdEzzd3xRI6t+rc8oybYWBcCBfr7h6wISdNMwX9qaAOg==
-X-Received: by 2002:adf:d84b:0:b0:236:e0da:61b7 with SMTP id k11-20020adfd84b000000b00236e0da61b7mr30671488wrl.79.1668010161881;
-        Wed, 09 Nov 2022 08:09:21 -0800 (PST)
+        bh=qy2f8+NzXqqh+hHluSqYA8rs21AngxEcIYG3EwxYgis=;
+        b=RLyQoSd3ZIkUQbdDiu6lKzzSx9Xxz2PLuHc1r936vpkPAnk/HaYolWpLRSKA8wHziK
+         hMo7XjsROlfy4el6Nl9a7UvFN2miBugUq1uSWkx4Mw9s/Vm2FeI29As0qPGkCr+tE60u
+         X+Wll1tFseEDNXGhVjTZIzDYBi7Jf7EGVy/vlcjvqX23LOkMnve0Vhi2tK0q9ci4nHIj
+         dIaz4p7nGApFCjHKcp077k5lRWG8rAnsLeBhNTIUCmqHKeEWnbWMIoY/dPcgAxpm8m0w
+         vXwWvBXqG3YOlyJxRqhyUPwaen98p72hFcxsnlbA0YLlVleb+Byp9vv5MgXRQ9TqvM7q
+         9bow==
+X-Gm-Message-State: ACrzQf3xKXB2FQ5PAqua6E41cdpi1xtOs0BgWKG38uUChwSPGE69+Y8V
+        2MgrN95XT9B7CXuSy7j7Lp9bLA==
+X-Google-Smtp-Source: AMsMyM4kMZdZIbntenev7NAd8FtPrEx319fPVgDr1A96WLsrqhQsOxDeGrhtoxh8EkTb1EysuRexfQ==
+X-Received: by 2002:a5d:58d7:0:b0:236:6c53:6123 with SMTP id o23-20020a5d58d7000000b002366c536123mr39987592wrf.719.1668010162874;
+        Wed, 09 Nov 2022 08:09:22 -0800 (PST)
 Received: from mpfj-unity.. ([94.12.112.226])
-        by smtp.gmail.com with ESMTPSA id n4-20020a5d6604000000b002366fb99cdasm13307772wru.50.2022.11.09.08.09.20
+        by smtp.gmail.com with ESMTPSA id n4-20020a5d6604000000b002366fb99cdasm13307772wru.50.2022.11.09.08.09.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Nov 2022 08:09:21 -0800 (PST)
+        Wed, 09 Nov 2022 08:09:22 -0800 (PST)
 From:   Mark Jackson <mpfj@newflow.co.uk>
 To:     Mark Jackson <mpfj@newflow.co.uk>,
         =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
@@ -57,9 +57,9 @@ To:     Mark Jackson <mpfj@newflow.co.uk>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 4/5] ARM: dts: nanobone: Fix GPIO settings for MMC pins
-Date:   Wed,  9 Nov 2022 16:09:03 +0000
-Message-Id: <20221109160904.183147-5-mpfj@newflow.co.uk>
+Subject: [PATCH 5/5] ARM: dts: nanobone: Enable USB host
+Date:   Wed,  9 Nov 2022 16:09:04 +0000
+Message-Id: <20221109160904.183147-6-mpfj@newflow.co.uk>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20221109160904.183147-1-mpfj@newflow.co.uk>
 References: <20221109160904.183147-1-mpfj@newflow.co.uk>
@@ -74,30 +74,28 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The MMC slot uses GPIO pins for Write Protext and Card Detect.
-Define these so everything works correctly.
+Add missing entry to enable the USB host.
 
 Signed-off-by: Mark Jackson <mpfj@newflow.co.uk>
 ---
- arch/arm/boot/dts/am335x-nano.dts | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/arm/boot/dts/am335x-nano.dts | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/arch/arm/boot/dts/am335x-nano.dts b/arch/arm/boot/dts/am335x-nano.dts
-index 2be831927af6..728164298a5e 100644
+index 728164298a5e..61af12b70688 100644
 --- a/arch/arm/boot/dts/am335x-nano.dts
 +++ b/arch/arm/boot/dts/am335x-nano.dts
-@@ -418,8 +418,9 @@ &mmc1 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&mmc1_pins>;
- 	bus-width = <4>;
--	cd-gpios = <&gpio3 8 0>;
--	wp-gpios = <&gpio3 18 0>;
-+	cd-debounce-delay-ms = <5>;
-+	cd-gpios = <&gpio3 8 GPIO_ACTIVE_LOW>;
-+	wp-gpios = <&gpio3 18 GPIO_ACTIVE_HIGH>;
+@@ -423,6 +423,10 @@ &mmc1 {
+ 	wp-gpios = <&gpio3 18 GPIO_ACTIVE_HIGH>;
  };
  
++&usb0 {
++	dr_mode = "host";
++};
++
  #include "tps65217.dtsi"
+ 
+ &tps {
 -- 
 2.34.1
 
