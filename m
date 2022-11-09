@@ -2,88 +2,62 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AF9D6225E0
-	for <lists+linux-omap@lfdr.de>; Wed,  9 Nov 2022 09:53:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BBD356226C7
+	for <lists+linux-omap@lfdr.de>; Wed,  9 Nov 2022 10:22:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230087AbiKIIxI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 9 Nov 2022 03:53:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59486 "EHLO
+        id S229987AbiKIJW2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 9 Nov 2022 04:22:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230035AbiKIIww (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 9 Nov 2022 03:52:52 -0500
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id F01021DA47;
-        Wed,  9 Nov 2022 00:52:50 -0800 (PST)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 0562180FB;
-        Wed,  9 Nov 2022 08:43:03 +0000 (UTC)
-Date:   Wed, 9 Nov 2022 10:52:48 +0200
-From:   Tony Lindgren <tony@atomide.com>
-To:     Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Cc:     linux-kernel@vger.kernel.org, michael@amarulasolutions.com,
-        Amarula patchwork <linux-amarula@amarulasolutions.com>,
-        Allison Randal <allison@lohutok.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Liang He <windhl@126.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Tero Kristo <kristo@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-clk@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: Re: [PATCH v3 1/2] clk: ti: add of_ti_clk_register() helper
-Message-ID: <Y2tqYDo5rxnffuWc@atomide.com>
-References: <20221106154612.3474940-1-dario.binacchi@amarulasolutions.com>
- <Y2thuiR3UVEeLCQO@atomide.com>
- <Y2tiHNLPiAwV6oEn@atomide.com>
- <CABGWkvrEGKTrwMgedzE1Oj0F+Fgpmzm6sB4hs7wcNn3xKPUupQ@mail.gmail.com>
+        with ESMTP id S229973AbiKIJW1 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 9 Nov 2022 04:22:27 -0500
+X-Greylist: delayed 368 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 09 Nov 2022 01:22:25 PST
+Received: from mail.lokoho.com (mail.lokoho.com [217.61.105.98])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F7CB140B4
+        for <linux-omap@vger.kernel.org>; Wed,  9 Nov 2022 01:22:25 -0800 (PST)
+Received: by mail.lokoho.com (Postfix, from userid 1001)
+        id 9C18082B27; Wed,  9 Nov 2022 09:16:09 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lokoho.com; s=mail;
+        t=1667985375; bh=Z0N5VlX9/JlryGOL5I747Le9USomZJCRNNGRT3LbbKc=;
+        h=Date:From:To:Subject:From;
+        b=D5Num3IyFLlkRA9gl9YhG+TExx22Wq9Q6I/wvJj1F/+UcphXNypLRX6LUBJsT+UNJ
+         /EHC1otqINNHTCQUHGAph1fSpcGxSzbpVQV22jIF0hZR7rHTQ6H50NOhFzgTl+qmLa
+         XRv4p1SRuxHpNsQ9yHyUA4O5Wl34BJ+lqYIZiTcqZL6S6ClYt4GQ09KOLVjwfX3yBL
+         P69hoTx9kRWbIRAmzlUyso2dvP5WvnJOfa5C8jQTI3UkjtkHztIOWi9UifsfyHB0XM
+         LgwyvQAC7bv7zhWFtN/xx0zpDLLgtvgOxy0K5OucwnKU2YrDrO/SqMUdgmePxKxjVF
+         p88u2LBiYy5Dg==
+Received: by mail.lokoho.com for <linux-omap@vger.kernel.org>; Wed,  9 Nov 2022 09:16:02 GMT
+Message-ID: <20221109074500-0.1.25.5s6h.0.xe372sxif2@lokoho.com>
+Date:   Wed,  9 Nov 2022 09:16:02 GMT
+From:   "Adam Charachuta" <adam.charachuta@lokoho.com>
+To:     <linux-omap@vger.kernel.org>
+Subject: =?UTF-8?Q?S=C5=82owa_kluczowe_do_wypozycjonowania?=
+X-Mailer: mail.lokoho.com
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CABGWkvrEGKTrwMgedzE1Oj0F+Fgpmzm6sB4hs7wcNn3xKPUupQ@mail.gmail.com>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=0.6 required=5.0 tests=BAYES_05,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_VALIDITY_RPBL,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Dario Binacchi <dario.binacchi@amarulasolutions.com> [221109 08:28]:
-> Hi Tony,
-> 
-> On Wed, Nov 9, 2022 at 9:17 AM Tony Lindgren <tony@atomide.com> wrote:
-> >
-> > * Tony Lindgren <tony@atomide.com> [221109 08:06]:
-> > > * Dario Binacchi <dario.binacchi@amarulasolutions.com> [221106 17:36]:
-> > > > The ti_clk_register() function is always called with the parameter of
-> > > > type struct device set to NULL, since the functions from which it is
-> > > > called always have a parameter of type struct device_node. Adding this
-> > > > helper will allow you to register a TI clock to the common clock
-> > > > framework by taking advantage of the facilities provided by the
-> > > > struct device_node type.
-> > >
-> > > Makes sense to me.
-> > >
-> > > Do you have a patch to make use of this I can test with?
-> >
-> > I mean a patch to convert the ti_clk_register() callers to use this or
-> > what's your plan?
-> 
-> The first patch that calls this function is the second one in this
-> series "clk: ti: dra7-atl: don't allocate` parent_names' variable ".
-> Since I don't have the dra7 hardware, I have indirectly tested it on a
-> beaglebone (gate clock driver) board. To do this I also
-> had to add the of_ti_clk_register_omap_hw() helper. In the case of the
-> dra7-atl driver it was not necessary because the setup
-> function calls the ti_clk_register() directly.
-> If you think it makes sense, I can do 1 or more patches that replace
-> ti_clk_register() and ti_clk_register_omap_hw() with their
-> counterparts of_ti_clk_register[_omap_hw]. And I could test this
-> further series on the beaglebone board.
+Dzie=C5=84 dobry,
 
-Yeah if you can please post one more patch separately replacing the old
-users that would be great.
+zapozna=C5=82em si=C4=99 z Pa=C5=84stwa ofert=C4=85 i z przyjemno=C5=9Bci=
+=C4=85 przyznaj=C4=99, =C5=BCe przyci=C4=85ga uwag=C4=99 i zach=C4=99ca d=
+o dalszych rozm=C3=B3w.=20
 
-Regards,
+Pomy=C5=9Bla=C5=82em, =C5=BCe mo=C5=BCe m=C3=B3g=C5=82bym mie=C4=87 sw=C3=
+=B3j wk=C5=82ad w Pa=C5=84stwa rozw=C3=B3j i pom=C3=B3c dotrze=C4=87 z t=C4=
+=85 ofert=C4=85 do wi=C4=99kszego grona odbiorc=C3=B3w. Pozycjonuj=C4=99 =
+strony www, dzi=C4=99ki czemu generuj=C4=85 =C5=9Bwietny ruch w sieci.
 
-Tony
+Mo=C5=BCemy porozmawia=C4=87 w najbli=C5=BCszym czasie?
+
+
+Pozdrawiam
+Adam Charachuta
