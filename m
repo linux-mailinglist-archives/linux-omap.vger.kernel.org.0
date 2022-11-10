@@ -2,93 +2,125 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D523623E5E
-	for <lists+linux-omap@lfdr.de>; Thu, 10 Nov 2022 10:14:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 10E1B623ECA
+	for <lists+linux-omap@lfdr.de>; Thu, 10 Nov 2022 10:39:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229747AbiKJJOz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 10 Nov 2022 04:14:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44424 "EHLO
+        id S229533AbiKJJj4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 10 Nov 2022 04:39:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229754AbiKJJOv (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 10 Nov 2022 04:14:51 -0500
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9172D682B3
-        for <linux-omap@vger.kernel.org>; Thu, 10 Nov 2022 01:14:50 -0800 (PST)
-Received: by mail-lf1-x12d.google.com with SMTP id b3so2026049lfv.2
-        for <linux-omap@vger.kernel.org>; Thu, 10 Nov 2022 01:14:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aWtnQJaZ/DC2sr1Ii69yeGSZuxu9g3YJF6gE4/PvhMI=;
-        b=IyqPqR2HfrTjYWOP26a2uWXKScvs+iwrE2hWCYZOtcqow8xOBNXqf+yqpdAcyAihQD
-         anjFfES39Wc3rbVkiYr0dw8tXWiORSEIB6LB9Av6KxIEIIXU8aKRczr4YeFLum9y2JXS
-         zR+e2d+V6AWcV+qKg+Rsd23WST+VtCuejCJKGoVajT+GlAvyZ54/WoncChoty4k7JwZx
-         T7KnMY30EKzqIw7EAvu2ok1Y/jy8etdvMRJO0/26JnkksiPCkOcqCX6z3rksL41BndP+
-         PG+MEcDeEQetWgTjFZrzyHdRi1CetcvMt7QblGBfLIopVkr+IKtEmyt8TAT/F0Mzbmg2
-         p9Vg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aWtnQJaZ/DC2sr1Ii69yeGSZuxu9g3YJF6gE4/PvhMI=;
-        b=t4k1YBy/T0xPM23wzg5n+sqlxSv0GcSkYbzdtRN7fcOKNa57JuNIyhSMt5YAvC7Md+
-         a13sgRcJkBBN2oJrJteKNg7oALNUsZV8cr2GfH/ZMY1nQNdLwaPtexmqlwGr6rQV8bnX
-         v/zDqquv+C8+qPbLLFlgBAEJbDEm7P1G5kwfrjlwX6izl/yVVNIfWmZjWyTdtoN8qdBP
-         KWWsF0xC6gxy+2QR6nqjF1Hb92ICSzdkFYu60yMwHzr+4lPYT8bzB5XV53Muth43b0Dn
-         T+E9u/ov7Nw8Ibd93KsO4x03q23xna7WlKlYg9AnqL+aILJeSf5NZWEXjkidM+ceJrSv
-         IEQQ==
-X-Gm-Message-State: ACrzQf0Xyz2h/sGiD7nPqBs0nbCHqg3zdji5lcJli+gjiWHxEB7O8mIL
-        K+t2Rvuio5JbEGerPfBTl3WpFg==
-X-Google-Smtp-Source: AMsMyM5SWvMuCZ7I789cGHR6D4TMVXQwi09H6ESZ3ij9ZsmEcuca6j39FFLlvqiJP0mflZ0jTY7LuA==
-X-Received: by 2002:a05:6512:22d4:b0:4af:1f59:b6d0 with SMTP id g20-20020a05651222d400b004af1f59b6d0mr1294867lfu.314.1668071688997;
-        Thu, 10 Nov 2022 01:14:48 -0800 (PST)
-Received: from krzk-bin.NAT.warszawa.vectranet.pl (088156142199.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.199])
-        by smtp.gmail.com with ESMTPSA id m3-20020a0565120a8300b00492dbf809e8sm2663338lfu.118.2022.11.10.01.14.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Nov 2022 01:14:48 -0800 (PST)
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To:     "B. Niedermayr" <benedikt.niedermayr@siemens.com>,
-        linux-next@vger.kernel.org
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        linux-hardening@vger.kernel.org, gustavo@embeddedor.com,
-        keescook@chromium.org, linux-kernel@vger.kernel.org,
-        rogerq@kernel.org, tony@atomide.com, linux-omap@vger.kernel.org
-Subject: Re: [PATCH] memory: omap-gpmc: fix coverity issue "Control flow issues"
-Date:   Thu, 10 Nov 2022 10:14:47 +0100
-Message-Id: <166807168409.17460.1069653454790290049.b4-ty@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20221109102454.174320-1-benedikt.niedermayr@siemens.com>
-References: <20221109102454.174320-1-benedikt.niedermayr@siemens.com>
+        with ESMTP id S229528AbiKJJj4 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 10 Nov 2022 04:39:56 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51A8B11A3E;
+        Thu, 10 Nov 2022 01:39:55 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 105D2B82140;
+        Thu, 10 Nov 2022 09:39:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0754C433D6;
+        Thu, 10 Nov 2022 09:39:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1668073192;
+        bh=D6RE7UOWJpA7EbAthQbU3kBtGwmEzK7dIzjwKD/PMjI=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=Sdeezdx5jtd/XT4rzX0jZI+656PDJg7/2pJl+HRrPk99fka5mwPJ+Ja7gpGKgjxsx
+         +OSKXKrY2Asw4qouuWeXzPRt1BLyI26uFpp6/sceQhXoFNzz0hSBpn+AUp5O62b7+5
+         D5456T2PEJAuayEz6zKmYu7hiNIVCiw/Fc5KOqS/cI+OvghjRGzxgurfE9lJIYK2R3
+         4gethJIBNI9yBkyu7pN3/lKYok3tI2bM26OhU61rLx7LYMOHrztm04CtLZ9ayzyBuO
+         116SmHF8FmQ7uAtXlT9cheuvAJXOtmQmxxeldA63OzwOCIVEgGow1x5bkSB4v6ZFjw
+         8mRPQnlevlnfQ==
+Message-ID: <32eacc9d-3866-149a-579a-41f8e405123f@kernel.org>
+Date:   Thu, 10 Nov 2022 11:39:47 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCH] net: ethernet: ti: cpsw_ale: optimize cpsw_ale_restore()
+Content-Language: en-US
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+        vigneshr@ti.com, srk@ti.com, linux-omap@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20221108135643.15094-1-rogerq@kernel.org>
+ <20221109191941.6af4f71d@kernel.org>
+From:   Roger Quadros <rogerq@kernel.org>
+In-Reply-To: <20221109191941.6af4f71d@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, 9 Nov 2022 11:24:54 +0100, B. Niedermayr wrote:
-> From: Benedikt Niedermayr <benedikt.niedermayr@siemens.com>
+On 10/11/2022 05:19, Jakub Kicinski wrote:
+> On Tue,  8 Nov 2022 15:56:43 +0200 Roger Quadros wrote:
+>> If an entry was FREE then we don't have to restore it.
 > 
-> Assign a big positive integer instead of an negative integer to an
-> u32 variable. Also remove the check for ">= 0" which doesn't make sense
-> for unsigned integers.
+> Motivation? Does it make the restore faster?
+
+Yes, since this would be called during system suspend/resume path.
+I will update the commit message to mention this.
+
 > 
+>> Signed-off-by: Roger Quadros <rogerq@kernel.org>
+>> ---
+>>
+>> Patch depends on
+>> https://lore.kernel.org/netdev/20221104132310.31577-3-rogerq@kernel.org/T/
+>>
+>>  drivers/net/ethernet/ti/cpsw_ale.c | 7 +++++--
+>>  1 file changed, 5 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
+>> index 0c5e783e574c..41bcf34a22f8 100644
+>> --- a/drivers/net/ethernet/ti/cpsw_ale.c
+>> +++ b/drivers/net/ethernet/ti/cpsw_ale.c
+>> @@ -1452,12 +1452,15 @@ void cpsw_ale_dump(struct cpsw_ale *ale, u32 *data)
+>>  	}
+>>  }
+>>  
+>> +/* ALE table should be cleared (ALE_CLEAR) before cpsw_ale_restore() */
 > 
-> [...]
+> Maybe my tree is old but I see we clear only if there is a netdev that
 
-Applied, thanks!
+This patch depends on this series
+https://lore.kernel.org/netdev/20221104132310.31577-3-rogerq@kernel.org/T/
 
-[1/1] memory: omap-gpmc: fix coverity issue "Control flow issues"
-      https://git.kernel.org/krzk/linux-mem-ctrl/c/10913c3c59ce04562230eee4a9d1b0d4e2808842
+> needs to be opened but then always call ale_restore(). Is that okay?
 
-Best regards,
--- 
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+If netdev is closed and opened ale_restore() is not called.
+ale_restore() is only called during system suspend/resume path
+since CPSW-ALE might have lost context during suspend and we want to restore
+all valid ALE entries.
+
+I have a question here. How should ageable entries be treated in this case?
+
+> 
+> I'd also s/should/must/ 
+
+OK, will fix.
+
+> 
+>>  void cpsw_ale_restore(struct cpsw_ale *ale, u32 *data)
+>>  {
+>> -	int i;
+>> +	int i, type;
+>>  
+>>  	for (i = 0; i < ale->params.ale_entries; i++) {
+>> -		cpsw_ale_write(ale, i, data);
+>> +		type = cpsw_ale_get_entry_type(data);
+>> +		if (type != ALE_TYPE_FREE)
+>> +			cpsw_ale_write(ale, i, data);
+>>  		data += ALE_ENTRY_WORDS;
+>>  	}
+>>  }
+> 
+
+cheers,
+-roger
