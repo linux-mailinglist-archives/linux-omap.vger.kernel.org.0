@@ -2,54 +2,69 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 496CF624BDA
-	for <lists+linux-omap@lfdr.de>; Thu, 10 Nov 2022 21:33:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 147DF624C58
+	for <lists+linux-omap@lfdr.de>; Thu, 10 Nov 2022 22:02:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231777AbiKJUdA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 10 Nov 2022 15:33:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40594 "EHLO
+        id S230232AbiKJVCp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 10 Nov 2022 16:02:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231820AbiKJUc6 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 10 Nov 2022 15:32:58 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1396E1D330;
-        Thu, 10 Nov 2022 12:32:52 -0800 (PST)
+        with ESMTP id S230435AbiKJVCl (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 10 Nov 2022 16:02:41 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1098A45EE4;
+        Thu, 10 Nov 2022 13:02:40 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A6E7061E38;
-        Thu, 10 Nov 2022 20:32:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7A02C433D6;
-        Thu, 10 Nov 2022 20:32:50 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id B9A1FB82381;
+        Thu, 10 Nov 2022 21:02:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AFFAC433C1;
+        Thu, 10 Nov 2022 21:02:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1668112371;
-        bh=FAwxMVXEMCAcS5uby63ed6orJtZrfmYhYcYpN6PuPrI=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=iXAbIe8qFQnagQ5siMYMEYtmnyY7pKqQkhT1164Uv1Nxs5YcfFkTzJtE7Pz3hF20o
-         Fz/CFvkcfS97k+YvDTASeXPu9d4slw3UM09GEkXxEDnHRUmYlxUkzKDYATtImU8vmz
-         vZuKVDaz+L5U+effJeDL5j/KyfvsbKTq3+hVY3rfTCeu/a2bzIkvTOKtn+IndjKy18
-         a7klHzIGJ+1p39ZYBgPCS7dypgYE98nUFPIWBylSZulwWi9rfLyp4rdU1ZKuNd+QsV
-         CuiS4NsdstMxXQMhU/RqWvTeae1jBz8hIqiuBdfFoha0sIT77vmW8z9G5ENnOFM/Pm
-         k6oTzr5iCcrlA==
-Date:   Thu, 10 Nov 2022 12:32:49 -0800
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Roger Quadros <rogerq@kernel.org>,
-        Vladimir Oltean <vladimir.oltean@nxp.com>,
-        Ido Schimmel <idosch@idosch.org>,
-        Nikolay Aleksandrov <razor@blackwall.org>
-Cc:     davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-        vigneshr@ti.com, srk@ti.com, linux-omap@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: ethernet: ti: cpsw_ale: optimize
- cpsw_ale_restore()
-Message-ID: <20221110123249.5f0e19df@kernel.org>
-In-Reply-To: <32eacc9d-3866-149a-579a-41f8e405123f@kernel.org>
-References: <20221108135643.15094-1-rogerq@kernel.org>
-        <20221109191941.6af4f71d@kernel.org>
-        <32eacc9d-3866-149a-579a-41f8e405123f@kernel.org>
+        s=k20201202; t=1668114157;
+        bh=dFjwsB2x4Vktj11UP1nFbKy1JuZUspP3pjwcHIsSSnc=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=iJwMckJy0uCcByLR5dTqb/sLhh/p4neWekIYZaZ3yeonbwH09ch8EqoG8ecGOC/gh
+         LxSdAJBLbKmEE3CXGDI3A7Vc6BCxXLJ/bsFq5hQJgqS/nai15IhiKGetEeKH4+vpT2
+         j9Ld+7uAe0Uz9IipZQ/88pm8pLqURo9XzvxQWuunebeReJqpcbJfuCN8BWniAwIWF9
+         a+ZwQoYjb1mS5vRmT3xSXjeYdGWxfBo/pZQHhYRV38fM2nHaPFfGhzmt8f50haLCEQ
+         7sSMDQr3yt4Z74/HTNY4ceRxsq+32kGBXwaNszYjSX1Y2pvyiMxqjjRM7Gykh+Y6zM
+         XSZjD4/Y6CHGA==
+Date:   Thu, 10 Nov 2022 15:02:35 -0600
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc:     Kishon Vijay Abraham I <kishon@kernel.org>,
+        Tom Joseph <tjoseph@cadence.com>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+        Minghuan Lian <minghuan.Lian@nxp.com>,
+        Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Toan Le <toan@os.amperecomputing.com>,
+        Joyce Ooi <joyce.ooi@intel.com>, Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        Conor Dooley <conor.dooley@microchip.com>,
+        Daire McNamara <daire.mcnamara@microchip.com>,
+        Shawn Lin <shawn.lin@rock-chips.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Bharat Kumar Gogada <bharat.kumar.gogada@amd.com>,
+        Michal Simek <michal.simek@amd.com>,
+        bcm-kernel-feedback-list@broadcom.com, linux-omap@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-tegra@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-rockchip@lists.infradead.org,
+        Bjorn Helgaas <bhelgaas@google.com>
+Subject: Re: [PATCH v3 0/5] PCI: Remove unnecessary <linux/of_irq.h> includes
+Message-ID: <20221110210235.GA671572@bhelgaas>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221031153954.1163623-1-helgaas@kernel.org>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -59,44 +74,57 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, 10 Nov 2022 11:39:47 +0200 Roger Quadros wrote:
-> > Maybe my tree is old but I see we clear only if there is a netdev that  
+On Mon, Oct 31, 2022 at 10:39:49AM -0500, Bjorn Helgaas wrote:
+> From: Bjorn Helgaas <bhelgaas@google.com>
 > 
-> This patch depends on this series
-> https://lore.kernel.org/netdev/20221104132310.31577-3-rogerq@kernel.org/T/
-
-I do have those in my tree.
-
-> > needs to be opened but then always call ale_restore(). Is that okay?  
+> Many host controller drivers #include <linux/of_irq.h> even though they
+> don't need it.  Remove the unnecessary #includes.
 > 
-> If netdev is closed and opened ale_restore() is not called.
-> ale_restore() is only called during system suspend/resume path
-> since CPSW-ALE might have lost context during suspend and we want to restore
-> all valid ALE entries.
+> v2: https://lore.kernel.org/r/20221025185147.665365-1-helgaas@kernel.org/
+> v1: https://lore.kernel.org/r/20221019195452.37606-1-helgaas@kernel.org/
+> 
+> Changes from v2 to v3:
+>   - Include <linux/irqdomain.h> explicitly in xgene-msi, which doesn't need
+>     <linux/of_irq.h> itself, but relied on it to include
+>     <linux/irqdomain.h>.  On x86, this was covered up by the fact that
+>     <linux/msi.h> includes <asm/msi.h>, which includes <asm/irqdomain.h>,
+>     which includes <linux/irqdomain.h>.  But on parisc, <asm/msi.h> is
+>     actually asm-generic/msi.h, which does *not* include
+>     <linux/irqdomain.h>
+>   - Pick up tags from Conor Dooley and Thomas Petazzoni
+> 
+> Changes from v1 to v2:
+>   - Include <linux/irqdomain.h> explicitly in altera-msi and microchip,
+>     which don't need <linux/of_irq.h> itself, but relied on it to include
+>     <linux/irqdomain.h>
+>   - Include <linux/irqdomain.h> explicitly in mvebu, which needs both it
+>     and <linux/of_irq.h>
+> 
+> Bjorn Helgaas (5):
+>   PCI: altera-msi: Include <linux/irqdomain.h> explicitly
+>   PCI: microchip: Include <linux/irqdomain.h> explicitly
+>   PCI: mvebu: Include <linux/irqdomain.h> explicitly
+>   PCI: xgene-msi: Include <linux/irqdomain.h> explicitly
+>   PCI: Remove unnecessary <linux/of_irq.h> includes
+> 
+>  drivers/pci/controller/cadence/pci-j721e.c   | 1 -
+>  drivers/pci/controller/dwc/pci-layerscape.c  | 1 -
+>  drivers/pci/controller/dwc/pcie-armada8k.c   | 1 -
+>  drivers/pci/controller/dwc/pcie-tegra194.c   | 1 -
+>  drivers/pci/controller/pci-mvebu.c           | 1 +
+>  drivers/pci/controller/pci-v3-semi.c         | 1 -
+>  drivers/pci/controller/pci-xgene-msi.c       | 2 +-
+>  drivers/pci/controller/pci-xgene.c           | 1 -
+>  drivers/pci/controller/pcie-altera-msi.c     | 2 +-
+>  drivers/pci/controller/pcie-iproc-platform.c | 1 -
+>  drivers/pci/controller/pcie-iproc.c          | 1 -
+>  drivers/pci/controller/pcie-microchip-host.c | 2 +-
+>  drivers/pci/controller/pcie-rockchip-host.c  | 1 -
+>  drivers/pci/controller/pcie-xilinx-cpm.c     | 1 -
+>  drivers/pci/controller/pcie-xilinx-nwl.c     | 1 -
+>  15 files changed, 4 insertions(+), 14 deletions(-)
 
-Ack, what I'm referring to is the contents of am65_cpsw_nuss_resume().
+I put these on a pci/kbuild branch that I propose to merge in after
+everything else.  Lorenzo, let me know if you prefer another approach.
 
-I'm guessing that ALE_CLEAR is expected to be triggered by
-cpsw_ale_start().
-
-Assuming above is true and that ALE_CLEAR comes from cpsw_ale_start(),
-the call stack is:
-
- cpsw_ale_start()
- am65_cpsw_nuss_common_open()
- am65_cpsw_nuss_ndo_slave_open()
- am65_cpsw_nuss_resume()
-
-but resume() only calls ndo_slave_open under certain conditions:
-
-        for (i = 0; i < common->port_num; i++) {                                  
-                if (netif_running(ndev)) {                                      
-                        rtnl_lock();                                            
-                        ret = am65_cpsw_nuss_ndo_slave_open(ndev);    
-
-Is there another path? Or perhaps there's nothing to restore 
-if all netdevs are down?
-
-> I have a question here. How should ageable entries be treated in this case?
-
-Ah, no idea :) Let's me add experts to To:
+Bjorn
