@@ -2,56 +2,49 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B48266239E0
-	for <lists+linux-omap@lfdr.de>; Thu, 10 Nov 2022 03:40:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 92193623A4D
+	for <lists+linux-omap@lfdr.de>; Thu, 10 Nov 2022 04:19:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229556AbiKJCkU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 9 Nov 2022 21:40:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48054 "EHLO
+        id S232301AbiKJDTo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 9 Nov 2022 22:19:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36114 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232335AbiKJCkS (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 9 Nov 2022 21:40:18 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCDF713EAD;
-        Wed,  9 Nov 2022 18:40:17 -0800 (PST)
+        with ESMTP id S230120AbiKJDTo (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 9 Nov 2022 22:19:44 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86CA3286E4;
+        Wed,  9 Nov 2022 19:19:43 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 3882FB82062;
-        Thu, 10 Nov 2022 02:40:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id CEB1BC433D7;
-        Thu, 10 Nov 2022 02:40:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 22C2261D2E;
+        Thu, 10 Nov 2022 03:19:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27236C433D6;
+        Thu, 10 Nov 2022 03:19:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1668048014;
-        bh=yrsGQQL1q+GBNKW7AMNQYw3Mlguuo+PD9a5PiSGG0kM=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=m47KIj8K98+UnShqojg3+ANKHyZ7J2M2l5dM/1nVrfrHTPohFMPfb2prTFmrdsSVD
-         ErMT1+K+uni1aJ9eh0H9gk6ed5MrOeHYs7jxrm4PChzClABC4s0+C4PnGo7F+fnFJw
-         JMK53yzECJBVabJsuHr6PUBWs+MW9Z92L8vKtaeq3LgQt/UJg/bx2N6hNQMWV7uLKg
-         Aq9+NVFT7XOqXHCzt+wwb9SyqAdCvo6UK+CaynGb8Ep7cTar+bHDi+HQNWUsStoEQd
-         YyNv5lmWml7/Xsf7lJXYGJCLTPgtS9GQbeCbM9gBNHzulaOscnz5Z27+WsSAQa/vsw
-         /JEKwSOmzJEXA==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id A55B1C395F7;
-        Thu, 10 Nov 2022 02:40:14 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        s=k20201202; t=1668050382;
+        bh=lEvNPQT64JP784ZbtlJ2vRiQt5VXmBZWy37oJLq+9Yk=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=lrc9jPwfm5wGLhnQjkl7vdG9A7eP3u7lsFf8egWyJF4miGX0qRqPnopIg0SHsKR37
+         ic+zwMLPgK6+Q61c7SnN28o7e4lx+TjvwPIuKqrmguV41f+ohZb6RcT5pfeAHsi7vl
+         OSvzBT7PlyaYFxCW6LUTi2h9XIMN2Knd7v7F9nLDGmn33FFA2IG6kq3r4d/eThHxsc
+         FKdkE6U38d3+2N2mlxwAMWe21fXR82N/yLpJ99xeL0kvxFPMh4X+bMMta3ISYXl7Dd
+         u6PWtqcB0RwTDyMic9P1HqLboUWP+uu6DEokI0tznZF3fh1kDTWJhH/amCzRMNLvtm
+         Na04cS58cmSPw==
+Date:   Wed, 9 Nov 2022 19:19:41 -0800
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Roger Quadros <rogerq@kernel.org>
+Cc:     davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+        vigneshr@ti.com, srk@ti.com, linux-omap@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] net: ethernet: ti: cpsw_ale: optimize
+ cpsw_ale_restore()
+Message-ID: <20221109191941.6af4f71d@kernel.org>
+In-Reply-To: <20221108135643.15094-1-rogerq@kernel.org>
+References: <20221108135643.15094-1-rogerq@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: cpsw: disable napi in cpsw_ndo_open()
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <166804801465.842.8389256583880399963.git-patchwork-notify@kernel.org>
-Date:   Thu, 10 Nov 2022 02:40:14 +0000
-References: <20221109011537.96975-1-shaozhengchao@huawei.com>
-In-Reply-To: <20221109011537.96975-1-shaozhengchao@huawei.com>
-To:     Zhengchao Shao <shaozhengchao@huawei.com>
-Cc:     linux-omap@vger.kernel.org, netdev@vger.kernel.org,
-        bpf@vger.kernel.org, grygorii.strashko@ti.com, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
-        john.fastabend@gmail.com, chi.minghao@zte.com.cn,
-        mkl@pengutronix.de, wsa+renesas@sang-engineering.com,
-        ardb@kernel.org, yangyingliang@huawei.com, mugunthanvnm@ti.com,
-        weiyongjun1@huawei.com, yuehaibing@huawei.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -61,29 +54,46 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hello:
+On Tue,  8 Nov 2022 15:56:43 +0200 Roger Quadros wrote:
+> If an entry was FREE then we don't have to restore it.
 
-This patch was applied to netdev/net.git (master)
-by Jakub Kicinski <kuba@kernel.org>:
+Motivation? Does it make the restore faster?
 
-On Wed, 9 Nov 2022 09:15:37 +0800 you wrote:
-> When failed to create xdp rxqs or fill rx channels in cpsw_ndo_open() for
-> opening device, napi isn't disabled. When open cpsw device next time, it
-> will report a invalid opcode issue. Fix it. Only be compiled, not be
-> tested.
+> Signed-off-by: Roger Quadros <rogerq@kernel.org>
+> ---
 > 
-> Fixes: d354eb85d618 ("drivers: net: cpsw: dual_emac: simplify napi usage")
-> Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
+> Patch depends on
+> https://lore.kernel.org/netdev/20221104132310.31577-3-rogerq@kernel.org/T/
 > 
-> [...]
+>  drivers/net/ethernet/ti/cpsw_ale.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
+> index 0c5e783e574c..41bcf34a22f8 100644
+> --- a/drivers/net/ethernet/ti/cpsw_ale.c
+> +++ b/drivers/net/ethernet/ti/cpsw_ale.c
+> @@ -1452,12 +1452,15 @@ void cpsw_ale_dump(struct cpsw_ale *ale, u32 *data)
+>  	}
+>  }
+>  
+> +/* ALE table should be cleared (ALE_CLEAR) before cpsw_ale_restore() */
 
-Here is the summary with links:
-  - [net] net: cpsw: disable napi in cpsw_ndo_open()
-    https://git.kernel.org/netdev/net/c/6d47b53fb3f3
+Maybe my tree is old but I see we clear only if there is a netdev that
+needs to be opened but then always call ale_restore(). Is that okay?
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+I'd also s/should/must/ 
 
+>  void cpsw_ale_restore(struct cpsw_ale *ale, u32 *data)
+>  {
+> -	int i;
+> +	int i, type;
+>  
+>  	for (i = 0; i < ale->params.ale_entries; i++) {
+> -		cpsw_ale_write(ale, i, data);
+> +		type = cpsw_ale_get_entry_type(data);
+> +		if (type != ALE_TYPE_FREE)
+> +			cpsw_ale_write(ale, i, data);
+>  		data += ALE_ENTRY_WORDS;
+>  	}
+>  }
 
