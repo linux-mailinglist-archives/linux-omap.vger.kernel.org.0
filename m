@@ -2,100 +2,98 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BD6B625B50
-	for <lists+linux-omap@lfdr.de>; Fri, 11 Nov 2022 14:35:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B607626111
+	for <lists+linux-omap@lfdr.de>; Fri, 11 Nov 2022 19:27:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230377AbiKKNfy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 11 Nov 2022 08:35:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50406 "EHLO
+        id S233898AbiKKS1k (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 11 Nov 2022 13:27:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230270AbiKKNfy (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 11 Nov 2022 08:35:54 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A582213FB8;
-        Fri, 11 Nov 2022 05:35:53 -0800 (PST)
+        with ESMTP id S232004AbiKKS1j (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 11 Nov 2022 13:27:39 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EF104D5CA;
+        Fri, 11 Nov 2022 10:27:38 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 46B3561FB9;
-        Fri, 11 Nov 2022 13:35:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03BDEC433C1;
-        Fri, 11 Nov 2022 13:35:49 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id B358BCE2923;
+        Fri, 11 Nov 2022 18:27:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B41C3C4347C;
+        Fri, 11 Nov 2022 18:27:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1668173752;
-        bh=CaRWFQiIEk3LaLCfHVLBit9YNmh0dMLE9iEL18b83rU=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=hfsWscfQevV1MMDKPneC9LR/rjZe4/oQJjeVp5jQN/y5d9QKQBb8gIwJukxN8etsp
-         GG7UWqx9E+6h37zbMTMTzc9huTz4Ym/eZYuCGXuoRDNYtm6PtfJ9mSs6Nry7T1ktBC
-         YIAJiXygu+qgANsYedd7jpejnc+i9GyArejbXQpTVv48RlbcTzK1Xlz8q0imDumlDE
-         GeyuVVY/yKX9yqAygpVzXofsBPe6kajCmQmBYW21tJTdVYteb9BEp5S02wOG9Dj1rP
-         knY6Ji4F76flOWGmMHsyRTKBcncPz0sz1SOntyFp421LPXehWeZqhM/R54yNTr65I0
-         W3N+dD8x9lj3w==
-Message-ID: <8958bf63-d5e4-9f3c-ad61-b85068cb2fd3@kernel.org>
-Date:   Fri, 11 Nov 2022 15:35:46 +0200
+        s=k20201202; t=1668191254;
+        bh=r2cI09RUXuELqRiuQS5kKQ79PQPgCuGaFw4FvQy4K9w=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=bn606Xi8F0jx27buuhj9XwSONaHLGZzzcIotUYXv4ZKWBQeeUDyfRoNmj2JFkndd/
+         4GIp4ngPAWf2LF184mjQo29YdjxybzAGlKmAO4UYd8tL6hDLuktD1SfEBXUvoUFaom
+         ltrxbltUqo5iJcClAQG4PnmPmYGhuBiQd3PlxoV8JF6GGnyBonr3LsB8B9jQ+RHbow
+         GorUBHsmsaLEKbMk5A0qMAvES5X7ifMVGSSjygOiqI42xDskcQbZXFBqY1HBZS7/ZZ
+         9j5W4TIP75bvJcf3j37BS1T0Ygffu/VOfPQs006iPYcfjPes/FIHeY1ih8kWlVkmPl
+         K0JJoVRcOFZgA==
+Received: by mail-lf1-f51.google.com with SMTP id r12so9521721lfp.1;
+        Fri, 11 Nov 2022 10:27:34 -0800 (PST)
+X-Gm-Message-State: ANoB5plbcoOMms5rkoVUQ5NJgeHnugrE0l0WbBEe/TyNN3DfF3zO2Y8f
+        unNZbyWo6Ttf9lo/zXSMAfoJOMNFJ6GSH2ft2g==
+X-Google-Smtp-Source: AA0mqf5AsfopZSW40P5z5SuakKi9gWyzraY7YgC+syc1XRIXJFwAM0ajx5uLiWLRMjx1lWptwFOAR2YFY1YIdK1z7HM=
+X-Received: by 2002:a05:6512:b1a:b0:4b0:3e46:2b75 with SMTP id
+ w26-20020a0565120b1a00b004b03e462b75mr1111916lfu.368.1668191252668; Fri, 11
+ Nov 2022 10:27:32 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCH] net: ethernet: ti: cpsw_ale: optimize cpsw_ale_restore()
-Content-Language: en-US
-To:     Vladimir Oltean <vladimir.oltean@nxp.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Cc:     Ido Schimmel <idosch@idosch.org>,
-        Nikolay Aleksandrov <razor@blackwall.org>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "edumazet@google.com" <edumazet@google.com>,
-        "pabeni@redhat.com" <pabeni@redhat.com>,
-        "vigneshr@ti.com" <vigneshr@ti.com>, "srk@ti.com" <srk@ti.com>,
-        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20221108135643.15094-1-rogerq@kernel.org>
- <20221109191941.6af4f71d@kernel.org>
- <32eacc9d-3866-149a-579a-41f8e405123f@kernel.org>
- <20221110123249.5f0e19df@kernel.org> <20221111120350.waumn6x35vwfnrfc@skbuf>
-From:   Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <20221111120350.waumn6x35vwfnrfc@skbuf>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20221031153954.1163623-1-helgaas@kernel.org>
+In-Reply-To: <20221031153954.1163623-1-helgaas@kernel.org>
+From:   Rob Herring <robh@kernel.org>
+Date:   Fri, 11 Nov 2022 12:27:23 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqKt81KKopsGML7k3mvBqFCQ5VkKx31eCdjntpsHBkTMkw@mail.gmail.com>
+Message-ID: <CAL_JsqKt81KKopsGML7k3mvBqFCQ5VkKx31eCdjntpsHBkTMkw@mail.gmail.com>
+Subject: Re: [PATCH v3 0/5] PCI: Remove unnecessary <linux/of_irq.h> includes
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Kishon Vijay Abraham I <kishon@kernel.org>,
+        Tom Joseph <tjoseph@cadence.com>,
+        =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
+        Minghuan Lian <minghuan.Lian@nxp.com>,
+        Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Toan Le <toan@os.amperecomputing.com>,
+        Joyce Ooi <joyce.ooi@intel.com>, Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        Conor Dooley <conor.dooley@microchip.com>,
+        Daire McNamara <daire.mcnamara@microchip.com>,
+        Shawn Lin <shawn.lin@rock-chips.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Bharat Kumar Gogada <bharat.kumar.gogada@amd.com>,
+        Michal Simek <michal.simek@amd.com>,
+        bcm-kernel-feedback-list@broadcom.com, linux-omap@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-tegra@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-rockchip@lists.infradead.org,
+        Bjorn Helgaas <bhelgaas@google.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Mon, Oct 31, 2022 at 10:40 AM Bjorn Helgaas <helgaas@kernel.org> wrote:
+>
+> From: Bjorn Helgaas <bhelgaas@google.com>
+>
+> Many host controller drivers #include <linux/of_irq.h> even though they
+> don't need it.  Remove the unnecessary #includes.
 
+Note that the same is often true of the other of_*.h headers.
 
-On 11/11/2022 14:03, Vladimir Oltean wrote:
-> On Thu, Nov 10, 2022 at 12:32:49PM -0800, Jakub Kicinski wrote:
->>> I have a question here. How should ageable entries be treated in this case?
->>
->> Ah, no idea :) Let's me add experts to To:
-> 
-> Not a real expert, but if suspend/resume loses the Ethernet link,
-> I expect that no dynamically learned entries are preserved across
-> a link loss event.
+of_device.h and of_platform.h are tricky though as one includes the
+other (with a decade old comment to fix). I started down that rabbit
+hole once...
 
-Understood. We loose the link in this particular case.
-
-> 
-> In DSA for example, we only keep ageable entries in hardware as long as
-> the port STP state, plus BR_LEARNING port flag, are compatible with
-> having such FDB entries. Otherwise, any transition to such a state
-> flushes the ageable FDB entries.
-> 
-> A link loss generates a bridge port transition to the DISABLED state,
-> which DSA uses to generate a SWITCHDEV_FDB_FLUSH_TO_BRIDGE event.
-> 
-> I'm not sure if it would even be possible to accurately do the right
-> thing and update the ageing timer of the FDB entries with the amount of
-> time that the system was suspended.
-
-In that case I'll leave the entries as they are and let the Switch logic
-deal with the stale entries. They should eventually get flushed out.
-
-cheers,
--roger
+Rob
