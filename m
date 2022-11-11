@@ -2,129 +2,141 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 147DF624C58
-	for <lists+linux-omap@lfdr.de>; Thu, 10 Nov 2022 22:02:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C395762556D
+	for <lists+linux-omap@lfdr.de>; Fri, 11 Nov 2022 09:36:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230232AbiKJVCp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 10 Nov 2022 16:02:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56098 "EHLO
+        id S232825AbiKKIgm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 11 Nov 2022 03:36:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56730 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230435AbiKJVCl (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 10 Nov 2022 16:02:41 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1098A45EE4;
-        Thu, 10 Nov 2022 13:02:40 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id B9A1FB82381;
-        Thu, 10 Nov 2022 21:02:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AFFAC433C1;
-        Thu, 10 Nov 2022 21:02:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1668114157;
-        bh=dFjwsB2x4Vktj11UP1nFbKy1JuZUspP3pjwcHIsSSnc=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=iJwMckJy0uCcByLR5dTqb/sLhh/p4neWekIYZaZ3yeonbwH09ch8EqoG8ecGOC/gh
-         LxSdAJBLbKmEE3CXGDI3A7Vc6BCxXLJ/bsFq5hQJgqS/nai15IhiKGetEeKH4+vpT2
-         j9Ld+7uAe0Uz9IipZQ/88pm8pLqURo9XzvxQWuunebeReJqpcbJfuCN8BWniAwIWF9
-         a+ZwQoYjb1mS5vRmT3xSXjeYdGWxfBo/pZQHhYRV38fM2nHaPFfGhzmt8f50haLCEQ
-         7sSMDQr3yt4Z74/HTNY4ceRxsq+32kGBXwaNszYjSX1Y2pvyiMxqjjRM7Gykh+Y6zM
-         XSZjD4/Y6CHGA==
-Date:   Thu, 10 Nov 2022 15:02:35 -0600
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Lorenzo Pieralisi <lpieralisi@kernel.org>
-Cc:     Kishon Vijay Abraham I <kishon@kernel.org>,
-        Tom Joseph <tjoseph@cadence.com>,
+        with ESMTP id S232471AbiKKIgl (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 11 Nov 2022 03:36:41 -0500
+Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DC52654D3;
+        Fri, 11 Nov 2022 00:36:40 -0800 (PST)
+Received: by mail-wr1-x42d.google.com with SMTP id y16so5504598wrt.12;
+        Fri, 11 Nov 2022 00:36:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=3LdKiDa3X5sRwQrkwBd9fsnonVBgPFP/Q0DkSX0juAw=;
+        b=bfRj7QxjEbM/niJkaWqqiz0trKfDz4MiqicdQJwv9oRoVzm47d0EGJ6eXu3tHaQiHE
+         Ugyp05pCuAD2GFL2AicQM4tQggjVqrtd6r7PLcEk9LnbEYS/tOWV2G7Wd0OFORhQVYmZ
+         xJdmnSEnqlRfLV1oM+XGa2TXnhaG7GV6AvDQPBEfOaRM4iMPqonz4npkO4OW/c31H6wI
+         EhZkO2HnbPHCzog7XSelGYmpU6litGhPVm7emL1lpyiDl1t4EE09MqAHO/Qsd3JO/4uI
+         kCFOXDuOVO3hpZu8G8Wl/izyHLYno8ymnqgnJDxpLL8SlgNPimorIW11tLEp03pPzHFI
+         BOSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3LdKiDa3X5sRwQrkwBd9fsnonVBgPFP/Q0DkSX0juAw=;
+        b=kHfIBfmVdkpRybFB9xzu1QVqHPIEsESNNt88DVIlo5zNJknor6ZFiS4F4u3sSUAaWd
+         F6whm5MupSzwFFFw751qQl5fkd1uyV/tyJ90Y25ePqGEuAVNEcHYPgSIbOdVc5LixJIT
+         sCFCptz9ATvFvT+GB/ZRpwxHIUZ7mOGjPY94P73062QoTpaRRJGv7iit925xpTyrJiO6
+         lmJfRgsxlmjct3ttFUm9CzBwL7gCCCiMgRNUGnYqhSIVoNbSIF4vLIbocYEgDhvFAMx9
+         CoH+5trO9rRhaSl45mKcnS8f0HM84XmWjw/UfqxFQWL+WmBRZYNaCTur/GPmZ5cx+SDy
+         6LYg==
+X-Gm-Message-State: ANoB5pmLyhZ9FxeTUgGzR/QoYSamwgzx2JlH3hbMSD4EYH1F1XEfmuSP
+        lsSJDe+FNVZOiRezQw6sBRc=
+X-Google-Smtp-Source: AA0mqf5zJnBWSewYJi5CZXCHSfIqp/EIZEL1KUO2jeV1UtAmzpZYjV0gKz5oXlS+9igqzhly82U9UQ==
+X-Received: by 2002:a5d:538d:0:b0:236:6b8e:3a3f with SMTP id d13-20020a5d538d000000b002366b8e3a3fmr577678wrv.159.1668155798966;
+        Fri, 11 Nov 2022 00:36:38 -0800 (PST)
+Received: from tp440p.steeds.sam ([69.63.64.50])
+        by smtp.gmail.com with ESMTPSA id k7-20020a05600c1c8700b003c6b7f5567csm12067507wms.0.2022.11.11.00.36.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 11 Nov 2022 00:36:38 -0800 (PST)
+Date:   Fri, 11 Nov 2022 10:36:33 +0200
+From:   Sicelo <absicsz@gmail.com>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     linux-usb@vger.kernel.org, linux-omap@vger.kernel.org,
+        maemo-leste@lists.dyne.org, Felipe Balbi <balbi@kernel.org>,
+        phone-devel@vger.kernel.org, Bin Liu <b-liu@ti.com>,
         Rob Herring <robh@kernel.org>,
-        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-        Minghuan Lian <minghuan.Lian@nxp.com>,
-        Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Toan Le <toan@os.amperecomputing.com>,
-        Joyce Ooi <joyce.ooi@intel.com>, Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Conor Dooley <conor.dooley@microchip.com>,
-        Daire McNamara <daire.mcnamara@microchip.com>,
-        Shawn Lin <shawn.lin@rock-chips.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Bharat Kumar Gogada <bharat.kumar.gogada@amd.com>,
-        Michal Simek <michal.simek@amd.com>,
-        bcm-kernel-feedback-list@broadcom.com, linux-omap@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-tegra@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-rockchip@lists.infradead.org,
-        Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: [PATCH v3 0/5] PCI: Remove unnecessary <linux/of_irq.h> includes
-Message-ID: <20221110210235.GA671572@bhelgaas>
+        "H. Nikolaus Schaller" <hns@goldelico.com>
+Subject: Re: [maemo-leste] USB PHY Initialization Fails on Nokia N900 Since
+ 5.19
+Message-ID: <Y24JkS3tykIZRH+A@tp440p.steeds.sam>
+References: <Y0PhEOl+MwlQ8HAD@tp440p.steeds.sam>
+ <Y0UBindrJa1ptyR0@atomide.com>
+ <Y0VI+/XJs8nsazwE@tp440p.steeds.sam>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20221031153954.1163623-1-helgaas@kernel.org>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <Y0VI+/XJs8nsazwE@tp440p.steeds.sam>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Oct 31, 2022 at 10:39:49AM -0500, Bjorn Helgaas wrote:
-> From: Bjorn Helgaas <bhelgaas@google.com>
+On Tue, Oct 11, 2022 at 12:44:11PM +0200, Sicelo wrote:
+> On Tue, Oct 11, 2022 at 08:39:22AM +0300, Tony Lindgren wrote:
+> > To me it seems that we now somehow have a probe issue for musb depending
+> > on how it gets probed depending on the following line:
+> > 
+> > device_set_of_node_from_dev(&musb->dev, &pdev->dev);
+> > 
 > 
-> Many host controller drivers #include <linux/of_irq.h> even though they
-> don't need it.  Remove the unnecessary #includes.
+> Thanks for the suggestion. However, 239071064732 does not fix it for me.
+> With that in place, there is no trace created automatically, but dmesg
+> shows:
 > 
-> v2: https://lore.kernel.org/r/20221025185147.665365-1-helgaas@kernel.org/
-> v1: https://lore.kernel.org/r/20221019195452.37606-1-helgaas@kernel.org/
+>   [    1.389648] musb-hdrc musb-hdrc.0.auto: error -ENXIO: IRQ mc not found
 > 
-> Changes from v2 to v3:
->   - Include <linux/irqdomain.h> explicitly in xgene-msi, which doesn't need
->     <linux/of_irq.h> itself, but relied on it to include
->     <linux/irqdomain.h>.  On x86, this was covered up by the fact that
->     <linux/msi.h> includes <asm/msi.h>, which includes <asm/irqdomain.h>,
->     which includes <linux/irqdomain.h>.  But on parisc, <asm/msi.h> is
->     actually asm-generic/msi.h, which does *not* include
->     <linux/irqdomain.h>
->   - Pick up tags from Conor Dooley and Thomas Petazzoni
+> I wonder if there is something to update on the N900 dts perhaps, in
+> connection with the recent musb changes?
 > 
-> Changes from v1 to v2:
->   - Include <linux/irqdomain.h> explicitly in altera-msi and microchip,
->     which don't need <linux/of_irq.h> itself, but relied on it to include
->     <linux/irqdomain.h>
->   - Include <linux/irqdomain.h> explicitly in mvebu, which needs both it
->     and <linux/of_irq.h>
-> 
-> Bjorn Helgaas (5):
->   PCI: altera-msi: Include <linux/irqdomain.h> explicitly
->   PCI: microchip: Include <linux/irqdomain.h> explicitly
->   PCI: mvebu: Include <linux/irqdomain.h> explicitly
->   PCI: xgene-msi: Include <linux/irqdomain.h> explicitly
->   PCI: Remove unnecessary <linux/of_irq.h> includes
-> 
->  drivers/pci/controller/cadence/pci-j721e.c   | 1 -
->  drivers/pci/controller/dwc/pci-layerscape.c  | 1 -
->  drivers/pci/controller/dwc/pcie-armada8k.c   | 1 -
->  drivers/pci/controller/dwc/pcie-tegra194.c   | 1 -
->  drivers/pci/controller/pci-mvebu.c           | 1 +
->  drivers/pci/controller/pci-v3-semi.c         | 1 -
->  drivers/pci/controller/pci-xgene-msi.c       | 2 +-
->  drivers/pci/controller/pci-xgene.c           | 1 -
->  drivers/pci/controller/pcie-altera-msi.c     | 2 +-
->  drivers/pci/controller/pcie-iproc-platform.c | 1 -
->  drivers/pci/controller/pcie-iproc.c          | 1 -
->  drivers/pci/controller/pcie-microchip-host.c | 2 +-
->  drivers/pci/controller/pcie-rockchip-host.c  | 1 -
->  drivers/pci/controller/pcie-xilinx-cpm.c     | 1 -
->  drivers/pci/controller/pcie-xilinx-nwl.c     | 1 -
->  15 files changed, 4 insertions(+), 14 deletions(-)
 
-I put these on a pci/kbuild branch that I propose to merge in after
-everything else.  Lorenzo, let me know if you prefer another approach.
+Good day
 
-Bjorn
+Just for further testing, I added the very ugly patch below. Applied on
+vanilla 6.1-rc3 (i.e. containing 239071064732), USB works normally on
+the N900.
+
+I copied the irq numbers from omap3xxx.dtsi. Does this give us any hints
+regarding the cause and resolution of this issue?
+
+Regards
+Sicelo
+
+
+
+
+diff --git a/drivers/usb/musb/musb_core.c b/drivers/usb/musb/musb_core.c
+index 03027c6fa3ab..440c917c0133 100644
+--- a/drivers/usb/musb/musb_core.c
++++ b/drivers/usb/musb/musb_core.c
+@@ -2613,7 +2613,8 @@ musb_init_controller(struct device *dev, int nIrq, void __iomem *ctrl)
+ static int musb_probe(struct platform_device *pdev)
+ {
+        struct device   *dev = &pdev->dev;
+-       int             irq = platform_get_irq_byname(pdev, "mc");
++       //int           irq = platform_get_irq_byname(pdev, "mc");
++       int irq = 92;
+        void __iomem    *base;
+
+        if (irq <= 0)
+diff --git a/drivers/usb/musb/musbhsdma.c b/drivers/usb/musb/musbhsdma.c
+index 7acd1635850d..6c03a5301d01 100644
+--- a/drivers/usb/musb/musbhsdma.c
++++ b/drivers/usb/musb/musbhsdma.c
+@@ -416,7 +416,8 @@ musbhs_dma_controller_create(struct musb *musb, void __iomem *base)
+        struct musb_dma_controller *controller;
+        struct device *dev = musb->controller;
+        struct platform_device *pdev = to_platform_device(dev);
+-       int irq = platform_get_irq_byname(pdev, "dma");
++       //int irq = platform_get_irq_byname(pdev, "dma");
++       int irq= 93;
+
+        if (irq <= 0) {
+                dev_err(dev, "No DMA interrupt line!\n");
+
+
+
