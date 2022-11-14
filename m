@@ -2,112 +2,92 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C776662742E
-	for <lists+linux-omap@lfdr.de>; Mon, 14 Nov 2022 02:32:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E348627C72
+	for <lists+linux-omap@lfdr.de>; Mon, 14 Nov 2022 12:38:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235614AbiKNBcS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 13 Nov 2022 20:32:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50146 "EHLO
+        id S235859AbiKNLiN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 14 Nov 2022 06:38:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235430AbiKNBcR (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 13 Nov 2022 20:32:17 -0500
-Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55D13C19
-        for <linux-omap@vger.kernel.org>; Sun, 13 Nov 2022 17:32:16 -0800 (PST)
-Received: by mail-ej1-x643.google.com with SMTP id f27so25011509eje.1
-        for <linux-omap@vger.kernel.org>; Sun, 13 Nov 2022 17:32:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:sender:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2A5Zw4wTof6wwwRVMT2EklD6tpS33zcb3kC2X1CkRqg=;
-        b=cVSrKxrWfTF+zSdGici4PM07zxG67TR+qaSgbucf2F1NLpGQAC5yUL1JJiA05RBWLk
-         ABlOkBX5SJOrE+e+f2e9aKNtklegGpCzTIca9QIxiM01NAG/eO1A+h+yNW+LnR+z2/T0
-         X8DkeT0hL50I8T+1b+xiY+LKKbkz0c1Cl5F2cCdEp4f2LdUC0qqvXeu0zTBrSlIh/3zM
-         RA4yRVgpImE46NM+r4T4mObkDyrwrB8DxPtPsNat7u3yl3eS3uvMe5cW4b/IPYxcf2W9
-         OpcIe8uWqwy2Ss0sUkXdlgZELOVlxRcFW7IUDSxseJK7OKPHPYobnVZxqwupX+iYdnvB
-         Ys2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:sender:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2A5Zw4wTof6wwwRVMT2EklD6tpS33zcb3kC2X1CkRqg=;
-        b=VXxHLO4gKRSkrC6SZ98YKKqw5MBcz05oAA5YZVrJkcnwCJKIVYF0AvuCbZhSCM+q/D
-         92rtgyM8yrkkCHAnwh4e3r87mB7PKnp1Vbz4CyPkYcRdJ4hTGkUin4mu1cJ4GiGr1Yhg
-         OBcJJdFH7iqn4/7CpvqeaKfW19evyr4Nl8q/VO3yv4RAuvYvuTE9fHBdfshgbR4kFDuy
-         9Pvc9r/LNRo01bKdVdPARk+fcHvqeqHmhKDNDQuqyXzNs+qhBDdN3hHcqpbTx6z4ZIAO
-         9Tz5u4u+B3TBfrvY6kDpS7fOQqSXifUyY4nRBSAMSkterkkvufmIO3oYf+K4Dum8aZK+
-         QAZg==
-X-Gm-Message-State: ANoB5pndZjEE3kp48TJq3JjiQ9z+zlnVThDs+y2w7nGW5b+xHZOTQ5NN
-        74w8SZ/WIFRXtI8ToqlnVq++O71spp9wrHXUEqs=
-X-Google-Smtp-Source: AA0mqf6+GACnFv7dkky0qVX2+Wib1yT2HKORJaJkTf4fU8HCrF+ZffGDNNolX+oydNmx3Xrm5XsvY3PMY0UChOxLc1I=
-X-Received: by 2002:a17:906:824e:b0:7ae:77ef:d048 with SMTP id
- f14-20020a170906824e00b007ae77efd048mr9070417ejx.740.1668389534685; Sun, 13
- Nov 2022 17:32:14 -0800 (PST)
+        with ESMTP id S229484AbiKNLiM (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 14 Nov 2022 06:38:12 -0500
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a01:238:4321:8900:456f:ecd6:43e:202c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A546E0E8
+        for <linux-omap@vger.kernel.org>; Mon, 14 Nov 2022 03:38:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=kemnade.info; s=20220719; h=Content-Transfer-Encoding:Content-Type:
+        MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=PrNFcixPn+MG01/kOkfXY15R3eqYFpWyt4XCXqLRKZw=; b=o6LrO2wEvWbArpEl35UG3pfve4
+        pmgTJlph6PWlbj/TxUT9agy8bDiIJdLumoR6gkf9l4CWwa/z1KYZ+meCI0SIqEF4FjawMjFDFNRV9
+        FlImaaI99FdPktA3BcEGYsubQ4vizqlYR6drGdOwDdcZS8n0ClcJG8zW7LDijJm1rNHwjRuxEVJQh
+        shsiGoG22eXtuid0CPN78od/kuL86t1X+mhs0It5JHAxt+BRBfVBHV53hv+F4puRezvePLgLcxe3g
+        dhVA9hu3io8Xsh/Z0r/IQcWc6vnbdFxlFyKSxEr0GAy/VH0S/8bI52wIkulDecWBx8tiRl0WX+AXG
+        xTEXKmVw==;
+Received: from p200300ccff0644001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff06:4400:1a3d:a2ff:febf:d33a] helo=aktux)
+        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <andreas@kemnade.info>)
+        id 1ouXmx-00042k-2H; Mon, 14 Nov 2022 12:38:07 +0100
+Date:   Mon, 14 Nov 2022 12:38:05 +0100
+From:   Andreas Kemnade <andreas@kemnade.info>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     deffo@gmx.de, linux-omap@vger.kernel.org, aford173@gmail.com
+Subject: Re: twl: not initialized and twl6030_uv_to_vsel problems
+Message-ID: <20221114123805.60ada45e@aktux>
+In-Reply-To: <20191230174010.GO35479@atomide.com>
+References: <trinity-8c439dd8-69cc-4bbc-812f-a063b15a9369-1576233714035@3c-app-gmx-bs17>
+        <20191230174010.GO35479@atomide.com>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Sender: khwajasalman03@gmail.com
-Received: by 2002:a17:906:60c8:b0:770:af02:b99a with HTTP; Sun, 13 Nov 2022
- 17:32:13 -0800 (PST)
-From:   "Mrs.Yu  Ging" <yuging9567@gmail.com>
-Date:   Mon, 14 Nov 2022 01:32:13 +0000
-X-Google-Sender-Auth: vS0z2V14QX6ZGzINSc8HbglTGjo
-Message-ID: <CAPvpH87Kr8N0V69Wa7C-Y7vEUvWnBp8E5a6PMOB6E7wue0AmAQ@mail.gmail.com>
-Subject: Hello Dear,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.8 required=5.0 tests=BAYES_80,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,LOTS_OF_MONEY,MILLION_USD,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,UNDISC_MONEY autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:643 listed in]
-        [list.dnswl.org]
-        *  2.0 BAYES_80 BODY: Bayes spam probability is 80 to 95%
-        *      [score: 0.9101]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [khwajasalman03[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [khwajasalman03[at]gmail.com]
-        *  0.4 MILLION_USD BODY: Talks about millions of dollars
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        *  3.3 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: *****
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Score: -1.0 (-)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-I am Mrs Yu. Ging Yunnan, and i have Covid-19 and the doctor said I
-will not survive it because all vaccines has been given to me but to
-no avian, am a China
+Hi,
 
-woman but I base here in France because am married here and I have no
-child for my late husband and now am a widow.
+as am taming the Epson Moverio BT-200 containing
+an omap 4660, I came across that this issue. The kernel hangs somewhere
+after this, I am still debugging.
 
-My reason of communicating you is that i have $9.2million USD which
-was deposited in BNP Paribas Bank here in France by my late husband
-which am the next of
+What is the impact of all this? Just not working cpufreq modifications?
 
-kin to and I want you to stand as the beneficiary for the claim now
-that am about to end my race according to my doctor.
+On Mon, 30 Dec 2019 09:40:10 -0800
+Tony Lindgren <tony@atomide.com> wrote:
 
-I will want you to use the fund to build an orphanage home in my name
-there in your country, please kindly reply to this message urgently if
-willing to handle this project.
+> * deffo@gmx.de <deffo@gmx.de> [191213 10:42]:
+> > Thanks for the link Adam, I fixed this on my local branch.
+> > 
+so, it did not went into mainline kernel? Can/did you
+publish the fix?
 
-Mrs Yu. Ging Yunnan.
+> > Concerning the
+> > 
+> > [    2.318054] twl: not initialized
+> > 
+seen this also
+
+> > error, this is due to the fact, that the twl itself is probed later:
+> > 
+> > [    3.042114] twl_probe() called
+> > 
+and the kernel hangs before that (probably still some other problem, still investigating)
+
+> > So it cannot be available at this point. Might be a fundamental problem in the chronological order of init calls?  
+> 
+> Hmm maybe the related omap_*_initcall() needs to use *_initcall_sync()?
+> 
+so there is no fix yet?
+
+Regards
+Andreas
