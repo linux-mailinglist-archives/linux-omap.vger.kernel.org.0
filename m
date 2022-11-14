@@ -2,92 +2,74 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E348627C72
-	for <lists+linux-omap@lfdr.de>; Mon, 14 Nov 2022 12:38:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C7E0E627F21
+	for <lists+linux-omap@lfdr.de>; Mon, 14 Nov 2022 13:55:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235859AbiKNLiN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 14 Nov 2022 06:38:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34200 "EHLO
+        id S237526AbiKNMzu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 14 Nov 2022 07:55:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48040 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229484AbiKNLiM (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 14 Nov 2022 06:38:12 -0500
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a01:238:4321:8900:456f:ecd6:43e:202c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A546E0E8
-        for <linux-omap@vger.kernel.org>; Mon, 14 Nov 2022 03:38:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=kemnade.info; s=20220719; h=Content-Transfer-Encoding:Content-Type:
-        MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=PrNFcixPn+MG01/kOkfXY15R3eqYFpWyt4XCXqLRKZw=; b=o6LrO2wEvWbArpEl35UG3pfve4
-        pmgTJlph6PWlbj/TxUT9agy8bDiIJdLumoR6gkf9l4CWwa/z1KYZ+meCI0SIqEF4FjawMjFDFNRV9
-        FlImaaI99FdPktA3BcEGYsubQ4vizqlYR6drGdOwDdcZS8n0ClcJG8zW7LDijJm1rNHwjRuxEVJQh
-        shsiGoG22eXtuid0CPN78od/kuL86t1X+mhs0It5JHAxt+BRBfVBHV53hv+F4puRezvePLgLcxe3g
-        dhVA9hu3io8Xsh/Z0r/IQcWc6vnbdFxlFyKSxEr0GAy/VH0S/8bI52wIkulDecWBx8tiRl0WX+AXG
-        xTEXKmVw==;
-Received: from p200300ccff0644001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff06:4400:1a3d:a2ff:febf:d33a] helo=aktux)
-        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <andreas@kemnade.info>)
-        id 1ouXmx-00042k-2H; Mon, 14 Nov 2022 12:38:07 +0100
-Date:   Mon, 14 Nov 2022 12:38:05 +0100
-From:   Andreas Kemnade <andreas@kemnade.info>
+        with ESMTP id S237521AbiKNMzu (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 14 Nov 2022 07:55:50 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F3DB2792B;
+        Mon, 14 Nov 2022 04:55:49 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by sin.source.kernel.org (Postfix) with ESMTPS id A780ACE1017;
+        Mon, 14 Nov 2022 12:55:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD622C4347C;
+        Mon, 14 Nov 2022 12:55:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1668430545;
+        bh=PVNoHXT6G+m3J7WFKNR3wufjyq6Oy9PAVmaeUdCeTxg=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=pYBEmBfSRlzwPUHnSnUfqnxfV1Jud0g5HpfzScA/n6n1vexy5S0yM/mr0yayzGnnT
+         2gjaWMHg6TBQq17l0OevXkSz7YVBwG8k6EEK6BY0Y6qerVAMY3ETyoI1SrX2j4jzEG
+         dmnMAESVE+LrnOFnoEdJ+/mrEpoqJMM9l/4oBjqAj9ER9l3kv++05oe9AgMSijJVRP
+         AJxiS+PSSoaxa9C9sU0n28GsjzZGQNpmNAqg5Jp24XQvur9EWB6PByeTj++8oPBEnj
+         2IL++wabmRdoYiwLgz/OG9KgIn5vaxAHknz0IQpizhN4uF549GSWG8xVvyCecQ0Iv9
+         IpakIFwcnavgw==
+From:   Kalle Valo <kvalo@kernel.org>
 To:     Tony Lindgren <tony@atomide.com>
-Cc:     deffo@gmx.de, linux-omap@vger.kernel.org, aford173@gmail.com
-Subject: Re: twl: not initialized and twl6030_uv_to_vsel problems
-Message-ID: <20221114123805.60ada45e@aktux>
-In-Reply-To: <20191230174010.GO35479@atomide.com>
-References: <trinity-8c439dd8-69cc-4bbc-812f-a063b15a9369-1576233714035@3c-app-gmx-bs17>
-        <20191230174010.GO35479@atomide.com>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] ARM: OMAP2+: pdata-quirks: stop including wl12xx.h
+In-Reply-To: <Y2yknekcTus8CB2J@atomide.com> (Tony Lindgren's message of "Thu,
+        10 Nov 2022 09:13:33 +0200")
+References: <20221109224250.2885119-1-dmitry.torokhov@gmail.com>
+        <Y2yknekcTus8CB2J@atomide.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+Date:   Mon, 14 Nov 2022 14:55:40 +0200
+Message-ID: <87mt8tbsqb.fsf@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Score: -1.0 (-)
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
+Tony Lindgren <tony@atomide.com> writes:
 
-as am taming the Epson Moverio BT-200 containing
-an omap 4660, I came across that this issue. The kernel hangs somewhere
-after this, I am still debugging.
+> * Dmitry Torokhov <dmitry.torokhov@gmail.com> [221109 22:33]:
+>> As of commit 2398c41d6432 ("omap: pdata-quirks: remove openpandora
+>> quirks for mmc3 and wl1251") the code no longer creates an instance of
+>> wl1251_platform_data, so there is no need for including this header.
+>
+> Best to merge this together with the rest of the series:
+>
+> Acked-by: Tony Lindgren <tony@atomide.com>
 
-What is the impact of all this? Just not working cpufreq modifications?
+Ok, so I'll plan to take the full series to wireless-next. Please let me
+know if I misunderstood.
 
-On Mon, 30 Dec 2019 09:40:10 -0800
-Tony Lindgren <tony@atomide.com> wrote:
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-> * deffo@gmx.de <deffo@gmx.de> [191213 10:42]:
-> > Thanks for the link Adam, I fixed this on my local branch.
-> > 
-so, it did not went into mainline kernel? Can/did you
-publish the fix?
-
-> > Concerning the
-> > 
-> > [    2.318054] twl: not initialized
-> > 
-seen this also
-
-> > error, this is due to the fact, that the twl itself is probed later:
-> > 
-> > [    3.042114] twl_probe() called
-> > 
-and the kernel hangs before that (probably still some other problem, still investigating)
-
-> > So it cannot be available at this point. Might be a fundamental problem in the chronological order of init calls?  
-> 
-> Hmm maybe the related omap_*_initcall() needs to use *_initcall_sync()?
-> 
-so there is no fix yet?
-
-Regards
-Andreas
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
