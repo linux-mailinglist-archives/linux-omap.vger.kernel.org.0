@@ -2,46 +2,59 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8490462C564
-	for <lists+linux-omap@lfdr.de>; Wed, 16 Nov 2022 17:51:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C1A7C62C74B
+	for <lists+linux-omap@lfdr.de>; Wed, 16 Nov 2022 19:11:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234211AbiKPQvK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 16 Nov 2022 11:51:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35934 "EHLO
+        id S234780AbiKPSL4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 16 Nov 2022 13:11:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51038 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239097AbiKPQus (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 16 Nov 2022 11:50:48 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 504821112;
-        Wed, 16 Nov 2022 08:49:33 -0800 (PST)
+        with ESMTP id S234613AbiKPSLy (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 16 Nov 2022 13:11:54 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBAF06175A;
+        Wed, 16 Nov 2022 10:11:53 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E13D861EEE;
-        Wed, 16 Nov 2022 16:49:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27E8AC43470;
-        Wed, 16 Nov 2022 16:49:29 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 9BF40B81E4F;
+        Wed, 16 Nov 2022 18:11:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AEE4C433D6;
+        Wed, 16 Nov 2022 18:11:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1668617372;
-        bh=qvQKpvLNHVXrB7+8IiQETTMMyyG0jxiPHRO3yv3NGeI=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ANYxNHBCK+3ptBc0Q7XznL1jDwyzPsSoTxs+evIacNUxebzuC/LZTteEaU9DEWbit
-         GIYnMdJCpq6n6QPwuplWul7GiAKSkSQAGskQLG7mPqUfzMAOo9xRZl7Nr1oVE7g7SZ
-         aWCGtwi36aK+2QfOmvWflT4ft81C0z732rEqRCbta9gUrFRIUU4Lvcl5xSRGiWOviS
-         iMkUOSgrwwuC2ktvIsRTq1G0CIRNm7P4B2BQTb2hqNelq8bxqhxs6zWwkPpo7eD2FQ
-         7qyWD+oBngSS2a/93aQLLg5oca8BiEyhOEEbqzevf86/mteZgbyB1ogBT+7W6rCYlK
-         2NoCFlOBOzgYA==
-From:   Roger Quadros <rogerq@kernel.org>
-To:     davem@davemloft.net, kuba@kernel.org
-Cc:     edumazet@google.com, pabeni@redhat.com, vigneshr@ti.com,
-        linux-omap@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Roger Quadros <rogerq@kernel.org>
-Subject: [PATCH 4/4] net: ethernet: ti: cpsw_ale: optimize cpsw_ale_restore()
-Date:   Wed, 16 Nov 2022 18:49:15 +0200
-Message-Id: <20221116164915.13236-5-rogerq@kernel.org>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20221116164915.13236-1-rogerq@kernel.org>
-References: <20221116164915.13236-1-rogerq@kernel.org>
+        s=k20201202; t=1668622311;
+        bh=w0UO98liO5fLCNnlMHd5BQufutT9Of+UoFv/uKbaByY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=lAKPE3PSimsi0+eDiHvPD0qlee7GY738+lb4Z/kt+iyzopEL4vDLZBi2713YTl0LP
+         Kg1W0TOqgwruvLtNRIAZeZdf+tOwkqFXGYuZTkjeF8kYL4U+1HUrwiD9Z8zcdGm76R
+         4zwKh9CeSj8QWrYOZ7ll+7j7kTij7cCB7ulC/B/LXk1QAXeSP+tLmI1FHZRGW+jhY9
+         E0bNNr7YN82FOI/HOt/wUjgBmdSgcQxsTlc8wz8mijzDTZZbR9RAX9FVNzdimGvy8n
+         zD65CrnJ4UCifwzRNdMuOhc/yqHSdSW9A/RqKevSBiy5GSJZ2kleyAtIPxdW7Nz04i
+         mJo1QaKw6/5Sw==
+Date:   Wed, 16 Nov 2022 18:11:43 +0000
+From:   Lee Jones <lee@kernel.org>
+To:     Jerome Neanne <jneanne@baylibre.com>
+Cc:     lgirdwood@gmail.com, broonie@kernel.org, robh+dt@kernel.org,
+        nm@ti.com, kristo@kernel.org, dmitry.torokhov@gmail.com,
+        krzysztof.kozlowski+dt@linaro.org, catalin.marinas@arm.com,
+        will@kernel.org, tony@atomide.com, vigneshr@ti.com,
+        shawnguo@kernel.org, geert+renesas@glider.be,
+        dmitry.baryshkov@linaro.org, marcel.ziswiler@toradex.com,
+        vkoul@kernel.org, biju.das.jz@bp.renesas.com, arnd@arndb.de,
+        jeff@labundy.com, afd@ti.com, khilman@baylibre.com,
+        narmstrong@baylibre.com, msp@baylibre.com, j-keerthy@ti.com,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-input@vger.kernel.org,
+        linux-omap@vger.kernel.org
+Subject: Re: [PATCH v7 4/6] mfd: tps65219: Add driver for TI TPS65219 PMIC
+Message-ID: <Y3Un36o/lACru9Kq@google.com>
+References: <20221104152311.1098603-1-jneanne@baylibre.com>
+ <20221104152311.1098603-5-jneanne@baylibre.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20221104152311.1098603-5-jneanne@baylibre.com>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -51,36 +64,57 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-If an entry was FREE then we don't have to restore it.
-This will make the restore faster in most cases.
+On Fri, 04 Nov 2022, Jerome Neanne wrote:
 
-Signed-off-by: Roger Quadros <rogerq@kernel.org>
----
- drivers/net/ethernet/ti/cpsw_ale.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+> The TPS65219 is a power management IC PMIC designed to supply a wide
+> range of SoCs in both portable and stationary applications. Any SoC can
+> control TPS65219 over a standard I2C interface.
+> 
+> It contains the following components:
+> - Regulators.
+> - Over Temperature warning and Shut down.
+> - GPIOs
+> - Multi Function Pins (MFP)
+> - power-button
+> 
+> This patch adds support for tps65219 PMIC. At this time only
+> the functionalities listed below are made available:
+> 
+> - Regulators probe and functionalities
+> - warm and cold reset support
+> - SW shutdown support
+> - Regulator warnings via IRQs
+> - Power-button via IRQ
+> 
+> Signed-off-by: Jerome Neanne <jneanne@baylibre.com>
+> Signed-off-by: Markus Schneider-Pargmann <msp@baylibre.com>
+> Acked-for-mfd-by: Lee Jones <lee@kernel.org>
+> ---
+> 
+> Notes:
+>     Changes in v7:
+>     Lee Jones review
+>     - Kconfig nit: button that is
+>     - tps65219.c, nits: '\n' x2
+>     - tps65219.c, nit: { .name = "tps65219-gpios", },
+>     - tps65219.h, nit: Power Management IC
+>     - tps65219.h, rework header: struct tps65219
+>     - tps65219.h, remove Superflous " " /* MFD_TPS65219_H */
+>     - remove unused tps65219_soft_shutdown further to make W=1 check
+>     Biju Das review:
+>     - Remove all includes that are not mandatory
+>     - Remove container_of err check
+> 
+>  MAINTAINERS                  |   1 +
+>  drivers/mfd/Kconfig          |  14 ++
+>  drivers/mfd/Makefile         |   1 +
+>  drivers/mfd/tps65219.c       | 299 ++++++++++++++++++++++++++++++
+>  include/linux/mfd/tps65219.h | 345 +++++++++++++++++++++++++++++++++++
+>  5 files changed, 660 insertions(+)
+>  create mode 100644 drivers/mfd/tps65219.c
+>  create mode 100644 include/linux/mfd/tps65219.h
 
-diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
-index 0c5e783e574c..41bcf34a22f8 100644
---- a/drivers/net/ethernet/ti/cpsw_ale.c
-+++ b/drivers/net/ethernet/ti/cpsw_ale.c
-@@ -1452,12 +1452,15 @@ void cpsw_ale_dump(struct cpsw_ale *ale, u32 *data)
- 	}
- }
- 
-+/* ALE table should be cleared (ALE_CLEAR) before cpsw_ale_restore() */
- void cpsw_ale_restore(struct cpsw_ale *ale, u32 *data)
- {
--	int i;
-+	int i, type;
- 
- 	for (i = 0; i < ale->params.ale_entries; i++) {
--		cpsw_ale_write(ale, i, data);
-+		type = cpsw_ale_get_entry_type(data);
-+		if (type != ALE_TYPE_FREE)
-+			cpsw_ale_write(ale, i, data);
- 		data += ALE_ENTRY_WORDS;
- 	}
- }
+Applied, thanks.
+
 -- 
-2.17.1
-
+Lee Jones [李琼斯]
