@@ -2,74 +2,103 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E6AD662B6A8
-	for <lists+linux-omap@lfdr.de>; Wed, 16 Nov 2022 10:38:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F36362BAE2
+	for <lists+linux-omap@lfdr.de>; Wed, 16 Nov 2022 12:06:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233221AbiKPJiF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 16 Nov 2022 04:38:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55604 "EHLO
+        id S238792AbiKPLGS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 16 Nov 2022 06:06:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232614AbiKPJiE (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 16 Nov 2022 04:38:04 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBCA3D13B;
-        Wed, 16 Nov 2022 01:38:03 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 82B1661B3C;
-        Wed, 16 Nov 2022 09:38:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC770C433C1;
-        Wed, 16 Nov 2022 09:38:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1668591482;
-        bh=jq4Sq7lYxlLmxmVfQimbqudfPqziyGm+FvZJ7JxXJPk=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=KqHMfkzskEESogcbsk1/87DM90Ae/VvO7LsB/sjJ5f6xpLRdgYoJ/QB+OyNJux2MM
-         4imwQBOLj817FtgWEVMyPoFyiFINfdFP7DrUr6txzphU40ZFPjhVW/IZ6V7lGP7vd4
-         25mFE40bst9zU6OSj42i59jIYXGa01an9G5aKDsEOie6pqbHKA/+koRnFU3NQR/bpT
-         lAWqYBRHoXtrn1Demz8FVK9YI/02trDns7hcEJPb/zHv1tSLovnCoxwfElri6jUpSS
-         jCq7V/W8hjmRIAFw/byd+m0REIJ/0FYatzlLLhASWvQO1BARoChKfXt/9eioL/hEkt
-         Z0dOtfi/u7MMg==
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S229907AbiKPLFp (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 16 Nov 2022 06:05:45 -0500
+Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66E464C256
+        for <linux-omap@vger.kernel.org>; Wed, 16 Nov 2022 02:52:20 -0800 (PST)
+Received: by mail-yb1-xb29.google.com with SMTP id b131so19812933yba.11
+        for <linux-omap@vger.kernel.org>; Wed, 16 Nov 2022 02:52:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YoRuKDvRtfqyxGXCloGQzrbnsQ9lUzIfiyzXfdm3sb0=;
+        b=EQyRpq6xCb5QSFzpsfric99YN0ZsQ9Us/A8yUiBkDqeQa69Af3/Ws27dLusUvjCwVj
+         lbPyWiX1rvCAeMXcEEj4sEH6wrFNffdMYIdk2jECYf+YzbvKgO3U5Jnfk0GDyPsAE+5j
+         tbjbxhTXMGVfynN1opiPyTSjpthCHKwA/QuuA+i+y7BR/F+kOX6qc9UAlhTF+ciu709T
+         15Z+YPwKtf1oMMZoKOyoc/VYzbsqssNVw/cvMQ3LpYu4n+DJB1E/BAgqD2ULpPPlbmGG
+         QCWzrdyTxoLggYsxp/93kgxKxabb6kmRrlGn1qUBhr+tEAMLVzJfHZ72sCrNvgEkW5kR
+         kdUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YoRuKDvRtfqyxGXCloGQzrbnsQ9lUzIfiyzXfdm3sb0=;
+        b=HGu/yb/FmmUhI0BQcoMqwkep2sCVi3/8Z8czG6zyvkiY8cG7unGB7D2krRrEROR70n
+         8Gnmf1R+fALx776RkrOQZOQyDVxL4a8T+P/CNMMOXe3dz2XF5PZGFOqw8eSRSoHor89n
+         +ss34Iaeq+12Qcu8bw/YwBVbV1ueVrYwjjd8IpUrkvIfRkB/AaX0FIAtfnRlYUt+J/cz
+         oN/df6eFRtVhJ9HeWd8uzreJEB579NoX2CgIxxO7ZJzvGkwRqyJ1ONL6u3AoSA2wg19E
+         byiFxfLpmaclrnfYB4/6EClFlbH9f/o/CPqb6KaFlr7HNdPCtkg0ExNZm7tIYYfc8QBR
+         fLCg==
+X-Gm-Message-State: ANoB5pnKiRoL66tfCFNgyk5zF6kE0GP8SY9vkFb0mFCaa2VuVsr+beKz
+        loGhLs8gU1oZd2P/urH2MjBnvvJ4DulMokNz28r5uw==
+X-Google-Smtp-Source: AA0mqf670K8oXK4BKY3rGd4/pry5UiYhbONNHWXWMaIp6wf/HClXcTpOxNUWLRinurA/uSVisGW1IKI3bgfLq1d+9gU=
+X-Received: by 2002:a25:828a:0:b0:6cf:cfa9:94e9 with SMTP id
+ r10-20020a25828a000000b006cfcfa994e9mr21818067ybk.35.1668595939679; Wed, 16
+ Nov 2022 02:52:19 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 1/3] ARM: OMAP2+: pdata-quirks: stop including wl12xx.h
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20221109224250.2885119-1-dmitry.torokhov@gmail.com>
-References: <20221109224250.2885119-1-dmitry.torokhov@gmail.com>
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc:     Tony Lindgren <tony@atomide.com>, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <166859147683.17701.10193347639724464036.kvalo@kernel.org>
-Date:   Wed, 16 Nov 2022 09:38:01 +0000 (UTC)
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <20221108181144.433087-1-nfrayer@baylibre.com> <20221108181144.433087-5-nfrayer@baylibre.com>
+ <575fa0c61cb55845c4d3a646d0b1f48d782588a0.camel@redhat.com>
+In-Reply-To: <575fa0c61cb55845c4d3a646d0b1f48d782588a0.camel@redhat.com>
+From:   Nicolas Frayer <nfrayer@baylibre.com>
+Date:   Wed, 16 Nov 2022 11:52:08 +0100
+Message-ID: <CANyCTtRCY3_DUDbwHUt39toeUtUJDMQmV4Q9bxz+enyJkY5OWg@mail.gmail.com>
+Subject: Re: [PATCH v4 4/4] net: ethernet: ti: davinci_mdio: Deferring probe
+ when soc_device_match() returns NULL
+To:     Paolo Abeni <pabeni@redhat.com>
+Cc:     nm@ti.com, ssantosh@kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, peter.ujfalusi@gmail.com,
+        vkoul@kernel.org, dmaengine@vger.kernel.org,
+        grygorii.strashko@ti.com, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, linux-omap@vger.kernel.org,
+        netdev@vger.kernel.org, khilman@baylibre.com, glaroque@baylibre.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Dmitry Torokhov <dmitry.torokhov@gmail.com> wrote:
+Le jeu. 10 nov. 2022 =C3=A0 12:21, Paolo Abeni <pabeni@redhat.com> a =C3=A9=
+crit :
+>
+> Hello,
+>
+> On Tue, 2022-11-08 at 19:11 +0100, Nicolas Frayer wrote:
+> > When the k3 socinfo driver is built as a module, there is a possibility
+> > that it will probe after the davinci mdio driver. By deferring the mdio
+> > probe we allow the k3 socinfo to probe and register the
+> > soc_device_attribute structure needed by the mdio driver.
+> >
+> > Signed-off-by: Nicolas Frayer <nfrayer@baylibre.com>
+>
+> I guess this one will go via the arm tree, right?
+>
+> I'm dropping it from the netdev PW.
+>
+> Thanks,
+>
+> Paolo
+>
+Hello Paolo,
 
-> As of commit 2398c41d6432 ("omap: pdata-quirks: remove openpandora
-> quirks for mmc3 and wl1251") the code no longer creates an instance of
-> wl1251_platform_data, so there is no need for including this header.
-> 
-> Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> Acked-by: Tony Lindgren <tony@atomide.com>
+I will resend this series as individual patches, so can you please
+apply this mdio patch individually as it's independent from the others ?
 
-3 patches applied to wireless-next.git, thanks.
+Thanks,
 
-e14e4c933e00 ARM: OMAP2+: pdata-quirks: stop including wl12xx.h
-06463f6e98df wifi: wl1251: drop support for platform data
-a1d0b9535cd8 wifi: wl1251: switch to using gpiod API
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20221109224250.2885119-1-dmitry.torokhov@gmail.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+Nicolas
