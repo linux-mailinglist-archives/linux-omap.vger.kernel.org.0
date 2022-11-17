@@ -2,59 +2,49 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 52CDA62D9EB
-	for <lists+linux-omap@lfdr.de>; Thu, 17 Nov 2022 12:53:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 402E362D9FC
+	for <lists+linux-omap@lfdr.de>; Thu, 17 Nov 2022 12:56:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230043AbiKQLxY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 17 Nov 2022 06:53:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55430 "EHLO
+        id S234810AbiKQL4N (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 17 Nov 2022 06:56:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57566 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234518AbiKQLxQ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 17 Nov 2022 06:53:16 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A84D1141;
-        Thu, 17 Nov 2022 03:53:15 -0800 (PST)
+        with ESMTP id S234840AbiKQL4K (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 17 Nov 2022 06:56:10 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4098BC15;
+        Thu, 17 Nov 2022 03:56:06 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BC58261303;
-        Thu, 17 Nov 2022 11:53:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B06DC433D6;
-        Thu, 17 Nov 2022 11:53:08 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id A0F5EB8202A;
+        Thu, 17 Nov 2022 11:56:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 803E1C433D7;
+        Thu, 17 Nov 2022 11:56:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1668685994;
-        bh=ShqTe1CG2H2vpLDKDFV7iYYR2HXYxDuYRyuDgEafb10=;
+        s=k20201202; t=1668686164;
+        bh=9Fkhxq4OVC8lI+gbq2Q+peNCgyo1mLExv7tuyLyzo6c=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=c1BvFloj9U+G4l3s5fB0S3s6wd9nDJWAKF9jgAlxVb07mREgj3TvGzY/NFV8OQxDI
-         55Ub+0cRUU+qG0C85Dh85mLvCZWM+4jKMrHQuP/F+tLn/3OX9E4w08s1R+ENbD6bZz
-         nR/LKmEs0o2k8PNPS1J10WpjgmXNOJWSpVJut5I55oLwVhYUuqjOqcLTT4UV1F+iTh
-         37hpbCxE3i+x2o2Pt5HW0ezQEKQxFff/cJ84NhJkVuZtmrHKMky4DefsVUfZwrg/mw
-         oFrLaOuNUPV3LKC8JOONjknV4SCwOcSFMS7jYQPGQya54TdZrVxUdcstunUlmUi71c
-         XuASjz1yeh7BA==
-Date:   Thu, 17 Nov 2022 11:53:05 +0000
+        b=J3AEB9Q+Mk9s7FrPOPAT6vFDwzYtMPJjFx8pfI7ryuN00HjT4ITbAZzEjiuhbGmzp
+         NyHj1P5/jBAUlQQL7ZSIWzBxEwjRdQ9WTxkJvzH4c88r7prmhM1zLAl9OoArll3M6x
+         ZM1YwDiOZpK93F9OkdhIjPGR9Z1bXrFsJnE7RH05oRwIRr4qAbaaEA9sMXYZ1Kf3sH
+         kiDASmrrkeEdzktw6gkaf3ZCmSGHVEUOADmR+JCemKw6BnlmrmT7Ga4fhnnHfMHa4x
+         vmeuZhDbAefiXuF4wBcjQpdM5gf8+aKk7oweDVsvE0ifOYWvuoxJ7zcQ+YshY44OwA
+         zN3CyXpmI79jA==
+Date:   Thu, 17 Nov 2022 11:56:00 +0000
 From:   Lee Jones <lee@kernel.org>
-To:     Jerome Neanne <jneanne@baylibre.com>
-Cc:     lgirdwood@gmail.com, broonie@kernel.org, robh+dt@kernel.org,
-        nm@ti.com, kristo@kernel.org, dmitry.torokhov@gmail.com,
-        krzysztof.kozlowski+dt@linaro.org, catalin.marinas@arm.com,
-        will@kernel.org, tony@atomide.com, vigneshr@ti.com,
-        shawnguo@kernel.org, geert+renesas@glider.be,
-        dmitry.baryshkov@linaro.org, marcel.ziswiler@toradex.com,
-        vkoul@kernel.org, biju.das.jz@bp.renesas.com, arnd@arndb.de,
-        jeff@labundy.com, afd@ti.com, khilman@baylibre.com,
-        narmstrong@baylibre.com, msp@baylibre.com, j-keerthy@ti.com,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-input@vger.kernel.org,
-        linux-omap@vger.kernel.org
-Subject: Re: [PATCH v7 5/6] Input: Add tps65219 interrupt driven powerbutton
-Message-ID: <Y3YgocGss54KIMRi@google.com>
-References: <20221104152311.1098603-1-jneanne@baylibre.com>
- <20221104152311.1098603-6-jneanne@baylibre.com>
+To:     ye.xingchen@zte.com.cn
+Cc:     tony@atomide.com, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH linux-next] mfd: palmas: Use device_get_match_data() to
+ simplify the code
+Message-ID: <Y3YhULhpCy2lIptO@google.com>
+References: <202211171952240424511@zte.com.cn>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20221104152311.1098603-6-jneanne@baylibre.com>
+In-Reply-To: <202211171952240424511@zte.com.cn>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -64,29 +54,16 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, 04 Nov 2022, Jerome Neanne wrote:
+On Thu, 17 Nov 2022, ye.xingchen@zte.com.cn wrote:
 
-> From: Markus Schneider-Pargmann <msp@baylibre.com>
+> From: ye xingchen <ye.xingchen@zte.com.cn>
 > 
-> TPS65219 has different interrupts compared to other TPS6521* chips.
-> TPS65219 defines two interrupts for the powerbutton one for push and one
-> for release.
+> Directly get the match data with device_get_match_data().
 > 
-> This driver is very simple in that it maps the push interrupt to a key
-> input and the release interrupt to a key release.
-> 
-> Signed-off-by: Markus Schneider-Pargmann <msp@baylibre.com>
-> Signed-off-by: Jerome Neanne <jneanne@baylibre.com>
-> 
-> Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> 
-> Please feel free to merge through MFD tree.
+> Signed-off-by: ye xingchen <ye.xingchen@zte.com.cn>
 > ---
->  drivers/input/misc/Kconfig              |  10 ++
->  drivers/input/misc/Makefile             |   1 +
->  drivers/input/misc/tps65219-pwrbutton.c | 148 ++++++++++++++++++++++++
->  3 files changed, 159 insertions(+)
->  create mode 100644 drivers/input/misc/tps65219-pwrbutton.c
+>  drivers/mfd/palmas.c | 8 +-------
+>  1 file changed, 1 insertion(+), 7 deletions(-)
 
 Applied, thanks.
 
