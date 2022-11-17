@@ -2,70 +2,102 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4799462CD6A
-	for <lists+linux-omap@lfdr.de>; Wed, 16 Nov 2022 23:12:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 54FBA62D32F
+	for <lists+linux-omap@lfdr.de>; Thu, 17 Nov 2022 07:06:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232664AbiKPWMG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 16 Nov 2022 17:12:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38720 "EHLO
+        id S234606AbiKQGGL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 17 Nov 2022 01:06:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234852AbiKPWME (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 16 Nov 2022 17:12:04 -0500
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a01:238:4321:8900:456f:ecd6:43e:202c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA8FF67F72
-        for <linux-omap@vger.kernel.org>; Wed, 16 Nov 2022 14:12:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=kemnade.info; s=20220719; h=Content-Transfer-Encoding:Content-Type:
-        MIME-Version:Message-ID:Subject:To:From:Date:Sender:Reply-To:Cc:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=Xt3OWjKOEfdRH1gHZaPd5M0jNQFgnP2n84v8jd8hRzM=; b=t3B4xfuTWb6qZm33AuRBSLpviZ
-        hTJYoFtyfNTFCpsKbNVq2EY/mZL/1X6PxLckmPOkbL9G1aN1dBT2EcNoFkOghCd/zdAmJhYQal5Si
-        cuAW4dsRE23tpvxaNvdggBum8B1TkDjPFxuq6g+qripSC9eAOBZ6wXUZGTV3HNqXW0GEAn0wIZmy0
-        hY5Q8l2gZWRM3CXCwqIBpvsUzZT2Db34kwLLGX2U6aGRQw7fLbRdRFCUtFJaLio2h1A0nAx9fGGvT
-        cnDOim6frH/CwYfI8uv8WmSoGRG700tXl9TxjiHR79D8NKq1tmDFBiMNjf0IYS8U2BCOe9cQiRiep
-        wDqV3hFQ==;
-Received: from p200300ccff0625001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff06:2500:1a3d:a2ff:febf:d33a] helo=aktux)
-        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <andreas@kemnade.info>)
-        id 1ovQdT-0001x1-Mv
-        for linux-omap@vger.kernel.org; Wed, 16 Nov 2022 23:11:59 +0100
-Date:   Wed, 16 Nov 2022 23:11:58 +0100
-From:   Andreas Kemnade <andreas@kemnade.info>
-To:     linux-omap@vger.kernel.org
-Subject: omap4-keypad mystery
-Message-ID: <20221116231146.2edf8322@aktux>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Score: -1.0 (-)
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S234664AbiKQGGK (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 17 Nov 2022 01:06:10 -0500
+Received: from mxct.zte.com.cn (mxct.zte.com.cn [58.251.27.85])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B61A02A706;
+        Wed, 16 Nov 2022 22:06:08 -0800 (PST)
+Received: from mxde.zte.com.cn (unknown [10.35.20.121])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mxct.zte.com.cn (FangMail) with ESMTPS id 4NCTtl0C0Vz1Drr;
+        Thu, 17 Nov 2022 14:06:07 +0800 (CST)
+Received: from mxus.zte.com.cn (unknown [10.207.168.8])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mxde.zte.com.cn (FangMail) with ESMTPS id 4NCTtg39NFzBf6Kq;
+        Thu, 17 Nov 2022 14:06:03 +0800 (CST)
+Received: from mxhk.zte.com.cn (unknown [192.168.250.137])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mxus.zte.com.cn (FangMail) with ESMTPS id 4NCTtb556Rzdmc15;
+        Thu, 17 Nov 2022 14:05:59 +0800 (CST)
+Received: from mxct.zte.com.cn (unknown [192.168.251.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mxhk.zte.com.cn (FangMail) with ESMTPS id 4NCTtX54thz8R040;
+        Thu, 17 Nov 2022 14:05:56 +0800 (CST)
+Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mxct.zte.com.cn (FangMail) with ESMTPS id 4NCTtS3SDKz4y0vK;
+        Thu, 17 Nov 2022 14:05:52 +0800 (CST)
+Received: from xaxapp01.zte.com.cn ([10.88.40.50])
+        by mse-fl2.zte.com.cn with SMTP id 2AH65mHN083361;
+        Thu, 17 Nov 2022 14:05:48 +0800 (+08)
+        (envelope-from ye.xingchen@zte.com.cn)
+Received: from mapi (xaxapp01[null])
+        by mapi (Zmail) with MAPI id mid31;
+        Thu, 17 Nov 2022 14:05:50 +0800 (CST)
+Date:   Thu, 17 Nov 2022 14:05:50 +0800 (CST)
+X-Zmail-TransId: 2af96375cf3e43e4b876
+X-Mailer: Zmail v1.0
+Message-ID: <202211171405502792797@zte.com.cn>
+Mime-Version: 1.0
+From:   <ye.xingchen@zte.com.cn>
+To:     <stern@rowland.harvard.edu>
+Cc:     <gregkh@linuxfoundation.org>, <linux-usb@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: =?UTF-8?B?W1BBVENIXSB1c2I6IGVoY2ktb21hcDogdXNlIGRldm1fcGxhdGZvcm1fZ2V0X2FuZF9pb3JlbWFwX3Jlc291cmNlKCk=?=
+Content-Type: text/plain;
+        charset="UTF-8"
+X-MAIL: mse-fl2.zte.com.cn 2AH65mHN083361
+X-Fangmail-Gw-Spam-Type: 0
+X-FangMail-Miltered: at cgslv5.04-192.168.251.14.novalocal with ID 6375CF4D.000 by FangMail milter!
+X-FangMail-Envelope: 1668665167/4NCTtl0C0Vz1Drr/6375CF4D.000/10.35.20.121/[10.35.20.121]/mxde.zte.com.cn/<ye.xingchen@zte.com.cn>
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6375CF4D.000/4NCTtl0C0Vz1Drr
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,UNPARSEABLE_RELAY autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
+From: Minghao Chi <chi.minghao@zte.com.cn>
 
-I am investigating how to use the omap4 keypad driver in dts and I am quite
-confused. Nobody seems to add any pinmux to it. Why?
+Convert platform_get_resource(), devm_ioremap_resource() to a single
+call to devm_platform_get_and_ioremap_resource(), as this is exactly
+what this function does.
 
-I muxed the rows0-3 and cols0-3 to MODE1 without any wakeup.
+Signed-off-by: Minghao Chi <chi.minghao@zte.com.cn>
+Signed-off-by: ye xingchen <ye.xingchen@zte.com.cn>
+---
+ drivers/usb/host/ehci-omap.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-When I set /sys/bus/platform/devices/4a31c000.keypad/power/control
-to on I get keypad interrupts and events in evtest. but with it set to auto,
-nothing happens. Setting the rows pinmux to 0x4119 instead of 0x119 does not
-change anything.
+diff --git a/drivers/usb/host/ehci-omap.c b/drivers/usb/host/ehci-omap.c
+index 7dd984722a7f..962e3e6ab4d8 100644
+--- a/drivers/usb/host/ehci-omap.c
++++ b/drivers/usb/host/ehci-omap.c
+@@ -113,8 +113,7 @@ static int ehci_hcd_omap_probe(struct platform_device *pdev)
+ 	if (irq < 0)
+ 		return irq;
 
-Nobody seems to add provisions to wake up independently of the keypad
-hwmod which seems to be odd. I would expect interrupt-extended along with
-the keypad definitions.
+-	res =  platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	regs = devm_ioremap_resource(dev, res);
++	regs = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
+ 	if (IS_ERR(regs))
+ 		return PTR_ERR(regs);
 
-Confused,
-Andreas
+-- 
+2.25.1
