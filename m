@@ -2,30 +2,30 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CB2062F565
-	for <lists+linux-omap@lfdr.de>; Fri, 18 Nov 2022 13:53:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9904962F56A
+	for <lists+linux-omap@lfdr.de>; Fri, 18 Nov 2022 13:54:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239931AbiKRMxk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 18 Nov 2022 07:53:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60626 "EHLO
+        id S241538AbiKRMyp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 18 Nov 2022 07:54:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235088AbiKRMxj (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 18 Nov 2022 07:53:39 -0500
+        with ESMTP id S235088AbiKRMyo (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 18 Nov 2022 07:54:44 -0500
 Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4D32613D46;
-        Fri, 18 Nov 2022 04:53:36 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id BCBCE2AF9;
+        Fri, 18 Nov 2022 04:54:43 -0800 (PST)
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 43E2B807E;
-        Fri, 18 Nov 2022 12:43:29 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id 5BF2C807E;
+        Fri, 18 Nov 2022 12:44:36 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
-To:     linux-omap@vger.kernel.org
-Cc:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        devicetree@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>
-Subject: [PATCH] ARM: dts: Unify pwm-omap-dmtimer node names
-Date:   Fri, 18 Nov 2022 14:53:32 +0200
-Message-Id: <20221118125332.9347-1-tony@atomide.com>
+To:     Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-omap@vger.kernel.org, Nishanth Menon <nm@ti.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>
+Subject: [PATCH] dt-bindings: pwm: ti,pwm-omap-dmtimer: Update binding for yaml
+Date:   Fri, 18 Nov 2022 14:54:35 +0200
+Message-Id: <20221118125435.9479-1-tony@atomide.com>
 X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -37,100 +37,105 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-There is no reg property for pwm-omap-dmtimer.
+Update for yaml and remove the old txt binding.
 
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc: Rob Herring <robh+dt@kernel.org>
+Cc: Nishanth Menon <nm@ti.com>
+Cc: Vignesh Raghavendra <vigneshr@ti.com>
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 ---
- arch/arm/boot/dts/am335x-guardian.dts            | 2 +-
- arch/arm/boot/dts/am3517-evm.dts                 | 2 +-
- arch/arm/boot/dts/logicpd-torpedo-baseboard.dtsi | 2 +-
- arch/arm/boot/dts/motorola-mapphone-common.dtsi  | 4 ++--
- arch/arm/boot/dts/omap3-gta04.dtsi               | 2 +-
- arch/arm/boot/dts/omap3-n900.dts                 | 2 +-
- 6 files changed, 7 insertions(+), 7 deletions(-)
+ .../bindings/pwm/pwm-omap-dmtimer.txt         | 22 --------
+ .../bindings/pwm/ti,pwm-omap-dmtimer.yaml     | 56 +++++++++++++++++++
+ 2 files changed, 56 insertions(+), 22 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/pwm/pwm-omap-dmtimer.txt
+ create mode 100644 Documentation/devicetree/bindings/pwm/ti,pwm-omap-dmtimer.yaml
 
-diff --git a/arch/arm/boot/dts/am335x-guardian.dts b/arch/arm/boot/dts/am335x-guardian.dts
---- a/arch/arm/boot/dts/am335x-guardian.dts
-+++ b/arch/arm/boot/dts/am335x-guardian.dts
-@@ -103,7 +103,7 @@ panel-info {
- 
- 	};
- 
--	guardian_beeper: dmtimer-pwm@7 {
-+	guardian_beeper: pwm-7 {
- 		compatible = "ti,omap-dmtimer-pwm";
- 		ti,timers = <&timer7>;
- 		pinctrl-names = "default";
-diff --git a/arch/arm/boot/dts/am3517-evm.dts b/arch/arm/boot/dts/am3517-evm.dts
---- a/arch/arm/boot/dts/am3517-evm.dts
-+++ b/arch/arm/boot/dts/am3517-evm.dts
-@@ -150,7 +150,7 @@ bl: backlight {
- 		enable-gpios = <&gpio6 22 GPIO_ACTIVE_HIGH>; /* gpio_182 */
- 	};
- 
--	pwm11: dmtimer-pwm@11 {
-+	pwm11: pwm-11 {
- 		compatible = "ti,omap-dmtimer-pwm";
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&pwm_pins>;
-diff --git a/arch/arm/boot/dts/logicpd-torpedo-baseboard.dtsi b/arch/arm/boot/dts/logicpd-torpedo-baseboard.dtsi
---- a/arch/arm/boot/dts/logicpd-torpedo-baseboard.dtsi
-+++ b/arch/arm/boot/dts/logicpd-torpedo-baseboard.dtsi
-@@ -59,7 +59,7 @@ led2 {
- 		};
- 	};
- 
--	pwm10: dmtimer-pwm {
-+	pwm10: pwm-10 {
- 		compatible = "ti,omap-dmtimer-pwm";
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&pwm_pins>;
-diff --git a/arch/arm/boot/dts/motorola-mapphone-common.dtsi b/arch/arm/boot/dts/motorola-mapphone-common.dtsi
---- a/arch/arm/boot/dts/motorola-mapphone-common.dtsi
-+++ b/arch/arm/boot/dts/motorola-mapphone-common.dtsi
-@@ -133,7 +133,7 @@ soundcard {
- 		dais = <&mcbsp2_port>, <&mcbsp3_port>;
- 	};
- 
--	pwm8: dmtimer-pwm-8 {
-+	pwm8: pwm-8 {
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&vibrator_direction_pin>;
- 
-@@ -143,7 +143,7 @@ pwm8: dmtimer-pwm-8 {
- 		ti,clock-source = <0x01>;
- 	};
- 
--	pwm9: dmtimer-pwm-9 {
-+	pwm9: pwm-9 {
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&vibrator_enable_pin>;
- 
-diff --git a/arch/arm/boot/dts/omap3-gta04.dtsi b/arch/arm/boot/dts/omap3-gta04.dtsi
---- a/arch/arm/boot/dts/omap3-gta04.dtsi
-+++ b/arch/arm/boot/dts/omap3-gta04.dtsi
-@@ -147,7 +147,7 @@ backlight: backlight {
- 		pinctrl-0 = <&backlight_pins>;
- 	};
- 
--	pwm11: dmtimer-pwm {
-+	pwm11: pwm-11 {
- 		compatible = "ti,omap-dmtimer-pwm";
- 		ti,timers = <&timer11>;
- 		#pwm-cells = <3>;
-diff --git a/arch/arm/boot/dts/omap3-n900.dts b/arch/arm/boot/dts/omap3-n900.dts
---- a/arch/arm/boot/dts/omap3-n900.dts
-+++ b/arch/arm/boot/dts/omap3-n900.dts
-@@ -156,7 +156,7 @@ battery: n900-battery {
- 		io-channel-names = "temp", "bsi", "vbat";
- 	};
- 
--	pwm9: dmtimer-pwm {
-+	pwm9: pwm-9 {
- 		compatible = "ti,omap-dmtimer-pwm";
- 		#pwm-cells = <3>;
- 		ti,timers = <&timer9>;
+diff --git a/Documentation/devicetree/bindings/pwm/pwm-omap-dmtimer.txt b/Documentation/devicetree/bindings/pwm/pwm-omap-dmtimer.txt
+deleted file mode 100644
+--- a/Documentation/devicetree/bindings/pwm/pwm-omap-dmtimer.txt
++++ /dev/null
+@@ -1,22 +0,0 @@
+-* OMAP PWM for dual-mode timers
+-
+-Required properties:
+-- compatible: Shall contain "ti,omap-dmtimer-pwm".
+-- ti,timers: phandle to PWM capable OMAP timer. See timer/ti,timer-dm.yaml for info
+-  about these timers.
+-- #pwm-cells: Should be 3. See pwm.yaml in this directory for a description of
+-  the cells format.
+-
+-Optional properties:
+-- ti,prescaler: Should be a value between 0 and 7, see the timers datasheet
+-- ti,clock-source: Set dmtimer parent clock, values between 0 and 2:
+-  - 0x00 - high-frequency system clock (timer_sys_ck)
+-  - 0x01 - 32-kHz always-on clock (timer_32k_ck)
+-  - 0x02 - external clock (timer_ext_ck, OMAP2 only)
+-
+-Example:
+-	pwm9: dmtimer-pwm@9 {
+-		compatible = "ti,omap-dmtimer-pwm";
+-		ti,timers = <&timer9>;
+-		#pwm-cells = <3>;
+-	};
+diff --git a/Documentation/devicetree/bindings/pwm/ti,pwm-omap-dmtimer.yaml b/Documentation/devicetree/bindings/pwm/ti,pwm-omap-dmtimer.yaml
+new file mode 100644
+--- /dev/null
++++ b/Documentation/devicetree/bindings/pwm/ti,pwm-omap-dmtimer.yaml
+@@ -0,0 +1,56 @@
++# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/pwm/ti,pwm-omap-dmtimer.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: TI dual mode timer PWM controller
++
++maintainers:
++  - Tony Lindgren <tony@atomide.com>
++
++description:
++  TI dual mode timer instances have an IO pin for PWM capability
++
++allOf:
++  - $ref: pwm.yaml#
++
++properties:
++  $nodename:
++    pattern: "^pwm-([1-9]|1[0-2])$"
++
++  compatible:
++    const: ti,omap-dmtimer-pwm
++
++  "#pwm-cells":
++    const: 3
++
++  ti,timers:
++    description: phandle to the timer instance used for PWM
++    $ref: /schemas/types.yaml#/definitions/phandle
++
++  ti,prescaler:
++    description: legacy clock prescaled for timer
++    $ref: /schemas/types.yaml#/definitions/uint32
++    enum: [ 0, 1, 2, 3, 4, 5, 6, 7 ]
++    deprecated: true
++
++  ti,clock-source:
++    description: legacy clock for timer, use assigned-clocks instead
++    $ref: /schemas/types.yaml#/definitions/uint32
++    enum: [ 0, 1, 2 ]
++    deprecated: true
++
++required:
++  - compatible
++  - ti,timers
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    pwm9: pwm-9 {
++      compatible = "ti,omap-dmtimer-pwm";
++      ti,timers = <&timer9>;
++      #pwm-cells = <3>;
++    };
 -- 
 2.38.1
