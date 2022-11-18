@@ -2,98 +2,95 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 59F8762F7F6
-	for <lists+linux-omap@lfdr.de>; Fri, 18 Nov 2022 15:43:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CD8B630806
+	for <lists+linux-omap@lfdr.de>; Sat, 19 Nov 2022 01:43:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241701AbiKROnj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 18 Nov 2022 09:43:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41462 "EHLO
+        id S236780AbiKSAnM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 18 Nov 2022 19:43:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43182 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234971AbiKROn0 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 18 Nov 2022 09:43:26 -0500
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F68FEC
-        for <linux-omap@vger.kernel.org>; Fri, 18 Nov 2022 06:43:24 -0800 (PST)
-Received: by mail-lj1-x236.google.com with SMTP id t10so7096635ljj.0
-        for <linux-omap@vger.kernel.org>; Fri, 18 Nov 2022 06:43:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=WdF8bmxTWuHAOgXPKQhJz71OI4DmuJEnYLajXB4naGE=;
-        b=UlYWsWnkKX84BrgCT6baoI5qXcZO5xYrQGHiXvml/paiD2nQcKag83WgiLgND4lP+L
-         3J0ZjRWGM1KV3a8xC807o2/nUbJEe5oU5H8GXd5mxh4nPaRuvCOLSDDkk+WxpQZFq9CH
-         6oCT6fQDH/WZzL8i+hB7H9dp5QJ2+TlwKy8MljvcgunpMhZklpWGcx8pZUEYuwlwDfi3
-         Xj41uremO55AQZhWjIyXnrsOiLPe0qZMw0laqYw52NMQU/kOK5jLsS3fMSFWS12Y96If
-         UG7yqQILptmXnJQzqNz8L1vFaJiguvl1p2et7gy7gIkjdPVC4uHun6s9fC/Lg1l4QdRF
-         bOrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WdF8bmxTWuHAOgXPKQhJz71OI4DmuJEnYLajXB4naGE=;
-        b=CYAcxn7988OHHCwRlgJWNzgik7qGa88ITmNUYL7AB5lYo6HkTyLFjx2fwztLJ0RK4Y
-         ++5g+fod8MKO1ylOx4tRDoE1ZwGVS1LBXMC530NTOI+6tLBAMWj8W7+CEB7PGJMh0w0o
-         ybUFkTGXRZXTXtNa41so0ibZuKY/6H77pDtxy+JhEfylgLdbhy0IsNBVSXYZXcjJ0lqR
-         dm6JFsyjka2lnqOSzw7RhAT3ltpQ411h0ZfByZuiJouHPPGk5RDgO6J/XuO687fZB5co
-         2h2SrMZREmcVkByjy8plmBrUc363oi6TfxjB3ZTFuY759MrkI+tOavgEYL5vA3ESpUPZ
-         4tIQ==
-X-Gm-Message-State: ANoB5pnblfRYtm2++M5II05jBt7DpaYsp6XWHgBPnoDgtTGiwz5xC3i3
-        4wL4XbHAjxRXHv+PxjC5ym8keW6w4zj5U0cL
-X-Google-Smtp-Source: AA0mqf4IAqdFaqstFGpytpeVt/fRY+TBWIEystdlMj4m9iyac5DL01XHArlgI9dvZlIgkQzCOoCIfg==
-X-Received: by 2002:a2e:a806:0:b0:277:4b35:d94a with SMTP id l6-20020a2ea806000000b002774b35d94amr2443237ljq.21.1668782602704;
-        Fri, 18 Nov 2022 06:43:22 -0800 (PST)
-Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
-        by smtp.gmail.com with ESMTPSA id m1-20020a056512114100b004acb2adfa1fsm677950lfg.307.2022.11.18.06.43.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 18 Nov 2022 06:43:22 -0800 (PST)
-Message-ID: <bedbaebe-d84b-fc0b-9492-4503a6d59a83@linaro.org>
-Date:   Fri, 18 Nov 2022 15:43:21 +0100
+        with ESMTP id S236908AbiKSAlE (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 18 Nov 2022 19:41:04 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99699CB951
+        for <linux-omap@vger.kernel.org>; Fri, 18 Nov 2022 15:44:57 -0800 (PST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1owA9I-0004BS-9P; Fri, 18 Nov 2022 23:47:52 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1owA9F-0058hR-Hn; Fri, 18 Nov 2022 23:47:50 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1owA9F-0000Ln-C6; Fri, 18 Nov 2022 23:47:49 +0100
+From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>
+To:     Angel Iglesias <ang.iglesiasg@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Grant Likely <grant.likely@linaro.org>,
+        Wolfram Sang <wsa@kernel.org>,
+        Tony Lindgren <tony@atomide.com>, Lee Jones <lee@kernel.org>
+Cc:     linux-i2c@vger.kernel.org, kernel@pengutronix.de,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 447/606] mfd: menelaus: Convert to i2c's .probe_new()
+Date:   Fri, 18 Nov 2022 23:43:01 +0100
+Message-Id: <20221118224540.619276-448-uwe@kleine-koenig.org>
+X-Mailer: git-send-email 2.38.1
+In-Reply-To: <20221118224540.619276-1-uwe@kleine-koenig.org>
+References: <20221118224540.619276-1-uwe@kleine-koenig.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [PATCH] dt-bindings: pwm: ti,pwm-omap-dmtimer: Update binding for
- yaml
-Content-Language: en-US
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-omap@vger.kernel.org, Nishanth Menon <nm@ti.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>
-References: <20221118125435.9479-1-tony@atomide.com>
- <debfe50a-7e94-9703-efde-2c805faa3d2b@linaro.org>
- <Y3eXe/S6MMaDGwEt@atomide.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <Y3eXe/S6MMaDGwEt@atomide.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-omap@vger.kernel.org
+X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 18/11/2022 15:32, Tony Lindgren wrote:
-> * Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> [221118 14:12]:
->> On 18/11/2022 13:54, Tony Lindgren wrote:
->>> +properties:
->>> +  $nodename:
->>> +    pattern: "^pwm-([1-9]|1[0-2])$"
->>
->> Drop the nodename, device schemas do not need to enforce it.
-> 
-> Hmm I think that's needed to avoid warnings if the knob is
-> tweaked to 11? Right now the max timer value is 12.
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-Which warnings? The pwm.yaml allows up to 15.
+The probe function doesn't make use of the i2c_device_id * parameter so it
+can be trivially converted.
 
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+---
+ drivers/mfd/menelaus.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-Best regards,
-Krzysztof
+diff --git a/drivers/mfd/menelaus.c b/drivers/mfd/menelaus.c
+index eb08f69001f9..c2866a11c1d2 100644
+--- a/drivers/mfd/menelaus.c
++++ b/drivers/mfd/menelaus.c
+@@ -1142,8 +1142,7 @@ static inline void menelaus_rtc_init(struct menelaus_chip *m)
+ 
+ static struct i2c_driver menelaus_i2c_driver;
+ 
+-static int menelaus_probe(struct i2c_client *client,
+-			  const struct i2c_device_id *id)
++static int menelaus_probe(struct i2c_client *client)
+ {
+ 	struct menelaus_chip	*menelaus;
+ 	int			rev = 0;
+@@ -1241,7 +1240,7 @@ static struct i2c_driver menelaus_i2c_driver = {
+ 	.driver = {
+ 		.name		= DRIVER_NAME,
+ 	},
+-	.probe		= menelaus_probe,
++	.probe_new	= menelaus_probe,
+ 	.remove		= menelaus_remove,
+ 	.id_table	= menelaus_id,
+ };
+-- 
+2.38.1
 
