@@ -2,36 +2,33 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 81A8162F55B
-	for <lists+linux-omap@lfdr.de>; Fri, 18 Nov 2022 13:52:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CB2062F565
+	for <lists+linux-omap@lfdr.de>; Fri, 18 Nov 2022 13:53:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235198AbiKRMwz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 18 Nov 2022 07:52:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59750 "EHLO
+        id S239931AbiKRMxk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 18 Nov 2022 07:53:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229580AbiKRMwy (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 18 Nov 2022 07:52:54 -0500
+        with ESMTP id S235088AbiKRMxj (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 18 Nov 2022 07:53:39 -0500
 Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6F37A1AF09;
-        Fri, 18 Nov 2022 04:52:51 -0800 (PST)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id C0373807E;
-        Fri, 18 Nov 2022 12:42:44 +0000 (UTC)
-Date:   Fri, 18 Nov 2022 14:52:49 +0200
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4D32613D46;
+        Fri, 18 Nov 2022 04:53:36 -0800 (PST)
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id 43E2B807E;
+        Fri, 18 Nov 2022 12:43:29 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
-To:     Maxim Korotkov <korotkov.maxim.s@gmail.com>
-Cc:     Haojian Zhuang <haojian.zhuang@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        lvc-project@linuxtesting.org
-Subject: Re: [PATCH] pinctrl: single: fix potential NULL dereference
-Message-ID: <Y3eAIb7x6de9Bigy@atomide.com>
-References: <20221118104332.943-1-korotkov.maxim.s@gmail.com>
+To:     linux-omap@vger.kernel.org
+Cc:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        devicetree@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>
+Subject: [PATCH] ARM: dts: Unify pwm-omap-dmtimer node names
+Date:   Fri, 18 Nov 2022 14:53:32 +0200
+Message-Id: <20221118125332.9347-1-tony@atomide.com>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221118104332.943-1-korotkov.maxim.s@gmail.com>
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -40,9 +37,100 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Maxim Korotkov <korotkov.maxim.s@gmail.com> [221118 10:33]:
-> Added checking of pointer "function" in pcs_set_mux().
-> pinmux_generic_get_function() can return NULL and the pointer
-> "function" was dereferenced without checking against NULL.
+There is no reg property for pwm-omap-dmtimer.
 
-Reviewed-by: Tony Lindgren <tony@atomide.com>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc: Rob Herring <robh+dt@kernel.org>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+---
+ arch/arm/boot/dts/am335x-guardian.dts            | 2 +-
+ arch/arm/boot/dts/am3517-evm.dts                 | 2 +-
+ arch/arm/boot/dts/logicpd-torpedo-baseboard.dtsi | 2 +-
+ arch/arm/boot/dts/motorola-mapphone-common.dtsi  | 4 ++--
+ arch/arm/boot/dts/omap3-gta04.dtsi               | 2 +-
+ arch/arm/boot/dts/omap3-n900.dts                 | 2 +-
+ 6 files changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/arch/arm/boot/dts/am335x-guardian.dts b/arch/arm/boot/dts/am335x-guardian.dts
+--- a/arch/arm/boot/dts/am335x-guardian.dts
++++ b/arch/arm/boot/dts/am335x-guardian.dts
+@@ -103,7 +103,7 @@ panel-info {
+ 
+ 	};
+ 
+-	guardian_beeper: dmtimer-pwm@7 {
++	guardian_beeper: pwm-7 {
+ 		compatible = "ti,omap-dmtimer-pwm";
+ 		ti,timers = <&timer7>;
+ 		pinctrl-names = "default";
+diff --git a/arch/arm/boot/dts/am3517-evm.dts b/arch/arm/boot/dts/am3517-evm.dts
+--- a/arch/arm/boot/dts/am3517-evm.dts
++++ b/arch/arm/boot/dts/am3517-evm.dts
+@@ -150,7 +150,7 @@ bl: backlight {
+ 		enable-gpios = <&gpio6 22 GPIO_ACTIVE_HIGH>; /* gpio_182 */
+ 	};
+ 
+-	pwm11: dmtimer-pwm@11 {
++	pwm11: pwm-11 {
+ 		compatible = "ti,omap-dmtimer-pwm";
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&pwm_pins>;
+diff --git a/arch/arm/boot/dts/logicpd-torpedo-baseboard.dtsi b/arch/arm/boot/dts/logicpd-torpedo-baseboard.dtsi
+--- a/arch/arm/boot/dts/logicpd-torpedo-baseboard.dtsi
++++ b/arch/arm/boot/dts/logicpd-torpedo-baseboard.dtsi
+@@ -59,7 +59,7 @@ led2 {
+ 		};
+ 	};
+ 
+-	pwm10: dmtimer-pwm {
++	pwm10: pwm-10 {
+ 		compatible = "ti,omap-dmtimer-pwm";
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&pwm_pins>;
+diff --git a/arch/arm/boot/dts/motorola-mapphone-common.dtsi b/arch/arm/boot/dts/motorola-mapphone-common.dtsi
+--- a/arch/arm/boot/dts/motorola-mapphone-common.dtsi
++++ b/arch/arm/boot/dts/motorola-mapphone-common.dtsi
+@@ -133,7 +133,7 @@ soundcard {
+ 		dais = <&mcbsp2_port>, <&mcbsp3_port>;
+ 	};
+ 
+-	pwm8: dmtimer-pwm-8 {
++	pwm8: pwm-8 {
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&vibrator_direction_pin>;
+ 
+@@ -143,7 +143,7 @@ pwm8: dmtimer-pwm-8 {
+ 		ti,clock-source = <0x01>;
+ 	};
+ 
+-	pwm9: dmtimer-pwm-9 {
++	pwm9: pwm-9 {
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&vibrator_enable_pin>;
+ 
+diff --git a/arch/arm/boot/dts/omap3-gta04.dtsi b/arch/arm/boot/dts/omap3-gta04.dtsi
+--- a/arch/arm/boot/dts/omap3-gta04.dtsi
++++ b/arch/arm/boot/dts/omap3-gta04.dtsi
+@@ -147,7 +147,7 @@ backlight: backlight {
+ 		pinctrl-0 = <&backlight_pins>;
+ 	};
+ 
+-	pwm11: dmtimer-pwm {
++	pwm11: pwm-11 {
+ 		compatible = "ti,omap-dmtimer-pwm";
+ 		ti,timers = <&timer11>;
+ 		#pwm-cells = <3>;
+diff --git a/arch/arm/boot/dts/omap3-n900.dts b/arch/arm/boot/dts/omap3-n900.dts
+--- a/arch/arm/boot/dts/omap3-n900.dts
++++ b/arch/arm/boot/dts/omap3-n900.dts
+@@ -156,7 +156,7 @@ battery: n900-battery {
+ 		io-channel-names = "temp", "bsi", "vbat";
+ 	};
+ 
+-	pwm9: dmtimer-pwm {
++	pwm9: pwm-9 {
+ 		compatible = "ti,omap-dmtimer-pwm";
+ 		#pwm-cells = <3>;
+ 		ti,timers = <&timer9>;
+-- 
+2.38.1
