@@ -2,196 +2,98 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 43F2562F2C7
-	for <lists+linux-omap@lfdr.de>; Fri, 18 Nov 2022 11:42:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E320862F2D5
+	for <lists+linux-omap@lfdr.de>; Fri, 18 Nov 2022 11:44:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241173AbiKRKmw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 18 Nov 2022 05:42:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60970 "EHLO
+        id S241522AbiKRKoA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 18 Nov 2022 05:44:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33730 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229743AbiKRKmv (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 18 Nov 2022 05:42:51 -0500
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 2940397082
-        for <linux-omap@vger.kernel.org>; Fri, 18 Nov 2022 02:42:50 -0800 (PST)
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 28796807E;
-        Fri, 18 Nov 2022 10:32:43 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     linux-omap@vger.kernel.org
-Cc:     linux-arm-kernel@lists.infradead.org,
-        "H . Nikolaus Schaller" <hns@goldelico.com>,
-        Sicelo Mhlongo <absicsz@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH 3/3] ARM: OMAP2+: Drop legacy hwmod data for omap3 otg
-Date:   Fri, 18 Nov 2022 12:42:26 +0200
-Message-Id: <20221118104226.46223-4-tony@atomide.com>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20221118104226.46223-1-tony@atomide.com>
-References: <20221118104226.46223-1-tony@atomide.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S241493AbiKRKn6 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 18 Nov 2022 05:43:58 -0500
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9EF111A23;
+        Fri, 18 Nov 2022 02:43:56 -0800 (PST)
+Received: by mail-lf1-x133.google.com with SMTP id g12so7587257lfh.3;
+        Fri, 18 Nov 2022 02:43:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=M54rSFxQLijO3j26nQU0jB0r1Bnt0dCKzsYSgimLrI4=;
+        b=KMvnRwY0L3d/A/JoE/GXTUQz3sVPfvFmvGZpaOggwoHMG6wnO+7CkXqhK7Q7RJI7sK
+         WfR74K9m6eZtlWz+JZxVHEICLP4OT//621qOZhBu2Tn5k35N3yYUwesIA9mDw4uLFE4W
+         4JK4Yr3psUhtsKmVuJNkgIhBQTZ5eg4xmgGVGsEgl4njX5METYg97AT+Byxfaou20Mg5
+         uzsCERH0AZpX+8LAzQ/2CC8ScUhF5Uwu30RlWuNpIY9X3gb5K6WyrSdQSoTfRsPmhoHb
+         NL1sGo6t0gtxPXc65aEsxspqq5QAfl+gMQgASAuNG5fNJGtDvTbsOM68Z3uB/xOQk8T8
+         FD4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=M54rSFxQLijO3j26nQU0jB0r1Bnt0dCKzsYSgimLrI4=;
+        b=gMw2yel/DbddWShEycCRp1KUPRti2gF3BM5v8UdIs7Wd3h3+zkhW2D6ksutjf76mDU
+         NeLjkSO+6eZt+G9Y1F1/nL0DEEnayZtrYQU/lN74/o9HxEPtWGdFPA6ecdO/J/6RuYu/
+         znAlyXRH4OC9dCy0RgO2pX2fpxOLuyJpNffEwcQDsKpIYZE0UTfldTlu15FYyxgbeLwA
+         j7K8Hoe/fxMP/m7YWLfrrtVz9zk+wwjimLkF5RBkIXhYwsSBdzbA6CdmoI8CzACS3SNJ
+         0CX+8YEwLASRlv2EfCioWN9ooZKQMPRtsQBHzH3LwotvSrESIzA9WEkDeyyuMgIQcFA8
+         r+EQ==
+X-Gm-Message-State: ANoB5pndm94Ft0nQ83EBqKOw+WSA2T3kxtkiERVnRbjDNHuwk9wqXkve
+        0nndVMblJgBkWaR8WSHeupw=
+X-Google-Smtp-Source: AA0mqf5UbfQ4/CHQXYMvIKq/kso9soqgxgLcSAnHR3LCuoNPh4obki+ZWElYMSb07O6pDWTFEjJqfw==
+X-Received: by 2002:a05:6512:324c:b0:4a2:2e51:85c1 with SMTP id c12-20020a056512324c00b004a22e5185c1mr2134919lfr.658.1668768235135;
+        Fri, 18 Nov 2022 02:43:55 -0800 (PST)
+Received: from mkor.rasu.local ([212.22.67.162])
+        by smtp.gmail.com with ESMTPSA id v26-20020a056512049a00b0048b365176d9sm606174lfq.286.2022.11.18.02.43.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Nov 2022 02:43:54 -0800 (PST)
+From:   Maxim Korotkov <korotkov.maxim.s@gmail.com>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Maxim Korotkov <korotkov.maxim.s@gmail.com>,
+        Haojian Zhuang <haojian.zhuang@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        lvc-project@linuxtesting.org
+Subject: [PATCH] pinctrl: single: fix potential NULL dereference
+Date:   Fri, 18 Nov 2022 13:43:32 +0300
+Message-Id: <20221118104332.943-1-korotkov.maxim.s@gmail.com>
+X-Mailer: git-send-email 2.17.1
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-With complete devicetree data available to probe with ti-sysc interconnect
-target module driver, we can now drop the related SoC data.
+Added checking of pointer "function" in pcs_set_mux().
+pinmux_generic_get_function() can return NULL and the pointer
+"function" was dereferenced without checking against NULL.
 
-Cc: H. Nikolaus Schaller <hns@goldelico.com>
-Cc: Sicelo Mhlongo <absicsz@gmail.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 571aec4df5b7 ("pinctrl: single: Use generic pinmux helpers for managing functions")
+Signed-off-by: Maxim Korotkov <korotkov.maxim.s@gmail.com>
 ---
- arch/arm/mach-omap2/omap_hwmod_3xxx_data.c | 99 ----------------------
- 1 file changed, 99 deletions(-)
+ drivers/pinctrl/pinctrl-single.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm/mach-omap2/omap_hwmod_3xxx_data.c b/arch/arm/mach-omap2/omap_hwmod_3xxx_data.c
---- a/arch/arm/mach-omap2/omap_hwmod_3xxx_data.c
-+++ b/arch/arm/mach-omap2/omap_hwmod_3xxx_data.c
-@@ -1135,65 +1135,6 @@ static struct omap_hwmod omap34xx_mcspi4 = {
- 	.class		= &omap34xx_mcspi_class,
- };
- 
--/* usbhsotg */
--static struct omap_hwmod_class_sysconfig omap3xxx_usbhsotg_sysc = {
--	.rev_offs	= 0x0400,
--	.sysc_offs	= 0x0404,
--	.syss_offs	= 0x0408,
--	.sysc_flags	= (SYSC_HAS_SIDLEMODE | SYSC_HAS_MIDLEMODE|
--			  SYSC_HAS_ENAWAKEUP | SYSC_HAS_SOFTRESET |
--			  SYSC_HAS_AUTOIDLE),
--	.idlemodes	= (SIDLE_FORCE | SIDLE_NO | SIDLE_SMART |
--			  MSTANDBY_FORCE | MSTANDBY_NO | MSTANDBY_SMART),
--	.sysc_fields	= &omap_hwmod_sysc_type1,
--};
--
--static struct omap_hwmod_class usbotg_class = {
--	.name = "usbotg",
--	.sysc = &omap3xxx_usbhsotg_sysc,
--};
--
--/* usb_otg_hs */
--
--static struct omap_hwmod omap3xxx_usbhsotg_hwmod = {
--	.name		= "usb_otg_hs",
--	.main_clk	= "hsotgusb_ick",
--	.prcm		= {
--		.omap2 = {
--			.module_offs = CORE_MOD,
--			.idlest_reg_id = 1,
--			.idlest_idle_bit = OMAP3430ES2_ST_HSOTGUSB_IDLE_SHIFT,
--		},
--	},
--	.class		= &usbotg_class,
--
--	/*
--	 * Erratum ID: i479  idle_req / idle_ack mechanism potentially
--	 * broken when autoidle is enabled
--	 * workaround is to disable the autoidle bit at module level.
--	 *
--	 * Enabling the device in any other MIDLEMODE setting but force-idle
--	 * causes core_pwrdm not enter idle states at least on OMAP3630.
--	 * Note that musb has OTG_FORCESTDBY register that controls MSTANDBY
--	 * signal when MIDLEMODE is set to force-idle.
--	 */
--	.flags		= HWMOD_NO_OCP_AUTOIDLE | HWMOD_SWSUP_SIDLE |
--			  HWMOD_FORCE_MSTANDBY | HWMOD_RECONFIG_IO_CHAIN,
--};
--
--/* usb_otg_hs */
--
--static struct omap_hwmod_class am35xx_usbotg_class = {
--	.name = "am35xx_usbotg",
--};
--
--static struct omap_hwmod am35xx_usbhsotg_hwmod = {
--	.name		= "am35x_otg_hs",
--	.main_clk	= "hsotgusb_fck",
--	.class		= &am35xx_usbotg_class,
--	.flags		= HWMOD_NO_IDLEST,
--};
--
- /* MMC/SD/SDIO common */
- static struct omap_hwmod_class_sysconfig omap34xx_mmc_sysc = {
- 	.rev_offs	= 0x1fc,
-@@ -1561,22 +1502,6 @@ static struct omap_hwmod_ocp_if omap3xxx_dss__l3 = {
- 	.user		= OCP_USER_MPU | OCP_USER_SDMA,
- };
- 
--/* l3_core -> usbhsotg interface */
--static struct omap_hwmod_ocp_if omap3xxx_usbhsotg__l3 = {
--	.master		= &omap3xxx_usbhsotg_hwmod,
--	.slave		= &omap3xxx_l3_main_hwmod,
--	.clk		= "core_l3_ick",
--	.user		= OCP_USER_MPU,
--};
--
--/* l3_core -> am35xx_usbhsotg interface */
--static struct omap_hwmod_ocp_if am35xx_usbhsotg__l3 = {
--	.master		= &am35xx_usbhsotg_hwmod,
--	.slave		= &omap3xxx_l3_main_hwmod,
--	.clk		= "hsotgusb_ick",
--	.user		= OCP_USER_MPU,
--};
--
- /* l3_core -> sad2d interface */
- static struct omap_hwmod_ocp_if omap3xxx_sad2d__l3 = {
- 	.master		= &omap3xxx_sad2d_hwmod,
-@@ -1758,24 +1683,6 @@ static struct omap_hwmod_ocp_if omap36xx_l4_core__sr2 = {
- 	.user		= OCP_USER_MPU,
- };
- 
--
--/* l4_core -> usbhsotg  */
--static struct omap_hwmod_ocp_if omap3xxx_l4_core__usbhsotg = {
--	.master		= &omap3xxx_l4_core_hwmod,
--	.slave		= &omap3xxx_usbhsotg_hwmod,
--	.clk		= "l4_ick",
--	.user		= OCP_USER_MPU,
--};
--
--
--/* l4_core -> usbhsotg  */
--static struct omap_hwmod_ocp_if am35xx_l4_core__usbhsotg = {
--	.master		= &omap3xxx_l4_core_hwmod,
--	.slave		= &am35xx_usbhsotg_hwmod,
--	.clk		= "hsotgusb_ick",
--	.user		= OCP_USER_MPU,
--};
--
- /* L4_WKUP -> L4_SEC interface */
- static struct omap_hwmod_ocp_if omap3xxx_l4_wkup__l4_sec = {
- 	.master = &omap3xxx_l4_wkup_hwmod,
-@@ -2465,8 +2372,6 @@ static struct omap_hwmod_ocp_if *omap3430es1_hwmod_ocp_ifs[] __initdata = {
- static struct omap_hwmod_ocp_if *omap3430es2plus_hwmod_ocp_ifs[] __initdata = {
- 	&omap3xxx_dss__l3,
- 	&omap3xxx_l4_core__dss,
--	&omap3xxx_usbhsotg__l3,
--	&omap3xxx_l4_core__usbhsotg,
- 	&omap3xxx_usb_host_hs__l3_main_2,
- 	&omap3xxx_l4_core__usb_host_hs,
- 	&omap3xxx_l4_core__usb_tll_hs,
-@@ -2509,8 +2414,6 @@ static struct omap_hwmod_ocp_if *omap36xx_hwmod_ocp_ifs[] __initdata = {
- 	&omap3xxx_l4_core__dss,
- 	&omap36xx_l4_core__sr1,
- 	&omap36xx_l4_core__sr2,
--	&omap3xxx_usbhsotg__l3,
--	&omap3xxx_l4_core__usbhsotg,
- 	&omap3xxx_l4_core__mailbox,
- 	&omap3xxx_usb_host_hs__l3_main_2,
- 	&omap3xxx_l4_core__usb_host_hs,
-@@ -2528,8 +2431,6 @@ static struct omap_hwmod_ocp_if *omap36xx_hwmod_ocp_ifs[] __initdata = {
- static struct omap_hwmod_ocp_if *am35xx_hwmod_ocp_ifs[] __initdata = {
- 	&omap3xxx_dss__l3,
- 	&omap3xxx_l4_core__dss,
--	&am35xx_usbhsotg__l3,
--	&am35xx_l4_core__usbhsotg,
- 	&am35xx_l4_core__uart4,
- 	&omap3xxx_usb_host_hs__l3_main_2,
- 	&omap3xxx_l4_core__usb_host_hs,
+diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
+index 67bec7ea0f8b..5655a2da5413 100644
+--- a/drivers/pinctrl/pinctrl-single.c
++++ b/drivers/pinctrl/pinctrl-single.c
+@@ -372,6 +372,8 @@ static int pcs_set_mux(struct pinctrl_dev *pctldev, unsigned fselector,
+ 	if (!pcs->fmask)
+ 		return 0;
+ 	function = pinmux_generic_get_function(pctldev, fselector);
++	if (!function)
++		return -EINVAL;
+ 	func = function->data;
+ 	if (!func)
+ 		return -EINVAL;
 -- 
-2.38.1
+2.17.1
+
