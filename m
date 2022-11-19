@@ -2,107 +2,120 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E320630CB6
-	for <lists+linux-omap@lfdr.de>; Sat, 19 Nov 2022 07:50:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7ED39630DFB
+	for <lists+linux-omap@lfdr.de>; Sat, 19 Nov 2022 11:04:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232655AbiKSGuh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 19 Nov 2022 01:50:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43954 "EHLO
+        id S229670AbiKSKEO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 19 Nov 2022 05:04:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231847AbiKSGuU (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 19 Nov 2022 01:50:20 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C7D9193C3;
-        Fri, 18 Nov 2022 22:50:19 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 14FB6B82716;
-        Sat, 19 Nov 2022 06:50:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 86E7AC433B5;
-        Sat, 19 Nov 2022 06:50:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1668840616;
-        bh=J6A2zN+GaxubPoA4pynMpJ9aRQjTm1qSEAaKvZV9V00=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=d+WNCYrodp79kOfNGIXr5PvvIs5GCF6E/TB0CDa2g+OZEp77Ua/U5QlZvwsWMDrK4
-         OlLD/U4jjbYyhWaiA4rct4JoYkz9IWVscixQD26JhUaXY3yUQEg8Y11+kSP0F7KpB8
-         zMZfwDOJzrlQ9jze8VoIW1mJ3xn1MyS9umDxW8U4aWjYwb6wOYhonyX7dPSQGn//c3
-         ES9sycuBVsgfSKQQ6UBEnGpryiRSmirdvQs2tXppPiSbnayeSEWB/Bx525GuMc+yZz
-         4Kon/n6VmXCwbfBd8TB8yHub9wkc/uggzN+T8rGWKeov06QFTXG5sVNeaRlrWw+yQP
-         EzUp1tL6honhQ==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 64E94E524E4;
-        Sat, 19 Nov 2022 06:50:16 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S229606AbiKSKEL (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 19 Nov 2022 05:04:11 -0500
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a01:238:4321:8900:456f:ecd6:43e:202c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5832193DE;
+        Sat, 19 Nov 2022 02:04:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=kemnade.info; s=20220719; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=RMNXYrumhI3yLofiZI7k3r2DEJ+lXONtPLs3WFv5g+o=; b=5SsmuCcG6tK82cWqUfyg9d5Eck
+        KksnUD/SWupHQBxwWvOf/0nvvNjb6cxknUFGI+j80Y9R+kKA/6TKtoWvbPIjZozzgbKWomxQtfNYz
+        Y7uImLQblBjsKTvabMuZOzRF6QZXYiD9m1tWIClhx0oG+Dre6nBQGhQ6IaVRacUi7WtYThIiwmPW2
+        zt1GSi5mnynxPaPOPRzphluF4GIu9yPBGCqOTV4QlYwvIppsaJXq/pRX/mr0vBIQGJcB4WBJ4c6ub
+        dN+1SjblSLACfPUtXxXovJu1FyAVtaUAK2wtbvtEB3YZDBxfxxVNKOzPAXUjehDaF/wHtF5TT4izx
+        4xs+cLfA==;
+Received: from p200300ccff2ff3001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff2f:f300:1a3d:a2ff:febf:d33a] helo=aktux)
+        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <andreas@kemnade.info>)
+        id 1owKhf-0000Nr-Oi; Sat, 19 Nov 2022 11:04:04 +0100
+Received: from andi by aktux with local (Exim 4.94.2)
+        (envelope-from <andreas@kemnade.info>)
+        id 1owKhe-00CIPK-Qp; Sat, 19 Nov 2022 11:04:02 +0100
+From:   Andreas Kemnade <andreas@kemnade.info>
+To:     tony@atomide.com, lee@kernel.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Andreas Kemnade <andreas@kemnade.info>, Bin Liu <b-liu@ti.com>
+Subject: [PATCH] mfd: twl: fix TWL6032 phy vbus detection
+Date:   Sat, 19 Nov 2022 11:03:41 +0100
+Message-Id: <20221119100341.2930647-1-andreas@kemnade.info>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH 000/606] i2c: Complete conversion to i2c_probe_new
-From:   patchwork-bot+chrome-platform@kernel.org
-Message-Id: <166884061640.19423.12726268813615488480.git-patchwork-notify@kernel.org>
-Date:   Sat, 19 Nov 2022 06:50:16 +0000
-References: <20221118224540.619276-1-uwe@kleine-koenig.org>
-In-Reply-To: <20221118224540.619276-1-uwe@kleine-koenig.org>
-To:     =?utf-8?q?Uwe_Kleine-K=C3=B6nig_=3Cuwe=40kleine-koenig=2Eorg=3E?=@ci.codeaurora.org
-Cc:     ang.iglesiasg@gmail.com, lee.jones@linaro.org,
-        grant.likely@linaro.org, wsa@kernel.org, linux-i2c@vger.kernel.org,
-        kernel@pengutronix.de, linux-integrity@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-crypto@vger.kernel.org, linux-gpio@vger.kernel.org,
-        bcm-kernel-feedback-list@broadcom.com,
-        linux-rpi-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
-        linux-input@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-leds@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-media@vger.kernel.org, patches@opensource.cirrus.com,
-        linux-actions@lists.infradead.org,
-        linux-renesas-soc@vger.kernel.org,
-        linux-amlogic@lists.infradead.org, alsa-devel@alsa-project.org,
-        linux-omap@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
-        linux-mtd@lists.infradead.org, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, chrome-platform@lists.linux.dev,
-        linux-pm@vger.kernel.org, kernel@puri.sm,
-        linux-pwm@vger.kernel.org, linux-rtc@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-staging@lists.linux.dev,
-        linux-serial@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        openipmi-developer@lists.sourceforge.net
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Score: -1.0 (-)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hello:
+TWL6032 has a few charging registers prepended before the charging
+registers the TWL6030 has. To be able to use common register defines
+declare the additional registers as additional module.
+At the moment this affects the access to CHARGERUSB_CTRL1 in
+phy-twl6030-usb.  Without this patch, it is accessing the wrong register
+on TWL6032.
+The consequence is that presence of Vbus is not reported.
 
-This patch was applied to chrome-platform/linux.git (for-next)
-by Tzung-Bi Shih <tzungbi@kernel.org>:
+Cc: Bin Liu <b-liu@ti.com>
+Cc: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+---
+ drivers/mfd/twl-core.c  | 8 ++++----
+ include/linux/mfd/twl.h | 2 ++
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
-On Fri, 18 Nov 2022 23:35:34 +0100 you wrote:
-> Hello,
-> 
-> since commit b8a1a4cd5a98 ("i2c: Provide a temporary .probe_new()
-> call-back type") from 2016 there is a "temporary" alternative probe
-> callback for i2c drivers.
-> 
-> This series completes all drivers to this new callback (unless I missed
-> something). It's based on current next/master.
-> A part of the patches depend on commit 662233731d66 ("i2c: core:
-> Introduce i2c_client_get_device_id helper function"), there is a branch that
-> you can pull into your tree to get it:
-> 
-> [...]
-
-Here is the summary with links:
-  - [512/606] platform/chrome: cros_ec: Convert to i2c's .probe_new()
-    https://git.kernel.org/chrome-platform/c/f9e510dc92df
-
-You are awesome, thank you!
+diff --git a/drivers/mfd/twl-core.c b/drivers/mfd/twl-core.c
+index f6b4b9d94bbd..5a7ed71d0e30 100644
+--- a/drivers/mfd/twl-core.c
++++ b/drivers/mfd/twl-core.c
+@@ -111,6 +111,7 @@
+ #define TWL6030_BASEADD_GASGAUGE	0x00C0
+ #define TWL6030_BASEADD_PIH		0x00D0
+ #define TWL6030_BASEADD_CHARGER		0x00E0
++/* A few regs prepended before the 6030 regs */
+ #define TWL6032_BASEADD_CHARGER		0x00DA
+ #define TWL6030_BASEADD_LED		0x00F4
+ 
+@@ -353,6 +354,9 @@ static struct twl_mapping twl6030_map[] = {
+ 	{ 2, TWL6030_BASEADD_ZERO },
+ 	{ 1, TWL6030_BASEADD_GPADC_CTRL },
+ 	{ 1, TWL6030_BASEADD_GASGAUGE },
++
++	/* TWL6032 specific charger registers */
++	{ 1, TWL6032_BASEADD_CHARGER },
+ };
+ 
+ static const struct regmap_config twl6030_regmap_config[3] = {
+@@ -802,10 +806,6 @@ twl_probe(struct i2c_client *client, const struct i2c_device_id *id)
+ 	if ((id->driver_data) & TWL6030_CLASS) {
+ 		twl_priv->twl_id = TWL6030_CLASS_ID;
+ 		twl_priv->twl_map = &twl6030_map[0];
+-		/* The charger base address is different in twl6032 */
+-		if ((id->driver_data) & TWL6032_SUBCLASS)
+-			twl_priv->twl_map[TWL_MODULE_MAIN_CHARGE].base =
+-							TWL6032_BASEADD_CHARGER;
+ 		twl_regmap_config = twl6030_regmap_config;
+ 	} else {
+ 		twl_priv->twl_id = TWL4030_CLASS_ID;
+diff --git a/include/linux/mfd/twl.h b/include/linux/mfd/twl.h
+index eaa233038254..6e3d99b7a0ee 100644
+--- a/include/linux/mfd/twl.h
++++ b/include/linux/mfd/twl.h
+@@ -69,6 +69,8 @@ enum twl6030_module_ids {
+ 	TWL6030_MODULE_GPADC,
+ 	TWL6030_MODULE_GASGAUGE,
+ 
++	/* A few extra registers before the registers shared with the 6030 */
++	TWL6032_MODULE_CHARGE,
+ 	TWL6030_MODULE_LAST,
+ };
+ 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.30.2
 
