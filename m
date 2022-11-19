@@ -2,120 +2,151 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7ED39630DFB
-	for <lists+linux-omap@lfdr.de>; Sat, 19 Nov 2022 11:04:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D77A5630E42
+	for <lists+linux-omap@lfdr.de>; Sat, 19 Nov 2022 12:10:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229670AbiKSKEO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 19 Nov 2022 05:04:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41340 "EHLO
+        id S231865AbiKSLKX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 19 Nov 2022 06:10:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229606AbiKSKEL (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 19 Nov 2022 05:04:11 -0500
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a01:238:4321:8900:456f:ecd6:43e:202c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5832193DE;
-        Sat, 19 Nov 2022 02:04:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=kemnade.info; s=20220719; h=Content-Transfer-Encoding:MIME-Version:
-        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=RMNXYrumhI3yLofiZI7k3r2DEJ+lXONtPLs3WFv5g+o=; b=5SsmuCcG6tK82cWqUfyg9d5Eck
-        KksnUD/SWupHQBxwWvOf/0nvvNjb6cxknUFGI+j80Y9R+kKA/6TKtoWvbPIjZozzgbKWomxQtfNYz
-        Y7uImLQblBjsKTvabMuZOzRF6QZXYiD9m1tWIClhx0oG+Dre6nBQGhQ6IaVRacUi7WtYThIiwmPW2
-        zt1GSi5mnynxPaPOPRzphluF4GIu9yPBGCqOTV4QlYwvIppsaJXq/pRX/mr0vBIQGJcB4WBJ4c6ub
-        dN+1SjblSLACfPUtXxXovJu1FyAVtaUAK2wtbvtEB3YZDBxfxxVNKOzPAXUjehDaF/wHtF5TT4izx
-        4xs+cLfA==;
-Received: from p200300ccff2ff3001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff2f:f300:1a3d:a2ff:febf:d33a] helo=aktux)
-        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <andreas@kemnade.info>)
-        id 1owKhf-0000Nr-Oi; Sat, 19 Nov 2022 11:04:04 +0100
-Received: from andi by aktux with local (Exim 4.94.2)
-        (envelope-from <andreas@kemnade.info>)
-        id 1owKhe-00CIPK-Qp; Sat, 19 Nov 2022 11:04:02 +0100
-From:   Andreas Kemnade <andreas@kemnade.info>
-To:     tony@atomide.com, lee@kernel.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Andreas Kemnade <andreas@kemnade.info>, Bin Liu <b-liu@ti.com>
-Subject: [PATCH] mfd: twl: fix TWL6032 phy vbus detection
-Date:   Sat, 19 Nov 2022 11:03:41 +0100
-Message-Id: <20221119100341.2930647-1-andreas@kemnade.info>
-X-Mailer: git-send-email 2.30.2
+        with ESMTP id S229470AbiKSLKS (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 19 Nov 2022 06:10:18 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32F3F6B9E9;
+        Sat, 19 Nov 2022 03:10:18 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 99C4960A1F;
+        Sat, 19 Nov 2022 11:10:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 763BCC433C1;
+        Sat, 19 Nov 2022 11:10:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1668856217;
+        bh=ene1SzTvsJEbW7r9yE4HzkF6rHfAR+aLIm+4UV/wgpo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=AwWwg8hTEvU1lRotHevSh1bppQ+LWfLwM9aU/yyuaFSoeFCmSwjJ4hNXPYNKPqyxF
+         RwoQt69tGMzjEml+0YwDwVnLfETtKSINebD6ZDDIjJG2YZ26iP67zsjgz4cgG6uGnz
+         NeH6bx6FUo9hgiiy06aaBkM2k9pRw5peXY9fXGbpIdefsltNF4FVq05z66zkCjnicj
+         f/YnghTN3aq/ykMs6EmMfO5tnMvkQz4JaZBC1pmyIfU8l5HPFc7Qkk3nYySibldc2a
+         4zm4rXtEkUSkKLdGBy0DoGhHf7XI5Gph/tChnTnqwzMKjNhd3aisTxqnB1pP+2RhuX
+         Z5WZrjjMLqJaQ==
+Date:   Sat, 19 Nov 2022 12:10:11 +0100
+From:   Wolfram Sang <wsa@kernel.org>
+To:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>
+Cc:     Angel Iglesias <ang.iglesiasg@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Grant Likely <grant.likely@linaro.org>,
+        linux-i2c@vger.kernel.org, kernel@pengutronix.de,
+        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
+        linux-gpio@vger.kernel.org,
+        Broadcom internal kernel review list 
+        <bcm-kernel-feedback-list@broadcom.com>,
+        linux-rpi-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
+        linux-input@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-leds@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-media@vger.kernel.org, patches@opensource.cirrus.com,
+        linux-actions@lists.infradead.org,
+        linux-renesas-soc@vger.kernel.org,
+        linux-amlogic@lists.infradead.org, alsa-devel@alsa-project.org,
+        linux-omap@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+        linux-mtd@lists.infradead.org, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, chrome-platform@lists.linux.dev,
+        linux-pm@vger.kernel.org, Purism Kernel Team <kernel@puri.sm>,
+        linux-pwm@vger.kernel.org, linux-rtc@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-staging@lists.linux.dev,
+        linux-serial@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        openipmi-developer@lists.sourceforge.net
+Subject: Re: [PATCH 000/606] i2c: Complete conversion to i2c_probe_new
+Message-ID: <Y3i5kz6IL7tFbVwX@shikoro>
+Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
+        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>,
+        Angel Iglesias <ang.iglesiasg@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Grant Likely <grant.likely@linaro.org>, linux-i2c@vger.kernel.org,
+        kernel@pengutronix.de, linux-integrity@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-crypto@vger.kernel.org, linux-gpio@vger.kernel.org,
+        Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+        linux-rpi-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
+        linux-input@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-leds@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-media@vger.kernel.org, patches@opensource.cirrus.com,
+        linux-actions@lists.infradead.org,
+        linux-renesas-soc@vger.kernel.org,
+        linux-amlogic@lists.infradead.org, alsa-devel@alsa-project.org,
+        linux-omap@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+        linux-mtd@lists.infradead.org, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, chrome-platform@lists.linux.dev,
+        linux-pm@vger.kernel.org, Purism Kernel Team <kernel@puri.sm>,
+        linux-pwm@vger.kernel.org, linux-rtc@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-staging@lists.linux.dev,
+        linux-serial@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        openipmi-developer@lists.sourceforge.net
+References: <20221118224540.619276-1-uwe@kleine-koenig.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Score: -1.0 (-)
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="xRatB1/o2GNYTDWD"
+Content-Disposition: inline
+In-Reply-To: <20221118224540.619276-1-uwe@kleine-koenig.org>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-TWL6032 has a few charging registers prepended before the charging
-registers the TWL6030 has. To be able to use common register defines
-declare the additional registers as additional module.
-At the moment this affects the access to CHARGERUSB_CTRL1 in
-phy-twl6030-usb.  Without this patch, it is accessing the wrong register
-on TWL6032.
-The consequence is that presence of Vbus is not reported.
 
-Cc: Bin Liu <b-liu@ti.com>
-Cc: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
----
- drivers/mfd/twl-core.c  | 8 ++++----
- include/linux/mfd/twl.h | 2 ++
- 2 files changed, 6 insertions(+), 4 deletions(-)
+--xRatB1/o2GNYTDWD
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/drivers/mfd/twl-core.c b/drivers/mfd/twl-core.c
-index f6b4b9d94bbd..5a7ed71d0e30 100644
---- a/drivers/mfd/twl-core.c
-+++ b/drivers/mfd/twl-core.c
-@@ -111,6 +111,7 @@
- #define TWL6030_BASEADD_GASGAUGE	0x00C0
- #define TWL6030_BASEADD_PIH		0x00D0
- #define TWL6030_BASEADD_CHARGER		0x00E0
-+/* A few regs prepended before the 6030 regs */
- #define TWL6032_BASEADD_CHARGER		0x00DA
- #define TWL6030_BASEADD_LED		0x00F4
- 
-@@ -353,6 +354,9 @@ static struct twl_mapping twl6030_map[] = {
- 	{ 2, TWL6030_BASEADD_ZERO },
- 	{ 1, TWL6030_BASEADD_GPADC_CTRL },
- 	{ 1, TWL6030_BASEADD_GASGAUGE },
-+
-+	/* TWL6032 specific charger registers */
-+	{ 1, TWL6032_BASEADD_CHARGER },
- };
- 
- static const struct regmap_config twl6030_regmap_config[3] = {
-@@ -802,10 +806,6 @@ twl_probe(struct i2c_client *client, const struct i2c_device_id *id)
- 	if ((id->driver_data) & TWL6030_CLASS) {
- 		twl_priv->twl_id = TWL6030_CLASS_ID;
- 		twl_priv->twl_map = &twl6030_map[0];
--		/* The charger base address is different in twl6032 */
--		if ((id->driver_data) & TWL6032_SUBCLASS)
--			twl_priv->twl_map[TWL_MODULE_MAIN_CHARGE].base =
--							TWL6032_BASEADD_CHARGER;
- 		twl_regmap_config = twl6030_regmap_config;
- 	} else {
- 		twl_priv->twl_id = TWL4030_CLASS_ID;
-diff --git a/include/linux/mfd/twl.h b/include/linux/mfd/twl.h
-index eaa233038254..6e3d99b7a0ee 100644
---- a/include/linux/mfd/twl.h
-+++ b/include/linux/mfd/twl.h
-@@ -69,6 +69,8 @@ enum twl6030_module_ids {
- 	TWL6030_MODULE_GPADC,
- 	TWL6030_MODULE_GASGAUGE,
- 
-+	/* A few extra registers before the registers shared with the 6030 */
-+	TWL6032_MODULE_CHARGE,
- 	TWL6030_MODULE_LAST,
- };
- 
--- 
-2.30.2
+Hi Uwe,
 
+> This series completes all drivers to this new callback (unless I missed
+> something). It's based on current next/master.
+
+Thanks for this work, really, but oh my poor inbox...
+
+> I don't think it's feasable to apply this series in one go, so I ask the
+> maintainers of the changed files to apply via their tree.
+
+This seems reasonable. It would have made sense to send "patch series
+per subsystem" then. So people only see the subset they are interested
+in. I know filename-to-subsys mapping is hardly ever perfect. But in my
+experience, even imperfect, it is more convenient than such a huge patch
+series.
+
+Happy hacking,
+
+   Wolfram
+
+
+--xRatB1/o2GNYTDWD
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmN4uY8ACgkQFA3kzBSg
+KbYEfw/+L6nVN4bUDqiN6AeU0yv+Wq/oAFkIUgM8TLT/4gzeEwPsCcTwHBaHQFEF
+sO9yZWukjVYlt2YlcEZglBVIAl7Ha17oQfv2HbWzZXl4cv8PEMfodh6PuOpcPuna
+P+RjiB40nPPxUt5hZ7EjiOpqML0Xy9G8X9Uzs5rA4Yt2OSXcGSYhCZb+U/Vygwlo
+VmLhSQhUnluCyhMZlbTn+bnmVCSHW8Bk5YBKOWygj8K7/LRYKfcNKXjMV35OsBix
+3rezawgwT9KZlZ6ABJZ6U/o5Lp91OP/XeUfhMp76fmAOBcrh25HhWcunmbfRNto7
+gsYho2Ov6yLtz3/Gq4gsDB2HULSajZW1behtfyfufpmkyGd8+C5+/uUjfltWtpqm
+qaAL4YC+kjzarFDRKtIINCqlixjh0VUUKCkf6c4IDCNoLD4HW5KGevjvMvG0kJ9S
+ftPKDwBpZ+cMZtpTcYgRQRiEb30VekQVyWM8SL+350sLO2dVhy7tjAX1jTnWZ843
+4L3c6tSTioFtNmuIREzKl4EX2xkZUq6ajI4QeAcleHXAsBKHB5kvDpfKYIfGZ49X
+mvIEEWRaUXGZAyqx2tMBXvuSA2aL+Gk9hrW3cvCHoBh6EkGfa6R4flw7yN0RkYHR
+Fzq+Jpg1jOHfQhNDoZ8yqFo2xQZQpp1oDdVAjW70IRrE5KPvV0k=
+=eSNj
+-----END PGP SIGNATURE-----
+
+--xRatB1/o2GNYTDWD--
