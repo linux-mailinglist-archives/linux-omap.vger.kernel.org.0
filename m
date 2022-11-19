@@ -2,86 +2,107 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 35E8E630BDA
-	for <lists+linux-omap@lfdr.de>; Sat, 19 Nov 2022 05:14:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BEB56630CAF
+	for <lists+linux-omap@lfdr.de>; Sat, 19 Nov 2022 07:50:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229946AbiKSEOM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 18 Nov 2022 23:14:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32916 "EHLO
+        id S232576AbiKSGug (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 19 Nov 2022 01:50:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230472AbiKSENW (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 18 Nov 2022 23:13:22 -0500
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D571942DD
-        for <linux-omap@vger.kernel.org>; Fri, 18 Nov 2022 20:12:30 -0800 (PST)
-Received: by mail-ed1-x52d.google.com with SMTP id i29so2151921edj.11
-        for <linux-omap@vger.kernel.org>; Fri, 18 Nov 2022 20:12:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=w7tQQFuzfSDaPhrpS10Z2AmYKZc2634bkTMZZmcNW9w=;
-        b=MNEQrnYN0CwjluQhpFBPdhcJLSSPJ5PvV+TedMFkoNnRFP5+pATyS+695oH/rEYhB2
-         r3EwH9KXfhJLiarSxGIIbs1gK8imgBreybzaugftIHjoNPPbeYe2wrrqsp2LQyYLVYDO
-         +680tgT57zm1bZcj+blxWl1j7aE6FC7G5nfTdJXM7KAi3Jj9OI0VDcGMNTiyG/I5yZb/
-         Mq3U5iykInDWZnqBsUcwEsZYvzABz0zrGGE2FTpD+3RIbm6+sNSFUott6XDdJ6DGCLVe
-         9Hd96acwlLO5LblDt7ecsJpnxyvaEL7KIcT0eIRg8wjCh0IfbTzb+DEHNV5IE/tS1uwu
-         1FJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=w7tQQFuzfSDaPhrpS10Z2AmYKZc2634bkTMZZmcNW9w=;
-        b=2Ytsjv6KrMoZckEdmcTa2xqahMXYqybJzW3A4xH1jKS71oigJNOSD9RU9CiObbxDst
-         NnGgYOOwYhjiAglI0tXdggn4WZI0m90DENvEs+zhxo2muqsxxrzT79+mjNjZZSuP6vf1
-         rxQFEIoGXQXfOBPulcTkz3hG+huRM5O6azi4sqC1vXTgZgAr814VQXtJLv0BY0yiQc1s
-         OwApQTBupYUNdOyic/KX/cGNGTQcWiT0Jdzcu5zpz9vSRoRIyB1YNupvhi3LJ+/OMinV
-         6iATcMxr8kqPo5256Uu3RomxASwGDL5Z5u0vWVWhqhoVZYD5y4zkv804689/1Kd/HGA8
-         0WKQ==
-X-Gm-Message-State: ANoB5pmSytARPB8X4djtqKT7/PxyDV9C3a6KrJalVvQrpwxLbqr5yZt+
-        YENfRxmvIC4fTYmXJwRGMyo=
-X-Google-Smtp-Source: AA0mqf5oFpecZM3YgieC+sI6iJUAcb5mR6ijkkRyrWR5HuxTP0qx/pMZqgtnxUoRX/i39vqVS792pA==
-X-Received: by 2002:a05:6402:4:b0:463:cb99:5c8 with SMTP id d4-20020a056402000400b00463cb9905c8mr8519870edu.395.1668831148866;
-        Fri, 18 Nov 2022 20:12:28 -0800 (PST)
-Received: from tp440p.steeds.sam ([69.63.75.250])
-        by smtp.gmail.com with ESMTPSA id ee47-20020a056402292f00b00468f7bb4895sm2216271edb.43.2022.11.18.20.12.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Nov 2022 20:12:28 -0800 (PST)
-Date:   Sat, 19 Nov 2022 06:12:24 +0200
-From:   Sicelo <absicsz@gmail.com>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        "H . Nikolaus Schaller" <hns@goldelico.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH 3/3] ARM: OMAP2+: Drop legacy hwmod data for omap3 otg
-Message-ID: <Y3hXqL3lYt0f4ueZ@tp440p.steeds.sam>
-References: <20221118104226.46223-1-tony@atomide.com>
- <20221118104226.46223-4-tony@atomide.com>
+        with ESMTP id S229606AbiKSGuU (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 19 Nov 2022 01:50:20 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B6A91704F;
+        Fri, 18 Nov 2022 22:50:19 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id E0B52B80D1E;
+        Sat, 19 Nov 2022 06:50:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 5944BC433D6;
+        Sat, 19 Nov 2022 06:50:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1668840616;
+        bh=ak6M5fgrTHQ1MM2vf+n5AubLq+AMYqmK/RRzz3/3gig=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=seXipkg9CAyFA9/DRpiD01V8ITXAB4g0Feuk+M72plAUXo40561rs1dMVurztjC0R
+         UGqXlOdf3JC5VrI2IWVezRWqsbHRKhLTyD3mEBicEAh2WBWvOY+SAmQ5aoJgjdz1Vk
+         5aq4YUvgNncdPRSw5IsP6xY0s8PudX8SdTsR/EyWyOmZxNi+pkZtOu70losD9BrvnB
+         Du21LerJzoVvVs4d9eSLNMvDcUU7T0jOw29zyRduMgSnRBWCRcfu03u6uXJN2UHbLy
+         DMpzJwBt86Z35Odc5hTd6y/3r7eqH4zheZmOWuKtOuYVHcjUBHn5l00sWabdAIfdsG
+         FRNiHf2EtKUDg==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 37F78E29F44;
+        Sat, 19 Nov 2022 06:50:16 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221118104226.46223-4-tony@atomide.com>
-X-Spam-Status: No, score=1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: *
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH 000/606] i2c: Complete conversion to i2c_probe_new
+From:   patchwork-bot+chrome-platform@kernel.org
+Message-Id: <166884061622.19423.870710096225259467.git-patchwork-notify@kernel.org>
+Date:   Sat, 19 Nov 2022 06:50:16 +0000
+References: <20221118224540.619276-1-uwe@kleine-koenig.org>
+In-Reply-To: <20221118224540.619276-1-uwe@kleine-koenig.org>
+To:     =?utf-8?q?Uwe_Kleine-K=C3=B6nig_=3Cuwe=40kleine-koenig=2Eorg=3E?=@ci.codeaurora.org
+Cc:     ang.iglesiasg@gmail.com, lee.jones@linaro.org,
+        grant.likely@linaro.org, wsa@kernel.org, linux-i2c@vger.kernel.org,
+        kernel@pengutronix.de, linux-integrity@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-crypto@vger.kernel.org, linux-gpio@vger.kernel.org,
+        bcm-kernel-feedback-list@broadcom.com,
+        linux-rpi-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
+        linux-input@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-leds@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-media@vger.kernel.org, patches@opensource.cirrus.com,
+        linux-actions@lists.infradead.org,
+        linux-renesas-soc@vger.kernel.org,
+        linux-amlogic@lists.infradead.org, alsa-devel@alsa-project.org,
+        linux-omap@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+        linux-mtd@lists.infradead.org, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, chrome-platform@lists.linux.dev,
+        linux-pm@vger.kernel.org, kernel@puri.sm,
+        linux-pwm@vger.kernel.org, linux-rtc@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-staging@lists.linux.dev,
+        linux-serial@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        openipmi-developer@lists.sourceforge.net
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, Nov 18, 2022 at 12:42:26PM +0200, Tony Lindgren wrote:
-> With complete devicetree data available to probe with ti-sysc interconnect
-> target module driver, we can now drop the related SoC data.
+Hello:
+
+This patch was applied to chrome-platform/linux.git (for-kernelci)
+by Tzung-Bi Shih <tzungbi@kernel.org>:
+
+On Fri, 18 Nov 2022 23:35:34 +0100 you wrote:
+> Hello,
 > 
-> Cc: H. Nikolaus Schaller <hns@goldelico.com>
-> Cc: Sicelo Mhlongo <absicsz@gmail.com>
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> since commit b8a1a4cd5a98 ("i2c: Provide a temporary .probe_new()
+> call-back type") from 2016 there is a "temporary" alternative probe
+> callback for i2c drivers.
+> 
+> This series completes all drivers to this new callback (unless I missed
+> something). It's based on current next/master.
+> A part of the patches depend on commit 662233731d66 ("i2c: core:
+> Introduce i2c_client_get_device_id helper function"), there is a branch that
+> you can pull into your tree to get it:
+> 
+> [...]
 
-Tested working on Nokia N900 (omap 3430). 
+Here is the summary with links:
+  - [512/606] platform/chrome: cros_ec: Convert to i2c's .probe_new()
+    https://git.kernel.org/chrome-platform/c/f9e510dc92df
 
-Tested-by: Sicelo A. Mhlongo <absicsz@gmail.com>
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
