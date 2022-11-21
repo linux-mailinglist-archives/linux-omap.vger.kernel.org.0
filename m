@@ -2,181 +2,473 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 08230632B7B
-	for <lists+linux-omap@lfdr.de>; Mon, 21 Nov 2022 18:51:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 259AF632C38
+	for <lists+linux-omap@lfdr.de>; Mon, 21 Nov 2022 19:41:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230299AbiKURvX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 21 Nov 2022 12:51:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41954 "EHLO
+        id S229505AbiKUSlb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 21 Nov 2022 13:41:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230349AbiKURvV (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 21 Nov 2022 12:51:21 -0500
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4424BD22A9;
-        Mon, 21 Nov 2022 09:51:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1669053081; x=1700589081;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=uqDCy2cOXkUv7ZNnvlCV+g8niZQkK47asrHmjcimO1Q=;
-  b=EAz045K3T0duIMcevsMYO8xNG3op5742OEraJI+Ibx0iIV4GDTMiihCz
-   wlksYZyLHjHF1PuZZwtDhSGgpdJAewN4g4q+rw+M/PUwKJKQKCq7et5cS
-   M3dwkV6KX+9UG6k+ZtHTG/UotuA9I6HNfgAGcwaTW4mHJ4Imyg7LwRSh6
-   sQ5u72yk0Q6aD1uy+V2LERPuaSTLMl99xP/3bJwD0H6a3BGg0KLLUszCZ
-   OCxY3yiD64M2Fro6nenmZKqJT7amK3Eh8AJgCgirEIeU3tp6RXAZq1FNg
-   2bOBK4YHliP6al8fqqz6wvFqPvI1+W9uQDffbfpKPPfu08b0zwwGaMu2s
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10538"; a="377879989"
-X-IronPort-AV: E=Sophos;i="5.96,182,1665471600"; 
-   d="scan'208";a="377879989"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2022 09:51:20 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10538"; a="643406274"
-X-IronPort-AV: E=Sophos;i="5.96,182,1665471600"; 
-   d="scan'208";a="643406274"
-Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
-  by fmsmga007.fm.intel.com with ESMTP; 21 Nov 2022 09:51:20 -0800
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Mon, 21 Nov 2022 09:51:19 -0800
-Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31 via Frontend Transport; Mon, 21 Nov 2022 09:51:19 -0800
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.168)
- by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2375.31; Mon, 21 Nov 2022 09:51:13 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=C6c1I6UOW4lt8mHahRvkOC9+2BcZE/c801xeaLR/YQulHGL90w2rv+QaApg+Pv3GED38wdEwjSfZqpjH0YdTind7uIEEZVzMHWVLwm3sHEJVUbxZ0bOgtQXzxcg3ZvG+gViwCRgZsKUHEcIuKp130o3joQO6g950tlKXYcPtbtvAphQwU5PaTfDdF5As9SgzlgLa+4WIIdex7eCGAKjcSxKlkb9gsgd8lXAtbd/KaGrCWbu/WhjTh7yAsEeveOWg/OQGCYt26b5/lf5k1n2qkKQyOqyLk/Uco/XdTrh4ztU6rzLIrZfYYkpqz2JkFqznbCw84kO4sYBZ3Bbx8awh2w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MCPSD3b9yIex6iqzT4K7txrOUX7iuswKjJ9rUhRFlCU=;
- b=GdDxzziTtIrXMs3z/dGMQblYs6dPeaCgpD+JGexjeq/aQMuo3+3Cv0dorolj6lxc2dR/xrlSBaZxdta4qgyGPP8ap2niAWiurQUu5o4t0qNqBRKgyuZrdhh9Qd1/ymMXo4TPq+wxHCHG7sM1yDRhId04vg9UYD79TG/usDovcskLWDXDAKxIWHcdQhlhjIK9AvyKU4/0zoW+fDSDewNDS45Jf6GV3X8llp8Jy2M5g8w6mR5dHWZKdht/E0RZ0bMV8KiuR2uPmiywXOXOQ+jNz2R3cfEyPDX9cvWLpJ3QOf5T8No71eGJ7np2zW/TBGgQv4uO5HVhmfy4C1Gls23ABw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DM4PR11MB6117.namprd11.prod.outlook.com (2603:10b6:8:b3::19) by
- PH8PR11MB7120.namprd11.prod.outlook.com (2603:10b6:510:214::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5834.11; Mon, 21 Nov
- 2022 17:51:11 +0000
-Received: from DM4PR11MB6117.namprd11.prod.outlook.com
- ([fe80::5f39:1ef:13a5:38b6]) by DM4PR11MB6117.namprd11.prod.outlook.com
- ([fe80::5f39:1ef:13a5:38b6%6]) with mapi id 15.20.5834.009; Mon, 21 Nov 2022
- 17:51:11 +0000
-Date:   Mon, 21 Nov 2022 18:51:05 +0100
-From:   Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-To:     Roger Quadros <rogerq@kernel.org>
-CC:     "davem@davemloft.net" <davem@davemloft.net>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "edumazet@google.com" <edumazet@google.com>,
-        "pabeni@redhat.com" <pabeni@redhat.com>,
-        "vigneshr@ti.com" <vigneshr@ti.com>,
-        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 2/4] net: ethernet: ti: am65-cpsw-nuss: Remove
- redundant ALE_CLEAR
-Message-ID: <Y3u6iSiJOgcy38cL@boxer>
-References: <20221121142300.9320-1-rogerq@kernel.org>
- <20221121142300.9320-3-rogerq@kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20221121142300.9320-3-rogerq@kernel.org>
-X-ClientProxiedBy: FR3P281CA0030.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:1c::16) To DM4PR11MB6117.namprd11.prod.outlook.com
- (2603:10b6:8:b3::19)
+        with ESMTP id S229489AbiKUSla (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 21 Nov 2022 13:41:30 -0500
+Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [IPv6:2a0b:5c81:1c1::37])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70F8DC6D16;
+        Mon, 21 Nov 2022 10:41:28 -0800 (PST)
+Received: from darkstar.musicnaut.iki.fi (85-76-79-38-nat.elisa-mobile.fi [85.76.79.38])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: aaro.koskinen)
+        by lahtoruutu.iki.fi (Postfix) with ESMTPSA id C42B01B0004C;
+        Mon, 21 Nov 2022 20:41:23 +0200 (EET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
+        t=1669056085;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=xMozIrSr+DsI0LLyMCdCD3765v6ZduYm8IK2jsoYbs4=;
+        b=bP9M5IGSSK+lZ0msfZJ0c79ZVdG8Mc3SOY791aLARWOLXzkVIjVYI+5vhsoAVjuFdw59xP
+        EOjeWKu1YXRyzTn7TLkRU3oLIxO+6iXfT+EAG2hE/gZmBMJDv2QX0UOZ6A7u1GHzbVcoTt
+        pw+lUShitVcH+E8pBisq9Hdhf6uLIYjT5NwnoL807cRbYifHHwaZ30Hg0PZ/FFqIWdvQF5
+        f9kxhpKPkk1IjBYLZGixD5LHIUHHJs/0hjYDds0Tk6OUlJe8MKfNkPyaeG1PJ+dNuSFker
+        GP1Mlww9vCFzI3iRymwrF8ZWP6zBAAql/rQQcGD8cPMIKqHm9ysd6KTii6d7Xg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
+        s=lahtoruutu; t=1669056085;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=xMozIrSr+DsI0LLyMCdCD3765v6ZduYm8IK2jsoYbs4=;
+        b=KiXnq2OzTQlJYFwa5eABkMHPv38DytFbptYAlQRRYb4w8LDA+agbNcUxh2GzwhI6JHPRYi
+        x5k6PSo1m46/tdmWnVGoG3mpxKfJgSidmVbljedo92OEqNv/D1wDW/xr5XFvsMbbfkkL/D
+        NFR+T5Ry5F8GBLD0cP3Bb3PT6ZN9WGpweaM18MGDo1rul1auft8ZeTxmKiSH8Mi6Ev6U2F
+        Ojh70UVzYQPF7inJ0lqMs+1TZX92oDGxRQSS6ApoQL95KvsysEcSpR5ynZDwvE16IJi13B
+        NOmKvxl0VZj4IrKgNT7u7zSDllnFg3sc8k+MdUTVJhYO7quLbgxuUfRmQfHMdw==
+ARC-Authentication-Results: i=1;
+        ORIGINATING;
+        auth=pass smtp.auth=aaro.koskinen smtp.mailfrom=aaro.koskinen@iki.fi
+ARC-Seal: i=1; s=lahtoruutu; d=iki.fi; t=1669056085; a=rsa-sha256;
+        cv=none;
+        b=Bhw4nLkas5u0eqrP9ts3qwPshdMd7FX/MdiVReJyV4MIW/LQox9moRuF5RzqSLGxN2T491
+        WFhOTHVaOZ64wCHWsrD4BIPokr8Gm4oU2FHXNoTadZVFhmhhtlasOzHxmGDt5VuTCchDvJ
+        hxV+UxJ+Dm/YqZ0BSB6nfF5YzNZAghQ6haVl/tneKdnJRGKufCBKvAmobQZ9f6QnyCKzMy
+        hhjAPa9mh3A7EyisS/KU8l43mUwG8pHTdc/uyOol39X5xQu5m1+ZANuGpLxalHUlMkbnDd
+        ImrMUk9P01WGeGLTgZCxYxmb0V0bx5T7642vnjM+zBUtoGvOnEuSN5R62fi7LA==
+Date:   Mon, 21 Nov 2022 20:41:21 +0200
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     Vlastimil Babka <vbabka@suse.cz>
+Cc:     Christoph Lameter <cl@linux.com>,
+        David Rientjes <rientjes@google.com>,
+        Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+        Pekka Enberg <penberg@kernel.org>,
+        Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+        Roman Gushchin <roman.gushchin@linux.dev>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Matthew Wilcox <willy@infradead.org>, patches@lists.linux.dev,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        Russell King <linux@armlinux.org.uk>,
+        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Jonas Bonn <jonas@southpole.se>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        Stafford Horne <shorne@gmail.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>, Arnd Bergmann <arnd@arndb.de>,
+        Josh Triplett <josh@joshtriplett.org>,
+        Conor Dooley <conor@kernel.org>,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        openrisc@lists.librecores.org, linux-riscv@lists.infradead.org,
+        linux-sh@vger.kernel.org
+Subject: Re: [PATCH 12/12] mm, slob: rename CONFIG_SLOB to
+ CONFIG_SLOB_DEPRECATED
+Message-ID: <20221121184121.GB2095@darkstar.musicnaut.iki.fi>
+References: <20221121171202.22080-1-vbabka@suse.cz>
+ <20221121171202.22080-13-vbabka@suse.cz>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR11MB6117:EE_|PH8PR11MB7120:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3bde7cd3-dec9-41da-283c-08dacbe8f9fb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Qu5ghIGtsGwP5eXFQm/koZnz/jpp1lUqzslqwv8owbSOW6MWttw2m0Msptw0tKsj/PyXVLZEVxEkHO2Oo3n00FHPnXO+B8Htt/9Szml6MDIddjQ++wS2ThZAwcuaK8E7FPBx+pgAZl26LT7nQOmnseWTHXQHqFuePMNUiCNrqLKj5qyPHOW0xdsQtYt+PYj4T+mh94Y8k/FOTrYeoz23JAts6KaL92K1eO3OeK6FgDoakBc9SqDzlRJ2K2WEZmccZ1FUAaeZPrYlT/x5XpcqaT8Ma0z4oeRQrHG8+k75rJUptj10ChyfPgvTl92xGoqoarle3d6qDboKc9+P2zNQuO42b1KWuKJITIKsLQPucIqJuX/8DhVNUvt5skKYjJSFjRDx0iH8LEuAkQoKKiJ8m4Q7o5VM/6qJqps2BXPVDeZ5Ir3MwlDvQvGyGykh7DsW+gwTcibj1lmKKnKi8caxJV3XXhYVc9JVxWqpaZrD3hO1rR5O/8BZ/e9lTra/fkX0eplAYih5mIjvVxxp4ecJawphcgq7/Y+BoOBisDFJOqah75E56L89L+ikPdK8DJPhspqG9xjkSJWfr9bYQ9K7/5RcTk+dRGUnv9pIMlkNimdMk6R5CFWmsKEVdtJcI+rQ2fYKbWrJR5ChwFej9XmNrA==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR11MB6117.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(7916004)(396003)(346002)(376002)(366004)(39860400002)(136003)(451199015)(41300700001)(8936002)(316002)(6916009)(4326008)(5660300002)(66946007)(66476007)(54906003)(66556008)(8676002)(44832011)(478600001)(2906002)(6506007)(186003)(6512007)(9686003)(26005)(6666004)(6486002)(33716001)(38100700002)(83380400001)(86362001)(82960400001);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?gksZj5JOFEFa+sOlxVJTvxfjIBD8FsmpS/NUaQEIQUTyI4Lm6D7SXN/xcjia?=
- =?us-ascii?Q?fI8HCbuobVxAUsfSFB/ofFKH1Rxz3KTz+60s25Oz8u9CU7HuP7q1n2mgfjtI?=
- =?us-ascii?Q?SxbWDCx0lphQ1OzWg4IA6/olU4Fov7kkCdXtHoYyYuby3u/gFZrir7E4v8rr?=
- =?us-ascii?Q?0ms2ev3aoxPl1xwXa7p7BntFRmyRA2JFv/VyTnm6hmE99Fv86npUEniCJ15R?=
- =?us-ascii?Q?Ebmv37TdNYyGYgYOohwXl/4MMWmZJy5BepXIck/QGRq68PeYGp5i2ACK3XdU?=
- =?us-ascii?Q?TbAzOkTZxkU6mFbucxpN5gVHEqwlcpzTBxUNtizZMtzV1AHdcQFaFELig9eb?=
- =?us-ascii?Q?QyJ5XRBfUDPwHi7QgY2IVS1O6acm5+8KUrlg4lqRtaaMYfuDKTqPauHSaeWJ?=
- =?us-ascii?Q?LLJvG19JXEfTwYWMODU5W9K+Cv9oJMDB7RWKZcUtVRcFNKy33YPvVRcFqrrl?=
- =?us-ascii?Q?Gyy47AVX847wb7ykj2RZpymDMH2EZKKRWIaiUgrr7JPo16cucElXTFP/FWwo?=
- =?us-ascii?Q?ALNVAU1jtZIqymJ8pRYfZB1EipsdquTy8+Z1+8bfz+GDoYvhOKKVhpDhEmkl?=
- =?us-ascii?Q?eonNFpslcel0l/dbAbcGhBYy2uxZSrYopSOZrqhM5IhcR/FX4O+rEgVEmcF3?=
- =?us-ascii?Q?1mXSQHiZyqlWZmwaJrXpd6L+Jz4q6DZESMQDcF9vXwAN5mLke7IkY22TjlOs?=
- =?us-ascii?Q?ftAyEzCuBqvex/yoG3LtPj7+x4nnS9w7ChuohOjyay7TNKcucQljFvxLqTxr?=
- =?us-ascii?Q?4iQrRc8YEJ+h3/nuQEevyWxtzEvBxTNzeOdpIC8oO+2oXHUO8/Yq7IH9xHI1?=
- =?us-ascii?Q?WujGDn5focW0bk9c8MHavI8ncrOHL9avQE/6/56LqtWE3QflGLysyQDriyxA?=
- =?us-ascii?Q?IqN/f/07ltSBrePRhKCGYAzgI6FMtwl0wEY2waVHxFyrY/cfg+SaO0DYG7lS?=
- =?us-ascii?Q?x0RQshoCu1o5Zp8AtzcUUJXr3kQ37skLpALb8GMHcHzdaFZ1y3zlTk1zX2g8?=
- =?us-ascii?Q?APfQA8jC8cpvOwpP8gUtoIlIZXck0E3Jb/ZXmRJkZ7bDfvE0ZCimVtRR82KV?=
- =?us-ascii?Q?700WnoFM/sEWgErfz5mmWGcrPrsaJ5BFfuBFLie5xGgLEoDpmQBbcu2ntq4e?=
- =?us-ascii?Q?6O0W4SFbF66vUJbEHVkZXIsyCZemTPjcHUaMGiRz6Y44i0Kf1etV036kNDVh?=
- =?us-ascii?Q?LNUxmBO1taYdrNr6aqMpXmrdKrK3f1EB2YpLR+GkljHeyQzTvtcGVmTEa4sd?=
- =?us-ascii?Q?pIGNEoiqNBhUNFnHVijs6z9CT6SCC3zU8DjT50d58Gxz+y9IMSu+OETBhfq0?=
- =?us-ascii?Q?IOSDk17HX8dMiME0rCEqda+VvNb74TS8G5ujxev81p9N4qf2BTjGI2gm4sXb?=
- =?us-ascii?Q?ojooA++k3YErzKN/NXptUralc176S7/cyG4XHFoUZ9/fL3umSPvJhIEJlXIX?=
- =?us-ascii?Q?jJH5SKLjgurBwUNyUjfbryd8DNMgQXsJLBb/0hPcLZQbxotolVT2fKieUihI?=
- =?us-ascii?Q?H3YVYkBgMP9edIxByjk+/6DwaSZ4k5kgsiIUwXGUgdc91W+mknjYYL283KT7?=
- =?us-ascii?Q?kKBskXW9lkh12WRZEamejJdvaLTJJIX0WI+ow6ev1+p0ejFo0MKYjVIEBrN9?=
- =?us-ascii?Q?Yg=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3bde7cd3-dec9-41da-283c-08dacbe8f9fb
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB6117.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Nov 2022 17:51:11.4277
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: cFD5KpELufa/B5xaAPJ8D23Jj1ac+iqdkpcuVCYBN3Vx0fLa+7JdLbU7MYVR0Z1mTotBt0AAbMNGNJ3UFh1xEHnJbkpK6tGdTG0czNcNmGE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB7120
-X-OriginatorOrg: intel.com
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221121171202.22080-13-vbabka@suse.cz>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Nov 21, 2022 at 03:22:58PM +0100, Roger Quadros wrote:
-> ALE_CLEAR command is issued in cpsw_ale_start() so no need
-> to issue it before the call to cpsw_ale_start().
+Hi,
+
+On Mon, Nov 21, 2022 at 06:12:02PM +0100, Vlastimil Babka wrote:
+> As explained in [1], we would like to remove SLOB if possible.
 > 
-> Fixes: fd23df72f2be ("net: ethernet: ti: am65-cpsw: Add suspend/resume support")
+> - There are no known users that need its somewhat lower memory footprint
+>   so much that they cannot handle SLUB (after some modifications by the
+>   previous patches) instead.
+> 
+> - It is an extra maintenance burden, and a number of features are
+>   incompatible with it.
+> 
+> - It blocks the API improvement of allowing kfree() on objects allocated
+>   via kmem_cache_alloc().
+> 
+> As the first step, rename the CONFIG_SLOB option in the slab allocator
+> configuration choice to CONFIG_SLOB_DEPRECATED. Add CONFIG_SLOB
+> depending on CONFIG_SLOB_DEPRECATED as an internal option to avoid code
+> churn. This will cause existing .config files and defconfigs with
+> CONFIG_SLOB=y to silently switch to the default (and recommended
+> replacement) SLUB, while still allowing SLOB to be configured by anyone
+> that notices and needs it. But those should contact the slab maintainers
+> and linux-mm@kvack.org as explained in the updated help. With no valid
+> objections, the plan is to update the existing defconfigs to SLUB and
+> remove SLOB in a few cycles.
+> 
+> To make SLUB more suitable replacement for SLOB, a CONFIG_SLUB_TINY
+> option was introduced to limit SLUB's memory overhead.
+> There is a number of defconfigs specifying CONFIG_SLOB=y. As part of
+> this patch, update them to select CONFIG_SLUB and CONFIG_SLUB_TINY.
+> 
+> [1] https://lore.kernel.org/all/b35c3f82-f67b-2103-7d82-7a7ba7521439@suse.cz/
+> 
+> Cc: Russell King <linux@armlinux.org.uk>
+> Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
 
-Not a fix to me, can you send it to -next tree? As you said, it's an
-optimization.
+Acked-by: Aaro Koskinen <aaro.koskinen@iki.fi> # OMAP1
 
-> Signed-off-by: Roger Quadros <rogerq@kernel.org>
+A.
+
+> Cc: Janusz Krzysztofik <jmkrzyszt@gmail.com>
+> Cc: Tony Lindgren <tony@atomide.com>
+> Cc: Jonas Bonn <jonas@southpole.se>
+> Cc: Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>
+> Cc: Stafford Horne <shorne@gmail.com>
+> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+> Cc: Rich Felker <dalias@libc.org>
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> Cc: Josh Triplett <josh@joshtriplett.org>
+> Cc: Conor Dooley <conor@kernel.org>
+> Cc: Damien Le Moal <damien.lemoal@opensource.wdc.com>
+> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+> Cc: <linux-arm-kernel@lists.infradead.org>
+> Cc: <linux-omap@vger.kernel.org>
+> Cc: <openrisc@lists.librecores.org>
+> Cc: <linux-riscv@lists.infradead.org>
+> Cc: <linux-sh@vger.kernel.org>
+> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 > ---
->  drivers/net/ethernet/ti/am65-cpsw-nuss.c | 1 -
->  1 file changed, 1 deletion(-)
+>  arch/arm/configs/clps711x_defconfig            |  3 ++-
+>  arch/arm/configs/collie_defconfig              |  3 ++-
+>  arch/arm/configs/multi_v4t_defconfig           |  3 ++-
+>  arch/arm/configs/omap1_defconfig               |  3 ++-
+>  arch/arm/configs/pxa_defconfig                 |  3 ++-
+>  arch/arm/configs/tct_hammer_defconfig          |  3 ++-
+>  arch/arm/configs/xcep_defconfig                |  3 ++-
+>  arch/openrisc/configs/or1ksim_defconfig        |  3 ++-
+>  arch/openrisc/configs/simple_smp_defconfig     |  3 ++-
+>  arch/riscv/configs/nommu_k210_defconfig        |  3 ++-
+>  arch/riscv/configs/nommu_k210_sdcard_defconfig |  3 ++-
+>  arch/riscv/configs/nommu_virt_defconfig        |  3 ++-
+>  arch/sh/configs/rsk7201_defconfig              |  3 ++-
+>  arch/sh/configs/rsk7203_defconfig              |  3 ++-
+>  arch/sh/configs/se7206_defconfig               |  3 ++-
+>  arch/sh/configs/shmin_defconfig                |  3 ++-
+>  arch/sh/configs/shx3_defconfig                 |  3 ++-
+>  kernel/configs/tiny.config                     |  5 +++--
+>  mm/Kconfig                                     | 17 +++++++++++++++--
+>  19 files changed, 52 insertions(+), 21 deletions(-)
 > 
-> diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-> index 505c9edf98ff..2acde5b14516 100644
-> --- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-> +++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-> @@ -404,7 +404,6 @@ static int am65_cpsw_nuss_common_open(struct am65_cpsw_common *common)
->  	/* disable priority elevation */
->  	writel(0, common->cpsw_base + AM65_CPSW_REG_PTYPE);
+> diff --git a/arch/arm/configs/clps711x_defconfig b/arch/arm/configs/clps711x_defconfig
+> index 92481b2a88fa..adcee238822a 100644
+> --- a/arch/arm/configs/clps711x_defconfig
+> +++ b/arch/arm/configs/clps711x_defconfig
+> @@ -14,7 +14,8 @@ CONFIG_ARCH_EDB7211=y
+>  CONFIG_ARCH_P720T=y
+>  CONFIG_AEABI=y
+>  # CONFIG_COREDUMP is not set
+> -CONFIG_SLOB=y
+> +CONFIG_SLUB=y
+> +CONFIG_SLUB_TINY=y
+>  CONFIG_NET=y
+>  CONFIG_PACKET=y
+>  CONFIG_UNIX=y
+> diff --git a/arch/arm/configs/collie_defconfig b/arch/arm/configs/collie_defconfig
+> index 2a2d2cb3ce2e..69341c33e0cc 100644
+> --- a/arch/arm/configs/collie_defconfig
+> +++ b/arch/arm/configs/collie_defconfig
+> @@ -13,7 +13,8 @@ CONFIG_CMDLINE="noinitrd root=/dev/mtdblock2 rootfstype=jffs2 fbcon=rotate:1"
+>  CONFIG_FPE_NWFPE=y
+>  CONFIG_PM=y
+>  # CONFIG_SWAP is not set
+> -CONFIG_SLOB=y
+> +CONFIG_SLUB=y
+> +CONFIG_SLUB_TINY=y
+>  CONFIG_NET=y
+>  CONFIG_PACKET=y
+>  CONFIG_UNIX=y
+> diff --git a/arch/arm/configs/multi_v4t_defconfig b/arch/arm/configs/multi_v4t_defconfig
+> index e2fd822f741a..b60000a89aff 100644
+> --- a/arch/arm/configs/multi_v4t_defconfig
+> +++ b/arch/arm/configs/multi_v4t_defconfig
+> @@ -25,7 +25,8 @@ CONFIG_ARM_CLPS711X_CPUIDLE=y
+>  CONFIG_JUMP_LABEL=y
+>  CONFIG_PARTITION_ADVANCED=y
+>  # CONFIG_COREDUMP is not set
+> -CONFIG_SLOB=y
+> +CONFIG_SLUB=y
+> +CONFIG_SLUB_TINY=y
+>  CONFIG_MTD=y
+>  CONFIG_MTD_CMDLINE_PARTS=y
+>  CONFIG_MTD_BLOCK=y
+> diff --git a/arch/arm/configs/omap1_defconfig b/arch/arm/configs/omap1_defconfig
+> index 70511fe4b3ec..246f1bba7df5 100644
+> --- a/arch/arm/configs/omap1_defconfig
+> +++ b/arch/arm/configs/omap1_defconfig
+> @@ -42,7 +42,8 @@ CONFIG_MODULE_FORCE_UNLOAD=y
+>  CONFIG_PARTITION_ADVANCED=y
+>  CONFIG_BINFMT_MISC=y
+>  # CONFIG_SWAP is not set
+> -CONFIG_SLOB=y
+> +CONFIG_SLUB=y
+> +CONFIG_SLUB_TINY=y
+>  # CONFIG_VM_EVENT_COUNTERS is not set
+>  CONFIG_NET=y
+>  CONFIG_PACKET=y
+> diff --git a/arch/arm/configs/pxa_defconfig b/arch/arm/configs/pxa_defconfig
+> index d60cc9cc4c21..0a0f12df40b5 100644
+> --- a/arch/arm/configs/pxa_defconfig
+> +++ b/arch/arm/configs/pxa_defconfig
+> @@ -49,7 +49,8 @@ CONFIG_PARTITION_ADVANCED=y
+>  CONFIG_LDM_PARTITION=y
+>  CONFIG_CMDLINE_PARTITION=y
+>  CONFIG_BINFMT_MISC=y
+> -CONFIG_SLOB=y
+> +CONFIG_SLUB=y
+> +CONFIG_SLUB_TINY=y
+>  # CONFIG_COMPACTION is not set
+>  CONFIG_NET=y
+>  CONFIG_PACKET=y
+> diff --git a/arch/arm/configs/tct_hammer_defconfig b/arch/arm/configs/tct_hammer_defconfig
+> index 3b29ae1fb750..6bd38b6f22c4 100644
+> --- a/arch/arm/configs/tct_hammer_defconfig
+> +++ b/arch/arm/configs/tct_hammer_defconfig
+> @@ -19,7 +19,8 @@ CONFIG_FPE_NWFPE=y
+>  CONFIG_MODULES=y
+>  CONFIG_MODULE_UNLOAD=y
+>  # CONFIG_SWAP is not set
+> -CONFIG_SLOB=y
+> +CONFIG_SLUB=y
+> +CONFIG_SLUB_TINY=y
+>  CONFIG_NET=y
+>  CONFIG_PACKET=y
+>  CONFIG_UNIX=y
+> diff --git a/arch/arm/configs/xcep_defconfig b/arch/arm/configs/xcep_defconfig
+> index ea59e4b6bfc5..6bd9f71b71fc 100644
+> --- a/arch/arm/configs/xcep_defconfig
+> +++ b/arch/arm/configs/xcep_defconfig
+> @@ -26,7 +26,8 @@ CONFIG_MODULE_UNLOAD=y
+>  CONFIG_MODVERSIONS=y
+>  CONFIG_MODULE_SRCVERSION_ALL=y
+>  # CONFIG_BLOCK is not set
+> -CONFIG_SLOB=y
+> +CONFIG_SLUB=y
+> +CONFIG_SLUB_TINY=y
+>  # CONFIG_COMPAT_BRK is not set
+>  # CONFIG_VM_EVENT_COUNTERS is not set
+>  CONFIG_NET=y
+> diff --git a/arch/openrisc/configs/or1ksim_defconfig b/arch/openrisc/configs/or1ksim_defconfig
+> index 6e1e004047c7..0116e465238f 100644
+> --- a/arch/openrisc/configs/or1ksim_defconfig
+> +++ b/arch/openrisc/configs/or1ksim_defconfig
+> @@ -10,7 +10,8 @@ CONFIG_EXPERT=y
+>  # CONFIG_AIO is not set
+>  # CONFIG_VM_EVENT_COUNTERS is not set
+>  # CONFIG_COMPAT_BRK is not set
+> -CONFIG_SLOB=y
+> +CONFIG_SLUB=y
+> +CONFIG_SLUB_TINY=y
+>  CONFIG_MODULES=y
+>  # CONFIG_BLOCK is not set
+>  CONFIG_OPENRISC_BUILTIN_DTB="or1ksim"
+> diff --git a/arch/openrisc/configs/simple_smp_defconfig b/arch/openrisc/configs/simple_smp_defconfig
+> index ff49d868e040..b990cb6c9309 100644
+> --- a/arch/openrisc/configs/simple_smp_defconfig
+> +++ b/arch/openrisc/configs/simple_smp_defconfig
+> @@ -16,7 +16,8 @@ CONFIG_EXPERT=y
+>  # CONFIG_AIO is not set
+>  # CONFIG_VM_EVENT_COUNTERS is not set
+>  # CONFIG_COMPAT_BRK is not set
+> -CONFIG_SLOB=y
+> +CONFIG_SLUB=y
+> +CONFIG_SLUB_TINY=y
+>  CONFIG_MODULES=y
+>  # CONFIG_BLOCK is not set
+>  CONFIG_OPENRISC_BUILTIN_DTB="simple_smp"
+> diff --git a/arch/riscv/configs/nommu_k210_defconfig b/arch/riscv/configs/nommu_k210_defconfig
+> index 96fe8def644c..79b3ccd58ff0 100644
+> --- a/arch/riscv/configs/nommu_k210_defconfig
+> +++ b/arch/riscv/configs/nommu_k210_defconfig
+> @@ -25,7 +25,8 @@ CONFIG_CC_OPTIMIZE_FOR_SIZE=y
+>  CONFIG_EMBEDDED=y
+>  # CONFIG_VM_EVENT_COUNTERS is not set
+>  # CONFIG_COMPAT_BRK is not set
+> -CONFIG_SLOB=y
+> +CONFIG_SLUB=y
+> +CONFIG_SLUB_TINY=y
+>  # CONFIG_MMU is not set
+>  CONFIG_SOC_CANAAN=y
+>  CONFIG_NONPORTABLE=y
+> diff --git a/arch/riscv/configs/nommu_k210_sdcard_defconfig b/arch/riscv/configs/nommu_k210_sdcard_defconfig
+> index 379740654373..6b80bb13b8ed 100644
+> --- a/arch/riscv/configs/nommu_k210_sdcard_defconfig
+> +++ b/arch/riscv/configs/nommu_k210_sdcard_defconfig
+> @@ -17,7 +17,8 @@ CONFIG_CC_OPTIMIZE_FOR_SIZE=y
+>  CONFIG_EMBEDDED=y
+>  # CONFIG_VM_EVENT_COUNTERS is not set
+>  # CONFIG_COMPAT_BRK is not set
+> -CONFIG_SLOB=y
+> +CONFIG_SLUB=y
+> +CONFIG_SLUB_TINY=y
+>  # CONFIG_MMU is not set
+>  CONFIG_SOC_CANAAN=y
+>  CONFIG_NONPORTABLE=y
+> diff --git a/arch/riscv/configs/nommu_virt_defconfig b/arch/riscv/configs/nommu_virt_defconfig
+> index 1a56eda5ce46..4cf0f297091e 100644
+> --- a/arch/riscv/configs/nommu_virt_defconfig
+> +++ b/arch/riscv/configs/nommu_virt_defconfig
+> @@ -22,7 +22,8 @@ CONFIG_EXPERT=y
+>  # CONFIG_KALLSYMS is not set
+>  # CONFIG_VM_EVENT_COUNTERS is not set
+>  # CONFIG_COMPAT_BRK is not set
+> -CONFIG_SLOB=y
+> +CONFIG_SLUB=y
+> +CONFIG_SLUB_TINY=y
+>  # CONFIG_MMU is not set
+>  CONFIG_SOC_VIRT=y
+>  CONFIG_NONPORTABLE=y
+> diff --git a/arch/sh/configs/rsk7201_defconfig b/arch/sh/configs/rsk7201_defconfig
+> index 619c18699459..376e95fa77bc 100644
+> --- a/arch/sh/configs/rsk7201_defconfig
+> +++ b/arch/sh/configs/rsk7201_defconfig
+> @@ -10,7 +10,8 @@ CONFIG_USER_NS=y
+>  CONFIG_PID_NS=y
+>  CONFIG_BLK_DEV_INITRD=y
+>  # CONFIG_AIO is not set
+> -CONFIG_SLOB=y
+> +CONFIG_SLUB=y
+> +CONFIG_SLUB_TINY=y
+>  CONFIG_PROFILING=y
+>  CONFIG_MODULES=y
+>  # CONFIG_BLK_DEV_BSG is not set
+> diff --git a/arch/sh/configs/rsk7203_defconfig b/arch/sh/configs/rsk7203_defconfig
+> index d00fafc021e1..1d5fd67a3949 100644
+> --- a/arch/sh/configs/rsk7203_defconfig
+> +++ b/arch/sh/configs/rsk7203_defconfig
+> @@ -11,7 +11,8 @@ CONFIG_USER_NS=y
+>  CONFIG_PID_NS=y
+>  CONFIG_BLK_DEV_INITRD=y
+>  CONFIG_KALLSYMS_ALL=y
+> -CONFIG_SLOB=y
+> +CONFIG_SLUB=y
+> +CONFIG_SLUB_TINY=y
+>  CONFIG_PROFILING=y
+>  CONFIG_MODULES=y
+>  # CONFIG_BLK_DEV_BSG is not set
+> diff --git a/arch/sh/configs/se7206_defconfig b/arch/sh/configs/se7206_defconfig
+> index 122216123e63..78e0e7be57ee 100644
+> --- a/arch/sh/configs/se7206_defconfig
+> +++ b/arch/sh/configs/se7206_defconfig
+> @@ -21,7 +21,8 @@ CONFIG_BLK_DEV_INITRD=y
+>  CONFIG_KALLSYMS_ALL=y
+>  # CONFIG_ELF_CORE is not set
+>  # CONFIG_COMPAT_BRK is not set
+> -CONFIG_SLOB=y
+> +CONFIG_SLUB=y
+> +CONFIG_SLUB_TINY=y
+>  CONFIG_PROFILING=y
+>  CONFIG_MODULES=y
+>  CONFIG_MODULE_UNLOAD=y
+> diff --git a/arch/sh/configs/shmin_defconfig b/arch/sh/configs/shmin_defconfig
+> index c0b6f40d01cc..e078b193a78a 100644
+> --- a/arch/sh/configs/shmin_defconfig
+> +++ b/arch/sh/configs/shmin_defconfig
+> @@ -9,7 +9,8 @@ CONFIG_LOG_BUF_SHIFT=14
+>  # CONFIG_FUTEX is not set
+>  # CONFIG_EPOLL is not set
+>  # CONFIG_SHMEM is not set
+> -CONFIG_SLOB=y
+> +CONFIG_SLUB=y
+> +CONFIG_SLUB_TINY=y
+>  # CONFIG_BLK_DEV_BSG is not set
+>  CONFIG_CPU_SUBTYPE_SH7706=y
+>  CONFIG_MEMORY_START=0x0c000000
+> diff --git a/arch/sh/configs/shx3_defconfig b/arch/sh/configs/shx3_defconfig
+> index 32ec6eb1eabc..aa353dff7f19 100644
+> --- a/arch/sh/configs/shx3_defconfig
+> +++ b/arch/sh/configs/shx3_defconfig
+> @@ -20,7 +20,8 @@ CONFIG_USER_NS=y
+>  CONFIG_PID_NS=y
+>  # CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
+>  CONFIG_KALLSYMS_ALL=y
+> -CONFIG_SLOB=y
+> +CONFIG_SLUB=y
+> +CONFIG_SLUB_TINY=y
+>  CONFIG_PROFILING=y
+>  CONFIG_KPROBES=y
+>  CONFIG_MODULES=y
+> diff --git a/kernel/configs/tiny.config b/kernel/configs/tiny.config
+> index 8a44b93da0f3..c2f9c912df1c 100644
+> --- a/kernel/configs/tiny.config
+> +++ b/kernel/configs/tiny.config
+> @@ -7,5 +7,6 @@ CONFIG_KERNEL_XZ=y
+>  # CONFIG_KERNEL_LZO is not set
+>  # CONFIG_KERNEL_LZ4 is not set
+>  # CONFIG_SLAB is not set
+> -# CONFIG_SLUB is not set
+> -CONFIG_SLOB=y
+> +# CONFIG_SLOB_DEPRECATED is not set
+> +CONFIG_SLUB=y
+> +CONFIG_SLUB_TINY=y
+> diff --git a/mm/Kconfig b/mm/Kconfig
+> index 5941cb34e30d..dcc49c69552f 100644
+> --- a/mm/Kconfig
+> +++ b/mm/Kconfig
+> @@ -219,17 +219,30 @@ config SLUB
+>  	   and has enhanced diagnostics. SLUB is the default choice for
+>  	   a slab allocator.
 >  
-> -	cpsw_ale_control_set(common->ale, 0, ALE_CLEAR, 1);
->  	cpsw_ale_start(common->ale);
+> -config SLOB
+> +config SLOB_DEPRECATED
+>  	depends on EXPERT
+> -	bool "SLOB (Simple Allocator)"
+> +	bool "SLOB (Simple Allocator - DEPRECATED)"
+>  	depends on !PREEMPT_RT
+>  	help
+> +	   Deprecated and scheduled for removal in a few cycles. SLUB
+> +	   recommended as replacement. CONFIG_SLUB_TINY can be considered
+> +	   on systems with 16MB or less RAM.
+> +
+> +	   If you need SLOB to stay, please contact linux-mm@kvack.org and
+> +	   people listed in the SLAB ALLOCATOR section of MAINTAINERS file,
+> +	   with your use case.
+> +
+>  	   SLOB replaces the stock allocator with a drastically simpler
+>  	   allocator. SLOB is generally more space efficient but
+>  	   does not perform as well on large systems.
 >  
->  	/* limit to one RX flow only */
+>  endchoice
+>  
+> +config SLOB
+> +	bool
+> +	default y
+> +	depends on SLOB_DEPRECATED
+> +
+>  config SLUB_TINY
+>  	bool "Configure SLUB for minimal memory footprint"
+>  	depends on SLUB && EXPERT
 > -- 
-> 2.17.1
+> 2.38.1
 > 
