@@ -2,66 +2,46 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CE8A63241D
-	for <lists+linux-omap@lfdr.de>; Mon, 21 Nov 2022 14:43:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 944B363258F
+	for <lists+linux-omap@lfdr.de>; Mon, 21 Nov 2022 15:23:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231487AbiKUNn0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 21 Nov 2022 08:43:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52112 "EHLO
+        id S229904AbiKUOXL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 21 Nov 2022 09:23:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35534 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229944AbiKUNnK (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 21 Nov 2022 08:43:10 -0500
-Received: from mail-yb1-xb35.google.com (mail-yb1-xb35.google.com [IPv6:2607:f8b0:4864:20::b35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C1FAC1F72
-        for <linux-omap@vger.kernel.org>; Mon, 21 Nov 2022 05:42:43 -0800 (PST)
-Received: by mail-yb1-xb35.google.com with SMTP id i131so13594622ybc.9
-        for <linux-omap@vger.kernel.org>; Mon, 21 Nov 2022 05:42:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=7fsoSstP+kTMnlGCyhKQpRZRy1Cn2GgHrvraYINr6P0=;
-        b=tLc3HmTvsLWQ82lR6B6iR76sR+Rdyf6gUKpUNsZ4d59KxO6FQLRT9iCtd+a7WXb/Kv
-         WxIy74c5i6veiZgMD1pSc7PMCo81tbqvtigJWx+oeTbCTVMgkCJtnB4IVQWgXi8c4dYV
-         doqWeCsxIsTxu8Gg/k4eOLy9THzp+WH4k9RifTHJeQCYHlnqAucBFaPIG0r8dcNlR1NE
-         wYwtslCMbW//KKggTSyDwe5TWzUhJ/1BrVdA3bg9o4czJ3x24VM4Mm3Xe3HEftKb6Jz9
-         Na4BT06OHWdus37ULNZ1BQ7JoySXCk3w0OAoPqyMtruwirxUhZ2fiv7Fj7XfrsRItaJZ
-         unrQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=7fsoSstP+kTMnlGCyhKQpRZRy1Cn2GgHrvraYINr6P0=;
-        b=OzUC7thAQ57VUw7+/gMq7usB3nt6Tfd2x2gGbDIWnvYSrDLWfrbR/19YuGWS0ujKMb
-         1G9C8CATjCOP/kxrwSh5/MnGT7prQRKV/fietJ/iJ6MVCwE6q0tEYgUz6mPLK1yr1Cmt
-         RkzfQ+W8+srg8WF7j3IFMKjZ7A/wKgYm95ASl4hyWy3skjMv4n6m7/S9O8aDUNJwWuU2
-         ViYBxMINJ7PXZdtwESFUiaVw+EL1BTuuoQ4ac62QDattxf4nLcnLyEBzuT6STUSsbkPw
-         qQwLL54ZCXSG4pQwTu5Xr0mS9lzQp5eGSSh4E47Z5l/f6FTSohJE5FvzhLPB18tZjnc6
-         D4PQ==
-X-Gm-Message-State: ANoB5pnYNLGB98HCxZvUW8c6xd4g3RmKEuBAKc+l2YoQoLBDCPWQnnll
-        RlHpK3VQdVuKyu05gAjez+250Ig/6zvmyboz10B/qo98+5Y=
-X-Google-Smtp-Source: AA0mqf7D6nlXUukeFyw5JeCgOvxcdvH2H+0keXaRw1neBKuVwJvQY/4CuSboWYoyyNJkNwfRd/CnZz9h11UwJNgMk/M=
-X-Received: by 2002:a25:acd1:0:b0:6b4:b9e3:c64b with SMTP id
- x17-20020a25acd1000000b006b4b9e3c64bmr17664071ybd.238.1669038162430; Mon, 21
- Nov 2022 05:42:42 -0800 (PST)
-MIME-Version: 1.0
-References: <20221117123034.27383-1-korotkov.maxim.s@gmail.com>
-In-Reply-To: <20221117123034.27383-1-korotkov.maxim.s@gmail.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Mon, 21 Nov 2022 14:42:31 +0100
-Message-ID: <CACRpkdY09f+VUn+F3smfNksUr0r5+xMhTn8kb3LAd0ot+8gpMg@mail.gmail.com>
-Subject: Re: [PATCH] pinctrl: single: Fix potential division by zero
-To:     Maxim Korotkov <korotkov.maxim.s@gmail.com>
-Cc:     Tony Lindgren <tony@atomide.com>,
-        Haojian Zhuang <haojian.zhuang@linaro.org>,
-        "Manjunathappa, Prakash" <prakash.pm@ti.com>,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        lvc-project@linuxtesting.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        with ESMTP id S230386AbiKUOXJ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 21 Nov 2022 09:23:09 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35D5311C12;
+        Mon, 21 Nov 2022 06:23:07 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C5F1F61236;
+        Mon, 21 Nov 2022 14:23:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F18DBC433D6;
+        Mon, 21 Nov 2022 14:23:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1669040586;
+        bh=cUULGy4mgdbSd468FijsWaJOzVXL6DoDInK2H/YTWCA=;
+        h=From:To:Cc:Subject:Date:From;
+        b=fNDGIKafaZDaj/M/kzfmZuJBs5SF53P0Pclx3NvCmL5hAj/dTl+lwzNbUTKhowCcC
+         Y+PHJmTQTreeAC4kKQseKQ+PXb4QczWC9lHkJdvy2jnu22JZGkCFUvAmzCXn9Td/WD
+         GlOtGPYYutUdjZYu6RUMI+eI/SipKfLuYapcMSp72fsHIQPpwt+TznChinqcJ5WLkC
+         igpNFZSml8zHtlPLM5kUvodC9zV2qVed9ds5mF9N4cGmE8YIermuTcwU0C3KLSnBA0
+         LLT2pRwKV7LaCfItaScEA6IF/AtBPWQPlqvgkmrcgax6aXUEhusl9SIEDFu7s1mqJK
+         74VktjC25xd4g==
+From:   Roger Quadros <rogerq@kernel.org>
+To:     davem@davemloft.net, kuba@kernel.org
+Cc:     edumazet@google.com, pabeni@redhat.com, vigneshr@ti.com,
+        linux-omap@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Roger Quadros <rogerq@kernel.org>
+Subject: [PATCH v2 0/4] net: ethernet: ti: am65-cpsw: Fix set channel operation
+Date:   Mon, 21 Nov 2022 16:22:56 +0200
+Message-Id: <20221121142300.9320-1-rogerq@kernel.org>
+X-Mailer: git-send-email 2.17.1
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -69,21 +49,31 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, Nov 17, 2022 at 1:32 PM Maxim Korotkov
-<korotkov.maxim.s@gmail.com> wrote:
+Hi,
 
-> There is a possibility of dividing by zero due to the pcs->bits_per_pin
-> if pcs->fmask() also has a value of zero and called fls
-> from asm-generic/bitops/builtin-fls.h or arch/x86/include/asm/bitops.h.
-> The function pcs_probe() has the branch that assigned to fmask 0 before
-> pcs_allocate_pin_table() was called
->
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
->
-> Fixes: 4e7e8017a80e ("pinctrl: pinctrl-single: enhance to configure multiple pins of different modules")
-> Signed-off-by: Maxim Korotkov <korotkov.maxim.s@gmail.com>
+This contains a critical bug fix for the recently merged suspend/resume
+support that broke set channel operation. (ethtool -L eth0 tx <n>)
 
-Patch applied for fixes.
+Remaining patches are optimizations.
 
-Yours,
-Linus Walleij
+cheers,
+-roger
+
+Changelog:
+v2:
+-Fix build warning
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c:562:13: warning: variable 'tmo' set but not used [-Wunused-but-set-variable]
+
+Roger Quadros (4):
+  net: ethernet: ti: am65-cpsw: Fix set channel operation
+  net: ethernet: ti: am65-cpsw-nuss: Remove redundant ALE_CLEAR
+  net: ethernet: ti: am65-cpsw: Restore ALE only if any interface was up
+  net: ethernet: ti: cpsw_ale: optimize cpsw_ale_restore()
+
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c | 167 +++++++++++++----------
+ drivers/net/ethernet/ti/cpsw_ale.c       |   7 +-
+ 2 files changed, 99 insertions(+), 75 deletions(-)
+
+-- 
+2.17.1
+
