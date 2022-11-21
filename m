@@ -2,41 +2,40 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DCA9632895
-	for <lists+linux-omap@lfdr.de>; Mon, 21 Nov 2022 16:48:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 58D8763290B
+	for <lists+linux-omap@lfdr.de>; Mon, 21 Nov 2022 17:11:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229949AbiKUPsB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 21 Nov 2022 10:48:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49298 "EHLO
+        id S229848AbiKUQLP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 21 Nov 2022 11:11:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40854 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232391AbiKUPr0 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 21 Nov 2022 10:47:26 -0500
-Received: from laurent.telenet-ops.be (laurent.telenet-ops.be [IPv6:2a02:1800:110:4::f00:19])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8B15CFA72
-        for <linux-omap@vger.kernel.org>; Mon, 21 Nov 2022 07:47:14 -0800 (PST)
+        with ESMTP id S229712AbiKUQLO (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 21 Nov 2022 11:11:14 -0500
+Received: from albert.telenet-ops.be (albert.telenet-ops.be [IPv6:2a02:1800:110:4::f00:1a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48248C8C80
+        for <linux-omap@vger.kernel.org>; Mon, 21 Nov 2022 08:11:13 -0800 (PST)
 Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed10:4821:1ba5:2638:5c3a])
-        by laurent.telenet-ops.be with bizsmtp
-        id n3nC2800M5WXlCv013nCc8; Mon, 21 Nov 2022 16:47:13 +0100
+        by albert.telenet-ops.be with bizsmtp
+        id n4BB2800W5WXlCv064BBA1; Mon, 21 Nov 2022 17:11:11 +0100
 Received: from rox.of.borg ([192.168.97.57])
         by ramsan.of.borg with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.93)
         (envelope-from <geert@linux-m68k.org>)
-        id 1ox90q-0019FZ-6T; Mon, 21 Nov 2022 16:47:12 +0100
+        id 1ox9O3-0019Is-38; Mon, 21 Nov 2022 17:11:11 +0100
 Received: from geert by rox.of.borg with local (Exim 4.93)
         (envelope-from <geert@linux-m68k.org>)
-        id 1ox90p-00BQUA-IK; Mon, 21 Nov 2022 16:47:11 +0100
+        id 1ox9O2-00BRya-86; Mon, 21 Nov 2022 17:11:10 +0100
 From:   Geert Uytterhoeven <geert+renesas@glider.be>
-To:     Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>
-Cc:     linux-pm@vger.kernel.org, linux-omap@vger.kernel.org,
+To:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH resend] thermal: ti-soc-thermal: Drop comma after SoC match table sentinel
-Date:   Mon, 21 Nov 2022 16:47:10 +0100
-Message-Id: <1d6de2a80b919cb11199e56ac06ad21c273ebe57.1669045586.git.geert+renesas@glider.be>
+Subject: [PATCH v3] ARM: dts: am335x: Fix TDA998x ports addressing
+Date:   Mon, 21 Nov 2022 17:11:09 +0100
+Message-Id: <e9ac64d29bc18b3b394fd9a2abbfeafacc624f98.1669047037.git.geert+renesas@glider.be>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -49,27 +48,61 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-It does not make sense to have a comma after a sentinel, as any new
-elements must be added before the sentinel.
+Fix addressing in the NXP TDA998x HDMI transmitters' subnodes:
+  - Add missing #{address,size}-cells properties to ports capsule,
+  - Add missing reg properties to port child nodes,
+  - Drop bogus unit addresses from endpoint grandchildren nodes.
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
- drivers/thermal/ti-soc-thermal/ti-bandgap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+v3:
+  - Drop applied patches from the series,
 
-diff --git a/drivers/thermal/ti-soc-thermal/ti-bandgap.c b/drivers/thermal/ti-soc-thermal/ti-bandgap.c
-index 53d409c80753c25e..576c2115df85da72 100644
---- a/drivers/thermal/ti-soc-thermal/ti-bandgap.c
-+++ b/drivers/thermal/ti-soc-thermal/ti-bandgap.c
-@@ -877,7 +877,7 @@ static struct ti_bandgap *ti_bandgap_build(struct platform_device *pdev)
-  */
- static const struct soc_device_attribute soc_no_cpu_notifier[] = {
- 	{ .machine = "OMAP4430" },
--	{ /* sentinel */ },
-+	{ /* sentinel */ }
- };
+v2:
+  - No changes.
+---
+ arch/arm/boot/dts/am335x-boneblack-hdmi.dtsi | 7 ++++++-
+ arch/arm/boot/dts/am335x-myirtech-myd.dts    | 7 ++++++-
+ 2 files changed, 12 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/boot/dts/am335x-boneblack-hdmi.dtsi b/arch/arm/boot/dts/am335x-boneblack-hdmi.dtsi
+index 7cfddada934861bc..486f24deb875c688 100644
+--- a/arch/arm/boot/dts/am335x-boneblack-hdmi.dtsi
++++ b/arch/arm/boot/dts/am335x-boneblack-hdmi.dtsi
+@@ -85,8 +85,13 @@ tda19988: tda19988@70 {
+ 		audio-ports = <	TDA998x_I2S	0x03>;
  
- /***   Device driver call backs   ***/
+ 		ports {
++			#address-cells = <1>;
++			#size-cells = <0>;
++
+ 			port@0 {
+-				hdmi_0: endpoint@0 {
++				reg = <0>;
++
++				hdmi_0: endpoint {
+ 					remote-endpoint = <&lcdc_0>;
+ 				};
+ 			};
+diff --git a/arch/arm/boot/dts/am335x-myirtech-myd.dts b/arch/arm/boot/dts/am335x-myirtech-myd.dts
+index 9d81d4cc6890eea9..425ad9b81a68ab18 100644
+--- a/arch/arm/boot/dts/am335x-myirtech-myd.dts
++++ b/arch/arm/boot/dts/am335x-myirtech-myd.dts
+@@ -161,8 +161,13 @@ tda9988: tda9988@70 {
+ 		#sound-dai-cells = <0>;
+ 
+ 		ports {
++			#address-cells = <1>;
++			#size-cells = <0>;
++
+ 			port@0 {
+-				hdmi_0: endpoint@0 {
++				reg = <0>;
++
++				hdmi_0: endpoint {
+ 					remote-endpoint = <&lcdc_0>;
+ 				};
+ 			};
 -- 
 2.25.1
 
