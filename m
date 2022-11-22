@@ -2,35 +2,70 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 08ABB633ACC
-	for <lists+linux-omap@lfdr.de>; Tue, 22 Nov 2022 12:11:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EF8A633B81
+	for <lists+linux-omap@lfdr.de>; Tue, 22 Nov 2022 12:36:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232359AbiKVLLs convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-omap@lfdr.de>); Tue, 22 Nov 2022 06:11:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58618 "EHLO
+        id S232838AbiKVLg2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 22 Nov 2022 06:36:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54792 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232934AbiKVLLr (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 22 Nov 2022 06:11:47 -0500
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id DC6272FC2F;
-        Tue, 22 Nov 2022 03:11:45 -0800 (PST)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 396CB8061;
-        Tue, 22 Nov 2022 11:01:31 +0000 (UTC)
-Date:   Tue, 22 Nov 2022 13:11:43 +0200
-From:   Tony Lindgren <tony@atomide.com>
-To:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
+        with ESMTP id S232917AbiKVLgG (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 22 Nov 2022 06:36:06 -0500
+Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFA57183B8
+        for <linux-omap@vger.kernel.org>; Tue, 22 Nov 2022 03:30:34 -0800 (PST)
+Received: by mail-lf1-x129.google.com with SMTP id b3so23141320lfv.2
+        for <linux-omap@vger.kernel.org>; Tue, 22 Nov 2022 03:30:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=C1XTXm9UvBoDAZHI1hrDbgLg98MYtdJ0rMyqAqbL2VA=;
+        b=tOkgdnwgrQbSiP0oM5B6azywQYQ7aLjmWowFDdh9CIvq1uf8hJKMiEpcVEU9963zwF
+         XUeM9ihlSWKDrCmmdYFi8RGN1tf13dNf9IraNxmBtV3ALPamSf7IJRH/iBiTuLBOBIXk
+         5GFu918HTN18SWPojUywme1z5CDNMFa3FUNlvc6NXmWzVkHNtlYWM/CHwfr+EU/EAlA3
+         fcnSH+LOqb2EFwsfN2tXvqdIkEaF3Oppx8twk49AHCElYsJdQgotCf+BEyQyeOnFZuIf
+         Oozt4/jwxLMd++aDgE6DhT8UHloh8U/GX7L/mMWs9/XJwwX4NpjQlDMw5DOvDWXv62Gs
+         YlSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=C1XTXm9UvBoDAZHI1hrDbgLg98MYtdJ0rMyqAqbL2VA=;
+        b=Aaj/9VCPylbzMSSvBCFKy5kpDtBryLGkksKOO7jfqS4k9DtezfVLtnul0kiuXMACTi
+         eDL2cGpDR8ZZwOFSkjarpONGtvdKIRtMdKBOX2vu7zhHq05PONQEHrXFGL6DMI/uuqLd
+         WVN8DgnFfhaU9RWgrdV0y94C06Jchi/x0FNXz+SECYx8LY9CJS/+uiGulxGLocT3zuDf
+         NXyf37JILOO5i1+6YfEMlU84SH3XSZ66KqTteBVBsOsxOpXCL7Yuhgwso9/dMTQIKA59
+         ph6GXm019t0p+J9aYmk1Hb3BGlLxcU6mO4eJoM5Mwr5I6YDhc+P/q3TLCwle2WYT+HDb
+         HHMA==
+X-Gm-Message-State: ANoB5pkG0+KdzEY7XKkLCMjigmDhAmRuZU4JYpG2jpoAb+F25rIIFpPY
+        z7RZ4JbOReZBu3NyhuIUAiniUg==
+X-Google-Smtp-Source: AA0mqf7k2oCVEZ/0IIJSufubpSb04tX7QCDu2eKbXO2CgPdAvMGr9kyWv4pHLufgBRv3l+PWGTAzaA==
+X-Received: by 2002:ac2:5cbc:0:b0:4b4:e461:3abb with SMTP id e28-20020ac25cbc000000b004b4e4613abbmr262278lfq.343.1669116633157;
+        Tue, 22 Nov 2022 03:30:33 -0800 (PST)
+Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
+        by smtp.gmail.com with ESMTPSA id i5-20020a0565123e0500b004978e51b691sm2465683lfv.266.2022.11.22.03.30.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 22 Nov 2022 03:30:32 -0800 (PST)
+Message-ID: <4128deb0-c5b8-2405-033b-35edc8c5110d@linaro.org>
+Date:   Tue, 22 Nov 2022 12:30:31 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.2
+Subject: Re: [PATCH v2 1/2] dt-bindings: pwm: Allow decimal format in addition
+ to hex format
+Content-Language: en-US
+To:     Tony Lindgren <tony@atomide.com>,
+        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>
+Cc:     Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-omap@vger.kernel.org,
         Thierry Reding <thierry.reding@gmail.com>,
         Nishanth Menon <nm@ti.com>,
         Vignesh Raghavendra <vigneshr@ti.com>
-Subject: Re: [PATCH v2 1/2] dt-bindings: pwm: Allow decimal format in
- addition to hex format
-Message-ID: <Y3yubxJ3ZCIIed3T@atomide.com>
 References: <20221121115525.36362-1-tony@atomide.com>
  <20221121144000.7weeyfbbulltfxmd@pengutronix.de>
  <Y3uPvYqaILNiYW8K@atomide.com>
@@ -39,110 +74,31 @@ References: <20221121115525.36362-1-tony@atomide.com>
  <20221122093650.oouke2utlkvdd7r6@pengutronix.de>
  <Y3ymZphck8JM6g9B@atomide.com>
  <20221122105710.5aow5qsri6pikgri@pengutronix.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8BIT
-In-Reply-To: <20221122105710.5aow5qsri6pikgri@pengutronix.de>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+ <Y3yubxJ3ZCIIed3T@atomide.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <Y3yubxJ3ZCIIed3T@atomide.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Uwe Kleine-König <u.kleine-koenig@pengutronix.de> [221122 10:47]:
-> On Tue, Nov 22, 2022 at 12:37:26PM +0200, Tony Lindgren wrote:
-> > * Uwe Kleine-König <u.kleine-koenig@pengutronix.de> [221122 09:26]:
-> > > On Tue, Nov 22, 2022 at 06:43:55AM +0200, Tony Lindgren wrote:
-> > > > * Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> [221121 16:05]:
-> > > > > On 21/11/2022 15:48, Tony Lindgren wrote:
-> > > > > > * Uwe Kleine-König <u.kleine-koenig@pengutronix.de> [221121 14:30]:
-> > > > > >> On Mon, Nov 21, 2022 at 01:55:24PM +0200, Tony Lindgren wrote:
-> > > > > >>> Let's allow node numbering in decimal format too.
-> > > > > >>>
-> > > > > >>> Simple human-readable increments/IDs are usually decimal, hex is only for
-> > > > > >>> addresses as noted by Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>.
-> > > > > >>>
-> > > > > >>> Cc: Thierry Reding <thierry.reding@gmail.com>
-> > > > > >>> Cc: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-> > > > > >>> Suggested-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> > > > > >>> Signed-off-by: Tony Lindgren <tony@atomide.com>
-> > > > > >>> ---
-> > > > > >>>  Documentation/devicetree/bindings/pwm/pwm.yaml | 2 +-
-> > > > > >>>  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > > > >>>
-> > > > > >>> diff --git a/Documentation/devicetree/bindings/pwm/pwm.yaml b/Documentation/devicetree/bindings/pwm/pwm.yaml
-> > > > > >>> --- a/Documentation/devicetree/bindings/pwm/pwm.yaml
-> > > > > >>> +++ b/Documentation/devicetree/bindings/pwm/pwm.yaml
-> > > > > >>> @@ -13,7 +13,7 @@ select: false
-> > > > > >>>  
-> > > > > >>>  properties:
-> > > > > >>>    $nodename:
-> > > > > >>> -    pattern: "^pwm(@.*|-[0-9a-f])*$"
-> > > > > >>> +    pattern: "^pwm(@.*|-([0-9a-f]|1[0-5]))*$"
-> > > > > >>
-> > > > > >> I wonder why you don't make this:
-> > > > > >>
-> > > > > >> +    pattern: "^pwm(@.*|-[0-9a-f]*)$"
-> > > > > 
-> > > > > Yes, the '*' should be within ().
-> > > > 
-> > > > Sorry I guess I don't follow. So for what type of naming is the second '*'
-> > > > actually needed here, or is it needed at all?
-> > > > 
-> > > > We only want to match the following:
-> > > > 
-> > > > pwm@1234
-> > > > 
-> > > > pwm-0
-> > > > ...
-> > > > pwm-f
-> > > > 
-> > > > And now also:
-> > > > 
-> > > > pwm-0
-> > > > ...
-> > > > pwm-15
-> > > > 
-> > > > Is there yet another format I'm missing?
-> > > 
-> > > I think there is a misunderstanding about the type of pattern here. Do
-> > > we talk about a shell pattern where "[0-9a-f]*" matches a name starting
-> > > with a hex digit followed by any number of any caracter, or is it a
-> > > regexp where the * means "any number of the preceding pattern", so
-> > > effectively a word consisting of only hex digits.
-> > > 
-> > > The .* part makes me think we're talking about a regexp, so the old
-> > > pattern ("^pwm(@.*|-[0-9a-f])*$") means that
-> > > 
-> > > 	pwm-1-2-3-4
-> > > 
-> > > is allowed but
-> > > 
-> > > 	pwm-10
-> > > 
-> > > isn't. And I think what we want is:
-> > > 
-> > > 	"^pwm(@.*|-[0-9a-f]*)$"
-> > 
-> > Heh so this fails for just node name pwm:
-> > 
-> > pwm: $nodename:0: 'pwm' does not match '^pwm(@.*|-[0-9a-f]*)$'
-> > 
-> > Maybe that's why the second '..)*$' was there originally for?
-> > And adding it back there fixes pwm but allows pwm-1-2-3..
-> > 
-> > > (or maybe better "^pwm(@.+|-[0-9a-f]+)$" ?)
-> > 
-> > And this too fails for just pwm node name.
+On 22/11/2022 12:11, Tony Lindgren wrote:
+>> Then let's pick:
+>>
+>>
+>> 	"^pwm(@.+|-[0-9a-f]+)?$"
 > 
-> Then let's pick:
-> 
-> 
-> 	"^pwm(@.+|-[0-9a-f]+)?$"
+> That works for pwm and pwm-11, but now fails for pwm11 :)
 
-That works for pwm and pwm-11, but now fails for pwm11 :)
+Which was never valid, so no problem.
 
-Tony
+Best regards,
+Krzysztof
+
