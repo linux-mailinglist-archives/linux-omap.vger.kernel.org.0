@@ -2,33 +2,24 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE0DA633DD8
-	for <lists+linux-omap@lfdr.de>; Tue, 22 Nov 2022 14:38:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 27CEC633DEB
+	for <lists+linux-omap@lfdr.de>; Tue, 22 Nov 2022 14:42:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233110AbiKVNiu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 22 Nov 2022 08:38:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37598 "EHLO
+        id S232972AbiKVNmF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 22 Nov 2022 08:42:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233771AbiKVNik (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 22 Nov 2022 08:38:40 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A2092CE1B
-        for <linux-omap@vger.kernel.org>; Tue, 22 Nov 2022 05:38:37 -0800 (PST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1oxTTp-0004vK-FC; Tue, 22 Nov 2022 14:38:29 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1oxTTm-005rZX-0P; Tue, 22 Nov 2022 14:38:26 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1oxTTl-000o5y-RL; Tue, 22 Nov 2022 14:38:25 +0100
-Date:   Tue, 22 Nov 2022 14:38:25 +0100
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Tony Lindgren <tony@atomide.com>
+        with ESMTP id S232550AbiKVNmE (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 22 Nov 2022 08:42:04 -0500
+Received: from muru.com (muru.com [72.249.23.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 9EFB7654C5;
+        Tue, 22 Nov 2022 05:42:00 -0800 (PST)
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 946C18061;
+        Tue, 22 Nov 2022 13:31:45 +0000 (UTC)
+Date:   Tue, 22 Nov 2022 15:41:58 +0200
+From:   Tony Lindgren <tony@atomide.com>
+To:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
 Cc:     Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
@@ -39,74 +30,46 @@ Cc:     Rob Herring <robh+dt@kernel.org>,
         Vignesh Raghavendra <vigneshr@ti.com>
 Subject: Re: [PATCH v3 1/2] dt-bindings: pwm: Allow decimal format in
  addition to hex format
-Message-ID: <20221122133825.d67q4q6k3wkncucj@pengutronix.de>
+Message-ID: <Y3zRpgY1cXCKsJCu@atomide.com>
 References: <20221122123225.59106-1-tony@atomide.com>
+ <20221122133825.d67q4q6k3wkncucj@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="4vb7eimw6h63aqds"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20221122123225.59106-1-tony@atomide.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-omap@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20221122133825.d67q4q6k3wkncucj@pengutronix.de>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+* Uwe Kleine-König <u.kleine-koenig@pengutronix.de> [221122 13:28]:
+> On Tue, Nov 22, 2022 at 02:32:24PM +0200, Tony Lindgren wrote:
+> > Let's allow node numbering in decimal format too.
+> > 
+> > Simple human-readable increments/IDs are usually decimal, hex is only for
+> > addresses as noted by Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>.
+> > 
+> > Let's use an improved match suggested by Krzysztof Kozlowski
+> > <krzysztof.kozlowski@linaro.org> and improved a bit by Uwe Kleine-König
+> > <u.kleine-koenig@pengutronix.de>.
+> > 
+> > Cc: linux-pwm@vger.kernel.org
+> > Cc: Thierry Reding <thierry.reding@gmail.com>
+> > Suggested-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> > Suggested-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+> > Signed-off-by: Tony Lindgren <tony@atomide.com>
+> 
+> Acked-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+> 
+> Which tree should this merged through? The obvious candidates are pwm,
+> dt and omap.
 
---4vb7eimw6h63aqds
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The dt folks usually queue the binding patches separately.
 
-On Tue, Nov 22, 2022 at 02:32:24PM +0200, Tony Lindgren wrote:
-> Let's allow node numbering in decimal format too.
->=20
-> Simple human-readable increments/IDs are usually decimal, hex is only for
-> addresses as noted by Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org=
->.
->=20
-> Let's use an improved match suggested by Krzysztof Kozlowski
-> <krzysztof.kozlowski@linaro.org> and improved a bit by Uwe Kleine-K=F6nig
-> <u.kleine-koenig@pengutronix.de>.
->=20
-> Cc: linux-pwm@vger.kernel.org
-> Cc: Thierry Reding <thierry.reding@gmail.com>
-> Suggested-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> Suggested-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
+Regards,
 
-Acked-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-
-Which tree should this merged through? The obvious candidates are pwm,
-dt and omap.
-
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---4vb7eimw6h63aqds
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmN80M4ACgkQwfwUeK3K
-7Al/Hgf/T8WrsKj9Va/XMq4b+dz2KEAoeMJolD8jiaNVghYiXDGCcG7QkgovEv1k
-RaUWlSXWrGAJBv90zZ7AcGcKHZO1VNLOZhk5qXU59d5FOzYCSm+wf53lpap7i81x
-GhxeZwlsxySwhQ7LRGddfG7V6PfL9KqMYY83Sf3Y5nDadCycChfIaD3o1hOh2Ko3
-vZDplHOiTJ15fvqLiVBp7mKORZ93/9ixtmz8ud9qVv5bxz/9VZabF4hycX5Svl2v
-PJW2MG463pTuSth6EsjXet2i+xySpbzP0I96og9hChEraaucDnyzYMpVfO2qAfkX
-0jp2crJzI0L8jmhq6wtmfhRoOU7n2g==
-=CVSO
------END PGP SIGNATURE-----
-
---4vb7eimw6h63aqds--
+Tony
