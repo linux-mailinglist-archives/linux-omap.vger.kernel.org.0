@@ -2,76 +2,55 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D6ED633CD9
-	for <lists+linux-omap@lfdr.de>; Tue, 22 Nov 2022 13:49:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BE0DA633DD8
+	for <lists+linux-omap@lfdr.de>; Tue, 22 Nov 2022 14:38:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233234AbiKVMtV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 22 Nov 2022 07:49:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54534 "EHLO
+        id S233110AbiKVNiu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 22 Nov 2022 08:38:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232453AbiKVMtR (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 22 Nov 2022 07:49:17 -0500
-Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 413A5606A5
-        for <linux-omap@vger.kernel.org>; Tue, 22 Nov 2022 04:49:11 -0800 (PST)
-Received: by mail-lj1-x22c.google.com with SMTP id z4so910175ljq.6
-        for <linux-omap@vger.kernel.org>; Tue, 22 Nov 2022 04:49:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=BKKhKb5Gs5Frt6QdrTXva2XYvf3P1wraxWYylueZjts=;
-        b=vROLuRMtSqcLs1vlki0d4Ne+UuwsQbEAY11V9y2sDHUGQI21crDHZJ0tXsuLE9VtKp
-         N2Q4+Y6IUjbnBrY500Tf762D8wED2XgZtptJAxv3FDcvzZY/Wunw/aA8FlnzWTLzI2ax
-         GEFLAcEKzlSOXMdqVs5jPTh+0TlUc7GCVQ6bG2KJASiozOKfojeO/A3IjuIVGIrVYtL9
-         bmmDAQSoJjiRYxMlfYVdXX/BVXZWi+6yAS9h4uSlIB4lhisB4BsIzws0KXXnyrumElRm
-         sXM+e+23Hl1PJkhflw3fYIN/lni5xF2hnK4bUyv3j76scCac5Legy7zYPCyyE+3VXZ60
-         8/MQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BKKhKb5Gs5Frt6QdrTXva2XYvf3P1wraxWYylueZjts=;
-        b=gsQbP7uxqWe6ZvRbvxueW2P3zCArYedqhvjn72CywXCutrWXAQuL57Xe/90buTMI2M
-         kSHcvufjYOXQ8lgMKGnXXdPrUjzqkqn2e2GaaIx7guWP3J6kQyL5Zyqe1icE/KfNpVMc
-         X9s1MO9D76ekKGNOhkE0zgxty9zWJrz36/Q3wpGyAT/7YpQ1Zx1gCF1PEk0J52PyZnwY
-         xlCD9vChJ7csiktGZbBUCPR/abaKlGADtW8lSfbpQHdIW3DJ2ymaXfUWckNi386tkILw
-         cRDPlobI/6u/6krgEb64Qb4LF92PKi/BtJ25yssza8tPI7iThMhe4h9+tWFMokLgfNTs
-         AdyQ==
-X-Gm-Message-State: ANoB5pk3UqjvT3d6nEyb3+nmA+ivsnR6Ya0lF9kLcPCBZbcPLAiFb4MV
-        IbIY3qBX1mn9nmcmf0YnYXJBqg==
-X-Google-Smtp-Source: AA0mqf5sBXpQ0lraqYbLN3Pt9WJ/0BS7mciGklDZFRVVoBTpC5iowYQuF9T/Uuqg6Tc0kDYLXXQ8fA==
-X-Received: by 2002:a2e:2c05:0:b0:277:13ef:53ad with SMTP id s5-20020a2e2c05000000b0027713ef53admr1396802ljs.327.1669121349652;
-        Tue, 22 Nov 2022 04:49:09 -0800 (PST)
-Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
-        by smtp.gmail.com with ESMTPSA id w26-20020a05651c119a00b0027730261350sm1853863ljo.131.2022.11.22.04.49.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 22 Nov 2022 04:49:09 -0800 (PST)
-Message-ID: <bee157b1-e05f-7f64-61bf-8d6796dd1336@linaro.org>
-Date:   Tue, 22 Nov 2022 13:49:08 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Subject: Re: [PATCH v3 1/2] dt-bindings: pwm: Allow decimal format in addition
- to hex format
-To:     Tony Lindgren <tony@atomide.com>, Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        with ESMTP id S233771AbiKVNik (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 22 Nov 2022 08:38:40 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A2092CE1B
+        for <linux-omap@vger.kernel.org>; Tue, 22 Nov 2022 05:38:37 -0800 (PST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1oxTTp-0004vK-FC; Tue, 22 Nov 2022 14:38:29 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1oxTTm-005rZX-0P; Tue, 22 Nov 2022 14:38:26 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1oxTTl-000o5y-RL; Tue, 22 Nov 2022 14:38:25 +0100
+Date:   Tue, 22 Nov 2022 14:38:25 +0100
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-omap@vger.kernel.org, linux-pwm@vger.kernel.org,
         Thierry Reding <thierry.reding@gmail.com>,
-        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
         Nishanth Menon <nm@ti.com>,
         Vignesh Raghavendra <vigneshr@ti.com>
+Subject: Re: [PATCH v3 1/2] dt-bindings: pwm: Allow decimal format in
+ addition to hex format
+Message-ID: <20221122133825.d67q4q6k3wkncucj@pengutronix.de>
 References: <20221122123225.59106-1-tony@atomide.com>
-Content-Language: en-US
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="4vb7eimw6h63aqds"
+Content-Disposition: inline
 In-Reply-To: <20221122123225.59106-1-tony@atomide.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-omap@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -80,20 +59,54 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 22/11/2022 13:32, Tony Lindgren wrote:
+
+--4vb7eimw6h63aqds
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, Nov 22, 2022 at 02:32:24PM +0200, Tony Lindgren wrote:
 > Let's allow node numbering in decimal format too.
-> 
+>=20
 > Simple human-readable increments/IDs are usually decimal, hex is only for
-> addresses as noted by Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>.
-> 
+> addresses as noted by Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org=
+>.
+>=20
 > Let's use an improved match suggested by Krzysztof Kozlowski
-> <krzysztof.kozlowski@linaro.org> and improved a bit by Uwe Kleine-König
+> <krzysztof.kozlowski@linaro.org> and improved a bit by Uwe Kleine-K=F6nig
 > <u.kleine-koenig@pengutronix.de>.
-> 
+>=20
+> Cc: linux-pwm@vger.kernel.org
+> Cc: Thierry Reding <thierry.reding@gmail.com>
+> Suggested-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Suggested-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
 
+Acked-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Which tree should this merged through? The obvious candidates are pwm,
+dt and omap.
 
-Best regards,
-Krzysztof
+Best regards
+Uwe
 
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--4vb7eimw6h63aqds
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmN80M4ACgkQwfwUeK3K
+7Al/Hgf/T8WrsKj9Va/XMq4b+dz2KEAoeMJolD8jiaNVghYiXDGCcG7QkgovEv1k
+RaUWlSXWrGAJBv90zZ7AcGcKHZO1VNLOZhk5qXU59d5FOzYCSm+wf53lpap7i81x
+GhxeZwlsxySwhQ7LRGddfG7V6PfL9KqMYY83Sf3Y5nDadCycChfIaD3o1hOh2Ko3
+vZDplHOiTJ15fvqLiVBp7mKORZ93/9ixtmz8ud9qVv5bxz/9VZabF4hycX5Svl2v
+PJW2MG463pTuSth6EsjXet2i+xySpbzP0I96og9hChEraaucDnyzYMpVfO2qAfkX
+0jp2crJzI0L8jmhq6wtmfhRoOU7n2g==
+=CVSO
+-----END PGP SIGNATURE-----
+
+--4vb7eimw6h63aqds--
