@@ -2,64 +2,69 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EC70635FC0
-	for <lists+linux-omap@lfdr.de>; Wed, 23 Nov 2022 14:33:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BF7F63651F
+	for <lists+linux-omap@lfdr.de>; Wed, 23 Nov 2022 16:59:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238340AbiKWNct (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 23 Nov 2022 08:32:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42892 "EHLO
+        id S236775AbiKWP7m (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 23 Nov 2022 10:59:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238846AbiKWNcO (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 23 Nov 2022 08:32:14 -0500
-Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02951F0E
-        for <linux-omap@vger.kernel.org>; Wed, 23 Nov 2022 05:17:26 -0800 (PST)
-Received: by mail-wr1-x429.google.com with SMTP id bs21so29357359wrb.4
-        for <linux-omap@vger.kernel.org>; Wed, 23 Nov 2022 05:17:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=mXCYaSmMqqEDfVGfKyWMjlG4vgxEb1dGWfZP4Ic23TM=;
-        b=WXBPukmmS14aMCOS8w61k/jTzofcIacWIKg2AVDdO7Z5wxkzk9sK9Vj4lW+3kLHjoS
-         exNhsZJmoevUqtTaFjMV0Uwkf/UZRMUVvEA1+C9zHszd01/B7ExO9W/0TkW6elTQUjvb
-         D6YsWU6Wk6Ns1bEEyihNxIv57Y9amYQL6s5sio8kiO5MStT58bEop3QkwB1AOk8SuisC
-         PuGuzf1SB9rNVZLn6xAUGTPIWzbsHpf66NnRXIE5/21sdB1hSwZNCi3YQghMSR6z2IF2
-         /4KZxGN00SCZDBOkNb5ZINywcHB7g7HZBOblVCFqYBmqQppVqgCdPYN2ISvZfyZ/C3MH
-         biSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=mXCYaSmMqqEDfVGfKyWMjlG4vgxEb1dGWfZP4Ic23TM=;
-        b=AkSik4snK0B+Dtwon5DTkCiDMdFAsrFGj4kMIDqmx/a01pjueAD3S3eNV0sHG7Ecxf
-         cWqyacywjPAYjJ0xr9TaFGzUv8Pd9A5p6uaBETlsddaj8t8X213WZoKp2dOuRdu/lIwI
-         5MtLuOTgysLwBQ6ZKuPsEp6Aud//YsiiccOZRdsudjH8tGMvvr8F/TmAdlOOCKxa2H+c
-         qaQdR6U8j7Qiehd0uCr4OdiToS7tc+bkGL7WJAciOMEPqdHztKr/3IQNh2jU45K1bfed
-         AHO5Ydw8lwoEI6DISP1XVK/yhCxJTjKcpzJsHvDQk2nvZcGY/VWxn9imNDIiySTq16Rm
-         0rLA==
-X-Gm-Message-State: ANoB5pm2DX2pg9rSMG0bJGwTTjlCIaHbGeSH5XAYEkplQwiitBgitYLi
-        wNCfk5LaK6yq3qIB0PKJRoQ=
-X-Google-Smtp-Source: AA0mqf7+5+uLz6CrlL6Jrbc9v9nwDW2r1RFdQT1c3LdlTxiqEO0Rka7q9hIH8njfyUYHq30orvlNLA==
-X-Received: by 2002:a05:6000:910:b0:236:56a9:65cc with SMTP id bz16-20020a056000091000b0023656a965ccmr17234074wrb.563.1669209444282;
-        Wed, 23 Nov 2022 05:17:24 -0800 (PST)
-Received: from niros.localdomain ([176.231.147.83])
-        by smtp.gmail.com with ESMTPSA id y7-20020a1c4b07000000b003b4c979e6bcsm2206148wma.10.2022.11.23.05.17.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Nov 2022 05:17:23 -0800 (PST)
-From:   Nir Levy <bhr166@gmail.com>
-To:     tony@atomide.com, linux-omap@vger.kernel.org
-Cc:     bhr166@gmail.com
-Subject: [PATCH] arm: mach-omap2: Fix spelling typos in comment
-Date:   Wed, 23 Nov 2022 15:17:20 +0200
-Message-Id: <20221123131720.79978-1-bhr166@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S237496AbiKWP7g (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 23 Nov 2022 10:59:36 -0500
+Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1894112C;
+        Wed, 23 Nov 2022 07:59:34 -0800 (PST)
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 2ANFxL1o067298;
+        Wed, 23 Nov 2022 09:59:21 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1669219161;
+        bh=jpZuW9oHORo8S/7hQxhhY/cDw10zv0j955exyoygGXM=;
+        h=Date:To:CC:References:From:Subject:In-Reply-To;
+        b=rbHsk4lu5HCOC7TeS/xhfElLPA9MhGbPKNA6kYTjgySfeKRnp7APsegqliHNzyCNy
+         Rmr54liG+IYHFylcifIzJMr4BKlQR0RaetrL0WzV3IaO9NnLIlCLHJxfgUlOcnvRV3
+         YQh8q367KW9NeQyZz12FvE+VWZZwHwnSNA34sDgI=
+Received: from DLEE105.ent.ti.com (dlee105.ent.ti.com [157.170.170.35])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 2ANFxLos016741
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 23 Nov 2022 09:59:21 -0600
+Received: from DLEE101.ent.ti.com (157.170.170.31) by DLEE105.ent.ti.com
+ (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16; Wed, 23
+ Nov 2022 09:59:21 -0600
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE101.ent.ti.com
+ (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16 via
+ Frontend Transport; Wed, 23 Nov 2022 09:59:21 -0600
+Received: from [10.250.233.34] (ileaxei01-snat.itg.ti.com [10.180.69.5])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 2ANFxFTG035291;
+        Wed, 23 Nov 2022 09:59:16 -0600
+Message-ID: <c3ded2b8-cf99-36ac-7152-5a23245a2e9c@ti.com>
+Date:   Wed, 23 Nov 2022 21:29:15 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.0
+Content-Language: en-US
+To:     Nicolas Frayer <nfrayer@baylibre.com>, <nm@ti.com>,
+        <ssantosh@kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <peter.ujfalusi@gmail.com>,
+        <vkoul@kernel.org>, <dmaengine@vger.kernel.org>,
+        <grygorii.strashko@ti.com>, <davem@davemloft.net>,
+        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+        <linux-omap@vger.kernel.org>, <netdev@vger.kernel.org>
+CC:     <khilman@baylibre.com>, <glaroque@baylibre.com>
+References: <20221108181144.433087-1-nfrayer@baylibre.com>
+ <20221108181144.433087-5-nfrayer@baylibre.com>
+From:   Vignesh Raghavendra <vigneshr@ti.com>
+Subject: Re: [PATCH v4 4/4] net: ethernet: ti: davinci_mdio: Deferring probe
+ when soc_device_match() returns NULL
+In-Reply-To: <20221108181144.433087-5-nfrayer@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -67,26 +72,41 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Fix spelling: adress -> address
-Signed-off-by: Nir Levy <bhr166@gmail.com>
+Hi Nicolas,
 
----
- arch/arm/mach-omap2/sleep34xx.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On 08/11/22 11:41 pm, Nicolas Frayer wrote:
+> When the k3 socinfo driver is built as a module, there is a possibility
+> that it will probe after the davinci mdio driver. By deferring the mdio
+> probe we allow the k3 socinfo to probe and register the
+> soc_device_attribute structure needed by the mdio driver.
+> 
+> Signed-off-by: Nicolas Frayer <nfrayer@baylibre.com>
+> ---
+>  drivers/net/ethernet/ti/davinci_mdio.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/drivers/net/ethernet/ti/davinci_mdio.c b/drivers/net/ethernet/ti/davinci_mdio.c
+> index 946b9753ccfb..095198b6b7be 100644
+> --- a/drivers/net/ethernet/ti/davinci_mdio.c
+> +++ b/drivers/net/ethernet/ti/davinci_mdio.c
+> @@ -533,6 +533,10 @@ static int davinci_mdio_probe(struct platform_device *pdev)
+>  		const struct soc_device_attribute *soc_match_data;
+>  
+>  		soc_match_data = soc_device_match(k3_mdio_socinfo);
+> +
+> +		if (!soc_match_data)
+> +			return -EPROBE_DEFER;
 
-diff --git a/arch/arm/mach-omap2/sleep34xx.S b/arch/arm/mach-omap2/sleep34xx.S
-index c4e97d35c310..781a131b40a6 100644
---- a/arch/arm/mach-omap2/sleep34xx.S
-+++ b/arch/arm/mach-omap2/sleep34xx.S
-@@ -465,7 +465,7 @@ l2_inv_gp:
- 	mov	r12, #0x2
- 	smc	#0			@ Call SMI monitor (smieq)
- logic_l1_restore:
--	adr	r0, l2dis_3630_offset	@ adress for offset
-+	adr	r0, l2dis_3630_offset	@ address for offset
- 	ldr	r1, [r0]		@ value for offset
- 	ldr	r1, [r0, r1]		@ value at l2dis_3630
- 	cmp	r1, #0x1		@ Test if L2 re-enable needed on 3630
--- 
-2.34.1
+I dont think this is right way to detect if socinfo driver is probed.
+Per documentation of soc_device_match() , function will return NULL if
+it does not match any of the entries in k3_mdio_socinfo (ie if we are
+running on any platforms other that ones in the list)
 
+Note that this driver is used on TI's 32 bit SoCs too that dont even
+have a k3-socinfo driver equivalent. In such case, this code will end up
+probe deferring indefinitely.
+
+> +
+>  		if (soc_match_data && soc_match_data->data) {
+>  			const struct k3_mdio_soc_data *socdata =
+>  						soc_match_data->data;
