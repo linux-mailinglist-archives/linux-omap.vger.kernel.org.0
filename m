@@ -2,88 +2,396 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F1DAB635151
-	for <lists+linux-omap@lfdr.de>; Wed, 23 Nov 2022 08:49:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A8E8563529B
+	for <lists+linux-omap@lfdr.de>; Wed, 23 Nov 2022 09:30:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235771AbiKWHtB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 23 Nov 2022 02:49:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53214 "EHLO
+        id S236282AbiKWI24 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 23 Nov 2022 03:28:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36862 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236078AbiKWHs7 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 23 Nov 2022 02:48:59 -0500
-Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9FF5FAE98
-        for <linux-omap@vger.kernel.org>; Tue, 22 Nov 2022 23:48:56 -0800 (PST)
-Received: by mail-wm1-x32f.google.com with SMTP id r9-20020a1c4409000000b003d02dd48c45so455653wma.0
-        for <linux-omap@vger.kernel.org>; Tue, 22 Nov 2022 23:48:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=5P5d+EzlKQPtLhYD9Bm10HppuJ/7kiec/cuhMTow9Ew=;
-        b=Is1BjFxtq4aiEJ33XL48JzG3s+4esBJEan3EQk020pZ07+FrQPjCfXvxIGInokZU2H
-         WmRMskNhVrz1V3t47tKV5Eo6VbJLdY+kGIkmH5JyEE64KrrqKS6UDDc8Zw6IZ9lTmAby
-         wUpI4CQT2/96Exjs7ihHyZ0jtLTh7fAiyf9zGk9/3hTUSr9/6tP7g/4MiR5gZWpXqCip
-         VsCJhhH8hXo81KdEYO/UylmjZgT64sNPriF0JqVb9Q/BTPdbr9oYGMJ/Vsa9KdWxEpzM
-         thN/FBrMw8FLtsuPHsgeogoScYDIq23XAyySd0uEvGZ6NcDpuTWmKf9MG5kvC0/k7cQ8
-         lHBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=5P5d+EzlKQPtLhYD9Bm10HppuJ/7kiec/cuhMTow9Ew=;
-        b=OxoE7vbByo+FlsuvvkZJ4Yz/8dZShQDw2CJut8SNsteqOIrH7FBsH+7oCtJ5lc20Xs
-         Q5Y/jJEJZDd57OqqvJbXrn5rT5563JPLXISNP8i7xTxEr48Mn0nzIFtT245zL3Wlpkko
-         2Hc7Bol0w1xnVE9RlH1CiHAW3f83SRXnHSWGJ76CFWfoarJIK5vR4xSliquR75RKZr8e
-         j0oB5/CzquOJx7/VUTEZU59pTGdSp6/i11aRsA2szCxKsMlYw/pSoNUqAJ2uoJdMTK7s
-         /C+PW+fbxun+reDEssltKzMDCW8XOw8bH3jAkfALSZoMtgEDArs8p7UQe+pY6QYla22g
-         eBEQ==
-X-Gm-Message-State: ANoB5pmE/k3JvWIItVa6U788oZ4T9YVhCzXex8Iihutz0v2zKwhvuspg
-        EbBvg4G3BotHCnI8rJAXidNjYpvuMr3DTA==
-X-Google-Smtp-Source: AA0mqf7d2zbBL1BKzuLfC59iWZsBGoXySSkrLpeea1YVqUx3P9MGUdmG7b/2ajoYjFSttfUPTR77HA==
-X-Received: by 2002:a05:600c:24e:b0:3c5:f9f1:f956 with SMTP id 14-20020a05600c024e00b003c5f9f1f956mr5414402wmj.50.1669189734927;
-        Tue, 22 Nov 2022 23:48:54 -0800 (PST)
-Received: from niros.localdomain ([176.231.147.83])
-        by smtp.gmail.com with ESMTPSA id y3-20020adfee03000000b002365254ea42sm15874917wrn.1.2022.11.22.23.48.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Nov 2022 23:48:54 -0800 (PST)
-From:   Nir Levy <bhr166@gmail.com>
-To:     tony@atomide.com, linux-omap@vger.kernel.org
-Cc:     bhr166@gmail.com
-Subject: [PATCH] arm: mach-omap2: Fix spelling typos in comment
-Date:   Wed, 23 Nov 2022 09:48:49 +0200
-Message-Id: <20221123074849.76989-1-bhr166@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S236489AbiKWI2g (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 23 Nov 2022 03:28:36 -0500
+Received: from muru.com (muru.com [72.249.23.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 319D014082;
+        Wed, 23 Nov 2022 00:28:29 -0800 (PST)
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id C178280F1;
+        Wed, 23 Nov 2022 08:28:27 +0000 (UTC)
+From:   Tony Lindgren <tony@atomide.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Andy Shevchenko <andriy.shevchenko@intel.com>,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Johan Hovold <johan@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        linux-serial@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v3 1/2] serial: core: Start managing serial controllers to enable runtime PM
+Date:   Wed, 23 Nov 2022 10:28:24 +0200
+Message-Id: <20221123082825.32820-1-tony@atomide.com>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+We want to enable runtime PM for serial port device drivers in a generic
+way. To do this, we want to have the serial core layer manage the
+registered physical serial controller devices.
+
+The serial layer has a few challenges to deal with:
+
+1. The serial port mapping to a physical serial port controller device
+   is currently not easily available after the physical serial controller
+   struct device gets registered uart_add_one_port() time
+
+2. The serial port device drivers have their own driver data. So we cannot
+   currently start making use of serial core generic data easily without
+   changing all the serial port device drivers
+
+To find the serial ports for a controller based on struct device, let's
+add a new data structure for a serial_controller. On registering a port,
+we can use the drv->state array to find the associated serial port
+controller and initialize the serial core controller.
+
+As some serial port device drivers enable runtime PM in their probe before
+registering with the serial core layer, and some do not enable runtime PM
+at all currently, we need check the state in the serial core layer on
+uart_port_startup(). We need to also consider that a serial port device
+may have multiple ports.
+
+Initially we enable runtime PM for all the serial port controller devices.
+This allows us to add runtime PM calls and properly handle any errors
+without a need for serial layer specific runtime PM wrapper functions.
+
+After this patch no functional changes for the serial port device drivers
+are intended. We just enable runtime PM and keep the runtime PM usage
+count until all the serial controller ports are unregistered. For drivers
+implementing PM runtime, we just keep track of the runtime PM
+configuration.
+
+For the serial port drivers, the serial core layer has the following use
+cases to deal with:
+
+1. If a serial port device driver does not implement runtime PM, the
+   device state is set to active state, and the runtime PM usage count
+   is kept until the last port for a device is unregistered
+
+2. If a serial port device driver implements runtime PM, the runtime PM
+   usage count is kept until the last port for the device is unregistered
+
+3. If a serial port device driver implements runtime PM autosuspend,
+   autosuspend is not prevented. This currently gets set only for the
+   8250_omap driver to keep runtime PM working for it
+
+For system suspend, things should be mostly detached from the runtime PM.
+The serial port device drivers may call pm_runtime_force_suspend() and
+pm_runtime_force_resume() as needed.
+
+Suggested-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
 ---
- arch/arm/mach-omap2/sleep34xx.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changes since v2:
 
-diff --git a/arch/arm/mach-omap2/sleep34xx.S b/arch/arm/mach-omap2/sleep34xx.S
-index c4e97d35c310..781a131b40a6 100644
---- a/arch/arm/mach-omap2/sleep34xx.S
-+++ b/arch/arm/mach-omap2/sleep34xx.S
-@@ -465,7 +465,7 @@ l2_inv_gp:
- 	mov	r12, #0x2
- 	smc	#0			@ Call SMI monitor (smieq)
- logic_l1_restore:
--	adr	r0, l2dis_3630_offset	@ adress for offset
-+	adr	r0, l2dis_3630_offset	@ address for offset
- 	ldr	r1, [r0]		@ value for offset
- 	ldr	r1, [r0, r1]		@ value at l2dis_3630
- 	cmp	r1, #0x1		@ Test if L2 re-enable needed on 3630
+- Make each serial port a proper device as suggested by Greg. This is
+  a separate patch that flushes the TX on runtime PM resume
+
+Changes since v1:
+
+- Use kref as suggested by Andy
+
+- Fix memory leak on error as noted by Andy
+
+- Use use unsigned char for supports_autosuspend as suggested by Andy
+
+- Coding style improvments as suggested by Andy
+
+---
+ drivers/tty/serial/8250/8250_core.c |   1 +
+ drivers/tty/serial/8250/8250_omap.c |   1 +
+ drivers/tty/serial/serial_core.c    | 179 ++++++++++++++++++++++++++++
+ include/linux/serial_core.h         |   4 +
+ 4 files changed, 185 insertions(+)
+
+diff --git a/drivers/tty/serial/8250/8250_core.c b/drivers/tty/serial/8250/8250_core.c
+--- a/drivers/tty/serial/8250/8250_core.c
++++ b/drivers/tty/serial/8250/8250_core.c
+@@ -1004,6 +1004,7 @@ int serial8250_register_8250_port(const struct uart_8250_port *up)
+ 		uart->port.regshift     = up->port.regshift;
+ 		uart->port.iotype       = up->port.iotype;
+ 		uart->port.flags        = up->port.flags | UPF_BOOT_AUTOCONF;
++		uart->port.supports_autosuspend = up->port.supports_autosuspend;
+ 		uart->bugs		= up->bugs;
+ 		uart->port.mapbase      = up->port.mapbase;
+ 		uart->port.mapsize      = up->port.mapsize;
+diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
+--- a/drivers/tty/serial/8250/8250_omap.c
++++ b/drivers/tty/serial/8250/8250_omap.c
+@@ -1330,6 +1330,7 @@ static int omap8250_probe(struct platform_device *pdev)
+ 	up.rs485_start_tx = serial8250_em485_start_tx;
+ 	up.rs485_stop_tx = serial8250_em485_stop_tx;
+ 	up.port.has_sysrq = IS_ENABLED(CONFIG_SERIAL_8250_CONSOLE);
++	up.port.supports_autosuspend = 1;
+ 
+ 	ret = of_alias_get_id(np, "serial");
+ 	if (ret < 0) {
+diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
+--- a/drivers/tty/serial/serial_core.c
++++ b/drivers/tty/serial/serial_core.c
+@@ -16,6 +16,7 @@
+ #include <linux/console.h>
+ #include <linux/gpio/consumer.h>
+ #include <linux/of.h>
++#include <linux/pm_runtime.h>
+ #include <linux/proc_fs.h>
+ #include <linux/seq_file.h>
+ #include <linux/device.h>
+@@ -30,6 +31,20 @@
+ #include <linux/irq.h>
+ #include <linux/uaccess.h>
+ 
++/*
++ * Serial port device specific data for serial core.
++ *
++ * Each port device can have multiple ports with struct uart_state allocated
++ * for each port. The array of ports is kept in struct uart_driver.
++ */
++struct serial_controller {
++	struct device *dev;			/* Physical controller device */
++	struct uart_driver *drv;		/* For port specific uart_state */
++	struct kref ref;			/* Registered port count */
++	unsigned long implements_pm_runtime:1;
++	unsigned long supports_autosuspend:1;
++};
++
+ /*
+  * This is used to lock changes in serial line configuration.
+  */
+@@ -177,6 +192,162 @@ static void uart_port_dtr_rts(struct uart_port *uport, int raise)
+ 		uart_clear_mctrl(uport, TIOCM_DTR | TIOCM_RTS);
+ }
+ 
++static struct serial_controller *to_controller(struct uart_port *port)
++{
++	if (!port->dev)
++		return NULL;
++
++	return port->state->controller;
++}
++
++/*
++ * Starts runtime PM for the serial controller device if not already started
++ * by the serial port driver. Called from uart_add_one_port() with port_mutex
++ * held.
++ */
++static int serial_core_pm_runtime_start(struct uart_port *port)
++{
++	struct serial_controller *controller = to_controller(port);
++	struct device *dev = port->dev;
++	int ret = 0;
++
++	if (kref_get_unless_zero(&controller->ref))
++		return 0;
++
++	/* Init controller device on first reference */
++	kref_init(&controller->ref);
++
++	/* Always enable autosuspend and consider child devices for serdev */
++	pm_runtime_use_autosuspend(dev);
++	pm_suspend_ignore_children(dev, false);
++
++	/*
++	 * If the port driver did not enable runtime PM in probe, do it now.
++	 * Devices that did not enable runtime PM get set active so we can
++	 * properly handle the returned errors for runtime PM calls.
++	 */
++	if (!pm_runtime_enabled(dev)) {
++		pm_runtime_set_active(dev);
++		pm_runtime_enable(dev);
++	} else {
++		controller->implements_pm_runtime = 1;
++	}
++
++	/*
++	 * Keep the port device enabled unless autosuspend is supported.
++	 * Released on port shutdown.
++	 */
++	if (!controller->supports_autosuspend) {
++		ret = pm_runtime_resume_and_get(dev);
++		if (ret < 0) {
++			pm_runtime_dont_use_autosuspend(dev);
++			pm_runtime_disable(dev);
++		}
++	}
++
++	return ret;
++}
++
++/* Clean up the runtime PM settings done on serial_core_register_port() */
++static void serial_core_pm_runtime_cleanup(struct kref *ref)
++{
++	struct serial_controller *controller =
++		 container_of(ref, struct serial_controller, ref);
++	struct device *dev = controller->dev;
++
++	pm_runtime_dont_use_autosuspend(dev);
++	pm_suspend_ignore_children(dev, true);
++	if (!controller->supports_autosuspend)
++		pm_runtime_put_sync(dev);
++	if (!controller->implements_pm_runtime) {
++		pm_runtime_set_suspended(dev);
++		pm_runtime_disable(dev);
++	}
++	kfree(controller);
++}
++
++/*
++ * Find the registered serial port controller if one exists. Caller must
++ * hold port_mutex.
++ */
++static struct serial_controller *
++serial_core_find_controller(struct uart_driver *drv, struct device *dev)
++{
++	struct uart_state *state;
++	int i;
++
++	for (i = 0; i < drv->nr; i++) {
++		state = drv->state + i;
++		if (!state->uart_port->dev)
++			continue;
++
++		if (state->uart_port->dev == dev)
++			return state->controller;
++	}
++
++	return NULL;
++}
++
++/*
++ * Initialize a serial port device and serial port controller as
++ * needed. Called from uart_add_one_port() with port_mutex held.
++ */
++static int serial_core_register_port(struct uart_port *port,
++				     struct uart_driver *drv)
++{
++	struct serial_controller *controller;
++	bool allocated = false;
++	int ret;
++
++	if (!port->dev)
++		return 0;
++
++	controller = serial_core_find_controller(drv, port->dev);
++	if (!controller) {
++		controller = kzalloc(sizeof(*controller), GFP_KERNEL);
++		if (!controller)
++			return -ENOMEM;
++
++		controller->drv = drv;
++		controller->dev = port->dev;
++		controller->supports_autosuspend = port->supports_autosuspend;
++		allocated = true;
++	}
++
++	port->state->controller = controller;
++	WARN_ON(port->supports_autosuspend != controller->supports_autosuspend);
++
++	ret = serial_core_pm_runtime_start(port);
++	if (ret < 0)
++		goto err_free;
++
++	return 0;
++
++err_free:
++	port->state->controller = NULL;
++	if (allocated)
++		kfree(controller);
++
++	return ret;
++}
++
++/*
++ * Removes a serial port device and the serial port controller if the last
++ * port instance. Called from uart_add_one_port() error path with port_mutex
++ * held.
++ */
++static void serial_core_unregister_port(struct uart_port *port)
++{
++	struct serial_controller *controller = to_controller(port);
++
++	/* Check for a registered controller, no struct device early on */
++	if (!controller)
++		return;
++
++	port->state->controller = NULL;
++	kref_put(&controller->ref, serial_core_pm_runtime_cleanup);
++}
++
+ /*
+  * Startup the port.  This will be called once per open.  All calls
+  * will be serialised by the per-port mutex.
+@@ -3082,6 +3253,10 @@ int uart_add_one_port(struct uart_driver *drv, struct uart_port *uport)
+ 		goto out;
+ 	}
+ 
++	ret = serial_core_register_port(uport, drv);
++	if (ret)
++		goto out;
++
+ 	/*
+ 	 * If this port is in use as a console then the spinlock is already
+ 	 * initialised.
+@@ -3105,6 +3280,7 @@ int uart_add_one_port(struct uart_driver *drv, struct uart_port *uport)
+ 				    GFP_KERNEL);
+ 	if (!uport->tty_groups) {
+ 		ret = -ENOMEM;
++		serial_core_unregister_port(uport);
+ 		goto out;
+ 	}
+ 	uport->tty_groups[0] = &tty_dev_attr_group;
+@@ -3173,6 +3349,9 @@ int uart_remove_one_port(struct uart_driver *drv, struct uart_port *uport)
+ 		goto out;
+ 	}
+ 	uport->flags |= UPF_DEAD;
++
++	serial_core_unregister_port(uport);
++
+ 	mutex_unlock(&port->mutex);
+ 
+ 	/*
+diff --git a/include/linux/serial_core.h b/include/linux/serial_core.h
+--- a/include/linux/serial_core.h
++++ b/include/linux/serial_core.h
+@@ -28,6 +28,7 @@
+ 
+ struct uart_port;
+ struct serial_struct;
++struct serial_port_controller;
+ struct device;
+ struct gpio_desc;
+ 
+@@ -573,6 +574,7 @@ struct uart_port {
+ 	unsigned char		hub6;			/* this should be in the 8250 driver */
+ 	unsigned char		suspended;
+ 	unsigned char		console_reinit;
++	unsigned char		supports_autosuspend;
+ 	const char		*name;			/* port name */
+ 	struct attribute_group	*attr_group;		/* port specific attributes */
+ 	const struct attribute_group **tty_groups;	/* all attributes (serial core use only) */
+@@ -611,6 +613,8 @@ enum uart_pm_state {
+ struct uart_state {
+ 	struct tty_port		port;
+ 
++	struct serial_controller *controller;
++
+ 	enum uart_pm_state	pm_state;
+ 	struct circ_buf		xmit;
+ 
 -- 
-2.34.1
-
+2.38.1
