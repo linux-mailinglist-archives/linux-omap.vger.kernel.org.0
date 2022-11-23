@@ -2,111 +2,88 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E4D516350BE
-	for <lists+linux-omap@lfdr.de>; Wed, 23 Nov 2022 07:59:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F1DAB635151
+	for <lists+linux-omap@lfdr.de>; Wed, 23 Nov 2022 08:49:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236163AbiKWG7B (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 23 Nov 2022 01:59:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53686 "EHLO
+        id S235771AbiKWHtB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 23 Nov 2022 02:49:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236165AbiKWG7A (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 23 Nov 2022 01:59:00 -0500
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 9F7928B138;
-        Tue, 22 Nov 2022 22:58:56 -0800 (PST)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 6116780F1;
-        Wed, 23 Nov 2022 06:58:55 +0000 (UTC)
-Date:   Wed, 23 Nov 2022 08:58:54 +0200
-From:   Tony Lindgren <tony@atomide.com>
-To:     Rob Herring <robh@kernel.org>
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-omap@vger.kernel.org, linux-pwm@vger.kernel.org,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>, Nishanth Menon <nm@ti.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>
-Subject: Re: [PATCH v3 1/2] dt-bindings: pwm: Allow decimal format in
- addition to hex format
-Message-ID: <Y33ErrigR4II6EYH@atomide.com>
-References: <20221122123225.59106-1-tony@atomide.com>
- <20221123024153.GB1026269-robh@kernel.org>
+        with ESMTP id S236078AbiKWHs7 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 23 Nov 2022 02:48:59 -0500
+Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9FF5FAE98
+        for <linux-omap@vger.kernel.org>; Tue, 22 Nov 2022 23:48:56 -0800 (PST)
+Received: by mail-wm1-x32f.google.com with SMTP id r9-20020a1c4409000000b003d02dd48c45so455653wma.0
+        for <linux-omap@vger.kernel.org>; Tue, 22 Nov 2022 23:48:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=5P5d+EzlKQPtLhYD9Bm10HppuJ/7kiec/cuhMTow9Ew=;
+        b=Is1BjFxtq4aiEJ33XL48JzG3s+4esBJEan3EQk020pZ07+FrQPjCfXvxIGInokZU2H
+         WmRMskNhVrz1V3t47tKV5Eo6VbJLdY+kGIkmH5JyEE64KrrqKS6UDDc8Zw6IZ9lTmAby
+         wUpI4CQT2/96Exjs7ihHyZ0jtLTh7fAiyf9zGk9/3hTUSr9/6tP7g/4MiR5gZWpXqCip
+         VsCJhhH8hXo81KdEYO/UylmjZgT64sNPriF0JqVb9Q/BTPdbr9oYGMJ/Vsa9KdWxEpzM
+         thN/FBrMw8FLtsuPHsgeogoScYDIq23XAyySd0uEvGZ6NcDpuTWmKf9MG5kvC0/k7cQ8
+         lHBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5P5d+EzlKQPtLhYD9Bm10HppuJ/7kiec/cuhMTow9Ew=;
+        b=OxoE7vbByo+FlsuvvkZJ4Yz/8dZShQDw2CJut8SNsteqOIrH7FBsH+7oCtJ5lc20Xs
+         Q5Y/jJEJZDd57OqqvJbXrn5rT5563JPLXISNP8i7xTxEr48Mn0nzIFtT245zL3Wlpkko
+         2Hc7Bol0w1xnVE9RlH1CiHAW3f83SRXnHSWGJ76CFWfoarJIK5vR4xSliquR75RKZr8e
+         j0oB5/CzquOJx7/VUTEZU59pTGdSp6/i11aRsA2szCxKsMlYw/pSoNUqAJ2uoJdMTK7s
+         /C+PW+fbxun+reDEssltKzMDCW8XOw8bH3jAkfALSZoMtgEDArs8p7UQe+pY6QYla22g
+         eBEQ==
+X-Gm-Message-State: ANoB5pmE/k3JvWIItVa6U788oZ4T9YVhCzXex8Iihutz0v2zKwhvuspg
+        EbBvg4G3BotHCnI8rJAXidNjYpvuMr3DTA==
+X-Google-Smtp-Source: AA0mqf7d2zbBL1BKzuLfC59iWZsBGoXySSkrLpeea1YVqUx3P9MGUdmG7b/2ajoYjFSttfUPTR77HA==
+X-Received: by 2002:a05:600c:24e:b0:3c5:f9f1:f956 with SMTP id 14-20020a05600c024e00b003c5f9f1f956mr5414402wmj.50.1669189734927;
+        Tue, 22 Nov 2022 23:48:54 -0800 (PST)
+Received: from niros.localdomain ([176.231.147.83])
+        by smtp.gmail.com with ESMTPSA id y3-20020adfee03000000b002365254ea42sm15874917wrn.1.2022.11.22.23.48.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Nov 2022 23:48:54 -0800 (PST)
+From:   Nir Levy <bhr166@gmail.com>
+To:     tony@atomide.com, linux-omap@vger.kernel.org
+Cc:     bhr166@gmail.com
+Subject: [PATCH] arm: mach-omap2: Fix spelling typos in comment
+Date:   Wed, 23 Nov 2022 09:48:49 +0200
+Message-Id: <20221123074849.76989-1-bhr166@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20221123024153.GB1026269-robh@kernel.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Rob Herring <robh@kernel.org> [221123 02:31]:
-> On Tue, Nov 22, 2022 at 02:32:24PM +0200, Tony Lindgren wrote:
-> > Let's allow node numbering in decimal format too.
-> > 
-> > Simple human-readable increments/IDs are usually decimal, hex is only for
-> > addresses as noted by Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>.
-> > 
-> > Let's use an improved match suggested by Krzysztof Kozlowski
-> > <krzysztof.kozlowski@linaro.org> and improved a bit by Uwe Kleine-König
-> > <u.kleine-koenig@pengutronix.de>.
-> > 
-> > Cc: linux-pwm@vger.kernel.org
-> > Cc: Thierry Reding <thierry.reding@gmail.com>
-> > Suggested-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> > Suggested-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-> > Signed-off-by: Tony Lindgren <tony@atomide.com>
-> > ---
-> > 
-> > Changes since v2:
-> > 
-> > - Use pattern suggested by Krzysztof and Uwe
-> > 
-> > Changes since v1:
-> > 
-> > - New patch added to deal with pwm-omap-dmtimer binding
-> > 
-> > ---
-> >  Documentation/devicetree/bindings/pwm/pwm.yaml | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/pwm/pwm.yaml b/Documentation/devicetree/bindings/pwm/pwm.yaml
-> > --- a/Documentation/devicetree/bindings/pwm/pwm.yaml
-> > +++ b/Documentation/devicetree/bindings/pwm/pwm.yaml
-> > @@ -13,7 +13,7 @@ select: false
-> >  
-> >  properties:
-> >    $nodename:
-> > -    pattern: "^pwm(@.*|-[0-9a-f])*$"
-> > +    pattern: "^pwm(@.+|-[0-9a-f]+)?$"
-> 
-> So now pwm-10 could be either?
+---
+ arch/arm/mach-omap2/sleep34xx.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Yes.
+diff --git a/arch/arm/mach-omap2/sleep34xx.S b/arch/arm/mach-omap2/sleep34xx.S
+index c4e97d35c310..781a131b40a6 100644
+--- a/arch/arm/mach-omap2/sleep34xx.S
++++ b/arch/arm/mach-omap2/sleep34xx.S
+@@ -465,7 +465,7 @@ l2_inv_gp:
+ 	mov	r12, #0x2
+ 	smc	#0			@ Call SMI monitor (smieq)
+ logic_l1_restore:
+-	adr	r0, l2dis_3630_offset	@ adress for offset
++	adr	r0, l2dis_3630_offset	@ address for offset
+ 	ldr	r1, [r0]		@ value for offset
+ 	ldr	r1, [r0, r1]		@ value at l2dis_3630
+ 	cmp	r1, #0x1		@ Test if L2 re-enable needed on 3630
+-- 
+2.34.1
 
-> I'm fine with decimal, but can we do that everywhere we do this -N 
-> naming?
-
-Do you mean the '[0-9a-f]' users that don't use '[0-9af]+'?
-
-These can be found with:
-
-$ find Documentation/devicetree/bindings/ -name \*.yaml | \
-	xargs grep pattern: | grep '\[0-9a-f\]' | grep -v '\[0-9a-f\]+'
-
-Not sure if some of these need to intentionally limit the node numbering
-to 15.
-
-If you have some other criteria in mind, let me know :)
-
-That sounds like a separate patch though.
-
-Regards,
-
-Tony
