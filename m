@@ -2,123 +2,85 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EAA8634819
-	for <lists+linux-omap@lfdr.de>; Tue, 22 Nov 2022 21:26:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F225E634BE6
+	for <lists+linux-omap@lfdr.de>; Wed, 23 Nov 2022 02:02:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234373AbiKVU0y (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 22 Nov 2022 15:26:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36698 "EHLO
+        id S234076AbiKWBCh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 22 Nov 2022 20:02:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38642 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234592AbiKVU0k (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 22 Nov 2022 15:26:40 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CADE163CFD
-        for <linux-omap@vger.kernel.org>; Tue, 22 Nov 2022 12:26:38 -0800 (PST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1oxZqg-0007mI-Mb; Tue, 22 Nov 2022 21:26:30 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1oxZqe-005v29-6E; Tue, 22 Nov 2022 21:26:29 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1oxZqe-000s99-Gn; Tue, 22 Nov 2022 21:26:28 +0100
-Date:   Tue, 22 Nov 2022 21:26:24 +0100
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-omap@vger.kernel.org, linux-pwm@vger.kernel.org,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Nishanth Menon <nm@ti.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>
-Subject: Re: [PATCH v3 1/2] dt-bindings: pwm: Allow decimal format in
- addition to hex format
-Message-ID: <20221122202624.zsudqa2azpdw22gx@pengutronix.de>
-References: <20221122123225.59106-1-tony@atomide.com>
- <20221122133825.d67q4q6k3wkncucj@pengutronix.de>
- <Y3zRpgY1cXCKsJCu@atomide.com>
+        with ESMTP id S232341AbiKWBCg (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 22 Nov 2022 20:02:36 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C660BF47;
+        Tue, 22 Nov 2022 17:02:34 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 4A6C1B81DDD;
+        Wed, 23 Nov 2022 01:02:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F07CEC433D6;
+        Wed, 23 Nov 2022 01:02:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1669165352;
+        bh=ijrMTcyWsqW6LZM3KVpES0ixK86mmIZqatbEA6I3C6E=;
+        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+        b=s/s5LCHvcVkPGC8p3nryjKjLv7qUSKYfx9BfVc9V8vdfeSpZ+QEBHNHVlO5GVBkXy
+         o0KGgPDaIiLSDqTpKvCRol3Ov2HHMntplS+6vlGyeM7eNrim7JcyTL4o+L9VJrHrA8
+         4Y9gtwp8FbGzwoYdxvZvMiC218BjH4OUzvE5+69oNQ0KEswdOrfFOAMiVbEfgtarcp
+         I82F5C2fA4gbhEJmCmOBXF5IxZdNvXQNJm69eNQTzkZcc9f3XfKAPp53TNoWIEU84C
+         xnLLgbuhgf5IUHoLLu5IyHdMLdC7RZA3DVD3vk6aNhEH0J2VDpkfU9EQApoAnXKPdn
+         fX7b+VdlTQlKw==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="flij3xzkn4w2n4q5"
-Content-Disposition: inline
-In-Reply-To: <Y3zRpgY1cXCKsJCu@atomide.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-omap@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20221113181147.1626585-1-dario.binacchi@amarulasolutions.com>
+References: <20221113181147.1626585-1-dario.binacchi@amarulasolutions.com>
+Subject: Re: [PATCH v4 1/2] clk: ti: change ti_clk_register[_omap_hw]() API
+From:   Stephen Boyd <sboyd@kernel.org>
+Cc:     Amarula patchwork <linux-amarula@amarulasolutions.com>,
+        michael@amarulasolutions.com,
+        Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+        Allison Randal <allison@lohutok.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jakob Koschel <jakobkoschel@gmail.com>,
+        Julia Lawall <Julia.Lawall@inria.fr>,
+        Len Baker <len.baker@gmx.com>, Liang He <windhl@126.com>,
+        Miaoqian Lin <linmq006@gmail.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Rob Herring <robh@kernel.org>, Tero Kristo <kristo@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tony Lindgren <tony@atomide.com>, linux-clk@vger.kernel.org,
+        linux-omap@vger.kernel.org
+To:     Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+        linux-kernel@vger.kernel.org
+Date:   Tue, 22 Nov 2022 17:02:29 -0800
+User-Agent: alot/0.10
+Message-Id: <20221123010231.F07CEC433D6@smtp.kernel.org>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-
---flij3xzkn4w2n4q5
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hello Tony,
-
-On Tue, Nov 22, 2022 at 03:41:58PM +0200, Tony Lindgren wrote:
-> * Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de> [221122 13:28]:
-> > On Tue, Nov 22, 2022 at 02:32:24PM +0200, Tony Lindgren wrote:
-> > > Let's allow node numbering in decimal format too.
-> > >=20
-> > > Simple human-readable increments/IDs are usually decimal, hex is only=
- for
-> > > addresses as noted by Krzysztof Kozlowski <krzysztof.kozlowski@linaro=
-=2Eorg>.
-> > >=20
-> > > Let's use an improved match suggested by Krzysztof Kozlowski
-> > > <krzysztof.kozlowski@linaro.org> and improved a bit by Uwe Kleine-K=
-=F6nig
-> > > <u.kleine-koenig@pengutronix.de>.
-> > >=20
-> > > Cc: linux-pwm@vger.kernel.org
-> > > Cc: Thierry Reding <thierry.reding@gmail.com>
-> > > Suggested-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> > > Suggested-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> > > Signed-off-by: Tony Lindgren <tony@atomide.com>
-> >=20
-> > Acked-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> >=20
-> > Which tree should this merged through? The obvious candidates are pwm,
-> > dt and omap.
+Quoting Dario Binacchi (2022-11-13 10:11:46)
+> The ti_clk_register() and ti_clk_register_omap_hw() functions are always
+> called with the parameter of type "struct device" set to NULL, since the
+> functions from which they are called always have a parameter of type
+> "struct device_node". Replacing "struct device" type parameter with
+> "struct device_node" will allow you to register a TI clock to the common
+> clock framework by taking advantage of the facilities provided by the
+> "struct device_node" type. Further, adding the "of_" prefix to the name
+> of these functions explicitly binds them to the "struct device_node"
+> type.
 >=20
-> The dt folks usually queue the binding patches separately.
+> The patch has been tested on a Beaglebone board.
+>=20
+> Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+>=20
+> ---
 
-fine, so I marked your series in the PWM patchwork as "handled-elsewhere".
-
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---flij3xzkn4w2n4q5
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmN9MG0ACgkQwfwUeK3K
-7AmjBAgAkc70OZy1zQfFXnIQH4R9fKwJmpAJJuhUAWdB9RvUERDB3VU0iFvQAZyJ
-j4WoDWfKt3lnPknZSIvpogOOaxHGiCKXB1dfupTuCp20Cf7iu1T6Goz9Hv4NnPfm
-JfPAttsCYUSeBOBLsW94INRn90CWSXOr7IqLIi1eoi8JaNIqR/qHmxiE6OZOQBMB
-eXczP75rgiZqAww+jsy/bG4fjtfEMhCyAJ63/4sxiAvJh8M/RkA0RsDmmGquIAsa
-1RwXrGilZRRFkECS5mSki0TEsZQ2930gadQPmNzwRE9QXtGE6lEvB3IFdDNpNa1Y
-1rXaBtUibezAPqGa23I3WMWgFLWy5g==
-=Far5
------END PGP SIGNATURE-----
-
---flij3xzkn4w2n4q5--
+Applied to clk-next
