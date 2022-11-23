@@ -2,69 +2,102 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BAB8E634BFB
-	for <lists+linux-omap@lfdr.de>; Wed, 23 Nov 2022 02:04:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BB3A634DF3
+	for <lists+linux-omap@lfdr.de>; Wed, 23 Nov 2022 03:38:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234375AbiKWBEb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 22 Nov 2022 20:04:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40860 "EHLO
+        id S234684AbiKWCiR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 22 Nov 2022 21:38:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235393AbiKWBEa (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 22 Nov 2022 20:04:30 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07378DAD03;
-        Tue, 22 Nov 2022 17:04:30 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 92F3161962;
-        Wed, 23 Nov 2022 01:04:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2919C433B5;
-        Wed, 23 Nov 2022 01:04:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1669165469;
-        bh=zKr0vysxg9hT9r8cIAZlZ3wtj9YOLwV9ca4LqEGGFHA=;
-        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-        b=SXzHzOsCR/cM1pbBcol3RCpiqp9uk9FeeGlJ7XFQMELri/UY2ZCMV3Ysc5B1Docol
-         JmeAGMllk1a+vWlIlsBsaQXFfCYEaOFlW8yPPP4EiTUKB1eRJ6YDF9DcxfEHbnqvVl
-         IBJkwtZpKztNBpoubYm7gLLG5UBu1TH5oJ2cyLq/dTwMc9VxHX8XNGWXcOJOjK5e3g
-         /8dVcWyQAhNh2XvmOKJU3Q2YMQGU7VCa1zOCAHUzVm3P1p0C2cAxsbQ0NAvnnPH5GL
-         XRQoYG3g89bbgD0p7f22TBiz3zO3dRAHIyNSqhBG3HxTV2ev1PMgJaqW5qJEYSRksV
-         HVgENrpjztW2A==
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S235422AbiKWCiP (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 22 Nov 2022 21:38:15 -0500
+Received: from mail-io1-f42.google.com (mail-io1-f42.google.com [209.85.166.42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 170596D496;
+        Tue, 22 Nov 2022 18:38:15 -0800 (PST)
+Received: by mail-io1-f42.google.com with SMTP id i85so1041168ioa.5;
+        Tue, 22 Nov 2022 18:38:15 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=EUCkOlHnbf0RGMMarg0kKY6VYKEKcAOkoBffam39m+E=;
+        b=5zaJsbgZIG2pXDvD3xZAl/I13ctGY1/ThShAPA1JXKpuGf8yzz0e2iXfqbbWpzCxor
+         zubsB4J02LzFNGNHrE0MWAkqTMbCgYyWamwaI2nUYF6qOoDKgpvp8hRD6AuSnFOfK8MQ
+         quv01Z8oRVWG3RCBU2hTlsRRVGK9pS8SirBGNbht8wppcN7vEYmq3fao91fuHPXUVWHN
+         XwmgNBnLSuEZB/V6yNHeA90iM1hyO1u5i6223Fz5/g/VusZ4j3nhbqRvAmuHDVGrfzna
+         8kpZpPVI4uq3uBct9Nyb/5RSOCHSIvtb+hqF+uUUx150O0Ird6i7F6nJxe3JcBRZ790x
+         pJOw==
+X-Gm-Message-State: ANoB5pnk9z6lBhhrvsWhmc3tbclshhdfCS63MlyWWP9YmgLJtfTpaUNS
+        +A73/y9GbZmY0s5+MBFbQA==
+X-Google-Smtp-Source: AA0mqf6qotcHGpq8zIuW2HhoJpNTCHIunf2EygOd6Pv0MUV9RtFYJBFEpPDMOB9tOnvQ8JiY/3VgSw==
+X-Received: by 2002:a02:3b2b:0:b0:375:9edc:532d with SMTP id c43-20020a023b2b000000b003759edc532dmr11548887jaa.13.1669171094302;
+        Tue, 22 Nov 2022 18:38:14 -0800 (PST)
+Received: from robh_at_kernel.org ([64.188.179.252])
+        by smtp.gmail.com with ESMTPSA id y14-20020a927d0e000000b00302b066d502sm1751976ilc.1.2022.11.22.18.38.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Nov 2022 18:38:13 -0800 (PST)
+Received: (nullmailer pid 1036274 invoked by uid 1000);
+        Wed, 23 Nov 2022 02:38:14 -0000
+Date:   Tue, 22 Nov 2022 20:38:14 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-omap@vger.kernel.org, linux-pwm@vger.kernel.org,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Nishanth Menon <nm@ti.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>
+Subject: Re: [PATCH v3 1/2] dt-bindings: pwm: Allow decimal format in
+ addition to hex format
+Message-ID: <20221123023814.GA1026269-robh@kernel.org>
+References: <20221122123225.59106-1-tony@atomide.com>
+ <20221122133825.d67q4q6k3wkncucj@pengutronix.de>
+ <Y3zRpgY1cXCKsJCu@atomide.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20221106155625.3476564-1-dario.binacchi@amarulasolutions.com>
-References: <20221106155625.3476564-1-dario.binacchi@amarulasolutions.com>
-Subject: Re: [PATCH] clk: ti: fix typo in ti_clk_retry_init() code comment
-From:   Stephen Boyd <sboyd@kernel.org>
-Cc:     Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-        Allison Randal <allison@lohutok.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Liang He <windhl@126.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Tero Kristo <kristo@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tony Lindgren <tony@atomide.com>, linux-clk@vger.kernel.org,
-        linux-omap@vger.kernel.org
-To:     Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-        linux-kernel@vger.kernel.org
-Date:   Tue, 22 Nov 2022 17:04:26 -0800
-User-Agent: alot/0.10
-Message-Id: <20221123010428.E2919C433B5@smtp.kernel.org>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Y3zRpgY1cXCKsJCu@atomide.com>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Quoting Dario Binacchi (2022-11-06 07:56:25)
-> Replace "not" with "node".
->=20
-> Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-> ---
+On Tue, Nov 22, 2022 at 03:41:58PM +0200, Tony Lindgren wrote:
+> * Uwe Kleine-König <u.kleine-koenig@pengutronix.de> [221122 13:28]:
+> > On Tue, Nov 22, 2022 at 02:32:24PM +0200, Tony Lindgren wrote:
+> > > Let's allow node numbering in decimal format too.
+> > > 
+> > > Simple human-readable increments/IDs are usually decimal, hex is only for
+> > > addresses as noted by Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>.
+> > > 
+> > > Let's use an improved match suggested by Krzysztof Kozlowski
+> > > <krzysztof.kozlowski@linaro.org> and improved a bit by Uwe Kleine-König
+> > > <u.kleine-koenig@pengutronix.de>.
+> > > 
+> > > Cc: linux-pwm@vger.kernel.org
+> > > Cc: Thierry Reding <thierry.reding@gmail.com>
+> > > Suggested-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> > > Suggested-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+> > > Signed-off-by: Tony Lindgren <tony@atomide.com>
+> > 
+> > Acked-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+> > 
+> > Which tree should this merged through? The obvious candidates are pwm,
+> > dt and omap.
+> 
+> The dt folks usually queue the binding patches separately.
 
-Applied to clk-next
+The default is they go thru the subsystem trees, and I mainly pickup 
+what has not after some time (and is standalone binding change).
+
+Rob
