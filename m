@@ -2,120 +2,85 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 78D3163674D
-	for <lists+linux-omap@lfdr.de>; Wed, 23 Nov 2022 18:33:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B5353636777
+	for <lists+linux-omap@lfdr.de>; Wed, 23 Nov 2022 18:42:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238547AbiKWRdi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 23 Nov 2022 12:33:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53354 "EHLO
+        id S237759AbiKWRmj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 23 Nov 2022 12:42:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238834AbiKWRdh (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 23 Nov 2022 12:33:37 -0500
-Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F2F985140
-        for <linux-omap@vger.kernel.org>; Wed, 23 Nov 2022 09:33:35 -0800 (PST)
-Received: by mail-pj1-x102e.google.com with SMTP id g5so1304645pjd.4
-        for <linux-omap@vger.kernel.org>; Wed, 23 Nov 2022 09:33:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZMav1MoLnlovR7wauioRwnzBkg6agxKz0diAzOaiymY=;
-        b=uQk48qc8RxNQ3vdF2jt//Dx6Y6u15ctAKMSb43mWo/sbHtZm7Hb8i80uMZGxIJrEgg
-         i/teLSbsfsw6TkjsHYXU+ZiH33Yxtn811y0YZx1If+3OdPF2l3XMEJxHA8qwGcJ6Pog0
-         wv4G1fajI+kvV93KU8//hgn8rhFI5vzJcpCDiPZxmoDGp6opxmeEL5TAHsjESHmkfTqi
-         IKJmj+ZY+hMeQYRKzEvjejSKPNnU0tnDrzWibCQk1oV9cvkExuol/JK8ccfr+gSWu5t6
-         g+7A9fwOCozqxrQoRGrsnjbIZtoq6rQ25MIMU8t/fdueECofcNQuPsBMS87gypYrkSHf
-         2QcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZMav1MoLnlovR7wauioRwnzBkg6agxKz0diAzOaiymY=;
-        b=01Lv8Thu+Y32Mpy27koG93WkCfrIqgQQEBvqUbsUXHaVapBw5skiZ9sonfxwqrV2mb
-         d2ACzMK2xBfK5BVFUfxsvGj3r5kg4S9FVgBWRkiSMlpM7IK4oz/YAGDC8HhGPxxA7+lh
-         c+GgqP54EoCtxg242DX4Hq1ka3XAyr9po4030sYkdeDtFAJcB+dm5v5TYbhUxeGfedMR
-         CGNpuvy/Bruqrcn8t0WyQh9s2YgD3rzKr6UxOdrCM6kTPYoAtPbS0EG/PJhcEJE6vsUZ
-         +1LwAMbB8AIGCviKtPFSzvcdR6vod4RS412w1/ZEFZMaAH1nbTHzw96gDCSRDB66/0Ou
-         esdg==
-X-Gm-Message-State: ANoB5pltPMUC2lMFNKpvf0QfX6JniUEou9bIyZumF9guySb8VCjn58q3
-        K+B1hS/ly6ZzPNaHrIiiMxCy+Q==
-X-Google-Smtp-Source: AA0mqf4WqLxxdXhfKDPLxWyUcqM26bK2hgFSm1DPmYLJL1nGrkggO31sxqSMLdpb+g5jh57m36xZQg==
-X-Received: by 2002:a17:902:f643:b0:188:9ae7:bb81 with SMTP id m3-20020a170902f64300b001889ae7bb81mr22748148plg.66.1669224814860;
-        Wed, 23 Nov 2022 09:33:34 -0800 (PST)
-Received: from localhost ([75.172.139.56])
-        by smtp.gmail.com with ESMTPSA id l125-20020a622583000000b0056baca45977sm12925932pfl.21.2022.11.23.09.33.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Nov 2022 09:33:34 -0800 (PST)
-From:   Kevin Hilman <khilman@baylibre.com>
-To:     Vignesh Raghavendra <vigneshr@ti.com>,
-        Nicolas Frayer <nfrayer@baylibre.com>, nm@ti.com,
-        ssantosh@kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, peter.ujfalusi@gmail.com,
-        vkoul@kernel.org, dmaengine@vger.kernel.org,
-        grygorii.strashko@ti.com, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, linux-omap@vger.kernel.org,
-        netdev@vger.kernel.org
-Cc:     glaroque@baylibre.com
-Subject: Re: [PATCH v4 4/4] net: ethernet: ti: davinci_mdio: Deferring probe
- when soc_device_match() returns NULL
-In-Reply-To: <c3ded2b8-cf99-36ac-7152-5a23245a2e9c@ti.com>
-References: <20221108181144.433087-1-nfrayer@baylibre.com>
- <20221108181144.433087-5-nfrayer@baylibre.com>
- <c3ded2b8-cf99-36ac-7152-5a23245a2e9c@ti.com>
-Date:   Wed, 23 Nov 2022 09:33:33 -0800
-Message-ID: <7ho7sx8tjm.fsf@baylibre.com>
+        with ESMTP id S237702AbiKWRmh (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 23 Nov 2022 12:42:37 -0500
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E5AE65DA;
+        Wed, 23 Nov 2022 09:42:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+        bh=lXKv7tLmFFWSiFg8XDXNAbAKOuzyytUGwHdhjfEns0U=; b=ThkdbeRfetBSUlnQpyTOfNDiFR
+        EFDF1RzD+bITt4TW/q7TAfzp6sIsf1q/EZ1YS+IwqXg36AVOi1YNx6YvTmLl/VB9YL/HPfaMjwCvN
+        QOGWgtdeW9+8/AxQdxZrewpX/AA8vDEfYwGW1Bud87Vq5PH21vz46+oF//g7OKa3gbPU=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1oxtl4-003FQg-Hv; Wed, 23 Nov 2022 18:42:02 +0100
+Date:   Wed, 23 Nov 2022 18:42:02 +0100
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Roger Quadros <rogerq@kernel.org>
+Cc:     davem@davemloft.net, maciej.fijalkowski@intel.com, kuba@kernel.org,
+        edumazet@google.com, pabeni@redhat.com, vigneshr@ti.com,
+        linux-omap@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 net-next 4/6] net: ethernet: ti: am65-cpsw: Add
+ suspend/resume support
+Message-ID: <Y35bahTL2cMgXM1F@lunn.ch>
+References: <20221123124835.18937-1-rogerq@kernel.org>
+ <20221123124835.18937-5-rogerq@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221123124835.18937-5-rogerq@kernel.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Vignesh,
+> +static int am65_cpsw_nuss_ndev_add_tx_napi(struct am65_cpsw_common *common);
+> +
 
-Vignesh Raghavendra <vigneshr@ti.com> writes:
+Please move the code around so you don't need this. Ideally as a patch
+which only does the move. It is then trivial to review.
 
-> Hi Nicolas,
->
-> On 08/11/22 11:41 pm, Nicolas Frayer wrote:
->> When the k3 socinfo driver is built as a module, there is a possibility
->> that it will probe after the davinci mdio driver. By deferring the mdio
->> probe we allow the k3 socinfo to probe and register the
->> soc_device_attribute structure needed by the mdio driver.
->> 
->> Signed-off-by: Nicolas Frayer <nfrayer@baylibre.com>
->> ---
->>  drivers/net/ethernet/ti/davinci_mdio.c | 4 ++++
->>  1 file changed, 4 insertions(+)
->> 
->> diff --git a/drivers/net/ethernet/ti/davinci_mdio.c b/drivers/net/ethernet/ti/davinci_mdio.c
->> index 946b9753ccfb..095198b6b7be 100644
->> --- a/drivers/net/ethernet/ti/davinci_mdio.c
->> +++ b/drivers/net/ethernet/ti/davinci_mdio.c
->> @@ -533,6 +533,10 @@ static int davinci_mdio_probe(struct platform_device *pdev)
->>  		const struct soc_device_attribute *soc_match_data;
->>  
->>  		soc_match_data = soc_device_match(k3_mdio_socinfo);
->> +
->> +		if (!soc_match_data)
->> +			return -EPROBE_DEFER;
->
-> I dont think this is right way to detect if socinfo driver is probed.
-> Per documentation of soc_device_match() , function will return NULL if
-> it does not match any of the entries in k3_mdio_socinfo (ie if we are
-> running on any platforms other that ones in the list)
->
-> Note that this driver is used on TI's 32 bit SoCs too that dont even
-> have a k3-socinfo driver equivalent. In such case, this code will end up
-> probe deferring indefinitely.
+>  static void am65_cpsw_port_set_sl_mac(struct am65_cpsw_port *slave,
+>  				      const u8 *dev_addr)
+>  {
+> @@ -555,11 +558,24 @@ static int am65_cpsw_nuss_ndo_slave_open(struct net_device *ndev)
+>  	struct am65_cpsw_common *common = am65_ndev_to_common(ndev);
+>  	struct am65_cpsw_port *port = am65_ndev_to_port(ndev);
+>  	int ret, i;
+> +	u32 reg;
+>  
+>  	ret = pm_runtime_resume_and_get(common->dev);
+>  	if (ret < 0)
+>  		return ret;
+>  
+> +	/* Idle MAC port */
+> +	cpsw_sl_ctl_set(port->slave.mac_sl, CPSW_SL_CTL_CMD_IDLE);
+> +	cpsw_sl_wait_for_idle(port->slave.mac_sl, 100);
+> +	cpsw_sl_ctl_reset(port->slave.mac_sl);
+> +
+> +	/* soft reset MAC */
+> +	cpsw_sl_reg_write(port->slave.mac_sl, CPSW_SL_SOFT_RESET, 1);
+> +	mdelay(1);
+> +	reg = cpsw_sl_reg_read(port->slave.mac_sl, CPSW_SL_SOFT_RESET);
+> +	if (reg)
+> +		dev_info(common->dev, "mac reset not yet done\n");
 
-Yes, you're right.  This is not the right solution and this patch should
-be dropped. We'll need to have a deeper look at socinfo to figure out
-if/how it could be configured to support a fully modular kernel.
+Should that be dev_info()? dev_dbg()
 
-Kevin
+       Andrew
