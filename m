@@ -2,117 +2,91 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD111635ED3
-	for <lists+linux-omap@lfdr.de>; Wed, 23 Nov 2022 14:08:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9EC70635FC0
+	for <lists+linux-omap@lfdr.de>; Wed, 23 Nov 2022 14:33:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238143AbiKWNF0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 23 Nov 2022 08:05:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42938 "EHLO
+        id S238340AbiKWNct (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 23 Nov 2022 08:32:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238577AbiKWNFB (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 23 Nov 2022 08:05:01 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D636CEBB5;
-        Wed, 23 Nov 2022 04:49:14 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A451B61C61;
-        Wed, 23 Nov 2022 12:48:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5559C43144;
-        Wed, 23 Nov 2022 12:48:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1669207739;
-        bh=o3Io+SK7lX1cC2f73bZPoDGBckcr/KVKDkRqhBF9SK4=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=j/bcDk7krj5VnAJm2QAY4P6ukQmr50nr9VztKrPLZPPaAHHARlB6jDeG3CJe7ygK9
-         ajzzdKjAc2QfpF2CE4IYwJ3JEUOC+BJ/c0v6+WZaPjIOVTPdc5ZdnxRSTDpyHYlFxZ
-         YH2We6ZPxg2x9fSSn8yDKw1rYBeFFJhm/n1CSHt8ilolU4AMupj5uTXVou9+f30F6j
-         VZ7ruHQjgtlhEPGMXxc9H4QuOMQftV/WiJtoJ0yCDe3/rqaSPF+fwu2iu2FmOozO6k
-         ZotEDFxugoZRZXAlfCmiy8buyVdCayVEkeBUKn4/WggsU+nvHnYZE3FyTD2j0MuDfM
-         KqB9UuK0uof5g==
-From:   Roger Quadros <rogerq@kernel.org>
-To:     davem@davemloft.net, maciej.fijalkowski@intel.com, kuba@kernel.org
-Cc:     edumazet@google.com, pabeni@redhat.com, vigneshr@ti.com,
-        linux-omap@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Roger Quadros <rogerq@kernel.org>
-Subject: [PATCH v3 net-next 6/6] net: ethernet: ti: am65-cpsw: Fix hardware switch mode on suspend/resume
-Date:   Wed, 23 Nov 2022 14:48:35 +0200
-Message-Id: <20221123124835.18937-7-rogerq@kernel.org>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20221123124835.18937-1-rogerq@kernel.org>
-References: <20221123124835.18937-1-rogerq@kernel.org>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S238846AbiKWNcO (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 23 Nov 2022 08:32:14 -0500
+Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02951F0E
+        for <linux-omap@vger.kernel.org>; Wed, 23 Nov 2022 05:17:26 -0800 (PST)
+Received: by mail-wr1-x429.google.com with SMTP id bs21so29357359wrb.4
+        for <linux-omap@vger.kernel.org>; Wed, 23 Nov 2022 05:17:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=mXCYaSmMqqEDfVGfKyWMjlG4vgxEb1dGWfZP4Ic23TM=;
+        b=WXBPukmmS14aMCOS8w61k/jTzofcIacWIKg2AVDdO7Z5wxkzk9sK9Vj4lW+3kLHjoS
+         exNhsZJmoevUqtTaFjMV0Uwkf/UZRMUVvEA1+C9zHszd01/B7ExO9W/0TkW6elTQUjvb
+         D6YsWU6Wk6Ns1bEEyihNxIv57Y9amYQL6s5sio8kiO5MStT58bEop3QkwB1AOk8SuisC
+         PuGuzf1SB9rNVZLn6xAUGTPIWzbsHpf66NnRXIE5/21sdB1hSwZNCi3YQghMSR6z2IF2
+         /4KZxGN00SCZDBOkNb5ZINywcHB7g7HZBOblVCFqYBmqQppVqgCdPYN2ISvZfyZ/C3MH
+         biSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=mXCYaSmMqqEDfVGfKyWMjlG4vgxEb1dGWfZP4Ic23TM=;
+        b=AkSik4snK0B+Dtwon5DTkCiDMdFAsrFGj4kMIDqmx/a01pjueAD3S3eNV0sHG7Ecxf
+         cWqyacywjPAYjJ0xr9TaFGzUv8Pd9A5p6uaBETlsddaj8t8X213WZoKp2dOuRdu/lIwI
+         5MtLuOTgysLwBQ6ZKuPsEp6Aud//YsiiccOZRdsudjH8tGMvvr8F/TmAdlOOCKxa2H+c
+         qaQdR6U8j7Qiehd0uCr4OdiToS7tc+bkGL7WJAciOMEPqdHztKr/3IQNh2jU45K1bfed
+         AHO5Ydw8lwoEI6DISP1XVK/yhCxJTjKcpzJsHvDQk2nvZcGY/VWxn9imNDIiySTq16Rm
+         0rLA==
+X-Gm-Message-State: ANoB5pm2DX2pg9rSMG0bJGwTTjlCIaHbGeSH5XAYEkplQwiitBgitYLi
+        wNCfk5LaK6yq3qIB0PKJRoQ=
+X-Google-Smtp-Source: AA0mqf7+5+uLz6CrlL6Jrbc9v9nwDW2r1RFdQT1c3LdlTxiqEO0Rka7q9hIH8njfyUYHq30orvlNLA==
+X-Received: by 2002:a05:6000:910:b0:236:56a9:65cc with SMTP id bz16-20020a056000091000b0023656a965ccmr17234074wrb.563.1669209444282;
+        Wed, 23 Nov 2022 05:17:24 -0800 (PST)
+Received: from niros.localdomain ([176.231.147.83])
+        by smtp.gmail.com with ESMTPSA id y7-20020a1c4b07000000b003b4c979e6bcsm2206148wma.10.2022.11.23.05.17.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Nov 2022 05:17:23 -0800 (PST)
+From:   Nir Levy <bhr166@gmail.com>
+To:     tony@atomide.com, linux-omap@vger.kernel.org
+Cc:     bhr166@gmail.com
+Subject: [PATCH] arm: mach-omap2: Fix spelling typos in comment
+Date:   Wed, 23 Nov 2022 15:17:20 +0200
+Message-Id: <20221123131720.79978-1-bhr166@gmail.com>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On low power during system suspend the ALE table context is lost.
-Save the ALE context before suspend and restore it after resume.
+Fix spelling: adress -> address
+Signed-off-by: Nir Levy <bhr166@gmail.com>
 
-Signed-off-by: Roger Quadros <rogerq@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
 ---
- drivers/net/ethernet/ti/am65-cpsw-nuss.c | 7 +++++++
- drivers/net/ethernet/ti/am65-cpsw-nuss.h | 2 ++
- 2 files changed, 9 insertions(+)
+ arch/arm/mach-omap2/sleep34xx.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-index f5357afde527..72e4ee71f106 100644
---- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-+++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-@@ -2712,6 +2712,7 @@ static int am65_cpsw_nuss_probe(struct platform_device *pdev)
- 	struct clk *clk;
- 	u64 id_temp;
- 	int ret, i;
-+	int ale_entries;
- 
- 	common = devm_kzalloc(dev, sizeof(struct am65_cpsw_common), GFP_KERNEL);
- 	if (!common)
-@@ -2807,6 +2808,10 @@ static int am65_cpsw_nuss_probe(struct platform_device *pdev)
- 		goto err_of_clear;
- 	}
- 
-+	ale_entries = common->ale->params.ale_entries;
-+	common->ale_context = devm_kzalloc(dev,
-+					   ale_entries * ALE_ENTRY_WORDS * sizeof(u32),
-+					   GFP_KERNEL);
- 	ret = am65_cpsw_init_cpts(common);
- 	if (ret)
- 		goto err_of_clear;
-@@ -2877,6 +2882,7 @@ static int am65_cpsw_nuss_suspend(struct device *dev)
- 	int i, ret;
- 	struct am65_cpsw_host *host_p = am65_common_get_host(common);
- 
-+	cpsw_ale_dump(common->ale, common->ale_context);
- 	host_p->vid_context = readl(host_p->port_base + AM65_CPSW_PORT_VLAN_REG_OFFSET);
- 	for (i = 0; i < common->port_num; i++) {
- 		port = &common->ports[i];
-@@ -2949,6 +2955,7 @@ static int am65_cpsw_nuss_resume(struct device *dev)
- 	}
- 
- 	writel(host_p->vid_context, host_p->port_base + AM65_CPSW_PORT_VLAN_REG_OFFSET);
-+	cpsw_ale_restore(common->ale, common->ale_context);
- 
- 	return 0;
- }
-diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.h b/drivers/net/ethernet/ti/am65-cpsw-nuss.h
-index e95cc37a7286..4b75620f8d28 100644
---- a/drivers/net/ethernet/ti/am65-cpsw-nuss.h
-+++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.h
-@@ -149,6 +149,8 @@ struct am65_cpsw_common {
- 	struct net_device *hw_bridge_dev;
- 	struct notifier_block am65_cpsw_netdevice_nb;
- 	unsigned char switch_id[MAX_PHYS_ITEM_ID_LEN];
-+	/* only for suspend/resume context restore */
-+	u32			*ale_context;
- };
- 
- struct am65_cpsw_ndev_stats {
+diff --git a/arch/arm/mach-omap2/sleep34xx.S b/arch/arm/mach-omap2/sleep34xx.S
+index c4e97d35c310..781a131b40a6 100644
+--- a/arch/arm/mach-omap2/sleep34xx.S
++++ b/arch/arm/mach-omap2/sleep34xx.S
+@@ -465,7 +465,7 @@ l2_inv_gp:
+ 	mov	r12, #0x2
+ 	smc	#0			@ Call SMI monitor (smieq)
+ logic_l1_restore:
+-	adr	r0, l2dis_3630_offset	@ adress for offset
++	adr	r0, l2dis_3630_offset	@ address for offset
+ 	ldr	r1, [r0]		@ value for offset
+ 	ldr	r1, [r0, r1]		@ value at l2dis_3630
+ 	cmp	r1, #0x1		@ Test if L2 re-enable needed on 3630
 -- 
-2.17.1
+2.34.1
 
