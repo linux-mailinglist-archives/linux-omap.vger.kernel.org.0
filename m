@@ -2,121 +2,106 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C52736373B3
-	for <lists+linux-omap@lfdr.de>; Thu, 24 Nov 2022 09:14:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F06BE63743A
+	for <lists+linux-omap@lfdr.de>; Thu, 24 Nov 2022 09:41:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230008AbiKXIOs (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 24 Nov 2022 03:14:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57946 "EHLO
+        id S230036AbiKXIlt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 24 Nov 2022 03:41:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230009AbiKXIOI (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 24 Nov 2022 03:14:08 -0500
-Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22F0991C2B;
-        Thu, 24 Nov 2022 00:13:13 -0800 (PST)
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 2AO8CvFH028202;
-        Thu, 24 Nov 2022 02:12:57 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1669277577;
-        bh=pQRNSGirOQXjd3vm3b5fncqcHi4AeVKpPaZV1zeypiI=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=cNqv/qkfAfNjBdcTYA/5r4/6cQa59T0HTvpNacBRLazkMGNWIEO+hDP84Ti1rJd6V
-         osB5tJKGP0Mp27hhZsPjwQk4fqmwjD/ne28eV7+UBGRgohCGr6v4d8cnhCTBwhvbUF
-         9E7NxVVnUKVH5h9Vr3mgFat+TrNCOFqk/W2FahTw=
-Received: from DLEE112.ent.ti.com (dlee112.ent.ti.com [157.170.170.23])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 2AO8Cvx2021586
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 24 Nov 2022 02:12:57 -0600
-Received: from DLEE109.ent.ti.com (157.170.170.41) by DLEE112.ent.ti.com
- (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16; Thu, 24
- Nov 2022 02:12:57 -0600
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE109.ent.ti.com
- (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16 via
- Frontend Transport; Thu, 24 Nov 2022 02:12:57 -0600
-Received: from localhost (ileaxei01-snat2.itg.ti.com [10.180.69.6])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 2AO8Cs01010102;
-        Thu, 24 Nov 2022 02:12:56 -0600
-From:   Matt Ranostay <mranostay@ti.com>
-To:     <rogerq@kernel.org>, <lpieralisi@kernel.org>, <robh@kernel.org>,
-        <kw@linux.com>, <bhelgaas@google.com>,
-        <krzysztof.kozlowski@linaro.org>, <vigneshr@ti.com>,
-        <tjoseph@cadence.com>, <sergio.paracuellos@gmail.com>,
-        <pthombar@cadence.com>, <linux-pci@vger.kernel.org>
-CC:     <devicetree@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Matt Ranostay <mranostay@ti.com>, Achal Verma <a-verma1@ti.com>
-Subject: [PATCH v7 5/5] PCI: j721e: add j784s4 PCIe configuration
-Date:   Thu, 24 Nov 2022 00:12:21 -0800
-Message-ID: <20221124081221.1206167-6-mranostay@ti.com>
-X-Mailer: git-send-email 2.38.GIT
-In-Reply-To: <20221124081221.1206167-1-mranostay@ti.com>
-References: <20221124081221.1206167-1-mranostay@ti.com>
+        with ESMTP id S229790AbiKXIls (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 24 Nov 2022 03:41:48 -0500
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64F79BCA9;
+        Thu, 24 Nov 2022 00:41:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1669279307; x=1700815307;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=sjWDb836xFTamN2ETa2XyR2Y3MbHGsy8VxBoR88LjKU=;
+  b=eOnwKnFK9tFsC2tWIaq9FQFML2y+hFvf2YaoaZSn8s31m4QBQI2JBHNl
+   dWFX88pv+QCNGhlC3tjalUTC13DjexXnwNdYgJv0n+XHoJey8YdT0qPHm
+   C5kth9kViNEqK+7oKQJgTvwSdj33WkeUyU6p44oEoR6MX+lXtaxSzJwQM
+   4szCS+qnaUcV84Mgn67HtCo50chrP2vH6XQnJwMFGyGs1Zd2PW5YjIa7O
+   0Tb2zE15SF7SJZpT8xIyfWFBsKpmKkOnGj+phH47lj1sSr9em50BsgnHu
+   wg7GeGE/pLqXhy8wtvP+OB3G5VdKQQK6z7u10PxcMGdQvzQ7cwNCOt1Q9
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10540"; a="312953017"
+X-IronPort-AV: E=Sophos;i="5.96,189,1665471600"; 
+   d="scan'208";a="312953017"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2022 00:41:47 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10540"; a="705674601"
+X-IronPort-AV: E=Sophos;i="5.96,189,1665471600"; 
+   d="scan'208";a="705674601"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga008.fm.intel.com with ESMTP; 24 Nov 2022 00:41:44 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@intel.com>)
+        id 1oy7ni-00Gf8f-2S;
+        Thu, 24 Nov 2022 10:41:42 +0200
+Date:   Thu, 24 Nov 2022 10:41:42 +0200
+From:   Andy Shevchenko <andriy.shevchenko@intel.com>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Johan Hovold <johan@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        linux-serial@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] serial: core: Add port port device to flush TX on
+ runtime resume
+Message-ID: <Y38uRqAFjKpAPy8J@smile.fi.intel.com>
+References: <20221123082825.32820-1-tony@atomide.com>
+ <20221123082825.32820-2-tony@atomide.com>
+ <Y35oT9/3OKRciWCP@smile.fi.intel.com>
+ <Y38UQXbzw54Jo93s@atomide.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Y38UQXbzw54Jo93s@atomide.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Add PCIe configuration for j784s4 platform which has 4x lane support.
+On Thu, Nov 24, 2022 at 08:50:41AM +0200, Tony Lindgren wrote:
+> * Andy Shevchenko <andriy.shevchenko@intel.com> [221123 18:37]:
+> > On Wed, Nov 23, 2022 at 10:28:25AM +0200, Tony Lindgren wrote:
+> > > +EXPORT_SYMBOL(serial_port_get);
+> > 
+> > Can we move these to namespace from day 1?
+> 
+> Assuming you mean EXPORT_SYMBOL_NS(), sure.
+> 
+> But we might be better off doing the following:
+> 
+> - Move already exported uart_add_one_port() and uart_remove_one_port()
+>   from serial_core to serial_port as wrapper functions for serial_core
+> 
+> - Export new functions in serial_core for serial_core_register_port()
+>   and serial_core_unregister_port() for serial_port to call
+> 
+> This would ensure both serial_core and serial_port modules are
+> always loaded when a hardware specific serial port driver is
+> loaded.
+> 
+> This should also leave out the need for serial_port_get() and
+> serial_port_put().
 
-Tested-by: Achal Verma <a-verma1@ti.com>
-Signed-off-by: Matt Ranostay <mranostay@ti.com>
----
- drivers/pci/controller/cadence/pci-j721e.c | 23 ++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+Yes, this is good idea!
 
-diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
-index dab3db9be6d8..c484d658c18a 100644
---- a/drivers/pci/controller/cadence/pci-j721e.c
-+++ b/drivers/pci/controller/cadence/pci-j721e.c
-@@ -330,6 +330,21 @@ static const struct j721e_pcie_data am64_pcie_ep_data = {
- 	.max_lanes = 1,
- };
- 
-+static const struct j721e_pcie_data j784s4_pcie_rc_data = {
-+	.mode = PCI_MODE_RC,
-+	.quirk_retrain_flag = true,
-+	.is_intc_v1 = true,
-+	.byte_access_allowed = false,
-+	.linkdown_irq_regfield = LINK_DOWN,
-+	.max_lanes = 4,
-+};
-+
-+static const struct j721e_pcie_data j784s4_pcie_ep_data = {
-+	.mode = PCI_MODE_EP,
-+	.linkdown_irq_regfield = LINK_DOWN,
-+	.max_lanes = 4,
-+};
-+
- static const struct of_device_id of_j721e_pcie_match[] = {
- 	{
- 		.compatible = "ti,j721e-pcie-host",
-@@ -355,6 +370,14 @@ static const struct of_device_id of_j721e_pcie_match[] = {
- 		.compatible = "ti,am64-pcie-ep",
- 		.data = &am64_pcie_ep_data,
- 	},
-+	{
-+		.compatible = "ti,j784s4-pcie-host",
-+		.data = &j784s4_pcie_rc_data,
-+	},
-+	{
-+		.compatible = "ti,j784s4-pcie-ep",
-+		.data = &j784s4_pcie_ep_data,
-+	},
- 	{},
- };
- 
 -- 
-2.38.GIT
+With Best Regards,
+Andy Shevchenko
+
 
