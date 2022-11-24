@@ -2,44 +2,69 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F3D563728C
-	for <lists+linux-omap@lfdr.de>; Thu, 24 Nov 2022 07:50:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FE87637292
+	for <lists+linux-omap@lfdr.de>; Thu, 24 Nov 2022 07:53:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229572AbiKXGuq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 24 Nov 2022 01:50:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55234 "EHLO
+        id S229680AbiKXGx4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 24 Nov 2022 01:53:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229620AbiKXGup (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 24 Nov 2022 01:50:45 -0500
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0456BA659E;
-        Wed, 23 Nov 2022 22:50:43 -0800 (PST)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id EF18380F1;
-        Thu, 24 Nov 2022 06:50:42 +0000 (UTC)
-Date:   Thu, 24 Nov 2022 08:50:41 +0200
-From:   Tony Lindgren <tony@atomide.com>
-To:     Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
+        with ESMTP id S229630AbiKXGxz (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 24 Nov 2022 01:53:55 -0500
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37202C4B48;
+        Wed, 23 Nov 2022 22:53:54 -0800 (PST)
+Received: by mail-ed1-f54.google.com with SMTP id s12so1288882edd.5;
+        Wed, 23 Nov 2022 22:53:54 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=iY6ZcqTTzxn4fRkMMwseAbYXc9/C12zRHdPoC7nG4+o=;
+        b=bEqqMoDVcv5J/XOkGre/RGj0X7KQTLtpnBpy+lt+873JXMTZeXO7qTux8rU2STn2Cj
+         5ebttfOD6b2zwp7jzOGRnvwKbgbchUJGEb9+lyHMCNDm1JakHEhvH6VT2E/AK+xiuE5B
+         UzRfPJbE2jMYix9D6aIheV+dvzKukaH8i9wK1yV49TP05mc22Nru/eiE+UoV0aIxWs/D
+         kmDdklqo6xLquPAjpeukk1fv1KKvHnuKbJ+J/YfiEnyrzwfwDdU5pLz17SRty/kO3Kr/
+         Ry0Ljhj53jfMrTE0fDVZQ8w6LSLy9D2m2DOz2gS+nC1/4rEayqTH6Ywtkz7Ijbfhy0rr
+         Ubwg==
+X-Gm-Message-State: ANoB5pkkFWVDk3C53WanvDJuyM/RNgMhg+AawSRgnsqWj2hlY/x2lImf
+        V6C+VbbXDHFeW20mlYO8XvhshDnhhBI=
+X-Google-Smtp-Source: AA0mqf4K7o5VSk7GHDPYog09RKIoAm6TRMYBZNhaDqjolSQDmdfEO0Q0jeZA+d8g42ipSTA45J8tPQ==
+X-Received: by 2002:a05:6402:1655:b0:46a:80cc:d5bd with SMTP id s21-20020a056402165500b0046a80ccd5bdmr1546199edx.210.1669272832529;
+        Wed, 23 Nov 2022 22:53:52 -0800 (PST)
+Received: from ?IPV6:2a0b:e7c0:0:107::aaaa:49? ([2a0b:e7c0:0:107::aaaa:49])
+        by smtp.gmail.com with ESMTPSA id t18-20020a056402021200b00463a83ce063sm150395edv.96.2022.11.23.22.53.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 23 Nov 2022 22:53:51 -0800 (PST)
+Message-ID: <562c1505-d3bc-6422-9598-15c399e6fbba@kernel.org>
+Date:   Thu, 24 Nov 2022 07:53:50 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.1
+Content-Language: en-US
+To:     Tony Lindgren <tony@atomide.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Andy Shevchenko <andriy.shevchenko@intel.com>,
+        =?UTF-8?Q?Ilpo_J=c3=a4rvinen?= <ilpo.jarvinen@linux.intel.com>,
         Jiri Slaby <jirislaby@kernel.org>,
         Johan Hovold <johan@kernel.org>,
         Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
         Vignesh Raghavendra <vigneshr@ti.com>,
         linux-serial@vger.kernel.org, linux-omap@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] serial: core: Add port port device to flush TX on
- runtime resume
-Message-ID: <Y38UQXbzw54Jo93s@atomide.com>
-References: <20221123082825.32820-1-tony@atomide.com>
- <20221123082825.32820-2-tony@atomide.com>
- <Y35oT9/3OKRciWCP@smile.fi.intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Y35oT9/3OKRciWCP@smile.fi.intel.com>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+References: <20220615062455.15490-1-tony@atomide.com>
+ <Yrmfr3GfXYhclKXA@kroah.com> <Yrm1HaUtjTMcSIE+@atomide.com>
+From:   Jiri Slaby <jirislaby@kernel.org>
+Subject: Re: [PATCH v2 1/1] serial: core: Start managing serial controllers to
+ enable runtime PM
+In-Reply-To: <Yrm1HaUtjTMcSIE+@atomide.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -48,33 +73,68 @@ X-Mailing-List: linux-omap@vger.kernel.org
 
 Hi,
 
-Thanks for your review again, will fix what you noted. One idea
-for an improvment below though.
+I am returning to v2, as I managed to read only v3 and only now. But 
+here was already the point below.
 
-* Andy Shevchenko <andriy.shevchenko@intel.com> [221123 18:37]:
-> On Wed, Nov 23, 2022 at 10:28:25AM +0200, Tony Lindgren wrote:
-> > +EXPORT_SYMBOL(serial_port_get);
+On 27. 06. 22, 15:48, Tony Lindgren wrote:
+>>> Considering the above, let's improve the serial core layer so we can
+>>> manage the serial port controllers better. Let's register the controllers
+>>> with the serial core layer in addition to the serial ports.
+>>
+>> Why can't controllers be a device as well?
 > 
-> Can we move these to namespace from day 1?
+> The controllers are devices already probed by the serial port drivers.
+> What's missing is mapping the ports (as devices based on the comments
+> above) to the controller devices. I don't think we need another struct
+> device for the serial controller in addition to the serial port driver
+> device and it's child port devices.
 
-Assuming you mean EXPORT_SYMBOL_NS(), sure.
+To be honest, I don't like the patch (even v3). We have uart_state which 
+I already hate and now we have another structure holding *some* other 
+info about a serial device (apart from uart_port). It's mess already and 
+hard to follow, esp. to newcomers.
 
-But we might be better off doing the following:
+AFAIU, what Greg suggests would be:
 
-- Move already exported uart_add_one_port() and uart_remove_one_port()
-  from serial_core to serial_port as wrapper functions for serial_core
+PCI/platform/acpi/whatever struct dev
+   -> serial controller 1 struct dev
+      -> serial port 1 struct dev (tty_port instance exists for this)
+      -> serial port 2 struct dev (tty_port instance exists for this)
+      -> ...
+   -> serial controller 2 struct dev
+      -> serial port 1 struct dev (tty_port instance exists for this)
+      -> serial port 2 struct dev (tty_port instance exists for this)
+      -> ...
 
-- Export new functions in serial_core for serial_core_register_port()
-  and serial_core_unregister_port() for serial_port to call
+And you are objecting that mostly (or in all cases?), there will never 
+be "serial controller 2"?
 
-This would ensure both serial_core and serial_port modules are
-always loaded when a hardware specific serial port driver is
-loaded.
+But given your description, I believe you need it anyway -- side note: 
+does really the PM layer/or you need it or would you be fine with 
+"serial port N" dev children? But provided you don't have the 
+controller, you work around it by struct serial_controller. So what's 
+actually the point of the workaround instead of sticking to proper 
+driver model? With the workaround you seem you have to implement all the 
+binding, lookup and such yourself anyway. And that renders the serial 
+even worse :P. Let's do the reverse instead.
 
-This should also leave out the need for serial_port_get() and
-serial_port_put().
+The only thing I am not sure about, whether tty_port should be struct 
+dev too -- and if it should have serial port 1 as a parent. But likely 
+so. And then with pure tty (i.e. tty_driver's, not uart_driver's), it 
+would have PCI/platform/acpi/whatever as a parent directly.
 
-Regards,
+In sum, the above structure makes perfect sense to me. There has only 
+been noone to do the real work yet. And having tty_port was a hard 
+prerequisite for this to happen. And that happened long time ago. All 
+this would need a lot of work initially¹⁾, but it paid off a lot in long 
+term.
 
-Tony
+¹⁾I know what I am writing about -- I converted HID. After all, the core 
+was only 1000 lines patch (cf 85cdaf524b7d) + patches to convert all the 
+drivers incrementally (like 8c19a51591).
+
+thanks,
+-- 
+js
+suse labs
 
