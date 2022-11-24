@@ -2,134 +2,100 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E6656374BA
-	for <lists+linux-omap@lfdr.de>; Thu, 24 Nov 2022 10:05:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 366E2637813
+	for <lists+linux-omap@lfdr.de>; Thu, 24 Nov 2022 12:53:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230173AbiKXJFQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 24 Nov 2022 04:05:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38702 "EHLO
+        id S229644AbiKXLxh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 24 Nov 2022 06:53:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59716 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230123AbiKXJE4 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 24 Nov 2022 04:04:56 -0500
-Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 967321122DA
-        for <linux-omap@vger.kernel.org>; Thu, 24 Nov 2022 01:04:54 -0800 (PST)
-Received: by mail-yb1-xb32.google.com with SMTP id l67so1157497ybl.1
-        for <linux-omap@vger.kernel.org>; Thu, 24 Nov 2022 01:04:54 -0800 (PST)
+        with ESMTP id S229712AbiKXLxh (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 24 Nov 2022 06:53:37 -0500
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E77D39DB92
+        for <linux-omap@vger.kernel.org>; Thu, 24 Nov 2022 03:53:35 -0800 (PST)
+Received: by mail-lf1-x135.google.com with SMTP id be13so2207310lfb.4
+        for <linux-omap@vger.kernel.org>; Thu, 24 Nov 2022 03:53:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZQMn/QyPPR2r1LCYoxqFu28Ro+07zKB9FKhQSMwSCuA=;
-        b=53uPRna67y5ORU5RPKz1WcXbdcnaVn8LOEwexY9S7887D5qkBKi1gNKPt43omOSSbx
-         9wjuPNuzTzvMvcwNwruYYb5xvqNsbNDU/Yc1o+qWsq3dzLPLil07tXZT3yJSc6zZpRIG
-         DlWtO0VLqN+38ET8jvkL6ezI7QAg0dbETE/vI56ICDvX+77nNa9PjZgviS3q7lYfqRr2
-         N/aSrpMGjBN6alIBG4N4b+zjSdt27hlTo/naz+E9ucl4yrKzdzj3IHNTs/eEFg3R6lVP
-         cTvWpJD6MEbejZ8ATMQ9H4qX+HM1HzWfvkrLjc4bH1v24kX/6h9rDeT0ad4iAYjcGmiG
-         ZJZw==
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=QPVcl2Eug+5uraZ8m6qhcz30LIzsGZsRRGgxjK4JKkQ=;
+        b=UZ3xC41EWV1GfOOrF46u4ZqOAdpreJnnihRyvCq8lvAqy3OFuTuVlphajy3OQrkiKM
+         yiWfG2OuD6zm9ZjFA07vazCpZaK5NpnZMDEYzyytqdYG5SEypvLiFctsgb1jewHKxlp4
+         YBGw8p3QrzUwOiWsTJPdkx47dyRQ+La9dGB4Gij9g8jMcqbKRhL+3QIJ2wIcF90IVycf
+         XyD7EMcpP59Ka5k5ZW0TnO55nPFiLNrVh3hgiQQRXVZVo014j/QLabcpfSXD+gv20FWl
+         IieUtv7CjjftVyWTQJdejuAWiJkPoX7nLzKVfs28Ku6yEsYhC3EafaqNPoyYGc5WSXNo
+         ZNjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ZQMn/QyPPR2r1LCYoxqFu28Ro+07zKB9FKhQSMwSCuA=;
-        b=hG+1hsZclYWbqN7JQewfEuqfSiSfoJQ8lUtPeQ2udBnPc1esbs4OpOn+esiZFfVuTt
-         OjwS9Ff8uiSgjVmfLijbS+E4DtRECvYNrE/8T6aqrPljR9PGas923NeWWyJ5ttNclkm2
-         eyr/x8ZUy09uZxrZ22gB+uQnVtSr7RNTaB6GyMynoM8vY8S4jzowlp/OH0j9aHYcRUNt
-         kvFAoynqFB2beRwMlot0VdeWJiqKh/o+de1JP7B3D6dHyCGYLwtPCk/hYvPAM4bwAoZ6
-         NTgWhPSIPKekbAvyY0r61h+50LCLBvjdJ2sXe8g3ZQ78T4dfUI8528ljlml4eGUXO2Uv
-         icJw==
-X-Gm-Message-State: ANoB5pkTRiCE7lyAzawp/eF9gq3YKWgqMLKtm6U3YR4us/h4zZac52l8
-        mnuDA7UnNumWs5vL9a+lAd4D8Z8Qw2p2U8iTc4zGAw==
-X-Google-Smtp-Source: AA0mqf4/98SG5FePo0fHg3o1sgkYBRPrR934rSaKrm0ZYEpLYaIfbM9/Qa7CPjKox6A/TJnwoLcZw7wg1gnYQTuty5g=
-X-Received: by 2002:a5b:49:0:b0:6cf:cfa9:94e9 with SMTP id e9-20020a5b0049000000b006cfcfa994e9mr12484087ybp.35.1669280693699;
- Thu, 24 Nov 2022 01:04:53 -0800 (PST)
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=QPVcl2Eug+5uraZ8m6qhcz30LIzsGZsRRGgxjK4JKkQ=;
+        b=AV8kCnNOL2l3vS2TEgt8cul6wSBeiQnwGl5S1X/2WcZUS2q792senngb7Gvmy6RM9m
+         QQqwJneATkckVIDLpU+YbjLYOLNnXXOY8LwnQG6tzNwDy3WyKSO8kH6lGCV7DvgmGUJR
+         Yl4XH93C/SPXfSFEXZ5GGc/yYKfMitz50YucffXe6JlcWlaR/lmxZcUDPgOFdF0Aw1y7
+         vFQzCylCPBIcETqHudLwb9LpQAKguIcLhpqtBP3xLKUNiqjB4W8gUBCURaDJHT5rjx5y
+         5ugJ6eSZOTFB80PKNsYEysDfSdzWtO70RgXSJAFnju111zt31MRrTQplL4tdAyrYVz2/
+         RALA==
+X-Gm-Message-State: ANoB5pmqdW0uk6vUU+d8DaCmHfyZJHdv636ModfpS1sbtBeSddXcWnCC
+        T2vqITbNBUR3/dikG34rOBvIAA==
+X-Google-Smtp-Source: AA0mqf7BswiRU15d2KnipL8ZZJdBMrUwqe10ADV8X/LEEDqryOG+RLgGnMJu4AYr+KJcmL9hOBAkTQ==
+X-Received: by 2002:a19:6b0b:0:b0:4a2:44dc:b70c with SMTP id d11-20020a196b0b000000b004a244dcb70cmr9943677lfa.360.1669290814310;
+        Thu, 24 Nov 2022 03:53:34 -0800 (PST)
+Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
+        by smtp.gmail.com with ESMTPSA id be34-20020a056512252200b004978e51b691sm97186lfb.266.2022.11.24.03.53.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 24 Nov 2022 03:53:33 -0800 (PST)
+Message-ID: <0a3b491c-7b91-4732-e280-3e49d9da01c6@linaro.org>
+Date:   Thu, 24 Nov 2022 12:53:32 +0100
 MIME-Version: 1.0
-References: <20221108181144.433087-1-nfrayer@baylibre.com> <20221108181144.433087-3-nfrayer@baylibre.com>
- <d0a8d451-2068-6536-3969-5cdfcd09d595@infradead.org>
-In-Reply-To: <d0a8d451-2068-6536-3969-5cdfcd09d595@infradead.org>
-From:   Nicolas Frayer <nfrayer@baylibre.com>
-Date:   Thu, 24 Nov 2022 10:04:42 +0100
-Message-ID: <CANyCTtRc=aUcU5zFR6+fR-2HQ4UeKsuN-1okQXMuJNXVTCqdUw@mail.gmail.com>
-Subject: Re: [PATCH v4 2/4] soc: ti: Add module build support
-To:     Randy Dunlap <rdunlap@infradead.org>
-Cc:     Nishanth Menon <nm@ti.com>, ssantosh@kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Peter Ujfalusi <peter.ujfalusi@gmail.com>, vkoul@kernel.org,
-        dmaengine@vger.kernel.org, grygorii.strashko@ti.com,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        Paolo Abeni <pabeni@redhat.com>, linux-omap@vger.kernel.org,
-        netdev@vger.kernel.org, Kevin Hilman <khilman@baylibre.com>,
-        Guillaume La Roque <glaroque@baylibre.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.0
+Subject: Re: [PATCH v2 1/2] dt-bindings: arm: omap: add phytec pcm-049 som and
+ pcm-959 dev board
+Content-Language: en-US
+To:     Colin Foster <colin.foster@in-advantage.com>,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Cc:     Tony Lindgren <tony@atomide.com>,
+        =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
+        soc@kernel.org, Olof Johansson <olof@lixom.net>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>
+References: <20221123233209.1854806-1-colin.foster@in-advantage.com>
+ <20221123233209.1854806-2-colin.foster@in-advantage.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20221123233209.1854806-2-colin.foster@in-advantage.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Randy,
+On 24/11/2022 00:32, Colin Foster wrote:
+> Add documentation for additional OMAP SOMs and development platforms,
+> provided by Phytec as the PCM-049 SOM and the PCM-959 development kit.
+> 
+> Signed-off-by: Colin Foster <colin.foster@in-advantage.com>
+> ---
+> 
+> v1->v2
 
-Le mar. 8 nov. 2022 =C3=A0 19:18, Randy Dunlap <rdunlap@infradead.org> a =
-=C3=A9crit :
->
-> Hi--
->
-> On 11/8/22 10:11, Nicolas Frayer wrote:
-> > Added module build support for the TI K3 SoC info driver.
-> >
-> > Signed-off-by: Nicolas Frayer <nfrayer@baylibre.com>
-> > ---
-> >  arch/arm64/Kconfig.platforms |  1 -
-> >  drivers/soc/ti/Kconfig       |  3 ++-
-> >  drivers/soc/ti/k3-socinfo.c  | 11 +++++++++++
-> >  3 files changed, 13 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/arch/arm64/Kconfig.platforms b/arch/arm64/Kconfig.platform=
-s
-> > index 76580b932e44..4f2f92eb499f 100644
-> > --- a/arch/arm64/Kconfig.platforms
-> > +++ b/arch/arm64/Kconfig.platforms
-> > @@ -130,7 +130,6 @@ config ARCH_K3
-> >       select TI_SCI_PROTOCOL
-> >       select TI_SCI_INTR_IRQCHIP
-> >       select TI_SCI_INTA_IRQCHIP
-> > -     select TI_K3_SOCINFO
-> >       help
-> >         This enables support for Texas Instruments' K3 multicore SoC
-> >         architecture.
-> > diff --git a/drivers/soc/ti/Kconfig b/drivers/soc/ti/Kconfig
-> > index 7e2fb1c16af1..1a730c057cce 100644
-> > --- a/drivers/soc/ti/Kconfig
-> > +++ b/drivers/soc/ti/Kconfig
-> > @@ -74,7 +74,8 @@ config TI_K3_RINGACC
-> >         If unsure, say N.
-> >
-> >  config TI_K3_SOCINFO
-> > -     bool
-> > +     tristate "TI K3 SoC info driver"
-> > +     default y
->
-> Maybe
->         default ARCH_K3
-> ?
 
-You're correct this should be defaulted to ARCH_K3.
-This series will be dropped as it introduces dependency issues with
-consumer drivers.
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
->
-> >       depends on ARCH_K3 || COMPILE_TEST
-> >       select SOC_BUS
-> >       select MFD_SYSCON
->
->
-> --
-> ~Randy
-Thanks,
-Nicolas
+Would be nice to convert the file to DT Schema.
+
+Best regards,
+Krzysztof
+
