@@ -2,129 +2,79 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1882D636FBB
-	for <lists+linux-omap@lfdr.de>; Thu, 24 Nov 2022 02:22:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F3D563728C
+	for <lists+linux-omap@lfdr.de>; Thu, 24 Nov 2022 07:50:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229648AbiKXBWA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 23 Nov 2022 20:22:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53160 "EHLO
+        id S229572AbiKXGuq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 24 Nov 2022 01:50:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229452AbiKXBV7 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 23 Nov 2022 20:21:59 -0500
-Received: from out0.migadu.com (out0.migadu.com [94.23.1.103])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09A74B54EE;
-        Wed, 23 Nov 2022 17:21:59 -0800 (PST)
-Date:   Wed, 23 Nov 2022 17:21:42 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-        t=1669252917;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=LCCb6cJQpNNyYRBbz4kRdgD2tyLQ9Ns2A7s10hH5kx0=;
-        b=WLIGoxoQm3+/ru5YF2x6H+6yl4N5sAGKnAhwTr5uRYPr8dQqa/R3ysskmGjANDh6CBkZQy
-        KJ0MBuI2R1IiCx1P42YUay6SolBrMpWVMI6fGEzq+7bsLesglGpb2m5siLqtS2z++OWNnR
-        eN3d8mpNwNHZTr5snKaaNTKSv/nsBqw=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From:   Roman Gushchin <roman.gushchin@linux.dev>
-To:     Vlastimil Babka <vbabka@suse.cz>
-Cc:     Christoph Lameter <cl@linux.com>,
-        David Rientjes <rientjes@google.com>,
-        Joonsoo Kim <iamjoonsoo.kim@lge.com>,
-        Pekka Enberg <penberg@kernel.org>,
-        Hyeonggon Yoo <42.hyeyoo@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Matthew Wilcox <willy@infradead.org>, patches@lists.linux.dev,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        Russell King <linux@armlinux.org.uk>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Jonas Bonn <jonas@southpole.se>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        Stafford Horne <shorne@gmail.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>, Arnd Bergmann <arnd@arndb.de>,
-        Josh Triplett <josh@joshtriplett.org>,
-        Conor Dooley <conor@kernel.org>,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        openrisc@lists.librecores.org, linux-riscv@lists.infradead.org,
-        linux-sh@vger.kernel.org
-Subject: Re: [PATCH 12/12] mm, slob: rename CONFIG_SLOB to
- CONFIG_SLOB_DEPRECATED
-Message-ID: <Y37HJr+lBv7wGZcs@P9FQF9L96D.corp.robot.car>
-References: <20221121171202.22080-1-vbabka@suse.cz>
- <20221121171202.22080-13-vbabka@suse.cz>
+        with ESMTP id S229620AbiKXGup (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 24 Nov 2022 01:50:45 -0500
+Received: from muru.com (muru.com [72.249.23.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0456BA659E;
+        Wed, 23 Nov 2022 22:50:43 -0800 (PST)
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id EF18380F1;
+        Thu, 24 Nov 2022 06:50:42 +0000 (UTC)
+Date:   Thu, 24 Nov 2022 08:50:41 +0200
+From:   Tony Lindgren <tony@atomide.com>
+To:     Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Johan Hovold <johan@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        linux-serial@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] serial: core: Add port port device to flush TX on
+ runtime resume
+Message-ID: <Y38UQXbzw54Jo93s@atomide.com>
+References: <20221123082825.32820-1-tony@atomide.com>
+ <20221123082825.32820-2-tony@atomide.com>
+ <Y35oT9/3OKRciWCP@smile.fi.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20221121171202.22080-13-vbabka@suse.cz>
-X-Migadu-Flow: FLOW_OUT
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <Y35oT9/3OKRciWCP@smile.fi.intel.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Nov 21, 2022 at 06:12:02PM +0100, Vlastimil Babka wrote:
-> As explained in [1], we would like to remove SLOB if possible.
-> 
-> - There are no known users that need its somewhat lower memory footprint
->   so much that they cannot handle SLUB (after some modifications by the
->   previous patches) instead.
-> 
-> - It is an extra maintenance burden, and a number of features are
->   incompatible with it.
-> 
-> - It blocks the API improvement of allowing kfree() on objects allocated
->   via kmem_cache_alloc().
-> 
-> As the first step, rename the CONFIG_SLOB option in the slab allocator
-> configuration choice to CONFIG_SLOB_DEPRECATED. Add CONFIG_SLOB
-> depending on CONFIG_SLOB_DEPRECATED as an internal option to avoid code
-> churn. This will cause existing .config files and defconfigs with
-> CONFIG_SLOB=y to silently switch to the default (and recommended
-> replacement) SLUB, while still allowing SLOB to be configured by anyone
-> that notices and needs it. But those should contact the slab maintainers
-> and linux-mm@kvack.org as explained in the updated help. With no valid
-> objections, the plan is to update the existing defconfigs to SLUB and
-> remove SLOB in a few cycles.
-> 
-> To make SLUB more suitable replacement for SLOB, a CONFIG_SLUB_TINY
-> option was introduced to limit SLUB's memory overhead.
-> There is a number of defconfigs specifying CONFIG_SLOB=y. As part of
-> this patch, update them to select CONFIG_SLUB and CONFIG_SLUB_TINY.
-> 
-> [1] https://lore.kernel.org/all/b35c3f82-f67b-2103-7d82-7a7ba7521439@suse.cz/
-> 
-> Cc: Russell King <linux@armlinux.org.uk>
-> Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
-> Cc: Janusz Krzysztofik <jmkrzyszt@gmail.com>
-> Cc: Tony Lindgren <tony@atomide.com>
-> Cc: Jonas Bonn <jonas@southpole.se>
-> Cc: Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>
-> Cc: Stafford Horne <shorne@gmail.com>
-> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-> Cc: Rich Felker <dalias@libc.org>
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Cc: Josh Triplett <josh@joshtriplett.org>
-> Cc: Conor Dooley <conor@kernel.org>
-> Cc: Damien Le Moal <damien.lemoal@opensource.wdc.com>
-> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-> Cc: <linux-arm-kernel@lists.infradead.org>
-> Cc: <linux-omap@vger.kernel.org>
-> Cc: <openrisc@lists.librecores.org>
-> Cc: <linux-riscv@lists.infradead.org>
-> Cc: <linux-sh@vger.kernel.org>
-> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Hi,
 
-Acked-by: Roman Gushchin <roman.gushchin@linux.dev>
+Thanks for your review again, will fix what you noted. One idea
+for an improvment below though.
 
-Thanks!
+* Andy Shevchenko <andriy.shevchenko@intel.com> [221123 18:37]:
+> On Wed, Nov 23, 2022 at 10:28:25AM +0200, Tony Lindgren wrote:
+> > +EXPORT_SYMBOL(serial_port_get);
+> 
+> Can we move these to namespace from day 1?
+
+Assuming you mean EXPORT_SYMBOL_NS(), sure.
+
+But we might be better off doing the following:
+
+- Move already exported uart_add_one_port() and uart_remove_one_port()
+  from serial_core to serial_port as wrapper functions for serial_core
+
+- Export new functions in serial_core for serial_core_register_port()
+  and serial_core_unregister_port() for serial_port to call
+
+This would ensure both serial_core and serial_port modules are
+always loaded when a hardware specific serial port driver is
+loaded.
+
+This should also leave out the need for serial_port_get() and
+serial_port_put().
+
+Regards,
+
+Tony
+
