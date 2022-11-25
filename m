@@ -2,122 +2,262 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 42C5E6389D4
-	for <lists+linux-omap@lfdr.de>; Fri, 25 Nov 2022 13:33:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A6E12638BC9
+	for <lists+linux-omap@lfdr.de>; Fri, 25 Nov 2022 15:03:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229761AbiKYMc5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 25 Nov 2022 07:32:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58618 "EHLO
+        id S229922AbiKYODP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 25 Nov 2022 09:03:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229570AbiKYMc5 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 25 Nov 2022 07:32:57 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A0F6186FE;
-        Fri, 25 Nov 2022 04:32:56 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C39E7623B1;
-        Fri, 25 Nov 2022 12:32:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1A3DC433D6;
-        Fri, 25 Nov 2022 12:32:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1669379575;
-        bh=p7ss/fqibxOK0PX8EdO8U+TTo07V8zCu5SpOcHojgAA=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=qdi5lDv2Jtp8LCdCcgMfP5C4RRZxR57BJfgLSOyiEnHVpRDME342qmcYoL6eAF7G7
-         b4WKDJVKVgPaib2FJSPdZx2FRe+sDMG6W7JxggOXaP2UtZwMn7ZOjmGrMji5O2UrAu
-         +EKQJ+ywNrW7vCo9rJE9J0RRIbAGEJVDDOCTwJreYZXUAF5rVl3EGb72QWqQ4cQ52X
-         Xjjc0hH+1knU92nBAC0hPVMzAYNK7Cl9+ciX+yMRnJ1AU8wRBxtjxe3/bX2myovB4a
-         Xcohx33ZtmFbxAgnAPKlAqKy2gcphnH0tLvDDJVtjLwzHBbDJh9NEy0JAfILoNYPIS
-         9A6Gty8kU70GA==
-Message-ID: <e0f4d411-2345-a13e-b7e1-fd4a5622f701@kernel.org>
-Date:   Fri, 25 Nov 2022 14:32:49 +0200
+        with ESMTP id S229943AbiKYODM (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 25 Nov 2022 09:03:12 -0500
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BCDA1CB3C;
+        Fri, 25 Nov 2022 06:03:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1669384990; x=1700920990;
+  h=date:from:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=2Y/9XdXRQark7DT8SRb7nK7aO6b4EOSkUvrrkHSKpbM=;
+  b=KwSR3ds9cg2jKrO3c8B+DMD3eGuupgsQupqDSaac5YqnNVMQythwJzkJ
+   nShOk5oz3i7d4HKwo7/WJ9G3KqMR3I3ScWvYHNn7mB5dRQWjKpjRYDiIa
+   SIr08ejupyU7DVExaoonwd45UPKRhJBJmTIDFcEJlMvTtYedKPBLrjcZ/
+   wDGKOZYLjZsG/I58T+vaFWNHgkyBvzVF98cJJtfldcrcHNgSW4Np3ZUK4
+   +4NApUkMTz5ryZ83lMb+UCeWYYOHZ3XNrxWjNOw9UAynN40QZmKkLRGrK
+   AkYaNYhUM0Nq0813lkzIl7+62S+Xn8OhJ4Dipiuq6e89FDPKi1/+Vxeb7
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10542"; a="341390779"
+X-IronPort-AV: E=Sophos;i="5.96,193,1665471600"; 
+   d="scan'208";a="341390779"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2022 06:02:50 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10542"; a="971579845"
+X-IronPort-AV: E=Sophos;i="5.96,193,1665471600"; 
+   d="scan'208";a="971579845"
+Received: from dpotapen-mobl.ger.corp.intel.com ([10.252.50.101])
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2022 06:02:47 -0800
+Date:   Fri, 25 Nov 2022 16:02:45 +0200 (EET)
+From:   =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To:     Tony Lindgren <tony@atomide.com>
+cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andy Shevchenko <andriy.shevchenko@intel.com>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Johan Hovold <johan@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        linux-serial <linux-serial@vger.kernel.org>,
+        linux-omap@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3 1/2] serial: core: Start managing serial controllers
+ to enable runtime PM
+In-Reply-To: <20221123082825.32820-1-tony@atomide.com>
+Message-ID: <e6922dd6-8968-b54-afbc-d5ad969f64@linux.intel.com>
+References: <20221123082825.32820-1-tony@atomide.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [PATCH v7 5/5] PCI: j721e: add j784s4 PCIe configuration
-Content-Language: en-US
-To:     Matt Ranostay <mranostay@ti.com>, lpieralisi@kernel.org,
-        robh@kernel.org, kw@linux.com, bhelgaas@google.com,
-        krzysztof.kozlowski@linaro.org, vigneshr@ti.com,
-        tjoseph@cadence.com, sergio.paracuellos@gmail.com,
-        pthombar@cadence.com, linux-pci@vger.kernel.org
-Cc:     devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Achal Verma <a-verma1@ti.com>
-References: <20221124081221.1206167-1-mranostay@ti.com>
- <20221124081221.1206167-6-mranostay@ti.com>
-From:   Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <20221124081221.1206167-6-mranostay@ti.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Status: No, score=-7.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Wed, 23 Nov 2022, Tony Lindgren wrote:
 
-
-On 24/11/2022 10:12, Matt Ranostay wrote:
-> Add PCIe configuration for j784s4 platform which has 4x lane support.
+> We want to enable runtime PM for serial port device drivers in a generic
+> way. To do this, we want to have the serial core layer manage the
+> registered physical serial controller devices.
 > 
-> Tested-by: Achal Verma <a-verma1@ti.com>
-> Signed-off-by: Matt Ranostay <mranostay@ti.com>
-
-Reviewed-by: Roger Quadros <rogerq@kernel.org>
-
+> The serial layer has a few challenges to deal with:
+> 
+> 1. The serial port mapping to a physical serial port controller device
+>    is currently not easily available after the physical serial controller
+>    struct device gets registered uart_add_one_port() time
+> 
+> 2. The serial port device drivers have their own driver data. So we cannot
+>    currently start making use of serial core generic data easily without
+>    changing all the serial port device drivers
+> 
+> To find the serial ports for a controller based on struct device, let's
+> add a new data structure for a serial_controller. On registering a port,
+> we can use the drv->state array to find the associated serial port
+> controller and initialize the serial core controller.
+> 
+> As some serial port device drivers enable runtime PM in their probe before
+> registering with the serial core layer, and some do not enable runtime PM
+> at all currently, we need check the state in the serial core layer on
+> uart_port_startup(). We need to also consider that a serial port device
+> may have multiple ports.
+> 
+> Initially we enable runtime PM for all the serial port controller devices.
+> This allows us to add runtime PM calls and properly handle any errors
+> without a need for serial layer specific runtime PM wrapper functions.
+> 
+> After this patch no functional changes for the serial port device drivers
+> are intended. We just enable runtime PM and keep the runtime PM usage
+> count until all the serial controller ports are unregistered. For drivers
+> implementing PM runtime, we just keep track of the runtime PM
+> configuration.
+> 
+> For the serial port drivers, the serial core layer has the following use
+> cases to deal with:
+> 
+> 1. If a serial port device driver does not implement runtime PM, the
+>    device state is set to active state, and the runtime PM usage count
+>    is kept until the last port for a device is unregistered
+> 
+> 2. If a serial port device driver implements runtime PM, the runtime PM
+>    usage count is kept until the last port for the device is unregistered
+> 
+> 3. If a serial port device driver implements runtime PM autosuspend,
+>    autosuspend is not prevented. This currently gets set only for the
+>    8250_omap driver to keep runtime PM working for it
+> 
+> For system suspend, things should be mostly detached from the runtime PM.
+> The serial port device drivers may call pm_runtime_force_suspend() and
+> pm_runtime_force_resume() as needed.
+> 
+> Suggested-by: Johan Hovold <johan@kernel.org>
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
 > ---
->  drivers/pci/controller/cadence/pci-j721e.c | 23 ++++++++++++++++++++++
->  1 file changed, 23 insertions(+)
+> Changes since v2:
 > 
-> diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
-> index dab3db9be6d8..c484d658c18a 100644
-> --- a/drivers/pci/controller/cadence/pci-j721e.c
-> +++ b/drivers/pci/controller/cadence/pci-j721e.c
-> @@ -330,6 +330,21 @@ static const struct j721e_pcie_data am64_pcie_ep_data = {
->  	.max_lanes = 1,
->  };
+> - Make each serial port a proper device as suggested by Greg. This is
+>   a separate patch that flushes the TX on runtime PM resume
+> 
+> Changes since v1:
+> 
+> - Use kref as suggested by Andy
+> 
+> - Fix memory leak on error as noted by Andy
+> 
+> - Use use unsigned char for supports_autosuspend as suggested by Andy
+> 
+> - Coding style improvments as suggested by Andy
+> 
+> ---
+>  drivers/tty/serial/8250/8250_core.c |   1 +
+>  drivers/tty/serial/8250/8250_omap.c |   1 +
+>  drivers/tty/serial/serial_core.c    | 179 ++++++++++++++++++++++++++++
+>  include/linux/serial_core.h         |   4 +
+>  4 files changed, 185 insertions(+)
+> 
+> diff --git a/drivers/tty/serial/8250/8250_core.c b/drivers/tty/serial/8250/8250_core.c
+> --- a/drivers/tty/serial/8250/8250_core.c
+> +++ b/drivers/tty/serial/8250/8250_core.c
+> @@ -1004,6 +1004,7 @@ int serial8250_register_8250_port(const struct uart_8250_port *up)
+>  		uart->port.regshift     = up->port.regshift;
+>  		uart->port.iotype       = up->port.iotype;
+>  		uart->port.flags        = up->port.flags | UPF_BOOT_AUTOCONF;
+> +		uart->port.supports_autosuspend = up->port.supports_autosuspend;
+>  		uart->bugs		= up->bugs;
+>  		uart->port.mapbase      = up->port.mapbase;
+>  		uart->port.mapsize      = up->port.mapsize;
+> diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
+> --- a/drivers/tty/serial/8250/8250_omap.c
+> +++ b/drivers/tty/serial/8250/8250_omap.c
+> @@ -1330,6 +1330,7 @@ static int omap8250_probe(struct platform_device *pdev)
+>  	up.rs485_start_tx = serial8250_em485_start_tx;
+>  	up.rs485_stop_tx = serial8250_em485_stop_tx;
+>  	up.port.has_sysrq = IS_ENABLED(CONFIG_SERIAL_8250_CONSOLE);
+> +	up.port.supports_autosuspend = 1;
 >  
-> +static const struct j721e_pcie_data j784s4_pcie_rc_data = {
-> +	.mode = PCI_MODE_RC,
-> +	.quirk_retrain_flag = true,
-> +	.is_intc_v1 = true,
-> +	.byte_access_allowed = false,
-> +	.linkdown_irq_regfield = LINK_DOWN,
-> +	.max_lanes = 4,
+>  	ret = of_alias_get_id(np, "serial");
+>  	if (ret < 0) {
+> diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
+> --- a/drivers/tty/serial/serial_core.c
+> +++ b/drivers/tty/serial/serial_core.c
+> @@ -16,6 +16,7 @@
+>  #include <linux/console.h>
+>  #include <linux/gpio/consumer.h>
+>  #include <linux/of.h>
+> +#include <linux/pm_runtime.h>
+>  #include <linux/proc_fs.h>
+>  #include <linux/seq_file.h>
+>  #include <linux/device.h>
+> @@ -30,6 +31,20 @@
+>  #include <linux/irq.h>
+>  #include <linux/uaccess.h>
+>  
+> +/*
+> + * Serial port device specific data for serial core.
+> + *
+> + * Each port device can have multiple ports with struct uart_state allocated
+> + * for each port. The array of ports is kept in struct uart_driver.
+> + */
+> +struct serial_controller {
+> +	struct device *dev;			/* Physical controller device */
+> +	struct uart_driver *drv;		/* For port specific uart_state */
+> +	struct kref ref;			/* Registered port count */
+> +	unsigned long implements_pm_runtime:1;
+> +	unsigned long supports_autosuspend:1;
 > +};
 > +
-> +static const struct j721e_pcie_data j784s4_pcie_ep_data = {
-> +	.mode = PCI_MODE_EP,
-> +	.linkdown_irq_regfield = LINK_DOWN,
-> +	.max_lanes = 4,
-> +};
-> +
->  static const struct of_device_id of_j721e_pcie_match[] = {
->  	{
->  		.compatible = "ti,j721e-pcie-host",
-> @@ -355,6 +370,14 @@ static const struct of_device_id of_j721e_pcie_match[] = {
->  		.compatible = "ti,am64-pcie-ep",
->  		.data = &am64_pcie_ep_data,
->  	},
-> +	{
-> +		.compatible = "ti,j784s4-pcie-host",
-> +		.data = &j784s4_pcie_rc_data,
-> +	},
-> +	{
-> +		.compatible = "ti,j784s4-pcie-ep",
-> +		.data = &j784s4_pcie_ep_data,
-> +	},
->  	{},
->  };
+>  /*
+>   * This is used to lock changes in serial line configuration.
+>   */
+> @@ -177,6 +192,162 @@ static void uart_port_dtr_rts(struct uart_port *uport, int raise)
+>  		uart_clear_mctrl(uport, TIOCM_DTR | TIOCM_RTS);
+>  }
 >  
+> +static struct serial_controller *to_controller(struct uart_port *port)
+> +{
+> +	if (!port->dev)
+> +		return NULL;
+> +
+> +	return port->state->controller;
+> +}
+> +
+> +/*
+> + * Starts runtime PM for the serial controller device if not already started
+> + * by the serial port driver. Called from uart_add_one_port() with port_mutex
+> + * held.
+> + */
+> +static int serial_core_pm_runtime_start(struct uart_port *port)
+> +{
+> +	struct serial_controller *controller = to_controller(port);
+> +	struct device *dev = port->dev;
+> +	int ret = 0;
+> +
+> +	if (kref_get_unless_zero(&controller->ref))
+> +		return 0;
+> +
+> +	/* Init controller device on first reference */
+> +	kref_init(&controller->ref);
+> +
+> +	/* Always enable autosuspend and consider child devices for serdev */
+> +	pm_runtime_use_autosuspend(dev);
+> +	pm_suspend_ignore_children(dev, false);
+> +
+> +	/*
+> +	 * If the port driver did not enable runtime PM in probe, do it now.
+> +	 * Devices that did not enable runtime PM get set active so we can
+> +	 * properly handle the returned errors for runtime PM calls.
+> +	 */
+> +	if (!pm_runtime_enabled(dev)) {
+> +		pm_runtime_set_active(dev);
+> +		pm_runtime_enable(dev);
+> +	} else {
+> +		controller->implements_pm_runtime = 1;
+> +	}
+> +
+> +	/*
+> +	 * Keep the port device enabled unless autosuspend is supported.
+> +	 * Released on port shutdown.
+> +	 */
+> +	if (!controller->supports_autosuspend) {
+> +		ret = pm_runtime_resume_and_get(dev);
 
---
-cheers,
--roger
+Should this be done regardless of autosuspend if the port is console?
+
+There's a problem in the current place where this being called from 
+though, uart_console_enabled() doesn't return the correct value with at 
+least some devices this early:
+
+https://lore.kernel.org/linux-serial/AS8PR04MB84047F39CD10C00CEE29213F92219@AS8PR04MB8404.eurprd04.prod.outlook.com/
+
+-- 
+ i.
