@@ -2,60 +2,60 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 31333639678
-	for <lists+linux-omap@lfdr.de>; Sat, 26 Nov 2022 15:30:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CA0463967D
+	for <lists+linux-omap@lfdr.de>; Sat, 26 Nov 2022 15:31:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229608AbiKZOaZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 26 Nov 2022 09:30:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39082 "EHLO
+        id S229644AbiKZOa7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 26 Nov 2022 09:30:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229614AbiKZOaY (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 26 Nov 2022 09:30:24 -0500
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24AA41B7B6
-        for <linux-omap@vger.kernel.org>; Sat, 26 Nov 2022 06:30:23 -0800 (PST)
-Received: by mail-lf1-x12b.google.com with SMTP id r12so10925103lfp.1
-        for <linux-omap@vger.kernel.org>; Sat, 26 Nov 2022 06:30:23 -0800 (PST)
+        with ESMTP id S229580AbiKZOa6 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 26 Nov 2022 09:30:58 -0500
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91C861D302
+        for <linux-omap@vger.kernel.org>; Sat, 26 Nov 2022 06:30:56 -0800 (PST)
+Received: by mail-lf1-x12a.google.com with SMTP id d6so10873768lfs.10
+        for <linux-omap@vger.kernel.org>; Sat, 26 Nov 2022 06:30:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=0FH6Qg/jduzi6PwcFvP6hRcgcF3jb6cJugtkH2wA03k=;
-        b=GZqbKSqt+e1ftphMnBrAMi19b1u4IAdImBmNTWqJrX8rdn1oVuFBFKOAfvvO64bKdM
-         NMKq6OpVDdPfw275d9Ldd19+I67ocoK8A0PLAKOoK3TKN78kVwSVYM1gfmZEORB3LoxU
-         ZEM09KjqYmuGjq9NTAGC6y3w6aA+Mkh5LE5mDZs0eyiQDPTK1s2WtUlH6KqTScWXCaLX
-         nzFPUN7+4E4TOPrRpcQE4eTJJowwJlA6OT71zDN8sbFl1ldqK3w/Ng4OFOi9OzYbeQkj
-         hXkh21S4ZmZ99b+vdxzxyRqAclye5TvOgH8dw3cVsw9Dlhqg7W3uvYAe1tqrYpra9qxV
-         +evQ==
+        bh=LOp9VeEnzv5VAO/OaCmDsm8rDMNVnUqD5Q2WOV4X6To=;
+        b=J9veXx5lGUVMqWV12L613oXsILLAQ+wdd9j0hxVGO49OzpZdRB5bzLw/nxtcS8z87e
+         re99fj8r/ZKReZvZX5iAxs7yR6/s8zsnZU5pPJE+nWXLwcQJcd+fBQYLtqmUayn/5j5T
+         ZkSop/96qSZ/eiG/l9O4wG0d+BO2v85G6zRYu86MJVpFf6d72MBrgfsho9hKX2H3RfdJ
+         NklZGbzahZi8znKT+oqgqHJhUcsT72isQGFmNnB34J/BSSK91TrYePmcU5fztIfia8oV
+         GUsnly+WeWsZjpNgN7rNNmnWzSzdW+x9ty4IueNPFj6GN0t8rBbHWZmuyENj9bI6uOwG
+         /b5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0FH6Qg/jduzi6PwcFvP6hRcgcF3jb6cJugtkH2wA03k=;
-        b=04YrGGyiAdGL7XIjqkTbnORvy/V59Kg5cZy2RpykiXlTvpYHjsn+YpQTa/O0TQSqc8
-         eZvwmig7DG7QGoenot7Xu9xddvGWWnYJu+GNunCxHPzDN5TuX1Wmrdz9JGFlhaazdnHi
-         66BqxkHZIc24wrKsW9X84QVkPMtwhKQ3vHxArgDbKQ/VxQ4DZulN4r53TfKQc7QMUlp8
-         oeRyuluszj919av+EJ3wwPlesj0UFcUexsYmq7HW2qtFOtbWAhOKTZIDy3CsPfstqHV8
-         Mu4ylAt/SNP7C5IZXPjYrP9fwdK24WvOXxXNlzAklb4gbnPTTvhw2Y8BXAkwhXWIWz+/
-         mSUA==
-X-Gm-Message-State: ANoB5pks7l4EM+bS8kCh6JyFu8duOOkF9VJuQb6K9XeLibAK7QWizSiY
-        USUgu2wiXs/mpJ3LxSWQ2/ygUA==
-X-Google-Smtp-Source: AA0mqf6OQNKG/3n825nCEeCAO06Iv5aI6Uk1mOESWJou2dOgsKu3cRwImPUH9aEIreGzTmYNvODxFA==
-X-Received: by 2002:ac2:5453:0:b0:4a2:2c23:a6d4 with SMTP id d19-20020ac25453000000b004a22c23a6d4mr13687688lfn.257.1669473021404;
-        Sat, 26 Nov 2022 06:30:21 -0800 (PST)
+        bh=LOp9VeEnzv5VAO/OaCmDsm8rDMNVnUqD5Q2WOV4X6To=;
+        b=M23VZBNGGNvp6ngkkAL431BctoTowCR5dCmCSzkYDS8K9DdBkMvW/Q2Mxx2WJgXhHc
+         niM0k79oXTq/hgy/qwrKYMbkUbsSUxCe9SsVzGiTAwiQ0o+XuLM8qAc7zx6lpC+Pvv9J
+         VOvWrdd7YE9hQogclF2hJqpNWVKvRSzS2IwKEduqaDf3icSRLZELuwOThHnoYB1GYhLE
+         DMDXOlay3ohjEcbHGZ7m/W2of6kcfvDvQb9XlO8QTqtUEMAgrQulF81O3PZYZ9WIonBd
+         0W5mMr73vbTQLJPooq2b1oQirDV2NNcDoKpCk1RrNATQkexkvRtxmrVv/smgBjpz3Zyv
+         M6Mg==
+X-Gm-Message-State: ANoB5pm0AM1thEITblL12XeNe7mK5TeG0Qz4BTWLro4YPn/LNk/9M4AO
+        Y7HvLWZVVfvltI04JSIqb2i2pA==
+X-Google-Smtp-Source: AA0mqf75yMUiNVRsRqbq4zu5xWBS2wPOH+4izo3ghaVHNNA3rV1zExal1ikJKmniGK3OZXYq/r03dQ==
+X-Received: by 2002:a19:5049:0:b0:4b4:661a:1ce1 with SMTP id z9-20020a195049000000b004b4661a1ce1mr13137363lfj.136.1669473054898;
+        Sat, 26 Nov 2022 06:30:54 -0800 (PST)
 Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
-        by smtp.gmail.com with ESMTPSA id p11-20020ac24ecb000000b004b50ae0bfe8sm262741lfr.208.2022.11.26.06.30.20
+        by smtp.gmail.com with ESMTPSA id p5-20020ac24ec5000000b00494603953b6sm935295lfr.6.2022.11.26.06.30.53
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 26 Nov 2022 06:30:21 -0800 (PST)
-Message-ID: <2b399e95-70c9-0213-90e6-95f377976e95@linaro.org>
-Date:   Sat, 26 Nov 2022 15:30:19 +0100
+        Sat, 26 Nov 2022 06:30:54 -0800 (PST)
+Message-ID: <30744357-33cb-96c1-bbe9-f544cde04980@linaro.org>
+Date:   Sat, 26 Nov 2022 15:30:53 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.5.0
-Subject: Re: [PATCH v7 1/5] dt-bindings: PCI: ti,j721e-pci-*: add checks for
- num-lanes
+Subject: Re: [PATCH v7 4/5] dt-bindings: PCI: ti,j721e-pci-*: add j784s4-pci-*
+ compatible strings
 Content-Language: en-US
 To:     Matt Ranostay <mranostay@ti.com>, rogerq@kernel.org,
         lpieralisi@kernel.org, robh@kernel.org, kw@linux.com,
@@ -65,9 +65,9 @@ To:     Matt Ranostay <mranostay@ti.com>, rogerq@kernel.org,
 Cc:     devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20221124081221.1206167-1-mranostay@ti.com>
- <20221124081221.1206167-2-mranostay@ti.com>
+ <20221124081221.1206167-5-mranostay@ti.com>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20221124081221.1206167-2-mranostay@ti.com>
+In-Reply-To: <20221124081221.1206167-5-mranostay@ti.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -81,99 +81,13 @@ List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
 On 24/11/2022 09:12, Matt Ranostay wrote:
-> Add num-lanes schema checks based on compatible string on available lanes
-> for that platform.
+> Add definition for j784s4-pci-ep + j784s4-pci-host devices along with
+> schema checks for num-lanes.
 > 
 > Signed-off-by: Matt Ranostay <mranostay@ti.com>
-> ---
->  .../bindings/pci/ti,j721e-pci-ep.yaml         | 28 +++++++++++++++++--
->  .../bindings/pci/ti,j721e-pci-host.yaml       | 28 +++++++++++++++++--
->  2 files changed, 50 insertions(+), 6 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/pci/ti,j721e-pci-ep.yaml b/Documentation/devicetree/bindings/pci/ti,j721e-pci-ep.yaml
-> index 10e6eabdff53..1aeea168d3d0 100644
-> --- a/Documentation/devicetree/bindings/pci/ti,j721e-pci-ep.yaml
-> +++ b/Documentation/devicetree/bindings/pci/ti,j721e-pci-ep.yaml
-> @@ -10,9 +10,6 @@ title: TI J721E PCI EP (PCIe Wrapper)
->  maintainers:
->    - Kishon Vijay Abraham I <kishon@ti.com>
->  
-> -allOf:
-> -  - $ref: "cdns-pcie-ep.yaml#"
-> -
->  properties:
->    compatible:
->      oneOf:
-> @@ -65,6 +62,31 @@ properties:
->      items:
->        - const: link_state
->  
-> +allOf:
-> +  - $ref: "cdns-pcie-ep.yaml#"
-
-While moving it, drop the quotes.
-
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          enum:
-> +            - ti,am64-pcie-ep
-> +    then:
-> +      properties:
-> +        num-lanes:
-> +          minimum: 1
-> +          maximum: 1
-> +
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          enum:
-> +            - ti,j7200-pcie-ep
-> +            - ti,j721e-pcie-ep
-> +    then:
-> +      properties:
-> +        num-lanes:
-> +          minimum: 1
-> +          maximum: 2
-> +
->  required:
->    - compatible
->    - reg
-> diff --git a/Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml b/Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml
-> index b0513b197d08..8eca0d08303f 100644
-> --- a/Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml
-> +++ b/Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml
-> @@ -10,9 +10,6 @@ title: TI J721E PCI Host (PCIe Wrapper)
->  maintainers:
->    - Kishon Vijay Abraham I <kishon@ti.com>
->  
-> -allOf:
-> -  - $ref: "cdns-pcie-host.yaml#"
-> -
->  properties:
->    compatible:
->      oneOf:
-> @@ -98,6 +95,31 @@ properties:
->        interrupts:
->          maxItems: 1
->  
-> +allOf:
-> +  - $ref: "cdns-pcie-host.yaml#"
-
-Same here.
-
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          enum:
-> +            - ti,am64-pcie-host
-> +    then:
-> +      properties:
-> +        num-lanes:
-
-const: 1
 
 
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 Best regards,
 Krzysztof
