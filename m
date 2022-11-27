@@ -2,159 +2,343 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60350639C47
-	for <lists+linux-omap@lfdr.de>; Sun, 27 Nov 2022 19:22:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B124639CC7
+	for <lists+linux-omap@lfdr.de>; Sun, 27 Nov 2022 21:30:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229563AbiK0SWg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 27 Nov 2022 13:22:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35546 "EHLO
+        id S229646AbiK0Uao (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 27 Nov 2022 15:30:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40002 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229509AbiK0SWf (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 27 Nov 2022 13:22:35 -0500
-Received: from mail-io1-f48.google.com (mail-io1-f48.google.com [209.85.166.48])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE5D5D6C;
-        Sun, 27 Nov 2022 10:22:33 -0800 (PST)
-Received: by mail-io1-f48.google.com with SMTP id e189so6219449iof.1;
-        Sun, 27 Nov 2022 10:22:33 -0800 (PST)
+        with ESMTP id S229475AbiK0Uan (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 27 Nov 2022 15:30:43 -0500
+Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09B77DFA2
+        for <linux-omap@vger.kernel.org>; Sun, 27 Nov 2022 12:30:42 -0800 (PST)
+Received: by mail-lf1-x130.google.com with SMTP id s8so14524024lfc.8
+        for <linux-omap@vger.kernel.org>; Sun, 27 Nov 2022 12:30:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=hu+yQVk57pR5VcjtjDK4hyLy8fbw5tF37Ue3y9QXBOo=;
+        b=YmVLBZT2UjEDjM/UE6g5dHU13QZzbsdDOL4tvMo3nsQuCLIA5q3qTHF1gpSf8IC7yT
+         5EoAKsG4KOUD1he245oHRxBrrIdZZFX9OsiCffJWuEmQMXVWlzGxroBzBuSJzKEFJ7aG
+         GWt5ikOHa681rSseWCgmHMBx9osL2ck7bqcnzOJuVD4WqvF2vwRshibUVKYbEDL9BA+1
+         ucL9BUn94K7MQtEFpiUUBmJgRlmIRpQL2XgJK5ikoMYdYVxJjYhq1lmxIz7vaZZJPB+/
+         L+fMXWUuCXLBIvgD3xttlXwGZIvznnjUTonQ2n/MTkQDSoDyRtdWS0xhU7IvSdqkMO4c
+         Udbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vukWGyYF9LYnWEtUXZi++E5sJfGRcnavjJ89dxRwcfA=;
-        b=NX9rsp6+QjC1mPtLbdgo8pFJ1CiwpUJabVGx9r4r5SBk4YxtS3JdKGx7BbBMduDVUE
-         NnyDbDR3aVLuAvUhCCRUwtPHzdSsGqSx8hkShKLeU+NDYP15nIt06hH1YDr3rOVpOV61
-         +eC0DldiZZ65BI8NPFSQdJDunX8hPsESCF2KJDvaSG6zCTWl8S0z68xLyCpmsjhjuwng
-         NkdIGlYm/4+DvzgeHH6GLY/2v5lkxfMGPmGfu0eEJpqMqzPkfmKOnoe8CB8QLjfnh+00
-         5Bg5+jkujIvBNXO8NJ5vNuyHoYCG9pcNcHvGulPpsgDooyLudPD0Wf/OtMhXVbxc5Yp7
-         m05Q==
-X-Gm-Message-State: ANoB5plYTMf+BcgcAVCavTH+Mc37bpOiojQbMngxBSYtf/imLqeg1eab
-        Sp2QDU6css+jQmKwcL8rXw==
-X-Google-Smtp-Source: AA0mqf52id4ogOIrUkQbo6wDm6Jj1UbJySa/csflYIxoWGpZdD7lafsWa0xqORF+oFNfTceNY8Asbg==
-X-Received: by 2002:a02:9547:0:b0:375:3dd1:743c with SMTP id y65-20020a029547000000b003753dd1743cmr14810797jah.281.1669573353061;
-        Sun, 27 Nov 2022 10:22:33 -0800 (PST)
-Received: from robh_at_kernel.org ([2605:ef80:80c1:3b80:81db:640f:ef27:c9e2])
-        by smtp.gmail.com with ESMTPSA id u13-20020a056638304d00b00372bbd04b75sm3611473jak.87.2022.11.27.10.22.30
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hu+yQVk57pR5VcjtjDK4hyLy8fbw5tF37Ue3y9QXBOo=;
+        b=oJPOcqBYr1OhJQfXsrni8QtBygdrveG/DQiWg0/NzlqIkmEk7pgN7/QV0aLn9Ogs7b
+         M1+yEDI3x3mReexc04BEhlom49CQOrUZgw7VWZfWScYvILxjadVRnS5jnEInOSAupm0c
+         WuOoV9wZxMWXPc9Qnc4IUoaR35lgTd15aE7qJvfjl9vXalnACARdIcnM4fIN5Vyp8MWv
+         ovCXegjSA5bIS2+dKB+uYZD8y4d6nA0JE51j7ptv0cFOHFYN49+IziIx1aAz6/EkrbW3
+         MR0vuV5YjVej8ZJe+6LTmF50a7zdA4G5euxi1gfrJRYzAysfgktiOGxLLtzAuVwuXuAt
+         izmA==
+X-Gm-Message-State: ANoB5plXWwlyYb+FQAHDvFtSWVIUE5GFRkqNg2j1Qdn0ca3ZDi5LwyD7
+        SDEXUFg2OLxRNVVF1RwGqPRjphQCjdpXIjrX
+X-Google-Smtp-Source: AA0mqf6B8LjmkCruK3fZzDntO0QQUZZGsr1NrReN7LC7S715xB04/o/9dIglCs6YM7KmjdOQ3Gbakw==
+X-Received: by 2002:ac2:5289:0:b0:4b4:faae:2c7c with SMTP id q9-20020ac25289000000b004b4faae2c7cmr4919000lfm.382.1669581040316;
+        Sun, 27 Nov 2022 12:30:40 -0800 (PST)
+Received: from krzk-bin.NAT.warszawa.vectranet.pl (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
+        by smtp.gmail.com with ESMTPSA id c20-20020a056512075400b004a2588520f5sm1398190lfs.166.2022.11.27.12.30.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Nov 2022 10:22:32 -0800 (PST)
-Received: (nullmailer pid 144847 invoked by uid 1000);
-        Sun, 27 Nov 2022 18:22:32 -0000
-Date:   Sun, 27 Nov 2022 12:22:32 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-omap@vger.kernel.org, linux-pwm@vger.kernel.org,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>, Nishanth Menon <nm@ti.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>
-Subject: Re: [PATCH v3 1/2] dt-bindings: pwm: Allow decimal format in
- addition to hex format
-Message-ID: <20221127182232.GA128974-robh@kernel.org>
-References: <20221122123225.59106-1-tony@atomide.com>
- <20221123024153.GB1026269-robh@kernel.org>
- <Y33ErrigR4II6EYH@atomide.com>
+        Sun, 27 Nov 2022 12:30:39 -0800 (PST)
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH v2 1/2] ARM: dts: omap: align LED node names with dtschema
+Date:   Sun, 27 Nov 2022 21:30:33 +0100
+Message-Id: <20221127203034.54092-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <Y33ErrigR4II6EYH@atomide.com>
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Nov 23, 2022 at 08:58:54AM +0200, Tony Lindgren wrote:
-> * Rob Herring <robh@kernel.org> [221123 02:31]:
-> > On Tue, Nov 22, 2022 at 02:32:24PM +0200, Tony Lindgren wrote:
-> > > Let's allow node numbering in decimal format too.
-> > > 
-> > > Simple human-readable increments/IDs are usually decimal, hex is only for
-> > > addresses as noted by Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>.
-> > > 
-> > > Let's use an improved match suggested by Krzysztof Kozlowski
-> > > <krzysztof.kozlowski@linaro.org> and improved a bit by Uwe Kleine-König
-> > > <u.kleine-koenig@pengutronix.de>.
-> > > 
-> > > Cc: linux-pwm@vger.kernel.org
-> > > Cc: Thierry Reding <thierry.reding@gmail.com>
-> > > Suggested-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> > > Suggested-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-> > > Signed-off-by: Tony Lindgren <tony@atomide.com>
-> > > ---
-> > > 
-> > > Changes since v2:
-> > > 
-> > > - Use pattern suggested by Krzysztof and Uwe
-> > > 
-> > > Changes since v1:
-> > > 
-> > > - New patch added to deal with pwm-omap-dmtimer binding
-> > > 
-> > > ---
-> > >  Documentation/devicetree/bindings/pwm/pwm.yaml | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > 
-> > > diff --git a/Documentation/devicetree/bindings/pwm/pwm.yaml b/Documentation/devicetree/bindings/pwm/pwm.yaml
-> > > --- a/Documentation/devicetree/bindings/pwm/pwm.yaml
-> > > +++ b/Documentation/devicetree/bindings/pwm/pwm.yaml
-> > > @@ -13,7 +13,7 @@ select: false
-> > >  
-> > >  properties:
-> > >    $nodename:
-> > > -    pattern: "^pwm(@.*|-[0-9a-f])*$"
-> > > +    pattern: "^pwm(@.+|-[0-9a-f]+)?$"
-> > 
-> > So now pwm-10 could be either?
-> 
-> Yes.
-> 
-> > I'm fine with decimal, but can we do that everywhere we do this -N 
-> > naming?
-> 
-> Do you mean the '[0-9a-f]' users that don't use '[0-9af]+'?
+The node names should be generic and DT schema expects certain pattern:
 
-No, I mean for all cases of <nodename>-N, can be we consistent. Either 
-we use hex or we use decimal.
+  omap3-beagle-ab4.dtb: leds: 'heartbeat', 'mmc', 'pmu_stat' do not match any of the regexes: '(^led-[0-9a-f]$|led)', 'pinctrl-[0-9]+'
+
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+---
+
+Changes since v1:
+1. None
+---
+ arch/arm/boot/dts/omap3-beagle.dts                   | 6 +++---
+ arch/arm/boot/dts/omap3-devkit8000-common.dtsi       | 8 ++++----
+ arch/arm/boot/dts/omap3-n900.dts                     | 2 +-
+ arch/arm/boot/dts/omap3-overo-alto35-common.dtsi     | 8 ++++----
+ arch/arm/boot/dts/omap3-overo-chestnut43-common.dtsi | 4 ++--
+ arch/arm/boot/dts/omap3-overo-gallop43-common.dtsi   | 4 ++--
+ arch/arm/boot/dts/omap3-overo-palo35-common.dtsi     | 4 ++--
+ arch/arm/boot/dts/omap3-overo-palo43-common.dtsi     | 4 ++--
+ arch/arm/boot/dts/omap3-overo-summit-common.dtsi     | 2 +-
+ arch/arm/boot/dts/omap3-overo-tobi-common.dtsi       | 2 +-
+ arch/arm/boot/dts/omap4-panda-common.dtsi            | 4 ++--
+ arch/arm/boot/dts/omap4-panda-es.dts                 | 4 ++--
+ 12 files changed, 26 insertions(+), 26 deletions(-)
+
+diff --git a/arch/arm/boot/dts/omap3-beagle.dts b/arch/arm/boot/dts/omap3-beagle.dts
+index 0548b391334f..47ff1ffddfc5 100644
+--- a/arch/arm/boot/dts/omap3-beagle.dts
++++ b/arch/arm/boot/dts/omap3-beagle.dts
+@@ -28,18 +28,18 @@ aliases {
  
-> 
-> These can be found with:
-> 
-> $ find Documentation/devicetree/bindings/ -name \*.yaml | \
-> 	xargs grep pattern: | grep '\[0-9a-f\]' | grep -v '\[0-9a-f\]+'
+ 	leds {
+ 		compatible = "gpio-leds";
+-		pmu_stat {
++		led-pmu-stat {
+ 			label = "beagleboard::pmu_stat";
+ 			gpios = <&twl_gpio 19 GPIO_ACTIVE_HIGH>; /* LEDB */
+ 		};
+ 
+-		heartbeat {
++		led-heartbeat {
+ 			label = "beagleboard::usr0";
+ 			gpios = <&gpio5 22 GPIO_ACTIVE_HIGH>; /* 150 -> D6 LED */
+ 			linux,default-trigger = "heartbeat";
+ 		};
+ 
+-		mmc {
++		led-mmc {
+ 			label = "beagleboard::usr1";
+ 			gpios = <&gpio5 21 GPIO_ACTIVE_HIGH>; /* 149 -> D7 LED */
+ 			linux,default-trigger = "mmc0";
+diff --git a/arch/arm/boot/dts/omap3-devkit8000-common.dtsi b/arch/arm/boot/dts/omap3-devkit8000-common.dtsi
+index 54cd37336be7..38aa1febc33f 100644
+--- a/arch/arm/boot/dts/omap3-devkit8000-common.dtsi
++++ b/arch/arm/boot/dts/omap3-devkit8000-common.dtsi
+@@ -15,28 +15,28 @@ memory@80000000 {
+ 	leds {
+ 		compatible = "gpio-leds";
+ 
+-		heartbeat {
++		led-heartbeat {
+ 			label = "devkit8000::led1";
+ 			gpios = <&gpio6 26 GPIO_ACTIVE_HIGH>;	/* 186 -> LED1 */
+ 			default-state = "on";
+ 			linux,default-trigger = "heartbeat";
+ 		};
+ 
+-		mmc {
++		led-mmc {
+ 			label = "devkit8000::led2";
+ 			gpios = <&gpio6 3 GPIO_ACTIVE_HIGH>;	/* 163 -> LED2 */
+ 			default-state = "on";
+ 			linux,default-trigger = "none";
+ 		};
+ 
+-		usr {
++		led-usr {
+ 			label = "devkit8000::led3";
+ 			gpios = <&gpio6 4 GPIO_ACTIVE_HIGH>;	/* 164 -> LED3 */
+ 			default-state = "on";
+ 			linux,default-trigger = "usr";
+ 		};
+ 
+-		pmu_stat {
++		led-pmu-stat {
+ 			label = "devkit8000::pmu_stat";
+ 			gpios = <&twl_gpio 19 GPIO_ACTIVE_HIGH>; /* LEDB */
+ 		};
+diff --git a/arch/arm/boot/dts/omap3-n900.dts b/arch/arm/boot/dts/omap3-n900.dts
+index 98a67581bdd2..ba35cff5b01e 100644
+--- a/arch/arm/boot/dts/omap3-n900.dts
++++ b/arch/arm/boot/dts/omap3-n900.dts
+@@ -49,7 +49,7 @@ cpu@0 {
+ 
+ 	leds {
+ 		compatible = "gpio-leds";
+-		heartbeat {
++		led-heartbeat {
+ 			label = "debug::sleep";
+ 			gpios = <&gpio6 2 GPIO_ACTIVE_HIGH>;  /* 162 */
+ 			linux,default-trigger = "default-on";
+diff --git a/arch/arm/boot/dts/omap3-overo-alto35-common.dtsi b/arch/arm/boot/dts/omap3-overo-alto35-common.dtsi
+index bb932913c9e3..a6dbbba799b2 100644
+--- a/arch/arm/boot/dts/omap3-overo-alto35-common.dtsi
++++ b/arch/arm/boot/dts/omap3-overo-alto35-common.dtsi
+@@ -17,19 +17,19 @@ leds {
+ 		compatible = "gpio-leds";
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&led_pins>;
+-		gpio148 {
++		led-gpio148 {
+ 			label = "overo:red:gpio148";
+ 			gpios = <&gpio5 20 GPIO_ACTIVE_HIGH>;		/* gpio 148 */
+ 		};
+-		gpio150 {
++		led-gpio150 {
+ 			label = "overo:yellow:gpio150";
+ 			gpios = <&gpio5 22 GPIO_ACTIVE_HIGH>;		/* gpio 150 */
+ 		};
+-		gpio151 {
++		led-gpio151 {
+ 			label = "overo:blue:gpio151";
+ 			gpios = <&gpio5 23 GPIO_ACTIVE_HIGH>;		/* gpio 151 */
+ 		};
+-		gpio170 {
++		led-gpio170 {
+ 			label = "overo:green:gpio170";
+ 			gpios = <&gpio6 10 GPIO_ACTIVE_HIGH>;		/* gpio 170 */
+ 		};
+diff --git a/arch/arm/boot/dts/omap3-overo-chestnut43-common.dtsi b/arch/arm/boot/dts/omap3-overo-chestnut43-common.dtsi
+index 2d2c61d7aa86..0d0e62c00916 100644
+--- a/arch/arm/boot/dts/omap3-overo-chestnut43-common.dtsi
++++ b/arch/arm/boot/dts/omap3-overo-chestnut43-common.dtsi
+@@ -17,12 +17,12 @@ leds {
+ 		compatible = "gpio-leds";
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&led_pins>;
+-		heartbeat {
++		led-heartbeat {
+ 			label = "overo:red:gpio21";
+ 			gpios = <&gpio1 21 GPIO_ACTIVE_LOW>;		/* gpio_21 */
+ 			linux,default-trigger = "heartbeat";
+ 		};
+-		gpio22 {
++		led-gpio22 {
+ 			label = "overo:blue:gpio22";
+ 			gpios = <&gpio1 22 GPIO_ACTIVE_LOW>;		/* gpio_22 */
+ 		};
+diff --git a/arch/arm/boot/dts/omap3-overo-gallop43-common.dtsi b/arch/arm/boot/dts/omap3-overo-gallop43-common.dtsi
+index 155aec121400..5f6721326f86 100644
+--- a/arch/arm/boot/dts/omap3-overo-gallop43-common.dtsi
++++ b/arch/arm/boot/dts/omap3-overo-gallop43-common.dtsi
+@@ -17,12 +17,12 @@ leds {
+ 		compatible = "gpio-leds";
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&led_pins>;
+-		heartbeat {
++		led-heartbeat {
+ 			label = "overo:red:gpio21";
+ 			gpios = <&gpio1 21 GPIO_ACTIVE_LOW>;		/* gpio_21 */
+ 			linux,default-trigger = "heartbeat";
+ 		};
+-		gpio22 {
++		led-gpio22 {
+ 			label = "overo:blue:gpio22";
+ 			gpios = <&gpio1 22 GPIO_ACTIVE_LOW>;		/* gpio_22 */
+ 		};
+diff --git a/arch/arm/boot/dts/omap3-overo-palo35-common.dtsi b/arch/arm/boot/dts/omap3-overo-palo35-common.dtsi
+index 82a04466747a..4b66f622ac13 100644
+--- a/arch/arm/boot/dts/omap3-overo-palo35-common.dtsi
++++ b/arch/arm/boot/dts/omap3-overo-palo35-common.dtsi
+@@ -17,12 +17,12 @@ leds {
+ 		compatible = "gpio-leds";
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&led_pins>;
+-		heartbeat {
++		led-heartbeat {
+ 			label = "overo:red:gpio21";
+ 			gpios = <&gpio1 21 GPIO_ACTIVE_LOW>;		/* gpio_21 */
+ 			linux,default-trigger = "heartbeat";
+ 		};
+-		gpio22 {
++		led-gpio22 {
+ 			label = "overo:blue:gpio22";
+ 			gpios = <&gpio1 22 GPIO_ACTIVE_LOW>;		/* gpio_22 */
+ 		};
+diff --git a/arch/arm/boot/dts/omap3-overo-palo43-common.dtsi b/arch/arm/boot/dts/omap3-overo-palo43-common.dtsi
+index 453a55324fa1..a8f163a899f0 100644
+--- a/arch/arm/boot/dts/omap3-overo-palo43-common.dtsi
++++ b/arch/arm/boot/dts/omap3-overo-palo43-common.dtsi
+@@ -17,12 +17,12 @@ leds {
+ 		compatible = "gpio-leds";
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&led_pins>;
+-		heartbeat {
++		led-heartbeat {
+ 			label = "overo:red:gpio21";
+ 			gpios = <&gpio1 21 GPIO_ACTIVE_LOW>;		/* gpio_21 */
+ 			linux,default-trigger = "heartbeat";
+ 		};
+-		gpio22 {
++		led-gpio22 {
+ 			label = "overo:blue:gpio22";
+ 			gpios = <&gpio1 22 GPIO_ACTIVE_LOW>;		/* gpio_22 */
+ 		};
+diff --git a/arch/arm/boot/dts/omap3-overo-summit-common.dtsi b/arch/arm/boot/dts/omap3-overo-summit-common.dtsi
+index df7450f17ffd..ec03ca17e98b 100644
+--- a/arch/arm/boot/dts/omap3-overo-summit-common.dtsi
++++ b/arch/arm/boot/dts/omap3-overo-summit-common.dtsi
+@@ -15,7 +15,7 @@ leds {
+ 		compatible = "gpio-leds";
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&led_pins>;
+-		heartbeat {
++		led-heartbeat {
+ 			label = "overo:red:gpio21";
+ 			gpios = <&gpio1 21 GPIO_ACTIVE_LOW>;		/* gpio_21 */
+ 			linux,default-trigger = "heartbeat";
+diff --git a/arch/arm/boot/dts/omap3-overo-tobi-common.dtsi b/arch/arm/boot/dts/omap3-overo-tobi-common.dtsi
+index 9bf4b88a4b50..5432e4e16ab5 100644
+--- a/arch/arm/boot/dts/omap3-overo-tobi-common.dtsi
++++ b/arch/arm/boot/dts/omap3-overo-tobi-common.dtsi
+@@ -13,7 +13,7 @@
+ / {
+ 	leds {
+ 		compatible = "gpio-leds";
+-		heartbeat {
++		led-heartbeat {
+ 			label = "overo:red:gpio21";
+ 			gpios = <&gpio1 21 GPIO_ACTIVE_LOW>;
+ 			linux,default-trigger = "heartbeat";
+diff --git a/arch/arm/boot/dts/omap4-panda-common.dtsi b/arch/arm/boot/dts/omap4-panda-common.dtsi
+index 518652a599bd..0269424350aa 100644
+--- a/arch/arm/boot/dts/omap4-panda-common.dtsi
++++ b/arch/arm/boot/dts/omap4-panda-common.dtsi
+@@ -49,13 +49,13 @@ leds: leds {
+ 			&led_wkgpio_pins
+ 		>;
+ 
+-		heartbeat {
++		led-heartbeat {
+ 			label = "pandaboard::status1";
+ 			gpios = <&gpio1 7 GPIO_ACTIVE_HIGH>;
+ 			linux,default-trigger = "heartbeat";
+ 		};
+ 
+-		mmc {
++		led-mmc {
+ 			label = "pandaboard::status2";
+ 			gpios = <&gpio1 8 GPIO_ACTIVE_HIGH>;
+ 			linux,default-trigger = "mmc0";
+diff --git a/arch/arm/boot/dts/omap4-panda-es.dts b/arch/arm/boot/dts/omap4-panda-es.dts
+index 7c6886cd738f..7631029e4d7a 100644
+--- a/arch/arm/boot/dts/omap4-panda-es.dts
++++ b/arch/arm/boot/dts/omap4-panda-es.dts
+@@ -79,10 +79,10 @@ &led_gpio_pins
+ 		&led_wkgpio_pins
+ 	>;
+ 
+-	heartbeat {
++	led-heartbeat {
+ 		gpios = <&gpio4 14 GPIO_ACTIVE_HIGH>;
+ 	};
+-	mmc {
++	led-mmc {
+ 		gpios = <&gpio1 8 GPIO_ACTIVE_HIGH>;
+ 	};
+ };
+-- 
+2.34.1
 
-Not quite. It's just cases of '-N':
-
-$ find Documentation/devicetree/bindings/ -name \*.yaml |         xargs grep pattern: | grep '\-\[0-9a-f\]' | grep -v '\[0-9a-f\]+'
-Documentation/devicetree/bindings/phy/intel,combo-phy.yaml:    pattern: "combophy(@.*|-[0-9a-f])*$"
-Documentation/devicetree/bindings/pwm/pwm.yaml:    pattern: "^pwm(@.*|-[0-9a-f])*$"
-Documentation/devicetree/bindings/timestamp/hardware-timestamps-common.yaml:    pattern: "^timestamp(@.*|-[0-9a-f])?$"
-Documentation/devicetree/bindings/watchdog/watchdog.yaml:    pattern: "^watchdog(@.*|-[0-9a-f])?$"
-Documentation/devicetree/bindings/spi/spi-controller.yaml:    pattern: "^spi(@.*|-[0-9a-f])*$"
-Documentation/devicetree/bindings/rtc/rtc.yaml:    pattern: "^rtc(@.*|-[0-9a-f])*$"
-
-
-And there's probably some more in dtschema.
-
-> 
-> Not sure if some of these need to intentionally limit the node numbering
-> to 15.
-
-No, I think it was all just cases of 15 should be enough for anyone.
-
-> 
-> If you have some other criteria in mind, let me know :)
-
-If the numbering is hex, then it is as you have it. (Though we can't 
-enforce that.
-
-If it is decimal, then the regex should be ([0-9]|[1-9][0-9]+). 
-
-Rob
