@@ -2,47 +2,47 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 33E2B63AFD5
-	for <lists+linux-omap@lfdr.de>; Mon, 28 Nov 2022 18:46:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D5C7763B00C
+	for <lists+linux-omap@lfdr.de>; Mon, 28 Nov 2022 18:48:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233530AbiK1RqP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 28 Nov 2022 12:46:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35164 "EHLO
+        id S233676AbiK1RsG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 28 Nov 2022 12:48:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34956 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233357AbiK1Rpe (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 28 Nov 2022 12:45:34 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D8992CE21;
-        Mon, 28 Nov 2022 09:41:19 -0800 (PST)
+        with ESMTP id S233719AbiK1RrJ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 28 Nov 2022 12:47:09 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6169F2DA91;
+        Mon, 28 Nov 2022 09:41:54 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id DED30B80E81;
-        Mon, 28 Nov 2022 17:41:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C357DC433C1;
-        Mon, 28 Nov 2022 17:41:09 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id CF75FCE0FB1;
+        Mon, 28 Nov 2022 17:41:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44CE3C433D6;
+        Mon, 28 Nov 2022 17:41:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1669657270;
+        s=k20201202; t=1669657311;
         bh=bU25Nii84+2iHsLAjyvDjHvd8R4uQjmsRD9iQBkNt8A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=p4YL6y53Ub1LWd7orWo8f2yJRZuuFvSEHnkjNIwBPZG597JT9R4kRmICS+A+WPazQ
-         DeTrESBshVh3akzNHQpY8oNbSUKVozKXeSg2t0Ij+B+c5MIKwpjkzc3x/+aSYOuIni
-         3CsoEiCnfnRa5VnY/5WN/NhgJ7prm95jMpFMTv/AQmNaifTQRXt6TXyTrvXcImUEKs
-         HLqi6qmoCIjLkTTB2aBLjYlWN2I4j0N+ivpcWI/MgVh5YtjULQDVV9Pu3Pnkjnpfbk
-         biNbHUnj3Isc37M1M6Ad8YebJeoMXSh7zf5i4B94X1+3D256zoejpNcUD2z6d2pIg+
-         aHiAuIpcrwsgw==
+        b=n4Yz4yzJwmsGTzQu7f7to0cK8HIlczw+PGU29p3reA8j3sPgW55uQaxjLBgKPYeqW
+         6d3E6AIimrOm9FYOqz9zkaeiBY9Cnn3uUY//8R4Fsc4EOv5CYcsPcfKir74mGuSc3c
+         UUw4hDDXKK4CqjCO702+0bfyiW2aFCGQVCnP5doX5SEGPQ0bZ35yysH76Q5uxX8oRr
+         DP5PWdmrvexQzfaH4NNIej8CS9nBpRpyRieR14/qN3A5qsnocOcM8xgOYoZ5YxOPpu
+         8txW9gzkxK6YQKccngZXZFYrCXqYzQvskl+v9hk2moAMEtOMSRZd6N14k2YvokaOkT
+         LYmz4wnMG1w+Q==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Andreas Kemnade <andreas@kemnade.info>,
         Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>, tony@atomide.com,
         lgirdwood@gmail.com, linux-omap@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 20/24] regulator: twl6030: fix get status of twl6032 regulators
-Date:   Mon, 28 Nov 2022 12:40:20 -0500
-Message-Id: <20221128174027.1441921-20-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 15/19] regulator: twl6030: fix get status of twl6032 regulators
+Date:   Mon, 28 Nov 2022 12:41:15 -0500
+Message-Id: <20221128174120.1442235-15-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20221128174027.1441921-1-sashal@kernel.org>
-References: <20221128174027.1441921-1-sashal@kernel.org>
+In-Reply-To: <20221128174120.1442235-1-sashal@kernel.org>
+References: <20221128174120.1442235-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
