@@ -2,51 +2,45 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D9DA63B06E
-	for <lists+linux-omap@lfdr.de>; Mon, 28 Nov 2022 18:51:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4418163C124
+	for <lists+linux-omap@lfdr.de>; Tue, 29 Nov 2022 14:35:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233811AbiK1Rv1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 28 Nov 2022 12:51:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48314 "EHLO
+        id S229820AbiK2NfN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 29 Nov 2022 08:35:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233820AbiK1RtZ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 28 Nov 2022 12:49:25 -0500
+        with ESMTP id S229632AbiK2NfM (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 29 Nov 2022 08:35:12 -0500
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93D392ED4B;
-        Mon, 28 Nov 2022 09:43:24 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AFDC1134;
+        Tue, 29 Nov 2022 05:35:11 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 15EE3B80EA4;
-        Mon, 28 Nov 2022 17:43:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F349CC433D7;
-        Mon, 28 Nov 2022 17:43:20 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 07679B811BC;
+        Tue, 29 Nov 2022 13:35:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06C6AC433C1;
+        Tue, 29 Nov 2022 13:35:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1669657401;
-        bh=iQpQUVK5gX+soU2jK/6FjxFPztatRaqDKoWWz//s3zA=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oXBMdLtw/ZwdByQ4I6/oS0Qyxw6jIbilpynAwd2I3X1L9uMSi8z4zSq2RUp3fnW//
-         kp67n4aSPUQolVeHNYtliGIDwwWF/YhEfFobOZfLYwmSj58int8Qy5OeDGLSrfdy+V
-         0TDmjGkA7Rt78vC4+AqUKhPObzL5kK/lvK3FSkseaNgTembAe/eiSAYV9A07Jc6wBL
-         f1xXHEyrI8n8b9361CGaf7ty9gmW5c7/oOs6WcE9p2pOYj0i04z46sreyUrBZaVzXy
-         /v11L+X+PaHr+fduX6u8P45a9aITgnnyQRUue92Q009B8vVXqP1KHQlrD++vM8z910
-         9kkPIkE/JH84Q==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Andreas Kemnade <andreas@kemnade.info>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, tony@atomide.com,
-        lgirdwood@gmail.com, linux-omap@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 8/9] regulator: twl6030: fix get status of twl6032 regulators
-Date:   Mon, 28 Nov 2022 12:43:01 -0500
-Message-Id: <20221128174303.1443008-8-sashal@kernel.org>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20221128174303.1443008-1-sashal@kernel.org>
-References: <20221128174303.1443008-1-sashal@kernel.org>
-MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+        s=k20201202; t=1669728908;
+        bh=AgrFaXDHO4T8urlnogCwZ98IvUvFDANZ++DIGe943KE=;
+        h=From:To:Cc:Subject:Date:From;
+        b=jV9BEps1XGs/8fKcoiR/Q1JO799qkN+235RF8yuZya24QM90/LEk0eNABaGTehX1i
+         /BdztpcW1MvnwMxAURXmVb3m8gFbeBfeEQUgICBUypOlEyMmYT0VoqEjviZMSnhBui
+         fD2rFON+a5Pm4IJGoNU7RgE5diimosEHT3Lre9T5xYB0x/wst9GaCEucNDxrJXVmLS
+         9EKoFn4FjSuY22UQs08H/dsEJS+OaneyvcIo5IN1ZmeY2ERiQ37nbuw7xzqDwUN1ik
+         r7/7jLft+MWmNNy2SSf9Jpbxb82SE3bKBVf+Ro7D6m5fpGkW51tN5y+GzRRfNywcCT
+         bHfoaiQUiFU0g==
+From:   Roger Quadros <rogerq@kernel.org>
+To:     davem@davemloft.net, maciej.fijalkowski@intel.com, kuba@kernel.org
+Cc:     andrew@lunn.ch, edumazet@google.com, pabeni@redhat.com,
+        vigneshr@ti.com, linux-omap@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Roger Quadros <rogerq@kernel.org>
+Subject: [PATCH v4 net-next 0/6] net: ethernet: ti: am65-cpsw: Fix set channel operation
+Date:   Tue, 29 Nov 2022 15:34:55 +0200
+Message-Id: <20221129133501.30659-1-rogerq@kernel.org>
+X-Mailer: git-send-email 2.17.1
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -56,67 +50,49 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Andreas Kemnade <andreas@kemnade.info>
+Hi,
 
-[ Upstream commit 31a6297b89aabc81b274c093a308a7f5b55081a7 ]
+This contains a critical bug fix for the recently merged suspend/resume
+support [1] that broke set channel operation. (ethtool -L eth0 tx <n>)
 
-Status is reported as always off in the 6032 case. Status
-reporting now matches the logic in the setters. Once of
-the differences to the 6030 is that there are no groups,
-therefore the state needs to be read out in the lower bits.
+As there were 2 dependent patches on top of the offending commit [1]
+first revert them and then apply them back after the correct fix.
 
-Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-Link: https://lore.kernel.org/r/20221120221208.3093727-3-andreas@kemnade.info
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/regulator/twl6030-regulator.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+[1] fd23df72f2be ("net: ethernet: ti: am65-cpsw: Add suspend/resume support")
 
-diff --git a/drivers/regulator/twl6030-regulator.c b/drivers/regulator/twl6030-regulator.c
-index 219cbd910dbf..485d25f683d8 100644
---- a/drivers/regulator/twl6030-regulator.c
-+++ b/drivers/regulator/twl6030-regulator.c
-@@ -71,6 +71,7 @@ struct twlreg_info {
- #define TWL6030_CFG_STATE_SLEEP	0x03
- #define TWL6030_CFG_STATE_GRP_SHIFT	5
- #define TWL6030_CFG_STATE_APP_SHIFT	2
-+#define TWL6030_CFG_STATE_MASK		0x03
- #define TWL6030_CFG_STATE_APP_MASK	(0x03 << TWL6030_CFG_STATE_APP_SHIFT)
- #define TWL6030_CFG_STATE_APP(v)	(((v) & TWL6030_CFG_STATE_APP_MASK) >>\
- 						TWL6030_CFG_STATE_APP_SHIFT)
-@@ -131,13 +132,14 @@ static int twl6030reg_is_enabled(struct regulator_dev *rdev)
- 		if (grp < 0)
- 			return grp;
- 		grp &= P1_GRP_6030;
-+		val = twlreg_read(info, TWL_MODULE_PM_RECEIVER, VREG_STATE);
-+		val = TWL6030_CFG_STATE_APP(val);
- 	} else {
-+		val = twlreg_read(info, TWL_MODULE_PM_RECEIVER, VREG_STATE);
-+		val &= TWL6030_CFG_STATE_MASK;
- 		grp = 1;
- 	}
- 
--	val = twlreg_read(info, TWL_MODULE_PM_RECEIVER, VREG_STATE);
--	val = TWL6030_CFG_STATE_APP(val);
--
- 	return grp && (val == TWL6030_CFG_STATE_ON);
- }
- 
-@@ -190,7 +192,12 @@ static int twl6030reg_get_status(struct regulator_dev *rdev)
- 
- 	val = twlreg_read(info, TWL_MODULE_PM_RECEIVER, VREG_STATE);
- 
--	switch (TWL6030_CFG_STATE_APP(val)) {
-+	if (info->features & TWL6032_SUBCLASS)
-+		val &= TWL6030_CFG_STATE_MASK;
-+	else
-+		val = TWL6030_CFG_STATE_APP(val);
-+
-+	switch (val) {
- 	case TWL6030_CFG_STATE_ON:
- 		return REGULATOR_STATUS_NORMAL;
- 
+cheers,
+-roger
+
+Changelog:
+v4:
+- move am65_cpsw_nuss_ndev_add_tx_napi() earlier to avoid declaration.
+- print error and error out if soft RESET failed in
+  am65_cpsw_nuss_ndo_slave_open()
+- move struct 'am65_cpsw_host *host' where 'common' is defined.
+
+v3:
+- revert offending commit before applying the updated patch.
+- drop optimization patch to be sent separately.
+
+v2:
+- Fix build warning
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c:562:13: warning: variable 'tmo' set but not used [-Wunused-but-set-variable]
+
+Roger Quadros (6):
+  Revert "net: ethernet: ti: am65-cpsw: Fix hardware switch mode on
+    suspend/resume"
+  Revert "net: ethernet: ti: am65-cpsw: retain PORT_VLAN_REG after
+    suspend/resume"
+  Revert "net: ethernet: ti: am65-cpsw: Add suspend/resume support"
+  net: ethernet: ti: am65-cpsw: Add suspend/resume support
+  net: ethernet: ti: am65-cpsw: retain PORT_VLAN_REG after
+    suspend/resume
+  net: ethernet: ti: am65-cpsw: Fix hardware switch mode on
+    suspend/resume
+
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c | 197 ++++++++++++-----------
+ 1 file changed, 105 insertions(+), 92 deletions(-)
+
 -- 
-2.35.1
+2.17.1
 
