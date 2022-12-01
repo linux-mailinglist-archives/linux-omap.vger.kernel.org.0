@@ -2,93 +2,256 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 832DB63F5E7
-	for <lists+linux-omap@lfdr.de>; Thu,  1 Dec 2022 18:06:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8709C63F6FB
+	for <lists+linux-omap@lfdr.de>; Thu,  1 Dec 2022 19:00:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230003AbiLARGv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 1 Dec 2022 12:06:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55454 "EHLO
+        id S230022AbiLASAn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 1 Dec 2022 13:00:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54130 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229988AbiLARGu (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 1 Dec 2022 12:06:50 -0500
-Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26B76A6068
-        for <linux-omap@vger.kernel.org>; Thu,  1 Dec 2022 09:06:49 -0800 (PST)
-Received: by mail-lf1-x134.google.com with SMTP id b3so3459927lfv.2
-        for <linux-omap@vger.kernel.org>; Thu, 01 Dec 2022 09:06:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=PvnwqFoda3R81XSsH5X8ckaYHfYXYc7+YOPbr2SI3JY=;
-        b=NDrN6eqmcPfDqgehQ9tqv8zIUNhNWoMbw1ReFyE9DuwfC7axElTCeqHYkSC1Ndgx1A
-         kKTQS03ICML74BW1vIdWvS1TTM2Vnqgoct2QLYjagWccRuthslzA8Qr+B5D3YKs5WTr6
-         Mnla5jqEkvVvjx1vKwZ0tJs/YX0xIjFw6OPlF6yK5dXBylEvQ6rV7NkiZZeP+WW6s/Oc
-         UUKDQso00astuSNXSVMh/RdyKV/WPHjsE1W6mrAK5yupJ75dClqdY0evhXSQkqq4Jont
-         fpPSGvAmGZW9fy0leyiFLxyhUhcQNpw4fh3RPpFTVbEEgftTwBbUzbesTTnOWuVybwfs
-         VHvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PvnwqFoda3R81XSsH5X8ckaYHfYXYc7+YOPbr2SI3JY=;
-        b=q33HxfFViwiDVKm8V4oZtpxbmJlQ6KokUgyOPY+aJiwLp6sE7w15VHFFnTAjLUMDEL
-         hXCoDm70C/bYkazP9a+DOfeWepsx6+7AI/I4AYEnlmZcadijuJ9JouQjcu9QnhFpcfut
-         9MdXNVpuJt3Nywu6wmlgNhScyB+Lw8jNQn/bq0BMKQIVpNC+5uhV8h+GJ9ywlywRsJ1x
-         jmBTxWVhaS4TIXMGPaIqj8Q9LT8GrnMDJQxpfj7bMWBYYJrdGIPKmlwkzd3PgtlxK/LB
-         S3VIGwN8IcIZlzf1DblnY9pN3S+EbqqItLDB07D+iIvYNGqjSvfcAkncTYOgooqjEcrV
-         2Gvw==
-X-Gm-Message-State: ANoB5pmDjKYDy4IYnfrfRyaWS8OE+GlXc3cQwq13/2ZEQwiiZw3gip4p
-        H2Pmbu6Sb4YEj07R7/9QSq1qd0+bdF0THPX/
-X-Google-Smtp-Source: AA0mqf5b+G9hYnKMFf5FxV5ES5WTINWCBfL1ffRNqTPhAmhe1ML2MbwtBW9ttJYnftFUHuC81JDLCA==
-X-Received: by 2002:a19:674a:0:b0:4b1:3931:af with SMTP id e10-20020a19674a000000b004b1393100afmr18949930lfj.394.1669914407257;
-        Thu, 01 Dec 2022 09:06:47 -0800 (PST)
-Received: from krzk-bin.NAT.warszawa.vectranet.pl (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
-        by smtp.gmail.com with ESMTPSA id q9-20020ac25fc9000000b004b40f5e7336sm703659lfg.199.2022.12.01.09.06.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Dec 2022 09:06:46 -0800 (PST)
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To:     linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        Tony Lindgren <tony@atomide.com>, linux-kernel@vger.kernel.org,
-        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Subject: Re: [PATCH v2 1/2] ARM: dts: omap: align LED node names with dtschema
-Date:   Thu,  1 Dec 2022 18:06:41 +0100
-Message-Id: <166991439955.130674.13081986511238050689.b4-ty@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20221127203034.54092-1-krzysztof.kozlowski@linaro.org>
-References: <20221127203034.54092-1-krzysztof.kozlowski@linaro.org>
+        with ESMTP id S229999AbiLASAn (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 1 Dec 2022 13:00:43 -0500
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D28BAB276F;
+        Thu,  1 Dec 2022 10:00:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1669917642; x=1701453642;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=7JbfxM0BIJTQeM0nqxSmNKYTXO3qQdt9sUjsZ0/oGGE=;
+  b=jHMZL/U8WDKsZDJOupEUiH4lpO0xGQeUKXLscWeSMapWNbH6qVscjlSc
+   +oge1Syfyuw1mPJzgi8Mq9DUDLJc4LKLFAknhi8K31eGrRgQ0/A9ro/AR
+   ZAw/Ng7kbcQ8gi/i7jNkxF5vCJku6WqNcPMkU29OGyRsnnxKckJwpWkbi
+   LtCIh2wxMNPuJC6bljTfMdpN4WRfU7ukjiTvRgKk1O3MkV8X11xqDv2Ux
+   xWvjuBftrYGF07G1RYfRQev5EnDvuX2fBvE+jMNZl4OaYrl9nQmMqI+1K
+   /R0Qu1CjKGKNzejC03QUXw1oppgiuuVF5HypAIqUAMZ5ldQUTmvd93hvz
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10548"; a="317623783"
+X-IronPort-AV: E=Sophos;i="5.96,209,1665471600"; 
+   d="scan'208";a="317623783"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Dec 2022 10:00:41 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10548"; a="750911949"
+X-IronPort-AV: E=Sophos;i="5.96,209,1665471600"; 
+   d="scan'208";a="750911949"
+Received: from lkp-server01.sh.intel.com (HELO 64a2d449c951) ([10.239.97.150])
+  by fmsmga002.fm.intel.com with ESMTP; 01 Dec 2022 10:00:37 -0800
+Received: from kbuild by 64a2d449c951 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1p0nrQ-000CnL-1t;
+        Thu, 01 Dec 2022 18:00:36 +0000
+Date:   Fri, 02 Dec 2022 02:00:20 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     nouveau@lists.freedesktop.org, netfilter-devel@vger.kernel.org,
+        loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+        linux-omap@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        dri-devel@lists.freedesktop.org, coreteam@netfilter.org,
+        amd-gfx@lists.freedesktop.org,
+        Linux Memory Management List <linux-mm@kvack.org>
+Subject: [linux-next:master] BUILD REGRESSION
+ 2934ceb4e967b9233d0f97732e47175574a11406
+Message-ID: <6388ebb4.4fWHGaE8GeH20VVN%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sun, 27 Nov 2022 21:30:33 +0100, Krzysztof Kozlowski wrote:
-> The node names should be generic and DT schema expects certain pattern:
-> 
->   omap3-beagle-ab4.dtb: leds: 'heartbeat', 'mmc', 'pmu_stat' do not match any of the regexes: '(^led-[0-9a-f]$|led)', 'pinctrl-[0-9]+'
-> 
-> 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: 2934ceb4e967b9233d0f97732e47175574a11406  Add linux-next specific files for 20221201
 
-Applied, thanks!
+Error/Warning reports:
 
-[1/2] ARM: dts: omap: align LED node names with dtschema
-      https://git.kernel.org/krzk/linux-dt/c/95a45c667635d50de9beb3c5f5b3046dfa395bff
-[2/2] ARM: dts: omap: echo: use preferred enable-gpios for LP5523 LED
-      https://git.kernel.org/krzk/linux-dt/c/e920bcac0ec64b3010438d38724cefce361f7c3a
+https://lore.kernel.org/oe-kbuild-all/202211041320.coq8EELJ-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202211090634.RyFKK0WS-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202211242021.FDZRFNA8-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202211242120.MzZVGULn-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202211301840.y7rROb13-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202212011005.7X5XAsmG-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202212020122.myyqvrXj-lkp@intel.com
 
-Best regards,
+Error/Warning: (recently discovered and may have been fixed)
+
+arch/arm/mach-s3c/devs.c:32:10: fatal error: linux/platform_data/dma-s3c24xx.h: No such file or directory
+arch/loongarch/kernel/ftrace_dyn.c:47:36: error: invalid use of undefined type 'struct module'
+arch/powerpc/kernel/kvm_emul.o: warning: objtool: kvm_template_end(): can't find starting instruction
+arch/powerpc/kernel/optprobes_head.o: warning: objtool: optprobe_template_end(): can't find starting instruction
+drivers/gpu/drm/amd/amdgpu/../display/dc/irq/dcn201/irq_service_dcn201.c:40:20: warning: no previous prototype for 'to_dal_irq_source_dcn201' [-Wmissing-prototypes]
+drivers/gpu/drm/nouveau/nvkm/engine/fifo/gf100.c:451:1: warning: no previous prototype for 'gf100_fifo_nonstall_block' [-Wmissing-prototypes]
+drivers/gpu/drm/nouveau/nvkm/engine/fifo/gf100.c:451:1: warning: no previous prototype for function 'gf100_fifo_nonstall_block' [-Wmissing-prototypes]
+drivers/gpu/drm/nouveau/nvkm/engine/fifo/runl.c:34:1: warning: no previous prototype for 'nvkm_engn_cgrp_get' [-Wmissing-prototypes]
+drivers/gpu/drm/nouveau/nvkm/engine/fifo/runl.c:34:1: warning: no previous prototype for function 'nvkm_engn_cgrp_get' [-Wmissing-prototypes]
+drivers/gpu/drm/nouveau/nvkm/engine/gr/tu102.c:210:1: warning: no previous prototype for 'tu102_gr_load' [-Wmissing-prototypes]
+drivers/gpu/drm/nouveau/nvkm/engine/gr/tu102.c:210:1: warning: no previous prototype for function 'tu102_gr_load' [-Wmissing-prototypes]
+drivers/gpu/drm/nouveau/nvkm/nvfw/acr.c:49:1: warning: no previous prototype for 'wpr_generic_header_dump' [-Wmissing-prototypes]
+drivers/gpu/drm/nouveau/nvkm/nvfw/acr.c:49:1: warning: no previous prototype for function 'wpr_generic_header_dump' [-Wmissing-prototypes]
+drivers/gpu/drm/nouveau/nvkm/subdev/acr/lsfw.c:221:21: warning: variable 'loc' set but not used [-Wunused-but-set-variable]
+drivers/irqchip/irq-loongarch-cpu.c:96:12: warning: no previous prototype for 'loongarch_cpu_irq_of_init' [-Wmissing-prototypes]
+drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c:1849:38: warning: unused variable 'mt8173_jpeg_drvdata' [-Wunused-const-variable]
+drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c:1864:38: warning: unused variable 'mtk_jpeg_drvdata' [-Wunused-const-variable]
+drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c:1890:38: warning: unused variable 'mtk8195_jpegdec_drvdata' [-Wunused-const-variable]
+drivers/regulator/tps65219-regulator.c:310:60: warning: parameter 'dev' set but not used [-Wunused-but-set-parameter]
+drivers/regulator/tps65219-regulator.c:370:26: warning: ordered comparison of pointer with integer zero [-Wextra]
+net/netfilter/nf_conntrack_netlink.c:2674:6: warning: unused variable 'mark' [-Wunused-variable]
+vmlinux.o: warning: objtool: __btrfs_map_block+0x1d77: unreachable instruction
+
+Error/Warning ids grouped by kconfigs:
+
+gcc_recent_errors
+|-- alpha-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-gf100_fifo_nonstall_block
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-runl.c:warning:no-previous-prototype-for-nvkm_engn_cgrp_get
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-gr-tu102.c:warning:no-previous-prototype-for-tu102_gr_load
+|   |-- drivers-gpu-drm-nouveau-nvkm-nvfw-acr.c:warning:no-previous-prototype-for-wpr_generic_header_dump
+|   |-- drivers-gpu-drm-nouveau-nvkm-subdev-acr-lsfw.c:warning:variable-loc-set-but-not-used
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- alpha-randconfig-r005-20221128
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-gf100_fifo_nonstall_block
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-runl.c:warning:no-previous-prototype-for-nvkm_engn_cgrp_get
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-gr-tu102.c:warning:no-previous-prototype-for-tu102_gr_load
+|   |-- drivers-gpu-drm-nouveau-nvkm-nvfw-acr.c:warning:no-previous-prototype-for-wpr_generic_header_dump
+|   `-- drivers-gpu-drm-nouveau-nvkm-subdev-acr-lsfw.c:warning:variable-loc-set-but-not-used
+|-- arc-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-gf100_fifo_nonstall_block
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-runl.c:warning:no-previous-prototype-for-nvkm_engn_cgrp_get
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-gr-tu102.c:warning:no-previous-prototype-for-tu102_gr_load
+|   |-- drivers-gpu-drm-nouveau-nvkm-nvfw-acr.c:warning:no-previous-prototype-for-wpr_generic_header_dump
+|   |-- drivers-gpu-drm-nouveau-nvkm-subdev-acr-lsfw.c:warning:variable-loc-set-but-not-used
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- arm-allyesconfig
+|   |-- arch-arm-mach-s3c-devs.c:fatal-error:linux-platform_data-dma-s3c24xx.h:No-such-file-or-directory
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-gf100_fifo_nonstall_block
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-runl.c:warning:no-previous-prototype-for-nvkm_engn_cgrp_get
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-gr-tu102.c:warning:no-previous-prototype-for-tu102_gr_load
+|   |-- drivers-gpu-drm-nouveau-nvkm-nvfw-acr.c:warning:no-previous-prototype-for-wpr_generic_header_dump
+|   |-- drivers-gpu-drm-nouveau-nvkm-subdev-acr-lsfw.c:warning:variable-loc-set-but-not-used
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- arm-defconfig
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-gf100_fifo_nonstall_block
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-runl.c:warning:no-previous-prototype-for-nvkm_engn_cgrp_get
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-gr-tu102.c:warning:no-previous-prototype-for-tu102_gr_load
+|   |-- drivers-gpu-drm-nouveau-nvkm-nvfw-acr.c:warning:no-previous-prototype-for-wpr_generic_header_dump
+|   `-- drivers-gpu-drm-nouveau-nvkm-subdev-acr-lsfw.c:warning:variable-loc-set-but-not-used
+|-- arm64-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-gf100_fifo_nonstall_block
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-runl.c:warning:no-previous-prototype-for-nvkm_engn_cgrp_get
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-gr-tu102.c:warning:no-previous-prototype-for-tu102_gr_load
+|   |-- drivers-gpu-drm-nouveau-nvkm-nvfw-acr.c:warning:no-previous-prototype-for-wpr_generic_header_dump
+|   |-- drivers-gpu-drm-nouveau-nvkm-subdev-acr-lsfw.c:warning:variable-loc-set-but-not-used
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- i386-allyesconfig
+clang_recent_errors
+|-- arm64-randconfig-r016-20221128
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-function-gf100_fifo_nonstall_block
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-runl.c:warning:no-previous-prototype-for-function-nvkm_engn_cgrp_get
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-gr-tu102.c:warning:no-previous-prototype-for-function-tu102_gr_load
+|   `-- drivers-gpu-drm-nouveau-nvkm-nvfw-acr.c:warning:no-previous-prototype-for-function-wpr_generic_header_dump
+|-- hexagon-randconfig-r041-20221128
+|   |-- drivers-media-platform-mediatek-jpeg-mtk_jpeg_core.c:warning:unused-variable-mt8173_jpeg_drvdata
+|   |-- drivers-media-platform-mediatek-jpeg-mtk_jpeg_core.c:warning:unused-variable-mtk8195_jpegdec_drvdata
+|   `-- drivers-media-platform-mediatek-jpeg-mtk_jpeg_core.c:warning:unused-variable-mtk_jpeg_drvdata
+|-- i386-randconfig-a013
+|   `-- net-netfilter-nf_conntrack_netlink.c:warning:unused-variable-mark
+|-- powerpc-randconfig-r024-20221128
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-function-gf100_fifo_nonstall_block
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-runl.c:warning:no-previous-prototype-for-function-nvkm_engn_cgrp_get
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-gr-tu102.c:warning:no-previous-prototype-for-function-tu102_gr_load
+|   `-- drivers-gpu-drm-nouveau-nvkm-nvfw-acr.c:warning:no-previous-prototype-for-function-wpr_generic_header_dump
+|-- s390-randconfig-r044-20221128
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-function-gf100_fifo_nonstall_block
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-runl.c:warning:no-previous-prototype-for-function-nvkm_engn_cgrp_get
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-gr-tu102.c:warning:no-previous-prototype-for-function-tu102_gr_load
+|   `-- drivers-gpu-drm-nouveau-nvkm-nvfw-acr.c:warning:no-previous-prototype-for-function-wpr_generic_header_dump
+`-- x86_64-randconfig-a016
+    `-- vmlinux.o:warning:objtool:handle_bug:call-to-kmsan_unpoison_entry_regs()-leaves-.noinstr.text-section
+
+elapsed time: 738m
+
+configs tested: 59
+configs skipped: 2
+
+gcc tested configs:
+powerpc                           allnoconfig
+i386                 randconfig-a002-20221128
+i386                 randconfig-a003-20221128
+i386                 randconfig-a001-20221128
+i386                 randconfig-a004-20221128
+x86_64                              defconfig
+ia64                             allmodconfig
+arc                  randconfig-r043-20221128
+x86_64                           rhel-8.3-syz
+i386                 randconfig-a005-20221128
+um                             i386_defconfig
+x86_64                         rhel-8.3-kunit
+m68k                             allyesconfig
+um                           x86_64_defconfig
+arc                                 defconfig
+m68k                             allmodconfig
+i386                 randconfig-a006-20221128
+s390                             allmodconfig
+x86_64                           rhel-8.3-kvm
+arc                              allyesconfig
+x86_64                        randconfig-a004
+alpha                               defconfig
+i386                                defconfig
+x86_64                        randconfig-a002
+s390                                defconfig
+alpha                            allyesconfig
+x86_64                               rhel-8.3
+arm                                 defconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                           allyesconfig
+x86_64                        randconfig-a006
+s390                             allyesconfig
+x86_64                          rhel-8.3-func
+arm                              allyesconfig
+arm64                            allyesconfig
+x86_64                        randconfig-a013
+x86_64                        randconfig-a011
+x86_64                        randconfig-a015
+i386                          randconfig-a014
+i386                          randconfig-a012
+i386                          randconfig-a016
+sh                               allmodconfig
+mips                             allyesconfig
+powerpc                          allmodconfig
+i386                             allyesconfig
+
+clang tested configs:
+hexagon              randconfig-r045-20221128
+hexagon              randconfig-r041-20221128
+riscv                randconfig-r042-20221128
+s390                 randconfig-r044-20221128
+x86_64                        randconfig-a001
+x86_64                        randconfig-a003
+x86_64                        randconfig-a005
+x86_64                        randconfig-a014
+x86_64                        randconfig-a012
+x86_64                        randconfig-a016
+i386                          randconfig-a013
+i386                          randconfig-a011
+i386                          randconfig-a015
+x86_64                          rhel-8.3-rust
+
 -- 
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+0-DAY CI Kernel Test Service
+https://01.org/lkp
