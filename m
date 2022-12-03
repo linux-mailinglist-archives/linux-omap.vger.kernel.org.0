@@ -2,133 +2,183 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AA1E6416CB
-	for <lists+linux-omap@lfdr.de>; Sat,  3 Dec 2022 14:09:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 541DD64177A
+	for <lists+linux-omap@lfdr.de>; Sat,  3 Dec 2022 16:17:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229727AbiLCNJI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 3 Dec 2022 08:09:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39046 "EHLO
+        id S229671AbiLCPRs (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 3 Dec 2022 10:17:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46110 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229730AbiLCNJG (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 3 Dec 2022 08:09:06 -0500
-Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82B492C651
-        for <linux-omap@vger.kernel.org>; Sat,  3 Dec 2022 05:09:05 -0800 (PST)
-Received: by mail-wr1-x42e.google.com with SMTP id m14so11899530wrh.7
-        for <linux-omap@vger.kernel.org>; Sat, 03 Dec 2022 05:09:05 -0800 (PST)
+        with ESMTP id S229553AbiLCPRr (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 3 Dec 2022 10:17:47 -0500
+Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0537C626A
+        for <linux-omap@vger.kernel.org>; Sat,  3 Dec 2022 07:17:44 -0800 (PST)
+Received: by mail-wm1-x335.google.com with SMTP id ay27-20020a05600c1e1b00b003d070f4060bso6603200wmb.2
+        for <linux-omap@vger.kernel.org>; Sat, 03 Dec 2022 07:17:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
+        d=smile-fr.20210112.gappssmtp.com; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=he4pvbcj9k7gldXO1AUh5F+PmpcqjQDOE40QJU9PQgY=;
-        b=IpTDWkg/+W6qtb6/BO+Rextf9MvVMSlQQo2APxxM4BQDnn7qkZcjkB9FFMGn9O0vXJ
-         xmbYFo0ZqKzC+reWi5Ui9m8ZE1DJ75WQ/bFAPBwaB3yh9eWT2bus6awgqTyx7PNgfhCI
-         BIvAAuR9hVxe/O2K+n3uaJUi0elOaR19s/Wse5pkabhXyOshgLmtSwZzqtvZqzXN08Qn
-         kDzAwrurvkG00GxtgVAhvrZdg82nMPvqvv+CKvcporDHyn64rgrQ7nLeu1tWshBlJ8TS
-         GDHMfMYnKweZp0ELa2PUHmSv5lLnkW7A+qy+Wew81JoaPQynn0ljjylNO17zoxC18jz1
-         TURQ==
+        bh=tC4AheAOygD5Q+8OaSRfrmV/Z8V9M2yBmfT77mic4IA=;
+        b=2uXNojJDIOyZcRSv4GU2d1wtFAm4dTj02+YaQewJI82Iu4F5soQahgOVbCFagTM0dH
+         E0qRODpK/X44WTXmgtr1vljGIccJOdpewRedtzh5UPnMVrj4NcHIN3EzWG4WFtPIknMg
+         VQblmEAahw5G6wWcPu5tOH9Mc3CQxo0HGpxwb1QN4LqYuP475bK6/vRZUUp3PxiOY9D9
+         oc16MsJyhIFpnCYKrJ+X71if5PxTUPAe2Pm5khukhWdKbPfoel6s+dcoVA7YyWHkPPP/
+         03H9A3KYQC+rvg62WoTpTjHZIyb/DqCwevwcfkqGnsKjSJ/RX5VSdwPpCrrMhgsgMFfZ
+         HTqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=he4pvbcj9k7gldXO1AUh5F+PmpcqjQDOE40QJU9PQgY=;
-        b=b1ZxDotoubU8bz58Wwo6M9Vb5TtrJ+32h0SxOuzJzzul9CCE5nZjQZ6SpLDBQpkJpI
-         TSxzDGblMMu3kHWMBGpyAjPRpq0sjwl9PvEFX5pFoU+0s/+qRiMfOQzbbuvgyQHfR6PV
-         jzqGI+oJA6THQJhkxmbVoOFcQsfl38lZijwzsb3HPQWBNfB+P8v7RKeJ+BlTdCQjWyur
-         l+VnRNjiiBfzttcYKkQUz1IoRvUSnktFX3cYngK5ASOI4g8JHHI6QvuwhR1BMB3gw/Tm
-         UKq/T2JOUprbCwX8qsUs/cdtKLOXXy3aK4ts+FhGUqG19GGpj/1XLQ2/wi6dxT0W4DH/
-         HfUg==
-X-Gm-Message-State: ANoB5pmDrFt72DRribwlYZnI5QLnTCBV2doMufJ+hECMpBvA83NeqI2l
-        GSrYKH7RcwziI+El92lfM4BVZA==
-X-Google-Smtp-Source: AA0mqf7FEFUrgBHbSYwX9vCImy4IPfSr1vGLJ8MA6ZSfnzZGkyWh6DJhnsHrk4VGpak6bs/xb0bb7g==
-X-Received: by 2002:adf:eb92:0:b0:236:80a8:485e with SMTP id t18-20020adfeb92000000b0023680a8485emr38696645wrn.362.1670072944015;
-        Sat, 03 Dec 2022 05:09:04 -0800 (PST)
-Received: from [192.168.1.115] ([185.126.107.38])
-        by smtp.gmail.com with ESMTPSA id n3-20020a05600c3b8300b003cfbbd54178sm19062878wms.2.2022.12.03.05.09.01
+        bh=tC4AheAOygD5Q+8OaSRfrmV/Z8V9M2yBmfT77mic4IA=;
+        b=s37NKiC5oPsE9rCEZSj9hwtom6Q+RYuVU0CNw9Om83o6quR1jI0uGpTCtSbk1k4+lJ
+         qUC3CpF/LAQIcU2T8ZfR5dWZgV8Ewz+W9Bk3pMDQySU8Wdh7+LVE33K/4OEcMupJKHu2
+         bJai6gUvn+vi5cYXNPUp/cJOYlJLCKcu74y2WlSmu5jUnv5IhPyPfHbukRyc85oeoDW0
+         YEnaBfgzgm0T4ze+aHMiMCoadabj8TyVMHxtCby738/zo0IfVUDeaix76GULQbRYkNHE
+         ShPlAcGJgLbUfg3aW6UqMVBz8oFz4+O7mwBHpBHUJ+sPAShcRCeHNSu4SNQzge7M3xaq
+         8j3g==
+X-Gm-Message-State: ANoB5plCejo8cZOYHHpkbOPpEmodVS+ClmgBpAK8jqswKd4cTfuV+JDP
+        FPtPh3COk/Ms/htl5JrxVGt2WCbL0NBsFfeg
+X-Google-Smtp-Source: AA0mqf4ifsFZORfnBS5P9rWVGjWkrrUc+jpAlb3Y/L7t3lfpxZuKSVdzEPhk75h65dtPe8H3tAWhng==
+X-Received: by 2002:a05:600c:1e89:b0:3cf:774b:ce6f with SMTP id be9-20020a05600c1e8900b003cf774bce6fmr11445571wmb.133.1670080662078;
+        Sat, 03 Dec 2022 07:17:42 -0800 (PST)
+Received: from ?IPV6:2a01:cb05:8f8a:1800:1c97:b8d1:b477:d53f? (2a01cb058f8a18001c97b8d1b477d53f.ipv6.abo.wanadoo.fr. [2a01:cb05:8f8a:1800:1c97:b8d1:b477:d53f])
+        by smtp.gmail.com with ESMTPSA id m35-20020a05600c3b2300b003b50428cf66sm13364063wms.33.2022.12.03.07.17.40
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 03 Dec 2022 05:09:03 -0800 (PST)
-Message-ID: <9bd630af-6f88-baa7-7bd4-e99d818fb977@linaro.org>
-Date:   Sat, 3 Dec 2022 14:09:00 +0100
+        Sat, 03 Dec 2022 07:17:41 -0800 (PST)
+Message-ID: <a9466cd9-2a75-6b53-3d57-6a6cdabd1b05@smile.fr>
+Date:   Sat, 3 Dec 2022 16:17:40 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.5.0
-Subject: Re: [PATCH 00/11] Fix pca954x i2c-mux node names
-Content-Language: en-US
-To:     Geert Uytterhoeven <geert+renesas@glider.be>,
-        =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Joel Stanley <joel@jms.id.au>,
-        Andrew Jeffery <andrew@aj.id.au>,
-        Avi Fishman <avifishman70@gmail.com>,
-        Tomer Maimon <tmaimon77@gmail.com>,
-        Tali Perry <tali.perry1@gmail.com>,
-        Patrick Venture <venture@google.com>,
-        Nancy Yuen <yuenn@google.com>,
-        Benjamin Fair <benjaminfair@google.com>,
-        Dinh Nguyen <dinguyen@kernel.org>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Stefan Agner <stefan@agner.ch>, Li Yang <leoyang.li@nxp.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        UNGLinuxDriver@microchip.com,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-aspeed@lists.ozlabs.org, openbmc@lists.ozlabs.org,
-        linux-renesas-soc@vger.kernel.org, linux-mips@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, devicetree@vger.kernel.org
-References: <cover.1669999298.git.geert+renesas@glider.be>
-From:   =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <cover.1669999298.git.geert+renesas@glider.be>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.0
+Subject: Re: [PATCH] serial: 8250: omap: Fix missing PM runtime calls for
+ omap8250_set_mctrl()
+Content-Language: fr
+To:     Tony Lindgren <tony@atomide.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Johan Hovold <johan@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        linux-serial@vger.kernel.org, linux-omap@vger.kernel.org,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+References: <20221024063613.25943-1-tony@atomide.com>
+From:   Romain Naour <romain.naour@smile.fr>
+In-Reply-To: <20221024063613.25943-1-tony@atomide.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 2/12/22 17:49, Geert Uytterhoeven wrote:
-> 	Hi all,
-> 
-> According to the I2C bus multiplexer/switch DT bindings, i2c-mux nodes
-> should be named "i2c-mux" (or something similar).
-> This patch series renames nodes for pca954x i2c-muxes that are flagged
-> by
-> 
->      make dtbs_checK DT_SCHEMA_FILES=Documentation/devicetree/bindings/i2c/i2c-mux-pca954x.yaml
-> 
-> Please apply where appropriate.
-> Thanks!
-> 
-> Geert Uytterhoeven (11):
->    ARM: dts: ti: Fix pca954x i2c-mux node names
->    ARM: dts: aspeed: Fix pca954x i2c-mux node names
->    ARM: dts: imx: Fix pca9547 i2c-mux node name
->    ARM: dts: nuvoton: Fix pca954x i2c-mux node names
->    ARM: dts: socfpga: Fix pca9548 i2c-mux node name
->    ARM: dts: vf610: Fix pca9548 i2c-mux node names
->    arm64: dts: freescale: Fix pca954x i2c-mux node names
->    arm64: dts: marvell: Fix pca954x i2c-mux node names
->    arm64: dts: renesas: ulcb-kf: Fix pca9548 i2c-mux node names
->    MIPS: mscc: jaguar2: Fix pca9545 i2c-mux node names
->    powerpc: dts: fsl: Fix pca954x i2c-mux node names
+Hello,
 
-Series:
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Le 24/10/2022 à 08:36, Tony Lindgren a écrit :
+> There are cases where omap8250_set_mctrl() may get called after the
+> UART has already autoidled causing an asynchronous external abort.
+> 
+> This can happen on ttyport_open():
+> 
+> mem_serial_in from omap8250_set_mctrl+0x38/0xa0
+> omap8250_set_mctrl from uart_update_mctrl+0x4c/0x58
+> uart_update_mctrl from uart_dtr_rts+0x60/0xa8
+> uart_dtr_rts from tty_port_block_til_ready+0xd0/0x2a8
+> tty_port_block_til_ready from uart_open+0x14/0x1c
+> uart_open from ttyport_open+0x64/0x148
+> 
+> And on ttyport_close():
+> 
+> omap8250_set_mctrl from uart_update_mctrl+0x3c/0x48
+> uart_update_mctrl from uart_dtr_rts+0x54/0x9c
+> uart_dtr_rts from tty_port_shutdown+0x78/0x9c
+> tty_port_shutdown from tty_port_close+0x3c/0x74
+> tty_port_close from ttyport_close+0x40/0x58
+> 
+> It can also happen on disassociate_ctty() calling uart_shutdown()
+> that ends up calling omap8250_set_mctrl().
+> 
+> Let's fix the issue by adding missing PM runtime calls to
+> omap8250_set_mctrl(). To do this, we need to add __omap8250_set_mctrl()
+> that can be called from both omap8250_set_mctrl(), and from runtime PM
+> resume path when restoring the registers.
+
+Sorry, I'm late but I confirm that this patch fixes my issue [1].
+
+I checked without this patch applied with the 5.10.153-rt76+ kernel and I can
+reproduce the issue.
+
+Tested-by: Romain Naour <romain.naour@smile.fr>
+
+[1] https://marc.info/?l=linux-omap&m=164398186306233&w=2
+
+Best regards,
+Romain
+
+
+> 
+> Fixes: 61929cf0169d ("tty: serial: Add 8250-core based omap driver")
+> Depends-on: dd8088d5a896 ("PM: runtime: Add pm_runtime_resume_and_get to deal with usage counter")
+> Reported-by: Merlijn Wajer <merlijn@wizzup.org>
+> Reported-by: Romain Naour <romain.naour@smile.fr>
+> Reported-by: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+> Tested-by: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> ---
+>  drivers/tty/serial/8250/8250_omap.c | 22 ++++++++++++++++++++--
+>  1 file changed, 20 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
+> --- a/drivers/tty/serial/8250/8250_omap.c
+> +++ b/drivers/tty/serial/8250/8250_omap.c
+> @@ -157,7 +157,11 @@ static u32 uart_read(struct uart_8250_port *up, u32 reg)
+>  	return readl(up->port.membase + (reg << up->port.regshift));
+>  }
+>  
+> -static void omap8250_set_mctrl(struct uart_port *port, unsigned int mctrl)
+> +/*
+> + * Called on runtime PM resume path from omap8250_restore_regs(), and
+> + * omap8250_set_mctrl().
+> + */
+> +static void __omap8250_set_mctrl(struct uart_port *port, unsigned int mctrl)
+>  {
+>  	struct uart_8250_port *up = up_to_u8250p(port);
+>  	struct omap8250_priv *priv = up->port.private_data;
+> @@ -181,6 +185,20 @@ static void omap8250_set_mctrl(struct uart_port *port, unsigned int mctrl)
+>  	}
+>  }
+>  
+> +static void omap8250_set_mctrl(struct uart_port *port, unsigned int mctrl)
+> +{
+> +	int err;
+> +
+> +	err = pm_runtime_resume_and_get(port->dev);
+> +	if (err)
+> +		return;
+> +
+> +	__omap8250_set_mctrl(port, mctrl);
+> +
+> +	pm_runtime_mark_last_busy(port->dev);
+> +	pm_runtime_put_autosuspend(port->dev);
+> +}
+> +
+>  /*
+>   * Work Around for Errata i202 (2430, 3430, 3630, 4430 and 4460)
+>   * The access to uart register after MDR1 Access
+> @@ -341,7 +359,7 @@ static void omap8250_restore_regs(struct uart_8250_port *up)
+>  
+>  	omap8250_update_mdr1(up, priv);
+>  
+> -	up->port.ops->set_mctrl(&up->port, up->port.mctrl);
+> +	__omap8250_set_mctrl(&up->port, up->port.mctrl);
+>  
+>  	if (up->port.rs485.flags & SER_RS485_ENABLED)
+>  		serial8250_em485_stop_tx(up);
 
