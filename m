@@ -2,97 +2,137 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 20128641DE7
-	for <lists+linux-omap@lfdr.de>; Sun,  4 Dec 2022 17:30:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E953264285F
+	for <lists+linux-omap@lfdr.de>; Mon,  5 Dec 2022 13:25:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230084AbiLDQaV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 4 Dec 2022 11:30:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49944 "EHLO
+        id S230480AbiLEMZ5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 5 Dec 2022 07:25:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229996AbiLDQaU (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 4 Dec 2022 11:30:20 -0500
-Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EA2E1183F
-        for <linux-omap@vger.kernel.org>; Sun,  4 Dec 2022 08:30:18 -0800 (PST)
-Received: by mail-wr1-x433.google.com with SMTP id h7so9273872wrs.6
-        for <linux-omap@vger.kernel.org>; Sun, 04 Dec 2022 08:30:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=gd6xlk0AzdtO6fVepPWbasCUVikDRLJKo87U3nnnfAY=;
-        b=X/n9meftm1bOCbPshY2mJNHMO249wdWAAl7xVqEN9E2IoHNwlQ3Mec19MnmB1fifcK
-         MJFlFJQbP4CKs84yOEEAGSfo1H9EljwiL0092QaHICynf5DHqwK9LRVwG3Y/2gQgGSGe
-         sEcscYwYGbYEGYMl6NNV4viaX6bRsYFq+EQ/0oERsVbsH5esFo830b6Mch6D14aaliq+
-         y4Mn88v357KoFtB/S0uWxY4EFGRluk62EpIdU0HerZ4Xe9srb4qq3OsGFhIV5eDnYZZX
-         vIZkjk87wwH3RG3GYynUREb28qCkkgmKFyZBedJY23Ogr3NVXY0b9/vPIvgx/ZSyyBIw
-         oLAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gd6xlk0AzdtO6fVepPWbasCUVikDRLJKo87U3nnnfAY=;
-        b=OS1I43EhBsOPCHW/FEq9115qEMf/rv/mGfprmCL8Ax/vMB3Cd4xoRj8dGf/JiuPRpX
-         JIE5J04bIIvGA9sutLtR5cgeYuszywIxUCuNp9Wm92CfZLzpf3WavzhvnDwEXUNFLbDD
-         W9qgUKJ74/55qoki9hw18NcptZGChCfb/XWfY1LXRLPE6h+kS3zoiR7iKB+y66UMLWoN
-         gD8y5Jtab2lIBngEG5b9vE9QTyz26RV5Af9XhgzPenSfXt76T7zgBs6PMBdO+Qu67wzY
-         CFOTlD2nj7C1Tik/ESYzrO4cVzZtmGMfYBuWU7eEDXbEY9ZXJOsSFsqCdNpkv5In19ee
-         /S/A==
-X-Gm-Message-State: ANoB5plWw8XiyOWUOZpID02/q0N2SkEYLMwLVKQL6lA5oZ9NFKrE19Am
-        gX8QRysINxDRtFOyZ/8UzeVIbA==
-X-Google-Smtp-Source: AA0mqf6QpWXjGm//fr5A4yjBuLavlGGryTq+y6p1sDRmgWEXfE7VCLXHuwMpAWKODjQN+zwv54Pakw==
-X-Received: by 2002:a5d:6b46:0:b0:236:56a6:823e with SMTP id x6-20020a5d6b46000000b0023656a6823emr48005339wrw.495.1670171416813;
-        Sun, 04 Dec 2022 08:30:16 -0800 (PST)
-Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
-        by smtp.googlemail.com with ESMTPSA id o18-20020a05600c4fd200b003cff309807esm20374921wmq.23.2022.12.04.08.30.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 04 Dec 2022 08:30:16 -0800 (PST)
-Message-ID: <bcab394a-75b0-995b-96f0-608880c80b50@linaro.org>
-Date:   Sun, 4 Dec 2022 17:30:15 +0100
+        with ESMTP id S230084AbiLEMZ5 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 5 Dec 2022 07:25:57 -0500
+Received: from esa1.hgst.iphmx.com (esa1.hgst.iphmx.com [68.232.141.245])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5297363AB
+        for <linux-omap@vger.kernel.org>; Mon,  5 Dec 2022 04:25:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
+  t=1670243155; x=1701779155;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=neMU4Ok0awO5Rq5skIsVHn5TxIHDupVu3e9O7MCpojQ=;
+  b=XoZt7TS+c3+PcbLmgBNGyT17QeoHX83Et8fdOHWy5m3+HD0MZ7ylL4nq
+   ob6uykKbKrJXJP1KWSzdAMKy8ySg5mwqfwt5/B0+wKr0KkyVIgtY3FqxI
+   ECBVY0qGsCoY1F0939IiLMHofHqHfrMkn9ZbFDdejZavLROqt6gUuv4Wi
+   5sXM8G2tg14dgfJqzXUiMFvV9qaD692Dg1pZQhiD4lqz0jb3UVJ/X6XGl
+   z3wtmHFCxJF9rY2b/SkbxLY+aYzwUKk2OTfRUGsQnFm0rmCQ5KR+QZbNW
+   Dxh9Blqmhfvv/dpXXretgkMD3mpPZzMNCsYo4/s8fUaT+ePOS6Y4gIiW8
+   A==;
+X-IronPort-AV: E=Sophos;i="5.96,219,1665417600"; 
+   d="scan'208";a="330010008"
+Received: from uls-op-cesaip02.wdc.com (HELO uls-op-cesaep02.wdc.com) ([199.255.45.15])
+  by ob1.hgst.iphmx.com with ESMTP; 05 Dec 2022 20:25:55 +0800
+IronPort-SDR: /CpwERxQrjgGo8M9GCcVkXDIyIeioazGZkvG+8vAf6pvtwOtcOR1rlV9tVIFL1LpbH3YQY79nC
+ ev5KSs6lv9Y+WjlMF2jniPhCi1kHOenXlC6sNUY6bBtMiIoRhvZxf/1KonmJJIgrP0N0QWNO6/
+ 1v7LFNx3ou/kIR/ph+eb9iVKKXJMRZo9EhwdAVbpqVanFnvGpnL4HUiTklY/aXY6oA4ABAJJyy
+ 4EAx7zYXYml/6ssZ0xaQ34AT6zGRS7QuSx5U/JmdMZw6jl0eENY25GOIfwUny0Dq/eylSaxq5E
+ vgU=
+Received: from uls-op-cesaip02.wdc.com ([10.248.3.37])
+  by uls-op-cesaep02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 05 Dec 2022 03:38:44 -0800
+IronPort-SDR: QKipDJ8/6aANyAwK/ZeM0u2LIpOI0Fq26sHHVXY0eU7t5oKbbK7e0MgNpBszT+pHLpxdchGgh7
+ ocIEMuYqVg2fkuW0y+G8I01eMwodPxtqM+C7rNgr53vD7ZYcRvc02pKUMknyKrgwm0pVR8q9AB
+ 7RoAPUZCuM3NvfRBpzq2rJ+EGpDRkZqyCa08vUlvDUJLenll2uVUIBhWJMjzeHGgXLuxvGMF5d
+ NzlYGrgkxt0joMNCX0K6Fu71E6K+Mettjy5FEphj8QAJjmqpnw87xzJfjVKlaXCmVAFvi9K+9T
+ nYE=
+WDCIronportException: Internal
+Received: from usg-ed-osssrv.wdc.com ([10.3.10.180])
+  by uls-op-cesaip02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 05 Dec 2022 04:25:56 -0800
+Received: from usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1])
+        by usg-ed-osssrv.wdc.com (Postfix) with ESMTP id 4NQjSf6s4zz1RWxq
+        for <linux-omap@vger.kernel.org>; Mon,  5 Dec 2022 04:25:54 -0800 (PST)
+Authentication-Results: usg-ed-osssrv.wdc.com (amavisd-new); dkim=pass
+        reason="pass (just generated, assumed good)"
+        header.d=opensource.wdc.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=
+        opensource.wdc.com; h=content-transfer-encoding:content-type
+        :in-reply-to:organization:from:content-language:references:to
+        :subject:user-agent:mime-version:date:message-id; s=dkim; t=
+        1670243154; x=1672835155; bh=neMU4Ok0awO5Rq5skIsVHn5TxIHDupVu3e9
+        O7MCpojQ=; b=gTyQiIEtSVqvwVxAB8CGYS4bn2kbh+onxccWNV2pvnEJ+s1MACa
+        HasKpuudsHW2I0jpWQdI60uCpE7syCOp5DmV8WeF6T6GDyzSPOBIxbLb7JDtpHL5
+        z5WMuG/3pXadnoyPHiZTHDyRqi/tbpww8Sg/bIzhlqIcBH2f6rEuO69h9qEgK0Il
+        YwwhRbfChGSHLra69SncbFAS7Oz90ikKUlvaT+EUgBl6anL+lhhs3zTcrxrzs8j8
+        bdXdPtuE1b0NNsUMqYgYuSIBtAeQCvvpiy0EXzJwyjPKIe9SCPH9nwmayNXQzf2K
+        BYgRH3gvTis3DJ01W8qmCcKom9ZOBBUx1mw==
+X-Virus-Scanned: amavisd-new at usg-ed-osssrv.wdc.com
+Received: from usg-ed-osssrv.wdc.com ([127.0.0.1])
+        by usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id iX2kpa9VNQYI for <linux-omap@vger.kernel.org>;
+        Mon,  5 Dec 2022 04:25:54 -0800 (PST)
+Received: from [10.225.163.74] (unknown [10.225.163.74])
+        by usg-ed-osssrv.wdc.com (Postfix) with ESMTPSA id 4NQjSW6BW3z1RvLy;
+        Mon,  5 Dec 2022 04:25:47 -0800 (PST)
+Message-ID: <e62bc865-3b6f-2790-3dbf-6485cb233c4e@opensource.wdc.com>
+Date:   Mon, 5 Dec 2022 21:25:45 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [PATCH resend] thermal: ti-soc-thermal: Drop comma after SoC
- match table sentinel
+ Thunderbird/102.5.0
+Subject: Re: [PATCH 12/12] mm, slob: rename CONFIG_SLOB to
+ CONFIG_SLOB_DEPRECATED
+To:     Palmer Dabbelt <palmer@dabbelt.com>, vbabka@suse.cz
+Cc:     cl@linux.com, rientjes@google.com, iamjoonsoo.kim@lge.com,
+        penberg@kernel.org, 42.hyeyoo@gmail.com, roman.gushchin@linux.dev,
+        akpm@linux-foundation.org,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        willy@infradead.org, patches@lists.linux.dev, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, linux@armlinux.org.uk,
+        aaro.koskinen@iki.fi, jmkrzyszt@gmail.com, tony@atomide.com,
+        jonas@southpole.se, stefan.kristiansson@saunalahti.fi,
+        shorne@gmail.com, ysato@users.sourceforge.jp, dalias@libc.org,
+        Arnd Bergmann <arnd@arndb.de>, josh@joshtriplett.org,
+        Conor Dooley <conor@kernel.org>, christophe.leroy@csgroup.eu,
+        geert@linux-m68k.org, linux-arm-kernel@lists.infradead.org,
+        linux-omap@vger.kernel.org, openrisc@lists.librecores.org,
+        linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org
+References: <mhng-b0214281-7ee5-4698-a158-980427a97472@palmer-ri-x1c9a>
 Content-Language: en-US
-To:     Geert Uytterhoeven <geert+renesas@glider.be>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Keerthy <j-keerthy@ti.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>
-Cc:     linux-pm@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <1d6de2a80b919cb11199e56ac06ad21c273ebe57.1669045586.git.geert+renesas@glider.be>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <1d6de2a80b919cb11199e56ac06ad21c273ebe57.1669045586.git.geert+renesas@glider.be>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=1.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
-        version=3.4.6
+From:   Damien Le Moal <damien.lemoal@opensource.wdc.com>
+Organization: Western Digital Research
+In-Reply-To: <mhng-b0214281-7ee5-4698-a158-980427a97472@palmer-ri-x1c9a>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 21/11/2022 16:47, Geert Uytterhoeven wrote:
-> It does not make sense to have a comma after a sentinel, as any new
-> elements must be added before the sentinel.
+On 12/3/22 02:59, Palmer Dabbelt wrote:
+[...]
+>> diff --git a/arch/riscv/configs/nommu_virt_defconfig b/arch/riscv/configs/nommu_virt_defconfig
+>> index 1a56eda5ce46..4cf0f297091e 100644
+>> --- a/arch/riscv/configs/nommu_virt_defconfig
+>> +++ b/arch/riscv/configs/nommu_virt_defconfig
+>> @@ -22,7 +22,8 @@ CONFIG_EXPERT=y
+>>  # CONFIG_KALLSYMS is not set
+>>  # CONFIG_VM_EVENT_COUNTERS is not set
+>>  # CONFIG_COMPAT_BRK is not set
+>> -CONFIG_SLOB=y
+>> +CONFIG_SLUB=y
+>> +CONFIG_SLUB_TINY=y
+>>  # CONFIG_MMU is not set
+>>  CONFIG_SOC_VIRT=y
+>>  CONFIG_NONPORTABLE=y
 > 
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> ---
+> Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
+> 
+> Though I don't have a K210 to test against, maybe Damien still does?
 
-Applied, thanks
+I did test and it is OK.
 
 -- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+Damien Le Moal
+Western Digital Research
 
