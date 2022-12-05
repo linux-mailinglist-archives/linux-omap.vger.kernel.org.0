@@ -2,288 +2,173 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B017642E51
-	for <lists+linux-omap@lfdr.de>; Mon,  5 Dec 2022 18:07:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B3A5642EFF
+	for <lists+linux-omap@lfdr.de>; Mon,  5 Dec 2022 18:42:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230232AbiLERHN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 5 Dec 2022 12:07:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34536 "EHLO
+        id S230123AbiLERmB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 5 Dec 2022 12:42:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230233AbiLERHM (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 5 Dec 2022 12:07:12 -0500
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14D25167CD;
-        Mon,  5 Dec 2022 09:07:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1670260031; x=1701796031;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=vvR/NEhNegklDAJADBM+PimCCqdG/cVpS9hvSwcjzi8=;
-  b=FCW71pXcEn4bDz6rxXCdjFs7NDv6zwqT1r2C+Hbl6fTRE3mS1hTJ+zGP
-   iE174hz75P0KqGSw8Spd2iSrGSGxP3Vpz3p+doJnyR3EtYqbUUJUup6BN
-   6O7DpAwspSbhqKEdjplV2yXVoZ3nP4EuX814rDBVkH0eqcoTkFplbDxaf
-   LnBw1NY5VDekl9akbAcq49221GL0cljv6636EBupBysj0wPkiS0rxafPT
-   IDc8+WRVvXXSqY7/iBKBJGr0DnxNvp3YHObiSwsKHM7g2zFVC7mle2iWF
-   kYX7O39IhgHxtAFAogOf8exFma6xnPrl1VLHVwTMJ6QZrzMe32cosCjnV
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10552"; a="299832388"
-X-IronPort-AV: E=Sophos;i="5.96,220,1665471600"; 
-   d="scan'208";a="299832388"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2022 09:06:06 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10552"; a="714470671"
-X-IronPort-AV: E=Sophos;i="5.96,220,1665471600"; 
-   d="scan'208";a="714470671"
-Received: from lkp-server01.sh.intel.com (HELO b3c45e08cbc1) ([10.239.97.150])
-  by fmsmga004.fm.intel.com with ESMTP; 05 Dec 2022 09:05:59 -0800
-Received: from kbuild by b3c45e08cbc1 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1p2Euk-0000Ez-37;
-        Mon, 05 Dec 2022 17:05:58 +0000
-Date:   Tue, 06 Dec 2022 01:05:09 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     nouveau@lists.freedesktop.org, loongarch@lists.linux.dev,
-        linuxppc-dev@lists.ozlabs.org, linux-omap@vger.kernel.org,
-        linux-btrfs@vger.kernel.org, kvm@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
-        Linux Memory Management List <linux-mm@kvack.org>
-Subject: [linux-next:master] BUILD REGRESSION
- ee9bda616d36d2dc864aa294c2656fad88c9efa0
-Message-ID: <638e24c5.oS0rVB5y1Y/NpbHH%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        with ESMTP id S230037AbiLERmA (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 5 Dec 2022 12:42:00 -0500
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1F7326EE;
+        Mon,  5 Dec 2022 09:41:59 -0800 (PST)
+Received: from mercury (dyndsl-091-096-035-193.ewe-ip-backbone.de [91.96.35.193])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: sre)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 5E229660038D;
+        Mon,  5 Dec 2022 17:41:58 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1670262118;
+        bh=LqnzPlkZpZ1kDmkuSMvd1lcS/g4tXqwV3xRr1AHaHMw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=hY27qSSd2yMRnSkEubRZlPQS+jWe87ZRKnGCRhbe/a9z+gHt0rU/eg5hDjKNzxGDX
+         KzOccqotwKbEIERnJSrEchYUcrtQCK1kkYtSndYKzv/TVegeoEHKMjKQSVdRI58hDH
+         9WZJcWOdKRwtKN+Cl5jYFmeu6g0L4EADa6drIx2ax4AWvbjqWrcTUZHNh5GmMNxu4P
+         BDjN8s2o6xLQWGy+ftBncs1+AyL+kCLCL9OHuGeISPyVOsEZO+BHVRi/kKoirW6/df
+         bujhjixElVzfE/hdRJvYyvaRWjEygFCosZrZ7yknyyaUfsZIuucXmfRs3IR+6s6/ij
+         WO9iaqyfUN6SQ==
+Received: by mercury (Postfix, from userid 1000)
+        id E7A8B1060F2F; Mon,  5 Dec 2022 18:41:55 +0100 (CET)
+Date:   Mon, 5 Dec 2022 18:41:55 +0100
+From:   Sebastian Reichel <sebastian.reichel@collabora.com>
+To:     Carl Philipp Klemm <philipp@uvos.xyz>
+Cc:     linux-omap@vger.kernel.org, tony@atomide.com,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH 1/4] leds: cpcap: add support for the keyboard light
+ channel
+Message-ID: <20221205174155.cbqxyqfaqdgajd2u@mercury.elektranox.org>
+References: <20221204104313.17478-1-philipp@uvos.xyz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="ql5lvt6czyurbbhx"
+Content-Disposition: inline
+In-Reply-To: <20221204104313.17478-1-philipp@uvos.xyz>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-branch HEAD: ee9bda616d36d2dc864aa294c2656fad88c9efa0  Add linux-next specific files for 20221205
 
-Error/Warning reports:
+--ql5lvt6czyurbbhx
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-https://lore.kernel.org/oe-kbuild-all/202211242120.MzZVGULn-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202211301840.y7rROb13-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202212011005.7X5XAsmG-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202212032205.IeHBbyyp-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202212051759.cEv6fyHy-lkp@intel.com
+Hi,
 
-Error/Warning: (recently discovered and may have been fixed)
+On Sun, Dec 04, 2022 at 11:43:10AM +0100, Carl Philipp Klemm wrote:
+> The keyboard light channel is used on xt875 for the touchscreen
+> button lights.
+> This commit also adds a checks for the sucessfull return of
+> device_get_match_data.
 
-arch/powerpc/kernel/kvm_emul.o: warning: objtool: kvm_template_end(): can't find starting instruction
-arch/powerpc/kernel/optprobes_head.o: warning: objtool: optprobe_template_end(): can't find starting instruction
-drivers/gpu/drm/amd/amdgpu/../display/dc/irq/dcn201/irq_service_dcn201.c:40:20: warning: no previous prototype for 'to_dal_irq_source_dcn201' [-Wmissing-prototypes]
-drivers/gpu/drm/amd/amdgpu/amdgpu_ring_mux.c:353:5: warning: no previous prototype for 'amdgpu_mcbp_scan' [-Wmissing-prototypes]
-drivers/gpu/drm/amd/amdgpu/amdgpu_ring_mux.c:373:5: warning: no previous prototype for 'amdgpu_mcbp_trigger_preempt' [-Wmissing-prototypes]
-drivers/gpu/drm/nouveau/nvkm/engine/fifo/gf100.c:451:1: warning: no previous prototype for 'gf100_fifo_nonstall_block' [-Wmissing-prototypes]
-drivers/gpu/drm/nouveau/nvkm/engine/fifo/gf100.c:451:1: warning: no previous prototype for function 'gf100_fifo_nonstall_block' [-Wmissing-prototypes]
-drivers/gpu/drm/nouveau/nvkm/engine/fifo/runl.c:34:1: warning: no previous prototype for 'nvkm_engn_cgrp_get' [-Wmissing-prototypes]
-drivers/gpu/drm/nouveau/nvkm/engine/fifo/runl.c:34:1: warning: no previous prototype for function 'nvkm_engn_cgrp_get' [-Wmissing-prototypes]
-drivers/gpu/drm/nouveau/nvkm/engine/gr/tu102.c:210:1: warning: no previous prototype for 'tu102_gr_load' [-Wmissing-prototypes]
-drivers/gpu/drm/nouveau/nvkm/engine/gr/tu102.c:210:1: warning: no previous prototype for function 'tu102_gr_load' [-Wmissing-prototypes]
-drivers/gpu/drm/nouveau/nvkm/nvfw/acr.c:49:1: warning: no previous prototype for 'wpr_generic_header_dump' [-Wmissing-prototypes]
-drivers/gpu/drm/nouveau/nvkm/nvfw/acr.c:49:1: warning: no previous prototype for function 'wpr_generic_header_dump' [-Wmissing-prototypes]
-drivers/gpu/drm/nouveau/nvkm/subdev/acr/lsfw.c:221:21: warning: variable 'loc' set but not used [-Wunused-but-set-variable]
-drivers/irqchip/irq-loongarch-cpu.c:96:12: warning: no previous prototype for 'loongarch_cpu_irq_of_init' [-Wmissing-prototypes]
-drivers/regulator/tps65219-regulator.c:310:60: warning: parameter 'dev' set but not used [-Wunused-but-set-parameter]
-drivers/regulator/tps65219-regulator.c:370:26: sparse:    int
-drivers/regulator/tps65219-regulator.c:370:26: sparse:    struct regulator_dev *[assigned] rdev
-drivers/regulator/tps65219-regulator.c:370:26: warning: ordered comparison of pointer with integer zero [-Wextra]
-fs/btrfs/btrfs.o: warning: objtool: __btrfs_map_block+0x1c67: unreachable instruction
-pahole: .tmp_vmlinux.btf: No such file or directory
+"this commit also adds ..." means, that the commit should be split
+:)
 
-Unverified Error/Warning (likely false positive, please contact us if interested):
+> Signed-off-by: Carl Philipp Klemm <philipp@uvos.xyz>
+> ---
+>  drivers/leds/leds-cpcap.c    | 15 +++++++++++++++
+>  drivers/mfd/motorola-cpcap.c |  4 ++++
+>  2 files changed, 19 insertions(+)
+>=20
+> diff --git a/drivers/leds/leds-cpcap.c b/drivers/leds/leds-cpcap.c
+> index 7d41ce8c9bb1..11a9b857d8ea 100644
+> --- a/drivers/leds/leds-cpcap.c
+> +++ b/drivers/leds/leds-cpcap.c
+> @@ -58,6 +58,15 @@ static const struct cpcap_led_info cpcap_led_cp =3D {
+>  	.init_val	=3D 0x0008,
+>  };
+> =20
+> +/* keyboard led */
+> +static const struct cpcap_led_info cpcap_led_kl =3D {
+> +	.reg		=3D CPCAP_REG_KLC,
+> +	.mask		=3D 0x0001,
+> +	.limit		=3D 1,
+> +	.init_mask	=3D 0x07FF,
+> +	.init_val	=3D 0x07F0,
+> +};
+> +
+>  struct cpcap_led {
+>  	struct led_classdev led;
+>  	const struct cpcap_led_info *info;
+> @@ -152,6 +161,7 @@ static const struct of_device_id cpcap_led_of_match[]=
+ =3D {
+>  	{ .compatible =3D "motorola,cpcap-led-blue",  .data =3D &cpcap_led_blue=
+ },
+>  	{ .compatible =3D "motorola,cpcap-led-adl", .data =3D &cpcap_led_adl },
+>  	{ .compatible =3D "motorola,cpcap-led-cp", .data =3D &cpcap_led_cp },
+> +	{ .compatible =3D "motorola,cpcap-led-kl", .data =3D &cpcap_led_kl },
+>  	{},
+>  };
+>  MODULE_DEVICE_TABLE(of, cpcap_led_of_match);
+> @@ -168,6 +178,11 @@ static int cpcap_led_probe(struct platform_device *p=
+dev)
+>  	led->info =3D device_get_match_data(&pdev->dev);
+>  	led->dev =3D &pdev->dev;
+> =20
+> +	if (!led->info) {
+> +		dev_warn(led->dev, "Can't get match data");
+> +		return -ENODEV;
+> +	}
 
-arch/x86/kvm/vmx/hyperv.c:108:9: sparse: sparse: cast truncates bits from constant value (1a001a becomes 1a)
-arch/x86/kvm/vmx/hyperv.c:110:9: sparse: sparse: cast truncates bits from constant value (1a009a becomes 9a)
-arch/x86/kvm/vmx/hyperv.c:112:9: sparse: sparse: cast truncates bits from constant value (1a011a becomes 11a)
-arch/x86/kvm/vmx/hyperv.c:114:9: sparse: sparse: cast truncates bits from constant value (1a069a becomes 69a)
-arch/x86/kvm/vmx/hyperv.c:116:9: sparse: sparse: cast truncates bits from constant value (1b019b becomes 19b)
-arch/x86/kvm/vmx/hyperv.c:118:9: sparse: sparse: cast truncates bits from constant value (1b021b becomes 21b)
-arch/x86/kvm/vmx/hyperv.c:120:9: sparse: sparse: cast truncates bits from constant value (1b029b becomes 29b)
-arch/x86/kvm/vmx/hyperv.c:122:9: sparse: sparse: cast truncates bits from constant value (1b031b becomes 31b)
-arch/x86/kvm/vmx/hyperv.c:124:9: sparse: sparse: cast truncates bits from constant value (1b039b becomes 39b)
-arch/x86/kvm/vmx/hyperv.c:126:9: sparse: sparse: cast truncates bits from constant value (1b051b becomes 51b)
-arch/x86/kvm/vmx/hyperv.c:130:9: sparse: sparse: cast truncates bits from constant value (a048a becomes 48a)
-arch/x86/kvm/vmx/hyperv.c:132:9: sparse: sparse: cast truncates bits from constant value (80b08 becomes b08)
-arch/x86/kvm/vmx/hyperv.c:134:9: sparse: sparse: cast truncates bits from constant value (80b88 becomes b88)
-arch/x86/kvm/vmx/hyperv.c:136:9: sparse: sparse: cast truncates bits from constant value (80c88 becomes c88)
-arch/x86/kvm/vmx/hyperv.c:22:9: sparse: sparse: cast truncates bits from constant value (1a079a becomes 79a)
-arch/x86/kvm/vmx/hyperv.c:24:9: sparse: sparse: cast truncates bits from constant value (1a071a becomes 71a)
-arch/x86/kvm/vmx/hyperv.c:253:9: sparse: sparse: cast truncates bits from constant value (120a92 becomes a92)
-arch/x86/kvm/vmx/hyperv.c:26:9: sparse: sparse: cast truncates bits from constant value (1a081a becomes 81a)
-arch/x86/kvm/vmx/hyperv.c:28:9: sparse: sparse: cast truncates bits from constant value (b000b becomes b)
-arch/x86/kvm/vmx/hyperv.c:30:9: sparse: sparse: cast truncates bits from constant value (b008b becomes 8b)
-arch/x86/kvm/vmx/hyperv.c:32:9: sparse: sparse: cast truncates bits from constant value (b010b becomes 10b)
-arch/x86/kvm/vmx/hyperv.c:34:9: sparse: sparse: cast truncates bits from constant value (1b001b becomes 1b)
-arch/x86/kvm/vmx/hyperv.c:36:9: sparse: sparse: cast truncates bits from constant value (1b009b becomes 9b)
-arch/x86/kvm/vmx/hyperv.c:38:9: sparse: sparse: cast truncates bits from constant value (1b011b becomes 11b)
-arch/x86/kvm/vmx/hyperv.c:40:9: sparse: sparse: cast truncates bits from constant value (1b041b becomes 41b)
-arch/x86/kvm/vmx/hyperv.c:42:9: sparse: sparse: cast truncates bits from constant value (1b049b becomes 49b)
-arch/x86/kvm/vmx/hyperv.c:44:9: sparse: sparse: cast truncates bits from constant value (1b059b becomes 59b)
-arch/x86/kvm/vmx/hyperv.c:46:9: sparse: sparse: cast truncates bits from constant value (80008 becomes 8)
-arch/x86/kvm/vmx/hyperv.c:52:9: sparse: sparse: cast truncates bits from constant value (1a019a becomes 19a)
-arch/x86/kvm/vmx/hyperv.c:54:9: sparse: sparse: cast truncates bits from constant value (1a021a becomes 21a)
-arch/x86/kvm/vmx/hyperv.c:56:9: sparse: sparse: cast truncates bits from constant value (1a029a becomes 29a)
-arch/x86/kvm/vmx/hyperv.c:58:9: sparse: sparse: cast truncates bits from constant value (1a031a becomes 31a)
-arch/x86/kvm/vmx/hyperv.c:60:9: sparse: sparse: cast truncates bits from constant value (1a039a becomes 39a)
-arch/x86/kvm/vmx/hyperv.c:62:9: sparse: sparse: cast truncates bits from constant value (1a041a becomes 41a)
-arch/x86/kvm/vmx/hyperv.c:64:9: sparse: sparse: cast truncates bits from constant value (1a049a becomes 49a)
-arch/x86/kvm/vmx/hyperv.c:66:9: sparse: sparse: cast truncates bits from constant value (1a051a becomes 51a)
-arch/x86/kvm/vmx/hyperv.c:68:9: sparse: sparse: cast truncates bits from constant value (1a059a becomes 59a)
-arch/x86/kvm/vmx/hyperv.c:70:9: sparse: sparse: cast truncates bits from constant value (1a061a becomes 61a)
-arch/x86/kvm/vmx/hyperv.c:76:9: sparse: sparse: cast truncates bits from constant value (a000a becomes a)
-arch/x86/kvm/vmx/hyperv.c:78:9: sparse: sparse: cast truncates bits from constant value (a008a becomes 8a)
-arch/x86/kvm/vmx/hyperv.c:80:9: sparse: sparse: cast truncates bits from constant value (a010a becomes 10a)
-arch/x86/kvm/vmx/hyperv.c:82:9: sparse: sparse: cast truncates bits from constant value (a018a becomes 18a)
-arch/x86/kvm/vmx/hyperv.c:84:9: sparse: sparse: cast truncates bits from constant value (a020a becomes 20a)
-arch/x86/kvm/vmx/hyperv.c:86:9: sparse: sparse: cast truncates bits from constant value (a028a becomes 28a)
-arch/x86/kvm/vmx/hyperv.c:88:9: sparse: sparse: cast truncates bits from constant value (a030a becomes 30a)
-arch/x86/kvm/vmx/hyperv.c:90:9: sparse: sparse: cast truncates bits from constant value (a038a becomes 38a)
-arch/x86/kvm/vmx/hyperv.c:92:9: sparse: sparse: cast truncates bits from constant value (a040a becomes 40a)
-arch/x86/kvm/vmx/hyperv.c:94:9: sparse: sparse: cast truncates bits from constant value (1a089a becomes 89a)
-arch/x86/kvm/vmx/hyperv.c:96:9: sparse: sparse: cast truncates bits from constant value (1a091a becomes 91a)
-arch/x86/kvm/vmx/hyperv.c:98:9: sparse: sparse: cast truncates bits from constant value (1a099a becomes 99a)
+If it's fatal, it should be dev_err and not dev_warn:
 
-Error/Warning ids grouped by kconfigs:
+if (!led->info)
+    return dev_err_probe(led->dev, -ENODEV, "Can't get match data");
 
-gcc_recent_errors
-|-- alpha-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
-|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-gf100_fifo_nonstall_block
-|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-runl.c:warning:no-previous-prototype-for-nvkm_engn_cgrp_get
-|   |-- drivers-gpu-drm-nouveau-nvkm-engine-gr-tu102.c:warning:no-previous-prototype-for-tu102_gr_load
-|   |-- drivers-gpu-drm-nouveau-nvkm-nvfw-acr.c:warning:no-previous-prototype-for-wpr_generic_header_dump
-|   |-- drivers-gpu-drm-nouveau-nvkm-subdev-acr-lsfw.c:warning:variable-loc-set-but-not-used
-|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
-|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
-|-- alpha-randconfig-r032-20221205
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_ring_mux.c:warning:no-previous-prototype-for-amdgpu_mcbp_scan
-|   `-- drivers-gpu-drm-amd-amdgpu-amdgpu_ring_mux.c:warning:no-previous-prototype-for-amdgpu_mcbp_trigger_preempt
-|-- alpha-randconfig-s032-20221205
-|   |-- drivers-regulator-tps65219-regulator.c:sparse:int
-|   |-- drivers-regulator-tps65219-regulator.c:sparse:sparse:incompatible-types-for-operation-(-):
-|   `-- drivers-regulator-tps65219-regulator.c:sparse:struct-regulator_dev-assigned-rdev
-|-- arc-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
-|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-gf100_fifo_nonstall_block
-|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-runl.c:warning:no-previous-prototype-for-nvkm_engn_cgrp_get
-|   |-- drivers-gpu-drm-nouveau-nvkm-engine-gr-tu102.c:warning:no-previous-prototype-for-tu102_gr_load
-|   |-- drivers-gpu-drm-nouveau-nvkm-nvfw-acr.c:warning:no-previous-prototype-for-wpr_generic_header_dump
-|   |-- drivers-gpu-drm-nouveau-nvkm-subdev-acr-lsfw.c:warning:variable-loc-set-but-not-used
-|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
-|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
-|-- arc-randconfig-r024-20221204
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
-|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-gf100_fifo_nonstall_block
-|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-runl.c:warning:no-previous-prototype-for-nvkm_engn_cgrp_get
-|   |-- drivers-gpu-drm-nouveau-nvkm-engine-gr-tu102.c:warning:no-previous-prototype-for-tu102_gr_load
-|   |-- drivers-gpu-drm-nouveau-nvkm-nvfw-acr.c:warning:no-previous-prototype-for-wpr_generic_header_dump
-|   `-- drivers-gpu-drm-nouveau-nvkm-subdev-acr-lsfw.c:warning:variable-loc-set-but-not-used
-|-- arm-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
-|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-gf100_fifo_nonstall_block
-|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-runl.c:warning:no-previous-prototype-for-nvkm_engn_cgrp_get
-|   |-- drivers-gpu-drm-nouveau-nvkm-engine-gr-tu102.c:warning:no-previous-prototype-for-tu102_gr_load
-|   |-- drivers-gpu-drm-nouveau-nvkm-nvfw-acr.c:warning:no-previous-prototype-for-wpr_generic_header_dump
-|   |-- drivers-gpu-drm-nouveau-nvkm-subdev-acr-lsfw.c:warning:variable-loc-set-but-not-used
-|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
-|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
-|-- arm-defconfig
-|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-gf100_fifo_nonstall_block
-|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-runl.c:warning:no-previous-prototype-for-nvkm_engn_cgrp_get
-|   |-- drivers-gpu-drm-nouveau-nvkm-engine-gr-tu102.c:warning:no-previous-prototype-for-tu102_gr_load
-|   |-- drivers-gpu-drm-nouveau-nvkm-nvfw-acr.c:warning:no-previous-prototype-for-wpr_generic_header_dump
-|   `-- drivers-gpu-drm-nouveau-nvkm-subdev-acr-lsfw.c:warning:variable-loc-set-but-not-used
-|-- arm64-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
-|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-gf100_fifo_nonstall_block
-clang_recent_errors
-|-- arm-randconfig-r046-20221205
-|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-function-gf100_fifo_nonstall_block
-|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-runl.c:warning:no-previous-prototype-for-function-nvkm_engn_cgrp_get
-|   |-- drivers-gpu-drm-nouveau-nvkm-engine-gr-tu102.c:warning:no-previous-prototype-for-function-tu102_gr_load
-|   `-- drivers-gpu-drm-nouveau-nvkm-nvfw-acr.c:warning:no-previous-prototype-for-function-wpr_generic_header_dump
-`-- s390-randconfig-r036-20221205
-    `-- pahole:.tmp_vmlinux.btf:No-such-file-or-directory
+-- Sebastian
 
-elapsed time: 721m
+> +
+>  	if (led->info->reg =3D=3D 0x0000) {
+>  		dev_err(led->dev, "Unsupported LED");
+>  		return -ENODEV;
+> diff --git a/drivers/mfd/motorola-cpcap.c b/drivers/mfd/motorola-cpcap.c
+> index 265464b5d7cc..57b3378a8829 100644
+> --- a/drivers/mfd/motorola-cpcap.c
+> +++ b/drivers/mfd/motorola-cpcap.c
+> @@ -285,6 +285,10 @@ static const struct mfd_cell cpcap_mfd_devices[] =3D=
+ {
+>  		.name          =3D "cpcap-led",
+>  		.id            =3D 4,
+>  		.of_compatible =3D "motorola,cpcap-led-cp",
+> +	}, {
+> +		.name          =3D "cpcap-led",
+> +		.id            =3D 5,
+> +		.of_compatible =3D "motorola,cpcap-led-kl",
+>  	}, {
+>  		.name          =3D "cpcap-codec",
+>  	}
+> --=20
+> 2.38.1
+>=20
+>=20
 
-configs tested: 59
-configs skipped: 3
+--ql5lvt6czyurbbhx
+Content-Type: application/pgp-signature; name="signature.asc"
 
-gcc tested configs:
-arc                                 defconfig
-s390                             allmodconfig
-alpha                               defconfig
-i386                                defconfig
-s390                                defconfig
-um                           x86_64_defconfig
-um                             i386_defconfig
-s390                             allyesconfig
-arm                                 defconfig
-x86_64                    rhel-8.3-kselftests
-x86_64                          rhel-8.3-func
-x86_64                              defconfig
-x86_64                               rhel-8.3
-powerpc                           allnoconfig
-x86_64                           allyesconfig
-x86_64                           rhel-8.3-kvm
-arc                              allyesconfig
-x86_64                           rhel-8.3-syz
-x86_64                         rhel-8.3-kunit
-arm64                            allyesconfig
-i386                 randconfig-a014-20221205
-i386                 randconfig-a013-20221205
-alpha                            allyesconfig
-sh                               allmodconfig
-arm                              allyesconfig
-i386                 randconfig-a012-20221205
-i386                 randconfig-a015-20221205
-mips                             allyesconfig
-m68k                             allyesconfig
-i386                 randconfig-a011-20221205
-i386                 randconfig-a016-20221205
-m68k                             allmodconfig
-powerpc                          allmodconfig
-i386                             allyesconfig
-arc                  randconfig-r043-20221205
-x86_64               randconfig-a011-20221205
-x86_64               randconfig-a014-20221205
-x86_64               randconfig-a013-20221205
-ia64                             allmodconfig
-x86_64               randconfig-a015-20221205
-s390                 randconfig-r044-20221205
-x86_64               randconfig-a012-20221205
-riscv                randconfig-r042-20221205
-x86_64               randconfig-a016-20221205
+-----BEGIN PGP SIGNATURE-----
 
-clang tested configs:
-x86_64               randconfig-a003-20221205
-x86_64               randconfig-a001-20221205
-x86_64               randconfig-a002-20221205
-x86_64               randconfig-a004-20221205
-i386                 randconfig-a001-20221205
-x86_64               randconfig-a006-20221205
-x86_64               randconfig-a005-20221205
-i386                 randconfig-a002-20221205
-i386                 randconfig-a004-20221205
-i386                 randconfig-a003-20221205
-i386                 randconfig-a006-20221205
-i386                 randconfig-a005-20221205
-hexagon              randconfig-r045-20221205
-arm                  randconfig-r046-20221205
-hexagon              randconfig-r041-20221205
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmOOLVcACgkQ2O7X88g7
++pp0cg//Y2QCueRfXqJDASylrO8rJOFqIIyhXNBqu7BGGapSjHXJkQO3+kgdcL90
+qtgDb4Ljw0l/2iJTzGWAUdrsjNpsl1UR/sUDfibWzPw8PLOUHwxETUCt0WKzAa74
+D54ds/JVznrLrEhk0q/8S411B4qmD4fOdkZ2wk2LuOxEo1v50MG3fBcVCHV0E9LJ
+6i/+AuMfKeSIDcCl//HO6josOMYM9As7yISJsCHSNt+oPE5b4jkYZXQLNZuGI81R
+WNNOSFTWdP11eEEtnlVZ/CsjEBu5oBil4D+cjZKY3JEiPuexO75xM45TZ/hTpOe8
+R8CdxxKTplFwG+LGlhA5ej+7uDSFrSYhbeekeFwA99nJSU/qKKkaFbTdqvO446KZ
+RczKajYM7p2hBXf01yUFl4hBfvh2ZhgoMjNhalXd6Qa5HTLH8r8c16vF69MNi8TQ
+i6ZvMYw9ohTUXfGnMuQ3mQNCACvZ79fPyYBWI79NdL5uWq5l0VAfztPBGP1jBbzF
+KSfL642b+J+YkEAkVK3MoJCtFQ8RGf/3vHKFxnT0s9MBTjIYHHw+kZCmiIy9ZI3J
+2el2N1PrZlEJvY/Qdb4wzikF/AxfrvxaPyK14Fh37w0li+vk8Sqkxzu1Y7a6VYrw
+4wy+FzN8VRK4KnCbooy1XkriT/KOkL1mxPMSsR4TbGbMr7gatG4=
+=odNb
+-----END PGP SIGNATURE-----
 
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+--ql5lvt6czyurbbhx--
