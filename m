@@ -2,47 +2,50 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AC99644017
-	for <lists+linux-omap@lfdr.de>; Tue,  6 Dec 2022 10:45:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D8F2644102
+	for <lists+linux-omap@lfdr.de>; Tue,  6 Dec 2022 11:11:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234152AbiLFJpG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 6 Dec 2022 04:45:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52554 "EHLO
+        id S234372AbiLFKLM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 6 Dec 2022 05:11:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229690AbiLFJos (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 6 Dec 2022 04:44:48 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B93EF1B7BA;
-        Tue,  6 Dec 2022 01:44:47 -0800 (PST)
+        with ESMTP id S234960AbiLFKKq (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 6 Dec 2022 05:10:46 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F2232B180;
+        Tue,  6 Dec 2022 02:05:25 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 62483B818D8;
-        Tue,  6 Dec 2022 09:44:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71ABEC433C1;
-        Tue,  6 Dec 2022 09:44:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F158C615DC;
+        Tue,  6 Dec 2022 10:05:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF534C43155;
+        Tue,  6 Dec 2022 10:05:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1670319885;
-        bh=5jhZ4rlNB57+cbmRPNMaOe67g3zWz4nSshCuRjsEt1E=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jOOlrv+4z/WLphJNyTbfbV6yZUEZqghEpZ3g/LypadktX3gYCqGPilbiVSF1+dgOc
-         lcqRTGk5kLts84EyF0FBBng+mTXsWsng0mSocpLZrAKoKbXTphgmDGCXIqK4uQmBgH
-         7b1V8OspK9RdMU5TFtwuF0vXDbz4k4I3PpHrHeH/eE0aX+ldX4xG41T46inNHT/IZc
-         ACl+IYJ93dxL3tiCA5iPOhY/u7YN/XyTbRa5YIDv+kisCR3bgqXdoP4bj+JlUkjq/X
-         MGTn1JxT0f6jzxO0SApfGjn1c7giaxuKV+qZI9MPRh5qgAS8V3zQb8K96JCPOWhVBO
-         YTp17CkMIvlTg==
-From:   Roger Quadros <rogerq@kernel.org>
-To:     davem@davemloft.net, maciej.fijalkowski@intel.com, kuba@kernel.org
-Cc:     andrew@lunn.ch, edumazet@google.com, pabeni@redhat.com,
+        s=k20201202; t=1670321124;
+        bh=zAR2ZwReyK2Gtgq5zewd/xcIBPQR360V27DsMylLTWE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=m0RFQtBQvOB7bHFIdbOupUQ1a0qAppDjTDha9Ss908R8wCUUHByP/xnxp4RpM9cIH
+         18fvsN2zQiZPDR2L0dZw5w46ulr2toDALvc74oZGZ1WaL2BBkxal7QCfFbKklZE3Iq
+         qJ/o86mS01d3gY5EYxy6HArht/7oAC+L7zIk2PoqOp97pDi0ROvzdQY2RI+BY9Bs5X
+         JT8uYNoEY3Ni96NTfVvI2CLiK+VWFOcwLJaYjhxTDBcomFiu96zlVjQoPq+wqlTHu6
+         D+hsEL/j5jN1clqeihoK7osAqqB05qZxu0s2BaXTkZ85atO3iR8FwOmH84JZ6G6DEP
+         Uy6XirS7d4/aw==
+Date:   Tue, 6 Dec 2022 12:05:20 +0200
+From:   Leon Romanovsky <leon@kernel.org>
+To:     Roger Quadros <rogerq@kernel.org>
+Cc:     davem@davemloft.net, maciej.fijalkowski@intel.com, kuba@kernel.org,
+        andrew@lunn.ch, edumazet@google.com, pabeni@redhat.com,
         vigneshr@ti.com, linux-omap@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Roger Quadros <rogerq@kernel.org>
-Subject: [PATCH v5 net-next 6/6] net: ethernet: ti: am65-cpsw: Fix hardware switch mode on suspend/resume
-Date:   Tue,  6 Dec 2022 11:44:19 +0200
-Message-Id: <20221206094419.19478-7-rogerq@kernel.org>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20221206094419.19478-1-rogerq@kernel.org>
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 net-next 0/6] net: ethernet: ti: am65-cpsw: Fix set
+ channel operation
+Message-ID: <Y48T4OduISrVD4HR@unreal>
 References: <20221206094419.19478-1-rogerq@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221206094419.19478-1-rogerq@kernel.org>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -52,68 +55,60 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On low power during system suspend the ALE table context is lost.
-Save the ALE context before suspend and restore it after resume.
+On Tue, Dec 06, 2022 at 11:44:13AM +0200, Roger Quadros wrote:
+> Hi,
+> 
+> This contains a critical bug fix for the recently merged suspend/resume
+> support [1] that broke set channel operation. (ethtool -L eth0 tx <n>)
+> 
+> As there were 2 dependent patches on top of the offending commit [1]
+> first revert them and then apply them back after the correct fix.
 
-Signed-off-by: Roger Quadros <rogerq@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
----
- drivers/net/ethernet/ti/am65-cpsw-nuss.c | 7 +++++++
- drivers/net/ethernet/ti/am65-cpsw-nuss.h | 2 ++
- 2 files changed, 9 insertions(+)
+Why did you chose revert and reapply almost same patch instead of simply
+fixing what is missing?
 
-diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-index ecf33c17ca96..b8f7080434cb 100644
---- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-+++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-@@ -2712,6 +2712,7 @@ static int am65_cpsw_nuss_probe(struct platform_device *pdev)
- 	struct clk *clk;
- 	u64 id_temp;
- 	int ret, i;
-+	int ale_entries;
- 
- 	common = devm_kzalloc(dev, sizeof(struct am65_cpsw_common), GFP_KERNEL);
- 	if (!common)
-@@ -2807,6 +2808,10 @@ static int am65_cpsw_nuss_probe(struct platform_device *pdev)
- 		goto err_of_clear;
- 	}
- 
-+	ale_entries = common->ale->params.ale_entries;
-+	common->ale_context = devm_kzalloc(dev,
-+					   ale_entries * ALE_ENTRY_WORDS * sizeof(u32),
-+					   GFP_KERNEL);
- 	ret = am65_cpsw_init_cpts(common);
- 	if (ret)
- 		goto err_of_clear;
-@@ -2877,6 +2882,7 @@ static int am65_cpsw_nuss_suspend(struct device *dev)
- 	struct net_device *ndev;
- 	int i, ret;
- 
-+	cpsw_ale_dump(common->ale, common->ale_context);
- 	host_p->vid_context = readl(host_p->port_base + AM65_CPSW_PORT_VLAN_REG_OFFSET);
- 	for (i = 0; i < common->port_num; i++) {
- 		port = &common->ports[i];
-@@ -2949,6 +2955,7 @@ static int am65_cpsw_nuss_resume(struct device *dev)
- 	}
- 
- 	writel(host_p->vid_context, host_p->port_base + AM65_CPSW_PORT_VLAN_REG_OFFSET);
-+	cpsw_ale_restore(common->ale, common->ale_context);
- 
- 	return 0;
- }
-diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.h b/drivers/net/ethernet/ti/am65-cpsw-nuss.h
-index e95cc37a7286..4b75620f8d28 100644
---- a/drivers/net/ethernet/ti/am65-cpsw-nuss.h
-+++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.h
-@@ -149,6 +149,8 @@ struct am65_cpsw_common {
- 	struct net_device *hw_bridge_dev;
- 	struct notifier_block am65_cpsw_netdevice_nb;
- 	unsigned char switch_id[MAX_PHYS_ITEM_ID_LEN];
-+	/* only for suspend/resume context restore */
-+	u32			*ale_context;
- };
- 
- struct am65_cpsw_ndev_stats {
--- 
-2.17.1
+Thanks
 
+> 
+> [1] fd23df72f2be ("net: ethernet: ti: am65-cpsw: Add suspend/resume support")
+> 
+> cheers,
+> -roger
+> 
+> Changelog:
+> 
+> v5:
+> - Change reset failure error code from -EBUSY to -ETIMEDOUT
+> 
+> v4:
+> - move am65_cpsw_nuss_ndev_add_tx_napi() earlier to avoid declaration.
+> - print error and error out if soft RESET failed in
+>   am65_cpsw_nuss_ndo_slave_open()
+> - move struct 'am65_cpsw_host *host' where 'common' is defined.
+> 
+> v3:
+> - revert offending commit before applying the updated patch.
+> - drop optimization patch to be sent separately.
+> 
+> v2:
+> - Fix build warning
+>  drivers/net/ethernet/ti/am65-cpsw-nuss.c:562:13: warning: variable 'tmo' set but not used [-Wunused-but-set-variable]
+> 
+> Roger Quadros (6):
+>   Revert "net: ethernet: ti: am65-cpsw: Fix hardware switch mode on
+>     suspend/resume"
+>   Revert "net: ethernet: ti: am65-cpsw: retain PORT_VLAN_REG after
+>     suspend/resume"
+>   Revert "net: ethernet: ti: am65-cpsw: Add suspend/resume support"
+>   net: ethernet: ti: am65-cpsw: Add suspend/resume support
+>   net: ethernet: ti: am65-cpsw: retain PORT_VLAN_REG after
+>     suspend/resume
+>   net: ethernet: ti: am65-cpsw: Fix hardware switch mode on
+>     suspend/resume
+> 
+>  drivers/net/ethernet/ti/am65-cpsw-nuss.c | 197 ++++++++++++-----------
+>  1 file changed, 105 insertions(+), 92 deletions(-)
+> 
+> -- 
+> 2.17.1
+> 
