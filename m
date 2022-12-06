@@ -2,82 +2,84 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 33E15644C6F
-	for <lists+linux-omap@lfdr.de>; Tue,  6 Dec 2022 20:22:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E882F644DA5
+	for <lists+linux-omap@lfdr.de>; Tue,  6 Dec 2022 22:02:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229748AbiLFTWf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 6 Dec 2022 14:22:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55888 "EHLO
+        id S229774AbiLFVCC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 6 Dec 2022 16:02:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48528 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229744AbiLFTWe (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 6 Dec 2022 14:22:34 -0500
-Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B45642189
-        for <linux-omap@vger.kernel.org>; Tue,  6 Dec 2022 11:22:31 -0800 (PST)
-Received: by mail-wr1-x42d.google.com with SMTP id d1so24910195wrs.12
-        for <linux-omap@vger.kernel.org>; Tue, 06 Dec 2022 11:22:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4Kc0DPAtZANtmBB4/APA8h9MGVc9hC5I6CM/Vzwl2xs=;
-        b=dK3PhiQhFUgbwn2UgOzR1EI3QDvs0M1JfayULjfIe+7Gf8mqT4rqpTFUcViscqXXYc
-         fk+YnJ8+ix4y2bSgF2Nj4w2yxrOJpZPpuueGinJoBw1FUUygisozIrjlLc4iZWE8tHs0
-         sTDciBFyePOOeh5LQ0tN18H+FubhMZLZ8bO1CJT2IYa+XVPLRxblsD4OksYEu75Y95cv
-         X9OEaXZTFjAx50izorCHGRCx0ILWhWJTzgpJ0AOGkORNtvWIVf5YQ0gd04Rf1V7QHAkW
-         G1YXZImgoffra/o0hA2LHZrEI14JZ5Ua2bXusXQFQw4qqcOcTeG5Az5txUe4FCUC7Xe7
-         Zshw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4Kc0DPAtZANtmBB4/APA8h9MGVc9hC5I6CM/Vzwl2xs=;
-        b=iGPiR840cLf12RU8b1MDfGKHwDnOotrzwTpkYEio6Jyg9h95w2Wk/8kE9fUZ+9PPH1
-         v1wxkU2Bgyw3XfRYL6G1N7MUtRDdR3lASVvqBGVj/6tVsX7eiRm8dDjxeouVqGFBJoHQ
-         K/75/BAW81TNAYb+qTmft0Ea10hnbO9XSxdT2T4kRYY7k+29QpgxjtbhZpkxcGSdKR0e
-         kGQpHc1nnMkH0wThnxsX8nsZTa/6qPukg83xSGucouZdVKDoUtVoAB6TCdgaHuy7aW0P
-         XdSQEMPYHtDn7Pg+iC1zI6XI5yz1SjiVh8z21+90heYWgrFiUrjdRx07mhkuBbdg+ZWX
-         b3HQ==
-X-Gm-Message-State: ANoB5plQub36FzUaIB6mkKjGfZCTlp7W5iWqAOTh9TTQYY7UCUqIsJSv
-        uUECOfJAPrpTaWiA1Q/AIF4z5A==
-X-Google-Smtp-Source: AA0mqf5rkOLSX/PBJ641Jpt5pcEBmiAtuAfQ5WZKW86lfETq6U0wWZJ5hpIkbTr4DDC8swW1DDtZVg==
-X-Received: by 2002:a5d:6a06:0:b0:242:140d:43d5 with SMTP id m6-20020a5d6a06000000b00242140d43d5mr27054697wru.53.1670354549595;
-        Tue, 06 Dec 2022 11:22:29 -0800 (PST)
-Received: from [192.168.1.91] (192.201.68.85.rev.sfr.net. [85.68.201.192])
-        by smtp.gmail.com with ESMTPSA id h16-20020a05600c2cb000b003c6bbe910fdsm32563712wmc.9.2022.12.06.11.22.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 06 Dec 2022 11:22:29 -0800 (PST)
-Message-ID: <753775e9-33f6-031f-8da5-2f65894f44fe@baylibre.com>
-Date:   Tue, 6 Dec 2022 20:22:27 +0100
+        with ESMTP id S229456AbiLFVCB (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 6 Dec 2022 16:02:01 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C526C2F028;
+        Tue,  6 Dec 2022 13:02:00 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5DAF6618F2;
+        Tue,  6 Dec 2022 21:02:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D33CC433D6;
+        Tue,  6 Dec 2022 21:01:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1670360519;
+        bh=bvu32LFYIQ3mqvaTjtC2wlG+bQ9D2wDMKyzUQjMLf4M=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=mLTZZLRFOJuvTzmVeiD2+CyUjIalTOGm3M/E4TMnfX2uFbcuGdWa7eJLw1/8YlUI5
+         DbE+pdQmZNSGfU2yrVr37kqsQVuMvMq2z3g6OzCP6giGorFIO3+M+Jd0WHE2F6Sk8O
+         qIIRC7Yu4dDw202VtZGBeE1iMDdwvCfn3cTCt7ky0fRYQv5gZpxFGA0uE8VWJsoIMq
+         fqlWxLAhCX6knHHyU3u7iy4ECDBUKM9ynujSfKssDRRQanAv+c/MHu8BQbPfxXlUqQ
+         zurB1mt1f5M1xQlD1SXS9Z363LzSOTk4cIwZha01CKuz9YXkQ2oxSeoKQiSIcO+f0S
+         uIywgvgMBgt3w==
+Message-ID: <98a97883-3303-20eb-5a18-cfa00af9443e@kernel.org>
+Date:   Tue, 6 Dec 2022 15:01:54 -0600
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.4.2
-Subject: Re: [PATCH v7 0/6] Add support for TI TPS65219 PMIC.
+Subject: Re: [PATCH 05/11] ARM: dts: socfpga: Fix pca9548 i2c-mux node name
 Content-Language: en-US
-To:     Francesco Dolcini <francesco@dolcini.it>
-Cc:     lgirdwood@gmail.com, broonie@kernel.org, robh+dt@kernel.org,
-        nm@ti.com, kristo@kernel.org, dmitry.torokhov@gmail.com,
-        krzysztof.kozlowski+dt@linaro.org, catalin.marinas@arm.com,
-        will@kernel.org, lee@kernel.org, tony@atomide.com, vigneshr@ti.com,
-        shawnguo@kernel.org, geert+renesas@glider.be,
-        dmitry.baryshkov@linaro.org, marcel.ziswiler@toradex.com,
-        vkoul@kernel.org, biju.das.jz@bp.renesas.com, arnd@arndb.de,
-        jeff@labundy.com, afd@ti.com, khilman@baylibre.com,
-        narmstrong@baylibre.com, msp@baylibre.com, j-keerthy@ti.com,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-input@vger.kernel.org,
-        linux-omap@vger.kernel.org
-References: <20221104152311.1098603-1-jneanne@baylibre.com>
- <Y44ztV+2j4krM8mp@francesco-nb.int.toradex.com>
-From:   jerome Neanne <jneanne@baylibre.com>
-In-Reply-To: <Y44ztV+2j4krM8mp@francesco-nb.int.toradex.com>
+To:     Geert Uytterhoeven <geert+renesas@glider.be>,
+        =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Joel Stanley <joel@jms.id.au>,
+        Andrew Jeffery <andrew@aj.id.au>,
+        Avi Fishman <avifishman70@gmail.com>,
+        Tomer Maimon <tmaimon77@gmail.com>,
+        Tali Perry <tali.perry1@gmail.com>,
+        Patrick Venture <venture@google.com>,
+        Nancy Yuen <yuenn@google.com>,
+        Benjamin Fair <benjaminfair@google.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Stefan Agner <stefan@agner.ch>, Li Yang <leoyang.li@nxp.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        UNGLinuxDriver@microchip.com,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-aspeed@lists.ozlabs.org, openbmc@lists.ozlabs.org,
+        linux-renesas-soc@vger.kernel.org, linux-mips@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, devicetree@vger.kernel.org
+References: <cover.1669999298.git.geert+renesas@glider.be>
+ <a7bcc2de6c2c0946f56b2d9f9584c55cf28545dc.1669999298.git.geert+renesas@glider.be>
+From:   Dinh Nguyen <dinguyen@kernel.org>
+In-Reply-To: <a7bcc2de6c2c0946f56b2d9f9584c55cf28545dc.1669999298.git.geert+renesas@glider.be>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -86,20 +88,38 @@ X-Mailing-List: linux-omap@vger.kernel.org
 
 
 
-On 05/12/2022 19:08, Francesco Dolcini wrote:
-> On Fri, Nov 04, 2022 at 04:23:05PM +0100, Jerome Neanne wrote:
->> Hi everyone,
-> Hello Jerome,
+On 12/2/22 10:49, Geert Uytterhoeven wrote:
+> "make dtbs_check":
 > 
-> are you planning to have also gpio support added to the driver?
+>      arch/arm/boot/dts/socfpga_cyclone5_vining_fpga.dtb: i2cswitch@70: $nodename:0: 'i2cswitch@70' does not match '^(i2c-?)?mux'
+> 	    From schema: Documentation/devicetree/bindings/i2c/i2c-mux-pca954x.yaml
+>      arch/arm/boot/dts/socfpga_cyclone5_vining_fpga.dtb: i2cswitch@70: Unevaluated properties are not allowed ('#address-cells', '#size-cells', 'i2c@0', 'i2c@1', 'i2c@2', 'i2c@3', 'i2c@4', 'i2c@5', 'i2c@6', 'i2c@7' were unexpected)
+>          From schema: Documentation/devicetree/bindings/i2c/i2c-mux-pca954x.yaml
 > 
-> Francesco
+> Fix this by renaming the PCA9548 node to "i2c-mux", to match the I2C bus
+> multiplexer/switch DT bindings and the Generic Names Recommendation in
+> the Devicetree Specification.
 > 
-Hi Francesco,
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> ---
+>   arch/arm/boot/dts/socfpga_cyclone5_vining_fpga.dts | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm/boot/dts/socfpga_cyclone5_vining_fpga.dts b/arch/arm/boot/dts/socfpga_cyclone5_vining_fpga.dts
+> index f24f17c2f5ee6bc4..e0630b0eed036d35 100644
+> --- a/arch/arm/boot/dts/socfpga_cyclone5_vining_fpga.dts
+> +++ b/arch/arm/boot/dts/socfpga_cyclone5_vining_fpga.dts
+> @@ -141,7 +141,7 @@ at24@50 {
+>   		reg = <0x50>;
+>   	};
+>   
+> -	i2cswitch@70 {
+> +	i2c-mux@70 {
+>   		compatible = "nxp,pca9548";
+>   		#address-cells = <1>;
+>   		#size-cells = <0>;
 
-I don't have any requirement regarding GPIO on that PMIC. We've just 
-done this (GPIO driver) for another TI PMIC. Will see if this can be 
-reused later.
+Applied!
 
-Regards,
-Jerome
+Thanks,
+Dinh
