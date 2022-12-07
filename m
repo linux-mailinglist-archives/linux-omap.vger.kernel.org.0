@@ -2,259 +2,160 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD8DB645EF6
-	for <lists+linux-omap@lfdr.de>; Wed,  7 Dec 2022 17:31:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 79EB764603D
+	for <lists+linux-omap@lfdr.de>; Wed,  7 Dec 2022 18:29:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229847AbiLGQbr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 7 Dec 2022 11:31:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55248 "EHLO
+        id S229870AbiLGR3V (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 7 Dec 2022 12:29:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229938AbiLGQbm (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 7 Dec 2022 11:31:42 -0500
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A9762DABB;
-        Wed,  7 Dec 2022 08:31:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1670430701; x=1701966701;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=vyOIPD1QcdoDOdc894HhvLtkRYWBJmy52hkMb/uhT/U=;
-  b=ZUw871GJFiTuzni1ZUh+Ew20ur/YTy0GVuGJRrRdHBElaNNlZmcZ+OKI
-   UcVpQultQpLApjlZrK/ywDiqDfnX3jhd9rmNIvwzQflo2JeJ+x5daGYmq
-   7NngQNsXV0dX5J/riPQMRU+6rahBF1qyjx8Hz3eIFqBqcT4KHcS3joIYL
-   f71Vy8KQpjJ9KM1nZYUUmwQavKEA8sYNoTVO/B3dPzaHhFXXMNs7xZOT1
-   O32OT8OYfKN28mfZ8bBrt5bzXu2dm/A53r2FemyBTida1AUX71w9qSEvL
-   qq+OKvor++TxM+6SsW7TcrX3MzE1RGReHE39maOuV5Q7F229GmJB2FIE6
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10554"; a="297291826"
-X-IronPort-AV: E=Sophos;i="5.96,225,1665471600"; 
-   d="scan'208";a="297291826"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Dec 2022 08:31:15 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10554"; a="710122690"
-X-IronPort-AV: E=Sophos;i="5.96,225,1665471600"; 
-   d="scan'208";a="710122690"
-Received: from lkp-server01.sh.intel.com (HELO b5d47979f3ad) ([10.239.97.150])
-  by fmsmga008.fm.intel.com with ESMTP; 07 Dec 2022 08:31:12 -0800
-Received: from kbuild by b5d47979f3ad with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1p2xKB-0000P9-1J;
-        Wed, 07 Dec 2022 16:31:11 +0000
-Date:   Thu, 08 Dec 2022 00:30:54 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     nouveau@lists.freedesktop.org, netdev@vger.kernel.org,
-        loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
-        linux-omap@vger.kernel.org, linux-media@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
-        Linux Memory Management List <linux-mm@kvack.org>
-Subject: [linux-next:master] BUILD REGRESSION
- 591cd61541b9b95401e17dca24be486e32104cb8
-Message-ID: <6390bfbe.rxwT5v2Rml4m2xt/%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        with ESMTP id S229866AbiLGR3B (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 7 Dec 2022 12:29:01 -0500
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2056.outbound.protection.outlook.com [40.107.22.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5D6E3FBAD;
+        Wed,  7 Dec 2022 09:28:59 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=irCqsWChxCM9TKqKn4jmu4NP9fzsNLPPfTYIc/1HVO9Y6y2ty1XYSiNKo/BqxeRouGGWnakcryycgqHMRG3ciZqzPrFBm5MwXcOQZAnZm/f66PIedJ2pkrK4Bm5e49zDETbXPYjcH05OzDahjXKmDUCg107KAoAJxDItBFF2VyNkv9LnGFvzmeNCk+pAREk2it69rN/nrgMUzQNqmYqefmU1JaTa599h+6GPbHOWngs+o0u1Tl76Tz5P8wmfmo3Uv7x/7PK6OxDkqldwx3Z7jnKTOE5PH/luV8vquz2UBZ2qWnFp9LT0s9BNvYS484D8vtrEkAh0PcTfNyhkwTfeIw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nqT4TTeg3E6/vUuCZ2uQAu317QHtEwr4sQUVCcwfCHk=;
+ b=FZaKTiGZ251X5IpHVeDvnL421RIbcztX9UH2C9Enai95mrLrHT7SoEyvce77pc5zOmwKkcZrutFdkLaPWom5+nbvvxRLnho8Ik8Udsfls/BXcqm/LdLF65dWBSwGgj0jmyGJa/p7WDMo9TKHPN4fTIaloElksULU/0jQ59LKkWs/ApvMDMUw8+wQI+MZFpwQ9dLgYSMTXo40oEDRKFDOBVKBWQ3hS3NUGZuiqmXMrLXbSZoI4JWTEBawghRZ64uachM2SnbnCdGwpkKPssEmrnd5B557TgaC0x3O7HmyZt1SaO/tqMYhEO1HjQ/kZc68RPEHQyeeXwwFdhOtvsQ0kA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=siemens.com; dmarc=pass action=none header.from=siemens.com;
+ dkim=pass header.d=siemens.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=siemens.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=nqT4TTeg3E6/vUuCZ2uQAu317QHtEwr4sQUVCcwfCHk=;
+ b=UOXLCWFB62ZponkXKG71RbydnEbOIX8kLCros5VrguO6NZf5GepVLWAwbufkTs29TZ/wo7mqW3JMtfkBlKGuDWIQ2JRa6Ndm/lAAIK3t3iLrye8vE1G6g1OVvrpJEKTwNB4UYJTjc+HvQEXqJBvqfp2CwKMt9ta3h5+kMbT569am59vcZGDbnkyF1XAa8Z+iXUXxgAmCNTjj3bMASrK+fQDli44k9uBjyO2pi9jrc0PihNNOqOS+GMjhljb4UHT6HaDb6CvW/fxzxs8M3bbenpB0v52RybmU5+mtVUHwVw/8aBLRjhiurBYBDGKKlRsLzHkpDoncXRwJ0ATxi14moA==
+Received: from PAXPR10MB5520.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:102:23e::20)
+ by DU0PR10MB5410.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:329::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5880.14; Wed, 7 Dec
+ 2022 17:28:57 +0000
+Received: from PAXPR10MB5520.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::ddda:691a:9da:c150]) by PAXPR10MB5520.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::ddda:691a:9da:c150%3]) with mapi id 15.20.5880.014; Wed, 7 Dec 2022
+ 17:28:57 +0000
+From:   "Niedermayr, BENEDIKT" <benedikt.niedermayr@siemens.com>
+To:     "tony@atomide.com" <tony@atomide.com>
+CC:     "rogerq@kernel.org" <rogerq@kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "krzysztof.kozlowski@linaro.org" <krzysztof.kozlowski@linaro.org>,
+        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>
+Subject: Re: [PATCH v9 1/2] memory: omap-gpmc: wait pin additions
+Thread-Topic: [PATCH v9 1/2] memory: omap-gpmc: wait pin additions
+Thread-Index: AQHZCkMWzmVLjxOYAU2QxNHfyRTG2q5igpUAgAAD+YCAACeIgA==
+Date:   Wed, 7 Dec 2022 17:28:57 +0000
+Message-ID: <cf36d335dc6a85ebafc765a4d806745cca62362a.camel@siemens.com>
+References: <20221102133047.1654449-1-benedikt.niedermayr@siemens.com>
+         <20221102133047.1654449-2-benedikt.niedermayr@siemens.com>
+         <Y5CafQpZnjSSCMoj@atomide.com>
+         <ae35cfd12ed3472df20ca5f99bffa8bb7c009199.camel@siemens.com>
+         <Y5CsDefg12Bbg24p@atomide.com>
+In-Reply-To: <Y5CsDefg12Bbg24p@atomide.com>
+Reply-To: "Niedermayr, BENEDIKT" <benedikt.niedermayr@siemens.com>
+Accept-Language: de-DE, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=siemens.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR10MB5520:EE_|DU0PR10MB5410:EE_
+x-ms-office365-filtering-correlation-id: 6def837f-11d4-458b-3168-08dad878859f
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: gQkpmp1066xNZAf2kfWsJzj3K7JG/JF9QUcdtJNS2H0xsKPvTbxSsTXUvladqLTofTVHrwXdvF/SG2aY2+YEYOlkI/rYyNdIs35/VIRSA4srvFIldhCxo+A+yeiQBKefMYCHJ3E2OR9Y8ZPp0m8Elczww0Qp59NrrFkmr2IYWialBA24oNzNCMw3THyCZLfUrgibbYSTH/rTS3LJ6d58PY5ZXjK3K/12pKAcmqXXQFnSEdYMr05Zo9s8m2KAzaBWo+r3fvAy/PaNfGRZAcMkoiSgL9FrW4IW8QpuTNPpbl9uaMZQUkUrcg5KT95t3QUVCiHfoyTkTKymw3g6QQDGuflvgkzE96mW0k/2rrXKrHo8/cUOw0ITg0rIDhIYutqIFWFFa5hTMzD5A6Q8qs3U5ZE7J4/3sxd6SHh9R0jJ2EnfUbZFrQCacYJqOCkY3r795jbgPpNL8pO22jxSXkqpOBoStbqrP2eiMLUCkhsNHhiGVW9VrQJKpyOMA2V59aBglkAKoh4Wi4EAvdGcgFYz7DCT/Okg5rre83YLmyA3A1yAghjjt6xNVlGJ5ddqh+TOhY1U7yI5ERC3Pl3lmEFF75ohPc65rngZksfNn9/PqWKGpAkltWn6oCuDwA2tAWnydHoFJhCg8XoBIx7Z5Qi3mCPYeSOyKi/1rskwt7NwXO1PuZ/tgwbrQmsuRKn3B1N9OXuuV87mEne1EkZBaz4OHg==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR10MB5520.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230022)(4636009)(39860400002)(376002)(136003)(396003)(366004)(346002)(451199015)(6506007)(86362001)(41300700001)(71200400001)(478600001)(6486002)(38070700005)(36756003)(186003)(38100700002)(82960400001)(8676002)(122000001)(2616005)(6512007)(5660300002)(66946007)(6916009)(66556008)(66476007)(54906003)(4326008)(8936002)(64756008)(66446008)(76116006)(3450700001)(2906002)(316002)(91956017);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?VU9wUW1yVXpPd1NwcWw2TEU2UENGNFZBSFR2WFVrV29UMnBTTUtJRWNWVW1z?=
+ =?utf-8?B?Q3BKYXdxMjlVOGtnTnZwQUNYaC94Z0liNmhkbk11YXQ1QUNwdnppZzdzTm5q?=
+ =?utf-8?B?ZWRUeU4zWnFIc3RrWldDZUFhSDY5cGY4bXpVd0xvMTJJdjB1S3JiVDRjQWR2?=
+ =?utf-8?B?a2Zla1BMOFNyeVBVbGlXK2paTEo2OHRtSEZyN3B3aTU5a2ZqV3JwcWJ5Wita?=
+ =?utf-8?B?eVl3Y2JyVmZPUVAxM29sZ2p5OTlBVEJoU2lTa1FGK2NSTEE4UEhGaVgycjA5?=
+ =?utf-8?B?OWRNenNYdklFVWlBR0txUHo1SVdFSVJKWS9zeGNHVzJDc3ZrYU1kNFdIRjFv?=
+ =?utf-8?B?VEl2eUNRaWxuN2dzRFlDM3FEb2IxZ2tYT04wSWx1QlJSRUV0WU5xNUJUbmtw?=
+ =?utf-8?B?bklBUnFtQVh0Y1VmZDV3Mk92azdVM2s3M040TUxCRyt0blVKcGhWckNpTmd2?=
+ =?utf-8?B?M0VJQjdCcFY5VloxYzc1NS9lcmZnZklMdzV2N3FCQVhCN1N4MkRzbndILzZE?=
+ =?utf-8?B?TW4rVVkxeE5DK2d2Z1k0VlJCblNpaldOOC9KWWxJamQrWHNGMFlNamxFRWND?=
+ =?utf-8?B?TWJaN0QvaU9vTUtjZ0JrMEJLd2V4eTM4UHY2R2Q3NHFjZUFISXd0clNvb3RU?=
+ =?utf-8?B?WWl3YTZGRFArSEhlZSswZHFyV3pZbEc0Rk83NnY5c0xMVlhNSzRRa1BpaW1D?=
+ =?utf-8?B?WVR3aWt3bDZQNjlDTlRFOEE4MndJMzY1ZDlQdlIxQjZ1N1Frblg1SFBPMEdH?=
+ =?utf-8?B?TDY0R2lCTXZuYlBxSEk1R3orbDhZbUJ0YXdLQkVncWsxa3ZvN2RkWm5xemdW?=
+ =?utf-8?B?S0JrT3VadStWRFl3MDFVTTZVakpEQk9MNS84Y0JMUjN5ZHhoMTRYWkdoVWRi?=
+ =?utf-8?B?Umtsd092L1hhcnl4SzBNQUw2bnp0UmRXblNUYnZyLzBiU3hMNHNZbVRJUnBX?=
+ =?utf-8?B?VHI2dVdRWU1ha04vL1JQOEZaUHFHUHZkME82QTBabFgxajlFK2JzVlpxU0h1?=
+ =?utf-8?B?dS9NOTU5MzBNRG1jb0VNWHNGNzJ1S3dzdFA5Z3U5aEhPSG5RazQyV0NqRlJu?=
+ =?utf-8?B?YTljM1c2VW82aDFpWEc5elRhT1hLNzJvaVcvd2FUVVF3V0pjbW9CbFBVUlpO?=
+ =?utf-8?B?OEtaRWxYMTJSV3lqRmhXWllMRUNncHVvQmYvcUVnZm8rQXhRbjMzRXpLaEV0?=
+ =?utf-8?B?L043bDE4aDhFMmJBazJDZjZjNm9sdnJaNFhweXlLZ3h4SXM5UExseFhCMG1F?=
+ =?utf-8?B?cWJORytiMXNpQ0tUTXBzQytNcjM3S2VXQjhyME5hMUlDaGpmSG5KUjdhMXIr?=
+ =?utf-8?B?WjR5VjRHaEk5c2tpc0ZKM083RkhZb1c2NUZWUWdWS0NGclQ5SEFFREJmUWZ0?=
+ =?utf-8?B?WUhOaXA5MEJ4ZnExd216K3pXVnBFRy9RRTZIazROaTcvcmZEdVdGV3pYaEFE?=
+ =?utf-8?B?VWNVUWdPL2ZTZVZkU3ViT3BwWHQ4aGwybUN0Sk5nbThsRkhBblFEK3Q5OEZ0?=
+ =?utf-8?B?MG55U05mZDVpaHpET2hmaEpDVVNvZndYQ3JabzdXd3NMZHMzUS80TFFISnpq?=
+ =?utf-8?B?UlVWL294bHRoTCtFZVFZYVFGTFc0ZkVRTEUzSHpkcDRBV0VIK01SZ1pzVFll?=
+ =?utf-8?B?cC9YSldGb1RnaFQzY085SGdQdGpza0lNcHkvQXM2SU9QS1RsOHlLeXFMNjk2?=
+ =?utf-8?B?ZTUwVmtZUFVUd0ljVGpKdWpCSjJGQ3BZR0xucHBwS3FGUnlZTlhLRTlsdXpz?=
+ =?utf-8?B?bFdNNTNCbnNKbC9MQ2N3NXRJM25tMkZzOVBVNE5TQjRRUHg3eU1sQ2g4OVor?=
+ =?utf-8?B?b3ZFMjU2ekpGbVVzdE5IcUtaV0NqQzZDQThIM0EyakRxZHdJQWVwZG1GR25W?=
+ =?utf-8?B?b0IvSkpqa1UxamNQTGxhVzRuV29ibUs2d3ZlYjJsYlJtVnUrWW5HVWlLV3Ji?=
+ =?utf-8?B?eFpEOEtGK3g2MER2cFQrZ1hZaHNBUEVJalFxQjkyeUZXNTkxSWh2TkZBaWcr?=
+ =?utf-8?B?RXEvY2VvWW1zc240VXFIU3d2a0JBN2x5QnZSR0M4VGI0QlZQZTBYZ3NiNnVp?=
+ =?utf-8?B?YWZINVdpYU1tNjlkQ096M2ZzMUFPV01LVkJ2Qnk0b0JnL3JMakF2Sm1GNlRq?=
+ =?utf-8?B?T0VUQ2lTcXZMMWlTY0VSQmNIS0pkU3p0MmJDTnFacUVjMU5iMHVrN2NNbVhr?=
+ =?utf-8?B?cExaUzNaUDUwMjd6YzJ6K0dxN3Nzdm1LUmMyWHZ5OG53WDVMVHhVR2NmYitR?=
+ =?utf-8?Q?wBItJltyRg6/siHB6chHhbfKvxX5ZCQrUXXok4gdHg=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <545EAC8891D9CD459009A59518D00FD6@EURPRD10.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+X-OriginatorOrg: siemens.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR10MB5520.EURPRD10.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6def837f-11d4-458b-3168-08dad878859f
+X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Dec 2022 17:28:57.5199
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 38ae3bcd-9579-4fd4-adda-b42e1495d55a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: mDKPCPMgjRp7QhPdEcDFarthMs7TVKNT1eMGGvniP+/+R8USpHE2rS+LKGSL26DBPx32oJee3TVAcUBUrhuF9fck/XfMP+j4x03Nt08rtco=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR10MB5410
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-branch HEAD: 591cd61541b9b95401e17dca24be486e32104cb8  Add linux-next specific files for 20221207
-
-Error/Warning reports:
-
-https://lore.kernel.org/oe-kbuild-all/202211090634.RyFKK0WS-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202211242120.MzZVGULn-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202211282102.QUr7HHrW-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202211301634.cejLlTJP-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202211301840.y7rROb13-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202212070208.3FsKY80H-lkp@intel.com
-
-Error/Warning: (recently discovered and may have been fixed)
-
-arch/loongarch/kernel/asm-offsets.c:265:6: warning: no previous prototype for 'output_pbe_defines' [-Wmissing-prototypes]
-arch/loongarch/power/hibernate.c:14:6: warning: no previous prototype for 'save_processor_state' [-Wmissing-prototypes]
-arch/loongarch/power/hibernate.c:26:6: warning: no previous prototype for 'restore_processor_state' [-Wmissing-prototypes]
-arch/loongarch/power/hibernate.c:38:5: warning: no previous prototype for 'pfn_is_nosave' [-Wmissing-prototypes]
-arch/loongarch/power/hibernate.c:48:5: warning: no previous prototype for 'swsusp_arch_suspend' [-Wmissing-prototypes]
-arch/loongarch/power/hibernate.c:56:5: warning: no previous prototype for 'swsusp_arch_resume' [-Wmissing-prototypes]
-arch/powerpc/kernel/kvm_emul.o: warning: objtool: kvm_template_end(): can't find starting instruction
-arch/powerpc/kernel/optprobes_head.o: warning: objtool: optprobe_template_end(): can't find starting instruction
-arch/powerpc/lib/qspinlock.c:304:2: error: call to undeclared function 'spin_end'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-arch/powerpc/lib/qspinlock.c:324:3: error: call to undeclared function 'spin_begin'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-arch/powerpc/lib/qspinlock.c:331:2: error: call to undeclared function 'spin_cpu_relax'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-drivers/gpu/drm/amd/amdgpu/../display/dc/irq/dcn201/irq_service_dcn201.c:40:20: warning: no previous prototype for 'to_dal_irq_source_dcn201' [-Wmissing-prototypes]
-drivers/gpu/drm/nouveau/nvkm/engine/fifo/gf100.c:451:1: warning: no previous prototype for 'gf100_fifo_nonstall_block' [-Wmissing-prototypes]
-drivers/gpu/drm/nouveau/nvkm/engine/fifo/gf100.c:451:1: warning: no previous prototype for function 'gf100_fifo_nonstall_block' [-Wmissing-prototypes]
-drivers/gpu/drm/nouveau/nvkm/engine/fifo/runl.c:34:1: warning: no previous prototype for 'nvkm_engn_cgrp_get' [-Wmissing-prototypes]
-drivers/gpu/drm/nouveau/nvkm/engine/fifo/runl.c:34:1: warning: no previous prototype for function 'nvkm_engn_cgrp_get' [-Wmissing-prototypes]
-drivers/gpu/drm/nouveau/nvkm/engine/gr/tu102.c:210:1: warning: no previous prototype for 'tu102_gr_load' [-Wmissing-prototypes]
-drivers/gpu/drm/nouveau/nvkm/engine/gr/tu102.c:210:1: warning: no previous prototype for function 'tu102_gr_load' [-Wmissing-prototypes]
-drivers/gpu/drm/nouveau/nvkm/nvfw/acr.c:49:1: warning: no previous prototype for 'wpr_generic_header_dump' [-Wmissing-prototypes]
-drivers/gpu/drm/nouveau/nvkm/nvfw/acr.c:49:1: warning: no previous prototype for function 'wpr_generic_header_dump' [-Wmissing-prototypes]
-drivers/gpu/drm/nouveau/nvkm/subdev/acr/lsfw.c:221:21: warning: variable 'loc' set but not used [-Wunused-but-set-variable]
-drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c:1474:38: warning: unused variable 'mt8173_jpeg_drvdata' [-Wunused-const-variable]
-drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c:1489:38: warning: unused variable 'mtk_jpeg_drvdata' [-Wunused-const-variable]
-drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c:1859:38: warning: unused variable 'mtk8195_jpegdec_drvdata' [-Wunused-const-variable]
-drivers/regulator/tps65219-regulator.c:310:60: warning: parameter 'dev' set but not used [-Wunused-but-set-parameter]
-drivers/regulator/tps65219-regulator.c:370:26: warning: ordered comparison of pointer with integer zero [-Wextra]
-include/linux/signal.h:113:11: error: array index 3 is past the end of the array (that has type 'const unsigned long[2]') [-Werror,-Warray-bounds]
-include/linux/signal.h:97:11: error: array index 3 is past the end of the array (that has type 'unsigned long[2]') [-Werror,-Warray-bounds]
-vmlinux.o: warning: objtool: __btrfs_map_block+0x1d77: unreachable instruction
-
-Unverified Error/Warning (likely false positive, please contact us if interested):
-
-drivers/net/ipa/ipa_table.c:425 ipa_table_init_add() error: we previously assumed 'hash_mem' could be null (see line 416)
-
-Error/Warning ids grouped by kconfigs:
-
-gcc_recent_errors
-|-- alpha-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
-|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-gf100_fifo_nonstall_block
-|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-runl.c:warning:no-previous-prototype-for-nvkm_engn_cgrp_get
-|   |-- drivers-gpu-drm-nouveau-nvkm-engine-gr-tu102.c:warning:no-previous-prototype-for-tu102_gr_load
-|   |-- drivers-gpu-drm-nouveau-nvkm-nvfw-acr.c:warning:no-previous-prototype-for-wpr_generic_header_dump
-|   |-- drivers-gpu-drm-nouveau-nvkm-subdev-acr-lsfw.c:warning:variable-loc-set-but-not-used
-|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
-|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
-|-- alpha-randconfig-r022-20221206
-|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-gf100_fifo_nonstall_block
-|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-runl.c:warning:no-previous-prototype-for-nvkm_engn_cgrp_get
-|   |-- drivers-gpu-drm-nouveau-nvkm-engine-gr-tu102.c:warning:no-previous-prototype-for-tu102_gr_load
-|   |-- drivers-gpu-drm-nouveau-nvkm-nvfw-acr.c:warning:no-previous-prototype-for-wpr_generic_header_dump
-|   `-- drivers-gpu-drm-nouveau-nvkm-subdev-acr-lsfw.c:warning:variable-loc-set-but-not-used
-|-- arc-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
-|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-gf100_fifo_nonstall_block
-|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-runl.c:warning:no-previous-prototype-for-nvkm_engn_cgrp_get
-|   |-- drivers-gpu-drm-nouveau-nvkm-engine-gr-tu102.c:warning:no-previous-prototype-for-tu102_gr_load
-|   |-- drivers-gpu-drm-nouveau-nvkm-nvfw-acr.c:warning:no-previous-prototype-for-wpr_generic_header_dump
-|   |-- drivers-gpu-drm-nouveau-nvkm-subdev-acr-lsfw.c:warning:variable-loc-set-but-not-used
-|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
-|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
-|-- arm-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
-|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-gf100_fifo_nonstall_block
-|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-runl.c:warning:no-previous-prototype-for-nvkm_engn_cgrp_get
-|   |-- drivers-gpu-drm-nouveau-nvkm-engine-gr-tu102.c:warning:no-previous-prototype-for-tu102_gr_load
-|   |-- drivers-gpu-drm-nouveau-nvkm-nvfw-acr.c:warning:no-previous-prototype-for-wpr_generic_header_dump
-|   |-- drivers-gpu-drm-nouveau-nvkm-subdev-acr-lsfw.c:warning:variable-loc-set-but-not-used
-|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
-|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
-|-- arm-defconfig
-|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-gf100_fifo_nonstall_block
-|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-runl.c:warning:no-previous-prototype-for-nvkm_engn_cgrp_get
-|   |-- drivers-gpu-drm-nouveau-nvkm-engine-gr-tu102.c:warning:no-previous-prototype-for-tu102_gr_load
-|   |-- drivers-gpu-drm-nouveau-nvkm-nvfw-acr.c:warning:no-previous-prototype-for-wpr_generic_header_dump
-|   `-- drivers-gpu-drm-nouveau-nvkm-subdev-acr-lsfw.c:warning:variable-loc-set-but-not-used
-|-- arm-randconfig-r016-20221206
-|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-gf100_fifo_nonstall_block
-|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-runl.c:warning:no-previous-prototype-for-nvkm_engn_cgrp_get
-|   |-- drivers-gpu-drm-nouveau-nvkm-engine-gr-tu102.c:warning:no-previous-prototype-for-tu102_gr_load
-|   |-- drivers-gpu-drm-nouveau-nvkm-nvfw-acr.c:warning:no-previous-prototype-for-wpr_generic_header_dump
-|   `-- drivers-gpu-drm-nouveau-nvkm-subdev-acr-lsfw.c:warning:variable-loc-set-but-not-used
-|-- arm64-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
-|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-gf100_fifo_nonstall_block
-|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-runl.c:warning:no-previous-prototype-for-nvkm_engn_cgrp_get
-|   |-- drivers-gpu-drm-nouveau-nvkm-engine-gr-tu102.c:warning:no-previous-prototype-for-tu102_gr_load
-clang_recent_errors
-|-- powerpc-randconfig-r003-20221207
-|   |-- arch-powerpc-kernel-kvm_emul.o:warning:objtool:kvm_template_end():can-t-find-starting-instruction
-|   |-- arch-powerpc-kernel-prom_init.o:warning:objtool:prom_init:unannotated-intra-function-call
-|   |-- arch-powerpc-lib-qspinlock.c:error:call-to-undeclared-function-spin_begin-ISO-C99-and-later-do-not-support-implicit-function-declarations
-|   |-- arch-powerpc-lib-qspinlock.c:error:call-to-undeclared-function-spin_cpu_relax-ISO-C99-and-later-do-not-support-implicit-function-declarations
-|   |-- arch-powerpc-lib-qspinlock.c:error:call-to-undeclared-function-spin_end-ISO-C99-and-later-do-not-support-implicit-function-declarations
-|   |-- include-linux-signal.h:error:array-index-is-past-the-end-of-the-array-(that-has-type-const-unsigned-long-)-Werror-Warray-bounds
-|   `-- include-linux-signal.h:error:array-index-is-past-the-end-of-the-array-(that-has-type-unsigned-long-)-Werror-Warray-bounds
-|-- s390-randconfig-r014-20221206
-|   |-- drivers-media-platform-mediatek-jpeg-mtk_jpeg_core.c:warning:unused-variable-mt8173_jpeg_drvdata
-|   |-- drivers-media-platform-mediatek-jpeg-mtk_jpeg_core.c:warning:unused-variable-mtk8195_jpegdec_drvdata
-|   `-- drivers-media-platform-mediatek-jpeg-mtk_jpeg_core.c:warning:unused-variable-mtk_jpeg_drvdata
-`-- s390-randconfig-r044-20221206
-    |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-function-gf100_fifo_nonstall_block
-    |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-runl.c:warning:no-previous-prototype-for-function-nvkm_engn_cgrp_get
-    |-- drivers-gpu-drm-nouveau-nvkm-engine-gr-tu102.c:warning:no-previous-prototype-for-function-tu102_gr_load
-    `-- drivers-gpu-drm-nouveau-nvkm-nvfw-acr.c:warning:no-previous-prototype-for-function-wpr_generic_header_dump
-
-elapsed time: 739m
-
-configs tested: 60
-configs skipped: 2
-
-gcc tested configs:
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64                              defconfig
-x86_64                          rhel-8.3-rust
-powerpc                           allnoconfig
-x86_64                    rhel-8.3-kselftests
-x86_64                          rhel-8.3-func
-x86_64                               rhel-8.3
-i386                          randconfig-a001
-arc                                 defconfig
-x86_64                           rhel-8.3-syz
-i386                          randconfig-a003
-arm                  randconfig-r046-20221206
-s390                             allmodconfig
-alpha                               defconfig
-arc                  randconfig-r043-20221206
-i386                                defconfig
-i386                          randconfig-a005
-arm                                 defconfig
-x86_64                         rhel-8.3-kunit
-s390                                defconfig
-x86_64                           rhel-8.3-kvm
-ia64                             allmodconfig
-alpha                            allyesconfig
-x86_64                           allyesconfig
-m68k                             allyesconfig
-sh                               allmodconfig
-i386                          randconfig-a014
-x86_64                        randconfig-a013
-m68k                             allmodconfig
-x86_64                        randconfig-a011
-s390                             allyesconfig
-powerpc                          allmodconfig
-arc                              allyesconfig
-i386                          randconfig-a012
-i386                          randconfig-a016
-mips                             allyesconfig
-arm64                            allyesconfig
-arm                              allyesconfig
-x86_64                        randconfig-a015
-x86_64                        randconfig-a004
-x86_64                        randconfig-a002
-i386                             allyesconfig
-x86_64                        randconfig-a006
-
-clang tested configs:
-hexagon              randconfig-r041-20221206
-i386                          randconfig-a002
-hexagon              randconfig-r045-20221206
-i386                          randconfig-a013
-s390                 randconfig-r044-20221206
-i386                          randconfig-a006
-i386                          randconfig-a004
-i386                          randconfig-a015
-riscv                randconfig-r042-20221206
-i386                          randconfig-a011
-x86_64                        randconfig-a012
-x86_64                        randconfig-a014
-x86_64                        randconfig-a016
-x86_64                        randconfig-a001
-x86_64                        randconfig-a003
-x86_64                        randconfig-a005
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+SGkgVG9ueSwNCk9uIFdlZCwgMjAyMi0xMi0wNyBhdCAxNzowNiArMDIwMCwgVG9ueSBMaW5kZ3Jl
+biB3cm90ZToNCj4gKiBOaWVkZXJtYXlyLCBCRU5FRElLVCA8YmVuZWRpa3QubmllZGVybWF5ckBz
+aWVtZW5zLmNvbT4gWzIyMTIwNyAxNDo1Ml06DQo+ID4gSGkgVG9ueSwNCj4gPiANCj4gPiBPbiBX
+ZWQsIDIwMjItMTItMDcgYXQgMTU6NTEgKzAyMDAsIFRvbnkgTGluZGdyZW4gd3JvdGU6DQo+ID4g
+PiBIaSwNCj4gPiA+IA0KPiA+ID4gKiBCLiBOaWVkZXJtYXlyIDxiZW5lZGlrdC5uaWVkZXJtYXly
+QHNpZW1lbnMuY29tPiBbMjIxMTAyIDEzOjIxXToNCj4gPiA+ID4gRnJvbTogQmVuZWRpa3QgTmll
+ZGVybWF5ciA8YmVuZWRpa3QubmllZGVybWF5ckBzaWVtZW5zLmNvbT4NCj4gPiA+ID4gDQo+ID4g
+PiA+IFRoaXMgcGF0Y2ggaW50cm9kdWNlcyBzdXBwb3J0IGZvciBzZXR0aW5nIHRoZSB3YWl0LXBp
+biBwb2xhcml0eSBhcyB3ZWxsDQo+ID4gPiA+IGFzIHVzaW5nIHRoZSBzYW1lIHdhaXQtcGluIGZv
+ciBkaWZmZXJlbnQgQ1MgcmVnaW9ucy4NCj4gPiA+IA0KPiA+ID4gTG9va3MgbGlrZSBMaW51eCBu
+ZXh0IGNvbW1pdCA4OWFlZDNjZDVjYjkgKCJtZW1vcnk6IG9tYXAtZ3BtYzogd2FpdCBwaW4NCj4g
+PiA+IGFkZGl0aW9ucyIpIGJyZWFrcyB0aGUgb2xkIHNtc2M5MTF4IHVzaW5nIGRldmljZXMgc29t
+ZWhvdyBmb3IgbmZzcm9vdC4NCj4gPiA+IA0KPiA+IENhbiB5b3UgZXhwbGFpbiBob3cgdGhpcyBi
+cmVha2luZyBjaGFuZ2UgbG9va3MgbGlrZSwgaW4gYml0IG1vcmUgZGV0YWlsPw0KPiA+IEknbSBh
+IGJpdCBjb25mdXNlZCBzaW5jZSB0aGUgY2hhbmdlcyBvbiBvbWFwLWdwbWMgaGF2ZSBub3RoaW5n
+IGluIGNvbW1vbiB3aXRoDQo+ID4gc21zYzkxMXguIA0KPiANCj4gVGhlIHNtc2M5MTF4IGRldmlj
+ZSBpcyBvbiBncG1jLiBJdCdzIG5vdCBmb3VuZCB3aXRoIHRoaXMgY2hhbmdlLg0KPiBTZWUgYXJj
+aC9hcm0vYm9vdC9kdHMvb21hcC1ncG1jLXNtc2M5MTF4LmR0c2kgZm9yIHRoZSBjb25maWd1cmF0
+aW9uLg0KVGhhbmtzIGZvciB0aGUgY29uZmlndXJhdGlvbiBleGFtcGxlLiANCg0KSSBmb3VuZCB0
+aGUgY2F1c2Ugb2YgdGhpcyBidWcuDQpBdCBsZWFzdCB3aGVuICJncG1jX2NzX3Byb2dyYW1fc2V0
+dGluZ3M6IGludmFsaWQgd2FpdC1waW4gKC0xKSIgaXMgcHJpbnRlZCBpbiB0aGUga2VybmVsIGxv
+Zy4NCg0KTm93IEknbSBub3Qgc3VyZSB3aGVyZSB0byBzZW5kIHRoZSBidWdmaXggcGF0Y2ggKGxp
+bnV4LW5leHQsIGxpbnV4LW9tYXAsIGJvdGg/KS4gDQoNCj4gDQo+IFJlZ2FyZHMsDQo+IA0KPiBU
+b255DQoNCmNoZWVycywNCmJlbmVkaWt0DQoNCg==
