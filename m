@@ -2,41 +2,42 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F7486468BB
-	for <lists+linux-omap@lfdr.de>; Thu,  8 Dec 2022 06:49:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AA9C6468BE
+	for <lists+linux-omap@lfdr.de>; Thu,  8 Dec 2022 06:52:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229517AbiLHFtr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 8 Dec 2022 00:49:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43416 "EHLO
+        id S229523AbiLHFwP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 8 Dec 2022 00:52:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43672 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229437AbiLHFtq (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 8 Dec 2022 00:49:46 -0500
+        with ESMTP id S229486AbiLHFwO (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 8 Dec 2022 00:52:14 -0500
 Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id AAB9B45A16;
-        Wed,  7 Dec 2022 21:49:45 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D327B92A37;
+        Wed,  7 Dec 2022 21:52:13 -0800 (PST)
 Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id AF82A804D;
-        Thu,  8 Dec 2022 05:49:44 +0000 (UTC)
-Date:   Thu, 8 Dec 2022 07:49:43 +0200
+        by muru.com (Postfix) with ESMTPS id 26FB5804D;
+        Thu,  8 Dec 2022 05:52:13 +0000 (UTC)
+Date:   Thu, 8 Dec 2022 07:52:11 +0200
 From:   Tony Lindgren <tony@atomide.com>
-To:     "Niedermayr, BENEDIKT" <benedikt.niedermayr@siemens.com>
-Cc:     "rogerq@kernel.org" <rogerq@kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "krzysztof.kozlowski@linaro.org" <krzysztof.kozlowski@linaro.org>,
-        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>
-Subject: Re: [PATCH v9 1/2] memory: omap-gpmc: wait pin additions
-Message-ID: <Y5F69xtIPM87iklg@atomide.com>
-References: <20221102133047.1654449-1-benedikt.niedermayr@siemens.com>
- <20221102133047.1654449-2-benedikt.niedermayr@siemens.com>
- <Y5CafQpZnjSSCMoj@atomide.com>
- <ae35cfd12ed3472df20ca5f99bffa8bb7c009199.camel@siemens.com>
- <Y5CsDefg12Bbg24p@atomide.com>
- <cf36d335dc6a85ebafc765a4d806745cca62362a.camel@siemens.com>
+To:     Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Johan Hovold <johan@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        linux-serial@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v4 1/1] serial: core: Start managing serial
+ controllers to enable runtime PM
+Message-ID: <Y5F7i8Ee/jAQKu9n@atomide.com>
+References: <20221207124305.49943-1-tony@atomide.com>
+ <Y5D187ygOvDEA0UK@smile.fi.intel.com>
+ <Y5D3UKLgHCT9feuC@smile.fi.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cf36d335dc6a85ebafc765a4d806745cca62362a.camel@siemens.com>
+In-Reply-To: <Y5D3UKLgHCT9feuC@smile.fi.intel.com>
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -45,20 +46,23 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Niedermayr, BENEDIKT <benedikt.niedermayr@siemens.com> [221207 17:29]:
-> I found the cause of this bug.
-> At least when "gpmc_cs_program_settings: invalid wait-pin (-1)" is printed in the kernel log.
+* Andy Shevchenko <andriy.shevchenko@intel.com> [221207 20:28]:
+> We can avoid this check by caching the platform device.
+> 
+> 	struct platform_device *ctrl_pdev = NULL;
+> 
+> 	if (...) {
+> 		ctrl_pdev = to_platform_device(ctrl_dev);
+> 	}
+> 
+> 	platform_device_del(ctrl_pdev);
 
-OK
+OK yeah that's nicer :)
 
-> Now I'm not sure where to send the bugfix patch (linux-next, linux-omap, both?). 
+> > Shouldn't you call platform_device_unregister()?
 
-Please send a fix as against current Linux next as a separate patch as
-your earlier patches have been already applied for the merge window.
-
-If dts changes are also needed, let's first try to fix the driver to handle
-the invalid wait-pin case. Then we can patch the dts files separately as
-needed.
+Outside the error path it should be platform_device_unregister(),
+I'll check. Thanks also for your other comments.
 
 Regards,
 
