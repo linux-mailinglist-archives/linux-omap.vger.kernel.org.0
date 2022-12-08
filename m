@@ -2,95 +2,131 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B28E0646E2D
-	for <lists+linux-omap@lfdr.de>; Thu,  8 Dec 2022 12:13:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C913646FA9
+	for <lists+linux-omap@lfdr.de>; Thu,  8 Dec 2022 13:29:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229522AbiLHLNe (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 8 Dec 2022 06:13:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46998 "EHLO
+        id S229720AbiLHM3T (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 8 Dec 2022 07:29:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229524AbiLHLNd (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 8 Dec 2022 06:13:33 -0500
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0778D3F05B;
-        Thu,  8 Dec 2022 03:13:32 -0800 (PST)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 4E1EA8109;
-        Thu,  8 Dec 2022 11:13:31 +0000 (UTC)
-Date:   Thu, 8 Dec 2022 13:13:30 +0200
-From:   Tony Lindgren <tony@atomide.com>
-To:     Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Johan Hovold <johan@kernel.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-serial <linux-serial@vger.kernel.org>,
-        linux-omap@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [RFC PATCH v4 1/1] serial: core: Start managing serial
- controllers to enable runtime PM
-Message-ID: <Y5HG2okzlqX+xfWv@atomide.com>
-References: <20221207124305.49943-1-tony@atomide.com>
- <7f105ff9-cdc3-f98e-2557-812361faa94@linux.intel.com>
- <Y5G5Udw6FAEFdAYi@atomide.com>
- <3c87186b-336f-6884-a2c-6ee3c9d70@linux.intel.com>
+        with ESMTP id S229538AbiLHM3S (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 8 Dec 2022 07:29:18 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A0BE2B185;
+        Thu,  8 Dec 2022 04:29:17 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BAE8961EEE;
+        Thu,  8 Dec 2022 12:29:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05875C433C1;
+        Thu,  8 Dec 2022 12:29:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1670502556;
+        bh=zbX8/ClFA3b2CThz56cTysR/0+gs5BUOcVmr4sqX8fc=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=M9aAZxAvft8qRQ0t9SH9a4A7edcdMpmF/DIvHtqVmKMX67+nipkhZzYqP7N6XHAxc
+         1JsQDSahfmod5QD0xJ1hKD5fJD52lp6afr49c8GETzvJtBtje+7/3V7r16T1UfiiHh
+         ayr29LSi6LVoJdeIlk9lx4Q0JG3kwrZEuxg9MASt07OhBHSHT/rXI1fBKL6AX/7hLV
+         jJkNnifxVnE2oVyIshpvLwLHIDD4L6esgn7DlxEZ/AGmMbA4SWKMk08mrkKizjnwGb
+         uxEK6G9oX8Jbo+ygbvtAHcvNGfuah423J0zsf/SkoPYzygexbie1WzOkOE4qKwcowN
+         dSt/ZwIqSYMig==
+Date:   Thu, 8 Dec 2022 12:29:11 +0000
+From:   Lee Jones <lee@kernel.org>
+To:     Andreas Kemnade <andreas@kemnade.info>
+Cc:     tony@atomide.com, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Bin Liu <b-liu@ti.com>
+Subject: Re: [PATCH] mfd: twl: fix TWL6032 phy vbus detection
+Message-ID: <Y5HYl2Umqs7HSOKN@google.com>
+References: <20221119100341.2930647-1-andreas@kemnade.info>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <3c87186b-336f-6884-a2c-6ee3c9d70@linux.intel.com>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20221119100341.2930647-1-andreas@kemnade.info>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Ilpo Järvinen <ilpo.jarvinen@linux.intel.com> [221208 10:48]:
-> On Thu, 8 Dec 2022, Tony Lindgren wrote:
+On Sat, 19 Nov 2022, Andreas Kemnade wrote:
+
+> TWL6032 has a few charging registers prepended before the charging
+> registers the TWL6030 has. To be able to use common register defines
+> declare the additional registers as additional module.
+> At the moment this affects the access to CHARGERUSB_CTRL1 in
+> phy-twl6030-usb.  Without this patch, it is accessing the wrong register
+> on TWL6032.
+> The consequence is that presence of Vbus is not reported.
 > 
-> > * Ilpo Järvinen <ilpo.jarvinen@linux.intel.com> [221208 09:12]:
-> > > On Wed, 7 Dec 2022, Tony Lindgren wrote:
-> > > > +	ret = serial_core_add_one_port(drv, port);
-> > > > +	if (ret)
-> > > > +		return ret;
-> > > > +
-> > > > +	mutex_lock(&port_mutex);
-> > > > +
-> > > > +	/* Inititalize a serial core controller device if needed */
-> > > > +	ctrl_dev = serial_core_ctrl_find(drv, port->dev, port->ctrl_id);
-> > > > +	if (!ctrl_dev) {
-> > > > +		ctrl_dev = serial_core_ctrl_device_add(port);
-> > > > +		if (!ctrl_dev)
-> > > > +			goto err_remove_port;
-> > > > +		allocated = true;
-> > > > +	}
-> > > > +
-> > > > +	/* Initialize a serial core port device */
-> > > > +	ret = serial_core_port_device_add(ctrl_dev, port);
-> > > 
-> > > How is ->port_dev supposed to work here?
-> > > 
-> > > ->port_dev is not set until in serial_core_port_device_add() but you made
-> > > serial_core_add_one_port() call before that.
-> > 
-> > Hmm do you mean you want to call serial_core_add_one_port() later after
-> > serial_core_port_device_add()?
-> > 
-> > Or are you seeing some uninitialized use of port->port_dev (and not
-> > port->dev)?
+> Cc: Bin Liu <b-liu@ti.com>
+> Cc: Tony Lindgren <tony@atomide.com>
+> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+> ---
+>  drivers/mfd/twl-core.c  | 8 ++++----
+>  include/linux/mfd/twl.h | 2 ++
+>  2 files changed, 6 insertions(+), 4 deletions(-)
 > 
-> With the other patch on top of this, yes, I did see uninitialized 
-> port->port_dev already in serial_core_add_one_port()->uart_configure_port().
-> While that could be solved by removing the pm_runtime_*() calls from 
-> there, I think it's a generic problem because after 
-> serial_core_add_one_port() the port can have anything happening on it, no?
+> diff --git a/drivers/mfd/twl-core.c b/drivers/mfd/twl-core.c
+> index f6b4b9d94bbd..5a7ed71d0e30 100644
+> --- a/drivers/mfd/twl-core.c
+> +++ b/drivers/mfd/twl-core.c
+> @@ -111,6 +111,7 @@
+>  #define TWL6030_BASEADD_GASGAUGE	0x00C0
+>  #define TWL6030_BASEADD_PIH		0x00D0
+>  #define TWL6030_BASEADD_CHARGER		0x00E0
+> +/* A few regs prepended before the 6030 regs */
 
-OK. Sounds like it should get sorted out by moving the call to
-serial_core_add_one_port() to happen after the devices are created.
+This would be better represented if the defines were in order.
 
-Regards,
+The comment is also superfluous.
 
-Tony
+>  #define TWL6032_BASEADD_CHARGER		0x00DA
+
+Are you sure this is prepended i.e. before the other registers?
+
+These looks as though they sit in the middle.
+
+>  #define TWL6030_BASEADD_LED		0x00F4
+>  
+> @@ -353,6 +354,9 @@ static struct twl_mapping twl6030_map[] = {
+>  	{ 2, TWL6030_BASEADD_ZERO },
+>  	{ 1, TWL6030_BASEADD_GPADC_CTRL },
+>  	{ 1, TWL6030_BASEADD_GASGAUGE },
+> +
+> +	/* TWL6032 specific charger registers */
+> +	{ 1, TWL6032_BASEADD_CHARGER },
+>  };
+>  
+>  static const struct regmap_config twl6030_regmap_config[3] = {
+> @@ -802,10 +806,6 @@ twl_probe(struct i2c_client *client, const struct i2c_device_id *id)
+>  	if ((id->driver_data) & TWL6030_CLASS) {
+>  		twl_priv->twl_id = TWL6030_CLASS_ID;
+>  		twl_priv->twl_map = &twl6030_map[0];
+> -		/* The charger base address is different in twl6032 */
+> -		if ((id->driver_data) & TWL6032_SUBCLASS)
+> -			twl_priv->twl_map[TWL_MODULE_MAIN_CHARGE].base =
+> -							TWL6032_BASEADD_CHARGER;
+>  		twl_regmap_config = twl6030_regmap_config;
+>  	} else {
+>  		twl_priv->twl_id = TWL4030_CLASS_ID;
+> diff --git a/include/linux/mfd/twl.h b/include/linux/mfd/twl.h
+> index eaa233038254..6e3d99b7a0ee 100644
+> --- a/include/linux/mfd/twl.h
+> +++ b/include/linux/mfd/twl.h
+> @@ -69,6 +69,8 @@ enum twl6030_module_ids {
+>  	TWL6030_MODULE_GPADC,
+>  	TWL6030_MODULE_GASGAUGE,
+>  
+> +	/* A few extra registers before the registers shared with the 6030 */
+> +	TWL6032_MODULE_CHARGE,
+>  	TWL6030_MODULE_LAST,
+>  };
+>  
+
+-- 
+Lee Jones [李琼斯]
