@@ -2,45 +2,25 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8353E649F13
-	for <lists+linux-omap@lfdr.de>; Mon, 12 Dec 2022 13:49:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D5A5649F24
+	for <lists+linux-omap@lfdr.de>; Mon, 12 Dec 2022 13:53:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231685AbiLLMt5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 12 Dec 2022 07:49:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55310 "EHLO
+        id S231676AbiLLMx1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 12 Dec 2022 07:53:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231343AbiLLMt4 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 12 Dec 2022 07:49:56 -0500
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D297F1107;
-        Mon, 12 Dec 2022 04:49:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1670849394; x=1702385394;
-  h=date:from:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=17A8u7UINSK9mVy2bf6dgep4EzLuH0vbmZm+/lj3kjo=;
-  b=NRki/BxvUK71QX+MpF7dWgaz2RyUpQeVINWBQu8Hps5b1sYTk/60TFoT
-   OE3susG9BmPkbmHze4j2RghVWvqMSO2jg0X3YOzEJROQrcx/FETzTVBiv
-   5yOcwip3FDJ5sWIBBmx6UduLO5LYXaYR94ct/cciuDjc9w0FGse+2jwK5
-   XB7LNd2M+ZTj5JJ+B+iXQ/KTWNUakN20mwFdGpzmSDKPi0j1SsfLF2vLI
-   NPsUh8uJpp96YeLHUyOr6NNJ8CJk5Avw8wJs3yNTeEBUFcQ+crQxoEiAX
-   2L4qMqo7BelaGRGWG0RK6xc1E9JFSL0M/GDCERTKwCU+GPh5l3/9dLk7v
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10558"; a="305486344"
-X-IronPort-AV: E=Sophos;i="5.96,238,1665471600"; 
-   d="scan'208";a="305486344"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Dec 2022 04:49:54 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10558"; a="716784636"
-X-IronPort-AV: E=Sophos;i="5.96,238,1665471600"; 
-   d="scan'208";a="716784636"
-Received: from rnowicki-mobl.ger.corp.intel.com ([10.249.39.121])
-  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Dec 2022 04:49:51 -0800
-Date:   Mon, 12 Dec 2022 14:49:48 +0200 (EET)
-From:   =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To:     Tony Lindgren <tony@atomide.com>
-cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        with ESMTP id S232032AbiLLMxZ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 12 Dec 2022 07:53:25 -0500
+Received: from muru.com (muru.com [72.249.23.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A1CF3DFD3;
+        Mon, 12 Dec 2022 04:53:22 -0800 (PST)
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id D172E80B3;
+        Mon, 12 Dec 2022 12:53:21 +0000 (UTC)
+Date:   Mon, 12 Dec 2022 14:53:20 +0200
+From:   Tony Lindgren <tony@atomide.com>
+To:     Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Andy Shevchenko <andriy.shevchenko@intel.com>,
         Jiri Slaby <jirislaby@kernel.org>,
         Johan Hovold <johan@kernel.org>,
@@ -48,50 +28,51 @@ cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Vignesh Raghavendra <vigneshr@ti.com>,
         linux-serial <linux-serial@vger.kernel.org>,
         linux-omap@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [RFC PATCH v4 1/1] serial: core: Start managing serial controllers
- to enable runtime PM
-In-Reply-To: <Y5bToLirsgA5NK/j@atomide.com>
-Message-ID: <ced9e9ea-317e-f2a2-d42f-97c2cd39f11b@linux.intel.com>
-References: <20221207124305.49943-1-tony@atomide.com> <7f105ff9-cdc3-f98e-2557-812361faa94@linux.intel.com> <Y5G5Udw6FAEFdAYi@atomide.com> <3c87186b-336f-6884-a2c-6ee3c9d70@linux.intel.com> <Y5HG2okzlqX+xfWv@atomide.com> <Y5bToLirsgA5NK/j@atomide.com>
+Subject: Re: [RFC PATCH v4 1/1] serial: core: Start managing serial
+ controllers to enable runtime PM
+Message-ID: <Y5ckQKmQYwi8aWgi@atomide.com>
+References: <20221207124305.49943-1-tony@atomide.com>
+ <7f105ff9-cdc3-f98e-2557-812361faa94@linux.intel.com>
+ <Y5G5Udw6FAEFdAYi@atomide.com>
+ <3c87186b-336f-6884-a2c-6ee3c9d70@linux.intel.com>
+ <Y5HG2okzlqX+xfWv@atomide.com>
+ <Y5bToLirsgA5NK/j@atomide.com>
+ <ced9e9ea-317e-f2a2-d42f-97c2cd39f11b@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-1000174910-1670849393=:1743"
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ced9e9ea-317e-f2a2-d42f-97c2cd39f11b@linux.intel.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
-
---8323329-1000174910-1670849393=:1743
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
-
-On Mon, 12 Dec 2022, Tony Lindgren wrote:
-
-> Hi Ilpo,
+* Ilpo Järvinen <ilpo.jarvinen@linux.intel.com> [221212 12:49]:
+> On Mon, 12 Dec 2022, Tony Lindgren wrote:
 > 
-> * Tony Lindgren <tony@atomide.com> [221208 11:13]:
-> > * Ilpo Järvinen <ilpo.jarvinen@linux.intel.com> [221208 10:48]:
-> > > With the other patch on top of this, yes, I did see uninitialized 
-> > > port->port_dev already in serial_core_add_one_port()->uart_configure_port().
-> > > While that could be solved by removing the pm_runtime_*() calls from 
-> > > there, I think it's a generic problem because after 
-> > > serial_core_add_one_port() the port can have anything happening on it, no?
+> > Hi Ilpo,
 > > 
-> > OK. Sounds like it should get sorted out by moving the call to
-> > serial_core_add_one_port() to happen after the devices are created.
+> > * Tony Lindgren <tony@atomide.com> [221208 11:13]:
+> > > * Ilpo Järvinen <ilpo.jarvinen@linux.intel.com> [221208 10:48]:
+> > > > With the other patch on top of this, yes, I did see uninitialized 
+> > > > port->port_dev already in serial_core_add_one_port()->uart_configure_port().
+> > > > While that could be solved by removing the pm_runtime_*() calls from 
+> > > > there, I think it's a generic problem because after 
+> > > > serial_core_add_one_port() the port can have anything happening on it, no?
+> > > 
+> > > OK. Sounds like it should get sorted out by moving the call to
+> > > serial_core_add_one_port() to happen after the devices are created.
+> > 
+> > Can you give a try with the patch below and see if it works for you?
 > 
-> Can you give a try with the patch below and see if it works for you?
+> This one worked, yes.
 
-This one worked, yes.
+OK good to hear. I'll send out v5 after -rc1 then.
 
--- 
- i.
+Thanks,
 
---8323329-1000174910-1670849393=:1743--
+Tony
