@@ -2,77 +2,128 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D5A5649F24
-	for <lists+linux-omap@lfdr.de>; Mon, 12 Dec 2022 13:53:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C6DD064A510
+	for <lists+linux-omap@lfdr.de>; Mon, 12 Dec 2022 17:39:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231676AbiLLMx1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 12 Dec 2022 07:53:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56818 "EHLO
+        id S232874AbiLLQjH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 12 Dec 2022 11:39:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40860 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232032AbiLLMxZ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 12 Dec 2022 07:53:25 -0500
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A1CF3DFD3;
-        Mon, 12 Dec 2022 04:53:22 -0800 (PST)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id D172E80B3;
-        Mon, 12 Dec 2022 12:53:21 +0000 (UTC)
-Date:   Mon, 12 Dec 2022 14:53:20 +0200
-From:   Tony Lindgren <tony@atomide.com>
-To:     Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Johan Hovold <johan@kernel.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-serial <linux-serial@vger.kernel.org>,
-        linux-omap@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [RFC PATCH v4 1/1] serial: core: Start managing serial
- controllers to enable runtime PM
-Message-ID: <Y5ckQKmQYwi8aWgi@atomide.com>
-References: <20221207124305.49943-1-tony@atomide.com>
- <7f105ff9-cdc3-f98e-2557-812361faa94@linux.intel.com>
- <Y5G5Udw6FAEFdAYi@atomide.com>
- <3c87186b-336f-6884-a2c-6ee3c9d70@linux.intel.com>
- <Y5HG2okzlqX+xfWv@atomide.com>
- <Y5bToLirsgA5NK/j@atomide.com>
- <ced9e9ea-317e-f2a2-d42f-97c2cd39f11b@linux.intel.com>
+        with ESMTP id S232606AbiLLQig (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 12 Dec 2022 11:38:36 -0500
+Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4C11164B7
+        for <linux-omap@vger.kernel.org>; Mon, 12 Dec 2022 08:37:03 -0800 (PST)
+Received: by mail-ed1-x52d.google.com with SMTP id v8so13692778edi.3
+        for <linux-omap@vger.kernel.org>; Mon, 12 Dec 2022 08:37:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lvYON1Uq6UT3Qph7OPPr0NH47G6rUYR8O1BO9MFwJow=;
+        b=lIFXcScE+1mmzH1SBNLfPzmU2yyZ22FDa7zo6/O0Bw9aIOxDeXxYkEVfus52JWuhda
+         4ouELocZnEhmnwFppolEYq4c3c7RHYAqD4pax4M3unQDLONiM/9+ejXSM9E2FE+Z0v02
+         plxbNMhSLCExfq6g58BwEJLatQLzpt/xLWOhKWfMwSgaHbhPuPfGnoShEU2Q/8V0GhBe
+         I8mO/6POKEHTvHhiQrSmT3i/DlcfyH1o4pAMtSuNXvNoHj+mOy3GKKCsRTSQGVPFd3Z7
+         AQYI0FN6wamo3RnZf0VXDCwVvMRjPWjYDkKYXDeP5o/vQIFIn9FanCQzU/XNFNQHrfWF
+         2geA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lvYON1Uq6UT3Qph7OPPr0NH47G6rUYR8O1BO9MFwJow=;
+        b=YEvf/ZUmOdC7zr4zkDPrW65AwVX/rLeEdSmwU11U0i8rgPgvZrl50IOh4Pqzihqpj7
+         FOlR19KGHGHTmoyPF2BFLYo6YziculIek+W7rPS4ZPclIa3shJYlxpyuYl9FLPA4HF0Y
+         isdsUXL1zRF+nBZRndC5NOND+SUoumKh3DI9DzoXKlDRvwgiIIHKEtdJ/tSJOcmJGeYY
+         nTJL05Ebaqd3nac7G6VxdSQ7TSGsFmNcQlVAeoe02QScFgk8uvE6mv7Tzw1mXKQNs7Ci
+         E0zUa4JtX04gdouvH0x6Pftp4oqD4+a3MsVZ8286owouIQ+pTofcu0rqjFUnJIBUuf9q
+         K5ng==
+X-Gm-Message-State: ANoB5pm/eyKcfF9Qzl5MdFYKBdmv5aTqkJ1lxCizI+hi/UCT4IR2ym6g
+        GGgPyjZq/PApaVC5SbjgLl0SOw==
+X-Google-Smtp-Source: AA0mqf5ppTTyM6N0bPOAfBX//eKXVRPakyRimeYdkY/8NocUbAvjnOSiYLmQOcD2W7tmhBu2XO410g==
+X-Received: by 2002:a05:6402:702:b0:46f:68d0:76 with SMTP id w2-20020a056402070200b0046f68d00076mr10093614edx.34.1670863020790;
+        Mon, 12 Dec 2022 08:37:00 -0800 (PST)
+Received: from prec5560.. ([2001:bf7:830:a7a8:ff97:7d8d:1f2e:ffaa])
+        by smtp.gmail.com with ESMTPSA id m15-20020a50930f000000b00463597d2c25sm4051979eda.74.2022.12.12.08.36.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Dec 2022 08:37:00 -0800 (PST)
+From:   Robert Foss <robert.foss@linaro.org>
+To:     Lee Jones <lee.jones@linaro.org>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>,
+        Angel Iglesias <ang.iglesiasg@gmail.com>,
+        Wolfram Sang <wsa@kernel.org>,
+        Grant Likely <grant.likely@linaro.org>
+Cc:     Robert Foss <robert.foss@linaro.org>,
+        linuxppc-dev@lists.ozlabs.org, linux-actions@lists.infradead.org,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-media@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-crypto@vger.kernel.org, chrome-platform@lists.linux.dev,
+        Broadcom internal kernel review list 
+        <bcm-kernel-feedback-list@broadcom.com>,
+        linux-input@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
+        linux-integrity@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-serial@vger.kernel.org, Purism Kernel Team <kernel@puri.sm>,
+        linux-staging@lists.linux.dev, alsa-devel@alsa-project.org,
+        linux-watchdog@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-rtc@vger.kernel.org, linux-leds@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-pm@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org, patches@opensource.cirrus.com,
+        linux-mtd@lists.infradead.org, linux-renesas-soc@vger.kernel.org,
+        linux-amlogic@lists.infradead.org, linux-pwm@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org, linux-i2c@vger.kernel.org,
+        kernel@pengutronix.de, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        openipmi-developer@lists.sourceforge.net,
+        linux-fbdev@vger.kernel.org
+Subject: Re: (subset) [PATCH 000/606] i2c: Complete conversion to i2c_probe_new
+Date:   Mon, 12 Dec 2022 17:36:51 +0100
+Message-Id: <167086288411.3041259.17824406556561546642.b4-ty@linaro.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20221118224540.619276-1-uwe@kleine-koenig.org>
+References: <20221118224540.619276-1-uwe@kleine-koenig.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ced9e9ea-317e-f2a2-d42f-97c2cd39f11b@linux.intel.com>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Ilpo Järvinen <ilpo.jarvinen@linux.intel.com> [221212 12:49]:
-> On Mon, 12 Dec 2022, Tony Lindgren wrote:
+On Fri, 18 Nov 2022 23:35:34 +0100, Uwe Kleine-König wrote:
+> since commit b8a1a4cd5a98 ("i2c: Provide a temporary .probe_new()
+> call-back type") from 2016 there is a "temporary" alternative probe
+> callback for i2c drivers.
 > 
-> > Hi Ilpo,
-> > 
-> > * Tony Lindgren <tony@atomide.com> [221208 11:13]:
-> > > * Ilpo Järvinen <ilpo.jarvinen@linux.intel.com> [221208 10:48]:
-> > > > With the other patch on top of this, yes, I did see uninitialized 
-> > > > port->port_dev already in serial_core_add_one_port()->uart_configure_port().
-> > > > While that could be solved by removing the pm_runtime_*() calls from 
-> > > > there, I think it's a generic problem because after 
-> > > > serial_core_add_one_port() the port can have anything happening on it, no?
-> > > 
-> > > OK. Sounds like it should get sorted out by moving the call to
-> > > serial_core_add_one_port() to happen after the devices are created.
-> > 
-> > Can you give a try with the patch below and see if it works for you?
+> This series completes all drivers to this new callback (unless I missed
+> something). It's based on current next/master.
+> A part of the patches depend on commit 662233731d66 ("i2c: core:
+> Introduce i2c_client_get_device_id helper function"), there is a branch that
+> you can pull into your tree to get it:
 > 
-> This one worked, yes.
+> [...]
 
-OK good to hear. I'll send out v5 after -rc1 then.
+Applied, thanks!
 
-Thanks,
+Repo: https://cgit.freedesktop.org/drm/drm-misc/
 
-Tony
+
+[014/606] drm/bridge: adv7511: Convert to i2c's .probe_new()
+          commit: 1c546894ff82f8b7c070998c03f9b15a3499f326
+[028/606] drm/bridge: parade-ps8622: Convert to i2c's .probe_new()
+          commit: d6b522e9bbb0cca1aeae4ef6188800534794836f
+[035/606] drm/bridge: ti-sn65dsi83: Convert to i2c's .probe_new()
+          commit: 0f6548807fa77e87bbc37964c6b1ed9ba6e1155d
+
+
+
+rob
+
