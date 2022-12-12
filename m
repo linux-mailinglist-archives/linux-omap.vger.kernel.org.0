@@ -2,98 +2,96 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3622D649AFE
-	for <lists+linux-omap@lfdr.de>; Mon, 12 Dec 2022 10:22:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8353E649F13
+	for <lists+linux-omap@lfdr.de>; Mon, 12 Dec 2022 13:49:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231839AbiLLJWu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 12 Dec 2022 04:22:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46780 "EHLO
+        id S231685AbiLLMt5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 12 Dec 2022 07:49:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231956AbiLLJV6 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 12 Dec 2022 04:21:58 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C840D50;
-        Mon, 12 Dec 2022 01:21:02 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1805E60F39;
-        Mon, 12 Dec 2022 09:21:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC63BC433D2;
-        Mon, 12 Dec 2022 09:20:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1670836861;
-        bh=lC6luI6DCbVTais4yXR5+kEUwbcuUmGiAsYYh+6zc8Y=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=lKqCbvpPP275sYFbjwH4DF6Ydmerw6HU4eYdDcn8E1vSCj1sEV8mmt4JaoNXiyt75
-         FDHm467qkI9WuOEh7qN6op7obJjyWhfDPtpBk4dKxk3NtAv/SIaRfy0AUVcinbTnZm
-         PwV+xUQ3cZudkqOiG0GuO7MJfxt5/H9bkJdU8YRG6T+/48Lfbi6k7iOb2qZIoY0bmu
-         TMfnoRVFtk+ucadZR9ldC7ULO5VTI1StELMdV2dnJE8/shBDtfOg24B3DwfBkfyhMe
-         bN5U4VHvlTsDyWZPe6y2HA7Lh7/lPRDlu9+tRl/LV3pX+0KaR+ctoTjTIr3UeQ/6AA
-         6WSN7AHzrR1PQ==
-Message-ID: <f5076356-495b-c42d-e22a-7207dfb1fb3b@kernel.org>
-Date:   Mon, 12 Dec 2022 11:20:56 +0200
+        with ESMTP id S231343AbiLLMt4 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 12 Dec 2022 07:49:56 -0500
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D297F1107;
+        Mon, 12 Dec 2022 04:49:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1670849394; x=1702385394;
+  h=date:from:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=17A8u7UINSK9mVy2bf6dgep4EzLuH0vbmZm+/lj3kjo=;
+  b=NRki/BxvUK71QX+MpF7dWgaz2RyUpQeVINWBQu8Hps5b1sYTk/60TFoT
+   OE3susG9BmPkbmHze4j2RghVWvqMSO2jg0X3YOzEJROQrcx/FETzTVBiv
+   5yOcwip3FDJ5sWIBBmx6UduLO5LYXaYR94ct/cciuDjc9w0FGse+2jwK5
+   XB7LNd2M+ZTj5JJ+B+iXQ/KTWNUakN20mwFdGpzmSDKPi0j1SsfLF2vLI
+   NPsUh8uJpp96YeLHUyOr6NNJ8CJk5Avw8wJs3yNTeEBUFcQ+crQxoEiAX
+   2L4qMqo7BelaGRGWG0RK6xc1E9JFSL0M/GDCERTKwCU+GPh5l3/9dLk7v
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10558"; a="305486344"
+X-IronPort-AV: E=Sophos;i="5.96,238,1665471600"; 
+   d="scan'208";a="305486344"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Dec 2022 04:49:54 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10558"; a="716784636"
+X-IronPort-AV: E=Sophos;i="5.96,238,1665471600"; 
+   d="scan'208";a="716784636"
+Received: from rnowicki-mobl.ger.corp.intel.com ([10.249.39.121])
+  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Dec 2022 04:49:51 -0800
+Date:   Mon, 12 Dec 2022 14:49:48 +0200 (EET)
+From:   =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To:     Tony Lindgren <tony@atomide.com>
+cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andy Shevchenko <andriy.shevchenko@intel.com>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Johan Hovold <johan@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        linux-serial <linux-serial@vger.kernel.org>,
+        linux-omap@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [RFC PATCH v4 1/1] serial: core: Start managing serial controllers
+ to enable runtime PM
+In-Reply-To: <Y5bToLirsgA5NK/j@atomide.com>
+Message-ID: <ced9e9ea-317e-f2a2-d42f-97c2cd39f11b@linux.intel.com>
+References: <20221207124305.49943-1-tony@atomide.com> <7f105ff9-cdc3-f98e-2557-812361faa94@linux.intel.com> <Y5G5Udw6FAEFdAYi@atomide.com> <3c87186b-336f-6884-a2c-6ee3c9d70@linux.intel.com> <Y5HG2okzlqX+xfWv@atomide.com> <Y5bToLirsgA5NK/j@atomide.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [PATCH net-next] net: ethernet: ti: am65-cpsw: Fix PM runtime
- leakage in am65_cpsw_nuss_ndo_slave_open()
-Content-Language: en-US
-To:     Saeed Mahameed <saeed@kernel.org>
-Cc:     davem@davemloft.net, maciej.fijalkowski@intel.com, kuba@kernel.org,
-        andrew@lunn.ch, edumazet@google.com, pabeni@redhat.com,
-        vigneshr@ti.com, s-vadapalli@ti.com, linux-omap@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20221208105534.63709-1-rogerq@kernel.org> <Y5PY1Cdp3px3vRqE@x130>
-From:   Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <Y5PY1Cdp3px3vRqE@x130>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: multipart/mixed; boundary="8323329-1000174910-1670849393=:1743"
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
+--8323329-1000174910-1670849393=:1743
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
 
-On 10/12/2022 02:54, Saeed Mahameed wrote:
-> On 08 Dec 12:55, Roger Quadros wrote:
->> Ensure pm_runtime_put() is issued in error path.
->>
->> Reported-by: Jakub Kicinski <kuba@kernel.org>
->> Signed-off-by: Roger Quadros <rogerq@kernel.org>
-> 
-> 
-> Reviewed-by: Saeed Mahameed <saeed@kernel.org>
-> 
-> 
-> [...]
-> 
->> @@ -622,6 +623,10 @@ static int am65_cpsw_nuss_ndo_slave_open(struct net_device *ndev)
->> error_cleanup:
->>     am65_cpsw_nuss_ndo_slave_stop(ndev);
-> 
-> BTW, while looking at the ndo_slave_stop() call, it seems to abort if am65_cpsw_nuss_common_stop() fails, but looking deeper at that and it seems am65_cpsw_nuss_common_stop() can never fail, so you might want to fix that.
+On Mon, 12 Dec 2022, Tony Lindgren wrote:
 
-You mean we should change it to return void and get rid of error checks on that function. Right?
-
+> Hi Ilpo,
 > 
->>     return ret;
->> +
->> +runtime_put:
->> +    pm_runtime_put(common->dev);
->> +    return ret;
->> }
->>
->> static void am65_cpsw_nuss_rx_cleanup(void *data, dma_addr_t desc_dma)
->> -- 
->> 2.34.1
->>
+> * Tony Lindgren <tony@atomide.com> [221208 11:13]:
+> > * Ilpo Järvinen <ilpo.jarvinen@linux.intel.com> [221208 10:48]:
+> > > With the other patch on top of this, yes, I did see uninitialized 
+> > > port->port_dev already in serial_core_add_one_port()->uart_configure_port().
+> > > While that could be solved by removing the pm_runtime_*() calls from 
+> > > there, I think it's a generic problem because after 
+> > > serial_core_add_one_port() the port can have anything happening on it, no?
+> > 
+> > OK. Sounds like it should get sorted out by moving the call to
+> > serial_core_add_one_port() to happen after the devices are created.
+> 
+> Can you give a try with the patch below and see if it works for you?
 
-cheers,
--roger
+This one worked, yes.
+
+-- 
+ i.
+
+--8323329-1000174910-1670849393=:1743--
