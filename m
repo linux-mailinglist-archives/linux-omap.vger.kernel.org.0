@@ -2,55 +2,49 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FDBB64A91A
-	for <lists+linux-omap@lfdr.de>; Mon, 12 Dec 2022 22:01:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D3DFE64A9A4
+	for <lists+linux-omap@lfdr.de>; Mon, 12 Dec 2022 22:44:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233314AbiLLVBk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 12 Dec 2022 16:01:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41876 "EHLO
+        id S233445AbiLLVoN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 12 Dec 2022 16:44:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232871AbiLLVBO (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 12 Dec 2022 16:01:14 -0500
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56ACD19C1B;
-        Mon, 12 Dec 2022 13:00:20 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id A7E2FCE0FDD;
-        Mon, 12 Dec 2022 21:00:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id E024BC433A7;
-        Mon, 12 Dec 2022 21:00:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1670878817;
-        bh=O06dcxALdaiAZ7GkSYnUnuuDVtVajIiDb8qy4vzQcvI=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=Jxaup04GFy5M7KlneezoseB5J0Bho48YhvvfbZDFfN5phN+IWeGF89rmafA4zQtsJ
-         IOaX9fYjXgLM6+zH8KrtgkspxIOHEgsjuTlsg/fTDmgixcEB4E1aHBofPhIwMd2zRe
-         6woJuPcOY2Au3gxU3xn767ORRusz/GSUGZTBIw1csoCr57CwA6ySiNGiIMfU3IJxub
-         dJULcmFXBwpRTD4E6nSbdYv32IQ4+UFDZ15UB9oq/xyZEk6Z2qk8871ClltMBR5pg8
-         0RcQbKXTPCvbpQQ52vEX8l19OkSAwkn7cgCc4oZLPnV9RPH0V6wiWMji8E0AZhT477
-         PgEuswoA5Qhgg==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id CA90FE21EF1;
-        Mon, 12 Dec 2022 21:00:16 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S233346AbiLLVoF (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 12 Dec 2022 16:44:05 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 326EB18B22
+        for <linux-omap@vger.kernel.org>; Mon, 12 Dec 2022 13:44:04 -0800 (PST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1p4qad-0008FE-GY; Mon, 12 Dec 2022 22:43:59 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1p4qab-0046cQ-Lm; Mon, 12 Dec 2022 22:43:58 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1p4qab-004bJI-Lk; Mon, 12 Dec 2022 22:43:57 +0100
+From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Tony Lindgren <tony@atomide.com>, Lee Jones <lee@kernel.org>
+Cc:     linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel@pengutronix.de
+Subject: [PATCH] mfd: twl4030-power: Drop empty platform remove function
+Date:   Mon, 12 Dec 2022 22:43:52 +0100
+Message-Id: <20221212214352.3776110-1-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1001; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=BzmOHIPwX22OuQ0j7QceFIwmWa5znnV1hu65LFP3ox8=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBjl6CU7iVyCxC00llipkoCqDHfxObd2aeCr4wzYNnN S3SyVyOJATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCY5eglAAKCRDB/BR4rcrsCQw1B/ 4iJxyAr7se/ctq384UOztRz2h46yEE/E2oujGbtCZEKWJ56kh0POCPpF2c5rUO2QLx2P4ksU9II+BN PKCxJ4mUQ56FwiCHRIyU4Rz5nmyjgMrFum/fET93OhsFfynqlfEQqYPcIOvI/EP2do2ISu1ePybcB6 xD9Uob6ulDQLB8Rglmx4uDxcuAkj6YIyAO0dqglYHG33VtwJkmFah04Ju+iPeoocW38fgBvuxac1BJ 7ZF8hrXULDPYYWVIZnDMTS1/gdV1kh6xoJlgwJ574JOtonlr44jqdoDiyakY7nxma8Q2UK9mM3pKrp H+q6eLs4eFWs1sLkNCRYkXRWzAM/bL
+X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] net: ethernet: ti: am65-cpsw: Fix PM runtime leakage
- in am65_cpsw_nuss_ndo_slave_open()
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <167087881682.21711.2011176766794694783.git-patchwork-notify@kernel.org>
-Date:   Mon, 12 Dec 2022 21:00:16 +0000
-References: <20221208105534.63709-1-rogerq@kernel.org>
-In-Reply-To: <20221208105534.63709-1-rogerq@kernel.org>
-To:     Roger Quadros <rogerq@kernel.org>
-Cc:     davem@davemloft.net, maciej.fijalkowski@intel.com, kuba@kernel.org,
-        andrew@lunn.ch, edumazet@google.com, pabeni@redhat.com,
-        vigneshr@ti.com, s-vadapalli@ti.com, linux-omap@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-omap@vger.kernel.org
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,27 +52,39 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hello:
+A remove callback just returning 0 is equivalent to no remove callback
+at all. So drop the useless function.
 
-This patch was applied to netdev/net-next.git (master)
-by Jakub Kicinski <kuba@kernel.org>:
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+---
+ drivers/mfd/twl4030-power.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-On Thu,  8 Dec 2022 12:55:34 +0200 you wrote:
-> Ensure pm_runtime_put() is issued in error path.
-> 
-> Reported-by: Jakub Kicinski <kuba@kernel.org>
-> Signed-off-by: Roger Quadros <rogerq@kernel.org>
-> ---
->  drivers/net/ethernet/ti/am65-cpsw-nuss.c | 13 +++++++++----
->  1 file changed, 9 insertions(+), 4 deletions(-)
+diff --git a/drivers/mfd/twl4030-power.c b/drivers/mfd/twl4030-power.c
+index 6b36932263ba..e35b0f788c50 100644
+--- a/drivers/mfd/twl4030-power.c
++++ b/drivers/mfd/twl4030-power.c
+@@ -953,18 +953,12 @@ static int twl4030_power_probe(struct platform_device *pdev)
+ 	return err;
+ }
+ 
+-static int twl4030_power_remove(struct platform_device *pdev)
+-{
+-	return 0;
+-}
+-
+ static struct platform_driver twl4030_power_driver = {
+ 	.driver = {
+ 		.name	= "twl4030_power",
+ 		.of_match_table = of_match_ptr(twl4030_power_of_match),
+ 	},
+ 	.probe		= twl4030_power_probe,
+-	.remove		= twl4030_power_remove,
+ };
+ 
+ module_platform_driver(twl4030_power_driver);
 
-Here is the summary with links:
-  - [net-next] net: ethernet: ti: am65-cpsw: Fix PM runtime leakage in am65_cpsw_nuss_ndo_slave_open()
-    https://git.kernel.org/netdev/net-next/c/5821504f5073
-
-You are awesome, thank you!
+base-commit: 830b3c68c1fb1e9176028d02ef86f3cf76aa2476
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.38.1
 
