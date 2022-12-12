@@ -2,54 +2,53 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F714649AB6
-	for <lists+linux-omap@lfdr.de>; Mon, 12 Dec 2022 10:09:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3622D649AFE
+	for <lists+linux-omap@lfdr.de>; Mon, 12 Dec 2022 10:22:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231313AbiLLJJC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 12 Dec 2022 04:09:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40522 "EHLO
+        id S231839AbiLLJWu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 12 Dec 2022 04:22:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231202AbiLLJIz (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 12 Dec 2022 04:08:55 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0D35DD2;
-        Mon, 12 Dec 2022 01:08:54 -0800 (PST)
+        with ESMTP id S231956AbiLLJV6 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 12 Dec 2022 04:21:58 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C840D50;
+        Mon, 12 Dec 2022 01:21:02 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 65A42B80A4A;
-        Mon, 12 Dec 2022 09:08:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63287C433EF;
-        Mon, 12 Dec 2022 09:08:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1805E60F39;
+        Mon, 12 Dec 2022 09:21:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC63BC433D2;
+        Mon, 12 Dec 2022 09:20:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1670836132;
-        bh=+syCpe53ksZ1wk/P+ti6joXMTLfEgJsQad42fqKxD3g=;
+        s=k20201202; t=1670836861;
+        bh=lC6luI6DCbVTais4yXR5+kEUwbcuUmGiAsYYh+6zc8Y=;
         h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=NSC7eTO0arSVlDUtvmnWkmHX8oKugfq1mHlKbrZuU/v1ILMrnZ5E++3Mpa3Hc9fuI
-         /dbB8VZSGb89vmfi9DfHkC7EIhEetA5vvbQZHdCUkC87ddQhd9pGHa3mboMXsTysOT
-         XgPzcRlO2WqYieGyv8jZJPL0XcnZvcsbsW1kOW9YzOOh4zRXk/Nah0HMLxTuu/0Txo
-         Tgv41hTvIY0aMCYyHr+NC0xyLlO4UwtIn2ZZlXbBWP/Kbb/KEwP2Su2GoCcXASjuLN
-         9B2UNexqwTGaca0T3dLRP3M4sf8XPFryN/rdmEOBaFZ7EoaWikTcpAFikcBpcoEUte
-         KfpjN9KykJUEg==
-Message-ID: <0a42d725-ce95-216f-6078-877590be1d09@kernel.org>
-Date:   Mon, 12 Dec 2022 11:08:47 +0200
+        b=lKqCbvpPP275sYFbjwH4DF6Ydmerw6HU4eYdDcn8E1vSCj1sEV8mmt4JaoNXiyt75
+         FDHm467qkI9WuOEh7qN6op7obJjyWhfDPtpBk4dKxk3NtAv/SIaRfy0AUVcinbTnZm
+         PwV+xUQ3cZudkqOiG0GuO7MJfxt5/H9bkJdU8YRG6T+/48Lfbi6k7iOb2qZIoY0bmu
+         TMfnoRVFtk+ucadZR9ldC7ULO5VTI1StELMdV2dnJE8/shBDtfOg24B3DwfBkfyhMe
+         bN5U4VHvlTsDyWZPe6y2HA7Lh7/lPRDlu9+tRl/LV3pX+0KaR+ctoTjTIr3UeQ/6AA
+         6WSN7AHzrR1PQ==
+Message-ID: <f5076356-495b-c42d-e22a-7207dfb1fb3b@kernel.org>
+Date:   Mon, 12 Dec 2022 11:20:56 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.4.2
-Subject: Re: [PATCH] memory: omap-gpmc: fix wait pin validation
+Subject: Re: [PATCH net-next] net: ethernet: ti: am65-cpsw: Fix PM runtime
+ leakage in am65_cpsw_nuss_ndo_slave_open()
 Content-Language: en-US
-To:     "B. Niedermayr" <benedikt.niedermayr@siemens.com>,
-        linux-next@vger.kernel.org, Tony Lindgren <tony@atomide.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        "open list:OMAP GENERAL PURPOSE MEMORY CONTROLLER SUPPORT" 
-        <linux-omap@vger.kernel.org>,
-        "open list:MEMORY CONTROLLER DRIVERS" <linux-kernel@vger.kernel.org>
-References: <20221209123147.591982-1-benedikt.niedermayr@siemens.com>
+To:     Saeed Mahameed <saeed@kernel.org>
+Cc:     davem@davemloft.net, maciej.fijalkowski@intel.com, kuba@kernel.org,
+        andrew@lunn.ch, edumazet@google.com, pabeni@redhat.com,
+        vigneshr@ti.com, s-vadapalli@ti.com, linux-omap@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20221208105534.63709-1-rogerq@kernel.org> <Y5PY1Cdp3px3vRqE@x130>
 From:   Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <20221209123147.591982-1-benedikt.niedermayr@siemens.com>
+In-Reply-To: <Y5PY1Cdp3px3vRqE@x130>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
         RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -62,21 +61,39 @@ X-Mailing-List: linux-omap@vger.kernel.org
 
 
 
-On 09/12/2022 14:31, B. Niedermayr wrote:
-> From: Benedikt Niedermayr <benedikt.niedermayr@siemens.com>
+On 10/12/2022 02:54, Saeed Mahameed wrote:
+> On 08 Dec 12:55, Roger Quadros wrote:
+>> Ensure pm_runtime_put() is issued in error path.
+>>
+>> Reported-by: Jakub Kicinski <kuba@kernel.org>
+>> Signed-off-by: Roger Quadros <rogerq@kernel.org>
 > 
-> This bug has been introduced after switching from -1 to UINT_MAX
-> for GPMC_WAITPIN_INVALID.
 > 
-> The bug leads to an error when the optional gpmc,wait-pin
-> dt-property is not used:
+> Reviewed-by: Saeed Mahameed <saeed@kernel.org>
 > 
-> ...
-> gpmc_cs_program_settings: invalid wait-pin (-1)
-> ...
 > 
-> Signed-off-by: Benedikt Niedermayr <benedikt.niedermayr@siemens.com>
-> Fixes: 8dd7e4af5853 ("memory: omap-gpmc: fix coverity issue "Control flow issues"")
-> Cc: Rob Herring <robh+dt@kernel.org>
+> [...]
+> 
+>> @@ -622,6 +623,10 @@ static int am65_cpsw_nuss_ndo_slave_open(struct net_device *ndev)
+>> error_cleanup:
+>>     am65_cpsw_nuss_ndo_slave_stop(ndev);
+> 
+> BTW, while looking at the ndo_slave_stop() call, it seems to abort if am65_cpsw_nuss_common_stop() fails, but looking deeper at that and it seems am65_cpsw_nuss_common_stop() can never fail, so you might want to fix that.
 
-Acked-by: Roger Quadros <rogerq@kernel.org>
+You mean we should change it to return void and get rid of error checks on that function. Right?
+
+> 
+>>     return ret;
+>> +
+>> +runtime_put:
+>> +    pm_runtime_put(common->dev);
+>> +    return ret;
+>> }
+>>
+>> static void am65_cpsw_nuss_rx_cleanup(void *data, dma_addr_t desc_dma)
+>> -- 
+>> 2.34.1
+>>
+
+cheers,
+-roger
