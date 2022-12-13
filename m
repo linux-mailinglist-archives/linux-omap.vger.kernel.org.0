@@ -2,469 +2,251 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 81B0464B67A
-	for <lists+linux-omap@lfdr.de>; Tue, 13 Dec 2022 14:41:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 30D4964BBF5
+	for <lists+linux-omap@lfdr.de>; Tue, 13 Dec 2022 19:29:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235651AbiLMNlS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 13 Dec 2022 08:41:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52470 "EHLO
+        id S235844AbiLMS3h (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 13 Dec 2022 13:29:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234969AbiLMNlR (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 13 Dec 2022 08:41:17 -0500
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F30B8B41;
-        Tue, 13 Dec 2022 05:41:15 -0800 (PST)
-Received: by mail-pl1-x634.google.com with SMTP id m4so15657956pls.4;
-        Tue, 13 Dec 2022 05:41:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8bKi55q2x/j7htNUB1ASa122I9SyPa/BbXRS0RRZVE8=;
-        b=lO4ziCN/NWAT6Qy/Rk9/fRa2Y6PYUK12H1JDfhFjdW7rE9S+ReVEIxsrkViJYmGAW0
-         LUOrqm4/NQU0UIPP/0UjMQ9MycnxlPeM4JPJp8f5lNTJE1fKXfaJfPNtwSgSn6u7HFuk
-         dBIN58ZAlrdrw+rGWXO1F/y1k3D/vZBi2jEmB23D4ic3SUWHTy750VXcq2zc8dw5duj8
-         fcidOAQqBd5n3YS6Yy/Kl3R7+8O3xi76gQpcRBUOiwwUXFF/brNSoNExJa4ZbLyPNR9K
-         k5HxTRjJJfoKycAs7vswTGir0oKZQ/m5TSWgMU959wN9wGBiMO9GeFJwFKIH7jXlCgz6
-         mlsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8bKi55q2x/j7htNUB1ASa122I9SyPa/BbXRS0RRZVE8=;
-        b=mqGE6fgyGURzUdiSHFpLIAKuu4VQXJs1yNjq5T+xUI5F8DLH2C8eHP3im6KX6oM7bW
-         ZVh7TM7TMh+G5FXshkm3NVGe2hmdW0SZEskMNNPKPBIjDPoNVdxyQpd8TsqBriGKxvp3
-         SUhn0QQpzm/ekknt30g5U9Sbn/SPd0QlIE7KHX/37RfDW5/YSgSoIlLYFae6GzS8icpF
-         xqyvgfjCtNJcrj1Q8ejHxItztuDM/VsEYcmGd/Kc7z4GrR60sS6uCCLroW8YJzya9jXQ
-         OxohujnieV7NQwyGN4QMDsjs+qJWFA0/aEA+jbT5XqKt4/Dh2aS/MD1chUzNpxbYqEyQ
-         Xlmw==
-X-Gm-Message-State: ANoB5pnN4I2GgnXgjwKnww0UYkGCfJUsbZ9jlAHp+12B7zIB4T6XXp9i
-        z1W1P7AzXgfADiLJxuQi784=
-X-Google-Smtp-Source: AA0mqf6UvlwCYGCXXNd0n1wQNiwymfyWKN28bzxheLVr+lSKAwJxZjLof93GpSIaklOjbOsZufqitw==
-X-Received: by 2002:a17:902:e94c:b0:188:bd82:2b7c with SMTP id b12-20020a170902e94c00b00188bd822b7cmr22251688pll.5.1670938875341;
-        Tue, 13 Dec 2022 05:41:15 -0800 (PST)
-Received: from hyeyoo ([114.29.91.56])
-        by smtp.gmail.com with ESMTPSA id ik28-20020a170902ab1c00b0017d97d13b18sm8479096plb.65.2022.12.13.05.41.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Dec 2022 05:41:14 -0800 (PST)
-Date:   Tue, 13 Dec 2022 22:41:05 +0900
-From:   Hyeonggon Yoo <42.hyeyoo@gmail.com>
-To:     Vlastimil Babka <vbabka@suse.cz>
-Cc:     Christoph Lameter <cl@linux.com>,
-        David Rientjes <rientjes@google.com>,
-        Joonsoo Kim <iamjoonsoo.kim@lge.com>,
-        Pekka Enberg <penberg@kernel.org>,
-        Roman Gushchin <roman.gushchin@linux.dev>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Matthew Wilcox <willy@infradead.org>, patches@lists.linux.dev,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        Russell King <linux@armlinux.org.uk>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Jonas Bonn <jonas@southpole.se>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        Stafford Horne <shorne@gmail.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>, Arnd Bergmann <arnd@arndb.de>,
-        Josh Triplett <josh@joshtriplett.org>,
-        Conor Dooley <conor@kernel.org>,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        openrisc@lists.librecores.org, linux-riscv@lists.infradead.org,
-        linux-sh@vger.kernel.org
-Subject: Re: [PATCH 12/12] mm, slob: rename CONFIG_SLOB to
- CONFIG_SLOB_DEPRECATED
-Message-ID: <Y5iA8RzXs8MacQqi@hyeyoo>
-References: <20221121171202.22080-1-vbabka@suse.cz>
- <20221121171202.22080-13-vbabka@suse.cz>
+        with ESMTP id S235670AbiLMS3X (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 13 Dec 2022 13:29:23 -0500
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DAFD1141;
+        Tue, 13 Dec 2022 10:29:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1670956162; x=1702492162;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=4QPyqb1pvMS81Vaf94Si1tAEYfCAa6LBQX4nMxoXvDU=;
+  b=fblDVHrs8d00dwnWC+708+IXf39IazFulRiiVNwey2IwwrsgIa/QHU51
+   1C0C94AYulw+pincAzC1q0ohP01rg01+i3mylADC9Arotc+dokkEHh0jR
+   1VhvGZVS1iNJjzo86cQEl7wa0+yJdAGCJ5i5DGT7qcO09F60sywPJQLfi
+   4fbhrxxM4KtXby6QYVI5dL4Q8Mzqli8ZQ/cErDfSfgaXmC3GT4cJf26sp
+   ugfpj2FKL0RDm7P7T4hrthsWGczgKXiJXhw5n1cA5KXrIT+HgxLc4dyC1
+   XjvCw01blt9DtvApZOmY9psuDyf86kkIvsl55wzqLsL+fYpnW6Q/mDt8X
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10560"; a="315843084"
+X-IronPort-AV: E=Sophos;i="5.96,242,1665471600"; 
+   d="scan'208";a="315843084"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2022 10:29:22 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10560"; a="893997924"
+X-IronPort-AV: E=Sophos;i="5.96,242,1665471600"; 
+   d="scan'208";a="893997924"
+Received: from lkp-server01.sh.intel.com (HELO b5d47979f3ad) ([10.239.97.150])
+  by fmsmga006.fm.intel.com with ESMTP; 13 Dec 2022 10:29:19 -0800
+Received: from kbuild by b5d47979f3ad with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1p5A1m-0004el-1S;
+        Tue, 13 Dec 2022 18:29:18 +0000
+Date:   Wed, 14 Dec 2022 02:28:39 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     ntfs3@lists.linux.dev, netdev@vger.kernel.org,
+        lvs-devel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-xfs@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        amd-gfx@lists.freedesktop.org,
+        Linux Memory Management List <linux-mm@kvack.org>
+Subject: [linux-next:master] BUILD REGRESSION
+ 39ab32797f072eaf86b1faa7384ac73450684110
+Message-ID: <6398c457.hhPKRJ7/7EGjTQb/%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221121171202.22080-13-vbabka@suse.cz>
-X-Spam-Status: No, score=-0.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,HK_RANDOM_ENVFROM,
-        HK_RANDOM_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Nov 21, 2022 at 06:12:02PM +0100, Vlastimil Babka wrote:
-> As explained in [1], we would like to remove SLOB if possible.
-> 
-> - There are no known users that need its somewhat lower memory footprint
->   so much that they cannot handle SLUB (after some modifications by the
->   previous patches) instead.
-> 
-> - It is an extra maintenance burden, and a number of features are
->   incompatible with it.
-> 
-> - It blocks the API improvement of allowing kfree() on objects allocated
->   via kmem_cache_alloc().
-> 
-> As the first step, rename the CONFIG_SLOB option in the slab allocator
-> configuration choice to CONFIG_SLOB_DEPRECATED. Add CONFIG_SLOB
-> depending on CONFIG_SLOB_DEPRECATED as an internal option to avoid code
-> churn. This will cause existing .config files and defconfigs with
-> CONFIG_SLOB=y to silently switch to the default (and recommended
-> replacement) SLUB, while still allowing SLOB to be configured by anyone
-> that notices and needs it. But those should contact the slab maintainers
-> and linux-mm@kvack.org as explained in the updated help. With no valid
-> objections, the plan is to update the existing defconfigs to SLUB and
-> remove SLOB in a few cycles.
-> 
-> To make SLUB more suitable replacement for SLOB, a CONFIG_SLUB_TINY
-> option was introduced to limit SLUB's memory overhead.
-> There is a number of defconfigs specifying CONFIG_SLOB=y. As part of
-> this patch, update them to select CONFIG_SLUB and CONFIG_SLUB_TINY.
-> 
-> [1] https://lore.kernel.org/all/b35c3f82-f67b-2103-7d82-7a7ba7521439@suse.cz/
-> 
-> Cc: Russell King <linux@armlinux.org.uk>
-> Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
-> Cc: Janusz Krzysztofik <jmkrzyszt@gmail.com>
-> Cc: Tony Lindgren <tony@atomide.com>
-> Cc: Jonas Bonn <jonas@southpole.se>
-> Cc: Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>
-> Cc: Stafford Horne <shorne@gmail.com>
-> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-> Cc: Rich Felker <dalias@libc.org>
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Cc: Josh Triplett <josh@joshtriplett.org>
-> Cc: Conor Dooley <conor@kernel.org>
-> Cc: Damien Le Moal <damien.lemoal@opensource.wdc.com>
-> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-> Cc: <linux-arm-kernel@lists.infradead.org>
-> Cc: <linux-omap@vger.kernel.org>
-> Cc: <openrisc@lists.librecores.org>
-> Cc: <linux-riscv@lists.infradead.org>
-> Cc: <linux-sh@vger.kernel.org>
-> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-> ---
->  arch/arm/configs/clps711x_defconfig            |  3 ++-
->  arch/arm/configs/collie_defconfig              |  3 ++-
->  arch/arm/configs/multi_v4t_defconfig           |  3 ++-
->  arch/arm/configs/omap1_defconfig               |  3 ++-
->  arch/arm/configs/pxa_defconfig                 |  3 ++-
->  arch/arm/configs/tct_hammer_defconfig          |  3 ++-
->  arch/arm/configs/xcep_defconfig                |  3 ++-
->  arch/openrisc/configs/or1ksim_defconfig        |  3 ++-
->  arch/openrisc/configs/simple_smp_defconfig     |  3 ++-
->  arch/riscv/configs/nommu_k210_defconfig        |  3 ++-
->  arch/riscv/configs/nommu_k210_sdcard_defconfig |  3 ++-
->  arch/riscv/configs/nommu_virt_defconfig        |  3 ++-
->  arch/sh/configs/rsk7201_defconfig              |  3 ++-
->  arch/sh/configs/rsk7203_defconfig              |  3 ++-
->  arch/sh/configs/se7206_defconfig               |  3 ++-
->  arch/sh/configs/shmin_defconfig                |  3 ++-
->  arch/sh/configs/shx3_defconfig                 |  3 ++-
->  kernel/configs/tiny.config                     |  5 +++--
->  mm/Kconfig                                     | 17 +++++++++++++++--
->  19 files changed, 52 insertions(+), 21 deletions(-)
-> 
-> diff --git a/arch/arm/configs/clps711x_defconfig b/arch/arm/configs/clps711x_defconfig
-> index 92481b2a88fa..adcee238822a 100644
-> --- a/arch/arm/configs/clps711x_defconfig
-> +++ b/arch/arm/configs/clps711x_defconfig
-> @@ -14,7 +14,8 @@ CONFIG_ARCH_EDB7211=y
->  CONFIG_ARCH_P720T=y
->  CONFIG_AEABI=y
->  # CONFIG_COREDUMP is not set
-> -CONFIG_SLOB=y
-> +CONFIG_SLUB=y
-> +CONFIG_SLUB_TINY=y
->  CONFIG_NET=y
->  CONFIG_PACKET=y
->  CONFIG_UNIX=y
-> diff --git a/arch/arm/configs/collie_defconfig b/arch/arm/configs/collie_defconfig
-> index 2a2d2cb3ce2e..69341c33e0cc 100644
-> --- a/arch/arm/configs/collie_defconfig
-> +++ b/arch/arm/configs/collie_defconfig
-> @@ -13,7 +13,8 @@ CONFIG_CMDLINE="noinitrd root=/dev/mtdblock2 rootfstype=jffs2 fbcon=rotate:1"
->  CONFIG_FPE_NWFPE=y
->  CONFIG_PM=y
->  # CONFIG_SWAP is not set
-> -CONFIG_SLOB=y
-> +CONFIG_SLUB=y
-> +CONFIG_SLUB_TINY=y
->  CONFIG_NET=y
->  CONFIG_PACKET=y
->  CONFIG_UNIX=y
-> diff --git a/arch/arm/configs/multi_v4t_defconfig b/arch/arm/configs/multi_v4t_defconfig
-> index e2fd822f741a..b60000a89aff 100644
-> --- a/arch/arm/configs/multi_v4t_defconfig
-> +++ b/arch/arm/configs/multi_v4t_defconfig
-> @@ -25,7 +25,8 @@ CONFIG_ARM_CLPS711X_CPUIDLE=y
->  CONFIG_JUMP_LABEL=y
->  CONFIG_PARTITION_ADVANCED=y
->  # CONFIG_COREDUMP is not set
-> -CONFIG_SLOB=y
-> +CONFIG_SLUB=y
-> +CONFIG_SLUB_TINY=y
->  CONFIG_MTD=y
->  CONFIG_MTD_CMDLINE_PARTS=y
->  CONFIG_MTD_BLOCK=y
-> diff --git a/arch/arm/configs/omap1_defconfig b/arch/arm/configs/omap1_defconfig
-> index 70511fe4b3ec..246f1bba7df5 100644
-> --- a/arch/arm/configs/omap1_defconfig
-> +++ b/arch/arm/configs/omap1_defconfig
-> @@ -42,7 +42,8 @@ CONFIG_MODULE_FORCE_UNLOAD=y
->  CONFIG_PARTITION_ADVANCED=y
->  CONFIG_BINFMT_MISC=y
->  # CONFIG_SWAP is not set
-> -CONFIG_SLOB=y
-> +CONFIG_SLUB=y
-> +CONFIG_SLUB_TINY=y
->  # CONFIG_VM_EVENT_COUNTERS is not set
->  CONFIG_NET=y
->  CONFIG_PACKET=y
-> diff --git a/arch/arm/configs/pxa_defconfig b/arch/arm/configs/pxa_defconfig
-> index d60cc9cc4c21..0a0f12df40b5 100644
-> --- a/arch/arm/configs/pxa_defconfig
-> +++ b/arch/arm/configs/pxa_defconfig
-> @@ -49,7 +49,8 @@ CONFIG_PARTITION_ADVANCED=y
->  CONFIG_LDM_PARTITION=y
->  CONFIG_CMDLINE_PARTITION=y
->  CONFIG_BINFMT_MISC=y
-> -CONFIG_SLOB=y
-> +CONFIG_SLUB=y
-> +CONFIG_SLUB_TINY=y
->  # CONFIG_COMPACTION is not set
->  CONFIG_NET=y
->  CONFIG_PACKET=y
-> diff --git a/arch/arm/configs/tct_hammer_defconfig b/arch/arm/configs/tct_hammer_defconfig
-> index 3b29ae1fb750..6bd38b6f22c4 100644
-> --- a/arch/arm/configs/tct_hammer_defconfig
-> +++ b/arch/arm/configs/tct_hammer_defconfig
-> @@ -19,7 +19,8 @@ CONFIG_FPE_NWFPE=y
->  CONFIG_MODULES=y
->  CONFIG_MODULE_UNLOAD=y
->  # CONFIG_SWAP is not set
-> -CONFIG_SLOB=y
-> +CONFIG_SLUB=y
-> +CONFIG_SLUB_TINY=y
->  CONFIG_NET=y
->  CONFIG_PACKET=y
->  CONFIG_UNIX=y
-> diff --git a/arch/arm/configs/xcep_defconfig b/arch/arm/configs/xcep_defconfig
-> index ea59e4b6bfc5..6bd9f71b71fc 100644
-> --- a/arch/arm/configs/xcep_defconfig
-> +++ b/arch/arm/configs/xcep_defconfig
-> @@ -26,7 +26,8 @@ CONFIG_MODULE_UNLOAD=y
->  CONFIG_MODVERSIONS=y
->  CONFIG_MODULE_SRCVERSION_ALL=y
->  # CONFIG_BLOCK is not set
-> -CONFIG_SLOB=y
-> +CONFIG_SLUB=y
-> +CONFIG_SLUB_TINY=y
->  # CONFIG_COMPAT_BRK is not set
->  # CONFIG_VM_EVENT_COUNTERS is not set
->  CONFIG_NET=y
-> diff --git a/arch/openrisc/configs/or1ksim_defconfig b/arch/openrisc/configs/or1ksim_defconfig
-> index 6e1e004047c7..0116e465238f 100644
-> --- a/arch/openrisc/configs/or1ksim_defconfig
-> +++ b/arch/openrisc/configs/or1ksim_defconfig
-> @@ -10,7 +10,8 @@ CONFIG_EXPERT=y
->  # CONFIG_AIO is not set
->  # CONFIG_VM_EVENT_COUNTERS is not set
->  # CONFIG_COMPAT_BRK is not set
-> -CONFIG_SLOB=y
-> +CONFIG_SLUB=y
-> +CONFIG_SLUB_TINY=y
->  CONFIG_MODULES=y
->  # CONFIG_BLOCK is not set
->  CONFIG_OPENRISC_BUILTIN_DTB="or1ksim"
-> diff --git a/arch/openrisc/configs/simple_smp_defconfig b/arch/openrisc/configs/simple_smp_defconfig
-> index ff49d868e040..b990cb6c9309 100644
-> --- a/arch/openrisc/configs/simple_smp_defconfig
-> +++ b/arch/openrisc/configs/simple_smp_defconfig
-> @@ -16,7 +16,8 @@ CONFIG_EXPERT=y
->  # CONFIG_AIO is not set
->  # CONFIG_VM_EVENT_COUNTERS is not set
->  # CONFIG_COMPAT_BRK is not set
-> -CONFIG_SLOB=y
-> +CONFIG_SLUB=y
-> +CONFIG_SLUB_TINY=y
->  CONFIG_MODULES=y
->  # CONFIG_BLOCK is not set
->  CONFIG_OPENRISC_BUILTIN_DTB="simple_smp"
-> diff --git a/arch/riscv/configs/nommu_k210_defconfig b/arch/riscv/configs/nommu_k210_defconfig
-> index 96fe8def644c..79b3ccd58ff0 100644
-> --- a/arch/riscv/configs/nommu_k210_defconfig
-> +++ b/arch/riscv/configs/nommu_k210_defconfig
-> @@ -25,7 +25,8 @@ CONFIG_CC_OPTIMIZE_FOR_SIZE=y
->  CONFIG_EMBEDDED=y
->  # CONFIG_VM_EVENT_COUNTERS is not set
->  # CONFIG_COMPAT_BRK is not set
-> -CONFIG_SLOB=y
-> +CONFIG_SLUB=y
-> +CONFIG_SLUB_TINY=y
->  # CONFIG_MMU is not set
->  CONFIG_SOC_CANAAN=y
->  CONFIG_NONPORTABLE=y
-> diff --git a/arch/riscv/configs/nommu_k210_sdcard_defconfig b/arch/riscv/configs/nommu_k210_sdcard_defconfig
-> index 379740654373..6b80bb13b8ed 100644
-> --- a/arch/riscv/configs/nommu_k210_sdcard_defconfig
-> +++ b/arch/riscv/configs/nommu_k210_sdcard_defconfig
-> @@ -17,7 +17,8 @@ CONFIG_CC_OPTIMIZE_FOR_SIZE=y
->  CONFIG_EMBEDDED=y
->  # CONFIG_VM_EVENT_COUNTERS is not set
->  # CONFIG_COMPAT_BRK is not set
-> -CONFIG_SLOB=y
-> +CONFIG_SLUB=y
-> +CONFIG_SLUB_TINY=y
->  # CONFIG_MMU is not set
->  CONFIG_SOC_CANAAN=y
->  CONFIG_NONPORTABLE=y
-> diff --git a/arch/riscv/configs/nommu_virt_defconfig b/arch/riscv/configs/nommu_virt_defconfig
-> index 1a56eda5ce46..4cf0f297091e 100644
-> --- a/arch/riscv/configs/nommu_virt_defconfig
-> +++ b/arch/riscv/configs/nommu_virt_defconfig
-> @@ -22,7 +22,8 @@ CONFIG_EXPERT=y
->  # CONFIG_KALLSYMS is not set
->  # CONFIG_VM_EVENT_COUNTERS is not set
->  # CONFIG_COMPAT_BRK is not set
-> -CONFIG_SLOB=y
-> +CONFIG_SLUB=y
-> +CONFIG_SLUB_TINY=y
->  # CONFIG_MMU is not set
->  CONFIG_SOC_VIRT=y
->  CONFIG_NONPORTABLE=y
-> diff --git a/arch/sh/configs/rsk7201_defconfig b/arch/sh/configs/rsk7201_defconfig
-> index 619c18699459..376e95fa77bc 100644
-> --- a/arch/sh/configs/rsk7201_defconfig
-> +++ b/arch/sh/configs/rsk7201_defconfig
-> @@ -10,7 +10,8 @@ CONFIG_USER_NS=y
->  CONFIG_PID_NS=y
->  CONFIG_BLK_DEV_INITRD=y
->  # CONFIG_AIO is not set
-> -CONFIG_SLOB=y
-> +CONFIG_SLUB=y
-> +CONFIG_SLUB_TINY=y
->  CONFIG_PROFILING=y
->  CONFIG_MODULES=y
->  # CONFIG_BLK_DEV_BSG is not set
-> diff --git a/arch/sh/configs/rsk7203_defconfig b/arch/sh/configs/rsk7203_defconfig
-> index d00fafc021e1..1d5fd67a3949 100644
-> --- a/arch/sh/configs/rsk7203_defconfig
-> +++ b/arch/sh/configs/rsk7203_defconfig
-> @@ -11,7 +11,8 @@ CONFIG_USER_NS=y
->  CONFIG_PID_NS=y
->  CONFIG_BLK_DEV_INITRD=y
->  CONFIG_KALLSYMS_ALL=y
-> -CONFIG_SLOB=y
-> +CONFIG_SLUB=y
-> +CONFIG_SLUB_TINY=y
->  CONFIG_PROFILING=y
->  CONFIG_MODULES=y
->  # CONFIG_BLK_DEV_BSG is not set
-> diff --git a/arch/sh/configs/se7206_defconfig b/arch/sh/configs/se7206_defconfig
-> index 122216123e63..78e0e7be57ee 100644
-> --- a/arch/sh/configs/se7206_defconfig
-> +++ b/arch/sh/configs/se7206_defconfig
-> @@ -21,7 +21,8 @@ CONFIG_BLK_DEV_INITRD=y
->  CONFIG_KALLSYMS_ALL=y
->  # CONFIG_ELF_CORE is not set
->  # CONFIG_COMPAT_BRK is not set
-> -CONFIG_SLOB=y
-> +CONFIG_SLUB=y
-> +CONFIG_SLUB_TINY=y
->  CONFIG_PROFILING=y
->  CONFIG_MODULES=y
->  CONFIG_MODULE_UNLOAD=y
-> diff --git a/arch/sh/configs/shmin_defconfig b/arch/sh/configs/shmin_defconfig
-> index c0b6f40d01cc..e078b193a78a 100644
-> --- a/arch/sh/configs/shmin_defconfig
-> +++ b/arch/sh/configs/shmin_defconfig
-> @@ -9,7 +9,8 @@ CONFIG_LOG_BUF_SHIFT=14
->  # CONFIG_FUTEX is not set
->  # CONFIG_EPOLL is not set
->  # CONFIG_SHMEM is not set
-> -CONFIG_SLOB=y
-> +CONFIG_SLUB=y
-> +CONFIG_SLUB_TINY=y
->  # CONFIG_BLK_DEV_BSG is not set
->  CONFIG_CPU_SUBTYPE_SH7706=y
->  CONFIG_MEMORY_START=0x0c000000
-> diff --git a/arch/sh/configs/shx3_defconfig b/arch/sh/configs/shx3_defconfig
-> index 32ec6eb1eabc..aa353dff7f19 100644
-> --- a/arch/sh/configs/shx3_defconfig
-> +++ b/arch/sh/configs/shx3_defconfig
-> @@ -20,7 +20,8 @@ CONFIG_USER_NS=y
->  CONFIG_PID_NS=y
->  # CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
->  CONFIG_KALLSYMS_ALL=y
-> -CONFIG_SLOB=y
-> +CONFIG_SLUB=y
-> +CONFIG_SLUB_TINY=y
->  CONFIG_PROFILING=y
->  CONFIG_KPROBES=y
->  CONFIG_MODULES=y
-> diff --git a/kernel/configs/tiny.config b/kernel/configs/tiny.config
-> index 8a44b93da0f3..c2f9c912df1c 100644
-> --- a/kernel/configs/tiny.config
-> +++ b/kernel/configs/tiny.config
-> @@ -7,5 +7,6 @@ CONFIG_KERNEL_XZ=y
->  # CONFIG_KERNEL_LZO is not set
->  # CONFIG_KERNEL_LZ4 is not set
->  # CONFIG_SLAB is not set
-> -# CONFIG_SLUB is not set
-> -CONFIG_SLOB=y
-> +# CONFIG_SLOB_DEPRECATED is not set
-> +CONFIG_SLUB=y
-> +CONFIG_SLUB_TINY=y
-> diff --git a/mm/Kconfig b/mm/Kconfig
-> index 5941cb34e30d..dcc49c69552f 100644
-> --- a/mm/Kconfig
-> +++ b/mm/Kconfig
-> @@ -219,17 +219,30 @@ config SLUB
->  	   and has enhanced diagnostics. SLUB is the default choice for
->  	   a slab allocator.
->  
-> -config SLOB
-> +config SLOB_DEPRECATED
->  	depends on EXPERT
-> -	bool "SLOB (Simple Allocator)"
-> +	bool "SLOB (Simple Allocator - DEPRECATED)"
->  	depends on !PREEMPT_RT
->  	help
-> +	   Deprecated and scheduled for removal in a few cycles. SLUB
-> +	   recommended as replacement. CONFIG_SLUB_TINY can be considered
-> +	   on systems with 16MB or less RAM.
-> +
-> +	   If you need SLOB to stay, please contact linux-mm@kvack.org and
-> +	   people listed in the SLAB ALLOCATOR section of MAINTAINERS file,
-> +	   with your use case.
-> +
->  	   SLOB replaces the stock allocator with a drastically simpler
->  	   allocator. SLOB is generally more space efficient but
->  	   does not perform as well on large systems.
->  
->  endchoice
->  
-> +config SLOB
-> +	bool
-> +	default y
-> +	depends on SLOB_DEPRECATED
-> +
->  config SLUB_TINY
->  	bool "Configure SLUB for minimal memory footprint"
->  	depends on SLUB && EXPERT
-> -- 
-> 2.38.1
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: 39ab32797f072eaf86b1faa7384ac73450684110  Add linux-next specific files for 20221213
 
-FTR,
+Error/Warning reports:
 
-Acked-by: Hyeonggon Yoo <42.hyeyoo@gmail.com>
+https://lore.kernel.org/oe-kbuild-all/202211142244.sGkXbWO2-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202211150003.LkfYS4HE-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202211242120.MzZVGULn-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202211282102.QUr7HHrW-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202211301634.cejLlTJP-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202212020520.0OkMIno3-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202212040713.rVney9e8-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202212051759.cEv6fyHy-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202212111423.XqZdM0Kt-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202212132047.wvOyEPMA-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202212132110.CvE3HjB8-lkp@intel.com
+
+Error/Warning: (recently discovered and may have been fixed)
+
+Documentation/networking/devlink/etas_es58x.rst: WARNING: document isn't included in any toctree
+arch/powerpc/kernel/kvm_emul.o: warning: objtool: kvm_template_end(): can't find starting instruction
+arch/powerpc/kernel/optprobes_head.o: warning: objtool: optprobe_template_end(): can't find starting instruction
+drivers/gpu/drm/amd/amdgpu/../display/dc/irq/dcn201/irq_service_dcn201.c:139:43: warning: unused variable 'dmub_outbox_irq_info_funcs' [-Wunused-const-variable]
+drivers/gpu/drm/amd/amdgpu/../display/dc/irq/dcn201/irq_service_dcn201.c:40:20: warning: no previous prototype for 'to_dal_irq_source_dcn201' [-Wmissing-prototypes]
+drivers/gpu/drm/amd/amdgpu/../display/dc/irq/dcn201/irq_service_dcn201.c:40:20: warning: no previous prototype for function 'to_dal_irq_source_dcn201' [-Wmissing-prototypes]
+drivers/regulator/tps65219-regulator.c:310:32: warning: parameter 'dev' set but not used [-Wunused-but-set-parameter]
+drivers/regulator/tps65219-regulator.c:310:60: warning: parameter 'dev' set but not used [-Wunused-but-set-parameter]
+drivers/regulator/tps65219-regulator.c:370:26: sparse:    int
+drivers/regulator/tps65219-regulator.c:370:26: sparse:    struct regulator_dev *[assigned] rdev
+drivers/regulator/tps65219-regulator.c:370:26: warning: ordered comparison of pointer with integer zero [-Wextra]
+include/linux/compiler_types.h:357:45: error: call to '__compiletime_assert_270' declared with attribute error: BUILD_BUG_ON failed: sizeof(priv_tbl->probs) % 16
+net/netfilter/ipvs/ip_vs_est.c:688:17: sparse:    signed long long *
+net/netfilter/ipvs/ip_vs_est.c:688:17: sparse:    unsigned long long [usertype] *
+
+Unverified Error/Warning (likely false positive, please contact us if interested):
+
+drivers/i2c/busses/i2c-qcom-geni.c:1028:28: sparse: sparse: symbol 'i2c_master_hub' was not declared. Should it be static?
+drivers/iio/adc/twl6030-gpadc.c:955:16-23: duplicated argument to & or |
+drivers/iio/light/tsl2563.c:768:8-33: WARNING: Threaded IRQ with no primary handler requested without IRQF_ONESHOT (unless it is nested IRQ)
+fs/xfs/xfs_iomap.c:86:29: sparse: sparse: symbol 'xfs_iomap_page_ops' was not declared. Should it be static?
+
+Error/Warning ids grouped by kconfigs:
+
+gcc_recent_errors
+|-- alpha-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- arc-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- arm-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- arm-randconfig-s032-20221213
+|   `-- include-linux-compiler_types.h:error:call-to-__compiletime_assert_NNN-declared-with-attribute-error:BUILD_BUG_ON-failed:sizeof(priv_tbl-probs)
+|-- arm64-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- i386-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- i386-randconfig-s002
+|   `-- fs-xfs-xfs_iomap.c:sparse:sparse:symbol-xfs_iomap_page_ops-was-not-declared.-Should-it-be-static
+|-- ia64-buildonly-randconfig-r001-20221213
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
+|-- ia64-randconfig-c034-20221213
+|   `-- drivers-iio-light-tsl2563.c:WARNING:Threaded-IRQ-with-no-primary-handler-requested-without-IRQF_ONESHOT-(unless-it-is-nested-IRQ)
+|-- ia64-randconfig-s043-20221213
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
+|   `-- fs-xfs-xfs_iomap.c:sparse:sparse:symbol-xfs_iomap_page_ops-was-not-declared.-Should-it-be-static
+|-- loongarch-buildonly-randconfig-r005-20221213
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- m68k-allmodconfig
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- m68k-allyesconfig
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- m68k-randconfig-r004-20221213
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- microblaze-randconfig-c043-20221213
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
+|-- microblaze-randconfig-s052-20221213
+|   `-- fs-xfs-xfs_iomap.c:sparse:sparse:symbol-xfs_iomap_page_ops-was-not-declared.-Should-it-be-static
+|-- mips-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+clang_recent_errors
+|-- arm64-randconfig-r023-20221213
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-function-to_dal_irq_source_dcn201
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:unused-variable-dmub_outbox_irq_info_funcs
+|-- hexagon-randconfig-r002-20221213
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- i386-allmodconfig
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+`-- powerpc-randconfig-r026-20221213
+    |-- arch-powerpc-kernel-kvm_emul.o:warning:objtool:kvm_template_end():can-t-find-starting-instruction
+    |-- arch-powerpc-kernel-optprobes_head.o:warning:objtool:optprobe_template_end():can-t-find-starting-instruction
+    `-- arch-powerpc-kernel-prom_init.o:warning:objtool:prom_init:unannotated-intra-function-call
+
+elapsed time: 738m
+
+configs tested: 64
+configs skipped: 7
+
+gcc tested configs:
+um                             i386_defconfig
+um                           x86_64_defconfig
+powerpc                           allnoconfig
+x86_64                            allnoconfig
+x86_64                              defconfig
+x86_64                           allyesconfig
+m68k                          sun3x_defconfig
+sh                             espt_defconfig
+x86_64                               rhel-8.3
+x86_64                           rhel-8.3-bpf
+m68k                       m5275evb_defconfig
+x86_64                           rhel-8.3-syz
+arc                  randconfig-r043-20221213
+x86_64                         rhel-8.3-kunit
+x86_64                           rhel-8.3-kvm
+arm                  randconfig-r046-20221213
+powerpc                     rainier_defconfig
+i386                          randconfig-c001
+i386                          randconfig-a001
+i386                          randconfig-a003
+i386                          randconfig-a014
+arm                          iop32x_defconfig
+i386                          randconfig-a012
+i386                          randconfig-a016
+powerpc                        cell_defconfig
+i386                          randconfig-a005
+sh                               j2_defconfig
+sh                          sdk7780_defconfig
+sh                      rts7751r2d1_defconfig
+sh                           se7712_defconfig
+mips                         bigsur_defconfig
+sh                               allmodconfig
+mips                             allyesconfig
+i386                                defconfig
+powerpc                          allmodconfig
+x86_64                          rhel-8.3-rust
+x86_64                          rhel-8.3-func
+x86_64                    rhel-8.3-kselftests
+arm                                 defconfig
+m68k                             allyesconfig
+m68k                             allmodconfig
+i386                             allyesconfig
+arc                              allyesconfig
+alpha                            allyesconfig
+arm64                            allyesconfig
+arm                              allyesconfig
+
+clang tested configs:
+arm                       mainstone_defconfig
+mips                           ip28_defconfig
+hexagon              randconfig-r041-20221213
+riscv                randconfig-r042-20221213
+powerpc                     kilauea_defconfig
+arm                   milbeaut_m10v_defconfig
+hexagon              randconfig-r045-20221213
+s390                 randconfig-r044-20221213
+powerpc                     mpc512x_defconfig
+i386                          randconfig-a013
+i386                          randconfig-a002
+i386                          randconfig-a004
+mips                     cu1830-neo_defconfig
+i386                          randconfig-a015
+i386                          randconfig-a011
+powerpc                     tqm8560_defconfig
+i386                          randconfig-a006
+arm                       netwinder_defconfig
 
 -- 
-Thanks,
-Hyeonggon
+0-DAY CI Kernel Test Service
+https://01.org/lkp
