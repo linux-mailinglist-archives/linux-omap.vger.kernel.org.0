@@ -2,251 +2,93 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 30D4964BBF5
-	for <lists+linux-omap@lfdr.de>; Tue, 13 Dec 2022 19:29:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A2B964C0D6
+	for <lists+linux-omap@lfdr.de>; Wed, 14 Dec 2022 00:45:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235844AbiLMS3h (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 13 Dec 2022 13:29:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57704 "EHLO
+        id S237184AbiLMXpY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 13 Dec 2022 18:45:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235670AbiLMS3X (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 13 Dec 2022 13:29:23 -0500
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DAFD1141;
-        Tue, 13 Dec 2022 10:29:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1670956162; x=1702492162;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=4QPyqb1pvMS81Vaf94Si1tAEYfCAa6LBQX4nMxoXvDU=;
-  b=fblDVHrs8d00dwnWC+708+IXf39IazFulRiiVNwey2IwwrsgIa/QHU51
-   1C0C94AYulw+pincAzC1q0ohP01rg01+i3mylADC9Arotc+dokkEHh0jR
-   1VhvGZVS1iNJjzo86cQEl7wa0+yJdAGCJ5i5DGT7qcO09F60sywPJQLfi
-   4fbhrxxM4KtXby6QYVI5dL4Q8Mzqli8ZQ/cErDfSfgaXmC3GT4cJf26sp
-   ugfpj2FKL0RDm7P7T4hrthsWGczgKXiJXhw5n1cA5KXrIT+HgxLc4dyC1
-   XjvCw01blt9DtvApZOmY9psuDyf86kkIvsl55wzqLsL+fYpnW6Q/mDt8X
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10560"; a="315843084"
-X-IronPort-AV: E=Sophos;i="5.96,242,1665471600"; 
-   d="scan'208";a="315843084"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2022 10:29:22 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10560"; a="893997924"
-X-IronPort-AV: E=Sophos;i="5.96,242,1665471600"; 
-   d="scan'208";a="893997924"
-Received: from lkp-server01.sh.intel.com (HELO b5d47979f3ad) ([10.239.97.150])
-  by fmsmga006.fm.intel.com with ESMTP; 13 Dec 2022 10:29:19 -0800
-Received: from kbuild by b5d47979f3ad with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1p5A1m-0004el-1S;
-        Tue, 13 Dec 2022 18:29:18 +0000
-Date:   Wed, 14 Dec 2022 02:28:39 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     ntfs3@lists.linux.dev, netdev@vger.kernel.org,
-        lvs-devel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-xfs@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        amd-gfx@lists.freedesktop.org,
-        Linux Memory Management List <linux-mm@kvack.org>
-Subject: [linux-next:master] BUILD REGRESSION
- 39ab32797f072eaf86b1faa7384ac73450684110
-Message-ID: <6398c457.hhPKRJ7/7EGjTQb/%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        with ESMTP id S237209AbiLMXpF (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 13 Dec 2022 18:45:05 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01D181C909;
+        Tue, 13 Dec 2022 15:44:47 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 0E16EB815FE;
+        Tue, 13 Dec 2022 23:44:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 627B8C433F1;
+        Tue, 13 Dec 2022 23:44:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1670975084;
+        bh=2tvp9NwfkXVkp5bFjHTkmFQ7muXx0ZcIww+kK5zEtVg=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=rs22s+42gOPyj0CUdx6/k27/mWhapSg8QDoyLDf0HLDv1OakEC2dfZBjVPBtaD+PN
+         KX9CSFjEAe0Z15L9UPgyJG1XVfaI/uzPalHBmCeHUUwTY7LefInlrN7kqwidLdET7C
+         iGRNJ+Y06F2m6nM1wdlEQ3AXL1DhP+NgNJO+e/UlBkcHNlqbX9KTC/sxvZKKpQspRp
+         kbhg7V1fhF+DJBHQAZLnZ5kasXYZMbw4WDgswRcdLLQWy8yTPoWeRR603q21ECuYT+
+         gJthfOJEwBvYAcRC6W0Z6yGjg5UYHku3byLM97SKQqRmiwmK2v4YLTqeFT04Y1NHnc
+         3FFXLLu/W0Gdg==
+Date:   Tue, 13 Dec 2022 17:44:42 -0600
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Kishon Vijay Abraham I <kishon@kernel.org>
+Cc:     Bjorn Helgaas <bhelgaas@google.com>,
+        Joao Pinto <Joao.Pinto@synopsys.com>,
+        linux-pci@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        hch@infradead.org, nsekhar@ti.com
+Subject: Re: [PATCH v7 01/23] PCI: endpoint: Add EP core layer to enable EP
+ controller and EP functions
+Message-ID: <20221213234442.GA219721@bhelgaas>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+In-Reply-To: <20170410135510.30673-1-kishon@ti.com>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-branch HEAD: 39ab32797f072eaf86b1faa7384ac73450684110  Add linux-next specific files for 20221213
+On Mon, Apr 10, 2017 at 07:25:10PM +0530, Kishon Vijay Abraham I wrote:
+> Introduce a new EP core layer in order to support endpoint functions in
+> linux kernel. This comprises the EPC library (Endpoint Controller Library)
+> and EPF library (Endpoint Function Library). EPC library implements
+> functions specific to an endpoint controller and EPF library implements
+> functions specific to an endpoint function.
 
-Error/Warning reports:
+> +void *pci_epf_alloc_space(struct pci_epf *epf, size_t size, enum pci_barno bar)
+> +{
+> +	void *space;
+> +	struct device *dev = &epf->dev;
+> +	dma_addr_t phys_addr;
+> +
+> +	if (size < 128)
+> +		size = 128;
+> +	size = roundup_pow_of_two(size);
+> +
+> +	space = dma_alloc_coherent(dev, size, &phys_addr, GFP_KERNEL);
+> +	if (!space) {
+> +		dev_err(dev, "failed to allocate mem space\n");
+> +		return NULL;
+> +	}
+> +
+> +	epf->bar[bar].phys_addr = phys_addr;
 
-https://lore.kernel.org/oe-kbuild-all/202211142244.sGkXbWO2-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202211150003.LkfYS4HE-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202211242120.MzZVGULn-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202211282102.QUr7HHrW-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202211301634.cejLlTJP-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202212020520.0OkMIno3-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202212040713.rVney9e8-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202212051759.cEv6fyHy-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202212111423.XqZdM0Kt-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202212132047.wvOyEPMA-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202212132110.CvE3HjB8-lkp@intel.com
+> + * struct pci_epf_bar - represents the BAR of EPF device
+> + * @phys_addr: physical address that should be mapped to the BAR
+> + * @size: the size of the address space present in BAR
+> + */
+> +struct pci_epf_bar {
+> +	dma_addr_t	phys_addr;
 
-Error/Warning: (recently discovered and may have been fixed)
+If this "phys_addr" is an address that can appear on the PCI bus, is
+"phys_addr" a misnomer?  Many drivers use dma, dmabuf, bus_addr, etc.
 
-Documentation/networking/devlink/etas_es58x.rst: WARNING: document isn't included in any toctree
-arch/powerpc/kernel/kvm_emul.o: warning: objtool: kvm_template_end(): can't find starting instruction
-arch/powerpc/kernel/optprobes_head.o: warning: objtool: optprobe_template_end(): can't find starting instruction
-drivers/gpu/drm/amd/amdgpu/../display/dc/irq/dcn201/irq_service_dcn201.c:139:43: warning: unused variable 'dmub_outbox_irq_info_funcs' [-Wunused-const-variable]
-drivers/gpu/drm/amd/amdgpu/../display/dc/irq/dcn201/irq_service_dcn201.c:40:20: warning: no previous prototype for 'to_dal_irq_source_dcn201' [-Wmissing-prototypes]
-drivers/gpu/drm/amd/amdgpu/../display/dc/irq/dcn201/irq_service_dcn201.c:40:20: warning: no previous prototype for function 'to_dal_irq_source_dcn201' [-Wmissing-prototypes]
-drivers/regulator/tps65219-regulator.c:310:32: warning: parameter 'dev' set but not used [-Wunused-but-set-parameter]
-drivers/regulator/tps65219-regulator.c:310:60: warning: parameter 'dev' set but not used [-Wunused-but-set-parameter]
-drivers/regulator/tps65219-regulator.c:370:26: sparse:    int
-drivers/regulator/tps65219-regulator.c:370:26: sparse:    struct regulator_dev *[assigned] rdev
-drivers/regulator/tps65219-regulator.c:370:26: warning: ordered comparison of pointer with integer zero [-Wextra]
-include/linux/compiler_types.h:357:45: error: call to '__compiletime_assert_270' declared with attribute error: BUILD_BUG_ON failed: sizeof(priv_tbl->probs) % 16
-net/netfilter/ipvs/ip_vs_est.c:688:17: sparse:    signed long long *
-net/netfilter/ipvs/ip_vs_est.c:688:17: sparse:    unsigned long long [usertype] *
-
-Unverified Error/Warning (likely false positive, please contact us if interested):
-
-drivers/i2c/busses/i2c-qcom-geni.c:1028:28: sparse: sparse: symbol 'i2c_master_hub' was not declared. Should it be static?
-drivers/iio/adc/twl6030-gpadc.c:955:16-23: duplicated argument to & or |
-drivers/iio/light/tsl2563.c:768:8-33: WARNING: Threaded IRQ with no primary handler requested without IRQF_ONESHOT (unless it is nested IRQ)
-fs/xfs/xfs_iomap.c:86:29: sparse: sparse: symbol 'xfs_iomap_page_ops' was not declared. Should it be static?
-
-Error/Warning ids grouped by kconfigs:
-
-gcc_recent_errors
-|-- alpha-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
-|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
-|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
-|-- arc-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
-|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
-|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
-|-- arm-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
-|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
-|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
-|-- arm-randconfig-s032-20221213
-|   `-- include-linux-compiler_types.h:error:call-to-__compiletime_assert_NNN-declared-with-attribute-error:BUILD_BUG_ON-failed:sizeof(priv_tbl-probs)
-|-- arm64-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
-|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
-|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
-|-- i386-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
-|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
-|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
-|-- i386-randconfig-s002
-|   `-- fs-xfs-xfs_iomap.c:sparse:sparse:symbol-xfs_iomap_page_ops-was-not-declared.-Should-it-be-static
-|-- ia64-buildonly-randconfig-r001-20221213
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
-|-- ia64-randconfig-c034-20221213
-|   `-- drivers-iio-light-tsl2563.c:WARNING:Threaded-IRQ-with-no-primary-handler-requested-without-IRQF_ONESHOT-(unless-it-is-nested-IRQ)
-|-- ia64-randconfig-s043-20221213
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
-|   `-- fs-xfs-xfs_iomap.c:sparse:sparse:symbol-xfs_iomap_page_ops-was-not-declared.-Should-it-be-static
-|-- loongarch-buildonly-randconfig-r005-20221213
-|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
-|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
-|-- m68k-allmodconfig
-|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
-|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
-|-- m68k-allyesconfig
-|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
-|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
-|-- m68k-randconfig-r004-20221213
-|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
-|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
-|-- microblaze-randconfig-c043-20221213
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
-|-- microblaze-randconfig-s052-20221213
-|   `-- fs-xfs-xfs_iomap.c:sparse:sparse:symbol-xfs_iomap_page_ops-was-not-declared.-Should-it-be-static
-|-- mips-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
-|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
-clang_recent_errors
-|-- arm64-randconfig-r023-20221213
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-function-to_dal_irq_source_dcn201
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:unused-variable-dmub_outbox_irq_info_funcs
-|-- hexagon-randconfig-r002-20221213
-|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
-|-- i386-allmodconfig
-|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
-`-- powerpc-randconfig-r026-20221213
-    |-- arch-powerpc-kernel-kvm_emul.o:warning:objtool:kvm_template_end():can-t-find-starting-instruction
-    |-- arch-powerpc-kernel-optprobes_head.o:warning:objtool:optprobe_template_end():can-t-find-starting-instruction
-    `-- arch-powerpc-kernel-prom_init.o:warning:objtool:prom_init:unannotated-intra-function-call
-
-elapsed time: 738m
-
-configs tested: 64
-configs skipped: 7
-
-gcc tested configs:
-um                             i386_defconfig
-um                           x86_64_defconfig
-powerpc                           allnoconfig
-x86_64                            allnoconfig
-x86_64                              defconfig
-x86_64                           allyesconfig
-m68k                          sun3x_defconfig
-sh                             espt_defconfig
-x86_64                               rhel-8.3
-x86_64                           rhel-8.3-bpf
-m68k                       m5275evb_defconfig
-x86_64                           rhel-8.3-syz
-arc                  randconfig-r043-20221213
-x86_64                         rhel-8.3-kunit
-x86_64                           rhel-8.3-kvm
-arm                  randconfig-r046-20221213
-powerpc                     rainier_defconfig
-i386                          randconfig-c001
-i386                          randconfig-a001
-i386                          randconfig-a003
-i386                          randconfig-a014
-arm                          iop32x_defconfig
-i386                          randconfig-a012
-i386                          randconfig-a016
-powerpc                        cell_defconfig
-i386                          randconfig-a005
-sh                               j2_defconfig
-sh                          sdk7780_defconfig
-sh                      rts7751r2d1_defconfig
-sh                           se7712_defconfig
-mips                         bigsur_defconfig
-sh                               allmodconfig
-mips                             allyesconfig
-i386                                defconfig
-powerpc                          allmodconfig
-x86_64                          rhel-8.3-rust
-x86_64                          rhel-8.3-func
-x86_64                    rhel-8.3-kselftests
-arm                                 defconfig
-m68k                             allyesconfig
-m68k                             allmodconfig
-i386                             allyesconfig
-arc                              allyesconfig
-alpha                            allyesconfig
-arm64                            allyesconfig
-arm                              allyesconfig
-
-clang tested configs:
-arm                       mainstone_defconfig
-mips                           ip28_defconfig
-hexagon              randconfig-r041-20221213
-riscv                randconfig-r042-20221213
-powerpc                     kilauea_defconfig
-arm                   milbeaut_m10v_defconfig
-hexagon              randconfig-r045-20221213
-s390                 randconfig-r044-20221213
-powerpc                     mpc512x_defconfig
-i386                          randconfig-a013
-i386                          randconfig-a002
-i386                          randconfig-a004
-mips                     cu1830-neo_defconfig
-i386                          randconfig-a015
-i386                          randconfig-a011
-powerpc                     tqm8560_defconfig
-i386                          randconfig-a006
-arm                       netwinder_defconfig
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+Bjorn
