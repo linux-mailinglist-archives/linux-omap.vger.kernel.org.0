@@ -2,93 +2,49 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A2B964C0D6
-	for <lists+linux-omap@lfdr.de>; Wed, 14 Dec 2022 00:45:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AB41364C7AC
+	for <lists+linux-omap@lfdr.de>; Wed, 14 Dec 2022 12:05:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237184AbiLMXpY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 13 Dec 2022 18:45:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52708 "EHLO
+        id S238122AbiLNLFS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 14 Dec 2022 06:05:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237209AbiLMXpF (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 13 Dec 2022 18:45:05 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01D181C909;
-        Tue, 13 Dec 2022 15:44:47 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 0E16EB815FE;
-        Tue, 13 Dec 2022 23:44:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 627B8C433F1;
-        Tue, 13 Dec 2022 23:44:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1670975084;
-        bh=2tvp9NwfkXVkp5bFjHTkmFQ7muXx0ZcIww+kK5zEtVg=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=rs22s+42gOPyj0CUdx6/k27/mWhapSg8QDoyLDf0HLDv1OakEC2dfZBjVPBtaD+PN
-         KX9CSFjEAe0Z15L9UPgyJG1XVfaI/uzPalHBmCeHUUwTY7LefInlrN7kqwidLdET7C
-         iGRNJ+Y06F2m6nM1wdlEQ3AXL1DhP+NgNJO+e/UlBkcHNlqbX9KTC/sxvZKKpQspRp
-         kbhg7V1fhF+DJBHQAZLnZ5kasXYZMbw4WDgswRcdLLQWy8yTPoWeRR603q21ECuYT+
-         gJthfOJEwBvYAcRC6W0Z6yGjg5UYHku3byLM97SKQqRmiwmK2v4YLTqeFT04Y1NHnc
-         3FFXLLu/W0Gdg==
-Date:   Tue, 13 Dec 2022 17:44:42 -0600
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Kishon Vijay Abraham I <kishon@kernel.org>
-Cc:     Bjorn Helgaas <bhelgaas@google.com>,
-        Joao Pinto <Joao.Pinto@synopsys.com>,
-        linux-pci@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        with ESMTP id S237566AbiLNLFR (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 14 Dec 2022 06:05:17 -0500
+Received: from muru.com (muru.com [72.249.23.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A39A510B5D;
+        Wed, 14 Dec 2022 03:05:16 -0800 (PST)
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 8196D80E1;
+        Wed, 14 Dec 2022 11:05:15 +0000 (UTC)
+Date:   Wed, 14 Dec 2022 13:05:14 +0200
+From:   Tony Lindgren <tony@atomide.com>
+To:     Chen Hui <judy.chenhui@huawei.com>
+Cc:     linux@armlinux.org.uk, santosh.shilimkar@ti.com,
         linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        hch@infradead.org, nsekhar@ti.com
-Subject: Re: [PATCH v7 01/23] PCI: endpoint: Add EP core layer to enable EP
- controller and EP functions
-Message-ID: <20221213234442.GA219721@bhelgaas>
+        linux-kernel@vger.kernel.org, yusongping@huawei.com
+Subject: Re: [PATCH] arch: arm: Fix memory leak in realtime_counter_init()
+Message-ID: <Y5mt6thuh6CC7hvP@atomide.com>
+References: <20221108141917.46796-1-judy.chenhui@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20170410135510.30673-1-kishon@ti.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20221108141917.46796-1-judy.chenhui@huawei.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Apr 10, 2017 at 07:25:10PM +0530, Kishon Vijay Abraham I wrote:
-> Introduce a new EP core layer in order to support endpoint functions in
-> linux kernel. This comprises the EPC library (Endpoint Controller Library)
-> and EPF library (Endpoint Function Library). EPC library implements
-> functions specific to an endpoint controller and EPF library implements
-> functions specific to an endpoint function.
+* Chen Hui <judy.chenhui@huawei.com> [221108 15:40]:
+> The "sys_clk" resource is malloced by clk_get(),
+> it is not released when the function return.
 
-> +void *pci_epf_alloc_space(struct pci_epf *epf, size_t size, enum pci_barno bar)
-> +{
-> +	void *space;
-> +	struct device *dev = &epf->dev;
-> +	dma_addr_t phys_addr;
-> +
-> +	if (size < 128)
-> +		size = 128;
-> +	size = roundup_pow_of_two(size);
-> +
-> +	space = dma_alloc_coherent(dev, size, &phys_addr, GFP_KERNEL);
-> +	if (!space) {
-> +		dev_err(dev, "failed to allocate mem space\n");
-> +		return NULL;
-> +	}
-> +
-> +	epf->bar[bar].phys_addr = phys_addr;
+Sorry for the delays, I'll apply this for v6.3 after v6.2-rc1
+is available.
 
-> + * struct pci_epf_bar - represents the BAR of EPF device
-> + * @phys_addr: physical address that should be mapped to the BAR
-> + * @size: the size of the address space present in BAR
-> + */
-> +struct pci_epf_bar {
-> +	dma_addr_t	phys_addr;
+Regards,
 
-If this "phys_addr" is an address that can appear on the PCI bus, is
-"phys_addr" a misnomer?  Many drivers use dma, dmabuf, bus_addr, etc.
-
-Bjorn
+Tony
