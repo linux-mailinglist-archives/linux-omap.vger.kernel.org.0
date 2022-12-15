@@ -2,39 +2,47 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E5ED64E099
-	for <lists+linux-omap@lfdr.de>; Thu, 15 Dec 2022 19:22:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CA3BF64E362
+	for <lists+linux-omap@lfdr.de>; Thu, 15 Dec 2022 22:42:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229448AbiLOSWo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 15 Dec 2022 13:22:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49740 "EHLO
+        id S229784AbiLOVmn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 15 Dec 2022 16:42:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42040 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229637AbiLOSWg (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 15 Dec 2022 13:22:36 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB8284667B;
-        Thu, 15 Dec 2022 10:22:35 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 66E76B81C37;
-        Thu, 15 Dec 2022 18:22:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17311C433D2;
-        Thu, 15 Dec 2022 18:22:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1671128553;
-        bh=dAaOdWTPCc7tzr5zLW6fD/haLwLpJykRK4uPP26zcfE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ovOmvcVJK+pbxmzyzMfETbt5Usv3hISJzTZuEcW6r2mdgU2XcS3x12pTd4d0PlVRU
-         9DBk+sUxP3gx5LgyKL2Tr2mzDMr3O816aAGA5Xzi6ZcTcsnh58amiUMPtZ+IBk10hY
-         cbPLO4nb695Dz84nkN9F7A443FHrzxWaqxrZ8/Ve91MpHB1j8kQPpOriaGjZ0YxglU
-         NFZ1BPt5mKyVOkXqDkvARlu2vJEENCGr5fuWuu7alGuBOq6pINzLnBNAP74aX7kwRY
-         ysZqnH0fNwe5fz4G5u5d0GP6MO0+6DQpxNMB6DAc3ymieYUFXHwqSVKgPuFIJEoLlB
-         xn7MuS3Ca33Jw==
-Date:   Thu, 15 Dec 2022 18:22:23 +0000
-From:   Mark Brown <broonie@kernel.org>
-To:     Nishanth Menon <nm@ti.com>
-Cc:     jerome Neanne <jneanne@baylibre.com>,
+        with ESMTP id S229736AbiLOVmj (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 15 Dec 2022 16:42:39 -0500
+Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BACA5C76B;
+        Thu, 15 Dec 2022 13:42:34 -0800 (PST)
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 2BFLfnha052913;
+        Thu, 15 Dec 2022 15:41:49 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1671140509;
+        bh=WLpVP2bWfliAogzAGVvfrb8O9z6xT+DatR+7Ps4pVB8=;
+        h=Date:From:To:CC:Subject:References:In-Reply-To;
+        b=YkRW9VrIYluAbll9dwl1NaXdtykQ7/RwaMYW9TfyfocH17R2Oxf/oe4ljablDsk/y
+         9UlFYgkNzoEhKp8WSsbOz8FJ3YrvKGoM5/qTXEXUa2IhZHLu0AmWmRzwG5U8ew57Kf
+         2R+TII0CdC9MeRqbpfF+76gxynynnU7qQj+W4C4M=
+Received: from DFLE109.ent.ti.com (dfle109.ent.ti.com [10.64.6.30])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 2BFLfncA110061
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 15 Dec 2022 15:41:49 -0600
+Received: from DFLE101.ent.ti.com (10.64.6.22) by DFLE109.ent.ti.com
+ (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16; Thu, 15
+ Dec 2022 15:41:49 -0600
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE101.ent.ti.com
+ (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16 via
+ Frontend Transport; Thu, 15 Dec 2022 15:41:49 -0600
+Received: from localhost (ileaxei01-snat.itg.ti.com [10.180.69.5])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 2BFLfnGb072680;
+        Thu, 15 Dec 2022 15:41:49 -0600
+Date:   Thu, 15 Dec 2022 15:41:49 -0600
+From:   Nishanth Menon <nm@ti.com>
+To:     Mark Brown <broonie@kernel.org>
+CC:     jerome Neanne <jneanne@baylibre.com>,
         Wadim Egorov <W.Egorov@phytec.de>,
         "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
         "robh+dt@kernel.org" <robh+dt@kernel.org>,
@@ -67,21 +75,22 @@ Cc:     jerome Neanne <jneanne@baylibre.com>,
         "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>
 Subject: Re: [PATCH v7 1/6] DONOTMERGE: arm64: dts: ti: Add TI TPS65219 PMIC
  support for AM642 SK board.
-Message-ID: <Y5tl3+2pJispcXy6@sirena.org.uk>
+Message-ID: <20221215214149.whcjdphxxvvedrih@affront>
 References: <20221104152311.1098603-1-jneanne@baylibre.com>
  <20221104152311.1098603-2-jneanne@baylibre.com>
  <d0d7e315-ce86-0420-8ef5-fe2e4aefd5b4@phytec.de>
  <e2bc53fe-3a0c-cf24-8b29-ca377aba3721@baylibre.com>
  <Y5tGzjgcAWPqdFNE@sirena.org.uk>
  <20221215175411.znxy3d6ussq2iq5h@grieving>
+ <Y5tl3+2pJispcXy6@sirena.org.uk>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="Ou+aT4tEkmn4+pSU"
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20221215175411.znxy3d6ussq2iq5h@grieving>
-X-Cookie: Today is what happened to yesterday.
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+In-Reply-To: <Y5tl3+2pJispcXy6@sirena.org.uk>
+User-Agent: NeoMutt/20171215
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -89,55 +98,72 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On 18:22-20221215, Mark Brown wrote:
+> On Thu, Dec 15, 2022 at 11:54:11AM -0600, Nishanth Menon wrote:
+> > On 16:09-20221215, Mark Brown wrote:
+> 
+> > > That proposal looks really non-idiomatic and quite unusual, if there's a
+> > > fixed voltage supply to the LDO I'd expect to see it modeled as a fixed
+> > > voltage regulator.  I'm not sure what the use of bypass here is trying
+> > > to accomplish TBH.
+> 
+> > The problem is this - the default NVM in the PMIC is setup such that
+> > VSET value =3.3v and bypass bit set (makes sense since the vin=3.3v).
+> 
+> This implies no voltage drop over the LDO?  Sounds a bit suspect.
 
---Ou+aT4tEkmn4+pSU
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Not the choice I'd probably have made ;)
 
-On Thu, Dec 15, 2022 at 11:54:11AM -0600, Nishanth Menon wrote:
-> On 16:09-20221215, Mark Brown wrote:
+> 
+> > Now the constraint is bypass bit cannot be changed without the LDO
+> > being switched off.
+> 
+> > regulator-allow-bypass property allows us to control bypass bit, but we
+> > should'nt toggle it when LDO is active. Not providing the property
+> > implies the bit wont be toggled by regulator core either.
+> 
+> > What we need is a scheme that will disable the bypass bit with the
+> > intent of operating the LDO with just the vset field. I did'nt find it
+> > possible atm.. unless I am mistaken..
+> 
+> Can the consumer just disable the supply as part of startup?  Though
+> that's starting to feel rather board specific.  There's not really a
 
-> > That proposal looks really non-idiomatic and quite unusual, if there's a
-> > fixed voltage supply to the LDO I'd expect to see it modeled as a fixed
-> > voltage regulator.  I'm not sure what the use of bypass here is trying
-> > to accomplish TBH.
+Yeah - this happens to be SDcard supply (at least in my case).. I'd
+rather not change the mmc host or core layer to handle a case where
+LDO happened to be in bypass. it is a regulator driver's problem, IMHO
+how to provide the stated voltage OR fail to transition the voltage.
 
-> The problem is this - the default NVM in the PMIC is setup such that
-> VSET value =3.3v and bypass bit set (makes sense since the vin=3.3v).
+In this driver's case, it happily accepts and set the VSET voltage - for
+example to 1.8V, but then, since the bypass bit is set, well, voltage
+sticks around at 3.3v.
 
-This implies no voltage drop over the LDO?  Sounds a bit suspect.
+> good place to put a board specific setup process like that in the kernel
+> at the minute, you'd ideally want the firmware to leave the device at
+> least disabled if not actually out of bypass on startup so we don't have
+> to deal with this.  Ugh...
 
-> Now the constraint is bypass bit cannot be changed without the LDO
-> being switched off.
+Yeah - that would be the other option - I could plug this bypass clear
+in the u-boot or someplace early so that the LDO behaves
 
-> regulator-allow-bypass property allows us to control bypass bit, but we
-> should'nt toggle it when LDO is active. Not providing the property
-> implies the bit wont be toggled by regulator core either.
+Also the reason why I did'nt send the mentioned patch (or the like
+upstream and the patch was done just a couple of days back) were the following
+questions:
+a) Why would'nt we handle the case where bypass bit
+   is set AND voltage change implies bypass bit needs to be disabled? (i
+   would expect it to fail but if i did provide regulator-allow-bypass,
+   then if bypass is set AND requested-voltage != vin-supply, then i'd
+   have expected framework to probably disable bypass and switch voltage
+   to new voltage - which this driver, based on it's constraint will say
+   "nope, cant do" - but that would be better than silently telling me
+   all good, setting vset and leaving the bypass bit on.)
+b) If I wanted the LDO to poweroff the bypass bit at start (define the
+   startup hardware condition), I dont seem to have a description for
+   that either.
 
-> What we need is a scheme that will disable the bypass bit with the
-> intent of operating the LDO with just the vset field. I did'nt find it
-> possible atm.. unless I am mistaken..
 
-Can the consumer just disable the supply as part of startup?  Though
-that's starting to feel rather board specific.  There's not really a
-good place to put a board specific setup process like that in the kernel
-at the minute, you'd ideally want the firmware to leave the device at
-least disabled if not actually out of bypass on startup so we don't have
-to deal with this.  Ugh...
 
---Ou+aT4tEkmn4+pSU
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmObZd8ACgkQJNaLcl1U
-h9BH+QgAgXSqInlA7GNyvDv3vqe3E5eleoOCrAa5Ti6K31e7Nvrrr1eDU3YoFQHF
-T1gPkwcmB8T5CvtTK7gWQi5Yv8HAXerZRJXZHYw3cm682lyi+FDUUtq6nAU9Py0G
-wKuNxyD0r5s4VU0IEKMq3AmxpfpDAR1O1X+J17M1qpA7hRTWS2gOvtdFp9f5Qv6M
-7DcL8RN3/kL8lbypTL4D2gFAmxcDSStYOtbNYzzf+ScPXb3FJp0lqn5oFuQzjRuv
-GbcR1e9FRnMNGVZAUfmY8vhSICzHLwMzHZMLZhgNqR20tNc5NrVhEGFfb3BWxU8Q
-9SSKv8RBqU1QqLYxzYC6GkpsKtNcVw==
-=rWw5
------END PGP SIGNATURE-----
-
---Ou+aT4tEkmn4+pSU--
+-- 
+Regards,
+Nishanth Menon
+Key (0xDDB5849D1736249D) / Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
