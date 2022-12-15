@@ -2,81 +2,50 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 735C264DE38
-	for <lists+linux-omap@lfdr.de>; Thu, 15 Dec 2022 17:10:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AAF4964DED4
+	for <lists+linux-omap@lfdr.de>; Thu, 15 Dec 2022 17:41:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229730AbiLOQKF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 15 Dec 2022 11:10:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41286 "EHLO
+        id S229811AbiLOQl4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 15 Dec 2022 11:41:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229762AbiLOQKE (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 15 Dec 2022 11:10:04 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9030731DF9;
-        Thu, 15 Dec 2022 08:10:02 -0800 (PST)
+        with ESMTP id S230183AbiLOQlu (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 15 Dec 2022 11:41:50 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 007BA20357;
+        Thu, 15 Dec 2022 08:41:47 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 417ADB81AAC;
-        Thu, 15 Dec 2022 16:10:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E46F1C433D2;
-        Thu, 15 Dec 2022 16:09:53 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id A1DB2B81C10;
+        Thu, 15 Dec 2022 16:41:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D382C433D2;
+        Thu, 15 Dec 2022 16:41:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1671120599;
-        bh=75qsygyEYXqcr+pywz0PhGBqH3J09FtbdMv+diptvgQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=B+Asg/OGm1kVbP/PG/O1rChNh7cpi9x6sxLebrbSjW6v387faHJ1TWdeW4q3ptQWB
-         wnlzTWGLB4QM+fVfCO7+AvUxUt7UDsUpa8Cu+nhyuiFfP0oo0JmguJzSgV0W+1QbJA
-         UH/VzOuVigptGEZBwr7AIEET8J5cn5gn7fX8DTtuT4CqUc+wZADQFxuPBDBGoT8Gee
-         /Q31eYblIFnigfqf4mCedQcpDa0zucn/7L4rj2zl5VX5jrJbdy+tzei6O/dwmM3jy7
-         BSrePBvVEC7ah2ZwvuLf2Xc6E1UnFXqsj9he9sOuuICS9AbBl71gkDhEqo/MBo3K9b
-         6u6+QQ/FcuZJA==
-Date:   Thu, 15 Dec 2022 16:09:50 +0000
-From:   Mark Brown <broonie@kernel.org>
-To:     jerome Neanne <jneanne@baylibre.com>
-Cc:     Wadim Egorov <W.Egorov@phytec.de>,
-        "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>, "nm@ti.com" <nm@ti.com>,
-        "kristo@kernel.org" <kristo@kernel.org>,
-        "dmitry.torokhov@gmail.com" <dmitry.torokhov@gmail.com>,
-        "krzysztof.kozlowski+dt@linaro.org" 
-        <krzysztof.kozlowski+dt@linaro.org>,
-        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
-        "will@kernel.org" <will@kernel.org>,
-        "lee@kernel.org" <lee@kernel.org>,
-        "tony@atomide.com" <tony@atomide.com>,
-        "vigneshr@ti.com" <vigneshr@ti.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "geert+renesas@glider.be" <geert+renesas@glider.be>,
-        "dmitry.baryshkov@linaro.org" <dmitry.baryshkov@linaro.org>,
-        "marcel.ziswiler@toradex.com" <marcel.ziswiler@toradex.com>,
-        "vkoul@kernel.org" <vkoul@kernel.org>,
-        "biju.das.jz@bp.renesas.com" <biju.das.jz@bp.renesas.com>,
-        "arnd@arndb.de" <arnd@arndb.de>,
-        "jeff@labundy.com" <jeff@labundy.com>, "afd@ti.com" <afd@ti.com>,
-        "khilman@baylibre.com" <khilman@baylibre.com>,
-        "narmstrong@baylibre.com" <narmstrong@baylibre.com>,
-        "msp@baylibre.com" <msp@baylibre.com>,
-        "j-keerthy@ti.com" <j-keerthy@ti.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
-        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>
-Subject: Re: [PATCH v7 1/6] DONOTMERGE: arm64: dts: ti: Add TI TPS65219 PMIC
- support for AM642 SK board.
-Message-ID: <Y5tGzjgcAWPqdFNE@sirena.org.uk>
-References: <20221104152311.1098603-1-jneanne@baylibre.com>
- <20221104152311.1098603-2-jneanne@baylibre.com>
- <d0d7e315-ce86-0420-8ef5-fe2e4aefd5b4@phytec.de>
- <e2bc53fe-3a0c-cf24-8b29-ca377aba3721@baylibre.com>
+        s=k20201202; t=1671122505;
+        bh=qr+A41JYwJVtW3GKLurUHfsNl6BDsehK6/H/piVrKGU=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Tfj+INVJjKCGmcs5qcMnIAFcmlg+jpYqEItRG67UtzFGQof2s0NFPLFZ0YE6yGYJ9
+         BB9kWsCWlCpaDUzsaO7cXOm06CpmKU0Vk2p3sYwRhjt7QIvglk8+iCXRap+1zi3THE
+         7PiOzBZ22xJXljAtIJ52Idr7/IGnm9aj3pUFKvDJ2Oyj8xaFPal++UaeTU9nRobAzk
+         /J7HHorm7D8wQJ7/iAjxEc7ZMDC3ZIEJvdPGoXR9rvyiRaUSy05zEstsI60TXKo+Tc
+         IZ5nlfoGeuLlD4oqeBr+H5JGFJeOJWBb++e2NoN4QDrUyCRJVs7ZBAED0mekmOP/9k
+         adVQKoBf6+0uA==
+From:   Arnd Bergmann <arnd@kernel.org>
+To:     Tony Lindgren <tony@atomide.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jerome Neanne <jneanne@baylibre.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>, Axel Lin <axel.lin@ingics.com>,
+        Yang Li <yang.lee@linux.alibaba.com>,
+        Yang Yingliang <yangyingliang@huawei.com>,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] regulator: tps65219: fix Wextra warning
+Date:   Thu, 15 Dec 2022 17:41:28 +0100
+Message-Id: <20221215164140.821796-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="anoyA9LaY/gDcS8e"
-Content-Disposition: inline
-In-Reply-To: <e2bc53fe-3a0c-cf24-8b29-ca377aba3721@baylibre.com>
-X-Cookie: Today is what happened to yesterday.
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -86,49 +55,45 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+From: Arnd Bergmann <arnd@arndb.de>
 
---anoyA9LaY/gDcS8e
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+gcc warns about an invalid pointer comparison when building with
+-Wextra enabled:
 
-On Thu, Dec 15, 2022 at 04:51:40PM +0100, jerome Neanne wrote:
-> On 15/12/2022 16:09, Wadim Egorov wrote:
+drivers/regulator/tps65219-regulator.c: In function 'tps65219_regulator_probe':
+drivers/regulator/tps65219-regulator.c:370:26: error: ordered comparison of pointer with integer zero [-Werror=extra]
+  370 |                 if (rdev < 0) {
+      |                          ^
 
-> > I am testing your PMIC patches on a AM62 based board with a similar set=
-up and
-> > running into the following error
+It appears that the intention here was to check for an error code, rather
+than the pointer, so adapt the code to propagate the error from the
+called function instead.
 
-> >   =A0=A0 VDDSHV5_SDIO: bypassed regulator has no supply!
-> >   =A0=A0 VDDSHV5_SDIO: will resolve supply early: ldo1
-> >   =A0=A0 VDDSHV5_SDIO: supplied by regulator-dummy
-> >   =A0=A0 VDDSHV5_SDIO: failed to get the current voltage: -EINVAL
+Fixes: c12ac5fc3e0a ("regulator: drivers: Add TI TPS65219 PMIC regulators support")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ drivers/regulator/tps65219-regulator.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-> > Have you noticed problems with LDO1 and bypass mode?
+diff --git a/drivers/regulator/tps65219-regulator.c b/drivers/regulator/tps65219-regulator.c
+index c484c943e467..fea3998334b1 100644
+--- a/drivers/regulator/tps65219-regulator.c
++++ b/drivers/regulator/tps65219-regulator.c
+@@ -366,11 +366,11 @@ static int tps65219_regulator_probe(struct platform_device *pdev)
+ 		irq_data[i].dev = tps->dev;
+ 		irq_data[i].type = irq_type;
+ 
+-		tps65219_get_rdev_by_name(irq_type->regulator_name, rdevtbl, rdev);
+-		if (rdev < 0) {
++		error = tps65219_get_rdev_by_name(irq_type->regulator_name, rdevtbl, rdev);
++		if (error) {
+ 			dev_err(tps->dev, "Failed to get rdev for %s\n",
+ 				irq_type->regulator_name);
+-			return -EINVAL;
++			return error;
+ 		}
+ 		irq_data[i].rdev = rdev;
+ 
+-- 
+2.35.1
 
-> I did not noticed this on am642 board but IIRC this rail was not used. I
-> heard about similar issue reported to me by Nishanth M with a fix proposal
-> here:
-> https://gist.github.com/nmenon/e4dd6ef6afe31bc9750fa6cbee8d3e25
-
-That proposal looks really non-idiomatic and quite unusual, if there's a
-fixed voltage supply to the LDO I'd expect to see it modeled as a fixed
-voltage regulator.  I'm not sure what the use of bypass here is trying
-to accomplish TBH.
-
---anoyA9LaY/gDcS8e
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmObRs0ACgkQJNaLcl1U
-h9DROwf7Blis2co9b1vk/lwNjHztgy0KnqViuctcaTlTVYkb+V6RhFAqjiLnCPef
-CjaaHwcJJIi4NYJcpDPR2BjKxrKbbKtCtcGez4QGNvRXwvQLqtuxNhYV8+Z5uxFi
-cwlGtOdiwfGmpci42d7e6Uc2R/mlTKUVi6W3qgjMNIkX/mR9fYljdEmR3/zOZ/Cx
-A3ogZf79cpQm86Cq4bq0xUkqIk4iniLOJGjRHU7iXPew163il5JRSElLvmkIx96n
-VDhX7JAHQwVMmg4lvVeBT7+MFm2NF4VrE87ULtBxb1SbBHl7+etRlst4eCUvdvLD
-dyuEsKTAvt6hU329mYRXcbe1VgAvOA==
-=Dq0K
------END PGP SIGNATURE-----
-
---anoyA9LaY/gDcS8e--
