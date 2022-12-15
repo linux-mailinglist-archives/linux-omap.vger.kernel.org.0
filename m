@@ -2,96 +2,134 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A6B9664DDF8
-	for <lists+linux-omap@lfdr.de>; Thu, 15 Dec 2022 16:44:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CD97264DE15
+	for <lists+linux-omap@lfdr.de>; Thu, 15 Dec 2022 16:51:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230217AbiLOPon (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 15 Dec 2022 10:44:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60250 "EHLO
+        id S230209AbiLOPvt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 15 Dec 2022 10:51:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230216AbiLOPok (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 15 Dec 2022 10:44:40 -0500
-Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC87319009
-        for <linux-omap@vger.kernel.org>; Thu, 15 Dec 2022 07:44:37 -0800 (PST)
-Received: by mail-wm1-x32c.google.com with SMTP id bg10so14103317wmb.1
-        for <linux-omap@vger.kernel.org>; Thu, 15 Dec 2022 07:44:37 -0800 (PST)
+        with ESMTP id S229883AbiLOPvq (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 15 Dec 2022 10:51:46 -0500
+Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08E2D2EF23
+        for <linux-omap@vger.kernel.org>; Thu, 15 Dec 2022 07:51:44 -0800 (PST)
+Received: by mail-wm1-x32f.google.com with SMTP id ay14-20020a05600c1e0e00b003cf6ab34b61so2049562wmb.2
+        for <linux-omap@vger.kernel.org>; Thu, 15 Dec 2022 07:51:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=newflow-co-uk.20210112.gappssmtp.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=zijsSUVaIUpTN7Np0PCJl6J2whtZWz6/1MPijX4eR38=;
-        b=SPG19721mTbMi7Eqvdu5ZSY6gUCCQ80sW6GTjfKBhf/10/KOS/xyYzWnWXU8WAjYSM
-         RKsVI6KSb48Ybo5NGD52xr8VArHuPVyGFI11HBZOvhCCpDFlKaTTw47Adh5JbLfturIO
-         6gkhZ3aOjHEcEkIU6TBIkbFk/7zX3opP5B7ad4FE6YM+XLhn873N32P0T9lGxnf30Mpv
-         42XsTKZIcP/SCT6Qe1g6cP04LRIF2AMOdMcDjVf7hJ1pFb8SqyM1DNtGsTOIvCd4tfQ7
-         VbtdOLZMDkNCxbznpD5UHKncTS+L5jHZVSt+fbHT0dfPJFhtF6pdgTStDkPEvC2g23sV
-         s3lw==
+        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=V2cRcfojGiF9qQEX9U8QFOzZLig/2FAjtxG+CBJEBFo=;
+        b=bVgJyDTvQ2d+crPVf0qEjj/SXvuxIZeFKQITUxl2atDfl2hEcbxwgt9LyrHVid2lUS
+         uIF78Zw09fK3Za5eMw03H0Tfgf6xXFVAtee5guOt6PU2dIgML8wI/QVuit8Kpmhi6p+1
+         7bUZH4srlxGuaBfE+k/GGTcv8bnM0yct37Jn0ECFYZBNGKN+iTW6Ywj/ZylY81SWbP2V
+         QpkDpq3+HsdbmHK82gn970aupr7h8L9oJ1NUJJ+/MMGtzIzYOKxxDYdOiBJcCyjpEMpG
+         kHPXwZUDFjkvO7DfXHxYcIdZZRWmVCvGHASdRW2D4gDqAFhfKzhuwUguMqzgVE/38a7Y
+         bqzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zijsSUVaIUpTN7Np0PCJl6J2whtZWz6/1MPijX4eR38=;
-        b=2Fc6fgMHcuZlthFa1HhuEQi/pKk+KuPpfWk0ld5voaks9+uA4als4GGMartQiBUMtW
-         vbTVhBzLAMhODhMXL5+4oIb+41103EcIe57c0G/ZHczWVYsLio29VbC1vG6UYWXSb7rR
-         mlPgM7FnbsNf9MQMneHyXKdn5pN0MIFFclG8XcUKl8nYnGgHB51e/caUJSbtTbSmCN3E
-         wbzv4Se6hP2fc6GcWx2epII0qkEljADzrFfrOj1NX231g3sSRQtbhgpDpzTdkAs6XNXZ
-         jNxkbLGXIP6PH4pPLF84A0bthj4rPCV4a0WBJqLC16QYFLZJkM4NqwV4mQmAPe5dw/Xc
-         urIg==
-X-Gm-Message-State: AFqh2kphI+jTUbDR++eGKS/gsayQNdNnRKS1rBvOA230kupr19NG/drv
-        q9Tigx5qyQy+T4oB14GhFy7Wmj6Clil03XB0A6ujsA==
-X-Google-Smtp-Source: AMrXdXt7SQhwiWv6vRkZCYXtns42GT8BBahf2dxB+IvRUFqX0QrIGIZ5l0Gfwj01LMgROb+UbBYHXugrav0tep/fj/A=
-X-Received: by 2002:a05:600c:3ace:b0:3cf:88c3:d010 with SMTP id
- d14-20020a05600c3ace00b003cf88c3d010mr137029wms.180.1671119076344; Thu, 15
- Dec 2022 07:44:36 -0800 (PST)
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=V2cRcfojGiF9qQEX9U8QFOzZLig/2FAjtxG+CBJEBFo=;
+        b=HAuqt68qO1vuFKeTXMzkGYTVmQw72lsWm2ZfH0sZ31KxZ/46oSg7B0YxmM7igBQwFV
+         yUlrpbUJBQnlF5YIS8HYRdCuhM8XV5avCEZp02bgLZMYIQtlc+hS8xr2ZZLmqe6xDwM6
+         JdMUULjC5DpPJEcAu14wwvRskhgZmAWYbi1sIVMXhnFnKL1sS0wfGtICsXtpCcNpgYmD
+         fYC6zfFP8bz/ipyXhtG6xQKWznK++BQhr3OhR2Qi3y+cJ8nyk3xO/728wGFcTcTdkPbX
+         c7t7g6VEizrhi3tXSnjj2deAZbr2aBYCyhejC9zDaDUSy81Spm2U+vWM3hS9pPhs3LdW
+         2fXQ==
+X-Gm-Message-State: ANoB5pl+bv9FpKtW8GgPL3iPU2wtexpbJW0Ts5JF6/BI3zDOw60cfpIm
+        Wt6xO49dUtS7dpTWRswMMt5VLg==
+X-Google-Smtp-Source: AA0mqf5T28A1fwwJEdZX35EQu5OSksBT6KKYLBeLzZpR+52DmK8gZxNd3JNVBBNn8gPpdSKSQ71WGQ==
+X-Received: by 2002:a05:600c:2101:b0:3cf:e850:4451 with SMTP id u1-20020a05600c210100b003cfe8504451mr22559864wml.9.1671119502537;
+        Thu, 15 Dec 2022 07:51:42 -0800 (PST)
+Received: from [192.168.1.91] (192.201.68.85.rev.sfr.net. [85.68.201.192])
+        by smtp.gmail.com with ESMTPSA id n7-20020a05600c4f8700b003d1e90717ccsm8522883wmq.30.2022.12.15.07.51.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 15 Dec 2022 07:51:41 -0800 (PST)
+Message-ID: <e2bc53fe-3a0c-cf24-8b29-ca377aba3721@baylibre.com>
+Date:   Thu, 15 Dec 2022 16:51:40 +0100
 MIME-Version: 1.0
-References: <20221130140547.295859-1-mpfj@newflow.co.uk> <CAAbcLfgUmiM=6eTQRRdkgLSEQZEcZwnzq0=Ov58S_osru-_V2Q@mail.gmail.com>
- <c7cb3be5-150b-a912-8801-670db63bd4ca@linaro.org>
-In-Reply-To: <c7cb3be5-150b-a912-8801-670db63bd4ca@linaro.org>
-From:   Mark Jackson <mpfj@newflow.co.uk>
-Date:   Thu, 15 Dec 2022 15:44:25 +0000
-Message-ID: <CAAbcLfikQtFrVAsQgs9dYrXGx5-tFv4Mv-GZonNkbBQyNmFQ3A@mail.gmail.com>
-Subject: Re: [PATCH v2 RESEND 0/5] ARM: dts: nanobone: Fix missing/incorrect features
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.2
+Subject: Re: [PATCH v7 1/6] DONOTMERGE: arm64: dts: ti: Add TI TPS65219 PMIC
+ support for AM642 SK board.
+Content-Language: en-US
+To:     Wadim Egorov <W.Egorov@phytec.de>,
+        "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>, "nm@ti.com" <nm@ti.com>,
+        "kristo@kernel.org" <kristo@kernel.org>,
+        "dmitry.torokhov@gmail.com" <dmitry.torokhov@gmail.com>,
+        "krzysztof.kozlowski+dt@linaro.org" 
+        <krzysztof.kozlowski+dt@linaro.org>,
+        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+        "will@kernel.org" <will@kernel.org>,
+        "lee@kernel.org" <lee@kernel.org>,
+        "tony@atomide.com" <tony@atomide.com>,
+        "vigneshr@ti.com" <vigneshr@ti.com>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "geert+renesas@glider.be" <geert+renesas@glider.be>,
+        "dmitry.baryshkov@linaro.org" <dmitry.baryshkov@linaro.org>,
+        "marcel.ziswiler@toradex.com" <marcel.ziswiler@toradex.com>,
+        "vkoul@kernel.org" <vkoul@kernel.org>,
+        "biju.das.jz@bp.renesas.com" <biju.das.jz@bp.renesas.com>,
+        "arnd@arndb.de" <arnd@arndb.de>,
+        "jeff@labundy.com" <jeff@labundy.com>
+Cc:     "afd@ti.com" <afd@ti.com>,
+        "khilman@baylibre.com" <khilman@baylibre.com>,
+        "narmstrong@baylibre.com" <narmstrong@baylibre.com>,
+        "msp@baylibre.com" <msp@baylibre.com>,
+        "j-keerthy@ti.com" <j-keerthy@ti.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
+        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>
+References: <20221104152311.1098603-1-jneanne@baylibre.com>
+ <20221104152311.1098603-2-jneanne@baylibre.com>
+ <d0d7e315-ce86-0420-8ef5-fe2e4aefd5b4@phytec.de>
+From:   jerome Neanne <jneanne@baylibre.com>
+In-Reply-To: <d0d7e315-ce86-0420-8ef5-fe2e4aefd5b4@phytec.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, 14 Dec 2022 at 16:54, Krzysztof Kozlowski
-<krzysztof.kozlowski@linaro.org> wrote:
->
-> On 14/12/2022 14:35, Mark Jackson wrote:
-> > On Wed, 30 Nov 2022 at 14:06, Mark Jackson <mpfj@newflow.co.uk> wrote:
-> >>
-> >> This patch series updates the NanoBone DTS file to address various missing or
-> >> incorrect features.
-> >>
 
-<snip>
 
-> >
-> > Any update on this patch ?
-> > Did it ever get through ?
-> > Do I need to re-submit for some reason ?
->
-> It's a merge window and you sent it just before it started.
+On 15/12/2022 16:09, Wadim Egorov wrote:
+> Hi Jerome,
+> 
+> is this setup working for you on the AM642 SK board?
+> 
+> I am testing your PMIC patches on a AM62 based board with a similar setup and
+> running into the following error
+> 
+>      VDDSHV5_SDIO: bypassed regulator has no supply!
+>      VDDSHV5_SDIO: will resolve supply early: ldo1
+>      VDDSHV5_SDIO: supplied by regulator-dummy
+>      VDDSHV5_SDIO: failed to get the current voltage: -EINVAL
+> 
+> Have you noticed problems with LDO1 and bypass mode?
 
-Ah, okay.
-So will it be picked up automatically next time round or do I need to
-re-submit ?
+Wadim,
 
-Cheers
-Mark J.
+I did not noticed this on am642 board but IIRC this rail was not used. I 
+heard about similar issue reported to me by Nishanth M with a fix 
+proposal here:
+https://gist.github.com/nmenon/e4dd6ef6afe31bc9750fa6cbee8d3e25
+
+I did not have time yet to investigate on this but will do soon.
+
+Regards,
+Jerome
