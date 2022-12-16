@@ -2,117 +2,136 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD7A164EBD9
-	for <lists+linux-omap@lfdr.de>; Fri, 16 Dec 2022 14:06:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BEF764EC30
+	for <lists+linux-omap@lfdr.de>; Fri, 16 Dec 2022 14:42:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230345AbiLPNGa (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 16 Dec 2022 08:06:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46914 "EHLO
+        id S230240AbiLPNmH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 16 Dec 2022 08:42:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230419AbiLPNGB (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 16 Dec 2022 08:06:01 -0500
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95B052A960;
-        Fri, 16 Dec 2022 05:06:00 -0800 (PST)
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-43ea87d0797so3742007b3.5;
-        Fri, 16 Dec 2022 05:06:00 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jXF9c7i/pRZwb/zK4b3gP0kYwDE/+CkuRpF8ttFbdN4=;
-        b=l6PATB868fr4d3YF83iMoL9gZrL0DVm5wVxcQGRgLaPJWSjgEyZ2i/DNHtmiWYnfFp
-         05+Y7EpMmJahQTNDiusfHkkfykV163RdO7IZbZe+4s6rMl9wWmC4wz9yybZh5Ff/EhmU
-         Ox1i9LDd4rt4VUQUE22W2tDjONMjM5LnKOzD5Pc2MKf9D26t1/jbg49/64+uavx7HDgP
-         7hT4xWheJ/8jS2mTnxxc7FBvm8Z6zRLgKWAfU1PiCOIsnIi5UnJyOctvdqXgZF10sFIi
-         scgsukm03YXe8RnXnp0o9EprOpEQJ9NQbAUByBOywwUuk1dyXJwSqMECoQAOntmSEdPN
-         Id0A==
-X-Gm-Message-State: ANoB5pkkpc6C2jvYlGU3a5A4o3hFPQsXNCugvdtzuysPs7fOwvuKAXIa
-        OlO3Qlepr5xMOVUT3jiBXjFOhn5WQTfFPA==
-X-Google-Smtp-Source: AA0mqf4Aq6ticabG5QcKLKfzwPbPLtx4dun+78K6CTRoPxjqhcg6sfe+5ucaM8hs9nnK0HvaWDlGHg==
-X-Received: by 2002:a05:7500:579f:b0:eb:5db:86f4 with SMTP id bz31-20020a057500579f00b000eb05db86f4mr4204563gab.62.1671195959208;
-        Fri, 16 Dec 2022 05:05:59 -0800 (PST)
-Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com. [209.85.128.178])
-        by smtp.gmail.com with ESMTPSA id y18-20020a37f612000000b006fefa5f7fcesm1465631qkj.10.2022.12.16.05.05.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 16 Dec 2022 05:05:58 -0800 (PST)
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-3f15a6f72d0so32136857b3.1;
-        Fri, 16 Dec 2022 05:05:58 -0800 (PST)
-X-Received: by 2002:a0d:dd4b:0:b0:370:61f5:b19e with SMTP id
- g72-20020a0ddd4b000000b0037061f5b19emr28600389ywe.316.1671195958287; Fri, 16
- Dec 2022 05:05:58 -0800 (PST)
+        with ESMTP id S229627AbiLPNmG (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 16 Dec 2022 08:42:06 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADE32167E7;
+        Fri, 16 Dec 2022 05:42:05 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 08554CE1E58;
+        Fri, 16 Dec 2022 13:42:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AB36C433EF;
+        Fri, 16 Dec 2022 13:41:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1671198122;
+        bh=2ta2ZSy/1DnFNJh/pelUUCAUc6BGdkCTfxCfkwD0h90=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=kQN0C0k8g3tw/U2Df1O4kusm7rjJC90FfErN6s9R7utn3dzkZ/ZaadgST7NvTr2aD
+         W4jcRD/OR/rAKVunSkwqDzBOT7+hck23uKNJTnJN2KD3UcolrP1VlUTeEzmGn34qZL
+         AyJcfP9pEHN84Zw59XPGo0AzQzXUqPQkaBYDcrliM061gIqqbHWxnqlsXqatLpx4Yp
+         rmxQFjI6/LG0/YsIfjo8EdQHnf6i8v8TFUWXehnDK3YeCm0FS7FF4U4/sNQ7QdxLqL
+         TtDu8w+VeQBeOPBsHxftA/ZdUFgebSbJX72vpRPAzNBu4xp9LhRt6jJ95mCh/3+DkJ
+         L+m/1JjE2pABQ==
+Date:   Fri, 16 Dec 2022 13:41:52 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Nishanth Menon <nm@ti.com>
+Cc:     jerome Neanne <jneanne@baylibre.com>,
+        Wadim Egorov <W.Egorov@phytec.de>,
+        "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "kristo@kernel.org" <kristo@kernel.org>,
+        "dmitry.torokhov@gmail.com" <dmitry.torokhov@gmail.com>,
+        "krzysztof.kozlowski+dt@linaro.org" 
+        <krzysztof.kozlowski+dt@linaro.org>,
+        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+        "will@kernel.org" <will@kernel.org>,
+        "lee@kernel.org" <lee@kernel.org>,
+        "tony@atomide.com" <tony@atomide.com>,
+        "vigneshr@ti.com" <vigneshr@ti.com>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "geert+renesas@glider.be" <geert+renesas@glider.be>,
+        "dmitry.baryshkov@linaro.org" <dmitry.baryshkov@linaro.org>,
+        "marcel.ziswiler@toradex.com" <marcel.ziswiler@toradex.com>,
+        "vkoul@kernel.org" <vkoul@kernel.org>,
+        "biju.das.jz@bp.renesas.com" <biju.das.jz@bp.renesas.com>,
+        "arnd@arndb.de" <arnd@arndb.de>,
+        "jeff@labundy.com" <jeff@labundy.com>, "afd@ti.com" <afd@ti.com>,
+        "khilman@baylibre.com" <khilman@baylibre.com>,
+        "narmstrong@baylibre.com" <narmstrong@baylibre.com>,
+        "msp@baylibre.com" <msp@baylibre.com>,
+        "j-keerthy@ti.com" <j-keerthy@ti.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
+        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>
+Subject: Re: [PATCH v7 1/6] DONOTMERGE: arm64: dts: ti: Add TI TPS65219 PMIC
+ support for AM642 SK board.
+Message-ID: <Y5x1oAzezZGqyZSx@sirena.org.uk>
+References: <20221104152311.1098603-1-jneanne@baylibre.com>
+ <20221104152311.1098603-2-jneanne@baylibre.com>
+ <d0d7e315-ce86-0420-8ef5-fe2e4aefd5b4@phytec.de>
+ <e2bc53fe-3a0c-cf24-8b29-ca377aba3721@baylibre.com>
+ <Y5tGzjgcAWPqdFNE@sirena.org.uk>
+ <20221215175411.znxy3d6ussq2iq5h@grieving>
+ <Y5tl3+2pJispcXy6@sirena.org.uk>
+ <20221215214149.whcjdphxxvvedrih@affront>
 MIME-Version: 1.0
-References: <20221215170234.2515030-1-arnd@kernel.org>
-In-Reply-To: <20221215170234.2515030-1-arnd@kernel.org>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Fri, 16 Dec 2022 14:05:46 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdWZX9_c7Wvpbu2E9JSm4eoh6S4U+aNfPQ-kk0zyEQdj7A@mail.gmail.com>
-Message-ID: <CAMuHMdWZX9_c7Wvpbu2E9JSm4eoh6S4U+aNfPQ-kk0zyEQdj7A@mail.gmail.com>
-Subject: Re: [PATCH] fbdev: omapfb: avoid stack overflow warning
-To:     Arnd Bergmann <arnd@kernel.org>
-Cc:     Helge Deller <deller@gmx.de>, Arnd Bergmann <arnd@arndb.de>,
-        Zhang Qilong <zhangqilong3@huawei.com>,
-        linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="VapHQVuQho8X7pjH"
+Content-Disposition: inline
+In-Reply-To: <20221215214149.whcjdphxxvvedrih@affront>
+X-Cookie: No passing.
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Arnd,
 
-On Thu, Dec 15, 2022 at 6:05 PM Arnd Bergmann <arnd@kernel.org> wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
->
-> The dsi_irq_stats structure is a little too big to fit on the
-> stack of a 32-bit task, depending on the specific gcc options:
->
-> fbdev/omap2/omapfb/dss/dsi.c: In function 'dsi_dump_dsidev_irqs':
-> fbdev/omap2/omapfb/dss/dsi.c:1621:1: error: the frame size of 1064 bytes is larger than 1024 bytes [-Werror=frame-larger-than=]
->
-> Since this is only a debugfs file, performance is not critical,
-> so just dynamically allocate it, and print an error message
-> in there in place of a failure code when the allocation fails.
->
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+--VapHQVuQho8X7pjH
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Thanks for your patch!
+On Thu, Dec 15, 2022 at 03:41:49PM -0600, Nishanth Menon wrote:
 
-> --- a/drivers/video/fbdev/omap2/omapfb/dss/dsi.c
-> +++ b/drivers/video/fbdev/omap2/omapfb/dss/dsi.c
-> @@ -1536,22 +1536,28 @@ static void dsi_dump_dsidev_irqs(struct platform_device *dsidev,
->  {
->         struct dsi_data *dsi = dsi_get_dsidrv_data(dsidev);
->         unsigned long flags;
-> -       struct dsi_irq_stats stats;
-> +       struct dsi_irq_stats *stats;
-> +
-> +       stats = kzalloc(sizeof(*stats), GFP_KERNEL);
-> +       if (!stats) {
-> +               seq_printf(s, "out of memory\n");
+> Yeah - this happens to be SDcard supply (at least in my case).. I'd
+> rather not change the mmc host or core layer to handle a case where
+> LDO happened to be in bypass. it is a regulator driver's problem, IMHO
+> how to provide the stated voltage OR fail to transition the voltage.
 
-I guess this is futile?
-No need to increase kernel size for OOM messages.
+Well, if the regulator is in bypass mode then it is by definition not
+regulating and so it's like programming the voltage while switched off,
+setting the target for when it starts regulating again.  It's a weirder
+use case but it does feel like the consistent thing to do at least.
+The driver shouldn't enter/leave bypass without being explicitly told to
+so since there'll be a performance impact.
 
-> +               return;
-> +       }
->
->         spin_lock_irqsave(&dsi->irq_stats_lock, flags);
+> b) If I wanted the LDO to poweroff the bypass bit at start (define the
+>    startup hardware condition), I dont seem to have a description for
+>    that either.
 
-Gr{oetje,eeting}s,
+That's something we could add in constraints, though the actual process
+of implementing it might get messy if there's restrictions like having
+to power off (though from further down the thread I see that might not
+apply to this device).
 
-                        Geert
+--VapHQVuQho8X7pjH
+Content-Type: application/pgp-signature; name="signature.asc"
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+-----BEGIN PGP SIGNATURE-----
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmOcdaAACgkQJNaLcl1U
+h9Dq1Af/ddHVFwSXOlqEfFOhIBYoXPlYIzskhgSQ37/fzbM3GgG8OYyBV3+uzWg7
+UDcaFwuPoRpQs2FLQ69ODsy1PueJJoZw2O3yJ2684T+TYQzS9CKGkRx2VcbAWJVp
+719ILyvgo0ZAHQD8Hl/jJgl1+at59wyTBaSNdtGC1HP68SpvPwrg2Iwh2yElD/IR
+bO6qHZmL1MqJi5YMfjpHtwpH7Wg5NSfBkIm0B7jAcltYMG9e1DYfF6NxtZe5HFx9
+LPo/V+Y6UkgqI5/yTdxF6VtHfMiLxBUfwnQM4YynGmfLb1hId9JU7UBLVB7JScxW
+wkKBppC21IAR9aRDl9C8lsnbXE2FIg==
+=h3Av
+-----END PGP SIGNATURE-----
+
+--VapHQVuQho8X7pjH--
