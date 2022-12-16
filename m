@@ -2,162 +2,123 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BEDCB64E7B5
-	for <lists+linux-omap@lfdr.de>; Fri, 16 Dec 2022 08:28:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F241264E99C
+	for <lists+linux-omap@lfdr.de>; Fri, 16 Dec 2022 11:41:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229471AbiLPH2d (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 16 Dec 2022 02:28:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46644 "EHLO
+        id S230193AbiLPKlo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 16 Dec 2022 05:41:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229636AbiLPH2c (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 16 Dec 2022 02:28:32 -0500
-Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 626C12F648
-        for <linux-omap@vger.kernel.org>; Thu, 15 Dec 2022 23:28:30 -0800 (PST)
-Received: by mail-wr1-x42f.google.com with SMTP id h12so1588543wrv.10
-        for <linux-omap@vger.kernel.org>; Thu, 15 Dec 2022 23:28:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=5mW7QVt5GH3e598iWydxa74nESqdi2JjbfGI/OH0/N4=;
-        b=HzPqlS3pSJKX/mWg1aDPh3gvD5j5vVwFrI1oPVhVq0OU90pjIL4AHCWuTX6FwdrH29
-         UC1oZF5oNlBEnUfHZOh3y5JsKjFOXQQ8xuYJ0gcP2UzgC/d08zbXfLvS2z0ofXLelTxq
-         gn7z21Gmim6PrUf1gMW5fgojW1UV/HRNWvLz3ZGQY4RPufEy75lvMvJRWo/I2Gj1rNI5
-         V5h1Oqb8Mi2jOhHPWUCmhg458gzCQP3M4znlhdWMsOB6Y3r8i9v6AcxqURgtPHlSeCGw
-         3Gm8d46jhoI98aGwJibETXxGvINhzNvnNhJ/2HoDgZrmnnf+rFtro8E8tKq5QiFs6cOW
-         2DTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5mW7QVt5GH3e598iWydxa74nESqdi2JjbfGI/OH0/N4=;
-        b=nVHf5Y7UGkWU2LZk4Ae+IfhuS1lAn94l18C1hmTsaptCvLsLopWOkpdQZ6WJ6/eZ0A
-         cA7do9bcp9OVLNLQz1/J/OY0/tOOQQhSvOU/b82/BCWgGm3yvclkz4I394OWRcO9y2y7
-         q3r8HCmALU/C+VKhkRhdfvJs9Cnxl+q0Y/NbNsu5Zrj3N8bBv5fLPvU9t6dZQwwIpHpz
-         Vc/ZQ4abCGbatV4gpig5FGAz/tgL7u49EPXc0mA4e+4sP2GtDtH0b55c8rYUTMHMiDqX
-         9FwT+AP2POPtRyG8VNsVm2d/NOI0HvLbvD4HMyPYmqPoDxnsCAwy7jBWDaK8uT/biBie
-         vbVg==
-X-Gm-Message-State: ANoB5pmB2wEASRrSFKcYr+VOiR1BvOUDF9OwlqfYOGDgGtUQnyUCAQtW
-        cfWY6s4MBliGZV/x2d1CET9ARw==
-X-Google-Smtp-Source: AA0mqf4v6cBApCiabUT5dWKT5Iaw++KpSoED6jqDXvZelej5Hfe95uM7HEGCGLzAfd0oCYIw/fYf1w==
-X-Received: by 2002:a5d:6a0c:0:b0:242:4bbe:2d20 with SMTP id m12-20020a5d6a0c000000b002424bbe2d20mr18379863wru.42.1671175708861;
-        Thu, 15 Dec 2022 23:28:28 -0800 (PST)
-Received: from [192.168.1.91] (192.201.68.85.rev.sfr.net. [85.68.201.192])
-        by smtp.gmail.com with ESMTPSA id c10-20020a5d4cca000000b0024278304ef6sm1498230wrt.13.2022.12.15.23.28.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 15 Dec 2022 23:28:28 -0800 (PST)
-Message-ID: <c2014039-f1e8-6976-33d6-52e2dd4e7b66@baylibre.com>
-Date:   Fri, 16 Dec 2022 08:28:26 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [PATCH v7 1/6] DONOTMERGE: arm64: dts: ti: Add TI TPS65219 PMIC
- support for AM642 SK board.
-Content-Language: en-US
-To:     Vignesh Raghavendra <vigneshr@ti.com>, Nishanth Menon <nm@ti.com>,
-        Mark Brown <broonie@kernel.org>
-Cc:     Wadim Egorov <W.Egorov@phytec.de>,
-        "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "kristo@kernel.org" <kristo@kernel.org>,
-        "dmitry.torokhov@gmail.com" <dmitry.torokhov@gmail.com>,
-        "krzysztof.kozlowski+dt@linaro.org" 
-        <krzysztof.kozlowski+dt@linaro.org>,
-        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
-        "will@kernel.org" <will@kernel.org>,
-        "lee@kernel.org" <lee@kernel.org>,
-        "tony@atomide.com" <tony@atomide.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "geert+renesas@glider.be" <geert+renesas@glider.be>,
-        "dmitry.baryshkov@linaro.org" <dmitry.baryshkov@linaro.org>,
-        "marcel.ziswiler@toradex.com" <marcel.ziswiler@toradex.com>,
-        "vkoul@kernel.org" <vkoul@kernel.org>,
-        "biju.das.jz@bp.renesas.com" <biju.das.jz@bp.renesas.com>,
-        "arnd@arndb.de" <arnd@arndb.de>,
-        "jeff@labundy.com" <jeff@labundy.com>, "afd@ti.com" <afd@ti.com>,
-        "khilman@baylibre.com" <khilman@baylibre.com>,
-        "narmstrong@baylibre.com" <narmstrong@baylibre.com>,
-        "msp@baylibre.com" <msp@baylibre.com>,
-        "j-keerthy@ti.com" <j-keerthy@ti.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
-        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>
-References: <20221104152311.1098603-1-jneanne@baylibre.com>
- <20221104152311.1098603-2-jneanne@baylibre.com>
- <d0d7e315-ce86-0420-8ef5-fe2e4aefd5b4@phytec.de>
- <e2bc53fe-3a0c-cf24-8b29-ca377aba3721@baylibre.com>
- <Y5tGzjgcAWPqdFNE@sirena.org.uk> <20221215175411.znxy3d6ussq2iq5h@grieving>
- <Y5tl3+2pJispcXy6@sirena.org.uk> <20221215214149.whcjdphxxvvedrih@affront>
- <b6ea8cb7-38c4-13cf-a08a-ece973859342@ti.com>
-From:   jerome Neanne <jneanne@baylibre.com>
-In-Reply-To: <b6ea8cb7-38c4-13cf-a08a-ece973859342@ti.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S230365AbiLPKlj (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 16 Dec 2022 05:41:39 -0500
+Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com [64.147.123.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B13F145ECC;
+        Fri, 16 Dec 2022 02:41:34 -0800 (PST)
+Received: from compute6.internal (unknown [10.202.2.47])
+        by mailout.west.internal (Postfix) with ESMTP id 98F253202612;
+        Fri, 16 Dec 2022 05:18:46 -0500 (EST)
+Received: from imap51 ([10.202.2.101])
+  by compute6.internal (MEProxy); Fri, 16 Dec 2022 05:18:47 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+        :cc:content-type:date:date:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to; s=fm1; t=1671185926; x=1671272326; bh=GtRlZqOItr
+        U1QlWIXO4vq2lcVVqz0Xra01x2nnM+5SQ=; b=G7igdATSsnZODT8XLz5ncALZqO
+        k10fQ237UsThCWdue+lltqUJGzUPDMF28fMx97M4AkorJqqSe9ZQxSYaQZx56AeC
+        EHEguJlyXunsocNiu/RjZLUUMkHEMqxDLoH4YXPyvHEDXXJux7NFSF9mn9Y8TgvW
+        6AxviGNh4UK1BY5vBQmQCWog9vI/qBw8ps8PeLoNTszeIwQSa+IQIH9YAYtD33Xn
+        7OGI7uTr2b787gd9qofN7L1CpDS7ZwJyfqWa502zzrXr6MiDxvN9x4nvH1yh5ti0
+        I978fG/62KBjzAh4YSzW3k9m2CoTL7IZZFdsJ7evDejrSy8eHPA0+BOvIFag==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
+        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
+        :mime-version:references:reply-to:sender:subject:subject:to:to
+        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+        fm2; t=1671185926; x=1671272326; bh=GtRlZqOItrU1QlWIXO4vq2lcVVqz
+        0Xra01x2nnM+5SQ=; b=L1By0LA9/8qY7X6bsIAaH5MIjUmuI/9h6xWB+o5BkDS8
+        TXObzHFRQ20lKmpIXNUk6B0d2x4/49/QXq3+xLGmTXAY8SrNlH1T1uBSJ3fSDQAG
+        Vz19SLJqF1VYOWJPL1SiFAO67EtVDowfqSO56VNa/E8K9z8cKw8wlEv1nO6VGbHR
+        jyvL7gT3jn2i7htTK1wUiuLTi8NBTcQhlgUXhA+/jF7QNBrbX2pkjBgi3oXKkp96
+        Lq+HjXbhYN0rsqie9sgiDEp439pmJgUtfVu1UdfcoSQpsFZtVWHTHuTgkH6DlC0u
+        vBE0Poon/VxmL73MTWbfa/HburlDqsdPtHQGz88UBg==
+X-ME-Sender: <xms:BUacY_-PhfvlXsey-UuiVE0ZvvN90m5buhvbpbSbHyvDQ0r9lSZMmw>
+    <xme:BUacY7uFR0D8sxe4HOWpX4LUZSwaRGK6kZF2SWEbQqrT1guXZCDQ16cqMrAhVsm4F
+    e85JoNt1RY3bmtbAa4>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeejgdduvdcutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdetrhhn
+    ugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtth
+    gvrhhnpeevhfffledtgeehfeffhfdtgedvheejtdfgkeeuvefgudffteettdekkeeufeeh
+    udenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptd
+    enucfrrghrrghmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvg
+X-ME-Proxy: <xmx:BUacY9BKXgoEbxLPkM6sCJcFgXIxtV69mZ60oiFXVUyrSmJ6ChZL8A>
+    <xmx:BUacY7cmAL6rDakAhEmVptzn7zkezpzOFEKlIb2kvJVKxGE8ylKSZQ>
+    <xmx:BUacY0Oq0KeJ_uUj7n15o18IznObE4MnGf4_-Q7PlywN4-2m6jYgcA>
+    <xmx:BkacY7f0WYx1-vltgzIe39PWgEdva10sh-1EeWjQieqCagtoh1OVUA>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id 3F2F9B60086; Fri, 16 Dec 2022 05:18:45 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.7.0-alpha0-1185-g841157300a-fm-20221208.002-g84115730
+Mime-Version: 1.0
+Message-Id: <67efe55d-e5cd-46c1-97e4-c9f3a5884a07@app.fastmail.com>
+In-Reply-To: <Y5tPyOqSNud7LumS@sirena.org.uk>
+References: <20221215164140.821796-1-arnd@kernel.org>
+ <Y5tPyOqSNud7LumS@sirena.org.uk>
+Date:   Fri, 16 Dec 2022 11:18:24 +0100
+From:   "Arnd Bergmann" <arnd@arndb.de>
+To:     "Mark Brown" <broonie@kernel.org>,
+        "Arnd Bergmann" <arnd@kernel.org>
+Cc:     "Tony Lindgren" <tony@atomide.com>,
+        "Liam Girdwood" <lgirdwood@gmail.com>,
+        "Jerome Neanne" <jneanne@baylibre.com>,
+        "Axel Lin" <axel.lin@ingics.com>,
+        "Yang Li" <yang.lee@linux.alibaba.com>,
+        "Yang Yingliang" <yangyingliang@huawei.com>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] regulator: tps65219: fix Wextra warning
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Thu, Dec 15, 2022, at 17:48, Mark Brown wrote:
+> On Thu, Dec 15, 2022 at 05:41:28PM +0100, Arnd Bergmann wrote:
+>
+>> -		tps65219_get_rdev_by_name(irq_type->regulator_name, rdevtbl, rdev);
+>> -		if (rdev < 0) {
+>> +		error = tps65219_get_rdev_by_name(irq_type->regulator_name, rdevtbl, rdev);
+>> +		if (error) {
+>>  			dev_err(tps->dev, "Failed to get rdev for %s\n",
+>>  				irq_type->regulator_name);
+>> -			return -EINVAL;
+>> +			return error;
+>
+> This will shut up the warning but is leaving the use of the
+> uninitialised rdev (which I'm kind of disappointed the static checkers
+> didn't pick up on).  rdev needs to be passed by reference into the
+> function, or set from the return value.
 
+Right, I didn't look far enough to see what the function is
+actually trying to do here, and that it completely fails to
+do that.
 
-On 16/12/2022 07:21, Vignesh Raghavendra wrote:
-> 
-> 
-> On 16/12/22 03:11, Nishanth Menon wrote:
->> On 18:22-20221215, Mark Brown wrote:
->>> On Thu, Dec 15, 2022 at 11:54:11AM -0600, Nishanth Menon wrote:
->>>> On 16:09-20221215, Mark Brown wrote:
->>>
->>>>> That proposal looks really non-idiomatic and quite unusual, if there's a
->>>>> fixed voltage supply to the LDO I'd expect to see it modeled as a fixed
->>>>> voltage regulator.  I'm not sure what the use of bypass here is trying
->>>>> to accomplish TBH.
->>>
->>>> The problem is this - the default NVM in the PMIC is setup such that
->>>> VSET value =3.3v and bypass bit set (makes sense since the vin=3.3v).
->>>
->>> This implies no voltage drop over the LDO?  Sounds a bit suspect.
->>
->> Not the choice I'd probably have made ;)
->>
->>>
->>>> Now the constraint is bypass bit cannot be changed without the LDO
->>>> being switched off.
->>>
-> 
-> Per https://www.ti.com/lit/ds/symlink/tps65219.pdf (7.3.6 Linear
-> Regulators).
-> 
-> LDOs have two modes:
-> 
-> 1. Load switch mode: in this case, output voltages of 1.5V up to 5.5V
-> are supported.
-> 
-> 2 Linear regulator LDO mode where output voltage is programmable in the
-> range of 0.6V to 3.4V in 50mV-steps with possibility of bypass.
-> 
-> (CAUTION on page 25):
-> A mode change between LDO(/bypass) and LSW-mode must only be performed,
-> when this regulator is disabled!
-> A change between LDO and bypass-mode (supported by LDO1 and LDO2 only)
-> is supported during operation.
-> 
-> So, seems like bypass can be toggled even with LDO on?
->I possibly miss-interpreted this caution statement which leads to that 
-situation.
+I see that the bug was introduced between the first [1] and
+second []2] version of the driver, but don't see why. I'll
+leave it up to Jerome to address the problem, he's still
+in the middle of posting the rest of the series that has
+not yet been merged, so it makes sense for him to test it
+all together.
 
-Your understanding sounds correct. My mistake... Sorry for that
+    Arnd
 
-
-Regards,
-Jerome.
+[1] https://lore.kernel.org/lkml/20220719091742.3221-9-jneanne@baylibre.com/
+[2] https://lore.kernel.org/lkml/20220726103355.17684-10-jneanne@baylibre.com/
