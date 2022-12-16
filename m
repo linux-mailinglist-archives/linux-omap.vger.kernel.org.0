@@ -2,136 +2,270 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BEF764EC30
-	for <lists+linux-omap@lfdr.de>; Fri, 16 Dec 2022 14:42:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7217E64EDB0
+	for <lists+linux-omap@lfdr.de>; Fri, 16 Dec 2022 16:18:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230240AbiLPNmH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 16 Dec 2022 08:42:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60664 "EHLO
+        id S230283AbiLPPSm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 16 Dec 2022 10:18:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229627AbiLPNmG (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 16 Dec 2022 08:42:06 -0500
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADE32167E7;
-        Fri, 16 Dec 2022 05:42:05 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 08554CE1E58;
-        Fri, 16 Dec 2022 13:42:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AB36C433EF;
-        Fri, 16 Dec 2022 13:41:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1671198122;
-        bh=2ta2ZSy/1DnFNJh/pelUUCAUc6BGdkCTfxCfkwD0h90=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=kQN0C0k8g3tw/U2Df1O4kusm7rjJC90FfErN6s9R7utn3dzkZ/ZaadgST7NvTr2aD
-         W4jcRD/OR/rAKVunSkwqDzBOT7+hck23uKNJTnJN2KD3UcolrP1VlUTeEzmGn34qZL
-         AyJcfP9pEHN84Zw59XPGo0AzQzXUqPQkaBYDcrliM061gIqqbHWxnqlsXqatLpx4Yp
-         rmxQFjI6/LG0/YsIfjo8EdQHnf6i8v8TFUWXehnDK3YeCm0FS7FF4U4/sNQ7QdxLqL
-         TtDu8w+VeQBeOPBsHxftA/ZdUFgebSbJX72vpRPAzNBu4xp9LhRt6jJ95mCh/3+DkJ
-         L+m/1JjE2pABQ==
-Date:   Fri, 16 Dec 2022 13:41:52 +0000
-From:   Mark Brown <broonie@kernel.org>
-To:     Nishanth Menon <nm@ti.com>
-Cc:     jerome Neanne <jneanne@baylibre.com>,
-        Wadim Egorov <W.Egorov@phytec.de>,
-        "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "kristo@kernel.org" <kristo@kernel.org>,
-        "dmitry.torokhov@gmail.com" <dmitry.torokhov@gmail.com>,
-        "krzysztof.kozlowski+dt@linaro.org" 
-        <krzysztof.kozlowski+dt@linaro.org>,
-        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
-        "will@kernel.org" <will@kernel.org>,
-        "lee@kernel.org" <lee@kernel.org>,
-        "tony@atomide.com" <tony@atomide.com>,
-        "vigneshr@ti.com" <vigneshr@ti.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "geert+renesas@glider.be" <geert+renesas@glider.be>,
-        "dmitry.baryshkov@linaro.org" <dmitry.baryshkov@linaro.org>,
-        "marcel.ziswiler@toradex.com" <marcel.ziswiler@toradex.com>,
-        "vkoul@kernel.org" <vkoul@kernel.org>,
-        "biju.das.jz@bp.renesas.com" <biju.das.jz@bp.renesas.com>,
-        "arnd@arndb.de" <arnd@arndb.de>,
-        "jeff@labundy.com" <jeff@labundy.com>, "afd@ti.com" <afd@ti.com>,
-        "khilman@baylibre.com" <khilman@baylibre.com>,
-        "narmstrong@baylibre.com" <narmstrong@baylibre.com>,
-        "msp@baylibre.com" <msp@baylibre.com>,
-        "j-keerthy@ti.com" <j-keerthy@ti.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
-        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>
-Subject: Re: [PATCH v7 1/6] DONOTMERGE: arm64: dts: ti: Add TI TPS65219 PMIC
- support for AM642 SK board.
-Message-ID: <Y5x1oAzezZGqyZSx@sirena.org.uk>
-References: <20221104152311.1098603-1-jneanne@baylibre.com>
- <20221104152311.1098603-2-jneanne@baylibre.com>
- <d0d7e315-ce86-0420-8ef5-fe2e4aefd5b4@phytec.de>
- <e2bc53fe-3a0c-cf24-8b29-ca377aba3721@baylibre.com>
- <Y5tGzjgcAWPqdFNE@sirena.org.uk>
- <20221215175411.znxy3d6ussq2iq5h@grieving>
- <Y5tl3+2pJispcXy6@sirena.org.uk>
- <20221215214149.whcjdphxxvvedrih@affront>
+        with ESMTP id S230030AbiLPPSk (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 16 Dec 2022 10:18:40 -0500
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7135D2B247;
+        Fri, 16 Dec 2022 07:18:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1671203917; x=1702739917;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=02QCuar4dYfcGk8X71Ps6oFW/ok7pF7lniU7WvO+y+o=;
+  b=ZipIDMVoqOS0+ImdM2jzS1A4KQS2BkClU7P2JROSQICvfnrREjFo0Ukd
+   g9Gw1FTiltMuOlYSHd36wtFnA1zhog3VLnlmgbKhdYVth8CLEc84Nsfql
+   9gBA00pZidwBQkLecautY4jly2E4oOpWDObWKEcOMOlQumdzve6ygnn6m
+   prRYkoiUyR4evXF37O1IjhR3QS9SznWskYRUDma7MUhHnPTLt1vhMmv8L
+   sU6m2KZrx8vHIdVP/je2EyagwcytKxmhVQJ0MYU6B5+4barIx9Sc+aPAG
+   9Beql5KJzYu7m4xHf2zrU/RXeMHv2Ya6APeQvUmluDIj3/N6cpPH2aqyy
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10563"; a="383319603"
+X-IronPort-AV: E=Sophos;i="5.96,249,1665471600"; 
+   d="scan'208";a="383319603"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2022 07:18:36 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10563"; a="756782958"
+X-IronPort-AV: E=Sophos;i="5.96,249,1665471600"; 
+   d="scan'208";a="756782958"
+Received: from lkp-server01.sh.intel.com (HELO b5d47979f3ad) ([10.239.97.150])
+  by fmsmga002.fm.intel.com with ESMTP; 16 Dec 2022 07:18:33 -0800
+Received: from kbuild by b5d47979f3ad with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1p6CTo-0007EQ-1R;
+        Fri, 16 Dec 2022 15:18:32 +0000
+Date:   Fri, 16 Dec 2022 23:18:17 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     speakup@linux-speakup.org, linuxppc-dev@lists.ozlabs.org,
+        linux-xfs@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-mm@kvack.org,
+        linux-media@vger.kernel.org, linux-can@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, kvm@vger.kernel.org,
+        amd-gfx@lists.freedesktop.org,
+        Linux Memory Management List <linux-mm@kvack.org>
+Subject: [linux-next:master] BUILD REGRESSION
+ ca39c4daa6f7f770b1329ffb46f1e4a6bcc3f291
+Message-ID: <639c8c39./q+QZSDrWluXOpoJ%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="VapHQVuQho8X7pjH"
-Content-Disposition: inline
-In-Reply-To: <20221215214149.whcjdphxxvvedrih@affront>
-X-Cookie: No passing.
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: ca39c4daa6f7f770b1329ffb46f1e4a6bcc3f291  Add linux-next specific files for 20221216
 
---VapHQVuQho8X7pjH
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Error/Warning reports:
 
-On Thu, Dec 15, 2022 at 03:41:49PM -0600, Nishanth Menon wrote:
+https://lore.kernel.org/oe-kbuild-all/202211180516.dtOWIlEo-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202211180955.UiXgTkeu-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202211190207.Rf66o1j0-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202211242120.MzZVGULn-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202212020520.0OkMIno3-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202212051759.cEv6fyHy-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202212142121.vendKsOc-lkp@intel.com
 
-> Yeah - this happens to be SDcard supply (at least in my case).. I'd
-> rather not change the mmc host or core layer to handle a case where
-> LDO happened to be in bypass. it is a regulator driver's problem, IMHO
-> how to provide the stated voltage OR fail to transition the voltage.
+Error/Warning: (recently discovered and may have been fixed)
 
-Well, if the regulator is in bypass mode then it is by definition not
-regulating and so it's like programming the voltage while switched off,
-setting the target for when it starts regulating again.  It's a weirder
-use case but it does feel like the consistent thing to do at least.
-The driver shouldn't enter/leave bypass without being explicitly told to
-so since there'll be a performance impact.
+Documentation/gpu/drm-internals:179: ./include/drm/drm_file.h:411: WARNING: undefined label: drm_accel_node (if the link has no caption the label must precede a section header)
+Documentation/networking/devlink/etas_es58x.rst: WARNING: document isn't included in any toctree
+Warning: tools/power/cpupower/man/cpupower-powercap-info.1 references a file that doesn't exist: Documentation/power/powercap/powercap.txt
+arch/powerpc/kernel/kvm_emul.o: warning: objtool: kvm_template_end(): can't find starting instruction
+arch/powerpc/kernel/optprobes_head.o: warning: objtool: optprobe_template_end(): can't find starting instruction
+drivers/gpu/drm/amd/amdgpu/../display/dc/irq/dcn201/irq_service_dcn201.c:40:20: warning: no previous prototype for 'to_dal_irq_source_dcn201' [-Wmissing-prototypes]
+drivers/regulator/tps65219-regulator.c:310:32: warning: parameter 'dev' set but not used [-Wunused-but-set-parameter]
+drivers/regulator/tps65219-regulator.c:310:60: warning: parameter 'dev' set but not used [-Wunused-but-set-parameter]
+drivers/regulator/tps65219-regulator.c:370:26: sparse:    int
+drivers/regulator/tps65219-regulator.c:370:26: sparse:    struct regulator_dev *[assigned] rdev
+drivers/regulator/tps65219-regulator.c:370:26: warning: ordered comparison of pointer with integer zero [-Wextra]
 
-> b) If I wanted the LDO to poweroff the bypass bit at start (define the
->    startup hardware condition), I dont seem to have a description for
->    that either.
+Unverified Error/Warning (likely false positive, please contact us if interested):
 
-That's something we could add in constraints, though the actual process
-of implementing it might get messy if there's restrictions like having
-to power off (though from further down the thread I see that might not
-apply to this device).
+drivers/accessibility/speakup/main.c:1290:26: sparse: sparse: obsolete array initializer, use C99 syntax
+drivers/i2c/busses/i2c-qcom-geni.c:1028:28: sparse: sparse: symbol 'i2c_master_hub' was not declared. Should it be static?
+drivers/media/platform/ti/davinci/vpif.c:483:20: sparse: sparse: cast from non-scalar
+drivers/media/platform/ti/davinci/vpif.c:483:20: sparse: sparse: cast to non-scalar
+drivers/media/test-drivers/visl/visl-video.c:690:22: sparse: sparse: symbol 'visl_qops' was not declared. Should it be static?
+drivers/usb/misc/sisusbvga/sisusbvga.c:528:9: sparse: sparse: incorrect type in assignment (different base types)
+fs/xfs/xfs_iomap.c:86:29: sparse: sparse: symbol 'xfs_iomap_page_ops' was not declared. Should it be static?
+hidma.c:(.text+0x46): undefined reference to `devm_ioremap_resource'
+mm/hugetlb.c:6897 hugetlb_reserve_pages() error: uninitialized symbol 'chg'.
 
---VapHQVuQho8X7pjH
-Content-Type: application/pgp-signature; name="signature.asc"
+Error/Warning ids grouped by kconfigs:
 
------BEGIN PGP SIGNATURE-----
+gcc_recent_errors
+|-- alpha-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- arc-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- arc-randconfig-s053-20221216
+|   |-- drivers-i2c-busses-i2c-qcom-geni.c:sparse:sparse:symbol-i2c_master_hub-was-not-declared.-Should-it-be-static
+|   `-- drivers-media-test-drivers-visl-visl-video.c:sparse:sparse:symbol-visl_qops-was-not-declared.-Should-it-be-static
+|-- arm-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- arm64-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- arm64-buildonly-randconfig-r006-20221215
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
+|-- arm64-randconfig-s051-20221216
+|   |-- drivers-i2c-busses-i2c-qcom-geni.c:sparse:sparse:symbol-i2c_master_hub-was-not-declared.-Should-it-be-static
+|   |-- drivers-regulator-tps65219-regulator.c:sparse:int
+|   |-- drivers-regulator-tps65219-regulator.c:sparse:sparse:incompatible-types-for-operation-(-):
+|   |-- drivers-regulator-tps65219-regulator.c:sparse:struct-regulator_dev-assigned-rdev
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   |-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|   `-- fs-xfs-xfs_iomap.c:sparse:sparse:symbol-xfs_iomap_page_ops-was-not-declared.-Should-it-be-static
+|-- i386-allyesconfig
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- i386-randconfig-s002
+|   `-- fs-xfs-xfs_iomap.c:sparse:sparse:symbol-xfs_iomap_page_ops-was-not-declared.-Should-it-be-static
+|-- ia64-allmodconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- m68k-allmodconfig
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- m68k-allyesconfig
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- m68k-randconfig-s041-20221216
+|   |-- drivers-media-platform-ti-davinci-vpif.c:sparse:sparse:cast-from-non-scalar
+|   `-- drivers-media-platform-ti-davinci-vpif.c:sparse:sparse:cast-to-non-scalar
+|-- m68k-randconfig-s043-20221216
+|   |-- drivers-accessibility-speakup-main.c:sparse:sparse:obsolete-array-initializer-use-C99-syntax
+|   |-- drivers-usb-misc-sisusbvga-sisusbvga.c:sparse:sparse:incorrect-type-in-assignment-(different-base-types)-expected-unsigned-int-usertype-address-got-restricted-__le32-usertype
+clang_recent_errors
+|-- hexagon-allyesconfig
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- riscv-randconfig-r023-20221215
+|   |-- ld.lld:error:too-many-errors-emitted-stopping-now-(use-error-limit-to-see-all-errors)
+|   |-- ld.lld:error:vmlinux.a(kernel-kallsyms.o):(function-kallsyms_lookup_name:.text):relocation-R_RISCV_PCREL_HI20-out-of-range:is-not-in-references-kallsyms_seqs_of_names
+|   |-- ld.lld:error:vmlinux.a(kernel-kallsyms.o):(function-kallsyms_lookup_names:.text):relocation-R_RISCV_PCREL_HI20-out-of-range:is-not-in-references-kallsyms_num_syms
+|   |-- ld.lld:error:vmlinux.a(kernel-kallsyms.o):(function-kallsyms_lookup_names:.text):relocation-R_RISCV_PCREL_HI20-out-of-range:is-not-in-references-kallsyms_seqs_of_names
+|   |-- ld.lld:error:vmlinux.a(kernel-kallsyms.o):(function-kallsyms_on_each_match_symbol:.text):relocation-R_RISCV_PCREL_HI20-out-of-range:is-not-in-references-kallsyms_offsets
+|   |-- ld.lld:error:vmlinux.a(kernel-kallsyms.o):(function-kallsyms_on_each_match_symbol:.text):relocation-R_RISCV_PCREL_HI20-out-of-range:is-not-in-references-kallsyms_relative_base
+|   |-- ld.lld:error:vmlinux.a(kernel-kallsyms.o):(function-kallsyms_on_each_match_symbol:.text):relocation-R_RISCV_PCREL_HI20-out-of-range:is-not-in-references-kallsyms_seqs_of_names
+|   |-- ld.lld:error:vmlinux.a(kernel-kallsyms.o):(function-kallsyms_sym_address:.text):relocation-R_RISCV_PCREL_HI20-out-of-range:is-not-in-references-kallsyms_offsets
+|   `-- ld.lld:error:vmlinux.a(kernel-kallsyms.o):(function-kallsyms_sym_address:.text):relocation-R_RISCV_PCREL_HI20-out-of-range:is-not-in-references-kallsyms_relative_base
+`-- s390-randconfig-r022-20221215
+    `-- hidma.c:(.text):undefined-reference-to-devm_ioremap_resource
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmOcdaAACgkQJNaLcl1U
-h9Dq1Af/ddHVFwSXOlqEfFOhIBYoXPlYIzskhgSQ37/fzbM3GgG8OYyBV3+uzWg7
-UDcaFwuPoRpQs2FLQ69ODsy1PueJJoZw2O3yJ2684T+TYQzS9CKGkRx2VcbAWJVp
-719ILyvgo0ZAHQD8Hl/jJgl1+at59wyTBaSNdtGC1HP68SpvPwrg2Iwh2yElD/IR
-bO6qHZmL1MqJi5YMfjpHtwpH7Wg5NSfBkIm0B7jAcltYMG9e1DYfF6NxtZe5HFx9
-LPo/V+Y6UkgqI5/yTdxF6VtHfMiLxBUfwnQM4YynGmfLb1hId9JU7UBLVB7JScxW
-wkKBppC21IAR9aRDl9C8lsnbXE2FIg==
-=h3Av
------END PGP SIGNATURE-----
+elapsed time: 731m
 
---VapHQVuQho8X7pjH--
+configs tested: 81
+configs skipped: 2
+
+gcc tested configs:
+arc                                 defconfig
+alpha                               defconfig
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                              defconfig
+x86_64                        randconfig-a013
+x86_64                        randconfig-a011
+x86_64                               rhel-8.3
+arm                                 defconfig
+ia64                             allmodconfig
+x86_64                           rhel-8.3-bpf
+m68k                             allyesconfig
+x86_64                           allyesconfig
+m68k                             allmodconfig
+x86_64                           rhel-8.3-syz
+x86_64                         rhel-8.3-kunit
+arc                  randconfig-r043-20221215
+x86_64                        randconfig-a015
+i386                          randconfig-a001
+x86_64                          rhel-8.3-func
+i386                          randconfig-a003
+s390                             allmodconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                           rhel-8.3-kvm
+s390                             allyesconfig
+s390                                defconfig
+x86_64                            allnoconfig
+x86_64                        randconfig-a004
+arm                  randconfig-r046-20221215
+arm64                            allyesconfig
+i386                          randconfig-a005
+arc                              allyesconfig
+i386                                defconfig
+powerpc                           allnoconfig
+x86_64                        randconfig-a002
+arm                              allyesconfig
+i386                          randconfig-a014
+alpha                            allyesconfig
+powerpc                          allmodconfig
+i386                          randconfig-a012
+x86_64                        randconfig-a006
+i386                          randconfig-a016
+sh                               allmodconfig
+mips                             allyesconfig
+mips                           xway_defconfig
+arc                              alldefconfig
+sh                            shmin_defconfig
+i386                             allyesconfig
+sh                          r7785rp_defconfig
+sparc                            alldefconfig
+sh                         ecovec24_defconfig
+i386                          randconfig-c001
+sh                         apsh4a3a_defconfig
+sh                        sh7757lcr_defconfig
+m68k                        m5307c3_defconfig
+arc                               allnoconfig
+arm                        clps711x_defconfig
+sh                            titan_defconfig
+
+clang tested configs:
+x86_64                        randconfig-a012
+x86_64                        randconfig-a014
+x86_64                          rhel-8.3-rust
+i386                          randconfig-a013
+x86_64                        randconfig-a016
+i386                          randconfig-a002
+i386                          randconfig-a015
+i386                          randconfig-a006
+hexagon              randconfig-r041-20221215
+i386                          randconfig-a004
+hexagon              randconfig-r045-20221215
+x86_64                        randconfig-a005
+i386                          randconfig-a011
+x86_64                        randconfig-a001
+riscv                randconfig-r042-20221215
+s390                 randconfig-r044-20221215
+x86_64                        randconfig-a003
+mips                        qi_lb60_defconfig
+arm                             mxs_defconfig
+arm                         palmz72_defconfig
+arm                         hackkit_defconfig
+arm                          ixp4xx_defconfig
+arm                        vexpress_defconfig
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
