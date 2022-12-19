@@ -2,43 +2,66 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F8AC64F0CC
-	for <lists+linux-omap@lfdr.de>; Fri, 16 Dec 2022 19:16:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E88E650D6A
+	for <lists+linux-omap@lfdr.de>; Mon, 19 Dec 2022 15:35:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229453AbiLPSQY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 16 Dec 2022 13:16:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59934 "EHLO
+        id S232304AbiLSOfT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 19 Dec 2022 09:35:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39352 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229886AbiLPSQW (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 16 Dec 2022 13:16:22 -0500
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4B161DDD1;
-        Fri, 16 Dec 2022 10:16:20 -0800 (PST)
-Received: from pendragon.ideasonboard.com (213-243-189-158.bb.dnainternet.fi [213.243.189.158])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 9CECBA31;
-        Fri, 16 Dec 2022 19:16:17 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1671214577;
-        bh=OuefztTKQUALROWv85YCLijIiQmQk5IUdDdU8uFi/tI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=nQoCm9L+WoIKJp4FqqFiQT5952wyMP0m94s2rvhMGvDJYs5iwTqoJUvH9A/EVQq98
-         C/w2y9TmFwY2sG4QzTpZIZcGBwaAEioT1WunUnNwfXoYvNxiyj1KJS4GHMcy79tdvz
-         u4h6JI9PKJRO3cm1LuIqkPvg8lTJ5ipOAotd0lig=
-Date:   Fri, 16 Dec 2022 20:16:13 +0200
-From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To:     Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Cc:     dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH 2/2] drm/omap: Fix kernel docs
-Message-ID: <Y5y17ZNQtpNMbx4w@pendragon.ideasonboard.com>
-References: <20220916082206.167427-1-tomi.valkeinen@ideasonboard.com>
- <20220916082206.167427-2-tomi.valkeinen@ideasonboard.com>
+        with ESMTP id S232261AbiLSOfP (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 19 Dec 2022 09:35:15 -0500
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA613B49;
+        Mon, 19 Dec 2022 06:35:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1671460514; x=1702996514;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=LVsOQvzkOtTm5a/HbIKG/rvJvKxEXOkq5De3oJvkS9U=;
+  b=PHRdOQHDJgwpccjshx6HRAg49Xw+dcOe5J/pLeWnkBWlegxpHelOxiGd
+   OhgiCHhkpPQZy1PV4BFMvtxeuP9+xseqMQGnAbIzJJa6zwb8g8FEKjpoy
+   n0xmgqOy51XogRJCh+EvsxUDasUATYZ4j2dRUUJHeMO3rtBAhk/KZBdeu
+   qkwIo4LLsotxyvRwinPgmNlS5p8z7FBsTz0jPGDd9DUrR/qM4f837REvX
+   WDt/f1zfCIbcDVis9RJMW3SPPm6287nhDgoBfAlfTEi0KT4/Bi92nCqKz
+   FA6DcKAKoo6WSdKp+Rta8KqHRUTee7z3l7nU4uuky8mKVDMvGaGCSWbDI
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10566"; a="307034207"
+X-IronPort-AV: E=Sophos;i="5.96,255,1665471600"; 
+   d="scan'208";a="307034207"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2022 06:35:12 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10566"; a="896064818"
+X-IronPort-AV: E=Sophos;i="5.96,255,1665471600"; 
+   d="scan'208";a="896064818"
+Received: from lkp-server01.sh.intel.com (HELO b5d47979f3ad) ([10.239.97.150])
+  by fmsmga006.fm.intel.com with ESMTP; 19 Dec 2022 06:35:09 -0800
+Received: from kbuild by b5d47979f3ad with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1p7HES-0008kZ-17;
+        Mon, 19 Dec 2022 14:35:08 +0000
+Date:   Mon, 19 Dec 2022 22:34:58 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     speakup@linux-speakup.org, netdev@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-xfs@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-media@vger.kernel.org, linux-cxl@vger.kernel.org,
+        linux-can@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org,
+        Linux Memory Management List <linux-mm@kvack.org>
+Subject: [linux-next:master] BUILD REGRESSION
+ d650871875b2ccc670f1044be7f3cc90f276745d
+Message-ID: <63a07692.6I76+dHvnFt0bil/%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20220916082206.167427-2-tomi.valkeinen@ideasonboard.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -46,60 +69,243 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Tomi,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: d650871875b2ccc670f1044be7f3cc90f276745d  Add linux-next specific files for 20221219
 
-Thank you for the patch.
+Error/Warning reports:
 
-On Fri, Sep 16, 2022 at 11:22:06AM +0300, Tomi Valkeinen wrote:
-> Fix doc related warnings seen with W=1: the function names have changed
-> but the docs have not been changed accordingly.
-> 
-> Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+https://lore.kernel.org/oe-kbuild-all/202211242120.MzZVGULn-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202212020520.0OkMIno3-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202212040713.rVney9e8-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202212061455.6GE7y0jg-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202212090509.NjAl9tbo-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202212142121.vendKsOc-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202212191708.Xk9yBj52-lkp@intel.com
 
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Error/Warning: (recently discovered and may have been fixed)
 
-> ---
->  drivers/gpu/drm/omapdrm/omap_gem.c | 2 +-
->  drivers/gpu/drm/omapdrm/omap_irq.c | 4 ++--
->  2 files changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/omapdrm/omap_gem.c b/drivers/gpu/drm/omapdrm/omap_gem.c
-> index cf571796fd26..d6b4934fa0fd 100644
-> --- a/drivers/gpu/drm/omapdrm/omap_gem.c
-> +++ b/drivers/gpu/drm/omapdrm/omap_gem.c
-> @@ -605,7 +605,7 @@ int omap_gem_dumb_create(struct drm_file *file, struct drm_device *dev,
->  }
->  
->  /**
-> - * omap_gem_dumb_map	-	buffer mapping for dumb interface
-> + * omap_gem_dumb_map_offset - create an offset for a dumb buffer
->   * @file: our drm client file
->   * @dev: drm device
->   * @handle: GEM handle to the object (from dumb_create)
-> diff --git a/drivers/gpu/drm/omapdrm/omap_irq.c b/drivers/gpu/drm/omapdrm/omap_irq.c
-> index 4aca14dab927..a6f0bbc879d2 100644
-> --- a/drivers/gpu/drm/omapdrm/omap_irq.c
-> +++ b/drivers/gpu/drm/omapdrm/omap_irq.c
-> @@ -99,7 +99,7 @@ int omap_irq_enable_framedone(struct drm_crtc *crtc, bool enable)
->  }
->  
->  /**
-> - * enable_vblank - enable vblank interrupt events
-> + * omap_irq_enable_vblank - enable vblank interrupt events
->   * @crtc: DRM CRTC
->   *
->   * Enable vblank interrupts for @crtc.  If the device doesn't have
-> @@ -129,7 +129,7 @@ int omap_irq_enable_vblank(struct drm_crtc *crtc)
->  }
->  
->  /**
-> - * disable_vblank - disable vblank interrupt events
-> + * omap_irq_disable_vblank - disable vblank interrupt events
->   * @crtc: DRM CRTC
->   *
->   * Disable vblank interrupts for @crtc.  If the device doesn't have
+Documentation/gpu/drm-internals:179: ./include/drm/drm_file.h:411: WARNING: undefined label: drm_accel_node (if the link has no caption the label must precede a section header)
+Documentation/networking/devlink/etas_es58x.rst: WARNING: document isn't included in any toctree
+Warning: tools/power/cpupower/man/cpupower-powercap-info.1 references a file that doesn't exist: Documentation/power/powercap/powercap.txt
+aarch64-linux-ld: ID map text too big or misaligned
+arch/arm/kernel/entry-armv.S:485:5: warning: "CONFIG_ARM_THUMB" is not defined, evaluates to 0 [-Wundef]
+arch/powerpc/kernel/kvm_emul.o: warning: objtool: kvm_template_end(): can't find starting instruction
+arch/powerpc/kernel/optprobes_head.o: warning: objtool: optprobe_template_end(): can't find starting instruction
+cistpl.c:(.text+0x82): undefined reference to `iounmap'
+drivers/regulator/tps65219-regulator.c:310:32: warning: parameter 'dev' set but not used [-Wunused-but-set-parameter]
+drivers/regulator/tps65219-regulator.c:310:60: warning: parameter 'dev' set but not used [-Wunused-but-set-parameter]
+drivers/regulator/tps65219-regulator.c:370:26: warning: ordered comparison of pointer with integer zero [-Wextra]
+irq-al-fic.c:(.init.text+0x2e): undefined reference to `of_iomap'
+lib/dhry_run.c:61:6: warning: variable 'ret' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+s390x-linux-ld: cistpl.c:(.text+0x210): undefined reference to `iounmap'
+s390x-linux-ld: cistpl.c:(.text+0x222): undefined reference to `ioremap'
+s390x-linux-ld: irq-al-fic.c:(.init.text+0x898): undefined reference to `iounmap'
+
+Unverified Error/Warning (likely false positive, please contact us if interested):
+
+drivers/accessibility/speakup/main.c:1290:26: sparse: sparse: obsolete array initializer, use C99 syntax
+drivers/cxl/core/mbox.c:832:18: sparse: sparse: cast from non-scalar
+drivers/cxl/core/mbox.c:832:18: sparse: sparse: cast to non-scalar
+drivers/i2c/busses/i2c-qcom-geni.c:1028:28: sparse: sparse: symbol 'i2c_master_hub' was not declared. Should it be static?
+drivers/media/test-drivers/visl/visl-video.c:690:22: sparse: sparse: symbol 'visl_qops' was not declared. Should it be static?
+drivers/usb/misc/sisusbvga/sisusbvga.c:528:9: sparse: sparse: incorrect type in assignment (different base types)
+fs/xfs/xfs_iomap.c:86:29: sparse: sparse: symbol 'xfs_iomap_page_ops' was not declared. Should it be static?
+hidma.c:(.text+0x9a): undefined reference to `devm_ioremap_resource'
+s390x-linux-ld: fsl-edma.c:(.text+0x15c): undefined reference to `devm_ioremap_resource'
+s390x-linux-ld: fsl-edma.c:(.text+0x49c): undefined reference to `devm_ioremap_resource'
+timer-of.c:(.init.text+0x1aee): undefined reference to `iounmap'
+timer-of.c:(.init.text+0x5a2): undefined reference to `of_iomap'
+
+Error/Warning ids grouped by kconfigs:
+
+gcc_recent_errors
+|-- alpha-randconfig-s031-20221218
+|   |-- drivers-cxl-core-mbox.c:sparse:sparse:cast-from-non-scalar
+|   `-- drivers-cxl-core-mbox.c:sparse:sparse:cast-to-non-scalar
+|-- arc-randconfig-r031-20221219
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- arc-randconfig-s033-20221218
+|   |-- drivers-cxl-core-mbox.c:sparse:sparse:cast-from-non-scalar
+|   `-- drivers-cxl-core-mbox.c:sparse:sparse:cast-to-non-scalar
+|-- arm-cerfcube_defconfig
+|   `-- arch-arm-kernel-entry-armv.S:warning:CONFIG_ARM_THUMB-is-not-defined-evaluates-to
+|-- arm-footbridge_defconfig
+|   `-- arch-arm-kernel-entry-armv.S:warning:CONFIG_ARM_THUMB-is-not-defined-evaluates-to
+|-- arm64-allyesconfig
+|   `-- aarch64-linux-ld:ID-map-text-too-big-or-misaligned
+|-- csky-randconfig-s051-20221218
+|   |-- drivers-nvmem-u-boot-env.c:sparse:sparse:cast-to-restricted-__le32
+|   `-- drivers-nvmem-u-boot-env.c:sparse:sparse:restricted-__le32-degrades-to-integer
+|-- i386-allyesconfig
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- i386-randconfig-s002
+|   `-- fs-xfs-xfs_iomap.c:sparse:sparse:symbol-xfs_iomap_page_ops-was-not-declared.-Should-it-be-static
+|-- ia64-allmodconfig
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- loongarch-randconfig-s053-20221218
+|   |-- drivers-cxl-core-mbox.c:sparse:sparse:cast-from-non-scalar
+|   |-- drivers-cxl-core-mbox.c:sparse:sparse:cast-to-non-scalar
+|   `-- drivers-media-test-drivers-visl-visl-video.c:sparse:sparse:symbol-visl_qops-was-not-declared.-Should-it-be-static
+|-- microblaze-randconfig-s052-20221218
+|   |-- drivers-cxl-core-mbox.c:sparse:sparse:cast-from-non-scalar
+|   `-- drivers-cxl-core-mbox.c:sparse:sparse:cast-to-non-scalar
+|-- nios2-allyesconfig
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- openrisc-allyesconfig
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- openrisc-randconfig-r025-20221219
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- parisc-allyesconfig
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- powerpc-allmodconfig
+|   |-- arch-powerpc-kernel-kvm_emul.o:warning:objtool:kvm_template_end():can-t-find-starting-instruction
+|   |-- arch-powerpc-kernel-optprobes_head.o:warning:objtool:optprobe_template_end():can-t-find-starting-instruction
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+clang_recent_errors
+|-- riscv-randconfig-r024-20221219
+|   |-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|   `-- lib-dhry_run.c:warning:variable-ret-is-used-uninitialized-whenever-if-condition-is-false
+|-- s390-randconfig-r003-20221218
+|   |-- hidma.c:(.text):undefined-reference-to-devm_ioremap_resource
+|   |-- irq-al-fic.c:(.init.text):undefined-reference-to-of_iomap
+|   |-- s39-linux-ld:fsl-edma.c:(.text):undefined-reference-to-devm_ioremap_resource
+|   |-- s39-linux-ld:irq-al-fic.c:(.init.text):undefined-reference-to-iounmap
+|   |-- timer-of.c:(.init.text):undefined-reference-to-iounmap
+|   `-- timer-of.c:(.init.text):undefined-reference-to-of_iomap
+|-- s390-randconfig-r036-20221218
+|   |-- cistpl.c:(.text):undefined-reference-to-iounmap
+|   |-- s39-linux-ld:cistpl.c:(.text):undefined-reference-to-ioremap
+|   |-- s39-linux-ld:cistpl.c:(.text):undefined-reference-to-iounmap
+|   `-- s39-linux-ld:fsl-edma.c:(.text):undefined-reference-to-devm_ioremap_resource
+`-- x86_64-rhel-8.3-rust
+    `-- vmlinux.o:warning:objtool:___ksymtab_gpl-_RNvNtCsfATHBUcknU9_6kernel5print16call_printk_cont:data-relocation-to-ENDBR:_RNvNtCsfATHBUcknU9_6kernel5print16call_printk_cont
+
+elapsed time: 745m
+
+configs tested: 109
+configs skipped: 3
+
+gcc tested configs:
+x86_64               randconfig-a002-20221219
+um                             i386_defconfig
+x86_64                            allnoconfig
+x86_64               randconfig-a003-20221219
+x86_64               randconfig-a001-20221219
+um                           x86_64_defconfig
+x86_64               randconfig-a004-20221219
+x86_64               randconfig-a005-20221219
+x86_64               randconfig-a006-20221219
+i386                 randconfig-a001-20221219
+i386                 randconfig-a003-20221219
+arm                            pleb_defconfig
+i386                 randconfig-a002-20221219
+i386                 randconfig-a004-20221219
+i386                 randconfig-a006-20221219
+ia64                             allmodconfig
+i386                 randconfig-a005-20221219
+powerpc                     taishan_defconfig
+powerpc                   currituck_defconfig
+arm                        cerfcube_defconfig
+arc                          axs103_defconfig
+powerpc                     ep8248e_defconfig
+arm                           sama5_defconfig
+openrisc                            defconfig
+powerpc                           allnoconfig
+x86_64                           rhel-8.3-bpf
+x86_64                           rhel-8.3-syz
+i386                                defconfig
+x86_64                    rhel-8.3-kselftests
+riscv                randconfig-r042-20221218
+alpha                            allyesconfig
+m68k                             allyesconfig
+x86_64                         rhel-8.3-kunit
+m68k                             allmodconfig
+x86_64                          rhel-8.3-func
+arc                              allyesconfig
+x86_64                              defconfig
+x86_64                           rhel-8.3-kvm
+sh                               allmodconfig
+arc                                 defconfig
+sh                             sh03_defconfig
+s390                             allmodconfig
+alpha                               defconfig
+mips                             allyesconfig
+arm                                 defconfig
+powerpc                      ppc40x_defconfig
+x86_64                               rhel-8.3
+powerpc                          allmodconfig
+s390                             allyesconfig
+arm64                            allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+arm                              allyesconfig
+mips                      fuloong2e_defconfig
+ia64                                defconfig
+x86_64                           allyesconfig
+m68k                            mac_defconfig
+riscv                               defconfig
+i386                          randconfig-c001
+arc                  randconfig-r043-20221219
+arm                      footbridge_defconfig
+arm                  randconfig-r046-20221219
+powerpc                  storcenter_defconfig
+arc                  randconfig-r043-20221218
+s390                 randconfig-r044-20221218
+mips                    maltaup_xpa_defconfig
+powerpc                  iss476-smp_defconfig
+nios2                               defconfig
+parisc                              defconfig
+riscv                             allnoconfig
+i386                        debian-10.3-kunit
+i386                         debian-10.3-func
+i386                          debian-10.3-kvm
+riscv                    nommu_virt_defconfig
+riscv                    nommu_k210_defconfig
+parisc64                            defconfig
+riscv                          rv32_defconfig
+i386                              debian-10.3
+nios2                            allyesconfig
+parisc                           allyesconfig
+
+clang tested configs:
+powerpc                     ppa8548_defconfig
+arm                          pxa168_defconfig
+x86_64               randconfig-a011-20221219
+x86_64               randconfig-a012-20221219
+mips                       rbtx49xx_defconfig
+arm                         s5pv210_defconfig
+x86_64               randconfig-a014-20221219
+x86_64               randconfig-a015-20221219
+x86_64               randconfig-a013-20221219
+x86_64                          rhel-8.3-rust
+arm                  randconfig-r046-20221218
+x86_64               randconfig-a016-20221219
+i386                 randconfig-a014-20221219
+i386                 randconfig-a012-20221219
+i386                 randconfig-a013-20221219
+i386                 randconfig-a011-20221219
+hexagon              randconfig-r041-20221218
+hexagon              randconfig-r045-20221219
+s390                 randconfig-r044-20221219
+i386                 randconfig-a015-20221219
+hexagon              randconfig-r041-20221219
+powerpc                     tqm8560_defconfig
+i386                 randconfig-a016-20221219
+hexagon              randconfig-r045-20221218
+riscv                randconfig-r042-20221219
+mips                     cu1830-neo_defconfig
+arm                       imx_v4_v5_defconfig
+x86_64                        randconfig-k001
+powerpc                      ppc44x_defconfig
 
 -- 
-Regards,
-
-Laurent Pinchart
+0-DAY CI Kernel Test Service
+https://01.org/lkp
