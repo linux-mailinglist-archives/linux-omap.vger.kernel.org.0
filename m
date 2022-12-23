@@ -2,118 +2,182 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DCAE665469D
-	for <lists+linux-omap@lfdr.de>; Thu, 22 Dec 2022 20:32:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DD119654F72
+	for <lists+linux-omap@lfdr.de>; Fri, 23 Dec 2022 12:10:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235345AbiLVTcU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 22 Dec 2022 14:32:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55952 "EHLO
+        id S236102AbiLWLKC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 23 Dec 2022 06:10:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38558 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235558AbiLVTcS (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 22 Dec 2022 14:32:18 -0500
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7792617E1D
-        for <linux-omap@vger.kernel.org>; Thu, 22 Dec 2022 11:32:15 -0800 (PST)
-Received: by mail-wm1-x32e.google.com with SMTP id bg10so2189553wmb.1
-        for <linux-omap@vger.kernel.org>; Thu, 22 Dec 2022 11:32:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zNJxRZfkj51KwDKq1a1M1MYd6okplAxevNZpSh9Sp8E=;
-        b=M1INwOzOMu2/uO3wMa+PG1XV1IhWC/mSobIA2M20QAYfcNnT/bVoNTwXA99NjcqIzd
-         af3gJ/smTHfLFB5LCHkTKvga9EnW5p8xsh4jK6dhTqKe+pfu+cqCnbth/fxNWN9AcsWG
-         RnjpBEHD0cOWOtAHRKkEb5M13JyTj8Ol4BOk0/bQRoEfY3y6JQzJyEXiv6MGffefbSrm
-         MumvBCraSE1kwfveS7v0Ag6ODRcVdOigk3B4A+ipBe8cJ+q7GM6nht6TVljoJs9S4uyy
-         dPMVZqbHaZOwjuM1oXIxqsFU/3H/UeDduRLZUBLqqeoY4RTgwenwm4eXXHU3j1e6bZ5N
-         3JQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zNJxRZfkj51KwDKq1a1M1MYd6okplAxevNZpSh9Sp8E=;
-        b=oP4/O1x3ADpPSLs6fzO+6fk5FoDsAKWYyUZYkC2DpM+yMa5XBQQ8kKfnWFalFYYyoZ
-         Io1HAGI30BbbuJtcr9AOUFYvN1H1UEQ81uovdKsu4oQrDtIGe5m8DwEJXEt4g+HkNMI3
-         b8FR/cE3AIjDcsfDIklFbR+IQ9WejnFCbH23o2c+yd/TeTZAOEyRzvjr3voSvTei+ohY
-         CQ8TPvZtvtnJoI8plA+7bzpsup8E9zu2awNv3RH3q54CFHdWMqAplDdyXQpGOoJtQoZA
-         auGAZNwNkxpLMuxSFY1MFPuNeQw8gyUTKutHFuLvtX3JZreOzHfvMPabIILPTEIAjpsN
-         QU8Q==
-X-Gm-Message-State: AFqh2kpBr6zdbR0lzgekGjsK4l/TwoBJWmrMM+cXMW8F+gUliHnR4Mcf
-        NxVYZq2jZrGiv2X7eRfQQMrq3g==
-X-Google-Smtp-Source: AMrXdXsiq5a3VIXTM1M/LZ9ItZoVVu6V8Rubs2+q5FtHOS2UV1GRCroRnLcceee6vs8Fyql/dNL3uA==
-X-Received: by 2002:a05:600c:a4f:b0:3d3:5c35:8919 with SMTP id c15-20020a05600c0a4f00b003d35c358919mr5316137wmq.30.1671737534058;
-        Thu, 22 Dec 2022 11:32:14 -0800 (PST)
-Received: from nicolas-Precision-3551.home ([2001:861:5180:dcc0:f5e4:afec:1c65:21c3])
-        by smtp.gmail.com with ESMTPSA id p12-20020a05600c468c00b003cf57329221sm4446729wmo.14.2022.12.22.11.32.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Dec 2022 11:32:13 -0800 (PST)
-From:   Nicolas Frayer <nfrayer@baylibre.com>
-To:     nm@ti.com, kristo@kernel.org, ssantosh@kernel.org,
-        tglx@linutronix.de, maz@kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org
-Cc:     khilman@baylibre.com, glaroque@baylibre.com,
-        mkorpershoek@baylibre.com, nfrayer@baylibre.com
-Subject: [PATCH v2 2/2] irqchip: Kconfig: Added module build support for the TI interrupt aggregator
-Date:   Thu, 22 Dec 2022 20:32:01 +0100
-Message-Id: <20221222193201.1552711-3-nfrayer@baylibre.com>
+        with ESMTP id S229658AbiLWLKA (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 23 Dec 2022 06:10:00 -0500
+Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B2F62708;
+        Fri, 23 Dec 2022 03:09:58 -0800 (PST)
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 2BNB9XGD044123;
+        Fri, 23 Dec 2022 05:09:33 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1671793773;
+        bh=ubDG4WCRNYleiVwKG/9I8i06Y0Ga/hIKm87LALUcyqo=;
+        h=From:To:CC:Subject:Date;
+        b=A2we3eKJM1A4avcx47GykmudA6gb9Y1aWJ6Vg+HIIo+sSjbHQHTgOkN0QjdnzbrUc
+         Tz3fVJaFcnjhpQlJYlolVUFJ9Y87E1PmNqdey8HlaK/7pdXXABBDI87jUbqFkYJHs9
+         ugIZ2P/3Tg43jw15ugGqdd/xrD18YkvCcpdnSkxM=
+Received: from DLEE112.ent.ti.com (dlee112.ent.ti.com [157.170.170.23])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 2BNB9XHU115576
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 23 Dec 2022 05:09:33 -0600
+Received: from DLEE103.ent.ti.com (157.170.170.33) by DLEE112.ent.ti.com
+ (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16; Fri, 23
+ Dec 2022 05:09:32 -0600
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE103.ent.ti.com
+ (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16 via
+ Frontend Transport; Fri, 23 Dec 2022 05:09:32 -0600
+Received: from lelv0854.itg.ti.com (lelv0854.itg.ti.com [10.181.64.140])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 2BNB9WfC058705;
+        Fri, 23 Dec 2022 05:09:32 -0600
+Received: from localhost (a0501179-pc.dhcp.ti.com [10.24.69.114])
+        by lelv0854.itg.ti.com (8.14.7/8.14.7) with ESMTP id 2BNB9VOu001006;
+        Fri, 23 Dec 2022 05:09:32 -0600
+From:   MD Danish Anwar <danishanwar@ti.com>
+To:     "Andrew F. Davis" <afd@ti.com>, Tero Kristo <t-kristo@ti.com>,
+        Suman Anna <s-anna@ti.com>, Roger Quadros <rogerq@kernel.org>,
+        YueHaibing <yuehaibing@huawei.com>,
+        MD Danish Anwar <danishanwar@ti.com>,
+        "Vignesh Raghavendra" <vigneshr@ti.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        "Paolo Abeni" <pabeni@redhat.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>, <andrew@lunn.ch>
+CC:     <nm@ti.com>, <ssantosh@kernel.org>, <srk@ti.com>,
+        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>
+Subject: [PATCH v3 0/2] Introduce ICSSG based ethernet Driver
+Date:   Fri, 23 Dec 2022 16:39:28 +0530
+Message-ID: <20221223110930.1337536-1-danishanwar@ti.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20221222193201.1552711-1-nfrayer@baylibre.com>
-References: <20221222193201.1552711-1-nfrayer@baylibre.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Added module build support in Kconfig for the TI SCI interrupt aggregator
-driver. The driver's default build is built-in and it also depends on
-ARCH_K3 as the driver uses some 64 bit ops and should only be built
-for 64 bit platforms.
+The Programmable Real-time Unit and Industrial Communication Subsystem
+Gigabit (PRU_ICSSG) is a low-latency microcontroller subsystem in the TI
+SoCs. This subsystem is provided for the use cases like the implementation of
+custom peripheral interfaces, offloading of tasks from the other
+processor cores of the SoC, etc.
 
-Signed-off-by: Nicolas Frayer <nfrayer@baylibre.com>
----
- arch/arm64/Kconfig.platforms | 1 -
- drivers/irqchip/Kconfig      | 5 +++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+The subsystem includes many accelerators for data processing like
+multiplier and multiplier-accumulator. It also has peripherals like
+UART, MII/RGMII, MDIO, etc. Every ICSSG core includes two 32-bit
+load/store RISC CPU cores called PRUs.
 
-diff --git a/arch/arm64/Kconfig.platforms b/arch/arm64/Kconfig.platforms
-index 6ede8e105af52..26cd5021d265c 100644
---- a/arch/arm64/Kconfig.platforms
-+++ b/arch/arm64/Kconfig.platforms
-@@ -128,7 +128,6 @@ config ARCH_K3
- 	select SOC_TI
- 	select TI_MESSAGE_MANAGER
- 	select TI_SCI_PROTOCOL
--	select TI_SCI_INTA_IRQCHIP
- 	select TI_K3_SOCINFO
- 	help
- 	  This enables support for Texas Instruments' K3 multicore SoC
-diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
-index e773357e4ab03..77be35559168e 100644
---- a/drivers/irqchip/Kconfig
-+++ b/drivers/irqchip/Kconfig
-@@ -517,10 +517,11 @@ config TI_SCI_INTR_IRQCHIP
- 	  TI System Controller, say Y here. Otherwise, say N.
+The above features allow it to be used for implementing custom firmware
+based peripherals like ethernet.
+
+This series adds the YAML documentation and the driver with basic EMAC
+support for TI AM654 Silicon Rev 2 SoC with the PRU_ICSSG Sub-system.
+running dual-EMAC firmware.
+This currently supports basic EMAC with 1Gbps and 100Mbps link. 10M and
+half-duplex modes are not yet supported because they require the support
+of an IEP, which will be added later.
+Advanced features like switch-dev and timestamping will be added later.
+
+This series depends on two patch series that are not yet merged, one in
+the remoteproc tree and another in the soc tree. the first one is titled
+Introduce PRU remoteproc consumer API and the second one is titled
+Introduce PRU platform consumer API.
+Both of these are required for this driver.
+
+To explain this dependency and to get reviews, I had earlier posted all
+three of these as an RFC[1], this can be seen for understanding the
+dependencies.
+
+The two series remoteproc[2] and soc[3] have been posted seperately to 
+their respective trees.
+
+This is the v3 of the patch series [v1]. This version of the patchset 
+addresses the comments made on [v2] of the series. 
+
+Changes from v1 to v2 :
+
+*) Addressed Rob and Krzysztof's comments on patch 1 of this series.
+   Fixed indentation. Removed description and pinctrl section from 
+   ti,icssg-prueth.yaml file.
+*) Addressed Krzysztof, Paolo, Randy, Andrew and Christophe's comments on 
+   patch 2 of this seires.
+*) Fixed blanklines in Kconfig and Makefile. Changed structures to const 
+   as suggested by Krzysztof.
+*) Fixed while loop logic in emac_tx_complete_packets() API as suggested 
+   by Paolo. Previously in the loop's last iteration 'budget' was 0 and 
+   napi_consume_skb would wrongly assume the caller is not in NAPI context. 
+   Now, budget won't be zero in last iteration of loop. 
+*) Removed inline functions addr_to_da1() and addr_to_da0() as asked by 
+   Andrew.
+*) Added dev_err_probe() instead of dev_err() as suggested by Christophe.
+*) In ti,icssg-prueth.yaml file, in the patternProperties section of 
+   ethernet-ports, kept the port name as "port" instead of "ethernet-port" 
+   as all other drivers were using "port". Will change it if is compulsory 
+   to use "ethernet-port".
  
- config TI_SCI_INTA_IRQCHIP
--	bool
--	depends on TI_SCI_PROTOCOL
-+	tristate "TI SCI INTA Interrupt Controller"
-+	depends on ARCH_K3 && TI_SCI_PROTOCOL
- 	select IRQ_DOMAIN_HIERARCHY
- 	select TI_SCI_INTA_MSI_DOMAIN
-+	default ARCH_K3
- 	help
- 	  This enables the irqchip driver support for K3 Interrupt aggregator
- 	  over TI System Control Interface available on some new TI's SoCs.
+It is a good idea to mention this in the change history. It is then
+clear you have considered it, but decided against it.
+
+[1] https://lore.kernel.org/all/20220406094358.7895-1-p-mohan@ti.com/
+[2] https://patchwork.kernel.org/project/linux-remoteproc/cover/20220418104118.12878-1-p-mohan@ti.com/
+[3] https://patchwork.kernel.org/project/linux-remoteproc/cover/20220418123004.9332-1-p-mohan@ti.com/
+
+[v1] https://lore.kernel.org/all/20220506052433.28087-1-p-mohan@ti.com/
+[v2] https://lore.kernel.org/all/20220531095108.21757-1-p-mohan@ti.com/
+
+Thanks and Regards,
+Md Danish Anwar
+
+Puranjay Mohan (1):
+  dt-bindings: net: Add ICSSG Ethernet Driver bindings
+
+Roger Quadros (1):
+  net: ti: icssg-prueth: Add ICSSG ethernet driver
+
+ .../bindings/net/ti,icssg-prueth.yaml         |  174 ++
+ drivers/net/ethernet/ti/Kconfig               |   13 +
+ drivers/net/ethernet/ti/Makefile              |    2 +
+ drivers/net/ethernet/ti/icssg_classifier.c    |  368 ++++
+ drivers/net/ethernet/ti/icssg_config.c        |  440 ++++
+ drivers/net/ethernet/ti/icssg_config.h        |  200 ++
+ drivers/net/ethernet/ti/icssg_ethtool.c       |  320 +++
+ drivers/net/ethernet/ti/icssg_mii_cfg.c       |  104 +
+ drivers/net/ethernet/ti/icssg_mii_rt.h        |  151 ++
+ drivers/net/ethernet/ti/icssg_prueth.c        | 1882 +++++++++++++++++
+ drivers/net/ethernet/ti/icssg_prueth.h        |  246 +++
+ drivers/net/ethernet/ti/icssg_switch_map.h    |  183 ++
+ include/linux/pruss.h                         |    1 +
+ 13 files changed, 4084 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/net/ti,icssg-prueth.yaml
+ create mode 100644 drivers/net/ethernet/ti/icssg_classifier.c
+ create mode 100644 drivers/net/ethernet/ti/icssg_config.c
+ create mode 100644 drivers/net/ethernet/ti/icssg_config.h
+ create mode 100644 drivers/net/ethernet/ti/icssg_ethtool.c
+ create mode 100644 drivers/net/ethernet/ti/icssg_mii_cfg.c
+ create mode 100644 drivers/net/ethernet/ti/icssg_mii_rt.h
+ create mode 100644 drivers/net/ethernet/ti/icssg_prueth.c
+ create mode 100644 drivers/net/ethernet/ti/icssg_prueth.h
+ create mode 100644 drivers/net/ethernet/ti/icssg_switch_map.h
+
 -- 
 2.25.1
 
