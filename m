@@ -2,69 +2,54 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CB22C65703F
-	for <lists+linux-omap@lfdr.de>; Tue, 27 Dec 2022 23:39:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 987306571A9
+	for <lists+linux-omap@lfdr.de>; Wed, 28 Dec 2022 02:40:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230097AbiL0Wjn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 27 Dec 2022 17:39:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39168 "EHLO
+        id S229525AbiL1BkJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 27 Dec 2022 20:40:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229608AbiL0Wjm (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 27 Dec 2022 17:39:42 -0500
-Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33F482195;
-        Tue, 27 Dec 2022 14:39:41 -0800 (PST)
-Received: by mail-wr1-x42b.google.com with SMTP id y8so13500761wrl.13;
-        Tue, 27 Dec 2022 14:39:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Kq2Gpt1I0Xi+5bwKdazv9Q7izhR4qPVICvO2Klgy1FM=;
-        b=XIQIGt7MsMGJjoCGtAm/0GlCyvgYQzq502eUTB0k6slIUVwSiBuXWN9+x3D+3SNp58
-         JGCRaeHaQckLiQ5r0dfxChgxOsC3vrpX+eyk1xUJfui+chTSLarc65oreQcFjRTP9mCu
-         UBEH8oWGl72MUWFmOWFb9/uXwY0OnlTRyjFUeb0cix/GxmHcWYQbBMRf6rG5eQRM6aND
-         eWeHCNqstKoXpVjz5d5gSYeduejBe/h281ZnGF2/hGqI4MkUf9JCmigoP9/z0J1MHzop
-         I3CAtEjbMdnSXfml6ZozY+SKitR89xvdDo31gjownD5Gz+3e3QPkRMuu3SVW/2XtK7fG
-         HkXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Kq2Gpt1I0Xi+5bwKdazv9Q7izhR4qPVICvO2Klgy1FM=;
-        b=k0LTLvWOaEqS84lXvUMxfiWTG2f52oNoNfKAzufWvIU0cP3Jqp0hh2BDPaItHFaPRc
-         a1DoS2bkziMtLxUzOY1DV0dDzTuGHG20ZT4P1VNhU431mgy0dckccl8kLoucILvprqeR
-         kHpaKc9sAqsDZsWeauietHe4JCajJM4lL4dndkoaaMEx2bwJDTgdNViAVHNnVHGOIGzo
-         xLZH/5jKiSQwdynWVvODHoLr2QTZRbYkY4tca6VSvLe80xX7O0R644hvGUaXop13bInj
-         2NkKk/Gj5DurKt0NHsC5DgYJpOtzhpCmOQrb1jPiFjDLfL1NfmlFV/IVctJ3baNKm1vH
-         xVhA==
-X-Gm-Message-State: AFqh2kou7fB2qxVOaJgrTqOUTcGJRiSK8JN8ARrmWXLEPZRRRmjOQHn2
-        upQuUQ5cXkjuREzqukamOGV9WEhP7kGeQqDEJRU=
-X-Google-Smtp-Source: AMrXdXum+TGXQlUSSlj4R0Jbn6rhSvLAf5+ZKn/cW33IIzSUF61sqoKrpcpQFWE6JNe7Q4eUHkMc3Q==
-X-Received: by 2002:a5d:6250:0:b0:268:885:bd87 with SMTP id m16-20020a5d6250000000b002680885bd87mr14072848wrv.37.1672180779822;
-        Tue, 27 Dec 2022 14:39:39 -0800 (PST)
-Received: from tpt440p.steeds.sam ([2602:fbf6:10:8::2])
-        by smtp.gmail.com with ESMTPSA id c8-20020a5d4148000000b002428c4fb16asm13739132wrq.10.2022.12.27.14.39.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Dec 2022 14:39:39 -0800 (PST)
-From:   "Sicelo A. Mhlongo" <absicsz@gmail.com>
-To:     linux-omap@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, tony@atomide.com,
-        devicetree@vger.kernel.org, "Sicelo A. Mhlongo" <absicsz@gmail.com>
-Subject: [PATCH] ARM: dts: n900: switch accelerometer to iio driver
-Date:   Wed, 28 Dec 2022 00:38:41 +0200
-Message-Id: <20221227223841.2990847-2-absicsz@gmail.com>
-X-Mailer: git-send-email 2.39.0
-In-Reply-To: <20221227223841.2990847-1-absicsz@gmail.com>
-References: <20221227223841.2990847-1-absicsz@gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        with ESMTP id S229475AbiL1BkI (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 27 Dec 2022 20:40:08 -0500
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [63.216.63.40])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04A31DF94;
+        Tue, 27 Dec 2022 17:40:08 -0800 (PST)
+Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mxhk.zte.com.cn (FangMail) with ESMTPS id 4NhZ2t53W1z8QrkZ;
+        Wed, 28 Dec 2022 09:40:06 +0800 (CST)
+Received: from szxlzmapp06.zte.com.cn ([10.5.230.252])
+        by mse-fl1.zte.com.cn with SMTP id 2BS1e0df048934;
+        Wed, 28 Dec 2022 09:40:00 +0800 (+08)
+        (envelope-from yang.yang29@zte.com.cn)
+Received: from mapi (szxlzmapp01[null])
+        by mapi (Zmail) with MAPI id mid14;
+        Wed, 28 Dec 2022 09:40:01 +0800 (CST)
+Date:   Wed, 28 Dec 2022 09:40:01 +0800 (CST)
+X-Zmail-TransId: 2b0363ab9e71ffffffffbc84f49e
+X-Mailer: Zmail v1.0
+Message-ID: <202212280940017919910@zte.com.cn>
+Mime-Version: 1.0
+From:   <yang.yang29@zte.com.cn>
+To:     <deller@gmx.de>
+Cc:     <tony@atomide.com>, <b.zolnierkie@samsung.com>, <arnd@arndb.de>,
+        <yuzhe@nfschina.com>, <jiapeng.chong@linux.alibaba.com>,
+        <guozhengkui@vivo.com>, <linux-fbdev@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+        <linux-kernel@vger.kernel.org>, <xu.panda@zte.com.cn>,
+        <yang.yang29@zte.com.cn>
+Subject: =?UTF-8?B?W1BBVENIIGxpbnV4LW5leHRdIGZiZGV2OiBvbWFwOiB1c2Ugc3Ryc2NweSgpIHRvIGluc3RlYWQgb2Ygc3RybmNweSgp?=
+Content-Type: text/plain;
+        charset="UTF-8"
+X-MAIL: mse-fl1.zte.com.cn 2BS1e0df048934
+X-Fangmail-Gw-Spam-Type: 0
+X-FangMail-Miltered: at cgslv5.04-192.168.250.137.novalocal with ID 63AB9E76.000 by FangMail milter!
+X-FangMail-Envelope: 1672191606/4NhZ2t53W1z8QrkZ/63AB9E76.000/10.5.228.132/[10.5.228.132]/mse-fl1.zte.com.cn/<yang.yang29@zte.com.cn>
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 63AB9E76.000/4NhZ2t53W1z8QrkZ
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -72,84 +57,39 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Since 8a7449d68670a8f9033d57b9e7997af77a900d53, lis302dl is supported by an iio
-driver. Make the switch, to accommodate modern userspace, even though the iio
-interface lacks some of the extended features of the older driver
+From: Xu Panda <xu.panda@zte.com.cn>
 
-Signed-off-by: Sicelo A. Mhlongo <absicsz@gmail.com>
+The implementation of strscpy() is more robust and safer.
+That's now the recommended way to copy NUL-terminated strings.
+
+Signed-off-by: Xu Panda <xu.panda@zte.com.cn>
+Signed-off-by: Yang Yang <yang.yang29@zte.com>
 ---
- arch/arm/boot/dts/omap3-n900.dts | 53 +++++---------------------------
- 1 file changed, 8 insertions(+), 45 deletions(-)
+ drivers/video/fbdev/omap/omapfb_main.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/boot/dts/omap3-n900.dts b/arch/arm/boot/dts/omap3-n900.dts
-index 6ba2e8f81973..94fa1d492fb4 100644
---- a/arch/arm/boot/dts/omap3-n900.dts
-+++ b/arch/arm/boot/dts/omap3-n900.dts
-@@ -767,56 +767,19 @@ &i2c3 {
- 
- 	clock-frequency = <400000>;
- 
--	lis302dl: lis3lv02d@1d {
--		compatible = "st,lis3lv02d";
-+	lis302dl: lis302dl@1d {
-+		compatible = "st,lis302dl";
- 		reg = <0x1d>;
- 
--		Vdd-supply = <&vaux1>;
--		Vdd_IO-supply = <&vio>;
-+		vdd-supply = <&vaux1>;
-+		vddio-supply = <&vio>;
- 
- 		interrupt-parent = <&gpio6>;
--		interrupts = <21 20>; /* 181 and 180 */
--
--		/* click flags */
--		st,click-single-x;
--		st,click-single-y;
--		st,click-single-z;
--
--		/* Limits are 0.5g * value */
--		st,click-threshold-x = <8>;
--		st,click-threshold-y = <8>;
--		st,click-threshold-z = <10>;
--
--		/* Click must be longer than time limit */
--		st,click-time-limit = <9>;
--
--		/* Kind of debounce filter */
--		st,click-latency = <50>;
--
--		/* Interrupt line 2 for click detection */
--		st,irq2-click;
--
--		st,wakeup-x-hi;
--		st,wakeup-y-hi;
--		st,wakeup-threshold = <(800/18)>; /* millig-value / 18 to get HW values */
--
--		st,wakeup2-z-hi;
--		st,wakeup2-threshold = <(900/18)>; /* millig-value / 18 to get HW values */
--
--		st,hipass1-disable;
--		st,hipass2-disable;
--
--		st,axis-x = <1>;    /* LIS3_DEV_X */
--		st,axis-y = <(-2)>; /* LIS3_INV_DEV_Y */
--		st,axis-z = <(-3)>; /* LIS3_INV_DEV_Z */
--
--		st,min-limit-x = <(-32)>;
--		st,min-limit-y = <3>;
--		st,min-limit-z = <3>;
-+		interrupts = <21 IRQ_TYPE_EDGE_RISING>, <20 IRQ_TYPE_EDGE_RISING>; /* 181 and 180 */
- 
--		st,max-limit-x = <(-3)>;
--		st,max-limit-y = <32>;
--		st,max-limit-z = <32>;
-+		mount-matrix =	 "-1",  "0",  "0",
-+				  "0",  "1",  "0",
-+				  "0",  "0",  "1";
- 	};
- 
- 	cam1: camera@3e {
+diff --git a/drivers/video/fbdev/omap/omapfb_main.c b/drivers/video/fbdev/omap/omapfb_main.c
+index 17cda5765683..1f3df2055ff0 100644
+--- a/drivers/video/fbdev/omap/omapfb_main.c
++++ b/drivers/video/fbdev/omap/omapfb_main.c
+@@ -1447,7 +1447,7 @@ static int fbinfo_init(struct omapfb_device *fbdev, struct fb_info *info)
+ 	info->fbops = &omapfb_ops;
+ 	info->flags = FBINFO_FLAG_DEFAULT;
+
+-	strncpy(fix->id, MODULE_NAME, sizeof(fix->id));
++	strscpy(fix->id, MODULE_NAME, sizeof(fix->id));
+
+ 	info->pseudo_palette = fbdev->pseudo_palette;
+
+@@ -1573,8 +1573,7 @@ static int omapfb_find_ctrl(struct omapfb_device *fbdev)
+
+ 	fbdev->ctrl = NULL;
+
+-	strncpy(name, conf->lcd.ctrl_name, sizeof(name) - 1);
+-	name[sizeof(name) - 1] = '\0';
++	strscpy(name, conf->lcd.ctrl_name, sizeof(name));
+
+ 	if (strcmp(name, "internal") == 0) {
+ 		fbdev->ctrl = fbdev->int_ctrl;
 -- 
-2.39.0
-
+2.15.2
