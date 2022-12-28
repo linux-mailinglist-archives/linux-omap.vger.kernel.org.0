@@ -2,120 +2,91 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E15D6573C6
-	for <lists+linux-omap@lfdr.de>; Wed, 28 Dec 2022 08:59:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B0EBA65746F
+	for <lists+linux-omap@lfdr.de>; Wed, 28 Dec 2022 10:07:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229710AbiL1H7T (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 28 Dec 2022 02:59:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36324 "EHLO
+        id S232543AbiL1JHT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 28 Dec 2022 04:07:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230451AbiL1H7D (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 28 Dec 2022 02:59:03 -0500
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F50CEA0;
-        Tue, 27 Dec 2022 23:59:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-        t=1672214307; bh=ut0QnBH+n52wyKHqQwBmihflDips2qqky7SOU6xr2yk=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=eN4Ex5QIPgdWjYcTYy02q5aoymbvKY1bYLviQ/rRbu0eSYMZYvDKomIFZwyNpSL6X
-         dDOlDBXZU4g0zLRxV0OxLqMb9jix3i5YNyaXWlN0Ka+e3fgKL15J32gphECk6EMM7y
-         cfjWG4Tz9e36ntSPS253HeVp+vP17JdNUBl2E5by+N7Y6jh/jAqRCy67LhtnlOLm6o
-         G+LZqLeLqTG9nX2vnX+UGBjeNOETP1nvbjzFH3/v7kPl83v9rvCMZ7VbBybaPGfRE4
-         2+nWnwa24JVg8yE75z9IdoUKneFPViOCAR6FBG9Z6bMeE9NMA+MIr0supORmd6XdQF
-         Wvm1t9CQH48RQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([92.116.184.137]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MmDEm-1oSGsF2jrc-00iCsh; Wed, 28
- Dec 2022 08:58:27 +0100
-Message-ID: <10b15ff6-0671-a523-a708-76f1dfa0383e@gmx.de>
-Date:   Wed, 28 Dec 2022 08:58:25 +0100
+        with ESMTP id S232535AbiL1JHS (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 28 Dec 2022 04:07:18 -0500
+Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3A36D10F
+        for <linux-omap@vger.kernel.org>; Wed, 28 Dec 2022 01:07:16 -0800 (PST)
+Received: by mail-lf1-x131.google.com with SMTP id g13so22792788lfv.7
+        for <linux-omap@vger.kernel.org>; Wed, 28 Dec 2022 01:07:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Oh65FXjCWAwyP79+/vrzZvQeGGHMxBBP8jJk770rSK8=;
+        b=pXOWDmBhmA6HC5EVCNFeArfhGxQe+kMSdPJp/1XqA9ZWx02rTeEGlv1QzAUeWw54rb
+         Pe4UksIILEv78JeARhLL6iR4d/KfK7pVsXveKAzHUXTIzswkWidgBT6T6uwsDMiVYJJR
+         cDf6Qd05db5zsG9aNgef3LSRPGj9/kK48ef/b8ZDrELwUQOq0lHbef/JVJol2hMwIR0b
+         F/Ay3jqY4fyh806VruaHb+bNO/TwUJCtGa3dr8W982qHfXU6z0K8MSBKh0DE1fxxfALW
+         mGY8O8OAIPL5YIopfl0rx5oeOvM0KJpUbWVpnVDCDzHfzpYqYr8RDxFOayrAF03vRRA2
+         VbEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Oh65FXjCWAwyP79+/vrzZvQeGGHMxBBP8jJk770rSK8=;
+        b=VbQ8WLzL0Z1jdJQkLfhBuqJco1UqSzHUjExhobNVhrpRIsZxSlZq0tiDNjesgyuuae
+         XeZPh3HCCaezgBbYXCewKG7WwIJM5VCw0wohLDJ5mlCJxPetq6uIzkSYT5p+X3RxbGsV
+         xmJDscz+VyPP006XNsfLZV0jZ9eBMGm7FKH4nLTQ0AhkGiw7QTue9zxDqV0kUCirOaiv
+         nHLTtZ1s/hw6LGknWp+Q91j7Hcr85ZyQoWwJ3xcMdRMG+NZJibNpi21z4Xz8Tc2IeVuy
+         SghyAF3GFzYhNi7UGy50QQejEuQmo2AlslpRy86ljIwEK6E6F/rblx/0v8IzSwPvOtSo
+         p9Tg==
+X-Gm-Message-State: AFqh2koYrCl6cGwiWXtLxcNRePbfvuzjDf7SzQJNJk8OirTUKLZcaVA2
+        t/rH0FDRFjrl05zBNJt/HDW6ow==
+X-Google-Smtp-Source: AMrXdXvjAOViEM8pna0LEosao806X0PY7+H/x6mLffTcWoSQnbPPML/6Cl+0YwP8cb3h4eWFo07euQ==
+X-Received: by 2002:a05:6512:25a2:b0:4bc:a66e:9aa7 with SMTP id bf34-20020a05651225a200b004bca66e9aa7mr6623846lfb.6.1672218435095;
+        Wed, 28 Dec 2022 01:07:15 -0800 (PST)
+Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
+        by smtp.gmail.com with ESMTPSA id v14-20020a056512348e00b00497a61453a9sm2578871lfr.243.2022.12.28.01.07.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 28 Dec 2022 01:07:14 -0800 (PST)
+Message-ID: <c4046ed8-f84c-f1d7-2687-7e5c00b1304b@linaro.org>
+Date:   Wed, 28 Dec 2022 10:07:13 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
-Subject: Re: [PATCH linux-next] fbdev: omap: use strscpy() to instead of
- strncpy()
+ Thunderbird/102.6.1
+Subject: Re: ARM: dts: n900: switch accelerometer to iio driver
+To:     "Sicelo A. Mhlongo" <absicsz@gmail.com>, linux-omap@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, tony@atomide.com,
+        devicetree@vger.kernel.org
+References: <20221227223841.2990847-1-absicsz@gmail.com>
 Content-Language: en-US
-To:     yang.yang29@zte.com.cn
-Cc:     tony@atomide.com, b.zolnierkie@samsung.com, arnd@arndb.de,
-        yuzhe@nfschina.com, jiapeng.chong@linux.alibaba.com,
-        guozhengkui@vivo.com, linux-fbdev@vger.kernel.org,
-        linux-omap@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, xu.panda@zte.com.cn
-References: <202212280940017919910@zte.com.cn>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <202212280940017919910@zte.com.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:6xYT7XBtpcRWzDX6SMR5Z8MDNCitrlJnvbo6qFAtHCUpmmFKG34
- DRPCkQvPUUNTq4SCURlK0nW2KbSdPE5Grhs+SCPnjG/D6UE8SdJcq6trxfGRFDV4ZuurelR
- zYw9zApIoPh+QWH9UbFNIYmcfnm6xI2/COONct/6CTwTjyCUFD+izjSkiIBF2L0gY2tMMdL
- OatStnnePHFTsFj5928yQ==
-UI-OutboundReport: notjunk:1;M01:P0:dneBwogOC4o=;S5DKRe/GJouDkmz713c8D7GJqKU
- smMzawgYoxAlQfzoJG7OXVgQcpjkt0IqYNibKYZVNkL2RQRa7gXQ1lrTQsyKPGWl9CrX+7x/S
- HYNu+j2+k7b+uybzfaetqpRO7G9vBLo9113eU2gXJ8Jft0dGNt7+ig8rJAHnIGB11Q/aU9mc1
- jamMY/chikb/PyJis3Gj/tNPtorYqoHvDMV9xa8W4LKoR6aFAFkMYf8qWmI87dZNJ4gCGiJCS
- kTx2vXFySUiydsVkvPxrciN05hMZOqt05nw1LFJjxIcAuyFEQ7zvAkBFMfSc8W5rgyPiddNyT
- 9c7td3QC0z/0hmVWWvZoAe9xbd25xFcpvYcI4tpeRc7JHj1RVwlpsSDmN1+qtsETI3RM1YYA0
- sVE4F5QcqsS2wuwb8J/gKg3m5a1AYnUMvryyvnLD1lFetZcJCSXY/AjHZb876N1aopDWNiVOQ
- 5F/UsAU+tUSRuJAPhmN3PYJgiUGRFDKQkalmiGHrto4JoXyHDggqvBsJsffnqbm0NT8my9hUZ
- 8wdEeN2AB7PJ8CZWJH/Pb/owXT6XnCTZCifnZL76LBYF/pHWyzqGwG/azsCGeV/9jpvUzKVO4
- 02KtXNoDD+PfphySAkjnEDzt2czFaRFLB1yvxfSgz0jU+HmgSXwpAiFfCw5JluOESFCJNzjVr
- loYNzfH+SMkrk57A8cGmw49z+l3TbhJnw63OqbcbWEIQxYAOIgVpG+/ur5WFZn3z8GY6FSvXk
- ZANUX3x6tzYeqO7715fn0cQ9L5BZlzx5JqqYVDotaWxSs8q+ukKz6vbJGqNulenCnT95wcDOu
- fb/6RmYWzTAPLVpv44PMsfQe10S52P9t9Nv1OjW8/pfvIMObhWLzM6MbMLgmbhk63pRe9mXUb
- 897s79htsTTweXHFSzhBxzxBuTgwHY8r7eVu38W/Xu0sP9xytOj7tj7Duz075b6TRm2LS/l3Q
- ftQ5+g==
-X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20221227223841.2990847-1-absicsz@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 12/28/22 02:40, yang.yang29@zte.com.cn wrote:
-> From: Xu Panda <xu.panda@zte.com.cn>
->
-> The implementation of strscpy() is more robust and safer.
-> That's now the recommended way to copy NUL-terminated strings.
->
-> Signed-off-by: Xu Panda <xu.panda@zte.com.cn>
-> Signed-off-by: Yang Yang <yang.yang29@zte.com>
-> ---
->   drivers/video/fbdev/omap/omapfb_main.c | 5 ++---
->   1 file changed, 2 insertions(+), 3 deletions(-)
+On 27/12/2022 23:38, Sicelo A. Mhlongo wrote:
+> [PATCH] ARM: dts: n900: switch accelerometer to iio driver
 
-applied.
-Thanks!
-Helge
+That's not correct placement of title. This should be in the subject.
 
->
-> diff --git a/drivers/video/fbdev/omap/omapfb_main.c b/drivers/video/fbde=
-v/omap/omapfb_main.c
-> index 17cda5765683..1f3df2055ff0 100644
-> --- a/drivers/video/fbdev/omap/omapfb_main.c
-> +++ b/drivers/video/fbdev/omap/omapfb_main.c
-> @@ -1447,7 +1447,7 @@ static int fbinfo_init(struct omapfb_device *fbdev=
-, struct fb_info *info)
->   	info->fbops =3D &omapfb_ops;
->   	info->flags =3D FBINFO_FLAG_DEFAULT;
->
-> -	strncpy(fix->id, MODULE_NAME, sizeof(fix->id));
-> +	strscpy(fix->id, MODULE_NAME, sizeof(fix->id));
->
->   	info->pseudo_palette =3D fbdev->pseudo_palette;
->
-> @@ -1573,8 +1573,7 @@ static int omapfb_find_ctrl(struct omapfb_device *=
-fbdev)
->
->   	fbdev->ctrl =3D NULL;
->
-> -	strncpy(name, conf->lcd.ctrl_name, sizeof(name) - 1);
-> -	name[sizeof(name) - 1] =3D '\0';
-> +	strscpy(name, conf->lcd.ctrl_name, sizeof(name));
->
->   	if (strcmp(name, "internal") =3D=3D 0) {
->   		fbdev->ctrl =3D fbdev->int_ctrl;
+> 
+> The lis302dl accelerometer is now supported by an iio driver, so the N900 can
+> work with modern iio-based userspace. This patch provides the required dts
+> changes for the switch
+
+You miss the actual patch here...
+
+Best regards,
+Krzysztof
 
