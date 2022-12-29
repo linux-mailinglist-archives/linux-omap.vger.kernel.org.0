@@ -2,111 +2,91 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 17842657556
-	for <lists+linux-omap@lfdr.de>; Wed, 28 Dec 2022 11:33:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E1C58658E18
+	for <lists+linux-omap@lfdr.de>; Thu, 29 Dec 2022 15:54:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232678AbiL1KdR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 28 Dec 2022 05:33:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39320 "EHLO
+        id S229615AbiL2Ox5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 29 Dec 2022 09:53:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232494AbiL1KdQ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 28 Dec 2022 05:33:16 -0500
-Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1BC810063
-        for <linux-omap@vger.kernel.org>; Wed, 28 Dec 2022 02:33:14 -0800 (PST)
-Received: by mail-lj1-x22e.google.com with SMTP id q2so16162322ljp.6
-        for <linux-omap@vger.kernel.org>; Wed, 28 Dec 2022 02:33:14 -0800 (PST)
+        with ESMTP id S233601AbiL2Oxk (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 29 Dec 2022 09:53:40 -0500
+Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2731FF2;
+        Thu, 29 Dec 2022 06:53:39 -0800 (PST)
+Received: by mail-wr1-x429.google.com with SMTP id z16so1123213wrw.1;
+        Thu, 29 Dec 2022 06:53:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=OEp9IYyED8X7OHNpRld99usILEl7zmdiLWyW6VCAt3I=;
-        b=ODEssGuGzUu2tk/wxbHi7TxffhnKCPYfPWJ3mabLByvOf8Tcih8kc/cn/9SDvv/lmr
-         eB+4z7yOBh+vO6BWBk4wcbF/QNYPc5F2136iRDmk6gdj1E+HaYJUD1JGhY5V7hy2FU7K
-         q/J+t//VVttb1T1KVyW/qz7fwtjulFEfIPkVa27Fwe/Pw8TIlk41PM0pPuarmzAv3R2n
-         7QENWp2h3kGRe6/Sbe1xqfd2v27E6ejkBy6o7jJATZRRoTzk7oM0fDQNWpa+6QhrDvvN
-         CIIchKYn47eAODcOKAATngruhSfYPMMjP/jNnxxlOp0qMCMWA/bTpCJJWYZnSzjOTC4L
-         J/WQ==
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ccq95IZNXm9rVZDfCeTqu5lSGJXR28E+vmtTwPcaamg=;
+        b=ekFyAFgaaNki7S+7E4Gz20eL+7Whui6g7qwdwTgMop9nsxhN0LhAVMbNvGXm+V90LH
+         X6EBoo9DJdXIZ5hCe3QHyKQcUY9ieLl9xceDK8J2YJWORfnh7BRz6tAL10bgRKPnhqjp
+         aW1G2LhOJoY7/dgYDYrzxbGzLqJF/mHc+mC0GY+5IRn/KmvYRMWlYoLgCtmv5wLlO7du
+         68qrkoStvgQ3oW8xTfJba759GEd7/U+YaIWMI/Gww9pq3sDj58cFmtANff8pivZ4dNIf
+         A3iI1wu9qZ6N+iYhYWNZgFEgdLCs4cGXtH+veim7SuiPZwy8pIaefyFWDwgPtXFfIV0z
+         XaLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=OEp9IYyED8X7OHNpRld99usILEl7zmdiLWyW6VCAt3I=;
-        b=p2A0wCLImBVvjQnZE2Wij4YA0sRvUOqzwx40g4hayYeVWGr0rImDEWKok+LK9xhGNq
-         wLs9fzdArM962rsIMSziNmd0f7JAPAHXbWAqSsmAn1uAalE4Euaz8aGLQANhb2X5xDoT
-         /O7T3baGvUb5c95Mx/WDheY19MaRll/GTvHe0lCWR6UCqcMH1CkK6uw5zK41ujyE3Iw/
-         Qh/Vi7YtYuJSsRz7/Su/nCVmcaW6CVVg9WjROC0DiY8yoTJwZnHsjAakLqIsjT8ZSxZi
-         QSvlLpF2SwVJMpTUhIy1JCf44Exrynn973EzWq2JUmRRsAXWAxpl82Qh/+OfEJx26i0H
-         MLPw==
-X-Gm-Message-State: AFqh2kpvP7MQiTZqEUlPxAxBu4/3juzPYFpXGfTEdrB9ep9xB8QQ8GXW
-        N5xfOXMWX7Ssmo4JEz7l4HWiTN6NCFBroxbU
-X-Google-Smtp-Source: AMrXdXuQCDuEPsW6x3RcMopuQYPmt30y+od2VlW/CIl6y/KTfTnBNt28UrsHU9ln8ZXUut8+xGwPyw==
-X-Received: by 2002:a05:651c:505:b0:279:bddb:6c8e with SMTP id o5-20020a05651c050500b00279bddb6c8emr8977955ljp.25.1672223593192;
-        Wed, 28 Dec 2022 02:33:13 -0800 (PST)
-Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
-        by smtp.gmail.com with ESMTPSA id a18-20020a05651c031200b0026bf0d71b1esm1887465ljp.93.2022.12.28.02.33.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 28 Dec 2022 02:33:12 -0800 (PST)
-Message-ID: <958b6c4e-02f8-1289-42f7-212edbcd80ee@linaro.org>
-Date:   Wed, 28 Dec 2022 11:33:11 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.1
-Subject: Re: [PATCH] ARM: dts: n900: switch accelerometer to iio driver
-Content-Language: en-US
-To:     Sicelo <absicsz@gmail.com>
-Cc:     linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        tony@atomide.com, devicetree@vger.kernel.org
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ccq95IZNXm9rVZDfCeTqu5lSGJXR28E+vmtTwPcaamg=;
+        b=N7e87b0y9PyEZyG37KfgACAdQcX0GwBubGC5pQxaJVCQxQTzFEIOBsl16NwgZeL6ED
+         okfHvKXwiI06HNQvRoHB8gVIzhvpbHx23HjLUdpdIdjQMdQntBL6Mnh12YLXfGrF+dFY
+         Jr+hK8Y3N+YEMhULhDBjW5sp63hF91P+laSMH4UH8Hl6necP41sXI+yjtXJaCnmaJVfh
+         aVj2L65sEnNpiKRQQK+GOXQ4p/KGtEwHpo5/rp2IzHw9NGbcIimOWJ+GnQNseZAhNo5x
+         GxuaKc4uoVfm+EgOkqatYxJeqRjEtSCSH8T238Wu8FLeMI1aqe1RUb9RvngJAtQg72B5
+         kHeA==
+X-Gm-Message-State: AFqh2kqA9ZMBfSXzJ/eYqwMK5Yc/cl0TU0P0FasKZj9lbAp00YQkPZbV
+        BcRlc4+wLK34zWytbBta7QWKma3YVmmIEj5c
+X-Google-Smtp-Source: AMrXdXvp3Q4zQlK6xWLHi9MPyCpoexg5UaRopR2zLTJ9XTYu/rRnCtIela47vdbKjiUqO6z87VrEDw==
+X-Received: by 2002:a5d:5965:0:b0:27f:1c70:58c3 with SMTP id e37-20020a5d5965000000b0027f1c7058c3mr8172632wri.24.1672325617544;
+        Thu, 29 Dec 2022 06:53:37 -0800 (PST)
+Received: from tpt440p.steeds.sam ([69.63.64.50])
+        by smtp.gmail.com with ESMTPSA id v7-20020adfe287000000b00241bd177f89sm18151089wri.14.2022.12.29.06.53.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Dec 2022 06:53:36 -0800 (PST)
+From:   "Sicelo A. Mhlongo" <absicsz@gmail.com>
+To:     linux-omap@vger.kernel.org
+Cc:     "Sicelo A. Mhlongo" <absicsz@gmail.com>,
+        linux-kernel@vger.kernel.org, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, tony@atomide.com,
+        devicetree@vger.kernel.org, maemo-leste@lists.dyne.org
+Subject: [PATCH v2 0/2] ARM: dts: n900: use iio driver for accelerometer
+Date:   Thu, 29 Dec 2022 16:52:48 +0200
+Message-Id: <20221229145251.3535402-1-absicsz@gmail.com>
+X-Mailer: git-send-email 2.39.0
+In-Reply-To: <20221227223841.2990847-1-absicsz@gmail.com>
 References: <20221227223841.2990847-1-absicsz@gmail.com>
- <20221227223841.2990847-2-absicsz@gmail.com>
- <73599d25-cd2c-e89a-20b4-d34471583a6b@linaro.org>
- <Y6waVkobLCGqRHm7@tp440p.steeds.sam>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <Y6waVkobLCGqRHm7@tp440p.steeds.sam>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 28/12/2022 11:28, Sicelo wrote:
-> Thank you for the review.
-> 
->>> +	lis302dl: lis302dl@1d {
->>
->> That's not really explained in commit msg and does not look related to
->> your goal. If changing - in separate patch - make the node name generic.
->> https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
->  
-> Now I understand that it should just be `accelerometer@1d`. To be clear,
-> are you saying this change should have a separate patch, i.e. not part
-> of the switch to iio driver?
+The accelerometer in the N900 is now supported by the iio framework. This patch
+series makes the switch to the new compatible.
 
-Yes, such cleanup is not related to changing compatible.
+The iio framework does not support some of the extended properties in the
+previous driver, but the change is useful for modern userspace, which expects
+accelerometers to be exposed via iio
 
-> 
->>> -		Vdd-supply = <&vaux1>;
->>> -		Vdd_IO-supply = <&vio>;
->>> +		vdd-supply = <&vaux1>;
->>> +		vddio-supply = <&vio>;
->>
->> Does not look related/explained in commit msg.
-> 
-> This is from Documentation/devicetree/bindings/iio/st,st-sensors.yaml,
-> i.e. lowercase. I will look for a way to explain it in v2.
+Sicelo A. Mhlongo (2):
+  ARM: dts: n900: rename accelerometer node
+  ARM: dts: n900: use iio driver for accelerometer
 
-Ah, ok, then maybe mention in commit msg that you are changing
-properties to match bindings of new compatible.
+ arch/arm/boot/dts/omap3-n900.dts | 54 ++++++--------------------------
+ 1 file changed, 9 insertions(+), 45 deletions(-)
 
-Best regards,
-Krzysztof
+-- 
+2.39.0
 
