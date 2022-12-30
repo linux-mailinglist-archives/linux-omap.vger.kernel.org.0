@@ -2,157 +2,74 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D4468658F79
-	for <lists+linux-omap@lfdr.de>; Thu, 29 Dec 2022 18:14:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7175065963E
+	for <lists+linux-omap@lfdr.de>; Fri, 30 Dec 2022 09:20:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233816AbiL2RO4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 29 Dec 2022 12:14:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46440 "EHLO
+        id S234784AbiL3IUf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 30 Dec 2022 03:20:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233726AbiL2ROb (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 29 Dec 2022 12:14:31 -0500
-Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4036913F76;
-        Thu, 29 Dec 2022 09:14:30 -0800 (PST)
-Received: by mail-wm1-x32a.google.com with SMTP id l26so11996968wme.5;
-        Thu, 29 Dec 2022 09:14:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cIQW09CqX9CkrW+ObP5qHJbu4xvI7F5KPrqUJVnMAfg=;
-        b=kTbYGYfbcKJYoEQJGQ6Zi9Sw0kJu6rCQDiGDUq603Sd01FjS3LIuBUdNiisDXN2Xan
-         q7ykbJaGj6TM6QKvK5W8ct4E3qkx3N/IQ8ipcVZiEYM0YVL/kl+lQKDTtwhmkQLt3Tdw
-         VZhA39d/JZk8jDwZErEKNQZzOIQ9fpLFoBji2dZXdbQH2st9kUaySewRXU6bJU3Aln6x
-         2Zp5SpjESwPjpU7gXODpBJS/v4sUwQA/C0kdiFXBmmsnSeHdLsib7AL94qBH4DWGVstk
-         8m6gaMrt2RlUTPmPdpWIvowwuyM1Ya9MQpqM1m90DObqnZYm8fM2ixWcav5l4DoDYj5Y
-         3OAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cIQW09CqX9CkrW+ObP5qHJbu4xvI7F5KPrqUJVnMAfg=;
-        b=X6VTZgrQW4s8H2SakIe53QH34V8cflF/XXmXTa2xml9aBt6uIRH7IVpdeTXgNSVEgH
-         +HtDbepc8iKsY/HaKm6hOPUJHoXGmZiX9Gxpb2sjTEOm/SKd1fAo+ufR5bQpuhwTaube
-         5Fwu4kCjaRXpDzwTrrGuntz+CZk+7n41fFtTxJDHC3L2MtukGwEEWkft3q7C5f5KfCNc
-         6txendGHQFcwwJh1lsTBr+XnYAYCM6FZQXFP/w+I2oTSrStlkHFrnUom8yoxGu2+3U7Z
-         Pd8WyXd31qNbXmpOPvXPw5/03gppFOjTIezXzs86Q46IKPkP/pkIYcj8VqGyylOoEINo
-         /q7Q==
-X-Gm-Message-State: AFqh2kreUgrsPC5R5UQtCd/0E0Jd67w5fUu2618057wEhDX+LG6k1fw3
-        36XgAXya62RCTR8bhCRKAXWv9u7IRWuCLweZ
-X-Google-Smtp-Source: AMrXdXvxdNzeaVO27hvAA4NHURvr+qmfEunBqFUzPtq8x3m0yT80gZNe5XjjIV3IPvgA5nLY5uxPdw==
-X-Received: by 2002:a05:600c:ace:b0:3d1:fe0a:f134 with SMTP id c14-20020a05600c0ace00b003d1fe0af134mr20524123wmr.19.1672334068801;
-        Thu, 29 Dec 2022 09:14:28 -0800 (PST)
-Received: from tpt440p.steeds.sam ([2602:fbf6:10:8::2])
-        by smtp.gmail.com with ESMTPSA id n41-20020a05600c3ba900b003d358beab9dsm28085366wms.47.2022.12.29.09.14.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Dec 2022 09:14:28 -0800 (PST)
-From:   "Sicelo A. Mhlongo" <absicsz@gmail.com>
-To:     linux-omap@vger.kernel.org
-Cc:     "Sicelo A. Mhlongo" <absicsz@gmail.com>,
-        linux-kernel@vger.kernel.org, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, tony@atomide.com,
-        devicetree@vger.kernel.org, maemo-leste@lists.dyne.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH v3 2/2] ARM: dts: n900: use iio driver for accelerometer
-Date:   Thu, 29 Dec 2022 19:13:48 +0200
-Message-Id: <20221229171348.3543327-3-absicsz@gmail.com>
-X-Mailer: git-send-email 2.39.0
-In-Reply-To: <20221229171348.3543327-1-absicsz@gmail.com>
-References: <20221229171348.3543327-1-absicsz@gmail.com>
+        with ESMTP id S234705AbiL3IUd (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 30 Dec 2022 03:20:33 -0500
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47C841A207;
+        Fri, 30 Dec 2022 00:20:31 -0800 (PST)
+Received: from dggpemm500007.china.huawei.com (unknown [172.30.72.54])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4Njykg1CxfzqTK3;
+        Fri, 30 Dec 2022 16:15:55 +0800 (CST)
+Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
+ (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Fri, 30 Dec
+ 2022 16:20:28 +0800
+From:   Yang Yingliang <yangyingliang@huawei.com>
+To:     <linux-usb@vger.kernel.org>, <linux-omap@vger.kernel.org>
+CC:     <b-liu@ti.com>, <gregkh@linuxfoundation.org>, <tony@atomide.com>,
+        <yangyingliang@huawei.com>
+Subject: [PATCH] usb: musb: fix error return code in omap2430_probe()
+Date:   Fri, 30 Dec 2022 16:17:30 +0800
+Message-ID: <20221230081730.1655616-1-yangyingliang@huawei.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.103.91]
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ dggpemm500007.china.huawei.com (7.185.36.183)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The accelerometer in the N900 is supported by the iio-framework since commit
-8a7449d68670a8f9 ("iio: accel: add support for LIS302DL variant). This commit
-switches to it and updates node properties to match the bindings of the new
-compatible.
+Before calling platform_get_resource() in omap2430_probe(), the 'ret' is
+re-assgined to 0, it can't return an error code, if platform_get_resource
+fails. Set the error code to -EINVAL to fix this.
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Sicelo A. Mhlongo <absicsz@gmail.com>
+Fixes: ffbe2feac59b ("usb: musb: omap2430: Fix probe regression for missing resources")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- arch/arm/boot/dts/omap3-n900.dts | 52 +++++---------------------------
- 1 file changed, 8 insertions(+), 44 deletions(-)
+ drivers/usb/musb/omap2430.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/omap3-n900.dts b/arch/arm/boot/dts/omap3-n900.dts
-index 20d7a7bb6b04..adee3da93421 100644
---- a/arch/arm/boot/dts/omap3-n900.dts
-+++ b/arch/arm/boot/dts/omap3-n900.dts
-@@ -768,55 +768,19 @@ &i2c3 {
- 	clock-frequency = <400000>;
+diff --git a/drivers/usb/musb/omap2430.c b/drivers/usb/musb/omap2430.c
+index 476f55d1fec3..44a21ec865fb 100644
+--- a/drivers/usb/musb/omap2430.c
++++ b/drivers/usb/musb/omap2430.c
+@@ -411,8 +411,10 @@ static int omap2430_probe(struct platform_device *pdev)
+ 		memset(musb_res, 0, sizeof(*musb_res) * ARRAY_SIZE(musb_res));
  
- 	accelerometer@1d {
--		compatible = "st,lis3lv02d";
-+		compatible = "st,lis302dl";
- 		reg = <0x1d>;
+ 		res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-		if (!res)
++		if (!res) {
++			ret = -EINVAL;
+ 			goto err2;
++		}
  
--		Vdd-supply = <&vaux1>;
--		Vdd_IO-supply = <&vio>;
-+		vdd-supply = <&vaux1>;
-+		vddio-supply = <&vio>;
- 
- 		interrupt-parent = <&gpio6>;
--		interrupts = <21 20>; /* 181 and 180 */
--
--		/* click flags */
--		st,click-single-x;
--		st,click-single-y;
--		st,click-single-z;
--
--		/* Limits are 0.5g * value */
--		st,click-threshold-x = <8>;
--		st,click-threshold-y = <8>;
--		st,click-threshold-z = <10>;
--
--		/* Click must be longer than time limit */
--		st,click-time-limit = <9>;
--
--		/* Kind of debounce filter */
--		st,click-latency = <50>;
--
--		/* Interrupt line 2 for click detection */
--		st,irq2-click;
--
--		st,wakeup-x-hi;
--		st,wakeup-y-hi;
--		st,wakeup-threshold = <(800/18)>; /* millig-value / 18 to get HW values */
--
--		st,wakeup2-z-hi;
--		st,wakeup2-threshold = <(900/18)>; /* millig-value / 18 to get HW values */
--
--		st,hipass1-disable;
--		st,hipass2-disable;
--
--		st,axis-x = <1>;    /* LIS3_DEV_X */
--		st,axis-y = <(-2)>; /* LIS3_INV_DEV_Y */
--		st,axis-z = <(-3)>; /* LIS3_INV_DEV_Z */
--
--		st,min-limit-x = <(-32)>;
--		st,min-limit-y = <3>;
--		st,min-limit-z = <3>;
-+		interrupts = <21 IRQ_TYPE_EDGE_RISING>,
-+			     <20 IRQ_TYPE_EDGE_RISING>; /* 181 and 180 */
- 
--		st,max-limit-x = <(-3)>;
--		st,max-limit-y = <32>;
--		st,max-limit-z = <32>;
-+		mount-matrix =	 "-1",  "0",  "0",
-+				  "0",  "1",  "0",
-+				  "0",  "0",  "1";
- 	};
- 
- 	cam1: camera@3e {
+ 		musb_res[i].start = res->start;
+ 		musb_res[i].end = res->end;
 -- 
-2.39.0
+2.25.1
 
