@@ -2,48 +2,49 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D6E3465D8BF
-	for <lists+linux-omap@lfdr.de>; Wed,  4 Jan 2023 17:17:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B8A065DAF6
+	for <lists+linux-omap@lfdr.de>; Wed,  4 Jan 2023 18:08:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239913AbjADQRt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 4 Jan 2023 11:17:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41308 "EHLO
+        id S235070AbjADRH6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 4 Jan 2023 12:07:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239915AbjADQRo (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 4 Jan 2023 11:17:44 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2957CCD2;
-        Wed,  4 Jan 2023 08:17:43 -0800 (PST)
+        with ESMTP id S239829AbjADRHj (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 4 Jan 2023 12:07:39 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E91FDEF0;
+        Wed,  4 Jan 2023 09:07:39 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BC5BC617A9;
-        Wed,  4 Jan 2023 16:17:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AED1C433D2;
-        Wed,  4 Jan 2023 16:17:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0AB4861563;
+        Wed,  4 Jan 2023 17:07:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25CC7C433EF;
+        Wed,  4 Jan 2023 17:07:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1672849062;
-        bh=PXjg8l9xNNWMxJbfGxkrZ5VoCzj53LmR0NTnWk0bFOM=;
+        s=k20201202; t=1672852058;
+        bh=H1u7KeGjX9MtbhSj4AsLCYDFLyehWz853sxrtfB7UWg=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=nCc9rTUgLcNfiEG2oQB6HMDo1nBojPYPe8espWSXK9QYcoruovIrI5On8IV8+mrd+
-         2mQwDrbYEB7i4lEE2H7h8ESEqTclcLCeIde+E8zxg7mmgmVioTcea1D+UIhRZvn6+2
-         oVe+NxDv35pzlQhlIJ9b7h/boosEe3qvzu+5reDIBQtSIAes/O6o3VFpn/m2hyjQ3w
-         mdH/XPAADk9HM9L/MW5R+qjwPx/IAJ0iA+9JmMnu6ROy8SVXHYMOQjUlq8d1pTIq+i
-         /+92aLdfWNO4ZTpQfJ7ITUkK4rOi7HJrKPriSHn1nFsUTgdZOY9H8k2NPdYgqGA+/E
-         gQzW+ePQhpXkA==
-Date:   Wed, 4 Jan 2023 16:17:35 +0000
+        b=FWbcVGSL+3K9pwtISBY8dsB39H6lt7v2+9oVXR7J0hHyLuMn4E21Pay2vqGiS3tXU
+         QFpnP3n3pUg71y3YLYN7xRRC+QRKf8fPkwc9wtPrevms7tG0XyVisjNzVcQd6u9DEh
+         q68PrdmG1hNE45557bbFXQAuZYFfXGCgB+aOu74OnnZqV0VhCNZk3d6i+/FZgqgcEX
+         VbKczyO1L0bW+ru30EyeOOnLwTE4A5MEcYemel/Kjzbulhq2QMr/jywH6gRkDjgL2Q
+         0oPC3YFEY+mRPcsksgqNape/Y3TdCxepiKU8Y9tIQtOPD3aqFyV5tI/cQS1G5hrnGD
+         h7J/XJIkWN12g==
+Date:   Wed, 4 Jan 2023 17:07:31 +0000
 From:   Lee Jones <lee@kernel.org>
-To:     Andreas Kemnade <andreas@kemnade.info>
-Cc:     tony@atomide.com, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Bin Liu <b-liu@ti.com>
-Subject: Re: [PATCH v2] mfd: twl: fix TWL6032 phy vbus detection
-Message-ID: <Y7Wmn06iHri/hfzC@google.com>
-References: <20221208215723.217557-1-andreas@kemnade.info>
+To:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+Cc:     Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel@pengutronix.de
+Subject: Re: [PATCH] mfd: twl4030-power: Drop empty platform remove function
+Message-ID: <Y7WyUyAMErksRqJr@google.com>
+References: <20221212214352.3776110-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20221208215723.217557-1-andreas@kemnade.info>
+In-Reply-To: <20221212214352.3776110-1-u.kleine-koenig@pengutronix.de>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -53,25 +54,15 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, 08 Dec 2022, Andreas Kemnade wrote:
+On Mon, 12 Dec 2022, Uwe Kleine-König wrote:
 
-> TWL6032 has a few charging registers prepended before the charging
-> registers the TWL6030 has. To be able to use common register defines
-> declare the additional registers as additional module.
-> At the moment this affects the access to CHARGERUSB_CTRL1 in
-> phy-twl6030-usb.  Without this patch, it is accessing the wrong register
-> on TWL6032.
-> The consequence is that presence of Vbus is not reported.
+> A remove callback just returning 0 is equivalent to no remove callback
+> at all. So drop the useless function.
 > 
-> Cc: Bin Liu <b-liu@ti.com>
-> Cc: Tony Lindgren <tony@atomide.com>
-> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 > ---
-> Changes in v2:
->  - remove comment
->  drivers/mfd/twl-core.c  | 9 ++++-----
->  include/linux/mfd/twl.h | 2 ++
->  2 files changed, 6 insertions(+), 5 deletions(-)
+>  drivers/mfd/twl4030-power.c | 6 ------
+>  1 file changed, 6 deletions(-)
 
 Applied, thanks
 
