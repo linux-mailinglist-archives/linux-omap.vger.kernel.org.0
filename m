@@ -2,116 +2,188 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B0CB65E9F5
-	for <lists+linux-omap@lfdr.de>; Thu,  5 Jan 2023 12:34:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CA6E765F081
+	for <lists+linux-omap@lfdr.de>; Thu,  5 Jan 2023 16:51:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233227AbjAELd4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 5 Jan 2023 06:33:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34834 "EHLO
+        id S231854AbjAEPvK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 5 Jan 2023 10:51:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233315AbjAELdh (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 5 Jan 2023 06:33:37 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EF5011A27;
-        Thu,  5 Jan 2023 03:33:35 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CC122619C9;
-        Thu,  5 Jan 2023 11:33:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE274C433D2;
-        Thu,  5 Jan 2023 11:33:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1672918414;
-        bh=GZ/oxElBbGOcTDLAg4QnaapTHh9nj+beO5PtIB3KxK0=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=uP45hb1MDd2Xiwn2n/0fQ6fDLt1SWtUHLBBCMAAOZIkwhpui/fNQoma//RC5zOh9s
-         QPTdx0+TOuRGLI3TgIf2P3m7delgJfMr+hgpKmTDozNMBw005PBU9QNTj1Nnonu/RO
-         mqTbUciS8tBHStdLY6MLVfqH3cVX+PeQY/u5pou1Ii8twEET1DdERG8oMlEYPcco7K
-         u+Q1gpRriUiKlZipx4CJwNyk2DL/BjQIHf4ffD16LSpjhwgcqDJbjBziFGvJ/uGHYw
-         WRYhVkDZ7rcovEAHnR4krtEzibu9JWGwqKnuj22DAuYA2T37CmgACn4EG/BhmJFoHt
-         /3HPtklGezGkQ==
-Message-ID: <b55dec4b-4fd5-71fa-4073-b5793cafdee7@kernel.org>
-Date:   Thu, 5 Jan 2023 13:33:26 +0200
+        with ESMTP id S234960AbjAEPuY (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 5 Jan 2023 10:50:24 -0500
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 302AB5E09D;
+        Thu,  5 Jan 2023 07:50:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1672933822; x=1704469822;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=RJatMYrbPfEvNurBxtLaBiUJD4LCEtP8VKvLxxz/leM=;
+  b=kd+ndZ8K31PGe55ZJiqMQis4fsu+hv8Rm63LgYwx5JxFW9JsIhuqBdsU
+   mUV2x5Jscn5rE5BjY3vePPgkoaYaz56cKPdGNYKuP4sRZal5LafympAro
+   8Gry/cIEmHQZK8kFSjgyEQ42SvcWVmih9WIPeRz6HicpQ4F1I/efKWDRx
+   U45aDrwzVvms7bgxa2YiAQr+44rJrMnUZkrcIw/U/OHnSaeDDlumeK9xR
+   xF9qVk4Ey39D7v53nkXypFoSQTGoSghKWaH2M4l5pQOsbTY2PPWg3RgHE
+   XmHRJBeyW+Me1s/I7vsi4I/4qv26uDvkN2g3YnTaRbi8io+T7QP+eHsKt
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10580"; a="310026053"
+X-IronPort-AV: E=Sophos;i="5.96,303,1665471600"; 
+   d="scan'208";a="310026053"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jan 2023 07:50:21 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10580"; a="633190458"
+X-IronPort-AV: E=Sophos;i="5.96,303,1665471600"; 
+   d="scan'208";a="633190458"
+Received: from lkp-server02.sh.intel.com (HELO f1920e93ebb5) ([10.239.97.151])
+  by orsmga006.jf.intel.com with ESMTP; 05 Jan 2023 07:50:18 -0800
+Received: from kbuild by f1920e93ebb5 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pDSVV-0001zD-1E;
+        Thu, 05 Jan 2023 15:50:17 +0000
+Date:   Thu, 05 Jan 2023 23:49:40 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     loongarch@lists.linux.dev, linux-omap@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-block@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Linux Memory Management List <linux-mm@kvack.org>
+Subject: [linux-next:master] BUILD REGRESSION
+ cc3c08b41a9c9402ead726ec6deb1217081d0d8b
+Message-ID: <63b6f194.O4eKwdyFWFrII4HE%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [PATCH v3 1/2] dt-bindings: net: Add ICSSG Ethernet Driver
- bindings
-Content-Language: en-US
-To:     Andrew Lunn <andrew@lunn.ch>, Md Danish Anwar <danishanwar@ti.com>
-Cc:     "Andrew F. Davis" <afd@ti.com>, Tero Kristo <t-kristo@ti.com>,
-        Suman Anna <s-anna@ti.com>, YueHaibing <yuehaibing@huawei.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>, nm@ti.com,
-        ssantosh@kernel.org, srk@ti.com, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, netdev@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-References: <20221223110930.1337536-1-danishanwar@ti.com>
- <20221223110930.1337536-2-danishanwar@ti.com> <Y6W7FNzJEHYt6URg@lunn.ch>
- <620ce8e6-2b40-1322-364a-0099a6e2af26@kernel.org> <Y7Mjx8ZEVEcU2mK8@lunn.ch>
-From:   Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <Y7Mjx8ZEVEcU2mK8@lunn.ch>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-10.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 02/01/2023 20:34, Andrew Lunn wrote:
-> On Mon, Jan 02, 2023 at 03:04:19PM +0200, Roger Quadros wrote:
->>
->>
->> On 23/12/2022 16:28, Andrew Lunn wrote:
->>>> +        ethernet-ports {
->>>> +            #address-cells = <1>;
->>>> +            #size-cells = <0>;
->>>> +            pruss2_emac0: port@0 {
->>>> +                reg = <0>;
->>>> +                phy-handle = <&pruss2_eth0_phy>;
->>>> +                phy-mode = "rgmii-rxid";
->>>
->>> That is unusual. Where are the TX delays coming from?
->>
->> >From the below property
->>
->> +                ti,syscon-rgmii-delay = <&scm_conf 0x4120>;
->>
->> The TX delay can be enabled/disabled from within the ICSSG block.
->>
->> If this property exists and PHY mode is neither PHY_INTERFACE_MODE_RGMII_ID
->> nor PHY_INTERFACE_MODE_RGMII_TXID then the internal delay is enabled.
->>
->> This logic is in prueth_config_rgmiidelay() function in the introduced driver.
-> 
-> What nearly every other MAC driver does is pass the phy-mode to the
-> PHY and lets the PHY add the delays. I would recommend you do that,
-> rather than be special and different.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: cc3c08b41a9c9402ead726ec6deb1217081d0d8b  Add linux-next specific files for 20230105
 
+Error/Warning reports:
 
-If I remember right we couldn't disable MAC TX delay on some earlier silicon
-so had to take this route. I don't remember why we couldn't disable it though.
+https://lore.kernel.org/oe-kbuild-all/202212090509.NjAl9tbo-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202212170128.DFuMhkwh-lkp@intel.com
 
-In more recent Silicon Manuals I do see that MAC TX delay can be enabled/disabled.
-If this really is the case then we should change to
+Error/Warning: (recently discovered and may have been fixed)
 
- phy-mode = "rgmii-id";
+Documentation/gpu/drm-internals:179: ./include/drm/drm_file.h:411: WARNING: undefined label: drm_accel_node (if the link has no caption the label must precede a section header)
+Warning: tools/power/cpupower/man/cpupower-powercap-info.1 references a file that doesn't exist: Documentation/power/powercap/powercap.txt
+aarch64-linux-ld: ID map text too big or misaligned
+arch/loongarch/kernel/asm-offsets.c:265:6: warning: no previous prototype for 'output_pbe_defines' [-Wmissing-prototypes]
+drivers/gpu/drm/ttm/ttm_bo_util.c:364:32: error: implicit declaration of function 'vmap'; did you mean 'kmap'? [-Werror=implicit-function-declaration]
+drivers/gpu/drm/ttm/ttm_bo_util.c:429:17: error: implicit declaration of function 'vunmap'; did you mean 'kunmap'? [-Werror=implicit-function-declaration]
 
-And let PHY handle the TX+RX delays.
+Unverified Error/Warning (likely false positive, please contact us if interested):
 
-Danish,
-could you please make the change and test if it works on current silicon?
+drivers/block/null_blk/zoned.c:769 zone_cond_store() warn: potential spectre issue 'dev->zones' [w] (local cap)
+drivers/clk/qcom/camcc-sm6350.c:1745:15: sparse: sparse: symbol 'camcc_sm6350_hws' was not declared. Should it be static?
+fs/udf/file.c:177 udf_file_write_iter() warn: inconsistent returns '&iinfo->i_data_sem'.
 
-cheers,
--roger
+Error/Warning ids grouped by kconfigs:
+
+gcc_recent_errors
+|-- arm64-allyesconfig
+|   `-- aarch64-linux-ld:ID-map-text-too-big-or-misaligned
+|-- loongarch-allyesconfig
+|   `-- arch-loongarch-kernel-asm-offsets.c:warning:no-previous-prototype-for-output_pbe_defines
+|-- mips-allyesconfig
+|   |-- drivers-gpu-drm-ttm-ttm_bo_util.c:error:implicit-declaration-of-function-vmap
+|   `-- drivers-gpu-drm-ttm-ttm_bo_util.c:error:implicit-declaration-of-function-vunmap
+|-- parisc-randconfig-m041-20230102
+|   `-- fs-udf-file.c-udf_file_write_iter()-warn:inconsistent-returns-iinfo-i_data_sem-.
+|-- riscv-randconfig-m031-20230105
+|   |-- drivers-block-null_blk-zoned.c-zone_cond_store()-warn:potential-spectre-issue-dev-zones-w-(local-cap)
+|   `-- drivers-regulator-tps65219-regulator.c-tps65219_regulator_probe()-warn:unsigned-rdev-is-never-less-than-zero.
+|-- riscv-randconfig-s032-20230105
+|   `-- drivers-clk-qcom-camcc-sm6350.c:sparse:sparse:symbol-camcc_sm6350_hws-was-not-declared.-Should-it-be-static
+`-- x86_64-allnoconfig
+    |-- Documentation-gpu-drm-internals:.-include-drm-drm_file.h:WARNING:undefined-label:drm_accel_node-(if-the-link-has-no-caption-the-label-must-precede-a-section-header)
+    `-- Warning:tools-power-cpupower-man-cpupower-powercap-info.-references-a-file-that-doesn-t-exist:Documentation-power-powercap-powercap.txt
+clang_recent_errors
+`-- x86_64-rhel-8.3-rust
+    `-- vmlinux.o:warning:objtool:___ksymtab_gpl-_RNvNtCsfATHBUcknU9_6kernel5print16call_printk_cont:data-relocation-to-ENDBR:_RNvNtCsfATHBUcknU9_6kernel5print16call_printk_cont
+
+elapsed time: 726m
+
+configs tested: 62
+configs skipped: 2
+
+gcc tested configs:
+um                             i386_defconfig
+x86_64                            allnoconfig
+um                           x86_64_defconfig
+i386                                defconfig
+x86_64                        randconfig-a004
+x86_64                        randconfig-a002
+x86_64                           rhel-8.3-bpf
+x86_64                           rhel-8.3-syz
+m68k                             allmodconfig
+powerpc                           allnoconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                         rhel-8.3-kunit
+x86_64                        randconfig-a006
+x86_64                          rhel-8.3-func
+i386                          randconfig-a014
+x86_64                           rhel-8.3-kvm
+arc                              allyesconfig
+i386                          randconfig-a012
+alpha                            allyesconfig
+i386                          randconfig-a016
+x86_64                              defconfig
+m68k                             allyesconfig
+arc                                 defconfig
+x86_64                        randconfig-a013
+x86_64                        randconfig-a011
+ia64                             allmodconfig
+x86_64                               rhel-8.3
+x86_64                           allyesconfig
+i386                          randconfig-a001
+alpha                               defconfig
+arc                  randconfig-r043-20230105
+s390                                defconfig
+i386                          randconfig-a003
+s390                             allmodconfig
+x86_64                        randconfig-a015
+i386                          randconfig-a005
+s390                 randconfig-r044-20230105
+i386                             allyesconfig
+arm                                 defconfig
+s390                             allyesconfig
+riscv                randconfig-r042-20230105
+sh                               allmodconfig
+mips                             allyesconfig
+powerpc                          allmodconfig
+arm64                            allyesconfig
+arm                              allyesconfig
+
+clang tested configs:
+x86_64                          rhel-8.3-rust
+x86_64                        randconfig-a001
+i386                          randconfig-a013
+x86_64                        randconfig-a003
+x86_64                        randconfig-a005
+i386                          randconfig-a011
+i386                          randconfig-a015
+x86_64                        randconfig-a012
+x86_64                        randconfig-a014
+arm                  randconfig-r046-20230105
+i386                          randconfig-a002
+x86_64                        randconfig-a016
+hexagon              randconfig-r041-20230105
+i386                          randconfig-a004
+hexagon              randconfig-r045-20230105
+i386                          randconfig-a006
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
