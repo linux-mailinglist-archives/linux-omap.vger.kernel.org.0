@@ -2,136 +2,152 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E05366165D
-	for <lists+linux-omap@lfdr.de>; Sun,  8 Jan 2023 16:58:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A724C661769
+	for <lists+linux-omap@lfdr.de>; Sun,  8 Jan 2023 18:27:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230396AbjAHP6X (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 8 Jan 2023 10:58:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55712 "EHLO
+        id S231279AbjAHR07 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 8 Jan 2023 12:26:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230052AbjAHP6V (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 8 Jan 2023 10:58:21 -0500
-Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6C67BCB8;
-        Sun,  8 Jan 2023 07:58:20 -0800 (PST)
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 308Fvxd8086520;
-        Sun, 8 Jan 2023 09:57:59 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1673193479;
-        bh=RXQWbFwTRI1d7toE/Mabr2p1LXDd7wglaC5Brhy3z1g=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=Bka8Ckn/MgejWPxM9xHg/PUtPR4BzaCYpGB/wU/H8o9M9BtReaQ6KhE+jhIgABbZG
-         4arHu6xxkrFEiSGVvQvyRiGuegryfd4Cz0j3L0P/H+/VjEgJsMcSVeraYO8GAxVPJy
-         3hGrFYQZluWT1xguhCIbpgoXmOlXSW8vhiTotW0U=
-Received: from DLEE113.ent.ti.com (dlee113.ent.ti.com [157.170.170.24])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 308FvxEc072677
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Sun, 8 Jan 2023 09:57:59 -0600
-Received: from DLEE103.ent.ti.com (157.170.170.33) by DLEE113.ent.ti.com
- (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16; Sun, 8
- Jan 2023 09:57:59 -0600
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE103.ent.ti.com
- (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16 via
- Frontend Transport; Sun, 8 Jan 2023 09:57:59 -0600
-Received: from localhost (ileaxei01-snat.itg.ti.com [10.180.69.5])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 308FvwCv097922;
-        Sun, 8 Jan 2023 09:57:58 -0600
-From:   Achal Verma <a-verma1@ti.com>
-To:     Tom Joseph <tjoseph@cadence.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Wilczy_ski <kw@linux.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>
-CC:     <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        Achal Verma <a-verma1@ti.com>,
-        Milind Parab <mparab@cadence.com>
-Subject: [PATCH v2 2/2] PCI: j721e: Add support to build pci-j721e as module.
-Date:   Sun, 8 Jan 2023 21:27:55 +0530
-Message-ID: <20230108155755.2614147-3-a-verma1@ti.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230108155755.2614147-1-a-verma1@ti.com>
-References: <20230108155755.2614147-1-a-verma1@ti.com>
+        with ESMTP id S231134AbjAHR06 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 8 Jan 2023 12:26:58 -0500
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0104CE12;
+        Sun,  8 Jan 2023 09:26:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+        t=1673198777; bh=7v/7zj2Ysz+/w95b1kVq+oD2bzqjczc2L3mL7k87WRA=;
+        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=mSEqKLllgfaugEUfwK1DpPrKag9byMTMLILVvzboSZPDzN7DwyzMSecpRQMcjBYxj
+         pj0rdSo5U+fSPsljmVc1C0LFpIrSqT5w6GQQEg6m4+o2U+egvvGryWEidj9Z/drf/H
+         guX99U+MmRRs1DE6MyCFachtRZamU6Can45Erl7Smo9trEl/NAdVk+l2hGvseDGxWv
+         /M95xPilavrfcFC9obqbWatVy3RU29HQJA0QvQp6dbs8gwmdoRcNfNxZwWPiwgEfYu
+         ca8AHIT5Aev1OAO29txxakpsD1NwmxZ6ZTlt+dRXHASiC7ZTMP/+PeeBVO1v5rH3Y7
+         tDSPYx2XGQBjA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.60] ([92.116.135.194]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mel3n-1ogbfA2j3d-00amNL; Sun, 08
+ Jan 2023 18:26:17 +0100
+Message-ID: <811a392a-d634-5557-dd58-57f1580e28f2@gmx.de>
+Date:   Sun, 8 Jan 2023 18:26:12 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.0
+Subject: Re: [PATCH 01/15] video: fbdev: atmel_lcdfb: Rework backlight
+ handling
+Content-Language: en-US
+To:     Sam Ravnborg <sam@ravnborg.org>, Stephen Kitt <steve@sk2.org>
+Cc:     Sam Ravnborg via B4 Submission Endpoint 
+        <devnull+sam.ravnborg.org@kernel.org>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Antonino Daplas <adaplas@gmail.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Robin van der Gracht <robin@protonic.nl>,
+        Miguel Ojeda <ojeda@kernel.org>, Lee Jones <lee@kernel.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-staging@lists.linux.dev,
+        linuxppc-dev@lists.ozlabs.org,
+        Ludovic Desroches <ludovic.desroches@microchip.com>
+References: <20230107-sam-video-backlight-drop-fb_blank-v1-0-1bd9bafb351f@ravnborg.org>
+ <20230107-sam-video-backlight-drop-fb_blank-v1-1-1bd9bafb351f@ravnborg.org>
+ <553AE999-CAF1-4E59-9F3F-68591ED192DE@sk2.org>
+ <Y7nb2q6SDota/rTU@ravnborg.org>
+From:   Helge Deller <deller@gmx.de>
+In-Reply-To: <Y7nb2q6SDota/rTU@ravnborg.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:T9uileinKOrfmfXULyUKIEJ7Q5sw2pWalYogfbz1gtzJSOq1Nnk
+ V1Zd+9ekAM/oEwNZj1ns1vPVvUAvy44ZTl/BH109UTdaVmWLFROcAvtyBj2aiXsnhpoNIYK
+ f6LsM16mV7xk2n5D7VSkS/fvq9QrFB+Qsr4JdY1dEhwACqZ+EY+1G3NYsfmX6ypM+wH5gFE
+ /7WyOoTkU98Aw7Eoh7DaA==
+UI-OutboundReport: notjunk:1;M01:P0:6EvwsDxHCUk=;/ufhnGN+zI+oDWZwCc4k4w2CiV6
+ QrBtAZx6984DADkmIhmphyAOMnO+EsKjlmNqXIClAaw7V8tj9JPpHNARsM246kng951NRk2oi
+ /byMbKSDYi8rsJz7nXc/8KdnxSv+1burzS9rBLLQM/SSTUMuQUByG7DylwBo981H4z994LqZg
+ KLx+5Rc+JTjZRTHm7FAkEiXfexyhIuoMWuFoc8+oJtEX8HPb5zhB5OYNiVjMNrPqGx2C+3K7v
+ sAZWfQ7gadJK+ycK0a+DF6ZK6q1LsCz+1WRS2kTIc9PJ8/LSLnFu85kOu+o+9tCNP4DY5zQ5p
+ NhGfVTn5bxnME9Sfjeg+9Tr9u6dO9obRYORwJqPjaDTe9+CZNal/yd1ZwaAro20jGQk4TVyDa
+ LkGBCsyMdaLmZYKdXXuZBayAMT8PyJ9HI4w/2Y3jeySKFTrrCPt2MgKeLt5Cqy6vUEvLdAXC6
+ y0Ril9BxeR4vpeFvuNrwd4GuHDQngvSxVPqvMgf9aMfVU/HTZ0ND9Ff0zHT5k+CYIfU9ozKXw
+ WAJ9oQAhGTIpHa1DGlP6FNxdU0ewRRtrxDez7r0n0fX2Zesqdwb93PvYFJUz/NaUPU2MoemBZ
+ PtnNHPXybe5g2TGiVP5ruaDYkd/2yG87qwT269V9l+B2aBIckWPR8RiFPdO+VgqKSSRILZAvu
+ Xcsx1fp/7/gviRZ9yGN1JlA8f+Dfko5WDu+R0kGU1IgSRGJ3aNB9IlxTKhDshTXZ446gME2//
+ HQlzmCrV6kWA+h8ISQpNIPgwhV/sb1/m7HSHW3yfdftuO+AaZA0FhJ/kKMk+6QHaigTShvBIA
+ dfiV4QG0v6WifGj7P5cbgofBhvUlZ3ZDqiloZyOB5ccr4M3sIufP2OCBfjm0AXFsWAIChC2Cg
+ bC7QBlhaNveFAmYsdFSSPtz2++nCIfoAnf+6cNmVDXN3eAGT4HtkCZDEmS/w+OGm4ZNZAzGPW
+ BztdIqZ4VB6gHHWaPzjmxy5jaag=
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Add support to build pci-j721e as module.
+On 1/7/23 21:53, Sam Ravnborg wrote:
+> Hi Stephen.
+>
+> On Sat, Jan 07, 2023 at 09:36:47PM +0100, Stephen Kitt wrote:
+>> On 7 January 2023 19:26:15 CET, Sam Ravnborg via B4 Submission Endpoint=
+ <devnull+sam.ravnborg.org@kernel.org> wrote:
+>>> From: Sam Ravnborg <sam@ravnborg.org>
+>>>
+>>> The atmel_lcdfb had code to save/restore power state.
+>>> This is not needed so drop it.
+>>>
+>>> Introduce backlight_is_brightness() to make logic simpler.
+>>>
+>>> Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+>>> Cc: Nicolas Ferre <nicolas.ferre@microchip.com>
+>>> Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
+>>> Cc: Ludovic Desroches <ludovic.desroches@microchip.com>
+>>> Cc: linux-fbdev@vger.kernel.org
+>>> Cc: linux-arm-kernel@lists.infradead.org
+>>> ---
+>>> drivers/video/fbdev/atmel_lcdfb.c | 24 +++---------------------
+>>> 1 file changed, 3 insertions(+), 21 deletions(-)
+> ...
+>>
+>> Hi Sam,
+>>
+>> I=E2=80=99d submitted quite a few more of these previously (and you=E2=
+=80=99d reviewed them), see e.g. the thread starting at https://lkml.org/l=
+kml/2022/6/7/4365, and yesterday, https://lkml.org/lkml/2023/1/6/520, http=
+s://lkml.org/lkml/2023/1/6/656, https://lkml.org/lkml/2023/1/6/970, https:=
+//lkml.org/lkml/2023/1/6/643, and https://lkml.org/lkml/2023/1/6/680. Ther=
+e are a few more, I can find them if it=E2=80=99s any use.
+>
+> The patches from yesterday was what triggered me to resurrect an old
+> branch of mine where I had done something similar. I had lost all
+> memory of reviewing similar patches from you.
+>
+>
+> Helge - could you pick the reviewed patches from:
+> https://lore.kernel.org/all/20220607192335.1137249-1-steve@sk2.org/
+> [This is the same mail as Stephen refer to above - looked up via lore].
 
-Signed-off-by: Achal Verma <a-verma1@ti.com>
----
- drivers/pci/controller/cadence/Kconfig     | 10 +++++-----
- drivers/pci/controller/cadence/pci-j721e.c |  6 +++++-
- 2 files changed, 10 insertions(+), 6 deletions(-)
+I just pulled those 7 patches into fbdev/for-next.
+If you need more, please let me know,
 
-diff --git a/drivers/pci/controller/cadence/Kconfig b/drivers/pci/controller/cadence/Kconfig
-index 693c41fe32ce..51edf723586c 100644
---- a/drivers/pci/controller/cadence/Kconfig
-+++ b/drivers/pci/controller/cadence/Kconfig
-@@ -43,12 +43,13 @@ config PCIE_CADENCE_PLAT_EP
- 	  different vendors SoCs.
- 
- config PCI_J721E
--	bool
-+	tristate
-+	select PCIE_CADENCE_HOST
-+	select PCIE_CADENCE_EP
- 
- config PCI_J721E_HOST
--	bool "TI J721E PCIe platform host controller"
-+	tristate "TI J721E PCIe platform host controller"
- 	depends on OF
--	select PCIE_CADENCE_HOST
- 	select PCI_J721E
- 	help
- 	  Say Y here if you want to support the TI J721E PCIe platform
-@@ -56,10 +57,9 @@ config PCI_J721E_HOST
- 	  core.
- 
- config PCI_J721E_EP
--	bool "TI J721E PCIe platform endpoint controller"
-+	tristate "TI J721E PCIe platform endpoint controller"
- 	depends on OF
- 	depends on PCI_ENDPOINT
--	select PCIE_CADENCE_EP
- 	select PCI_J721E
- 	help
- 	  Say Y here if you want to support the TI J721E PCIe platform
-diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
-index cc83a8925ce0..c4017fa6ae61 100644
---- a/drivers/pci/controller/cadence/pci-j721e.c
-+++ b/drivers/pci/controller/cadence/pci-j721e.c
-@@ -13,6 +13,7 @@
- #include <linux/irqchip/chained_irq.h>
- #include <linux/irqdomain.h>
- #include <linux/mfd/syscon.h>
-+#include <linux/module.h>
- #include <linux/of.h>
- #include <linux/of_device.h>
- #include <linux/pci.h>
-@@ -565,4 +566,7 @@ static struct platform_driver j721e_pcie_driver = {
- 		.suppress_bind_attrs = true,
- 	},
- };
--builtin_platform_driver(j721e_pcie_driver);
-+module_platform_driver(j721e_pcie_driver);
-+
-+MODULE_AUTHOR("Kishon Vijay Abraham I <kishon@ti.com>");
-+MODULE_LICENSE("GPL v2");
--- 
-2.25.1
+Thanks!
+Helge
+
+
+>
+> Stephen - I expect Daniel/Lee to take care of the patches from yesterday=
+.
+> If you can look up other pending patches from you please do so, so we
+> can have them applied.
+> Preferably with links to lore - as this makes it easier to apply them.
+>
+> Review of what is unique in this set would be appreciated.
+>
+> 	Sam
 
