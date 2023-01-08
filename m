@@ -2,43 +2,38 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A724C661769
-	for <lists+linux-omap@lfdr.de>; Sun,  8 Jan 2023 18:27:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8EDC1661890
+	for <lists+linux-omap@lfdr.de>; Sun,  8 Jan 2023 20:37:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231279AbjAHR07 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 8 Jan 2023 12:26:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56142 "EHLO
+        id S230396AbjAHThF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 8 Jan 2023 14:37:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231134AbjAHR06 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 8 Jan 2023 12:26:58 -0500
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0104CE12;
-        Sun,  8 Jan 2023 09:26:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-        t=1673198777; bh=7v/7zj2Ysz+/w95b1kVq+oD2bzqjczc2L3mL7k87WRA=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=mSEqKLllgfaugEUfwK1DpPrKag9byMTMLILVvzboSZPDzN7DwyzMSecpRQMcjBYxj
-         pj0rdSo5U+fSPsljmVc1C0LFpIrSqT5w6GQQEg6m4+o2U+egvvGryWEidj9Z/drf/H
-         guX99U+MmRRs1DE6MyCFachtRZamU6Can45Erl7Smo9trEl/NAdVk+l2hGvseDGxWv
-         /M95xPilavrfcFC9obqbWatVy3RU29HQJA0QvQp6dbs8gwmdoRcNfNxZwWPiwgEfYu
-         ca8AHIT5Aev1OAO29txxakpsD1NwmxZ6ZTlt+dRXHASiC7ZTMP/+PeeBVO1v5rH3Y7
-         tDSPYx2XGQBjA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([92.116.135.194]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mel3n-1ogbfA2j3d-00amNL; Sun, 08
- Jan 2023 18:26:17 +0100
-Message-ID: <811a392a-d634-5557-dd58-57f1580e28f2@gmx.de>
-Date:   Sun, 8 Jan 2023 18:26:12 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
-Subject: Re: [PATCH 01/15] video: fbdev: atmel_lcdfb: Rework backlight
- handling
-Content-Language: en-US
-To:     Sam Ravnborg <sam@ravnborg.org>, Stephen Kitt <steve@sk2.org>
-Cc:     Sam Ravnborg via B4 Submission Endpoint 
-        <devnull+sam.ravnborg.org@kernel.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        with ESMTP id S230193AbjAHThE (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 8 Jan 2023 14:37:04 -0500
+X-Greylist: delayed 42571 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 08 Jan 2023 11:37:02 PST
+Received: from 18.mo583.mail-out.ovh.net (18.mo583.mail-out.ovh.net [178.33.45.10])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEE4CAE7B
+        for <linux-omap@vger.kernel.org>; Sun,  8 Jan 2023 11:37:02 -0800 (PST)
+Received: from director9.ghost.mail-out.ovh.net (unknown [10.109.146.20])
+        by mo583.mail-out.ovh.net (Postfix) with ESMTP id B61A9238AC
+        for <linux-omap@vger.kernel.org>; Sun,  8 Jan 2023 19:28:30 +0000 (UTC)
+Received: from ghost-submission-6684bf9d7b-jkvnz (unknown [10.110.115.217])
+        by director9.ghost.mail-out.ovh.net (Postfix) with ESMTPS id 5F9761FF09;
+        Sun,  8 Jan 2023 19:28:25 +0000 (UTC)
+Received: from sk2.org ([37.59.142.109])
+        by ghost-submission-6684bf9d7b-jkvnz with ESMTPSA
+        id EegsFFkZu2NcfgEALOiSWw
+        (envelope-from <steve@sk2.org>); Sun, 08 Jan 2023 19:28:25 +0000
+Authentication-Results: garm.ovh; auth=pass (GARM-109S00347102589-c051-4779-a238-3104c8c3a5ba,
+                    5128B599F7D401446F64D4771BE19AB2B9CD7A8B) smtp.auth=steve@sk2.org
+X-OVh-ClientIp: 82.65.25.201
+Date:   Sun, 8 Jan 2023 20:28:17 +0100
+From:   Stephen Kitt <steve@sk2.org>
+To:     Sam Ravnborg via B4 Submission Endpoint 
+        <devnull+sam.ravnborg.org@kernel.org>
+Cc:     <sam@ravnborg.org>, Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Helge Deller <deller@gmx.de>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Claudiu Beznea <claudiu.beznea@microchip.com>,
         Antonino Daplas <adaplas@gmail.com>,
@@ -53,37 +48,23 @@ Cc:     Sam Ravnborg via B4 Submission Endpoint
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-omap@vger.kernel.org, linux-staging@lists.linux.dev,
         linuxppc-dev@lists.ozlabs.org,
-        Ludovic Desroches <ludovic.desroches@microchip.com>
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH 09/15] staging: fbtft: fb_ssd1351.c: Introduce
+ backlight_is_blank()
+Message-ID: <20230108202817.7890f85c@heffalump.sk2.org>
+In-Reply-To: <20230107-sam-video-backlight-drop-fb_blank-v1-9-1bd9bafb351f@ravnborg.org>
 References: <20230107-sam-video-backlight-drop-fb_blank-v1-0-1bd9bafb351f@ravnborg.org>
- <20230107-sam-video-backlight-drop-fb_blank-v1-1-1bd9bafb351f@ravnborg.org>
- <553AE999-CAF1-4E59-9F3F-68591ED192DE@sk2.org>
- <Y7nb2q6SDota/rTU@ravnborg.org>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <Y7nb2q6SDota/rTU@ravnborg.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:T9uileinKOrfmfXULyUKIEJ7Q5sw2pWalYogfbz1gtzJSOq1Nnk
- V1Zd+9ekAM/oEwNZj1ns1vPVvUAvy44ZTl/BH109UTdaVmWLFROcAvtyBj2aiXsnhpoNIYK
- f6LsM16mV7xk2n5D7VSkS/fvq9QrFB+Qsr4JdY1dEhwACqZ+EY+1G3NYsfmX6ypM+wH5gFE
- /7WyOoTkU98Aw7Eoh7DaA==
-UI-OutboundReport: notjunk:1;M01:P0:6EvwsDxHCUk=;/ufhnGN+zI+oDWZwCc4k4w2CiV6
- QrBtAZx6984DADkmIhmphyAOMnO+EsKjlmNqXIClAaw7V8tj9JPpHNARsM246kng951NRk2oi
- /byMbKSDYi8rsJz7nXc/8KdnxSv+1burzS9rBLLQM/SSTUMuQUByG7DylwBo981H4z994LqZg
- KLx+5Rc+JTjZRTHm7FAkEiXfexyhIuoMWuFoc8+oJtEX8HPb5zhB5OYNiVjMNrPqGx2C+3K7v
- sAZWfQ7gadJK+ycK0a+DF6ZK6q1LsCz+1WRS2kTIc9PJ8/LSLnFu85kOu+o+9tCNP4DY5zQ5p
- NhGfVTn5bxnME9Sfjeg+9Tr9u6dO9obRYORwJqPjaDTe9+CZNal/yd1ZwaAro20jGQk4TVyDa
- LkGBCsyMdaLmZYKdXXuZBayAMT8PyJ9HI4w/2Y3jeySKFTrrCPt2MgKeLt5Cqy6vUEvLdAXC6
- y0Ril9BxeR4vpeFvuNrwd4GuHDQngvSxVPqvMgf9aMfVU/HTZ0ND9Ff0zHT5k+CYIfU9ozKXw
- WAJ9oQAhGTIpHa1DGlP6FNxdU0ewRRtrxDez7r0n0fX2Zesqdwb93PvYFJUz/NaUPU2MoemBZ
- PtnNHPXybe5g2TGiVP5ruaDYkd/2yG87qwT269V9l+B2aBIckWPR8RiFPdO+VgqKSSRILZAvu
- Xcsx1fp/7/gviRZ9yGN1JlA8f+Dfko5WDu+R0kGU1IgSRGJ3aNB9IlxTKhDshTXZ446gME2//
- HQlzmCrV6kWA+h8ISQpNIPgwhV/sb1/m7HSHW3yfdftuO+AaZA0FhJ/kKMk+6QHaigTShvBIA
- dfiV4QG0v6WifGj7P5cbgofBhvUlZ3ZDqiloZyOB5ccr4M3sIufP2OCBfjm0AXFsWAIChC2Cg
- bC7QBlhaNveFAmYsdFSSPtz2++nCIfoAnf+6cNmVDXN3eAGT4HtkCZDEmS/w+OGm4ZNZAzGPW
- BztdIqZ4VB6gHHWaPzjmxy5jaag=
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        <20230107-sam-video-backlight-drop-fb_blank-v1-9-1bd9bafb351f@ravnborg.org>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: multipart/signed; boundary="Sig_/7r7u4ublxCZJ9BAQVs4mie8";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
+X-Ovh-Tracer-Id: 1827898502950454918
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedrkeeggdduvdekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfofggtgesghdtreerredtvdenucfhrhhomhepufhtvghphhgvnhcumfhithhtuceoshhtvghvvgesshhkvddrohhrgheqnecuggftrfgrthhtvghrnhepfeffgefhgfeuueeffeejieefieefgfefffethfdtudegvdejueelhffhfeegjeeinecukfhppeduvdejrddtrddtrddupdefjedrheelrddugedvrddutdelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepuddvjedrtddrtddruddpmhgrihhlfhhrohhmpeeoshhtvghvvgesshhkvddrohhrgheqpdhnsggprhgtphhtthhopedupdhrtghpthhtoheplhhinhhugidqohhmrghpsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdfovfetjfhoshhtpehmohehkeefpdhmohguvgepshhmthhpohhuth
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -91,63 +72,95 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 1/7/23 21:53, Sam Ravnborg wrote:
-> Hi Stephen.
->
-> On Sat, Jan 07, 2023 at 09:36:47PM +0100, Stephen Kitt wrote:
->> On 7 January 2023 19:26:15 CET, Sam Ravnborg via B4 Submission Endpoint=
- <devnull+sam.ravnborg.org@kernel.org> wrote:
->>> From: Sam Ravnborg <sam@ravnborg.org>
->>>
->>> The atmel_lcdfb had code to save/restore power state.
->>> This is not needed so drop it.
->>>
->>> Introduce backlight_is_brightness() to make logic simpler.
->>>
->>> Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
->>> Cc: Nicolas Ferre <nicolas.ferre@microchip.com>
->>> Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
->>> Cc: Ludovic Desroches <ludovic.desroches@microchip.com>
->>> Cc: linux-fbdev@vger.kernel.org
->>> Cc: linux-arm-kernel@lists.infradead.org
->>> ---
->>> drivers/video/fbdev/atmel_lcdfb.c | 24 +++---------------------
->>> 1 file changed, 3 insertions(+), 21 deletions(-)
-> ...
->>
->> Hi Sam,
->>
->> I=E2=80=99d submitted quite a few more of these previously (and you=E2=
-=80=99d reviewed them), see e.g. the thread starting at https://lkml.org/l=
-kml/2022/6/7/4365, and yesterday, https://lkml.org/lkml/2023/1/6/520, http=
-s://lkml.org/lkml/2023/1/6/656, https://lkml.org/lkml/2023/1/6/970, https:=
-//lkml.org/lkml/2023/1/6/643, and https://lkml.org/lkml/2023/1/6/680. Ther=
-e are a few more, I can find them if it=E2=80=99s any use.
->
-> The patches from yesterday was what triggered me to resurrect an old
-> branch of mine where I had done something similar. I had lost all
-> memory of reviewing similar patches from you.
->
->
-> Helge - could you pick the reviewed patches from:
-> https://lore.kernel.org/all/20220607192335.1137249-1-steve@sk2.org/
-> [This is the same mail as Stephen refer to above - looked up via lore].
+--Sig_/7r7u4ublxCZJ9BAQVs4mie8
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-I just pulled those 7 patches into fbdev/for-next.
-If you need more, please let me know,
+On Sat, 07 Jan 2023 19:26:23 +0100, Sam Ravnborg via B4 Submission Endpoint
+<devnull+sam.ravnborg.org@kernel.org> wrote:
 
-Thanks!
-Helge
+> From: Sam Ravnborg <sam@ravnborg.org>
+>=20
+> Avoiding direct access to backlight_properties.props.
+>=20
+> Access to the deprecated props.fb_blank replaced by backlight_is_blank().
+> Access to props.power is dropped - it was only used for debug.
+>=20
+> Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+> Cc: Stephen Kitt <steve@sk2.org>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Daniel Thompson <daniel.thompson@linaro.org>
+> Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Cc: linux-fbdev@vger.kernel.org
+> ---
+>  drivers/staging/fbtft/fb_ssd1351.c | 9 +++------
+>  1 file changed, 3 insertions(+), 6 deletions(-)
+>=20
+> diff --git a/drivers/staging/fbtft/fb_ssd1351.c
+> b/drivers/staging/fbtft/fb_ssd1351.c index b8d55aa8c5c7..995fbd2f3dc6 100=
+644
+> --- a/drivers/staging/fbtft/fb_ssd1351.c
+> +++ b/drivers/staging/fbtft/fb_ssd1351.c
+> @@ -190,15 +190,12 @@ static struct fbtft_display display =3D {
+>  static int update_onboard_backlight(struct backlight_device *bd)
+>  {
+>  	struct fbtft_par *par =3D bl_get_data(bd);
+> -	bool on;
+> +	bool blank =3D backlight_is_blank(bd);
+> =20
+> -	fbtft_par_dbg(DEBUG_BACKLIGHT, par,
+> -		      "%s: power=3D%d, fb_blank=3D%d\n",
+> -		      __func__, bd->props.power, bd->props.fb_blank);
+> +	fbtft_par_dbg(DEBUG_BACKLIGHT, par, "%s: blank=3D%d\n", __func__,
+> blank);=20
+> -	on =3D !backlight_is_blank(bd);
+>  	/* Onboard backlight connected to GPIO0 on SSD1351, GPIO1 unused */
+> -	write_reg(par, 0xB5, on ? 0x03 : 0x02);
+> +	write_reg(par, 0xB5, !blank ? 0x03 : 0x02);
+> =20
+>  	return 0;
+>  }
+>=20
+> --=20
+> 2.34.1
 
+For debugging purposes here, would there be any point in logging props.stat=
+e?
+As in
 
->
-> Stephen - I expect Daniel/Lee to take care of the patches from yesterday=
-.
-> If you can look up other pending patches from you please do so, so we
-> can have them applied.
-> Preferably with links to lore - as this makes it easier to apply them.
->
-> Review of what is unique in this set would be appreciated.
->
-> 	Sam
+        fbtft_par_dbg(DEBUG_BACKLIGHT, par,
+-                     "%s: power=3D%d, fb_blank=3D%d\n",
+-                     __func__, bd->props.power, bd->props.fb_blank);
++                     "%s: power=3D%d, state=3D%u\n",
++                     __func__, bd->props.power, bd->props.state);
 
+In any case,
+
+Reviewed-by: Stephen Kitt <steve@sk2.org>
+
+Regards,
+
+Stephen
+
+--Sig_/7r7u4ublxCZJ9BAQVs4mie8
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEnPVX/hPLkMoq7x0ggNMC9Yhtg5wFAmO7GVIACgkQgNMC9Yht
+g5x37A/7B3puI8clzUcFlUoGWvM7pLm9F6edVmfW2Ck32NHOFEQ+oECUWSeX2T5+
+Ol8So/dDrSXGuqFUKEAjbn++F54QGE2LveKquiPDIOxwQMiZQdj8WvqLHWe3qzv2
+e1Am1nIijJ6mEph2pnKUhoriwloWC1EsY+au3CjU9iWdVa57tyeRUL4hScUpelyr
+6ysQxU3G0Rd5xkVe3V1RCHwxu7x6IK7lcQbk+9HpN1N3yDSTPZjHJAuIsVZYjlly
+TBc0BMhZGwK4XHcRi03Sm6rby7tNS+uZilljBtMjOKfDZx1M53iReLmQFMwk4pTb
+e0mC/zdp6MaGDdYI5FavZkHC8OOmKvfZnOKGZnuxdE5XERx9j7FoSPrm1/PrkAop
+1X+Ku2r+JKw96kq+pRg2I2zbtODbjrRdK6GmrDUZznfG5aMcZeZqDXnBMOBeolZz
+rjGVMeDzt2xJGCFIUFyiWnqwRoFoPkXs5cEklkYfszxnLnuWA20EhaWTpL1+w89k
+d0LymgENWcL7IzaazX/FOaX950T5K0iIGd7EnKR3R7eLYq/4W3fa2v/wNR2NehQs
+nP39LfiNX7brah5GIfGlQanv9YxJ7XaqUEVyKkC9Y37SpTfzbzuVY0ndx+z1Y3zD
+sDB0Ut1gNyL4DjtVgMu8Q9miiMuDKyL41MaxMEZpcKYIfQIEhVU=
+=y2dJ
+-----END PGP SIGNATURE-----
+
+--Sig_/7r7u4ublxCZJ9BAQVs4mie8--
