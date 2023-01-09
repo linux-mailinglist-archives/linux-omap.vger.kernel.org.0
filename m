@@ -2,155 +2,79 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B9D0661D14
-	for <lists+linux-omap@lfdr.de>; Mon,  9 Jan 2023 04:56:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 130A0661E86
+	for <lists+linux-omap@lfdr.de>; Mon,  9 Jan 2023 06:58:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236293AbjAIDz5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 8 Jan 2023 22:55:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46102 "EHLO
+        id S229865AbjAIF6N (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 9 Jan 2023 00:58:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36232 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236629AbjAIDzS (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 8 Jan 2023 22:55:18 -0500
-Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B867E9FCB;
-        Sun,  8 Jan 2023 19:53:58 -0800 (PST)
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 3093rfgG126582;
-        Sun, 8 Jan 2023 21:53:41 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1673236421;
-        bh=iTkO1kJivHhXYaPsMyNQdCqrZFAjoK4UkcZDHr5UEZo=;
-        h=Date:Subject:To:CC:References:From:In-Reply-To;
-        b=JXLdnjAI86CosCWwO9cdrAVnxKNW/7GMDhWEFtf4yQXg6hoj3tjuypY1Uz09Rdb1D
-         SmmaKPJYUU90/gkLfBAG6BU/nZdeB+GrKt0OrlY41MjLadOdZV7Eu0tJK5wNHSQ2py
-         qCwkFUkb0qpf18d50F+g/CDIR4IlTWC1fgCIPCvI=
-Received: from DLEE108.ent.ti.com (dlee108.ent.ti.com [157.170.170.38])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 3093rfQ6044902
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Sun, 8 Jan 2023 21:53:41 -0600
-Received: from DLEE111.ent.ti.com (157.170.170.22) by DLEE108.ent.ti.com
- (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16; Sun, 8
- Jan 2023 21:53:41 -0600
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE111.ent.ti.com
- (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16 via
- Frontend Transport; Sun, 8 Jan 2023 21:53:41 -0600
-Received: from [172.24.145.182] (ileaxei01-snat.itg.ti.com [10.180.69.5])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 3093rbKc023652;
-        Sun, 8 Jan 2023 21:53:38 -0600
-Message-ID: <8dc31852-3d1c-860d-7844-15205f8fd6c6@ti.com>
-Date:   Mon, 9 Jan 2023 09:23:37 +0530
+        with ESMTP id S229685AbjAIF6M (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 9 Jan 2023 00:58:12 -0500
+Received: from muru.com (muru.com [72.249.23.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 81ADEDFFE
+        for <linux-omap@vger.kernel.org>; Sun,  8 Jan 2023 21:58:10 -0800 (PST)
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 80234804D;
+        Mon,  9 Jan 2023 05:58:09 +0000 (UTC)
+Date:   Mon, 9 Jan 2023 07:58:08 +0200
+From:   Tony Lindgren <tony@atomide.com>
+To:     Adam Ford <aford173@gmail.com>
+Cc:     "H. Nikolaus Schaller" <hns@messlink.de>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        Discussions about the Letux Kernel 
+        <letux-kernel@openphoenux.org>
+Subject: Re: omap_hsmmc RX DMA errors
+Message-ID: <Y7us8Ann7tjJ5lcn@atomide.com>
+References: <CAHCN7xJT+1XP-LHyzj0GB5rDnVP+EgGmUVb6h4uTJA4bVE1yPg@mail.gmail.com>
+ <5DD8AC17-A7FD-4D44-953E-F2EF84C6896D@messlink.de>
+ <CAHCN7xJZgy1HKp-sHtqZeKAa2uKFtLLGeEguJoZRB+RswEfgJg@mail.gmail.com>
+ <CAHCN7xLrDGMNKyXw6Eb9LJSHm_wDF2N3PjDKUtZ6LKTvQOxfFw@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
-Subject: Re: [PATCH v2 2/2] PCI: j721e: Add support to build pci-j721e as
- module.
-Content-Language: en-US
-To:     Achal Verma <a-verma1@ti.com>, Tom Joseph <tjoseph@cadence.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Wilczy_ski <kw@linux.com>,
-        Bjorn Helgaas <bhelgaas@google.com>
-CC:     <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        Milind Parab <mparab@cadence.com>
-References: <20230108155755.2614147-1-a-verma1@ti.com>
- <20230108155755.2614147-3-a-verma1@ti.com>
-From:   Vignesh Raghavendra <vigneshr@ti.com>
-In-Reply-To: <20230108155755.2614147-3-a-verma1@ti.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHCN7xLrDGMNKyXw6Eb9LJSHm_wDF2N3PjDKUtZ6LKTvQOxfFw@mail.gmail.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Achal,
+Hi,
 
-On 08/01/23 21:27, Achal Verma wrote:
-> Add support to build pci-j721e as module.
+* Adam Ford <aford173@gmail.com> [230105 19:20]:
+> On Thu, Jan 5, 2023 at 1:08 PM Adam Ford <aford173@gmail.com> wrote:
+> > On Thu, Jan 5, 2023 at 12:17 PM H. Nikolaus Schaller <hns@messlink.de> wrote:
+> > > Am 05.01.2023 um 18:54 schrieb Adam Ford <aford173@gmail.com>:
+> > >
+> > > Would there be an objection if I migrate the OMAP3.dtsi file to the
+> > > newer driver?  I wasn't sure if there was a reason this family was
+> > > being held back from the newer driver.
+> > >
+> > >
+> > > AFAIR Tony wanted to retire the older driver anyways.
+> >
+> > That was my impression and it appears that the AM35x has already
 > 
-> Signed-off-by: Achal Verma <a-verma1@ti.com>
-> ---
->  drivers/pci/controller/cadence/Kconfig     | 10 +++++-----
->  drivers/pci/controller/cadence/pci-j721e.c |  6 +++++-
->  2 files changed, 10 insertions(+), 6 deletions(-)
+> correction AM335x (not AM35x)
 > 
-> diff --git a/drivers/pci/controller/cadence/Kconfig b/drivers/pci/controller/cadence/Kconfig
-> index 693c41fe32ce..51edf723586c 100644
-> --- a/drivers/pci/controller/cadence/Kconfig
-> +++ b/drivers/pci/controller/cadence/Kconfig
-> @@ -43,12 +43,13 @@ config PCIE_CADENCE_PLAT_EP
->  	  different vendors SoCs.
->  
->  config PCI_J721E
-> -	bool
-> +	tristate
-> +	select PCIE_CADENCE_HOST
-> +	select PCIE_CADENCE_EP
->  
+> > migrated to it.  I wasn't sure what was holding us back.  In theory,
+> > we could add the compatible flags to the new driver and mark them as
+> > deprecated so the new driver would work with older device trees if
+> > there was push-back on changing the device trees.  I know sometimes
+> > there are concerns about using older device trees and the interaction
+> > with the compatible flags make it a bit more complex.
 
-Please don't use select when symbol being selected, depends on
-additional configs
+Things should be ready to flip the remaining SoCs to use sdhci so we
+should do that.
 
-Documentation/kbuild/kconfig-language.rst::
+The only thing I'm aware of is that sdhci will try to keep probing
+also mmc instances that are not wired. So some board specific dts files
+may need to set some mmc instances with status = "disabled". Or maybe
+the sdhci driver can be configured to stop trying after some timeout.
 
-select should be used with care. select will force
-a symbol to a value without visiting the dependencies.
-By abusing select you are able to select a symbol FOO even
-if FOO depends on BAR that is not set.
+Regards,
 
-
->  config PCI_J721E_HOST
-> -	bool "TI J721E PCIe platform host controller"
-> +	tristate "TI J721E PCIe platform host controller"
->  	depends on OF
-> -	select PCIE_CADENCE_HOST
->  	select PCI_J721E
->  	help
->  	  Say Y here if you want to support the TI J721E PCIe platform
-> @@ -56,10 +57,9 @@ config PCI_J721E_HOST
->  	  core.
->  
->  config PCI_J721E_EP
-> -	bool "TI J721E PCIe platform endpoint controller"
-> +	tristate "TI J721E PCIe platform endpoint controller"
->  	depends on OF
->  	depends on PCI_ENDPOINT
-> -	select PCIE_CADENCE_EP
->  	select PCI_J721E
->  	help
->  	  Say Y here if you want to support the TI J721E PCIe platform
-> diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
-> index cc83a8925ce0..c4017fa6ae61 100644
-> --- a/drivers/pci/controller/cadence/pci-j721e.c
-> +++ b/drivers/pci/controller/cadence/pci-j721e.c
-> @@ -13,6 +13,7 @@
->  #include <linux/irqchip/chained_irq.h>
->  #include <linux/irqdomain.h>
->  #include <linux/mfd/syscon.h>
-> +#include <linux/module.h>
->  #include <linux/of.h>
->  #include <linux/of_device.h>
->  #include <linux/pci.h>
-> @@ -565,4 +566,7 @@ static struct platform_driver j721e_pcie_driver = {
->  		.suppress_bind_attrs = true,
->  	},
->  };
-> -builtin_platform_driver(j721e_pcie_driver);
-> +module_platform_driver(j721e_pcie_driver);
-> +
-> +MODULE_AUTHOR("Kishon Vijay Abraham I <kishon@ti.com>");
-> +MODULE_LICENSE("GPL v2");
-
--- 
-Regards
-Vignesh
+Tony
