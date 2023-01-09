@@ -2,250 +2,155 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B2B9A661A49
-	for <lists+linux-omap@lfdr.de>; Sun,  8 Jan 2023 22:59:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B9D0661D14
+	for <lists+linux-omap@lfdr.de>; Mon,  9 Jan 2023 04:56:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233343AbjAHV7p (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 8 Jan 2023 16:59:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50230 "EHLO
+        id S236293AbjAIDz5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 8 Jan 2023 22:55:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46102 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233278AbjAHV7f (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 8 Jan 2023 16:59:35 -0500
-X-Greylist: delayed 7807 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 08 Jan 2023 13:59:31 PST
-Received: from 8.mo584.mail-out.ovh.net (8.mo584.mail-out.ovh.net [188.165.33.112])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FF077662
-        for <linux-omap@vger.kernel.org>; Sun,  8 Jan 2023 13:59:30 -0800 (PST)
-Received: from director9.ghost.mail-out.ovh.net (unknown [10.109.156.62])
-        by mo584.mail-out.ovh.net (Postfix) with ESMTP id 6A6552433E
-        for <linux-omap@vger.kernel.org>; Sun,  8 Jan 2023 19:32:18 +0000 (UTC)
-Received: from ghost-submission-6684bf9d7b-rxrrl (unknown [10.110.208.237])
-        by director9.ghost.mail-out.ovh.net (Postfix) with ESMTPS id 531A61FED5;
-        Sun,  8 Jan 2023 19:32:17 +0000 (UTC)
-Received: from sk2.org ([37.59.142.102])
-        by ghost-submission-6684bf9d7b-rxrrl with ESMTPSA
-        id GQDvD0Eau2MQfAAAaOw9AQ
-        (envelope-from <steve@sk2.org>); Sun, 08 Jan 2023 19:32:17 +0000
-Authentication-Results: garm.ovh; auth=pass (GARM-102R004bd0c23e1-a184-484d-af6b-234daf9726ce,
-                    5128B599F7D401446F64D4771BE19AB2B9CD7A8B) smtp.auth=steve@sk2.org
-X-OVh-ClientIp: 82.65.25.201
-Date:   Sun, 8 Jan 2023 20:32:15 +0100
-From:   Stephen Kitt <steve@sk2.org>
-To:     Sam Ravnborg via B4 Submission Endpoint 
-        <devnull+sam.ravnborg.org@kernel.org>
-Cc:     <sam@ravnborg.org>, Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Helge Deller <deller@gmx.de>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Antonino Daplas <adaplas@gmail.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Robin van der Gracht <robin@protonic.nl>,
-        Miguel Ojeda <ojeda@kernel.org>, Lee Jones <lee@kernel.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-staging@lists.linux.dev,
-        linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 13/15] backlight: omap1: Use backlight helpers
-Message-ID: <20230108203215.30037a70@heffalump.sk2.org>
-In-Reply-To: <20230107-sam-video-backlight-drop-fb_blank-v1-13-1bd9bafb351f@ravnborg.org>
-References: <20230107-sam-video-backlight-drop-fb_blank-v1-0-1bd9bafb351f@ravnborg.org>
-        <20230107-sam-video-backlight-drop-fb_blank-v1-13-1bd9bafb351f@ravnborg.org>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        with ESMTP id S236629AbjAIDzS (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 8 Jan 2023 22:55:18 -0500
+Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B867E9FCB;
+        Sun,  8 Jan 2023 19:53:58 -0800 (PST)
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 3093rfgG126582;
+        Sun, 8 Jan 2023 21:53:41 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1673236421;
+        bh=iTkO1kJivHhXYaPsMyNQdCqrZFAjoK4UkcZDHr5UEZo=;
+        h=Date:Subject:To:CC:References:From:In-Reply-To;
+        b=JXLdnjAI86CosCWwO9cdrAVnxKNW/7GMDhWEFtf4yQXg6hoj3tjuypY1Uz09Rdb1D
+         SmmaKPJYUU90/gkLfBAG6BU/nZdeB+GrKt0OrlY41MjLadOdZV7Eu0tJK5wNHSQ2py
+         qCwkFUkb0qpf18d50F+g/CDIR4IlTWC1fgCIPCvI=
+Received: from DLEE108.ent.ti.com (dlee108.ent.ti.com [157.170.170.38])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 3093rfQ6044902
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Sun, 8 Jan 2023 21:53:41 -0600
+Received: from DLEE111.ent.ti.com (157.170.170.22) by DLEE108.ent.ti.com
+ (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16; Sun, 8
+ Jan 2023 21:53:41 -0600
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE111.ent.ti.com
+ (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16 via
+ Frontend Transport; Sun, 8 Jan 2023 21:53:41 -0600
+Received: from [172.24.145.182] (ileaxei01-snat.itg.ti.com [10.180.69.5])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 3093rbKc023652;
+        Sun, 8 Jan 2023 21:53:38 -0600
+Message-ID: <8dc31852-3d1c-860d-7844-15205f8fd6c6@ti.com>
+Date:   Mon, 9 Jan 2023 09:23:37 +0530
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/GypAq4FXG4m.CwTF5BhTXQF";
- protocol="application/pgp-signature"; micalg=pgp-sha512
-X-Ovh-Tracer-Id: 1892074796039898758
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedrkeeggdduvdelucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfofggtgesghdtreerredtvdenucfhrhhomhepufhtvghphhgvnhcumfhithhtuceoshhtvghvvgesshhkvddrohhrgheqnecuggftrfgrthhtvghrnhepfeffgefhgfeuueeffeejieefieefgfefffethfdtudegvdejueelhffhfeegjeeinecukfhppeduvdejrddtrddtrddupdefjedrheelrddugedvrddutddvnecuvehluhhsthgvrhfuihiivgepjeenucfrrghrrghmpehinhgvthepuddvjedrtddrtddruddpmhgrihhlfhhrohhmpeeoshhtvghvvgesshhkvddrohhrgheqpdhnsggprhgtphhtthhopedupdhrtghpthhtoheplhhinhhugidqohhmrghpsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdfovfetjfhoshhtpehmohehkeegpdhmohguvgepshhmthhpohhuth
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.0
+Subject: Re: [PATCH v2 2/2] PCI: j721e: Add support to build pci-j721e as
+ module.
+Content-Language: en-US
+To:     Achal Verma <a-verma1@ti.com>, Tom Joseph <tjoseph@cadence.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Wilczy_ski <kw@linux.com>,
+        Bjorn Helgaas <bhelgaas@google.com>
+CC:     <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Milind Parab <mparab@cadence.com>
+References: <20230108155755.2614147-1-a-verma1@ti.com>
+ <20230108155755.2614147-3-a-verma1@ti.com>
+From:   Vignesh Raghavendra <vigneshr@ti.com>
+In-Reply-To: <20230108155755.2614147-3-a-verma1@ti.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
---Sig_/GypAq4FXG4m.CwTF5BhTXQF
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Hi Achal,
 
-On Sat, 07 Jan 2023 19:26:27 +0100, Sam Ravnborg via B4 Submission Endpoint
-<devnull+sam.ravnborg.org@kernel.org> wrote:
-
-> From: Sam Ravnborg <sam@ravnborg.org>
->=20
-> Rework backlight handling to avoid access to the deprecated
-> backlight_properties.fb_blank member.
->=20
-> The rework includes removal of get_brightness() operation,
-> because there was no read back from HW so no use for it.
->=20
-> Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-> Cc: Lee Jones <lee@kernel.org>
-> Cc: Daniel Thompson <daniel.thompson@linaro.org>
-> Cc: Jingoo Han <jingoohan1@gmail.com>
+On 08/01/23 21:27, Achal Verma wrote:
+> Add support to build pci-j721e as module.
+> 
+> Signed-off-by: Achal Verma <a-verma1@ti.com>
 > ---
->  drivers/video/backlight/omap1_bl.c | 67
-> +++++--------------------------------- 1 file changed, 9 insertions(+), 58
-> deletions(-)
->=20
-> diff --git a/drivers/video/backlight/omap1_bl.c
-> b/drivers/video/backlight/omap1_bl.c index 69a49384b3de..49f37da857e7 100=
-644
-> --- a/drivers/video/backlight/omap1_bl.c
-> +++ b/drivers/video/backlight/omap1_bl.c
-> @@ -20,9 +20,6 @@
->  #define OMAPBL_MAX_INTENSITY		0xff
-> =20
->  struct omap_backlight {
-> -	int powermode;
-> -	int current_intensity;
-> -
->  	struct device *dev;
->  	struct omap_backlight_config *pdata;
+>  drivers/pci/controller/cadence/Kconfig     | 10 +++++-----
+>  drivers/pci/controller/cadence/pci-j721e.c |  6 +++++-
+>  2 files changed, 10 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/cadence/Kconfig b/drivers/pci/controller/cadence/Kconfig
+> index 693c41fe32ce..51edf723586c 100644
+> --- a/drivers/pci/controller/cadence/Kconfig
+> +++ b/drivers/pci/controller/cadence/Kconfig
+> @@ -43,12 +43,13 @@ config PCIE_CADENCE_PLAT_EP
+>  	  different vendors SoCs.
+>  
+>  config PCI_J721E
+> -	bool
+> +	tristate
+> +	select PCIE_CADENCE_HOST
+> +	select PCIE_CADENCE_EP
+>  
+
+Please don't use select when symbol being selected, depends on
+additional configs
+
+Documentation/kbuild/kconfig-language.rst::
+
+select should be used with care. select will force
+a symbol to a value without visiting the dependencies.
+By abusing select you are able to select a symbol FOO even
+if FOO depends on BAR that is not set.
+
+
+>  config PCI_J721E_HOST
+> -	bool "TI J721E PCIe platform host controller"
+> +	tristate "TI J721E PCIe platform host controller"
+>  	depends on OF
+> -	select PCIE_CADENCE_HOST
+>  	select PCI_J721E
+>  	help
+>  	  Say Y here if you want to support the TI J721E PCIe platform
+> @@ -56,10 +57,9 @@ config PCI_J721E_HOST
+>  	  core.
+>  
+>  config PCI_J721E_EP
+> -	bool "TI J721E PCIe platform endpoint controller"
+> +	tristate "TI J721E PCIe platform endpoint controller"
+>  	depends on OF
+>  	depends on PCI_ENDPOINT
+> -	select PCIE_CADENCE_EP
+>  	select PCI_J721E
+>  	help
+>  	  Say Y here if you want to support the TI J721E PCIe platform
+> diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
+> index cc83a8925ce0..c4017fa6ae61 100644
+> --- a/drivers/pci/controller/cadence/pci-j721e.c
+> +++ b/drivers/pci/controller/cadence/pci-j721e.c
+> @@ -13,6 +13,7 @@
+>  #include <linux/irqchip/chained_irq.h>
+>  #include <linux/irqdomain.h>
+>  #include <linux/mfd/syscon.h>
+> +#include <linux/module.h>
+>  #include <linux/of.h>
+>  #include <linux/of_device.h>
+>  #include <linux/pci.h>
+> @@ -565,4 +566,7 @@ static struct platform_driver j721e_pcie_driver = {
+>  		.suppress_bind_attrs = true,
+>  	},
 >  };
-> @@ -37,82 +34,40 @@ static inline void omapbl_send_enable(int enable)
->  	omap_writeb(enable, OMAP_PWL_CLK_ENABLE);
->  }
-> =20
-> -static void omapbl_blank(struct omap_backlight *bl, int mode)
-> -{
-> -	if (bl->pdata->set_power)
-> -		bl->pdata->set_power(bl->dev, mode);
-> -
-> -	switch (mode) {
-> -	case FB_BLANK_NORMAL:
-> -	case FB_BLANK_VSYNC_SUSPEND:
-> -	case FB_BLANK_HSYNC_SUSPEND:
-> -	case FB_BLANK_POWERDOWN:
-> -		omapbl_send_intensity(0);
-> -		omapbl_send_enable(0);
-> -		break;
-> -
-> -	case FB_BLANK_UNBLANK:
-> -		omapbl_send_intensity(bl->current_intensity);
-> -		omapbl_send_enable(1);
-> -		break;
-> -	}
-> -}
-> -
->  #ifdef CONFIG_PM_SLEEP
->  static int omapbl_suspend(struct device *dev)
->  {
->  	struct backlight_device *bl_dev =3D dev_get_drvdata(dev);
-> -	struct omap_backlight *bl =3D bl_get_data(bl_dev);
-> =20
-> -	omapbl_blank(bl, FB_BLANK_POWERDOWN);
-> +	backlight_disable(bl_dev);
->  	return 0;
->  }
-> =20
->  static int omapbl_resume(struct device *dev)
->  {
->  	struct backlight_device *bl_dev =3D dev_get_drvdata(dev);
-> -	struct omap_backlight *bl =3D bl_get_data(bl_dev);
-> =20
-> -	omapbl_blank(bl, bl->powermode);
-> +	backlight_enable(bl_dev);
->  	return 0;
->  }
->  #endif
-> =20
-> -static int omapbl_set_power(struct backlight_device *dev, int state)
-> -{
-> -	struct omap_backlight *bl =3D bl_get_data(dev);
-> -
-> -	omapbl_blank(bl, state);
-> -	bl->powermode =3D state;
-> -
-> -	return 0;
-> -}
-> -
->  static int omapbl_update_status(struct backlight_device *dev)
->  {
-> -	struct omap_backlight *bl =3D bl_get_data(dev);
-> +	int brightness =3D backlight_get_brightness(dev);
-> =20
-> -	if (bl->current_intensity !=3D dev->props.brightness) {
-> -		if (bl->powermode =3D=3D FB_BLANK_UNBLANK)
-> -			omapbl_send_intensity(dev->props.brightness);
-> -		bl->current_intensity =3D dev->props.brightness;
-> +	if (brightness > 0) {
-> +		omapbl_send_intensity(dev->props.brightness);
-> +		omapbl_send_enable(1);
-> +	} else {
-> +		omapbl_send_intensity(0);
-> +		omapbl_send_enable(0);
->  	}
-> =20
-> -	if (dev->props.fb_blank !=3D bl->powermode)
-> -		omapbl_set_power(dev, dev->props.fb_blank);
-> -
->  	return 0;
->  }
-> =20
-> -static int omapbl_get_intensity(struct backlight_device *dev)
-> -{
-> -	struct omap_backlight *bl =3D bl_get_data(dev);
-> -
-> -	return bl->current_intensity;
-> -}
-> -
->  static const struct backlight_ops omapbl_ops =3D {
-> -	.get_brightness =3D omapbl_get_intensity,
->  	.update_status  =3D omapbl_update_status,
->  };
-> =20
-> @@ -139,9 +94,6 @@ static int omapbl_probe(struct platform_device *pdev)
->  	if (IS_ERR(dev))
->  		return PTR_ERR(dev);
-> =20
-> -	bl->powermode =3D FB_BLANK_POWERDOWN;
-> -	bl->current_intensity =3D 0;
-> -
->  	bl->pdata =3D pdata;
->  	bl->dev =3D &pdev->dev;
-> =20
-> @@ -149,7 +101,6 @@ static int omapbl_probe(struct platform_device *pdev)
-> =20
->  	omap_cfg_reg(PWL);	/* Conflicts with UART3 */
-> =20
-> -	dev->props.fb_blank =3D FB_BLANK_UNBLANK;
->  	dev->props.brightness =3D pdata->default_intensity;
->  	omapbl_update_status(dev);
-> =20
->=20
-> --=20
-> 2.34.1
+> -builtin_platform_driver(j721e_pcie_driver);
+> +module_platform_driver(j721e_pcie_driver);
+> +
+> +MODULE_AUTHOR("Kishon Vijay Abraham I <kishon@ti.com>");
+> +MODULE_LICENSE("GPL v2");
 
-Wow that gets rid of a lot of unnecessary code!
-
-Reviewed-by: Stephen Kitt <steve@sk2.org>
-
---Sig_/GypAq4FXG4m.CwTF5BhTXQF
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEEnPVX/hPLkMoq7x0ggNMC9Yhtg5wFAmO7GkAACgkQgNMC9Yht
-g5wbPw//Ss+kTsAfHvbPabK9dJV/X66aYDEyoOZ3yDLe6E2BoTflL+WrHBw8VFNa
-AJvgfHwrJ1T4yIWpz0T/hzHKeO1gx0bj+VMDMJnCwGueAAZoz3rE9NXDPclWfqzb
-LkSkCDgIu44dDRbvFE3Sd0azg0lN35evn+zyEqbpw+QKfsv5O3S+LX9iY2rkLXcv
-CkEynsPcOzfQSUBMgCvrvkDK0L0Gi0OghVh5WEnYfB0RMs31qFaEd8i+maho3DKP
-p78tgvWNxAw62OxEvlXK66XvibuCJpwsVmDCN6pLZXQCqmIUgUa3U6PS3kINzIVp
-vd0Mlca7QxaPrqWINi8SQhO8O9bVhQWK5FgPP719ay6QGtyR85FhNsW5DZQHG7yd
-kxrvExOJDvZ0GnrAvSNGPrPXqp/rlelpeHW4dyf67t8bQkpaUIsNYVha0XrhuZv9
-tFwdW5RA0Ay/uqReXzMn+qXJqcakZ0YBsRunzpSjvXC2ejg8K056tncizpvAFY6o
-B427h2bO5F1gZ83eXMFVNuhxk8ve2Bi4A62l2J0lJb1UZNuLy0I2YSTgvvOlHN/E
-GCsrQFZZc6T0ETq1STqS1b8yGFbB47xQTluCqOD5Pk91cisLsUL7uFAyI/6HnbrA
-gdlHJTW4bxnEHedzYUUIW40PlyoAW01YP3dvwrUSUgFvQqJQfAs=
-=WGiV
------END PGP SIGNATURE-----
-
---Sig_/GypAq4FXG4m.CwTF5BhTXQF--
+-- 
+Regards
+Vignesh
