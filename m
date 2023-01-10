@@ -2,66 +2,53 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 260DF663D88
-	for <lists+linux-omap@lfdr.de>; Tue, 10 Jan 2023 11:09:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CF914664507
+	for <lists+linux-omap@lfdr.de>; Tue, 10 Jan 2023 16:38:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229660AbjAJKJ3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 10 Jan 2023 05:09:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36626 "EHLO
+        id S232176AbjAJPiO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 10 Jan 2023 10:38:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45700 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230133AbjAJKJ1 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 10 Jan 2023 05:09:27 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 548C54D731;
-        Tue, 10 Jan 2023 02:09:27 -0800 (PST)
+        with ESMTP id S232997AbjAJPiM (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 10 Jan 2023 10:38:12 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB5D0AE70;
+        Tue, 10 Jan 2023 07:38:11 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C415061589;
-        Tue, 10 Jan 2023 10:09:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB743C433D2;
-        Tue, 10 Jan 2023 10:09:21 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id C0417B81731;
+        Tue, 10 Jan 2023 15:38:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50CCCC433EF;
+        Tue, 10 Jan 2023 15:38:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1673345366;
-        bh=wbyd3dtAWj+DS0fcJULsfdTl+t+d2B5Uw2ZuQAp6tpM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=XKJ7hEZZUPaCSNrB26CzNsDjquQbBentUhlmtWHZJjjl5ajSRsc2cY1J6TlsbuK52
-         UoeGdRXnxLZ8mTjHgbPSqEmh732Odonfjc467CustS3+5wXOJ8G7sxPOOj5OmOUNRy
-         w0kKUTLk2m70RapGM9Y4KlCXmcVOjK/OPWsBagysaySfqoZm82qlsKdYmxswDYrer+
-         TbB8sWFTiUPd3iYuGD/0RfH2xQw1GdiwwQtq6XoVkDXuGvwSpzZu+xjIKPR/5OQlxm
-         16rTc6Mfdvm4x7QdvW8p5nVL1YDBiVFkf6NsLekUIa2pYUR8HMFXdeiKexpKNRNiyO
-         ttG8j2EPjTphQ==
-Date:   Tue, 10 Jan 2023 10:09:18 +0000
-From:   Lee Jones <lee@kernel.org>
-To:     Sam Ravnborg <sam@ravnborg.org>
-Cc:     Daniel Thompson <daniel.thompson@linaro.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Helge Deller <deller@gmx.de>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Antonino Daplas <adaplas@gmail.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Robin van der Gracht <robin@protonic.nl>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Jingoo Han <jingoohan1@gmail.com>, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-staging@lists.linux.dev,
-        linuxppc-dev@lists.ozlabs.org, Stephen Kitt <steve@sk2.org>
-Subject: Re: [PATCH 15/15] backlight: backlight: Drop the deprecated fb_blank
- property
-Message-ID: <Y705TvBPWkHzeMrp@google.com>
-References: <20230107-sam-video-backlight-drop-fb_blank-v1-0-1bd9bafb351f@ravnborg.org>
- <20230107-sam-video-backlight-drop-fb_blank-v1-15-1bd9bafb351f@ravnborg.org>
- <Y7v1OxdowGdxgvUj@aspen.lan>
- <Y7xAgHgg0sfh32Ga@ravnborg.org>
+        s=k20201202; t=1673365087;
+        bh=Ae0S8Vw/l+xGMbOvlfmhz4OmrcFgB5X+e/tuUD64qhI=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=LAWqU2ypxGwCgqobnWL36+/jv/dCMhLsYAZUHxhpU110wHlVuN2EUk7Vvz4RC6X/E
+         xff/aw4iDInfuL3EQZFPF4bs+vnYhRE91JbuGx3spYd4ZeybMLbTfmYBnXZ9ttamZz
+         EBFMnKR8DXo9vOEZ3xvmKBPXnc/doVhI7SSeJ3CmSuhz/QItKad0x4TkR3hPrvHPBM
+         7crUXpv96kb6eqgL4UyOkoYbj4UF+4ApTdaf9wDnLXRcoPcchW7SB/YV39AY6IHiWn
+         2Uc7SWjQwWCTRfQBhPtTw0y/LMAH8l79DjKdRw4/sTWEjbFXpFnT5oZrBF2CcO67S7
+         HaKhi4i/GF4dg==
+Date:   Tue, 10 Jan 2023 09:38:05 -0600
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Vignesh Raghavendra <vigneshr@ti.com>
+Cc:     Achal Verma <a-verma1@ti.com>, Tom Joseph <tjoseph@cadence.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Wilczy_ski <kw@linux.com>,
+        Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        Milind Parab <mparab@cadence.com>
+Subject: Re: [PATCH v2 2/2] PCI: j721e: Add support to build pci-j721e as
+ module.
+Message-ID: <20230110153805.GA1505901@bhelgaas>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <Y7xAgHgg0sfh32Ga@ravnborg.org>
+In-Reply-To: <db93c472-f617-3207-af57-55b14de8e236@ti.com>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -71,40 +58,30 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, 09 Jan 2023, Sam Ravnborg wrote:
-
-> Hi Daniel.
+On Mon, Jan 09, 2023 at 09:06:14PM +0530, Vignesh Raghavendra wrote:
+> On 09/01/23 6:05 pm, Achal Verma wrote:
+> > Discussed with Vignesh the current config dependency of pcie-cadence and pci-j721e modules,
+> > it seems like for now to modularize these drivers with minimal changes is to use "select"
+> > as they were used before in PCI_J721E_HOST and PCI_J721E_EP config options.
 > 
-> On Mon, Jan 09, 2023 at 11:06:35AM +0000, Daniel Thompson wrote:
-> > On Sat, Jan 07, 2023 at 07:26:29PM +0100, Sam Ravnborg via B4 Submission Endpoint wrote:
-> > > From: Sam Ravnborg <sam@ravnborg.org>
-> > >
-> > > With all users gone remove the deprecated fb_blank member in
-> > > backlight_properties.
-> > >
-> > > Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-> > > Cc: Lee Jones <lee@kernel.org>
-> > > Cc: Daniel Thompson <daniel.thompson@linaro.org>
-> > > Cc: Jingoo Han <jingoohan1@gmail.com>
-> > 
-> > 
-> > Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+> With this patch its now impossible to build PCI_J721E_HOST without
+> pcie endpoint support (as PCI_ENDPOINT is now a dependency). I don't
+> know a way to achieve this via Kconfig magic w/o splitting pci-j721e.c
+> into EP/RC (like pcie-rcar* or pcie-rockchip*)
 > 
-> Thanks for the follow-up on all the backlight related patches.
+> > Will push updated version with "depends on PCI_ENDPOINT" in PCI_J721E config to check
+> > dependency on PCI_ENDPOINT before selecting PCIE_CADENCE_EP.
+> > 
 > 
-> > 
-> > 
-> > PS Please don't treat this like a maintainer Acked-by: and merge it
-> >    (Lee's not on holiday so work with Lee to figure out the merge
-> >    strategy ;-) ).
-> Nope, I am aware that the usual pattern here and wait for Lee to show
-> up.
+> Please don't top post and respond inline:
+> https://en.wikipedia.org/wiki/Posting_style#Interleaved_style
 
-It's on the list.  Only 50 more reviews in the backlog now!
+Apparently there was also email from Achal to Vignesh that didn't make
+it to the archives, probably because it was HTML or other "fancy"
+email.  See the thread overview here, which is missing something:
+https://lore.kernel.org/all/20230108155755.2614147-1-a-verma1@ti.com/
 
-> For this patch there is a bug as I need to update a comment.
-> I will fix this when I resend after all the patches in flight has
-> landed. So likely after the next merge window,
+It's best to use plain text email when possible.  See
+http://vger.kernel.org/majordomo-info.html for details.
 
--- 
-Lee Jones [李琼斯]
+Bjorn
