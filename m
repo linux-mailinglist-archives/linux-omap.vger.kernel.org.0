@@ -2,108 +2,158 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C021666D4F
-	for <lists+linux-omap@lfdr.de>; Thu, 12 Jan 2023 10:02:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B4C9666D7E
+	for <lists+linux-omap@lfdr.de>; Thu, 12 Jan 2023 10:09:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239809AbjALJCy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 12 Jan 2023 04:02:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50088 "EHLO
+        id S239760AbjALJI5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 12 Jan 2023 04:08:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54584 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236560AbjALJB1 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 12 Jan 2023 04:01:27 -0500
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF0F04ECA1
-        for <linux-omap@vger.kernel.org>; Thu, 12 Jan 2023 00:57:43 -0800 (PST)
-Received: by mail-ej1-x62f.google.com with SMTP id u19so43019916ejm.8
-        for <linux-omap@vger.kernel.org>; Thu, 12 Jan 2023 00:57:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=9gdt6mH2qXqR64IjGhfzVvhvZf1/l3ziFWOV6P1ug3Y=;
-        b=u+8Z0AIUVl7SPy8uUbKf1dBpNEGj1vYTwpJg8g4SRaW8sS8ngIZlMMEZl2e2cmNIBE
-         yA6J76BnF9v7tZarxZcwKc9voD8bfFpa3UuNKpfJj3icoUEK7M23qS5sfYcoioHOJiVf
-         nYNAFWt6bFwR+PxtpLu5vBfPtlHGXoNCcfhxUeGCaYwEUX9i8uZKPz94i6AnM7ZRDfgw
-         VrxCnsD7p64AnALovyjDJ2J2x1lbb43KQdiv1VVS2DKEQwiB+YePMuQfgwXBGHIMSt7/
-         SGQuuj17Ppt2SP+aSPv0+A/E5qtkLOVD5GVEpfciE+d/iJ9/tzQOeZhW0bQ6Va0tSG0z
-         P/lg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9gdt6mH2qXqR64IjGhfzVvhvZf1/l3ziFWOV6P1ug3Y=;
-        b=OrzY9Xs40YsZMjIWDE0W+I3ZrzrqCqemfOsSxiAsUGhd/xya8H0lU4FRoeXOFSoBSM
-         CdWz22BLfLKg4R4x4Tee21fdNZRJlT+2HG9diSG/EzH9egAimpwvzUz7xXYa57i7e8tn
-         XBdyeyspyGJKDrH7+hC8g1b2VFpt7A9XB/wh55T/Yx1L1D8LN7gY00cV+F0wnFqLocZe
-         VsdOOvbTnFLGcHwYxq1aloQIwA5Y1Pu/7/4UbEj1715dMdhblVVXbgqEB0SQwOzOgv4f
-         hH/KiIJkFoMBe6sOvpSrOf4tayYhUaxngkAuUlmPX8nkfPovV/AjxBsCsCG5j1ov6EoS
-         TCYA==
-X-Gm-Message-State: AFqh2krZudKUvq3OheJn6y8fTn9K07y5YUXai9nwVHzaIf5bJ2WlVBQ5
-        V7M0A40KHlHb0W46VBWZxxZU4g==
-X-Google-Smtp-Source: AMrXdXszmAiXSd265ELT3ixgr5T5uiKMnafyv3E0Y1jt8pgRpenFeEB6jrDJ+86Qk/KRI6wMWHqG1Q==
-X-Received: by 2002:a17:906:5202:b0:7c1:4a3:10b6 with SMTP id g2-20020a170906520200b007c104a310b6mr63048868ejm.53.1673513862243;
-        Thu, 12 Jan 2023 00:57:42 -0800 (PST)
-Received: from [192.168.1.109] ([178.197.216.144])
-        by smtp.gmail.com with ESMTPSA id r8-20020aa7c148000000b0046951b43e84sm6921504edp.55.2023.01.12.00.57.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Jan 2023 00:57:41 -0800 (PST)
-Message-ID: <772b3694-e889-69a3-7ac2-d17eea0f4fdd@linaro.org>
-Date:   Thu, 12 Jan 2023 09:57:39 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.1
-Subject: Re: [PATCH 1/4] ARM: s3c: remove obsolete s3c-cpu-freq header
-Content-Language: en-US
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>
-Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        with ESMTP id S235894AbjALJIT (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 12 Jan 2023 04:08:19 -0500
+Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CCB44FD62;
+        Thu, 12 Jan 2023 01:03:36 -0800 (PST)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+        by mailout.nyi.internal (Postfix) with ESMTP id CEDB85C018C;
+        Thu, 12 Jan 2023 04:03:35 -0500 (EST)
+Received: from imap51 ([10.202.2.101])
+  by compute6.internal (MEProxy); Thu, 12 Jan 2023 04:03:35 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+        :cc:content-type:date:date:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to; s=fm2; t=1673514215; x=1673600615; bh=z28MIn97Rc
+        98zMcl0IlmdYkFgGOJRGV34Y2wLplLgGI=; b=DDe1bwierpKaunxk71CoGT6yzi
+        SJedgNQ/YlAe+TGcKid1qsvbyAjbCv4saHqU3wjPfsX2JwUXMfVdJPXIe7+C1dSW
+        jdh8iYLPBBZ1fLELXkb9Q0QXd5m/rq5R/gYNEdzaVuwr90laSj2jslbVJEKIYVpM
+        rJ2w99HKM4Pk8VhElkdG+wWkQ1ld3xPVU4MweQtnZhCXA/YIfwI+lDn23Q90rV3p
+        x/vhrNl2yKcZ31u1VaPlZthYyrOuM6gGs56oyMv8UiWtSXE8OYTcgTxS0QSh44C7
+        OJKFX37rgTInHCnbKBeT/CzyMaaSzXJTLy8Nq0bQwL6VZWRhZSusVbWJ57lw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
+        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
+        :mime-version:references:reply-to:sender:subject:subject:to:to
+        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+        fm3; t=1673514215; x=1673600615; bh=z28MIn97Rc98zMcl0IlmdYkFgGOJ
+        RGV34Y2wLplLgGI=; b=E4t3NR5k0rfwB6JFxnkLIK1/WIvewfETzb2a3egUsRbP
+        YKgjGSCg+KjN4Ho1L+xRbjDaqpzrr275xA66CQD7vV86jcG4JtFjqMfBUY05R+wd
+        NiXD0aaSHsLOdG5GWYJvfrZqXCpoglTcyuqZ3U9YQgJhbrF+RhxORtYtLSfOz+Rk
+        lF1g8OXKAOuzIs/CZJhyUQdV2EuM5FwOv3m8sZ67bbhoWRG286ioYPduOGEyCxc0
+        L9IvrP26O4kqfFVkePtlbHkHffeZEEKzb9hS22xDLIJFofxiopmlfcTua3xLDGkS
+        /mr2UpHbGMKp3CpJ2EDjKaoMUrqgPoBUFNIfgC+mow==
+X-ME-Sender: <xms:58y_Y54Uwlzzvx0UrHM37f4F_yHYCnLWm4_QyddRVJFaG6c31VBQ5w>
+    <xme:58y_Y27XxiqJlQto_9J50hZfBtUzbclTfZl_i1EYgxJktZLf4P92lQyZqpvfKTTuL
+    cGiuK-Ac5tCGSKPT-Y>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrleehgdduvdeiucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
+    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
+    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
+    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
+    hrnhgusegrrhhnuggsrdguvg
+X-ME-Proxy: <xmx:58y_Ywfm_tCJE7GB5mX8sEgJNwF9q3OfRlA2rPB1-HCl6ItTmNmQJA>
+    <xmx:58y_YyKniWSnemOCWdo4QE2UvtOgfV0rGUtvHp_N2HBMxyPbpdf5mQ>
+    <xmx:58y_Y9J5YEZFuo5kvunef1dqXpAcopJd3ZLmV8apEqth0gmNhFOgOA>
+    <xmx:58y_Y09eXyGstUUkLoKCcalf1NJuu7JAImz0U4cxKXubCZKFJOrMpw>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id 32133B60089; Thu, 12 Jan 2023 04:03:35 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.7.0-alpha0-1185-g841157300a-fm-20221208.002-g84115730
+Mime-Version: 1.0
+Message-Id: <3f2663ff-ff3f-4632-853a-ba4d38df9701@app.fastmail.com>
+In-Reply-To: <20230112083746.9551-4-lukas.bulwahn@gmail.com>
+References: <20230112083746.9551-1-lukas.bulwahn@gmail.com>
+ <20230112083746.9551-4-lukas.bulwahn@gmail.com>
+Date:   Thu, 12 Jan 2023 10:02:50 +0100
+From:   "Arnd Bergmann" <arnd@arndb.de>
+To:     "Lukas Bulwahn" <lukas.bulwahn@gmail.com>
+Cc:     "Aaro Koskinen" <aaro.koskinen@iki.fi>,
+        "Janusz Krzysztofik" <jmkrzyszt@gmail.com>,
+        "Tony Lindgren" <tony@atomide.com>,
+        "Krzysztof Kozlowski" <krzysztof.kozlowski@linaro.org>,
+        linux-arm-kernel@lists.infradead.org,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
         linux-usb@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
         kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20230112083746.9551-1-lukas.bulwahn@gmail.com>
- <20230112083746.9551-2-lukas.bulwahn@gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230112083746.9551-2-lukas.bulwahn@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Subject: Re: [PATCH 3/4] usb: remove OMAP USB Device Controller and OHCI support for
+ OMAP1/2 chips
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 12/01/2023 09:37, Lukas Bulwahn wrote:
-> The s3c-cpu-freq header was previously included by:
-> 
->   ./arch/arm/mach-s3c/mach-bast.c
->   ./arch/arm/mach-s3c/mach-osiris-dvs.c
->   ./arch/arm/mach-s3c/mach-osiris.c
->   ./include/linux/soc/samsung/s3c-cpufreq-core.h
-> 
-> Commit a4946a153cb9 ("ARM: s3c: remove all s3c24xx support") removes the
-> files in ./arch/arm/mach-s3c/; commit daf0ee583fc7 ("cpufreq: remove
-> s3c24xx drivers") removes the file s3c-cpufreq-core.h.
-> 
-> Remove this obsolete header file.
-> 
-> This issue was identified, as s3c-cpu-freq.h referred to the removed config
-> ARM_S3C_CPUFREQ.
-> 
+On Thu, Jan 12, 2023, at 09:37, Lukas Bulwahn wrote:
+> Commit 0fee2eac5c2b ("usb: phy: remove phy-isp1301-omap driver") removes
+> the Philips ISP1301 with OMAP OTG driver and its corresponding config
+> ISP1301_OMAP. The drivers, OMAP USB Device Controller and OHCI support for
+> OMAP1/2 chips, with corresponding configs, USB_OMAP and USB_OHCI_HCD_OMAP1,
+> need this removed driver (see "depends on ISP1301_OMAP") to build.
+>
+> Remove those two drivers.
+>
+> With the config USB_OMAP removed in this commit, remove some further code
+> in the omap-dma header and mach-omap1 architecture code.
+>
 > Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-> ---
->  include/linux/soc/samsung/s3c-cpu-freq.h | 145 -----------------------
->  1 file changed, 145 deletions(-)
 
+This would be a great cleanup because of the simplications of the
+omap-dma code. I had previously looked at it and concluded that
+the driver is still in use though, and I think my mistake was
+just in the Kconfig part of this patch:
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+commit c32fd10914a314dd96c5d24030200070c84df5f1
+Author: Arnd Bergmann <arnd@arndb.de>
+Date:   Thu Sep 29 15:38:56 2022 +0200
 
-Best regards,
-Krzysztof
+    ARM: omap1: remove unused board files
+    
+    All board support that was marked as 'unused' earlier can
+    now be removed, leaving the five machines that that still
+    had someone using them in 2022, or that are supported in
+    qemu.
+    
+    Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
+    Cc: Janusz Krzysztofik <jmkrzyszt@gmail.com>
+    Cc: Tony Lindgren <tony@atomide.com>
+    Cc: linux-omap@vger.kernel.org
+    Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
+diff --git a/drivers/usb/gadget/udc/Kconfig b/drivers/usb/gadget/udc/Kconfig
+index b3006d8b04ab..95751062078e 100644
+--- a/drivers/usb/gadget/udc/Kconfig
++++ b/drivers/usb/gadget/udc/Kconfig
+@@ -118,7 +118,7 @@ config USB_GR_UDC
+ config USB_OMAP
+        tristate "OMAP USB Device Controller"
+        depends on ARCH_OMAP1
+-       depends on ISP1301_OMAP || !(MACH_OMAP_H2 || MACH_OMAP_H3)
++       depends on ISP1301_OMAP
+        help
+           Many Texas Instruments OMAP processors have flexible full
+           speed USB device controllers, with support for up to 30
+diff --git a/drivers/usb/host/Kconfig b/drivers/usb/host/Kconfig
+index 0442dc4bc334..a0c14c62ff32 100644
+--- a/drivers/usb/host/Kconfig
++++ b/drivers/usb/host/Kconfig
+@@ -409,7 +409,7 @@ if USB_OHCI_HCD
+ config USB_OHCI_HCD_OMAP1
+        tristate "OHCI support for OMAP1/2 chips"
+        depends on ARCH_OMAP1
+-       depends on ISP1301_OMAP || !(MACH_OMAP_H2 || MACH_OMAP_H3)
++       depends on ISP1301_OMAP
+        default y
+        help
+          Enables support for the OHCI controller on OMAP1/2 chips.
+
+Instead of changing this to 'depends on ISP1301_OMAP', the line
+probably should just be dropped entirely.
+
+      Arnd
