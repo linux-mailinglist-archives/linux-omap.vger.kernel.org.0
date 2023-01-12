@@ -2,49 +2,49 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B4C9666D7E
-	for <lists+linux-omap@lfdr.de>; Thu, 12 Jan 2023 10:09:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 489DB666DA5
+	for <lists+linux-omap@lfdr.de>; Thu, 12 Jan 2023 10:11:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239760AbjALJI5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 12 Jan 2023 04:08:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54584 "EHLO
+        id S240036AbjALJLh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 12 Jan 2023 04:11:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235894AbjALJIT (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 12 Jan 2023 04:08:19 -0500
+        with ESMTP id S239940AbjALJKW (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 12 Jan 2023 04:10:22 -0500
 Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CCB44FD62;
-        Thu, 12 Jan 2023 01:03:36 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30D4D4E43E;
+        Thu, 12 Jan 2023 01:06:08 -0800 (PST)
 Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-        by mailout.nyi.internal (Postfix) with ESMTP id CEDB85C018C;
-        Thu, 12 Jan 2023 04:03:35 -0500 (EST)
+        by mailout.nyi.internal (Postfix) with ESMTP id 964DB5C00EF;
+        Thu, 12 Jan 2023 04:06:07 -0500 (EST)
 Received: from imap51 ([10.202.2.101])
-  by compute6.internal (MEProxy); Thu, 12 Jan 2023 04:03:35 -0500
+  by compute6.internal (MEProxy); Thu, 12 Jan 2023 04:06:07 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
         :cc:content-type:date:date:from:from:in-reply-to:in-reply-to
         :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to; s=fm2; t=1673514215; x=1673600615; bh=z28MIn97Rc
-        98zMcl0IlmdYkFgGOJRGV34Y2wLplLgGI=; b=DDe1bwierpKaunxk71CoGT6yzi
-        SJedgNQ/YlAe+TGcKid1qsvbyAjbCv4saHqU3wjPfsX2JwUXMfVdJPXIe7+C1dSW
-        jdh8iYLPBBZ1fLELXkb9Q0QXd5m/rq5R/gYNEdzaVuwr90laSj2jslbVJEKIYVpM
-        rJ2w99HKM4Pk8VhElkdG+wWkQ1ld3xPVU4MweQtnZhCXA/YIfwI+lDn23Q90rV3p
-        x/vhrNl2yKcZ31u1VaPlZthYyrOuM6gGs56oyMv8UiWtSXE8OYTcgTxS0QSh44C7
-        OJKFX37rgTInHCnbKBeT/CzyMaaSzXJTLy8Nq0bQwL6VZWRhZSusVbWJ57lw==
+        :subject:to:to; s=fm2; t=1673514367; x=1673600767; bh=i0Vf2i9x70
+        fWXxPpRrZTCxU0nL+Gr6Pa34HbDF5NKhg=; b=YTjeuD4wKJ7HrtZWtHhsXNxsKq
+        cNOVgLCCr48zVApp4I+dGidjpEwO52kI/8/OrHx57KOqKryuXjC5Oo9PxBtatKSC
+        akFuo+LTIiOo2IOpWyEtd4McQR8bboOjcgNME7zFfOe6HqER4caPmWWjZ0rw8Aw+
+        IsoBj0NCmu06X6oiESocaT4tjYVsbJ34o3YFpPKVXYGTyQZ+70G49533ENDbjEnH
+        4lm6DTLz2fzScqMe3ccvk2HNwy7VFdCyfUYT8uU0mO9ZfsQksv9nW+rKRetDFfTG
+        iDXVXWFp9SO7N/Sm2GSxYbg1WtoUZbByWlgBPQ1fyb75nEoldGrG8YTCrSaw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
         messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
         :feedback-id:from:from:in-reply-to:in-reply-to:message-id
         :mime-version:references:reply-to:sender:subject:subject:to:to
         :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-        fm3; t=1673514215; x=1673600615; bh=z28MIn97Rc98zMcl0IlmdYkFgGOJ
-        RGV34Y2wLplLgGI=; b=E4t3NR5k0rfwB6JFxnkLIK1/WIvewfETzb2a3egUsRbP
-        YKgjGSCg+KjN4Ho1L+xRbjDaqpzrr275xA66CQD7vV86jcG4JtFjqMfBUY05R+wd
-        NiXD0aaSHsLOdG5GWYJvfrZqXCpoglTcyuqZ3U9YQgJhbrF+RhxORtYtLSfOz+Rk
-        lF1g8OXKAOuzIs/CZJhyUQdV2EuM5FwOv3m8sZ67bbhoWRG286ioYPduOGEyCxc0
-        L9IvrP26O4kqfFVkePtlbHkHffeZEEKzb9hS22xDLIJFofxiopmlfcTua3xLDGkS
-        /mr2UpHbGMKp3CpJ2EDjKaoMUrqgPoBUFNIfgC+mow==
-X-ME-Sender: <xms:58y_Y54Uwlzzvx0UrHM37f4F_yHYCnLWm4_QyddRVJFaG6c31VBQ5w>
-    <xme:58y_Y27XxiqJlQto_9J50hZfBtUzbclTfZl_i1EYgxJktZLf4P92lQyZqpvfKTTuL
-    cGiuK-Ac5tCGSKPT-Y>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrleehgdduvdeiucetufdoteggodetrfdotf
+        fm3; t=1673514367; x=1673600767; bh=i0Vf2i9x70fWXxPpRrZTCxU0nL+G
+        r6Pa34HbDF5NKhg=; b=pm2NzmomMkR6Z3IEHZh5NgtTVo2jgipoBuDt//2h/AG5
+        S+4jqrHNsbCYqk1f+BJk4M89mnBHUpQXfx+whFXWQWyNjnhmB8cUSv1rk0Q9t0SG
+        wgq29B9BL9Meb7p9htR+vi9/xI510gtGWLS1jl3rU3GJMQ7qShSqkUi9NaTEGIPv
+        xDJy1fyQZP/AahEnLBaTDR9zyeSql52rSVVZMeVffw21bsYhYQpqCOIR13HQcFvk
+        0kKbo7v3yW8UVnov+KowhBPbbUSbqDc35UBhEe5SNb+109CLpIySP4lOSufu01P+
+        Huw1fG7dFS41lGNxuZ6e7iyLxCDSnnTqLwFFr4vJ3w==
+X-ME-Sender: <xms:f82_Y8rZObVjPMvCH-CvjESEUl2uHJqzkyZKi7F2iGL3XYXt6nVvtA>
+    <xme:f82_YypTe13rIXZFEJIKbWBekxKT9GgOjt3z9NfnF4uA0VUxzoRWXNE87IaVxJmV2
+    p8hrRb3s5Gl0pd79LY>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrleehgdduvdejucetufdoteggodetrfdotf
     fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
     uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
     cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
@@ -52,21 +52,21 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrleehgdduvdeiucetufdoteggod
     htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
     teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
     hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:58y_Ywfm_tCJE7GB5mX8sEgJNwF9q3OfRlA2rPB1-HCl6ItTmNmQJA>
-    <xmx:58y_YyKniWSnemOCWdo4QE2UvtOgfV0rGUtvHp_N2HBMxyPbpdf5mQ>
-    <xmx:58y_Y9J5YEZFuo5kvunef1dqXpAcopJd3ZLmV8apEqth0gmNhFOgOA>
-    <xmx:58y_Y09eXyGstUUkLoKCcalf1NJuu7JAImz0U4cxKXubCZKFJOrMpw>
+X-ME-Proxy: <xmx:f82_YxN9UqinprXnHU1kvfphUuDyKIhuD2U8BqWCZx7u2KnwQ2vZlQ>
+    <xmx:f82_Yz6_5dOaz3XKTO-tHclB4-cvIoTkrxVMn_dgva0BU9EqyLJyHg>
+    <xmx:f82_Y77lD_AIrBduzpD3zz0-yQDpV2HLm8K7RNeC9Z_V-J7nvNzlKg>
+    <xmx:f82_Y1vQNmbKVazZWrQ3ChoPEmDrxRRabaxg0_f1Y_WqB8xUU-d_bg>
 Feedback-ID: i56a14606:Fastmail
 Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 32133B60089; Thu, 12 Jan 2023 04:03:35 -0500 (EST)
+        id F26A7B60086; Thu, 12 Jan 2023 04:06:06 -0500 (EST)
 X-Mailer: MessagingEngine.com Webmail Interface
 User-Agent: Cyrus-JMAP/3.7.0-alpha0-1185-g841157300a-fm-20221208.002-g84115730
 Mime-Version: 1.0
-Message-Id: <3f2663ff-ff3f-4632-853a-ba4d38df9701@app.fastmail.com>
-In-Reply-To: <20230112083746.9551-4-lukas.bulwahn@gmail.com>
+Message-Id: <4d2f2b81-b7ab-4ad6-84cc-f3a3c932880d@app.fastmail.com>
+In-Reply-To: <20230112083746.9551-3-lukas.bulwahn@gmail.com>
 References: <20230112083746.9551-1-lukas.bulwahn@gmail.com>
- <20230112083746.9551-4-lukas.bulwahn@gmail.com>
-Date:   Thu, 12 Jan 2023 10:02:50 +0100
+ <20230112083746.9551-3-lukas.bulwahn@gmail.com>
+Date:   Thu, 12 Jan 2023 10:05:47 +0100
 From:   "Arnd Bergmann" <arnd@arndb.de>
 To:     "Lukas Bulwahn" <lukas.bulwahn@gmail.com>
 Cc:     "Aaro Koskinen" <aaro.koskinen@iki.fi>,
@@ -77,8 +77,7 @@ Cc:     "Aaro Koskinen" <aaro.koskinen@iki.fi>,
         Linux-OMAP <linux-omap@vger.kernel.org>,
         linux-usb@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
         kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/4] usb: remove OMAP USB Device Controller and OHCI support for
- OMAP1/2 chips
+Subject: Re: [PATCH 2/4] ARM: pxa: remove further dead code after pxa93 support removal
 Content-Type: text/plain
 X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
@@ -91,69 +90,21 @@ List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
 On Thu, Jan 12, 2023, at 09:37, Lukas Bulwahn wrote:
-> Commit 0fee2eac5c2b ("usb: phy: remove phy-isp1301-omap driver") removes
-> the Philips ISP1301 with OMAP OTG driver and its corresponding config
-> ISP1301_OMAP. The drivers, OMAP USB Device Controller and OHCI support for
-> OMAP1/2 chips, with corresponding configs, USB_OMAP and USB_OHCI_HCD_OMAP1,
-> need this removed driver (see "depends on ISP1301_OMAP") to build.
+> Commit 150ccb6f9a89 ("ARM: pxa: remove pxa93x support") removes configs
+> CPU_PXA930 and CPU_PXA935 and uses of cpu_is_pxa93x() and cpu_is_pxa935().
 >
-> Remove those two drivers.
->
-> With the config USB_OMAP removed in this commit, remove some further code
-> in the omap-dma header and mach-omap1 architecture code.
+> Remove some further dead code in ./include/linux/soc/pxa/cpu.h on top of
+> that commit above.
 >
 > Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 
-This would be a great cleanup because of the simplications of the
-omap-dma code. I had previously looked at it and concluded that
-the driver is still in use though, and I think my mistake was
-just in the Kconfig part of this patch:
+I had this in an earlier version and ended up leaving this bit in
+when I reworked the series to not drop support for PXA310 and PXA320.
 
-commit c32fd10914a314dd96c5d24030200070c84df5f1
-Author: Arnd Bergmann <arnd@arndb.de>
-Date:   Thu Sep 29 15:38:56 2022 +0200
+You are probably right that we should not reference the removed
+Kconfig symbols, but I see that this causes a regression
+unless I also bring back the change to
 
-    ARM: omap1: remove unused board files
-    
-    All board support that was marked as 'unused' earlier can
-    now be removed, leaving the five machines that that still
-    had someone using them in 2022, or that are supported in
-    qemu.
-    
-    Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
-    Cc: Janusz Krzysztofik <jmkrzyszt@gmail.com>
-    Cc: Tony Lindgren <tony@atomide.com>
-    Cc: linux-omap@vger.kernel.org
-    Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+drivers/mmc/host/pxamci.c:                              || cpu_is_pxa935())
 
-diff --git a/drivers/usb/gadget/udc/Kconfig b/drivers/usb/gadget/udc/Kconfig
-index b3006d8b04ab..95751062078e 100644
---- a/drivers/usb/gadget/udc/Kconfig
-+++ b/drivers/usb/gadget/udc/Kconfig
-@@ -118,7 +118,7 @@ config USB_GR_UDC
- config USB_OMAP
-        tristate "OMAP USB Device Controller"
-        depends on ARCH_OMAP1
--       depends on ISP1301_OMAP || !(MACH_OMAP_H2 || MACH_OMAP_H3)
-+       depends on ISP1301_OMAP
-        help
-           Many Texas Instruments OMAP processors have flexible full
-           speed USB device controllers, with support for up to 30
-diff --git a/drivers/usb/host/Kconfig b/drivers/usb/host/Kconfig
-index 0442dc4bc334..a0c14c62ff32 100644
---- a/drivers/usb/host/Kconfig
-+++ b/drivers/usb/host/Kconfig
-@@ -409,7 +409,7 @@ if USB_OHCI_HCD
- config USB_OHCI_HCD_OMAP1
-        tristate "OHCI support for OMAP1/2 chips"
-        depends on ARCH_OMAP1
--       depends on ISP1301_OMAP || !(MACH_OMAP_H2 || MACH_OMAP_H3)
-+       depends on ISP1301_OMAP
-        default y
-        help
-          Enables support for the OHCI controller on OMAP1/2 chips.
-
-Instead of changing this to 'depends on ISP1301_OMAP', the line
-probably should just be dropped entirely.
-
-      Arnd
+    Arnd
