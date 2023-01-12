@@ -2,51 +2,51 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 87BB3666C97
-	for <lists+linux-omap@lfdr.de>; Thu, 12 Jan 2023 09:40:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 904B5666CA3
+	for <lists+linux-omap@lfdr.de>; Thu, 12 Jan 2023 09:40:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239779AbjALIkE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 12 Jan 2023 03:40:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37456 "EHLO
+        id S239679AbjALIkO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 12 Jan 2023 03:40:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34514 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236568AbjALIjL (ORCPT
+        with ESMTP id S239295AbjALIjL (ORCPT
         <rfc822;linux-omap@vger.kernel.org>); Thu, 12 Jan 2023 03:39:11 -0500
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A91611C0E;
-        Thu, 12 Jan 2023 00:38:13 -0800 (PST)
-Received: by mail-ej1-x62f.google.com with SMTP id cf18so36610441ejb.5;
-        Thu, 12 Jan 2023 00:38:13 -0800 (PST)
+Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE99612D3C;
+        Thu, 12 Jan 2023 00:38:16 -0800 (PST)
+Received: by mail-ej1-x634.google.com with SMTP id hw16so31110019ejc.10;
+        Thu, 12 Jan 2023 00:38:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=MJ7M69IJgQ7eq0zD8HH26eB4H+AGbBbySaGYUjUcQBw=;
-        b=IcffrHRIMHhghWPt20VxeyDygLFkboChRBG/bHkHzOgAPbmD8qI3CUXhm006ygSAQd
-         vfER8FQsfoNwqEfr1YnaWgqClEmGR+61TLjck5jMsWnv2H+cIVfk+Bj/gp/qAGBIDLMY
-         4sTUwczJD0nYz//zvSJ53Zj+2z7HavLgxwy5XrQiD5zEN7CAC7Usxudx1dhlmreI4Atc
-         oA+f6kuUcmafuWCf34KVnG31EhDA2ozm0oKbdrmn8AE8WK/noYA4lxOr0vYYb1PJzbt9
-         9emHsUULpyp69hbWxu8xx77+JofW4GUTNcdyOAGMI0DIWGhWMzoyKUJFcGkHZQeS5CZP
-         B7hA==
+        bh=bifQdYT6k9+1DNQbBHa98RaQAwgSYemBoBBiUkTIS6w=;
+        b=HgUpU/7xujgyKBn2Qz3w9IR+OQk+SAu6b1SP9tj2zjxNo4UrLIWW5UjVf6VexH8N9Z
+         i8tUweFZ9gCE8rWP+sQZfHjYguyY9TcFmk8EJOBMMMJdDheR7e49sjvpc5BluNxdx3rK
+         ggeIAdGnMfHCekCNQab29aQ/tMAVxJbV83t1MUXBpdU9jdZt7rK+z7OOOtHRUZtTk7Mr
+         s2WHQWbg1M7rssFADVge7mxkPcXgmUa+FdVLDRrDG+ydc3hTsFg2iX10Ch7LrgPn9jJC
+         Qu/oJqC5XdSTA1jNEEfN693uq+oDg7Ng0QIDHR2EHR+hbN7tZ+WPDHvIIvxOjhQabxlE
+         nraw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=references:in-reply-to:message-id:date:subject:cc:to:from
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=MJ7M69IJgQ7eq0zD8HH26eB4H+AGbBbySaGYUjUcQBw=;
-        b=y7TS8aT9bX6IlBJ3/B/3w+7V1xL6rtSZOEueZdLYc4V0sRUihD2jgpeWKjSIZo8N53
-         nPiXaR0tkDKHrWIrioS1TCGJeMSZJNHLNFwRRZD8hpiQ6eJz1cR3OSKaQFeMmrPhYoL0
-         QicNKEymyzAZASYSxZ7InDm7a3o/JSDnIgWx7rc6Sb+UDgEHyPm5VkvtwPKhkrurJ3vg
-         W0MluPwFIpn+FzRENLXo0Em7dRwxgCMHznfKCAcPZYBPF0vEMi8mFdW48mgY3w1xMGKI
-         WNO2fAkPXWDqvLJ5JPyifBMTwdLKLS/iwW4pUHeLDaESaffaOTPGd4wkzudPYyFXuy+U
-         9lzw==
-X-Gm-Message-State: AFqh2kp3Mckv/bJLJ5JFwvXXEarelvdVpiDbxwg0JEJYHEw+M6m98NiR
-        AHBaccolPpJyoA+LiCbhGso=
-X-Google-Smtp-Source: AMrXdXsYu8QtQWfGBFPSra3S5dDttoNV50EyPKju+nuF3gxzfemx0e2nNkKLjbP/YgmzEOnjG3Lllg==
-X-Received: by 2002:a17:906:4f88:b0:7cd:5a34:8932 with SMTP id o8-20020a1709064f8800b007cd5a348932mr62731256eju.21.1673512691700;
-        Thu, 12 Jan 2023 00:38:11 -0800 (PST)
+        bh=bifQdYT6k9+1DNQbBHa98RaQAwgSYemBoBBiUkTIS6w=;
+        b=5IXXSdHRh6ewyNWFjfLDsf/7OrekYRyH5yx22hUNkD/mmeosaxPboqDBmUOlrScLFs
+         k8PkPiJQhxooR4AsZqr4pS/pk+Rd6fcgbmAcVEO/UgDw//NEtBnDXuHeAGmwB/dCbk7g
+         JTOhfePknIE6jaiOWyjCmZkChpgW/RqDYkW7LsuCAh9aAz0NQ1i4zkUlWk3UC3lvtlNM
+         Glox/NutSaVRAs/qz/hrIjGhzuOcrn5czHJ4QEo90OiuKam7A5EeBZ6CszMI4nfEapjE
+         ZpzZ/UbY/lvqrcQGwNGOL4/ZnCXvkX9tYXKx6agelWMyzYi7xvHh/VlgTh15Wvz/uSvs
+         jNeQ==
+X-Gm-Message-State: AFqh2kquTymd/tBwEW1woJmXlKgmxX8VpRXAK/4JC4YMihKS0Dz20QdQ
+        Oa9ssG5vsnn9Rmoy95CGsgI=
+X-Google-Smtp-Source: AMrXdXtHn98f5GYr/AjsWDxBNbI5lJU1WeJqXLM+s7giJDCqt1gMfO2ByjuEviCBhKuBqDyy7WZ0fw==
+X-Received: by 2002:a17:907:d68e:b0:798:d745:f87 with SMTP id wf14-20020a170907d68e00b00798d7450f87mr64914906ejc.73.1673512695500;
+        Thu, 12 Jan 2023 00:38:15 -0800 (PST)
 Received: from felia.fritz.box ([2a02:810d:2a40:1104:a47e:7f3e:6b25:bafb])
-        by smtp.gmail.com with ESMTPSA id 14-20020a170906308e00b0084d3acda5fasm5670410ejv.189.2023.01.12.00.38.10
+        by smtp.gmail.com with ESMTPSA id 14-20020a170906308e00b0084d3acda5fasm5670410ejv.189.2023.01.12.00.38.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Jan 2023 00:38:11 -0800 (PST)
+        Thu, 12 Jan 2023 00:38:15 -0800 (PST)
 From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
 To:     Arnd Bergmann <arnd@arndb.de>
 Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
@@ -57,9 +57,9 @@ Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
         linux-usb@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
         kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
         Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH 2/4] ARM: pxa: remove further dead code after pxa93 support removal
-Date:   Thu, 12 Jan 2023 09:37:44 +0100
-Message-Id: <20230112083746.9551-3-lukas.bulwahn@gmail.com>
+Subject: [PATCH 4/4] ARM: debug: remove references in DEBUG_UART_8250_SHIFT to removed configs
+Date:   Thu, 12 Jan 2023 09:37:46 +0100
+Message-Id: <20230112083746.9551-5-lukas.bulwahn@gmail.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20230112083746.9551-1-lukas.bulwahn@gmail.com>
 References: <20230112083746.9551-1-lukas.bulwahn@gmail.com>
@@ -73,94 +73,32 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Commit 150ccb6f9a89 ("ARM: pxa: remove pxa93x support") removes configs
-CPU_PXA930 and CPU_PXA935 and uses of cpu_is_pxa93x() and cpu_is_pxa935().
+Commit 67d3928c3df5 ("ARM: omap1: remove unused board files") removes
+configs DEBUG_OMAP7XXUART{1,2,3}.
 
-Remove some further dead code in ./include/linux/soc/pxa/cpu.h on top of
-that commit above.
+The config DEBUG_UART_8250_SHIFT still refers to those removed configs.
+
+Remove those obsolete references.
 
 Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 ---
- include/linux/soc/pxa/cpu.h | 47 -------------------------------------
- 1 file changed, 47 deletions(-)
+ arch/arm/Kconfig.debug | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/include/linux/soc/pxa/cpu.h b/include/linux/soc/pxa/cpu.h
-index 5782450ee45c..c151a9a14cce 100644
---- a/include/linux/soc/pxa/cpu.h
-+++ b/include/linux/soc/pxa/cpu.h
-@@ -126,26 +126,6 @@
- #define __cpu_is_pxa320(id)	(0)
- #endif
+diff --git a/arch/arm/Kconfig.debug b/arch/arm/Kconfig.debug
+index d0c1e4410694..8e49a44ec532 100644
+--- a/arch/arm/Kconfig.debug
++++ b/arch/arm/Kconfig.debug
+@@ -1778,8 +1778,7 @@ config DEBUG_UART_8250_SHIFT
+ 	int "Register offset shift for the 8250 debug UART"
+ 	depends on DEBUG_LL_UART_8250 || DEBUG_UART_8250
+ 	default 0 if DEBUG_FOOTBRIDGE_COM1 || DEBUG_BCM_5301X || \
+-		DEBUG_BCM_HR2 || DEBUG_OMAP7XXUART1 || DEBUG_OMAP7XXUART2 || \
+-		DEBUG_OMAP7XXUART3
++		DEBUG_BCM_HR2
+ 	default 3 if DEBUG_MSTARV7_PMUART
+ 	default 2
  
--#ifdef CONFIG_CPU_PXA930
--#define __cpu_is_pxa930(id)				\
--	({						\
--		unsigned int _id = (id) >> 4 & 0xfff;	\
--		_id == 0x683;				\
--	 })
--#else
--#define __cpu_is_pxa930(id)	(0)
--#endif
--
--#ifdef CONFIG_CPU_PXA935
--#define __cpu_is_pxa935(id)				\
--	({						\
--		unsigned int _id = (id) >> 4 & 0xfff;	\
--		_id == 0x693;				\
--	 })
--#else
--#define __cpu_is_pxa935(id)	(0)
--#endif
--
- #define cpu_is_pxa210()					\
- 	({						\
- 		__cpu_is_pxa210(read_cpuid_id());	\
-@@ -186,18 +166,6 @@
- 		__cpu_is_pxa320(read_cpuid_id());	\
- 	 })
- 
--#define cpu_is_pxa930()					\
--	({						\
--		__cpu_is_pxa930(read_cpuid_id());	\
--	 })
--
--#define cpu_is_pxa935()					\
--	({						\
--		__cpu_is_pxa935(read_cpuid_id());	\
--	 })
--
--
--
- /*
-  * CPUID Core Generation Bit
-  * <= 0x2 for pxa21x/pxa25x/pxa26x/pxa27x
-@@ -224,16 +192,6 @@
- #define __cpu_is_pxa3xx(id)	(0)
- #endif
- 
--#if defined(CONFIG_CPU_PXA930) || defined(CONFIG_CPU_PXA935)
--#define __cpu_is_pxa93x(id)				\
--	({						\
--		__cpu_is_pxa930(id)			\
--			|| __cpu_is_pxa935(id);		\
--	 })
--#else
--#define __cpu_is_pxa93x(id)	(0)
--#endif
--
- #define cpu_is_pxa2xx()					\
- 	({						\
- 		__cpu_is_pxa2xx(read_cpuid_id());	\
-@@ -244,9 +202,4 @@
- 		__cpu_is_pxa3xx(read_cpuid_id());	\
- 	 })
- 
--#define cpu_is_pxa93x()					\
--	({						\
--		__cpu_is_pxa93x(read_cpuid_id());	\
--	 })
--
- #endif
 -- 
 2.17.1
 
