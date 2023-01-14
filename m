@@ -2,73 +2,40 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C276766A949
-	for <lists+linux-omap@lfdr.de>; Sat, 14 Jan 2023 05:44:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A30DD66AA4D
+	for <lists+linux-omap@lfdr.de>; Sat, 14 Jan 2023 10:01:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229542AbjANEot (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 13 Jan 2023 23:44:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52910 "EHLO
+        id S229723AbjANJBq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 14 Jan 2023 04:01:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229610AbjANEos (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 13 Jan 2023 23:44:48 -0500
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5430DA4;
-        Fri, 13 Jan 2023 20:44:46 -0800 (PST)
-Received: by mail-pj1-x1033.google.com with SMTP id q64so24308507pjq.4;
-        Fri, 13 Jan 2023 20:44:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=XGwB257AdpC1fAL0nSSnjqsI/M6uThtuC4LfS4+SqZU=;
-        b=RisbqdtLLw+gQGxMC8RO7OPkQ7m5mx9DD6E4LyCkzZJANlrTUHN3fd7s9+sEVb3b1B
-         JrdsPT/auwrBmJvpkcbuNLviE6/QzUlML5BzzwdGVYdXMlVb8oIP7ntbFuhcCqLm+eBs
-         IGLkqHvCuQx8Zq4S1jXJ3bzAMEDqKeonsceKeAYD+44hFfls+hmlCuvz7GFeD5c7Fj8i
-         nnGb2key9bxIV9PjVUhIDiKEbpmmy11xenSE/Tx35edrTfVk1OMk8jDSUsoryR2SPbe5
-         uW0DajHwexCQ63cRSYOpYsjuyRIqVzB+AdcqoxTNtyDLxaRIcSisLh4KRz2K73O55yLg
-         q5Ow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XGwB257AdpC1fAL0nSSnjqsI/M6uThtuC4LfS4+SqZU=;
-        b=wFn/TcRsJ6DT3X4GxmWyFPXzNlL0Q3dj5UxnplC+kKl/s65pOqiA5AgwO8kYG4mj6a
-         GWZJ9ce9Pe9TfhKZq6OEX03uRnfy/adAqSIYc+/Og8l9XqkO5tek3fOH1taFZKm3+Gdq
-         aLSTqW3uDyB7cih8DpyEY+Rs7/RmPVQq/eish+KdNMsFRBL/vRjbYpyyDLq3MlWo+M+v
-         Cu0Opve7qKLvQIVpsok7QAvlUIiWw4i8lAhJt7CRpTvnKqudKvx10AJAPakhfXVzDUgY
-         EtCPZkHtwZ31q7F9aUeVoK8Hvju0sHNchmq3Ag9yBjtUoZzVkyXTphT2blZ46hV4VrNy
-         56rw==
-X-Gm-Message-State: AFqh2koZleyrtm4gKk2kvo1EpGKPieM+op60GCN1lJKQ/N8BmARCNNGT
-        JY3rBy459EDhdntWQqu9MTE=
-X-Google-Smtp-Source: AMrXdXv+c5SPhcd1BE0v9XlSOn+qEIy/YA7cTo+PDXymSv9SnxRT75ubQC1lPmvaZj7fR7cmT6dmvg==
-X-Received: by 2002:a05:6a20:1b04:b0:af:88d2:33f8 with SMTP id ch4-20020a056a201b0400b000af88d233f8mr13248740pzb.7.1673671485780;
-        Fri, 13 Jan 2023 20:44:45 -0800 (PST)
-Received: from ?IPV6:240b:12:500:6500:dd98:10ce:e5c4:a8d4? ([240b:12:500:6500:dd98:10ce:e5c4:a8d4])
-        by smtp.gmail.com with ESMTPSA id m9-20020a654c89000000b004a281fb63c3sm12427667pgt.87.2023.01.13.20.44.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 13 Jan 2023 20:44:45 -0800 (PST)
-Message-ID: <8db143ce-d479-d7c8-bf85-f81d7a6e66d9@gmail.com>
-Date:   Sat, 14 Jan 2023 13:44:41 +0900
+        with ESMTP id S229770AbjANJBp (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 14 Jan 2023 04:01:45 -0500
+X-Greylist: delayed 450 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 14 Jan 2023 01:01:43 PST
+Received: from smtp.smtpout.orange.fr (smtp-13.smtpout.orange.fr [80.12.242.13])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A3E1659C7
+        for <linux-omap@vger.kernel.org>; Sat, 14 Jan 2023 01:01:43 -0800 (PST)
+Received: from pop-os.home ([86.243.2.178])
+        by smtp.orange.fr with ESMTPA
+        id GcIkpkMKaFcd8GcIkpbxVz; Sat, 14 Jan 2023 09:54:11 +0100
+X-ME-Helo: pop-os.home
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sat, 14 Jan 2023 09:54:11 +0100
+X-ME-IP: 86.243.2.178
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     Helge Deller <deller@gmx.de>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org
+Subject: [PATCH v2] video: fbdev: omapfb: Use kstrtobool() instead of strtobool()
+Date:   Sat, 14 Jan 2023 09:54:04 +0100
+Message-Id: <b475ed9827ccef2081b557330a224f5fd8e6c8f3.1673686433.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.0
-Subject: Re: [PATCH] memory: omap-gpmc: fix multi-device handling on the same
- CS
-Content-Language: en-US
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        rogerq@kernel.org, tony@atomide.com
-Cc:     linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20230111141346.1516-1-musashino.open@gmail.com>
- <2a2b2412-752a-1c64-41b7-eb256ae55f42@linaro.org>
-From:   INAGAKI Hiroshi <musashino.open@gmail.com>
-In-Reply-To: <2a2b2412-752a-1c64-41b7-eb256ae55f42@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -76,128 +43,154 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Krzysztof,
+strtobool() is the same as kstrtobool().
+However, the latter is more used within the kernel.
 
-thank you for your review and sorry for my ugly patch.
+In order to remove strtobool() and slightly simplify kstrtox.h, switch to
+the other function name.
 
-On 2023/01/11 23:57, Krzysztof Kozlowski wrote:
-> On 11/01/2023 15:13, INAGAKI Hiroshi wrote:
->> This patch fixes the handling of multiple devices on the same CS by
-> Do not use "This commit/patch".
-> https://elixir.bootlin.com/linux/v5.17.1/source/Documentation/process/submitting-patches.rst#L95
-Okay, I'll improve.
+While at it, include the corresponding header file (<linux/kstrtox.h>)
 
->
->> replacing CS name to "name" of node instead of "full_name".
->>
->> In c2ade654dbf7d02f09ad491f5621fc321d4af96b
->> ("memory: omap-gpmc: Use of_node_name_eq for node name comparisons"),
-> Use syntax: commit short SHA (".....") as pointed by checkpatch.
-I see, I'll replace.
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+This patch was already sent as a part of a serie ([1]) that axed all usages
+of strtobool().
+Most of the patches have been merged in -next.
 
->
->> the name for setting to CS was replaced but it doesn't fit for the
->> comparison by of_node_name_eq.
->> In of_node_name_eq, the length for strncmp will be obtained from the
->> node that trying to register and it doesn't contain the length of
->> "@<cs>,<offset>".
-> Skip explanation what is inside of_node_name_eq() but focus on what the
-> driver is doing.
-Okay, I'll improve it.
+I synch'ed with latest -next and re-send the remaining ones as individual
+patches.
 
->
->> But the base name for comparison passed from
->> registered CS name contains the prefix,
-> What is "the prefix"?
-Ahh, it's not a prefix, but suffix...my mistake.
+Changes in v2:
+  - No change
 
->
->>   then, that two lengths won't
->> match and false will be returned, and registration on the same CS
->> will be failed.
-> Unfortunately, based on this, I don't get what is compare with what. I
-> bet the issue is simple, but based on the description it does not look
-> like that.
-Indeed... I wrote it because I felt like I had to explain it in detail, 
-but I made it unnecessarily complicated.
-I'll improve and make it concise.
+[1]: https://lore.kernel.org/all/cover.1667336095.git.christophe.jaillet@wanadoo.fr/
+---
+ drivers/video/fbdev/omap2/omapfb/dss/display-sysfs.c | 7 ++++---
+ drivers/video/fbdev/omap2/omapfb/dss/manager-sysfs.c | 7 ++++---
+ drivers/video/fbdev/omap2/omapfb/dss/overlay-sysfs.c | 3 ++-
+ drivers/video/fbdev/omap2/omapfb/omapfb-sysfs.c      | 3 ++-
+ 4 files changed, 12 insertions(+), 8 deletions(-)
 
->
->> example (Century Systems MA-E350/N, AM3352):
->>
->> - Device Tree
->>
->>    /* memory mapped gpio controllers on GPMC */
->>    gpio@2,2 {
->>        reg = <2 0x2 0x1>; /* CS2, offset 0x2, IO size 0x1 */
->>        ...
->>    };
->>
->>    gpio@2,10 {
->>        reg = <2 0x10 0x1>; /* CS2, offset 0x10, IO size 0x1 */
->>        ...
->>    };
->>
->>    gpio@2,12 {
->>        reg = <2 0x12 0x1>; /* CS2, offset 0x12, IO size 0x1 */
->>        ...
->>    };
->>
->>    gpio@2,14 {
->>        reg = <2 0x14 0x1>; /* CS2, offset 0x14, IO size 0x1 */
->>        ...
->>    };
-> Trim it, two entries might be enough to illustrate it.
-Okay, I'll reduce.
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/display-sysfs.c b/drivers/video/fbdev/omap2/omapfb/dss/display-sysfs.c
+index bc5a44c2a144..ae937854403b 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/display-sysfs.c
++++ b/drivers/video/fbdev/omap2/omapfb/dss/display-sysfs.c
+@@ -10,6 +10,7 @@
+ #define DSS_SUBSYS_NAME "DISPLAY"
+ 
+ #include <linux/kernel.h>
++#include <linux/kstrtox.h>
+ #include <linux/module.h>
+ #include <linux/platform_device.h>
+ #include <linux/sysfs.h>
+@@ -36,7 +37,7 @@ static ssize_t display_enabled_store(struct omap_dss_device *dssdev,
+ 	int r;
+ 	bool enable;
+ 
+-	r = strtobool(buf, &enable);
++	r = kstrtobool(buf, &enable);
+ 	if (r)
+ 		return r;
+ 
+@@ -73,7 +74,7 @@ static ssize_t display_tear_store(struct omap_dss_device *dssdev,
+ 	if (!dssdev->driver->enable_te || !dssdev->driver->get_te)
+ 		return -ENOENT;
+ 
+-	r = strtobool(buf, &te);
++	r = kstrtobool(buf, &te);
+ 	if (r)
+ 		return r;
+ 
+@@ -183,7 +184,7 @@ static ssize_t display_mirror_store(struct omap_dss_device *dssdev,
+ 	if (!dssdev->driver->set_mirror || !dssdev->driver->get_mirror)
+ 		return -ENOENT;
+ 
+-	r = strtobool(buf, &mirror);
++	r = kstrtobool(buf, &mirror);
+ 	if (r)
+ 		return r;
+ 
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/manager-sysfs.c b/drivers/video/fbdev/omap2/omapfb/dss/manager-sysfs.c
+index ba21c4a2633d..1b644be5fe2e 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/manager-sysfs.c
++++ b/drivers/video/fbdev/omap2/omapfb/dss/manager-sysfs.c
+@@ -10,6 +10,7 @@
+ #define DSS_SUBSYS_NAME "MANAGER"
+ 
+ #include <linux/kernel.h>
++#include <linux/kstrtox.h>
+ #include <linux/slab.h>
+ #include <linux/module.h>
+ #include <linux/platform_device.h>
+@@ -246,7 +247,7 @@ static ssize_t manager_trans_key_enabled_store(struct omap_overlay_manager *mgr,
+ 	bool enable;
+ 	int r;
+ 
+-	r = strtobool(buf, &enable);
++	r = kstrtobool(buf, &enable);
+ 	if (r)
+ 		return r;
+ 
+@@ -290,7 +291,7 @@ static ssize_t manager_alpha_blending_enabled_store(
+ 	if(!dss_has_feature(FEAT_ALPHA_FIXED_ZORDER))
+ 		return -ENODEV;
+ 
+-	r = strtobool(buf, &enable);
++	r = kstrtobool(buf, &enable);
+ 	if (r)
+ 		return r;
+ 
+@@ -329,7 +330,7 @@ static ssize_t manager_cpr_enable_store(struct omap_overlay_manager *mgr,
+ 	if (!dss_has_feature(FEAT_CPR))
+ 		return -ENODEV;
+ 
+-	r = strtobool(buf, &enable);
++	r = kstrtobool(buf, &enable);
+ 	if (r)
+ 		return r;
+ 
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/overlay-sysfs.c b/drivers/video/fbdev/omap2/omapfb/dss/overlay-sysfs.c
+index 601c0beb6de9..1da4fb1c77b4 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/overlay-sysfs.c
++++ b/drivers/video/fbdev/omap2/omapfb/dss/overlay-sysfs.c
+@@ -13,6 +13,7 @@
+ #include <linux/err.h>
+ #include <linux/sysfs.h>
+ #include <linux/kobject.h>
++#include <linux/kstrtox.h>
+ #include <linux/platform_device.h>
+ 
+ #include <video/omapfb_dss.h>
+@@ -210,7 +211,7 @@ static ssize_t overlay_enabled_store(struct omap_overlay *ovl, const char *buf,
+ 	int r;
+ 	bool enable;
+ 
+-	r = strtobool(buf, &enable);
++	r = kstrtobool(buf, &enable);
+ 	if (r)
+ 		return r;
+ 
+diff --git a/drivers/video/fbdev/omap2/omapfb/omapfb-sysfs.c b/drivers/video/fbdev/omap2/omapfb/omapfb-sysfs.c
+index 06dc41aa0354..831b2c2fbdf9 100644
+--- a/drivers/video/fbdev/omap2/omapfb/omapfb-sysfs.c
++++ b/drivers/video/fbdev/omap2/omapfb/omapfb-sysfs.c
+@@ -15,6 +15,7 @@
+ #include <linux/uaccess.h>
+ #include <linux/platform_device.h>
+ #include <linux/kernel.h>
++#include <linux/kstrtox.h>
+ #include <linux/mm.h>
+ #include <linux/omapfb.h>
+ 
+@@ -96,7 +97,7 @@ static ssize_t store_mirror(struct device *dev,
+ 	int r;
+ 	struct fb_var_screeninfo new_var;
+ 
+-	r = strtobool(buf, &mirror);
++	r = kstrtobool(buf, &mirror);
+ 	if (r)
+ 		return r;
+ 
+-- 
+2.34.1
 
->
->> - dmesg
->>
->>    [    1.596402] omap-gpmc 50000000.gpmc: cannot request GPMC CS 2
->>    [    1.596434] omap-gpmc 50000000.gpmc: failed to probe DT child 'gpio': -16
->>    [    1.596489] omap-gpmc 50000000.gpmc: cannot request GPMC CS 2
->>    [    1.596511] omap-gpmc 50000000.gpmc: failed to probe DT child 'gpio': -16
->>    [    1.596564] omap-gpmc 50000000.gpmc: cannot request GPMC CS 2
->>    [    1.596586] omap-gpmc 50000000.gpmc: failed to probe DT child 'gpio': -16
->>
->>    ("gpio@2,2" is ok, "gpio@2,10", "gpio@2,12", "gpio@2.14" are fail)
->>
->> Fixes: c2ade654dbf7d02f09ad491f5621fc321d4af96b
->> ("memory: omap-gpmc: Use of_node_name_eq for node name comparisons")
-> Also not correct tag. Run checkpatch.
->
-> No blank lines.
-I'll fix.
-
->
->> Signed-off-by: INAGAKI Hiroshi <musashino.open@gmail.com>
->
->> ---
->>   drivers/memory/omap-gpmc.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/memory/omap-gpmc.c b/drivers/memory/omap-gpmc.c
->> index d78f73db37c8..3e3e84e34795 100644
->> --- a/drivers/memory/omap-gpmc.c
->> +++ b/drivers/memory/omap-gpmc.c
->> @@ -2202,7 +2202,7 @@ static int gpmc_probe_generic_child(struct platform_device *pdev,
->>   		dev_err(&pdev->dev, "cannot request GPMC CS %d\n", cs);
->>   		return ret;
->>   	}
->> -	gpmc_cs_set_name(cs, child->full_name);
->> +	gpmc_cs_set_name(cs, child->name);
->>   
->>   	gpmc_read_settings_dt(child, &gpmc_s);
->>   	gpmc_read_timings_dt(child, &gpmc_t);
->>
->> base-commit: 13f35b3c72f4075e13a974f439b20b9e26f8f243
-> Best regards,
-> Krzysztof
->
-
-I've completely forgot to run checkpatch.pl before sending...
-Before sending the next patch, I will fix the points pointed out this 
-time, read the guidelines carefully again and run checkpatch.
-
-Regards,
-Hiroshi
