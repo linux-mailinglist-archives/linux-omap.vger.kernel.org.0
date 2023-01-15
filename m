@@ -2,88 +2,117 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E993B66AD55
-	for <lists+linux-omap@lfdr.de>; Sat, 14 Jan 2023 19:57:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D00D66B1BF
+	for <lists+linux-omap@lfdr.de>; Sun, 15 Jan 2023 15:58:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230193AbjANS5k (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 14 Jan 2023 13:57:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57828 "EHLO
+        id S231311AbjAOO6M (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 15 Jan 2023 09:58:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229900AbjANS5j (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 14 Jan 2023 13:57:39 -0500
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F9D3B76D;
-        Sat, 14 Jan 2023 10:57:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-        Content-ID:Content-Description:In-Reply-To:References;
-        bh=COfo/oBaSIMqiEbzejZ+tc/RTs2C5/+Q+HgjZl4m/5Q=; b=nN5H6ijpvyI0WhD3m22iQZr6W7
-        +5YKA0DdaE6ip5ViwvmqcWedP7YM+ybK/WyHv0nQK6ZjUCkYboQvvOns5QaYWGUd1OHBU/WiPyfye
-        aTc/WgGTLyhK+k4aaQuHgpCR6M6tx4IloALsQD1OCAIZNq9Wf7+N0ZilJ9XXqF0tXzQtR3Jo4qNM+
-        h2dOZfRUWC4z3CD/qsVD2sS51uk2tISK0FIrQKfBACQvYLNAqqs/IWsKifhcOevg0nMFCxI/JEhwL
-        dYaC8nmS4z6fVoFVa11/zXhghpQdUIVsT/x1HcKdv9dCeAcP3spn8N5qW/5Pi+vSMTWijnYLZZgKv
-        PmIT69BA==;
-Received: from [2601:1c2:d80:3110::9307] (helo=bombadil.infradead.org)
-        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1pGlij-006MF8-7c; Sat, 14 Jan 2023 18:57:37 +0000
-From:   Randy Dunlap <rdunlap@infradead.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        Jerome Neanne <jneanne@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>
-Subject: [PATCH v2] regulator: tps65219: use IS_ERR() to detect an error pointer
-Date:   Sat, 14 Jan 2023 10:57:36 -0800
-Message-Id: <20230114185736.2076-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.39.0
+        with ESMTP id S230411AbjAOO6L (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 15 Jan 2023 09:58:11 -0500
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 104DD1040B
+        for <linux-omap@vger.kernel.org>; Sun, 15 Jan 2023 06:58:09 -0800 (PST)
+Received: by mail-ej1-x62a.google.com with SMTP id ud5so62692124ejc.4
+        for <linux-omap@vger.kernel.org>; Sun, 15 Jan 2023 06:58:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=PfWWCmg2Z6NPIwFDHOmJ9fYg7mNLT5FmitAzeljhDik=;
+        b=egGGhPWNjQO6X44QNAaWTM1OkdaR5dgL2U1R39eQ13Uu8ZxxfaWlgYKAD0kKab4Jqm
+         3x4ZIh8T0QLC52iRgfWx21cZwsN8ZD852M9fOxhzae1pRz7XUrzuw+JH+7KbFX28YEEq
+         M4Yj0bcAryGCtAPETNPejjthYlA+gO4VzoiIJuBiUr2puTC/ATjpGMMX+HdU/p8xcC+i
+         eXueIlFt4rYR+06CJuwf57VJMscBpDP/7mlpy65vRu1851gEl6sPpTWOyPRtMXkLh8WM
+         8RO3x03COF8F9unt7UN7s2cow2k7T5UWApdvaiX1yiWBG7YEDOE87tBNmbz7DH38sc7D
+         RwGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=PfWWCmg2Z6NPIwFDHOmJ9fYg7mNLT5FmitAzeljhDik=;
+        b=rcr0i0rkVl7rEOCRUnUhx7JGI1aeQJePDPzS4NwUdHjezC61oZRXHwb1Y0o1w7zzYw
+         1rxylcms0Se6hK1FjRIMBXDWFb9BHXne6rKDXwIi6kl6AK0IjCOj6t1fPV7TkOyNUACL
+         mdNdReZCR9zbrfANYuu1sm/tmeF/7GWl4GFQnyzUSkm4wDSXxg3EINbMnxlJbj+WIylx
+         jGUfLEplYn3H9Y0cVJ4FzX3Zd/sj7BmN9WycfL/3LT4GXsnw0SYGERZMdczp8jqT7qYJ
+         zG3+G4+Xn/70gNbPzWgFKrUzuKFbytNfG7bD+u9RbP/Smo+E0yw66XbdqoSeTX8nvNVE
+         uQ2A==
+X-Gm-Message-State: AFqh2kqjz0nSEN3PIP+TDdQQgyb0XaE+GT4rD9BylFHXLnwRvtgwHaoA
+        9g8iiNAub4A8028S2sEIoY/8iA==
+X-Google-Smtp-Source: AMrXdXsM/Rz+u4//7jTJKSU7N4pZGKA5+3HOizlKLtnzAZ8bz+S5kLRNy78y4fpyA7DTrcnLC5yA9A==
+X-Received: by 2002:a17:907:8e93:b0:7c1:7226:c936 with SMTP id tx19-20020a1709078e9300b007c17226c936mr79173818ejc.64.1673794687628;
+        Sun, 15 Jan 2023 06:58:07 -0800 (PST)
+Received: from [192.168.1.109] ([178.197.216.144])
+        by smtp.gmail.com with ESMTPSA id p4-20020a17090653c400b0084ca4bd745esm10802871ejo.35.2023.01.15.06.58.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 15 Jan 2023 06:58:07 -0800 (PST)
+Message-ID: <2ebbe66f-fc98-3be2-1f93-857f0025e75e@linaro.org>
+Date:   Sun, 15 Jan 2023 15:58:05 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
+Subject: Re: [PATCH] ARM: dts: omap: gta04: add BNO055 IMU chip
+Content-Language: en-US
+To:     Andreas Kemnade <andreas@kemnade.info>, bcousson@baylibre.com,
+        tony@atomide.com, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, linux-omap@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20230113221058.2355840-1-andreas@kemnade.info>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230113221058.2355840-1-andreas@kemnade.info>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Fix pointer comparison to integer warning from gcc & sparse:
+On 13/01/2023 23:10, Andreas Kemnade wrote:
+> There is finally a driver upstreamed, so add the
+> device.
+> 
+> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+> ---
+>  arch/arm/boot/dts/omap3-gta04a5.dts | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
+> 
+> diff --git a/arch/arm/boot/dts/omap3-gta04a5.dts b/arch/arm/boot/dts/omap3-gta04a5.dts
+> index 0b5bd7388877..4f56f7fc0d1b 100644
+> --- a/arch/arm/boot/dts/omap3-gta04a5.dts
+> +++ b/arch/arm/boot/dts/omap3-gta04a5.dts
+> @@ -75,6 +75,11 @@ OMAP3_CORE1_IOPAD(0x2138, PIN_INPUT | MUX_MODE4) /* gpin114 */
+>  		>;
+>  	};
+>  
+> +	bno050_pins: pinmux-bno050-pins {
+> +		pinctrl-single,pins = <
+> +			OMAP3_CORE1_IOPAD(0x2136, PIN_INPUT | MUX_MODE4) /* gpin113 */
+> +		>;
+> +	};
+>  };
+>  
+>  /*
+> @@ -136,4 +141,13 @@ bme280@76 {
+>  		vdda-supply = <&vio>;
+>  		vddd-supply = <&vio>;
+>  	};
+> +
+> +	bno055@29 {
 
-GCC:
-../drivers/regulator/tps65219-regulator.c:370:26: warning: ordered comparison of pointer with integer zero [-Wextra]
-  370 |                 if (rdev < 0) {
-      |                          ^
+Node names should be generic.
+https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
 
-sparse warning:
-drivers/regulator/tps65219-regulator.c:370:26: sparse: error: incompatible types for operation (<):
-drivers/regulator/tps65219-regulator.c:370:26: sparse:    struct regulator_dev *[assigned] rdev
-drivers/regulator/tps65219-regulator.c:370:26: sparse:    int
+> +		compatible = "bosch,bno055";
+> +		reg = <0x29>;
 
-Fixes: c12ac5fc3e0a ("regulator: drivers: Add TI TPS65219 PMIC regulators support")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Jerome Neanne <jneanne@baylibre.com>
-Cc: Tony Lindgren <tony@atomide.com>
-Cc: linux-omap@vger.kernel.org
-Cc: Liam Girdwood <lgirdwood@gmail.com>
-Cc: Mark Brown <broonie@kernel.org>
----
-v2: correct Jerome's email address;
-    add Fixes: tag.
+Best regards,
+Krzysztof
 
- drivers/regulator/tps65219-regulator.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff -- a/drivers/regulator/tps65219-regulator.c b/drivers/regulator/tps65219-regulator.c
---- a/drivers/regulator/tps65219-regulator.c
-+++ b/drivers/regulator/tps65219-regulator.c
-@@ -367,7 +367,7 @@ static int tps65219_regulator_probe(stru
- 		irq_data[i].type = irq_type;
- 
- 		tps65219_get_rdev_by_name(irq_type->regulator_name, rdevtbl, rdev);
--		if (rdev < 0) {
-+		if (IS_ERR(rdev)) {
- 			dev_err(tps->dev, "Failed to get rdev for %s\n",
- 				irq_type->regulator_name);
- 			return -EINVAL;
