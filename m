@@ -2,105 +2,61 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 640B766C28B
-	for <lists+linux-omap@lfdr.de>; Mon, 16 Jan 2023 15:45:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A65A66C335
+	for <lists+linux-omap@lfdr.de>; Mon, 16 Jan 2023 16:03:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232201AbjAPOpQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 16 Jan 2023 09:45:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37264 "EHLO
+        id S232836AbjAPPDN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 16 Jan 2023 10:03:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229608AbjAPOo2 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 16 Jan 2023 09:44:28 -0500
-Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com [IPv6:2607:f8b0:4864:20::b36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8D5D22DCD
-        for <linux-omap@vger.kernel.org>; Mon, 16 Jan 2023 06:24:53 -0800 (PST)
-Received: by mail-yb1-xb36.google.com with SMTP id v19so24550202ybv.1
-        for <linux-omap@vger.kernel.org>; Mon, 16 Jan 2023 06:24:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=hCyXRjcH8YuwMPEc2ZGG+hIyruOgN3sWMVzTY5twqOU=;
-        b=XWpOyCztBtkKx9ZAX92Cij1ET+v3vM5l4VgjTnfVz8etnbVKmQzdzXKiArQff3IlVy
-         jvoZUuLVCzvHSWG43wIh5rLJu/thKefKdcqxmWqYiy4/y/UmeyiaA+aZFHIUnv3wlzeD
-         dIEt6/mDa9m+meh8Kgli87SMgtlT45zia86KPKlID1ylg2f82LVnbZcw+rW9IPsg+y2Q
-         umy8FyEupLgcjA47nK+5cEQGho3FR2tB8m33lVTZ9LVPWc7VVlPaPrF7XwbrDlWP5JaV
-         7gcYpsfMwI0HO+/cNhLw1CjUA1zn3NliRhzyI6Fd9yr8LfEoqaReR+ydamnQimvJFlvi
-         oz+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=hCyXRjcH8YuwMPEc2ZGG+hIyruOgN3sWMVzTY5twqOU=;
-        b=jbw/gLOX+bGeNQvOXLVkTXgOgdq3xJ5AUEzWxx7rr5c0lOaZi/Udtek50VgnS2wr4G
-         xGuIepiZQblWNuBFGEvr7xf34D2BQExLuVXsaK9x3IocRd2jHvR2puqaf390P9ObSF4D
-         NHCmv7UNblk/M7vdFrPM5DTCH1cHIoxx9FDrh96n22gkdaDxgZWY/6owQkaUdCzNAiXd
-         giMLXllbpm56PZ5uF3GgdJkclaZSAbOS59QBpJF/f2hstRJyLSEVca3lYFGMxDPCrNvX
-         1t0s2ot4pAoqz4bFB+T8P6aIkfVPyT1I2E+P6HOD5YBTwHlUBsJfeANHoUrF1RIFACyp
-         5I1Q==
-X-Gm-Message-State: AFqh2kpxTAqhjF+Tai7DFr8hkCbKRFikwRdVv45SLHk0GD7wvYkBHLWG
-        g341HKOpMFfLJ+zhm4lusK5TqKIir3WfekPq3i3xag==
-X-Google-Smtp-Source: AMrXdXvOIqa4B5X1SKY7nI4ChSAOS1tejaxJocS8domNreZwCS9JtClGZZpNoDocx9NKT25bHmmO8QYUc/fY4qvGdzg=
-X-Received: by 2002:a5b:a90:0:b0:70b:87d5:4a73 with SMTP id
- h16-20020a5b0a90000000b0070b87d54a73mr7127242ybq.584.1673879093120; Mon, 16
- Jan 2023 06:24:53 -0800 (PST)
+        with ESMTP id S233008AbjAPPBS (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 16 Jan 2023 10:01:18 -0500
+Received: from muru.com (muru.com [72.249.23.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 257DA25E07;
+        Mon, 16 Jan 2023 06:52:00 -0800 (PST)
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 29C2A8108;
+        Mon, 16 Jan 2023 14:51:59 +0000 (UTC)
+Date:   Mon, 16 Jan 2023 16:51:57 +0200
+From:   Tony Lindgren <tony@atomide.com>
+To:     Adam Ford <aford173@gmail.com>
+Cc:     Andreas Kemnade <andreas@kemnade.info>, bcousson@baylibre.com,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        "H. Nikolaus Schaller" <hns@goldelico.com>
+Subject: Re: [PATCH] ARM: dts: gta04: fix excess dma channel usage
+Message-ID: <Y8VkjQ2yZQssx/wJ@atomide.com>
+References: <20230113211151.2314874-1-andreas@kemnade.info>
+ <CAHCN7xJH+c41Yas+xnWA57KNi9arOOJDxJ=joEDEJr2k6jrRrw@mail.gmail.com>
 MIME-Version: 1.0
-References: <20230113205922.2312951-1-andreas@kemnade.info>
-In-Reply-To: <20230113205922.2312951-1-andreas@kemnade.info>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Mon, 16 Jan 2023 15:24:42 +0100
-Message-ID: <CACRpkdauDEys-XyYvb=jt1U6FcKc-qiie-A3W0WQ08rnm42DwQ@mail.gmail.com>
-Subject: Re: [PATCH] gpio: omap: use dynamic allocation of base
-To:     Andreas Kemnade <andreas@kemnade.info>
-Cc:     grygorii.strashko@ti.com, ssantosh@kernel.org, khilman@kernel.org,
-        brgl@bgdev.pl, linux-omap@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHCN7xJH+c41Yas+xnWA57KNi9arOOJDxJ=joEDEJr2k6jrRrw@mail.gmail.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, Jan 13, 2023 at 9:59 PM Andreas Kemnade <andreas@kemnade.info> wrote:
+Hi,
 
-> Static allocatin is deprecated and may cause probe mess,
-> if probe order is unusual.
->
-> like this example
-> [    2.553833] twl4030_gpio twl4030-gpio: gpio (irq 145) chaining IRQs 161..178
-> [    2.561401] gpiochip_find_base: found new base at 160
-> [    2.564392] gpio gpiochip5: (twl4030): added GPIO chardev (254:5)
-> [    2.564544] gpio gpiochip5: registered GPIOs 160 to 177 on twl4030
-> [...]
-> [    2.692169] omap-gpmc 6e000000.gpmc: GPMC revision 5.0
-> [    2.697357] gpmc_mem_init: disabling cs 0 mapped at 0x0-0x1000000
-> [    2.703643] gpiochip_find_base: found new base at 178
-> [    2.704376] gpio gpiochip6: (omap-gpmc): added GPIO chardev (254:6)
-> [    2.704589] gpio gpiochip6: registered GPIOs 178 to 181 on omap-gpmc
-> [...]
-> [    2.840393] gpio gpiochip7: Static allocation of GPIO base is deprecated, use dynamic allocation.
-> [    2.849365] gpio gpiochip7: (gpio-160-191): GPIO integer space overlap, cannot add chip
-> [    2.857513] gpiochip_add_data_with_key: GPIOs 160..191 (gpio-160-191) failed to register, -16
-> [    2.866149] omap_gpio 48310000.gpio: error -EBUSY: Could not register gpio chip
->
-> So probing was done in an unusual order, causing mess
-> and chips not getting their gpio in the end.
->
-> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+* Adam Ford <aford173@gmail.com> [230116 14:16]:
+> Would it make sense to make this default in the omap3.dtsi file and
+> enable them in the individual boards that need it?
 
-Dangerous but beautiful change. Let's be brave.
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+In general disabling the unused devices by default for omaps will break
+the power management. The disabled devices are completely ignored by the
+kernel, and the devices are left to whatever the bootloader state might
+be.
 
-> maybe CC stable? not sure about good fixes tag.
+For SoCs using firmware to manage devices it's a bit different story
+however. The firmware can still idle disabled devices based on a
+late_initcall for example, even if the kernel knows nothing about the
+disabled devices.
 
-I wouldn't do that from the outset. If there are no problems
-for a few kernel releases we can think about doing that.
+Regards,
 
-Yours,
-Linus Walleij
+Tony
