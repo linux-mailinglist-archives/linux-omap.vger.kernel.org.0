@@ -2,121 +2,126 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D494667171B
-	for <lists+linux-omap@lfdr.de>; Wed, 18 Jan 2023 10:08:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 91130671857
+	for <lists+linux-omap@lfdr.de>; Wed, 18 Jan 2023 10:59:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230051AbjARJIQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 18 Jan 2023 04:08:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38300 "EHLO
+        id S229475AbjARJ7b (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 18 Jan 2023 04:59:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40192 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230070AbjARJHO (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 18 Jan 2023 04:07:14 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5171E46165;
-        Wed, 18 Jan 2023 00:27:56 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1F12C6170A;
-        Wed, 18 Jan 2023 08:27:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 051CAC433F2;
-        Wed, 18 Jan 2023 08:27:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1674030471;
-        bh=WbTFsa9uUp/GVGY/40OGOerWX8P64wmwxJdpH4/nltI=;
-        h=From:To:Cc:Subject:Date:From;
-        b=V7aUlMB1fk/MekJXOCCs0PVc7h7kscdLWolw8c0WI1wa+OsKN/p6yxqVXnzGJ8JHS
-         Uoycpu4Jp3BQQEZKAaEgSK/Q6UY+ktGlvOuFG/Szp1NpTdSQsyX7UCo4e7qfon2KGu
-         78vDDd0SXYGxCealFCqVG/uKwJf0pL+FpTSO1tqZQ4m6X3UdHE68ub0TuHWg1/BhIe
-         JLdfMCz5kuK9g70CWen7N6kMbwi0mH4D8+U2nH8hvx/MLye9I3kqaBjCd/zAjR1X2i
-         7lePDAf9uc90kD3v246r28DG1lKoxbDLWXL4366Xlgwya8yB2y3jL9aiJC1xKsT+GU
-         YvfU7u9dsED8A==
-From:   Arnd Bergmann <arnd@kernel.org>
-To:     Alan Stern <stern@rowland.harvard.edu>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Arnd Bergmann <arnd@arndb.de>, Tony Lindgren <tony@atomide.com>
-Cc:     Felipe Balbi <felipe.balbi@linux.intel.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        linux-usb@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] usb: ohci-omap: avoid unused-variable warning
-Date:   Wed, 18 Jan 2023 09:27:34 +0100
-Message-Id: <20230118082746.391542-1-arnd@kernel.org>
-X-Mailer: git-send-email 2.39.0
+        with ESMTP id S230299AbjARJyh (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 18 Jan 2023 04:54:37 -0500
+Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D0728F7D2;
+        Wed, 18 Jan 2023 01:06:21 -0800 (PST)
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 30I969TF104115;
+        Wed, 18 Jan 2023 03:06:09 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1674032769;
+        bh=/da+ssa5GDD6vweT7++x50Ek4g6HrX+yJTbxHpmjcwM=;
+        h=Date:CC:Subject:To:References:From:In-Reply-To;
+        b=VyNGN4/1efZ4VWOZP9XZ1ZoGXQAyENpXrPzInwoHAhnEOEfgizsU16ssgE562PMRp
+         DRdaKZV1+uC3V60HC9/3mwet8bCBCpAsqqzpLNdjz041VRpbvZ+0nJ8aaXFTTPaMMW
+         AkWwnDK2F2Zs2UjXTcVAAcBLeltrPztSxf8LEASw=
+Received: from DLEE101.ent.ti.com (dlee101.ent.ti.com [157.170.170.31])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 30I969HG007343
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 18 Jan 2023 03:06:09 -0600
+Received: from DLEE111.ent.ti.com (157.170.170.22) by DLEE101.ent.ti.com
+ (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16; Wed, 18
+ Jan 2023 03:06:08 -0600
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE111.ent.ti.com
+ (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16 via
+ Frontend Transport; Wed, 18 Jan 2023 03:06:08 -0600
+Received: from [172.24.145.61] (ileaxei01-snat.itg.ti.com [10.180.69.5])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 30I963Jf062854;
+        Wed, 18 Jan 2023 03:06:04 -0600
+Message-ID: <998410e8-7856-2b15-4312-e8f6fe868587@ti.com>
+Date:   Wed, 18 Jan 2023 14:36:03 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.2
+CC:     Tom Joseph <tjoseph@cadence.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Wilczy_ski <kw@linux.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Milind Parab <mparab@cadence.com>,
+        Jian Wang <jian-wang@ti.com>, <s-vadapalli@ti.com>
+Subject: Re: [PATCH] PCI: cadence: Fix next function value in case of ARI
+Content-Language: en-US
+To:     Achal Verma <a-verma1@ti.com>
+References: <20230118072035.3381993-1-a-verma1@ti.com>
+From:   Siddharth Vadapalli <s-vadapalli@ti.com>
+In-Reply-To: <20230118072035.3381993-1-a-verma1@ti.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+Hello Achal,
 
-The dead code removal has led to 'need_transceiver' not being
-used at all when OTG support is disabled:
+On 18/01/23 12:50, Achal Verma wrote:
+> From: Jasko-EXT Wojciech <wojciech.jasko-EXT@continental-corporation.com>
+> 
+> Next function field in ARI_CAP_AND_CTR field register for last
+> function should be zero but thats not the case, so this patch
+> programs the next function field for last function as zero.
+> 
+> Signed-off-by: Jasko-EXT Wojciech <wojciech.jasko-EXT@continental-corporation.com>
+> Signed-off-by: Achal Verma <a-verma1@ti.com>
+> ---
+>  drivers/pci/controller/cadence/pcie-cadence-ep.c | 15 ++++++++++++++-
+>  drivers/pci/controller/cadence/pcie-cadence.h    |  6 ++++++
+>  2 files changed, 20 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/pci/controller/cadence/pcie-cadence-ep.c b/drivers/pci/controller/cadence/pcie-cadence-ep.c
+> index b8b655d4047e..6b6904cf0123 100644
+> --- a/drivers/pci/controller/cadence/pcie-cadence-ep.c
+> +++ b/drivers/pci/controller/cadence/pcie-cadence-ep.c
+> @@ -565,7 +565,8 @@ static int cdns_pcie_ep_start(struct pci_epc *epc)
+>  	struct cdns_pcie *pcie = &ep->pcie;
+>  	struct device *dev = pcie->dev;
+>  	int max_epfs = sizeof(epc->function_num_map) * 8;
+> -	int ret, value, epf;
+> +	int ret, epf, last_fn;
+> +	u32 reg, value;
+>  
+>  	/*
+>  	 * BIT(0) is hardwired to 1, hence function 0 is always enabled
+> @@ -573,6 +574,18 @@ static int cdns_pcie_ep_start(struct pci_epc *epc)
+>  	 */
+>  	cdns_pcie_writel(pcie, CDNS_PCIE_LM_EP_FUNC_CFG, epc->function_num_map);
+>  
+> +	/* Setup ARI Next Function Number.
 
-drivers/usb/host/ohci-omap.c: In function 'ohci_omap_reset':
-drivers/usb/host/ohci-omap.c:99:33: error: unused variable 'need_transceiver' [-Werror=unused-variable]
-   99 |         int                     need_transceiver = (config->otg != 0);
+Please follow the standard multi-line commenting style with the first line being
+"/*" followed by the comment on the next line.
 
-Change the #ifdef check into an IS_ENABLED() check to make the
-code more readable and let the compiler see where it is used.
+> +	 * This field should point to the next physical Function and 0 for
+> +	 * last Function.
+> +	 */
+> +	last_fn = find_last_bit(&epc->function_num_map, BITS_PER_LONG);
+> +	reg     = CDNS_PCIE_CORE_PF_I_ARI_CAP_AND_CTRL(last_fn);
+> +
+> +	// Clear Next Function Number for the last function used.
 
-Fixes: 8825acd7cc8a ("ARM: omap1: remove dead code")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
-The patch that caused the issue is in the boardfile-removal branch
-of the soc tree. I would just add the patch there.
----
- drivers/usb/host/ohci-omap.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+Please enclose the comment within /* and */.
 
-diff --git a/drivers/usb/host/ohci-omap.c b/drivers/usb/host/ohci-omap.c
-index 3d57b9454a27..78088cd46908 100644
---- a/drivers/usb/host/ohci-omap.c
-+++ b/drivers/usb/host/ohci-omap.c
-@@ -67,8 +67,6 @@ static void omap_ohci_clock_power(struct ohci_omap_priv *priv, int on)
- 	}
- }
- 
--#ifdef	CONFIG_USB_OTG
--
- static void start_hnp(struct ohci_hcd *ohci)
- {
- 	struct usb_hcd *hcd = ohci_to_hcd(ohci);
-@@ -87,8 +85,6 @@ static void start_hnp(struct ohci_hcd *ohci)
- 	local_irq_restore(flags);
- }
- 
--#endif
--
- /*-------------------------------------------------------------------------*/
- 
- static int ohci_omap_reset(struct usb_hcd *hcd)
-@@ -111,8 +107,7 @@ static int ohci_omap_reset(struct usb_hcd *hcd)
- 	if (config->ocpi_enable)
- 		config->ocpi_enable();
- 
--#ifdef	CONFIG_USB_OTG
--	if (need_transceiver) {
-+	if (IS_ENABLED(CONFIG_USB_OTG) && need_transceiver) {
- 		hcd->usb_phy = usb_get_phy(USB_PHY_TYPE_USB2);
- 		if (!IS_ERR_OR_NULL(hcd->usb_phy)) {
- 			int	status = otg_set_host(hcd->usb_phy->otg,
-@@ -129,7 +124,6 @@ static int ohci_omap_reset(struct usb_hcd *hcd)
- 		hcd->skip_phy_initialization = 1;
- 		ohci->start_hnp = start_hnp;
- 	}
--#endif
- 
- 	omap_ohci_clock_power(priv, 1);
- 
--- 
-2.39.0
-
+Regards,
+Siddharth.
