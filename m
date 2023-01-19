@@ -2,78 +2,176 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B4D9673965
-	for <lists+linux-omap@lfdr.de>; Thu, 19 Jan 2023 14:05:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C08FA673DAD
+	for <lists+linux-omap@lfdr.de>; Thu, 19 Jan 2023 16:38:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229879AbjASNFI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 19 Jan 2023 08:05:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43308 "EHLO
+        id S230396AbjASPiQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 19 Jan 2023 10:38:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230265AbjASNEN (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 19 Jan 2023 08:04:13 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4670B7E6A5;
-        Thu, 19 Jan 2023 05:03:01 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D087160ED9;
-        Thu, 19 Jan 2023 13:03:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8570C433D2;
-        Thu, 19 Jan 2023 13:02:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1674133380;
-        bh=4fpRwxBDEvKhdeNvpW0jXDdE0yZhmx+fqvJjKU6UQ8o=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=jxzWnwrIOK3O/jYLSAqMZPG5FXGQqLLw1cHUt7kw3BLgocy1ioIoytm80AedZHoMO
-         mtbNusCHvs3V0zPrfLPLj+gCAJ+jVAKbLB/m2iNDLAX4nWrUD6vCjYE4qWFQxtfOKI
-         +4j88CsxiWONiAV+Ubv20xf/nuI0MILqna0DufCw=
-Date:   Thu, 19 Jan 2023 14:02:57 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Arnd Bergmann <arnd@kernel.org>
-Cc:     Alan Stern <stern@rowland.harvard.edu>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Tony Lindgren <tony@atomide.com>,
-        Felipe Balbi <felipe.balbi@linux.intel.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        linux-usb@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] usb: ohci-omap: avoid unused-variable warning
-Message-ID: <Y8k/gXy8YQd0/oyr@kroah.com>
-References: <20230118082746.391542-1-arnd@kernel.org>
+        with ESMTP id S231223AbjASPiO (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 19 Jan 2023 10:38:14 -0500
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 685F28299D
+        for <linux-omap@vger.kernel.org>; Thu, 19 Jan 2023 07:38:08 -0800 (PST)
+Received: by mail-wr1-x430.google.com with SMTP id t5so2277801wrq.1
+        for <linux-omap@vger.kernel.org>; Thu, 19 Jan 2023 07:38:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=9OtQKUy3O/wxA8BJ9fjP5SexIZ7HSW4yV7WQUNilHvg=;
+        b=qDUwzHhP9WiwfxC3rlJQQt3rmBKzAJQWEgZSjeuvbrGSHyfBIW/UX9axTeJ6b72khJ
+         nuKAXboBweC0hJWpbxz8lKKA/LnMWK6FVlKVnTbRWCjSPEo64nNMp2KlZ34+2sRJOzIG
+         w5Pkh1vzqJ+4Oh0VMMRTZdEF8LNYlPreCV4X3ezWjMhVWaV0vb4PR7FTNwmjuxDFFyH8
+         j0gaTvYTvn02jK0UrXzu3iNyLVoRgyDu8v/Ga5OBWjGnHIsPe+YocS/3c9uyxbp8qwlq
+         ntBWEClNF60A8WwLce1bSXWX4CdZHPYKzLpv0liw3XO2N4Ql2wVqCYtrPqZn8eEW9VYe
+         enAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=9OtQKUy3O/wxA8BJ9fjP5SexIZ7HSW4yV7WQUNilHvg=;
+        b=v4Lj6Am6Sq29OtYoSjZN1Mta4lG3dVD7sw/EXDdCFPMq+yUKi69EJ7h4w04EVnpAN2
+         R3daaJHc9LOiKN1thkhkazZ4DGP1X/2TKGtQ45BDbtnUORGVSkLyqWNfj/OP2E01cMwU
+         bpZMP3jSWonUX/3rUTNrKZez7e+lLxTkEmhjGgikMSNA8vPtG5owgCK4IuE3IF+ozvsS
+         Fi7lQgGIZxiYi6Ov2vynp0MjwnNdo16lcEa6drBhpURJqkxr+vD+M/I+MrfcsZGtcfM3
+         yzasgq1D1M9KAYwQ/cfcLxnvu4sXdxB3OHQD+vm3H/of7AERHmL8abTXRM4GvG498qEF
+         rSkA==
+X-Gm-Message-State: AFqh2krOhDt49pSk22FAiR175tnDtIVAUCsAUkRo1Yd+PxO7gzeBA/5C
+        oIKyjMC62KYBoSeJfpWV2AxIMQ==
+X-Google-Smtp-Source: AMrXdXt3ur3QfDs3VlwSTaNjxSdTD7GrQQEI25qrf//XEtQ+vibijcjrDE3k3n/epLp7Qdx9CSeVCA==
+X-Received: by 2002:adf:f501:0:b0:2ba:dce5:ee28 with SMTP id q1-20020adff501000000b002badce5ee28mr9249903wro.18.1674142686828;
+        Thu, 19 Jan 2023 07:38:06 -0800 (PST)
+Received: from [192.168.1.109] ([178.197.216.144])
+        by smtp.gmail.com with ESMTPSA id c18-20020adffb52000000b0025e86026866sm40281182wrs.0.2023.01.19.07.38.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 19 Jan 2023 07:38:06 -0800 (PST)
+Message-ID: <7b6603d6-3ca9-ff74-0a3e-c76ba555e554@linaro.org>
+Date:   Thu, 19 Jan 2023 16:38:03 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230118082746.391542-1-arnd@kernel.org>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.0
+Subject: Re: [PATCH v8 1/5] dt-bindings: PCI: ti,j721e-pci-*: add checks for
+ num-lanes
+To:     Achal Verma <a-verma1@ti.com>, mranostay@ti.com, rogerq@kernel.org,
+        lpieralisi@kernel.org, robh@kernel.org, kw@linux.com,
+        bhelgaas@google.com, vigneshr@ti.com, tjoseph@cadence.com,
+        sergio.paracuellos@gmail.com, pthombar@cadence.com,
+        linux-pci@vger.kernel.org
+Cc:     devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20230118125936.3456716-1-a-verma1@ti.com>
+ <20230118125936.3456716-2-a-verma1@ti.com>
+Content-Language: en-US
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230118125936.3456716-2-a-verma1@ti.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Jan 18, 2023 at 09:27:34AM +0100, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
+On 18/01/2023 13:59, Achal Verma wrote:
+> From: Matt Ranostay <mranostay@ti.com>
 > 
-> The dead code removal has led to 'need_transceiver' not being
-> used at all when OTG support is disabled:
+> Add num-lanes schema checks based on compatible string on available lanes
+> for that platform.
 > 
-> drivers/usb/host/ohci-omap.c: In function 'ohci_omap_reset':
-> drivers/usb/host/ohci-omap.c:99:33: error: unused variable 'need_transceiver' [-Werror=unused-variable]
->    99 |         int                     need_transceiver = (config->otg != 0);
-> 
-> Change the #ifdef check into an IS_ENABLED() check to make the
-> code more readable and let the compiler see where it is used.
-> 
-> Fixes: 8825acd7cc8a ("ARM: omap1: remove dead code")
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> Signed-off-by: Matt Ranostay <mranostay@ti.com>
+> Signed-off-by: Achal Verma <a-verma1@ti.com>
 > ---
-> The patch that caused the issue is in the boardfile-removal branch
-> of the soc tree. I would just add the patch there.
+>  .../bindings/pci/ti,j721e-pci-ep.yaml         | 28 +++++++++++++++++--
+>  .../bindings/pci/ti,j721e-pci-host.yaml       | 28 +++++++++++++++++--
+>  2 files changed, 50 insertions(+), 6 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/pci/ti,j721e-pci-ep.yaml b/Documentation/devicetree/bindings/pci/ti,j721e-pci-ep.yaml
+> index 10e6eabdff53..403cd3ef1177 100644
+> --- a/Documentation/devicetree/bindings/pci/ti,j721e-pci-ep.yaml
+> +++ b/Documentation/devicetree/bindings/pci/ti,j721e-pci-ep.yaml
+> @@ -10,9 +10,6 @@ title: TI J721E PCI EP (PCIe Wrapper)
+>  maintainers:
+>    - Kishon Vijay Abraham I <kishon@ti.com>
+>  
+> -allOf:
+> -  - $ref: "cdns-pcie-ep.yaml#"
+> -
+>  properties:
+>    compatible:
+>      oneOf:
+> @@ -65,6 +62,31 @@ properties:
+>      items:
+>        - const: link_state
+>  
+> +allOf:
+> +  - $ref: cdns-pcie-ep.yaml#
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          enum:
+> +            - ti,am64-pcie-ep
+> +    then:
+> +      properties:
+> +        num-lanes:
+> +          minimum: 1
+> +          maximum: 1
+> +
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          enum:
+> +            - ti,j7200-pcie-ep
+> +            - ti,j721e-pcie-ep
+> +    then:
+> +      properties:
+> +        num-lanes:
+> +          minimum: 1
+> +          maximum: 2
+> +
+>  required:
+>    - compatible
+>    - reg
+> diff --git a/Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml b/Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml
+> index b0513b197d08..7bd78cfca845 100644
+> --- a/Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml
+> +++ b/Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml
+> @@ -10,9 +10,6 @@ title: TI J721E PCI Host (PCIe Wrapper)
+>  maintainers:
+>    - Kishon Vijay Abraham I <kishon@ti.com>
+>  
+> -allOf:
+> -  - $ref: "cdns-pcie-host.yaml#"
+> -
+>  properties:
+>    compatible:
+>      oneOf:
+> @@ -98,6 +95,31 @@ properties:
+>        interrupts:
+>          maxItems: 1
+>  
+> +allOf:
+> +  - $ref: cdns-pcie-host.yaml#
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          enum:
+> +            - ti,am64-pcie-host
+> +    then:
+> +      properties:
+> +        num-lanes:
+> +          minimum: 1
+> +          maximum: 1
 
+Why not what I asked for?
 
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Best regards,
+Krzysztof
+
