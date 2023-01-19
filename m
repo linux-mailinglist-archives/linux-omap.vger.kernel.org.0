@@ -2,103 +2,97 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 10B2D674437
-	for <lists+linux-omap@lfdr.de>; Thu, 19 Jan 2023 22:22:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E1A7C674C6B
+	for <lists+linux-omap@lfdr.de>; Fri, 20 Jan 2023 06:33:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229789AbjASVW2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 19 Jan 2023 16:22:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38952 "EHLO
+        id S230265AbjATFdi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 20 Jan 2023 00:33:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229968AbjASVWD (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 19 Jan 2023 16:22:03 -0500
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a01:238:4321:8900:456f:ecd6:43e:202c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A56AF87287
-        for <linux-omap@vger.kernel.org>; Thu, 19 Jan 2023 13:16:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=kemnade.info; s=20220719; h=Content-Transfer-Encoding:Content-Type:
-        MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=h9N/HW/LeH8W09KSaxiKhfpHnzZswyTOjUsJzkEM4uY=; b=9C3B0VQT5jru1dChx///+AOobv
-        vYt+0Lxw/cPmrEp4yhc+mr84IhW6EyIFEMjXjrC7KSohZnxLIL3wqRm1u0RUseoBKSGvGZ7IPAKpm
-        0wvuk+sLKiyglHtrR6oXHFFH5om95EQe1zpEv/mKFKDYvc6zBtSc5oOV1TO/RU9//fKrmlfWONxeK
-        iimy/ZKmSDetGRZ8AAt7/7POY2mIRXZLpTwTfPoEWKbIQz8S5/P36nonk8EKyKW4h+xGq342BpF7J
-        4XaBe+KMhbBT9bWFBOLPyM1piNw281KgtYwVRgCKF+fZKrK/crH4xQ1SuWaK8S3Wg479cKcT58OHZ
-        kyH5HvNw==;
-Received: from p200300ccff0e60001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff0e:6000:1a3d:a2ff:febf:d33a] helo=aktux)
-        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <andreas@kemnade.info>)
-        id 1pIcGr-0002e3-36; Thu, 19 Jan 2023 22:16:29 +0100
-Date:   Thu, 19 Jan 2023 22:16:28 +0100
-From:   Andreas Kemnade <andreas@kemnade.info>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     linux-omap@vger.kernel.org, peter.ujfalusi@gmail.com,
-        jarkko.nikula@bitmer.com
-Subject: Re: omap  mcbsp and prcm_fck
-Message-ID: <20230119221628.169766c9@aktux>
-In-Reply-To: <Y8j0MMLoanjo1MCf@atomide.com>
-References: <20230117120810.6cf8b6f7@aktux>
-        <Y8j0MMLoanjo1MCf@atomide.com>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        with ESMTP id S229490AbjATFdY (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 20 Jan 2023 00:33:24 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B4C97AF29;
+        Thu, 19 Jan 2023 21:28:40 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id AD2E5B82166;
+        Thu, 19 Jan 2023 11:13:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CBD5C433EF;
+        Thu, 19 Jan 2023 11:13:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1674126804;
+        bh=JrptjghR/Vgs9p8nXxLUoLdJdd6g9EnHtJeS1PFHDQY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=geqj6wRL4wK3/d1U1EN9IXiI1dDG/mMPJ/4P37Z7uTpqkAJwP+h9wRIDNAHQ2ebiE
+         R7hOeFahUu56mK1wEThpL2qqeohi8ML/F9VXlDnHM7DNF2jm3EcS3Qw8iv05BEuVFq
+         6h6xkiemkCfCJ9cGFev9YqIGHun7NLU1JPFu32S9MzmAMG6NCam2zWXYPfXGnJtynf
+         ZXy+VRtLeP5XlXv4SdPVv1qsZMC3gsMX3UdN/OmQVnWk0FeJ0HrGWdCNednsfxvsZ6
+         STS4sYlbgoYL8OUIvJKyVkxFzS9InI8sWBtHevkl6H+lu4eIYe9BgFa3Dw0Amydnl1
+         rkDeNW/VInIOA==
+Date:   Thu, 19 Jan 2023 11:13:21 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Arnd Bergmann <arnd@kernel.org>, Tony Lindgren <tony@atomide.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Jerome Neanne <jneanne@baylibre.com>,
+        Axel Lin <axel.lin@ingics.com>,
+        Yang Li <yang.lee@linux.alibaba.com>,
+        Yang Yingliang <yangyingliang@huawei.com>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        linux-kernel@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>
+Subject: Re: [PATCH] regulator: tps65219: fix Wextra warning
+Message-ID: <Y8kl0YZwMO3nkaly@sirena.org.uk>
+References: <20221215164140.821796-1-arnd@kernel.org>
+ <Y5tPyOqSNud7LumS@sirena.org.uk>
+ <67efe55d-e5cd-46c1-97e4-c9f3a5884a07@app.fastmail.com>
+ <b1f98c2a-3087-464e-b9fb-97e7c78cfdab@app.fastmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Score: -1.0 (-)
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="+SIVaY/fvl0fQGyk"
+Content-Disposition: inline
+In-Reply-To: <b1f98c2a-3087-464e-b9fb-97e7c78cfdab@app.fastmail.com>
+X-Cookie: Serving suggestion.
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
 
-On Thu, 19 Jan 2023 09:41:36 +0200
-Tony Lindgren <tony@atomide.com> wrote:
+--+SIVaY/fvl0fQGyk
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> Hi,
-> 
-> * Andreas Kemnade <andreas@kemnade.info> [230117 11:08]:
-> > Hi,
-> > 
-> > while trying to create a devicetree for a omap4 device, I stumbled upon this:
-> > 
-> > [   59.789367] omap-mcbsp 40124000.mcbsp: CLKS: could not clk_get() prcm_fck
-> > 
-> > But where should prcm_fck come from? The string does not appear in the
-> > devicetree binding documentation. I have seen it only in the omap_hwmod_* stuff
-> > used by omap2/3.
-> > 
-> > So how to make mcbsp happy?  
-> 
-> I think all you need to do is add an entry for prcm_fck to point to
-> mcbsp4_sync_mux_ck in omap44xx_clks[]. Seems this got dropped with commit
-> 349355ce3a05 ("ARM: OMAP2+: Drop legacy platform data for omap4 mcbsp").
-> 
-> Or patch the driver so it tries to use the dt clock so that the standard
-> assigned-clocks devicetree property works for a board specific
-> configuration.
-> 
-I tried this hack-fix:
+On Thu, Jan 19, 2023 at 09:07:38AM +0100, Arnd Bergmann wrote:
 
---- a/sound/soc/ti/omap-mcbsp.c
-+++ b/sound/soc/ti/omap-mcbsp.c
-@@ -64,7 +64,7 @@ static int omap2_mcbsp_set_clks_src(struct omap_mcbsp *mcbsp, u8 fck_src_id)
-        if (fck_src_id == MCBSP_CLKS_PAD_SRC)
-                src = "pad_fck";
-        else if (fck_src_id == MCBSP_CLKS_PRCM_SRC)
--               src = "prcm_fck";
-+               src = "mcbsp2_sync_mux_ck";
-        else
-                return -EINVAL;
+> It looks like you merged another workaround from Randy Dunlap now as
+> commit 2bbba115c3c9 ("regulator: tps65219: use IS_ERR() to detect an error
+> pointer"), but I think that one is just as wrong as the one I submitted:
+> the 'rdev' variable still remains uninitialized, and checking its value
+> after it has already been used is not helpful.
 
+Right, that's just changing the way the result is parsed, it's
+nothing to do with making sure things are initialised.  It's just
+a coccinelle style thing.
 
-Then I stumple upon the next problem:
-omap-mcbsp 40124000.mcbsp: CLKS: could not clk_set_parent() to mcbsp2_sync_mux_ck
+--+SIVaY/fvl0fQGyk
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Regards,
-Andreas
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmPJJc4ACgkQJNaLcl1U
+h9C6Lgf+MGdWjcr2w5o/s6+Tn+hU9fEAEBbvKquANNH4PIWfbHai88bpEJ3h4P+o
+D9KYDMRcpJzIkxIvj7f+6tLcFdB7EK1gUFmb919cyQhW5UiZmtNaDAiJNuQLFbzy
+sx6iJcNAa+TvRFm0zotZ3souT3RPV+cIjSGKqT8cy4r8g3XWH2fQVyRvAUeg3WCw
+pldKcYZQJrVAAolIUHHMQsT82DwAmOcwogYJGps3PhPNTmAlRZZayqjs1lwuPHja
+5JkfzsLpfjWWMFoKnFEavbvM9JUlLN1z02LDLeSSSIEVJXqoDSoYXBvJY9eM4l3a
+5BIusGAZA/CZcSRFhvCG/P74ttEfMQ==
+=+7Er
+-----END PGP SIGNATURE-----
+
+--+SIVaY/fvl0fQGyk--
