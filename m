@@ -2,36 +2,35 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF56C67350C
-	for <lists+linux-omap@lfdr.de>; Thu, 19 Jan 2023 11:04:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 68F50673545
+	for <lists+linux-omap@lfdr.de>; Thu, 19 Jan 2023 11:16:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230323AbjASKEX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 19 Jan 2023 05:04:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39744 "EHLO
+        id S229928AbjASKQl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 19 Jan 2023 05:16:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230326AbjASKDz (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 19 Jan 2023 05:03:55 -0500
+        with ESMTP id S229618AbjASKQh (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 19 Jan 2023 05:16:37 -0500
 Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 2E8CF6FF97
-        for <linux-omap@vger.kernel.org>; Thu, 19 Jan 2023 02:03:00 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 80CB476AA;
+        Thu, 19 Jan 2023 02:16:36 -0800 (PST)
 Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 773AE8140;
-        Thu, 19 Jan 2023 10:02:59 +0000 (UTC)
-Date:   Thu, 19 Jan 2023 12:02:58 +0200
+        by muru.com (Postfix) with ESMTPS id EBCE18140;
+        Thu, 19 Jan 2023 10:16:35 +0000 (UTC)
+Date:   Thu, 19 Jan 2023 12:16:34 +0200
 From:   Tony Lindgren <tony@atomide.com>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        linux-omap@vger.kernel.org,
-        Maciej Falkowski <maciej.falkowski9@gmail.com>
-Subject: Re: [PATCH v2] ARM: OMAP1: Move h2 LEDs to GPIO lookup table
-Message-ID: <Y8kVUsmPN52xpIYr@atomide.com>
-References: <20230111132403.134617-1-linus.walleij@linaro.org>
- <Y8kUW8+vz62CXFsj@atomide.com>
+To:     Geert Uytterhoeven <geert+renesas@glider.be>
+Cc:     Kevin Hilman <khilman@kernel.org>, Keerthy <j-keerthy@ti.com>,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-gpio@vger.kernel.org
+Subject: Re: [PATCH] ARM: OMAP2+: Remove unneeded #include
+ <linux/pinctrl/pinmux.h>
+Message-ID: <Y8kYgjLwBU9Wkl08@atomide.com>
+References: <7f22fb21f76f4d23be2e31a5908bcfa295704ef4.1668000965.git.geert+renesas@glider.be>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Y8kUW8+vz62CXFsj@atomide.com>
+In-Reply-To: <7f22fb21f76f4d23be2e31a5908bcfa295704ef4.1668000965.git.geert+renesas@glider.be>
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -40,24 +39,10 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Tony Lindgren <tony@atomide.com> [230119 09:58]:
-> * Linus Walleij <linus.walleij@linaro.org> [230111 15:24]:
-> > This converts the the H2 GPIO LEDs to use a machine lookup
-> > table.
-> > 
-> > Cc: Tony Lindgren <tony@atomide.com>
-> > Cc: Maciej Falkowski <maciej.falkowski9@gmail.com>
-> > Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-> > ---
-> > ChangeLog v1->v2:
-> > - Rebased on v6.2-rc1
-> > - I suppose Tony picks this up?
-> 
-> OK thanks, applying into omap-for-v6.3/omap1 branch.
+* Geert Uytterhoeven <geert+renesas@glider.be> [221109 15:27]:
+> Commit 44c22a2d12a5c04d ("ARM: OMAP2+: pm33xx: Add support for rtc+ddr
+> in self refresh mode") added the include, but no user.
 
-Oh actually this file is getting dropped in Linux next, so not
-applying.
-
-Regards,
+Applying into omap-for-v6.2/cleanup thanks.
 
 Tony
