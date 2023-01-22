@@ -2,124 +2,96 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 89420676CDC
-	for <lists+linux-omap@lfdr.de>; Sun, 22 Jan 2023 13:22:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A229676DAC
+	for <lists+linux-omap@lfdr.de>; Sun, 22 Jan 2023 15:30:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230120AbjAVMWD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 22 Jan 2023 07:22:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33572 "EHLO
+        id S229888AbjAVOaJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 22 Jan 2023 09:30:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229949AbjAVMWC (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 22 Jan 2023 07:22:02 -0500
-Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F7729EC9;
-        Sun, 22 Jan 2023 04:21:49 -0800 (PST)
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 30MCLU4M118101;
-        Sun, 22 Jan 2023 06:21:30 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1674390090;
-        bh=GGrsVB2NuWgQ/IDsTg782FJLIK98IZjp/7pCe7Mspxs=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=f8nmQIrqBKxewIRmuG39303yaIZlvaG4IBCqtSupTJUVDW4zlzAuHK1OUtgHpa4XC
-         UrkVBa+7eu28+hSU/uLOEvdR2gUmXAu1ia7smVQmxTgPWOUVZHhMBCJJUxe2lOzrfd
-         IRPbwymuDn/DLl2BIPVhfsk0K32cyR6GAYCCu6eM=
-Received: from DLEE112.ent.ti.com (dlee112.ent.ti.com [157.170.170.23])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 30MCLUUA102341
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Sun, 22 Jan 2023 06:21:30 -0600
-Received: from DLEE102.ent.ti.com (157.170.170.32) by DLEE112.ent.ti.com
- (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16; Sun, 22
- Jan 2023 06:21:30 -0600
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE102.ent.ti.com
- (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16 via
- Frontend Transport; Sun, 22 Jan 2023 06:21:30 -0600
-Received: from localhost (ileaxei01-snat.itg.ti.com [10.180.69.5])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 30MCLTIJ008319;
-        Sun, 22 Jan 2023 06:21:29 -0600
-From:   Achal Verma <a-verma1@ti.com>
-To:     <mranostay@ti.com>, <rogerq@kernel.org>, <lpieralisi@kernel.org>,
-        <robh@kernel.org>, <kw@linux.com>, <bhelgaas@google.com>,
-        <krzysztof.kozlowski@linaro.org>, <vigneshr@ti.com>,
-        <tjoseph@cadence.com>, <sergio.paracuellos@gmail.com>,
-        <pthombar@cadence.com>, <linux-pci@vger.kernel.org>
-CC:     <devicetree@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v9 5/5] PCI: j721e: add j784s4 PCIe configuration
-Date:   Sun, 22 Jan 2023 17:51:21 +0530
-Message-ID: <20230122122121.3552375-6-a-verma1@ti.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230122122121.3552375-1-a-verma1@ti.com>
-References: <20230122122121.3552375-1-a-verma1@ti.com>
+        with ESMTP id S229960AbjAVOaI (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 22 Jan 2023 09:30:08 -0500
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC1EA1716D
+        for <linux-omap@vger.kernel.org>; Sun, 22 Jan 2023 06:30:06 -0800 (PST)
+Received: by mail-wr1-x430.google.com with SMTP id e3so8620989wru.13
+        for <linux-omap@vger.kernel.org>; Sun, 22 Jan 2023 06:30:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=PpDZ5sD5zv7Y/iHdpyDxn61pvRVZoLIH2VkNs6bDVos=;
+        b=h8leWq/zMCW4MAdZeD/mLJTV3TO3KXwN/Nhat4PLODvqeXmeLDwiI7gORQoEl8cgj4
+         EQ/l/PKgKi/aCM+FXHkpU3MKTEO70mPY1wo1d9wInRF6avgckw6m0OIHehX5a5Aqnudr
+         77WDisoz2o11SGIrQtlFeUsnAx38jzQDDG63qMFvtyNZqRpFBGOCGm83HNtT3VZ3RLpr
+         OT2p3RU2tvCEr7BCXDRbAIPrg33a4DTtLetexg+JpRLyKa0iB7jyLlMhr/MLqE6BTHTB
+         AiTNK5oB1CpIS6iU8K3FsiRMls9eczSC7ih0CTQbOrkiF0DdgSzOM8nA7JzU5AMm5K/U
+         HIbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=PpDZ5sD5zv7Y/iHdpyDxn61pvRVZoLIH2VkNs6bDVos=;
+        b=mokCirH9DtflsZrux4tWsrXpNd6+3hqv/G27ZrALgtVcJr5W7xIdIsiFFU4vKnT3yy
+         FGPhU9tQcgy+vwiEyon3N8MMnNWUgeR0VcYHKlExvc1ORazRFl+N2YdYTK7JCoKrsxP8
+         y8mSol8kSR6lMSEQCMZP10O0WbRVTFfiBNyxBgUJ+/qwjw8F5WoFWjDOvpgiWcPzlq36
+         OJ/Pb3mKsjn65nhW4qZ6/PIQ3NOsSbjuIUVyMwtLSp3mhVpYVPNBAiVtbRiGizyfOt30
+         +MmKtUgZ90Y/mXR/ga5Ry+LGRVT8zinxGjFeiagib1tP9SwqCDkduZwyMwgGw0QmlmdR
+         Nehg==
+X-Gm-Message-State: AFqh2kpjTaTm8u+FFCREIBWFQFg/Q/2jRZdn4SVlB2I8qAEDIm/YpTKq
+        fj8zdp5RINZjdcxjI/QYKujWNg==
+X-Google-Smtp-Source: AMrXdXtQRKKv9PeFSBCBuLQmkmKWOPSml2EWvIudir73H5SyynbDp6Qmdt9W/FGruq86o5qm6WMgGQ==
+X-Received: by 2002:adf:ce06:0:b0:2bf:95cc:744c with SMTP id p6-20020adfce06000000b002bf95cc744cmr6173296wrn.0.1674397805293;
+        Sun, 22 Jan 2023 06:30:05 -0800 (PST)
+Received: from [192.168.1.109] ([178.197.216.144])
+        by smtp.gmail.com with ESMTPSA id a9-20020a5d5089000000b00287da7ee033sm2086281wrt.46.2023.01.22.06.30.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 22 Jan 2023 06:30:04 -0800 (PST)
+Message-ID: <a20028e6-3318-26ca-117a-26c87c292139@linaro.org>
+Date:   Sun, 22 Jan 2023 15:30:02 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.0
+Subject: Re: [PATCH v9 1/5] dt-bindings: PCI: ti,j721e-pci-*: add checks for
+ num-lanes
+Content-Language: en-US
+To:     Achal Verma <a-verma1@ti.com>, mranostay@ti.com, rogerq@kernel.org,
+        lpieralisi@kernel.org, robh@kernel.org, kw@linux.com,
+        bhelgaas@google.com, vigneshr@ti.com, tjoseph@cadence.com,
+        sergio.paracuellos@gmail.com, pthombar@cadence.com,
+        linux-pci@vger.kernel.org
+Cc:     devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20230122122121.3552375-1-a-verma1@ti.com>
+ <20230122122121.3552375-2-a-verma1@ti.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230122122121.3552375-2-a-verma1@ti.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Matt Ranostay <mranostay@ti.com>
+On 22/01/2023 13:21, Achal Verma wrote:
+> From: Matt Ranostay <mranostay@ti.com>
+> 
+> Add num-lanes schema checks based on compatible string on available lanes
+> for that platform.
+> 
+> Signed-off-by: Matt Ranostay <mranostay@ti.com>
+> Signed-off-by: Achal Verma <a-verma1@ti.com>
 
-Add PCIe configuration for j784s4 platform which has 4x lane support.
 
-Tested-by: Achal Verma <a-verma1@ti.com>
-Signed-off-by: Matt Ranostay <mranostay@ti.com>
-Reviewed-by: Roger Quadros <rogerq@kernel.org>
-Signed-off-by: Achal Verma <a-verma1@ti.com>
----
- drivers/pci/controller/cadence/pci-j721e.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
-index 58dcac9021e4..cce7b391f931 100644
---- a/drivers/pci/controller/cadence/pci-j721e.c
-+++ b/drivers/pci/controller/cadence/pci-j721e.c
-@@ -330,6 +330,20 @@ static const struct j721e_pcie_data am64_pcie_ep_data = {
- 	.max_lanes = 1,
- };
- 
-+static const struct j721e_pcie_data j784s4_pcie_rc_data = {
-+	.mode = PCI_MODE_RC,
-+	.quirk_retrain_flag = true,
-+	.byte_access_allowed = false,
-+	.linkdown_irq_regfield = LINK_DOWN,
-+	.max_lanes = 4,
-+};
-+
-+static const struct j721e_pcie_data j784s4_pcie_ep_data = {
-+	.mode = PCI_MODE_EP,
-+	.linkdown_irq_regfield = LINK_DOWN,
-+	.max_lanes = 4,
-+};
-+
- static const struct of_device_id of_j721e_pcie_match[] = {
- 	{
- 		.compatible = "ti,j721e-pcie-host",
-@@ -355,6 +369,14 @@ static const struct of_device_id of_j721e_pcie_match[] = {
- 		.compatible = "ti,am64-pcie-ep",
- 		.data = &am64_pcie_ep_data,
- 	},
-+	{
-+		.compatible = "ti,j784s4-pcie-host",
-+		.data = &j784s4_pcie_rc_data,
-+	},
-+	{
-+		.compatible = "ti,j784s4-pcie-ep",
-+		.data = &j784s4_pcie_ep_data,
-+	},
- 	{},
- };
- 
--- 
-2.25.1
+Best regards,
+Krzysztof
 
