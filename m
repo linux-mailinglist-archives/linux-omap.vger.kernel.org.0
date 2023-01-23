@@ -2,67 +2,122 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 99D8B6776A3
-	for <lists+linux-omap@lfdr.de>; Mon, 23 Jan 2023 09:46:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F23DC677F4B
+	for <lists+linux-omap@lfdr.de>; Mon, 23 Jan 2023 16:16:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231516AbjAWIq4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 23 Jan 2023 03:46:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36472 "EHLO
+        id S232430AbjAWPQV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 23 Jan 2023 10:16:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230122AbjAWIq4 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 23 Jan 2023 03:46:56 -0500
-X-Greylist: delayed 446 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 23 Jan 2023 00:46:52 PST
-Received: from mail.tryweryn.pl (mail.tryweryn.pl [5.196.29.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A933318166
-        for <linux-omap@vger.kernel.org>; Mon, 23 Jan 2023 00:46:52 -0800 (PST)
-Received: by mail.tryweryn.pl (Postfix, from userid 1002)
-        id D7651A240C; Mon, 23 Jan 2023 08:38:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tryweryn.pl; s=mail;
-        t=1674463164; bh=Bo+/jg3TCpOeS79PpZREuOWEeqJV//jojylD9dSrSik=;
-        h=Date:From:To:Subject:From;
-        b=BGaawQXtWOfcewoJUeXtWrnHcppQairQ5ruWOpVK/JF4JITNJlCglWv8GgssC7wju
-         ndwGBeszb0wrA1wyUIT/gvzwsATt2h5fzg66oytZekdWCHRwBqed4OAYxcnA7dRcL5
-         Ye5fIO0QkpsXITrWPASmXc9haAsvKCma6rbfSwMIEudmbvzwAPhNSuMdmJtRI8VaQK
-         2H40PVthkTex6kclyEHG2aTjxB6rDam2/NKpfRvWL51aipLVkKbSmVExZvH9FD205b
-         aC2jbS3fsG7RGfoKjeGzco1UTSgfARNbD+HeNYFO3H5yGHTcYlw3DSv3YAwg0BlJJ1
-         SB1wx5vlwplGg==
-Received: by mail.tryweryn.pl for <linux-omap@vger.kernel.org>; Mon, 23 Jan 2023 08:37:38 GMT
-Message-ID: <20230123081829-0.1.7p.2rw1z.0.199fe3lphc@tryweryn.pl>
-Date:   Mon, 23 Jan 2023 08:37:38 GMT
-From:   "Karol Michun" <karol.michun@tryweryn.pl>
-To:     <linux-omap@vger.kernel.org>
-Subject: Prezentacja
-X-Mailer: mail.tryweryn.pl
+        with ESMTP id S232445AbjAWPP5 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 23 Jan 2023 10:15:57 -0500
+Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DC8028D0B
+        for <linux-omap@vger.kernel.org>; Mon, 23 Jan 2023 07:15:35 -0800 (PST)
+Received: by mail-wm1-x32d.google.com with SMTP id q8so9262872wmo.5
+        for <linux-omap@vger.kernel.org>; Mon, 23 Jan 2023 07:15:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=iWAQjSOi13aBCxQ19WRdS3HTe/RxmEH0TVj9PZ91KvQ=;
+        b=sqGhRhnh5j+fCwU8OnlvQHyyleTPWiYMuSdo/PkbC7+kseo1mRUwT5HM2jwZQe9oCG
+         4xD72Q8t2VaZoElqubUr2mdzyyPN7F6+arU9qjHRbYLkgRTVCmg3MHcNre+f/Yf2Q7TM
+         /580B9/8bOUm7ZOVyYCRQgBB7Vr0MEBtO6YkMXpzx/lqWVY9z+RpnT/ENkzwvToGIGeC
+         GaJuQyzw1L3MTIIobEjLaPR8mEyWGKTdE0AvwkxqK25gADXi+tn1pYUbouzySBWKgNqX
+         bfTqKXgO65hDC9yMY/MUY7X8v8xD0PLgxtQx4EMx+DIGNlACYqM0Fn3y9EpIqVbMTNsH
+         Qa+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=iWAQjSOi13aBCxQ19WRdS3HTe/RxmEH0TVj9PZ91KvQ=;
+        b=pAUGarGAkBB5FIw2lrdRPCHENruXqoSgLbqNZ6Ufrvhi1dFOz4y8+ABo+ObqiJMHnc
+         yDCB3tG2rWcK4z8oUASbz5UpQhQQj/CCvilYCH38N7tRN2Ht2WgU/oa872xgRSy2Q5VL
+         rV1LDh8DNI754y2vaIy+8JzFvD7Dq/62fIB4ZrabCHzJbMNpGOHh5zhYtXOsqZL0PZGu
+         a86llwsqyE929i5Byorpe259DndII32rcFIkf2HtOag1bXP+ZYt0cJmgZj0f1QKrBkN0
+         rCViozSFcFWEoTP/7wSw5MtaaXrOhDRlCFrY3xy5LqOQ8zvaSgmtiuwdqJycD1oRmYCu
+         zHdg==
+X-Gm-Message-State: AFqh2krAQ605xPqBsgcPTQyUuFBNwTB8MoKTGq/AFLt3If5ZaCfR0Sel
+        oc7YOPQJIUbpEBI5sjxcfTZblQ==
+X-Google-Smtp-Source: AMrXdXtThWQ6lVueaaCAa0LEOvsD5PloZt+g2WnEjEBhjrLmQOvc0jbFEVU7lKNZxBP/TRUcXxPwmQ==
+X-Received: by 2002:a05:600c:34d1:b0:3db:1434:c51a with SMTP id d17-20020a05600c34d100b003db1434c51amr18691958wmq.40.1674486933463;
+        Mon, 23 Jan 2023 07:15:33 -0800 (PST)
+Received: from krzk-bin.. ([178.197.216.144])
+        by smtp.gmail.com with ESMTPSA id s5-20020a1cf205000000b003b47b80cec3sm10871971wmc.42.2023.01.23.07.15.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Jan 2023 07:15:33 -0800 (PST)
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH] ARM: dts: omap: align UART node name with bindings
+Date:   Mon, 23 Jan 2023 16:15:31 +0100
+Message-Id: <20230123151531.369419-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=5.0 tests=BAYES_20,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Dzie=C5=84 dobry!
+Bindings expect UART/serial node names to be "serial".
 
-Czy m=C3=B3g=C5=82bym przedstawi=C4=87 rozwi=C4=85zanie, kt=C3=B3re umo=C5=
-=BCliwia monitoring ka=C5=BCdego auta w czasie rzeczywistym w tym jego po=
-zycj=C4=99, zu=C5=BCycie paliwa i przebieg?
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+ arch/arm/boot/dts/omap-zoom-common.dtsi | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-Dodatkowo nasze narz=C4=99dzie minimalizuje koszty utrzymania samochod=C3=
-=B3w, skraca czas przejazd=C3=B3w, a tak=C5=BCe tworzenie planu tras czy =
-dostaw.
+diff --git a/arch/arm/boot/dts/omap-zoom-common.dtsi b/arch/arm/boot/dts/omap-zoom-common.dtsi
+index 1e96c865d41d..8adc0ef01f6c 100644
+--- a/arch/arm/boot/dts/omap-zoom-common.dtsi
++++ b/arch/arm/boot/dts/omap-zoom-common.dtsi
+@@ -14,7 +14,7 @@ &gpmc {
+ 	 * they probably share the same GPIO IRQ
+ 	 * REVISIT: Add timing support from slls644g.pdf
+ 	 */
+-	uart@3,0 {
++	serial@3,0 {
+ 		compatible = "ns16550a";
+ 		reg = <3 0 8>;	/* CS3, offset 0, IO size 8 */
+ 		bank-width = <2>;
+@@ -50,7 +50,7 @@ uart@3,0 {
+ 		gpmc,wr-data-mux-bus-ns = <45>;
+ 		gpmc,wr-access-ns = <145>;
+ 	};
+-	uart@3,1 {
++	serial@3,1 {
+ 		compatible = "ns16550a";
+ 		reg = <3 0x100 8>;	/* CS3, offset 0x100, IO size 8 */
+ 		bank-width = <2>;
+@@ -61,7 +61,7 @@ uart@3,1 {
+ 		clock-frequency = <1843200>;
+ 		current-speed = <115200>;
+ 	};
+-	uart@3,2 {
++	serial@3,2 {
+ 		compatible = "ns16550a";
+ 		reg = <3 0x200 8>;	/* CS3, offset 0x200, IO size 8 */
+ 		bank-width = <2>;
+@@ -72,7 +72,7 @@ uart@3,2 {
+ 		clock-frequency = <1843200>;
+ 		current-speed = <115200>;
+ 	};
+-	uart@3,3 {
++	serial@3,3 {
+ 		compatible = "ns16550a";
+ 		reg = <3 0x300 8>;	/* CS3, offset 0x300, IO size 8 */
+ 		bank-width = <2>;
+-- 
+2.34.1
 
-Z naszej wiedzy i do=C5=9Bwiadczenia korzysta ju=C5=BC ponad 49 tys. Klie=
-nt=C3=B3w. Monitorujemy 809 000 pojazd=C3=B3w na ca=C5=82ym =C5=9Bwiecie,=
- co jest nasz=C4=85 najlepsz=C4=85 wizyt=C3=B3wk=C4=85.
-
-Bardzo prosz=C4=99 o e-maila zwrotnego, je=C5=9Bli mogliby=C5=9Bmy wsp=C3=
-=B3lnie om=C3=B3wi=C4=87 potencja=C5=82 wykorzystania takiego rozwi=C4=85=
-zania w Pa=C5=84stwa firmie.
-
-
-Pozdrawiam
-Karol Michun
