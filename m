@@ -2,90 +2,108 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBEE2677FCA
-	for <lists+linux-omap@lfdr.de>; Mon, 23 Jan 2023 16:31:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EF6C6786BA
+	for <lists+linux-omap@lfdr.de>; Mon, 23 Jan 2023 20:48:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232228AbjAWPbN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 23 Jan 2023 10:31:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38152 "EHLO
+        id S232564AbjAWTsa (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 23 Jan 2023 14:48:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232213AbjAWPbM (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 23 Jan 2023 10:31:12 -0500
-Received: from smtp5-g21.free.fr (smtp5-g21.free.fr [IPv6:2a01:e0c:1:1599::14])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2668F2659B;
-        Mon, 23 Jan 2023 07:31:09 -0800 (PST)
-Received: from SOPL295.local (unknown [IPv6:2a01:e0a:a6a:5f90:f8ca:19b4:6313:bc3])
-        (Authenticated sender: robert.jarzmik@free.fr)
-        by smtp5-g21.free.fr (Postfix) with ESMTPSA id A3A4E5FF93;
-        Mon, 23 Jan 2023 16:30:52 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=free.fr;
-        s=smtp-20201208; t=1674487867;
-        bh=0mLGiFxXL934+MnA0bzTBcB0yjt9RF2xQOgM+iaYjPY=;
-        h=References:From:To:Cc:Subject:Date:In-reply-to:From;
-        b=oPO+odbfKIZ6vir9Tfwk80gwYeCsjrxxt/HC4veBDAcxRTbn32Hs1FVVwspQw+XTx
-         TEwEjOTHoHRFYjk/FTqepQNXfG6fe4LvGbcIp7GMCqGyXTgk0xAgiA6rNg8fFtKIT7
-         kGiJm1PSp6I0o0IUUkpqbj/3jYcNTQxD+B4ZLAiPvPpph0SfQSyMi1y9/BDJoopR5v
-         P+it0gg99oexQHK4cI2hFcHGdFrFglUrt1YbdIsg/ou6JC9P6tbkwgMeT2LPC1/QDN
-         HdZDTYqFs8WdawsswDBQzFFeKNtwwgZ+wpWS7JPeT/l+dTZobZjsGw7dB2UjMFf0HX
-         sV8iwf0BLXhig==
-References: <20230109161636.512203-1-arnd@kernel.org>
- <20230109161636.512203-2-arnd@kernel.org>
-User-agent: mu4e 1.8.11; emacs 28.1
-From:   Robert Jarzmik <robert.jarzmik@free.fr>
-To:     Arnd Bergmann <arnd@kernel.org>
-Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH 1/3] ARM: pxa: enable PXA310/PXA320 for DT-only build
-Date:   Mon, 23 Jan 2023 16:30:17 +0100
-In-reply-to: <20230109161636.512203-2-arnd@kernel.org>
-Message-ID: <m2bkmpgteb.fsf@free.fr>
+        with ESMTP id S229913AbjAWTs3 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 23 Jan 2023 14:48:29 -0500
+Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9D54222C3;
+        Mon, 23 Jan 2023 11:48:27 -0800 (PST)
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 30NJmLVE069757;
+        Mon, 23 Jan 2023 13:48:21 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1674503301;
+        bh=2deVQnpXjv2jkusjw58aOvaf5EeVgagttXtCwMY42tI=;
+        h=From:To:CC:Subject:Date;
+        b=LZfQoqi8fncgBDoAMBF3N7EjGljyuOZ0XcvyQMLjKTnF73kapHq9zMwK6P0RFtVqi
+         i/86k0+qgCYmGoKhSG6Dbx47IaLKtv9JWG1ZpNZmRVY1Z4wgl0GoHNWp76XgzUrifw
+         Vcuf27OCt/Pn8Mj5bASc97JMz7dlEyLM+yWBUocU=
+Received: from DFLE101.ent.ti.com (dfle101.ent.ti.com [10.64.6.22])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 30NJmL8j077799
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 23 Jan 2023 13:48:21 -0600
+Received: from DFLE108.ent.ti.com (10.64.6.29) by DFLE101.ent.ti.com
+ (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16; Mon, 23
+ Jan 2023 13:48:20 -0600
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE108.ent.ti.com
+ (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16 via
+ Frontend Transport; Mon, 23 Jan 2023 13:48:20 -0600
+Received: from ula0226330.dal.design.ti.com (ileaxei01-snat2.itg.ti.com [10.180.69.6])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 30NJmJ0q031936;
+        Mon, 23 Jan 2023 13:48:19 -0600
+From:   Andrew Davis <afd@ti.com>
+To:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>, Nishanth Menon <nm@ti.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        <linux-omap@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+CC:     Andrew Davis <afd@ti.com>
+Subject: [PATCH v3 0/3] AM57x EVM Device Tree Overlays
+Date:   Mon, 23 Jan 2023 13:48:15 -0600
+Message-ID: <20230123194818.21448-1-afd@ti.com>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-Content-Type: text/plain; format=flowed
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Hello all,
 
-Arnd Bergmann <arnd@kernel.org> writes:
+These is an uncontroversial (hopefully) DT Overlay to support the
+TI AM57x EVM. More complex cases are staged and ready to follow but
+wanted to test the water with this one.
 
-> From: Arnd Bergmann <arnd@arndb.de>
->
-> After commit b5aaaa666a85 ("ARM: pxa: add Kconfig dependencies 
-> for
-> ATAGS based boards"), the default PXA build no longer includes 
-> support
-> for the board files that are considered unused.
->
-> As a side-effect of this, the PXA310 and PXA320 support is not 
-> built
-> into the kernel any more, even though it should work in 
-> principle as
-> long as the symbols are enabled. As Robert points out, there are 
-> dts
-> files for zylonite and cm-x300, though those have not made it 
-> into the
-> mainline kernel.
->
-> Link: 
-> https://lore.kernel.org/linux-arm-kernel/m2sfglh02h.fsf@free.fr/
-> Reported-by: Robert Jarzmik <robert.jarzmik@free.fr>
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+For some reason dtbs_check does not get run on overlays, this
+will need further investigation to fix in kbuild. For now I ran
+it through manually but am not 100% sure it actually checked it,
+so double checks here very welcome.
 
-Acked-by: Robert Jarzmik <robert.jarzmik@free.fr>
+Thanks,
+Andrew
 
-Cheers.
+Changes from v2:
+ - Rebased on v6.2-rc5
 
---
-Robert
+Changes from v1:
+ - Made touchscreen node name generic
+ - Used proper interrupt flags
+
+Andrew Davis (3):
+  ARM: dts: ti: Add AM57xx GP EVM board support
+  ARM: dts: ti: Add AM57xx GP EVM Rev A3 board support
+  ARM: dts: am57xx-idk: Add IDK displays and touchscreens
+
+ arch/arm/boot/dts/Makefile                    |   8 ++
+ arch/arm/boot/dts/am571x-idk-touchscreen.dtso |  32 +++++
+ arch/arm/boot/dts/am572x-idk-touchscreen.dtso |  32 +++++
+ arch/arm/boot/dts/am57xx-evm.dtso             | 127 ++++++++++++++++++
+ .../boot/dts/am57xx-idk-lcd-osd101t2045.dtso  |  63 +++++++++
+ .../boot/dts/am57xx-idk-lcd-osd101t2587.dtso  |  66 +++++++++
+ 6 files changed, 328 insertions(+)
+ create mode 100644 arch/arm/boot/dts/am571x-idk-touchscreen.dtso
+ create mode 100644 arch/arm/boot/dts/am572x-idk-touchscreen.dtso
+ create mode 100644 arch/arm/boot/dts/am57xx-evm.dtso
+ create mode 100644 arch/arm/boot/dts/am57xx-idk-lcd-osd101t2045.dtso
+ create mode 100644 arch/arm/boot/dts/am57xx-idk-lcd-osd101t2587.dtso
+
+-- 
+2.38.1
+
