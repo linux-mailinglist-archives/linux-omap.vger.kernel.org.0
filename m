@@ -2,30 +2,32 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 77CEE679926
-	for <lists+linux-omap@lfdr.de>; Tue, 24 Jan 2023 14:22:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 768F3679927
+	for <lists+linux-omap@lfdr.de>; Tue, 24 Jan 2023 14:22:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234059AbjAXNWD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 24 Jan 2023 08:22:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51796 "EHLO
+        id S233944AbjAXNWF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 24 Jan 2023 08:22:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234056AbjAXNWC (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 24 Jan 2023 08:22:02 -0500
+        with ESMTP id S233490AbjAXNWE (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 24 Jan 2023 08:22:04 -0500
 Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id ECACE30D9
-        for <linux-omap@vger.kernel.org>; Tue, 24 Jan 2023 05:22:00 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1D6995258
+        for <linux-omap@vger.kernel.org>; Tue, 24 Jan 2023 05:22:04 -0800 (PST)
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 56D95809F;
-        Tue, 24 Jan 2023 13:21:59 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id C891D8125;
+        Tue, 24 Jan 2023 13:22:02 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     soc@kernel.org
 Cc:     arm@kernel.org, linux-omap@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
         "Tony Lindgren" <tony@atomide.com>
-Subject: [GIT PULL 1/2] Devicetree changes for omaps for v6.3
-Date:   Tue, 24 Jan 2023 15:21:55 +0200
-Message-Id: <pull-1674566471-434733@atomide.com>
+Subject: [GIT PULL 2/2] Clean-up for omamps for v6.3
+Date:   Tue, 24 Jan 2023 15:21:56 +0200
+Message-Id: <pull-1674566471-434733@atomide.com-2>
 X-Mailer: git-send-email 2.39.1
+In-Reply-To: <pull-1674566471-434733@atomide.com>
+References: <pull-1674566471-434733@atomide.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -45,42 +47,36 @@ The following changes since commit 1b929c02afd37871d5afb9d498426f83432e71c2:
 
 are available in the Git repository at:
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v6.3/dt-signed
+  git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v6.3/cleanup-signed
 
-for you to fetch changes up to 9dd320f0075fc765c6f35eb52f2a0cc73bf38a3f:
+for you to fetch changes up to 5fc1f76a85ce50b501b1d2ef04a29bc79910807d:
 
-  ARM: dts: omap: gta04a5: cleanup i2c node names (2023-01-19 10:34:39 +0200)
-
-----------------------------------------------------------------
-Devicetree related changes for omaps for v6.3
-
-Updates for am335x-nano, n900, and gta04 for the connected peripherals.
-Also few corrections for node names.
+  ARM: OMAP2+: Fix spelling typos in comment (2023-01-19 12:19:39 +0200)
 
 ----------------------------------------------------------------
-Andreas Kemnade (2):
-      ARM: dts: omap: gta04: add BNO055 IMU chip
-      ARM: dts: omap: gta04a5: cleanup i2c node names
+Clean-up for omaps for v6.3
 
-Geert Uytterhoeven (1):
-      ARM: dts: ti: Fix pca954x i2c-mux node names
+Non-urgent fixes for missing of_node_put() and clk_put(), drop few
+unnecessary includes, and fix a typo. None of these are urgent and
+can be merged along with other clean-up when suitable.
 
-Laurent Pinchart (1):
-      ARM: dts: omap: Use new media bus type macros
+----------------------------------------------------------------
+Chen Hui (1):
+      ARM: OMAP2+: Fix memory leak in realtime_counter_init()
 
-Mark Jackson (5):
-      ARM: dts: am335x-nano: Fix GPIO settings for RTS/CTS pins on UART3 & 4
-      ARM: dts: am335x-nano: Enable RS485 mode for UART3 & 4
-      ARM: dts: am335x-nano: Enable I2C temperature sensor
-      ARM: dts: am335x-nano: Fix GPIO settings for MMC pins
-      ARM: dts: am335x-nano: Enable USB host
+Geert Uytterhoeven (2):
+      ARM: OMAP2+: Remove unneeded #include <linux/pinctrl/pinmux.h>
+      ARM: OMAP2+: Remove unneeded #include <linux/pinctrl/machine.h>
 
-Sicelo A. Mhlongo (2):
-      ARM: dts: n900: rename accelerometer node
-      ARM: dts: n900: use iio driver for accelerometer
+Liang He (1):
+      ARM: OMAP2+: omap4-common: Fix refcount leak bug
 
- arch/arm/boot/dts/am335x-nano.dts     | 32 +++++++++++++++----
- arch/arm/boot/dts/am3874-iceboard.dts |  4 +--
- arch/arm/boot/dts/omap3-gta04a5.dts   | 19 +++++++++--
- arch/arm/boot/dts/omap3-n900.dts      | 59 +++++++----------------------------
- 4 files changed, 56 insertions(+), 58 deletions(-)
+Nir Levy (1):
+      ARM: OMAP2+: Fix spelling typos in comment
+
+ arch/arm/mach-omap2/devices.c      | 1 -
+ arch/arm/mach-omap2/omap4-common.c | 1 +
+ arch/arm/mach-omap2/pm33xx-core.c  | 1 -
+ arch/arm/mach-omap2/sleep34xx.S    | 2 +-
+ arch/arm/mach-omap2/timer.c        | 1 +
+ 5 files changed, 3 insertions(+), 3 deletions(-)
