@@ -2,98 +2,89 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C904D6799D8
-	for <lists+linux-omap@lfdr.de>; Tue, 24 Jan 2023 14:42:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A1CBB67AD30
+	for <lists+linux-omap@lfdr.de>; Wed, 25 Jan 2023 10:04:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234272AbjAXNmY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 24 Jan 2023 08:42:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34014 "EHLO
+        id S231253AbjAYJDX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 25 Jan 2023 04:03:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57906 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234040AbjAXNmQ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 24 Jan 2023 08:42:16 -0500
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F239457E6;
-        Tue, 24 Jan 2023 05:42:00 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 79642CE1B21;
-        Tue, 24 Jan 2023 13:41:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85ACEC433A8;
-        Tue, 24 Jan 2023 13:41:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1674567716;
-        bh=WZl2eKdtabjmBmr+WssfJF8VVwfHHWPXijY6QfNZVV8=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TCAvcOXtBNLSW3PzOF7d/JpKQXvQIBrrJX/m0MS6W6rZJSDfwVyH/p9fGAXR0jeve
-         k5VgYWC97qBgJu3bd0LFyF6j+PTYCZ/HFrF1T689maVW5sVeXgSAF6ucsR1hPgftdW
-         cbZQXo3yTItquCEioAV2N5W7ZXxJIx5S8wraJNaxSVmFB229IcEHXvM2ZMyz36Qw+x
-         Yba0VSqOoCT6V+oJOaAdvkUJ8ZOY0U6FoxXloyzx1K5362viRA4CvvzX8yYZ6uguXr
-         nt7f+37M3MBsQqGtL/74ClU/aeYF11yfehnry5/uj8oh8Hhx6knPSBy7wWBriKORPS
-         JR09BdPSjORQQ==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Sasha Levin <sashal@kernel.org>, jmkrzyszt@gmail.com,
-        tony@atomide.com, linux@armlinux.org.uk,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.1 10/35] ARM: omap1: fix building gpio15xx
-Date:   Tue, 24 Jan 2023 08:41:06 -0500
-Message-Id: <20230124134131.637036-10-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.0
-In-Reply-To: <20230124134131.637036-1-sashal@kernel.org>
-References: <20230124134131.637036-1-sashal@kernel.org>
+        with ESMTP id S235030AbjAYJDP (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 25 Jan 2023 04:03:15 -0500
+Received: from mail-il1-x135.google.com (mail-il1-x135.google.com [IPv6:2607:f8b0:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0937645229;
+        Wed, 25 Jan 2023 01:03:08 -0800 (PST)
+Received: by mail-il1-x135.google.com with SMTP id g15so836698ild.3;
+        Wed, 25 Jan 2023 01:03:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=23O3377BiRv60iyqj8AYTr/Gqz5BiVCca8OcTaruWfI=;
+        b=dswDnYOnYLJkiIvUf5tQQ4OA9mTnaRdMQIIs9XfS93TpiwUCVP3YMEejlt5RnqYYRE
+         4yM5O0jEwyuDkJUx4Mw4lQ1qWIzq2UECZib0Qs2dn/MQQSfmQReqz1OJ8vgw/joTvB6o
+         oxpADsDr19n1kG8616sf3f1HSQjEWJdA8dMjEP4bsMh2xWTWdtWGt6d6EbgNxPnNXMqF
+         1AupQQT+C8/jlp+2XpVFMLn+CWik0OYs5C9AxKV5kp9NV1rWCIriplHFmbw02xVYLzp9
+         LWqEc1JA2+/OAjiwLekeUKWItvb0AWOJ5nzNY3XWJcpkR0SAhbWGorbn77FbPzxukDiV
+         td8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=23O3377BiRv60iyqj8AYTr/Gqz5BiVCca8OcTaruWfI=;
+        b=awOBOUFf2lBz09dwx8bagTAaYgn6VAooqq7UBkE5o7G+v4IQcoHvx7SLYk4YGN9H+2
+         iVF3J/YMBFXnqTVyDArFm8J7OUgaANyEARmL2H+qJky0axixhw5NTyjk6dy33IBBAJY+
+         qAbYprgnwbupe7hUdN2tLPMt3bm8W1D+E1kAxHkksPlwI7UbfK5O8C5GuuRyFA1cY87K
+         3HrHi12zR9hkYEhSOW/c+Zho9nyhoWU+KGIN1Vw3aM4P2k/SgPwxmfh+TOwwlBGh4INb
+         aM6eVF5KXeLyyUq9HruB4tNzCScipzsrzZNA+soxjl/kESveD9D4mxqofGvGMJbLLCXH
+         GXrQ==
+X-Gm-Message-State: AFqh2kqb+1SFkgxSR96+n6f65wtLiSIvf8o/B1Tq6qgdEjIjM0NmNgb7
+        EBQvO9Iw3zC/hO0Z3Bf/duc5VfXx/7GgxPcR
+X-Google-Smtp-Source: AMrXdXuyKpg6E4oQwOgjQZjd5dGDmjHiEtp5ZwORNbr/uUIp1Lzv24yhIkwnn4V/tjT3t6T6Zw0ycg==
+X-Received: by 2002:a05:6e02:1a6c:b0:30f:40fc:7a2b with SMTP id w12-20020a056e021a6c00b0030f40fc7a2bmr21864229ilv.32.1674637387371;
+        Wed, 25 Jan 2023 01:03:07 -0800 (PST)
+Received: from [172.25.56.57] ([212.22.67.162])
+        by smtp.gmail.com with ESMTPSA id c2-20020a02a602000000b003a4894d46e0sm1446405jam.176.2023.01.25.01.03.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 25 Jan 2023 01:03:06 -0800 (PST)
+Message-ID: <959cce55-29f5-9470-afcb-ebfe73654b6f@gmail.com>
+Date:   Wed, 25 Jan 2023 12:03:03 +0300
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.1
+Subject: Re: [PATCH] pinctrl: single: fix potential NULL dereference
+Content-Language: en-US
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Haojian Zhuang <haojian.zhuang@linaro.org>,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        lvc-project@linuxtesting.org, Tony Lindgren <tony@atomide.com>
+References: <20221118104332.943-1-korotkov.maxim.s@gmail.com>
+ <Y3eAIb7x6de9Bigy@atomide.com>
+From:   Maxim Korotkov <korotkov.maxim.s@gmail.com>
+In-Reply-To: <Y3eAIb7x6de9Bigy@atomide.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+Dear Linus,
+Will this patch be applied or rejected?
+best regards, Max
 
-[ Upstream commit 9d46ce57f4d1c626bb48170226ea5e35deb5877c ]
-
-In some randconfig builds, the asm/irq.h header is not included
-in gpio15xx.c, so add an explicit include to avoid a build fialure:
-
-In file included from arch/arm/mach-omap1/gpio15xx.c:15:
-arch/arm/mach-omap1/irqs.h:99:34: error: 'NR_IRQS_LEGACY' undeclared here (not in a function)
-   99 | #define IH2_BASE                (NR_IRQS_LEGACY + 32)
-      |                                  ^~~~~~~~~~~~~~
-arch/arm/mach-omap1/irqs.h:105:38: note: in expansion of macro 'IH2_BASE'
-  105 | #define INT_MPUIO               (5 + IH2_BASE)
-      |                                      ^~~~~~~~
-arch/arm/mach-omap1/gpio15xx.c:28:27: note: in expansion of macro 'INT_MPUIO'
-   28 |                 .start  = INT_MPUIO,
-      |                           ^~~~~~~~~
-
-Acked-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/arm/mach-omap1/gpio15xx.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/arm/mach-omap1/gpio15xx.c b/arch/arm/mach-omap1/gpio15xx.c
-index c675f11de99d..61fa26efd865 100644
---- a/arch/arm/mach-omap1/gpio15xx.c
-+++ b/arch/arm/mach-omap1/gpio15xx.c
-@@ -11,6 +11,7 @@
- #include <linux/gpio.h>
- #include <linux/platform_data/gpio-omap.h>
- #include <linux/soc/ti/omap1-soc.h>
-+#include <asm/irq.h>
- 
- #include "irqs.h"
- 
--- 
-2.39.0
-
+On 18.11.2022 15:52, Tony Lindgren wrote:
+> * Maxim Korotkov <korotkov.maxim.s@gmail.com> [221118 10:33]:
+>> Added checking of pointer "function" in pcs_set_mux().
+>> pinmux_generic_get_function() can return NULL and the pointer
+>> "function" was dereferenced without checking against NULL.
+> 
+> Reviewed-by: Tony Lindgren <tony@atomide.com>
