@@ -2,89 +2,90 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A1CBB67AD30
-	for <lists+linux-omap@lfdr.de>; Wed, 25 Jan 2023 10:04:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 019AE67CE17
+	for <lists+linux-omap@lfdr.de>; Thu, 26 Jan 2023 15:28:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231253AbjAYJDX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 25 Jan 2023 04:03:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57906 "EHLO
+        id S232019AbjAZO2J (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 26 Jan 2023 09:28:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235030AbjAYJDP (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 25 Jan 2023 04:03:15 -0500
-Received: from mail-il1-x135.google.com (mail-il1-x135.google.com [IPv6:2607:f8b0:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0937645229;
-        Wed, 25 Jan 2023 01:03:08 -0800 (PST)
-Received: by mail-il1-x135.google.com with SMTP id g15so836698ild.3;
-        Wed, 25 Jan 2023 01:03:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=23O3377BiRv60iyqj8AYTr/Gqz5BiVCca8OcTaruWfI=;
-        b=dswDnYOnYLJkiIvUf5tQQ4OA9mTnaRdMQIIs9XfS93TpiwUCVP3YMEejlt5RnqYYRE
-         4yM5O0jEwyuDkJUx4Mw4lQ1qWIzq2UECZib0Qs2dn/MQQSfmQReqz1OJ8vgw/joTvB6o
-         oxpADsDr19n1kG8616sf3f1HSQjEWJdA8dMjEP4bsMh2xWTWdtWGt6d6EbgNxPnNXMqF
-         1AupQQT+C8/jlp+2XpVFMLn+CWik0OYs5C9AxKV5kp9NV1rWCIriplHFmbw02xVYLzp9
-         LWqEc1JA2+/OAjiwLekeUKWItvb0AWOJ5nzNY3XWJcpkR0SAhbWGorbn77FbPzxukDiV
-         td8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=23O3377BiRv60iyqj8AYTr/Gqz5BiVCca8OcTaruWfI=;
-        b=awOBOUFf2lBz09dwx8bagTAaYgn6VAooqq7UBkE5o7G+v4IQcoHvx7SLYk4YGN9H+2
-         iVF3J/YMBFXnqTVyDArFm8J7OUgaANyEARmL2H+qJky0axixhw5NTyjk6dy33IBBAJY+
-         qAbYprgnwbupe7hUdN2tLPMt3bm8W1D+E1kAxHkksPlwI7UbfK5O8C5GuuRyFA1cY87K
-         3HrHi12zR9hkYEhSOW/c+Zho9nyhoWU+KGIN1Vw3aM4P2k/SgPwxmfh+TOwwlBGh4INb
-         aM6eVF5KXeLyyUq9HruB4tNzCScipzsrzZNA+soxjl/kESveD9D4mxqofGvGMJbLLCXH
-         GXrQ==
-X-Gm-Message-State: AFqh2kqb+1SFkgxSR96+n6f65wtLiSIvf8o/B1Tq6qgdEjIjM0NmNgb7
-        EBQvO9Iw3zC/hO0Z3Bf/duc5VfXx/7GgxPcR
-X-Google-Smtp-Source: AMrXdXuyKpg6E4oQwOgjQZjd5dGDmjHiEtp5ZwORNbr/uUIp1Lzv24yhIkwnn4V/tjT3t6T6Zw0ycg==
-X-Received: by 2002:a05:6e02:1a6c:b0:30f:40fc:7a2b with SMTP id w12-20020a056e021a6c00b0030f40fc7a2bmr21864229ilv.32.1674637387371;
-        Wed, 25 Jan 2023 01:03:07 -0800 (PST)
-Received: from [172.25.56.57] ([212.22.67.162])
-        by smtp.gmail.com with ESMTPSA id c2-20020a02a602000000b003a4894d46e0sm1446405jam.176.2023.01.25.01.03.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 25 Jan 2023 01:03:06 -0800 (PST)
-Message-ID: <959cce55-29f5-9470-afcb-ebfe73654b6f@gmail.com>
-Date:   Wed, 25 Jan 2023 12:03:03 +0300
+        with ESMTP id S232024AbjAZO2I (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 26 Jan 2023 09:28:08 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9FE266018;
+        Thu, 26 Jan 2023 06:27:41 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 96EF46181D;
+        Thu, 26 Jan 2023 14:27:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FE03C433EF;
+        Thu, 26 Jan 2023 14:27:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1674743255;
+        bh=kyg287jVxNn5KSlNEsVGJfYboudO4DBm+FJvwry/P14=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=KWMMZa3enFGjyBvR2geXY/y1os9YbC/Uq6fvpBx147xoAci6F2dWQUwOp5qev7dqv
+         sDFzMt7hO6YpQHUbi6UXLJq/caD9FXOsVNgrL+IcDeaytcggK82q8G4TPARg46UQvR
+         qp4uxp3LOCVaFqBaaCiwljX3GBc1l6jZqUd5AJMLb2hOnEyztqjAXwXmyWbJDEosk5
+         fuPKSnnu2l0tBH3n5rSQm/zULLwOhCLeU2BQcHzouuw4T2jv6+uHjM+0xXK+iTmSzm
+         vld+2pv3ErucYbDOohg29FfZIjY619rILYR8g/bpIZoRx6/QTcILHFraOIiC5DP3WZ
+         c4HaAqCJIpw1A==
+Date:   Thu, 26 Jan 2023 14:27:26 +0000
+From:   Lee Jones <lee@kernel.org>
+To:     sam@ravnborg.org
+Cc:     Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Helge Deller <deller@gmx.de>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Antonino Daplas <adaplas@gmail.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Robin van der Gracht <robin@protonic.nl>,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-staging@lists.linux.dev,
+        linuxppc-dev@lists.ozlabs.org, Stephen Kitt <steve@sk2.org>
+Subject: Re: [PATCH 15/15] backlight: backlight: Drop the deprecated fb_blank
+ property
+Message-ID: <Y9KNziZJxMjCffbs@google.com>
+References: <20230107-sam-video-backlight-drop-fb_blank-v1-0-1bd9bafb351f@ravnborg.org>
+ <20230107-sam-video-backlight-drop-fb_blank-v1-15-1bd9bafb351f@ravnborg.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: Re: [PATCH] pinctrl: single: fix potential NULL dereference
-Content-Language: en-US
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Haojian Zhuang <haojian.zhuang@linaro.org>,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        lvc-project@linuxtesting.org, Tony Lindgren <tony@atomide.com>
-References: <20221118104332.943-1-korotkov.maxim.s@gmail.com>
- <Y3eAIb7x6de9Bigy@atomide.com>
-From:   Maxim Korotkov <korotkov.maxim.s@gmail.com>
-In-Reply-To: <Y3eAIb7x6de9Bigy@atomide.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230107-sam-video-backlight-drop-fb_blank-v1-15-1bd9bafb351f@ravnborg.org>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Dear Linus,
-Will this patch be applied or rejected?
-best regards, Max
+On Sat, 07 Jan 2023, Sam Ravnborg via B4 Submission Endpoint wrote:
 
-On 18.11.2022 15:52, Tony Lindgren wrote:
-> * Maxim Korotkov <korotkov.maxim.s@gmail.com> [221118 10:33]:
->> Added checking of pointer "function" in pcs_set_mux().
->> pinmux_generic_get_function() can return NULL and the pointer
->> "function" was dereferenced without checking against NULL.
+> From: Sam Ravnborg <sam@ravnborg.org>
 > 
-> Reviewed-by: Tony Lindgren <tony@atomide.com>
+> With all users gone remove the deprecated fb_blank member in
+> backlight_properties.
+> 
+> Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+> Cc: Lee Jones <lee@kernel.org>
+> Cc: Daniel Thompson <daniel.thompson@linaro.org>
+> Cc: Jingoo Han <jingoohan1@gmail.com>
+> ---
+>  drivers/video/backlight/backlight.c |  2 --
+>  include/linux/backlight.h           | 22 ----------------------
+>  2 files changed, 24 deletions(-)
+
+Applied, thanks
+
+-- 
+Lee Jones [李琼斯]
