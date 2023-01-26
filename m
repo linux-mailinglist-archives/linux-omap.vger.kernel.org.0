@@ -2,43 +2,38 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD59E67D110
-	for <lists+linux-omap@lfdr.de>; Thu, 26 Jan 2023 17:12:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A276C67D1A2
+	for <lists+linux-omap@lfdr.de>; Thu, 26 Jan 2023 17:31:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232690AbjAZQMe (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 26 Jan 2023 11:12:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51534 "EHLO
+        id S229482AbjAZQbL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 26 Jan 2023 11:31:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40648 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232606AbjAZQMY (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 26 Jan 2023 11:12:24 -0500
-Received: from mailrelay5-1.pub.mailoutpod2-cph3.one.com (mailrelay5-1.pub.mailoutpod2-cph3.one.com [IPv6:2a02:2350:5:404::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 695106F204
-        for <linux-omap@vger.kernel.org>; Thu, 26 Jan 2023 08:12:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ravnborg.org; s=rsa2;
-        h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
-         from:date:from;
-        bh=YwsGbP8UqP9PCAPALAZHuxiR6vSJEQg7mBCwK/505D4=;
-        b=Qus+ZU4RfOcNTS5rGnxfoQBcYpzPyF+aRz3PIQVZfjvTUjFpmtXeWmvp4rw3S7WD4kIU1isAjNCvI
-         qUFaf54lfngcQlsAyzn24QB3jg6dJQZkwRy6ly958KbRgFoeCt50M1sQ+1V2A0na3zKwfSSZ+BYCfi
-         svYtBApqryHA65/AytjF3mjQIlcOArwXu3tumrruNQocjmqLszEyWasAT29despRAzu0aObcNzXFBK
-         v0ytzr0e6G8s8tDhyint0ydbcValxEsn4ABDRtgPQ0br5+OrWW6rVQPIsnBDgzQ8nRQ8WiuKVDc8U0
-         nHkv92BxdqWcfXVuUnCtBBmCycCDUXg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed;
-        d=ravnborg.org; s=ed2;
-        h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
-         from:date:from;
-        bh=YwsGbP8UqP9PCAPALAZHuxiR6vSJEQg7mBCwK/505D4=;
-        b=52qvCSVoaxzKZeZmgUDnZYFeQCCVuo6KfDcOqqSiktTnnPsDDyAxqd+8jTSlziHCfI76MLtMpL0Iy
-         vITTQDACA==
-X-HalOne-ID: 27718327-9d94-11ed-b665-7703b0afff57
-Received: from ravnborg.org (2-105-2-98-cable.dk.customer.tdc.net [2.105.2.98])
-        by mailrelay5 (Halon) with ESMTPSA
-        id 27718327-9d94-11ed-b665-7703b0afff57;
-        Thu, 26 Jan 2023 16:11:58 +0000 (UTC)
-Date:   Thu, 26 Jan 2023 17:11:56 +0100
-From:   Sam Ravnborg <sam@ravnborg.org>
-To:     Lee Jones <lee@kernel.org>
+        with ESMTP id S229452AbjAZQbK (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 26 Jan 2023 11:31:10 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05472127;
+        Thu, 26 Jan 2023 08:31:10 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id AC00FB81EAD;
+        Thu, 26 Jan 2023 16:31:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F28DCC4339B;
+        Thu, 26 Jan 2023 16:31:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1674750667;
+        bh=Tm20dHbAFf/pXPytexrgAnAHrgWKBBgE48u5vZAscGQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=h1ecaBNcHoRmufYHj10lOotbnn0rWIQC85lVIDoK4Jm1+YCHjDUbSzDYa1M7Lb2eZ
+         5zKnI4ZD6kA0Sx3frT3CCnQhLrRlyTcK2v/Tysoqavyjp2/XGir4/+wORpaH9Di7NP
+         X875HViKzvPZ4wp3hh21NVyv8azAYawVFTzXj5WBkP6ScuV/NFaipOxjxoZMEsvPow
+         Oq80oSIW4Ng994V3as2N1R37s7/KdSBZOK0qTummzoIvwhx2VMaA342NYcdZtQ0Voa
+         OpSYzhQrqciYSeDQvRYwJ5vY24jDZatfR0MgTeoqE4uP/w0LRqaHYBANBXcRT02F7w
+         D7Osl9C/KWIdQ==
+Date:   Thu, 26 Jan 2023 16:30:59 +0000
+From:   Lee Jones <lee@kernel.org>
+To:     Sam Ravnborg <sam@ravnborg.org>
 Cc:     Nicolas Ferre <nicolas.ferre@microchip.com>,
         Helge Deller <deller@gmx.de>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>,
@@ -57,50 +52,57 @@ Cc:     Nicolas Ferre <nicolas.ferre@microchip.com>,
         linuxppc-dev@lists.ozlabs.org, Stephen Kitt <steve@sk2.org>
 Subject: Re: [PATCH 15/15] backlight: backlight: Drop the deprecated fb_blank
  property
-Message-ID: <Y9KmTFl5YbypgMZy@ravnborg.org>
+Message-ID: <Y9Kqw7ey6I7rQuZu@google.com>
 References: <20230107-sam-video-backlight-drop-fb_blank-v1-0-1bd9bafb351f@ravnborg.org>
  <20230107-sam-video-backlight-drop-fb_blank-v1-15-1bd9bafb351f@ravnborg.org>
  <Y9KNziZJxMjCffbs@google.com>
+ <Y9KmTFl5YbypgMZy@ravnborg.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <Y9KNziZJxMjCffbs@google.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Y9KmTFl5YbypgMZy@ravnborg.org>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Lee,
-On Thu, Jan 26, 2023 at 02:27:26PM +0000, Lee Jones wrote:
-> On Sat, 07 Jan 2023, Sam Ravnborg via B4 Submission Endpoint wrote:
-> 
-> > From: Sam Ravnborg <sam@ravnborg.org>
+On Thu, 26 Jan 2023, Sam Ravnborg wrote:
+
+> Hi Lee,
+> On Thu, Jan 26, 2023 at 02:27:26PM +0000, Lee Jones wrote:
+> > On Sat, 07 Jan 2023, Sam Ravnborg via B4 Submission Endpoint wrote:
 > > 
-> > With all users gone remove the deprecated fb_blank member in
-> > backlight_properties.
+> > > From: Sam Ravnborg <sam@ravnborg.org>
+> > > 
+> > > With all users gone remove the deprecated fb_blank member in
+> > > backlight_properties.
+> > > 
+> > > Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+> > > Cc: Lee Jones <lee@kernel.org>
+> > > Cc: Daniel Thompson <daniel.thompson@linaro.org>
+> > > Cc: Jingoo Han <jingoohan1@gmail.com>
+> > > ---
+> > >  drivers/video/backlight/backlight.c |  2 --
+> > >  include/linux/backlight.h           | 22 ----------------------
+> > >  2 files changed, 24 deletions(-)
 > > 
-> > Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-> > Cc: Lee Jones <lee@kernel.org>
-> > Cc: Daniel Thompson <daniel.thompson@linaro.org>
-> > Cc: Jingoo Han <jingoohan1@gmail.com>
-> > ---
-> >  drivers/video/backlight/backlight.c |  2 --
-> >  include/linux/backlight.h           | 22 ----------------------
-> >  2 files changed, 24 deletions(-)
+> > Applied, thanks
 > 
-> Applied, thanks
+> Some of the dependent patches in this series are not yet applied.
+> I have them queued up for processing this weekend, but I missed the -rc6
+> window for drm-misc so they will likely not hit upstream in the upcoming
+> merge window.
+> I can try to expedite it.
+> 
+> But if you have not yet pushed it, please revert this patch.
+> Then I will resend only when the remaining patches are upstream.
 
-Some of the dependent patches in this series are not yet applied.
-I have them queued up for processing this weekend, but I missed the -rc6
-window for drm-misc so they will likely not hit upstream in the upcoming
-merge window.
-I can try to expedite it.
+Thanks for the info.  Dropped.
 
-But if you have not yet pushed it, please revert this patch.
-Then I will resend only when the remaining patches are upstream.
-
-	Sam
+-- 
+Lee Jones [李琼斯]
