@@ -2,68 +2,65 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A276C67D1A2
-	for <lists+linux-omap@lfdr.de>; Thu, 26 Jan 2023 17:31:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7444C67E5AB
+	for <lists+linux-omap@lfdr.de>; Fri, 27 Jan 2023 13:44:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229482AbjAZQbL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 26 Jan 2023 11:31:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40648 "EHLO
+        id S234287AbjA0Moe (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 27 Jan 2023 07:44:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229452AbjAZQbK (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 26 Jan 2023 11:31:10 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05472127;
-        Thu, 26 Jan 2023 08:31:10 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id AC00FB81EAD;
-        Thu, 26 Jan 2023 16:31:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F28DCC4339B;
-        Thu, 26 Jan 2023 16:31:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1674750667;
-        bh=Tm20dHbAFf/pXPytexrgAnAHrgWKBBgE48u5vZAscGQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=h1ecaBNcHoRmufYHj10lOotbnn0rWIQC85lVIDoK4Jm1+YCHjDUbSzDYa1M7Lb2eZ
-         5zKnI4ZD6kA0Sx3frT3CCnQhLrRlyTcK2v/Tysoqavyjp2/XGir4/+wORpaH9Di7NP
-         X875HViKzvPZ4wp3hh21NVyv8azAYawVFTzXj5WBkP6ScuV/NFaipOxjxoZMEsvPow
-         Oq80oSIW4Ng994V3as2N1R37s7/KdSBZOK0qTummzoIvwhx2VMaA342NYcdZtQ0Voa
-         OpSYzhQrqciYSeDQvRYwJ5vY24jDZatfR0MgTeoqE4uP/w0LRqaHYBANBXcRT02F7w
-         D7Osl9C/KWIdQ==
-Date:   Thu, 26 Jan 2023 16:30:59 +0000
-From:   Lee Jones <lee@kernel.org>
-To:     Sam Ravnborg <sam@ravnborg.org>
-Cc:     Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Helge Deller <deller@gmx.de>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Antonino Daplas <adaplas@gmail.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Robin van der Gracht <robin@protonic.nl>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-staging@lists.linux.dev,
-        linuxppc-dev@lists.ozlabs.org, Stephen Kitt <steve@sk2.org>
-Subject: Re: [PATCH 15/15] backlight: backlight: Drop the deprecated fb_blank
- property
-Message-ID: <Y9Kqw7ey6I7rQuZu@google.com>
-References: <20230107-sam-video-backlight-drop-fb_blank-v1-0-1bd9bafb351f@ravnborg.org>
- <20230107-sam-video-backlight-drop-fb_blank-v1-15-1bd9bafb351f@ravnborg.org>
- <Y9KNziZJxMjCffbs@google.com>
- <Y9KmTFl5YbypgMZy@ravnborg.org>
+        with ESMTP id S233119AbjA0Mod (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 27 Jan 2023 07:44:33 -0500
+Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79E2344AA
+        for <linux-omap@vger.kernel.org>; Fri, 27 Jan 2023 04:44:32 -0800 (PST)
+Received: by mail-yb1-xb2f.google.com with SMTP id t16so5836047ybk.2
+        for <linux-omap@vger.kernel.org>; Fri, 27 Jan 2023 04:44:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=R+sg6+kg+mDO+1d3pUfJQmwVY1aeKMmZ9aezNjGPZVg=;
+        b=zrdO2hqCxOQx5qZ2F+gxHPPjqRFCI3zBruy4pMLBUzrYej743IiJmiROmYmf5g2pos
+         YSlhFHqssAQuIPPSn86I6l4ltZTnh9lt7MlOoB5/dlad3nxfUrBT7tojHWtAbNwyY0sI
+         v3QpQr+R3VCtBy+hXIE83LyTM5BYclNnbtf1c/Z9rvdsvusxAFdVjzRpuTJuhL6Fo1s8
+         HzLyV/Xvpz9Ir5sOFwd30LsW0zfgV/nvCY8Z5y7erq4BIkku6cH6JZEZf/qzfMXuS+cX
+         kYlUBejwQjGpFiXDpLMvwr8D+p5Zw5ynsiANaqfqFQvZRbe02w7VGwA4hQhoRt2xq0eu
+         bt2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=R+sg6+kg+mDO+1d3pUfJQmwVY1aeKMmZ9aezNjGPZVg=;
+        b=SDqyqG0aa9A3SdVYsR2upVKcxQa2MiHOGcwXjyYYuuQLc5K4x25AShn9MffNuWeg1n
+         xuJFjaHGj9Tn4+P8TNHjT5Z1VQgBQcjrNPv5Og2LUc2Vx0xiVnTstfXefolrhDkQI6An
+         ueU53aP5Ux7ky8us4eisgEwuZpYagX6/edTXIyKafeBfi0BwG0dPseAwdD1oPzOLZNN4
+         CcR/zxPV8plzTom79cUkfdIavC49io2t6Zu6S/5ZUjua2v3eCJdUFcct6sgbfcBiuSsJ
+         BdsUuPnMaURZ+xALK/DaW6QFHUGoPySEnGzsNY1Ut/9c9K0I8FFaT72eFg3HVoUYrxeV
+         9nUA==
+X-Gm-Message-State: AO0yUKVjsoWHjzj40ZjaOTeHTp6Z4nZaJ31spUaq/Jacbn0zIxtSheAI
+        gFUU4g6Zyc79TrrOu5HapGfaz/KWwOHpka0krIx1yg==
+X-Google-Smtp-Source: AK7set/4H1YBNoNr7lHd1Z5jEkZeZBRo4qW9byaYRflLio74663CD1kkkfdTsnvh7hsxsffNlDvb99V3Xrk54g1gzBM=
+X-Received: by 2002:a25:d884:0:b0:80b:66c5:9fc5 with SMTP id
+ p126-20020a25d884000000b0080b66c59fc5mr1741253ybg.210.1674823471630; Fri, 27
+ Jan 2023 04:44:31 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <Y9KmTFl5YbypgMZy@ravnborg.org>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+References: <20221118104332.943-1-korotkov.maxim.s@gmail.com>
+In-Reply-To: <20221118104332.943-1-korotkov.maxim.s@gmail.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Fri, 27 Jan 2023 13:44:20 +0100
+Message-ID: <CACRpkdYwBNjGzODYqvz+oScsO3u=R0dXMkP4UfqmosDugPFWRA@mail.gmail.com>
+Subject: Re: [PATCH] pinctrl: single: fix potential NULL dereference
+To:     Maxim Korotkov <korotkov.maxim.s@gmail.com>
+Cc:     Tony Lindgren <tony@atomide.com>,
+        Haojian Zhuang <haojian.zhuang@linaro.org>,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        lvc-project@linuxtesting.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,38 +68,19 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, 26 Jan 2023, Sam Ravnborg wrote:
+On Fri, Nov 18, 2022 at 11:43 AM Maxim Korotkov
+<korotkov.maxim.s@gmail.com> wrote:
 
-> Hi Lee,
-> On Thu, Jan 26, 2023 at 02:27:26PM +0000, Lee Jones wrote:
-> > On Sat, 07 Jan 2023, Sam Ravnborg via B4 Submission Endpoint wrote:
-> > 
-> > > From: Sam Ravnborg <sam@ravnborg.org>
-> > > 
-> > > With all users gone remove the deprecated fb_blank member in
-> > > backlight_properties.
-> > > 
-> > > Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-> > > Cc: Lee Jones <lee@kernel.org>
-> > > Cc: Daniel Thompson <daniel.thompson@linaro.org>
-> > > Cc: Jingoo Han <jingoohan1@gmail.com>
-> > > ---
-> > >  drivers/video/backlight/backlight.c |  2 --
-> > >  include/linux/backlight.h           | 22 ----------------------
-> > >  2 files changed, 24 deletions(-)
-> > 
-> > Applied, thanks
-> 
-> Some of the dependent patches in this series are not yet applied.
-> I have them queued up for processing this weekend, but I missed the -rc6
-> window for drm-misc so they will likely not hit upstream in the upcoming
-> merge window.
-> I can try to expedite it.
-> 
-> But if you have not yet pushed it, please revert this patch.
-> Then I will resend only when the remaining patches are upstream.
+> Added checking of pointer "function" in pcs_set_mux().
+> pinmux_generic_get_function() can return NULL and the pointer
+> "function" was dereferenced without checking against NULL.
+>
+> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+>
+> Fixes: 571aec4df5b7 ("pinctrl: single: Use generic pinmux helpers for managing functions")
+> Signed-off-by: Maxim Korotkov <korotkov.maxim.s@gmail.com>
 
-Thanks for the info.  Dropped.
+Patch applied for fixes.
 
--- 
-Lee Jones [李琼斯]
+Yours,
+Linus Walleij
