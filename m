@@ -2,38 +2,27 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B5FC6829F8
-	for <lists+linux-omap@lfdr.de>; Tue, 31 Jan 2023 11:10:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F33A685FD9
+	for <lists+linux-omap@lfdr.de>; Wed,  1 Feb 2023 07:38:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230263AbjAaKKH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 31 Jan 2023 05:10:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38510 "EHLO
+        id S230213AbjBAGiq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 1 Feb 2023 01:38:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231809AbjAaKKB (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 31 Jan 2023 05:10:01 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F30C255A0;
-        Tue, 31 Jan 2023 02:10:00 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 97ABE614A0;
-        Tue, 31 Jan 2023 10:10:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B461C433EF;
-        Tue, 31 Jan 2023 10:09:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1675159800;
-        bh=nwkS/pbOsJuXffQqTETQVuoDDHsBxdfFjcAQA16lTkM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=wuq0S0qvVUihSCU+NDx02COKCc5IJJC4eZdalM6tZzBlXH4QGYwTMn/lvt/53pg7Z
-         Rf3pI4t/s6uhidvQ5/v4dF/rks2jN2GVRzozS08NKXeIwFgWpTySPKtQAR1JCp9FWY
-         fWk6Fy0Ne1B28LEFi+H2YOpNlaa76YscZJJhlKfI=
-Date:   Tue, 31 Jan 2023 11:09:57 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Tony Lindgren <tony@atomide.com>
+        with ESMTP id S229761AbjBAGiq (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 1 Feb 2023 01:38:46 -0500
+Received: from muru.com (muru.com [72.249.23.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A6A3010AB6;
+        Tue, 31 Jan 2023 22:38:44 -0800 (PST)
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id ABB2B8154;
+        Wed,  1 Feb 2023 06:38:43 +0000 (UTC)
+Date:   Wed, 1 Feb 2023 08:38:42 +0200
+From:   Tony Lindgren <tony@atomide.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     Jiri Slaby <jirislaby@kernel.org>,
         Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
         Johan Hovold <johan@kernel.org>,
         Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
         Vignesh Raghavendra <vigneshr@ti.com>,
@@ -41,41 +30,98 @@ Cc:     Jiri Slaby <jirislaby@kernel.org>,
         linux-serial@vger.kernel.org
 Subject: Re: [PATCH v5 1/1] serial: core: Start managing serial controllers
  to enable runtime PM
-Message-ID: <Y9jo9bTnmejWYoH2@kroah.com>
+Message-ID: <Y9oI8m132aQOeSed@atomide.com>
 References: <20230116080002.47315-1-tony@atomide.com>
+ <Y9jo9bTnmejWYoH2@kroah.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230116080002.47315-1-tony@atomide.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <Y9jo9bTnmejWYoH2@kroah.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Jan 16, 2023 at 09:59:58AM +0200, Tony Lindgren wrote:
-> We want to enable runtime PM for serial port device drivers in a generic
-> way. To do this, we want to have the serial core layer manage the
-> registered physical serial controller devices.
+* Greg Kroah-Hartman <gregkh@linuxfoundation.org> [230131 10:10]:
+> On Mon, Jan 16, 2023 at 09:59:58AM +0200, Tony Lindgren wrote:
+> > We want to enable runtime PM for serial port device drivers in a generic
+> > way. To do this, we want to have the serial core layer manage the
+> > registered physical serial controller devices.
+> > 
+> > To do this, let's set up a struct device for the serial core controller
+> > as suggested by Greg and Jiri. The serial core controller devices are
+> > children of the physical serial port device. The serial core controller
+> > device is needed to support multiple different kind of ports connected
+> > to single physical serial port device.
+> > 
+> > Let's also set up a struct device for the serial core port. The serial
+> > core port instances are children of the serial core controller device.
 > 
-> To do this, let's set up a struct device for the serial core controller
-> as suggested by Greg and Jiri. The serial core controller devices are
-> children of the physical serial port device. The serial core controller
-> device is needed to support multiple different kind of ports connected
-> to single physical serial port device.
-> 
-> Let's also set up a struct device for the serial core port. The serial
-> core port instances are children of the serial core controller device.
+> Looking better, but why is this new device a platform device?  That
+> feels odd, you should never have a platform device hanging off of a
+> non-platform device, right?
 
-Looking better, but why is this new device a platform device?  That
-feels odd, you should never have a platform device hanging off of a
-non-platform device, right?
+No special need for it to be a platform device. It just is easy to set
+up, and for my test case the serial port physical device is also a
+platform device.
 
-What does the sysfs tree look like now with this patch applied?
+What's your preference here?
 
-thanks,
+> What does the sysfs tree look like now with this patch applied?
 
-greg k-h
+Below are two examples of what's in sysfs.
+
+Regards,
+
+Tony
+
+8< -----------------
+On arm64 with two physical 8250 devices I have:
+
+# ls -l /sys/devices/platform/serial8250/
+total 0
+lrwxrwxrwx    1 root     root             0 Jan  1  1970 driver -> ../../../bus/platform/drivers/serial8250
+-rw-r--r--    1 root     root          4096 Jan  1  1970 driver_override
+-r--r--r--    1 root     root          4096 Jan  1  1970 modalias
+drwxr-xr-x    2 root     root             0 Jan  1  1970 power
+drwxr-xr-x    5 root     root             0 Jan  1  1970 serial-ctrl.0.auto
+lrwxrwxrwx    1 root     root             0 Jan  1  1970 subsystem -> ../../../bus/platform
+drwxr-xr-x    4 root     root             0 Jan  1  1970 tty
+-rw-r--r--    1 root     root          4096 Jan  1  1970 uevent
+
+# ls -l /sys/devices/platform/serial8250/serial-ctrl*
+total 0
+lrwxrwxrwx    1 root     root             0 Jan  1  1970 driver -> ../../../../bus/platform/drivers/serial-ctrl
+-rw-r--r--    1 root     root          4096 Jan  1  1970 driver_override
+-r--r--r--    1 root     root          4096 Jan  1  1970 modalias
+drwxr-xr-x    2 root     root             0 Jan  1  1970 power
+drwxr-xr-x    3 root     root             0 Jan  1  1970 serial-port.1.auto
+drwxr-xr-x    3 root     root             0 Jan  1  1970 serial-port.4.auto
+lrwxrwxrwx    1 root     root             0 Jan  1  1970 subsystem -> ../../../../bus/platform
+-rw-r--r--    1 root     root          4096 Jan  1  1970 uevent
+
+On x86_64 qemu with one port I have:
+
+# ls -l /sys/devices/pnp0/00:04/
+total 0
+lrwxrwxrwx    1 root     root             0 Feb  1 06:13 driver -> ../../../bus/pnp/drivers/serial
+lrwxrwxrwx    1 root     root             0 Feb  1 06:13 firmware_node -> ../../LNXSYSTM:00/LNXSYBUS:00/PNP0A03:00/device:01/PNP0501:00
+-r--r--r--    1 root     root          4096 Feb  1 06:13 id
+-r--r--r--    1 root     root          4096 Feb  1 06:13 options
+-rw-r--r--    1 root     root          4096 Feb  1 06:13 resources
+drwxr-xr-x    3 root     root             0 Feb  1 06:12 serial-ctrl.0.auto
+lrwxrwxrwx    1 root     root             0 Feb  1 06:13 subsystem -> ../../../bus/pnp
+drwxr-xr-x    3 root     root             0 Feb  1 06:12 tty
+-rw-r--r--    1 root     root          4096 Feb  1 06:12 uevent
+
+# ls -l /sys/devices/pnp0/00:04/serial-ctrl.0.auto/
+total 0
+lrwxrwxrwx    1 root     root             0 Feb  1 06:13 driver -> ../../../../bus/platform/drivers/serial-ctrl
+-rw-r--r--    1 root     root          4096 Feb  1 06:13 driver_override
+-r--r--r--    1 root     root          4096 Feb  1 06:13 modalias
+drwxr-xr-x    2 root     root             0 Feb  1 06:12 serial-port.1.auto
+lrwxrwxrwx    1 root     root             0 Feb  1 06:13 subsystem -> ../../../../bus/platform
+-rw-r--r--    1 root     root          4096 Feb  1 06:12 uevent
