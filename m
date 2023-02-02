@@ -2,129 +2,130 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D92346870C4
-	for <lists+linux-omap@lfdr.de>; Wed,  1 Feb 2023 23:00:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 53B196883C3
+	for <lists+linux-omap@lfdr.de>; Thu,  2 Feb 2023 17:09:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229471AbjBAWAL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 1 Feb 2023 17:00:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40770 "EHLO
+        id S232001AbjBBQJn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 2 Feb 2023 11:09:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231607AbjBAWAL (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 1 Feb 2023 17:00:11 -0500
-Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BD37728D1;
-        Wed,  1 Feb 2023 14:00:10 -0800 (PST)
-Received: by mail-oi1-f180.google.com with SMTP id r28so526977oiw.3;
-        Wed, 01 Feb 2023 14:00:10 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Vj0b1ZK3fckZ4VvFRyf/KYc9WA7HNMJVi8mYiiJF7CM=;
-        b=76Rsq/LOlR63GR1MYsDQgQIpjiF5+3AzXL3Jwn1bOKh1AyhoSwr/f4A5trlASv4xtB
-         6BsupJrwVBcI0zmNfPIW8xtRGr8ppItP1bmjPf4UMDoDZ6WV7IvamJjJ1VUNm6ALjd60
-         xpCN1ViuY9p+LmriynCivUFSaPN/jY3j6D24mBd1mjJV5Kw/VFm9nI825AxOgk4dQ1ij
-         gHm3FSqeinskWywT+BAew5uiM19xhMLoHpn6BQW7H6AABp5A2dlMrrDZWS7ykVujvdTF
-         peNoxCeFhaBwXR6q5HsUD8uY64i+LidYz7xDn6foWUnWNeZukYxPOPi9gHl5su7SOXaO
-         gYEw==
-X-Gm-Message-State: AO0yUKX71hT96W+6EbtrlkvzLtH4+Dubd8DqRsJZVH6xWCNORchEDxFN
-        hl3EhTzr0TivLWT2RgIpmJqa1kh6Mw==
-X-Google-Smtp-Source: AK7set9RqCkO37nOMZk3VE97UdW3F6KdrsVcaoBbY/5KlonMFk7VdUFXJJ19kcx9oQ0CM4FAcLhnYA==
-X-Received: by 2002:a05:6808:f0c:b0:378:6396:13cc with SMTP id m12-20020a0568080f0c00b00378639613ccmr2286307oiw.56.1675288809257;
-        Wed, 01 Feb 2023 14:00:09 -0800 (PST)
-Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id my11-20020a056870698b00b00143ae7d4ccesm8331600oab.45.2023.02.01.14.00.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Feb 2023 14:00:08 -0800 (PST)
-Received: (nullmailer pid 247042 invoked by uid 1000);
-        Wed, 01 Feb 2023 22:00:08 -0000
-From:   Rob Herring <robh@kernel.org>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] bus: ti-sysc: Remove open coded "ranges" parsing
-Date:   Wed,  1 Feb 2023 16:00:02 -0600
-Message-Id: <20230201220002.246907-1-robh@kernel.org>
-X-Mailer: git-send-email 2.39.0
+        with ESMTP id S232297AbjBBQJm (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 2 Feb 2023 11:09:42 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D94556B036;
+        Thu,  2 Feb 2023 08:09:38 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 71AF661BF4;
+        Thu,  2 Feb 2023 16:09:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54ABEC433EF;
+        Thu,  2 Feb 2023 16:09:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1675354177;
+        bh=xjNBvclZKFnIHn9hRQhrxBHvSbPwMKJe/L5bKZulUDM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=YKwX9vpOm7OPqRcBWD60/Kcla5InDbtRaafHfflIRtWCcFuEscArPK7Z1O2px2hiz
+         PoR6bR4dy7UePHOGngn1BGINwwcmRhCjt9xulXO+gV8O909OctHENGX9EkKynHVP2p
+         2plz2lqZrjOnkQYxDzcW1yxDPGTYLhyE+nX28LtVHKf3D+DxFZc718+NZ+KtscHv8S
+         6O9DQoTp1gtB7frsriKqaBoNdirBk5ktfBq1FKK3FayD7GZR5M0EKUqE5vUkotW2YM
+         m0/DTMLvSCDVVDKpOiBpxhTXOO8rhXuitPP2kImZ+oZTk5LzApRg94WusgYUrXP2n9
+         aw3zRwi7sStQg==
+Date:   Thu, 2 Feb 2023 17:09:31 +0100
+From:   Lorenzo Pieralisi <lpieralisi@kernel.org>
+To:     Matt Ranostay <mranostay@ti.com>, robh@kernel.org
+Cc:     rogerq@kernel.org, kw@linux.com, bhelgaas@google.com,
+        krzysztof.kozlowski@linaro.org, vigneshr@ti.com,
+        tjoseph@cadence.com, sergio.paracuellos@gmail.com,
+        pthombar@cadence.com, linux-pci@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7 3/5] PCI: j721e: Add PCIe 4x lane selection support
+Message-ID: <Y9vgO51IRfx1by3P@lpieralisi>
+References: <20221124081221.1206167-1-mranostay@ti.com>
+ <20221124081221.1206167-4-mranostay@ti.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221124081221.1206167-4-mranostay@ti.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-"ranges" is a standard property and we have common helper functions for
-parsing it, so let's use them.
+Hi Rob,
 
-Signed-off-by: Rob Herring <robh@kernel.org>
----
-Compile tested only!
----
- drivers/bus/ti-sysc.c | 41 +++++++++--------------------------------
- 1 file changed, 9 insertions(+), 32 deletions(-)
+I think your comment:
 
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-index 6afae9897843..9c8985515376 100644
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -648,43 +648,20 @@ static int sysc_init_resets(struct sysc *ddata)
- static int sysc_parse_and_check_child_range(struct sysc *ddata)
- {
- 	struct device_node *np = ddata->dev->of_node;
--	const __be32 *ranges;
--	u32 nr_addr, nr_size;
--	int len, error;
--
--	ranges = of_get_property(np, "ranges", &len);
--	if (!ranges) {
--		dev_err(ddata->dev, "missing ranges for %pOF\n", np);
--
--		return -ENOENT;
--	}
--
--	len /= sizeof(*ranges);
--
--	if (len < 3) {
--		dev_err(ddata->dev, "incomplete ranges for %pOF\n", np);
--
--		return -EINVAL;
--	}
--
--	error = of_property_read_u32(np, "#address-cells", &nr_addr);
--	if (error)
--		return -ENOENT;
-+	struct of_range_parser parser;
-+	struct of_range range;
-+	int error;
- 
--	error = of_property_read_u32(np, "#size-cells", &nr_size);
-+	error = of_range_parser_init(&parser, np);
- 	if (error)
--		return -ENOENT;
--
--	if (nr_addr != 1 || nr_size != 1) {
--		dev_err(ddata->dev, "invalid ranges for %pOF\n", np);
-+		return error;
- 
--		return -EINVAL;
-+	for_each_of_range(&parser, &range) {
-+		ddata->module_pa = range.cpu_addr;
-+		ddata->module_size = range.size;
-+		break;
- 	}
- 
--	ranges++;
--	ddata->module_pa = of_translate_address(np, ranges++);
--	ddata->module_size = be32_to_cpup(ranges);
--
- 	return 0;
- }
- 
--- 
-2.39.0
+https://lore.kernel.org/linux-pci/CAL_JsqJ5cOLXhD-73esmhVwMEWGT+w3SJC14Z0jY4tQJQRA7iw@mail.gmail.com
 
+was related to the commit log wording and not necessarily
+the actual diff. Please let me know if you are happy with
+this change and I shall merge the series.
+
+Thanks,
+Lorenzo
+
+On Thu, Nov 24, 2022 at 12:12:19AM -0800, Matt Ranostay wrote:
+> Add support for setting of two-bit field that allows selection of 4x lane
+> PCIe which was previously limited to only 2x lanes.
+> 
+> Signed-off-by: Matt Ranostay <mranostay@ti.com>
+> Reviewed-by: Vignesh Raghavendra <vigneshr@ti.com>
+> ---
+>  drivers/pci/controller/cadence/pci-j721e.c | 10 ++++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
+> index 8990f58d64d5..dab3db9be6d8 100644
+> --- a/drivers/pci/controller/cadence/pci-j721e.c
+> +++ b/drivers/pci/controller/cadence/pci-j721e.c
+> @@ -42,7 +42,6 @@ enum link_status {
+>  };
+>  
+>  #define J721E_MODE_RC			BIT(7)
+> -#define LANE_COUNT_MASK			BIT(8)
+>  #define LANE_COUNT(n)			((n) << 8)
+>  
+>  #define GENERATION_SEL_MASK		GENMASK(1, 0)
+> @@ -52,6 +51,7 @@ struct j721e_pcie {
+>  	struct clk		*refclk;
+>  	u32			mode;
+>  	u32			num_lanes;
+> +	u32			max_lanes;
+>  	void __iomem		*user_cfg_base;
+>  	void __iomem		*intd_cfg_base;
+>  	u32			linkdown_irq_regfield;
+> @@ -205,11 +205,15 @@ static int j721e_pcie_set_lane_count(struct j721e_pcie *pcie,
+>  {
+>  	struct device *dev = pcie->cdns_pcie->dev;
+>  	u32 lanes = pcie->num_lanes;
+> +	u32 mask = GENMASK(8, 8);
+>  	u32 val = 0;
+>  	int ret;
+>  
+> +	if (pcie->max_lanes == 4)
+> +		mask = GENMASK(9, 8);
+> +
+>  	val = LANE_COUNT(lanes - 1);
+> -	ret = regmap_update_bits(syscon, offset, LANE_COUNT_MASK, val);
+> +	ret = regmap_update_bits(syscon, offset, mask, val);
+>  	if (ret)
+>  		dev_err(dev, "failed to set link count\n");
+>  
+> @@ -439,6 +443,8 @@ static int j721e_pcie_probe(struct platform_device *pdev)
+>  	ret = of_property_read_u32(node, "num-lanes", &num_lanes);
+>  	if (ret || num_lanes > data->max_lanes)
+>  		num_lanes = 1;
+> +
+> +	pcie->max_lanes = data->max_lanes;
+>  	pcie->num_lanes = num_lanes;
+>  
+>  	if (dma_set_mask_and_coherent(dev, DMA_BIT_MASK(48)))
+> -- 
+> 2.38.GIT
+> 
