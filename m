@@ -2,60 +2,60 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2893E689AF3
-	for <lists+linux-omap@lfdr.de>; Fri,  3 Feb 2023 15:08:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 542DF689B1A
+	for <lists+linux-omap@lfdr.de>; Fri,  3 Feb 2023 15:08:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233456AbjBCOEb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 3 Feb 2023 09:04:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49098 "EHLO
+        id S233061AbjBCOFX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 3 Feb 2023 09:05:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233481AbjBCOED (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 3 Feb 2023 09:04:03 -0500
-Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A140D1D92F
-        for <linux-omap@vger.kernel.org>; Fri,  3 Feb 2023 06:01:53 -0800 (PST)
-Received: by mail-wr1-x429.google.com with SMTP id h12so4720435wrv.10
-        for <linux-omap@vger.kernel.org>; Fri, 03 Feb 2023 06:01:53 -0800 (PST)
+        with ESMTP id S233181AbjBCOEN (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 3 Feb 2023 09:04:13 -0500
+Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 355BCA56EC
+        for <linux-omap@vger.kernel.org>; Fri,  3 Feb 2023 06:02:05 -0800 (PST)
+Received: by mail-wm1-x332.google.com with SMTP id k16so3945559wms.2
+        for <linux-omap@vger.kernel.org>; Fri, 03 Feb 2023 06:02:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=baylibre-com.20210112.gappssmtp.com; s=20210112;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=C80uHS7oQ9BIHpE1WmMa0ssy0dSruFRP/djxr2WevbY=;
-        b=Qlxx84XZAGXu2f/D9Zjd3opzizOJ1VtjZiwcnVtu5WlR8C3ZeGzqw2xQ6fM5TQD6ye
-         ySoDD1MS9qc/koK1t9UZvGrhc4DSmP5TfBkNeDeAxBfafUFWT8veGW98NdgefrgoCNXx
-         nMzEE28npBOAVqDMjD+oafrLW7OnN2BQk6orC8qjMfwIS7sw0BbDHpl5r+9BilS4tcxj
-         /WBsAlCqbJe4pwVQ4oMQx5k4GHfK4cqTWhIY6G5q6YZl99LfvboEml10YQPsNWDXWUsM
-         dw00YoQ8vzwnVYVVolGU8DEAsu60sGCB5VtHq+wb+4PQyM0zFgDNJTIJBYp+1ij/6JCO
-         hdiA==
+        bh=oEkaRI2/7OwdP6CFOGx3AkcXyupYh3TuV6fnAqTrbn8=;
+        b=sHxjOK4xLPki6HlXUcVjIamFw7gcPjMf3aifkU7FVnaJU/10MVvRXXqhp7M2fLNP2b
+         S6aX3jACu7Va+p8Nf9e+A5FzZ2AoUuTzFAr/1A57g7A6Ilu2d6yLziBbSNs6NqtKO+cS
+         5dNk0DjzNtDEWG56WWuuRALima53OCtPLY9N5eNVFRxka43H9LJ9DTJuBjJFn2o7NjpR
+         0EELvc7//3E6Ax0xn85aKg1VIGKqUinYZN71HQX2SoJ6ckQ33No8i7E8S9t3x/BSG7R+
+         dL7hKNdgme6iGklgw897tOI7R0laQWDZxjegSq9ktY+Cm0JbBaaoQztefgK4bvD+EX5t
+         YiHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=C80uHS7oQ9BIHpE1WmMa0ssy0dSruFRP/djxr2WevbY=;
-        b=6AsqKMc1fk8T4Xoe8magis6VwbM1IsXTZC4lkLOO/or6cTpXpBzZmOaFbaPdt8I8XE
-         wFnQYhRg0mBVK4J64iAo5IYDyezep2YzZPvwgfNf+mwji41bAyTHJtO4W7KjhCyin6x0
-         oIQOprfkIAgWp23FlGsyjpH82n2f2NZSLp8wieV1IT966oqB20cBm0+Losc3lWXEEnzo
-         dswNe5BLTnoVttw/y6mNDn+Ma5vSV9TY0SpJmlKLsHa0X6pVhH/tcoqfpwpADjL+kqra
-         BbF9NQmgSX0HmxDOG0zw0HENyDXDsdJxa82YNUAUjlKUtif1YM4iM8N6aSsGB1NF9leR
-         bXxA==
-X-Gm-Message-State: AO0yUKXXb1drUvuIPM1Whw9lSBJf7MJb9Q3sJmrc+/Hwvmte7hNNwvs9
-        MGD43UE/BefhbEX4Y9I/VrgIVg==
-X-Google-Smtp-Source: AK7set9QsyK9xtov2bQPmgwqnf/VObYYOTpUrptYGpBtPDdrWwmt2VHzCPQSmj5kTSFn7/FeUNm9WQ==
-X-Received: by 2002:a05:6000:1a86:b0:2bf:c9e9:a654 with SMTP id f6-20020a0560001a8600b002bfc9e9a654mr10455136wry.10.1675432883455;
-        Fri, 03 Feb 2023 06:01:23 -0800 (PST)
+        bh=oEkaRI2/7OwdP6CFOGx3AkcXyupYh3TuV6fnAqTrbn8=;
+        b=cimZAlMF4fvDV11kfDTLjIQKh2xjHkgy8dBPCKj/67h/4NLKbYJyp8uRxhoOgpC8z4
+         4yrRYssXybN9wP9AUQLj25pbtxhHiwcSyJo8LPjr0gE4+r/igt+xZuSo/sVgt/KeAssY
+         MOnmIM5L9VOxCvbOxuRheaG7W2LQNfOVNS4SXjnYvjNsmP6VY9GFLeMMzun0RMB1u1Fn
+         O5G8u47dAUXHf6M/83PeRkocbqfcTn+N3Zhr5oLKO2+bB2HMdwLtdspquWOfCDBw3bJa
+         +kMHf3v0YQKPFQbFBMwV+Tt1+tsjRVjR29M0E+pkC2HkL6Myi5dgCWmHfbUdk6ZN/Js9
+         qrZg==
+X-Gm-Message-State: AO0yUKVhQtb/KswEDhT4q+h3uFTloRz0Ubk2E4mtK6Tx5cR/o6Mi0lEZ
+        CIIdxC03RKnsx2G/6SJpXuckLtVw1kXWVTYauSg=
+X-Google-Smtp-Source: AK7set/td3giVdEyQMU1/tNN5LqZolXDlM06sT0CPDRovFBWDn9DIptflRFLfdzI+M12SsOBkGWKxw==
+X-Received: by 2002:a05:600c:1e84:b0:3dc:5aba:f287 with SMTP id be4-20020a05600c1e8400b003dc5abaf287mr10085611wmb.23.1675432913358;
+        Fri, 03 Feb 2023 06:01:53 -0800 (PST)
 Received: from jerome-BL.. (192.201.68.85.rev.sfr.net. [85.68.201.192])
-        by smtp.gmail.com with ESMTPSA id x9-20020a5d4449000000b002c3cf230b60sm1719396wrr.73.2023.02.03.06.01.22
+        by smtp.gmail.com with ESMTPSA id g24-20020a7bc4d8000000b003df30c94850sm6859209wmk.25.2023.02.03.06.01.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Feb 2023 06:01:23 -0800 (PST)
+        Fri, 03 Feb 2023 06:01:52 -0800 (PST)
 From:   Jerome Neanne <jneanne@baylibre.com>
-To:     tony@atomide.com, lgirdwood@gmail.com, broonie@kernel.org
+To:     tony@atomide.com, lee@kernel.org
 Cc:     linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-        khilman@baylibre.com, nm@ti.com, msp@baylibre.com,
+        khilman@baylibre.com, nm@ti.com, afd@ti.com, msp@baylibre.com,
         Jerome Neanne <jneanne@baylibre.com>
-Subject: [PATCH] regulator: tps65219: use generic set_bypass()
-Date:   Fri,  3 Feb 2023 15:01:19 +0100
-Message-Id: <20230203140119.13029-1-jneanne@baylibre.com>
+Subject: [PATCH] mfd: tps65219: Add support for soft shutdown via sys-off API
+Date:   Fri,  3 Feb 2023 15:01:50 +0100
+Message-Id: <20230203140150.13071-1-jneanne@baylibre.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -68,56 +68,110 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Due to wrong interpretation of the specification,
-custom implementation was used instead of standard regmap helper.
-LINK: https://lore.kernel.org/all/c2014039-f1e8-6976-33d6-52e2dd4e7b66@baylibre.com/
+Use new API for power-off mode support:
+Link: https://lwn.net/Articles/894511/
+Link: https://lore.kernel.org/all/7hfseqa7l0.fsf@baylibre.com/
 
-Fixes: c12ac5fc3e0a ("regulator: drivers: Add TI TPS65219 PMIC regulators support")
+sys-off API allows support of shutdown handler and restart handler.
 
-Regulator does NOT require to be off to be switched to bypass mode.
+Shutdown was not supported before that enhancement.
+This is required for platform that are not using PSCI.
+
+Test:
+- restart:
+  # reboot
+  Default is cold reset:
+  # cat /sys/kernel/reboot/mode
+  Switch boot mode to warm reset:
+  # echo warm > /sys/kernel/reboot/mode
+- power-off:
+  # halt
+
+Tested on AM62-SP-SK board.
 
 Signed-off-by: Jerome Neanne <jneanne@baylibre.com>
+Suggested-by: Andrew Davis <afd@ti.com>
 ---
- drivers/regulator/tps65219-regulator.c | 20 +-------------------
- 1 file changed, 1 insertion(+), 19 deletions(-)
+ drivers/mfd/tps65219.c | 45 +++++++++++++++++++++++++++++++-----------
+ 1 file changed, 34 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/regulator/tps65219-regulator.c b/drivers/regulator/tps65219-regulator.c
-index 070159cb5f09..58f6541b6417 100644
---- a/drivers/regulator/tps65219-regulator.c
-+++ b/drivers/regulator/tps65219-regulator.c
-@@ -173,24 +173,6 @@ static unsigned int tps65219_get_mode(struct regulator_dev *dev)
- 		return REGULATOR_MODE_NORMAL;
+diff --git a/drivers/mfd/tps65219.c b/drivers/mfd/tps65219.c
+index 0e402fda206b..c134f3f6e202 100644
+--- a/drivers/mfd/tps65219.c
++++ b/drivers/mfd/tps65219.c
+@@ -25,25 +25,34 @@ static int tps65219_cold_reset(struct tps65219 *tps)
+ 				  TPS65219_MFP_COLD_RESET_I2C_CTRL_MASK);
  }
  
--/*
-- * generic regulator_set_bypass_regmap does not fully match requirements
-- * TPS65219 Requires explicitly that regulator is disabled before switch
-- */
--static int tps65219_set_bypass(struct regulator_dev *dev, bool enable)
--{
--	struct tps65219 *tps = rdev_get_drvdata(dev);
--	unsigned int rid = rdev_get_id(dev);
+-static int tps65219_restart(struct notifier_block *this,
+-			    unsigned long reboot_mode, void *cmd)
++static int tps65219_soft_shutdown(struct tps65219 *tps)
+ {
+-	struct tps65219 *tps;
++	return regmap_update_bits(tps->regmap, TPS65219_REG_MFP_CTRL,
++				  TPS65219_MFP_I2C_OFF_REQ_MASK,
++				  TPS65219_MFP_I2C_OFF_REQ_MASK);
++}
+ 
+-	tps = container_of(this, struct tps65219, nb);
++static int tps65219_power_off_handler(struct sys_off_data *data)
++{
++	tps65219_soft_shutdown(data->cb_data);
++	return NOTIFY_DONE;
++}
+ 
++static int tps65219_restart(struct tps65219 *tps,
++			    unsigned long reboot_mode)
++{
+ 	if (reboot_mode == REBOOT_WARM)
+ 		tps65219_warm_reset(tps);
+ 	else
+ 		tps65219_cold_reset(tps);
 -
--	if (dev->desc->ops->is_enabled(dev)) {
--		dev_err(tps->dev,
--			"%s LDO%d enabled, must be shut down to set bypass ",
--			__func__, rid);
--		return -EBUSY;
--	}
--	return regulator_set_bypass_regmap(dev, enable);
--}
--
- /* Operations permitted on BUCK1/2/3 */
- static const struct regulator_ops tps65219_bucks_ops = {
- 	.is_enabled		= regulator_is_enabled_regmap,
-@@ -217,7 +199,7 @@ static const struct regulator_ops tps65219_ldos_1_2_ops = {
- 	.set_voltage_sel	= regulator_set_voltage_sel_regmap,
- 	.list_voltage		= regulator_list_voltage_linear_range,
- 	.map_voltage		= regulator_map_voltage_linear_range,
--	.set_bypass		= tps65219_set_bypass,
-+	.set_bypass		= regulator_set_bypass_regmap,
- 	.get_bypass		= regulator_get_bypass_regmap,
- };
+ 	return NOTIFY_DONE;
+ }
+ 
+-static struct notifier_block pmic_rst_restart_nb = {
+-	.notifier_call = tps65219_restart,
+-	.priority = 200,
+-};
++static int tps65219_restart_handler(struct sys_off_data *data)
++{
++	tps65219_restart(data->cb_data, data->mode);
++	return NOTIFY_DONE;
++}
+ 
+ static const struct resource tps65219_pwrbutton_resources[] = {
+ 	DEFINE_RES_IRQ_NAMED(TPS65219_INT_PB_FALLING_EDGE_DETECT, "falling"),
+@@ -269,13 +278,27 @@ static int tps65219_probe(struct i2c_client *client)
+ 		}
+ 	}
+ 
+-	tps->nb = pmic_rst_restart_nb;
+-	ret = register_restart_handler(&tps->nb);
++	ret = devm_register_sys_off_handler(tps->dev,
++					    SYS_OFF_MODE_RESTART,
++					    SYS_OFF_PRIO_HIGH,
++					    tps65219_restart_handler,
++					    tps);
++
+ 	if (ret) {
+ 		dev_err(tps->dev, "cannot register restart handler, %d\n", ret);
+ 		return ret;
+ 	}
+ 
++	ret = devm_register_sys_off_handler(tps->dev,
++					    SYS_OFF_MODE_POWER_OFF,
++					    SYS_OFF_PRIO_DEFAULT,
++					    tps65219_power_off_handler,
++					    tps);
++	if (ret) {
++		dev_err(tps->dev, "failed to register sys-off handler: %d\n",
++			ret);
++		return ret;
++	}
+ 	return 0;
+ }
  
 -- 
 2.34.1
