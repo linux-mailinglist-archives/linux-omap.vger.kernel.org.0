@@ -2,135 +2,123 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB4FF6895BE
-	for <lists+linux-omap@lfdr.de>; Fri,  3 Feb 2023 11:24:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2893E689AF3
+	for <lists+linux-omap@lfdr.de>; Fri,  3 Feb 2023 15:08:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232869AbjBCKXm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 3 Feb 2023 05:23:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46616 "EHLO
+        id S233456AbjBCOEb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 3 Feb 2023 09:04:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233445AbjBCKXf (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 3 Feb 2023 05:23:35 -0500
-Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68DD92FCC6
-        for <linux-omap@vger.kernel.org>; Fri,  3 Feb 2023 02:23:14 -0800 (PST)
-Received: by mail-wr1-x42d.google.com with SMTP id a2so3919276wrd.6
-        for <linux-omap@vger.kernel.org>; Fri, 03 Feb 2023 02:23:14 -0800 (PST)
+        with ESMTP id S233481AbjBCOED (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 3 Feb 2023 09:04:03 -0500
+Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A140D1D92F
+        for <linux-omap@vger.kernel.org>; Fri,  3 Feb 2023 06:01:53 -0800 (PST)
+Received: by mail-wr1-x429.google.com with SMTP id h12so4720435wrv.10
+        for <linux-omap@vger.kernel.org>; Fri, 03 Feb 2023 06:01:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smile-fr.20210112.gappssmtp.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=QQd7CbH4H743nTW9DhKy+wRFxxQrT0fQR+gCFf4zST8=;
-        b=42OnDUyvlvOfKwL3GSUAKbEq4GSYYdj/RFPj2Dx5db+tJ7b/8+GN7oGjUEW7Nm0LgF
-         EOcCAr+Hl8IcGf42Ob+9OB1afZ/bGZx6Agb4HZhHi1Bll3XZGSKge/ATpM5eE5alMgoJ
-         QXPQjiESsa+BbkMlHiYwwSLTFuWE66H/DD8NrP4mFQdUoHmViuqqfMIFlYGJTj27eISt
-         JKQKMCsY5lvvj2pffR5exSuzyQvVhClHD3jadMocJiHji5yitqoKDesupnajA//ze9L+
-         l/OB4EaeHcLIcjZZWHUEAZwhNRUoDtKAEjpkdGYWVinCb0rm5wRI1YlmvPq2mBVw9xPh
-         jV9Q==
+        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=C80uHS7oQ9BIHpE1WmMa0ssy0dSruFRP/djxr2WevbY=;
+        b=Qlxx84XZAGXu2f/D9Zjd3opzizOJ1VtjZiwcnVtu5WlR8C3ZeGzqw2xQ6fM5TQD6ye
+         ySoDD1MS9qc/koK1t9UZvGrhc4DSmP5TfBkNeDeAxBfafUFWT8veGW98NdgefrgoCNXx
+         nMzEE28npBOAVqDMjD+oafrLW7OnN2BQk6orC8qjMfwIS7sw0BbDHpl5r+9BilS4tcxj
+         /WBsAlCqbJe4pwVQ4oMQx5k4GHfK4cqTWhIY6G5q6YZl99LfvboEml10YQPsNWDXWUsM
+         dw00YoQ8vzwnVYVVolGU8DEAsu60sGCB5VtHq+wb+4PQyM0zFgDNJTIJBYp+1ij/6JCO
+         hdiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QQd7CbH4H743nTW9DhKy+wRFxxQrT0fQR+gCFf4zST8=;
-        b=x20ZmxtkinBlgPFers6l6GhpQ8cvJuoSC0EPVpDRn+TcF/FMt+B6JvKfPuGzr2W3Tb
-         H+aDvjFRqLRQX1xe75SdN/Fs26a+s2DsUizS4ZZZzLVBtqYJcWRFLbYP4zyNrBRoKFtC
-         fH7s1KI2BiEoXGKRps/ikMmyyiW80tCDN7SGRzREoTjA0ax/46bpRaIGn/LDODNVo1qP
-         xMDZLP7YPkabd0mvklShNdEtTu3N+nU5E8YfYghvZgo+XQ4jUD/p3KsEXkRKNZ06qFiZ
-         rzMrcBQMkre69TLhFMAOHH4In9faccSgwCgc4zE9P3b0hdd4lHNxp9GrOe4jkx9YzFjA
-         g8gg==
-X-Gm-Message-State: AO0yUKV3623j3hs45XQ5vl5pYbQMjhmpqNSCau6eQXk+/9z0BZvj9VT+
-        CdmOnGaCK/3tgXym09IERBG77A==
-X-Google-Smtp-Source: AK7set8Xp1wCsHhRr9D6MMbAX20Uj1pxumUfe3oABhruVYcBdfPfGqNza5+drgDusIc1n+U8ttoYew==
-X-Received: by 2002:a5d:4d84:0:b0:2bf:b872:cf21 with SMTP id b4-20020a5d4d84000000b002bfb872cf21mr8565006wru.0.1675419792287;
-        Fri, 03 Feb 2023 02:23:12 -0800 (PST)
-Received: from ?IPV6:2a01:cb05:945b:7e00:9bdc:6887:23a2:4f31? (2a01cb05945b7e009bdc688723a24f31.ipv6.abo.wanadoo.fr. [2a01:cb05:945b:7e00:9bdc:6887:23a2:4f31])
-        by smtp.gmail.com with ESMTPSA id l11-20020a05600002ab00b002bfb5ebf8cfsm1756844wry.21.2023.02.03.02.23.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 03 Feb 2023 02:23:11 -0800 (PST)
-Message-ID: <d9ef2aeb-85b6-b5c9-da92-b6396d1557c5@smile.fr>
-Date:   Fri, 3 Feb 2023 11:23:10 +0100
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=C80uHS7oQ9BIHpE1WmMa0ssy0dSruFRP/djxr2WevbY=;
+        b=6AsqKMc1fk8T4Xoe8magis6VwbM1IsXTZC4lkLOO/or6cTpXpBzZmOaFbaPdt8I8XE
+         wFnQYhRg0mBVK4J64iAo5IYDyezep2YzZPvwgfNf+mwji41bAyTHJtO4W7KjhCyin6x0
+         oIQOprfkIAgWp23FlGsyjpH82n2f2NZSLp8wieV1IT966oqB20cBm0+Losc3lWXEEnzo
+         dswNe5BLTnoVttw/y6mNDn+Ma5vSV9TY0SpJmlKLsHa0X6pVhH/tcoqfpwpADjL+kqra
+         BbF9NQmgSX0HmxDOG0zw0HENyDXDsdJxa82YNUAUjlKUtif1YM4iM8N6aSsGB1NF9leR
+         bXxA==
+X-Gm-Message-State: AO0yUKXXb1drUvuIPM1Whw9lSBJf7MJb9Q3sJmrc+/Hwvmte7hNNwvs9
+        MGD43UE/BefhbEX4Y9I/VrgIVg==
+X-Google-Smtp-Source: AK7set9QsyK9xtov2bQPmgwqnf/VObYYOTpUrptYGpBtPDdrWwmt2VHzCPQSmj5kTSFn7/FeUNm9WQ==
+X-Received: by 2002:a05:6000:1a86:b0:2bf:c9e9:a654 with SMTP id f6-20020a0560001a8600b002bfc9e9a654mr10455136wry.10.1675432883455;
+        Fri, 03 Feb 2023 06:01:23 -0800 (PST)
+Received: from jerome-BL.. (192.201.68.85.rev.sfr.net. [85.68.201.192])
+        by smtp.gmail.com with ESMTPSA id x9-20020a5d4449000000b002c3cf230b60sm1719396wrr.73.2023.02.03.06.01.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Feb 2023 06:01:23 -0800 (PST)
+From:   Jerome Neanne <jneanne@baylibre.com>
+To:     tony@atomide.com, lgirdwood@gmail.com, broonie@kernel.org
+Cc:     linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+        khilman@baylibre.com, nm@ti.com, msp@baylibre.com,
+        Jerome Neanne <jneanne@baylibre.com>
+Subject: [PATCH] regulator: tps65219: use generic set_bypass()
+Date:   Fri,  3 Feb 2023 15:01:19 +0100
+Message-Id: <20230203140119.13029-1-jneanne@baylibre.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-Subject: Re: [PATCH] net: ethernet: ti: cpsw: Set max and min MTU sizes
-Content-Language: en-US
-To:     Alexandre Bard <alexandre.bard@netmodule.com>,
-        grygorii.strashko@ti.com
-Cc:     linux-omap@vger.kernel.org, davem@davemloft.net,
-        edumazet@google.com, Jakub Kicinski <kuba@kernel.org>,
-        pabeni@redhat.com, ast@kernel.org, daniel@iogearbox.net,
-        hawk@kernel.org, john.fastabend@gmail.com,
-        shaozhengchao@huawei.com, mw@semihalf.com,
-        wsa+renesas@sang-engineering.com, yangyingliang@huawei.com,
-        chi.minghao@zte.com.cn,
-        Alexandre Bard <alexandre.bard@netmodule.com>,
-        netdev@vger.kernel.org
-References: <20220906113212.8680-1-alexandre.bard@netmodule.com>
-From:   Romain Naour <romain.naour@smile.fr>
-In-Reply-To: <20220906113212.8680-1-alexandre.bard@netmodule.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hello,
+Due to wrong interpretation of the specification,
+custom implementation was used instead of standard regmap helper.
+LINK: https://lore.kernel.org/all/c2014039-f1e8-6976-33d6-52e2dd4e7b66@baylibre.com/
 
-Adding missing ML and maintainers in Cc.
+Fixes: c12ac5fc3e0a ("regulator: drivers: Add TI TPS65219 PMIC regulators support")
 
-Le 06/09/2022 à 13:32, Alexandre Bard a écrit :
-> These fields need to be set in order for the userspace or DSA drivers to
-> change the MTU to bigger or smaller values. They default to 68 and 1500
-> respectively. Since the hardware supports wider limits, it is all
-> benefit to set them.
-> 
-> Specially when connecting a DSA switch, the DSA code wants to set the
-> MTU of the cpsw port to 1500 + tag size. This was failing without this
-> change.
+Regulator does NOT require to be off to be switched to bypass mode.
 
-I had a similar issue with the cpsw_new driver (TI CPSW Switch Support with
-switchdev):
+Signed-off-by: Jerome Neanne <jneanne@baylibre.com>
+---
+ drivers/regulator/tps65219-regulator.c | 20 +-------------------
+ 1 file changed, 1 insertion(+), 19 deletions(-)
 
-eth0: mtu greater than device maximum
-cpsw-switch 48484000.switch eth0: error -22 setting MTU to 1502 to include DSA
-overhead
-
-I did the same changes to allow setting the MTU on cpsw_new driver when used
-with DSA switch.
-
-Also I noticed that the am65-cpsw-nuss already initialize min_mtu and max_mtu [1].
-
-[1]
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/drivers/net/ethernet/ti/am65-cpsw-nuss.c?h=linux-6.1.y#n1981
-
-Best regards,
-Romain
-
-> 
-> Signed-off-by: Alexandre Bard <alexandre.bard@netmodule.com>
-> ---
->  drivers/net/ethernet/ti/cpsw.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/drivers/net/ethernet/ti/cpsw.c b/drivers/net/ethernet/ti/cpsw.c
-> index ed66c4d4d830..83d8c6a8a527 100644
-> --- a/drivers/net/ethernet/ti/cpsw.c
-> +++ b/drivers/net/ethernet/ti/cpsw.c
-> @@ -1631,6 +1631,9 @@ static int cpsw_probe(struct platform_device *pdev)
->  
->  	eth_hw_addr_set(ndev, priv->mac_addr);
->  
-> +	ndev->min_mtu = CPSW_MIN_PACKET_SIZE;
-> +	ndev->max_mtu = CPSW_MAX_PACKET_SIZE;
-> +
->  	cpsw->slaves[0].ndev = ndev;
->  
->  	ndev->features |= NETIF_F_HW_VLAN_CTAG_FILTER | NETIF_F_HW_VLAN_CTAG_RX;
+diff --git a/drivers/regulator/tps65219-regulator.c b/drivers/regulator/tps65219-regulator.c
+index 070159cb5f09..58f6541b6417 100644
+--- a/drivers/regulator/tps65219-regulator.c
++++ b/drivers/regulator/tps65219-regulator.c
+@@ -173,24 +173,6 @@ static unsigned int tps65219_get_mode(struct regulator_dev *dev)
+ 		return REGULATOR_MODE_NORMAL;
+ }
+ 
+-/*
+- * generic regulator_set_bypass_regmap does not fully match requirements
+- * TPS65219 Requires explicitly that regulator is disabled before switch
+- */
+-static int tps65219_set_bypass(struct regulator_dev *dev, bool enable)
+-{
+-	struct tps65219 *tps = rdev_get_drvdata(dev);
+-	unsigned int rid = rdev_get_id(dev);
+-
+-	if (dev->desc->ops->is_enabled(dev)) {
+-		dev_err(tps->dev,
+-			"%s LDO%d enabled, must be shut down to set bypass ",
+-			__func__, rid);
+-		return -EBUSY;
+-	}
+-	return regulator_set_bypass_regmap(dev, enable);
+-}
+-
+ /* Operations permitted on BUCK1/2/3 */
+ static const struct regulator_ops tps65219_bucks_ops = {
+ 	.is_enabled		= regulator_is_enabled_regmap,
+@@ -217,7 +199,7 @@ static const struct regulator_ops tps65219_ldos_1_2_ops = {
+ 	.set_voltage_sel	= regulator_set_voltage_sel_regmap,
+ 	.list_voltage		= regulator_list_voltage_linear_range,
+ 	.map_voltage		= regulator_map_voltage_linear_range,
+-	.set_bypass		= tps65219_set_bypass,
++	.set_bypass		= regulator_set_bypass_regmap,
+ 	.get_bypass		= regulator_get_bypass_regmap,
+ };
+ 
+-- 
+2.34.1
 
