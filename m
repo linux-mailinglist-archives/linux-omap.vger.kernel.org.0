@@ -2,54 +2,52 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F54568D331
-	for <lists+linux-omap@lfdr.de>; Tue,  7 Feb 2023 10:48:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 172D368D3D6
+	for <lists+linux-omap@lfdr.de>; Tue,  7 Feb 2023 11:14:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231706AbjBGJsR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 7 Feb 2023 04:48:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52858 "EHLO
+        id S230501AbjBGKOQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 7 Feb 2023 05:14:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45482 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231695AbjBGJsP (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 7 Feb 2023 04:48:15 -0500
-X-Greylist: delayed 589 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 07 Feb 2023 01:48:10 PST
-Received: from mr85p00im-ztdg06011901.me.com (mr85p00im-ztdg06011901.me.com [17.58.23.198])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 502CE2E837
-        for <linux-omap@vger.kernel.org>; Tue,  7 Feb 2023 01:48:10 -0800 (PST)
+        with ESMTP id S231518AbjBGKOJ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 7 Feb 2023 05:14:09 -0500
+X-Greylist: delayed 452 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 07 Feb 2023 02:14:07 PST
+Received: from st43p00im-zteg10063501.me.com (st43p00im-zteg10063501.me.com [17.58.63.176])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D73A6C17D
+        for <linux-omap@vger.kernel.org>; Tue,  7 Feb 2023 02:14:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-        s=1a1hai; t=1675762700;
+        s=1a1hai; t=1675764394;
         bh=uy/u/jBsLuDEhP7DZbXSmCIaVmd50OFJVFk6lVxCMTQ=;
         h=From:To:Subject:Date:Message-Id:MIME-Version;
-        b=IdNaGH+xWpP+bEltJRBGwq59N1vzX3jRcn7IhWiCvXkemsmknYb+6kk0LZu5kmHoj
-         tlq5PJLm8RNV99aLNv9gGEDlVFmfJM7Et5WeRxe9gnQpl++lhJFay1zpfTUhgNrET0
-         bQ+Z8ZDYaqVHIN3vYw8n8yIk5qEC3Ub3ORFS15RgKIXNOB4haO0SvnEDlzlneLeAoe
-         iVKYZ++43efkadZ8DQ/Wup4kDpw0xgTPIjDSkPGV9GJ9tlSNg0HKMy5jJyW9X3z7pc
-         1d/CzEEeK2m1yI6xwAGHoh2yVboWm8/MUf/EYUgOyiFasaysIiRJWLDyEnF6MSTqyP
-         ycyjMkjY6cDxw==
-Received: from apollo.fritz.box (mr38p00im-dlb-asmtp-mailmevip.me.com [17.57.152.18])
-        by mr85p00im-ztdg06011901.me.com (Postfix) with ESMTPSA id 9F4F790056A;
-        Tue,  7 Feb 2023 09:38:18 +0000 (UTC)
+        b=WE5GgMq/MzwH3oRueLocrSeoZKe//cptxsnNPSY1ZBvNgM05+hC8sEMOsNN5hBhzZ
+         C9i09bsvt7WkMCX0sjEZXoBP/Q6oG1v/9+ypNeEbIdjctQDhAIWH35s9pIcBtTbLkm
+         VhbMC5+z6c7FCo+wkYEReLGEbhrTFeIgrPVSS1hoIhDVmWQ6iZU7nNuxanUVep+sYn
+         Cwdn2HNfqRJKLV9vX79byWHAEuhdofpGC4UqjujvfUodn2d94kMJNWlzpStXiy/jk9
+         MWUqibOgw4NF+4jMyHdWnAXKbSphTdorNV5Wr3brrkUQJVta4TKuLuVBh0KdosMKDa
+         zBY/KIbGporHw==
+Received: from apollo.fritz.box (st43p00im-dlb-asmtp-mailmevip.me.com [17.42.251.41])
+        by st43p00im-zteg10063501.me.com (Postfix) with ESMTPSA id 308374C17A5;
+        Tue,  7 Feb 2023 10:06:33 +0000 (UTC)
 From:   Lucy Mielke <mielkesteven@icloud.com>
 To:     deller@gmx.de, linux-fbdev@vger.kernel.org,
         linux-omap@vger.kernel.org, dri-devel@lists.freedesktop.org
-Cc:     linux-kernel@vger.kernel.org, arnd@arndb.de,
-        Lucy Mielke <mielkesteven@icloud.com>,
-        kernel test robot <lkp@intel.com>
+Cc:     linux-kernel@vger.kernel.org, arnd@arndb.de
 Subject: [PATCH] fbdev: omapfb: cleanup inconsistent indentation
-Date:   Tue,  7 Feb 2023 10:36:11 +0100
-Message-Id: <20230207093611.9361-1-mielkesteven@icloud.com>
+Date:   Tue,  7 Feb 2023 11:06:30 +0100
+Message-Id: <20230207100630.11644-1-mielkesteven@icloud.com>
 X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: s1KjAHgi32XVWN0sMXv-uTz5FlrRyFXw
-X-Proofpoint-ORIG-GUID: s1KjAHgi32XVWN0sMXv-uTz5FlrRyFXw
+X-Proofpoint-GUID: Gq_PqnEGhE0xunAGRdTHGMQPVdHOi2Vh
+X-Proofpoint-ORIG-GUID: Gq_PqnEGhE0xunAGRdTHGMQPVdHOi2Vh
 X-Proofpoint-Virus-Version: =?UTF-8?Q?vendor=3Dfsecure_engine=3D1.1.170-22c6f66c430a71ce266a39bfe25bc?=
- =?UTF-8?Q?2903e8d5c8f:6.0.138,18.0.572,17.11.62.513.0000000_definitions?=
- =?UTF-8?Q?=3D2020-02-14=5F11:2020-02-14=5F02,2020-02-14=5F11,2021-12-02?=
+ =?UTF-8?Q?2903e8d5c8f:6.0.425,18.0.572,17.11.62.513.0000000_definitions?=
+ =?UTF-8?Q?=3D2022-01-14=5F01:2022-01-14=5F01,2020-02-14=5F11,2021-12-02?=
  =?UTF-8?Q?=5F01_signatures=3D0?=
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 spamscore=0 clxscore=1011
- mlxlogscore=791 phishscore=0 malwarescore=0 suspectscore=0 adultscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2209130000 definitions=main-2302070086
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxscore=0 clxscore=1015
+ malwarescore=0 mlxlogscore=681 phishscore=0 bulkscore=0 suspectscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2209130000 definitions=main-2302070090
 X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
         RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
