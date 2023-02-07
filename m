@@ -2,188 +2,210 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 923F668E198
-	for <lists+linux-omap@lfdr.de>; Tue,  7 Feb 2023 20:57:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 51B5768E1A3
+	for <lists+linux-omap@lfdr.de>; Tue,  7 Feb 2023 20:59:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231985AbjBGT5I (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 7 Feb 2023 14:57:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52816 "EHLO
+        id S229636AbjBGT7l (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 7 Feb 2023 14:59:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229679AbjBGT5I (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 7 Feb 2023 14:57:08 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 251B21EBF3;
-        Tue,  7 Feb 2023 11:57:06 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8452A6115B;
-        Tue,  7 Feb 2023 19:57:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9D52C433EF;
-        Tue,  7 Feb 2023 19:57:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1675799825;
-        bh=wTSzGIVVJ5e2gYLl9ScWoBcYXsaIMyB7F/krxBcdJHk=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=KsQtXmO2JqnrhchH9auqKhmeEm2Q29wvzSI9zrlFF8LnCh+Ea3gO9j2UmEScsdfD0
-         PeKLtmJ3Zf0jLcgzOWhFR6cLqea9XuAGrJ5SJNpKgqO4w/dJAY6C4NFwJP0sHyXzyT
-         15gvP9ILwmVT0GZfB9uU4rIi4GwPgA4gLRjiRUf08V47nFhKqrfjJvVfvI2/kGPf9W
-         +eDppsuymcq8Q2sL2T6nWZ+q/yQubR3SnJMX2a6HLHbjJrn9x+Dhe7x1Y3opSiBEZk
-         /y+AvWOKcR/zbEW0+zPU2D0wyoC81SmCN83NrYZYjgIlL2VRMp4l1wp4FuhYY6nQGb
-         IlMLWEmkLDw9g==
-Message-ID: <e8158969-08d0-1edc-24be-8c300a71adbd@kernel.org>
-Date:   Tue, 7 Feb 2023 21:56:57 +0200
+        with ESMTP id S229699AbjBGT7k (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 7 Feb 2023 14:59:40 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA6233EFC0
+        for <linux-omap@vger.kernel.org>; Tue,  7 Feb 2023 11:59:39 -0800 (PST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pPU7i-0004LR-Tg; Tue, 07 Feb 2023 20:59:26 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pPU7f-003M0p-NY; Tue, 07 Feb 2023 20:59:24 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pPU7f-001f6l-GJ; Tue, 07 Feb 2023 20:59:23 +0100
+From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        iresh Kumar <viresh.kumar@linaro.org>
+Cc:     Markus Mayer <mmayer@broadcom.com>,
+        Broadcom internal kernel review list 
+        <bcm-kernel-feedback-list@broadcom.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Kevin Hilman <khilman@kernel.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        linux-pm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-omap@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, kernel@pengutronix.de
+Subject: [PATCH] cpufreq: Make cpufreq_unregister_driver() return void
+Date:   Tue,  7 Feb 2023 20:59:09 +0100
+Message-Id: <20230207195909.474953-1-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: Re: [EXTERNAL] Re: [PATCH v4 2/2] net: ti: icssg-prueth: Add ICSSG
- ethernet driver
-To:     Md Danish Anwar <a0501179@ti.com>, Andrew Lunn <andrew@lunn.ch>,
-        MD Danish Anwar <danishanwar@ti.com>
-Cc:     "Andrew F. Davis" <afd@ti.com>, Suman Anna <s-anna@ti.com>,
-        YueHaibing <yuehaibing@huawei.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>, nm@ti.com,
-        ssantosh@kernel.org, srk@ti.com, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, netdev@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-References: <20230206060708.3574472-1-danishanwar@ti.com>
- <20230206060708.3574472-3-danishanwar@ti.com> <Y+ELeSQX+GWS5N2p@lunn.ch>
- <42503a0d-b434-bbcc-553d-a326af5b4918@ti.com>
-Content-Language: en-US
-From:   Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <42503a0d-b434-bbcc-553d-a326af5b4918@ti.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5250; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=JTPX5wQArjFokwps66B5mHzGddYcN7+nEQY+JlShuOM=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBj4q2KUQySq9hxhg8uj4r2ZPhCEmnFf9Ja7bJMi+Kv NbPJafSJATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCY+KtigAKCRDB/BR4rcrsCXgeB/ 4qnB4YPMS3Lsxa/9NngHxXLycsrs4OdKxs3OEGavkqm9iGIYZvZx5N7v8fky+3JDCzMWm9aGO+VLK/ mXxXnTifr+ia/DyX7ByY7JlIGojKHnEybDdFj0DSgC8SuUuBwrT35E+SwGFAlricUaXU5tEMQG3Dvb stX8T8uCfhsGShZRpqZ2ks42bRHDeZZx1KcV9HhnVdloWxtK3NLHTcwIbNtsffSeZ+rcohZRKeGMNX ndAiCXTETKFq8w+hSYw7rt5266cymIVGf7z53jYVaxCpw2+PaFXvptsyuOfSAlNhiOgWx2b13T/alD mjryrmnrzwDhe4hIWktqRbqt8FhqYl
+X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-omap@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Danish,
+All but a few drivers ignore the return value of
+cpufreq_unregister_driver(). Those few that don't only call it after
+cpufreq_register_driver() succeeded, in which case the call doesn't
+fail.
 
-On 07/02/2023 17:29, Md Danish Anwar wrote:
-> Hi Andrew,
-> 
-> On 06/02/23 19:45, Andrew Lunn wrote:
->>> +enum mii_mode {
->>> +	MII_MODE_MII = 0,
->>> +	MII_MODE_RGMII,
->>> +	MII_MODE_SGMII
->>
->> There is no mention of SGMII anywhere else. And in a couple of places,
->> the code makes the assumption that if it is not RGMII it is MII.
->>
->> Does the hardware really support SGMII?
->>
-> 
-> As far as I know, the hardware does support SGMII but it's not yet supported by
-> the driver. I will drop the SGMII because it's not needed as of now. If in
-> future support for SGMII is there, I'll add it.
-> 
->>> +static int prueth_config_rgmiidelay(struct prueth *prueth,
->>> +				    struct device_node *eth_np,
->>> +				    phy_interface_t phy_if)
->>> +{
->>
->> ...
->>
->>> +	if (phy_if == PHY_INTERFACE_MODE_RGMII_ID ||
->>> +	    phy_if == PHY_INTERFACE_MODE_RGMII_TXID)
->>> +		rgmii_tx_id |= ICSSG_CTRL_RGMII_ID_MODE;
->>> +
->>> +	regmap_update_bits(ctrl_mmr, icssgctrl_reg, ICSSG_CTRL_RGMII_ID_MODE, rgmii_tx_id);
+Make the function return no value and add a WARN_ON for the case that
+the function is called in an invalid situation (i.e. without a previous
+successful call to cpufreq_register_driver()).
 
-This is only applicable to some devices so you need to restrict this only
-to those devices.
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+---
+ drivers/cpufreq/brcmstb-avs-cpufreq.c | 5 +----
+ drivers/cpufreq/cpufreq.c             | 8 +++-----
+ drivers/cpufreq/davinci-cpufreq.c     | 4 +++-
+ drivers/cpufreq/mediatek-cpufreq-hw.c | 4 +++-
+ drivers/cpufreq/omap-cpufreq.c        | 4 +++-
+ drivers/cpufreq/qcom-cpufreq-hw.c     | 4 +++-
+ include/linux/cpufreq.h               | 2 +-
+ 7 files changed, 17 insertions(+), 14 deletions(-)
 
-And only when you enable MAC TX delay you need to change emac->phy_if to PHY_INTERFACE_MODE_RGMII_RXID
-if it was PHY_INTERFACE_MODE_RGMII_ID.
+diff --git a/drivers/cpufreq/brcmstb-avs-cpufreq.c b/drivers/cpufreq/brcmstb-avs-cpufreq.c
+index 4153150e20db..ffea6402189d 100644
+--- a/drivers/cpufreq/brcmstb-avs-cpufreq.c
++++ b/drivers/cpufreq/brcmstb-avs-cpufreq.c
+@@ -751,10 +751,7 @@ static int brcm_avs_cpufreq_probe(struct platform_device *pdev)
+ 
+ static int brcm_avs_cpufreq_remove(struct platform_device *pdev)
+ {
+-	int ret;
+-
+-	ret = cpufreq_unregister_driver(&brcm_avs_driver);
+-	WARN_ON(ret);
++	cpufreq_unregister_driver(&brcm_avs_driver);
+ 
+ 	brcm_avs_prepare_uninit(pdev);
+ 
+diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
+index 7e56a42750ea..85a0bea2dbf1 100644
+--- a/drivers/cpufreq/cpufreq.c
++++ b/drivers/cpufreq/cpufreq.c
+@@ -2904,12 +2904,12 @@ EXPORT_SYMBOL_GPL(cpufreq_register_driver);
+  * Returns zero if successful, and -EINVAL if the cpufreq_driver is
+  * currently not initialised.
+  */
+-int cpufreq_unregister_driver(struct cpufreq_driver *driver)
++void cpufreq_unregister_driver(struct cpufreq_driver *driver)
+ {
+ 	unsigned long flags;
+ 
+-	if (!cpufreq_driver || (driver != cpufreq_driver))
+-		return -EINVAL;
++	if (WARN_ON(!cpufreq_driver || (driver != cpufreq_driver)))
++		return;
+ 
+ 	pr_debug("unregistering driver %s\n", driver->name);
+ 
+@@ -2926,8 +2926,6 @@ int cpufreq_unregister_driver(struct cpufreq_driver *driver)
+ 
+ 	write_unlock_irqrestore(&cpufreq_driver_lock, flags);
+ 	cpus_read_unlock();
+-
+-	return 0;
+ }
+ EXPORT_SYMBOL_GPL(cpufreq_unregister_driver);
+ 
+diff --git a/drivers/cpufreq/davinci-cpufreq.c b/drivers/cpufreq/davinci-cpufreq.c
+index 9e97f60f8199..2d23015e2abd 100644
+--- a/drivers/cpufreq/davinci-cpufreq.c
++++ b/drivers/cpufreq/davinci-cpufreq.c
+@@ -138,7 +138,9 @@ static int __exit davinci_cpufreq_remove(struct platform_device *pdev)
+ 	if (cpufreq.asyncclk)
+ 		clk_put(cpufreq.asyncclk);
+ 
+-	return cpufreq_unregister_driver(&davinci_driver);
++	cpufreq_unregister_driver(&davinci_driver);
++
++	return 0;
+ }
+ 
+ static struct platform_driver davinci_cpufreq_driver = {
+diff --git a/drivers/cpufreq/mediatek-cpufreq-hw.c b/drivers/cpufreq/mediatek-cpufreq-hw.c
+index f80339779084..f21a9e3df53d 100644
+--- a/drivers/cpufreq/mediatek-cpufreq-hw.c
++++ b/drivers/cpufreq/mediatek-cpufreq-hw.c
+@@ -317,7 +317,9 @@ static int mtk_cpufreq_hw_driver_probe(struct platform_device *pdev)
+ 
+ static int mtk_cpufreq_hw_driver_remove(struct platform_device *pdev)
+ {
+-	return cpufreq_unregister_driver(&cpufreq_mtk_hw_driver);
++	cpufreq_unregister_driver(&cpufreq_mtk_hw_driver);
++
++	return 0;
+ }
+ 
+ static const struct of_device_id mtk_cpufreq_hw_match[] = {
+diff --git a/drivers/cpufreq/omap-cpufreq.c b/drivers/cpufreq/omap-cpufreq.c
+index 1b50df06c6bc..81649a1969b6 100644
+--- a/drivers/cpufreq/omap-cpufreq.c
++++ b/drivers/cpufreq/omap-cpufreq.c
+@@ -184,7 +184,9 @@ static int omap_cpufreq_probe(struct platform_device *pdev)
+ 
+ static int omap_cpufreq_remove(struct platform_device *pdev)
+ {
+-	return cpufreq_unregister_driver(&omap_driver);
++	cpufreq_unregister_driver(&omap_driver);
++
++	return 0;
+ }
+ 
+ static struct platform_driver omap_cpufreq_platdrv = {
+diff --git a/drivers/cpufreq/qcom-cpufreq-hw.c b/drivers/cpufreq/qcom-cpufreq-hw.c
+index 9505a812d6a1..8a1b140884af 100644
+--- a/drivers/cpufreq/qcom-cpufreq-hw.c
++++ b/drivers/cpufreq/qcom-cpufreq-hw.c
+@@ -766,7 +766,9 @@ static int qcom_cpufreq_hw_driver_probe(struct platform_device *pdev)
+ 
+ static int qcom_cpufreq_hw_driver_remove(struct platform_device *pdev)
+ {
+-	return cpufreq_unregister_driver(&cpufreq_qcom_hw_driver);
++	cpufreq_unregister_driver(&cpufreq_qcom_hw_driver);
++
++	return 0;
+ }
+ 
+ static struct platform_driver qcom_cpufreq_hw_driver = {
+diff --git a/include/linux/cpufreq.h b/include/linux/cpufreq.h
+index 6a94a6eaad27..65623233ab2f 100644
+--- a/include/linux/cpufreq.h
++++ b/include/linux/cpufreq.h
+@@ -448,7 +448,7 @@ struct cpufreq_driver {
+ #define CPUFREQ_NO_AUTO_DYNAMIC_SWITCHING	BIT(6)
+ 
+ int cpufreq_register_driver(struct cpufreq_driver *driver_data);
+-int cpufreq_unregister_driver(struct cpufreq_driver *driver_data);
++void cpufreq_unregister_driver(struct cpufreq_driver *driver_data);
+ 
+ bool cpufreq_driver_test_flags(u16 flags);
+ const char *cpufreq_get_current_driver(void);
 
->>
->> Here you are adding the TX delay if the phy-mode indicates it should
->> be added.
->>
->>> +static int prueth_netdev_init(struct prueth *prueth,
->>> +			      struct device_node *eth_node)
->>> +{
->>
->>> +	ret = of_get_phy_mode(eth_node, &emac->phy_if);
->>> +	if (ret) {
->>> +		dev_err(prueth->dev, "could not get phy-mode property\n");
->>> +		goto free;
->>> +	}
->>
->>> +	ret = prueth_config_rgmiidelay(prueth, eth_node, emac->phy_if);
->>> +	if (ret)
->>> +		goto free;
->>> +
->>
->> Reading it from DT and calling the delay function.
->>
->>> +static int prueth_probe(struct platform_device *pdev)
->>> +{
->>
->>
->>> +	/* register the network devices */
->>> +	if (eth0_node) {
->>> +		ret = register_netdev(prueth->emac[PRUETH_MAC0]->ndev);
->>> +		if (ret) {
->>> +			dev_err(dev, "can't register netdev for port MII0");
->>> +			goto netdev_exit;
->>> +		}
->>> +
->>> +		prueth->registered_netdevs[PRUETH_MAC0] = prueth->emac[PRUETH_MAC0]->ndev;
->>> +
->>> +		emac_phy_connect(prueth->emac[PRUETH_MAC0]);
->>
->> And this is connecting the MAC and the PHY, where emac_phy_connect()
->> passes emac->phy_if to phylib.
->>
->> What i don't see anywhere is you changing emac->phy_if to indicate the
->> MAC has inserted the TX delay, and so the PHY should not.
->>
-> 
-> Yes, there is no indication whether MAC has enabled TX delay or not. I have
-> changed the phy-mode in DT from "rgmii-rxid" to "rgmii-id" as per your
-> suggestion in previous revision. I will keep Tx Internal delay as it is(getting
-> configured in MAC) and inside emac_phy_connect() API, while calling
-> of_phy_connect() instead of passing emac->phy_if (which is rgmii-id as per DT),
-> I will pass PHY_INTERFACE_MODE_RGMII_RXID. This will make sure that phy only
-> enables Rx delay and keep the existing approach of keepping Tx delay in MAC.
-> 
-> Currently, in emac_phy_connect() API,
-> 
-> 	/* connect PHY */
-> 	ndev->phydev = of_phy_connect(emac->ndev, emac->phy_node,
-> 				      &emac_adjust_link, 0,
-> 				      emac->phy_if);
-> I will change it to,
-> 
-> 	/* connect PHY */
-> 	ndev->phydev = of_phy_connect(emac->ndev, emac->phy_node,
-> 				      &emac_adjust_link, 0,
-> 				      PHY_INTERFACE_MODE_RGMII_RXID);
-> 
-> Let me know if this looks OK.
+base-commit: 05ecb680708a1dbe6554d6fc17e5d9a8a7cb5e6a
+-- 
+2.39.0
 
-No, this is not OK.
-
-Please keep this as emac->phy_if.
-
-In prueth_config_rgmiidelay(), you can change emac->phy_if to
-PHY_INTERFACE_MODE_RGMII_RXID only if it was RGMII mode
-*and* MAC TX delay was enabled.
-
-cheers,
--roger
