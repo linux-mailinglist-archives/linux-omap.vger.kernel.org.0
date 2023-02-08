@@ -2,174 +2,134 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DBC068EC5F
-	for <lists+linux-omap@lfdr.de>; Wed,  8 Feb 2023 11:09:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 48C0068EF5E
+	for <lists+linux-omap@lfdr.de>; Wed,  8 Feb 2023 13:56:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230392AbjBHKJL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 8 Feb 2023 05:09:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49980 "EHLO
+        id S230434AbjBHM4h (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 8 Feb 2023 07:56:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229706AbjBHKJG (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 8 Feb 2023 05:09:06 -0500
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FA7293F3;
-        Wed,  8 Feb 2023 02:09:05 -0800 (PST)
-Received: by mail-qt1-f170.google.com with SMTP id h24so20055725qta.12;
-        Wed, 08 Feb 2023 02:09:05 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Al90dbaVnMvp1zrarwIGYloHZEfuuu1TJgBG8XepFdE=;
-        b=ODARmn87I0+wpt7STPuOcAeBBIeRkkY/k2hP75Qd4JOmZxio7IfcvQdWW9foKUFJVB
-         Itxtl8SjNumukYOQra1ho0pXyAuPGXc5EKHwHc+/IhuF0oR4RLecpLvyVrWuLfjmme5e
-         iQyJCsh85x9mH1QlC1Z0F2UPzE1dqJu+5ERGhRy0Fw4mSMG7RTes46DPLOndJAV2dwwJ
-         iLtTO54zg1K1pmS9w8eufYCnb13IZ+aEnubUQSI9oHBh5suTCdUGjQXySiKv6kymRe1j
-         nJsuIY0jQtB560gkm8r4dc131LxAylv8/D0ctnEypNhKfyks8bA5xc6sTGpo4Dv6N0AF
-         ErXg==
-X-Gm-Message-State: AO0yUKXsgEY8F3V3EFBVd8aLTRVnoEIVTxJ/SJYscTfqx5MSiwGzhJbo
-        KqNXxWQiDHoWC2aPojWoUado5EWuuINBfS2S
-X-Google-Smtp-Source: AK7set+z2q+GKKBVkMO9i5mvqn6izSiK+EF5MtJjRSaQhddI6zFY8709SiO4krMyjD9TKY81rsaDkg==
-X-Received: by 2002:ac8:5fc1:0:b0:3b8:49a9:48c0 with SMTP id k1-20020ac85fc1000000b003b849a948c0mr11975248qta.13.1675850944267;
-        Wed, 08 Feb 2023 02:09:04 -0800 (PST)
-Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com. [209.85.219.169])
-        by smtp.gmail.com with ESMTPSA id x11-20020a05620a448b00b0072c01a3b6aasm11511525qkp.100.2023.02.08.02.09.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Feb 2023 02:09:03 -0800 (PST)
-Received: by mail-yb1-f169.google.com with SMTP id o187so21579816ybg.3;
-        Wed, 08 Feb 2023 02:09:02 -0800 (PST)
-X-Received: by 2002:a5b:508:0:b0:8a3:59a4:340e with SMTP id
- o8-20020a5b0508000000b008a359a4340emr741320ybp.604.1675850942618; Wed, 08 Feb
- 2023 02:09:02 -0800 (PST)
-MIME-Version: 1.0
-References: <20230207142952.51844-1-andriy.shevchenko@linux.intel.com> <20230207142952.51844-9-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20230207142952.51844-9-andriy.shevchenko@linux.intel.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Wed, 8 Feb 2023 11:08:51 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdVkhymFCys_LnqKtpXLBT6sKURbVqBnp2wDUc63nhxvSw@mail.gmail.com>
-Message-ID: <CAMuHMdVkhymFCys_LnqKtpXLBT6sKURbVqBnp2wDUc63nhxvSw@mail.gmail.com>
-Subject: Re: [PATCH v3 08/12] gpio: aggregator: Add missing header(s)
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Devarsh Thakkar <devarsht@ti.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Stefan Schmidt <stefan@datenfreihafen.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        linux-gpio@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        linux-doc-tw-discuss@lists.sourceforge.net,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-wpan@vger.kernel.org,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, linux-arch@vger.kernel.org,
-        devicetree@vger.kernel.org, Bartosz Golaszewski <brgl@bgdev.pl>,
-        Jonathan Corbet <corbet@lwn.net>, Alex Shi <alexs@kernel.org>,
-        Yanteng Si <siyanteng@loongson.cn>,
-        Hu Haowen <src.res@email.cn>,
-        Russell King <linux@armlinux.org.uk>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Mun Yew Tham <mun.yew.tham@intel.com>,
-        Keerthy <j-keerthy@ti.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Alexander Aring <alex.aring@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Kalle Valo <kvalo@kernel.org>, Qiang Zhao <qiang.zhao@nxp.com>,
-        Li Yang <leoyang.li@nxp.com>, Lee Jones <lee@kernel.org>,
+        with ESMTP id S229630AbjBHM4h (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 8 Feb 2023 07:56:37 -0500
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FA5630EB6;
+        Wed,  8 Feb 2023 04:56:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+        bh=5oTXr0EPcDd/e3wIuQRZ5u10MSlrlS9A+107BrjVmHs=; b=lZXrR+cpLuZWFm1TV1kwOBAI8X
+        3orKSsD9snMKmhpFBtZ2MknaMyc6+SXMyBUch2d47V7zsB7267Y3jphpG0NH5u1HSgxXsgUtg7JXd
+        sKM1ffrc3/sDrSfUlDxW/5wVK3gKYtCgGo/8QX7RMPNu2WwRBAbx058NOymLLOcQIlF8=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1pPjzn-004Oze-F9; Wed, 08 Feb 2023 13:56:19 +0100
+Date:   Wed, 8 Feb 2023 13:56:19 +0100
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Md Danish Anwar <a0501179@ti.com>
+Cc:     Roger Quadros <rogerq@kernel.org>,
+        MD Danish Anwar <danishanwar@ti.com>,
+        "Andrew F. Davis" <afd@ti.com>, Suman Anna <s-anna@ti.com>,
+        YueHaibing <yuehaibing@huawei.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+        Paolo Abeni <pabeni@redhat.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>, nm@ti.com,
+        ssantosh@kernel.org, srk@ti.com, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, netdev@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [EXTERNAL] Re: [EXTERNAL] Re: [PATCH v4 2/2] net: ti:
+ icssg-prueth: Add ICSSG ethernet driver
+Message-ID: <Y+Ob8++GWciL127K@lunn.ch>
+References: <20230206060708.3574472-1-danishanwar@ti.com>
+ <20230206060708.3574472-3-danishanwar@ti.com>
+ <Y+ELeSQX+GWS5N2p@lunn.ch>
+ <42503a0d-b434-bbcc-553d-a326af5b4918@ti.com>
+ <e8158969-08d0-1edc-24be-8c300a71adbd@kernel.org>
+ <4438fb71-7e20-6532-a858-b688bc64e826@ti.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4438fb71-7e20-6532-a858-b688bc64e826@ti.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Andy,
+> >>>> +static int prueth_config_rgmiidelay(struct prueth *prueth,
+> >>>> +				    struct device_node *eth_np,
+> >>>> +				    phy_interface_t phy_if)
+> >>>> +{
+> >>>
+> >>> ...
+> >>>
+> >>>> +	if (phy_if == PHY_INTERFACE_MODE_RGMII_ID ||
+> >>>> +	    phy_if == PHY_INTERFACE_MODE_RGMII_TXID)
+> >>>> +		rgmii_tx_id |= ICSSG_CTRL_RGMII_ID_MODE;
+> >>>> +
+> >>>> +	regmap_update_bits(ctrl_mmr, icssgctrl_reg, ICSSG_CTRL_RGMII_ID_MODE, rgmii_tx_id);
+> > 
+> > This is only applicable to some devices so you need to restrict this only
+> > to those devices.
+> > 
+> 
+> Currently ICSSG driver is getting upstreamed for AM65 SR2.0 device, so I don't
+> think there is any need for any device related restriction. Once support for
+> other devices are enabled for upstream, we can modify this accordingly.
 
-Thanks for your patch!
+The problem is, this is a board property, not a SoC property. What if
+somebody designs a board with extra long clock lines in order to add
+the delay?
 
-On Tue, Feb 7, 2023 at 3:29 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
-> Do not imply that some of the generic headers may be always included.
-> Instead, include explicitly what we are direct user of.
+> I checked the latest Technical Reference Manual [1] (Section 5.1.3.4.49, Table
+> 5-624) for AM65 Silicon Revision 2.0.
+> 
+> Below is the description in Table 5-624
+> 
+> BIT	    : 24
+> Field	    : RGMII0_ID_MODE
+> Type	    : R/W
+> Reset	    : 0h
+> Description : Controls the PRU_ICSSG0 RGMII0 port internal transmit delay
+> 	      0h - Internal transmit delay is enabled
+> 	      1h - Reserved
+> 
+> The TX internal delay is always enabled and couldn't be disabled as 1h is
+> reserved. So hardware support for disabling TX internal delay is not there.
 
-That applies only to the addition of #include <linux/slab.h>...
-Please also describe the other changes.
+So if somebody passes a phy-mode which requires it disabled, you need
+to return -EINVAL, to indicate the hardware cannot actually do it.
 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
->  drivers/gpio/gpio-aggregator.c | 9 +++++----
->  1 file changed, 5 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/gpio/gpio-aggregator.c b/drivers/gpio/gpio-aggregator.c
-> index 6d17d262ad91..20a686f12df7 100644
-> --- a/drivers/gpio/gpio-aggregator.c
-> +++ b/drivers/gpio/gpio-aggregator.c
-> @@ -10,19 +10,20 @@
->  #include <linux/bitmap.h>
->  #include <linux/bitops.h>
->  #include <linux/ctype.h>
-> -#include <linux/gpio.h>
-> -#include <linux/gpio/consumer.h>
-> -#include <linux/gpio/driver.h>
-> -#include <linux/gpio/machine.h>
->  #include <linux/idr.h>
->  #include <linux/kernel.h>
->  #include <linux/module.h>
->  #include <linux/mutex.h>
->  #include <linux/overflow.h>
->  #include <linux/platform_device.h>
-> +#include <linux/slab.h>
->  #include <linux/spinlock.h>
->  #include <linux/string.h>
->
-> +#include <linux/gpio/consumer.h>
-> +#include <linux/gpio/driver.h>
-> +#include <linux/gpio/machine.h>
-> +
->  #define AGGREGATOR_MAX_GPIOS 512
+> As, TX internal delay is always there, there is no need to enable it in MAC or
+> PHY. So no need of API prueth_config_rgmiidelay().
+> 
+> My approach to handle delay would be as below.
+> 
+> *) Keep phy-mode = "rgmii-id" in DT as asked by Andrew.
 
-For the actual changes:
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+As i said this depends on the board, not the SoC. In theory, you could
+design a board with an extra long RX clock line, and then use phy-mode
+rgmii-txid, meaning the MAC/PHY combination needs to add the TX delay.
 
-Gr{oetje,eeting}s,
+> *) Let TX internal delay enabled in Hardware.
+> *) Let PHY configure RX internal delay.
+> *) Remove prueth_config_rgmiidelay() API is there is no use of this. TX
+> Internal delay is always enabled.
+> *) Instead of calling prueth_config_rgmiidelay() API in prueth_netdev_init()
+> API, add below if condition.
+> 
+> 	if(emac->phy_if == PHY_INTERFACE_MODE_RGMII_ID)
+> 		emac->phy_if == PHY_INTERFACE_MODE_RGMII_RXID
 
-                        Geert
+You should handle all cases where a TX delay is requested, not just
+ID.
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+	Andrew
