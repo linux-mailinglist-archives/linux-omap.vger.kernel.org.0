@@ -2,228 +2,236 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C11AA6907A3
-	for <lists+linux-omap@lfdr.de>; Thu,  9 Feb 2023 12:43:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F1832690968
+	for <lists+linux-omap@lfdr.de>; Thu,  9 Feb 2023 13:58:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230509AbjBILnS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 9 Feb 2023 06:43:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52296 "EHLO
+        id S229658AbjBIM63 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 9 Feb 2023 07:58:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230403AbjBILmx (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 9 Feb 2023 06:42:53 -0500
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on20601.outbound.protection.outlook.com [IPv6:2a01:111:f400:7eae::601])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1674A6E885;
-        Thu,  9 Feb 2023 03:31:10 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=fZR2Q2RnFbagGyX5YCVSuYN30uU2QVj2mWzqzF5iSq8uUW4IjVxQiHyAyTq7G1UzVoXSYPPxzav5rPK+A4Mh/ITs44ZbIND1iglV/Cg9CtdWk+nP/UsjDrgoohEvcUIMmfCvtrsW9ucUohJUA0pWFevFgGhwwWVOdCbCnS4peIwdf7yWFMTblKG7opUofqjD3ItN4LtFEupsbhcuUAUZ1AMVI/tFG5udQR1aveVu0sPTMcu03/+N9HJ34lha2T9ov4b9RWIDVjyfLtL/76S0EoeMztbaZ0FSEAssaqhjE9mO1JtKZe0aTEEciu4sp+FjobNEClMHCepK60e0W5WEEg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wv/h9yMF1V7f8yQyo1ITCHbCwWDrmyWqYtd76E8ToHE=;
- b=AIikFwk0FSPqlx9eirUO/VY0izD2abhKoCtO6eTgvLeZsmuUWXiz/oBCDhsQ8OKvxZO3q4+HWcM1jYnSUKpge1nvJY06EjhtqK2FVRH9FTe4o7VvSzNqEKGScXyRbT/5u/vcbjZMLhyQ/mNAkI7d2lVf0apkCwLfeBpoucv7z+/C+D9n26w+kFsvkBxmszX2mQaaecnF79j89QyRf4G3gd9yrVOlFThTAUCsFoXT5DNW+fOBJ/xQ7uOnm6/v6pXmzKu/FMjXGdFMGiOGXq0ZxEPZjFRWSZ3HKsHc7ITWKn6Rw+nNrP5boOPCpNb4oeQGu487Zq6v0jc/e3FMMeyPiw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wv/h9yMF1V7f8yQyo1ITCHbCwWDrmyWqYtd76E8ToHE=;
- b=eQ0M/s3sSwbTRQo7lwAn1wirtgYUKwYHdG9hv5MqPxAKIOM3ghMiRZFlyENi13CRosgmdxel+Y/abR18bLp8vVLJ4GTQhrVRKsq3d1pXszWtE5MJHqDS4AUPTMjslA6cATz6aqoENg178ZRXt1GWouS1eHT11vTdPK/uRwAHRQDBWEgvgPS1fRJTJ8R3+ZhILSMwY9qZaV3J8k2rVaQ3NiJlloZoeYOVPYGnaDBDICcAs9mtOXi11VJyBuAtzfl5WrC6QpUvQTgXczW/tWZE3YiKYXeYbAUV2CmymMNLkWCig9KYP/dH2O60W5NjrYY9K3w0bbq704WtoDJXbDbRvQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from IA1PR12MB6604.namprd12.prod.outlook.com (2603:10b6:208:3a0::7)
- by DM4PR12MB5245.namprd12.prod.outlook.com (2603:10b6:5:398::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6086.17; Thu, 9 Feb
- 2023 11:30:03 +0000
-Received: from IA1PR12MB6604.namprd12.prod.outlook.com
- ([fe80::735c:fa9:2043:279a]) by IA1PR12MB6604.namprd12.prod.outlook.com
- ([fe80::735c:fa9:2043:279a%4]) with mapi id 15.20.6086.019; Thu, 9 Feb 2023
- 11:30:03 +0000
-Message-ID: <e9772188-2b52-d7f4-0540-9e9402155285@nvidia.com>
-Date:   Thu, 9 Feb 2023 16:59:24 +0530
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.7.2
-Subject: Re: [PATCH v4 03/18] hte: tegra-194: Use proper includes
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Vincenzo Palazzo <vincenzopalazzodev@gmail.com>,
-        Devarsh Thakkar <devarsht@ti.com>,
-        Michael Walle <michael@walle.cc>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Thierry Reding <treding@nvidia.com>,
-        Stefan Schmidt <stefan@datenfreihafen.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Lee Jones <lee@kernel.org>, linux-gpio@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-doc-tw-discuss@lists.sourceforge.net,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-wpan@vger.kernel.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, linux-arch@vger.kernel.org,
-        devicetree@vger.kernel.org
-Cc:     Bartosz Golaszewski <brgl@bgdev.pl>,
-        Jonathan Corbet <corbet@lwn.net>, Alex Shi <alexs@kernel.org>,
-        Yanteng Si <siyanteng@loongson.cn>,
-        Hu Haowen <src.res@email.cn>,
-        Russell King <linux@armlinux.org.uk>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Mun Yew Tham <mun.yew.tham@intel.com>,
-        Keerthy <j-keerthy@ti.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Alexander Aring <alex.aring@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Kalle Valo <kvalo@kernel.org>, Qiang Zhao <qiang.zhao@nxp.com>,
-        Li Yang <leoyang.li@nxp.com>, Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>
-References: <20230208173343.37582-1-andriy.shevchenko@linux.intel.com>
- <20230208173343.37582-4-andriy.shevchenko@linux.intel.com>
+        with ESMTP id S229483AbjBIM62 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 9 Feb 2023 07:58:28 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BAD783EF;
+        Thu,  9 Feb 2023 04:58:27 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A1A7661A3E;
+        Thu,  9 Feb 2023 12:58:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DB78C433D2;
+        Thu,  9 Feb 2023 12:58:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1675947506;
+        bh=BIA4FTURFrvXnkpdcGAJC7eUwFXh6Wbr3akTf63NIN4=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=Mj51+W26Br+nLAcmj0/2vWD6X1CbipF/tiA1ILLUlQQv33y79C+n4+SP18W3KfYKA
+         Cy1Y+K7ws0DNmhpvvZqmeLPmr7FbL1FiJXd2F413m/wa4p46o32VN6v16v5fkQ08Se
+         kgSVcfUvrLyrDc4y4GBGC8Uw6kOWV1vJPHk4Zg2S2dN+SmcAbDog8jsvMD1QPOHlkN
+         EP9H/65qTO53siq9Z77Zapf/RFRNZhQ+vl9iFFTv4M6jG0B3ykPDbGTpHrR1//zC3u
+         ZSoUhb8Z6TlJVNZefk/Sq6O3adLTr7J8MO0Of8cij/pbDOB98DyRfYKZ93KEIBfK5p
+         PDIMpiNMM5JMg==
+Message-ID: <9cc8df06-8ad3-234d-b221-b1af2ee3719a@kernel.org>
+Date:   Thu, 9 Feb 2023 14:58:18 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.1
+Subject: Re: [EXTERNAL] Re: [EXTERNAL] Re: [EXTERNAL] Re: [PATCH v4 2/2] net:
+ ti: icssg-prueth: Add ICSSG ethernet driver
 Content-Language: en-US
-X-Nvconfidentiality: public
-From:   Dipen Patel <dipenp@nvidia.com>
-In-Reply-To: <20230208173343.37582-4-andriy.shevchenko@linux.intel.com>
+To:     Md Danish Anwar <a0501179@ti.com>, Andrew Lunn <andrew@lunn.ch>
+Cc:     MD Danish Anwar <danishanwar@ti.com>,
+        "Andrew F. Davis" <afd@ti.com>, Suman Anna <s-anna@ti.com>,
+        YueHaibing <yuehaibing@huawei.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>, nm@ti.com,
+        ssantosh@kernel.org, srk@ti.com, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, netdev@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+References: <20230206060708.3574472-1-danishanwar@ti.com>
+ <20230206060708.3574472-3-danishanwar@ti.com> <Y+ELeSQX+GWS5N2p@lunn.ch>
+ <42503a0d-b434-bbcc-553d-a326af5b4918@ti.com>
+ <e8158969-08d0-1edc-24be-8c300a71adbd@kernel.org>
+ <4438fb71-7e20-6532-a858-b688bc64e826@ti.com> <Y+Ob8++GWciL127K@lunn.ch>
+ <6713252d-6f86-c674-9229-c4512ebf1d72@ti.com>
+From:   Roger Quadros <rogerq@kernel.org>
+In-Reply-To: <6713252d-6f86-c674-9229-c4512ebf1d72@ti.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MAXPR01CA0095.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a00:5d::13) To IA1PR12MB6604.namprd12.prod.outlook.com
- (2603:10b6:208:3a0::7)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA1PR12MB6604:EE_|DM4PR12MB5245:EE_
-X-MS-Office365-Filtering-Correlation-Id: d27b7497-fb1c-4a3f-af5e-08db0a90fc2c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: kJ0ZjfD7taWEJFCo/vx/mTiyAEC2X1B5VCXMLNd1n7I7puu1EUNOPjfMWSzzQb+upc5gf4sayt5uSBAaOua0+lRtCJof0QqjE+OdLxV9ZI2LwKQwOwjKWqh0rw1+BjFmHUWwltOzUMtJ7TvcZ0TJlJfbgG1dNbaQ/FjVpDJ1UFupHN/bpzXp3aWy5iFQF+8yge3ZFseeiJbtQSfImgB61mkjCUK7haZZuKEkXwiQvWSwuWxn/GkoFt7bNUWWMZNEFBCZuDBa5qjEhlk6ndB6o7BKmVuCyzeodyWFqqODQ7DB51pCWN4LJ1Zi6lKqv5gVy2d73VuGe1JMNbk0GUPlWk58Xf3JApo+tBPGCCod9nwzDquDWDUgwIEl80JT6sfMb890EY1Fr35FIQH2pSZYQ5zrFpjEbVUmO/9UrT/y39U1tsQYneP3XpJIHWx+gIuG1u0q+5RTJoffEJ0R3DvYAbbJpFx2EF8sYcitlHUtqk+/CO3MezgmhuOSENdz2PiSj7P9brVdLqMgbD3YHflxi2cWrODBwMhUDWepfTczH3adY0SG5EZLOk6E8Exdx7cURwziwuOQ2r/RXljuyEP0Y5uM8mzQ+TrjhK/H2EWU9wBuTo+hVNXayNt4F92ZTJe+6TrPN8Zgy/0kNK+jYwOMgHTU65PPQmOxNstZ1h3RW3tjFZFUa50ct8m53fVmmnb8up4ySdK4vTmZ9admV0/REWKly8QwbGJteMS6VZYnkAIDfeZGM4oMclXRYlyeM5gU
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR12MB6604.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(396003)(376002)(366004)(136003)(346002)(39860400002)(451199018)(31686004)(7366002)(36756003)(31696002)(86362001)(2906002)(921005)(7416002)(5660300002)(8936002)(41300700001)(38100700002)(83380400001)(7406005)(66476007)(6486002)(478600001)(6512007)(316002)(4326008)(53546011)(186003)(26005)(66556008)(6666004)(66946007)(54906003)(6506007)(2616005)(110136005)(8676002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?MkxVbHQ4NE9zeUc3VSs2Qmd5M1VuZXRLYlltcGtEbDc4NlVIb3l4MEhMZmR2?=
- =?utf-8?B?Q3hRQXpCZTVXMis1RjlPRFBNUnB4emI2LzZBOHpQNE45YmxRQUJ3MThnRzRk?=
- =?utf-8?B?UEVDa0xFdnJWdzBVSTFOY0NGN0VFM3Fic3ZoYkpaMExMVkpWU0FCaUVUT2Jp?=
- =?utf-8?B?VlFDaVM4MkhhNjZtYnhGcDN3K1E3ZEhPdWF2b0VkWkdxYlh1VnVMVTR4RUtZ?=
- =?utf-8?B?QWxpYmRMWXJieGpaRG5nWkFYTnkzMXJRWVVYTzk2RGxqcUdPeFlrSkJsQ3ZJ?=
- =?utf-8?B?Y3ZqVUwwa0ViZEd4ZHRJbXVlVHJBblZ0RUJHeWk1Y2VuV1l6R0ZkMjNDQ285?=
- =?utf-8?B?RXJ2ZDJFOGJiQVNrVGphVG14YmVOWC82YTgrT3FKWGdVZURGbjNmdDRYK3pW?=
- =?utf-8?B?RUZ6Q3ZwLzdVRUVLcHBMU29OM0kvRXhvYjMwZDlNRUJveFZGK2VDRmZEbU50?=
- =?utf-8?B?TVZ3b1doREt1bkNIQ0J6eHBVVlFGSisvU2lYVmpucmVzSllTSmFiUUdzeFZm?=
- =?utf-8?B?OGZwc2U3S3lRL3ZSS0xvMFNwRVlLT2xRUjU4eFVGSXRiN1g0TU5LY1BVNEt5?=
- =?utf-8?B?L3I1dUtkM1BNRFJnY0Qyc2lUMm1oUG1EUlprZ1BBaGYzZWtLTngwUGZUMzFT?=
- =?utf-8?B?MW0wUFh3Uit4aFM2M3cxTnJkZER4aTRENFFXejBwdm5mdGpOU2pBVWpvTUZr?=
- =?utf-8?B?RFFBdWMvZjdkSWo1QnZSSWlRUlBwaENqb09zQ0QxdGtZcFBDcVhhZWxwY1A3?=
- =?utf-8?B?REdORWtmOTdJcjFNcVdQOG1EdW1zM1hiL01ybFJqSG1vRjUyYmU3UEljSkJC?=
- =?utf-8?B?UEtreXkrUXBubnltVnpObjQ4enZNMG5nZWVNWGF2NFNOVzRTVnMxS0NvU0h6?=
- =?utf-8?B?MlJqZkZudENxMm9CbFJwU0FCWjRXTTU5Q21iQ3lzR1ZuWHpUMTFOLzJXeVdZ?=
- =?utf-8?B?T2RCeHBYaHU2amhVcDF6YlNkd1pQRHF5SHVkNnhVZUxPWEdUV2c2djdHMFJM?=
- =?utf-8?B?RW1lWjRiTDRNUno4MjVzbXB1Nk1nYjhKVXZCNmhGUGpQR0NkZmFrS2NOWmJ4?=
- =?utf-8?B?UWIzdTF1dzZqMVFkSXliN3hKNFlZOEdpMXNHa21qbGsvZ1dWU1QvZ1JTV0tz?=
- =?utf-8?B?WHhscVY0SUZ1cE41NU5abnM2SVJMSGE2YnVYWjRUQnQ5QkJoYjNxS3dnUHVL?=
- =?utf-8?B?MXBFSVF4aDdpRDhsbTYzcjZ0SWFlYjhZTTNaYlRldHZSSmhJVm91eXNqb0Ry?=
- =?utf-8?B?SGMzN0s1UmMxS3RsOWpIQjJDcmtJdW5FTVBNNU1KUnQ5czBDRXBvOXZ2Qk4v?=
- =?utf-8?B?N1NpVy95Rjd1SS8yamZnVy9paDNqU0puV3hQdHVZNlFONXdrS0s3TlhpTW50?=
- =?utf-8?B?dm4rNnpZS2pBbGIxc2swMnNvMFZkd3RYRE1ZdDJMNDNVZUIrZ00zRkoxUU92?=
- =?utf-8?B?bVJGWXk1ZUEyVk1wd1B1TktNeEtLUUhmWGtMT05qd0ZlUFZMcHc2aDBFbVJz?=
- =?utf-8?B?YkVESHg0NlNCZTlpWXVzaUxOeW9LeE9JTytqN1pBck5NOE5oa3NZUHU4UUM0?=
- =?utf-8?B?Nmg4eSsrVUVraGdlbXJEbWJIZkkwanJQYS9WRmwva2ZYMWFzUWFINmx2TzZG?=
- =?utf-8?B?eit1YkMrWmtpblNaLzJiZDgvTU5OcXorcThFVDVkcGcrcUdKUVpMdFJvTU51?=
- =?utf-8?B?VzRJTGk5L0V6YXhydFRjbElCM0JyTC9OaDNvUXUzN3h2bTlvaENKQWFnUEdm?=
- =?utf-8?B?YXZSZzZlWHROZ1gzVHlHSENmOG5RSkJXSXRTdHNuRWpUUE5iVy91Q2VTUjlR?=
- =?utf-8?B?NlhMZzY4cVZWdWpXUGE2bEROWjRaTzE1ZXhkQ0pvSVM0Yk5EU2xWWlhNanlU?=
- =?utf-8?B?VDFMeE5ZMEtuOW5oM0UrOWdjS1JxTnp1SDJJSElyN3VIL0pvcDRMV0pNSktO?=
- =?utf-8?B?R3ZFQ2s5TVo2RzV2WkR5cGVTVCt6bU14ZHhqb2U3bjk4aHhOaGVNMjlXTmFh?=
- =?utf-8?B?ZS81K3F5dEc1VnlMNWZWZS9BT0xEaHhVN01WZFNiMWJzODJ1NVFDUWQ0ZDJq?=
- =?utf-8?B?cTMyTzJZWGxKY3ltM1p2VzdBbllPWWxvbE1ZRFBIM2E2TCtCRXhRZzJXelR3?=
- =?utf-8?Q?yx6R0t4siwkpyC+r0gwCmnBXz?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d27b7497-fb1c-4a3f-af5e-08db0a90fc2c
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR12MB6604.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Feb 2023 11:30:03.1060
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: RgnVePRshhtNyI7EK3hV10yfvYWwoy6r/JMJaW3kBxatpvWgvTplrf0ZPqjDP0Il5grE/15H1h9RyChK1nEEDA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5245
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        NICE_REPLY_A,SPF_HELO_PASS,SPF_NONE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-8.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 2/8/23 11:03 PM, Andy Shevchenko wrote:
-> From: Linus Walleij <linus.walleij@linaro.org>
+
+
+On 09/02/2023 12:29, Md Danish Anwar wrote:
+> Hi Andrew,
 > 
-> The test driver uses the gpiod consumer API so include the right
-> <linux/gpio/consumer.h> header. This may cause a problem with
-> struct of_device_id being implcitly pulled in by the legacy
-> header <linux/gpio.h> so include <linux/mod_devicetable.h>
-> explicitly as well.
+> On 08/02/23 18:26, Andrew Lunn wrote:
+>>>>>>> +static int prueth_config_rgmiidelay(struct prueth *prueth,
+>>>>>>> +				    struct device_node *eth_np,
+>>>>>>> +				    phy_interface_t phy_if)
+>>>>>>> +{
+>>>>>>
+>>>>>> ...
+>>>>>>
+>>>>>>> +	if (phy_if == PHY_INTERFACE_MODE_RGMII_ID ||
+>>>>>>> +	    phy_if == PHY_INTERFACE_MODE_RGMII_TXID)
+>>>>>>> +		rgmii_tx_id |= ICSSG_CTRL_RGMII_ID_MODE;
+>>>>>>> +
+>>>>>>> +	regmap_update_bits(ctrl_mmr, icssgctrl_reg, ICSSG_CTRL_RGMII_ID_MODE, rgmii_tx_id);
+>>>>
+>>>> This is only applicable to some devices so you need to restrict this only
+>>>> to those devices.
+>>>>
+>>>
+>>> Currently ICSSG driver is getting upstreamed for AM65 SR2.0 device, so I don't
+>>> think there is any need for any device related restriction. Once support for
+>>> other devices are enabled for upstream, we can modify this accordingly.
+>>
+>> The problem is, this is a board property, not a SoC property. What if
+>> somebody designs a board with extra long clock lines in order to add
+>> the delay?
+>>
+>>> I checked the latest Technical Reference Manual [1] (Section 5.1.3.4.49, Table
+>>> 5-624) for AM65 Silicon Revision 2.0.
+>>>
+>>> Below is the description in Table 5-624
+>>>
+>>> BIT	    : 24
+>>> Field	    : RGMII0_ID_MODE
+>>> Type	    : R/W
+>>> Reset	    : 0h
+>>> Description : Controls the PRU_ICSSG0 RGMII0 port internal transmit delay
+>>> 	      0h - Internal transmit delay is enabled
+>>> 	      1h - Reserved
+>>>
+>>> The TX internal delay is always enabled and couldn't be disabled as 1h is
+>>> reserved. So hardware support for disabling TX internal delay is not there.
+>>
+>> So if somebody passes a phy-mode which requires it disabled, you need
+>> to return -EINVAL, to indicate the hardware cannot actually do it.
+>>
 > 
-> While at it, drop explicit moduleparam.h (it's included with module.h)
-> and sort the headers.
+> Sure, I'll do that. In the list of all phy modes described in [1], I can only
+> see phy-mode "rgmii-txid", for which we can return -EINVAL. Is there any other
+> phy-mode that requires enabling/disabling TX internal delays? Please let me
+> know if any other phy-mode also needs this. I will add check for that as well.
 > 
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
->  drivers/hte/hte-tegra194-test.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
+>>> As, TX internal delay is always there, there is no need to enable it in MAC or
+>>> PHY. So no need of API prueth_config_rgmiidelay().
+>>>
+>>> My approach to handle delay would be as below.
+>>>
+>>> *) Keep phy-mode = "rgmii-id" in DT as asked by Andrew.
+>>
+>> As i said this depends on the board, not the SoC. In theory, you could
+>> design a board with an extra long RX clock line, and then use phy-mode
+>> rgmii-txid, meaning the MAC/PHY combination needs to add the TX delay.
+>>
 > 
-> diff --git a/drivers/hte/hte-tegra194-test.c b/drivers/hte/hte-tegra194-test.c
-> index 5d776a185bd6..358d4a10c6a1 100644
-> --- a/drivers/hte/hte-tegra194-test.c
-> +++ b/drivers/hte/hte-tegra194-test.c
-> @@ -6,14 +6,14 @@
->   */
->  
->  #include <linux/err.h>
-> -#include <linux/module.h>
-> -#include <linux/moduleparam.h>
-> +#include <linux/gpio/consumer.h>
-> +#include <linux/hte.h>
->  #include <linux/interrupt.h>
-> -#include <linux/gpio.h>
-> -#include <linux/timer.h>
-> +#include <linux/mod_devicetable.h>
-> +#include <linux/module.h>
->  #include <linux/platform_device.h>
-> +#include <linux/timer.h>
->  #include <linux/workqueue.h>
-> -#include <linux/hte.h>
->  
->  /*
->   * This sample HTE GPIO test driver demonstrates HTE API usage by enabling
-Acked-by: Dipen Patel <dipenp@nvidia.com>
+> Yes I understand that board can have any phy-mode in it's DTS. We need to be
+> able to handle all different phy modes.
+> 
+>>> *) Let TX internal delay enabled in Hardware.
+>>> *) Let PHY configure RX internal delay.
+>>> *) Remove prueth_config_rgmiidelay() API is there is no use of this. TX
+>>> Internal delay is always enabled.
+>>> *) Instead of calling prueth_config_rgmiidelay() API in prueth_netdev_init()
+>>> API, add below if condition.
+>>>
+>>> 	if(emac->phy_if == PHY_INTERFACE_MODE_RGMII_ID)
+>>> 		emac->phy_if == PHY_INTERFACE_MODE_RGMII_RXID
+>>
+>> You should handle all cases where a TX delay is requested, not just
+>> ID.
+>>
+> 
+> So there could be four different RGMII phy modes as described in [1]. Below is
+> the handling mechanism for different phy modes.
+> 
+> 1)    # RGMII with internal RX and TX delays provided by the PHY,
+>       # the MAC should not add the RX or TX delays in this case
+>       - rgmii-id
+> 
+> For phy-mode="rgmii-id", phy needs to add both TX and RX internal delays. But
+> in our SoC TX internal delay is always enabled. So to handle this, we'll change
+
+OK. I thought that this MAC forced TX delay issue was fixed in Later Silicon Revisions.
+But it looks like it hasn't been fixed yet.
+
+
+> the phy-mode in driver to "rgmii-rxid" and then pass it ti PHY, so that PHY
+> will enable RX internal delay only.
+
+OK.
+
+> 
+> 2)    # RGMII with internal RX delay provided by the PHY, the MAC
+>       # should not add an RX delay in this case
+>       - rgmii-rxid
+> 
+> For phy-mode="rgmii-rxid", phy needs to add only RX internal delay. We will do
+> nothing in the driver and just pass the same mode to phy, so that PHY will
+> enable RX internal delay only.
+
+But the MAC is forcing TX-delay right? So this case can't be implemented.
+you have to return error.
+
+> 
+> 3)    # RGMII with internal TX delay provided by the PHY, the MAC
+>       # should not add an TX delay in this case
+>       - rgmii-txid
+> 
+> For phy-mode="rgmii-txid", phy needs to add only TX internal delay,the MAC
+> should not add an TX delay in this case. But in our SoC TX internal delay is
+> always enabled. So this scenario can not be handled. We will return -EINVAL in
+> this case.
+
+As you didn't return error for 1st case "rgmii-id" even though TX delay was requested
+for PHY but you added it in the MAC I see no reason to return error here.
+
+You just do the delay in MAC and pass "rgmii" to the PHY.
+
+> 
+> 
+> 4)    # RX and TX delays are added by the MAC when required
+>       - rgmii
+> 
+> For phy-mode="rgmii", MAC needs to add both TX and RX delays. But in our SoC TX
+> internal delay is always enabled so no need to add TX delay. For RX I am not
+> sure what should we do as there is no provision of adding RX delay in MAC
+> currently. Should we ask PHY to add RX delay?
+>
+
+I don't think it will work so you can error out in this case.
+ 
+> Andrew, Roger, Can you please comment on this.
+> 
+> Apart from Case 4, below code change will be able to handle all other cases.
+> 
+> 	if(emac->phy_if == PHY_INTERFACE_MODE_RGMII_ID)
+> 		emac->phy_if = PHY_INTERFACE_MODE_RGMII_RXID;
+> 	if(emac->phy_if == PHY_INTERFACE_MODE_RGMII_TXID)
+> 		return -EINVAL;
+> 
+> Please let me know if I am missing any other phy modes.
+> 
+> [1] Documentation/devicetree/bindings/net/ethernet-controller.yaml
+> 
+>> 	Andrew
+> 
+
+cheers,
+-roger
