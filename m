@@ -2,56 +2,56 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AE1B69056A
-	for <lists+linux-omap@lfdr.de>; Thu,  9 Feb 2023 11:44:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C2B469057C
+	for <lists+linux-omap@lfdr.de>; Thu,  9 Feb 2023 11:45:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229874AbjBIKoi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 9 Feb 2023 05:44:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36336 "EHLO
+        id S229962AbjBIKpi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 9 Feb 2023 05:45:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230045AbjBIKoA (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 9 Feb 2023 05:44:00 -0500
-Received: from mail-yw1-x1133.google.com (mail-yw1-x1133.google.com [IPv6:2607:f8b0:4864:20::1133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB5B66951A
-        for <linux-omap@vger.kernel.org>; Thu,  9 Feb 2023 02:43:47 -0800 (PST)
-Received: by mail-yw1-x1133.google.com with SMTP id 00721157ae682-52bf58b417fso19489687b3.6
-        for <linux-omap@vger.kernel.org>; Thu, 09 Feb 2023 02:43:47 -0800 (PST)
+        with ESMTP id S229841AbjBIKpK (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 9 Feb 2023 05:45:10 -0500
+Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE6296A30A
+        for <linux-omap@vger.kernel.org>; Thu,  9 Feb 2023 02:44:39 -0800 (PST)
+Received: by mail-yb1-xb31.google.com with SMTP id 139so376782ybe.3
+        for <linux-omap@vger.kernel.org>; Thu, 09 Feb 2023 02:44:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=tNSj88tAbE2c6y06Ms9sAOyNH2UyWm+Nrt13hPQ8iWI=;
-        b=HJPsu/Wz/435Gl3W5fT4LJ0iVcWC4lhFzEpUL8YyaR7PHlvhZ83ixgxoByTXAid1J6
-         Q5GAhluj0HC3PbE1r/44Y5Po7Dcqxzy82TkQMMXBgK87a8FhdSiUApImVIBuCtr7BiYC
-         dQLEBtEZdWctRXxi6/C2opdxP4i1uwAWHCHdDSA/D1SRv93/BupZ5BhMYI4QvWArqCap
-         jvLGTJwRxDNHq2E5jYN8fkuP96FlRR3JcB7Y5i9dj53kAAZKJ1YJN62fLu6KRbhOa9LI
-         tP08YGlrCMdjGNwfJa+qKCNB8+CEi1mdDPS1pUUWPuKXJEJYoVbW8egTh0v2xuSgaBHI
-         mAXQ==
+        bh=4qUYzBh+htvaSXOzFbNonzhWIZMquhylnwgwaeahDZw=;
+        b=uuZ/oXOru1y5UKbjewNxej2lUBZUjA/1ggGu58hEptHz0z4GXGOaT7FaMOglr+2wPj
+         4/MsVJ6KLCikf3ZFZNyK0Gy12bs9MQqkPAtfTr75QUjILYQQ/DRnb2+a60m8owu7ZRy6
+         STtBilq89ZUzNjAwwp8kE2q+7q6e6f5g/d+9CTEAorBMILiidfS6YQHMkfUk7LQYdTv/
+         NI++1y0LwBY9js8Sr97WQfezP1Ee3hKFW9ffbD2Ed7rpzUZN3ALWW0F5B6y9hYsVO7uT
+         0dDXJ4o+1R2iwk4/GIy5Xk4EtkzULEIoKVf/W3QINP0rEKMAOq0w8D/WStNV1a1neNO3
+         Xjtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=tNSj88tAbE2c6y06Ms9sAOyNH2UyWm+Nrt13hPQ8iWI=;
-        b=px4E9Uq5MowU1opbC4sbaZz5VpXrd4BNqyt9KkfJTpgr9L2dt4+UcNGkHSKY1krpHs
-         BLSBQT7kJwR4j9v3BYWV9paAkPhFPwBDxz6Ij21YVIdreEL75VqLUYVJep262fbLp/AU
-         U4Og0uutgqGwwEZAKtpF+I4qncHwKJJucToB35HnfovzSph8e8Ea7sv3C0vRIAw0cLvl
-         CeDeEjpTMXMhe9ByS/V/cV1TF70ZenuhFk0TCmAJmGYG70h+xYa3jpiVh6FrNvyHq35X
-         ahNPREJBjhfETauHBO/z9734cr0H2NugqvFWt1AjHLwgJof7g51KZPCIsgM/tpBwdMPK
-         /eSg==
-X-Gm-Message-State: AO0yUKVYMBTKHhLdtteVTti0GkedMtDRhbUSZy0gIYJra0WDvUMHHXyK
-        oi/oZRELxQZN7uH6lFYh/2+IWOjxZENmDZH5wxuefw==
-X-Google-Smtp-Source: AK7set9ymol3+anqgOuNHLyeYoAoKJBt8lF4LiRuMMBcOpRzV7KXZewKH5NE/Xez2syh1Qjfl7P5JUsj0CNKmumi+ig=
-X-Received: by 2002:a0d:ca01:0:b0:52a:ac51:c6d1 with SMTP id
- m1-20020a0dca01000000b0052aac51c6d1mr903762ywd.477.1675939426884; Thu, 09 Feb
- 2023 02:43:46 -0800 (PST)
+        bh=4qUYzBh+htvaSXOzFbNonzhWIZMquhylnwgwaeahDZw=;
+        b=Jk0WxVCFXkosKywjDvACSYH39N4Cj1vt78E1qwe5nzzsr1jAcqmIqXiWCqSNwPmcdv
+         CaiP3QumyEAW5BIs0NDndA2zDIixGjFMroWiRF39yzntljFUrt1ZuYTyBIhFi9g2sHLU
+         ittyDKlLQ2uv9otLxIrVfUFy45BLuDxWPi4c0E5Y4UP86Ri/LFIkhp6rSuDm6YARNPRl
+         L/rrvbnQZnaIVj3UphJs8ieMizRiMz1AQH5+TVa/4PLavSJoAVAovDMtpEVmD1XnttAc
+         j9rL1ZTZNti3hnxx7KBxpSp4TAdf9D4k+0ceZNAET4YP84Y/nX4dsccP7CadbBmvtE43
+         gwbA==
+X-Gm-Message-State: AO0yUKXr2DozFkQU3Mf2a29YmDgox+oxqKMCyy0ymvmPmCBmYMeH1UGj
+        vi7EjVrPTh0gkNJbK/6hwF+Ob94+XO+RHwFN/gPtJw==
+X-Google-Smtp-Source: AK7set9d9VE2L5hryiHb25bGtGaGLrBq8cYlmsHU1RCuAZ6kpI7lLERRU7ZJG+pSow3smAjpy+w5g/+hxXK6eBZGKHY=
+X-Received: by 2002:a25:d987:0:b0:893:76b2:9200 with SMTP id
+ q129-20020a25d987000000b0089376b29200mr1091099ybg.584.1675939478849; Thu, 09
+ Feb 2023 02:44:38 -0800 (PST)
 MIME-Version: 1.0
-References: <20230208173343.37582-1-andriy.shevchenko@linux.intel.com> <20230208173343.37582-14-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20230208173343.37582-14-andriy.shevchenko@linux.intel.com>
+References: <20230208173343.37582-1-andriy.shevchenko@linux.intel.com> <20230208173343.37582-19-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20230208173343.37582-19-andriy.shevchenko@linux.intel.com>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Thu, 9 Feb 2023 11:43:35 +0100
-Message-ID: <CACRpkdYvZyon5hkgbks0dUqY8QsfrKcuU048LHRPg=UwLezE-A@mail.gmail.com>
-Subject: Re: [PATCH v4 13/18] gpio: reg: Add missing header(s)
+Date:   Thu, 9 Feb 2023 11:44:27 +0100
+Message-ID: <CACRpkdbO85vArYXF1iY8Z1wXXFTs5rOffyzy2zWK=PgM+mGM_g@mail.gmail.com>
+Subject: Re: [PATCH v4 18/18] gpiolib: Clean up headers
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc:     Arnd Bergmann <arnd@arndb.de>,
         Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
@@ -126,10 +126,12 @@ X-Mailing-List: linux-omap@vger.kernel.org
 On Wed, Feb 8, 2023 at 6:34 PM Andy Shevchenko
 <andriy.shevchenko@linux.intel.com> wrote:
 
-> Do not imply that some of the generic headers may be always included.
-> Instead, include explicitly what we are direct user of.
->
-> While at it, split out the GPIO group of headers.
+> There is a few things done:
+> - include only the headers we are direct user of
+> - when pointer is in use, provide a forward declaration
+> - add missing headers
+> - group generic headers and subsystem headers
+> - sort each group alphabetically
 >
 > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
