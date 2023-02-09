@@ -2,104 +2,98 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BC17690F53
-	for <lists+linux-omap@lfdr.de>; Thu,  9 Feb 2023 18:35:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D55A669110C
+	for <lists+linux-omap@lfdr.de>; Thu,  9 Feb 2023 20:12:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229637AbjBIRfh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 9 Feb 2023 12:35:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58642 "EHLO
+        id S229648AbjBITMc convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-omap@lfdr.de>); Thu, 9 Feb 2023 14:12:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229460AbjBIRfh (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 9 Feb 2023 12:35:37 -0500
-Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 744E04216;
-        Thu,  9 Feb 2023 09:35:36 -0800 (PST)
-Received: by mail-oi1-f174.google.com with SMTP id bd6so2269727oib.6;
-        Thu, 09 Feb 2023 09:35:36 -0800 (PST)
+        with ESMTP id S229974AbjBITMc (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 9 Feb 2023 14:12:32 -0500
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 046BF5DC31;
+        Thu,  9 Feb 2023 11:12:31 -0800 (PST)
+Received: by mail-ej1-f51.google.com with SMTP id p26so9375477ejx.13;
+        Thu, 09 Feb 2023 11:12:30 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uDg+0168zHr+2g1dStzDLeHsdA5LJsyBUjIXGQnr0Uw=;
-        b=gn+5FWReEXgPlJ6dbbq8/0iqe4/yRNcSND+zPnLnfWe98/E9hyWRMX7jGq6svzfL1P
-         QUSGG3OJArd6rVrrro+lqBOpVXPnEtYwvwHXjhrJcqyKjyYlon9Rn/hOGdU7CO5q3SHL
-         fzeYdCVCURQUNzI0MpW2JtEJxo6Jo0QtJR3O9SLYqEFmVg52JIgPzKPEQ/EbwOjx9nHj
-         IAlfbOOYVnQ+Z9IoTh0DFfasP/y1mVw1L6ZOrKXFjuU8kMhHjqoPLLHNH/WqEcfJHWCd
-         4498k3f/IpUKByS3wkRy3bAjgEHb+2Fd3i5qMgOwD82aULQLA6bqx6kbZg3U3gUcWtMu
-         WS3g==
-X-Gm-Message-State: AO0yUKWQeQggX2AM3eairXlGEOsOCVr4JVF8CG7fcwaPB+ZA9V0wK3rF
-        N20iiiAzlVoyVLOrgPD+7m+6DFp58g==
-X-Google-Smtp-Source: AK7set/+azMMFBXOEiuPtaHsvq8e3IvjnwMin5dScWkMDL2fWCaP2EyrZgGMmOcrSa3aOQo3MObWmw==
-X-Received: by 2002:a05:6808:7cf:b0:35b:ae91:db53 with SMTP id f15-20020a05680807cf00b0035bae91db53mr6067889oij.42.1675964135655;
-        Thu, 09 Feb 2023 09:35:35 -0800 (PST)
-Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id h7-20020a056808014700b0037d59e90a07sm502835oie.55.2023.02.09.09.35.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Feb 2023 09:35:35 -0800 (PST)
-Received: (nullmailer pid 543618 invoked by uid 1000);
-        Thu, 09 Feb 2023 17:35:34 -0000
-Date:   Thu, 9 Feb 2023 11:35:34 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Colin Foster <colin.foster@in-advantage.com>
-Cc:     linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        Tony Lindgren <tony@atomide.com>,
-        =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
-        soc@kernel.org, Olof Johansson <olof@lixom.net>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH v3 1/2] dt-bindings: arm: omap: add phytec pcm-049 som
- and pcm-959 dev board
-Message-ID: <20230209173534.GA539622-robh@kernel.org>
-References: <20230209025525.148872-1-colin.foster@in-advantage.com>
- <20230209025525.148872-2-colin.foster@in-advantage.com>
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=niG2EGz1c3OyIttax2i1EHaJSbYZ3YTZEcZ6nzjdxG0=;
+        b=wRo7s/lGJsqWVTANk/4w69h3W3SONzNTDIMNoh3AuwLumyEzG6In4UeMXeem657Iqy
+         qi9Ii/VPAavDzc/8zRX4UbVIGhSvvr/wDsNBGcDUGKLutDZ+gSS9V/xRYsBE2aGeGIF9
+         OVWPjLM9g/hKtmpYAhJVPZvgAClHe9+lTfVGFy0NQkcOnZZnx9P9oPmLabUQQYiWVIt4
+         dWFXWy/FqGnxfpIAHcMR09t36lk7fXOXyueZCEE7iVcRg1/8aNKcYehqs2zeCHnd4sPF
+         sOtKiYq43jIGu0Ih6IOC3Jj8PEKXFIN3wBZ8BCiDqIIErbCNKTAHGiUR/DgLIXGB9qy1
+         g7XQ==
+X-Gm-Message-State: AO0yUKX+j8og7+3riy4qedBeEowE7uMt542xPEJUoZCeejrrjO1vL7Hf
+        Wal+MguhWrBBm3fGHJXoLiLU4QHT1TTjNxkpw3M=
+X-Google-Smtp-Source: AK7set/MBDxY2bsqoUNJIfYp1yC1dE/C3CJidAg9e+hMJUPfMqLOQ4lw0XH2Dx0dGNSmaYEZnFvIZYKr9ymv3Fd+uE8=
+X-Received: by 2002:a17:907:7e82:b0:8ad:d366:54c4 with SMTP id
+ qb2-20020a1709077e8200b008add36654c4mr899027ejc.4.1675969949277; Thu, 09 Feb
+ 2023 11:12:29 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230209025525.148872-2-colin.foster@in-advantage.com>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+References: <20230207195909.474953-1-u.kleine-koenig@pengutronix.de> <20230208050523.p6437bes6cmpd33k@vireshk-i7>
+In-Reply-To: <20230208050523.p6437bes6cmpd33k@vireshk-i7>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 9 Feb 2023 20:12:17 +0100
+Message-ID: <CAJZ5v0j8RCEE21Aj8j47k4bXV8-b=kKynBYWdf2tQL6Hfcsfbg@mail.gmail.com>
+Subject: Re: [PATCH] cpufreq: Make cpufreq_unregister_driver() return void
+To:     Viresh Kumar <viresh.kumar@linaro.org>,
+        =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Markus Mayer <mmayer@broadcom.com>,
+        Broadcom internal kernel review list 
+        <bcm-kernel-feedback-list@broadcom.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Kevin Hilman <khilman@kernel.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        linux-pm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-omap@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, kernel@pengutronix.de
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Feb 08, 2023 at 06:55:24PM -0800, Colin Foster wrote:
-> Add documentation for additional OMAP SOMs and development platforms,
-> provided by Phytec as the PCM-049 SOM and the PCM-959 development kit.
-> 
-> Signed-off-by: Colin Foster <colin.foster@in-advantage.com>
-> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> ---
-> 
-> v2->v3
->     * Add Krzysztof Acked
-> 
-> v1->v2
->     * New patch
-> 
-> ---
->  Documentation/devicetree/bindings/arm/omap/omap.txt | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/arm/omap/omap.txt b/Documentation/devicetree/bindings/arm/omap/omap.txt
-> index fa8b31660cad..0a28215dfa12 100644
-> --- a/Documentation/devicetree/bindings/arm/omap/omap.txt
-> +++ b/Documentation/devicetree/bindings/arm/omap/omap.txt
-> @@ -131,6 +131,9 @@ Boards (incomplete list of examples):
->  - OMAP4 PandaBoard : Low cost community board
->    compatible = "ti,omap4-panda", "ti,omap4430", "ti,omap4"
->  
-> +- OMAP4 PCM-959 : Commercial dev kit with PCM-049 SOM
-> +  compatible = "phytec,pcm959", "phytec,pcm049", "ti,omap4460", "ti,omap4430", "ti,omap4";
+On Wed, Feb 8, 2023 at 6:05 AM Viresh Kumar <viresh.kumar@linaro.org> wrote:
+>
+> On 07-02-23, 20:59, Uwe Kleine-König wrote:
+> > All but a few drivers ignore the return value of
+> > cpufreq_unregister_driver(). Those few that don't only call it after
+> > cpufreq_register_driver() succeeded, in which case the call doesn't
+> > fail.
+> >
+> > Make the function return no value and add a WARN_ON for the case that
+> > the function is called in an invalid situation (i.e. without a previous
+> > successful call to cpufreq_register_driver()).
+> >
+> > Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+> > ---
+> >  drivers/cpufreq/brcmstb-avs-cpufreq.c | 5 +----
+> >  drivers/cpufreq/cpufreq.c             | 8 +++-----
+> >  drivers/cpufreq/davinci-cpufreq.c     | 4 +++-
+> >  drivers/cpufreq/mediatek-cpufreq-hw.c | 4 +++-
+> >  drivers/cpufreq/omap-cpufreq.c        | 4 +++-
+> >  drivers/cpufreq/qcom-cpufreq-hw.c     | 4 +++-
+> >  include/linux/cpufreq.h               | 2 +-
+> >  7 files changed, 17 insertions(+), 14 deletions(-)
+>
+> Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
 
-OMAP maintainers, if no one is going to convert all of omap.txt over to 
-schema, can we at least start an empty schema and add to it instead of 
-here...
-
-Rob
+Applied as 6.3 material, thanks!
