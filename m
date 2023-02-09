@@ -2,89 +2,104 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 36802690AF2
-	for <lists+linux-omap@lfdr.de>; Thu,  9 Feb 2023 14:55:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BC17690F53
+	for <lists+linux-omap@lfdr.de>; Thu,  9 Feb 2023 18:35:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230370AbjBINzS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 9 Feb 2023 08:55:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54440 "EHLO
+        id S229637AbjBIRfh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 9 Feb 2023 12:35:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58642 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230088AbjBINzR (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 9 Feb 2023 08:55:17 -0500
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DB4C5ACED;
-        Thu,  9 Feb 2023 05:55:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-        bh=tFaUdKp7wDYrDTvnaxF2KtSQEYEo5175B30HdBwPNXc=; b=fmRTRM/LVwJDezrq4pjisSt/vq
-        GcU5XcVLPw1gcRXIFBP9xYCIb2LmSqP9lC1UbFPZhN0nYc20oT3gn3SnMTTzJtWqvdQ5uLmoL3slx
-        HllmbaL2nK94YEIikq8AIol0hu5xUx3dpdDWvXoMgFyQpNlZsRqkJyxWPD0OjCosvSUE=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-        (envelope-from <andrew@lunn.ch>)
-        id 1pQ7O4-004VZS-JC; Thu, 09 Feb 2023 14:54:56 +0100
-Date:   Thu, 9 Feb 2023 14:54:56 +0100
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Md Danish Anwar <a0501179@ti.com>
-Cc:     Roger Quadros <rogerq@kernel.org>,
-        MD Danish Anwar <danishanwar@ti.com>,
-        "Andrew F. Davis" <afd@ti.com>, Suman Anna <s-anna@ti.com>,
-        YueHaibing <yuehaibing@huawei.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
+        with ESMTP id S229460AbjBIRfh (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 9 Feb 2023 12:35:37 -0500
+Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 744E04216;
+        Thu,  9 Feb 2023 09:35:36 -0800 (PST)
+Received: by mail-oi1-f174.google.com with SMTP id bd6so2269727oib.6;
+        Thu, 09 Feb 2023 09:35:36 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uDg+0168zHr+2g1dStzDLeHsdA5LJsyBUjIXGQnr0Uw=;
+        b=gn+5FWReEXgPlJ6dbbq8/0iqe4/yRNcSND+zPnLnfWe98/E9hyWRMX7jGq6svzfL1P
+         QUSGG3OJArd6rVrrro+lqBOpVXPnEtYwvwHXjhrJcqyKjyYlon9Rn/hOGdU7CO5q3SHL
+         fzeYdCVCURQUNzI0MpW2JtEJxo6Jo0QtJR3O9SLYqEFmVg52JIgPzKPEQ/EbwOjx9nHj
+         IAlfbOOYVnQ+Z9IoTh0DFfasP/y1mVw1L6ZOrKXFjuU8kMhHjqoPLLHNH/WqEcfJHWCd
+         4498k3f/IpUKByS3wkRy3bAjgEHb+2Fd3i5qMgOwD82aULQLA6bqx6kbZg3U3gUcWtMu
+         WS3g==
+X-Gm-Message-State: AO0yUKWQeQggX2AM3eairXlGEOsOCVr4JVF8CG7fcwaPB+ZA9V0wK3rF
+        N20iiiAzlVoyVLOrgPD+7m+6DFp58g==
+X-Google-Smtp-Source: AK7set/+azMMFBXOEiuPtaHsvq8e3IvjnwMin5dScWkMDL2fWCaP2EyrZgGMmOcrSa3aOQo3MObWmw==
+X-Received: by 2002:a05:6808:7cf:b0:35b:ae91:db53 with SMTP id f15-20020a05680807cf00b0035bae91db53mr6067889oij.42.1675964135655;
+        Thu, 09 Feb 2023 09:35:35 -0800 (PST)
+Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id h7-20020a056808014700b0037d59e90a07sm502835oie.55.2023.02.09.09.35.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Feb 2023 09:35:35 -0800 (PST)
+Received: (nullmailer pid 543618 invoked by uid 1000);
+        Thu, 09 Feb 2023 17:35:34 -0000
+Date:   Thu, 9 Feb 2023 11:35:34 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Colin Foster <colin.foster@in-advantage.com>
+Cc:     linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        Tony Lindgren <tony@atomide.com>,
+        =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
+        soc@kernel.org, Olof Johansson <olof@lixom.net>,
+        Arnd Bergmann <arnd@arndb.de>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>, nm@ti.com,
-        ssantosh@kernel.org, srk@ti.com, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, netdev@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [EXTERNAL] Re: [EXTERNAL] Re: [EXTERNAL] Re: [PATCH v4 2/2] net:
- ti: icssg-prueth: Add ICSSG ethernet driver
-Message-ID: <Y+T7MAu0/s1bjYIt@lunn.ch>
-References: <20230206060708.3574472-1-danishanwar@ti.com>
- <20230206060708.3574472-3-danishanwar@ti.com>
- <Y+ELeSQX+GWS5N2p@lunn.ch>
- <42503a0d-b434-bbcc-553d-a326af5b4918@ti.com>
- <e8158969-08d0-1edc-24be-8c300a71adbd@kernel.org>
- <4438fb71-7e20-6532-a858-b688bc64e826@ti.com>
- <Y+Ob8++GWciL127K@lunn.ch>
- <6713252d-6f86-c674-9229-c4512ebf1d72@ti.com>
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH v3 1/2] dt-bindings: arm: omap: add phytec pcm-049 som
+ and pcm-959 dev board
+Message-ID: <20230209173534.GA539622-robh@kernel.org>
+References: <20230209025525.148872-1-colin.foster@in-advantage.com>
+ <20230209025525.148872-2-colin.foster@in-advantage.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <6713252d-6f86-c674-9229-c4512ebf1d72@ti.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20230209025525.148872-2-colin.foster@in-advantage.com>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-> Sure, I'll do that. In the list of all phy modes described in [1], I can only
-> see phy-mode "rgmii-txid", for which we can return -EINVAL. Is there any other
-> phy-mode that requires enabling/disabling TX internal delays? Please let me
-> know if any other phy-mode also needs this. I will add check for that as well.
+On Wed, Feb 08, 2023 at 06:55:24PM -0800, Colin Foster wrote:
+> Add documentation for additional OMAP SOMs and development platforms,
+> provided by Phytec as the PCM-049 SOM and the PCM-959 development kit.
+> 
+> Signed-off-by: Colin Foster <colin.foster@in-advantage.com>
+> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> ---
+> 
+> v2->v3
+>     * Add Krzysztof Acked
+> 
+> v1->v2
+>     * New patch
+> 
+> ---
+>  Documentation/devicetree/bindings/arm/omap/omap.txt | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/arm/omap/omap.txt b/Documentation/devicetree/bindings/arm/omap/omap.txt
+> index fa8b31660cad..0a28215dfa12 100644
+> --- a/Documentation/devicetree/bindings/arm/omap/omap.txt
+> +++ b/Documentation/devicetree/bindings/arm/omap/omap.txt
+> @@ -131,6 +131,9 @@ Boards (incomplete list of examples):
+>  - OMAP4 PandaBoard : Low cost community board
+>    compatible = "ti,omap4-panda", "ti,omap4430", "ti,omap4"
+>  
+> +- OMAP4 PCM-959 : Commercial dev kit with PCM-049 SOM
+> +  compatible = "phytec,pcm959", "phytec,pcm049", "ti,omap4460", "ti,omap4430", "ti,omap4";
 
-There are 4 phy-modes for RGMII.
+OMAP maintainers, if no one is going to convert all of omap.txt over to 
+schema, can we at least start an empty schema and add to it instead of 
+here...
 
-rgmii, rgmii-id, rmgii-rxid, rgmii-txid.
-
-rgmii-id, rgmii-txid both require TX delays. If you do that in the MAC
-you then need to pass rgmii-rxid and rgmii to the PHY respectively.
-
-rmii and rgmii-rxid requires no TX delays, which your SoC cannot do,
-so you need to return -EINVAl,
-
-The interpretation of these properties is all really messy and
-historically not very uniformly done. Which is why i recommend the MAC
-does nothing, leaving it to the PHY. That generally works since the
-PHYs have a pretty uniform implementation. But in your case, you don't
-have that option. So i suggest you do what is described above. 
-
-    Andrew
+Rob
