@@ -2,98 +2,146 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D55A669110C
-	for <lists+linux-omap@lfdr.de>; Thu,  9 Feb 2023 20:12:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 96F8B691565
+	for <lists+linux-omap@lfdr.de>; Fri, 10 Feb 2023 01:30:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229648AbjBITMc convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-omap@lfdr.de>); Thu, 9 Feb 2023 14:12:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44476 "EHLO
+        id S230007AbjBJAal (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 9 Feb 2023 19:30:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229974AbjBITMc (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 9 Feb 2023 14:12:32 -0500
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 046BF5DC31;
-        Thu,  9 Feb 2023 11:12:31 -0800 (PST)
-Received: by mail-ej1-f51.google.com with SMTP id p26so9375477ejx.13;
-        Thu, 09 Feb 2023 11:12:30 -0800 (PST)
+        with ESMTP id S229762AbjBJAaj (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 9 Feb 2023 19:30:39 -0500
+Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5E5C125A4;
+        Thu,  9 Feb 2023 16:30:37 -0800 (PST)
+Received: by mail-pg1-x52f.google.com with SMTP id s8so2678534pgg.11;
+        Thu, 09 Feb 2023 16:30:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=j/k0erUD/kDhxh7/K7OwX/bqJpwb0bJwB0iaNCFMZK4=;
+        b=m45PZQvJM/hD/Xj9vlTDu7tBQyIzoAKV+Ug121N7xEPFN7JnwalygRfN9Deee662VD
+         1QVbr7FN2GjKS80HHKfM2VRvvS5Vumhqz4Q+X5SC3+HRHqlG8a7QYMW60YZ5vMmXuVWT
+         Whj682Dxwd3DP/j9rmnilydYjFYDO78yDRgj3f2c7t5Yh9pLdW/rRTvgu6ytHpVWH4Bp
+         WyfwWCyWVkyOkZzxzrnyvN21unxPk7gjxu9VkavwgK4rgme7Roz1XT+g6ILjuGTvn1Ca
+         djNyiDLTeCH+LIzJyxsFu0Lca5uXhw3bVHkTtzSaYa2Z8GkE/XD13cpHeodi0b9EwBno
+         w3Hw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=niG2EGz1c3OyIttax2i1EHaJSbYZ3YTZEcZ6nzjdxG0=;
-        b=wRo7s/lGJsqWVTANk/4w69h3W3SONzNTDIMNoh3AuwLumyEzG6In4UeMXeem657Iqy
-         qi9Ii/VPAavDzc/8zRX4UbVIGhSvvr/wDsNBGcDUGKLutDZ+gSS9V/xRYsBE2aGeGIF9
-         OVWPjLM9g/hKtmpYAhJVPZvgAClHe9+lTfVGFy0NQkcOnZZnx9P9oPmLabUQQYiWVIt4
-         dWFXWy/FqGnxfpIAHcMR09t36lk7fXOXyueZCEE7iVcRg1/8aNKcYehqs2zeCHnd4sPF
-         sOtKiYq43jIGu0Ih6IOC3Jj8PEKXFIN3wBZ8BCiDqIIErbCNKTAHGiUR/DgLIXGB9qy1
-         g7XQ==
-X-Gm-Message-State: AO0yUKX+j8og7+3riy4qedBeEowE7uMt542xPEJUoZCeejrrjO1vL7Hf
-        Wal+MguhWrBBm3fGHJXoLiLU4QHT1TTjNxkpw3M=
-X-Google-Smtp-Source: AK7set/MBDxY2bsqoUNJIfYp1yC1dE/C3CJidAg9e+hMJUPfMqLOQ4lw0XH2Dx0dGNSmaYEZnFvIZYKr9ymv3Fd+uE8=
-X-Received: by 2002:a17:907:7e82:b0:8ad:d366:54c4 with SMTP id
- qb2-20020a1709077e8200b008add36654c4mr899027ejc.4.1675969949277; Thu, 09 Feb
- 2023 11:12:29 -0800 (PST)
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=j/k0erUD/kDhxh7/K7OwX/bqJpwb0bJwB0iaNCFMZK4=;
+        b=imNCB5YEGb78LKNyU+wzeL/H1iYwWxeAuK2mArDGOf8lHLPeMjSO63NSt9NtamWke7
+         Zcr1OXH1HLFVaFBBU4wfpjEbQ/UYisapCy9S7MDHXPPkQ41ZpA2n4YVxkNzwqs+x2Yl5
+         /Ue9tX/AmGog2dcdokrZz+QskLqzb7mKVUb0/8lxxMBR4TbDi3D7hlinmqCba2HwZbPe
+         BsCI7girFxG8nsN3PkftaAkfmvcB8i+YOOo5k4yo5JRYX9aa6jdjQZeDLgaU7EjOK9Lq
+         r6X5u/8V9dgrfGMv2nfAhhGzLJZmsQhX9879r/5XEJwW2rsavEqo2QUXmcVq7kDphFzz
+         wpAA==
+X-Gm-Message-State: AO0yUKWUstSy+4URxhLVCpX38XSe2jM5U1EZo/Lv9PIW/6ovqAysQb8h
+        En0lN9dqQExrKBxM//3uyGU=
+X-Google-Smtp-Source: AK7set8J843VCb5Swh1of6p2yfW1raUVGGmO4Q3S+xAJAvwl45nss0avFGNhPNql2c/P0j9nxUjhIg==
+X-Received: by 2002:aa7:9e42:0:b0:5a8:5424:d13a with SMTP id z2-20020aa79e42000000b005a85424d13amr3990100pfq.11.1675989036714;
+        Thu, 09 Feb 2023 16:30:36 -0800 (PST)
+Received: from google.com ([2620:15c:9d:2:4b3d:5db5:694e:89d0])
+        by smtp.gmail.com with ESMTPSA id e24-20020aa78c58000000b005815217e665sm392161pfd.65.2023.02.09.16.30.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Feb 2023 16:30:35 -0800 (PST)
+Date:   Thu, 9 Feb 2023 16:30:29 -0800
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Vincenzo Palazzo <vincenzopalazzodev@gmail.com>,
+        Devarsh Thakkar <devarsht@ti.com>,
+        Michael Walle <michael@walle.cc>,
+        Dipen Patel <dipenp@nvidia.com>,
+        Thierry Reding <treding@nvidia.com>,
+        Stefan Schmidt <stefan@datenfreihafen.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Lee Jones <lee@kernel.org>, linux-gpio@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-doc-tw-discuss@lists.sourceforge.net,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-input@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-wpan@vger.kernel.org, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, linux-arch@vger.kernel.org,
+        devicetree@vger.kernel.org, Bartosz Golaszewski <brgl@bgdev.pl>,
+        Jonathan Corbet <corbet@lwn.net>, Alex Shi <alexs@kernel.org>,
+        Yanteng Si <siyanteng@loongson.cn>,
+        Hu Haowen <src.res@email.cn>,
+        Russell King <linux@armlinux.org.uk>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Mun Yew Tham <mun.yew.tham@intel.com>,
+        Keerthy <j-keerthy@ti.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Alexander Aring <alex.aring@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Kalle Valo <kvalo@kernel.org>, Qiang Zhao <qiang.zhao@nxp.com>,
+        Li Yang <leoyang.li@nxp.com>, Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>
+Subject: Re: [PATCH v4 08/18] gpiolib: remove gpio_set_debounce()
+Message-ID: <Y+WQJTsdeZeAEs/S@google.com>
+References: <20230208173343.37582-1-andriy.shevchenko@linux.intel.com>
+ <20230208173343.37582-9-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-References: <20230207195909.474953-1-u.kleine-koenig@pengutronix.de> <20230208050523.p6437bes6cmpd33k@vireshk-i7>
-In-Reply-To: <20230208050523.p6437bes6cmpd33k@vireshk-i7>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 9 Feb 2023 20:12:17 +0100
-Message-ID: <CAJZ5v0j8RCEE21Aj8j47k4bXV8-b=kKynBYWdf2tQL6Hfcsfbg@mail.gmail.com>
-Subject: Re: [PATCH] cpufreq: Make cpufreq_unregister_driver() return void
-To:     Viresh Kumar <viresh.kumar@linaro.org>,
-        =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Markus Mayer <mmayer@broadcom.com>,
-        Broadcom internal kernel review list 
-        <bcm-kernel-feedback-list@broadcom.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Kevin Hilman <khilman@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        linux-pm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-omap@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, kernel@pengutronix.de
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230208173343.37582-9-andriy.shevchenko@linux.intel.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Feb 8, 2023 at 6:05 AM Viresh Kumar <viresh.kumar@linaro.org> wrote:
->
-> On 07-02-23, 20:59, Uwe Kleine-König wrote:
-> > All but a few drivers ignore the return value of
-> > cpufreq_unregister_driver(). Those few that don't only call it after
-> > cpufreq_register_driver() succeeded, in which case the call doesn't
-> > fail.
-> >
-> > Make the function return no value and add a WARN_ON for the case that
-> > the function is called in an invalid situation (i.e. without a previous
-> > successful call to cpufreq_register_driver()).
-> >
-> > Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-> > ---
-> >  drivers/cpufreq/brcmstb-avs-cpufreq.c | 5 +----
-> >  drivers/cpufreq/cpufreq.c             | 8 +++-----
-> >  drivers/cpufreq/davinci-cpufreq.c     | 4 +++-
-> >  drivers/cpufreq/mediatek-cpufreq-hw.c | 4 +++-
-> >  drivers/cpufreq/omap-cpufreq.c        | 4 +++-
-> >  drivers/cpufreq/qcom-cpufreq-hw.c     | 4 +++-
-> >  include/linux/cpufreq.h               | 2 +-
-> >  7 files changed, 17 insertions(+), 14 deletions(-)
->
-> Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+On Wed, Feb 08, 2023 at 07:33:33PM +0200, Andy Shevchenko wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> gpio_set_debounce() only has a single user, which is trivially
+> converted to gpiod_set_debounce().
+> 
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-Applied as 6.3 material, thanks!
+Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+
+Thanks.
+
+-- 
+Dmitry
