@@ -2,103 +2,90 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 306206931F7
-	for <lists+linux-omap@lfdr.de>; Sat, 11 Feb 2023 16:29:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F21806932FF
+	for <lists+linux-omap@lfdr.de>; Sat, 11 Feb 2023 19:24:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229527AbjBKP3c (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 11 Feb 2023 10:29:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35734 "EHLO
+        id S229535AbjBKSYM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 11 Feb 2023 13:24:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229447AbjBKP3b (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 11 Feb 2023 10:29:31 -0500
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 544E5234E5;
-        Sat, 11 Feb 2023 07:29:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-        bh=8YPAqYrXs8xgVTeNN1RVK5WeYcrdHrjBJgamcx6JiKM=; b=bPTho8JMeWATFLKUG2ByZRkvWY
-        6ZE21x0qHhQ+N/jj69zQzyMjZki9BYI4hKNhn5L9nEMaVv1sKRsNiOX6OjDyC5uQpP0AHgXeFZ2nr
-        0yIdHVfnmDK6J2AiFEzeAdm9QDGT9TlhFjRzSEPSSk1rUOolXjOOFxTJQ/y0aHI2PUag=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-        (envelope-from <andrew@lunn.ch>)
-        id 1pQroM-004hrp-2Y; Sat, 11 Feb 2023 16:29:10 +0100
-Date:   Sat, 11 Feb 2023 16:29:10 +0100
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     MD Danish Anwar <danishanwar@ti.com>
-Cc:     "Andrew F. Davis" <afd@ti.com>, Suman Anna <s-anna@ti.com>,
-        Roger Quadros <rogerq@kernel.org>,
-        YueHaibing <yuehaibing@huawei.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>, nm@ti.com,
-        ssantosh@kernel.org, srk@ti.com, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, netdev@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v5 2/2] net: ti: icssg-prueth: Add ICSSG ethernet driver
-Message-ID: <Y+e0RrevtDpEMqyg@lunn.ch>
-References: <20230210114957.2667963-1-danishanwar@ti.com>
- <20230210114957.2667963-3-danishanwar@ti.com>
+        with ESMTP id S229514AbjBKSYL (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 11 Feb 2023 13:24:11 -0500
+Received: from mail-ot1-x336.google.com (mail-ot1-x336.google.com [IPv6:2607:f8b0:4864:20::336])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E8AD16AD7
+        for <linux-omap@vger.kernel.org>; Sat, 11 Feb 2023 10:24:10 -0800 (PST)
+Received: by mail-ot1-x336.google.com with SMTP id e12-20020a0568301e4c00b0068bc93e7e34so2551572otj.4
+        for <linux-omap@vger.kernel.org>; Sat, 11 Feb 2023 10:24:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=FjQPrWN6Mx/j9QOWemnThx5RUGniRyLvYrOHyiVrn48=;
+        b=Q3JGIQaWJP1nrLKpPCPKIZ3T9NZrdwQepgsQegcz85IBlYyOis0mVwltRLuhkkGlhv
+         ai5dWR9q90uyWL3CBxyGcvqByHEFjw4jyDOtb8nt6tbSJqZb2mnZeHerWkx2iQYzHvS1
+         WEfER4wkHmpMtTEhK6hufpGFUUV4uo9wEUvemnzscp58gSnRsbhKeC3IBQPV8OhX+vr3
+         solQbjQ8BPCNwQEbKKbS2QnHP6KtYWkCb/w6wHs0mGtUv6Sprt0TIGH6pg6ZGxejgkKa
+         H56EoKEl0B5qSemCQ+l+TlNbfAzs489lKFm3pG1HtrqgbOMBmL5ThyreZgHIAxuYab7+
+         irEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FjQPrWN6Mx/j9QOWemnThx5RUGniRyLvYrOHyiVrn48=;
+        b=aDCmhdzAepzpCATldofrNQtwrOeNM2ClMt9kKfkaGC8gIhT02v6XBLsL8jq1JfekPh
+         lgRztPS3mC6CMQrapLBsUTMRGbj0xouv/PWgF4ObyLNbpTlpdIWQP+DQ2zDdI3RbAS4X
+         /pED+ehugKNJmKYvNRch7DE9x8xD9KN6LCU8J24F+MPADdlgB7Aqjc/lC/DYZ2js9cf4
+         8DVuQv2XkV81NvpVEUMjzFLiCw7gbsx3ExlvRNGKa3sv2J5lFvr0zAKiqPZhS11f7+0R
+         +8Wh78wTKdrb4kGE4muK51cqq22vRTn+65Nu3OL1Zos3Do6dTq3pihyt8afB+TOZa2m8
+         loZA==
+X-Gm-Message-State: AO0yUKULTJqZf1zFY4KgUCsG3eUl83jIhzkLR2PNqISnBXB7UyFzFNyQ
+        4om4u3mRsVBrbAXUFBQFr+M=
+X-Google-Smtp-Source: AK7set8NF8acmT6ZtayJ2uk35IHLztdGSUiNgFhlBw/jm/8G/zBwmNr8zYxZoP7QglhE1V2uUJHqHA==
+X-Received: by 2002:a9d:7cda:0:b0:68b:e2cd:9362 with SMTP id r26-20020a9d7cda000000b0068be2cd9362mr11725729otn.33.1676139850000;
+        Sat, 11 Feb 2023 10:24:10 -0800 (PST)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id z14-20020a0568301dae00b0068d56f93d73sm3376509oti.26.2023.02.11.10.24.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 11 Feb 2023 10:24:09 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Sat, 11 Feb 2023 10:24:08 -0800
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     linux-omap@vger.kernel.org, Tony Lindgren <tony@atomide.com>,
+        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>
+Subject: Re: [PATCH] ARM: omap1: remove unused board files
+Message-ID: <20230211182408.GA898817@roeck-us.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230210114957.2667963-3-danishanwar@ti.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, Feb 10, 2023 at 05:19:57PM +0530, MD Danish Anwar wrote:
-> From: Roger Quadros <rogerq@ti.com>
-> 
-> This is the Ethernet driver for TI AM654 Silicon rev. 2
-> with the ICSSG PRU Sub-system running dual-EMAC firmware.
-> 
-> The Programmable Real-time Unit and Industrial Communication Subsystem
-> Gigabit (PRU_ICSSG) is a low-latency microcontroller subsystem in the TI
-> SoCs. This subsystem is provided for the use cases like implementation of
-> custom peripheral interfaces, offloading of tasks from the other
-> processor cores of the SoC, etc.
-> 
-> Every ICSSG core has two Programmable Real-Time Unit(PRUs),
-> two auxiliary Real-Time Transfer Unit (RT_PRUs), and
-> two Transmit Real-Time Transfer Units (TX_PRUs). Each one of these runs
-> its own firmware. Every ICSSG core has two MII ports connect to these
-> PRUs and also a MDIO port.
-> 
-> The cores can run different firmwares to support different protocols and
-> features like switch-dev, timestamping, etc.
-> 
-> It uses System DMA to transfer and receive packets and
-> shared memory register emulation between the firmware and
-> driver for control and configuration.
-> 
-> This patch adds support for basic EMAC functionality with 1Gbps
-> and 100Mbps link speed. 10M and half duplex mode are not supported
-> currently as they require IEP, the support for which will be added later.
-> Support for switch-dev, timestamp, etc. will be added later
-> by subsequent patch series.
-> 
-> Signed-off-by: Roger Quadros <rogerq@ti.com>
-> [Vignesh Raghavendra: add 10M full duplex support]
-> Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
-> [Grygorii Strashko: add support for half duplex operation]
-> Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
-> Signed-off-by: Puranjay Mohan <p-mohan@ti.com>
-> Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
+Hi,
 
-The PHY handling looks correct now.
+On Thu, Sep 29, 2022 at 03:38:56PM +0200, Arnd Bergmann wrote:
+> All board support that was marked as 'unused' earlier can
+> now be removed, leaving the five machines that that still
+> had someone using them in 2022, or that are supported in
+> qemu.
+> 
+> Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
+> Cc: Janusz Krzysztofik <jmkrzyszt@gmail.com>
+> Cc: Tony Lindgren <tony@atomide.com>
+> Cc: linux-omap@vger.kernel.org
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+After this patch I can no longer boot the qemu sx1 emulation from mmc.
+Is this on purpose ?
 
-    Andrew
+Guenter
