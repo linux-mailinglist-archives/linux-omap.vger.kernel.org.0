@@ -2,17 +2,17 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FF2A69649D
-	for <lists+linux-omap@lfdr.de>; Tue, 14 Feb 2023 14:23:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DB97469649C
+	for <lists+linux-omap@lfdr.de>; Tue, 14 Feb 2023 14:23:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232711AbjBNNXo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 14 Feb 2023 08:23:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34602 "EHLO
+        id S232431AbjBNNXn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 14 Feb 2023 08:23:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232671AbjBNNXl (ORCPT
+        with ESMTP id S232677AbjBNNXl (ORCPT
         <rfc822;linux-omap@vger.kernel.org>); Tue, 14 Feb 2023 08:23:41 -0500
 Received: from mickerik.phytec.de (mickerik.phytec.de [91.26.50.163])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A3295FED
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88F5E4484
         for <linux-omap@vger.kernel.org>; Tue, 14 Feb 2023 05:23:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; d=phytec.de; s=a4; c=relaxed/simple;
         q=dns/txt; i=@phytec.de; t=1676381002; x=1678973002;
@@ -20,15 +20,15 @@ DKIM-Signature: v=1; a=rsa-sha256; d=phytec.de; s=a4; c=relaxed/simple;
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:Resent-From:
         Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=3UH2KjisQLJ7vrusBUoVcp7yffdoSC2xp8sAkP/P0Jc=;
-        b=O2rKPUF5pwKb+e8FykpsWmhDEylujVOWaWxPJ9NOi3AqWrqFi5DNQBiDHamTm6JL
-        3ptV4xTaNrvZHCTqpA8V8HFuqHoN80UZvr2ha7uBsomUdnEt6Hren0Jy+dp4Y28x
-        zkXz7InqNYKMhR3FmkMYHxCK0aBllwv6GN3bqO9LBRE=;
-X-AuditID: ac14000a-923ff70000007ecb-f0-63eb8b4a0d1d
+        bh=WQ3nZyhpun324ptYC94xxk1/e/L5LRS43aUs6HwMRek=;
+        b=IMOwVBr1PzrQrUEJfeexDyoiM8TN65VlmFP2iUsDZr/KUHL5yr+oH4MA8Xq376It
+        eAfoIWQKLPz7s5uKMnv/spYKrApLf4w1Uro3Cp9vX3QSWlvrxfEly1e08YvyMipF
+        CUyEJZVW3383VxuC8du/t1apml6isC7aPUDTYyUAdQU=;
+X-AuditID: ac14000a-917fe70000007ecb-f1-63eb8b4a849b
 Received: from florix.phytec.de (Unknown_Domain [172.25.0.13])
         (using TLS with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (Client did not present a certificate)
-        by mickerik.phytec.de (PHYTEC Mail Gateway) with SMTP id F1.D9.32459.A4B8BE36; Tue, 14 Feb 2023 14:23:22 +0100 (CET)
+        by mickerik.phytec.de (PHYTEC Mail Gateway) with SMTP id 62.D9.32459.A4B8BE36; Tue, 14 Feb 2023 14:23:22 +0100 (CET)
 Received: from llp-Hemer.phytec.de (172.25.0.11) by Florix.phytec.de
  (172.25.0.13) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.18; Tue, 14 Feb
@@ -37,9 +37,9 @@ From:   Steffen Hemer <s.hemer@phytec.de>
 To:     <linux-omap@vger.kernel.org>
 CC:     <upstream@lists.phytec.de>, <krzysztof.kozlowski+dt@linaro.org>,
         <robh+dt@kernel.org>, <tony@atomide.com>, <bcousson@baylibre.com>
-Subject: [PATCH 7/8] ARM: dts: am335x-pcm-953: Remove superseded/invalid LED trigger.
-Date:   Tue, 14 Feb 2023 14:23:01 +0100
-Message-ID: <20230214132302.39087-7-s.hemer@phytec.de>
+Subject: [PATCH 8/8] ARM: dts: am335x-phycore-som: Remove superseded/invalid GPMC NAND type.
+Date:   Tue, 14 Feb 2023 14:23:02 +0100
+Message-ID: <20230214132302.39087-8-s.hemer@phytec.de>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230214132302.39087-1-s.hemer@phytec.de>
 References: <20230214132302.39087-1-s.hemer@phytec.de>
@@ -49,17 +49,17 @@ Content-Type: text/plain
 X-Originating-IP: [172.25.0.11]
 X-ClientProxiedBy: Berlix.phytec.de (172.25.0.12) To Florix.phytec.de
  (172.25.0.13)
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrALMWRmVeSWpSXmKPExsWyRpKBV9er+3WywanJUhZ35v9lteh78ZDZ
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrALMWRmVeSWpSXmKPExsWyRpKBV9er+3WywevLyhZ35v9lteh78ZDZ
         YvaSfhaL1r1H2C32X/Gy6H6n7sDm8e3rJBaP9zda2T02repk87hzbQ+bR393C6vH501yAWxR
-        XDYpqTmZZalF+nYJXBn9238wFsxlq7jbf4a5gbGZtYuRg0NCwETi9xWBLkYuDiGBxUwSx/+8
-        ZOti5ARyHjNKbLwuCmKzCahLzN/7nR3EFhFQkDhypIkVpIFZoINRonlmN1hCWCBUYs3u5Uwg
-        NouAqkTvhBtgcV4BM4mJM18xg9gSAvIS+w+eBbM5Bcwllk94A7XMTKL98B0WiHpBiZMzn4DZ
-        zED1zVtnM0PYEhIHX7xghqiXk5hz6iPczGnnXkPZoRKdf+6zTGAUmoVk1Cwko2YhGbWAkXkV
-        o1BuZnJ2alFmtl5BRmVJarJeSuomRlAsiDBw7WDsm+NxiJGJg/EQowQHs5IIr/DTF8lCvCmJ
-        lVWpRfnxRaU5qcWHGKU5WJTEee/3MCUKCaQnlqRmp6YWpBbBZJk4OKUaGHM2tBn3uXkKa9xw
-        Wv1zkXra3pTug8FeS4QTgrbxrZ+3/PzKonlvSvzu90w99ilP+SP3saeZGYWbz28KPTvXa+nq
-        1p4q1p4dxR6u2Us+bVv34MEzGdbD/1kObpDMdCo0z/kmWmr+c9Z/gY/n/734d3fh41/LVrFK
-        NiQayD0w2Xji/NWa8LL1G1uUWIozEg21mIuKEwGgjpq6cwIAAA==
+        XDYpqTmZZalF+nYJXBmfb25lLfjPWjGreTJjA2MTaxcjJ4eEgInEun+dTCC2kMBiJonVm1Ig
+        7MeMEhuvi4LYbALqEvP3fmcHsUUEFCSOHAHp5eJgFuhglGie2Q2WEBaIkdhzeyUbiM0ioCqx
+        +PJEZhCbV8BMYvK/F+wQy+Ql9h88CxbnFDCXWD7hDRvEMjOJ9sN3WCDqBSVOznwCZjMD1Tdv
+        nc0MYUtIHHzxghmiXk5izqmPzDAzp517DWWHSnT+uc8ygVFoFpJRs5CMmoVk1AJG5lWMQrmZ
+        ydmpRZnZegUZlSWpyXopqZsYQbEgwsC1g7FvjschRiYOxkOMEhzMSiK8wk9fJAvxpiRWVqUW
+        5ccXleakFh9ilOZgURLnvd/DlCgkkJ5YkpqdmlqQWgSTZeLglGpgTBW0/yYr7uf993gKj9uG
+        7ROvFB9bFGmUHf+jt9T3yMF/a+Jju5YsvnDxwJ6DhSJNOjfWKM202jSRf6FNLd/bClGnRskv
+        BnxBJaapEzN7v3QbHQzmv3m5ZfWDc40bzt18EqcSKz33o8TfBoP6jqbChqin3YnN+Xu+2GhI
+        Pz6lJT9RZUXDMscKJZbijERDLeai4kQAwtuoJnMCAAA=
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
         autolearn=ham autolearn_force=no version=3.4.6
@@ -69,32 +69,26 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-According to docu and dtschema check, 'linux,default-trigger = gpio' is
+According to docu and dtschema check, 'gpmc,device-nand = true' is
 no longer valid, so remove it.
 
 Signed-off-by: Steffen Hemer <s.hemer@phytec.de>
 ---
- arch/arm/boot/dts/am335x-pcm-953.dtsi | 2 --
- 1 file changed, 2 deletions(-)
+ arch/arm/boot/dts/am335x-phycore-som.dtsi | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/am335x-pcm-953.dtsi b/arch/arm/boot/dts/am335x-pcm-953.dtsi
-index 92f2a283fe92..67c7fcc52ce6 100644
---- a/arch/arm/boot/dts/am335x-pcm-953.dtsi
-+++ b/arch/arm/boot/dts/am335x-pcm-953.dtsi
-@@ -36,13 +36,11 @@ user_leds: user-leds {
- 
- 		user-led0 {
- 			gpios = <&gpio1 30 GPIO_ACTIVE_HIGH>;
--			linux,default-trigger = "gpio";
- 			default-state = "on";
- 		};
- 
- 		user-led1 {
- 			gpios = <&gpio1 31 GPIO_ACTIVE_LOW>;
--			linux,default-trigger = "gpio";
- 			default-state = "on";
- 		};
- 	};
+diff --git a/arch/arm/boot/dts/am335x-phycore-som.dtsi b/arch/arm/boot/dts/am335x-phycore-som.dtsi
+index 5bb05620da56..034dc5181679 100644
+--- a/arch/arm/boot/dts/am335x-phycore-som.dtsi
++++ b/arch/arm/boot/dts/am335x-phycore-som.dtsi
+@@ -203,7 +203,6 @@ nandflash: nand@0,0 {
+ 		rb-gpios = <&gpmc 0 GPIO_ACTIVE_HIGH>; /* gpmc_wait0 */
+ 		nand-bus-width = <8>;
+ 		ti,nand-ecc-opt = "bch8";
+-		gpmc,device-nand = "true";
+ 		gpmc,device-width = <1>;
+ 		gpmc,sync-clk-ps = <0>;
+ 		gpmc,cs-on-ns = <0>;
 -- 
 2.34.1
 
