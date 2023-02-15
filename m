@@ -2,74 +2,146 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D8686697732
-	for <lists+linux-omap@lfdr.de>; Wed, 15 Feb 2023 08:15:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 85DA8697FE8
+	for <lists+linux-omap@lfdr.de>; Wed, 15 Feb 2023 16:52:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233772AbjBOHPA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 15 Feb 2023 02:15:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46234 "EHLO
+        id S229726AbjBOPwq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 15 Feb 2023 10:52:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40216 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233712AbjBOHOq (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 15 Feb 2023 02:14:46 -0500
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4D9702B2B8;
-        Tue, 14 Feb 2023 23:14:45 -0800 (PST)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 4D05A80CD;
-        Wed, 15 Feb 2023 07:14:44 +0000 (UTC)
-Date:   Wed, 15 Feb 2023 09:14:43 +0200
-From:   Tony Lindgren <tony@atomide.com>
-To:     Rob Herring <robh@kernel.org>
-Cc:     Colin Foster <colin.foster@in-advantage.com>,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        soc@kernel.org, Olof Johansson <olof@lixom.net>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH v3 1/2] dt-bindings: arm: omap: add phytec pcm-049 som
- and pcm-959 dev board
-Message-ID: <Y+yGYycS7rrBRBPN@atomide.com>
-References: <20230209025525.148872-1-colin.foster@in-advantage.com>
- <20230209025525.148872-2-colin.foster@in-advantage.com>
- <20230209173534.GA539622-robh@kernel.org>
+        with ESMTP id S229819AbjBOPwp (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 15 Feb 2023 10:52:45 -0500
+Received: from mail-ua1-x933.google.com (mail-ua1-x933.google.com [IPv6:2607:f8b0:4864:20::933])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 906CB37F15
+        for <linux-omap@vger.kernel.org>; Wed, 15 Feb 2023 07:52:41 -0800 (PST)
+Received: by mail-ua1-x933.google.com with SMTP id az27so1533824uab.10
+        for <linux-omap@vger.kernel.org>; Wed, 15 Feb 2023 07:52:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20210112.gappssmtp.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=QHEckESBmtanHoXNoCvk3gYsaCb3mmNnsjrBL0CHXHo=;
+        b=uFE2tcYXYvgsB0sRGahu4i6/jR0i1fWRumRbB6+LOj6E4ZTQeoJQKY+uir8dwyQAPf
+         0tFSiyKW/Fnvdx7G9YqrFDzJ5rpovQR98oqoI9mDNOHpQoG6qkudJ1v0/vpv9DTZyvHu
+         2FZ5pBhMrW+AwLQ0UHgvstufkVnkWswfeG6NT/qsFhsMW+RqE4zXszDTo9BrlFUTp25+
+         B7HTBOKfeZtBkRm441r7YFaJc0rXVKo3xjPJcpiXV6JNc9DsILiJLKJHBFrcxHls+m2Y
+         ZP+U/dMUytGegPXffNuxumCFe0jCae7w9HsecNZLfJZoIChNvNanAquRYPfNiHANjZr/
+         6auA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=QHEckESBmtanHoXNoCvk3gYsaCb3mmNnsjrBL0CHXHo=;
+        b=5dbgyX8wQFczsGZrNMQkYUKLdbOUozYlfN6cObG/Kck6jIXJUF6l9gcWPJQ2gq0gR9
+         mb0l0D93dAFgbTeKTKXxL5EJIDynxE6mALQZDrqIBbN9LENcQPhbfhdmD9QDifEobSl3
+         XNjFKI8Jvr2oUrz7hmQft2J1sGcw/2+1hbQgSHgjc6DMCLoKZ0MGXWXAzBsbx+99XvgZ
+         cKfkaJ1A6Sa86tVfm0Fny9J0yWgSATmmXl+bqlOLuuKLuEzBBbqMN1pncue5AF3IClBy
+         j5ESet8qobSbr5YLxiJgOEA+CG8HhoodwbdZANLn3xkk4RNFxiHObHtN3t3lxW3d/K38
+         Pvew==
+X-Gm-Message-State: AO0yUKWgcX8+B/ZNv5m6QkvRrMgRbblr9HGrhxAvbHNGZjio0hNgqsTJ
+        Oe1qxcU5VW3c+Wz28fUX9HkZMhqOYS/JSv+7j4KPDQ==
+X-Google-Smtp-Source: AK7set+vnGRn5VJvyu0QxjkbABjPQvrEocRoV7wexNKYGw75YkBBJD0qPPmjAkmta0f6ajtUkrNDoiyJSIKAB5KOn4A=
+X-Received: by 2002:ab0:654d:0:b0:68a:7054:58a6 with SMTP id
+ x13-20020ab0654d000000b0068a705458a6mr367631uap.22.1676476360679; Wed, 15 Feb
+ 2023 07:52:40 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230209173534.GA539622-robh@kernel.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+References: <20230208173343.37582-1-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20230208173343.37582-1-andriy.shevchenko@linux.intel.com>
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+Date:   Wed, 15 Feb 2023 16:52:29 +0100
+Message-ID: <CAMRc=MdsCZKh12QcqdWk+Zht5UDpA_G1+rx6+_3dzwjDYe6L+Q@mail.gmail.com>
+Subject: Re: [PATCH v4 00/18] gpiolib cleanups
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Vincenzo Palazzo <vincenzopalazzodev@gmail.com>,
+        Devarsh Thakkar <devarsht@ti.com>,
+        Michael Walle <michael@walle.cc>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Dipen Patel <dipenp@nvidia.com>,
+        Thierry Reding <treding@nvidia.com>,
+        Stefan Schmidt <stefan@datenfreihafen.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Lee Jones <lee@kernel.org>, linux-gpio@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-doc-tw-discuss@lists.sourceforge.net,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-input@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-wpan@vger.kernel.org, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, linux-arch@vger.kernel.org,
+        devicetree@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        Alex Shi <alexs@kernel.org>,
+        Yanteng Si <siyanteng@loongson.cn>,
+        Hu Haowen <src.res@email.cn>,
+        Russell King <linux@armlinux.org.uk>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Mun Yew Tham <mun.yew.tham@intel.com>,
+        Keerthy <j-keerthy@ti.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Alexander Aring <alex.aring@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Kalle Valo <kvalo@kernel.org>, Qiang Zhao <qiang.zhao@nxp.com>,
+        Li Yang <leoyang.li@nxp.com>, Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Rob Herring <robh@kernel.org> [230209 19:35]:
-> On Wed, Feb 08, 2023 at 06:55:24PM -0800, Colin Foster wrote:
-> > --- a/Documentation/devicetree/bindings/arm/omap/omap.txt
-> > +++ b/Documentation/devicetree/bindings/arm/omap/omap.txt
-> > @@ -131,6 +131,9 @@ Boards (incomplete list of examples):
-> >  - OMAP4 PandaBoard : Low cost community board
-> >    compatible = "ti,omap4-panda", "ti,omap4430", "ti,omap4"
-> >  
-> > +- OMAP4 PCM-959 : Commercial dev kit with PCM-049 SOM
-> > +  compatible = "phytec,pcm959", "phytec,pcm049", "ti,omap4460", "ti,omap4430", "ti,omap4";
+On Wed, Feb 8, 2023 at 6:34 PM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> These are some older patches Arnd did last year, rebased to
+> linux-next-20230208. On top there are Andy's patches regarding
+> similar topic. The series starts with Linus Walleij's patches.
+>
+> The main goal is to remove some of the legacy bits of the gpiolib
+> interfaces, where the corner cases are easily avoided or replaced
+> with gpio descriptor based interfaces.
+>
+> The idea is to get an immutable branch and route the whole series
+> via GPIO tree.
+>
 
-Do you have both "ti,omap4460" and "ti,omap4430" SoCs variants for
-these boards? If not just drop the SoC variant not in use. If you do have,
-please mention it in the commit message.
+Andy,
 
-> OMAP maintainers, if no one is going to convert all of omap.txt over to 
-> schema, can we at least start an empty schema and add to it instead of 
-> here...
+looks like this series has all the acks it needs but I decided to not
+send it in the upcoming merge window, I'd prefer it gets some time in
+next so I'll let it sit until the next release cycle.
 
-That sounds like a good plan to me as it allows moving one device at a
-time.
-
-Colin, care to add the initial yaml binding file with your board?
-
-Regards,
-
-Tony
+Bart
