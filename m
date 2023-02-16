@@ -2,174 +2,110 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B1A36993E1
-	for <lists+linux-omap@lfdr.de>; Thu, 16 Feb 2023 13:06:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C91D6998F2
+	for <lists+linux-omap@lfdr.de>; Thu, 16 Feb 2023 16:34:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229436AbjBPMGs (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 16 Feb 2023 07:06:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50552 "EHLO
+        id S230316AbjBPPeS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 16 Feb 2023 10:34:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229866AbjBPMGp (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 16 Feb 2023 07:06:45 -0500
-Received: from mail-oa1-x36.google.com (mail-oa1-x36.google.com [IPv6:2001:4860:4864:20::36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B07C4DE3D
-        for <linux-omap@vger.kernel.org>; Thu, 16 Feb 2023 04:06:42 -0800 (PST)
-Received: by mail-oa1-x36.google.com with SMTP id 586e51a60fabf-16aa71c1600so2231281fac.11
-        for <linux-omap@vger.kernel.org>; Thu, 16 Feb 2023 04:06:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=mRWEN0keF6NiEd7O9ayzoP6wwuhhhF8V1d3xPTIxNoI=;
-        b=CoYVjdLzmYKvj7Vd87G8M0+tYb1Ba3tu1VwpLjaeGT/voYVghBoZRmM3+NienWGtJU
-         MeuZV+1IDBoQO59Jj+fWFaIIHgUFxpG6EyTJ+CSnW819UHaOAv9ugYbCRh7m94dzjC2k
-         5P0Otds2OcdruKvClfV1YcUlCxNC7O7iC4pesdlSbV8v1Xw+ibyXN2ukLOxwQ/WzGiSl
-         qkfAUjvubdR7Lf9Dudmsni/8S6hkq9i3mIm9cQ3CNfSodZaLJZKuj7vf/OLtjIC3OL/W
-         LUihx7TpXmnrgxDgiV6QlthzG9184i9sa4dGeoaLus31NR4hFhW00FPj8MW+q2sIFUWU
-         dalQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mRWEN0keF6NiEd7O9ayzoP6wwuhhhF8V1d3xPTIxNoI=;
-        b=fiuQuYC3I3+9SbmKAT5NtmALfIxQTFD35mtFIEpVbyhLQvB6L45VKdIXArQmxzxkED
-         Bg59ImljbCua+bJ7yw9In5O3Ylx1ssNnongWZ4mT/xQ+Nt+8yjx3fODySyuNNFoyuCxD
-         5H6SB8r32KzF9uD4qGmnDMWBe1s7jbalGNygM9k3bmz4yjA8pkGzi144HgxRyb1K/Eri
-         Ws/1Uf0VJBH2JylfCcaIXZlZA/uRwSo4fbpKlEquZ+j+jqHQVHOIjTQQE45JNrh00Zes
-         MX8xYYmzRU8hclI8OPS59Mp0jRUiYPtJ6y6L4GT3Lv4+ssiOFsQdyXH8fN9+q42MjL+Z
-         SPhw==
-X-Gm-Message-State: AO0yUKWhUPI1tUcFQeJv4yWTfLqMjs1lwWz5t2ifavVOd4YUmX6XaDgS
-        WU0eKHi+TVvz10BqY2QtA1F3Gw==
-X-Google-Smtp-Source: AK7set94J1nmitezcU13KRwKZUpuXlQCbbTw5DAP8kxFwGDFXsKNw5nnYXe6YgwYapp9po8R9SvLqQ==
-X-Received: by 2002:a05:6870:b51f:b0:16d:ea1d:6a6a with SMTP id v31-20020a056870b51f00b0016dea1d6a6amr2823105oap.40.1676549201345;
-        Thu, 16 Feb 2023 04:06:41 -0800 (PST)
-Received: from fedora (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
-        by smtp.gmail.com with ESMTPSA id m3-20020a056870a40300b00152c52608dbsm476595oal.34.2023.02.16.04.06.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Feb 2023 04:06:40 -0800 (PST)
-Date:   Wed, 8 Feb 2023 06:17:14 -0500
-From:   William Breathitt Gray <william.gray@linaro.org>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Mun Yew Tham <mun.yew.tham@intel.com>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Joel Stanley <joel@jms.id.au>,
-        Andrew Jeffery <andrew@aj.id.au>, Alban Bedel <albeu@free.fr>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Jay Fang <f.fangjian@huawei.com>,
-        Daniel Palmer <daniel@thingy.jp>,
-        Romain Perier <romain.perier@gmail.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Kevin Hilman <khilman@kernel.org>, linux-gpio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-aspeed@lists.ozlabs.org, linux-omap@vger.kernel.org,
-        Marc Zyngier <maz@kernel.org>
-Subject: Re: [PATCH 17/17] gpio: pcie-idio-24: Convert to immutable irq_chip
-Message-ID: <Y+OEujGudfk1SkSS@fedora>
-References: <20230215-immutable-chips-v1-0-51a8f224a5d0@linaro.org>
- <20230215-immutable-chips-v1-17-51a8f224a5d0@linaro.org>
+        with ESMTP id S230283AbjBPPeO (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 16 Feb 2023 10:34:14 -0500
+Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FB2A23DA5;
+        Thu, 16 Feb 2023 07:34:09 -0800 (PST)
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 31GFXeAH113353;
+        Thu, 16 Feb 2023 09:33:40 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1676561620;
+        bh=gGClkZ7Y6W8QSzuKIqCvjRgFVLWWEXdv+MGh3f1pp30=;
+        h=From:To:CC:Subject:Date;
+        b=mnqc/etMZlfmCgxezuHGTaZGGz7tLjApE9yOXjvVBUfW5D4/yc4+z6OroVY6UUkqT
+         BDc61hOmbpdyyyzufsCF/3cORSAhRuQ4OoZJ4lBM7+zwT/HqEWqbV92Zxu001WGaXN
+         O5u1q8tAHJAJN9r71f9GFhPGh3krR3BV7rOGHuLw=
+Received: from DLEE110.ent.ti.com (dlee110.ent.ti.com [157.170.170.21])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 31GFXe9e121204
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 16 Feb 2023 09:33:40 -0600
+Received: from DLEE107.ent.ti.com (157.170.170.37) by DLEE110.ent.ti.com
+ (157.170.170.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16; Thu, 16
+ Feb 2023 09:33:40 -0600
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE107.ent.ti.com
+ (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16 via
+ Frontend Transport; Thu, 16 Feb 2023 09:33:40 -0600
+Received: from ula0226330.dal.design.ti.com (ileaxei01-snat2.itg.ti.com [10.180.69.6])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 31GFXdcd018680;
+        Thu, 16 Feb 2023 09:33:39 -0600
+From:   Andrew Davis <afd@ti.com>
+To:     Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Colin Foster <colin.foster@in-advantage.com>,
+        Olof Johansson <olof@lixom.net>, Arnd Bergmann <arnd@arndb.de>
+CC:     <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, Andrew Davis <afd@ti.com>
+Subject: [RFC 0/2] Convert omap.txt to DT schema
+Date:   Thu, 16 Feb 2023 09:33:37 -0600
+Message-ID: <20230216153339.19987-1-afd@ti.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="cyeQsMhX/E0TO8qE"
-Content-Disposition: inline
-In-Reply-To: <20230215-immutable-chips-v1-17-51a8f224a5d0@linaro.org>
-X-Spam-Status: No, score=1.3 required=5.0 tests=BAYES_00,DATE_IN_PAST_96_XX,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: *
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Hello all,
 
---cyeQsMhX/E0TO8qE
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I saw there was some more talk on the lists about converting
+the omap.txt over to DT schema. I remembered that I had made
+an attempt at this and wanted to post it as a WIP example.
+It is not perfect or even very good, but might serve as
+a base for someone.
 
-On Thu, Feb 16, 2023 at 10:37:18AM +0100, Linus Walleij wrote:
-> Convert the driver to immutable irq-chip with a bit of
-> intuition.
->=20
-> Cc: Marc Zyngier <maz@kernel.org>
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Thanks,
+Andrew
 
-Acked-by: William Breathitt Gray <william.gray@linaro.org>
+Andrew Davis (2):
+  ARM: dts: omap: Drop ti,omap36xx compatible
+  WIP: dt-bindings: omap: Convert omap.txt to yaml
 
-> ---
->  drivers/gpio/gpio-pcie-idio-24.c | 12 +++++++++---
->  1 file changed, 9 insertions(+), 3 deletions(-)
->=20
-> diff --git a/drivers/gpio/gpio-pcie-idio-24.c b/drivers/gpio/gpio-pcie-id=
-io-24.c
-> index 8a9b98fa418f..ac42150f4009 100644
-> --- a/drivers/gpio/gpio-pcie-idio-24.c
-> +++ b/drivers/gpio/gpio-pcie-idio-24.c
-> @@ -396,6 +396,8 @@ static void idio_24_irq_mask(struct irq_data *data)
->  	}
-> =20
->  	raw_spin_unlock_irqrestore(&idio24gpio->lock, flags);
-> +
-> +	gpiochip_disable_irq(chip, irqd_to_hwirq(data));
->  }
-> =20
->  static void idio_24_irq_unmask(struct irq_data *data)
-> @@ -408,6 +410,8 @@ static void idio_24_irq_unmask(struct irq_data *data)
->  	const unsigned long bank_offset =3D bit_offset / 8;
->  	unsigned char cos_enable_state;
-> =20
-> +	gpiochip_enable_irq(chip, irqd_to_hwirq(data));
-> +
->  	raw_spin_lock_irqsave(&idio24gpio->lock, flags);
-> =20
->  	prev_irq_mask =3D idio24gpio->irq_mask >> bank_offset * 8;
-> @@ -437,12 +441,14 @@ static int idio_24_irq_set_type(struct irq_data *da=
-ta, unsigned int flow_type)
->  	return 0;
->  }
-> =20
-> -static struct irq_chip idio_24_irqchip =3D {
-> +static const struct irq_chip idio_24_irqchip =3D {
->  	.name =3D "pcie-idio-24",
->  	.irq_ack =3D idio_24_irq_ack,
->  	.irq_mask =3D idio_24_irq_mask,
->  	.irq_unmask =3D idio_24_irq_unmask,
-> -	.irq_set_type =3D idio_24_irq_set_type
-> +	.irq_set_type =3D idio_24_irq_set_type,
-> +	.flags =3D IRQCHIP_IMMUTABLE,
-> +	GPIOCHIP_IRQ_RESOURCE_HELPERS,
->  };
-> =20
->  static irqreturn_t idio_24_irq_handler(int irq, void *dev_id)
-> @@ -535,7 +541,7 @@ static int idio_24_probe(struct pci_dev *pdev, const =
-struct pci_device_id *id)
->  	idio24gpio->chip.set_multiple =3D idio_24_gpio_set_multiple;
-> =20
->  	girq =3D &idio24gpio->chip.irq;
-> -	girq->chip =3D &idio_24_irqchip;
-> +	gpio_irq_chip_set_chip(girq, &idio_24_irqchip);
->  	/* This will let us handle the parent IRQ in the driver */
->  	girq->parent_handler =3D NULL;
->  	girq->num_parents =3D 0;
->=20
-> --=20
-> 2.34.1
->=20
+ .../devicetree/bindings/arm/omap/omap.yaml    | 174 ++++++++++++++++++
+ arch/arm/boot/dts/omap3-beagle-xm.dts         |   2 +-
+ arch/arm/boot/dts/omap3-cm-t3730.dts          |   2 +-
+ arch/arm/boot/dts/omap3-igep0020-rev-f.dts    |   2 +-
+ arch/arm/boot/dts/omap3-igep0020.dts          |   2 +-
+ arch/arm/boot/dts/omap3-igep0030-rev-g.dts    |   2 +-
+ arch/arm/boot/dts/omap3-igep0030.dts          |   2 +-
+ arch/arm/boot/dts/omap3-lilly-dbb056.dts      |   2 +-
+ arch/arm/boot/dts/omap3-n9.dts                |   2 +-
+ arch/arm/boot/dts/omap3-n950.dts              |   2 +-
+ .../arm/boot/dts/omap3-overo-storm-alto35.dts |   2 +-
+ .../boot/dts/omap3-overo-storm-chestnut43.dts |   2 +-
+ .../boot/dts/omap3-overo-storm-gallop43.dts   |   2 +-
+ .../arm/boot/dts/omap3-overo-storm-palo35.dts |   2 +-
+ .../arm/boot/dts/omap3-overo-storm-palo43.dts |   2 +-
+ .../arm/boot/dts/omap3-overo-storm-summit.dts |   2 +-
+ arch/arm/boot/dts/omap3-overo-storm-tobi.dts  |   2 +-
+ .../boot/dts/omap3-overo-storm-tobiduo.dts    |   2 +-
+ arch/arm/boot/dts/omap3-pandora-1ghz.dts      |   2 +-
+ arch/arm/boot/dts/omap3-sbc-t3730.dts         |   2 +-
+ arch/arm/boot/dts/omap3-sniper.dts            |   2 +-
+ arch/arm/boot/dts/omap3-zoom3.dts             |   2 +-
+ 22 files changed, 195 insertions(+), 21 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/arm/omap/omap.yaml
 
---cyeQsMhX/E0TO8qE
-Content-Type: application/pgp-signature; name="signature.asc"
+-- 
+2.39.1
 
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCY+OEugAKCRC1SFbKvhIj
-K02BAP91FSltXanO1Y/3GfoNBCJE7RStvsFHG9hsQlUmwpOJuwEA/eYRZLIo5k9G
-AtVeJJfhJC6J5AUcb0/9/dTNIIukVQ4=
-=HUho
------END PGP SIGNATURE-----
-
---cyeQsMhX/E0TO8qE--
