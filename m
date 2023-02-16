@@ -2,73 +2,151 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 485D3698D62
-	for <lists+linux-omap@lfdr.de>; Thu, 16 Feb 2023 07:51:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EB23698FE9
+	for <lists+linux-omap@lfdr.de>; Thu, 16 Feb 2023 10:37:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229528AbjBPGvc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 16 Feb 2023 01:51:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53094 "EHLO
+        id S230042AbjBPJhJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 16 Feb 2023 04:37:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48128 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229520AbjBPGvb (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 16 Feb 2023 01:51:31 -0500
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B21FA9F;
-        Wed, 15 Feb 2023 22:51:28 -0800 (PST)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id BB2388050;
-        Thu, 16 Feb 2023 06:51:27 +0000 (UTC)
-Date:   Thu, 16 Feb 2023 08:51:26 +0200
-From:   Tony Lindgren <tony@atomide.com>
-To:     Colin Foster <colin.foster@in-advantage.com>
-Cc:     Rob Herring <robh@kernel.org>, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org,
-        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        soc@kernel.org, Olof Johansson <olof@lixom.net>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH v3 1/2] dt-bindings: arm: omap: add phytec pcm-049 som
- and pcm-959 dev board
-Message-ID: <Y+3Sbnau5qtmFabI@atomide.com>
-References: <20230209025525.148872-1-colin.foster@in-advantage.com>
- <20230209025525.148872-2-colin.foster@in-advantage.com>
- <20230209173534.GA539622-robh@kernel.org>
- <Y+yGYycS7rrBRBPN@atomide.com>
- <Y+0Ma9En4JLbR41t@COLIN-DESKTOP1.localdomain>
+        with ESMTP id S229554AbjBPJhI (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 16 Feb 2023 04:37:08 -0500
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79CC934F78
+        for <linux-omap@vger.kernel.org>; Thu, 16 Feb 2023 01:37:06 -0800 (PST)
+Received: by mail-lf1-x12c.google.com with SMTP id bp15so1981690lfb.13
+        for <linux-omap@vger.kernel.org>; Thu, 16 Feb 2023 01:37:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=J4kcTI2putLnbdN9MP2mFPB2+31xxohlAWl8A4kqJzM=;
+        b=IWvdWUomqTO8QzgT9/RsA6AztLIRxUOVfgNmvqvN5Gxqy/9cUOZIxx4zOEI1GUMEuO
+         V9TAsRuESAn9eSAcdJ2Q3Y3LmKVgHE8dfzqSPMuCxP/X5dVXTxpT/3K4G5ne2L20BOdg
+         +Ns/bp3nNMVysizAwePy8SWWIByCVc5VQGg8CAYpY3pYPX0k66HI0RMoIupaYO98vhyF
+         UQv0R+0F5TTrERZ+m2rMar8TvjV9kY3VTcqgBRT3yds+E6jk3uqrdTy6JBPMpNEg1k6H
+         AheohWlxTzNKMooy9nCo7cHAhRm+3PHCMpalddk4nPGaayP7ES+3UEPmE2SdsVilbLTV
+         raJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=J4kcTI2putLnbdN9MP2mFPB2+31xxohlAWl8A4kqJzM=;
+        b=RVi2QWpYmvxpRS5ZNBrOHUwJYlLI3VWkv2ycGCjGemb6yMl4uCXWxB/S+j2U2qiKUS
+         C0OrL5b+Rd20GAgBuDNhLi9KweP+Bs37SVD76JdP6Yd19Obzdq3aJsB5ox4UVKEmMP1w
+         E0FwYAsjZYGQQLUus/NOVANWeVIC7dzhZLEhx7taxb417rEFOjqiwpf6cWwlLF7gnKqY
+         PuStNpRkrxAUqliM/jOAZwvXvTpb2e2BO9+BY0q6C+rPj0yocUkjQJLJH08v7bEAmMV9
+         95REw+7Gltj08N3aMyqT3o5FgwgFnK110hV6hFDoXniYLVhIWw8/fvSFaVjH7laAsnfZ
+         BT2Q==
+X-Gm-Message-State: AO0yUKW2PUkjcDgyO2PrMzPiP26KtrwMEH5AFyTi6KUD+r3RwcoyQvX9
+        6+HpdXpw5fR4CcJaOcRYsMh18rSliUhRc+DE
+X-Google-Smtp-Source: AK7set8LMDSUl/0lfLpNLdxiWXIpZtBeu3tMcI1noiOnxnhVDDzyYiOekOwnbuCrkq4smDZqBa7rOg==
+X-Received: by 2002:a05:6512:48f:b0:4ce:88af:473b with SMTP id v15-20020a056512048f00b004ce88af473bmr1118725lfq.54.1676540224493;
+        Thu, 16 Feb 2023 01:37:04 -0800 (PST)
+Received: from [127.0.1.1] ([85.235.12.219])
+        by smtp.gmail.com with ESMTPSA id r3-20020a19ac43000000b004d8758a452asm229069lfc.288.2023.02.16.01.37.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Feb 2023 01:37:04 -0800 (PST)
+From:   Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 00/17] Mass convert GPIO IRQ chips to be immutable
+Date:   Thu, 16 Feb 2023 10:37:01 +0100
+Message-Id: <20230215-immutable-chips-v1-0-51a8f224a5d0@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Y+0Ma9En4JLbR41t@COLIN-DESKTOP1.localdomain>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAD357WMC/0XNQQqDMBCF4avIrDtgprTBXqV0kaSjGdAYMioF8
+ e6N3XT5w/t4OygXYYVHs0PhTVTmVMNcGgjRpYFR3rWBWrq2ZG4o07Quzo+MIUpWtHfqiMja3jB
+ U5Z0y+uJSiKcbssx/cw5y4V4+v8vn6zi+Vg6p2IIAAAA=
+To:     Mun Yew Tham <mun.yew.tham@intel.com>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Joel Stanley <joel@jms.id.au>,
+        Andrew Jeffery <andrew@aj.id.au>, Alban Bedel <albeu@free.fr>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Jay Fang <f.fangjian@huawei.com>,
+        Daniel Palmer <daniel@thingy.jp>,
+        Romain Perier <romain.perier@gmail.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Kevin Hilman <khilman@kernel.org>,
+        William Breathitt Gray <william.gray@linaro.org>
+Cc:     linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-aspeed@lists.ozlabs.org, linux-omap@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Marc Zyngier <maz@kernel.org>,
+        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>, Tony Lindgren <tony@atomide.com>
+X-Mailer: b4 0.12.1
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Colin Foster <colin.foster@in-advantage.com> [230215 16:46]:
-> On Wed, Feb 15, 2023 at 09:14:43AM +0200, Tony Lindgren wrote:
-> > * Rob Herring <robh@kernel.org> [230209 19:35]:
-> > > OMAP maintainers, if no one is going to convert all of omap.txt over to 
-> > > schema, can we at least start an empty schema and add to it instead of 
-> > > here...
-> > 
-> > That sounds like a good plan to me as it allows moving one device at a
-> > time.
-> > 
-> > Colin, care to add the initial yaml binding file with your board?
-> 
-> I'll give it a go. To be clear, this would be
-> Documentation/devicetree/bindings/arm/omap.yaml and it would
-> include my device? I'm taking
-> Documentation/devicetree/bindings/arm/sunxi.yaml as inspiration (for no
-> reason other than it was the first one that I came across that seemed to
-> solve this same issue)
+We are getting tired of these irq_chips not getting converted
+to be immutable, so I just take out the big hammer and fix
+some that I deem not too complex as best I can.
 
-Yes just something minimal to start with.
+I stopped after doing some, I will take another sweep at some
+point I guess.
 
-Thanks,
+Please test if you have the hardware. The OMAP patch especially,
+hi Tony ;)
 
-Tony
+I don't expect this to be merged to v6.3, but as Bartosz may
+feel it is fixes material they are of course fine to trickle
+in on a case-by-case basis.
+
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+---
+Linus Walleij (17):
+      gpio: altera: Convert to immutable irq_chip
+      gpio: adnp: Convert to immutable irq_chip
+      gpio: aspeed: Convert to immutable irq_chip
+      gpio: aspeed-sgpio: Convert to immutable irq_chip
+      gpio: ath79: Convert to immutable irq_chip
+      gpio: cadence: Convert to immutable irq_chip
+      gpio: eic_sprd: Convert to immutable irq_chip
+      gpio: hisi: Convert to immutable irq_chip
+      gpio: hlwd: Convert to immutable irq_chip
+      gpio: idt3243x: Convert to immutable irq_chip
+      gpio: msc313: Convert to immutable irq_chip
+      gpio: mlxbf2: Convert to immutable irq_chip
+      gpio: max732x: Convert to immutable irq_chip
+      gpio: omap: Drop irq_base
+      gpio: omap: Convert to immutable irq_chip
+      gpio: pci-idio-16: Convert to immutable irq_chip
+      gpio: pcie-idio-24: Convert to immutable irq_chip
+
+ drivers/gpio/gpio-adnp.c         |  9 ++++-
+ drivers/gpio/gpio-altera.c       | 25 +++++++-----
+ drivers/gpio/gpio-aspeed-sgpio.c | 44 +++++++++++++++++----
+ drivers/gpio/gpio-aspeed.c       | 44 ++++++++++++++++++---
+ drivers/gpio/gpio-ath79.c        |  8 +++-
+ drivers/gpio/gpio-cadence.c      | 10 +++--
+ drivers/gpio/gpio-eic-sprd.c     | 33 +++++++++++-----
+ drivers/gpio/gpio-hisi.c         | 25 +++++++-----
+ drivers/gpio/gpio-hlwd.c         | 33 ++++++++++++----
+ drivers/gpio/gpio-idt3243x.c     | 11 ++++--
+ drivers/gpio/gpio-max732x.c      |  8 +++-
+ drivers/gpio/gpio-mlxbf2.c       | 32 ++++++++++++----
+ drivers/gpio/gpio-msc313.c       | 26 +++++++++++--
+ drivers/gpio/gpio-omap.c         | 83 ++++++++++++++++++++++------------------
+ drivers/gpio/gpio-pci-idio-16.c  | 12 ++++--
+ drivers/gpio/gpio-pcie-idio-24.c | 12 ++++--
+ 16 files changed, 297 insertions(+), 118 deletions(-)
+---
+base-commit: 1b929c02afd37871d5afb9d498426f83432e71c2
+change-id: 20230215-immutable-chips-762922277f1e
+
+Best regards,
+-- 
+Linus Walleij <linus.walleij@linaro.org>
+
