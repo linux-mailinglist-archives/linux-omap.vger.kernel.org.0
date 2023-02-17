@@ -2,100 +2,80 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 068A769A5B0
-	for <lists+linux-omap@lfdr.de>; Fri, 17 Feb 2023 07:42:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9528A69A63C
+	for <lists+linux-omap@lfdr.de>; Fri, 17 Feb 2023 08:49:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229561AbjBQGmB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 17 Feb 2023 01:42:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47250 "EHLO
+        id S229596AbjBQHtm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 17 Feb 2023 02:49:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229482AbjBQGmA (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 17 Feb 2023 01:42:00 -0500
-Received: from mail-vk1-xa35.google.com (mail-vk1-xa35.google.com [IPv6:2607:f8b0:4864:20::a35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0CC74BE8D
-        for <linux-omap@vger.kernel.org>; Thu, 16 Feb 2023 22:41:56 -0800 (PST)
-Received: by mail-vk1-xa35.google.com with SMTP id bi17so2576881vkb.9
-        for <linux-omap@vger.kernel.org>; Thu, 16 Feb 2023 22:41:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=O+3r6Lwvhms6XJ6bo2c6l90xkWazMwajl6iI1ojTsco=;
-        b=MZN1hnRVVqw6S02YR9BFZ1XIx034Snwz/Cn2OZs36LCZwUC7Xhfw+YsdhYZeWKd85Y
-         BPnse0qWqhCec4Qa0Gnz2zKyl/M+nrWmC9C75n3rWxyckxckb1fArc+5/n6nmh16n6bi
-         YQUOAaPSfI6AQP2KOMy6yoUTY8tNGOZE5bgpMVFjQi3HVib5GzUZjLRJnatjMln9CwNy
-         Fz6yC7xcDDPtmO2j/VtLfCBe7/uVRhSVNYo5Y2Xyj1GEN7PK1502JSC/l5NlQ+x6j+PR
-         8OhtvMZ9ss81cskrQOM8toEEp+1c2DYuMZ8EjBnu+bZJPZe/E57080u0zkdJPxva4SlD
-         7y1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=O+3r6Lwvhms6XJ6bo2c6l90xkWazMwajl6iI1ojTsco=;
-        b=l88zoGGy6yLcpFqsW+t9TUjPmbtwAwC0wXoxfN9funLe8DTR43iEExQQEJvIuOyFlZ
-         oF7t6MrZZZhnqSE0i92BU8k70kwwIM3/tHQkBXFDnrlttPm+9Pk0sGs+GNGl4z6HDz7U
-         nUooGBz+/aSRpJ7P7SGSNstoQOhteYFgnE3gFGsgd6q6iYTvUXSKGVPLvLC1wNuP5U4G
-         rXZ7B+nMu2gyrX6J1vbZGxDH6mVfHUHfVl0iQnhEZ/W6nGiMiOyaX4hh9KQpi22qqEUq
-         MjIfFMVtt7UeTjOuQhBMwQI8RXoROY6VPNLGRff7PpsFTQ9NwhjBraHzLVLY59UFfRe0
-         WVGQ==
-X-Gm-Message-State: AO0yUKXI6bAjhfNfK12uGdiNuhfT3zBmhnuXyoV4pewlfPIysdFOBwMO
-        t4Q+NJlS290Wusa+IjXXA9z3Gxub3VwYT1yMLf8=
-X-Google-Smtp-Source: AK7set8T23btIryZWkVhuq3unfRZ1y/qWOgjeFkTzeONfKsB68vNpviltx2TNlhaWNNI2QrEoY1efH8u429LjqEapoI=
-X-Received: by 2002:a1f:9e0f:0:b0:401:355e:e0be with SMTP id
- h15-20020a1f9e0f000000b00401355ee0bemr1340450vke.17.1676616115815; Thu, 16
- Feb 2023 22:41:55 -0800 (PST)
+        with ESMTP id S229507AbjBQHtl (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 17 Feb 2023 02:49:41 -0500
+Received: from muru.com (muru.com [72.249.23.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 665D55A3BC;
+        Thu, 16 Feb 2023 23:49:40 -0800 (PST)
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 202B880C1;
+        Fri, 17 Feb 2023 07:49:39 +0000 (UTC)
+Date:   Fri, 17 Feb 2023 09:49:37 +0200
+From:   Tony Lindgren <tony@atomide.com>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Mun Yew Tham <mun.yew.tham@intel.com>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Joel Stanley <joel@jms.id.au>,
+        Andrew Jeffery <andrew@aj.id.au>, Alban Bedel <albeu@free.fr>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Jay Fang <f.fangjian@huawei.com>,
+        Daniel Palmer <daniel@thingy.jp>,
+        Romain Perier <romain.perier@gmail.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Kevin Hilman <khilman@kernel.org>,
+        William Breathitt Gray <william.gray@linaro.org>,
+        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-aspeed@lists.ozlabs.org, linux-omap@vger.kernel.org,
+        Marc Zyngier <maz@kernel.org>
+Subject: Re: [PATCH 15/17] gpio: omap: Convert to immutable irq_chip
+Message-ID: <Y+8xkV5aUrAajLNP@atomide.com>
+References: <20230215-immutable-chips-v1-0-51a8f224a5d0@linaro.org>
+ <20230215-immutable-chips-v1-15-51a8f224a5d0@linaro.org>
 MIME-Version: 1.0
-Received: by 2002:a59:d8ae:0:b0:3a3:49d7:7bd0 with HTTP; Thu, 16 Feb 2023
- 22:41:55 -0800 (PST)
-Reply-To: zongjianxin14@gmail.com
-From:   Zong Jianxin <majisamuel02@gmail.com>
-Date:   Fri, 17 Feb 2023 07:41:55 +0100
-Message-ID: <CANV+rvwyKObzQL=Mnozu7TV_k2kADXb-gJXcQBximwB3kFDq3g@mail.gmail.com>
-Subject: Urgent
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.1 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:a35 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [zongjianxin14[at]gmail.com]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [majisamuel02[at]gmail.com]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [majisamuel02[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  3.0 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230215-immutable-chips-v1-15-51a8f224a5d0@linaro.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
--- 
-Did you receive my previous email? I have a Profitable deal for you.
+Hi,
 
-Thanks
+* Linus Walleij <linus.walleij@linaro.org> [230216 09:38]:
+> Convert the driver to immutable irq-chip with a bit of
+> intuition.
+> 
+> This driver require some special care: .irq_ack() was copied
+> from dummy_irq_chip where it was defined as noop. This only
+> makes sense if using handle_edge_irq() that will unconditionally
+> call .irq_ack() to avoid a crash, but this driver is not ever
+> using handle_edge_irq() so just avoid assigning .irq_ack().
+> 
+> A separate chip had to be created for the non-wakeup instance.
 
-Zong Jianxin
+Nice, works for me.
+
+BTW, I still see these warnings remaining on boot:
+
+gpio gpiochip0: Static allocation of GPIO base is deprecated, use dynamic allocation.
+
+Seems like we might be able to get rid of those too now or are
+there still some dependencies with /sys/class/gpio for example?
+
+Reviewed-by: Tony Lindgren <tony@atomide.com>
+Tested-by: Tony Lindgren <tony@atomide.com>
