@@ -2,23 +2,25 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9528A69A63C
-	for <lists+linux-omap@lfdr.de>; Fri, 17 Feb 2023 08:49:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E1EA569AE1F
+	for <lists+linux-omap@lfdr.de>; Fri, 17 Feb 2023 15:34:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229596AbjBQHtm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 17 Feb 2023 02:49:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57604 "EHLO
+        id S229679AbjBQOeN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 17 Feb 2023 09:34:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229507AbjBQHtl (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 17 Feb 2023 02:49:41 -0500
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 665D55A3BC;
-        Thu, 16 Feb 2023 23:49:40 -0800 (PST)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 202B880C1;
-        Fri, 17 Feb 2023 07:49:39 +0000 (UTC)
-Date:   Fri, 17 Feb 2023 09:49:37 +0200
-From:   Tony Lindgren <tony@atomide.com>
+        with ESMTP id S229475AbjBQOeM (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 17 Feb 2023 09:34:12 -0500
+Received: from elvis.franken.de (elvis.franken.de [193.175.24.41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 5C3F6644FB;
+        Fri, 17 Feb 2023 06:34:11 -0800 (PST)
+Received: from uucp (helo=alpha)
+        by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+        id 1pT1o3-0001zG-00; Fri, 17 Feb 2023 15:33:47 +0100
+Received: by alpha.franken.de (Postfix, from userid 1000)
+        id 19465C28A2; Fri, 17 Feb 2023 14:28:16 +0100 (CET)
+Date:   Fri, 17 Feb 2023 14:28:16 +0100
+From:   Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 To:     Linus Walleij <linus.walleij@linaro.org>
 Cc:     Mun Yew Tham <mun.yew.tham@intel.com>,
         Bartosz Golaszewski <brgl@bgdev.pl>,
@@ -38,44 +40,87 @@ Cc:     Mun Yew Tham <mun.yew.tham@intel.com>,
         linux-arm-kernel@lists.infradead.org,
         linux-aspeed@lists.ozlabs.org, linux-omap@vger.kernel.org,
         Marc Zyngier <maz@kernel.org>
-Subject: Re: [PATCH 15/17] gpio: omap: Convert to immutable irq_chip
-Message-ID: <Y+8xkV5aUrAajLNP@atomide.com>
+Subject: Re: [PATCH 10/17] gpio: idt3243x: Convert to immutable irq_chip
+Message-ID: <20230217132816.GA9335@alpha.franken.de>
 References: <20230215-immutable-chips-v1-0-51a8f224a5d0@linaro.org>
- <20230215-immutable-chips-v1-15-51a8f224a5d0@linaro.org>
+ <20230215-immutable-chips-v1-10-51a8f224a5d0@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230215-immutable-chips-v1-15-51a8f224a5d0@linaro.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20230215-immutable-chips-v1-10-51a8f224a5d0@linaro.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
-
-* Linus Walleij <linus.walleij@linaro.org> [230216 09:38]:
+On Thu, Feb 16, 2023 at 10:37:11AM +0100, Linus Walleij wrote:
 > Convert the driver to immutable irq-chip with a bit of
 > intuition.
 > 
-> This driver require some special care: .irq_ack() was copied
-> from dummy_irq_chip where it was defined as noop. This only
-> makes sense if using handle_edge_irq() that will unconditionally
-> call .irq_ack() to avoid a crash, but this driver is not ever
-> using handle_edge_irq() so just avoid assigning .irq_ack().
+> Cc: Marc Zyngier <maz@kernel.org>
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+> ---
+>  drivers/gpio/gpio-idt3243x.c | 11 ++++++++---
+>  1 file changed, 8 insertions(+), 3 deletions(-)
 > 
-> A separate chip had to be created for the non-wakeup instance.
+> diff --git a/drivers/gpio/gpio-idt3243x.c b/drivers/gpio/gpio-idt3243x.c
+> index 1cafdf46f875..00f547d26254 100644
+> --- a/drivers/gpio/gpio-idt3243x.c
+> +++ b/drivers/gpio/gpio-idt3243x.c
+> @@ -92,6 +92,8 @@ static void idt_gpio_mask(struct irq_data *d)
+>  	writel(ctrl->mask_cache, ctrl->pic + IDT_PIC_IRQ_MASK);
+>  
+>  	raw_spin_unlock_irqrestore(&gc->bgpio_lock, flags);
+> +
+> +	gpiochip_disable_irq(gc, irqd_to_hwirq(d));
+>  }
+>  
+>  static void idt_gpio_unmask(struct irq_data *d)
+> @@ -100,6 +102,7 @@ static void idt_gpio_unmask(struct irq_data *d)
+>  	struct idt_gpio_ctrl *ctrl = gpiochip_get_data(gc);
+>  	unsigned long flags;
+>  
+> +	gpiochip_enable_irq(gc, irqd_to_hwirq(d));
+>  	raw_spin_lock_irqsave(&gc->bgpio_lock, flags);
+>  
+>  	ctrl->mask_cache &= ~BIT(d->hwirq);
+> @@ -119,12 +122,14 @@ static int idt_gpio_irq_init_hw(struct gpio_chip *gc)
+>  	return 0;
+>  }
+>  
+> -static struct irq_chip idt_gpio_irqchip = {
+> +static const struct irq_chip idt_gpio_irqchip = {
+>  	.name = "IDTGPIO",
+>  	.irq_mask = idt_gpio_mask,
+>  	.irq_ack = idt_gpio_ack,
+>  	.irq_unmask = idt_gpio_unmask,
+> -	.irq_set_type = idt_gpio_irq_set_type
+> +	.irq_set_type = idt_gpio_irq_set_type,
+> +	.flags = IRQCHIP_IMMUTABLE,
+> +	GPIOCHIP_IRQ_RESOURCE_HELPERS,
+>  };
+>  
+>  static int idt_gpio_probe(struct platform_device *pdev)
+> @@ -168,7 +173,7 @@ static int idt_gpio_probe(struct platform_device *pdev)
+>  			return parent_irq;
+>  
+>  		girq = &ctrl->gc.irq;
+> -		girq->chip = &idt_gpio_irqchip;
+> +		gpio_irq_chip_set_chip(girq, &idt_gpio_irqchip);
+>  		girq->init_hw = idt_gpio_irq_init_hw;
+>  		girq->parent_handler = idt_gpio_dispatch;
+>  		girq->num_parents = 1;
+> 
+> -- 
+> 2.34.1
 
-Nice, works for me.
+Tested-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 
-BTW, I still see these warnings remaining on boot:
 
-gpio gpiochip0: Static allocation of GPIO base is deprecated, use dynamic allocation.
-
-Seems like we might be able to get rid of those too now or are
-there still some dependencies with /sys/class/gpio for example?
-
-Reviewed-by: Tony Lindgren <tony@atomide.com>
-Tested-by: Tony Lindgren <tony@atomide.com>
+-- 
+Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
+good idea.                                                [ RFC1925, 2.3 ]
