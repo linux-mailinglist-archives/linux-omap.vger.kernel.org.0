@@ -2,93 +2,81 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A973569D847
-	for <lists+linux-omap@lfdr.de>; Tue, 21 Feb 2023 03:04:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F0A369E2D0
+	for <lists+linux-omap@lfdr.de>; Tue, 21 Feb 2023 15:58:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232697AbjBUCEF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 20 Feb 2023 21:04:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47650 "EHLO
+        id S230164AbjBUO6a (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 21 Feb 2023 09:58:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232511AbjBUCEE (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 20 Feb 2023 21:04:04 -0500
-Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com [209.85.167.169])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E529914498;
-        Mon, 20 Feb 2023 18:04:03 -0800 (PST)
-Received: by mail-oi1-f169.google.com with SMTP id bg11so2871422oib.5;
-        Mon, 20 Feb 2023 18:04:03 -0800 (PST)
+        with ESMTP id S233381AbjBUO63 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 21 Feb 2023 09:58:29 -0500
+Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 594412716
+        for <linux-omap@vger.kernel.org>; Tue, 21 Feb 2023 06:58:28 -0800 (PST)
+Received: by mail-wr1-x429.google.com with SMTP id c12so4748679wrw.1
+        for <linux-omap@vger.kernel.org>; Tue, 21 Feb 2023 06:58:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:subject:to:from:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZYgal4JxSeqClDjOaTIWuG632pDj7jRjSVKH768J0cA=;
+        b=TGh5xl8rpn3JBIZPQ6YTzAdRKMNcEvhNyEIaOarkFd1ahX5ZPcygayr7O5eyZYL4bb
+         ZerP4Kf3GFvmtFR6L56ATsN4lhAjmfVORFBmzDPsfXFULj7R6XnQDurCByvZAYrtfM/0
+         T6ecPLNbINYIWbmZUK6GKa73mgJfmuzfyFwNXxRJIBJpc/77ccV/xyheaZRQWAUOcpFP
+         qV1Rb2PRZasG2QnattzpPUHmBUlXYwvVYni+zMrzBy3bbtWtvkpI5Qw6CoiT6pAZukyR
+         6FDi3xMGqfQLoVKpLTXZr3mdez5gmUwmwrv3ka08+x6uw6ZxF273mQ+LqkzAO6JBQvvX
+         2mig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8u1dqJgOyyF1gVqdLsNGzGEEgiXpoRAuhWlKicwwL2E=;
-        b=Xsu9k6oEVUKXPebChxwQr4gSgrMantGX/RpSYihGCxdGmGTUIp9BL9bqFwCTiI3J9R
-         Ofz+g6Uv4LymDdAzW6j50xci4k1VeatAZiBI7aYx3ABFD4i3j2p4Kam5n84BphL1JnGC
-         643b8CRpj2GhuN0jiLPXwfygg0e5VryoRAQGJ+GKe45M4J//el61qTw1PVUBKrRlRWFh
-         6v24sjbuvrCC5QO/10kEEgg4wbX8ZRNmEoGu84YMUYQ/CmcXhyaETlmaWz8XUesZoLmz
-         0wzf3Gfz9i9L6YphPDqUeznmMEuw+bQSyIoGlHz5U0dcBaPAvc3t3lIJNVvd3xvE5s+7
-         vC2Q==
-X-Gm-Message-State: AO0yUKXMUWi2tIDYa7Q7fsIB8pJhMUoc5WHuog2njhwyVudLfmx/qaJ2
-        KOskX1BtLVlvSWPD3Gcxck1c1VOGDw==
-X-Google-Smtp-Source: AK7set+Mhv11/kQ/8HGMt4nvXDhitVgC4Qw5M0iyD3Q5Rm7A6Zy3pxuo2Sve9oVNjfKCoVHlMonQmA==
-X-Received: by 2002:a05:6808:48e:b0:37a:d6dc:a742 with SMTP id z14-20020a056808048e00b0037ad6dca742mr5070574oid.6.1676945043155;
-        Mon, 20 Feb 2023 18:04:03 -0800 (PST)
-Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id p84-20020acabf57000000b0037841fb9a65sm5544242oif.5.2023.02.20.18.04.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Feb 2023 18:04:02 -0800 (PST)
-Received: (nullmailer pid 814909 invoked by uid 1000);
-        Tue, 21 Feb 2023 02:04:01 -0000
-Date:   Mon, 20 Feb 2023 20:04:01 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     Andrew Davis <afd@ti.com>, kernel@pyra-handheld.com,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        letux-kernel@openphoenux.org,
-        =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Chris Morgan <macromorgan@hotmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        devicetree@vger.kernel.org, Tony Lindgren <tony@atomide.com>
-Subject: Re: [PATCH] ARM: dts: omap3-gta04: fix compatible record for GTA04
- board
-Message-ID: <167694504105.814849.13739306703872130380.robh@kernel.org>
-References: <38b49aad0cf33bb5d6a511edb458139b58e367fd.1676566002.git.hns@goldelico.com>
+        h=content-transfer-encoding:subject:to:from:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZYgal4JxSeqClDjOaTIWuG632pDj7jRjSVKH768J0cA=;
+        b=tBMJYT1K/lhtmiEe7KEQkCodwQEyjHPKGU9I7XTzMJ3OuRa/sU16pAI+E/+MQXkdJl
+         lzTOXLrBTqNyX/NqMrMqOs+wB8ukE5VDFMjwkyy1EQ8bunf3sh+lkwVT/XMN2wQjAAx+
+         4a4wx2Z04I5LZfXKiSIurM36mI3zVQSaGcLeKdVwr3gwTZahCv5e/JFB3hUF43qMMvX7
+         +vf8Og831fek0I8LXclqA25/E2QzpnqSRIuqmdIV8OYBh+EOkcLjW0qYF2rNppgIwnh5
+         tTnCamRghZJiNtiAXXbp1Q07nvGFgYFNbw2ldma8Q6/kxMNzdRz64HOsGhTyqeBtrNRC
+         2d9w==
+X-Gm-Message-State: AO0yUKWxxsTHyDSgfnU1z6bM+tylwy6hh9L4Ne8dcRII8u5VEj8R64XG
+        RzwrMZlk+/lfTMeeG7KgTuzbdnaFGg==
+X-Google-Smtp-Source: AK7set+XHzot2cziDjBR97QJgiPM2up9F76NnV8fVWLtWJ40PdVMVJqrGHAWETuyYMj1xc4oGGcM3Q==
+X-Received: by 2002:adf:e811:0:b0:2c5:61ef:7b37 with SMTP id o17-20020adfe811000000b002c561ef7b37mr5061651wrm.10.1676991506572;
+        Tue, 21 Feb 2023 06:58:26 -0800 (PST)
+Received: from DESKTOP-L1U6HLH ([39.42.138.70])
+        by smtp.gmail.com with ESMTPSA id l3-20020a1ced03000000b003dd1bd66e0dsm2242447wmh.3.2023.02.21.06.58.25
+        for <linux-omap@vger.kernel.org>
+        (version=TLS1 cipher=ECDHE-ECDSA-AES128-SHA bits=128/128);
+        Tue, 21 Feb 2023 06:58:26 -0800 (PST)
+Message-ID: <63f4dc12.1c0a0220.cebe0.67a5@mx.google.com>
+Date:   Tue, 21 Feb 2023 06:58:26 -0800 (PST)
+X-Google-Original-Date: 21 Feb 2023 09:58:27 -0500
 MIME-Version: 1.0
+From:   butler.dreamlandestimation@gmail.com
+To:     linux-omap@vger.kernel.org
+Subject: Building Estimates
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <38b49aad0cf33bb5d6a511edb458139b58e367fd.1676566002.git.hns@goldelico.com>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=0.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-
-On Thu, 16 Feb 2023 17:46:43 +0100, H. Nikolaus Schaller wrote:
-> Vendor of the GTA04 boards is and always was
-> Golden Delicious Computers GmbH&Co. KG, Germany
-> and not Texas Instruments.
-> 
-> Maybe, TI was references here because the GTA04 was based on
-> the BeagleBoard design which is designated as "ti,omap3-beagle".
-> 
-> While we are looking at vendors of omap3 based devices, we also
-> add the record for OpenPandora. The DTS files for the pandora
-> device already make use of it.
-> 
-> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
-> ---
->  Documentation/devicetree/bindings/vendor-prefixes.yaml | 4 ++++
->  arch/arm/boot/dts/omap3-gta04.dtsi                     | 3 +--
->  2 files changed, 5 insertions(+), 2 deletions(-)
-> 
-
-Acked-by: Rob Herring <robh@kernel.org>
+Hi,=0D=0A=0D=0AIn case you really want take-offs for a developmen=
+t project, we ought to be your consultancy of decision. Reach out=
+ to us assuming that you have any undertakings for departure whic=
+h could utilize our administrations.=0D=0A=0D=0ASend over the pla=
+ns and notice the exact extent of work you need us to assess.=0D=0A=
+We will hit you up with a statement on our administration charges=
+ and turnaround time.=0D=0AIn case you endorse that individual st=
+atement then we will continue further with the gauge.=0D=0A=0D=0A=
+For a superior comprehension of our work, go ahead and ask us que=
+stions .=0D=0A=0D=0AKind Regards=0D=0AButler Alexis	=0D=0ADreamla=
+nd Estimation, LLC
 
