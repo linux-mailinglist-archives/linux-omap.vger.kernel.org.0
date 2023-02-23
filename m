@@ -2,183 +2,132 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 902BA6A0BF2
-	for <lists+linux-omap@lfdr.de>; Thu, 23 Feb 2023 15:36:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F8716A0D77
+	for <lists+linux-omap@lfdr.de>; Thu, 23 Feb 2023 17:01:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234553AbjBWOgJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 23 Feb 2023 09:36:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44202 "EHLO
+        id S234738AbjBWQBU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 23 Feb 2023 11:01:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234655AbjBWOgH (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 23 Feb 2023 09:36:07 -0500
-Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BC6B59400
-        for <linux-omap@vger.kernel.org>; Thu, 23 Feb 2023 06:36:01 -0800 (PST)
-Received: by mail-wm1-x331.google.com with SMTP id ay29-20020a05600c1e1d00b003e9f4c2b623so4122228wmb.3
-        for <linux-omap@vger.kernel.org>; Thu, 23 Feb 2023 06:36:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=5A8UeRr2Gc2z9WOFsL/7qhv/YNUuwYHZ6QFgk2PLkf4=;
-        b=G/KnzB+TqsBI8cevd406M1H2uS/axQyn5O3J8LbGgYCVum00LDCUcdsLRO4e+PYdTW
-         U53td03TDwO3oqU/DfyEACJp3u8kqk/fQs1hqFQfHLbFvVaGxAxtxfhj20dVBDn/KocL
-         bRm4dGcQ8RneN0QZZOclkTDXg5Tz49YHzlv2KJwX01gmRldUTxSI9wx6CwNtT7JS4MpX
-         XQc/ceZ/Ksf8XK7DsOO+WaVEgFWi4+WZcf9lLCMAByGprBtrAIY/OBJ06L3/FJ6oVN0s
-         EtSN5c388v7cMmniaxK9MZ4F5hupqKl7pkEC/gfUk5A76nvfNX4TMsgdKEROOksO965j
-         GZ+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5A8UeRr2Gc2z9WOFsL/7qhv/YNUuwYHZ6QFgk2PLkf4=;
-        b=Apvwnaqj6JWcr3wlEZX6Qrqn3s7CgjW+j38aCCbYGNJSCc4PlMbLG71nvrCpY7TxCf
-         rRjnsozuOc4v1X8GtX70Y8gja0lXDGezRcVMuR2jDzL2E9BctW5qTq5tagW4FZbkvBsL
-         iOfMdMfYmQjHkTBEK0CMug3ZfoaUEEpWypUXLF34/dvZ1V4iKi7wrK7HqlELt44DwTup
-         7I7Ilz1l9wqujfMew5BuMdKhnX9O7iAUcN1otTNlPgITtvMcmn4budbl/O9nVVr3Li/K
-         JRl/uI7qKJXz6+Y+y3zgcL8XiiyV8Qx8fUkN+Rix/PuzqPz94tHgegKZPCd3IF8CqKmJ
-         Ne1w==
-X-Gm-Message-State: AO0yUKVCW0W8qYHF7TSPqhAhxIqU4ihLbCEoJnIq9iNFayGCok2lMXrS
-        Qt/QW7989GuQ7qr9a+jR4K9T+g==
-X-Google-Smtp-Source: AK7set8m6oTFiOFyJ69IZZpXnSY707D1wGVpzvSHc156iH26zK9yl1Et8LQfhfLoNB4CqfmWsB2ihw==
-X-Received: by 2002:a05:600c:43c9:b0:3e1:f8af:7942 with SMTP id f9-20020a05600c43c900b003e1f8af7942mr3008298wmn.22.1677162958724;
-        Thu, 23 Feb 2023 06:35:58 -0800 (PST)
-Received: from ?IPV6:2a05:6e02:1041:c10:c265:a8c7:c71d:6e47? ([2a05:6e02:1041:c10:c265:a8c7:c71d:6e47])
-        by smtp.googlemail.com with ESMTPSA id n15-20020a05600c3b8f00b003e224ff61a8sm12388179wms.43.2023.02.23.06.35.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Feb 2023 06:35:58 -0800 (PST)
-Message-ID: <abac6405-6a09-4267-a5ec-626e92f08f30@linaro.org>
-Date:   Thu, 23 Feb 2023 15:35:56 +0100
+        with ESMTP id S234468AbjBWQBT (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 23 Feb 2023 11:01:19 -0500
+Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 818FC3BD81;
+        Thu, 23 Feb 2023 08:01:17 -0800 (PST)
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 31NG0qMc055806;
+        Thu, 23 Feb 2023 10:00:52 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1677168052;
+        bh=vTURQD9WPvmBl1atQgQJRPHjqPyGm4gzWobOEQ9n+Ao=;
+        h=Date:Subject:To:CC:References:From:In-Reply-To;
+        b=VIxvGT9mW6dn1gTDS69GDblSRm/3bg6BI/2QQGI/CzBnMkyb3siBz84IM/mpnEWpD
+         tM+2dL0d62cOHmRPIB3tynyIuUTsOwugJro+N/ERZki1YFCXyJXUttHg1zpgz4yjoj
+         /YipLAg5zBgWYmL6uxq/bG/rAf/LGclJw63r+5ms=
+Received: from DFLE115.ent.ti.com (dfle115.ent.ti.com [10.64.6.36])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 31NG0q47024758
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 23 Feb 2023 10:00:52 -0600
+Received: from DFLE103.ent.ti.com (10.64.6.24) by DFLE115.ent.ti.com
+ (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16; Thu, 23
+ Feb 2023 10:00:52 -0600
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE103.ent.ti.com
+ (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16 via
+ Frontend Transport; Thu, 23 Feb 2023 10:00:51 -0600
+Received: from [10.250.32.101] (ileaxei01-snat2.itg.ti.com [10.180.69.6])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 31NG0o2V016398;
+        Thu, 23 Feb 2023 10:00:51 -0600
+Message-ID: <dd67f7c9-0867-47d0-a201-9316908d9d62@ti.com>
+Date:   Thu, 23 Feb 2023 10:00:50 -0600
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.7.1
-Subject: Re: [PATCH v2 06/16] thermal: Don't use 'device' internal thermal
- zone structure field
+Subject: Re: [PATCH v4 1/2] dt-bindings: arm: omap: add phytec pcm-049 som and
+ pcm-959 dev board
 Content-Language: en-US
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Balsam CHIHI <bchihi@baylibre.com>,
-        Amit Kucheria <amitk@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Keerthy <j-keerthy@ti.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Ido Schimmel <idosch@nvidia.com>,
-        Mark Brown <broonie@kernel.org>,
-        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "open list:TI BANDGAP AND THERMAL DRIVER" 
+To:     Colin Foster <colin.foster@in-advantage.com>,
         <linux-omap@vger.kernel.org>,
-        "moderated list:ARM/Mediatek SoC support" 
-        <linux-mediatek@lists.infradead.org>
-References: <20230221180710.2781027-1-daniel.lezcano@linaro.org>
- <20230221180710.2781027-7-daniel.lezcano@linaro.org>
- <CAJZ5v0gTmi7ZeDDdHWGWju4m3bv2366oVqSP1dGOT+3jLV-jaw@mail.gmail.com>
- <0889767f-d187-0cb4-895e-c149517b6636@linaro.org>
- <CAJZ5v0h=UCOyJ88UgEdqch4NZK+DaT8jWnDaguQGNx-KOMhPPA@mail.gmail.com>
- <2b843912-cc9b-f1ac-1f81-28e3ecf8daba@linaro.org>
- <CAJZ5v0g+fkX=ZUJ0MgENy2SmMv98wD0dApVwU352OS4ZXpDDCw@mail.gmail.com>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <CAJZ5v0g+fkX=ZUJ0MgENy2SmMv98wD0dApVwU352OS4ZXpDDCw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>
+CC:     Tony Lindgren <tony@atomide.com>,
+        =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
+        <soc@kernel.org>, Olof Johansson <olof@lixom.net>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>
+References: <20230222203847.2664903-1-colin.foster@in-advantage.com>
+ <20230222203847.2664903-2-colin.foster@in-advantage.com>
+From:   Andrew Davis <afd@ti.com>
+In-Reply-To: <20230222203847.2664903-2-colin.foster@in-advantage.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 23/02/2023 12:43, Rafael J. Wysocki wrote:
-> On Thu, Feb 23, 2023 at 10:56 AM Daniel Lezcano
-> <daniel.lezcano@linaro.org> wrote:
->>
->> On 22/02/2023 21:06, Rafael J. Wysocki wrote:
->>> On Wed, Feb 22, 2023 at 9:00 PM Daniel Lezcano
->>> <daniel.lezcano@linaro.org> wrote:
->>>>
->>>> On 22/02/2023 20:43, Rafael J. Wysocki wrote:
->>>>> On Tue, Feb 21, 2023 at 7:07 PM Daniel Lezcano
->>>>> <daniel.lezcano@linaro.org> wrote:
->>>>>>
->>>>>> Some drivers are directly using the thermal zone's 'device' structure
->>>>>> field.
->>>>>>
->>>>>> Use the driver device pointer instead of the thermal zone device when
->>>>>> it is available.
->>>>>>
->>>>>> Remove the traces when they are duplicate with the traces in the core
->>>>>> code.
->>>>>>
->>>>>> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
->>>>>> Reviewed-by: Balsam CHIHI <bchihi@baylibre.com> #Mediatek LVTS
->>>>>> ---
->>>>
->>>> [ ... ]
->>>>
->>>>>>            thermal_zone_device_update(data->ti_thermal, THERMAL_EVENT_UNSPECIFIED);
->>>>>>
->>>>>> -       dev_dbg(&data->ti_thermal->device, "updated thermal zone %s\n",
->>>>>> +       dev_dbg(data->bgp->dev, "updated thermal zone %s\n",
->>>>>>                    data->ti_thermal->type);
->>>>>
->>>>> The code before the change is more consistent, because it refers to
->>>>> the same object in both instances.
->>>>>
->>>>> It looks like a type field accessor is needed, eg. thermal_zone_device_type()?
->>>>>
->>>>> Or move the debug message to thermal_zone_device_update()?
->>>>
->>>> Actually it is done on purpose because the patch 9 replaces the accesses
->>>> to 'type' by 'id', the thermal_zone_device_type() accessor won't be needed.
->>>
->>> Cool.
->>>
->>> However, this is a change in behavior (albeit small) which doesn't
->>> appear to be necessary.
->>>
->>> What would be wrong with having a tz->type accessor too?
->>
->> I can add the 'type' accessor but from my point of view it is not
->> correct because the information belongs to the thermal framework and it
->> is used to export the information in the sysfs which is along with the
->> directory name giving the id of the thermal zone.
+On 2/22/23 2:38 PM, Colin Foster wrote:
+> Add yaml documentation for TI OMAP devices for the Phytec PCM-049 SoM and
+> the Phytec PCM-959 development kit.
 > 
-> I'm not sure what you mean here.
+> Signed-off-by: Colin Foster <colin.foster@in-advantage.com>
+> ---
 > 
-> Surely, the 'type' is provided by whoever registers the thermal zone,
-> so I'm not sure in what way it "belongs" to the framework.
+> v4
+>      * New patch, based on a WIP from Andrew Davis <afd@ti.com>
+> 
+> ---
+>   .../devicetree/bindings/arm/ti,omap.yaml      | 29 +++++++++++++++++++
+>   1 file changed, 29 insertions(+)
+>   create mode 100644 Documentation/devicetree/bindings/arm/ti,omap.yaml
 
-I meant the goal of 'type' is to be exported to sysfs, nothing else.
+How will this work if I add the same file? Why not take my WIP patch, make
+the suggested changes from Rob, then have it as your first patch in this
+series?
 
-That is the reason why I used the word 'belongs', because it was 
-introduced to stay in the scope of the thermal framework, but then its 
-usage has been diverted to a name.
+Andrew
 
-Anyway, from my POV having traces in the ops is not a good thing, so 
-I'll propose later to remove them and add a single message in the call 
-sites.
-
-Meanwhile, I'll provide the accessor for 'type' and hopefully we do not 
-end up with a plethora of accessors to be used in the core code.
-
-
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
-
+> 
+> diff --git a/Documentation/devicetree/bindings/arm/ti,omap.yaml b/Documentation/devicetree/bindings/arm/ti,omap.yaml
+> new file mode 100644
+> index 000000000000..9c0e08f74fee
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/arm/ti,omap.yaml
+> @@ -0,0 +1,29 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/arm/ti,omap.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Texas Instruments OMAP SoC architecture
+> +
+> +maintainers:
+> +  - Tony Lindgren <tony@atomide.com>
+> +
+> +description:
+> +  Platforms based on Texas Instruments OMAP SoC architecture.
+> +
+> +properties:
+> +  $nodename:
+> +    const: '/'
+> +  compatibnle:
+> +    oneOf:
+> +
+> +      - description: TI OMAP 4460 SoC based platforms
+> +        items:
+> +          - enum:
+> +              - phytec,pcm049   # Phytec OMAP 4460 SoM
+> +              - phytec,pcm959   # Phytec development board for the pcm049
+> +          - const: ti,omap4460
+> +          - const: ti,omap4
+> +
+> +additionalProperties: true
