@@ -2,201 +2,112 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B1136A1328
-	for <lists+linux-omap@lfdr.de>; Thu, 23 Feb 2023 23:57:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 65C826A1B7B
+	for <lists+linux-omap@lfdr.de>; Fri, 24 Feb 2023 12:38:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229637AbjBWW46 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 23 Feb 2023 17:56:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54444 "EHLO
+        id S229513AbjBXLiq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 24 Feb 2023 06:38:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229669AbjBWW44 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 23 Feb 2023 17:56:56 -0500
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 688835DCEC
-        for <linux-omap@vger.kernel.org>; Thu, 23 Feb 2023 14:56:51 -0800 (PST)
-Received: by mail-wm1-x329.google.com with SMTP id c18so5591647wmr.3
-        for <linux-omap@vger.kernel.org>; Thu, 23 Feb 2023 14:56:51 -0800 (PST)
+        with ESMTP id S229468AbjBXLiq (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 24 Feb 2023 06:38:46 -0500
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 038F738B5B
+        for <linux-omap@vger.kernel.org>; Fri, 24 Feb 2023 03:38:44 -0800 (PST)
+Received: by mail-wr1-x444.google.com with SMTP id c12so13606297wrw.1
+        for <linux-omap@vger.kernel.org>; Fri, 24 Feb 2023 03:38:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=cikNiAl3CsaUVzCtk0AInA3PwE1/TMQnMlzjF1gGdG0=;
-        b=DRN7VfySjUL0rYZq24bKTqYo1a7eMqo07ygSwMFUqHzuTKP65b9sTMEH8VZt0hxwu1
-         dmHGRYaPf3ggH9KZmEyIo+flPWm4zpT9CAN4fb3bb2UwUttx3rmo4vx8zo6F2tPiEUOK
-         kQWqn6QOgf2ZhhgOZ653j1GAMDb6AMca6ljq3tiMi06NSCiMzWp0EPnd6Uvs6JK9LOIe
-         r43kHvJdLLA9VFyPJO6M+KZDTGdMEFaMKztCR+nTATohFgvC9r80+cCMQ12KHZsj+SUY
-         jwwZvlnmtS9kLRvR3sEhulVIN5kRwRQDmQ/AX297OlmgtRWEUsWG1kh7J/OLhfLYqjHy
-         599w==
+        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=vpzAS3s+Cknt6SusAxCgxYC801c1KRUgoMVD/9jWeaQ=;
+        b=LmvkL2ICUxHCi5JnX6qNtHeCxijsatAjX0YJDWsunnS/ftTbbj5rUec4lgOaXqOG2k
+         OpDu5xoXv2edDxi314/dISSVuwVZMfeGKGpURxqFRt3cjr8ppZhSGKglF1ur2WIC1s5/
+         stmZRhkTs6gP0ldUe2814bB4iuPrAR1KQRCsKUW+eWXBPMYEmGM2hoJsVVXdij0PgJxD
+         8rqa28nLJA5JdrD9i1FHgcr88B3R1vpKiPrszKKKZsKsgQyUVIR5iU5gHY16oGLw/9A2
+         5cAG1oYsurtJHLshKAh3wliUMzdVFsAyOPMxdPVQpNaS7TQ8yXQCwHp9WBQBg1xDgtzk
+         q0JA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cikNiAl3CsaUVzCtk0AInA3PwE1/TMQnMlzjF1gGdG0=;
-        b=y+aGZZHZGjlqOj6DnBLUesGv/+dv4mMI0Oy22Ou8/ZvjeIj1xpzMUFqsIbnKT7MWm3
-         0dw6Htg19JKXPX3lWpmMLKKbfWW8oftgFEVVfZPvETa2UnWclkuiGxNRyjn4trvhabcf
-         yTH1g3BC3exVllsuuLGkfiC0w6kQEtrEfxgAxftes8WwG9fgSkRT4ok+2eiD0xithsvO
-         21xKs4cpbZpOEYbOn5mTl/cRFANQ6XirtmtMiDLp0i8PlBckaxtzkOcvx1WI3rvVQdUO
-         3sm4KUnx1odRZ2oL6Mb0ocYOYeMYymmxaawFuhRLiGyi2LqzD+vFAWHOcB6jzr0irM4a
-         Nkrw==
-X-Gm-Message-State: AO0yUKVmoM5VByUFNXAo0SREY0kJtqImRP+z02msZ7I0ZsvNMCPqU2zw
-        ETlVxheR3nRqoeVEYeGc2H80BA==
-X-Google-Smtp-Source: AK7set9Z52yxWv52zRMDow6DF+DTZQX7KbVMepo+DRQCwOeMkXAXaJBNJ2zYwaSnuLVGEj/k1hBdjw==
-X-Received: by 2002:a05:600c:a695:b0:3e2:2f9:b8e2 with SMTP id ip21-20020a05600ca69500b003e202f9b8e2mr10908094wmb.35.1677193009641;
-        Thu, 23 Feb 2023 14:56:49 -0800 (PST)
-Received: from ?IPV6:2a05:6e02:1041:c10:3e6f:e90a:1fc9:3708? ([2a05:6e02:1041:c10:3e6f:e90a:1fc9:3708])
-        by smtp.googlemail.com with ESMTPSA id d21-20020a1c7315000000b003b47b80cec3sm662936wmb.42.2023.02.23.14.56.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Feb 2023 14:56:49 -0800 (PST)
-Message-ID: <37b3b835-e992-0090-56e5-bd4d58e547a7@linaro.org>
-Date:   Thu, 23 Feb 2023 23:56:44 +0100
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vpzAS3s+Cknt6SusAxCgxYC801c1KRUgoMVD/9jWeaQ=;
+        b=hFjvgrD9Dygjex3ZMRZS7fxzp2nPZTfEZ+a00Lg2OkpiDvUAPvCPeyz1KLTcIPkMhJ
+         toCUdJ8rxavdGD3IqI6sqKB4yBSn83iT5WBJRnCy9DY85c08OPICzfL2/dQQp4veyEUG
+         NmncJbaHm4RWpwvTC6duIm8hd5wqxECokE2fDJmDn+QVqT7N7AWLfVDDaF8cwwCrbr/V
+         t83uWUU+vQ3StxbOdy85+oPDYcE3/e9ePUX2qK1OzHSvWJ9tHJPDm7vzyO8JNpoehVp+
+         J20h+MsXmPeSHHdhiR/exLYatl+cQtv8w1fhu2sxYKlGDVm86p+2y34BOp3hvvTCfXUs
+         ZaUQ==
+X-Gm-Message-State: AO0yUKWu9R71zRYlZeqSuq50sw/pr8OrQiUC0H5ReIyuWtpCs1Oeqm3H
+        E6d82HC5MvxQtryWy83rYHJJqQ==
+X-Google-Smtp-Source: AK7set+ria7amvD5JkJfXPya3WzHNUc0HXURdmyuPFMgJvFkQ3DJiRy+b8Fi+vNUtyDXKbDyj9Qibg==
+X-Received: by 2002:a05:6000:c1:b0:2c5:5308:859c with SMTP id q1-20020a05600000c100b002c55308859cmr11994396wrx.18.1677238722449;
+        Fri, 24 Feb 2023 03:38:42 -0800 (PST)
+Received: from jerome-BL.. (2a02-8440-5241-7427-e801-6f64-356d-2fd7.rev.sfr.net. [2a02:8440:5241:7427:e801:6f64:356d:2fd7])
+        by smtp.gmail.com with ESMTPSA id l11-20020adff48b000000b002c592535839sm12769679wro.17.2023.02.24.03.38.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Feb 2023 03:38:41 -0800 (PST)
+From:   Jerome Neanne <jneanne@baylibre.com>
+To:     linus.walleij@linaro.org, brgl@bgdev.pl, tony@atomide.com,
+        lee@kernel.org
+Cc:     linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-omap@vger.kernel.org, Jerome Neanne <jneanne@baylibre.com>
+Subject: [PATCH 0/2] Add support for TI TPS65219 PMIC GPIO interface.
+Date:   Fri, 24 Feb 2023 12:38:35 +0100
+Message-Id: <20230224113837.874264-1-jneanne@baylibre.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: Re: [PATCH v3 00/17] Self-encapsulate the thermal zone device
- structure
-Content-Language: en-US
-To:     rafael@kernel.org
-Cc:     linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Samuel Holland <samuel@sholland.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Ido Schimmel <idosch@nvidia.com>,
-        Petr Machata <petrm@nvidia.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Amit Kucheria <amitk@kernel.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Broadcom internal kernel review list 
-        <bcm-kernel-feedback-list@broadcom.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Markus Mayer <mmayer@broadcom.com>,
-        Support Opensource <support.opensource@diasemi.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Thara Gopinath <thara.gopinath@gmail.com>,
-        =?UTF-8?Q?Niklas_S=c3=b6derlund?= <niklas.soderlund@ragnatech.se>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Vasily Khoruzhick <anarsoul@gmail.com>,
-        Yangtao Li <tiny.windzz@gmail.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Talel Shenhar <talel@amazon.com>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Keerthy <j-keerthy@ti.com>,
-        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Stefan Wahren <stefan.wahren@i2se.com>,
-        Zheng Yongjun <zhengyongjun3@huawei.com>,
-        Yang Li <yang.lee@linux.alibaba.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Daniel Golle <daniel@makrotopia.org>,
-        Balsam CHIHI <bchihi@baylibre.com>,
-        Mikko Perttunen <mperttunen@nvidia.com>,
-        linux-acpi@vger.kernel.org, linux-ide@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-hwmon@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-sunxi@lists.linux.dev,
-        linux-input@vger.kernel.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org,
-        linux-rpi-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-rockchip@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-mediatek@lists.infradead.org
-References: <20230223224844.3491251-1-daniel.lezcano@linaro.org>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <20230223224844.3491251-1-daniel.lezcano@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 23/02/2023 23:48, Daniel Lezcano wrote:
-> The exported thermal headers expose the thermal core structure while those
-> should be private to the framework. The initial idea was the thermal sensor
-> drivers use the thermal zone device structure pointer to pass it around from
-> the ops to the thermal framework API like a handler.
-> 
-> Unfortunately, different drivers are using and abusing the internals of this
-> structure to hook the associated struct device, read the internals values, take
-> the lock, etc ...
-> 
-> rn order to fix this situation, let's encapsulate the structure leaking the
-> more in the different drivers: the thermal_zone_device structure.
-> 
-> This series revisit the existing drivers using the thermal zone private
-> structure internals to change the access to something else. For instance, the
-> get_temp() ops is using the tz->dev to write a debug trace. Despite the trace
-> is not helpful, we can check the return value for the get_temp() ops in the
-> call site and show the message in this place.
-> 
-> With this set of changes, the thermal_zone_device is almost self-encapsulated.
-> As usual, the acpi driver needs a more complex changes, so that will come in a
-> separate series along with the structure moved the private core headers.
-> 
-> Changelog:
-> 	- V3:
-> 	   - Collected more tags
-> 	   - Added missing changes for ->devdata in some drivers
-> 	   - Added a 'type' accessor
-> 	   - Replaced the 'type' to 'id' changes by the 'type' accessor
-> 	   - Used the 'type' accessor in the drivers
-> 	- V2:
-> 	   - Collected tags
-> 	   - Added missing changes for ->devdata for the tsens driver
-> 	   - Renamed thermal_zone_device_get_data() to thermal_zone_priv()
-> 	   - Added stubs when CONFIG_THERMAL is not set
-> 	   - Dropped hwmon change where we remove the tz->lock usage
-> 
-> Thank you all for your comments
+GPIO interface consist in 3 pins:
+Two GPIOS are output only: GPO1, GPO2.
 
-The series has been blocked by gsmtp because the next patch has too many 
-Cc. I'll sort out this and resend.
+GPIO0 is used for multi device support:
+- The input-functionality is only used in multi-PMIC configuration
+- In single-PMIC, it can be used as an output
 
+The configuration is static and flashed in NVM in factory.
+Description tps65219.pdf chapter 7.3.13
+
+Linux must not change MULTI_DEVICE_ENABLE bit at run time.
+
+This was done for test purpose only to check input/output
+correct behavior on EVM board (no access to different NVM config).
+
+Tested on k3-am62x-lp-sk board. This board MULTI_DEVICE_ENABLE=0
+
+Despite the register bits are out of order,
+driver is remapping in natural order:
+GPIO0 is gpiochip line 0
+GPO1/2 are gpiochip line 1/2
+
+ Initial version by Jon Cormier on TI Mainline.
+ Ported upstream by Jerome Neanne
+
+
+Link: https://www.ti.com/lit/ds/symlink/tps65219.pdf
+
+Jerome Neanne (2):
+  gpio: tps65219: add GPIO support for TPS65219 PMIC
+  mfd: tps65219: Add gpio cell instance
+
+ MAINTAINERS                  |   1 +
+ drivers/gpio/Kconfig         |  13 +++
+ drivers/gpio/Makefile        |   1 +
+ drivers/gpio/gpio-tps65219.c | 167 +++++++++++++++++++++++++++++++++++
+ drivers/mfd/tps65219.c       |   7 +-
+ 5 files changed, 188 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/gpio/gpio-tps65219.c
 
 -- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+2.34.1
 
