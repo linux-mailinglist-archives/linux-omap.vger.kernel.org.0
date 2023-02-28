@@ -2,107 +2,91 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CAAF26A5408
-	for <lists+linux-omap@lfdr.de>; Tue, 28 Feb 2023 09:01:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E6A66A57A2
+	for <lists+linux-omap@lfdr.de>; Tue, 28 Feb 2023 12:18:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230430AbjB1IBH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 28 Feb 2023 03:01:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45568 "EHLO
+        id S231238AbjB1LSu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 28 Feb 2023 06:18:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39784 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230249AbjB1IA3 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 28 Feb 2023 03:00:29 -0500
-Received: from mail-yw1-x1136.google.com (mail-yw1-x1136.google.com [IPv6:2607:f8b0:4864:20::1136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFACD2C643
-        for <linux-omap@vger.kernel.org>; Tue, 28 Feb 2023 00:00:11 -0800 (PST)
-Received: by mail-yw1-x1136.google.com with SMTP id 00721157ae682-536af432ee5so249657937b3.0
-        for <linux-omap@vger.kernel.org>; Tue, 28 Feb 2023 00:00:11 -0800 (PST)
+        with ESMTP id S231481AbjB1LSs (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 28 Feb 2023 06:18:48 -0500
+Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 816067A91
+        for <linux-omap@vger.kernel.org>; Tue, 28 Feb 2023 03:18:44 -0800 (PST)
+Received: by mail-wr1-x431.google.com with SMTP id h14so9324574wru.4
+        for <linux-omap@vger.kernel.org>; Tue, 28 Feb 2023 03:18:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=tHYax+79/7KD9mgzANO2cU0qDWMCaiZzX5GSj5yb/Mk=;
-        b=UpTYF8BGRFmqxjuG03YEwfWURxE3yO0p/s8TlfgVerisxioiAIEAzDBbspw9Nr0vMB
-         6A9/QJqoKxL95uauijZap+d1xpYJIH9kR0n9azaAxN1xT82ukWyse+5GU1gGH1FBpocP
-         HKTPiCRbjJJQOPzu08Kt6gbzSgntU4In/tkS1K14Z13LPv6SQbMGdJEMmuHwzZfxWgfY
-         bxd8cC0RE6+Nyfbuyzt8UZde1iuSmCj8ci3YdEydCZxRa+MLmPRhX2GDaYiw0uL9hOJY
-         /Nj1ENwJZtgRIm6BZKoMR9gfHMoKHuaQ6NA6hsdh8XxWhG0Xj97zh3KLm4Ebd+VhzwCK
-         6AAQ==
+        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=xVoyC8wrd+bTb+TPTb4Bl/kNMNJ5socmwXem2vdIaJo=;
+        b=NHhkM6XWjGereQscqBrss1KgjdsC4Uw7hMUfqTgTCppgDbPYH4HmZvWHbf1YptSK2v
+         RY2HNVoOcTiJwSKMta9OCE1XR6dozHgkeOdm1pUhcWqbAIygIsF49f8wrQaFJCmcmKtw
+         SLGt+1Drnm5QJqtXw7gdHTBVOvQh4pFmPtyCC8iljFLSiSTLJe7/LQaSL7Jv4kmFHDCd
+         8UnCNtmZN/5ZKldUT3wIRCokoLwDsY+YrCz2365mu+thrNSg4rJME8cDHNRVIzl7ajmf
+         qTr1RLxYhEQM5eCRjVDnbYlyeVHD3INXy/NlGNUi2XgJ6moIIQ9R8zm48HaisrQqTeqk
+         CFVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=tHYax+79/7KD9mgzANO2cU0qDWMCaiZzX5GSj5yb/Mk=;
-        b=0kCU4w450EXnbim7InsKHDLaZZ/BdT3xyylIaEPYiypMxeGTE4LBP9F+g2DAhlZyJC
-         wsj3LZFi/9rx0DKzLyInoBpRv4/ZSlFUBpE1zjUEqSWdGsSN5Rr2zNWW3HuPppbYJ7R0
-         hWvarvc7Qc0zWs/Da0v91wFoSqsWlnWDw+SlR6BmsQ6Q/0x+nGd5TM3wpe3L/94ynspO
-         L77UmGr6fO/DjzLXqmJDKpz4oewiwvdXqVB78vRNzqP1EYM/fB7pYy/B2AHD8T3FO+RG
-         aRn3+y5wSjynlkZpZT1juSOmNbczfSShqX7bPIXIetIhDXbx4tkLhsztydvjy8ntGP8y
-         FPSA==
-X-Gm-Message-State: AO0yUKUdsZqb7MxdG1cgm3yJUScEhUqFbkanh0oP+5feRiMPpomt6brU
-        e6thKEqtrxglNliaVfvPzt1nvlN8RB1n3lwBVjVIpd/tuC0=
-X-Google-Smtp-Source: AK7set/9D7H+t/N+YSYMBhnIPT7iU/NqGPuMbaqPwWsYAxTudEkwyjNM4QjaL91dapje1hCKlzeqAKTJMdr6rZCTI6A=
-X-Received: by 2002:a81:b612:0:b0:533:8080:16ee with SMTP id
- u18-20020a81b612000000b00533808016eemr1037225ywh.10.1677571210280; Tue, 28
- Feb 2023 00:00:10 -0800 (PST)
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=xVoyC8wrd+bTb+TPTb4Bl/kNMNJ5socmwXem2vdIaJo=;
+        b=Rgyft6gU1x5VAS1FQ2Ko+HIGE6nuHTysyiJ4StP01LFvuNqv8kab/TYp/T87Pcg6+s
+         00M3pG13FvWLLRMlSSRDYivG4VdWICby8Rd8wvVhAhO5iT5Qj+ojZ3U9l+8L/4XfUcsF
+         oIwJP8/OmZfVL1+RZrm4e3xDMxN9nEtQkJleCoPAfAICz8NZwxL+8Igy+ZEjwGY+bBgi
+         G2u7KfUPvKxU7SQUO4SrdNkpJOAIjDxvESlc2BV7N1djWCs+XpoWwz3YvD5iqbwsFmzb
+         lH4xxOabPKUjYQr7IQGM9bwip5LEflTaNg1B18Z8/iLiorzwopCfHUcPbfz5ckORfUfx
+         ulSQ==
+X-Gm-Message-State: AO0yUKVu3AmECUxc4sUV6RaVe/6HHVJwFi9ZH1tlMIzz4ESRvN3Xezs8
+        cOnUOq6PeTj5tAPC+o4gLrlqTBWD+O0kHnid+hE4ZA==
+X-Google-Smtp-Source: AK7set8SssAP4PkOqN8PR49y6R5vCMxua5W3zRYjs7yGeGL5s0LFqTaxTjp7CcBvtRCJSDHFZSLQiw==
+X-Received: by 2002:a5d:4b87:0:b0:2c9:a8c7:b48d with SMTP id b7-20020a5d4b87000000b002c9a8c7b48dmr1857468wrt.10.1677583122951;
+        Tue, 28 Feb 2023 03:18:42 -0800 (PST)
+Received: from [10.2.4.117] (lfbn-nic-1-295-18.w90-116.abo.wanadoo.fr. [90.116.132.18])
+        by smtp.gmail.com with ESMTPSA id j14-20020a5d464e000000b002c558869934sm9633925wrs.81.2023.02.28.03.18.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 28 Feb 2023 03:18:42 -0800 (PST)
+Message-ID: <741eb8c3-ad05-19e2-2604-9cd9c97c4ef4@baylibre.com>
+Date:   Tue, 28 Feb 2023 12:18:41 +0100
 MIME-Version: 1.0
-From:   Yegor Yefremov <yegorslists@googlemail.com>
-Date:   Tue, 28 Feb 2023 08:59:59 +0100
-Message-ID: <CAGm1_kuc0T5xqdQU0JVbetz+pMZb2=v=jhpgmfvZQhAiPdAG=A@mail.gmail.com>
-Subject: am335x: performnce issues with FTDI and LOW_LATENCY
-To:     Linux-OMAP <linux-omap@vger.kernel.org>
-Cc:     Bin Liu <b-liu@ti.com>, Johan Hovold <johan@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.1
+Subject: Re: [PATCH 1/2] gpio: tps65219: add GPIO support for TPS65219 PMIC
+Content-Language: en-US
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Jon Cormier <jcormier@criticallink.com>
+Cc:     linus.walleij@linaro.org, brgl@bgdev.pl, tony@atomide.com,
+        lee@kernel.org, linux-kernel@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-omap@vger.kernel.org
+References: <20230224113837.874264-1-jneanne@baylibre.com>
+ <20230224113837.874264-2-jneanne@baylibre.com> <Y/iqhsEIvHgnZ+5l@surfacebook>
+ <CADL8D3bm82+=LwYnve04FB2zsSJ6ceKQHycV9oNWoYFiOQnVCA@mail.gmail.com>
+ <CAHp75Vc52cqPaTFTvi2E-3Gg6gAsDWc7wSWjn7wMuhcxWqFXBA@mail.gmail.com>
+From:   jerome Neanne <jneanne@baylibre.com>
+In-Reply-To: <CAHp75Vc52cqPaTFTvi2E-3Gg6gAsDWc7wSWjn7wMuhcxWqFXBA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-I have the same am335x-based system running with both 3.18.x and 5.4.x
-(6.2.1 too) kernels. In the full setup the system handles 4x FT4232-H
-chips.
 
-# lsusb -t
-/:  Bus 02.Port 1: Dev 1, Class=root_hub, Driver=musb-hdrc/1p, 480M
-    |__ Port 1: Dev 2, If 0, Class=, Driver=hub/4p, 480M
-        |__ Port 2: Dev 3, If 0, Class=, Driver=ftdi_sio, 480M
-        |__ Port 2: Dev 3, If 1, Class=, Driver=ftdi_sio, 480M
-        |__ Port 2: Dev 3, If 2, Class=, Driver=ftdi_sio, 480M
-        |__ Port 2: Dev 3, If 3, Class=, Driver=ftdi_sio, 480M
-        |__ Port 3: Dev 4, If 1, Class=, Driver=ftdi_sio, 480M
-        |__ Port 3: Dev 4, If 2, Class=, Driver=ftdi_sio, 480M
-        |__ Port 3: Dev 4, If 0, Class=, Driver=ftdi_sio, 480M
-        |__ Port 3: Dev 4, If 3, Class=, Driver=ftdi_sio, 480M
-/:  Bus 01.Port 1: Dev 1, Class=root_hub, Driver=musb-hdrc/1p, 480M
-    |__ Port 1: Dev 2, If 0, Class=, Driver=hub/4p, 480M
-        |__ Port 2: Dev 3, If 0, Class=, Driver=ftdi_sio, 480M
-        |__ Port 2: Dev 3, If 3, Class=, Driver=ftdi_sio, 480M
-        |__ Port 2: Dev 3, If 1, Class=, Driver=ftdi_sio, 480M
-        |__ Port 2: Dev 3, If 2, Class=, Driver=ftdi_sio, 480M
-        |__ Port 3: Dev 4, If 0, Class=, Driver=ftdi_sio, 480M
-        |__ Port 3: Dev 4, If 1, Class=, Driver=ftdi_sio, 480M
-        |__ Port 3: Dev 4, If 2, Class=, Driver=ftdi_sio, 480M
-        |__ Port 3: Dev 4, If 3, Class=, Driver=ftdi_sio, 480M
 
-When I open all 16 serial ports with the LOW_LATENCY flag in the
-latest kernels, the system performance drops dramatically. It is best
-to watch via iperf3:
-
-Kernel 6.2.1
-16 serial ports closed: 90.2 Mbits/sec
-16 serial ports opened without LOW_LATENCY: 88.3 Mbits/sec
-16 serial ports opened with LOW_LATENCY: 12.1 Mbits/sec
-
-Kernel: 3.18.1
-16 serial ports closed: 61.1 Mbits/sec
-16 serial ports opened without LOW_LATENCY: 53.7 Mbits/sec
-16 serial ports opened with LOW_LATENCY: 37.2 Mbits/sec
-
-Any idea why the performance drop is so big?
-
-Regards,
-Yegor
+On 27/02/2023 20:51, Andy Shevchenko wrote:
+>>>> Signed-off-by: Jonathan Cormier<jcormier@criticallink.com>
+>>>> Signed-off-by: Jerome Neanne<jneanne@baylibre.com>
+>>> Not sure how to interpet this along with the From line.
+>> Are two sign-offs not allowed/expected?  I wrote the initial
+>> implementation of this driver and Jerome updated it and is handling
+>> submitting it since he did the rest of the TPS65219 drivers.
+> 1. Submitter's SoB must be the last SoB in the chain.
+> 2. Developers also need to be marked with Co-developed-by.
+Got it! My mistake. I'll fix following your instructions.
