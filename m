@@ -2,205 +2,378 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 868A36A715B
-	for <lists+linux-omap@lfdr.de>; Wed,  1 Mar 2023 17:37:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A9D76A74D8
+	for <lists+linux-omap@lfdr.de>; Wed,  1 Mar 2023 21:15:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229557AbjCAQh2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 1 Mar 2023 11:37:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34078 "EHLO
+        id S229783AbjCAUPF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 1 Mar 2023 15:15:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49672 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229905AbjCAQhT (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 1 Mar 2023 11:37:19 -0500
-Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D6D94988F;
-        Wed,  1 Mar 2023 08:36:53 -0800 (PST)
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 321GZt9U126046;
-        Wed, 1 Mar 2023 10:35:55 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1677688555;
-        bh=sITZyv1tyFmXqgH0GUHmAT6tC2/cSlL5cr4fVh06Kh4=;
-        h=Date:Subject:To:CC:References:From:In-Reply-To;
-        b=TMKfEu8fok+w9L6/Xcqw1Oj/LKQVxc7mvi/SkZ77rUPp+51kH/rTTerY2KNN+Z51B
-         v09jnFhpRhPPmWzUhdnh5XiYrgf1Dbt7mdyTQkNWZupnBW3xZbrZ89zZPnMybRt4ep
-         nE+5jnKPHmu4o3E0qB0X2+IDwYJpJYq4iuefYoi4=
-Received: from DLEE104.ent.ti.com (dlee104.ent.ti.com [157.170.170.34])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 321GZt8N058701
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 1 Mar 2023 10:35:55 -0600
-Received: from DLEE107.ent.ti.com (157.170.170.37) by DLEE104.ent.ti.com
- (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16; Wed, 1
- Mar 2023 10:35:54 -0600
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE107.ent.ti.com
- (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16 via
- Frontend Transport; Wed, 1 Mar 2023 10:35:55 -0600
-Received: from [10.249.33.186] (ileaxei01-snat2.itg.ti.com [10.180.69.6])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 321GZsqx069950;
-        Wed, 1 Mar 2023 10:35:54 -0600
-Message-ID: <d4abf0c3-f5c8-fd54-87f6-4397596ae40f@ti.com>
-Date:   Wed, 1 Mar 2023 10:35:54 -0600
+        with ESMTP id S229615AbjCAUPD (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 1 Mar 2023 15:15:03 -0500
+Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A53A3E098
+        for <linux-omap@vger.kernel.org>; Wed,  1 Mar 2023 12:14:57 -0800 (PST)
+Received: by mail-wm1-x332.google.com with SMTP id m25-20020a7bcb99000000b003e7842b75f2so258166wmi.3
+        for <linux-omap@vger.kernel.org>; Wed, 01 Mar 2023 12:14:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1677701695;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=UL6jyObqEDWPkIExW0RcGcpMNbk7K85iwtzEZPEoxdA=;
+        b=LV3tqRLJ/ej99je4mDW0tARqwSA5pYbVA7Y5HNC+uUOFiOinqVIGYTkRBR9rvtr/Wm
+         0T/C7PvyEJKxRhUWox5zwepS1dAlTzUaccJWU0FkWphN/S9cu09ltf1pZHqlVMNaepMs
+         VMxJ4UUmDQE98V8fnIwzIHf3gRM3XzVcAJcdQoHR2ESxh9anlXptud7g35Vlj4Bo04gT
+         HDLS9w0DJYFZ9I4jsqlJxAOGteMkYUw+p6ukfEgzoaodyKOq8P1flOX79iwEfIPPlrl/
+         BB/6FgVweItWFyTL5IETuFFnEVVJinMZa6jip9PEmprLoyb+jaLZe1CnIWZO9Ut63dXp
+         FKsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1677701695;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=UL6jyObqEDWPkIExW0RcGcpMNbk7K85iwtzEZPEoxdA=;
+        b=s0PciMZOW2JgSeMVSF3swSn0Sckh1Vz3owzfOONmykbbczl6QTnq9duK8DUAhQLhgs
+         SNpivB7/J1Hokwaesj+N+k9DprVEjItqMXgq93KOt4sjc99EyzI/Humi54QpyCYb0okU
+         ufUAd7wNXj3ZWcTsfR5tvmrnOxsGs7ZEskEYulcav7vTSaB3hDF06yOa9mHM+cq/hqba
+         kBnUb5zDI38yXpWAhE6A9Zo61OHq0cmDZi/UqoulqgAYxrnIqcDIzqwGss/MQEkgnm+g
+         m2WHR/IDJASD3Nf+NJXEsTemNqx3LSx0oPMhNtYfQwkaFpHJslk7+IIbMnswWTNp5Ebe
+         RRmA==
+X-Gm-Message-State: AO0yUKW3NlFD9lAM8dznsJ8FU+5t5oUv96klbaOPiDvC7EGKB2yCS661
+        yfo+Go+egibxb6/1U6fYzwgVMw==
+X-Google-Smtp-Source: AK7set+KfD0tst2qDZWSdc/h50S9KF3GhIgTFGhpH1HtZEw4NcDC4rb9Dp0BF3xPtLF+MyJmFYpf8g==
+X-Received: by 2002:a05:600c:19c7:b0:3dc:40a0:3853 with SMTP id u7-20020a05600c19c700b003dc40a03853mr5873714wmq.11.1677701695517;
+        Wed, 01 Mar 2023 12:14:55 -0800 (PST)
+Received: from mai.box.freepro.com ([2a05:6e02:1041:c10:6ffe:ce4f:bd31:1e6d])
+        by smtp.gmail.com with ESMTPSA id x16-20020a1c7c10000000b003e70a7c1b73sm576546wmc.16.2023.03.01.12.14.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Mar 2023 12:14:54 -0800 (PST)
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+To:     rafael@kernel.org, daniel.lezcano@linaro.org
+Cc:     linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Samuel Holland <samuel@sholland.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Ido Schimmel <idosch@nvidia.com>,
+        Petr Machata <petrm@nvidia.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Amit Kucheria <amitk@kernel.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Broadcom internal kernel review list 
+        <bcm-kernel-feedback-list@broadcom.com>,
+        Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        Markus Mayer <mmayer@broadcom.com>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Thara Gopinath <thara.gopinath@gmail.com>,
+        =?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Vasily Khoruzhick <anarsoul@gmail.com>,
+        Yangtao Li <tiny.windzz@gmail.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Talel Shenhar <talel@amazon.com>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        Keerthy <j-keerthy@ti.com>,
+        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Stefan Wahren <stefan.wahren@i2se.com>,
+        Zheng Yongjun <zhengyongjun3@huawei.com>,
+        Yang Li <yang.lee@linux.alibaba.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Daniel Golle <daniel@makrotopia.org>,
+        Balsam CHIHI <bchihi@baylibre.com>,
+        Mikko Perttunen <mperttunen@nvidia.com>,
+        linux-acpi@vger.kernel.org, linux-ide@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-hwmon@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-sunxi@lists.linux.dev,
+        linux-input@vger.kernel.org, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org,
+        linux-rpi-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-rockchip@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-mediatek@lists.infradead.org
+Subject: [PATCH v5 00/18] Self-encapsulate the thermal zone device structure
+Date:   Wed,  1 Mar 2023 21:14:28 +0100
+Message-Id: <20230301201446.3713334-1-daniel.lezcano@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: Re: [PATCH] mfd: tps65219: Add support for soft shutdown via sys-off
- API
-Content-Language: en-US
-To:     Lee Jones <lee@kernel.org>, Jerome Neanne <jneanne@baylibre.com>
-CC:     <tony@atomide.com>, <linux-omap@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <khilman@baylibre.com>,
-        <nm@ti.com>, <msp@baylibre.com>
-References: <20230203140150.13071-1-jneanne@baylibre.com>
- <Y/94Pew4vr6FROcI@google.com>
-From:   Andrew Davis <afd@ti.com>
-In-Reply-To: <Y/94Pew4vr6FROcI@google.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 3/1/23 10:07 AM, Lee Jones wrote:
-> On Fri, 03 Feb 2023, Jerome Neanne wrote:
-> 
->> Use new API for power-off mode support:
->> Link: https://lwn.net/Articles/894511/
->> Link: https://lore.kernel.org/all/7hfseqa7l0.fsf@baylibre.com/
->>
->> sys-off API allows support of shutdown handler and restart handler.
->>
->> Shutdown was not supported before that enhancement.
->> This is required for platform that are not using PSCI.
->>
+The exported thermal headers expose the thermal core structure while those
+should be private to the framework. The initial idea was the thermal sensor
+drivers use the thermal zone device structure pointer to pass it around from
+the ops to the thermal framework API like a handler.
 
-Not sure what platform doesn't have PSCI off, since you tested on
-AM62-SK I'm guessing you manually disabled the PSCI off for testing?
+Unfortunately, different drivers are using and abusing the internals of this
+structure to hook the associated struct device, read the internals values, take
+the lock, etc ...
 
-Anyway I don't see any huge issues with the code itself, small comment below.
+In order to fix this situation, let's encapsulate the structure leaking the
+more in the different drivers: the thermal_zone_device structure.
 
->> Test:
->> - restart:
->>    # reboot
->>    Default is cold reset:
->>    # cat /sys/kernel/reboot/mode
->>    Switch boot mode to warm reset:
->>    # echo warm > /sys/kernel/reboot/mode
->> - power-off:
->>    # halt
->>
->> Tested on AM62-SP-SK board.
->>
->> Signed-off-by: Jerome Neanne <jneanne@baylibre.com>
->> Suggested-by: Andrew Davis <afd@ti.com>
-> 
-> A review from Andrew would be helpful here.
-> 
->> ---
->>   drivers/mfd/tps65219.c | 45 +++++++++++++++++++++++++++++++-----------
->>   1 file changed, 34 insertions(+), 11 deletions(-)
->>
->> diff --git a/drivers/mfd/tps65219.c b/drivers/mfd/tps65219.c
->> index 0e402fda206b..c134f3f6e202 100644
->> --- a/drivers/mfd/tps65219.c
->> +++ b/drivers/mfd/tps65219.c
->> @@ -25,25 +25,34 @@ static int tps65219_cold_reset(struct tps65219 *tps)
->>   				  TPS65219_MFP_COLD_RESET_I2C_CTRL_MASK);
->>   }
->>   
->> -static int tps65219_restart(struct notifier_block *this,
->> -			    unsigned long reboot_mode, void *cmd)
->> +static int tps65219_soft_shutdown(struct tps65219 *tps)
->>   {
->> -	struct tps65219 *tps;
->> +	return regmap_update_bits(tps->regmap, TPS65219_REG_MFP_CTRL,
->> +				  TPS65219_MFP_I2C_OFF_REQ_MASK,
->> +				  TPS65219_MFP_I2C_OFF_REQ_MASK);
->> +}
->>   
->> -	tps = container_of(this, struct tps65219, nb);
->> +static int tps65219_power_off_handler(struct sys_off_data *data)
->> +{
->> +	tps65219_soft_shutdown(data->cb_data);
->> +	return NOTIFY_DONE;
->> +}
->>   
->> +static int tps65219_restart(struct tps65219 *tps,
->> +			    unsigned long reboot_mode)
->> +{
->>   	if (reboot_mode == REBOOT_WARM)
->>   		tps65219_warm_reset(tps);
->>   	else
->>   		tps65219_cold_reset(tps);
->> -
->>   	return NOTIFY_DONE;
->>   }
->>   
->> -static struct notifier_block pmic_rst_restart_nb = {
->> -	.notifier_call = tps65219_restart,
->> -	.priority = 200,
->> -};
->> +static int tps65219_restart_handler(struct sys_off_data *data)
->> +{
->> +	tps65219_restart(data->cb_data, data->mode);
->> +	return NOTIFY_DONE;
->> +}
->>   
->>   static const struct resource tps65219_pwrbutton_resources[] = {
->>   	DEFINE_RES_IRQ_NAMED(TPS65219_INT_PB_FALLING_EDGE_DETECT, "falling"),
->> @@ -269,13 +278,27 @@ static int tps65219_probe(struct i2c_client *client)
->>   		}
->>   	}
->>   
->> -	tps->nb = pmic_rst_restart_nb;
->> -	ret = register_restart_handler(&tps->nb);
->> +	ret = devm_register_sys_off_handler(tps->dev,
->> +					    SYS_OFF_MODE_RESTART,
->> +					    SYS_OFF_PRIO_HIGH,
+This series revisit the existing drivers using the thermal zone private
+structure internals to change the access to something else. For instance, the
+get_temp() ops is using the tz->dev to write a debug trace. Despite the trace
+is not helpful, we can check the return value for the get_temp() ops in the
+call site and show the message in this place.
 
-Why not default prio? SYS_OFF_PRIO_DEFAULT
+With this set of changes, the thermal_zone_device is almost self-encapsulated.
+As usual, the acpi driver needs a more complex changes, so that will come in a
+separate series along with the structure moved the private core headers.
 
-Then you can use this new helper devm_register_restart_handler()
+Changelog:
+	- V5:
+	   - Dropped patch 19 : "thermal/tegra: Do not enable ... is already enabled"
+	   - Changed the init sequence of the hw channels on tegra3 to close
+	     the race window
+	   - Collected more tags
+	- V4:
+	   - Collected more tags
+	   - Fixed a typo therma_zone_device_priv() for db8500
+	   - Remove traces patch [20/20] to be submitted separetely
+	- V3:
+	   - Split the first patch into three to reduce the number of
+	     recipients per change
+	   - Collected more tags
+	   - Added missing changes for ->devdata in some drivers
+	   - Added a 'type' accessor
+	   - Replaced the 'type' to 'id' changes by the 'type' accessor
+	   - Used the 'type' accessor in the drivers
+	- V2:
+	   - Collected tags
+	   - Added missing changes for ->devdata for the tsens driver
+	   - Renamed thermal_zone_device_get_data() to thermal_zone_priv()
+	   - Added stubs when CONFIG_THERMAL is not set
+	   - Dropped hwmon change where we remove the tz->lock usage
 
->> +					    tps65219_restart_handler,
->> +					    tps);
->> +
->>   	if (ret) {
->>   		dev_err(tps->dev, "cannot register restart handler, %d\n", ret);
->>   		return ret;
->>   	}
->>   
->> +	ret = devm_register_sys_off_handler(tps->dev,
->> +					    SYS_OFF_MODE_POWER_OFF,
->> +					    SYS_OFF_PRIO_DEFAULT,
->> +					    tps65219_power_off_handler,
->> +					    tps);
+Thank you all for your comments
 
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Zhang Rui <rui.zhang@intel.com>
+Cc: Len Brown <lenb@kernel.org>
+Cc: Damien Le Moal <damien.lemoal@opensource.wdc.com>
+Cc: Shawn Guo <shawnguo@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: NXP Linux Team <linux-imx@nxp.com>
+Cc: Jean Delvare <jdelvare@suse.com>
+Cc: Guenter Roeck <linux@roeck-us.net>
+Cc: Jonathan Cameron <jic23@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>
+Cc: Chen-Yu Tsai <wens@csie.org>
+Cc: Jernej Skrabec <jernej.skrabec@gmail.com>
+Cc: Samuel Holland <samuel@sholland.org>
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Ido Schimmel <idosch@nvidia.com>
+Cc: Petr Machata <petrm@nvidia.com>
+Cc: Gregory Greenman <gregory.greenman@intel.com>
+Cc: Kalle Valo <kvalo@kernel.org>
+Cc: Sebastian Reichel <sre@kernel.org>
+Cc: Liam Girdwood <lgirdwood@gmail.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc: Amit Kucheria <amitk@kernel.org>
+Cc: Florian Fainelli <f.fainelli@gmail.com>
+Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
+Cc: Ray Jui <rjui@broadcom.com>
+Cc: Scott Branden <sbranden@broadcom.com>
+Cc: Markus Mayer <mmayer@broadcom.com>
+Cc: Support Opensource <support.opensource@diasemi.com>
+Cc: Andy Gross <agross@kernel.org>
+Cc: Bjorn Andersson <andersson@kernel.org>
+Cc: Konrad Dybcio <konrad.dybcio@linaro.org>
+Cc: Thara Gopinath <thara.gopinath@gmail.com>
+Cc: "Niklas Söderlund" <niklas.soderlund@ragnatech.se>
+Cc: Heiko Stuebner <heiko@sntech.de>
+Cc: Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Alim Akhtar <alim.akhtar@samsung.com>
+Cc: Orson Zhai <orsonzhai@gmail.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Chunyan Zhang <zhang.lyra@gmail.com>
+Cc: Vasily Khoruzhick <anarsoul@gmail.com>
+Cc: Yangtao Li <tiny.windzz@gmail.com>
+Cc: Thierry Reding <thierry.reding@gmail.com>
+Cc: Jonathan Hunter <jonathanh@nvidia.com>
+Cc: Talel Shenhar <talel@amazon.com>
+Cc: Eduardo Valentin <edubezval@gmail.com>
+Cc: Keerthy <j-keerthy@ti.com>
+Cc: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Matthias Brugger <matthias.bgg@gmail.com>
+Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: Stefan Wahren <stefan.wahren@i2se.com>
+Cc: Zheng Yongjun <zhengyongjun3@huawei.com>
+Cc: Yang Li <yang.lee@linux.alibaba.com>
+Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc: Daniel Golle <daniel@makrotopia.org>
+Cc: Balsam CHIHI <bchihi@baylibre.com>
+Cc: Mikko Perttunen <mperttunen@nvidia.com>
+Cc: linux-acpi@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-ide@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-hwmon@vger.kernel.org
+Cc: linux-iio@vger.kernel.org
+Cc: linux-sunxi@lists.linux.dev
+Cc: linux-input@vger.kernel.org
+Cc: netdev@vger.kernel.org
+Cc: linux-wireless@vger.kernel.org
+Cc: linux-pm@vger.kernel.org
+Cc: linux-rpi-kernel@lists.infradead.org
+Cc: linux-arm-msm@vger.kernel.org
+Cc: linux-renesas-soc@vger.kernel.org
+Cc: linux-rockchip@lists.infradead.org
+Cc: linux-samsung-soc@vger.kernel.org
+Cc: linux-tegra@vger.kernel.org
+Cc: linux-omap@vger.kernel.org
+Cc: linux-mediatek@lists.infradead.org
 
-devm_register_power_off_handler()?
+Daniel Lezcano (18):
+  thermal/core: Add a thermal zone 'devdata' accessor
+  thermal/core: Use the thermal zone 'devdata' accessor in thermal
+    located drivers
+  thermal/core: Use the thermal zone 'devdata' accessor in hwmon located
+    drivers
+  thermal/core: Use the thermal zone 'devdata' accessor in remaining
+    drivers
+  thermal/core: Show a debug message when get_temp() fails
+  thermal: Remove debug or error messages in get_temp() ops
+  thermal/hwmon: Do not set no_hwmon before calling
+    thermal_add_hwmon_sysfs()
+  thermal/hwmon: Use the right device for devm_thermal_add_hwmon_sysfs()
+  thermal: Don't use 'device' internal thermal zone structure field
+  thermal/core: Add thermal_zone_device structure 'type' accessor
+  thermal/drivers/spear: Don't use tz->device but pdev->dev
+  thermal: Add a thermal zone id accessor
+  thermal: Use thermal_zone_device_type() accessor
+  thermal/drivers/da9062: Don't access the thermal zone device fields
+  thermal/hwmon: Use the thermal_core.h header
+  thermal/drivers/tegra: Remove unneeded lock when setting a trip point
+  thermal/drivers/acerhdf: Make interval setting only at module load
+    time
+  thermal/drivers/acerhdf: Remove pointless governor test
 
-Otherwise I see no major issues,
+ drivers/acpi/thermal.c                        | 18 +++----
+ drivers/ata/ahci_imx.c                        |  2 +-
+ drivers/hwmon/hwmon.c                         |  4 +-
+ drivers/hwmon/pmbus/pmbus_core.c              |  2 +-
+ drivers/hwmon/scmi-hwmon.c                    |  4 +-
+ drivers/hwmon/scpi-hwmon.c                    |  2 +-
+ drivers/iio/adc/sun4i-gpadc-iio.c             |  2 +-
+ drivers/input/touchscreen/sun4i-ts.c          |  2 +-
+ .../ethernet/chelsio/cxgb4/cxgb4_thermal.c    |  2 +-
+ .../ethernet/mellanox/mlxsw/core_thermal.c    | 16 +++----
+ drivers/net/wireless/intel/iwlwifi/mvm/tt.c   |  4 +-
+ drivers/platform/x86/acerhdf.c                | 19 ++------
+ drivers/power/supply/power_supply_core.c      |  2 +-
+ drivers/regulator/max8973-regulator.c         |  2 +-
+ drivers/thermal/amlogic_thermal.c             |  4 +-
+ drivers/thermal/armada_thermal.c              | 14 ++----
+ drivers/thermal/broadcom/bcm2711_thermal.c    |  3 +-
+ drivers/thermal/broadcom/bcm2835_thermal.c    |  3 +-
+ drivers/thermal/broadcom/brcmstb_thermal.c    |  8 ++--
+ drivers/thermal/broadcom/ns-thermal.c         |  2 +-
+ drivers/thermal/broadcom/sr-thermal.c         |  2 +-
+ drivers/thermal/da9062-thermal.c              | 13 +++--
+ drivers/thermal/db8500_thermal.c              |  2 +-
+ drivers/thermal/dove_thermal.c                |  7 +--
+ drivers/thermal/hisi_thermal.c                |  5 +-
+ drivers/thermal/imx8mm_thermal.c              |  4 +-
+ drivers/thermal/imx_sc_thermal.c              |  9 ++--
+ drivers/thermal/imx_thermal.c                 | 47 +++++--------------
+ .../intel/int340x_thermal/int3400_thermal.c   |  2 +-
+ .../int340x_thermal/int340x_thermal_zone.c    |  4 +-
+ .../processor_thermal_device_pci.c            |  4 +-
+ drivers/thermal/intel/intel_pch_thermal.c     |  2 +-
+ .../thermal/intel/intel_quark_dts_thermal.c   |  6 +--
+ drivers/thermal/intel/intel_soc_dts_iosf.c    | 13 ++---
+ drivers/thermal/intel/x86_pkg_temp_thermal.c  |  4 +-
+ drivers/thermal/k3_bandgap.c                  |  4 +-
+ drivers/thermal/k3_j72xx_bandgap.c            |  2 +-
+ drivers/thermal/kirkwood_thermal.c            |  7 +--
+ drivers/thermal/max77620_thermal.c            |  6 +--
+ drivers/thermal/mediatek/auxadc_thermal.c     |  4 +-
+ drivers/thermal/mediatek/lvts_thermal.c       | 10 ++--
+ drivers/thermal/qcom/qcom-spmi-adc-tm5.c      |  6 +--
+ drivers/thermal/qcom/qcom-spmi-temp-alarm.c   |  6 +--
+ drivers/thermal/qcom/tsens.c                  |  6 +--
+ drivers/thermal/qoriq_thermal.c               |  4 +-
+ drivers/thermal/rcar_gen3_thermal.c           |  5 +-
+ drivers/thermal/rcar_thermal.c                |  8 +---
+ drivers/thermal/rockchip_thermal.c            |  8 +---
+ drivers/thermal/rzg2l_thermal.c               |  3 +-
+ drivers/thermal/samsung/exynos_tmu.c          |  4 +-
+ drivers/thermal/spear_thermal.c               | 10 ++--
+ drivers/thermal/sprd_thermal.c                |  2 +-
+ drivers/thermal/st/st_thermal.c               |  5 +-
+ drivers/thermal/st/stm_thermal.c              |  4 +-
+ drivers/thermal/sun8i_thermal.c               |  4 +-
+ drivers/thermal/tegra/soctherm.c              |  6 +--
+ drivers/thermal/tegra/tegra-bpmp-thermal.c    |  6 ++-
+ drivers/thermal/tegra/tegra30-tsensor.c       | 31 ++++++------
+ drivers/thermal/thermal-generic-adc.c         |  7 ++-
+ drivers/thermal/thermal_core.c                | 18 +++++++
+ drivers/thermal/thermal_helpers.c             |  3 ++
+ drivers/thermal/thermal_hwmon.c               |  9 ++--
+ drivers/thermal/thermal_hwmon.h               |  4 +-
+ drivers/thermal/thermal_mmio.c                |  2 +-
+ .../ti-soc-thermal/ti-thermal-common.c        | 10 ++--
+ drivers/thermal/uniphier_thermal.c            |  2 +-
+ include/linux/thermal.h                       | 19 ++++++++
+ 67 files changed, 218 insertions(+), 246 deletions(-)
 
-Reviewed-by: Andrew Davis <afd@ti.com>
+-- 
+2.34.1
 
-Andrew
-
->> +	if (ret) {
->> +		dev_err(tps->dev, "failed to register sys-off handler: %d\n",
->> +			ret);
->> +		return ret;
->> +	}
->>   	return 0;
->>   }
->>   
->> -- 
->> 2.34.1
->>
-> 
