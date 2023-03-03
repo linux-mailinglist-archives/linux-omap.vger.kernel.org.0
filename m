@@ -2,189 +2,121 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC2C36A9B9F
-	for <lists+linux-omap@lfdr.de>; Fri,  3 Mar 2023 17:22:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E26E86A9BF2
+	for <lists+linux-omap@lfdr.de>; Fri,  3 Mar 2023 17:43:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231137AbjCCQWC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 3 Mar 2023 11:22:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60864 "EHLO
+        id S230389AbjCCQm7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 3 Mar 2023 11:42:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230399AbjCCQV7 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 3 Mar 2023 11:21:59 -0500
-Received: from mx.socionext.com (mx.socionext.com [202.248.49.38])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 21B765ADF6;
-        Fri,  3 Mar 2023 08:21:53 -0800 (PST)
-Received: from unknown (HELO kinkan2-ex.css.socionext.com) ([172.31.9.52])
-  by mx.socionext.com with ESMTP; 04 Mar 2023 01:21:52 +0900
-Received: from mail.mfilter.local (mail-arc02.css.socionext.com [10.213.46.40])
-        by kinkan2-ex.css.socionext.com (Postfix) with ESMTP id EE1632058442;
-        Sat,  4 Mar 2023 01:21:51 +0900 (JST)
-Received: from kinkan2.css.socionext.com ([172.31.9.51]) by m-FILTER with ESMTP; Sat, 4 Mar 2023 01:21:51 +0900
-Received: from [10.212.156.241] (unknown [10.212.156.241])
-        by kinkan2.css.socionext.com (Postfix) with ESMTP id 60F9D25528;
-        Sat,  4 Mar 2023 01:21:44 +0900 (JST)
-Message-ID: <acb7d81e-69d5-ff1b-aa0b-709c8c56010b@socionext.com>
-Date:   Sat, 4 Mar 2023 01:21:43 +0900
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [PATCH v5 02/18] thermal/core: Use the thermal zone 'devdata'
- accessor in thermal located drivers
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>, rafael@kernel.org
-Cc:     linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        =?UTF-8?Q?Niklas_S=c3=b6derlund?= 
-        <niklas.soderlund+renesas@ragnatech.se>,
-        Mark Brown <broonie@kernel.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Balsam CHIHI <bchihi@baylibre.com>,
-        Adam Ward <DLG-Adam.Ward.opensource@dm.renesas.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Dhruva Gole <d-gole@ti.com>,
-        Guillaume La Roque <glaroque@baylibre.com>,
-        Amit Kucheria <amitk@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Broadcom internal kernel review list 
-        <bcm-kernel-feedback-list@broadcom.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Markus Mayer <mmayer@broadcom.com>,
-        Support Opensource <support.opensource@diasemi.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Thara Gopinath <thara.gopinath@gmail.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        =?UTF-8?Q?Niklas_S=c3=b6derlund?= <niklas.soderlund@ragnatech.se>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Vasily Khoruzhick <anarsoul@gmail.com>,
-        Yangtao Li <tiny.windzz@gmail.com>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Samuel Holland <samuel@sholland.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Talel Shenhar <talel@amazon.com>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Keerthy <j-keerthy@ti.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Stefan Wahren <stefan.wahren@i2se.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        ye xingchen <ye.xingchen@zte.com.cn>,
-        Zheng Yongjun <zhengyongjun3@huawei.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>,
-        "Lee, Chun-Yi" <joeyli.kernel@gmail.com>,
-        Shang XiaoJing <shangxiaojing@huawei.com>,
-        Tim Zimmermann <tim@linux4.de>,
-        Yang Li <yang.lee@linux.alibaba.com>,
-        Jiang Jian <jiangjian@cdjrlc.com>,
-        Daniel Golle <daniel@makrotopia.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Ido Schimmel <idosch@nvidia.com>,
+        with ESMTP id S230039AbjCCQm6 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 3 Mar 2023 11:42:58 -0500
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::222])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E1E330EC;
+        Fri,  3 Mar 2023 08:42:56 -0800 (PST)
+Received: (Authenticated sender: kory.maincent@bootlin.com)
+        by mail.gandi.net (Postfix) with ESMTPSA id 52ECC4000C;
+        Fri,  3 Mar 2023 16:42:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1677861774;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=csamStH77sJnPtDrYLR0tMq3UeHvDQUiPkz/YlTPbIM=;
+        b=YGzJbpYZNE5r3p0wRdTwWTiraPIcTLdMTlpjLSYMDTSUsa6v0TkVAS9ENLio8IU6xSFEEo
+        YEzMUlCgb/dhfs9FTBHxq5hMHjtk5Bz8/R5r4kbVQh7xGiEzA22vyCQ5KBKg6zoDQEjXiP
+        xPdSbwIlPs/Bhk4I7V2m1+2g4+/WUlmhw1wqs6oitqfXelJRl1jhb3STM7Fs1n/B76WC52
+        CdTPgNn9qqBpO258EovFmr91EBYge+VUDaaKWoh/zozA9BcTZXWWnw5loe3YcX2mEBIvVL
+        PNcILevEluL4QohOUTZc//9pb8/3qfgWBWIlVyeDpKshbZ2LrCp+nlc9WVReYw==
+From:   =?UTF-8?q?K=C3=B6ry=20Maincent?= <kory.maincent@bootlin.com>
+To:     linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-omap@vger.kernel.org
+Cc:     Michael Walle <michael@walle.cc>,
+        Kory Maincent <kory.maincent@bootlin.com>,
+        thomas.petazzoni@bootlin.com, Jay Vosburgh <j.vosburgh@gmail.com>,
+        Veaceslav Falico <vfalico@gmail.com>,
+        Andy Gospodarek <andy@greyhouse.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Joakim Zhang <qiangqing.zhang@nxp.com>,
+        Vladimir Oltean <vladimir.oltean@nxp.com>,
+        Claudiu Manoil <claudiu.manoil@nxp.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        UNGLinuxDriver@microchip.com,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Richard Cochran <richardcochran@gmail.com>,
         Minghao Chi <chi.minghao@zte.com.cn>,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Mikko Perttunen <mperttunen@nvidia.com>,
-        "open list:THERMAL DRIVER FOR AMLOGIC SOCS" 
-        <linux-amlogic@lists.infradead.org>,
-        "moderated list:BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE" 
-        <linux-rpi-kernel@lists.infradead.org>,
-        "moderated list:BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "open list:QUALCOMM TSENS THERMAL DRIVER" 
-        <linux-arm-msm@vger.kernel.org>,
-        "open list:RENESAS R-CAR THERMAL DRIVERS" 
-        <linux-renesas-soc@vger.kernel.org>,
-        "open list:ARM/Rockchip SoC support" 
-        <linux-rockchip@lists.infradead.org>,
-        "open list:SAMSUNG THERMAL DRIVER" 
-        <linux-samsung-soc@vger.kernel.org>,
-        "moderated list:ARM/STM32 ARCHITECTURE" 
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        "open list:ARM/Allwinner sunXi SoC support" 
-        <linux-sunxi@lists.linux.dev>,
-        "open list:TEGRA ARCHITECTURE SUPPORT" <linux-tegra@vger.kernel.org>,
-        "open list:TI BANDGAP AND THERMAL DRIVER" 
-        <linux-omap@vger.kernel.org>,
-        "moderated list:ARM/Mediatek SoC support" 
-        <linux-mediatek@lists.infradead.org>
-References: <20230301201446.3713334-1-daniel.lezcano@linaro.org>
- <20230301201446.3713334-3-daniel.lezcano@linaro.org>
-Content-Language: en-US
-From:   Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-In-Reply-To: <20230301201446.3713334-3-daniel.lezcano@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+        Guangbin Huang <huangguangbin2@huawei.com>,
+        Jie Wang <wangjie125@huawei.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Sven Eckelmann <sven@narfation.org>,
+        Wang Yufen <wangyufen@huawei.com>,
+        Alexandru Tachici <alexandru.tachici@analog.com>
+Subject: [PATCH v2 0/4] Up until now, there was no way to let the user select the layer at which time stamping occurs.  The stack assumed that PHY time stamping is always preferred, but some MAC/PHY combinations were buggy.
+Date:   Fri,  3 Mar 2023 17:42:37 +0100
+Message-Id: <20230303164248.499286-1-kory.maincent@bootlin.com>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 2023/03/02 5:14, Daniel Lezcano wrote:
-> The thermal zone device structure is exposed to the different drivers
-> and obviously they access the internals while that should be
-> restricted to the core thermal code.
-> 
-> In order to self-encapsulate the thermal core code, we need to prevent
-> the drivers accessing directly the thermal zone structure and provide
-> accessor functions to deal with.
-> 
-> Use the devdata accessor introduced in the previous patch.
-> 
-> No functional changes intended.
-> 
-> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-> Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se> #R-Car
-> Acked-by: Mark Brown <broonie@kernel.org>
-> Reviewed-by: AngeloGioacchino Del Regno
-> <angelogioacchino.delregno@collabora.com> #MediaTek auxadc and lvts
-> Reviewed-by: Balsam CHIHI <bchihi@baylibre.com> #Mediatek lvts
-> Reviewed-by: Adam Ward <DLG-Adam.Ward.opensource@dm.renesas.com> #da9062
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>  #spread
-> Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com> #sun8i_thermal
-> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Acked-by: Florian Fainelli <f.fainelli@gmail.com> #Broadcom
-> Reviewed-by: Dhruva Gole <d-gole@ti.com> # K3 bandgap
+From: Kory Maincent <kory.maincent@bootlin.com>
 
-(snip)
+This series aims to allow the user to select the desired layer
+administratively.
 
-> diff --git a/drivers/thermal/uniphier_thermal.c
-> b/drivers/thermal/uniphier_thermal.c
-> index 47801841b3f5..aef6119cc004 100644
-> --- a/drivers/thermal/uniphier_thermal.c
-> +++ b/drivers/thermal/uniphier_thermal.c
-> @@ -187,7 +187,7 @@ static void uniphier_tm_disable_sensor(struct
-> uniphier_tm_dev *tdev)
-> 
->   static int uniphier_tm_get_temp(struct thermal_zone_device *tz, int
-> *out_temp)
->   {
-> -	struct uniphier_tm_dev *tdev = tz->devdata;
-> +	struct uniphier_tm_dev *tdev = thermal_zone_device_priv(tz);
+- Patch 1 refactors get_ts_info copy/paste code.
 
-Reviewed-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com> #uniphier
+- Patch 2 introduces sysfs files that reflect the current, static
+  preference of PHY over MAC.
 
-Thank you,
+- Patch 3 makes the layer selectable at run time.
 
----
-Best Regards
-Kunihiko Hayashi
+- Patch 4 fixes up MAC drivers that attempt to defer to the PHY layer.
+  This patch is broken out for review, but it will eventually be
+  squashed into Patch 3 after comments come in.
+
+Changes in v2:
+- Move selected_timestamping_layer variable of the concerned patch.
+- Use sysfs_streq instead of strmcmp.
+- Use the PHY timestamp only if available.
+
+Richard Cochran (4):
+  net: ethtool: Refactor identical get_ts_info implementations.
+  net: Expose available time stamping layers to user space.
+  net: Let the active time stamping layer be selectable.
+  net: fix up drivers WRT phy time stamping
+
+ .../ABI/testing/sysfs-class-net-timestamping  |  20 ++++
+ drivers/net/bonding/bond_main.c               |  14 +--
+ drivers/net/ethernet/freescale/fec_main.c     |  23 ++--
+ drivers/net/ethernet/mscc/ocelot_net.c        |  21 ++--
+ drivers/net/ethernet/ti/cpsw_priv.c           |  12 +--
+ drivers/net/ethernet/ti/netcp_ethss.c         |  26 +----
+ drivers/net/macvlan.c                         |  14 +--
+ drivers/net/phy/phy_device.c                  |   6 ++
+ include/linux/ethtool.h                       |   8 ++
+ include/linux/netdevice.h                     |  10 ++
+ net/8021q/vlan_dev.c                          |  15 +--
+ net/core/dev_ioctl.c                          |  44 +++++++-
+ net/core/net-sysfs.c                          | 102 ++++++++++++++++++
+ net/core/timestamping.c                       |   6 ++
+ net/ethtool/common.c                          |  24 ++++-
+ 15 files changed, 248 insertions(+), 97 deletions(-)
+ create mode 100644 Documentation/ABI/testing/sysfs-class-net-timestamping
+
+-- 
+2.25.1
+
