@@ -2,102 +2,100 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA58F6A85D5
-	for <lists+linux-omap@lfdr.de>; Thu,  2 Mar 2023 17:07:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 292B76A907E
+	for <lists+linux-omap@lfdr.de>; Fri,  3 Mar 2023 06:36:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229487AbjCBQG7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 2 Mar 2023 11:06:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36934 "EHLO
+        id S229692AbjCCFgv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 3 Mar 2023 00:36:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58338 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229482AbjCBQG6 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 2 Mar 2023 11:06:58 -0500
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47AF3515DA;
-        Thu,  2 Mar 2023 08:06:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1677773217; x=1709309217;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=VPSx/AhyKKGPzUlJ3kgpsLe16fwtwFBjOK+GiXUPDwI=;
-  b=YX2G2H/gH222sjHD5lMmSQtcQFmh37vXu2fP9+TGgpAepngRjNh5YDza
-   zkcXoVMFaWE2Bi+QGpugUBK1q52M91RDs3xyzdUEmZfOxCyPK9mOIkIa7
-   1fgMABi4/Idl6O10SozZCxJMnw67V9Z9NzrNHCbuvHoX2TcZ/83r61hVu
-   ffG0Pxhp0Pl/iq7ksF8GOdx2qJwXoiYqR4bha4uQGmuixreIB2LasF8dE
-   pHqBexl+9d/BXpT0uvdD1shw1vndmj68lvjbd4ImVJ3Ejkwk+a6b9rxKC
-   UXDgIuGN2fNz/trJBRScOdLima2S1QEkYqzC+52zl5sRS5JmSXpx0Z3hC
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10637"; a="323056341"
-X-IronPort-AV: E=Sophos;i="5.98,228,1673942400"; 
-   d="scan'208";a="323056341"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2023 08:06:56 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10637"; a="784886444"
-X-IronPort-AV: E=Sophos;i="5.98,228,1673942400"; 
-   d="scan'208";a="784886444"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP; 02 Mar 2023 08:06:54 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@intel.com>)
-        id 1pXlSG-00EQ6E-0q;
-        Thu, 02 Mar 2023 18:06:52 +0200
-Date:   Thu, 2 Mar 2023 18:06:51 +0200
-From:   Andy Shevchenko <andriy.shevchenko@intel.com>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Johan Hovold <johan@kernel.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-serial@vger.kernel.org
-Subject: Re: [PATCH v5 1/1] serial: core: Start managing serial controllers
- to enable runtime PM
-Message-ID: <ZADJm+co4goPgr7u@smile.fi.intel.com>
-References: <20230116080002.47315-1-tony@atomide.com>
+        with ESMTP id S229506AbjCCFgu (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 3 Mar 2023 00:36:50 -0500
+Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DB2116ADE;
+        Thu,  2 Mar 2023 21:36:49 -0800 (PST)
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 3235aaZZ016516;
+        Thu, 2 Mar 2023 23:36:36 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1677821796;
+        bh=0UuwiPbuzfGP6jLk+3jQHWnAHOr7rltx8G6UhwdqOcQ=;
+        h=Date:Subject:To:CC:References:From:In-Reply-To;
+        b=lkZa3eBiMlZ0p4Z2Ej2EXw4/Z2Ju/91MmQcceCJHIiXZMlE3TFilO1m9eb8IlY0r/
+         82a96C3v42H7/eNDLNwz5m0yxUWQpQ4+p04sbq1i+Xg6dZSBR1zl+njXO8LY52t9He
+         RkfsfZ0QEZ6CZUImDynzgwtumquucXBPL+hqC9u8=
+Received: from DFLE101.ent.ti.com (dfle101.ent.ti.com [10.64.6.22])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 3235aZTt044794
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 2 Mar 2023 23:36:35 -0600
+Received: from DFLE107.ent.ti.com (10.64.6.28) by DFLE101.ent.ti.com
+ (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16; Thu, 2
+ Mar 2023 23:36:35 -0600
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE107.ent.ti.com
+ (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16 via
+ Frontend Transport; Thu, 2 Mar 2023 23:36:35 -0600
+Received: from [172.24.145.182] (ileaxei01-snat.itg.ti.com [10.180.69.5])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 3235aWtl005315;
+        Thu, 2 Mar 2023 23:36:33 -0600
+Message-ID: <4b9fc988-5313-757a-b3bc-ec90dba4f4b2@ti.com>
+Date:   Fri, 3 Mar 2023 11:06:32 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230116080002.47315-1-tony@atomide.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.1
+Subject: Re: [PATCH] mfd: tps65219: Add support for soft shutdown via sys-off
+ API
+Content-Language: en-US
+To:     Jerome Neanne <jneanne@baylibre.com>, <tony@atomide.com>,
+        <lee@kernel.org>
+CC:     <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <khilman@baylibre.com>, <nm@ti.com>, <afd@ti.com>,
+        <msp@baylibre.com>
+References: <20230203140150.13071-1-jneanne@baylibre.com>
+From:   Vignesh Raghavendra <vigneshr@ti.com>
+In-Reply-To: <20230203140150.13071-1-jneanne@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Jan 16, 2023 at 09:59:58AM +0200, Tony Lindgren wrote:
-> We want to enable runtime PM for serial port device drivers in a generic
-> way. To do this, we want to have the serial core layer manage the
-> registered physical serial controller devices.
-> 
-> To do this, let's set up a struct device for the serial core controller
-> as suggested by Greg and Jiri. The serial core controller devices are
-> children of the physical serial port device. The serial core controller
-> device is needed to support multiple different kind of ports connected
-> to single physical serial port device.
-> 
-> Let's also set up a struct device for the serial core port. The serial
-> core port instances are children of the serial core controller device.
-> 
-> With the serial core port device we can now flush pending TX on the
-> runtime PM resume as suggested by Johan.
 
-A side note. Perhaps it makes sense to also clean up documentation somehow
-related to this change. For example, I found that
-Documentation/firmware-guide/acpi/enumeration.rst has this:
 
-  "Note that standard UARTs are not busses so there is no struct uart_device,
-   although some of them may be represented by struct serdev_device."
+On 03/02/23 19:31, Jerome Neanne wrote:
+> Use new API for power-off mode support:
+> Link: https://lwn.net/Articles/894511/
+> Link: https://lore.kernel.org/all/7hfseqa7l0.fsf@baylibre.com/
+> 
+> sys-off API allows support of shutdown handler and restart handler.
+> 
+> Shutdown was not supported before that enhancement.
+> This is required for platform that are not using PSCI.
+> 
+> Test:
+> - restart:
+>   # reboot
+>   Default is cold reset:
+>   # cat /sys/kernel/reboot/mode
+>   Switch boot mode to warm reset:
+>   # echo warm > /sys/kernel/reboot/mode
+> - power-off:
+>   # halt
+> 
+> Tested on AM62-SP-SK board.
+> 
+
+There is no -SP-SK that I am aware of.. Do you mean -LP-SK?
+[...]
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+Regards
+Vignesh
