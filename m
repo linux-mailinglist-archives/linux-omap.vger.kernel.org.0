@@ -2,175 +2,148 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D2C3A6A9FC9
-	for <lists+linux-omap@lfdr.de>; Fri,  3 Mar 2023 19:55:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A5B926AA046
+	for <lists+linux-omap@lfdr.de>; Fri,  3 Mar 2023 20:48:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231753AbjCCSzg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 3 Mar 2023 13:55:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37566 "EHLO
+        id S231528AbjCCTsg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 3 Mar 2023 14:48:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47730 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231844AbjCCSze (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 3 Mar 2023 13:55:34 -0500
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F08781421B;
-        Fri,  3 Mar 2023 10:55:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1677869731; x=1709405731;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=r9iSxYed7V91NJekvh25QrQIYpH26KBADuAyQA9VZsI=;
-  b=Hq5HrMLMC4xx4M9hODUc10R3cTYd0945n6/6h6yyciamMMHHJNlgNaiz
-   agaKe0j2aYf3zOnxlOR37tWfJx3zbVbseVgSj5E28ht9VR8hHvz0jNN3c
-   mftleVC3A6KEBwGxrj3dkqc7qZHbdBt53oXOoE/PFXJT8DxaljcusOcj3
-   dkVfIFu09OV6rqxpY+A6FQ4YUs3mhtLyu1vL6E07SxMID3yH+17e2BByX
-   P0itpajaNQRgybDaeev30VmV2nRqlHVBziNclRuOwr2EKeVOMTzrEftfO
-   HIY1FVTXd0z7D/dhuiA7bMisGx6Gw2ArbHkN5ygZIXTBVxavtYzP5l/Dg
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10638"; a="333849459"
-X-IronPort-AV: E=Sophos;i="5.98,231,1673942400"; 
-   d="scan'208";a="333849459"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2023 10:55:30 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10638"; a="707940969"
-X-IronPort-AV: E=Sophos;i="5.98,231,1673942400"; 
-   d="scan'208";a="707940969"
-Received: from lkp-server01.sh.intel.com (HELO 776573491cc5) ([10.239.97.150])
-  by orsmga001.jf.intel.com with ESMTP; 03 Mar 2023 10:55:23 -0800
-Received: from kbuild by 776573491cc5 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1pYAYs-0001cE-1U;
-        Fri, 03 Mar 2023 18:55:22 +0000
-Date:   Sat, 4 Mar 2023 02:54:30 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     =?iso-8859-1?Q?K=F6ry?= Maincent <kory.maincent@bootlin.com>,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-omap@vger.kernel.org
-Cc:     oe-kbuild-all@lists.linux.dev, Michael Walle <michael@walle.cc>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Kory Maincent <kory.maincent@bootlin.com>,
-        thomas.petazzoni@bootlin.com, Jay Vosburgh <j.vosburgh@gmail.com>,
-        Veaceslav Falico <vfalico@gmail.com>,
-        Andy Gospodarek <andy@greyhouse.net>,
+        with ESMTP id S231377AbjCCTse (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 3 Mar 2023 14:48:34 -0500
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EA6B136DD;
+        Fri,  3 Mar 2023 11:48:29 -0800 (PST)
+Received: by mail-ed1-f50.google.com with SMTP id d30so14743202eda.4;
+        Fri, 03 Mar 2023 11:48:29 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1677872908;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=qr3wWyppk2JO5cvuGc7OJNqcMG2NC5hwXnkMjN+yuLE=;
+        b=mXnS1hzVlXCx/SEZZDeRfFq3BbGUQ+FjBtAfGFxEc85b/SDiGvfpUX5JGXb2Z9tljK
+         rOiGhppg1i6z9oMLxW9thrYeiO19ASWqZ2fscBNdgDaVbRpvwU2kwtYDrC6vmS4ODpst
+         +94sWKfQlegHXJGKnUd9gtUYoKXXAozsoxfrJ/I3LlSe5MNcgeLDUr/IejCmigtQ+v6a
+         aE3C/A91wSwmjfJSKSCXIYoP+gLDxRUD30cluv2duVOIxollBv24c0jL7g6HcgIKN/lU
+         I2NKB480pc2+1Sm8d+irHvwfGtMYgmUPvT3mhMHdnmRF2+yAst3bcCgQaV/1hRwlWBHT
+         a0tw==
+X-Gm-Message-State: AO0yUKUPkSB+bPBxfzvK+deUOKRvGuaCQHQ3KJTrVnZjqpQ/33IEcdjy
+        lQk3i8K6WdCn2pEMgIDr2SCbV4U9+BGn131FnjeSFLkp
+X-Google-Smtp-Source: AK7set8pOENE3qQdov6OdbnX8NZeqRAuHLeW/9RDr9g861DgXcdaR15YJISLt3N0xGeu3omTus0Ig7L1FfyytK0BbOU=
+X-Received: by 2002:a50:ce19:0:b0:4bc:2776:5b61 with SMTP id
+ y25-20020a50ce19000000b004bc27765b61mr1748709edi.6.1677872907622; Fri, 03 Mar
+ 2023 11:48:27 -0800 (PST)
+MIME-Version: 1.0
+References: <20230301201446.3713334-1-daniel.lezcano@linaro.org> <1d3da42e-2499-7ff6-50fa-048a720e855f@linaro.org>
+In-Reply-To: <1d3da42e-2499-7ff6-50fa-048a720e855f@linaro.org>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 3 Mar 2023 20:48:16 +0100
+Message-ID: <CAJZ5v0i9fbEpedS-CCM5qvfaG095jUDzOFd-H83G3mpwDaxoAA@mail.gmail.com>
+Subject: Re: [PATCH v5 00/18] Self-encapsulate the thermal zone device structure
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc:     rafael@kernel.org, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Zhang Rui <rui.zhang@intel.com>,
+        Len Brown <lenb@kernel.org>,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Samuel Holland <samuel@sholland.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>,
-        Joakim Zhang <qiangqing.zhang@nxp.com>,
-        Vladimir Oltean <vladimir.oltean@nxp.com>,
-        Claudiu Manoil <claudiu.manoil@nxp.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        UNGLinuxDriver@microchip.com,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Minghao Chi <chi.minghao@zte.com.cn>,
-        Jie Wang <wangjie125@huawei.com>,
-        Guangbin Huang <huangguangbin2@huawei.com>,
-        Wolfram Sang <wsa-dev@sang-engineering.com>,
-        Wang Yufen <wangyufen@huawei.com>,
-        Alexandru Tachici <alexandru.tachici@analog.com>,
-        Oleksij Rempel <linux@rempel-privat.de>
-Subject: Re: [PATCH v2 3/4] net: Let the active time stamping layer be
- selectable.
-Message-ID: <202303040219.nmNWbGrY-lkp@intel.com>
-References: <20230303164248.499286-4-kory.maincent@bootlin.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230303164248.499286-4-kory.maincent@bootlin.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        Ido Schimmel <idosch@nvidia.com>,
+        Petr Machata <petrm@nvidia.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Amit Kucheria <amitk@kernel.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Broadcom internal kernel review list 
+        <bcm-kernel-feedback-list@broadcom.com>,
+        Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        Markus Mayer <mmayer@broadcom.com>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Thara Gopinath <thara.gopinath@gmail.com>,
+        =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Vasily Khoruzhick <anarsoul@gmail.com>,
+        Yangtao Li <tiny.windzz@gmail.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Talel Shenhar <talel@amazon.com>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        Keerthy <j-keerthy@ti.com>,
+        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Stefan Wahren <stefan.wahren@i2se.com>,
+        Zheng Yongjun <zhengyongjun3@huawei.com>,
+        Yang Li <yang.lee@linux.alibaba.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Daniel Golle <daniel@makrotopia.org>,
+        Balsam CHIHI <bchihi@baylibre.com>,
+        Mikko Perttunen <mperttunen@nvidia.com>,
+        linux-acpi@vger.kernel.org, linux-ide@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-hwmon@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-sunxi@lists.linux.dev,
+        linux-input@vger.kernel.org, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org,
+        linux-rpi-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-rockchip@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-mediatek@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Köry,
+Hi Daniel,
 
-I love your patch! Perhaps something to improve:
+On Fri, Mar 3, 2023 at 10:24 AM Daniel Lezcano
+<daniel.lezcano@linaro.org> wrote:
+>
+>
+> Hi Rafael,
+>
+> Do we have enough ack to apply this series, is it for you ?
 
-[auto build test WARNING on v6.2]
-[also build test WARNING on next-20230303]
-[cannot apply to net/master net-next/master horms-ipvs/master linus/master]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+I've just queued it up for 6.4.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/K-ry-Maincent/net-ethtool-Refactor-identical-get_ts_info-implementations/20230304-004527
-patch link:    https://lore.kernel.org/r/20230303164248.499286-4-kory.maincent%40bootlin.com
-patch subject: [PATCH v2 3/4] net: Let the active time stamping layer be selectable.
-config: m68k-allyesconfig (https://download.01.org/0day-ci/archive/20230304/202303040219.nmNWbGrY-lkp@intel.com/config)
-compiler: m68k-linux-gcc (GCC) 12.1.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/00a0656f9b222cfeb7c1253a4a2771b1f63b5c9b
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review K-ry-Maincent/net-ethtool-Refactor-identical-get_ts_info-implementations/20230304-004527
-        git checkout 00a0656f9b222cfeb7c1253a4a2771b1f63b5c9b
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=m68k olddefconfig
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=m68k SHELL=/bin/bash net/core/
+It will reach linux-next and the thermal branch some time next week,
+but I will be traveling, so there may be delays.
 
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-| Link: https://lore.kernel.org/oe-kbuild-all/202303040219.nmNWbGrY-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   net/core/net-sysfs.c: In function 'available_timestamping_providers_show':
-   net/core/net-sysfs.c:627:35: warning: variable 'ops' set but not used [-Wunused-but-set-variable]
-     627 |         const struct ethtool_ops *ops;
-         |                                   ^~~
-   net/core/net-sysfs.c: In function 'current_timestamping_provider_show':
->> net/core/net-sysfs.c:659:28: warning: variable 'phydev' set but not used [-Wunused-but-set-variable]
-     659 |         struct phy_device *phydev;
-         |                            ^~~~~~
-   net/core/net-sysfs.c:657:35: warning: variable 'ops' set but not used [-Wunused-but-set-variable]
-     657 |         const struct ethtool_ops *ops;
-         |                                   ^~~
-
-
-vim +/phydev +659 net/core/net-sysfs.c
-
-90d54e1c6ed12a Richard Cochran 2023-03-03  652  
-90d54e1c6ed12a Richard Cochran 2023-03-03  653  static ssize_t current_timestamping_provider_show(struct device *dev,
-90d54e1c6ed12a Richard Cochran 2023-03-03  654  						  struct device_attribute *attr,
-90d54e1c6ed12a Richard Cochran 2023-03-03  655  						  char *buf)
-90d54e1c6ed12a Richard Cochran 2023-03-03  656  {
-90d54e1c6ed12a Richard Cochran 2023-03-03  657  	const struct ethtool_ops *ops;
-90d54e1c6ed12a Richard Cochran 2023-03-03  658  	struct net_device *netdev;
-90d54e1c6ed12a Richard Cochran 2023-03-03 @659  	struct phy_device *phydev;
-90d54e1c6ed12a Richard Cochran 2023-03-03  660  	int ret;
-90d54e1c6ed12a Richard Cochran 2023-03-03  661  
-90d54e1c6ed12a Richard Cochran 2023-03-03  662  	netdev = to_net_dev(dev);
-90d54e1c6ed12a Richard Cochran 2023-03-03  663  	phydev = netdev->phydev;
-90d54e1c6ed12a Richard Cochran 2023-03-03  664  	ops = netdev->ethtool_ops;
-90d54e1c6ed12a Richard Cochran 2023-03-03  665  
-90d54e1c6ed12a Richard Cochran 2023-03-03  666  	if (!rtnl_trylock())
-90d54e1c6ed12a Richard Cochran 2023-03-03  667  		return restart_syscall();
-90d54e1c6ed12a Richard Cochran 2023-03-03  668  
-00a0656f9b222c Richard Cochran 2023-03-03  669  	switch (netdev->selected_timestamping_layer) {
-00a0656f9b222c Richard Cochran 2023-03-03  670  	case MAC_TIMESTAMPING:
-90d54e1c6ed12a Richard Cochran 2023-03-03  671  		ret = sprintf(buf, "%s\n", "mac");
-00a0656f9b222c Richard Cochran 2023-03-03  672  		break;
-00a0656f9b222c Richard Cochran 2023-03-03  673  	case PHY_TIMESTAMPING:
-00a0656f9b222c Richard Cochran 2023-03-03  674  		ret = sprintf(buf, "%s\n", "phy");
-00a0656f9b222c Richard Cochran 2023-03-03  675  		break;
-90d54e1c6ed12a Richard Cochran 2023-03-03  676  	}
-90d54e1c6ed12a Richard Cochran 2023-03-03  677  
-90d54e1c6ed12a Richard Cochran 2023-03-03  678  	rtnl_unlock();
-90d54e1c6ed12a Richard Cochran 2023-03-03  679  
-90d54e1c6ed12a Richard Cochran 2023-03-03  680  	return ret;
-90d54e1c6ed12a Richard Cochran 2023-03-03  681  }
-00a0656f9b222c Richard Cochran 2023-03-03  682  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+Thanks!
