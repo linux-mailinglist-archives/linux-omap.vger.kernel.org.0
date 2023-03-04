@@ -2,57 +2,40 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C8DDB6AA7BF
-	for <lists+linux-omap@lfdr.de>; Sat,  4 Mar 2023 04:07:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DE0386AAA99
+	for <lists+linux-omap@lfdr.de>; Sat,  4 Mar 2023 16:04:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229601AbjCDDHl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 3 Mar 2023 22:07:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37854 "EHLO
+        id S229495AbjCDPEp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 4 Mar 2023 10:04:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229437AbjCDDHl (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 3 Mar 2023 22:07:41 -0500
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73DAB1ABEC;
-        Fri,  3 Mar 2023 19:07:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1677899259; x=1709435259;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=p9wuUBRJAuSisbmC0MWSa/lJzRmQ5d5xrSZ5zn9hbAk=;
-  b=YsMIL3I6IQxHiWbUS2LYvMpQ4yxeMtwwN00qZVqnI8rkENF0Fc/MHdRU
-   UNnDiv2WQ50giFiNIW5WAvFpd5hnWShewxzRViEUVmiu1VWoGZ1blSccW
-   kxHeH2aSiZ4PkHmilrCerzzvw9C3Z17eNw3WN2OLG32P4ZFSnn49FvHMj
-   88aGKqJQ/XieIIrH5gmMiOmskeGtTueAUqAQ9xs6M5D78UNpIHY4mghJq
-   a5rhM7fcbDlPzBjqwjVtZxrZjo70/nkR9V5NEMQ7GInBenCQGJvmDTgyZ
-   eYNmusTEneDxNk8FvwFdSWOe1srH3Qu2opsSjMRcl8Roniu6RYLdtkTjm
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10638"; a="421485942"
-X-IronPort-AV: E=Sophos;i="5.98,232,1673942400"; 
-   d="scan'208";a="421485942"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2023 19:07:38 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10638"; a="744450365"
-X-IronPort-AV: E=Sophos;i="5.98,232,1673942400"; 
-   d="scan'208";a="744450365"
-Received: from lkp-server01.sh.intel.com (HELO 776573491cc5) ([10.239.97.150])
-  by fmsmga004.fm.intel.com with ESMTP; 03 Mar 2023 19:07:32 -0800
-Received: from kbuild by 776573491cc5 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1pYIF9-0001oW-2T;
-        Sat, 04 Mar 2023 03:07:31 +0000
-Date:   Sat, 4 Mar 2023 11:06:54 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     =?iso-8859-1?Q?K=F6ry?= Maincent <kory.maincent@bootlin.com>,
+        with ESMTP id S229473AbjCDPEo (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 4 Mar 2023 10:04:44 -0500
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FC64D324;
+        Sat,  4 Mar 2023 07:04:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+        bh=3EW+cE1iPdOSlYV+9XVPWeV5/ZUNFFr2RNIs7Bm7Q44=; b=1au3pzdpramIt1YwUPSqtQumKR
+        0r4t1ixg0lzWmEO/XivdFeomCxi/BBZopPzoFBt/tpl4omWM2O8Yg/YVr5kOtVyb5gqwjWoZDbn+v
+        xOOW/5Dxdcx7RRU10CY85NgVYCy1Z+3nWwhx5U4ah5qO62qa59w7B6V9IqrIw1z3fT8M=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1pYTQy-006S1R-4R; Sat, 04 Mar 2023 16:04:28 +0100
+Date:   Sat, 4 Mar 2023 16:04:28 +0100
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc:     =?iso-8859-1?Q?K=F6ry?= Maincent <kory.maincent@bootlin.com>,
         linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-omap@vger.kernel.org
-Cc:     oe-kbuild-all@lists.linux.dev, Michael Walle <michael@walle.cc>,
+        linux-omap@vger.kernel.org, Michael Walle <michael@walle.cc>,
         Richard Cochran <richardcochran@gmail.com>,
-        Kory Maincent <kory.maincent@bootlin.com>,
         thomas.petazzoni@bootlin.com, Jay Vosburgh <j.vosburgh@gmail.com>,
         Veaceslav Falico <vfalico@gmail.com>,
         Andy Gospodarek <andy@greyhouse.net>,
+        "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>,
@@ -62,73 +45,75 @@ Cc:     oe-kbuild-all@lists.linux.dev, Michael Walle <michael@walle.cc>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>,
         UNGLinuxDriver@microchip.com,
         Grygorii Strashko <grygorii.strashko@ti.com>,
-        Andrew Lunn <andrew@lunn.ch>,
         Heiner Kallweit <hkallweit1@gmail.com>,
         Russell King <linux@armlinux.org.uk>,
         Minghao Chi <chi.minghao@zte.com.cn>,
         Jie Wang <wangjie125@huawei.com>,
         Guangbin Huang <huangguangbin2@huawei.com>,
-        Wolfram Sang <wsa-dev@sang-engineering.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
         Wang Yufen <wangyufen@huawei.com>,
         Alexandru Tachici <alexandru.tachici@analog.com>,
         Oleksij Rempel <linux@rempel-privat.de>
 Subject: Re: [PATCH v2 3/4] net: Let the active time stamping layer be
  selectable.
-Message-ID: <202303041027.GxlLyldN-lkp@intel.com>
-References: <20230303164248.499286-4-kory.maincent@bootlin.com>
+Message-ID: <ZANd/LE8Jk+0gPdI@lunn.ch>
+References: <20230303164248.499286-1-kory.maincent@bootlin.com>
+ <20230303164248.499286-4-kory.maincent@bootlin.com>
+ <640289d5ef54c_cc8e2087a@willemb.c.googlers.com.notmuch>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230303164248.499286-4-kory.maincent@bootlin.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <640289d5ef54c_cc8e2087a@willemb.c.googlers.com.notmuch>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Köry,
+> Should setting netdev->selected_timestamping_layer be limited to
+> choices that the device supports?
+> 
+> At a higher level, this series assumes that any timestamp not through
+> phydev is a MAC timestamp. I don't think that is necessarily true for
+> all devices. Some may timestamp at the phy, but not expose a phydev.
+> This is a somewhat pedantic point. I understand that the purpose of
+> the series is to select from among two sets of APIs.
 
-I love your patch! Yet something to improve:
+Network drivers tend to fall into one of two classes.
 
-[auto build test ERROR on v6.2]
-[also build test ERROR on next-20230303]
-[cannot apply to net/master net-next/master horms-ipvs/master linus/master]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+1) Linux drives the whole hardware, MAC, PCS, PHY, SPF cage, LEDs etc.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/K-ry-Maincent/net-ethtool-Refactor-identical-get_ts_info-implementations/20230304-004527
-patch link:    https://lore.kernel.org/r/20230303164248.499286-4-kory.maincent%40bootlin.com
-patch subject: [PATCH v2 3/4] net: Let the active time stamping layer be selectable.
-config: csky-defconfig (https://download.01.org/0day-ci/archive/20230304/202303041027.GxlLyldN-lkp@intel.com/config)
-compiler: csky-linux-gcc (GCC) 12.1.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/00a0656f9b222cfeb7c1253a4a2771b1f63b5c9b
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review K-ry-Maincent/net-ethtool-Refactor-identical-get_ts_info-implementations/20230304-004527
-        git checkout 00a0656f9b222cfeb7c1253a4a2771b1f63b5c9b
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=csky olddefconfig
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=csky SHELL=/bin/bash
+2) Linux drives just the MAC, and the rest is hidden away by firmware.
 
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-| Link: https://lore.kernel.org/oe-kbuild-all/202303041027.GxlLyldN-lkp@intel.com/
+For this to work, the MAC API should be sufficient to configure and
+get status information for things which are hidden away from Linux.
+An example of this is the ethtool .get_link_ksettings, which mostly
+deals with PHY settings. Those which have linux controlling the
+hardware call phy_ethtool_get_link_ksettings to get phylib to do the
+work, where as if the hardware is hidden away, calls into the firmware
+are made to implement the API.
 
-All errors (new ones prefixed by >>):
+When we are talking about time stamping, i assume you are talking
+about firmware driver the lower level hardware. I can see two ways
+this could go:
 
-   csky-linux-ld: net/core/dev_ioctl.o: in function `dev_ifsioc':
->> dev_ioctl.c:(.text+0x292): undefined reference to `phy_mii_ioctl'
->> csky-linux-ld: dev_ioctl.c:(.text+0x370): undefined reference to `phy_do_ioctl'
->> csky-linux-ld: dev_ioctl.c:(.text+0x374): undefined reference to `phy_mii_ioctl'
+1) The MAC driver registers two timestamping devices with the core,
+one for the MAC and another for the PHY. In that case, all we need is
+the registration API to include some sort of indicator what layer this
+time stamper works at. The core can then expose to user space that
+there are two, and mux kAPI calls to one or the other.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+2) Despite the hardware having two stampers, it only exposes one to
+the PTP core. Firmware driven hardware already has intimate knowledge
+of the hardware, since it has to have firmware to drive the hardware,
+so it should be able to say which is the better stamper. So it just
+exposes that one.
+
+So i think the proposed API does work for firmware driven stampers,
+but we might need to extend ptp_caps to include a level indication,
+MAC, bump in the wire, PHY, etc.
+
+     Andrew
