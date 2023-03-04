@@ -2,65 +2,57 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 374CC6AA5FE
-	for <lists+linux-omap@lfdr.de>; Sat,  4 Mar 2023 00:59:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C8DDB6AA7BF
+	for <lists+linux-omap@lfdr.de>; Sat,  4 Mar 2023 04:07:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229613AbjCCX7V (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 3 Mar 2023 18:59:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35728 "EHLO
+        id S229601AbjCDDHl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 3 Mar 2023 22:07:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37854 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229445AbjCCX7V (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 3 Mar 2023 18:59:21 -0500
-Received: from mail-qt1-x830.google.com (mail-qt1-x830.google.com [IPv6:2607:f8b0:4864:20::830])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B2A5CA12;
-        Fri,  3 Mar 2023 15:59:19 -0800 (PST)
-Received: by mail-qt1-x830.google.com with SMTP id h19so4807316qtk.7;
-        Fri, 03 Mar 2023 15:59:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1677887958;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=U1nTNHMYdyHCaoekkizYh9XLLLFdRS3SAJPYKEnkyUU=;
-        b=OMl5RyFRfMexLL3jZVjSn4vNHqSs6pOcR9iseiK4FVpD7nTZZEIugqCPYU8YwJJavo
-         MwOMK8HhyfMrcIfoKmnIWS+tqgBmBDBo3tP5IFMcc16Iaywc5MlyBzeS/QdpuT9GjUl9
-         MM3Rll3Z+gY9v4p3WH52L7XJLjLPo1AvXPoKs9CITCd/8H+4Gw2txDZ/SubHiAp7jdJ6
-         1yfQWpzkq4RzOJc+akc0tRYne5YD4uZdv2F24Ydn3KC2NgcgF9wSdU6MxccfPot6MLzG
-         7aJdLTAFahZtMumw7Ml6nZB/5BMEdJTDUhb2Y4YBkVr4Oz3Jy/31FNXQuWeOUoycO/x/
-         85xQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1677887958;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=U1nTNHMYdyHCaoekkizYh9XLLLFdRS3SAJPYKEnkyUU=;
-        b=hii+3nr7QB2FGDtfVZFcLQJB+sBnwW/zPzxRvfhIr7Yc+OAIJAzUmQzedyVZNXrq5x
-         v3fZPD4O8uPnd5epoeUChIRe9haj478b2om3YyKSULE+rD1gXKkQdn/LD4vx6DRonwno
-         MMmdtdTc4+2ovY9bAY02p9+Ooo7G8zyWngGauLJpCuz7mA1cSjJXhaVTbB07zhGwsCt6
-         AcOlcH0idmdU7JxP0mn7TSLrpXEwVL3fGDnqHejlRJQGkWYwNggHRALjpFw5he8aPTtA
-         4+LLOzwUSSFlVX4+P4K6PuZEEsCym9sSr066p1+84syunkkPxyvFj15KyiiKkr5w+iJU
-         BApQ==
-X-Gm-Message-State: AO0yUKUExMVk8TjIfkIz0CB2/7Pw/2wdwC+c26coW+//1SqqdxtVVZGz
-        aH0txZoDAin85iFbX/b3GtA=
-X-Google-Smtp-Source: AK7set8xw48pmJapZtqFLrxVJ1J3zmGyHxh/cPnKxjzP11vXxYezWIpDrw5FtZ07a+K9I5YAdtNSwA==
-X-Received: by 2002:a05:622a:1354:b0:3bf:c474:df98 with SMTP id w20-20020a05622a135400b003bfc474df98mr5755019qtk.56.1677887958503;
-        Fri, 03 Mar 2023 15:59:18 -0800 (PST)
-Received: from localhost (240.157.150.34.bc.googleusercontent.com. [34.150.157.240])
-        by smtp.gmail.com with ESMTPSA id y9-20020ac87089000000b003bfaae103f6sm2674891qto.89.2023.03.03.15.59.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Mar 2023 15:59:18 -0800 (PST)
-Date:   Fri, 03 Mar 2023 18:59:17 -0500
-From:   Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To:     =?UTF-8?B?S8O2cnkgTWFpbmNlbnQ=?= <kory.maincent@bootlin.com>,
+        with ESMTP id S229437AbjCDDHl (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 3 Mar 2023 22:07:41 -0500
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73DAB1ABEC;
+        Fri,  3 Mar 2023 19:07:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1677899259; x=1709435259;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=p9wuUBRJAuSisbmC0MWSa/lJzRmQ5d5xrSZ5zn9hbAk=;
+  b=YsMIL3I6IQxHiWbUS2LYvMpQ4yxeMtwwN00qZVqnI8rkENF0Fc/MHdRU
+   UNnDiv2WQ50giFiNIW5WAvFpd5hnWShewxzRViEUVmiu1VWoGZ1blSccW
+   kxHeH2aSiZ4PkHmilrCerzzvw9C3Z17eNw3WN2OLG32P4ZFSnn49FvHMj
+   88aGKqJQ/XieIIrH5gmMiOmskeGtTueAUqAQ9xs6M5D78UNpIHY4mghJq
+   a5rhM7fcbDlPzBjqwjVtZxrZjo70/nkR9V5NEMQ7GInBenCQGJvmDTgyZ
+   eYNmusTEneDxNk8FvwFdSWOe1srH3Qu2opsSjMRcl8Roniu6RYLdtkTjm
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10638"; a="421485942"
+X-IronPort-AV: E=Sophos;i="5.98,232,1673942400"; 
+   d="scan'208";a="421485942"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2023 19:07:38 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10638"; a="744450365"
+X-IronPort-AV: E=Sophos;i="5.98,232,1673942400"; 
+   d="scan'208";a="744450365"
+Received: from lkp-server01.sh.intel.com (HELO 776573491cc5) ([10.239.97.150])
+  by fmsmga004.fm.intel.com with ESMTP; 03 Mar 2023 19:07:32 -0800
+Received: from kbuild by 776573491cc5 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pYIF9-0001oW-2T;
+        Sat, 04 Mar 2023 03:07:31 +0000
+Date:   Sat, 4 Mar 2023 11:06:54 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     =?iso-8859-1?Q?K=F6ry?= Maincent <kory.maincent@bootlin.com>,
         linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
         linux-omap@vger.kernel.org
-Cc:     Michael Walle <michael@walle.cc>,
+Cc:     oe-kbuild-all@lists.linux.dev, Michael Walle <michael@walle.cc>,
         Richard Cochran <richardcochran@gmail.com>,
         Kory Maincent <kory.maincent@bootlin.com>,
         thomas.petazzoni@bootlin.com, Jay Vosburgh <j.vosburgh@gmail.com>,
         Veaceslav Falico <vfalico@gmail.com>,
         Andy Gospodarek <andy@greyhouse.net>,
-        "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>,
@@ -76,274 +68,67 @@ Cc:     Michael Walle <michael@walle.cc>,
         Minghao Chi <chi.minghao@zte.com.cn>,
         Jie Wang <wangjie125@huawei.com>,
         Guangbin Huang <huangguangbin2@huawei.com>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Wolfram Sang <wsa-dev@sang-engineering.com>,
         Wang Yufen <wangyufen@huawei.com>,
         Alexandru Tachici <alexandru.tachici@analog.com>,
         Oleksij Rempel <linux@rempel-privat.de>
-Message-ID: <640289d5ef54c_cc8e2087a@willemb.c.googlers.com.notmuch>
-In-Reply-To: <20230303164248.499286-4-kory.maincent@bootlin.com>
-References: <20230303164248.499286-1-kory.maincent@bootlin.com>
- <20230303164248.499286-4-kory.maincent@bootlin.com>
-Subject: RE: [PATCH v2 3/4] net: Let the active time stamping layer be
+Subject: Re: [PATCH v2 3/4] net: Let the active time stamping layer be
  selectable.
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Message-ID: <202303041027.GxlLyldN-lkp@intel.com>
+References: <20230303164248.499286-4-kory.maincent@bootlin.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230303164248.499286-4-kory.maincent@bootlin.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-K=C3=B6ry Maincent wrote:
-> From: Richard Cochran <richardcochran@gmail.com>
-> =
+Hi Köry,
 
-> Make the sysfs knob writable, and add checks in the ioctl and time
-> stamping paths to respect the currently selected time stamping layer.
-> =
+I love your patch! Yet something to improve:
 
-> Signed-off-by: Richard Cochran <richardcochran@gmail.com>
-> Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
-> ---
-> =
+[auto build test ERROR on v6.2]
+[also build test ERROR on next-20230303]
+[cannot apply to net/master net-next/master horms-ipvs/master linus/master]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-> Notes:
->     Changes in v2:
->     - Move selected_timestamping_layer introduction in this patch.
->     - Replace strmcmp by sysfs_streq.
->     - Use the PHY timestamp only if available.
-> =
+url:    https://github.com/intel-lab-lkp/linux/commits/K-ry-Maincent/net-ethtool-Refactor-identical-get_ts_info-implementations/20230304-004527
+patch link:    https://lore.kernel.org/r/20230303164248.499286-4-kory.maincent%40bootlin.com
+patch subject: [PATCH v2 3/4] net: Let the active time stamping layer be selectable.
+config: csky-defconfig (https://download.01.org/0day-ci/archive/20230304/202303041027.GxlLyldN-lkp@intel.com/config)
+compiler: csky-linux-gcc (GCC) 12.1.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/00a0656f9b222cfeb7c1253a4a2771b1f63b5c9b
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review K-ry-Maincent/net-ethtool-Refactor-identical-get_ts_info-implementations/20230304-004527
+        git checkout 00a0656f9b222cfeb7c1253a4a2771b1f63b5c9b
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=csky olddefconfig
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=csky SHELL=/bin/bash
 
->  .../ABI/testing/sysfs-class-net-timestamping  |  5 +-
->  drivers/net/phy/phy_device.c                  |  6 +++
->  include/linux/netdevice.h                     | 10 ++++
->  net/core/dev_ioctl.c                          | 44 ++++++++++++++--
->  net/core/net-sysfs.c                          | 50 +++++++++++++++++--=
+If you fix the issue, kindly add following tag where applicable
+| Reported-by: kernel test robot <lkp@intel.com>
+| Link: https://lore.kernel.org/oe-kbuild-all/202303041027.GxlLyldN-lkp@intel.com/
 
->  net/core/timestamping.c                       |  6 +++
->  net/ethtool/common.c                          | 18 +++++--
->  7 files changed, 127 insertions(+), 12 deletions(-)
-> =
+All errors (new ones prefixed by >>):
 
-> diff --git a/Documentation/ABI/testing/sysfs-class-net-timestamping b/D=
-ocumentation/ABI/testing/sysfs-class-net-timestamping
-> index 529c3a6eb607..6dfd59740cad 100644
-> --- a/Documentation/ABI/testing/sysfs-class-net-timestamping
-> +++ b/Documentation/ABI/testing/sysfs-class-net-timestamping
-> @@ -11,7 +11,10 @@ What:		/sys/class/net/<iface>/current_timestamping_p=
-rovider
->  Date:		January 2022
->  Contact:	Richard Cochran <richardcochran@gmail.com>
->  Description:
-> -		Show the current SO_TIMESTAMPING provider.
-> +		Shows or sets the current SO_TIMESTAMPING provider.
-> +		When changing the value, some packets in the kernel
-> +		networking stack may still be delivered with time
-> +		stamps from the previous provider.
->  		The possible values are:
->  		- "mac"  The MAC provides time stamping.
->  		- "phy"  The PHY or MII device provides time stamping.
-> diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.=
-c
-> index 8cff61dbc4b5..8dff0c6493b5 100644
-> --- a/drivers/net/phy/phy_device.c
-> +++ b/drivers/net/phy/phy_device.c
-> @@ -1451,6 +1451,11 @@ int phy_attach_direct(struct net_device *dev, st=
-ruct phy_device *phydev,
->  =
+   csky-linux-ld: net/core/dev_ioctl.o: in function `dev_ifsioc':
+>> dev_ioctl.c:(.text+0x292): undefined reference to `phy_mii_ioctl'
+>> csky-linux-ld: dev_ioctl.c:(.text+0x370): undefined reference to `phy_do_ioctl'
+>> csky-linux-ld: dev_ioctl.c:(.text+0x374): undefined reference to `phy_mii_ioctl'
 
->  	phydev->phy_link_change =3D phy_link_change;
->  	if (dev) {
-> +		if (phy_has_hwtstamp(phydev))
-> +			dev->selected_timestamping_layer =3D PHY_TIMESTAMPING;
-> +		else
-> +			dev->selected_timestamping_layer =3D MAC_TIMESTAMPING;
-> +
->  		phydev->attached_dev =3D dev;
->  		dev->phydev =3D phydev;
->  =
-
-> @@ -1762,6 +1767,7 @@ void phy_detach(struct phy_device *phydev)
->  =
-
->  	phy_suspend(phydev);
->  	if (dev) {
-> +		dev->selected_timestamping_layer =3D MAC_TIMESTAMPING;
->  		phydev->attached_dev->phydev =3D NULL;
->  		phydev->attached_dev =3D NULL;
->  	}
-> diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-> index ba2bd604359d..d8e9da2526f0 100644
-> --- a/include/linux/netdevice.h
-> +++ b/include/linux/netdevice.h
-> @@ -1742,6 +1742,11 @@ enum netdev_ml_priv_type {
->  	ML_PRIV_CAN,
->  };
->  =
-
-> +enum timestamping_layer {
-> +	MAC_TIMESTAMPING,
-> +	PHY_TIMESTAMPING,
-> +};
-> +
->  /**
->   *	struct net_device - The DEVICE structure.
->   *
-> @@ -1981,6 +1986,9 @@ enum netdev_ml_priv_type {
->   *
->   *	@threaded:	napi threaded mode is enabled
->   *
-> + *	@selected_timestamping_layer:	Tracks whether the MAC or the PHY
-> + *					performs packet time stamping.
-> + *
->   *	@net_notifier_list:	List of per-net netdev notifier block
->   *				that follow this device when it is moved
->   *				to another network namespace.
-> @@ -2339,6 +2347,8 @@ struct net_device {
->  	unsigned		wol_enabled:1;
->  	unsigned		threaded:1;
->  =
-
-> +	enum timestamping_layer selected_timestamping_layer;
-> +
->  	struct list_head	net_notifier_list;
->  =
-
->  #if IS_ENABLED(CONFIG_MACSEC)
-> diff --git a/net/core/dev_ioctl.c b/net/core/dev_ioctl.c
-> index 7674bb9f3076..cc7cf2a542fb 100644
-> --- a/net/core/dev_ioctl.c
-> +++ b/net/core/dev_ioctl.c
-> @@ -262,6 +262,43 @@ static int dev_eth_ioctl(struct net_device *dev,
->  	return err;
->  }
->  =
-
-> +static int dev_hwtstamp_ioctl(struct net_device *dev,
-> +			      struct ifreq *ifr, unsigned int cmd)
-> +{
-> +	const struct net_device_ops *ops =3D dev->netdev_ops;
-> +	int err;
-> +
-> +	err =3D dsa_ndo_eth_ioctl(dev, ifr, cmd);
-> +	if (err =3D=3D 0 || err !=3D -EOPNOTSUPP)
-> +		return err;
-> +
-> +	if (!netif_device_present(dev))
-> +		return -ENODEV;
-> +
-> +	switch (dev->selected_timestamping_layer) {
-> +
-> +	case MAC_TIMESTAMPING:
-> +		if (ops->ndo_do_ioctl =3D=3D phy_do_ioctl) {
-> +			/* Some drivers set .ndo_do_ioctl to phy_do_ioctl. */
-> +			err =3D -EOPNOTSUPP;
-> +		} else {
-> +			err =3D ops->ndo_eth_ioctl(dev, ifr, cmd);
-> +		}
-> +		break;
-> +
-> +	case PHY_TIMESTAMPING:
-> +		if (phy_has_hwtstamp(dev->phydev)) {
-> +			err =3D phy_mii_ioctl(dev->phydev, ifr, cmd);
-> +		} else {
-> +			err =3D -ENODEV;
-> +			WARN_ON(1);
-> +		}
-> +		break;
-> +	}
-> +
-> +	return err;
-> +}
-> +
->  static int dev_siocbond(struct net_device *dev,
->  			struct ifreq *ifr, unsigned int cmd)
->  {
-> @@ -397,6 +434,9 @@ static int dev_ifsioc(struct net *net, struct ifreq=
- *ifr, void __user *data,
->  			return err;
->  		fallthrough;
->  =
-
-> +	case SIOCGHWTSTAMP:
-> +		return dev_hwtstamp_ioctl(dev, ifr, cmd);
-> +
->  	/*
->  	 *	Unknown or private ioctl
->  	 */
-> @@ -407,9 +447,7 @@ static int dev_ifsioc(struct net *net, struct ifreq=
- *ifr, void __user *data,
->  =
-
->  		if (cmd =3D=3D SIOCGMIIPHY ||
->  		    cmd =3D=3D SIOCGMIIREG ||
-> -		    cmd =3D=3D SIOCSMIIREG ||
-> -		    cmd =3D=3D SIOCSHWTSTAMP ||
-> -		    cmd =3D=3D SIOCGHWTSTAMP) {
-> +		    cmd =3D=3D SIOCSMIIREG) {
->  			err =3D dev_eth_ioctl(dev, ifr, cmd);
->  		} else if (cmd =3D=3D SIOCBONDENSLAVE ||
->  		    cmd =3D=3D SIOCBONDRELEASE ||
-> diff --git a/net/core/net-sysfs.c b/net/core/net-sysfs.c
-> index 26095634fb31..66079424b100 100644
-> --- a/net/core/net-sysfs.c
-> +++ b/net/core/net-sysfs.c
-> @@ -666,17 +666,59 @@ static ssize_t current_timestamping_provider_show=
-(struct device *dev,
->  	if (!rtnl_trylock())
->  		return restart_syscall();
->  =
-
-> -	if (phy_has_tsinfo(phydev)) {
-> -		ret =3D sprintf(buf, "%s\n", "phy");
-> -	} else {
-> +	switch (netdev->selected_timestamping_layer) {
-> +	case MAC_TIMESTAMPING:
->  		ret =3D sprintf(buf, "%s\n", "mac");
-> +		break;
-> +	case PHY_TIMESTAMPING:
-> +		ret =3D sprintf(buf, "%s\n", "phy");
-> +		break;
->  	}
->  =
-
->  	rtnl_unlock();
->  =
-
->  	return ret;
->  }
-> -static DEVICE_ATTR_RO(current_timestamping_provider);
-> +
-> +static ssize_t current_timestamping_provider_store(struct device *dev,=
-
-> +						   struct device_attribute *attr,
-> +						   const char *buf, size_t len)
-> +{
-> +	struct net_device *netdev =3D to_net_dev(dev);
-> +	struct net *net =3D dev_net(netdev);
-> +	enum timestamping_layer flavor;
-> +
-> +	if (!ns_capable(net->user_ns, CAP_NET_ADMIN))
-> +		return -EPERM;
-> +
-> +	if (sysfs_streq(buf, "mac"))
-> +		flavor =3D MAC_TIMESTAMPING;
-> +	else if (sysfs_streq(buf, "phy"))
-> +		flavor =3D PHY_TIMESTAMPING;
-> +	else
-> +		return -EINVAL;
-
-Should setting netdev->selected_timestamping_layer be limited to
-choices that the device supports?
-
-At a higher level, this series assumes that any timestamp not through
-phydev is a MAC timestamp. I don't think that is necessarily true for
-all devices. Some may timestamp at the phy, but not expose a phydev.
-This is a somewhat pedantic point. I understand that the purpose of
-the series is to select from among two sets of APIs.
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
