@@ -2,34 +2,34 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE0386AAA99
-	for <lists+linux-omap@lfdr.de>; Sat,  4 Mar 2023 16:04:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CE0316AAAE8
+	for <lists+linux-omap@lfdr.de>; Sat,  4 Mar 2023 16:43:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229495AbjCDPEp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 4 Mar 2023 10:04:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36116 "EHLO
+        id S229500AbjCDPn4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 4 Mar 2023 10:43:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60654 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229473AbjCDPEo (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 4 Mar 2023 10:04:44 -0500
+        with ESMTP id S229447AbjCDPnz (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 4 Mar 2023 10:43:55 -0500
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FC64D324;
-        Sat,  4 Mar 2023 07:04:43 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CD27FF34;
+        Sat,  4 Mar 2023 07:43:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-        bh=3EW+cE1iPdOSlYV+9XVPWeV5/ZUNFFr2RNIs7Bm7Q44=; b=1au3pzdpramIt1YwUPSqtQumKR
-        0r4t1ixg0lzWmEO/XivdFeomCxi/BBZopPzoFBt/tpl4omWM2O8Yg/YVr5kOtVyb5gqwjWoZDbn+v
-        xOOW/5Dxdcx7RRU10CY85NgVYCy1Z+3nWwhx5U4ah5qO62qa59w7B6V9IqrIw1z3fT8M=;
+        s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+        Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+        Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+        In-Reply-To:References; bh=WlHItfDe2+GVbkKB85wB9pJreJVbUkzc7e8si1p2OT8=; b=qW
+        fr/uZxICOV4UQXlqV2gON+WQQo6vX/Wo4LeMEYqkLSbrbllTHcA0+EaWnBDmIcTQexi1ybMemJyFz
+        WwKQe4z6u0fdA+UDzRCYPJ0DOWeo2MnZqN2xpy3YKnIOfP7zYdjsT/efTT4DV36UAHygulzU9Namf
+        fxjk7hWl/kW3268=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
         (envelope-from <andrew@lunn.ch>)
-        id 1pYTQy-006S1R-4R; Sat, 04 Mar 2023 16:04:28 +0100
-Date:   Sat, 4 Mar 2023 16:04:28 +0100
+        id 1pYU31-006SBw-3w; Sat, 04 Mar 2023 16:43:47 +0100
+Date:   Sat, 4 Mar 2023 16:43:47 +0100
 From:   Andrew Lunn <andrew@lunn.ch>
-To:     Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc:     =?iso-8859-1?Q?K=F6ry?= Maincent <kory.maincent@bootlin.com>,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+To:     =?iso-8859-1?Q?K=F6ry?= Maincent <kory.maincent@bootlin.com>
+Cc:     linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
         linux-omap@vger.kernel.org, Michael Walle <michael@walle.cc>,
         Richard Cochran <richardcochran@gmail.com>,
         thomas.petazzoni@bootlin.com, Jay Vosburgh <j.vosburgh@gmail.com>,
@@ -56,14 +56,14 @@ Cc:     =?iso-8859-1?Q?K=F6ry?= Maincent <kory.maincent@bootlin.com>,
         Oleksij Rempel <linux@rempel-privat.de>
 Subject: Re: [PATCH v2 3/4] net: Let the active time stamping layer be
  selectable.
-Message-ID: <ZANd/LE8Jk+0gPdI@lunn.ch>
+Message-ID: <011d63c3-e3ff-4b67-8ab7-d39f541c7b31@lunn.ch>
 References: <20230303164248.499286-1-kory.maincent@bootlin.com>
  <20230303164248.499286-4-kory.maincent@bootlin.com>
- <640289d5ef54c_cc8e2087a@willemb.c.googlers.com.notmuch>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <640289d5ef54c_cc8e2087a@willemb.c.googlers.com.notmuch>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230303164248.499286-4-kory.maincent@bootlin.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
         autolearn=ham autolearn_force=no version=3.4.6
@@ -73,47 +73,26 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-> Should setting netdev->selected_timestamping_layer be limited to
-> choices that the device supports?
+On Fri, Mar 03, 2023 at 05:42:40PM +0100, Köry Maincent wrote:
+> From: Richard Cochran <richardcochran@gmail.com>
 > 
-> At a higher level, this series assumes that any timestamp not through
-> phydev is a MAC timestamp. I don't think that is necessarily true for
-> all devices. Some may timestamp at the phy, but not expose a phydev.
-> This is a somewhat pedantic point. I understand that the purpose of
-> the series is to select from among two sets of APIs.
+> Make the sysfs knob writable, and add checks in the ioctl and time
+> stamping paths to respect the currently selected time stamping layer.
 
-Network drivers tend to fall into one of two classes.
+Although it probably works, i think the ioctl code is ugly.
 
-1) Linux drives the whole hardware, MAC, PCS, PHY, SPF cage, LEDs etc.
+I think it would be better to pull the IOCTL code into the PTP object
+interface. Add an ioctl member to struct ptp_clock_info. The PTP core
+can then directly call into the PTP object.
 
-2) Linux drives just the MAC, and the rest is hidden away by firmware.
+You now have a rather odd semantic that calling the .ndo_eth_ioctl
+means operate on the MAC PTP. If you look at net_device_ops, i don't
+think any of the other members have this semantic. They all look at
+the netdev as a whole, and ask the netdev to do something, without
+caring what level it operates at. So a PTP ioctl should operate on
+'the' PTP of the netdev, whichever that might be, MAC or PHY.
 
-For this to work, the MAC API should be sufficient to configure and
-get status information for things which are hidden away from Linux.
-An example of this is the ethtool .get_link_ksettings, which mostly
-deals with PHY settings. Those which have linux controlling the
-hardware call phy_ethtool_get_link_ksettings to get phylib to do the
-work, where as if the hardware is hidden away, calls into the firmware
-are made to implement the API.
-
-When we are talking about time stamping, i assume you are talking
-about firmware driver the lower level hardware. I can see two ways
-this could go:
-
-1) The MAC driver registers two timestamping devices with the core,
-one for the MAC and another for the PHY. In that case, all we need is
-the registration API to include some sort of indicator what layer this
-time stamper works at. The core can then expose to user space that
-there are two, and mux kAPI calls to one or the other.
-
-2) Despite the hardware having two stampers, it only exposes one to
-the PTP core. Firmware driven hardware already has intimate knowledge
-of the hardware, since it has to have firmware to drive the hardware,
-so it should be able to say which is the better stamper. So it just
-exposes that one.
-
-So i think the proposed API does work for firmware driven stampers,
-but we might need to extend ptp_caps to include a level indication,
-MAC, bump in the wire, PHY, etc.
+Clearly, it is a bigger change, you need to touch every MAC driver
+with PTP support, but at the end, you have a cleaner architecture.
 
      Andrew
