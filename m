@@ -2,149 +2,97 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 998666ABDC8
-	for <lists+linux-omap@lfdr.de>; Mon,  6 Mar 2023 12:10:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FD4D6ACBA4
+	for <lists+linux-omap@lfdr.de>; Mon,  6 Mar 2023 18:56:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230244AbjCFLKD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 6 Mar 2023 06:10:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52332 "EHLO
+        id S230520AbjCFR44 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 6 Mar 2023 12:56:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230186AbjCFLJ7 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 6 Mar 2023 06:09:59 -0500
-Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C5A711668;
-        Mon,  6 Mar 2023 03:09:58 -0800 (PST)
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 326B9pI0037167;
-        Mon, 6 Mar 2023 05:09:51 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1678100991;
-        bh=Cd4zhNvCBEhmy2AH5WLywa5MlAZZBww/b2JRFPiMn0M=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=xy80XgT9LKv+HabZteybQKQ193ScXin7r9XAmXPN0+YRM4+YeRlZIY+Hn5nl0Yk0A
-         U8moz8FnA9NUkKwrMa8V+nqihoTFeC5CXJvrTK97+CIBKiT2lj3xk6pN5PjjUnH+Ou
-         TNyV+zsaeGfipDHUsQsvNmcLEySrsUOTiMWvrzWA=
-Received: from DLEE109.ent.ti.com (dlee109.ent.ti.com [157.170.170.41])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 326B9pOF013906
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 6 Mar 2023 05:09:51 -0600
-Received: from DLEE115.ent.ti.com (157.170.170.26) by DLEE109.ent.ti.com
- (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16; Mon, 6
- Mar 2023 05:09:51 -0600
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE115.ent.ti.com
- (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16 via
- Frontend Transport; Mon, 6 Mar 2023 05:09:50 -0600
-Received: from fllv0122.itg.ti.com (fllv0122.itg.ti.com [10.247.120.72])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 326B9pRi010708;
-        Mon, 6 Mar 2023 05:09:51 -0600
-Received: from localhost (a0501179-pc.dhcp.ti.com [10.24.69.114])
-        by fllv0122.itg.ti.com (8.14.7/8.14.7) with ESMTP id 326B9nt3015734;
-        Mon, 6 Mar 2023 05:09:50 -0600
-From:   MD Danish Anwar <danishanwar@ti.com>
-To:     "Andrew F. Davis" <afd@ti.com>, Suman Anna <s-anna@ti.com>,
-        Roger Quadros <rogerq@kernel.org>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Tero Kristo <t-kristo@ti.com>,
-        MD Danish Anwar <danishanwar@ti.com>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        "Santosh Shilimkar" <ssantosh@kernel.org>,
-        Nishanth Menon <nm@ti.com>
-CC:     <linux-remoteproc@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <srk@ti.com>, <devicetree@vger.kernel.org>,
-        <netdev@vger.kernel.org>
-Subject: [PATCH v3 6/6] soc: ti: pruss: Add helper functions to get/set PRUSS_CFG_GPMUX
-Date:   Mon, 6 Mar 2023 16:39:34 +0530
-Message-ID: <20230306110934.2736465-7-danishanwar@ti.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230306110934.2736465-1-danishanwar@ti.com>
-References: <20230306110934.2736465-1-danishanwar@ti.com>
+        with ESMTP id S230400AbjCFR4m (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 6 Mar 2023 12:56:42 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36C7B3AA8;
+        Mon,  6 Mar 2023 09:55:55 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DE88761058;
+        Mon,  6 Mar 2023 17:55:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09792C433EF;
+        Mon,  6 Mar 2023 17:55:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1678125317;
+        bh=tPlXjG7fq0sTP12q7R0JSH+JTt6YBwCm664lnJwGbsw=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=FwWzHJUhGDPFKlKdYtCnh5OHOShY6aACx8VOQATs/1k0GxGtZKeTIC9Goq13jhKRN
+         1hbn2aDhIu2q9HM2PpslaPtxpuLUQg57UovETpG+pXptLbkGIa04h7CPWYUhigr8DD
+         LpbeQPSgaFIRyaIcF9IJVE3QgyGHYBW+sYXZ0hvVl/GMVTvtwIKcdiu2xU0p5U9NIn
+         oGUy83mU/desT6b//rtBtYbuI46myUQj86m/eMMUzRhxNpO8HQ7PvEgrPrNcrche1W
+         9VuxJJRkQ5PU5NIkLrLqJ09SyCp3MLY/AlCcKgV8/T6knVl+8TxcsHamb8Zcg2YyK3
+         gv6lbUsbFdeeQ==
+Date:   Mon, 6 Mar 2023 09:55:15 -0800
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Andrew Lunn <andrew@lunn.ch>
+Cc:     "Russell King (Oracle)" <linux@armlinux.org.uk>,
+        =?UTF-8?B?S8O2cnk=?= Maincent <kory.maincent@bootlin.com>,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-omap@vger.kernel.org, Michael Walle <michael@walle.cc>,
+        Richard Cochran <richardcochran@gmail.com>,
+        thomas.petazzoni@bootlin.com, Jay Vosburgh <j.vosburgh@gmail.com>,
+        Veaceslav Falico <vfalico@gmail.com>,
+        Andy Gospodarek <andy@greyhouse.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Joakim Zhang <qiangqing.zhang@nxp.com>,
+        Vladimir Oltean <vladimir.oltean@nxp.com>,
+        Claudiu Manoil <claudiu.manoil@nxp.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        UNGLinuxDriver@microchip.com,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Minghao Chi <chi.minghao@zte.com.cn>,
+        Jie Wang <wangjie125@huawei.com>,
+        Guangbin Huang <huangguangbin2@huawei.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Wang Yufen <wangyufen@huawei.com>,
+        Alexandru Tachici <alexandru.tachici@analog.com>,
+        Oleksij Rempel <linux@rempel-privat.de>
+Subject: Re: [PATCH v2 3/4] net: Let the active time stamping layer be
+ selectable.
+Message-ID: <20230306095515.20e819d1@kernel.org>
+In-Reply-To: <94544cd0-18da-40d1-8691-66e50d42bfb4@lunn.ch>
+References: <20230303164248.499286-1-kory.maincent@bootlin.com>
+        <20230303164248.499286-4-kory.maincent@bootlin.com>
+        <011d63c3-e3ff-4b67-8ab7-d39f541c7b31@lunn.ch>
+        <ZANu37JHCKwsiCTT@shell.armlinux.org.uk>
+        <94544cd0-18da-40d1-8691-66e50d42bfb4@lunn.ch>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Tero Kristo <t-kristo@ti.com>
+On Sat, 4 Mar 2023 20:46:05 +0100 Andrew Lunn wrote:
+> > Since the ioctl is to do with requesting what we want the timestamping
+> > layer to be doing with packets, putting it in ptp_clock_info makes
+> > very little sense.  
+> 
+> So there does not appear to be an object to represent a time stamper?
+> 
+> Should one be added? It looks like it needs two ops hwtstamp_set() and
+> hwtstamp_get(). It would then be registered with the ptp core. And
+> then the rest of what i said would apply...
 
-Add two new helper functions pruss_cfg_get_gpmux() & pruss_cfg_set_gpmux()
-to get and set the GP MUX mode for programming the PRUSS internal wrapper
-mux functionality as needed by usecases.
-
-Co-developed-by: Suman Anna <s-anna@ti.com>
-Signed-off-by: Suman Anna <s-anna@ti.com>
-Signed-off-by: Tero Kristo <t-kristo@ti.com>
-Co-developed-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
-Signed-off-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
-Signed-off-by: Puranjay Mohan <p-mohan@ti.com>
----
- include/linux/pruss_driver.h | 44 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 44 insertions(+)
-
-diff --git a/include/linux/pruss_driver.h b/include/linux/pruss_driver.h
-index 22b4b37d2536..80b668889d9d 100644
---- a/include/linux/pruss_driver.h
-+++ b/include/linux/pruss_driver.h
-@@ -35,4 +35,48 @@ struct pruss {
- 	struct clk *iep_clk_mux;
- };
- 
-+/**
-+ * pruss_cfg_get_gpmux() - get the current GPMUX value for a PRU device
-+ * @pruss: pruss instance
-+ * @pru_id: PRU identifier (0-1)
-+ * @mux: pointer to store the current mux value into
-+ *
-+ * Return: 0 on success, or an error code otherwise
-+ */
-+static inline int pruss_cfg_get_gpmux(struct pruss *pruss,
-+				      enum pruss_pru_id pru_id, u8 *mux)
-+{
-+	int ret = 0;
-+	u32 val;
-+
-+	if (pru_id < 0 || pru_id >= PRUSS_NUM_PRUS)
-+		return -EINVAL;
-+
-+	ret = pruss_cfg_read(pruss, PRUSS_CFG_GPCFG(pru_id), &val);
-+	if (!ret)
-+		*mux = (u8)((val & PRUSS_GPCFG_PRU_MUX_SEL_MASK) >>
-+			    PRUSS_GPCFG_PRU_MUX_SEL_SHIFT);
-+	return ret;
-+}
-+
-+/**
-+ * pruss_cfg_set_gpmux() - set the GPMUX value for a PRU device
-+ * @pruss: pruss instance
-+ * @pru_id: PRU identifier (0-1)
-+ * @mux: new mux value for PRU
-+ *
-+ * Return: 0 on success, or an error code otherwise
-+ */
-+static inline int pruss_cfg_set_gpmux(struct pruss *pruss,
-+				      enum pruss_pru_id pru_id, u8 mux)
-+{
-+	if (mux >= PRUSS_GP_MUX_SEL_MAX ||
-+	    pru_id < 0 || pru_id >= PRUSS_NUM_PRUS)
-+		return -EINVAL;
-+
-+	return pruss_cfg_update(pruss, PRUSS_CFG_GPCFG(pru_id),
-+				PRUSS_GPCFG_PRU_MUX_SEL_MASK,
-+				(u32)mux << PRUSS_GPCFG_PRU_MUX_SEL_SHIFT);
-+}
-+
- #endif	/* _PRUSS_DRIVER_H_ */
--- 
-2.25.1
-
+IMHO time stamper is very much part of the netdev. I attribute the lack
+of clarity palatially to the fact that (for reasons unknown) we still
+lug the request as a raw IOCTL/ifreq. Rather than converting it to an
+NDO/phydev op in the core.. Also can't think of a reason why modeling
+it as a separate object would be useful?
