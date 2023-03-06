@@ -2,100 +2,79 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 306536AAC2A
-	for <lists+linux-omap@lfdr.de>; Sat,  4 Mar 2023 20:46:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C11186AB68E
+	for <lists+linux-omap@lfdr.de>; Mon,  6 Mar 2023 07:50:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229547AbjCDTqQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 4 Mar 2023 14:46:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57612 "EHLO
+        id S229591AbjCFGuR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 6 Mar 2023 01:50:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60740 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229445AbjCDTqQ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 4 Mar 2023 14:46:16 -0500
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DAEA1B57D;
-        Sat,  4 Mar 2023 11:46:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-        bh=mqhIv4BnRUzpQwjss739cv1fDBqva1NryZa6MDjF/Z4=; b=WIb7cDtQ9Pwtt/epJFfAzsYlNu
-        uf0G1zcrglU47PJ9TJYNfDSJwmXT53uDxwBrH8ddS1axGuNAY6qwQrCvU4f8vjsIHQBu3573Oz6x8
-        iMs8hT+7Q0Bb6F04Pg/Xz7nyVpzNeccIvACQxXz3npeCtU+nMAzkdVyeRp6rkwEFj4qI=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-        (envelope-from <andrew@lunn.ch>)
-        id 1pYXpV-006Sj3-IH; Sat, 04 Mar 2023 20:46:05 +0100
-Date:   Sat, 4 Mar 2023 20:46:05 +0100
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc:     =?iso-8859-1?Q?K=F6ry?= Maincent <kory.maincent@bootlin.com>,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-omap@vger.kernel.org, Michael Walle <michael@walle.cc>,
-        Richard Cochran <richardcochran@gmail.com>,
-        thomas.petazzoni@bootlin.com, Jay Vosburgh <j.vosburgh@gmail.com>,
-        Veaceslav Falico <vfalico@gmail.com>,
-        Andy Gospodarek <andy@greyhouse.net>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Joakim Zhang <qiangqing.zhang@nxp.com>,
-        Vladimir Oltean <vladimir.oltean@nxp.com>,
-        Claudiu Manoil <claudiu.manoil@nxp.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        UNGLinuxDriver@microchip.com,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Minghao Chi <chi.minghao@zte.com.cn>,
-        Jie Wang <wangjie125@huawei.com>,
-        Guangbin Huang <huangguangbin2@huawei.com>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Wang Yufen <wangyufen@huawei.com>,
-        Alexandru Tachici <alexandru.tachici@analog.com>,
-        Oleksij Rempel <linux@rempel-privat.de>
-Subject: Re: [PATCH v2 3/4] net: Let the active time stamping layer be
- selectable.
-Message-ID: <94544cd0-18da-40d1-8691-66e50d42bfb4@lunn.ch>
-References: <20230303164248.499286-1-kory.maincent@bootlin.com>
- <20230303164248.499286-4-kory.maincent@bootlin.com>
- <011d63c3-e3ff-4b67-8ab7-d39f541c7b31@lunn.ch>
- <ZANu37JHCKwsiCTT@shell.armlinux.org.uk>
+        with ESMTP id S229689AbjCFGuL (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 6 Mar 2023 01:50:11 -0500
+Received: from muru.com (muru.com [72.249.23.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 9F6D7F949;
+        Sun,  5 Mar 2023 22:49:29 -0800 (PST)
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id A34328027;
+        Mon,  6 Mar 2023 06:49:28 +0000 (UTC)
+Date:   Mon, 6 Mar 2023 08:49:27 +0200
+From:   Tony Lindgren <tony@atomide.com>
+To:     Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
+        Johan Hovold <johan@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-serial@vger.kernel.org
+Subject: Re: [PATCH v5 1/1] serial: core: Start managing serial controllers
+ to enable runtime PM
+Message-ID: <20230306064927.GA7501@atomide.com>
+References: <20230116080002.47315-1-tony@atomide.com>
+ <ZADJm+co4goPgr7u@smile.fi.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZANu37JHCKwsiCTT@shell.armlinux.org.uk>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <ZADJm+co4goPgr7u@smile.fi.intel.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-> The timestamping part is via the netdev, which is a separate entity,
-> and its that entity which is responsible for identifying which PHC it
-> is connected to (normally by filling in the phc_index field of
-> ethtool_ts_info.)
+* Andy Shevchenko <andriy.shevchenko@intel.com> [230302 16:07]:
+> On Mon, Jan 16, 2023 at 09:59:58AM +0200, Tony Lindgren wrote:
+> > We want to enable runtime PM for serial port device drivers in a generic
+> > way. To do this, we want to have the serial core layer manage the
+> > registered physical serial controller devices.
+> > 
+> > To do this, let's set up a struct device for the serial core controller
+> > as suggested by Greg and Jiri. The serial core controller devices are
+> > children of the physical serial port device. The serial core controller
+> > device is needed to support multiple different kind of ports connected
+> > to single physical serial port device.
+> > 
+> > Let's also set up a struct device for the serial core port. The serial
+> > core port instances are children of the serial core controller device.
+> > 
+> > With the serial core port device we can now flush pending TX on the
+> > runtime PM resume as suggested by Johan.
 > 
-> Think of is as:
+> A side note. Perhaps it makes sense to also clean up documentation somehow
+> related to this change. For example, I found that
+> Documentation/firmware-guide/acpi/enumeration.rst has this:
 > 
->   netdev ---- timestamping ---- PHC
-> 
-> since we can have:
-> 
->   netdev1 ---- timestamping \
->   netdev2 ---- timestamping -*--- PHC
->   netdev3 ---- timestamping /
-> 
-> Since the ioctl is to do with requesting what we want the timestamping
-> layer to be doing with packets, putting it in ptp_clock_info makes
-> very little sense.
+>   "Note that standard UARTs are not busses so there is no struct uart_device,
+>    although some of them may be represented by struct serdev_device."
 
-So there does not appear to be an object to represent a time stamper?
+OK good point, will update that for the next version.
 
-Should one be added? It looks like it needs two ops hwtstamp_set() and
-hwtstamp_get(). It would then be registered with the ptp core. And
-then the rest of what i said would apply...
+FYI, I replaced the serial core platform bus with just struct device and
+bus, need to clean-up a bit before posting though.
 
-	Andrew
+Regards,
+
+Tony
