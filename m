@@ -2,60 +2,60 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 14CA96ADFF6
-	for <lists+linux-omap@lfdr.de>; Tue,  7 Mar 2023 14:06:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AD2E6ADFF9
+	for <lists+linux-omap@lfdr.de>; Tue,  7 Mar 2023 14:06:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230028AbjCGNGm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 7 Mar 2023 08:06:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40842 "EHLO
+        id S230284AbjCGNGy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 7 Mar 2023 08:06:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230294AbjCGNFq (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 7 Mar 2023 08:05:46 -0500
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7A1A509A1
-        for <linux-omap@vger.kernel.org>; Tue,  7 Mar 2023 05:05:15 -0800 (PST)
-Received: by mail-lj1-x236.google.com with SMTP id h9so13079189ljq.2
-        for <linux-omap@vger.kernel.org>; Tue, 07 Mar 2023 05:05:15 -0800 (PST)
+        with ESMTP id S230312AbjCGNFr (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 7 Mar 2023 08:05:47 -0500
+Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 479C5769EA
+        for <linux-omap@vger.kernel.org>; Tue,  7 Mar 2023 05:05:19 -0800 (PST)
+Received: by mail-lf1-x130.google.com with SMTP id r27so16942524lfe.10
+        for <linux-omap@vger.kernel.org>; Tue, 07 Mar 2023 05:05:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1678194301;
+        d=linaro.org; s=google; t=1678194302;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=EBLzNrziBJousn1yobeY2nHyRl+4RLWPBMZMMzuQhho=;
-        b=WoDr9naT88KPAmWtmecnyXyKXIJdxVKHY3fSLJFVbGwG76jmxOMnW1et6daEkqtG8a
-         ihRSCVa77byEIL8HXfej//ovzCXo2+wz4tewtmwIYanbdWMiw1u7VZSjs3FvkhLGWAAz
-         8bU+ToyGYK5TQqxPFixsNJk3BwPb+xCmOtBb1wfh0vJiixcJpC+jZ6wCUl1pBey1Sfnj
-         5O+2O/5WrBnQhSh/+P8FR0PuM04bQvZab0oLWH67mE9DsyTdVwceUHDEC87OzrOq7RJH
-         NAeSyLCPgKw2C9ADzYlHWxkINSMPIl1OEVULA0x0k+31OVxFKBls9sFnQoFEVdHaeguW
-         1tkA==
+        bh=/ycp1fOFRcqnvrXtuAswlNcdj2NkXI8qjDu7ztULp4g=;
+        b=QehD1bhYUi9CqVD9QXVP0PtANkHCGauBClYHYYp0hr12HX7h0TkjG6fFMxmn9vm4Fq
+         A0X4es0spCzccWcbPoMxmOrMCNy/A5TG0QfpzMRBydTn0gUeRbHifX49RoaxF28/p4c3
+         3MPzisEdzqQcDpwFKdn1vn0WbPQoyeWfa56aT8dso6OaTuDQ3wnHvEk04IKND9fyVPLy
+         Q6J9Et8+kF3WOl+6mfaK7yqU8cRBEec7+/1TvJLaC+JdzO19/KWv8b2nUAnoD8s5OhEH
+         /FYgtuMbVw+pao3NUpX0jp4lf0kWuC3tKBRndIYTnNOznEgDVQg2LLCkUfoNy87pvt5c
+         k3cQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678194301;
+        d=1e100.net; s=20210112; t=1678194302;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=EBLzNrziBJousn1yobeY2nHyRl+4RLWPBMZMMzuQhho=;
-        b=3GYD63MOXFvTcBLwCgqeN85/kz8d/LHsQS/xIyjjrMJHTeU6VhwEuefAQPbUZUmA5m
-         A81+ajLhIIQ35X2azfEhl6qpamWjGN4ogHBYIgnCHoqd4ecKrjEtMMj6zskS0e7DDgP3
-         K1ZMQxe+2wiXyHQkk0esmFXxb9IsfnM012/l/e3Nn/fcPLFOEJ2JBBK36EPqZuyU4Hm6
-         ehdyRwen9a34FXH/kP5JS9dpUXTZeCM44AwLThRHtYSmdFppoAZrRALuxSij47VyuqdM
-         2JmHKq+V68a48+7aRff4uhLQaJxfxf5zz5jPfFPr6z6pV6Xes3TpLVmK6v9yweOxEGDI
-         5d1w==
-X-Gm-Message-State: AO0yUKVA4fhNAfdu3rk8CqPt+kymNRDnntgQHMO9Q9zJAcjY11S+fGvx
-        tp4UmeMcYE71AOJElJmFaG7efQ==
-X-Google-Smtp-Source: AK7set9FIRk+D02EpqNXIipxeF+W2c44Rc49IDIGvQg7pSf1+vwkxVbmpAXxb9VPe8SErITD4clMrg==
-X-Received: by 2002:a2e:a99b:0:b0:28b:6525:e6b1 with SMTP id x27-20020a2ea99b000000b0028b6525e6b1mr4810829ljq.24.1678194301238;
-        Tue, 07 Mar 2023 05:05:01 -0800 (PST)
+        bh=/ycp1fOFRcqnvrXtuAswlNcdj2NkXI8qjDu7ztULp4g=;
+        b=qPK4uL0WdlwsZ9szRLnr91qcjvnnHQyPL0oZFsaBzaD3FRSvYndQMkdRPd1a6vjiBf
+         FUUxdpAe0AfZvXs0z+6Grd+/RxpWCr9A32zLiPjelU2DQRA2cSrHPo+uPi0Tfb4+hjsS
+         TDKOBvxJaNgozsJ6krQ/GAZUUxqtCAnxictKA6evlQQPczv4Qb/HHWTuALKkqEM80nhj
+         Hch0WC3Hit6LiHJcz5DLSgRN8ddmfF1E6cAZ1WbxCYfx2ZcT/tOgBkTTsVsA7Jaafkxc
+         5q2lBl1AUUlnuh33Gql62M+ryP4pjewq2tMJWNruqbKxrlenCLfLKDBOxQRBkiVTC+0w
+         SSfQ==
+X-Gm-Message-State: AO0yUKVoG1gRJh2e6V7/2Ofk4w1cXAYO7uHOgquHJBWBwS/9QkvJmrL1
+        Sitsl1LlvA1DtKr6TI6/tYs19wg0/dkw/bTOG28=
+X-Google-Smtp-Source: AK7set93WXjwZmiOBSQIZMB+0eDjPtJOLkR/LAOqDz4vWAPBj9BCaVrg7CvYpdXzX2eFJC+J4/9b9A==
+X-Received: by 2002:a19:760e:0:b0:4df:2c71:57fb with SMTP id c14-20020a19760e000000b004df2c7157fbmr4088445lff.43.1678194302348;
+        Tue, 07 Mar 2023 05:05:02 -0800 (PST)
 Received: from [127.0.1.1] ([85.235.12.219])
-        by smtp.gmail.com with ESMTPSA id w14-20020ac2598e000000b004caf992bba9sm2030548lfn.268.2023.03.07.05.05.00
+        by smtp.gmail.com with ESMTPSA id w14-20020ac2598e000000b004caf992bba9sm2030548lfn.268.2023.03.07.05.05.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Mar 2023 05:05:00 -0800 (PST)
+        Tue, 07 Mar 2023 05:05:01 -0800 (PST)
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Tue, 07 Mar 2023 14:04:57 +0100
-Subject: [PATCH v2 15/16] gpio: pci-idio-16: Convert to immutable irq_chip
+Date:   Tue, 07 Mar 2023 14:04:58 +0100
+Subject: [PATCH v2 16/16] gpio: pcie-idio-24: Convert to immutable irq_chip
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230215-immutable-chips-v2-15-d6b0e3f2d991@linaro.org>
+Message-Id: <20230215-immutable-chips-v2-16-d6b0e3f2d991@linaro.org>
 References: <20230215-immutable-chips-v2-0-d6b0e3f2d991@linaro.org>
 In-Reply-To: <20230215-immutable-chips-v2-0-d6b0e3f2d991@linaro.org>
 To:     Mun Yew Tham <mun.yew.tham@intel.com>,
@@ -95,54 +95,54 @@ Acked-by: William Breathitt Gray <william.gray@linaro.org>
 Acked-by: Marc Zyngier <maz@kernel.org>
 Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 ---
- drivers/gpio/gpio-pci-idio-16.c | 12 +++++++++---
+ drivers/gpio/gpio-pcie-idio-24.c | 12 +++++++++---
  1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpio/gpio-pci-idio-16.c b/drivers/gpio/gpio-pci-idio-16.c
-index a86ce748384b..6726c32e31e6 100644
---- a/drivers/gpio/gpio-pci-idio-16.c
-+++ b/drivers/gpio/gpio-pci-idio-16.c
-@@ -107,6 +107,8 @@ static void idio_16_irq_mask(struct irq_data *data)
- 
- 		raw_spin_unlock_irqrestore(&idio16gpio->lock, flags);
+diff --git a/drivers/gpio/gpio-pcie-idio-24.c b/drivers/gpio/gpio-pcie-idio-24.c
+index 8a9b98fa418f..ac42150f4009 100644
+--- a/drivers/gpio/gpio-pcie-idio-24.c
++++ b/drivers/gpio/gpio-pcie-idio-24.c
+@@ -396,6 +396,8 @@ static void idio_24_irq_mask(struct irq_data *data)
  	}
+ 
+ 	raw_spin_unlock_irqrestore(&idio24gpio->lock, flags);
 +
 +	gpiochip_disable_irq(chip, irqd_to_hwirq(data));
  }
  
- static void idio_16_irq_unmask(struct irq_data *data)
-@@ -117,6 +119,8 @@ static void idio_16_irq_unmask(struct irq_data *data)
- 	const unsigned long prev_irq_mask = idio16gpio->irq_mask;
- 	unsigned long flags;
+ static void idio_24_irq_unmask(struct irq_data *data)
+@@ -408,6 +410,8 @@ static void idio_24_irq_unmask(struct irq_data *data)
+ 	const unsigned long bank_offset = bit_offset / 8;
+ 	unsigned char cos_enable_state;
  
 +	gpiochip_enable_irq(chip, irqd_to_hwirq(data));
 +
- 	idio16gpio->irq_mask |= mask;
+ 	raw_spin_lock_irqsave(&idio24gpio->lock, flags);
  
- 	if (!prev_irq_mask) {
-@@ -138,12 +142,14 @@ static int idio_16_irq_set_type(struct irq_data *data, unsigned int flow_type)
+ 	prev_irq_mask = idio24gpio->irq_mask >> bank_offset * 8;
+@@ -437,12 +441,14 @@ static int idio_24_irq_set_type(struct irq_data *data, unsigned int flow_type)
  	return 0;
  }
  
--static struct irq_chip idio_16_irqchip = {
-+static const struct irq_chip idio_16_irqchip = {
- 	.name = "pci-idio-16",
- 	.irq_ack = idio_16_irq_ack,
- 	.irq_mask = idio_16_irq_mask,
- 	.irq_unmask = idio_16_irq_unmask,
--	.irq_set_type = idio_16_irq_set_type
-+	.irq_set_type = idio_16_irq_set_type,
+-static struct irq_chip idio_24_irqchip = {
++static const struct irq_chip idio_24_irqchip = {
+ 	.name = "pcie-idio-24",
+ 	.irq_ack = idio_24_irq_ack,
+ 	.irq_mask = idio_24_irq_mask,
+ 	.irq_unmask = idio_24_irq_unmask,
+-	.irq_set_type = idio_24_irq_set_type
++	.irq_set_type = idio_24_irq_set_type,
 +	.flags = IRQCHIP_IMMUTABLE,
 +	GPIOCHIP_IRQ_RESOURCE_HELPERS,
  };
  
- static irqreturn_t idio_16_irq_handler(int irq, void *dev_id)
-@@ -242,7 +248,7 @@ static int idio_16_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	idio_16_state_init(&idio16gpio->state);
+ static irqreturn_t idio_24_irq_handler(int irq, void *dev_id)
+@@ -535,7 +541,7 @@ static int idio_24_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	idio24gpio->chip.set_multiple = idio_24_gpio_set_multiple;
  
- 	girq = &idio16gpio->chip.irq;
--	girq->chip = &idio_16_irqchip;
-+	gpio_irq_chip_set_chip(girq, &idio_16_irqchip);
+ 	girq = &idio24gpio->chip.irq;
+-	girq->chip = &idio_24_irqchip;
++	gpio_irq_chip_set_chip(girq, &idio_24_irqchip);
  	/* This will let us handle the parent IRQ in the driver */
  	girq->parent_handler = NULL;
  	girq->num_parents = 0;
