@@ -2,81 +2,68 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AD2E6ADFF9
-	for <lists+linux-omap@lfdr.de>; Tue,  7 Mar 2023 14:06:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 684CB6AE0C6
+	for <lists+linux-omap@lfdr.de>; Tue,  7 Mar 2023 14:38:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230284AbjCGNGy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 7 Mar 2023 08:06:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40924 "EHLO
+        id S231180AbjCGNiM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 7 Mar 2023 08:38:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230312AbjCGNFr (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 7 Mar 2023 08:05:47 -0500
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 479C5769EA
-        for <linux-omap@vger.kernel.org>; Tue,  7 Mar 2023 05:05:19 -0800 (PST)
-Received: by mail-lf1-x130.google.com with SMTP id r27so16942524lfe.10
-        for <linux-omap@vger.kernel.org>; Tue, 07 Mar 2023 05:05:19 -0800 (PST)
+        with ESMTP id S230429AbjCGNiF (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 7 Mar 2023 08:38:05 -0500
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00C1A23DB9
+        for <linux-omap@vger.kernel.org>; Tue,  7 Mar 2023 05:38:01 -0800 (PST)
+Received: by mail-wr1-x430.google.com with SMTP id q16so12162666wrw.2
+        for <linux-omap@vger.kernel.org>; Tue, 07 Mar 2023 05:38:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1678194302;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/ycp1fOFRcqnvrXtuAswlNcdj2NkXI8qjDu7ztULp4g=;
-        b=QehD1bhYUi9CqVD9QXVP0PtANkHCGauBClYHYYp0hr12HX7h0TkjG6fFMxmn9vm4Fq
-         A0X4es0spCzccWcbPoMxmOrMCNy/A5TG0QfpzMRBydTn0gUeRbHifX49RoaxF28/p4c3
-         3MPzisEdzqQcDpwFKdn1vn0WbPQoyeWfa56aT8dso6OaTuDQ3wnHvEk04IKND9fyVPLy
-         Q6J9Et8+kF3WOl+6mfaK7yqU8cRBEec7+/1TvJLaC+JdzO19/KWv8b2nUAnoD8s5OhEH
-         /FYgtuMbVw+pao3NUpX0jp4lf0kWuC3tKBRndIYTnNOznEgDVQg2LLCkUfoNy87pvt5c
-         k3cQ==
+        d=linaro.org; s=google; t=1678196280;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JdJDrqqtlUNFE/DFGXP1EExWYwWTrZ4sgoVgCOKRcHw=;
+        b=V4DzUa/CJXmEKyz8Xpy8/QGIKXBudu8ASEL6k8YrDJZSBCz38x5ZOffeZtMUdO57ki
+         ITJyzDUh1dSdl8jwqFsAXbKJwIkdCxzK52vv1w3ry+4IgzfMQ7NpjyrwZyoj/9KFpGRf
+         e35A86LQwKNWwcNbSCrCCHdHghj0uj5f5EYTQ/eefhnk1XIuhrNifsMUylxxf5OiWN60
+         M/aUUCIWGaINg+xt7BMcqrewBKIv2hSmM97nsqNxjEOAUZiAMsSjGFBVIgE8G/708Xh+
+         W0TiVoin/cQPePlabFlMqdwQftivwZqIYmq3lMpkQ9xkG9gEzBMkhA0C/yFM+K34lIUb
+         x0uw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678194302;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20210112; t=1678196280;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=/ycp1fOFRcqnvrXtuAswlNcdj2NkXI8qjDu7ztULp4g=;
-        b=qPK4uL0WdlwsZ9szRLnr91qcjvnnHQyPL0oZFsaBzaD3FRSvYndQMkdRPd1a6vjiBf
-         FUUxdpAe0AfZvXs0z+6Grd+/RxpWCr9A32zLiPjelU2DQRA2cSrHPo+uPi0Tfb4+hjsS
-         TDKOBvxJaNgozsJ6krQ/GAZUUxqtCAnxictKA6evlQQPczv4Qb/HHWTuALKkqEM80nhj
-         Hch0WC3Hit6LiHJcz5DLSgRN8ddmfF1E6cAZ1WbxCYfx2ZcT/tOgBkTTsVsA7Jaafkxc
-         5q2lBl1AUUlnuh33Gql62M+ryP4pjewq2tMJWNruqbKxrlenCLfLKDBOxQRBkiVTC+0w
-         SSfQ==
-X-Gm-Message-State: AO0yUKVoG1gRJh2e6V7/2Ofk4w1cXAYO7uHOgquHJBWBwS/9QkvJmrL1
-        Sitsl1LlvA1DtKr6TI6/tYs19wg0/dkw/bTOG28=
-X-Google-Smtp-Source: AK7set93WXjwZmiOBSQIZMB+0eDjPtJOLkR/LAOqDz4vWAPBj9BCaVrg7CvYpdXzX2eFJC+J4/9b9A==
-X-Received: by 2002:a19:760e:0:b0:4df:2c71:57fb with SMTP id c14-20020a19760e000000b004df2c7157fbmr4088445lff.43.1678194302348;
-        Tue, 07 Mar 2023 05:05:02 -0800 (PST)
-Received: from [127.0.1.1] ([85.235.12.219])
-        by smtp.gmail.com with ESMTPSA id w14-20020ac2598e000000b004caf992bba9sm2030548lfn.268.2023.03.07.05.05.01
+        bh=JdJDrqqtlUNFE/DFGXP1EExWYwWTrZ4sgoVgCOKRcHw=;
+        b=Ek6FdH3nDAZCORNQLtkTPVxJEDSZo5xC975qTcp/opYhGAqT1INmfUNdOkCdhFYJI2
+         j2MUEStIv4p10qSuxhqScqj4b6wNd5DLIk1G6xBhnfmf2sBhpxHFUSAezLQduqUSJHye
+         JuN31uwAF7ofS5Eqm82kzO3JIxzvCS0orBpsBj9PKxx7ZGoi1HPrShxrnZO8uyhEBGMA
+         tGwhKsZtN19jZ6smvYOCwhwwGplHYG65GiEgMv1qxM7IqlAP/7DnXpa7uVHrJJjdgthu
+         tbh/8gRhXBfvfrMH+GKB0myubaXba1QEkmKKVtrxDVXg0HYOfTj89OvhPb4B1/E6MNsQ
+         KoCg==
+X-Gm-Message-State: AO0yUKX0tzucjZcbbu8PsH1wQYbSIME1XUw6aKrsrcQ1Q3AX6/S1zQzz
+        LA4rJFlf8MgoipO2SH7TDebx5g==
+X-Google-Smtp-Source: AK7set9/G2RCKujNj/awqunJtgb4/HR/pw5Zjft48/44xtwqy0fHRIBEntFMik1v/yB+mPnrmmq9Cg==
+X-Received: by 2002:adf:f70d:0:b0:2c7:c9e:2c41 with SMTP id r13-20020adff70d000000b002c70c9e2c41mr9490477wrp.57.1678196280284;
+        Tue, 07 Mar 2023 05:38:00 -0800 (PST)
+Received: from mai.box.freepro.com ([2a05:6e02:1041:c10:5ab9:1ac6:870d:35c])
+        by smtp.gmail.com with ESMTPSA id v5-20020a5d43c5000000b002c55de1c72bsm12311477wrr.62.2023.03.07.05.37.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Mar 2023 05:05:01 -0800 (PST)
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Tue, 07 Mar 2023 14:04:58 +0100
-Subject: [PATCH v2 16/16] gpio: pcie-idio-24: Convert to immutable irq_chip
+        Tue, 07 Mar 2023 05:37:59 -0800 (PST)
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+To:     daniel.lezcano@linaro.org, rafael@kernel.org
+Cc:     rui.zhang@intel.com, amitk@kernel.org, Keerthy <j-keerthy@ti.com>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        linux-pm@vger.kernel.org (open list:TI BANDGAP AND THERMAL DRIVER),
+        linux-omap@vger.kernel.org (open list:TI BANDGAP AND THERMAL DRIVER),
+        linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH v1 06/11] thermal/drivers/ti: Use fixed update interval
+Date:   Tue,  7 Mar 2023 14:37:30 +0100
+Message-Id: <20230307133735.90772-7-daniel.lezcano@linaro.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230307133735.90772-1-daniel.lezcano@linaro.org>
+References: <20230307133735.90772-1-daniel.lezcano@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230215-immutable-chips-v2-16-d6b0e3f2d991@linaro.org>
-References: <20230215-immutable-chips-v2-0-d6b0e3f2d991@linaro.org>
-In-Reply-To: <20230215-immutable-chips-v2-0-d6b0e3f2d991@linaro.org>
-To:     Mun Yew Tham <mun.yew.tham@intel.com>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Joel Stanley <joel@jms.id.au>,
-        Andrew Jeffery <andrew@aj.id.au>, Alban Bedel <albeu@free.fr>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Jay Fang <f.fangjian@huawei.com>,
-        Daniel Palmer <daniel@thingy.jp>,
-        Romain Perier <romain.perier@gmail.com>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Kevin Hilman <khilman@kernel.org>,
-        William Breathitt Gray <william.gray@linaro.org>
-Cc:     linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-aspeed@lists.ozlabs.org, linux-omap@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Marc Zyngier <maz@kernel.org>
-X-Mailer: b4 0.12.1
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
@@ -87,66 +74,61 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Convert the driver to immutable irq-chip with a bit of
-intuition.
+Currently the TI thermal driver sets the sensor update interval based
+on the polling of the thermal zone. In order to get the polling rate,
+the code inspects the thermal zone device strcuture internals, thus
+breaking the self-encapsulation of the thermal framework core
+framework.
 
-Cc: Marc Zyngier <maz@kernel.org>
-Acked-by: William Breathitt Gray <william.gray@linaro.org>
-Acked-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+On the other side, we see the common polling rates set in the device
+tree for the platforms using this driver are 500 or 1000 ms.
+
+Setting the polling rate to 250 ms would be far enough to cover the
+combination we found in the device tree.
+
+Instead of accessing the thermal zone device structure polling rate,
+let's use a common update interval of 250 ms for the driver.
+
+Cc: Keerthy <j-keerthy@ti.com>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 ---
- drivers/gpio/gpio-pcie-idio-24.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/thermal/ti-soc-thermal/ti-thermal-common.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpio/gpio-pcie-idio-24.c b/drivers/gpio/gpio-pcie-idio-24.c
-index 8a9b98fa418f..ac42150f4009 100644
---- a/drivers/gpio/gpio-pcie-idio-24.c
-+++ b/drivers/gpio/gpio-pcie-idio-24.c
-@@ -396,6 +396,8 @@ static void idio_24_irq_mask(struct irq_data *data)
+diff --git a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
+index 0c8914017c18..430c4b43151f 100644
+--- a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
++++ b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
+@@ -23,6 +23,8 @@
+ #include "ti-bandgap.h"
+ #include "../thermal_hwmon.h"
+ 
++#define TI_BANDGAP_UPDATE_INTERVAL_MS 250
++
+ /* common data structures */
+ struct ti_thermal_data {
+ 	struct cpufreq_policy *policy;
+@@ -159,7 +161,6 @@ int ti_thermal_expose_sensor(struct ti_bandgap *bgp, int id,
+ 			     char *domain)
+ {
+ 	struct ti_thermal_data *data;
+-	int interval;
+ 
+ 	data = ti_bandgap_get_sensor_data(bgp, id);
+ 
+@@ -177,10 +178,9 @@ int ti_thermal_expose_sensor(struct ti_bandgap *bgp, int id,
+ 		return PTR_ERR(data->ti_thermal);
  	}
  
- 	raw_spin_unlock_irqrestore(&idio24gpio->lock, flags);
-+
-+	gpiochip_disable_irq(chip, irqd_to_hwirq(data));
- }
+-	interval = jiffies_to_msecs(data->ti_thermal->polling_delay_jiffies);
+-
+ 	ti_bandgap_set_sensor_data(bgp, id, data);
+-	ti_bandgap_write_update_interval(bgp, data->sensor_id, interval);
++	ti_bandgap_write_update_interval(bgp, data->sensor_id,
++					 TI_BANDGAP_UPDATE_INTERVAL_MS);
  
- static void idio_24_irq_unmask(struct irq_data *data)
-@@ -408,6 +410,8 @@ static void idio_24_irq_unmask(struct irq_data *data)
- 	const unsigned long bank_offset = bit_offset / 8;
- 	unsigned char cos_enable_state;
- 
-+	gpiochip_enable_irq(chip, irqd_to_hwirq(data));
-+
- 	raw_spin_lock_irqsave(&idio24gpio->lock, flags);
- 
- 	prev_irq_mask = idio24gpio->irq_mask >> bank_offset * 8;
-@@ -437,12 +441,14 @@ static int idio_24_irq_set_type(struct irq_data *data, unsigned int flow_type)
- 	return 0;
- }
- 
--static struct irq_chip idio_24_irqchip = {
-+static const struct irq_chip idio_24_irqchip = {
- 	.name = "pcie-idio-24",
- 	.irq_ack = idio_24_irq_ack,
- 	.irq_mask = idio_24_irq_mask,
- 	.irq_unmask = idio_24_irq_unmask,
--	.irq_set_type = idio_24_irq_set_type
-+	.irq_set_type = idio_24_irq_set_type,
-+	.flags = IRQCHIP_IMMUTABLE,
-+	GPIOCHIP_IRQ_RESOURCE_HELPERS,
- };
- 
- static irqreturn_t idio_24_irq_handler(int irq, void *dev_id)
-@@ -535,7 +541,7 @@ static int idio_24_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	idio24gpio->chip.set_multiple = idio_24_gpio_set_multiple;
- 
- 	girq = &idio24gpio->chip.irq;
--	girq->chip = &idio_24_irqchip;
-+	gpio_irq_chip_set_chip(girq, &idio_24_irqchip);
- 	/* This will let us handle the parent IRQ in the driver */
- 	girq->parent_handler = NULL;
- 	girq->num_parents = 0;
-
+ 	if (devm_thermal_add_hwmon_sysfs(bgp->dev, data->ti_thermal))
+ 		dev_warn(bgp->dev, "failed to add hwmon sysfs attributes\n");
 -- 
 2.34.1
 
