@@ -2,71 +2,67 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 684CB6AE0C6
-	for <lists+linux-omap@lfdr.de>; Tue,  7 Mar 2023 14:38:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B6E496AE11D
+	for <lists+linux-omap@lfdr.de>; Tue,  7 Mar 2023 14:49:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231180AbjCGNiM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 7 Mar 2023 08:38:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34132 "EHLO
+        id S229621AbjCGNtB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 7 Mar 2023 08:49:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230429AbjCGNiF (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 7 Mar 2023 08:38:05 -0500
-Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00C1A23DB9
-        for <linux-omap@vger.kernel.org>; Tue,  7 Mar 2023 05:38:01 -0800 (PST)
-Received: by mail-wr1-x430.google.com with SMTP id q16so12162666wrw.2
-        for <linux-omap@vger.kernel.org>; Tue, 07 Mar 2023 05:38:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1678196280;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JdJDrqqtlUNFE/DFGXP1EExWYwWTrZ4sgoVgCOKRcHw=;
-        b=V4DzUa/CJXmEKyz8Xpy8/QGIKXBudu8ASEL6k8YrDJZSBCz38x5ZOffeZtMUdO57ki
-         ITJyzDUh1dSdl8jwqFsAXbKJwIkdCxzK52vv1w3ry+4IgzfMQ7NpjyrwZyoj/9KFpGRf
-         e35A86LQwKNWwcNbSCrCCHdHghj0uj5f5EYTQ/eefhnk1XIuhrNifsMUylxxf5OiWN60
-         M/aUUCIWGaINg+xt7BMcqrewBKIv2hSmM97nsqNxjEOAUZiAMsSjGFBVIgE8G/708Xh+
-         W0TiVoin/cQPePlabFlMqdwQftivwZqIYmq3lMpkQ9xkG9gEzBMkhA0C/yFM+K34lIUb
-         x0uw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678196280;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JdJDrqqtlUNFE/DFGXP1EExWYwWTrZ4sgoVgCOKRcHw=;
-        b=Ek6FdH3nDAZCORNQLtkTPVxJEDSZo5xC975qTcp/opYhGAqT1INmfUNdOkCdhFYJI2
-         j2MUEStIv4p10qSuxhqScqj4b6wNd5DLIk1G6xBhnfmf2sBhpxHFUSAezLQduqUSJHye
-         JuN31uwAF7ofS5Eqm82kzO3JIxzvCS0orBpsBj9PKxx7ZGoi1HPrShxrnZO8uyhEBGMA
-         tGwhKsZtN19jZ6smvYOCwhwwGplHYG65GiEgMv1qxM7IqlAP/7DnXpa7uVHrJJjdgthu
-         tbh/8gRhXBfvfrMH+GKB0myubaXba1QEkmKKVtrxDVXg0HYOfTj89OvhPb4B1/E6MNsQ
-         KoCg==
-X-Gm-Message-State: AO0yUKX0tzucjZcbbu8PsH1wQYbSIME1XUw6aKrsrcQ1Q3AX6/S1zQzz
-        LA4rJFlf8MgoipO2SH7TDebx5g==
-X-Google-Smtp-Source: AK7set9/G2RCKujNj/awqunJtgb4/HR/pw5Zjft48/44xtwqy0fHRIBEntFMik1v/yB+mPnrmmq9Cg==
-X-Received: by 2002:adf:f70d:0:b0:2c7:c9e:2c41 with SMTP id r13-20020adff70d000000b002c70c9e2c41mr9490477wrp.57.1678196280284;
-        Tue, 07 Mar 2023 05:38:00 -0800 (PST)
-Received: from mai.box.freepro.com ([2a05:6e02:1041:c10:5ab9:1ac6:870d:35c])
-        by smtp.gmail.com with ESMTPSA id v5-20020a5d43c5000000b002c55de1c72bsm12311477wrr.62.2023.03.07.05.37.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Mar 2023 05:37:59 -0800 (PST)
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-To:     daniel.lezcano@linaro.org, rafael@kernel.org
-Cc:     rui.zhang@intel.com, amitk@kernel.org, Keerthy <j-keerthy@ti.com>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        linux-pm@vger.kernel.org (open list:TI BANDGAP AND THERMAL DRIVER),
-        linux-omap@vger.kernel.org (open list:TI BANDGAP AND THERMAL DRIVER),
-        linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v1 06/11] thermal/drivers/ti: Use fixed update interval
-Date:   Tue,  7 Mar 2023 14:37:30 +0100
-Message-Id: <20230307133735.90772-7-daniel.lezcano@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230307133735.90772-1-daniel.lezcano@linaro.org>
-References: <20230307133735.90772-1-daniel.lezcano@linaro.org>
+        with ESMTP id S230166AbjCGNsp (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 7 Mar 2023 08:48:45 -0500
+Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 147F983895;
+        Tue,  7 Mar 2023 05:47:42 -0800 (PST)
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 327DlSLh050148;
+        Tue, 7 Mar 2023 07:47:28 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1678196848;
+        bh=SK8LF2YieqOxb+9pM44sEMrLQlozFKt0sw/cyRAA+iI=;
+        h=Date:Subject:To:CC:References:From:In-Reply-To;
+        b=QQhWtqZdIDFiFzNDNMrMeDAGi27SgzEZtI5fwCKnOdpAzPKItEhkltRgluimtGD7z
+         vusQZx9+HtzOUaTq7S/htD3mP9aQS1VbZeTDJT61VJKNgx3uSifa+AuhG1Bz7GIsUs
+         d2HbZBUMz1oE6w+aN/OvBCS15IiWniYnv1hdHwBY=
+Received: from DLEE109.ent.ti.com (dlee109.ent.ti.com [157.170.170.41])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 327DlSBO068610
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 7 Mar 2023 07:47:28 -0600
+Received: from DLEE108.ent.ti.com (157.170.170.38) by DLEE109.ent.ti.com
+ (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16; Tue, 7
+ Mar 2023 07:47:28 -0600
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE108.ent.ti.com
+ (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16 via
+ Frontend Transport; Tue, 7 Mar 2023 07:47:28 -0600
+Received: from [10.250.174.229] (ileaxei01-snat2.itg.ti.com [10.180.69.6])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 327DlNEC081802;
+        Tue, 7 Mar 2023 07:47:24 -0600
+Message-ID: <d6ef0ff1-f8db-c945-99c2-268cded9da8c@ti.com>
+Date:   Tue, 7 Mar 2023 19:17:23 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [PATCH v1 06/11] thermal/drivers/ti: Use fixed update interval
+Content-Language: en-US
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>, <rafael@kernel.org>
+CC:     <rui.zhang@intel.com>, <amitk@kernel.org>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        "open list:TI BANDGAP AND THERMAL DRIVER" <linux-pm@vger.kernel.org>,
+        "open list:TI BANDGAP AND THERMAL DRIVER" 
+        <linux-omap@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+References: <20230307133735.90772-1-daniel.lezcano@linaro.org>
+ <20230307133735.90772-7-daniel.lezcano@linaro.org>
+From:   "J, KEERTHY" <j-keerthy@ti.com>
+In-Reply-To: <20230307133735.90772-7-daniel.lezcano@linaro.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -74,61 +70,66 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Currently the TI thermal driver sets the sensor update interval based
-on the polling of the thermal zone. In order to get the polling rate,
-the code inspects the thermal zone device strcuture internals, thus
-breaking the self-encapsulation of the thermal framework core
-framework.
 
-On the other side, we see the common polling rates set in the device
-tree for the platforms using this driver are 500 or 1000 ms.
 
-Setting the polling rate to 250 ms would be far enough to cover the
-combination we found in the device tree.
+On 3/7/2023 7:07 PM, Daniel Lezcano wrote:
+> Currently the TI thermal driver sets the sensor update interval based
+> on the polling of the thermal zone. In order to get the polling rate,
+> the code inspects the thermal zone device strcuture internals, thus
+> breaking the self-encapsulation of the thermal framework core
+> framework.
+> 
+> On the other side, we see the common polling rates set in the device
+> tree for the platforms using this driver are 500 or 1000 ms.
+> 
+> Setting the polling rate to 250 ms would be far enough to cover the
+> combination we found in the device tree.
+> 
+> Instead of accessing the thermal zone device structure polling rate,
+> let's use a common update interval of 250 ms for the driver.
 
-Instead of accessing the thermal zone device structure polling rate,
-let's use a common update interval of 250 ms for the driver.
+Thanks for the patch.
 
-Cc: Keerthy <j-keerthy@ti.com>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
----
- drivers/thermal/ti-soc-thermal/ti-thermal-common.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Acked-by: Keerthy <j-keerthy@ti.com>
 
-diff --git a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-index 0c8914017c18..430c4b43151f 100644
---- a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-+++ b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-@@ -23,6 +23,8 @@
- #include "ti-bandgap.h"
- #include "../thermal_hwmon.h"
- 
-+#define TI_BANDGAP_UPDATE_INTERVAL_MS 250
-+
- /* common data structures */
- struct ti_thermal_data {
- 	struct cpufreq_policy *policy;
-@@ -159,7 +161,6 @@ int ti_thermal_expose_sensor(struct ti_bandgap *bgp, int id,
- 			     char *domain)
- {
- 	struct ti_thermal_data *data;
--	int interval;
- 
- 	data = ti_bandgap_get_sensor_data(bgp, id);
- 
-@@ -177,10 +178,9 @@ int ti_thermal_expose_sensor(struct ti_bandgap *bgp, int id,
- 		return PTR_ERR(data->ti_thermal);
- 	}
- 
--	interval = jiffies_to_msecs(data->ti_thermal->polling_delay_jiffies);
--
- 	ti_bandgap_set_sensor_data(bgp, id, data);
--	ti_bandgap_write_update_interval(bgp, data->sensor_id, interval);
-+	ti_bandgap_write_update_interval(bgp, data->sensor_id,
-+					 TI_BANDGAP_UPDATE_INTERVAL_MS);
- 
- 	if (devm_thermal_add_hwmon_sysfs(bgp->dev, data->ti_thermal))
- 		dev_warn(bgp->dev, "failed to add hwmon sysfs attributes\n");
--- 
-2.34.1
-
+> 
+> Cc: Keerthy <j-keerthy@ti.com>
+> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+> ---
+>   drivers/thermal/ti-soc-thermal/ti-thermal-common.c | 8 ++++----
+>   1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
+> index 0c8914017c18..430c4b43151f 100644
+> --- a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
+> +++ b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
+> @@ -23,6 +23,8 @@
+>   #include "ti-bandgap.h"
+>   #include "../thermal_hwmon.h"
+>   
+> +#define TI_BANDGAP_UPDATE_INTERVAL_MS 250
+> +
+>   /* common data structures */
+>   struct ti_thermal_data {
+>   	struct cpufreq_policy *policy;
+> @@ -159,7 +161,6 @@ int ti_thermal_expose_sensor(struct ti_bandgap *bgp, int id,
+>   			     char *domain)
+>   {
+>   	struct ti_thermal_data *data;
+> -	int interval;
+>   
+>   	data = ti_bandgap_get_sensor_data(bgp, id);
+>   
+> @@ -177,10 +178,9 @@ int ti_thermal_expose_sensor(struct ti_bandgap *bgp, int id,
+>   		return PTR_ERR(data->ti_thermal);
+>   	}
+>   
+> -	interval = jiffies_to_msecs(data->ti_thermal->polling_delay_jiffies);
+> -
+>   	ti_bandgap_set_sensor_data(bgp, id, data);
+> -	ti_bandgap_write_update_interval(bgp, data->sensor_id, interval);
+> +	ti_bandgap_write_update_interval(bgp, data->sensor_id,
+> +					 TI_BANDGAP_UPDATE_INTERVAL_MS);
+>   
+>   	if (devm_thermal_add_hwmon_sysfs(bgp->dev, data->ti_thermal))
+>   		dev_warn(bgp->dev, "failed to add hwmon sysfs attributes\n");
