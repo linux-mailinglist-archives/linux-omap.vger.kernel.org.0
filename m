@@ -2,117 +2,90 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 852816AD9B1
-	for <lists+linux-omap@lfdr.de>; Tue,  7 Mar 2023 09:58:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 30C056ADB14
+	for <lists+linux-omap@lfdr.de>; Tue,  7 Mar 2023 10:54:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230144AbjCGI6G (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 7 Mar 2023 03:58:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39708 "EHLO
+        id S231163AbjCGJyM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 7 Mar 2023 04:54:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53430 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230001AbjCGI6F (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 7 Mar 2023 03:58:05 -0500
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96D4B31E06
-        for <linux-omap@vger.kernel.org>; Tue,  7 Mar 2023 00:58:03 -0800 (PST)
-Received: by mail-ed1-x532.google.com with SMTP id u9so49463489edd.2
-        for <linux-omap@vger.kernel.org>; Tue, 07 Mar 2023 00:58:03 -0800 (PST)
+        with ESMTP id S230462AbjCGJxx (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 7 Mar 2023 04:53:53 -0500
+Received: from mail-yw1-x1131.google.com (mail-yw1-x1131.google.com [IPv6:2607:f8b0:4864:20::1131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D4AF40EF
+        for <linux-omap@vger.kernel.org>; Tue,  7 Mar 2023 01:53:48 -0800 (PST)
+Received: by mail-yw1-x1131.google.com with SMTP id 00721157ae682-536bbe5f888so234902607b3.8
+        for <linux-omap@vger.kernel.org>; Tue, 07 Mar 2023 01:53:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1678179482;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ZVTfPiVagOZL90gtIf96Yys0KYhqSZTVjW5Vb21u5PM=;
-        b=lMOa5uVEs630Vnh6L/HLw1O+7z304xtCXQWssdZJSHBtS4gIfwMxoSXq/0Zgf/xUbN
-         PN1HG2FZxjcmO345RxD5HR4grPkXWhRsqUFgr+JvkV6aWU72WtqZAe/ZZCkkq+sgsB7p
-         fx4vQxO+UJweosWCMiYvgAzNM1YfAP9OG9zO3yJvtLyT4cA1G0ud0lgINu7+Gbm+/6Gd
-         qa1h8WDwJJGEWNAxdRiEPORgRxXprK2YQflKCXc3dUfIcRoueho+UxtOkW3L/SOLWnrD
-         xkMAvbpKIcDVZqMHPIrVJJMNjpMaPY96d0ICAOMq8opK6t40l4RJ4EO05Fmv0hpF3O3g
-         axKw==
+        d=googlemail.com; s=20210112; t=1678182827;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=KJzG0p0gXsmorAUxLydHRSvfZbmyGBAct3SdikU1lvg=;
+        b=ezdgd3huiqHpYWOPv12drRgxOHsRQ74szi2bJDNu6gqeI/yULxy73v3t5xP2M5pWG/
+         sFQXL+NkSba8OV5hSZyH2eZSwZP+74x/9lQplPTi9bc/8iPXtHvFRvTRnmxAObjyClht
+         BupUI5HokaepBOq1Jnoqzn1vOPVQ5+1W5bd4vIRcRkxIqMyPV+CTzt8Rxs2PYjlEyGtW
+         3AIdO3GqXUeEh/IA6ZzX5sYwNHsc8EcEd1pwkH0eF12wV9rc+Nh9e1PkewfOm1ONZjVB
+         UY183dSOygdZMPENTV46qdG2q3NKArgTxepXLcSIwrqcozyXmDZyYcLm109LkwnGTvm1
+         jw8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678179482;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZVTfPiVagOZL90gtIf96Yys0KYhqSZTVjW5Vb21u5PM=;
-        b=6n4Y7pi5Fn+r9yXZkDIZCoWCRkn0EpxVWdAhYd8mOTfe0ny1LfOmOG8oA0KzuGRXRf
-         +73bCyfNioYgfRJsgrsjOVsJwO+WWMS46YEbjIHqb2kDVAriXeuMdEInHEULfuCSQMLC
-         RK9yr4hbWKFqbPXPBd8KzceRKp/cxGmAhZEESjuI5CKU3aN1e+ph7NV6rXTdvc4sfkpa
-         GlkXGTL26xNdqgMlgSKi7NeUSeduipRQsTE6hFI70RtUbNVL1xl20TBT/KYpYEBPzG7W
-         tnUFA+0Ip+4fNBCciN90U21KhIqNlp0ldi4ZFdyN71OMNqa0XRpInrTM0yHQjBlXEmF4
-         TI/Q==
-X-Gm-Message-State: AO0yUKWk0xkAj/QowYJn4wAzyokbTLb/lxljE0Fqdhsd66S60m5kZNP8
-        lM6RHCT/iveyADGQD/ovz+4omg==
-X-Google-Smtp-Source: AK7set9i6XN8jLMfyZaebyCVBR+PyyIEq6PPzmiHj6R2qI1SLS1ib+ru7uB7rd79hwfISF1aZfF07Q==
-X-Received: by 2002:aa7:d7c3:0:b0:4af:5aa1:6e58 with SMTP id e3-20020aa7d7c3000000b004af5aa16e58mr13274064eds.21.1678179482002;
-        Tue, 07 Mar 2023 00:58:02 -0800 (PST)
-Received: from ?IPV6:2a02:810d:15c0:828:5310:35c7:6f9e:2cd3? ([2a02:810d:15c0:828:5310:35c7:6f9e:2cd3])
-        by smtp.gmail.com with ESMTPSA id o22-20020a509b16000000b004c4eed3fe20sm6364807edi.5.2023.03.07.00.58.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Mar 2023 00:58:01 -0800 (PST)
-Message-ID: <63dbbda7-a444-8dac-6399-45e305652155@linaro.org>
-Date:   Tue, 7 Mar 2023 09:58:00 +0100
+        d=1e100.net; s=20210112; t=1678182827;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KJzG0p0gXsmorAUxLydHRSvfZbmyGBAct3SdikU1lvg=;
+        b=yg4k7J7M51yv07aRYwbad0exTFg68jIuje6/iVJwD4gC2a+ldOOCtXkTrXKjvttqmW
+         uy5e/5Ukpc3NRRDlAydggAQ3IEu7RWKPzvH5lONnA76CXQRupeuQCcqZsUxH3rnVsF9Q
+         VkFYOpPRrj+RFDhP+rnidhNpSfTqBkpbJydbT/QeutECLzTdPFk3j+lDcpoUvSbg2fS3
+         cEje3Nd5o6tR5ukKM8jvP5JsPas+oDkAIeXZw7/FnZBo2vaX4QdOnn8aImh13/ycTIXS
+         dK7RLZjlAs709mFD/ocf5fjc2dRsEm9bKpI5E6JAjggww6mmnoWGrbJFzNrVtuAm1hcX
+         yQOA==
+X-Gm-Message-State: AO0yUKX/5WH+f1ff+tQgyHAIrfu6c5wgskqUBoP9mLD462iDPqKF7GZ7
+        Ta5lElqU71XAQEhpcPtk3VGP9v/GYtmVvpnPOrI=
+X-Google-Smtp-Source: AK7set8L3VPByxziSpBK4EbTyixVSBgK/wG8CRLe9KdDajrtGu44cVZoliI8FLdTM7wpOgxC97OssISwlZI3oauFScM=
+X-Received: by 2002:a81:ad44:0:b0:52a:92e9:27c1 with SMTP id
+ l4-20020a81ad44000000b0052a92e927c1mr8918117ywk.10.1678182827587; Tue, 07 Mar
+ 2023 01:53:47 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [EXTERNAL] Re: [PATCH v5 1/2] dt-bindings: net: Add ICSSG
- Ethernet
-Content-Language: en-US
-To:     Md Danish Anwar <a0501179@ti.com>, Rob Herring <robh@kernel.org>,
-        MD Danish Anwar <danishanwar@ti.com>
-Cc:     "Andrew F. Davis" <afd@ti.com>, Suman Anna <s-anna@ti.com>,
-        Roger Quadros <rogerq@kernel.org>,
-        YueHaibing <yuehaibing@huawei.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>, andrew@lunn.ch, nm@ti.com,
-        ssantosh@kernel.org, srk@ti.com, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, netdev@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-References: <20230210114957.2667963-1-danishanwar@ti.com>
- <20230210114957.2667963-2-danishanwar@ti.com>
- <20230210192001.GB2923614-robh@kernel.org>
- <43df3c2c-d0d0-f2b8-cf8b-8a2453ca43b4@ti.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <43df3c2c-d0d0-f2b8-cf8b-8a2453ca43b4@ti.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <CAGm1_kuc0T5xqdQU0JVbetz+pMZb2=v=jhpgmfvZQhAiPdAG=A@mail.gmail.com>
+ <20230306074200.GD7501@atomide.com>
+In-Reply-To: <20230306074200.GD7501@atomide.com>
+From:   Yegor Yefremov <yegorslists@googlemail.com>
+Date:   Tue, 7 Mar 2023 10:53:36 +0100
+Message-ID: <CAGm1_ktJH21qk=eRH_xJgwkf_pGCgp1z7Jrp5M2orZ-eNRNg=Q@mail.gmail.com>
+Subject: Re: am335x: performnce issues with FTDI and LOW_LATENCY
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Linux-OMAP <linux-omap@vger.kernel.org>, Bin Liu <b-liu@ti.com>,
+        Johan Hovold <johan@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 07/03/2023 05:57, Md Danish Anwar wrote:
->>> +allOf:
->>> +  - $ref: /schemas/remoteproc/ti,pru-consumer.yaml#
->>> +
->>> +properties:
->>> +  compatible:
->>> +    enum:
->>> +      - ti,am654-icssg-prueth  # for AM65x SoC family
->>> +
->>> +  ti,sram:
->>> +    $ref: /schemas/types.yaml#/definitions/phandle
->>> +    description:
->>> +      phandle to MSMC SRAM node
->>
->> I believe we have a standard 'sram' property to point to SRAM nodes 
->> assuming this is just mmio-sram or similar.
->>
-> 
-> Yes, we have standard 'sram' property but Krzysztof had asked me to make the
-> sram property vendor specific in last revision of this series.
+On Mon, Mar 6, 2023 at 8:42 AM Tony Lindgren <tony@atomide.com> wrote:
+>
+> * Yegor Yefremov <yegorslists@googlemail.com> [230228 08:01]:
+> > Any idea why the performance drop is so big?
+>
+> Maybe lots of interrupts and dma not being used for musb in this case?
 
-Sorry about that. I missed that we already have a 'sram'. The question
-remains whether this is a phandle to MMIO SRAM or similar (sram.yaml).
+Using "irqtop -d 1", I get the following results:
 
-Best regards,
-Krzysztof
+3.18.1 LATENCY_OFF (16 ports): ca. 1000 IRQs/s INTC 17 47400000.dma-controller
+3.18.1 LATENCY_ON (16 ports): ca. 4000 IRQs/s INTC 17 47400000.dma-controller
 
+6.2.1 LATENCY_OFF (16 ports): ca. 300 IRQs/s INTC 17 47400000.dma-controller
+6.2.1 LATENCY_ON (16 ports): ca. 1000 IRQs/s INTC 17 47400000.dma-controller
+
+#zcat /proc/config.gz | grep CPP
+CONFIG_USB_TI_CPPI41_DMA=y
+CONFIG_TI_CPPI41=y
+
+Looks like 3.18.1 can handle more interrupts than 6.2.1.
+
+Yegor
