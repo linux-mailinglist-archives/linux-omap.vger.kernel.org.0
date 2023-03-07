@@ -2,134 +2,228 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B6E496AE11D
-	for <lists+linux-omap@lfdr.de>; Tue,  7 Mar 2023 14:49:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 405B16AE1F8
+	for <lists+linux-omap@lfdr.de>; Tue,  7 Mar 2023 15:15:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229621AbjCGNtB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 7 Mar 2023 08:49:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47470 "EHLO
+        id S229981AbjCGOPY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 7 Mar 2023 09:15:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230166AbjCGNsp (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 7 Mar 2023 08:48:45 -0500
-Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 147F983895;
-        Tue,  7 Mar 2023 05:47:42 -0800 (PST)
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 327DlSLh050148;
-        Tue, 7 Mar 2023 07:47:28 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1678196848;
-        bh=SK8LF2YieqOxb+9pM44sEMrLQlozFKt0sw/cyRAA+iI=;
-        h=Date:Subject:To:CC:References:From:In-Reply-To;
-        b=QQhWtqZdIDFiFzNDNMrMeDAGi27SgzEZtI5fwCKnOdpAzPKItEhkltRgluimtGD7z
-         vusQZx9+HtzOUaTq7S/htD3mP9aQS1VbZeTDJT61VJKNgx3uSifa+AuhG1Bz7GIsUs
-         d2HbZBUMz1oE6w+aN/OvBCS15IiWniYnv1hdHwBY=
-Received: from DLEE109.ent.ti.com (dlee109.ent.ti.com [157.170.170.41])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 327DlSBO068610
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 7 Mar 2023 07:47:28 -0600
-Received: from DLEE108.ent.ti.com (157.170.170.38) by DLEE109.ent.ti.com
- (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16; Tue, 7
- Mar 2023 07:47:28 -0600
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE108.ent.ti.com
- (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16 via
- Frontend Transport; Tue, 7 Mar 2023 07:47:28 -0600
-Received: from [10.250.174.229] (ileaxei01-snat2.itg.ti.com [10.180.69.6])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 327DlNEC081802;
-        Tue, 7 Mar 2023 07:47:24 -0600
-Message-ID: <d6ef0ff1-f8db-c945-99c2-268cded9da8c@ti.com>
-Date:   Tue, 7 Mar 2023 19:17:23 +0530
+        with ESMTP id S231622AbjCGOO5 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 7 Mar 2023 09:14:57 -0500
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D34AC888AF;
+        Tue,  7 Mar 2023 06:10:59 -0800 (PST)
+Received: by mail-ed1-x52b.google.com with SMTP id da10so52837841edb.3;
+        Tue, 07 Mar 2023 06:10:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1678198232;
+        h=content-transfer-encoding:content-language:in-reply-to:mime-version
+         :user-agent:date:message-id:from:references:to:subject:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nMwIvhw/CtZLY+ptbTUoRQC+a1etWn/yg2z1ztKfgbs=;
+        b=NW9cmKnh9Jl40OJEJ5sp+KQCAMPpPXNHX2zc/3+0bNa9wt5dnUK4INlK8tUNbFzXMA
+         mLakrIjH0cbSZlFaNJxfINMyjhUH1nezStfay67wWlmbFW4jEwu79M/2e6A0tNOKyShc
+         KKvHtU3KLY3eItN5Xel3k02wCCx/vBD6d9oXhqvX15mkl/kmv38TAHKuhiFgZGXKLcF6
+         F2Cy2Fy606vuQZPBbTgMv7u2SjMS7AcVRN3HA5e7ylle+8VUgylWlPyEgPvSUng3vVYl
+         PwLpSEf8+Z5MB0UzKSiNXE2c7436w0Y54WEY5hSaRxKzSh19B2Z6kPLR0DbB7vhQ7qdV
+         iNHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678198232;
+        h=content-transfer-encoding:content-language:in-reply-to:mime-version
+         :user-agent:date:message-id:from:references:to:subject
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=nMwIvhw/CtZLY+ptbTUoRQC+a1etWn/yg2z1ztKfgbs=;
+        b=ZQ6T7NRLOAmIH594KnKoKMQKA5vJrEniBYHjaKyShABIvcj8cp5mYhub3oYAmj4XXh
+         I+ddje6/xBzdG0DryynIH1ktNJ0chY2GIrVRhszhFAVgqV2aB5QZlMv3DV55TbDTDoIb
+         OixbcUVwCtb3LfQt0kqzM8hF5NJs0ZWoXEaNDoVRBWOG7YHD78KzBhCqADBki8D37boB
+         C4BKtFrEPwKUT+Ii69XZEm47A4iHlwZmeOiFWX7tu18EU+Fq0i01mY3ybK9GHy5KJSIZ
+         Wr7A3NdeRyi/RB5i8f3bLBLZmE++GicOJCCEVldciWixTFPy1Och6d9gc6MQ+SSG/144
+         UB+g==
+X-Gm-Message-State: AO0yUKUxEhoIEIpMrH2tNI2dqBOSQyChf85ekadm1T9wFdn11g9nZLGa
+        FpO82jYebyMIMuDLtQffL4A=
+X-Google-Smtp-Source: AK7set+aBb52NAC13xrM+v54duRdjN0wl3TEwef2LK4yyjd04KNS4pTWCk6cb6N/bBtcul/oU3PbqA==
+X-Received: by 2002:a17:906:d0ca:b0:88d:ba89:183a with SMTP id bq10-20020a170906d0ca00b0088dba89183amr17484151ejb.11.1678198232403;
+        Tue, 07 Mar 2023 06:10:32 -0800 (PST)
+Received: from [192.168.1.10] ([95.43.220.235])
+        by smtp.googlemail.com with ESMTPSA id k12-20020a50ce4c000000b004c0459c20f9sm6743662edj.66.2023.03.07.06.10.31
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 07 Mar 2023 06:10:31 -0800 (PST)
+Subject: Re: Motorola Droid 4 -- Stopping charger when battery is full
+To:     Pavel Machek <pavel@ucw.cz>,
+        kernel list <linux-kernel@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        linux-omap@vger.kernel.org, tony@atomide.com, sre@kernel.org,
+        nekit1000@gmail.com, mpartap@gmx.net, merlijn@wizzup.org,
+        martin_rysavy@centrum.cz, phone-devel@vger.kernel.org,
+        maemo-leste@lists.dyne.org
+References: <ZAcvuP8kmWveLoE/@duo.ucw.cz>
+From:   Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+Message-ID: <ef4409b2-abd8-0eac-f66e-6858c3358cc1@gmail.com>
+Date:   Tue, 7 Mar 2023 16:10:20 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Firefox/60.0 Thunderbird/60.6.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH v1 06/11] thermal/drivers/ti: Use fixed update interval
-Content-Language: en-US
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>, <rafael@kernel.org>
-CC:     <rui.zhang@intel.com>, <amitk@kernel.org>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        "open list:TI BANDGAP AND THERMAL DRIVER" <linux-pm@vger.kernel.org>,
-        "open list:TI BANDGAP AND THERMAL DRIVER" 
-        <linux-omap@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-References: <20230307133735.90772-1-daniel.lezcano@linaro.org>
- <20230307133735.90772-7-daniel.lezcano@linaro.org>
-From:   "J, KEERTHY" <j-keerthy@ti.com>
-In-Reply-To: <20230307133735.90772-7-daniel.lezcano@linaro.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <ZAcvuP8kmWveLoE/@duo.ucw.cz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Hi,
 
+On 7.03.23 г. 14:36 ч., Pavel Machek wrote:
+> Hi!
+> 
+> I complained that "battery life is very poor" with leste. It seems to
+> be combination of several factors.
+> 
+> 1) I was using very old battery
+> 
+> 2) My charger is detected as "USB", not as "AC"
+> 
 
-On 3/7/2023 7:07 PM, Daniel Lezcano wrote:
-> Currently the TI thermal driver sets the sensor update interval based
-> on the polling of the thermal zone. In order to get the polling rate,
-> the code inspects the thermal zone device strcuture internals, thus
-> breaking the self-encapsulation of the thermal framework core
-> framework.
-> 
-> On the other side, we see the common polling rates set in the device
-> tree for the platforms using this driver are 500 or 1000 ms.
-> 
-> Setting the polling rate to 250 ms would be far enough to cover the
-> combination we found in the device tree.
-> 
-> Instead of accessing the thermal zone device structure polling rate,
-> let's use a common update interval of 250 ms for the driver.
+And this is because there is no working charger detection in the driver, 
+so initial current limit is hard-coded to 500mA.
 
-Thanks for the patch.
+I was on it, but had to suspend, partially because of 
+https://lore.kernel.org/lkml/1668430562-27114-1-git-send-email-ivo.g.dimitrov.75@gmail.com/#r 
+, which I will have to fix by other means.
 
-Acked-by: Keerthy <j-keerthy@ti.com>
+OTOH, I have cpcap-extcon driver around which does charger detection and 
+sends the appropriate events, along with cpcap-charger patches that 
+properly limit the charger current, however, until the issue in charger 
+framework is fixed those are of no use.
 
+Didn't have enough spare time lately to resume the work :(
+
+> 3) Charger was cycling on/off, which was annoying and I often ending
+> up dissconnecting the charger
 > 
-> Cc: Keerthy <j-keerthy@ti.com>
-> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-> ---
->   drivers/thermal/ti-soc-thermal/ti-thermal-common.c | 8 ++++----
->   1 file changed, 4 insertions(+), 4 deletions(-)
+> 4) It probably has a bit higher power consuption than original android
 > 
-> diff --git a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-> index 0c8914017c18..430c4b43151f 100644
-> --- a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-> +++ b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-> @@ -23,6 +23,8 @@
->   #include "ti-bandgap.h"
->   #include "../thermal_hwmon.h"
+> 5) Android is more aggressive, charges to 4.35V, and allows deeper
+> discharge
+> 
+
+We can't charge to 4.35 without knowing the type of the battery, 
+unfortunately 
+https://lore.kernel.org/all/1667332425-12536-1-git-send-email-ivo.g.dimitrov.75@gmail.com/T/#t 
+didn't make it, for reasons unknown to me.
+
+Yes, we have that in leste kernel, but I am getting sick of supporting 
+out-of-tree patches, so I don't really want to build userspace on kernel 
+features that are not upstream, if possible.
+
+Also, some guys have concerns about charging (and keeping it charged) 
+@4.35, because of the possibly reduced battery life.
+
+> According to my measurements "CPCAP_REG_CRM_FET_OVRD |
+> CPCAP_REG_CRM_FET_CTRL" results in battery discharding and 0A drawn
+> frmo the USB.  "CPCAP_REG_CRM_FET_OVRD" is phone powered from USB,
+> with battery more or less disconnected (<12mA), which is what we want
+> in battery full situation.
+> 
+
+What will happen if phone needs to draw more than N mA (N is the set 
+charger current limit)?
+
+> Second problem was that phone never really stayed in "battery full",
+> immediately exiting it.
+> 
+> This should solve both issues (plus it enables a lot of
+> debugging).
+> 
+
+Thanks and regards,
+Ivo
+
+> Best regards,
+> 								Pavel
+> 
+> Signed-off-by: Pavel Machek <pavel@ucw.cz>
+> 
+> diff --git a/drivers/power/supply/cpcap-charger.c b/drivers/power/supply/cpcap-charger.c
+> index 8bd1abe246cc..af268fc87fbf 100644
+> --- a/drivers/power/supply/cpcap-charger.c
+> +++ b/drivers/power/supply/cpcap-charger.c
+> @@ -10,6 +10,7 @@
+>    * Copyright (C) 2009-2010 Motorola, Inc.
+>    */
 >   
-> +#define TI_BANDGAP_UPDATE_INTERVAL_MS 250
+> +#define DEBUG
+>   #include <linux/atomic.h>
+>   #include <linux/init.h>
+>   #include <linux/module.h>
+> @@ -410,8 +411,7 @@ static int cpcap_charger_disable(struct cpcap_charger_ddata *ddata)
+>   	int error;
+>   
+>   	error = regmap_update_bits(ddata->reg, CPCAP_REG_CRM, 0x3fff,
+> -				   CPCAP_REG_CRM_FET_OVRD |
+> -				   CPCAP_REG_CRM_FET_CTRL);
+> +				   CPCAP_REG_CRM_FET_OVRD);
+>   	if (error)
+>   		dev_err(ddata->dev, "%s failed with %i\n", __func__, error);
+>   
+> @@ -686,8 +686,11 @@ static void cpcap_usb_detect(struct work_struct *work)
+>   	if (error)
+>   		return;
+>   
+> +	dev_dbg(ddata->dev, "%d %d %d %d\n", s.chrg_det, s.chrgcurr1, s.chrgcurr2, s.vbusvld);
 > +
->   /* common data structures */
->   struct ti_thermal_data {
->   	struct cpufreq_policy *policy;
-> @@ -159,7 +161,6 @@ int ti_thermal_expose_sensor(struct ti_bandgap *bgp, int id,
->   			     char *domain)
->   {
->   	struct ti_thermal_data *data;
-> -	int interval;
+>   	/* Just init the state if a charger is connected with no chrg_det set */
+>   	if (!s.chrg_det && s.chrgcurr1 && s.vbusvld) {
+> +	  printk("Just init -- not chrg_det\n");
+>   		cpcap_charger_update_state(ddata,
+>   					   POWER_SUPPLY_STATUS_NOT_CHARGING);
 >   
->   	data = ti_bandgap_get_sensor_data(bgp, id);
+> @@ -699,6 +702,7 @@ static void cpcap_usb_detect(struct work_struct *work)
+>   	 * charged to 4.35V by Android. Try again in 10 minutes.
+>   	 */
+>   	if (cpcap_charger_get_charge_voltage(ddata) > ddata->voltage) {
+> +	  printk("Battery overcharged, wait\n");
+>   		cpcap_charger_disconnect(ddata,
+>   					 POWER_SUPPLY_STATUS_NOT_CHARGING,
+>   					 HZ * 60 * 10);
+> @@ -713,14 +717,24 @@ static void cpcap_usb_detect(struct work_struct *work)
+>   			break;
+>   		new_state = POWER_SUPPLY_STATUS_FULL;
 >   
-> @@ -177,10 +178,9 @@ int ti_thermal_expose_sensor(struct ti_bandgap *bgp, int id,
->   		return PTR_ERR(data->ti_thermal);
->   	}
->   
-> -	interval = jiffies_to_msecs(data->ti_thermal->polling_delay_jiffies);
-> -
->   	ti_bandgap_set_sensor_data(bgp, id, data);
-> -	ti_bandgap_write_update_interval(bgp, data->sensor_id, interval);
-> +	ti_bandgap_write_update_interval(bgp, data->sensor_id,
-> +					 TI_BANDGAP_UPDATE_INTERVAL_MS);
->   
->   	if (devm_thermal_add_hwmon_sysfs(bgp->dev, data->ti_thermal))
->   		dev_warn(bgp->dev, "failed to add hwmon sysfs attributes\n");
+> +		printk("No current -> we are done\n");
+> +
+>   		if (s.chrgcurr1 && s.vbusvld) {
+>   			cpcap_charger_disconnect(ddata, new_state, HZ * 5);
+>   			return;
+>   		}
+>   		break;
+>   	case POWER_SUPPLY_STATUS_FULL:
+> +		if (s.vbusvld) {
+> +			printk("Full, stay full\n");
+> +			schedule_delayed_work(&ddata->detect_work, HZ * 10);
+> +			return;
+> +		}
+>   		if (!s.chrgcurr2)
+>   			break;
+> +
+> +		printk("Full but we need to do something\n");
+> +
+>   		if (s.vbusvld)
+>   			new_state = POWER_SUPPLY_STATUS_NOT_CHARGING;
+>   		else
+> @@ -762,6 +776,7 @@ static void cpcap_usb_detect(struct work_struct *work)
+>   		if (!delayed_work_pending(&ddata->ramp_work))
+>   			schedule_delayed_work(&ddata->ramp_work, HZ/20);
+>   	} else {
+> +	  printk("No feeding bus, disabling\n");
+>   		ddata->set_current = 0;
+>   		error = cpcap_charger_disable(ddata);
+>   		if (error)
+> 
