@@ -2,298 +2,150 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC9886B0CA7
-	for <lists+linux-omap@lfdr.de>; Wed,  8 Mar 2023 16:28:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 884F66B0E19
+	for <lists+linux-omap@lfdr.de>; Wed,  8 Mar 2023 17:04:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231213AbjCHP24 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 8 Mar 2023 10:28:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45332 "EHLO
+        id S232408AbjCHQEj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 8 Mar 2023 11:04:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231481AbjCHP2z (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 8 Mar 2023 10:28:55 -0500
-Received: from mail-qv1-xf35.google.com (mail-qv1-xf35.google.com [IPv6:2607:f8b0:4864:20::f35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A80FA73AD7;
-        Wed,  8 Mar 2023 07:28:53 -0800 (PST)
-Received: by mail-qv1-xf35.google.com with SMTP id m4so11313067qvq.3;
-        Wed, 08 Mar 2023 07:28:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678289333;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bd0EmI05pCHTfIlBbUfoXj5rvm0Lfpegcu0/RFX07E0=;
-        b=oi0vouDb9vTONHCz7DWqrFJLIaUvXJ6V7s2rQfvwtAiJ+Nc3gKa8Dq81cQumK0b0Yv
-         qTrTkrQavLsdFb1wAJAGtI5rdU980XCncLXOTcn8Vc5wW3iVt6D4V5hzTXcuwN7ZPAsp
-         7cFjREFMPdLhMrof4l9PAAgUiUlIlEeirBsHN9VoM2RZgSmHSrKadxm9LYZSHCzUR8+l
-         V2+EFPjDcHOFOouYNGL5Ch7Sl01pVi4+aKmwxOVOIg0ElZZ09VIp91EG0mEG9OtYh2dZ
-         6kJ67jcK+nfw8T8rKqsxP8TjqVrHkgWkezaZdfdP6Har3eN/7qlOjyY3Zt8//YiS90aR
-         V+eA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678289333;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=bd0EmI05pCHTfIlBbUfoXj5rvm0Lfpegcu0/RFX07E0=;
-        b=N6AUWeOd0Cf2W3DsnqBm0tG/sUw9+HZDNkB4VN/mKwCcnhv4Az+P+r5dq8EQs8NofD
-         Jm1VGi1zefdHGdYRegiOodCVQOXH9KVny1GlJw2+lXtVlq8uAgY/vyxWphPZ9ijhqCBQ
-         lJkRMPNJouJG4BkGqJnfkQnNwGfwsCKdtTb5eBaoxyFH1no2XkIBuK5EP/hj14FbXOXk
-         uwik/mRE9HZ06Mhc8m2mvgsiGoDEelbC5ijpwqGNvPNPBXtoNCWN9Y4KiKdjtzTDk4rJ
-         CUfkRp9QmXLgx96YKHVTpMC8IWM91XuQlyCeWoWseuCAke9ozu/2O+Sskv4aLBldq7+1
-         EbaA==
-X-Gm-Message-State: AO0yUKUjVlSVVVBKTamkkS1oTIrw0+EgUN4XRgZ/LKlITQjVl2JjDpUh
-        3+DmQEINJT8Lic88nlKJptY=
-X-Google-Smtp-Source: AK7set/QwnmzvGEgctgtRzpXygzSgoQMuIMdEi7EGkwdBQ/fUr9GGZ7htQvDCPjxU3tNhW4OMkQOPg==
-X-Received: by 2002:a05:6214:238e:b0:56e:bb43:a07c with SMTP id fw14-20020a056214238e00b0056ebb43a07cmr30115921qvb.20.1678289332740;
-        Wed, 08 Mar 2023 07:28:52 -0800 (PST)
-Received: from localhost (240.157.150.34.bc.googleusercontent.com. [34.150.157.240])
-        by smtp.gmail.com with ESMTPSA id t190-20020a3746c7000000b0074235745fdasm11481891qka.58.2023.03.08.07.28.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Mar 2023 07:28:52 -0800 (PST)
-Date:   Wed, 08 Mar 2023 10:28:51 -0500
-From:   Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To:     =?UTF-8?B?S8O2cnkgTWFpbmNlbnQ=?= <kory.maincent@bootlin.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Heiner Kallweit <hkallweit1@gmail.com>, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-omap@vger.kernel.org
-Cc:     Michael Walle <michael@walle.cc>,
-        Maxime Chevallier <maxime.chevallier@bootlin.com>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Kory Maincent <kory.maincent@bootlin.com>,
-        thomas.petazzoni@bootlin.com, Russell King <linux@armlinux.org.uk>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Jay Vosburgh <j.vosburgh@gmail.com>,
-        Veaceslav Falico <vfalico@gmail.com>,
-        Andy Gospodarek <andy@greyhouse.net>,
-        Joakim Zhang <qiangqing.zhang@nxp.com>,
-        Vladimir Oltean <vladimir.oltean@nxp.com>,
-        Claudiu Manoil <claudiu.manoil@nxp.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        UNGLinuxDriver@microchip.com,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Minghao Chi <chi.minghao@zte.com.cn>,
-        Guangbin Huang <huangguangbin2@huawei.com>,
-        Jie Wang <wangjie125@huawei.com>,
-        Oleksij Rempel <linux@rempel-privat.de>,
-        Sean Anderson <sean.anderson@seco.com>,
-        Alexandru Tachici <alexandru.tachici@analog.com>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Alexander Lobakin <alexandr.lobakin@intel.com>,
-        Marco Bonelli <marco@mebeim.net>
-Message-ID: <6408a9b3c7ae1_13061c2082a@willemb.c.googlers.com.notmuch>
-In-Reply-To: <20230308135936.761794-4-kory.maincent@bootlin.com>
-References: <20230308135936.761794-1-kory.maincent@bootlin.com>
- <20230308135936.761794-4-kory.maincent@bootlin.com>
-Subject: RE: [PATCH v3 3/5] net: Let the active time stamping layer be
- selectable.
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S232410AbjCHQEP (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 8 Mar 2023 11:04:15 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7911AB4F44
+        for <linux-omap@vger.kernel.org>; Wed,  8 Mar 2023 08:02:35 -0800 (PST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pZwEb-0002Aj-1k; Wed, 08 Mar 2023 17:01:45 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pZwEZ-002kUL-F7; Wed, 08 Mar 2023 17:01:43 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pZwEY-003KO4-KZ; Wed, 08 Mar 2023 17:01:42 +0100
+Date:   Wed, 8 Mar 2023 17:01:41 +0100
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Russell King <linux@armlinux.org.uk>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Mark Brown <broonie@kernel.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        Fabio Estevam <festevam@gmail.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        linux-arm-kernel@lists.infradead.org,
+        NXP Linux Team <linux-imx@nxp.com>
+Subject: Re: [PATCH 0/8] ARM: Convert to platform remove callback returning
+ void
+Message-ID: <20230308160141.ct6x3a7x7trkx2dh@pengutronix.de>
+References: <20230308100012.2539189-1-u.kleine-koenig@pengutronix.de>
+ <adaf8b7c-f1a7-4770-adb6-31ced13d64d2@app.fastmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="wljixglgwyusnend"
+Content-Disposition: inline
+In-Reply-To: <adaf8b7c-f1a7-4770-adb6-31ced13d64d2@app.fastmail.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-omap@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-K=C3=B6ry Maincent wrote:
-> From: Richard Cochran <richardcochran@gmail.com>
-> =
 
-> Add the ETHTOOL_SET_PTP ethtool ioctl, and add checks in the ioctl and =
-time
-> stamping paths to respect the currently selected time stamping layer.
-> =
+--wljixglgwyusnend
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> Add a preferred-timestamp devicetree binding to select the preferred
-> hardware timestamp layer between PHY and MAC. The choice of using
-> devicetree binding has been made as the PTP precision and quality depen=
-ds
-> of external things, like adjustable clock, or the lack of a temperature=
+On Wed, Mar 08, 2023 at 04:06:47PM +0100, Arnd Bergmann wrote:
+> On Wed, Mar 8, 2023, at 11:00, Uwe Kleine-K=F6nig wrote:
+> > Hello,
+> >
+> > this patch series adapts the platform drivers below arch/arm to use the
+> > .remove_new() callback. Compared to the traditional .remove() callback
+> > .remove_new() returns no value. This is a good thing because the driver=
+ core
+> > doesn't (and cannot) cope for errors during remove. The only effect of a
+> > non-zero return value in .remove() is that the driver core emits a warn=
+ing. The
+> > device is removed anyhow and an early return from .remove() usually yie=
+lds a
+> > resource leak.
+> >
+> > By changing the remove callback to return void driver authors cannot
+> > reasonably assume any more that there is some kind of cleanup later.
+> >
+> > All drivers in arch/arm returned zero unconditionally in their remove c=
+allback,
+> > so they could all be converted trivially to .remove_new().
+> >
+> > Note that this series depends on commit 5c5a7680e67b ("platform: Provide
+> > a remove callback that returns no value") which is included in v6.3-rc1.
+>=20
+> Looks good to me,
+>=20
+> Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+>=20
+> > I'm unsure who will pick up this series. Will it go as a whole via arm-=
+soc? Or
+> > will the individual maintainers pick it up?
+>=20
+> I can take it through the soc tree, please send it to
+> soc@kernel.org once you are done getting Acks.
+>=20
+> Since all eight patches in the series have the exact same
+> changelog text and are all trivial, I'd prefer them to be
+> folded into a single patch if that works for you.
 
-> compensated crystal or specific features. Even if the preferred timesta=
-mp
-> is a configuration it is hardly related to the design oh the board.
+No, they are not all identical, they all have their individual subject
+prefix :-)
 
-nit: oh -> of
+Honestly: I don't care much. I split it because for most other
+subsystems that's what the respective maintainers seem to prefer.
 
-> =
+I'll care for that, i.e. wait a bit to give others the chance to ack (or
+object) and then send it as you recommended. Thanks.
 
-> Signed-off-by: Richard Cochran <richardcochran@gmail.com>
-> Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
-> ---
-> =
+Best regards
+Uwe
 
-> Notes:
->     Changes in v2:
->     - Move selected_timestamping_layer introduction in this patch.
->     - Replace strmcmp by sysfs_streq.
->     - Use the PHY timestamp only if available.
->     =
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
 
->     Changes in v3:
->     - Added a devicetree binding to select the preferred timestamp
->     - Replace the way to select timestamp through ethtool instead of sy=
-sfs
->     You can test it with the ethtool source on branch feature_ptp of:
->     https://github.com/kmaincent/ethtool
-> =
+--wljixglgwyusnend
+Content-Type: application/pgp-signature; name="signature.asc"
 
->  Documentation/networking/ethtool-netlink.rst |  1 +
->  drivers/net/phy/phy_device.c                 | 34 ++++++++++++++++
->  include/linux/netdevice.h                    |  6 +++
->  include/uapi/linux/ethtool.h                 |  1 +
->  net/core/dev_ioctl.c                         | 43 ++++++++++++++++++--=
+-----BEGIN PGP SIGNATURE-----
 
->  net/core/timestamping.c                      |  6 +++
->  net/ethtool/common.c                         | 16 ++++++--
->  net/ethtool/ioctl.c                          | 41 ++++++++++++++-----
->  8 files changed, 131 insertions(+), 17 deletions(-)
-> =
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmQIsWIACgkQwfwUeK3K
+7AlReAf+JSNxIpWJ8GtBZ/TLHPUXPBKI6UIanrESMnnqmRQxr1Qq3vQP8xrZKNV+
+Z6jh6S11MJuEk9zd7J3W5XUY3YXJbXoJpoGwpVvph8cR8vGGubtQNTCExhpoRHKc
+8dsIQwExGdbfNpvrCAiurB4KiS8TqqO48cwpgS4gn3W0khrkz/x2nBucX1foFf0F
+bJNf2WZBFUj36/jekTOGBpA2kMW8dtf/jB6NZGezgy2y+GmhkduTQklZ8WafkDFh
+AcNun7mwLFRnpAtHu68ggIi8BDHNVMIDsWB7uUMDIC8vL1zC3f0HNyRq4XdC5HWU
+a1w/6rgDKDS38sdcZ0saeA04pxwhhw==
+=wJrL
+-----END PGP SIGNATURE-----
 
-> +void of_set_timestamp(struct net_device *netdev, struct phy_device *ph=
-ydev)
-> +{
-> +	struct device_node *node =3D phydev->mdio.dev.of_node;
-> +	const struct ethtool_ops *ops =3D netdev->ethtool_ops;
-> +	const char *s;
-> +	enum timestamping_layer ts_layer =3D 0;
-> +
-> +	if (phy_has_hwtstamp(phydev))
-> +		ts_layer =3D PHY_TIMESTAMPING;
-> +	else if (ops->get_ts_info)
-> +		ts_layer =3D MAC_TIMESTAMPING;
-> +
-> +	if (of_property_read_string(node, "preferred-timestamp", &s))
-> +		goto out;
-> +
-> +	if (!s)
-> +		goto out;
-> +
-> +	if (phy_has_hwtstamp(phydev) && !strcmp(s, "phy"))
-> +		ts_layer =3D PHY_TIMESTAMPING;
-> +
-> +	if (ops->get_ts_info && !strcmp(s, "mac"))
-> +		ts_layer =3D MAC_TIMESTAMPING;
-> +
-> +out:
-> +	netdev->selected_timestamping_layer =3D ts_layer;
-> +}
-> +
-> diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-> index ba2bd604359d..d9a1c12fc43c 100644
-> --- a/include/linux/netdevice.h
-> +++ b/include/linux/netdevice.h
-> @@ -47,6 +47,7 @@
->  #include <uapi/linux/netdevice.h>
->  #include <uapi/linux/if_bonding.h>
->  #include <uapi/linux/pkt_cls.h>
-> +#include <uapi/linux/net_tstamp.h>
->  #include <linux/hashtable.h>
->  #include <linux/rbtree.h>
->  #include <net/net_trackers.h>
-> @@ -1981,6 +1982,9 @@ enum netdev_ml_priv_type {
->   *
->   *	@threaded:	napi threaded mode is enabled
->   *
-> + *	@selected_timestamping_layer:	Tracks whether the MAC or the PHY
-> + *					performs packet time stamping.
-> + *
->   *	@net_notifier_list:	List of per-net netdev notifier block
->   *				that follow this device when it is moved
->   *				to another network namespace.
-> @@ -2339,6 +2343,8 @@ struct net_device {
->  	unsigned		wol_enabled:1;
->  	unsigned		threaded:1;
->  =
-
-> +	enum timestamping_layer selected_timestamping_layer;
-> +
-
-can perhaps be a single bit rather than an enum
-
-> +static int dev_hwtstamp_ioctl(struct net_device *dev,
-> +			      struct ifreq *ifr, unsigned int cmd)
-> +{
-> +	const struct net_device_ops *ops =3D dev->netdev_ops;
-> +	int err;
-> +
-> +	err =3D dsa_ndo_eth_ioctl(dev, ifr, cmd);
-> +	if (err =3D=3D 0 || err !=3D -EOPNOTSUPP)
-> +		return err;
-> +
-> +	if (!netif_device_present(dev))
-> +		return -ENODEV;
-> +
-> +	switch (dev->selected_timestamping_layer) {
-> +	case MAC_TIMESTAMPING:
-> +		if (ops->ndo_do_ioctl =3D=3D phy_do_ioctl) {
-> +			/* Some drivers set .ndo_do_ioctl to phy_do_ioctl. */
-> +			err =3D -EOPNOTSUPP;
-> +		} else {
-> +			err =3D ops->ndo_eth_ioctl(dev, ifr, cmd);
-> +		}
-> +		break;
-> +
-> +	case PHY_TIMESTAMPING:
-> +		if (phy_has_hwtstamp(dev->phydev)) {
-> +			err =3D phy_mii_ioctl(dev->phydev, ifr, cmd);
-> +		} else {
-> +			err =3D -ENODEV;
-> +			WARN_ON(1);
-
-Please no WARN_ON on error cases that are known to be reachable
-and can be handled safely and reported to userspace.
-
-> +		}
-> +		break;
-> +	}
-> +
-> +	return err;
-> +}
-> +
-> diff --git a/net/ethtool/common.c b/net/ethtool/common.c
-> index 64a7e05cf2c2..e55e70bdbb3c 100644
-> --- a/net/ethtool/common.c
-> +++ b/net/ethtool/common.c
-> @@ -548,10 +548,18 @@ int __ethtool_get_ts_info(struct net_device *dev,=
- struct ethtool_ts_info *info)
->  	memset(info, 0, sizeof(*info));
->  	info->cmd =3D ETHTOOL_GET_TS_INFO;
->  =
-
-> -	if (phy_has_tsinfo(phydev))
-> -		return phy_ts_info(phydev, info);
-> -	if (ops->get_ts_info)
-> -		return ops->get_ts_info(dev, info);
-> +	switch (dev->selected_timestamping_layer) {
-> +	case MAC_TIMESTAMPING:
-> +		if (ops->get_ts_info)
-> +			return ops->get_ts_info(dev, info);
-> +		break;
-> +
-> +	case PHY_TIMESTAMPING:
-> +		if (phy_has_tsinfo(phydev))
-> +			return phy_ts_info(phydev, info);
-> +		WARN_ON(1);
-> +		return -ENODEV;
-
-same
-
-> +	}
->  =
-
->  	info->so_timestamping =3D SOF_TIMESTAMPING_RX_SOFTWARE |
->  				SOF_TIMESTAMPING_SOFTWARE;=
+--wljixglgwyusnend--
