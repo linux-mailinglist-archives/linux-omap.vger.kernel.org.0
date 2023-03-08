@@ -2,95 +2,145 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 387FA6B0B42
-	for <lists+linux-omap@lfdr.de>; Wed,  8 Mar 2023 15:32:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 816E96B0C2C
+	for <lists+linux-omap@lfdr.de>; Wed,  8 Mar 2023 16:08:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231453AbjCHOcC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 8 Mar 2023 09:32:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34060 "EHLO
+        id S230257AbjCHPHb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 8 Mar 2023 10:07:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231791AbjCHOb5 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 8 Mar 2023 09:31:57 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AEF557D27;
-        Wed,  8 Mar 2023 06:31:45 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id BA5B7B81CB2;
-        Wed,  8 Mar 2023 14:31:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10F82C4339C;
-        Wed,  8 Mar 2023 14:31:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1678285902;
-        bh=KmoZ6Oyoq0qko8GaFGadIcTrYdCyseD9sb6zK+Fa+9Y=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Mz4+YssctZc6K2X6dmUb+6eMFGD3lvEpoh2uluwtsV9phXewDFx142HYKcBXrW9YV
-         qBcucQzLL9zRc1UoxmHJPiP5u8BCep+j0Y37Ijkc8Z8n0nzDc0/FQBws8WmqCqKtG9
-         YutgAKyiyslxPAmysfYKTb9lsWkpb73kg28JC8Oy/0O+ZAaP+U9g9Xrs4SyWjGqN0N
-         NLmuOIPHHgDVFYlAooUp29CGLydwz+SBfwt8q2S2Nd+GEXOe2EI15ZpOYq7M5IyEIS
-         gyOBVjmJrUx+K1pj9s6ht8KSIy3vI8Vst2eBDWmQEPyaaTWPYoaz9PnfZClBxm8TrZ
-         yDHLll0vYhGYw==
-Date:   Wed, 8 Mar 2023 14:31:37 +0000
-From:   Lee Jones <lee@kernel.org>
-To:     Nick Alcock <nick.alcock@oracle.com>
-Cc:     mcgrof@kernel.org, linux-modules@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Hitomi Hasegawa <hasegawa-hitomi@fujitsu.com>,
-        Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org
-Subject: Re: [PATCH 26/27] mfd: remove MODULE_LICENSE in non-modules
-Message-ID: <20230308143137.GQ9667@google.com>
-References: <20230224150811.80316-1-nick.alcock@oracle.com>
- <20230224150811.80316-27-nick.alcock@oracle.com>
- <20230303105203.GA2420672@google.com>
- <87mt4n5spv.fsf@esperi.org.uk>
- <20230308130420.GH9667@google.com>
- <87bkl35r2t.fsf@esperi.org.uk>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87bkl35r2t.fsf@esperi.org.uk>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S232123AbjCHPHV (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 8 Mar 2023 10:07:21 -0500
+Received: from wout3-smtp.messagingengine.com (wout3-smtp.messagingengine.com [64.147.123.19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBACFBF3B1
+        for <linux-omap@vger.kernel.org>; Wed,  8 Mar 2023 07:07:13 -0800 (PST)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+        by mailout.west.internal (Postfix) with ESMTP id 1CEF23200961;
+        Wed,  8 Mar 2023 10:07:10 -0500 (EST)
+Received: from imap51 ([10.202.2.101])
+  by compute6.internal (MEProxy); Wed, 08 Mar 2023 10:07:11 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+        :cc:content-transfer-encoding:content-type:content-type:date
+        :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to; s=fm1; t=
+        1678288029; x=1678374429; bh=9MGUDvQR5kO8q74Bt+RtDaxilLrgMJbIBgc
+        qufGksZw=; b=gJ1wVYfzVeVEbm1ro+seMFo812NGfFNCHNB3yu/gL6KrwXQ95fj
+        tBY1rRbYxecjT0YR2u2Npao8ur4tilY4xgbZYPwHzqhNHQ4vSA0idDLQSWsCpUVm
+        ANqEuLxRAGNu3QHUUsb8Cm1WvUtLMJn7CoW/ylFEYHUzOxzR6Mg18RlfudKet9o/
+        R7+34FdcrIiWmK/YGNR4kxwwd4q5XvSPEq4+XhGWqBNsNE7SlwEQlRR+C1D6FxdL
+        88d/FUKjAG8g15z+HG5D0jcbwyKR93nCwF6IAL+DrgNEXp2UGEx+sC+A7uBxlUsD
+        Mpjl9woNpkjOlWVFnuEo/OWhHsuK/VEX/2A==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding
+        :content-type:content-type:date:date:feedback-id:feedback-id
+        :from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+        1678288029; x=1678374429; bh=9MGUDvQR5kO8q74Bt+RtDaxilLrgMJbIBgc
+        qufGksZw=; b=NB0EwHPQ1POfAJWgWxPacWErNGMu8jcG2Q3oZkG3vLesT/YnZeB
+        cAeDmB9gzshlSARIyf+TDivu1XGhd4FYj4SYzaQc2MaVQ6fI2+1V+3wRl8ZHlF7X
+        54DttPIrP4FmE8Zg04hocY6fmXcFbVOuwI2A+FWKhmXvL1CZj4AkP4urZonvwCG5
+        YsJc7Mny4+VZrmLxxAxTq54/ZREscMiLYDlZsDci4rIkD1Idfe1c6WwL4DuduTNQ
+        SdUQMfMIcqEq+nAGtzg6NClz1HAnsj6/vu68ldcavXK4Mt4/WdSTmNoubxOkv56T
+        V9zTPGGeYRztgMpOVLATw4+3fMBgVsyxd8w==
+X-ME-Sender: <xms:nKQIZFsOYMPLMRZx0cESHlU0YJ7F4OGeY_q3zh--LIy7Q77BaxhmpA>
+    <xme:nKQIZOf6peo-CEDrtfkG2w2egZKAuhiTqNfs_zUxJqtYhHjv-g3gObTkMBRVtHUh8
+    btpSD-2ZNOIo02pQ2k>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvddufedgvdegucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvfevufgtgfesthhqredtreerjeenucfhrhhomhepfdet
+    rhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrg
+    htthgvrhhnpeegfeejhedvledvffeijeeijeeivddvhfeliedvleevheejleetgedukedt
+    gfejveenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    grrhhnugesrghrnhgusgdruggv
+X-ME-Proxy: <xmx:nKQIZIy2a54taY5iqRMzd12cI7XSDW3YaKPgc0KIqH4UNJoADhwIpA>
+    <xmx:nKQIZMPt0S-mTLH_xibagnqpYs7wM1ByIB3mP2pxylO6ik4e5Z4VwA>
+    <xmx:nKQIZF8yB35NXQHIPdRJubNMU_kFStvKzuSnCKujunFQ-CO683Nd4g>
+    <xmx:naQIZKiDUffkf-qEieXfZemHcgvrseGjk1Yy2aA2ktTSih4mNBgLOw>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id 1C576B60086; Wed,  8 Mar 2023 10:07:08 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-206-g57c8fdedf8-fm-20230227.001-g57c8fded
+Mime-Version: 1.0
+Message-Id: <adaf8b7c-f1a7-4770-adb6-31ced13d64d2@app.fastmail.com>
+In-Reply-To: <20230308100012.2539189-1-u.kleine-koenig@pengutronix.de>
+References: <20230308100012.2539189-1-u.kleine-koenig@pengutronix.de>
+Date:   Wed, 08 Mar 2023 16:06:47 +0100
+From:   "Arnd Bergmann" <arnd@arndb.de>
+To:     =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+        "Russell King" <linux@armlinux.org.uk>,
+        "Viresh Kumar" <viresh.kumar@linaro.org>,
+        "Ulf Hansson" <ulf.hansson@linaro.org>,
+        "Dmitry Torokhov" <dmitry.torokhov@gmail.com>,
+        "Alan Stern" <stern@rowland.harvard.edu>,
+        "Mark Brown" <broonie@kernel.org>,
+        "Shawn Guo" <shawnguo@kernel.org>,
+        "Sascha Hauer" <s.hauer@pengutronix.de>,
+        "Aaro Koskinen" <aaro.koskinen@iki.fi>,
+        "Janusz Krzysztofik" <jmkrzyszt@gmail.com>,
+        "Tony Lindgren" <tony@atomide.com>,
+        "Daniel Mack" <daniel@zonque.org>,
+        "Haojian Zhuang" <haojian.zhuang@gmail.com>,
+        "Robert Jarzmik" <robert.jarzmik@free.fr>
+Cc:     linux-arm-kernel@lists.infradead.org,
+        "Pengutronix Kernel Team" <kernel@pengutronix.de>,
+        "Fabio Estevam" <festevam@gmail.com>,
+        "NXP Linux Team" <linux-imx@nxp.com>,
+        Linux-OMAP <linux-omap@vger.kernel.org>
+Subject: Re: [PATCH 0/8] ARM: Convert to platform remove callback returning void
+Content-Type: text/plain;charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
+        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, 08 Mar 2023, Nick Alcock wrote:
-
-> On 8 Mar 2023, Lee Jones uttered the following:
+On Wed, Mar 8, 2023, at 11:00, Uwe Kleine-K=C3=B6nig wrote:
+> Hello,
 >
-> > On Wed, 08 Mar 2023, Nick Alcock wrote:
-> >
-> >> >>  drivers/mfd/omap-usb-host.c | 1 -
-> >> >>  drivers/mfd/omap-usb-tll.c  | 1 -
-> >> >>  drivers/mfd/twl4030-audio.c | 1 -
-> >> >>  drivers/mfd/twl6040.c       | 1 -
-> >> >>  4 files changed, 4 deletions(-)
-> [...]
-> >> For now, I'll split this one into four and mail it out again: coming
-> >> shortly.
-> >
-> > If you haven't sent it out already, 2 will be fine.
-> >
-> > mfd: omap: ...
-> > mfd: twl: ...
+> this patch series adapts the platform drivers below arch/arm to use the
+> .remove_new() callback. Compared to the traditional .remove() callback
+> .remove_new() returns no value. This is a good thing because the drive=
+r core
+> doesn't (and cannot) cope for errors during remove. The only effect of=
+ a
+> non-zero return value in .remove() is that the driver core emits a war=
+ning. The
+> device is removed anyhow and an early return from .remove() usually yi=
+elds a
+> resource leak.
 >
-> I'm trying to automate this whole thing (since I've had to resplit it a
-> dozen times already), and even making mfd a special case that wants
-> splitting finer than by subsystem, I honestly have no idea how to
-> automatically determine a split like *that*. I can't split on file, on
-> subsystem, on dashes in the names... I think I'd have to literally parse
-> the makefile to figure out which things belonged together in commits,
-> and that's getting ridiculous even for me.
+> By changing the remove callback to return void driver authors cannot
+> reasonably assume any more that there is some kind of cleanup later.
 >
-> So, if you don't mind, I'd rather do it by subsystem or by file :)
+> All drivers in arch/arm returned zero unconditionally in their remove =
+callback,
+> so they could all be converted trivially to .remove_new().
+>
+> Note that this series depends on commit 5c5a7680e67b ("platform: Provi=
+de
+> a remove callback that returns no value") which is included in v6.3-rc=
+1.
 
-File is fine.
+Looks good to me,
 
---
-Lee Jones [李琼斯]
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+
+> I'm unsure who will pick up this series. Will it go as a whole via arm=
+-soc? Or
+> will the individual maintainers pick it up?
+
+I can take it through the soc tree, please send it to
+soc@kernel.org once you are done getting Acks.
+
+Since all eight patches in the series have the exact same
+changelog text and are all trivial, I'd prefer them to be
+folded into a single patch if that works for you.
+
+      Arnd
