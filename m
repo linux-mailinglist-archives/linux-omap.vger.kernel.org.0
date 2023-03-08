@@ -2,137 +2,111 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 511EA6B0634
-	for <lists+linux-omap@lfdr.de>; Wed,  8 Mar 2023 12:42:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A45B46B06B2
+	for <lists+linux-omap@lfdr.de>; Wed,  8 Mar 2023 13:13:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230156AbjCHLmd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 8 Mar 2023 06:42:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39858 "EHLO
+        id S231272AbjCHMNv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 8 Mar 2023 07:13:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229668AbjCHLm1 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 8 Mar 2023 06:42:27 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEF13BD7A2;
-        Wed,  8 Mar 2023 03:42:16 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5475C61773;
-        Wed,  8 Mar 2023 11:42:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A627C433D2;
-        Wed,  8 Mar 2023 11:42:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1678275735;
-        bh=GS6tRvkGtq0vN1+iQ6FDOaBDA0r4jEk4oIYueLCnWjM=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=B9MDF729gBqxZMwvSLxjfF6grvy4mczrvvUSqhv/h12vJpU+USUDlVrKhuoMSSbwz
-         Vw0m/ZG3u0Mp26dt24EXuoyLX4w+OnhsVsLmWJGc5jL3L2elEToDIIa9ZC3bb2hLqK
-         79DewjzU5TQfEMTg/jNuBHPmUEcPmF47/bTobCiKUQNsCfjsSzJFkcw965FuWd3Vky
-         5qerDjXTfatAcCCFQ8zurcAGa9yj4WdT1vj7YxttFoYhodV2ogK8RWAgLFohfD54I+
-         e2etU3CoSsglY+pOURvphF3O92nfpAibR7a0mrzUZ8Fv7sD+gDSa4Ur3CK56OLMWIq
-         UlBEVYR5T59Jw==
-Message-ID: <a74e5079-d89d-2420-b6af-d630c4f04380@kernel.org>
-Date:   Wed, 8 Mar 2023 13:42:10 +0200
+        with ESMTP id S231273AbjCHMNj (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 8 Mar 2023 07:13:39 -0500
+Received: from mail-yb1-xb2e.google.com (mail-yb1-xb2e.google.com [IPv6:2607:f8b0:4864:20::b2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D919911D8
+        for <linux-omap@vger.kernel.org>; Wed,  8 Mar 2023 04:13:38 -0800 (PST)
+Received: by mail-yb1-xb2e.google.com with SMTP id q8so72680ybu.5
+        for <linux-omap@vger.kernel.org>; Wed, 08 Mar 2023 04:13:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1678277617;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Oca9dY8hWUO5/h8xtr438Tcso20TDnzGLmg2ddoHe4M=;
+        b=mG+VNc7/+ZVH4peD5IzNTeOjeDEtz2/QDLrQseyt1w5jR60Vf3vwhV/UiECtfojG1d
+         placMWBg9SZ3uNn9KmQCqQyQKL+3dbLOvATLA2d7k4wzQeMx7iD1t8Ej0dykdODGuchw
+         ZIC5gVhPTsdlc+vgfY7DP/ICTAy1rHAyN0BtycPUV2Td9bWfnWKPQAR41CdVEPVcLgjE
+         +amCcxZzViJs5TgPv/+zaeIZbAkHw0Gr3djUm2UlDD9P1vRU2cWC0xMDVSvcDMuZv6Ij
+         EZN20pCM7mLDwQNRN/EbnHrQycWZHZ6Zqd7umnQU+0SOlaK2Kpr6Cuz2EZN4okjiyEw/
+         ID7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678277617;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Oca9dY8hWUO5/h8xtr438Tcso20TDnzGLmg2ddoHe4M=;
+        b=P2dmqqGc391RHLT2RYSCzP8OiM1vOg09HZbOKZ0zOQdyWOd07AtuzwPouAAshQSayu
+         gQThX5yyYhMv5FKBpT7IhDsdI3bWFc4TO1zi9MjGfjUrsVeuq7VNUB8qBYrPbPD+Zk9g
+         /i9RbbiSFMybsWg27SyR9dvMESKp1WeBIle/cTn86PJ8FpK5cELYg3w0YCfMU+YKWuWX
+         dU/Mg78SdI33scb5R87XS+cID4LDkyyo+5G0gdKrFKdTfi5d2vXj9R6zYrPy9qpNrl9C
+         4SCFE3z9FlPrLHBdoETuHETAIK96rvtrnmrGdywUlVQ4j3knBLWC7aDSh4maMYT9ky5O
+         bulQ==
+X-Gm-Message-State: AO0yUKXH1ZIMU9mxFQ2UpQlITcbYj7hJlDNGgX9W+s1GcijfN/RG+OWO
+        4J/BMK47IRbdwLcse8zVSa65LKYABoanTC1lxixGAg==
+X-Google-Smtp-Source: AK7set+ggNypJdI+7ULj7vVNY+A7k42rbSaDWPMWE5mmu2065wVDPTzRD/vMNWcCbvtu842b/ja6rElDW3gnsY5CIcg=
+X-Received: by 2002:a5b:209:0:b0:aa9:bd2e:3746 with SMTP id
+ z9-20020a5b0209000000b00aa9bd2e3746mr6164422ybl.4.1678277617418; Wed, 08 Mar
+ 2023 04:13:37 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: Re: [EXTERNAL] Re: [PATCH v3 3/6] soc: ti: pruss: Add
- pruss_cfg_read()/update() API
-Content-Language: en-US
-To:     Md Danish Anwar <a0501179@ti.com>,
-        MD Danish Anwar <danishanwar@ti.com>,
-        "Andrew F. Davis" <afd@ti.com>, Suman Anna <s-anna@ti.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+References: <20230215-immutable-chips-v2-0-d6b0e3f2d991@linaro.org>
+ <20230215-immutable-chips-v2-3-d6b0e3f2d991@linaro.org> <CACPK8Xc7ekzM9oeR7+fYuK8RfZ4jA8gpH=nUJ-OTp0XZoKwzHQ@mail.gmail.com>
+In-Reply-To: <CACPK8Xc7ekzM9oeR7+fYuK8RfZ4jA8gpH=nUJ-OTp0XZoKwzHQ@mail.gmail.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Wed, 8 Mar 2023 13:13:25 +0100
+Message-ID: <CACRpkdZmemtVHkdo7f8G4wTHEayk1moHSMHEyvomebPV_h8AHA@mail.gmail.com>
+Subject: Re: [PATCH v2 03/16] gpio: aspeed: Convert to immutable irq_chip
+To:     Joel Stanley <joel@jms.id.au>
+Cc:     Mun Yew Tham <mun.yew.tham@intel.com>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Andrew Jeffery <andrew@aj.id.au>, Alban Bedel <albeu@free.fr>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Jay Fang <f.fangjian@huawei.com>,
+        Daniel Palmer <daniel@thingy.jp>,
+        Romain Perier <romain.perier@gmail.com>,
         Santosh Shilimkar <ssantosh@kernel.org>,
-        Nishanth Menon <nm@ti.com>
-Cc:     linux-remoteproc@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, srk@ti.com, devicetree@vger.kernel.org,
-        netdev@vger.kernel.org
-References: <20230306110934.2736465-1-danishanwar@ti.com>
- <20230306110934.2736465-4-danishanwar@ti.com>
- <7076208d-7dca-6980-5399-498e55648740@kernel.org>
- <afd6cd8a-8ba7-24b2-d7fc-c25a9c5f3c42@ti.com>
-From:   Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <afd6cd8a-8ba7-24b2-d7fc-c25a9c5f3c42@ti.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        Kevin Hilman <khilman@kernel.org>,
+        William Breathitt Gray <william.gray@linaro.org>,
+        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-aspeed@lists.ozlabs.org, linux-omap@vger.kernel.org,
+        Marc Zyngier <maz@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Wed, Mar 8, 2023 at 2:22 AM Joel Stanley <joel@jms.id.au> wrote:
+> On Tue, 7 Mar 2023 at 13:04, Linus Walleij <linus.walleij@linaro.org> wrote:
 
+> > +static void aspeed_gpio_irq_print_chip(struct irq_data *d, struct seq_file *p)
+> > +{
+> > +       const struct aspeed_gpio_bank *bank;
+> > +       struct aspeed_gpio *gpio;
+> > +       u32 bit;
+> > +       int rc, offset;
+> > +
+> > +       rc = irqd_to_aspeed_gpio_data(d, &gpio, &bank, &bit, &offset);
+>
+> Why do we call this instead of using irq_data_get_irq_chip_data?
 
-On 08/03/2023 13:36, Md Danish Anwar wrote:
-> Hi Roger,
-> 
-> On 08/03/23 13:57, Roger Quadros wrote:
->> Hi,
->>
->> On 06/03/2023 13:09, MD Danish Anwar wrote:
->>> From: Suman Anna <s-anna@ti.com>
->>>
->>> Add two new generic API pruss_cfg_read() and pruss_cfg_update() to
->>> the PRUSS platform driver to allow other drivers to read and program
->>> respectively a register within the PRUSS CFG sub-module represented
->>> by a syscon driver. This interface provides a simple way for client
->>
->> Do you really need these 2 functions to be public?
->> I see that later patches (4-6) add APIs for doing specific things
->> and that should be sufficient than exposing entire CFG space via
->> pruss_cfg_read/update().
->>
->>
-> 
-> I think the intention here is to keep this APIs pruss_cfg_read() and
-> pruss_cfg_update() public so that other drivers can read / modify PRUSS config
-> when needed.
+Because this is what the other irqchip callbacks do and I do not
+dare to do anything inventive or different as I can't really test
+the patches.
 
-Where are these other drivers? If they don't exist then let's not make provision
-for it now.
-We can provide necessary API helpers when needed instead of letting client drivers
-do what they want as they can be misused and hard to debug.
+> Actually, the callback appears to do the same as the default
+> implementation, so we could just drop it?
 
-> 
-> The later patches (4-6) add APIs to do specific thing, but those APIs also
-> eventually call pruss_cfg_read/update().
+So is chip->name always set to dev_name(dev) if we don't define
+it? I had no idea.
 
-They can still call them but they need to be private to pruss.c
+I can respon with this change, the optional IRQ should be a separate
+patch I think?
 
-> 
->>> drivers without having them to include and parse the CFG syscon node
->>> within their respective device nodes. Various useful registers and
->>> macros for certain register bit-fields and their values have also
->>> been added.
->>>
->>> It is the responsibility of the client drivers to reconfigure or
->>> reset a particular register upon any failures.
->>>
->>> Signed-off-by: Suman Anna <s-anna@ti.com>
->>> Co-developed-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
->>> Signed-off-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
->>> Signed-off-by: Puranjay Mohan <p-mohan@ti.com>
->>> ---
->>>  drivers/soc/ti/pruss.c           |  41 +++++++++++++
->>>  include/linux/remoteproc/pruss.h | 102 +++++++++++++++++++++++++++++++
->>>  2 files changed, 143 insertions(+)
->>>
->>> diff --git a/drivers/soc/ti/pruss.c b/drivers/soc/ti/pruss.c
->>> index c8053c0d735f..537a3910ffd8 100644
->>> --- a/drivers/soc/ti/pruss.c
->>> +++ b/drivers/soc/ti/pruss.c
->>> @@ -164,6 +164,47 @@ int pruss_release_mem_region(struct pruss *pruss,
->>>  }
->>>  EXPORT_SYMBOL_GPL(pruss_release_mem_region);
->>
->> cheers,
->> -roger
-> 
+Yours,
+Linus Walleij
