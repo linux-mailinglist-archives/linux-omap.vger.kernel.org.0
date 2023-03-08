@@ -2,41 +2,42 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A2986B0160
-	for <lists+linux-omap@lfdr.de>; Wed,  8 Mar 2023 09:30:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F5836B019F
+	for <lists+linux-omap@lfdr.de>; Wed,  8 Mar 2023 09:36:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229573AbjCHIaF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 8 Mar 2023 03:30:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50178 "EHLO
+        id S230444AbjCHIgd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 8 Mar 2023 03:36:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38374 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230362AbjCHI3x (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 8 Mar 2023 03:29:53 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4CE8B32B8;
-        Wed,  8 Mar 2023 00:29:23 -0800 (PST)
+        with ESMTP id S230451AbjCHIgE (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 8 Mar 2023 03:36:04 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96D55B3730;
+        Wed,  8 Mar 2023 00:35:13 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 7A3DDB81BFC;
-        Wed,  8 Mar 2023 08:28:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C758C433D2;
-        Wed,  8 Mar 2023 08:28:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8B138616EB;
+        Wed,  8 Mar 2023 08:34:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75CAAC433EF;
+        Wed,  8 Mar 2023 08:34:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1678264085;
-        bh=hHAJ1zXtYZn9AD+oMdKn2rsolKX4a1QC16QjAldjP9E=;
+        s=k20201202; t=1678264458;
+        bh=g6FWDWTVvtbUVJ0kus/OK9I+nhtkZyDFnv104tDpUdg=;
         h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=C1RZzVymTrF2+zLGhfB2byPuJKAsUHR907RRBJtq8WwaTJPipeLBF7jGzqsNwSjsg
-         W3HpF0PHJMF7AfXyNe+YwUbrU3GGm4F7XLS+WgANAFtSoj5iMq/xetFEsK0Ea/e62h
-         r5MsxpfJsirJUzTVbA9gGDmlosiNn0jvX7BNHpSstrH4FmcSAGMNMS8lTxoPt8fkyG
-         JBhbSKxulvpPbqJbslLZOdEZ6mR2kkfrs3Y5Azkp2eYe1A6YK/3SJe11z34hmBDgc6
-         6t1o6vUe2Z78IFW4Akna6FEdnXOVmY6mm3NdruQKjvVZNf5KDY0t1AbFkPbO1eM1cF
-         DkGakNZWXxJCQ==
-Message-ID: <7076208d-7dca-6980-5399-498e55648740@kernel.org>
-Date:   Wed, 8 Mar 2023 10:27:58 +0200
+        b=KJayE8QeTlag7cnxN2nStkgFonskLPD56vS7wrJt+yEbZIwhYJINJVweCe2mwGX2f
+         LealC9F1CqMnXhkgKUGh/1H2M8d/N8+IAVzeFOW1tyuTTORDlUiU7EapRTleS5DdMz
+         CBfkBuiaUcm5DvlHs6UK1QFx6qN4SuZ5ai812CgrkCg3Q8mbMk6Hdkk2M7vE+d1woQ
+         EQ5o1TtFdU94PHElLD7IXLKn+GRjq1wUrvdLXq2xWIbmZe4a1rfGakc1/6q2ycFmC6
+         L91jKRyk6/z7unULkymS1imZT2yLyVsBPOB9ipPjS53SudX8BBI4h6otu2iQTIHqq0
+         TnbJ12NOPyLHw==
+Message-ID: <2f039534-dd21-7361-0fcd-b91da1636a3a@kernel.org>
+Date:   Wed, 8 Mar 2023 10:34:12 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.7.1
-Subject: Re: [PATCH v3 3/6] soc: ti: pruss: Add pruss_cfg_read()/update() API
+Subject: Re: [PATCH v3 4/6] soc: ti: pruss: Add helper functions to set GPI
+ mode, MII_RT_event and XFR
 Content-Language: en-US
 To:     MD Danish Anwar <danishanwar@ti.com>,
         "Andrew F. Davis" <afd@ti.com>, Suman Anna <s-anna@ti.com>,
@@ -51,14 +52,14 @@ Cc:     linux-remoteproc@vger.kernel.org,
         linux-omap@vger.kernel.org, srk@ti.com, devicetree@vger.kernel.org,
         netdev@vger.kernel.org
 References: <20230306110934.2736465-1-danishanwar@ti.com>
- <20230306110934.2736465-4-danishanwar@ti.com>
+ <20230306110934.2736465-5-danishanwar@ti.com>
 From:   Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <20230306110934.2736465-4-danishanwar@ti.com>
+In-Reply-To: <20230306110934.2736465-5-danishanwar@ti.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -66,46 +67,92 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
+Hi Danish,
 
 On 06/03/2023 13:09, MD Danish Anwar wrote:
 > From: Suman Anna <s-anna@ti.com>
 > 
-> Add two new generic API pruss_cfg_read() and pruss_cfg_update() to
-> the PRUSS platform driver to allow other drivers to read and program
-> respectively a register within the PRUSS CFG sub-module represented
-> by a syscon driver. This interface provides a simple way for client
-
-Do you really need these 2 functions to be public?
-I see that later patches (4-6) add APIs for doing specific things
-and that should be sufficient than exposing entire CFG space via
-pruss_cfg_read/update().
-
-
-> drivers without having them to include and parse the CFG syscon node
-> within their respective device nodes. Various useful registers and
-> macros for certain register bit-fields and their values have also
-> been added.
-> 
-> It is the responsibility of the client drivers to reconfigure or
-> reset a particular register upon any failures.
+> The PRUSS CFG module is represented as a syscon node and is currently
+> managed by the PRUSS platform driver. Add easy accessor functions to set
+> GPI mode, MII_RT event enable/disable and XFR (XIN XOUT) enable/disable
+> to enable the PRUSS Ethernet usecase. These functions reuse the generic
+> pruss_cfg_update() API function.
 > 
 > Signed-off-by: Suman Anna <s-anna@ti.com>
 > Co-developed-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
 > Signed-off-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
 > Signed-off-by: Puranjay Mohan <p-mohan@ti.com>
 > ---
->  drivers/soc/ti/pruss.c           |  41 +++++++++++++
->  include/linux/remoteproc/pruss.h | 102 +++++++++++++++++++++++++++++++
->  2 files changed, 143 insertions(+)
+>  include/linux/remoteproc/pruss.h | 55 ++++++++++++++++++++++++++++++++
+>  1 file changed, 55 insertions(+)
 > 
-> diff --git a/drivers/soc/ti/pruss.c b/drivers/soc/ti/pruss.c
-> index c8053c0d735f..537a3910ffd8 100644
-> --- a/drivers/soc/ti/pruss.c
-> +++ b/drivers/soc/ti/pruss.c
-> @@ -164,6 +164,47 @@ int pruss_release_mem_region(struct pruss *pruss,
+> diff --git a/include/linux/remoteproc/pruss.h b/include/linux/remoteproc/pruss.h
+> index d41bec448f06..7952f250301a 100644
+> --- a/include/linux/remoteproc/pruss.h
+> +++ b/include/linux/remoteproc/pruss.h
+> @@ -240,4 +240,59 @@ static inline bool is_pru_rproc(struct device *dev)
+>  	return true;
 >  }
->  EXPORT_SYMBOL_GPL(pruss_release_mem_region);
+>  
+> +/**
+> + * pruss_cfg_gpimode() - set the GPI mode of the PRU
+> + * @pruss: the pruss instance handle
+> + * @pru_id: id of the PRU core within the PRUSS
+> + * @mode: GPI mode to set
+> + *
+> + * Sets the GPI mode for a given PRU by programming the
+> + * corresponding PRUSS_CFG_GPCFGx register
+> + *
+> + * Return: 0 on success, or an error code otherwise
+> + */
+> +static inline int pruss_cfg_gpimode(struct pruss *pruss,
+> +				    enum pruss_pru_id pru_id,
+> +				    enum pruss_gpi_mode mode)
+> +{
+> +	if (pru_id < 0 || pru_id >= PRUSS_NUM_PRUS)
+> +		return -EINVAL;
+> +
+
+Should we check for invalid gpi mode and error out if so?
+
+> +	return pruss_cfg_update(pruss, PRUSS_CFG_GPCFG(pru_id),
+> +				PRUSS_GPCFG_PRU_GPI_MODE_MASK,
+> +				mode << PRUSS_GPCFG_PRU_GPI_MODE_SHIFT);
+> +}
+> +
+> +/**
+> + * pruss_cfg_miirt_enable() - Enable/disable MII RT Events
+> + * @pruss: the pruss instance
+> + * @enable: enable/disable
+> + *
+> + * Enable/disable the MII RT Events for the PRUSS.
+> + *
+> + * Return: 0 on success, or an error code otherwise
+> + */
+> +static inline int pruss_cfg_miirt_enable(struct pruss *pruss, bool enable)
+> +{
+> +	u32 set = enable ? PRUSS_MII_RT_EVENT_EN : 0;
+> +
+> +	return pruss_cfg_update(pruss, PRUSS_CFG_MII_RT,
+> +				PRUSS_MII_RT_EVENT_EN, set);
+> +}
+> +
+> +/**
+> + * pruss_cfg_xfr_enable() - Enable/disable XIN XOUT shift functionality
+> + * @pruss: the pruss instance
+> + * @enable: enable/disable
+> + *
+> + * Return: 0 on success, or an error code otherwise
+> + */
+> +static inline int pruss_cfg_xfr_enable(struct pruss *pruss, bool enable)
+> +{
+> +	u32 set = enable ? PRUSS_SPP_XFER_SHIFT_EN : 0;
+> +
+> +	return pruss_cfg_update(pruss, PRUSS_CFG_SPP,
+> +				PRUSS_SPP_XFER_SHIFT_EN, set);
+> +}
+> +
+>  #endif /* __LINUX_PRUSS_H */
 
 cheers,
 -roger
