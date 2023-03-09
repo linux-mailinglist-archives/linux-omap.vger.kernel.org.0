@@ -2,133 +2,232 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ACAB36B2350
-	for <lists+linux-omap@lfdr.de>; Thu,  9 Mar 2023 12:45:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A6296B240B
+	for <lists+linux-omap@lfdr.de>; Thu,  9 Mar 2023 13:23:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231588AbjCILpV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 9 Mar 2023 06:45:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40674 "EHLO
+        id S230050AbjCIMXT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 9 Mar 2023 07:23:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39798 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231698AbjCILpK (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 9 Mar 2023 06:45:10 -0500
-Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 522799FE57;
-        Thu,  9 Mar 2023 03:45:09 -0800 (PST)
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 329BilmV067182;
-        Thu, 9 Mar 2023 05:44:47 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1678362288;
-        bh=/q/r+VqIDQV+nyf/HFdFt7S4d1PgKsozHa8XIbxD8aY=;
-        h=Date:Subject:To:CC:References:From:In-Reply-To;
-        b=nAnAGXYW/BIh78fUHAF8Qk8hBwnEkuy5WmwDM9NDgykbzDS94TzunNiSbEHM08EZf
-         SIWLabHhn09QBlt8dfoAKNl6ODNLNseANMBusUJ7MwbOnfTuRmU91N+5Vx38gcKRZl
-         U/BcI1f82iMoQ6L9rvjidTWmPcFBFyVr70O/u3WA=
-Received: from DFLE111.ent.ti.com (dfle111.ent.ti.com [10.64.6.32])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 329BiliX027723
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 9 Mar 2023 05:44:47 -0600
-Received: from DFLE112.ent.ti.com (10.64.6.33) by DFLE111.ent.ti.com
- (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16; Thu, 9
- Mar 2023 05:44:47 -0600
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16 via
- Frontend Transport; Thu, 9 Mar 2023 05:44:47 -0600
-Received: from [10.24.69.114] (ileaxei01-snat2.itg.ti.com [10.180.69.6])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 329BifPD012701;
-        Thu, 9 Mar 2023 05:44:42 -0600
-Message-ID: <d7f18805-7b26-e2c9-a40e-262165ec8f9b@ti.com>
-Date:   Thu, 9 Mar 2023 17:14:41 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: Re: [EXTERNAL] Re: [PATCH v5 1/2] dt-bindings: net: Add ICSSG
- Ethernet
-Content-Language: en-US
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Rob Herring <robh@kernel.org>,
-        MD Danish Anwar <danishanwar@ti.com>
-CC:     "Andrew F. Davis" <afd@ti.com>, Suman Anna <s-anna@ti.com>,
-        Roger Quadros <rogerq@kernel.org>,
-        YueHaibing <yuehaibing@huawei.com>,
+        with ESMTP id S229577AbjCIMXS (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 9 Mar 2023 07:23:18 -0500
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7EB55678A;
+        Thu,  9 Mar 2023 04:23:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1678364597; x=1709900597;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=zrQ6SdmoAtu1iTJKI0dbhn+kY3EFRa2D18rxQvDuHSY=;
+  b=RqdpC+AZnHXow412U5lY1nDTnbJgdUh84IkH+ejtAwle/dEW7QZeu83m
+   OwJ9QPEEjzdgsz7/0n68R9wViPxF/00h4aGolMuq1GAVAFdN8ts/ZJwJs
+   bS1YHsSUJ8dzlGQzBPPh0VT4z3OvD5EJ954j6r1JLtZqFgW3kYokPirxE
+   Anxj/g6faugnrrn/NFpwAOzLjC1wo/eFehm7/9eBK7oGWrCU0Pmg+4TbR
+   xjx3ZZdvCUfooqvWUQx9xA/gA26cfob3KcNUXUEljKVDJtiL3FepVeX2B
+   FuqmHHvjfLp4U1L5gqCz6hR0tJk/sRJPy5vpzrWB5T3CUMuD76XJik2Ik
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10643"; a="335134674"
+X-IronPort-AV: E=Sophos;i="5.98,246,1673942400"; 
+   d="scan'208";a="335134674"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Mar 2023 04:23:17 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10643"; a="746305788"
+X-IronPort-AV: E=Sophos;i="5.98,246,1673942400"; 
+   d="scan'208";a="746305788"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga004.fm.intel.com with ESMTP; 09 Mar 2023 04:23:14 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@intel.com>)
+        id 1paFIe-000JEN-0d;
+        Thu, 09 Mar 2023 14:23:12 +0200
+Date:   Thu, 9 Mar 2023 14:23:11 +0200
+From:   Andy Shevchenko <andriy.shevchenko@intel.com>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Johan Hovold <johan@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
         Vignesh Raghavendra <vigneshr@ti.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>, <andrew@lunn.ch>,
-        <nm@ti.com>, <ssantosh@kernel.org>, <srk@ti.com>,
-        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>
-References: <20230210114957.2667963-1-danishanwar@ti.com>
- <20230210114957.2667963-2-danishanwar@ti.com>
- <20230210192001.GB2923614-robh@kernel.org>
- <43df3c2c-d0d0-f2b8-cf8b-8a2453ca43b4@ti.com>
- <63dbbda7-a444-8dac-6399-45e305652155@linaro.org>
-From:   Md Danish Anwar <a0501179@ti.com>
-Organization: Texas Instruments
-In-Reply-To: <63dbbda7-a444-8dac-6399-45e305652155@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+        linux-omap@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org
+Subject: Re: [PATCH v6 1/1] serial: core: Start managing serial controllers
+ to enable runtime PM
+Message-ID: <ZAnPrwLUA/1Bsq26@smile.fi.intel.com>
+References: <20230309085713.57700-1-tony@atomide.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230309085713.57700-1-tony@atomide.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Krzysztof,
-
-On 07/03/23 14:28, Krzysztof Kozlowski wrote:
-> On 07/03/2023 05:57, Md Danish Anwar wrote:
->>>> +allOf:
->>>> +  - $ref: /schemas/remoteproc/ti,pru-consumer.yaml#
->>>> +
->>>> +properties:
->>>> +  compatible:
->>>> +    enum:
->>>> +      - ti,am654-icssg-prueth  # for AM65x SoC family
->>>> +
->>>> +  ti,sram:
->>>> +    $ref: /schemas/types.yaml#/definitions/phandle
->>>> +    description:
->>>> +      phandle to MSMC SRAM node
->>>
->>> I believe we have a standard 'sram' property to point to SRAM nodes 
->>> assuming this is just mmio-sram or similar.
->>>
->>
->> Yes, we have standard 'sram' property but Krzysztof had asked me to make the
->> sram property vendor specific in last revision of this series.
+On Thu, Mar 09, 2023 at 10:57:08AM +0200, Tony Lindgren wrote:
+> We want to enable runtime PM for serial port device drivers in a generic
+> way. To do this, we want to have the serial core layer manage the
+> registered physical serial controller devices.
 > 
-> Sorry about that. I missed that we already have a 'sram'. The question
-> remains whether this is a phandle to MMIO SRAM or similar (sram.yaml).
+> To do this, let's set up a struct bus and struct device for the serial
+> core controller as suggested by Greg and Jiri. The serial core controller
+> devices are children of the physical serial port device. The serial core
+> controller device is needed to support multiple different kind of ports
+> connected to single physical serial port device.
 > 
-> Best regards,
-> Krzysztof
+> Let's also set up a struct device for the serial core port. The serial
+> core port instances are children of the serial core controller device.
 > 
+> We need to also update the documentation a bit as suggested by Andy.
+> 
+> With the serial core port device we can now flush pending TX on the
+> runtime PM resume as suggested by Johan.
 
-The SRAM that we are using here is phandle to MMIO-SRAM only. In the example
-section you can see, sram node points to msmc_ram (ti,sram = <&msmc_ram>;) And
-msmc_ram has compatible as "mmio-sram" in k3-am65-main.dtsi [1].
+Thanks, my comments below.
 
-	msmc_ram: sram@70000000 {
-		compatible = "mmio-sram";
-		reg = <0x0 0x70000000 0x0 0x200000>;
+...
 
-So I can use 'sram' property as there is no need to make this as ti specific.
-Let me know if it seems good to you.
+>    - Devices behind real busses where there is a connector resource
+> -    are represented as struct spi_device or struct i2c_device. Note
+> -    that standard UARTs are not busses so there is no struct uart_device,
+> -    although some of them may be represented by struct serdev_device.
+> +    are represented as struct spi_device, struct i2c_device or
+> +    struct serdev_device.
 
-[1]
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/arm64/boot/dts/ti/k3-am65-main.dtsi?h=v6.3-rc1#n11
+JFYI: the i2c_device will be changed soon to i2c_client in the v6.3-rcX,
+so this will have a conflict.
+
+...
+
+> +	if (!strncmp(name, "ctrl", 4)) {
+
+Wouldn't str_has_previx() be better to show the intention?
+
+> +		id = port->ctrl_id;
+> +	} else {
+> +		id = port->line;
+> +		dev->port = port;
+> +	}
+
+...
+
+
+> +	dev_set_name(&dev->dev, "%s.%s.%d", name, dev_name(port->dev), id);
+
+No error check?
+
+...
+
+> +	ret = device_add(&dev->dev);
+> +	if (ret) {
+
+> +		kfree(dev);
+
+Would it free the device name?
+
+> +		return NULL;
+> +	}
+
+...
+
+> +EXPORT_SYMBOL_GPL(serial_base_device_add);
+
+I'm wondering if we can use namespace from day 1 for this.
+
+...
+
+> +static int serial_base_init(void)
+> +{
+> +	return bus_register(&serial_base_bus_type);
+> +}
+> +
+> +static void serial_base_exit(void)
+> +{
+> +	bus_unregister(&serial_base_bus_type);
+> +}
+
+> +
+
+Redundant blank line and...
+
+> +module_init(serial_base_init);
+
+...move this to be after the function itself.
+
+> +module_exit(serial_base_exit);
+
+...
+
+> +extern int serial_base_driver_register(struct device_driver *driver);
+> +extern void serial_base_driver_unregister(struct device_driver *driver);
+> +extern struct serial_base_device *serial_base_device_add(struct uart_port *port,
+> +							 const char *name,
+> +							 struct device *parent_dev);
+> +extern void serial_base_device_remove(struct serial_base_device *dev);
+> +
+> +extern int serial_ctrl_register_port(struct uart_driver *drv, struct uart_port *port);
+> +extern void serial_ctrl_unregister_port(struct uart_driver *drv, struct uart_port *port);
+> +
+> +extern int serial_core_register_port(struct uart_driver *drv, struct uart_port *port);
+> +extern void serial_core_unregister_port(struct uart_driver *drv, struct uart_port *port);
+
+I believe you do not need "extern" for the function declarations here.
+
+...
+
+> +	err = pm_runtime_get(port_dev);
+
+Is not sync API a deliberate choice? Do we need to comment on why is so?
+
+...
+
+> +	bool added = false;
+
+> +	/* Inititalize a serial core controller device if needed */
+> +	ctrl_dev = serial_core_ctrl_find(drv, port->dev, port->ctrl_id);
+> +	if (!ctrl_dev) {
+> +		ctrl_dev = serial_core_ctrl_device_add(port);
+> +		if (!ctrl_dev) {
+> +			ret = -ENODEV;
+> +			goto err_unlock;
+> +		}
+> +		added = true;
+> +	}
+
+
+> +	if (added)
+> +		serial_base_device_remove(to_serial_base_device(ctrl_dev));
+
+Wondering if it makes sense to add a boolean directly into uart_port and drop
+this conditional here and move it to the callee.
+
+...
+
+> +
+> +module_init(serial_ctrl_init);
+> +module_exit(serial_ctrl_exit);
+
+Can we also move these closer to the respective functions?
+
+...
+
+> +
+> +module_init(serial_port_init);
+> +module_exit(serial_port_exit);
+
+Ditto.
 
 -- 
-Thanks and Regards,
-Danish.
+With Best Regards,
+Andy Shevchenko
+
+
