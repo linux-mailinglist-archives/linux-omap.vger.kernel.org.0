@@ -2,71 +2,65 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 476FD6B4839
-	for <lists+linux-omap@lfdr.de>; Fri, 10 Mar 2023 16:00:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EB176B47B7
+	for <lists+linux-omap@lfdr.de>; Fri, 10 Mar 2023 15:53:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233706AbjCJPAr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 10 Mar 2023 10:00:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42596 "EHLO
+        id S233529AbjCJOxu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 10 Mar 2023 09:53:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59334 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233879AbjCJPAR (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 10 Mar 2023 10:00:17 -0500
-Received: from mail-oi1-x22b.google.com (mail-oi1-x22b.google.com [IPv6:2607:f8b0:4864:20::22b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BB4C12C713;
-        Fri, 10 Mar 2023 06:54:16 -0800 (PST)
-Received: by mail-oi1-x22b.google.com with SMTP id bi17so4406374oib.3;
-        Fri, 10 Mar 2023 06:54:16 -0800 (PST)
+        with ESMTP id S233489AbjCJOxU (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 10 Mar 2023 09:53:20 -0500
+Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEDBF12B026;
+        Fri, 10 Mar 2023 06:49:22 -0800 (PST)
+Received: by mail-oi1-f179.google.com with SMTP id bg11so4401311oib.5;
+        Fri, 10 Mar 2023 06:49:22 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678459681;
+        d=1e100.net; s=20210112; t=1678459700;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=5kDFnMhlDjXbQhhC8cyka2MH9qZ1qf0f7uQ7y1/E2wc=;
-        b=IcYlxUmCpI4bJisf6t1mXNhASlCmGHOt/gztv79+k72tPBzmdunCZGNhehrCMNT5xP
-         X+q3puBg6VKct9uLZLYByxZwQ/X+stA8+zkNJjsEg4YaNfPN41xTw5GkuRLex1Rd/NMi
-         ZyiJ40ZL7MsL1qB3NSHIbcl8EjMvmrOjc/Zo7zG/d/fAfytIgXSSCoZicNMtxQKR4ofx
-         ANfpRXraUuypgv3/sUNv+sBz13kl0x83oGNKrobl3+PvWdpZzH/tQQEGTE4OxuCi6rPH
-         4BQPHsUWYWF46QrUmhWCI/OzctpJaVgQlx8wxMbE0rrOv93X/7nzSDi8IYFykbJNpxbw
-         brJQ==
-X-Gm-Message-State: AO0yUKWHRe8Ky1jWDbEpE5xC+pQLPdFX9TxKSIt7Y+56YfsxhQfJfnzb
-        zp6KfT7bnI7DYBXesfY6Ow==
-X-Google-Smtp-Source: AK7set8wyTPqB0zymJsFHoosApuhG8yLkiRC9jhDOWpmPaOxeYvrXuRmGrs8h0Q1Jwi9MFpU5m2ehQ==
-X-Received: by 2002:a05:6808:481:b0:383:b2c0:4ea1 with SMTP id z1-20020a056808048100b00383b2c04ea1mr11230371oid.16.1678459680625;
-        Fri, 10 Mar 2023 06:48:00 -0800 (PST)
+        bh=tCm7q3U60/6KX9NcfTGr2pgCK75ismvU0cilf2FoiGw=;
+        b=BgrvSnFROC0ijHIi650QY2Fx+hT4+KyHeonVoBY+ygi5mmTSabAya8yv4za8rvKvXC
+         YJDhs8e1Jhld1LWTbQKG9JlSCCit85cejfKKj0/SCbIQt/tebepplnfHo/zXhrBbEwIQ
+         4EYTxXcaW39k9JHo19R7hzBQ9sYva0OH7s/T6dHQrzflNTCVn7q5ABrSIccfgLFJPKcq
+         c0R0VVD98IhuB6+aX0qEEWI244MQ7qXkZhoimM5XlvtPYcMIVmnUodn8lmNxW0WUq5WG
+         k851etgYLHdXYKkWGsXclytNuz+FdhEkkhhNElZgLAQrjj7LY8epFBSmnSPWT/9V0XdZ
+         hNoA==
+X-Gm-Message-State: AO0yUKWu80XvnxL6A/3D/OcoDgpFGqXDvuZZosKW8F37P3zcoUsPAgXT
+        eNbYET2qA8PzyAFzkkvTJg==
+X-Google-Smtp-Source: AK7set+/P06XaRp7GkTwg3tc6gShVPdQ5zxSFTjc+shqKUaog2xzKowKu9ROn/VBl+65mw2D8Tw0Yw==
+X-Received: by 2002:a05:6808:86:b0:384:67e1:ca00 with SMTP id s6-20020a056808008600b0038467e1ca00mr9966724oic.48.1678459700609;
+        Fri, 10 Mar 2023 06:48:20 -0800 (PST)
 Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id u25-20020a544399000000b0038467f03345sm971615oiv.10.2023.03.10.06.47.59
+        by smtp.gmail.com with ESMTPSA id u26-20020a9d4d9a000000b00686a19ffef1sm92062otk.80.2023.03.10.06.48.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Mar 2023 06:48:00 -0800 (PST)
-Received: (nullmailer pid 1545569 invoked by uid 1000);
-        Fri, 10 Mar 2023 14:47:26 -0000
+        Fri, 10 Mar 2023 06:48:20 -0800 (PST)
+Received: (nullmailer pid 1545813 invoked by uid 1000);
+        Fri, 10 Mar 2023 14:47:28 -0000
 From:   Rob Herring <robh@kernel.org>
-To:     Amit Daniel Kachhap <amit.kachhap@gmail.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Lukasz Luba <lukasz.luba@arm.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Shawn Guo <shawnguo@kernel.org>,
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Bin Liu <b-liu@ti.com>, Shawn Guo <shawnguo@kernel.org>,
         Sascha Hauer <s.hauer@pengutronix.de>,
         Pengutronix Kernel Team <kernel@pengutronix.de>,
         Fabio Estevam <festevam@gmail.com>,
         NXP Linux Team <linux-imx@nxp.com>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Keerthy <j-keerthy@ti.com>
-Cc:     devicetree@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-omap@vger.kernel.org
-Subject: [PATCH] thermal: Use of_property_present() for testing DT property presence
-Date:   Fri, 10 Mar 2023 08:47:26 -0600
-Message-Id: <20230310144726.1545543-1-robh@kernel.org>
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>
+Cc:     devicetree@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-tegra@vger.kernel.org
+Subject: [PATCH] usb: Use of_property_present() for testing DT property presence
+Date:   Fri, 10 Mar 2023 08:47:27 -0600
+Message-Id: <20230310144728.1545786-1-robh@kernel.org>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,
         FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -82,73 +76,82 @@ for presence of a property and nothing more.
 
 Signed-off-by: Rob Herring <robh@kernel.org>
 ---
- drivers/thermal/cpufreq_cooling.c                  | 2 +-
- drivers/thermal/imx8mm_thermal.c                   | 2 +-
- drivers/thermal/imx_thermal.c                      | 4 ++--
- drivers/thermal/ti-soc-thermal/ti-thermal-common.c | 2 +-
- 4 files changed, 5 insertions(+), 5 deletions(-)
+ drivers/usb/gadget/udc/snps_udc_plat.c | 2 +-
+ drivers/usb/host/fsl-mph-dr-of.c       | 4 ++--
+ drivers/usb/musb/omap2430.c            | 2 +-
+ drivers/usb/phy/phy-mxs-usb.c          | 2 +-
+ drivers/usb/phy/phy-tegra-usb.c        | 2 +-
+ 5 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/thermal/cpufreq_cooling.c b/drivers/thermal/cpufreq_cooling.c
-index 9f8b438fcf8f..4608555b7ec3 100644
---- a/drivers/thermal/cpufreq_cooling.c
-+++ b/drivers/thermal/cpufreq_cooling.c
-@@ -633,7 +633,7 @@ of_cpufreq_cooling_register(struct cpufreq_policy *policy)
- 		return NULL;
+diff --git a/drivers/usb/gadget/udc/snps_udc_plat.c b/drivers/usb/gadget/udc/snps_udc_plat.c
+index 8bbb89c80348..0d3e705655b9 100644
+--- a/drivers/usb/gadget/udc/snps_udc_plat.c
++++ b/drivers/usb/gadget/udc/snps_udc_plat.c
+@@ -158,7 +158,7 @@ static int udc_plat_probe(struct platform_device *pdev)
  	}
  
--	if (of_find_property(np, "#cooling-cells", NULL)) {
-+	if (of_property_present(np, "#cooling-cells")) {
- 		struct em_perf_domain *em = em_cpu_get(policy->cpu);
+ 	/* Register for extcon if supported */
+-	if (of_get_property(dev->of_node, "extcon", NULL)) {
++	if (of_property_present(dev->of_node, "extcon")) {
+ 		udc->edev = extcon_get_edev_by_phandle(dev, 0);
+ 		if (IS_ERR(udc->edev)) {
+ 			if (PTR_ERR(udc->edev) == -EPROBE_DEFER)
+diff --git a/drivers/usb/host/fsl-mph-dr-of.c b/drivers/usb/host/fsl-mph-dr-of.c
+index 46c6a152b865..cdf71b716c2b 100644
+--- a/drivers/usb/host/fsl-mph-dr-of.c
++++ b/drivers/usb/host/fsl-mph-dr-of.c
+@@ -200,10 +200,10 @@ static int fsl_usb2_mph_dr_of_probe(struct platform_device *ofdev)
+ 	dev_data = get_dr_mode_data(np);
  
- 		cdev = __cpufreq_cooling_register(np, policy, em);
-diff --git a/drivers/thermal/imx8mm_thermal.c b/drivers/thermal/imx8mm_thermal.c
-index 72b5d6f319c1..334ce8e9830b 100644
---- a/drivers/thermal/imx8mm_thermal.c
-+++ b/drivers/thermal/imx8mm_thermal.c
-@@ -282,7 +282,7 @@ static int imx8mm_tmu_probe_set_calib(struct platform_device *pdev,
- 	 * strongly recommended to update such old DTs to get correct
- 	 * temperature compensation values for each SoC.
+ 	if (of_device_is_compatible(np, "fsl-usb2-mph")) {
+-		if (of_get_property(np, "port0", NULL))
++		if (of_property_present(np, "port0"))
+ 			pdata->port_enables |= FSL_USB2_PORT0_ENABLED;
+ 
+-		if (of_get_property(np, "port1", NULL))
++		if (of_property_present(np, "port1"))
+ 			pdata->port_enables |= FSL_USB2_PORT1_ENABLED;
+ 
+ 		pdata->operating_mode = FSL_USB2_MPH_HOST;
+diff --git a/drivers/usb/musb/omap2430.c b/drivers/usb/musb/omap2430.c
+index 44a21ec865fb..7f305b352591 100644
+--- a/drivers/usb/musb/omap2430.c
++++ b/drivers/usb/musb/omap2430.c
+@@ -334,7 +334,7 @@ static int omap2430_probe(struct platform_device *pdev)
+ 	 * Legacy SoCs using omap_device get confused if node is moved
+ 	 * because of interconnect properties mixed into the node.
  	 */
--	if (!of_find_property(pdev->dev.of_node, "nvmem-cells", NULL)) {
-+	if (!of_property_present(pdev->dev.of_node, "nvmem-cells")) {
- 		dev_warn(dev,
- 			 "No OCOTP nvmem reference found, SoC-specific calibration not loaded. Please update your DT.\n");
- 		return 0;
-diff --git a/drivers/thermal/imx_thermal.c b/drivers/thermal/imx_thermal.c
-index fb0d5cab70af..77d6567a3f47 100644
---- a/drivers/thermal/imx_thermal.c
-+++ b/drivers/thermal/imx_thermal.c
-@@ -594,7 +594,7 @@ static int imx_thermal_register_legacy_cooling(struct imx_thermal_data *data)
+-	if (of_get_property(np, "ti,hwmods", NULL)) {
++	if (of_property_present(np, "ti,hwmods")) {
+ 		dev_warn(&pdev->dev, "please update to probe with ti-sysc\n");
+ 		populate_irqs = true;
+ 	} else {
+diff --git a/drivers/usb/phy/phy-mxs-usb.c b/drivers/usb/phy/phy-mxs-usb.c
+index d2836ef5d15c..0a8e3fd699ca 100644
+--- a/drivers/usb/phy/phy-mxs-usb.c
++++ b/drivers/usb/phy/phy-mxs-usb.c
+@@ -733,7 +733,7 @@ static int mxs_phy_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
  
- 	np = of_get_cpu_node(data->policy->cpu, NULL);
+ 	/* Some SoCs don't have anatop registers */
+-	if (of_get_property(np, "fsl,anatop", NULL)) {
++	if (of_property_present(np, "fsl,anatop")) {
+ 		mxs_phy->regmap_anatop = syscon_regmap_lookup_by_phandle
+ 			(np, "fsl,anatop");
+ 		if (IS_ERR(mxs_phy->regmap_anatop)) {
+diff --git a/drivers/usb/phy/phy-tegra-usb.c b/drivers/usb/phy/phy-tegra-usb.c
+index f0240107edb1..4d207ce3ddf2 100644
+--- a/drivers/usb/phy/phy-tegra-usb.c
++++ b/drivers/usb/phy/phy-tegra-usb.c
+@@ -1375,7 +1375,7 @@ static int tegra_usb_phy_probe(struct platform_device *pdev)
+ 	tegra_phy->is_legacy_phy =
+ 		of_property_read_bool(np, "nvidia,has-legacy-mode");
  
--	if (!np || !of_find_property(np, "#cooling-cells", NULL)) {
-+	if (!np || !of_property_present(np, "#cooling-cells")) {
- 		data->cdev = cpufreq_cooling_register(data->policy);
- 		if (IS_ERR(data->cdev)) {
- 			ret = PTR_ERR(data->cdev);
-@@ -671,7 +671,7 @@ static int imx_thermal_probe(struct platform_device *pdev)
- 
- 	platform_set_drvdata(pdev, data);
- 
--	if (of_find_property(pdev->dev.of_node, "nvmem-cells", NULL)) {
-+	if (of_property_present(pdev->dev.of_node, "nvmem-cells")) {
- 		ret = imx_init_from_nvmem_cells(pdev);
- 		if (ret)
- 			return dev_err_probe(&pdev->dev, ret,
-diff --git a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-index 8a9055bd376e..dace6591220e 100644
---- a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-+++ b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-@@ -223,7 +223,7 @@ int ti_thermal_register_cpu_cooling(struct ti_bandgap *bgp, int id)
- 	 * using DT, then it must be aware that the cooling device
- 	 * loading has to happen via cpufreq driver.
- 	 */
--	if (of_find_property(np, "#thermal-sensor-cells", NULL))
-+	if (of_property_present(np, "#thermal-sensor-cells"))
- 		return 0;
- 
- 	data = ti_bandgap_get_sensor_data(bgp, id);
+-	if (of_find_property(np, "dr_mode", NULL))
++	if (of_property_present(np, "dr_mode"))
+ 		tegra_phy->mode = usb_get_dr_mode(&pdev->dev);
+ 	else
+ 		tegra_phy->mode = USB_DR_MODE_HOST;
 -- 
 2.39.2
 
