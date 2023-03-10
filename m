@@ -2,88 +2,79 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF04E6B3752
-	for <lists+linux-omap@lfdr.de>; Fri, 10 Mar 2023 08:29:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 89B746B3817
+	for <lists+linux-omap@lfdr.de>; Fri, 10 Mar 2023 09:07:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230126AbjCJH3M (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 10 Mar 2023 02:29:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44770 "EHLO
+        id S229668AbjCJIHo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 10 Mar 2023 03:07:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230164AbjCJH3L (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 10 Mar 2023 02:29:11 -0500
-Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39061ED681
-        for <linux-omap@vger.kernel.org>; Thu,  9 Mar 2023 23:29:08 -0800 (PST)
-Received: by mail-wm1-x334.google.com with SMTP id l7-20020a05600c1d0700b003eb5e6d906bso2746034wms.5
-        for <linux-omap@vger.kernel.org>; Thu, 09 Mar 2023 23:29:08 -0800 (PST)
+        with ESMTP id S229846AbjCJIHl (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 10 Mar 2023 03:07:41 -0500
+Received: from mail-ua1-x935.google.com (mail-ua1-x935.google.com [IPv6:2607:f8b0:4864:20::935])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24E65ED0D9;
+        Fri, 10 Mar 2023 00:07:08 -0800 (PST)
+Received: by mail-ua1-x935.google.com with SMTP id v48so2942033uad.6;
+        Fri, 10 Mar 2023 00:07:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1678433346;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=AwBOkR9lwcDkjadRLgF0R44wF9qXADVSTiSBWCFE2ko=;
-        b=mypyJqnC/F6lSavmkFjuNxCKPeRm25olFcbDuBbOsNUdgP5ZV1s0p+0BbdmQia3Nco
-         eWD82VasDd0oGCDEKHhbnfPVkrOrJpT3f1RdWpJTlQ9FFHc8JoHhmHwOWxMA0+fH6UtJ
-         5RnzxgtdCPBWoloVZpMX2hboHtHa6/ZkgrUh+vWSktIBlGqc4ZrFmPcCxkKAUI7h9WkK
-         FqjdmcRRCl+OyDdE05M4VOz4/XwOMi9xUQjLahywyfgovNrTASKp3ts1ZdL9YTrjMBVX
-         MCobRRHYDuKI5CshilPmv2tUYuHFRqIH/mMLjgOpNFDI0z8nmNRYTmaceloOm3TFnnFC
-         kRrA==
+        d=gmail.com; s=20210112; t=1678435609;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ompnZ/3O4+0ABFbvCAC6GsX78rObx/mdpREpnU4Oecc=;
+        b=cbg0wETPSFur5F3ohH6/3YUQUCSwXh/+CObEvJt4g2MpmNZh7VpVTvfi+R/DkrLdME
+         Gl5ebrrnijQocAEx1ZUwF/botmS0rV7JbhaOZnwtPhrb1YszIIwNq+lpGzW9SZcp4u3x
+         fj2aCPNJ8i6ajYYyaZOiicTI8Mo72RX0aXW/q2JKVKxHymZurjK1l1+OLwoMr/ttGeR/
+         KRFDIifCS28nqitPTq3c0/oMJO8bt3E4FDu0ly5uFd0RyfpOcoGG61XQDAp8NKrfg9gX
+         7ZYrdVAy0ae78C8fCXP07GddGi6Bd6X5GAw7eR5LcTAqu5bdW9s1EuhcOvzDyoWqYzD2
+         txdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678433346;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AwBOkR9lwcDkjadRLgF0R44wF9qXADVSTiSBWCFE2ko=;
-        b=eG6+U8mmXG8ygnHZELbZ9UDkgYKbFp53MHjTKcJDUuRfpTQnPQMDMS9QYr4/x1cNf+
-         h+/GR3frDXm7YSjzaF3l6Rlnxdl4YB6T2v5OwOq/7MWM80kIBaTIrVZZoHTl3aUozKjH
-         jcK+jgqQogvqzWjByXuryQdfIgCOqdGSdbepBesp1bciGMFO4nVdP/qJxynkrMjzIYXn
-         T4Jbo++EZJMQbRyRfldQYcte7gVyEjBSs0OprQvFWW13egwYaS8ruvvlAJ8Md61ynouh
-         PW+E5SEAH8JF1ma8ejYz/d42BjYyFAAn9WsbQ8T33fDYf9wL6KHsSUcRhSpVJb9Fg7wm
-         Zjqg==
-X-Gm-Message-State: AO0yUKWrHYIz0dMu0kbz37S0TZoWMkdnyScsEyTAENcuI04zauZZ82wW
-        QJRgnsj7VkfXbPHxa452/dMv2w==
-X-Google-Smtp-Source: AK7set92+cRtbKy+3ERr2ns8dFh7B2dy3XcYI3Bks9AgxAOC76oxIeXSLX+VzvC44JGh3SZrPpNXNg==
-X-Received: by 2002:a05:600c:3ba5:b0:3eb:4501:6c60 with SMTP id n37-20020a05600c3ba500b003eb45016c60mr1132916wms.5.1678433346655;
-        Thu, 09 Mar 2023 23:29:06 -0800 (PST)
-Received: from [192.168.1.195] ([5.133.47.210])
-        by smtp.googlemail.com with ESMTPSA id o1-20020a056000010100b002c71b4d476asm1393871wrx.106.2023.03.09.23.29.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Mar 2023 23:29:05 -0800 (PST)
-Message-ID: <ef92dcac-cadd-b85e-d6ea-512684266e81@linaro.org>
-Date:   Fri, 10 Mar 2023 07:29:04 +0000
+        d=1e100.net; s=20210112; t=1678435609;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ompnZ/3O4+0ABFbvCAC6GsX78rObx/mdpREpnU4Oecc=;
+        b=c/1y1cBZ0yf5x74k9QH8uzj75MBxjQo0uim2hOG5gotKkgNgt8eiXdGwg+Cv6vcueF
+         HXIG2YRNl5bQ/ruZmd59/PRqXLpxV/WRer45jxd0jryaFwFDtpMsXCZIEH44lQSs0LIA
+         bPBhGRr9xu1epNiWMpNJpeUqL1PxyO+DHNi95jDPT3ghiSHk/EJa/airEQZ1rljlN1b0
+         LbcF0fGjArDs6i9FBLOT9n4LSJknIrhpFNpVJCQmS08pVJM0ClxACsEwBVBBQcxJeK6/
+         kAZfHyauzbYfEwRg3BCotknHVbMn1SCTVBcHDumDwur/DjghfTfaJ1DIZv6QBx87IJWd
+         mVzg==
+X-Gm-Message-State: AO0yUKXqHXzVKOJV8jmLq54fNZznhDPYXtKXzNQ927aRhxVFYO/GAXhQ
+        2rj8/GWxRMe7ONAM/d/51BXz7Zr3n4D64Kl8u7w=
+X-Google-Smtp-Source: AK7set/qlJvjYuXoCyUYfAj6ozy+Oqc/tvsnLRcTu8sRCueO0ZP2nsCHjERtM+2sxUEh0L/Qs4oOjOXfDAA0Sh/rI6w=
+X-Received: by 2002:ab0:5402:0:b0:688:d612:2024 with SMTP id
+ n2-20020ab05402000000b00688d6122024mr16280357uaa.2.1678435609291; Fri, 10 Mar
+ 2023 00:06:49 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: Re: [PATCH] ASoC: do not include pm_runtime.h if not used
-Content-Language: en-US
-To:     Claudiu Beznea <claudiu.beznea@microchip.com>, perex@perex.cz,
-        tiwai@suse.com, lgirdwood@gmail.com, broonie@kernel.org,
-        james.schulman@cirrus.com, david.rhodes@cirrus.com,
-        tanureal@opensource.cirrus.com, rf@opensource.cirrus.com,
-        oder_chiou@realtek.com, shengjiu.wang@gmail.com,
-        Xiubo.Lee@gmail.com, festevam@gmail.com, nicoleotsuka@gmail.com,
-        shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-        linux-imx@nxp.com, cezary.rojewski@intel.com,
-        pierre-louis.bossart@linux.intel.com,
-        peter.ujfalusi@linux.intel.com, yung-chuan.liao@linux.intel.com,
-        ranjani.sridharan@linux.intel.com, kai.vehmanen@linux.intel.com,
-        matthias.bgg@gmail.com, bgoswami@quicinc.com, vkoul@kernel.org,
-        daniel.baluta@nxp.com, thierry.reding@gmail.com,
-        jonathanh@nvidia.com, jarkko.nikula@bitmer.com
-Cc:     alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
-        patches@opensource.cirrus.com, linuxppc-dev@lists.ozlabs.org,
+References: <20230215-immutable-chips-v3-0-972542092a77@linaro.org> <20230215-immutable-chips-v3-11-972542092a77@linaro.org>
+In-Reply-To: <20230215-immutable-chips-v3-11-972542092a77@linaro.org>
+From:   Romain Perier <romain.perier@gmail.com>
+Date:   Fri, 10 Mar 2023 09:06:38 +0100
+Message-ID: <CABgxDoLkhOR=eq5TAoLk-GfOvPgKzbRyedaM+j-8YsRYn27DMw@mail.gmail.com>
+Subject: Re: [PATCH v3 11/17] gpio: msc313: Convert to immutable irq_chip
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Mun Yew Tham <mun.yew.tham@intel.com>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Joel Stanley <joel@jms.id.au>,
+        Andrew Jeffery <andrew@aj.id.au>, Alban Bedel <albeu@free.fr>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Jay Fang <f.fangjian@huawei.com>,
+        Daniel Palmer <daniel@thingy.jp>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Kevin Hilman <khilman@kernel.org>,
+        William Breathitt Gray <william.gray@linaro.org>,
+        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org,
-        sound-open-firmware@alsa-project.org, linux-tegra@vger.kernel.org,
-        linux-omap@vger.kernel.org
-References: <20230307103022.1007420-1-claudiu.beznea@microchip.com>
-From:   Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-In-Reply-To: <20230307103022.1007420-1-claudiu.beznea@microchip.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+        linux-aspeed@lists.ozlabs.org, linux-omap@vger.kernel.org,
+        Marc Zyngier <maz@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -91,38 +82,86 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Le jeu. 9 mars 2023 =C3=A0 08:46, Linus Walleij <linus.walleij@linaro.org> =
+a =C3=A9crit :
+>
+> Convert the driver to immutable irq-chip with a bit of
+> intuition.
+>
+> This conversion follows the pattern of the gpio-ixp4xx
+> hierarchical GPIO interrupt driver.
 
+Hi,
 
-On 07/03/2023 10:30, Claudiu Beznea wrote:
-> diff --git a/sound/soc/qcom/lpass-sc7180.c b/sound/soc/qcom/lpass-sc7180.c
-> index 41db6617e2ed..dc892fac4baa 100644
-> --- a/sound/soc/qcom/lpass-sc7180.c
-> +++ b/sound/soc/qcom/lpass-sc7180.c
-> @@ -12,7 +12,6 @@
->   #include <linux/module.h>
->   #include <linux/of.h>
->   #include <linux/platform_device.h>
-> -#include <linux/pm_runtime.h>
->   #include <dt-bindings/sound/sc7180-lpass.h>
->   #include <sound/pcm.h>
->   #include <sound/soc.h>
-> diff --git a/sound/soc/qcom/lpass-sc7280.c b/sound/soc/qcom/lpass-sc7280.c
-> index d43f480cbae3..ee4a4b553e74 100644
-> --- a/sound/soc/qcom/lpass-sc7280.c
-> +++ b/sound/soc/qcom/lpass-sc7280.c
-> @@ -8,7 +8,6 @@
->   #include <linux/module.h>
->   #include <sound/pcm.h>
->   #include <sound/soc.h>
-> -#include <linux/pm_runtime.h>
->   
->   #include <dt-bindings/sound/sc7180-lpass.h>
+lgtm
 
-Has these been compile tested? the reason I ask is because both these 
-drivers need SET_SYSTEM_SLEEP_PM_OPS macro from pm.h which was getting 
-included from pm_runtime.h, now that is removed, am guessing it will 
-cause a compile errors.
+>
+> Cc: Marc Zyngier <maz@kernel.org>
+> Acked-by: Marc Zyngier <maz@kernel.org>
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 
-can you atleast replace this with pm.h instead of removing it totally?
+Reviewed-by: Romain Perier <romain.perier@gmail.com>
 
---srini
+> ---
+>  drivers/gpio/gpio-msc313.c | 26 ++++++++++++++++++++++----
+>  1 file changed, 22 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/gpio/gpio-msc313.c b/drivers/gpio/gpio-msc313.c
+> index b0773e5652fa..036ad2324892 100644
+> --- a/drivers/gpio/gpio-msc313.c
+> +++ b/drivers/gpio/gpio-msc313.c
+> @@ -532,17 +532,35 @@ static int msc313_gpio_direction_output(struct gpio=
+_chip *chip, unsigned int off
+>         return 0;
+>  }
+>
+> +static void msc313_gpio_irq_mask(struct irq_data *d)
+> +{
+> +       struct gpio_chip *gc =3D irq_data_get_irq_chip_data(d);
+> +
+> +       irq_chip_mask_parent(d);
+> +       gpiochip_disable_irq(gc, d->hwirq);
+> +}
+> +
+> +static void msc313_gpio_irq_unmask(struct irq_data *d)
+> +{
+> +       struct gpio_chip *gc =3D irq_data_get_irq_chip_data(d);
+> +
+> +       gpiochip_enable_irq(gc, d->hwirq);
+> +       irq_chip_unmask_parent(d);
+> +}
+> +
+>  /*
+>   * The interrupt handling happens in the parent interrupt controller,
+>   * we don't do anything here.
+>   */
+> -static struct irq_chip msc313_gpio_irqchip =3D {
+> +static const struct irq_chip msc313_gpio_irqchip =3D {
+>         .name =3D "GPIO",
+>         .irq_eoi =3D irq_chip_eoi_parent,
+> -       .irq_mask =3D irq_chip_mask_parent,
+> -       .irq_unmask =3D irq_chip_unmask_parent,
+> +       .irq_mask =3D msc313_gpio_irq_mask,
+> +       .irq_unmask =3D msc313_gpio_irq_unmask,
+>         .irq_set_type =3D irq_chip_set_type_parent,
+>         .irq_set_affinity =3D irq_chip_set_affinity_parent,
+> +       .flags =3D IRQCHIP_IMMUTABLE,
+> +       GPIOCHIP_IRQ_RESOURCE_HELPERS,
+>  };
+>
+>  /*
+> @@ -644,7 +662,7 @@ static int msc313_gpio_probe(struct platform_device *=
+pdev)
+>         gpiochip->names =3D gpio->gpio_data->names;
+>
+>         gpioirqchip =3D &gpiochip->irq;
+> -       gpioirqchip->chip =3D &msc313_gpio_irqchip;
+> +       gpio_irq_chip_set_chip(gpioirqchip, &msc313_gpio_irqchip);
+>         gpioirqchip->fwnode =3D of_node_to_fwnode(dev->of_node);
+>         gpioirqchip->parent_domain =3D parent_domain;
+>         gpioirqchip->child_to_parent_hwirq =3D msc313e_gpio_child_to_pare=
+nt_hwirq;
+>
+> --
+> 2.34.1
+>
