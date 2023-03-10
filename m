@@ -2,59 +2,57 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC71E6B47BB
-	for <lists+linux-omap@lfdr.de>; Fri, 10 Mar 2023 15:53:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C39A6B47F6
+	for <lists+linux-omap@lfdr.de>; Fri, 10 Mar 2023 15:56:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233490AbjCJOxw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 10 Mar 2023 09:53:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57620 "EHLO
+        id S233459AbjCJO4a (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 10 Mar 2023 09:56:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32972 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233403AbjCJOx2 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 10 Mar 2023 09:53:28 -0500
-Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B67B125AF9;
-        Fri, 10 Mar 2023 06:49:27 -0800 (PST)
-Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-17671fb717cso6053250fac.8;
-        Fri, 10 Mar 2023 06:49:27 -0800 (PST)
+        with ESMTP id S233734AbjCJOzL (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 10 Mar 2023 09:55:11 -0500
+Received: from mail-oa1-x2b.google.com (mail-oa1-x2b.google.com [IPv6:2001:4860:4864:20::2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAC3D12DDD3;
+        Fri, 10 Mar 2023 06:50:38 -0800 (PST)
+Received: by mail-oa1-x2b.google.com with SMTP id 586e51a60fabf-1755e639b65so6083081fac.3;
+        Fri, 10 Mar 2023 06:50:38 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678459709;
+        d=1e100.net; s=20210112; t=1678459706;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=5ABh9MagjDNyGivJ3oT/1DUZHeIg4J1qNxCI1uEPy4Q=;
-        b=xduS1bTaK+w0+UU0Zy70jd4Utq3VZsmT4t/6+RVgE2t9PaaGgjQAyrCJ1sfaMNbzsN
-         ETnHC6owPUuov1UUWfS30ivGbsOaFWv57M0/CvqxTyIgbQH9cGqdaF88er+Ix5e8g6s4
-         VNE8Yc8f4xZ6GOJ0uYhdeKHy8045VQtenTbWeGe8Y8bqYdgZuubm1DvWqHlIUJ1jJ/xX
-         2FnX3Gvaiaxe5hlNuYAH1E/yT4iuJN12H//Iuh0IAMYpg1+rA4R/PxcnWUIKxSxKjSx5
-         +qF1KVGcHB/wwTtV0QCJ4smmaVhmKMm9o1K+qwggIOI2ljGM9pHSQW747ttMWwLQ/Mb1
-         1m7Q==
-X-Gm-Message-State: AO0yUKVNpG0riEZo8LJljPV2I/in+4lScZ/rAT/MKVC6Sa4T6QIrdJpK
-        ydU291gcQeOIebN7cJjhCA==
-X-Google-Smtp-Source: AK7set/3qtl4P82g+jyKy/zqrO1gocYbHRAq7O166an25I6PVtSxchhQQDghw8aD3mFYHy2oBhVb6g==
-X-Received: by 2002:a05:6870:a68c:b0:16e:8d40:b5ec with SMTP id i12-20020a056870a68c00b0016e8d40b5ecmr16859362oam.50.1678459708772;
-        Fri, 10 Mar 2023 06:48:28 -0800 (PST)
+        bh=q3KHc2qfQy8/Fx/GchcHCRrPSc3mgzu0I8uWgkcqEU0=;
+        b=YomaDBgKcI4/WOUBsKf74VZ64VP/0kiT0fkqBA4O1u2g3zDdn+3EAhyNVaqPgT2dRM
+         asg7w43ASpptlSAW+581lRJ7skCKtB21FQhsjAnoHABHs0iHQnFU+weKPQ9d79BBSt38
+         UoyC4TW4KeQvCwXkpvKzgm5h5YV6/31b0wNHd2JUU8CTYn0Ikl9atR2SF/KV+3MBXLxh
+         hf0MCMH5rxvuR7VangIXRblSXo+DnRM/jNAFd/VZ0Es75ZFzfuYonVW5AEPzr+pDYQ+c
+         8+LinPUQcIXevPKWRhlXDDWmQHAxuJE65ugP210eqyT+C2aeDgr2i7dziLg/1wiHWWuh
+         yTzg==
+X-Gm-Message-State: AO0yUKVPaA2j8QimbJ5FQiPOBQo1MNCij7nQEORwdX6OsfHsEcF5KohT
+        d5BQBN9QPkpoiIdzdQdNnmaTMKlk4Q==
+X-Google-Smtp-Source: AK7set8QmvbQP/Bjfjc3O5nnCMjZn+KxAeSmG9Ea+h1QaqVMxanfmgnEk4F99ymmNw1xiMUHNTguXw==
+X-Received: by 2002:a05:6870:8a0e:b0:176:6b9f:7ff4 with SMTP id p14-20020a0568708a0e00b001766b9f7ff4mr13541205oaq.21.1678459706222;
+        Fri, 10 Mar 2023 06:48:26 -0800 (PST)
 Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id z21-20020a056870515500b001728d38a41asm71779oak.55.2023.03.10.06.48.28
+        by smtp.gmail.com with ESMTPSA id an10-20020a056871b18a00b001730afaeb63sm112238oac.19.2023.03.10.06.48.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Mar 2023 06:48:28 -0800 (PST)
-Received: (nullmailer pid 1545988 invoked by uid 1000);
-        Fri, 10 Mar 2023 14:47:29 -0000
+        Fri, 10 Mar 2023 06:48:25 -0800 (PST)
+Received: (nullmailer pid 1546683 invoked by uid 1000);
+        Fri, 10 Mar 2023 14:47:34 -0000
 From:   Rob Herring <robh@kernel.org>
-To:     Russell King <linux@armlinux.org.uk>, Helge Deller <deller@gmx.de>
-Cc:     devicetree@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org
-Subject: [PATCH] fbdev: Use of_property_present() for testing DT property presence
-Date:   Fri, 10 Mar 2023 08:47:29 -0600
-Message-Id: <20230310144729.1545943-1-robh@kernel.org>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     devicetree@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] bus: ti-sysc: Use of_property_present() for testing DT property presence
+Date:   Fri, 10 Mar 2023 08:47:34 -0600
+Message-Id: <20230310144734.1546656-1-robh@kernel.org>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,
         FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -70,64 +68,22 @@ for presence of a property and nothing more.
 
 Signed-off-by: Rob Herring <robh@kernel.org>
 ---
- drivers/video/fbdev/amba-clcd.c                          | 2 +-
- drivers/video/fbdev/bw2.c                                | 2 +-
- drivers/video/fbdev/cg3.c                                | 2 +-
- drivers/video/fbdev/omap2/omapfb/dss/omapdss-boot-init.c | 2 +-
- 4 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/bus/ti-sysc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/amba-clcd.c b/drivers/video/fbdev/amba-clcd.c
-index f65c96d1394d..e45338227be6 100644
---- a/drivers/video/fbdev/amba-clcd.c
-+++ b/drivers/video/fbdev/amba-clcd.c
-@@ -854,7 +854,7 @@ static struct clcd_board *clcdfb_of_get_board(struct amba_device *dev)
- 	board->caps = CLCD_CAP_ALL;
- 	board->check = clcdfb_check;
- 	board->decode = clcdfb_decode;
--	if (of_find_property(node, "memory-region", NULL)) {
-+	if (of_property_present(node, "memory-region")) {
- 		board->setup = clcdfb_of_vram_setup;
- 		board->mmap = clcdfb_of_vram_mmap;
- 		board->remove = clcdfb_of_vram_remove;
-diff --git a/drivers/video/fbdev/bw2.c b/drivers/video/fbdev/bw2.c
-index 6403ae07970d..9cbadcd18b25 100644
---- a/drivers/video/fbdev/bw2.c
-+++ b/drivers/video/fbdev/bw2.c
-@@ -306,7 +306,7 @@ static int bw2_probe(struct platform_device *op)
- 	if (!par->regs)
- 		goto out_release_fb;
+diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+index 6afae9897843..34d755797db4 100644
+--- a/drivers/bus/ti-sysc.c
++++ b/drivers/bus/ti-sysc.c
+@@ -964,7 +964,7 @@ static int sysc_map_and_check_registers(struct sysc *ddata)
  
--	if (!of_find_property(dp, "width", NULL)) {
-+	if (!of_property_present(dp, "width")) {
- 		err = bw2_do_default_mode(par, info, &linebytes);
- 		if (err)
- 			goto out_unmap_regs;
-diff --git a/drivers/video/fbdev/cg3.c b/drivers/video/fbdev/cg3.c
-index bdcc3f6ab666..3a37fff4df36 100644
---- a/drivers/video/fbdev/cg3.c
-+++ b/drivers/video/fbdev/cg3.c
-@@ -393,7 +393,7 @@ static int cg3_probe(struct platform_device *op)
+ 	sysc_check_children(ddata);
  
- 	cg3_blank(FB_BLANK_UNBLANK, info);
+-	if (!of_get_property(np, "reg", NULL))
++	if (!of_property_present(np, "reg"))
+ 		return 0;
  
--	if (!of_find_property(dp, "width", NULL)) {
-+	if (!of_property_present(dp, "width")) {
- 		err = cg3_do_default_mode(par);
- 		if (err)
- 			goto out_unmap_screen;
-diff --git a/drivers/video/fbdev/omap2/omapfb/dss/omapdss-boot-init.c b/drivers/video/fbdev/omap2/omapfb/dss/omapdss-boot-init.c
-index 0ae0cab252d3..09f719af0d0c 100644
---- a/drivers/video/fbdev/omap2/omapfb/dss/omapdss-boot-init.c
-+++ b/drivers/video/fbdev/omap2/omapfb/dss/omapdss-boot-init.c
-@@ -192,7 +192,7 @@ static int __init omapdss_boot_init(void)
- 	omapdss_walk_device(dss, true);
- 
- 	for_each_available_child_of_node(dss, child) {
--		if (!of_find_property(child, "compatible", NULL))
-+		if (!of_property_present(child, "compatible"))
- 			continue;
- 
- 		omapdss_walk_device(child, true);
+ 	error = sysc_parse_registers(ddata);
 -- 
 2.39.2
 
