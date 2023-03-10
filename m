@@ -2,170 +2,109 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F15816B4B4A
-	for <lists+linux-omap@lfdr.de>; Fri, 10 Mar 2023 16:38:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 899C16B4B8E
+	for <lists+linux-omap@lfdr.de>; Fri, 10 Mar 2023 16:47:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230016AbjCJPis (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 10 Mar 2023 10:38:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52850 "EHLO
+        id S234461AbjCJPrc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 10 Mar 2023 10:47:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234332AbjCJPiS (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 10 Mar 2023 10:38:18 -0500
-Received: from mail-ua1-x931.google.com (mail-ua1-x931.google.com [IPv6:2607:f8b0:4864:20::931])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 911BD13550E
-        for <linux-omap@vger.kernel.org>; Fri, 10 Mar 2023 07:25:48 -0800 (PST)
-Received: by mail-ua1-x931.google.com with SMTP id h34so3758319uag.4
-        for <linux-omap@vger.kernel.org>; Fri, 10 Mar 2023 07:25:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20210112.gappssmtp.com; s=20210112; t=1678461947;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fdQamsC4vi5DdWnwK5HVEMpNIaeepKJtcchj23r+Ns8=;
-        b=xRgf8zpxpRcJiHDvwUeCgbDOhtkP0Co5sv+gAy33WegXPv7/8fF4TChaKaOtJk7Zib
-         p9248LVUG2Op1wOvSOlIN3/odHqRfA5uyWhQ+RCL/D4KcgIdvEK7nTGgRWvrJu7DwF68
-         sG9v09jiWmvcWoAMA4OCSI8OUiY6S1+HZGGVvsKUEhzElhGVBwNBQ+A+mX6wTv8S8gzJ
-         hMO8c8uEn1awYHv22BiJGlHel8L4nMzk7d8nnDK4iOpmrUHA4WqQN1E/ncqGT+JXGAxf
-         1MgZ/5aFZSZ+zMeSbZ4OgVDyVDApZSpdwrT/vE+wCvVqciX5oRp7fbLAcCZvvo6aOWTX
-         UDjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678461947;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fdQamsC4vi5DdWnwK5HVEMpNIaeepKJtcchj23r+Ns8=;
-        b=Blm/r280dpgjgXthuXPJqOAbiCFz0xaOS7NEGPgdJUl9bN4oyunnLKDX/caUKBUWFg
-         fLhERIPNEiTlPy0VzyNvsFSRbUjm8WAgvMQcPhw7CBrZ0Q9BDsQO/taMdteF/2p2/N4j
-         F69VyAFFfgQeVEyqDnYab3FfDuu+ldQ2N+pn3/pixOExUn3bXL2dLA2wCGe1AVSa86Aw
-         CGyfgwcOBfu1wTJDCN4nFuT2OkVfGfLtErinGeBUZZ5XoR8NYeS1uwV+w5HqqDjeqoSp
-         tp/lg4AAZQ5V8a5lOSIWk42jgW63F3G09YupCyiCqxazC43hXV6hC/kGPIpMScTMILFe
-         nk9g==
-X-Gm-Message-State: AO0yUKWsmKxtDjv8TJwmBcINHJ4AQ7D0H2e5B/tUFumEJrNog/6WKIVi
-        3pEtrS2mbjlpNljq6nI7zWvPUjt3xetZIkC2296weA==
-X-Google-Smtp-Source: AK7set8JKIa0SDKefJ5/5r0bsBT4FjcaTDkUOLiUSu4UpVWrx/n+FeDaLWhaBvyJsXFMK706ylGuz6gzvS1T6/qS6zA=
-X-Received: by 2002:a05:6122:588:b0:42f:6cba:201f with SMTP id
- i8-20020a056122058800b0042f6cba201fmr3007297vko.1.1678461947541; Fri, 10 Mar
- 2023 07:25:47 -0800 (PST)
+        with ESMTP id S233814AbjCJPrB (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 10 Mar 2023 10:47:01 -0500
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B3B2EBFA4;
+        Fri, 10 Mar 2023 07:37:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+        Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+        Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+        In-Reply-To:References; bh=MvFhqjBn8lsfHrgXKsRvl+cKYKntZywOxeyOqBNYdjE=; b=TM
+        3UJCQk0hGZKteBHnw0DOcgvkEPPN85rhLAKKF05n3myc43csiumRbPS4VkwATWqrDxI3A+KcJKEE7
+        Zk9OJ0g9VvNYEouuwIfV+LMEsiolzIN+8eYRgpkPr1cbHuGk/BBytaNqbNAGX3ChjucoUXKT7+hE9
+        hI4Z/BX8nNjvbo4=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1paej9-006zM1-Ig; Fri, 10 Mar 2023 16:32:15 +0100
+Date:   Fri, 10 Mar 2023 16:32:15 +0100
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc:     =?iso-8859-1?Q?K=F6ry?= Maincent <kory.maincent@bootlin.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-omap@vger.kernel.org,
+        Michael Walle <michael@walle.cc>,
+        Maxime Chevallier <maxime.chevallier@bootlin.com>,
+        Richard Cochran <richardcochran@gmail.com>,
+        thomas.petazzoni@bootlin.com, Russell King <linux@armlinux.org.uk>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Jay Vosburgh <j.vosburgh@gmail.com>,
+        Veaceslav Falico <vfalico@gmail.com>,
+        Andy Gospodarek <andy@greyhouse.net>,
+        Joakim Zhang <qiangqing.zhang@nxp.com>,
+        Vladimir Oltean <vladimir.oltean@nxp.com>,
+        Claudiu Manoil <claudiu.manoil@nxp.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        UNGLinuxDriver@microchip.com, Minghao Chi <chi.minghao@zte.com.cn>,
+        Jie Wang <wangjie125@huawei.com>,
+        Oleksij Rempel <linux@rempel-privat.de>,
+        Sean Anderson <sean.anderson@seco.com>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Alexander Lobakin <alexandr.lobakin@intel.com>,
+        Marco Bonelli <marco@mebeim.net>
+Subject: Re: [PATCH v3 3/5] net: Let the active time stamping layer be
+ selectable.
+Message-ID: <c0719411-4c8a-4af8-9cd1-f3386b8b8d15@lunn.ch>
+References: <20230308135936.761794-1-kory.maincent@bootlin.com>
+ <20230308135936.761794-4-kory.maincent@bootlin.com>
+ <6408a9b3c7ae1_13061c2082a@willemb.c.googlers.com.notmuch>
+ <20230310154125.696a3eb3@kmaincent-XPS-13-7390>
+ <640b45e9c765e_1dc964208eb@willemb.c.googlers.com.notmuch>
 MIME-Version: 1.0
-References: <20230215-immutable-chips-v3-0-972542092a77@linaro.org>
-In-Reply-To: <20230215-immutable-chips-v3-0-972542092a77@linaro.org>
-From:   Bartosz Golaszewski <brgl@bgdev.pl>
-Date:   Fri, 10 Mar 2023 16:25:36 +0100
-Message-ID: <CAMRc=MdyjQDEMNxGYOKwWHry7MnEFMHYZSg=-FPohNwn6dxjaQ@mail.gmail.com>
-Subject: Re: [PATCH v3 00/17] Mass convert GPIO IRQ chips to be immutable
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Mun Yew Tham <mun.yew.tham@intel.com>,
-        Joel Stanley <joel@jms.id.au>,
-        Andrew Jeffery <andrew@aj.id.au>, Alban Bedel <albeu@free.fr>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Jay Fang <f.fangjian@huawei.com>,
-        Daniel Palmer <daniel@thingy.jp>,
-        Romain Perier <romain.perier@gmail.com>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Kevin Hilman <khilman@kernel.org>,
-        William Breathitt Gray <william.gray@linaro.org>,
-        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-aspeed@lists.ozlabs.org, linux-omap@vger.kernel.org,
-        Marc Zyngier <maz@kernel.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        Tony Lindgren <tony@atomide.com>, Arnd Bergmann <arnd@arndb.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <640b45e9c765e_1dc964208eb@willemb.c.googlers.com.notmuch>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, Mar 9, 2023 at 8:45=E2=80=AFAM Linus Walleij <linus.walleij@linaro.=
-org> wrote:
->
-> We are getting tired of these irq_chips not getting converted
-> to be immutable, so I just take out the big hammer and fix
-> some that I deem not too complex as best I can.
->
-> I stopped after doing some, I will take another sweep at some
-> point I guess.
->
-> This is v6.4 material.
->
-> The last two patches to pci-idio-* (patch 15 and 16) can be
-> omitted if William's patches to convert this driver to
-> regmap GPIO are merged first.
->
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-> ---
-> Changes in v3:
-> - Deleted the irq_chip->name assignment in the Aspeed driver
-> - Fold in a patch from Joel to make aspeed IRQs compulsory
-> - Link to v2: https://lore.kernel.org/r/20230215-immutable-chips-v2-0-d6b=
-0e3f2d991@linaro.org
->
-> Changes in v2:
-> - Rebased on v6.3-rc1
-> - Collected some test and ACK tags
-> - Link to v1: https://lore.kernel.org/r/20230215-immutable-chips-v1-0-51a=
-8f224a5d0@linaro.org
->
-> ---
-> Joel Stanley (1):
->       gpio: aspeed: Always register the irqchip
->
-> Linus Walleij (16):
->       gpio: altera: Convert to immutable irq_chip
->       gpio: adnp: Convert to immutable irq_chip
->       gpio: aspeed: Convert to immutable irq_chip
->       gpio: aspeed-sgpio: Convert to immutable irq_chip
->       gpio: ath79: Convert to immutable irq_chip
->       gpio: cadence: Convert to immutable irq_chip
->       gpio: hisi: Convert to immutable irq_chip
->       gpio: hlwd: Convert to immutable irq_chip
->       gpio: idt3243x: Convert to immutable irq_chip
->       gpio: msc313: Convert to immutable irq_chip
->       gpio: mlxbf2: Convert to immutable irq_chip
->       gpio: max732x: Convert to immutable irq_chip
->       gpio: omap: Drop irq_base
->       gpio: omap: Convert to immutable irq_chip
->       gpio: pci-idio-16: Convert to immutable irq_chip
->       gpio: pcie-idio-24: Convert to immutable irq_chip
->
->  drivers/gpio/gpio-adnp.c         |  9 ++++-
->  drivers/gpio/gpio-altera.c       | 25 +++++++-----
->  drivers/gpio/gpio-aspeed-sgpio.c | 44 +++++++++++++++++----
->  drivers/gpio/gpio-aspeed.c       | 82 ++++++++++++++++++++++++++--------=
------
->  drivers/gpio/gpio-ath79.c        |  8 +++-
->  drivers/gpio/gpio-cadence.c      | 10 +++--
->  drivers/gpio/gpio-hisi.c         | 25 +++++++-----
->  drivers/gpio/gpio-hlwd.c         | 33 ++++++++++++----
->  drivers/gpio/gpio-idt3243x.c     | 11 ++++--
->  drivers/gpio/gpio-max732x.c      |  8 +++-
->  drivers/gpio/gpio-mlxbf2.c       | 32 ++++++++++++----
->  drivers/gpio/gpio-msc313.c       | 26 +++++++++++--
->  drivers/gpio/gpio-omap.c         | 83 ++++++++++++++++++++++------------=
-------
->  drivers/gpio/gpio-pci-idio-16.c  | 12 ++++--
->  drivers/gpio/gpio-pcie-idio-24.c | 12 ++++--
->  15 files changed, 290 insertions(+), 130 deletions(-)
-> ---
-> base-commit: fe15c26ee26efa11741a7b632e9f23b01aca4cc6
-> change-id: 20230215-immutable-chips-762922277f1e
->
-> Best regards,
-> --
-> Linus Walleij <linus.walleij@linaro.org>
->
+On Fri, Mar 10, 2023 at 09:59:53AM -0500, Willem de Bruijn wrote:
+> Köry Maincent wrote:
+> > On Wed, 08 Mar 2023 10:28:51 -0500
+> > Willem de Bruijn <willemdebruijn.kernel@gmail.com> wrote:
+> > 
+> > > >  
+> > > > +	enum timestamping_layer selected_timestamping_layer;
+> > > > +  
+> > > 
+> > > can perhaps be a single bit rather than an enum
+> > 
+> > I need at least two bits to be able to list the PTPs available.
+> > Look at the ethtool_list_ptp function of the second patch.
+> 
+> In the available bitmap, yes. Since there are only two options,
+> in the selected case, a single bit would suffice.
 
-Normally these irq_chip conversions would go upstream as fixes but
-this time there are too many at once. I applied them to my
-gpio/for-next branch. Let's give them some time in next and later we
-can backport them if necessary.
+It was a bit tongue in cheek, but in an earlier thread discussing this
+problem, i listed how there could be up to 7 time stampers on the path
+from the RJ45 to the network stack.
 
-Bartosz
+We got into this problem by assuming there could only ever be one time
+stamper. Lets try to avoid potential problems of assuming there can
+only every be two time stampers by assuming there can be N stampers.
+
+     Andrew
