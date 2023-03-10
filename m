@@ -2,81 +2,148 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B9D96B4B86
-	for <lists+linux-omap@lfdr.de>; Fri, 10 Mar 2023 16:47:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BDF06B4C37
+	for <lists+linux-omap@lfdr.de>; Fri, 10 Mar 2023 17:10:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234409AbjCJPrK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 10 Mar 2023 10:47:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43014 "EHLO
+        id S230517AbjCJQKM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 10 Mar 2023 11:10:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229960AbjCJPqt (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 10 Mar 2023 10:46:49 -0500
-Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01FF4146260;
-        Fri, 10 Mar 2023 07:36:36 -0800 (PST)
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 32AFaReT044993;
-        Fri, 10 Mar 2023 09:36:27 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1678462587;
-        bh=2jS4m1hfS5ZhsM5/IeDXWXfR6o0Vi1UQwqVeeLivIxE=;
-        h=Date:Subject:To:CC:References:From:In-Reply-To;
-        b=BOODLewz62gp5gwDnks7ntrRoM4JgqiTTY1m1HL/qZ5qfaWhRBJi0k78aUdMLYQiP
-         z5b2lkzuS2G6BilU8Dxlyn+HT74KUGySfGdjn+ZIQ5KjBztrKAoioHg2B0hrxYSYD8
-         DIqNN/ekY+3UsA2TT9D3a5iT8K2sa51c3hUCkOt8=
-Received: from DLEE100.ent.ti.com (dlee100.ent.ti.com [157.170.170.30])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 32AFaQUa117350
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 10 Mar 2023 09:36:26 -0600
-Received: from DLEE109.ent.ti.com (157.170.170.41) by DLEE100.ent.ti.com
- (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16; Fri, 10
- Mar 2023 09:36:26 -0600
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE109.ent.ti.com
- (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16 via
- Frontend Transport; Fri, 10 Mar 2023 09:36:26 -0600
-Received: from [10.24.69.114] (ileaxei01-snat2.itg.ti.com [10.180.69.6])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 32AFaLdT113550;
-        Fri, 10 Mar 2023 09:36:22 -0600
-Message-ID: <1c1e67fd-1eaa-30f5-8b2a-41a7e3ff664a@ti.com>
-Date:   Fri, 10 Mar 2023 21:06:21 +0530
+        with ESMTP id S229895AbjCJQJp (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 10 Mar 2023 11:09:45 -0500
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2067.outbound.protection.outlook.com [40.107.21.67])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD24E4C38;
+        Fri, 10 Mar 2023 08:07:55 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=gih0m/OTNKpGg9Cu/FwQBoS/ArWUGSpysKVbBTy7DKO6kV0MKLnizwIGL6id/7cGNewGjI4piXRaYcfx+lAW3RecqTrkmq7XcVE2LAM+LWD1kZ10yQSmESHgdFfx5Zuwt8Xrdb5tB2HKNdDrxysfYikXE5gjutqHh79J+Cd69ebl7giIUketzgQKXAInCcoGSLavX3pAzjljBigKbkI/vTGBnS7SFYFK5zj2t9HMsZsXN2D7nXaJY0QrDAYrlOxKcna7jZzfjiLdNiqx1DFx3jBhRXDMGwc7o8ZuluFam5hVmc2iQqpF6vwY72q1oQgPlYihnzbwyZYLyGgeFXCc1A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ykSoph8ns4bWbHSoV0AGspKJg/h2aL7+nQ0C9qwUIEM=;
+ b=oTbWTm2anMQF+WoTm1uMOaArDmzI5a2CfWev1r3+sDhnDOOsvFjTpDlmBljg4x5VEwbJz6mo5zR916n9SaNa/OI9s/RBU6tj8ayLgAM3I0jG71OxGWjoK5sP2YDXQyb2cNal+KQCOeNSk2VirWS/aaKUsExGLolC+dI4zuqPddWz5qqzhvEqz42Bsy9QwrbFey4RE1wSdAEJp2q1dUeHC6eit1aYqaMCKMw1l1iAoCyajjvutqnmyJIbHAblrN6sU9jQq6xqlgYXF3JRBi3XVBPSIYy6gUaneY12Xzz6LIbbvTHd+ATSo0X0yS+yAni7t+AY7+i60hmizTLdmLgejw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ykSoph8ns4bWbHSoV0AGspKJg/h2aL7+nQ0C9qwUIEM=;
+ b=U64n9Y4RuwEK2M4BNHdhig3Ta8hPXX/sIPJEEEb3HYkIk3Kbxww4g6DJw28WuGKj/OajU5GkgtxsiNYkncx1+ONg+VDmCqn2j5+A8iQUiY9fXxrUI5aBg+DHuZdQpyfGPPpQXDyD65hISVIOvxPiQiSwekhb6gk+FXh6BHli7vU=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM0PR04MB6452.eurprd04.prod.outlook.com (2603:10a6:208:16d::21)
+ by DU2PR04MB8679.eurprd04.prod.outlook.com (2603:10a6:10:2de::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6156.29; Fri, 10 Mar
+ 2023 16:06:54 +0000
+Received: from AM0PR04MB6452.eurprd04.prod.outlook.com
+ ([fe80::29a3:120c:7d42:3ca8]) by AM0PR04MB6452.eurprd04.prod.outlook.com
+ ([fe80::29a3:120c:7d42:3ca8%7]) with mapi id 15.20.6178.019; Fri, 10 Mar 2023
+ 16:06:54 +0000
+Date:   Fri, 10 Mar 2023 18:06:48 +0200
+From:   Vladimir Oltean <vladimir.oltean@nxp.com>
+To:     Michael Walle <michael@walle.cc>
+Cc:     Horatiu Vultur <horatiu.vultur@microchip.com>,
+        =?utf-8?B?S8O2cnk=?= Maincent <kory.maincent@bootlin.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-omap@vger.kernel.org,
+        Maxime Chevallier <maxime.chevallier@bootlin.com>,
+        Richard Cochran <richardcochran@gmail.com>,
+        thomas.petazzoni@bootlin.com, Russell King <linux@armlinux.org.uk>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Jay Vosburgh <j.vosburgh@gmail.com>,
+        Veaceslav Falico <vfalico@gmail.com>,
+        Andy Gospodarek <andy@greyhouse.net>,
+        Claudiu Manoil <claudiu.manoil@nxp.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        UNGLinuxDriver@microchip.com, Minghao Chi <chi.minghao@zte.com.cn>,
+        Jie Wang <wangjie125@huawei.com>,
+        Oleksij Rempel <linux@rempel-privat.de>,
+        Sean Anderson <sean.anderson@seco.com>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Alexander Lobakin <alexandr.lobakin@intel.com>,
+        Marco Bonelli <marco@mebeim.net>
+Subject: Re: [PATCH v3 3/5] net: Let the active time stamping layer be
+ selectable.
+Message-ID: <20230310160648.vwzbyood3rectlr7@skbuf>
+References: <20230308135936.761794-1-kory.maincent@bootlin.com>
+ <20230308135936.761794-1-kory.maincent@bootlin.com>
+ <20230308135936.761794-4-kory.maincent@bootlin.com>
+ <20230308135936.761794-4-kory.maincent@bootlin.com>
+ <20230308230321.liw3v255okrhxg6s@skbuf>
+ <20230310114852.3cef643d@kmaincent-XPS-13-7390>
+ <20230310113533.l7flaoli7y3bmlnr@skbuf>
+ <b4ebfd3770ffa5ad1233d2b5e79499ee@walle.cc>
+ <20230310131529.6bahmi4obryy5dsx@soft-dev3-1>
+ <0d2304a9bc276a0d321629108cf8febd@walle.cc>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0d2304a9bc276a0d321629108cf8febd@walle.cc>
+X-ClientProxiedBy: BE1P281CA0258.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:b10:86::10) To AM0PR04MB6452.eurprd04.prod.outlook.com
+ (2603:10a6:208:16d::21)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: Re: [EXTERNAL] Re: [EXTERNAL] Re: [EXTERNAL] Re: [PATCH v3 3/6] soc:
- ti: pruss: Add pruss_cfg_read()/update() API
-To:     Roger Quadros <rogerq@kernel.org>,
-        MD Danish Anwar <danishanwar@ti.com>,
-        "Andrew F. Davis" <afd@ti.com>, Suman Anna <s-anna@ti.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Nishanth Menon <nm@ti.com>
-CC:     <linux-remoteproc@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <srk@ti.com>, <devicetree@vger.kernel.org>,
-        <netdev@vger.kernel.org>
-References: <20230306110934.2736465-1-danishanwar@ti.com>
- <20230306110934.2736465-4-danishanwar@ti.com>
- <7076208d-7dca-6980-5399-498e55648740@kernel.org>
- <afd6cd8a-8ba7-24b2-d7fc-c25a9c5f3c42@ti.com>
- <a74e5079-d89d-2420-b6af-d630c4f04380@kernel.org>
- <a4395259-9b83-1101-7c4c-d8a36c3600eb@ti.com>
- <367f6b50-e4cc-c3eb-e8e9-dabd4e044530@ti.com>
- <46415d8e-3c92-d489-3f44-01a586160082@kernel.org>
-Content-Language: en-US
-From:   Md Danish Anwar <a0501179@ti.com>
-Organization: Texas Instruments
-In-Reply-To: <46415d8e-3c92-d489-3f44-01a586160082@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=ham
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM0PR04MB6452:EE_|DU2PR04MB8679:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4b0ba51d-5770-47de-8414-08db21817746
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: jnVtxtMMPYAlybZV5eiHNS/ufwRlKnFv1XNVJiKR0smfokfkxmb/lJgoFyF6etKzoi3FC/RuEtHYfRwEcrRM+aa6j6P8xewXw72//nkCu5+6OyFxDv5aY2WFRqcso3R+TlcnX55KLDAHakbTDy0VzPEsyA6XuBYUtgVGY38W5DjiUmVdTrz6tCNXjp5wETrekGZZUZSu6xzHqA8Ra8DphKHHyoMDwUEIgQdfVr2Qxg/NRWfherEf5WAoup+iDvFy4Bpd8kBmzT+6cQdnT7IUzFRI9P0Ck0NRukRF7oAO4Uy69QYq/fwGzJM4xbvvJOFdb+Ji/6AqowFh6pasyUzdhsOP81sWHPZD/3CQl4nDbMxPcoDTi25WlhcB23S3u/wDp/ggc4dHQCS4U9l5q5Cv+2yc0kTEA5L6y870RHacpRcEVL3xUcJmfLa1CDwGwqNkWS2fat21PCxOFIoV/DbhEUqk/7wwWC3i/GcsBqD6WW18bxo43wzRA/oLP5pDIFDFD1p+pAc6HjlrPxfvXN2Ob6Mb4IAoH7AY+wmBAKIVYQwGR31OQuiXxbBIKI+rmstej9MN6i7cpBCVnhaXgrOdjVDPYuM1YQPaEoU6X2r7l/w9ZegQQ4yiNjbHqKazDg9xmg0rYEGbx2x8yTO/d4BhSA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6452.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(7916004)(4636009)(346002)(376002)(396003)(39860400002)(136003)(366004)(451199018)(6666004)(9686003)(54906003)(316002)(6486002)(478600001)(41300700001)(5660300002)(7416002)(7406005)(44832011)(4326008)(6916009)(2906002)(8676002)(66946007)(66556008)(66476007)(8936002)(38100700002)(86362001)(6506007)(26005)(186003)(33716001)(83380400001)(6512007)(1076003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?8ejDZ9T+WpWzRwyeMHBBbbKvJDGdnKGtxt4dojPPjtloO9q4uMtXqGID+ZkX?=
+ =?us-ascii?Q?IbaOtnOk6n4/tahFvQy5S0CbYYjcRaFHZOsHK3tTNAB/2fsFgnBtm8FtWL2a?=
+ =?us-ascii?Q?ErXKp50Ot/Gnj5VRnUNGl30gZ7lt/34u91f7haLJ+o6o4/QZLDexa8ihR0uV?=
+ =?us-ascii?Q?CtG5f4ZsLmwkuoe5M4a0TR6f8bSyYpom/vZF0nJdPwyaIwuaVh2+Sq+deqiD?=
+ =?us-ascii?Q?6YIpdOD1KGDZ4y1Sa2ExOE/lW0I4+OCDR0iOKJ0/QoIroyKVOPaJY0V1CK1V?=
+ =?us-ascii?Q?NzumPtF/TQOJE4SX477y13qE1WMKKpY8KsPuv1olNIM6yuCNB3sjby/hJelz?=
+ =?us-ascii?Q?BEMLl7assR/Xoaoeg6gaetyP1mJzwZ/nsLTMAIgQThCpQUBcuJ8gG3MPqpEx?=
+ =?us-ascii?Q?3mvad5bUcGTt7u2TbvIeMzzDRzDMZdzD+RB2ll3SxzXrmnwVzXUG/6CsUq1G?=
+ =?us-ascii?Q?MyW1NbhKWQcQmGLlSlZsX8g/wJ8SgvUOt8LsNasV7Y2b+Y4UwppmJRqLbpNH?=
+ =?us-ascii?Q?/EwFeTvWCcfEFZLeZqeaE51jF33tdyUUtfjXqT/RRD+Dqy4MrrlaeVZ0qmwC?=
+ =?us-ascii?Q?nr3MBflAIXcrXeb/5GR9S+U6Cd/BvrE22Eqy7fifnjAna5QTZEE4NsaJi8d/?=
+ =?us-ascii?Q?DUIgoVl6p7pwXUbu4P2W9BcjoXJg+rqWAeZdqsgAS8FIk2KioUK0d45dbCkh?=
+ =?us-ascii?Q?NaQDjjZdMZFwOiu9knr88EPNnUqGyqpXsxW+O5IajxiGgauLNtNFvGuOrb76?=
+ =?us-ascii?Q?t/ot6GrjAbnrEHfroZwAsu1V0jzmhdfj/9ZRJsajzGiPc7N1Jndoa8sdVEzJ?=
+ =?us-ascii?Q?qLsJxBFrAaScT4ZfenCA2SIGfyxc38JgDUb8IsydPBROYM28hFbtDywXNibN?=
+ =?us-ascii?Q?K/foz9p+dzhsEq49uDuJZw1xIZE+7KaEdydR8yK0KC2EQecRq08ZggbSns5R?=
+ =?us-ascii?Q?06UQZxkhS5zTmDcQ3O9/JjvI+7FXCHU7sD95Tx/mAHl8cEgbpl32bqwJOxyh?=
+ =?us-ascii?Q?S/7kymYhD9nfQO2qN0VC/PjaD3Sc6kA0fSEk9DG+8NIUgQ9BPj7qX3MMFSaz?=
+ =?us-ascii?Q?2OnnKS35q8uUNl9pWQOL2SsiYAnXK2XyoqC4a9HhBTBlMCroA7eE+QiMNUWw?=
+ =?us-ascii?Q?JR+mF2YlUsfTMMGQzqRbyOItuvRspOEZwelDrSulIoubWzsGh/2skAKFpSAk?=
+ =?us-ascii?Q?g2z+bBjsjilc/NQySSDbpdu7H+dj1EitlxDnwn/itMs3pADKH2yd7aHVIFGc?=
+ =?us-ascii?Q?lgPe8MILAUMJwE0zDjjqQnwmWzaVd7UesQX4eIFZSkGk6Yy4xl10xo+XK0w6?=
+ =?us-ascii?Q?HJSCYSvH5EA7AKqK7luvoeIZtZTAMyTd3bniOmxIeSnBFKEOHTZ6g440IRbR?=
+ =?us-ascii?Q?Ddy7AGnVqeqj06dfENA0mdt3ByAZvlZtW7WjwwpE7iPgkEjPABmxz7RecVlv?=
+ =?us-ascii?Q?XGWWoVixULdYa7b2PEB4xvKic44QryLxacqBOAXy+kaprv/DxTbN8/9evEZM?=
+ =?us-ascii?Q?1q+sPqc+vF/YcCVmaTG3vJIUzKWtAHiLwoNKE1TYSYubr3+Z3gvs+P4qVt8A?=
+ =?us-ascii?Q?C3FWywU9JRLeH30uasdOjN4trhqQG/azKFt7PddoKQLFEqX7CoUG8AzVi/WI?=
+ =?us-ascii?Q?kQ=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4b0ba51d-5770-47de-8414-08db21817746
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6452.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Mar 2023 16:06:54.1008
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5vYukeev3i+UtbDqWUxN5eoHwA/W1QU0PMJeHO5CF/kxtlxy9j50tuMVqwo8gZfvAVHqjxXhihuMDV6dCitqDw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8679
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -84,250 +151,28 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Roger,
-
-On 10/03/23 18:53, Roger Quadros wrote:
-> Hi Danish,
+On Fri, Mar 10, 2023 at 02:34:07PM +0100, Michael Walle wrote:
+> Yeah, but my problem right now is, that if this discussion won't find
+> any good solution, the lan8814 phy timestamping will find it's way
+> into an official kernel and then it is really hard to undo things.
 > 
-> On 10/03/2023 13:53, Md Danish Anwar wrote:
->> Hi Roger,
->>
->> On 09/03/23 17:00, Md Danish Anwar wrote:
->>> Hi Roger,
->>>
->>> On 08/03/23 17:12, Roger Quadros wrote:
->>>>
->>>>
->>>> On 08/03/2023 13:36, Md Danish Anwar wrote:
->>>>> Hi Roger,
->>>>>
->>>>> On 08/03/23 13:57, Roger Quadros wrote:
->>>>>> Hi,
->>>>>>
->>>>>> On 06/03/2023 13:09, MD Danish Anwar wrote:
->>>>>>> From: Suman Anna <s-anna@ti.com>
->>>>>>>
->>>>>>> Add two new generic API pruss_cfg_read() and pruss_cfg_update() to
->>>>>>> the PRUSS platform driver to allow other drivers to read and program
->>>>>>> respectively a register within the PRUSS CFG sub-module represented
->>>>>>> by a syscon driver. This interface provides a simple way for client
->>>>>>
->>>>>> Do you really need these 2 functions to be public?
->>>>>> I see that later patches (4-6) add APIs for doing specific things
->>>>>> and that should be sufficient than exposing entire CFG space via
->>>>>> pruss_cfg_read/update().
->>>>>>
->>>>>>
->>>>>
->>>>> I think the intention here is to keep this APIs pruss_cfg_read() and
->>>>> pruss_cfg_update() public so that other drivers can read / modify PRUSS config
->>>>> when needed.
->>>>
->>>> Where are these other drivers? If they don't exist then let's not make provision
->>>> for it now.
->>>> We can provide necessary API helpers when needed instead of letting client drivers
->>>> do what they want as they can be misused and hard to debug.
->>>>
->>>
->>> The ICSSG Ethernet driver uses pruss_cfg_update() API. It is posted upstream in
->>> the series [1]. The ethernet driver series is dependent on this series. In
->>> series [1] we are using pruss_cfg_update() in icssg_config.c file,
->>> icssg_config() API.
-> 
-> You can instead add a new API on what exactly you want it to do rather than exposing
-> entire CFG space.
-> 
+> So, I'd really prefer to *first* have a discussion how to proceed
+> with the PHY timestamping and then add the lan8814 support, so
+> existing boards don't show a regressions.
 
-Sure.
+You don't mean LAN8814 but LAN8841, no?
 
-In icssg_config.c, a call to pruss_cfg_update() is made to enable XFR shift for
-PRU and RTU,
+For the former, PTP support was added in commit ece19502834d ("net: phy:
+micrel: 1588 support for LAN8814 phy") - first present in v5.18.
 
-	/* enable XFR shift for PRU and RTU */
-	mask = PRUSS_SPP_XFER_SHIFT_EN | PRUSS_SPP_RTU_XFR_SHIFT_EN;
-	pruss_cfg_update(prueth->pruss, PRUSS_CFG_SPP, mask, mask);
+For the latter, it was commit cafc3662ee3f ("net: micrel: Add PHC
+support for lan8841"), and this one indeed is in the v6.3 release
+candidates.
 
-I will add the below API as part of Patch 4 of the series. We'll call this API
-and entire CFG space will not be exposed.
+Assuming you can prove a regression, how about adding the PHY driver
+whitelist *without* the lan8841 as a patch to net.git? (blaming commit
+cafc3662ee3f ("net: micrel: Add PHC support for lan8841")).
 
-/**
- * pruss_cfg_xfr_pru_rtu_enable() - Enable/disable XFR shift for PRU and RTU
- * @pruss: the pruss instance
- * @enable: enable/disable
- *
- * Return: 0 on success, or an error code otherwise
- */
-static inline int pruss_cfg_xfr_pru_rtu_enable(struct pruss *pruss, bool enable)
-{
-	u32 mask = PRUSS_SPP_XFER_SHIFT_EN | PRUSS_SPP_RTU_XFR_SHIFT_EN;
-	u32 set = enable ? mask : 0;
-
-	return pruss_cfg_update(pruss, PRUSS_CFG_SPP, mask, set);
-}
-
-To make pruss_cfg_update() and pruss_cfg_read() API internal to pruss.c, I will
-add the below change to pruss.h file and pruss.c file. Let me know if this
-change looks okay to you.
-
-diff --git a/drivers/soc/ti/pruss.c b/drivers/soc/ti/pruss.c
-
-index 537a3910ffd8..9f01c8809deb 100644
-
---- a/drivers/soc/ti/pruss.c
-
-+++ b/drivers/soc/ti/pruss.c
-
-@@ -182,7 +182,6 @@ int pruss_cfg_read(struct pruss *pruss, unsigned int reg,
-unsigned int *val)
-
-
-
-        return regmap_read(pruss->cfg_regmap, reg, val);
-
- }
-
--EXPORT_SYMBOL_GPL(pruss_cfg_read);
-
-
-
- /**
-
-  * pruss_cfg_update() - configure a PRUSS CFG sub-module register
-
-@@ -203,7 +202,6 @@ int pruss_cfg_update(struct pruss *pruss, unsigned int reg,
-
-
-
-        return regmap_update_bits(pruss->cfg_regmap, reg, mask, val);
-
- }
-
--EXPORT_SYMBOL_GPL(pruss_cfg_update);
-
-
-
- static void pruss_of_free_clk_provider(void *data)
-
- {
-
-diff --git a/include/linux/remoteproc/pruss.h b/include/linux/remoteproc/pruss.h
-
-index d41bec448f06..12ef10b9fe9a 100644
-
---- a/include/linux/remoteproc/pruss.h
-
-+++ b/include/linux/remoteproc/pruss.h
-
-@@ -165,9 +165,6 @@ int pruss_request_mem_region(struct pruss *pruss, enum
-pruss_mem mem_id,
-
-                             struct pruss_mem_region *region);
-
- int pruss_release_mem_region(struct pruss *pruss,
-
-                             struct pruss_mem_region *region);
-
--int pruss_cfg_read(struct pruss *pruss, unsigned int reg, unsigned int *val);
-
--int pruss_cfg_update(struct pruss *pruss, unsigned int reg,
-
--                    unsigned int mask, unsigned int val);
-
-
-
- #else
-
-
-
-@@ -191,18 +188,6 @@ static inline int pruss_release_mem_region(struct pruss
-*pruss,
-
-        return -EOPNOTSUPP;
-
- }
-
-
-
--static inline int pruss_cfg_read(struct pruss *pruss, unsigned int reg,
-
--                                unsigned int *val)
-
--{
-
--       return -EOPNOTSUPP;
-
--}
-
--
-
--static inline int pruss_cfg_update(struct pruss *pruss, unsigned int reg,
-
--                                  unsigned int mask, unsigned int val)
-
--{
-
--       return -EOPNOTSUPP;
-
--}
-
--
-
- #endif /* CONFIG_TI_PRUSS */
-
-
-
- #if IS_ENABLED(CONFIG_PRU_REMOTEPROC)
-
-
-Please have a look and let me know if above API and code changes looks OK to you.
-
->>>
->>> So for this, the API pruss_cfg_update() needs to be public.
->>>
->>> [1] https://lore.kernel.org/all/20230210114957.2667963-3-danishanwar@ti.com/
->>>
->>
->> I will keep this patch as it is as pruss_cfg_update() needs to be public for
->> ICSSG Ethernet driver and pruss_cfg_read() is kind of a complementary function
->> to update. I will do required changes in other patches and send next revision
->> if that's OK with you. Please let me know.
->>
->>>>>
->>>>> The later patches (4-6) add APIs to do specific thing, but those APIs also
->>>>> eventually call pruss_cfg_read/update().
->>>>
->>>> They can still call them but they need to be private to pruss.c
->>>>
->>>>>
->>>>>>> drivers without having them to include and parse the CFG syscon node
->>>>>>> within their respective device nodes. Various useful registers and
->>>>>>> macros for certain register bit-fields and their values have also
->>>>>>> been added.
->>>>>>>
->>>>>>> It is the responsibility of the client drivers to reconfigure or
->>>>>>> reset a particular register upon any failures.
->>>>>>>
->>>>>>> Signed-off-by: Suman Anna <s-anna@ti.com>
->>>>>>> Co-developed-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
->>>>>>> Signed-off-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
->>>>>>> Signed-off-by: Puranjay Mohan <p-mohan@ti.com>
->>>>>>> ---
->>>>>>>  drivers/soc/ti/pruss.c           |  41 +++++++++++++
->>>>>>>  include/linux/remoteproc/pruss.h | 102 +++++++++++++++++++++++++++++++
->>>>>>>  2 files changed, 143 insertions(+)
->>>>>>>
->>>>>>> diff --git a/drivers/soc/ti/pruss.c b/drivers/soc/ti/pruss.c
->>>>>>> index c8053c0d735f..537a3910ffd8 100644
->>>>>>> --- a/drivers/soc/ti/pruss.c
->>>>>>> +++ b/drivers/soc/ti/pruss.c
->>>>>>> @@ -164,6 +164,47 @@ int pruss_release_mem_region(struct pruss *pruss,
->>>>>>>  }
->>>>>>>  EXPORT_SYMBOL_GPL(pruss_release_mem_region);
->>>>>>
-> 
-> cheers,
-> -roger
-
--- 
-Thanks and Regards,
-Danish.
+Doing this will effectively deactivate lan8841 PHY timestamping without
+reverting the code. Then, this PHY timestamping support could be
+activated back in net-next, based on some sort of explicit UAPI call.
