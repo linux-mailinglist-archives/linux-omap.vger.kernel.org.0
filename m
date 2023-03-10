@@ -2,82 +2,60 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C47B96B4649
-	for <lists+linux-omap@lfdr.de>; Fri, 10 Mar 2023 15:41:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D66F6B46EB
+	for <lists+linux-omap@lfdr.de>; Fri, 10 Mar 2023 15:47:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232808AbjCJOlp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 10 Mar 2023 09:41:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58170 "EHLO
+        id S233064AbjCJOri (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 10 Mar 2023 09:47:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232770AbjCJOlm (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 10 Mar 2023 09:41:42 -0500
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B392A11F617;
-        Fri, 10 Mar 2023 06:41:38 -0800 (PST)
-Received: (Authenticated sender: kory.maincent@bootlin.com)
-        by mail.gandi.net (Postfix) with ESMTPSA id E899F20004;
-        Fri, 10 Mar 2023 14:41:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1678459297;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=pUUgqFNlw24KGZBRs7B+tm6wf/ckBW4bRKWkK0IV5qc=;
-        b=dkeyz0iftQK3fyQh6Ez4a61Wt+8pzqScxpLUL+5GznGPOhydR0DJ9JWely5kKlWH97Dz/b
-        9rFEXI1DMZArRyMCRUas2PyYd6k7Yz3FoCXBbkC7IM7eZLuZSP3IwcEB2paeRAT/644Bfu
-        yvNFZ7lYYMVUP0Zs6xGKFAi1+Umb22diGTyeMaY9Ho9CkbMyXHW/KYEeJEEAGQB4vM5xPS
-        cv3TJ+dT1b+agqvZs28JKwn2y2F8/pJDrHHCtq7P3oCBom2+jJaiu/cUFASiKzqBNxVs8z
-        FtSOZvV7+HffS8cxKX137Q9yS8/Wb8N4mTUeN76riK2KDVFCUsFYkA1HIOPZ4Q==
-Date:   Fri, 10 Mar 2023 15:41:25 +0100
-From:   =?UTF-8?B?S8O2cnk=?= Maincent <kory.maincent@bootlin.com>
-To:     Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc:     Andrew Lunn <andrew@lunn.ch>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Heiner Kallweit <hkallweit1@gmail.com>, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-omap@vger.kernel.org,
-        Michael Walle <michael@walle.cc>,
-        Maxime Chevallier <maxime.chevallier@bootlin.com>,
-        Richard Cochran <richardcochran@gmail.com>,
-        thomas.petazzoni@bootlin.com, Russell King <linux@armlinux.org.uk>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Jay Vosburgh <j.vosburgh@gmail.com>,
-        Veaceslav Falico <vfalico@gmail.com>,
-        Andy Gospodarek <andy@greyhouse.net>,
-        Joakim Zhang <qiangqing.zhang@nxp.com>,
-        Vladimir Oltean <vladimir.oltean@nxp.com>,
-        Claudiu Manoil <claudiu.manoil@nxp.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        UNGLinuxDriver@microchip.com, Minghao Chi <chi.minghao@zte.com.cn>,
-        Jie Wang <wangjie125@huawei.com>,
-        Oleksij Rempel <linux@rempel-privat.de>,
-        Sean Anderson <sean.anderson@seco.com>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Alexander Lobakin <alexandr.lobakin@intel.com>,
-        Marco Bonelli <marco@mebeim.net>
-Subject: Re: [PATCH v3 3/5] net: Let the active time stamping layer be
- selectable.
-Message-ID: <20230310154125.696a3eb3@kmaincent-XPS-13-7390>
-In-Reply-To: <6408a9b3c7ae1_13061c2082a@willemb.c.googlers.com.notmuch>
-References: <20230308135936.761794-1-kory.maincent@bootlin.com>
-        <20230308135936.761794-4-kory.maincent@bootlin.com>
-        <6408a9b3c7ae1_13061c2082a@willemb.c.googlers.com.notmuch>
-Organization: bootlin
-X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        with ESMTP id S233023AbjCJOrW (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 10 Mar 2023 09:47:22 -0500
+Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C1E8105568;
+        Fri, 10 Mar 2023 06:47:04 -0800 (PST)
+Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-1755e639b65so6078243fac.3;
+        Fri, 10 Mar 2023 06:47:04 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678459619;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Ze4x2UjW4SC+7SgOWlyCc0ynsM258m+gI2GkQIZTPMI=;
+        b=yTt3CTEiH7cPMBp+ZAX14PZgaXmETv68qxJToExAFp3anwLcRJQr8Lwi2eWSxrSAqb
+         LDES7Zo/NifSQGbRrOUcUSVjh4G2mbDT/YsiBntb9DsC6Cl9cC3so/wPvkcccUIpiFww
+         fGw2T2pdJdAcFgUFr3zh2kR80PICZ3xlCoD4DG8IWeED7/t3wfG1zHnyVCxMzzRkYvAS
+         3D9s1QQEZdi4vimwlcdOxvmhsxX+jWLs6I8QpAcvbpAe75zRitsH2Q2oiFNAP+bDnQoh
+         MD6TymTyicoYlzm02C79BMC1zZ7s8Vbz/DJFgbMBGdsQwZ0+V3VLwONFj0OdFbOl0Vy/
+         DoXQ==
+X-Gm-Message-State: AO0yUKXu0WBUCF1cYqarvawRkMz5TxMrlGo7z2hm3jzGDf15SQJaLEvM
+        iSbwkynCJlH29eFt/yHt2wvYBNsY8g==
+X-Google-Smtp-Source: AK7set82KIT56SQJ6WqeSwMPkCDv0B0eHIXclgRxzxBAzHabdT7fVwRv6tyCkq20rhBO+1pi1bynLQ==
+X-Received: by 2002:a05:6870:73cc:b0:176:4920:bf8c with SMTP id a12-20020a05687073cc00b001764920bf8cmr16477103oan.55.1678459619557;
+        Fri, 10 Mar 2023 06:46:59 -0800 (PST)
+Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id e15-20020a056871044f00b0016e9308e17bsm73055oag.52.2023.03.10.06.46.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Mar 2023 06:46:59 -0800 (PST)
+Received: (nullmailer pid 1540838 invoked by uid 1000);
+        Fri, 10 Mar 2023 14:46:55 -0000
+From:   Rob Herring <robh@kernel.org>
+To:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        Paul Walmsley <paul@pwsan.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Russell King <linux@armlinux.org.uk>
+Cc:     devicetree@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] ARM: omap2: Use of_property_read_bool() for boolean properties
+Date:   Fri, 10 Mar 2023 08:46:55 -0600
+Message-Id: <20230310144655.1540793-1-robh@kernel.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -85,24 +63,35 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, 08 Mar 2023 10:28:51 -0500
-Willem de Bruijn <willemdebruijn.kernel@gmail.com> wrote:
+It is preferred to use typed property access functions (i.e.
+of_property_read_<type> functions) rather than low-level
+of_get_property/of_find_property functions for reading properties.
+Convert reading boolean properties to to of_property_read_bool().
 
-> > =20
-> > +	enum timestamping_layer selected_timestamping_layer;
-> > + =20
->=20
-> can perhaps be a single bit rather than an enum
+Signed-off-by: Rob Herring <robh@kernel.org>
+---
+ arch/arm/mach-omap2/omap_hwmod.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-I need at least two bits to be able to list the PTPs available.
-Look at the ethtool_list_ptp function of the second patch.
+diff --git a/arch/arm/mach-omap2/omap_hwmod.c b/arch/arm/mach-omap2/omap_hwmod.c
+index 5a2a9b8e61ed..989195f6f7be 100644
+--- a/arch/arm/mach-omap2/omap_hwmod.c
++++ b/arch/arm/mach-omap2/omap_hwmod.c
+@@ -2322,11 +2322,11 @@ static int __init _init_mpu_rt_base(struct omap_hwmod *oh, void *data,
+ static void __init parse_module_flags(struct omap_hwmod *oh,
+ 				      struct device_node *np)
+ {
+-	if (of_find_property(np, "ti,no-reset-on-init", NULL))
++	if (of_property_read_bool(np, "ti,no-reset-on-init"))
+ 		oh->flags |= HWMOD_INIT_NO_RESET;
+-	if (of_find_property(np, "ti,no-idle-on-init", NULL))
++	if (of_property_read_bool(np, "ti,no-idle-on-init"))
+ 		oh->flags |= HWMOD_INIT_NO_IDLE;
+-	if (of_find_property(np, "ti,no-idle", NULL))
++	if (of_property_read_bool(np, "ti,no-idle"))
+ 		oh->flags |= HWMOD_NO_IDLE;
+ }
+ 
+-- 
+2.39.2
 
-> > +			err =3D -ENODEV;
-> > +			WARN_ON(1); =20
->=20
-> Please no WARN_ON on error cases that are known to be reachable
-> and can be handled safely and reported to userspace.
-
-Alright, thanks.
-
-K=C3=B6ry
