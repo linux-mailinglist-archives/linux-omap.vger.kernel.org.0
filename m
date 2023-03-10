@@ -2,177 +2,188 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A9D86B3E70
-	for <lists+linux-omap@lfdr.de>; Fri, 10 Mar 2023 12:54:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 64B0A6B3EEE
+	for <lists+linux-omap@lfdr.de>; Fri, 10 Mar 2023 13:15:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229984AbjCJLyK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 10 Mar 2023 06:54:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34618 "EHLO
+        id S230071AbjCJMPY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 10 Mar 2023 07:15:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229469AbjCJLyD (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 10 Mar 2023 06:54:03 -0500
-Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7450AC2237;
-        Fri, 10 Mar 2023 03:54:00 -0800 (PST)
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 32ABro76127449;
-        Fri, 10 Mar 2023 05:53:50 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1678449230;
-        bh=QSIrK2hf0RVPY4b/FgB+Q97RERaUbLYuYjYCaB2CdYQ=;
-        h=Date:Subject:From:To:CC:References:In-Reply-To;
-        b=USybG5S2djIhE2wGOt/XlHuHsO3yvv7Mxug4un46WUoMCM+2BK8kU+nJm28KePPeR
-         0QYi884r64b+bJo6keFHmWj6YHAcQvcr7aCB9tzjNQnyKZNp3aq6a+l8nxiQebyHr6
-         H3XE4NII6n3IBMG9S7N3C3sFtD5GnOB57F4Se5Eo=
-Received: from DLEE111.ent.ti.com (dlee111.ent.ti.com [157.170.170.22])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 32ABronN096866
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 10 Mar 2023 05:53:50 -0600
-Received: from DLEE113.ent.ti.com (157.170.170.24) by DLEE111.ent.ti.com
- (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16; Fri, 10
- Mar 2023 05:53:50 -0600
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE113.ent.ti.com
- (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16 via
- Frontend Transport; Fri, 10 Mar 2023 05:53:50 -0600
-Received: from [10.24.69.114] (ileaxei01-snat.itg.ti.com [10.180.69.5])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 32ABrj67017278;
-        Fri, 10 Mar 2023 05:53:45 -0600
-Message-ID: <367f6b50-e4cc-c3eb-e8e9-dabd4e044530@ti.com>
-Date:   Fri, 10 Mar 2023 17:23:44 +0530
+        with ESMTP id S229885AbjCJMPX (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 10 Mar 2023 07:15:23 -0500
+Received: from mail.3ffe.de (0001.3ffe.de [IPv6:2a01:4f8:c0c:9d57::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C035AEE282;
+        Fri, 10 Mar 2023 04:15:20 -0800 (PST)
+Received: from 3ffe.de (0001.3ffe.de [IPv6:2a01:4f8:c0c:9d57::1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.3ffe.de (Postfix) with ESMTPSA id 8AC87B8B;
+        Fri, 10 Mar 2023 13:15:16 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2022082101;
+        t=1678450516;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=ksiA2zxyIIXuXWaNTFlfyJw/hUgGVKsFuq59jCd+r4E=;
+        b=fltrcmQT6B8k+hGlfi2WLwYDjB4aso1Sxu7yQmAcnzym7FKHneedP+v7hh6fUsPgFckTKL
+        DwXrSPEmHUjiZrFszRh8cSOvUWEFjZZSsIixknhPpNd0MTU42iu9gN7HE6gNyRO9O7dY4H
+        bgUyv+RGv+/MindDlMxveDV3SAwmEQpmoyJVaJeYJwJWGwf9FhL8iGAHa1aNWLcPG8cdKS
+        xkn5FyA0BbYtExxnDNDwldGjmVG8aRIWquF3OwnD2ohKeeAvGJcjsgwqqcOPRIpIl0izdV
+        e18jtYFCm+BjUelIJBKpxNpwKqYf9fdTcHMlXQwfnrmhCZKZor9Z5bw8tXFcqg==
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: Re: [EXTERNAL] Re: [EXTERNAL] Re: [PATCH v3 3/6] soc: ti: pruss: Add
- pruss_cfg_read()/update() API
-Content-Language: en-US
-From:   Md Danish Anwar <a0501179@ti.com>
-To:     Roger Quadros <rogerq@kernel.org>,
-        MD Danish Anwar <danishanwar@ti.com>,
-        "Andrew F. Davis" <afd@ti.com>, Suman Anna <s-anna@ti.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Nishanth Menon <nm@ti.com>
-CC:     <linux-remoteproc@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <srk@ti.com>, <devicetree@vger.kernel.org>,
-        <netdev@vger.kernel.org>
-References: <20230306110934.2736465-1-danishanwar@ti.com>
- <20230306110934.2736465-4-danishanwar@ti.com>
- <7076208d-7dca-6980-5399-498e55648740@kernel.org>
- <afd6cd8a-8ba7-24b2-d7fc-c25a9c5f3c42@ti.com>
- <a74e5079-d89d-2420-b6af-d630c4f04380@kernel.org>
- <a4395259-9b83-1101-7c4c-d8a36c3600eb@ti.com>
-Organization: Texas Instruments
-In-Reply-To: <a4395259-9b83-1101-7c4c-d8a36c3600eb@ti.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+Date:   Fri, 10 Mar 2023 13:15:16 +0100
+From:   Michael Walle <michael@walle.cc>
+To:     Vladimir Oltean <vladimir.oltean@nxp.com>,
+        Horatiu Vultur <horatiu.vultur@microchip.com>
+Cc:     =?UTF-8?Q?K=C3=B6ry_Maincent?= <kory.maincent@bootlin.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-omap@vger.kernel.org,
+        Maxime Chevallier <maxime.chevallier@bootlin.com>,
+        Richard Cochran <richardcochran@gmail.com>,
+        thomas.petazzoni@bootlin.com, Russell King <linux@armlinux.org.uk>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Jay Vosburgh <j.vosburgh@gmail.com>,
+        Veaceslav Falico <vfalico@gmail.com>,
+        Andy Gospodarek <andy@greyhouse.net>,
+        Claudiu Manoil <claudiu.manoil@nxp.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        UNGLinuxDriver@microchip.com, Minghao Chi <chi.minghao@zte.com.cn>,
+        Jie Wang <wangjie125@huawei.com>,
+        Oleksij Rempel <linux@rempel-privat.de>,
+        Sean Anderson <sean.anderson@seco.com>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Alexander Lobakin <alexandr.lobakin@intel.com>,
+        Marco Bonelli <marco@mebeim.net>
+Subject: Re: [PATCH v3 3/5] net: Let the active time stamping layer be
+ selectable.
+In-Reply-To: <20230310113533.l7flaoli7y3bmlnr@skbuf>
+References: <20230308135936.761794-1-kory.maincent@bootlin.com>
+ <20230308135936.761794-1-kory.maincent@bootlin.com>
+ <20230308135936.761794-4-kory.maincent@bootlin.com>
+ <20230308135936.761794-4-kory.maincent@bootlin.com>
+ <20230308230321.liw3v255okrhxg6s@skbuf>
+ <20230310114852.3cef643d@kmaincent-XPS-13-7390>
+ <20230310113533.l7flaoli7y3bmlnr@skbuf>
+User-Agent: Roundcube Webmail/1.4.13
+Message-ID: <b4ebfd3770ffa5ad1233d2b5e79499ee@walle.cc>
+X-Sender: michael@walle.cc
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Roger,
+[+ Horatiu]
 
-On 09/03/23 17:00, Md Danish Anwar wrote:
-> Hi Roger,
+Am 2023-03-10 12:35, schrieb Vladimir Oltean:
+> On Fri, Mar 10, 2023 at 11:48:52AM +0100, Köry Maincent wrote:
+>> > From previous discussions, I believe that a device tree property was
+>> > added in order to prevent perceived performance regressions when
+>> > timestamping support is added to a PHY driver, correct?
+>> 
+>> Yes, i.e. to select the default and better timestamp on a board.
 > 
-> On 08/03/23 17:12, Roger Quadros wrote:
->>
->>
->> On 08/03/2023 13:36, Md Danish Anwar wrote:
->>> Hi Roger,
->>>
->>> On 08/03/23 13:57, Roger Quadros wrote:
->>>> Hi,
->>>>
->>>> On 06/03/2023 13:09, MD Danish Anwar wrote:
->>>>> From: Suman Anna <s-anna@ti.com>
->>>>>
->>>>> Add two new generic API pruss_cfg_read() and pruss_cfg_update() to
->>>>> the PRUSS platform driver to allow other drivers to read and program
->>>>> respectively a register within the PRUSS CFG sub-module represented
->>>>> by a syscon driver. This interface provides a simple way for client
->>>>
->>>> Do you really need these 2 functions to be public?
->>>> I see that later patches (4-6) add APIs for doing specific things
->>>> and that should be sufficient than exposing entire CFG space via
->>>> pruss_cfg_read/update().
->>>>
->>>>
->>>
->>> I think the intention here is to keep this APIs pruss_cfg_read() and
->>> pruss_cfg_update() public so that other drivers can read / modify PRUSS config
->>> when needed.
->>
->> Where are these other drivers? If they don't exist then let's not make provision
->> for it now.
->> We can provide necessary API helpers when needed instead of letting client drivers
->> do what they want as they can be misused and hard to debug.
->>
+> Is there a way to unambiguously determine the "better" timestamping on 
+> a board?
 > 
-> The ICSSG Ethernet driver uses pruss_cfg_update() API. It is posted upstream in
-> the series [1]. The ethernet driver series is dependent on this series. In
-> series [1] we are using pruss_cfg_update() in icssg_config.c file,
-> icssg_config() API.
+> Is it plausible that over time, when PTP timestamping matures and,
+> for example, MDIO devices get support for PTP_SYS_OFFSET_EXTENDED
+> (an attempt was here: https://lkml.org/lkml/2019/8/16/638), the
+> relationship between PTP clock qualities changes, and so does the
+> preference change?
 > 
-> So for this, the API pruss_cfg_update() needs to be public.
+>> > I have a dumb question: if updating the device trees is needed in order
+>> > to prevent these behavior changes, then how is the regression problem
+>> > addressed for those device trees which don't contain this new property
+>> > (all device trees)?
+>> 
+>> On that case there is not really solution,
 > 
-> [1] https://lore.kernel.org/all/20230210114957.2667963-3-danishanwar@ti.com/
+> If it's not really a solution, then doesn't this fail at its primary
+> purpose of preventing regressions?
 > 
+>> but be aware that CONFIG_PHY_TIMESTAMPING need to be activated to
+>> allow timestamping on the PHY. Currently in mainline only few (3)
+>> defconfig have it enabled so it is really not spread,
+> 
+> Do distribution kernels use the defconfigs from the kernel, or do they
+> just enable as many options that sound good as possible?
+> 
+>> maybe I could add more documentation to prevent further regression
+>> issue when adding support of timestamp to a PHY driver.
+> 
+> My opinion is that either the problem was not correctly identified,
+> or the proposed solution does not address that problem.
+> 
+> What I believe is the problem is that adding support for PHY 
+> timestamping
+> to a PHY driver will cause a behavior change for existing systems which
+> are deployed with that PHY.
+> 
+> If I had a multi-port NIC where all ports share the same PHC, I would
+> want to create a boundary clock with it. I can do that just fine when
+> using MAC timestamping. But assume someone adds support for PHY
+> timestamping and the kernel switches to using PHY timestamps by 
+> default.
+> Now I need to keep in sync the PHCs of the PHYs, something which was
+> implicit before (all ports shared the same PHC). I have done nothing
+> incorrectly, yet my deployment doesn't work anymore. This is just an
+> example. It doesn't sound like a good idea in general for new features
+> to cause a behavior change by default.
+> 
+> Having identified that as the problem, I guess the solution should be
+> to stop doing that (and even though a PHY driver supports timestamping,
+> keep using the MAC timestamping by default).
+> 
+> There is a slight inconvenience caused by the fact that there are
+> already PHY drivers using PHY timestamping, and those may have been
+> introduced into deployments with PHY timestamping. We cannot change the
+> default behavior for those either. There are 5 such PHY drivers today
+> (I've grepped for mii_timestamper in drivers/net/phy).
+> 
+> I would suggest that the kernel implements a short whitelist of 5
+> entries containing PHY driver names, which are compared against
+> netdev->phydev->drv->name (with the appropriate NULL pointer checks).
+> Matches will default to PHY timestamping. Otherwise, the new default
+> will be to keep the behavior as if PHY timestamping doesn't exist
+> (MAC still provides the timestamps), and the user needs to select the
+> PHY as the timestamping source explicitly.
+> 
+> Thoughts?
 
-I will keep this patch as it is as pruss_cfg_update() needs to be public for
-ICSSG Ethernet driver and pruss_cfg_read() is kind of a complementary function
-to update. I will do required changes in other patches and send next revision
-if that's OK with you. Please let me know.
+While I agree in principle (I have suggested to make MAC timestamping
+the default before), I see a problem with the recent LAN8814 PHY
+timestamping support, which will likely be released with 6.3. That
+would now switch the timestamping to PHY timestamping for our board
+(arch/arm/boot/dts/lan966x-kontron-kswitch-d10-mmt-8g.dts). I could
+argue that is a regression for our board iff NETWORK_PHY_TIMESTAMPING
+is enabled. Honestly, I don't know how to proceed here and haven't
+tried to replicate the regression due to limited time. Assuming,
+that I can show it is a regression, what would be the solution then,
+reverting the commit? Horatiu, any ideas?
 
->>>
->>> The later patches (4-6) add APIs to do specific thing, but those APIs also
->>> eventually call pruss_cfg_read/update().
->>
->> They can still call them but they need to be private to pruss.c
->>
->>>
->>>>> drivers without having them to include and parse the CFG syscon node
->>>>> within their respective device nodes. Various useful registers and
->>>>> macros for certain register bit-fields and their values have also
->>>>> been added.
->>>>>
->>>>> It is the responsibility of the client drivers to reconfigure or
->>>>> reset a particular register upon any failures.
->>>>>
->>>>> Signed-off-by: Suman Anna <s-anna@ti.com>
->>>>> Co-developed-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
->>>>> Signed-off-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
->>>>> Signed-off-by: Puranjay Mohan <p-mohan@ti.com>
->>>>> ---
->>>>>  drivers/soc/ti/pruss.c           |  41 +++++++++++++
->>>>>  include/linux/remoteproc/pruss.h | 102 +++++++++++++++++++++++++++++++
->>>>>  2 files changed, 143 insertions(+)
->>>>>
->>>>> diff --git a/drivers/soc/ti/pruss.c b/drivers/soc/ti/pruss.c
->>>>> index c8053c0d735f..537a3910ffd8 100644
->>>>> --- a/drivers/soc/ti/pruss.c
->>>>> +++ b/drivers/soc/ti/pruss.c
->>>>> @@ -164,6 +164,47 @@ int pruss_release_mem_region(struct pruss *pruss,
->>>>>  }
->>>>>  EXPORT_SYMBOL_GPL(pruss_release_mem_region);
->>>>
->>>> cheers,
->>>> -roger
->>>
-> 
+I digress from the original problem a bit. But if there would be such
+a whitelist, I'd propose that it won't contain the lan8814 driver.
 
--- 
-Thanks and Regards,
-Danish.
+Other than that, I guess I have to put some time into testing
+before it's too late.
+
+-michael
