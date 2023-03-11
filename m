@@ -2,82 +2,66 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C398F6B54C0
-	for <lists+linux-omap@lfdr.de>; Fri, 10 Mar 2023 23:45:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E8E66B5835
+	for <lists+linux-omap@lfdr.de>; Sat, 11 Mar 2023 05:41:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232032AbjCJWpm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 10 Mar 2023 17:45:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43244 "EHLO
+        id S229637AbjCKElp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 10 Mar 2023 23:41:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231867AbjCJWpT (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 10 Mar 2023 17:45:19 -0500
-Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86DB9108C34
-        for <linux-omap@vger.kernel.org>; Fri, 10 Mar 2023 14:44:52 -0800 (PST)
-Received: by mail-yb1-xb2c.google.com with SMTP id u32so87187ybi.6
-        for <linux-omap@vger.kernel.org>; Fri, 10 Mar 2023 14:44:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1678488292;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Yiatag0HBPlssT6lLHj1B1HKa5gHM0ni9RfFjV/A3Bw=;
-        b=QZ3qQGl3ysCLYqc3+BIcJrkcZY3w56sert/WwHUWbfS/p8AQ9DaVUlS5eXZe4EBqVP
-         9c9luQSVcOprbIBmT4aoo7qrOkqr6Of+9Q3dpcAurxosNUrUcxJ2ue80KuwxUHWbkLAD
-         tW3n+zTvB7W+Mprlb3opzUwh3KimYqnigLOSovXrnjqyEFOQgL9RKx3OJ3GNyqaf6nRz
-         uX8XydJa1GbBI2q6lG8NRTB71u+mvJGjxLA0Kh5EYyQdo+5l3bo2aFUo4u7ADFj3Nwaq
-         zK9xR5f3b7lIyuSPqZXSZfVIaOEauYBccbtrSkZCYwSgbPaKaN14l5ul1WUuLxf8Emx3
-         7WUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678488292;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Yiatag0HBPlssT6lLHj1B1HKa5gHM0ni9RfFjV/A3Bw=;
-        b=hSumwKdXIsQtSibdRc0OrhgzsuuDKeEGexxnHOLyv/CaiLhnYVtRbrCB+Md41uDzTq
-         hy5xqkCQeGqHiBO2B49RAAPJeWEPXPviVtHAvyqfqY5i6i5x8YUOSB0LhqK9FRC5MxfI
-         Pl67+Ink1I7yukMaExkIkEmaFujeQn9kuLgdLi3W7l/NZF3xb7nOC6Eaq44aNY8f1oj2
-         iLZ5soLD/jhHt704wzxzLzSc+p92mL/zC/EFe6ktWpEyBqUDRA/vZ9KOEeTZOZ4sdasd
-         3oEbSXitN53+QOfaxoZbfMD+eixdrTlfX9ERwBjwxhr1jOhy48bs22fHANQ55y1QStIs
-         Iv7g==
-X-Gm-Message-State: AO0yUKU/Oxw4p7wRyAZWSvRou0Nb/OBzGTCA8F6jZNmt18Hb+HPgfyAG
-        kYp1L76/f0sOb1awl8coQHvkIlaJl4m06GTFCMc6Rg==
-X-Google-Smtp-Source: AK7set9IjziFhtMIyDmTbNJQeJUGfaU6EwLqgkuRD5zd8aQOX/4BVX9GyyO8rgzvXcYU5bs7/TQU+5AK438In//pe/w=
-X-Received: by 2002:a25:3f01:0:b0:b26:884:c35e with SMTP id
- m1-20020a253f01000000b00b260884c35emr2340474yba.4.1678488291762; Fri, 10 Mar
- 2023 14:44:51 -0800 (PST)
+        with ESMTP id S229530AbjCKElo (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 10 Mar 2023 23:41:44 -0500
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 410E01C303;
+        Fri, 10 Mar 2023 20:41:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1678509703; x=1710045703;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=C+Y5bxY9qe45ry63psa0DIaiA7c2eI/wBZK0raAHYVQ=;
+  b=Duo1TnOZ4UAMdph5almpr8MOKGBcF7dCNbi5lf+2lAeQZdYETiUl7aly
+   DIDAI2jhMI/Oj3TDRAQ4P2cvTm3wFaJT/d6qb1FQP+1/8TgFIkKiiGA6P
+   /kXSePdF8Sl2ZMp+L94V2XHlS/fkpJSDvrMSLMoZ+qL5RTOlarr03rMoL
+   PndSgQ4vIzc+ZjzgYlj7Wc+g+dJld6Kl5xeLO+CEoPYW3nvysNa9Fb0BV
+   x00a/PIy1kia/+n+uS63JTIOB0ii/OKI3x5ZUns+Zra9PXZga9Jj0j+qR
+   SgEASVVimtQenwA47Pxl4W4DYZwnTEr/wyaWmsblFcUSysrk0O3P7yE0R
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10645"; a="316522271"
+X-IronPort-AV: E=Sophos;i="5.98,251,1673942400"; 
+   d="scan'208";a="316522271"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2023 20:41:42 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10645"; a="680435840"
+X-IronPort-AV: E=Sophos;i="5.98,251,1673942400"; 
+   d="scan'208";a="680435840"
+Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
+  by fmsmga007.fm.intel.com with ESMTP; 10 Mar 2023 20:41:40 -0800
+Received: from kbuild by b613635ddfff with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1par35-0004Kd-2k;
+        Sat, 11 Mar 2023 04:41:39 +0000
+Date:   Sat, 11 Mar 2023 12:40:53 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Rob Herring <robh@kernel.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Helge Deller <deller@gmx.de>
+Cc:     llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+        devicetree@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH] fbdev: Use of_property_present() for testing DT property
+ presence
+Message-ID: <202303111229.3Uuc8JQV-lkp@intel.com>
+References: <20230310144729.1545943-1-robh@kernel.org>
 MIME-Version: 1.0
-References: <20230215-immutable-chips-v3-0-972542092a77@linaro.org> <CAMRc=MdyjQDEMNxGYOKwWHry7MnEFMHYZSg=-FPohNwn6dxjaQ@mail.gmail.com>
-In-Reply-To: <CAMRc=MdyjQDEMNxGYOKwWHry7MnEFMHYZSg=-FPohNwn6dxjaQ@mail.gmail.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Fri, 10 Mar 2023 23:44:40 +0100
-Message-ID: <CACRpkdYZvvPRgdctcFo+o24+PEWaz-dpPd0ntFg7qWQDYNPKsA@mail.gmail.com>
-Subject: Re: [PATCH v3 00/17] Mass convert GPIO IRQ chips to be immutable
-To:     Bartosz Golaszewski <brgl@bgdev.pl>
-Cc:     Mun Yew Tham <mun.yew.tham@intel.com>,
-        Joel Stanley <joel@jms.id.au>,
-        Andrew Jeffery <andrew@aj.id.au>, Alban Bedel <albeu@free.fr>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Jay Fang <f.fangjian@huawei.com>,
-        Daniel Palmer <daniel@thingy.jp>,
-        Romain Perier <romain.perier@gmail.com>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Kevin Hilman <khilman@kernel.org>,
-        William Breathitt Gray <william.gray@linaro.org>,
-        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-aspeed@lists.ozlabs.org, linux-omap@vger.kernel.org,
-        Marc Zyngier <maz@kernel.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        Tony Lindgren <tony@atomide.com>, Arnd Bergmann <arnd@arndb.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230310144729.1545943-1-robh@kernel.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -85,28 +69,87 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, Mar 10, 2023 at 4:25=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev.pl>=
- wrote:
-> On Thu, Mar 9, 2023 at 8:45=E2=80=AFAM Linus Walleij <linus.walleij@linar=
-o.org> wrote:
-> >
-> > We are getting tired of these irq_chips not getting converted
-> > to be immutable, so I just take out the big hammer and fix
-> > some that I deem not too complex as best I can.
-> >
-> > I stopped after doing some, I will take another sweep at some
-> > point I guess.
+Hi Rob,
 
-> Normally these irq_chip conversions would go upstream as fixes but
-> this time there are too many at once. I applied them to my
-> gpio/for-next branch. Let's give them some time in next and later we
-> can backport them if necessary.
+I love your patch! Yet something to improve:
 
-That's fine since the maintainers didn't get around to fixing it themselves
-yet anyway it can't be that important to them.
+[auto build test ERROR on drm-misc/drm-misc-next]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-I will try to take a second sweep and see what is left on the floor, and
-then I guess a sweep over the gpio_chips in pinctrl as well.
+url:    https://github.com/intel-lab-lkp/linux/commits/Rob-Herring/fbdev-Use-of_property_present-for-testing-DT-property-presence/20230310-225754
+base:   git://anongit.freedesktop.org/drm/drm-misc drm-misc-next
+patch link:    https://lore.kernel.org/r/20230310144729.1545943-1-robh%40kernel.org
+patch subject: [PATCH] fbdev: Use of_property_present() for testing DT property presence
+config: arm64-randconfig-r032-20230310 (https://download.01.org/0day-ci/archive/20230311/202303111229.3Uuc8JQV-lkp@intel.com/config)
+compiler: clang version 17.0.0 (https://github.com/llvm/llvm-project 67409911353323ca5edf2049ef0df54132fa1ca7)
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # install arm64 cross compiling tool for clang build
+        # apt-get install binutils-aarch64-linux-gnu
+        # https://github.com/intel-lab-lkp/linux/commit/c013f4111f36b0b4327e7fbf46c0dd93399e9209
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Rob-Herring/fbdev-Use-of_property_present-for-testing-DT-property-presence/20230310-225754
+        git checkout c013f4111f36b0b4327e7fbf46c0dd93399e9209
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=arm64 olddefconfig
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=arm64 SHELL=/bin/bash drivers/video/fbdev/
 
-Yours,
-Linus Walleij
+If you fix the issue, kindly add following tag where applicable
+| Reported-by: kernel test robot <lkp@intel.com>
+| Link: https://lore.kernel.org/oe-kbuild-all/202303111229.3Uuc8JQV-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> drivers/video/fbdev/amba-clcd.c:857:6: error: call to undeclared function 'of_property_present'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+           if (of_property_present(node, "memory-region")) {
+               ^
+   drivers/video/fbdev/amba-clcd.c:857:6: note: did you mean 'fwnode_property_present'?
+   include/linux/property.h:59:6: note: 'fwnode_property_present' declared here
+   bool fwnode_property_present(const struct fwnode_handle *fwnode,
+        ^
+   1 error generated.
+
+
+vim +/of_property_present +857 drivers/video/fbdev/amba-clcd.c
+
+   843	
+   844	static struct clcd_board *clcdfb_of_get_board(struct amba_device *dev)
+   845	{
+   846		struct clcd_board *board = devm_kzalloc(&dev->dev, sizeof(*board),
+   847				GFP_KERNEL);
+   848		struct device_node *node = dev->dev.of_node;
+   849	
+   850		if (!board)
+   851			return NULL;
+   852	
+   853		board->name = of_node_full_name(node);
+   854		board->caps = CLCD_CAP_ALL;
+   855		board->check = clcdfb_check;
+   856		board->decode = clcdfb_decode;
+ > 857		if (of_property_present(node, "memory-region")) {
+   858			board->setup = clcdfb_of_vram_setup;
+   859			board->mmap = clcdfb_of_vram_mmap;
+   860			board->remove = clcdfb_of_vram_remove;
+   861		} else {
+   862			board->setup = clcdfb_of_dma_setup;
+   863			board->mmap = clcdfb_of_dma_mmap;
+   864			board->remove = clcdfb_of_dma_remove;
+   865		}
+   866	
+   867		return board;
+   868	}
+   869	#else
+   870	static struct clcd_board *clcdfb_of_get_board(struct amba_device *dev)
+   871	{
+   872		return NULL;
+   873	}
+   874	#endif
+   875	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
