@@ -2,66 +2,70 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E8E66B5835
-	for <lists+linux-omap@lfdr.de>; Sat, 11 Mar 2023 05:41:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 835666B5A1D
+	for <lists+linux-omap@lfdr.de>; Sat, 11 Mar 2023 10:37:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229637AbjCKElp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 10 Mar 2023 23:41:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52370 "EHLO
+        id S229550AbjCKJhf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 11 Mar 2023 04:37:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229530AbjCKElo (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 10 Mar 2023 23:41:44 -0500
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 410E01C303;
-        Fri, 10 Mar 2023 20:41:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1678509703; x=1710045703;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=C+Y5bxY9qe45ry63psa0DIaiA7c2eI/wBZK0raAHYVQ=;
-  b=Duo1TnOZ4UAMdph5almpr8MOKGBcF7dCNbi5lf+2lAeQZdYETiUl7aly
-   DIDAI2jhMI/Oj3TDRAQ4P2cvTm3wFaJT/d6qb1FQP+1/8TgFIkKiiGA6P
-   /kXSePdF8Sl2ZMp+L94V2XHlS/fkpJSDvrMSLMoZ+qL5RTOlarr03rMoL
-   PndSgQ4vIzc+ZjzgYlj7Wc+g+dJld6Kl5xeLO+CEoPYW3nvysNa9Fb0BV
-   x00a/PIy1kia/+n+uS63JTIOB0ii/OKI3x5ZUns+Zra9PXZga9Jj0j+qR
-   SgEASVVimtQenwA47Pxl4W4DYZwnTEr/wyaWmsblFcUSysrk0O3P7yE0R
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10645"; a="316522271"
-X-IronPort-AV: E=Sophos;i="5.98,251,1673942400"; 
-   d="scan'208";a="316522271"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2023 20:41:42 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10645"; a="680435840"
-X-IronPort-AV: E=Sophos;i="5.98,251,1673942400"; 
-   d="scan'208";a="680435840"
-Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
-  by fmsmga007.fm.intel.com with ESMTP; 10 Mar 2023 20:41:40 -0800
-Received: from kbuild by b613635ddfff with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1par35-0004Kd-2k;
-        Sat, 11 Mar 2023 04:41:39 +0000
-Date:   Sat, 11 Mar 2023 12:40:53 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Rob Herring <robh@kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Helge Deller <deller@gmx.de>
-Cc:     llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-        devicetree@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH] fbdev: Use of_property_present() for testing DT property
- presence
-Message-ID: <202303111229.3Uuc8JQV-lkp@intel.com>
-References: <20230310144729.1545943-1-robh@kernel.org>
+        with ESMTP id S229929AbjCKJhX (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 11 Mar 2023 04:37:23 -0500
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F8472197A
+        for <linux-omap@vger.kernel.org>; Sat, 11 Mar 2023 01:37:22 -0800 (PST)
+Received: by mail-ed1-x52b.google.com with SMTP id y4so704208edo.2
+        for <linux-omap@vger.kernel.org>; Sat, 11 Mar 2023 01:37:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1678527440;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=zoFNgJXSeI0QXkwv/gajPhMKTUx0Ql0+UzzulYKcp8I=;
+        b=vbuq92uTrFcz1QXjN5cnSNlg96KPUOHqt6l5sS8LDJThuZLSkQYO/OQrvtyyeBmhzp
+         sIbfpuPfWkyChMnwl7W4s7V/HKIv5VnPpEpXl06TZFbCxw2ycBL/2WvRvW44dBg73LO1
+         wSLA5oKyKHTLaRseDmGziNzcR/bRllDnyLZETF1LvRFbNor45Z7mCLhbNjYcx/3qPR7G
+         S6LH9YzhGt8e/uZ0tO2ymY6F2qIS9P8gtbuvzF8K+dZjmZ0eQ74V6CuQGlW4PM6P9Vrh
+         rRTWovXPqepPEPxPK+6lkkgDvw1f+UvtSx0iYOgq1i+gQjv0+tMtWdxA/ucVpqcFFNIc
+         kgvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678527440;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zoFNgJXSeI0QXkwv/gajPhMKTUx0Ql0+UzzulYKcp8I=;
+        b=X6LqYxRaeAi1G9y86Nb6fWNIqne7e3jEO5kYI9H/gnQ/vqB1ILB/Q3WWkZc00D77EW
+         hpx5IqKdbvXa7DAhPDctsGTb4LB8S5b1ah+XGYTCuj8j4UH0I8sstf6tKfSHuK6hYz/P
+         SoINabTKN9xO3zCOcojVPY+Ph/k0RJhTBiFtv7bIMJUyJt6/9ndYhn1LU/f021bzx5fP
+         ai+vp5/MNjllZ8v7Jl1T7k585LjVa+JJidpBxVMC7dHwCp3MOeDVKW7qfyKVl7HMTOiS
+         EMItvgXHzglSKdQwQMBNQT73fZKdQkl/PGJB0VzYQR7jJh87Ltc/ghB21rfnteR4WEG4
+         Gyzw==
+X-Gm-Message-State: AO0yUKXMSfUxNbNU6+HuFQGlypCeK2R9YLng3sqo7tOAjx4Jr3NAsVmx
+        ukHhfDuaNhooVhRuEXi2dGfbTQ==
+X-Google-Smtp-Source: AK7set9tyci2a83B+v5hashuwoyakRSdq5rO9MANqmIWpVQFXA58HRMLT12lWsHLL7m6h0IFwe+NLQ==
+X-Received: by 2002:aa7:ccd6:0:b0:4af:59c0:5add with SMTP id y22-20020aa7ccd6000000b004af59c05addmr25985018edt.37.1678527440685;
+        Sat, 11 Mar 2023 01:37:20 -0800 (PST)
+Received: from krzk-bin.. ([2a02:810d:15c0:828:fa97:2d7c:bdd7:e1b])
+        by smtp.gmail.com with ESMTPSA id y13-20020a50ce0d000000b004fa380a14e7sm631645edi.77.2023.03.11.01.37.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 11 Mar 2023 01:37:20 -0800 (PST)
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To:     Tony Lindgren <tony@atomide.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jerome Neanne <jneanne@baylibre.com>,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        stable@vger.kernel.org
+Subject: [PATCH] regulator: tps65219: fix matching interrupts for their regulators
+Date:   Sat, 11 Mar 2023 10:37:18 +0100
+Message-Id: <20230311093718.70803-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230310144729.1545943-1-robh@kernel.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -69,87 +73,58 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Rob,
+The driver's probe() first registers regulators in a loop and then in a
+second loop passes them as irq data to the interrupt handlers.  However
+the function to get the regulator for given name
+tps65219_get_rdev_by_name() was a no-op due to argument passed by value,
+not pointer, thus the second loop assigned always same value - from
+previous loop.  The interrupts, when fired, where executed with wrong
+data.  Compiler also noticed it:
 
-I love your patch! Yet something to improve:
+  drivers/regulator/tps65219-regulator.c: In function ‘tps65219_get_rdev_by_name’:
+  drivers/regulator/tps65219-regulator.c:292:60: error: parameter ‘dev’ set but not used [-Werror=unused-but-set-parameter]
 
-[auto build test ERROR on drm-misc/drm-misc-next]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Fixes: c12ac5fc3e0a ("regulator: drivers: Add TI TPS65219 PMIC regulators support")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Rob-Herring/fbdev-Use-of_property_present-for-testing-DT-property-presence/20230310-225754
-base:   git://anongit.freedesktop.org/drm/drm-misc drm-misc-next
-patch link:    https://lore.kernel.org/r/20230310144729.1545943-1-robh%40kernel.org
-patch subject: [PATCH] fbdev: Use of_property_present() for testing DT property presence
-config: arm64-randconfig-r032-20230310 (https://download.01.org/0day-ci/archive/20230311/202303111229.3Uuc8JQV-lkp@intel.com/config)
-compiler: clang version 17.0.0 (https://github.com/llvm/llvm-project 67409911353323ca5edf2049ef0df54132fa1ca7)
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # install arm64 cross compiling tool for clang build
-        # apt-get install binutils-aarch64-linux-gnu
-        # https://github.com/intel-lab-lkp/linux/commit/c013f4111f36b0b4327e7fbf46c0dd93399e9209
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Rob-Herring/fbdev-Use-of_property_present-for-testing-DT-property-presence/20230310-225754
-        git checkout c013f4111f36b0b4327e7fbf46c0dd93399e9209
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=arm64 olddefconfig
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=arm64 SHELL=/bin/bash drivers/video/fbdev/
+---
 
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-| Link: https://lore.kernel.org/oe-kbuild-all/202303111229.3Uuc8JQV-lkp@intel.com/
+Not tested. However the cood looks so trivial and so buggy (could have
+never worked), so I am really confused...
+---
+ drivers/regulator/tps65219-regulator.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-All errors (new ones prefixed by >>):
-
->> drivers/video/fbdev/amba-clcd.c:857:6: error: call to undeclared function 'of_property_present'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-           if (of_property_present(node, "memory-region")) {
-               ^
-   drivers/video/fbdev/amba-clcd.c:857:6: note: did you mean 'fwnode_property_present'?
-   include/linux/property.h:59:6: note: 'fwnode_property_present' declared here
-   bool fwnode_property_present(const struct fwnode_handle *fwnode,
-        ^
-   1 error generated.
-
-
-vim +/of_property_present +857 drivers/video/fbdev/amba-clcd.c
-
-   843	
-   844	static struct clcd_board *clcdfb_of_get_board(struct amba_device *dev)
-   845	{
-   846		struct clcd_board *board = devm_kzalloc(&dev->dev, sizeof(*board),
-   847				GFP_KERNEL);
-   848		struct device_node *node = dev->dev.of_node;
-   849	
-   850		if (!board)
-   851			return NULL;
-   852	
-   853		board->name = of_node_full_name(node);
-   854		board->caps = CLCD_CAP_ALL;
-   855		board->check = clcdfb_check;
-   856		board->decode = clcdfb_decode;
- > 857		if (of_property_present(node, "memory-region")) {
-   858			board->setup = clcdfb_of_vram_setup;
-   859			board->mmap = clcdfb_of_vram_mmap;
-   860			board->remove = clcdfb_of_vram_remove;
-   861		} else {
-   862			board->setup = clcdfb_of_dma_setup;
-   863			board->mmap = clcdfb_of_dma_mmap;
-   864			board->remove = clcdfb_of_dma_remove;
-   865		}
-   866	
-   867		return board;
-   868	}
-   869	#else
-   870	static struct clcd_board *clcdfb_of_get_board(struct amba_device *dev)
-   871	{
-   872		return NULL;
-   873	}
-   874	#endif
-   875	
-
+diff --git a/drivers/regulator/tps65219-regulator.c b/drivers/regulator/tps65219-regulator.c
+index 4b5acaa45049..7f100361cbaf 100644
+--- a/drivers/regulator/tps65219-regulator.c
++++ b/drivers/regulator/tps65219-regulator.c
+@@ -289,13 +289,13 @@ static irqreturn_t tps65219_regulator_irq_handler(int irq, void *data)
+ 
+ static int tps65219_get_rdev_by_name(const char *regulator_name,
+ 				     struct regulator_dev *rdevtbl[7],
+-				     struct regulator_dev *dev)
++				     struct regulator_dev **dev)
+ {
+ 	int i;
+ 
+ 	for (i = 0; i < ARRAY_SIZE(regulators); i++) {
+ 		if (strcmp(regulator_name, regulators[i].name) == 0) {
+-			dev = rdevtbl[i];
++			*dev = rdevtbl[i];
+ 			return 0;
+ 		}
+ 	}
+@@ -348,7 +348,7 @@ static int tps65219_regulator_probe(struct platform_device *pdev)
+ 		irq_data[i].dev = tps->dev;
+ 		irq_data[i].type = irq_type;
+ 
+-		tps65219_get_rdev_by_name(irq_type->regulator_name, rdevtbl, rdev);
++		tps65219_get_rdev_by_name(irq_type->regulator_name, rdevtbl, &rdev);
+ 		if (IS_ERR(rdev)) {
+ 			dev_err(tps->dev, "Failed to get rdev for %s\n",
+ 				irq_type->regulator_name);
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+2.34.1
+
