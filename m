@@ -2,149 +2,107 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 502E06B5C58
-	for <lists+linux-omap@lfdr.de>; Sat, 11 Mar 2023 14:43:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1687D6B5D40
+	for <lists+linux-omap@lfdr.de>; Sat, 11 Mar 2023 16:15:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229522AbjCKNm6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 11 Mar 2023 08:42:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36418 "EHLO
+        id S230243AbjCKPPQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 11 Mar 2023 10:15:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46108 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229473AbjCKNm5 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 11 Mar 2023 08:42:57 -0500
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8206A5FFC;
-        Sat, 11 Mar 2023 05:42:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1678542175; x=1710078175;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=x+ZRr0pj7ADlwQU5k8M99g/tAgS3JVQU+0XabB88Cew=;
-  b=ifixLZ3iyI3mSRH1UqDpTh08bhiEFl8bpf7aov3H36sAz8C2A8wV2AeK
-   aNB6XOoT94hdLnPaiiBeyWvG1OuhmG2v36XdlOh4E6azYa+7m9vjtARY7
-   gkTk6w39pCVr6ylWgPXuJdZY5d/XA3Y6mnh8ufxFmB2upLTi/vwRiBhPq
-   0Em/1jYttHh9QHDN3n31tlIFK+LkrZwd+zrJdAPwgdpOaY2v0BdEOzQqy
-   jfC7D5TNZwunjvfXvYMtXSIuyybK6p+dhjm60yURMkU0pekCfRRWvrQ2B
-   BHeWqK5h4rUMnVeST/Zp2g+2VREl5VyQ1AA4BCgdsnvvOGKguC+CB9CI7
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10646"; a="325260775"
-X-IronPort-AV: E=Sophos;i="5.98,252,1673942400"; 
-   d="scan'208";a="325260775"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2023 05:42:55 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10646"; a="678156174"
-X-IronPort-AV: E=Sophos;i="5.98,252,1673942400"; 
-   d="scan'208";a="678156174"
-Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
-  by orsmga002.jf.intel.com with ESMTP; 11 Mar 2023 05:42:52 -0800
-Received: from kbuild by b613635ddfff with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1pazUq-0004bR-0O;
-        Sat, 11 Mar 2023 13:42:52 +0000
-Date:   Sat, 11 Mar 2023 21:42:48 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Rob Herring <robh@kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Helge Deller <deller@gmx.de>
-Cc:     oe-kbuild-all@lists.linux.dev, devicetree@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH] fbdev: Use of_property_present() for testing DT property
- presence
-Message-ID: <202303112153.uPbFjEUI-lkp@intel.com>
-References: <20230310144729.1545943-1-robh@kernel.org>
+        with ESMTP id S229601AbjCKPPQ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 11 Mar 2023 10:15:16 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0ADBA29411;
+        Sat, 11 Mar 2023 07:15:15 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A3DE360C7C;
+        Sat, 11 Mar 2023 15:15:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11B67C4339C;
+        Sat, 11 Mar 2023 15:15:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1678547714;
+        bh=WRaPMgPwoMyVfWOrMK/gri/pJ94fL6M3Kw9x+oiTxO0=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=gZhJB2F9iy6FmxvX8SyqZbZ4M5nomLJ55sweLYLeFmKNlVXuX4g39QyJWygTVktxi
+         9OxR1w1ydSBoi5qTew5drMKsPV6cT2lCPDxk5msXp29XkKDKx8cBQxkMzOoXoR+zeo
+         PPK7LDTAizFwRw/rTsNttnxVIEHxkpEQhNO7v+8QT7s8zDtOdPf96ixtiMBhUvILP0
+         r63pglxm6Y7OBB+OX7bDX8oFg22wJ2/hI3kJYkb6p39hlC3FvVkYAoyG2+rgouCL73
+         nc7DqlBnuPv36ND4fYSQLCCVuqiyg/7L2dYz/BiczwCi+pyY0hScAXtq+IOhhFQTdi
+         9yYijtH2oeWbg==
+Received: by mail-ua1-f52.google.com with SMTP id d12so5480102uak.10;
+        Sat, 11 Mar 2023 07:15:14 -0800 (PST)
+X-Gm-Message-State: AO0yUKWO48Qey0ZNQgrmGYp3ybuv4/Ds8WTbH09a9isFdmKvKqOOnjK6
+        00FILDrfA8pYqsuwlYj1Eiq4cxYW4XO6gr+NAw==
+X-Google-Smtp-Source: AK7set8bzSrdqy8+6YvY1DEekvcd7XPtfCqoKUDgoIQxF8sLBXDP8W8tOeQonNhJP3Pia6+DI8c59rOwGnTGo0UkVGw=
+X-Received: by 2002:a1f:6d42:0:b0:401:b9fd:7053 with SMTP id
+ i63-20020a1f6d42000000b00401b9fd7053mr18828740vkc.2.1678547713018; Sat, 11
+ Mar 2023 07:15:13 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230310144729.1545943-1-robh@kernel.org>
+References: <20230310144729.1545943-1-robh@kernel.org> <202303111229.3Uuc8JQV-lkp@intel.com>
+In-Reply-To: <202303111229.3Uuc8JQV-lkp@intel.com>
+From:   Rob Herring <robh@kernel.org>
+Date:   Sat, 11 Mar 2023 09:15:01 -0600
+X-Gmail-Original-Message-ID: <CAL_Jsq+kE3v+=WptWet=JHp2-FCOFah_YzWHFbbfSH-Wh_0o5A@mail.gmail.com>
+Message-ID: <CAL_Jsq+kE3v+=WptWet=JHp2-FCOFah_YzWHFbbfSH-Wh_0o5A@mail.gmail.com>
+Subject: Re: [PATCH] fbdev: Use of_property_present() for testing DT property presence
+To:     kernel test robot <lkp@intel.com>
+Cc:     Russell King <linux@armlinux.org.uk>, Helge Deller <deller@gmx.de>,
+        llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+        devicetree@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Rob,
+On Fri, Mar 10, 2023 at 10:41=E2=80=AFPM kernel test robot <lkp@intel.com> =
+wrote:
+>
+> Hi Rob,
+>
+> I love your patch! Yet something to improve:
+>
+> [auto build test ERROR on drm-misc/drm-misc-next]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch#_base_tree_information]
+>
+> url:    https://github.com/intel-lab-lkp/linux/commits/Rob-Herring/fbdev-=
+Use-of_property_present-for-testing-DT-property-presence/20230310-225754
+> base:   git://anongit.freedesktop.org/drm/drm-misc drm-misc-next
+> patch link:    https://lore.kernel.org/r/20230310144729.1545943-1-robh%40=
+kernel.org
+> patch subject: [PATCH] fbdev: Use of_property_present() for testing DT pr=
+operty presence
+> config: arm64-randconfig-r032-20230310 (https://download.01.org/0day-ci/a=
+rchive/20230311/202303111229.3Uuc8JQV-lkp@intel.com/config)
+> compiler: clang version 17.0.0 (https://github.com/llvm/llvm-project 6740=
+9911353323ca5edf2049ef0df54132fa1ca7)
+> reproduce (this is a W=3D1 build):
+>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbi=
+n/make.cross -O ~/bin/make.cross
+>         chmod +x ~/bin/make.cross
+>         # install arm64 cross compiling tool for clang build
+>         # apt-get install binutils-aarch64-linux-gnu
+>         # https://github.com/intel-lab-lkp/linux/commit/c013f4111f36b0b43=
+27e7fbf46c0dd93399e9209
+>         git remote add linux-review https://github.com/intel-lab-lkp/linu=
+x
+>         git fetch --no-tags linux-review Rob-Herring/fbdev-Use-of_propert=
+y_present-for-testing-DT-property-presence/20230310-225754
+>         git checkout c013f4111f36b0b4327e7fbf46c0dd93399e9209
 
-I love your patch! Yet something to improve:
+Looks like this patch was applied to drm-next which was/is based on
+v6.2-rc6. This patch is dependent on a change in v6.3-rc1.
 
-[auto build test ERROR on drm-misc/drm-misc-next]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Rob-Herring/fbdev-Use-of_property_present-for-testing-DT-property-presence/20230310-225754
-base:   git://anongit.freedesktop.org/drm/drm-misc drm-misc-next
-patch link:    https://lore.kernel.org/r/20230310144729.1545943-1-robh%40kernel.org
-patch subject: [PATCH] fbdev: Use of_property_present() for testing DT property presence
-config: arm-allyesconfig (https://download.01.org/0day-ci/archive/20230311/202303112153.uPbFjEUI-lkp@intel.com/config)
-compiler: arm-linux-gnueabi-gcc (GCC) 12.1.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/c013f4111f36b0b4327e7fbf46c0dd93399e9209
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Rob-Herring/fbdev-Use-of_property_present-for-testing-DT-property-presence/20230310-225754
-        git checkout c013f4111f36b0b4327e7fbf46c0dd93399e9209
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=arm olddefconfig
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=arm SHELL=/bin/bash
-
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-| Link: https://lore.kernel.org/oe-kbuild-all/202303112153.uPbFjEUI-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   drivers/video/fbdev/amba-clcd.c: In function 'clcdfb_of_get_board':
->> drivers/video/fbdev/amba-clcd.c:857:13: error: implicit declaration of function 'of_property_present'; did you mean 'fwnode_property_present'? [-Werror=implicit-function-declaration]
-     857 |         if (of_property_present(node, "memory-region")) {
-         |             ^~~~~~~~~~~~~~~~~~~
-         |             fwnode_property_present
-   cc1: some warnings being treated as errors
-
-
-vim +857 drivers/video/fbdev/amba-clcd.c
-
-   843	
-   844	static struct clcd_board *clcdfb_of_get_board(struct amba_device *dev)
-   845	{
-   846		struct clcd_board *board = devm_kzalloc(&dev->dev, sizeof(*board),
-   847				GFP_KERNEL);
-   848		struct device_node *node = dev->dev.of_node;
-   849	
-   850		if (!board)
-   851			return NULL;
-   852	
-   853		board->name = of_node_full_name(node);
-   854		board->caps = CLCD_CAP_ALL;
-   855		board->check = clcdfb_check;
-   856		board->decode = clcdfb_decode;
- > 857		if (of_property_present(node, "memory-region")) {
-   858			board->setup = clcdfb_of_vram_setup;
-   859			board->mmap = clcdfb_of_vram_mmap;
-   860			board->remove = clcdfb_of_vram_remove;
-   861		} else {
-   862			board->setup = clcdfb_of_dma_setup;
-   863			board->mmap = clcdfb_of_dma_mmap;
-   864			board->remove = clcdfb_of_dma_remove;
-   865		}
-   866	
-   867		return board;
-   868	}
-   869	#else
-   870	static struct clcd_board *clcdfb_of_get_board(struct amba_device *dev)
-   871	{
-   872		return NULL;
-   873	}
-   874	#endif
-   875	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+Rob
