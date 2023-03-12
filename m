@@ -2,123 +2,162 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E28906B64D5
-	for <lists+linux-omap@lfdr.de>; Sun, 12 Mar 2023 11:18:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A5A46B65E5
+	for <lists+linux-omap@lfdr.de>; Sun, 12 Mar 2023 13:14:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229854AbjCLKSU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 12 Mar 2023 06:18:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51828 "EHLO
+        id S229685AbjCLMOb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 12 Mar 2023 08:14:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229876AbjCLKST (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 12 Mar 2023 06:18:19 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EFC015147
-        for <linux-omap@vger.kernel.org>; Sun, 12 Mar 2023 03:18:17 -0700 (PDT)
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <mkl@pengutronix.de>)
-        id 1pbIlX-0001NV-KV; Sun, 12 Mar 2023 11:17:23 +0100
-Received: from pengutronix.de (unknown [IPv6:2a00:20:4047:f0aa:709:fab:bab8:4a48])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (Client did not present a certificate)
-        (Authenticated sender: mkl-all@blackshift.org)
-        by smtp.blackshift.org (Postfix) with ESMTPSA id 8D95418F886;
-        Sun, 12 Mar 2023 10:16:59 +0000 (UTC)
-Date:   Sun, 12 Mar 2023 11:16:56 +0100
-From:   Marc Kleine-Budde <mkl@pengutronix.de>
-To:     Rob Herring <robh@kernel.org>
-Cc:     Wolfgang Grandegger <wg@grandegger.com>,
+        with ESMTP id S229516AbjCLMOa (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 12 Mar 2023 08:14:30 -0400
+Received: from wnew4-smtp.messagingengine.com (wnew4-smtp.messagingengine.com [64.147.123.18])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C642D36FE1;
+        Sun, 12 Mar 2023 05:14:25 -0700 (PDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+        by mailnew.west.internal (Postfix) with ESMTP id 2E8A02B066CB;
+        Sun, 12 Mar 2023 08:14:19 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute6.internal (MEProxy); Sun, 12 Mar 2023 08:14:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm2; t=1678623258; x=1678630458; bh=uOiTi6/NTNM3M
+        UGJcuvZvSM01KsroDdW5S+kXTtbd8w=; b=eHYyrL4NaW+yMUjCNptl5jYYtoi8E
+        hLBKzStAuQkG4v/z4hhP3kqHJQ2dwsRiMM/zQZmYQuybV3ns2BtF/u+8yL8z2Lpx
+        Fmm8zqjgnyTXuowli2+dSb8yfzjw4fhctK9VDp59jUGkHPWADWbTNq/qwMcS4V2D
+        nJzvwzXB3DZqQONKCTj7Ai1tlKWl3EuFudxD2O4eOA/UZCCneHrJ2UESteRQ80wa
+        DIqa4yLbBJCwUjKYoouq9gT2uFNwoaBp54W+m/0tweudxnh2fvhCVWnaKIgSmJRU
+        6fTwksJ6D/49vNcKmO24kfNVAM+PfU+O0BFXGq6gmpmocg7/R3c1RWetw==
+X-ME-Sender: <xms:GMINZGTf74JeblrjlpCh3YB4_QRRq8vjzK0oAN37uf84Wq2fmxR25A>
+    <xme:GMINZLwR_DLRm0xvpbHAjBj56JOUxatnZe2vfFGNpmMYMmk-Rc5duszkyCP3ccJqd
+    CMMbOhtJaOGzHw>
+X-ME-Received: <xmr:GMINZD3N8oWjeD-ZblmcgytVfWOgbjI-9Urb4YeJ1SDeIiaSlgllXVS72rYf>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvddvvddgfeejucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepkfguohcu
+    ufgthhhimhhmvghluceoihguohhstghhsehiughoshgthhdrohhrgheqnecuggftrfgrth
+    htvghrnhepvddufeevkeehueegfedtvdevfefgudeifeduieefgfelkeehgeelgeejjeeg
+    gefhnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepih
+    guohhstghhsehiughoshgthhdrohhrgh
+X-ME-Proxy: <xmx:GMINZCCd5Yv4ayURM5DOEpHnfT7iGftOXamBF3b0R3zWoNndjgvtew>
+    <xmx:GMINZPhqsrHiMYhX0eZcE-3b2KPOlLyZft3GgY2KvKmPR4znhEQTFQ>
+    <xmx:GMINZOr3mCJj8kq-QN1JeGycDSOV_iFTbuNK_uDCf3DOYZ8phjakwA>
+    <xmx:GsINZCMz0m5ZZart7AcvGICSsoelDhvqQ3z5GzBg10_jUUYuoBThpmdI-JU>
+Feedback-ID: i494840e7:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 12 Mar 2023 08:14:15 -0400 (EDT)
+Date:   Sun, 12 Mar 2023 14:14:12 +0200
+From:   Ido Schimmel <idosch@idosch.org>
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc:     rafael@kernel.org, linux-kernel@vger.kernel.org,
+        linux-pm@vger.kernel.org, rui.zhang@intel.com,
+        Raju Rangoju <rajur@chelsio.com>,
         "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Wei Fang <wei.fang@nxp.com>,
-        Shenwei Wang <shenwei.wang@nxp.com>,
-        Clark Wang <xiaoning.wang@nxp.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Claudiu Manoil <claudiu.manoil@nxp.com>,
-        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Jose Abreu <joabreu@synopsys.com>,
+        Peter Kaestle <peter@piie.net>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <markgross@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Amit Kucheria <amitk@kernel.org>,
+        Nicolas Saenz Julienne <nsaenz@kernel.org>,
+        Broadcom Kernel Team <bcm-kernel-feedback-list@broadcom.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Lukasz Luba <lukasz.luba@arm.com>,
         Shawn Guo <shawnguo@kernel.org>,
         Sascha Hauer <s.hauer@pengutronix.de>,
         Pengutronix Kernel Team <kernel@pengutronix.de>,
         Fabio Estevam <festevam@gmail.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Francois Romieu <romieu@fr.zoreil.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Zhao Qiang <qiang.zhao@nxp.com>, Kalle Valo <kvalo@kernel.org>,
-        Samuel Mendoza-Jonas <sam@mendozajonas.com>,
-        devicetree@vger.kernel.org, linux-can@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] net: Use of_property_read_bool() for boolean properties
-Message-ID: <20230312101656.6vugofe3ejtovnks@pengutronix.de>
-References: <20230310144718.1544169-1-robh@kernel.org>
+        NXP Linux Team <linux-imx@nxp.com>,
+        Thara Gopinath <thara.gopinath@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Niklas =?iso-8859-1?Q?S=F6derlund?= 
+        <niklas.soderlund@ragnatech.se>,
+        Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        Keerthy <j-keerthy@ti.com>,
+        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Antoine Tenart <atenart@kernel.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Dmitry Osipenko <digetx@gmail.com>, netdev@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org,
+        linux-rpi-kernel@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-omap@vger.kernel.org,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        danieller@nvidia.com, vadimp@nvidia.com, petrm@nvidia.com
+Subject: Re: [PATCH v8 01/29] thermal/core: Add a generic
+ thermal_zone_get_trip() function
+Message-ID: <ZA3CFNhU4AbtsP4G@shredder>
+References: <20221003092602.1323944-1-daniel.lezcano@linaro.org>
+ <20221003092602.1323944-2-daniel.lezcano@linaro.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="56s4oxy73xinyvne"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230310144718.1544169-1-robh@kernel.org>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:b01:1d::7b
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-omap@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+In-Reply-To: <20221003092602.1323944-2-daniel.lezcano@linaro.org>
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Mon, Oct 03, 2022 at 11:25:34AM +0200, Daniel Lezcano wrote:
+> @@ -1252,9 +1319,10 @@ thermal_zone_device_register_with_trips(const char *type, struct thermal_trip *t
+>  		goto release_device;
+>  
+>  	for (count = 0; count < num_trips; count++) {
+> -		if (tz->ops->get_trip_type(tz, count, &trip_type) ||
+> -		    tz->ops->get_trip_temp(tz, count, &trip_temp) ||
+> -		    !trip_temp)
+> +		struct thermal_trip trip;
+> +
+> +		result = thermal_zone_get_trip(tz, count, &trip);
+> +		if (result)
+>  			set_bit(count, &tz->trips_disabled);
+>  	}
 
---56s4oxy73xinyvne
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Daniel, this change makes it so that trip points with a temperature of
+zero are no longer disabled. This behavior was originally added in
+commit 81ad4276b505 ("Thermal: Ignore invalid trip points"). The mlxsw
+driver relies on this behavior - see mlxsw_thermal_module_trips_reset()
+- and with this change I see that the thermal subsystem tries to
+repeatedly set the state of the associated cooling devices to the
+maximum state. Other drivers might also be affected by this.
 
-On 10.03.2023 08:47:16, Rob Herring wrote:
-> It is preferred to use typed property access functions (i.e.
-> of_property_read_<type> functions) rather than low-level
-> of_get_property/of_find_property functions for reading properties.
-> Convert reading boolean properties to to of_property_read_bool().
->=20
-> Signed-off-by: Rob Herring <robh@kernel.org>
-> ---
->  drivers/net/can/cc770/cc770_platform.c          | 12 ++++++------
+Following patch solves the problem for me:
 
-Acked-by: Marc Kleine-Budde <mkl@pengutronix.de> # for net/can
+diff --git a/drivers/thermal/thermal_core.c b/drivers/thermal/thermal_core.c
+index 55679fd86505..b50931f84aaa 100644
+--- a/drivers/thermal/thermal_core.c
++++ b/drivers/thermal/thermal_core.c
+@@ -1309,7 +1309,7 @@ thermal_zone_device_register_with_trips(const char *type, struct thermal_trip *t
+                struct thermal_trip trip;
+ 
+                result = thermal_zone_get_trip(tz, count, &trip);
+-               if (result)
++               if (result || !trip.temperature)
+                        set_bit(count, &tz->trips_disabled);
+        }
 
-regards,
-Marc
+Should I submit it or do you have a better idea?
 
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde           |
-Embedded Linux                   | https://www.pengutronix.de  |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-5555 |
-
---56s4oxy73xinyvne
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEDs2BvajyNKlf9TJQvlAcSiqKBOgFAmQNppYACgkQvlAcSiqK
-BOih8Af/YX2B3N5FsBIZG4yqpr++vgKc4n7OnSLKeurhmc0xDoCskNspwUZEwQMx
-qH0NpgRO8lQRNavcmnZCXsQNyaDN+MZisfJf/6ok61y5S2klIpM53ExvbwwG3bMN
-s4yVdfQC6+OXVLKbp8zOkZvkjIJ8WPXROJs7co0Vwpw+6ISlaBCr1tNOyaQ8pG1I
-okCqcVtkxS7Oq972YEV14iIgJkqaIhjVDuCQib7hRPf3AQOf4HVwSOdRmKQSpa2J
-JoiV0ENG22zhLQ10qSyttO6mLAyAfF63yU4gNr8Qr4HFfMu2GrnhlI5mhVJAsBET
-xkYmWkJD8zscCZtljlR5NmYU9uO/sA==
-=0vPJ
------END PGP SIGNATURE-----
-
---56s4oxy73xinyvne--
+Thanks
