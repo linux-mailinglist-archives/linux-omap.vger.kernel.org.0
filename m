@@ -2,155 +2,123 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 50FA96B64B7
-	for <lists+linux-omap@lfdr.de>; Sun, 12 Mar 2023 11:06:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E28906B64D5
+	for <lists+linux-omap@lfdr.de>; Sun, 12 Mar 2023 11:18:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230175AbjCLKGR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 12 Mar 2023 06:06:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49826 "EHLO
+        id S229854AbjCLKSU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 12 Mar 2023 06:18:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230072AbjCLKFx (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 12 Mar 2023 06:05:53 -0400
-Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EEA217CC0
-        for <linux-omap@vger.kernel.org>; Sun, 12 Mar 2023 03:04:55 -0700 (PDT)
-Received: by mail-ed1-x533.google.com with SMTP id cy23so37449938edb.12
-        for <linux-omap@vger.kernel.org>; Sun, 12 Mar 2023 03:04:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1678615440;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=RIqRqJQWxyWyp+7pWTYPje+scwaftD+oSHprfH2ssSw=;
-        b=LwN1zyWcU+7gQx1gHeM0LZ6sL9jJ5FX9NnYNQp0itQFk17eu372cOAIxC8z+hmFoOZ
-         ya/VO817mKfi1xinlpWmDvDFqDRjWxLg9AQjI5MFOqTEilbCmpqOEVqTj11bf62Aud0B
-         mVq87JJ2nub44hMxXTv5h5yIaR6P1JI5b20AqvZNrJxruvm+v/esiuUfxl7AbDvCfBLA
-         DkW5K+BEhitTJ0hqCQ1P1ZCGW/CG5/0J08Yp/XAOijhqa/TOIN7NzDacnWa9HmtFw/nR
-         wFWyvY1LoTDOzQvtslVG1rqmHEg8xonBKClSY8G0ssNUiZKwutVTpWFoHkivNEpbiUHD
-         PqhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678615440;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RIqRqJQWxyWyp+7pWTYPje+scwaftD+oSHprfH2ssSw=;
-        b=fUgPaTdXZG1qHgHZpm545oHXRZw8IjPntThkGeIwCAEF9Dd9+8v79dXtte3FySyXa/
-         1BuxV73A4QrBgTj6BoM1KjdiZApkJe5par3vw6sx5MxWSE9FapcCZnPe5Muh2VZNUg2D
-         0pcPlpVA6s8MXID+KbQWoOq1zHjhnTamm4BSsrLE6SCEQGL/yzr9fvOzJ9A0Hw8cCvzj
-         sZxdril/zkt5rNCjul4e/9Zxx1muivI5X6Xd2z6evp8EclS7oT31AyKWS8NzuGLUy8SK
-         XT4msfDgmnZIXBiJiTq+qQ0QA94qMpc7K/WTF/4Sa+UHFEDMNe0RZ0kJ6TASO81ysSfD
-         uXAg==
-X-Gm-Message-State: AO0yUKWLdzJIaANQVqH4HzKDbYvR1EANXyHw3EXx4/iGrgjrtssYok0X
-        WUEu7kHyP4DmZImOwQ8GwTSPew==
-X-Google-Smtp-Source: AK7set9BNyklSZqUMLmjUu0BMV2qwFcaLVPC2rn+aSkSJjZmyq8uEhBBimKQ5IDtGdQHPDcEoYS4Pg==
-X-Received: by 2002:a17:906:30c8:b0:8b1:4b6d:c57a with SMTP id b8-20020a17090630c800b008b14b6dc57amr5595353ejb.21.1678615440513;
-        Sun, 12 Mar 2023 03:04:00 -0700 (PDT)
-Received: from ?IPV6:2a02:810d:15c0:828:d9f6:3e61:beeb:295a? ([2a02:810d:15c0:828:d9f6:3e61:beeb:295a])
-        by smtp.gmail.com with ESMTPSA id x14-20020a1709060a4e00b008dd3956c2e3sm2057895ejf.183.2023.03.12.03.03.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 12 Mar 2023 03:04:00 -0700 (PDT)
-Message-ID: <b159616c-f665-42c5-6fbb-841de937d868@linaro.org>
-Date:   Sun, 12 Mar 2023 11:03:58 +0100
+        with ESMTP id S229876AbjCLKST (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 12 Mar 2023 06:18:19 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EFC015147
+        for <linux-omap@vger.kernel.org>; Sun, 12 Mar 2023 03:18:17 -0700 (PDT)
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <mkl@pengutronix.de>)
+        id 1pbIlX-0001NV-KV; Sun, 12 Mar 2023 11:17:23 +0100
+Received: from pengutronix.de (unknown [IPv6:2a00:20:4047:f0aa:709:fab:bab8:4a48])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        (Authenticated sender: mkl-all@blackshift.org)
+        by smtp.blackshift.org (Postfix) with ESMTPSA id 8D95418F886;
+        Sun, 12 Mar 2023 10:16:59 +0000 (UTC)
+Date:   Sun, 12 Mar 2023 11:16:56 +0100
+From:   Marc Kleine-Budde <mkl@pengutronix.de>
+To:     Rob Herring <robh@kernel.org>
+Cc:     Wolfgang Grandegger <wg@grandegger.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Wei Fang <wei.fang@nxp.com>,
+        Shenwei Wang <shenwei.wang@nxp.com>,
+        Clark Wang <xiaoning.wang@nxp.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Claudiu Manoil <claudiu.manoil@nxp.com>,
+        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Jose Abreu <joabreu@synopsys.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Francois Romieu <romieu@fr.zoreil.com>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Zhao Qiang <qiang.zhao@nxp.com>, Kalle Valo <kvalo@kernel.org>,
+        Samuel Mendoza-Jonas <sam@mendozajonas.com>,
+        devicetree@vger.kernel.org, linux-can@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] net: Use of_property_read_bool() for boolean properties
+Message-ID: <20230312101656.6vugofe3ejtovnks@pengutronix.de>
+References: <20230310144718.1544169-1-robh@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH 2/9] regulator: max20086: Mark OF related data as maybe
- unused
-To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc:     Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org
-References: <20230310214553.275450-1-krzysztof.kozlowski@linaro.org>
- <20230310214553.275450-2-krzysztof.kozlowski@linaro.org>
- <20230312094216.GC707@pendragon.ideasonboard.com>
-Content-Language: en-US
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230312094216.GC707@pendragon.ideasonboard.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="56s4oxy73xinyvne"
+Content-Disposition: inline
+In-Reply-To: <20230310144718.1544169-1-robh@kernel.org>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:b01:1d::7b
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-omap@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 12/03/2023 10:42, Laurent Pinchart wrote:
-> Hi Krzysztof,
-> 
-> Thank you for the patch.
-> 
-> On Fri, Mar 10, 2023 at 10:45:46PM +0100, Krzysztof Kozlowski wrote:
->> The driver can be compile tested with !CONFIG_OF making certain data
->> unused:
->>
->>   drivers/regulator/max20086-regulator.c:289:34: error: ‘max20086_dt_ids’ defined but not used [-Werror=unused-const-variable=]
->>
->> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
->> ---
->>  drivers/regulator/max20086-regulator.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/regulator/max20086-regulator.c b/drivers/regulator/max20086-regulator.c
->> index b8bf76c170fe..c98a72f43935 100644
->> --- a/drivers/regulator/max20086-regulator.c
->> +++ b/drivers/regulator/max20086-regulator.c
->> @@ -286,7 +286,7 @@ static const struct i2c_device_id max20086_i2c_id[] = {
->>  
->>  MODULE_DEVICE_TABLE(i2c, max20086_i2c_id);
->>  
->> -static const struct of_device_id max20086_dt_ids[] = {
->> +static const struct of_device_id max20086_dt_ids[] __maybe_unused = {
-> 
-> The following change would also work, as the of_match_table field of
-> struct device_driver isn't conditioned by CONFIG_OF:
-> 
-> diff --git a/drivers/regulator/max20086-regulator.c b/drivers/regulator/max20086-regulator.c
-> index b8bf76c170fe..ad92f84b4abb 100644
-> --- a/drivers/regulator/max20086-regulator.c
-> +++ b/drivers/regulator/max20086-regulator.c
-> @@ -320,7 +320,7 @@ MODULE_DEVICE_TABLE(of, max20086_dt_ids);
->  static struct i2c_driver max20086_regulator_driver = {
->  	.driver = {
->  		.name = "max20086",
-> -		.of_match_table = of_match_ptr(max20086_dt_ids),
-> +		.of_match_table = max20086_dt_ids,
->  	},
->  	.probe_new = max20086_i2c_probe,
->  	.id_table = max20086_i2c_id,
-> 
-> Your patch should reduce the module size without any real drawback as
-> far as I can see, so that's probably best. I'm fine with either
-> approach, so
 
-I know it would work. If you check all my patches you see both patterns
-used depending on the needs:
-https://lore.kernel.org/all/?q=f%3Akrzysztof+of_device_id
-(~100 patches so far)
+--56s4oxy73xinyvne
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-The point is that here the device can actually match via ID table, so OF
-table could stay optional. I don't think PRP0001 is relevant here, thus
-I proposed to keep OF table optional. Different folks have different
-opinion on that, so if general consensus is that availability of OF ID
-table (for PRP0001) is preferred, I can rework the patch towards it.
+On 10.03.2023 08:47:16, Rob Herring wrote:
+> It is preferred to use typed property access functions (i.e.
+> of_property_read_<type> functions) rather than low-level
+> of_get_property/of_find_property functions for reading properties.
+> Convert reading boolean properties to to of_property_read_bool().
+>=20
+> Signed-off-by: Rob Herring <robh@kernel.org>
+> ---
+>  drivers/net/can/cc770/cc770_platform.c          | 12 ++++++------
 
+Acked-by: Marc Kleine-Budde <mkl@pengutronix.de> # for net/can
 
-> 
-> Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+regards,
+Marc
 
-Thanks
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde           |
+Embedded Linux                   | https://www.pengutronix.de  |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-5555 |
 
-Best regards,
-Krzysztof
+--56s4oxy73xinyvne
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEDs2BvajyNKlf9TJQvlAcSiqKBOgFAmQNppYACgkQvlAcSiqK
+BOih8Af/YX2B3N5FsBIZG4yqpr++vgKc4n7OnSLKeurhmc0xDoCskNspwUZEwQMx
+qH0NpgRO8lQRNavcmnZCXsQNyaDN+MZisfJf/6ok61y5S2klIpM53ExvbwwG3bMN
+s4yVdfQC6+OXVLKbp8zOkZvkjIJ8WPXROJs7co0Vwpw+6ISlaBCr1tNOyaQ8pG1I
+okCqcVtkxS7Oq972YEV14iIgJkqaIhjVDuCQib7hRPf3AQOf4HVwSOdRmKQSpa2J
+JoiV0ENG22zhLQ10qSyttO6mLAyAfF63yU4gNr8Qr4HFfMu2GrnhlI5mhVJAsBET
+xkYmWkJD8zscCZtljlR5NmYU9uO/sA==
+=0vPJ
+-----END PGP SIGNATURE-----
+
+--56s4oxy73xinyvne--
