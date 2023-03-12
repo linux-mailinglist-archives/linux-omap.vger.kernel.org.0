@@ -2,53 +2,71 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E5286B6802
-	for <lists+linux-omap@lfdr.de>; Sun, 12 Mar 2023 17:15:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ACE486B68BC
+	for <lists+linux-omap@lfdr.de>; Sun, 12 Mar 2023 18:21:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230164AbjCLQPs (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 12 Mar 2023 12:15:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38962 "EHLO
+        id S229906AbjCLRVc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 12 Mar 2023 13:21:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230095AbjCLQPf (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 12 Mar 2023 12:15:35 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99AFF34F7E
-        for <linux-omap@vger.kernel.org>; Sun, 12 Mar 2023 09:15:33 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1pbOM1-0007sf-Uk; Sun, 12 Mar 2023 17:15:25 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1pbOM1-003f3d-Bl; Sun, 12 Mar 2023 17:15:25 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1pbOM0-004K9h-4q; Sun, 12 Mar 2023 17:15:24 +0100
-From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     Tero Kristo <kristo@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>
-Cc:     linux-omap@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 27/30] clk: ti: Convert to platform remove callback returning void
-Date:   Sun, 12 Mar 2023 17:15:09 +0100
-Message-Id: <20230312161512.2715500-28-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20230312161512.2715500-1-u.kleine-koenig@pengutronix.de>
-References: <20230312161512.2715500-1-u.kleine-koenig@pengutronix.de>
+        with ESMTP id S229723AbjCLRVb (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 12 Mar 2023 13:21:31 -0400
+Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 398573401E
+        for <linux-omap@vger.kernel.org>; Sun, 12 Mar 2023 10:21:30 -0700 (PDT)
+Received: by mail-ed1-x52c.google.com with SMTP id cn21so9668329edb.0
+        for <linux-omap@vger.kernel.org>; Sun, 12 Mar 2023 10:21:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1678641689;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=B2jFUNzqqRCDLI/6nYZx2Ja0Za/TmGMlbNfoy2LoUTs=;
+        b=oLF81Y9ESa+qrxvLu8LvsOuQ99msMDyUyRUR1kfbRibooxnGxYhg+CzdbJz6bez4KM
+         aEmQKTiqNzwXeYKIgl/RJwdXv9ydi41LEcaED+lNvzS2Wx0M5JiIqcSsTsCqpaG2oX1V
+         Pr6x95K1+PySHOsFub3A7vQ6szdqev8l+PYA9Vp4mMUR7HV8GbfiyljZvypEAosuoXFG
+         TAfqiPSfRygjK94zX1olBaZBrqdzKQ5pLlncnETkq3dnHfd8G02puLsQ+Ipifv9iCLG1
+         wFDO84iw+dwoMiOkAyHe5KAlsPLoOqsh8fK4P/ioDftjj1PmwiiwF7ryLUuQjckkIaWn
+         gQAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678641689;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=B2jFUNzqqRCDLI/6nYZx2Ja0Za/TmGMlbNfoy2LoUTs=;
+        b=VWTsLVg08di30/+3yZp74VvTsnUnjyhbxqjJi/68rdSmKDCDZ26CpNhUDSuJTPL6pp
+         J35tuWpOeyc/DG5u6zW0fLAU1JSXg/wfzkpLugLR7xQyQgkNwQj7dT9R5DSN51KD3X6O
+         IgBLm5BROWi2sxRfD/eNRNk3c7FJdNfpg/ytWuJeaTLfuPBmK/1qJ35YWs8/u7xVtWEP
+         hAjDf7pKUHQ4fTPRyiIAMaA0Bc6vC919849+She0PdIhkTqDgRjSkp+lrHGTuXAdxEyd
+         AnsRk/5Ge3eiukYpzC6R+3NpSbjMswbIYNwaUd8n59COh/H/cP0g6Aa0sqOHUjK0s+EN
+         I80g==
+X-Gm-Message-State: AO0yUKVVcpt8yDTJ09Se4U4j4TEzmpIN7M1M5QSKOENIJAPiXLk4iLE8
+        g5AgTW41NW60sbf79EFpbN2r3A==
+X-Google-Smtp-Source: AK7set+cL33+vHAjkESY8UEX/3MAdl182jZV7Je3gOlYfun4sjeFigKvM4R1ccOJ3+5C5gX9YP3S/g==
+X-Received: by 2002:aa7:c053:0:b0:4fa:18d3:a8fb with SMTP id k19-20020aa7c053000000b004fa18d3a8fbmr5819674edo.26.1678641688749;
+        Sun, 12 Mar 2023 10:21:28 -0700 (PDT)
+Received: from krzk-bin.. ([2a02:810d:15c0:828:d9f6:3e61:beeb:295a])
+        by smtp.gmail.com with ESMTPSA id y13-20020a50ce0d000000b004fa380a14e7sm2055395edi.77.2023.03.12.10.21.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 12 Mar 2023 10:21:28 -0700 (PDT)
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To:     Tony Lindgren <tony@atomide.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH] ARM: dts: omap: align UART node name with bindings
+Date:   Sun, 12 Mar 2023 18:21:22 +0100
+Message-Id: <167864162126.395859.15093808144511870577.b4-ty@linaro.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230123151531.369419-1-krzysztof.kozlowski@linaro.org>
+References: <20230123151531.369419-1-krzysztof.kozlowski@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1546; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=+eDcQI6Zb4aIs7d9bJFFkkDfJcRJeMKqXpNyUgVrxUw=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBkDfqAWH+TKlTmHEM6RxOYZ9/tjSDti0OgQsMd8 3lfr5mcv2GJATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCZA36gAAKCRDB/BR4rcrs CUW0B/4jNY4NiHQmjbgaA87O5C1kRpCQk+LmocZoMsFOsC0tZJxOkF/iopdO1LZvnd6RO/TFNtL 4sHa7kuYCq4fzdCigy8ArkO4qcv3qjWbHjtF9IaIkRnfFQ5Q1xwqfuonhrhGANm/Lc9l823UMGV VMqyTVphe/dudZ8iH2wbqbyXsxosUjCbDg54p1tVjIRr9NwPsx8gc5ecRq4oP61hOcXBVXY2Z3g waRxdIPA0Pgllstt5/4O3iQl/Yd8o3L5a0lGs4x2Ov/sA8RjdSmqqOXwrxTfTE0MEjVhIACueWD AOC1aazeB2ueFvzfFAzgZPKfA4u1IKoDpyUS6Y2BNREilAg6
-X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-omap@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,50 +74,18 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The .remove() callback for a platform driver returns an int which makes
-many driver authors wrongly assume it's possible to do error handling by
-returning an error code. However the value returned is (mostly) ignored
-and this typically results in resource leaks. To improve here there is a
-quest to make the remove callback return void. In the first step of this
-quest all drivers are converted to .remove_new() which already returns
-void.
+On Mon, 23 Jan 2023 16:15:31 +0100, Krzysztof Kozlowski wrote:
+> Bindings expect UART/serial node names to be "serial".
+> 
+> 
 
-Trivially convert this driver from always returning zero in the remove
-callback to the void returning variant.
+Applied, thanks!
+(Patch was waiting for quite a long on the lists, let me know if anyone wants
+to pick it up instead)
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
----
- drivers/clk/ti/adpll.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+[1/1] ARM: dts: omap: align UART node name with bindings
+      https://git.kernel.org/krzk/linux-dt/c/f7ec6efef4560edeebdca10b73a92f37c6fb16cf
 
-diff --git a/drivers/clk/ti/adpll.c b/drivers/clk/ti/adpll.c
-index f5e7e2049241..6ecbba4342c5 100644
---- a/drivers/clk/ti/adpll.c
-+++ b/drivers/clk/ti/adpll.c
-@@ -931,13 +931,11 @@ static int ti_adpll_probe(struct platform_device *pdev)
- 	return err;
- }
- 
--static int ti_adpll_remove(struct platform_device *pdev)
-+static void ti_adpll_remove(struct platform_device *pdev)
- {
- 	struct ti_adpll_data *d = dev_get_drvdata(&pdev->dev);
- 
- 	ti_adpll_free_resources(d);
--
--	return 0;
- }
- 
- static struct platform_driver ti_adpll_driver = {
-@@ -946,7 +944,7 @@ static struct platform_driver ti_adpll_driver = {
- 		.of_match_table = ti_adpll_match,
- 	},
- 	.probe = ti_adpll_probe,
--	.remove = ti_adpll_remove,
-+	.remove_new = ti_adpll_remove,
- };
- 
- static int __init ti_adpll_init(void)
+Best regards,
 -- 
-2.39.1
-
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
