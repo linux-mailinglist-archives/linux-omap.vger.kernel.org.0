@@ -2,73 +2,99 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 16D6B6B7054
-	for <lists+linux-omap@lfdr.de>; Mon, 13 Mar 2023 08:51:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 36CFF6B70EA
+	for <lists+linux-omap@lfdr.de>; Mon, 13 Mar 2023 09:17:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229791AbjCMHvW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 13 Mar 2023 03:51:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49068 "EHLO
+        id S229790AbjCMIRL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 13 Mar 2023 04:17:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36084 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229648AbjCMHvV (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 13 Mar 2023 03:51:21 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4354E28D1D;
-        Mon, 13 Mar 2023 00:51:20 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D295F6112C;
-        Mon, 13 Mar 2023 07:51:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD111C433EF;
-        Mon, 13 Mar 2023 07:51:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1678693879;
-        bh=W0+XBjv+nrljobq/UfvhL1/USkBrUmYTR01ih/dZaiE=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=GtNR/gp4Et7JQ19cG1OhxKrtAbSQh4wVdLE9n7Xadw8FH1g9mO+kMMzuFRJaeYCT2
-         5UysR6IgAtEBJxhLtn4bk6RFwddPR1wBmdUO2r8znxGPDIRm1FderayEKHCtnYQzMN
-         L1+4Lig/toHD9LkYi/NndLSv/NvehyIFe4ehjXrDw06VWreF63O7HNx2FH74hMOUyV
-         vxjycwnkGa1hIxmZ2s1oxXFcsNYXi6cuuGU99ypf84PUVugwUETrf/gWC3Bx1QKza8
-         wcvWXnchebS6JWMlQTjTCaaBGhie8NWGQ0ihfPGuO2rxF8QfsrVThxxVTvZ+c4AbER
-         oH/AFe507pZzw==
-Message-ID: <df628a96-1355-2623-d262-187d930794d9@kernel.org>
-Date:   Mon, 13 Mar 2023 09:51:12 +0200
+        with ESMTP id S229712AbjCMIRJ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 13 Mar 2023 04:17:09 -0400
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58A6D2CC53;
+        Mon, 13 Mar 2023 01:17:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1678695423; x=1710231423;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=5JrPFVlcWQFwap3ILpm16k6q7pBO4Fn/SgtyEDcEoGU=;
+  b=up3gFiw+XeKOPFI2M7wG7DDT2ygITHsj2NbhiW66u1sVMjrSWL3pDQj1
+   DNRybkQxOwvQHJE9wF4Y2u20xfVpRqmV4VKeQAuaxhWPIeu3SEopunivF
+   z3neOodlZGo79tlq71x8lSGpcR4SYseAFPXCvShWuzHOvzk9ki0oETt4t
+   ReHi1DhfiLjw/LNTzp7G3XiOdLQSpk1QITO5S9K+13mojBBVTZFp+SSLs
+   3Fn+9a5XS8MrioBgVITfRxENWwQF8HHGq1yi9wBmtU6xzDDkXaK5R20aH
+   lmO0JRzVF3mhZqcCgoTVqRgB/FxcNCEzCUDw34edZ67HX9BUrDo6dk6YY
+   Q==;
+X-IronPort-AV: E=Sophos;i="5.98,256,1673938800"; 
+   d="scan'208";a="201308119"
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa4.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 13 Mar 2023 01:17:02 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.21; Mon, 13 Mar 2023 01:17:01 -0700
+Received: from localhost (10.10.115.15) by chn-vm-ex01.mchp-main.com
+ (10.10.85.143) with Microsoft SMTP Server id 15.1.2507.21 via Frontend
+ Transport; Mon, 13 Mar 2023 01:17:00 -0700
+Date:   Mon, 13 Mar 2023 09:17:00 +0100
+From:   Horatiu Vultur <horatiu.vultur@microchip.com>
+To:     Vladimir Oltean <vladimir.oltean@nxp.com>
+CC:     Michael Walle <michael@walle.cc>,
+        =?utf-8?B?S8O2cnk=?= Maincent <kory.maincent@bootlin.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>,
+        Maxime Chevallier <maxime.chevallier@bootlin.com>,
+        Richard Cochran <richardcochran@gmail.com>,
+        <thomas.petazzoni@bootlin.com>,
+        Russell King <linux@armlinux.org.uk>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        "Jakub Kicinski" <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        "Jay Vosburgh" <j.vosburgh@gmail.com>,
+        Veaceslav Falico <vfalico@gmail.com>,
+        "Andy Gospodarek" <andy@greyhouse.net>,
+        Claudiu Manoil <claudiu.manoil@nxp.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        <UNGLinuxDriver@microchip.com>,
+        Minghao Chi <chi.minghao@zte.com.cn>,
+        "Jie Wang" <wangjie125@huawei.com>,
+        Oleksij Rempel <linux@rempel-privat.de>,
+        "Sean Anderson" <sean.anderson@seco.com>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Alexander Lobakin <alexandr.lobakin@intel.com>,
+        Marco Bonelli <marco@mebeim.net>
+Subject: Re: [PATCH v3 3/5] net: Let the active time stamping layer be
+ selectable.
+Message-ID: <20230313081700.ie7cwjvrlky4e27b@soft-dev3-1>
+References: <20230308135936.761794-1-kory.maincent@bootlin.com>
+ <20230308135936.761794-1-kory.maincent@bootlin.com>
+ <20230308135936.761794-4-kory.maincent@bootlin.com>
+ <20230308135936.761794-4-kory.maincent@bootlin.com>
+ <20230308230321.liw3v255okrhxg6s@skbuf>
+ <20230310114852.3cef643d@kmaincent-XPS-13-7390>
+ <20230310113533.l7flaoli7y3bmlnr@skbuf>
+ <b4ebfd3770ffa5ad1233d2b5e79499ee@walle.cc>
+ <20230310131529.6bahmi4obryy5dsx@soft-dev3-1>
+ <20230310164451.ls7bbs6pdzs4m6pw@skbuf>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: Re: [EXTERNAL] Re: [EXTERNAL] Re: [EXTERNAL] Re: [EXTERNAL] Re:
- [PATCH v3 3/6] soc: ti: pruss: Add pruss_cfg_read()/update() API
-To:     Md Danish Anwar <a0501179@ti.com>,
-        MD Danish Anwar <danishanwar@ti.com>,
-        "Andrew F. Davis" <afd@ti.com>, Suman Anna <s-anna@ti.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Nishanth Menon <nm@ti.com>
-Cc:     linux-remoteproc@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, srk@ti.com, devicetree@vger.kernel.org,
-        netdev@vger.kernel.org
-References: <20230306110934.2736465-1-danishanwar@ti.com>
- <20230306110934.2736465-4-danishanwar@ti.com>
- <7076208d-7dca-6980-5399-498e55648740@kernel.org>
- <afd6cd8a-8ba7-24b2-d7fc-c25a9c5f3c42@ti.com>
- <a74e5079-d89d-2420-b6af-d630c4f04380@kernel.org>
- <a4395259-9b83-1101-7c4c-d8a36c3600eb@ti.com>
- <367f6b50-e4cc-c3eb-e8e9-dabd4e044530@ti.com>
- <46415d8e-3c92-d489-3f44-01a586160082@kernel.org>
- <1c1e67fd-1eaa-30f5-8b2a-41a7e3ff664a@ti.com>
- <ba703ed6-e91d-5128-f1a4-1667125c531e@kernel.org>
- <ab595625-d2ad-3f14-737e-748b233d7fe5@ti.com>
-Content-Language: en-US
-From:   Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <ab595625-d2ad-3f14-737e-748b233d7fe5@ti.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230310164451.ls7bbs6pdzs4m6pw@skbuf>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -76,112 +102,75 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+The 03/10/2023 18:44, Vladimir Oltean wrote:
+> 
+> On Fri, Mar 10, 2023 at 02:15:29PM +0100, Horatiu Vultur wrote:
+> > I was thinking about another scenario (I am sorry if this was already
+> > discussed).
+> > Currently when setting up to do the timestamp, the MAC will check if the
+> > PHY has timestamping support if that is the case the PHY will do the
+> > timestamping. So in case the switch was supposed to be a TC then we had
+> > to make sure that the HW was setting up some rules not to forward PTP
+> > frames by HW but to copy these frames to CPU.
+> > With this new implementation, this would not be possible anymore as the
+> > MAC will not be notified when doing the timestamping in the PHY.
+> > Does it mean that now the switch should allocate these rules at start
+> > time?
+> 
+> I would say no (to the allocation of trapping rules at startup time).
+> It was argued before by people present in this thread that it should be
+> possible (and default behavior) for switches to forward PTP frames as if
+> they were PTP-unaware:
+> https://patchwork.ozlabs.org/project/netdev/patch/20190813025214.18601-5-yangbo.lu@nxp.com/
 
+Thanks for the explanation!
 
-On 13/03/2023 07:01, Md Danish Anwar wrote:
-> Hi Roger
 > 
-> On 11/03/23 17:36, Roger Quadros wrote:
->> Hi Danish,
->>
->> On 10/03/2023 17:36, Md Danish Anwar wrote:
->>> Hi Roger,
->>>
->>> On 10/03/23 18:53, Roger Quadros wrote:
->>>> Hi Danish,
->>>>
->>>> On 10/03/2023 13:53, Md Danish Anwar wrote:
->>>>> Hi Roger,
->>>>>
->>>>> On 09/03/23 17:00, Md Danish Anwar wrote:
->>>>>> Hi Roger,
->>>>>>
->>>>>> On 08/03/23 17:12, Roger Quadros wrote:
->>>>>>>
->>>>>>>
->>>>>>> On 08/03/2023 13:36, Md Danish Anwar wrote:
->>>>>>>> Hi Roger,
->>>>>>>>
->>>>>>>> On 08/03/23 13:57, Roger Quadros wrote:
->>>>>>>>> Hi,
->>>>>>>>>
->>>>>>>>> On 06/03/2023 13:09, MD Danish Anwar wrote:
->>>>>>>>>> From: Suman Anna <s-anna@ti.com>
->>>>>>>>>>
->>>>>>>>>> Add two new generic API pruss_cfg_read() and pruss_cfg_update() to
->>>>>>>>>> the PRUSS platform driver to allow other drivers to read and program
->>>>>>>>>> respectively a register within the PRUSS CFG sub-module represented
->>>>>>>>>> by a syscon driver. This interface provides a simple way for client
->>>>>>>>>
->>>>>>>>> Do you really need these 2 functions to be public?
->>>>>>>>> I see that later patches (4-6) add APIs for doing specific things
->>>>>>>>> and that should be sufficient than exposing entire CFG space via
->>>>>>>>> pruss_cfg_read/update().
->>>>>>>>>
->>>>>>>>>
->>>>>>>>
->>>>>>>> I think the intention here is to keep this APIs pruss_cfg_read() and
->>>>>>>> pruss_cfg_update() public so that other drivers can read / modify PRUSS config
->>>>>>>> when needed.
->>>>>>>
->>>>>>> Where are these other drivers? If they don't exist then let's not make provision
->>>>>>> for it now.
->>>>>>> We can provide necessary API helpers when needed instead of letting client drivers
->>>>>>> do what they want as they can be misused and hard to debug.
->>>>>>>
->>>>>>
->>>>>> The ICSSG Ethernet driver uses pruss_cfg_update() API. It is posted upstream in
->>>>>> the series [1]. The ethernet driver series is dependent on this series. In
->>>>>> series [1] we are using pruss_cfg_update() in icssg_config.c file,
->>>>>> icssg_config() API.
->>>>
->>>> You can instead add a new API on what exactly you want it to do rather than exposing
->>>> entire CFG space.
->>>>
->>>
->>> Sure.
->>>
->>> In icssg_config.c, a call to pruss_cfg_update() is made to enable XFR shift for
->>> PRU and RTU,
->>>
->>> 	/* enable XFR shift for PRU and RTU */
->>> 	mask = PRUSS_SPP_XFER_SHIFT_EN | PRUSS_SPP_RTU_XFR_SHIFT_EN;
->>> 	pruss_cfg_update(prueth->pruss, PRUSS_CFG_SPP, mask, mask);
->>>
->>> I will add the below API as part of Patch 4 of the series. We'll call this API
->>> and entire CFG space will not be exposed.
->>>
->>> /**
->>>  * pruss_cfg_xfr_pru_rtu_enable() - Enable/disable XFR shift for PRU and RTU
->>>  * @pruss: the pruss instance
->>>  * @enable: enable/disable
->>>  *
->>>  * Return: 0 on success, or an error code otherwise
->>>  */
->>> static inline int pruss_cfg_xfr_pru_rtu_enable(struct pruss *pruss, bool enable)
->>> {
->>> 	u32 mask = PRUSS_SPP_XFER_SHIFT_EN | PRUSS_SPP_RTU_XFR_SHIFT_EN;
->>> 	u32 set = enable ? mask : 0;
->>>
->>> 	return pruss_cfg_update(pruss, PRUSS_CFG_SPP, mask, set);
->>> }
->>
->> I would suggest to make separate APIs for PRU XFR vs RTU XFR.
->>
+> But it raises a really good point about how much care a switch driver
+> needs to take, such that with PTP timestamping, it must trap but not
+> timestamp the PTP frames.
 > 
-> How about making only one API for XFR shift and passing PRU or RTU as argument
-> to the API. The API along with struct pruss and bool enable will take another
-> argument u32 mask.
+> There is a huge amount of variability here today.
 > 
-> mask = PRUSS_SPP_XFER_SHIFT_EN for PRU
-> mask = PRUSS_SPP_RTU_XFR_SHIFT_EN for RTU
-> mask = PRUSS_SPP_XFER_SHIFT_EN | PRUSS_SPP_RTU_XFR_SHIFT_EN for PRU and RTU
+> The ocelot driver would be broken with PHY timestamping, since it would
+> flood the PTP messages (it installs the traps only if it is responsible
+> for taking the timestamps too).
 > 
-> So one API will be able to do all three jobs.
+> The lan966x driver is very fine-tuned to call lan966x_ptp_setup_traps()
+> regardless of what phy_has_hwtstamp() says.
 > 
-> How does this seem?
+> The sparx5 driver doesn't even seem to install traps at all (unclear if
+> they are predefined in hardware or not).
 
-Yes, that is also fine.
+They are not predefined in HW, I have on my TODO list to add those
+traps I just need to get the time to do this.
 
-cheers,
--roger
+> 
+> I guess that we want something like lan966x to keep working, since it
+> sounds like it's making the sanest decision about what to do.
+> 
+> But, as you point out, with Köry's/Richard's proposal, the MAC driver
+> will be bypassed when the selected timestamping layer is the PHY, and
+> that's a problem currently.
+> 
+> May I suggest the following? There was another RFC which proposed the
+> introduction of a netdev notifier when timestamping is turned on/off:
+> https://lore.kernel.org/netdev/20220317225035.3475538-1-vladimir.oltean@nxp.com/
+> 
+> It didn't go beyond RFC status, because I started doing what Jakub
+> suggested (converting the raw ioctls handlers to NDOs) but quickly got
+> absolutely swamped into the whole mess.
+> 
+> If we have a notifier, then we can make switch drivers do things
+> differently. They can activate timestamping per se in the timestamping
+> NDO (which is only called when the MAC is the active timestamping layer),
+> and they can activate PTP traps in the netdev notifier (which is called
+> any time a timestamping status change takes place - the notifier info
+> should contain details about which net_device and timestamping layer
+> this is, for example).
+> 
+> It's just a proposal of how to create an alternative notification path
+> that doesn't disturb the goals of this patch set.
+
+-- 
+/Horatiu
