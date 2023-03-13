@@ -2,128 +2,129 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C28556B71FB
-	for <lists+linux-omap@lfdr.de>; Mon, 13 Mar 2023 10:05:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 921846B7226
+	for <lists+linux-omap@lfdr.de>; Mon, 13 Mar 2023 10:10:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229494AbjCMJFM convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-omap@lfdr.de>); Mon, 13 Mar 2023 05:05:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55042 "EHLO
+        id S231214AbjCMJKu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 13 Mar 2023 05:10:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230479AbjCMJEk (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 13 Mar 2023 05:04:40 -0400
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5A1B3C29;
-        Mon, 13 Mar 2023 02:01:02 -0700 (PDT)
-Received: by mail-qt1-f179.google.com with SMTP id l18so12414410qtp.1;
-        Mon, 13 Mar 2023 02:01:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678698061;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JMjv67oqH0XcHnu1slnz7obBOYeNA0kXm4szuRMQips=;
-        b=aw1AdWyNMcEeGLnQunCJe99uq/ZZs0gLThSnXLv+UBhc9Rib6ovcsXKl3FGetg/oI6
-         ELwDiOyJtQjDTNja5v2ZagaJPgs9QPrssPZvAR2Vz3O5XHvJki7Ry/CJEzk45yPkT/LE
-         Idjww0rBB6xtPzaYnzWxrYjHP5XGwhR4VlTHBM9Rz8rXW1Z/OFh8CBGYDxWate6iW781
-         HOwK5AE9Y5kAF9OP9pQ6PY7ESjW7riNLsFouQnySoJlb7CyunaMaHQHtOpq9iBFh7/+C
-         dDd3aHEu8Q27kQM1Wts1lqnAgTacpIgXs01//Igy+aGGfzE8UQkVYjBi1PNxpDI41son
-         dTJg==
-X-Gm-Message-State: AO0yUKW0XN2nKFEHPr37VqxYuhiuf0+D+au45+Lp5+h1X2S9ZQAWjXkJ
-        3eA0TA/xPaXgXIybuo+Q6zMoEka+I/bVoQ==
-X-Google-Smtp-Source: AK7set8WzH26vCM0R1qdZpsSSh6qK0fRhpddR77RNdbVXnu1G9x9/BW/Idu5OTcljORGnqz/50GFlg==
-X-Received: by 2002:a05:622a:1a0e:b0:3b9:cc9b:1d9d with SMTP id f14-20020a05622a1a0e00b003b9cc9b1d9dmr16045605qtb.20.1678698061442;
-        Mon, 13 Mar 2023 02:01:01 -0700 (PDT)
-Received: from mail-yb1-f181.google.com (mail-yb1-f181.google.com. [209.85.219.181])
-        by smtp.gmail.com with ESMTPSA id j6-20020ac86646000000b003bfb820f17csm5074246qtp.63.2023.03.13.02.01.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 13 Mar 2023 02:01:01 -0700 (PDT)
-Received: by mail-yb1-f181.google.com with SMTP id t4so10929109ybg.11;
-        Mon, 13 Mar 2023 02:01:00 -0700 (PDT)
-X-Received: by 2002:a25:8b08:0:b0:b14:91e:4d19 with SMTP id
- i8-20020a258b08000000b00b14091e4d19mr14474451ybl.7.1678698060305; Mon, 13 Mar
- 2023 02:01:00 -0700 (PDT)
+        with ESMTP id S231235AbjCMJKa (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 13 Mar 2023 05:10:30 -0400
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5268AD21;
+        Mon, 13 Mar 2023 02:10:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1678698602; x=1710234602;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=YivqxS+zeFWZMfPdu5ClCSUPNAcBM+7zK7hLm2cpsW4=;
+  b=YvKAV2+yIUJ4Xr1ZHuwqJv40zlJF+SYCOcCMJbdckABCCzZJumm3oF4m
+   yIHWnwdCHJ+mZCV35h9+APqwpJ+LOQEWw15LbypXY9dGRp29ALC8xBErP
+   zYh4VPE1ZhjhizyY6soCSjppW5u/bq3pOQ1jP32UhxGXK9lC7rAl23wNC
+   PtkrYIHvA8C08QKfiwOL7PVwQJkoViZxhiwqihq+AxJMNArjFQgSK2QlA
+   eG2aMXqFxHbS69hkqXjcSKC0GlCi5kSoRrI/xdN58Wuu4UCTSceOQ5ASz
+   Dmo1BtHXxBYoZyWtVT83BBiFFscouuR8oGetW5jg+S2v3zW+OiSbPlvpS
+   g==;
+X-IronPort-AV: E=Sophos;i="5.98,256,1673938800"; 
+   d="scan'208";a="205062965"
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa2.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 13 Mar 2023 02:10:01 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.21; Mon, 13 Mar 2023 02:09:47 -0700
+Received: from [10.159.245.112] (10.10.115.15) by chn-vm-ex04.mchp-main.com
+ (10.10.85.152) with Microsoft SMTP Server id 15.1.2507.21 via Frontend
+ Transport; Mon, 13 Mar 2023 02:09:40 -0700
+Message-ID: <21d44d0b-05c0-1912-15de-a5c74d3ff4c6@microchip.com>
+Date:   Mon, 13 Mar 2023 10:09:37 +0100
 MIME-Version: 1.0
-References: <20230310144721.1544669-1-robh@kernel.org>
-In-Reply-To: <20230310144721.1544669-1-robh@kernel.org>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 13 Mar 2023 10:00:48 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdUaeyHs9fQxS+16F62uHaifJYMXKJpL2-xi-SL5HCrTHQ@mail.gmail.com>
-Message-ID: <CAMuHMdUaeyHs9fQxS+16F62uHaifJYMXKJpL2-xi-SL5HCrTHQ@mail.gmail.com>
-Subject: Re: [PATCH] pinctrl: Use of_property_present() for testing DT
- property presence
-To:     Rob Herring <robh@kernel.org>
-Cc:     Sean Wang <sean.wang@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Haojian Zhuang <haojian.zhuang@linaro.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [PATCH] net: Use of_property_read_bool() for boolean properties
+Content-Language: en-US
+To:     Rob Herring <robh@kernel.org>,
+        Wolfgang Grandegger <wg@grandegger.com>,
+        Marc Kleine-Budde <mkl@pengutronix.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Wei Fang <wei.fang@nxp.com>,
+        Shenwei Wang <shenwei.wang@nxp.com>,
+        Clark Wang <xiaoning.wang@nxp.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Claudiu Manoil <claudiu.manoil@nxp.com>,
+        "Giuseppe Cavallaro" <peppe.cavallaro@st.com>,
         Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Samuel Holland <samuel@sholland.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        devicetree@vger.kernel.org, linux-mediatek@lists.infradead.org,
-        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-renesas-soc@vger.kernel.org, linux-sunxi@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+        Jose Abreu <joabreu@synopsys.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        "Pengutronix Kernel Team" <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Francois Romieu <romieu@fr.zoreil.com>,
+        "Michal Simek" <michal.simek@xilinx.com>,
+        Zhao Qiang <qiang.zhao@nxp.com>, Kalle Valo <kvalo@kernel.org>,
+        Samuel Mendoza-Jonas <sam@mendozajonas.com>
+CC:     <devicetree@vger.kernel.org>, <linux-can@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-omap@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
+        <linux-wireless@vger.kernel.org>
+References: <20230310144718.1544169-1-robh@kernel.org>
+From:   Nicolas Ferre <nicolas.ferre@microchip.com>
+Organization: microchip
+In-Reply-To: <20230310144718.1544169-1-robh@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Rob,
-
-On Fri, Mar 10, 2023 at 3:56 PM Rob Herring <robh@kernel.org> wrote:
+On 10/03/2023 at 15:47, Rob Herring wrote:
+> EXTERNAL EMAIL: Do not click links or open attachments unless you know the content is safe
+> 
 > It is preferred to use typed property access functions (i.e.
 > of_property_read_<type> functions) rather than low-level
-> of_get_property/of_find_property functions for reading properties. As
-> part of this, convert of_get_property/of_find_property calls to the
-> recently added of_property_present() helper when we just want to test
-> for presence of a property and nothing more.
->
+> of_get_property/of_find_property functions for reading properties.
+> Convert reading boolean properties to to of_property_read_bool().
+> 
 > Signed-off-by: Rob Herring <robh@kernel.org>
+> ---
+>   drivers/net/can/cc770/cc770_platform.c          | 12 ++++++------
+>   drivers/net/ethernet/cadence/macb_main.c        |  2 +-
 
-Thanks for your patch!
+Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
 
-> --- a/drivers/pinctrl/renesas/pinctrl.c
-> +++ b/drivers/pinctrl/renesas/pinctrl.c
-> @@ -125,8 +125,8 @@ static int sh_pfc_dt_subnode_to_map(struct pinctrl_dev *pctldev,
->          * inside a subnode nor across subnodes.
->          */
->         if (!pmx->func_prop_name) {
-> -               if (of_find_property(np, "groups", NULL) ||
-> -                   of_find_property(np, "pins", NULL)) {
-> +               if (of_property_present(np, "groups")||
-> +                   of_property_present(np, "pins")) {
->                         pmx->func_prop_name = "function";
->                         pmx->groups_prop_name = "groups";
->                         pmx->pins_prop_name = "pins";
+>   drivers/net/ethernet/davicom/dm9000.c           |  4 ++--
 
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+[..]
 
-This check is used to auto-detect if the standard property names
-should be used, or the "renesas,"-prefixed ones.
-As the last users of the latter were removed from DTS in v4.10,
-perhaps I should just remove these checks instead?
+> --- a/drivers/net/ethernet/cadence/macb_main.c
+> +++ b/drivers/net/ethernet/cadence/macb_main.c
+> @@ -4990,7 +4990,7 @@ static int macb_probe(struct platform_device *pdev)
+>                  bp->jumbo_max_len = macb_config->jumbo_max_len;
+> 
+>          bp->wol = 0;
+> -       if (of_get_property(np, "magic-packet", NULL))
+> +       if (of_property_read_bool(np, "magic-packet"))
+>                  bp->wol |= MACB_WOL_HAS_MAGIC_PACKET;
+>          device_set_wakeup_capable(&pdev->dev, bp->wol & MACB_WOL_HAS_MAGIC_PACKET);
 
-Gr{oetje,eeting}s,
-
-                        Geert
+[..]
 
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+Nicolas Ferre
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
