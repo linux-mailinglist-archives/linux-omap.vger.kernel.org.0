@@ -2,76 +2,105 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FC9D6B6D16
-	for <lists+linux-omap@lfdr.de>; Mon, 13 Mar 2023 02:25:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 574E16B6E73
+	for <lists+linux-omap@lfdr.de>; Mon, 13 Mar 2023 05:29:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229885AbjCMBZg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 12 Mar 2023 21:25:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60186 "EHLO
+        id S229783AbjCME3V (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 13 Mar 2023 00:29:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229910AbjCMBZf (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 12 Mar 2023 21:25:35 -0400
-Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9CBA367C0;
-        Sun, 12 Mar 2023 18:25:33 -0700 (PDT)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R771e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046060;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=6;SR=0;TI=SMTPD_---0VdeZwZg_1678670731;
-Received: from 30.97.48.63(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0VdeZwZg_1678670731)
-          by smtp.aliyun-inc.com;
-          Mon, 13 Mar 2023 09:25:31 +0800
-Message-ID: <4c27d8dd-8468-ff6d-a015-b4017b82bc72@linux.alibaba.com>
-Date:   Mon, 13 Mar 2023 09:25:30 +0800
+        with ESMTP id S229672AbjCME3U (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 13 Mar 2023 00:29:20 -0400
+Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C17B2A980
+        for <linux-omap@vger.kernel.org>; Sun, 12 Mar 2023 21:29:17 -0700 (PDT)
+Received: by mail-pl1-x635.google.com with SMTP id y11so11602037plg.1
+        for <linux-omap@vger.kernel.org>; Sun, 12 Mar 2023 21:29:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1678681757;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=XZWJljCZTLJTay1u9WDo4/NCIqnGYgP7+4i4A4VqEcA=;
+        b=oOv+tWaMVEWXItt8wgN8VM3EukEgAEBFId2q13Hm7Wxd2YooYqW34MvOV3P9lDX7HF
+         QSI2VBN0ushhjIOVJOa/fPGueZ8iEYv/g5q2tmF/HjpdengJoUiQ6HLSIgwvOPvrFdgh
+         avkyIiBTxGTu04XFINDazJk0HeElR7CkAynD+rnZD5nxZukWpaeXtmowPLp8XVl2tfbZ
+         Y4xswJWHTPUslhxguVmHho9qks0ZujQcivtcmh8Y82wiBBnurI59JcM1cd+ibDgpL5RR
+         GwI4haSghTexpcZHl2KFle7Y6osMSmcCCtk+mlCovyBAB/lVlXhEXiM/RUwz8Z6LWZUV
+         +pDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678681757;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XZWJljCZTLJTay1u9WDo4/NCIqnGYgP7+4i4A4VqEcA=;
+        b=GMNwd1S/rTGFlTejADcJ9NkVxyJY8DwrhDIPMQOzsTe4gd0vjS2ddVxGyMRpJ6Vw2c
+         UQniq/LNsbZ97G3Kry+vHyBeU1IC0cwKdrEr5QFRcMzo8di3+BaTpznBv8DfR5zEpAGe
+         CyIajMf418fbyAdL22jQXynlKX9IpkxJrsq+2YQMxD91T9EYz8Xx9wa6GOUhWN+U3hZG
+         yt9aGjDpv7muXD+n0PhKtBEsxXNVARnPkn1j1LtYeCWrpoWnDt4r1qwPLX4EcMwAcZNH
+         B5sgeUxdgXYAwN8PT9A2W2scOL7jHsDLgTmUlM/KLdHbyYAqDvSFUIuCIuvTa14POnV9
+         L6Rg==
+X-Gm-Message-State: AO0yUKWP/tyqnDQiKsKh6+fEaEaWaGxuBnLG2lZcRDPKOFkUmYKbyiHA
+        L0K/xdpkJK4dUS2mP1o3oeGUig==
+X-Google-Smtp-Source: AK7set908sTlB6jwJGCHrtkE9seweG/OTpEuZ6DuKlQGg8uGByBWB5Yi/DYCx+ImQpAFmhRFC5nMAA==
+X-Received: by 2002:a05:6a20:4f0a:b0:d3:78ab:77c3 with SMTP id gi10-20020a056a204f0a00b000d378ab77c3mr6670980pzb.48.1678681757095;
+        Sun, 12 Mar 2023 21:29:17 -0700 (PDT)
+Received: from localhost ([122.172.83.155])
+        by smtp.gmail.com with ESMTPSA id z12-20020a630a4c000000b00478c48cf73csm3528441pgk.82.2023.03.12.21.29.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 12 Mar 2023 21:29:16 -0700 (PDT)
+Date:   Mon, 13 Mar 2023 09:59:14 +0530
+From:   Viresh Kumar <viresh.kumar@linaro.org>
+To:     Rob Herring <robh@kernel.org>
+Cc:     Amit Daniel Kachhap <amit.kachhap@gmail.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Lukasz Luba <lukasz.luba@arm.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Amit Kucheria <amitk@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        Keerthy <j-keerthy@ti.com>, devicetree@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCH] thermal: Use of_property_present() for testing DT
+ property presence
+Message-ID: <20230313042914.jmbpmlfczad4epkv@vireshk-i7>
+References: <20230310144726.1545543-1-robh@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH] hwspinlock: omap: drop of_match_ptr for ID table
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Ohad Ben-Cohen <ohad@wizery.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        linux-omap@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20230311111438.251422-1-krzysztof.kozlowski@linaro.org>
-From:   Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20230311111438.251422-1-krzysztof.kozlowski@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
-        ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,
-        USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230310144726.1545543-1-robh@kernel.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-
-
-On 3/11/2023 7:14 PM, Krzysztof Kozlowski wrote:
-> The driver can match only via the DT table so the table should be always
-> used and the of_match_ptr does not have any sense (this also allows ACPI
-> matching via PRP0001, even though it might not be relevant here).
+On 10-03-23, 08:47, Rob Herring wrote:
+> It is preferred to use typed property access functions (i.e.
+> of_property_read_<type> functions) rather than low-level
+> of_get_property/of_find_property functions for reading properties. As
+> part of this, convert of_get_property/of_find_property calls to the
+> recently added of_property_present() helper when we just want to test
+> for presence of a property and nothing more.
 > 
->    drivers/hwspinlock/omap_hwspinlock.c:164:34: error: ‘omap_hwspinlock_of_match’ defined but not used [-Werror=unused-const-variable=]
-> 
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
-LGTM. Thanks.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-
+> Signed-off-by: Rob Herring <robh@kernel.org>
 > ---
->   drivers/hwspinlock/omap_hwspinlock.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/hwspinlock/omap_hwspinlock.c b/drivers/hwspinlock/omap_hwspinlock.c
-> index 1fb3a2550e29..dfe82952671b 100644
-> --- a/drivers/hwspinlock/omap_hwspinlock.c
-> +++ b/drivers/hwspinlock/omap_hwspinlock.c
-> @@ -174,7 +174,7 @@ static struct platform_driver omap_hwspinlock_driver = {
->   	.remove		= omap_hwspinlock_remove,
->   	.driver		= {
->   		.name	= "omap_hwspinlock",
-> -		.of_match_table = of_match_ptr(omap_hwspinlock_of_match),
-> +		.of_match_table = omap_hwspinlock_of_match,
->   	},
->   };
->   
+>  drivers/thermal/cpufreq_cooling.c                  | 2 +-
+>  drivers/thermal/imx8mm_thermal.c                   | 2 +-
+>  drivers/thermal/imx_thermal.c                      | 4 ++--
+>  drivers/thermal/ti-soc-thermal/ti-thermal-common.c | 2 +-
+>  4 files changed, 5 insertions(+), 5 deletions(-)
+
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+
+-- 
+viresh
