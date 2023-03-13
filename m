@@ -2,213 +2,202 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C37B6B73A1
-	for <lists+linux-omap@lfdr.de>; Mon, 13 Mar 2023 11:18:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 57FD06B747B
+	for <lists+linux-omap@lfdr.de>; Mon, 13 Mar 2023 11:45:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229609AbjCMKST (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 13 Mar 2023 06:18:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43800 "EHLO
+        id S229929AbjCMKpu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 13 Mar 2023 06:45:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229587AbjCMKSR (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 13 Mar 2023 06:18:17 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id EC2B2CC2E;
-        Mon, 13 Mar 2023 03:18:14 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 44B714B3;
-        Mon, 13 Mar 2023 03:18:58 -0700 (PDT)
-Received: from slackpad.lan (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A408A3F71A;
-        Mon, 13 Mar 2023 03:18:11 -0700 (PDT)
-Date:   Mon, 13 Mar 2023 10:17:51 +0000
-From:   Andre Przywara <andre.przywara@arm.com>
-To:     Rob Herring <robh@kernel.org>
-Cc:     Sean Wang <sean.wang@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Haojian Zhuang <haojian.zhuang@linaro.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Samuel Holland <samuel@sholland.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        devicetree@vger.kernel.org, linux-mediatek@lists.infradead.org,
-        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-renesas-soc@vger.kernel.org, linux-sunxi@lists.linux.dev
-Subject: Re: [PATCH] pinctrl: Use of_property_present() for testing DT
- property presence
-Message-ID: <20230313101751.18003b2d@slackpad.lan>
-In-Reply-To: <20230310144721.1544669-1-robh@kernel.org>
-References: <20230310144721.1544669-1-robh@kernel.org>
-Organization: Arm Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.31; x86_64-slackware-linux-gnu)
+        with ESMTP id S230071AbjCMKpt (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 13 Mar 2023 06:45:49 -0400
+Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C6EF52F63
+        for <linux-omap@vger.kernel.org>; Mon, 13 Mar 2023 03:45:46 -0700 (PDT)
+Received: by mail-wm1-x335.google.com with SMTP id o38-20020a05600c512600b003e8320d1c11so7136686wms.1
+        for <linux-omap@vger.kernel.org>; Mon, 13 Mar 2023 03:45:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1678704345;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6YaG0SWzLbweQszAk60kBLdxmB/7i6RyPeQI10oAzV4=;
+        b=LGtukpD/p9tW2HynhY3ArpOnq71vUNWspCHDXcqL9E0H12uUGwCrNnJ8M0RxmdNpeq
+         pAeM7HgE3lC/iWS08/SNNgrlDNCkMeXQqRuX8cwlBg4zRVpNXPW3gDjtnKxALuceF78y
+         NdVTDObibZ8R4EtyBNCPIMcq0OgaTbkZvAM49h3p8hUGXW7fJ7YGuhjTjqQdepEuEkoV
+         cD7UbzHMLuWJXYr4Foe1gbFD2MHYxciKwANocceIkSdzewD4rowtkp2iwkioPH9TaNKp
+         rEBkV5vvEN+FggyOIX39CDWbzc/iJhYRAVxAyxEi2kAEgx37tlorGCa+Sd08jrlENeFY
+         mZeg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678704345;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6YaG0SWzLbweQszAk60kBLdxmB/7i6RyPeQI10oAzV4=;
+        b=W+p+VJRxZ2s/C90v+A8y6TK3UukJrddcreqcaSfkCGySgsNDVrCnHrSNYMYkrAMW+z
+         N51UUhLgVrgf0TAi/ulPdLXfVSKo9q13ooOOg/yM2KKfprlwIgNWp92y2YGIAFpZuwou
+         IKR8JE7mOUqbhxEtiMBMQZZ8UKajMMEXMZY7JcerK6VA5I8nfaptjpfr2Qg9g0/YX9xm
+         19tFk7NbHL8GT7cEsfvRgeOYwnV8zKFN5OR/gW7aoBMizv4rLGykcO737sBCl8+DRajC
+         4wJswxukD125wvCYTQ35kl6V1fYVgaC/gakkzvcfV+LjW2lcuO924f27SJ1r3dB2KDo8
+         skTg==
+X-Gm-Message-State: AO0yUKURZ8k4YMaNbjAt+7yv43lkhsUeI6qEfUiu3Qg4HfWRmKtp7dCg
+        m7u3uYUtdHGGzZcwnzVWmR7zYw==
+X-Google-Smtp-Source: AK7set+0Oc4726DzdphLUKeZrWCln4A5vSwSav6cx8LjV/d2+4mI/5d3Gg6o/COIT9hrcw7T8dFWSQ==
+X-Received: by 2002:a05:600c:3504:b0:3ea:d620:579b with SMTP id h4-20020a05600c350400b003ead620579bmr9852881wmq.0.1678704344899;
+        Mon, 13 Mar 2023 03:45:44 -0700 (PDT)
+Received: from ?IPV6:2a05:6e02:1041:c10:8522:ca6e:1db4:96c6? ([2a05:6e02:1041:c10:8522:ca6e:1db4:96c6])
+        by smtp.googlemail.com with ESMTPSA id l4-20020a05600c4f0400b003dc4a47605fsm9523224wmq.8.2023.03.13.03.45.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 13 Mar 2023 03:45:44 -0700 (PDT)
+Message-ID: <f78e6b70-a963-c0ca-a4b2-0d4c6aeef1fb@linaro.org>
+Date:   Mon, 13 Mar 2023 11:45:41 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.1
+Subject: Re: [PATCH v8 01/29] thermal/core: Add a generic
+ thermal_zone_get_trip() function
+Content-Language: en-US
+To:     Ido Schimmel <idosch@idosch.org>
+Cc:     rafael@kernel.org, linux-kernel@vger.kernel.org,
+        linux-pm@vger.kernel.org, rui.zhang@intel.com,
+        Raju Rangoju <rajur@chelsio.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Peter Kaestle <peter@piie.net>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <markgross@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Amit Kucheria <amitk@kernel.org>,
+        Nicolas Saenz Julienne <nsaenz@kernel.org>,
+        Broadcom Kernel Team <bcm-kernel-feedback-list@broadcom.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Lukasz Luba <lukasz.luba@arm.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Thara Gopinath <thara.gopinath@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        =?UTF-8?Q?Niklas_S=c3=b6derlund?= <niklas.soderlund@ragnatech.se>,
+        Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        Keerthy <j-keerthy@ti.com>,
+        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Antoine Tenart <atenart@kernel.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Dmitry Osipenko <digetx@gmail.com>, netdev@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org,
+        linux-rpi-kernel@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-omap@vger.kernel.org,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        danieller@nvidia.com, vadimp@nvidia.com, petrm@nvidia.com
+References: <20221003092602.1323944-1-daniel.lezcano@linaro.org>
+ <20221003092602.1323944-2-daniel.lezcano@linaro.org>
+ <ZA3CFNhU4AbtsP4G@shredder>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <ZA3CFNhU4AbtsP4G@shredder>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, 10 Mar 2023 08:47:20 -0600
-Rob Herring <robh@kernel.org> wrote:
 
-> It is preferred to use typed property access functions (i.e.
-> of_property_read_<type> functions) rather than low-level
-> of_get_property/of_find_property functions for reading properties. As
-> part of this, convert of_get_property/of_find_property calls to the
-> recently added of_property_present() helper when we just want to test
-> for presence of a property and nothing more.
+Hi Ido,
+
+On 12/03/2023 13:14, Ido Schimmel wrote:
+> On Mon, Oct 03, 2022 at 11:25:34AM +0200, Daniel Lezcano wrote:
+>> @@ -1252,9 +1319,10 @@ thermal_zone_device_register_with_trips(const char *type, struct thermal_trip *t
+>>   		goto release_device;
+>>   
+>>   	for (count = 0; count < num_trips; count++) {
+>> -		if (tz->ops->get_trip_type(tz, count, &trip_type) ||
+>> -		    tz->ops->get_trip_temp(tz, count, &trip_temp) ||
+>> -		    !trip_temp)
+>> +		struct thermal_trip trip;
+>> +
+>> +		result = thermal_zone_get_trip(tz, count, &trip);
+>> +		if (result)
+>>   			set_bit(count, &tz->trips_disabled);
+>>   	}
 > 
-> Signed-off-by: Rob Herring <robh@kernel.org>
-> ---
->  drivers/pinctrl/mediatek/pinctrl-moore.c |  2 +-
->  drivers/pinctrl/pinctrl-single.c         |  4 ++--
->  drivers/pinctrl/pinctrl-stmfx.c          |  2 +-
->  drivers/pinctrl/renesas/pinctrl.c        |  4 ++--
->  drivers/pinctrl/stm32/pinctrl-stm32.c    |  2 +-
->  drivers/pinctrl/sunxi/pinctrl-sunxi.c    | 20 ++++++++++----------
-
-
-For sunxi: Reviewed-by: Andre Przywara <andre.przywara@arm.com>
-
-Cheers,
-Andre
-
->  6 files changed, 17 insertions(+), 17 deletions(-)
+> Daniel, this change makes it so that trip points with a temperature of
+> zero are no longer disabled. This behavior was originally added in
+> commit 81ad4276b505 ("Thermal: Ignore invalid trip points"). The mlxsw
+> driver relies on this behavior - see mlxsw_thermal_module_trips_reset()
+> - and with this change I see that the thermal subsystem tries to
+> repeatedly set the state of the associated cooling devices to the
+> maximum state. Other drivers might also be affected by this.
 > 
-> diff --git a/drivers/pinctrl/mediatek/pinctrl-moore.c b/drivers/pinctrl/mediatek/pinctrl-moore.c
-> index 007b98ce5631..8649a2f9d324 100644
-> --- a/drivers/pinctrl/mediatek/pinctrl-moore.c
-> +++ b/drivers/pinctrl/mediatek/pinctrl-moore.c
-> @@ -586,7 +586,7 @@ static int mtk_build_gpiochip(struct mtk_pinctrl *hw)
->  	 * Documentation/devicetree/bindings/gpio/gpio.txt on how to
->  	 * bind pinctrl and gpio drivers via the "gpio-ranges" property.
->  	 */
-> -	if (!of_find_property(hw->dev->of_node, "gpio-ranges", NULL)) {
-> +	if (!of_property_present(hw->dev->of_node, "gpio-ranges")) {
->  		ret = gpiochip_add_pin_range(chip, dev_name(hw->dev), 0, 0,
->  					     chip->ngpio);
->  		if (ret < 0) {
-> diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
-> index 190923757cda..0dabbcf68b9f 100644
-> --- a/drivers/pinctrl/pinctrl-single.c
-> +++ b/drivers/pinctrl/pinctrl-single.c
-> @@ -939,11 +939,11 @@ static int pcs_parse_pinconf(struct pcs_device *pcs, struct device_node *np,
->  
->  	/* cacluate how much properties are supported in current node */
->  	for (i = 0; i < ARRAY_SIZE(prop2); i++) {
-> -		if (of_find_property(np, prop2[i].name, NULL))
-> +		if (of_property_present(np, prop2[i].name))
->  			nconfs++;
->  	}
->  	for (i = 0; i < ARRAY_SIZE(prop4); i++) {
-> -		if (of_find_property(np, prop4[i].name, NULL))
-> +		if (of_property_present(np, prop4[i].name))
->  			nconfs++;
->  	}
->  	if (!nconfs)
-> diff --git a/drivers/pinctrl/pinctrl-stmfx.c b/drivers/pinctrl/pinctrl-stmfx.c
-> index 1181c4b506b1..3c031692e44d 100644
-> --- a/drivers/pinctrl/pinctrl-stmfx.c
-> +++ b/drivers/pinctrl/pinctrl-stmfx.c
-> @@ -632,7 +632,7 @@ static int stmfx_pinctrl_probe(struct platform_device *pdev)
->  	pctl->dev = &pdev->dev;
->  	pctl->stmfx = stmfx;
->  
-> -	if (!of_find_property(np, "gpio-ranges", NULL)) {
-> +	if (!of_property_present(np, "gpio-ranges")) {
->  		dev_err(pctl->dev, "missing required gpio-ranges property\n");
->  		return -EINVAL;
->  	}
-> diff --git a/drivers/pinctrl/renesas/pinctrl.c b/drivers/pinctrl/renesas/pinctrl.c
-> index b74147800319..5c71e168b370 100644
-> --- a/drivers/pinctrl/renesas/pinctrl.c
-> +++ b/drivers/pinctrl/renesas/pinctrl.c
-> @@ -125,8 +125,8 @@ static int sh_pfc_dt_subnode_to_map(struct pinctrl_dev *pctldev,
->  	 * inside a subnode nor across subnodes.
->  	 */
->  	if (!pmx->func_prop_name) {
-> -		if (of_find_property(np, "groups", NULL) ||
-> -		    of_find_property(np, "pins", NULL)) {
-> +		if (of_property_present(np, "groups")||
-> +		    of_property_present(np, "pins")) {
->  			pmx->func_prop_name = "function";
->  			pmx->groups_prop_name = "groups";
->  			pmx->pins_prop_name = "pins";
-> diff --git a/drivers/pinctrl/stm32/pinctrl-stm32.c b/drivers/pinctrl/stm32/pinctrl-stm32.c
-> index cb33a23ab0c1..66a25becd8f5 100644
-> --- a/drivers/pinctrl/stm32/pinctrl-stm32.c
-> +++ b/drivers/pinctrl/stm32/pinctrl-stm32.c
-> @@ -1374,7 +1374,7 @@ static struct irq_domain *stm32_pctrl_get_irq_domain(struct platform_device *pde
->  	struct device_node *parent;
->  	struct irq_domain *domain;
->  
-> -	if (!of_find_property(np, "interrupt-parent", NULL))
-> +	if (!of_property_present(np, "interrupt-parent"))
->  		return NULL;
->  
->  	parent = of_irq_find_parent(np);
-> diff --git a/drivers/pinctrl/sunxi/pinctrl-sunxi.c b/drivers/pinctrl/sunxi/pinctrl-sunxi.c
-> index f35179eceb4e..1dc1882cbdd7 100644
-> --- a/drivers/pinctrl/sunxi/pinctrl-sunxi.c
-> +++ b/drivers/pinctrl/sunxi/pinctrl-sunxi.c
-> @@ -224,16 +224,16 @@ static int sunxi_pctrl_get_group_pins(struct pinctrl_dev *pctldev,
->  
->  static bool sunxi_pctrl_has_bias_prop(struct device_node *node)
->  {
-> -	return of_find_property(node, "bias-pull-up", NULL) ||
-> -		of_find_property(node, "bias-pull-down", NULL) ||
-> -		of_find_property(node, "bias-disable", NULL) ||
-> -		of_find_property(node, "allwinner,pull", NULL);
-> +	return of_property_present(node, "bias-pull-up") ||
-> +		of_property_present(node, "bias-pull-down") ||
-> +		of_property_present(node, "bias-disable") ||
-> +		of_property_present(node, "allwinner,pull");
->  }
->  
->  static bool sunxi_pctrl_has_drive_prop(struct device_node *node)
->  {
-> -	return of_find_property(node, "drive-strength", NULL) ||
-> -		of_find_property(node, "allwinner,drive", NULL);
-> +	return of_property_present(node, "drive-strength") ||
-> +		of_property_present(node, "allwinner,drive");
->  }
->  
->  static int sunxi_pctrl_parse_bias_prop(struct device_node *node)
-> @@ -241,13 +241,13 @@ static int sunxi_pctrl_parse_bias_prop(struct device_node *node)
->  	u32 val;
->  
->  	/* Try the new style binding */
-> -	if (of_find_property(node, "bias-pull-up", NULL))
-> +	if (of_property_present(node, "bias-pull-up"))
->  		return PIN_CONFIG_BIAS_PULL_UP;
->  
-> -	if (of_find_property(node, "bias-pull-down", NULL))
-> +	if (of_property_present(node, "bias-pull-down"))
->  		return PIN_CONFIG_BIAS_PULL_DOWN;
->  
-> -	if (of_find_property(node, "bias-disable", NULL))
-> +	if (of_property_present(node, "bias-disable"))
->  		return PIN_CONFIG_BIAS_DISABLE;
->  
->  	/* And fall back to the old binding */
-> @@ -1424,7 +1424,7 @@ static int sunxi_pinctrl_setup_debounce(struct sunxi_pinctrl *pctl,
->  		return 0;
->  
->  	/* If we don't have any setup, bail out */
-> -	if (!of_find_property(node, "input-debounce", NULL))
-> +	if (!of_property_present(node, "input-debounce"))
->  		return 0;
->  
->  	losc = devm_clk_get(pctl->dev, "losc");
+> Following patch solves the problem for me:
+> 
+> diff --git a/drivers/thermal/thermal_core.c b/drivers/thermal/thermal_core.c
+> index 55679fd86505..b50931f84aaa 100644
+> --- a/drivers/thermal/thermal_core.c
+> +++ b/drivers/thermal/thermal_core.c
+> @@ -1309,7 +1309,7 @@ thermal_zone_device_register_with_trips(const char *type, struct thermal_trip *t
+>                  struct thermal_trip trip;
+>   
+>                  result = thermal_zone_get_trip(tz, count, &trip);
+> -               if (result)
+> +               if (result || !trip.temperature)
+>                          set_bit(count, &tz->trips_disabled);
+>          }
+> 
+> Should I submit it or do you have a better idea?
+
+Thanks for reporting this, I think the fix you are proposing is correct 
+regarding the previous behavior.
+
+However, I disagree with the commit 81ad4276b505, because it defines the 
+zero as an invalid trip point. But some platforms have warming devices, 
+when the temperature is too cold, eg 0°C, we enable the warming device 
+in order to stay in the functioning temperature range.
+
+Other devices can do the same with negative temperature values.
+
+This feature is not yet upstream and the rework of the trip point should 
+allow proper handling of cold trip points.
+
+If you can send the change to fix the regression that would be great.
+
+But keep in mind, the driver is assuming an internal thermal framework 
+behavior. The trips_disabled is only to overcome a trip point 
+description bug and you should not rely on it as well as not changing 
+the trip points on the fly after they are registered.
+
+Actually, the mlxsw driver should just build a valid array of trip 
+points without 0°C trip point and pass it to 
+thermal_zone_device_register_with_trips(). That would be a proper change 
+without relying on a side effect of the thermal trip bug 0°C workaround.
+
+
+
+-- 
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
 
