@@ -2,157 +2,99 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E16A6B773B
-	for <lists+linux-omap@lfdr.de>; Mon, 13 Mar 2023 13:13:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 37B8B6B79B5
+	for <lists+linux-omap@lfdr.de>; Mon, 13 Mar 2023 14:59:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229663AbjCMMNE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 13 Mar 2023 08:13:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54236 "EHLO
+        id S231154AbjCMN7e (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 13 Mar 2023 09:59:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229682AbjCMMNC (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 13 Mar 2023 08:13:02 -0400
-Received: from wnew4-smtp.messagingengine.com (wnew4-smtp.messagingengine.com [64.147.123.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B33F63C01;
-        Mon, 13 Mar 2023 05:12:57 -0700 (PDT)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-        by mailnew.west.internal (Postfix) with ESMTP id 23BFD2B065EF;
-        Mon, 13 Mar 2023 08:12:51 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute6.internal (MEProxy); Mon, 13 Mar 2023 08:12:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding
-        :content-type:content-type:date:date:feedback-id:feedback-id
-        :from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-        1678709570; x=1678716770; bh=9ui9bmvE5i4u3m/ARdGTj1kwQVPleXj0Y6d
-        rKORRRdE=; b=WUMIR8yT/f22HAwm5Aovj8/OD54RFZFtg8maPs6wmZCp79zQwk2
-        KXXos4GzGqFt9BvscL4OqD1szAu52+4XSWc70eThQIbOjMYwZktDXpc6sewkt1Kt
-        IQuP4iYISi11UCu5EGR4vK5yWqNX2bodRIrhiIzD8dN8e71kC3/T2BSIfwW08q6w
-        sOm3bg2DJDrZhG+CaHwhggasxpIKKspowN8iOVbGD4wmr4U7d7yXFVs0egsFMhvn
-        UsjuDboWzqQ2sXYU5zIgUDAHiJdHRUHwGuGMtE45ml6QdWmA9inGrWaPjlIGdGG0
-        U0zNusFrFDr6WwzqNo4fbbk7d4LWnEmsQdw==
-X-ME-Sender: <xms:QBMPZAGuXJ6KHpEM2zLBqBMUhtupMv-AYvRIxQsCT9c2WXj_KrL9yw>
-    <xme:QBMPZJUYrUCR9v9niZxHAtNQXDXMuRJOeUTfDrNQL5AMpWp5_gRyUgARVG6AJt5MB
-    8V-REv7A00LtEU>
-X-ME-Received: <xmr:QBMPZKKtheRiAdEM52XhXs5g2XlATNLs-UmEZDpDXOxzcEYr2b_RExlVS0qy>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvddvgedgfeeiucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddttddunecuhfhrohhmpefkugho
-    ucfutghhihhmmhgvlhcuoehiughoshgthhesihguohhstghhrdhorhhgqeenucggtffrrg
-    htthgvrhhnpeegheekuddvueejvddtvdfgtddvgfevudektddtteevuddvkeetveeftdev
-    ueejveenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    hiughoshgthhesihguohhstghhrdhorhhg
-X-ME-Proxy: <xmx:QBMPZCHmJTlQSPmNn5mFwF98VfTp58Lr3edQLA0SKWtFi27UqxeHjg>
-    <xmx:QBMPZGVmlGLnYUi0bAWfEBuENurj0LmBoTEnwljNdphwsJYoJ_5spg>
-    <xmx:QBMPZFPzMMmiZLpPDr-Ymi2cASyz9VcV8XLgDOWfjhFRevVEG5aPmw>
-    <xmx:QhMPZBQ3z4tvEYR1IPnmOsVCvIChQHU9DB0qKJv1fRScLdvuwmt2Jm_iXJ0>
-Feedback-ID: i494840e7:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 13 Mar 2023 08:12:47 -0400 (EDT)
-Date:   Mon, 13 Mar 2023 14:12:44 +0200
-From:   Ido Schimmel <idosch@idosch.org>
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc:     rafael@kernel.org, linux-kernel@vger.kernel.org,
-        linux-pm@vger.kernel.org, rui.zhang@intel.com,
-        Raju Rangoju <rajur@chelsio.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Peter Kaestle <peter@piie.net>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <markgross@kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Amit Kucheria <amitk@kernel.org>,
-        Nicolas Saenz Julienne <nsaenz@kernel.org>,
-        Broadcom Kernel Team <bcm-kernel-feedback-list@broadcom.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Support Opensource <support.opensource@diasemi.com>,
-        Lukasz Luba <lukasz.luba@arm.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Thara Gopinath <thara.gopinath@linaro.org>,
+        with ESMTP id S230522AbjCMN7O (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 13 Mar 2023 09:59:14 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80B8923C79;
+        Mon, 13 Mar 2023 06:58:59 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 15AD4612D2;
+        Mon, 13 Mar 2023 13:58:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A34BC4339B;
+        Mon, 13 Mar 2023 13:58:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1678715938;
+        bh=zEcQUdMeBfoETlPddkKFkjIDDgvirbomXMlkHaajWe4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=IEu82KsPAFa2JlJsPns2YbDSdht0+ESoS/nkVvjQMhJ1+EuOY4YHHM8jWXmlw6Lue
+         0ItydL57xtY29cHzYD2+xqk/RhZeL5oSCE9u/1egMtP9XV6c8vVFiFEqIUGV8CYwwK
+         Koj58JUag+J1f3sa/euBpe6mLKnlzUFG2Mvmj9b1UsFZGX2Sc5coWWsMu7SEB3LdOg
+         O8k/H5TIKsy5cE5yTptmqNF5/QR0lunWpjQe03UOiFJDofqUsgNbULnvlCc9q80x6d
+         4ou8QmxC4uyk59dTfcR6SgleKnp3ByCSCI7/xRYh0qpy8GOSRIRsnTxOBzKiE2f9AU
+         xtmfugXQY012g==
+Date:   Mon, 13 Mar 2023 13:58:52 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     Liam Girdwood <lgirdwood@gmail.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Tony Lindgren <tony@atomide.com>,
         Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Niklas =?iso-8859-1?Q?S=F6derlund?= 
-        <niklas.soderlund@ragnatech.se>,
-        Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Keerthy <j-keerthy@ti.com>,
-        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Antoine Tenart <atenart@kernel.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Dmitry Osipenko <digetx@gmail.com>, netdev@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org,
-        linux-rpi-kernel@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-omap@vger.kernel.org,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        danieller@nvidia.com, vadimp@nvidia.com, petrm@nvidia.com
-Subject: Re: [PATCH v8 01/29] thermal/core: Add a generic
- thermal_zone_get_trip() function
-Message-ID: <ZA8TPDpEVanOpjEp@shredder>
-References: <20221003092602.1323944-1-daniel.lezcano@linaro.org>
- <20221003092602.1323944-2-daniel.lezcano@linaro.org>
- <ZA3CFNhU4AbtsP4G@shredder>
- <f78e6b70-a963-c0ca-a4b2-0d4c6aeef1fb@linaro.org>
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH 1/9] regulator: lp872x: Mark OF related data as maybe
+ unused
+Message-ID: <a3c886f2-571e-4b66-827a-2b0fade61c61@sirena.org.uk>
+References: <20230310214553.275450-1-krzysztof.kozlowski@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="5sz95mK51+KCvPTd"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <f78e6b70-a963-c0ca-a4b2-0d4c6aeef1fb@linaro.org>
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <20230310214553.275450-1-krzysztof.kozlowski@linaro.org>
+X-Cookie: Type louder, please.
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Mar 13, 2023 at 11:45:41AM +0100, Daniel Lezcano wrote:
-> Thanks for reporting this, I think the fix you are proposing is correct
-> regarding the previous behavior.
-> 
-> However, I disagree with the commit 81ad4276b505, because it defines the
-> zero as an invalid trip point. But some platforms have warming devices, when
-> the temperature is too cold, eg 0°C, we enable the warming device in order
-> to stay in the functioning temperature range.
-> 
-> Other devices can do the same with negative temperature values.
-> 
-> This feature is not yet upstream and the rework of the trip point should
-> allow proper handling of cold trip points.
-> 
-> If you can send the change to fix the regression that would be great.
 
-Thanks for the reply. Will send you the fix later this week. I want to
-test it across all of our systems.
+--5sz95mK51+KCvPTd
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> 
-> But keep in mind, the driver is assuming an internal thermal framework
-> behavior. The trips_disabled is only to overcome a trip point description
-> bug and you should not rely on it as well as not changing the trip points on
-> the fly after they are registered.
-> 
-> Actually, the mlxsw driver should just build a valid array of trip points
-> without 0°C trip point and pass it to
-> thermal_zone_device_register_with_trips(). That would be a proper change
-> without relying on a side effect of the thermal trip bug 0°C workaround.
+On Fri, Mar 10, 2023 at 10:45:45PM +0100, Krzysztof Kozlowski wrote:
+> The driver can be compile tested with !CONFIG_OF making certain data
+> unused:
+>=20
+>   drivers/regulator/lp872x.c:931:34: error: =E2=80=98lp872x_dt_ids=E2=80=
+=99 defined but not used [-Werror=3Dunused-const-variable=3D]
 
-Understood. Will check with Vadim what we can do in order not to rely on
-this behavior.
+Here you're using maybe unused instead of removing the of_match_ptr()
+(which does seem like a better approach).  This really feels very
+random, there's obviously a usability problem here.
+
+--5sz95mK51+KCvPTd
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmQPLBsACgkQJNaLcl1U
+h9CyJwf/WqKJPKC6kh2mubKAh8kZ595kuWjjTRVC3nIoN7SeXxKElHC+EAekIWW2
+N2CKvSu+0/rnDO1xXVlzwlxocljHthQoB3llq8k8ffUdsKdk5a56cG+31hklnuPs
+CydA9CgZmqBiLG5nj5h7FteJjO39HdZa5iwWO2AHodjF7RECQCfsiBcjjz9vyiZg
+ckx9xRTNsQSKzG0GPMSwugJd8zRvv2nbbTTdIZkd45K3E1FqNL4LhRC73QJByH9E
+vTxR1ustr/UVD3gR1P22DKLOJH2egLgVZfdInAbbL5fmtrCXWfPYefZCMJ1puXwJ
+DYamtgQhghBCKuguwjidqjAVkjwMxw==
+=GokI
+-----END PGP SIGNATURE-----
+
+--5sz95mK51+KCvPTd--
