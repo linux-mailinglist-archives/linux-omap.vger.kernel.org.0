@@ -2,762 +2,344 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 23DE66B8C0F
-	for <lists+linux-omap@lfdr.de>; Tue, 14 Mar 2023 08:36:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 70FA86B9016
+	for <lists+linux-omap@lfdr.de>; Tue, 14 Mar 2023 11:34:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229780AbjCNHg3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 14 Mar 2023 03:36:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51688 "EHLO
+        id S229582AbjCNKeC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 14 Mar 2023 06:34:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229605AbjCNHg3 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 14 Mar 2023 03:36:29 -0400
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 42BFB738B3;
-        Tue, 14 Mar 2023 00:36:14 -0700 (PDT)
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id EF29280C1;
-        Tue, 14 Mar 2023 07:36:11 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>
-Cc:     Andy Shevchenko <andriy.shevchenko@intel.com>,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Johan Hovold <johan@kernel.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-omap@vger.kernel.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org
-Subject: [PATCH v7 1/1] serial: core: Start managing serial controllers to enable runtime PM
-Date:   Tue, 14 Mar 2023 09:35:59 +0200
-Message-Id: <20230314073603.42279-1-tony@atomide.com>
+        with ESMTP id S230481AbjCNKdv (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 14 Mar 2023 06:33:51 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2321912F30
+        for <linux-omap@vger.kernel.org>; Tue, 14 Mar 2023 03:33:13 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pc1xI-0005YF-Qq; Tue, 14 Mar 2023 11:32:32 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pc1xG-0043UX-F0; Tue, 14 Mar 2023 11:32:30 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pc1xF-004nNq-OD; Tue, 14 Mar 2023 11:32:29 +0100
+From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Arnd Bergmann <arnd@arndb.de>, soc@kernel.org
+Cc:     Russell King <linux@armlinux.org.uk>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Mark Brown <broonie@kernel.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        Fabio Estevam <festevam@gmail.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        linux-arm-kernel@lists.infradead.org,
+        NXP Linux Team <linux-imx@nxp.com>
+Subject: [PATCH] ARM: Convert to platform remove callback returning void
+Date:   Tue, 14 Mar 2023 11:32:25 +0100
+Message-Id: <20230314103225.2787101-1-u.kleine-koenig@pengutronix.de>
 X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=9062; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=6Yckzic+pHbOmxVs5SdCfHgJjaKqW/jSwTZ30hy1o+4=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBkEE0zASNV9SbE3O7FzPhIJ+r1hM1IBkMYBbnj9 OM3Yx9OpCWJATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCZBBNMwAKCRDB/BR4rcrs CW50B/9eRJSeA3Hg+THxytLR/US+Ow01eLN7G4dC7gUBp+9OcnPJ5Vg9IQxZ/aSvFItKGzfVU8+ 9b5Tc6JQBMk4kNVCOVL4qnPPaKqIJAVYpY/lhtlOUvVKdq+uWf9I4Qq4rn5/1OmKNKhTfhK5he4 1ifm3sHo69Fr3V+qaiNpdNzJdchjc6+RCNcBR8/+MY6g6wF32HqmPYnquIchZZX0eGlwb/Zcnfk +znABOI8nyrd72UJHHlJIcoDu023niHVgg9aQ8H0YPO0kk3lTpBhppfE4vtmHYIxkzxHNw5xxoU LDPXm5QEvxP4vICeLIwOieO0/3VJ0nXn4dRpItJ/1tR9ufox
+X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-omap@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-We want to enable runtime PM for serial port device drivers in a generic
-way. To do this, we want to have the serial core layer manage the
-registered physical serial controller devices.
+The .remove() callback for a platform driver returns an int which makes
+many driver authors wrongly assume it's possible to do error handling by
+returning an error code. However the value returned is (mostly) ignored
+and this typically results in resource leaks. To improve here there is a
+quest to make the remove callback return void. In the first step of this
+quest all drivers are converted to .remove_new() which already returns
+void.
 
-To do this, let's set up a struct bus and struct device for the serial
-core controller as suggested by Greg and Jiri. The serial core controller
-devices are children of the physical serial port device. The serial core
-controller device is needed to support multiple different kind of ports
-connected to single physical serial port device.
+Trivially convert this driver from always returning zero in the remove
+callback to the void returning variant.
 
-Let's also set up a struct device for the serial core port. The serial
-core port instances are children of the serial core controller device.
-
-We need to also update the documentation a bit as suggested by Andy.
-
-With the serial core port device we can now flush pending TX on the
-runtime PM resume as suggested by Johan.
-
-Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Suggested-by: Jiri Slaby <jirislaby@kernel.org>
-Suggested-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Acked-by: Shawn Guo <shawnguo@kernel.org> # for imx/mmdc
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 ---
+Hello,
 
-Changes since v6:
+On Wed, Mar 08, 2023 at 04:06:47PM +0100, Arnd Bergmann wrote in reply
+to (implicit) v1
+(https://lore.kernel.org/linux-arm-kernel/adaf8b7c-f1a7-4770-adb6-31ced13d64d2@app.fastmail.com):
+> Since all eight patches in the series have the exact same
+> changelog text and are all trivial, I'd prefer them to be
+> folded into a single patch if that works for you.
 
-- Fix up a memory leak and a bunch of issues in serial_base.c as noted
-  by Andy
+Works fine, here comes the series squashed into one.
 
-- Replace bool with new_ctrl_dev for freeing the added device on
-  error path
+Best regards and thanks for taking care,
+Uwe
 
-- Drop unused pm ops for serial_ctrl.c as noted by kernel test robot
+ arch/arm/common/locomo.c              | 6 ++----
+ arch/arm/common/sa1111.c              | 6 ++----
+ arch/arm/common/scoop.c               | 6 ++----
+ arch/arm/mach-imx/mmdc.c              | 5 ++---
+ arch/arm/mach-omap1/omap-dma.c        | 6 ++----
+ arch/arm/mach-pxa/sharpsl_pm.c        | 6 ++----
+ arch/arm/mach-sa1100/jornada720_ssp.c | 5 ++---
+ arch/arm/mach-sa1100/neponset.c       | 6 ++----
+ 8 files changed, 16 insertions(+), 30 deletions(-)
 
-- Drop documentation updates for acpi devices for now to avoid a merge
-  conflict and make testing easier between -rc2 and Linux next
-
-Changes since v5:
-
-- Replace platform bus and device with bus_add() and device_add(),
-  Greg did not like platform bus and device here. This also gets
-  rid of the need for platform data with struct serial_base_device,
-  see new file serial_base.c
-
-- Update documentation to drop reference to struct uart_device as
-  suggested by Andy
-
-Changes since v4:
-
-- Fix issue noted by Ilpo by calling serial_core_add_one_port() after
-  the devices are created
-
-Changes since v3:
-
-- Simplify things by adding a serial core control device as the child of
-  the physical serial port as suggested by Jiri
-
-- Drop the tinkering of the physical serial port device for runtime PM.
-  Serial core just needs to manage port->port_dev with the addition of
-  the serial core control device and the device hierarchy will keep the
-  pysical serial port device enabled as needed
-
-- Simplify patch description with all the runtime PM tinkering gone
-
-- Coding style improvments as noted by Andy
-
-- Post as a single RFC patch as we're close to the merge window
-
-Changes since v2:
-
-- Make each serial port a proper device as suggested by Greg. This is
-  a separate patch that flushes the TX on runtime PM resume
-
-Changes since v1:
-
-- Use kref as suggested by Andy
-
-- Fix memory leak on error as noted by Andy
-
-- Use use unsigned char for supports_autosuspend as suggested by Andy
-
-- Coding style improvments as suggested by Andy
-
----
- drivers/tty/serial/8250/8250_core.c |   1 +
- drivers/tty/serial/Makefile         |   2 +-
- drivers/tty/serial/serial_base.c    | 105 +++++++++++++++++
- drivers/tty/serial/serial_base.h    |  27 +++++
- drivers/tty/serial/serial_core.c    | 174 ++++++++++++++++++++++++++--
- drivers/tty/serial/serial_ctrl.c    |  69 +++++++++++
- drivers/tty/serial/serial_port.c    | 101 ++++++++++++++++
- include/linux/serial_core.h         |   4 +-
- 8 files changed, 474 insertions(+), 9 deletions(-)
- create mode 100644 drivers/tty/serial/serial_base.c
- create mode 100644 drivers/tty/serial/serial_base.h
- create mode 100644 drivers/tty/serial/serial_ctrl.c
- create mode 100644 drivers/tty/serial/serial_port.c
-
-diff --git a/drivers/tty/serial/8250/8250_core.c b/drivers/tty/serial/8250/8250_core.c
---- a/drivers/tty/serial/8250/8250_core.c
-+++ b/drivers/tty/serial/8250/8250_core.c
-@@ -996,6 +996,7 @@ int serial8250_register_8250_port(const struct uart_8250_port *up)
- 		if (uart->port.dev)
- 			uart_remove_one_port(&serial8250_reg, &uart->port);
- 
-+		uart->port.ctrl_id	= up->port.ctrl_id;
- 		uart->port.iobase       = up->port.iobase;
- 		uart->port.membase      = up->port.membase;
- 		uart->port.irq          = up->port.irq;
-diff --git a/drivers/tty/serial/Makefile b/drivers/tty/serial/Makefile
---- a/drivers/tty/serial/Makefile
-+++ b/drivers/tty/serial/Makefile
-@@ -3,7 +3,7 @@
- # Makefile for the kernel serial device drivers.
- #
- 
--obj-$(CONFIG_SERIAL_CORE) += serial_core.o
-+obj-$(CONFIG_SERIAL_CORE) += serial_base.o serial_core.o serial_ctrl.o serial_port.o
- 
- obj-$(CONFIG_SERIAL_EARLYCON) += earlycon.o
- obj-$(CONFIG_SERIAL_EARLYCON_SEMIHOST) += earlycon-semihost.o
-diff --git a/drivers/tty/serial/serial_base.c b/drivers/tty/serial/serial_base.c
-new file mode 100644
---- /dev/null
-+++ b/drivers/tty/serial/serial_base.c
-@@ -0,0 +1,105 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+
-+/*
-+ * Serial core base layer for controllers
-+ *
-+ * The serial core bus manages the serial core controller instances.
-+ */
-+
-+#include <linux/device.h>
-+#include <linux/module.h>
-+#include <linux/serial_core.h>
-+#include <linux/slab.h>
-+
-+#include "serial_base.h"
-+
-+static int serial_base_match(struct device *dev, struct device_driver *drv)
-+{
-+	int len = strlen(drv->name);
-+
-+	return (strncmp(dev_name(dev), drv->name, len) == 0);
-+}
-+
-+static struct bus_type serial_base_bus_type = {
-+	.name = "serial-base",
-+	.match = serial_base_match,
-+};
-+
-+int serial_base_driver_register(struct device_driver *driver)
-+{
-+	driver->bus = &serial_base_bus_type;
-+
-+	return driver_register(driver);
-+}
-+EXPORT_SYMBOL_NS(serial_base_driver_register, SERIAL_CORE);
-+
-+void serial_base_driver_unregister(struct device_driver *driver)
-+{
-+	driver_unregister(driver);
-+}
-+EXPORT_SYMBOL_NS(serial_base_driver_unregister, SERIAL_CORE);
-+
-+struct serial_base_device *serial_base_device_add(struct uart_port *port,
-+						  const char *name,
-+						  struct device *parent_dev)
-+{
-+	struct serial_base_device *dev;
-+	int err, id;
-+
-+	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
-+	if (!dev)
-+		return NULL;
-+
-+	device_initialize(&dev->dev);
-+	dev->dev.parent = parent_dev;
-+	dev->dev.bus = &serial_base_bus_type;
-+
-+	if (str_has_prefix(name, "ctrl")) {
-+		id = port->ctrl_id;
-+	} else {
-+		id = port->line;
-+		dev->port = port;
-+	}
-+
-+	err = dev_set_name(&dev->dev, "%s.%s.%d", name, dev_name(port->dev), id);
-+	if (err)
-+		goto err_free_dev;
-+
-+	err = device_add(&dev->dev);
-+	if (err)
-+		goto err_free_name;
-+
-+	return dev;
-+
-+err_free_name:
-+	kfree_const(dev->dev.kobj.name);
-+
-+err_free_dev:
-+	kfree(dev);
-+
-+	return NULL;
-+}
-+EXPORT_SYMBOL_NS(serial_base_device_add, SERIAL_CORE);
-+
-+void serial_base_device_remove(struct serial_base_device *dev)
-+{
-+	device_del(&dev->dev);
-+	kfree(dev);
-+}
-+EXPORT_SYMBOL_NS(serial_base_device_remove, SERIAL_CORE);
-+
-+static int serial_base_init(void)
-+{
-+	return bus_register(&serial_base_bus_type);
-+}
-+module_init(serial_base_init);
-+
-+static void serial_base_exit(void)
-+{
-+	bus_unregister(&serial_base_bus_type);
-+}
-+module_exit(serial_base_exit);
-+
-+MODULE_AUTHOR("Tony Lindgren <tony@atomide.com>");
-+MODULE_DESCRIPTION("Serial core bus");
-+MODULE_LICENSE("GPL");
-diff --git a/drivers/tty/serial/serial_base.h b/drivers/tty/serial/serial_base.h
-new file mode 100644
---- /dev/null
-+++ b/drivers/tty/serial/serial_base.h
-@@ -0,0 +1,27 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+
-+/* Serial core related functions, serial port device drivers do not need this. */
-+
-+struct device;
-+struct uart_driver;
-+struct uart_port;
-+
-+struct serial_base_device {
-+	struct device dev;
-+	struct uart_port *port;
-+};
-+
-+#define to_serial_base_device(x) container_of((x), struct serial_base_device, dev)
-+
-+int serial_base_driver_register(struct device_driver *driver);
-+void serial_base_driver_unregister(struct device_driver *driver);
-+struct serial_base_device *serial_base_device_add(struct uart_port *port,
-+						  const char *name,
-+						  struct device *parent_dev);
-+void serial_base_device_remove(struct serial_base_device *dev);
-+
-+int serial_ctrl_register_port(struct uart_driver *drv, struct uart_port *port);
-+void serial_ctrl_unregister_port(struct uart_driver *drv, struct uart_port *port);
-+
-+int serial_core_register_port(struct uart_driver *drv, struct uart_port *port);
-+void serial_core_unregister_port(struct uart_driver *drv, struct uart_port *port);
-diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
---- a/drivers/tty/serial/serial_core.c
-+++ b/drivers/tty/serial/serial_core.c
-@@ -16,6 +16,7 @@
- #include <linux/console.h>
- #include <linux/gpio/consumer.h>
- #include <linux/of.h>
-+#include <linux/pm_runtime.h>
- #include <linux/proc_fs.h>
- #include <linux/seq_file.h>
- #include <linux/device.h>
-@@ -30,6 +31,8 @@
- #include <linux/irq.h>
- #include <linux/uaccess.h>
- 
-+#include "serial_base.h"
-+
- /*
-  * This is used to lock changes in serial line configuration.
-  */
-@@ -136,9 +139,30 @@ static void __uart_start(struct tty_struct *tty)
- {
- 	struct uart_state *state = tty->driver_data;
- 	struct uart_port *port = state->uart_port;
-+	struct device *port_dev;
-+	int err;
-+
-+	if (!port || uart_tx_stopped(port))
-+		return;
-+
-+	port_dev = port->port_dev;
-+
-+	/* Increment the runtime PM usage count for the active check below */
-+	err = pm_runtime_get(port_dev);
-+	if (err < 0) {
-+		pm_runtime_put_noidle(port_dev);
-+		return;
-+	}
- 
--	if (port && !uart_tx_stopped(port))
-+	/*
-+	 * Start TX if enabled, and kick runtime PM. Otherwise we must
-+	 * wait for a retry. See also serial_port.c for runtime PM
-+	 * autosuspend timeout.
-+	 */
-+	if (pm_runtime_active(port_dev))
- 		port->ops->start_tx(port);
-+	pm_runtime_mark_last_busy(port_dev);
-+	pm_runtime_put_autosuspend(port_dev);
+diff --git a/arch/arm/common/locomo.c b/arch/arm/common/locomo.c
+index da30a4d4f35c..309b74783468 100644
+--- a/arch/arm/common/locomo.c
++++ b/arch/arm/common/locomo.c
+@@ -494,7 +494,7 @@ static int locomo_probe(struct platform_device *dev)
+ 	return __locomo_probe(&dev->dev, mem, irq);
  }
  
- static void uart_start(struct tty_struct *tty)
-@@ -3039,7 +3063,7 @@ static const struct attribute_group tty_dev_attr_group = {
+-static int locomo_remove(struct platform_device *dev)
++static void locomo_remove(struct platform_device *dev)
+ {
+ 	struct locomo *lchip = platform_get_drvdata(dev);
+ 
+@@ -502,8 +502,6 @@ static int locomo_remove(struct platform_device *dev)
+ 		__locomo_remove(lchip);
+ 		platform_set_drvdata(dev, NULL);
+ 	}
+-
+-	return 0;
+ }
+ 
+ /*
+@@ -514,7 +512,7 @@ static int locomo_remove(struct platform_device *dev)
+  */
+ static struct platform_driver locomo_device_driver = {
+ 	.probe		= locomo_probe,
+-	.remove		= locomo_remove,
++	.remove_new	= locomo_remove,
+ #ifdef CONFIG_PM
+ 	.suspend	= locomo_suspend,
+ 	.resume		= locomo_resume,
+diff --git a/arch/arm/common/sa1111.c b/arch/arm/common/sa1111.c
+index f5e6990b8856..aad6ba236f0f 100644
+--- a/arch/arm/common/sa1111.c
++++ b/arch/arm/common/sa1111.c
+@@ -1123,7 +1123,7 @@ static int sa1111_probe(struct platform_device *pdev)
+ 	return __sa1111_probe(&pdev->dev, mem, irq);
+ }
+ 
+-static int sa1111_remove(struct platform_device *pdev)
++static void sa1111_remove(struct platform_device *pdev)
+ {
+ 	struct sa1111 *sachip = platform_get_drvdata(pdev);
+ 
+@@ -1135,8 +1135,6 @@ static int sa1111_remove(struct platform_device *pdev)
+ 		__sa1111_remove(sachip);
+ 		platform_set_drvdata(pdev, NULL);
+ 	}
+-
+-	return 0;
+ }
+ 
+ static struct dev_pm_ops sa1111_pm_ops = {
+@@ -1155,7 +1153,7 @@ static struct dev_pm_ops sa1111_pm_ops = {
+  */
+ static struct platform_driver sa1111_device_driver = {
+ 	.probe		= sa1111_probe,
+-	.remove		= sa1111_remove,
++	.remove_new	= sa1111_remove,
+ 	.driver		= {
+ 		.name	= "sa1111",
+ 		.pm	= &sa1111_pm_ops,
+diff --git a/arch/arm/common/scoop.c b/arch/arm/common/scoop.c
+index e74c5bfdc6d3..9018c7240166 100644
+--- a/arch/arm/common/scoop.c
++++ b/arch/arm/common/scoop.c
+@@ -236,7 +236,7 @@ static int scoop_probe(struct platform_device *pdev)
+ 	return ret;
+ }
+ 
+-static int scoop_remove(struct platform_device *pdev)
++static void scoop_remove(struct platform_device *pdev)
+ {
+ 	struct scoop_dev *sdev = platform_get_drvdata(pdev);
+ 
+@@ -246,13 +246,11 @@ static int scoop_remove(struct platform_device *pdev)
+ 	platform_set_drvdata(pdev, NULL);
+ 	iounmap(sdev->base);
+ 	kfree(sdev);
+-
+-	return 0;
+ }
+ 
+ static struct platform_driver scoop_driver = {
+ 	.probe		= scoop_probe,
+-	.remove		= scoop_remove,
++	.remove_new	= scoop_remove,
+ 	.suspend	= scoop_suspend,
+ 	.resume		= scoop_resume,
+ 	.driver		= {
+diff --git a/arch/arm/mach-imx/mmdc.c b/arch/arm/mach-imx/mmdc.c
+index b9efe9da06e0..2157493b78a9 100644
+--- a/arch/arm/mach-imx/mmdc.c
++++ b/arch/arm/mach-imx/mmdc.c
+@@ -456,7 +456,7 @@ static int mmdc_pmu_init(struct mmdc_pmu *pmu_mmdc,
+ 	return pmu_mmdc->id;
+ }
+ 
+-static int imx_mmdc_remove(struct platform_device *pdev)
++static void imx_mmdc_remove(struct platform_device *pdev)
+ {
+ 	struct mmdc_pmu *pmu_mmdc = platform_get_drvdata(pdev);
+ 
+@@ -466,7 +466,6 @@ static int imx_mmdc_remove(struct platform_device *pdev)
+ 	iounmap(pmu_mmdc->mmdc_base);
+ 	clk_disable_unprepare(pmu_mmdc->mmdc_ipg_clk);
+ 	kfree(pmu_mmdc);
+-	return 0;
+ }
+ 
+ static int imx_mmdc_perf_init(struct platform_device *pdev, void __iomem *mmdc_base,
+@@ -592,7 +591,7 @@ static struct platform_driver imx_mmdc_driver = {
+ 		.of_match_table = imx_mmdc_dt_ids,
+ 	},
+ 	.probe		= imx_mmdc_probe,
+-	.remove		= imx_mmdc_remove,
++	.remove_new	= imx_mmdc_remove,
  };
  
- /**
-- * uart_add_one_port - attach a driver-defined port structure
-+ * serial_core_add_one_port - attach a driver-defined port structure
-  * @drv: pointer to the uart low level driver structure for this port
-  * @uport: uart port structure to use for this port.
-  *
-@@ -3049,7 +3073,7 @@ static const struct attribute_group tty_dev_attr_group = {
-  * core driver. The main purpose is to allow the low level uart drivers to
-  * expand uart_port, rather than having yet more levels of structures.
-  */
--int uart_add_one_port(struct uart_driver *drv, struct uart_port *uport)
-+static int serial_core_add_one_port(struct uart_driver *drv, struct uart_port *uport)
- {
- 	struct uart_state *state;
- 	struct tty_port *port;
-@@ -3139,10 +3163,9 @@ int uart_add_one_port(struct uart_driver *drv, struct uart_port *uport)
- 
+ static int __init imx_mmdc_init(void)
+diff --git a/arch/arm/mach-omap1/omap-dma.c b/arch/arm/mach-omap1/omap-dma.c
+index f7e62de427f3..9ee472f8ead1 100644
+--- a/arch/arm/mach-omap1/omap-dma.c
++++ b/arch/arm/mach-omap1/omap-dma.c
+@@ -833,7 +833,7 @@ static int omap_system_dma_probe(struct platform_device *pdev)
  	return ret;
  }
--EXPORT_SYMBOL(uart_add_one_port);
  
- /**
-- * uart_remove_one_port - detach a driver defined port structure
-+ * serial_core_remove_one_port - detach a driver defined port structure
-  * @drv: pointer to the uart low level driver structure for this port
-  * @uport: uart port structure for this port
-  *
-@@ -3151,7 +3174,8 @@ EXPORT_SYMBOL(uart_add_one_port);
-  * This unhooks (and hangs up) the specified port structure from the core
-  * driver. No further calls will be made to the low-level code for this port.
-  */
--int uart_remove_one_port(struct uart_driver *drv, struct uart_port *uport)
-+static int serial_core_remove_one_port(struct uart_driver *drv,
-+				       struct uart_port *uport)
+-static int omap_system_dma_remove(struct platform_device *pdev)
++static void omap_system_dma_remove(struct platform_device *pdev)
  {
- 	struct uart_state *state = drv->state + uport->line;
- 	struct tty_port *port = &state->port;
-@@ -3208,6 +3232,8 @@ int uart_remove_one_port(struct uart_driver *drv, struct uart_port *uport)
- 	 * Indicate that there isn't a port here anymore.
- 	 */
- 	uport->type = PORT_UNKNOWN;
-+	uport->port_dev = NULL;
-+	uport->ctrl_id = -ENODEV;
+ 	int dma_irq, irq_rel = 0;
  
- 	mutex_lock(&port->mutex);
- 	WARN_ON(atomic_dec_return(&state->refcount) < 0);
-@@ -3219,7 +3245,6 @@ int uart_remove_one_port(struct uart_driver *drv, struct uart_port *uport)
+@@ -841,13 +841,11 @@ static int omap_system_dma_remove(struct platform_device *pdev)
+ 		dma_irq = platform_get_irq(pdev, irq_rel);
+ 		free_irq(dma_irq, (void *)(irq_rel + 1));
+ 	}
+-
+-	return 0;
+ }
  
+ static struct platform_driver omap_system_dma_driver = {
+ 	.probe		= omap_system_dma_probe,
+-	.remove		= omap_system_dma_remove,
++	.remove_new	= omap_system_dma_remove,
+ 	.driver		= {
+ 		.name	= "omap_dma_system"
+ 	},
+diff --git a/arch/arm/mach-pxa/sharpsl_pm.c b/arch/arm/mach-pxa/sharpsl_pm.c
+index 929cc51ed7c2..d29bdcd5270e 100644
+--- a/arch/arm/mach-pxa/sharpsl_pm.c
++++ b/arch/arm/mach-pxa/sharpsl_pm.c
+@@ -890,7 +890,7 @@ static int sharpsl_pm_probe(struct platform_device *pdev)
+ 	return 0;
+ }
+ 
+-static int sharpsl_pm_remove(struct platform_device *pdev)
++static void sharpsl_pm_remove(struct platform_device *pdev)
+ {
+ 	suspend_set_ops(NULL);
+ 
+@@ -917,13 +917,11 @@ static int sharpsl_pm_remove(struct platform_device *pdev)
+ 
+ 	del_timer_sync(&sharpsl_pm.chrg_full_timer);
+ 	del_timer_sync(&sharpsl_pm.ac_timer);
+-
+-	return 0;
+ }
+ 
+ static struct platform_driver sharpsl_pm_driver = {
+ 	.probe		= sharpsl_pm_probe,
+-	.remove		= sharpsl_pm_remove,
++	.remove_new	= sharpsl_pm_remove,
+ 	.suspend	= sharpsl_pm_suspend,
+ 	.resume		= sharpsl_pm_resume,
+ 	.driver		= {
+diff --git a/arch/arm/mach-sa1100/jornada720_ssp.c b/arch/arm/mach-sa1100/jornada720_ssp.c
+index 1dbe98948ce3..67f72ca984b2 100644
+--- a/arch/arm/mach-sa1100/jornada720_ssp.c
++++ b/arch/arm/mach-sa1100/jornada720_ssp.c
+@@ -175,18 +175,17 @@ static int jornada_ssp_probe(struct platform_device *dev)
+ 	return 0;
+ };
+ 
+-static int jornada_ssp_remove(struct platform_device *dev)
++static void jornada_ssp_remove(struct platform_device *dev)
+ {
+ 	/* Note that this doesn't actually remove the driver, since theres nothing to remove
+ 	 * It just makes sure everything is turned off */
+ 	GPSR = GPIO_GPIO25;
+ 	ssp_exit();
+-	return 0;
+ };
+ 
+ struct platform_driver jornadassp_driver = {
+ 	.probe	= jornada_ssp_probe,
+-	.remove	= jornada_ssp_remove,
++	.remove_new = jornada_ssp_remove,
+ 	.driver	= {
+ 		.name	= "jornada_ssp",
+ 	},
+diff --git a/arch/arm/mach-sa1100/neponset.c b/arch/arm/mach-sa1100/neponset.c
+index 6876bc1e33b4..0ef0ebbf31ac 100644
+--- a/arch/arm/mach-sa1100/neponset.c
++++ b/arch/arm/mach-sa1100/neponset.c
+@@ -376,7 +376,7 @@ static int neponset_probe(struct platform_device *dev)
  	return ret;
  }
--EXPORT_SYMBOL(uart_remove_one_port);
  
- /**
-  * uart_match_port - are the two ports equivalent?
-@@ -3254,6 +3279,141 @@ bool uart_match_port(const struct uart_port *port1,
+-static int neponset_remove(struct platform_device *dev)
++static void neponset_remove(struct platform_device *dev)
+ {
+ 	struct neponset_drvdata *d = platform_get_drvdata(dev);
+ 	int irq = platform_get_irq(dev, 0);
+@@ -395,8 +395,6 @@ static int neponset_remove(struct platform_device *dev)
+ 	nep = NULL;
+ 	iounmap(d->base);
+ 	kfree(d);
+-
+-	return 0;
  }
- EXPORT_SYMBOL(uart_match_port);
  
-+/*
-+ * Find a registered serial core controller device if one exists. Returns
-+ * the first device matching the ctrl_id. Caller must hold port_mutex.
-+ */
-+static struct device *serial_core_ctrl_find(struct uart_driver *drv,
-+					    struct device *phys_dev,
-+					    int ctrl_id)
-+{
-+	struct uart_state *state;
-+	int i;
-+
-+	if (ctrl_id < 0)
-+		return NULL;
-+
-+	lockdep_assert_held(&port_mutex);
-+
-+	for (i = 0; i < drv->nr; i++) {
-+		state = drv->state + i;
-+		if (!state->uart_port || !state->uart_port->port_dev)
-+			continue;
-+
-+		if (state->uart_port->dev == phys_dev &&
-+		    state->uart_port->ctrl_id == ctrl_id)
-+			return state->uart_port->port_dev->parent;
-+	}
-+
-+	return NULL;
-+}
-+
-+static struct device *serial_core_ctrl_device_add(struct uart_port *port)
-+{
-+	struct serial_base_device *dev;
-+
-+	dev = serial_base_device_add(port, "ctrl", port->dev);
-+	if (IS_ERR(dev))
-+		return NULL;
-+
-+	return &dev->dev;
-+}
-+
-+static int serial_core_port_device_add(struct device *ctrl_dev, struct uart_port *port)
-+{
-+	struct serial_base_device *dev;
-+
-+	dev = serial_base_device_add(port, "port", ctrl_dev);
-+	if (IS_ERR(dev))
-+		return PTR_ERR(dev);
-+
-+	port->port_dev = &dev->dev;
-+
-+	return 0;
-+}
-+
-+static void serial_core_device_remove(struct device *dev)
-+{
-+	if (!dev)
-+		return;
-+
-+	serial_base_device_remove(to_serial_base_device(dev));
-+}
-+
-+/*
-+ * Initialize a serial core port device, and a controller device if needed.
-+ */
-+int serial_core_register_port(struct uart_driver *drv, struct uart_port *port)
-+{
-+	struct device *ctrl_dev, *new_ctrl_dev = NULL;
-+	int ret;
-+
-+	mutex_lock(&port_mutex);
-+
-+	/* Inititalize a serial core controller device if needed */
-+	ctrl_dev = serial_core_ctrl_find(drv, port->dev, port->ctrl_id);
-+	if (!ctrl_dev) {
-+		new_ctrl_dev = serial_core_ctrl_device_add(port);
-+		if (!new_ctrl_dev) {
-+			ret = -ENODEV;
-+			goto err_unlock;
-+		}
-+		ctrl_dev = new_ctrl_dev;
-+	}
-+
-+	/* Initialize a serial core port device */
-+	ret = serial_core_port_device_add(ctrl_dev, port);
-+	if (ret)
-+		goto err_unregister_ctrl_dev;
-+
-+	mutex_unlock(&port_mutex);
-+
-+	ret = serial_core_add_one_port(drv, port);
-+	if (ret)
-+		goto err_unregister_port_dev;
-+
-+	return 0;
-+
-+err_unregister_port_dev:
-+	mutex_lock(&port_mutex);
-+	serial_core_device_remove(port->port_dev);
-+
-+err_unregister_ctrl_dev:
-+	serial_core_device_remove(new_ctrl_dev);
-+
-+err_unlock:
-+	mutex_unlock(&port_mutex);
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL_NS(serial_core_register_port, SERIAL_CORE);
-+
-+/*
-+ * Removes a serial core port device, and the related serial core controller
-+ * device if the last instance.
-+ */
-+void serial_core_unregister_port(struct uart_driver *drv, struct uart_port *port)
-+{
-+	struct device *phys_dev = port->dev;
-+	struct device *port_dev = port->port_dev;
-+	struct device *ctrl_dev = port_dev->parent;
-+	int ctrl_id = port->ctrl_id;
-+
-+	serial_core_remove_one_port(drv, port);
-+
-+	mutex_lock(&port_mutex);
-+
-+	/* Note that struct uart_port *port is no longer valid at this point */
-+	serial_core_device_remove(port_dev);
-+
-+	/* Drop the serial core controller device if no ports are using it */
-+	if (!serial_core_ctrl_find(drv, phys_dev, ctrl_id))
-+		serial_core_device_remove(ctrl_dev);
-+
-+	mutex_unlock(&port_mutex);
-+}
-+EXPORT_SYMBOL_NS(serial_core_unregister_port, SERIAL_CORE);
-+
- /**
-  * uart_handle_dcd_change - handle a change of carrier detect state
-  * @uport: uart_port structure for the open port
-diff --git a/drivers/tty/serial/serial_ctrl.c b/drivers/tty/serial/serial_ctrl.c
-new file mode 100644
---- /dev/null
-+++ b/drivers/tty/serial/serial_ctrl.c
-@@ -0,0 +1,69 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+
-+/*
-+ * Serial core controller driver
-+ *
-+ * This driver manages the serial core controller struct device instances.
-+ * The serial core controller devices are children of the physical serial
-+ * port device.
-+ */
-+
-+#include <linux/module.h>
-+#include <linux/pm_runtime.h>
-+#include <linux/serial_core.h>
-+
-+#include "serial_base.h"
-+
-+static int serial_ctrl_probe(struct device *dev)
-+{
-+	pm_runtime_enable(dev);
-+
-+	return 0;
-+}
-+
-+static int serial_ctrl_remove(struct device *dev)
-+{
-+	pm_runtime_disable(dev);
-+
-+	return 0;
-+}
-+
-+/*
-+ * Serial core controller device init functions. Note that the physical
-+ * serial port device driver may not have completed probe at this point.
-+ */
-+int serial_ctrl_register_port(struct uart_driver *drv, struct uart_port *port)
-+{
-+	return serial_core_register_port(drv, port);
-+}
-+EXPORT_SYMBOL_NS(serial_ctrl_register_port, SERIAL_CORE);
-+
-+void serial_ctrl_unregister_port(struct uart_driver *drv, struct uart_port *port)
-+{
-+	serial_core_unregister_port(drv, port);
-+}
-+EXPORT_SYMBOL_NS(serial_ctrl_unregister_port, SERIAL_CORE);
-+
-+static struct device_driver serial_ctrl_driver = {
-+	.name = "ctrl",
-+	.suppress_bind_attrs = true,
-+	.probe = serial_ctrl_probe,
-+	.remove = serial_ctrl_remove,
-+};
-+
-+static int serial_ctrl_init(void)
-+{
-+	return serial_base_driver_register(&serial_ctrl_driver);
-+}
-+module_init(serial_ctrl_init);
-+
-+static void serial_ctrl_exit(void)
-+{
-+	serial_base_driver_unregister(&serial_ctrl_driver);
-+}
-+module_exit(serial_ctrl_exit);
-+
-+MODULE_AUTHOR("Tony Lindgren <tony@atomide.com>");
-+MODULE_DESCRIPTION("Serial core controller driver");
-+MODULE_LICENSE("GPL");
-+MODULE_IMPORT_NS(SERIAL_CORE);
-diff --git a/drivers/tty/serial/serial_port.c b/drivers/tty/serial/serial_port.c
-new file mode 100644
---- /dev/null
-+++ b/drivers/tty/serial/serial_port.c
-@@ -0,0 +1,101 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+
-+/*
-+ * Serial core port device driver
-+ */
-+
-+#include <linux/module.h>
-+#include <linux/pm_runtime.h>
-+#include <linux/serial_core.h>
-+
-+#include "serial_base.h"
-+
-+#define SERIAL_PORT_AUTOSUSPEND_DELAY_MS	500
-+
-+/* Only considers pending TX for now. Caller must take care of locking */
-+static int __serial_port_busy(struct uart_port *port)
-+{
-+	return !uart_tx_stopped(port) &&
-+		uart_circ_chars_pending(&port->state->xmit);
-+}
-+
-+static int serial_port_runtime_resume(struct device *dev)
-+{
-+	struct serial_base_device *scd = to_serial_base_device(dev);
-+	struct uart_port *port = scd->port;
-+	unsigned long flags;
-+
-+	/* Flush any pending TX for the port */
-+	spin_lock_irqsave(&port->lock, flags);
-+	if (__serial_port_busy(port))
-+		port->ops->start_tx(port);
-+	spin_unlock_irqrestore(&port->lock, flags);
-+	pm_runtime_mark_last_busy(dev);
-+
-+	return 0;
-+}
-+
-+static __maybe_unused DEFINE_RUNTIME_DEV_PM_OPS(serial_port_pm,
-+						NULL,
-+						serial_port_runtime_resume,
-+						NULL);
-+
-+static int serial_port_probe(struct device *dev)
-+{
-+	pm_runtime_enable(dev);
-+	pm_runtime_set_autosuspend_delay(dev, SERIAL_PORT_AUTOSUSPEND_DELAY_MS);
-+	pm_runtime_use_autosuspend(dev);
-+
-+	return 0;
-+}
-+
-+static int serial_port_remove(struct device *dev)
-+{
-+	pm_runtime_dont_use_autosuspend(dev);
-+	pm_runtime_disable(dev);
-+
-+	return 0;
-+}
-+
-+/*
-+ * Serial core port device init functions. Note that the physical serial
-+ * port device driver may not have completed probe at this point.
-+ */
-+int uart_add_one_port(struct uart_driver *drv, struct uart_port *port)
-+{
-+	return serial_ctrl_register_port(drv, port);
-+}
-+EXPORT_SYMBOL(uart_add_one_port);
-+
-+int uart_remove_one_port(struct uart_driver *drv, struct uart_port *port)
-+{
-+	serial_ctrl_unregister_port(drv, port);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(uart_remove_one_port);
-+
-+static struct device_driver serial_port_driver = {
-+	.name = "port",
-+	.suppress_bind_attrs = true,
-+	.probe = serial_port_probe,
-+	.remove = serial_port_remove,
-+	.pm = pm_ptr(&serial_port_pm),
-+};
-+
-+static int serial_port_init(void)
-+{
-+	return serial_base_driver_register(&serial_port_driver);
-+}
-+module_init(serial_port_init);
-+
-+static void serial_port_exit(void)
-+{
-+	serial_base_driver_unregister(&serial_port_driver);
-+}
-+module_exit(serial_port_exit);
-+
-+MODULE_AUTHOR("Tony Lindgren <tony@atomide.com>");
-+MODULE_DESCRIPTION("Serial controller port driver");
-+MODULE_LICENSE("GPL");
-+MODULE_IMPORT_NS(SERIAL_CORE);
-diff --git a/include/linux/serial_core.h b/include/linux/serial_core.h
---- a/include/linux/serial_core.h
-+++ b/include/linux/serial_core.h
-@@ -458,6 +458,7 @@ struct uart_port {
- 						struct serial_rs485 *rs485);
- 	int			(*iso7816_config)(struct uart_port *,
- 						  struct serial_iso7816 *iso7816);
-+	int			ctrl_id;		/* optional serial core controller id */
- 	unsigned int		irq;			/* irq number */
- 	unsigned long		irqflags;		/* irq flags  */
- 	unsigned int		uartclk;		/* base uart clock */
-@@ -563,7 +564,8 @@ struct uart_port {
- 	unsigned int		minor;
- 	resource_size_t		mapbase;		/* for ioremap */
- 	resource_size_t		mapsize;
--	struct device		*dev;			/* parent device */
-+	struct device		*dev;			/* serial port physical parent device */
-+	struct device		*port_dev;		/* serial core port device */
+ #ifdef CONFIG_PM_SLEEP
+@@ -425,7 +423,7 @@ static const struct dev_pm_ops neponset_pm_ops = {
  
- 	unsigned long		sysrq;			/* sysrq timeout */
- 	unsigned int		sysrq_ch;		/* char for sysrq */
+ static struct platform_driver neponset_device_driver = {
+ 	.probe		= neponset_probe,
+-	.remove		= neponset_remove,
++	.remove_new	= neponset_remove,
+ 	.driver		= {
+ 		.name	= "neponset",
+ 		.pm	= PM_OPS,
 -- 
 2.39.1
+
