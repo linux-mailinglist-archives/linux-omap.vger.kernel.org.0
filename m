@@ -2,219 +2,107 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9966C6BA08D
-	for <lists+linux-omap@lfdr.de>; Tue, 14 Mar 2023 21:19:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ECBF56BA0BD
+	for <lists+linux-omap@lfdr.de>; Tue, 14 Mar 2023 21:29:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231149AbjCNUTC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 14 Mar 2023 16:19:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36256 "EHLO
+        id S229682AbjCNU3i (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 14 Mar 2023 16:29:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229627AbjCNUTB (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 14 Mar 2023 16:19:01 -0400
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B4FB22039;
-        Tue, 14 Mar 2023 13:18:58 -0700 (PDT)
-Received: by mail-ed1-x52a.google.com with SMTP id eg48so7772302edb.13;
-        Tue, 14 Mar 2023 13:18:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678825137;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=9SB+BZ9VlItZGYcgdFLvcDeLn9V7Ni7FQjQccgDvwrY=;
-        b=g2hoRZekVEYCAA8AduTtlGx8aHEyEgxe2KGWlhuvqT/NzAGwGTGmjtYrbLRKUkj/wC
-         ixN4tLnGKw0EOf6XQVFTAKUO0PSuxqrCr1IKFlTpzQnWIBBZT7Sgeis4gCQE7LHrIYdO
-         qkV5VwvwitJQnZ4FlccFrAGfsk2nVIPv+MPA1MyP5qzyVI4kYlqCujyASvQAveQ4FPeY
-         B5dlrTebAbQ9+DZTk+1PEWHk5D9a37BcqwGleAtP6gxghkvyDbkLp9UxLWqBnBE/ZZYU
-         4Jca3ivZyIdkvJCcAEVWcV0ewYECKMOey4nEsh/eLKxzvCJoQKoEKSQq6sc/5CjUgEn2
-         mU9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678825137;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9SB+BZ9VlItZGYcgdFLvcDeLn9V7Ni7FQjQccgDvwrY=;
-        b=4v+/wHrLPJLvwZ8h7l38/3Fsu1ldwjosraBmnkcSzbkx4oWlnZMcxuElHndTHZL0UV
-         AT/dCLzQDBPC7jpXVfEJI/WplHpk1ozRp7mIThaDZpLTiKrL5//Opc/+RFooZSL6rUoc
-         dgIm/p+tbOoGCyWMFT+agJ++Vn6ziDffXjCZEyyvMYFRLlHeSMbHNrPnPmFD2BcrLXdR
-         y0c84AIj5XkNY59c4fELpDkTsZyeTSEBWhyIrnxIUX8H776W1Ny+AQFSeiDbGvWsLpI+
-         l6yMNed4AYZH4zQqipndDMP+LwOtK2Ghs4rfI/y3vpcf9pnvaao10I88vfAByJUT4gYw
-         na2Q==
-X-Gm-Message-State: AO0yUKUwsJkLAuG41gO75hr/CvoIEEOi2+Y08f8OF79PQj5iggCASlcJ
-        5WELFWY2QfdlM1HERrun2FU=
-X-Google-Smtp-Source: AK7set+Az0JnVlYyAujOmgXmvxHSPGWN2t4HQaFP5dCEv4IGXZVHl2FMuV5ikQn6E1nGZaa7D6LW/A==
-X-Received: by 2002:a17:906:c047:b0:926:8992:4310 with SMTP id bm7-20020a170906c04700b0092689924310mr4316468ejb.38.1678825136545;
-        Tue, 14 Mar 2023 13:18:56 -0700 (PDT)
-Received: from shift (pd9e2911a.dip0.t-ipconnect.de. [217.226.145.26])
-        by smtp.gmail.com with ESMTPSA id dt5-20020a170906b78500b008e82cb55195sm1543714ejb.203.2023.03.14.13.18.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Mar 2023 13:18:56 -0700 (PDT)
-Received: from localhost ([127.0.0.1])
-        by shift with esmtp (Exim 4.96)
-        (envelope-from <chunkeey@gmail.com>)
-        id 1pcB4d-000AO6-1G;
-        Tue, 14 Mar 2023 21:18:55 +0100
-Message-ID: <e8dc9acb-6f85-e0a9-a145-d101ca6da201@gmail.com>
-Date:   Tue, 14 Mar 2023 21:18:55 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH] p54spi: convert to devicetree
-To:     Arnd Bergmann <arnd@kernel.org>, Kalle Valo <kvalo@kernel.org>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        linux-gpio@vger.kernel.org, linux-omap@vger.kernel.org,
+        with ESMTP id S229641AbjCNU3i (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 14 Mar 2023 16:29:38 -0400
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01F3C2BEED;
+        Tue, 14 Mar 2023 13:29:36 -0700 (PDT)
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id 967191C0E01; Tue, 14 Mar 2023 21:29:34 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
+        t=1678825774;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=nJ8ZoDVBp9N2S7vrzr0YU2PolIoNsLTp2XBOlcdlIPg=;
+        b=BkSCCzU02feAm65GhqP0GWWI8z0CCoN7pMIy6PMi0oONerZwtL+8LOaHFoXDg170UqC2ce
+        620SxtcllPMosAjZWojyNv5hUk0dwzSnXQINwjmz2i7CDb+vCw9i6S3SVNGZz0gqmuIJJ0
+        vh4ZX7ptDoWwZVC36ZeE8TYuY/aPJ9k=
+Date:   Tue, 14 Mar 2023 21:29:34 +0100
+From:   Pavel Machek <pavel@ucw.cz>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Lee Jones <lee@kernel.org>, linux-leds@vger.kernel.org,
+        Arnd Bergmann <arnd@arndb.de>,
         Tony Lindgren <tony@atomide.com>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Felipe Balbi <balbi@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-References: <20230314163201.955689-1-arnd@kernel.org>
-Content-Language: de-DE
-From:   Christian Lamparter <chunkeey@gmail.com>
-In-Reply-To: <20230314163201.955689-1-arnd@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+        Felipe Balbi <balbi@kernel.org>, linux-omap@vger.kernel.org,
+        linux-gpio@vger.kernel.org
+Subject: Re: [PATCH] leds: Delete GPIO LED trigger
+Message-ID: <ZBDZLgb1+2aMTE7A@duo.ucw.cz>
+References: <20230314115940.411939-1-linus.walleij@linaro.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="tKhNwwcLaBcO0xrj"
+Content-Disposition: inline
+In-Reply-To: <20230314115940.411939-1-linus.walleij@linaro.org>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
 
-On 3/14/23 17:30, Arnd Bergmann wrote:
-> The Prism54 SPI driver hardcodes GPIO numbers and expects users to
-> pass them as module parameters, apparently a relic from its life as a
-> staging driver. This works because there is only one user, the Nokia
-> N8x0 tablet.
-> 
-> Convert this to the gpio descriptor interface and move the gpio
-> line information into devicetree to improve this and simplify the
-> code at the same time.
+--tKhNwwcLaBcO0xrj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Yes, this is definitely the right idea/way. From what I remember, Kalle
-Valo was partially involved in p54spi/stlc45xx. The details are very fuzzy.
-So,  I could be totally wrong. From what I remember Kalle was working
-for Nokia (or as a contractor for Nokia?) at the time.
+Hi!
 
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> The GPIO LED trigger exposes a userspace ABI where a user
+> can echo a GPIO number from the global GPIO numberspace into
+> a file that will trigger a certain LED when active.
+>=20
+> This is problematic because the global GPIO numberspace is
+> inherently instable. The trigger came about at a time when
+> systems had one GPIO controller that defined hard-wired
+> GPIOs numbered 0..N and this number space was stable.
+>=20
+> We have since moved to dynamic allocation of GPIO numbers
+> and there is no real guarantee that a GPIO number will stay
+> consistent even across a reboot: consider a USB attached
+> GPIO controller for example. Or two. Or the effect of
+> probe order after adding -EPROBE_DEFER to the kernel.
 
-I've seen the device-tree comments. That said, this is/was overdue.
-You can definitely have this for a v2 :).
-Acked-by: Christian Lamparter <chunkeey@gmail.com>
+So... what? If your system is one of those with single GPIO
+controller, you can still use it. If you have modern "complex" system,
+your userspace can find out desired GPIO number and then use it.
 
-Thanks you!
-Christian
-
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 > ---
-> As I don't have an N8x0, this is completely untested.
-> 
-> I listed the driver authors (Johannes and Christian) as the maintainers
-> of the binding document, but I don't know if they actually have this
-> hardware. It might be better to list someone who is actually using it.
-> 
-> Among the various chip identifications, I wasn't sure which one to
-> use for the compatible string and the name of the binding document.
-> I picked st,stlc4560 as that was cited as the version in the N800
-> on multiple websites.
-> ---
->   .../bindings/net/wireless/st,stlc45xx.yaml    | 64 +++++++++++++++++
->   MAINTAINERS                                   |  1 +
->   arch/arm/boot/dts/omap2.dtsi                  |  4 ++
->   arch/arm/boot/dts/omap2420-n8x0-common.dtsi   | 12 ++++
->   arch/arm/mach-omap2/board-n8x0.c              | 18 -----
->   drivers/net/wireless/intersil/p54/p54spi.c    | 69 +++++++------------
->   drivers/net/wireless/intersil/p54/p54spi.h    |  3 +
->   7 files changed, 109 insertions(+), 62 deletions(-)
->   create mode 100644 Documentation/devicetree/bindings/net/wireless/st,stlc45xx.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/net/wireless/st,stlc45xx.yaml b/Documentation/devicetree/bindings/net/wireless/st,stlc45xx.yaml
-> new file mode 100644
-> index 000000000000..45bc4fab409a
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/net/wireless/st,stlc45xx.yaml
-> @@ -0,0 +1,64 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/net/wireless/st,stlc45xx.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: ST/Intersil/Conexant stlc45xx/p54spi/cx3110x SPI wireless device
-> +
-> +maintainers:
-> +  - Johannes Berg <johannes@sipsolutions.net>
-> +  - Christian Lamparter <chunkeey@web.de>
-Can you please change that to: Christian Lamparter <chunkeey@gmail.com> ?
-(the @web.de/googlemail.com address still work too, but they are now just
-forwarding)
+>  drivers/leds/trigger/ledtrig-gpio.c | 202 ----------------------------
 
-> +description: |
-> +  The SPI variant of the Intersil Prism54 wireless device was sold
-> +  under a variety of names, including ST Microelectronics STLC5460
-> +  and Conexant CX3110x.
-> +
-> +allOf:
-> +  - $ref: ieee80211.yaml#
-> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - st,stlc4550
-> +      - st,stlc4560
-> +      - isil,p54spi
-> +      - cnxt,3110x
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  power-gpios:
-> +    maxItems: 1
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +   gpio {
-> +     gpio-controller;
-> +     #gpio-cells = <1>;
-> +     #interupt-cells = <1>;
-> +   };
-> +   spi {
-> +      #address-cells = <1>;
-> +      #size-cells = <0>;
-> +
-> +      wifi@0 {
-> +        reg = <0>;
-> +        compatible = "st,stlc4560";
-> +        spi-max-frequency = <48000000>;
-> +        interrupts-extended = <&gpio 23>;
-> +        power-gpios = <&gpio 1>;
-> +     };
-> +   };
+No. :-).
 
+You'd need to delete it from Kconfig/Makefile, too.
+
+But this is not how we handle deletions.
+
+Likely noone will miss this trigger, but correct way is to mark it as
+deprecated / broken in Kconfig, first, and see who screams.
+
+Best regards,
+								Pavel
+--=20
+People of Russia, stop Putin before his war on Ukraine escalates.
+
+--tKhNwwcLaBcO0xrj
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZBDZLgAKCRAw5/Bqldv6
+8klMAJ9RYjzXTBTo4QfS2v/LhV6OgE+IRQCeNI5XEn8aDS6eILWYfiQJoWARBEQ=
+=qCyO
+-----END PGP SIGNATURE-----
+
+--tKhNwwcLaBcO0xrj--
