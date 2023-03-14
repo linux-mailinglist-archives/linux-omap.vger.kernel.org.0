@@ -2,202 +2,97 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A03B86B9D80
-	for <lists+linux-omap@lfdr.de>; Tue, 14 Mar 2023 18:51:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BCF386B9DBD
+	for <lists+linux-omap@lfdr.de>; Tue, 14 Mar 2023 19:00:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229712AbjCNRve (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 14 Mar 2023 13:51:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52594 "EHLO
+        id S229627AbjCNSAf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 14 Mar 2023 14:00:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229626AbjCNRvd (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 14 Mar 2023 13:51:33 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 532A3B421C;
-        Tue, 14 Mar 2023 10:50:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-        t=1678816230; i=deller@gmx.de;
-        bh=hiRcwa3Bj6JP6LNEczfBcFHjplGK9+ZvNc9H7ZoMwPs=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=EAc0R3bNgjecoU592ZKL/GAsi5xFKouguRxsWXdi9FOTSlJvlOCPoA4Q23IdXE42A
-         xsiaiiL1wfbvpesw6kr8h/UnPPqh039w4tNxK3+8EV7pxYJr+uf6lzeXcWQD0mt0eP
-         j0jywFFss1HHvJQ/s6dzVYQIPpRrNtn3qPfwUuMo5iQ5MYDGF6rm/klDzI9flXwJGi
-         IYHtBxrdg7N7Ncew7vx4dmFNriSK+RkdKooVbYTYGJenNPIEIerryR/5xwi20HOQbz
-         mgzxSgOD3pVMK96unXtrUMm74jb0PNDDCP5j0wh7Je6ggA2UGNCft+t2ObL6E3mXIh
-         NJdLinM/NYmVg==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.156.222]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MiaYJ-1q8i3d2t7P-00fm7k; Tue, 14
- Mar 2023 18:50:30 +0100
-Message-ID: <8ace3dfb-a254-849f-614c-e3ab262a326a@gmx.de>
-Date:   Tue, 14 Mar 2023 18:50:29 +0100
+        with ESMTP id S229475AbjCNSAd (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 14 Mar 2023 14:00:33 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7682698874
+        for <linux-omap@vger.kernel.org>; Tue, 14 Mar 2023 11:00:32 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pc8wi-0000gB-Vp; Tue, 14 Mar 2023 19:00:25 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pc8wh-0047yB-Ls; Tue, 14 Mar 2023 19:00:23 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pc8wg-004sLM-Dx; Tue, 14 Mar 2023 19:00:22 +0100
+From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Ohad Ben-Cohen <ohad@wizery.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>
+Cc:     Baolin Wang <baolin.wang@linux.alibaba.com>,
+        linux-omap@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+        kernel@pengutronix.de, linux-arm-kernel@lists.infradead.org
+Subject: [PATCH 0/3] hwspinlock: Convert to platform remove callback returning void
+Date:   Tue, 14 Mar 2023 19:00:20 +0100
+Message-Id: <20230314180020.2865734-1-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH] fbdev: omapfb: remove omap1 osk driver
-Content-Language: en-US
-To:     Arnd Bergmann <arnd@kernel.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Tony Lindgren <tony@atomide.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        linux-omap@vger.kernel.org, dri-devel@lists.freedesktop.org
-References: <20230314162720.759220-1-arnd@kernel.org>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <20230314162720.759220-1-arnd@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:o5cuRxTMJaH64czFiaSigYfCyUGemdhcMG6VLO5HIGBBl4kjnH/
- jO3Goz+1UkP4NilMknd10y/vj8jA7YC2U22HiffnPxeI9/Um6NRhuT6NV8c0CsXjHOdz/nG
- Ar9dSmXfcaKfCAX5ktHGI6tf1d7gR8khgJKTr112LE5GTggAnzPjDOaD9j8RSLtksrX09vg
- WeiJL0hLJdh9R0SBC29Lg==
-UI-OutboundReport: notjunk:1;M01:P0:3lGrawyPYt8=;U5APRKzheTzr2fYF/kshZ2MTMaP
- vx0a9gSExdrK6Rd8uLOYibFPOTe41iHW9NyBw39JP2J/y88TZwIGe0IA7en6SLhhsAlqQeept
- ZhKUS/vyZMzqCU7LsAR1kFynDVZyI2iXxX2CUYjGP3NKeli1cNmCZ7gY1ujEh2kYwkku80OtA
- 3wOMC9ndpnzTM92ROQQbCsfV1Zv5NfbjShml4iiZGlqOeOs+1M3moXYZK8KaTvHrebJgSSIkA
- j3ZGfVzjtl7XI8EU0tBf5GmiB25vhulTrf0eQZPVB0dj/9HUM1YX6+cCGmzMKbjEthLlNBfDD
- +ApLnNiPl+VWuR46gq3IddRVCVpPHHFlJSsQc4duTUfUNesTfSMfZQJFZFmOrsxV5L8io9W8D
- 0ZfZoLVqf4MTTpt+aeXaUUMW31kWtiXcZ+1ViY7U1hwbjinxGTU9YpcA7cnjBO4J1aQzF4ar7
- n5FbUKSKfHhl0D3pt1tjSZOl8g4/IV5oi2Bx8ctL3R0TJ2JgyHN0hw7sUtD1cGKhOHQteZgO9
- gnKgN93UHFqCHOz68afvW8vLXArrIv/6cYFjVrOPZq17qhMledwq/aF5AF3aeRzPAEdOTuldY
- pTvSSuOwQclFE5aXolr0k5HrEMn3mS7VOYKep8JuZ+9yo9J6Ev703aeJIrXmQDDZEckmPAMzo
- rZ2eoSpGW6gCBWLBOD7Xbffoa3A6WeBEhigeLukjf4/IJd8zRKdC2N4dLCUVQs9WWqj4wpLT6
- q+MN+we+rbv8Sz3KExE4pwVYYZDsyW7FHiGcfX5j7kbszc+Mq29m0eDhA6m3xy8Ko07jgruTI
- v7cN0KuSrNFyKIB8yfFvYiFnCS69rNCBKtLJu4wb+fL6b4+yf2ZAy7UW+q+WEzymCWhNkA10X
- 5KC94F6HQA6vU6iv6XEyL6JAu7dw1U20LrPkTcQP6ItSbMAO8UrI96oZOe4nGTJ7gNCADwKyt
- sf2Wfg==
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1761; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=JYzczQ8X/PT/2KeGNGW0QPjekxWwXUc3X/tHSI7Ug8Y=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBkELYsTuGZVKio8vyB/NDu7iicE4b4nR1fe9yYv kgSV2g0oI+JATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCZBC2LAAKCRDB/BR4rcrs CTkOB/4yAo7CnjbeFhcb4uo5BHim68SP/gpJormExr8rdNFTIEDGs6PqskLFxm84Gb+zyQm4Nlf jkiPbknG27+B84e2ai9iX6wu5vpCPo8qW5E9unr2Y3p6e1DXT42RQGAlyMme0R3v0wTw7HcufBP LCQi690rSlCAkNM+udStLOVEoS5M6w1mITliHXemFqSZM4hlWn8kP0SagjgSdSnVkO3nVTxBT34 byf9za6Hv04ga0fHEyCjVmQHaDv5jRhurCCFhBRM77f39M8wATO2sny1pf6B9RKeNJwTW5Kgffy rk9moLloqso65m2eyzgQYoBZeXDDYH6mdLxvd3y5HhQASE4M
+X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-omap@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 3/14/23 17:27, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
->
-> Commit 21a3e6eed423 ("ARM: omap1: remove osk-mistral add-on board
-> support") removed the platform_device definition for the "lcd_osk"
-> device, so this driver is now unused and can be removed as well.
->
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Hello,
 
-applied.
+this patch series adapts the platform drivers below drivers/hwspinlock to use
+the .remove_new() callback. Compared to the traditional .remove() callback
+.remove_new() returns no value. This is a good thing because the driver core
+doesn't (and cannot) cope for errors during remove. The only effect of a
+non-zero return value in .remove() is that the driver core emits a warning. The
+device is removed anyhow and an early return from .remove() usually yields a
+resource leak.
 
-Thanks!
-Helge
+By changing the remove callback to return void driver authors cannot reasonably
+assume any more that there is some kind of cleanup later.
 
-> ---
->   drivers/video/fbdev/omap/Makefile  |  1 -
->   drivers/video/fbdev/omap/lcd_osk.c | 86 ------------------------------
->   2 files changed, 87 deletions(-)
->   delete mode 100644 drivers/video/fbdev/omap/lcd_osk.c
->
-> diff --git a/drivers/video/fbdev/omap/Makefile b/drivers/video/fbdev/oma=
-p/Makefile
-> index 504edb9c09dd..6d5082c76919 100644
-> --- a/drivers/video/fbdev/omap/Makefile
-> +++ b/drivers/video/fbdev/omap/Makefile
-> @@ -18,7 +18,6 @@ objs-y$(CONFIG_FB_OMAP_LCDC_HWA742) +=3D hwa742.o
->
->   lcds-y$(CONFIG_MACH_AMS_DELTA) +=3D lcd_ams_delta.o
->   lcds-y$(CONFIG_MACH_OMAP_PALMTE) +=3D lcd_palmte.o
-> -lcds-y$(CONFIG_MACH_OMAP_OSK) +=3D lcd_osk.o
->
->   lcds-y$(CONFIG_FB_OMAP_LCD_MIPID) +=3D lcd_mipid.o
->
-> diff --git a/drivers/video/fbdev/omap/lcd_osk.c b/drivers/video/fbdev/om=
-ap/lcd_osk.c
-> deleted file mode 100644
-> index 8168ba0d47fd..000000000000
-> --- a/drivers/video/fbdev/omap/lcd_osk.c
-> +++ /dev/null
-> @@ -1,86 +0,0 @@
-> -// SPDX-License-Identifier: GPL-2.0-or-later
-> -/*
-> - * LCD panel support for the TI OMAP OSK board
-> - *
-> - * Copyright (C) 2004 Nokia Corporation
-> - * Author: Imre Deak <imre.deak@nokia.com>
-> - * Adapted for OSK by <dirk.behme@de.bosch.com>
-> - */
-> -
-> -#include <linux/module.h>
-> -#include <linux/platform_device.h>
-> -#include <linux/gpio.h>
-> -
-> -#include <linux/soc/ti/omap1-io.h>
-> -#include <linux/soc/ti/omap1-mux.h>
-> -
-> -#include "omapfb.h"
-> -
-> -static int osk_panel_enable(struct lcd_panel *panel)
-> -{
-> -	/* configure PWL pin */
-> -	omap_cfg_reg(PWL);
-> -
-> -	/* Enable PWL unit */
-> -	omap_writeb(0x01, OMAP_PWL_CLK_ENABLE);
-> -
-> -	/* Set PWL level */
-> -	omap_writeb(0xFF, OMAP_PWL_ENABLE);
-> -
-> -	/* set GPIO2 high (lcd power enabled) */
-> -	gpio_set_value(2, 1);
-> -
-> -	return 0;
-> -}
-> -
-> -static void osk_panel_disable(struct lcd_panel *panel)
-> -{
-> -	/* Set PWL level to zero */
-> -	omap_writeb(0x00, OMAP_PWL_ENABLE);
-> -
-> -	/* Disable PWL unit */
-> -	omap_writeb(0x00, OMAP_PWL_CLK_ENABLE);
-> -
-> -	/* set GPIO2 low */
-> -	gpio_set_value(2, 0);
-> -}
-> -
-> -static struct lcd_panel osk_panel =3D {
-> -	.name		=3D "osk",
-> -	.config		=3D OMAP_LCDC_PANEL_TFT,
-> -
-> -	.bpp		=3D 16,
-> -	.data_lines	=3D 16,
-> -	.x_res		=3D 240,
-> -	.y_res		=3D 320,
-> -	.pixel_clock	=3D 12500,
-> -	.hsw		=3D 40,
-> -	.hfp		=3D 40,
-> -	.hbp		=3D 72,
-> -	.vsw		=3D 1,
-> -	.vfp		=3D 1,
-> -	.vbp		=3D 0,
-> -	.pcd		=3D 12,
-> -
-> -	.enable		=3D osk_panel_enable,
-> -	.disable	=3D osk_panel_disable,
-> -};
-> -
-> -static int osk_panel_probe(struct platform_device *pdev)
-> -{
-> -	omapfb_register_panel(&osk_panel);
-> -	return 0;
-> -}
-> -
-> -static struct platform_driver osk_panel_driver =3D {
-> -	.probe		=3D osk_panel_probe,
-> -	.driver		=3D {
-> -		.name	=3D "lcd_osk",
-> -	},
-> -};
-> -
-> -module_platform_driver(osk_panel_driver);
-> -
-> -MODULE_AUTHOR("Imre Deak");
-> -MODULE_DESCRIPTION("LCD panel support for the TI OMAP OSK board");
-> -MODULE_LICENSE("GPL");
+The omap driver could return -EBUSY. This is first changed to return
+zero to drop the duplicated error message. I assume this error path is
+dangerous. For sure the platform device binding goes away and so
+devm_platform_ioremap_resource is undone. So probably the user of the
+hwspinlock that prevented its removal will soon access an unmapped
+virtual address resulting in an oops. This is true with and without my
+patch. IMHO hwspin_lock_unregister() shouldn't return an error code but
+care that all users go away and then return void.
+
+After this change the two platform_drivers can be trivially converted to
+.remove_new().
+
+Best regards
+Uwe
+
+Uwe Kleine-König (3):
+  hwspinlock: omap: Emit only one error message for errors in .remove()
+  hwspinlock: omap: Convert to platform remove callback returning void
+  hwspinlock: u8500: Convert to platform remove callback returning void
+
+ drivers/hwspinlock/omap_hwspinlock.c | 8 +++-----
+ drivers/hwspinlock/u8500_hsem.c      | 6 ++----
+ 2 files changed, 5 insertions(+), 9 deletions(-)
+
+base-commit: fe15c26ee26efa11741a7b632e9f23b01aca4cc6
+-- 
+2.39.2
 
