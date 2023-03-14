@@ -2,439 +2,229 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD0EF6B9F7A
-	for <lists+linux-omap@lfdr.de>; Tue, 14 Mar 2023 20:19:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 883646BA028
+	for <lists+linux-omap@lfdr.de>; Tue, 14 Mar 2023 20:57:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229446AbjCNTTC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 14 Mar 2023 15:19:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53780 "EHLO
+        id S230001AbjCNT5X (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 14 Mar 2023 15:57:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229436AbjCNTTB (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 14 Mar 2023 15:19:01 -0400
-Received: from mail-il1-f174.google.com (mail-il1-f174.google.com [209.85.166.174])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FBEC126F8;
-        Tue, 14 Mar 2023 12:18:59 -0700 (PDT)
-Received: by mail-il1-f174.google.com with SMTP id j6so4717071ilr.7;
-        Tue, 14 Mar 2023 12:18:59 -0700 (PDT)
+        with ESMTP id S229997AbjCNT5W (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 14 Mar 2023 15:57:22 -0400
+Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE34D497E7
+        for <linux-omap@vger.kernel.org>; Tue, 14 Mar 2023 12:57:18 -0700 (PDT)
+Received: by mail-ed1-x535.google.com with SMTP id cy23so66656897edb.12
+        for <linux-omap@vger.kernel.org>; Tue, 14 Mar 2023 12:57:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1678823837;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=aORkeEWyO4el94Bv6We6yy/BW+bw5NjQvuZusdWHXhw=;
+        b=gr18aPzM5zECvOkClsBTCdIMXKpwux+V1a6gMKvaYD7cxf8xfCzZFnwTplfRbntBe+
+         pBvDyOSmdKO8kWrmxOskVrIOGRk9Pex1nzNb0goa0jkia5LwixA+rneqPQM3iQfp0C51
+         s2EefWp9yN8cUY3QUv4nuKg6X8aM+WgZwDvIhcbzshhyPV4dqqSz9fXz9w6t6M+8lHf1
+         I+biZuTX+mYJBpYz4OZ8zOAFr99syPdi6A+eboC3FsZBfm+fU3psVzJD0aePAq5n4LZU
+         CQ3lVGIYOMc+LaWysoxc+lTzEw5+z/DKx3Gw4IqFNa9O9x/b53pkMtJIPBifAyfHBcP7
+         vw8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678821538;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=7SHHH82b44ejO8hTyfXFkG6QT42FRv8xv8FBLwbDdBU=;
-        b=f2dUvjrUSUFLs8ppAZkB6LFu/5qd2XFapsrQPvmclX3Xz5g8gw6RwaOqjfn31K6Psw
-         21KJncTlGRt6WDRSy2T2z02sQZmZ6NIHn0uYLC7uihv7r4BSsAVgJpSxPOsnh/nM9GxI
-         78ZnoV2PO2+fzhnoatR6xEwNr8s5yZaXATcyD9qxibCrt6Kc0OtBCEFu3b0Jz8RE9wDq
-         idFpZCj2poij0R1ZDniZ80SB6d0NNN+go1JtrM6DPlLn4nhbacXOs6XPC27tOwIxHyUX
-         hVPaHke3bt/VF+1ow+V6EIR4rlcRYqQoVCPhm7lH8rfaK7adJ0s6eJE3NbEKWNbk1DbV
-         M1jA==
-X-Gm-Message-State: AO0yUKW7NzV0wlXy7ykuPxCwFW93k7aJIQsCBI3LMFyoo9LjOIbIay3j
-        qtrDqhlX/Jsu4kiBl7VY5g==
-X-Google-Smtp-Source: AK7set+D4OgbXOnjCh9jn0yevluq/zU240KhGAAqP+qZ9PQbeEy3MjIEdlBp1nmgLk0F0k16FEDCEw==
-X-Received: by 2002:a05:6e02:10c1:b0:317:c80f:b416 with SMTP id s1-20020a056e0210c100b00317c80fb416mr2957326ilj.20.1678821538158;
-        Tue, 14 Mar 2023 12:18:58 -0700 (PDT)
-Received: from robh_at_kernel.org ([64.188.179.249])
-        by smtp.gmail.com with ESMTPSA id h13-20020a02c72d000000b003bf39936d1esm987920jao.131.2023.03.14.12.18.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Mar 2023 12:18:57 -0700 (PDT)
-Received: (nullmailer pid 914779 invoked by uid 1000);
-        Tue, 14 Mar 2023 19:18:55 -0000
-From:   Rob Herring <robh@kernel.org>
-To:     Wolfgang Grandegger <wg@grandegger.com>,
-        Marc Kleine-Budde <mkl@pengutronix.de>,
+        d=1e100.net; s=20210112; t=1678823837;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=aORkeEWyO4el94Bv6We6yy/BW+bw5NjQvuZusdWHXhw=;
+        b=Ddn8qpdriYLpgNBRB9AxxG1uMmhoLJuA4SY17m+AEWmrem5ZpTpKosMsqDziYnXt4+
+         77iBs0G2u4hfPq1+TYEhDzGpyhx0YwOTGrAQnKRgMmGjs4XYzml6/ndYiOrwR59l6Ga6
+         msGt9tag7hjoRtPURVGFTOFOK04NlHUnKiIkNUZmtgUNoxfJ7FqDGQgkDlwTuUDgMEWG
+         KCgRyUmhT0lfHavrfdq48M2rHU9/cF8StxHpZc59G5cvghMdhSTlTNybiJkqYqXQg2qd
+         12A18l7uGj4jdjhlAO0ZxteQE8mJzatCki8iOGA1+syyqSk2YVvrCnVgdfDN+JKnP98x
+         gq9w==
+X-Gm-Message-State: AO0yUKVASOx+tAKT1oW88QqWjbpagCAQ7llo7qKpLlRj3PzElsyhXnhe
+        4GrD32LTyQrN+bSZnXrostV7VA==
+X-Google-Smtp-Source: AK7set/XAW5ciHQcJno6hH/Z88UfN6YapdX8vcLUOlfdJ3yyprHp0j3qR3GzULGcqsy5r/vRByYzFQ==
+X-Received: by 2002:a17:906:a0e:b0:91e:acf4:b009 with SMTP id w14-20020a1709060a0e00b0091eacf4b009mr4068970ejf.22.1678823837351;
+        Tue, 14 Mar 2023 12:57:17 -0700 (PDT)
+Received: from ?IPV6:2a02:810d:15c0:828:642b:87c2:1efc:c8af? ([2a02:810d:15c0:828:642b:87c2:1efc:c8af])
+        by smtp.gmail.com with ESMTPSA id c37-20020a509fa8000000b004fb17f10326sm1514478edf.10.2023.03.14.12.57.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 14 Mar 2023 12:57:16 -0700 (PDT)
+Message-ID: <4ac809d2-3924-3839-479f-0b4be9f18a1f@linaro.org>
+Date:   Tue, 14 Mar 2023 20:57:15 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [PATCH] p54spi: convert to devicetree
+Content-Language: en-US
+To:     Arnd Bergmann <arnd@kernel.org>,
+        Christian Lamparter <chunkeey@googlemail.com>,
+        Kalle Valo <kvalo@kernel.org>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        linux-gpio@vger.kernel.org, linux-omap@vger.kernel.org,
+        Tony Lindgren <tony@atomide.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Felipe Balbi <balbi@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
         "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Wei Fang <wei.fang@nxp.com>,
-        Shenwei Wang <shenwei.wang@nxp.com>,
-        Clark Wang <xiaoning.wang@nxp.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Claudiu Manoil <claudiu.manoil@nxp.com>,
-        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Jose Abreu <joabreu@synopsys.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Francois Romieu <romieu@fr.zoreil.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Zhao Qiang <qiang.zhao@nxp.com>, Kalle Valo <kvalo@kernel.org>,
-        Samuel Mendoza-Jonas <sam@mendozajonas.com>
-Cc:     Simon Horman <simon.horman@corigine.com>,
-        linux-can@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-omap@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-wireless@vger.kernel.org
-Subject: [PATCH v2] net: Use of_property_read_bool() for boolean properties
-Date:   Tue, 14 Mar 2023 14:18:27 -0500
-Message-Id: <20230314191828.914124-1-robh@kernel.org>
-X-Mailer: git-send-email 2.39.2
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+References: <20230314163201.955689-1-arnd@kernel.org>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230314163201.955689-1-arnd@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-It is preferred to use typed property access functions (i.e.
-of_property_read_<type> functions) rather than low-level
-of_get_property/of_find_property functions for reading properties.
-Convert reading boolean properties to of_property_read_bool().
+On 14/03/2023 17:30, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> The Prism54 SPI driver hardcodes GPIO numbers and expects users to
+> pass them as module parameters, apparently a relic from its life as a
+> staging driver. This works because there is only one user, the Nokia
+> N8x0 tablet.
+> 
+> Convert this to the gpio descriptor interface and move the gpio
+> line information into devicetree to improve this and simplify the
+> code at the same time.
+> 
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+> As I don't have an N8x0, this is completely untested.
+> 
+> I listed the driver authors (Johannes and Christian) as the maintainers
+> of the binding document, but I don't know if they actually have this
+> hardware. It might be better to list someone who is actually using it.
+> 
+> Among the various chip identifications, I wasn't sure which one to
+> use for the compatible string and the name of the binding document.
+> I picked st,stlc4560 as that was cited as the version in the N800
+> on multiple websites.
+> ---
+>  .../bindings/net/wireless/st,stlc45xx.yaml    | 64 +++++++++++++++++
 
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Acked-by: Marc Kleine-Budde <mkl@pengutronix.de> # for net/can
-Acked-by: Kalle Valo <kvalo@kernel.org>
-Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
-Acked-by: Francois Romieu <romieu@fr.zoreil.com>
-Reviewed-by: Wei Fang <wei.fang@nxp.com>
-Signed-off-by: Rob Herring <robh@kernel.org>
----
-v2:
- - Convert no_eeprom type to bool.
----
- drivers/net/can/cc770/cc770_platform.c          | 12 ++++++------
- drivers/net/ethernet/cadence/macb_main.c        |  2 +-
- drivers/net/ethernet/davicom/dm9000.c           |  4 ++--
- drivers/net/ethernet/freescale/fec_main.c       |  2 +-
- drivers/net/ethernet/freescale/fec_mpc52xx.c    |  2 +-
- drivers/net/ethernet/freescale/gianfar.c        |  4 ++--
- drivers/net/ethernet/ibm/emac/core.c            |  8 ++++----
- drivers/net/ethernet/ibm/emac/rgmii.c           |  2 +-
- drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c |  3 +--
- drivers/net/ethernet/sun/niu.c                  |  2 +-
- drivers/net/ethernet/ti/cpsw-phy-sel.c          |  3 +--
- drivers/net/ethernet/ti/netcp_ethss.c           |  8 +++-----
- drivers/net/ethernet/via/via-velocity.c         |  3 +--
- drivers/net/ethernet/via/via-velocity.h         |  2 +-
- drivers/net/ethernet/xilinx/ll_temac_main.c     |  9 ++++-----
- drivers/net/wan/fsl_ucc_hdlc.c                  | 11 +++--------
- drivers/net/wireless/ti/wlcore/spi.c            |  3 +--
- net/ncsi/ncsi-manage.c                          |  4 ++--
- 18 files changed, 36 insertions(+), 48 deletions(-)
+Please split bindings to separate patch.
 
-diff --git a/drivers/net/can/cc770/cc770_platform.c b/drivers/net/can/cc770/cc770_platform.c
-index 8d916e2ee6c2..8dcc32e4e30e 100644
---- a/drivers/net/can/cc770/cc770_platform.c
-+++ b/drivers/net/can/cc770/cc770_platform.c
-@@ -93,20 +93,20 @@ static int cc770_get_of_node_data(struct platform_device *pdev,
- 	if (priv->can.clock.freq > 8000000)
- 		priv->cpu_interface |= CPUIF_DMC;
- 
--	if (of_get_property(np, "bosch,divide-memory-clock", NULL))
-+	if (of_property_read_bool(np, "bosch,divide-memory-clock"))
- 		priv->cpu_interface |= CPUIF_DMC;
--	if (of_get_property(np, "bosch,iso-low-speed-mux", NULL))
-+	if (of_property_read_bool(np, "bosch,iso-low-speed-mux"))
- 		priv->cpu_interface |= CPUIF_MUX;
- 
- 	if (!of_get_property(np, "bosch,no-comperator-bypass", NULL))
- 		priv->bus_config |= BUSCFG_CBY;
--	if (of_get_property(np, "bosch,disconnect-rx0-input", NULL))
-+	if (of_property_read_bool(np, "bosch,disconnect-rx0-input"))
- 		priv->bus_config |= BUSCFG_DR0;
--	if (of_get_property(np, "bosch,disconnect-rx1-input", NULL))
-+	if (of_property_read_bool(np, "bosch,disconnect-rx1-input"))
- 		priv->bus_config |= BUSCFG_DR1;
--	if (of_get_property(np, "bosch,disconnect-tx1-output", NULL))
-+	if (of_property_read_bool(np, "bosch,disconnect-tx1-output"))
- 		priv->bus_config |= BUSCFG_DT1;
--	if (of_get_property(np, "bosch,polarity-dominant", NULL))
-+	if (of_property_read_bool(np, "bosch,polarity-dominant"))
- 		priv->bus_config |= BUSCFG_POL;
- 
- 	prop = of_get_property(np, "bosch,clock-out-frequency", &prop_size);
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index 6e141a8bbf43..66e30561569e 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -4990,7 +4990,7 @@ static int macb_probe(struct platform_device *pdev)
- 		bp->jumbo_max_len = macb_config->jumbo_max_len;
- 
- 	bp->wol = 0;
--	if (of_get_property(np, "magic-packet", NULL))
-+	if (of_property_read_bool(np, "magic-packet"))
- 		bp->wol |= MACB_WOL_HAS_MAGIC_PACKET;
- 	device_set_wakeup_capable(&pdev->dev, bp->wol & MACB_WOL_HAS_MAGIC_PACKET);
- 
-diff --git a/drivers/net/ethernet/davicom/dm9000.c b/drivers/net/ethernet/davicom/dm9000.c
-index b21e56de6167..05a89ab6766c 100644
---- a/drivers/net/ethernet/davicom/dm9000.c
-+++ b/drivers/net/ethernet/davicom/dm9000.c
-@@ -1393,9 +1393,9 @@ static struct dm9000_plat_data *dm9000_parse_dt(struct device *dev)
- 	if (!pdata)
- 		return ERR_PTR(-ENOMEM);
- 
--	if (of_find_property(np, "davicom,ext-phy", NULL))
-+	if (of_property_read_bool(np, "davicom,ext-phy"))
- 		pdata->flags |= DM9000_PLATF_EXT_PHY;
--	if (of_find_property(np, "davicom,no-eeprom", NULL))
-+	if (of_property_read_bool(np, "davicom,no-eeprom"))
- 		pdata->flags |= DM9000_PLATF_NO_EEPROM;
- 
- 	ret = of_get_mac_address(np, pdata->dev_addr);
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index c73e25f8995e..f3b16a6673e2 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -4251,7 +4251,7 @@ fec_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto failed_ipc_init;
- 
--	if (of_get_property(np, "fsl,magic-packet", NULL))
-+	if (of_property_read_bool(np, "fsl,magic-packet"))
- 		fep->wol_flag |= FEC_WOL_HAS_MAGIC_PACKET;
- 
- 	ret = fec_enet_init_stop_mode(fep, np);
-diff --git a/drivers/net/ethernet/freescale/fec_mpc52xx.c b/drivers/net/ethernet/freescale/fec_mpc52xx.c
-index a7f4c3c29f3e..b88816b71ddf 100644
---- a/drivers/net/ethernet/freescale/fec_mpc52xx.c
-+++ b/drivers/net/ethernet/freescale/fec_mpc52xx.c
-@@ -937,7 +937,7 @@ static int mpc52xx_fec_probe(struct platform_device *op)
- 	priv->phy_node = of_parse_phandle(np, "phy-handle", 0);
- 
- 	/* the 7-wire property means don't use MII mode */
--	if (of_find_property(np, "fsl,7-wire-mode", NULL)) {
-+	if (of_property_read_bool(np, "fsl,7-wire-mode")) {
- 		priv->seven_wire_mode = 1;
- 		dev_info(&ndev->dev, "using 7-wire PHY mode\n");
- 	}
-diff --git a/drivers/net/ethernet/freescale/gianfar.c b/drivers/net/ethernet/freescale/gianfar.c
-index b2def295523a..38d5013c6fed 100644
---- a/drivers/net/ethernet/freescale/gianfar.c
-+++ b/drivers/net/ethernet/freescale/gianfar.c
-@@ -787,10 +787,10 @@ static int gfar_of_init(struct platform_device *ofdev, struct net_device **pdev)
- 	else
- 		priv->interface = gfar_get_interface(dev);
- 
--	if (of_find_property(np, "fsl,magic-packet", NULL))
-+	if (of_property_read_bool(np, "fsl,magic-packet"))
- 		priv->device_flags |= FSL_GIANFAR_DEV_HAS_MAGIC_PACKET;
- 
--	if (of_get_property(np, "fsl,wake-on-filer", NULL))
-+	if (of_property_read_bool(np, "fsl,wake-on-filer"))
- 		priv->device_flags |= FSL_GIANFAR_DEV_HAS_WAKE_ON_FILER;
- 
- 	priv->phy_node = of_parse_phandle(np, "phy-handle", 0);
-diff --git a/drivers/net/ethernet/ibm/emac/core.c b/drivers/net/ethernet/ibm/emac/core.c
-index 9b08e41ccc29..c97095abd26a 100644
---- a/drivers/net/ethernet/ibm/emac/core.c
-+++ b/drivers/net/ethernet/ibm/emac/core.c
-@@ -2939,9 +2939,9 @@ static int emac_init_config(struct emac_instance *dev)
- 	}
- 
- 	/* Fixup some feature bits based on the device tree */
--	if (of_get_property(np, "has-inverted-stacr-oc", NULL))
-+	if (of_property_read_bool(np, "has-inverted-stacr-oc"))
- 		dev->features |= EMAC_FTR_STACR_OC_INVERT;
--	if (of_get_property(np, "has-new-stacr-staopc", NULL))
-+	if (of_property_read_bool(np, "has-new-stacr-staopc"))
- 		dev->features |= EMAC_FTR_HAS_NEW_STACR;
- 
- 	/* CAB lacks the appropriate properties */
-@@ -3042,7 +3042,7 @@ static int emac_probe(struct platform_device *ofdev)
- 	 * property here for now, but new flat device trees should set a
- 	 * status property to "disabled" instead.
- 	 */
--	if (of_get_property(np, "unused", NULL) || !of_device_is_available(np))
-+	if (of_property_read_bool(np, "unused") || !of_device_is_available(np))
- 		return -ENODEV;
- 
- 	/* Find ourselves in the bootlist if we are there */
-@@ -3333,7 +3333,7 @@ static void __init emac_make_bootlist(void)
- 
- 		if (of_match_node(emac_match, np) == NULL)
- 			continue;
--		if (of_get_property(np, "unused", NULL))
-+		if (of_property_read_bool(np, "unused"))
- 			continue;
- 		idx = of_get_property(np, "cell-index", NULL);
- 		if (idx == NULL)
-diff --git a/drivers/net/ethernet/ibm/emac/rgmii.c b/drivers/net/ethernet/ibm/emac/rgmii.c
-index 242ef976fd15..50358cf00130 100644
---- a/drivers/net/ethernet/ibm/emac/rgmii.c
-+++ b/drivers/net/ethernet/ibm/emac/rgmii.c
-@@ -242,7 +242,7 @@ static int rgmii_probe(struct platform_device *ofdev)
- 	}
- 
- 	/* Check for RGMII flags */
--	if (of_get_property(ofdev->dev.of_node, "has-mdio", NULL))
-+	if (of_property_read_bool(ofdev->dev.of_node, "has-mdio"))
- 		dev->flags |= EMAC_RGMII_FLAG_HAS_MDIO;
- 
- 	/* CAB lacks the right properties, fix this up */
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-index ac8580f501e2..ac550d1ac015 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-@@ -213,8 +213,7 @@ imx_dwmac_parse_dt(struct imx_priv_data *dwmac, struct device *dev)
- 	struct device_node *np = dev->of_node;
- 	int err = 0;
- 
--	if (of_get_property(np, "snps,rmii_refclk_ext", NULL))
--		dwmac->rmii_refclk_ext = true;
-+	dwmac->rmii_refclk_ext = of_property_read_bool(np, "snps,rmii_refclk_ext");
- 
- 	dwmac->clk_tx = devm_clk_get(dev, "tx");
- 	if (IS_ERR(dwmac->clk_tx)) {
-diff --git a/drivers/net/ethernet/sun/niu.c b/drivers/net/ethernet/sun/niu.c
-index e6144d963eaa..ab8b09a9ef61 100644
---- a/drivers/net/ethernet/sun/niu.c
-+++ b/drivers/net/ethernet/sun/niu.c
-@@ -9271,7 +9271,7 @@ static int niu_get_of_props(struct niu *np)
- 	if (model)
- 		strcpy(np->vpd.model, model);
- 
--	if (of_find_property(dp, "hot-swappable-phy", NULL)) {
-+	if (of_property_read_bool(dp, "hot-swappable-phy")) {
- 		np->flags |= (NIU_FLAGS_10G | NIU_FLAGS_FIBER |
- 			NIU_FLAGS_HOTPLUG_PHY);
- 	}
-diff --git a/drivers/net/ethernet/ti/cpsw-phy-sel.c b/drivers/net/ethernet/ti/cpsw-phy-sel.c
-index e8f38e3f7706..25e707d7b87c 100644
---- a/drivers/net/ethernet/ti/cpsw-phy-sel.c
-+++ b/drivers/net/ethernet/ti/cpsw-phy-sel.c
-@@ -226,8 +226,7 @@ static int cpsw_phy_sel_probe(struct platform_device *pdev)
- 	if (IS_ERR(priv->gmii_sel))
- 		return PTR_ERR(priv->gmii_sel);
- 
--	if (of_find_property(pdev->dev.of_node, "rmii-clock-ext", NULL))
--		priv->rmii_clock_external = true;
-+	priv->rmii_clock_external = of_property_read_bool(pdev->dev.of_node, "rmii-clock-ext");
- 
- 	dev_set_drvdata(&pdev->dev, priv);
- 
-diff --git a/drivers/net/ethernet/ti/netcp_ethss.c b/drivers/net/ethernet/ti/netcp_ethss.c
-index 751fb0bc65c5..2adf82a32bf6 100644
---- a/drivers/net/ethernet/ti/netcp_ethss.c
-+++ b/drivers/net/ethernet/ti/netcp_ethss.c
-@@ -3583,13 +3583,11 @@ static int gbe_probe(struct netcp_device *netcp_device, struct device *dev,
- 	/* init the hw stats lock */
- 	spin_lock_init(&gbe_dev->hw_stats_lock);
- 
--	if (of_find_property(node, "enable-ale", NULL)) {
--		gbe_dev->enable_ale = true;
-+	gbe_dev->enable_ale = of_property_read_bool(node, "enable-ale");
-+	if (gbe_dev->enable_ale)
- 		dev_info(dev, "ALE enabled\n");
--	} else {
--		gbe_dev->enable_ale = false;
-+	else
- 		dev_dbg(dev, "ALE bypass enabled*\n");
--	}
- 
- 	ret = of_property_read_u32(node, "tx-queue",
- 				   &gbe_dev->tx_queue_id);
-diff --git a/drivers/net/ethernet/via/via-velocity.c b/drivers/net/ethernet/via/via-velocity.c
-index a502812ac418..86f7843b4591 100644
---- a/drivers/net/ethernet/via/via-velocity.c
-+++ b/drivers/net/ethernet/via/via-velocity.c
-@@ -2709,8 +2709,7 @@ static int velocity_get_platform_info(struct velocity_info *vptr)
- 	struct resource res;
- 	int ret;
- 
--	if (of_get_property(vptr->dev->of_node, "no-eeprom", NULL))
--		vptr->no_eeprom = 1;
-+	vptr->no_eeprom = of_property_read_bool(vptr->dev->of_node, "no-eeprom");
- 
- 	ret = of_address_to_resource(vptr->dev->of_node, 0, &res);
- 	if (ret) {
-diff --git a/drivers/net/ethernet/via/via-velocity.h b/drivers/net/ethernet/via/via-velocity.h
-index ffdac6fac054..f64ed39b93d8 100644
---- a/drivers/net/ethernet/via/via-velocity.h
-+++ b/drivers/net/ethernet/via/via-velocity.h
-@@ -1383,7 +1383,7 @@ struct velocity_info {
- 	struct device *dev;
- 	struct pci_dev *pdev;
- 	struct net_device *netdev;
--	int no_eeprom;
-+	bool no_eeprom;
- 
- 	unsigned long active_vlans[BITS_TO_LONGS(VLAN_N_VID)];
- 	u8 ip_addr[4];
-diff --git a/drivers/net/ethernet/xilinx/ll_temac_main.c b/drivers/net/ethernet/xilinx/ll_temac_main.c
-index 1066420d6a83..e0ac1bcd9925 100644
---- a/drivers/net/ethernet/xilinx/ll_temac_main.c
-+++ b/drivers/net/ethernet/xilinx/ll_temac_main.c
-@@ -1455,12 +1455,11 @@ static int temac_probe(struct platform_device *pdev)
- 	 * endianness mode.  Default for OF devices is big-endian.
- 	 */
- 	little_endian = false;
--	if (temac_np) {
--		if (of_get_property(temac_np, "little-endian", NULL))
--			little_endian = true;
--	} else if (pdata) {
-+	if (temac_np)
-+		little_endian = of_property_read_bool(temac_np, "little-endian");
-+	else if (pdata)
- 		little_endian = pdata->reg_little_endian;
--	}
-+
- 	if (little_endian) {
- 		lp->temac_ior = _temac_ior_le;
- 		lp->temac_iow = _temac_iow_le;
-diff --git a/drivers/net/wan/fsl_ucc_hdlc.c b/drivers/net/wan/fsl_ucc_hdlc.c
-index 1c53b5546927..47c2ad7a3e42 100644
---- a/drivers/net/wan/fsl_ucc_hdlc.c
-+++ b/drivers/net/wan/fsl_ucc_hdlc.c
-@@ -1177,14 +1177,9 @@ static int ucc_hdlc_probe(struct platform_device *pdev)
- 	uhdlc_priv->dev = &pdev->dev;
- 	uhdlc_priv->ut_info = ut_info;
- 
--	if (of_get_property(np, "fsl,tdm-interface", NULL))
--		uhdlc_priv->tsa = 1;
--
--	if (of_get_property(np, "fsl,ucc-internal-loopback", NULL))
--		uhdlc_priv->loopback = 1;
--
--	if (of_get_property(np, "fsl,hdlc-bus", NULL))
--		uhdlc_priv->hdlc_bus = 1;
-+	uhdlc_priv->tsa = of_property_read_bool(np, "fsl,tdm-interface");
-+	uhdlc_priv->loopback = of_property_read_bool(np, "fsl,ucc-internal-loopback");
-+	uhdlc_priv->hdlc_bus = of_property_read_bool(np, "fsl,hdlc-bus");
- 
- 	if (uhdlc_priv->tsa == 1) {
- 		utdm = kzalloc(sizeof(*utdm), GFP_KERNEL);
-diff --git a/drivers/net/wireless/ti/wlcore/spi.c b/drivers/net/wireless/ti/wlcore/spi.c
-index 2d2edddc77bd..3f88e6a0a510 100644
---- a/drivers/net/wireless/ti/wlcore/spi.c
-+++ b/drivers/net/wireless/ti/wlcore/spi.c
-@@ -447,8 +447,7 @@ static int wlcore_probe_of(struct spi_device *spi, struct wl12xx_spi_glue *glue,
- 	dev_info(&spi->dev, "selected chip family is %s\n",
- 		 pdev_data->family->name);
- 
--	if (of_find_property(dt_node, "clock-xtal", NULL))
--		pdev_data->ref_clock_xtal = true;
-+	pdev_data->ref_clock_xtal = of_property_read_bool(dt_node, "clock-xtal");
- 
- 	/* optional clock frequency params */
- 	of_property_read_u32(dt_node, "ref-clock-frequency",
-diff --git a/net/ncsi/ncsi-manage.c b/net/ncsi/ncsi-manage.c
-index 80713febfac6..d9da942ad53d 100644
---- a/net/ncsi/ncsi-manage.c
-+++ b/net/ncsi/ncsi-manage.c
-@@ -1803,8 +1803,8 @@ struct ncsi_dev *ncsi_register_dev(struct net_device *dev,
- 	pdev = to_platform_device(dev->dev.parent);
- 	if (pdev) {
- 		np = pdev->dev.of_node;
--		if (np && (of_get_property(np, "mellanox,multi-host", NULL) ||
--			   of_get_property(np, "mlx,multi-host", NULL)))
-+		if (np && (of_property_read_bool(np, "mellanox,multi-host") ||
-+			   of_property_read_bool(np, "mlx,multi-host")))
- 			ndp->mlx_multi_host = true;
- 	}
- 
--- 
-2.39.2
+>  MAINTAINERS                                   |  1 +
+>  arch/arm/boot/dts/omap2.dtsi                  |  4 ++
+>  arch/arm/boot/dts/omap2420-n8x0-common.dtsi   | 12 ++++
+
+DTS as well...
+
+>  arch/arm/mach-omap2/board-n8x0.c              | 18 -----
+>  drivers/net/wireless/intersil/p54/p54spi.c    | 69 +++++++------------
+>  drivers/net/wireless/intersil/p54/p54spi.h    |  3 +
+>  7 files changed, 109 insertions(+), 62 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/net/wireless/st,stlc45xx.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/net/wireless/st,stlc45xx.yaml b/Documentation/devicetree/bindings/net/wireless/st,stlc45xx.yaml
+> new file mode 100644
+> index 000000000000..45bc4fab409a
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/net/wireless/st,stlc45xx.yaml
+> @@ -0,0 +1,64 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/net/wireless/st,stlc45xx.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: ST/Intersil/Conexant stlc45xx/p54spi/cx3110x SPI wireless device
+> +
+> +maintainers:
+> +  - Johannes Berg <johannes@sipsolutions.net>
+> +  - Christian Lamparter <chunkeey@web.de>
+> +
+> +description: |
+
+You can drop '|'.
+
+> +  The SPI variant of the Intersil Prism54 wireless device was sold
+> +  under a variety of names, including ST Microelectronics STLC5460
+> +  and Conexant CX3110x.
+> +
+> +allOf:
+> +  - $ref: ieee80211.yaml#
+> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - st,stlc4550
+> +      - st,stlc4560
+> +      - isil,p54spi
+> +      - cnxt,3110x
+
+Order above entries by name.
+
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  power-gpios:
+
+If this is GPIO driving some power pin, then it should be
+"powerdown-gpios" (like in /bindings/gpio/gpio-consumer-common.yaml)
+
+> +    maxItems: 1
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +   gpio {
+
+Align example with above |, so four spaces. Or better indent entire
+example with four spaces.
+
+> +     gpio-controller;
+> +     #gpio-cells = <1>;
+> +     #interupt-cells = <1>;
+> +   };
+
+Drop "gpio" node. It's not needed for the example.
+
+> +   spi {
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
+> +
+> +      wifi@0 {
+> +        reg = <0>;
+> +        compatible = "st,stlc4560";
+
+compatible before reg.
+
+> +        spi-max-frequency = <48000000>;
+> +        interrupts-extended = <&gpio 23>;
+> +        power-gpios = <&gpio 1>;
+> +     };
+> +   };
+
+Best regards,
+Krzysztof
 
