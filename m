@@ -2,325 +2,250 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 665C86B9276
-	for <lists+linux-omap@lfdr.de>; Tue, 14 Mar 2023 13:00:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 287B36B9633
+	for <lists+linux-omap@lfdr.de>; Tue, 14 Mar 2023 14:29:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231706AbjCNMAl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 14 Mar 2023 08:00:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53784 "EHLO
+        id S232310AbjCNN26 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 14 Mar 2023 09:28:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231725AbjCNMAc (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 14 Mar 2023 08:00:32 -0400
-Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 972EA12CD7
-        for <linux-omap@vger.kernel.org>; Tue, 14 Mar 2023 05:00:06 -0700 (PDT)
-Received: by mail-lf1-x12c.google.com with SMTP id i28so19713887lfv.0
-        for <linux-omap@vger.kernel.org>; Tue, 14 Mar 2023 05:00:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1678795182;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ViP+MAHVi9ZX7WmXnnlEqSV44cIxrdPJm6mHwoawDgM=;
-        b=gI4K0yab0tI/hvQk5FfB96VwA8JGsKdD5yzdodVHZZBhJ+AyW7y2OZ6I5PEVxDJRxf
-         MhhthPdiQHCBjsLw6fToZxWOi8Guu19sGyaRZeeVbpGrGp9AsX71lNuxuA9DZTwetFBm
-         gJD1KS6/tFf9u4VsUHQq2RJYWNwq6g5gF1s3khcsDMS7KRNqYPo9ct03fxvUE+x/I8WW
-         5DyB14AVtnDGufYVv+m9C4Y0keOlxWS8m47QRKK+u40sjrregKT5OKShXWOppTSvqMZM
-         bmXBgBCT1aLT1BERU9nMQRzTE2jyxXGaMRphDSLM9Xcyuw4FLtXsc12JGuKc/pxsbglT
-         tIdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678795182;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ViP+MAHVi9ZX7WmXnnlEqSV44cIxrdPJm6mHwoawDgM=;
-        b=lYGQ8l3FuMIfwzWnJ1okXSdJdzP0dQLjh0Jdf3yAJmPvbvewfytKh8c+pgU3L/+f1x
-         +8gEIWpYlEK7oyDZTZEqIS8wCAaFX55BtkOeS/T1LCBXwbfxETgp88vqEEh59Fkh0EiB
-         P4MXeqyNwAX4A798rCv9w4GLdiD45Z1TC3Ey8n8/LhZV9vErI2qu7tSmlXOXxwjh7CMO
-         iQB1UsviPwxgged2pIUO0hDxlGV1eAx34jRNi52ZCExH3ZrvUjikxyL3qFwk7kGuBs1G
-         Jd6fREBL2V1hdFmiuxAksP6goBzFYEI6Ks+mWF881B6c7XX+s9/AElkp45NPSsUvi1aY
-         sv+g==
-X-Gm-Message-State: AO0yUKXikbpVFHeEYgJvXncL0kZDOIqPp8tb8O4nUI5s5XoMlR4il0tg
-        XkMnANY3y96UX1E7peRrl8iDLQ==
-X-Google-Smtp-Source: AK7set9HxJWvCWZqRUD1AUMJ2jgecIt1ciTlkSlWfUSEIAx/SP8rU0kevunAothDR/ypZkpuLAOmrg==
-X-Received: by 2002:ac2:5966:0:b0:4b6:a6e4:ab7a with SMTP id h6-20020ac25966000000b004b6a6e4ab7amr598959lfp.8.1678795182136;
-        Tue, 14 Mar 2023 04:59:42 -0700 (PDT)
-Received: from fedora.. ([85.235.12.219])
-        by smtp.gmail.com with ESMTPSA id q19-20020ac25293000000b004dc4b00a1f3sm373747lfm.253.2023.03.14.04.59.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Mar 2023 04:59:41 -0700 (PDT)
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     Lee Jones <lee@kernel.org>, Pavel Machek <pavel@ucw.cz>
-Cc:     linux-leds@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Tony Lindgren <tony@atomide.com>,
-        Felipe Balbi <balbi@kernel.org>, linux-omap@vger.kernel.org,
-        linux-gpio@vger.kernel.org
-Subject: [PATCH] leds: Delete GPIO LED trigger
-Date:   Tue, 14 Mar 2023 12:59:40 +0100
-Message-Id: <20230314115940.411939-1-linus.walleij@linaro.org>
-X-Mailer: git-send-email 2.39.2
+        with ESMTP id S232428AbjCNN2O (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 14 Mar 2023 09:28:14 -0400
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8C8F8B307;
+        Tue, 14 Mar 2023 06:25:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1678800342; x=1710336342;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=0DeveTeOTTZY6abqN216d+MpmyjSz+VWTzc+RDADd0I=;
+  b=Pom7t7R5qTtJjcwtAr5Z0/P+St8EUPJt4k66dK6rtiRF7AtLsqO/ek0p
+   6R9if7NrM6P58FocrJfzVsW8zSY6AHYOpNSnVo5Lrom2MkcQ+zRwGREWq
+   dLclwFBcauouE1LC680oE7JueuOCcc0eAVygV7kqbjbIkoC+k5G4+ouXW
+   H7yRDuzuF1nYNf1+D6m32ZWdTvB5BjvPo6cYZ8SCVVFCZ7HE16z6FEfEi
+   NtCGqokyeHIKDR7t6dR75qJAMADxCkgGBHs8GImgXimkNL5VCLgfzpe4X
+   TcpNo0soJV7uzG/2GW8mjqgjhNEyDmktQTNeI7xTG2ghWlxmQ9GClJ9MI
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10648"; a="365088126"
+X-IronPort-AV: E=Sophos;i="5.98,259,1673942400"; 
+   d="scan'208";a="365088126"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2023 06:24:29 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10648"; a="802861553"
+X-IronPort-AV: E=Sophos;i="5.98,259,1673942400"; 
+   d="scan'208";a="802861553"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga004.jf.intel.com with ESMTP; 14 Mar 2023 06:24:26 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@intel.com>)
+        id 1pc4db-003EZd-39;
+        Tue, 14 Mar 2023 15:24:23 +0200
+Date:   Tue, 14 Mar 2023 15:24:23 +0200
+From:   Andy Shevchenko <andriy.shevchenko@intel.com>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Johan Hovold <johan@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-serial@vger.kernel.org
+Subject: Re: [PATCH v7 1/1] serial: core: Start managing serial controllers
+ to enable runtime PM
+Message-ID: <ZBB1h12WHIGo4NX8@smile.fi.intel.com>
+References: <20230314073603.42279-1-tony@atomide.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230314073603.42279-1-tony@atomide.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The GPIO LED trigger exposes a userspace ABI where a user
-can echo a GPIO number from the global GPIO numberspace into
-a file that will trigger a certain LED when active.
+On Tue, Mar 14, 2023 at 09:35:59AM +0200, Tony Lindgren wrote:
+> We want to enable runtime PM for serial port device drivers in a generic
+> way. To do this, we want to have the serial core layer manage the
+> registered physical serial controller devices.
+> 
+> To do this, let's set up a struct bus and struct device for the serial
+> core controller as suggested by Greg and Jiri. The serial core controller
+> devices are children of the physical serial port device. The serial core
+> controller device is needed to support multiple different kind of ports
+> connected to single physical serial port device.
+> 
+> Let's also set up a struct device for the serial core port. The serial
+> core port instances are children of the serial core controller device.
 
-This is problematic because the global GPIO numberspace is
-inherently instable. The trigger came about at a time when
-systems had one GPIO controller that defined hard-wired
-GPIOs numbered 0..N and this number space was stable.
+> We need to also update the documentation a bit as suggested by Andy.
 
-We have since moved to dynamic allocation of GPIO numbers
-and there is no real guarantee that a GPIO number will stay
-consistent even across a reboot: consider a USB attached
-GPIO controller for example. Or two. Or the effect of
-probe order after adding -EPROBE_DEFER to the kernel.
+Now this can be moved to the comments section (below '---' cutter)
+with perhaps addition why it's not done yet.
 
-The trigger was added to support keypad LEDs on the Nokia
-n810 from the GPIO event when a user slides up/down the
-keypad. This is arch/arm/boot/dts/omap2420-n810.dts.
-A userspace script is needed to activate the trigger.
+> With the serial core port device we can now flush pending TX on the
 
-I want to know that this trigger has active users that
-cannot live without it if we are to continue to support it.
-Otherwise: delete it.
+...
 
-As second option: I can develop a new trigger that can associate
-GPIOs with LEDs as triggers using device tree, which should
-also remove the use of userspace custom scripts to achieve
-this and be much more trustworthy, if someone with the Nokia
-n810 or a device with a similar need is willing to test it.
+> +	return (strncmp(dev_name(dev), drv->name, len) == 0);
 
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Tony Lindgren <tony@atomide.com>
-Cc: Felipe Balbi <balbi@kernel.org>
-Cc: linux-omap@vger.kernel.org
-Cc: linux-gpio@vger.kernel.org
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
----
- drivers/leds/trigger/ledtrig-gpio.c | 202 ----------------------------
- 1 file changed, 202 deletions(-)
- delete mode 100644 drivers/leds/trigger/ledtrig-gpio.c
+Outer parentheses are redundant. The ' == 0' can be replaced with !,
+but it's up to you.
 
-diff --git a/drivers/leds/trigger/ledtrig-gpio.c b/drivers/leds/trigger/ledtrig-gpio.c
-deleted file mode 100644
-index 0120faa3dafa..000000000000
---- a/drivers/leds/trigger/ledtrig-gpio.c
-+++ /dev/null
-@@ -1,202 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-only
--/*
-- * ledtrig-gio.c - LED Trigger Based on GPIO events
-- *
-- * Copyright 2009 Felipe Balbi <me@felipebalbi.com>
-- */
--
--#include <linux/module.h>
--#include <linux/kernel.h>
--#include <linux/init.h>
--#include <linux/gpio.h>
--#include <linux/interrupt.h>
--#include <linux/leds.h>
--#include <linux/slab.h>
--#include "../leds.h"
--
--struct gpio_trig_data {
--	struct led_classdev *led;
--
--	unsigned desired_brightness;	/* desired brightness when led is on */
--	unsigned inverted;		/* true when gpio is inverted */
--	unsigned gpio;			/* gpio that triggers the leds */
--};
--
--static irqreturn_t gpio_trig_irq(int irq, void *_led)
--{
--	struct led_classdev *led = _led;
--	struct gpio_trig_data *gpio_data = led_get_trigger_data(led);
--	int tmp;
--
--	tmp = gpio_get_value_cansleep(gpio_data->gpio);
--	if (gpio_data->inverted)
--		tmp = !tmp;
--
--	if (tmp) {
--		if (gpio_data->desired_brightness)
--			led_set_brightness_nosleep(gpio_data->led,
--					   gpio_data->desired_brightness);
--		else
--			led_set_brightness_nosleep(gpio_data->led, LED_FULL);
--	} else {
--		led_set_brightness_nosleep(gpio_data->led, LED_OFF);
--	}
--
--	return IRQ_HANDLED;
--}
--
--static ssize_t gpio_trig_brightness_show(struct device *dev,
--		struct device_attribute *attr, char *buf)
--{
--	struct gpio_trig_data *gpio_data = led_trigger_get_drvdata(dev);
--
--	return sprintf(buf, "%u\n", gpio_data->desired_brightness);
--}
--
--static ssize_t gpio_trig_brightness_store(struct device *dev,
--		struct device_attribute *attr, const char *buf, size_t n)
--{
--	struct gpio_trig_data *gpio_data = led_trigger_get_drvdata(dev);
--	unsigned desired_brightness;
--	int ret;
--
--	ret = sscanf(buf, "%u", &desired_brightness);
--	if (ret < 1 || desired_brightness > 255) {
--		dev_err(dev, "invalid value\n");
--		return -EINVAL;
--	}
--
--	gpio_data->desired_brightness = desired_brightness;
--
--	return n;
--}
--static DEVICE_ATTR(desired_brightness, 0644, gpio_trig_brightness_show,
--		gpio_trig_brightness_store);
--
--static ssize_t gpio_trig_inverted_show(struct device *dev,
--		struct device_attribute *attr, char *buf)
--{
--	struct gpio_trig_data *gpio_data = led_trigger_get_drvdata(dev);
--
--	return sprintf(buf, "%u\n", gpio_data->inverted);
--}
--
--static ssize_t gpio_trig_inverted_store(struct device *dev,
--		struct device_attribute *attr, const char *buf, size_t n)
--{
--	struct led_classdev *led = led_trigger_get_led(dev);
--	struct gpio_trig_data *gpio_data = led_trigger_get_drvdata(dev);
--	unsigned long inverted;
--	int ret;
--
--	ret = kstrtoul(buf, 10, &inverted);
--	if (ret < 0)
--		return ret;
--
--	if (inverted > 1)
--		return -EINVAL;
--
--	gpio_data->inverted = inverted;
--
--	/* After inverting, we need to update the LED. */
--	if (gpio_is_valid(gpio_data->gpio))
--		gpio_trig_irq(0, led);
--
--	return n;
--}
--static DEVICE_ATTR(inverted, 0644, gpio_trig_inverted_show,
--		gpio_trig_inverted_store);
--
--static ssize_t gpio_trig_gpio_show(struct device *dev,
--		struct device_attribute *attr, char *buf)
--{
--	struct gpio_trig_data *gpio_data = led_trigger_get_drvdata(dev);
--
--	return sprintf(buf, "%u\n", gpio_data->gpio);
--}
--
--static ssize_t gpio_trig_gpio_store(struct device *dev,
--		struct device_attribute *attr, const char *buf, size_t n)
--{
--	struct led_classdev *led = led_trigger_get_led(dev);
--	struct gpio_trig_data *gpio_data = led_trigger_get_drvdata(dev);
--	unsigned gpio;
--	int ret;
--
--	ret = sscanf(buf, "%u", &gpio);
--	if (ret < 1) {
--		dev_err(dev, "couldn't read gpio number\n");
--		return -EINVAL;
--	}
--
--	if (gpio_data->gpio == gpio)
--		return n;
--
--	if (!gpio_is_valid(gpio)) {
--		if (gpio_is_valid(gpio_data->gpio))
--			free_irq(gpio_to_irq(gpio_data->gpio), led);
--		gpio_data->gpio = gpio;
--		return n;
--	}
--
--	ret = request_threaded_irq(gpio_to_irq(gpio), NULL, gpio_trig_irq,
--			IRQF_ONESHOT | IRQF_SHARED | IRQF_TRIGGER_RISING
--			| IRQF_TRIGGER_FALLING, "ledtrig-gpio", led);
--	if (ret) {
--		dev_err(dev, "request_irq failed with error %d\n", ret);
--	} else {
--		if (gpio_is_valid(gpio_data->gpio))
--			free_irq(gpio_to_irq(gpio_data->gpio), led);
--		gpio_data->gpio = gpio;
--		/* After changing the GPIO, we need to update the LED. */
--		gpio_trig_irq(0, led);
--	}
--
--	return ret ? ret : n;
--}
--static DEVICE_ATTR(gpio, 0644, gpio_trig_gpio_show, gpio_trig_gpio_store);
--
--static struct attribute *gpio_trig_attrs[] = {
--	&dev_attr_desired_brightness.attr,
--	&dev_attr_inverted.attr,
--	&dev_attr_gpio.attr,
--	NULL
--};
--ATTRIBUTE_GROUPS(gpio_trig);
--
--static int gpio_trig_activate(struct led_classdev *led)
--{
--	struct gpio_trig_data *gpio_data;
--
--	gpio_data = kzalloc(sizeof(*gpio_data), GFP_KERNEL);
--	if (!gpio_data)
--		return -ENOMEM;
--
--	gpio_data->led = led;
--	gpio_data->gpio = -ENOENT;
--
--	led_set_trigger_data(led, gpio_data);
--
--	return 0;
--}
--
--static void gpio_trig_deactivate(struct led_classdev *led)
--{
--	struct gpio_trig_data *gpio_data = led_get_trigger_data(led);
--
--	if (gpio_is_valid(gpio_data->gpio))
--		free_irq(gpio_to_irq(gpio_data->gpio), led);
--	kfree(gpio_data);
--}
--
--static struct led_trigger gpio_led_trigger = {
--	.name		= "gpio",
--	.activate	= gpio_trig_activate,
--	.deactivate	= gpio_trig_deactivate,
--	.groups		= gpio_trig_groups,
--};
--module_led_trigger(gpio_led_trigger);
--
--MODULE_AUTHOR("Felipe Balbi <me@felipebalbi.com>");
--MODULE_DESCRIPTION("GPIO LED trigger");
--MODULE_LICENSE("GPL v2");
+...
+
+> +struct serial_base_device *serial_base_device_add(struct uart_port *port,
+> +						  const char *name,
+> +						  struct device *parent_dev)
+> +{
+> +	struct serial_base_device *dev;
+
+Can we call this variable (and perhaps everywhere else) like sbd, or sbdev?
+
+This will help to distinguish core device operations and serial one, because,
+for example, I have stumbled over kfree(dev) and puzzled a lot.
+
+> +	int err, id;
+> +
+> +	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
+> +	if (!dev)
+> +		return NULL;
+> +
+> +	device_initialize(&dev->dev);
+> +	dev->dev.parent = parent_dev;
+> +	dev->dev.bus = &serial_base_bus_type;
+
+Who should provide a ->release() callback?
+
+> +	if (str_has_prefix(name, "ctrl")) {
+> +		id = port->ctrl_id;
+> +	} else {
+> +		id = port->line;
+> +		dev->port = port;
+> +	}
+> +
+> +	err = dev_set_name(&dev->dev, "%s.%s.%d", name, dev_name(port->dev), id);
+> +	if (err)
+> +		goto err_free_dev;
+> +
+> +	err = device_add(&dev->dev);
+> +	if (err)
+> +		goto err_free_name;
+> +
+> +	return dev;
+> +
+> +err_free_name:
+> +	kfree_const(dev->dev.kobj.name);
+
+It's still missing put_device() call as suggested by device_add() kernel
+documentation. (Double) check also the removal path.
+
+> +err_free_dev:
+> +	kfree(dev);
+
+> +	return NULL;
+> +}
+
+...
+
+> +struct device;
+
+Since you are embedding the device object this won't suffice,
+you need to include device.h.
+
+> +struct uart_driver;
+> +struct uart_port;
+> +
+> +struct serial_base_device {
+> +	struct device dev;
+> +	struct uart_port *port;
+> +};
+> +
+> +#define to_serial_base_device(x) container_of((x), struct serial_base_device, dev)
+
+container_of.h
+
+...
+
+> +	/* Increment the runtime PM usage count for the active check below */
+> +	err = pm_runtime_get(port_dev);
+
+The question here is why don't we need to actually turn on the device immediately
+(sync) if it's not already powered?
+
+> +	if (err < 0) {
+> +		pm_runtime_put_noidle(port_dev);
+> +		return;
+> +	}
+
+> +	/*
+> +	 * Start TX if enabled, and kick runtime PM. Otherwise we must
+> +	 * wait for a retry. See also serial_port.c for runtime PM
+> +	 * autosuspend timeout.
+> +	 */
+
+I.o.w. does the start_tx() require device to be powered on at this point?
+
+> +	if (pm_runtime_active(port_dev))
+>  		port->ops->start_tx(port);
+> +	pm_runtime_mark_last_busy(port_dev);
+> +	pm_runtime_put_autosuspend(port_dev);
+
+...
+
+> +++ b/drivers/tty/serial/serial_ctrl.c
+> @@ -0,0 +1,69 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +
+> +/*
+> + * Serial core controller driver
+> + *
+> + * This driver manages the serial core controller struct device instances.
+> + * The serial core controller devices are children of the physical serial
+> + * port device.
+> + */
+> +
+> +#include <linux/module.h>
+> +#include <linux/pm_runtime.h>
+> +#include <linux/serial_core.h>
+
+Include for the struct device_driver?
+
+Do we need a separete include for EXPORT_SYMBOL_NS()?
+
+...
+
+> +/*
+> + * Serial core port device driver
+> + */
+> +#include <linux/module.h>
+> +#include <linux/pm_runtime.h>
+> +#include <linux/serial_core.h>
+
+Similar questions.
+
++ spinlock.h?
+
+...
+
+> +static __maybe_unused DEFINE_RUNTIME_DEV_PM_OPS(serial_port_pm,
+
+Do you still need __maybe_unused?
+
+> +						NULL,
+> +						serial_port_runtime_resume,
+> +						NULL);
+
 -- 
-2.39.2
+With Best Regards,
+Andy Shevchenko
+
 
