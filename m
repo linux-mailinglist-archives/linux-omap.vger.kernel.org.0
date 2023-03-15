@@ -2,184 +2,100 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D80816BA193
-	for <lists+linux-omap@lfdr.de>; Tue, 14 Mar 2023 22:50:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EBDA26BA725
+	for <lists+linux-omap@lfdr.de>; Wed, 15 Mar 2023 06:33:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230113AbjCNVuy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 14 Mar 2023 17:50:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42836 "EHLO
+        id S231234AbjCOFdn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 15 Mar 2023 01:33:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229666AbjCNVux (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 14 Mar 2023 17:50:53 -0400
-X-Greylist: delayed 598 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 14 Mar 2023 14:50:52 PDT
-Received: from wnew3-smtp.messagingengine.com (wnew3-smtp.messagingengine.com [64.147.123.17])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4A7051F9B;
-        Tue, 14 Mar 2023 14:50:52 -0700 (PDT)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-        by mailnew.west.internal (Postfix) with ESMTP id 4D0D92B06998;
-        Tue, 14 Mar 2023 17:40:49 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute6.internal (MEProxy); Tue, 14 Mar 2023 17:40:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-        :cc:content-type:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm1; t=1678830048; x=1678837248; bh=5b
-        KacenUJfm/nP5sO5Oy+iL59bFvwd5SQ5iWdLqSo4g=; b=YqOtIxPA+cenlSXmEi
-        oE/uy4NZjAva5jR+QabiGcAlnZf+GRYmdaLPuezreOWpGLeK+79HKWs5ovQI73Qy
-        /ZdzNjiELcZ0Khc7tQThlji9o9aFMFZDN1xjHPZogp5+qVudhvyJBfye7KCv95DC
-        DA+WVurirmQ/hdAM0KmQ78F7b431AfMs4xX720iKXEh57fiNLCmqxob4UQcj2k6h
-        jxK1y4kfRwDcGvPtfoUOWFPfquGeblyJ65toUwiq++c0GqUijdGGcCvvfFmFojtj
-        cotFBBTH/22V7ya8bJJ9JJtgDzbHMwh+fxM74Qt+tT6qeY7BgHaDdR8gfXi7o+u7
-        cBmA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm2; t=1678830048; x=1678837248; bh=5bKacenUJfm/n
-        P5sO5Oy+iL59bFvwd5SQ5iWdLqSo4g=; b=qRxUZQAmpg5QJcl9WX1S5CgDDmK0M
-        cxCVreIPFl1JJRODX1xb4GquKGhrsmBy8O3olaVB7KlQESzM3cVmXuskNOSzrJgb
-        S9Z/B0JQlGb/YhDjY6VSdF3E7DN7H8owbH4HUBBtrRMBp0Ci08hhEUZ1kAaHAIJo
-        2rAf9fiTU90Hmiwbr7F6C//na42jhy/xR4LsZ++HpA3R8ebSlyb4Qyw7G/orPVMs
-        hguqbgIDqFeARu2762LQbprGfPc9ZG2DT+9203hBJLU4YqnS6GNsG9bFadE/oE8H
-        iZdZR5j5H7MH9/gW7rq4twT0rf+5+NOOUpu+sl9kcfPGS9xI9Mn5oTS9A==
-X-ME-Sender: <xms:3-kQZJXFQJHQkta4QvilzNqcOzjithYjaaFBh78TLVaLM_y9qNiIFQ>
-    <xme:3-kQZJkaaq3elsxKt3gPqWaNSR6jxEhGj-_9oZoVjaPEHGPycq4VASFWz9afPRKcc
-    bbAEfPxyGdTyozlP8A>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvddviedgudehhecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdet
-    rhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrg
-    htthgvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedt
-    keetffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    grrhhnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:3-kQZFYhf1TsT3pLLX6NZmaCfIf3H5wp84LFusnJJ-Pp3lKSQxYTcw>
-    <xmx:3-kQZMXhP8b3Tp_w9haN4FT9huU5zgBLyGlGmPBxE4InX9Bagld48g>
-    <xmx:3-kQZDnj6QFV9Xb2HDYBWc7nJILXRyYWy5rv6CJdxk0EcLsKHxZxpA>
-    <xmx:4OkQZBFL9QqWRkq4JlCzjiqgfKAqW_oC1iZCdZn2Rj279g00Z1zyPhldr-E>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 5FE61B60089; Tue, 14 Mar 2023 17:40:47 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-221-gec32977366-fm-20230306.001-gec329773
-Mime-Version: 1.0
-Message-Id: <e19fd8bc-5944-409d-a4a1-3a3d53691634@app.fastmail.com>
-In-Reply-To: <4ac809d2-3924-3839-479f-0b4be9f18a1f@linaro.org>
-References: <20230314163201.955689-1-arnd@kernel.org>
- <4ac809d2-3924-3839-479f-0b4be9f18a1f@linaro.org>
-Date:   Tue, 14 Mar 2023 22:40:26 +0100
-From:   "Arnd Bergmann" <arnd@arndb.de>
-To:     "Krzysztof Kozlowski" <krzysztof.kozlowski@linaro.org>,
-        "Arnd Bergmann" <arnd@kernel.org>,
-        "Christian Lamparter" <chunkeey@googlemail.com>,
-        "Kalle Valo" <kvalo@kernel.org>
-Cc:     "Linus Walleij" <linus.walleij@linaro.org>,
-        "Bartosz Golaszewski" <brgl@bgdev.pl>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        "Tony Lindgren" <tony@atomide.com>,
-        "Aaro Koskinen" <aaro.koskinen@iki.fi>,
-        "Felipe Balbi" <balbi@kernel.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        "Eric Dumazet" <edumazet@google.com>,
-        "Jakub Kicinski" <kuba@kernel.org>,
-        "Paolo Abeni" <pabeni@redhat.com>,
-        "Rob Herring" <robh+dt@kernel.org>,
-        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
-        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
-        "Russell King" <linux@armlinux.org.uk>,
-        "Dmitry Torokhov" <dmitry.torokhov@gmail.com>,
-        "Johannes Berg" <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org, Netdev <netdev@vger.kernel.org>,
+        with ESMTP id S231220AbjCOFdm (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 15 Mar 2023 01:33:42 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8102D2411F;
+        Tue, 14 Mar 2023 22:33:11 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 149B261AA3;
+        Wed, 15 Mar 2023 05:33:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21124C433D2;
+        Wed, 15 Mar 2023 05:33:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1678858385;
+        bh=JDBgkW5qQtTPm1yWAp51l+ZgG0AKs3eXBoW5HnCX/MA=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=kbwOpU7JF4hU5h6xcfj11Qgfvtpqh5mMi0uUMmOwi5tvKTgG5FeQrIbm3ZObMJxOi
+         Pd2OV69aatTDB3f705BKz/UIy6hUMExg9s86PkTCcSSvedmKica8rkCf5WBZ4tTbUI
+         04OSFs0GXPMawq6acf4ZOGnSk2edfAM2m2YfJPuRDfaWSn+aiWfrPmvYeFVnygwxkh
+         Fm8ASG9bTzGUiGqnDrCFHYTTyvaNl4fA/j57alcPP9QxEwPXj9p/obP3lGfpvLBmxD
+         qtwCkSPnTIIN5ZyOHbjrPmc4NdUgLmKTP9oek3xHkwWId/JdNWaPYqzbu2RvfDGsZ2
+         Dqe2eGY1KWRjQ==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Christian Lamparter <chunkeey@gmail.com>
+Cc:     Arnd Bergmann <arnd@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        linux-gpio@vger.kernel.org, linux-omap@vger.kernel.org,
+        Tony Lindgren <tony@atomide.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Felipe Balbi <balbi@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org
 Subject: Re: [PATCH] p54spi: convert to devicetree
+References: <20230314163201.955689-1-arnd@kernel.org>
+        <e8dc9acb-6f85-e0a9-a145-d101ca6da201@gmail.com>
+Date:   Wed, 15 Mar 2023 07:32:57 +0200
+In-Reply-To: <e8dc9acb-6f85-e0a9-a145-d101ca6da201@gmail.com> (Christian
+        Lamparter's message of "Tue, 14 Mar 2023 21:18:55 +0100")
+Message-ID: <87jzziwpdi.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+MIME-Version: 1.0
 Content-Type: text/plain
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
-        SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, Mar 14, 2023, at 20:57, Krzysztof Kozlowski wrote:
-> On 14/03/2023 17:30, Arnd Bergmann wrote:
+Christian Lamparter <chunkeey@gmail.com> writes:
+
+> Hi,
 >
-> Please split bindings to separate patch.
+> On 3/14/23 17:30, Arnd Bergmann wrote:
+>> The Prism54 SPI driver hardcodes GPIO numbers and expects users to
+>> pass them as module parameters, apparently a relic from its life as a
+>> staging driver. This works because there is only one user, the Nokia
+>> N8x0 tablet.
+>>
+>> Convert this to the gpio descriptor interface and move the gpio
+>> line information into devicetree to improve this and simplify the
+>> code at the same time.
 >
->>  MAINTAINERS                                   |  1 +
->>  arch/arm/boot/dts/omap2.dtsi                  |  4 ++
->>  arch/arm/boot/dts/omap2420-n8x0-common.dtsi   | 12 ++++
->
-> DTS as well...
+> Yes, this is definitely the right idea/way. From what I remember, Kalle
+> Valo was partially involved in p54spi/stlc45xx. The details are very fuzzy.
+> So,  I could be totally wrong. From what I remember Kalle was working
+> for Nokia (or as a contractor for Nokia?) at the time.
 
-ok
+I wrote stlc45xx driver as part of my thesis when working for Nokia and
+I think then someone wrote p54spi after that. Oh man, this was a long
+time ago so hard to remember :)
 
->> +maintainers:
->> +  - Johannes Berg <johannes@sipsolutions.net>
->> +  - Christian Lamparter <chunkeey@web.de>
->> +
->> +description: |
->
-> You can drop '|'.
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-ok
-
->> +properties:
->> +  compatible:
->> +    enum:
->> +      - st,stlc4550
->> +      - st,stlc4560
->> +      - isil,p54spi
->> +      - cnxt,3110x
->
-> Order above entries by name.
-
-ok
-
->> +
->> +  power-gpios:
->
-> If this is GPIO driving some power pin, then it should be
-> "powerdown-gpios" (like in /bindings/gpio/gpio-consumer-common.yaml)
-
-As far as I can tell, it's the opposite: the gpio turns the power on
-in 'high' state. I could make it GPIO_ACTIVE_LOW and call it powerdown,
-if you think that's better, but I don't think that is how it was
-meant.
-
->> +examples:
->> +  - |
->> +   gpio {
->
-> Align example with above |, so four spaces. Or better indent entire
-> example with four spaces.
-
-Ok, that makes it much more readable.
-
->> +     gpio-controller;
->> +     #gpio-cells = <1>;
->> +     #interupt-cells = <1>;
->> +   };
->
-> Drop "gpio" node. It's not needed for the example.
-
-ok.
-
->> +   spi {
->> +      #address-cells = <1>;
->> +      #size-cells = <0>;
->> +
->> +      wifi@0 {
->> +        reg = <0>;
->> +        compatible = "st,stlc4560";
->
-> compatible before reg.
-
-ok.
-
-       Arnd
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
