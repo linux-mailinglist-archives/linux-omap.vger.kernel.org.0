@@ -2,119 +2,250 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BFAEA6BABD2
-	for <lists+linux-omap@lfdr.de>; Wed, 15 Mar 2023 10:13:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EBD26BAFEA
+	for <lists+linux-omap@lfdr.de>; Wed, 15 Mar 2023 13:08:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232017AbjCOJN0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 15 Mar 2023 05:13:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35866 "EHLO
+        id S231465AbjCOMIW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 15 Mar 2023 08:08:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231475AbjCOJNK (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 15 Mar 2023 05:13:10 -0400
-Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E87C844A9
-        for <linux-omap@vger.kernel.org>; Wed, 15 Mar 2023 02:12:50 -0700 (PDT)
-Received: by mail-wr1-x42a.google.com with SMTP id p4so10418879wre.11
-        for <linux-omap@vger.kernel.org>; Wed, 15 Mar 2023 02:12:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1678871569;
-        h=content-transfer-encoding:in-reply-to:organization:from:references
-         :to:content-language:subject:reply-to:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=8eWJAVwfdAMUCwI3o2WJJsF7HeRR9gB8W1OrllJjb5o=;
-        b=XzSmAIL6WPDc9unS6StGpnGGh/CGMJ8Wy8hZjsWSd8gRTPzMl4yLkyH89Z+NjNNOEE
-         /Zl4VkWXiNeVyyMGC7M7hiIBT32VcDKSLy3AiNF1yo1y17rrs6Q98cNSLWgczakKjRen
-         nr+onVKwv62YRyFi0/Ar2V62oOKd932RzGtYRliH1EwMglxP5NqYCJwxiWMCjhIRnRog
-         2R4k6Q7byMQpvMmJkzinKqrxYlBIs2v9GCUanWcefXQXQ8MJEjRntl+eLd6HQc/jPsgZ
-         n2XpIhHApTZItuwQB5/c5PwtrzQI3mSIHqoIDWaieiCE+5NREvvA69rUWPdAieBmH6G8
-         8Huw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678871569;
-        h=content-transfer-encoding:in-reply-to:organization:from:references
-         :to:content-language:subject:reply-to:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8eWJAVwfdAMUCwI3o2WJJsF7HeRR9gB8W1OrllJjb5o=;
-        b=3D+u9wfx6brc/cbq8mAIs5CBU1HZyvfpw6JKLp0xZ/AAyjke7GTwphz7qQoCSieo0D
-         vZjbpEK1hbF3NwaWdCrgY9yivzYNXOpfAGia31+bGO8HULja+YSQuRWFXiqPfNV1yjxH
-         3v2E7OcLnEs5XuYoZAfhQV5epZNn6j7VwscWuMubV3zKhj3vajb6Hmfz00O+6tRVedyQ
-         ork04xyY6a/BzLrOgnTkaJli4ezipHCsqXGo2bL8/f1H64wj9vhgRW4cOGhMfbK2PzYD
-         paZ3fQoodQ1lsDiXBXd+zv7gDzB3OGQ7R+iCjBj2C3oGQw2snRqXgm3lw+vyWHa+E4Lr
-         KJvQ==
-X-Gm-Message-State: AO0yUKXPwXQgpcw1Wl6Ocnir6eZ8UA7oaNz1Gn8y+Uq26oEqXgkFPn2V
-        2WoCaFvO92P2xtuq4jSoBFQx0Q==
-X-Google-Smtp-Source: AK7set+eEbACpzLETf5+yoKzRbTbJU8SVnRF6TSezwW6SQk2wIN2YnBbU8HXUTnpArYwaQ5lSXadsw==
-X-Received: by 2002:a5d:4c8e:0:b0:2cf:e710:a4b9 with SMTP id z14-20020a5d4c8e000000b002cfe710a4b9mr1357985wrs.32.1678871569378;
-        Wed, 15 Mar 2023 02:12:49 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:982:cbb0:5d2d:8427:397b:8fe7? ([2a01:e0a:982:cbb0:5d2d:8427:397b:8fe7])
-        by smtp.gmail.com with ESMTPSA id n4-20020a5d6b84000000b002cfe685bfd6sm4027654wrx.108.2023.03.15.02.12.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 15 Mar 2023 02:12:48 -0700 (PDT)
-Message-ID: <f4801f1d-cd6a-2a3f-155c-e72d3d28da30@linaro.org>
-Date:   Wed, 15 Mar 2023 10:12:47 +0100
+        with ESMTP id S229734AbjCOMIV (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 15 Mar 2023 08:08:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8331C2E0D8;
+        Wed, 15 Mar 2023 05:07:42 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 48A1361D42;
+        Wed, 15 Mar 2023 12:07:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CEC6C433D2;
+        Wed, 15 Mar 2023 12:07:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1678882054;
+        bh=sgmMmhvI0/Dp036Wgs1Ke6kgrXhU8+5SUe5lgi+/8DQ=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=kOhvlL35CAXqoue/F//cqZTBdbupgess90uesi0SzcucA8PEEFs17WFmB23hpbz8t
+         aJ5LLChtZcDOZtUlOEgQJE6//7e42C5UovnJpJQ4PvO4F9n8qFUqes+2LBWfamj9lP
+         YzkxopUOMxJEOKnEEKcP+y/DjcMOdyQ912a9V6ML62WjjXvBEOH3zLj39bLzbiDY8y
+         v67ScRVM6LSQeIzsR9/PbgfOWfyCSIsEi5yulvbLg8uDA9w3A/HXOIvLr0VFBTbZQF
+         S+QwbJ9Esokxt58NExYSQF5zlnQHoGcKqzMODj9hsV+y63syqf5mabdpr9Xl8hWC3i
+         LKtecIye54+3A==
+Message-ID: <91481d4f-2005-7b33-d3be-df09b7d27ef6@kernel.org>
+Date:   Wed, 15 Mar 2023 14:07:28 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.8.0
-Reply-To: neil.armstrong@linaro.org
-Subject: Re: [PATCH 7/9] regulator: rpi-panel-attiny: Drop of_match_ptr for ID
- table
-Content-Language: en-US
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Andy Gross <agross@kernel.org>,
+Subject: Re: [PATCH v4 3/5] soc: ti: pruss: Add pruss_cfg_read()/update() API
+To:     MD Danish Anwar <danishanwar@ti.com>,
+        "Andrew F. Davis" <afd@ti.com>, Suman Anna <s-anna@ti.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org
-References: <20230310214553.275450-1-krzysztof.kozlowski@linaro.org>
- <20230310214553.275450-7-krzysztof.kozlowski@linaro.org>
-From:   Neil Armstrong <neil.armstrong@linaro.org>
-Organization: Linaro Developer Services
-In-Reply-To: <20230310214553.275450-7-krzysztof.kozlowski@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Nishanth Menon <nm@ti.com>
+Cc:     linux-remoteproc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, srk@ti.com, devicetree@vger.kernel.org,
+        netdev@vger.kernel.org
+References: <20230313111127.1229187-1-danishanwar@ti.com>
+ <20230313111127.1229187-4-danishanwar@ti.com>
+Content-Language: en-US
+From:   Roger Quadros <rogerq@kernel.org>
+In-Reply-To: <20230313111127.1229187-4-danishanwar@ti.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 10/03/2023 22:45, Krzysztof Kozlowski wrote:
-> The driver can match only via the DT table so the table should be always
-> used and the of_match_ptr does not have any sense (this also allows ACPI
-> matching via PRP0001, even though it is not relevant here).
+Danish,
+
+On 13/03/2023 13:11, MD Danish Anwar wrote:
+> From: Suman Anna <s-anna@ti.com>
 > 
->    drivers/regulator/rpi-panel-attiny-regulator.c:390:34: error: ‘attiny_dt_ids’ defined but not used [-Werror=unused-const-variable=]
+> Add two new generic API pruss_cfg_read() and pruss_cfg_update() to
+> the PRUSS platform driver to read and program respectively a register
+> within the PRUSS CFG sub-module represented by a syscon driver.
 > 
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> These APIs are internal to PRUSS driver. Various useful registers
+> and macros for certain register bit-fields and their values have also
+> been added.
+> 
+> Signed-off-by: Suman Anna <s-anna@ti.com>
+> Co-developed-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
+> Signed-off-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
+> Signed-off-by: Puranjay Mohan <p-mohan@ti.com>
+> Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
 > ---
->   drivers/regulator/rpi-panel-attiny-regulator.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/soc/ti/pruss.c           | 39 ++++++++++++++
+>  include/linux/remoteproc/pruss.h | 87 ++++++++++++++++++++++++++++++++
+>  2 files changed, 126 insertions(+)
 > 
-> diff --git a/drivers/regulator/rpi-panel-attiny-regulator.c b/drivers/regulator/rpi-panel-attiny-regulator.c
-> index 34514976475e..3953fc1f389f 100644
-> --- a/drivers/regulator/rpi-panel-attiny-regulator.c
-> +++ b/drivers/regulator/rpi-panel-attiny-regulator.c
-> @@ -396,7 +396,7 @@ MODULE_DEVICE_TABLE(of, attiny_dt_ids);
->   static struct i2c_driver attiny_regulator_driver = {
->   	.driver = {
->   		.name = "rpi_touchscreen_attiny",
-> -		.of_match_table = of_match_ptr(attiny_dt_ids),
-> +		.of_match_table = attiny_dt_ids,
->   	},
->   	.probe_new = attiny_i2c_probe,
->   	.remove	= attiny_i2c_remove,
+> diff --git a/drivers/soc/ti/pruss.c b/drivers/soc/ti/pruss.c
+> index c8053c0d735f..26d8129b515c 100644
+> --- a/drivers/soc/ti/pruss.c
+> +++ b/drivers/soc/ti/pruss.c
+> @@ -164,6 +164,45 @@ int pruss_release_mem_region(struct pruss *pruss,
+>  }
+>  EXPORT_SYMBOL_GPL(pruss_release_mem_region);
+>  
+> +/**
+> + * pruss_cfg_read() - read a PRUSS CFG sub-module register
+> + * @pruss: the pruss instance handle
+> + * @reg: register offset within the CFG sub-module
+> + * @val: pointer to return the value in
+> + *
+> + * Reads a given register within the PRUSS CFG sub-module and
+> + * returns it through the passed-in @val pointer
+> + *
+> + * Return: 0 on success, or an error code otherwise
+> + */
+> +static int pruss_cfg_read(struct pruss *pruss, unsigned int reg, unsigned int *val)
+> +{
+> +	if (IS_ERR_OR_NULL(pruss))
+> +		return -EINVAL;
+> +
+> +	return regmap_read(pruss->cfg_regmap, reg, val);
+> +}
+> +
+> +/**
+> + * pruss_cfg_update() - configure a PRUSS CFG sub-module register
+> + * @pruss: the pruss instance handle
+> + * @reg: register offset within the CFG sub-module
+> + * @mask: bit mask to use for programming the @val
+> + * @val: value to write
+> + *
+> + * Programs a given register within the PRUSS CFG sub-module
+> + *
+> + * Return: 0 on success, or an error code otherwise
+> + */
+> +static int pruss_cfg_update(struct pruss *pruss, unsigned int reg,
+> +			    unsigned int mask, unsigned int val)
+> +{
+> +	if (IS_ERR_OR_NULL(pruss))
+> +		return -EINVAL;
+> +
+> +	return regmap_update_bits(pruss->cfg_regmap, reg, mask, val);
+> +}
+> +
+>  static void pruss_of_free_clk_provider(void *data)
+>  {
+>  	struct device_node *clk_mux_np = data;
+> diff --git a/include/linux/remoteproc/pruss.h b/include/linux/remoteproc/pruss.h
+> index 33f930e0a0ce..12ef10b9fe9a 100644
+> --- a/include/linux/remoteproc/pruss.h
+> +++ b/include/linux/remoteproc/pruss.h
+> @@ -10,12 +10,99 @@
+>  #ifndef __LINUX_PRUSS_H
+>  #define __LINUX_PRUSS_H
+>  
+> +#include <linux/bits.h>
+>  #include <linux/device.h>
+>  #include <linux/err.h>
+>  #include <linux/types.h>
+>  
+>  #define PRU_RPROC_DRVNAME "pru-rproc"
+>  
+> +/*
+> + * PRU_ICSS_CFG registers
+> + * SYSCFG, ISRP, ISP, IESP, IECP, SCRP applicable on AMxxxx devices only
+> + */
+> +#define PRUSS_CFG_REVID		0x00
+> +#define PRUSS_CFG_SYSCFG	0x04
+> +#define PRUSS_CFG_GPCFG(x)	(0x08 + (x) * 4)
+> +#define PRUSS_CFG_CGR		0x10
+> +#define PRUSS_CFG_ISRP		0x14
+> +#define PRUSS_CFG_ISP		0x18
+> +#define PRUSS_CFG_IESP		0x1C
+> +#define PRUSS_CFG_IECP		0x20
+> +#define PRUSS_CFG_SCRP		0x24
+> +#define PRUSS_CFG_PMAO		0x28
+> +#define PRUSS_CFG_MII_RT	0x2C
+> +#define PRUSS_CFG_IEPCLK	0x30
+> +#define PRUSS_CFG_SPP		0x34
+> +#define PRUSS_CFG_PIN_MX	0x40
+> +
+> +/* PRUSS_GPCFG register bits */
+> +#define PRUSS_GPCFG_PRU_GPO_SH_SEL		BIT(25)
+> +
+> +#define PRUSS_GPCFG_PRU_DIV1_SHIFT		20
+> +#define PRUSS_GPCFG_PRU_DIV1_MASK		GENMASK(24, 20)
+> +
+> +#define PRUSS_GPCFG_PRU_DIV0_SHIFT		15
+> +#define PRUSS_GPCFG_PRU_DIV0_MASK		GENMASK(15, 19)
+> +
+> +#define PRUSS_GPCFG_PRU_GPO_MODE		BIT(14)
+> +#define PRUSS_GPCFG_PRU_GPO_MODE_DIRECT		0
+> +#define PRUSS_GPCFG_PRU_GPO_MODE_SERIAL		BIT(14)
+> +
+> +#define PRUSS_GPCFG_PRU_GPI_SB			BIT(13)
+> +
+> +#define PRUSS_GPCFG_PRU_GPI_DIV1_SHIFT		8
+> +#define PRUSS_GPCFG_PRU_GPI_DIV1_MASK		GENMASK(12, 8)
+> +
+> +#define PRUSS_GPCFG_PRU_GPI_DIV0_SHIFT		3
+> +#define PRUSS_GPCFG_PRU_GPI_DIV0_MASK		GENMASK(7, 3)
+> +
+> +#define PRUSS_GPCFG_PRU_GPI_CLK_MODE_POSITIVE	0
+> +#define PRUSS_GPCFG_PRU_GPI_CLK_MODE_NEGATIVE	BIT(2)
+> +#define PRUSS_GPCFG_PRU_GPI_CLK_MODE		BIT(2)
+> +
+> +#define PRUSS_GPCFG_PRU_GPI_MODE_MASK		GENMASK(1, 0)
+> +#define PRUSS_GPCFG_PRU_GPI_MODE_SHIFT		0
+> +
+> +#define PRUSS_GPCFG_PRU_MUX_SEL_SHIFT		26
+> +#define PRUSS_GPCFG_PRU_MUX_SEL_MASK		GENMASK(29, 26)
+> +
+> +/* PRUSS_MII_RT register bits */
+> +#define PRUSS_MII_RT_EVENT_EN			BIT(0)
+> +
+> +/* PRUSS_SPP register bits */
+> +#define PRUSS_SPP_XFER_SHIFT_EN			BIT(1)
+> +#define PRUSS_SPP_PRU1_PAD_HP_EN		BIT(0)
 
+Can we please move all the above definitions to private driver/soc/ti/pruss.h?
+You can also add pruss_cfg_read and pruss_cfg_update there.
 
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+> +
+> +/*
+> + * enum pruss_gp_mux_sel - PRUSS GPI/O Mux modes for the
+> + * PRUSS_GPCFG0/1 registers
+> + *
+> + * NOTE: The below defines are the most common values, but there
+> + * are some exceptions like on 66AK2G, where the RESERVED and MII2
+> + * values are interchanged. Also, this bit-field does not exist on
+> + * AM335x SoCs
+> + */
+> +enum pruss_gp_mux_sel {
+> +	PRUSS_GP_MUX_SEL_GP = 0,
+> +	PRUSS_GP_MUX_SEL_ENDAT,
+> +	PRUSS_GP_MUX_SEL_RESERVED,
+> +	PRUSS_GP_MUX_SEL_SD,
+> +	PRUSS_GP_MUX_SEL_MII2,
+> +	PRUSS_GP_MUX_SEL_MAX,
+> +};
+> +
+> +/*
+> + * enum pruss_gpi_mode - PRUSS GPI configuration modes, used
+> + *			 to program the PRUSS_GPCFG0/1 registers
+> + */
+> +enum pruss_gpi_mode {
+> +	PRUSS_GPI_MODE_DIRECT = 0,
+> +	PRUSS_GPI_MODE_PARALLEL,
+> +	PRUSS_GPI_MODE_28BIT_SHIFT,
+> +	PRUSS_GPI_MODE_MII,
+> +};
+> +
+>  /**
+>   * enum pruss_pru_id - PRU core identifiers
+>   * @PRUSS_PRU0: PRU Core 0.
+
+cheers,
+-roger
