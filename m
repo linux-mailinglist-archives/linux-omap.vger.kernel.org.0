@@ -2,30 +2,30 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 872886BB6FE
-	for <lists+linux-omap@lfdr.de>; Wed, 15 Mar 2023 16:08:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A7316BB701
+	for <lists+linux-omap@lfdr.de>; Wed, 15 Mar 2023 16:08:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232867AbjCOPIy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 15 Mar 2023 11:08:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38316 "EHLO
+        id S233018AbjCOPIz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 15 Mar 2023 11:08:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232789AbjCOPIw (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 15 Mar 2023 11:08:52 -0400
+        with ESMTP id S232830AbjCOPIx (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 15 Mar 2023 11:08:53 -0400
 Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F76580E34
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78F68763C5
         for <linux-omap@vger.kernel.org>; Wed, 15 Mar 2023 08:08:48 -0700 (PDT)
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
         by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <ukl@pengutronix.de>)
-        id 1pcSk2-0000ff-PP; Wed, 15 Mar 2023 16:08:38 +0100
+        id 1pcSk2-0000fs-Vt; Wed, 15 Mar 2023 16:08:39 +0100
 Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
         by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
         (envelope-from <ukl@pengutronix.de>)
-        id 1pcSjy-004KgQ-3r; Wed, 15 Mar 2023 16:08:34 +0100
+        id 1pcSjy-004KgW-6R; Wed, 15 Mar 2023 16:08:34 +0100
 Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
         (envelope-from <ukl@pengutronix.de>)
-        id 1pcSjx-0057mP-14; Wed, 15 Mar 2023 16:08:33 +0100
+        id 1pcSjx-0057mT-7l; Wed, 15 Mar 2023 16:08:33 +0100
 From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>
 To:     Peter Ujfalusi <peter.ujfalusi@gmail.com>,
@@ -35,15 +35,15 @@ To:     Peter Ujfalusi <peter.ujfalusi@gmail.com>,
         Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
 Cc:     alsa-devel@alsa-project.org, linux-omap@vger.kernel.org,
         kernel@pengutronix.de
-Subject: [PATCH 164/173] ASoC: ti: omap-hdmi: Convert to platform remove callback returning void
-Date:   Wed, 15 Mar 2023 16:07:36 +0100
-Message-Id: <20230315150745.67084-165-u.kleine-koenig@pengutronix.de>
+Subject: [PATCH 165/173] ASoC: ti: omap-mcbsp: Convert to platform remove callback returning void
+Date:   Wed, 15 Mar 2023 16:07:37 +0100
+Message-Id: <20230315150745.67084-166-u.kleine-koenig@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230315150745.67084-1-u.kleine-koenig@pengutronix.de>
 References: <20230315150745.67084-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1594; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=V0X26gJA4wFzkbA0wVMc+KOS97dbQ5KaT5HYnQz7Yes=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBkEd8ffnN4csMffKpvTJmawfvjum6ywVroUtKwY nYHlYnYQNyJATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCZBHfHwAKCRDB/BR4rcrs CZsBB/40yGC+w/7LyF5TMCuOJCVAy5ZnJe74VRiuUFKZBhNocxZRlwTgleVmNh0x/Oun7q/FlmO PzQjHdNit00S4w8bqUt/MzQYvj8HcgviY9qlfCJTzpgDUuWBIaaIn1mipAwEVvkCUPqyZKCIr7z 2pqh5IERRoF2dcNhUYeOc2nEaOKmGyPbt4IbJskPbra8Gr85U/4eUyEi4uz0xKAClVI4k8HxYkK G6DZS/WaY/J7SfeY6PLQXqehSp74u2a/2HTX8uhyZp/3afYOFbvkREt49VEasWCE1WBg7tkq7Od FJKbHeljSBMLvzFCUgGPwgp5JvdfD9/8iSe5WVcuFtzy3QM7
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1765; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=yQ1XknE7p/oS0I51vfo/7IP5cM3Kt4RKihMsAPvgXlE=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBkEd8i5hZgl/LPMPfwcVicdJ8HTUmWFXV4yF7BL OSHTizjW6SJATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCZBHfIgAKCRDB/BR4rcrs CXqFB/978lG52XAHzVPu6/6/f3RL3WSKChwa1atrIcEoXEKPt06SeGCFjLJv1k1iUs4YPKt1GIb hA/gf/SP3bbxNBEW8RaW1DC8hP53b1P471W5a+9ODpmCMmdAvectApnLBHmPUGRHbc+gkWEuyxg p7qxfbo+jZVzjDR6+/DmcwrT1CH7UYPvckiiwbtFo2y4miBufONFu/verwYybQTh9ZGF4iWwzm5 Vnr4j7bXSExqvX+eaYs4aG6DmgmGGvAHeKb8EHMX01fDuMdieHIH7iCKd7yptaUbYvsxuUC/5lK zpK0gRtoYU6/lu5gxUO4T8hdXN3MxBQbCNKiw0uqZBLfVJIy
 X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -71,36 +71,40 @@ callback to the void returning variant.
 
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 ---
- sound/soc/ti/omap-hdmi.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ sound/soc/ti/omap-mcbsp.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/ti/omap-hdmi.c b/sound/soc/ti/omap-hdmi.c
-index 0dc0475670ff..ad37785e05d8 100644
---- a/sound/soc/ti/omap-hdmi.c
-+++ b/sound/soc/ti/omap-hdmi.c
-@@ -398,12 +398,11 @@ static int omap_hdmi_audio_probe(struct platform_device *pdev)
- 	return 0;
+diff --git a/sound/soc/ti/omap-mcbsp.c b/sound/soc/ti/omap-mcbsp.c
+index 7c539a41a6a3..21fa7b978799 100644
+--- a/sound/soc/ti/omap-mcbsp.c
++++ b/sound/soc/ti/omap-mcbsp.c
+@@ -1412,7 +1412,7 @@ static int asoc_mcbsp_probe(struct platform_device *pdev)
+ 	return sdma_pcm_platform_register(&pdev->dev, "tx", "rx");
  }
  
--static int omap_hdmi_audio_remove(struct platform_device *pdev)
-+static void omap_hdmi_audio_remove(struct platform_device *pdev)
+-static int asoc_mcbsp_remove(struct platform_device *pdev)
++static void asoc_mcbsp_remove(struct platform_device *pdev)
  {
- 	struct hdmi_audio_data *ad = platform_get_drvdata(pdev);
+ 	struct omap_mcbsp *mcbsp = platform_get_drvdata(pdev);
  
- 	snd_soc_unregister_card(ad->card);
+@@ -1421,8 +1421,6 @@ static int asoc_mcbsp_remove(struct platform_device *pdev)
+ 
+ 	if (cpu_latency_qos_request_active(&mcbsp->pm_qos_req))
+ 		cpu_latency_qos_remove_request(&mcbsp->pm_qos_req);
+-
 -	return 0;
  }
  
- static struct platform_driver hdmi_audio_driver = {
-@@ -411,7 +410,7 @@ static struct platform_driver hdmi_audio_driver = {
- 		.name = DRV_NAME,
+ static struct platform_driver asoc_mcbsp_driver = {
+@@ -1432,7 +1430,7 @@ static struct platform_driver asoc_mcbsp_driver = {
  	},
- 	.probe = omap_hdmi_audio_probe,
--	.remove = omap_hdmi_audio_remove,
-+	.remove_new = omap_hdmi_audio_remove,
+ 
+ 	.probe = asoc_mcbsp_probe,
+-	.remove = asoc_mcbsp_remove,
++	.remove_new = asoc_mcbsp_remove,
  };
  
- module_platform_driver(hdmi_audio_driver);
+ module_platform_driver(asoc_mcbsp_driver);
 -- 
 2.39.2
 
