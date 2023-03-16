@@ -2,40 +2,41 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C28A46BC95C
-	for <lists+linux-omap@lfdr.de>; Thu, 16 Mar 2023 09:41:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C939F6BCA14
+	for <lists+linux-omap@lfdr.de>; Thu, 16 Mar 2023 09:53:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230254AbjCPIk7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 16 Mar 2023 04:40:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56882 "EHLO
+        id S231195AbjCPIxw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 16 Mar 2023 04:53:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230425AbjCPIk4 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 16 Mar 2023 04:40:56 -0400
-Received: from mail.paretdee.com (mail.paretdee.com [141.95.17.174])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC9552BED6
-        for <linux-omap@vger.kernel.org>; Thu, 16 Mar 2023 01:40:47 -0700 (PDT)
-Received: by mail.paretdee.com (Postfix, from userid 1002)
-        id 95436A2AD0; Thu, 16 Mar 2023 08:40:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=paretdee.com; s=mail;
-        t=1678956046; bh=FLMIyM7qOCOVEMp1o/ltkgnLeuU0ZBlT9xWiZMBZ7Ag=;
+        with ESMTP id S230079AbjCPIw7 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 16 Mar 2023 04:52:59 -0400
+Received: from mail.corrib.pl (mail.corrib.pl [185.58.226.145])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2E9DB79F5
+        for <linux-omap@vger.kernel.org>; Thu, 16 Mar 2023 01:52:09 -0700 (PDT)
+Received: by mail.corrib.pl (Postfix, from userid 1001)
+        id 47C62A325D; Thu, 16 Mar 2023 08:51:35 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=corrib.pl; s=mail;
+        t=1678956706; bh=X6IEpSISwJiYlJ3uA866lskXve3r+4o2hf4z7VM6m5o=;
         h=Date:From:To:Subject:From;
-        b=dM/iDaLfrBG2NeqGeaSaxORN+OOryhMAbxWmXydbKYNsfolzRQr5NiUrdEMLYZzAW
-         /IkjhH2tmD91ir+NxK1zyWtEX3L7WKe16LUEl6E+uPwQBkKTjgJEQtjlX4RivO9sw+
-         cUlklQ+qIKh+2hvkwERixVcvi0bowA5EXlat1SYLwOqT2oq1Vvd+kWENBZd/iaGcxc
-         B+ApuyYUUj5q2ZIQTmvq77nzqjfHR6PaeCgH8pJMUBJ39JFBIYfRsmJXHcV41Z8rFn
-         I1p9teTfjd43m8ajtx5W8X1EQMH6JQGfbIBBu1zaeK8KiYWVR58z73XFIc4wpEnk9f
-         Tmrbd1tKd9OXg==
-Received: by mail.paretdee.com for <linux-omap@vger.kernel.org>; Thu, 16 Mar 2023 08:40:33 GMT
-Message-ID: <20230316074500-0.1.5h.cls0.0.8b4pep5q2p@paretdee.com>
-Date:   Thu, 16 Mar 2023 08:40:33 GMT
-From:   "Zbynek Spacek" <zbynek.spacek@paretdee.com>
+        b=lTE+5LlNffqOn04j8JIpWB9FBIJHSaAD3qs9eg1r2VAiid+EqSIXtPyL/tOwFGXgV
+         FZLWPGeQsZtVUfKUiAPeNbPPPhDjlAh1VzPf7aZSqLnzlpbF3eof6YWmCpxP2b8rPB
+         z1o6Yb0U+mw05IR7P1emX6qzFixiVQZjYD1r6/BSK5cdQreLJEtJpqNZshJdrJtagj
+         pfDuHJJA4BNqVH9kpoaVai5v5/4c7SAvlWpWNO8By92mOzD7N6Q256cs8UqdoWRYpL
+         xqT3WWxFxs5PwW+iU4UemfwSIp8c5PMfeBPl52vg4Rn3HVs3kujLAJ5u6W9VlJ7vp/
+         7KlQ78AYL46Bw==
+Received: by mail.corrib.pl for <linux-omap@vger.kernel.org>; Thu, 16 Mar 2023 08:51:25 GMT
+Message-ID: <20230316074501-0.1.63.izfz.0.md4t3aayx0@corrib.pl>
+Date:   Thu, 16 Mar 2023 08:51:25 GMT
+From:   =?UTF-8?Q? "Szczepan_Kie=C5=82basa" ?= 
+        <szczepan.kielbasa@corrib.pl>
 To:     <linux-omap@vger.kernel.org>
-Subject: Rubber Molded
-X-Mailer: mail.paretdee.com
+Subject: Faktoring
+X-Mailer: mail.corrib.pl
 MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=0.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
         autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -44,16 +45,19 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Good morning,
+Dzie=C5=84 dobry,
 
-we can offer unbeatable conditions for the supply of various silicone com=
-pounds and rubbers, liquid silicone rubber (LSR).
+rozwa=C5=BCali Pa=C5=84stwo wyb=C3=B3r finansowania, kt=C3=B3re spe=C5=82=
+ni potrzeby firmy, zapewniaj=C4=85c natychmiastowy dost=C4=99p do got=C3=B3=
+wki, bez zb=C4=99dnych przestoj=C3=B3w?=20
 
-In our assortment you will also find cross-linking agents, stabilizers, d=
-yes and individual silicone mixtures that we will develop for your needs.
+Przygotowali=C5=9Bmy rozwi=C4=85zania faktoringowe dopasowane do Pa=C5=84=
+stwa bran=C5=BCy i wielko=C5=9Bci firmy, dzi=C4=99ki kt=C3=B3rym, nie mus=
+z=C4=85 Pa=C5=84stwo martwi=C4=87 si=C4=99 o niewyp=C5=82acalno=C5=9B=C4=87=
+ kontrahent=C3=B3w, poniewa=C5=BC transakcje s=C4=85 zabezpieczone i posi=
+adaj=C4=85 gwarancj=C4=99 sp=C5=82aty.=20
+Chc=C4=85 Pa=C5=84stwo przeanalizowa=C4=87 dost=C4=99pne opcje?
 
-Do you want to know what we can offer you?
 
-
-Best regards
-Zbynek Spacek
+Pozdrawiam
+Szczepan Kie=C5=82basa
