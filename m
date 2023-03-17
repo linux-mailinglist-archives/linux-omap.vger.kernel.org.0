@@ -2,98 +2,160 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E11156BDD5C
-	for <lists+linux-omap@lfdr.de>; Fri, 17 Mar 2023 01:07:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AD296BDFF8
+	for <lists+linux-omap@lfdr.de>; Fri, 17 Mar 2023 05:08:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229993AbjCQAHb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 16 Mar 2023 20:07:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44426 "EHLO
+        id S229766AbjCQEIt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 17 Mar 2023 00:08:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230011AbjCQAH2 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 16 Mar 2023 20:07:28 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35B3C738B0;
-        Thu, 16 Mar 2023 17:07:21 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id C6F36B822EC;
-        Fri, 17 Mar 2023 00:07:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12907C433EF;
-        Fri, 17 Mar 2023 00:07:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1679011638;
-        bh=qfqozMAegKijY8JNbuj9EKz7MePhaVeyD54LoSNyvDA=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=ZhWPY3/M3Sqi+evrt88Clwt3B9SMEDaX2TLOVy+k7nLqDt057pQc0Pbxk02rspClR
-         626vz/UV35x2vMwvvCF9Qtn6hli5foqzEvZXwtxFkb91PPN2Zkq81L95WTOgddmw7H
-         iHcIfXk+406ouIkKWI9q/pfGjJg0MdTGUOD7rU9YzQfV7NaIg8MBs8iWayNU6qUX+q
-         wKc9kko5zNaRoPQAw9578Em3wT39m1Iw3qu1xGG2XRFx+UwskZWBKZQYNkS2KuJ2F+
-         EZYT/CuLzjp6JhmwRvJuhjJqMYLNomtdp66H/StV9XEWgx+3Eoz9R+1rtUQbZHOCM/
-         t1CoZWi1wh6oA==
-Date:   Thu, 16 Mar 2023 17:07:16 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     Wolfgang Grandegger <wg@grandegger.com>,
-        Marc Kleine-Budde <mkl@pengutronix.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Wei Fang <wei.fang@nxp.com>,
-        Shenwei Wang <shenwei.wang@nxp.com>,
-        Clark Wang <xiaoning.wang@nxp.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Claudiu Manoil <claudiu.manoil@nxp.com>,
-        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Jose Abreu <joabreu@synopsys.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Francois Romieu <romieu@fr.zoreil.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Zhao Qiang <qiang.zhao@nxp.com>, Kalle Valo <kvalo@kernel.org>,
-        Samuel Mendoza-Jonas <sam@mendozajonas.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        linux-can@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-omap@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v2] net: Use of_property_read_bool() for boolean
- properties
-Message-ID: <20230316170716.7039161d@kernel.org>
-In-Reply-To: <20230314191828.914124-1-robh@kernel.org>
-References: <20230314191828.914124-1-robh@kernel.org>
+        with ESMTP id S229523AbjCQEIs (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 17 Mar 2023 00:08:48 -0400
+Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 518A22278E;
+        Thu, 16 Mar 2023 21:08:45 -0700 (PDT)
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 32H48O5C025320;
+        Thu, 16 Mar 2023 23:08:24 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1679026104;
+        bh=hTnCLwzT7E/jUr8nrf+BIIZqCannDfxi+O/YjyW82n0=;
+        h=Date:Subject:To:CC:References:From:In-Reply-To;
+        b=K+4+TSTYFK6JfARcyJI0kc9asINmKkFlRokxTmtHz46gP6HxXOzu2F5+bi2S0zXyW
+         8zroPzjIpexxesYzusJD5HnGBMULMadJwAYPMN1nAj3qPmgFxWJbNLozn/L/kp5cEO
+         UgjWe622xhb4eNQynJrhpQP1Q5lvq1Y98cQ6kCnU=
+Received: from DLEE113.ent.ti.com (dlee113.ent.ti.com [157.170.170.24])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 32H48O59007269
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 16 Mar 2023 23:08:24 -0500
+Received: from DLEE109.ent.ti.com (157.170.170.41) by DLEE113.ent.ti.com
+ (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16; Thu, 16
+ Mar 2023 23:08:24 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE109.ent.ti.com
+ (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16 via
+ Frontend Transport; Thu, 16 Mar 2023 23:08:23 -0500
+Received: from [172.24.145.182] (ileaxei01-snat.itg.ti.com [10.180.69.5])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 32H48K8T130014;
+        Thu, 16 Mar 2023 23:08:20 -0500
+Message-ID: <11b83885-ff64-df78-e14c-137fffb5f7ce@ti.com>
+Date:   Fri, 17 Mar 2023 09:38:19 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.1
+Subject: Re: [PATCH v3] PCI: cadence: Clear the ARI Capability Next Function
+ Number of the last function
+Content-Language: en-US
+To:     Achal Verma <a-verma1@ti.com>, Tom Joseph <tjoseph@cadence.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Wilczy_ski <kw@linux.com>,
+        Bjorn Helgaas <bhelgaas@google.com>
+CC:     <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Milind Parab <mparab@cadence.com>,
+        <wojciech.jasko-EXT@continental-corporation.com>
+References: <20230316071156.200888-1-a-verma1@ti.com>
+From:   Vignesh Raghavendra <vigneshr@ti.com>
+In-Reply-To: <20230316071156.200888-1-a-verma1@ti.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, 14 Mar 2023 14:18:27 -0500 Rob Herring wrote:
-> It is preferred to use typed property access functions (i.e.
-> of_property_read_<type> functions) rather than low-level
-> of_get_property/of_find_property functions for reading properties.
-> Convert reading boolean properties to of_property_read_bool().
-> 
-> Reviewed-by: Simon Horman <simon.horman@corigine.com>
-> Acked-by: Marc Kleine-Budde <mkl@pengutronix.de> # for net/can
-> Acked-by: Kalle Valo <kvalo@kernel.org>
-> Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
-> Acked-by: Francois Romieu <romieu@fr.zoreil.com>
-> Reviewed-by: Wei Fang <wei.fang@nxp.com>
-> Signed-off-by: Rob Herring <robh@kernel.org>
 
-Applied, to net(?), thanks!
+
+On 16/03/23 12:41, Achal Verma wrote:
+> From: Jasko-EXT Wojciech <wojciech.jasko-EXT@continental-corporation.com>
+> 
+> Next Function Number field in ARI Capability Register for last function
+> must be zero by default as per the PCIe specification, indicating there
+> is no next higher number function but that's not happening in our case,
+> so this patch clears the Next Function Number field for last function used.
+> 
+> Signed-off-by: Jasko-EXT Wojciech <wojciech.jasko-EXT@continental-corporation.com>
+> Signed-off-by: Achal Verma <a-verma1@ti.com>
+> ---
+> Changes from v1:
+> * Fix commments in the code.
+> 
+> Changes from v2:
+> * Rework the commit message.
+> 
+>  drivers/pci/controller/cadence/pcie-cadence-ep.c | 14 +++++++++++++-
+>  drivers/pci/controller/cadence/pcie-cadence.h    |  6 ++++++
+>  2 files changed, 19 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/pci/controller/cadence/pcie-cadence-ep.c b/drivers/pci/controller/cadence/pcie-cadence-ep.c
+> index b8b655d4047e..8742b2f594fd 100644
+> --- a/drivers/pci/controller/cadence/pcie-cadence-ep.c
+> +++ b/drivers/pci/controller/cadence/pcie-cadence-ep.c
+> @@ -565,7 +565,8 @@ static int cdns_pcie_ep_start(struct pci_epc *epc)
+>  	struct cdns_pcie *pcie = &ep->pcie;
+>  	struct device *dev = pcie->dev;
+>  	int max_epfs = sizeof(epc->function_num_map) * 8;
+> -	int ret, value, epf;
+> +	int ret, epf, last_fn;
+> +	u32 reg, value;
+>  
+>  	/*
+>  	 * BIT(0) is hardwired to 1, hence function 0 is always enabled
+> @@ -573,6 +574,17 @@ static int cdns_pcie_ep_start(struct pci_epc *epc)
+>  	 */
+>  	cdns_pcie_writel(pcie, CDNS_PCIE_LM_EP_FUNC_CFG, epc->function_num_map);
+>  
+> +	/*
+> +	 * Next function field in ARI_CAP_AND_CTR register for last function
+> +	 * should be 0.
+> +	 * Clearing Next Function Number field for the last function used.
+> +	 */
+> +	last_fn = find_last_bit(&epc->function_num_map, BITS_PER_LONG);
+> +	reg     = CDNS_PCIE_CORE_PF_I_ARI_CAP_AND_CTRL(last_fn);
+> +	value  = cdns_pcie_readl(pcie, reg);
+> +	value &= ~CDNS_PCIE_ARI_CAP_NFN_MASK;
+> +	cdns_pcie_writel(pcie, reg, value);
+> +
+>  	if (ep->quirk_disable_flr) {
+>  		for (epf = 0; epf < max_epfs; epf++) {
+>  			if (!(epc->function_num_map & BIT(epf)))
+> diff --git a/drivers/pci/controller/cadence/pcie-cadence.h b/drivers/pci/controller/cadence/pcie-cadence.h
+> index 190786e47df9..68c4c7878111 100644
+> --- a/drivers/pci/controller/cadence/pcie-cadence.h
+> +++ b/drivers/pci/controller/cadence/pcie-cadence.h
+> @@ -130,6 +130,12 @@
+>  #define CDNS_PCIE_EP_FUNC_DEV_CAP_OFFSET	0xc0
+>  #define CDNS_PCIE_EP_FUNC_SRIOV_CAP_OFFSET	0x200
+>  
+> +/*
+> + * Endpoint PF Registers
+> + */
+> +#define CDNS_PCIE_CORE_PF_I_ARI_CAP_AND_CTRL(fn)	(0x144 + (fn) * 0x1000)
+> +#define CDNS_PCIE_ARI_CAP_NFN_MASK	GENMASK(15, 8)
+> +
+>  /*
+>   * Root Port Registers (PCI configuration space for the root port function)
+>   */
+
+
+
+Reviewed-by: Vignesh Raghavendra <vigneshr@ti.com>
+
+FYI, there seems to be a duplicate patch [1], you may want to clarify
+which one to look at
+
+
+[1] https://lore.kernel.org/all/20230316065455.191785-1-a-verma1@ti.com/
+
+-- 
+Regards
+Vignesh
