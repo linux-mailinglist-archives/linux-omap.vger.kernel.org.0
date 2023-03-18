@@ -2,86 +2,51 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3283C6BFDE4
-	for <lists+linux-omap@lfdr.de>; Sun, 19 Mar 2023 00:58:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A1246BFDB6
+	for <lists+linux-omap@lfdr.de>; Sun, 19 Mar 2023 00:55:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229508AbjCRX62 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 18 Mar 2023 19:58:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50324 "EHLO
+        id S229867AbjCRXzS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 18 Mar 2023 19:55:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229488AbjCRX61 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 18 Mar 2023 19:58:27 -0400
+        with ESMTP id S229841AbjCRXzQ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 18 Mar 2023 19:55:16 -0400
 Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56EB383C8
-        for <linux-omap@vger.kernel.org>; Sat, 18 Mar 2023 16:58:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3EB522004
+        for <linux-omap@vger.kernel.org>; Sat, 18 Mar 2023 16:55:14 -0700 (PDT)
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
         by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <ukl@pengutronix.de>)
-        id 1pdgNw-00041d-SJ; Sun, 19 Mar 2023 00:54:52 +0100
+        id 1pdgNw-0004Eo-40; Sun, 19 Mar 2023 00:54:52 +0100
 Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
         by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
         (envelope-from <ukl@pengutronix.de>)
-        id 1pdgNk-0056ZL-On; Sun, 19 Mar 2023 00:54:40 +0100
+        id 1pdgNq-0056bh-R5; Sun, 19 Mar 2023 00:54:46 +0100
 Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
         (envelope-from <ukl@pengutronix.de>)
-        id 1pdgNj-005zTb-Tl; Sun, 19 Mar 2023 00:54:39 +0100
+        id 1pdgNp-005zVW-VN; Sun, 19 Mar 2023 00:54:45 +0100
 From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>
-To:     Helge Deller <deller@gmx.de>, Yihao Han <hanyihao@vivo.com>,
-        Jaya Kumar <jayalk@intworks.biz>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Alexander Shiyan <shc_work@mail.ru>,
-        Dongliang Mu <dzm91@hust.edu.cn>,
-        Peter Jones <pjones@redhat.com>,
-        Gaosheng Cui <cuigaosheng1@huawei.com>,
-        Timur Tabi <timur@kernel.org>,
-        Xuezhi Zhang <zhangxuezhi1@coolpad.com>,
-        Jiasheng Jiang <jiasheng@iscas.ac.cn>,
-        Ferenc Bakonyi <fero@drama.obuda.kando.hu>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Stephen Kitt <steve@sk2.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
+To:     Helge Deller <deller@gmx.de>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Arnd Bergmann <arnd@arndb.de>,
         Tony Lindgren <tony@atomide.com>,
         Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
         Yu Zhe <yuzhe@nfschina.com>, Xu Panda <xu.panda@zte.com.cn>,
         Zhang Qilong <zhangqilong3@huawei.com>,
-        Hyunwoo Kim <imv4bel@gmail.com>,
-        Yang Yingliang <yangyingliang@huawei.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        "wangkailong@jari.cn" <wangkailong@jari.cn>,
-        Wang Qing <wangqing@vivo.com>,
-        Kristoffer Ericson <kristoffer.ericson@gmail.com>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        ye xingchen <ye.xingchen@zte.com.cn>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Michal Januszewski <spock@gentoo.org>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Zeng Heng <zengheng4@huawei.com>,
-        Florian Tobias Schandinat <FlorianSchandinat@gmx.de>,
-        Michal Simek <michal.simek@xilinx.com>
-Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        kernel@pengutronix.de, linux-arm-kernel@lists.infradead.org,
-        linux-nvidia@lists.surfsouth.com,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        linux-omap@vger.kernel.org
-Subject: [PATCH 00/51] video: fbdev: Convert to platform remove callback returning void
-Date:   Sun, 19 Mar 2023 00:53:37 +0100
-Message-Id: <20230318235428.272091-1-u.kleine-koenig@pengutronix.de>
+        Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc:     linux-fbdev@vger.kernel.org, linux-omap@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, kernel@pengutronix.de
+Subject: [PATCH 30/51] video: fbdev: omapfb: Convert to platform remove callback returning void
+Date:   Sun, 19 Mar 2023 00:54:07 +0100
+Message-Id: <20230318235428.272091-31-u.kleine-koenig@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230318235428.272091-1-u.kleine-koenig@pengutronix.de>
+References: <20230318235428.272091-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=8788; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=r47GeEUiKhIRzd604LzE9SshHsY8vNnwnEndN4rcgxc=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBkFk6mxH5O1X401TvHV16mfKARbclG2lGu0mDau CJO8k3/v2OJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZBZOpgAKCRCPgPtYfRL+ TiILB/9v221lowIpze5yRsKWMaPaDBN5v7zuzOfbGY25vvPp5y4fEPqf4VPkHbmyM4Pxi7OtHzZ taKGS0g8hkYNITGL0Bz7dy3aL05quBqg2zJ0WgsSJy6EcrqY7sGYyGia+CPaY10UYWhTzHpQL8z YzAGm2w/A1buoJmfqWBLZRsh3nHYhI9P00kVviTm8ARg8LyR7KHiTeL4nADHSHjMnweVR5dst+e RIaE3K9zHVguN+cE6ywzVgY4J7OWN9d5Ax46X9HWgkIAI9fGLl37kbq+wWivvDxIeaWc4NbxMtz vXEOxaVbR2k/0gEOYFUUeyuXCC+aXpEJTCnzZVCUq5QhZ2+W
+X-Developer-Signature: v=1; a=openpgp-sha256; l=11405; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=EDo1aKr//a6fSQeLgJmtFuaS5zNte07XgYOIvfwCNuE=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBkFk7If3DWRwK0CgL/5etvBVaf95/C4zJtGKLr5 c4+YmguNRCJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZBZOyAAKCRCPgPtYfRL+ Tin+B/9zMPO7MOHCK7GgHr1I396v1t6o2mfmOsIBQkwZdfGNwI/TNKQyYtQk+4Q3SzVyR4Hh7JM hX5nL7E7GXHr89gR0Dqq4+kqHuiqXklN5I7kAUoVwIM86+euJevzMqnT0e3zGct97OcN9UZqaNM QoJYWQn9K+rTuzrJyeb13dKNoYTjFXfahDu5rxovjGrciqpTD+ZH7kSK7TsPhQEf8ECHJJOp6Om 3LTfB3Pp0DltlBy1VF0UyNNMDVfMJq8I2wC15wdjv+FAUTWQL5/KCFzlst9lZe4pWxxxfKm7eMM ToTjIvJOVBlprWjuHg2dfWKg8VjvDWcpAkObAXw2iU2mKJaN
 X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -97,182 +62,313 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hello,
+The .remove() callback for a platform driver returns an int which makes
+many driver authors wrongly assume it's possible to do error handling by
+returning an error code. However the value returned is (mostly) ignored
+and this typically results in resource leaks. To improve here there is a
+quest to make the remove callback return void. In the first step of this
+quest all drivers are converted to .remove_new() which already returns
+void.
 
-this series adapts the platform drivers below drivers/video/fbdev to use the
-.remove_new() callback. Compared to the traditional .remove() callback
-.remove_new() returns no value. This is a good thing because the driver core
-doesn't (and cannot) cope for errors during remove. The only effect of a
-non-zero return value in .remove() is that the driver core emits a warning. The
-device is removed anyhow and an early return from .remove() usually yields a
-resource leak.
+Trivially convert this driver from always returning zero in the remove
+callback to the void returning variant.
 
-By changing the remove callback to return void driver authors cannot
-reasonably assume any more that there is some kind of cleanup later.
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+---
+ drivers/video/fbdev/omap/omapfb_main.c         | 6 ++----
+ drivers/video/fbdev/omap2/omapfb/dss/core.c    | 6 ++----
+ drivers/video/fbdev/omap2/omapfb/dss/dispc.c   | 5 ++---
+ drivers/video/fbdev/omap2/omapfb/dss/dpi.c     | 5 ++---
+ drivers/video/fbdev/omap2/omapfb/dss/dsi.c     | 5 ++---
+ drivers/video/fbdev/omap2/omapfb/dss/dss.c     | 5 ++---
+ drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c   | 5 ++---
+ drivers/video/fbdev/omap2/omapfb/dss/hdmi5.c   | 5 ++---
+ drivers/video/fbdev/omap2/omapfb/dss/sdi.c     | 5 ++---
+ drivers/video/fbdev/omap2/omapfb/dss/venc.c    | 5 ++---
+ drivers/video/fbdev/omap2/omapfb/omapfb-main.c | 6 ++----
+ 11 files changed, 22 insertions(+), 36 deletions(-)
 
-The first patch simplifies the remove callback of one driver to obviously
-always return zero. After that all drivers are converted trivially to
-.remove_new().
-
-Best regards
-Uwe
-
-Uwe Kleine-König (51):
-  video: fbdev: au1100fb: Drop if with an always false condition
-  video: fbdev: arcfb: Convert to platform remove callback returning
-    void
-  video: fbdev: au1100fb: Convert to platform remove callback returning
-    void
-  video: fbdev: au1200fb: Convert to platform remove callback returning
-    void
-  video: fbdev: broadsheetfb: Convert to platform remove callback
-    returning void
-  video: fbdev: bw2: Convert to platform remove callback returning void
-  video: fbdev: cg14: Convert to platform remove callback returning void
-  video: fbdev: cg3: Convert to platform remove callback returning void
-  video: fbdev: cg6: Convert to platform remove callback returning void
-  video: fbdev: clps711x-fb: Convert to platform remove callback
-    returning void
-  video: fbdev: cobalt_lcdfb: Convert to platform remove callback
-    returning void
-  video: fbdev: da8xx-fb: Convert to platform remove callback returning
-    void
-  video: fbdev: efifb: Convert to platform remove callback returning
-    void
-  video: fbdev: ep93xx-fb: Convert to platform remove callback returning
-    void
-  video: fbdev: ffb: Convert to platform remove callback returning void
-  video: fbdev: fsl-diu-fb: Convert to platform remove callback
-    returning void
-  video: fbdev: gbefb: Convert to platform remove callback returning
-    void
-  video: fbdev: goldfishfb: Convert to platform remove callback
-    returning void
-  video: fbdev: grvga: Convert to platform remove callback returning
-    void
-  video: fbdev: hecubafb: Convert to platform remove callback returning
-    void
-  video: fbdev: hgafb: Convert to platform remove callback returning
-    void
-  video: fbdev: hitfb: Convert to platform remove callback returning
-    void
-  video: fbdev: imxfb: Convert to platform remove callback returning
-    void
-  video: fbdev: leo: Convert to platform remove callback returning void
-  video: fbdev: mb862xx: Convert to platform remove callback returning
-    void
-  video: fbdev: metronomefb: Convert to platform remove callback
-    returning void
-  video: fbdev: mx3fb: Convert to platform remove callback returning
-    void
-  video: fbdev: ocfb: Convert to platform remove callback returning void
-  video: fbdev: offb: Convert to platform remove callback returning void
-  video: fbdev: omapfb: Convert to platform remove callback returning
-    void
-  video: fbdev: p9100: Convert to platform remove callback returning
-    void
-  video: fbdev: platinumfb: Convert to platform remove callback
-    returning void
-  video: fbdev: pxa168fb: Convert to platform remove callback returning
-    void
-  video: fbdev: pxa3xx-gcu: Convert to platform remove callback
-    returning void
-  video: fbdev: pxafb: Convert to platform remove callback returning
-    void
-  video: fbdev: s1d13xxxfb: Convert to platform remove callback
-    returning void
-  video: fbdev: s3c-fb: Convert to platform remove callback returning
-    void
-  video: fbdev: sh7760fb: Convert to platform remove callback returning
-    void
-  video: fbdev: sh_mobile_lcdcfb: Convert to platform remove callback
-    returning void
-  video: fbdev: simplefb: Convert to platform remove callback returning
-    void
-  video: fbdev: sm501fb: Convert to platform remove callback returning
-    void
-  video: fbdev: tcx: Convert to platform remove callback returning void
-  video: fbdev: uvesafb: Convert to platform remove callback returning
-    void
-  video: fbdev: vesafb: Convert to platform remove callback returning
-    void
-  video: fbdev: vfb: Convert to platform remove callback returning void
-  video: fbdev: vga16fb: Convert to platform remove callback returning
-    void
-  video: fbdev: via: Convert to platform remove callback returning void
-  video: fbdev: vt8500lcdfb: Convert to platform remove callback
-    returning void
-  video: fbdev: wm8505fb: Convert to platform remove callback returning
-    void
-  video: fbdev: wmt_ge_rops: Convert to platform remove callback
-    returning void
-  video: fbdev: xilinxfb: Convert to platform remove callback returning
-    void
-
- drivers/video/fbdev/arcfb.c                    |  5 ++---
- drivers/video/fbdev/au1100fb.c                 | 11 +++--------
- drivers/video/fbdev/au1200fb.c                 |  6 ++----
- drivers/video/fbdev/broadsheetfb.c             |  5 ++---
- drivers/video/fbdev/bw2.c                      |  6 ++----
- drivers/video/fbdev/cg14.c                     |  6 ++----
- drivers/video/fbdev/cg3.c                      |  6 ++----
- drivers/video/fbdev/cg6.c                      |  6 ++----
- drivers/video/fbdev/clps711x-fb.c              |  6 ++----
- drivers/video/fbdev/cobalt_lcdfb.c             |  6 ++----
- drivers/video/fbdev/da8xx-fb.c                 |  6 ++----
- drivers/video/fbdev/efifb.c                    |  6 ++----
- drivers/video/fbdev/ep93xx-fb.c                |  6 ++----
- drivers/video/fbdev/ffb.c                      |  6 ++----
- drivers/video/fbdev/fsl-diu-fb.c               |  6 ++----
- drivers/video/fbdev/gbefb.c                    |  6 ++----
- drivers/video/fbdev/goldfishfb.c               |  5 ++---
- drivers/video/fbdev/grvga.c                    |  6 ++----
- drivers/video/fbdev/hecubafb.c                 |  5 ++---
- drivers/video/fbdev/hgafb.c                    |  6 ++----
- drivers/video/fbdev/hitfb.c                    |  6 ++----
- drivers/video/fbdev/imxfb.c                    |  6 ++----
- drivers/video/fbdev/leo.c                      |  6 ++----
- drivers/video/fbdev/mb862xx/mb862xxfbdrv.c     |  5 ++---
- drivers/video/fbdev/metronomefb.c              |  5 ++---
- drivers/video/fbdev/mx3fb.c                    |  5 ++---
- drivers/video/fbdev/ocfb.c                     |  6 ++----
- drivers/video/fbdev/offb.c                     |  8 +++-----
- drivers/video/fbdev/omap/omapfb_main.c         |  6 ++----
- drivers/video/fbdev/omap2/omapfb/dss/core.c    |  6 ++----
- drivers/video/fbdev/omap2/omapfb/dss/dispc.c   |  5 ++---
- drivers/video/fbdev/omap2/omapfb/dss/dpi.c     |  5 ++---
- drivers/video/fbdev/omap2/omapfb/dss/dsi.c     |  5 ++---
- drivers/video/fbdev/omap2/omapfb/dss/dss.c     |  5 ++---
- drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c   |  5 ++---
- drivers/video/fbdev/omap2/omapfb/dss/hdmi5.c   |  5 ++---
- drivers/video/fbdev/omap2/omapfb/dss/sdi.c     |  5 ++---
- drivers/video/fbdev/omap2/omapfb/dss/venc.c    |  5 ++---
- drivers/video/fbdev/omap2/omapfb/omapfb-main.c |  6 ++----
- drivers/video/fbdev/p9100.c                    |  6 ++----
- drivers/video/fbdev/platinumfb.c               |  6 ++----
- drivers/video/fbdev/pxa168fb.c                 |  8 +++-----
- drivers/video/fbdev/pxa3xx-gcu.c               |  6 ++----
- drivers/video/fbdev/pxafb.c                    |  8 +++-----
- drivers/video/fbdev/s1d13xxxfb.c               |  5 ++---
- drivers/video/fbdev/s3c-fb.c                   |  6 ++----
- drivers/video/fbdev/sh7760fb.c                 |  6 ++----
- drivers/video/fbdev/sh_mobile_lcdcfb.c         |  5 ++---
- drivers/video/fbdev/simplefb.c                 |  6 ++----
- drivers/video/fbdev/sm501fb.c                  |  6 ++----
- drivers/video/fbdev/tcx.c                      |  6 ++----
- drivers/video/fbdev/uvesafb.c                  |  6 ++----
- drivers/video/fbdev/vesafb.c                   |  6 ++----
- drivers/video/fbdev/vfb.c                      |  5 ++---
- drivers/video/fbdev/vga16fb.c                  |  6 ++----
- drivers/video/fbdev/via/via-gpio.c             |  5 ++---
- drivers/video/fbdev/via/via_i2c.c              |  5 ++---
- drivers/video/fbdev/vt8500lcdfb.c              |  6 ++----
- drivers/video/fbdev/wm8505fb.c                 |  6 ++----
- drivers/video/fbdev/wmt_ge_rops.c              |  5 ++---
- drivers/video/fbdev/xilinxfb.c                 |  6 ++----
- 61 files changed, 126 insertions(+), 230 deletions(-)
-
-base-commit: fe15c26ee26efa11741a7b632e9f23b01aca4cc6
+diff --git a/drivers/video/fbdev/omap/omapfb_main.c b/drivers/video/fbdev/omap/omapfb_main.c
+index 1f3df2055ff0..764058f40341 100644
+--- a/drivers/video/fbdev/omap/omapfb_main.c
++++ b/drivers/video/fbdev/omap/omapfb_main.c
+@@ -1793,7 +1793,7 @@ void omapfb_register_panel(struct lcd_panel *panel)
+ EXPORT_SYMBOL_GPL(omapfb_register_panel);
+ 
+ /* Called when the device is being detached from the driver */
+-static int omapfb_remove(struct platform_device *pdev)
++static void omapfb_remove(struct platform_device *pdev)
+ {
+ 	struct omapfb_device *fbdev = platform_get_drvdata(pdev);
+ 	enum omapfb_state saved_state = fbdev->state;
+@@ -1805,8 +1805,6 @@ static int omapfb_remove(struct platform_device *pdev)
+ 
+ 	platform_device_unregister(&omapdss_device);
+ 	fbdev->dssdev = NULL;
+-
+-	return 0;
+ }
+ 
+ /* PM suspend */
+@@ -1831,7 +1829,7 @@ static int omapfb_resume(struct platform_device *pdev)
+ 
+ static struct platform_driver omapfb_driver = {
+ 	.probe		= omapfb_probe,
+-	.remove		= omapfb_remove,
++	.remove_new	= omapfb_remove,
+ 	.suspend	= omapfb_suspend,
+ 	.resume		= omapfb_resume,
+ 	.driver		= {
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/core.c b/drivers/video/fbdev/omap2/omapfb/dss/core.c
+index 37858be8be83..5fbd8885bad8 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/core.c
++++ b/drivers/video/fbdev/omap2/omapfb/dss/core.c
+@@ -171,13 +171,11 @@ static int __init omap_dss_probe(struct platform_device *pdev)
+ 	return 0;
+ }
+ 
+-static int omap_dss_remove(struct platform_device *pdev)
++static void omap_dss_remove(struct platform_device *pdev)
+ {
+ 	unregister_pm_notifier(&omap_dss_pm_notif_block);
+ 
+ 	dss_uninitialize_debugfs();
+-
+-	return 0;
+ }
+ 
+ static void omap_dss_shutdown(struct platform_device *pdev)
+@@ -187,7 +185,7 @@ static void omap_dss_shutdown(struct platform_device *pdev)
+ }
+ 
+ static struct platform_driver omap_dss_driver = {
+-	.remove         = omap_dss_remove,
++	.remove_new     = omap_dss_remove,
+ 	.shutdown	= omap_dss_shutdown,
+ 	.driver         = {
+ 		.name   = "omapdss",
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dispc.c b/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
+index 92fb6b7e1f68..21fef9db90d2 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
++++ b/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
+@@ -4017,10 +4017,9 @@ static int dispc_probe(struct platform_device *pdev)
+ 	return component_add(&pdev->dev, &dispc_component_ops);
+ }
+ 
+-static int dispc_remove(struct platform_device *pdev)
++static void dispc_remove(struct platform_device *pdev)
+ {
+ 	component_del(&pdev->dev, &dispc_component_ops);
+-	return 0;
+ }
+ 
+ static int dispc_runtime_suspend(struct device *dev)
+@@ -4073,7 +4072,7 @@ static const struct of_device_id dispc_of_match[] = {
+ 
+ static struct platform_driver omap_dispchw_driver = {
+ 	.probe		= dispc_probe,
+-	.remove         = dispc_remove,
++	.remove_new     = dispc_remove,
+ 	.driver         = {
+ 		.name   = "omapdss_dispc",
+ 		.pm	= &dispc_pm_ops,
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dpi.c b/drivers/video/fbdev/omap2/omapfb/dss/dpi.c
+index 99ce6e955a46..7c1b7d89389a 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/dpi.c
++++ b/drivers/video/fbdev/omap2/omapfb/dss/dpi.c
+@@ -810,15 +810,14 @@ static int dpi_probe(struct platform_device *pdev)
+ 	return component_add(&pdev->dev, &dpi_component_ops);
+ }
+ 
+-static int dpi_remove(struct platform_device *pdev)
++static void dpi_remove(struct platform_device *pdev)
+ {
+ 	component_del(&pdev->dev, &dpi_component_ops);
+-	return 0;
+ }
+ 
+ static struct platform_driver omap_dpi_driver = {
+ 	.probe		= dpi_probe,
+-	.remove		= dpi_remove,
++	.remove_new	= dpi_remove,
+ 	.driver         = {
+ 		.name   = "omapdss_dpi",
+ 		.suppress_bind_attrs = true,
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dsi.c b/drivers/video/fbdev/omap2/omapfb/dss/dsi.c
+index 7cddb7b8ae34..b7eb17a16ec4 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/dsi.c
++++ b/drivers/video/fbdev/omap2/omapfb/dss/dsi.c
+@@ -5495,10 +5495,9 @@ static int dsi_probe(struct platform_device *pdev)
+ 	return component_add(&pdev->dev, &dsi_component_ops);
+ }
+ 
+-static int dsi_remove(struct platform_device *pdev)
++static void dsi_remove(struct platform_device *pdev)
+ {
+ 	component_del(&pdev->dev, &dsi_component_ops);
+-	return 0;
+ }
+ 
+ static int dsi_runtime_suspend(struct device *dev)
+@@ -5565,7 +5564,7 @@ static const struct of_device_id dsi_of_match[] = {
+ 
+ static struct platform_driver omap_dsihw_driver = {
+ 	.probe		= dsi_probe,
+-	.remove		= dsi_remove,
++	.remove_new	= dsi_remove,
+ 	.driver         = {
+ 		.name   = "omapdss_dsi",
+ 		.pm	= &dsi_pm_ops,
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dss.c b/drivers/video/fbdev/omap2/omapfb/dss/dss.c
+index 335e0af4eec1..d814e4baa4b3 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/dss.c
++++ b/drivers/video/fbdev/omap2/omapfb/dss/dss.c
+@@ -1224,10 +1224,9 @@ static int dss_probe(struct platform_device *pdev)
+ 	return 0;
+ }
+ 
+-static int dss_remove(struct platform_device *pdev)
++static void dss_remove(struct platform_device *pdev)
+ {
+ 	component_master_del(&pdev->dev, &dss_component_ops);
+-	return 0;
+ }
+ 
+ static int dss_runtime_suspend(struct device *dev)
+@@ -1279,7 +1278,7 @@ MODULE_DEVICE_TABLE(of, dss_of_match);
+ 
+ static struct platform_driver omap_dsshw_driver = {
+ 	.probe		= dss_probe,
+-	.remove		= dss_remove,
++	.remove_new	= dss_remove,
+ 	.driver         = {
+ 		.name   = "omapdss_dss",
+ 		.pm	= &dss_pm_ops,
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c b/drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c
+index 0f39612e002e..f05b4e35a842 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c
++++ b/drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c
+@@ -756,10 +756,9 @@ static int hdmi4_probe(struct platform_device *pdev)
+ 	return component_add(&pdev->dev, &hdmi4_component_ops);
+ }
+ 
+-static int hdmi4_remove(struct platform_device *pdev)
++static void hdmi4_remove(struct platform_device *pdev)
+ {
+ 	component_del(&pdev->dev, &hdmi4_component_ops);
+-	return 0;
+ }
+ 
+ static int hdmi_runtime_suspend(struct device *dev)
+@@ -792,7 +791,7 @@ static const struct of_device_id hdmi_of_match[] = {
+ 
+ static struct platform_driver omapdss_hdmihw_driver = {
+ 	.probe		= hdmi4_probe,
+-	.remove		= hdmi4_remove,
++	.remove_new	= hdmi4_remove,
+ 	.driver         = {
+ 		.name   = "omapdss_hdmi",
+ 		.pm	= &hdmi_pm_ops,
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/hdmi5.c b/drivers/video/fbdev/omap2/omapfb/dss/hdmi5.c
+index bfccc2cb917a..03292945b1d4 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/hdmi5.c
++++ b/drivers/video/fbdev/omap2/omapfb/dss/hdmi5.c
+@@ -797,10 +797,9 @@ static int hdmi5_probe(struct platform_device *pdev)
+ 	return component_add(&pdev->dev, &hdmi5_component_ops);
+ }
+ 
+-static int hdmi5_remove(struct platform_device *pdev)
++static void hdmi5_remove(struct platform_device *pdev)
+ {
+ 	component_del(&pdev->dev, &hdmi5_component_ops);
+-	return 0;
+ }
+ 
+ static int hdmi_runtime_suspend(struct device *dev)
+@@ -834,7 +833,7 @@ static const struct of_device_id hdmi_of_match[] = {
+ 
+ static struct platform_driver omapdss_hdmihw_driver = {
+ 	.probe		= hdmi5_probe,
+-	.remove		= hdmi5_remove,
++	.remove_new	= hdmi5_remove,
+ 	.driver         = {
+ 		.name   = "omapdss_hdmi5",
+ 		.pm	= &hdmi_pm_ops,
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/sdi.c b/drivers/video/fbdev/omap2/omapfb/dss/sdi.c
+index 002f07f5480f..d527931b2b16 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/sdi.c
++++ b/drivers/video/fbdev/omap2/omapfb/dss/sdi.c
+@@ -375,15 +375,14 @@ static int sdi_probe(struct platform_device *pdev)
+ 	return component_add(&pdev->dev, &sdi_component_ops);
+ }
+ 
+-static int sdi_remove(struct platform_device *pdev)
++static void sdi_remove(struct platform_device *pdev)
+ {
+ 	component_del(&pdev->dev, &sdi_component_ops);
+-	return 0;
+ }
+ 
+ static struct platform_driver omap_sdi_driver = {
+ 	.probe		= sdi_probe,
+-	.remove         = sdi_remove,
++	.remove_new     = sdi_remove,
+ 	.driver         = {
+ 		.name   = "omapdss_sdi",
+ 		.suppress_bind_attrs = true,
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/venc.c b/drivers/video/fbdev/omap2/omapfb/dss/venc.c
+index 78a7309d25dd..c9d40e28a06f 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/venc.c
++++ b/drivers/video/fbdev/omap2/omapfb/dss/venc.c
+@@ -880,10 +880,9 @@ static int venc_probe(struct platform_device *pdev)
+ 	return component_add(&pdev->dev, &venc_component_ops);
+ }
+ 
+-static int venc_remove(struct platform_device *pdev)
++static void venc_remove(struct platform_device *pdev)
+ {
+ 	component_del(&pdev->dev, &venc_component_ops);
+-	return 0;
+ }
+ 
+ static int venc_runtime_suspend(struct device *dev)
+@@ -922,7 +921,7 @@ static const struct of_device_id venc_of_match[] = {
+ 
+ static struct platform_driver omap_venchw_driver = {
+ 	.probe		= venc_probe,
+-	.remove		= venc_remove,
++	.remove_new	= venc_remove,
+ 	.driver         = {
+ 		.name   = "omapdss_venc",
+ 		.pm	= &venc_pm_ops,
+diff --git a/drivers/video/fbdev/omap2/omapfb/omapfb-main.c b/drivers/video/fbdev/omap2/omapfb/omapfb-main.c
+index 5ccddcfce722..c0538069eb48 100644
+--- a/drivers/video/fbdev/omap2/omapfb/omapfb-main.c
++++ b/drivers/video/fbdev/omap2/omapfb/omapfb-main.c
+@@ -2599,7 +2599,7 @@ static int omapfb_probe(struct platform_device *pdev)
+ 	return r;
+ }
+ 
+-static int omapfb_remove(struct platform_device *pdev)
++static void omapfb_remove(struct platform_device *pdev)
+ {
+ 	struct omapfb2_device *fbdev = platform_get_drvdata(pdev);
+ 
+@@ -2610,13 +2610,11 @@ static int omapfb_remove(struct platform_device *pdev)
+ 	omapfb_free_resources(fbdev);
+ 
+ 	omapdss_compat_uninit();
+-
+-	return 0;
+ }
+ 
+ static struct platform_driver omapfb_driver = {
+ 	.probe		= omapfb_probe,
+-	.remove         = omapfb_remove,
++	.remove_new     = omapfb_remove,
+ 	.driver         = {
+ 		.name   = "omapfb",
+ 	},
 -- 
 2.39.2
 
