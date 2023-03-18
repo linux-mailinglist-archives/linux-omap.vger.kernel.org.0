@@ -2,142 +2,277 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5ED106BFB01
-	for <lists+linux-omap@lfdr.de>; Sat, 18 Mar 2023 15:47:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3283C6BFDE4
+	for <lists+linux-omap@lfdr.de>; Sun, 19 Mar 2023 00:58:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229924AbjCROrD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 18 Mar 2023 10:47:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56158 "EHLO
+        id S229508AbjCRX62 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 18 Mar 2023 19:58:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50324 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229942AbjCROq7 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 18 Mar 2023 10:46:59 -0400
-Received: from APC01-TYZ-obe.outbound.protection.outlook.com (mail-tyzapc01on2109.outbound.protection.outlook.com [40.107.117.109])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4378DCA2F;
-        Sat, 18 Mar 2023 07:46:30 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=JtighpnZeyUCP0N8ueMLoTWZmULKd0IcA8fPSyZC5IzwwebHBwzN31ySC/hUI4zXysm5traLREJNz1di3g/dFXUHRkjGG1FBjXGM3ChqpxPhdguCML6JTrej0OdsAdFhBA51ECHOui1dsNzFl9d9aKqwa17Ev+w2gIkEgtoyfBLMbJsRFVzxN4EKLsBTtyv+1ENowM2sZX5+oJHb6sBg7Pum5ytbKY0nz5dqP11Qb+j+5Dm/+CPOLrUEtEnl5DK/tLQY+FRW3WM3Ds9aCB0B+cH57WtOu3BGKJ2x3zXVLuRdxPSmbCyRxRP79WRw0nSIVZ5d+JDvcowUI3rgCAcLjA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GE3MEtYd/t6m9uX7tsCrsm/xazH/HurMYPLnGfjf41A=;
- b=lSJC1M0lBOvH2H9Sb72AUiUkRFPaH+wkp6cEICkVsfPdgWgH643h4QbMNFiysPSTrfEveFE3Ez4aaOYLPIbsDKFkKfuIyFDdqF7X4Hul4vkstDTeMMTnzyXmggLxmw4fUrHhsaGO1CcTx2zlr9DpQ9xu6M1HKEnvyBa41kt7Ktqv7vmi/VQWXgQoqB/X/v4m5HcxBbhXUB9ZylcLI8C1MbuKUdHC08W50gHvP5crM3QqGFWTHIq3fYnKtWDvTKxA3Cgin4yNL/lyeBGMhz5o7HamisOd1dIVM78VK4tBzk5ocPUZ9w/sig+859Cr88xL+nZLQnXVYA4tLX8NHXf00A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
- dkim=pass header.d=vivo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GE3MEtYd/t6m9uX7tsCrsm/xazH/HurMYPLnGfjf41A=;
- b=BstLJmB5qBYfLuP5aQTUGTnLzwbl2c1DKu4G+Bu7rS6d1fcHEyUW5Bv5D2OMOrfcJqtmo5vk+5vTNkQwSYh1mDkM4b/ykwzmcBk4CACWgzK0TsxBQiIn2uoACTEscCWxSfRTK2YJXivhhqV83Rb2Iiyn+7OpzECIFhGuafelVYFy+Sa4WZhmunv2RchGr7YGUUcvQYIo3vy/tgBeYyqWDtZ+kK5dFcv2Ml+4k9Eattc1uFy1iCYiCLGPhi+7VDI+6pV6KWk8hZDcoPENjnDkzdAXTp9npv8ZH3HgI6A7c/aynj3EFb8OOXaOVBnuD5MuQ+GgJUWv69hgwFS190XoSg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=vivo.com;
-Received: from SEZPR06MB5269.apcprd06.prod.outlook.com (2603:1096:101:78::6)
- by TY0PR06MB5283.apcprd06.prod.outlook.com (2603:1096:400:210::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6178.36; Sat, 18 Mar
- 2023 14:45:16 +0000
-Received: from SEZPR06MB5269.apcprd06.prod.outlook.com
- ([fe80::daf6:5ebb:a93f:1869]) by SEZPR06MB5269.apcprd06.prod.outlook.com
- ([fe80::daf6:5ebb:a93f:1869%9]) with mapi id 15.20.6178.036; Sat, 18 Mar 2023
- 14:45:16 +0000
-From:   Yangtao Li <frank.li@vivo.com>
-To:     Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>
-Cc:     Yangtao Li <frank.li@vivo.com>, linux-pm@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 8/9] thermal/drivers/ti-soc: remove redundant msg in ti_thermal_expose_sensor()
-Date:   Sat, 18 Mar 2023 22:44:11 +0800
-Message-Id: <20230318144412.75046-8-frank.li@vivo.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20230318144412.75046-1-frank.li@vivo.com>
-References: <20230318144412.75046-1-frank.li@vivo.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI2PR02CA0032.apcprd02.prod.outlook.com
- (2603:1096:4:195::12) To SEZPR06MB5269.apcprd06.prod.outlook.com
- (2603:1096:101:78::6)
+        with ESMTP id S229488AbjCRX61 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 18 Mar 2023 19:58:27 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56EB383C8
+        for <linux-omap@vger.kernel.org>; Sat, 18 Mar 2023 16:58:25 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pdgNw-00041d-SJ; Sun, 19 Mar 2023 00:54:52 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pdgNk-0056ZL-On; Sun, 19 Mar 2023 00:54:40 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pdgNj-005zTb-Tl; Sun, 19 Mar 2023 00:54:39 +0100
+From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Helge Deller <deller@gmx.de>, Yihao Han <hanyihao@vivo.com>,
+        Jaya Kumar <jayalk@intworks.biz>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Alexander Shiyan <shc_work@mail.ru>,
+        Dongliang Mu <dzm91@hust.edu.cn>,
+        Peter Jones <pjones@redhat.com>,
+        Gaosheng Cui <cuigaosheng1@huawei.com>,
+        Timur Tabi <timur@kernel.org>,
+        Xuezhi Zhang <zhangxuezhi1@coolpad.com>,
+        Jiasheng Jiang <jiasheng@iscas.ac.cn>,
+        Ferenc Bakonyi <fero@drama.obuda.kando.hu>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Stephen Kitt <steve@sk2.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Tony Lindgren <tony@atomide.com>,
+        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
+        Yu Zhe <yuzhe@nfschina.com>, Xu Panda <xu.panda@zte.com.cn>,
+        Zhang Qilong <zhangqilong3@huawei.com>,
+        Hyunwoo Kim <imv4bel@gmail.com>,
+        Yang Yingliang <yangyingliang@huawei.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        "wangkailong@jari.cn" <wangkailong@jari.cn>,
+        Wang Qing <wangqing@vivo.com>,
+        Kristoffer Ericson <kristoffer.ericson@gmail.com>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        ye xingchen <ye.xingchen@zte.com.cn>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Michal Januszewski <spock@gentoo.org>,
+        Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Zeng Heng <zengheng4@huawei.com>,
+        Florian Tobias Schandinat <FlorianSchandinat@gmx.de>,
+        Michal Simek <michal.simek@xilinx.com>
+Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        kernel@pengutronix.de, linux-arm-kernel@lists.infradead.org,
+        linux-nvidia@lists.surfsouth.com,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        linux-omap@vger.kernel.org
+Subject: [PATCH 00/51] video: fbdev: Convert to platform remove callback returning void
+Date:   Sun, 19 Mar 2023 00:53:37 +0100
+Message-Id: <20230318235428.272091-1-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SEZPR06MB5269:EE_|TY0PR06MB5283:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4d6364b3-69d4-46e8-16fa-08db27bf632c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 1BvdNsw6gt6DYeYjrdBU3QtxleLDOZJtls2m8i9BtdZoGolzwC3gtrcLZlCJ+LWEQOG6ibDIJT/RQVi0HEfh5SvfDGBE+q0vveMz7rm/d3aZrghXd+xXW90y+YlZhIpVSA0Vxuok5Voh+3Cd+Jwr3bLVnflM/BAQWcAN3k5XIEgM4jfzUSRDVxvqm0KYKCvZ+tPuulVnnL2h2RQYNWwH/b/UeKUatv2kdi+JubrB26/SyMdyS3etjzNHcMdcmS+WswWV0ZuYUuU9go6N3ODCr78Dde0G4xLQunrbKFQ7fn/QWi+2wEQIz3a06lXi7OIB8vidQ1mc5zH4HynYkOHb1NkPJdC1trHfK5pJYo0kH2kp/Cmf5gFctcg3TzD2Y9N16j2gwajNJ0Zl64Kp8wv+AXz/+6U4R4LYkYWECKjtCchmBbNQE7mItMplUvy5zQiEOqmCN8IoPQfWJblxRNCTPOD/HYhU17fDDrpd8ynU87VkD5DezAGUg5DEh5CHhdcfXISYtgpb+BajRtp84dzAwdbi9DSaVMcdUSk/c/liTp9Z8CDM2C5dnsYndy0Y5vzietQWrvnkTdSZfxYMtsXjg3Ax9EAAq/OVQho/3aIAlCM41ySmxxwR+1t2a9Fnk1oPYsGF/fpyVhINP0iJ4IJnuvfH/qqBqqcODJ0lO7k6hyExGJmIPXe52mn3hnMws/MPKyP5AIDDOEOO5iy6T/ntPw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SEZPR06MB5269.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(39860400002)(376002)(366004)(346002)(136003)(396003)(451199018)(86362001)(36756003)(52116002)(316002)(66946007)(66556008)(66476007)(8676002)(4326008)(83380400001)(478600001)(110136005)(186003)(6512007)(6506007)(1076003)(26005)(2616005)(6486002)(6666004)(38100700002)(38350700002)(8936002)(41300700001)(4744005)(2906002)(5660300002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?X+e/OsTX4dDM+4MrTTTOyNlynD2MYhRnTYZXC62RGMWZNC6JpCGZBcAXnE5/?=
- =?us-ascii?Q?MRATcrH1+csMcmAhZXUmgwuvtJtmAeAZ6kfoEZeGYryMNDewWbWWy/F58SG9?=
- =?us-ascii?Q?Pj36WbKZN/5aP1iauhgGSMcIZIRX83hL4Jxir8k2zXb4K24sboHbcUcyDu5m?=
- =?us-ascii?Q?RvHYyUbDABEWv0+xippTXk3opk7Rh94ZTNVjozkgEMoU/1zNu+389BX8nSWj?=
- =?us-ascii?Q?J89PLnuKIMhlYXwAU3W3906ht3vVcmDBxwtmTCn3ox/z3QsCKR8TgEWxLNDP?=
- =?us-ascii?Q?XmxP3jnk84DDuD0DzbUDKdveQklDblzcrkB3954L6I1ijuodgdnBQNMPeknS?=
- =?us-ascii?Q?A57ZZRVdF1OSCJkP97hePZFicpj0Jd7fIpFzgsxafQMsEuJKxnvW671ORqQX?=
- =?us-ascii?Q?FYf6GhKkMFRFn7cYZ73+bcAtXKf1szRNsx20ioJDS2ree69WcbslvD52UTfa?=
- =?us-ascii?Q?h1kBLXZbR01CjusTdTTMkumlEOv8lkNMPa3/gmZgTFWZl7M1QzNemVhYSBK+?=
- =?us-ascii?Q?LXbC4CVGTXlopYaA1vJTzhCKro6BTR+nUCrpCL6+C6qMu+gTiX4Fh9LB/Wyz?=
- =?us-ascii?Q?MGk17/nYWioVeuUAHGTz1sPSWbOFLuSVPMjuuNhb2JDy5cimFZCTaQtEJ/21?=
- =?us-ascii?Q?7656YfE+YBJIJq5BpJb2OgHaWworiEe4mslguuWt9oEXG/GRgNC1S4avdo9w?=
- =?us-ascii?Q?E8bp1ie3rOAjD3zfEgoMApmn4kLN48U7WwXVtepNZdYov6eBEPvnAfkKiKLs?=
- =?us-ascii?Q?VbWP6xFXjjY6o1+WtDp/QK6Plx3HMwSdy6AuDeZUGnN5hZL/r2KzB0bVhR9v?=
- =?us-ascii?Q?h4jWoOs9CDVPtRQdz2VNjHeB+CQD4aYMtyf0VZl3hfHSdqhlUud9aBsB/HS1?=
- =?us-ascii?Q?8NETioCFM9u2Jd5BJykBC79Zf9KUtZkcV4gbhdA5IWFoZDpnE+B6kSR3qkoD?=
- =?us-ascii?Q?HXowRW59alpr+TUouWCWX5sfcKRBamnX0o8s4OP2xyjcsbRbM20p8i7UQyI0?=
- =?us-ascii?Q?j9LGrt/0bkbnpHn6CiQ9oUBnsyj469ITjItMGu0p4L5/V8CBI40wyICniFmc?=
- =?us-ascii?Q?VgipQ5LDzAJFuBgP81xzK+vjEZBXr/dg6WlJ9lToiIGdCAFPEeQoRkFeS0h8?=
- =?us-ascii?Q?VEcrYrJgiyv4RRut352S9mpBfKl8lA/EMlUEE2c1LwtGNGfwyhZZBhFPOgQt?=
- =?us-ascii?Q?0nMLivGqOchdUOPIZ94dbxjUHhiwc7z4+xX3eNn3qILONPm/DDB2c1rg2B7f?=
- =?us-ascii?Q?nMdWWxdY02uIAHAh0JMqy+qyhHjHrd+QozAJGRQxtXBOw0zpTnaDLPQXcRc0?=
- =?us-ascii?Q?3mnP5HATqGS1QL8LxHUPA6ch3/R1ngA+J50Ot4hqotFFE2GnqKJMiFZGn8Es?=
- =?us-ascii?Q?sB0oipEvnTBbYH7FKINNzlBHZQuoDiGjiYEE09PQYoiUrK6PPnJ66iaY8OA6?=
- =?us-ascii?Q?3hvBfCnTVYgymR4hESdvpB7Ha0f2dGYWZW5rUGEHVEmAWvfumvOpAArs7V7q?=
- =?us-ascii?Q?6nWR183hEed7ZoPtNaBWAIId9GAUzaIp1BdRK0brsP3qcDoHavlqiTa2hGDS?=
- =?us-ascii?Q?07rnYylvgY9Q7SvZGaL7z6I6bMKhHYI8MaHVtjjG?=
-X-OriginatorOrg: vivo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4d6364b3-69d4-46e8-16fa-08db27bf632c
-X-MS-Exchange-CrossTenant-AuthSource: SEZPR06MB5269.apcprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Mar 2023 14:45:16.1314
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: UwANLDm7LTWDQCiym2Jkf7Iy/bWdzdxntgJ1n9sTHLlbpH9P2eDsVL30HZeSBC5wcGXBEqYwrNh24KC2cymBJw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY0PR06MB5283
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8788; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=r47GeEUiKhIRzd604LzE9SshHsY8vNnwnEndN4rcgxc=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBkFk6mxH5O1X401TvHV16mfKARbclG2lGu0mDau CJO8k3/v2OJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZBZOpgAKCRCPgPtYfRL+ TiILB/9v221lowIpze5yRsKWMaPaDBN5v7zuzOfbGY25vvPp5y4fEPqf4VPkHbmyM4Pxi7OtHzZ taKGS0g8hkYNITGL0Bz7dy3aL05quBqg2zJ0WgsSJy6EcrqY7sGYyGia+CPaY10UYWhTzHpQL8z YzAGm2w/A1buoJmfqWBLZRsh3nHYhI9P00kVviTm8ARg8LyR7KHiTeL4nADHSHjMnweVR5dst+e RIaE3K9zHVguN+cE6ywzVgY4J7OWN9d5Ax46X9HWgkIAI9fGLl37kbq+wWivvDxIeaWc4NbxMtz vXEOxaVbR2k/0gEOYFUUeyuXCC+aXpEJTCnzZVCUq5QhZ2+W
+X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-omap@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The upper-layer devm_thermal_add_hwmon_sysfs() function can directly
-print error information.
+Hello,
 
-Signed-off-by: Yangtao Li <frank.li@vivo.com>
----
- drivers/thermal/ti-soc-thermal/ti-thermal-common.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+this series adapts the platform drivers below drivers/video/fbdev to use the
+.remove_new() callback. Compared to the traditional .remove() callback
+.remove_new() returns no value. This is a good thing because the driver core
+doesn't (and cannot) cope for errors during remove. The only effect of a
+non-zero return value in .remove() is that the driver core emits a warning. The
+device is removed anyhow and an early return from .remove() usually yields a
+resource leak.
 
-diff --git a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-index 0c8914017c18..e39091f999d9 100644
---- a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-+++ b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-@@ -182,8 +182,7 @@ int ti_thermal_expose_sensor(struct ti_bandgap *bgp, int id,
- 	ti_bandgap_set_sensor_data(bgp, id, data);
- 	ti_bandgap_write_update_interval(bgp, data->sensor_id, interval);
- 
--	if (devm_thermal_add_hwmon_sysfs(bgp->dev, data->ti_thermal))
--		dev_warn(bgp->dev, "failed to add hwmon sysfs attributes\n");
-+	devm_thermal_add_hwmon_sysfs(bgp->dev, data->ti_thermal);
- 
- 	return 0;
- }
+By changing the remove callback to return void driver authors cannot
+reasonably assume any more that there is some kind of cleanup later.
+
+The first patch simplifies the remove callback of one driver to obviously
+always return zero. After that all drivers are converted trivially to
+.remove_new().
+
+Best regards
+Uwe
+
+Uwe Kleine-König (51):
+  video: fbdev: au1100fb: Drop if with an always false condition
+  video: fbdev: arcfb: Convert to platform remove callback returning
+    void
+  video: fbdev: au1100fb: Convert to platform remove callback returning
+    void
+  video: fbdev: au1200fb: Convert to platform remove callback returning
+    void
+  video: fbdev: broadsheetfb: Convert to platform remove callback
+    returning void
+  video: fbdev: bw2: Convert to platform remove callback returning void
+  video: fbdev: cg14: Convert to platform remove callback returning void
+  video: fbdev: cg3: Convert to platform remove callback returning void
+  video: fbdev: cg6: Convert to platform remove callback returning void
+  video: fbdev: clps711x-fb: Convert to platform remove callback
+    returning void
+  video: fbdev: cobalt_lcdfb: Convert to platform remove callback
+    returning void
+  video: fbdev: da8xx-fb: Convert to platform remove callback returning
+    void
+  video: fbdev: efifb: Convert to platform remove callback returning
+    void
+  video: fbdev: ep93xx-fb: Convert to platform remove callback returning
+    void
+  video: fbdev: ffb: Convert to platform remove callback returning void
+  video: fbdev: fsl-diu-fb: Convert to platform remove callback
+    returning void
+  video: fbdev: gbefb: Convert to platform remove callback returning
+    void
+  video: fbdev: goldfishfb: Convert to platform remove callback
+    returning void
+  video: fbdev: grvga: Convert to platform remove callback returning
+    void
+  video: fbdev: hecubafb: Convert to platform remove callback returning
+    void
+  video: fbdev: hgafb: Convert to platform remove callback returning
+    void
+  video: fbdev: hitfb: Convert to platform remove callback returning
+    void
+  video: fbdev: imxfb: Convert to platform remove callback returning
+    void
+  video: fbdev: leo: Convert to platform remove callback returning void
+  video: fbdev: mb862xx: Convert to platform remove callback returning
+    void
+  video: fbdev: metronomefb: Convert to platform remove callback
+    returning void
+  video: fbdev: mx3fb: Convert to platform remove callback returning
+    void
+  video: fbdev: ocfb: Convert to platform remove callback returning void
+  video: fbdev: offb: Convert to platform remove callback returning void
+  video: fbdev: omapfb: Convert to platform remove callback returning
+    void
+  video: fbdev: p9100: Convert to platform remove callback returning
+    void
+  video: fbdev: platinumfb: Convert to platform remove callback
+    returning void
+  video: fbdev: pxa168fb: Convert to platform remove callback returning
+    void
+  video: fbdev: pxa3xx-gcu: Convert to platform remove callback
+    returning void
+  video: fbdev: pxafb: Convert to platform remove callback returning
+    void
+  video: fbdev: s1d13xxxfb: Convert to platform remove callback
+    returning void
+  video: fbdev: s3c-fb: Convert to platform remove callback returning
+    void
+  video: fbdev: sh7760fb: Convert to platform remove callback returning
+    void
+  video: fbdev: sh_mobile_lcdcfb: Convert to platform remove callback
+    returning void
+  video: fbdev: simplefb: Convert to platform remove callback returning
+    void
+  video: fbdev: sm501fb: Convert to platform remove callback returning
+    void
+  video: fbdev: tcx: Convert to platform remove callback returning void
+  video: fbdev: uvesafb: Convert to platform remove callback returning
+    void
+  video: fbdev: vesafb: Convert to platform remove callback returning
+    void
+  video: fbdev: vfb: Convert to platform remove callback returning void
+  video: fbdev: vga16fb: Convert to platform remove callback returning
+    void
+  video: fbdev: via: Convert to platform remove callback returning void
+  video: fbdev: vt8500lcdfb: Convert to platform remove callback
+    returning void
+  video: fbdev: wm8505fb: Convert to platform remove callback returning
+    void
+  video: fbdev: wmt_ge_rops: Convert to platform remove callback
+    returning void
+  video: fbdev: xilinxfb: Convert to platform remove callback returning
+    void
+
+ drivers/video/fbdev/arcfb.c                    |  5 ++---
+ drivers/video/fbdev/au1100fb.c                 | 11 +++--------
+ drivers/video/fbdev/au1200fb.c                 |  6 ++----
+ drivers/video/fbdev/broadsheetfb.c             |  5 ++---
+ drivers/video/fbdev/bw2.c                      |  6 ++----
+ drivers/video/fbdev/cg14.c                     |  6 ++----
+ drivers/video/fbdev/cg3.c                      |  6 ++----
+ drivers/video/fbdev/cg6.c                      |  6 ++----
+ drivers/video/fbdev/clps711x-fb.c              |  6 ++----
+ drivers/video/fbdev/cobalt_lcdfb.c             |  6 ++----
+ drivers/video/fbdev/da8xx-fb.c                 |  6 ++----
+ drivers/video/fbdev/efifb.c                    |  6 ++----
+ drivers/video/fbdev/ep93xx-fb.c                |  6 ++----
+ drivers/video/fbdev/ffb.c                      |  6 ++----
+ drivers/video/fbdev/fsl-diu-fb.c               |  6 ++----
+ drivers/video/fbdev/gbefb.c                    |  6 ++----
+ drivers/video/fbdev/goldfishfb.c               |  5 ++---
+ drivers/video/fbdev/grvga.c                    |  6 ++----
+ drivers/video/fbdev/hecubafb.c                 |  5 ++---
+ drivers/video/fbdev/hgafb.c                    |  6 ++----
+ drivers/video/fbdev/hitfb.c                    |  6 ++----
+ drivers/video/fbdev/imxfb.c                    |  6 ++----
+ drivers/video/fbdev/leo.c                      |  6 ++----
+ drivers/video/fbdev/mb862xx/mb862xxfbdrv.c     |  5 ++---
+ drivers/video/fbdev/metronomefb.c              |  5 ++---
+ drivers/video/fbdev/mx3fb.c                    |  5 ++---
+ drivers/video/fbdev/ocfb.c                     |  6 ++----
+ drivers/video/fbdev/offb.c                     |  8 +++-----
+ drivers/video/fbdev/omap/omapfb_main.c         |  6 ++----
+ drivers/video/fbdev/omap2/omapfb/dss/core.c    |  6 ++----
+ drivers/video/fbdev/omap2/omapfb/dss/dispc.c   |  5 ++---
+ drivers/video/fbdev/omap2/omapfb/dss/dpi.c     |  5 ++---
+ drivers/video/fbdev/omap2/omapfb/dss/dsi.c     |  5 ++---
+ drivers/video/fbdev/omap2/omapfb/dss/dss.c     |  5 ++---
+ drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c   |  5 ++---
+ drivers/video/fbdev/omap2/omapfb/dss/hdmi5.c   |  5 ++---
+ drivers/video/fbdev/omap2/omapfb/dss/sdi.c     |  5 ++---
+ drivers/video/fbdev/omap2/omapfb/dss/venc.c    |  5 ++---
+ drivers/video/fbdev/omap2/omapfb/omapfb-main.c |  6 ++----
+ drivers/video/fbdev/p9100.c                    |  6 ++----
+ drivers/video/fbdev/platinumfb.c               |  6 ++----
+ drivers/video/fbdev/pxa168fb.c                 |  8 +++-----
+ drivers/video/fbdev/pxa3xx-gcu.c               |  6 ++----
+ drivers/video/fbdev/pxafb.c                    |  8 +++-----
+ drivers/video/fbdev/s1d13xxxfb.c               |  5 ++---
+ drivers/video/fbdev/s3c-fb.c                   |  6 ++----
+ drivers/video/fbdev/sh7760fb.c                 |  6 ++----
+ drivers/video/fbdev/sh_mobile_lcdcfb.c         |  5 ++---
+ drivers/video/fbdev/simplefb.c                 |  6 ++----
+ drivers/video/fbdev/sm501fb.c                  |  6 ++----
+ drivers/video/fbdev/tcx.c                      |  6 ++----
+ drivers/video/fbdev/uvesafb.c                  |  6 ++----
+ drivers/video/fbdev/vesafb.c                   |  6 ++----
+ drivers/video/fbdev/vfb.c                      |  5 ++---
+ drivers/video/fbdev/vga16fb.c                  |  6 ++----
+ drivers/video/fbdev/via/via-gpio.c             |  5 ++---
+ drivers/video/fbdev/via/via_i2c.c              |  5 ++---
+ drivers/video/fbdev/vt8500lcdfb.c              |  6 ++----
+ drivers/video/fbdev/wm8505fb.c                 |  6 ++----
+ drivers/video/fbdev/wmt_ge_rops.c              |  5 ++---
+ drivers/video/fbdev/xilinxfb.c                 |  6 ++----
+ 61 files changed, 126 insertions(+), 230 deletions(-)
+
+base-commit: fe15c26ee26efa11741a7b632e9f23b01aca4cc6
 -- 
-2.35.1
+2.39.2
 
