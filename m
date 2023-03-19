@@ -2,121 +2,133 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B95936C03CF
-	for <lists+linux-omap@lfdr.de>; Sun, 19 Mar 2023 19:44:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 379AC6C0504
+	for <lists+linux-omap@lfdr.de>; Sun, 19 Mar 2023 21:55:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229813AbjCSSo1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 19 Mar 2023 14:44:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49534 "EHLO
+        id S230123AbjCSUzo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 19 Mar 2023 16:55:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229826AbjCSSoZ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 19 Mar 2023 14:44:25 -0400
-Received: from mailrelay1-1.pub.mailoutpod2-cph3.one.com (mailrelay1-1.pub.mailoutpod2-cph3.one.com [IPv6:2a02:2350:5:400::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61C3015CB1
-        for <linux-omap@vger.kernel.org>; Sun, 19 Mar 2023 11:44:18 -0700 (PDT)
+        with ESMTP id S229676AbjCSUzn (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 19 Mar 2023 16:55:43 -0400
+Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EB5014997
+        for <linux-omap@vger.kernel.org>; Sun, 19 Mar 2023 13:55:41 -0700 (PDT)
+Received: by mail-yb1-xb29.google.com with SMTP id p203so10789782ybb.13
+        for <linux-omap@vger.kernel.org>; Sun, 19 Mar 2023 13:55:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ravnborg.org; s=rsa2;
-        h=in-reply-to:content-transfer-encoding:content-type:mime-version:references:
-         message-id:subject:cc:to:from:date:from;
-        bh=55TQw3vmH2ewB+u+Nx+NoaqSvHlaHxAFdFOoflwM9FY=;
-        b=cFGyvjChe1mTdtFdX6pdqz0ATMgdpW3fT1KkwUrUkpNalQQDaqFU5vN7VKBddGpYLXta2DpkFI55w
-         MogWKlXdSXzNrrC5bGiSlpq5Do4A2sQNeWaCmqIlEimeq9x1gl80wZc6zJUzkUhAOW1N6R5wz8ZVPd
-         leZt4y4mpQn+ssBwEd/MBYswMDehgShJ7ooPBMIBmdbptpzJcDOW8EWJG0l7LOHAdSdye4j/hTjl2J
-         OAiIf/mCrmSOrSub6eIq5J9qMPc36zFTeLyCvrYO7OvVztiKoy8rmG/+Gwak6H+EiJ+PByU8MKo+X5
-         +j1pgZ4jnJU00weICutVZqABC1PMCAw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed;
-        d=ravnborg.org; s=ed2;
-        h=in-reply-to:content-transfer-encoding:content-type:mime-version:references:
-         message-id:subject:cc:to:from:date:from;
-        bh=55TQw3vmH2ewB+u+Nx+NoaqSvHlaHxAFdFOoflwM9FY=;
-        b=z5JZS1uRC8yuO9NKyeQdfLOOcdSuevOdrmWZPSc3Ui+aGG0zuuit9OrsPex0yW9dEql1YHNHq7Q2U
-         ZbTuEn0DQ==
-X-HalOne-ID: 0b8d9806-c686-11ed-a42d-11abd97b9443
-Received: from ravnborg.org (2-105-2-98-cable.dk.customer.tdc.net [2.105.2.98])
-        by mailrelay1 (Halon) with ESMTPSA
-        id 0b8d9806-c686-11ed-a42d-11abd97b9443;
-        Sun, 19 Mar 2023 18:44:15 +0000 (UTC)
-Date:   Sun, 19 Mar 2023 19:44:13 +0100
-From:   Sam Ravnborg <sam@ravnborg.org>
-To:     Stephen Kitt <steve@sk2.org>
-Cc:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        linux-staging@lists.linux.dev, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        Paul Mackerras <paulus@samba.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Helge Deller <deller@gmx.de>, Lee Jones <lee@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Antonino Daplas <adaplas@gmail.com>,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-        Robin van der Gracht <robin@protonic.nl>,
-        linuxppc-dev@lists.ozlabs.org,
-        Claudiu Beznea <claudiu.beznea@microchip.com>
-Subject: Re: [PATCH 12/15] auxdisplay: ht16k33: Introduce
- backlight_get_brightness()
-Message-ID: <ZBdX/YlexhyVzIRf@ravnborg.org>
-References: <20230107-sam-video-backlight-drop-fb_blank-v1-0-1bd9bafb351f@ravnborg.org>
- <20230107-sam-video-backlight-drop-fb_blank-v1-12-1bd9bafb351f@ravnborg.org>
- <CANiq72mFMJuec+r=T6xYtLpuU+a1rOrAhrHiecy_1Jpj2m4J=g@mail.gmail.com>
- <Y7qM+ZlG5gQiOW4K@ravnborg.org>
- <2857575f6ec206f79cc21d423fde7d17@protonic.nl>
- <20230319144408.03045c50@heffalump.sk2.org>
+        d=linaro.org; s=google; t=1679259340;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ac/NF/X3Ce1vR1hDDyKBTJ707og2BXuZP/lMQW+OCrs=;
+        b=H/USSk17Fu5IdWFmU2HYEVwZ92SC2T/aL/5nOvlVpJeD0L0do87jcAsTliaBEz0MCA
+         mMqeZBU9urZirZ7zxW11auSX7+tkHYp0K9XThAE/wLNlnvSVJ8GdNjd8zqxEnyfC6R+S
+         bF0GNyNi0+l9Pp7ASmve9a2w4hwTf3i3d+4y1vux+85gQW4f0GI7kaHZLVj6jXu3zltE
+         7jVl7Q6CBsq+1I5qhe0Ga3XfgMounIvMwgwAAF156gYYGaIPQ8+xRHnk/kIV9uZT6MuK
+         aofXXYTTc5isXyhzb02mMH9GFNLJv1AQNxp4DslX98DqL+NC2qt8ieSTjsvVDSUikCvp
+         WBRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679259340;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Ac/NF/X3Ce1vR1hDDyKBTJ707og2BXuZP/lMQW+OCrs=;
+        b=hrgm5kQcrHuvaMj0cMHLvRmO3nCfd9V9PUjuKSKxIYjeNvb+OOBaxlYmFaHvlHq01D
+         EFjijLYyAqWDQOxWRi6hsaX8YJDW6tfFfjo4gsRZSgjKva+rZZWRoMeUPZ1hvLBQjUR2
+         8ySdvvhGdKjbApKXVieTFuPfBUKfvVi0aIJZ7r6fE9NFE6c3VQBfkg76Gk9p2u9fm7Ip
+         dugI8MxD2SJulK+ZPjnlctK/0efXk90iShXG3agP2qRv6Zu5HYTS+sRje9LWDh8K6H6f
+         GVn7knZUw6jkb7FHxEz+Dv+EtgnYhNhOVyH8T3Si3ZY86RTCWatVP6gwfftOoytiYRpp
+         QDGA==
+X-Gm-Message-State: AO0yUKXj7h4MRJzwhmaY/2gpOg52TEQhcVLwjr/jrdAQwgCAbVSUue6G
+        VvTHRblL6xIz+RcC6v3XL7hvkkLPaA7bP9FcsF0iwA==
+X-Google-Smtp-Source: AK7set96jMMXsU1lpAmC3W40A6khl6vhFPSlLdYAPpPspd35ltaJhYbiXGg5BwG99gy+Dk9b8AqTCwMdTjF2Un45KI0=
+X-Received: by 2002:a05:6902:110e:b0:b26:47f3:6cb with SMTP id
+ o14-20020a056902110e00b00b2647f306cbmr3222772ybu.4.1679259340445; Sun, 19 Mar
+ 2023 13:55:40 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230319144408.03045c50@heffalump.sk2.org>
+References: <20230310144721.1544669-1-robh@kernel.org> <CAMuHMdUaeyHs9fQxS+16F62uHaifJYMXKJpL2-xi-SL5HCrTHQ@mail.gmail.com>
+ <CAMuHMdX1=+WwWjfiWDYOjSzTjcYBEY+QR=XKuU+o5_SCyU7rag@mail.gmail.com>
+In-Reply-To: <CAMuHMdX1=+WwWjfiWDYOjSzTjcYBEY+QR=XKuU+o5_SCyU7rag@mail.gmail.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Sun, 19 Mar 2023 21:55:29 +0100
+Message-ID: <CACRpkdaw7TodD0hr3vD8cGB80k0qtEiaC1ne-ivCj6YEefi44w@mail.gmail.com>
+Subject: Re: [PATCH] pinctrl: Use of_property_present() for testing DT
+ property presence
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Rob Herring <robh@kernel.org>, Sean Wang <sean.wang@kernel.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Haojian Zhuang <haojian.zhuang@linaro.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Samuel Holland <samuel@sholland.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        devicetree@vger.kernel.org, linux-mediatek@lists.infradead.org,
+        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-renesas-soc@vger.kernel.org, linux-sunxi@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_PASS,SPF_NONE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sun, Mar 19, 2023 at 02:44:08PM +0100, Stephen Kitt wrote:
-> Hi,
-> 
-> On Mon, 09 Jan 2023 11:12:02 +0100, Robin van der Gracht <robin@protonic.nl>
-> wrote:
-> > On 2023-01-08 10:29, Sam Ravnborg wrote:
-> > > On Sat, Jan 07, 2023 at 10:02:38PM +0100, Miguel Ojeda wrote:  
-> > >> On Sat, Jan 7, 2023 at 7:26 PM Sam Ravnborg via B4 Submission Endpoint
-> > >> <devnull+sam.ravnborg.org@kernel.org> wrote:  
-> > >> >
-> > >> > Introduce backlight_get_brightness() to simplify logic
-> > >> > and avoid direct access to backlight properties.  
-> > >> 
-> > >> Note: Stephen sent this one too a while ago (with some more details in
-> > >> the commit message, which is always nice); and then he sent yesterday
-> > >> v2 [1] (to mention the functional change with `BL_CORE_SUSPENDED`
-> > >> [2]).  
-> > > Thanks for the pointers. I will try to move forward with Stephen's
-> > > patches.  
-> > >> 
-> > >> Anyway, if it goes via drm-misc, feel free to have my:
-> > >> 
-> > >>     Acked-by: Miguel Ojeda <ojeda@kernel.org>
-> > >> 
-> > >> Though it would be nice to have Robin test the change.  
-> > > 
-> > > Robin - can I get your ack to apply Stephen's original v2 patch to
-> > > drm-misc?  
-> > 
-> > done! see: 
-> > https://lore.kernel.org/lkml/0b16391f997e6ed005a326e4e48f2033@protonic.nl/
-> 
-> As far as I can tell, this never got applied to drm-misc, and I don’t see it
-> anywhere else. I guess it slipped through the cracks ;-)
+On Mon, Mar 13, 2023 at 12:00=E2=80=AFPM Geert Uytterhoeven
+<geert@linux-m68k.org> wrote:
+> On Mon, Mar 13, 2023 at 10:00=E2=80=AFAM Geert Uytterhoeven
+> <geert@linux-m68k.org> wrote:
+> > On Fri, Mar 10, 2023 at 3:56=E2=80=AFPM Rob Herring <robh@kernel.org> w=
+rote:
+> > > It is preferred to use typed property access functions (i.e.
+> > > of_property_read_<type> functions) rather than low-level
+> > > of_get_property/of_find_property functions for reading properties. As
+> > > part of this, convert of_get_property/of_find_property calls to the
+> > > recently added of_property_present() helper when we just want to test
+> > > for presence of a property and nothing more.
+> > >
+> > > Signed-off-by: Rob Herring <robh@kernel.org>
+> >
+> > Thanks for your patch!
+> >
+> > > --- a/drivers/pinctrl/renesas/pinctrl.c
+> > > +++ b/drivers/pinctrl/renesas/pinctrl.c
+> > > @@ -125,8 +125,8 @@ static int sh_pfc_dt_subnode_to_map(struct pinctr=
+l_dev *pctldev,
+> > >          * inside a subnode nor across subnodes.
+> > >          */
+> > >         if (!pmx->func_prop_name) {
+> > > -               if (of_find_property(np, "groups", NULL) ||
+> > > -                   of_find_property(np, "pins", NULL)) {
+> > > +               if (of_property_present(np, "groups")||
+> > > +                   of_property_present(np, "pins")) {
+> > >                         pmx->func_prop_name =3D "function";
+> > >                         pmx->groups_prop_name =3D "groups";
+> > >                         pmx->pins_prop_name =3D "pins";
+> >
+> > Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> >
+> > This check is used to auto-detect if the standard property names
+> > should be used, or the "renesas,"-prefixed ones.
+> > As the last users of the latter were removed from DTS in v4.10,
+> > perhaps I should just remove these checks instead?
+>
+> Sent a patch just doing that, so you can drop this chunk.
+> https://lore.kernel.org/linux-renesas-soc/ff9c14781110bbf19b56b45dd1f01e6=
+da90319ad.1678704441.git.geert+renesas@glider.be
 
-Yes, I have been busy with a lot of other stuff lately, and cannot
-promise when I get back to do Linux work.
-So if someone else could pick it up that would be nice.
+So I need a new version of this patch before I can apply it
+I guess, or there will be conflict with Reseas stuff?
 
-	Sam
+Yours,
+Linus Walleij
