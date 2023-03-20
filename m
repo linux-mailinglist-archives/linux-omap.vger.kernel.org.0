@@ -2,114 +2,247 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 13FE86C0E5D
-	for <lists+linux-omap@lfdr.de>; Mon, 20 Mar 2023 11:12:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 57BA56C15E1
+	for <lists+linux-omap@lfdr.de>; Mon, 20 Mar 2023 15:58:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229888AbjCTKMF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 20 Mar 2023 06:12:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47030 "EHLO
+        id S232122AbjCTO6u (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 20 Mar 2023 10:58:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229878AbjCTKMC (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 20 Mar 2023 06:12:02 -0400
-Received: from mail-qk1-x72b.google.com (mail-qk1-x72b.google.com [IPv6:2607:f8b0:4864:20::72b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B75C793EE;
-        Mon, 20 Mar 2023 03:11:56 -0700 (PDT)
-Received: by mail-qk1-x72b.google.com with SMTP id n13so523046qkh.5;
-        Mon, 20 Mar 2023 03:11:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679307115;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VEHX2H3FPvonaNoZg4d3ZXKZZZCxjwbRPNv3Abil3kY=;
-        b=pGRG8DR8czC6mIySn8c+XY/QyPsxNJby0FDmm6hU8zH3srOc1pzYmcAtzW++zTsVST
-         oIKxOe+AVWw3Q/vF2tZU81xD0VZuk+6u66OpAtC8p6jZyD8wmZhAZSJFOAuerqDP/Vo7
-         TBo9jbf5dZR5AvNjqQ8y4q31DORWt/TGC1jexEA460NOlL8vYpwY1zSiFzLLTZMDoQuI
-         2IZbSZnw6mQl4D81ehGAV4TERB7EvlqTNvfy4Mr9ntcUMQjf2WYyzSa68Nbzy2ZU3Koa
-         P3KZ1aMChHLD6su7o5vLa3LQ+d2V6OaFKe2DagbmdM9TKAlM4Ol7RHA3UY53SbomsUy8
-         z5cw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679307115;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VEHX2H3FPvonaNoZg4d3ZXKZZZCxjwbRPNv3Abil3kY=;
-        b=gDMwWkABYDLCxNPiH5+aIukMq1V+wLK91mhRjvPoKjbljqOMLTNbW6YuYWn0zYfUjv
-         emJ/dF791PAyftOp8O8ExSDI1rntFMUJhtSNgZAHBywTPlU197fnvFPwEyfj6wi5FRUZ
-         9TWFF3qUYzxOGCkiMK6TxxgR0hpSmjxsKaxmblnWSpC6NhSE0w1+73kCecUrYMXcNWUz
-         DMakMW5Ljaovd+95gtsF7jfRwGPN+l/vj/a2HzSN5Pbzmrns2t+BNO0/ux6NHvug5eoE
-         cV9GXAv4r8WyRK5pJJpebd8yvq4YC9d0N0obT7DtsEO3XGVbItDZHxT9Lh8qoC7kdC2e
-         wWTQ==
-X-Gm-Message-State: AO0yUKVkMmSu/PayECjGngfBMkS2RuR0k333lfE5Jwh/eYeFFZHpJL0b
-        MvPNKBsbG1UtMBgsG7HGsrcAQHNH/HQ6tzHVG9M=
-X-Google-Smtp-Source: AK7set/7f2o3MXyyuIp0oW2dzmomSD1AeJIwa/bkGf1KaepstcBoZ2oGQTq2OW/QrKdEOrRxx9NAQwjPPU8J1KTvGK8=
-X-Received: by 2002:a37:e119:0:b0:746:3c7f:7524 with SMTP id
- c25-20020a37e119000000b007463c7f7524mr2618315qkm.14.1679307115447; Mon, 20
- Mar 2023 03:11:55 -0700 (PDT)
+        with ESMTP id S231893AbjCTO6K (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 20 Mar 2023 10:58:10 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D3561125A7;
+        Mon, 20 Mar 2023 07:56:30 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8FD62AD7;
+        Mon, 20 Mar 2023 07:57:13 -0700 (PDT)
+Received: from FVFF77S0Q05N.cambridge.arm.com (FVFF77S0Q05N.cambridge.arm.com [10.1.35.35])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AAA413F71E;
+        Mon, 20 Mar 2023 07:56:26 -0700 (PDT)
+Date:   Mon, 20 Mar 2023 14:56:20 +0000
+From:   Mark Rutland <mark.rutland@arm.com>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Guo Ren <guoren@kernel.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Kajetan Puchalski <kajetan.puchalski@arm.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Ingo Molnar <mingo@kernel.org>, linux@armlinux.org.uk,
+        linux-imx@nxp.com, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+        linux-perf-users@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-clk@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-tegra@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
+        kasan-dev@googlegroups.com, linux-renesas-soc@vger.kernel.org
+Subject: Re: [PATCH v3 07/51] cpuidle,psci: Push RCU-idle into driver
+Message-ID: <ZBh0FPlF1oeqHftc@FVFF77S0Q05N.cambridge.arm.com>
+References: <20230112194314.845371875@infradead.org>
+ <20230112195539.760296658@infradead.org>
+ <ff338b9f-4ab0-741b-26ea-7b7351da156@linux-m68k.org>
 MIME-Version: 1.0
-References: <20230319115925.1317654-1-sensor1010@163.com> <CAHp75Vf9kwhbZaGjZeN5Jq0Wr_yJtDdj9N48-3o79AMORqmS3w@mail.gmail.com>
-In-Reply-To: <CAHp75Vf9kwhbZaGjZeN5Jq0Wr_yJtDdj9N48-3o79AMORqmS3w@mail.gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 20 Mar 2023 12:11:19 +0200
-Message-ID: <CAHp75VeLoMPtTU8TCuPjXD_YTY-_V-TmVJYeZiBB_BPqh8EVrQ@mail.gmail.com>
-Subject: Re: [PATCH v2] drivers/gpio : Remove redundant platform_set_drvdata().
-To:     Lizhe <sensor1010@163.com>
-Cc:     linus.walleij@linaro.org, brgl@bgdev.pl, geert+renesas@glider.be,
-        info@metux.net, rjui@broadcom.com,
-        bcm-kernel-feedback-list@broadcom.com, f.fainelli@gmail.com,
-        sbranden@broadcom.com, shc_work@mail.ru, j-keerthy@ti.com,
-        hoan@os.amperecomputing.com, fancer.lancer@gmail.com,
-        orsonzhai@gmail.com, baolin.wang@linux.alibaba.com,
-        zhang.lyra@gmail.com, shawnguo@kernel.org, s.hauer@pengutronix.de,
-        kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
-        kaloz@openwrt.org, khalasa@piap.pl, keguang.zhang@gmail.com,
-        daniel@thingy.jp, romain.perier@gmail.com, matthias.bgg@gmail.com,
-        angelogioacchino.delregno@collabora.com, thierry.reding@gmail.com,
-        u.kleine-koenig@pengutronix.de, grygorii.strashko@ti.com,
-        ssantosh@kernel.org, khilman@kernel.org, mani@kernel.org,
-        ludovic.desroches@microchip.com, andy@kernel.org,
-        palmer@dabbelt.com, paul.walmsley@sifive.com, jonathanh@nvidia.com,
-        sathyanarayanan.kuppuswamy@linux.intel.com,
-        michal.simek@xilinx.com, linux-gpio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mips@vger.kernel.org, linux-mediatek@lists.infradead.org,
-        linux-pwm@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-unisoc@lists.infradead.org, linux-riscv@lists.infradead.org,
-        linux-tegra@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ff338b9f-4ab0-741b-26ea-7b7351da156@linux-m68k.org>
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Mar 20, 2023 at 12:10=E2=80=AFPM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
-> On Sun, Mar 19, 2023 at 2:01=E2=80=AFPM Lizhe <sensor1010@163.com> wrote:
-> >
-> > platform_set_drvdata() is redundant in these functions.
-> > the purpose of calling this function is to place data
-> > in *driver_data. but the data is not retrieved in these
-> > functions
+Hi Geert,
+
+On Tue, Mar 07, 2023 at 05:40:08PM +0100, Geert Uytterhoeven wrote:
+> 	Hoi Peter,
+> 
+> (reduced the insane CC list)
+
+Helpfully you dropped me from Cc, so I missed this until just now...
+
+> On Thu, 12 Jan 2023, Peter Zijlstra wrote:
+> > Doing RCU-idle outside the driver, only to then temporarily enable it
+> > again, at least twice, before going idle is daft.
+> > 
+> > Notably once implicitly through the cpu_pm_*() calls and once
+> > explicitly doing ct_irq_*_irqon().
+> > 
+> > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> > Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+> > Reviewed-by: Guo Ren <guoren@kernel.org>
+> > Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > Tested-by: Kajetan Puchalski <kajetan.puchalski@arm.com>
+> > Tested-by: Tony Lindgren <tony@atomide.com>
+> > Tested-by: Ulf Hansson <ulf.hansson@linaro.org>
+> 
+> Thanks for your patch, which is now commit e038f7b8028a1d1b ("cpuidle,
+> psci: Push RCU-idle into driver") in v6.3-rc1.
+> 
+> I have bisected a PSCI checker regression on Renesas R-Car Gen3/4 SoCs
+> to commit a01353cf1896ea5b ("cpuidle: Fix ct_idle_*() usage") (the 7
+> commits before that do not compile):
 >
-> You need to:
-> 1) split the series on per driver basis (not all of the drivers are
-> going thru the same subsystem);
+> psci_checker: PSCI checker started using 2 CPUs
+> psci_checker: Starting hotplug tests
+> psci_checker: Trying to turn off and on again all CPUs
+> psci: CPU0 killed (polled 0 ms)
+> Detected PIPT I-cache on CPU0
+> CPU0: Booted secondary processor 0x0000000000 [0x411fd073]
+> psci_checker: Trying to turn off and on again group 0 (CPUs 0-1)
+> psci: CPU0 killed (polled 0 ms)
+> Detected PIPT I-cache on CPU0
+> CPU0: Booted secondary processor 0x0000000000 [0x411fd073]
+> psci_checker: Hotplug tests passed OK
+> psci_checker: Starting suspend tests (10 cycles per state)
+> psci_checker: CPU 0 entering suspend cycles, states 1 through 1
+> psci_checker: CPU 1 entering suspend cycles, states 1 through 1
+> ------------[ cut here ]------------
+> WARNING: CPU: 1 PID: 177 at kernel/context_tracking.c:141 ct_kernel_exit.constprop.0+0xd8/0xf4
 
-s/subsystem/tree/
+So that's:
 
-> 2) improve English grammar and style in your commit message;
-> 3) carefully explain in the cover letter your methods of finding the
-> places you think need to be improved.
->
-> Before that it's a waste of time to look at your contributions.
+  WARN_ON_ONCE(IS_ENABLED(CONFIG_RCU_EQS_DEBUG) && !user && !is_idle_task(current));
 
+... and the PSCI checker doens't run in the context of the idle thread, so the
+warning is correct, and we're violating the expectation of the context tracking
+code.
 
---=20
-With Best Regards,
-Andy Shevchenko
+The PSCI checker is very much a special case, and I'm not sure how we can fix
+this without removing the warning in the cases we want it. It'd be nicer if we
+could "queue" the idle into the relevant idle thread. :/
+
+I'm very tempted to say we should just rip the checker code out, rather than
+contorting the rest of the code to make that work.
+
+Thanks,
+Mark.
+
+> Modules linked in:
+> CPU: 1 PID: 177 Comm: psci_suspend_te Not tainted 6.2.0-rc1-salvator-x-00052-ga01353cf1896 #1415
+> Hardware name: Renesas Salvator-X 2nd version board based on r8a77965 (DT)
+> pstate: 604000c5 (nZCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+> pc : ct_kernel_exit.constprop.0+0xd8/0xf4
+> lr : ct_kernel_exit.constprop.0+0xc8/0xf4
+> sp : ffffffc00b73bd30
+> x29: ffffffc00b73bd30 x28: ffffff807fbadc90 x27: 0000000000000000
+> x26: 0000000000000000 x25: 0000000000000000 x24: 0000000000000000
+> x23: ffffff800981e140 x22: 0000000000000001 x21: 0000000000010000
+> x20: ffffffc0086be1d8 x19: ffffff807fbac070 x18: 0000000000000000
+> x17: ffffff80083d1000 x16: ffffffc00841fff8 x15: ffffffc00b73b990
+> x14: ffffffc00895be78 x13: 0000000000000001 x12: 0000000000000000
+> x11: 00000000000001aa x10: 00000000ffffffea x9 : 000000000000000f
+> x8 : ffffffc00b73bb68 x7 : ffffffc00b73be18 x6 : ffffffc00815ff34
+> x5 : ffffffc00a6a0c30 x4 : ffffffc00801ce00 x3 : 0000000000000000
+> x2 : ffffffc008dc3070 x1 : ffffffc008dc3078 x0 : 0000000004208040
+> Call trace:
+>  ct_kernel_exit.constprop.0+0xd8/0xf4
+>  ct_idle_enter+0x18/0x20
+>  psci_enter_idle_state+0xa4/0xfc
+>  suspend_test_thread+0x238/0x2f0
+>  kthread+0xd8/0xe8
+>  ret_from_fork+0x10/0x20
+> irq event stamp: 0
+> hardirqs last  enabled at (0): [<0000000000000000>] 0x0
+> hardirqs last disabled at (0): [<ffffffc0080798b0>] copy_process+0x608/0x13dc
+> softirqs last  enabled at (0): [<ffffffc0080798b0>] copy_process+0x608/0x13dc
+> softirqs last disabled at (0): [<0000000000000000>] 0x0
+> ---[ end trace 0000000000000000 ]---
+> ------------[ cut here ]------------
+> WARNING: CPU: 1 PID: 177 at kernel/context_tracking.c:186 ct_kernel_enter.constprop.0+0x78/0xa4
+> Modules linked in:
+> CPU: 1 PID: 177 Comm: psci_suspend_te Tainted: G        W          6.2.0-rc1-salvator-x-00052-ga01353cf1896 #1415
+> Hardware name: Renesas Salvator-X 2nd version board based on r8a77965 (DT)
+> pstate: 604000c5 (nZCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+> pc : ct_kernel_enter.constprop.0+0x78/0xa4
+> lr : ct_kernel_enter.constprop.0+0x68/0xa4
+> sp : ffffffc00b73bd30
+> x29: ffffffc00b73bd30 x28: ffffff807fbadc90 x27: 0000000000000000
+> x26: 0000000000000000 x25: 0000000000000000 x24: 0000000000000000
+> x23: ffffff800981e140 x22: 0000000000000001 x21: 00000000ffffffa1
+> x20: ffffffc0086be1d8 x19: 00000000000000c0 x18: 0000000000000000
+> x17: ffffff80083d1000 x16: ffffffc00841fff8 x15: ffffffc00b73b990
+> x14: ffffffc00895be78 x13: ffffff800e325180 x12: ffffffc076de9000
+> x11: 0000000034d4d91d x10: 0000000000000008 x9 : 0000000000001000
+> x8 : ffffffc008012800 x7 : 0000000000000000 x6 : ffffff807fbac070
+> x5 : ffffffc008dc3070 x4 : 0000000000000000 x3 : 000000000001a9fc
+> x2 : 0000000000000003 x1 : ffffffc008dc3070 x0 : 0000000004208040
+> Call trace:
+>  ct_kernel_enter.constprop.0+0x78/0xa4
+>  ct_idle_exit+0x18/0x38
+>  psci_enter_idle_state+0xdc/0xfc
+>  suspend_test_thread+0x238/0x2f0
+>  kthread+0xd8/0xe8
+>  ret_from_fork+0x10/0x20
+> irq event stamp: 0
+> hardirqs last  enabled at (0): [<0000000000000000>] 0x0
+> hardirqs last disabled at (0): [<ffffffc0080798b0>] copy_process+0x608/0x13dc
+> softirqs last  enabled at (0): [<ffffffc0080798b0>] copy_process+0x608/0x13dc
+> softirqs last disabled at (0): [<0000000000000000>] 0x0
+> ---[ end trace 0000000000000000 ]---
+> psci_checker: Failed to suspend CPU 1: error -1 (requested state 1, cycle 0)
+> psci_checker: CPU 0 suspend test results: success 0, shallow states 10, errors 0
+> mmcblk0rpmb: mmc0:0001 BGSD3R 4.00 MiB, chardev (243:0)
+> psci_checker: CPU 1 suspend test results: success 0, shallow states 9, errors 1
+> psci_checker: 1 error(s) encountered in suspend tests
+> psci_checker: PSCI checker completed
+> 
+> > ---
+> > drivers/cpuidle/cpuidle-psci.c |    9 +++++----
+> > 1 file changed, 5 insertions(+), 4 deletions(-)
+> > 
+> > --- a/drivers/cpuidle/cpuidle-psci.c
+> > +++ b/drivers/cpuidle/cpuidle-psci.c
+> > @@ -69,12 +69,12 @@ static int __psci_enter_domain_idle_stat
+> > 		return -1;
+> > 
+> > 	/* Do runtime PM to manage a hierarchical CPU toplogy. */
+> > -	ct_irq_enter_irqson();
+> > 	if (s2idle)
+> > 		dev_pm_genpd_suspend(pd_dev);
+> > 	else
+> > 		pm_runtime_put_sync_suspend(pd_dev);
+> > -	ct_irq_exit_irqson();
+> > +
+> > +	ct_idle_enter();
+> > 
+> > 	state = psci_get_domain_state();
+> > 	if (!state)
+> > @@ -82,12 +82,12 @@ static int __psci_enter_domain_idle_stat
+> > 
+> > 	ret = psci_cpu_suspend_enter(state) ? -1 : idx;
+> > 
+> > -	ct_irq_enter_irqson();
+> > +	ct_idle_exit();
+> > +
+> > 	if (s2idle)
+> > 		dev_pm_genpd_resume(pd_dev);
+> > 	else
+> > 		pm_runtime_get_sync(pd_dev);
+> > -	ct_irq_exit_irqson();
+> > 
+> > 	cpu_pm_exit();
+> > 
+> > @@ -240,6 +240,7 @@ static int psci_dt_cpu_init_topology(str
+> > 	 * of a shared state for the domain, assumes the domain states are all
+> > 	 * deeper states.
+> > 	 */
+> > +	drv->states[state_count - 1].flags |= CPUIDLE_FLAG_RCU_IDLE;
+> > 	drv->states[state_count - 1].enter = psci_enter_domain_idle_state;
+> > 	drv->states[state_count - 1].enter_s2idle = psci_enter_s2idle_domain_idle_state;
+> > 	psci_cpuidle_use_cpuhp = true;
+> 
+> Gr{oetje,eeting}s,
+> 
+> 						Geert
+> 
+> --
+> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+> 
+> In personal conversations with technical people, I call myself a hacker. But
+> when I'm talking to journalists I just say "programmer" or something like that.
+> 							    -- Linus Torvalds
+> 
