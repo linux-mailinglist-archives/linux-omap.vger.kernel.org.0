@@ -2,107 +2,140 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE4606C4B35
-	for <lists+linux-omap@lfdr.de>; Wed, 22 Mar 2023 13:59:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 00E4C6C4E72
+	for <lists+linux-omap@lfdr.de>; Wed, 22 Mar 2023 15:49:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229747AbjCVM7A (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 22 Mar 2023 08:59:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53164 "EHLO
+        id S231777AbjCVOtm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 22 Mar 2023 10:49:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229717AbjCVM67 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 22 Mar 2023 08:58:59 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99374574C1
-        for <linux-omap@vger.kernel.org>; Wed, 22 Mar 2023 05:58:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1679489890;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=TIlkqLegAeBC+m6CULqCYBtfGXGiuVBtfnZhQsPJi1c=;
-        b=ZKzsUA8jMRHwX/NMBN+26e4vRJ/VwRKod+T7P7wGpJOzz1gnxi+LW/DLYyLfRyRlyJ9AaM
-        T69tdm9FNSaHNTZzQkqMo0B9ZXV/+ql0ODjPnmUwDE44s8hp6XqLbmKxoMthVY7xBnB3gA
-        AVWcUg+7l9JmRZysTPBhse7YksxUL0s=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-136-Nu327XCiOs-RNHwqshAf7Q-1; Wed, 22 Mar 2023 08:58:09 -0400
-X-MC-Unique: Nu327XCiOs-RNHwqshAf7Q-1
-Received: by mail-qv1-f70.google.com with SMTP id dl18-20020ad44e12000000b005a4d5420bc6so9217709qvb.11
-        for <linux-omap@vger.kernel.org>; Wed, 22 Mar 2023 05:58:09 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679489888;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TIlkqLegAeBC+m6CULqCYBtfGXGiuVBtfnZhQsPJi1c=;
-        b=Chx06xEiAEGElqoUBAQqrjvZrcQqggvDZjYQb/+B5ZgsyoD1Ft4xabysRVEn0WI6dc
-         kiuUlYayUj/3eTLpNB8Cz9zTgBpq3uYX6jgE/lYErAaflylHocw9k0cPFIpgvpQAQBi8
-         G723dcVcCQB07FeyqzTzUGKKzFc1Mrb9iKIfE6s8A4AS2IxPaSV7aNPwmsQtO5Xe2FrS
-         WL2RlsQSLycfpvK36uNOHmACzqIoCm0/lo1BqhtsDnqfVbTVaZpujJFlQckfUesKNLci
-         0Hb4xIgKXzQefFr2/uvn4AquKjXZuFgE8TePZDI7pOo32CnEPHIYncT+kV2WXqFHQT0m
-         sLfg==
-X-Gm-Message-State: AO0yUKV5U2hJCUpPRmgig161kvf5fpzZN9X2kkcOXdXeiu01RnigITyn
-        sCjRhv4BB87pomwJbk6hQIKdTWnQlOg2aYmEho0KTQd0/Oy4RQlJeWv6UxwtGF7Li05o80i74Q2
-        2LBq/pBu8SKz57VkZgYuhiw==
-X-Received: by 2002:ac8:4e8f:0:b0:3e0:61d0:f7f7 with SMTP id 15-20020ac84e8f000000b003e061d0f7f7mr3644642qtp.14.1679489888595;
-        Wed, 22 Mar 2023 05:58:08 -0700 (PDT)
-X-Google-Smtp-Source: AK7set+ZXo2BL1krc+p+oXQftVChy1UR6ByYgMLDN+KiLPI5b2ZE0C/8zB2LdH0plZsW39kzr5AVQQ==
-X-Received: by 2002:ac8:4e8f:0:b0:3e0:61d0:f7f7 with SMTP id 15-20020ac84e8f000000b003e061d0f7f7mr3644621qtp.14.1679489888366;
-        Wed, 22 Mar 2023 05:58:08 -0700 (PDT)
-Received: from dell-per740-01.7a2m.lab.eng.bos.redhat.com (nat-pool-bos-t.redhat.com. [66.187.233.206])
-        by smtp.gmail.com with ESMTPSA id j9-20020ac874c9000000b003dffd3d3df5sm6394388qtr.2.2023.03.22.05.58.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Mar 2023 05:58:08 -0700 (PDT)
-From:   Tom Rix <trix@redhat.com>
-To:     tony@atomide.com, lee@kernel.org, nathan@kernel.org,
-        ndesaulniers@google.com
-Cc:     linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-        llvm@lists.linux.dev, Tom Rix <trix@redhat.com>
-Subject: [PATCH] mfd: omap-usb-tll: remove unused usbtll_readb function
-Date:   Wed, 22 Mar 2023 08:58:03 -0400
-Message-Id: <20230322125803.2570968-1-trix@redhat.com>
-X-Mailer: git-send-email 2.27.0
+        with ESMTP id S231847AbjCVOtU (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 22 Mar 2023 10:49:20 -0400
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF2FF6782F;
+        Wed, 22 Mar 2023 07:47:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1679496473; x=1711032473;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=lj2AHpVNlWyegPAy0etEep0QsoP1FICJ6uYFf1nrmTY=;
+  b=dgK7NSMhzqIS2MXR/HXgbMWjU1jtpeEvoXAJKvAs7Yes91BFwDYlJ4oD
+   QOOmxMA+DuTIzS1O/Ghe6twUQjOqSjrnICEZLkbxKb6TxBDDkuX4+GOdc
+   d+MGjPKJuE+tJGtT95rBXa9es6M/KAsRy42SEsUwbr0jfhpXAB1WtN7Jq
+   VQMrNhdj4U/rQtdiOyjg2q/S9hUL/IbF3CvkPlDVn7rDLG40p0F1z5J9R
+   cGdNfYLc7CC3kk9hV/ln1v333vWvlbWEVa8mAizrNQhemxmVOgTCIGnRc
+   6A79MIDSqmC//jMjnRr2A/OPJDBp4fIjq22BpizoEJMJAw54Eo8CtPhQs
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10657"; a="341590174"
+X-IronPort-AV: E=Sophos;i="5.98,282,1673942400"; 
+   d="scan'208";a="341590174"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2023 07:45:51 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10657"; a="681919224"
+X-IronPort-AV: E=Sophos;i="5.98,282,1673942400"; 
+   d="scan'208";a="681919224"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga002.jf.intel.com with ESMTP; 22 Mar 2023 07:45:48 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@intel.com>)
+        id 1pezik-007AYA-2e;
+        Wed, 22 Mar 2023 16:45:46 +0200
+Date:   Wed, 22 Mar 2023 16:45:46 +0200
+From:   Andy Shevchenko <andriy.shevchenko@intel.com>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Johan Hovold <johan@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-serial@vger.kernel.org
+Subject: Re: [PATCH v8 1/1] serial: core: Start managing serial controllers
+ to enable runtime PM
+Message-ID: <ZBsUmkqKnP/jrNjv@smile.fi.intel.com>
+References: <20230322111255.29827-1-tony@atomide.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230322111255.29827-1-tony@atomide.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-clang with W=1 reports
-drivers/mfd/omap-usb-tll.c:128:18: error: unused function
-  'usbtll_readb' [-Werror,-Wunused-function]
-static inline u8 usbtll_readb(void __iomem *base, u32 reg)
-                 ^
-This function is not used so remove it.
+On Wed, Mar 22, 2023 at 01:12:51PM +0200, Tony Lindgren wrote:
+> We want to enable runtime PM for serial port device drivers in a generic
+> way. To do this, we want to have the serial core layer manage the
+> registered physical serial controller devices.
+> 
+> To do this, let's set up a struct bus and struct device for the serial
+> core controller as suggested by Greg and Jiri. The serial core controller
+> devices are children of the physical serial port device. The serial core
+> controller device is needed to support multiple different kind of ports
+> connected to single physical serial port device.
+> 
+> Let's also set up a struct device for the serial core port. The serial
+> core port instances are children of the serial core controller device.
+> 
+> With the serial core port device we can now flush pending TX on the
+> runtime PM resume as suggested by Johan.
 
-Signed-off-by: Tom Rix <trix@redhat.com>
----
- drivers/mfd/omap-usb-tll.c | 5 -----
- 1 file changed, 5 deletions(-)
+With below addressed, FWIW,
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
 
-diff --git a/drivers/mfd/omap-usb-tll.c b/drivers/mfd/omap-usb-tll.c
-index 8ca4067da6cd..69cbc2097911 100644
---- a/drivers/mfd/omap-usb-tll.c
-+++ b/drivers/mfd/omap-usb-tll.c
-@@ -125,11 +125,6 @@ static inline void usbtll_writeb(void __iomem *base, u32 reg, u8 val)
- 	writeb_relaxed(val, base + reg);
- }
- 
--static inline u8 usbtll_readb(void __iomem *base, u32 reg)
--{
--	return readb_relaxed(base + reg);
--}
--
- /*-------------------------------------------------------------------------*/
- 
- static bool is_ohci_port(enum usbhs_omap_port_mode pmode)
+...
+
+> +	device_initialize(&sbd->dev);
+> +	sbd->dev.parent = parent_dev;
+> +	sbd->dev.bus = &serial_base_bus_type;
+> +	sbd->dev.release = &serial_base_release;
+> +
+> +	if (str_has_prefix(name, "ctrl")) {
+> +		id = port->ctrl_id;
+> +	} else {
+> +		id = port->line;
+> +		sbd->port = port;
+> +	}
+> +
+> +	err = dev_set_name(&sbd->dev, "%s.%s.%d", name, dev_name(port->dev), id);
+> +	if (err)
+> +		goto err_free_dev;
+> +
+> +	err = device_add(&sbd->dev);
+> +	if (err)
+> +		goto err_put_device;
+> +
+> +	return &sbd->dev;
+> +
+> +err_put_device:
+> +	put_device(&sbd->dev);
+
+> +	kfree_const(sbd->dev.kobj.name);
+
+This is double free if not const, right?
+At least that's how I read kobject_cleanup() implementation.
+
+Sorry I haven't paid attention to this earlier.
+
+...
+
+> +/*
+> + * Serial core port device driver
+> + */
+
+Put it on one line for now?
+
 -- 
-2.27.0
+With Best Regards,
+Andy Shevchenko
+
 
