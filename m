@@ -2,35 +2,36 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 36C9E6C9D7D
-	for <lists+linux-omap@lfdr.de>; Mon, 27 Mar 2023 10:19:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 086B16C9D91
+	for <lists+linux-omap@lfdr.de>; Mon, 27 Mar 2023 10:21:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232390AbjC0ITW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 27 Mar 2023 04:19:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51508 "EHLO
+        id S233067AbjC0IVu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 27 Mar 2023 04:21:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233073AbjC0ITC (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 27 Mar 2023 04:19:02 -0400
+        with ESMTP id S233042AbjC0IVk (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 27 Mar 2023 04:21:40 -0400
 Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 41E072D5A
-        for <linux-omap@vger.kernel.org>; Mon, 27 Mar 2023 01:18:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C516B3C1E;
+        Mon, 27 Mar 2023 01:21:38 -0700 (PDT)
 Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 89ED38108;
-        Mon, 27 Mar 2023 08:18:48 +0000 (UTC)
-Date:   Mon, 27 Mar 2023 11:18:47 +0300
+        by muru.com (Postfix) with ESMTPS id 3B5078108;
+        Mon, 27 Mar 2023 08:21:38 +0000 (UTC)
+Date:   Mon, 27 Mar 2023 11:21:37 +0300
 From:   Tony Lindgren <tony@atomide.com>
-To:     Steffen Hemer <s.hemer@phytec.de>
-Cc:     linux-omap@vger.kernel.org, upstream@lists.phytec.de,
-        krzysztof.kozlowski+dt@linaro.org, robh+dt@kernel.org,
-        bcousson@baylibre.com
-Subject: Re: [PATCH 1/8] ARM: dts: am335x-phycore-som: Add alias for TPS65910
- RTC
-Message-ID: <20230327081847.GG7501@atomide.com>
-References: <20230214132302.39087-1-s.hemer@phytec.de>
+To:     Andreas Kemnade <andreas@kemnade.info>
+Cc:     arnd@arndb.de, olof@lixom.net, soc@kernel.org, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, bcousson@baylibre.com,
+        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCH] ARM: dts: omap4: add initial support for Epson Moverio
+ BT-200
+Message-ID: <20230327082137.GH7501@atomide.com>
+References: <20230313110409.2294154-1-andreas@kemnade.info>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230214132302.39087-1-s.hemer@phytec.de>
+In-Reply-To: <20230313110409.2294154-1-andreas@kemnade.info>
 X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_NONE
         autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -39,10 +40,18 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Steffen Hemer <s.hemer@phytec.de> [230214 15:23]:
-> Without an alias for the TPS65910 RTC, it snatches the rtc0 device in
-> advance to the I2C RTC assigned to that alias.
+* Andreas Kemnade <andreas@kemnade.info> [230313 13:04]:
+> yes, epson,embt2ws is unknown, is the txt->yaml conversion around the
+> corner? I would then resubmit it includding an addition
+> to that yaml. If not probably I resubmit the conversion patch with
+> the compatible added. But that should not stop the rest of this patch from
+> being reviewed.
 
-Applying all eight patches into omap-for-v6.4/dt thanks.
+Yeah let's do the yaml conversion first as otherwise we'll be adding some
+extra warnings for the dt folks.
+
+Your patch looks otherwise OK to me.
+
+Thanks,
 
 Tony
