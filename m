@@ -2,38 +2,36 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0522B6C9D38
-	for <lists+linux-omap@lfdr.de>; Mon, 27 Mar 2023 10:10:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6234C6C9D51
+	for <lists+linux-omap@lfdr.de>; Mon, 27 Mar 2023 10:13:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232927AbjC0IKK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 27 Mar 2023 04:10:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38892 "EHLO
+        id S232728AbjC0INl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 27 Mar 2023 04:13:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232957AbjC0IKI (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 27 Mar 2023 04:10:08 -0400
+        with ESMTP id S232970AbjC0IN3 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 27 Mar 2023 04:13:29 -0400
 Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4747749DD;
-        Mon, 27 Mar 2023 01:10:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id F40C449CA;
+        Mon, 27 Mar 2023 01:13:28 -0700 (PDT)
 Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id AFF918108;
-        Mon, 27 Mar 2023 08:10:06 +0000 (UTC)
-Date:   Mon, 27 Mar 2023 11:10:05 +0300
+        by muru.com (Postfix) with ESMTPS id 4411C8108;
+        Mon, 27 Mar 2023 08:13:28 +0000 (UTC)
+Date:   Mon, 27 Mar 2023 11:13:27 +0300
 From:   Tony Lindgren <tony@atomide.com>
-To:     Andrew Davis <afd@ti.com>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        Colin Foster <colin.foster@in-advantage.com>,
-        Olof Johansson <olof@lixom.net>, Arnd Bergmann <arnd@arndb.de>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v4 0/3] AM57x EVM Device Tree Overlays
-Message-ID: <20230327081005.GD7501@atomide.com>
-References: <20230307161715.15209-1-afd@ti.com>
+To:     Andreas Kemnade <andreas@kemnade.info>
+Cc:     bcousson@baylibre.com, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, aford173@gmail.com,
+        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        "H. Nikolaus Schaller" <hns@goldelico.com>
+Subject: Re: [PATCH] ARM: dts: gta04: fix excess dma channel usage
+Message-ID: <20230327081327.GE7501@atomide.com>
+References: <20230113211151.2314874-1-andreas@kemnade.info>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230307161715.15209-1-afd@ti.com>
+In-Reply-To: <20230113211151.2314874-1-andreas@kemnade.info>
 X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_NONE
         autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -42,22 +40,35 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Andrew Davis <afd@ti.com> [230307 18:17]:
-> Hello all,
+* Andreas Kemnade <andreas@kemnade.info> [230113 23:12]:
+> From: "H. Nikolaus Schaller" <hns@goldelico.com>
 > 
-> These are a set of uncontroversial (hopefully) DT Overlays to support the
-> TI AM57x EVM and displays for AM57x IDKs. More complex cases are staged
-> and ready to follow, but wanted to test the water with these first.
+> OMAP processors support 32 channels but there is no check or
+> inspect this except booting a device and looking at dmesg reports
+> of not available channels.
+> 
+> Recently some more subsystems with DMA (aes1+2) were added filling
+> the list of dma channels beyond the limit of 32 (even if other
+> parameters indicate 96 or 128 channels). This leads to random
+> subsystem failures i(e.g. mcbsp for audio) after boot or boot
+> messages that DMA can not be initialized.
+> 
+> Another symptom is that
+> 
+> /sys/kernel/debug/dmaengine/summary
+> 
+> has 32 entries and does not show all required channels.
+> 
+> Fix by disabling unused (on the GTA04 hardware) mcspi1...4.
+> Each SPI channel allocates 4 DMA channels rapidly filling
+> the available ones.
+> 
+> Disabling unused SPI modules on the OMAP3 SoC may also save
+> some energy (has not been checked).
 
-Applying these into omap-for-v6.4/dt-overlays thanks.
+Applying this into omap-for-v6.4/dt based on what we discussed
+in this thread earlier.
 
-> For some reason dtbs_check does not get run on overlays, this
-> will need further investigation to fix in kbuild. For now I ran
-> it through manually but am not 100% sure it actually checked it,
-> so double checks here very welcome.
-
-Seems like that's a separate patch from this series.
-
-Regards,
+Thanks,
 
 Tony
