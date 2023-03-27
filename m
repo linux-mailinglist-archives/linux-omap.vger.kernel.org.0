@@ -2,36 +2,32 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 53E626C9BB1
-	for <lists+linux-omap@lfdr.de>; Mon, 27 Mar 2023 09:11:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35C666C9BF8
+	for <lists+linux-omap@lfdr.de>; Mon, 27 Mar 2023 09:27:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231980AbjC0HLZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 27 Mar 2023 03:11:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42018 "EHLO
+        id S232496AbjC0H1y (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 27 Mar 2023 03:27:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229935AbjC0HLY (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 27 Mar 2023 03:11:24 -0400
+        with ESMTP id S229651AbjC0H1y (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 27 Mar 2023 03:27:54 -0400
 Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id EC41F422C;
-        Mon, 27 Mar 2023 00:11:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 7C613E3;
+        Mon, 27 Mar 2023 00:27:53 -0700 (PDT)
 Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 417618108;
-        Mon, 27 Mar 2023 07:11:23 +0000 (UTC)
-Date:   Mon, 27 Mar 2023 10:11:21 +0300
+        by muru.com (Postfix) with ESMTPS id C8E008108;
+        Mon, 27 Mar 2023 07:27:52 +0000 (UTC)
+Date:   Mon, 27 Mar 2023 10:27:51 +0300
 From:   Tony Lindgren <tony@atomide.com>
-To:     cgel.zte@gmail.com
-Cc:     aaro.koskinen@iki.fi, jmkrzyszt@gmail.com, linux@armlinux.org.uk,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Jinpeng Cui <cui.jinpeng2@zte.com.cn>,
-        Zeal Robot <zealci@zte.com.cn>
-Subject: Re: [PATCH linux-next] ARM: omap1: remove redundant variables err
-Message-ID: <20230327071121.GR7501@atomide.com>
-References: <20220830142136.299373-1-cui.jinpeng2@zte.com.cn>
+To:     Rob Herring <robh@kernel.org>
+Cc:     linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] bus: ti-sysc: Remove open coded "ranges" parsing
+Message-ID: <20230327072751.GS7501@atomide.com>
+References: <20230201220002.246907-1-robh@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220830142136.299373-1-cui.jinpeng2@zte.com.cn>
+In-Reply-To: <20230201220002.246907-1-robh@kernel.org>
 X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_NONE
         autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -40,13 +36,12 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* cgel.zte@gmail.com <cgel.zte@gmail.com> [220830 17:14]:
-> From: Jinpeng Cui <cui.jinpeng2@zte.com.cn>
-> 
-> Rturn value directly from platform_device_register()
-> instead of getting value from redundant variable err.
+* Rob Herring <robh@kernel.org> [230202 00:00]:
+> "ranges" is a standard property and we have common helper functions for
+> parsing it, so let's use them.
 
-Sorry looks like this is still pending, applying into
-omap-for-v6.4/omap1 thanks.
+Nice, applying into omap-for-v6.4/ti-sysc.
+
+Thanks,
 
 Tony
