@@ -2,79 +2,63 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A71706CA1D1
-	for <lists+linux-omap@lfdr.de>; Mon, 27 Mar 2023 12:57:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00E956CAACA
+	for <lists+linux-omap@lfdr.de>; Mon, 27 Mar 2023 18:39:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232019AbjC0K5f (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 27 Mar 2023 06:57:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39638 "EHLO
+        id S229619AbjC0Qi6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 27 Mar 2023 12:38:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229651AbjC0K5f (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 27 Mar 2023 06:57:35 -0400
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a01:238:4321:8900:456f:ecd6:43e:202c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E54FFFE;
-        Mon, 27 Mar 2023 03:57:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=kemnade.info; s=20220719; h=Content-Transfer-Encoding:Content-Type:
-        MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=onlZ3BW/ohpzwNjPNz62W4K6Z+/iFWEigy06QiA3/PQ=; b=TNfv9X/+XWLgMmxbwbfvvl5iza
-        JF/NG1pYn4CuIbbyC0FfJaqoDJG+cgm8GSJAtO3nc1VvmQEQ2srTdxq4MtHMAxsR38Gv8jRiz0ze4
-        IHBH9ynoLhfRSxIyOItTmNsi2NLom/lT0KSAN66LgGYNeR4eGHUyr+65WMvT4XncEYJu7cKs/vRTo
-        xW0MxmTJkBjsqWYOYlbBwHKlhWUo9WQsdkq+fTCgm+fhwWg3z7HHl/sm96s6UxI6gwBjRCxXsQ9bl
-        8P2zw5tTcY2vOmFpc90tVKjZX3yfsiFm9/excxE/jv914YGQT4kPOMRo0ubunuzQ0f9KPTapiIG8S
-        jXc0YYpA==;
-Received: from p200300ccff0533001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff05:3300:1a3d:a2ff:febf:d33a] helo=aktux)
-        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <andreas@kemnade.info>)
-        id 1pgkXK-0000EF-Ag; Mon, 27 Mar 2023 12:57:14 +0200
-Date:   Mon, 27 Mar 2023 12:57:13 +0200
-From:   Andreas Kemnade <andreas@kemnade.info>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     arnd@arndb.de, olof@lixom.net, soc@kernel.org, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, bcousson@baylibre.com,
-        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: Re: [PATCH] ARM: dts: omap4: add initial support for Epson Moverio
- BT-200
-Message-ID: <20230327125713.49537a26@aktux>
-In-Reply-To: <20230327082137.GH7501@atomide.com>
-References: <20230313110409.2294154-1-andreas@kemnade.info>
-        <20230327082137.GH7501@atomide.com>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        with ESMTP id S229462AbjC0Qi5 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 27 Mar 2023 12:38:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54D2012F;
+        Mon, 27 Mar 2023 09:38:56 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DA2846137B;
+        Mon, 27 Mar 2023 16:38:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 378EDC433EF;
+        Mon, 27 Mar 2023 16:38:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1679935135;
+        bh=F060jgHqbH6lD6Iawlogyvh44iIfQh/1fPwjaXIGgow=;
+        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+        b=HN7XlhW0sXNs2xzrjFb1y4F7wVw1z5qXURrxybRr2I488/gOB+m+l3QxFljvORllg
+         LiIlERYPWXcLpdBsYFoPc5OM+B19W8bRIN29sEjLYBSGHtDkrXPanysMUpMZAXTtG2
+         yGulzHdRm8ERG+MgVrLGtDmAloKxlt4+j6FT6uDHE/TC1DCDOwml8J64HG4b6EDJV7
+         oiHkpqktWVbwFugpZpXOKK5qg9d8fbkvOyxW0lrKWhJ61mw7FZPwOmMvZvi6wVxD0X
+         Tv6ptamlZ3Lzy2ptqUUvookWQvrAbisi1sL4ClGkiz/PoENH6DnpeQehkc3pKSS+H4
+         wjze1Yqn5Z4pg==
+Message-ID: <79723c14ff5dcd2388fa20bf8a5105b1.sboyd@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Score: -1.0 (-)
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20230319163217.226144-1-robh@kernel.org>
+References: <20230319163217.226144-1-robh@kernel.org>
+Subject: Re: [PATCH] clk: ti: Use of_address_to_resource()
+From:   Stephen Boyd <sboyd@kernel.org>
+Cc:     linux-omap@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+To:     Michael Turquette <mturquette@baylibre.com>,
+        Rob Herring <robh@kernel.org>, Tero Kristo <kristo@kernel.org>
+Date:   Mon, 27 Mar 2023 09:38:52 -0700
+User-Agent: alot/0.10
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, 27 Mar 2023 11:21:37 +0300
-Tony Lindgren <tony@atomide.com> wrote:
+Quoting Rob Herring (2023-03-19 09:32:17)
+> Replace of_get_address() and of_translate_address() calls with single
+> call to of_address_to_resource().
+>=20
+> Signed-off-by: Rob Herring <robh@kernel.org>
+> ---
 
-> * Andreas Kemnade <andreas@kemnade.info> [230313 13:04]:
-> > yes, epson,embt2ws is unknown, is the txt->yaml conversion around the
-> > corner? I would then resubmit it includding an addition
-> > to that yaml. If not probably I resubmit the conversion patch with
-> > the compatible added. But that should not stop the rest of this patch from
-> > being reviewed.  
-> 
-> Yeah let's do the yaml conversion first as otherwise we'll be adding some
-> extra warnings for the dt folks.
-> 
-> Your patch looks otherwise OK to me.
->
-So I will try to incooperate the feedback into the last version
-of the conversion patch and include epson,embt2ws.
-
-Regards,
-Andreas
+Applied to clk-next
