@@ -2,59 +2,75 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 69A0F6CAE69
-	for <lists+linux-omap@lfdr.de>; Mon, 27 Mar 2023 21:19:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EA0F6CB02F
+	for <lists+linux-omap@lfdr.de>; Mon, 27 Mar 2023 22:58:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232654AbjC0TTA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 27 Mar 2023 15:19:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43956 "EHLO
+        id S230218AbjC0U6s (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 27 Mar 2023 16:58:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47706 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230379AbjC0TS7 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 27 Mar 2023 15:18:59 -0400
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a01:238:4321:8900:456f:ecd6:43e:202c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A966CF;
-        Mon, 27 Mar 2023 12:18:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=kemnade.info; s=20220719; h=Content-Transfer-Encoding:Content-Type:
-        MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=xfwD58r7ManSAcpynfJdhPJPb96SmXfv4nKRVZMP16k=; b=xS3TkBLpKk7oxdcIdC9Bdo53Ny
-        QwB2QZZLiC+Bi6w8bc7MVztJhPo3j8elRFfzvjeFdI59SaG2OGxMhJzkjWl2X1ZzdBPcephzafTcb
-        rwBPLae2mbcT2HFnaoIgXZYwslSXnivcOEYv8K185DlnGDkiI94CMNu1ueRF+1Ri4BsBac1Ne8lSA
-        PTMbAeqpmuW06qud/FMkRU0rPZxgqh9AqptFUkaMtyG5fOLBNHk5DgSNhmnNvtfW02qPd/mBBKnEu
-        iKVZxCcnali3pFoyBWBlKYlmnLCLTomj4rJp2vmb45PDnNzQhHOTSpFLAarX3JSC4rNDUnM3N0r7F
-        pvW8uqHA==;
-Received: from p200300ccff0533001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff05:3300:1a3d:a2ff:febf:d33a] helo=aktux)
-        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <andreas@kemnade.info>)
-        id 1pgsMZ-00014E-IO; Mon, 27 Mar 2023 21:18:40 +0200
-Date:   Mon, 27 Mar 2023 21:18:38 +0200
-From:   Andreas Kemnade <andreas@kemnade.info>
-To:     Andrew Davis <afd@ti.com>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        =?UTF-8?B?QmVub8OudA==?= Cousson <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Colin Foster <colin.foster@in-advantage.com>,
-        Olof Johansson <olof@lixom.net>, Arnd Bergmann <arnd@arndb.de>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [RFC 1/2] ARM: dts: omap: Drop ti,omap36xx compatible
-Message-ID: <20230327211838.580af7a9@aktux>
-In-Reply-To: <20230216153339.19987-2-afd@ti.com>
-References: <20230216153339.19987-1-afd@ti.com>
-        <20230216153339.19987-2-afd@ti.com>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        with ESMTP id S229610AbjC0U6r (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 27 Mar 2023 16:58:47 -0400
+Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6074C2123
+        for <linux-omap@vger.kernel.org>; Mon, 27 Mar 2023 13:58:45 -0700 (PDT)
+Received: by mail-pj1-x1034.google.com with SMTP id h12-20020a17090aea8c00b0023d1311fab3so10352175pjz.1
+        for <linux-omap@vger.kernel.org>; Mon, 27 Mar 2023 13:58:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1679950725;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=eH1CJX04q2BHUR5TJOFKJGoWhDyShBC0LXQUgI8ky8M=;
+        b=J3o54tF0lNEkesTpP5H1LlTIpmJlYC/zA8uXtDj4vzg1d1dSPjT3iSz0JcuXDw63lZ
+         BAuLhmRwwfAi3TYxK/P1vfWLXL5TxZRAj4LjqE6kSg3uT776Z9kjGD1bcXR/5wTlbvJj
+         sYXbAy2/1dUNBNmrNsLIjz9O8Yar7App3XBwpxXyuXcDH28vBiHRSVW2RcRwBb/3nZaF
+         okREhu68L83ulgoPoH/KyCSVqCuwKfdGq4nMEcmTc2DzrBrkGICpvy+veFdr/1iThqc3
+         2ouszMCDmMIHCK3u6Aq7EW9UBbulDhd9WXfyHuYDt/y/P2l6DGrgQXiZ6mwQXFs5/kVZ
+         OvFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679950725;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eH1CJX04q2BHUR5TJOFKJGoWhDyShBC0LXQUgI8ky8M=;
+        b=QyjtJp6O3k9ipk96Mr+dnlibrkLRmASxJP1Sn6fuSbCLI5VacgnKC3Il4W7ykgK9lC
+         QWCEcan2OYawgpfg5eyzLamX+cGKRF90Fm77KocJk9Xfhtcl12hHLJIIFWvAYjtrMGRn
+         T8wCnHHlkHmF2OB8+Lm0EKhLrZToYKwbAaGwlqBAQxWNhJ9nj2i/lWUFpGGcZ6cROo4h
+         8VjwQ55eUYSNQFzdY3IagwcB4ziNJnpVFStm1I/dKyJQmWSAL+c1IY+s22/Xo9V4H+JG
+         OThIWMjuIZaTotkUtfS49guAbcBz9c2jGaIlyUoEmuC6KLUY+soMyW4eXNjWnI3TWuQH
+         jHMg==
+X-Gm-Message-State: AO0yUKVrHmgmTTfeM7594vv2q2xbw5ed0BIyh7nj/TaZNC5Ro6GbSJvB
+        ccmydf+BhRBvXI+OsbUQaEhJQg==
+X-Google-Smtp-Source: AK7set+nDTrsfcNlBKMWgUMp0C+CrZ+copoRG2Tzs6C6eZzeKaYjFY9667WrepMwzomNCv3HfVYCKA==
+X-Received: by 2002:a05:6a20:4ca3:b0:dd:44a8:9d2c with SMTP id fq35-20020a056a204ca300b000dd44a89d2cmr11207157pzb.47.1679950724652;
+        Mon, 27 Mar 2023 13:58:44 -0700 (PDT)
+Received: from p14s ([2604:3d09:148c:c800:ad52:968f:ad4a:52d2])
+        by smtp.gmail.com with ESMTPSA id y18-20020a62b512000000b0062d8c855ee9sm1909108pfe.149.2023.03.27.13.58.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Mar 2023 13:58:44 -0700 (PDT)
+Date:   Mon, 27 Mar 2023 14:58:41 -0600
+From:   Mathieu Poirier <mathieu.poirier@linaro.org>
+To:     MD Danish Anwar <danishanwar@ti.com>
+Cc:     "Andrew F. Davis" <afd@ti.com>, Suman Anna <s-anna@ti.com>,
+        Roger Quadros <rogerq@kernel.org>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Tero Kristo <kristo@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Nishanth Menon <nm@ti.com>, linux-remoteproc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, srk@ti.com, devicetree@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: Re: [PATCH v5 1/5] soc: ti: pruss: Add pruss_get()/put() API
+Message-ID: <20230327205841.GA3158115@p14s>
+References: <20230323062451.2925996-1-danishanwar@ti.com>
+ <20230323062451.2925996-2-danishanwar@ti.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Score: -1.0 (-)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230323062451.2925996-2-danishanwar@ti.com>
 X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
         autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -62,45 +78,209 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, 16 Feb 2023 09:33:38 -0600
-Andrew Davis <afd@ti.com> wrote:
+Hi Danish
 
-> This was not matched anywhere and provides no additional information.
+On Thu, Mar 23, 2023 at 11:54:47AM +0530, MD Danish Anwar wrote:
+> From: Tero Kristo <t-kristo@ti.com>
 > 
-> Signed-off-by: Andrew Davis <afd@ti.com>
+> Add two new get and put API, pruss_get() and pruss_put() to the
+> PRUSS platform driver to allow client drivers to request a handle
+> to a PRUSS device. This handle will be used by client drivers to
+> request various operations of the PRUSS platform driver through
+> additional API that will be added in the following patches.
+> 
+> The pruss_get() function returns the pruss handle corresponding
+> to a PRUSS device referenced by a PRU remoteproc instance. The
+> pruss_put() is the complimentary function to pruss_get().
+> 
+> Co-developed-by: Suman Anna <s-anna@ti.com>
+> Signed-off-by: Suman Anna <s-anna@ti.com>
+> Signed-off-by: Tero Kristo <t-kristo@ti.com>
+> Co-developed-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
+> Signed-off-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
+> Signed-off-by: Puranjay Mohan <p-mohan@ti.com>
+> Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
+> Reviewed-by: Roger Quadros <rogerq@kernel.org>
 > ---
->  arch/arm/boot/dts/omap3-beagle-xm.dts              | 2 +-
->  arch/arm/boot/dts/omap3-cm-t3730.dts               | 2 +-
->  arch/arm/boot/dts/omap3-igep0020-rev-f.dts         | 2 +-
->  arch/arm/boot/dts/omap3-igep0020.dts               | 2 +-
->  arch/arm/boot/dts/omap3-igep0030-rev-g.dts         | 2 +-
->  arch/arm/boot/dts/omap3-igep0030.dts               | 2 +-
->  arch/arm/boot/dts/omap3-lilly-dbb056.dts           | 2 +-
->  arch/arm/boot/dts/omap3-n9.dts                     | 2 +-
->  arch/arm/boot/dts/omap3-n950.dts                   | 2 +-
->  arch/arm/boot/dts/omap3-overo-storm-alto35.dts     | 2 +-
->  arch/arm/boot/dts/omap3-overo-storm-chestnut43.dts | 2 +-
->  arch/arm/boot/dts/omap3-overo-storm-gallop43.dts   | 2 +-
->  arch/arm/boot/dts/omap3-overo-storm-palo35.dts     | 2 +-
->  arch/arm/boot/dts/omap3-overo-storm-palo43.dts     | 2 +-
->  arch/arm/boot/dts/omap3-overo-storm-summit.dts     | 2 +-
->  arch/arm/boot/dts/omap3-overo-storm-tobi.dts       | 2 +-
->  arch/arm/boot/dts/omap3-overo-storm-tobiduo.dts    | 2 +-
->  arch/arm/boot/dts/omap3-pandora-1ghz.dts           | 2 +-
->  arch/arm/boot/dts/omap3-sbc-t3730.dts              | 2 +-
->  arch/arm/boot/dts/omap3-sniper.dts                 | 2 +-
->  arch/arm/boot/dts/omap3-zoom3.dts                  | 2 +-
->  21 files changed, 21 insertions(+), 21 deletions(-)
+>  drivers/remoteproc/pru_rproc.c                |  2 +-
+>  drivers/soc/ti/pruss.c                        | 60 ++++++++++++++++++-
+>  .../{pruss_driver.h => pruss_internal.h}      |  7 ++-
+>  include/linux/remoteproc/pruss.h              | 19 ++++++
+>  4 files changed, 83 insertions(+), 5 deletions(-)
+>  rename include/linux/{pruss_driver.h => pruss_internal.h} (90%)
 > 
-hmm, we have
-drivers/clk/ti/dpll.c:         of_machine_is_compatible("ti,omap36xx"))
+> diff --git a/drivers/remoteproc/pru_rproc.c b/drivers/remoteproc/pru_rproc.c
+> index b76db7fa693d..4ddd5854d56e 100644
+> --- a/drivers/remoteproc/pru_rproc.c
+> +++ b/drivers/remoteproc/pru_rproc.c
+> @@ -19,7 +19,7 @@
+>  #include <linux/of_device.h>
+>  #include <linux/of_irq.h>
+>  #include <linux/remoteproc/pruss.h>
+> -#include <linux/pruss_driver.h>
+> +#include <linux/pruss_internal.h>
+>  #include <linux/remoteproc.h>
+>  
+>  #include "remoteproc_internal.h"
+> diff --git a/drivers/soc/ti/pruss.c b/drivers/soc/ti/pruss.c
+> index 6882c86b3ce5..6c2bb02a521d 100644
+> --- a/drivers/soc/ti/pruss.c
+> +++ b/drivers/soc/ti/pruss.c
+> @@ -6,6 +6,7 @@
+>   * Author(s):
+>   *	Suman Anna <s-anna@ti.com>
+>   *	Andrew F. Davis <afd@ti.com>
+> + *	Tero Kristo <t-kristo@ti.com>
+>   */
+>  
+>  #include <linux/clk-provider.h>
+> @@ -16,8 +17,9 @@
+>  #include <linux/of_address.h>
+>  #include <linux/of_device.h>
+>  #include <linux/pm_runtime.h>
+> -#include <linux/pruss_driver.h>
+> +#include <linux/pruss_internal.h>
+>  #include <linux/regmap.h>
+> +#include <linux/remoteproc.h>
+>  #include <linux/slab.h>
+>  
+>  /**
+> @@ -30,6 +32,62 @@ struct pruss_private_data {
+>  	bool has_core_mux_clock;
+>  };
+>  
+> +/**
+> + * pruss_get() - get the pruss for a given PRU remoteproc
+> + * @rproc: remoteproc handle of a PRU instance
+> + *
+> + * Finds the parent pruss device for a PRU given the @rproc handle of the
+> + * PRU remote processor. This function increments the pruss device's refcount,
+> + * so always use pruss_put() to decrement it back once pruss isn't needed
+> + * anymore.
+> + *
+> + * Return: pruss handle on success, and an ERR_PTR on failure using one
+> + * of the following error values
+> + *    -EINVAL if invalid parameter
+> + *    -ENODEV if PRU device or PRUSS device is not found
+> + */
+> +struct pruss *pruss_get(struct rproc *rproc)
+> +{
+> +	struct pruss *pruss;
+> +	struct device *dev;
+> +	struct platform_device *ppdev;
+> +
+> +	if (IS_ERR_OR_NULL(rproc))
+> +		return ERR_PTR(-EINVAL);
+> +
 
-but that is more completely
-  if ((of_machine_is_compatible("ti,omap3630") ||
-             of_machine_is_compatible("ti,omap36xx")) &&
+There is no guarantee that @rproc is valid without calling rproc_get_by_handle()
+or pru_rproc_get().
 
-so missing omap36xx will not harm if 3630 is there. SO this should
-be probably ok.
-
-Regards,
-Andreas
+> +	dev = &rproc->dev;
+> +
+> +	/* make sure it is PRU rproc */
+> +	if (!dev->parent || !is_pru_rproc(dev->parent))
+> +		return ERR_PTR(-ENODEV);
+> +
+> +	ppdev = to_platform_device(dev->parent->parent);
+> +	pruss = platform_get_drvdata(ppdev);
+> +	if (!pruss)
+> +		return ERR_PTR(-ENODEV);
+> +
+> +	get_device(pruss->dev);
+> +
+> +	return pruss;
+> +}
+> +EXPORT_SYMBOL_GPL(pruss_get);
+> +
+> +/**
+> + * pruss_put() - decrement pruss device's usecount
+> + * @pruss: pruss handle
+> + *
+> + * Complimentary function for pruss_get(). Needs to be called
+> + * after the PRUSS is used, and only if the pruss_get() succeeds.
+> + */
+> +void pruss_put(struct pruss *pruss)
+> +{
+> +	if (IS_ERR_OR_NULL(pruss))
+> +		return;
+> +
+> +	put_device(pruss->dev);
+> +}
+> +EXPORT_SYMBOL_GPL(pruss_put);
+> +
+>  static void pruss_of_free_clk_provider(void *data)
+>  {
+>  	struct device_node *clk_mux_np = data;
+> diff --git a/include/linux/pruss_driver.h b/include/linux/pruss_internal.h
+> similarity index 90%
+> rename from include/linux/pruss_driver.h
+> rename to include/linux/pruss_internal.h
+> index ecfded30ed05..8f91cb164054 100644
+> --- a/include/linux/pruss_driver.h
+> +++ b/include/linux/pruss_internal.h
+> @@ -6,9 +6,10 @@
+>   *	Suman Anna <s-anna@ti.com>
+>   */
+>  
+> -#ifndef _PRUSS_DRIVER_H_
+> -#define _PRUSS_DRIVER_H_
+> +#ifndef _PRUSS_INTERNAL_H_
+> +#define _PRUSS_INTERNAL_H_
+>  
+> +#include <linux/remoteproc/pruss.h>
+>  #include <linux/types.h>
+>  
+>  /*
+> @@ -51,4 +52,4 @@ struct pruss {
+>  	struct clk *iep_clk_mux;
+>  };
+>  
+> -#endif	/* _PRUSS_DRIVER_H_ */
+> +#endif	/* _PRUSS_INTERNAL_H_ */
+> diff --git a/include/linux/remoteproc/pruss.h b/include/linux/remoteproc/pruss.h
+> index 039b50d58df2..93a98cac7829 100644
+> --- a/include/linux/remoteproc/pruss.h
+> +++ b/include/linux/remoteproc/pruss.h
+> @@ -4,12 +4,14 @@
+>   *
+>   * Copyright (C) 2015-2022 Texas Instruments Incorporated - http://www.ti.com
+>   *	Suman Anna <s-anna@ti.com>
+> + *	Tero Kristo <t-kristo@ti.com>
+>   */
+>  
+>  #ifndef __LINUX_PRUSS_H
+>  #define __LINUX_PRUSS_H
+>  
+>  #include <linux/device.h>
+> +#include <linux/err.h>
+>  #include <linux/types.h>
+>  
+>  #define PRU_RPROC_DRVNAME "pru-rproc"
+> @@ -44,6 +46,23 @@ enum pru_ctable_idx {
+>  
+>  struct device_node;
+>  struct rproc;
+> +struct pruss;
+> +
+> +#if IS_ENABLED(CONFIG_TI_PRUSS)
+> +
+> +struct pruss *pruss_get(struct rproc *rproc);
+> +void pruss_put(struct pruss *pruss);
+> +
+> +#else
+> +
+> +static inline struct pruss *pruss_get(struct rproc *rproc)
+> +{
+> +	return ERR_PTR(-EOPNOTSUPP);
+> +}
+> +
+> +static inline void pruss_put(struct pruss *pruss) { }
+> +
+> +#endif /* CONFIG_TI_PRUSS */
+>  
+>  #if IS_ENABLED(CONFIG_PRU_REMOTEPROC)
+>  
+> -- 
+> 2.25.1
+> 
