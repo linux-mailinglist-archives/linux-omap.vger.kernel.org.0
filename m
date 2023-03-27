@@ -2,156 +2,105 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ADE576CABA2
-	for <lists+linux-omap@lfdr.de>; Mon, 27 Mar 2023 19:14:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69A0F6CAE69
+	for <lists+linux-omap@lfdr.de>; Mon, 27 Mar 2023 21:19:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232408AbjC0RN7 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-omap@lfdr.de>); Mon, 27 Mar 2023 13:13:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45960 "EHLO
+        id S232654AbjC0TTA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 27 Mar 2023 15:19:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43956 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232241AbjC0RN6 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 27 Mar 2023 13:13:58 -0400
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 692E030C1;
-        Mon, 27 Mar 2023 10:13:57 -0700 (PDT)
-Received: by mail-ed1-f46.google.com with SMTP id x3so39059550edb.10;
-        Mon, 27 Mar 2023 10:13:57 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679937236;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xY9MkMEfq0rtpITAYQsVIbaSEu5rkXEFrZ/WULaQF+w=;
-        b=NCBMUme002ANns1iORxbL2oCi5QWeriXuOhcJ5MyWgz/TIMqQoc6CEKrxJ+UPrLsA8
-         5pLhuqndQg2yoWidNYcEfhq013oBxE087KXVOVwu98H1turl453T88fURv3wVv2tVUmU
-         NFP+sLEn+1xICExYApbIRuCHRmns8mNRZ5zNMr/0NhlLmIgtGgoP+exQLL8fSIw81yu1
-         FyUoklmsciQQfq29ifoole/caWlpHF1y82rDdIfu6S4z4RgCqpI1KoNHlcMKPjes+QnH
-         6ybyk3RuYWOTWeNexoMhRM9GHv/RpEPGsAzIuJCAp+AEm31sJMLWWQGz3yEFaXx+2PlW
-         S4PQ==
-X-Gm-Message-State: AAQBX9dHUxMIGGw0ovhySN01h/Ls51uPlp0MXktfqSZvG5HcpSp5MoGo
-        33TA3I1KKyFCxlJfRtlC2ToI1XaBFx6CDHOYNvcHY9E/
-X-Google-Smtp-Source: AKy350aZDqhWcU7EVw+CmqQuXdIe4jvumwx1/OIAjVr9zH/Jnyvws8G2bpeIyY5GkUCfmMCBvL3bFkOnoQDA0j9VY1Q=
-X-Received: by 2002:a17:907:6285:b0:931:f8b1:4472 with SMTP id
- nd5-20020a170907628500b00931f8b14472mr6098691ejc.2.1679937235734; Mon, 27 Mar
- 2023 10:13:55 -0700 (PDT)
+        with ESMTP id S230379AbjC0TS7 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 27 Mar 2023 15:18:59 -0400
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a01:238:4321:8900:456f:ecd6:43e:202c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A966CF;
+        Mon, 27 Mar 2023 12:18:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=kemnade.info; s=20220719; h=Content-Transfer-Encoding:Content-Type:
+        MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=xfwD58r7ManSAcpynfJdhPJPb96SmXfv4nKRVZMP16k=; b=xS3TkBLpKk7oxdcIdC9Bdo53Ny
+        QwB2QZZLiC+Bi6w8bc7MVztJhPo3j8elRFfzvjeFdI59SaG2OGxMhJzkjWl2X1ZzdBPcephzafTcb
+        rwBPLae2mbcT2HFnaoIgXZYwslSXnivcOEYv8K185DlnGDkiI94CMNu1ueRF+1Ri4BsBac1Ne8lSA
+        PTMbAeqpmuW06qud/FMkRU0rPZxgqh9AqptFUkaMtyG5fOLBNHk5DgSNhmnNvtfW02qPd/mBBKnEu
+        iKVZxCcnali3pFoyBWBlKYlmnLCLTomj4rJp2vmb45PDnNzQhHOTSpFLAarX3JSC4rNDUnM3N0r7F
+        pvW8uqHA==;
+Received: from p200300ccff0533001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff05:3300:1a3d:a2ff:febf:d33a] helo=aktux)
+        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <andreas@kemnade.info>)
+        id 1pgsMZ-00014E-IO; Mon, 27 Mar 2023 21:18:40 +0200
+Date:   Mon, 27 Mar 2023 21:18:38 +0200
+From:   Andreas Kemnade <andreas@kemnade.info>
+To:     Andrew Davis <afd@ti.com>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        =?UTF-8?B?QmVub8OudA==?= Cousson <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Colin Foster <colin.foster@in-advantage.com>,
+        Olof Johansson <olof@lixom.net>, Arnd Bergmann <arnd@arndb.de>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [RFC 1/2] ARM: dts: omap: Drop ti,omap36xx compatible
+Message-ID: <20230327211838.580af7a9@aktux>
+In-Reply-To: <20230216153339.19987-2-afd@ti.com>
+References: <20230216153339.19987-1-afd@ti.com>
+        <20230216153339.19987-2-afd@ti.com>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-References: <20230310144726.1545543-1-robh@kernel.org>
-In-Reply-To: <20230310144726.1545543-1-robh@kernel.org>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 27 Mar 2023 19:13:44 +0200
-Message-ID: <CAJZ5v0hAeRa9xsp6-_um9j-9F6nf=PYuOC2mgMAmmUHP+9=RZg@mail.gmail.com>
-Subject: Re: [PATCH] thermal: Use of_property_present() for testing DT
- property presence
-To:     Rob Herring <robh@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc:     Amit Daniel Kachhap <amit.kachhap@gmail.com>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Lukasz Luba <lukasz.luba@arm.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Keerthy <j-keerthy@ti.com>, devicetree@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=0.5 required=5.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
-        FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Score: -1.0 (-)
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, Mar 10, 2023 at 3:48 PM Rob Herring <robh@kernel.org> wrote:
->
-> It is preferred to use typed property access functions (i.e.
-> of_property_read_<type> functions) rather than low-level
-> of_get_property/of_find_property functions for reading properties. As
-> part of this, convert of_get_property/of_find_property calls to the
-> recently added of_property_present() helper when we just want to test
-> for presence of a property and nothing more.
->
-> Signed-off-by: Rob Herring <robh@kernel.org>
+On Thu, 16 Feb 2023 09:33:38 -0600
+Andrew Davis <afd@ti.com> wrote:
 
-Daniel, are you going to apply this, or should I take it directly?
-
+> This was not matched anywhere and provides no additional information.
+> 
+> Signed-off-by: Andrew Davis <afd@ti.com>
 > ---
->  drivers/thermal/cpufreq_cooling.c                  | 2 +-
->  drivers/thermal/imx8mm_thermal.c                   | 2 +-
->  drivers/thermal/imx_thermal.c                      | 4 ++--
->  drivers/thermal/ti-soc-thermal/ti-thermal-common.c | 2 +-
->  4 files changed, 5 insertions(+), 5 deletions(-)
->
-> diff --git a/drivers/thermal/cpufreq_cooling.c b/drivers/thermal/cpufreq_cooling.c
-> index 9f8b438fcf8f..4608555b7ec3 100644
-> --- a/drivers/thermal/cpufreq_cooling.c
-> +++ b/drivers/thermal/cpufreq_cooling.c
-> @@ -633,7 +633,7 @@ of_cpufreq_cooling_register(struct cpufreq_policy *policy)
->                 return NULL;
->         }
->
-> -       if (of_find_property(np, "#cooling-cells", NULL)) {
-> +       if (of_property_present(np, "#cooling-cells")) {
->                 struct em_perf_domain *em = em_cpu_get(policy->cpu);
->
->                 cdev = __cpufreq_cooling_register(np, policy, em);
-> diff --git a/drivers/thermal/imx8mm_thermal.c b/drivers/thermal/imx8mm_thermal.c
-> index 72b5d6f319c1..334ce8e9830b 100644
-> --- a/drivers/thermal/imx8mm_thermal.c
-> +++ b/drivers/thermal/imx8mm_thermal.c
-> @@ -282,7 +282,7 @@ static int imx8mm_tmu_probe_set_calib(struct platform_device *pdev,
->          * strongly recommended to update such old DTs to get correct
->          * temperature compensation values for each SoC.
->          */
-> -       if (!of_find_property(pdev->dev.of_node, "nvmem-cells", NULL)) {
-> +       if (!of_property_present(pdev->dev.of_node, "nvmem-cells")) {
->                 dev_warn(dev,
->                          "No OCOTP nvmem reference found, SoC-specific calibration not loaded. Please update your DT.\n");
->                 return 0;
-> diff --git a/drivers/thermal/imx_thermal.c b/drivers/thermal/imx_thermal.c
-> index fb0d5cab70af..77d6567a3f47 100644
-> --- a/drivers/thermal/imx_thermal.c
-> +++ b/drivers/thermal/imx_thermal.c
-> @@ -594,7 +594,7 @@ static int imx_thermal_register_legacy_cooling(struct imx_thermal_data *data)
->
->         np = of_get_cpu_node(data->policy->cpu, NULL);
->
-> -       if (!np || !of_find_property(np, "#cooling-cells", NULL)) {
-> +       if (!np || !of_property_present(np, "#cooling-cells")) {
->                 data->cdev = cpufreq_cooling_register(data->policy);
->                 if (IS_ERR(data->cdev)) {
->                         ret = PTR_ERR(data->cdev);
-> @@ -671,7 +671,7 @@ static int imx_thermal_probe(struct platform_device *pdev)
->
->         platform_set_drvdata(pdev, data);
->
-> -       if (of_find_property(pdev->dev.of_node, "nvmem-cells", NULL)) {
-> +       if (of_property_present(pdev->dev.of_node, "nvmem-cells")) {
->                 ret = imx_init_from_nvmem_cells(pdev);
->                 if (ret)
->                         return dev_err_probe(&pdev->dev, ret,
-> diff --git a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-> index 8a9055bd376e..dace6591220e 100644
-> --- a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-> +++ b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-> @@ -223,7 +223,7 @@ int ti_thermal_register_cpu_cooling(struct ti_bandgap *bgp, int id)
->          * using DT, then it must be aware that the cooling device
->          * loading has to happen via cpufreq driver.
->          */
-> -       if (of_find_property(np, "#thermal-sensor-cells", NULL))
-> +       if (of_property_present(np, "#thermal-sensor-cells"))
->                 return 0;
->
->         data = ti_bandgap_get_sensor_data(bgp, id);
-> --
-> 2.39.2
->
+>  arch/arm/boot/dts/omap3-beagle-xm.dts              | 2 +-
+>  arch/arm/boot/dts/omap3-cm-t3730.dts               | 2 +-
+>  arch/arm/boot/dts/omap3-igep0020-rev-f.dts         | 2 +-
+>  arch/arm/boot/dts/omap3-igep0020.dts               | 2 +-
+>  arch/arm/boot/dts/omap3-igep0030-rev-g.dts         | 2 +-
+>  arch/arm/boot/dts/omap3-igep0030.dts               | 2 +-
+>  arch/arm/boot/dts/omap3-lilly-dbb056.dts           | 2 +-
+>  arch/arm/boot/dts/omap3-n9.dts                     | 2 +-
+>  arch/arm/boot/dts/omap3-n950.dts                   | 2 +-
+>  arch/arm/boot/dts/omap3-overo-storm-alto35.dts     | 2 +-
+>  arch/arm/boot/dts/omap3-overo-storm-chestnut43.dts | 2 +-
+>  arch/arm/boot/dts/omap3-overo-storm-gallop43.dts   | 2 +-
+>  arch/arm/boot/dts/omap3-overo-storm-palo35.dts     | 2 +-
+>  arch/arm/boot/dts/omap3-overo-storm-palo43.dts     | 2 +-
+>  arch/arm/boot/dts/omap3-overo-storm-summit.dts     | 2 +-
+>  arch/arm/boot/dts/omap3-overo-storm-tobi.dts       | 2 +-
+>  arch/arm/boot/dts/omap3-overo-storm-tobiduo.dts    | 2 +-
+>  arch/arm/boot/dts/omap3-pandora-1ghz.dts           | 2 +-
+>  arch/arm/boot/dts/omap3-sbc-t3730.dts              | 2 +-
+>  arch/arm/boot/dts/omap3-sniper.dts                 | 2 +-
+>  arch/arm/boot/dts/omap3-zoom3.dts                  | 2 +-
+>  21 files changed, 21 insertions(+), 21 deletions(-)
+> 
+hmm, we have
+drivers/clk/ti/dpll.c:         of_machine_is_compatible("ti,omap36xx"))
+
+but that is more completely
+  if ((of_machine_is_compatible("ti,omap3630") ||
+             of_machine_is_compatible("ti,omap36xx")) &&
+
+so missing omap36xx will not harm if 3630 is there. SO this should
+be probably ok.
+
+Regards,
+Andreas
