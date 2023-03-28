@@ -2,109 +2,247 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60A276CBA79
-	for <lists+linux-omap@lfdr.de>; Tue, 28 Mar 2023 11:24:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3703D6CBD49
+	for <lists+linux-omap@lfdr.de>; Tue, 28 Mar 2023 13:18:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232314AbjC1JYT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 28 Mar 2023 05:24:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52148 "EHLO
+        id S232672AbjC1LRi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 28 Mar 2023 07:17:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232324AbjC1JYS (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 28 Mar 2023 05:24:18 -0400
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 448FB5B9C;
-        Tue, 28 Mar 2023 02:24:13 -0700 (PDT)
-Received: from [192.168.1.155] ([92.225.143.37]) by mrelayeu.kundenserver.de
- (mreue109 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1MGi6m-1pc5Lj18Gw-00DswJ; Tue, 28 Mar 2023 11:23:17 +0200
-Message-ID: <716362db-7355-7f10-6b8b-ee59ad22db41@metux.net>
-Date:   Tue, 28 Mar 2023 11:23:10 +0200
+        with ESMTP id S230226AbjC1LRc (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 28 Mar 2023 07:17:32 -0400
+Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FE163C20;
+        Tue, 28 Mar 2023 04:17:30 -0700 (PDT)
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 32SBH9xG108436;
+        Tue, 28 Mar 2023 06:17:09 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1680002229;
+        bh=+eoEEe1pmtcdoeNbEZvPGDZU834mlTMCt5fDZ1sH9SQ=;
+        h=Date:Subject:To:CC:References:From:In-Reply-To;
+        b=oGGoOHR38rHg1qUDXzXDofSvKLb4TCXoaDSwBXKvJqcFbaP2AZ6akfsbz4hZS1jMX
+         gRZ2Lj6Q7nNSA5gYVyHRgID/tmEGDY3kWCwgqo00dzrluSkMJ5DiWymlEqvP6zgs/w
+         kH1Zrq6uXL86JfNBFkHgQECIpJRLoclkvPnEX+iU=
+Received: from DFLE105.ent.ti.com (dfle105.ent.ti.com [10.64.6.26])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 32SBH9M6037561
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 28 Mar 2023 06:17:09 -0500
+Received: from DFLE105.ent.ti.com (10.64.6.26) by DFLE105.ent.ti.com
+ (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16; Tue, 28
+ Mar 2023 06:17:09 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE105.ent.ti.com
+ (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16 via
+ Frontend Transport; Tue, 28 Mar 2023 06:17:09 -0500
+Received: from [10.24.69.114] (ileaxei01-snat2.itg.ti.com [10.180.69.6])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 32SBH4Wp095866;
+        Tue, 28 Mar 2023 06:17:04 -0500
+Message-ID: <f5b84da7-313a-179b-5f35-aefffaa206a7@ti.com>
+Date:   Tue, 28 Mar 2023 16:47:03 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.8.0
-Subject: Re: [PATCH v2] drivers/gpio : Remove redundant
- platform_set_drvdata().
-Content-Language: tl
-To:     Lizhe <sensor1010@163.com>, linus.walleij@linaro.org,
-        brgl@bgdev.pl, geert+renesas@glider.be, info@metux.net,
-        rjui@broadcom.com, bcm-kernel-feedback-list@broadcom.com,
-        f.fainelli@gmail.com, sbranden@broadcom.com, shc_work@mail.ru,
-        j-keerthy@ti.com, hoan@os.amperecomputing.com,
-        fancer.lancer@gmail.com, orsonzhai@gmail.com,
-        baolin.wang@linux.alibaba.com, zhang.lyra@gmail.com,
-        shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-        festevam@gmail.com, linux-imx@nxp.com, kaloz@openwrt.org,
-        khalasa@piap.pl, keguang.zhang@gmail.com, daniel@thingy.jp,
-        romain.perier@gmail.com, matthias.bgg@gmail.com,
-        angelogioacchino.delregno@collabora.com, thierry.reding@gmail.com,
-        u.kleine-koenig@pengutronix.de, grygorii.strashko@ti.com,
-        ssantosh@kernel.org, khilman@kernel.org, mani@kernel.org,
-        ludovic.desroches@microchip.com, andy@kernel.org,
-        palmer@dabbelt.com, paul.walmsley@sifive.com, jonathanh@nvidia.com,
-        sathyanarayanan.kuppuswamy@linux.intel.com, michal.simek@xilinx.com
-Cc:     linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, linux-pwm@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-unisoc@lists.infradead.org,
-        linux-riscv@lists.infradead.org, linux-tegra@vger.kernel.org
-References: <20230319115925.1317654-1-sensor1010@163.com>
-From:   "Enrico Weigelt, metux IT consult" <lkml@metux.net>
-In-Reply-To: <20230319115925.1317654-1-sensor1010@163.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:ujdla9v/iyjL3L1Cm+XjJDsalTUKxgU24jiOGfnRDDlv+6BxEBk
- 28H46E0XI7p7p9qVjalxDWlIy6xfzIDACEQPVcoEKmfJeBTZUDYzWzsBgiTF5sK7xKSXsMU
- 6Ne5GFLPg3iF8SZpcov4SyijjbvxZuHNNahhvxW/b6vh/XwvP38kR4/h5+o9k+BYKi+yuY4
- IR9s2WsFAuBtirUVyTm1A==
-UI-OutboundReport: notjunk:1;M01:P0:MoGEpRKG1bo=;5T7PdYmcLG5pYfzDf8wQM6gX+1u
- u6+1T7eGv8suLuqhFsVIQetTiIHhQeLdoWrYLOJykRD4kcwK9iIB1R2Ca6YAta5bggT8ITXWp
- kcxl0zTa4ujpJwuro9HKDULm2lmwI2kytGe/Zytpl54o/yMIIfUHys1TRdUugR2GX5JoEVusy
- m7NL6/bKinALAavCcvyl+yWz8iEFkUCGAjBkwRq6GcK+Vfn59Qf7Ix0NssyHKIRXiJfCpVcYl
- 7WLb8jY8RcqzNuiTT5NZi/D4uEktukiHS3sOhJzbf5a+yfLg8nyEdQeUaPxU7XogDjK1cGIM/
- bC0jFNv8FWtQgNYeKhBQsMaLJlgnU4mLgu4ZlCnW0VNCVrkT/t77bdnYZ+KGrOMV1hX+5ytNP
- dsbmjC+D8CuFxyPhuO51HbjyV24/bG7u/ai8V0eGP7FsUxZTQ90poeILm6KZOgK51Kw3FAQBc
- gUDTVLam3E6T6uEH35Ub1whNqJ/lmrSwrzT+Z+ytclVP+A6Y5ePVGynFAYBCpEsZ7qgJECWYH
- 1haSxsR64jHGcikbbyr5rWTWWvJo93rP4HizhuoFUdiHRjpcjDIhHCAMJ/uu+wWQ+3GznrxTb
- PuQWQXNZ9dTYb627WNCdmUGhCKlnju8FIAE5EJGm2qPT8TFuZldhrSZWZ1sdxgKTFRe7VoUBk
- AGpHH9uEKGUANhP09xvX5f9fbGpGuwMmmasM0yXdMA==
-X-Spam-Status: No, score=0.0 required=5.0 tests=NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Subject: Re: [EXTERNAL] Re: [PATCH v5 3/5] soc: ti: pruss: Add
+ pruss_cfg_read()/update() API
+Content-Language: en-US
+To:     Mathieu Poirier <mathieu.poirier@linaro.org>,
+        MD Danish Anwar <danishanwar@ti.com>
+CC:     "Andrew F. Davis" <afd@ti.com>, Suman Anna <s-anna@ti.com>,
+        Roger Quadros <rogerq@kernel.org>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Tero Kristo <kristo@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Nishanth Menon <nm@ti.com>, <linux-remoteproc@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        <srk@ti.com>, <devicetree@vger.kernel.org>,
+        <netdev@vger.kernel.org>
+References: <20230323062451.2925996-1-danishanwar@ti.com>
+ <20230323062451.2925996-4-danishanwar@ti.com> <20230327210126.GC3158115@p14s>
+From:   Md Danish Anwar <a0501179@ti.com>
+Organization: Texas Instruments
+In-Reply-To: <20230327210126.GC3158115@p14s>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 19.03.23 12:59, Lizhe wrote:
-
-Hi,
-
-> platform_set_drvdata() is redundant in these functions.
-> the purpose of calling this function is to place data
-> in *driver_data. but the data is not retrieved in these
-> functions
-
-I appreciate your contribution, but I have to NAK for the gpio-amd-fch 
-driver: it would at least create a memleak (driver core can't free the
-driver_data when the driver is unloaded).
-
-In general, patches to drivers should be splitted per driver, unless 
-there's a hard reason to do otherwise. That's important for the
-individual maintainers being able to review patches to their drivers.
-If each maintainer can only ack on pieces of the patch, somebody else
-would need to split out those things that could be picked. Really too
-complicated.
 
 
---mtx
+On 28/03/23 02:31, Mathieu Poirier wrote:
+> On Thu, Mar 23, 2023 at 11:54:49AM +0530, MD Danish Anwar wrote:
+>> From: Suman Anna <s-anna@ti.com>
+>>
+>> Add two new generic API pruss_cfg_read() and pruss_cfg_update() to
+>> the PRUSS platform driver to read and program respectively a register
+>> within the PRUSS CFG sub-module represented by a syscon driver.
+>>
+>> These APIs are internal to PRUSS driver. Various useful registers
+>> and macros for certain register bit-fields and their values have also
+>> been added.
+>>
+>> Signed-off-by: Suman Anna <s-anna@ti.com>
+>> Co-developed-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
+>> Signed-off-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
+>> Signed-off-by: Puranjay Mohan <p-mohan@ti.com>
+>> Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
+>> ---
+>>  drivers/soc/ti/pruss.c |   1 +
+>>  drivers/soc/ti/pruss.h | 112 +++++++++++++++++++++++++++++++++++++++++
+>>  2 files changed, 113 insertions(+)
+>>  create mode 100644 drivers/soc/ti/pruss.h
+>>
+> 
+> This patch doesn't compile without warnings.
+> 
+
+Sure, Mathieu. I'll check the warnings.
+
+>> diff --git a/drivers/soc/ti/pruss.c b/drivers/soc/ti/pruss.c
+>> index 126b672b9b30..2fa7df667592 100644
+>> --- a/drivers/soc/ti/pruss.c
+>> +++ b/drivers/soc/ti/pruss.c
+>> @@ -21,6 +21,7 @@
+>>  #include <linux/regmap.h>
+>>  #include <linux/remoteproc.h>
+>>  #include <linux/slab.h>
+>> +#include "pruss.h"
+>>  
+>>  /**
+>>   * struct pruss_private_data - PRUSS driver private data
+>> diff --git a/drivers/soc/ti/pruss.h b/drivers/soc/ti/pruss.h
+>> new file mode 100644
+>> index 000000000000..4626d5f6b874
+>> --- /dev/null
+>> +++ b/drivers/soc/ti/pruss.h
+>> @@ -0,0 +1,112 @@
+>> +/* SPDX-License-Identifier: GPL-2.0-only */
+>> +/*
+>> + * PRU-ICSS Subsystem user interfaces
+>> + *
+>> + * Copyright (C) 2015-2023 Texas Instruments Incorporated - http://www.ti.com
+>> + *	MD Danish Anwar <danishanwar@ti.com>
+>> + */
+>> +
+>> +#ifndef _SOC_TI_PRUSS_H_
+>> +#define _SOC_TI_PRUSS_H_
+>> +
+>> +#include <linux/bits.h>
+>> +#include <linux/regmap.h>
+>> +
+>> +/*
+>> + * PRU_ICSS_CFG registers
+>> + * SYSCFG, ISRP, ISP, IESP, IECP, SCRP applicable on AMxxxx devices only
+>> + */
+>> +#define PRUSS_CFG_REVID         0x00
+>> +#define PRUSS_CFG_SYSCFG        0x04
+>> +#define PRUSS_CFG_GPCFG(x)      (0x08 + (x) * 4)
+>> +#define PRUSS_CFG_CGR           0x10
+>> +#define PRUSS_CFG_ISRP          0x14
+>> +#define PRUSS_CFG_ISP           0x18
+>> +#define PRUSS_CFG_IESP          0x1C
+>> +#define PRUSS_CFG_IECP          0x20
+>> +#define PRUSS_CFG_SCRP          0x24
+>> +#define PRUSS_CFG_PMAO          0x28
+>> +#define PRUSS_CFG_MII_RT        0x2C
+>> +#define PRUSS_CFG_IEPCLK        0x30
+>> +#define PRUSS_CFG_SPP           0x34
+>> +#define PRUSS_CFG_PIN_MX        0x40
+>> +
+>> +/* PRUSS_GPCFG register bits */
+>> +#define PRUSS_GPCFG_PRU_GPO_SH_SEL              BIT(25)
+>> +
+>> +#define PRUSS_GPCFG_PRU_DIV1_SHIFT              20
+>> +#define PRUSS_GPCFG_PRU_DIV1_MASK               GENMASK(24, 20)
+>> +
+>> +#define PRUSS_GPCFG_PRU_DIV0_SHIFT              15
+>> +#define PRUSS_GPCFG_PRU_DIV0_MASK               GENMASK(15, 19)
+>> +
+>> +#define PRUSS_GPCFG_PRU_GPO_MODE                BIT(14)
+>> +#define PRUSS_GPCFG_PRU_GPO_MODE_DIRECT         0
+>> +#define PRUSS_GPCFG_PRU_GPO_MODE_SERIAL         BIT(14)
+>> +
+>> +#define PRUSS_GPCFG_PRU_GPI_SB                  BIT(13)
+>> +
+>> +#define PRUSS_GPCFG_PRU_GPI_DIV1_SHIFT          8
+>> +#define PRUSS_GPCFG_PRU_GPI_DIV1_MASK           GENMASK(12, 8)
+>> +
+>> +#define PRUSS_GPCFG_PRU_GPI_DIV0_SHIFT          3
+>> +#define PRUSS_GPCFG_PRU_GPI_DIV0_MASK           GENMASK(7, 3)
+>> +
+>> +#define PRUSS_GPCFG_PRU_GPI_CLK_MODE_POSITIVE   0
+>> +#define PRUSS_GPCFG_PRU_GPI_CLK_MODE_NEGATIVE   BIT(2)
+>> +#define PRUSS_GPCFG_PRU_GPI_CLK_MODE            BIT(2)
+>> +
+>> +#define PRUSS_GPCFG_PRU_GPI_MODE_MASK           GENMASK(1, 0)
+>> +#define PRUSS_GPCFG_PRU_GPI_MODE_SHIFT          0
+>> +
+>> +#define PRUSS_GPCFG_PRU_MUX_SEL_SHIFT           26
+>> +#define PRUSS_GPCFG_PRU_MUX_SEL_MASK            GENMASK(29, 26)
+>> +
+>> +/* PRUSS_MII_RT register bits */
+>> +#define PRUSS_MII_RT_EVENT_EN                   BIT(0)
+>> +
+>> +/* PRUSS_SPP register bits */
+>> +#define PRUSS_SPP_XFER_SHIFT_EN                 BIT(1)
+>> +#define PRUSS_SPP_PRU1_PAD_HP_EN                BIT(0)
+>> +#define PRUSS_SPP_RTU_XFR_SHIFT_EN              BIT(3)
+>> +
+>> +/**
+>> + * pruss_cfg_read() - read a PRUSS CFG sub-module register
+>> + * @pruss: the pruss instance handle
+>> + * @reg: register offset within the CFG sub-module
+>> + * @val: pointer to return the value in
+>> + *
+>> + * Reads a given register within the PRUSS CFG sub-module and
+>> + * returns it through the passed-in @val pointer
+>> + *
+>> + * Return: 0 on success, or an error code otherwise
+>> + */
+>> +static int pruss_cfg_read(struct pruss *pruss, unsigned int reg, unsigned int *val)
+>> +{
+>> +	if (IS_ERR_OR_NULL(pruss))
+>> +		return -EINVAL;
+>> +
+>> +	return regmap_read(pruss->cfg_regmap, reg, val);
+>> +}
+>> +
+>> +/**
+>> + * pruss_cfg_update() - configure a PRUSS CFG sub-module register
+>> + * @pruss: the pruss instance handle
+>> + * @reg: register offset within the CFG sub-module
+>> + * @mask: bit mask to use for programming the @val
+>> + * @val: value to write
+>> + *
+>> + * Programs a given register within the PRUSS CFG sub-module
+>> + *
+>> + * Return: 0 on success, or an error code otherwise
+>> + */
+>> +static int pruss_cfg_update(struct pruss *pruss, unsigned int reg,
+>> +			    unsigned int mask, unsigned int val)
+>> +{
+>> +	if (IS_ERR_OR_NULL(pruss))
+>> +		return -EINVAL;
+>> +
+>> +	return regmap_update_bits(pruss->cfg_regmap, reg, mask, val);
+>> +}
+>> +
+>> +#endif  /* _SOC_TI_PRUSS_H_ */
+>> -- 
+>> 2.25.1
+>>
 
 -- 
----
-Hinweis: unverschlüsselte E-Mails können leicht abgehört und manipuliert
-werden ! Für eine vertrauliche Kommunikation senden Sie bitte ihren
-GPG/PGP-Schlüssel zu.
----
-Enrico Weigelt, metux IT consult
-Free software and Linux embedded engineering
-info@metux.net -- +49-151-27565287
+Thanks and Regards,
+Danish.
