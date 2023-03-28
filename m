@@ -2,48 +2,41 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EF276CB358
-	for <lists+linux-omap@lfdr.de>; Tue, 28 Mar 2023 03:46:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0C3B6CB5B9
+	for <lists+linux-omap@lfdr.de>; Tue, 28 Mar 2023 07:01:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232377AbjC1Bqu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 27 Mar 2023 21:46:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50432 "EHLO
+        id S230269AbjC1FBV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 28 Mar 2023 01:01:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232446AbjC1Bqt (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 27 Mar 2023 21:46:49 -0400
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E677211E
-        for <linux-omap@vger.kernel.org>; Mon, 27 Mar 2023 18:46:43 -0700 (PDT)
-Received: from kwepemi500012.china.huawei.com (unknown [172.30.72.53])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4PlssB56NBz17N4t;
-        Tue, 28 Mar 2023 09:43:26 +0800 (CST)
-Received: from [10.67.110.176] (10.67.110.176) by
- kwepemi500012.china.huawei.com (7.221.188.12) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.21; Tue, 28 Mar 2023 09:46:40 +0800
-Subject: Re: [PATCH 0/3] Remove unused declarations from arm
-To:     Tony Lindgren <tony@atomide.com>
-CC:     <paul@pwsan.com>, <linux@armlinux.org.uk>, <khilman@kernel.org>,
-        <daniel@zonque.org>, <haojian.zhuang@gmail.com>,
-        <robert.jarzmik@free.fr>, <linux-omap@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>
-References: <20220920130110.1104272-1-cuigaosheng1@huawei.com>
- <Y2tiucLEcPyTTmwv@atomide.com> <20230327080229.GC7501@atomide.com>
-From:   cuigaosheng <cuigaosheng1@huawei.com>
-Message-ID: <f26011c6-3abd-741e-eafb-b74f0162652b@huawei.com>
-Date:   Tue, 28 Mar 2023 09:46:39 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.1
+        with ESMTP id S229606AbjC1FBU (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 28 Mar 2023 01:01:20 -0400
+Received: from muru.com (muru.com [72.249.23.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id DE8D31BDC;
+        Mon, 27 Mar 2023 22:01:17 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id CD7348108;
+        Tue, 28 Mar 2023 05:01:16 +0000 (UTC)
+Date:   Tue, 28 Mar 2023 08:01:15 +0300
+From:   Tony Lindgren <tony@atomide.com>
+To:     Andreas Kemnade <andreas@kemnade.info>
+Cc:     Andrew Davis <afd@ti.com>, Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        Colin Foster <colin.foster@in-advantage.com>,
+        Olof Johansson <olof@lixom.net>, Arnd Bergmann <arnd@arndb.de>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [RFC 1/2] ARM: dts: omap: Drop ti,omap36xx compatible
+Message-ID: <20230328050115.GI7501@atomide.com>
+References: <20230216153339.19987-1-afd@ti.com>
+ <20230216153339.19987-2-afd@ti.com>
+ <20230327211838.580af7a9@aktux>
 MIME-Version: 1.0
-In-Reply-To: <20230327080229.GC7501@atomide.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.67.110.176]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- kwepemi500012.china.huawei.com (7.221.188.12)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-2.3 required=5.0 tests=NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230327211838.580af7a9@aktux>
+X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_NONE
         autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -51,31 +44,52 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-> Looks like the two omap related patch in this series are no longer
-> needed after Arnd's clean-up has been merged. If I missed something,
-> please resend updated patches.
+* Andreas Kemnade <andreas@kemnade.info> [230327 19:18]:
+> On Thu, 16 Feb 2023 09:33:38 -0600
+> Andrew Davis <afd@ti.com> wrote:
+> 
+> > This was not matched anywhere and provides no additional information.
+> > 
+> > Signed-off-by: Andrew Davis <afd@ti.com>
+> > ---
+> >  arch/arm/boot/dts/omap3-beagle-xm.dts              | 2 +-
+> >  arch/arm/boot/dts/omap3-cm-t3730.dts               | 2 +-
+> >  arch/arm/boot/dts/omap3-igep0020-rev-f.dts         | 2 +-
+> >  arch/arm/boot/dts/omap3-igep0020.dts               | 2 +-
+> >  arch/arm/boot/dts/omap3-igep0030-rev-g.dts         | 2 +-
+> >  arch/arm/boot/dts/omap3-igep0030.dts               | 2 +-
+> >  arch/arm/boot/dts/omap3-lilly-dbb056.dts           | 2 +-
+> >  arch/arm/boot/dts/omap3-n9.dts                     | 2 +-
+> >  arch/arm/boot/dts/omap3-n950.dts                   | 2 +-
+> >  arch/arm/boot/dts/omap3-overo-storm-alto35.dts     | 2 +-
+> >  arch/arm/boot/dts/omap3-overo-storm-chestnut43.dts | 2 +-
+> >  arch/arm/boot/dts/omap3-overo-storm-gallop43.dts   | 2 +-
+> >  arch/arm/boot/dts/omap3-overo-storm-palo35.dts     | 2 +-
+> >  arch/arm/boot/dts/omap3-overo-storm-palo43.dts     | 2 +-
+> >  arch/arm/boot/dts/omap3-overo-storm-summit.dts     | 2 +-
+> >  arch/arm/boot/dts/omap3-overo-storm-tobi.dts       | 2 +-
+> >  arch/arm/boot/dts/omap3-overo-storm-tobiduo.dts    | 2 +-
+> >  arch/arm/boot/dts/omap3-pandora-1ghz.dts           | 2 +-
+> >  arch/arm/boot/dts/omap3-sbc-t3730.dts              | 2 +-
+> >  arch/arm/boot/dts/omap3-sniper.dts                 | 2 +-
+> >  arch/arm/boot/dts/omap3-zoom3.dts                  | 2 +-
+> >  21 files changed, 21 insertions(+), 21 deletions(-)
+> > 
+> hmm, we have
+> drivers/clk/ti/dpll.c:         of_machine_is_compatible("ti,omap36xx"))
+> 
+> but that is more completely
+>   if ((of_machine_is_compatible("ti,omap3630") ||
+>              of_machine_is_compatible("ti,omap36xx")) &&
+> 
+> so missing omap36xx will not harm if 3630 is there. SO this should
+> be probably ok.
 
-Thanks for taking time to review these patches, these issue have been
-fixed in linux next.
+Looks like we still have these that should be patched away first:
 
-Gaosheng
+drivers/cpufreq/ti-cpufreq.c-   { .compatible = "ti,omap34xx", .data = &omap34xx_soc_data, },
+drivers/cpufreq/ti-cpufreq.c:   { .compatible = "ti,omap36xx", .data = &omap36xx_soc_data, },
 
-On 2023/3/27 16:02, Tony Lindgren wrote:
-> * Tony Lindgren <tony@atomide.com> [221109 08:10]:
->> Hi,
->>
->> * Gaosheng Cui <cuigaosheng1@huawei.com> [220920 15:53]:
->>> This series contains a few cleanup patches, to remove unused
->>> declarations which have been removed. Thanks!
->> FYI, let's wait a bit longer with these until we have Arnd's pending
->> clean-up patches in Linux next as they remove some unused functions
->> too.
-> Looks like the two omap related patch in this series are no longer
-> needed after Arnd's clean-up has been merged. If I missed something,
-> please resend updated patches.
->
-> Thanks,
->
-> Tony
->
-> .
+Regards,
+
+Tony
