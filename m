@@ -2,51 +2,52 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D4B4F6CD03F
-	for <lists+linux-omap@lfdr.de>; Wed, 29 Mar 2023 04:41:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9984C6CD5F4
+	for <lists+linux-omap@lfdr.de>; Wed, 29 Mar 2023 11:08:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229984AbjC2ClD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 28 Mar 2023 22:41:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57004 "EHLO
+        id S229849AbjC2JIq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 29 Mar 2023 05:08:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45514 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229990AbjC2ClA (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 28 Mar 2023 22:41:00 -0400
+        with ESMTP id S229629AbjC2JIp (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 29 Mar 2023 05:08:45 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F9573C3A;
-        Tue, 28 Mar 2023 19:40:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAD4819BA;
+        Wed, 29 Mar 2023 02:08:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 718E3B81FAD;
-        Wed, 29 Mar 2023 02:40:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B4C9C433D2;
-        Wed, 29 Mar 2023 02:40:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1680057634;
-        bh=Ch0NsSuJTofP/QNhdjknf2Lga+tdY9yLg7bYCRUolUE=;
-        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-        b=foswPpRoMJliPAdXiG5AOjAf21bbb/bwHCGPfawiYvgAdA+/Vdyi4I6otG9XbPSy1
-         w/mRN0ovJGT1YaJL1KuO7TQ8ME86rlzo08NvZSZ1I8oiApu5i527hmtgdfIF18olve
-         ReSoUitWHGprNTlCNRzMwhYNlXN0a68Wt/wKRLbSNNS2vTIG7fYXWEuOU4KVp2WR4w
-         Lyvrsy0M0Vmh3Gif+a/SF4E0WJ0UK0se9zE4I3sKQ0GjvdzP6au4T0fssRJJEmqYvZ
-         6+xLXMxjjBAY9TP+jAXT3sNH5LIC191RLg8AtIc+jNf11gyoaSdwIj7f5h5CMDy6kk
-         Fr98/Yzn/WRZw==
-Message-ID: <22c217f49b5894f2b560500360036689.sboyd@kernel.org>
-Content-Type: text/plain; charset="utf-8"
+        by ams.source.kernel.org (Postfix) with ESMTPS id 5CEB9B821AC;
+        Wed, 29 Mar 2023 09:08:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 941CFC433EF;
+        Wed, 29 Mar 2023 09:08:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1680080922;
+        bh=1bBGA8NktkVBqzjr2FRdql4wXbWDk2rW1T2qFU/H/WY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=AJRFZAFAZnYkDvEcmN0A82nvXmRVbfplHCpFLa/vgEDTwGcVsZ8U1S8KGwWS4A2Rk
+         Sd3C0jUyxKTIPcIO9Ed3hC/FRnvPm4L7piw8S4LLuSZOdr8OuoBJ2UHrf/qGkTvpGo
+         oE9dMJM+pXx20guVutDuajtgRwCrtqWoVilzVvj4=
+Date:   Wed, 29 Mar 2023 11:08:39 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Jiri Slaby <jirislaby@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@intel.com>,
+        Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Johan Hovold <johan@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        linux-omap@vger.kernel.org,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org
+Subject: Re: [PATCH v9 1/1] serial: core: Start managing serial controllers
+ to enable runtime PM
+Message-ID: <ZCQAF-nrrsfBtviT@kroah.com>
+References: <20230323071051.2184-1-tony@atomide.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20230312161512.2715500-28-u.kleine-koenig@pengutronix.de>
-References: <20230312161512.2715500-1-u.kleine-koenig@pengutronix.de> <20230312161512.2715500-28-u.kleine-koenig@pengutronix.de>
-Subject: Re: [PATCH 27/30] clk: ti: Convert to platform remove callback returning void
-From:   Stephen Boyd <sboyd@kernel.org>
-Cc:     linux-omap@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-To:     Michael Turquette <mturquette@baylibre.com>,
-        Tero Kristo <kristo@kernel.org>,
-        Uwe =?utf-8?q?Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-Date:   Tue, 28 Mar 2023 19:40:32 -0700
-User-Agent: alot/0.10
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230323071051.2184-1-tony@atomide.com>
 X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
@@ -56,19 +57,25 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Quoting Uwe Kleine-K=C3=B6nig (2023-03-12 09:15:09)
-> The .remove() callback for a platform driver returns an int which makes
-> many driver authors wrongly assume it's possible to do error handling by
-> returning an error code. However the value returned is (mostly) ignored
-> and this typically results in resource leaks. To improve here there is a
-> quest to make the remove callback return void. In the first step of this
-> quest all drivers are converted to .remove_new() which already returns
-> void.
->=20
-> Trivially convert this driver from always returning zero in the remove
-> callback to the void returning variant.
->=20
-> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
-> ---
+On Thu, Mar 23, 2023 at 09:10:47AM +0200, Tony Lindgren wrote:
+> --- /dev/null
+> +++ b/drivers/tty/serial/serial_base.c
+> @@ -0,0 +1,142 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
 
-Applied to clk-next
+Given that the driver core is "GPL-2.0-only", why is this -or-later?
+
+Sorry, I have to ask.
+
+
+> +
+> +/*
+> + * Serial core base layer for controllers
+> + *
+> + * The serial core bus manages the serial core controller instances.
+
+No copyright notice?  That's fine, but again, I have to ask.
+
+thanks,
+
+greg k-h
