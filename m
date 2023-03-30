@@ -2,52 +2,51 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CC236D04CE
-	for <lists+linux-omap@lfdr.de>; Thu, 30 Mar 2023 14:35:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FE4E6D04DB
+	for <lists+linux-omap@lfdr.de>; Thu, 30 Mar 2023 14:36:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229880AbjC3MfK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 30 Mar 2023 08:35:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56312 "EHLO
+        id S229521AbjC3Mgj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 30 Mar 2023 08:36:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229661AbjC3MfJ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 30 Mar 2023 08:35:09 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 939FB768A;
-        Thu, 30 Mar 2023 05:35:08 -0700 (PDT)
+        with ESMTP id S230019AbjC3Mgi (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 30 Mar 2023 08:36:38 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4BB47A8B;
+        Thu, 30 Mar 2023 05:36:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id F0E87B828A6;
-        Thu, 30 Mar 2023 12:35:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2767C433EF;
-        Thu, 30 Mar 2023 12:35:03 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 6C7F3B828A2;
+        Thu, 30 Mar 2023 12:36:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA578C433D2;
+        Thu, 30 Mar 2023 12:36:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1680179705;
-        bh=y+2gCE8/Cx3zjDhG3ki9NXZfOdNfIYHBd/3JGB6uaN8=;
+        s=k20201202; t=1680179779;
+        bh=apjuJydxqBhPZhcIQdOGZhWg7a9aRiJmg/9aojOU6Xs=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Cp6aBBHtwV3qcj9lLsSRv592j/zDoiXol/xJlrebkCiGucvZc8NaB9TBp+GFWXotV
-         0UXL9RsflBhWhnQEO3CtDQD8DuHlAOsN1OrlX16EX0EHLu45mnk4Zfo055ugiLtyVF
-         AzbWZAMM7hb/1H/KKx3wGtFg0YS+0AoX2bvifG2tf1ABoIDsNs8uZkCNjlJ51j1PCh
-         Kjm0JzTyzTuUkYKUKm+42O/N4vw8mqYTxRHdKNFWTTe+0ePBwfJUio+LyllE33HRCu
-         eXohTgchQwJxLUGJlJetQJaard0E6ljRoIZ0WwHSwdkiMxu98BDq+Jrzu1DIfTqqiD
-         omBwPg+jlYTtg==
-Date:   Thu, 30 Mar 2023 13:35:00 +0100
+        b=RXaFiCOOxBKkVMcldHGDcX6733J33G2LEWE5xW6ucRxTHIWhm0oq7BtWWwcJY5q2p
+         WE+0gRNRZNf5aON1M4JNrLmVbZLA5vPBvtvc8P06F66dRMmP/6iNHaKtiwlWgPWQAZ
+         9sv3/AoChFrvBnml58hsP8OwG9JTFmSU2kCJCJoONWE+6K8H6GT5+wDflwAm/HyphD
+         8ckzN2KJfBwpd1bqPij40bRNUC6y8t3UM8ZqRKJ+YIVbQYsXnNmPpehopi7v4rV8qh
+         KjRfAn8Pi02/WqTe5a9tedvFFrPxjklyudHWPscom1ReRc41Y9PT+1RFi/aSN8ih5q
+         mmLMdszS/4DUA==
+Date:   Thu, 30 Mar 2023 13:36:14 +0100
 From:   Lee Jones <lee@kernel.org>
 To:     Tom Rix <trix@redhat.com>
 Cc:     tony@atomide.com, nathan@kernel.org, ndesaulniers@google.com,
         linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
         llvm@lists.linux.dev
-Subject: Re: [PATCH] mfd: twl-core: remove unused add_child and
- add_numbered_child functions
-Message-ID: <20230330123500.GG434339@google.com>
-References: <20230322115838.2569414-1-trix@redhat.com>
+Subject: Re: [PATCH] mfd: omap-usb-tll: remove unused usbtll_readb function
+Message-ID: <20230330123614.GH434339@google.com>
+References: <20230322125803.2570968-1-trix@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230322115838.2569414-1-trix@redhat.com>
-X-Spam-Status: No, score=-5.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+In-Reply-To: <20230322125803.2570968-1-trix@redhat.com>
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,17 +57,16 @@ X-Mailing-List: linux-omap@vger.kernel.org
 On Wed, 22 Mar 2023, Tom Rix wrote:
 
 > clang with W=1 reports
-> drivers/mfd/twl-core.c:654:30: error: unused function 'add_child' [-Werror,-Wunused-function]
-> static inline struct device *add_child(unsigned mod_no, const char *name,
->                              ^
-> add_numbered_child and its only caller add_child are not used, so remove them.
+> drivers/mfd/omap-usb-tll.c:128:18: error: unused function
+>   'usbtll_readb' [-Werror,-Wunused-function]
+> static inline u8 usbtll_readb(void __iomem *base, u32 reg)
+>                  ^
+> This function is not used so remove it.
 >
 > Signed-off-by: Tom Rix <trix@redhat.com>
 > ---
->  drivers/mfd/twl-core.c | 65 ------------------------------------------
-> 1 file changed, 65 deletions(-)
-
-I chopped around the commit message a bit and:
+>  drivers/mfd/omap-usb-tll.c | 5 -----
+>  1 file changed, 5 deletions(-)
 
 Applied, thanks
 
