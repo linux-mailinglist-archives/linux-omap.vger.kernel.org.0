@@ -2,90 +2,120 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA97D6D179A
-	for <lists+linux-omap@lfdr.de>; Fri, 31 Mar 2023 08:41:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F14346D1AAD
+	for <lists+linux-omap@lfdr.de>; Fri, 31 Mar 2023 10:45:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230047AbjCaGlM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 31 Mar 2023 02:41:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55522 "EHLO
+        id S231749AbjCaIpl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 31 Mar 2023 04:45:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47492 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229981AbjCaGlK (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 31 Mar 2023 02:41:10 -0400
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0420F11162;
-        Thu, 30 Mar 2023 23:41:09 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 11FAB8027;
-        Fri, 31 Mar 2023 06:41:09 +0000 (UTC)
-Date:   Fri, 31 Mar 2023 09:41:07 +0300
-From:   Tony Lindgren <tony@atomide.com>
-To:     Andreas Kemnade <andreas@kemnade.info>
-Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, Andrew Davis <afd@ti.com>
-Subject: Re: [PATCH v2] dt-bindings: omap: Convert omap.txt to yaml
-Message-ID: <20230331064107.GU7501@atomide.com>
-References: <20230329222246.3292766-1-andreas@kemnade.info>
- <20230330113918.GS7501@atomide.com>
- <20230330181506.4d5fcf51@aktux>
+        with ESMTP id S231268AbjCaIpa (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 31 Mar 2023 04:45:30 -0400
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A30765B88
+        for <linux-omap@vger.kernel.org>; Fri, 31 Mar 2023 01:45:06 -0700 (PDT)
+Received: by mail-wr1-x430.google.com with SMTP id d17so21596316wrb.11
+        for <linux-omap@vger.kernel.org>; Fri, 31 Mar 2023 01:45:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1680252290;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=xxyqdIn+bk4QczcFBL4xE02Qvuk54XzxnYqApbWmQ7E=;
+        b=T/C6VRoG0clsKlt9wMakpFmsJW9/eJik5Xxo338Tq2stTAGKoyZqJ6beLQsP5VWvmP
+         dnvxyj9mU8lu8qyu+XXGY6Fyx7sBjawIsbGYMz4LNzyOGlJ4zg5hf9SLtX0BNdWP1BSv
+         /JAgcDA9GTBLjNk7RJBvssxuXZXcTKGC2xEsWmXKM8OflqZC/C7s03VavwsBazeW+fp/
+         VFAn8Anm+CA3IjUlG62nkGRaMFO+uQBHQj+LBuyZoa7Zvmrv74uKnQWuiaYmIGmaoj/5
+         HsCAL59OWnPfxc3crmgdXrBL0cCCvJ8Z6TD5FAXvAjNxaRdyyQGyHm1UNvm6H0lI9Sx3
+         R5qQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680252290;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=xxyqdIn+bk4QczcFBL4xE02Qvuk54XzxnYqApbWmQ7E=;
+        b=uazJDTLalpixY1nfuq4cMIkL2sZR2WusP0DUJpKEelKwqPgz6r/0VBA/5yxNrM8Vw3
+         DGom8hsld8D3pdy/eZSjH4OpBW0GAh6Sd+SqvWXnPYDpzqP8sHGGodflPlfy2dJiDUAW
+         jrFzcYwqnYYdFf5AqkE7fgKsSJ62e9bpx7aV/9tioj1jR2iYTF78ULGph6Yz4qHDkMpX
+         /2Bfie2fjp0ZEa96nSk9VlB7+SOECC+C1TcJznozlRsh1k80sB/iW5jnENx/GDDeRvF1
+         5NZ9Mxoq+13EQGSXojeM1uG1wDAkOGjJe0ncSn1mcd17YdSaUoWR0KkmnxM4hdbwl7xB
+         Rprg==
+X-Gm-Message-State: AAQBX9cbj4tdtx1F5/JEJhzIXb2MffyT2N9tOJuB9Uypsm1zsZRiz/+B
+        bLRtrCJRnCAfMUxehq3jL5H6zQ==
+X-Google-Smtp-Source: AKy350ZHxE08ANZvF4H7bloNjkiIkHgIWRHOGVefKapS/JJkMMHtS7CHxDmiDoX5QSSpdo+bvMN3Pw==
+X-Received: by 2002:adf:d08e:0:b0:2cf:f312:86dd with SMTP id y14-20020adfd08e000000b002cff31286ddmr17970572wrh.18.1680252290022;
+        Fri, 31 Mar 2023 01:44:50 -0700 (PDT)
+Received: from ?IPV6:2a05:6e02:1041:c10:17ff:909e:1b73:8366? ([2a05:6e02:1041:c10:17ff:909e:1b73:8366])
+        by smtp.googlemail.com with ESMTPSA id m7-20020a5d56c7000000b002cea9d931e6sm1590350wrw.78.2023.03.31.01.44.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 31 Mar 2023 01:44:49 -0700 (PDT)
+Message-ID: <f4592c81-af30-8289-d02d-a44e25e0fe26@linaro.org>
+Date:   Fri, 31 Mar 2023 10:44:48 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230330181506.4d5fcf51@aktux>
-X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH] thermal: Use of_property_present() for testing DT
+ property presence
+Content-Language: en-US
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Rob Herring <robh@kernel.org>
+Cc:     Amit Daniel Kachhap <amit.kachhap@gmail.com>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Lukasz Luba <lukasz.luba@arm.com>,
+        Amit Kucheria <amitk@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        devicetree@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-omap@vger.kernel.org
+References: <20230310144726.1545543-1-robh@kernel.org>
+ <CAJZ5v0hAeRa9xsp6-_um9j-9F6nf=PYuOC2mgMAmmUHP+9=RZg@mail.gmail.com>
+ <CAJZ5v0i-Vum+js8c7fZJiQWwTBYByy2O=UtObR6GciLMLt41Nw@mail.gmail.com>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <CAJZ5v0i-Vum+js8c7fZJiQWwTBYByy2O=UtObR6GciLMLt41Nw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Andreas Kemnade <andreas@kemnade.info> [230330 16:15]:
-> On Thu, 30 Mar 2023 14:39:18 +0300
-> Tony Lindgren <tony@atomide.com> wrote:
+On 30/03/2023 19:28, Rafael J. Wysocki wrote:
+> On Mon, Mar 27, 2023 at 7:13 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
+>>
+>> On Fri, Mar 10, 2023 at 3:48 PM Rob Herring <robh@kernel.org> wrote:
+>>>
+>>> It is preferred to use typed property access functions (i.e.
+>>> of_property_read_<type> functions) rather than low-level
+>>> of_get_property/of_find_property functions for reading properties. As
+>>> part of this, convert of_get_property/of_find_property calls to the
+>>> recently added of_property_present() helper when we just want to test
+>>> for presence of a property and nothing more.
+>>>
+>>> Signed-off-by: Rob Herring <robh@kernel.org>
+>>
+>> Daniel, are you going to apply this, or should I take it directly?
 > 
-> > * Andreas Kemnade <andreas@kemnade.info> [230329 22:22]:
-> > > From: Andrew Davis <afd@ti.com>
-> > > 
-> > > Convert omap.txt to yaml.
-> > >  Documentation/devicetree/bindings/arm/ti.yaml | 157 ++++++++++++++++++
-> > >  1 file changed, 157 insertions(+)
-> > >  create mode 100644 Documentation/devicetree/bindings/arm/ti.yaml  
-> > 
-> > Great, can we also drop the old txt file or is more changes needed before
-> > we can do that?
-> >
-> we have still 
-> - ti,hwmods: list of hwmod names (ascii strings), that comes from the OMAP
->   HW documentation, attached to a device. Must contain at least
->   one hwmod.
-> 
-> Optional properties:
-> - ti,no_idle_on_suspend: When present, it prevents the PM to idle the module
->   during suspend.
-> - ti,no-reset-on-init: When present, the module should not be reset at init
-> - ti,no-idle-on-init: When present, the module should not be idled at init
-> - ti,no-idle: When present, the module is never allowed to idle.
+> Applied as 6.4 material, thanks
 
-These are documented in the ti-sysc.yaml for the current SoCs, but not for
-the legacy SoC still using ti,hwmods.
+Sorry, I forgot to answer. I already applied it.
 
-> These optional properties are not in the root node but in subnodes.
-> From my guts feeling this belongs in a separate file and should
-> be somehow dealed with in a second step.
+Shall I drop it from my branch ?
 
-Agreed.
+-- 
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
 
-> So how to proceed?
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
 
-How about just rename the hwmods related parts of omap.txt to something like
-ti-hwmods.txt?
-
-> BTW: I think this file then also belongs into
-> OMAP2+ SUPPORT section of MAINTAINERS
-
-Yeah that helps for receiving related emails :)
-
-Regards,
-
-Tony
