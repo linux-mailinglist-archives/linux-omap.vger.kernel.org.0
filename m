@@ -2,64 +2,51 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F14346D1AAD
-	for <lists+linux-omap@lfdr.de>; Fri, 31 Mar 2023 10:45:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D2DEC6D1B42
+	for <lists+linux-omap@lfdr.de>; Fri, 31 Mar 2023 11:05:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231749AbjCaIpl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 31 Mar 2023 04:45:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47492 "EHLO
+        id S232037AbjCaJF2 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-omap@lfdr.de>); Fri, 31 Mar 2023 05:05:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231268AbjCaIpa (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 31 Mar 2023 04:45:30 -0400
-Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A30765B88
-        for <linux-omap@vger.kernel.org>; Fri, 31 Mar 2023 01:45:06 -0700 (PDT)
-Received: by mail-wr1-x430.google.com with SMTP id d17so21596316wrb.11
-        for <linux-omap@vger.kernel.org>; Fri, 31 Mar 2023 01:45:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1680252290;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=xxyqdIn+bk4QczcFBL4xE02Qvuk54XzxnYqApbWmQ7E=;
-        b=T/C6VRoG0clsKlt9wMakpFmsJW9/eJik5Xxo338Tq2stTAGKoyZqJ6beLQsP5VWvmP
-         dnvxyj9mU8lu8qyu+XXGY6Fyx7sBjawIsbGYMz4LNzyOGlJ4zg5hf9SLtX0BNdWP1BSv
-         /JAgcDA9GTBLjNk7RJBvssxuXZXcTKGC2xEsWmXKM8OflqZC/C7s03VavwsBazeW+fp/
-         VFAn8Anm+CA3IjUlG62nkGRaMFO+uQBHQj+LBuyZoa7Zvmrv74uKnQWuiaYmIGmaoj/5
-         HsCAL59OWnPfxc3crmgdXrBL0cCCvJ8Z6TD5FAXvAjNxaRdyyQGyHm1UNvm6H0lI9Sx3
-         R5qQ==
+        with ESMTP id S231855AbjCaJFD (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 31 Mar 2023 05:05:03 -0400
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E6A71E728;
+        Fri, 31 Mar 2023 02:04:58 -0700 (PDT)
+Received: by mail-ed1-f45.google.com with SMTP id t10so86796500edd.12;
+        Fri, 31 Mar 2023 02:04:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680252290;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xxyqdIn+bk4QczcFBL4xE02Qvuk54XzxnYqApbWmQ7E=;
-        b=uazJDTLalpixY1nfuq4cMIkL2sZR2WusP0DUJpKEelKwqPgz6r/0VBA/5yxNrM8Vw3
-         DGom8hsld8D3pdy/eZSjH4OpBW0GAh6Sd+SqvWXnPYDpzqP8sHGGodflPlfy2dJiDUAW
-         jrFzcYwqnYYdFf5AqkE7fgKsSJ62e9bpx7aV/9tioj1jR2iYTF78ULGph6Yz4qHDkMpX
-         /2Bfie2fjp0ZEa96nSk9VlB7+SOECC+C1TcJznozlRsh1k80sB/iW5jnENx/GDDeRvF1
-         5NZ9Mxoq+13EQGSXojeM1uG1wDAkOGjJe0ncSn1mcd17YdSaUoWR0KkmnxM4hdbwl7xB
-         Rprg==
-X-Gm-Message-State: AAQBX9cbj4tdtx1F5/JEJhzIXb2MffyT2N9tOJuB9Uypsm1zsZRiz/+B
-        bLRtrCJRnCAfMUxehq3jL5H6zQ==
-X-Google-Smtp-Source: AKy350ZHxE08ANZvF4H7bloNjkiIkHgIWRHOGVefKapS/JJkMMHtS7CHxDmiDoX5QSSpdo+bvMN3Pw==
-X-Received: by 2002:adf:d08e:0:b0:2cf:f312:86dd with SMTP id y14-20020adfd08e000000b002cff31286ddmr17970572wrh.18.1680252290022;
-        Fri, 31 Mar 2023 01:44:50 -0700 (PDT)
-Received: from ?IPV6:2a05:6e02:1041:c10:17ff:909e:1b73:8366? ([2a05:6e02:1041:c10:17ff:909e:1b73:8366])
-        by smtp.googlemail.com with ESMTPSA id m7-20020a5d56c7000000b002cea9d931e6sm1590350wrw.78.2023.03.31.01.44.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 31 Mar 2023 01:44:49 -0700 (PDT)
-Message-ID: <f4592c81-af30-8289-d02d-a44e25e0fe26@linaro.org>
-Date:   Fri, 31 Mar 2023 10:44:48 +0200
+        d=1e100.net; s=20210112; t=1680253497;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Pg7UvCKf4FflsOaE7m6CKblqSYNUNLu+zsGJqL+kAIo=;
+        b=CyWjmHBNCMZOZgEzkZ/LUgXPVLWsoZPxzn+HK2G6vFfmkJ53uscRRZQBbGJgBzdWp0
+         T/WG0XS1weZSm+KfPeR+so2Pcx7eQAHhiYrqvsC/ZMoYrxk8Y9RJD+7W+X6oOrOhpKcw
+         0iKfuboEwX7hrfOWKEID0y9WiZpl5QnCuTLqAr7DvxQG967Ht8IvosJAMru+mk+vFwR+
+         tbxHOnMdMjR10skuQN8HReLsjv1wSIDic77khVeA9ZL/kx6v6yznFSfAGiW77yRxM8WS
+         QWz1uoohWSTR1k/BGoDmerUZH8JcthN6zEHBjdxkSxxAHJ7FvXVVY602zt+vMYx3Gkfk
+         YwJg==
+X-Gm-Message-State: AAQBX9e09aaou8ff1PTTBf0XU8H2jZuq7hQvcbtTtOC8wjsvYEFgQ0Z0
+        WBBCKka7wYfbmiW7CKftXeldEjliwu8NhXq/fSE=
+X-Google-Smtp-Source: AKy350ZubaYRqIEgMdcx/bX/uJcrS6NTNG8xSB+YnlIP65Jv2fmonLvwL9ZmfCS2Wbvtq4XF3yqqER+2aj6WGc1q+qU=
+X-Received: by 2002:a50:cc94:0:b0:4fb:c8e3:1ae2 with SMTP id
+ q20-20020a50cc94000000b004fbc8e31ae2mr13352964edi.3.1680253496669; Fri, 31
+ Mar 2023 02:04:56 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
+References: <20230310144726.1545543-1-robh@kernel.org> <CAJZ5v0hAeRa9xsp6-_um9j-9F6nf=PYuOC2mgMAmmUHP+9=RZg@mail.gmail.com>
+ <CAJZ5v0i-Vum+js8c7fZJiQWwTBYByy2O=UtObR6GciLMLt41Nw@mail.gmail.com> <f4592c81-af30-8289-d02d-a44e25e0fe26@linaro.org>
+In-Reply-To: <f4592c81-af30-8289-d02d-a44e25e0fe26@linaro.org>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 31 Mar 2023 11:04:44 +0200
+Message-ID: <CAJZ5v0ioHh2E1krvVhXTdzKN+Bh64ML+t5v-Tnt+bORpAqHUyw@mail.gmail.com>
 Subject: Re: [PATCH] thermal: Use of_property_present() for testing DT
  property presence
-Content-Language: en-US
-To:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Rob Herring <robh@kernel.org>
-Cc:     Amit Daniel Kachhap <amit.kachhap@gmail.com>,
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Amit Daniel Kachhap <amit.kachhap@gmail.com>,
         Viresh Kumar <viresh.kumar@linaro.org>,
         Lukasz Luba <lukasz.luba@arm.com>,
         Amit Kucheria <amitk@kernel.org>,
@@ -73,49 +60,41 @@ Cc:     Amit Daniel Kachhap <amit.kachhap@gmail.com>,
         devicetree@vger.kernel.org, linux-pm@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-omap@vger.kernel.org
-References: <20230310144726.1545543-1-robh@kernel.org>
- <CAJZ5v0hAeRa9xsp6-_um9j-9F6nf=PYuOC2mgMAmmUHP+9=RZg@mail.gmail.com>
- <CAJZ5v0i-Vum+js8c7fZJiQWwTBYByy2O=UtObR6GciLMLt41Nw@mail.gmail.com>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <CAJZ5v0i-Vum+js8c7fZJiQWwTBYByy2O=UtObR6GciLMLt41Nw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=0.5 required=5.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
+        FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 30/03/2023 19:28, Rafael J. Wysocki wrote:
-> On Mon, Mar 27, 2023 at 7:13 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
->>
->> On Fri, Mar 10, 2023 at 3:48 PM Rob Herring <robh@kernel.org> wrote:
->>>
->>> It is preferred to use typed property access functions (i.e.
->>> of_property_read_<type> functions) rather than low-level
->>> of_get_property/of_find_property functions for reading properties. As
->>> part of this, convert of_get_property/of_find_property calls to the
->>> recently added of_property_present() helper when we just want to test
->>> for presence of a property and nothing more.
->>>
->>> Signed-off-by: Rob Herring <robh@kernel.org>
->>
->> Daniel, are you going to apply this, or should I take it directly?
-> 
-> Applied as 6.4 material, thanks
+On Fri, Mar 31, 2023 at 10:44 AM Daniel Lezcano
+<daniel.lezcano@linaro.org> wrote:
+>
+> On 30/03/2023 19:28, Rafael J. Wysocki wrote:
+> > On Mon, Mar 27, 2023 at 7:13 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
+> >>
+> >> On Fri, Mar 10, 2023 at 3:48 PM Rob Herring <robh@kernel.org> wrote:
+> >>>
+> >>> It is preferred to use typed property access functions (i.e.
+> >>> of_property_read_<type> functions) rather than low-level
+> >>> of_get_property/of_find_property functions for reading properties. As
+> >>> part of this, convert of_get_property/of_find_property calls to the
+> >>> recently added of_property_present() helper when we just want to test
+> >>> for presence of a property and nothing more.
+> >>>
+> >>> Signed-off-by: Rob Herring <robh@kernel.org>
+> >>
+> >> Daniel, are you going to apply this, or should I take it directly?
+> >
+> > Applied as 6.4 material, thanks
+>
+> Sorry, I forgot to answer. I already applied it.
+>
+> Shall I drop it from my branch ?
 
-Sorry, I forgot to answer. I already applied it.
-
-Shall I drop it from my branch ?
-
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
-
+If you can do that, then yes, please.
