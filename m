@@ -2,218 +2,146 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0532B6D3EFE
-	for <lists+linux-omap@lfdr.de>; Mon,  3 Apr 2023 10:32:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91A4B6D3F9F
+	for <lists+linux-omap@lfdr.de>; Mon,  3 Apr 2023 11:01:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229843AbjDCIcK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 3 Apr 2023 04:32:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50500 "EHLO
+        id S231765AbjDCJBm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 3 Apr 2023 05:01:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52316 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229698AbjDCIcK (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 3 Apr 2023 04:32:10 -0400
-Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0D5449C2;
-        Mon,  3 Apr 2023 01:32:07 -0700 (PDT)
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 3338Vpul058187;
-        Mon, 3 Apr 2023 03:31:51 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1680510711;
-        bh=lgfPx1evUUMdkoqBOH4tAB2qzNFrhhX1gZ9kjndYKyw=;
-        h=Date:Subject:To:CC:References:From:In-Reply-To;
-        b=KIsprksEU00AQnVW2+onEFLhJqRMgMEBaU4Cc+rwUyo1j90cshWeDgsLRSUbfHumq
-         b2s9Ay9f3KPZwZai6J3ZSK+c7hwtLqh/DGSBcJvKE4QbevxdexL3lV2ApELu9DGoCs
-         txBb9kN1x1VebEutVREs5wKq2J2yI8kjHIQKVN8U=
-Received: from DFLE103.ent.ti.com (dfle103.ent.ti.com [10.64.6.24])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 3338Vp3S013019
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 3 Apr 2023 03:31:51 -0500
-Received: from DFLE105.ent.ti.com (10.64.6.26) by DFLE103.ent.ti.com
- (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16; Mon, 3
- Apr 2023 03:31:50 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE105.ent.ti.com
- (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16 via
- Frontend Transport; Mon, 3 Apr 2023 03:31:50 -0500
-Received: from [10.24.69.114] (ileaxei01-snat.itg.ti.com [10.180.69.5])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 3338Vikd099122;
-        Mon, 3 Apr 2023 03:31:45 -0500
-Message-ID: <19c82e73-2e37-582b-06aa-6f83776a562d@ti.com>
-Date:   Mon, 3 Apr 2023 14:01:44 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [EXTERNAL] Re: [PATCH v6 3/4] soc: ti: pruss: Add
- pruss_cfg_read()/update(), pruss_cfg_get_gpmux()/set_gpmux() APIs
-Content-Language: en-US
-To:     Simon Horman <simon.horman@corigine.com>,
-        MD Danish Anwar <danishanwar@ti.com>
-CC:     "Andrew F. Davis" <afd@ti.com>, Suman Anna <s-anna@ti.com>,
+        with ESMTP id S231310AbjDCJBl (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 3 Apr 2023 05:01:41 -0400
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2117.outbound.protection.outlook.com [40.107.244.117])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 499F361AE;
+        Mon,  3 Apr 2023 02:01:39 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=NL/5CoTlhjtKmYow5ms+hCN4+NvBDd4oLgPTiylKD6fovB0iv/z2eQr8MCNqn75dvV9etYZEAVRmnUSlt6+RTynLarz1tgKxRCSlgTDSFIbmLLjB4tJ4z7e/FxjMh/9YvQj23FWUWHdaPZF9xtR8Zmcrp0u80NRf11tM+FLXSXGrVwuV25UkxSIm0aGAIWM/xdo1eWB13GK5ptYCPQ9B4izNL4aNAmA0m31RCX1LjSGYbr3P/W6VwEeQr9qt1Duz91kuTLBnUXGY0Eltwu3gZXBFeuy3wg+1ZyxDslrt0o3TXtrXcOs6mj/Svj5DI4cjJDAc3fKquFweFBCeaMQlhg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ihjkSxYeQ09n6W01RS4sQxvdPhDLVtLfL4Avmq+2o2E=;
+ b=RBYVsFS9hQscfZlVdDw06j+3aS7mLZanqDUvM5iVjy2jblbe+r5bpjAc6P/5xIzeAqPjsUDWRZeCDp3m2AXff4rVvlT3jU8FVTL5ehtkRT11fhnMRqgKqYa98HmAeZZmKCiARXAVHRCBNEYviYMzUIg9eGzMxSSxvYdxX7aHQcbT62JrBw8jxNJGTU2giILeCGjFC33/TKyKYwecBBUyWUuSxfVk6nyZV6F8DV9uJswRxNkwiJ2Y3pYfbhAhFmQrSMthShVyLVkZZjTPDGGsJRomS+HHtcrMuSFWytIzeWcbpyfJuGXyepWYAarx9C/VMtSa2QGbmn5lt3Vm4aLC0Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=corigine.com; dmarc=pass action=none header.from=corigine.com;
+ dkim=pass header.d=corigine.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=corigine.onmicrosoft.com; s=selector2-corigine-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ihjkSxYeQ09n6W01RS4sQxvdPhDLVtLfL4Avmq+2o2E=;
+ b=HmYvF/0iODhShunLpyrW7BVRdclBFMTmcrIkJPxt6yiqGTM6DduYHud7StuarHROAiNlRKSwVk3sNotrdDqHXAjXQlwmpT/5AseMyTgSs5Yih/XYyvwVEGeE+Wq4DfxDqTQEsYglfBl4am6z4Iorx6TdORWncSumv+vaawrXfpU=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=corigine.com;
+Received: from PH0PR13MB4842.namprd13.prod.outlook.com (2603:10b6:510:78::6)
+ by BN0PR13MB4661.namprd13.prod.outlook.com (2603:10b6:408:124::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6254.33; Mon, 3 Apr
+ 2023 09:01:36 +0000
+Received: from PH0PR13MB4842.namprd13.prod.outlook.com
+ ([fe80::c506:5243:557e:82cb]) by PH0PR13MB4842.namprd13.prod.outlook.com
+ ([fe80::c506:5243:557e:82cb%5]) with mapi id 15.20.6254.030; Mon, 3 Apr 2023
+ 09:01:35 +0000
+Date:   Mon, 3 Apr 2023 11:01:27 +0200
+From:   Simon Horman <simon.horman@corigine.com>
+To:     Md Danish Anwar <a0501179@ti.com>
+Cc:     MD Danish Anwar <danishanwar@ti.com>,
+        "Andrew F. Davis" <afd@ti.com>, Suman Anna <s-anna@ti.com>,
         Roger Quadros <rogerq@kernel.org>,
         Vignesh Raghavendra <vigneshr@ti.com>,
         Tero Kristo <kristo@kernel.org>,
         Mathieu Poirier <mathieu.poirier@linaro.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Santosh Shilimkar <ssantosh@kernel.org>,
-        Nishanth Menon <nm@ti.com>, <linux-remoteproc@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <srk@ti.com>, <devicetree@vger.kernel.org>,
-        <netdev@vger.kernel.org>
+        Nishanth Menon <nm@ti.com>, linux-remoteproc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, srk@ti.com, devicetree@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: Re: [EXTERNAL] Re: [PATCH v6 3/4] soc: ti: pruss: Add
+ pruss_cfg_read()/update(), pruss_cfg_get_gpmux()/set_gpmux() APIs
+Message-ID: <ZCqV5xPilk/LPyZy@corigine.com>
 References: <20230331112941.823410-1-danishanwar@ti.com>
- <20230331112941.823410-4-danishanwar@ti.com> <ZCg6lzWMTuLa4gAC@corigine.com>
-From:   Md Danish Anwar <a0501179@ti.com>
-Organization: Texas Instruments
-In-Reply-To: <ZCg6lzWMTuLa4gAC@corigine.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-4.9 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+ <20230331112941.823410-4-danishanwar@ti.com>
+ <ZCg6lzWMTuLa4gAC@corigine.com>
+ <19c82e73-2e37-582b-06aa-6f83776a562d@ti.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <19c82e73-2e37-582b-06aa-6f83776a562d@ti.com>
+X-ClientProxiedBy: AM3PR07CA0109.eurprd07.prod.outlook.com
+ (2603:10a6:207:7::19) To PH0PR13MB4842.namprd13.prod.outlook.com
+ (2603:10b6:510:78::6)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR13MB4842:EE_|BN0PR13MB4661:EE_
+X-MS-Office365-Filtering-Correlation-Id: d85865c9-fc29-4e38-3417-08db342206a4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: uMKv/6F41S3TkrTRGELajIJZYpsYulmd24q9mfHwmvJjNDL03SFAIFmbwuSuRIzPh95yykpwikuS7SxyXdkSFZDlxV9aPWWEi6xRvxRujl8jpHnt+izVieqUiMis6Kkq+e1c1pjKNYd99JMlp99nEPZHs4IJHvHax/hWt/dX0MJvAEZs1Eyhgnmpik1glBY/QYtfwifl+mUuMpzy4V0Ta8S3jYvx/hYRkrOQ46X1bf9dNlusu0wXDDV1FQeM8ko77YeeItTVQViB5eKS3BRriEGyH96T91f8pmgQ2N+IMoOeuLp3TYfFt4BacYjctUGrQn08dYykNbhsZ7RJ3keB4cPJ88bfQNEWB/czpbZPks/+siP5qSdsNl+uNDVjpber0zpqlfcgL6SRSb9rxR5fe7xg6FFgN+taIuyqJ8A3DmDdtaE9/p8MignPaqUSybp8xDUxO9BjWdOh4CKzweWOass4jPO0wZzo7V3/+aAeU+6mW8Ombf8Z3lkIy/Ug53Mkw726/VUBwuSNhqTZc5a78QgBlvePw4Tua5c5bOO6O0lO2e8DR1W3YEpqy4i/baFy
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR13MB4842.namprd13.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(346002)(39840400004)(396003)(136003)(366004)(376002)(451199021)(186003)(6666004)(53546011)(8936002)(5660300002)(86362001)(2906002)(7416002)(44832011)(4744005)(6512007)(478600001)(66556008)(66946007)(54906003)(4326008)(6916009)(316002)(2616005)(6506007)(41300700001)(8676002)(38100700002)(36756003)(6486002)(66476007);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?cjJaftuZgZuJNBgPDJXCWzzc8LKYb1c2SkhZPvfMkI3vkdVwlyEiprt4I1Em?=
+ =?us-ascii?Q?BFaUn6Rn+0eAaUAAHRDumelz6YOvMsmuH5cc22CyDYAi9RQdIcg8cXuk8lq9?=
+ =?us-ascii?Q?dHDDtsIWHtSZqy9W882uJ6KMu3faVR8iSCW44XjhZ1DnM5s6vXDYOWQ8C5OQ?=
+ =?us-ascii?Q?u8AGRkFWlFdN+bg43n8E+FcLIXmPHeMZ9NYeFFll4KF5oBoUunrVzB+NrKGw?=
+ =?us-ascii?Q?pSBErcd0rQNHYtegIKtFhR86kYDeavyFjC7ZKzLaGlONvO7M1vmtvozhfx9p?=
+ =?us-ascii?Q?vsIM5A5yPBMtJZ3dFsgTT6MOAEfIPfhR9ocUsbpdynldl9YBkXB3wUSFC6HF?=
+ =?us-ascii?Q?yI5xkmF1mE5g8PTyoCqT1efrU+VuxD4bvQd05Gk2U3jmDszMOA5Pzfn+F7D4?=
+ =?us-ascii?Q?s6Md3bQgdToKHOoq/XHr7omdMN6kaX6QXduYBvz/RPdvvBAMRy0wOa32q2pH?=
+ =?us-ascii?Q?JIXG8ZZBSmdiyv/RgHPd1kIBhbg8AWqFWhq3G8SwiUftRxTIcnJV53ZD6Cel?=
+ =?us-ascii?Q?DOjXIjYhokT8GrwJHTniw3e/Nn7xxytmO/SAMibSHQNzdvuGCVkjUtdBHZAt?=
+ =?us-ascii?Q?xtutU8skY7JsZtMgWvKXtQZJcEBg+hS0rDraZws0jUr1R366ZTrE+KaedbjX?=
+ =?us-ascii?Q?mP0UKX/l+H4kw52bmNffIU9L39/rQsWS60Ewblu9ys52v7kQ+De0M6R1TLN1?=
+ =?us-ascii?Q?nL4nMYWe1dicuxuLMINhyvX5Ej+0iiiqB8XN/lwpZCxIgBmQfKR4MeKq7TZE?=
+ =?us-ascii?Q?ESlyPATy5oHjtiKcfpmGlaS+mrJHBwmJUm7g8RMKSPz3vgHaRGLcKdLzudH1?=
+ =?us-ascii?Q?bm07PlbWrNf7J0Ohv5hKUQ0rrM3S8+vUNaFaiOQo6UmMW7XkYmn0oVGU95f4?=
+ =?us-ascii?Q?dhsAhC7t13W4+Cn2s0t0mj+aiJl4g/bxA0PMSUKBJ4Lv8W/eW9bK7Fs8Domu?=
+ =?us-ascii?Q?/va8XaBQP/fAvnspeHeNgnsLk7yvyvTdwtTeMnHSsgPVb0iC2X6l6Fnl8svz?=
+ =?us-ascii?Q?QvC805BbSvcXuLpd1VZDD67M+rEe115EVqZzxfQXfvh+fWQXAhUoE40sszTR?=
+ =?us-ascii?Q?U3LoRd0pLZuPmUGz9i+VX9RLb01QWdLgScGFy1hpl+xPOeGEaZmpdbPz5aq0?=
+ =?us-ascii?Q?xRXw3yQcAlkqpdNTNDNvVxGQpFRlydP7RFySYb0ats/66pzpb7uWSwcWGg4p?=
+ =?us-ascii?Q?1D2YD4+9clfY9aGCdi+e0Y1ACwUj4CLpb4X2YxiGWz7dbZ1HApVjiv/Oepci?=
+ =?us-ascii?Q?mvbHSL/6zrcpTcNs/Yi8tZze4WkX6DT2YyybG33BvjD2Ny+VS4HHqs5/qvX4?=
+ =?us-ascii?Q?yujtkt7iU+wiNiZvcYIFDFV7ikxe3Xp6HOS7O9NdNtlZ/FxJTbSz9mMy/mFA?=
+ =?us-ascii?Q?UE2/wsi9RgYBkpo4uFOZxtVHZnvx0nHxB9xqVT741CzE/dMEAC7u9mbGgQzR?=
+ =?us-ascii?Q?IHCngutxdNuNX7NB3xHh8WTXrYyAHC+GQL5V0kFmvqVcByJF7F3FIOjh0da4?=
+ =?us-ascii?Q?p47sWhN8bz2y/uYIwdKsjEq2rV3ny9FTxyJRXcnJ2lUiIp2jJYRyR8bFLQXq?=
+ =?us-ascii?Q?9G0WESJ8erzaQvB/10xzecBz3p9AqZWKvt1R3KBg0g/63JDmq8hAnzmhqtuE?=
+ =?us-ascii?Q?tqI0J8KmW5S9X6f1WEWvktJR4umS2XBnnzO7Ef6X2OQALAa03xnjYB9S4Et0?=
+ =?us-ascii?Q?DoZWyg=3D=3D?=
+X-OriginatorOrg: corigine.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d85865c9-fc29-4e38-3417-08db342206a4
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR13MB4842.namprd13.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Apr 2023 09:01:35.0138
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: fe128f2c-073b-4c20-818e-7246a585940c
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7QiCVp4BA3X2hx2jTG9ArdXZP1BxLI4BQ8CRt3Src5j1e4B37WYloAdawsU6Nw6ncdyaS0qmHdX8gyzCNJb7oUT6FZPTyigwO68ynL9+6I8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN0PR13MB4661
+X-Spam-Status: No, score=-0.0 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Simon,
-
-On 01/04/23 19:37, Simon Horman wrote:
-> On Fri, Mar 31, 2023 at 04:59:40PM +0530, MD Danish Anwar wrote:
->> From: Suman Anna <s-anna@ti.com>
->>
->> Add two new generic API pruss_cfg_read() and pruss_cfg_update() to
->> the PRUSS platform driver to read and program respectively a register
->> within the PRUSS CFG sub-module represented by a syscon driver. These
->> APIs are internal to PRUSS driver.
->>
->> Add two new helper functions pruss_cfg_get_gpmux() & pruss_cfg_set_gpmux()
->> to get and set the GP MUX mode for programming the PRUSS internal wrapper
->> mux functionality as needed by usecases.
->>
->> Various useful registers and macros for certain register bit-fields and
->> their values have also been added.
->>
->> Signed-off-by: Suman Anna <s-anna@ti.com>
->> Co-developed-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
->> Signed-off-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
->> Signed-off-by: Puranjay Mohan <p-mohan@ti.com>
->> Reviewed-by: Roger Quadros <rogerq@kernel.org>
->> Reviewed-by: Tony Lindgren <tony@atomide.com>
->> Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
+On Mon, Apr 03, 2023 at 02:01:44PM +0530, Md Danish Anwar wrote:
+> Hi Simon,
 > 
-> ...
-> 
->> diff --git a/drivers/soc/ti/pruss.h b/drivers/soc/ti/pruss.h
->> new file mode 100644
->> index 000000000000..4626d5f6b874
->> --- /dev/null
->> +++ b/drivers/soc/ti/pruss.h
->> @@ -0,0 +1,112 @@
->> +/* SPDX-License-Identifier: GPL-2.0-only */
->> +/*
->> + * PRU-ICSS Subsystem user interfaces
->> + *
->> + * Copyright (C) 2015-2023 Texas Instruments Incorporated - http://www.ti.com
->> + *	MD Danish Anwar <danishanwar@ti.com>
->> + */
->> +
->> +#ifndef _SOC_TI_PRUSS_H_
->> +#define _SOC_TI_PRUSS_H_
->> +
->> +#include <linux/bits.h>
->> +#include <linux/regmap.h>
->> +
->> +/*
->> + * PRU_ICSS_CFG registers
->> + * SYSCFG, ISRP, ISP, IESP, IECP, SCRP applicable on AMxxxx devices only
->> + */
->> +#define PRUSS_CFG_REVID         0x00
->> +#define PRUSS_CFG_SYSCFG        0x04
->> +#define PRUSS_CFG_GPCFG(x)      (0x08 + (x) * 4)
->> +#define PRUSS_CFG_CGR           0x10
->> +#define PRUSS_CFG_ISRP          0x14
->> +#define PRUSS_CFG_ISP           0x18
->> +#define PRUSS_CFG_IESP          0x1C
->> +#define PRUSS_CFG_IECP          0x20
->> +#define PRUSS_CFG_SCRP          0x24
->> +#define PRUSS_CFG_PMAO          0x28
->> +#define PRUSS_CFG_MII_RT        0x2C
->> +#define PRUSS_CFG_IEPCLK        0x30
->> +#define PRUSS_CFG_SPP           0x34
->> +#define PRUSS_CFG_PIN_MX        0x40
->> +
->> +/* PRUSS_GPCFG register bits */
->> +#define PRUSS_GPCFG_PRU_GPO_SH_SEL              BIT(25)
->> +
->> +#define PRUSS_GPCFG_PRU_DIV1_SHIFT              20
->> +#define PRUSS_GPCFG_PRU_DIV1_MASK               GENMASK(24, 20)
-> 
-> There seems to be some redundancy in the encoding of '20' above.
-> I suspect this could be avoided by only defining ..._MASK
-> and using it with FIELD_SET() and FIELD_PREP().
-> 
->> +
->> +#define PRUSS_GPCFG_PRU_DIV0_SHIFT              15
->> +#define PRUSS_GPCFG_PRU_DIV0_MASK               GENMASK(15, 19)
-> 
-> Perhaps this should be GENMASK(19, 15) ?
-> 
+> On 01/04/23 19:37, Simon Horman wrote:
+> > On Fri, Mar 31, 2023 at 04:59:40PM +0530, MD Danish Anwar wrote:
+> >> From: Suman Anna <s-anna@ti.com>
 
-yes this should have been GENMASK(15, 19). But this macro is not used anywhere
-so I'll just drop it.
+...
 
->> +
->> +#define PRUSS_GPCFG_PRU_GPO_MODE                BIT(14)
->> +#define PRUSS_GPCFG_PRU_GPO_MODE_DIRECT         0
->> +#define PRUSS_GPCFG_PRU_GPO_MODE_SERIAL         BIT(14)
+> All these above macros are not used anywhere in the driver code. Also in the
+> planned upcoming driver series, there are no APIs that will use these macros.
 > 
-> Likewise, I suspect the awkwardness of using 0 to mean not BIT 14
-> could be avoided through use of FIELD_SET() and FIELD_PREP().
-> But maybe it doesn't help.
-> 
+> I'll be dropping all these redundant macros. The below macros are used in
+> driver so I'll keep them as it is.
 
-This Macro is not used anywhere in code. I'll just drop them.
+Thanks Danish,
 
->> +
->> +#define PRUSS_GPCFG_PRU_GPI_SB                  BIT(13)
->> +
->> +#define PRUSS_GPCFG_PRU_GPI_DIV1_SHIFT          8
->> +#define PRUSS_GPCFG_PRU_GPI_DIV1_MASK           GENMASK(12, 8)
->> +
->> +#define PRUSS_GPCFG_PRU_GPI_DIV0_SHIFT          3
->> +#define PRUSS_GPCFG_PRU_GPI_DIV0_MASK           GENMASK(7, 3)
->> +
->> +#define PRUSS_GPCFG_PRU_GPI_CLK_MODE_POSITIVE   0
->> +#define PRUSS_GPCFG_PRU_GPI_CLK_MODE_NEGATIVE   BIT(2)
->> +#define PRUSS_GPCFG_PRU_GPI_CLK_MODE            BIT(2)
->> +
-
-All these above macros are not used anywhere in the driver code. Also in the
-planned upcoming driver series, there are no APIs that will use these macros.
-
-I'll be dropping all these redundant macros. The below macros are used in
-driver so I'll keep them as it is.
-
->> +#define PRUSS_GPCFG_PRU_GPI_MODE_MASK           GENMASK(1, 0)
->> +#define PRUSS_GPCFG_PRU_GPI_MODE_SHIFT          0
->> +
->> +#define PRUSS_GPCFG_PRU_MUX_SEL_SHIFT           26
->> +#define PRUSS_GPCFG_PRU_MUX_SEL_MASK            GENMASK(29, 26)
->> +
->> +/* PRUSS_MII_RT register bits */
->> +#define PRUSS_MII_RT_EVENT_EN                   BIT(0)
->> +
->> +/* PRUSS_SPP register bits */
->> +#define PRUSS_SPP_XFER_SHIFT_EN                 BIT(1)
->> +#define PRUSS_SPP_PRU1_PAD_HP_EN                BIT(0)
->> +#define PRUSS_SPP_RTU_XFR_SHIFT_EN              BIT(3)
-> 
-> ...
-
--- 
-Thanks and Regards,
-Danish.
+Dropping unused things seems like a good idea to me.
