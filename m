@@ -2,36 +2,36 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 781A06D5F5B
-	for <lists+linux-omap@lfdr.de>; Tue,  4 Apr 2023 13:43:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62BAF6D5F68
+	for <lists+linux-omap@lfdr.de>; Tue,  4 Apr 2023 13:46:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234603AbjDDLn5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 4 Apr 2023 07:43:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49000 "EHLO
+        id S234432AbjDDLqf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 4 Apr 2023 07:46:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234648AbjDDLnz (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 4 Apr 2023 07:43:55 -0400
+        with ESMTP id S234790AbjDDLqe (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 4 Apr 2023 07:46:34 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E8E62D55;
-        Tue,  4 Apr 2023 04:43:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04E7EFF;
+        Tue,  4 Apr 2023 04:46:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 328A363249;
-        Tue,  4 Apr 2023 11:43:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4705C433EF;
-        Tue,  4 Apr 2023 11:43:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8DA2263293;
+        Tue,  4 Apr 2023 11:46:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05F18C433D2;
+        Tue,  4 Apr 2023 11:46:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1680608626;
-        bh=fmitKTP2A3EWk9XNz45pHfPah45MND6OQgw32mAKPK0=;
+        s=k20201202; t=1680608791;
+        bh=RHCs8FphgqOMMWc0BCoMg/a16dbHn72xyUKpV1s96HU=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=EmWSH+xkn42whE3uwo+NxSvbjzShE03vIDpxCtTA78dr+/n0W95kp8iWCkrlyNOb7
-         B1yxRmg9NkVVHR8vsJBijC2mPdp+ecp3IJ0zNhcnchr+ljfKLB84irzKnbKWc49qtP
-         m7Q/lVa31qkZ0VyNyJNf0ItXWr3mbdztwQSBk9+MDmp4SVQBEifvwWOQ1E6MNgWYt7
-         J9Qu2egqXSy8rf+i1kzLDDC+/bj1cb9Axb1macmxXjfB0JOlGhYCNilbxIh60CuNny
-         B0xaEXILNn7P1CX8/LkKCLLVZG3vpdAV5Drn+bGQ+PYZ0byKH4a+63d3DwHl1mYbSF
-         KXZ5gyFefXovQ==
-Date:   Tue, 4 Apr 2023 12:43:41 +0100
+        b=pJBvY7VDPPEbSY7kL6tl4DGnbEZo0yrwkM4oAcyc/8vXICAUPShFvBOICNYF3ye0M
+         247NnTkfHBhivIeoQEWVZ2YWJ5gRlWBfeUpaI8QaFyvd4/71ulYBmJoKBnj66e/1WZ
+         9MBLKcR3JRIQogsAkATJ1ZVXiXsqp6EH+SdDkPUYfL5tUnxgQxO8FiNrvL1hVEx0Xe
+         vsAJ2oym40KfGNFWWqQEYCjm60OfD4tPkJX1Ji6cF6FSQMz+2s10FsdpOmO5y2jLEt
+         kMhPx3eUpz3SjK2LB3RnZj1bdNw8ieNdpg432ZOUCSOF5rMzymE1JFLvSLucMHY1CK
+         UTRXv6zWXdSTw==
+Date:   Tue, 4 Apr 2023 12:46:25 +0100
 From:   Mark Brown <broonie@kernel.org>
 To:     ye.xingchen@zte.com.cn
 Cc:     peter.ujfalusi@gmail.com, jarkko.nikula@bitmer.com,
@@ -39,16 +39,16 @@ Cc:     peter.ujfalusi@gmail.com, jarkko.nikula@bitmer.com,
         alsa-devel@alsa-project.org, linux-omap@vger.kernel.org,
         linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] ASoC: ti: =?iso-8859-1?Q?omap-?=
- =?iso-8859-1?Q?mcpdm=3A_use=A0devm=5Fplatform=5Fioremap=5Fresource=5Fbyna?=
- =?iso-8859-1?Q?me=28=29?=
-Message-ID: <328d0920-7dd2-4ee5-9b22-3f86dd31ed4d@sirena.org.uk>
-References: <202303221411117451283@zte.com.cn>
+ =?iso-8859-1?Q?dmic=3A_use=A0devm=5Fplatform=5Fioremap=5Fresource=5Fbynam?=
+ =?iso-8859-1?B?ZSgp?=
+Message-ID: <48369cd0-cac8-421e-8691-e730a619d928@sirena.org.uk>
+References: <202303221410035741246@zte.com.cn>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="zd9rlODtJ73APuoC"
+        protocol="application/pgp-signature"; boundary="8bHbsp7cSqyHRWkg"
 Content-Disposition: inline
-In-Reply-To: <202303221411117451283@zte.com.cn>
-X-Cookie: Keep your laws off my body!
+In-Reply-To: <202303221410035741246@zte.com.cn>
+X-Cookie: FACILITY REJECTED 100044200000
 X-Spam-Status: No, score=-5.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
         SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
@@ -59,12 +59,12 @@ List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
 
---zd9rlODtJ73APuoC
+--8bHbsp7cSqyHRWkg
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 22, 2023 at 02:11:11PM +0800, ye.xingchen@zte.com.cn wrote:
+On Wed, Mar 22, 2023 at 02:10:03PM +0800, ye.xingchen@zte.com.cn wrote:
 > From: Ye Xingchen <ye.xingchen@zte.com.cn>
 >=20
 > Convert platform_get_resource_byname(),devm_ioremap_resource() to a single
@@ -73,19 +73,19 @@ On Wed, Mar 22, 2023 at 02:11:11PM +0800, ye.xingchen@zte.com.cn wrote:
 
 This doesn't apply against current code, please check and resend.
 
---zd9rlODtJ73APuoC
+--8bHbsp7cSqyHRWkg
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmQsDWwACgkQJNaLcl1U
-h9Crrgf/RStkN13yC5YhXkKomKmWTO6FB9f7QLIZLemvCbBNJhwL8aDs9Fp78bXe
-j6LJxCBEeMZRJqn8EaS9pMWj7QTR1lKjN9rkJXl4rx7uJ3TzL6O32jbkypQPNhKr
-GyeeogaxaFFfTzkMVkbImL4xacllrVowZES2oEopEXI1KrNvHp2fQKv4gLjo2sw0
-z/BCsrqyVL1POM675Nrsi4f/E6WBFi0gmkQw1gKYiRC6oK8X0G5po0z/lsZgRb3o
-cnrub1qB9+uyWdUCgcwEC8MbEOI+8F3xJAErppy2tGpYnXOv60cPyLVQj8hqvVBB
-aPkuqztkLLb2ET1mwdD3M4YzaS8XAA==
-=Iyzs
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmQsDhAACgkQJNaLcl1U
+h9Azgwf/bZGUQm4wOkmEdAXrBeNHI6JSXBqe+aLgVAVjMpYhHvFlp952bmZ5toBW
+VeTFZ8tkjLJZ4x+9xFot3Q5ohBg/WVmfC2PHAf2UdFWdemogpmype3GtCRScfUKb
+pAX+GHOGZlHsHMBb5+2mtFT50LFGSW7wfK2NCw7VkNcahj/157huhZX3HR84bMJt
+FZJ/xu7WWZTSL+3FX8RgeVc2Orp6TwbujXGbQOh0ETrn4Py4hSVIxJfwtPlGQb7R
+UbiINWoLhuuWLiVlOboPHx0QiNJyJWFboj4eI50GkFPK4OCH36vzdgkzON85Uewy
+Fg3bd6Jk1B7/h02FQKzvnqGlibBCCA==
+=2nf1
 -----END PGP SIGNATURE-----
 
---zd9rlODtJ73APuoC--
+--8bHbsp7cSqyHRWkg--
