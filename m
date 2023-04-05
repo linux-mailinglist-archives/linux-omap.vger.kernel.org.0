@@ -2,82 +2,108 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 11DF76D74C7
-	for <lists+linux-omap@lfdr.de>; Wed,  5 Apr 2023 08:56:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 158386D7604
+	for <lists+linux-omap@lfdr.de>; Wed,  5 Apr 2023 09:57:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236884AbjDEGz5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 5 Apr 2023 02:55:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53166 "EHLO
+        id S237242AbjDEH5Q (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 5 Apr 2023 03:57:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236833AbjDEGz4 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 5 Apr 2023 02:55:56 -0400
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a01:238:4321:8900:456f:ecd6:43e:202c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D03584224;
-        Tue,  4 Apr 2023 23:55:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=kemnade.info; s=20220719; h=Content-Transfer-Encoding:MIME-Version:
-        References:In-Reply-To:Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:
-        Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=YbHus8I5k6Kw59s8tS5l+mzZMN+5KPjsnPShZjTEdZ0=; b=rF3OY4jo522n4TUGHlORM61Oxd
-        FwiMyXEOkj6toTcPpkQsmvkkHi/DNyUdOIo75xsfvm6Xax0kKwVyXrAqLFhml2CNVh+saEeekcFwv
-        gUNsWNKghUbtBaNewEQbMeQ9DFlhpV9jiYy1X4JdDMYtxUkZWz2VCIfUKLVLHLyni5wqlb2yTyMM8
-        9usmG/8iIjz+dTcgZTRzV8B46vBxd0PUVMR94hc21Y079kaNd3+4oX5fQAJjHY/3FsHXGtMXJ2BtQ
-        ZLnl/AVMMKz4LPN3gS/nSyXGNtq314qy9Gt2DWdugsA8sSRyJXlDaRXFGReNz96FX7eNLktgGIdCB
-        pjuW+dLg==;
-Received: from p200300ccff0b98001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff0b:9800:1a3d:a2ff:febf:d33a] helo=aktux)
-        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <andreas@kemnade.info>)
-        id 1pjx3e-0000gv-6V; Wed, 05 Apr 2023 08:55:50 +0200
-Received: from andi by aktux with local (Exim 4.96)
-        (envelope-from <andreas@kemnade.info>)
-        id 1pjx3d-00EwVt-2z;
-        Wed, 05 Apr 2023 08:55:49 +0200
-From:   Andreas Kemnade <andreas@kemnade.info>
-To:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        tony@atomide.com, afd@ti.com, andreas@kemnade.info,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org
-Subject: [PATCH v5 2/2] MAINTAINERS: add board bindings list to OMAP2+ files
-Date:   Wed,  5 Apr 2023 08:55:33 +0200
-Message-Id: <20230405065533.3561492-3-andreas@kemnade.info>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230405065533.3561492-1-andreas@kemnade.info>
-References: <20230405065533.3561492-1-andreas@kemnade.info>
+        with ESMTP id S237244AbjDEH5K (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 5 Apr 2023 03:57:10 -0400
+Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D82094C31
+        for <linux-omap@vger.kernel.org>; Wed,  5 Apr 2023 00:57:04 -0700 (PDT)
+Received: by mail-ed1-x52d.google.com with SMTP id 4fb4d7f45d1cf-4faef469610so236032a12.1
+        for <linux-omap@vger.kernel.org>; Wed, 05 Apr 2023 00:57:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1680681423;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Q2eIUIgQam+Znm92t75ub3SSql/5kD/CSnGjaZOIeRE=;
+        b=ZFAmFQTn20XXB58Hm1LdXdWSQ5ZKxD4voHxxAhS1cKrInxf7DLRcTSbw0glAYuheNd
+         QsgC19PfAnkNACoih4X9yWq8Ua2f3Z5aqpAwmyG7K5XHuwPNdYpOLvr+4dizYlmkwqvh
+         8ippA6GSg6vwbKsguRd+gNlt6Q3d6qdPQH52wPe4yUNm7drYy8w79XnI6OkaMCxGYxXe
+         MDkio/NlgHAyk3tGfHbZ8+FvtwIbKJyHeY9Hl3c4m/UBMxdY642/4m0lMYD1+lZcL9DU
+         GTGlzj7aK8t/dfhFV0ZGCnZD6XTAnjOEHb+Mkw5/16dwcMVpicpYd4/+ImRJVe79/Ozv
+         w6jQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680681423;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Q2eIUIgQam+Znm92t75ub3SSql/5kD/CSnGjaZOIeRE=;
+        b=ZhRjvWhQnVGNCH2bjLXRted1UIXo6GbafRRGd5YjvG7Ix0d+fHWYk6lGf1r2406ZZ5
+         qwC4hEdRqLRAaGgrh1Lw8MgSrYurDJisgpsVI2arYSB1CDBeO8z6AecbrvErv6+1UZ4v
+         kwxJRdeb2Y3p9MjotAvWKU3Aqz6E2/ocOPrAxkPJmMALUsj8kUR7Ye+Mk9oFaw4XkCny
+         KRBG50xr/pMGJo7WcIpCagYeiIMGOw1LKASJj7ps7dt/1ImLf2Ui45I9ZBzms1MBP9Fq
+         GVA1jJZKPqxc6gLyK1JyHctnZqbdxqfPq/2On3RaS/yYsbmJgd4/3LYYvXAWN28dejlR
+         Z4AQ==
+X-Gm-Message-State: AAQBX9fdDmhgr+DkBSywTPGfAuJeuGHK6Pi1AybFAGBveqc7Y0UI5rCu
+        R3cCWGsQB3Z14oIyvVgqAgJKn6/NxpMHXILxVuQxiVWPL0W//g==
+X-Google-Smtp-Source: AKy350b+6mlAYsE5jCYer29QJ01MP1yshNVCPV/yu1iTNStkeOVxzQSr9n/dP8VlK7PnohYB4ysIDujVG47xryzVK58=
+X-Received: by 2002:a50:d781:0:b0:500:547b:4e1b with SMTP id
+ w1-20020a50d781000000b00500547b4e1bmr691870edi.6.1680681423244; Wed, 05 Apr
+ 2023 00:57:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Score: -1.0 (-)
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Received: by 2002:a05:7208:2202:b0:65:e547:3943 with HTTP; Wed, 5 Apr 2023
+ 00:57:02 -0700 (PDT)
+Reply-To: tamimbinhamadalthani00@gmail.com
+From:   Tamim Mohammed Taher <cisskhadidiatou890@gmail.com>
+Date:   Wed, 5 Apr 2023 00:57:02 -0700
+Message-ID: <CAAYY=dZe5ZjJ2b2KEkYbGOEnyScbFaaGqjvb6EmPHE7Lypp0cg@mail.gmail.com>
+Subject: RE:Saudi Arabia-Inquiry about your products.!!
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.9 required=5.0 tests=DEAR_SOMETHING,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:52d listed in]
+        [list.dnswl.org]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [tamimbinhamadalthani00[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [cisskhadidiatou890[at]gmail.com]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [cisskhadidiatou890[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  1.7 DEAR_SOMETHING BODY: Contains 'Dear (something)'
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  2.9 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Add list of OMAP2+ boards to the corresponding section
+Dear Sir/Madam,
 
-CC: linux-omap@vger.kernel.org
-Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
----
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 40e26624ff24b..5414ca882e031 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -15363,6 +15363,7 @@ W:	http://www.muru.com/linux/omap/
- W:	http://linux.omap.com/
- Q:	http://patchwork.kernel.org/project/linux-omap/list/
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap.git
-+F:	Documentation/devicetree/bindings/arm/ti/omap.yaml
- F:	arch/arm/configs/omap2plus_defconfig
- F:	arch/arm/mach-omap2/
- F:	drivers/bus/ti-sysc.c
--- 
-2.39.2
 
+Can you supply your products to  the government of (Saudi Arabia). We
+buy in larger quantity if your company can supply please reply with
+your products detail for more information.
+
+Looking forward to hearing from you.
+
+Thanks and Regards
+
+ Mr.Tamim Mohammed Taher
+
+Email:tamimbinhamadalthani00@gmail.com
