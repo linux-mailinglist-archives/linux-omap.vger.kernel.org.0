@@ -2,74 +2,58 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ED2796D8FD2
-	for <lists+linux-omap@lfdr.de>; Thu,  6 Apr 2023 08:55:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29BE86D916A
+	for <lists+linux-omap@lfdr.de>; Thu,  6 Apr 2023 10:24:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234923AbjDFGzG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 6 Apr 2023 02:55:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58382 "EHLO
+        id S235829AbjDFIYL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 6 Apr 2023 04:24:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235705AbjDFGy7 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 6 Apr 2023 02:54:59 -0400
-Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EF4AAD09;
-        Wed,  5 Apr 2023 23:54:33 -0700 (PDT)
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 3366sIPm100035;
-        Thu, 6 Apr 2023 01:54:18 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1680764058;
-        bh=v+uscHIJUtjNPid3oUE4ixMM5r8S9AuEpMcESFmmVcA=;
-        h=Date:Subject:To:CC:References:From:In-Reply-To;
-        b=pZiIO7/CHHfD2BnFwzjGqSO65P7XDMjWiOhReTa4ZoXjJqUD20pildmKCWtrxlLJV
-         hoeisNQjlExLtIVTHSyzk11r5pfXtHPJVCF4+5HSykiyH7tvb5g3Q5Fw3lqlNvi8R8
-         QaulBt3PG5j1awyHQZHvF92jonb2olR8sKOJvC9w=
-Received: from DLEE110.ent.ti.com (dlee110.ent.ti.com [157.170.170.21])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 3366sIaS116965
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 6 Apr 2023 01:54:18 -0500
-Received: from DLEE109.ent.ti.com (157.170.170.41) by DLEE110.ent.ti.com
- (157.170.170.21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16; Thu, 6
- Apr 2023 01:54:18 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE109.ent.ti.com
- (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16 via
- Frontend Transport; Thu, 6 Apr 2023 01:54:18 -0500
-Received: from [10.24.69.114] (ileaxei01-snat2.itg.ti.com [10.180.69.6])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 3366sCca000927;
-        Thu, 6 Apr 2023 01:54:13 -0500
-Message-ID: <86ee5333-6d65-d28b-0dd5-40dfe485d48b@ti.com>
-Date:   Thu, 6 Apr 2023 12:24:12 +0530
+        with ESMTP id S235716AbjDFIYK (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 6 Apr 2023 04:24:10 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6023172A3
+        for <linux-omap@vger.kernel.org>; Thu,  6 Apr 2023 01:24:08 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pkKuT-0006zt-8j; Thu, 06 Apr 2023 10:23:57 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pkKuR-009L2f-71; Thu, 06 Apr 2023 10:23:55 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pkKuQ-00AzQf-G5; Thu, 06 Apr 2023 10:23:54 +0200
+Date:   Thu, 6 Apr 2023 10:23:54 +0200
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     Wolfram Sang <wsa@kernel.org>, Tony Lindgren <tony@atomide.com>,
+        Andreas Kemnade <andreas@kemnade.info>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+        Vignesh R <vigneshr@ti.com>, linux-omap@vger.kernel.org,
+        linux-i2c@vger.kernel.org, kernel@pengutronix.de,
+        "Rafael J. Wysocki" <rafael@kernel.org>, linux-pm@vger.kernel.org
+Subject: [PATCH] i2c: omap: Improve error reporting for problems during
+ .remove()
+Message-ID: <20230406082354.jwchbl5ir6p4gjw7@pengutronix.de>
+References: <20230402105518.2512541-1-u.kleine-koenig@pengutronix.de>
+ <20230402225001.75a32147@aktux>
+ <20230403054837.6lxyzznzntvw2drg@pengutronix.de>
+ <20230403060404.GX7501@atomide.com>
+ <ZC5qUU4JLI9Negyi@sai>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH v7 0/4] Introduce PRU platform consumer API
-To:     MD Danish Anwar <danishanwar@ti.com>,
-        "Andrew F. Davis" <afd@ti.com>, Suman Anna <s-anna@ti.com>,
-        Roger Quadros <rogerq@kernel.org>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Tero Kristo <kristo@kernel.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Nishanth Menon <nm@ti.com>
-CC:     <linux-remoteproc@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <srk@ti.com>, <devicetree@vger.kernel.org>,
-        <netdev@vger.kernel.org>
-References: <20230404115336.599430-1-danishanwar@ti.com>
-Content-Language: en-US
-From:   Md Danish Anwar <a0501179@ti.com>
-Organization: Texas Instruments
-In-Reply-To: <20230404115336.599430-1-danishanwar@ti.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-3.9 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_PASS autolearn=unavailable autolearn_force=no
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="nsmp2sx53qt2rvps"
+Content-Disposition: inline
+In-Reply-To: <ZC5qUU4JLI9Negyi@sai>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-omap@vger.kernel.org
+X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -77,58 +61,92 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 04/04/23 17:23, MD Danish Anwar wrote:
-> Hi All,
-> The Programmable Real-Time Unit and Industrial Communication Subsystem (PRU-ICSS
-> or simply PRUSS) on various TI SoCs consists of dual 32-bit RISC cores
-> (Programmable Real-Time Units, or PRUs) for program execution.
-> 
-> There are 3 foundation components for TI PRUSS subsystem: the PRUSS platform
-> driver, the PRUSS INTC driver and the PRUSS remoteproc driver. All of them have
-> already been merged and can be found under:
-> 1) drivers/soc/ti/pruss.c
->    Documentation/devicetree/bindings/soc/ti/ti,pruss.yaml
-> 2) drivers/irqchip/irq-pruss-intc.c
->    Documentation/devicetree/bindings/interrupt-controller/ti,pruss-intc.yaml
-> 3) drivers/remoteproc/pru_rproc.c
->    Documentation/devicetree/bindings/remoteproc/ti,pru-consumer.yaml
-> 
-> The programmable nature of the PRUs provide flexibility to implement custom
-> peripheral interfaces, fast real-time responses, or specialized data handling.
-> Example of a PRU consumer drivers will be: 
->   - Software UART over PRUSS
->   - PRU-ICSS Ethernet EMAC
-> 
-> In order to make usage of common PRU resources and allow the consumer drivers 
-> to configure the PRU hardware for specific usage the PRU API is introduced.
-> 
-> This is the v7 of the old patch series [9].
-> 
 
-Hi Mathieu, Can you please review this series. I have addressed comments made
-by you in v5. I have also addressed Simon's comment in v6 and removed redundant
-macros from pruss.h header file.
+--nsmp2sx53qt2rvps
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> Changes from v6 [9] to v7:
-> *) Addressed Simon's comment on patch 3 of this series and dropped unnecassary
-> macros from the patch.
-> 
-> Changes from v5 [1] to v6:
-> *) Added Reviewed by tags of Roger and Tony to the patches.
-> *) Added Acked by tag of Mathieu to patch 2 of this series.
-> *) Added NULL check for @mux in pruss_cfg_get_gpmux() API.
-> *) Added comment to the pruss_get() function documentation mentioning it is
-> expected the caller will have done a pru_rproc_get() on @rproc.
-> *) Fixed compilation warning "warning: ‘pruss_cfg_update’ defined but not used"
-> in patch 3 by squashing patch 3 [7] and patch 5 [8] of previous revision
-> together. Squashed patch 5 instead of patch 4 with patch 3 because patch 5 uses
-> both read() and update() APIs where as patch 4 only uses update() API.
-> Previously pruss_cfg_read()/update() APIs were intoroduced in patch 3
-> and used in patch 4 and 5. Now these APIs are introduced as well as used in 
-> patch 3.
-> 
+If pm_runtime_get() fails in .remove() the driver used to return the
+error to the driver core. The only effect of this (compared to returning
+zero) is a generic warning that the error value is ignored.
+
+So emit a better warning and return zero to suppress the generic (and
+little helpful) message. Also disable runtime PM in the error case.
+
+This prepares changing platform device remove callbacks to return void.
+
+Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+---
+On Thu, Apr 06, 2023 at 08:44:33AM +0200, Wolfram Sang wrote:
+>=20
+> > > So if there is some clk handling necessary before the register access,
+> > > I'm not aware where it's hidden. Is there some bus or omap specific c=
+ode
+> > > that ensures clk handling?
+> >=20
+> > I think the missing part is that the runtime PM calls in the i2c driver
+> > cause the parent ti-sysc interconnect target module device to get enabl=
+ed
+> > and clocked before accessing the i2c registers.
+>=20
+> So, this patch is not needed?
+
+The patch as is is wrong. For my quest to drop the return value of
+platform driver's remove callbacks, I need this patch instead:
+
+ drivers/i2c/busses/i2c-omap.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/i2c/busses/i2c-omap.c b/drivers/i2c/busses/i2c-omap.c
+index f9ae520aed22..2b4e2be51318 100644
+--- a/drivers/i2c/busses/i2c-omap.c
++++ b/drivers/i2c/busses/i2c-omap.c
+@@ -1525,14 +1525,17 @@ static int omap_i2c_remove(struct platform_device *=
+pdev)
+ 	int ret;
+=20
+ 	i2c_del_adapter(&omap->adapter);
+-	ret =3D pm_runtime_resume_and_get(&pdev->dev);
++
++	ret =3D pm_runtime_get_sync(&pdev->dev);
+ 	if (ret < 0)
+-		return ret;
++		dev_err(omap->dev, "Failed to resume hardware, skip disable\n");
++	else
++		omap_i2c_write_reg(omap, OMAP_I2C_CON_REG, 0);
+=20
+-	omap_i2c_write_reg(omap, OMAP_I2C_CON_REG, 0);
+ 	pm_runtime_dont_use_autosuspend(&pdev->dev);
+ 	pm_runtime_put_sync(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
++
+ 	return 0;
+ }
+=20
+
+base-commit: fe15c26ee26efa11741a7b632e9f23b01aca4cc6
+--=20
+2.39.2
 
 
--- 
-Thanks and Regards,
-Danish.
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--nsmp2sx53qt2rvps
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmQugZkACgkQj4D7WH0S
+/k6e1QgAgMnr2q6+pOqsrux2OQmK4cmDqgLRGQhbp6quxKBbs7BiVJcK2NqGKE+8
+YHELGSWPVwNz/Hd6V0YxaBKbFQvPJlSJdVhELTuBiWLQ1pnUkt6DcF5zbxpLw5NT
+1qd8i621AKmq3kWowz/uoz1XqtsFo9jYrLwqj/jutbbIuUcmr3pXY8DRv4x4fb82
++oTUpMjvUyJhsdebnQ3T+NeAdNtobO4Iy73/eBSZedvmMecH3XlRx1Y9ZGiJx4Hb
+DG0+QqVIeWQJawHYVFKSo2DP2w074A1dMI5+dMd/szvn7an7pa/cT6w24iDKFXHd
+9tQji5xY/yCxCt6ZJkpL9v+rwG9iaQ==
+=3J10
+-----END PGP SIGNATURE-----
+
+--nsmp2sx53qt2rvps--
