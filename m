@@ -2,68 +2,69 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7EF436D91AC
-	for <lists+linux-omap@lfdr.de>; Thu,  6 Apr 2023 10:32:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79F616D91C3
+	for <lists+linux-omap@lfdr.de>; Thu,  6 Apr 2023 10:36:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236118AbjDFIcz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 6 Apr 2023 04:32:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49692 "EHLO
+        id S234884AbjDFIgl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 6 Apr 2023 04:36:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235345AbjDFIcy (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 6 Apr 2023 04:32:54 -0400
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 627784C0E
-        for <linux-omap@vger.kernel.org>; Thu,  6 Apr 2023 01:32:52 -0700 (PDT)
-Received: by mail-ed1-x52e.google.com with SMTP id y4so147511709edo.2
-        for <linux-omap@vger.kernel.org>; Thu, 06 Apr 2023 01:32:52 -0700 (PDT)
+        with ESMTP id S229483AbjDFIgk (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 6 Apr 2023 04:36:40 -0400
+Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE267A1
+        for <linux-omap@vger.kernel.org>; Thu,  6 Apr 2023 01:36:38 -0700 (PDT)
+Received: by mail-ed1-x52f.google.com with SMTP id y4so147532716edo.2
+        for <linux-omap@vger.kernel.org>; Thu, 06 Apr 2023 01:36:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1680769971;
-        h=content-transfer-encoding:in-reply-to:from:references:to
+        d=linaro.org; s=google; t=1680770197;
+        h=content-transfer-encoding:in-reply-to:references:to:from
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=BT2qFcfVRrSPbLmHGDYiFwGIJvbuDVrXM9ieD+KEetg=;
-        b=mCYEIsC5QpSAr3Rk/Hd52mLlp+OxBWbLmbSc29ZDoUMcVryqDrZHztiCVnzMf+uAmI
-         SuB7Y/g3J9ZCV58hnnLQoHLrrKDGtn6aYIbvks+FArhzOAe0uN6+9w3o0Y7eiGyqVsdz
-         cKKLAWOdfytoiHDSMnnWZGxwq3uQf18H2+gL1tfskLPx4sVTFRmptsBDommEM70cZy4N
-         u9vb7omR2+mGEInyh0Y/iJ0CfD2U7exUO0XeIs1p1I8eaX6fN/TMWJxMXTMfCO1kLAS1
-         LZMRGS6VVOHPjcZi4QJoYHzxPAYmEB7uhi6KClJ02cmSMxhlgPRbMQhcCMIV1JSZKfvM
-         9FRQ==
+        bh=vtF8Lv6Q0CwOFk9dcjRC1QHDijm+JO8RtHr3ocFrp/U=;
+        b=mUdLRtCjv0gZVJwa4cOuipMDKrvHL/wwz0bIh3yPXf7bcLnmjjqHTnioSrrKmGl9t7
+         tcMPTqOCRSC88mSilMkdUhudKKZ+ol/VDCtpYC+7H8qZfgXciyxYPYJIhf7cfNqpCq4T
+         VOFksLUsqDL6G53APniuIZivzV5PH9tbuRi5bj76U4wh4XS+2KfOW1r82NMc03VTF27e
+         LJ8xBZVfnIt5sfNN0RL3uj0JQcwTsQwqxBsBJcfeT75updTNE8WxRUmCxUjaLYN7czgU
+         YQVylxL+j58hEcp9mMOW5y7TaHMkF8wqobyKhEODWWShJ+ssHJd3JIboMu5E7bSRxb+N
+         mZzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680769971;
-        h=content-transfer-encoding:in-reply-to:from:references:to
+        d=1e100.net; s=20210112; t=1680770197;
+        h=content-transfer-encoding:in-reply-to:references:to:from
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BT2qFcfVRrSPbLmHGDYiFwGIJvbuDVrXM9ieD+KEetg=;
-        b=QnW0sZbx6oynBfgcKt0wO47Ytz9Z9PHu4nSrIeNlvaN6AUsVRC7Mvm1N4VOlBGfeNd
-         LuIQDuXQe040JSx+SShOK2NQ61vXScBQ4ITzRigAWwifY1ZNBvCkIz4An0mU33CfZ1OK
-         jDyIJRS9INtFSRlhWbksHg+GnoQ7SPr9K8MQbBYbphD++PLV3/vxvzjc5Ac/MksWZe48
-         Xcc8jQVRZb5HeYh5MI1L43GoIhCaCde5tHfl63u1KBZkLJXaEBF7LahY6laC/Va/hlLG
-         V8Wmn6uMlRLKJkRDBeV1aUP6RxHTwqfyhx4hhqjTpa4DVj8yDtL12x5wdcjLfdh40Vwh
-         M6UA==
-X-Gm-Message-State: AAQBX9fB8L/rl+14he1Hacv5ZDd7CLFCXfals37xPw3qW6Evx+yCW5NX
-        bd5d8s9NDUGfqUVfSfYvz0viSQ==
-X-Google-Smtp-Source: AKy350aWteAjATuSEazMZnJowUe1xwUDh+hPT2y1KxQkK1B38uDSyKB7xEZlzBF/8IBARLyMc98mlA==
-X-Received: by 2002:a17:906:f850:b0:92e:e9c2:7b9e with SMTP id ks16-20020a170906f85000b0092ee9c27b9emr5371449ejb.41.1680769970783;
-        Thu, 06 Apr 2023 01:32:50 -0700 (PDT)
+        bh=vtF8Lv6Q0CwOFk9dcjRC1QHDijm+JO8RtHr3ocFrp/U=;
+        b=C4AkvT+ceBs01+xzA4xXKwfxjPb6eqRVYm0BIr4SUekUrOabvKtv54aYUuEHBcCJZh
+         SR8LoqFF2CetISTgNDeWki49cqF/h/wcKrnmm0ucPAbFG4NuKQIZhh0Ehn2jkn6WWcSE
+         XaOP6cboFHrisN6jVIh/qdZj/L18U6iCGhpu21uPHk6yQ3geoI9byWAgT437KPT+ak50
+         IsBkozSku1Cd1JAZThw58u1K03O5xgh1vLyCcqnik4XZF2cup8oj0HxQjTKysCH5/plQ
+         O8ZJ5gNLpLxUUwyoCNLzpvX5hmaOWNXBeZxf+wk9BNXUhrY1+5l/eh3GlQ+amRysdt2K
+         E3xQ==
+X-Gm-Message-State: AAQBX9cqGw4RPoQV70rga9VJCDttKltF0TXGOPjEGtCxnXtBfeB59FXr
+        ZPL4Uv7spHiG+x0ogCWf9Rf9Mw==
+X-Google-Smtp-Source: AKy350Z7FUD7SIAZiIBu/jYSv5BCmTGOkJAJXaqtoFGEx2S3zZ58gQPrBwj/w5BDccY0fSJ27UuSlw==
+X-Received: by 2002:a17:907:7e95:b0:932:f88c:c2ff with SMTP id qb21-20020a1709077e9500b00932f88cc2ffmr6169731ejc.34.1680770197499;
+        Thu, 06 Apr 2023 01:36:37 -0700 (PDT)
 Received: from ?IPV6:2a02:810d:15c0:828:49e6:bb8c:a05b:c4ed? ([2a02:810d:15c0:828:49e6:bb8c:a05b:c4ed])
-        by smtp.gmail.com with ESMTPSA id r26-20020a50aada000000b004fc856b208asm425152edc.51.2023.04.06.01.32.49
+        by smtp.gmail.com with ESMTPSA id qm8-20020a170907674800b00947ed087a2csm497516ejc.154.2023.04.06.01.36.36
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 06 Apr 2023 01:32:50 -0700 (PDT)
-Message-ID: <eb4cf82d-f523-d5af-be18-25c37678a95a@linaro.org>
-Date:   Thu, 6 Apr 2023 10:32:49 +0200
+        Thu, 06 Apr 2023 01:36:37 -0700 (PDT)
+Message-ID: <7f43953c-d326-f517-d896-cbb060d8092a@linaro.org>
+Date:   Thu, 6 Apr 2023 10:36:36 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.9.0
 Subject: Re: [PATCH v6 1/2] dt-bindings: omap: Convert omap.txt to yaml
 Content-Language: en-US
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 To:     Andreas Kemnade <andreas@kemnade.info>, robh+dt@kernel.org,
         krzysztof.kozlowski+dt@linaro.org, tony@atomide.com, afd@ti.com,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-omap@vger.kernel.org
 References: <20230405161908.4312-1-andreas@kemnade.info>
  <20230405161908.4312-2-andreas@kemnade.info>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230405161908.4312-2-andreas@kemnade.info>
+ <eb4cf82d-f523-d5af-be18-25c37678a95a@linaro.org>
+In-Reply-To: <eb4cf82d-f523-d5af-be18-25c37678a95a@linaro.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-1.6 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
@@ -76,40 +77,46 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 05/04/2023 18:19, Andreas Kemnade wrote:
-> From: Andrew Davis <afd@ti.com>
+On 06/04/2023 10:32, Krzysztof Kozlowski wrote:
+> On 05/04/2023 18:19, Andreas Kemnade wrote:
+>> From: Andrew Davis <afd@ti.com>
+>>
+>> Convert omap.txt to yaml.
+>>
 > 
-> Convert omap.txt to yaml.
 > 
+>> +      - description: TI AM43 SoC based platforms
+>> +        items:
+>> +          - enum:
+>> +              - compulab,am437x-cm-t43
+>> +              - ti,am437x-gp-evm
+>> +              - ti,am437x-idk-evm
+>> +              - ti,am437x-sk-evm
+>> +          - pattern: '^ti,am4372[26789]$'
+>> +          - const: ti,am43
+>> +
+>> +      - description: TI AM57 SoC based platforms
+>> +        items:
+>> +          - enum:
+>> +              - beagle,am5729-beagleboneai
+>> +              - compulab,cl-som-am57x
+>> +              - ti,am5718-idk
+>> +              - ti,am5728-idk
+>> +              - ti,am5748-idk
+>> +          - pattern: '^ti,am57[0124][689]$'
+> 
+> I don't think my comments were resolved. I asked if it is possible to
+> make a board called "ti,am5718-idk" with "ti,am5749" or with "ti,am5708"?
 
+Hm, I cannot find my concern, so maybe it never left my outbox. Anyway,
+it looks like you allow here many incorrect patterns and combinations.
 
-> +      - description: TI AM43 SoC based platforms
-> +        items:
-> +          - enum:
-> +              - compulab,am437x-cm-t43
-> +              - ti,am437x-gp-evm
-> +              - ti,am437x-idk-evm
-> +              - ti,am437x-sk-evm
-> +          - pattern: '^ti,am4372[26789]$'
-> +          - const: ti,am43
-> +
-> +      - description: TI AM57 SoC based platforms
-> +        items:
-> +          - enum:
-> +              - beagle,am5729-beagleboneai
-> +              - compulab,cl-som-am57x
-> +              - ti,am5718-idk
-> +              - ti,am5728-idk
-> +              - ti,am5748-idk
-> +          - pattern: '^ti,am57[0124][689]$'
+> 
+> What's more, you dropped several variations and compatibles against
+> original binding (all the "dra") and it is not explained in commit msg
+> at all.
 
-I don't think my comments were resolved. I asked if it is possible to
-make a board called "ti,am5718-idk" with "ti,am5749" or with "ti,am5708"?
-
-What's more, you dropped several variations and compatibles against
-original binding (all the "dra") and it is not explained in commit msg
-at all.
-
+All changes against original bindings should be explained.
 
 Best regards,
 Krzysztof
