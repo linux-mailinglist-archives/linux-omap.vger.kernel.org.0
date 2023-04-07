@@ -2,140 +2,257 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E10F16DA041
-	for <lists+linux-omap@lfdr.de>; Thu,  6 Apr 2023 20:47:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBA446DB0D0
+	for <lists+linux-omap@lfdr.de>; Fri,  7 Apr 2023 18:45:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240515AbjDFSrI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 6 Apr 2023 14:47:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38416 "EHLO
+        id S229437AbjDGQpy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 7 Apr 2023 12:45:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54730 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240421AbjDFSqx (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 6 Apr 2023 14:46:53 -0400
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64691AD1F
-        for <linux-omap@vger.kernel.org>; Thu,  6 Apr 2023 11:46:31 -0700 (PDT)
-Received: by mail-ej1-x629.google.com with SMTP id cw23so3670438ejb.12
-        for <linux-omap@vger.kernel.org>; Thu, 06 Apr 2023 11:46:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1680806790;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=MgXJOn+WAZ47Cl6o8tPQjAABd5Itwae5J4f0B3wQsNo=;
-        b=mpk5TuobYbvWtl+C6R4wLIUF/Hc35fhvJv5TThEYojiqCz6ARENF8am1xXOuZlBYxm
-         V+6OxdoIfOdTAgqPVOUimNaPdocS5O4zRTVeblGEk1pwGG+A5Ll9Z0+GMr4FIQnkrZRu
-         0/PZYhI5ncokLTLlZMZsjgAR83yvo/Cl41eXvIZL8FiFyqSaPwlnZtBVEyP7y4TGSXyD
-         CwQUxZWYrAz/nqcGyNb7arm7sQnHGYylg8XxmOoEQZj5FNrfeGlq/y4pNvgz5po9kVPw
-         lXbiLUi4G3AGzHqsJvBViVK8Q+XZhkHsJKFXr/y9GMlu3eqZ0nyX4cAby5wnHmGAn5CC
-         zTEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680806790;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=MgXJOn+WAZ47Cl6o8tPQjAABd5Itwae5J4f0B3wQsNo=;
-        b=UM4WsOHfb7kxfu5sgy0rOvGorX35evx5MbwkU2s08exBbntV4VWqKhpIWb2HraDMo6
-         CUAjD7H8djkv9kiTMgsGzGTrqNF2T+7l4/Ha84gwVtYJEqgFexJzOn093uO7G8yVmUhB
-         M9FTl1mnwex7c77ShL2Kz0fmBvpAj8vkffQ8SjIct3HoPH/lNgcAtDTbBMIkw9lUNUCc
-         PwaQJOkhJcnA0XZr8fEJTK2SC6oFgGG0EXOXlIcqw5+8COtwH+Sg4cV2fP+9dj5wXrR4
-         opqjL14676jxbKDQlQmrp9DNwEDdgNyKIZh12tj4XDLFY2Gio/CLZ0dtUYxOU1zcp3I6
-         egJA==
-X-Gm-Message-State: AAQBX9eTBxGYDCPYQDtIkKnA2tr81siV+5otAtAgGeYrnlprrxXQiS/7
-        YRlDLyfk2FlGPD/vMzD1KO4U439dMnxMB3MJybQ=
-X-Google-Smtp-Source: AKy350ahKqk/eVseprVd25UAxkAp8OgeoVUzsVGX0BSATs/dsK1+2sIuMzxutuwaNHjcCfphm9gnJw==
-X-Received: by 2002:a17:906:c005:b0:947:55ce:1217 with SMTP id e5-20020a170906c00500b0094755ce1217mr6864670ejz.73.1680806789884;
-        Thu, 06 Apr 2023 11:46:29 -0700 (PDT)
-Received: from ?IPV6:2a02:810d:15c0:828:49e6:bb8c:a05b:c4ed? ([2a02:810d:15c0:828:49e6:bb8c:a05b:c4ed])
-        by smtp.gmail.com with ESMTPSA id p14-20020a1709061b4e00b00930a4e5b46bsm1108835ejg.211.2023.04.06.11.46.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 06 Apr 2023 11:46:29 -0700 (PDT)
-Message-ID: <37d04794-d790-fd7c-9f34-901955083874@linaro.org>
-Date:   Thu, 6 Apr 2023 20:46:28 +0200
+        with ESMTP id S229787AbjDGQpy (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 7 Apr 2023 12:45:54 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D314E7D8C;
+        Fri,  7 Apr 2023 09:45:52 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 69C5E64FBD;
+        Fri,  7 Apr 2023 16:45:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A8EBC433D2;
+        Fri,  7 Apr 2023 16:45:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1680885951;
+        bh=iqswN3dSq+XLG1LLR/7UGVkU8eNIsxqJUyJVWh+cxqA=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=Zd/XfKV7rNS9OsyQhfjG00UTKRFMfzXicd8YMN1TdAvZk3VCQsPQVkloiLuT3AG+Z
+         a5lJXpH8jfNwzTJwfGxVZW9RZCy3Jv2+W9z6qCE0nwv5WHtgIEaLQWP9IAx5e6kb3B
+         CGY6zqaEtHsM0VYHxlDE/vc7zRqLv5Zm01ZYjK0DdkRRildOVE855KY1pTKM9Eur/f
+         v6xX9JAYjk08OMrz8nT6lg/4jIg7fRKq7UBK1q3gRgFCoGFuD4DBPGK2gHxuLuhMnx
+         KnljJrm26FbK3FuCRqst4q0mnEED24K3nVa4x8YT5s/mhSLf+okLaq3ZyNkCCwcyfH
+         ESYyn8N+oHcdw==
+Date:   Fri, 7 Apr 2023 18:01:07 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Patrik =?UTF-8?B?RGFobHN0csO2bQ==?= <risca@dalakolonin.se>
+Cc:     "H. Nikolaus Schaller" <hns@goldelico.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        letux-kernel@openphoenux.org, kernel@pyra-handheld.com,
+        pgoudagunta@nvidia.com, lars@metafoo.de, linux-omap@vger.kernel.org
+Subject: Re: [PATCH v2 1/7] iio: adc: palmas: remove adc_wakeupX_data
+Message-ID: <20230407180107.1d95cbf4@jic23-huawei>
+In-Reply-To: <20230404103328.GD2403322@dalakolonin.se>
+References: <20230402164247.3089146-1-risca@dalakolonin.se>
+        <20230402164247.3089146-2-risca@dalakolonin.se>
+        <ED6919A6-CE57-4C31-9AE5-2C31D288A810@goldelico.com>
+        <20230404103328.GD2403322@dalakolonin.se>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH v6 1/2] dt-bindings: omap: Convert omap.txt to yaml
-Content-Language: en-US
-To:     Andreas Kemnade <andreas@kemnade.info>
-Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        tony@atomide.com, afd@ti.com, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
-References: <20230405161908.4312-1-andreas@kemnade.info>
- <20230405161908.4312-2-andreas@kemnade.info>
- <eb4cf82d-f523-d5af-be18-25c37678a95a@linaro.org>
- <7f43953c-d326-f517-d896-cbb060d8092a@linaro.org>
- <20230406203548.152ae065@aktux>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230406203548.152ae065@aktux>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.4 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-5.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 06/04/2023 20:35, Andreas Kemnade wrote:
-> On Thu, 6 Apr 2023 10:36:36 +0200
-> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
-> 
->> On 06/04/2023 10:32, Krzysztof Kozlowski wrote:
->>> On 05/04/2023 18:19, Andreas Kemnade wrote:  
->>>> From: Andrew Davis <afd@ti.com>
->>>>
->>>> Convert omap.txt to yaml.
->>>>  
->>>
->>>   
->>>> +      - description: TI AM43 SoC based platforms
->>>> +        items:
->>>> +          - enum:
->>>> +              - compulab,am437x-cm-t43
->>>> +              - ti,am437x-gp-evm
->>>> +              - ti,am437x-idk-evm
->>>> +              - ti,am437x-sk-evm
->>>> +          - pattern: '^ti,am4372[26789]$'
->>>> +          - const: ti,am43
->>>> +
->>>> +      - description: TI AM57 SoC based platforms
->>>> +        items:
->>>> +          - enum:
->>>> +              - beagle,am5729-beagleboneai
->>>> +              - compulab,cl-som-am57x
->>>> +              - ti,am5718-idk
->>>> +              - ti,am5728-idk
->>>> +              - ti,am5748-idk
->>>> +          - pattern: '^ti,am57[0124][689]$'  
->>>
->>> I don't think my comments were resolved. I asked if it is possible to
->>> make a board called "ti,am5718-idk" with "ti,am5749" or with "ti,am5708"?  
->>
->> Hm, I cannot find my concern, so maybe it never left my outbox. Anyway,
->> it looks like you allow here many incorrect patterns and combinations.
->>
-> You had concerns about the "dra" stuff for the same valid reasons.
+On Tue, 4 Apr 2023 12:33:28 +0200
+Patrik Dahlstr=C3=B6m <risca@dalakolonin.se> wrote:
 
-Yes, but also about this. So again:
-is "ti,am5718-idk" with "ti,am5749" correct?
+> On Mon, Apr 03, 2023 at 06:49:36PM +0200, H. Nikolaus Schaller wrote:
+> > Hi Patrik,
+> >  =20
+> > > Am 02.04.2023 um 18:42 schrieb Patrik Dahlstr=C3=B6m <risca@dalakolon=
+in.se>:
+> > >=20
+> > > It does not seem to be used by anyone and later patches in this series
+> > > are made simpler by first removing this. There is now a lot of dead c=
+ode
+> > > that cannot be reached, until later patches revive it. Arguably, this=
+ is
+> > > preferred over removing the code only to add it again.
+> > >=20
+> > > Signed-off-by: Patrik Dahlstr=C3=B6m <risca@dalakolonin.se>
+> > > ---
+> > > drivers/iio/adc/palmas_gpadc.c | 50 ++++------------------------------
+> > > include/linux/mfd/palmas.h     |  8 ------
+> > > 2 files changed, 6 insertions(+), 52 deletions(-)
+> > >=20
+> > > diff --git a/drivers/iio/adc/palmas_gpadc.c b/drivers/iio/adc/palmas_=
+gpadc.c
+> > > index 24d7c096e4b8..943ac579eb1f 100644
+> > > --- a/drivers/iio/adc/palmas_gpadc.c
+> > > +++ b/drivers/iio/adc/palmas_gpadc.c
+> > > @@ -76,6 +76,12 @@ static struct palmas_gpadc_info palmas_gpadc_info[=
+] =3D {
+> > > 	PALMAS_ADC_INFO(IN15, 0, 0, 0, 0, INVALID, INVALID, true),
+> > > };
+> > >=20
+> > > +struct palmas_adc_wakeup_property {
+> > > +	int adc_channel_number;
+> > > +	int adc_high_threshold;
+> > > +	int adc_low_threshold;
+> > > +};
+> > > +
+> > > /*
+> > >  * struct palmas_gpadc - the palmas_gpadc structure
+> > >  * @ch0_current:	channel 0 current source setting
+> > > @@ -492,11 +498,6 @@ static int palmas_gpadc_get_adc_dt_data(struct p=
+latform_device *pdev,
+> > > 	return 0;
+> > > }
+> > >=20
+> > > -static void palmas_disable_wakeup(void *dev) =20
+> >=20
+> > something seems to be mixed up here.
+> >=20
+> > There is no palmas_disable_wakeup() upstream that can be removed. So th=
+is patch
+> > can not be applied as 1/7 to any upstream kernel.
+> >=20
+> > Please rebase your series on either linus/master or linux-next/master. =
+=20
+>=20
+> I'm sorry for the confusion. I should have been more clear in the cover
+> letter.
+>=20
+> This series is based on Jonathan Cameron's iio tree[1], plus the patches =
+at
+> [2] and [3]. The first patch is already part of linux-next and I was under
+> the impression that [3] would be soon too.
+>=20
+> Would it be best to rebase this series on linux-next instead?
+>=20
+> [1] git://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git
+> [2] https://patchwork.kernel.org/project/linux-iio/patch/20230313205029.1=
+881745-1-risca@dalakolonin.se/
+> [3] https://patchwork.kernel.org/project/linux-iio/patch/20230318163039.5=
+6115-1-jic23@kernel.org/
+>=20
+This gets a bit complex because we have a mixture of fixes and updates and =
+the desire
+to end up with a fairly simple history in git.
 
-> 
->>>
->>> What's more, you dropped several variations and compatibles against
->>> original binding (all the "dra") and it is not explained in commit msg
->>> at all.  
->>
->> All changes against original bindings should be explained.
->>
-> ... which I then just decided not to convert but keep as is in the text file
-> because there were no comments hints about it more than a month since the first
-> version was sent so thought that it has to be resolved later.
+Before [3] can be applied I need to move the togreg tree base to incorporat=
+e a newer
+version of char-misc/char-misc-next (which is the upstream for IIO pull req=
+uests) and
+the fix to have made the round trip to get there (which hasn't happened yet=
+).
+At that point I'll pick up the above and your series will be on top of that.
 
-But you partially remove them - see AM5728 IDK.
+So you were fine to base this patch as you did, but you should make sure the
+cover letter calls out the required patches that haven't yet made it upstre=
+am.
 
-Best regards,
-Krzysztof
+I generally don't mind simple cases of needing to rebase if things are based
+on rc1 (don't every use linux-next as it is not a stable base) whilst apply=
+ing but
+in this case the devm change is sufficiently fiddly that you have two obvio=
+us choices.
+1) Just add it to the start of your patch set (I'm fine with people doing t=
+hat with
+   anything I post).
+2) Listing the patches that should be applied first in the cover letter.
+
+Jonathan
+
+> >=20
+> > BR,
+> > Nikolaus
+> >  =20
+> > > -{
+> > > -	device_wakeup_disable(dev);
+> > > -}
+> > > -
+> > > static int palmas_gpadc_probe(struct platform_device *pdev)
+> > > {
+> > > 	struct palmas_gpadc *adc;
+> > > @@ -547,36 +548,6 @@ static int palmas_gpadc_probe(struct platform_de=
+vice *pdev)
+> > > 		return dev_err_probe(adc->dev, ret,
+> > > 				     "request irq %d failed\n", adc->irq);
+> > >=20
+> > > -	if (gpadc_pdata->adc_wakeup1_data) {
+> > > -		memcpy(&adc->wakeup1_data, gpadc_pdata->adc_wakeup1_data,
+> > > -			sizeof(adc->wakeup1_data));
+> > > -		adc->wakeup1_enable =3D true;
+> > > -		adc->irq_auto_0 =3D  platform_get_irq(pdev, 1);
+> > > -		ret =3D devm_request_threaded_irq(&pdev->dev, adc->irq_auto_0,
+> > > -						NULL, palmas_gpadc_irq_auto,
+> > > -						IRQF_ONESHOT,
+> > > -						"palmas-adc-auto-0", adc);
+> > > -		if (ret < 0)
+> > > -			return dev_err_probe(adc->dev, ret,
+> > > -					     "request auto0 irq %d failed\n",
+> > > -					     adc->irq_auto_0);
+> > > -	}
+> > > -
+> > > -	if (gpadc_pdata->adc_wakeup2_data) {
+> > > -		memcpy(&adc->wakeup2_data, gpadc_pdata->adc_wakeup2_data,
+> > > -				sizeof(adc->wakeup2_data));
+> > > -		adc->wakeup2_enable =3D true;
+> > > -		adc->irq_auto_1 =3D  platform_get_irq(pdev, 2);
+> > > -		ret =3D devm_request_threaded_irq(&pdev->dev, adc->irq_auto_1,
+> > > -						NULL, palmas_gpadc_irq_auto,
+> > > -						IRQF_ONESHOT,
+> > > -						"palmas-adc-auto-1", adc);
+> > > -		if (ret < 0)
+> > > -			return dev_err_probe(adc->dev, ret,
+> > > -					     "request auto1 irq %d failed\n",
+> > > -					     adc->irq_auto_1);
+> > > -	}
+> > > -
+> > > 	/* set the current source 0 (value 0/5/15/20 uA =3D> 0..3) */
+> > > 	if (gpadc_pdata->ch0_current <=3D 1)
+> > > 		adc->ch0_current =3D PALMAS_ADC_CH0_CURRENT_SRC_0;
+> > > @@ -616,15 +587,6 @@ static int palmas_gpadc_probe(struct platform_de=
+vice *pdev)
+> > > 			palmas_gpadc_calibrate(adc, i);
+> > > 	}
+> > >=20
+> > > -	if (adc->wakeup1_enable || adc->wakeup2_enable) {
+> > > -		device_wakeup_enable(&pdev->dev);
+> > > -		ret =3D devm_add_action_or_reset(&pdev->dev,
+> > > -					       palmas_disable_wakeup,
+> > > -					       &pdev->dev);
+> > > -		if (ret)
+> > > -			return ret;
+> > > -	}
+> > > -
+> > > 	return 0;
+> > > }
+> > >=20
+> > > diff --git a/include/linux/mfd/palmas.h b/include/linux/mfd/palmas.h
+> > > index 1e61c7e9f50d..55f22adb1a9e 100644
+> > > --- a/include/linux/mfd/palmas.h
+> > > +++ b/include/linux/mfd/palmas.h
+> > > @@ -129,12 +129,6 @@ struct palmas_pmic_driver_data {
+> > > 			    struct regulator_config config);
+> > > };
+> > >=20
+> > > -struct palmas_adc_wakeup_property {
+> > > -	int adc_channel_number;
+> > > -	int adc_high_threshold;
+> > > -	int adc_low_threshold;
+> > > -};
+> > > -
+> > > struct palmas_gpadc_platform_data {
+> > > 	/* Channel 3 current source is only enabled during conversion */
+> > > 	int ch3_current;	/* 0: off; 1: 10uA; 2: 400uA; 3: 800 uA */
+> > > @@ -153,8 +147,6 @@ struct palmas_gpadc_platform_data {
+> > > 	int start_polarity;
+> > >=20
+> > > 	int auto_conversion_period_ms;
+> > > -	struct palmas_adc_wakeup_property *adc_wakeup1_data;
+> > > -	struct palmas_adc_wakeup_property *adc_wakeup2_data;
+> > > };
+> > >=20
+> > > struct palmas_reg_init {
+> > > --=20
+> > > 2.25.1
+> > >  =20
+> >  =20
 
