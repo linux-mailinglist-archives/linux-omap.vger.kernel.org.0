@@ -2,53 +2,53 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D93A16DE327
-	for <lists+linux-omap@lfdr.de>; Tue, 11 Apr 2023 19:51:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1326F6DE33C
+	for <lists+linux-omap@lfdr.de>; Tue, 11 Apr 2023 19:55:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230027AbjDKRvt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 11 Apr 2023 13:51:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34222 "EHLO
+        id S229965AbjDKRzj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 11 Apr 2023 13:55:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229988AbjDKRvr (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 11 Apr 2023 13:51:47 -0400
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D1E06A6A
-        for <linux-omap@vger.kernel.org>; Tue, 11 Apr 2023 10:51:41 -0700 (PDT)
-Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-632384298b3so4336727b3a.0
-        for <linux-omap@vger.kernel.org>; Tue, 11 Apr 2023 10:51:41 -0700 (PDT)
+        with ESMTP id S229535AbjDKRzg (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 11 Apr 2023 13:55:36 -0400
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 563A46183
+        for <linux-omap@vger.kernel.org>; Tue, 11 Apr 2023 10:55:23 -0700 (PDT)
+Received: by mail-pj1-x1031.google.com with SMTP id l9-20020a17090a3f0900b0023d32684e7fso1976278pjc.1
+        for <linux-omap@vger.kernel.org>; Tue, 11 Apr 2023 10:55:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1681235501;
+        d=linaro.org; s=google; t=1681235723;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Qbuj7VpjZ04yn+wg2bJaslUI/L4vbCkU/bi684VY7gU=;
-        b=rGqy3gXENEdQs9vwdi5+0tC3AYSczqHIF80RMZjqiYEC8liJHBMqz38foZT4QOZJHf
-         2BEiKR+utiGB6SNIy6QKcFABt+CjNDhFonLiW1GEKifNs6KbEhLK6JWn31aUy4f3Wo+D
-         QMb2xGdP6Dp1s7JEKq1KNQK6mqlh9kA+DwQ8hv3wnqjGQOdJZ3lcOwmQL/R2eTNJPIx0
-         BlSKSjOV1coNnS5G1X/RQy1xv5DeH1pkC1fKohcn8IyExr2IRswySVeMImOJDLCUhuHv
-         KU2K9SCdluLLdPipsRNPlljEcsGuKcbaQiUN7iFtd89VoQbxmejkjCcyXpnzEi4VwbtB
-         PqmQ==
+        bh=z+wspxn3j8gJu++FUxqZxSsWrkX6WZYur+w31HVIo5E=;
+        b=jG8rRP3d4bbGoXxIrEK0OYEnK+b1IjcF+Cs+d6eaZYAX94ri9Pum9fa/+Jx/A8HxCF
+         8yweRQp7oBFt+OYlXPYoxiHC0myTQjUhpLTLBRSfX1kjxW4TzvPfm6R+Abvncimgydpi
+         8YVDIFQcJmYCOyu+hpFjn2i56NA8kajSGOLy100OrURts2D0nrWuQ35uox5L9Ui5Z8LC
+         ClxFJKHQiV1SGHSKHUPJiHIO5HCZCvF/5PfhWRU0WHFeW6tNfTdtpPOrbHRdoeOq26mU
+         Kfd758hRYmRMtOMzXvjfmG38HbHI2dWTnWiagWfNiLa73Ngxqqoln8Wg4TUWWzLNMs6Z
+         ptVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1681235501;
+        d=1e100.net; s=20210112; t=1681235723;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Qbuj7VpjZ04yn+wg2bJaslUI/L4vbCkU/bi684VY7gU=;
-        b=sK2+hBMIOX8WZ5PPQbGQYe2t4DI0mhwulnUFdLL1twWYO438m5Ec/U4h6kMDdBYdav
-         pKjyu+6JWNfl51/4Q0smRapEgkWhiBiYBfHs1S8AY8maqXTtS4Cgawtu/31juKbgKMKs
-         S7MH1T9geQGBX4+lF2NF7EYQD/7c1WDLwgy4R0gY+o2WoSifklCVx7cEPOHG7JFyYgx1
-         FOl/LGLf0ETJWKKEUBCucTqUrthfbwCjbmpRgpndkA68dZHpARlduPwfc4XP6nQYujy4
-         SRhia7Nde59Qn2JkUW9SZiysy3v56TMkzA9lEDVPzowaf1bI11Vd5jtHQfnQH7oGT78C
-         5ONg==
-X-Gm-Message-State: AAQBX9ezSdZUSqsJVlPz2l/5juSB3VL3PrqvIOKFKDIBnFHxW4tmO3NO
-        fwV4h96qiipsQZid/HZMHtFsfg==
-X-Google-Smtp-Source: AKy350YEP9DijctCtVBhRuMX8F/0ocKY2aSATqLaLy16Q+DL1r+vUkiiec1juOtOMmYHlgtGSQUC1A==
-X-Received: by 2002:a62:ab14:0:b0:625:524b:9712 with SMTP id p20-20020a62ab14000000b00625524b9712mr41711pff.2.1681235500775;
-        Tue, 11 Apr 2023 10:51:40 -0700 (PDT)
+        bh=z+wspxn3j8gJu++FUxqZxSsWrkX6WZYur+w31HVIo5E=;
+        b=3yzpVn+dNlVcsIKyqb9cqnhelyMo26ftoc25QMy3rMEmfDMBEl7WT5txyRqjnmR9uZ
+         y+2hjYxAeFSBpb4LAqzArqygYn8Kz8F8FBLaHUn1aPOdIZdLfUtLAl0uUg9YLmw+G/lb
+         p8wOwOG7PjrVosyDM2U5a6o3XZiug5P9JP6G8eYCZz22PdwjlF/kJPBeL+b91/6/b/xv
+         RSzfkLrYHg+q25/sjJv4tkecEYMaqSu4/V7FzjGxJFL/gELdrpP6CaBGE9sSUteaLSyD
+         EBRNFbZBOYG78KwVHvIfyHNjbStIpUolvWYf+dAobFNVhQjb3qfZaxcQnnkwBz06hzek
+         azow==
+X-Gm-Message-State: AAQBX9eK5ANA2LOdHDNhwmSFXRiKyXJszGM6iVZD6jnuvCshx5fmiuW4
+        tkIJDq/WQvBAfZbb1+rrq6oy/A==
+X-Google-Smtp-Source: AKy350ZjzcTensJICOA4UuuuSXUEOa1haZjIESZWRdZ7Rh5k0GVM8LtE8IMxyCZ59c/F/5oquUzaxQ==
+X-Received: by 2002:a17:902:e892:b0:199:4be8:be48 with SMTP id w18-20020a170902e89200b001994be8be48mr17406540plg.19.1681235722790;
+        Tue, 11 Apr 2023 10:55:22 -0700 (PDT)
 Received: from p14s ([2604:3d09:148c:c800:f795:eecb:467b:d183])
-        by smtp.gmail.com with ESMTPSA id s21-20020a056a00195500b006243e706195sm10084448pfk.196.2023.04.11.10.51.39
+        by smtp.gmail.com with ESMTPSA id bg12-20020a1709028e8c00b001a50dcd10c8sm8601290plb.277.2023.04.11.10.55.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Apr 2023 10:51:40 -0700 (PDT)
-Date:   Tue, 11 Apr 2023 11:51:37 -0600
+        Tue, 11 Apr 2023 10:55:22 -0700 (PDT)
+Date:   Tue, 11 Apr 2023 11:55:19 -0600
 From:   Mathieu Poirier <mathieu.poirier@linaro.org>
 To:     MD Danish Anwar <danishanwar@ti.com>
 Cc:     "Andrew F. Davis" <afd@ti.com>, Suman Anna <s-anna@ti.com>,
@@ -61,15 +61,15 @@ Cc:     "Andrew F. Davis" <afd@ti.com>, Suman Anna <s-anna@ti.com>,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-omap@vger.kernel.org, srk@ti.com, devicetree@vger.kernel.org,
         netdev@vger.kernel.org
-Subject: Re: [PATCH v7 2/4] soc: ti: pruss: Add
- pruss_{request,release}_mem_region() API
-Message-ID: <20230411175137.GC38361@p14s>
+Subject: Re: [PATCH v7 3/4] soc: ti: pruss: Add pruss_cfg_read()/update(),
+ pruss_cfg_get_gpmux()/set_gpmux() APIs
+Message-ID: <20230411175519.GD38361@p14s>
 References: <20230404115336.599430-1-danishanwar@ti.com>
- <20230404115336.599430-3-danishanwar@ti.com>
+ <20230404115336.599430-4-danishanwar@ti.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230404115336.599430-3-danishanwar@ti.com>
+In-Reply-To: <20230404115336.599430-4-danishanwar@ti.com>
 X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
         DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
         autolearn=unavailable autolearn_force=no version=3.4.6
@@ -79,113 +79,94 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, Apr 04, 2023 at 05:23:34PM +0530, MD Danish Anwar wrote:
-> From: "Andrew F. Davis" <afd@ti.com>
+On Tue, Apr 04, 2023 at 05:23:35PM +0530, MD Danish Anwar wrote:
+> From: Suman Anna <s-anna@ti.com>
 > 
-> Add two new API - pruss_request_mem_region() & pruss_release_mem_region(),
-> to the PRUSS platform driver to allow client drivers to acquire and release
-> the common memory resources present within a PRU-ICSS subsystem. This
-> allows the client drivers to directly manipulate the respective memories,
-> as per their design contract with the associated firmware.
+> Add two new generic API pruss_cfg_read() and pruss_cfg_update() to
+> the PRUSS platform driver to read and program respectively a register
+> within the PRUSS CFG sub-module represented by a syscon driver. These
+> APIs are internal to PRUSS driver.
 > 
-> Co-developed-by: Suman Anna <s-anna@ti.com>
+> Add two new helper functions pruss_cfg_get_gpmux() & pruss_cfg_set_gpmux()
+> to get and set the GP MUX mode for programming the PRUSS internal wrapper
+> mux functionality as needed by usecases.
+> 
+> Various useful registers and macros for certain register bit-fields and
+> their values have also been added.
+> 
 > Signed-off-by: Suman Anna <s-anna@ti.com>
-> Signed-off-by: Andrew F. Davis <afd@ti.com>
 > Co-developed-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
 > Signed-off-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
+> Signed-off-by: Puranjay Mohan <p-mohan@ti.com>
 > Reviewed-by: Roger Quadros <rogerq@kernel.org>
-> Acked-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 > Reviewed-by: Tony Lindgren <tony@atomide.com>
 > Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
 > ---
->  drivers/soc/ti/pruss.c           | 77 ++++++++++++++++++++++++++++++++
->  include/linux/pruss_internal.h   | 27 +++--------
->  include/linux/remoteproc/pruss.h | 39 ++++++++++++++++
->  3 files changed, 121 insertions(+), 22 deletions(-)
+>  drivers/soc/ti/pruss.c           | 45 ++++++++++++++++
+>  drivers/soc/ti/pruss.h           | 88 ++++++++++++++++++++++++++++++++
+>  include/linux/remoteproc/pruss.h | 32 ++++++++++++
+>  3 files changed, 165 insertions(+)
+>  create mode 100644 drivers/soc/ti/pruss.h
 > 
 > diff --git a/drivers/soc/ti/pruss.c b/drivers/soc/ti/pruss.c
-> index 28b77d715903..7aa0f7171af1 100644
+> index 7aa0f7171af1..0e37fe142615 100644
 > --- a/drivers/soc/ti/pruss.c
 > +++ b/drivers/soc/ti/pruss.c
-> @@ -92,6 +92,82 @@ void pruss_put(struct pruss *pruss)
+> @@ -21,6 +21,7 @@
+>  #include <linux/regmap.h>
+>  #include <linux/remoteproc.h>
+>  #include <linux/slab.h>
+> +#include "pruss.h"
+>  
+>  /**
+>   * struct pruss_private_data - PRUSS driver private data
+> @@ -168,6 +169,50 @@ int pruss_release_mem_region(struct pruss *pruss,
 >  }
->  EXPORT_SYMBOL_GPL(pruss_put);
+>  EXPORT_SYMBOL_GPL(pruss_release_mem_region);
 >  
 > +/**
-> + * pruss_request_mem_region() - request a memory resource
-> + * @pruss: the pruss instance
-> + * @mem_id: the memory resource id
-> + * @region: pointer to memory region structure to be filled in
-> + *
-> + * This function allows a client driver to request a memory resource,
-> + * and if successful, will let the client driver own the particular
-> + * memory region until released using the pruss_release_mem_region()
-> + * API.
-> + *
-> + * Return: 0 if requested memory region is available (in such case pointer to
-> + * memory region is returned via @region), an error otherwise
+> + * pruss_cfg_get_gpmux() - get the current GPMUX value for a PRU device
+> + * @pruss: pruss instance
+> + * @pru_id: PRU identifier (0-1)
+> + * @mux: pointer to store the current mux value into
+> + w
+> + * Return: 0 on success, or an error code otherwise
 > + */
-> +int pruss_request_mem_region(struct pruss *pruss, enum pruss_mem mem_id,
-> +			     struct pruss_mem_region *region)
+> +int pruss_cfg_get_gpmux(struct pruss *pruss, enum pruss_pru_id pru_id, u8 *mux)
 > +{
-> +	if (!pruss || !region || mem_id >= PRUSS_MEM_MAX)
+> +	int ret = 0;
+> +	u32 val;
+> +
+> +	if (pru_id < 0 || pru_id >= PRUSS_NUM_PRUS || !mux)
 > +		return -EINVAL;
 > +
-> +	mutex_lock(&pruss->lock);
-> +
-> +	if (pruss->mem_in_use[mem_id]) {
-> +		mutex_unlock(&pruss->lock);
-> +		return -EBUSY;
-> +	}
-> +
-> +	*region = pruss->mem_regions[mem_id];
-> +	pruss->mem_in_use[mem_id] = region;
-> +
-> +	mutex_unlock(&pruss->lock);
-> +
-> +	return 0;
+> +	ret = pruss_cfg_read(pruss, PRUSS_CFG_GPCFG(pru_id), &val);
+> +	if (!ret)
+> +		*mux = (u8)((val & PRUSS_GPCFG_PRU_MUX_SEL_MASK) >>
+> +			    PRUSS_GPCFG_PRU_MUX_SEL_SHIFT);
+> +	return ret;
 > +}
-> +EXPORT_SYMBOL_GPL(pruss_request_mem_region);
+> +EXPORT_SYMBOL_GPL(pruss_cfg_get_gpmux);
 > +
 > +/**
-> + * pruss_release_mem_region() - release a memory resource
-> + * @pruss: the pruss instance
-> + * @region: the memory region to release
+> + * pruss_cfg_set_gpmux() - set the GPMUX value for a PRU device
+> + * @pruss: pruss instance
+> + * @pru_id: PRU identifier (0-1)
+> + * @mux: new mux value for PRU
 > + *
-> + * This function is the complimentary function to
-> + * pruss_request_mem_region(), and allows the client drivers to
-> + * release back a memory resource.
-> + *
-> + * Return: 0 on success, an error code otherwise
+> + * Return: 0 on success, or an error code otherwise
 > + */
-> +int pruss_release_mem_region(struct pruss *pruss,
-> +			     struct pruss_mem_region *region)
+> +int pruss_cfg_set_gpmux(struct pruss *pruss, enum pruss_pru_id pru_id, u8 mux)
 > +{
-> +	int id;
-> +
-> +	if (!pruss || !region)
+> +	if (mux >= PRUSS_GP_MUX_SEL_MAX ||
+> +	    pru_id < 0 || pru_id >= PRUSS_NUM_PRUS)
 > +		return -EINVAL;
 > +
-> +	mutex_lock(&pruss->lock);
-> +
-> +	/* find out the memory region being released */
-> +	for (id = 0; id < PRUSS_MEM_MAX; id++) {
-> +		if (pruss->mem_in_use[id] == region)
-> +			break;
-> +	}
-> +
-> +	if (id == PRUSS_MEM_MAX) {
-> +		mutex_unlock(&pruss->lock);
-> +		return -EINVAL;
-> +	}
-> +
-> +	pruss->mem_in_use[id] = NULL;
-> +
-> +	mutex_unlock(&pruss->lock);
-> +
-> +	return 0;
+> +	return pruss_cfg_update(pruss, PRUSS_CFG_GPCFG(pru_id),
+> +				PRUSS_GPCFG_PRU_MUX_SEL_MASK,
+> +				(u32)mux << PRUSS_GPCFG_PRU_MUX_SEL_SHIFT);
 > +}
-> +EXPORT_SYMBOL_GPL(pruss_release_mem_region);
+> +EXPORT_SYMBOL_GPL(pruss_cfg_set_gpmux);
 > +
 
 These stay here.
@@ -193,134 +174,159 @@ These stay here.
 >  static void pruss_of_free_clk_provider(void *data)
 >  {
 >  	struct device_node *clk_mux_np = data;
-> @@ -294,6 +370,7 @@ static int pruss_probe(struct platform_device *pdev)
->  		return -ENOMEM;
->  
->  	pruss->dev = dev;
-> +	mutex_init(&pruss->lock);
->  
->  	child = of_get_child_by_name(np, "memories");
->  	if (!child) {
-> diff --git a/include/linux/pruss_internal.h b/include/linux/pruss_internal.h
-> index 8f91cb164054..cf5287fa01df 100644
-> --- a/include/linux/pruss_internal.h
-> +++ b/include/linux/pruss_internal.h
-> @@ -9,37 +9,18 @@
->  #ifndef _PRUSS_INTERNAL_H_
->  #define _PRUSS_INTERNAL_H_
->  
-> +#include <linux/mutex.h>
->  #include <linux/remoteproc/pruss.h>
->  #include <linux/types.h>
->  
-> -/*
-> - * enum pruss_mem - PRUSS memory range identifiers
-> - */
-> -enum pruss_mem {
-> -	PRUSS_MEM_DRAM0 = 0,
-> -	PRUSS_MEM_DRAM1,
-> -	PRUSS_MEM_SHRD_RAM2,
-> -	PRUSS_MEM_MAX,
-> -};
-> -
-> -/**
-> - * struct pruss_mem_region - PRUSS memory region structure
-> - * @va: kernel virtual address of the PRUSS memory region
-> - * @pa: physical (bus) address of the PRUSS memory region
-> - * @size: size of the PRUSS memory region
-> - */
-> -struct pruss_mem_region {
-> -	void __iomem *va;
-> -	phys_addr_t pa;
-> -	size_t size;
-> -};
-> -
-
-These stay here.
-
->  /**
->   * struct pruss - PRUSS parent structure
->   * @dev: pruss device pointer
->   * @cfg_base: base iomap for CFG region
->   * @cfg_regmap: regmap for config region
->   * @mem_regions: data for each of the PRUSS memory regions
-> + * @mem_in_use: to indicate if memory resource is in use
-> + * @lock: mutex to serialize access to resources
->   * @core_clk_mux: clk handle for PRUSS CORE_CLK_MUX
->   * @iep_clk_mux: clk handle for PRUSS IEP_CLK_MUX
->   */
-> @@ -48,6 +29,8 @@ struct pruss {
->  	void __iomem *cfg_base;
->  	struct regmap *cfg_regmap;
->  	struct pruss_mem_region mem_regions[PRUSS_MEM_MAX];
-> +	struct pruss_mem_region *mem_in_use[PRUSS_MEM_MAX];
-> +	struct mutex lock; /* PRU resource lock */
->  	struct clk *core_clk_mux;
->  	struct clk *iep_clk_mux;
->  };
-> diff --git a/include/linux/remoteproc/pruss.h b/include/linux/remoteproc/pruss.h
-> index 93a98cac7829..33f930e0a0ce 100644
-> --- a/include/linux/remoteproc/pruss.h
-> +++ b/include/linux/remoteproc/pruss.h
-> @@ -44,6 +44,28 @@ enum pru_ctable_idx {
->  	PRU_C31,
->  };
->  
+> diff --git a/drivers/soc/ti/pruss.h b/drivers/soc/ti/pruss.h
+> new file mode 100644
+> index 000000000000..6c55987e0e55
+> --- /dev/null
+> +++ b/drivers/soc/ti/pruss.h
+> @@ -0,0 +1,88 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
 > +/*
-> + * enum pruss_mem - PRUSS memory range identifiers
+> + * PRU-ICSS Subsystem user interfaces
+> + *
+> + * Copyright (C) 2015-2023 Texas Instruments Incorporated - http://www.ti.com
+> + *	MD Danish Anwar <danishanwar@ti.com>
 > + */
-> +enum pruss_mem {
-> +	PRUSS_MEM_DRAM0 = 0,
-> +	PRUSS_MEM_DRAM1,
-> +	PRUSS_MEM_SHRD_RAM2,
-> +	PRUSS_MEM_MAX,
-> +};
+> +
+> +#ifndef _SOC_TI_PRUSS_H_
+> +#define _SOC_TI_PRUSS_H_
+> +
+> +#include <linux/bits.h>
+> +#include <linux/regmap.h>
+> +
+> +/*
+> + * PRU_ICSS_CFG registers
+> + * SYSCFG, ISRP, ISP, IESP, IECP, SCRP applicable on AMxxxx devices only
+> + */
+> +#define PRUSS_CFG_REVID         0x00
+> +#define PRUSS_CFG_SYSCFG        0x04
+> +#define PRUSS_CFG_GPCFG(x)      (0x08 + (x) * 4)
+> +#define PRUSS_CFG_CGR           0x10
+> +#define PRUSS_CFG_ISRP          0x14
+> +#define PRUSS_CFG_ISP           0x18
+> +#define PRUSS_CFG_IESP          0x1C
+> +#define PRUSS_CFG_IECP          0x20
+> +#define PRUSS_CFG_SCRP          0x24
+> +#define PRUSS_CFG_PMAO          0x28
+> +#define PRUSS_CFG_MII_RT        0x2C
+> +#define PRUSS_CFG_IEPCLK        0x30
+> +#define PRUSS_CFG_SPP           0x34
+> +#define PRUSS_CFG_PIN_MX        0x40
+> +
+> +/* PRUSS_GPCFG register bits */
+> +#define PRUSS_GPCFG_PRU_GPI_MODE_MASK           GENMASK(1, 0)
+> +#define PRUSS_GPCFG_PRU_GPI_MODE_SHIFT          0
+> +
+> +#define PRUSS_GPCFG_PRU_MUX_SEL_SHIFT           26
+> +#define PRUSS_GPCFG_PRU_MUX_SEL_MASK            GENMASK(29, 26)
+> +
+> +/* PRUSS_MII_RT register bits */
+> +#define PRUSS_MII_RT_EVENT_EN                   BIT(0)
+> +
+> +/* PRUSS_SPP register bits */
+> +#define PRUSS_SPP_XFER_SHIFT_EN                 BIT(1)
+> +#define PRUSS_SPP_PRU1_PAD_HP_EN                BIT(0)
+> +#define PRUSS_SPP_RTU_XFR_SHIFT_EN              BIT(3)
 > +
 > +/**
-> + * struct pruss_mem_region - PRUSS memory region structure
-> + * @va: kernel virtual address of the PRUSS memory region
-> + * @pa: physical (bus) address of the PRUSS memory region
-> + * @size: size of the PRUSS memory region
+> + * pruss_cfg_read() - read a PRUSS CFG sub-module register
+> + * @pruss: the pruss instance handle
+> + * @reg: register offset within the CFG sub-module
+> + * @val: pointer to return the value in
+> + *
+> + * Reads a given register within the PRUSS CFG sub-module and
+> + * returns it through the passed-in @val pointer
+> + *
+> + * Return: 0 on success, or an error code otherwise
 > + */
-> +struct pruss_mem_region {
-> +	void __iomem *va;
-> +	phys_addr_t pa;
-> +	size_t size;
+> +static int pruss_cfg_read(struct pruss *pruss, unsigned int reg, unsigned int *val)
+> +{
+> +	if (IS_ERR_OR_NULL(pruss))
+> +		return -EINVAL;
+> +
+> +	return regmap_read(pruss->cfg_regmap, reg, val);
+> +}
+> +
+> +/**
+> + * pruss_cfg_update() - configure a PRUSS CFG sub-module register
+> + * @pruss: the pruss instance handle
+> + * @reg: register offset within the CFG sub-module
+> + * @mask: bit mask to use for programming the @val
+> + * @val: value to write
+> + *
+> + * Programs a given register within the PRUSS CFG sub-module
+> + *
+> + * Return: 0 on success, or an error code otherwise
+> + */
+> +static int pruss_cfg_update(struct pruss *pruss, unsigned int reg,
+> +			    unsigned int mask, unsigned int val)
+> +{
+> +	if (IS_ERR_OR_NULL(pruss))
+> +		return -EINVAL;
+> +
+> +	return regmap_update_bits(pruss->cfg_regmap, reg, mask, val);
+> +}
+> +
+
+Everything in pruss.h is ok.
+
+> +#endif  /* _SOC_TI_PRUSS_H_ */
+> diff --git a/include/linux/remoteproc/pruss.h b/include/linux/remoteproc/pruss.h
+> index 33f930e0a0ce..5641153459a7 100644
+> --- a/include/linux/remoteproc/pruss.h
+> +++ b/include/linux/remoteproc/pruss.h
+> @@ -16,6 +16,24 @@
+>  
+>  #define PRU_RPROC_DRVNAME "pru-rproc"
+>  
+> +/*
+> + * enum pruss_gp_mux_sel - PRUSS GPI/O Mux modes for the
+> + * PRUSS_GPCFG0/1 registers
+> + *
+> + * NOTE: The below defines are the most common values, but there
+> + * are some exceptions like on 66AK2G, where the RESERVED and MII2
+> + * values are interchanged. Also, this bit-field does not exist on
+> + * AM335x SoCs
+> + */
+> +enum pruss_gp_mux_sel {
+> +	PRUSS_GP_MUX_SEL_GP = 0,
+> +	PRUSS_GP_MUX_SEL_ENDAT,
+> +	PRUSS_GP_MUX_SEL_RESERVED,
+> +	PRUSS_GP_MUX_SEL_SD,
+> +	PRUSS_GP_MUX_SEL_MII2,
+> +	PRUSS_GP_MUX_SEL_MAX,
 > +};
 > +
->  struct device_node;
->  struct rproc;
->  struct pruss;
-> @@ -52,6 +74,10 @@ struct pruss;
->  
->  struct pruss *pruss_get(struct rproc *rproc);
->  void pruss_put(struct pruss *pruss);
-> +int pruss_request_mem_region(struct pruss *pruss, enum pruss_mem mem_id,
-> +			     struct pruss_mem_region *region);
-> +int pruss_release_mem_region(struct pruss *pruss,
-> +			     struct pruss_mem_region *region);
+>  /**
+>   * enum pruss_pru_id - PRU core identifiers
+>   * @PRUSS_PRU0: PRU Core 0.
+> @@ -78,6 +96,8 @@ int pruss_request_mem_region(struct pruss *pruss, enum pruss_mem mem_id,
+>  			     struct pruss_mem_region *region);
+>  int pruss_release_mem_region(struct pruss *pruss,
+>  			     struct pruss_mem_region *region);
+> +int pruss_cfg_get_gpmux(struct pruss *pruss, enum pruss_pru_id pru_id, u8 *mux);
+> +int pruss_cfg_set_gpmux(struct pruss *pruss, enum pruss_pru_id pru_id, u8 mux);
 >  
 >  #else
 >  
-> @@ -62,6 +88,19 @@ static inline struct pruss *pruss_get(struct rproc *rproc)
+> @@ -101,6 +121,18 @@ static inline int pruss_release_mem_region(struct pruss *pruss,
+>  	return -EOPNOTSUPP;
+>  }
 >  
->  static inline void pruss_put(struct pruss *pruss) { }
->  
-> +static inline int pruss_request_mem_region(struct pruss *pruss,
-> +					   enum pruss_mem mem_id,
-> +					   struct pruss_mem_region *region)
+> +static inline int pruss_cfg_get_gpmux(struct pruss *pruss,
+> +				      enum pruss_pru_id pru_id, u8 *mux)
 > +{
-> +	return -EOPNOTSUPP;
+> +	return ERR_PTR(-EOPNOTSUPP);
 > +}
 > +
-> +static inline int pruss_release_mem_region(struct pruss *pruss,
-> +					   struct pruss_mem_region *region)
+> +static inline int pruss_cfg_set_gpmux(struct pruss *pruss,
+> +				      enum pruss_pru_id pru_id, u8 mux)
 > +{
-> +	return -EOPNOTSUPP;
+> +	return ERR_PTR(-EOPNOTSUPP);
 > +}
 > +
 
-These go in pruss_driver.h
+All of this goes in pruss_driver.h
 
 >  #endif /* CONFIG_TI_PRUSS */
 >  
