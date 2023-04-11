@@ -2,179 +2,294 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 406D76DDFCD
-	for <lists+linux-omap@lfdr.de>; Tue, 11 Apr 2023 17:38:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8553A6DE31B
+	for <lists+linux-omap@lfdr.de>; Tue, 11 Apr 2023 19:49:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229703AbjDKPih (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 11 Apr 2023 11:38:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57324 "EHLO
+        id S229727AbjDKRtq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 11 Apr 2023 13:49:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59852 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229491AbjDKPig (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 11 Apr 2023 11:38:36 -0400
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7CE1E60;
-        Tue, 11 Apr 2023 08:38:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1681227515; x=1712763515;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=Yb98Agr6ED/F4yxeuFitBVU4LwO7fDcWju0NzDdeBRo=;
-  b=GkpB+/l8L4F3pFLl6b0U0YVRi92l4CFomI5DZaIrkVdVpw3Ewq1+ndLd
-   EDVvb4+7llhW9EKTepO+M6TsHSNSBpdfTfBXCyF5WTjYr4JV38JmZ1QJt
-   9PpZOvgar6UVpHX8lF45HZdhenkxK4yP2rk7jisvgoFJX149HF10x0zaM
-   4bjyifcbJUrjIFVoxwashg7FFibEgkjvEYkUT3+8uZkdUaXQkqkFc78Xw
-   e5/cGbGjmqPSbrByQLUn7ISlvQEQUNIBH82jT5So4kVHVHOqCg3e+omoL
-   S0x+wELvfVsuxa6ZVz4PBXg7tMKvOc/zhlugEd/3gQmL6ijKr5TUzEMX6
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10677"; a="408791315"
-X-IronPort-AV: E=Sophos;i="5.98,336,1673942400"; 
-   d="scan'208";a="408791315"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Apr 2023 08:38:29 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10677"; a="688622223"
-X-IronPort-AV: E=Sophos;i="5.98,336,1673942400"; 
-   d="scan'208";a="688622223"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
-  by orsmga002.jf.intel.com with ESMTP; 11 Apr 2023 08:38:27 -0700
-Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Tue, 11 Apr 2023 08:38:26 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Tue, 11 Apr 2023 08:38:26 -0700
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23 via Frontend Transport; Tue, 11 Apr 2023 08:38:26 -0700
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.42) by
- edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.23; Tue, 11 Apr 2023 08:38:25 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=caZjrAiNtOftJEHmRN16/x02MCO8YbpljMhgQkNWRjC9aaMIcAmdgMd+v4PZKiMFmUAfpwOFlNMP+HgXWMTKeOBHiekeRo377Nz+oyK7ANQVJOD+HQTjVXi6WB6ndlDbpUSvKBtYi/U9d3yvppAn0b89GnLzg+oHBeHhVE7frPK80N7ixw32/RTWsmzCclIOVJ4lQiQHm0zoxsnSzB7AE7EiiEMhWQnCqxrO716u/pwNa7LsyoLqXDsy2modTWB1kY+M3USEQRIMeXxdn3DzyTX2fThmfbKZ3jiNdgUvYoiQMQio9jbXNlhnccumr+uM/DqX3jogsqZs19uuXGsr/g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sYeOsS1pSRB5iwVYBlC5hMUO6T/0/QAk2kx7FXmAc3A=;
- b=IYm7QqhUGkfVISY5tPJRgmA09R3qp6ZxutBqZ4D+mUCxdzrafg5EA0p0HmmJbhAfjRxEHsDkZHY1WHY+ZDfP/Bjv0DgVG2pexiBlDQfanFPDDn1ho4QHHrTNd7Kduz1s2b842evnUDnVkpGF1WMB2zOvxuRsn6TYNYbab7d1ptPCnX6GbzFU6bZqiU5+dPKxMV/TARJ3NHFA2LzBbnZNRn4G9YvvSJFWXukpIo9GbQQ0Zqovjfv6U7FVkCQbFzh2WXn4PG1YS96bP+U9GvAT3wq87uBXSmLo+KzHdGwEvHU/cjwcwKp6lVvS0YVIHvItxqucNxNpKaknSml8Xn+7RQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CO1PR11MB4914.namprd11.prod.outlook.com (2603:10b6:303:90::24)
- by SJ0PR11MB5022.namprd11.prod.outlook.com (2603:10b6:a03:2d7::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6277.35; Tue, 11 Apr
- 2023 15:38:24 +0000
-Received: from CO1PR11MB4914.namprd11.prod.outlook.com
- ([fe80::c7d6:3545:6927:8493]) by CO1PR11MB4914.namprd11.prod.outlook.com
- ([fe80::c7d6:3545:6927:8493%7]) with mapi id 15.20.6277.038; Tue, 11 Apr 2023
- 15:38:24 +0000
-Message-ID: <17a50d0d-6b00-8966-ae37-d8407c0a89fb@intel.com>
-Date:   Tue, 11 Apr 2023 08:38:22 -0700
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Firefox/102.0 Thunderbird/102.9.1
-Subject: Re: [PATCH] net: ti/cpsw: Add explicit platform_device.h and
- of_platform.h includes
-Content-Language: en-US
-To:     Rob Herring <robh@kernel.org>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        "Eric Dumazet" <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-CC:     <linux-omap@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-References: <20230410232719.1561950-1-robh@kernel.org>
-From:   Jesse Brandeburg <jesse.brandeburg@intel.com>
-In-Reply-To: <20230410232719.1561950-1-robh@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SJ0PR03CA0062.namprd03.prod.outlook.com
- (2603:10b6:a03:331::7) To CO1PR11MB4914.namprd11.prod.outlook.com
- (2603:10b6:303:90::24)
+        with ESMTP id S229473AbjDKRto (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 11 Apr 2023 13:49:44 -0400
+Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0657D40D5
+        for <linux-omap@vger.kernel.org>; Tue, 11 Apr 2023 10:49:42 -0700 (PDT)
+Received: by mail-pj1-x1033.google.com with SMTP id l9-20020a17090a3f0900b0023d32684e7fso1966677pjc.1
+        for <linux-omap@vger.kernel.org>; Tue, 11 Apr 2023 10:49:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1681235381;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=jaebHLqve3sr3PjhNWP7eX3jN2UJi3CqLa3+FrX8x6s=;
+        b=kA4FhnB8aG0ab2N8mylFWLmJfZnYWVGEzKp0pZXAocXC/y+0BsxCOp+cbv5mj68I4b
+         mS/362UmBdA+MtafvCOJW8hiQsr9o1F5Sg55B58ZwTWoLUe/DACmSEG+Pg5G5G8h6iuV
+         PsBgLSPzVrAQ1LAYXxko8L1iiU//KBkCDRrklc2rlqF9Ob4iEVT3yiKBVXgJ2CaVYI8V
+         LCb/QgvQBRb910+kWXq3rk9bhfBBLbIHtao27XdO9tSeLNUlWPjGy/AVEHoSGnof56dw
+         pXb5GGgtkZW34Vv+hOOXxcDQ8VHOquDAjN8hinsQl9q6qfkbWQoq2O71I3uZ3mCWyUAO
+         6qJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1681235381;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jaebHLqve3sr3PjhNWP7eX3jN2UJi3CqLa3+FrX8x6s=;
+        b=Dg2AOgROi/whEop3GAMgmzBz1vem9rMExYdjbLKkVSUo3hl9wHymBbh3Cv2RrlIEWh
+         9QYDSfkHIM4UOlOdNSdS3i3JTGWPXNKsBsoi2IEOE9Uk5Cmj9SckcnbrZn+XNnjxiD8X
+         MFlRKIycQ5iRFHycTmCAewQRMeeqe0TdO7etDD+0tkUCFPeoGkSia2d69pHoFxHiuiD5
+         fe86GuZnnAWWPH22mdCmqBbYMNTGpS7g5tS44WxxWEDnqiCTTdGxVsNCm5BKPW1hQchn
+         XabdPJn2qa2z6y974tdfDXIj/loeGiSokAfnQ7rIb7Yp3S8aILJgoEYN+jc3ORSIvoDn
+         8tgg==
+X-Gm-Message-State: AAQBX9etzzDEAbCtWp7JI7tz/j61SQ04UHFkNt1wZZ8VMZiq8MmL8Wdv
+        +/R4kACZ/D/J3HiXzQBT5RR1iQ==
+X-Google-Smtp-Source: AKy350ZR3zysgzggrix4Kf++ZHjpsKtVeF09whw+wPV8LPhDGW9uk/3nyPygD/2zY7/UjM+B9SM8tw==
+X-Received: by 2002:a05:6a20:49b0:b0:d8:bd6d:e122 with SMTP id fs48-20020a056a2049b000b000d8bd6de122mr3712989pzb.29.1681235381478;
+        Tue, 11 Apr 2023 10:49:41 -0700 (PDT)
+Received: from p14s ([2604:3d09:148c:c800:f795:eecb:467b:d183])
+        by smtp.gmail.com with ESMTPSA id s21-20020aa78295000000b0062dc14ee2a7sm10099273pfm.211.2023.04.11.10.49.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Apr 2023 10:49:41 -0700 (PDT)
+Date:   Tue, 11 Apr 2023 11:49:38 -0600
+From:   Mathieu Poirier <mathieu.poirier@linaro.org>
+To:     MD Danish Anwar <danishanwar@ti.com>
+Cc:     "Andrew F. Davis" <afd@ti.com>, Suman Anna <s-anna@ti.com>,
+        Roger Quadros <rogerq@kernel.org>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Tero Kristo <kristo@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Nishanth Menon <nm@ti.com>, linux-remoteproc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, srk@ti.com, devicetree@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: Re: [PATCH v7 1/4] soc: ti: pruss: Add pruss_get()/put() API
+Message-ID: <20230411174938.GB38361@p14s>
+References: <20230404115336.599430-1-danishanwar@ti.com>
+ <20230404115336.599430-2-danishanwar@ti.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PR11MB4914:EE_|SJ0PR11MB5022:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0f6468fb-54f3-456d-2e3c-08db3aa2c973
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: t/cJSFaQU/r/SLxv2ynMHYLbN4Rn0mDjxU1JbpnPxWLLNj6PF+Rkm/nhW028oPdC58xJFhlAqCkC50FBxxAAfyX73RBHKF3qAXaWPHcpeqJS0P50Rl6QwTPhztpR9snOOHnBsaSTrLtgECU+U/zJDZFjpv8WDIgJOE+YC4WhEynR8h4uqtnDuUTZYgfIf7SRGDD9cKNsH/z3UJqvOIxjUaF1cLUf7vGclEfDAVomBTV31yNzfLIQRJJe7Uivo702aGkI6HPYCqYq8kPi9xvt/9H/Z1Wx9VlX+SrRUH/x2WldO+iPiI/CrtppCHBwgIkvvmFqF0PrSB+NTrxkG0H1X88/ayNA43haDjGDuyWjYFNuZS/4vDBJ2Lo/UsHP+bXy6QZV58RH3rngPBZyAqmUeMJXrkb13dEm6jHkJuQiOiReJKN6kBXTsKyvXZPkenqHr3rx+GQGWgsj4vWiGgXI47PB4XEEUDc90lSfM0jOl148D6FtxLGHfrHXwVN8xqWF8oNnm1eQvRloTYu0qJ81n5qr7vJLprt3+meSutXmt0BOTpIrRXmegcM7Jld0dTjVdq7j3UiKyluvVGdQdbL+Y4Jz75KogSSftnTtzG6rryy1JKA7OYiStpqpg+WALMbSD89jHCYo88+TVcx/j32oVg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO1PR11MB4914.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(396003)(376002)(136003)(346002)(39850400004)(366004)(451199021)(8936002)(44832011)(4744005)(6486002)(5660300002)(86362001)(4326008)(31696002)(8676002)(66556008)(66476007)(66946007)(478600001)(38100700002)(31686004)(110136005)(316002)(82960400001)(53546011)(2906002)(6506007)(6512007)(2616005)(186003)(41300700001)(36756003)(26005)(45980500001)(43740500002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Y29pd0YzbkR1Ylc4NFNrTC9Mc09tcnEvRGhQbWlKYy8vRThWNXEzYkZMOWVX?=
- =?utf-8?B?ekVyb3M3ejF5U2hDekVCKzMvZXBoWjU4ait6M1FPbEhmYVRRWFBSaFJGcm12?=
- =?utf-8?B?NGd2ZjlaWUlEakZOQmxzM2pKR2w1WXo1aGZYQXV1ZW1Za2ltd0hJUUwrV3E2?=
- =?utf-8?B?ZERZRytrZER2eGZwSndqTk9oWnpMSTROZWhUUGFCWU1LQnpMVEZFZTVYTExv?=
- =?utf-8?B?Y2RHa0ZGamErSzRkWHNMcnF5dWg4T0ZKc2RibVR5K0lVRXBpNW5oRXJFQVdw?=
- =?utf-8?B?VkUwRTYxVzhPRmNFazZoajhOdjJSaDNZZW1lZUZYdHJOYXRKaVdwZzNYZUI0?=
- =?utf-8?B?V1R0Z1g4T0dMNERuMXQ2L3AwN1c5VHJwb2ZSa0kzV3hMbVdNYko1RVJoME8r?=
- =?utf-8?B?ZkZYVGpCZ1JIV09uTkVJU29rSmNWK1V6UkZSeDNJclZRUVk1LzhXbVhjVnBq?=
- =?utf-8?B?TWhrMDR5cnZSRGpVem5zaDNMZm5BWFIzaE52blFLZzBPS0tGdUQyTERIeHlX?=
- =?utf-8?B?ZkVxZTk0V1poM3owenMwWnhXWUlDK2FBd1V0RWpwS3NEeTBHTWowbG10Lzgw?=
- =?utf-8?B?ZGREUEZMVWtSOGNpRmw4eTJ3UGNpY0wxMVM0YzY3Z1ZFOXB0blhBV1JkZldl?=
- =?utf-8?B?cUIrQzh0V051RWtlVjZLcXNkQlMrd01lSG93QnNMRjVnL1l5V3FOUHdlM2pn?=
- =?utf-8?B?SjUrTDhSSzdPcU9ndU1ocmtNelBidUtmZGxKei9JMUlOVHgyWG1yYllPRUxL?=
- =?utf-8?B?L09za1lVTENQVVRpWXVua1ZjKzMzWkxKQUVDUWpQY0tiVEdCOEdtS2t2Z010?=
- =?utf-8?B?YjBwaFArT3FrM05jUTFpdFljRytsTmxEOHA0ZjdZRHNHVGdFYzBndlg5b0Y3?=
- =?utf-8?B?SUhEUkdwL0RUVDVQTXEwckNOWmp4WkE0dHhUOXg5N3gxQ3JNV3JINmttcXBx?=
- =?utf-8?B?bGV2TitnQlFsL2Fjc1NtZ3FGcWVMdmpFN3BDUWM2WlNRTGhYTlN1VmNTRlkz?=
- =?utf-8?B?WSt5UHNBU1BCYjBTdVliVmNreHZENkFyTCsvNkdoVGc0WkhrL0p5ckpNajRr?=
- =?utf-8?B?RVF5UlNYbHgwVzNUTTlZTENhbXUrUDJ4b2RzZlhYUDU3U1J3eFJkYU9qMXVl?=
- =?utf-8?B?c0ZSZHB1MytBTUZwV2JvUnV4MlpRRnBqTS8vbjBJSktHc2ErdlRpRHdnbjZv?=
- =?utf-8?B?QldjZXU1bTJhZWhUL3FTdEg1Rk1FRGRKVFZPVHZoNlZ6TGxCMHViUTJuU2x6?=
- =?utf-8?B?NWxOSUQremhlcE4xLzU5S0swZ1lvQ2Y0QXVJUzBNYndVQ21JVkU5RmRGYXUv?=
- =?utf-8?B?K3Q0aGxlcXVnN0lTNXc0UlgvQlVkWlN4QWhHTFlrWDVEVlRLZHV6MzZ1aUYv?=
- =?utf-8?B?UzNzdnJsWjE2UjRJVmxiZ0JFMUpNZWpvOUE5cll0bnM5NGlLaDBveE80OUgw?=
- =?utf-8?B?R0RQaklDUXAwWWhlNnFqcjk5OENGUEtpWWcwMFIwdXF0Z2RlRy8yMFQvYXgy?=
- =?utf-8?B?bElVOUhpQitYNWxJNlNmOWlnQ3AyREVPN0JtS2pLSGVGaUJxL0xrRXJpYWlx?=
- =?utf-8?B?b3czMkl5dEE5RzRLWG9RSENuVGIybGJ1cTM3VTVRM3J2bXY2SUx6RjJrWFhN?=
- =?utf-8?B?KzJnMWdkL2dIRngxeGpNcFlpMnRybzFjQUVZTGF5a0RocXhobVNzREREVlZH?=
- =?utf-8?B?QjQ3Ni9SYThYZC9VaGN4dW0xRUcxOXZPK0RXOGlLTFc4VnhNUUFxOGxMQTN6?=
- =?utf-8?B?MGYvVGlUMzZHMlMzZEFkSUtaY3Z5SGVXc29tVUdSQXVpSmJUSGxnMHg4ZUVa?=
- =?utf-8?B?cDdQRk80VXc5RzFyUUhyd21SUU04UXhJOGRPdlZYSkxUTFdKWi9GUUlVNE1M?=
- =?utf-8?B?VHhUbURSUW9GV1ZtUDhLTTU2WjJ5N005bktNQWhpN3J3ZHVxcU9xWVArc04z?=
- =?utf-8?B?UDVJYzAwNHorUUdDd1JEa2k2cjhtajNpWXUwakhyWFFrR2ZibGVQd29QOVps?=
- =?utf-8?B?eTNGOFRrOW1DeGVUb2RLR3g5dmQyM0tmNU9ibkFMYzlpSS9udytpWm12WWJx?=
- =?utf-8?B?V3ZhNXhSR2ErYmhSUXBwa2xTRzloazBYS1NxdEUvS3dvV3A3S2t5YjZaNTk3?=
- =?utf-8?B?VDQyYkVNWmxuV0orek5COGhKSGxkaVlMMEJZNXBzejJTQmVMYlEyQnNpS1N2?=
- =?utf-8?B?bXc9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0f6468fb-54f3-456d-2e3c-08db3aa2c973
-X-MS-Exchange-CrossTenant-AuthSource: CO1PR11MB4914.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Apr 2023 15:38:24.4110
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2dauERgHfMwZSWju3J99RFhq+bF0kAB/J21UDcBImoUzCpaairVkdLmcWokXnB24k+O7ec8nJDIUoo4NApUPdi+MxWeKzy2h2bcnd1+mDR0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB5022
-X-OriginatorOrg: intel.com
-X-Spam-Status: No, score=-4.7 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230404115336.599430-2-danishanwar@ti.com>
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 4/10/2023 4:27 PM, Rob Herring wrote:
-> TI CPSW uses of_platform_* functions which are declared in of_platform.h.
-> of_platform.h gets implicitly included by of_device.h, but that is going
-> to be removed soon. Nothing else depends on of_device.h so it can be
-> dropped. of_platform.h also implicitly includes platform_device.h, so
-> add an explicit include for it, too.
+On Tue, Apr 04, 2023 at 05:23:33PM +0530, MD Danish Anwar wrote:
+> From: Tero Kristo <t-kristo@ti.com>
 > 
-> Signed-off-by: Rob Herring <robh@kernel.org>
+> Add two new get and put API, pruss_get() and pruss_put() to the
+> PRUSS platform driver to allow client drivers to request a handle
+> to a PRUSS device. This handle will be used by client drivers to
+> request various operations of the PRUSS platform driver through
+> additional API that will be added in the following patches.
+> 
+> The pruss_get() function returns the pruss handle corresponding
+> to a PRUSS device referenced by a PRU remoteproc instance. The
+> pruss_put() is the complimentary function to pruss_get().
+> 
+> Co-developed-by: Suman Anna <s-anna@ti.com>
+> Signed-off-by: Suman Anna <s-anna@ti.com>
+> Signed-off-by: Tero Kristo <t-kristo@ti.com>
+> Co-developed-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
+> Signed-off-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
+> Signed-off-by: Puranjay Mohan <p-mohan@ti.com>
+> Reviewed-by: Roger Quadros <rogerq@kernel.org>
+> Reviewed-by: Tony Lindgren <tony@atomide.com>
+> Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
+> ---
+>  drivers/remoteproc/pru_rproc.c                |  2 +-
+>  drivers/soc/ti/pruss.c                        | 64 ++++++++++++++++++-
+>  .../{pruss_driver.h => pruss_internal.h}      |  7 +-
+>  include/linux/remoteproc/pruss.h              | 19 ++++++
+>  4 files changed, 87 insertions(+), 5 deletions(-)
+>  rename include/linux/{pruss_driver.h => pruss_internal.h} (90%)
+> 
+> diff --git a/drivers/remoteproc/pru_rproc.c b/drivers/remoteproc/pru_rproc.c
+> index b76db7fa693d..4ddd5854d56e 100644
+> --- a/drivers/remoteproc/pru_rproc.c
+> +++ b/drivers/remoteproc/pru_rproc.c
+> @@ -19,7 +19,7 @@
+>  #include <linux/of_device.h>
+>  #include <linux/of_irq.h>
+>  #include <linux/remoteproc/pruss.h>
+> -#include <linux/pruss_driver.h>
+> +#include <linux/pruss_internal.h>
 
-Reviewed-by: Jesse Brandeburg <jesse.brandeburg@intel.com>
+Don't rename pruss_driver.h.  There is no point in having a file in the include
+directory that contains a single struct declaration.
 
+>  #include <linux/remoteproc.h>
+>  
+>  #include "remoteproc_internal.h"
+> diff --git a/drivers/soc/ti/pruss.c b/drivers/soc/ti/pruss.c
+> index 6882c86b3ce5..28b77d715903 100644
+> --- a/drivers/soc/ti/pruss.c
+> +++ b/drivers/soc/ti/pruss.c
+> @@ -6,6 +6,7 @@
+>   * Author(s):
+>   *	Suman Anna <s-anna@ti.com>
+>   *	Andrew F. Davis <afd@ti.com>
+> + *	Tero Kristo <t-kristo@ti.com>
+>   */
+>  
+>  #include <linux/clk-provider.h>
+> @@ -16,8 +17,9 @@
+>  #include <linux/of_address.h>
+>  #include <linux/of_device.h>
+>  #include <linux/pm_runtime.h>
+> -#include <linux/pruss_driver.h>
+> +#include <linux/pruss_internal.h>
+>  #include <linux/regmap.h>
+> +#include <linux/remoteproc.h>
+>  #include <linux/slab.h>
+>  
+>  /**
+> @@ -30,6 +32,66 @@ struct pruss_private_data {
+>  	bool has_core_mux_clock;
+>  };
+>  
+> +/**
+> + * pruss_get() - get the pruss for a given PRU remoteproc
+> + * @rproc: remoteproc handle of a PRU instance
+> + *
+> + * Finds the parent pruss device for a PRU given the @rproc handle of the
+> + * PRU remote processor. This function increments the pruss device's refcount,
+> + * so always use pruss_put() to decrement it back once pruss isn't needed
+> + * anymore.
+> + *
+> + * This API doesn't check if @rproc is valid or not. It is expected the caller
+> + * will have done a pru_rproc_get() on @rproc, before calling this API to make
+> + * sure that @rproc is valid.
+> + *
+> + * Return: pruss handle on success, and an ERR_PTR on failure using one
+> + * of the following error values
+> + *    -EINVAL if invalid parameter
+> + *    -ENODEV if PRU device or PRUSS device is not found
+> + */
+> +struct pruss *pruss_get(struct rproc *rproc)
+> +{
+> +	struct pruss *pruss;
+> +	struct device *dev;
+> +	struct platform_device *ppdev;
+> +
+> +	if (IS_ERR_OR_NULL(rproc))
+> +		return ERR_PTR(-EINVAL);
+> +
+> +	dev = &rproc->dev;
+> +
+> +	/* make sure it is PRU rproc */
+> +	if (!dev->parent || !is_pru_rproc(dev->parent))
+> +		return ERR_PTR(-ENODEV);
+> +
+> +	ppdev = to_platform_device(dev->parent->parent);
+> +	pruss = platform_get_drvdata(ppdev);
+> +	if (!pruss)
+> +		return ERR_PTR(-ENODEV);
+> +
+> +	get_device(pruss->dev);
+> +
+> +	return pruss;
+> +}
+> +EXPORT_SYMBOL_GPL(pruss_get);
+> +
+> +/**
+> + * pruss_put() - decrement pruss device's usecount
+> + * @pruss: pruss handle
+> + *
+> + * Complimentary function for pruss_get(). Needs to be called
+> + * after the PRUSS is used, and only if the pruss_get() succeeds.
+> + */
+> +void pruss_put(struct pruss *pruss)
+> +{
+> +	if (IS_ERR_OR_NULL(pruss))
+> +		return;
+> +
+> +	put_device(pruss->dev);
+> +}
+> +EXPORT_SYMBOL_GPL(pruss_put);
 
+pruss_get() and pruss_put() stay here.
+
+> +
+>  static void pruss_of_free_clk_provider(void *data)
+>  {
+>  	struct device_node *clk_mux_np = data;
+> diff --git a/include/linux/pruss_driver.h b/include/linux/pruss_internal.h
+> similarity index 90%
+> rename from include/linux/pruss_driver.h
+> rename to include/linux/pruss_internal.h
+> index ecfded30ed05..8f91cb164054 100644
+> --- a/include/linux/pruss_driver.h
+> +++ b/include/linux/pruss_internal.h
+> @@ -6,9 +6,10 @@
+>   *	Suman Anna <s-anna@ti.com>
+>   */
+>  
+> -#ifndef _PRUSS_DRIVER_H_
+> -#define _PRUSS_DRIVER_H_
+> +#ifndef _PRUSS_INTERNAL_H_
+> +#define _PRUSS_INTERNAL_H_
+>  
+> +#include <linux/remoteproc/pruss.h>
+>  #include <linux/types.h>
+>  
+>  /*
+> @@ -51,4 +52,4 @@ struct pruss {
+>  	struct clk *iep_clk_mux;
+>  };
+>  
+> -#endif	/* _PRUSS_DRIVER_H_ */
+> +#endif	/* _PRUSS_INTERNAL_H_ */
+> diff --git a/include/linux/remoteproc/pruss.h b/include/linux/remoteproc/pruss.h
+> index 039b50d58df2..93a98cac7829 100644
+> --- a/include/linux/remoteproc/pruss.h
+> +++ b/include/linux/remoteproc/pruss.h
+> @@ -4,12 +4,14 @@
+>   *
+>   * Copyright (C) 2015-2022 Texas Instruments Incorporated - http://www.ti.com
+>   *	Suman Anna <s-anna@ti.com>
+> + *	Tero Kristo <t-kristo@ti.com>
+>   */
+>  
+>  #ifndef __LINUX_PRUSS_H
+>  #define __LINUX_PRUSS_H
+>  
+>  #include <linux/device.h>
+> +#include <linux/err.h>
+>  #include <linux/types.h>
+>  
+>  #define PRU_RPROC_DRVNAME "pru-rproc"
+> @@ -44,6 +46,23 @@ enum pru_ctable_idx {
+>  
+>  struct device_node;
+>  struct rproc;
+> +struct pruss;
+> +
+> +#if IS_ENABLED(CONFIG_TI_PRUSS)
+> +
+> +struct pruss *pruss_get(struct rproc *rproc);
+> +void pruss_put(struct pruss *pruss);
+> +
+> +#else
+> +
+> +static inline struct pruss *pruss_get(struct rproc *rproc)
+> +{
+> +	return ERR_PTR(-EOPNOTSUPP);
+> +}
+> +
+> +static inline void pruss_put(struct pruss *pruss) { }
+> +
+> +#endif /* CONFIG_TI_PRUSS */
+
+These go in pruss_driver.h
+
+>  
+>  #if IS_ENABLED(CONFIG_PRU_REMOTEPROC)
+>  
+> -- 
+> 2.25.1
+> 
