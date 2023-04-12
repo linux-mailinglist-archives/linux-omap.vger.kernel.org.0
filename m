@@ -2,61 +2,89 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5304D6DECCE
-	for <lists+linux-omap@lfdr.de>; Wed, 12 Apr 2023 09:42:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FB476DEF92
+	for <lists+linux-omap@lfdr.de>; Wed, 12 Apr 2023 10:52:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229551AbjDLHmb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 12 Apr 2023 03:42:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33922 "EHLO
+        id S231365AbjDLIwD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 12 Apr 2023 04:52:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229777AbjDLHmQ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 12 Apr 2023 03:42:16 -0400
-Received: from mail.lokoho.com (mail.lokoho.com [217.61.105.98])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF64A1FD5
-        for <linux-omap@vger.kernel.org>; Wed, 12 Apr 2023 00:42:14 -0700 (PDT)
-Received: by mail.lokoho.com (Postfix, from userid 1001)
-        id 9C98D83E50; Wed, 12 Apr 2023 08:41:36 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lokoho.com; s=mail;
-        t=1681285332; bh=Z0N5VlX9/JlryGOL5I747Le9USomZJCRNNGRT3LbbKc=;
-        h=Date:From:To:Subject:From;
-        b=oj5g99M0MSGuPw9nhh0O6fF3tAJRaZQ7JH9XQlkPSddShfg25p2J0LltflSesDGKr
-         mmNLe46nC7/Ho6zs918LjKYW++0weSewcdmBtGJQTv5adXOCerDVsg/iW8KwpMTMgC
-         +3L75REO1G5VX5YJF1CH9WN7gy8sul9UPVI7GTnePsvTc0npsByC4NtE7e12ew3Vku
-         afb5PsjlhOxAOEsmkbAXiTSfVsNQt0OtZz/lOS12ReTi/BxBlNFGknWXQV8AKqblP1
-         qWnIKFNFbTDQbfvA1yp/gnTng3rlQwwQMD3UDhlwyY3h0kTdr3oPhccfeKfcwXcKG0
-         fR3AYaMS7Jtuw==
-Received: by mail.lokoho.com for <linux-omap@vger.kernel.org>; Wed, 12 Apr 2023 07:40:53 GMT
-Message-ID: <20230412074501-0.1.59.1u7ta.0.jgfrc2odgq@lokoho.com>
-Date:   Wed, 12 Apr 2023 07:40:53 GMT
-From:   "Adam Charachuta" <adam.charachuta@lokoho.com>
-To:     <linux-omap@vger.kernel.org>
-Subject: =?UTF-8?Q?S=C5=82owa_kluczowe_do_wypozycjonowania?=
-X-Mailer: mail.lokoho.com
+        with ESMTP id S231367AbjDLIwC (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 12 Apr 2023 04:52:02 -0400
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0223900A;
+        Wed, 12 Apr 2023 01:51:37 -0700 (PDT)
+Received: from pendragon.ideasonboard.com (133-32-181-51.west.xps.vectant.ne.jp [133.32.181.51])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id EA022616E;
+        Wed, 12 Apr 2023 10:50:31 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1681289432;
+        bh=P9omQNjGcS98ijd1kM117+6oifyx6ZMzbf6istyRB4g=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Fd33A+4wt3y/33SzfS4z5h7/h/wcRGcdvwjMJyAze3ctbDteoo/NRvI5UySQHI5tc
+         o1prKtHhFq2S77Iwuu35OJET47uY+nL2q4CL/D6zttYHOoDgwQGRvT+/tzwFvOB4Cx
+         0IxMAwS6Ug5VaiZNyAtzWetyj5o7oCxXHgLcVYkg=
+Date:   Wed, 12 Apr 2023 11:50:44 +0300
+From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Tomi Valkeinen <tomba@kernel.org>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Sebastian Reichel <sre@kernel.org>,
+        dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] drm/omap: dsi: Fix deferred probe warnings
+Message-ID: <20230412085044.GP11253@pendragon.ideasonboard.com>
+References: <20230412073954.20601-1-tony@atomide.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230412073954.20601-1-tony@atomide.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Dzie=C5=84 dobry,
+Hi Tony,
 
-zapozna=C5=82em si=C4=99 z Pa=C5=84stwa ofert=C4=85 i z przyjemno=C5=9Bci=
-=C4=85 przyznaj=C4=99, =C5=BCe przyci=C4=85ga uwag=C4=99 i zach=C4=99ca d=
-o dalszych rozm=C3=B3w.=20
+Thank you for the patch.
 
-Pomy=C5=9Bla=C5=82em, =C5=BCe mo=C5=BCe m=C3=B3g=C5=82bym mie=C4=87 sw=C3=
-=B3j wk=C5=82ad w Pa=C5=84stwa rozw=C3=B3j i pom=C3=B3c dotrze=C4=87 z t=C4=
-=85 ofert=C4=85 do wi=C4=99kszego grona odbiorc=C3=B3w. Pozycjonuj=C4=99 =
-strony www, dzi=C4=99ki czemu generuj=C4=85 =C5=9Bwietny ruch w sieci.
+On Wed, Apr 12, 2023 at 10:39:53AM +0300, Tony Lindgren wrote:
+> We may not have dsi->dsidev initialized during probe, and that can
+> lead into various dsi related warnings as omap_dsi_host_detach() gets
+> called with dsi->dsidev set to NULL.
+> 
+> The warnings can be "Fixed dependency cycle(s)" followed by a
+> WARNING: CPU: 0 PID: 787 at drivers/gpu/drm/omapdrm/dss/dsi.c:4414.
 
-Mo=C5=BCemy porozmawia=C4=87 w najbli=C5=BCszym czasie?
+How can this happen ? I assume .detach() can't be called without a
+priori successful call to .attach(), that that sets dsi->dsidev.
 
+> Let's fix the warnings by checking for a valid dsi->dsidev.
+> 
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> ---
+>  drivers/gpu/drm/omapdrm/dss/dsi.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/omapdrm/dss/dsi.c b/drivers/gpu/drm/omapdrm/dss/dsi.c
+> --- a/drivers/gpu/drm/omapdrm/dss/dsi.c
+> +++ b/drivers/gpu/drm/omapdrm/dss/dsi.c
+> @@ -4411,7 +4411,7 @@ static int omap_dsi_host_detach(struct mipi_dsi_host *host,
+>  {
+>  	struct dsi_data *dsi = host_to_omap(host);
+>  
+> -	if (WARN_ON(dsi->dsidev != client))
+> +	if (dsi->dsidev && WARN_ON(dsi->dsidev != client))
+>  		return -EINVAL;
+>  
+>  	cancel_delayed_work_sync(&dsi->dsi_disable_work);
 
-Pozdrawiam
-Adam Charachuta
+-- 
+Regards,
+
+Laurent Pinchart
