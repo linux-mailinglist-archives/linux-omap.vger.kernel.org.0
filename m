@@ -2,301 +2,72 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 096146DE343
-	for <lists+linux-omap@lfdr.de>; Tue, 11 Apr 2023 19:57:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7889B6DEBFE
+	for <lists+linux-omap@lfdr.de>; Wed, 12 Apr 2023 08:42:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229833AbjDKR5N (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 11 Apr 2023 13:57:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40930 "EHLO
+        id S229531AbjDLGmP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 12 Apr 2023 02:42:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229699AbjDKR5M (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 11 Apr 2023 13:57:12 -0400
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F40A0559A
-        for <linux-omap@vger.kernel.org>; Tue, 11 Apr 2023 10:57:10 -0700 (PDT)
-Received: by mail-pl1-x634.google.com with SMTP id 20so10439104plk.10
-        for <linux-omap@vger.kernel.org>; Tue, 11 Apr 2023 10:57:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1681235830;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZXbDM1ImhdsbAlX5z/W3cgh/RDeLJTPqUHcpprXXqrI=;
-        b=Pe50bdhimru+N/2HOljtZmyOoxclKuA8dwD8vHMj/wTGm2q+w6oqit4YahOasjbSha
-         AMbONG0/q2aUcdmelgB9qgZ1iwUAmwsiiXC1x7I3jdHtRlYE6cz+vvfq2yB/6ZUVp8Gl
-         MEysICPLawzNdU6WcAZ2PpjMCi7/uwmAdt8PZHuW6NgeGBpRfeqBnQ/swpi+zcnx0iC+
-         24wHa5d31Kn6QfGldVxQrQQ20PZsRNVJj4yfBGLeNwmK3NOaSxs1NnlD0lYVKhJC1s+h
-         hNYmqVJU0gg01GaWFc1JaNe+gOleUte9vINUNhzY6WhovauG7H+/+BoF3wWE6NVBZxM9
-         AhnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1681235830;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZXbDM1ImhdsbAlX5z/W3cgh/RDeLJTPqUHcpprXXqrI=;
-        b=wIzErXf7vXhZ13YFF6uS/NuwSlUSVW5s0M5ZeFAQfD98rhQNpgI79ds2Wn27kFJm5q
-         ws0wVdTIbz6LYyAxqIyEofX5xs2DeF5i8tpXVBtCBPZOF1ps7XVE6wuZvablU9sci77D
-         QKe9m+J0Rog0svwsqDdqwYGPZTjKUym6jo0lhLYRTOnL40OtDF6DmoBZZmiYb2SQE4ht
-         tLbVyzmprJs2QdHZLUnyhhaUaFn9FqpzZTKv08No12K97hqDLnuKQuTI9nkMxVZzcGzH
-         MpKhWCgBd9LIC7/HbMaGVPjkPPu3eSd0sqOvkS/Op67K2mbRjJ6IB56NDdSBBGnhmih6
-         1uCQ==
-X-Gm-Message-State: AAQBX9dOmZEae3yLNlClEXJUvKJUUvKSRU16zPaOazSwTRI7qQm9J4+I
-        XwN4n7VjwUqux7DweQ+Q+WQUqA==
-X-Google-Smtp-Source: AKy350ZN9Il+nr1BgDR94DewMoio2CPd0j/HHP3oUqhd0/9J/DasM1Br0S+P8KV0fQblKMu/Th/CVw==
-X-Received: by 2002:a17:902:788f:b0:1a6:6afc:2d67 with SMTP id q15-20020a170902788f00b001a66afc2d67mr37276pll.61.1681235830196;
-        Tue, 11 Apr 2023 10:57:10 -0700 (PDT)
-Received: from p14s ([2604:3d09:148c:c800:f795:eecb:467b:d183])
-        by smtp.gmail.com with ESMTPSA id d3-20020a170902854300b001a1a9a639c2sm5501289plo.134.2023.04.11.10.57.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Apr 2023 10:57:09 -0700 (PDT)
-Date:   Tue, 11 Apr 2023 11:57:07 -0600
-From:   Mathieu Poirier <mathieu.poirier@linaro.org>
-To:     MD Danish Anwar <danishanwar@ti.com>
-Cc:     "Andrew F. Davis" <afd@ti.com>, Suman Anna <s-anna@ti.com>,
-        Roger Quadros <rogerq@kernel.org>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Tero Kristo <kristo@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Nishanth Menon <nm@ti.com>, linux-remoteproc@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, srk@ti.com, devicetree@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: Re: [PATCH v7 4/4] soc: ti: pruss: Add helper functions to set GPI
- mode, MII_RT_event and XFR
-Message-ID: <20230411175707.GE38361@p14s>
-References: <20230404115336.599430-1-danishanwar@ti.com>
- <20230404115336.599430-5-danishanwar@ti.com>
+        with ESMTP id S229761AbjDLGmO (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 12 Apr 2023 02:42:14 -0400
+Received: from muru.com (muru.com [72.249.23.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id CE36E5B90;
+        Tue, 11 Apr 2023 23:42:10 -0700 (PDT)
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id BCFD980CD;
+        Wed, 12 Apr 2023 06:42:07 +0000 (UTC)
+From:   Tony Lindgren <tony@atomide.com>
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Rob Herring <robh@kernel.org>
+Cc:     Georgi Vlaev <g-vlaev@ti.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Keerthy <j-keerthy@ti.com>,
+        Ladislav Michl <ladis@linux-mips.org>,
+        Nishanth Menon <nm@ti.com>, Suman Anna <s-anna@ti.com>,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: [PATCH] clocksource/drivers/timer-ti-dm: Fix finding alwon timer
+Date:   Wed, 12 Apr 2023 09:41:41 +0300
+Message-Id: <20230412064142.12726-1-tony@atomide.com>
+X-Mailer: git-send-email 2.40.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230404115336.599430-5-danishanwar@ti.com>
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, Apr 04, 2023 at 05:23:36PM +0530, MD Danish Anwar wrote:
-> From: Suman Anna <s-anna@ti.com>
-> 
-> The PRUSS CFG module is represented as a syscon node and is currently
-> managed by the PRUSS platform driver. Add easy accessor functions to set
-> GPI mode, MII_RT event enable/disable and XFR (XIN XOUT) enable/disable
-> to enable the PRUSS Ethernet usecase. These functions reuse the generic
-> pruss_cfg_update() API function.
-> 
-> Signed-off-by: Suman Anna <s-anna@ti.com>
-> Co-developed-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
-> Signed-off-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
-> Signed-off-by: Puranjay Mohan <p-mohan@ti.com>
-> Reviewed-by: Roger Quadros <rogerq@kernel.org>
-> Reviewed-by: Tony Lindgren <tony@atomide.com>
-> Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
-> ---
->  drivers/remoteproc/pru_rproc.c   | 15 -------
->  drivers/soc/ti/pruss.c           | 74 ++++++++++++++++++++++++++++++++
->  include/linux/remoteproc/pruss.h | 51 ++++++++++++++++++++++
->  3 files changed, 125 insertions(+), 15 deletions(-)
-> 
-> diff --git a/drivers/remoteproc/pru_rproc.c b/drivers/remoteproc/pru_rproc.c
-> index 4ddd5854d56e..a88861737dec 100644
-> --- a/drivers/remoteproc/pru_rproc.c
-> +++ b/drivers/remoteproc/pru_rproc.c
-> @@ -81,21 +81,6 @@ enum pru_iomem {
->  	PRU_IOMEM_MAX,
->  };
->  
-> -/**
-> - * enum pru_type - PRU core type identifier
-> - *
-> - * @PRU_TYPE_PRU: Programmable Real-time Unit
-> - * @PRU_TYPE_RTU: Auxiliary Programmable Real-Time Unit
-> - * @PRU_TYPE_TX_PRU: Transmit Programmable Real-Time Unit
-> - * @PRU_TYPE_MAX: just keep this one at the end
-> - */
-> -enum pru_type {
-> -	PRU_TYPE_PRU = 0,
-> -	PRU_TYPE_RTU,
-> -	PRU_TYPE_TX_PRU,
-> -	PRU_TYPE_MAX,
-> -};
-> -
->  /**
->   * struct pru_private_data - device data for a PRU core
->   * @type: type of the PRU core (PRU, RTU, Tx_PRU)
-> diff --git a/drivers/soc/ti/pruss.c b/drivers/soc/ti/pruss.c
-> index 0e37fe142615..64a1880ba4ee 100644
-> --- a/drivers/soc/ti/pruss.c
-> +++ b/drivers/soc/ti/pruss.c
-> @@ -213,6 +213,80 @@ int pruss_cfg_set_gpmux(struct pruss *pruss, enum pruss_pru_id pru_id, u8 mux)
->  }
->  EXPORT_SYMBOL_GPL(pruss_cfg_set_gpmux);
->  
-> +/**
-> + * pruss_cfg_gpimode() - set the GPI mode of the PRU
-> + * @pruss: the pruss instance handle
-> + * @pru_id: id of the PRU core within the PRUSS
-> + * @mode: GPI mode to set
-> + *
-> + * Sets the GPI mode for a given PRU by programming the
-> + * corresponding PRUSS_CFG_GPCFGx register
-> + *
-> + * Return: 0 on success, or an error code otherwise
-> + */
-> +int pruss_cfg_gpimode(struct pruss *pruss, enum pruss_pru_id pru_id,
-> +		      enum pruss_gpi_mode mode)
-> +{
-> +	if (pru_id < 0 || pru_id >= PRUSS_NUM_PRUS)
-> +		return -EINVAL;
-> +
-> +	if (mode < 0 || mode > PRUSS_GPI_MODE_MAX)
-> +		return -EINVAL;
-> +
-> +	return pruss_cfg_update(pruss, PRUSS_CFG_GPCFG(pru_id),
-> +				PRUSS_GPCFG_PRU_GPI_MODE_MASK,
-> +				mode << PRUSS_GPCFG_PRU_GPI_MODE_SHIFT);
-> +}
-> +EXPORT_SYMBOL_GPL(pruss_cfg_gpimode);
-> +
-> +/**
-> + * pruss_cfg_miirt_enable() - Enable/disable MII RT Events
-> + * @pruss: the pruss instance
-> + * @enable: enable/disable
-> + *
-> + * Enable/disable the MII RT Events for the PRUSS.
-> + *
-> + * Return: 0 on success, or an error code otherwise
-> + */
-> +int pruss_cfg_miirt_enable(struct pruss *pruss, bool enable)
-> +{
-> +	u32 set = enable ? PRUSS_MII_RT_EVENT_EN : 0;
-> +
-> +	return pruss_cfg_update(pruss, PRUSS_CFG_MII_RT,
-> +				PRUSS_MII_RT_EVENT_EN, set);
-> +}
-> +EXPORT_SYMBOL_GPL(pruss_cfg_miirt_enable);
-> +
-> +/**
-> + * pruss_cfg_xfr_enable() - Enable/disable XIN XOUT shift functionality
-> + * @pruss: the pruss instance
-> + * @pru_type: PRU core type identifier
-> + * @enable: enable/disable
-> + *
-> + * Return: 0 on success, or an error code otherwise
-> + */
-> +int pruss_cfg_xfr_enable(struct pruss *pruss, enum pru_type pru_type,
-> +			 bool enable)
-> +{
-> +	u32 mask, set;
-> +
-> +	switch (pru_type) {
-> +	case PRU_TYPE_PRU:
-> +		mask = PRUSS_SPP_XFER_SHIFT_EN;
-> +		break;
-> +	case PRU_TYPE_RTU:
-> +		mask = PRUSS_SPP_RTU_XFR_SHIFT_EN;
-> +		break;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +
-> +	set = enable ? mask : 0;
-> +
-> +	return pruss_cfg_update(pruss, PRUSS_CFG_SPP, mask, set);
-> +}
-> +EXPORT_SYMBOL_GPL(pruss_cfg_xfr_enable);
-> +
->  static void pruss_of_free_clk_provider(void *data)
->  {
->  	struct device_node *clk_mux_np = data;
-> diff --git a/include/linux/remoteproc/pruss.h b/include/linux/remoteproc/pruss.h
-> index 5641153459a7..b68ab8735247 100644
-> --- a/include/linux/remoteproc/pruss.h
-> +++ b/include/linux/remoteproc/pruss.h
-> @@ -34,6 +34,33 @@ enum pruss_gp_mux_sel {
->  	PRUSS_GP_MUX_SEL_MAX,
->  };
->  
-> +/*
-> + * enum pruss_gpi_mode - PRUSS GPI configuration modes, used
-> + *			 to program the PRUSS_GPCFG0/1 registers
-> + */
-> +enum pruss_gpi_mode {
-> +	PRUSS_GPI_MODE_DIRECT = 0,
-> +	PRUSS_GPI_MODE_PARALLEL,
-> +	PRUSS_GPI_MODE_28BIT_SHIFT,
-> +	PRUSS_GPI_MODE_MII,
-> +	PRUSS_GPI_MODE_MAX,
-> +};
-> +
-> +/**
-> + * enum pru_type - PRU core type identifier
-> + *
-> + * @PRU_TYPE_PRU: Programmable Real-time Unit
-> + * @PRU_TYPE_RTU: Auxiliary Programmable Real-Time Unit
-> + * @PRU_TYPE_TX_PRU: Transmit Programmable Real-Time Unit
-> + * @PRU_TYPE_MAX: just keep this one at the end
-> + */
-> +enum pru_type {
-> +	PRU_TYPE_PRU = 0,
-> +	PRU_TYPE_RTU,
-> +	PRU_TYPE_TX_PRU,
-> +	PRU_TYPE_MAX,
-> +};
-> +
+Clean-up commit b6999fa1c847 ("clocksource/drivers/timer-ti-dm: Use
+of_address_to_resource()") caused a regression where pa is never set
+making all related SoCs fail to boot. Let's fix this by setting pa
+if found.
 
-These go in pruss_driver.h
+Fixes: b6999fa1c847 ("clocksource/drivers/timer-ti-dm: Use of_address_to_resource()")
+Cc: Rob Herring <robh@kernel.org>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+---
+ drivers/clocksource/timer-ti-dm-systimer.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
->  /**
->   * enum pruss_pru_id - PRU core identifiers
->   * @PRUSS_PRU0: PRU Core 0.
-> @@ -98,6 +125,11 @@ int pruss_release_mem_region(struct pruss *pruss,
->  			     struct pruss_mem_region *region);
->  int pruss_cfg_get_gpmux(struct pruss *pruss, enum pruss_pru_id pru_id, u8 *mux);
->  int pruss_cfg_set_gpmux(struct pruss *pruss, enum pruss_pru_id pru_id, u8 mux);
-> +int pruss_cfg_gpimode(struct pruss *pruss, enum pruss_pru_id pru_id,
-> +		      enum pruss_gpi_mode mode);
-> +int pruss_cfg_miirt_enable(struct pruss *pruss, bool enable);
-> +int pruss_cfg_xfr_enable(struct pruss *pruss, enum pru_type pru_type,
-> +			 bool enable);
->  
->  #else
->  
-> @@ -133,6 +165,25 @@ static inline int pruss_cfg_set_gpmux(struct pruss *pruss,
->  	return ERR_PTR(-EOPNOTSUPP);
->  }
->  
-> +static inline int pruss_cfg_gpimode(struct pruss *pruss,
-> +				    enum pruss_pru_id pru_id,
-> +				    enum pruss_gpi_mode mode)
-> +{
-> +	return ERR_PTR(-EOPNOTSUPP);
-> +}
-> +
-> +static inline int pruss_cfg_miirt_enable(struct pruss *pruss, bool enable)
-> +{
-> +	return ERR_PTR(-EOPNOTSUPP);
-> +}
-> +
-> +static inline int pruss_cfg_xfr_enable(struct pruss *pruss,
-> +				       enum pru_type pru_type,
-> +				       bool enable);
-> +{
-> +	return ERR_PTR(-EOPNOTSUPP);
-> +}
-> +
-
-So do these.
-
-Thanks,
-Mathieu
-
->  #endif /* CONFIG_TI_PRUSS */
->  
->  #if IS_ENABLED(CONFIG_PRU_REMOTEPROC)
-> -- 
-> 2.25.1
-> 
+diff --git a/drivers/clocksource/timer-ti-dm-systimer.c b/drivers/clocksource/timer-ti-dm-systimer.c
+--- a/drivers/clocksource/timer-ti-dm-systimer.c
++++ b/drivers/clocksource/timer-ti-dm-systimer.c
+@@ -261,8 +261,10 @@ static void __init dmtimer_systimer_assign_alwon(void)
+ 		if (of_address_to_resource(np, 0, &res))
+ 			continue;
+ 
++		pa = res.start;
++
+ 		/* Quirky omap3 boards must use dmtimer12 */
+-		if (quirk_unreliable_oscillator && res.start == 0x48318000)
++		if (quirk_unreliable_oscillator && pa == 0x48318000)
+ 			continue;
+ 
+ 		of_node_put(np);
+-- 
+2.40.0
