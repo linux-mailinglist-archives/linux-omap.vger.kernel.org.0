@@ -2,35 +2,32 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7889B6DEBFE
-	for <lists+linux-omap@lfdr.de>; Wed, 12 Apr 2023 08:42:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F7B46DECBD
+	for <lists+linux-omap@lfdr.de>; Wed, 12 Apr 2023 09:40:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229531AbjDLGmP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 12 Apr 2023 02:42:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53440 "EHLO
+        id S229490AbjDLHka (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 12 Apr 2023 03:40:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229761AbjDLGmO (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 12 Apr 2023 02:42:14 -0400
+        with ESMTP id S229536AbjDLHk3 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 12 Apr 2023 03:40:29 -0400
 Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id CE36E5B90;
-        Tue, 11 Apr 2023 23:42:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 154DFE59;
+        Wed, 12 Apr 2023 00:40:13 -0700 (PDT)
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id BCFD980CD;
-        Wed, 12 Apr 2023 06:42:07 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id CE58B80CD;
+        Wed, 12 Apr 2023 07:40:09 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Rob Herring <robh@kernel.org>
-Cc:     Georgi Vlaev <g-vlaev@ti.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Keerthy <j-keerthy@ti.com>,
-        Ladislav Michl <ladis@linux-mips.org>,
-        Nishanth Menon <nm@ti.com>, Suman Anna <s-anna@ti.com>,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: [PATCH] clocksource/drivers/timer-ti-dm: Fix finding alwon timer
-Date:   Wed, 12 Apr 2023 09:41:41 +0300
-Message-Id: <20230412064142.12726-1-tony@atomide.com>
+To:     Tomi Valkeinen <tomba@kernel.org>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>
+Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] drm/omap: dsi: Fix deferred probe warnings
+Date:   Wed, 12 Apr 2023 10:39:53 +0300
+Message-Id: <20230412073954.20601-1-tony@atomide.com>
 X-Mailer: git-send-email 2.40.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -42,32 +39,31 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Clean-up commit b6999fa1c847 ("clocksource/drivers/timer-ti-dm: Use
-of_address_to_resource()") caused a regression where pa is never set
-making all related SoCs fail to boot. Let's fix this by setting pa
-if found.
+We may not have dsi->dsidev initialized during probe, and that can
+lead into various dsi related warnings as omap_dsi_host_detach() gets
+called with dsi->dsidev set to NULL.
 
-Fixes: b6999fa1c847 ("clocksource/drivers/timer-ti-dm: Use of_address_to_resource()")
-Cc: Rob Herring <robh@kernel.org>
+The warnings can be "Fixed dependency cycle(s)" followed by a
+WARNING: CPU: 0 PID: 787 at drivers/gpu/drm/omapdrm/dss/dsi.c:4414.
+
+Let's fix the warnings by checking for a valid dsi->dsidev.
+
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 ---
- drivers/clocksource/timer-ti-dm-systimer.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/omapdrm/dss/dsi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clocksource/timer-ti-dm-systimer.c b/drivers/clocksource/timer-ti-dm-systimer.c
---- a/drivers/clocksource/timer-ti-dm-systimer.c
-+++ b/drivers/clocksource/timer-ti-dm-systimer.c
-@@ -261,8 +261,10 @@ static void __init dmtimer_systimer_assign_alwon(void)
- 		if (of_address_to_resource(np, 0, &res))
- 			continue;
+diff --git a/drivers/gpu/drm/omapdrm/dss/dsi.c b/drivers/gpu/drm/omapdrm/dss/dsi.c
+--- a/drivers/gpu/drm/omapdrm/dss/dsi.c
++++ b/drivers/gpu/drm/omapdrm/dss/dsi.c
+@@ -4411,7 +4411,7 @@ static int omap_dsi_host_detach(struct mipi_dsi_host *host,
+ {
+ 	struct dsi_data *dsi = host_to_omap(host);
  
-+		pa = res.start;
-+
- 		/* Quirky omap3 boards must use dmtimer12 */
--		if (quirk_unreliable_oscillator && res.start == 0x48318000)
-+		if (quirk_unreliable_oscillator && pa == 0x48318000)
- 			continue;
+-	if (WARN_ON(dsi->dsidev != client))
++	if (dsi->dsidev && WARN_ON(dsi->dsidev != client))
+ 		return -EINVAL;
  
- 		of_node_put(np);
+ 	cancel_delayed_work_sync(&dsi->dsi_disable_work);
 -- 
 2.40.0
