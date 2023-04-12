@@ -2,346 +2,122 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AEE926DFC75
-	for <lists+linux-omap@lfdr.de>; Wed, 12 Apr 2023 19:15:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D21F6DFC84
+	for <lists+linux-omap@lfdr.de>; Wed, 12 Apr 2023 19:16:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231387AbjDLRPT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 12 Apr 2023 13:15:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53948 "EHLO
+        id S230224AbjDLRQr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 12 Apr 2023 13:16:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55796 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231251AbjDLRPQ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 12 Apr 2023 13:15:16 -0400
-Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E4917ABF
-        for <linux-omap@vger.kernel.org>; Wed, 12 Apr 2023 10:14:53 -0700 (PDT)
-Received: by mail-pj1-x102c.google.com with SMTP id q15-20020a17090a2dcf00b0023efab0e3bfso15231507pjm.3
-        for <linux-omap@vger.kernel.org>; Wed, 12 Apr 2023 10:14:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1681319677;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=O5AV7vfK/2nwKp0eVshwydhumuKVDn6U4uxG7E7tKMo=;
-        b=onAFA2dtpR1yA26nKlvTU+cGm5CAmVoVKOg2j5MyJBdEBXEbn5T6EsN78Mt7rK1aVR
-         qPEfbnFNUGoOFd3ljdpnEH+u3Krsy4M7vbcK0XZtM84O6YquQ8yhavldrwuRDLdaH2la
-         GrmW1SW9hWp9pI7F0s8Nh+vDR4sSJBO4a7EPQrX9re67No2HD2DcddCUioILebe6S9JW
-         //bB6cNcb9f9wiHH1mh1uFcYUUNFWWQsfR6xpLyxGouGYo4UAn7pKcch8afXDwQQBeX3
-         0BQojcWxFsJcQ8JHAKsIf0BUvHvbVFlDUbMmf/Pd8PXICOhf2F9oVRFmY9c3awZWzFqn
-         DB8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681319677;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=O5AV7vfK/2nwKp0eVshwydhumuKVDn6U4uxG7E7tKMo=;
-        b=axEr82a78fesIfJdizC2aNwAq85nq0o0zT93uzlzSCTiRA0U36w4ZxICnlEJcKO6JW
-         ea6Wl3LCGOG70AvP6cNpyQw3RlVrwLxmbiubUVKhJPx0hUk1quMoHxjbp44eVDUfP9u5
-         5Tf0GARTQ1dIUQ1HD7Qpv+IhMimNVtuIdyWqhnTmRjjGcdZO/qaXYSXK4gn+1hOf4eGF
-         bsn0SsTzoEdRgBiXy3l0XSoQ0q1dqIo9yq+G06VhqYocSSrUSukIL0w0UYBLKo7W1ysk
-         VR+y33GS4BtHi4a48NWvDSp8/gPPw7pvJ3kgalPCKZV8V3pXxBgbB+fhpwMXeRKQ2fdh
-         QwFw==
-X-Gm-Message-State: AAQBX9fPL23ylK6+h++Kqnog12Zzf+0kkPi57Fmi6Kq9TY0ILD8Relqs
-        f7S5k40HLUl4fifPOObJjKxtvQ==
-X-Google-Smtp-Source: AKy350Y6z/wOIUG6uyTQ/FSrzhRtpYxYONNMgWFGAY9qjQkaKe/SkIXQ5Q16F4XUaZal8QsKuVGbEQ==
-X-Received: by 2002:a17:902:ced1:b0:19c:be03:d1ba with SMTP id d17-20020a170902ced100b0019cbe03d1bamr25995343plg.6.1681319677069;
-        Wed, 12 Apr 2023 10:14:37 -0700 (PDT)
-Received: from p14s ([2604:3d09:148c:c800:1cd7:1135:5e45:5f77])
-        by smtp.gmail.com with ESMTPSA id jk2-20020a170903330200b001a63a1aed29sm6561362plb.303.2023.04.12.10.14.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Apr 2023 10:14:36 -0700 (PDT)
-Date:   Wed, 12 Apr 2023 11:14:34 -0600
-From:   Mathieu Poirier <mathieu.poirier@linaro.org>
-To:     MD Danish Anwar <danishanwar@ti.com>
-Cc:     "Andrew F. Davis" <afd@ti.com>, Suman Anna <s-anna@ti.com>,
-        Roger Quadros <rogerq@kernel.org>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Tero Kristo <kristo@kernel.org>,
+        with ESMTP id S231403AbjDLRQq (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 12 Apr 2023 13:16:46 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E095D9763
+        for <linux-omap@vger.kernel.org>; Wed, 12 Apr 2023 10:16:19 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pme4r-0002qW-23; Wed, 12 Apr 2023 19:16:13 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pme4p-00AmxJ-Ki; Wed, 12 Apr 2023 19:16:11 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pme4p-00CfO5-0R; Wed, 12 Apr 2023 19:16:11 +0200
+Date:   Wed, 12 Apr 2023 19:16:10 +0200
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     Ohad Ben-Cohen <ohad@wizery.com>,
         Bjorn Andersson <andersson@kernel.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Nishanth Menon <nm@ti.com>, linux-remoteproc@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, srk@ti.com, devicetree@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: Re: [PATCH v8 3/4] soc: ti: pruss: Add pruss_cfg_read()/update(),
- pruss_cfg_get_gpmux()/set_gpmux() APIs
-Message-ID: <20230412171434.GE86761@p14s>
-References: <20230412103012.1754161-1-danishanwar@ti.com>
- <20230412103012.1754161-4-danishanwar@ti.com>
- <20230412170654.GC86761@p14s>
+        Linus Walleij <linus.walleij@linaro.org>
+Cc:     linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-remoteproc@vger.kernel.org, kernel@pengutronix.de,
+        Baolin Wang <baolin.wang@linux.alibaba.com>
+Subject: Re: [PATCH 0/3] hwspinlock: Convert to platform remove callback
+ returning void
+Message-ID: <20230412171610.ji5czj5c77banf6d@pengutronix.de>
+References: <20230314180020.2865734-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="d6p2kczjkqfe3gmc"
 Content-Disposition: inline
-In-Reply-To: <20230412170654.GC86761@p14s>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+In-Reply-To: <20230314180020.2865734-1-u.kleine-koenig@pengutronix.de>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-omap@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Apr 12, 2023 at 11:06:54AM -0600, Mathieu Poirier wrote:
-> On Wed, Apr 12, 2023 at 04:00:11PM +0530, MD Danish Anwar wrote:
-> > From: Suman Anna <s-anna@ti.com>
-> > 
-> > Add two new generic API pruss_cfg_read() and pruss_cfg_update() to
-> > the PRUSS platform driver to read and program respectively a register
-> > within the PRUSS CFG sub-module represented by a syscon driver. These
-> > APIs are internal to PRUSS driver.
-> > 
-> > Add two new helper functions pruss_cfg_get_gpmux() & pruss_cfg_set_gpmux()
-> > to get and set the GP MUX mode for programming the PRUSS internal wrapper
-> > mux functionality as needed by usecases.
-> > 
-> > Various useful registers and macros for certain register bit-fields and
-> > their values have also been added.
-> > 
-> > Signed-off-by: Suman Anna <s-anna@ti.com>
-> > Co-developed-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
-> > Signed-off-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
-> > Signed-off-by: Puranjay Mohan <p-mohan@ti.com>
-> > Reviewed-by: Roger Quadros <rogerq@kernel.org>
-> > Reviewed-by: Tony Lindgren <tony@atomide.com>
-> > Reviewed-by: Simon Horman <simon.horman@corigine.com>
-> > Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
-> > ---
-> >  drivers/soc/ti/pruss.c       | 45 ++++++++++++++++++
-> >  drivers/soc/ti/pruss.h       | 88 ++++++++++++++++++++++++++++++++++++
-> >  include/linux/pruss_driver.h | 32 +++++++++++++
-> >  3 files changed, 165 insertions(+)
-> >  create mode 100644 drivers/soc/ti/pruss.h
-> > 
-> > diff --git a/drivers/soc/ti/pruss.c b/drivers/soc/ti/pruss.c
-> > index 8ada3758b31a..34d513816a9d 100644
-> > --- a/drivers/soc/ti/pruss.c
-> > +++ b/drivers/soc/ti/pruss.c
-> > @@ -21,6 +21,7 @@
-> >  #include <linux/regmap.h>
-> >  #include <linux/remoteproc.h>
-> >  #include <linux/slab.h>
-> > +#include "pruss.h"
-> >  
-> >  /**
-> >   * struct pruss_private_data - PRUSS driver private data
-> > @@ -168,6 +169,50 @@ int pruss_release_mem_region(struct pruss *pruss,
-> >  }
-> >  EXPORT_SYMBOL_GPL(pruss_release_mem_region);
-> >  
-> > +/**
-> > + * pruss_cfg_get_gpmux() - get the current GPMUX value for a PRU device
-> > + * @pruss: pruss instance
-> > + * @pru_id: PRU identifier (0-1)
-> > + * @mux: pointer to store the current mux value into
-> > + *
-> > + * Return: 0 on success, or an error code otherwise
-> > + */
-> > +int pruss_cfg_get_gpmux(struct pruss *pruss, enum pruss_pru_id pru_id, u8 *mux)
-> > +{
-> > +	int ret = 0;
-> 
-> Variable initialization is not needed.
-> 
-> > +	u32 val;
-> > +
-> > +	if (pru_id < 0 || pru_id >= PRUSS_NUM_PRUS || !mux)
-> 
-> If @pru_id is an enum, how can it be smaller than 0?
-> 
-> > +		return -EINVAL;
-> > +
-> > +	ret = pruss_cfg_read(pruss, PRUSS_CFG_GPCFG(pru_id), &val);
-> > +	if (!ret)
-> > +		*mux = (u8)((val & PRUSS_GPCFG_PRU_MUX_SEL_MASK) >>
-> > +			    PRUSS_GPCFG_PRU_MUX_SEL_SHIFT);
-> > +	return ret;
-> > +}
-> > +EXPORT_SYMBOL_GPL(pruss_cfg_get_gpmux);
-> > +
-> > +/**
-> > + * pruss_cfg_set_gpmux() - set the GPMUX value for a PRU device
-> > + * @pruss: pruss instance
-> > + * @pru_id: PRU identifier (0-1)
-> > + * @mux: new mux value for PRU
-> > + *
-> > + * Return: 0 on success, or an error code otherwise
-> > + */
-> > +int pruss_cfg_set_gpmux(struct pruss *pruss, enum pruss_pru_id pru_id, u8 mux)
-> > +{
-> > +	if (mux >= PRUSS_GP_MUX_SEL_MAX ||
-> > +	    pru_id < 0 || pru_id >= PRUSS_NUM_PRUS)
-> 
-> Same
-> 
-> > +		return -EINVAL;
-> > +
-> > +	return pruss_cfg_update(pruss, PRUSS_CFG_GPCFG(pru_id),
-> > +				PRUSS_GPCFG_PRU_MUX_SEL_MASK,
-> > +				(u32)mux << PRUSS_GPCFG_PRU_MUX_SEL_SHIFT);
-> > +}
-> > +EXPORT_SYMBOL_GPL(pruss_cfg_set_gpmux);
-> > +
-> >  static void pruss_of_free_clk_provider(void *data)
-> >  {
-> >  	struct device_node *clk_mux_np = data;
-> > diff --git a/drivers/soc/ti/pruss.h b/drivers/soc/ti/pruss.h
-> > new file mode 100644
-> > index 000000000000..6c55987e0e55
-> > --- /dev/null
-> > +++ b/drivers/soc/ti/pruss.h
-> > @@ -0,0 +1,88 @@
-> > +/* SPDX-License-Identifier: GPL-2.0-only */
-> > +/*
-> > + * PRU-ICSS Subsystem user interfaces
-> > + *
-> > + * Copyright (C) 2015-2023 Texas Instruments Incorporated - http://www.ti.com
-> > + *	MD Danish Anwar <danishanwar@ti.com>
-> > + */
-> > +
-> > +#ifndef _SOC_TI_PRUSS_H_
-> > +#define _SOC_TI_PRUSS_H_
-> > +
-> > +#include <linux/bits.h>
-> > +#include <linux/regmap.h>
-> > +
-> > +/*
-> > + * PRU_ICSS_CFG registers
-> > + * SYSCFG, ISRP, ISP, IESP, IECP, SCRP applicable on AMxxxx devices only
-> > + */
-> > +#define PRUSS_CFG_REVID         0x00
-> > +#define PRUSS_CFG_SYSCFG        0x04
-> > +#define PRUSS_CFG_GPCFG(x)      (0x08 + (x) * 4)
-> > +#define PRUSS_CFG_CGR           0x10
-> > +#define PRUSS_CFG_ISRP          0x14
-> > +#define PRUSS_CFG_ISP           0x18
-> > +#define PRUSS_CFG_IESP          0x1C
-> > +#define PRUSS_CFG_IECP          0x20
-> > +#define PRUSS_CFG_SCRP          0x24
-> > +#define PRUSS_CFG_PMAO          0x28
-> > +#define PRUSS_CFG_MII_RT        0x2C
-> > +#define PRUSS_CFG_IEPCLK        0x30
-> > +#define PRUSS_CFG_SPP           0x34
-> > +#define PRUSS_CFG_PIN_MX        0x40
-> > +
-> > +/* PRUSS_GPCFG register bits */
-> > +#define PRUSS_GPCFG_PRU_GPI_MODE_MASK           GENMASK(1, 0)
-> > +#define PRUSS_GPCFG_PRU_GPI_MODE_SHIFT          0
-> > +
-> > +#define PRUSS_GPCFG_PRU_MUX_SEL_SHIFT           26
-> > +#define PRUSS_GPCFG_PRU_MUX_SEL_MASK            GENMASK(29, 26)
-> > +
-> > +/* PRUSS_MII_RT register bits */
-> > +#define PRUSS_MII_RT_EVENT_EN                   BIT(0)
-> > +
-> > +/* PRUSS_SPP register bits */
-> > +#define PRUSS_SPP_XFER_SHIFT_EN                 BIT(1)
-> > +#define PRUSS_SPP_PRU1_PAD_HP_EN                BIT(0)
-> > +#define PRUSS_SPP_RTU_XFR_SHIFT_EN              BIT(3)
-> > +
-> > +/**
-> > + * pruss_cfg_read() - read a PRUSS CFG sub-module register
-> > + * @pruss: the pruss instance handle
-> > + * @reg: register offset within the CFG sub-module
-> > + * @val: pointer to return the value in
-> > + *
-> > + * Reads a given register within the PRUSS CFG sub-module and
-> > + * returns it through the passed-in @val pointer
-> > + *
-> > + * Return: 0 on success, or an error code otherwise
-> > + */
-> > +static int pruss_cfg_read(struct pruss *pruss, unsigned int reg, unsigned int *val)
-> > +{
-> > +	if (IS_ERR_OR_NULL(pruss))
-> > +		return -EINVAL;
-> > +
-> > +	return regmap_read(pruss->cfg_regmap, reg, val);
-> > +}
-> > +
-> > +/**
-> > + * pruss_cfg_update() - configure a PRUSS CFG sub-module register
-> > + * @pruss: the pruss instance handle
-> > + * @reg: register offset within the CFG sub-module
-> > + * @mask: bit mask to use for programming the @val
-> > + * @val: value to write
-> > + *
-> > + * Programs a given register within the PRUSS CFG sub-module
-> > + *
-> > + * Return: 0 on success, or an error code otherwise
-> > + */
-> > +static int pruss_cfg_update(struct pruss *pruss, unsigned int reg,
-> > +			    unsigned int mask, unsigned int val)
-> > +{
-> > +	if (IS_ERR_OR_NULL(pruss))
-> > +		return -EINVAL;
-> > +
-> > +	return regmap_update_bits(pruss->cfg_regmap, reg, mask, val);
-> > +}
-> > +
-> > +#endif  /* _SOC_TI_PRUSS_H_ */
-> > diff --git a/include/linux/pruss_driver.h b/include/linux/pruss_driver.h
-> > index c8f2e53b911b..c70e08c90165 100644
-> > --- a/include/linux/pruss_driver.h
-> > +++ b/include/linux/pruss_driver.h
-> > @@ -14,6 +14,24 @@
-> >  #include <linux/types.h>
-> >  #include <linux/err.h>
-> >  
-> > +/*
-> > + * enum pruss_gp_mux_sel - PRUSS GPI/O Mux modes for the
-> > + * PRUSS_GPCFG0/1 registers
-> > + *
-> > + * NOTE: The below defines are the most common values, but there
-> > + * are some exceptions like on 66AK2G, where the RESERVED and MII2
-> > + * values are interchanged. Also, this bit-field does not exist on
-> > + * AM335x SoCs
-> > + */
-> > +enum pruss_gp_mux_sel {
-> > +	PRUSS_GP_MUX_SEL_GP = 0,
-> 
-> Initialization not needed
->
 
-With the above:
-Acked-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+--d6p2kczjkqfe3gmc
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> > +	PRUSS_GP_MUX_SEL_ENDAT,
-> > +	PRUSS_GP_MUX_SEL_RESERVED,
-> > +	PRUSS_GP_MUX_SEL_SD,
-> > +	PRUSS_GP_MUX_SEL_MII2,
-> > +	PRUSS_GP_MUX_SEL_MAX,
-> > +};
-> > +
-> >  /*
-> >   * enum pruss_mem - PRUSS memory range identifiers
-> >   */
-> > @@ -66,6 +84,8 @@ int pruss_request_mem_region(struct pruss *pruss, enum pruss_mem mem_id,
-> >  			     struct pruss_mem_region *region);
-> >  int pruss_release_mem_region(struct pruss *pruss,
-> >  			     struct pruss_mem_region *region);
-> > +int pruss_cfg_get_gpmux(struct pruss *pruss, enum pruss_pru_id pru_id, u8 *mux);
-> > +int pruss_cfg_set_gpmux(struct pruss *pruss, enum pruss_pru_id pru_id, u8 mux);
-> >  
-> >  #else
-> >  
-> > @@ -89,6 +109,18 @@ static inline int pruss_release_mem_region(struct pruss *pruss,
-> >  	return -EOPNOTSUPP;
-> >  }
-> >  
-> > +static inline int pruss_cfg_get_gpmux(struct pruss *pruss,
-> > +				      enum pruss_pru_id pru_id, u8 *mux)
-> > +{
-> > +	return ERR_PTR(-EOPNOTSUPP);
-> > +}
-> > +
-> > +static inline int pruss_cfg_set_gpmux(struct pruss *pruss,
-> > +				      enum pruss_pru_id pru_id, u8 mux)
-> > +{
-> > +	return ERR_PTR(-EOPNOTSUPP);
-> > +}
-> > +
-> >  #endif /* CONFIG_TI_PRUSS */
-> >  
-> >  #endif	/* _PRUSS_DRIVER_H_ */
-> > -- 
-> > 2.34.1
-> > 
+On Tue, Mar 14, 2023 at 07:00:20PM +0100, Uwe Kleine-K=F6nig wrote:
+> Hello,
+>=20
+> this patch series adapts the platform drivers below drivers/hwspinlock to=
+ use
+> the .remove_new() callback. Compared to the traditional .remove() callback
+> .remove_new() returns no value. This is a good thing because the driver c=
+ore
+> doesn't (and cannot) cope for errors during remove. The only effect of a
+> non-zero return value in .remove() is that the driver core emits a warnin=
+g. The
+> device is removed anyhow and an early return from .remove() usually yield=
+s a
+> resource leak.
+>=20
+> By changing the remove callback to return void driver authors cannot reas=
+onably
+> assume any more that there is some kind of cleanup later.
+>=20
+> The omap driver could return -EBUSY. This is first changed to return
+> zero to drop the duplicated error message. I assume this error path is
+> dangerous. For sure the platform device binding goes away and so
+> devm_platform_ioremap_resource is undone. So probably the user of the
+> hwspinlock that prevented its removal will soon access an unmapped
+> virtual address resulting in an oops. This is true with and without my
+> patch. IMHO hwspin_lock_unregister() shouldn't return an error code but
+> care that all users go away and then return void.
+>=20
+> After this change the two platform_drivers can be trivially converted to
+> .remove_new().
+
+Gentle ping!
+
+Who is supposed to apply this series (or point out a good reason to not
+do that)?
+
+Best regards
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--d6p2kczjkqfe3gmc
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmQ251kACgkQj4D7WH0S
+/k5orwgAr2N2w9T3gGg6Ic0Ff3bAAQsb6lA3sToRxH+WLMg5wPHEZV0wf6nfMMOr
+2D2ChvSB9t+HZZBRt07wrugH9irqBYpzkkZbK5Sl7uutltTB4LIhFTo2676O4sXm
+jrHpLQWssu6XiN5j+Nzj3dOC5JL9k1uQ9trTD2PsNdN9y5azRVNXfAnpUUmVzGXJ
+QBRosllH59W/0I3aNybw5CrMU0Vm/Hm43Audhd0mmaBlwv9/RBjFyys6zPqYsh0G
+yzYH/VQChx5lfHP9P3ylcHtnqAKCeU6+rkZ80GgW8BI+PlkCKXkh09cTn3axMUf5
+HJpyXwRWp6SaNfA5nR2OzeRTUidnYg==
+=n+tf
+-----END PGP SIGNATURE-----
+
+--d6p2kczjkqfe3gmc--
