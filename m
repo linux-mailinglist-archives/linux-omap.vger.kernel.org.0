@@ -2,77 +2,147 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B6C56E0A73
-	for <lists+linux-omap@lfdr.de>; Thu, 13 Apr 2023 11:46:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45D5A6E0B64
+	for <lists+linux-omap@lfdr.de>; Thu, 13 Apr 2023 12:28:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230032AbjDMJqC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 13 Apr 2023 05:46:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37402 "EHLO
+        id S229591AbjDMK2i convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-omap@lfdr.de>); Thu, 13 Apr 2023 06:28:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229965AbjDMJpz (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 13 Apr 2023 05:45:55 -0400
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B26DA9EE2;
-        Thu, 13 Apr 2023 02:45:46 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id BFD6C80F0;
-        Thu, 13 Apr 2023 09:45:45 +0000 (UTC)
-Date:   Thu, 13 Apr 2023 12:45:44 +0300
-From:   Tony Lindgren <tony@atomide.com>
-To:     Pavel Machek <pavel@ucw.cz>
-Cc:     Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
-        kernel list <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        linux-omap@vger.kernel.org, sre@kernel.org, nekit1000@gmail.com,
-        mpartap@gmx.net, merlijn@wizzup.org, martin_rysavy@centrum.cz,
-        phone-devel@vger.kernel.org, maemo-leste@lists.dyne.org
-Subject: Re: Motorola Droid 4 -- Stopping charger when battery is full
-Message-ID: <20230413094544.GD36234@atomide.com>
-References: <ZAcvuP8kmWveLoE/@duo.ucw.cz>
- <ef4409b2-abd8-0eac-f66e-6858c3358cc1@gmail.com>
- <20230309071443.GF7501@atomide.com>
- <ZDfNRogC4ruBE4Xy@duo.ucw.cz>
+        with ESMTP id S229479AbjDMK2g (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 13 Apr 2023 06:28:36 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 246002737;
+        Thu, 13 Apr 2023 03:28:34 -0700 (PDT)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4PxwkY5Tgbz67QKJ;
+        Thu, 13 Apr 2023 18:27:33 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Thu, 13 Apr
+ 2023 11:28:32 +0100
+Date:   Thu, 13 Apr 2023 11:28:30 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Patrik =?ISO-8859-1?Q?Dahlstr=F6m?= <risca@dalakolonin.se>
+CC:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <letux-kernel@openphoenux.org>, <kernel@pyra-handheld.com>,
+        <pgoudagunta@nvidia.com>, <hns@goldelico.com>, <jic23@kernel.org>,
+        <lars@metafoo.de>, <linux-omap@vger.kernel.org>
+Subject: Re: [PATCH v4 8/9] iio: adc: palmas: add support for iio threshold
+ events
+Message-ID: <20230413112830.00006279@Huawei.com>
+In-Reply-To: <20230408114825.824505-9-risca@dalakolonin.se>
+References: <20230408114825.824505-1-risca@dalakolonin.se>
+        <20230408114825.824505-9-risca@dalakolonin.se>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZDfNRogC4ruBE4Xy@duo.ucw.cz>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500003.china.huawei.com (7.191.162.67) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Pavel Machek <pavel@ucw.cz> [230413 09:37]:
+On Sat,  8 Apr 2023 13:48:24 +0200
+Patrik Dahlström <risca@dalakolonin.se> wrote:
+
+> The palmas gpadc block has support for monitoring up to 2 ADC channels
+> and issue an interrupt if they reach past a set threshold. This change
+> hooks into the IIO events system and exposes to userspace the ability to
+> configure these threshold values for each channel, but only allow up to
+> 2 such thresholds to be enabled at any given time. Trying to enable a
+> third channel will result in an error.
 > 
-> > * Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com> [230307 14:10]:
-> > > Also, some guys have concerns about charging (and keeping it charged) @4.35,
-> > > because of the possibly reduced battery life.
-> > 
-> > Yes for devices connected to a charger for long periods the battery will
-> > bloat up within some weeks or months. This happens easily when using a
-> > lapdock for example.
-> > 
-> > A simple and safe solution here might be that we allow charging up to
-> > 4.35V only once when the charger is connected. Then we let the voltage
-> > decrease to 4.2V (or whatever known good maintenance voltage) if the
-> > charger stays connected.
+> Userspace is expected to input calibrated, as opposed to raw, values as
+> threshold. However, it is not enough to do the opposite of what is done
+> when converting the other way around. To account for tolerances in the
+> ADC, the calculated raw threshold should be adjusted based on the ADC
+> specifications for the device. These specifications include the integral
+> nonlinearity (INL), offset, and gain error. To adjust the high
+> threshold, use the following equation:
 > 
-> Optimum solution would be user specifying "I want battery full
-> tommorow at 8am" and doing the right thing.
-
-I think you can already do that via sysfs with cron or at :)
-
-> > For folks wanting to force the charge voltage higher we have the sysfs
-> > interface.
+>   (calibrated value + INL) * Gain error + offset = maximum value  [1]
 > 
-> Yep, we just need to make sure it is usable for this.
+> Likewise, use the following equation for the low threshold:
+> 
+>   (calibrated value - INL) * Gain error - offset = minimum value
+> 
+> The gain error is a combination of gain error, as listed in the
+> datasheet, and gain error drift due to temperature and supply. The exact
+> values for these specifications vary between palmas devices. This patch
+> sets the values found in TWL6035, TWL6037 datasheet.
+> 
+> [1] TI Application Report, SLIA087A, Guide to Using the GPADC in
+>     TPS65903x, TPS65917-Q1, TPS65919-Q1, and TPS65916 Devices.
+> 
+> Signed-off-by: Patrik Dahlström <risca@dalakolonin.se>
 
-It should be but I have not tried for years. You need to first configure
-the allowed voltage for battery via sysfs, then set the charge voltage
-for the charger.
+0-day found some stuff we'd missed in here.
 
-Regards,
+I've fixed it up and pushed out again.
 
-Tony
+> ---
+...
+> +static int palmas_gpadc_write_event_value(struct iio_dev *indio_dev,
+> +					  const struct iio_chan_spec *chan,
+> +					  enum iio_event_type type,
+> +					  enum iio_event_direction dir,
+> +					  enum iio_event_info info,
+> +					  int val, int val2)
+> +{
+> +	struct palmas_gpadc *adc = iio_priv(indio_dev);
+> +	int adc_chan = chan->channel;
+> +	int old;
+> +	int ret;
+> +
+> +	if (adc_chan > PALMAS_ADC_CH_MAX || type != IIO_EV_TYPE_THRESH)
+> +		return -EINVAL;
+> +
+> +	mutex_lock(&adc->lock);
+> +	switch (info) {
+> +	case IIO_EV_INFO_VALUE:
+> +		if (val < 0 || val > 0xFFF) {
+> +			ret = -EINVAL;
+> +			break;
+
+Should be goto out_unlock; Found because old is undefined.
+
+> +		}
+> +		if (dir == IIO_EV_DIR_RISING) {
+> +			old = adc->thresholds[adc_chan].high;
+> +			adc->thresholds[adc_chan].high = val;
+> +		}
+
+Whilst here should be } else {
+
+Tidied both up force an update on the testing branch.
+
+> +		else {
+> +			old = adc->thresholds[adc_chan].low;
+> +			adc->thresholds[adc_chan].low = val;
+> +		}
+> +		ret = 0;
+> +		break;
+> +	default:
+> +		ret = -EINVAL;
+> +		goto out_unlock;
+> +	}
+> +
+> +	if (val != old && palmas_gpadc_get_event(adc, adc_chan, dir))
+> +		ret = palmas_gpadc_reconfigure_event_channels(adc);
+> +
+> +out_unlock:
+> +	mutex_unlock(&adc->lock);
+> +
+> +	return ret;
+> +}
+> +
