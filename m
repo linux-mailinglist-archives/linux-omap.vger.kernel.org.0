@@ -2,101 +2,81 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FC6C6E070F
-	for <lists+linux-omap@lfdr.de>; Thu, 13 Apr 2023 08:39:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83CCF6E074E
+	for <lists+linux-omap@lfdr.de>; Thu, 13 Apr 2023 09:04:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229567AbjDMGjj convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-omap@lfdr.de>); Thu, 13 Apr 2023 02:39:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48480 "EHLO
+        id S229705AbjDMHD5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 13 Apr 2023 03:03:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57838 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229790AbjDMGji (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 13 Apr 2023 02:39:38 -0400
+        with ESMTP id S229599AbjDMHD5 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 13 Apr 2023 03:03:57 -0400
 Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A56F66EA0;
-        Wed, 12 Apr 2023 23:39:17 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id DA9B980CD;
-        Thu, 13 Apr 2023 06:39:16 +0000 (UTC)
-Date:   Thu, 13 Apr 2023 09:39:15 +0300
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 5344F46B9;
+        Thu, 13 Apr 2023 00:03:56 -0700 (PDT)
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id 5C3C580F0;
+        Thu, 13 Apr 2023 07:03:54 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
-To:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Cc:     Vignesh R <vigneshr@ti.com>, Aaro Koskinen <aaro.koskinen@iki.fi>,
-        linux-pm@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        Wolfram Sang <wsa@kernel.org>,
-        Andreas Kemnade <andreas@kemnade.info>,
-        linux-i2c@vger.kernel.org, kernel@pengutronix.de,
-        linux-omap@vger.kernel.org
-Subject: Re: [PATCH] i2c: omap: Improve error reporting for problems during
- .remove()
-Message-ID: <20230413063915.GA36234@atomide.com>
-References: <20230402105518.2512541-1-u.kleine-koenig@pengutronix.de>
- <20230402225001.75a32147@aktux>
- <20230403054837.6lxyzznzntvw2drg@pengutronix.de>
- <20230403060404.GX7501@atomide.com>
- <ZC5qUU4JLI9Negyi@sai>
- <20230406082354.jwchbl5ir6p4gjw7@pengutronix.de>
- <20230413051222.GA9837@atomide.com>
- <20230413062440.yixne5wqed4zrva4@pengutronix.de>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>
+Cc:     Andy Shevchenko <andriy.shevchenko@intel.com>,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Johan Hovold <johan@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        linux-omap@vger.kernel.org, linux-serial@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] serial: 8250: Clear port->pm on port specific driver unbind
+Date:   Thu, 13 Apr 2023 10:03:41 +0300
+Message-Id: <20230413070342.36155-1-tony@atomide.com>
+X-Mailer: git-send-email 2.40.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8BIT
-In-Reply-To: <20230413062440.yixne5wqed4zrva4@pengutronix.de>
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Uwe Kleine-König <u.kleine-koenig@pengutronix.de> [230413 06:24]:
-> Hello Tony,
-> 
-> On Thu, Apr 13, 2023 at 08:12:22AM +0300, Tony Lindgren wrote:
-> > * Uwe Kleine-König <u.kleine-koenig@pengutronix.de> [230406 08:23]:
-> > > --- a/drivers/i2c/busses/i2c-omap.c
-> > > +++ b/drivers/i2c/busses/i2c-omap.c
-> > > @@ -1525,14 +1525,17 @@ static int omap_i2c_remove(struct platform_device *pdev)
-> > >  	int ret;
-> > >  
-> > >  	i2c_del_adapter(&omap->adapter);
-> > > -	ret = pm_runtime_resume_and_get(&pdev->dev);
-> > > +
-> > > +	ret = pm_runtime_get_sync(&pdev->dev);
-> > 
-> > It's better to use pm_runtime_resume_and_get() nowadays in general as
-> > it does pm_runtime_put_noidle() on errors.
-> 
-> Sticking to pm_runtime_resume_and_get() complicates the change however,
-> because the function calls pm_runtime_put_sync() already. So with
-> pm_runtime_resume_and_get() I'd need
-> 
-> 	if (ret >= 0)
-> 		pm_runtime_put_sync(&pdev->dev);
-> 
-> instead of a plain
-> 
-> 	pm_runtime_put_sync(&pdev->dev);
+When we unbind a serial port hardware specific 8250 driver, the generic
+serial8250 driver takes over the port. After that we see an oops about 10
+seconds later. This can produce the following at least on some TI SoCs:
 
-In that case you still need to do pm_runtime_put_noidle()
-on errors, so not sure what's the best way here.
+Unhandled fault: imprecise external abort (0x1406)
+Internal error: : 1406 [#1] SMP ARM
 
-> > Not sure if there are changes needed here, maybe warn and return early
-> > if needed?
-> 
-> The idea of "return early" in a remove callback is exactly what I want
-> to get rid of.
-> 
-> See
-> https://lore.kernel.org/linux-spi/20230317084232.142257-3-u.kleine-koenig@pengutronix.de
-> for an example.
+Turns out that we may still have the serial port hardware specific driver
+port->pm in use, and serial8250_pm() tries to call it after the port
+specific driver is gone:
 
-Oh OK. Care to clarify a bit why we are not allowed to return errors
-on remove though? Are we getting rid of the return value for remove?
-Sorry if I'm not following the cunning plan here :)
+serial8250_pm [8250_base] from uart_change_pm+0x54/0x8c [serial_base]
+uart_change_pm [serial_base] from uart_hangup+0x154/0x198 [serial_base]
+uart_hangup [serial_base] from __tty_hangup.part.0+0x328/0x37c
+__tty_hangup.part.0 from disassociate_ctty+0x154/0x20c
+disassociate_ctty from do_exit+0x744/0xaac
+do_exit from do_group_exit+0x40/0x8c
+do_group_exit from __wake_up_parent+0x0/0x1c
 
-Regards,
+Let's fix the issue by clearing port->pm in serial8250_unregister_port().
 
-Tony
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+---
+ drivers/tty/serial/8250/8250_core.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/tty/serial/8250/8250_core.c b/drivers/tty/serial/8250/8250_core.c
+--- a/drivers/tty/serial/8250/8250_core.c
++++ b/drivers/tty/serial/8250/8250_core.c
+@@ -1157,6 +1157,7 @@ void serial8250_unregister_port(int line)
+ 		uart->port.flags &= ~UPF_BOOT_AUTOCONF;
+ 		uart->port.type = PORT_UNKNOWN;
+ 		uart->port.dev = &serial8250_isa_devs->dev;
++		uart->port.pm = NULL;
+ 		uart->capabilities = 0;
+ 		serial8250_apply_quirks(uart);
+ 		uart_add_one_port(&serial8250_reg, &uart->port);
+-- 
+2.40.0
