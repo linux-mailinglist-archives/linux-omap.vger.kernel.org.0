@@ -2,131 +2,122 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BE916E102A
-	for <lists+linux-omap@lfdr.de>; Thu, 13 Apr 2023 16:42:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CCA626E11AD
+	for <lists+linux-omap@lfdr.de>; Thu, 13 Apr 2023 18:06:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230083AbjDMOlg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 13 Apr 2023 10:41:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36496 "EHLO
+        id S229492AbjDMQGm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 13 Apr 2023 12:06:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45730 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229838AbjDMOlf (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 13 Apr 2023 10:41:35 -0400
-Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DDF74C3C;
-        Thu, 13 Apr 2023 07:41:34 -0700 (PDT)
-Received: by mail-wm1-x32a.google.com with SMTP id l16so8243372wms.1;
-        Thu, 13 Apr 2023 07:41:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1681396893; x=1683988893;
-        h=content-transfer-encoding:content-language:in-reply-to:mime-version
-         :user-agent:date:message-id:from:references:cc:to:subject:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GGGoYKbxWkMy+yAyRRbPOAvuFmowVBSZKJ7Gz931Puk=;
-        b=F/huq0ooJSEHqJT9WfOHndjq9zpC11qu90u1BPAWqrELhBG8tdwRyEJLvkqcJtiGaO
-         d0q+pU9yznj6xZSsXQU/81jwFOrjbDE01DQx1q1OiAkf8VYvzvnTeKiIPp4Rti908oL3
-         fWmg0qXf1FFWdzqg8mFSx/vaS7K9o1eHc7ZXzi2BYx+LDvrt8hD3aqrenDh6/KcKCBXJ
-         5uC9zavRCu/RZ0tI+NUlCLfU/uVZG+aBl6D4/D6vdS9Vt4bqNHSJr+tW2gEvr2/XZ3Q4
-         djI69Zrz067gWj4Y3/PBb0H2MJWVM8OWhIZ+CxfkdCUATw1xxt+eyc9RtlikNCM2+w8O
-         aXhw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681396893; x=1683988893;
-        h=content-transfer-encoding:content-language:in-reply-to:mime-version
-         :user-agent:date:message-id:from:references:cc:to:subject
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GGGoYKbxWkMy+yAyRRbPOAvuFmowVBSZKJ7Gz931Puk=;
-        b=IHv+iQqzqLQtEAAINDlk0fG85+HYCYDKDWgpjbBLtrC41/e7DyJzzK5xaJ87x4WX9F
-         +jmgN7GHml8iX/fUQ85r2/lvrVEef12+dr6BhooUYR5cXNuD1dwbU7hyCH7KFYntT0M7
-         jMkCUFWWdKq9PZnyq2xr3leWxd3v6pNU0d0zBFUVs2CAzo9+QOwe7OBFvSXoLAMishj+
-         YvvKX74lnU0cYg0e/rBMc9f6X94knlPkzC+nbdaXVYhvOlJb6QnHNnKJfl1YuCDz0n3q
-         TorXluhLo+htNGId/LDdL10K/fNwE+Eqh0t0w5opbUSYNxrTUOnbU1iUlC+DkltsTThi
-         deBQ==
-X-Gm-Message-State: AAQBX9fXSLCeHozh3bloKM+gQkw79KrJ7uP5YHUVQzIVQcbH7pgdrYDg
-        v9IWO/1qZXK5ZyB8v9UQPbk=
-X-Google-Smtp-Source: AKy350ZbqJ5bWa5cYv9CC7e5p+ddl8jNr2E7cZsF9uwQaXkZpYUWcK/uhYIyXxjjItA4CApD+jtVZg==
-X-Received: by 2002:a7b:c44a:0:b0:3eb:42fc:fb30 with SMTP id l10-20020a7bc44a000000b003eb42fcfb30mr1976459wmi.32.1681396892661;
-        Thu, 13 Apr 2023 07:41:32 -0700 (PDT)
-Received: from [192.168.1.10] ([95.43.220.235])
-        by smtp.googlemail.com with ESMTPSA id n21-20020a7bc5d5000000b003e91b9a92c9sm1995217wmk.24.2023.04.13.07.41.31
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 13 Apr 2023 07:41:32 -0700 (PDT)
-Subject: Re: Motorola Droid 4 -- Stopping charger when battery is full
-To:     Pavel Machek <pavel@ucw.cz>
-Cc:     kernel list <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        linux-omap@vger.kernel.org, tony@atomide.com, sre@kernel.org,
-        nekit1000@gmail.com, mpartap@gmx.net, merlijn@wizzup.org,
-        martin_rysavy@centrum.cz, phone-devel@vger.kernel.org,
-        maemo-leste@lists.dyne.org
-References: <ZAcvuP8kmWveLoE/@duo.ucw.cz>
- <ef4409b2-abd8-0eac-f66e-6858c3358cc1@gmail.com>
- <ZDfMlfVDdSm8mXs0@duo.ucw.cz>
-From:   Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
-Message-ID: <6f3eb1b9-f6b8-f980-8fac-27b32bc1b7e6@gmail.com>
-Date:   Thu, 13 Apr 2023 17:41:23 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Firefox/60.0 Thunderbird/60.6.1
+        with ESMTP id S229560AbjDMQGl (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 13 Apr 2023 12:06:41 -0400
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D93383EA;
+        Thu, 13 Apr 2023 09:06:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1681402000; x=1712938000;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=rOehdBIrreHkMjOxugsVNu2ybTTdqeAOr5KilNtz1OA=;
+  b=Ak1fzE/z0NYUWwyrwx5KhjEgUwCa0MKMf+/q3lV+R9NdM9s6ZnfEdb4v
+   s2kbg6iNqyj8OVt4LrMqeS53s4t2so4GXfp8DOCZzSXq0bo6TMo2PWkTq
+   5Bs+9SOVy2tHa8PpXzgB2K8a5DHq6EeuwVJctX1OdmvXiW0zF3ps7Wo3D
+   wLxQQHl844g/j+rDGI6GaA2DMEQoqbxQ5krsuwl9o/U5nxmEJDrZY75PC
+   cbdhgJ2TFl2NabQ1dQv9Zx+JknH0A5c5JTRtzZeibF+31OpQVifl4I7rF
+   //JAV3/uM8z2OuINv+qELQV6vKCkMAJZfvq4336dt8AySqCtupXNVT3Kv
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10679"; a="341722722"
+X-IronPort-AV: E=Sophos;i="5.99,194,1677571200"; 
+   d="scan'208";a="341722722"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2023 09:06:40 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10679"; a="754062124"
+X-IronPort-AV: E=Sophos;i="5.99,194,1677571200"; 
+   d="scan'208";a="754062124"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga008.fm.intel.com with ESMTP; 13 Apr 2023 09:06:37 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pmzT1-00GcXx-1e;
+        Thu, 13 Apr 2023 19:06:35 +0300
+Date:   Thu, 13 Apr 2023 19:06:35 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Johan Hovold <johan@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        linux-omap@vger.kernel.org, linux-serial@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] serial: 8250: Clear port->pm on port specific driver
+ unbind
+Message-ID: <ZDgoi2mFYYqswAhu@smile.fi.intel.com>
+References: <20230413070342.36155-1-tony@atomide.com>
 MIME-Version: 1.0
-In-Reply-To: <ZDfMlfVDdSm8mXs0@duo.ucw.cz>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230413070342.36155-1-tony@atomide.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Thu, Apr 13, 2023 at 10:03:41AM +0300, Tony Lindgren wrote:
+> When we unbind a serial port hardware specific 8250 driver, the generic
+> serial8250 driver takes over the port. After that we see an oops about 10
+> seconds later. This can produce the following at least on some TI SoCs:
+> 
+> Unhandled fault: imprecise external abort (0x1406)
+> Internal error: : 1406 [#1] SMP ARM
+> 
+> Turns out that we may still have the serial port hardware specific driver
+> port->pm in use, and serial8250_pm() tries to call it after the port
+> specific driver is gone:
+> 
+> serial8250_pm [8250_base] from uart_change_pm+0x54/0x8c [serial_base]
+> uart_change_pm [serial_base] from uart_hangup+0x154/0x198 [serial_base]
+> uart_hangup [serial_base] from __tty_hangup.part.0+0x328/0x37c
+> __tty_hangup.part.0 from disassociate_ctty+0x154/0x20c
+> disassociate_ctty from do_exit+0x744/0xaac
+> do_exit from do_group_exit+0x40/0x8c
+> do_group_exit from __wake_up_parent+0x0/0x1c
+> 
+> Let's fix the issue by clearing port->pm in serial8250_unregister_port().
+
+Sounds to me like a fix that needs a Fixes tag.
+Code wise LGTM,
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> ---
+>  drivers/tty/serial/8250/8250_core.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/tty/serial/8250/8250_core.c b/drivers/tty/serial/8250/8250_core.c
+> --- a/drivers/tty/serial/8250/8250_core.c
+> +++ b/drivers/tty/serial/8250/8250_core.c
+> @@ -1157,6 +1157,7 @@ void serial8250_unregister_port(int line)
+>  		uart->port.flags &= ~UPF_BOOT_AUTOCONF;
+>  		uart->port.type = PORT_UNKNOWN;
+>  		uart->port.dev = &serial8250_isa_devs->dev;
+> +		uart->port.pm = NULL;
+>  		uart->capabilities = 0;
+>  		serial8250_apply_quirks(uart);
+>  		uart_add_one_port(&serial8250_reg, &uart->port);
+> -- 
+> 2.40.0
+
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
-On 13.04.23 г. 12:34 ч., Pavel Machek wrote:
-> Hi!
-> 
->>> I complained that "battery life is very poor" with leste. It seems to
->>> be combination of several factors.
->>>
->>> 1) I was using very old battery
->>>
->>> 2) My charger is detected as "USB", not as "AC"
->>>
->>
->> And this is because there is no working charger detection in the driver, so
->> initial current limit is hard-coded to 500mA.
-> 
-> Aha, thanks, makes sense.
-> 
->>> According to my measurements "CPCAP_REG_CRM_FET_OVRD |
->>> CPCAP_REG_CRM_FET_CTRL" results in battery discharding and 0A drawn
->>> frmo the USB.  "CPCAP_REG_CRM_FET_OVRD" is phone powered from USB,
->>> with battery more or less disconnected (<12mA), which is what we want
->>> in battery full situation.
->>>
->>
->> What will happen if phone needs to draw more than N mA (N is the set charger
->> current limit)?
-> 
-> We may run over the limit, AFAICT. I guess one solution would be to
-> only do this when limit is high enough...
-> 
-> With current setup, phone will not boot if battery is empty, so this
-> needs quite urgent solution.
-> 
-> I updated my leste, and now have:
-> 
-> user@devuan-droid4:~/g/droid4-linux$ uname -a
-> Linux devuan-droid4 6.1.9 #1 SMP PREEMPT Mon Mar 20 15:16:53 UTC 2023 armv7l GNU/Linux
-> user@devuan-droid4:~/g$ apt show linux-image-omap
-> Package: linux-image-omap
-> Version: 6.1.8.0-1+m7
-> 
-> Where can I find corresponding sources?
-> 
-
-https://github.com/maemo-leste/droid4-linux/tree/maemo-6.1.y
-
-> Best regards,
-> 							Pavel
-> 
