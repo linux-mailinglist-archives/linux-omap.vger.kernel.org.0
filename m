@@ -2,122 +2,116 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CCA626E11AD
-	for <lists+linux-omap@lfdr.de>; Thu, 13 Apr 2023 18:06:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EFFF6E12B8
+	for <lists+linux-omap@lfdr.de>; Thu, 13 Apr 2023 18:49:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229492AbjDMQGm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 13 Apr 2023 12:06:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45730 "EHLO
+        id S229840AbjDMQt0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 13 Apr 2023 12:49:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54784 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229560AbjDMQGl (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 13 Apr 2023 12:06:41 -0400
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D93383EA;
-        Thu, 13 Apr 2023 09:06:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1681402000; x=1712938000;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=rOehdBIrreHkMjOxugsVNu2ybTTdqeAOr5KilNtz1OA=;
-  b=Ak1fzE/z0NYUWwyrwx5KhjEgUwCa0MKMf+/q3lV+R9NdM9s6ZnfEdb4v
-   s2kbg6iNqyj8OVt4LrMqeS53s4t2so4GXfp8DOCZzSXq0bo6TMo2PWkTq
-   5Bs+9SOVy2tHa8PpXzgB2K8a5DHq6EeuwVJctX1OdmvXiW0zF3ps7Wo3D
-   wLxQQHl844g/j+rDGI6GaA2DMEQoqbxQ5krsuwl9o/U5nxmEJDrZY75PC
-   cbdhgJ2TFl2NabQ1dQv9Zx+JknH0A5c5JTRtzZeibF+31OpQVifl4I7rF
-   //JAV3/uM8z2OuINv+qELQV6vKCkMAJZfvq4336dt8AySqCtupXNVT3Kv
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10679"; a="341722722"
-X-IronPort-AV: E=Sophos;i="5.99,194,1677571200"; 
-   d="scan'208";a="341722722"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2023 09:06:40 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10679"; a="754062124"
-X-IronPort-AV: E=Sophos;i="5.99,194,1677571200"; 
-   d="scan'208";a="754062124"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga008.fm.intel.com with ESMTP; 13 Apr 2023 09:06:37 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pmzT1-00GcXx-1e;
-        Thu, 13 Apr 2023 19:06:35 +0300
-Date:   Thu, 13 Apr 2023 19:06:35 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Johan Hovold <johan@kernel.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-omap@vger.kernel.org, linux-serial@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] serial: 8250: Clear port->pm on port specific driver
- unbind
-Message-ID: <ZDgoi2mFYYqswAhu@smile.fi.intel.com>
-References: <20230413070342.36155-1-tony@atomide.com>
+        with ESMTP id S229699AbjDMQtZ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 13 Apr 2023 12:49:25 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C1F93C11;
+        Thu, 13 Apr 2023 09:49:12 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C386F64020;
+        Thu, 13 Apr 2023 16:49:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73FB3C433EF;
+        Thu, 13 Apr 2023 16:49:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1681404550;
+        bh=PuPOEovLO0twQtnLYrf3MKJlFAcOQo0EcvYK1HRswxo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=C7hhCm38bpRkJJ6KFCHLT7wLpK1vC6fCLybkUi3sfmW8GH4svIHIeBVJgCz7P85NR
+         c6zEhQ8TkYKaDTd4DhA5qQKNdxz7R2YpH0DdEpchfSAof2DYYyG1H2WM2bDFiiqFWf
+         9gXauclJ/ZafAXehp48ctPi0WUmi2T3X8g0gEeDmcDBgSzKuFqboo4aamktInrs3Ms
+         CTjZSfS+pyhPpQo6fE+efF/PFkPhem/Rk6q8GS3HS1XqTDK740/mfL/VaLgckalMvp
+         sObJGb2LkG6C4e2jnTWvQ78WAQTJuoJHHPbUaQX0jXI+YTjNeu9uTCbNvFe7Jfm2/E
+         jSBdprs4nkI2Q==
+Date:   Thu, 13 Apr 2023 18:49:06 +0200
+From:   Wolfram Sang <wsa@kernel.org>
+To:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Cc:     Tony Lindgren <tony@atomide.com>,
+        Andreas Kemnade <andreas@kemnade.info>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+        Vignesh R <vigneshr@ti.com>, linux-omap@vger.kernel.org,
+        linux-i2c@vger.kernel.org, kernel@pengutronix.de,
+        "Rafael J. Wysocki" <rafael@kernel.org>, linux-pm@vger.kernel.org
+Subject: Re: [PATCH] i2c: omap: Improve error reporting for problems during
+ .remove()
+Message-ID: <ZDgygggnMLfqn86W@sai>
+Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
+        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+        Tony Lindgren <tony@atomide.com>,
+        Andreas Kemnade <andreas@kemnade.info>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+        Vignesh R <vigneshr@ti.com>, linux-omap@vger.kernel.org,
+        linux-i2c@vger.kernel.org, kernel@pengutronix.de,
+        "Rafael J. Wysocki" <rafael@kernel.org>, linux-pm@vger.kernel.org
+References: <20230402105518.2512541-1-u.kleine-koenig@pengutronix.de>
+ <20230402225001.75a32147@aktux>
+ <20230403054837.6lxyzznzntvw2drg@pengutronix.de>
+ <20230403060404.GX7501@atomide.com>
+ <ZC5qUU4JLI9Negyi@sai>
+ <20230406082354.jwchbl5ir6p4gjw7@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="rOVRl6TSD4jp04kC"
 Content-Disposition: inline
-In-Reply-To: <20230413070342.36155-1-tony@atomide.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20230406082354.jwchbl5ir6p4gjw7@pengutronix.de>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, Apr 13, 2023 at 10:03:41AM +0300, Tony Lindgren wrote:
-> When we unbind a serial port hardware specific 8250 driver, the generic
-> serial8250 driver takes over the port. After that we see an oops about 10
-> seconds later. This can produce the following at least on some TI SoCs:
-> 
-> Unhandled fault: imprecise external abort (0x1406)
-> Internal error: : 1406 [#1] SMP ARM
-> 
-> Turns out that we may still have the serial port hardware specific driver
-> port->pm in use, and serial8250_pm() tries to call it after the port
-> specific driver is gone:
-> 
-> serial8250_pm [8250_base] from uart_change_pm+0x54/0x8c [serial_base]
-> uart_change_pm [serial_base] from uart_hangup+0x154/0x198 [serial_base]
-> uart_hangup [serial_base] from __tty_hangup.part.0+0x328/0x37c
-> __tty_hangup.part.0 from disassociate_ctty+0x154/0x20c
-> disassociate_ctty from do_exit+0x744/0xaac
-> do_exit from do_group_exit+0x40/0x8c
-> do_group_exit from __wake_up_parent+0x0/0x1c
-> 
-> Let's fix the issue by clearing port->pm in serial8250_unregister_port().
 
-Sounds to me like a fix that needs a Fixes tag.
-Code wise LGTM,
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+--rOVRl6TSD4jp04kC
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
-> ---
->  drivers/tty/serial/8250/8250_core.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/tty/serial/8250/8250_core.c b/drivers/tty/serial/8250/8250_core.c
-> --- a/drivers/tty/serial/8250/8250_core.c
-> +++ b/drivers/tty/serial/8250/8250_core.c
-> @@ -1157,6 +1157,7 @@ void serial8250_unregister_port(int line)
->  		uart->port.flags &= ~UPF_BOOT_AUTOCONF;
->  		uart->port.type = PORT_UNKNOWN;
->  		uart->port.dev = &serial8250_isa_devs->dev;
-> +		uart->port.pm = NULL;
->  		uart->capabilities = 0;
->  		serial8250_apply_quirks(uart);
->  		uart_add_one_port(&serial8250_reg, &uart->port);
-> -- 
-> 2.40.0
+On Thu, Apr 06, 2023 at 10:23:54AM +0200, Uwe Kleine-K=C3=B6nig wrote:
+> If pm_runtime_get() fails in .remove() the driver used to return the
+> error to the driver core. The only effect of this (compared to returning
+> zero) is a generic warning that the error value is ignored.
+>=20
+> So emit a better warning and return zero to suppress the generic (and
+> little helpful) message. Also disable runtime PM in the error case.
+>=20
+> This prepares changing platform device remove callbacks to return void.
+>=20
+> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
 
--- 
-With Best Regards,
-Andy Shevchenko
+Applied to for-next, thanks!
 
 
+--rOVRl6TSD4jp04kC
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmQ4MoIACgkQFA3kzBSg
+Kba2Lw//b0WwKrYovKtazbVC+UUuNWEz4QvZy7mWKWR/RQKE/NetcIRpvfB/pTcn
+oPfg5JL8lCJh1bTmy9MtEhrhgF+emj/i64pu+Tz+C/piU+S3flJgD2FcJMLhU1Lj
+QkusCw5o5+fNq9kyivRkVWR7aaD1aYQs4U0s0c1uZZaCT4uyM0lZUbLvRc+xDxA/
+4Rt+uQNJmABKKfVMWaL9JIjuh3h1uKqp/wWAMikG+Hwt/+43njYX6o/RJo7Tb97h
+uyj/br5FBCssQStMfZbCQS/gyr6qxdfzPlgCNGLEzJysiazmcSwb0rfYQpBI4olC
+jGtIC9kdd3ZUblhj/VxsvjUbzYy4THKiWoIQD13/pUpinloY68L217iRMTUY1J/3
+f+tPlkIBokjV3FpaULloQK5hbVyiRB5/WPRqbn+v/uSODGCbcvDScR0dzd/wpAZQ
+rECFyq/LEwWvKMNf67jXqqdw9sEzAW8rlT6VkohqWfmQW8D8t15t3qd+ySVmWHGY
+s50LP9GIG5u/IOGKKKmjBG2wwed068S/j+co+R0dXgMY0Vc1xTbhK57JFia7KOjA
+3hAx5OQLcf3To5/OQcV+wSIiFAQa9hUI0gjzHXvFXh4t7VSZG1poC+/W3A1UgVmh
+c0EZC0EN55NqZbm3gAN7nqkXWgsrliyLaMzC5vvaAp6MsF/vvjE=
+=6+gW
+-----END PGP SIGNATURE-----
+
+--rOVRl6TSD4jp04kC--
