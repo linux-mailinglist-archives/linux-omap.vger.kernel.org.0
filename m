@@ -2,101 +2,119 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BD666E07F1
-	for <lists+linux-omap@lfdr.de>; Thu, 13 Apr 2023 09:40:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B675F6E0A4F
+	for <lists+linux-omap@lfdr.de>; Thu, 13 Apr 2023 11:34:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229593AbjDMHkd convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-omap@lfdr.de>); Thu, 13 Apr 2023 03:40:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52970 "EHLO
+        id S229593AbjDMJeS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 13 Apr 2023 05:34:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229998AbjDMHkb (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 13 Apr 2023 03:40:31 -0400
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 8690183E5;
-        Thu, 13 Apr 2023 00:40:29 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 7F47080F0;
-        Thu, 13 Apr 2023 07:40:28 +0000 (UTC)
-Date:   Thu, 13 Apr 2023 10:40:27 +0300
-From:   Tony Lindgren <tony@atomide.com>
-To:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Cc:     Vignesh R <vigneshr@ti.com>, linux-pm@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        Wolfram Sang <wsa@kernel.org>,
-        Andreas Kemnade <andreas@kemnade.info>,
-        linux-i2c@vger.kernel.org, kernel@pengutronix.de,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        linux-omap@vger.kernel.org
-Subject: Re: [PATCH] i2c: omap: Improve error reporting for problems during
- .remove()
-Message-ID: <20230413074027.GC36234@atomide.com>
-References: <20230403054837.6lxyzznzntvw2drg@pengutronix.de>
- <20230403060404.GX7501@atomide.com>
- <ZC5qUU4JLI9Negyi@sai>
- <20230406082354.jwchbl5ir6p4gjw7@pengutronix.de>
- <20230413051222.GA9837@atomide.com>
- <20230413062440.yixne5wqed4zrva4@pengutronix.de>
- <20230413063915.GA36234@atomide.com>
- <20230413070745.mpcqpqokqspzavca@pengutronix.de>
- <20230413071124.GB36234@atomide.com>
- <20230413073716.usr2r7kzw52z5n5l@pengutronix.de>
+        with ESMTP id S229575AbjDMJeR (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 13 Apr 2023 05:34:17 -0400
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FDC310FC;
+        Thu, 13 Apr 2023 02:34:16 -0700 (PDT)
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id F35171C0AB2; Thu, 13 Apr 2023 11:34:13 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
+        t=1681378454;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=umUMqWsiOaRqu7luUossCkhjp9MAzOhN4r0zCNlruGw=;
+        b=j09S/WMQ7UC43E0YBYzSwzyrXdYzPTJUKQXOEBz6TGeZ3XbSTXKHbLJq7i/gNhIuWbjcem
+        auCRYnaZskEmpqSHGXmWUxh7TXnK1Oe8jqKM+L/QuFbtnfLJK9k6mtzQD1+Iupx4JJAmvk
+        t9QCYp1ARrQDvbQ9sFQlv5tm2PhlT2U=
+Date:   Thu, 13 Apr 2023 11:34:13 +0200
+From:   Pavel Machek <pavel@ucw.cz>
+To:     Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+Cc:     kernel list <linux-kernel@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        linux-omap@vger.kernel.org, tony@atomide.com, sre@kernel.org,
+        nekit1000@gmail.com, mpartap@gmx.net, merlijn@wizzup.org,
+        martin_rysavy@centrum.cz, phone-devel@vger.kernel.org,
+        maemo-leste@lists.dyne.org
+Subject: Re: Motorola Droid 4 -- Stopping charger when battery is full
+Message-ID: <ZDfMlfVDdSm8mXs0@duo.ucw.cz>
+References: <ZAcvuP8kmWveLoE/@duo.ucw.cz>
+ <ef4409b2-abd8-0eac-f66e-6858c3358cc1@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="v2tQ4p4f1q0mM6CF"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8BIT
-In-Reply-To: <20230413073716.usr2r7kzw52z5n5l@pengutronix.de>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <ef4409b2-abd8-0eac-f66e-6858c3358cc1@gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Uwe Kleine-König <u.kleine-koenig@pengutronix.de> [230413 07:37]:
-> Hello Tony,
-> 
-> On Thu, Apr 13, 2023 at 10:11:24AM +0300, Tony Lindgren wrote:
-> > * Uwe Kleine-König <u.kleine-koenig@pengutronix.de> [230413 07:07]:
-> > > On Thu, Apr 13, 2023 at 09:39:15AM +0300, Tony Lindgren wrote:
-> > > > Oh OK. Care to clarify a bit why we are not allowed to return errors
-> > > > on remove though? Are we getting rid of the return value for remove?
-> > > > Sorry if I'm not following the cunning plan here :)
-> > > 
-> > > Yes, that's the plan. If you look at the caller of the remove functions
-> > > (before 5c5a7680e67ba6fbbb5f4d79fa41485450c1985c):
-> > > 
-> > > static void platform_remove(struct device *_dev)
-> > > {
-> > >         struct platform_driver *drv = to_platform_driver(_dev->driver);
-> > >         struct platform_device *dev = to_platform_device(_dev);
-> > > 
-> > >         if (drv->remove) {
-> > >                 int ret = drv->remove(dev);
-> > > 
-> > >                 if (ret)
-> > >                         dev_warn(_dev, "remove callback returned a non-zero value. This will be ignored.\n");
-> > >         }
-> > >         dev_pm_domain_detach(_dev, true);
-> > > }
-> > > 
-> > > you see it's pointless to return an error value. But the prototype
-> > > seduces driver authors to do it yielding to error that can easily
-> > > prevented if .remove returns void. See also
-> > > 5c5a7680e67ba6fbbb5f4d79fa41485450c1985c for some background and details
-> > > of the quest.
-> > 
-> > OK thanks. So maybe check the pm_runtime_get_sync() and on error do
-> > pm_runtime_put_noidle(), or pm_runtime_resume_and_get(). Both ways
-> > are fine for me, maybe you already figured it out.
-> 
-> Is this an Ack for my patch?
 
-Yes looking at it again:
+--v2tQ4p4f1q0mM6CF
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Reviewed-by: Tony Lindgren <tony@atomide.com>
+Hi!
 
-Thanks,
+> > I complained that "battery life is very poor" with leste. It seems to
+> > be combination of several factors.
+> >=20
+> > 1) I was using very old battery
+> >=20
+> > 2) My charger is detected as "USB", not as "AC"
+> >=20
+>=20
+> And this is because there is no working charger detection in the driver, =
+so
+> initial current limit is hard-coded to 500mA.
 
-Tony
+Aha, thanks, makes sense.
+
+> > According to my measurements "CPCAP_REG_CRM_FET_OVRD |
+> > CPCAP_REG_CRM_FET_CTRL" results in battery discharding and 0A drawn
+> > frmo the USB.  "CPCAP_REG_CRM_FET_OVRD" is phone powered from USB,
+> > with battery more or less disconnected (<12mA), which is what we want
+> > in battery full situation.
+> >=20
+>=20
+> What will happen if phone needs to draw more than N mA (N is the set char=
+ger
+> current limit)?
+
+We may run over the limit, AFAICT. I guess one solution would be to
+only do this when limit is high enough...
+
+With current setup, phone will not boot if battery is empty, so this
+needs quite urgent solution.
+
+I updated my leste, and now have:
+
+user@devuan-droid4:~/g/droid4-linux$ uname -a
+Linux devuan-droid4 6.1.9 #1 SMP PREEMPT Mon Mar 20 15:16:53 UTC 2023 armv7=
+l GNU/Linux
+user@devuan-droid4:~/g$ apt show linux-image-omap
+Package: linux-image-omap
+Version: 6.1.8.0-1+m7
+
+Where can I find corresponding sources?
+
+Best regards,
+							Pavel
+--=20
+People of Russia, stop Putin before his war on Ukraine escalates.
+
+--v2tQ4p4f1q0mM6CF
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZDfMlQAKCRAw5/Bqldv6
+8sUaAJoDZHikjOWqxw/NosRn0342+r66mQCePUJTIGUw+651WfEGCjHdueGm+Ms=
+=LkJe
+-----END PGP SIGNATURE-----
+
+--v2tQ4p4f1q0mM6CF--
