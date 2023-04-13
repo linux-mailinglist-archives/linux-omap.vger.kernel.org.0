@@ -2,147 +2,122 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 45D5A6E0B64
-	for <lists+linux-omap@lfdr.de>; Thu, 13 Apr 2023 12:28:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45BB16E0DD6
+	for <lists+linux-omap@lfdr.de>; Thu, 13 Apr 2023 14:56:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229591AbjDMK2i convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-omap@lfdr.de>); Thu, 13 Apr 2023 06:28:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45218 "EHLO
+        id S229867AbjDMM4P (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 13 Apr 2023 08:56:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59912 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229479AbjDMK2g (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 13 Apr 2023 06:28:36 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 246002737;
-        Thu, 13 Apr 2023 03:28:34 -0700 (PDT)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4PxwkY5Tgbz67QKJ;
-        Thu, 13 Apr 2023 18:27:33 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Thu, 13 Apr
- 2023 11:28:32 +0100
-Date:   Thu, 13 Apr 2023 11:28:30 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Patrik =?ISO-8859-1?Q?Dahlstr=F6m?= <risca@dalakolonin.se>
-CC:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <letux-kernel@openphoenux.org>, <kernel@pyra-handheld.com>,
-        <pgoudagunta@nvidia.com>, <hns@goldelico.com>, <jic23@kernel.org>,
-        <lars@metafoo.de>, <linux-omap@vger.kernel.org>
-Subject: Re: [PATCH v4 8/9] iio: adc: palmas: add support for iio threshold
- events
-Message-ID: <20230413112830.00006279@Huawei.com>
-In-Reply-To: <20230408114825.824505-9-risca@dalakolonin.se>
-References: <20230408114825.824505-1-risca@dalakolonin.se>
-        <20230408114825.824505-9-risca@dalakolonin.se>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+        with ESMTP id S230111AbjDMM4O (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 13 Apr 2023 08:56:14 -0400
+X-Greylist: delayed 61 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 13 Apr 2023 05:56:09 PDT
+Received: from h2.cmg1.smtp.forpsi.com (h2.cmg1.smtp.forpsi.com [81.2.195.163])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F5C41735
+        for <linux-omap@vger.kernel.org>; Thu, 13 Apr 2023 05:56:09 -0700 (PDT)
+Received: from lenoch ([91.218.190.200])
+        by cmgsmtp with ESMTPSA
+        id mwThpE7lOPm6CmwTipKOhq; Thu, 13 Apr 2023 14:55:06 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=triops.cz; s=f2019;
+        t=1681390506; bh=AmyPAwyE23hxI5N/DdjI4JGRQk1Q/Omh5fjDH33sHKw=;
+        h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+        b=Bmht6jUuIyHRCgqp0+GaVqsbPruZPNZnmWbrGDzi/eDLcEMovntlMbbZ0LFfkG0GH
+         gkNviCTJ5U8Elnl50KbqHoVe5GlviK3+vPD6RCfDZBqMHRNqQlbWT3uwNWpnz98rCo
+         kIy80lMabKDnkL2rkFS+hk4XpRHJdkwrFSV33pqJIjyRNFGaZPu+tJFlEuzaxDnhGZ
+         pVGqYnXUhkPwNKEs/qXaxwO4IlJfKVYnXADh8hOyhxZDuLddt2M3K8TZ1r5iycOwVN
+         Qg+8jD/z+riIvLswBfbfW+NC0akbC7eHLD05rbbUamZPW/nAU2vY6hkvV6YCMGLRZr
+         ryvTqxge745OA==
+Date:   Thu, 13 Apr 2023 14:55:05 +0200
+From:   Ladislav Michl <oss-lists@triops.cz>
+To:     linux-rtc@vger.kernel.org
+Cc:     linux-omap@vger.kernel.org
+Subject: [PATCH] rtc: rtc-twl: add NVRAM support
+Message-ID: <ZDf7qZTiml0ijD2g@lenoch>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: 8BIT
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500003.china.huawei.com (7.191.162.67) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-CMAE-Envelope: MS4wfI02poVSKl5s+9k6CotBW9U9SplIG5BhPhCUcEdA05XI5JYlWbUCvUfpp140spCKWyARbMFYf4JYyaf8l+gtF546AQUKBGc8Pjn6THaEGn6dV/EBPHcr
+ up5wPUrvIgCCTmtaqXPjy9hlMoGRHo7eZuLHYTEBM3LxZbGjQo6IJxmIh0p0VBdhIyCzGHWQCYUYVy9n7AEr/pTSXyAzhzwNqRQ=
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
+        SPF_NONE,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sat,  8 Apr 2023 13:48:24 +0200
-Patrik Dahlström <risca@dalakolonin.se> wrote:
+From: Ladislav Michl <ladis@linux-mips.org>
+Date: Sat, 28 May 2022 19:36:13 +0200
 
-> The palmas gpadc block has support for monitoring up to 2 ADC channels
-> and issue an interrupt if they reach past a set threshold. This change
-> hooks into the IIO events system and exposes to userspace the ability to
-> configure these threshold values for each channel, but only allow up to
-> 2 such thresholds to be enabled at any given time. Trying to enable a
-> third channel will result in an error.
-> 
-> Userspace is expected to input calibrated, as opposed to raw, values as
-> threshold. However, it is not enough to do the opposite of what is done
-> when converting the other way around. To account for tolerances in the
-> ADC, the calculated raw threshold should be adjusted based on the ADC
-> specifications for the device. These specifications include the integral
-> nonlinearity (INL), offset, and gain error. To adjust the high
-> threshold, use the following equation:
-> 
->   (calibrated value + INL) * Gain error + offset = maximum value  [1]
-> 
-> Likewise, use the following equation for the low threshold:
-> 
->   (calibrated value - INL) * Gain error - offset = minimum value
-> 
-> The gain error is a combination of gain error, as listed in the
-> datasheet, and gain error drift due to temperature and supply. The exact
-> values for these specifications vary between palmas devices. This patch
-> sets the values found in TWL6035, TWL6037 datasheet.
-> 
-> [1] TI Application Report, SLIA087A, Guide to Using the GPADC in
->     TPS65903x, TPS65917-Q1, TPS65919-Q1, and TPS65916 Devices.
-> 
-> Signed-off-by: Patrik Dahlström <risca@dalakolonin.se>
+Export SRAM using nvmem.
 
-0-day found some stuff we'd missed in here.
+Signed-off-by: Ladislav Michl <ladis@linux-mips.org>
+---
+ drivers/rtc/rtc-twl.c | 37 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 37 insertions(+)
 
-I've fixed it up and pushed out again.
+diff --git a/drivers/rtc/rtc-twl.c b/drivers/rtc/rtc-twl.c
+index c24d1e18f56c..31877522b379 100644
+--- a/drivers/rtc/rtc-twl.c
++++ b/drivers/rtc/rtc-twl.c
+@@ -487,11 +487,24 @@ static const struct rtc_class_ops twl_rtc_ops = {
+ 	.alarm_irq_enable = twl_rtc_alarm_irq_enable,
+ };
+ 
++static int twl_nvram_read(void *priv, unsigned int offset, void *val,
++			  size_t bytes)
++{
++	return twl_i2c_read((long)priv, val, offset, bytes);
++}
++
++static int twl_nvram_write(void *priv, unsigned int offset, void *val,
++			   size_t bytes)
++{
++	return twl_i2c_write((long)priv, val, offset, bytes);
++}
++
+ /*----------------------------------------------------------------------*/
+ 
+ static int twl_rtc_probe(struct platform_device *pdev)
+ {
+ 	struct twl_rtc *twl_rtc;
++	struct nvmem_config nvmem_cfg;
+ 	struct device_node *np = pdev->dev.of_node;
+ 	int ret = -EINVAL;
+ 	int irq = platform_get_irq(pdev, 0);
+@@ -579,6 +592,30 @@ static int twl_rtc_probe(struct platform_device *pdev)
+ 		return ret;
+ 	}
+ 
++	memset(&nvmem_cfg, 0, sizeof(nvmem_cfg));
++	nvmem_cfg.name = "twl-secured-";
++	nvmem_cfg.type = NVMEM_TYPE_BATTERY_BACKED;
++	nvmem_cfg.reg_read = twl_nvram_read,
++	nvmem_cfg.reg_write = twl_nvram_write,
++	nvmem_cfg.word_size = 1;
++	nvmem_cfg.stride = 1;
++	if (twl_class_is_4030()) {
++		/* 20 bytes SECURED_REG area */
++		nvmem_cfg.size = 20;
++		nvmem_cfg.priv = (void *)TWL_MODULE_SECURED_REG;
++		devm_rtc_nvmem_register(twl_rtc->rtc, &nvmem_cfg);
++		/* 8 bytes BACKUP area */
++		nvmem_cfg.name = "twl-backup-";
++		nvmem_cfg.size = 8;
++		nvmem_cfg.priv = (void *)TWL4030_MODULE_BACKUP;
++		devm_rtc_nvmem_register(twl_rtc->rtc, &nvmem_cfg);
++	} else {
++		/* 8 bytes SECURED_REG area */
++		nvmem_cfg.size = 8;
++		nvmem_cfg.priv = (void *)TWL_MODULE_SECURED_REG;
++		devm_rtc_nvmem_register(twl_rtc->rtc, &nvmem_cfg);
++	}
++
+ 	return 0;
+ }
+ 
+-- 
+2.32.0
 
-> ---
-...
-> +static int palmas_gpadc_write_event_value(struct iio_dev *indio_dev,
-> +					  const struct iio_chan_spec *chan,
-> +					  enum iio_event_type type,
-> +					  enum iio_event_direction dir,
-> +					  enum iio_event_info info,
-> +					  int val, int val2)
-> +{
-> +	struct palmas_gpadc *adc = iio_priv(indio_dev);
-> +	int adc_chan = chan->channel;
-> +	int old;
-> +	int ret;
-> +
-> +	if (adc_chan > PALMAS_ADC_CH_MAX || type != IIO_EV_TYPE_THRESH)
-> +		return -EINVAL;
-> +
-> +	mutex_lock(&adc->lock);
-> +	switch (info) {
-> +	case IIO_EV_INFO_VALUE:
-> +		if (val < 0 || val > 0xFFF) {
-> +			ret = -EINVAL;
-> +			break;
-
-Should be goto out_unlock; Found because old is undefined.
-
-> +		}
-> +		if (dir == IIO_EV_DIR_RISING) {
-> +			old = adc->thresholds[adc_chan].high;
-> +			adc->thresholds[adc_chan].high = val;
-> +		}
-
-Whilst here should be } else {
-
-Tidied both up force an update on the testing branch.
-
-> +		else {
-> +			old = adc->thresholds[adc_chan].low;
-> +			adc->thresholds[adc_chan].low = val;
-> +		}
-> +		ret = 0;
-> +		break;
-> +	default:
-> +		ret = -EINVAL;
-> +		goto out_unlock;
-> +	}
-> +
-> +	if (val != old && palmas_gpadc_get_event(adc, adc_chan, dir))
-> +		ret = palmas_gpadc_reconfigure_event_channels(adc);
-> +
-> +out_unlock:
-> +	mutex_unlock(&adc->lock);
-> +
-> +	return ret;
-> +}
-> +
