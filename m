@@ -2,81 +2,126 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 83CCF6E074E
-	for <lists+linux-omap@lfdr.de>; Thu, 13 Apr 2023 09:04:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C7916E0758
+	for <lists+linux-omap@lfdr.de>; Thu, 13 Apr 2023 09:08:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229705AbjDMHD5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 13 Apr 2023 03:03:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57838 "EHLO
+        id S229733AbjDMHIC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 13 Apr 2023 03:08:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229599AbjDMHD5 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 13 Apr 2023 03:03:57 -0400
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 5344F46B9;
-        Thu, 13 Apr 2023 00:03:56 -0700 (PDT)
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 5C3C580F0;
-        Thu, 13 Apr 2023 07:03:54 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>
-Cc:     Andy Shevchenko <andriy.shevchenko@intel.com>,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Johan Hovold <johan@kernel.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-omap@vger.kernel.org, linux-serial@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] serial: 8250: Clear port->pm on port specific driver unbind
-Date:   Thu, 13 Apr 2023 10:03:41 +0300
-Message-Id: <20230413070342.36155-1-tony@atomide.com>
-X-Mailer: git-send-email 2.40.0
+        with ESMTP id S229628AbjDMHIB (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 13 Apr 2023 03:08:01 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88D715585
+        for <linux-omap@vger.kernel.org>; Thu, 13 Apr 2023 00:08:00 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pmr3b-0007Sg-Fb; Thu, 13 Apr 2023 09:07:47 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pmr3a-00AuTs-35; Thu, 13 Apr 2023 09:07:46 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pmr3Z-00CoB0-GO; Thu, 13 Apr 2023 09:07:45 +0200
+Date:   Thu, 13 Apr 2023 09:07:45 +0200
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Vignesh R <vigneshr@ti.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>, linux-pm@vger.kernel.org,
+        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+        Wolfram Sang <wsa@kernel.org>,
+        Andreas Kemnade <andreas@kemnade.info>,
+        linux-i2c@vger.kernel.org, kernel@pengutronix.de,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        linux-omap@vger.kernel.org
+Subject: Re: [PATCH] i2c: omap: Improve error reporting for problems during
+ .remove()
+Message-ID: <20230413070745.mpcqpqokqspzavca@pengutronix.de>
+References: <20230402105518.2512541-1-u.kleine-koenig@pengutronix.de>
+ <20230402225001.75a32147@aktux>
+ <20230403054837.6lxyzznzntvw2drg@pengutronix.de>
+ <20230403060404.GX7501@atomide.com>
+ <ZC5qUU4JLI9Negyi@sai>
+ <20230406082354.jwchbl5ir6p4gjw7@pengutronix.de>
+ <20230413051222.GA9837@atomide.com>
+ <20230413062440.yixne5wqed4zrva4@pengutronix.de>
+ <20230413063915.GA36234@atomide.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="ys3aytxiomizzbdc"
+Content-Disposition: inline
+In-Reply-To: <20230413063915.GA36234@atomide.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-omap@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-When we unbind a serial port hardware specific 8250 driver, the generic
-serial8250 driver takes over the port. After that we see an oops about 10
-seconds later. This can produce the following at least on some TI SoCs:
 
-Unhandled fault: imprecise external abort (0x1406)
-Internal error: : 1406 [#1] SMP ARM
+--ys3aytxiomizzbdc
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Turns out that we may still have the serial port hardware specific driver
-port->pm in use, and serial8250_pm() tries to call it after the port
-specific driver is gone:
+On Thu, Apr 13, 2023 at 09:39:15AM +0300, Tony Lindgren wrote:
+> Oh OK. Care to clarify a bit why we are not allowed to return errors
+> on remove though? Are we getting rid of the return value for remove?
+> Sorry if I'm not following the cunning plan here :)
 
-serial8250_pm [8250_base] from uart_change_pm+0x54/0x8c [serial_base]
-uart_change_pm [serial_base] from uart_hangup+0x154/0x198 [serial_base]
-uart_hangup [serial_base] from __tty_hangup.part.0+0x328/0x37c
-__tty_hangup.part.0 from disassociate_ctty+0x154/0x20c
-disassociate_ctty from do_exit+0x744/0xaac
-do_exit from do_group_exit+0x40/0x8c
-do_group_exit from __wake_up_parent+0x0/0x1c
+Yes, that's the plan. If you look at the caller of the remove functions
+(before 5c5a7680e67ba6fbbb5f4d79fa41485450c1985c):
 
-Let's fix the issue by clearing port->pm in serial8250_unregister_port().
+static void platform_remove(struct device *_dev)
+{
+        struct platform_driver *drv =3D to_platform_driver(_dev->driver);
+        struct platform_device *dev =3D to_platform_device(_dev);
 
-Signed-off-by: Tony Lindgren <tony@atomide.com>
----
- drivers/tty/serial/8250/8250_core.c | 1 +
- 1 file changed, 1 insertion(+)
+        if (drv->remove) {
+                int ret =3D drv->remove(dev);
 
-diff --git a/drivers/tty/serial/8250/8250_core.c b/drivers/tty/serial/8250/8250_core.c
---- a/drivers/tty/serial/8250/8250_core.c
-+++ b/drivers/tty/serial/8250/8250_core.c
-@@ -1157,6 +1157,7 @@ void serial8250_unregister_port(int line)
- 		uart->port.flags &= ~UPF_BOOT_AUTOCONF;
- 		uart->port.type = PORT_UNKNOWN;
- 		uart->port.dev = &serial8250_isa_devs->dev;
-+		uart->port.pm = NULL;
- 		uart->capabilities = 0;
- 		serial8250_apply_quirks(uart);
- 		uart_add_one_port(&serial8250_reg, &uart->port);
--- 
-2.40.0
+                if (ret)
+                        dev_warn(_dev, "remove callback returned a non-zero=
+ value. This will be ignored.\n");
+        }
+        dev_pm_domain_detach(_dev, true);
+}
+
+you see it's pointless to return an error value. But the prototype
+seduces driver authors to do it yielding to error that can easily
+prevented if .remove returns void. See also
+5c5a7680e67ba6fbbb5f4d79fa41485450c1985c for some background and details
+of the quest.
+
+Best regards
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--ys3aytxiomizzbdc
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmQ3qkAACgkQj4D7WH0S
+/k6eSggApH8vCbn353TwGZL588/SZ61lY0yvxL3w6D6L9qgKzJTERlDIct5e6qrI
+LQ7LTZSnLP2pnU84Wt3z0aYO4LxxNUQhphv33KxCMIykd4apqLn9eAb33K0ZlIF8
+aPhx7VZIv78w4sg4UJWi32n2qB5qTCXJYmwhMh/B7RNqcjtIex9MCXyf2nyy/Odu
+3B7VU4ym62nlMoyvtPuwo+hDcKN+WmnPEUz7uKSA10fZmIiROOu9Wud3aOQoh1S6
+dLRKW5y69JVZOU6UgIzHLYBoBZfyzIG6EPJoJQ4DnvUrjio7K3/BDs7WnhO26+w3
+mRNu1fJT7uZFhZ/prT5/GFPIN0OtQQ==
+=Au1N
+-----END PGP SIGNATURE-----
+
+--ys3aytxiomizzbdc--
