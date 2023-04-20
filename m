@@ -2,92 +2,52 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EF7A6E92E5
-	for <lists+linux-omap@lfdr.de>; Thu, 20 Apr 2023 13:35:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67DF86E9C3A
+	for <lists+linux-omap@lfdr.de>; Thu, 20 Apr 2023 21:08:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232073AbjDTLf1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 20 Apr 2023 07:35:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38904 "EHLO
+        id S230332AbjDTTH7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 20 Apr 2023 15:07:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230246AbjDTLf1 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 20 Apr 2023 07:35:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE77440CA;
-        Thu, 20 Apr 2023 04:35:04 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DF381647CB;
-        Thu, 20 Apr 2023 11:34:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC007C433EF;
-        Thu, 20 Apr 2023 11:34:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1681990445;
-        bh=VsfZrco2JQZGfIqPwGjRvxKZSNISIaz4em2BpQLe6c0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=BDpo9ghQp8RBnno7IyBfZhU+f1LWUGRZE9uPmuOOaaRrJKBWQCyU3YIBTocmUU3io
-         Z09//nBu/OvgR/EDUIn/KzXXL1861GS/FCBu6x8/jSlYPsQ7ts8xCTJ7bzqxdEGeLF
-         MvgmqSlUQN5YYAifuBMFxqxUjBnlPF/WjMZfPKnk=
-Date:   Thu, 20 Apr 2023 13:34:02 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Jiri Slaby <jirislaby@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Johan Hovold <johan@kernel.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-serial@vger.kernel.org
-Subject: Re: [PATCH v5 1/1] serial: core: Start managing serial controllers
- to enable runtime PM
-Message-ID: <ZEEjKiHTyGsbpfma@kroah.com>
-References: <20230116080002.47315-1-tony@atomide.com>
- <Y9jo9bTnmejWYoH2@kroah.com>
- <Y9oI8m132aQOeSed@atomide.com>
+        with ESMTP id S230118AbjDTTH6 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 20 Apr 2023 15:07:58 -0400
+X-Greylist: delayed 1798 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 20 Apr 2023 12:07:56 PDT
+Received: from ODEDI148698.home (odedi148698.mywhc.ca [144.217.254.35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A674B10D1
+        for <linux-omap@vger.kernel.org>; Thu, 20 Apr 2023 12:07:56 -0700 (PDT)
+DKIM-Signature: v=1; c=relaxed/relaxed; h=content-type:mime-version:content-transfer-encoding:content-description:subject:to:from:date:reply-to:message-id;
+ d=a2ict.com; s=default; a=rsa-sha256;
+ bh=FQE3y/+3GQQzdAQHGLO+y57Gs24Zx9iAkvAV5kT0Bhk=;
+ b=bjLxYa/nyzGbD/1rdBgpjwF6IacUwO68zzE9pXSRcrM9ncE+Cr4M1dhOeJLAeAlhk
+ bygZ/kPRKmZ9r71m7aqKOSlkbKmxx9wqg/qfx0O4TNGQG+4valF/lk3XDm9UL+nY0W9
+ XcobaSygM4eqyQM5GbAzU2Y6uv0LcUguFuTdKf4=;
+Received: from [51.89.94.142] ([51.89.94.142]) by home with
+ MailEnable ESMTPA; Thu, 20 Apr 2023 18:29:33 +0000
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Y9oI8m132aQOeSed@atomide.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: ich bin Edwin Castro
+To:     linux-omap@vger.kernel.org
+From:   "Mr. Edwin Castro" <admin@a2ict.com>
+Date:   Thu, 20 Apr 2023 11:29:32 -0700
+Reply-To: charityhome_edwin@yahoo.com
+Message-ID: <826786A3B3C2430EA34F49F42F495A63.MAI@home>
+X-Spam-Status: No, score=3.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FORGED_REPLYTO,
+        HK_NAME_MR_MRS,LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Feb 01, 2023 at 08:38:42AM +0200, Tony Lindgren wrote:
-> * Greg Kroah-Hartman <gregkh@linuxfoundation.org> [230131 10:10]:
-> > On Mon, Jan 16, 2023 at 09:59:58AM +0200, Tony Lindgren wrote:
-> > > We want to enable runtime PM for serial port device drivers in a generic
-> > > way. To do this, we want to have the serial core layer manage the
-> > > registered physical serial controller devices.
-> > > 
-> > > To do this, let's set up a struct device for the serial core controller
-> > > as suggested by Greg and Jiri. The serial core controller devices are
-> > > children of the physical serial port device. The serial core controller
-> > > device is needed to support multiple different kind of ports connected
-> > > to single physical serial port device.
-> > > 
-> > > Let's also set up a struct device for the serial core port. The serial
-> > > core port instances are children of the serial core controller device.
-> > 
-> > Looking better, but why is this new device a platform device?  That
-> > feels odd, you should never have a platform device hanging off of a
-> > non-platform device, right?
-> 
-> No special need for it to be a platform device. It just is easy to set
-> up, and for my test case the serial port physical device is also a
-> platform device.
-> 
-> What's your preference here?
+Mein Name ist Edwin Castro, ich habe den Powerball-Jackpot gewonnen und ich=
+ spende die Summe von 2,8 Millionen Dollar an f=FCnf gl=FCckliche Menschen =
+auf der ganzen Welt...
 
-Never make up a "fake" platform device please.  Only use them for real
-platform devices.  Use a virtual device if you want a virtual one.
-
-thanks,
-
-greg k-h
+Kontaktieren Sie mich unter meiner E-Mail:charityhome_edwin@yahoo.com f=FCr=
+ weitere Einzelheiten.
