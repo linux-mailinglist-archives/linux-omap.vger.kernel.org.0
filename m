@@ -2,66 +2,94 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C87656EC76D
-	for <lists+linux-omap@lfdr.de>; Mon, 24 Apr 2023 09:51:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4280D6ED5A3
+	for <lists+linux-omap@lfdr.de>; Mon, 24 Apr 2023 21:54:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231466AbjDXHvA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 24 Apr 2023 03:51:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37788 "EHLO
+        id S232268AbjDXTyg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 24 Apr 2023 15:54:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54334 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231277AbjDXHux (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 24 Apr 2023 03:50:53 -0400
-Received: from mail.mahavavy.com (mail.mahavavy.com [92.222.170.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC92E1BE3
-        for <linux-omap@vger.kernel.org>; Mon, 24 Apr 2023 00:50:52 -0700 (PDT)
-Received: by mail.mahavavy.com (Postfix, from userid 1002)
-        id 8DABD222AD; Mon, 24 Apr 2023 07:50:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mahavavy.com; s=mail;
-        t=1682322651; bh=IfqQW79nVX/qUpmHcJiWDpV9BQnOf/s+Zcq9ON74QJY=;
-        h=Date:From:To:Subject:From;
-        b=fqCEU8M/NTVg9QOaz8b3XSRyN3CIO//E2gh5qawqF6lQzb0qbGspc5JQVWGdjqZ3H
-         c9t/zbLO7kgJ1CtDVR0kRIdrc9pWi4GZ1RCtCITSrIv/CGWLhPBOtbFkZ27MCsGgGf
-         XXXtmL7/rfyVRqCww65cbvQ0jz3xB8ST/LDu2lwVMiXgdwDiAywm/WJGarxNSvLzJN
-         HKUH+fbCFe6pFjaOuU94bRlJ6oEeF0qpPhYh2y2zEf8xY7SZ7hQEjgtZtNBLIN8eJz
-         X5JeMxQaIhQRq6bEp4xiwV+kZOPOUzCnK5IcWNZLjSoufTsNKM6QwRTR66GkykQ5JV
-         GfgF75n7F1qgg==
-Received: by mail.mahavavy.com for <linux-omap@vger.kernel.org>; Mon, 24 Apr 2023 07:50:40 GMT
-Message-ID: <20230424064500-0.1.25.3fuv.0.b12ipgnkm1@mahavavy.com>
-Date:   Mon, 24 Apr 2023 07:50:40 GMT
-From:   =?UTF-8?Q? "Kristi=C3=A1n_Plet=C3=A1nek" ?= 
-        <kristian.pletanek@mahavavy.com>
-To:     <linux-omap@vger.kernel.org>
-Subject: =?UTF-8?Q?Tlakov=C4=9B_lit=C3=BD?=
-X-Mailer: mail.mahavavy.com
+        with ESMTP id S232815AbjDXTyc (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 24 Apr 2023 15:54:32 -0400
+Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29363619A;
+        Mon, 24 Apr 2023 12:54:30 -0700 (PDT)
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 33OJs961070569;
+        Mon, 24 Apr 2023 14:54:09 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1682366049;
+        bh=fGh2KtrD4r68N5har2QjJNUa/w/bm+R2RNcbEC38Sxg=;
+        h=From:To:CC:Subject:Date;
+        b=RMA/RvAFyDsrC0r3FDZOkv81/keNPA/y9DcdbAiuKdI2luOz6nhcgbCbJA42RY1E9
+         SXjmtY8xMIl+wSsnLD79MUmVUsRkTDR4ZrpOBwIti0g3laBQyXqpAhOX9twWQccDZI
+         oLsM/frYmYOnAKQbxE98Hss6OXu1aF37ipScv4Io=
+Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 33OJs9a0007685
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 24 Apr 2023 14:54:09 -0500
+Received: from DFLE103.ent.ti.com (10.64.6.24) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16; Mon, 24
+ Apr 2023 14:54:09 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE103.ent.ti.com
+ (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16 via
+ Frontend Transport; Mon, 24 Apr 2023 14:54:09 -0500
+Received: from localhost (ileaxei01-snat.itg.ti.com [10.180.69.5])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 33OJs9G1044051;
+        Mon, 24 Apr 2023 14:54:09 -0500
+From:   Reid Tonking <reidt@ti.com>
+To:     <tony@atomide.com>, <vigneshr@ti.com>, <aaro.koskinen@iki.fi>,
+        <jmkrzyszt@gmail.com>
+CC:     <linux-omap@vger.kernel.org>, <linux-i2c@vger.kernel.org>,
+        Reid Tonking <reidt@ti.com>
+Subject: [PATCH] i2c: omap: Fix standard mode false ACK readings
+Date:   Mon, 24 Apr 2023 14:53:44 -0500
+Message-ID: <20230424195344.627861-1-reidt@ti.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,MIXED_ES,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Dobr=C3=A9 r=C3=A1no,
+Using standard mode, rare false ACK responses were appearing with
+i2cdetect tool. This was happening due to NACK interrupt triggering
+ISR thread before register access interrupt was ready. Removing the
+NACK interrupt's ability to trigger ISR thread lets register access
+ready interrupt do this instead.
 
-zaji=C5=A1=C5=A5ujeme technologii tlakov=C3=A9ho lit=C3=AD hlin=C3=ADku.
+Fixes: 3b2f8f82dad7 ("i2c: omap: switch to threaded IRQ support")
 
-M=C3=A1me v=C3=BDrobn=C3=AD z=C3=A1vody v Polsku, =C5=A0v=C3=A9dsku a =C4=
-=8C=C3=ADn=C4=9B se schopnost=C3=AD flexibiln=C4=9B p=C5=99esouvat v=C3=BD=
-robu mezi lokalitami.
+Signed-off-by: Reid Tonking <reidt@ti.com>
+---
+Fixes: LCPD-29949
 
-Na=C5=A1e lic=C3=AD bu=C5=88ky jsou v=C4=9Bt=C5=A1inou automatick=C3=A9 n=
-ebo poloautomatick=C3=A9, co=C5=BE umo=C5=BE=C5=88uje v=C3=BDrobu velk=C3=
-=BDch v=C3=BDrobn=C3=ADch s=C3=A9ri=C3=AD s vysokou flexibilitou detail=C5=
-=AF.
-=20
-Poskytujeme podporu v ka=C5=BEd=C3=A9 f=C3=A1zi v=C3=BDvoje projektu, vyv=
-=C3=ADj=C3=ADme strukturu detailu.
+ drivers/i2c/busses/i2c-omap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Cht=C4=9Bli byste mluvit o spolupr=C3=A1ci v t=C3=A9to oblasti?
+diff --git a/drivers/i2c/busses/i2c-omap.c b/drivers/i2c/busses/i2c-omap.c
+index f9ae520aed22..7ec252199706 100644
+--- a/drivers/i2c/busses/i2c-omap.c
++++ b/drivers/i2c/busses/i2c-omap.c
+@@ -1058,7 +1058,7 @@ omap_i2c_isr(int irq, void *dev_id)
+ 	u16 stat;
+ 
+ 	stat = omap_i2c_read_reg(omap, OMAP_I2C_STAT_REG);
+-	mask = omap_i2c_read_reg(omap, OMAP_I2C_IE_REG);
++	mask = omap_i2c_read_reg(omap, OMAP_I2C_IE_REG) & ~OMAP_I2C_STAT_NACK;
+ 
+ 	if (stat & mask)
+ 		ret = IRQ_WAKE_THREAD;
+-- 
+2.34.1
 
-Pozdravy
-Kristi=C3=A1n Plet=C3=A1nek
