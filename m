@@ -2,211 +2,156 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 883D86EC398
-	for <lists+linux-omap@lfdr.de>; Mon, 24 Apr 2023 04:35:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 304166EC39B
+	for <lists+linux-omap@lfdr.de>; Mon, 24 Apr 2023 04:36:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229581AbjDXCfJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 23 Apr 2023 22:35:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47362 "EHLO
+        id S229493AbjDXCgL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 23 Apr 2023 22:36:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229493AbjDXCfI (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 23 Apr 2023 22:35:08 -0400
-Received: from JPN01-OS0-obe.outbound.protection.outlook.com (mail-os0jpn01on2097.outbound.protection.outlook.com [40.107.113.97])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 924B32100
-        for <linux-omap@vger.kernel.org>; Sun, 23 Apr 2023 19:35:06 -0700 (PDT)
+        with ESMTP id S229476AbjDXCgK (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 23 Apr 2023 22:36:10 -0400
+Received: from JPN01-OS0-obe.outbound.protection.outlook.com (mail-os0jpn01on2110.outbound.protection.outlook.com [40.107.113.110])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DDF72100
+        for <linux-omap@vger.kernel.org>; Sun, 23 Apr 2023 19:36:08 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=PRrNTtS0G3cwQUF7T123w/Lxz696AZTnvQmCwnPfUoRQzRdUFHo8+iQac2JuGuX0qoMXYxqcoA6opa/Ed0zoy7Dtv9XtBzR3Gra5SvRNHQmBGh+eMtjN+dO3YnB7f0ErQLjVLzmcY2hPX2xCcbLCDBuIeE9Mhedyivj4JasL1WALEZpArFHCC8h/vikRITsMCc88aEKligEXf7lqH0Z4tU5WufmUXtJVshzdEzcb8lvl7LOIJdol1SUeFddjae49r7qOEeYMz2nwrs0T2vP1071z5JLk6Ii9wI2TelPIDpxhUrzHjLSUToG1XwneM5ddHeraBdmZEBXkOpLiYTMM3A==
+ b=UgwI1r2TZpZ1e8Hf/XH37PDKHCdUPwJQpEdYWJnTkKiBHAsmRLXXaA7cAv4Qx9B+8/7o9wATOaZNPoZ0ekCxb9nr6PYzyB1YmqpLm90962urLNZMJEI5oseaoJ0TKqp1pnDcerUzWPB4DBCJq7YlB4tCc6PF3H9w8c0fcpI2QaQnd2tziB5CVMk/pyn4FqrozGQB7m/C0odFMUOpDnx5ZiM0RIIY9gPOLjR+MFHi4XXZQMvB14Gvkr1qOnAnOa4B2nxyiISRSZGffInnX8t0D0ekoxVV6BA132R6naibNpz1KOusXTR0qq4B4TYuT+t3iieQIQwOAIFsvOdP/Dosew==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FuC8/NbudUW2StN+2wr9fflajXO+sOgoptpkUyhWL6M=;
- b=dywkoRGO9T7620Ko3BNiHqfCycdycP1M/XppiQVJzSnb+VXNl7S+y2YH6vqbV5naBiPL80a4iwFKDDpewVBJbOTpPfZMuHbCovTFSfIp6wLDRJlE10PIBfNVHdX4/yyLj0uvWLSBpaAMCpIwetavQTps2MGGccmVRG7y4mABgO3mMTmBOFAS9ufSMZYDjJttgKLGjpbVtpS6VdaE5onven5eUJiIpn5FBIvbAn2HO/PIoWkKmwZ3mTj1Ygo87bPam+6dzwI7bAzBVDhA7qN/c7a6cniPfA6iLx5jplRVT56513PZiPPXcu2zMWsjM+tHPnGf+l2zXznZynvlp4gQoA==
+ bh=e4j6tL+6IPA1jE55WJqPVoiUo39FMLd9is3K4Ivq8dI=;
+ b=hHD+ShO54GxqhMOLVE1C4zRvrzxG4Ru1sC7uxirfl60obEes163pyTps1l8zxn61e7iU1i4gAXRqWECz1VVbV8GYlQfCjiWRj6QXNyfXtmaVQevTFLqCdIezkgy3z4tVeBTHFCKD5GrvoamsHazl0ZNlPdKETOzgRo5pcgc1aIT45bYCJS86HOiiweVJIlEezehogkQL94psyUZCtip/NLzYY+eju/7c453XHlVRj+MSsL86OY5n6XxaON/PFnWPYVNodKbULGwEZf22jL6MYyaqudHyIPCm5VQKFQ76ng0f92yI8KMiF5X5Cqa9EZf14nQEVOGv9z7/EfvRAVOX3Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
  dkim=pass header.d=renesas.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FuC8/NbudUW2StN+2wr9fflajXO+sOgoptpkUyhWL6M=;
- b=Ve4GYHcn/FmQMdANED/t42Kh5dEqRjR4lLR7Q2sXgvIi4JdNhpoE6Oma59JmBCGQOLz4BBUtmp7mUAZYeb4V5rdW2l/LGeC2R4dKiS1RMDMyMiOqPuE+dY3m+AccKCUFBjqgdR6z3IbY/zWb1JFJvWZBRzI7OYAZzyWqHvctUy4=
+ bh=e4j6tL+6IPA1jE55WJqPVoiUo39FMLd9is3K4Ivq8dI=;
+ b=TwVuegrJKYk+AKnRWeyCPLXTzzA/FyefI//oaH+2OLnxl/2SEqYSPNVHgk0E12W7X7zrqYKHA1vFbUJCTZIQ8udrmioRHOPQQwMtwLrGiiHM/4F7p3OIuPM7WlPV2rD7gO4VSB1GUtKZrUq8shx8OBqE9WuSik1cGaBZzWeihZ4=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=renesas.com;
 Received: from OS3PR01MB8426.jpnprd01.prod.outlook.com (2603:1096:604:194::10)
  by OS0PR01MB5681.jpnprd01.prod.outlook.com (2603:1096:604:b3::12) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6319.33; Mon, 24 Apr
- 2023 02:35:02 +0000
+ 2023 02:36:05 +0000
 Received: from OS3PR01MB8426.jpnprd01.prod.outlook.com
  ([fe80::91e7:a94f:9f75:d840]) by OS3PR01MB8426.jpnprd01.prod.outlook.com
  ([fe80::91e7:a94f:9f75:d840%5]) with mapi id 15.20.6319.022; Mon, 24 Apr 2023
- 02:35:02 +0000
-Message-ID: <87bkje0zzf.wl-kuninori.morimoto.gx@renesas.com>
+ 02:36:05 +0000
+Message-ID: <878rei0zxn.wl-kuninori.morimoto.gx@renesas.com>
 From:   Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-To:     =?UTF-8?B?IkFtYWRldXN6IFPDhYJhd2nDhYRza2ki?= 
-        <amadeuszx.slawinski@linux.intel.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Banajit Goswami <bgoswami@quicinc.com>,
-        Bard Liao <yung-chuan.liao@linux.intel.com>,
-        Brent Lu <brent.lu@intel.com>,
-        Cezary Rojewski <cezary.rojewski@intel.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Daniel Baluta <daniel.baluta@nxp.com>,
-        Jarkko Nikula <jarkko.nikula@bitmer.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
+To:     Takashi Iwai <tiwai@suse.com>,
+        Peter Ujfalusi <peter.ujfalusi@gmail.com>,
         Mark Brown <broonie@kernel.org>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-        Richard Fitzgerald <rf@opensource.cirrus.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Shengjiu Wang <shengjiu.wang@gmail.com>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Stephan Gerhold <stephan@gerhold.net>,
-        Takashi Iwai <tiwai@suse.com>, Xiubo Li <Xiubo.Lee@gmail.com>
-Cc:     Fabio Estevam <festevam@gmail.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Nicolin Chen <nicoleotsuka@gmail.com>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Shengjiu Wang <shengjiu.wang@nxp.com>,
-        alsa-devel@alsa-project.org, linux-amlogic@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, sound-open-firmware@alsa-project.org
-Subject: [PATCH v2 00/13] ASoC: add and use asoc_dummy_dlc
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Jarkko Nikula <jarkko.nikula@bitmer.com>
+Cc:     Linux-ALSA <alsa-devel@alsa-project.org>,
+        linux-omap@vger.kernel.org
+In-Reply-To: <87bkje0zzf.wl-kuninori.morimoto.gx@renesas.com>
+References: <87bkje0zzf.wl-kuninori.morimoto.gx@renesas.com>
+Subject: [PATCH v2 02/13] ASoC: ti: use asoc_dummy_dlc
 User-Agent: Wanderlust/2.15.9 Emacs/27.1 Mule/6.0
 Content-Type: text/plain; charset=US-ASCII
-Date:   Mon, 24 Apr 2023 02:35:01 +0000
-X-ClientProxiedBy: TYBP286CA0008.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:404:ce::20) To OS3PR01MB8426.jpnprd01.prod.outlook.com
+Date:   Mon, 24 Apr 2023 02:36:04 +0000
+X-ClientProxiedBy: TYCP286CA0196.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:385::7) To OS3PR01MB8426.jpnprd01.prod.outlook.com
  (2603:1096:604:194::10)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: OS3PR01MB8426:EE_|OS0PR01MB5681:EE_
-X-MS-Office365-Filtering-Correlation-Id: 77ae0d26-f086-4a90-f76a-08db446c8162
+X-MS-Office365-Filtering-Correlation-Id: 220de766-e1ec-4696-a52f-08db446ca6f0
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 1hc5WYdn5tAYb7ZI4RR8e9AplU+PsB9S0v1q49YbGTzNZt8P8aeE2TT0aramayUZcT0v0JQVXKq3STAO9bKt4G7Ow+ZBltPv8hBdziABeByrm61JEKQaRKVuPS6HF/IiwyTkh3fexDxQB4Rx7SxIrefkLpI06uciRXRmMbQYyKlU+UxIIJoIhqTkV/N01GQvTQ/U/lpQBX73ifitKjGsD9cbFtdapeVJseOcipqo9w+TahoDNtVDNv0t5TKz++VXFhP1niaiRUzoyrofi1kqOVC0xJBlR9B3TTFHmn26KbxuCzJJu+JObQXXWXbXQ6WAKHMMjqGI/3ZDX/4UTPUbfulTbDOGTqghyGBaMs/siJAbKjTd2RZ3VV8tPZ3KUcfqMrPwgFoLMddHGgyd9uP+Yw67Mjpvpx7afPH5KByuwkMVnIwRAjOyaRwCwfs69mQCm9mBxpEOcJPEGH0QXr0u7pwLoLyRkBKgz9mP6gcgSbWkpOKTgdkcdHb9hmG6I0/PJ9QdvwXUOzflXQIpYK33/OtuORogEhCRnfGmte407iLyvFCWs6mbNT4pWGd/+HzZp5MD/JrnoS4Ppr9J+RrDkjhlC7wlV76WIjXF8IrFN/U30UC7moqmsai0C0ESpfdV
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:OS3PR01MB8426.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(396003)(376002)(346002)(136003)(39860400002)(366004)(451199021)(2906002)(52116002)(6486002)(966005)(2616005)(6512007)(6506007)(26005)(186003)(66946007)(66556008)(66476007)(8676002)(8936002)(316002)(41300700001)(4326008)(478600001)(7406005)(5660300002)(7416002)(54906003)(110136005)(921005)(38350700002)(38100700002)(36756003)(86362001)(83380400001);DIR:OUT;SFP:1102;
+X-Microsoft-Antispam-Message-Info: jjPF+rJ3w7pZVEn2pCoqTCOxwRr80gFJBuI4IOdzfbFgkTsLprmY1mRa/y8+P4fG+UsYHVu60h3vAYtN625MYidZfEgPGyZgpDVbZ8oXwmyJz/7LSFAB2L1zlrjSyDdTo4dg2k3NPX7b+u4GFKdynj+A8ary/wY+oZuumTWIOSaqEaKvMDSwKD2EXBBuM57Lr+HLrbXQlBWcepDG3tEn7VJp7LPhJnIuNx+vsec7iSGobiw8uya8ekxFoDdy23dJk27lrq6bumpkPrtIhZkBJZU25z2qqIUyC7ETWPbc3BujJHHqhYIm8cqYj1R73+phUpRA5J84EefasIN90ggSZKEXAjVNEtq4ghDSfEItdpdd9hGD8LQ3nw6lLbkvDoXhS/ZtqmeMZtIbTQTeCOV5vcFSklq4G1PuRJ7CN1nZcLZ3+adDbYxbqvWp+/l0egYTJVtEoJPNNS6TABYlplUqO+Qn/IV9FJjMJ6LCyl5W1ESpS0Q38CeSxxdl7Z0XQqaY7wRtqzSBKFRseQrTNjI1pXfgeGlEp0tzWVQDtyaobe3Ft11sf0SDQ6wQPzaqCYQ322GtHMaXXqxLlth55HYbwb45uagyHEvbx8NxpUldWpvlqi42CZZ8im2W0bMOWBFp
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:OS3PR01MB8426.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(396003)(376002)(346002)(136003)(39860400002)(366004)(451199021)(2906002)(52116002)(6486002)(2616005)(6512007)(6506007)(26005)(186003)(66946007)(66556008)(66476007)(8676002)(8936002)(316002)(41300700001)(4326008)(478600001)(5660300002)(110136005)(38350700002)(38100700002)(36756003)(86362001)(83380400001);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?uqU1kb7AIiR1Oz0wrwb430lOmPhIs2WcdlkYRxLnYM5WD5Wo4lT1Y/O8ze8r?=
- =?us-ascii?Q?FHX7VZfGWgZDNIEsN/ZrXICPY7XzcAFOiuSAvj+2nqsZ/2e3NL9mp1ZgFpjI?=
- =?us-ascii?Q?nxJny8+6kXVSIw3HeOOlJskvAW6kyQ4npe9A9O8SgStXo0+iUfUQBMArbVHF?=
- =?us-ascii?Q?mPHATAIZiWF9ZLDmU2FPDI4T8RX/Orc2Zea5sEujL/23ITm38wIzKzlTvT+u?=
- =?us-ascii?Q?n1TT5H0nT/68EUTHuk+8vN8loj0Qbxe7n4GeSmolLD3DMOwVouQhP1RyR4vm?=
- =?us-ascii?Q?3VmvJKNRhPar8O2f/VUoP2a6AwooNbMighWz5qusEiPuiRUAFMY/aFZyIxhD?=
- =?us-ascii?Q?s0aYtzh11aSepc1XD5i870bzzyrpbyHXHFr7UwHrL89kDgwf9Kg4puFxZUI3?=
- =?us-ascii?Q?BEuSwzG3O7+mZTqnKpSGZSG6quMdRXmls7CIFfg0VEsfBsEucjeEfgJVqPdg?=
- =?us-ascii?Q?xUl3Ykp1pUVfpPWfmzh9xAdL/BdKoxyeQgT+zkYaOQEP7V4/+VU5a3wCfPQf?=
- =?us-ascii?Q?xCgIfqZdDDguGErrVSfYxAK3Rl+IMsFy1atYgjAg9yHB9uecgQtZJgHnTkdT?=
- =?us-ascii?Q?+iS7hTsnWhhuY+ntVfKmiZSHs+xqonGwii1kBR3bdC7zlM+uNSFlY5IaLV3Q?=
- =?us-ascii?Q?n9PKPEbQwL+raxXD/4q5MJMPuy0yKWYLd6UExvPWdEkQ/kRtKLKGHiqb1WJZ?=
- =?us-ascii?Q?DSY4qGpiWQdnoarbjG4S+UxeTp68SKffOzrJNDL4GM8nbMYrlFD8LSNMyX91?=
- =?us-ascii?Q?NEWf7jba1HPLG9290WtnoHBWOQMk1rnKWOWYYweAiySJlVFxZpXCpx+Z9X/w?=
- =?us-ascii?Q?oPabktWrQil+1sAjg++OlNdsNjWZemzPv2h+GZUG/aPOHvF4vvB2F+Sbrf1S?=
- =?us-ascii?Q?f7fBC+lHGh1iNbwkniBw//IndQBmf1SfhjC9gaaEWFcivVmT57Cs7xDp6J7C?=
- =?us-ascii?Q?OEnVwab4PQFpv4g0DpL6u8b5YBSTGQP8iCSLoy3sVXwih4b9z4Cj7dX28z/y?=
- =?us-ascii?Q?NCM4IdXW5FlNCvBzS/FQF5YNp05DmGXpkUgmXj4j6I9oXzCNbDV9nIr9aYVR?=
- =?us-ascii?Q?D0gonDcfM8TOhitExzLr0I4zQySuDxbhgrCJgDZFb18+/0x7fhwjPWKdW/ju?=
- =?us-ascii?Q?G40uIiqg5sfN4OJ4j6zrv4TODyCasxzLiNWqPdET8cklmK6nrYQUDXVqY/Yn?=
- =?us-ascii?Q?z1WITtZ/mXJDUYOAyMuYWsSRZ03JYSXwNxGQ1wS7MK9C6EKW8EqO8bp2kcF2?=
- =?us-ascii?Q?NYQlm36stwyHe5IrdIX+ae11YlYociHSRBrG/2k02yjNpKNFHF5blaDEURCw?=
- =?us-ascii?Q?XdYd05iMt6BzrrvQcZOm5iIKY1it3nrs0vl6taeuo9j3v9tlHZN+KtdLQ8ip?=
- =?us-ascii?Q?/LsjOctcrnCJUkQUBmWtmVQxBqVMjjLhiHkdkT6Z1+soP8acXnYlL6iLr6/z?=
- =?us-ascii?Q?bIBLWHPcVx9GYH2sM6RiTz1KsRcnYrlU3lSYNSCcNWkolnqgwBX1qFm/Nseo?=
- =?us-ascii?Q?RhX+tb9TRJFcPjfhgTpl0R3dy2QXfC6loAlS5aHxI8DX15QP8diilEXWun96?=
- =?us-ascii?Q?kq9M+S5nz3fi5/Wzk/zsedWhJpBmKONjtw88YFIna3vGjBApkDBa7LPRdedK?=
- =?us-ascii?Q?VchufdFTATTHjJQsbcFNnWo=3D?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?1NFZUVZEcFa2M3B00FHaA3NwSa62nDwdw+sQne0oXlQv0J9BWgdI1OOZUzfG?=
+ =?us-ascii?Q?vU/ONpvoACuGiw0/iRh0RRueIX5ongBVrvtiyQHrEAvzRjOmQLBF37670ZvQ?=
+ =?us-ascii?Q?Je9061zocx3y4PPnL4EIttUVCKkjqNv2VjA0LRQPKJEM4UhyK8a15hFgJZQ3?=
+ =?us-ascii?Q?iXgUBYYUXyVsbmQb+LsJ2BqnJcxAv8UgRo0Ce6SDZ25UmkPUF5Pq6N1rqNWq?=
+ =?us-ascii?Q?If4r76gB3u8RIyDCahX6fOcsdfJdz4mY2E1LGYSqYpoVFWBsxiY8EOQyA49z?=
+ =?us-ascii?Q?1e7JDyaIXBKACdx+DDIb6elWSy5How2xwbEazAijeo3FIIMpUD2h60Rh4i3R?=
+ =?us-ascii?Q?6c888FHKBJTzF7/+I3pnlCeZNrjVS6fLMYo/dfcW2mBbEgiQp8oy1TLWVeoK?=
+ =?us-ascii?Q?7KUc1SoqThOrDsudqMZxVCB8A1I5YyOqPt2rED+IokfiVhhOn9it1anXLfxT?=
+ =?us-ascii?Q?ptHddmd3ecYTu8c7rsJG9yToCnbLz/kpbegfsYmzeJAdoLcX8+yJdiPVW4S4?=
+ =?us-ascii?Q?xPktqrx1d4zvn3jYHPt0J0RZuSYUirQIhq8/OMvAInmBheGH7ERVyiDq0Uux?=
+ =?us-ascii?Q?Bm9Xuym0QLjTN5SI2kOxlOOL+2/IaXVlE1meNqJHkp8Yj+oXVPuz7pfgWfDs?=
+ =?us-ascii?Q?1YrOFW2HMbDVDqVJWu48cZVOUgd4T4ZOZx2/gOHQtyjzMtGe4TApqckdjrNN?=
+ =?us-ascii?Q?lDARwmvDrNJq65uMTX2Y/3nnJReuFOBbLcE618veU7uaIAbjNrM6cLh8coCB?=
+ =?us-ascii?Q?W8Cv8BNjycdyVTEHoIzl3hrnt/gp0XFNHBWw7nBty5tXAixyNSwy0mxpK76J?=
+ =?us-ascii?Q?Z2gl2aqVwaKSET4LEU8pmUp03FEh4oifn2iLPVfUcNADokZryS4pqNCXGinl?=
+ =?us-ascii?Q?IfyrP/Z/j9bXI/hs7/kbbzKSEP2e6qA4G+ErPiwM23lzQLfiVTKhG4a4uqUO?=
+ =?us-ascii?Q?odDFqif6teKodB3XxpHR310A/+WlhlSBP191DNaoFOVSi8Xb3pI6FGL045XF?=
+ =?us-ascii?Q?TC09uT8BhDAviniQVkS0e1lOCiLfsgQKWk3dZvARXjdabtm0y2tNoGfYLVP6?=
+ =?us-ascii?Q?ZSZDpdH3ihyJd5OqLSe/Q9/LITyzRBdWrOv1HyJe0TKu2kazjTFagdbG87aQ?=
+ =?us-ascii?Q?HrMfcgVIfxf6yOvnqVYDmtCGZZOTmZ7ymN2vHHNPPc65vCu9xKMalqSnDdw2?=
+ =?us-ascii?Q?TcK3ieRWxV7fOVZiO92/d3WMti3oSkpjZ4sx68HGvT66LIdw5bMywNmdYdJr?=
+ =?us-ascii?Q?L9kEZ3t/ZfcD/opyUwr6FcaewQMCOXZ8fv9pzGbg5QNRu3UA2nVV7USWqdcV?=
+ =?us-ascii?Q?7AkPGytj0m3ZjTF6YfB0SoUgxQ2LeUkvLXwRBQFMa89mjzr5oleqXHLW8NH/?=
+ =?us-ascii?Q?hIJNhvDMvmo3dTUAUhqaTbkDgAJZWr9qgodez7Wo0SGVBqD6XqUZdDDvkmrt?=
+ =?us-ascii?Q?CPYqcyItQz/KpbaQ8/QoO4Rv0qcmFBdP8qAs4Q7J09vJQb9jAo1WTs/aKorV?=
+ =?us-ascii?Q?uCvNdHo2z2w2qYu1eyed/SM0SxtigqVfuHzka/TOj2ZjG/xnoKxBbE1dOuQX?=
+ =?us-ascii?Q?Y6yO+bC7cTeNebbB7o/Z6cfA5nI9AsN3fPkFRYq0dqPDpxYmZ77HHWBnKlWN?=
+ =?us-ascii?Q?EyLYr/r1xHN2u6D7GjDift8=3D?=
 X-OriginatorOrg: renesas.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 77ae0d26-f086-4a90-f76a-08db446c8162
+X-MS-Exchange-CrossTenant-Network-Message-Id: 220de766-e1ec-4696-a52f-08db446ca6f0
 X-MS-Exchange-CrossTenant-AuthSource: OS3PR01MB8426.jpnprd01.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Apr 2023 02:35:02.2815
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Apr 2023 02:36:05.2294
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: LfCnglRtkOD7U3hh+so4KkB+QYXvupFNIkk/z+RqwFrjJcClMCmMULHf7DiofVo3C0zCEXMXZY5AchHlU27GaLES+yXD3NB/fHduRokRldDsN48FZz38ZvnaqbMxBEO2
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4zbzN7KpWeg553BNBcOAdhVbK2JPBtQgMt4bpTZenIm6QwhGchpNceiFHwLger68e9uitelMyxIaiDpBn5Z3ZGtCHWNrLGHeFizJi6jOrmjU8uSqBwPbAgkbhg2/xBJ6
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS0PR01MB5681
-X-Spam-Status: No, score=0.9 required=5.0 tests=AC_FROM_MANY_DOTS,BAYES_00,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Now we can share asoc_dummy_dlc. This patch use it.
 
-Hi Mark
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+---
+ sound/soc/ti/omap-hdmi.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-These are v2 patch-set of asoc_dummy_dlc.
-
-Many ASoC drivers are using dummy DAI.
-I have 2 concern about it. 1st one is there is no guarantee that local
-strings ("snd-soc-dummy-dai",  "snd-soc-dummy") are kept until the card
-was binded if it was added at subfunction.
-2nd one is we can use common snd_soc_dai_link_component for it.
-This patch-set adds common asoc_dummy_dlc, and use it.
-
-v1 -> v2
-	- Separate intel patch into 3
-	- Topology codec doesn't use asoc_dummy_dlc
-
-Link: https://lore.kernel.org/r/874jpe3uqh.wl-kuninori.morimoto.gx@renesas.com
-
-Kuninori Morimoto (13):
-  ASoC: soc-utils.c: add asoc_dummy_dlc
-  ASoC: ti: use asoc_dummy_dlc
-  ASoC: sof: use asoc_dummy_dlc
-  ASoC: amd: use asoc_dummy_dlc
-  ASoC: fsl: use asoc_dummy_dlc
-  ASoC: qcom: use asoc_dummy_dlc
-  ASoC: atmel: use asoc_dummy_dlc
-  ASoC: meson: use asoc_dummy_dlc
-  ASoC: intel: avs: use asoc_dummy_dlc
-  ASoC: intel: sof: use asoc_dummy_dlc
-  ASoC: intel: skylake: use asoc_dummy_dlc
-  ASoC: simple_card_utils.c: use asoc_dummy_dlc
-  ASoC: soc-topology.c: add comment for Platform/Codec
-
- include/sound/simple_card_utils.h            |  1 -
- include/sound/soc.h                          |  1 +
- sound/soc/amd/acp/acp-mach-common.c          | 43 ++++++++------------
- sound/soc/atmel/atmel-classd.c               |  8 ++--
- sound/soc/atmel/atmel-pdmic.c                |  8 ++--
- sound/soc/fsl/imx-audmix.c                   | 14 +++----
- sound/soc/fsl/imx-card.c                     | 11 +----
- sound/soc/fsl/imx-rpmsg.c                    |  3 +-
- sound/soc/fsl/imx-spdif.c                    |  8 ++--
- sound/soc/generic/simple-card-utils.c        |  9 +---
- sound/soc/intel/avs/boards/i2s_test.c        |  6 +--
- sound/soc/intel/boards/ehl_rt5660.c          |  8 +---
- sound/soc/intel/boards/skl_hda_dsp_generic.c |  8 +---
- sound/soc/intel/boards/sof_cs42l42.c         | 11 +----
- sound/soc/intel/boards/sof_es8336.c          | 11 +----
- sound/soc/intel/boards/sof_nau8825.c         | 11 +----
- sound/soc/intel/boards/sof_pcm512x.c         |  3 +-
- sound/soc/intel/boards/sof_rt5682.c          | 14 ++-----
- sound/soc/intel/boards/sof_sdw.c             | 13 +-----
- sound/soc/intel/boards/sof_ssp_amp.c         | 18 +++-----
- sound/soc/meson/axg-card.c                   |  8 ++--
- sound/soc/meson/meson-card-utils.c           | 10 +----
- sound/soc/qcom/common.c                      | 11 +----
- sound/soc/soc-topology.c                     | 22 +++++-----
- sound/soc/soc-utils.c                        |  7 ++++
- sound/soc/sof/nocodec.c                      |  8 ++--
- sound/soc/ti/omap-hdmi.c                     |  8 ++--
- 27 files changed, 89 insertions(+), 194 deletions(-)
-
+diff --git a/sound/soc/ti/omap-hdmi.c b/sound/soc/ti/omap-hdmi.c
+index 96c3569d7643..a3663ab065ac 100644
+--- a/sound/soc/ti/omap-hdmi.c
++++ b/sound/soc/ti/omap-hdmi.c
+@@ -365,19 +365,17 @@ static int omap_hdmi_audio_probe(struct platform_device *pdev)
+ 	if (!card->dai_link)
+ 		return -ENOMEM;
+ 
+-	compnent = devm_kzalloc(dev, 2 * sizeof(*compnent), GFP_KERNEL);
++	compnent = devm_kzalloc(dev, sizeof(*compnent), GFP_KERNEL);
+ 	if (!compnent)
+ 		return -ENOMEM;
+-	card->dai_link->cpus		= &compnent[0];
++	card->dai_link->cpus		= compnent;
+ 	card->dai_link->num_cpus	= 1;
+-	card->dai_link->codecs		= &compnent[1];
++	card->dai_link->codecs		= &asoc_dummy_dlc;
+ 	card->dai_link->num_codecs	= 1;
+ 
+ 	card->dai_link->name = card->name;
+ 	card->dai_link->stream_name = card->name;
+ 	card->dai_link->cpus->dai_name = dev_name(ad->dssdev);
+-	card->dai_link->codecs->name = "snd-soc-dummy";
+-	card->dai_link->codecs->dai_name = "snd-soc-dummy-dai";
+ 	card->num_links = 1;
+ 	card->dev = dev;
+ 
 -- 
 2.25.1
 
