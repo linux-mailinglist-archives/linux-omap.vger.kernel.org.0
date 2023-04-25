@@ -2,112 +2,95 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 38F6D6EE79B
-	for <lists+linux-omap@lfdr.de>; Tue, 25 Apr 2023 20:39:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1484D6EE7CF
+	for <lists+linux-omap@lfdr.de>; Tue, 25 Apr 2023 20:53:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234193AbjDYSjK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 25 Apr 2023 14:39:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40928 "EHLO
+        id S234807AbjDYSxU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 25 Apr 2023 14:53:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50450 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234454AbjDYSjF (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 25 Apr 2023 14:39:05 -0400
-Received: from meesny.iki.fi (meesny.iki.fi [IPv6:2001:67c:2b0:1c1::201])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54DD116188;
-        Tue, 25 Apr 2023 11:39:04 -0700 (PDT)
-Received: from darkstar.musicnaut.iki.fi (85-76-14-243-nat.elisa-mobile.fi [85.76.14.243])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: aaro.koskinen)
-        by meesny.iki.fi (Postfix) with ESMTPSA id 4Q5W444p60zyTl;
-        Tue, 25 Apr 2023 21:38:58 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=meesny;
-        t=1682447941;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=5p9uScfzPk19gpQyn98pBN+cq88pJ1CZ5tq+PDyx8xI=;
-        b=R8XdVGegLNF17OUTXmYHWlHiOTwEb6K2P66fJzV1wjS8DSaCqCmg5TnomTit0RU1jJBNJk
-        qG6r58Yp/9GqDqsZTKFxjJC9SIBNYl4phyjVukiXF7GpF5/FJiofudltuAQh+MYRXsFJEj
-        TnxhyxL73Wp+4kMd0sm1RGDNxop0Hj0=
-ARC-Seal: i=1; s=meesny; d=iki.fi; t=1682447941; a=rsa-sha256; cv=none;
-        b=rh28xABjjHYjzxM5SVzGr3mvqznSGJHPm3dV1F8BObX43J2atey5NQ2Jnt4Pqq+acTZWMT
-        XbmqIC7Z4CuT3teUmVJgP3Nwi5q0exJOcXqGAvVKz96hRPCYEEn1mNYwu3xe7myJsxdTKY
-        vQOtKVwNoz7dHTWACMdsWw+52be4ZVA=
-ARC-Authentication-Results: i=1;
-        ORIGINATING;
-        auth=pass smtp.auth=aaro.koskinen smtp.mailfrom=aaro.koskinen@iki.fi
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
-        s=meesny; t=1682447941;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=5p9uScfzPk19gpQyn98pBN+cq88pJ1CZ5tq+PDyx8xI=;
-        b=RM1pu4Ixe11UObTKhIJjPggzWgOSCEQrerpw21QSrVtw7F70Jd1Ov7vQb7QuESJCF/4oK7
-        QmETYlxmOyglFd9VOLhphZNA4GGyfegLvK7uG+5eMboHdtCMwbSJFfvuKm3EjmNO3iOY/o
-        ishz2JsYpc4cEtSPKUto7OUnwJcFHCE=
-Date:   Tue, 25 Apr 2023 21:38:57 +0300
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     Andreas Kemnade <andreas@kemnade.info>
-Cc:     linux-omap@vger.kernel.org, linux-gpio@vger.kernel.org,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-        Tony Lindgren <tony@atomide.com>, linux-kernel@vger.kernel.org
-Subject: Re: [BISECTED REGRESSION] OMAP1 GPIO breakage
-Message-ID: <20230425183857.GG444508@darkstar.musicnaut.iki.fi>
-References: <20230425173241.GF444508@darkstar.musicnaut.iki.fi>
- <20230425201117.457f224c@aktux>
+        with ESMTP id S234806AbjDYSxL (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 25 Apr 2023 14:53:11 -0400
+Received: from mail-oa1-f45.google.com (mail-oa1-f45.google.com [209.85.160.45])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4727A17A32;
+        Tue, 25 Apr 2023 11:52:51 -0700 (PDT)
+Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-1879fc89e67so4065507fac.0;
+        Tue, 25 Apr 2023 11:52:51 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1682448703; x=1685040703;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UikZ9QXYdXTQtvhUyv/lQ7QWK7IHC52OKirQxX/ASjw=;
+        b=ZasKw8Ddl3Vlom+JzQEiJLDw2rsTXCTooG9vXfWJqGOiojBwRLMM2vBwMpnOf81utb
+         xoxXsyd0kO4weg+SNzB4RyVz+zABgwjX+IWppM2b5DMGnBxFVJ75VNT2wSTWLxvmlMoP
+         vUxxO9JlixyyUmnC+55pUjEZ7l0ewRd0wK2pYM0mUXo3mXtRchLTA7rcP3kZyJzq7C/B
+         yph+vpy8Qp2b8usK1/Ffgv/Tr5qkdiMHovKdoLmruAajwuFYsQ6ZiZHfFIes0uighlIx
+         KJCDyEqqdmsnzBbY1FO5sJAr8HywTdB/uZlAc3Dkg2vpKyv9wwm0jJda6QAfl5+pMphs
+         Xy2A==
+X-Gm-Message-State: AAQBX9cqXAD+bjotjE29JNfRf3hP0eYvkSCtO+wG4cZupIo5M4D3HKjE
+        KE9pqvaHGOWcVvvP7PLTqA==
+X-Google-Smtp-Source: AKy350aKeKHxBsyU0oVHol9rrTst7OaLguL14eolfZwMFamb8qWN0SPzusU+rrDs+pi8Z83LRg9ubw==
+X-Received: by 2002:a05:6870:c222:b0:18e:2db1:215d with SMTP id z34-20020a056870c22200b0018e2db1215dmr8694265oae.12.1682448703024;
+        Tue, 25 Apr 2023 11:51:43 -0700 (PDT)
+Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id q1-20020a056870e88100b001727d67f2dbsm5814455oan.40.2023.04.25.11.51.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Apr 2023 11:51:42 -0700 (PDT)
+Received: (nullmailer pid 2076040 invoked by uid 1000);
+        Tue, 25 Apr 2023 18:51:41 -0000
+Date:   Tue, 25 Apr 2023 13:51:41 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     MD Danish Anwar <danishanwar@ti.com>
+Cc:     andrew@lunn.ch, linux-kernel@vger.kernel.org,
+        Richard Cochran <richardcochran@gmail.com>,
+        Suman Anna <s-anna@ti.com>, ssantosh@kernel.org,
+        Roger Quadros <rogerq@kernel.org>,
+        linux-arm-kernel@lists.infradead.org,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        linux-omap@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
+        "Andrew F. Davis" <afd@ti.com>, devicetree@vger.kernel.org,
+        netdev@vger.kernel.org, srk@ti.com, nm@ti.com,
+        Paolo Abeni <pabeni@redhat.com>,
+        YueHaibing <yuehaibing@huawei.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Tero Kristo <kristo@kernel.org>
+Subject: Re: [RFC PATCH v6 1/2] dt-bindings: net: Add ICSSG Ethernet
+Message-ID: <168244870080.2075982.15308799170658396149.robh@kernel.org>
+References: <20230424053233.2338782-1-danishanwar@ti.com>
+ <20230424053233.2338782-2-danishanwar@ti.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230425201117.457f224c@aktux>
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+In-Reply-To: <20230424053233.2338782-2-danishanwar@ti.com>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
 
-On Tue, Apr 25, 2023 at 08:11:17PM +0200, Andreas Kemnade wrote:
-> On Tue, 25 Apr 2023 20:32:41 +0300
-> Aaro Koskinen <aaro.koskinen@iki.fi> wrote:
-> > It seems GPIOs on OMAP1 boards are somewhat broken after:
-> > 
-> > commit 92bf78b33b0b463b00c6b0203b49aea845daecc8
-> > Author: Andreas Kemnade <andreas@kemnade.info>
-> > Date:   Fri Jan 13 21:59:22 2023 +0100
-> > 
-> >     gpio: omap: use dynamic allocation of base
-> > 
-> > E.g. on OSK1 the ethernet IRQ cannot (omap_gpio.0) no longer be requested:
-> > 
-> > [    0.277252] Error requesting gpio 0 for smc91x irq
-> > 
-> > Also the tps65010 (still using static allocation) will now conflict:
-> > 
-> > [    0.400726] gpio gpiochip5: Static allocation of GPIO base is deprecated, use dynamic allocation.
-> > [    0.400848] gpio gpiochip5: (tps65010): GPIO integer space overlap, cannot add chip
-> > [    0.400970] gpiochip_add_data_with_key: GPIOs 208..214 (tps65010) failed to register, -16
-> > [    0.401092] tps65010 i2c-tps65010: can't add gpiochip, err -16
-> > 
-> > I think this change should be reverted until the board files and other
-> > gpiochips are fixed accordingly.
-> > 
-> well, then just fix that tps65010 thing. 
+On Mon, 24 Apr 2023 11:02:32 +0530, MD Danish Anwar wrote:
+> Add a YAML binding document for the ICSSG Programmable real time unit
+> based Ethernet hardware. The ICSSG driver uses the PRU and PRUSS consumer
+> APIs to interface the PRUs and load/run the firmware for supporting
+> ethernet functionality.
 > 
-> that change is itself a regression fix for exactly the same kind of error.
+> Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
+> ---
+>  .../bindings/net/ti,icssg-prueth.yaml         | 184 ++++++++++++++++++
+>  1 file changed, 184 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/net/ti,icssg-prueth.yaml
+> 
 
-Which commit introduced that regression? Also, the changelog mentions
-it happens only with "unusual" probe order. Now, all the ordinary cases
-for OMAP1 are broken.
+Reviewed-by: Rob Herring <robh@kernel.org>
 
-And it's not just that tps65010 thing. E.g. 770 fails to boot as well
-and it doesn't use it; and reverting 92bf78b33b0b fixes that one as
-well. AFAIK it's because all the gpio_request()s in OMAP1 board files
-stopped now working.
-
-A.
