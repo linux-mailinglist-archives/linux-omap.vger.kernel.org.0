@@ -2,107 +2,112 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62E816F02A9
-	for <lists+linux-omap@lfdr.de>; Thu, 27 Apr 2023 10:38:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EC586F0446
+	for <lists+linux-omap@lfdr.de>; Thu, 27 Apr 2023 12:37:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243111AbjD0Iig (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 27 Apr 2023 04:38:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48462 "EHLO
+        id S243584AbjD0Khv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 27 Apr 2023 06:37:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242982AbjD0Iif (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 27 Apr 2023 04:38:35 -0400
-Received: from mail-ua1-x92a.google.com (mail-ua1-x92a.google.com [IPv6:2607:f8b0:4864:20::92a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADA494ED0
-        for <linux-omap@vger.kernel.org>; Thu, 27 Apr 2023 01:38:33 -0700 (PDT)
-Received: by mail-ua1-x92a.google.com with SMTP id a1e0cc1a2514c-77aad9ef9adso2394825241.1
-        for <linux-omap@vger.kernel.org>; Thu, 27 Apr 2023 01:38:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20221208.gappssmtp.com; s=20221208; t=1682584712; x=1685176712;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qqsET4zZE92O9asPYXWFg0J1C3KphyLvZyDM+XSJoTU=;
-        b=HX5QdcVxP+EhLRHgdSwr67eJVSh3k1mphJR6wUwkvwCMfUOo6nkOIZATktzB4X3r4g
-         7iq/iut2YrUzFr/FvebSvTFPM4nSYpoXJV2aGSFZSx/py9IRMrGw50RgiKVJV3n2IDSx
-         q5GrYSpfka4eB+VCNviLw6lVh2sJ1zKv5qaP25AJ6/DcRv5j1NQMDrmC880RU0nYLueO
-         aIAXqFQ4ccyRpxHYYI6BdsVAbYZEra01wHDIfeHFMUXkOqdB8bV9rvsPF1HeX2aJlfTq
-         ZGM/Zh3TTE6SdXRF6paNqf8VH6gym+L1NUv+9B0lSQlJhzEb6u7afEvaN1Cj+xRZcQeQ
-         KiVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682584712; x=1685176712;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qqsET4zZE92O9asPYXWFg0J1C3KphyLvZyDM+XSJoTU=;
-        b=PP7PH53rHcs//uDnpIS6hsKI5Y+SLoCuW9dStefvfRb4keDpF5BMsY0GcE/Ir7b63H
-         CQus+jb0zX5tNN0m4hp8ikSwMhK4s0vWc88ZSySr1Vu8bL0ctpyHcOMZuzEODd7HbErZ
-         4Afv99acMF8ZI7RUVV7G8x8ACR15HmL42WVUJ63EYMTbbvJ7ASERbK2E9/kuIp81/cv7
-         VyTDWP+t1UDPbQsG+4lNiv+RgaED+Js1mWyhJxY7p+nNxddWTgWKIRHXMMkiLpzwmJIX
-         zErz9r3zI85aP7hgUYIsAygCW0t/y8bg4zKiaxQnvgNDhJS74KEZ7ZSh73CAlNUXotHH
-         FONQ==
-X-Gm-Message-State: AC+VfDwPESCXcD/ouKNCJjHMbsD0vNgp5LLZt+rts8QGZaGXF533M7aV
-        PwFU/3Zw1o5KehAbfVNKQ2qg3GCJtTD+K/Ic1qD0lA==
-X-Google-Smtp-Source: ACHHUZ7SX2J2Gw9Ezi+kIGhcXgELovpEBqq/4LTA3HcpFtSI9TGaSZUGgZOzrFkjyWf0BJw55MpAOcwfkIHHIGVMwfU=
-X-Received: by 2002:a1f:df87:0:b0:440:4946:fac with SMTP id
- w129-20020a1fdf87000000b0044049460facmr345248vkg.4.1682584712697; Thu, 27 Apr
- 2023 01:38:32 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230425173241.GF444508@darkstar.musicnaut.iki.fi>
- <20230425201117.457f224c@aktux> <20230425183857.GG444508@darkstar.musicnaut.iki.fi>
- <20230425212040.5a4d5b09@aktux> <20230425193637.GH444508@darkstar.musicnaut.iki.fi>
- <20230425215848.247a936a@aktux> <20230426071910.GE14287@atomide.com>
- <CACRpkdb7a32Ny=JR7=pAW_QRMj-S5QuhcSN8U6_f4PhAXj5pRA@mail.gmail.com> <20230427070307.GF14287@atomide.com>
-In-Reply-To: <20230427070307.GF14287@atomide.com>
-From:   Bartosz Golaszewski <brgl@bgdev.pl>
-Date:   Thu, 27 Apr 2023 10:38:21 +0200
-Message-ID: <CAMRc=MdvvHxOqtO=HMyya1bwHGS8rSGuPG1vmRqswL--=-r_Sg@mail.gmail.com>
-Subject: Re: [BISECTED REGRESSION] OMAP1 GPIO breakage
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Andreas Kemnade <andreas@kemnade.info>,
+        with ESMTP id S243320AbjD0Kht (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 27 Apr 2023 06:37:49 -0400
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a01:238:4321:8900:456f:ecd6:43e:202c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA92AFF;
+        Thu, 27 Apr 2023 03:37:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=kemnade.info; s=20220719; h=Content-Transfer-Encoding:Content-Type:
+        MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=kMB0XRCHsuAI2geKD5SmnuVr5s6qo5dyKc/cVU06Qig=; b=7WMB1Oele0kgZL8h5FamuK5WvD
+        +52PLwUQuRJanhXYRsv8J8Od/nFA7vRHGld6Jhdq0107Ri2t227KCxnDTU2Y3XuJBpPXKHQWWk2p8
+        56ajOd5D4aufPWJzcnRnqtDdiiRAquYvmWVvB0rMGNoxhj5QEi87BIZy5bfeGwXwrbrLYhPY3prCh
+        wCKaoqLSOuYUX15ofOI4X30NlHScRDi0UI/TDTAKYNkwirjHQ2NUhvQ+rf7IFa1OL48knQKQ+1CzH
+        dzrAvgx3ElhRR1D9xJuaNEmXMG6UsNBI2U/Dmn8BjVtH+SYtIRNbaaBeVaNAiWm7U2k1rsaCRPjqk
+        LVchktyw==;
+Received: from p200300ccff1672001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff16:7200:1a3d:a2ff:febf:d33a] helo=aktux)
+        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <andreas@kemnade.info>)
+        id 1prz0I-00010G-Na; Thu, 27 Apr 2023 12:37:34 +0200
+Date:   Thu, 27 Apr 2023 12:37:33 +0200
+From:   Andreas Kemnade <andreas@kemnade.info>
+To:     Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        "linus.walleij@linaro.org" <linus.walleij@linaro.org>,
+        "brgl@bgdev.pl" <brgl@bgdev.pl>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        ": Tony Lindgren" <tony@atomide.com>,
         Aaro Koskinen <aaro.koskinen@iki.fi>,
-        linux-omap@vger.kernel.org, linux-gpio@vger.kernel.org,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>
+Subject: Re: [PATCH] gpiolib: fix allocation of mixed dynamic/static GPIOs
+Message-ID: <20230427123733.15ad4aa3@aktux>
+In-Reply-To: <52453352-74bd-979f-03b6-322489800538@csgroup.eu>
+References: <20230426220338.430638-1-andreas@kemnade.info>
+        <f6b261ad-3267-db70-c173-154a12c42bea@csgroup.eu>
+        <CAHp75Vep8VSirY7mvGGCubNi-O4jS_inTALS3Ei9mQu98RV+7Q@mail.gmail.com>
+        <52453352-74bd-979f-03b6-322489800538@csgroup.eu>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.24; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Spam-Score: -1.0 (-)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, Apr 27, 2023 at 9:03=E2=80=AFAM Tony Lindgren <tony@atomide.com> wr=
-ote:
->
-> * Linus Walleij <linus.walleij@linaro.org> [230426 20:36]:
-> > On Wed, Apr 26, 2023 at 9:19=E2=80=AFAM Tony Lindgren <tony@atomide.com=
-> wrote:
-> >
-> > > Not sure what the best way to fix this might be, adding Linus W to Cc=
- too.
-> > > Maybe using gpio line names in the legacy platform data instead of nu=
-mbers?
-> >
-> > I sent a fat invasive fix which, if it works, will fix the problem once=
- and
-> > for all on OSK1.
-> >
-> > If it works, I can write the same fix for Nokia 770 or whatever.
-> >
-> > I think it is best to just get rid of the static GPIO numbers from thes=
-e
-> > boards so I took a stab at that.
->
-> OK makes sense to me thanks!
->
-> Tony
+On Thu, 27 Apr 2023 06:20:34 +0000
+Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
 
-Sorry, I'm late to the party, I was busy at Linaro Connect. Thanks
-Linus for taking care of this.
+> Le 27/04/2023 =C3=A0 08:00, Andy Shevchenko a =C3=A9crit=C2=A0:
+> > On Thu, Apr 27, 2023 at 8:40=E2=80=AFAM Christophe Leroy
+> > <christophe.leroy@csgroup.eu> wrote: =20
+> >>
+> >>
+> >>
+> >> Le 27/04/2023 =C3=A0 00:03, Andreas Kemnade a =C3=A9crit : =20
+> >>> [Vous ne recevez pas souvent de courriers de andreas@kemnade.info. D=
+=C3=A9couvrez pourquoi ceci est important =C3=A0 https://aka.ms/LearnAboutS=
+enderIdentification ]
+> >>>
+> >>> If static allocation and dynamic allocation GPIOs are present,
+> >>> dynamic allocation pollutes the numberspace for static allocation,
+> >>> causing static allocation to fail.
+> >>> Enfore dynamic allocation above GPIO_DYNAMIC_BASE. =20
+> >>
+> >> Hum ....
+> >>
+> >> Commit 7b61212f2a07 ("gpiolib: Get rid of ARCH_NR_GPIOS") was supposed
+> >> to enforce dynamic allocation above GPIO_DYNAMIC_BASE already.
+> >>
+> >> Can you describe what is going wrong exactly with the above commit ? =
+=20
+> >=20
+> > Above commit only works to the first dynamic allocation, if you need
+> > more than one with static ones present it mistakenly will give you a
+> > base _below_ DYNAMIC_BASE. =20
+>=20
+> Ah right, that needs to be fixed.
+>=20
+> >=20
+> > However, this change is just PoC I proposed, the conditional and
+> > action should be slightly different to cover a corner case, when
+> > statically allocated chip overlaps the DYNAMIC_BASE, i.e. gdev->base <
+> > DYNAMIC_BASE, while gdev->base + gdev->ngpio >=3D DYNAMIC_BASE.
+> >  =20
+>=20
+> Yes you are right, that's gdev->base + gdev->ngpio that should be checked.
+>=20
+and that not with simple continue or base might simply stay at DYNAMIC_BASE.
 
-Bartosz
+I will send a v2 of this patch with refined logic.
+
+Regards,
+Andreas
