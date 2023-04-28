@@ -2,116 +2,108 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E1E36F19FC
-	for <lists+linux-omap@lfdr.de>; Fri, 28 Apr 2023 15:50:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DADD6F1AB1
+	for <lists+linux-omap@lfdr.de>; Fri, 28 Apr 2023 16:45:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229580AbjD1NuQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 28 Apr 2023 09:50:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51750 "EHLO
+        id S1346073AbjD1OpO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 28 Apr 2023 10:45:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346263AbjD1NuP (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 28 Apr 2023 09:50:15 -0400
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 204B91FD5
-        for <linux-omap@vger.kernel.org>; Fri, 28 Apr 2023 06:50:14 -0700 (PDT)
-Received: by mail-wm1-x329.google.com with SMTP id 5b1f17b1804b1-3f19afc4fd8so49940805e9.2
-        for <linux-omap@vger.kernel.org>; Fri, 28 Apr 2023 06:50:14 -0700 (PDT)
+        with ESMTP id S229623AbjD1OpN (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 28 Apr 2023 10:45:13 -0400
+Received: from mail-vs1-xe2a.google.com (mail-vs1-xe2a.google.com [IPv6:2607:f8b0:4864:20::e2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F291326A5;
+        Fri, 28 Apr 2023 07:45:11 -0700 (PDT)
+Received: by mail-vs1-xe2a.google.com with SMTP id ada2fe7eead31-42e51230afcso8771137.0;
+        Fri, 28 Apr 2023 07:45:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1682689812; x=1685281812;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=fua5L+GNbpNJBh6UH6chMqiXo63OJdmhHHYy87puBPY=;
-        b=eMBBRLhFC+6vz3jOhN6FMOyVs5gbkZOcg/x8JSfQmDi2/k5vlUWyj/cklU4oH5Foaw
-         DRW2/5zVoidzUV1l51P6LhyOApdMPtou8khWZB/l4U00hDooRNKLlZjMKYY1ttl2YTQQ
-         Ldx9EDRW9WDlL07rnYbXAm6i0FnmSHMscHXk0Ayxi5w6bKs6X2FCFKzd49rYsUEmnugC
-         wD0aPhR6LXWv+rrMiHy5Jr41PjWSLnQ2r4mAfa4Kx28nvtD76Rh1c330552gDnxqI4sz
-         p8QyYFy/w4yyJaxHjlhIjBlo26tmwJ2rbdvsfrtVedw/MlzOZ7zCyAnqeSrczVowgHWf
-         HSYw==
+        d=gmail.com; s=20221208; t=1682693111; x=1685285111;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5WQK7u5uz2CHg54GpE0t/aU1Db+XDUfrdkRM7v2mYWI=;
+        b=fFcZJGAwp++jtP0/hTAPabIKRlMdYbKEaaskT7cQ4sOzTrlDwNUfVIXI/fmOvgutu5
+         B6TgJu/lKSKidAswj8BDo9ce/rQG34eTvZdL/Uv4U4R3AUNva2ekPXjDUcjg/2Y2Z1io
+         8jks80r28IkYJC4lmq2U4njFm/eNPi/f5KT9aKJGivJdjueVp4+WGMnejjeiVwpACQ2D
+         PS0rax6j0Dg9VvZa9pTco/YgNehFbvNdN4t6rTYm51lxaBgEKsfdllrWOVJR3ItvYlN1
+         /a/b6eHrTdorKQI4ubJO9gLLKd4rvK5AY0JS/rWNBnRtVuPXd0H2SF+SSoUBXESvKah6
+         l1fA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682689812; x=1685281812;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=fua5L+GNbpNJBh6UH6chMqiXo63OJdmhHHYy87puBPY=;
-        b=ZSYQV6uLSWcdseE6ljs+zLC38JkzJl4AyW+lGEWRXVGL4/Ulp6J6s7C1k39nQFG8M1
-         U5vEiR4q+U5ksiJEk/MBhp37v1o9wmbSkqfqihSPiRxcNDgllxatCYEfwDWfHw3UzEt6
-         ckhSjjrrpgXWsLHVhjc4EQpP6A71wJxN++fNTppO0M8NloO7+bJLRF2OnGLw+kEOUekn
-         lSdq1pKUHFBjW9LeY2AzdIQDZXn4ApXyiSR3aVQDc4jkNm8JPlXqO8eEozV0WhVnwGrZ
-         sySZcnS44TX33rbmT4gpEB2Fhhn2WZbNBgIprO9RPU57cOkzqGrWCESR6jP8U502jTtm
-         h3mw==
-X-Gm-Message-State: AC+VfDz2smKV9hT+AkEe5xwn/Fa3lFr3S2nhuE9SeaotO5O0scUXpjNA
-        IUobeuzndJ7n7+k9LlEkm5v9Qw==
-X-Google-Smtp-Source: ACHHUZ5Vd+iqT0hbusVDkDcn7XSOgXz4sQDdS0+3AkFybnT7jUueynuIQU87BKnhFDxGLCnhx55gPg==
-X-Received: by 2002:a05:600c:b45:b0:3f2:5922:d955 with SMTP id k5-20020a05600c0b4500b003f25922d955mr4904783wmr.8.1682689812594;
-        Fri, 28 Apr 2023 06:50:12 -0700 (PDT)
-Received: from [172.23.2.142] ([195.167.132.10])
-        by smtp.gmail.com with ESMTPSA id t13-20020a7bc3cd000000b003f173c566b5sm24514410wmj.5.2023.04.28.06.50.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 28 Apr 2023 06:50:11 -0700 (PDT)
-Message-ID: <8e1ee169-603f-4aa4-9f02-68520d708d57@linaro.org>
-Date:   Fri, 28 Apr 2023 15:50:10 +0200
+        d=1e100.net; s=20221208; t=1682693111; x=1685285111;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5WQK7u5uz2CHg54GpE0t/aU1Db+XDUfrdkRM7v2mYWI=;
+        b=c0UBrsNkPg+wEvujAde39xFWfmzRAwYfwcXyt1+nOGmJdw8jAAgXHJZdIbidCmYe9+
+         KkrqjPCmTV6dDxHv7rEyGasZDU6meMAi1IYnXcyNp/pAgidcHaRtbOCXlKGAsKvo5lNg
+         yVTJ3lUq+bi/0GFigBW3aYwer2NFv3fzuPHFpd8UNGzeUjVFwZg0yI3lt/RFEAqF1SvH
+         GbTW7VpupFttwH7Ji5f2M5+qHa9rjaO2Ke/YUkuFHzdLiVsu36gDcplln/kCw8PacMYr
+         j6p3xqRYIBwKfjxAjRF3LAQ5UusI0+pzcX75eRcOYXrq2v/wp19h2edH1BKjL4YDBzgz
+         S7lQ==
+X-Gm-Message-State: AC+VfDwHZGvERRmXyvwCNnSo50CQvGsa13kbJ/WTb6qKRmWBtNqxuL0h
+        Mt9iI3MdtwfijR9IPFu+REY7Pel8alubMlSj4T0=
+X-Google-Smtp-Source: ACHHUZ6ddCrxyxsU99j9thZI4WCeWSX+BROb5gyuOULzRIorRvUiWvX8kw0ISJV+jvwxjANaJdUmLXEvnlyEu+VEQlc=
+X-Received: by 2002:a67:f6c3:0:b0:42f:e7f3:923f with SMTP id
+ v3-20020a67f6c3000000b0042fe7f3923fmr2816115vso.13.1682693110896; Fri, 28 Apr
+ 2023 07:45:10 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH] arm: dts: Add am335x-boneblack-pps.dts
-Content-Language: en-US
-To:     Julien Panis <jpanis@baylibre.com>, arnd@arndb.de, olof@lixom.net,
-        soc@kernel.org, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, tony@atomide.com
-Cc:     linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
 References: <20230428105453.110254-1-jpanis@baylibre.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 In-Reply-To: <20230428105453.110254-1-jpanis@baylibre.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+From:   Robert Nelson <robertcnelson@gmail.com>
+Date:   Fri, 28 Apr 2023 09:44:45 -0500
+Message-ID: <CAOCHtYgKfJ4cXULvs8YrJ6+-UnrbBWQgXL+d6OMHOOexuj4uiQ@mail.gmail.com>
+Subject: Re: [PATCH] arm: dts: Add am335x-boneblack-pps.dts
+To:     Julien Panis <jpanis@baylibre.com>
+Cc:     arnd@arndb.de, olof@lixom.net, soc@kernel.org, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, tony@atomide.com,
+        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 28/04/2023 12:54, Julien Panis wrote:
+On Fri, Apr 28, 2023 at 6:00=E2=80=AFAM Julien Panis <jpanis@baylibre.com> =
+wrote:
+>
 > From: Lokesh Vutla <lokeshvutla@ti.com>
-> 
+>
 > Add a new am335x-boneblack-pps.dts that can be used to configure TIMER7
 > in PWM mode. This PWM signal can be used as a PPS signal when
 > synchronized to PTP clock. Typically this synchronization is done by a
 > userspace program. This PPS signal can be observed on pin P8.8.
-> 
+>
 > Signed-off-by: Lokesh Vutla <lokeshvutla@ti.com>
 > Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
 > Signed-off-by: Adrien Ricciardi <aricciardi@baylibre.com>
 > Signed-off-by: Julien Panis <jpanis@baylibre.com>
-
-Use subject prefixes matching the subsystem (which you can get for
-example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
-your patch is touching). Missing soemthing identifying sub-arch.
-
 > ---
 >  arch/arm/boot/dts/Makefile                 |  1 +
 >  arch/arm/boot/dts/am335x-boneblack-pps.dts | 25 ++++++++++++++++++++++
 >  2 files changed, 26 insertions(+)
 >  create mode 100644 arch/arm/boot/dts/am335x-boneblack-pps.dts
-> 
+>
 > diff --git a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
 > index efe4152e5846..d74158aae72d 100644
 > --- a/arch/arm/boot/dts/Makefile
 > +++ b/arch/arm/boot/dts/Makefile
-> @@ -939,6 +939,7 @@ dtb-$(CONFIG_SOC_AM33XX) += \
->  	am335x-base0033.dtb \
->  	am335x-bone.dtb \
->  	am335x-boneblack.dtb \
-> +	am335x-boneblack-pps.dtb \
->  	am335x-boneblack-wireless.dtb \
->  	am335x-boneblue.dtb \
->  	am335x-bonegreen.dtb \
-> diff --git a/arch/arm/boot/dts/am335x-boneblack-pps.dts b/arch/arm/boot/dts/am335x-boneblack-pps.dts
+> @@ -939,6 +939,7 @@ dtb-$(CONFIG_SOC_AM33XX) +=3D \
+>         am335x-base0033.dtb \
+>         am335x-bone.dtb \
+>         am335x-boneblack.dtb \
+> +       am335x-boneblack-pps.dtb \
+>         am335x-boneblack-wireless.dtb \
+>         am335x-boneblue.dtb \
+>         am335x-bonegreen.dtb \
+> diff --git a/arch/arm/boot/dts/am335x-boneblack-pps.dts b/arch/arm/boot/d=
+ts/am335x-boneblack-pps.dts
 > new file mode 100644
 > index 000000000000..88d2bc3fd759
 > --- /dev/null
@@ -119,47 +111,43 @@ your patch is touching). Missing soemthing identifying sub-arch.
 > @@ -0,0 +1,25 @@
 > +// SPDX-License-Identifier: GPL-2.0-only
 > +/*
-> + * Copyright (C) 2023 Texas Instruments Incorporated - http://www.ti.com/
+> + * Copyright (C) 2023 Texas Instruments Incorporated - http://www.ti.com=
+/
 > + */
 > +
 > +#include "am335x-boneblack.dts"
-
-Probably you need here compatible (and binding as separate patch).
-
 > +
 > +&am33xx_pinmux {
-> +	pwm7_pins: pinmux_pwm7_pins {
-
-No underscores in node names.
-
-
-> +		pinctrl-single,pins = <
-> +			AM33XX_PADCONF(AM335X_PIN_GPMC_OEN_REN, PIN_OUTPUT_PULLDOWN, MUX_MODE2)
-> +		>;
-> +	};
+> +       pwm7_pins: pinmux_pwm7_pins {
+> +               pinctrl-single,pins =3D <
+> +                       AM33XX_PADCONF(AM335X_PIN_GPMC_OEN_REN, PIN_OUTPU=
+T_PULLDOWN, MUX_MODE2)
+> +               >;
+> +       };
 > +};
 > +
 > +/{
-> +	pwm7: dmtimer-pwm7 {
-
-Node names should be generic.
-https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
-
-> +		compatible = "ti,omap-dmtimer-pwm";
-> +		pinctrl-names = "default";
-> +		pinctrl-0 = <&pwm7_pins>;
-> +		#pwm-cells = <3>;
-> +		ti,timers = <&timer7>;
-> +		ti,clock-source = <0x00>; /* timer_sys_ck */
-
-Why this is hex? Should be just 0/1/2?
-
-
-> +	};
+> +       pwm7: dmtimer-pwm7 {
+> +               compatible =3D "ti,omap-dmtimer-pwm";
+> +               pinctrl-names =3D "default";
+> +               pinctrl-0 =3D <&pwm7_pins>;
+> +               #pwm-cells =3D <3>;
+> +               ti,timers =3D <&timer7>;
+> +               ti,clock-source =3D <0x00>; /* timer_sys_ck */
+> +       };
 > +};
-> 
-> base-commit: fe15c26ee26efa11741a7b632e9f23b01aca4cc6
 
-Best regards,
-Krzysztof
+I know this commit is pretty small, but mainline now has overlay support:
 
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?=
+id=3D0fff0e49d72a53c51d8903fbadb2e6a84e531c4a
+
+At what point do we finally merge in the many dozen *BeagleBone*
+overlays, or do we still wait for :
+https://lore.kernel.org/lkml/20220328000915.15041-1-ansuelsmth@gmail.com/
+
+Regards,
+
+--=20
+Robert Nelson
+https://rcn-ee.com/
