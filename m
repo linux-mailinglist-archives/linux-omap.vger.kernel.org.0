@@ -2,152 +2,85 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DADD6F1AB1
-	for <lists+linux-omap@lfdr.de>; Fri, 28 Apr 2023 16:45:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AFF426F1E11
+	for <lists+linux-omap@lfdr.de>; Fri, 28 Apr 2023 20:31:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346073AbjD1OpO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 28 Apr 2023 10:45:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43820 "EHLO
+        id S1346475AbjD1SbM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 28 Apr 2023 14:31:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55216 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229623AbjD1OpN (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 28 Apr 2023 10:45:13 -0400
-Received: from mail-vs1-xe2a.google.com (mail-vs1-xe2a.google.com [IPv6:2607:f8b0:4864:20::e2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F291326A5;
-        Fri, 28 Apr 2023 07:45:11 -0700 (PDT)
-Received: by mail-vs1-xe2a.google.com with SMTP id ada2fe7eead31-42e51230afcso8771137.0;
-        Fri, 28 Apr 2023 07:45:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682693111; x=1685285111;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5WQK7u5uz2CHg54GpE0t/aU1Db+XDUfrdkRM7v2mYWI=;
-        b=fFcZJGAwp++jtP0/hTAPabIKRlMdYbKEaaskT7cQ4sOzTrlDwNUfVIXI/fmOvgutu5
-         B6TgJu/lKSKidAswj8BDo9ce/rQG34eTvZdL/Uv4U4R3AUNva2ekPXjDUcjg/2Y2Z1io
-         8jks80r28IkYJC4lmq2U4njFm/eNPi/f5KT9aKJGivJdjueVp4+WGMnejjeiVwpACQ2D
-         PS0rax6j0Dg9VvZa9pTco/YgNehFbvNdN4t6rTYm51lxaBgEKsfdllrWOVJR3ItvYlN1
-         /a/b6eHrTdorKQI4ubJO9gLLKd4rvK5AY0JS/rWNBnRtVuPXd0H2SF+SSoUBXESvKah6
-         l1fA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682693111; x=1685285111;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5WQK7u5uz2CHg54GpE0t/aU1Db+XDUfrdkRM7v2mYWI=;
-        b=c0UBrsNkPg+wEvujAde39xFWfmzRAwYfwcXyt1+nOGmJdw8jAAgXHJZdIbidCmYe9+
-         KkrqjPCmTV6dDxHv7rEyGasZDU6meMAi1IYnXcyNp/pAgidcHaRtbOCXlKGAsKvo5lNg
-         yVTJ3lUq+bi/0GFigBW3aYwer2NFv3fzuPHFpd8UNGzeUjVFwZg0yI3lt/RFEAqF1SvH
-         GbTW7VpupFttwH7Ji5f2M5+qHa9rjaO2Ke/YUkuFHzdLiVsu36gDcplln/kCw8PacMYr
-         j6p3xqRYIBwKfjxAjRF3LAQ5UusI0+pzcX75eRcOYXrq2v/wp19h2edH1BKjL4YDBzgz
-         S7lQ==
-X-Gm-Message-State: AC+VfDwHZGvERRmXyvwCNnSo50CQvGsa13kbJ/WTb6qKRmWBtNqxuL0h
-        Mt9iI3MdtwfijR9IPFu+REY7Pel8alubMlSj4T0=
-X-Google-Smtp-Source: ACHHUZ6ddCrxyxsU99j9thZI4WCeWSX+BROb5gyuOULzRIorRvUiWvX8kw0ISJV+jvwxjANaJdUmLXEvnlyEu+VEQlc=
-X-Received: by 2002:a67:f6c3:0:b0:42f:e7f3:923f with SMTP id
- v3-20020a67f6c3000000b0042fe7f3923fmr2816115vso.13.1682693110896; Fri, 28 Apr
- 2023 07:45:10 -0700 (PDT)
+        with ESMTP id S1346482AbjD1SbL (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 28 Apr 2023 14:31:11 -0400
+Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C751100;
+        Fri, 28 Apr 2023 11:31:10 -0700 (PDT)
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 33SIUc6Z055315;
+        Fri, 28 Apr 2023 13:30:38 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1682706638;
+        bh=xa1wxAxDRpJzcZXZhnN0JxvWNfHwGu9zSRjLj4uZ8b4=;
+        h=Date:From:To:CC:Subject:References:In-Reply-To;
+        b=jMLRCAAmrBoZ3hwBQgGAco+MO5cCbzTHIrVJwv2BQKmj/wR8CAjVpH7VRMdtNnQ/J
+         PUKpVvaotOi4rodJu+L6x/JKn/Wi8yL1iv5imqJ8WzRBOnXKrah8M2wHOs0yPAti3C
+         OJJ1A4RA9PxKWo7p2Be/BMKO98r8qx2U7O1aUJKc=
+Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 33SIUci4107286
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 28 Apr 2023 13:30:38 -0500
+Received: from DLEE114.ent.ti.com (157.170.170.25) by DLEE115.ent.ti.com
+ (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 28
+ Apr 2023 13:30:37 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE114.ent.ti.com
+ (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Fri, 28 Apr 2023 13:30:38 -0500
+Received: from localhost (ileaxei01-snat2.itg.ti.com [10.180.69.6])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 33SIUbqo027558;
+        Fri, 28 Apr 2023 13:30:37 -0500
+Date:   Fri, 28 Apr 2023 13:30:37 -0500
+From:   Reid Tonking <reidt@ti.com>
+To:     Tony Lindgren <tony@atomide.com>
+CC:     "Raghavendra, Vignesh" <vigneshr@ti.com>, <aaro.koskinen@iki.fi>,
+        <jmkrzyszt@gmail.com>, <linux-omap@vger.kernel.org>,
+        <linux-i2c@vger.kernel.org>
+Subject: Re: [PATCH v2] i2c: omap: Fix standard mode false ACK readings
+Message-ID: <20230428183037.wbhds54dz5l4v5xa@reidt-t5600.dhcp.ti.com>
+References: <20230426194956.689756-1-reidt@ti.com>
+ <445b3cbf-ffbc-6f77-47db-c30fc599e88f@ti.com>
+ <20230428074330.GJ14287@atomide.com>
 MIME-Version: 1.0
-References: <20230428105453.110254-1-jpanis@baylibre.com>
-In-Reply-To: <20230428105453.110254-1-jpanis@baylibre.com>
-From:   Robert Nelson <robertcnelson@gmail.com>
-Date:   Fri, 28 Apr 2023 09:44:45 -0500
-Message-ID: <CAOCHtYgKfJ4cXULvs8YrJ6+-UnrbBWQgXL+d6OMHOOexuj4uiQ@mail.gmail.com>
-Subject: Re: [PATCH] arm: dts: Add am335x-boneblack-pps.dts
-To:     Julien Panis <jpanis@baylibre.com>
-Cc:     arnd@arndb.de, olof@lixom.net, soc@kernel.org, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, tony@atomide.com,
-        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20230428074330.GJ14287@atomide.com>
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, Apr 28, 2023 at 6:00=E2=80=AFAM Julien Panis <jpanis@baylibre.com> =
-wrote:
->
-> From: Lokesh Vutla <lokeshvutla@ti.com>
->
-> Add a new am335x-boneblack-pps.dts that can be used to configure TIMER7
-> in PWM mode. This PWM signal can be used as a PPS signal when
-> synchronized to PTP clock. Typically this synchronization is done by a
-> userspace program. This PPS signal can be observed on pin P8.8.
->
-> Signed-off-by: Lokesh Vutla <lokeshvutla@ti.com>
-> Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
-> Signed-off-by: Adrien Ricciardi <aricciardi@baylibre.com>
-> Signed-off-by: Julien Panis <jpanis@baylibre.com>
-> ---
->  arch/arm/boot/dts/Makefile                 |  1 +
->  arch/arm/boot/dts/am335x-boneblack-pps.dts | 25 ++++++++++++++++++++++
->  2 files changed, 26 insertions(+)
->  create mode 100644 arch/arm/boot/dts/am335x-boneblack-pps.dts
->
-> diff --git a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
-> index efe4152e5846..d74158aae72d 100644
-> --- a/arch/arm/boot/dts/Makefile
-> +++ b/arch/arm/boot/dts/Makefile
-> @@ -939,6 +939,7 @@ dtb-$(CONFIG_SOC_AM33XX) +=3D \
->         am335x-base0033.dtb \
->         am335x-bone.dtb \
->         am335x-boneblack.dtb \
-> +       am335x-boneblack-pps.dtb \
->         am335x-boneblack-wireless.dtb \
->         am335x-boneblue.dtb \
->         am335x-bonegreen.dtb \
-> diff --git a/arch/arm/boot/dts/am335x-boneblack-pps.dts b/arch/arm/boot/d=
-ts/am335x-boneblack-pps.dts
-> new file mode 100644
-> index 000000000000..88d2bc3fd759
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/am335x-boneblack-pps.dts
-> @@ -0,0 +1,25 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Copyright (C) 2023 Texas Instruments Incorporated - http://www.ti.com=
-/
-> + */
-> +
-> +#include "am335x-boneblack.dts"
-> +
-> +&am33xx_pinmux {
-> +       pwm7_pins: pinmux_pwm7_pins {
-> +               pinctrl-single,pins =3D <
-> +                       AM33XX_PADCONF(AM335X_PIN_GPMC_OEN_REN, PIN_OUTPU=
-T_PULLDOWN, MUX_MODE2)
-> +               >;
-> +       };
-> +};
-> +
-> +/{
-> +       pwm7: dmtimer-pwm7 {
-> +               compatible =3D "ti,omap-dmtimer-pwm";
-> +               pinctrl-names =3D "default";
-> +               pinctrl-0 =3D <&pwm7_pins>;
-> +               #pwm-cells =3D <3>;
-> +               ti,timers =3D <&timer7>;
-> +               ti,clock-source =3D <0x00>; /* timer_sys_ck */
-> +       };
-> +};
+On 10:43-20230428, Tony Lindgren wrote:
+> * Raghavendra, Vignesh <vigneshr@ti.com> [230427 13:18]:
+> > On 4/27/2023 1:19 AM, Reid Tonking wrote:
+> > > Using standard mode, rare false ACK responses were appearing with
+> > > i2cdetect tool. This was happening due to NACK interrupt triggering
+> > > ISR thread before register access interrupt was ready. Removing the
+> > > NACK interrupt's ability to trigger ISR thread lets register access
+> > > ready interrupt do this instead.
+> 
+> So is it safe to leave NACK interrupt unhandled until we get the next
+> interrupt, does the ARDY always trigger after hitting this?
+> 
+> Regards,
+> 
+> Tony
 
-I know this commit is pretty small, but mainline now has overlay support:
+Yep, the ARDY always gets set after a new command when register access is ready so there's no need for NACK interrupt to control this. 
 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?=
-id=3D0fff0e49d72a53c51d8903fbadb2e6a84e531c4a
-
-At what point do we finally merge in the many dozen *BeagleBone*
-overlays, or do we still wait for :
-https://lore.kernel.org/lkml/20220328000915.15041-1-ansuelsmth@gmail.com/
-
-Regards,
-
---=20
-Robert Nelson
-https://rcn-ee.com/
+-Reid
