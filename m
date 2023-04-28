@@ -2,97 +2,125 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE25E6F13D3
-	for <lists+linux-omap@lfdr.de>; Fri, 28 Apr 2023 11:07:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D170B6F13D5
+	for <lists+linux-omap@lfdr.de>; Fri, 28 Apr 2023 11:07:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345296AbjD1JHO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 28 Apr 2023 05:07:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42576 "EHLO
+        id S1345452AbjD1JHh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 28 Apr 2023 05:07:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43174 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345452AbjD1JHN (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 28 Apr 2023 05:07:13 -0400
-Received: from mail.loanfly.pl (mail.loanfly.pl [141.94.250.68])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4851270C
-        for <linux-omap@vger.kernel.org>; Fri, 28 Apr 2023 02:07:11 -0700 (PDT)
-Received: by mail.loanfly.pl (Postfix, from userid 1002)
-        id 66445A8AEA; Fri, 28 Apr 2023 09:06:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=loanfly.pl; s=mail;
-        t=1682672809; bh=flSgn4+IJB03yMaHNopPnR0v50wun3P5Hd/CkHJx2Bc=;
-        h=Date:From:To:Subject:From;
-        b=ZCdmhPVzH4G/b7nUiOKA/6KTqWWJItINK1HwuVgidzlMZryVCNQar3GaM196TolRz
-         jb0I6QM83FUlv/FSOsdfL5a/heMLrv6SVQSGzG9h63m0HqpAiMKtbonskzdCuWVaAr
-         TcAbBrzforVquEbwYICbKR+a8lxOCtVNK+cEDrLyVNYtwrjCg56TNA0Bn10dDuBVck
-         xQY1uPQsS1NTnOCrQj0Xe09JFnkVqGQ3ytQEk1MB151kVpvffh/3nR+t2BKv3sqTJG
-         T0bnR2NCsK3wfwlwA+ihAUPZdM6OGf+Ot45drcA/AE3qEm+cFumdnKse3Bl2u+0Zsl
-         L76iAwpFsNIDw==
-Received: by mail.loanfly.pl for <linux-omap@vger.kernel.org>; Fri, 28 Apr 2023 09:06:32 GMT
-Message-ID: <20230428084110-0.1.9u.16p1x.0.d2d3on44k0@loanfly.pl>
-Date:   Fri, 28 Apr 2023 09:06:32 GMT
-From:   "Damian Cichocki" <damian.cichocki@loanfly.pl>
-To:     <linux-omap@vger.kernel.org>
-Subject: Prezentacja
-X-Mailer: mail.loanfly.pl
+        with ESMTP id S229840AbjD1JHg (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 28 Apr 2023 05:07:36 -0400
+Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39DFD2D5B;
+        Fri, 28 Apr 2023 02:07:34 -0700 (PDT)
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 33S96pq1060684;
+        Fri, 28 Apr 2023 04:06:51 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1682672811;
+        bh=o1rSdOmMRwFvIuaD+mfrZqbuIO8xyaxUVPv2FuoJHCs=;
+        h=Date:Subject:From:To:CC:References:In-Reply-To;
+        b=KIsIiiv9JP3wRNCZzTczcPRGEINj/pPz2AFDsHVpxyCA2/o4cRoOW2lL2lZ3/l0YU
+         PdqEjdZTfBffRphiZC6YVweUmXGVoGYX1NK8HZou+lP1yS4NxUeMbZJAuF6gjyenl9
+         Ix1W0RPb0l6+71ZyouOCEUmsMJ+wUchuJd40yLEc=
+Received: from DLEE103.ent.ti.com (dlee103.ent.ti.com [157.170.170.33])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 33S96p0k057141
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 28 Apr 2023 04:06:51 -0500
+Received: from DLEE103.ent.ti.com (157.170.170.33) by DLEE103.ent.ti.com
+ (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 28
+ Apr 2023 04:06:50 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE103.ent.ti.com
+ (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Fri, 28 Apr 2023 04:06:50 -0500
+Received: from [10.24.69.114] (ileaxei01-snat.itg.ti.com [10.180.69.5])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 33S96hWV077030;
+        Fri, 28 Apr 2023 04:06:44 -0500
+Message-ID: <ff6fe35f-ca4b-a48d-777f-196b771a14d3@ti.com>
+Date:   Fri, 28 Apr 2023 14:36:42 +0530
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [EXTERNAL] Re: [RFC PATCH v6 2/2] net: ti: icssg-prueth: Add
+ ICSSG ethernet driver
+Content-Language: en-US
+From:   Md Danish Anwar <a0501179@ti.com>
+To:     Simon Horman <simon.horman@corigine.com>,
+        MD Danish Anwar <danishanwar@ti.com>
+CC:     "Andrew F. Davis" <afd@ti.com>, Tero Kristo <kristo@kernel.org>,
+        Suman Anna <s-anna@ti.com>, Roger Quadros <rogerq@kernel.org>,
+        YueHaibing <yuehaibing@huawei.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>, <andrew@lunn.ch>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Richard Cochran <richardcochran@gmail.com>, <nm@ti.com>,
+        <ssantosh@kernel.org>, <srk@ti.com>,
+        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>
+References: <20230424053233.2338782-1-danishanwar@ti.com>
+ <20230424053233.2338782-3-danishanwar@ti.com> <ZEl2zh879QAX+QsK@corigine.com>
+ <9c97e367-56d6-689e-856a-c1a6ff575b63@ti.com>
+Organization: Texas Instruments
+In-Reply-To: <9c97e367-56d6-689e-856a-c1a6ff575b63@ti.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=5.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SBL_CSS,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_ABUSE_SURBL,URIBL_BLOCKED,
-        URIBL_CSS_A,URIBL_DBL_SPAM autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Report: *  0.0 URIBL_BLOCKED ADMINISTRATOR NOTICE: The query to URIBL was
-        *      blocked.  See
-        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
-        *      for more information.
-        *      [URIs: loanfly.pl]
-        *  2.5 URIBL_DBL_SPAM Contains a spam URL listed in the Spamhaus DBL
-        *      blocklist
-        *      [URIs: loanfly.pl]
-        *  3.3 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
-        *      [141.94.250.68 listed in zen.spamhaus.org]
-        *  0.1 URIBL_CSS_A Contains URL's A record listed in the Spamhaus CSS
-        *      blocklist
-        *      [URIs: loanfly.pl]
-        *  1.2 URIBL_ABUSE_SURBL Contains an URL listed in the ABUSE SURBL
-        *      blocklist
-        *      [URIs: loanfly.pl]
-        * -1.9 BAYES_00 BODY: Bayes spam probability is 0 to 1%
-        *      [score: 0.0000]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-X-Spam-Level: *****
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-6.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Dzie=C5=84 dobry!
+Hi Simon.
 
-Czy m=C3=B3g=C5=82bym przedstawi=C4=87 rozwi=C4=85zanie, kt=C3=B3re umo=C5=
-=BCliwia monitoring ka=C5=BCdego auta w czasie rzeczywistym w tym jego po=
-zycj=C4=99, zu=C5=BCycie paliwa i przebieg?
+On 27/04/23 12:42, Md Danish Anwar wrote:
+> Hi Simon,
+> Thanks for the comments.
+> 
+> On 27/04/23 00:39, Simon Horman wrote:
+>> On Mon, Apr 24, 2023 at 11:02:33AM +0530, MD Danish Anwar wrote:
+>>> From: Roger Quadros <rogerq@ti.com>
+>>>
+>>> This is the Ethernet driver for TI AM654 Silicon rev. 2
+>>> with the ICSSG PRU Sub-system running dual-EMAC firmware.
+>>>
 
-Dodatkowo nasze narz=C4=99dzie minimalizuje koszty utrzymania samochod=C3=
-=B3w, skraca czas przejazd=C3=B3w, a tak=C5=BCe tworzenie planu tras czy =
-dostaw.
+[ ... ]
 
-Z naszej wiedzy i do=C5=9Bwiadczenia korzysta ju=C5=BC ponad 49 tys. Klie=
-nt=C3=B3w. Monitorujemy 809 000 pojazd=C3=B3w na ca=C5=82ym =C5=9Bwiecie,=
- co jest nasz=C4=85 najlepsz=C4=85 wizyt=C3=B3wk=C4=85.
+>>
+>> ...
+>>
+>>> +MODULE_AUTHOR("Roger Quadros <rogerq@ti.com>");
+>>> +MODULE_AUTHOR("Puranjay Mohan <p-mohan@ti.com>");
+>>> +MODULE_AUTHOR("Md Danish Anwar <danishanwar@ti.com>");
+>>> +MODULE_DESCRIPTION("PRUSS ICSSG Ethernet Driver");
+>>> +MODULE_LICENSE("GPL");
+>>
+>> SPDK says GPL-2.0, so perhaps this should be "GPL v2" ?
+>>
 
-Bardzo prosz=C4=99 o e-maila zwrotnego, je=C5=9Bli mogliby=C5=9Bmy wsp=C3=
-=B3lnie om=C3=B3wi=C4=87 potencja=C5=82 wykorzystania takiego rozwi=C4=85=
-zania w Pa=C5=84stwa firmie.
+I am getting checkpatch warning while changing GPL version.
 
+WARNING: Prefer "GPL" over "GPL v2" - see commit bf7fbeeae6db ("module: Cure
+the MODULE_LICENSE "GPL" vs. "GPL v2" bogosity")
+#3602: FILE: drivers/net/ethernet/ti/icssg_prueth.c:1866:
++MODULE_LICENSE("GPL v2");
 
-Pozdrawiam,
-Damian Cichocki
+Should I ignore this warning and change it to "GPL v2"
+
+-- 
+Thanks and Regards,
+Danish.
