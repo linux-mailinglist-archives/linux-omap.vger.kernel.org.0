@@ -2,173 +2,164 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F13EE6F19ED
-	for <lists+linux-omap@lfdr.de>; Fri, 28 Apr 2023 15:48:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E1E36F19FC
+	for <lists+linux-omap@lfdr.de>; Fri, 28 Apr 2023 15:50:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346344AbjD1NsJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 28 Apr 2023 09:48:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50004 "EHLO
+        id S229580AbjD1NuQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 28 Apr 2023 09:50:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229471AbjD1NsH (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 28 Apr 2023 09:48:07 -0400
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2100.outbound.protection.outlook.com [40.107.236.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1DC9171E;
-        Fri, 28 Apr 2023 06:48:06 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=IeBEMNnZpjuHGwALY8tjh/vYK8N0/1VZghuZ3MRLCqyZ7WCqGu1ADwSAuVheunka7txOJOJr+P9Jgld/0XZs19WssBAhbJvSg+WIHldrzd9OdwAE9VVHfv01EmJuDuqZYBmay691Fy6mXxpcsgjrFyXC4AeJBHt+vYR1I6db6GfK+km7gM0KCmTM8qtulRYvQGWr1ldaCubDPO8cevZyOTJeDbUUp1vVAHab0Anh1R3BKjM++tiBP9Uzg8mXOI+s/RzBIchorsnSZmFWMqP6RjGCbFy8v+Pm0nLICuA46SDUOGgicTIJEmuH64ah8hVn3Ig4SgSpOr4hwDu6FyLWwA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Of1HD/t+Y25GDQ5qFM4/JjFQh382tDMVq+jAJ59YvfQ=;
- b=OKRsuihTzIVMWAJ71Snx85Zb0XxRO/TZSYYbpjs5cujgrkYnsbGU59wIbFXxlaBPpLTJmbO+Ypzj2D6bF6VrBrzg+Acqhmm9p3sSw22D5AJrcUpZ4OqJPCthOztGrXkgD6XOr87ByJeIxp7jjQmmbPtHOnEX4T02dEPDVM9M9o7PVuL3Pof2Ci/6sFuEbSbmqaFF6UoJiepIevH0pKMww8JJLBC6aaE37dCUAYJ7jys+tZBpWW1FjTiEyn+y5Glf8zU77loXf6DiYJSZCOahi2Rz+4YB3WSVIIJ3G9OpWGI/cMSKmG/p7v3xy1S453hUKm2qoNcguuVbbhDaYTNIHw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=corigine.com; dmarc=pass action=none header.from=corigine.com;
- dkim=pass header.d=corigine.com; arc=none
+        with ESMTP id S1346263AbjD1NuP (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 28 Apr 2023 09:50:15 -0400
+Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 204B91FD5
+        for <linux-omap@vger.kernel.org>; Fri, 28 Apr 2023 06:50:14 -0700 (PDT)
+Received: by mail-wm1-x329.google.com with SMTP id 5b1f17b1804b1-3f19afc4fd8so49940805e9.2
+        for <linux-omap@vger.kernel.org>; Fri, 28 Apr 2023 06:50:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=corigine.onmicrosoft.com; s=selector2-corigine-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Of1HD/t+Y25GDQ5qFM4/JjFQh382tDMVq+jAJ59YvfQ=;
- b=RpIgKxtcskO1Eca8Ylps1OfNJVFMHIJnsU7I+0lgoW3NW+nPb2z5zNENVd3hBKgq9LboViySppkuVAA/wXY/kN3lD22eIX6eoibv+n0LsOvfiiN4t5RrF1HnutFLg9p3mcigKWKDbX+VRfFnFehxJRlW5E/y635EOQQLAA9YD68=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=corigine.com;
-Received: from PH0PR13MB4842.namprd13.prod.outlook.com (2603:10b6:510:78::6)
- by BY5PR13MB4487.namprd13.prod.outlook.com (2603:10b6:a03:1d4::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6340.23; Fri, 28 Apr
- 2023 13:48:01 +0000
-Received: from PH0PR13MB4842.namprd13.prod.outlook.com
- ([fe80::f416:544d:18b7:bb34]) by PH0PR13MB4842.namprd13.prod.outlook.com
- ([fe80::f416:544d:18b7:bb34%5]) with mapi id 15.20.6340.022; Fri, 28 Apr 2023
- 13:48:01 +0000
-Date:   Fri, 28 Apr 2023 15:47:52 +0200
-From:   Simon Horman <simon.horman@corigine.com>
-To:     Md Danish Anwar <a0501179@ti.com>
-Cc:     MD Danish Anwar <danishanwar@ti.com>,
-        "Andrew F. Davis" <afd@ti.com>, Tero Kristo <kristo@kernel.org>,
-        Suman Anna <s-anna@ti.com>, Roger Quadros <rogerq@kernel.org>,
-        YueHaibing <yuehaibing@huawei.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>, andrew@lunn.ch,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Richard Cochran <richardcochran@gmail.com>, nm@ti.com,
-        ssantosh@kernel.org, srk@ti.com, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, netdev@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [EXTERNAL] Re: [RFC PATCH v6 2/2] net: ti: icssg-prueth: Add
- ICSSG ethernet driver
-Message-ID: <ZEvOiMSIIYG6nmsu@corigine.com>
-References: <20230424053233.2338782-1-danishanwar@ti.com>
- <20230424053233.2338782-3-danishanwar@ti.com>
- <ZEl2zh879QAX+QsK@corigine.com>
- <9c97e367-56d6-689e-856a-c1a6ff575b63@ti.com>
- <ff6fe35f-ca4b-a48d-777f-196b771a14d3@ti.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ff6fe35f-ca4b-a48d-777f-196b771a14d3@ti.com>
-X-ClientProxiedBy: AS4P250CA0006.EURP250.PROD.OUTLOOK.COM
- (2603:10a6:20b:5df::8) To PH0PR13MB4842.namprd13.prod.outlook.com
- (2603:10b6:510:78::6)
+        d=linaro.org; s=google; t=1682689812; x=1685281812;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=fua5L+GNbpNJBh6UH6chMqiXo63OJdmhHHYy87puBPY=;
+        b=eMBBRLhFC+6vz3jOhN6FMOyVs5gbkZOcg/x8JSfQmDi2/k5vlUWyj/cklU4oH5Foaw
+         DRW2/5zVoidzUV1l51P6LhyOApdMPtou8khWZB/l4U00hDooRNKLlZjMKYY1ttl2YTQQ
+         Ldx9EDRW9WDlL07rnYbXAm6i0FnmSHMscHXk0Ayxi5w6bKs6X2FCFKzd49rYsUEmnugC
+         wD0aPhR6LXWv+rrMiHy5Jr41PjWSLnQ2r4mAfa4Kx28nvtD76Rh1c330552gDnxqI4sz
+         p8QyYFy/w4yyJaxHjlhIjBlo26tmwJ2rbdvsfrtVedw/MlzOZ7zCyAnqeSrczVowgHWf
+         HSYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1682689812; x=1685281812;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=fua5L+GNbpNJBh6UH6chMqiXo63OJdmhHHYy87puBPY=;
+        b=ZSYQV6uLSWcdseE6ljs+zLC38JkzJl4AyW+lGEWRXVGL4/Ulp6J6s7C1k39nQFG8M1
+         U5vEiR4q+U5ksiJEk/MBhp37v1o9wmbSkqfqihSPiRxcNDgllxatCYEfwDWfHw3UzEt6
+         ckhSjjrrpgXWsLHVhjc4EQpP6A71wJxN++fNTppO0M8NloO7+bJLRF2OnGLw+kEOUekn
+         lSdq1pKUHFBjW9LeY2AzdIQDZXn4ApXyiSR3aVQDc4jkNm8JPlXqO8eEozV0WhVnwGrZ
+         sySZcnS44TX33rbmT4gpEB2Fhhn2WZbNBgIprO9RPU57cOkzqGrWCESR6jP8U502jTtm
+         h3mw==
+X-Gm-Message-State: AC+VfDz2smKV9hT+AkEe5xwn/Fa3lFr3S2nhuE9SeaotO5O0scUXpjNA
+        IUobeuzndJ7n7+k9LlEkm5v9Qw==
+X-Google-Smtp-Source: ACHHUZ5Vd+iqT0hbusVDkDcn7XSOgXz4sQDdS0+3AkFybnT7jUueynuIQU87BKnhFDxGLCnhx55gPg==
+X-Received: by 2002:a05:600c:b45:b0:3f2:5922:d955 with SMTP id k5-20020a05600c0b4500b003f25922d955mr4904783wmr.8.1682689812594;
+        Fri, 28 Apr 2023 06:50:12 -0700 (PDT)
+Received: from [172.23.2.142] ([195.167.132.10])
+        by smtp.gmail.com with ESMTPSA id t13-20020a7bc3cd000000b003f173c566b5sm24514410wmj.5.2023.04.28.06.50.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 28 Apr 2023 06:50:11 -0700 (PDT)
+Message-ID: <8e1ee169-603f-4aa4-9f02-68520d708d57@linaro.org>
+Date:   Fri, 28 Apr 2023 15:50:10 +0200
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR13MB4842:EE_|BY5PR13MB4487:EE_
-X-MS-Office365-Filtering-Correlation-Id: cdf81be2-8fc0-48b9-ab7d-08db47ef2eb3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: NYb8W0GjOdJQc5PdtTJb+CquYoPq23yuUrVIl9fG7Ym6n2V/Oqr7s/qGna2j9mULo+0gz9CYUX1fnxViO88gs6rdIjz3UM0duGMYBqY9dxnfO3JelsrHPxKVxbqpymE/uu6wBiykXr4feT22C21FRzh8hmByFdkP1Fq/iTYJTQxFg+ZZsIlGGBzt/DxcgTs6zmgjqfEUgpkfda9Uvv7GOlgQ7BRthOZcOpeu/Co7XH4ua7R041VV5Tp6CNd9p/zJOrrZ3JCrjerTib8J29E8s5Drkf+fvuffRDkXwaxTgNpy8fx02KBmKedcQb+qUQ0ryn1ZAfpS5HhMln/1gLZVjSwg+XjIW5SaiOaCe4z1AzcvwCOn/th8ix2Lqyt+D3ON9Pr3h4K4SJiOAkC+bzgRl21TDUivdZAFxiCTJ09I6hCgGneyYn8MtPHVQXKQExqaazNO1wc+wC9ON1+v+97eQxRCpajDJ/ikTZ7wS6oS61I/vxpFa5XJk+UN3s6vBNwJtyGvjOU+mhqY4AjDLp3RVDpSR4acZgu2gzThjyc0Sn1Og8hCTfqK9+d39K5L9EYjOtzJuiHtsFvLgheikHpAnGDZmI+90RNeT1RZ/oi3NIY=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR13MB4842.namprd13.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(376002)(396003)(366004)(39830400003)(346002)(136003)(451199021)(54906003)(478600001)(5660300002)(8936002)(8676002)(36756003)(86362001)(2906002)(7416002)(44832011)(38100700002)(66556008)(66476007)(66946007)(4326008)(6916009)(316002)(41300700001)(186003)(6512007)(6506007)(53546011)(83380400001)(2616005)(6666004)(6486002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?SjBV3PZKu8MqXRqdlKZglRPC/KbJlJZYIcXnQSRys5xA45/z3saeym4IechY?=
- =?us-ascii?Q?KkGc1dpfySdO8VwMUAM7w6dGzzt4O4ZXkeurN8vXU2TdijpAtrU9nSFzdl0p?=
- =?us-ascii?Q?SKUHtH2l4mJq0se3haM/9Aft1jfDVb5AGHIq+bsYzHT6PiNTAzRwLhF17aQK?=
- =?us-ascii?Q?wk+lRW3FHB0U3njvppb5AV4/TNiL68QtNStBkeXOVCKBgYHDdCFvqchJCCLK?=
- =?us-ascii?Q?pDNzKW9tM078v8esmt87hpQ1hpbtIWEZmJSHhKDHKKdgXCAwmCqN+IcOXCse?=
- =?us-ascii?Q?3JmUdIH2141w6SF4Q7dEjBUAXnLTnG2TxBVxE+qqAQCcTQhqai57EZ+EU+WM?=
- =?us-ascii?Q?bRZJ6xxMWI1L26yMoFmZhQlmomORsk+MJJ6mFC9NB1qvj0wqWYTbSsJj2l57?=
- =?us-ascii?Q?yIcib/EEQmTY8cBiUlrpC1x5DlYi2oPuVBa46No9Qm2Panl/tZN8/SdxRPk3?=
- =?us-ascii?Q?Qikj1BRGs/zpxr0mTs27Bw2GXt021/k5huvcax0yY38EILoNrA3uSUl2x4f3?=
- =?us-ascii?Q?M6LSRfyvLnhApoon8cuinwJQUsywngoRpvAAus5Vx8uiep+36XmucL9PBjRk?=
- =?us-ascii?Q?701Tk4gTitJK2CJfqRZvfBUJDZx7fbRC4ZpeXcBShG5zZAGol1BTuYVPYe5L?=
- =?us-ascii?Q?+EjZYviIqp/qvwm5blt3ZairleOp0/D+N19EgWxkvwwlbegmSNe1HXz8rd/y?=
- =?us-ascii?Q?N96W3jlXIB+PkTYY4rHpU1TCn50a7T+K4RCN90Sco7YxeCEn8Kb0jQBNVFtL?=
- =?us-ascii?Q?77MyKveLzO5aOsgUl4H22+WuyQIiI5tPnDeMvjKfIW4xfjG1dk2UcxEXdi0H?=
- =?us-ascii?Q?rwhjKtXuHXiy6q4ofI9oBd3l+1SnKjeSi/uQvYP3ySekuU7NjeRH1peOT6yR?=
- =?us-ascii?Q?/4eKsVjoeLtVYAbGf/qHT0aTsYhA2ulVEbz/bEI+WidkfbPBu7wvYJ1HsFEm?=
- =?us-ascii?Q?idf6usyC0yI61UkhRG6Vb6VloSmRp/QDVy8toIh+GoJL2q3n962I9Fa7Q4MH?=
- =?us-ascii?Q?qKntc3WL9aPFWtplNoYPEx2FNN/Ahakz6MP4LP5Mx3yfaSx3kIRJ1652hY/r?=
- =?us-ascii?Q?8eeEfwvRuUu7/e9/XqRVoR/arXfe4wZptXlzG4R121CUR6n2s7HPKLqWD7c9?=
- =?us-ascii?Q?ksWMgQotQhLpa3oIPgyg/UDGoBZhuN2AEMMPaDONQoMYaJJQB1zPgIM/Krrk?=
- =?us-ascii?Q?E3TUXfiz6bZo+dPj9ghAW5HOh7qqpeNWVLIg6wG8eY1tVUGSjTtw2H5n2xps?=
- =?us-ascii?Q?GMpqadlVnTUHxXJcg4RdhQ8wpsrdJeZVishjISSqtTPb5NxM6KAXY4urJtpM?=
- =?us-ascii?Q?+QMiEDdqZfkmbCEJ0AS1ldj+6NyitaqwUB+y8/GjX5ptxszLLYvJoYlGuqtr?=
- =?us-ascii?Q?mPUACoxrRj5LS0fAaWpyKDC5+5NPS7aIHyZlvDCuWswQlZ7xvWOH6BOXRkxP?=
- =?us-ascii?Q?NR5FDCDZ3NZ88equ9oxqv66C8eMQdc0WR44xWxemE4U0RMJj2V0fbSc7LhtR?=
- =?us-ascii?Q?rDzLLkoQzulRkeB+Q8nO6XXQ8jdYfywFyplzfVjzyNcx/Y1nXWPISAZFqnoN?=
- =?us-ascii?Q?z3CKhsbj9qnh8A7Nr+wOA/tJfGnzCC0byjbkkyfISRSFMcd6usZ0qukn6jbY?=
- =?us-ascii?Q?XNOQIw/84JjcBDjJZtpjA3luCbP1nPKrNnObGSXoKcTPwjAt3LiCAWzaPVIe?=
- =?us-ascii?Q?RgKnUg=3D=3D?=
-X-OriginatorOrg: corigine.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cdf81be2-8fc0-48b9-ab7d-08db47ef2eb3
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR13MB4842.namprd13.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Apr 2023 13:48:01.2347
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: fe128f2c-073b-4c20-818e-7246a585940c
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VvWLNx3dqU6BT5q0+DPlcqFRuUdyglnLs9s6ATTnU6ELUHq4T83fCOqXqku6BPMcnjaoRkFTXiqsRbb2zpNh0uHdY0BhUPdJnU4DlxGUzus=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR13MB4487
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH] arm: dts: Add am335x-boneblack-pps.dts
+Content-Language: en-US
+To:     Julien Panis <jpanis@baylibre.com>, arnd@arndb.de, olof@lixom.net,
+        soc@kernel.org, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, tony@atomide.com
+Cc:     linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
+References: <20230428105453.110254-1-jpanis@baylibre.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230428105453.110254-1-jpanis@baylibre.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, Apr 28, 2023 at 02:36:42PM +0530, Md Danish Anwar wrote:
-> Hi Simon.
+On 28/04/2023 12:54, Julien Panis wrote:
+> From: Lokesh Vutla <lokeshvutla@ti.com>
 > 
-> On 27/04/23 12:42, Md Danish Anwar wrote:
-> > Hi Simon,
-> > Thanks for the comments.
-> > 
-> > On 27/04/23 00:39, Simon Horman wrote:
-> >> On Mon, Apr 24, 2023 at 11:02:33AM +0530, MD Danish Anwar wrote:
-> >>> From: Roger Quadros <rogerq@ti.com>
-> >>>
-> >>> This is the Ethernet driver for TI AM654 Silicon rev. 2
-> >>> with the ICSSG PRU Sub-system running dual-EMAC firmware.
-> >>>
+> Add a new am335x-boneblack-pps.dts that can be used to configure TIMER7
+> in PWM mode. This PWM signal can be used as a PPS signal when
+> synchronized to PTP clock. Typically this synchronization is done by a
+> userspace program. This PPS signal can be observed on pin P8.8.
 > 
-> [ ... ]
-> 
-> >>
-> >> ...
-> >>
-> >>> +MODULE_AUTHOR("Roger Quadros <rogerq@ti.com>");
-> >>> +MODULE_AUTHOR("Puranjay Mohan <p-mohan@ti.com>");
-> >>> +MODULE_AUTHOR("Md Danish Anwar <danishanwar@ti.com>");
-> >>> +MODULE_DESCRIPTION("PRUSS ICSSG Ethernet Driver");
-> >>> +MODULE_LICENSE("GPL");
-> >>
-> >> SPDK says GPL-2.0, so perhaps this should be "GPL v2" ?
-> >>
-> 
-> I am getting checkpatch warning while changing GPL version.
-> 
-> WARNING: Prefer "GPL" over "GPL v2" - see commit bf7fbeeae6db ("module: Cure
-> the MODULE_LICENSE "GPL" vs. "GPL v2" bogosity")
-> #3602: FILE: drivers/net/ethernet/ti/icssg_prueth.c:1866:
-> +MODULE_LICENSE("GPL v2");
-> 
-> Should I ignore this warning and change it to "GPL v2"
+> Signed-off-by: Lokesh Vutla <lokeshvutla@ti.com>
+> Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+> Signed-off-by: Adrien Ricciardi <aricciardi@baylibre.com>
+> Signed-off-by: Julien Panis <jpanis@baylibre.com>
 
-I guess that "GPL" is correct after all.
-Sorry for the noise.
+Use subject prefixes matching the subsystem (which you can get for
+example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
+your patch is touching). Missing soemthing identifying sub-arch.
+
+> ---
+>  arch/arm/boot/dts/Makefile                 |  1 +
+>  arch/arm/boot/dts/am335x-boneblack-pps.dts | 25 ++++++++++++++++++++++
+>  2 files changed, 26 insertions(+)
+>  create mode 100644 arch/arm/boot/dts/am335x-boneblack-pps.dts
+> 
+> diff --git a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
+> index efe4152e5846..d74158aae72d 100644
+> --- a/arch/arm/boot/dts/Makefile
+> +++ b/arch/arm/boot/dts/Makefile
+> @@ -939,6 +939,7 @@ dtb-$(CONFIG_SOC_AM33XX) += \
+>  	am335x-base0033.dtb \
+>  	am335x-bone.dtb \
+>  	am335x-boneblack.dtb \
+> +	am335x-boneblack-pps.dtb \
+>  	am335x-boneblack-wireless.dtb \
+>  	am335x-boneblue.dtb \
+>  	am335x-bonegreen.dtb \
+> diff --git a/arch/arm/boot/dts/am335x-boneblack-pps.dts b/arch/arm/boot/dts/am335x-boneblack-pps.dts
+> new file mode 100644
+> index 000000000000..88d2bc3fd759
+> --- /dev/null
+> +++ b/arch/arm/boot/dts/am335x-boneblack-pps.dts
+> @@ -0,0 +1,25 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Copyright (C) 2023 Texas Instruments Incorporated - http://www.ti.com/
+> + */
+> +
+> +#include "am335x-boneblack.dts"
+
+Probably you need here compatible (and binding as separate patch).
+
+> +
+> +&am33xx_pinmux {
+> +	pwm7_pins: pinmux_pwm7_pins {
+
+No underscores in node names.
+
+
+> +		pinctrl-single,pins = <
+> +			AM33XX_PADCONF(AM335X_PIN_GPMC_OEN_REN, PIN_OUTPUT_PULLDOWN, MUX_MODE2)
+> +		>;
+> +	};
+> +};
+> +
+> +/{
+> +	pwm7: dmtimer-pwm7 {
+
+Node names should be generic.
+https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
+
+> +		compatible = "ti,omap-dmtimer-pwm";
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&pwm7_pins>;
+> +		#pwm-cells = <3>;
+> +		ti,timers = <&timer7>;
+> +		ti,clock-source = <0x00>; /* timer_sys_ck */
+
+Why this is hex? Should be just 0/1/2?
+
+
+> +	};
+> +};
+> 
+> base-commit: fe15c26ee26efa11741a7b632e9f23b01aca4cc6
+
+Best regards,
+Krzysztof
+
