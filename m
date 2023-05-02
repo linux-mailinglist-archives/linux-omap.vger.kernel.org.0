@@ -2,60 +2,60 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F33336F4D40
-	for <lists+linux-omap@lfdr.de>; Wed,  3 May 2023 00:54:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D3146F4D55
+	for <lists+linux-omap@lfdr.de>; Wed,  3 May 2023 01:02:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230137AbjEBWyb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 2 May 2023 18:54:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43390 "EHLO
+        id S229482AbjEBXCt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 2 May 2023 19:02:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230371AbjEBWyS (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 2 May 2023 18:54:18 -0400
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D65A3ABC
-        for <linux-omap@vger.kernel.org>; Tue,  2 May 2023 15:53:37 -0700 (PDT)
-Received: by mail-lf1-x129.google.com with SMTP id 2adb3069b0e04-4f0108a7d20so5140716e87.3
-        for <linux-omap@vger.kernel.org>; Tue, 02 May 2023 15:53:37 -0700 (PDT)
+        with ESMTP id S229460AbjEBXCt (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 2 May 2023 19:02:49 -0400
+Received: from mail-qk1-x734.google.com (mail-qk1-x734.google.com [IPv6:2607:f8b0:4864:20::734])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B17FC3;
+        Tue,  2 May 2023 16:02:47 -0700 (PDT)
+Received: by mail-qk1-x734.google.com with SMTP id af79cd13be357-75131c2997bso37715785a.1;
+        Tue, 02 May 2023 16:02:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1683067945; x=1685659945;
+        d=gmail.com; s=20221208; t=1683068567; x=1685660567;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=T1p8PAJD9DFCngojw0T3kSd1c2uyqBORxfNEmDK3GJ4=;
-        b=BUUnQw61aCluaeaOfOjylr17lq4wyiS3svEJzNGaImPvwBFbxjY1AYjKa65LSPa2ym
-         yE16k3jpuP3N8wCSlIVKGAALWKur7gs6Ffzu8U/kGAiuA1Xyx/x2hK/JJfWNLEFbZFh+
-         gw5Uv9OoWoi9etQy1IAyVFsO7YWXlAUhhQim+LNTWB6y3zMhsYaevaqfbTuzGPLNMccY
-         J+vqS7x9RyTltzOUQDkaayM18bum3WFZAKA4wqgFiMMBPsbYfXaNiW1/rSr4VdyK3Fqn
-         5j1I0Zeq+WoDj447GF++RwHlJ/hGKjEKpd2ivZT8M021uOxvON7tTCA8VLC+2Vt7SgLR
-         uLMQ==
+        bh=RVUCe/5y2Ex7bNIQOvHne7x9R8A0wELwbdEse2WDpF8=;
+        b=iHBlY9kIRMOF3Yq8hT/HYtLwTwjoof0FVfaEhNjRSWPoYgoA1qtRUzGwD+nkjOzJPI
+         u09FXpbJrjxtM3MFyzM74JfHNsb7UZ0GJze/A7Ip/HD+5roEWeYmZwjlYu0a2cdkfbwf
+         +kLbPvAmDmxad5KujOjWnyiCW+W4okHTLQRqn4fLYSw7t/qXPwhwMm5mWSJxb8hi+d0O
+         ev3gtx0+XlazA6w82yl+mnLoL1jpad70ZxSgOz1YQXa9W1BLk0lheCYSgecLnoqpXxAH
+         /k0Y7rMrxmhfNEQZTdJyCemWb5DMYD7STFJO05Jiqj2/50xWs6TXP7C2X1ywzoueu5sn
+         IGTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683067945; x=1685659945;
+        d=1e100.net; s=20221208; t=1683068567; x=1685660567;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=T1p8PAJD9DFCngojw0T3kSd1c2uyqBORxfNEmDK3GJ4=;
-        b=lDImKSGp9aovLaZkBcptbCmNWUWlzJzluedBwgjGCM+BT65X0tIzAeTyNY0SvkTwA1
-         BdZZL8vq8LWTd9T8UAoHPEnaKV7YDGTa5bN/nYLFCL+o2m6kVzBdU7wYavhcfxmslCAa
-         ur8DvVV1Ha8o73y6CU+0URufV7Sq9bSkeeou6rjarEOtoRROZHsnSJJLOq3FZdFNlkhU
-         a5V60FvGa0ThgfsKu8N2H7/ZOrESK9W6mQz14GKMU0kSMR9TH/TdEjU5BKXykv4EAFtk
-         Fjc3xWMQgdHwu/U+WKbLP/98yk28j8QbRSUbOz/3a7E/ohMsnb2Awaz/1DZdiBU9B3be
-         JYFA==
-X-Gm-Message-State: AC+VfDzq4ffRutq/nHSOdg1Yb0F3YgaAV0bBx71EuOS0f9bYZs+DoZPb
-        etSXlMV/HRFj+/DFuhWWhLedyA==
-X-Google-Smtp-Source: ACHHUZ6Oo6CNJusINV9/L7Xt1q+0o1hyr6U1jjDYvnM0ZlUDdwA1vrQ5KYtmvDXiiUxPR0FKQ1HT5g==
-X-Received: by 2002:a19:c204:0:b0:4f1:223c:dc83 with SMTP id l4-20020a19c204000000b004f1223cdc83mr355945lfc.48.1683067945539;
-        Tue, 02 May 2023 15:52:25 -0700 (PDT)
-Received: from ?IPV6:2001:14ba:a0db:1f00::8a5? (dzdqv0yyyyyyyyyyybcwt-3.rev.dnainternet.fi. [2001:14ba:a0db:1f00::8a5])
-        by smtp.gmail.com with ESMTPSA id r16-20020ac24d10000000b004ddaea30ba6sm5607156lfi.235.2023.05.02.15.52.24
+        bh=RVUCe/5y2Ex7bNIQOvHne7x9R8A0wELwbdEse2WDpF8=;
+        b=Di+NvKG4ckZ2tMZKwvFQi8cPaxZKc7DjQnG0MELv79YnJb7pZi66b9mLXOkmgbf5QG
+         zP09CJXKVQLuA4XEloTvt88PFdrHsYs1ors1Swu1M707MSxKnssS+Yj4H4RJNIBkVoo/
+         82sNVkd3hsoVRHwprme2wx7IF58Rdq8p5ZhOgRaG66vAQxyS8vNRBU+GAITewKmCutUj
+         BBTuklgiDfClWfLrEBylFnNTjHgSdeald7KYE/SUKEB5OSRACoMk9dXTqsDnBFvJxCta
+         ZdbhW8oH/EKRxA48jEIs1stPWoZ0noEdMGeEXRHc1LsLazfC+siVYDN9CXg6FeLWn0lS
+         t5EA==
+X-Gm-Message-State: AC+VfDzmGexNCjYNcuB9yVziO/f075hvp5vSTohtSu8G7O7KthjPkLjW
+        gtQaRgql0W8pvLLo091+L6E4JWrI/tQ=
+X-Google-Smtp-Source: ACHHUZ4eSB1jw2dhw1LAIzPe/MR5kdc4AoCnBVEG18379hjnfMdu0BtdA7D5r0jmXaGKb3nbIbuwpA==
+X-Received: by 2002:a05:6214:d64:b0:61a:96d3:bd20 with SMTP id 4-20020a0562140d6400b0061a96d3bd20mr380920qvs.10.1683068566677;
+        Tue, 02 May 2023 16:02:46 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id t18-20020a0cea32000000b0061b71220644sm326246qvp.19.2023.05.02.16.02.36
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 May 2023 15:52:24 -0700 (PDT)
-Message-ID: <bce93654-fc36-3d12-282d-76fafb8f51ce@linaro.org>
-Date:   Wed, 3 May 2023 01:52:24 +0300
+        Tue, 02 May 2023 16:02:45 -0700 (PDT)
+Message-ID: <d4b52074-d11c-4c7a-ad74-b2fce64c6d30@gmail.com>
+Date:   Tue, 2 May 2023 16:02:34 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
 Subject: Re: [RFC PATCH 0/1] Categorize ARM dts directory
-Content-Language: en-GB
+Content-Language: en-US
 To:     Rob Herring <robh+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>
 Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
         Olof Johansson <olof@lixom.net>,
@@ -87,21 +87,21 @@ References: <20220328000915.15041-1-ansuelsmth@gmail.com>
  <CAL_JsqJthKTm8bhRF2B=ae1tvtPeYYXx_Tm76qQtSwLtH5C6VA@mail.gmail.com>
  <720a2829-b6b5-411c-ac69-9a53e881f48d@app.fastmail.com>
  <CAL_JsqKCtmkwzKa01gyG65fH8ye6R3KhR41PJbJhOJ4X9j=znA@mail.gmail.com>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From:   Florian Fainelli <f.fainelli@gmail.com>
 In-Reply-To: <CAL_JsqKCtmkwzKa01gyG65fH8ye6R3KhR41PJbJhOJ4X9j=znA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-3.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 02/05/2023 22:40, Rob Herring wrote:
+On 5/2/23 12:40, Rob Herring wrote:
 > On Tue, May 2, 2023 at 3:15 AM Arnd Bergmann <arnd@arndb.de> wrote:
 >>
 >> On Tue, Apr 25, 2023, at 17:57, Rob Herring wrote:
@@ -186,11 +186,6 @@ On 02/05/2023 22:40, Rob Herring wrote:
 >      'pxa2' : 'pxa',
 >      'pxa3' : 'pxa',
 >      'pxa' : 'marvell',
-
-I'd question if it makes sense to split the pxa line. Yes, it was sold 
-by Intel to Marvell, but IIRC the devices still had some inheritance. 
-So, if we have the 'pxa' subdir, I'd move Marvell PXAs to that dir too.
-
 >      'arm-' : 'arm',
 >      'integ' : 'arm',
 >      'mps' : 'arm',
@@ -214,59 +209,10 @@ So, if we have the 'pxa' subdir, I'd move Marvell PXAs to that dir too.
 >      'pm9g45' : 'microchip',
 >      'ge86' : 'microchip',
 >      'bcm' : 'brcm',
->      'exynos' : 'samsung',
->      's3c' : 'samsung',
->      's5p' : 'samsung',
->      'gemini' : 'gemini',
->      'hi3' : 'hisilicon',
->      'hip' : 'hisilicon',
->      'hisi' : 'hisilicon',
->      'sd5' : 'hisilicon',
->      'hpe' : 'hpe',
->      'intel': 'intel',
->      'mt' : 'mediatek',
->      'meson' : 'meson',
->      'moxa' : 'moxa',
->      'mstar' : 'mstar',
->      'nuvo' : 'nuvoton',
->      'lpc' : 'lpc',
->      'lan96' : 'microchip',
->      'owl' : 'actions',
->      'ox8' : 'oxsemi',
->      'rda' : 'rda',
->      'rtd' : 'realtek',
->      'r7' : 'renesas',
->      'r8' : 'renesas',
->      'r9' : 'renesas',
->      'emev2' : 'renesas',
->      'sh73a' : 'renesas',
->      'gr-' : 'renesas',
->      'iwg' : 'renesas',
->      'rk' : 'rockchip',
->      'rv11' : 'rockchip',
->      'rockchip' : 'rockchip',
->      'socfpga' : 'socfpga',
->      'stm' : 'stm32',
->      'sti' : 'sti',
->      'st-pin' : 'sti',
->      'ste' : 'st-ericsson',
->      'spear' : 'spear',
->      'axp' : 'allwinner',
->      'tegra' : 'nvidia',
->      'milbeaut' : 'socionext',
->      'uniph' : 'socionext',
->      'vt8500' : 'vt8500',
->      'wm8' : 'vt8500',
->      'xen' : 'xen',
->      'zx' : 'zte',
->      'zynq' : 'xilinx',
-> }
-> 
-> Rob
-> 
-> [1] git://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git arm-dts-move-v2
 
+How about we use 'broadcom' here, to follow what arm64 does? I could 
+rename arch/mips/boot/dts/brcm to arch/mips/boot/dts/broadcom for 
+consistency, too?
 -- 
-With best wishes
-Dmitry
+Florian
 
