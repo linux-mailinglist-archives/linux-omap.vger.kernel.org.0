@@ -2,50 +2,43 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 18DFB6F603E
-	for <lists+linux-omap@lfdr.de>; Wed,  3 May 2023 22:40:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AB926F613E
+	for <lists+linux-omap@lfdr.de>; Thu,  4 May 2023 00:22:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229519AbjECUkM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 3 May 2023 16:40:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57512 "EHLO
+        id S229743AbjECWWu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 3 May 2023 18:22:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229586AbjECUkL (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 3 May 2023 16:40:11 -0400
-Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 983772129
-        for <linux-omap@vger.kernel.org>; Wed,  3 May 2023 13:40:08 -0700 (PDT)
-Received: by mail-yb1-xb30.google.com with SMTP id 3f1490d57ef6-b9a6eec8611so5624804276.0
-        for <linux-omap@vger.kernel.org>; Wed, 03 May 2023 13:40:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1683146408; x=1685738408;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hgRsKnqFosP21nRhvJTwDb+9jWUZ4oTCBD+B9SUv1+c=;
-        b=PpH7MTH5m9dkyEXVIA4ICZkEIVn6fbuhrX3P1BdP3if0uOROgJ2F72A2yUx7yz3sXS
-         HWtVkM2kQYKv0Z/8qhzueuBS50AQOyk7K3BJwxgGieroePKE8eXjAn/Rs2ABvHBf1Ijz
-         U1P79PfFgwkyyx9FoqJJyXG0FJZj0hjbpTgXC89JzuVKxRrHt/Ymllp9Jk2sJJ4tWbfw
-         y4m4tu9rb4QhSiyNaqi6I7vrNrgcUZvWsj2crRyd3wJnXlNcu8YGFm5WF58h1WRW0V1s
-         LqLygvOy2n4JrcJ0Gc4Jwlxu7AuH88CzuoSB7p+d0z+N11Z8y9Tc5gacDsefTGoZl+E/
-         SfdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683146408; x=1685738408;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hgRsKnqFosP21nRhvJTwDb+9jWUZ4oTCBD+B9SUv1+c=;
-        b=XkmdaelFpY101Be10oL7rfOfx47SM/1+Zqjre84z9hzyW9uFJsQdVBCW8fjyqNT3Q3
-         kb7HV+LqU4+/J2EmlVPUK+tENVUW+N8yvKaED/LmWqxMJCSqRzRLAkfMbQNjN3mVl7WP
-         1ktptCbpOw4wGlZ4tEhGC/JrrBAQu0WLsOi16ggaLTo/2b5kIOs+MEsIqRzYIv/vReao
-         ATJLJz6NMWxgz1kZKWdQ19qorjxnPyWPIb9va910ho6jZivcBEhw6LDH7iJt5XGtI4mG
-         B+uXQYVk/uHMYqH8i+ihrIpzOuC27MoKMiPlDAbpSvyzKhjsHKBKO337IwE4GROA7WBT
-         qO/w==
-X-Gm-Message-State: AC+VfDwqzJMMZ9KKmVnyux/f7Fh5FO0vryTEJk2QnyMVFRotN+VnAk+6
-        9nv8L6X4kfKqT3y0xPKulgtlaSPr3JKx+Z41QfOkPw==
-X-Google-Smtp-Source: ACHHUZ504wPVYlURitbUXR0w6GF5Hd5chFJsuF27bLfRTjvW8/vWf4wN9zc7VHWrnnoXqNvPfLtTOnqfU50Ll8hIGF4=
-X-Received: by 2002:a25:656:0:b0:b25:a1e1:5b65 with SMTP id
- 83-20020a250656000000b00b25a1e15b65mr3778724ybg.5.1683146407758; Wed, 03 May
- 2023 13:40:07 -0700 (PDT)
+        with ESMTP id S229545AbjECWWt (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 3 May 2023 18:22:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C5D57D9E;
+        Wed,  3 May 2023 15:22:48 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C95DF6305C;
+        Wed,  3 May 2023 22:22:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31BE2C433A8;
+        Wed,  3 May 2023 22:22:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1683152567;
+        bh=3fU8zKQCl4Kz1eWXPpHONjdIQH2Taxo8c7rFXpP8al8=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=gyKS6MttCNtMBfY1UbH64Gxs+WPEh98Gt6OT01M40SteIWEK5rSEDwur1RaXFO+KB
+         k1tdcAAsc2c2rzXvd1weeyyawHuQ8Lq59qhupvTSHCEywGQVnNLirhUV5LFKBX8xed
+         l0/UGIQ3CmVjXekItREFnJAzg+8iaG+wi29nNBk6X2ZIHAF+OpORY7hcZEXw8ggyI7
+         lqhuUpVxEH1ffbseQZUFxUdR9etC+52u7eYE9GhWMkOLouRSZWF2P5Zy0o7/nRvHLU
+         sdqmfLYRY9trzvPKYYsZ5exHv0HiJ28pGmOXf1C9Ug/qGMH9We/64sSgv1jQPsw+Ts
+         HEEttqKJrWkpw==
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-4eff4ea8e39so6629946e87.1;
+        Wed, 03 May 2023 15:22:47 -0700 (PDT)
+X-Gm-Message-State: AC+VfDwcjFjpxgpvwx/xjNV9IQuAxkgbI5G3tn4jZA22Ob7XCoVB3rm2
+        OozWR8Cwyhdt1FF41qXllLAt13GXoBYRCpAM1Q==
+X-Google-Smtp-Source: ACHHUZ7HeoGV7sGaLAr5Tc+TosYIxgwnkvp5ZEsh8Jj7wpXuo0FJb1Bm44GqyVTuGr9wlxbZQ+2RYfnrH8bg8TYUOtU=
+X-Received: by 2002:a19:ee03:0:b0:4ea:fa26:2378 with SMTP id
+ g3-20020a19ee03000000b004eafa262378mr1222041lfb.23.1683152565137; Wed, 03 May
+ 2023 15:22:45 -0700 (PDT)
 MIME-Version: 1.0
 References: <20220328000915.15041-1-ansuelsmth@gmail.com> <85eb14ec-f465-7447-ad77-a3dabc666f47@kernel.org>
  <YkKRYnN84D9VZhGj@Ansuel-xps.localdomain> <CAL_Jsq+RQQ-ADMxLPUFwk6S6kGmb6oNDy4k52fnU0EtbUvqmSA@mail.gmail.com>
@@ -57,13 +50,13 @@ References: <20220328000915.15041-1-ansuelsmth@gmail.com> <85eb14ec-f465-7447-ad
  <4e1e70a9-9b28-410b-bd29-fb5f5805798f@app.fastmail.com> <CAL_JsqJEdZBS231TvkmmipaXEqzvDjz+A32V6uJ4zfSMAJHn2w@mail.gmail.com>
  <4d9b4159-88b2-48cf-84d9-34169928c8e4@app.fastmail.com>
 In-Reply-To: <4d9b4159-88b2-48cf-84d9-34169928c8e4@app.fastmail.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Wed, 3 May 2023 22:39:55 +0200
-Message-ID: <CACRpkdZBFqhoK7WhERX8yfBHL8kxYqnOZGgBCcWaHpT8qB2S4Q@mail.gmail.com>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Wed, 3 May 2023 17:22:32 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqLi+h3E8wEjuzjdh-VhWac8VJAfBeAKAHMny=gg=-OQgQ@mail.gmail.com>
+Message-ID: <CAL_JsqLi+h3E8wEjuzjdh-VhWac8VJAfBeAKAHMny=gg=-OQgQ@mail.gmail.com>
 Subject: Re: [RFC PATCH 0/1] Categorize ARM dts directory
 To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+Cc:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
         Geert Uytterhoeven <geert@linux-m68k.org>,
         Olof Johansson <olof@lixom.net>,
         Christian Marangi <ansuelsmth@gmail.com>,
@@ -88,18 +81,18 @@ Cc:     Rob Herring <robh+dt@kernel.org>,
         linux-realtek-soc@lists.infradead.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, May 3, 2023 at 10:37=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> wrote=
-:
+On Wed, May 3, 2023 at 3:37=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> wrote:
+>
 > On Wed, May 3, 2023, at 15:16, Rob Herring wrote:
 >
 > > We could do a second level of directories here:
@@ -107,14 +100,8 @@ On Wed, May 3, 2023 at 10:37=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> wrote=
 > Works for me, but at that point, I'd really also want to do it
 > for nxp with its five or more product lines (mxs, imx, lpc,
 > s32, layerscape, vybrid)
->
-> > intel/pxa/
-> > intel/ixp/
-> > intel/socfpga/
->
-> and intel/axxia I guess.
 
-This looks neat. I like it.
+And marvell, microchip(lan96), ti, and broadcom probably. I think I
+withdraw my suggestion...
 
-Yours,
-Linus Walleij
+Rob
