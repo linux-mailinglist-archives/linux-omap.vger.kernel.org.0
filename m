@@ -2,57 +2,57 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 786CB6F4E50
-	for <lists+linux-omap@lfdr.de>; Wed,  3 May 2023 03:04:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9B796F4E61
+	for <lists+linux-omap@lfdr.de>; Wed,  3 May 2023 03:17:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229515AbjECBEg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 2 May 2023 21:04:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53622 "EHLO
+        id S229491AbjECBRf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 2 May 2023 21:17:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55596 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229441AbjECBEf (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 2 May 2023 21:04:35 -0400
+        with ESMTP id S229464AbjECBRe (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 2 May 2023 21:17:34 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2C1B2D61;
-        Tue,  2 May 2023 18:04:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32D7D2D69;
+        Tue,  2 May 2023 18:17:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3C8EB629CC;
-        Wed,  3 May 2023 01:04:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94028C433AE;
-        Wed,  3 May 2023 01:04:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B1290629CE;
+        Wed,  3 May 2023 01:17:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B903C433A4;
+        Wed,  3 May 2023 01:17:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683075872;
-        bh=3tzUPFXqJgNCRsublfj+ZgGaTs7KzeK4/lauS5NgXbw=;
+        s=k20201202; t=1683076652;
+        bh=hzNYaAPUaGLZ1v0sTCo4kr9f/IJ1faX5mnRj5TAeAKs=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=QoGLyyHrVl2A+YTplbrnYiMEIz6wk+jP9SV8dz5UCtY76MWzNfxcDGsWDt7XzaFbR
-         Xr4LoafVLAa94EjThKoFMtXLMkvCzIlI51WqQfPmq+42ZRGmwhqCuG73rtNFS7wUkc
-         +fEXrSTR/j+xouT44ufNnuT7bR771W/YBDuqC0FtyyPhTIzbPY4lJHmmC4JrKp+LqL
-         VUXrPWi4q/OV1Ezdi6st//MbXuMfXSMqmAVFzsUiMTdstEd3wZmJZlVLjAXQcv6nMA
-         7k3X1222URsa6zFwyiuGaddxH/mAzA1qAvda1W1zjhNGD1pbVwdRUepxFlVrtRcox8
-         yQNSGRSC9H6BA==
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-2a8b3ecf59fso46418061fa.0;
-        Tue, 02 May 2023 18:04:32 -0700 (PDT)
-X-Gm-Message-State: AC+VfDxrX1RTlyh35LQ1lyIfjVDZ9XSpUGaNTrbWR3iI+zmU2KY74l9I
-        wqQLSzBVjWvuMwcKlKrtaLj1AvVmhDES5zIw/w==
-X-Google-Smtp-Source: ACHHUZ4mSLqb1ExsMkOjNsdZYIFyOMFO5WWfDnvfwZvuM9fv3TyrxmQhN6hT67g4AYdNW/MVo7uZ6IBv6mL14dd4tuc=
-X-Received: by 2002:a2e:8402:0:b0:2a8:d103:dc8 with SMTP id
- z2-20020a2e8402000000b002a8d1030dc8mr4705375ljg.2.1683075870337; Tue, 02 May
- 2023 18:04:30 -0700 (PDT)
+        b=QMxxEJKiF/Xy/wpJ45M6Vv6cDRwnVgmz71oBe+yu+VPg0ZvwY64iyWw1oPr8JUNsE
+         0+NbSQmo02gKsS9daJssd0DmAziCO02D1v+rCR9/TCg9DRmRIzIHHDkEC5EBHq42cC
+         iZJESeEwfq5QYqjYTczZHNt4kDZ5i7w0VJs1GJao3IU+1auKFA2BykAAE5UNE3BtXQ
+         aC4MLEcHqVgH0EAnYnpuUjEij93YdOr8eL89gHougN+yaCFsiDwKF73MyP/ntMVVx7
+         Z0tyl6sVDb0DoXY+oCDA68mFlGLNWyOY++rZwaVyScUlpxomtUHulQA3qlYqFCh+jI
+         ZWyTVi+oNLAKA==
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-4efe8991bafso5827118e87.0;
+        Tue, 02 May 2023 18:17:31 -0700 (PDT)
+X-Gm-Message-State: AC+VfDzOGuDHTJ8vgpfZ2SIogWx5lN3a+TZgCbJBjTPRL6Re+O7Uf5XY
+        Pr0kzft79MeZsmfY0mvuMefmJ1XDurLSBZ5MXQ==
+X-Google-Smtp-Source: ACHHUZ55e+9yQPQvr0rpIhj0RbrnT2KB6aoc0WjPIM2H1fvT2bLnAwsd1znjwXMKc8qD22lf5irJ3k12RJA0LJgPE6Y=
+X-Received: by 2002:a05:6512:964:b0:4ea:c730:aabe with SMTP id
+ v4-20020a056512096400b004eac730aabemr592385lft.20.1683076649996; Tue, 02 May
+ 2023 18:17:29 -0700 (PDT)
 MIME-Version: 1.0
 References: <20220328000915.15041-1-ansuelsmth@gmail.com> <85eb14ec-f465-7447-ad77-a3dabc666f47@kernel.org>
  <YkKRYnN84D9VZhGj@Ansuel-xps.localdomain> <CAL_Jsq+RQQ-ADMxLPUFwk6S6kGmb6oNDy4k52fnU0EtbUvqmSA@mail.gmail.com>
  <CAMuHMdWNTE48MFy6fqxAsfMWz9b6E7dVNXtXtESP95sxk2PGwA@mail.gmail.com>
  <CAL_JsqJthKTm8bhRF2B=ae1tvtPeYYXx_Tm76qQtSwLtH5C6VA@mail.gmail.com>
  <720a2829-b6b5-411c-ac69-9a53e881f48d@app.fastmail.com> <CAL_JsqKCtmkwzKa01gyG65fH8ye6R3KhR41PJbJhOJ4X9j=znA@mail.gmail.com>
- <d4b52074-d11c-4c7a-ad74-b2fce64c6d30@gmail.com>
-In-Reply-To: <d4b52074-d11c-4c7a-ad74-b2fce64c6d30@gmail.com>
+ <bce93654-fc36-3d12-282d-76fafb8f51ce@linaro.org>
+In-Reply-To: <bce93654-fc36-3d12-282d-76fafb8f51ce@linaro.org>
 From:   Rob Herring <robh+dt@kernel.org>
-Date:   Tue, 2 May 2023 20:04:17 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqKRcMSijAdiP_BpyBGRuMhscZ12QFcLBAeZ+TcaQg7r4g@mail.gmail.com>
-Message-ID: <CAL_JsqKRcMSijAdiP_BpyBGRuMhscZ12QFcLBAeZ+TcaQg7r4g@mail.gmail.com>
+Date:   Tue, 2 May 2023 20:17:17 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqJXd_EpOQwwNEAn25mzFfkhEvqzur6ui5Ca+dbt2kA8-Q@mail.gmail.com>
+Message-ID: <CAL_JsqJXd_EpOQwwNEAn25mzFfkhEvqzur6ui5Ca+dbt2kA8-Q@mail.gmail.com>
 Subject: Re: [RFC PATCH 0/1] Categorize ARM dts directory
-To:     Florian Fainelli <f.fainelli@gmail.com>
+To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Cc:     Arnd Bergmann <arnd@arndb.de>,
         Geert Uytterhoeven <geert@linux-m68k.org>,
         Olof Johansson <olof@lixom.net>,
@@ -88,10 +88,10 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, May 2, 2023 at 6:02=E2=80=AFPM Florian Fainelli <f.fainelli@gmail.c=
-om> wrote:
+On Tue, May 2, 2023 at 5:52=E2=80=AFPM Dmitry Baryshkov
+<dmitry.baryshkov@linaro.org> wrote:
 >
-> On 5/2/23 12:40, Rob Herring wrote:
+> On 02/05/2023 22:40, Rob Herring wrote:
 > > On Tue, May 2, 2023 at 3:15=E2=80=AFAM Arnd Bergmann <arnd@arndb.de> wr=
 ote:
 > >>
@@ -181,36 +181,13 @@ ve
 > >      'pxa2' : 'pxa',
 > >      'pxa3' : 'pxa',
 > >      'pxa' : 'marvell',
-> >      'arm-' : 'arm',
-> >      'integ' : 'arm',
-> >      'mps' : 'arm',
-> >      've' : 'arm',
-> >      'aspeed' : 'aspeed',
-> >      'ast2' : 'aspeed',
-> >      'facebook' : 'aspeed',
-> >      'ibm' : 'aspeed',
-> >      'openbmc' : 'aspeed',
-> >      'en7' : 'airoha',
-> >      'at91' : 'microchip',
-> >      'sama' : 'microchip',
-> >      'sam9' : 'microchip',
-> >      'usb_' : 'microchip',
-> >      'tny_' : 'microchip',
-> >      'mpa1600' : 'microchip',
-> >      'animeo_ip' : 'microchip',
-> >      'aks-cdu' : 'microchip',
-> >      'ethernut5' : 'microchip',
-> >      'evk-pro3' : 'microchip',
-> >      'pm9g45' : 'microchip',
-> >      'ge86' : 'microchip',
-> >      'bcm' : 'brcm',
 >
-> How about we use 'broadcom' here, to follow what arm64 does? I could
-> rename arch/mips/boot/dts/brcm to arch/mips/boot/dts/broadcom for
-> consistency, too?
+> I'd question if it makes sense to split the pxa line. Yes, it was sold
+> by Intel to Marvell, but IIRC the devices still had some inheritance.
+> So, if we have the 'pxa' subdir, I'd move Marvell PXAs to that dir too.
 
-Okay, though if starting clean I'd somewhat prefer to use the vendor
-prefix. I guess since arm and arm64 share dtsi files, they should
-match.
+I think I probably split it because it was different maintainers.
+Though it doesn't look like pxa168 or pxa910 have any maintainer. They
+are a mixture of pxa and mmp I think.
 
 Rob
