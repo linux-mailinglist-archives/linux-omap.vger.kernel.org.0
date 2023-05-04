@@ -2,100 +2,97 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D7DFE6F6C39
-	for <lists+linux-omap@lfdr.de>; Thu,  4 May 2023 14:45:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFEF66F79B7
+	for <lists+linux-omap@lfdr.de>; Fri,  5 May 2023 01:24:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229886AbjEDMpm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 4 May 2023 08:45:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33470 "EHLO
+        id S229823AbjEDXY5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 4 May 2023 19:24:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229915AbjEDMpl (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 4 May 2023 08:45:41 -0400
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a01:238:4321:8900:456f:ecd6:43e:202c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBDE76199;
-        Thu,  4 May 2023 05:45:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=kemnade.info; s=20220719; h=Content-Transfer-Encoding:Content-Type:
-        MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=14sjKY8h8FWkGXw0wntZ015vh0LfS2hxWosSTp8tzLU=; b=mUJiJWJRnjt37+pnHmf80+vLPa
-        LTmHDz9mwSOwtSnTc4j8e8JgtGrZz5XXOIYOpuocZKx65fWcStKlwHC4Y5Ber/9PjieGsaCph8eFh
-        YjCWuaPgjD8iJWZ1zUU9AyzAe3hopakTtyQwYfgbFmNZQxUBu4Z/bLgqv5H++JpCtyT+1othWxq8+
-        y3M7uuBa8MkAwxAlj4EYvTLErrYNUPTHJB80QgBuU1eDUHcD4CB2g4svUTkzfmXK8zLK56VgBqnp4
-        kPvLhcrKgfVo1CPwVcJl6SFZSExnoH/yNX1LJjKYzjabB23KydEZolNi3/3EkETqXRVo+JrIuQ75o
-        iiiTuh2A==;
-Received: from p200300ccff0d59001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff0d:5900:1a3d:a2ff:febf:d33a] helo=aktux)
-        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <andreas@kemnade.info>)
-        id 1puYKp-0000l9-2J; Thu, 04 May 2023 14:45:23 +0200
-Date:   Thu, 4 May 2023 14:45:21 +0200
-From:   Andreas Kemnade <andreas@kemnade.info>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Tony Lindgren <tony@atomide.com>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        linux-omap@vger.kernel.org, linux-gpio@vger.kernel.org,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [BISECTED REGRESSION] OMAP1 GPIO breakage
-Message-ID: <20230504144521.1b3a3574@aktux>
-In-Reply-To: <CACRpkdY9ShRATHa776KyzeArmQdKxdwGxJC11YnmhWiCdSGzEA@mail.gmail.com>
-References: <20230425173241.GF444508@darkstar.musicnaut.iki.fi>
-        <20230425201117.457f224c@aktux>
-        <20230425183857.GG444508@darkstar.musicnaut.iki.fi>
-        <20230425212040.5a4d5b09@aktux>
-        <20230425193637.GH444508@darkstar.musicnaut.iki.fi>
-        <20230425215848.247a936a@aktux>
-        <20230426071910.GE14287@atomide.com>
-        <20230504055156.GO14287@atomide.com>
-        <CACRpkdY9ShRATHa776KyzeArmQdKxdwGxJC11YnmhWiCdSGzEA@mail.gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.24; x86_64-pc-linux-gnu)
+        with ESMTP id S229827AbjEDXY4 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 4 May 2023 19:24:56 -0400
+Received: from bkzirrati.com (bkzirrati.com [192.3.204.47])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B546A5FC
+        for <linux-omap@vger.kernel.org>; Thu,  4 May 2023 16:24:51 -0700 (PDT)
+Received: from bkzirrati.com (unknown [86.104.194.118])
+        by bkzirrati.com (Postfix) with ESMTPSA id BA39FAA67D
+        for <linux-omap@vger.kernel.org>; Thu,  4 May 2023 19:07:55 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bkzirrati.com;
+        s=default; t=1683241676; h=from:from:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:mime-version:mime-version:
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=BFhPGO7cEz1SePqs7eBlUjDmkzHDEVGN1zsooIh/RrU=;
+        b=ne5OpvRl91+2bRCiRT56Nj9fM5Lusxdc5mbnY42Nj235VsC3Icn2wmFX1fHdxbrVIq79eP
+        BD1NT+8F6BaZa58/MUmYGLS0ys7fxjIxCdQXEzqtxy+VvWg3SaBszZyFLLvazKWbeAutGE
+        q6MpPdp0uHkStoS7mL6ekG8P/0D3F/4=
+Reply-To: Nichole <nichole.greatconceptuae@outlook.com>
+From:   Nichole <batned@bkzirrati.com>
+To:     linux-omap@vger.kernel.org
+Subject: INVESTMENT/ LOAN FUNDING
+Date:   04 May 2023 16:07:54 -0700
+Message-ID: <20230504160753.29EC8BA7DF36FF17@bkzirrati.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain;
+        charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Score: -1.0 (-)
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: Yes, score=7.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FORGED_REPLYTO,
+        NIXSPAM_IXHASH,RCVD_IN_MSPIKE_H2,RCVD_IN_VALIDITY_RPBL,SPF_HELO_PASS,
+        SPF_PASS,SUBJ_ALL_CAPS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: *  0.0 URIBL_BLOCKED ADMINISTRATOR NOTICE: The query to URIBL was
+        *      blocked.  See
+        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
+        *      for more information.
+        *      [URIs: bkzirrati.com]
+        *  3.0 NIXSPAM_IXHASH http://www.nixspam.org/
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.4990]
+        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
+        * -0.0 RCVD_IN_MSPIKE_H2 RBL: Average reputation (+2)
+        *      [192.3.204.47 listed in wl.mailspike.net]
+        *  1.3 RCVD_IN_VALIDITY_RPBL RBL: Relay in Validity RPBL,
+        *      https://senderscore.org/blocklistlookup/
+        *      [192.3.204.47 listed in bl.score.senderscore.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        * -0.0 SPF_HELO_PASS SPF: HELO matches SPF record
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
+Hello
 
-On Thu, 4 May 2023 14:13:32 +0200
-Linus Walleij <linus.walleij@linaro.org> wrote:
+How are you today? Our company has a loan offer which might be of=20
+best interest to you? If you have a good project plan that=20
+requires funding or looking forward to an expansion of existing=20
+business, Let me know with your business plan for a feasibility=20
+study.
 
-> On Thu, May 4, 2023 at 7:52=E2=80=AFAM Tony Lindgren <tony@atomide.com> w=
-rote:
-> > * Tony Lindgren <tony@atomide.com> [230426 07:20]: =20
-> > > Seems that we should just revert this patch for now and try again aft=
-er
-> > > the issues have been fixed. =20
-> >
-> > Looking at the proposed fixes being posted seems like they are quite
-> > intrusive.. How about we partially revert this patch so omap1 still
-> > uses static assigment of gpios? =20
->=20
-> I think Andreas patch (commit 92bf78b33b0b463b00c6b0203b49aea845daecc8)
-> kind of describes the problem with that: the probe order is now unpredict=
-able,
-> so if we revert the patch then that problem returns, but I don't know how
-> serious that problem is.
->=20
-well, I think we can even fully revert 92bf78b33b0b463b00c6b0203b49aea845da=
-ecc8
-after my patch
+We also have an option of broker collaboration with us where you=20
+can get 1% to 2% finder's fee commission,
 
-gpiolib: fix allocation of mixed dynamic/static GPIOs
+Kindly check our website below or let me know your thoughts on=20
+this for more details to be sent to you for your kind perusal.
 
-is in as a short time solution. That should only leave unpredictable
-numbers of multiple dynamic gpio controllers.
 
-Regards,
-Andrea
+Kind regards.
+
+Nichole / Consultant
+Great Concept LLC
+Office Address: Al Multaqa St, Al Rawdah
+Abu Dhabi,United Arab Emirates.
+Business Hours: Sunday -Thursday: 8:00 am - 6:00 pm
+Email: nichole.greatconceptuae@outlook.com
+Call/Whatsapp: +971 58 285 3569
