@@ -2,137 +2,99 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 871946F6A50
-	for <lists+linux-omap@lfdr.de>; Thu,  4 May 2023 13:45:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9439D6F6AF5
+	for <lists+linux-omap@lfdr.de>; Thu,  4 May 2023 14:13:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230321AbjEDLpS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 4 May 2023 07:45:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58984 "EHLO
+        id S230253AbjEDMNr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 4 May 2023 08:13:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229835AbjEDLpR (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 4 May 2023 07:45:17 -0400
-Received: from new3-smtp.messagingengine.com (new3-smtp.messagingengine.com [66.111.4.229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D11DE4223;
-        Thu,  4 May 2023 04:45:12 -0700 (PDT)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-        by mailnew.nyi.internal (Postfix) with ESMTP id 7F8E7580E74;
-        Thu,  4 May 2023 07:45:09 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute6.internal (MEProxy); Thu, 04 May 2023 07:45:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-        :cc:content-type:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm3; t=1683200709; x=1683207909; bh=rv
-        dn+vPe48KPGDs0leGYpaM1jtugXaszLFPftQ7tCmQ=; b=K3vb/txYtZKnDaX7av
-        yXDErCEtK8JWoojEYV/KOhr/Dv3+/xOdTNnlfPilF7nZ1vUsdDP7l+AgwDbRQSuE
-        5AUT6SPooYuy01IO6jURwU7twh1iCROPuF4Hz3zAUJdbJERGRcVw7wLAOdZON0f2
-        AhZwSiy8u7IYmN4dU7xIQbvrXShHBkCkYnYnC0IoMvFDdx6WQKJ4rLgfLXj0hCW/
-        ckDTGcWhommWigg7s6rAmkjQ1+FesSQJLbAeZIs8XTPkdZlzCBQmlaWbCOt46UI7
-        TaQrFKOEB7Nrxln82bVy1GZqe9KuSEr+WJIPa6wdhqmLquSGvkDqg3ABmaiUtN8f
-        /V6A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm3; t=1683200709; x=1683207909; bh=rvdn+vPe48KPG
-        Ds0leGYpaM1jtugXaszLFPftQ7tCmQ=; b=Pw6Rg+XVCkD8w3YHy7jGkIyjxzhiF
-        bN/nWbfwIR4ZK/F9LSR2lSdh5WuOB6Zd/S/dxjLYOJX2pQKrTV0T8idbkjcOcQF5
-        SwoSgg9l8jKzkx3OOYZXp9IzAPIUyKCbJYXfJ1Co1zpAhWXPmQXpDlG8hbdhXCqo
-        Ide3agAfwauTe+q41YGw5qJ2db95dqZn1JU+kHQVa7baSeKRpcpIB14hYe498UV1
-        qSbU08XfSJ51vZL4nbzqAVErhFeOyUkPmcXy3uA1E2ZHbZ12aj+TO8581K6JMOqx
-        WSKLMOUGfU3GMPJTvVpyvFa7UxM2y027LOl0hEHvk1DeHWVGhQTOePmWQ==
-X-ME-Sender: <xms:xJpTZBRFDKFjpUX2zSPaH_4Nc8R2Qpk2no6uSQvOfRDhdZKlcM2S1w>
-    <xme:xJpTZKx9r-aiclDw81Wu7rGAVEGjfn7b8plKzDI0Fm4sbn8ToKgyao_lHGOMzamjl
-    uNZIJ6W5xJhlsHwBQU>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeeftddggedvucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:xJpTZG1ikd38RTtD1R071POfBXt5S1hFZ6Fml4H3RBTwbc4m3wVYQA>
-    <xmx:xJpTZJBCtHzUiKeZoBrJeZc8fH8Ed5ISfh9DPuxYIqK6axwqLg053Q>
-    <xmx:xJpTZKh7kYU5y_FppCdiasiBdQUPjv6lvIKqgolP6FEiBuWg49SF6g>
-    <xmx:xZpTZKDU9-4LKKK2Ti8y1N5SEny0C66Vm4BJmIaG1feFi_OTmPFchA>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 5DF60B60089; Thu,  4 May 2023 07:45:08 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-386-g2404815117-fm-20230425.001-g24048151
-Mime-Version: 1.0
-Message-Id: <6ece505b-1075-48e6-9ff9-1673014e5df1@app.fastmail.com>
-In-Reply-To: <ZFOE4wd31hpJh0ro@shell.armlinux.org.uk>
-References: <20220328000915.15041-1-ansuelsmth@gmail.com>
- <85eb14ec-f465-7447-ad77-a3dabc666f47@kernel.org>
- <YkKRYnN84D9VZhGj@Ansuel-xps.localdomain>
- <CAL_Jsq+RQQ-ADMxLPUFwk6S6kGmb6oNDy4k52fnU0EtbUvqmSA@mail.gmail.com>
- <CAMuHMdWNTE48MFy6fqxAsfMWz9b6E7dVNXtXtESP95sxk2PGwA@mail.gmail.com>
- <CAL_JsqJthKTm8bhRF2B=ae1tvtPeYYXx_Tm76qQtSwLtH5C6VA@mail.gmail.com>
- <720a2829-b6b5-411c-ac69-9a53e881f48d@app.fastmail.com>
- <CAL_JsqKCtmkwzKa01gyG65fH8ye6R3KhR41PJbJhOJ4X9j=znA@mail.gmail.com>
- <ZFOE4wd31hpJh0ro@shell.armlinux.org.uk>
-Date:   Thu, 04 May 2023 13:44:37 +0200
-From:   "Arnd Bergmann" <arnd@arndb.de>
-To:     "Russell King" <linux@armlinux.org.uk>,
-        "Rob Herring" <robh+dt@kernel.org>
-Cc:     "Geert Uytterhoeven" <geert@linux-m68k.org>,
-        "Olof Johansson" <olof@lixom.net>,
-        "Christian Marangi" <ansuelsmth@gmail.com>,
-        "Krzysztof Kozlowski" <krzk@kernel.org>,
-        "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-actions@lists.infradead.org,
-        linux-sunxi@lists.linux.dev,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        linux-amlogic@lists.infradead.org, linux-arm-kernel@axis.com,
-        linux-aspeed@lists.ozlabs.org,
-        linux-rpi-kernel@lists.infradead.org,
-        chrome-platform@lists.linux.dev,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        linux-samsung-soc@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        kernel@dh-electronics.com, linux-mediatek@lists.infradead.org,
-        openbmc@lists.ozlabs.org, linux-tegra@vger.kernel.org,
-        "linux-oxnas@groups.io" <linux-oxnas@groups.io>,
-        linux-arm-msm@vger.kernel.org, linux-unisoc@lists.infradead.org,
-        linux-rockchip@lists.infradead.org,
-        linux-realtek-soc@lists.infradead.org
-Subject: Re: [RFC PATCH 0/1] Categorize ARM dts directory
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S229873AbjEDMNq (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 4 May 2023 08:13:46 -0400
+Received: from mail-yb1-xb35.google.com (mail-yb1-xb35.google.com [IPv6:2607:f8b0:4864:20::b35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F4B55FD3
+        for <linux-omap@vger.kernel.org>; Thu,  4 May 2023 05:13:44 -0700 (PDT)
+Received: by mail-yb1-xb35.google.com with SMTP id 3f1490d57ef6-b9d8b2e1576so557944276.2
+        for <linux-omap@vger.kernel.org>; Thu, 04 May 2023 05:13:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1683202424; x=1685794424;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5Nz4N7dBdEb2mhhYgRb5Ac4u0WnwPfPfvIfQEz/oEYw=;
+        b=qXqX6HaLiyrnJBChHeBKAzAM0vEPq7TbgRHZmOwkhPcM1GakZW/ItPgWR/1Oxue1sq
+         cIQu/c6Te65Z6dExIcbTmK56lU8phMg7PhezCdVW01BBBZHUgp1ZKWGGn5qeH6nnbuup
+         WaQrY9cQ0IxucKvfSKHdn582Lw1aATNnMQbM5p8jhmClkRAxphauBfnB2jbMtqG/Mbdg
+         nYRvSlUJHZQ1KCee/9iJU0aTK9Ocu7E14ijm767M5v5YStjfGynNY7RKqbh7V9aCwG7/
+         R8XTpaRviX4SAFpYAgJ/n8CxrUgqgUL5QY598WnmHCY6w2dSR5iihskgnaRLQOXn+zJQ
+         JnyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683202424; x=1685794424;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5Nz4N7dBdEb2mhhYgRb5Ac4u0WnwPfPfvIfQEz/oEYw=;
+        b=h0Ak/0sNxl6qquDqjykQeyfiSTLtYd+5KrQQIb1sbpauWEDKeksYgyBVNdvZTHJdZ7
+         aiTrQWdzM1Gt/IHPKMlqoBsrJuDy3dXXpKhUcYc8YNB/vk26I5K/2zDb/CMQ1xEIBFxV
+         wVDgyYltGEqXWpjZo/ftcHWLWynQiTpwuoDzFY7VZBqeXmelg4axxOZsyuWvxHNRfUzb
+         z7vaeMlGYTHDjjjIo+tKm2U+l/UdjCIAqfJkAsPX7FZMGczIdVSTbcgTBeeHn0eY4Wkx
+         OmZM/SgBkwAqm/E4nI4lioXi/EyFjcCa4YzgvzgzLcsSHfAB65cHtJdUeiL//WqLwhNI
+         7cEQ==
+X-Gm-Message-State: AC+VfDzlCtc6Vb9g9rTAfbqNOcx6earNbjNYIicy/EXev5FeQVGgwLoO
+        trHe1d5Popy/6twmHbe6ARE6ImqzYfqV2wq0uSmqJg==
+X-Google-Smtp-Source: ACHHUZ7tC86v2dmQ/+32Ze+s5HIZkFWybkq5UTok2Fe2Q+hGI7uuxQK7pXSEjtNakF83A5FXhyVV12KWSUK8lqUIixE=
+X-Received: by 2002:a25:41ca:0:b0:b97:e31e:47b with SMTP id
+ o193-20020a2541ca000000b00b97e31e047bmr21780417yba.62.1683202423837; Thu, 04
+ May 2023 05:13:43 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230425173241.GF444508@darkstar.musicnaut.iki.fi>
+ <20230425201117.457f224c@aktux> <20230425183857.GG444508@darkstar.musicnaut.iki.fi>
+ <20230425212040.5a4d5b09@aktux> <20230425193637.GH444508@darkstar.musicnaut.iki.fi>
+ <20230425215848.247a936a@aktux> <20230426071910.GE14287@atomide.com> <20230504055156.GO14287@atomide.com>
+In-Reply-To: <20230504055156.GO14287@atomide.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Thu, 4 May 2023 14:13:32 +0200
+Message-ID: <CACRpkdY9ShRATHa776KyzeArmQdKxdwGxJC11YnmhWiCdSGzEA@mail.gmail.com>
+Subject: Re: [BISECTED REGRESSION] OMAP1 GPIO breakage
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Andreas Kemnade <andreas@kemnade.info>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        linux-omap@vger.kernel.org, linux-gpio@vger.kernel.org,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, May 4, 2023, at 12:11, Russell King (Oracle) wrote:
-> On Tue, May 02, 2023 at 02:40:19PM -0500, Rob Herring wrote:
->> I think the only issue remaining is finalizing the mapping of
->> platforms to subdirs. What I have currently is a mixture of SoC
->> families and vendors. The most notable are all the Freescale/NXP
->> platforms, pxa, socfpga, and stm32. It's not consistent with arm64
->> either. Once that's finalized, I still need to go update MAINTAINERS.
+On Thu, May 4, 2023 at 7:52=E2=80=AFAM Tony Lindgren <tony@atomide.com> wro=
+te:
+> * Tony Lindgren <tony@atomide.com> [230426 07:20]:
+> > Seems that we should just revert this patch for now and try again after
+> > the issues have been fixed.
 >
-> I haven't followed this discussion at all, so here's a question.
->
-> What does this mean for the _installed_ dtb files? Do they move
-> location? If they do, lots is going to break, because there will
-> be u-boot configurations and other scripts that assume the flat
-> directory structure for the installed dtb files.
->
-> I don't think changing the installed dtb structure is acceptable
-> at this point in time. It's something that _should_ have been
-> thought about when ARM was converted to dtb, it's too late to be
-> changing that now.
+> Looking at the proposed fixes being posted seems like they are quite
+> intrusive.. How about we partially revert this patch so omap1 still
+> uses static assigment of gpios?
 
-Rob said earlier that his script does keep a flat directory
-for the output of 'make dtbs_install'.
+I think Andreas patch (commit 92bf78b33b0b463b00c6b0203b49aea845daecc8)
+kind of describes the problem with that: the probe order is now unpredictab=
+le,
+so if we revert the patch then that problem returns, but I don't know how
+serious that problem is.
 
-     Arnd
+It's one of the reasons why we can't have static GPIO bases anymore FWIW.
+The only fix that would actually fix the problem would be to undo deferred
+probe and the ongoing work to determine probe order from the device
+tree resource tree, and it is way too late for that, it's just not possible=
+.
+
+Yours,
+Linus Walleij
