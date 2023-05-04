@@ -2,119 +2,100 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DF8E6F6B19
-	for <lists+linux-omap@lfdr.de>; Thu,  4 May 2023 14:23:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7DFE6F6C39
+	for <lists+linux-omap@lfdr.de>; Thu,  4 May 2023 14:45:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230183AbjEDMXK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 4 May 2023 08:23:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52918 "EHLO
+        id S229886AbjEDMpm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 4 May 2023 08:45:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229806AbjEDMXJ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 4 May 2023 08:23:09 -0400
-Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFD1C5FFF
-        for <linux-omap@vger.kernel.org>; Thu,  4 May 2023 05:23:07 -0700 (PDT)
-Received: by mail-yb1-xb2f.google.com with SMTP id 3f1490d57ef6-b9daef8681fso382328276.1
-        for <linux-omap@vger.kernel.org>; Thu, 04 May 2023 05:23:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1683202987; x=1685794987;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PFy1RBKM5Kcpg+NQ3BgZ5VLZiasvJE1KM8oJrv46mjo=;
-        b=k8NGS2RoUaPlaFGnbNnozITZIC7RFzujBKehrchANS16GXgN2iRN7A8pcae/DY5ArN
-         r98AVlVzAjzzwgwR7KQf80ueCnWJywuFiWLr5scCj3gK1yGJ5mLGpKlVlZF5ZeGS/M/x
-         F8qhdfp46a1EM/ksrOdvkVmxPw5QUC6vENxN6mWILgEL7K/BXLiNdL6WZ+b+kwHO6UqL
-         wdqWQCR6sE4Vv0P13PfheKzjD5G61R6EcrwIMBlOFkGk4Gudf7b3PySuxzc6bB0jO2Bx
-         vph91wx7L5lF6GEE4ek4SMI9xgSEhbyMZuRx7A64D+t1q/WFhjk5atGWdEWBlIDIQWM4
-         Y7Ug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683202987; x=1685794987;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PFy1RBKM5Kcpg+NQ3BgZ5VLZiasvJE1KM8oJrv46mjo=;
-        b=DAep8/Y7lj3Z7HwEOQzQ1ApXlnhlKo6oowxNSjrBzUCAYnAE4iAh8/KFwm6Tga7ib5
-         BYnAWtrQoH3rT31yw92gpxooFQJJZ++9pfbkqq+OqT2/Z4GhPlmM5zG/JqZB2Jcoa5Y2
-         fznmAlWW5FwmU1lpvblQH1fRDwxWT3BvLZKqgdgxzuSUrXWV3+Dxk3oxLEIVmUmbZy9r
-         i94dP2KW8LHLg58tl1l4GW16nNiShFtgJssrubQ5snHrXp2fas1GmUcn3uh54kYi1gOQ
-         iD10n0ycdawULHu0f50Er7RHajglQhPtFNGlI3Tm5uhGynEoXOVEws+0dz3kbWz9L7pA
-         RcEw==
-X-Gm-Message-State: AC+VfDwskNeXo7DjJv+apRxVdF1OsHICvLMQZtb9SnD+tf19iOlROWy1
-        a26EPFo3MZcOZ6MI9cWmcUCWDYAp0XgFn2eCVsI7IA==
-X-Google-Smtp-Source: ACHHUZ7JAeBstDHq+3hR0npxfBMjYla1Q+/pPK5AHGlISOXcDEwBbF5CxCX3cGaKL2oYcROZ/tLej+iD9Pk4osSuIMQ=
-X-Received: by 2002:a25:1885:0:b0:b92:3f59:26e with SMTP id
- 127-20020a251885000000b00b923f59026emr21205278yby.41.1683202987075; Thu, 04
- May 2023 05:23:07 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230504060421.804168-1-andreas@kemnade.info>
-In-Reply-To: <20230504060421.804168-1-andreas@kemnade.info>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Thu, 4 May 2023 14:22:56 +0200
-Message-ID: <CACRpkdZ=ri8OxqwtLqQe--GGkNDdY7NSzyhzHLfcCv99togfJQ@mail.gmail.com>
-Subject: Re: [PATCH v3] gpiolib: fix allocation of mixed dynamic/static GPIOs
-To:     Andreas Kemnade <andreas@kemnade.info>
-Cc:     brgl@bgdev.pl, christophe.leroy@csgroup.eu,
-        andy.shevchenko@gmail.com, linux-gpio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Tony Lindgren <tony@atomide.com>,
+        with ESMTP id S229915AbjEDMpl (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 4 May 2023 08:45:41 -0400
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a01:238:4321:8900:456f:ecd6:43e:202c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBDE76199;
+        Thu,  4 May 2023 05:45:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=kemnade.info; s=20220719; h=Content-Transfer-Encoding:Content-Type:
+        MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=14sjKY8h8FWkGXw0wntZ015vh0LfS2hxWosSTp8tzLU=; b=mUJiJWJRnjt37+pnHmf80+vLPa
+        LTmHDz9mwSOwtSnTc4j8e8JgtGrZz5XXOIYOpuocZKx65fWcStKlwHC4Y5Ber/9PjieGsaCph8eFh
+        YjCWuaPgjD8iJWZ1zUU9AyzAe3hopakTtyQwYfgbFmNZQxUBu4Z/bLgqv5H++JpCtyT+1othWxq8+
+        y3M7uuBa8MkAwxAlj4EYvTLErrYNUPTHJB80QgBuU1eDUHcD4CB2g4svUTkzfmXK8zLK56VgBqnp4
+        kPvLhcrKgfVo1CPwVcJl6SFZSExnoH/yNX1LJjKYzjabB23KydEZolNi3/3EkETqXRVo+JrIuQ75o
+        iiiTuh2A==;
+Received: from p200300ccff0d59001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff0d:5900:1a3d:a2ff:febf:d33a] helo=aktux)
+        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <andreas@kemnade.info>)
+        id 1puYKp-0000l9-2J; Thu, 04 May 2023 14:45:23 +0200
+Date:   Thu, 4 May 2023 14:45:21 +0200
+From:   Andreas Kemnade <andreas@kemnade.info>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Tony Lindgren <tony@atomide.com>,
         Aaro Koskinen <aaro.koskinen@iki.fi>,
-        linux-omap@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        linux-omap@vger.kernel.org, linux-gpio@vger.kernel.org,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [BISECTED REGRESSION] OMAP1 GPIO breakage
+Message-ID: <20230504144521.1b3a3574@aktux>
+In-Reply-To: <CACRpkdY9ShRATHa776KyzeArmQdKxdwGxJC11YnmhWiCdSGzEA@mail.gmail.com>
+References: <20230425173241.GF444508@darkstar.musicnaut.iki.fi>
+        <20230425201117.457f224c@aktux>
+        <20230425183857.GG444508@darkstar.musicnaut.iki.fi>
+        <20230425212040.5a4d5b09@aktux>
+        <20230425193637.GH444508@darkstar.musicnaut.iki.fi>
+        <20230425215848.247a936a@aktux>
+        <20230426071910.GE14287@atomide.com>
+        <20230504055156.GO14287@atomide.com>
+        <CACRpkdY9ShRATHa776KyzeArmQdKxdwGxJC11YnmhWiCdSGzEA@mail.gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.24; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
+X-Spam-Score: -1.0 (-)
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, May 4, 2023 at 8:04=E2=80=AFAM Andreas Kemnade <andreas@kemnade.inf=
-o> wrote:
+Hi,
 
-> If static allocation and dynamic allocation GPIOs are present,
-> dynamic allocation pollutes the numberspace for static allocation,
-> causing static allocation to fail.
-> Enforce dynamic allocation above GPIO_DYNAMIC_BASE.
->
-> Seen on a GTA04 when omap-gpio (static) and twl-gpio (dynamic)
-> raced:
-> [some successful registrations of omap_gpio instances]
-> [    2.553833] twl4030_gpio twl4030-gpio: gpio (irq 145) chaining IRQs 16=
-1..178
-> [    2.561401] gpiochip_find_base: found new base at 160
-> [    2.564392] gpio gpiochip5: (twl4030): added GPIO chardev (254:5)
-> [    2.564544] gpio gpiochip5: registered GPIOs 160 to 177 on twl4030
-> [...]
-> [    2.692169] omap-gpmc 6e000000.gpmc: GPMC revision 5.0
-> [    2.697357] gpmc_mem_init: disabling cs 0 mapped at 0x0-0x1000000
-> [    2.703643] gpiochip_find_base: found new base at 178
-> [    2.704376] gpio gpiochip6: (omap-gpmc): added GPIO chardev (254:6)
-> [    2.704589] gpio gpiochip6: registered GPIOs 178 to 181 on omap-gpmc
-> [...]
-> [    2.840393] gpio gpiochip7: Static allocation of GPIO base is deprecat=
-ed, use dynamic allocation.
-> [    2.849365] gpio gpiochip7: (gpio-160-191): GPIO integer space overlap=
-, cannot add chip
-> [    2.857513] gpiochip_add_data_with_key: GPIOs 160..191 (gpio-160-191) =
-failed to register, -16
-> [    2.866149] omap_gpio 48310000.gpio: error -EBUSY: Could not register =
-gpio chip
->
-> On that device it is fixed invasively by
-> commit 92bf78b33b0b4 ("gpio: omap: use dynamic allocation of base")
-> but let's also fix that for devices where there is still
-> a mixture of static and dynamic allocation.
->
-> Fixes: 7b61212f2a07 ("gpiolib: Get rid of ARCH_NR_GPIOS")
-> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-> Reviewed-by: <christophe.leroy@csgroup.eu>
-> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+On Thu, 4 May 2023 14:13:32 +0200
+Linus Walleij <linus.walleij@linaro.org> wrote:
 
-Looks good to me!
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+> On Thu, May 4, 2023 at 7:52=E2=80=AFAM Tony Lindgren <tony@atomide.com> w=
+rote:
+> > * Tony Lindgren <tony@atomide.com> [230426 07:20]: =20
+> > > Seems that we should just revert this patch for now and try again aft=
+er
+> > > the issues have been fixed. =20
+> >
+> > Looking at the proposed fixes being posted seems like they are quite
+> > intrusive.. How about we partially revert this patch so omap1 still
+> > uses static assigment of gpios? =20
+>=20
+> I think Andreas patch (commit 92bf78b33b0b463b00c6b0203b49aea845daecc8)
+> kind of describes the problem with that: the probe order is now unpredict=
+able,
+> so if we revert the patch then that problem returns, but I don't know how
+> serious that problem is.
+>=20
+well, I think we can even fully revert 92bf78b33b0b463b00c6b0203b49aea845da=
+ecc8
+after my patch
 
-Yours,
-Linus Walleij
+gpiolib: fix allocation of mixed dynamic/static GPIOs
+
+is in as a short time solution. That should only leave unpredictable
+numbers of multiple dynamic gpio controllers.
+
+Regards,
+Andrea
