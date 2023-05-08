@@ -2,42 +2,74 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 546216FA20E
-	for <lists+linux-omap@lfdr.de>; Mon,  8 May 2023 10:21:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB2446FA29F
+	for <lists+linux-omap@lfdr.de>; Mon,  8 May 2023 10:53:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233237AbjEHIVH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 8 May 2023 04:21:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45544 "EHLO
+        id S233350AbjEHIxt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 8 May 2023 04:53:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233655AbjEHIUz (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 8 May 2023 04:20:55 -0400
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id CB4401F4BF;
-        Mon,  8 May 2023 01:20:46 -0700 (PDT)
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 675FD8111;
-        Mon,  8 May 2023 08:20:44 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>
-Cc:     Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Dhruva Gole <d-gole@ti.com>,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Johan Hovold <johan@kernel.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-omap@vger.kernel.org, linux-serial@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 4/4] serial: 8250: omap: Shut down on remove for console uart
-Date:   Mon,  8 May 2023 11:20:14 +0300
-Message-Id: <20230508082014.23083-5-tony@atomide.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508082014.23083-1-tony@atomide.com>
-References: <20230508082014.23083-1-tony@atomide.com>
+        with ESMTP id S233309AbjEHIxs (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 8 May 2023 04:53:48 -0400
+Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3400555BD
+        for <linux-omap@vger.kernel.org>; Mon,  8 May 2023 01:53:45 -0700 (PDT)
+Received: by mail-wm1-x334.google.com with SMTP id 5b1f17b1804b1-3f19b9d5358so42288445e9.1
+        for <linux-omap@vger.kernel.org>; Mon, 08 May 2023 01:53:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20221208.gappssmtp.com; s=20221208; t=1683536023; x=1686128023;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=O3KqObjAsilK7W2Rhm2TS8fPos79XK4Q4L9RasYouWE=;
+        b=S4Bi5JRenXCjM29jmjyQWtCVZlgluw5yYsM9zqN8eASFqqaw/Dm2+ciVsGNuXE98un
+         gZDET1wJR8IHwp1ZUIk6hfNZpPorAHqzFfBEJ6ihLYqmm8L8Q5aR5mbwwk5xAaTfK0BQ
+         Y14q8+1FfrvZYeCb6dWEBf40WiREVcyb+N82/woJftlnbUFfZ+wCd9Asml3b6aqNN6YB
+         KX2Gl/J8kR232eQzb7qdcevT/gm0+iPWGLWXv+KubnsFcGwkhebvnfSLbic5/S2iX9Ze
+         V3E8bEtoyFK8ONJc2aTlSYoMoXf5UsgkLMCOGPAKCJQt6N7v0diXKTbiBIt934Yvg+vU
+         kl/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683536023; x=1686128023;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=O3KqObjAsilK7W2Rhm2TS8fPos79XK4Q4L9RasYouWE=;
+        b=b3FhZtO5Kow+FbYktnBvlf9Mu0Cw5C806BsTTObS6Cz4hzbw84UcoVjxzvXSNsdH5p
+         qWOgyz3qVjHmWfqqNNxw5hyaJQzJbs2dqZ+9J0nm1l56Jj0zmVHookmKDM+C2LGlKv0Z
+         9Xv4U9045SLuc0tgfq2MpjriRrRE9F+ca3WWF4z/nWCsJcagc/pFr5YzGplvfd33B56S
+         esKfLuoos7blCG07ntpELDLEdcstw1e5TrHS3vaZHoSu50ueWCaqeyoSWKyLRrUQiz/q
+         8Fh4cMVWfMMy6a82e/x3EXvBx+6RjPt5lNmLCbcpdeCcdeFPWfttFztCnmLzO/THNdAK
+         /+Ig==
+X-Gm-Message-State: AC+VfDwZA3sv9J7BUmoFKhAoZGqMH8P9Ci/eDg1DVLJx5ASbmo83S0iv
+        YZ7/jbHHXGMVgCeSZLzKYETm+Q==
+X-Google-Smtp-Source: ACHHUZ7aELAO5PERzM1eNeiR96sxaVm00o+2NMJmSigXprBBwEI4jBlUxzi2QX5vWAxcA4WV1/C5CQ==
+X-Received: by 2002:a7b:cc05:0:b0:3f1:7581:eaaf with SMTP id f5-20020a7bcc05000000b003f17581eaafmr6525943wmh.4.1683536023283;
+        Mon, 08 May 2023 01:53:43 -0700 (PDT)
+Received: from blmsp ([2001:4090:a246:80f3:ef71:25ff:df82:9cc9])
+        by smtp.gmail.com with ESMTPSA id z24-20020a1cf418000000b003f3e50eb606sm15935297wma.13.2023.05.08.01.53.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 May 2023 01:53:42 -0700 (PDT)
+Date:   Mon, 8 May 2023 10:53:41 +0200
+From:   Markus Schneider-Pargmann <msp@baylibre.com>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     Tony Lindgren <tony@atomide.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jerome Neanne <jneanne@baylibre.com>,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, khilman@baylibre.com, j-keerthy@ti.com
+Subject: Re: [RESEND PATCH] regulator: tps65219: Fix matching interrupts for
+ their regulators
+Message-ID: <20230508085341.hggdfw45zqer4e5q@blmsp>
+References: <20230507144656.192800-1-krzysztof.kozlowski@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+In-Reply-To: <20230507144656.192800-1-krzysztof.kozlowski@linaro.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -45,119 +77,72 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-When unbinding the console uart, we want to power down the uart hardware
-on remove. For the console uart, the normal shutdown path will never get
-called as the cons_filp stays open. Let's rearrange the dma related
-functions a bit so we can call driver shutdown also on console uart rebind.
+Hi,
 
-Currently we set up->dma on probe, but that causes issues calling
-omap_8250_shutdown() on remove. The dma startup will not get called on
-the next rebind as we still have up->dma set from probe.
+On Sun, May 07, 2023 at 04:46:56PM +0200, Krzysztof Kozlowski wrote:
+> The driver's probe() first registers regulators in a loop and then in a
+> second loop passes them as irq data to the interrupt handlers.  However
+> the function to get the regulator for given name
+> tps65219_get_rdev_by_name() was a no-op due to argument passed by value,
+> not pointer, thus the second loop assigned always same value - from
+> previous loop.  The interrupts, when fired, where executed with wrong
+> data.  Compiler also noticed it:
+> 
+>   drivers/regulator/tps65219-regulator.c: In function ‘tps65219_get_rdev_by_name’:
+>   drivers/regulator/tps65219-regulator.c:292:60: error: parameter ‘dev’ set but not used [-Werror=unused-but-set-parameter]
+> 
+> Fixes: c12ac5fc3e0a ("regulator: drivers: Add TI TPS65219 PMIC regulators support")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-Note that serial8250_release_dma() already checks for dma so we can
-remove the check for it in 8205_omap driver.
+Reviewed-by: Markus Schneider-Pargmann <msp@baylibre.com>
 
-With these changes we also avoid hogging dma virtual channels for the
-unused uarts that may be limited on some devices.
+Best,
+Markus
 
-Signed-off-by: Tony Lindgren <tony@atomide.com>
----
- drivers/tty/serial/8250/8250_omap.c | 36 ++++++++++++++++-------------
- 1 file changed, 20 insertions(+), 16 deletions(-)
-
-diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
---- a/drivers/tty/serial/8250/8250_omap.c
-+++ b/drivers/tty/serial/8250/8250_omap.c
-@@ -679,6 +679,7 @@ static int omap_8250_startup(struct uart_port *port)
- {
- 	struct uart_8250_port *up = up_to_u8250p(port);
- 	struct omap8250_priv *priv = port->private_data;
-+	struct uart_8250_dma *dma = &priv->omap8250_dma;
- 	int ret;
- 
- 	if (priv->wakeirq) {
-@@ -697,16 +698,16 @@ static int omap_8250_startup(struct uart_port *port)
- 	up->msr_saved_flags = 0;
- 
- 	/* Disable DMA for console UART */
--	if (uart_console(port))
--		up->dma = NULL;
--
--	if (up->dma) {
-+	if (dma->fn && !uart_console(port)) {
-+		up->dma = &priv->omap8250_dma;
- 		ret = serial8250_request_dma(up);
- 		if (ret) {
- 			dev_warn_ratelimited(port->dev,
- 					     "failed to request DMA\n");
- 			up->dma = NULL;
- 		}
-+	} else {
-+		up->dma = NULL;
- 	}
- 
- 	up->ier = UART_IER_RLSI | UART_IER_RDI;
-@@ -752,8 +753,8 @@ static void omap_8250_shutdown(struct uart_port *port)
- 	disable_irq_nosync(up->port.irq);
- 	dev_pm_clear_wake_irq(port->dev);
- 
--	if (up->dma)
--		serial8250_release_dma(up);
-+	serial8250_release_dma(up);
-+	up->dma = NULL;
- 
- 	/*
- 	 * Disable break condition and FIFOs
-@@ -1499,24 +1500,24 @@ static int omap8250_probe(struct platform_device *pdev)
- 	ret = of_property_count_strings(np, "dma-names");
- 	if (ret == 2) {
- 		struct omap8250_dma_params *dma_params = NULL;
-+		struct uart_8250_dma *dma = &priv->omap8250_dma;
- 
--		up.dma = &priv->omap8250_dma;
--		up.dma->fn = the_no_dma_filter_fn;
--		up.dma->tx_dma = omap_8250_tx_dma;
--		up.dma->rx_dma = omap_8250_rx_dma;
-+		dma->fn = the_no_dma_filter_fn;
-+		dma->tx_dma = omap_8250_tx_dma;
-+		dma->rx_dma = omap_8250_rx_dma;
- 		if (pdata)
- 			dma_params = pdata->dma_params;
- 
- 		if (dma_params) {
--			up.dma->rx_size = dma_params->rx_size;
--			up.dma->rxconf.src_maxburst = dma_params->rx_trigger;
--			up.dma->txconf.dst_maxburst = dma_params->tx_trigger;
-+			dma->rx_size = dma_params->rx_size;
-+			dma->rxconf.src_maxburst = dma_params->rx_trigger;
-+			dma->txconf.dst_maxburst = dma_params->tx_trigger;
- 			priv->rx_trigger = dma_params->rx_trigger;
- 			priv->tx_trigger = dma_params->tx_trigger;
- 		} else {
--			up.dma->rx_size = RX_TRIGGER;
--			up.dma->rxconf.src_maxburst = RX_TRIGGER;
--			up.dma->txconf.dst_maxburst = TX_TRIGGER;
-+			dma->rx_size = RX_TRIGGER;
-+			dma->rxconf.src_maxburst = RX_TRIGGER;
-+			dma->txconf.dst_maxburst = TX_TRIGGER;
- 		}
- 	}
- #endif
-@@ -1550,12 +1551,15 @@ static int omap8250_probe(struct platform_device *pdev)
- static int omap8250_remove(struct platform_device *pdev)
- {
- 	struct omap8250_priv *priv = platform_get_drvdata(pdev);
-+	struct uart_8250_port *up;
- 	int err;
- 
- 	err = pm_runtime_resume_and_get(&pdev->dev);
- 	if (err)
- 		return err;
- 
-+	up = serial8250_get_port(priv->line);
-+	omap_8250_shutdown(&up->port);
- 	serial8250_unregister_port(priv->line);
- 	priv->line = -ENODEV;
- 	pm_runtime_dont_use_autosuspend(&pdev->dev);
--- 
-2.40.1
+> 
+> ---
+> 
+> Not tested.
+> Sent two months ago and no comments, so resending.
+> 
+> Cc: Jerome Neanne <jneanne@baylibre.com>
+> Cc: khilman@baylibre.com
+> Cc: msp@baylibre.com
+> Cc: j-keerthy@ti.com
+> ---
+>  drivers/regulator/tps65219-regulator.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/regulator/tps65219-regulator.c b/drivers/regulator/tps65219-regulator.c
+> index b1719ee990ab..8971b507a79a 100644
+> --- a/drivers/regulator/tps65219-regulator.c
+> +++ b/drivers/regulator/tps65219-regulator.c
+> @@ -289,13 +289,13 @@ static irqreturn_t tps65219_regulator_irq_handler(int irq, void *data)
+>  
+>  static int tps65219_get_rdev_by_name(const char *regulator_name,
+>  				     struct regulator_dev *rdevtbl[7],
+> -				     struct regulator_dev *dev)
+> +				     struct regulator_dev **dev)
+>  {
+>  	int i;
+>  
+>  	for (i = 0; i < ARRAY_SIZE(regulators); i++) {
+>  		if (strcmp(regulator_name, regulators[i].name) == 0) {
+> -			dev = rdevtbl[i];
+> +			*dev = rdevtbl[i];
+>  			return 0;
+>  		}
+>  	}
+> @@ -348,7 +348,7 @@ static int tps65219_regulator_probe(struct platform_device *pdev)
+>  		irq_data[i].dev = tps->dev;
+>  		irq_data[i].type = irq_type;
+>  
+> -		tps65219_get_rdev_by_name(irq_type->regulator_name, rdevtbl, rdev);
+> +		tps65219_get_rdev_by_name(irq_type->regulator_name, rdevtbl, &rdev);
+>  		if (IS_ERR(rdev)) {
+>  			dev_err(tps->dev, "Failed to get rdev for %s\n",
+>  				irq_type->regulator_name);
+> -- 
+> 2.34.1
+> 
