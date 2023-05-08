@@ -2,117 +2,175 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF0156FB9BE
-	for <lists+linux-omap@lfdr.de>; Mon,  8 May 2023 23:31:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF1496FBB4F
+	for <lists+linux-omap@lfdr.de>; Tue,  9 May 2023 01:13:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233960AbjEHVbW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 8 May 2023 17:31:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42888 "EHLO
+        id S233350AbjEHXNx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 8 May 2023 19:13:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233951AbjEHVbU (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 8 May 2023 17:31:20 -0400
-Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50BE57EC3
-        for <linux-omap@vger.kernel.org>; Mon,  8 May 2023 14:31:18 -0700 (PDT)
-Received: by mail-yb1-xb31.google.com with SMTP id 3f1490d57ef6-b9a6eec8611so27425111276.0
-        for <linux-omap@vger.kernel.org>; Mon, 08 May 2023 14:31:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1683581477; x=1686173477;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mOJR/20LVKyz48EAyeHc1+jVArD8eFRaiPVz2llKJYw=;
-        b=xnPwIs1cwDo2FfYER/sCJ/da+7w70ojR2vcIjoTIwWXCv32mMF1zm1BD4+lfb2YBZM
-         a2JVJMgplb8WbXqgCdHgK8Kp72gs89jO2wf+8i72UAlWKsMEO+QAvE2kzbL6W+zsK4XX
-         5Z8iTG2eG+u2fgFxWPNmnpwDmCvRMpfx0fMcptbYfNamY9350JY8Gd4qdqq2mPQh9kC0
-         +x56ZfIKBMwAlE8P63WHOLZVXUP3U77r1pEjelQEPWycVNYaZZsW7RV6EqwWY1pIciet
-         mUJNXjEV6P9b/N9Sms+auwR08F+s4xsHpxn7JhrpRdBY15Z66VnYReC0HO7LXkTpsCWj
-         0ulg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683581477; x=1686173477;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mOJR/20LVKyz48EAyeHc1+jVArD8eFRaiPVz2llKJYw=;
-        b=FENiQcQxqZbq/Mz3pIxwEdoqY5SGa3RF+811DEbJ1oET3SAJpCe/plV/9A0+z5rkNw
-         ki7VTORnquvYErLnct1K8DOJKtpOlfQHHT8mPDRRAB/1jdAvklkPpRwVTiIYsapJCKvb
-         SDmuicrcVCzV0LmW4bSsbHSr6DSV9v27Q4m36lIMvi8DBdD/KiHsvdBO5p+BSauBTpz7
-         3VpSEpZhC4rKAYgJ/tWAOpD3q5d/ecEYkkBk5YoUWjypzzmRfX3s8jlkFLANPlk85grE
-         22wCNEH28cubufXGY6iRiOwk5XnzbU1kOuEM0+YZz3eGzYNH1i7t+iKVWljQw2R0BD0u
-         slUA==
-X-Gm-Message-State: AC+VfDz5Oo02Fy8fPdtW8yA7EbqijfrMOuiH6NIVyYfEyRrZvS2jtL2Q
-        763HC7Pt3k9o4ws2Bkf4hcyzpy0ah/axKpch6eYXJA==
-X-Google-Smtp-Source: ACHHUZ58fReQQ4pRCBtoCz9Lw0P3GVuCrDW/FKsG0+nk/YgPWCXp8EO7CBeqYU//QyxCun6JDuY2iPWmdeq6/W2Qfd0=
-X-Received: by 2002:a81:4c4c:0:b0:54f:54c5:70d with SMTP id
- z73-20020a814c4c000000b0054f54c5070dmr13840092ywa.20.1683581477497; Mon, 08
- May 2023 14:31:17 -0700 (PDT)
+        with ESMTP id S230022AbjEHXNw (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 8 May 2023 19:13:52 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8406249FE;
+        Mon,  8 May 2023 16:13:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1683587630; x=1715123630;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=UpsSTff8/0ZXEy+QYlfFYcdPyMTh1FDGgu5tOGHwm04=;
+  b=KvguI4bktPpyYQuKGuMO3HJJQ4z5GOEy6n5udFyl6S8YCz//4YKnqrdX
+   kThhm+btaG1KFbw9PjukUzBf4RCEEfCzoIVt6T8fAKPDaaHxfzkQV3iKY
+   tdpNj1sl9/viNGZsP9AE+HrRvBcEY4YsInuV0VE4Zi01EH+K7lcwi5pOI
+   KS4R68Uf3bNsFJ/sYYCyzf7HM+eNouswoRAGlcNwVZYNkrXFycdw4a+3T
+   evk2kWHkci2Hh4185evYnDACEH+ohKD0YABHNcO0VelsN1VaP07mshsKH
+   8Mh6LsKJkEhmzoTnSDa9RugSDsmHDTUlIRbdkWma3umzJtBdFeZ9Nj/Yh
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10704"; a="351937836"
+X-IronPort-AV: E=Sophos;i="5.99,259,1677571200"; 
+   d="scan'208";a="351937836"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2023 16:13:49 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10704"; a="788295124"
+X-IronPort-AV: E=Sophos;i="5.99,259,1677571200"; 
+   d="scan'208";a="788295124"
+Received: from lkp-server01.sh.intel.com (HELO dea6d5a4f140) ([10.239.97.150])
+  by FMSMGA003.fm.intel.com with ESMTP; 08 May 2023 16:13:46 -0700
+Received: from kbuild by dea6d5a4f140 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pwA37-0001SX-09;
+        Mon, 08 May 2023 23:13:45 +0000
+Date:   Tue, 9 May 2023 07:13:02 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Tony Lindgren <tony@atomide.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>
+Cc:     llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+        Andy Shevchenko <andriy.shevchenko@intel.com>,
+        Dhruva Gole <d-gole@ti.com>,
+        Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Johan Hovold <johan@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-serial@vger.kernel.org
+Subject: Re: [PATCH v10 1/1] serial: core: Start managing serial controllers
+ to enable runtime PM
+Message-ID: <202305090752.w4XZxmsN-lkp@intel.com>
+References: <20230508110339.38699-1-tony@atomide.com>
 MIME-Version: 1.0
-References: <20230430-nokia770-regression-v3-0-a6d0a89ffa8b@linaro.org>
- <20230430-nokia770-regression-v3-1-a6d0a89ffa8b@linaro.org>
- <ZFVGMiuRT+e2eVXw@google.com> <CACRpkdZUXOTOK9CObdXuHQx4PMD3ykMKco8X5ijchkZ8cEmQvA@mail.gmail.com>
- <ZFlpYff6I5V6JiH1@google.com>
-In-Reply-To: <ZFlpYff6I5V6JiH1@google.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Mon, 8 May 2023 23:31:06 +0200
-Message-ID: <CACRpkdae4+0vsJS71G6dR5PEpMw13JGJAJr9Jyf2T+Z8gOgoxQ@mail.gmail.com>
-Subject: Re: [PATCH v3 1/3] Input: ads7846 - Convert to use software nodes
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Mark Brown <broonie@kernel.org>,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-        Andreas Kemnade <andreas@kemnade.info>,
-        Helge Deller <deller@gmx.de>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-mmc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230508110339.38699-1-tony@atomide.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, May 8, 2023 at 11:28=E2=80=AFPM Dmitry Torokhov
-<dmitry.torokhov@gmail.com> wrote:
-> On Mon, May 08, 2023 at 11:23:44PM +0200, Linus Walleij wrote:
+Hi Tony,
 
-> > > This needs to be
-> > >
-> > >         return !gpiod_get_value_raw(ts->gpio_pendown);
-> >
-> > There is no such function. The gpio descriptor runpath simply assumes t=
-hat
-> > device trees can be trusted.
->
-> Sorry, this was supposed to be gpiod_get_raw_value():
->
-> https://elixir.bootlin.com/linux/latest/source/drivers/gpio/gpiolib.c#L28=
-54
+kernel test robot noticed the following build warnings:
 
-I missed it, I should have very well understood you meant that one...
-I just read the file too sloppily.
+[auto build test WARNING on tty/tty-testing]
+[also build test WARNING on tty/tty-next tty/tty-linus usb/usb-testing usb/usb-next usb/usb-linus linus/master v6.4-rc1 next-20230508]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-> Yeah, we we can land the DT fixes ahead of the driver change that would
-> be great. Otherwise we need a temporary application of
-> gpiod_get_raw_value().
+url:    https://github.com/intel-lab-lkp/linux/commits/Tony-Lindgren/serial-core-Start-managing-serial-controllers-to-enable-runtime-PM/20230508-190805
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/tty.git tty-testing
+patch link:    https://lore.kernel.org/r/20230508110339.38699-1-tony%40atomide.com
+patch subject: [PATCH v10 1/1] serial: core: Start managing serial controllers to enable runtime PM
+config: x86_64-randconfig-a001-20230508 (https://download.01.org/0day-ci/archive/20230509/202305090752.w4XZxmsN-lkp@intel.com/config)
+compiler: clang version 14.0.6 (https://github.com/llvm/llvm-project f28c006a5895fc0e329fe15fead81e37457cb1d1)
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/2f298f9dbe3a1d9550e1f15bb1415aeaf9ce4311
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Tony-Lindgren/serial-core-Start-managing-serial-controllers-to-enable-runtime-PM/20230508-190805
+        git checkout 2f298f9dbe3a1d9550e1f15bb1415aeaf9ce4311
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=x86_64 olddefconfig
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=x86_64 SHELL=/bin/bash drivers/tty/serial/
 
-If the patch is fine I will send it to the SoC tree and ask for it to be
-applied as a fix.
+If you fix the issue, kindly add following tag where applicable
+| Reported-by: kernel test robot <lkp@intel.com>
+| Link: https://lore.kernel.org/oe-kbuild-all/202305090752.w4XZxmsN-lkp@intel.com/
 
-Yours,
-Linus Walleij
+All warnings (new ones prefixed by >>):
+
+>> drivers/tty/serial/serial_base_bus.c:97:13: warning: variable 'id' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+           } else if (type == &serial_port_type) {
+                      ^~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/tty/serial/serial_base_bus.c:102:77: note: uninitialized use occurs here
+           err = dev_set_name(&sbd->dev, "%s.%s.%d", type->name, dev_name(port->dev), id);
+                                                                                      ^~
+   drivers/tty/serial/serial_base_bus.c:97:9: note: remove the 'if' if its condition is always true
+           } else if (type == &serial_port_type) {
+                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/tty/serial/serial_base_bus.c:83:13: note: initialize the variable 'id' to silence this warning
+           int err, id;
+                      ^
+                       = 0
+   1 warning generated.
+
+
+vim +97 drivers/tty/serial/serial_base_bus.c
+
+    77	
+    78	static struct device *serial_base_device_add(struct uart_port *port,
+    79						     struct device *parent_dev,
+    80						     const struct device_type *type)
+    81	{
+    82		struct serial_base_device *sbd;
+    83		int err, id;
+    84	
+    85		sbd = kzalloc(sizeof(*sbd), GFP_KERNEL);
+    86		if (!sbd)
+    87			return NULL;
+    88	
+    89		device_initialize(&sbd->dev);
+    90		sbd->dev.type = type;
+    91		sbd->dev.parent = parent_dev;
+    92		sbd->dev.bus = &serial_base_bus_type;
+    93		sbd->dev.release = &serial_base_release;
+    94	
+    95		if (type == &serial_ctrl_type) {
+    96			id = port->ctrl_id;
+  > 97		} else if (type == &serial_port_type) {
+    98			id = port->line;
+    99			sbd->port = port;
+   100		}
+   101	
+   102		err = dev_set_name(&sbd->dev, "%s.%s.%d", type->name, dev_name(port->dev), id);
+   103		if (err)
+   104			goto err_free_dev;
+   105	
+   106		err = device_add(&sbd->dev);
+   107		if (err)
+   108			goto err_put_device;
+   109	
+   110		return &sbd->dev;
+   111	
+   112	err_put_device:
+   113		put_device(&sbd->dev);
+   114	
+   115	err_free_dev:
+   116		kfree(sbd);
+   117	
+   118		return NULL;
+   119	}
+   120	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
