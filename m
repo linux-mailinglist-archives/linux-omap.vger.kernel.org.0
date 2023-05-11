@@ -2,93 +2,89 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D11C6FFB8C
-	for <lists+linux-omap@lfdr.de>; Thu, 11 May 2023 22:59:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20A756FFCA6
+	for <lists+linux-omap@lfdr.de>; Fri, 12 May 2023 00:31:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238791AbjEKU7p (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 11 May 2023 16:59:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51152 "EHLO
+        id S239342AbjEKWbR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 11 May 2023 18:31:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239099AbjEKU7o (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 11 May 2023 16:59:44 -0400
-Received: from mail-yb1-xb2e.google.com (mail-yb1-xb2e.google.com [IPv6:2607:f8b0:4864:20::b2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAC138A62
-        for <linux-omap@vger.kernel.org>; Thu, 11 May 2023 13:59:40 -0700 (PDT)
-Received: by mail-yb1-xb2e.google.com with SMTP id 3f1490d57ef6-b9246a5f3feso13397516276.1
-        for <linux-omap@vger.kernel.org>; Thu, 11 May 2023 13:59:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1683838780; x=1686430780;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=98GuhjooiSGjjfi39ai9daDWBREdBaEVAwj4iftZzQw=;
-        b=bSmaeaL6XsMSpQGXVo76D7Cka2A4+V528u3twGhCTwRyrimipNK15gOdfOSKEJGUcU
-         8BeA40+cyE6Q7FgzMM21dinVLyVevn3cbLDwFulnfDWnwwYGbN4dZB/xNLXwQeVOFxID
-         Gg/Wmtn/ugPGXNbGhKmvAngpjGyndGFRIgXSaZ1rOgff4984EMtBzzipl4PhC1MqBSt+
-         7Uawpthv42pqK5STAfQJ5RACIDrUJUTdF6/x3zn6BPtkErb3w8abtp+bfY0rmHLLhm11
-         MorAW146RMaNsZXRpnvxPJ387fjeJZHxZwnbPbMltsTYqfXw57f0dQKtvtbGwH555Ny2
-         mh1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683838780; x=1686430780;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=98GuhjooiSGjjfi39ai9daDWBREdBaEVAwj4iftZzQw=;
-        b=gie7VJ6dvJlvaHLwENX/r2GjIYlhRZ79xrba5BiaLJspD7ozpEmUD0LtMTI433wU0D
-         YELdE0caqe/P0hqL1ZEoAbQrUfE0xiXxUYghG9CmOaojTCsVA2EFuKxYe03gjqvmFmVJ
-         YFpJdlj8P7o1LleJLqsAqBG3uhbLrjn1zB6PAOB4gGBYlRMzCJI91VIp0azfCx8gY+Yx
-         PCtiBgrSsGEbDJLBHaIMGCJPEWzLOpKFY9b+vOcni+EVLVp3GxgcKJxOhzG9EdDB1JrB
-         XL8SccatM4TpprsKMpGGlRysmyZ9kXLxVeCdyIVoiaT4hhGurmYwWdiaNxGGsgaF4za3
-         RYZA==
-X-Gm-Message-State: AC+VfDwG+ZIpNgw2uhWm1wPMA8JR9JrIkKBSXpjpc/DM52qdooInZsdU
-        0B08tIX6hJ1XkXedwNGZWggXk0yHOxaGejPTjdy37A==
-X-Google-Smtp-Source: ACHHUZ6ixYhh8mxrkFHh0EE3iYR47T48OtoSaq7fLOFFEYZe/0R3Yk5UGjBRDzTOlSPxA0t5l6n+scz/ceHpvIGOcno=
-X-Received: by 2002:a25:694a:0:b0:b9f:9665:cab3 with SMTP id
- e71-20020a25694a000000b00b9f9665cab3mr18616597ybc.62.1683838779933; Thu, 11
- May 2023 13:59:39 -0700 (PDT)
+        with ESMTP id S238381AbjEKWbQ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 11 May 2023 18:31:16 -0400
+X-Greylist: delayed 1802 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 11 May 2023 15:31:15 PDT
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a02:c205:3004:2154::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 585692738;
+        Thu, 11 May 2023 15:31:15 -0700 (PDT)
+Received: from p200300ccff36df0080088350021b55c1.dip0.t-ipconnect.de ([2003:cc:ff36:df00:8008:8350:21b:55c1] helo=akair)
+        by mail.andi.de1.cc with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <andreas@kemnade.info>)
+        id 1pxDpi-0005dY-Fw; Thu, 11 May 2023 23:28:18 +0200
+Date:   Thu, 11 May 2023 23:28:12 +0200
+From:   Andreas Kemnade <andreas@kemnade.info>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        tony@atomide.com, afd@ti.com, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCH v6 1/2] dt-bindings: omap: Convert omap.txt to yaml
+Message-ID: <20230511232812.067440cf@akair>
+In-Reply-To: <eb4cf82d-f523-d5af-be18-25c37678a95a@linaro.org>
+References: <20230405161908.4312-1-andreas@kemnade.info>
+        <20230405161908.4312-2-andreas@kemnade.info>
+        <eb4cf82d-f523-d5af-be18-25c37678a95a@linaro.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-References: <20230511-tps65219-add-gpio-support-v2-0-60feb64d649a@baylibre.com>
- <20230511-tps65219-add-gpio-support-v2-2-60feb64d649a@baylibre.com>
-In-Reply-To: <20230511-tps65219-add-gpio-support-v2-2-60feb64d649a@baylibre.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Thu, 11 May 2023 22:59:29 +0200
-Message-ID: <CACRpkdb2yrgoDFQ2rYTyJRaBbVHMFRSJtuemGa4jLN5tMuS2hA@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] mfd: tps65219: Add gpio cell instance
-To:     Jerome Neanne <jneanne@baylibre.com>
-Cc:     Bartosz Golaszewski <brgl@bgdev.pl>,
-        Tony Lindgren <tony@atomide.com>, Lee Jones <lee@kernel.org>,
-        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-omap@vger.kernel.org,
-        Jonathan Cormier <jcormier@criticallink.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, May 11, 2023 at 4:09=E2=80=AFPM Jerome Neanne <jneanne@baylibre.com=
-> wrote:
+Am Thu, 6 Apr 2023 10:32:49 +0200
+schrieb Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>:
 
-> tps65219 PMIC GPIOs are exposed in a standard way:
-> gpiodetect
-> gpiochip0 [tps65219-gpio] (3 lines)
+> On 05/04/2023 18:19, Andreas Kemnade wrote:
+> > From: Andrew Davis <afd@ti.com>
+> > 
+> > Convert omap.txt to yaml.
+> >   
+> 
+> 
+> > +      - description: TI AM43 SoC based platforms
+> > +        items:
+> > +          - enum:
+> > +              - compulab,am437x-cm-t43
+> > +              - ti,am437x-gp-evm
+> > +              - ti,am437x-idk-evm
+> > +              - ti,am437x-sk-evm
+> > +          - pattern: '^ti,am4372[26789]$'
+> > +          - const: ti,am43
+> > +
+> > +      - description: TI AM57 SoC based platforms
+> > +        items:
+> > +          - enum:
+> > +              - beagle,am5729-beagleboneai
+> > +              - compulab,cl-som-am57x
+> > +              - ti,am5718-idk
+> > +              - ti,am5728-idk
+> > +              - ti,am5748-idk
+> > +          - pattern: '^ti,am57[0124][689]$'  
+> 
+> I don't think my comments were resolved. I asked if it is possible to
+> make a board called "ti,am5718-idk" with "ti,am5749" or with
+> "ti,am5708"?
+> 
+I am preparing a reduced version of this without all that pattern
+matches where I do not know the intention the original author had. 
 
-Write something in the commit message about that the cell
-has the wrong name, because all you do is change it from
-plural to singular.
-
-> Co-developed-by: Jonathan Cormier <jcormier@criticallink.com>
-> Signed-off-by: Jonathan Cormier <jcormier@criticallink.com>
-> Signed-off-by: Jerome Neanne <jneanne@baylibre.com>
-
-With that:
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-
-Yours,
-Linus Walleij
+> What's more, you dropped several variations and compatibles against
+> original binding (all the "dra") and it is not explained in commit msg
+> at all.
+>
+ok, time to better compare it by scrips, Did not notice
+the dra stuff  with am* in the other compatibles.
