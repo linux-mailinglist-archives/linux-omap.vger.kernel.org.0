@@ -2,63 +2,78 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F29396FF16D
-	for <lists+linux-omap@lfdr.de>; Thu, 11 May 2023 14:21:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 306B96FF396
+	for <lists+linux-omap@lfdr.de>; Thu, 11 May 2023 16:09:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232182AbjEKMVI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 11 May 2023 08:21:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58372 "EHLO
+        id S237900AbjEKOJy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 11 May 2023 10:09:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236577AbjEKMVI (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 11 May 2023 08:21:08 -0400
-Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0077B1FC6
-        for <linux-omap@vger.kernel.org>; Thu, 11 May 2023 05:21:05 -0700 (PDT)
-Received: by mail-ed1-x52b.google.com with SMTP id 4fb4d7f45d1cf-50b37f3e664so15112656a12.1
-        for <linux-omap@vger.kernel.org>; Thu, 11 May 2023 05:21:05 -0700 (PDT)
+        with ESMTP id S237750AbjEKOJt (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 11 May 2023 10:09:49 -0400
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B950D1FC1
+        for <linux-omap@vger.kernel.org>; Thu, 11 May 2023 07:09:47 -0700 (PDT)
+Received: by mail-ej1-x62c.google.com with SMTP id a640c23a62f3a-9661a1ff1e9so973559866b.1
+        for <linux-omap@vger.kernel.org>; Thu, 11 May 2023 07:09:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20221208.gappssmtp.com; s=20221208; t=1683807664; x=1686399664;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZRf/7bYU3ASVbppzqAIJlZclrPxE6HVJTYG/JZAScRs=;
-        b=IjNOKKeLlSTBGJQ5hlvyvuNhUoMndixw8BoDl8FUcqJmrL4ZtUZDA0Dfw9+/3nI5eX
-         XjSX2KyVbQ8m6Kgc4hZ7ZccYFTZ5nWM34c35ZFO1lgWZptGlvjG/h+mN3Re/6pJNUPH+
-         1Mv83Qel463mvsnP7RWk/Jfiyw9k4DE1uVeJOk1RTv6YsLwZKIVEEzn/4xn/W+8F51ac
-         Pa2PVcACAGDB7zVFAQs0prDXdSVMprsF82xCMo7o5PVt7jpD6mXKKKiZeDeLc9MkWHRW
-         CPl+DsJAVhs3HjzI8Tliyv8BfR5eLg4dUqnVn1RMriFW95nxXy4PVL6ozsjxlaYPL8MH
-         BLQA==
+        d=baylibre-com.20221208.gappssmtp.com; s=20221208; t=1683814186; x=1686406186;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=SuyDnlOYxo/iihv+FkzR/V6NypU3FUK1HIwlYQQjiFA=;
+        b=WV28hIevHEo3ZwDgw6pDbONFbRfwzDDWRcZAv12atTzdYG4VhUSkAXRuhmADUABQaQ
+         Q3DQAApxjlYwT35fXjaoN5tSE5WsZxI4QTv/Nz38Ng9l8DKXq5YT7ISYwWXP76SnClZH
+         us2IFCfAf1mjj/jdPfKS9ZHK6N6AbxhK9zOmAuMZ08scvfCJyJ4LXptry4GfjK6MePyu
+         87HTYEouLkVsMOvI1b/UUYM8hplu/lNwwL3YNYmIgevB5Uo3QD1oTQEh8pqwmljdPhu2
+         fXwj2nVnu4o7jnFMRlE7MQHqRXhird4kVLl6YzDTSraWOcdVTrqeC9UHU82Xji3WLINU
+         RGHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683807664; x=1686399664;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20221208; t=1683814186; x=1686406186;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ZRf/7bYU3ASVbppzqAIJlZclrPxE6HVJTYG/JZAScRs=;
-        b=X5x2dyXtV4g0zd9sROKUJPd0+GMQXDrCi0Ty1cWWbF1fLg5OlcxKY9bC8iu60DiAKF
-         WuwI/AJtneN7ecq1aS/MeuySgm8iWgsP9WsQnvzQaPzuG7+UavtN/wYLlsuJG6N7Sip3
-         TZDIeXuojDcvamFMhAajh838bwf+V7YfZ91jg2K3KEMAVI+w705bv94N25soDz5cLIYP
-         SrPmJeDHCrYXYVocaEVL6fnuM6M4QmQCfQBIDU58KpfLgHDKe5+zixmhkzcVnpFxt1fz
-         dwaFQK5iKncPrT0OiwC3j1pA342oiw/or5ZovvsH5vOZu4F+kGKPi2EydQXz2QJkooWL
-         CBDw==
-X-Gm-Message-State: AC+VfDx91ZD4AB9eGtmixTo9lohcB+P4u66ZEtJDFiKRA7tjW22rNJ4c
-        23GikH7/5/xKGlJ1RHqpMik+hA==
-X-Google-Smtp-Source: ACHHUZ6iZtjroYyNPUNLVmJno1jDVvsHwKiW4Ji4CvqXcp98aqd9dZG+s1pVtR1LF/DIkAE/+Cv3dw==
-X-Received: by 2002:a17:907:6d8d:b0:96a:3e39:f567 with SMTP id sb13-20020a1709076d8d00b0096a3e39f567mr4844456ejc.47.1683807664369;
-        Thu, 11 May 2023 05:21:04 -0700 (PDT)
-Received: from localhost.localdomain (abordeaux-655-1-129-86.w90-5.abo.wanadoo.fr. [90.5.10.86])
-        by smtp.gmail.com with ESMTPSA id mm10-20020a170906cc4a00b00960005e09a3sm3990513ejb.61.2023.05.11.05.21.03
+        bh=SuyDnlOYxo/iihv+FkzR/V6NypU3FUK1HIwlYQQjiFA=;
+        b=lu0HYKwEpn9Ze92L/GPrSh7vGIC3vlRwbI/mwfM82Bdf0qn7ca2n+IFXWWhcJrTP8Q
+         8mj5fZ6MCRYxSVKCDX34+hCwKNP/jWFOqBlCTT+KVhsQhPoLF6cAAgSovXpj5XmVz+Vk
+         ZSzZWNjWpCwdY4hjnFGu2H4mGlXRKvqR0tALSfF//Z7TvZke1aQHa59kJf3ruiW2Zgvj
+         WxHa90KK31ZR1tB1NBi753ceStnLZzgPcFDPSBhFsuzIuFY97Qh0vQUiFbQACpdaeSaA
+         7WX5mjld0X01zwRsZFqy9Frd8V1zTEkiSJYNdzoW9UsBge9T5KTEZGqnx4lZL2MaIxkb
+         vEaw==
+X-Gm-Message-State: AC+VfDxtvw49lCjLkzhfcXAQsdciisz1nUsg+1BARMIcBsjHxRlQrwhL
+        nestZupsQR0fMPdVI4OOrFXjG2mTplpk8xpuxF4=
+X-Google-Smtp-Source: ACHHUZ6p282M3/d4Ia8U1W83mgvlYj22N3NEAwi2ZxI3B2vtXVjPE9WM0L4kfOb72diM5xbMkAv/Hg==
+X-Received: by 2002:a17:907:3fa5:b0:966:180f:d10c with SMTP id hr37-20020a1709073fa500b00966180fd10cmr19775421ejc.33.1683814186117;
+        Thu, 11 May 2023 07:09:46 -0700 (PDT)
+Received: from [127.0.1.1] (abordeaux-655-1-129-86.w90-5.abo.wanadoo.fr. [90.5.10.86])
+        by smtp.gmail.com with ESMTPSA id gx1-20020a1709068a4100b00965a0f30fbfsm4057624ejc.186.2023.05.11.07.09.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 May 2023 05:21:03 -0700 (PDT)
+        Thu, 11 May 2023 07:09:45 -0700 (PDT)
 From:   Jerome Neanne <jneanne@baylibre.com>
-To:     tony@atomide.com, lee@kernel.org
-Cc:     linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-        khilman@baylibre.com, nm@ti.com, afd@ti.com, msp@baylibre.com,
-        Jerome Neanne <jneanne@baylibre.com>
-Subject: [PATCH] mfd: tps65219: Add support for soft shutdown via sys-off API
-Date:   Thu, 11 May 2023 14:21:00 +0200
-Message-Id: <20230511122100.2225417-1-jneanne@baylibre.com>
-X-Mailer: git-send-email 2.34.1
+Subject: [PATCH v2 0/2] Add support for TI TPS65219 PMIC GPIO interface.
+Date:   Thu, 11 May 2023 16:09:40 +0200
+Message-Id: <20230511-tps65219-add-gpio-support-v2-0-60feb64d649a@baylibre.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIACT3XGQC/0WOTQ7CIBBGr2JYOwoDtdaV9zAuoB0txgIZ0GhM7
+ y514/Il7/v5iEzsKYvD6iOYnj77GCrgeiX60YYrgR8qC5SoZaMUlJR3DaoO7DDANfkI+ZFS5AI
+ a0Q3OkMSuFTXvbCZwbEM/Lg1jKemRcmGy03ayuRBLIxvUi5uYLv71+3E6V75wnKCM1f2vIxql9
+ F63m31rcGdAwS2QDYGOzr7v3jFt+jiJef4C1WodctYAAAA=
+To:     Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Tony Lindgren <tony@atomide.com>, Lee Jones <lee@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-omap@vger.kernel.org,
+        Jonathan Cormier <jcormier@criticallink.com>,
+        Jerome Neanne <jneanne@baylibre.com>
+X-Mailer: b4 0.12.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1683814185; l=2580;
+ i=jneanne@baylibre.com; s=20230511; h=from:subject:message-id;
+ bh=8BsaXhLhKiuRMa3gSnxE5Xb+X8AQ7hver+4gadrzs5I=;
+ b=p38uRgJ/bhq6eBnzjcKnFfhtOZlC9rguiKdvXr1dGz995ibKYfcLymqO+mpShgRqofLU+4m+Z
+ TKc6XP6OJEKABSi9ltnTzHca3b95ykNeWSejCDBJkZhF1SiQS/l0f1M
+X-Developer-Key: i=jneanne@baylibre.com; a=ed25519;
+ pk=5rvbqNoG+28jQjC9/50ToY7TgKWf9rJukuCI8b6jkUo=
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
@@ -68,117 +83,82 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Use new API for power-off mode support:
-Link: https://lwn.net/Articles/894511/
-Link: https://lore.kernel.org/all/7hfseqa7l0.fsf@baylibre.com/
+GPIO interface consist in 3 pins:
+Two GPIOS are output only: GPO1, GPO2.
 
-sys-off API allows support of shutdown handler and restart handler.
+GPIO0 is used for multi device support:
+- The input-functionality is only used in multi-PMIC configuration
+- In single-PMIC, it can be used as an output
 
-Shutdown was not supported before that enhancement.
-This is required for platform that are not using PSCI.
+The configuration is static and flashed in NVM in factory.
+Description tps65219.pdf chapter 7.3.13
 
-Test:
-- restart:
-  # reboot
-  Default is cold reset:
-  # cat /sys/kernel/reboot/mode
-  Switch boot mode to warm reset:
-  # echo warm > /sys/kernel/reboot/mode
-- power-off:
-  # halt
+Linux must not change MULTI_DEVICE_ENABLE bit at run time.
 
-Tested on AM62-LP-SK board.
+This was done for test purpose only to check input/output
+correct behavior on EVM board (no access to different NVM config).
 
+Tested on k3-am62x-lp-sk board. This board MULTI_DEVICE_ENABLE=0
+
+Despite the register bits are out of order,
+driver is remapping in natural order:
+GPIO0 is gpiochip line 0
+GPO1/2 are gpiochip line 1/2
+
+Initial version by Jon Cormier on TI Mainline.
+Ported upstream by Jerome Neanne
+
+PMIC datasheet:
+Link: https://www.ti.com/lit/ds/symlink/tps65219.pdf
+
+Changes in v2:
+andy.shevchenko review
+- Typo and indentation in commit message.
+- Clarify Co-developer role.
+- Specify name for module.
+- Code simplification for tps65219_gpio_set
+- Put test code into #if 0 ... #endif to make it easier to re-use
+- Formatting for .driver
+- remove dupplicated error management => dead code
+
+Previous version:
+v1 - https://lore.kernel.org/all/20230224113837.874264-1-jneanne@baylibre.com/
+
+Co-developed-by: Jonathan Cormier <jcormier@criticallink.com>
+Signed-off-by: Jonathan Cormier <jcormier@criticallink.com>
 Signed-off-by: Jerome Neanne <jneanne@baylibre.com>
-Suggested-by: Andrew Davis <afd@ti.com>
-Reviewed-by: Andrew Davis <afd@ti.com>
----
 
-Notes:
-    Change-log v2 to v1
-    v1: Link: https://lore.kernel.org/all/20230203140150.13071-1-jneanne@baylibre.com/
-    Andrew Davis Review:
-    - Use new helpers devm_register_restart_handler and devm_register_power_off_handler
-    Vignesh Raghavendra:
-    - Fix typo on board name in commit message
+Jerome Neanne (2):
+  gpio: tps65219: add GPIO support for TPS65219 PMIC
+  mfd: tps65219: Add gpio cell instance
 
- drivers/mfd/tps65219.c | 41 ++++++++++++++++++++++++++++++-----------
- 1 file changed, 30 insertions(+), 11 deletions(-)
+ MAINTAINERS                  |   1 +
+ drivers/gpio/Kconfig         |  13 +++
+ drivers/gpio/Makefile        |   1 +
+ drivers/gpio/gpio-tps65219.c | 167 +++++++++++++++++++++++++++++++++++
+ drivers/mfd/tps65219.c       |   7 +-
+ 5 files changed, 188 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/gpio/gpio-tps65219.c
 
-diff --git a/drivers/mfd/tps65219.c b/drivers/mfd/tps65219.c
-index 0e402fda206b..5115d0a66701 100644
---- a/drivers/mfd/tps65219.c
-+++ b/drivers/mfd/tps65219.c
-@@ -25,25 +25,34 @@ static int tps65219_cold_reset(struct tps65219 *tps)
- 				  TPS65219_MFP_COLD_RESET_I2C_CTRL_MASK);
- }
- 
--static int tps65219_restart(struct notifier_block *this,
--			    unsigned long reboot_mode, void *cmd)
-+static int tps65219_soft_shutdown(struct tps65219 *tps)
- {
--	struct tps65219 *tps;
-+	return regmap_update_bits(tps->regmap, TPS65219_REG_MFP_CTRL,
-+				  TPS65219_MFP_I2C_OFF_REQ_MASK,
-+				  TPS65219_MFP_I2C_OFF_REQ_MASK);
-+}
- 
--	tps = container_of(this, struct tps65219, nb);
-+static int tps65219_power_off_handler(struct sys_off_data *data)
-+{
-+	tps65219_soft_shutdown(data->cb_data);
-+	return NOTIFY_DONE;
-+}
- 
-+static int tps65219_restart(struct tps65219 *tps,
-+			    unsigned long reboot_mode)
-+{
- 	if (reboot_mode == REBOOT_WARM)
- 		tps65219_warm_reset(tps);
- 	else
- 		tps65219_cold_reset(tps);
--
- 	return NOTIFY_DONE;
- }
- 
--static struct notifier_block pmic_rst_restart_nb = {
--	.notifier_call = tps65219_restart,
--	.priority = 200,
--};
-+static int tps65219_restart_handler(struct sys_off_data *data)
-+{
-+	tps65219_restart(data->cb_data, data->mode);
-+	return NOTIFY_DONE;
-+}
- 
- static const struct resource tps65219_pwrbutton_resources[] = {
- 	DEFINE_RES_IRQ_NAMED(TPS65219_INT_PB_FALLING_EDGE_DETECT, "falling"),
-@@ -269,13 +278,23 @@ static int tps65219_probe(struct i2c_client *client)
- 		}
- 	}
- 
--	tps->nb = pmic_rst_restart_nb;
--	ret = register_restart_handler(&tps->nb);
-+	ret = devm_register_restart_handler(tps->dev,
-+					    tps65219_restart_handler,
-+					    tps);
-+
- 	if (ret) {
- 		dev_err(tps->dev, "cannot register restart handler, %d\n", ret);
- 		return ret;
- 	}
- 
-+	ret = devm_register_power_off_handler(tps->dev,
-+					      tps65219_power_off_handler,
-+					      tps);
-+	if (ret) {
-+		dev_err(tps->dev, "failed to register power-off handler: %d\n",
-+			ret);
-+		return ret;
-+	}
- 	return 0;
- }
- 
--- 
+--
 2.34.1
+
+---
+Jerome Neanne (2):
+      gpio: tps65219: add GPIO support for TPS65219 PMIC
+      mfd: tps65219: Add gpio cell instance
+
+ MAINTAINERS                  |   1 +
+ drivers/gpio/Kconfig         |  17 +++++
+ drivers/gpio/Makefile        |   1 +
+ drivers/gpio/gpio-tps65219.c | 173 +++++++++++++++++++++++++++++++++++++++++++
+ drivers/mfd/tps65219.c       |   2 +-
+ 5 files changed, 193 insertions(+), 1 deletion(-)
+---
+base-commit: 1a5304fecee523060f26e2778d9d8e33c0562df3
+change-id: 20230511-tps65219-add-gpio-support-322bdb4e0297
+
+Best regards,
+-- 
+Jerome Neanne <jneanne@baylibre.com>
 
