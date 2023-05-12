@@ -2,116 +2,103 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CBE570012E
-	for <lists+linux-omap@lfdr.de>; Fri, 12 May 2023 09:16:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 195D070015D
+	for <lists+linux-omap@lfdr.de>; Fri, 12 May 2023 09:23:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240135AbjELHQG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 12 May 2023 03:16:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59142 "EHLO
+        id S240015AbjELHX3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 12 May 2023 03:23:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240137AbjELHPg (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 12 May 2023 03:15:36 -0400
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23F50100FA
-        for <linux-omap@vger.kernel.org>; Fri, 12 May 2023 00:13:26 -0700 (PDT)
-Received: by mail-wm1-x329.google.com with SMTP id 5b1f17b1804b1-3f42711865eso37782985e9.0
-        for <linux-omap@vger.kernel.org>; Fri, 12 May 2023 00:13:26 -0700 (PDT)
+        with ESMTP id S239986AbjELHX2 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 12 May 2023 03:23:28 -0400
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E51B51AC
+        for <linux-omap@vger.kernel.org>; Fri, 12 May 2023 00:23:26 -0700 (PDT)
+Received: by mail-ed1-x52a.google.com with SMTP id 4fb4d7f45d1cf-50be17a1eceso17929933a12.2
+        for <linux-omap@vger.kernel.org>; Fri, 12 May 2023 00:23:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20221208.gappssmtp.com; s=20221208; t=1683875604; x=1686467604;
+        d=linaro.org; s=google; t=1683876205; x=1686468205;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=PPhQRy4HPP9Hjp11lzPQ3zP0xKs4X8HPNb5FmQafXzg=;
-        b=4YJ/nGQcwmjEJyXetQTMv6vZEtXXnXCtVTEj6ZJdD2ZvjIzR3cQx7mlmlJ7h9/a8aM
-         +I9WYuDl63SaxIOwA1i37KQb6r3G4Oz7rZEkXbkjRMnXWyghHJ0b13VY9NMQMFdRGoKm
-         Z9VJG4TBTIMsIKdUPuahjsx7g2cc9PXUjdjS4hw3wCfMXEYoFfQXUv7LWHEGUV+uxFP9
-         sriHw/fEKQAUcFDV1AkZcmUhz5Jcu1RByKC4NPxtiiIqicFgJSKZfEuXb1XX8YFegQdL
-         rw+/2sB5eYUhznaLEfvUl3n9pgk2OOhczWSWdlYQpxPS70IfRd2V6+bsaltJgtdDJV7I
-         tjqw==
+        bh=i1WcT1EFQll4i945sfdDYYW2fDl+L8KOHaAQMIivfsc=;
+        b=KAC9LQke3q2fF50hBttyTjOkrS+lywl7NvQuSLsok1fII5S4DQG8cOSrF/i9nh3dip
+         GLl66OcYZyoZ8XOWqRe6DCT+WbQx45T/W3LGGczQ4hS2x01Z4dKM6lvDGk3vKzrACZg1
+         yRXK3MwGzUywlNt3jg4c2t57DlIT19w5Wpx1fic6/dyGxOyGMRdlkHl3mjzU1ZPRLT34
+         bjLO1VncsK7sfKheOjMiLB/hyBrFiP1F36vsE/NzejFNL+3SK5R+66CjGO8HEFH146T8
+         tbTTby/HsqAA7JjmQWzz2pQjRl306zoqJuFfXneuHo48ttZbBe3A0vtP7iCvPdkuzzUf
+         Uh0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683875604; x=1686467604;
+        d=1e100.net; s=20221208; t=1683876205; x=1686468205;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=PPhQRy4HPP9Hjp11lzPQ3zP0xKs4X8HPNb5FmQafXzg=;
-        b=H2ZzSIWJAHNEHDapsdqRIN7IYyTkDamiDGZnarrBYZCHNhuLbWon32E/9GIQaTbYrk
-         d33nC6g8pf+7JBnYuHtkIr5in7ChiiUvhX6XbPpBvHo3HGL022xaKUXZS2MKQ8jlgedJ
-         aIqNxOicmb8C1uVOe0N50L8t6fchyNy6peMAQXFYHwF58L5dBp6REzpOZDc2QW9AQYj6
-         GqorbL3Mq2+gWcTDJUKCg3NjLthlRxJcqPQRiISYTJ+6i1yiHo5vUnPHmeEt0o9KV84v
-         LbGWvc3FcJmC2QSglU7U8+sMcmjUidNd8zE4mVwWqG1JosZSKjRAyPNN5QfE/jSWtaC9
-         /Pvw==
-X-Gm-Message-State: AC+VfDzSuSLOCYWNLGQk6LoYUT09nIPZE1Ce1LclED2QWcJh6syfmbvu
-        fInDTxjXiqGi5JE5I/xAI2M4lg==
-X-Google-Smtp-Source: ACHHUZ5hHZ8pzx0QW5qL2MCBfXq4LuVRXmvd12CX+0R+UxFwrl9+UX5BRoq6I4Rf9oyUske5iZPZPg==
-X-Received: by 2002:a7b:c3cf:0:b0:3f4:220a:bbf8 with SMTP id t15-20020a7bc3cf000000b003f4220abbf8mr13053335wmj.34.1683875604597;
-        Fri, 12 May 2023 00:13:24 -0700 (PDT)
-Received: from [192.168.1.91] (192.201.68.85.rev.sfr.net. [85.68.201.192])
-        by smtp.gmail.com with ESMTPSA id y12-20020adffa4c000000b00306281cfa59sm22474955wrr.47.2023.05.12.00.13.23
+        bh=i1WcT1EFQll4i945sfdDYYW2fDl+L8KOHaAQMIivfsc=;
+        b=FF75gc+C7RisfblhrTILRndq+6/9Mx3xDEv59Kg4UyrLGlJ25ymhFoaiUrF8PcOUAx
+         OjD+Z6hq9SszNCC2cEobC1u3dxo2wc667CjaMuqQxABbn3in2g4PxUQDIgComMPXIIGi
+         vmi6VMuFe/THEMOvmT5dgJKT8Nhzrm9hPwQ2nw2aLTOPwV23QjuzBeI2Zn2igp0EmH7F
+         iZpgZnXg/Mcbn1kY3GLoV9dDD7/Wf0WWbC2nz0QazP5Q4XPWz37CtAVgr5/gOdzjwlxE
+         PfR3je98bovhCb8bql+VUwrtBkqABAJUxEryvKNmU7YyuFXJQHbWEuKM+I8biElqdiFT
+         hDvA==
+X-Gm-Message-State: AC+VfDwMnSy8ZFyOhwSaG96SnaiAmoK5Xseb3p84f39gPs74p5+eDh4y
+        Vsn57B6+h47uJ+aoklu0M3jclg==
+X-Google-Smtp-Source: ACHHUZ7ZOkCM9WlPxvllsqyiYBd8PiP1ZtLyfXAPuFaYI8O0MFez1OUIqXmuma5y0ETf/q/Ee45uzQ==
+X-Received: by 2002:a05:6402:398:b0:50b:c4b7:ee7c with SMTP id o24-20020a056402039800b0050bc4b7ee7cmr18839172edv.36.1683876205338;
+        Fri, 12 May 2023 00:23:25 -0700 (PDT)
+Received: from ?IPV6:2a02:810d:15c0:828:7ede:fc7b:2328:3883? ([2a02:810d:15c0:828:7ede:fc7b:2328:3883])
+        by smtp.gmail.com with ESMTPSA id b12-20020aa7dc0c000000b0050be1c28a0fsm3750129edu.7.2023.05.12.00.23.23
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 12 May 2023 00:13:24 -0700 (PDT)
-Message-ID: <2e5cae40-7040-a92f-3d11-ce68f1307049@baylibre.com>
-Date:   Fri, 12 May 2023 09:13:23 +0200
+        Fri, 12 May 2023 00:23:24 -0700 (PDT)
+Message-ID: <13028434-f68c-cad3-056e-d319c1ec35cf@linaro.org>
+Date:   Fri, 12 May 2023 09:23:22 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v2 1/2] gpio: tps65219: add GPIO support for TPS65219 PMIC
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 3/3] arm64: defconfig: enable J721e PCIe controller
 Content-Language: en-US
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Bartosz Golaszewski <brgl@bgdev.pl>,
-        Tony Lindgren <tony@atomide.com>, Lee Jones <lee@kernel.org>,
-        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-omap@vger.kernel.org,
-        Jonathan Cormier <jcormier@criticallink.com>
-References: <20230511-tps65219-add-gpio-support-v2-0-60feb64d649a@baylibre.com>
- <20230511-tps65219-add-gpio-support-v2-1-60feb64d649a@baylibre.com>
- <CACRpkdbjjoOoGeaqv9yQ4fTKqxt5eLDBjZCnNAYQnng3L+n8TQ@mail.gmail.com>
-From:   jerome Neanne <jneanne@baylibre.com>
-In-Reply-To: <CACRpkdbjjoOoGeaqv9yQ4fTKqxt5eLDBjZCnNAYQnng3L+n8TQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To:     Achal Verma <a-verma1@ti.com>, Tom Joseph <tjoseph@cadence.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Krzysztof Wilczy_ski <kw@linux.com>,
+        Rob Herring <robh@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Bjorn Andersson <quic_bjorande@quicinc.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        "N_colas F . R . A . Prado" <nfraprado@collabora.com>,
+        Mark Brown <broonie@kernel.org>,
+        Rafa_ Mi_ecki <rafal@milecki.pl>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Nishanth Menon <nm@ti.com>, Milind Parab <mparab@cadence.com>,
+        Swapnil Kashinath Jakhade <sjakhade@cadence.com>
+Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-omap@vger.kernel.org
+References: <20230512070510.1873171-1-a-verma1@ti.com>
+ <20230512070510.1873171-4-a-verma1@ti.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230512070510.1873171-4-a-verma1@ti.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On 12/05/2023 09:05, Achal Verma wrote:
+> Enable Cadence PCIe controller and pci-j721e drivers to be built as
+> kernel modules.
+
+Why? IOW, who needs them. Please provide rationale in the commit msg. I
+am pretty sure I asked for this...
 
 
-On 11/05/2023 22:57, Linus Walleij wrote:
->> +       /* Documentation is stating that GPIO0 direction must not be changed in Linux:
->> +        * Table 8-34. MFP_1_CONFIG(3): MULTI_DEVICE_ENABLE,
->> +        * Should only be changed in INITIALIZE state (prior to ON Request).
->> +        * Set statically by NVM, changing direction in application can cause a hang.
->> +        * Below can be used for test purpose only:
->> +        */
->> +
->> +#if 0
->> +       int ret = regmap_update_bits(gpio->tps->regmap, TPS65219_REG_MFP_1_CONFIG,
->> +                                TPS65219_GPIO0_DIR_MASK, direction);
->> +       if (ret)
->> +               return ret;
->> +#endif
->> +       dev_err(gpio->tps->dev,
->> +               "GPIO%d direction set by NVM, change to %u failed, not allowed by specification\n",
->> +                offset, direction);
->> +       return -EOPNOTSUPP;
->> +}
-> 
-> Normally people would complain about #if 0 code.
-> 
-> But this is a special case!
-> 
-> I definitely want the code to be in there somehow.
-> 
-> What about:
-> 
-> if (IS_ENABLED(DEBUG))?
-> 
-> If someone enables debug with an explicit -DDEBUG to the compiler
-> this could be allowed.
-I'm fine with your proposal. Will wait few days just in case anyone 
-wants to add any comment then go for this.
+Best regards,
+Krzysztof
+
