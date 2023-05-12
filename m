@@ -2,114 +2,116 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4805970010B
-	for <lists+linux-omap@lfdr.de>; Fri, 12 May 2023 09:08:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CBE570012E
+	for <lists+linux-omap@lfdr.de>; Fri, 12 May 2023 09:16:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240200AbjELHIz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 12 May 2023 03:08:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50078 "EHLO
+        id S240135AbjELHQG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 12 May 2023 03:16:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239956AbjELHIc (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 12 May 2023 03:08:32 -0400
-Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C51011B65;
-        Fri, 12 May 2023 00:06:06 -0700 (PDT)
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 34C75G8h125729;
-        Fri, 12 May 2023 02:05:17 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1683875117;
-        bh=qrcAD5FB7M7FMMCKbVwpO1WbxqwiY986JY7vFr3TIUE=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=JIYYyK+HO/z9iJJJBMFBGb9gEPU81TF22pkqM7kOU3EQ5FXzG83WKHlezpZbz4444
-         EtN29gQDw69eF+DnbaED6kfjAXShMI5mbTTGtceUkoe1+JsJlsN2JNATxdO+ao561Y
-         t2MLspfqkkYcQFTYTtnTPAtioTlam8fHrptVb7rE=
-Received: from DFLE108.ent.ti.com (dfle108.ent.ti.com [10.64.6.29])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 34C75Gl3007289
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 12 May 2023 02:05:16 -0500
-Received: from DFLE107.ent.ti.com (10.64.6.28) by DFLE108.ent.ti.com
- (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 12
- May 2023 02:05:15 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE107.ent.ti.com
- (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Fri, 12 May 2023 02:05:16 -0500
-Received: from localhost (ileaxei01-snat.itg.ti.com [10.180.69.5])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 34C75E1w085112;
-        Fri, 12 May 2023 02:05:15 -0500
-From:   Achal Verma <a-verma1@ti.com>
-To:     Tom Joseph <tjoseph@cadence.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Krzysztof Wilczy_ski <kw@linux.com>,
-        Rob Herring <robh@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Bjorn Andersson <quic_bjorande@quicinc.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        "N_colas F . R . A . Prado" <nfraprado@collabora.com>,
-        Mark Brown <broonie@kernel.org>,
-        Rafa_ Mi_ecki <rafal@milecki.pl>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Nishanth Menon <nm@ti.com>, Milind Parab <mparab@cadence.com>,
-        Swapnil Kashinath Jakhade <sjakhade@cadence.com>
-CC:     <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>, Achal Verma <a-verma1@ti.com>
-Subject: [PATCH 3/3] arm64: defconfig: enable J721e PCIe controller
-Date:   Fri, 12 May 2023 12:35:10 +0530
-Message-ID: <20230512070510.1873171-4-a-verma1@ti.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230512070510.1873171-1-a-verma1@ti.com>
-References: <20230512070510.1873171-1-a-verma1@ti.com>
+        with ESMTP id S240137AbjELHPg (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 12 May 2023 03:15:36 -0400
+Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23F50100FA
+        for <linux-omap@vger.kernel.org>; Fri, 12 May 2023 00:13:26 -0700 (PDT)
+Received: by mail-wm1-x329.google.com with SMTP id 5b1f17b1804b1-3f42711865eso37782985e9.0
+        for <linux-omap@vger.kernel.org>; Fri, 12 May 2023 00:13:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20221208.gappssmtp.com; s=20221208; t=1683875604; x=1686467604;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=PPhQRy4HPP9Hjp11lzPQ3zP0xKs4X8HPNb5FmQafXzg=;
+        b=4YJ/nGQcwmjEJyXetQTMv6vZEtXXnXCtVTEj6ZJdD2ZvjIzR3cQx7mlmlJ7h9/a8aM
+         +I9WYuDl63SaxIOwA1i37KQb6r3G4Oz7rZEkXbkjRMnXWyghHJ0b13VY9NMQMFdRGoKm
+         Z9VJG4TBTIMsIKdUPuahjsx7g2cc9PXUjdjS4hw3wCfMXEYoFfQXUv7LWHEGUV+uxFP9
+         sriHw/fEKQAUcFDV1AkZcmUhz5Jcu1RByKC4NPxtiiIqicFgJSKZfEuXb1XX8YFegQdL
+         rw+/2sB5eYUhznaLEfvUl3n9pgk2OOhczWSWdlYQpxPS70IfRd2V6+bsaltJgtdDJV7I
+         tjqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683875604; x=1686467604;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=PPhQRy4HPP9Hjp11lzPQ3zP0xKs4X8HPNb5FmQafXzg=;
+        b=H2ZzSIWJAHNEHDapsdqRIN7IYyTkDamiDGZnarrBYZCHNhuLbWon32E/9GIQaTbYrk
+         d33nC6g8pf+7JBnYuHtkIr5in7ChiiUvhX6XbPpBvHo3HGL022xaKUXZS2MKQ8jlgedJ
+         aIqNxOicmb8C1uVOe0N50L8t6fchyNy6peMAQXFYHwF58L5dBp6REzpOZDc2QW9AQYj6
+         GqorbL3Mq2+gWcTDJUKCg3NjLthlRxJcqPQRiISYTJ+6i1yiHo5vUnPHmeEt0o9KV84v
+         LbGWvc3FcJmC2QSglU7U8+sMcmjUidNd8zE4mVwWqG1JosZSKjRAyPNN5QfE/jSWtaC9
+         /Pvw==
+X-Gm-Message-State: AC+VfDzSuSLOCYWNLGQk6LoYUT09nIPZE1Ce1LclED2QWcJh6syfmbvu
+        fInDTxjXiqGi5JE5I/xAI2M4lg==
+X-Google-Smtp-Source: ACHHUZ5hHZ8pzx0QW5qL2MCBfXq4LuVRXmvd12CX+0R+UxFwrl9+UX5BRoq6I4Rf9oyUske5iZPZPg==
+X-Received: by 2002:a7b:c3cf:0:b0:3f4:220a:bbf8 with SMTP id t15-20020a7bc3cf000000b003f4220abbf8mr13053335wmj.34.1683875604597;
+        Fri, 12 May 2023 00:13:24 -0700 (PDT)
+Received: from [192.168.1.91] (192.201.68.85.rev.sfr.net. [85.68.201.192])
+        by smtp.gmail.com with ESMTPSA id y12-20020adffa4c000000b00306281cfa59sm22474955wrr.47.2023.05.12.00.13.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 12 May 2023 00:13:24 -0700 (PDT)
+Message-ID: <2e5cae40-7040-a92f-3d11-ce68f1307049@baylibre.com>
+Date:   Fri, 12 May 2023 09:13:23 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v2 1/2] gpio: tps65219: add GPIO support for TPS65219 PMIC
+Content-Language: en-US
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Bartosz Golaszewski <brgl@bgdev.pl>,
+        Tony Lindgren <tony@atomide.com>, Lee Jones <lee@kernel.org>,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-omap@vger.kernel.org,
+        Jonathan Cormier <jcormier@criticallink.com>
+References: <20230511-tps65219-add-gpio-support-v2-0-60feb64d649a@baylibre.com>
+ <20230511-tps65219-add-gpio-support-v2-1-60feb64d649a@baylibre.com>
+ <CACRpkdbjjoOoGeaqv9yQ4fTKqxt5eLDBjZCnNAYQnng3L+n8TQ@mail.gmail.com>
+From:   jerome Neanne <jneanne@baylibre.com>
+In-Reply-To: <CACRpkdbjjoOoGeaqv9yQ4fTKqxt5eLDBjZCnNAYQnng3L+n8TQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Enable Cadence PCIe controller and pci-j721e drivers to be built as
-kernel modules.
 
-Signed-off-by: Achal Verma <a-verma1@ti.com>
----
- arch/arm64/configs/defconfig | 7 +++++++
- 1 file changed, 7 insertions(+)
 
-diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
-index a24609e14d50..a4cf973e0aaa 100644
---- a/arch/arm64/configs/defconfig
-+++ b/arch/arm64/configs/defconfig
-@@ -230,9 +230,16 @@ CONFIG_PCIE_HISI_STB=y
- CONFIG_PCIE_TEGRA194_HOST=m
- CONFIG_PCIE_VISCONTI_HOST=y
- CONFIG_PCIE_LAYERSCAPE_GEN4=y
-+CONFIG_PCIE_CADENCE=m
-+CONFIG_PCIE_CADENCE_HOST=m
-+CONFIG_PCIE_CADENCE_EP=m
-+CONFIG_PCI_J721E=m
-+CONFIG_PCI_J721E_HOST=m
-+CONFIG_PCI_J721E_EP=m
- CONFIG_PCI_ENDPOINT=y
- CONFIG_PCI_ENDPOINT_CONFIGFS=y
- CONFIG_PCI_EPF_TEST=m
-+CONFIG_PCI_EPF_NTB=m
- CONFIG_DEVTMPFS=y
- CONFIG_DEVTMPFS_MOUNT=y
- CONFIG_FW_LOADER_USER_HELPER=y
--- 
-2.25.1
-
+On 11/05/2023 22:57, Linus Walleij wrote:
+>> +       /* Documentation is stating that GPIO0 direction must not be changed in Linux:
+>> +        * Table 8-34. MFP_1_CONFIG(3): MULTI_DEVICE_ENABLE,
+>> +        * Should only be changed in INITIALIZE state (prior to ON Request).
+>> +        * Set statically by NVM, changing direction in application can cause a hang.
+>> +        * Below can be used for test purpose only:
+>> +        */
+>> +
+>> +#if 0
+>> +       int ret = regmap_update_bits(gpio->tps->regmap, TPS65219_REG_MFP_1_CONFIG,
+>> +                                TPS65219_GPIO0_DIR_MASK, direction);
+>> +       if (ret)
+>> +               return ret;
+>> +#endif
+>> +       dev_err(gpio->tps->dev,
+>> +               "GPIO%d direction set by NVM, change to %u failed, not allowed by specification\n",
+>> +                offset, direction);
+>> +       return -EOPNOTSUPP;
+>> +}
+> 
+> Normally people would complain about #if 0 code.
+> 
+> But this is a special case!
+> 
+> I definitely want the code to be in there somehow.
+> 
+> What about:
+> 
+> if (IS_ENABLED(DEBUG))?
+> 
+> If someone enables debug with an explicit -DDEBUG to the compiler
+> this could be allowed.
+I'm fine with your proposal. Will wait few days just in case anyone 
+wants to add any comment then go for this.
