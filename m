@@ -2,89 +2,111 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 20A756FFCA6
-	for <lists+linux-omap@lfdr.de>; Fri, 12 May 2023 00:31:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BAD4700116
+	for <lists+linux-omap@lfdr.de>; Fri, 12 May 2023 09:10:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239342AbjEKWbR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 11 May 2023 18:31:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38394 "EHLO
+        id S240188AbjELHKO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 12 May 2023 03:10:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51056 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238381AbjEKWbQ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 11 May 2023 18:31:16 -0400
-X-Greylist: delayed 1802 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 11 May 2023 15:31:15 PDT
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a02:c205:3004:2154::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 585692738;
-        Thu, 11 May 2023 15:31:15 -0700 (PDT)
-Received: from p200300ccff36df0080088350021b55c1.dip0.t-ipconnect.de ([2003:cc:ff36:df00:8008:8350:21b:55c1] helo=akair)
-        by mail.andi.de1.cc with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <andreas@kemnade.info>)
-        id 1pxDpi-0005dY-Fw; Thu, 11 May 2023 23:28:18 +0200
-Date:   Thu, 11 May 2023 23:28:12 +0200
-From:   Andreas Kemnade <andreas@kemnade.info>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        tony@atomide.com, afd@ti.com, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: Re: [PATCH v6 1/2] dt-bindings: omap: Convert omap.txt to yaml
-Message-ID: <20230511232812.067440cf@akair>
-In-Reply-To: <eb4cf82d-f523-d5af-be18-25c37678a95a@linaro.org>
-References: <20230405161908.4312-1-andreas@kemnade.info>
-        <20230405161908.4312-2-andreas@kemnade.info>
-        <eb4cf82d-f523-d5af-be18-25c37678a95a@linaro.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
+        with ESMTP id S240224AbjELHJU (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 12 May 2023 03:09:20 -0400
+Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A45D2680;
+        Fri, 12 May 2023 00:06:45 -0700 (PDT)
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 34C75BZ9122235;
+        Fri, 12 May 2023 02:05:11 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1683875111;
+        bh=nAEYrJXhG8c2IqsEipikz1ePtIEvbDs0B+ioU9XH3HQ=;
+        h=From:To:CC:Subject:Date;
+        b=lq1dp/5Cx6GS2mEFARS4JiYLlnGrrgqGy9Ps+GU2mx6GpHiN2g8+Y3BtRlIq7zd99
+         3m5OTQ3gQ0OFKzFv08vsYoxSZkOU8NVGW9SNXcepCclJ3oevPrVljZf5t33z+k9T81
+         nyRXOacDitqv/vKIO5cS8DHxSdfddWwwtBPyxYxw=
+Received: from DFLE115.ent.ti.com (dfle115.ent.ti.com [10.64.6.36])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 34C75Bp0011997
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 12 May 2023 02:05:11 -0500
+Received: from DFLE101.ent.ti.com (10.64.6.22) by DFLE115.ent.ti.com
+ (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 12
+ May 2023 02:05:11 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE101.ent.ti.com
+ (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Fri, 12 May 2023 02:05:11 -0500
+Received: from localhost (ileaxei01-snat.itg.ti.com [10.180.69.5])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 34C75ABO085066;
+        Fri, 12 May 2023 02:05:11 -0500
+From:   Achal Verma <a-verma1@ti.com>
+To:     Tom Joseph <tjoseph@cadence.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Krzysztof Wilczy_ski <kw@linux.com>,
+        Rob Herring <robh@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Bjorn Andersson <quic_bjorande@quicinc.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        "N_colas F . R . A . Prado" <nfraprado@collabora.com>,
+        Mark Brown <broonie@kernel.org>,
+        Rafa_ Mi_ecki <rafal@milecki.pl>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Nishanth Menon <nm@ti.com>, Milind Parab <mparab@cadence.com>,
+        Swapnil Kashinath Jakhade <sjakhade@cadence.com>
+CC:     <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>, Achal Verma <a-verma1@ti.com>
+Subject: [PATCH 0/3] Add support to build pci-j721e as a kernel module
+Date:   Fri, 12 May 2023 12:35:07 +0530
+Message-ID: <20230512070510.1873171-1-a-verma1@ti.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Am Thu, 6 Apr 2023 10:32:49 +0200
-schrieb Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>:
+J721e PCie driver is not required during linux boot, thus it should be
+build as a loadable kernel module. This series add support to build pci-j721e
+driver and pcie-cadence library as lodable modules.
 
-> On 05/04/2023 18:19, Andreas Kemnade wrote:
-> > From: Andrew Davis <afd@ti.com>
-> > 
-> > Convert omap.txt to yaml.
-> >   
-> 
-> 
-> > +      - description: TI AM43 SoC based platforms
-> > +        items:
-> > +          - enum:
-> > +              - compulab,am437x-cm-t43
-> > +              - ti,am437x-gp-evm
-> > +              - ti,am437x-idk-evm
-> > +              - ti,am437x-sk-evm
-> > +          - pattern: '^ti,am4372[26789]$'
-> > +          - const: ti,am43
-> > +
-> > +      - description: TI AM57 SoC based platforms
-> > +        items:
-> > +          - enum:
-> > +              - beagle,am5729-beagleboneai
-> > +              - compulab,cl-som-am57x
-> > +              - ti,am5718-idk
-> > +              - ti,am5728-idk
-> > +              - ti,am5748-idk
-> > +          - pattern: '^ti,am57[0124][689]$'  
-> 
-> I don't think my comments were resolved. I asked if it is possible to
-> make a board called "ti,am5718-idk" with "ti,am5749" or with
-> "ti,am5708"?
-> 
-I am preparing a reduced version of this without all that pattern
-matches where I do not know the intention the original author had. 
+Achal Verma (2):
+  PCIE: j721e: Add support to build pci-j721e as a kernel module
+  arm64: defconfig: enable PCIe controller on TI platforms
 
-> What's more, you dropped several variations and compatibles against
-> original binding (all the "dra") and it is not explained in commit msg
-> at all.
->
-ok, time to better compare it by scrips, Did not notice
-the dra stuff  with am* in the other compatibles.
+Kishon Vijay Abraham I (1):
+  PCI: cadence: Add support to build pcie-cadence library as a kernel
+    module.
+
+ arch/arm64/configs/defconfig                  |   7 +
+ drivers/pci/controller/cadence/Kconfig        |  12 +-
+ drivers/pci/controller/cadence/Makefile       |   2 +
+ drivers/pci/controller/cadence/pci-j721e-ep.c | 130 +++++++
+ .../pci/controller/cadence/pci-j721e-host.c   | 204 +++++++++++
+ drivers/pci/controller/cadence/pci-j721e.c    | 343 +-----------------
+ drivers/pci/controller/cadence/pci-j721e.h    |  88 +++++
+ .../pci/controller/cadence/pcie-cadence-ep.c  |   4 +
+ .../controller/cadence/pcie-cadence-host.c    |   5 +
+ drivers/pci/controller/cadence/pcie-cadence.c |   9 +
+ drivers/pci/controller/cadence/pcie-cadence.h |   4 +-
+ 11 files changed, 473 insertions(+), 335 deletions(-)
+ create mode 100644 drivers/pci/controller/cadence/pci-j721e-ep.c
+ create mode 100644 drivers/pci/controller/cadence/pci-j721e-host.c
+ create mode 100644 drivers/pci/controller/cadence/pci-j721e.h
+
+-- 
+2.25.1
+
