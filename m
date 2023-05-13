@@ -2,104 +2,113 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C24E0701653
-	for <lists+linux-omap@lfdr.de>; Sat, 13 May 2023 13:10:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30FC07018E4
+	for <lists+linux-omap@lfdr.de>; Sat, 13 May 2023 20:01:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232990AbjEMLKD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 13 May 2023 07:10:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47884 "EHLO
+        id S233805AbjEMSBT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 13 May 2023 14:01:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231736AbjEMLKB (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 13 May 2023 07:10:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9655240CD;
-        Sat, 13 May 2023 04:10:00 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 262B560A36;
-        Sat, 13 May 2023 11:10:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EC3EC433D2;
-        Sat, 13 May 2023 11:09:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683976199;
-        bh=d6U6HY4Y147yLj/hkR4VH4OA5h+IAkhNN7SsSQMVw2Y=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ptS5Mq+PYQvQxKaGII3Bvz7UtKN661n9Mp0jjAtuIlc8ZxaucY2LZnAmWPN+K4QY2
-         vxx17LOmeusIfM8qxE7dQMAI25tOkWga9iC0jvOA27QKXVOEMVn6vpjy9cZTiZ/20w
-         Vle63pCtnK4g3OHW+q8WYUDT4TUagFdwHlA+QlYU=
-Date:   Sat, 13 May 2023 20:07:31 +0900
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Jiri Slaby <jirislaby@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Dhruva Gole <d-gole@ti.com>,
-        Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Johan Hovold <johan@kernel.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-omap@vger.kernel.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org
-Subject: Re: [PATCH v11 1/1] serial: core: Start managing serial controllers
- to enable runtime PM
-Message-ID: <2023051332-pretended-spoiler-61fc@gregkh>
-References: <20230511065355.47525-1-tony@atomide.com>
+        with ESMTP id S233993AbjEMSBC (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 13 May 2023 14:01:02 -0400
+Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5ADD835AC;
+        Sat, 13 May 2023 11:00:23 -0700 (PDT)
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 34DHwTdY129663;
+        Sat, 13 May 2023 12:58:29 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1684000709;
+        bh=mePJ/RInYE0y486rwBOzi4W43YzL4ZNbENMKuvC0VrQ=;
+        h=Date:Subject:To:CC:References:From:In-Reply-To;
+        b=ER4Zn/Yqprfvj+/F3pwYP12no5AmhVWle7eAm4Xx81m8Ogk5GQla434ZDVuuUx1sw
+         TeQLq9GgZAzpQRIPQMlaaz0BbwwguiyRh+t0tuTxO6lVsHZKgr8A2aGsF6l9tbQjKC
+         c5JgYPUcJLviB5SpyAArIdo0eq5/qM1WrEkgXwe4=
+Received: from DLEE112.ent.ti.com (dlee112.ent.ti.com [157.170.170.23])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 34DHwT0j079199
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Sat, 13 May 2023 12:58:29 -0500
+Received: from DLEE102.ent.ti.com (157.170.170.32) by DLEE112.ent.ti.com
+ (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Sat, 13
+ May 2023 12:58:29 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE102.ent.ti.com
+ (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Sat, 13 May 2023 12:58:29 -0500
+Received: from [10.249.131.60] (ileaxei01-snat2.itg.ti.com [10.180.69.6])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 34DHwMIY020336;
+        Sat, 13 May 2023 12:58:23 -0500
+Message-ID: <3b5d7c3c-164d-0690-c2e8-2c7daec4865c@ti.com>
+Date:   Sat, 13 May 2023 23:28:22 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230511065355.47525-1-tony@atomide.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.1
+Subject: Re: [EXTERNAL] Re: [PATCH 3/3] arm64: defconfig: enable J721e PCIe
+ controller
+Content-Language: en-US
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Tom Joseph <tjoseph@cadence.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Krzysztof Wilczy_ski <kw@linux.com>,
+        Rob Herring <robh@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Bjorn Andersson <quic_bjorande@quicinc.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        "N_colas F . R . A . Prado" <nfraprado@collabora.com>,
+        Mark Brown <broonie@kernel.org>,
+        Rafa_ Mi_ecki <rafal@milecki.pl>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Nishanth Menon <nm@ti.com>, Milind Parab <mparab@cadence.com>,
+        Swapnil Kashinath Jakhade <sjakhade@cadence.com>
+CC:     <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>, achal Verma <a-verma1@ti.com>
+References: <20230512070510.1873171-1-a-verma1@ti.com>
+ <20230512070510.1873171-4-a-verma1@ti.com>
+ <13028434-f68c-cad3-056e-d319c1ec35cf@linaro.org>
+From:   "Verma, Achal" <a-verma1@ti.com>
+In-Reply-To: <13028434-f68c-cad3-056e-d319c1ec35cf@linaro.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-5.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, May 11, 2023 at 09:53:51AM +0300, Tony Lindgren wrote:
-> We want to enable runtime PM for serial port device drivers in a generic
-> way. To do this, we want to have the serial core layer manage the
-> registered physical serial controller devices.
+
+Hello Krzysztof,
+On 5/12/2023 12:53 PM, Krzysztof Kozlowski wrote:
+> On 12/05/2023 09:05, Achal Verma wrote:
+>> Enable Cadence PCIe controller and pci-j721e drivers to be built as
+>> kernel modules.
 > 
-> To do this, let's set up a struct bus and struct device for the serial
-> core controller as suggested by Greg and Jiri. The serial core controller
-> devices are children of the physical serial port device. The serial core
-> controller device is needed to support multiple different kind of ports
-> connected to single physical serial port device.
+> Why? IOW, who needs them. Please provide rationale in the commit msg. I
+> am pretty sure I asked for this...
 > 
-> Let's also set up a struct device for the serial core port. The serial
-> core port instances are children of the serial core controller device.
+On TI's J7 SOCs, PCIe is composed of PCIe core from Cadence and TI 
+wrapper. It is desired to have J7 PCIe working on upstream kernel by 
+default. So to enable this I have pushed these defconfig changes.
+
+BTW, I am planning to hold this change until PCIe code changes (rest of 
+the patches in this series) gets merged.
+
+Please let me know if there are more concern to this.
+Sorry, for this time.
+
+Thanks,
+Achal Verma
 > 
-> With the serial core port device we can now flush pending TX on the
-> runtime PM resume as suggested by Johan.
-
-Much better, thanks!
-
-One thing jumps out at me though, you are passing around "raw" struct
-device pointers as the serial port structure, why?
-
-Shouldn't:
-
-> @@ -563,7 +564,8 @@ struct uart_port {
->  	unsigned int		minor;
->  	resource_size_t		mapbase;		/* for ioremap */
->  	resource_size_t		mapsize;
-> -	struct device		*dev;			/* parent device */
-> +	struct device		*dev;			/* serial port physical parent device */
-> +	struct device		*port_dev;		/* serial core port device */
-
-port_dev here be something like "struct serial_port" (or some better
-name)?  That way you enforce the type being passed around to the serial
-code in this change which will help catch any type mistakes.
-
-Yes, this structure can just be a "wrapper" around 'struct device' but
-at least it's a unique type.
-
-Or am I missing why this was done this way?
-
-thanks,
-
-greg k-h
+> Best regards,
+> Krzysztof
+> 
