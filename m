@@ -2,68 +2,54 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 114AC702A85
-	for <lists+linux-omap@lfdr.de>; Mon, 15 May 2023 12:33:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 091E3702CE2
+	for <lists+linux-omap@lfdr.de>; Mon, 15 May 2023 14:40:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240335AbjEOKdH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 15 May 2023 06:33:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59654 "EHLO
+        id S241411AbjEOMk4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 15 May 2023 08:40:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58980 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240898AbjEOKdG (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 15 May 2023 06:33:06 -0400
-Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2FB8109
-        for <linux-omap@vger.kernel.org>; Mon, 15 May 2023 03:33:03 -0700 (PDT)
-Received: by mail-wm1-x336.google.com with SMTP id 5b1f17b1804b1-3f42b984405so46071545e9.3
-        for <linux-omap@vger.kernel.org>; Mon, 15 May 2023 03:33:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1684146782; x=1686738782;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=VLsqNqohQaSlzi4qCFEM4zyQpH9q5HKdLX9afXF2oaw=;
-        b=KQVEDxj2SBeTF0e5HSoVKmXTQNAm6vP6/NPwYxfOORJkDSyvrzQfj8AWV+9e0h0wjZ
-         M3g0BJYfp6p9eZ1w8KY7CoIIIA/pNyZM1yCZVhZcTgc8f1n6iikO976qqN2Hv3rqpMmG
-         pZNDg0D4WRny5FjsQ9kWnrf9TSQOhMP/BctuABfwkDdndzajkAaUTiG4P5uTNVWJBPLK
-         NrsYJ6QRkWPA6E6VM2Ixr1ftSh4MPARusAl9+vbbbfu/OW1Jk0Z/aJISlymVxfQttEFE
-         7ulZK5ca8wG36lGNpuSs1ArYaXGiiRJ+0AHT6e1RRk5hHqgN94TF/UjmPJPXOifDDNOq
-         oBrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684146782; x=1686738782;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=VLsqNqohQaSlzi4qCFEM4zyQpH9q5HKdLX9afXF2oaw=;
-        b=SyR9jxoc4rdZZqmZQ0U+ms0gu9EfkA3c0ApfZU63QFU5+j5fdBJ/YoejBW1+mK9ZlL
-         8V/OkbSNDKWI9S4YEgmnftP4OadK2MgXT40C6GfPjPXFDOZnXmhXyNWfpDRFTE45FzQ1
-         2cj+eaJiXawWMGpPs9nnGMTFoxkl++c8rdKVBa/DPcafnauWxSRWtFWJxqJNHGxPZBX2
-         ygg0nk80tL6BAC6B059bBu8QGRitoxOahodu2muZ5ZOYErVvgRn6gkTSEpKfETNRwRKN
-         T/FbCEekNYDF2KGKyN4Ce3MBYGDGWuzRolFgEN9r3b8VuHnE8JWvePWf7VKQR3HcI1GS
-         IovA==
-X-Gm-Message-State: AC+VfDzyrQsNAlzvdExD4/wpaGDn+A5djmA/1KVwUxOnZuW8h8tWkyZJ
-        I+N24JHtjFe+3dYRWQTCNFNdjA==
-X-Google-Smtp-Source: ACHHUZ7KtZCye39Dr+WYjRXdcXbUksTilRBAuhufweF558lW2QerbCdOooNF2e7tBbAgKxnnqNFsPA==
-X-Received: by 2002:a7b:c314:0:b0:3ef:6b97:f0c3 with SMTP id k20-20020a7bc314000000b003ef6b97f0c3mr23631619wmj.15.1684146782068;
-        Mon, 15 May 2023 03:33:02 -0700 (PDT)
-Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id e1-20020adfdbc1000000b0030795249ffasm24511774wrj.92.2023.05.15.03.32.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 May 2023 03:33:00 -0700 (PDT)
-Date:   Mon, 15 May 2023 13:32:47 +0300
-From:   Dan Carpenter <dan.carpenter@linaro.org>
-To:     Cai Huoqing <cai.huoqing@linux.dev>
-Cc:     Helge Deller <deller@gmx.de>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] fbdev: omapfb: panel-tpo-td043mtea1: fix error code in
- probe()
-Message-ID: <6f80089a-9223-4434-8da1-c071dd9367b5@kili.mountain>
+        with ESMTP id S241430AbjEOMj3 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 15 May 2023 08:39:29 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 197331985
+        for <linux-omap@vger.kernel.org>; Mon, 15 May 2023 05:36:54 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AB4E161840
+        for <linux-omap@vger.kernel.org>; Mon, 15 May 2023 12:36:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41602C433A0;
+        Mon, 15 May 2023 12:36:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1684154213;
+        bh=rL3y0GxGBQ8zgYIxj2zjRqdV8oWOcLiu0Pettbs6hZs=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=kmqjFlv/VnyT6nohIr4H6tcC73iRv7AOkYCkYIUJQjdnF4JN/xLe3hR1urGbG+oST
+         bdxfxbbyDH2Oak7Rp+tprfp9gMQGOC9EUUvfxA2Wld2jxCaxFggEZ8RxF9+AD5NhKB
+         /rfD6EeVckGoKjfA2kSpEPXMFBhDwuXYb1H7E/yQe9EyoQO2p5B3VQrvTA8ZvAhTGo
+         S2YwWsBTtljk1/GNuthziPVghAiiPPxDKREHwBB53TzRMbnc/eFbymd4JakQW/2ysp
+         EUJJptrtE5Ytts3CYWftLndRYpU3SIUgkWEGgy+Vc8/84TtSrIqBcoHR3XYrFWWflx
+         JNeabSbFeLcAg==
+Date:   Mon, 15 May 2023 13:36:47 +0100
+From:   Lee Jones <lee@kernel.org>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+        Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        andy.shevchenko@gmail.com, Andreas Kemnade <andreas@kemnade.info>
+Subject: Re: [PATCH v3] ARM/mfd/gpio: Fixup TPS65010 regression on OMAP1 OSK1
+Message-ID: <20230515123647.GD10825@google.com>
+References: <20230430093505.561265-1-linus.walleij@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230430093505.561265-1-linus.walleij@linaro.org>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,29 +57,56 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-This was using the wrong variable, "r", instead of "ddata->vcc_reg", so
-it returned success instead of a negative error code.
+On Sun, 30 Apr 2023, Linus Walleij wrote:
 
-Fixes: 0d3dbeb8142a ("video: fbdev: omapfb: panel-tpo-td043mtea1: Make use of the helper function dev_err_probe()")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
----
- .../video/fbdev/omap2/omapfb/displays/panel-tpo-td043mtea1.c   | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+> Aaro reports problems on the OSK1 board after we altered
+> the dynamic base for GPIO allocations.
+> 
+> It appears this happens because the OMAP driver now
+> allocates GPIO numbers dynamically, so all that is
+> references by number is a bit up in the air.
+> 
+> Let's bite the bullet and try to just move the gpio_chip
+> in the tps65010 MFD driver over to using dynamic allocations.
+> Alter everything in the OSK1 board file to use a GPIO
+> descriptor table and lookups.
+> 
+> Utilize the NULL device to define some board-specific
+> GPIO lookups and use these to immediately look up the
+> same GPIOs, convert to IRQ numbers and pass as resources
+> to the devices. This is ugly but should work.
+> 
+> The .setup() callback for tps65010 was used for some GPIO
+> hogging, but since the OSK1 is the only user in the entire
+> kernel we can alter the signatures to something that
+> is helpful and make a clean transition.
+> 
+> Fixes: 92bf78b33b0b ("gpio: omap: use dynamic allocation of base")
+> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Cc: andy.shevchenko@gmail.com
+> Cc: Andreas Kemnade <andreas@kemnade.info>
+> Cc: Lee Jones <lee@kernel.org>
+> Reported-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+> ---
+> ChangeLog v2->v3:
+> - Add proper gpiod table terminators.
+> - Use DEFINE_RES_IRQ()
+> - Forward-declare struct gpio_chip instead of including a header.
+> ChangeLog v1->v2:
+> - Fix the CF card GPIO lookup
+> - Use the right Fixes: tag
+> ---
+>  arch/arm/mach-omap1/board-osk.c | 137 ++++++++++++++++++++++----------
 
-diff --git a/drivers/video/fbdev/omap2/omapfb/displays/panel-tpo-td043mtea1.c b/drivers/video/fbdev/omap2/omapfb/displays/panel-tpo-td043mtea1.c
-index 1eaa35c27835..477789cff8e0 100644
---- a/drivers/video/fbdev/omap2/omapfb/displays/panel-tpo-td043mtea1.c
-+++ b/drivers/video/fbdev/omap2/omapfb/displays/panel-tpo-td043mtea1.c
-@@ -491,7 +491,8 @@ static int tpo_td043_probe(struct spi_device *spi)
- 
- 	ddata->vcc_reg = devm_regulator_get(&spi->dev, "vcc");
- 	if (IS_ERR(ddata->vcc_reg)) {
--		r = dev_err_probe(&spi->dev, r, "failed to get LCD VCC regulator\n");
-+		r = dev_err_probe(&spi->dev, PTR_ERR(ddata->vcc_reg),
-+				  "failed to get LCD VCC regulator\n");
- 		goto err_regulator;
- 	}
- 
+>  drivers/mfd/tps65010.c          |  14 ++--
+
+Reviewed-by: Lee Jones <lee@kernel.org>
+
+What's the merge plan for this?
+
+>  include/linux/mfd/tps65010.h    |  11 +--
+>  3 files changed, 102 insertions(+), 60 deletions(-)
+
 -- 
-2.39.2
-
+Lee Jones [李琼斯]
