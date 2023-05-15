@@ -2,45 +2,40 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D2FA7701BA6
-	for <lists+linux-omap@lfdr.de>; Sun, 14 May 2023 07:41:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97C24702647
+	for <lists+linux-omap@lfdr.de>; Mon, 15 May 2023 09:45:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229635AbjENFl0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 14 May 2023 01:41:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34160 "EHLO
+        id S238839AbjEOHpa (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 15 May 2023 03:45:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55646 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229548AbjENFlZ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 14 May 2023 01:41:25 -0400
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 968C52129;
-        Sat, 13 May 2023 22:41:24 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 634638106;
-        Sun, 14 May 2023 05:41:23 +0000 (UTC)
-Date:   Sun, 14 May 2023 08:41:22 +0300
-From:   Tony Lindgren <tony@atomide.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Jiri Slaby <jirislaby@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Dhruva Gole <d-gole@ti.com>,
-        Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
-        Johan Hovold <johan@kernel.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-omap@vger.kernel.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org
-Subject: Re: [PATCH v11 1/1] serial: core: Start managing serial controllers
- to enable runtime PM
-Message-ID: <20230514054122.GH14287@atomide.com>
-References: <20230511065355.47525-1-tony@atomide.com>
- <2023051332-pretended-spoiler-61fc@gregkh>
+        with ESMTP id S229758AbjEOHp3 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 15 May 2023 03:45:29 -0400
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a02:c205:3004:2154::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F317F120;
+        Mon, 15 May 2023 00:45:26 -0700 (PDT)
+Received: from p200300ccff34d8001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff34:d800:1a3d:a2ff:febf:d33a] helo=aktux)
+        by mail.andi.de1.cc with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <andreas@kemnade.info>)
+        id 1pyStR-0003uR-AU; Mon, 15 May 2023 09:45:17 +0200
+Received: from andi by aktux with local (Exim 4.96)
+        (envelope-from <andreas@kemnade.info>)
+        id 1pyStQ-000HER-2d;
+        Mon, 15 May 2023 09:45:16 +0200
+From:   Andreas Kemnade <andreas@kemnade.info>
+To:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        conor+dt@kernel.org, tony@atomide.com, afd@ti.com,
+        andreas@kemnade.info, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: [PATCH v7 0/2] dt-bindings: omap: Convert omap.txt to yaml
+Date:   Mon, 15 May 2023 09:45:10 +0200
+Message-Id: <20230515074512.66226-1-andreas@kemnade.info>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2023051332-pretended-spoiler-61fc@gregkh>
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -48,52 +43,47 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Greg Kroah-Hartman <gregkh@linuxfoundation.org> [230513 11:10]:
-> On Thu, May 11, 2023 at 09:53:51AM +0300, Tony Lindgren wrote:
-> > We want to enable runtime PM for serial port device drivers in a generic
-> > way. To do this, we want to have the serial core layer manage the
-> > registered physical serial controller devices.
-> > 
-> > To do this, let's set up a struct bus and struct device for the serial
-> > core controller as suggested by Greg and Jiri. The serial core controller
-> > devices are children of the physical serial port device. The serial core
-> > controller device is needed to support multiple different kind of ports
-> > connected to single physical serial port device.
-> > 
-> > Let's also set up a struct device for the serial core port. The serial
-> > core port instances are children of the serial core controller device.
-> > 
-> > With the serial core port device we can now flush pending TX on the
-> > runtime PM resume as suggested by Johan.
-> 
-> Much better, thanks!
-> 
-> One thing jumps out at me though, you are passing around "raw" struct
-> device pointers as the serial port structure, why?
-> 
-> Shouldn't:
-> 
-> > @@ -563,7 +564,8 @@ struct uart_port {
-> >  	unsigned int		minor;
-> >  	resource_size_t		mapbase;		/* for ioremap */
-> >  	resource_size_t		mapsize;
-> > -	struct device		*dev;			/* parent device */
-> > +	struct device		*dev;			/* serial port physical parent device */
-> > +	struct device		*port_dev;		/* serial core port device */
-> 
-> port_dev here be something like "struct serial_port" (or some better
-> name)?  That way you enforce the type being passed around to the serial
-> code in this change which will help catch any type mistakes.
-> 
-> Yes, this structure can just be a "wrapper" around 'struct device' but
-> at least it's a unique type.
+Convert board compatibles to yaml and add the new yaml file to
+MAINTAINERS so that emails are properly distributed
 
-Good idea thanks, will change.
+Changes in V7:
+ - checked for lost compatibles
+ - remove conversions with pattern matches probably allowing
+   too much
 
-> Or am I missing why this was done this way?
+Changes in V6:
+ - reflect the rename also in the file header
 
-No reason to keep it as struct device.
+Changes in V5:
+ - renamed the new file to ti/omap.yaml
 
-Regards,
+Changes in V4:
+ - fix order 
+ - re-add dra7 to .txt to have it sorted out later
 
-Tony
+Changes in V3:
+ - update MAINTAINERS
+ - remove converted stuff from .txt
+
+Changes in V2:
+- renamed file
+- fixed gta04
+- added Openpandora, Epson Moverio BT-200
+- drop example
+- remove descriptions if just reformatting the name
+
+Andreas Kemnade (1):
+  MAINTAINERS: add board bindings list to OMAP2+ files
+
+Andrew Davis (1):
+  dt-bindings: omap: Partially convert omap.txt to yaml
+
+ .../devicetree/bindings/arm/omap/omap.txt     |  99 ----------
+ .../devicetree/bindings/arm/ti/omap.yaml      | 176 ++++++++++++++++++
+ MAINTAINERS                                   |   1 +
+ 3 files changed, 177 insertions(+), 99 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/arm/ti/omap.yaml
+
+-- 
+2.39.2
+
