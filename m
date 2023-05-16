@@ -2,107 +2,132 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CB0F07055A6
-	for <lists+linux-omap@lfdr.de>; Tue, 16 May 2023 20:07:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03BCF705B31
+	for <lists+linux-omap@lfdr.de>; Wed, 17 May 2023 01:19:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229670AbjEPSHo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 16 May 2023 14:07:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52706 "EHLO
+        id S229956AbjEPXTC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 16 May 2023 19:19:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231830AbjEPSHn (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 16 May 2023 14:07:43 -0400
-Received: from mail-yw1-x112a.google.com (mail-yw1-x112a.google.com [IPv6:2607:f8b0:4864:20::112a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3535E0
-        for <linux-omap@vger.kernel.org>; Tue, 16 May 2023 11:07:41 -0700 (PDT)
-Received: by mail-yw1-x112a.google.com with SMTP id 00721157ae682-55a14807e4cso248993267b3.1
-        for <linux-omap@vger.kernel.org>; Tue, 16 May 2023 11:07:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1684260461; x=1686852461;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=inQ5f7VRz5BOFEfnn5RAjhto61AF05QWWJr9NbIc+z0=;
-        b=IV7kVXdwi4x4PcwPjv+BtXQmnqKe7c83SYOcPGXUA1t8eNm3cAcYaEE2FNk24PpE5u
-         qmbV4OK6r2BVjSkn5LH26L15qgtXbdSdxdr2qEam9Y9996Q0MGmrSKDhyabUmvxxm3H/
-         +ef2oIOGONILaQqvI9UjhwouFY+at/Fb5BuAbYu9Ud0fOInH149sPGu+Tt1Ruk8tPmYA
-         Ax5ydboqb7uKoc1vCNs4xGbG4TqoBBRIqdLi4oscZ6LhDJFDr6GnfilQNIh+yYH8IF10
-         dUhhnNGF4qQbuIBgmgT/Zklp6j2oiHzBgZIWq5FNhioVeaYO3K+K7qhf8mG83tZhqThA
-         IlBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684260461; x=1686852461;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=inQ5f7VRz5BOFEfnn5RAjhto61AF05QWWJr9NbIc+z0=;
-        b=KyBwtG2FDBDa0f4bc4Vnqc3gJz/NhJRO3hYdFJkVAe+DrszSUWLlSzG7ratD2aOUM/
-         vpj8wo1lmKl+o2eoS4Vq1CDB08KvcfrXcTwHXc7RRG/Zhs39Xg4XlnFOr4aRJZWJu53A
-         WaCcL9vrqhmj39lT/ITaPXLNZwaB+y4i4V2JbncRJNjmu3nXyLqgq4/SsXOtSR4rx67i
-         oumD5jEW0B6RD78UPK8q3xkuhcWqTrOTqNCKFV6WhgjxaUY/2fWHMPsLyJsm0+ssON+V
-         597Z4pv+OEnJ1gYE9bSCAq70eX/oSzfQvYBc4792sdNd6BDnuzUXMWlZV7w8kVX/rtOW
-         Y4uw==
-X-Gm-Message-State: AC+VfDwjvXDA67yXwD+ARBu+tLCLmJ3UeHkLDGuCeA21tvO34ycRsH+i
-        m98XXbf5kZXahDsGL4QXvvL1Qyeg01CC0DBT/Av2Nw==
-X-Google-Smtp-Source: ACHHUZ4UmBVtZeZuZXoeN4pttqBDEu4dGrtjsmraWASig/YEZe42jK+t8kt80mgm5i6kdi1orGqxtmDr3G9WbZYaVts=
-X-Received: by 2002:a0d:c104:0:b0:561:b5cc:e10a with SMTP id
- c4-20020a0dc104000000b00561b5cce10amr721584ywd.6.1684260461116; Tue, 16 May
- 2023 11:07:41 -0700 (PDT)
+        with ESMTP id S231373AbjEPXSu (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 16 May 2023 19:18:50 -0400
+Received: from meesny.iki.fi (meesny.iki.fi [IPv6:2001:67c:2b0:1c1::201])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59E9E448C;
+        Tue, 16 May 2023 16:18:34 -0700 (PDT)
+Received: from darkstar.musicnaut.iki.fi (85-76-146-199-nat.elisa-mobile.fi [85.76.146.199])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: aaro.koskinen)
+        by meesny.iki.fi (Postfix) with ESMTPSA id 4QLXGl0L5SzyTW;
+        Wed, 17 May 2023 02:18:22 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=meesny;
+        t=1684279111;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=Vb+A9iOTP02ZCkPAmsVAR/eDZMRXA1HmPW5ybHLeMc8=;
+        b=Qa5s19H7fFpuhyAC8+miaNUHlba2D2tpjilO4QmL4HYjVqfUI0okebT3wi0qPuggZNTcW6
+        VnAEMLATAwxar7iQCdFuj8kZi01pjmYNoQtPmZdvi/y2bxyYSvFrj9dwBZHekYljCVsTb6
+        FoPv1AaGVsdRx/6Ivm4cLEmsNnJBgEI=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
+        s=meesny; t=1684279111;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=Vb+A9iOTP02ZCkPAmsVAR/eDZMRXA1HmPW5ybHLeMc8=;
+        b=Nn7Fxr7Ro53/rvPYt9zz7x9TFrN5D8hfPm2b5Ft9Rhr31I9DSBEWOxSC2RFbxZJlzsb1Uc
+        L1HgrAwOMRMsU1t95rcdSC0ZwEcFEGutRdY89NPXyiq6DqqlEzusRMn8/x14HSQaGzzgqq
+        BMZ0rU5UCrfNI7tIqcWYNaP7Np8dGF0=
+ARC-Authentication-Results: i=1;
+        ORIGINATING;
+        auth=pass smtp.auth=aaro.koskinen smtp.mailfrom=aaro.koskinen@iki.fi
+ARC-Seal: i=1; s=meesny; d=iki.fi; t=1684279111; a=rsa-sha256; cv=none;
+        b=RwleUqzehTz3HbZ6b/VMpIjDVaA4Nsc3fu72IsL4voTcCasHIU6DOx1Zq3B8wMDP8f0eUm
+        FMf8D7ammM6DWaYXL7QPxvOBaYxhOV+0KR4TMm2j0WoL/gYYHMsjIqyJ4r2a+GDsqVGsg7
+        eHViMsarDjur2uv7AYiYWail8NqVmOU=
+Date:   Wed, 17 May 2023 02:18:21 +0300
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     soc@kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        Russell King <linux@armlinux.org.uk>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Hartley Sweeten <hsweeten@visionengravers.com>,
+        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+        Andre Przywara <andre.przywara@arm.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+        Tony Lindgren <tony@atomide.com>, Andrew Lunn <andrew@lunn.ch>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Viresh Kumar <vireshk@kernel.org>,
+        Shiraz Hashim <shiraz.linux.kernel@gmail.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-usb@vger.kernel.org
+Subject: Re: [PATCH 07/13] ARM: omap1: add missing include
+Message-ID: <20230516231821.GC271152@darkstar.musicnaut.iki.fi>
+References: <20230516153109.514251-1-arnd@kernel.org>
+ <20230516153109.514251-8-arnd@kernel.org>
 MIME-Version: 1.0
-References: <20230430093505.561265-1-linus.walleij@linaro.org>
- <20230515210254.GA271152@darkstar.musicnaut.iki.fi> <CACRpkdYauX+Q2p+Nccxmd__fxjEjyGvs=Oysv-5BaArSScV2wg@mail.gmail.com>
- <20230516155215.GB271152@darkstar.musicnaut.iki.fi>
-In-Reply-To: <20230516155215.GB271152@darkstar.musicnaut.iki.fi>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Tue, 16 May 2023 20:07:29 +0200
-Message-ID: <CACRpkdaPzr3-ZjqJYeh+0wKPvr+N+Uj1pQjtEgFXm3OCbnq_9A@mail.gmail.com>
-Subject: Re: [PATCH v3] ARM/mfd/gpio: Fixup TPS65010 regression on OMAP1 OSK1
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>
-Cc:     Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        andy.shevchenko@gmail.com, Andreas Kemnade <andreas@kemnade.info>,
-        Lee Jones <lee@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230516153109.514251-8-arnd@kernel.org>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, May 16, 2023 at 5:52=E2=80=AFPM Aaro Koskinen <aaro.koskinen@iki.fi=
-> wrote:
+On Tue, May 16, 2023 at 05:31:03PM +0200, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> The omap_serial_wakeup_init() declaration is not visible where it is
+> defined, so make sure "common.h" is included here, avoiding:
+> 
+> arch/arm/mach-omap1/serial.c:221:12: error: no previous prototype for 'omap_serial_wakeup_init' [-Werror=missing-prototypes]
+> 
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-> > I just added that onliner, it gives a nice symmetry to the CF card
-> > IRQ.
->
-> It seems you forgot to add braces as they are now needed for if .. else:
->
-> +       d =3D gpiod_get(NULL, "smc_irq", GPIOD_IN);
-> +       if (IS_ERR(d))
-> +               pr_err("Unable to get SMC IRQ GPIO descriptor\n");
-> +       else
-> +               irq_set_irq_type(gpiod_to_irq(d), IRQ_TYPE_EDGE_RISING);
-> +               osk5912_smc91x_resources[1] =3D DEFINE_RES_IRQ(gpiod_to_i=
-rq(d));
-> +
+Acked-by: Aaro Koskinen <aaro.koskinen@iki.fi>
 
-Ooops fixed it.
+A.
 
-> > > But I'm not sure why this is now needed?
-> >
-> > Me neither. I hope some people will test the other boards as well,
-> > or I will fix them as they report breakage, as is custom.
->
-> I will try to test all the OMAP1 boards.
-
-Thanks!
-
-I actually have the nokia 770. I will see if I can figure out how to hack
-it.
-
-Yours,
-Linus Walleij
+> ---
+>  arch/arm/mach-omap1/serial.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/arch/arm/mach-omap1/serial.c b/arch/arm/mach-omap1/serial.c
+> index 96f59110d649..f25b94c86aec 100644
+> --- a/arch/arm/mach-omap1/serial.c
+> +++ b/arch/arm/mach-omap1/serial.c
+> @@ -19,6 +19,7 @@
+>  
+>  #include <asm/mach-types.h>
+>  
+> +#include "common.h"
+>  #include "serial.h"
+>  #include "mux.h"
+>  #include "pm.h"
+> -- 
+> 2.39.2
+> 
