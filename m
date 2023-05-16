@@ -2,98 +2,120 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC72B704D6A
-	for <lists+linux-omap@lfdr.de>; Tue, 16 May 2023 14:07:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 144A0704FC3
+	for <lists+linux-omap@lfdr.de>; Tue, 16 May 2023 15:49:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233083AbjEPMHt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 16 May 2023 08:07:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34306 "EHLO
+        id S233780AbjEPNtY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 16 May 2023 09:49:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233059AbjEPMHs (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 16 May 2023 08:07:48 -0400
-Received: from mail-yw1-x1132.google.com (mail-yw1-x1132.google.com [IPv6:2607:f8b0:4864:20::1132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DC9459FA
-        for <linux-omap@vger.kernel.org>; Tue, 16 May 2023 05:07:43 -0700 (PDT)
-Received: by mail-yw1-x1132.google.com with SMTP id 00721157ae682-559f1819c5dso204098997b3.0
-        for <linux-omap@vger.kernel.org>; Tue, 16 May 2023 05:07:43 -0700 (PDT)
+        with ESMTP id S233778AbjEPNtX (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 16 May 2023 09:49:23 -0400
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 877F05B85
+        for <linux-omap@vger.kernel.org>; Tue, 16 May 2023 06:49:19 -0700 (PDT)
+Received: by mail-ej1-x62e.google.com with SMTP id a640c23a62f3a-94a342f7c4cso2590991366b.0
+        for <linux-omap@vger.kernel.org>; Tue, 16 May 2023 06:49:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1684238862; x=1686830862;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EXBzkr7XTYihjpoMOMSdGJ+v/IJspSyEie+tjErWmBg=;
-        b=svJkFnnTK0Qk1XY5JfSqDfIvtnPZn8bTj2//4u5xhU4QRrZLBU0N6aLp5W2Q1Jgk2e
-         LLFwpb5BcO8PwnC/j9ZM4RvXQCwp9hzN8w3Gz8GaIjNOfNS9BJcMSCn4JJeXfaCR9Vva
-         iLd5dEis+8A05OPGeoW8S/hjB1gwoGeqqADX+7+7yUmHHyPOINtiPt+9puUY+dfs3Q4+
-         JFJyp3pRbzSh89f3S8mgKUfegD/Og8OTAt3kdYJsP3raSWzVR804dTsKY+IaP/tixHoU
-         QqwpExAEtMQiAfeqvIYrcptwBJuouWk5b2nNTcevoGf/B4EoeaBrTU1y3qg1ayj8RLNK
-         tTLw==
+        d=baylibre-com.20221208.gappssmtp.com; s=20221208; t=1684244958; x=1686836958;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=grBS+q7iyYNtpmlJiltCB+JthNyOMWFlJwW3Epp/Sos=;
+        b=HBRr7sH/6xzY5vpJcD68tLzE31I6o8a+NcxY2HFi4YFpzplHIJ7/PzJkngKJSuccRP
+         00wk/txTUCEKzf/9Xte3uU8wqxDOk1J4BWxlrVWd0mEUB9Bk8C5q2Gt+mkUAeuqYpvxu
+         /IjHj3a79JIRqSxIkcHZ2MO+RP/aqcA3GCEJYmTXAK8DqjMIwiFf7M1Ne/xzR9AWf7B5
+         lkYxLJ3wjWcVVbooSh6oiB40iD0UpzXbRSP8awT1N4CcFOMPqDmG01hTv4MedoquYXMR
+         r/D52eamKXZX7uxA1aNn8L2BZfWxMH70Zck3SY9Du40o3urawndmy1WWAV3E/2OiEahq
+         T7jQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684238862; x=1686830862;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=EXBzkr7XTYihjpoMOMSdGJ+v/IJspSyEie+tjErWmBg=;
-        b=TVfSf1xJe/joRxV5hbOfKNfNjj2MejUs8ddgacrwj4/Jd+Yl8TgzSLsDUEcQUTXKH1
-         2qmu9D+3XxK8VGHWCijR2/zbZIWUo3BJco95qiJ3E+fndkDsu0v7iXiJybjnyBEIm2Rx
-         zIZ+dg8e8D+PzAMw6Uh/Bd8aOhmZNt8Uy2w3jNhOQa868cCpj+/obcITvoXXlGLpTydm
-         RPHLvo1A2QX0XvVIFbJnNfWX8MG9ss6PaJkb6jt1C3IPIF5LHLJzXdppsesp6cNPv5/y
-         SQBYCy4JF/1YHEPZBdDKH+IVgJwJ+4XEGaw7pln2c3eLnXVWBCun5ac1sPca7cifRpIl
-         oiPg==
-X-Gm-Message-State: AC+VfDxGN4hpWVhI35/gCnpO7hQnMvvLJsWw8o3j1lpp6pzpADPh8NBg
-        lvtCCDK1neoL3DUWhZ8xyAMJvd12ZmkuNUCoeLNYpP8bhMzN0G4I
-X-Google-Smtp-Source: ACHHUZ7AAoHWKBCqPnMMtbU7pv68BVqjOLKj9mnRi/mT9BaVrD0v+kdG6baQkUtrchKiEDckPNZNjvs6YZyQ/Z6fjVo=
-X-Received: by 2002:a0d:cb01:0:b0:561:a80b:6647 with SMTP id
- n1-20020a0dcb01000000b00561a80b6647mr579558ywd.45.1684238862573; Tue, 16 May
- 2023 05:07:42 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1684244958; x=1686836958;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=grBS+q7iyYNtpmlJiltCB+JthNyOMWFlJwW3Epp/Sos=;
+        b=dIe/gHlSdW3kexiHxc7zR6qddWOkIjD1k+ZRhIsCn/L8dz8K4bnI5XB36nkGYShcEV
+         Q0e4KbPeFMCCFXzgx9j7CB3MQ/9GUuTDHM4g69XxFsGsFBb/xkeVIZYSib5ZbzY8w0QA
+         IiuCxZJBJR6w8UzrUNwS7O6Dsg9f/yQuZNI09WrUOyWrOGC3xbG7L6FAQyO8EP1/p4ZM
+         LH2kxCzEhpMOMyAqrSlQ4Ro+Eh6VU3oOBppLbqp1C6TAekYnuG2J1n5FAqI1b6YwODCK
+         3PlJUhYccIGxXwXAfzkFMNObvLaIWm59fRBo/3SzBstWuJyoHwLP6PVa3d7T6aaQBOoC
+         DJNg==
+X-Gm-Message-State: AC+VfDwbYcILRrTfE+CDS5VJwmHtp50dN0BI+PYGY3xV8aJaMoAwz/LD
+        Z99sgRXqvldtJRLqkNLNADHtBg==
+X-Google-Smtp-Source: ACHHUZ6QN/kV4HRxD583spR8ZSU6tjbIY8aGPRXSbA89TUY99874swg4qONJq7Wg00BCUE1z6qeGeA==
+X-Received: by 2002:a17:907:97c9:b0:96a:1348:7a27 with SMTP id js9-20020a17090797c900b0096a13487a27mr25712036ejc.12.1684244957919;
+        Tue, 16 May 2023 06:49:17 -0700 (PDT)
+Received: from [10.2.5.18] (abordeaux-655-1-129-86.w90-5.abo.wanadoo.fr. [90.5.10.86])
+        by smtp.gmail.com with ESMTPSA id lh2-20020a170906f8c200b00965b7bf6aa5sm10942387ejb.52.2023.05.16.06.49.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 16 May 2023 06:49:17 -0700 (PDT)
+Message-ID: <9a52e227-4f36-3766-7a1e-b2cc37a3657a@baylibre.com>
+Date:   Tue, 16 May 2023 15:49:16 +0200
 MIME-Version: 1.0
-References: <20230430093505.561265-1-linus.walleij@linaro.org> <20230515210254.GA271152@darkstar.musicnaut.iki.fi>
-In-Reply-To: <20230515210254.GA271152@darkstar.musicnaut.iki.fi>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Tue, 16 May 2023 14:07:31 +0200
-Message-ID: <CACRpkdYauX+Q2p+Nccxmd__fxjEjyGvs=Oysv-5BaArSScV2wg@mail.gmail.com>
-Subject: Re: [PATCH v3] ARM/mfd/gpio: Fixup TPS65010 regression on OMAP1 OSK1
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>
-Cc:     Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        andy.shevchenko@gmail.com, Andreas Kemnade <andreas@kemnade.info>,
-        Lee Jones <lee@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v2 1/2] gpio: tps65219: add GPIO support for TPS65219 PMIC
+Content-Language: en-US
+To:     Bartosz Golaszewski <brgl@bgdev.pl>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Tony Lindgren <tony@atomide.com>, Lee Jones <lee@kernel.org>,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-omap@vger.kernel.org,
+        Jonathan Cormier <jcormier@criticallink.com>
+References: <20230511-tps65219-add-gpio-support-v2-0-60feb64d649a@baylibre.com>
+ <20230511-tps65219-add-gpio-support-v2-1-60feb64d649a@baylibre.com>
+ <CAMRc=Md-CzrG3QPtnh0OxYaHTAYZ2aUfMKhkAOeRm2Zn30qE0A@mail.gmail.com>
+From:   jerome Neanne <jneanne@baylibre.com>
+In-Reply-To: <CAMRc=Md-CzrG3QPtnh0OxYaHTAYZ2aUfMKhkAOeRm2Zn30qE0A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, May 15, 2023 at 11:02=E2=80=AFPM Aaro Koskinen <aaro.koskinen@iki.f=
-i> wrote:
 
-> There is still a problem that smc_irq is not working. It seems when I
-> tested the previous version, I only quickly checked that the eth0 again
-> probes and the link comes up, without testing any actual traffic - sorry.
->
-> It seems the irq is stuck hi:
->
-> gpiochip1: GPIOs 208-223, parent: platform/omap_gpio.1, gpio-0-15:
->  gpio-208 (                    |smc_irq             ) in  hi IRQ
->
-> To fix it I had to add:
->
->         irq_set_irq_type(gpiod_to_irq(d), IRQ_TYPE_EDGE_RISING);
 
-I just added that onliner, it gives a nice symmetry to the CF card
-IRQ.
+On 15/05/2023 17:36, Bartosz Golaszewski wrote:
+>> +static const struct gpio_chip tps65219_gpio_chip = {
+>> +       .label                  = "tps65219-gpio",
+>> +       .owner                  = THIS_MODULE,
+>> +       .get_direction          = tps65219_gpio_get_direction,
+>> +       .direction_input        = tps65219_gpio_direction_input,
+>> +       .direction_output       = tps65219_gpio_direction_output,
+>> +       .get                    = tps65219_gpio_get,
+>> +       .set                    = tps65219_gpio_set,
+>> +       .base                   = -1,
+>> +       .ngpio                  = 3,
+>> +       .can_sleep              = true,
+>> +};
+>> +
+>> +static int tps65219_gpio_probe(struct platform_device *pdev)
+>> +{
+>> +       struct tps65219 *tps = dev_get_drvdata(pdev->dev.parent);
+>> +       struct tps65219_gpio *gpio;
+>> +
+>> +       gpio = devm_kzalloc(&pdev->dev, sizeof(*gpio), GFP_KERNEL);
+>> +       if (!gpio)
+>> +               return -ENOMEM;
+>> +
+>> +       gpio->tps = tps;
+>> +       gpio->gpio_chip = tps65219_gpio_chip;
+> 
+> Aren't you getting any warnings here about dropping the 'const' from
+> the global structure?
+I tried a build with W=1 to check for warning I might have missed but 
+can't catch any here.
+It's done in the exact same way in many other upstream drivers.
+Anyway I can remove the const here if you think that could create 
+trouble at some point.
 
-> But I'm not sure why this is now needed?
+Just let me know your recommendation.
 
-Me neither. I hope some people will test the other boards as well,
-or I will fix them as they report breakage, as is custom.
-
-Yours,
-Linus Walleij
+Regards,
+Jerome
