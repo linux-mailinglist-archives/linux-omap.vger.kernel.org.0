@@ -2,75 +2,93 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 144A0704FC3
-	for <lists+linux-omap@lfdr.de>; Tue, 16 May 2023 15:49:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B860705271
+	for <lists+linux-omap@lfdr.de>; Tue, 16 May 2023 17:41:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233780AbjEPNtY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 16 May 2023 09:49:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60048 "EHLO
+        id S234005AbjEPPlr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 16 May 2023 11:41:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34796 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233778AbjEPNtX (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 16 May 2023 09:49:23 -0400
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 877F05B85
-        for <linux-omap@vger.kernel.org>; Tue, 16 May 2023 06:49:19 -0700 (PDT)
-Received: by mail-ej1-x62e.google.com with SMTP id a640c23a62f3a-94a342f7c4cso2590991366b.0
-        for <linux-omap@vger.kernel.org>; Tue, 16 May 2023 06:49:19 -0700 (PDT)
+        with ESMTP id S233998AbjEPPln (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 16 May 2023 11:41:43 -0400
+Received: from mail-vk1-xa30.google.com (mail-vk1-xa30.google.com [IPv6:2607:f8b0:4864:20::a30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D2E17A94
+        for <linux-omap@vger.kernel.org>; Tue, 16 May 2023 08:41:31 -0700 (PDT)
+Received: by mail-vk1-xa30.google.com with SMTP id 71dfb90a1353d-44fa6454576so5055029e0c.0
+        for <linux-omap@vger.kernel.org>; Tue, 16 May 2023 08:41:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20221208.gappssmtp.com; s=20221208; t=1684244958; x=1686836958;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=grBS+q7iyYNtpmlJiltCB+JthNyOMWFlJwW3Epp/Sos=;
-        b=HBRr7sH/6xzY5vpJcD68tLzE31I6o8a+NcxY2HFi4YFpzplHIJ7/PzJkngKJSuccRP
-         00wk/txTUCEKzf/9Xte3uU8wqxDOk1J4BWxlrVWd0mEUB9Bk8C5q2Gt+mkUAeuqYpvxu
-         /IjHj3a79JIRqSxIkcHZ2MO+RP/aqcA3GCEJYmTXAK8DqjMIwiFf7M1Ne/xzR9AWf7B5
-         lkYxLJ3wjWcVVbooSh6oiB40iD0UpzXbRSP8awT1N4CcFOMPqDmG01hTv4MedoquYXMR
-         r/D52eamKXZX7uxA1aNn8L2BZfWxMH70Zck3SY9Du40o3urawndmy1WWAV3E/2OiEahq
-         T7jQ==
+        d=bgdev-pl.20221208.gappssmtp.com; s=20221208; t=1684251690; x=1686843690;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dUlgGwi/Bid+V+vNq0ihjnvnFHGXCmk1OrWz555v4NM=;
+        b=PwfMKsdb+yRpZ4onFvCLkAE93SmlnNm0Ta3+o6TB28KIbmR8tK1ZYoO5t9fa4TfPDk
+         lw9jaDL9fSmEFurrwzHmqYRCZPO8h/K8PRgP03l8Rpkpy/9kOa4cFt8n8j/IGa4PjN5e
+         xe06l6ToYOPFrMKxW5ChRmmbw1TPJSTuq+KM+CMWNiIY1fnlHEq2AdRLU0uXN/ihPxLl
+         D4LDqU8lNz6pSLUwB9xkU6A2/8AVlFvNoTVW4QYLQKPr6NwqWVxkKiNB3QSdLhGbe7dD
+         zgCFO+ccPHibN/JBS4R/XtUiJFNonfUTYhe+mKZxY061UdbpsdpRUasBFCuuRG8NRtaP
+         d4Dg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684244958; x=1686836958;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=grBS+q7iyYNtpmlJiltCB+JthNyOMWFlJwW3Epp/Sos=;
-        b=dIe/gHlSdW3kexiHxc7zR6qddWOkIjD1k+ZRhIsCn/L8dz8K4bnI5XB36nkGYShcEV
-         Q0e4KbPeFMCCFXzgx9j7CB3MQ/9GUuTDHM4g69XxFsGsFBb/xkeVIZYSib5ZbzY8w0QA
-         IiuCxZJBJR6w8UzrUNwS7O6Dsg9f/yQuZNI09WrUOyWrOGC3xbG7L6FAQyO8EP1/p4ZM
-         LH2kxCzEhpMOMyAqrSlQ4Ro+Eh6VU3oOBppLbqp1C6TAekYnuG2J1n5FAqI1b6YwODCK
-         3PlJUhYccIGxXwXAfzkFMNObvLaIWm59fRBo/3SzBstWuJyoHwLP6PVa3d7T6aaQBOoC
-         DJNg==
-X-Gm-Message-State: AC+VfDwbYcILRrTfE+CDS5VJwmHtp50dN0BI+PYGY3xV8aJaMoAwz/LD
-        Z99sgRXqvldtJRLqkNLNADHtBg==
-X-Google-Smtp-Source: ACHHUZ6QN/kV4HRxD583spR8ZSU6tjbIY8aGPRXSbA89TUY99874swg4qONJq7Wg00BCUE1z6qeGeA==
-X-Received: by 2002:a17:907:97c9:b0:96a:1348:7a27 with SMTP id js9-20020a17090797c900b0096a13487a27mr25712036ejc.12.1684244957919;
-        Tue, 16 May 2023 06:49:17 -0700 (PDT)
-Received: from [10.2.5.18] (abordeaux-655-1-129-86.w90-5.abo.wanadoo.fr. [90.5.10.86])
-        by smtp.gmail.com with ESMTPSA id lh2-20020a170906f8c200b00965b7bf6aa5sm10942387ejb.52.2023.05.16.06.49.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 16 May 2023 06:49:17 -0700 (PDT)
-Message-ID: <9a52e227-4f36-3766-7a1e-b2cc37a3657a@baylibre.com>
-Date:   Tue, 16 May 2023 15:49:16 +0200
+        d=1e100.net; s=20221208; t=1684251690; x=1686843690;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dUlgGwi/Bid+V+vNq0ihjnvnFHGXCmk1OrWz555v4NM=;
+        b=WEcVL7nQYwu8oWh7kO+jG1O7Ytt5y8KS5f8FLP+zpThDAQPa1ne8kJ8VSiAuC48Oeb
+         ZkSQQyLvrISoxcVfuy/RcDjOYosAnCdUgTCFazbLx2DUjbBuat5pRDjcDr+u39V/tV9S
+         7OOFYnc5p2ybJaMetkoW77zacGx7Q/Nv1SryNLyNg6jpHRKua8HGYKR2sFmlVq1potHW
+         oOWv+CpTMF3m8ovBW8q+6NlEcONCdHOvE5mCIHhyKKTRZbfMHgO+bONql1HP0ZDB5H4L
+         3f+dqVs6XDYHfgXua+H10mgF6fuTgnJxBDa3ViZPu+Xvt9q8zV6QQZHyTXASKc4k+Waj
+         BycA==
+X-Gm-Message-State: AC+VfDx5peceEMmvJ2dEHgGivkrCi/KyW95FxiFcr6zYFDLnj4j5yb9e
+        aeeX5uIsyeoi6KSDcJvIz8vkc4oMrlOswdcjs+IwKg==
+X-Google-Smtp-Source: ACHHUZ7geFgnpKprltmekDwePERwLI1/NGr2YZczOVKccWMobKpDNL54KOiEZyFYlCUv/sA4Wmnqgjfv0BdhoMFOVIs=
+X-Received: by 2002:a1f:bd47:0:b0:44f:cc25:2007 with SMTP id
+ n68-20020a1fbd47000000b0044fcc252007mr12901502vkf.11.1684251690642; Tue, 16
+ May 2023 08:41:30 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v2 1/2] gpio: tps65219: add GPIO support for TPS65219 PMIC
-Content-Language: en-US
-To:     Bartosz Golaszewski <brgl@bgdev.pl>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Tony Lindgren <tony@atomide.com>, Lee Jones <lee@kernel.org>,
-        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-omap@vger.kernel.org,
-        Jonathan Cormier <jcormier@criticallink.com>
-References: <20230511-tps65219-add-gpio-support-v2-0-60feb64d649a@baylibre.com>
- <20230511-tps65219-add-gpio-support-v2-1-60feb64d649a@baylibre.com>
- <CAMRc=Md-CzrG3QPtnh0OxYaHTAYZ2aUfMKhkAOeRm2Zn30qE0A@mail.gmail.com>
-From:   jerome Neanne <jneanne@baylibre.com>
-In-Reply-To: <CAMRc=Md-CzrG3QPtnh0OxYaHTAYZ2aUfMKhkAOeRm2Zn30qE0A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+References: <20230516153109.514251-1-arnd@kernel.org> <20230516153109.514251-2-arnd@kernel.org>
+In-Reply-To: <20230516153109.514251-2-arnd@kernel.org>
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+Date:   Tue, 16 May 2023 17:41:19 +0200
+Message-ID: <CAMRc=MdHC=PPs2f3XXpRF5705553dXgVaVpN1kbRzypoeuOpRQ@mail.gmail.com>
+Subject: Re: [PATCH 01/13] ARM: davinci: fix davinci_cpufreq_init() declaration
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     soc@kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        Russell King <linux@armlinux.org.uk>,
+        Hartley Sweeten <hsweeten@visionengravers.com>,
+        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+        Andre Przywara <andre.przywara@arm.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+        Tony Lindgren <tony@atomide.com>, Andrew Lunn <andrew@lunn.ch>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Viresh Kumar <vireshk@kernel.org>,
+        Shiraz Hashim <shiraz.linux.kernel@gmail.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-usb@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
         T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -79,43 +97,77 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Tue, May 16, 2023 at 5:31=E2=80=AFPM Arnd Bergmann <arnd@kernel.org> wro=
+te:
+>
+> From: Arnd Bergmann <arnd@arndb.de>
+>
+> The davinci_cpufreq_init() declaration is only seen by its caller
+> but not the definition:
+>
+> drivers/cpufreq/davinci-cpufreq.c:153:12: error: no previous prototype fo=
+r 'davinci_cpufreq_init'
+>
+> Move it into the platform_data header that is already used an
+> interface between the two places.
+>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+>  arch/arm/mach-davinci/common.c                | 1 +
+>  arch/arm/mach-davinci/common.h                | 6 ------
+>  include/linux/platform_data/davinci-cpufreq.h | 6 ++++++
+>  3 files changed, 7 insertions(+), 6 deletions(-)
+>
+> diff --git a/arch/arm/mach-davinci/common.c b/arch/arm/mach-davinci/commo=
+n.c
+> index c1ce6b2a8d48..7bc7018688de 100644
+> --- a/arch/arm/mach-davinci/common.c
+> +++ b/arch/arm/mach-davinci/common.c
+> @@ -11,6 +11,7 @@
+>  #include <linux/etherdevice.h>
+>  #include <linux/davinci_emac.h>
+>  #include <linux/dma-mapping.h>
+> +#include <linux/platform_data/davinci-cpufreq.h>
+>
+>  #include <asm/tlb.h>
+>  #include <asm/mach/map.h>
+> diff --git a/arch/arm/mach-davinci/common.h b/arch/arm/mach-davinci/commo=
+n.h
+> index b2a96cdf88da..010ba1df27b3 100644
+> --- a/arch/arm/mach-davinci/common.h
+> +++ b/arch/arm/mach-davinci/common.h
+> @@ -55,12 +55,6 @@ extern void davinci_common_init(const struct davinci_s=
+oc_info *soc_info);
+>  extern void davinci_init_ide(void);
+>  void davinci_init_late(void);
+>
+> -#ifdef CONFIG_CPU_FREQ
+> -int davinci_cpufreq_init(void);
+> -#else
+> -static inline int davinci_cpufreq_init(void) { return 0; }
+> -#endif
+> -
+>  #ifdef CONFIG_SUSPEND
+>  int davinci_pm_init(void);
+>  #else
+> diff --git a/include/linux/platform_data/davinci-cpufreq.h b/include/linu=
+x/platform_data/davinci-cpufreq.h
+> index bc208c64e3d7..1ef91c36f609 100644
+> --- a/include/linux/platform_data/davinci-cpufreq.h
+> +++ b/include/linux/platform_data/davinci-cpufreq.h
+> @@ -16,4 +16,10 @@ struct davinci_cpufreq_config {
+>         int (*init)(void);
+>  };
+>
+> +#ifdef CONFIG_CPU_FREQ
+> +int davinci_cpufreq_init(void);
+> +#else
+> +static inline int davinci_cpufreq_init(void) { return 0; }
+> +#endif
+> +
+>  #endif /* _MACH_DAVINCI_CPUFREQ_H */
+> --
+> 2.39.2
+>
 
-
-On 15/05/2023 17:36, Bartosz Golaszewski wrote:
->> +static const struct gpio_chip tps65219_gpio_chip = {
->> +       .label                  = "tps65219-gpio",
->> +       .owner                  = THIS_MODULE,
->> +       .get_direction          = tps65219_gpio_get_direction,
->> +       .direction_input        = tps65219_gpio_direction_input,
->> +       .direction_output       = tps65219_gpio_direction_output,
->> +       .get                    = tps65219_gpio_get,
->> +       .set                    = tps65219_gpio_set,
->> +       .base                   = -1,
->> +       .ngpio                  = 3,
->> +       .can_sleep              = true,
->> +};
->> +
->> +static int tps65219_gpio_probe(struct platform_device *pdev)
->> +{
->> +       struct tps65219 *tps = dev_get_drvdata(pdev->dev.parent);
->> +       struct tps65219_gpio *gpio;
->> +
->> +       gpio = devm_kzalloc(&pdev->dev, sizeof(*gpio), GFP_KERNEL);
->> +       if (!gpio)
->> +               return -ENOMEM;
->> +
->> +       gpio->tps = tps;
->> +       gpio->gpio_chip = tps65219_gpio_chip;
-> 
-> Aren't you getting any warnings here about dropping the 'const' from
-> the global structure?
-I tried a build with W=1 to check for warning I might have missed but 
-can't catch any here.
-It's done in the exact same way in many other upstream drivers.
-Anyway I can remove the const here if you think that could create 
-trouble at some point.
-
-Just let me know your recommendation.
-
-Regards,
-Jerome
+Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
