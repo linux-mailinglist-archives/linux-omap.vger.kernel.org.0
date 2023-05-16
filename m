@@ -2,62 +2,61 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B860705271
-	for <lists+linux-omap@lfdr.de>; Tue, 16 May 2023 17:41:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 985D97052DE
+	for <lists+linux-omap@lfdr.de>; Tue, 16 May 2023 17:53:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234005AbjEPPlr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 16 May 2023 11:41:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34796 "EHLO
+        id S234263AbjEPPxC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 16 May 2023 11:53:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48656 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233998AbjEPPln (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 16 May 2023 11:41:43 -0400
-Received: from mail-vk1-xa30.google.com (mail-vk1-xa30.google.com [IPv6:2607:f8b0:4864:20::a30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D2E17A94
-        for <linux-omap@vger.kernel.org>; Tue, 16 May 2023 08:41:31 -0700 (PDT)
-Received: by mail-vk1-xa30.google.com with SMTP id 71dfb90a1353d-44fa6454576so5055029e0c.0
-        for <linux-omap@vger.kernel.org>; Tue, 16 May 2023 08:41:31 -0700 (PDT)
+        with ESMTP id S234311AbjEPPws (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 16 May 2023 11:52:48 -0400
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE95FD040;
+        Tue, 16 May 2023 08:51:59 -0700 (PDT)
+Received: by mail-ed1-x52e.google.com with SMTP id 4fb4d7f45d1cf-510b6a249a8so76977a12.0;
+        Tue, 16 May 2023 08:51:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20221208.gappssmtp.com; s=20221208; t=1684251690; x=1686843690;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dUlgGwi/Bid+V+vNq0ihjnvnFHGXCmk1OrWz555v4NM=;
-        b=PwfMKsdb+yRpZ4onFvCLkAE93SmlnNm0Ta3+o6TB28KIbmR8tK1ZYoO5t9fa4TfPDk
-         lw9jaDL9fSmEFurrwzHmqYRCZPO8h/K8PRgP03l8Rpkpy/9kOa4cFt8n8j/IGa4PjN5e
-         xe06l6ToYOPFrMKxW5ChRmmbw1TPJSTuq+KM+CMWNiIY1fnlHEq2AdRLU0uXN/ihPxLl
-         D4LDqU8lNz6pSLUwB9xkU6A2/8AVlFvNoTVW4QYLQKPr6NwqWVxkKiNB3QSdLhGbe7dD
-         zgCFO+ccPHibN/JBS4R/XtUiJFNonfUTYhe+mKZxY061UdbpsdpRUasBFCuuRG8NRtaP
-         d4Dg==
+        d=gmail.com; s=20221208; t=1684252308; x=1686844308;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=68srKCHs7MOmD8qVy7azG1dB7pPSq7b9dHnxIkISzTs=;
+        b=iTUS/wUE8BKyDA6qSZodOkI0rEqV0M7K5I7xfvEnet54BGQGXGOSGhMhhOUfZSb563
+         +uJB+sgkak0HtNnKxCw8ptox//DCDjhU1VLd0XDlfv9DyFVTGIKqopHIss5WaXkZJIeW
+         DSwAX7CTsn5tcFbWaxjfGL29lo2sp/j9d2tYjOMPmzqgboK/m61tUvq7uJnBt8ZMSRmn
+         tldueC/cmvmx6uFV/ZsuEt4w58KFEcPDyjHTa4bjGWbVyRUF68jMpoeWBAa682Jjw05T
+         jWQQ9Z8dBSDUqE8HBlfFox9CUab+Ibq+PVFQ3delRVxLrxogy2nj8atfQfnlZvHpx31L
+         gRiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684251690; x=1686843690;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dUlgGwi/Bid+V+vNq0ihjnvnFHGXCmk1OrWz555v4NM=;
-        b=WEcVL7nQYwu8oWh7kO+jG1O7Ytt5y8KS5f8FLP+zpThDAQPa1ne8kJ8VSiAuC48Oeb
-         ZkSQQyLvrISoxcVfuy/RcDjOYosAnCdUgTCFazbLx2DUjbBuat5pRDjcDr+u39V/tV9S
-         7OOFYnc5p2ybJaMetkoW77zacGx7Q/Nv1SryNLyNg6jpHRKua8HGYKR2sFmlVq1potHW
-         oOWv+CpTMF3m8ovBW8q+6NlEcONCdHOvE5mCIHhyKKTRZbfMHgO+bONql1HP0ZDB5H4L
-         3f+dqVs6XDYHfgXua+H10mgF6fuTgnJxBDa3ViZPu+Xvt9q8zV6QQZHyTXASKc4k+Waj
-         BycA==
-X-Gm-Message-State: AC+VfDx5peceEMmvJ2dEHgGivkrCi/KyW95FxiFcr6zYFDLnj4j5yb9e
-        aeeX5uIsyeoi6KSDcJvIz8vkc4oMrlOswdcjs+IwKg==
-X-Google-Smtp-Source: ACHHUZ7geFgnpKprltmekDwePERwLI1/NGr2YZczOVKccWMobKpDNL54KOiEZyFYlCUv/sA4Wmnqgjfv0BdhoMFOVIs=
-X-Received: by 2002:a1f:bd47:0:b0:44f:cc25:2007 with SMTP id
- n68-20020a1fbd47000000b0044fcc252007mr12901502vkf.11.1684251690642; Tue, 16
- May 2023 08:41:30 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230516153109.514251-1-arnd@kernel.org> <20230516153109.514251-2-arnd@kernel.org>
-In-Reply-To: <20230516153109.514251-2-arnd@kernel.org>
-From:   Bartosz Golaszewski <brgl@bgdev.pl>
-Date:   Tue, 16 May 2023 17:41:19 +0200
-Message-ID: <CAMRc=MdHC=PPs2f3XXpRF5705553dXgVaVpN1kbRzypoeuOpRQ@mail.gmail.com>
-Subject: Re: [PATCH 01/13] ARM: davinci: fix davinci_cpufreq_init() declaration
-To:     Arnd Bergmann <arnd@kernel.org>
-Cc:     soc@kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        d=1e100.net; s=20221208; t=1684252308; x=1686844308;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=68srKCHs7MOmD8qVy7azG1dB7pPSq7b9dHnxIkISzTs=;
+        b=SuCeOQS3S6fdJMmCuDhUAwKU7Fots5wbkpqUUp6LlRAjzVyNGXHw3AdIkO2pNnm93p
+         QLXXR5VtUOJAe5Z+orcQVVQ5mmbb1lWvJfig+azX/S/Mi3nrsSn7xVLOVVkflnR/BFHf
+         PWUQXQP/Rj4ayYzC/5tckTv40EEz9wFcSgjtDWIWgQTAnPWLBw3YFgqzQvcIRBmTOI+V
+         4qO+CbO8AChwFQc4wGbHquINe7zy2hUfbHvOVnb4iJUiu4F1EGreG+OmAA+bopB4ljSL
+         Xnkw8KREgLIKwDxoqTddKr9h7JD3uWZ/slZISV/CZyXngVG8Tj16McrREOE4uBV649rm
+         NyGg==
+X-Gm-Message-State: AC+VfDw1zpJeESJxsWPD0RoRS+xdBxxwR0mKT88WTxAMurrwa8vEd0PJ
+        qSVelYAxhlzWzdg4P/z/UGk=
+X-Google-Smtp-Source: ACHHUZ6UUBhE2/l4rk0+SCxoMU9t9VVFuC5HUku4gkgS9VHvi0TfYlJHNkXhMHDuH1xgAyrCeRm11A==
+X-Received: by 2002:aa7:dd0f:0:b0:50c:4b1:8912 with SMTP id i15-20020aa7dd0f000000b0050c04b18912mr31793925edv.15.1684252308282;
+        Tue, 16 May 2023 08:51:48 -0700 (PDT)
+Received: from giga-mm.home ([2a02:1210:8629:800:82ee:73ff:feb8:99e3])
+        by smtp.gmail.com with ESMTPSA id t5-20020a05640203c500b0050d82f96860sm8527921edw.59.2023.05.16.08.51.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 May 2023 08:51:47 -0700 (PDT)
+Message-ID: <2abeb4d11e8274bc337e504c6b0b42e86899150a.camel@gmail.com>
+Subject: Re: [PATCH 02/13] ARM: ep93xx: fix missing-prototype warnings
+From:   Alexander Sverdlin <alexander.sverdlin@gmail.com>
+To:     Arnd Bergmann <arnd@kernel.org>, soc@kernel.org
+Cc:     Arnd Bergmann <arnd@arndb.de>,
         Russell King <linux@armlinux.org.uk>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
         Hartley Sweeten <hsweeten@visionengravers.com>,
-        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
         Andre Przywara <andre.przywara@arm.com>,
         Shawn Guo <shawnguo@kernel.org>,
         Sascha Hauer <s.hauer@pengutronix.de>,
@@ -85,89 +84,70 @@ Cc:     soc@kernel.org, Arnd Bergmann <arnd@arndb.de>,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-omap@vger.kernel.org, linux-clk@vger.kernel.org,
         linux-usb@vger.kernel.org
+Date:   Tue, 16 May 2023 17:51:46 +0200
+In-Reply-To: <20230516153109.514251-3-arnd@kernel.org>
+References: <20230516153109.514251-1-arnd@kernel.org>
+         <20230516153109.514251-3-arnd@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+User-Agent: Evolution 3.46.4 
+MIME-Version: 1.0
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, May 16, 2023 at 5:31=E2=80=AFPM Arnd Bergmann <arnd@kernel.org> wro=
-te:
->
-> From: Arnd Bergmann <arnd@arndb.de>
->
-> The davinci_cpufreq_init() declaration is only seen by its caller
-> but not the definition:
->
-> drivers/cpufreq/davinci-cpufreq.c:153:12: error: no previous prototype fo=
-r 'davinci_cpufreq_init'
->
-> Move it into the platform_data header that is already used an
-> interface between the two places.
->
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> ---
->  arch/arm/mach-davinci/common.c                | 1 +
->  arch/arm/mach-davinci/common.h                | 6 ------
->  include/linux/platform_data/davinci-cpufreq.h | 6 ++++++
->  3 files changed, 7 insertions(+), 6 deletions(-)
->
-> diff --git a/arch/arm/mach-davinci/common.c b/arch/arm/mach-davinci/commo=
-n.c
-> index c1ce6b2a8d48..7bc7018688de 100644
-> --- a/arch/arm/mach-davinci/common.c
-> +++ b/arch/arm/mach-davinci/common.c
-> @@ -11,6 +11,7 @@
->  #include <linux/etherdevice.h>
->  #include <linux/davinci_emac.h>
->  #include <linux/dma-mapping.h>
-> +#include <linux/platform_data/davinci-cpufreq.h>
->
->  #include <asm/tlb.h>
->  #include <asm/mach/map.h>
-> diff --git a/arch/arm/mach-davinci/common.h b/arch/arm/mach-davinci/commo=
-n.h
-> index b2a96cdf88da..010ba1df27b3 100644
-> --- a/arch/arm/mach-davinci/common.h
-> +++ b/arch/arm/mach-davinci/common.h
-> @@ -55,12 +55,6 @@ extern void davinci_common_init(const struct davinci_s=
-oc_info *soc_info);
->  extern void davinci_init_ide(void);
->  void davinci_init_late(void);
->
-> -#ifdef CONFIG_CPU_FREQ
-> -int davinci_cpufreq_init(void);
-> -#else
-> -static inline int davinci_cpufreq_init(void) { return 0; }
-> -#endif
-> -
->  #ifdef CONFIG_SUSPEND
->  int davinci_pm_init(void);
->  #else
-> diff --git a/include/linux/platform_data/davinci-cpufreq.h b/include/linu=
-x/platform_data/davinci-cpufreq.h
-> index bc208c64e3d7..1ef91c36f609 100644
-> --- a/include/linux/platform_data/davinci-cpufreq.h
-> +++ b/include/linux/platform_data/davinci-cpufreq.h
-> @@ -16,4 +16,10 @@ struct davinci_cpufreq_config {
->         int (*init)(void);
->  };
->
-> +#ifdef CONFIG_CPU_FREQ
-> +int davinci_cpufreq_init(void);
-> +#else
-> +static inline int davinci_cpufreq_init(void) { return 0; }
-> +#endif
-> +
->  #endif /* _MACH_DAVINCI_CPUFREQ_H */
-> --
-> 2.39.2
->
+Hi Arnd!
 
-Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+On Tue, 2023-05-16 at 17:30 +0200, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+>=20
+> ep93xx_clocksource_read() is only called from the file it is declared in,
+> while ep93xx_timer_init() is declared in a header that is not included he=
+re.
+>=20
+> arch/arm/mach-ep93xx/timer-ep93xx.c:120:13: error: no previous prototype =
+for 'ep93xx_timer_init'
+> arch/arm/mach-ep93xx/timer-ep93xx.c:63:5: error: no previous prototype fo=
+r 'ep93xx_clocksource_read'
+>=20
+> Fixes: 000bc17817bf ("ARM: ep93xx: switch to GENERIC_CLOCKEVENTS")
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+
+Acked-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
+
+> ---
+> =C2=A0arch/arm/mach-ep93xx/timer-ep93xx.c | 3 ++-
+> =C2=A01 file changed, 2 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/arch/arm/mach-ep93xx/timer-ep93xx.c b/arch/arm/mach-ep93xx/t=
+imer-ep93xx.c
+> index dd4b164d1831..a9efa7bc2fa1 100644
+> --- a/arch/arm/mach-ep93xx/timer-ep93xx.c
+> +++ b/arch/arm/mach-ep93xx/timer-ep93xx.c
+> @@ -9,6 +9,7 @@
+> =C2=A0#include <linux/io.h>
+> =C2=A0#include <asm/mach/time.h>
+> =C2=A0#include "soc.h"
+> +#include "platform.h"
+> =C2=A0
+> =C2=A0/******************************************************************=
+*******
+> =C2=A0 * Timer handling for EP93xx
+> @@ -60,7 +61,7 @@ static u64 notrace ep93xx_read_sched_clock(void)
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return ret;
+> =C2=A0}
+> =C2=A0
+> -u64 ep93xx_clocksource_read(struct clocksource *c)
+> +static u64 ep93xx_clocksource_read(struct clocksource *c)
+> =C2=A0{
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0u64 ret;
+
+--=20
+Alexander Sverdlin.
+
