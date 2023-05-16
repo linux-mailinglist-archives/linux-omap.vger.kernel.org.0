@@ -2,81 +2,67 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 947467045C8
-	for <lists+linux-omap@lfdr.de>; Tue, 16 May 2023 09:08:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A15487046EA
+	for <lists+linux-omap@lfdr.de>; Tue, 16 May 2023 09:51:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230145AbjEPHIg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 16 May 2023 03:08:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43322 "EHLO
+        id S230141AbjEPHvM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 16 May 2023 03:51:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230183AbjEPHIb (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 16 May 2023 03:08:31 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A5281BE1
-        for <linux-omap@vger.kernel.org>; Tue, 16 May 2023 00:08:30 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 07182615CB
-        for <linux-omap@vger.kernel.org>; Tue, 16 May 2023 07:08:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEE76C433D2;
-        Tue, 16 May 2023 07:08:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684220909;
-        bh=zTDlgLCpvBp8ETQdMVVhv3Xeg0OraSPaNP3be+FFjzs=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ARSn7RJtIfBOTpaT6yb6crhDKMMZ1I82bgT6PFUQHPJo0IbG7ATNYNt3mGWPvbWZs
-         Ai1lRItE9m0nUrQpitj1oMS9z81t3/vcuQblKLl1kpjVJuL0sYbXA8l+sbM2NWKUoT
-         uikGz5A6x5Ea2GFYFGgS/6T2b+039cSFO76sNwjs0q+KBeOJ9ArjiDM0gHmnN5AH05
-         Lpzjiey9jSNsz3XkfpPtfdrZp8SawWLvHtfs85UW6vDOiUOK74auVtHxgwF5BQxQcN
-         OonCs8RO+5b9btMRFIgz8/h5xziAdsf5/xIjzCMUk39tF0BB3u9cv7YKliC/Nzzp0E
-         n9znsXU8BxnsQ==
-Date:   Tue, 16 May 2023 08:08:23 +0100
-From:   Lee Jones <lee@kernel.org>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        andy.shevchenko@gmail.com, Andreas Kemnade <andreas@kemnade.info>
-Subject: Re: [PATCH v3] ARM/mfd/gpio: Fixup TPS65010 regression on OMAP1 OSK1
-Message-ID: <20230516070823.GC10825@google.com>
-References: <20230430093505.561265-1-linus.walleij@linaro.org>
- <20230515123647.GD10825@google.com>
- <CACRpkdYrSUOf0M7+Ub6F5uMAf6MDtK9=GLrdWo_Ey98fCfiv0A@mail.gmail.com>
+        with ESMTP id S231485AbjEPHvK (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 16 May 2023 03:51:10 -0400
+Received: from mail.feshiecree.pl (mail.feshiecree.pl [89.40.114.103])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF8B946B6
+        for <linux-omap@vger.kernel.org>; Tue, 16 May 2023 00:51:06 -0700 (PDT)
+Received: by mail.feshiecree.pl (Postfix, from userid 1001)
+        id 1ED3E8754E; Tue, 16 May 2023 08:50:24 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=feshiecree.pl;
+        s=mail; t=1684223426;
+        bh=hFxZwVw4rIL+JwfEOGI47p+fdoVOAeqVswP6NWoHSHQ=;
+        h=Date:From:To:Subject:From;
+        b=hkfSgKmj9VGBr8DaumAh+q07PpMrJPthAZLjWkFqZ+afW/pD3AC04aFF4efCHnjjE
+         W5eFUEshfhkjXj9vJG0gEz6xcyAfg559ukUJNoVudiLzLBzmI1PUtfMmYo8g+jkncA
+         dpI5Wn0G5dAYEe60NXd8kmG1G2FtNnidY26CED9zIV/ABNbSjJU1lmVXKYNZRjRnfr
+         94s6vbXuC40oaYbIZf1XVpZUsdkVZUROmJ6jChrX70vscVugw/g5p/0uZHPx/WIumO
+         zaUArb0VM5UZ04PyMNGiD6/HQ/BB02cGyLzNRCf1/R4Sl625Y4KeQY4lbbjaqdMnWt
+         jLtzf4+dvJ5FA==
+Received: by mail.feshiecree.pl for <linux-omap@vger.kernel.org>; Tue, 16 May 2023 07:50:18 GMT
+Message-ID: <20230516074502-0.1.2l.hsf0.0.e5filj5qnp@feshiecree.pl>
+Date:   Tue, 16 May 2023 07:50:18 GMT
+From:   "Krystian Wieczorek" <krystian.wieczorek@feshiecree.pl>
+To:     <linux-omap@vger.kernel.org>
+Subject: W sprawie samochodu
+X-Mailer: mail.feshiecree.pl
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACRpkdYrSUOf0M7+Ub6F5uMAf6MDtK9=GLrdWo_Ey98fCfiv0A@mail.gmail.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SORBS_DUL,
+        RCVD_IN_VALIDITY_RPBL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, 15 May 2023, Linus Walleij wrote:
+Dzie=C5=84 dobry,
 
-> On Mon, May 15, 2023 at 2:36 PM Lee Jones <lee@kernel.org> wrote:
-> > On Sun, 30 Apr 2023, Linus Walleij wrote:
-> 
-> > >  drivers/mfd/tps65010.c          |  14 ++--
-> >
-> > Reviewed-by: Lee Jones <lee@kernel.org>
-> 
-> Thanks!
-> 
-> > What's the merge plan for this?
-> 
-> I'll make a dedicated pull request for the SoC tree.
+chcieliby=C5=9Bmy zapewni=C4=87 Pa=C5=84stwu kompleksowe rozwi=C4=85zania=
+, je=C5=9Bli chodzi o system monitoringu GPS.
 
-Sounds good, have an Ack:
+Precyzyjne monitorowanie pojazd=C3=B3w na mapach cyfrowych, =C5=9Bledzeni=
+e ich parametr=C3=B3w eksploatacyjnych w czasie rzeczywistym oraz kontrol=
+a paliwa to kluczowe funkcjonalno=C5=9Bci naszego systemu.=20
 
-Acked-by: Lee Jones <lee@kernel.org>
+Organizowanie pracy pracownik=C3=B3w jest dzi=C4=99ki temu prostsze i bar=
+dziej efektywne, a oszcz=C4=99dno=C5=9Bci i optymalizacja w zakresie pono=
+szonych koszt=C3=B3w, maj=C4=85 dla ka=C5=BCdego przedsi=C4=99biorcy ogro=
+mne znaczenie.
 
--- 
-Lee Jones [李琼斯]
+Dopasujemy nasz=C4=85 ofert=C4=99 do Pa=C5=84stwa oczekiwa=C5=84 i potrze=
+b organizacji. Czy mogliby=C5=9Bmy porozmawia=C4=87 o naszej propozycji?
+
+
+Pozdrawiam
+Krystian Wieczorek
