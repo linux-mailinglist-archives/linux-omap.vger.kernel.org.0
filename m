@@ -2,106 +2,124 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD0DD707377
-	for <lists+linux-omap@lfdr.de>; Wed, 17 May 2023 23:02:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 829AA707395
+	for <lists+linux-omap@lfdr.de>; Wed, 17 May 2023 23:12:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229669AbjEQVC1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 17 May 2023 17:02:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47048 "EHLO
+        id S229693AbjEQVL7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 17 May 2023 17:11:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229650AbjEQVC0 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 17 May 2023 17:02:26 -0400
-Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com [IPv6:2607:f8b0:4864:20::b2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BB0F40EB
-        for <linux-omap@vger.kernel.org>; Wed, 17 May 2023 14:02:25 -0700 (PDT)
-Received: by mail-yb1-xb2b.google.com with SMTP id 3f1490d57ef6-b9e27684b53so1130114276.0
-        for <linux-omap@vger.kernel.org>; Wed, 17 May 2023 14:02:25 -0700 (PDT)
+        with ESMTP id S229550AbjEQVL6 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 17 May 2023 17:11:58 -0400
+Received: from mail-yw1-x1130.google.com (mail-yw1-x1130.google.com [IPv6:2607:f8b0:4864:20::1130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58FC665B9
+        for <linux-omap@vger.kernel.org>; Wed, 17 May 2023 14:11:56 -0700 (PDT)
+Received: by mail-yw1-x1130.google.com with SMTP id 00721157ae682-561bb2be5f8so14766817b3.0
+        for <linux-omap@vger.kernel.org>; Wed, 17 May 2023 14:11:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1684357345; x=1686949345;
+        d=linaro.org; s=google; t=1684357915; x=1686949915;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=P9JnXjOK4o901YK6gncmhl3deYaJ7AAOewWeZnkRUIg=;
-        b=btvSSSiXl3AJsE/vHIEM+4k9TDUSWVAaqX2FyT65Yo5+MUld3bnCmC6dbzGlJaizMX
-         Zs3BAWjifCtnNfMeWZCsMHcDiYpmvVQoldkjlsv5PqSGIyo3jikzNWX+3tQV/OvCm6fA
-         lUHTqg9lcebwFi/ZHMzMcg3v1qXZQCGM8e1GkGhwTDOABMvhHkqBpUc+DTwXXqcH5Huv
-         RczpRm2JSMx+ez/DhcLnqniIlwFUyHBwCCW2R+uw60xnxuxYg9mMceevKdT/SMVF369R
-         qSVR//mPcSTKpvT5dj266fh4C003CLtIcBlKIkA/uFCyXKRgtRY9kBndATXK2tf79Jol
-         XhqA==
+        bh=+ESbY04o8nMiMylkhFsmBCHORahVNqly1l+b0KOa640=;
+        b=v5SexcE/rX2IDDr2Q+Jg71qCnOgAEyqh82pmkfwBGRhxmmH1TRMWr90nRSxjjoCF1r
+         hGYuFJu1daRVqli8IXLNSBOXNnNwKzOdeANaee76IbW06Pf/BTOfIUH2zHOWfF/wUeLr
+         c9kW4YK0gfMM5I4x7QJZ47n0t+18qK5ugWD6CJ4BotPw8/dhlvZv24u9ZNAgwO59exXX
+         MWvs3Bh2AC8sMAG2Hx/UD7eVqmCETIqXr/Ve9A2Pb9L+Cr7EBH415lQBjobg5AAXwpbz
+         Sd7PazZFNAZ/ItAcx6G3TlD/PshhlglA0pY56ts9Lx8xkxwMk/sofpb/+T6wZqAd4tS0
+         oXLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684357345; x=1686949345;
+        d=1e100.net; s=20221208; t=1684357915; x=1686949915;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=P9JnXjOK4o901YK6gncmhl3deYaJ7AAOewWeZnkRUIg=;
-        b=GIlSsKJunf6gDTew3qHYSdCDTepuJ+VlAoyXuhJxKEBiMaQapzz82/waxc/kHCxgqe
-         6ymXe5KELVfEXEkqK5sLu/yXOLVqNmsx4biN/OuWp3RRkYpDjBZu71xvGty4dPTGoSFy
-         23ZtwNY2mK++Sdh+eTVdHpsTeXGwOpHu4mHK6mOhKfsehLrHKQ6D4uX6WByQ5fOAoWO4
-         t3q3psv/eZwTHpWd0gH75l0nrHZo5by4/MT7T7OHm5TtVTgZWyWvrmM22i1NMSQil6sL
-         uXa7Inqt43MhC9JjVN32GDIzdzQ1oKY3zWOkFVKgj00eXi4IwdQYdj2flIyiE7igYNcj
-         bZrw==
-X-Gm-Message-State: AC+VfDx+PWn0DEzjaT13SyZ/QPxtE1g3OGe5P3CE0fK5p8ZNvpAPq2Ps
-        Jw2iFt8yQTxh9rVsa2J6DdJ5KwpLcgpi8X56+2/pDqCVlnvVCJ/Q
-X-Google-Smtp-Source: ACHHUZ6YOWAn/1WaZvAlDgMYozThEVGcDaZ/nluhy+UQTAEbNm54ZZXj/lz0JtGmh0acIQGqUKPZcQb4vboGI0LTLzQ=
-X-Received: by 2002:a81:4810:0:b0:54f:752e:9e60 with SMTP id
- v16-20020a814810000000b0054f752e9e60mr40990080ywa.37.1684357344711; Wed, 17
- May 2023 14:02:24 -0700 (PDT)
+        bh=+ESbY04o8nMiMylkhFsmBCHORahVNqly1l+b0KOa640=;
+        b=RhGuW5QSQIiVkwdJdzNEQsEi4XNoUtPvLgbvT48rtlJbvAJEHco1WKk28OC4C+nAIv
+         81yQNdCPWssJwPojSO9sAbEtO67ug9gbesep08hVTVHfKMJ7O5iV7nk7ksKuCWFx7y+o
+         n8q+cHAOPog9KIoNBJfMfCfmw6+ftrLtXop4DPdgy5EJRR2ivTNScRkkhDdE4Edr7ar5
+         CAW5HYaa4Y0/ZR7ot6XtzBO1etPy9L8DqgHJuOJMEspL33Kp8FIHHySx7WEBh11UFbS+
+         CMBcuC5Qj4z9in9y6zaNG1u+RhfZzKDpOMLvJaw8g7JCScqHZ6Y2MiNuz7xJz+SiVjTh
+         X6bQ==
+X-Gm-Message-State: AC+VfDyzpe9S64KH5eKEdqZxrydkJnkBOXiXnejj12FFK1sHKLVnICNm
+        IyIBa7ixITr52bX7q92Nfc3Mz1MLJscpfWY7RA4lxQ==
+X-Google-Smtp-Source: ACHHUZ4WiU/7XNv5tV812IdEVaHBoQ+14tMHeWf4rv+lcocaQlv66/13I8fR3QBFOtF5w7UHYni2NBlJ2CKlqIUUMBE=
+X-Received: by 2002:a0d:e84f:0:b0:55a:679f:1d90 with SMTP id
+ r76-20020a0de84f000000b0055a679f1d90mr43201104ywe.2.1684357915574; Wed, 17
+ May 2023 14:11:55 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230430175130.574971-1-linus.walleij@linaro.org>
- <20230517180344.GE271152@darkstar.musicnaut.iki.fi> <20230517190648.GF271152@darkstar.musicnaut.iki.fi>
-In-Reply-To: <20230517190648.GF271152@darkstar.musicnaut.iki.fi>
+References: <20230430-nokia770-regression-v4-0-9b6dc5536b17@linaro.org>
+ <20230430-nokia770-regression-v4-1-9b6dc5536b17@linaro.org> <20230517195911.GG271152@darkstar.musicnaut.iki.fi>
+In-Reply-To: <20230517195911.GG271152@darkstar.musicnaut.iki.fi>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Wed, 17 May 2023 23:02:13 +0200
-Message-ID: <CACRpkdb_SwjqEk-_14bBZPHSheaMbVFRGRTa45E9kzedOzy76g@mail.gmail.com>
-Subject: Re: [PATCH] ARM: omap1: Make serial wakeup GPIOs use descriptors
+Date:   Wed, 17 May 2023 23:11:43 +0200
+Message-ID: <CACRpkdaxQQ3fJeYRs+M29MYA4=f+ha26m5Xa2+uV_MejtEdwUQ@mail.gmail.com>
+Subject: Re: [PATCH v4 1/4] Input: ads7846 - Convert to use software nodes
 To:     Aaro Koskinen <aaro.koskinen@iki.fi>
 Cc:     Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org
+        Tony Lindgren <tony@atomide.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+        Andreas Kemnade <andreas@kemnade.info>,
+        Helge Deller <deller@gmx.de>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-input@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-mmc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, May 17, 2023 at 9:06=E2=80=AFPM Aaro Koskinen <aaro.koskinen@iki.fi=
+On Wed, May 17, 2023 at 9:59=E2=80=AFPM Aaro Koskinen <aaro.koskinen@iki.fi=
 > wrote:
-> On Wed, May 17, 2023 at 09:03:49PM +0300, Aaro Koskinen wrote:
 
-> > This patch (now also in gpio-descriptors-omap branch) does not
-> > compile:
-> >
-> > On Sun, Apr 30, 2023 at 07:51:30PM +0200, Linus Walleij wrote:
-> > > +           pr_err("No interrupt for UART%d wake GPIO\n" idx + 1);
-> >
-> > Comma is missing.                                          ^^^
+> This does not compile as nokia770_ads7846_props is declared twice,
+> and nokia770_cbus_props and nokia770_mpuio_gpiochip_swnode are missing.
 
-Hm I wonder what happened. Allright fixed it up.
+Hmmmm I think we should probably update omap1_defconfig to enable
+all the OMAP1 drivers so we have good compile coverage. It's the
+ifdefs that fool me into believeing the code actually compiles ...
 
-> And when tested something goes wrong:
+> On Mon, May 08, 2023 at 11:20:06PM +0200, Linus Walleij wrote:
+> > +static const struct software_node_ref_args nokia770_cbus_gpio_refs[] =
+=3D {
+> > +     SOFTWARE_NODE_REFERENCE(&nokia770_mpuio_gpiochip_swnode, 9, 0),
+> > +     SOFTWARE_NODE_REFERENCE(&nokia770_mpuio_gpiochip_swnode, 10, 0),
+> > +     SOFTWARE_NODE_REFERENCE(&nokia770_mpuio_gpiochip_swnode, 11, 0),
+> > +};
 >
-> [    2.555725] (NULL device *): using lookup tables for GPIO lookup
-> [    2.561950] (NULL device *): No GPIO consumer wakeup found
-> [    2.567871] Unable to get UART wakeup GPIO descriptor
-> [    2.573272] (NULL device *): using lookup tables for GPIO lookup
-> [    2.579498] (NULL device *): No GPIO consumer wakeup found
-> [    2.585357] Unable to get UART wakeup GPIO descriptor
-> [    2.590576] (NULL device *): using lookup tables for GPIO lookup
-> [    2.596954] (NULL device *): No GPIO consumer wakeup found
-> [    2.602813] Unable to get UART wakeup GPIO descriptor
+> These should be nokia770_mpuio_gpiochip_node.
+
+Fixed it.
+
+> > +static const struct property_entry nokia770_ads7846_props[] =3D {
+> > +     PROPERTY_ENTRY_REF_ARRAY("gpios", nokia770_cbus_gpio_refs),
+> > +     { }
+> >  };
 >
-> There are now two tables with the NULL device - one in the board file,
-> and another in serial.c. Maybe that does not work?
+> This should be nokia770_cbus_props.
 
-Hm I pushed it down to each boardfile NULL device instead.
+Fixed it.
 
-I sent out a v2, I will update the branch in my git as well as soon
-as I looked into your other review comments.
+Also enabled CONFIG_I2C_CBUS_GPIO and recompiled.
+
+Yours,
+Linus Walleij
 
 Yours,
 Linus Walleij
