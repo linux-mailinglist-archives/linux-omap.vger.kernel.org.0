@@ -2,22 +2,22 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 35F36705FA6
-	for <lists+linux-omap@lfdr.de>; Wed, 17 May 2023 07:58:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7FA8705FAC
+	for <lists+linux-omap@lfdr.de>; Wed, 17 May 2023 07:59:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232558AbjEQF6n (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 17 May 2023 01:58:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55264 "EHLO
+        id S232619AbjEQF7I (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 17 May 2023 01:59:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232568AbjEQF6m (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 17 May 2023 01:58:42 -0400
+        with ESMTP id S232625AbjEQF7B (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 17 May 2023 01:59:01 -0400
 Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id BE4314C2C;
-        Tue, 16 May 2023 22:58:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 230FC2D67;
+        Tue, 16 May 2023 22:58:52 -0700 (PDT)
 Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 19262813D;
-        Wed, 17 May 2023 05:58:37 +0000 (UTC)
-Date:   Wed, 17 May 2023 08:58:35 +0300
+        by muru.com (Postfix) with ESMTPS id 3DE4F8164;
+        Wed, 17 May 2023 05:58:51 +0000 (UTC)
+Date:   Wed, 17 May 2023 08:58:50 +0300
 From:   Tony Lindgren <tony@atomide.com>
 To:     Aaro Koskinen <aaro.koskinen@iki.fi>
 Cc:     Arnd Bergmann <arnd@kernel.org>, soc@kernel.org,
@@ -53,7 +53,7 @@ Cc:     Arnd Bergmann <arnd@kernel.org>, soc@kernel.org,
         linux-omap@vger.kernel.org, linux-clk@vger.kernel.org,
         linux-usb@vger.kernel.org
 Subject: Re: [PATCH 07/13] ARM: omap1: add missing include
-Message-ID: <20230517055835.GK14287@atomide.com>
+Message-ID: <20230517055850.GL14287@atomide.com>
 References: <20230516153109.514251-1-arnd@kernel.org>
  <20230516153109.514251-8-arnd@kernel.org>
  <20230516231821.GC271152@darkstar.musicnaut.iki.fi>
