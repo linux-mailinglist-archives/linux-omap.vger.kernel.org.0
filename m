@@ -2,58 +2,55 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 938EC705B5A
-	for <lists+linux-omap@lfdr.de>; Wed, 17 May 2023 01:34:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32F1F705EB5
+	for <lists+linux-omap@lfdr.de>; Wed, 17 May 2023 06:34:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229638AbjEPXeP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 16 May 2023 19:34:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34082 "EHLO
+        id S231944AbjEQEev (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 17 May 2023 00:34:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229574AbjEPXeO (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 16 May 2023 19:34:14 -0400
-Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED343524C;
-        Tue, 16 May 2023 16:34:13 -0700 (PDT)
-Received: by mail-pf1-x42a.google.com with SMTP id d2e1a72fcca58-6439e53ed82so10662b3a.1;
-        Tue, 16 May 2023 16:34:13 -0700 (PDT)
+        with ESMTP id S229437AbjEQEeu (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 17 May 2023 00:34:50 -0400
+Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE99C2D63
+        for <linux-omap@vger.kernel.org>; Tue, 16 May 2023 21:34:48 -0700 (PDT)
+Received: by mail-pf1-x42b.google.com with SMTP id d2e1a72fcca58-64384274895so178150b3a.2
+        for <linux-omap@vger.kernel.org>; Tue, 16 May 2023 21:34:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684280053; x=1686872053;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=c91TtAMamdr84bU21XJdh1WC/pxB8oOMbvU4oHXaydM=;
-        b=CsB5WNulUh5bzvi0quKPWNNbWSo1UWxF3poeDTxUlUjdL+Ko4PKkQV1bMJG/rh25tC
-         CpPt1VXITQPipJOrVP/bYkz1mo/sg3G01pmCGYMOU7xdEN+hd1gfEfXA3e35x+S/cW+U
-         ez2ZUIqxbS70N2Qb+7i4KHrMq2PAJnjIa4ABZFpMATBa3wu7uwZ5Q1SxI+HxiH2pZvMp
-         PVkJr6zPf2MzrOXbFKP1oP+51mDavvl27eKHlzL21HoSOA0IEHEqzhOSpY1Dfmh6AxZ6
-         h1VWeqcrMYKpLcUCIrJ6FEXPIzBE1FUl5JImpEQqKiRzzwyMTeaYNfgiDVXA4lWmp7zG
-         XVkw==
+        d=linaro.org; s=google; t=1684298088; x=1686890088;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=tG1kNE7UYC4wkLWo37BI0qTN7B7iDGV7Ktvk8Nl+rtI=;
+        b=MuMlnckAVwMdyNsDsScgi01FUkHiJREx6ygDmlCSAYvvmS3ShaK7bjW6fknneksRan
+         Gn8kVbl8VuR04QDcjcOn2IZnJGmGvyU3zvW/c88xIqeULitJJZH1zckUbCGEjZ6OnzNY
+         SccIUkQ0mjHOVZhY+pO8e52TMG5owPuhTKBYAAyxQO2Hbyv+n98NDE5vZ3hvvaIkGy3E
+         fQ8+2G4hADpDPjI5VuCaB0gvDfMtVanZtS32ty7ZxZB+attc6uabA3/RAs43VTmhYee8
+         CIrHZkp1AmUnfoPkzvz5wo1ccJnWqrkvU+2qdLasFp/mal9wglF54LZn881g095OZqmQ
+         xDUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684280053; x=1686872053;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=c91TtAMamdr84bU21XJdh1WC/pxB8oOMbvU4oHXaydM=;
-        b=k92usEauSNovtOpkSkSQaoDXB7T2+64Ar/y2FZ3sSgTExO2ggekfmCRAbxKi78cWH0
-         c8r5xyK6JcAssUmQTC8SOzNDb5c0hdfHjDVAxxoNTA6QCXwJXbOzVE6PmvTL7XhRiWXj
-         bQtest06EvMW8dBlKYKxeSMCsY7BIHOmy3bGZnO8calOLi7Wyryg/PVX5KCUO6QtmFoD
-         ivs8h1VHa+pXKrpjMrfz68jbLBUo90sLeAjmX11JA4OYZsgFWj8xWQBRJDB4T3/JWr9T
-         Bjym9HLD9Qx0/fIuqWHcRo+yV5SP5ZswLpzCsZhts07mYiZ+FptBruflzxqgwCICQWI6
-         SdQw==
-X-Gm-Message-State: AC+VfDxXwJSwNwY0iUcXMIpfCDM2piZU7BTd9qB8U9d/Muv3hO/huaZI
-        Ezl1IDkNuBkoOD6ddnC1K6/ZzsTwXMS3c6CYRNE=
-X-Google-Smtp-Source: ACHHUZ5WSwyrzAxg9EJ7HhskT52wzTzQYu+10MKFEdqPNaA9RBbV826kiajHBS9KyC4sYy3yDoMly6VkZvAQJbz4f1w=
-X-Received: by 2002:a05:6a00:3406:b0:63b:5257:6837 with SMTP id
- cn6-20020a056a00340600b0063b52576837mr739273pfb.1.1684280053288; Tue, 16 May
- 2023 16:34:13 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230516153109.514251-1-arnd@kernel.org> <20230516153109.514251-6-arnd@kernel.org>
-In-Reply-To: <20230516153109.514251-6-arnd@kernel.org>
-From:   Fabio Estevam <festevam@gmail.com>
-Date:   Tue, 16 May 2023 20:34:01 -0300
-Message-ID: <CAOMZO5B0stW2X6YqPTTKDpCOAzPDvm=4HT8jfBAgbTy11gnKgg@mail.gmail.com>
-Subject: Re: [PATCH 05/13] ARM: imx: remove unused mx25_revision()
-To:     Arnd Bergmann <arnd@kernel.org>, Martin Kaiser <martin@kaiser.cx>
+        d=1e100.net; s=20221208; t=1684298088; x=1686890088;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tG1kNE7UYC4wkLWo37BI0qTN7B7iDGV7Ktvk8Nl+rtI=;
+        b=CsZ+5gjG9JX/wTV4ObFn8IP8QrTk+Tqp8j6CfZj8jWDB1tllejkMqIx3zQmev7CQg/
+         8o3JVgF/ybNbu1YIF3A3OELEnrD0nRWN4nF0RHa4GGX4oi70o+ZwUUdvBOSZUSyZjHFS
+         PDxDd9jeKkXFeUs/3+YrNLraUUm3HuTYOD/r/u1WeMAyIlys3KHmsy4yhCNJhgxvN6nh
+         qJ5a3zCrs/36d8bnyo60j8HCiGsItzRpwZD9t8xTRi7O+fC6v99oeZa6KMuKYmeZJDs7
+         MiH3Bop/JPEwmREbPBryAIOfDlf/Fo9hNQzbmU+SGZV3GhGx8dJh8uNbvAUTkAZt8gub
+         PBoQ==
+X-Gm-Message-State: AC+VfDw6KO3bq2ihwDG3/AxujR8GW0QyGeyDv/0ZcYA1EPoDxtUFfBz3
+        XRVZhMYUkoVTTPHeqbCSjtyrRg==
+X-Google-Smtp-Source: ACHHUZ7ZntCzPC6Kae1pDbO6DYSSci6YTuhSOAjEZpHtW1xnkNQFCJpFTJqzEf+yQY02x5W3U6f6sw==
+X-Received: by 2002:a05:6a00:c83:b0:64a:5cde:3a8c with SMTP id a3-20020a056a000c8300b0064a5cde3a8cmr24779255pfv.28.1684298088145;
+        Tue, 16 May 2023 21:34:48 -0700 (PDT)
+Received: from localhost ([122.172.82.60])
+        by smtp.gmail.com with ESMTPSA id k18-20020aa792d2000000b0064cca73d911sm1328858pfa.103.2023.05.16.21.34.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 May 2023 21:34:47 -0700 (PDT)
+Date:   Wed, 17 May 2023 10:04:45 +0530
+From:   Viresh Kumar <viresh.kumar@linaro.org>
+To:     Arnd Bergmann <arnd@kernel.org>
 Cc:     soc@kernel.org, Arnd Bergmann <arnd@arndb.de>,
         Russell King <linux@armlinux.org.uk>,
         Bartosz Golaszewski <brgl@bgdev.pl>,
@@ -63,6 +60,7 @@ Cc:     soc@kernel.org, Arnd Bergmann <arnd@arndb.de>,
         Shawn Guo <shawnguo@kernel.org>,
         Sascha Hauer <s.hauer@pengutronix.de>,
         Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
         NXP Linux Team <linux-imx@nxp.com>,
         Vladimir Zapolskiy <vz@mleia.com>,
         Aaro Koskinen <aaro.koskinen@iki.fi>,
@@ -85,11 +83,18 @@ Cc:     soc@kernel.org, Arnd Bergmann <arnd@arndb.de>,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-omap@vger.kernel.org, linux-clk@vger.kernel.org,
         linux-usb@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 12/13] ARM: spear: include "pl080.h" for
+ pl080_get_signal() prototype
+Message-ID: <20230517043445.qhc6ebfq4pwvgiqh@vireshk-i7>
+References: <20230516153109.514251-1-arnd@kernel.org>
+ <20230516153109.514251-13-arnd@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230516153109.514251-13-arnd@kernel.org>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -97,26 +102,34 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Arnd,
-
-On Tue, May 16, 2023 at 12:32=E2=80=AFPM Arnd Bergmann <arnd@kernel.org> wr=
-ote:
->
+On 16-05-23, 17:31, Arnd Bergmann wrote:
 > From: Arnd Bergmann <arnd@arndb.de>
->
-> This function has no prototype and no callers:
->
-> arm/mach-imx/cpu-imx25.c:43:5: error: no previous prototype for 'mx25_rev=
-ision' [-Werror=3Dmissing-prototypes]
->
+> 
+> pl080_get_signal() and pl080_put_signal() are declared in pl080.h
+> and defined in pl080.c, but this file is missing an include
+> of the header:
+> 
+> arch/arm/mach-spear/pl080.c:27:5: error: no previous prototype for 'pl080_get_signal'
+> arch/arm/mach-spear/pl080.c:62:6: error: no previous prototype for 'pl080_put_signal'
+> 
 > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+>  arch/arm/mach-spear/pl080.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/arch/arm/mach-spear/pl080.c b/arch/arm/mach-spear/pl080.c
+> index d6b8627d2544..47243a8153d0 100644
+> --- a/arch/arm/mach-spear/pl080.c
+> +++ b/arch/arm/mach-spear/pl080.c
+> @@ -16,6 +16,7 @@
+>  #include <linux/spinlock_types.h>
+>  #include "spear.h"
+>  #include "misc_regs.h"
+> +#include "pl080.h"
+>  
+>  static spinlock_t lock = __SPIN_LOCK_UNLOCKED(x);
 
-Martin Kaiser sent a patch adding a user for this function:
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
 
-https://lore.kernel.org/linux-arm-kernel/20220815190748.102664-2-martin@kai=
-ser.cx/
-
-It would be better to apply Martin's patch instead of removing mx25_revisio=
-n().
-
-Thanks
+-- 
+viresh
