@@ -2,38 +2,69 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EEAF7064DB
-	for <lists+linux-omap@lfdr.de>; Wed, 17 May 2023 12:09:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0C34706DD7
+	for <lists+linux-omap@lfdr.de>; Wed, 17 May 2023 18:17:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230170AbjEQKJH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 17 May 2023 06:09:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39116 "EHLO
+        id S229452AbjEQQRO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 17 May 2023 12:17:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230036AbjEQKJG (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 17 May 2023 06:09:06 -0400
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 05777E4D;
-        Wed, 17 May 2023 03:09:06 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 4E8658117;
-        Wed, 17 May 2023 10:09:05 +0000 (UTC)
-Date:   Wed, 17 May 2023 13:09:04 +0300
-From:   Tony Lindgren <tony@atomide.com>
-To:     Andreas Kemnade <andreas@kemnade.info>
-Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        conor+dt@kernel.org, afd@ti.com, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: Re: [PATCH v7 1/2] dt-bindings: omap: Partially convert omap.txt to
- yaml
-Message-ID: <20230517100904.GU14287@atomide.com>
-References: <20230515074512.66226-1-andreas@kemnade.info>
- <20230515074512.66226-2-andreas@kemnade.info>
- <20230517064031.GP14287@atomide.com>
- <20230517101010.31142e67@aktux>
+        with ESMTP id S229530AbjEQQRN (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 17 May 2023 12:17:13 -0400
+X-Greylist: delayed 76 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 17 May 2023 09:17:12 PDT
+Received: from viti.kaiser.cx (viti.kaiser.cx [IPv6:2a01:238:43fe:e600:cd0c:bd4a:7a3:8e9f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22987E66;
+        Wed, 17 May 2023 09:17:12 -0700 (PDT)
+Received: from martin by viti.kaiser.cx with local (Exim 4.89)
+        (envelope-from <martin@viti.kaiser.cx>)
+        id 1pzJLB-00050y-T9; Wed, 17 May 2023 17:45:25 +0200
+Date:   Wed, 17 May 2023 17:45:25 +0200
+From:   Martin Kaiser <martin@kaiser.cx>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Fabio Estevam <festevam@gmail.com>,
+        Arnd Bergmann <arnd@kernel.org>, soc@kernel.org,
+        Russell King <linux@armlinux.org.uk>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Hartley Sweeten <hsweeten@visionengravers.com>,
+        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+        Andre Przywara <andre.przywara@arm.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+        Tony Lindgren <tony@atomide.com>, Andrew Lunn <andrew@lunn.ch>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Viresh Kumar <vireshk@kernel.org>,
+        Shiraz Hashim <shiraz.linux.kernel@gmail.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        linux-clk@vger.kernel.org, linux-usb@vger.kernel.org
+Subject: Re: [PATCH 05/13] ARM: imx: remove unused mx25_revision()
+Message-ID: <20230517154525.ljoamjlfhpejtizm@viti.kaiser.cx>
+References: <20230516153109.514251-1-arnd@kernel.org>
+ <20230516153109.514251-6-arnd@kernel.org>
+ <CAOMZO5B0stW2X6YqPTTKDpCOAzPDvm=4HT8jfBAgbTy11gnKgg@mail.gmail.com>
+ <4e026f08-d733-4b01-ab47-e921d041e74e@app.fastmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230517101010.31142e67@aktux>
+In-Reply-To: <4e026f08-d733-4b01-ab47-e921d041e74e@app.fastmail.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+Sender: Martin Kaiser <martin@viti.kaiser.cx>
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
@@ -43,31 +74,23 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Andreas Kemnade <andreas@kemnade.info> [230517 08:10]:
-> Hi Tony,
-> 
-> On Wed, 17 May 2023 09:40:31 +0300
-> Tony Lindgren <tony@atomide.com> wrote:
-> 
-> > * Andreas Kemnade <andreas@kemnade.info> [230515 07:45]:
-> > > From: Andrew Davis <afd@ti.com>
-> > > 
-> > > Convert omap.txt to yaml.  
-> > 
-> > Looks good to me, thanks a lot for doing this:
-> > 
-> > Reviewed-by: Tony Lindgren <tony@atomide.com>
-> > 
-> > Anreas, for future patch reference, care to summarize what's still
-> > blocking updating the rest of the TI SoCs for the binding? I think
-> > it may have been discussed earlier here and there already so apologies
-> > if I'm the only one who lost track :)
-> > 
-> The original patch by Andrew allows probably too many combinations of
-> compatibles for the rest of the SoCs (e.g.  pattern: '^ti,dra7[12456][024568p]).
-> I do not know the intention of that and nobody commented, so I would have to
-> do a lot of research, so I decided to split the work.
+Thus wrote Arnd Bergmann (arnd@arndb.de):
 
-OK makes sense, thanks.
+> I think either way is ok to address the warning. If we wanted to do this
+> properly, the mx{25,27,31,35,5}_revision functions could all be removed
+> and the logic hooked up to imx_set_soc_revision() in the same way that
+> they already use mxc_set_cpu_type() for drivers/soc/imx/soc-imx.c.
 
-Tony
+> I'll leave it up to you, if you want to merge Martin's patches or
+> a replacement for the soc-imx driver through the imx tree for 6.5,
+> I'll drop my patch from this series, otherwise I'll keep it for now
+> and we can still do it better at later point.
+
+I suggest we merge my patches for imx25 first and then clean up all the
+older imx families to use the common functions.
+
+I've just rebased the patches against today's linux-next. My understanding
+is that they have to go through the clk tree.
+
+Thanks,
+Martin
