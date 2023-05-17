@@ -2,95 +2,128 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B0C34706DD7
-	for <lists+linux-omap@lfdr.de>; Wed, 17 May 2023 18:17:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DEDDA70702C
+	for <lists+linux-omap@lfdr.de>; Wed, 17 May 2023 19:57:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229452AbjEQQRO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 17 May 2023 12:17:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44446 "EHLO
+        id S229502AbjEQR5T (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 17 May 2023 13:57:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229530AbjEQQRN (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 17 May 2023 12:17:13 -0400
-X-Greylist: delayed 76 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 17 May 2023 09:17:12 PDT
-Received: from viti.kaiser.cx (viti.kaiser.cx [IPv6:2a01:238:43fe:e600:cd0c:bd4a:7a3:8e9f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22987E66;
-        Wed, 17 May 2023 09:17:12 -0700 (PDT)
-Received: from martin by viti.kaiser.cx with local (Exim 4.89)
-        (envelope-from <martin@viti.kaiser.cx>)
-        id 1pzJLB-00050y-T9; Wed, 17 May 2023 17:45:25 +0200
-Date:   Wed, 17 May 2023 17:45:25 +0200
-From:   Martin Kaiser <martin@kaiser.cx>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Fabio Estevam <festevam@gmail.com>,
-        Arnd Bergmann <arnd@kernel.org>, soc@kernel.org,
-        Russell King <linux@armlinux.org.uk>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Hartley Sweeten <hsweeten@visionengravers.com>,
-        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-        Andre Przywara <andre.przywara@arm.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        Tony Lindgren <tony@atomide.com>, Andrew Lunn <andrew@lunn.ch>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Viresh Kumar <vireshk@kernel.org>,
-        Shiraz Hashim <shiraz.linux.kernel@gmail.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        linux-clk@vger.kernel.org, linux-usb@vger.kernel.org
-Subject: Re: [PATCH 05/13] ARM: imx: remove unused mx25_revision()
-Message-ID: <20230517154525.ljoamjlfhpejtizm@viti.kaiser.cx>
-References: <20230516153109.514251-1-arnd@kernel.org>
- <20230516153109.514251-6-arnd@kernel.org>
- <CAOMZO5B0stW2X6YqPTTKDpCOAzPDvm=4HT8jfBAgbTy11gnKgg@mail.gmail.com>
- <4e026f08-d733-4b01-ab47-e921d041e74e@app.fastmail.com>
+        with ESMTP id S229622AbjEQR5F (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 17 May 2023 13:57:05 -0400
+Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 666BF19A;
+        Wed, 17 May 2023 10:57:04 -0700 (PDT)
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 34HHunoe025410;
+        Wed, 17 May 2023 12:56:49 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1684346209;
+        bh=Y5a7G0lQ4tGrkMUd9GogBnap1YhDDaj9ce2WHoIytzE=;
+        h=From:To:CC:Subject:Date:In-Reply-To:References;
+        b=OHFEjeIr/5Xotn/BzJYhNRpLynn9wN2SIlCiS+SLdCME3gtsNY47L5imijBiCoXln
+         4JoYY11qcbyFbZEOl5Ep9wYPKU/T5XmP0HpfthiTow2r4MmN2YKWRv++/C9WL+31I7
+         PMy2ZamfQkTOIlgX8MJWE/KrmbiZDuJ/JI7rO8d4=
+Received: from DLEE108.ent.ti.com (dlee108.ent.ti.com [157.170.170.38])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 34HHunFw020022
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 17 May 2023 12:56:49 -0500
+Received: from DLEE114.ent.ti.com (157.170.170.25) by DLEE108.ent.ti.com
+ (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Wed, 17
+ May 2023 12:56:49 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE114.ent.ti.com
+ (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Wed, 17 May 2023 12:56:49 -0500
+Received: from localhost (ileaxei01-snat2.itg.ti.com [10.180.69.6])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 34HHunJg106538;
+        Wed, 17 May 2023 12:56:49 -0500
+From:   Nishanth Menon <nm@ti.com>
+To:     "Andrew F. Davis" <afd@ti.com>, Suman Anna <s-anna@ti.com>,
+        Roger Quadros <rogerq@kernel.org>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Tero Kristo <kristo@kernel.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        MD Danish Anwar <danishanwar@ti.com>
+CC:     Nishanth Menon <nm@ti.com>, <linux-remoteproc@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        <srk@ti.com>, <devicetree@vger.kernel.org>,
+        <netdev@vger.kernel.org>
+Subject: Re: [PATCH v9 0/4] Introduce PRU platform consumer API
+Date:   Wed, 17 May 2023 12:56:48 -0500
+Message-ID: <168434617580.1538524.11482827517408254591.b4-ty@ti.com>
+X-Mailer: git-send-email 2.40.0
+In-Reply-To: <20230414045542.3249939-1-danishanwar@ti.com>
+References: <20230414045542.3249939-1-danishanwar@ti.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4e026f08-d733-4b01-ab47-e921d041e74e@app.fastmail.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-Sender: Martin Kaiser <martin@viti.kaiser.cx>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Thus wrote Arnd Bergmann (arnd@arndb.de):
+Hi MD Danish Anwar,
 
-> I think either way is ok to address the warning. If we wanted to do this
-> properly, the mx{25,27,31,35,5}_revision functions could all be removed
-> and the logic hooked up to imx_set_soc_revision() in the same way that
-> they already use mxc_set_cpu_type() for drivers/soc/imx/soc-imx.c.
+On Fri, 14 Apr 2023 10:25:38 +0530, MD Danish Anwar wrote:
+> The Programmable Real-Time Unit and Industrial Communication Subsystem (PRU-ICSS
+> or simply PRUSS) on various TI SoCs consists of dual 32-bit RISC cores
+> (Programmable Real-Time Units, or PRUs) for program execution.
+> 
+> There are 3 foundation components for TI PRUSS subsystem: the PRUSS platform
+> driver, the PRUSS INTC driver and the PRUSS remoteproc driver. All of them have
+> already been merged and can be found under:
+> 1) drivers/soc/ti/pruss.c
+>    Documentation/devicetree/bindings/soc/ti/ti,pruss.yaml
+> 2) drivers/irqchip/irq-pruss-intc.c
+>    Documentation/devicetree/bindings/interrupt-controller/ti,pruss-intc.yaml
+> 3) drivers/remoteproc/pru_rproc.c
+>    Documentation/devicetree/bindings/remoteproc/ti,pru-consumer.yaml
+> 
+> [...]
 
-> I'll leave it up to you, if you want to merge Martin's patches or
-> a replacement for the soc-imx driver through the imx tree for 6.5,
-> I'll drop my patch from this series, otherwise I'll keep it for now
-> and we can still do it better at later point.
+I have applied the following to branch ti-drivers-soc-next on [1].
+Thank you for your patience in following up and incorporating all the fixes
+and the multiple hand-overs!
 
-I suggest we merge my patches for imx25 first and then clean up all the
-older imx families to use the common functions.
+[1/4] soc: ti: pruss: Add pruss_get()/put() API
+      commit: 67d1b0a1030fb20d54b720df6e976c06b893fb00
+[2/4] soc: ti: pruss: Add pruss_{request,release}_mem_region() API
+      commit: b789ca1e3380ab63b60c3356c026a7e8eb26ba01
+[3/4] soc: ti: pruss: Add pruss_cfg_read()/update(), pruss_cfg_get_gpmux()/set_gpmux() APIs
+      commit: 51b5760e56ef19106a3c4487a66d186d46ccc6f4
+[4/4] soc: ti: pruss: Add helper functions to set GPI mode, MII_RT_event and XFR
+      commit: 0211cc1e4fbbc81853227147bf0982c47362c567
 
-I've just rebased the patches against today's linux-next. My understanding
-is that they have to go through the clk tree.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent up the chain during
+the next merge window (or sooner if it is a relevant bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-Thanks,
-Martin
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+[1] git://git.kernel.org/pub/scm/linux/kernel/git/ti/linux.git
+-- 
+Regards,
+Nishanth Menon
+Key (0xDDB5849D1736249D) / Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
+
