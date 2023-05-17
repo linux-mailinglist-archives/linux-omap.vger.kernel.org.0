@@ -2,36 +2,42 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC84A7060F5
-	for <lists+linux-omap@lfdr.de>; Wed, 17 May 2023 09:18:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57D92706214
+	for <lists+linux-omap@lfdr.de>; Wed, 17 May 2023 10:00:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229560AbjEQHSy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 17 May 2023 03:18:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50994 "EHLO
+        id S230097AbjEQIAl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 17 May 2023 04:00:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229880AbjEQHSw (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 17 May 2023 03:18:52 -0400
+        with ESMTP id S230113AbjEQIAR (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 17 May 2023 04:00:17 -0400
 Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4DDD5109;
-        Wed, 17 May 2023 00:18:51 -0700 (PDT)
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 343BD8117;
-        Wed, 17 May 2023 07:18:49 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 13C6F3C32;
+        Wed, 17 May 2023 01:00:16 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 279A58117;
+        Wed, 17 May 2023 08:00:15 +0000 (UTC)
+Date:   Wed, 17 May 2023 11:00:13 +0300
 From:   Tony Lindgren <tony@atomide.com>
-To:     linux-omap@vger.kernel.org
-Cc:     Dave Gerlach <d-gerlach@ti.com>, Faiz Abbas <faiz_abbas@ti.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Keerthy <j-keerthy@ti.com>, Kevin Hilman <khilman@baylibre.com>,
-        Nishanth Menon <nm@ti.com>, linux-kernel@vger.kernel.org,
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     Conor Dooley <conor+dt@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Nishanth Menon <nm@ti.com>,
         linux-arm-kernel@lists.infradead.org,
-        Dan Carpenter <dan.carpenter@linaro.org>
-Subject: [PATCH] bus: ti-sysc: Fix dispc quirk masking bool variables
-Date:   Wed, 17 May 2023 10:18:41 +0300
-Message-Id: <20230517071841.58444-1-tony@atomide.com>
-X-Mailer: git-send-email 2.40.1
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCH v4 2/2] dt-bindings: pinctrl: Update pinctrl-single to
+ use yaml
+Message-ID: <20230517080013.GS14287@atomide.com>
+References: <20230510095330.30742-1-tony@atomide.com>
+ <20230510095330.30742-2-tony@atomide.com>
+ <20230510124836.thqtol6qac762ggx@krzk-bin>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230510124836.thqtol6qac762ggx@krzk-bin>
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
@@ -41,40 +47,40 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Fix warning drivers/bus/ti-sysc.c:1806 sysc_quirk_dispc()
-warn: masking a bool.
+Hi,
 
-While at it let's add a comment for what were doing to make
-the code a bit easier to follow.
+* Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> [230510 12:48]:
+> On Wed, 10 May 2023 12:53:29 +0300, Tony Lindgren wrote:
+> > Update binding for yaml and remove the old related txt bindings. Note that
+> > we are also adding the undocumented pinctrl-single,slew-rate property. And
+> > we only use the first example from the old binding.
+...
+> My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+> on your patch (DT_CHECKER_FLAGS is new in v5.13):
+> 
+> yamllint warnings/errors:
+> 
+> dtschema/dtc warnings/errors:
+> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/pinctrl/pinctrl-single.example.dtb: pinmux@4a100040: #pinctrl-cells: [[2]] is not of type 'object'
+> 	From schema: /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/pinctrl/pinctrl-single.yaml
+> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/pinctrl/pinctrl-single.example.dtb: pinmux@4a100040: #pinctrl-cells: [[2]] is not of type 'object'
+> 	From schema: /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/pinctrl/pinctrl-single.yaml
+> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/pinctrl/pinctrl-single.example.dtb: pinmux@4a100040: pinctrl-single,register-width: [[16]] is not of type 'object'
+> 	From schema: /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/pinctrl/pinctrl-single.yaml
+> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/pinctrl/pinctrl-single.example.dtb: pinmux@4a100040: pinctrl-single,register-width: [[16]] is not of type 'object'
+> 	From schema: /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/pinctrl/pinctrl-single.yaml
+> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/pinctrl/pinctrl-single.example.dtb: pinmux@4a100040: pinctrl-single,function-mask: [[65535]] is not of type 'object'
+> 	From schema: /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/pinctrl/pinctrl-single.yaml
+> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/pinctrl/pinctrl-single.example.dtb: pinmux@4a100040: pinctrl-single,function-mask: [[65535]] is not of type 'object'
+> 	From schema: /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/pinctrl/pinctrl-single.yaml
+> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/pinctrl/pinctrl-single.example.dtb: pinmux@4a100040: pinctrl-single,gpio-range: [[1, 0, 3, 0]] is not of type 'object'
+> 	From schema: /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/pinctrl/pinctrl-single.yaml
+> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/pinctrl/pinctrl-single.example.dtb: pinmux@4a100040: pinctrl-single,gpio-range: [[1, 0, 3, 0]] is not of type 'object'
+> 	From schema: /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/pinctrl/pinctrl-single.yaml
 
-Fixes: 7324a7a0d5e2 ("bus: ti-sysc: Implement display subsystem reset quirk")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/linux-omap/a8ec8a68-9c2c-4076-bf47-09fccce7659f@kili.mountain/
-Signed-off-by: Tony Lindgren <tony@atomide.com>
----
- drivers/bus/ti-sysc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Looks like these are happening because of the patternProperties match for
+pin, will need to add more patterns like like -pin|_pin instead.
 
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -1791,7 +1791,7 @@ static u32 sysc_quirk_dispc(struct sysc *ddata, int dispc_offset,
- 	if (!ddata->module_va)
- 		return -EIO;
- 
--	/* DISP_CONTROL */
-+	/* DISP_CONTROL, shut down lcd and digit on disable if enabled */
- 	val = sysc_read(ddata, dispc_offset + 0x40);
- 	lcd_en = val & lcd_en_mask;
- 	digit_en = val & digit_en_mask;
-@@ -1803,7 +1803,7 @@ static u32 sysc_quirk_dispc(struct sysc *ddata, int dispc_offset,
- 		else
- 			irq_mask |= BIT(2) | BIT(3);	/* EVSYNC bits */
- 	}
--	if (disable & (lcd_en | digit_en))
-+	if (disable && (lcd_en || digit_en))
- 		sysc_write(ddata, dispc_offset + 0x40,
- 			   val & ~(lcd_en_mask | digit_en_mask));
- 
--- 
-2.40.1
+Regards,
+
+Tony
