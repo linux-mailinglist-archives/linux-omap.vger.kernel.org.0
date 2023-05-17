@@ -2,137 +2,114 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C2C5970648E
-	for <lists+linux-omap@lfdr.de>; Wed, 17 May 2023 11:51:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15F467064BB
+	for <lists+linux-omap@lfdr.de>; Wed, 17 May 2023 11:57:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229937AbjEQJu7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 17 May 2023 05:50:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52890 "EHLO
+        id S229921AbjEQJ5Z (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 17 May 2023 05:57:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229795AbjEQJu4 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 17 May 2023 05:50:56 -0400
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CCBB4C3C;
-        Wed, 17 May 2023 02:50:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1684317052; x=1715853052;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=dp4AjByrGPPW2+s+Gu4zde9gjuLVVm2MN56x4f0uc3E=;
-  b=2ap01Xs4Og0LcphINKfroNj4F6Ig0hCPNRVPokVwyffd5nS+aUsNR7L6
-   kquJJtfFdam5h1BCLXvh9ZeI1dSbULlV10ImPtKsb1PWrcNwRdPFETBnp
-   A7yMJTFI4vespT3DGSWZI8NeM/2u8Y+zhYlcdF1fo6SM9pZUETGeEa2CE
-   iFp4+ElmMfSKSUqqhhpoeE3w1oLcF92IWLbhCGpuOMtayiEP4BmwBf3Rd
-   4vLrIsCs9mQx5WPtjK9rawg2rgRYp/SyqykEqNfA0CuIR1VfoDOE+Pm+I
-   u5M6zrWuholnQ6mbxch4oO0JAYOqzIcaryPChCOOkbU+Hz8kFyXeMJHMN
-   Q==;
-X-IronPort-AV: E=Sophos;i="5.99,281,1677567600"; 
-   d="scan'208";a="211699133"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa4.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 17 May 2023 02:50:50 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.21; Wed, 17 May 2023 02:50:49 -0700
-Received: from m18063-ThinkPad-T460p.mchp-main.com (10.10.115.15) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
- 15.1.2507.21 via Frontend Transport; Wed, 17 May 2023 02:50:37 -0700
-From:   Claudiu Beznea <claudiu.beznea@microchip.com>
-To:     <perex@perex.cz>, <tiwai@suse.com>, <lgirdwood@gmail.com>,
-        <broonie@kernel.org>, <oder_chiou@realtek.com>,
-        <shengjiu.wang@gmail.com>, <Xiubo.Lee@gmail.com>,
-        <festevam@gmail.com>, <nicoleotsuka@gmail.com>,
-        <shawnguo@kernel.org>, <s.hauer@pengutronix.de>,
-        <kernel@pengutronix.de>, <linux-imx@nxp.com>,
-        <cezary.rojewski@intel.com>,
-        <pierre-louis.bossart@linux.intel.com>,
-        <peter.ujfalusi@linux.intel.com>,
-        <yung-chuan.liao@linux.intel.com>,
-        <ranjani.sridharan@linux.intel.com>,
-        <kai.vehmanen@linux.intel.com>, <matthias.bgg@gmail.com>,
-        <angelogioacchino.delregno@collabora.com>,
-        <srinivas.kandagatla@linaro.org>, <bgoswami@quicinc.com>,
-        <vkoul@kernel.org>, <daniel.baluta@nxp.com>,
-        <thierry.reding@gmail.com>, <jonathanh@nvidia.com>,
-        <jarkko.nikula@bitmer.com>
-CC:     <alsa-devel@alsa-project.org>, <linux-kernel@vger.kernel.org>,
-        <patches@opensource.cirrus.com>, <linuxppc-dev@lists.ozlabs.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>,
-        <sound-open-firmware@alsa-project.org>,
-        <linux-tegra@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>
-Subject: [PATCH v2 2/2] ASoC: use pm.h instead of runtime_pm.h
-Date:   Wed, 17 May 2023 12:49:03 +0300
-Message-ID: <20230517094903.2895238-3-claudiu.beznea@microchip.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230517094903.2895238-1-claudiu.beznea@microchip.com>
-References: <20230517094903.2895238-1-claudiu.beznea@microchip.com>
+        with ESMTP id S229889AbjEQJ5Y (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 17 May 2023 05:57:24 -0400
+Received: from mail-vs1-xe2d.google.com (mail-vs1-xe2d.google.com [IPv6:2607:f8b0:4864:20::e2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90CAB30C8
+        for <linux-omap@vger.kernel.org>; Wed, 17 May 2023 02:57:22 -0700 (PDT)
+Received: by mail-vs1-xe2d.google.com with SMTP id ada2fe7eead31-434737d7840so146194137.0
+        for <linux-omap@vger.kernel.org>; Wed, 17 May 2023 02:57:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20221208.gappssmtp.com; s=20221208; t=1684317441; x=1686909441;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VynSA3MQFwVAlFJdNBzl7ESPzIRRYdlEm8KKXbrpLiw=;
+        b=dxMWiPc/RBQNG0nw7gRRx8RJ1ieg+Q1e0goSUeFafR5dy3j9uXHba1ehIfcXfgpwtt
+         lQsoXLyM/5ZCBuoBu62jfg4LL9jfOsl1J/8Dz3Y95JfSnOIU/4GpXHmN7t45PmgNKzD+
+         +iiFiBxdYGsN1ftn63I4laptCzzfJUacG+A8de8o/OkfJU87LgJywI3rkBjERaO2PZ+Q
+         BTIMQTOafenASM7DTp3gyBumA1Sm/TwSYekq4oXM6/cc7eIuY47MNO0wL2o385gI4Ew+
+         OB5VqBtyIrCwZgfpK081tlmrG8pKNCe/UsSrkf/MJVZguF6ryVPHKGFleeXOHBFBVDMy
+         moyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684317441; x=1686909441;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VynSA3MQFwVAlFJdNBzl7ESPzIRRYdlEm8KKXbrpLiw=;
+        b=dkXgeSeKTOEE6K1uNByKiNVc1tBrb1Sy2fOmqsnOJ4oU6ozo2vLlOMQnruGPTYkC8X
+         1QfEkOQSvEvQHKGmZJXgONYb2IIUl8KXcIGkVGVWwLX4vXAGnYEnqdnNqcdPhfkYdKTR
+         umLNYIwnuh3XQTNf8QHj2pHf4Ok3RCK6IX3nsafzV24rZ+UUXcLBKMb6vzQSmAshPR1h
+         V+tEMg1nx2jhocQE30d3hFSWgmn2+G7n3lzAvF3IZ+187c5dZmTj5yEnJZpvcO1pFOtO
+         5cFdrflPojuONn4zjOT73O+k6zdH8jundPJ4lnSWQtkCz9aSwyxKVNXiS63a/YcERjyP
+         g35Q==
+X-Gm-Message-State: AC+VfDwmJPiwyz3G5FkGLvHDWscxjvqLk7zwRQhVzGvX1BDK8kQW/t3e
+        o3EJzXat3tWZx8q5zBsl3xVDKpiup7kTDHev347zqw==
+X-Google-Smtp-Source: ACHHUZ5h7TQ820u7krPwOeein/T5RuKnCImpgUUK7k9MkkO14WXVMJJhr8wd8FomNgs2ecq9zPQccveEy/DRhwF9UfQ=
+X-Received: by 2002:a67:e988:0:b0:436:1e1:685e with SMTP id
+ b8-20020a67e988000000b0043601e1685emr13184350vso.28.1684317441643; Wed, 17
+ May 2023 02:57:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+References: <20230430-omap2-pdata-quirks-v1-0-e015f3a3ea46@linaro.org>
+ <20230430-omap2-pdata-quirks-v1-1-e015f3a3ea46@linaro.org>
+ <CAMRc=MczGKVFo+iWe_Pnvi3-hCK0fhmmkjp-h92RHONEHFAP_g@mail.gmail.com> <CACRpkdbYR+kobi3-xx7FgQG5aZb37JJageP+JWMss=D+KZUkFw@mail.gmail.com>
+In-Reply-To: <CACRpkdbYR+kobi3-xx7FgQG5aZb37JJageP+JWMss=D+KZUkFw@mail.gmail.com>
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+Date:   Wed, 17 May 2023 11:57:10 +0200
+Message-ID: <CAMRc=Me3KdxwjHYE4SQWo=CvDx9ccHp1qmzEBc7PszhOSYgS3w@mail.gmail.com>
+Subject: Re: [PATCH 1/3] ARM/gpio: Push OMAP2 quirk down into TWL4030 driver
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Tony Lindgren <tony@atomide.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Lee Jones <lee@kernel.org>,
+        Andreas Kemnade <andreas@kemnade.info>,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Do not include pm_runtime.h header in files where runtime PM support is
-not implemented. Use pm.h instead as suspend to RAM specific
-implementation is available.
+On Thu, May 4, 2023 at 2:19=E2=80=AFPM Linus Walleij <linus.walleij@linaro.=
+org> wrote:
+>
+> On Wed, May 3, 2023 at 3:02=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev.pl=
+> wrote:
+> > On Mon, May 1, 2023 at 11:05=E2=80=AFAM Linus Walleij <linus.walleij@li=
+naro.org> wrote:
+> > >
+> > > The TWL4030 GPIO driver has a custom platform data .set_up()
+> > > callback to call back into the platform and do misc stuff such
+> > > as hog and export a GPIO for WLAN PWR on a specific OMAP3 board.
+> > >
+> > > Avoid all the kludgery in the platform data and the boardfile
+> > > and just put the quirks right into the driver. Make it
+> > > conditional on OMAP3.
+> > >
+> > > I think the exported GPIO is used by some kind of userspace
+> > > so ordinary DTS hogs will probably not work.
+> > >
+> >
+> > While I haven't tested it (nor can I) so don't take my word for it, it
+> > looks to me as if regular DTS hogs *should* work. If anything, the way
+> > this quirk is implemented in your patch moves the export past the chip
+> > registration, while ordinary hogs would be applied when the chip is
+> > first added.
+> >
+> > Am I missing something?
+>
+> DTS hogs cannot do gpiod_export(), that's the problem. I think the OMAP2
+> (Nokia phones?) need those exported GPIOs.
+>
+> Yours,
+> Linus Walleij
 
-Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
----
- sound/soc/codecs/max98373-i2c.c | 2 +-
- sound/soc/qcom/lpass-sc7180.c   | 2 +-
- sound/soc/qcom/lpass-sc7280.c   | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+Ah, it needs to manipulate the GPIOs then. Get it. I don't have a
+better idea either.
 
-diff --git a/sound/soc/codecs/max98373-i2c.c b/sound/soc/codecs/max98373-i2c.c
-index 3d6da4f133de..0fa5ceca62a2 100644
---- a/sound/soc/codecs/max98373-i2c.c
-+++ b/sound/soc/codecs/max98373-i2c.c
-@@ -9,7 +9,7 @@
- #include <linux/mod_devicetable.h>
- #include <linux/of.h>
- #include <linux/of_gpio.h>
--#include <linux/pm_runtime.h>
-+#include <linux/pm.h>
- #include <linux/regmap.h>
- #include <linux/slab.h>
- #include <linux/cdev.h>
-diff --git a/sound/soc/qcom/lpass-sc7180.c b/sound/soc/qcom/lpass-sc7180.c
-index 41db6617e2ed..56db852f4eab 100644
---- a/sound/soc/qcom/lpass-sc7180.c
-+++ b/sound/soc/qcom/lpass-sc7180.c
-@@ -12,7 +12,7 @@
- #include <linux/module.h>
- #include <linux/of.h>
- #include <linux/platform_device.h>
--#include <linux/pm_runtime.h>
-+#include <linux/pm.h>
- #include <dt-bindings/sound/sc7180-lpass.h>
- #include <sound/pcm.h>
- #include <sound/soc.h>
-diff --git a/sound/soc/qcom/lpass-sc7280.c b/sound/soc/qcom/lpass-sc7280.c
-index d43f480cbae3..bcf18fe8e14d 100644
---- a/sound/soc/qcom/lpass-sc7280.c
-+++ b/sound/soc/qcom/lpass-sc7280.c
-@@ -8,7 +8,7 @@
- #include <linux/module.h>
- #include <sound/pcm.h>
- #include <sound/soc.h>
--#include <linux/pm_runtime.h>
-+#include <linux/pm.h>
- 
- #include <dt-bindings/sound/sc7180-lpass.h>
- 
--- 
-2.34.1
-
+Bart
