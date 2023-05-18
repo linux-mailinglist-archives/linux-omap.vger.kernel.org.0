@@ -2,107 +2,104 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B5D59707626
-	for <lists+linux-omap@lfdr.de>; Thu, 18 May 2023 01:04:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37910707E2C
+	for <lists+linux-omap@lfdr.de>; Thu, 18 May 2023 12:34:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229938AbjEQXEC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 17 May 2023 19:04:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45958 "EHLO
+        id S229985AbjERKei (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 18 May 2023 06:34:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229941AbjEQXEA (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 17 May 2023 19:04:00 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFF5A7298
-        for <linux-omap@vger.kernel.org>; Wed, 17 May 2023 16:03:27 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1pzQAc-0008K5-Ib; Thu, 18 May 2023 01:02:58 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1pzQAa-000wse-E6; Thu, 18 May 2023 01:02:56 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1pzQAZ-005UZb-JE; Thu, 18 May 2023 01:02:55 +0200
-From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     Alan Stern <stern@rowland.harvard.edu>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     linux-usb@vger.kernel.org, linux-omap@vger.kernel.org,
-        kernel@pengutronix.de
-Subject: [PATCH 68/97] usb: ohci-omap: Convert to platform remove callback returning void
-Date:   Thu, 18 May 2023 01:02:10 +0200
-Message-Id: <20230517230239.187727-69-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230517230239.187727-1-u.kleine-koenig@pengutronix.de>
-References: <20230517230239.187727-1-u.kleine-koenig@pengutronix.de>
+        with ESMTP id S229726AbjERKeh (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 18 May 2023 06:34:37 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B924F0;
+        Thu, 18 May 2023 03:34:37 -0700 (PDT)
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34IARYb4028857;
+        Thu, 18 May 2023 10:33:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=qcppdkim1;
+ bh=iYXEmN22HFIjbTUbP/SZ6j1jySC3oY3gTEzP7pqB/3M=;
+ b=pCVNne/kk+Q2BvdR+ewDlxbafyZSnhOljIlZr9lBtVB3VVfPdWmAWFPVXQE66kxQ0BDf
+ TsC9DajWlYHUUhBNzu3RHh3MrynFy/Pio0DBjATn3Z3XOUl6Ml3lAN7cJib+f6cvriU9
+ tV/C102/qlNQGSZZPGAMBPD0Phi9kLKU4F5eJD0Jm388vCYgsk5kAQMwfrBJSDBTui1P
+ owbWU89vj/sLFwTVN/ljWjca51HIXixt9Sfh47IienzyIF1zbX93mXU+Z6VutOx2r6RA
+ II8OxbhAipmSiGdG8csorAxuiOEID0iIJSClqsNtFGRl2uzPJCcyhJYMfHPmRznDV2Xe AA== 
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3qn3fshp7x-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 18 May 2023 10:33:53 +0000
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
+        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 34IAXc7N013158
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 18 May 2023 10:33:52 GMT
+Received: from hu-pbaronia-blr.qualcomm.com (10.80.80.8) by
+ nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.42; Thu, 18 May 2023 03:33:37 -0700
+From:   Prathu Baronia <quic_pbaronia@quicinc.com>
+To:     Kevin Hilman <khilman@kernel.org>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Russell King <linux@armlinux.org.uk>,
+        <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+CC:     Prathu Baronia <quic_pbaronia@quicinc.com>
+Subject: [PATCH] arm: omap1: replace printk() with pr_err macro
+Date:   Thu, 18 May 2023 16:03:24 +0530
+Message-ID: <20230518103324.881394-1-quic_pbaronia@quicinc.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2114; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=036YeX6s4vOUnhzrH7knkszUUtAwrp7J4f82q0cSJ4g=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBkZVyNsh+T9FLx5rOt+RMHaVuQD6T7MhFW4ElcQ IjKYbMB11mJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZGVcjQAKCRCPgPtYfRL+ Tne4CAC2tHmWfrUSb8YoDi/pPWWNF50EyuYG2dcyg3cL/FYfCvTP93USlPL2jseIw9RLHH9wsol nZ4Z6wO3XV6nRR9MtPTuFCfw+JudtePL9SEOu+QVsfEGJ/gPmVIMplFmyYMJJTtVsPlCIDEDtHY M689U25sTuYG/Svb/0J8lpzKD7kTlybWpVse3+BmH4R7fucLO25K2W7LGEOoL0swXov5ggfZRDV ThFRDeSjD7LxBHTVajt1+Y4xBRDQXZBiL3qhfXyWqsmyCEBQBk6JqJdRzmlRHpcfxwrYQZDVw62 mz4zoeAS2wFqADy8xEQmQevTM+Pw+v9ad6hSuonMFHJPiDDO
-X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-omap@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: tR_Txb035mb03VXmVoWJtSjy54hQ1HCj
+X-Proofpoint-GUID: tR_Txb035mb03VXmVoWJtSjy54hQ1HCj
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-05-18_07,2023-05-17_02,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011
+ lowpriorityscore=0 suspectscore=0 spamscore=0 adultscore=0 bulkscore=0
+ phishscore=0 impostorscore=0 mlxlogscore=944 priorityscore=1501 mlxscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2304280000 definitions=main-2305180081
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The .remove() callback for a platform driver returns an int which makes
-many driver authors wrongly assume it's possible to do error handling by
-returning an error code. However the value returned is ignored (apart from
-emitting a warning) and this typically results in resource leaks. To improve
-here there is a quest to make the remove callback return void. In the first
-step of this quest all drivers are converted to .remove_new() which already
-returns void. Eventually after all drivers are converted, .remove_new() is
-renamed to .remove().
+Use pr_err() macro instead of printk(KERN_ERR "...").
 
-Trivially convert this driver from always returning zero in the remove
-callback to the void returning variant.
-
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Prathu Baronia <quic_pbaronia@quicinc.com>
 ---
- drivers/usb/host/ohci-omap.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ arch/arm/mach-omap1/pm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/host/ohci-omap.c b/drivers/usb/host/ohci-omap.c
-index c82121602511..21a6f6c55e07 100644
---- a/drivers/usb/host/ohci-omap.c
-+++ b/drivers/usb/host/ohci-omap.c
-@@ -321,7 +321,7 @@ static int ohci_hcd_omap_probe(struct platform_device *pdev)
-  * the HCD's stop() method.  It is always called from a thread
-  * context, normally "rmmod", "apmd", or something similar.
-  */
--static int ohci_hcd_omap_remove(struct platform_device *pdev)
-+static void ohci_hcd_omap_remove(struct platform_device *pdev)
- {
- 	struct usb_hcd	*hcd = platform_get_drvdata(pdev);
- 	struct ohci_omap_priv *priv = hcd_to_ohci_omap_priv(hcd);
-@@ -340,7 +340,6 @@ static int ohci_hcd_omap_remove(struct platform_device *pdev)
- 	clk_unprepare(priv->usb_host_ck);
- 	clk_put(priv->usb_host_ck);
- 	usb_put_hcd(hcd);
--	return 0;
- }
+diff --git a/arch/arm/mach-omap1/pm.c b/arch/arm/mach-omap1/pm.c
+index 9761d8404949..6a5815aa05e6 100644
+--- a/arch/arm/mach-omap1/pm.c
++++ b/arch/arm/mach-omap1/pm.c
+@@ -632,7 +632,7 @@ static int __init omap_pm_init(void)
  
- /*-------------------------------------------------------------------------*/
-@@ -391,7 +390,7 @@ static int ohci_omap_resume(struct platform_device *dev)
-  */
- static struct platform_driver ohci_hcd_omap_driver = {
- 	.probe		= ohci_hcd_omap_probe,
--	.remove		= ohci_hcd_omap_remove,
-+	.remove_new	= ohci_hcd_omap_remove,
- 	.shutdown	= usb_hcd_platform_shutdown,
- #ifdef	CONFIG_PM
- 	.suspend	= ohci_omap_suspend,
+ 	error = sysfs_create_file(power_kobj, &sleep_while_idle_attr.attr);
+ 	if (error)
+-		printk(KERN_ERR "sysfs_create_file failed: %d\n", error);
++		pr_err("sysfs_create_file failed: %d\n", error);
+ 
+ 	if (cpu_is_omap16xx()) {
+ 		/* configure LOW_PWR pin */
 -- 
-2.39.2
+2.25.1
 
