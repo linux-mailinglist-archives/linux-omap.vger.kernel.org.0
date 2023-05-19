@@ -2,37 +2,55 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3043F70999D
-	for <lists+linux-omap@lfdr.de>; Fri, 19 May 2023 16:27:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95FBC709B07
+	for <lists+linux-omap@lfdr.de>; Fri, 19 May 2023 17:16:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231163AbjESO1N (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 19 May 2023 10:27:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50054 "EHLO
+        id S229714AbjESPQp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 19 May 2023 11:16:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229642AbjESO1L (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 19 May 2023 10:27:11 -0400
-Received: from mail11.truemail.it (mail11.truemail.it [IPv6:2001:4b7e:0:8::81])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50A21116;
-        Fri, 19 May 2023 07:27:08 -0700 (PDT)
-Received: from francesco-nb.int.toradex.com (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-        by mail11.truemail.it (Postfix) with ESMTPA id E7DED2133C;
-        Fri, 19 May 2023 16:27:02 +0200 (CEST)
-Date:   Fri, 19 May 2023 16:26:58 +0200
-From:   Francesco Dolcini <francesco@dolcini.it>
-To:     Jerome Neanne <jneanne@baylibre.com>, nm@ti.com, lee@kernel.org,
-        tony@atomide.com, vigneshr@ti.com
-Cc:     afd@ti.com, khilman@baylibre.com, narmstrong@baylibre.com,
-        msp@baylibre.com, j-keerthy@ti.com, jneanne@baylibre.com,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-omap@vger.kernel.org, Wolfram Sang <wsa@kernel.org>,
-        linux-i2c@vger.kernel.org
-Subject: RCU WARNING on 6.4-rc2, TI AM62 and TPS65219
-Message-ID: <ZGeHMjlnob2GFyHF@francesco-nb.int.toradex.com>
+        with ESMTP id S229532AbjESPQp (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 19 May 2023 11:16:45 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 048E3CF;
+        Fri, 19 May 2023 08:16:43 -0700 (PDT)
+Received: from mercury (dyndsl-091-248-213-050.ewe-ip-backbone.de [91.248.213.50])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: sre)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 74826660298C;
+        Fri, 19 May 2023 16:16:42 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1684509402;
+        bh=gG0TdTUi5TP/4YlyrfonnMyAjHXDOX3bmS2Dy34e5O0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=f+XzWG3jZXvr2vEEX7lzfx+9cOzVSWywgqCvOHoNGVMRLZtbtZtRpwsuXvGSvWnr5
+         b8odGKRK1MbIVBI1uowyvC3gs458wWG3oNjQ1OyazofhM5x07oY4k1a2BoDXIGhH72
+         ksbmFFlPYmB2a/IJn21E85kst5QyUU80Pr8si2FzYpASCMnoD6GDjP6++UFxouL66w
+         6t0QUQ157qlDwDEHjrHvl/xTk/685hTBQ1kJGm03jxfigvrpc7cGW3UCi8CYQmY3GH
+         tZkNQkpJGwpOueUBDP3tS//Azc3+craNpSY7cuEgOivTfafKWwMDfO5R0gjypgHV0z
+         Ms5q6Qj+0oiJA==
+Received: by mercury (Postfix, from userid 1000)
+        id 82E90106138C; Fri, 19 May 2023 17:16:39 +0200 (CEST)
+Date:   Fri, 19 May 2023 17:16:39 +0200
+From:   Sebastian Reichel <sebastian.reichel@collabora.com>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-omap@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: Mystery dtb check errors with ti,x-plate-ohms with txt only
+ binding
+Message-ID: <20230519151639.67s2gapqplys7gva@mercury.elektranox.org>
+References: <20230519071359.GW14287@atomide.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="xs5semub2dxxej74"
 Content-Disposition: inline
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+In-Reply-To: <20230519071359.GW14287@atomide.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -40,92 +58,55 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hello all,
-while testing 6.4-rc2 (2d1bcbc6cd70) on a TI K3 AM625 SoC with TPS65219
-PMIC I noticed this warning.
 
-[   80.117502] systemd-shutdown[1]: All loop devices detached.
-[   80.123176] systemd-shutdown[1]: Stopping MD devices.
-[   80.128700] systemd-shutdown[1]: All MD devices stopped.
-[   80.134123] systemd-shutdown[1]: Detaching DM devices.
-[   80.139553] systemd-shutdown[1]: All DM devices detached.
-[   80.144970] systemd-shutdown[1]: All filesystems, swaps, loop devices, MD devices and DM devices detached.
-[   80.162682] systemd-shutdown[1]: Syncing filesystems and block devices.
-[   80.169602] systemd-shutdown[1]: Rebooting.
-[   80.173817] kvm: exiting hardware virtualization
-[   80.213016] reboot: Restarting system
-[   80.216767] ------------[ cut here ]------------
-[   80.221380] Voluntary context switch within RCU read-side critical section!
-[   80.221404] WARNING: CPU: 0 PID: 1 at kernel/rcu/tree_plugin.h:318 rcu_note_context_switch+0x31c/0x390
-[   80.237669] Modules linked in: 8021q garp mrp stp llc cfg80211 usb_f_ncm u_ether bluetooth ecdh_generic ecc rfkill sp
-idev crct10dif_ce snd_soc_simple_card snd_soc_simple_card_utils rtc_ti_k3 sa2ul sha256_generic libsha256 authenc snd_soc
-_davinci_mcasp snd_soc_ti_udma snd_soc_ti_edma snd_soc_ti_sdma ti_ads1015 ina2xx industrialio_triggered_buffer pwm_tiehr
-pwm snd_soc_nau8822 tps65219_pwrbutton lm75 kfifo_buf spi_omap2_mcspi rtc_ds1307 libcomposite fuse drm ipv6
-[   80.278507] CPU: 0 PID: 1 Comm: systemd-shutdow Not tainted 6.4.0-rc2-00166-gf932e7bb873b #3
-[   80.286938] Hardware name: Toradex Verdin AM62 on Verdin Development Board (DT)
-[   80.294238] pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[   80.301193] pc : rcu_note_context_switch+0x31c/0x390
-[   80.306154] lr : rcu_note_context_switch+0x31c/0x390
-[   80.311114] sp : ffff80000a71b4c0
-[   80.314422] x29: ffff80000a71b4c0 x28: 0000000000000000 x27: ffff000000118000
-[   80.321556] x26: 0000000000000000 x25: ffff000000118000 x24: ffff800008fafbd8
-[   80.328689] x23: ffff000000118000 x22: 0000000000000000 x21: ffff000000118000
-[   80.335822] x20: 0000000000000000 x19: ffff00003fd68cc0 x18: 0000000000000010
-[   80.342955] x17: 0000000000000000 x16: 0000000000000000 x15: ffff000000118000
-[   80.350087] x14: 00000000000001c5 x13: ffff000000118478 x12: 00000000ffffffea
-[   80.357220] x11: 00000000ffffefff x10: 00000000ffffefff x9 : ffff80000a2a9a98
-[   80.364352] x8 : 0000000000017fe8 x7 : c0000000ffffefff x6 : 000000000000bff4
-[   80.371485] x5 : 0000000000057fa8 x4 : 0000000000000000 x3 : 0000000000000000
-[   80.378617] x2 : ffff80000a251990 x1 : 0000000000000000 x0 : 0000000000000000
-[   80.385751] Call trace:
-[   80.388193]  rcu_note_context_switch+0x31c/0x390
-[   80.392807]  __schedule+0x98/0xa7c
-[   80.396214]  schedule+0x5c/0xc4
-[   80.399354]  schedule_timeout+0x180/0x25c
-[   80.403362]  wait_for_completion_timeout+0x80/0x15c
-[   80.408238]  ti_sci_set_device_state+0xb4/0x1e4
-[   80.412771]  ti_sci_cmd_get_device_exclusive+0x18/0x24
-[   80.417907]  ti_sci_pd_power_on+0x28/0x48
-[   80.421914]  _genpd_power_on+0x94/0x154
-[   80.425749]  genpd_power_on.part.0+0xa4/0x174
-[   80.430104]  genpd_runtime_resume+0x118/0x294
-[   80.434457]  __rpm_callback+0x48/0x140
-[   80.438206]  rpm_callback+0x6c/0x78
-[   80.441692]  rpm_resume+0x3bc/0x59c
-[   80.445179]  __pm_runtime_resume+0x4c/0x90
-[   80.449272]  omap_i2c_xfer_common+0x38/0x598
-[   80.453540]  omap_i2c_xfer_polling+0x14/0x20
-[   80.457804]  __i2c_transfer+0x138/0x35c
-[   80.461642]  i2c_transfer+0x94/0xf4
-[   80.465130]  regmap_i2c_read+0x60/0xa8
-[   80.468879]  _regmap_raw_read+0xf0/0x170
-[   80.472799]  _regmap_bus_read+0x44/0x7c
-[   80.476632]  _regmap_read+0x64/0xf4
-[   80.480118]  _regmap_update_bits+0xf4/0x130
-[   80.484298]  regmap_update_bits_base+0x64/0x98
-[   80.488738]  tps65219_restart+0x38/0x48
-[   80.492576]  atomic_notifier_call_chain+0x60/0x90
-[   80.497280]  do_kernel_restart+0x24/0x30
-[   80.501202]  machine_restart+0x38/0x5c
-[   80.504950]  kernel_restart+0x88/0x98
-[   80.508612]  __do_sys_reboot+0x1e0/0x264
-[   80.512533]  __arm64_sys_reboot+0x24/0x30
-[   80.516538]  invoke_syscall+0x44/0x104
-[   80.520287]  el0_svc_common.constprop.0+0x44/0xec
-[   80.524988]  do_el0_svc+0x38/0x98
-[   80.528302]  el0_svc+0x2c/0x84
-[   80.531354]  el0t_64_sync_handler+0xb8/0xbc
-[   80.535534]  el0t_64_sync+0x190/0x194
-[   80.539192] ---[ end trace 0000000000000000 ]---
+--xs5semub2dxxej74
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+Hi,
 
-This looks similar to what is described here [1], same issue or
-something else? Any suggestion?
+On Fri, May 19, 2023 at 10:13:59AM +0300, Tony Lindgren wrote:
+> Somehow the ti,x-plate-ohms property produces errors for nodes with the
+> compatible only in a txt binding that still uses /bits/ 16 value:
+>=20
+> ti,x-plate-ohms: size (2) error for type uint32-array
+>=20
+> For the yaml bindings, we have ti,xplate-ohms so far only defined in
+> Documentation/devicetree/bindings/input/touchscreen/ti,tsc2005.yaml.
+>=20
+> So for example, compatible =3D "ti,tsc2046" that only has a txt binding in
+> Documentation/devicetree/bindings/input/touchscreen/ads7846.txt still
+> produces warnings somehow based on the ti,tsc2005.yaml?
+>=20
+> Any ideas why this is happening?
 
-The issue is systematic and happens at every boot. With a TI downstream
-5.10 kernel this issue was never experienced.
+-ohms is a standard unit suffix and thus the property gets the type
+auto-assigned:
 
-Francesco
+https://github.com/robherring/dt-schema/blob/master/schemas/property-units.=
+yaml#L64
 
-[1] https://lore.kernel.org/all/20230327-tegra-pmic-reboot-v6-0-af44a4cd82e9@skidata.com/
+-- Sebastian
 
+--xs5semub2dxxej74
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmRnks8ACgkQ2O7X88g7
++podIg/9EnB+CkNHLvckxinfza4wMPOk8aisgDoJtVQC4Rwnwxr5+nBQIr+d2vIc
+IXaA1R9sVyUD717OKv4FD8mWbBwW+kL0Ns93khDHL4ovQlHK3uc/vrHzrb+zZryC
+Wd0BM0aC/3k4FE7QNnsAuauJy1c8xVD1WN8BMT3qeEJt6eHASX2JunT+/EWbWICy
+0Aw52jIhxtkm9XjMz2gO6Fds3ePZqws/Nf2xPFl9nFQsUDSqbnllPj7SzUcKndVg
+gp/ZKAWrz1UB1A+CdKGoThbk1hE4qtRDzCHeXRl/ZiLy7PRmktaBcrtbhIM4Y3YD
+ieHwj0eWCWnmX2xMxa5GHiXfztgMIohkiUIGnko0POAeUyOycHzcMPoPneSWb998
+DLUfYNwgqxWOERXbMuKl8HFh8x3rCaiCKSGvhw0K9FRY6xcQOu5c2iFb6uaCMYbb
+H6RAFzTEZBO3Pfo1ZqRL82+sqladtk2COmNen2798yrFFKRzelBNwwLDMIDHzvil
+HoQ8xAmu7/mt8C5UDKpjkwJkKLvxSpjqQbBemyOg5bHDTOnpwGoaFRzi2zSL/P0d
+k8m7u+jBuA06qk2X4ouDRP7HMxY5Ld/6DYa1XLdXgxoz/U2Qoqz9xdCcSS9mdcNK
+rytb6d43iNq0I+n8Np0TqEbCvuRFX6GAviUVZ8g40rjovzxfZEQ=
+=QDkN
+-----END PGP SIGNATURE-----
+
+--xs5semub2dxxej74--
