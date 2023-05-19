@@ -2,111 +2,101 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 95FBC709B07
-	for <lists+linux-omap@lfdr.de>; Fri, 19 May 2023 17:16:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3E40709EA2
+	for <lists+linux-omap@lfdr.de>; Fri, 19 May 2023 19:57:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229714AbjESPQp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 19 May 2023 11:16:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48342 "EHLO
+        id S231578AbjESR5B (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 19 May 2023 13:57:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229532AbjESPQp (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 19 May 2023 11:16:45 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 048E3CF;
-        Fri, 19 May 2023 08:16:43 -0700 (PDT)
-Received: from mercury (dyndsl-091-248-213-050.ewe-ip-backbone.de [91.248.213.50])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: sre)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 74826660298C;
-        Fri, 19 May 2023 16:16:42 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1684509402;
-        bh=gG0TdTUi5TP/4YlyrfonnMyAjHXDOX3bmS2Dy34e5O0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=f+XzWG3jZXvr2vEEX7lzfx+9cOzVSWywgqCvOHoNGVMRLZtbtZtRpwsuXvGSvWnr5
-         b8odGKRK1MbIVBI1uowyvC3gs458wWG3oNjQ1OyazofhM5x07oY4k1a2BoDXIGhH72
-         ksbmFFlPYmB2a/IJn21E85kst5QyUU80Pr8si2FzYpASCMnoD6GDjP6++UFxouL66w
-         6t0QUQ157qlDwDEHjrHvl/xTk/685hTBQ1kJGm03jxfigvrpc7cGW3UCi8CYQmY3GH
-         tZkNQkpJGwpOueUBDP3tS//Azc3+craNpSY7cuEgOivTfafKWwMDfO5R0gjypgHV0z
-         Ms5q6Qj+0oiJA==
-Received: by mercury (Postfix, from userid 1000)
-        id 82E90106138C; Fri, 19 May 2023 17:16:39 +0200 (CEST)
-Date:   Fri, 19 May 2023 17:16:39 +0200
-From:   Sebastian Reichel <sebastian.reichel@collabora.com>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-omap@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: Mystery dtb check errors with ti,x-plate-ohms with txt only
- binding
-Message-ID: <20230519151639.67s2gapqplys7gva@mercury.elektranox.org>
-References: <20230519071359.GW14287@atomide.com>
+        with ESMTP id S231407AbjESR47 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 19 May 2023 13:56:59 -0400
+Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E5FD13D
+        for <linux-omap@vger.kernel.org>; Fri, 19 May 2023 10:56:57 -0700 (PDT)
+Received: by mail-pf1-x42b.google.com with SMTP id d2e1a72fcca58-64d2b42a8f9so1268937b3a.3
+        for <linux-omap@vger.kernel.org>; Fri, 19 May 2023 10:56:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20221208.gappssmtp.com; s=20221208; t=1684519017; x=1687111017;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=lt+R66SZsjACqQLQDsP1T/1PH804jTRmZ4JzbbwpO0U=;
+        b=f8+SMr3t2qPVQOmEi/6pwbqCUOu+FC7kgupDjZbbgRp/Bju1XiEyEROvnrzIeAPIcP
+         ptNQFmQF4OEsozJNoUP8LqyhLYk1oGQlOlbBPofaDerSBfIUBnO6R5Jd83TmqVtWTv47
+         aIptasIq4EtXD3ibEpGgZXhzXlDc0usDHTBzB7QygCySo1+puz1Ju9yhtlRHSax8YyEU
+         PAZGU05VOZGzPtVu861CMp2L16Pnfn7JMNmlk+yxoV1pxiZhiFkDlSYGbAJGGPOK3KQp
+         BvlFnFqJEgL8s31SpQyhgf/w4bGuatySyK6UHtRDBALdkPUn5B8TKVN5Hr5jTL9ZBuol
+         odzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684519017; x=1687111017;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=lt+R66SZsjACqQLQDsP1T/1PH804jTRmZ4JzbbwpO0U=;
+        b=i/oJAMkEuYPBjnu17h05q6VE937PKu82eSz/Vu3bMtU+bBdCcFj4Ob/JZsz2NqflUc
+         ir99O3Wys+bTZKZYh+0wCJeIh7lV+zSPO3vu8UTujwJ8PJLSKAcizDZF6kf6M/F6HbpF
+         o0gY5f72YvUiYWjms4gLBpdEbntAuSCIms9IMckWlXL290dBeFGQV28vyAu57Rfh56X/
+         WJOWZ4I0EWIqYTsdXhYmsfyz2i+/3IV2eKW0ogAIf7hosfPJA7uCRg2k/Stw2JWjw7EC
+         Sk/Iw6r9CneEVKJ3TByj33KwhrbhPuTdEaSEtvdjtBgf3PdlwxiWXpLxQz89FBroSfSQ
+         jD0Q==
+X-Gm-Message-State: AC+VfDwCLfr/RJA4HSeHpzObDi989X0/s4Qw2GpgU83x+3ycGwiOVXIM
+        nWYBfVme1dvG7HM9b1kQw58SPA==
+X-Google-Smtp-Source: ACHHUZ5XErCDTH4azEKBxRjdnDnNN3sfrlswrYkchau1PsP2au5OzmCr1ocMI4VOVLvqOHd0cSpp4w==
+X-Received: by 2002:a17:903:2287:b0:1ad:b5f4:dfd5 with SMTP id b7-20020a170903228700b001adb5f4dfd5mr3851080plh.32.1684519016686;
+        Fri, 19 May 2023 10:56:56 -0700 (PDT)
+Received: from localhost (63-228-113-140.tukw.qwest.net. [63.228.113.140])
+        by smtp.gmail.com with ESMTPSA id ft24-20020a17090b0f9800b0024e268985b1sm1763401pjb.9.2023.05.19.10.56.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 19 May 2023 10:56:56 -0700 (PDT)
+From:   Kevin Hilman <khilman@baylibre.com>
+To:     Prathu Baronia <quic_pbaronia@quicinc.com>,
+        Kevin Hilman <khilman@kernel.org>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Russell King <linux@armlinux.org.uk>,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+Cc:     Prathu Baronia <quic_pbaronia@quicinc.com>
+Subject: Re: [PATCH] arm: omap1: replace printk() with pr_err macro
+In-Reply-To: <20230518103324.881394-1-quic_pbaronia@quicinc.com>
+References: <20230518103324.881394-1-quic_pbaronia@quicinc.com>
+Date:   Fri, 19 May 2023 10:56:55 -0700
+Message-ID: <7ho7mgyzko.fsf@baylibre.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="xs5semub2dxxej74"
-Content-Disposition: inline
-In-Reply-To: <20230519071359.GW14287@atomide.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Prathu Baronia <quic_pbaronia@quicinc.com> writes:
 
---xs5semub2dxxej74
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> Use pr_err() macro instead of printk(KERN_ERR "...").
+>
+> Signed-off-by: Prathu Baronia <quic_pbaronia@quicinc.com>
 
-Hi,
+Acked-by: Kevin Hilman <khilman@baylibre.com>
 
-On Fri, May 19, 2023 at 10:13:59AM +0300, Tony Lindgren wrote:
-> Somehow the ti,x-plate-ohms property produces errors for nodes with the
-> compatible only in a txt binding that still uses /bits/ 16 value:
->=20
-> ti,x-plate-ohms: size (2) error for type uint32-array
->=20
-> For the yaml bindings, we have ti,xplate-ohms so far only defined in
-> Documentation/devicetree/bindings/input/touchscreen/ti,tsc2005.yaml.
->=20
-> So for example, compatible =3D "ti,tsc2046" that only has a txt binding in
-> Documentation/devicetree/bindings/input/touchscreen/ads7846.txt still
-> produces warnings somehow based on the ti,tsc2005.yaml?
->=20
-> Any ideas why this is happening?
-
--ohms is a standard unit suffix and thus the property gets the type
-auto-assigned:
-
-https://github.com/robherring/dt-schema/blob/master/schemas/property-units.=
-yaml#L64
-
--- Sebastian
-
---xs5semub2dxxej74
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmRnks8ACgkQ2O7X88g7
-+podIg/9EnB+CkNHLvckxinfza4wMPOk8aisgDoJtVQC4Rwnwxr5+nBQIr+d2vIc
-IXaA1R9sVyUD717OKv4FD8mWbBwW+kL0Ns93khDHL4ovQlHK3uc/vrHzrb+zZryC
-Wd0BM0aC/3k4FE7QNnsAuauJy1c8xVD1WN8BMT3qeEJt6eHASX2JunT+/EWbWICy
-0Aw52jIhxtkm9XjMz2gO6Fds3ePZqws/Nf2xPFl9nFQsUDSqbnllPj7SzUcKndVg
-gp/ZKAWrz1UB1A+CdKGoThbk1hE4qtRDzCHeXRl/ZiLy7PRmktaBcrtbhIM4Y3YD
-ieHwj0eWCWnmX2xMxa5GHiXfztgMIohkiUIGnko0POAeUyOycHzcMPoPneSWb998
-DLUfYNwgqxWOERXbMuKl8HFh8x3rCaiCKSGvhw0K9FRY6xcQOu5c2iFb6uaCMYbb
-H6RAFzTEZBO3Pfo1ZqRL82+sqladtk2COmNen2798yrFFKRzelBNwwLDMIDHzvil
-HoQ8xAmu7/mt8C5UDKpjkwJkKLvxSpjqQbBemyOg5bHDTOnpwGoaFRzi2zSL/P0d
-k8m7u+jBuA06qk2X4ouDRP7HMxY5Ld/6DYa1XLdXgxoz/U2Qoqz9xdCcSS9mdcNK
-rytb6d43iNq0I+n8Np0TqEbCvuRFX6GAviUVZ8g40rjovzxfZEQ=
-=QDkN
------END PGP SIGNATURE-----
-
---xs5semub2dxxej74--
+> ---
+>  arch/arm/mach-omap1/pm.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/arch/arm/mach-omap1/pm.c b/arch/arm/mach-omap1/pm.c
+> index 9761d8404949..6a5815aa05e6 100644
+> --- a/arch/arm/mach-omap1/pm.c
+> +++ b/arch/arm/mach-omap1/pm.c
+> @@ -632,7 +632,7 @@ static int __init omap_pm_init(void)
+>  
+>  	error = sysfs_create_file(power_kobj, &sleep_while_idle_attr.attr);
+>  	if (error)
+> -		printk(KERN_ERR "sysfs_create_file failed: %d\n", error);
+> +		pr_err("sysfs_create_file failed: %d\n", error);
+>  
+>  	if (cpu_is_omap16xx()) {
+>  		/* configure LOW_PWR pin */
+> -- 
+> 2.25.1
