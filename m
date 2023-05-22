@@ -2,44 +2,77 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6316770A6D0
-	for <lists+linux-omap@lfdr.de>; Sat, 20 May 2023 11:44:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2840D70B706
+	for <lists+linux-omap@lfdr.de>; Mon, 22 May 2023 09:51:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229760AbjETJof (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 20 May 2023 05:44:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46370 "EHLO
+        id S231920AbjEVHvI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 22 May 2023 03:51:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38730 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229577AbjETJof (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 20 May 2023 05:44:35 -0400
-Received: from fgw21-7.mail.saunalahti.fi (fgw21-7.mail.saunalahti.fi [62.142.5.82])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC1CDD2
-        for <linux-omap@vger.kernel.org>; Sat, 20 May 2023 02:44:31 -0700 (PDT)
-Received: from localhost (88-113-26-95.elisa-laajakaista.fi [88.113.26.95])
-        by fgw21.mail.saunalahti.fi (Halon) with ESMTP
-        id e5b76b35-f6f2-11ed-abf4-005056bdd08f;
-        Sat, 20 May 2023 12:44:22 +0300 (EEST)
-From:   andy.shevchenko@gmail.com
-Date:   Sat, 20 May 2023 12:44:21 +0300
-To:     Bartosz Golaszewski <brgl@bgdev.pl>
-Cc:     Jerome Neanne <jneanne@baylibre.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
+        with ESMTP id S231808AbjEVHua (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 22 May 2023 03:50:30 -0400
+Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62F0610D7
+        for <linux-omap@vger.kernel.org>; Mon, 22 May 2023 00:49:00 -0700 (PDT)
+Received: by mail-wm1-x335.google.com with SMTP id 5b1f17b1804b1-3f603ff9c02so5677285e9.2
+        for <linux-omap@vger.kernel.org>; Mon, 22 May 2023 00:49:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20221208.gappssmtp.com; s=20221208; t=1684741665; x=1687333665;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=RiwtxuCvDMv279PaESGTGeWvfl9xpTP38snTPyvkmBg=;
+        b=B25mpczTgDcacVp+M6vrs2FgiTGL/wKWpN6AAIB6Gu5dpTHYtKOdT9XNHHa4GuiQfa
+         4PGCOx4vZ51Thk+XPM0PHTtN80XzjkfpKm8VOQhHeBWz6M0IuJNhaaPT5WmaScxkHprc
+         0ExBWYoZRybJe36CnBhKmzulXCBluuhFrXN+LWdNhxoSB4BBL/tsPfovii4pVagPIwza
+         8q+g+4U0sbzNK5l+SwsUDV1iOo7DUEqpo8QI2elc3HZYtx/ooIhAVNJHycoOOhfow9iI
+         uBe4F411Ts7KIhcF3QKupAR/hGs14uwO8aYhcCYiBEHodmmdyGSAInJHSxg+mzf4EBOh
+         z8BQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684741665; x=1687333665;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=RiwtxuCvDMv279PaESGTGeWvfl9xpTP38snTPyvkmBg=;
+        b=MAJQzs3nWkl9zrHSRplIhrdJNGaupvp4lVBsMYykeFui3n6OER2u3vmV/anar1sYFd
+         t3bnmMb5dbl3kA8SXf4EYFUfFmTuMezCR6SVrpligWlspjA3Dl8/MwfPl4MBvPVoxH3f
+         x3hbnfl2eMerBf87Thoajz6Yf6/gO42C4dWqO+BkdKcnIDY9X/NDQjbK/xfAqlG6fQf7
+         PVWZd2/BlgJLqmMuGLV0Tpyiizu3xDUR1xEOrVFUIxYE0k4AkW01GZDuGId00Apjq6tg
+         0/dmkPgW+p7HC+LV5wqqRQYuwxRsRpcvw8J68mPhbg72tYV53tny4tb3f2b9cpRgsMQP
+         aTNw==
+X-Gm-Message-State: AC+VfDwRUqogNP/ILBa/GfM/L6Jra5dT2uYlRdAiz7xFwKuQkPn+0f6t
+        lK6xc2vH3kMgCnTC9CgHL3udgw==
+X-Google-Smtp-Source: ACHHUZ478uL/FKIIQkjSOc9DwlEwYv9wHPlknnkW6XyifiI5UtwdQFU6A6JEmqkTdYI/pNVm+JOY1w==
+X-Received: by 2002:a05:600c:b4f:b0:3f4:ec32:6a00 with SMTP id k15-20020a05600c0b4f00b003f4ec326a00mr6264367wmr.6.1684741664711;
+        Mon, 22 May 2023 00:47:44 -0700 (PDT)
+Received: from [192.168.1.91] (192.201.68.85.rev.sfr.net. [85.68.201.192])
+        by smtp.gmail.com with ESMTPSA id p19-20020a05600c205300b003f60101074dsm5286380wmg.33.2023.05.22.00.47.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 22 May 2023 00:47:44 -0700 (PDT)
+Message-ID: <9fa1a6e8-368a-3e22-aa84-8cad09f72a32@baylibre.com>
+Date:   Mon, 22 May 2023 09:47:43 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v2 1/2] gpio: tps65219: add GPIO support for TPS65219 PMIC
+Content-Language: en-US
+To:     andy.shevchenko@gmail.com, Bartosz Golaszewski <brgl@bgdev.pl>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
         Tony Lindgren <tony@atomide.com>, Lee Jones <lee@kernel.org>,
         linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
         linux-omap@vger.kernel.org,
         Jonathan Cormier <jcormier@criticallink.com>
-Subject: Re: [PATCH v2 1/2] gpio: tps65219: add GPIO support for TPS65219 PMIC
-Message-ID: <ZGiWdQcR6Zq6Aw65@surfacebook>
 References: <20230511-tps65219-add-gpio-support-v2-0-60feb64d649a@baylibre.com>
  <20230511-tps65219-add-gpio-support-v2-1-60feb64d649a@baylibre.com>
  <CAMRc=Md-CzrG3QPtnh0OxYaHTAYZ2aUfMKhkAOeRm2Zn30qE0A@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+ <ZGiWdQcR6Zq6Aw65@surfacebook>
+From:   jerome Neanne <jneanne@baylibre.com>
+In-Reply-To: <ZGiWdQcR6Zq6Aw65@surfacebook>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMRc=Md-CzrG3QPtnh0OxYaHTAYZ2aUfMKhkAOeRm2Zn30qE0A@mail.gmail.com>
-X-Spam-Status: No, score=0.7 required=5.0 tests=BAYES_00,DKIM_ADSP_CUSTOM_MED,
-        FORGED_GMAIL_RCVD,FREEMAIL_FROM,NML_ADSP_CUSTOM_MED,SPF_HELO_NONE,
-        SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -47,20 +80,40 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Mon, May 15, 2023 at 05:36:46PM +0200, Bartosz Golaszewski kirjoitti:
-> On Thu, May 11, 2023 at 4:09 PM Jerome Neanne <jneanne@baylibre.com> wrote:
 
-...
 
-> > +       gpio->gpio_chip = tps65219_gpio_chip;
+On 20/05/2023 11:44, andy.shevchenko@gmail.com wrote:
+> Mon, May 15, 2023 at 05:36:46PM +0200, Bartosz Golaszewski kirjoitti:
+>> On Thu, May 11, 2023 at 4:09 PM Jerome Neanne <jneanne@baylibre.com> wrote:
 > 
-> Aren't you getting any warnings here about dropping the 'const' from
-> the global structure?
+> ...
+> 
+>>> +       gpio->gpio_chip = tps65219_gpio_chip;
+>>
+>> Aren't you getting any warnings here about dropping the 'const' from
+>> the global structure?
+> 
+> But this is a copy of the contents and not the simple pointer.
+> 
+In many other places where this is done, the struct is declared like:
 
-But this is a copy of the contents and not the simple pointer.
+static const struct gpio_chip template_chip = {
 
--- 
-With Best Regards,
-Andy Shevchenko
+After internal review, I changed this to:
 
+static const struct gpio_chip tps65219_gpio_chip = {
 
+This is because I didn't want to have this "template" that sounds to me 
+like "dummy". Maybe I misunderstood and this "template" was used on 
+purpose because this const struct is just copied once to initialize
+tps65219_gpio->gpio_chip during probe.
+
+Introducing tps65219_gpio_chip name is maybe confusing with 
+tps65219_gpio struct.
+
+I think the const should not be a problem here but the naming I used 
+might be misleading. If you have a suggestion of what is a good practice 
+to make this piece of code clearer. I'll follow your suggestion (use 
+template? more_explicit name like ???).
+
+Thanks for your time.
