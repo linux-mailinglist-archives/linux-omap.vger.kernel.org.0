@@ -2,187 +2,120 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 880A570B8E2
-	for <lists+linux-omap@lfdr.de>; Mon, 22 May 2023 11:27:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A65270BBAE
+	for <lists+linux-omap@lfdr.de>; Mon, 22 May 2023 13:24:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230319AbjEVJ1Y (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 22 May 2023 05:27:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57818 "EHLO
+        id S233345AbjEVLYD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 22 May 2023 07:24:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229518AbjEVJ1X (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 22 May 2023 05:27:23 -0400
-Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36A99AF
-        for <linux-omap@vger.kernel.org>; Mon, 22 May 2023 02:27:21 -0700 (PDT)
-Received: by mail-wr1-x434.google.com with SMTP id ffacd0b85a97d-3093a7b71fbso5552287f8f.2
-        for <linux-omap@vger.kernel.org>; Mon, 22 May 2023 02:27:21 -0700 (PDT)
+        with ESMTP id S233350AbjEVLXu (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 22 May 2023 07:23:50 -0400
+Received: from mail-qv1-xf2e.google.com (mail-qv1-xf2e.google.com [IPv6:2607:f8b0:4864:20::f2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0783F30DF;
+        Mon, 22 May 2023 04:20:18 -0700 (PDT)
+Received: by mail-qv1-xf2e.google.com with SMTP id 6a1803df08f44-62384e391e3so22973476d6.3;
+        Mon, 22 May 2023 04:20:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20221208.gappssmtp.com; s=20221208; t=1684747639; x=1687339639;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=eH0Ku76TH0B0kWfipJXrOOAuK57/hqY51qOlmvxtqXM=;
-        b=aMs5pvwIMKKsSwAabsUxUTaCw2/1XfgMoZuPNUUd2q/SuJ7iHb3W/wvWKJT8unJBzh
-         AQV4NmNintgpLvy4T+1sY45Ir+QudZxUBEuqYiY/qlWNxBptyRymKcKf/sW1A7fIyxJa
-         ecdcAWfbcaJfyArV6W2fe8/wcVVs2CLGV4ZNT1wtCGIWHSp6sCQXc96zdI89fXwuosGI
-         AeW3qiOgVyI1fc9gqRlUmwo0iJzUvkIl8JUSCch3eYZ+IdSaF+eQP3m7XrP7D9afDoQn
-         RLasJgRtFrBBr6ozTydohUuAp77kMZL3ANheY/Ot0Pw1JioONtuLkDqCCSZQpX2jkDWU
-         zmQw==
+        d=gmail.com; s=20221208; t=1684754367; x=1687346367;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=i83fQte0kPi44BubtTWNEheRMfnxb2j5LDfuJQhOHp0=;
+        b=qFdG49JI+6ZhvL/SM76DpZsKLsV0sl7pKc094y4HAIa5y9qJ8WIgvNjXo0hmYv3rfp
+         6Z/VrjHO0f3hoRQgOucTA2PJozbwA822zdQLN0L6IFRwEGiNB3PlzzNnFX0Kub5LuKtp
+         GQUCUHHlVeC7SwzZ4c754QxfHPioOq+B4q2l1MK22iNOgQ5994l0NDnG67H9ZLcbKjSr
+         zPqCyQh+bbXkL/kpI9s9yGuHt0inSXtgpASxYHSgPlDB3FtRRg3cU0l/gs/yEwK74mvc
+         8IQsGLN1mNO/nQs884wWbCKTqmEFx0+1MnDnAQlMVee+NF4/8eShKR3FEtuxUkTGw/l9
+         t+Aw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684747639; x=1687339639;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=eH0Ku76TH0B0kWfipJXrOOAuK57/hqY51qOlmvxtqXM=;
-        b=ZyaIm3qH3V8q6UBE3g72lOgOgEPR2VbbtT+Z0gaqb909NFPAC+juluT9kFiTxDWgc7
-         r2ZwfiRwhyfUQgSEHqzR8YksVtPpSp2/uc0WQhAm3IqczO83PtLPaqoBLXoa+fed0r1X
-         abJXdypMFogOlu3awVJt6GSxl8QOt1l1QThewztZ0L3+ruQgtKEpLZG61jsjP5uV2AqU
-         VJsROQdUWgeRlTjybrXKlwlvgPrX7rWcNs0BbJJL3kfWm9t2D6CvfR84ysRK+tUiPAeR
-         HHE0uxB2ag1MH91jZBsqUMWdgp9az4fTXM9CJMsonv9hbwS2oVufeebbrQZMZS2b8Omh
-         TtLw==
-X-Gm-Message-State: AC+VfDztv8PhABJOCUHWU4hRNT/2/Uj20SMBcVllAfRTPFE1eyVT2+DJ
-        obdP8wHfqmZA5HMrGVW6R83Cq6lSw8puY56fTE3pZQ==
-X-Google-Smtp-Source: ACHHUZ4h0zlM3o8vdkvrEaRSnmH8742/V749rYJ/J3bBodPrPZKiqwnDcd9CqsYlCwIw/uXqzPJyew==
-X-Received: by 2002:adf:f6d1:0:b0:309:53ba:9703 with SMTP id y17-20020adff6d1000000b0030953ba9703mr7442076wrp.16.1684747639634;
-        Mon, 22 May 2023 02:27:19 -0700 (PDT)
-Received: from [192.168.1.91] (192.201.68.85.rev.sfr.net. [85.68.201.192])
-        by smtp.gmail.com with ESMTPSA id z16-20020a5d4d10000000b002f6176cc6desm7031450wrt.110.2023.05.22.02.27.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 May 2023 02:27:19 -0700 (PDT)
-Message-ID: <1a0a796c-497f-41a5-2f76-493c09e29325@baylibre.com>
-Date:   Mon, 22 May 2023 11:27:18 +0200
+        d=1e100.net; s=20221208; t=1684754367; x=1687346367;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=i83fQte0kPi44BubtTWNEheRMfnxb2j5LDfuJQhOHp0=;
+        b=fXLuFPQI5Q53WITxtl/lxEJBTbdqWdjNn29gat70etwpmm0LNKw3TfpywdfhggMQV3
+         aphXfsU/QwguGyXE/jaQ4c2q5Nol4SnsYbnwrGvcdgDBM1iYvxU1WHQmocJhEWv48nev
+         Z5JXulussqxe56XDrxNM/bnDNqZZoXoy6MFBCU16EcCbHIqY+pqobu2N3yvGHS8UBqkn
+         Hhu7ZzZB9/8jY3YkasKGl9vT4DeOPNMsgMcEmeISIbXQS75Mtodw2CDuGa5oxAgdBjgN
+         QcKzCjmmh0v5cv4c+bDNNmVkQb/kCGDHX/jrZ8hTh/p9+5XS8Tua05A026/FmZYD9tZa
+         Gf9w==
+X-Gm-Message-State: AC+VfDxB1Ls3DwAdo+RTTK1AK9a4EygQhg3ACfAjISpMCmdXZFTgbcwR
+        iC+6QFFsouZbkbelDUK1DpShNEtVFlWDMeTVGYI=
+X-Google-Smtp-Source: ACHHUZ7At+03MmzdjnVYn32VGSuVFMl+tRrffaBTjQzv7x24hKdLsK3EbrSk4RFF9BVvITYCu4aH1m0Nz1gBBjaudRQ=
+X-Received: by 2002:a05:6214:c62:b0:5ef:7e33:c6c9 with SMTP id
+ t2-20020a0562140c6200b005ef7e33c6c9mr18954386qvj.38.1684754366919; Mon, 22
+ May 2023 04:19:26 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: RCU WARNING on 6.4-rc2, TI AM62 and TPS65219
-Content-Language: en-US
-To:     Francesco Dolcini <francesco@dolcini.it>, nm@ti.com,
-        lee@kernel.org, tony@atomide.com, vigneshr@ti.com
-Cc:     afd@ti.com, khilman@baylibre.com, narmstrong@baylibre.com,
-        msp@baylibre.com, j-keerthy@ti.com, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        Wolfram Sang <wsa@kernel.org>, linux-i2c@vger.kernel.org
-References: <ZGeHMjlnob2GFyHF@francesco-nb.int.toradex.com>
-From:   jerome Neanne <jneanne@baylibre.com>
-In-Reply-To: <ZGeHMjlnob2GFyHF@francesco-nb.int.toradex.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+References: <20230511-tps65219-add-gpio-support-v2-0-60feb64d649a@baylibre.com>
+ <20230511-tps65219-add-gpio-support-v2-1-60feb64d649a@baylibre.com>
+ <CAMRc=Md-CzrG3QPtnh0OxYaHTAYZ2aUfMKhkAOeRm2Zn30qE0A@mail.gmail.com>
+ <ZGiWdQcR6Zq6Aw65@surfacebook> <9fa1a6e8-368a-3e22-aa84-8cad09f72a32@baylibre.com>
+In-Reply-To: <9fa1a6e8-368a-3e22-aa84-8cad09f72a32@baylibre.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Mon, 22 May 2023 14:18:50 +0300
+Message-ID: <CAHp75Vf0hW6sMXeGSVXRVoW1mxFufWmbJNzt7_10xPj_k5SNkA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] gpio: tps65219: add GPIO support for TPS65219 PMIC
+To:     jerome Neanne <jneanne@baylibre.com>
+Cc:     Bartosz Golaszewski <brgl@bgdev.pl>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Tony Lindgren <tony@atomide.com>, Lee Jones <lee@kernel.org>,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-omap@vger.kernel.org,
+        Jonathan Cormier <jcormier@criticallink.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Mon, May 22, 2023 at 10:47=E2=80=AFAM jerome Neanne <jneanne@baylibre.co=
+m> wrote:
+> On 20/05/2023 11:44, andy.shevchenko@gmail.com wrote:
+> > Mon, May 15, 2023 at 05:36:46PM +0200, Bartosz Golaszewski kirjoitti:
+> >> On Thu, May 11, 2023 at 4:09=E2=80=AFPM Jerome Neanne <jneanne@baylibr=
+e.com> wrote:
 
+...
 
-On 19/05/2023 16:26, Francesco Dolcini wrote:
-> Hello all,
-> while testing 6.4-rc2 (2d1bcbc6cd70) on a TI K3 AM625 SoC with TPS65219
-> PMIC I noticed this warning.
-> 
-> [   80.117502] systemd-shutdown[1]: All loop devices detached.
-> [   80.123176] systemd-shutdown[1]: Stopping MD devices.
-> [   80.128700] systemd-shutdown[1]: All MD devices stopped.
-> [   80.134123] systemd-shutdown[1]: Detaching DM devices.
-> [   80.139553] systemd-shutdown[1]: All DM devices detached.
-> [   80.144970] systemd-shutdown[1]: All filesystems, swaps, loop devices, MD devices and DM devices detached.
-> [   80.162682] systemd-shutdown[1]: Syncing filesystems and block devices.
-> [   80.169602] systemd-shutdown[1]: Rebooting.
-> [   80.173817] kvm: exiting hardware virtualization
-> [   80.213016] reboot: Restarting system
-> [   80.216767] ------------[ cut here ]------------
-> [   80.221380] Voluntary context switch within RCU read-side critical section!
-> [   80.221404] WARNING: CPU: 0 PID: 1 at kernel/rcu/tree_plugin.h:318 rcu_note_context_switch+0x31c/0x390
-> [   80.237669] Modules linked in: 8021q garp mrp stp llc cfg80211 usb_f_ncm u_ether bluetooth ecdh_generic ecc rfkill sp
-> idev crct10dif_ce snd_soc_simple_card snd_soc_simple_card_utils rtc_ti_k3 sa2ul sha256_generic libsha256 authenc snd_soc
-> _davinci_mcasp snd_soc_ti_udma snd_soc_ti_edma snd_soc_ti_sdma ti_ads1015 ina2xx industrialio_triggered_buffer pwm_tiehr
-> pwm snd_soc_nau8822 tps65219_pwrbutton lm75 kfifo_buf spi_omap2_mcspi rtc_ds1307 libcomposite fuse drm ipv6
-> [   80.278507] CPU: 0 PID: 1 Comm: systemd-shutdow Not tainted 6.4.0-rc2-00166-gf932e7bb873b #3
-> [   80.286938] Hardware name: Toradex Verdin AM62 on Verdin Development Board (DT)
-> [   80.294238] pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-> [   80.301193] pc : rcu_note_context_switch+0x31c/0x390
-> [   80.306154] lr : rcu_note_context_switch+0x31c/0x390
-> [   80.311114] sp : ffff80000a71b4c0
-> [   80.314422] x29: ffff80000a71b4c0 x28: 0000000000000000 x27: ffff000000118000
-> [   80.321556] x26: 0000000000000000 x25: ffff000000118000 x24: ffff800008fafbd8
-> [   80.328689] x23: ffff000000118000 x22: 0000000000000000 x21: ffff000000118000
-> [   80.335822] x20: 0000000000000000 x19: ffff00003fd68cc0 x18: 0000000000000010
-> [   80.342955] x17: 0000000000000000 x16: 0000000000000000 x15: ffff000000118000
-> [   80.350087] x14: 00000000000001c5 x13: ffff000000118478 x12: 00000000ffffffea
-> [   80.357220] x11: 00000000ffffefff x10: 00000000ffffefff x9 : ffff80000a2a9a98
-> [   80.364352] x8 : 0000000000017fe8 x7 : c0000000ffffefff x6 : 000000000000bff4
-> [   80.371485] x5 : 0000000000057fa8 x4 : 0000000000000000 x3 : 0000000000000000
-> [   80.378617] x2 : ffff80000a251990 x1 : 0000000000000000 x0 : 0000000000000000
-> [   80.385751] Call trace:
-> [   80.388193]  rcu_note_context_switch+0x31c/0x390
-> [   80.392807]  __schedule+0x98/0xa7c
-> [   80.396214]  schedule+0x5c/0xc4
-> [   80.399354]  schedule_timeout+0x180/0x25c
-> [   80.403362]  wait_for_completion_timeout+0x80/0x15c
-> [   80.408238]  ti_sci_set_device_state+0xb4/0x1e4
-> [   80.412771]  ti_sci_cmd_get_device_exclusive+0x18/0x24
-> [   80.417907]  ti_sci_pd_power_on+0x28/0x48
-> [   80.421914]  _genpd_power_on+0x94/0x154
-> [   80.425749]  genpd_power_on.part.0+0xa4/0x174
-> [   80.430104]  genpd_runtime_resume+0x118/0x294
-> [   80.434457]  __rpm_callback+0x48/0x140
-> [   80.438206]  rpm_callback+0x6c/0x78
-> [   80.441692]  rpm_resume+0x3bc/0x59c
-> [   80.445179]  __pm_runtime_resume+0x4c/0x90
-> [   80.449272]  omap_i2c_xfer_common+0x38/0x598
-> [   80.453540]  omap_i2c_xfer_polling+0x14/0x20
-> [   80.457804]  __i2c_transfer+0x138/0x35c
-> [   80.461642]  i2c_transfer+0x94/0xf4
-> [   80.465130]  regmap_i2c_read+0x60/0xa8
-> [   80.468879]  _regmap_raw_read+0xf0/0x170
-> [   80.472799]  _regmap_bus_read+0x44/0x7c
-> [   80.476632]  _regmap_read+0x64/0xf4
-> [   80.480118]  _regmap_update_bits+0xf4/0x130
-> [   80.484298]  regmap_update_bits_base+0x64/0x98
-> [   80.488738]  tps65219_restart+0x38/0x48
-> [   80.492576]  atomic_notifier_call_chain+0x60/0x90
-> [   80.497280]  do_kernel_restart+0x24/0x30
-> [   80.501202]  machine_restart+0x38/0x5c
-> [   80.504950]  kernel_restart+0x88/0x98
-> [   80.508612]  __do_sys_reboot+0x1e0/0x264
-> [   80.512533]  __arm64_sys_reboot+0x24/0x30
-> [   80.516538]  invoke_syscall+0x44/0x104
-> [   80.520287]  el0_svc_common.constprop.0+0x44/0xec
-> [   80.524988]  do_el0_svc+0x38/0x98
-> [   80.528302]  el0_svc+0x2c/0x84
-> [   80.531354]  el0t_64_sync_handler+0xb8/0xbc
-> [   80.535534]  el0t_64_sync+0x190/0x194
-> [   80.539192] ---[ end trace 0000000000000000 ]---
-> 
-> 
-> This looks similar to what is described here [1], same issue or
-> something else? Any suggestion?
-> 
-> The issue is systematic and happens at every boot. With a TI downstream
-> 5.10 kernel this issue was never experienced.
-> 
-> Francesco
-> 
-> [1] https://lore.kernel.org/all/20230327-tegra-pmic-reboot-v6-0-af44a4cd82e9@skidata.com/
-> 
-I don't have the same board to test and don't experience this boot issue 
-with the am62 board I'm using (the board version I have is a custom 
-board not released publicly by TI unfortunately).
+> >>> +       gpio->gpio_chip =3D tps65219_gpio_chip;
+> >>
+> >> Aren't you getting any warnings here about dropping the 'const' from
+> >> the global structure?
+> >
+> > But this is a copy of the contents and not the simple pointer.
 
-Notice that: 
-https://lore.kernel.org/lkml/20230511122100.2225417-1-jneanne@baylibre.com/
+I commented on Bart's question.
 
-Is not yet applied and would help handle shutdown/reboot under some 
-conditions.
+> In many other places where this is done, the struct is declared like:
+>
+> static const struct gpio_chip template_chip =3D {
+>
+> After internal review, I changed this to:
+>
+> static const struct gpio_chip tps65219_gpio_chip =3D {
+>
+> This is because I didn't want to have this "template" that sounds to me
+> like "dummy". Maybe I misunderstood and this "template" was used on
+> purpose because this const struct is just copied once to initialize
+> tps65219_gpio->gpio_chip during probe.
+>
+> Introducing tps65219_gpio_chip name is maybe confusing with
+> tps65219_gpio struct.
+>
+> I think the const should not be a problem here but the naming I used
+> might be misleading. If you have a suggestion of what is a good practice
+> to make this piece of code clearer. I'll follow your suggestion (use
+> template? more_explicit name like ???).
 
-This might help for reboot handling if you are forcing a shutdown/reboot 
-in your test.
+It's up to Bart.
 
-But if the problem is your device tries to shutdown at each boot, then 
-this is just a side effect, not the original root cause.
-
-Regards,
-Jerome
+--=20
+With Best Regards,
+Andy Shevchenko
