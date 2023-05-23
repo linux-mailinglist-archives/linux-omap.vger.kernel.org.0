@@ -2,35 +2,80 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 44B3970D6A6
-	for <lists+linux-omap@lfdr.de>; Tue, 23 May 2023 10:06:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBBE770D877
+	for <lists+linux-omap@lfdr.de>; Tue, 23 May 2023 11:10:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230319AbjEWIGY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 23 May 2023 04:06:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59962 "EHLO
+        id S236108AbjEWJKA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 23 May 2023 05:10:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41040 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235592AbjEWIGX (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 23 May 2023 04:06:23 -0400
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 2DFACE5C;
-        Tue, 23 May 2023 01:05:39 -0700 (PDT)
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 92AED81B7;
-        Tue, 23 May 2023 07:58:14 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     linux-omap@vger.kernel.org
-Cc:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>
-Subject: [PATCH] ARM: dts: Unify pinctrl-single pin group nodes for ti81xx
-Date:   Tue, 23 May 2023 10:58:12 +0300
-Message-Id: <20230523075812.58808-1-tony@atomide.com>
-X-Mailer: git-send-email 2.40.1
+        with ESMTP id S235853AbjEWJJ7 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 23 May 2023 05:09:59 -0400
+Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBB9D94
+        for <linux-omap@vger.kernel.org>; Tue, 23 May 2023 02:09:57 -0700 (PDT)
+Received: by mail-ej1-x62b.google.com with SMTP id a640c23a62f3a-96fffe11714so309586466b.0
+        for <linux-omap@vger.kernel.org>; Tue, 23 May 2023 02:09:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20221208.gappssmtp.com; s=20221208; t=1684832993; x=1687424993;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=zoEso63g+0SKeGzDkD1maNgqaaGX52WJnGRxyXGPsc4=;
+        b=FYAUUJhu+cevF0Zg6iafvi/RtW1iniieS1LAaBi9MEVhqlz2zQbYCstnjRu/XTE8Tf
+         acH2KyB0IdWo6ugqPyNwIz21e+g2LeWBYqRvA0GOg0lbQzchwHoUQNzoNNAd7QLVWU07
+         au1DvBzxTw9kUXKLd2247RVQOQfQHmX9VNs2E56xdNsSNFbNUy4gSKZMclU1/+3cLBAF
+         VtMJKIjpxd1kltJ468dOvHZ+pnitvI8oMKRF5I8NcdITJS6SqrFi+DQS62zLPqyvBZjj
+         fEjz8degm1IisEbJokZhmTYZ9ScHgDPiSzCLQUMZJFanPMgXE/lf9aSxV3spPupYJzwb
+         59qw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684832993; x=1687424993;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zoEso63g+0SKeGzDkD1maNgqaaGX52WJnGRxyXGPsc4=;
+        b=P5grUMUWrBM+RtF40BD/RaiQcjBQyhYxB/vJTgNlJbH5ihI1NLQPlNj57dOFhx429z
+         0w3rZD6QPjkpR1Bg5nJ3w4jxlEqX/Ljo1kU/y2/UDoOF7ifuDm0MrbRRqFJpLo+VQUud
+         gEF0pef4o3EerctYyaOFB82IuwMwLCuYV+gJvUzsql83UCM+9dwgldTWTYPoMtRDZuPq
+         a2ia0rBE2UOyzNQZ43y00t6DZoGPVax4F/pQ/peWRWqmF3Bqsau38e6uud+X9at3DVdd
+         Kq66k8I1c/DPKbTagBe06McpL3qnF3ueys0B6H2iKG0twL3fL+IaPizUbBgzYs09OQwY
+         Ik9A==
+X-Gm-Message-State: AC+VfDz8KZOAOVreE33HscofMjwuHrf7jf41PeJqZ5v6lZEBZbi3CbL8
+        D231CCyLwGe+x6kXKF7fWc6p8g==
+X-Google-Smtp-Source: ACHHUZ5zYnuYGtxhCBEc6UuB0mA8LCTKfqijjVsWcN9D+xkiJ0rEyMKWdCr9Yd6nvdeUbwg/r/Dqxw==
+X-Received: by 2002:a17:907:60cc:b0:96a:580e:bf0f with SMTP id hv12-20020a17090760cc00b0096a580ebf0fmr15054349ejc.14.1684832993139;
+        Tue, 23 May 2023 02:09:53 -0700 (PDT)
+Received: from [10.2.5.18] (abordeaux-655-1-129-86.w90-5.abo.wanadoo.fr. [90.5.10.86])
+        by smtp.gmail.com with ESMTPSA id p26-20020a17090664da00b0096f7105b3a6sm4213801ejn.189.2023.05.23.02.09.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 23 May 2023 02:09:52 -0700 (PDT)
+Message-ID: <0cf870f1-8cdb-df74-79d6-a4004cdfcc2f@baylibre.com>
+Date:   Tue, 23 May 2023 11:09:51 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v2 1/2] gpio: tps65219: add GPIO support for TPS65219 PMIC
+Content-Language: en-US
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Bartosz Golaszewski <brgl@bgdev.pl>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Tony Lindgren <tony@atomide.com>, Lee Jones <lee@kernel.org>,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-omap@vger.kernel.org,
+        Jonathan Cormier <jcormier@criticallink.com>
+References: <20230511-tps65219-add-gpio-support-v2-0-60feb64d649a@baylibre.com>
+ <20230511-tps65219-add-gpio-support-v2-1-60feb64d649a@baylibre.com>
+ <CAMRc=Md-CzrG3QPtnh0OxYaHTAYZ2aUfMKhkAOeRm2Zn30qE0A@mail.gmail.com>
+ <ZGiWdQcR6Zq6Aw65@surfacebook>
+ <9fa1a6e8-368a-3e22-aa84-8cad09f72a32@baylibre.com>
+ <CAHp75Vf0hW6sMXeGSVXRVoW1mxFufWmbJNzt7_10xPj_k5SNkA@mail.gmail.com>
+From:   jerome Neanne <jneanne@baylibre.com>
+In-Reply-To: <CAHp75Vf0hW6sMXeGSVXRVoW1mxFufWmbJNzt7_10xPj_k5SNkA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -38,212 +83,47 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-We want to unify the pinctrl-single pin group nodes to use naming "pins".
-Otherwise non-standad pin group names will add make dtbs checks errors
-when the pinctrl-single yaml binding gets merged.
 
-Cc: Conor Dooley <conor+dt@kernel.org>
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc: Rob Herring <robh+dt@kernel.org>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
----
- arch/arm/boot/dts/am3874-iceboard.dts  | 16 ++++++++--------
- arch/arm/boot/dts/dm8148-evm.dts       |  6 +++---
- arch/arm/boot/dts/dm8148-t410.dts      |  6 +++---
- arch/arm/boot/dts/dm8168-evm.dts       | 10 +++++-----
- arch/arm/boot/dts/dra62x-j5eco-evm.dts |  4 ++--
- 5 files changed, 21 insertions(+), 21 deletions(-)
 
-diff --git a/arch/arm/boot/dts/am3874-iceboard.dts b/arch/arm/boot/dts/am3874-iceboard.dts
---- a/arch/arm/boot/dts/am3874-iceboard.dts
-+++ b/arch/arm/boot/dts/am3874-iceboard.dts
-@@ -285,7 +285,7 @@ i2c@6 {
- };
- 
- &pincntl {
--	mmc2_pins: pinmux_mmc2_pins {
-+	mmc2_pins: mmc2-pins {
- 		pinctrl-single,pins = <
- 			DM814X_IOPAD(0x0800, PIN_INPUT | 0x1)	/* SD1_CLK */
- 			DM814X_IOPAD(0x0804, PIN_INPUT_PULLUP | 0x1)	/* SD1_CMD */
-@@ -299,19 +299,19 @@ DM814X_IOPAD(0x093C, PIN_INPUT | 0x2)	/* SD1_SDCD */
- 			>;
- 	};
- 
--	usb0_pins: pinmux_usb0_pins {
-+	usb0_pins: usb0-pins {
- 		pinctrl-single,pins = <
- 			DM814X_IOPAD(0x0c34, PIN_OUTPUT | 0x1)	/* USB0_DRVVBUS */
- 			>;
- 	};
- 
--	usb1_pins: pinmux_usb1_pins {
-+	usb1_pins: usb1-pins {
- 		pinctrl-single,pins = <
- 			DM814X_IOPAD(0x0834, PIN_OUTPUT | 0x80)	/* USB1_DRVVBUS */
- 			>;
- 	};
- 
--	gpio1_pins: pinmux_gpio1_pins {
-+	gpio1_pins: gpio1-pins {
- 		pinctrl-single,pins = <
- 			DM814X_IOPAD(0x081c, PIN_OUTPUT | 0x80)	/* PROGRAM_B */
- 			DM814X_IOPAD(0x0820, PIN_INPUT | 0x80)	/* INIT_B */
-@@ -336,7 +336,7 @@ DM814X_IOPAD(0x0ab0, PIN_INPUT_PULLUP | 0x80) /* FPGA_TDI */
- 			>;
- 	};
- 
--	gpio2_pins: pinmux_gpio2_pins {
-+	gpio2_pins: gpio2-pins {
- 		pinctrl-single,pins = <
- 			DM814X_IOPAD(0x090c, PIN_INPUT_PULLUP | 0x80) /* PHY A IRQ */
- 			DM814X_IOPAD(0x0910, PIN_INPUT_PULLUP | 0x80) /* PHY A RESET */
-@@ -349,7 +349,7 @@ DM814X_IOPAD(0x0a2c, PIN_INPUT_PULLUP | 0x80) /* GPIO RESET */
- 		>;
- 	};
- 
--	gpio4_pins: pinmux_gpio4_pins {
-+	gpio4_pins: gpio4-pins {
- 		pinctrl-single,pins = <
- 			/* The PLL doesn't react well to the SPI controller reset, so
- 			 * we force the CS lines to pull up as GPIOs until we're ready.
-@@ -364,14 +364,14 @@ DM814X_IOPAD(0x0b50, PIN_INPUT_PULLUP | 0x80) /* BP_ARM_GPIO5 */
- 		>;
- 	};
- 
--	spi2_pins: pinmux_spi2_pins {
-+	spi2_pins: spi2-pins {
- 		pinctrl-single,pins = <
- 			DM814X_IOPAD(0x0950, PIN_INPUT_PULLUP | 0x80) /* PLL SPI CS1 as GPIO */
- 			DM814X_IOPAD(0x0818, PIN_INPUT_PULLUP | 0x80) /* PLL SPI CS2 as GPIO */
- 		>;
- 	};
- 
--	spi4_pins: pinmux_spi4_pins {
-+	spi4_pins: spi4-pins {
- 		pinctrl-single,pins = <
- 			DM814X_IOPAD(0x0a7c, 0x20)
- 			DM814X_IOPAD(0x0b74, 0x20)
-diff --git a/arch/arm/boot/dts/dm8148-evm.dts b/arch/arm/boot/dts/dm8148-evm.dts
---- a/arch/arm/boot/dts/dm8148-evm.dts
-+++ b/arch/arm/boot/dts/dm8148-evm.dts
-@@ -116,7 +116,7 @@ &mmc3 {
- };
- 
- &pincntl {
--	sd1_pins: pinmux_sd1_pins {
-+	sd1_pins: sd1-pins {
- 		pinctrl-single,pins = <
- 			DM814X_IOPAD(0x0800, PIN_INPUT | 0x1)	/* SD1_CLK */
- 			DM814X_IOPAD(0x0804, PIN_INPUT_PULLUP |  0x1)	/* SD1_CMD */
-@@ -129,13 +129,13 @@ DM814X_IOPAD(0x093C, PIN_INPUT_PULLUP |  0x80)	/* GP1[6] */
- 			>;
- 	};
- 
--	usb0_pins: pinmux_usb0_pins {
-+	usb0_pins: usb0-pins {
- 		pinctrl-single,pins = <
- 			DM814X_IOPAD(0x0c34, PIN_OUTPUT | 0x1)	/* USB0_DRVVBUS */
- 			>;
- 	};
- 
--	usb1_pins: pinmux_usb1_pins {
-+	usb1_pins: usb1-pins {
- 		pinctrl-single,pins = <
- 			DM814X_IOPAD(0x0834, PIN_OUTPUT | 0x80)	/* USB1_DRVVBUS */
- 			>;
-diff --git a/arch/arm/boot/dts/dm8148-t410.dts b/arch/arm/boot/dts/dm8148-t410.dts
---- a/arch/arm/boot/dts/dm8148-t410.dts
-+++ b/arch/arm/boot/dts/dm8148-t410.dts
-@@ -71,7 +71,7 @@ &mmc3 {
- };
- 
- &pincntl {
--	sd2_pins: pinmux_sd2_pins {
-+	sd2_pins: sd2-pins {
- 		pinctrl-single,pins = <
- 			DM814X_IOPAD(0x09c0, PIN_INPUT_PULLUP | 0x1)	/* SD2_DAT[7] */
- 			DM814X_IOPAD(0x09c4, PIN_INPUT_PULLUP | 0x1)	/* SD2_DAT[6] */
-@@ -87,13 +87,13 @@ DM814X_IOPAD(0x0920, PIN_INPUT | 0x40)	/* SD2_SDCD */
- 			>;
- 	};
- 
--	usb0_pins: pinmux_usb0_pins {
-+	usb0_pins: usb0-pins {
- 		pinctrl-single,pins = <
- 			DM814X_IOPAD(0x0c34, PIN_OUTPUT | 0x1)	/* USB0_DRVVBUS */
- 			>;
- 	};
- 
--	usb1_pins: pinmux_usb1_pins {
-+	usb1_pins: usb1-pins {
- 		pinctrl-single,pins = <
- 			DM814X_IOPAD(0x0834, PIN_OUTPUT | 0x80)	/* USB1_DRVVBUS */
- 			>;
-diff --git a/arch/arm/boot/dts/dm8168-evm.dts b/arch/arm/boot/dts/dm8168-evm.dts
---- a/arch/arm/boot/dts/dm8168-evm.dts
-+++ b/arch/arm/boot/dts/dm8168-evm.dts
-@@ -30,7 +30,7 @@ sata_refclk: fixedclock0 {
- };
- 
- &dm816x_pinmux {
--	mcspi1_pins: pinmux_mcspi1_pins {
-+	mcspi1_pins: mcspi1-pins {
- 		pinctrl-single,pins = <
- 			DM816X_IOPAD(0x0a94, MUX_MODE0)			/* SPI_SCLK */
- 			DM816X_IOPAD(0x0a98, MUX_MODE0)			/* SPI_SCS0 */
-@@ -39,7 +39,7 @@ DM816X_IOPAD(0x0aac, MUX_MODE0)			/* SPI_D1 */
- 		>;
- 	};
- 
--	mmc_pins: pinmux_mmc_pins {
-+	mmc_pins: mmc-pins {
- 		pinctrl-single,pins = <
- 			DM816X_IOPAD(0x0a70, MUX_MODE0)			/* SD_POW */
- 			DM816X_IOPAD(0x0a74, MUX_MODE0)			/* SD_CLK */
-@@ -53,19 +53,19 @@ DM816X_IOPAD(0x0a90, MUX_MODE2)			/* GP1[8] */
- 		>;
- 	};
- 
--	usb0_pins: pinmux_usb0_pins {
-+	usb0_pins: usb0-pins {
- 		pinctrl-single,pins = <
- 			DM816X_IOPAD(0x0d04, MUX_MODE0)			/* USB0_DRVVBUS */
- 		>;
- 	};
- 
--	usb1_pins: pinmux_usb1_pins {
-+	usb1_pins: usb1-pins {
- 		pinctrl-single,pins = <
- 			DM816X_IOPAD(0x0d08, MUX_MODE0)			/* USB1_DRVVBUS */
- 		>;
- 	};
- 
--	nandflash_pins: nandflash_pins {
-+	nandflash_pins: nandflash-pins {
- 		pinctrl-single,pins = <
- 			DM816X_IOPAD(0x0b38, PULL_UP | MUX_MODE0)		/* PINCTRL207 GPMC_CS0*/
- 			DM816X_IOPAD(0x0b60, PULL_ENA | MUX_MODE0)		/* PINCTRL217 GPMC_ADV_ALE */
-diff --git a/arch/arm/boot/dts/dra62x-j5eco-evm.dts b/arch/arm/boot/dts/dra62x-j5eco-evm.dts
---- a/arch/arm/boot/dts/dra62x-j5eco-evm.dts
-+++ b/arch/arm/boot/dts/dra62x-j5eco-evm.dts
-@@ -108,7 +108,7 @@ &mmc2 {
- };
- 
- &pincntl {
--	sd1_pins: pinmux_sd1_pins {
-+	sd1_pins: sd1-pins {
- 		pinctrl-single,pins = <
- 			DM814X_IOPAD(0x0800, PIN_INPUT | 0x1)	/* SD1_CLK */
- 			DM814X_IOPAD(0x0804, PIN_INPUT_PULLUP |  0x1)	/* SD1_CMD */
-@@ -121,7 +121,7 @@ DM814X_IOPAD(0x093C, PIN_INPUT_PULLUP |  0x80)	/* GP1[6] */
- 			>;
- 	};
- 
--	usb0_pins: pinmux_usb0_pins {
-+	usb0_pins: usb0-pins {
- 		pinctrl-single,pins = <
- 			DM814X_IOPAD(0x0c34, PIN_OUTPUT | 0x1)	/* USB0_DRVVBUS */
- 			>;
--- 
-2.40.1
+On 22/05/2023 13:18, Andy Shevchenko wrote:
+> On Mon, May 22, 2023 at 10:47 AM jerome Neanne <jneanne@baylibre.com> wrote:
+>> On 20/05/2023 11:44, andy.shevchenko@gmail.com wrote:
+>>> Mon, May 15, 2023 at 05:36:46PM +0200, Bartosz Golaszewski kirjoitti:
+>>>> On Thu, May 11, 2023 at 4:09 PM Jerome Neanne <jneanne@baylibre.com> wrote:
+> 
+> ...
+> 
+>>>>> +       gpio->gpio_chip = tps65219_gpio_chip;
+>>>>
+>>>> Aren't you getting any warnings here about dropping the 'const' from
+>>>> the global structure?
+>>>
+>>> But this is a copy of the contents and not the simple pointer.
+> 
+> I commented on Bart's question.
+> 
+>> In many other places where this is done, the struct is declared like:
+>>
+>> static const struct gpio_chip template_chip = {
+>>
+>> After internal review, I changed this to:
+>>
+>> static const struct gpio_chip tps65219_gpio_chip = {
+>>
+>> This is because I didn't want to have this "template" that sounds to me
+>> like "dummy". Maybe I misunderstood and this "template" was used on
+>> purpose because this const struct is just copied once to initialize
+>> tps65219_gpio->gpio_chip during probe.
+>>
+>> Introducing tps65219_gpio_chip name is maybe confusing with
+>> tps65219_gpio struct.
+>>
+>> I think the const should not be a problem here but the naming I used
+>> might be misleading. If you have a suggestion of what is a good practice
+>> to make this piece of code clearer. I'll follow your suggestion (use
+>> template? more_explicit name like ???).
+> 
+> It's up to Bart.
+> 
+Bart, should I keep the code like this or do you suggest a name change 
+so that's it's more appealing?
