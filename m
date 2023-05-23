@@ -2,38 +2,94 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C0BA70D8CB
-	for <lists+linux-omap@lfdr.de>; Tue, 23 May 2023 11:20:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 85DFE70D8D8
+	for <lists+linux-omap@lfdr.de>; Tue, 23 May 2023 11:22:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235903AbjEWJUs (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 23 May 2023 05:20:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48034 "EHLO
+        id S236163AbjEWJWl convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-omap@lfdr.de>); Tue, 23 May 2023 05:22:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235274AbjEWJUr (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 23 May 2023 05:20:47 -0400
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id CF997E6;
-        Tue, 23 May 2023 02:20:44 -0700 (PDT)
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id A380A80B5;
-        Tue, 23 May 2023 09:20:42 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        Nishanth Menon <nm@ti.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        devicetree@vger.kernel.org, linux-gpio@vger.kernel.org
-Subject: [PATCH v5 1/1] dt-bindings: pinctrl: Update pinctrl-single to use yaml
-Date:   Tue, 23 May 2023 12:20:35 +0300
-Message-Id: <20230523092038.55677-1-tony@atomide.com>
-X-Mailer: git-send-email 2.40.1
+        with ESMTP id S233035AbjEWJWk (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 23 May 2023 05:22:40 -0400
+Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9D4194;
+        Tue, 23 May 2023 02:22:38 -0700 (PDT)
+Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-6af6f5fc42aso2517648a34.1;
+        Tue, 23 May 2023 02:22:38 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684833758; x=1687425758;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ElqaZMSGIZr1PDsUyYzS4b4CKhVSDM9bJ+kKBcpqibs=;
+        b=igAbnxKmYpl8G8NR9kiR4zYtC5LarEkNJ48I8jVbUdztsToPdHwV/H1cTclSUHgvlz
+         V8t7jDAwvaD/26JYpEKAYuqgXx+Bd7U5AaA7uQvRMyGDBna13gZjiijZQhPBQEGvR2vD
+         Q7DzXjYw7LGVrFL42KApQzHM0ee94DlcwyGZWAg0Acb3zn5L1WkKtqZcNfMN6m2B92GE
+         RyUAQVwH3zMpvErA0x3KmaiNbNVwnb5joM93MkqOiPe42BNH/SYeGkaVU0157jhBhFUM
+         iUV/QlY0ywwJOI3OqpR6rUUPuNHf0FL4igJ1SEYI62TIaA6SyUBLlcD7HaxFBrNaD5yX
+         intQ==
+X-Gm-Message-State: AC+VfDwEdN8kj3+2vKE23zxEgczSzscvy5qnp4dlfbk5V1NF9uXM9fcg
+        UcBTXMY0iqrrt/B2zGsRrajMnozYcP8Blw==
+X-Google-Smtp-Source: ACHHUZ73qUy71q9MTXVPPU0P5dIaNf2Fg31SqM9zMkiPZVWbq62xSy0r1uHdaOsYAY3h+06OlL7i5w==
+X-Received: by 2002:a05:6830:20d8:b0:6af:7e6f:4959 with SMTP id z24-20020a05683020d800b006af7e6f4959mr2861399otq.21.1684833757696;
+        Tue, 23 May 2023 02:22:37 -0700 (PDT)
+Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com. [209.85.210.49])
+        by smtp.gmail.com with ESMTPSA id y5-20020a9d6345000000b006ab1ea1af9esm3174383otk.68.2023.05.23.02.22.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 23 May 2023 02:22:37 -0700 (PDT)
+Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-6af89b0f3e5so1005667a34.0;
+        Tue, 23 May 2023 02:22:37 -0700 (PDT)
+X-Received: by 2002:a81:5bc6:0:b0:562:16d7:e6eb with SMTP id
+ p189-20020a815bc6000000b0056216d7e6ebmr15255699ywb.40.1684833736388; Tue, 23
+ May 2023 02:22:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+References: <20230523091139.21449-1-vbabka@suse.cz>
+In-Reply-To: <20230523091139.21449-1-vbabka@suse.cz>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Tue, 23 May 2023 11:22:04 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdWRZmA1iEG2aXdKZ+wWgSTgg-P7KY7pTTJx9EmvuEa58A@mail.gmail.com>
+Message-ID: <CAMuHMdWRZmA1iEG2aXdKZ+wWgSTgg-P7KY7pTTJx9EmvuEa58A@mail.gmail.com>
+Subject: Re: [PATCH] mm/slab: rename CONFIG_SLAB to CONFIG_SLAB_DEPRECATED
+To:     Vlastimil Babka <vbabka@suse.cz>
+Cc:     Christoph Lameter <cl@linux.com>,
+        Pekka Enberg <penberg@kernel.org>,
+        David Rientjes <rientjes@google.com>,
+        Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+        Roman Gushchin <roman.gushchin@linux.dev>,
+        Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Qin Jian <qinjian@cqplus1.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Dinh Nguyen <dinguyen@kernel.org>,
+        "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        "David S . Miller" <davem@davemloft.net>,
+        Richard Weinberger <richard@nod.at>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-um@lists.infradead.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -41,548 +97,53 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Update binding for yaml and remove the old related txt bindings. Note that
-we are also adding the undocumented pinctrl-single,slew-rate property. And
-we only use the first example from the old binding.
+Hi Vlastimil,
 
-Cc: Linus Walleij <linus.walleij@linaro.org>
-Cc: Nishanth Menon <nm@ti.com>
-Cc: Vignesh Raghavendra <vigneshr@ti.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
----
-Changes since v4:
-- Removed legacy matching for pin group node names, let's fix the dts
-  files instead to use "pins" naming with dashes. This also fixed the
-  new warnings introduced for "not of type 'object'" for anything named
-  pin
+Thanks for your patch!
 
-Changes since v3:
-- Fix issues noted by Rob for v2 version that I had missed
+On Tue, May 23, 2023 at 11:12 AM Vlastimil Babka <vbabka@suse.cz> wrote:
+> As discussed at LSF/MM [1] [2] and with no objections raised there,
+> deprecate the SLAB allocator. Rename the user-visible option so that
+> users with CONFIG_SLAB=y get a new prompt with explanation during make
+> oldconfig, while make olddefconfig will just switch to SLUB.
+>
+> In all defconfigs with CONFIG_SLAB=y remove the line so those also
+> switch to SLUB. Regressions due to the switch should be reported to
+> linux-mm and slab maintainers.
 
-- Categorize patternProperties a bit to make fixing dts files easier
+Technically, removing these lines from the defconfig files does not
+have any impact, right?
+And it removes one more sync point indicating the last time some
+defconfig files were (not) updated by their maintainers ;-)
 
-Changes since v2:
+> [1] https://lore.kernel.org/all/4b9fc9c6-b48c-198f-5f80-811a44737e5f@suse.cz/
+> [2] https://lwn.net/Articles/932201/
+>
+> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 
-- Drop old ti,omap-pinctrl.txt in addition to old pinctrl-single.txt
+>  arch/m68k/configs/amiga_defconfig               |  1 -
+>  arch/m68k/configs/apollo_defconfig              |  1 -
+>  arch/m68k/configs/atari_defconfig               |  1 -
+>  arch/m68k/configs/bvme6000_defconfig            |  1 -
+>  arch/m68k/configs/hp300_defconfig               |  1 -
+>  arch/m68k/configs/mac_defconfig                 |  1 -
+>  arch/m68k/configs/multi_defconfig               |  1 -
+>  arch/m68k/configs/mvme147_defconfig             |  1 -
+>  arch/m68k/configs/mvme16x_defconfig             |  1 -
+>  arch/m68k/configs/q40_defconfig                 |  1 -
+>  arch/m68k/configs/sun3_defconfig                |  1 -
+>  arch/m68k/configs/sun3x_defconfig               |  1 -
 
-- Replace reference to pinctrl-single.txt to point to the yaml in ctrl.txt
+Regardless,
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
 
-Changes since v1:
+Gr{oetje,eeting}s,
 
-- The v1 version was a WIP patch posted as an example in thread
-  "dt binding check error with hash and comma"
----
- .../devicetree/bindings/arm/omap/ctrl.txt     |   2 +-
- .../bindings/pinctrl/pinctrl-single.txt       | 262 ------------------
- .../bindings/pinctrl/pinctrl-single.yaml      | 201 ++++++++++++++
- .../bindings/pinctrl/ti,omap-pinctrl.txt      |  13 -
- 4 files changed, 202 insertions(+), 276 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/pinctrl/pinctrl-single.txt
- create mode 100644 Documentation/devicetree/bindings/pinctrl/pinctrl-single.yaml
- delete mode 100644 Documentation/devicetree/bindings/pinctrl/ti,omap-pinctrl.txt
+                        Geert
 
-diff --git a/Documentation/devicetree/bindings/arm/omap/ctrl.txt b/Documentation/devicetree/bindings/arm/omap/ctrl.txt
---- a/Documentation/devicetree/bindings/arm/omap/ctrl.txt
-+++ b/Documentation/devicetree/bindings/arm/omap/ctrl.txt
-@@ -8,7 +8,7 @@ control module driver itself.
- 
- See [2] for documentation about clock/clockdomain nodes.
- 
--[1] Documentation/devicetree/bindings/pinctrl/pinctrl-single.txt
-+[1] Documentation/devicetree/bindings/pinctrl/pinctrl-single.yaml
- [2] Documentation/devicetree/bindings/clock/ti/*
- 
- Required properties:
-diff --git a/Documentation/devicetree/bindings/pinctrl/pinctrl-single.txt b/Documentation/devicetree/bindings/pinctrl/pinctrl-single.txt
-deleted file mode 100644
---- a/Documentation/devicetree/bindings/pinctrl/pinctrl-single.txt
-+++ /dev/null
-@@ -1,262 +0,0 @@
--One-register-per-pin type device tree based pinctrl driver
--
--Required properties:
--- compatible : "pinctrl-single" or "pinconf-single".
--  "pinctrl-single" means that pinconf isn't supported.
--  "pinconf-single" means that generic pinconf is supported.
--
--- reg : offset and length of the register set for the mux registers
--
--- #pinctrl-cells : number of cells in addition to the index, set to 1
--  or 2 for pinctrl-single,pins and set to 2 for pinctrl-single,bits
--
--- pinctrl-single,register-width : pinmux register access width in bits
--
--- pinctrl-single,function-mask : mask of allowed pinmux function bits
--  in the pinmux register
--
--Optional properties:
--- pinctrl-single,function-off : function off mode for disabled state if
--  available and same for all registers; if not specified, disabling of
--  pin functions is ignored
--
--- pinctrl-single,bit-per-mux : boolean to indicate that one register controls
--  more than one pin, for which "pinctrl-single,function-mask" property specifies
-- position mask of pin.
--
--- pinctrl-single,drive-strength : array of value that are used to configure
--  drive strength in the pinmux register. They're value of drive strength
--  current and drive strength mask.
--
--		/* drive strength current, mask */
--		pinctrl-single,power-source = <0x30 0xf0>;
--
--- pinctrl-single,bias-pullup : array of value that are used to configure the
--  input bias pullup in the pinmux register.
--
--		/* input, enabled pullup bits, disabled pullup bits, mask */
--		pinctrl-single,bias-pullup = <0 1 0 1>;
--
--- pinctrl-single,bias-pulldown : array of value that are used to configure the
--  input bias pulldown in the pinmux register.
--
--		/* input, enabled pulldown bits, disabled pulldown bits, mask */
--		pinctrl-single,bias-pulldown = <2 2 0 2>;
--
--  * Two bits to control input bias pullup and pulldown: User should use
--    pinctrl-single,bias-pullup & pinctrl-single,bias-pulldown. One bit means
--    pullup, and the other one bit means pulldown.
--  * Three bits to control input bias enable, pullup and pulldown. User should
--    use pinctrl-single,bias-pullup & pinctrl-single,bias-pulldown. Input bias
--    enable bit should be included in pullup or pulldown bits.
--  * Although driver could set PIN_CONFIG_BIAS_DISABLE, there's no property as
--    pinctrl-single,bias-disable. Because pinctrl single driver could implement
--    it by calling pulldown, pullup disabled.
--
--- pinctrl-single,input-schmitt : array of value that are used to configure
--  input schmitt in the pinmux register. In some silicons, there're two input
--  schmitt value (rising-edge & falling-edge) in the pinmux register.
--
--		/* input schmitt value, mask */
--		pinctrl-single,input-schmitt = <0x30 0x70>;
--
--- pinctrl-single,input-schmitt-enable : array of value that are used to
--  configure input schmitt enable or disable in the pinmux register.
--
--		/* input, enable bits, disable bits, mask */
--		pinctrl-single,input-schmitt-enable = <0x30 0x40 0 0x70>;
--
--- pinctrl-single,low-power-mode : array of value that are used to configure
--  low power mode of this pin. For some silicons, the low power mode will
--  control the output of the pin when the pad including the pin enter low
--  power mode.
--		/* low power mode value, mask */
--		pinctrl-single,low-power-mode = <0x288 0x388>;
--
--- pinctrl-single,gpio-range : list of value that are used to configure a GPIO
--  range. They're value of subnode phandle, pin base in pinctrl device, pin
--  number in this range, GPIO function value of this GPIO range.
--  The number of parameters is depend on #pinctrl-single,gpio-range-cells
--  property.
--
--		/* pin base, nr pins & gpio function */
--		pinctrl-single,gpio-range = <&range 0 3 0>, <&range 3 9 1>;
--
--- interrupt-controller : standard interrupt controller binding if using
--  interrupts for wake-up events for example. In this case pinctrl-single
--  is set up as a chained interrupt controller and the wake-up interrupts
--  can be requested by the drivers using request_irq().
--
--- #interrupt-cells : standard interrupt binding if using interrupts
--
--This driver assumes that there is only one register for each pin (unless the
--pinctrl-single,bit-per-mux is set), and uses the common pinctrl bindings as
--specified in the pinctrl-bindings.txt document in this directory.
--
--The pin configuration nodes for pinctrl-single are specified as pinctrl
--register offset and values using pinctrl-single,pins. Only the bits specified
--in pinctrl-single,function-mask are updated.
--
--When #pinctrl-cells = 1, then setting a pin for a device could be done with:
--
--	pinctrl-single,pins = <0xdc 0x118>;
--
--Where 0xdc is the offset from the pinctrl register base address for the device
--pinctrl register, and 0x118 contains the desired value of the pinctrl register.
--
--When #pinctrl-cells = 2, then setting a pin for a device could be done with:
--
--	pinctrl-single,pins = <0xdc 0x30 0x07>;
--
--Where 0x30 is the pin configuration value and 0x07 is the pin mux mode value.
--These two values are OR'd together to produce the value stored at offset 0xdc.
--See the device example and static board pins example below for more information.
--
--In case when one register changes more than one pin's mux the
--pinctrl-single,bits need to be used which takes three parameters:
--
--	pinctrl-single,bits = <0xdc 0x18 0xff>;
--
--Where 0xdc is the offset from the pinctrl register base address for the
--device pinctrl register, 0x18 is the desired value, and 0xff is the sub mask to
--be used when applying this change to the register.
--
--
--Optional sub-node: In case some pins could be configured as GPIO in the pinmux
--register, those pins could be defined as a GPIO range. This sub-node is required
--by pinctrl-single,gpio-range property.
--
--Required properties in sub-node:
--- #pinctrl-single,gpio-range-cells : the number of parameters after phandle in
--  pinctrl-single,gpio-range property.
--
--	range: gpio-range {
--		#pinctrl-single,gpio-range-cells = <3>;
--	};
--
--
--Example:
--
--/* SoC common file */
--
--/* first controller instance for pins in core domain */
--pmx_core: pinmux@4a100040 {
--	compatible = "pinctrl-single";
--	reg = <0x4a100040 0x0196>;
--	#address-cells = <1>;
--	#size-cells = <0>;
--	#interrupt-cells = <1>;
--	interrupt-controller;
--	pinctrl-single,register-width = <16>;
--	pinctrl-single,function-mask = <0xffff>;
--};
--
--/* second controller instance for pins in wkup domain */
--pmx_wkup: pinmux@4a31e040 {
--	compatible = "pinctrl-single";
--	reg = <0x4a31e040 0x0038>;
--	#address-cells = <1>;
--	#size-cells = <0>;
--	#interrupt-cells = <1>;
--	interrupt-controller;
--	pinctrl-single,register-width = <16>;
--	pinctrl-single,function-mask = <0xffff>;
--};
--
--control_devconf0: pinmux@48002274 {
--	compatible = "pinctrl-single";
--	reg = <0x48002274 4>;	/* Single register */
--	#address-cells = <1>;
--	#size-cells = <0>;
--	pinctrl-single,bit-per-mux;
--	pinctrl-single,register-width = <32>;
--	pinctrl-single,function-mask = <0x5F>;
--};
--
--/* third controller instance for pins in gpio domain */
--pmx_gpio: pinmux@d401e000 {
--	compatible = "pinconf-single";
--	reg = <0xd401e000 0x0330>;
--	#address-cells = <1>;
--	#size-cells = <1>;
--	ranges;
--
--	pinctrl-single,register-width = <32>;
--	pinctrl-single,function-mask = <7>;
--
--	/* sparse GPIO range could be supported */
--	pinctrl-single,gpio-range = <&range 0 3 0>, <&range 3 9 1>,
--				    <&range 12 1 0>, <&range 13 29 1>,
--				    <&range 43 1 0>, <&range 44 49 1>,
--				    <&range 94 1 1>, <&range 96 2 1>;
--
--	range: gpio-range {
--		#pinctrl-single,gpio-range-cells = <3>;
--	};
--};
--
--
--/* board specific .dts file */
--
--&pmx_core {
--
--	/*
--	 * map all board specific static pins enabled by the pinctrl driver
--	 * itself during the boot (or just set them up in the bootloader)
--	 */
--	pinctrl-names = "default";
--	pinctrl-0 = <&board_pins>;
--
--	board_pins: pinmux_board_pins {
--		pinctrl-single,pins = <
--			0x6c 0xf
--			0x6e 0xf
--			0x70 0xf
--			0x72 0xf
--		>;
--	};
--
--	uart0_pins: pinmux_uart0_pins {
--		pinctrl-single,pins = <
--			0x208 0		/* UART0_RXD (IOCFG138) */
--			0x20c 0		/* UART0_TXD (IOCFG139) */
--		>;
--		pinctrl-single,bias-pulldown = <0 2 2>;
--		pinctrl-single,bias-pullup = <0 1 1>;
--	};
--
--	/* map uart2 pins */
--	uart2_pins: pinmux_uart2_pins {
--		pinctrl-single,pins = <
--			0xd8 0x118
--			0xda 0
--			0xdc 0x118
--			0xde 0
--		>;
--	};
--};
--
--&control_devconf0 {
--	mcbsp1_pins: pinmux_mcbsp1_pins {
--		pinctrl-single,bits = <
--			0x00 0x18 0x18 /* FSR/CLKR signal from FSX/CLKX pin */
--		>;
--	};
--
--	mcbsp2_clks_pins: pinmux_mcbsp2_clks_pins {
--		pinctrl-single,bits = <
--			0x00 0x40 0x40 /* McBSP2 CLKS from McBSP_CLKS pin */
--		>;
--	};
--
--};
--
--&uart1 {
--       pinctrl-names = "default";
--       pinctrl-0 = <&uart0_pins>;
--};
--
--&uart2 {
--       pinctrl-names = "default";
--       pinctrl-0 = <&uart2_pins>;
--};
-diff --git a/Documentation/devicetree/bindings/pinctrl/pinctrl-single.yaml b/Documentation/devicetree/bindings/pinctrl/pinctrl-single.yaml
-new file mode 100644
---- /dev/null
-+++ b/Documentation/devicetree/bindings/pinctrl/pinctrl-single.yaml
-@@ -0,0 +1,201 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/pinctrl/pinctrl-single.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: One-register-per-pin type device tree based pinctrl driver
-+
-+maintainers:
-+  - Tony Lindgren <tony@atomide.com>
-+
-+description:
-+  This binding describes pinctrl devices that use one hardware register to
-+  configure each pin.
-+
-+properties:
-+  compatible:
-+    oneOf:
-+      - items:
-+          - enum:
-+              - pinctrl-single
-+              - pinconf-single
-+      - items:
-+          - enum:
-+              - ti,am437-padconf
-+              - ti,dra7-padconf
-+              - ti,omap2420-padconf
-+              - ti,omap2430-padconf
-+              - ti,omap3-padconf
-+              - ti,omap4-padconf
-+              - ti,omap5-padconf
-+          - const: pinctrl-single
-+
-+  reg:
-+    maxItems: 1
-+
-+  interrupt-controller: true
-+
-+  '#interrupt-cells':
-+    const: 1
-+
-+  '#address-cells':
-+    const: 1
-+
-+  '#size-cells':
-+    const: 0
-+
-+  '#pinctrl-cells':
-+    enum: [ 1, 2 ]
-+
-+  pinctrl-single,bit-per-mux:
-+    description: Optional flag to indicate register controls more than one pin
-+    type: boolean
-+
-+  pinctrl-single,function-mask:
-+    description: Mask of the allowed register bits
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+
-+  pinctrl-single,function-off:
-+    description: Optional function off mode for disabled state
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+
-+  pinctrl-single,register-width:
-+    description: Width of pin specific bits in the register
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    enum: [ 8, 16, 32 ]
-+
-+  pinctrl-single,gpio-range:
-+    description: Optional list of pin base, nr pins & gpio function
-+    $ref: /schemas/types.yaml#/definitions/phandle-array
-+    items:
-+      - items:
-+          - description: phandle of a gpio-range node
-+          - description: pin base
-+          - description: number of pins
-+          - description: gpio function
-+
-+  '#gpio-range-cells':
-+    description: No longer needed, may exist in older files for gpio-ranges
-+    deprecated: true
-+    const: 3
-+
-+  gpio-range:
-+    description: Optional node for gpio range cells
-+    type: object
-+    properties:
-+      '#pinctrl-single,gpio-range-cells':
-+        description: Number of gpio range cells
-+        const: 3
-+        $ref: /schemas/types.yaml#/definitions/uint32
-+
-+patternProperties:
-+  '-pins((.*)?)$|-pin':
-+    description: Pin group node name using pins or pin naming
-+    type: object
-+    $ref: pinmux-node.yaml#
-+
-+    additionalProperties: false
-+
-+    properties:
-+      pinctrl-single,pins:
-+        description:
-+          Array of pins as described in pinmux-node.yaml for pinctrl-pin-array
-+        $ref: /schemas/types.yaml#/definitions/uint32-array
-+
-+      pinctrl-single,bits:
-+        description: Register bit configuration for pinctrl-single,bit-per-mux
-+        $ref: /schemas/types.yaml#/definitions/uint32-array
-+        items:
-+          - description: register offset
-+          - description: value
-+          - description: pin bitmask in the register
-+
-+      pinctrl-single,bias-pullup:
-+        description: Optional bias pull up configuration
-+        $ref: /schemas/types.yaml#/definitions/uint32-array
-+        items:
-+          - description: input
-+          - description: enabled pull up bits
-+          - description: disabled pull up bits
-+          - description: bias pull up mask
-+
-+      pinctrl-single,bias-pulldown:
-+        description: Optional bias pull down configuration
-+        $ref: /schemas/types.yaml#/definitions/uint32-array
-+        items:
-+          - description: input
-+          - description: enabled pull down bits
-+          - description: disabled pull down bits
-+          - description: bias pull down mask
-+
-+      pinctrl-single,drive-strength:
-+        description: Optional drive strength configuration
-+        $ref: /schemas/types.yaml#/definitions/uint32-array
-+        items:
-+          - description: drive strength current
-+          - description: drive strength mask
-+
-+      pinctrl-single,input-schmitt:
-+        description: Optional input schmitt configuration
-+        $ref: /schemas/types.yaml#/definitions/uint32-array
-+        items:
-+          - description: input
-+          - description: enable bits
-+          - description: disable bits
-+          - description: input schmitt mask
-+
-+      pinctrl-single,low-power-mode:
-+        description: Optional low power mode configuration
-+        $ref: /schemas/types.yaml#/definitions/uint32-array
-+        items:
-+          - description: low power mode value
-+          - description: low power mode mask
-+
-+      pinctrl-single,slew-rate:
-+        description: Optional slew rate configuration
-+        $ref: /schemas/types.yaml#/definitions/uint32-array
-+        items:
-+          - description: slew rate
-+          - description: slew rate mask
-+
-+allOf:
-+  - $ref: pinctrl.yaml#
-+
-+required:
-+  - compatible
-+  - reg
-+  - pinctrl-single,register-width
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    soc {
-+      #address-cells = <1>;
-+      #size-cells = <1>;
-+
-+        pinmux@4a100040 {
-+          compatible = "pinctrl-single";
-+          reg = <0x4a100040 0x0196>;
-+          #address-cells = <1>;
-+          #size-cells = <0>;
-+          #pinctrl-cells = <2>;
-+          #interrupt-cells = <1>;
-+          interrupt-controller;
-+          pinctrl-single,register-width = <16>;
-+          pinctrl-single,function-mask = <0xffff>;
-+          pinctrl-single,gpio-range = <&range 0 3 0>;
-+          range: gpio-range {
-+            #pinctrl-single,gpio-range-cells = <3>;
-+          };
-+
-+          uart2-pins {
-+            pinctrl-single,pins =
-+              <0xd8 0x118>,
-+              <0xda 0>,
-+              <0xdc 0x118>,
-+              <0xde 0>;
-+          };
-+        };
-+      };
-diff --git a/Documentation/devicetree/bindings/pinctrl/ti,omap-pinctrl.txt b/Documentation/devicetree/bindings/pinctrl/ti,omap-pinctrl.txt
-deleted file mode 100644
---- a/Documentation/devicetree/bindings/pinctrl/ti,omap-pinctrl.txt
-+++ /dev/null
-@@ -1,13 +0,0 @@
--OMAP Pinctrl definitions
--
--Required properties:
--- compatible : Should be one of:
--  "ti,omap2420-padconf" - OMAP2420 compatible pinctrl
--  "ti,omap2430-padconf" - OMAP2430 compatible pinctrl
--  "ti,omap3-padconf" - OMAP3 compatible pinctrl
--  "ti,omap4-padconf" - OMAP4 compatible pinctrl
--  "ti,omap5-padconf" - OMAP5 compatible pinctrl
--  "ti,dra7-padconf" - DRA7 compatible pinctrl
--  "ti,am437-padconf" - AM437x compatible pinctrl
--
--See Documentation/devicetree/bindings/pinctrl/pinctrl-single.txt for further details.
 -- 
-2.40.1
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
