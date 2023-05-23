@@ -2,30 +2,30 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 63F3570D6A8
-	for <lists+linux-omap@lfdr.de>; Tue, 23 May 2023 10:06:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44B3970D6A6
+	for <lists+linux-omap@lfdr.de>; Tue, 23 May 2023 10:06:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235470AbjEWIG0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 23 May 2023 04:06:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59992 "EHLO
+        id S230319AbjEWIGY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 23 May 2023 04:06:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235459AbjEWIGZ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 23 May 2023 04:06:25 -0400
+        with ESMTP id S235592AbjEWIGX (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 23 May 2023 04:06:23 -0400
 Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 3A0CEE63;
-        Tue, 23 May 2023 01:05:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 2DFACE5C;
+        Tue, 23 May 2023 01:05:39 -0700 (PDT)
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id BEFFD814A;
-        Tue, 23 May 2023 07:57:38 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id 92AED81B7;
+        Tue, 23 May 2023 07:58:14 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     linux-omap@vger.kernel.org
 Cc:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
         devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Rob Herring <robh+dt@kernel.org>
-Subject: [PATCH] ARM: dts: Unify pinctrl-single pin group nodes for omap5
-Date:   Tue, 23 May 2023 10:57:36 +0300
-Message-Id: <20230523075736.39262-1-tony@atomide.com>
+Subject: [PATCH] ARM: dts: Unify pinctrl-single pin group nodes for ti81xx
+Date:   Tue, 23 May 2023 10:58:12 +0300
+Message-Id: <20230523075812.58808-1-tony@atomide.com>
 X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -47,395 +47,203 @@ Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
 Cc: Rob Herring <robh+dt@kernel.org>
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 ---
- arch/arm/boot/dts/omap5-board-common.dtsi | 42 +++++++++++------------
- arch/arm/boot/dts/omap5-cm-t54.dts        | 32 ++++++++---------
- arch/arm/boot/dts/omap5-igep0050.dts      |  4 +--
- arch/arm/boot/dts/omap5-sbc-t54.dts       |  4 +--
- arch/arm/boot/dts/omap5-uevm.dts          |  6 ++--
- 5 files changed, 44 insertions(+), 44 deletions(-)
+ arch/arm/boot/dts/am3874-iceboard.dts  | 16 ++++++++--------
+ arch/arm/boot/dts/dm8148-evm.dts       |  6 +++---
+ arch/arm/boot/dts/dm8148-t410.dts      |  6 +++---
+ arch/arm/boot/dts/dm8168-evm.dts       | 10 +++++-----
+ arch/arm/boot/dts/dra62x-j5eco-evm.dts |  4 ++--
+ 5 files changed, 21 insertions(+), 21 deletions(-)
 
-diff --git a/arch/arm/boot/dts/omap5-board-common.dtsi b/arch/arm/boot/dts/omap5-board-common.dtsi
---- a/arch/arm/boot/dts/omap5-board-common.dtsi
-+++ b/arch/arm/boot/dts/omap5-board-common.dtsi
-@@ -56,7 +56,7 @@ vmmcsdio_fixed: fixedregulator-mmcsdio {
- 	};
+diff --git a/arch/arm/boot/dts/am3874-iceboard.dts b/arch/arm/boot/dts/am3874-iceboard.dts
+--- a/arch/arm/boot/dts/am3874-iceboard.dts
++++ b/arch/arm/boot/dts/am3874-iceboard.dts
+@@ -285,7 +285,7 @@ i2c@6 {
+ };
  
- 	/* HS USB Host PHY on PORT 2 */
--	hsusb2_phy: hsusb2_phy {
-+	hsusb2_phy: hsusb2-phy-pins {
- 		compatible = "usb-nop-xceiv";
- 		reset-gpios = <&gpio3 16 GPIO_ACTIVE_LOW>; /* gpio3_80 HUB_NRESET */
- 		clocks = <&auxclk1_ck>;
-@@ -156,13 +156,13 @@ &usbhost_pins
- 			&led_gpio_pins
- 	>;
- 
--	twl6040_pins: pinmux_twl6040_pins {
-+	twl6040_pins: twl6040-pins {
- 		pinctrl-single,pins = <
- 			OMAP5_IOPAD(0x1be, PIN_OUTPUT | MUX_MODE6)	/* mcspi1_somi.gpio5_141 */
- 		>;
- 	};
- 
--	mcpdm_pins: pinmux_mcpdm_pins {
-+	mcpdm_pins: mcpdm-pins {
- 		pinctrl-single,pins = <
- 			OMAP5_IOPAD(0x182, PIN_INPUT_PULLDOWN | MUX_MODE0)	/* abe_clks.abe_clks */
- 			OMAP5_IOPAD(0x19c, PIN_INPUT_PULLDOWN | MUX_MODE0)	/* abemcpdm_ul_data.abemcpdm_ul_data */
-@@ -172,7 +172,7 @@ OMAP5_IOPAD(0x1a2, PIN_INPUT_PULLDOWN | MUX_MODE0)	/* abemcpdm_lb_clk.abemcpdm_l
- 		>;
- 	};
- 
--	mcbsp1_pins: pinmux_mcbsp1_pins {
-+	mcbsp1_pins: mcbsp1-pins {
- 		pinctrl-single,pins = <
- 			OMAP5_IOPAD(0x18c, PIN_INPUT | MUX_MODE1)		/* abedmic_clk2.abemcbsp1_fsx */
- 			OMAP5_IOPAD(0x18e, PIN_OUTPUT_PULLDOWN | MUX_MODE1)	/* abedmic_clk3.abemcbsp1_dx */
-@@ -181,7 +181,7 @@ OMAP5_IOPAD(0x192, PIN_INPUT_PULLDOWN | MUX_MODE1)	/* abeslimbus1_data.abemcbsp1
- 		>;
- 	};
- 
--	mcbsp2_pins: pinmux_mcbsp2_pins {
-+	mcbsp2_pins: mcbsp2-pins {
- 		pinctrl-single,pins = <
- 			OMAP5_IOPAD(0x194, PIN_INPUT_PULLDOWN | MUX_MODE0)	/* abemcbsp2_dr.abemcbsp2_dr */
- 			OMAP5_IOPAD(0x196, PIN_OUTPUT_PULLDOWN | MUX_MODE0)	/* abemcbsp2_dx.abemcbsp2_dx */
-@@ -190,14 +190,14 @@ OMAP5_IOPAD(0x19a, PIN_INPUT | MUX_MODE0)		/* abemcbsp2_clkx.abemcbsp2_clkx */
- 		>;
- 	};
- 
--	i2c1_pins: pinmux_i2c1_pins {
-+	i2c1_pins: i2c1-pins {
- 		pinctrl-single,pins = <
- 			OMAP5_IOPAD(0x1f2, PIN_INPUT_PULLUP | MUX_MODE0)	/* i2c1_scl */
- 			OMAP5_IOPAD(0x1f4, PIN_INPUT_PULLUP | MUX_MODE0)	/* i2c1_sda */
- 		>;
- 	};
- 
--	mcspi2_pins: pinmux_mcspi2_pins {
-+	mcspi2_pins: mcspi2-pins {
- 		pinctrl-single,pins = <
- 			OMAP5_IOPAD(0x0fc, PIN_INPUT | MUX_MODE0)		/*  mcspi2_clk */
- 			OMAP5_IOPAD(0x0fe, PIN_INPUT | MUX_MODE0)		/*  mcspi2_simo */
-@@ -206,7 +206,7 @@ OMAP5_IOPAD(0x102, PIN_OUTPUT | MUX_MODE0)		/*  mcspi2_cs0 */
- 		>;
- 	};
- 
--	mcspi3_pins: pinmux_mcspi3_pins {
-+	mcspi3_pins: mcspi3-pins {
- 		pinctrl-single,pins = <
- 			OMAP5_IOPAD(0x0b8, PIN_INPUT | MUX_MODE1)		/*  mcspi3_somi */
- 			OMAP5_IOPAD(0x0ba, PIN_INPUT | MUX_MODE1)		/*  mcspi3_cs0 */
-@@ -215,7 +215,7 @@ OMAP5_IOPAD(0x0be, PIN_INPUT | MUX_MODE1)		/*  mcspi3_clk */
- 		>;
- 	};
- 
--	mmc3_pins: pinmux_mmc3_pins {
-+	mmc3_pins: mmc3-pins {
- 		pinctrl-single,pins = <
- 			OMAP5_IOPAD(0x01a4, PIN_INPUT_PULLUP | MUX_MODE0) /* wlsdio_clk */
- 			OMAP5_IOPAD(0x01a6, PIN_INPUT_PULLUP | MUX_MODE0) /* wlsdio_cmd */
-@@ -226,20 +226,20 @@ OMAP5_IOPAD(0x01ae, PIN_INPUT_PULLUP | MUX_MODE0) /* wlsdio_data3 */
- 		>;
- 	};
- 
--	wlan_pins: pinmux_wlan_pins {
-+	wlan_pins: wlan-pins {
- 		pinctrl-single,pins = <
- 			OMAP5_IOPAD(0x1bc, PIN_OUTPUT | MUX_MODE6) /* mcspi1_clk.gpio5_140 */
- 		>;
- 	};
- 
- 	/* TI trees use GPIO mode; msecure mode does not work reliably? */
--	palmas_msecure_pins: palmas_msecure_pins {
-+	palmas_msecure_pins: palmas-msecure-pins {
- 		pinctrl-single,pins = <
- 			OMAP5_IOPAD(0x180, PIN_OUTPUT | MUX_MODE6) /* gpio8_234 */
- 		>;
- 	};
- 
--	usbhost_pins: pinmux_usbhost_pins {
-+	usbhost_pins: usbhost-pins {
- 		pinctrl-single,pins = <
- 			OMAP5_IOPAD(0x0c4, PIN_INPUT | MUX_MODE0) /* usbb2_hsic_strobe */
- 			OMAP5_IOPAD(0x0c6, PIN_INPUT | MUX_MODE0) /* usbb2_hsic_data */
-@@ -252,13 +252,13 @@ OMAP5_IOPAD(0x0ae, PIN_OUTPUT | MUX_MODE6) /* gpio3_79 ETH_NRESET */
- 		>;
- 	};
- 
--	led_gpio_pins: pinmux_led_gpio_pins {
-+	led_gpio_pins: led-gpio-pins {
- 		pinctrl-single,pins = <
- 			OMAP5_IOPAD(0x1d6, PIN_OUTPUT | MUX_MODE6) /* uart3_cts_rctx.gpio5_153 */
- 		>;
- 	};
- 
--	uart1_pins: pinmux_uart1_pins {
-+	uart1_pins: uart1-pins {
- 		pinctrl-single,pins = <
- 			OMAP5_IOPAD(0x0a0, PIN_OUTPUT | MUX_MODE0) /* uart1_tx.uart1_cts */
- 			OMAP5_IOPAD(0x0a2, PIN_INPUT_PULLUP | MUX_MODE0) /* uart1_tx.uart1_cts */
-@@ -267,14 +267,14 @@ OMAP5_IOPAD(0x0a6, PIN_OUTPUT | MUX_MODE0) /* uart1_rx.uart1_rts */
- 		>;
- 	};
- 
--	uart3_pins: pinmux_uart3_pins {
-+	uart3_pins: uart3-pins {
- 		pinctrl-single,pins = <
- 			OMAP5_IOPAD(0x1da, PIN_OUTPUT | MUX_MODE0) /* uart3_rts_irsd.uart3_tx_irtx */
- 			OMAP5_IOPAD(0x1dc, PIN_INPUT_PULLUP | MUX_MODE0) /* uart3_rx_irrx.uart3_usbb3_hsic */
- 		>;
- 	};
- 
--	uart5_pins: pinmux_uart5_pins {
-+	uart5_pins: uart5-pins {
- 		pinctrl-single,pins = <
- 			OMAP5_IOPAD(0x1b0, PIN_INPUT_PULLUP | MUX_MODE0) /* uart5_rx.uart5_rx */
- 			OMAP5_IOPAD(0x1b2, PIN_OUTPUT | MUX_MODE0) /* uart5_tx.uart5_tx */
-@@ -283,7 +283,7 @@ OMAP5_IOPAD(0x1b6, PIN_OUTPUT | MUX_MODE0) /* uart5_cts.uart5_rts */
- 		>;
- 	};
- 
--	dss_hdmi_pins: pinmux_dss_hdmi_pins {
-+	dss_hdmi_pins: dss-hdmi-pins {
- 		pinctrl-single,pins = <
- 			OMAP5_IOPAD(0x13c, PIN_INPUT | MUX_MODE0)	/* hdmi_cec.hdmi_cec */
- 			OMAP5_IOPAD(0x140, PIN_INPUT | MUX_MODE0)	/* hdmi_ddc_scl.hdmi_ddc_scl */
-@@ -291,7 +291,7 @@ OMAP5_IOPAD(0x142, PIN_INPUT | MUX_MODE0)	/* hdmi_ddc_sda.hdmi_ddc_sda */
- 		>;
- 	};
- 
--	tpd12s015_pins: pinmux_tpd12s015_pins {
-+	tpd12s015_pins: tpd12s015-pins {
- 		pinctrl-single,pins = <
- 			OMAP5_IOPAD(0x13e, PIN_INPUT_PULLDOWN | MUX_MODE6)	/* hdmi_hpd.gpio7_193 */
- 		>;
-@@ -304,20 +304,20 @@ &omap5_pmx_wkup {
- 			&usbhost_wkup_pins
- 	>;
- 
--	palmas_sys_nirq_pins: pinmux_palmas_sys_nirq_pins {
-+	palmas_sys_nirq_pins: palmas-sys-nirq-pins {
- 		pinctrl-single,pins = <
- 			/* sys_nirq1 is pulled down as the SoC is inverting it for GIC */
- 			OMAP5_IOPAD(0x068, PIN_INPUT_PULLUP | MUX_MODE0)
- 		>;
- 	};
- 
--	usbhost_wkup_pins: pinmux_usbhost_wkup_pins {
-+	usbhost_wkup_pins: usbhost-wkup-pins {
- 		pinctrl-single,pins = <
- 			OMAP5_IOPAD(0x05a, PIN_OUTPUT | MUX_MODE0) /* fref_clk1_out, USB hub clk */
- 		>;
- 	};
- 
--	wlcore_irq_pin: pinmux_wlcore_irq_pin {
-+	wlcore_irq_pin: wlcore-irq-pin-pins {
- 		pinctrl-single,pins = <
- 			OMAP5_IOPAD(0x40, PIN_INPUT | MUX_MODE6)	/* llia_wakereqin.gpio1_wk14 */
- 		>;
-diff --git a/arch/arm/boot/dts/omap5-cm-t54.dts b/arch/arm/boot/dts/omap5-cm-t54.dts
---- a/arch/arm/boot/dts/omap5-cm-t54.dts
-+++ b/arch/arm/boot/dts/omap5-cm-t54.dts
-@@ -60,7 +60,7 @@ ads7846reg: ads7846-reg {
- 	};
- 
- 	/* HS USB Host PHY on PORT 2 */
--	hsusb2_phy: hsusb2_phy {
-+	hsusb2_phy: hsusb2-phy-pins {
- 		compatible = "usb-nop-xceiv";
- 		reset-gpios = <&gpio3 12 GPIO_ACTIVE_LOW>; /* gpio3_76 HUB_RESET */
- 		#phy-cells = <0>;
-@@ -176,13 +176,13 @@ dvi_connector_in: endpoint {
- 
- &omap5_pmx_wkup {
- 
--	ads7846_pins: pinmux_ads7846_pins {
-+	ads7846_pins: ads7846-pins {
- 		pinctrl-single,pins = <
- 			OMAP5_IOPAD(0x0042, PIN_INPUT_PULLDOWN | MUX_MODE6)  /* llib_wakereqin.gpio1_wk15 */
- 		>;
- 	};
- 
--	palmas_sys_nirq_pins: pinmux_palmas_sys_nirq_pins {
-+	palmas_sys_nirq_pins: palmas-sys-nirq-pins {
- 		pinctrl-single,pins = <
- 			/* sys_nirq1 is pulled down as the SoC is inverting it for GIC */
- 			OMAP5_IOPAD(0x068, PIN_INPUT_PULLUP | MUX_MODE0)
-@@ -197,27 +197,27 @@ &led_gpio_pins
- 			&usbhost_pins
- 	>;
- 
--	led_gpio_pins: pinmux_led_gpio_pins {
-+	led_gpio_pins: led-gpio-pins {
- 		pinctrl-single,pins = <
- 			OMAP5_IOPAD(0x00b0, PIN_OUTPUT | MUX_MODE6) /* hsi2_caflag.gpio3_80 */
- 		>;
- 	};
- 
--	i2c1_pins: pinmux_i2c1_pins {
-+	i2c1_pins: i2c1-pins {
- 		pinctrl-single,pins = <
- 			OMAP5_IOPAD(0x01f2, PIN_INPUT_PULLUP | MUX_MODE0) /* i2c1_pmic_scl */
- 			OMAP5_IOPAD(0x01f4, PIN_INPUT_PULLUP | MUX_MODE0) /* i2c1_pmic_sda */
- 		>;
- 	};
- 
--	i2c2_pins: pinmux_i2c2_pins {
-+	i2c2_pins: i2c2-pins {
- 		pinctrl-single,pins = <
- 			OMAP5_IOPAD(0x01b8, PIN_INPUT | MUX_MODE0) /* i2c2_scl */
- 			OMAP5_IOPAD(0x01ba, PIN_INPUT | MUX_MODE0) /* i2c2_sda */
- 		>;
- 	};
- 
--	mmc1_pins: pinmux_mmc1_pins {
-+	mmc1_pins: mmc1-pins {
- 		pinctrl-single,pins = <
- 			OMAP5_IOPAD(0x01e2, PIN_INPUT_PULLUP | MUX_MODE0) /* sdcard_clk */
- 			OMAP5_IOPAD(0x01e4, PIN_INPUT_PULLUP | MUX_MODE0) /* sdcard_cmd */
-@@ -228,7 +228,7 @@ OMAP5_IOPAD(0x01ec, PIN_INPUT_PULLUP | MUX_MODE0) /* sdcard_data1 */
- 		>;
- 	};
- 
+ &pincntl {
 -	mmc2_pins: pinmux_mmc2_pins {
 +	mmc2_pins: mmc2-pins {
  		pinctrl-single,pins = <
- 			OMAP5_IOPAD(0x0040, PIN_INPUT_PULLUP | MUX_MODE0) /* emmc_clk */
- 			OMAP5_IOPAD(0x0042, PIN_INPUT_PULLUP | MUX_MODE0) /* emmc_cmd */
-@@ -243,7 +243,7 @@ OMAP5_IOPAD(0x0052, PIN_INPUT_PULLUP | MUX_MODE0) /* emmc_data7 */
+ 			DM814X_IOPAD(0x0800, PIN_INPUT | 0x1)	/* SD1_CLK */
+ 			DM814X_IOPAD(0x0804, PIN_INPUT_PULLUP | 0x1)	/* SD1_CMD */
+@@ -299,19 +299,19 @@ DM814X_IOPAD(0x093C, PIN_INPUT | 0x2)	/* SD1_SDCD */
+ 			>;
+ 	};
+ 
+-	usb0_pins: pinmux_usb0_pins {
++	usb0_pins: usb0-pins {
+ 		pinctrl-single,pins = <
+ 			DM814X_IOPAD(0x0c34, PIN_OUTPUT | 0x1)	/* USB0_DRVVBUS */
+ 			>;
+ 	};
+ 
+-	usb1_pins: pinmux_usb1_pins {
++	usb1_pins: usb1-pins {
+ 		pinctrl-single,pins = <
+ 			DM814X_IOPAD(0x0834, PIN_OUTPUT | 0x80)	/* USB1_DRVVBUS */
+ 			>;
+ 	};
+ 
+-	gpio1_pins: pinmux_gpio1_pins {
++	gpio1_pins: gpio1-pins {
+ 		pinctrl-single,pins = <
+ 			DM814X_IOPAD(0x081c, PIN_OUTPUT | 0x80)	/* PROGRAM_B */
+ 			DM814X_IOPAD(0x0820, PIN_INPUT | 0x80)	/* INIT_B */
+@@ -336,7 +336,7 @@ DM814X_IOPAD(0x0ab0, PIN_INPUT_PULLUP | 0x80) /* FPGA_TDI */
+ 			>;
+ 	};
+ 
+-	gpio2_pins: pinmux_gpio2_pins {
++	gpio2_pins: gpio2-pins {
+ 		pinctrl-single,pins = <
+ 			DM814X_IOPAD(0x090c, PIN_INPUT_PULLUP | 0x80) /* PHY A IRQ */
+ 			DM814X_IOPAD(0x0910, PIN_INPUT_PULLUP | 0x80) /* PHY A RESET */
+@@ -349,7 +349,7 @@ DM814X_IOPAD(0x0a2c, PIN_INPUT_PULLUP | 0x80) /* GPIO RESET */
  		>;
  	};
  
--	mmc3_pins: pinmux_mmc3_pins {
-+	mmc3_pins: mmc3-pins {
+-	gpio4_pins: pinmux_gpio4_pins {
++	gpio4_pins: gpio4-pins {
  		pinctrl-single,pins = <
- 			OMAP5_IOPAD(0x01a4, PIN_INPUT_PULLUP | MUX_MODE0) /* wlsdio_clk */
- 			OMAP5_IOPAD(0x01a6, PIN_INPUT_PULLUP | MUX_MODE0) /* wlsdio_cmd */
-@@ -254,14 +254,14 @@ OMAP5_IOPAD(0x01ae, PIN_INPUT_PULLUP | MUX_MODE0) /* wlsdio_data3 */
+ 			/* The PLL doesn't react well to the SPI controller reset, so
+ 			 * we force the CS lines to pull up as GPIOs until we're ready.
+@@ -364,14 +364,14 @@ DM814X_IOPAD(0x0b50, PIN_INPUT_PULLUP | 0x80) /* BP_ARM_GPIO5 */
  		>;
  	};
  
--	wlan_gpios_pins: pinmux_wlan_gpios_pins {
-+	wlan_gpios_pins: wlan-gpios-pins {
+-	spi2_pins: pinmux_spi2_pins {
++	spi2_pins: spi2-pins {
  		pinctrl-single,pins = <
- 			OMAP5_IOPAD(0x019c, PIN_OUTPUT_PULLDOWN | MUX_MODE6) /* abemcpdm_ul_data.gpio4_109 */
- 			OMAP5_IOPAD(0x019e, PIN_OUTPUT_PULLDOWN | MUX_MODE6) /* abemcpdm_dl_data.gpio4_110 */
+ 			DM814X_IOPAD(0x0950, PIN_INPUT_PULLUP | 0x80) /* PLL SPI CS1 as GPIO */
+ 			DM814X_IOPAD(0x0818, PIN_INPUT_PULLUP | 0x80) /* PLL SPI CS2 as GPIO */
  		>;
  	};
  
--	usbhost_pins: pinmux_usbhost_pins {
-+	usbhost_pins: usbhost-pins {
+-	spi4_pins: pinmux_spi4_pins {
++	spi4_pins: spi4-pins {
  		pinctrl-single,pins = <
- 			OMAP5_IOPAD(0x00c4, PIN_INPUT | MUX_MODE0)  /* usbb2_hsic_strobe */
- 			OMAP5_IOPAD(0x00c6, PIN_INPUT | MUX_MODE0)  /* usbb2_hsic_data */
-@@ -274,7 +274,7 @@ OMAP5_IOPAD(0x00b6, PIN_OUTPUT | MUX_MODE6) /* hsi2_acdata.gpio3_83 */
- 		>;
- 	};
- 
--	dss_hdmi_pins: pinmux_dss_hdmi_pins {
-+	dss_hdmi_pins: dss-hdmi-pins {
- 		pinctrl-single,pins = <
- 			OMAP5_IOPAD(0x013c, PIN_INPUT | MUX_MODE0) /* hdmi_cec */
- 			OMAP5_IOPAD(0x0140, PIN_INPUT | MUX_MODE0) /* hdmi_ddc_scl */
-@@ -282,19 +282,19 @@ OMAP5_IOPAD(0x0142, PIN_INPUT | MUX_MODE0) /* hdmi_ddc_sda */
- 		>;
- 	};
- 
--	lcd_pins: pinmux_lcd_pins {
-+	lcd_pins: lcd-pins {
- 		pinctrl-single,pins = <
- 			OMAP5_IOPAD(0x0172, PIN_OUTPUT_PULLDOWN | MUX_MODE6) /* timer11_pwm_evt.gpio8_227 */
- 		>;
- 	};
- 
--	hdmi_conn_pins: pinmux_hdmi_conn_pins {
-+	hdmi_conn_pins: hdmi-conn-pins {
- 		pinctrl-single,pins = <
- 			OMAP5_IOPAD(0x013e, PIN_INPUT | MUX_MODE6) /* hdmi_hpd.gpio7_193 */
- 		>;
- 	};
- 
--	dss_dpi_pins: pinmux_dss_dpi_pins {
-+	dss_dpi_pins: dss-dpi-pins {
- 		pinctrl-single,pins = <
- 			OMAP5_IOPAD(0x0104, PIN_OUTPUT | MUX_MODE3) /* rfbi_data15.dispc_data15 */
- 			OMAP5_IOPAD(0x0106, PIN_OUTPUT | MUX_MODE3) /* rfbi_data14.dispc_data14 */
-@@ -327,7 +327,7 @@ OMAP5_IOPAD(0x013a, PIN_OUTPUT | MUX_MODE3) /* gpio6_187.dispc_data23 */
- 		>;
- 	};
- 
--	mcspi2_pins: pinmux_mcspi1_pins {
-+	mcspi2_pins: mcspi1-pins {
- 		pinctrl-single,pins = <
- 			OMAP5_IOPAD(0x00fc, PIN_INPUT | MUX_MODE0) /* mcspi2_clk */
- 			OMAP5_IOPAD(0x00fe, PIN_INPUT | MUX_MODE0) /* mcspi2_simo */
-diff --git a/arch/arm/boot/dts/omap5-igep0050.dts b/arch/arm/boot/dts/omap5-igep0050.dts
---- a/arch/arm/boot/dts/omap5-igep0050.dts
-+++ b/arch/arm/boot/dts/omap5-igep0050.dts
-@@ -85,14 +85,14 @@ &ldo7_reg {
+ 			DM814X_IOPAD(0x0a7c, 0x20)
+ 			DM814X_IOPAD(0x0b74, 0x20)
+diff --git a/arch/arm/boot/dts/dm8148-evm.dts b/arch/arm/boot/dts/dm8148-evm.dts
+--- a/arch/arm/boot/dts/dm8148-evm.dts
++++ b/arch/arm/boot/dts/dm8148-evm.dts
+@@ -116,7 +116,7 @@ &mmc3 {
  };
  
- &omap5_pmx_core {
--	i2c4_pins: pinmux_i2c4_pins {
-+	i2c4_pins: i2c4-pins {
+ &pincntl {
+-	sd1_pins: pinmux_sd1_pins {
++	sd1_pins: sd1-pins {
  		pinctrl-single,pins = <
- 			OMAP5_IOPAD(0x0f8, PIN_INPUT | MUX_MODE0)	/* i2c4_scl */
- 			OMAP5_IOPAD(0x0fa, PIN_INPUT | MUX_MODE0)	/* i2c4_sda */
- 		>;
+ 			DM814X_IOPAD(0x0800, PIN_INPUT | 0x1)	/* SD1_CLK */
+ 			DM814X_IOPAD(0x0804, PIN_INPUT_PULLUP |  0x1)	/* SD1_CMD */
+@@ -129,13 +129,13 @@ DM814X_IOPAD(0x093C, PIN_INPUT_PULLUP |  0x80)	/* GP1[6] */
+ 			>;
  	};
  
--	power_button_pin: pinctrl_power_button_pin {
-+	power_button_pin: power-button-pins {
+-	usb0_pins: pinmux_usb0_pins {
++	usb0_pins: usb0-pins {
  		pinctrl-single,pins = <
- 			OMAP5_IOPAD(0x086, PIN_INPUT | MUX_MODE6)	/* gpio4_118 */
- 		>;
-diff --git a/arch/arm/boot/dts/omap5-sbc-t54.dts b/arch/arm/boot/dts/omap5-sbc-t54.dts
---- a/arch/arm/boot/dts/omap5-sbc-t54.dts
-+++ b/arch/arm/boot/dts/omap5-sbc-t54.dts
-@@ -11,14 +11,14 @@ / {
+ 			DM814X_IOPAD(0x0c34, PIN_OUTPUT | 0x1)	/* USB0_DRVVBUS */
+ 			>;
+ 	};
+ 
+-	usb1_pins: pinmux_usb1_pins {
++	usb1_pins: usb1-pins {
+ 		pinctrl-single,pins = <
+ 			DM814X_IOPAD(0x0834, PIN_OUTPUT | 0x80)	/* USB1_DRVVBUS */
+ 			>;
+diff --git a/arch/arm/boot/dts/dm8148-t410.dts b/arch/arm/boot/dts/dm8148-t410.dts
+--- a/arch/arm/boot/dts/dm8148-t410.dts
++++ b/arch/arm/boot/dts/dm8148-t410.dts
+@@ -71,7 +71,7 @@ &mmc3 {
  };
  
- &omap5_pmx_core {
--	i2c4_pins: pinmux_i2c4_pins {
-+	i2c4_pins: i2c4-pins {
+ &pincntl {
+-	sd2_pins: pinmux_sd2_pins {
++	sd2_pins: sd2-pins {
  		pinctrl-single,pins = <
- 			OMAP5_IOPAD(0x00f8, PIN_INPUT_PULLUP | MUX_MODE0) /* i2c4_scl */
- 			OMAP5_IOPAD(0x00fa, PIN_INPUT_PULLUP | MUX_MODE0) /* i2c4_sda */
- 		>;
+ 			DM814X_IOPAD(0x09c0, PIN_INPUT_PULLUP | 0x1)	/* SD2_DAT[7] */
+ 			DM814X_IOPAD(0x09c4, PIN_INPUT_PULLUP | 0x1)	/* SD2_DAT[6] */
+@@ -87,13 +87,13 @@ DM814X_IOPAD(0x0920, PIN_INPUT | 0x40)	/* SD2_SDCD */
+ 			>;
  	};
  
--	mmc1_aux_pins: pinmux_mmc1_aux_pins {
-+	mmc1_aux_pins: mmc1-aux-pins {
+-	usb0_pins: pinmux_usb0_pins {
++	usb0_pins: usb0-pins {
  		pinctrl-single,pins = <
- 			OMAP5_IOPAD(0x0174, PIN_INPUT_PULLUP | MUX_MODE6) /* timer5_pwm_evt.gpio8_228 */
- 			OMAP5_IOPAD(0x0176, PIN_INPUT_PULLUP | MUX_MODE6) /* timer6_pwm_evt.gpio8_229 */
-diff --git a/arch/arm/boot/dts/omap5-uevm.dts b/arch/arm/boot/dts/omap5-uevm.dts
---- a/arch/arm/boot/dts/omap5-uevm.dts
-+++ b/arch/arm/boot/dts/omap5-uevm.dts
-@@ -162,20 +162,20 @@ &mmc1 {
+ 			DM814X_IOPAD(0x0c34, PIN_OUTPUT | 0x1)	/* USB0_DRVVBUS */
+ 			>;
+ 	};
+ 
+-	usb1_pins: pinmux_usb1_pins {
++	usb1_pins: usb1-pins {
+ 		pinctrl-single,pins = <
+ 			DM814X_IOPAD(0x0834, PIN_OUTPUT | 0x80)	/* USB1_DRVVBUS */
+ 			>;
+diff --git a/arch/arm/boot/dts/dm8168-evm.dts b/arch/arm/boot/dts/dm8168-evm.dts
+--- a/arch/arm/boot/dts/dm8168-evm.dts
++++ b/arch/arm/boot/dts/dm8168-evm.dts
+@@ -30,7 +30,7 @@ sata_refclk: fixedclock0 {
  };
  
- &omap5_pmx_core {
--	evm_keys_pins: pinmux_evm_keys_gpio_pins {
-+	evm_keys_pins: evm-keys-gpio-pins {
+ &dm816x_pinmux {
+-	mcspi1_pins: pinmux_mcspi1_pins {
++	mcspi1_pins: mcspi1-pins {
  		pinctrl-single,pins = <
- 			OMAP5_IOPAD(0x0b6, PIN_INPUT | MUX_MODE6)	/* gpio3_83 */
+ 			DM816X_IOPAD(0x0a94, MUX_MODE0)			/* SPI_SCLK */
+ 			DM816X_IOPAD(0x0a98, MUX_MODE0)			/* SPI_SCS0 */
+@@ -39,7 +39,7 @@ DM816X_IOPAD(0x0aac, MUX_MODE0)			/* SPI_D1 */
  		>;
  	};
  
--	i2c5_pins: pinmux_i2c5_pins {
-+	i2c5_pins: i2c5-pins {
+-	mmc_pins: pinmux_mmc_pins {
++	mmc_pins: mmc-pins {
  		pinctrl-single,pins = <
- 			OMAP5_IOPAD(0x1c6, PIN_INPUT | MUX_MODE0)		/* i2c5_scl */
- 			OMAP5_IOPAD(0x1c8, PIN_INPUT | MUX_MODE0)		/* i2c5_sda */
+ 			DM816X_IOPAD(0x0a70, MUX_MODE0)			/* SD_POW */
+ 			DM816X_IOPAD(0x0a74, MUX_MODE0)			/* SD_CLK */
+@@ -53,19 +53,19 @@ DM816X_IOPAD(0x0a90, MUX_MODE2)			/* GP1[8] */
  		>;
  	};
  
--	mmc1_pins: pinmux_mmc1_pins {
-+	mmc1_pins: mmc1-pins {
+-	usb0_pins: pinmux_usb0_pins {
++	usb0_pins: usb0-pins {
  		pinctrl-single,pins = <
- 			OMAP5_IOPAD(0x1d4, PIN_INPUT_PULLUP | MUX_MODE6)	/* gpio5_152 */
+ 			DM816X_IOPAD(0x0d04, MUX_MODE0)			/* USB0_DRVVBUS */
  		>;
+ 	};
+ 
+-	usb1_pins: pinmux_usb1_pins {
++	usb1_pins: usb1-pins {
+ 		pinctrl-single,pins = <
+ 			DM816X_IOPAD(0x0d08, MUX_MODE0)			/* USB1_DRVVBUS */
+ 		>;
+ 	};
+ 
+-	nandflash_pins: nandflash_pins {
++	nandflash_pins: nandflash-pins {
+ 		pinctrl-single,pins = <
+ 			DM816X_IOPAD(0x0b38, PULL_UP | MUX_MODE0)		/* PINCTRL207 GPMC_CS0*/
+ 			DM816X_IOPAD(0x0b60, PULL_ENA | MUX_MODE0)		/* PINCTRL217 GPMC_ADV_ALE */
+diff --git a/arch/arm/boot/dts/dra62x-j5eco-evm.dts b/arch/arm/boot/dts/dra62x-j5eco-evm.dts
+--- a/arch/arm/boot/dts/dra62x-j5eco-evm.dts
++++ b/arch/arm/boot/dts/dra62x-j5eco-evm.dts
+@@ -108,7 +108,7 @@ &mmc2 {
+ };
+ 
+ &pincntl {
+-	sd1_pins: pinmux_sd1_pins {
++	sd1_pins: sd1-pins {
+ 		pinctrl-single,pins = <
+ 			DM814X_IOPAD(0x0800, PIN_INPUT | 0x1)	/* SD1_CLK */
+ 			DM814X_IOPAD(0x0804, PIN_INPUT_PULLUP |  0x1)	/* SD1_CMD */
+@@ -121,7 +121,7 @@ DM814X_IOPAD(0x093C, PIN_INPUT_PULLUP |  0x80)	/* GP1[6] */
+ 			>;
+ 	};
+ 
+-	usb0_pins: pinmux_usb0_pins {
++	usb0_pins: usb0-pins {
+ 		pinctrl-single,pins = <
+ 			DM814X_IOPAD(0x0c34, PIN_OUTPUT | 0x1)	/* USB0_DRVVBUS */
+ 			>;
 -- 
 2.40.1
