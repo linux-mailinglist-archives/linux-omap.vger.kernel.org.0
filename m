@@ -2,32 +2,30 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D4E770D658
-	for <lists+linux-omap@lfdr.de>; Tue, 23 May 2023 09:58:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C9D6A70D6AB
+	for <lists+linux-omap@lfdr.de>; Tue, 23 May 2023 10:06:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235973AbjEWH6O (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 23 May 2023 03:58:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51360 "EHLO
+        id S235980AbjEWIGn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 23 May 2023 04:06:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235395AbjEWH5V (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 23 May 2023 03:57:21 -0400
+        with ESMTP id S235938AbjEWIGh (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 23 May 2023 04:06:37 -0400
 Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0C599170D;
-        Tue, 23 May 2023 00:56:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 536AE1B9;
+        Tue, 23 May 2023 01:06:07 -0700 (PDT)
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id B6B3180B5;
-        Tue, 23 May 2023 07:55:17 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id 7E1998181;
+        Tue, 23 May 2023 07:56:10 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     linux-omap@vger.kernel.org
 Cc:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        devicetree@vger.kernel.org, Andreas Kemnade <andreas@kemnade.info>,
-        "H . Nikolaus Schaller" <hns@goldelico.com>,
-        Conor Dooley <conor+dt@kernel.org>,
+        devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Rob Herring <robh+dt@kernel.org>
-Subject: [PATCH 1/2] ARM: dts: gta04: Move model property out of pinctrl node
-Date:   Tue, 23 May 2023 10:55:10 +0300
-Message-Id: <20230523075511.41077-1-tony@atomide.com>
+Subject: [PATCH] ARM: dts: Unify pinctrl-single pin group nodes for omap2
+Date:   Tue, 23 May 2023 10:56:07 +0300
+Message-Id: <20230523075607.56381-1-tony@atomide.com>
 X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -40,32 +38,38 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The model property should be at the top level, let's move it out
-of the pinctrl node.
+We want to unify the pinctrl-single pin group nodes to use naming "pins".
+Otherwise non-standad pin group names will add make dtbs checks errors
+when the pinctrl-single yaml binding gets merged.
 
-Fixes: d2eaf949d2c3 ("ARM: dts: omap3-gta04a5one: define GTA04A5 variant with OneNAND")
-Cc: Andreas Kemnade <andreas@kemnade.info>
-Cc: H. Nikolaus Schaller <hns@goldelico.com>
+Cc: Conor Dooley <conor+dt@kernel.org>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc: Rob Herring <robh+dt@kernel.org>
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 ---
- arch/arm/boot/dts/omap3-gta04a5one.dts | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm/boot/dts/omap2420-n810.dts | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/omap3-gta04a5one.dts b/arch/arm/boot/dts/omap3-gta04a5one.dts
---- a/arch/arm/boot/dts/omap3-gta04a5one.dts
-+++ b/arch/arm/boot/dts/omap3-gta04a5one.dts
-@@ -5,9 +5,11 @@
+diff --git a/arch/arm/boot/dts/omap2420-n810.dts b/arch/arm/boot/dts/omap2420-n810.dts
+--- a/arch/arm/boot/dts/omap2420-n810.dts
++++ b/arch/arm/boot/dts/omap2420-n810.dts
+@@ -23,7 +23,7 @@ v28_aic: v28_aic {
+ };
  
- #include "omap3-gta04a5.dts"
- 
--&omap3_pmx_core {
-+/ {
- 	model = "Goldelico GTA04A5/Letux 2804 with OneNAND";
-+};
- 
-+&omap3_pmx_core {
- 	gpmc_pins: pinmux_gpmc_pins {
+ &omap2420_pmx {
+-	mcbsp2_pins: mcbsp2_pins {
++	mcbsp2_pins: mcbsp2-pins {
  		pinctrl-single,pins = <
+ 			OMAP2420_CORE_IOPAD(0x0124, PIN_INPUT | MUX_MODE1)	/* eac_ac_sclk.mcbsp2_clkx */
+ 			OMAP2420_CORE_IOPAD(0x0125, PIN_INPUT | MUX_MODE1)	/* eac_ac_fs.mcbsp2_fsx */
+@@ -32,7 +32,7 @@ OMAP2420_CORE_IOPAD(0x0127, PIN_OUTPUT | MUX_MODE1)	/* eac_ac_dout.mcbsp2_dx */
+ 		>;
+ 	};
  
+-	aic33_pins: aic33_pins {
++	aic33_pins: aic33-pins {
+ 		pinctrl-single,pins = <
+ 			OMAP2420_CORE_IOPAD(0x0129, PIN_OUTPUT | MUX_MODE3)	/* eac_ac_rst.gpio118 */
+ 			OMAP2420_CORE_IOPAD(0x00e8, PIN_OUTPUT | MUX_MODE2)	/* vlynq_tx1.sys_clkout2 */
 -- 
 2.40.1
