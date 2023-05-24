@@ -2,97 +2,154 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 737F570F1E6
-	for <lists+linux-omap@lfdr.de>; Wed, 24 May 2023 11:12:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8319C70F742
+	for <lists+linux-omap@lfdr.de>; Wed, 24 May 2023 15:07:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240581AbjEXJMo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 24 May 2023 05:12:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40900 "EHLO
+        id S229542AbjEXNHS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 24 May 2023 09:07:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240563AbjEXJMg (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 24 May 2023 05:12:36 -0400
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9073890;
-        Wed, 24 May 2023 02:12:34 -0700 (PDT)
-Received: by mail-lf1-x132.google.com with SMTP id 2adb3069b0e04-4f4b80bf93aso604138e87.0;
-        Wed, 24 May 2023 02:12:34 -0700 (PDT)
+        with ESMTP id S232326AbjEXNHR (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 24 May 2023 09:07:17 -0400
+Received: from mail-yw1-x1135.google.com (mail-yw1-x1135.google.com [IPv6:2607:f8b0:4864:20::1135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D51C990
+        for <linux-omap@vger.kernel.org>; Wed, 24 May 2023 06:07:15 -0700 (PDT)
+Received: by mail-yw1-x1135.google.com with SMTP id 00721157ae682-565014fc2faso12530787b3.1
+        for <linux-omap@vger.kernel.org>; Wed, 24 May 2023 06:07:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684919552; x=1687511552;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=U42ZMi69LkuMmwlkT8gzfK1DF8x9wNWEQyXj1QE5qjo=;
-        b=R+9Kz34RIWEqxJU3Hp5c3BV0GT31D2xh7FVa9hzi2DJddpVabxv7NMkMzTd7gR78Wo
-         /zqnLn5ZhaO1hL62hPmRjhD2Z10I8/Y+DdUQEyZrp6tRcehd9Db9jmghdGrdSK5xhgoR
-         /sRjRMlznWlgH5zvC85wMTPV82f487exvm7LRffEgtITfUUlE0q54qzz6bOOcjirO/CO
-         h82uTHBVO9X507JXZ2nONKCG8c6uxAmrZYsOjT6pivmq1YPGLdbhce4rDfmNLadgefbk
-         SN6Yw9r8Ee0eMq96gdYj6SxZjfeojZt+aNShH+r54rAOUQwJWzp78GCwBZxV7pkPlJKR
-         0bWg==
+        d=linaro.org; s=google; t=1684933635; x=1687525635;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=7T2td/HP9EXHaURHSmB+HEKZGzkbT+5xCwINot9A/Zw=;
+        b=yi4ylD8eJiuNjIP4eECWuk48rWL8P+wmAU25nBZw8BFzcQxO/1sEfVaA4MIDtb6MS4
+         6/0f5keWIZkT3bhRaOiauFkWFsWhIw7oytk+6wcwpw2KIEN2qo9IBdrVTCprGDuqNHZa
+         NyrQBt5ZOzZJPwqY51BH8KDf2207rT44nuK64dPXCtudLUrHyWwtQS2jzJXLne6uTAK3
+         YnNH2yVpOv4leOAwC4ti6kylg8HxCXWiqleqTRgjXHl8AZ9oYBMXJINWS50kU7rgdds2
+         jVbpKicozPdhF8/H3MSha9f3LfVDSYTVjhvp1PK8TtBpwjSxnOJ3zAPNVlzR3b/UOU95
+         koWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684919552; x=1687511552;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=U42ZMi69LkuMmwlkT8gzfK1DF8x9wNWEQyXj1QE5qjo=;
-        b=VQ2C1aiBhvQKmpWXZjdJ5slNHPBmHvIRfEGyRr+ScwBYvHLcAw0VZQ2Few9Xscfpsm
-         TU8qUJpJCMngDrdRshk+cbOfmXJRRKzCZaElmzURgH4KZI7evzOYfpwHW7dizzQiXDC/
-         Uyl6njqFMNqHNkQ85NyB9i0kyw1FNj1JSx7kibIGXzjS/u04FFvaSsGz+FJ739284Dz3
-         ZBHtCVJoG+3ZPY4cbQlfM5848/n6BpcyyVPRzuDQO37q1TYcqXLAt2W6k+cpBl6WlpQq
-         7j6yZelJ4iDFyGfdiM+zIiBmKXY4CZBm0nogfVDyi2njTfOuKdn/GvwPoeYlcf3CrH0H
-         4KHw==
-X-Gm-Message-State: AC+VfDwCrSImIOBQhmM5q122j3mErYiMFKxw9sKN7stNvqjCnjtL/p7+
-        qYoh84+d/+xq47OrabS0U3mCZQ0zR/w=
-X-Google-Smtp-Source: ACHHUZ4JMBlNjvv04AxefQ8Kl/fjXpsNkLjLiTTWtVuyOU7QArtRgGLipstyojlA3XCdoTSUSedzcQ==
-X-Received: by 2002:a05:6512:208:b0:4f3:7a59:d19 with SMTP id a8-20020a056512020800b004f37a590d19mr4657335lfo.59.1684919552023;
-        Wed, 24 May 2023 02:12:32 -0700 (PDT)
-Received: from localhost.localdomain ([188.243.217.78])
-        by smtp.gmail.com with ESMTPSA id o17-20020a056512051100b004f3789c8bd5sm1640453lfb.132.2023.05.24.02.12.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 May 2023 02:12:31 -0700 (PDT)
-From:   Alexander Shiyan <eagle.alexander923@gmail.com>
-To:     linux-omap@vger.kernel.org
-Cc:     devicetree@vger.kernel.org,
-        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Alexander Shiyan <eagle.alexander923@gmail.com>
-Subject: [PATCH] ARM: dts: am335x-myirtech: Add missing NAND wait pin definition
-Date:   Wed, 24 May 2023 12:11:56 +0300
-Message-Id: <20230524091157.775960-1-eagle.alexander923@gmail.com>
-X-Mailer: git-send-email 2.39.1
+        d=1e100.net; s=20221208; t=1684933635; x=1687525635;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=7T2td/HP9EXHaURHSmB+HEKZGzkbT+5xCwINot9A/Zw=;
+        b=NEr7lAyLPFd+en1eRX2pLk46txe0WoYeaZ4IxZgdFLoc2LgDg5Mi4lcmfHG9HbyX8Z
+         z8gXYsLb/A9a6zOBSlFgQ6FjZxTlBIyWSGZc26LWQ7y44OHRvoeo76KeET8Y8fRikLpK
+         XP5+9h4oR7eRCa0tZkqWQ5O+f8QAiIF8x4+f4xysLSreZ/WbOEPTeTTZwjd2D5EcE1oV
+         om3FswxOdYAXJ44HnZKcxUYtjSONLiWTQJXhESi6btC99d/23i+N1GErm9sUBINHQsFu
+         kurId2usHzq6WzT/M1KiwlordEd5q9fTQGIxteJrFi3Nh4SJjsoVL7icbmtrioFf4qNP
+         AzVg==
+X-Gm-Message-State: AC+VfDyJO4/V7rh7epvGGzWm2FidLaU5y1cNeFWJfeGZsmGR+3hUx7B3
+        aORoJ56OjL9VG9vlKaNCmLVpLCDhApGbhOQYX/DgBQ==
+X-Google-Smtp-Source: ACHHUZ7V57h9injTXnZtjgFdZ71gBB4fHagZfU55PK9k8FuPbaFmWuRLP+stVoaf5OMAO0zgAhir1Y7zuTPJQeqN7sg=
+X-Received: by 2002:a0d:ccd3:0:b0:562:7f3:beee with SMTP id
+ o202-20020a0dccd3000000b0056207f3beeemr19710027ywd.45.1684933634934; Wed, 24
+ May 2023 06:07:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Wed, 24 May 2023 15:07:03 +0200
+Message-ID: <CACRpkdbtE9yfx9kZqGwsHim91WsxHERecrGwjnr6TQpCUMsQwg@mail.gmail.com>
+Subject: [GIT PULL] OMAP GPIO numbers cleanup
+To:     SoC Team <soc@kernel.org>, arm-soc <arm@kernel.org>
+Cc:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        ext Tony Lindgren <tony@atomide.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The NAND wait pin is connected to the GPMC, but this is not mentioned
-in the DT bindings. Let's fix this.
+Hi SoC maintainers,
 
-Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
----
- arch/arm/boot/dts/am335x-myirtech-myc.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+please pull in this cleanup of the OMAP board files removing all
+usage of the global GPIO numberspace.
 
-diff --git a/arch/arm/boot/dts/am335x-myirtech-myc.dtsi b/arch/arm/boot/dts/am335x-myirtech-myc.dtsi
-index 6eea18b29355..38bc7d41baa7 100644
---- a/arch/arm/boot/dts/am335x-myirtech-myc.dtsi
-+++ b/arch/arm/boot/dts/am335x-myirtech-myc.dtsi
-@@ -127,6 +127,7 @@ nand0: nand@0,0 {
- 		gpmc,bus-turnaround-ns = <0>;
- 		gpmc,cycle2cycle-delay-ns = <0>;
- 		gpmc,clk-activation-ns = <0>;
-+		gpmc,wait-pin = <0>;
- 		gpmc,wr-access-ns = <40>;
- 		gpmc,wr-data-mux-bus-ns = <0>;
- 		ti,elm-id = <&elm>;
--- 
-2.39.1
+It's reasonably reviewed and tested, any remaining issues can
+be smoked out in-tree.
 
+Required subsystem maintainer ACKs are in place.
+
+Yours,
+Linus Walleij
+
+The following changes since commit ac9a78681b921877518763ba0e89202254349d1b:
+
+  Linux 6.4-rc1 (2023-05-07 13:34:35 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/linusw/linux-gpio.git
+tags/gpio-omap-descriptors-v6.5
+
+for you to fetch changes up to 8e0285ab95a9baf374f2c13eb152221c8ecb3f28:
+
+  ARM/musb: omap2: Remove global GPIO numbers from TUSB6010
+(2023-05-24 15:01:59 +0200)
+
+----------------------------------------------------------------
+This removes all usage of global GPIO numbers from
+arch/arm/mach-omap[12].
+
+The patches have been reviewed and tested by everyone
+who showed interest which was one person that tested
+on OSK1 and Nokia 770, and we smoked out the bugs and
+also addressed all review comments.
+
+Any remaining problems can certainly be fixed in-tree.
+
+----------------------------------------------------------------
+Linus Walleij (13):
+      ARM/mfd/gpio: Fixup TPS65010 regression on OMAP1 OSK1
+      ARM: omap1: Drop header on AMS Delta
+      ARM: omap1: Remove reliance on GPIO numbers from PalmTE
+      ARM: omap1: Remove reliance on GPIO numbers from SX1
+      Input: ads7846 - Convert to use software nodes
+      ARM/mmc: Convert old mmci-omap to GPIO descriptors
+      ARM: omap1: Fix up the Nokia 770 board device IRQs
+      ARM: omap1: Make serial wakeup GPIOs use descriptors
+      ARM: omap1: Exorcise the legacy GPIO header
+      ARM/gpio: Push OMAP2 quirk down into TWL4030 driver
+      ARM: omap2: Get USB hub reset GPIO from descriptor
+      ARM: omap2: Rewrite WLAN quirk to use GPIO descriptors
+      ARM/musb: omap2: Remove global GPIO numbers from TUSB6010
+
+ arch/arm/mach-omap1/board-ams-delta.c   |   1 -
+ arch/arm/mach-omap1/board-nokia770.c    | 207 ++++++++++++++++++++------------
+ arch/arm/mach-omap1/board-osk.c         | 146 +++++++++++++++-------
+ arch/arm/mach-omap1/board-palmte.c      |  51 +++++---
+ arch/arm/mach-omap1/board-sx1-mmc.c     |   1 -
+ arch/arm/mach-omap1/board-sx1.c         |  40 ++++--
+ arch/arm/mach-omap1/devices.c           |   1 -
+ arch/arm/mach-omap1/gpio15xx.c          |   1 -
+ arch/arm/mach-omap1/gpio16xx.c          |   1 -
+ arch/arm/mach-omap1/irq.c               |   1 -
+ arch/arm/mach-omap1/serial.c            |  30 ++---
+ arch/arm/mach-omap2/board-n8x0.c        | 156 +++++++-----------------
+ arch/arm/mach-omap2/omap_device.c       |   1 -
+ arch/arm/mach-omap2/pdata-quirks.c      | 132 ++++++++++----------
+ arch/arm/mach-omap2/usb-tusb6010.c      |  20 +--
+ arch/arm/mach-omap2/usb-tusb6010.h      |  12 ++
+ arch/arm/mach-pxa/spitz.c               |  11 +-
+ arch/mips/alchemy/devboards/db1000.c    |  11 +-
+ drivers/gpio/gpio-twl4030.c             |  52 +++++---
+ drivers/input/touchscreen/ads7846.c     | 113 +++++++----------
+ drivers/mfd/tps65010.c                  |  14 +--
+ drivers/mmc/host/omap.c                 |  46 ++++++-
+ drivers/usb/musb/musb_core.c            |   1 -
+ drivers/usb/musb/musb_core.h            |   2 -
+ drivers/usb/musb/tusb6010.c             |  53 +++++---
+ drivers/video/fbdev/omap/lcd_mipid.c    |  10 ++
+ include/linux/mfd/tps65010.h            |  11 +-
+ include/linux/mfd/twl.h                 |   3 -
+ include/linux/platform_data/lcd-mipid.h |   2 -
+ include/linux/platform_data/mmc-omap.h  |   2 -
+ include/linux/spi/ads7846.h             |   2 -
+ include/linux/usb/musb.h                |  13 --
+ 32 files changed, 636 insertions(+), 511 deletions(-)
+ create mode 100644 arch/arm/mach-omap2/usb-tusb6010.h
