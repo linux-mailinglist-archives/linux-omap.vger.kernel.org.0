@@ -2,125 +2,97 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9633C70EA3D
-	for <lists+linux-omap@lfdr.de>; Wed, 24 May 2023 02:29:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 737F570F1E6
+	for <lists+linux-omap@lfdr.de>; Wed, 24 May 2023 11:12:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235054AbjEXA3d (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 23 May 2023 20:29:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44276 "EHLO
+        id S240581AbjEXJMo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 24 May 2023 05:12:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238493AbjEXA3c (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 23 May 2023 20:29:32 -0400
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B090619D
-        for <linux-omap@vger.kernel.org>; Tue, 23 May 2023 17:29:19 -0700 (PDT)
-Received: by mail-pl1-x629.google.com with SMTP id d9443c01a7336-1a950b982d4so8575ad.0
-        for <linux-omap@vger.kernel.org>; Tue, 23 May 2023 17:29:19 -0700 (PDT)
+        with ESMTP id S240563AbjEXJMg (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 24 May 2023 05:12:36 -0400
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9073890;
+        Wed, 24 May 2023 02:12:34 -0700 (PDT)
+Received: by mail-lf1-x132.google.com with SMTP id 2adb3069b0e04-4f4b80bf93aso604138e87.0;
+        Wed, 24 May 2023 02:12:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1684888159; x=1687480159;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=p+iGDu91GXvHaUJ4/GkDIwXiVromlKTEDnrVX/jdHHE=;
-        b=oCPd/VMBzehzBIwxKD0CUQlcv9XnCqSIGnZFpfNhT9159UiXp4+4s0dt1T5T+r2N8u
-         ejdMVEW9GWrQK3u8D/R+OgCl4fi8an2VY0K+/eeCPWT2cGGSET/E3kHkr5iqimXeopNz
-         1LhLEfNIl9101bv8HdubYyq2hpbrF89XLwyNahFvZOtnckCP7CoEZsh2L+2+OK9q9Yjc
-         K9vC86dI9TWXu3/6r3ILFI/gvIY8hkiVXH1FcP052iNl13PiuUL4NAyi+n5JDzxUMMjc
-         YVmWP+V4GT0WZnv89R5QJMFswFGyufptXG7L83ZUIfYIL/yWyXKcEjeZvi21gEBg088G
-         o5Zg==
+        d=gmail.com; s=20221208; t=1684919552; x=1687511552;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=U42ZMi69LkuMmwlkT8gzfK1DF8x9wNWEQyXj1QE5qjo=;
+        b=R+9Kz34RIWEqxJU3Hp5c3BV0GT31D2xh7FVa9hzi2DJddpVabxv7NMkMzTd7gR78Wo
+         /zqnLn5ZhaO1hL62hPmRjhD2Z10I8/Y+DdUQEyZrp6tRcehd9Db9jmghdGrdSK5xhgoR
+         /sRjRMlznWlgH5zvC85wMTPV82f487exvm7LRffEgtITfUUlE0q54qzz6bOOcjirO/CO
+         h82uTHBVO9X507JXZ2nONKCG8c6uxAmrZYsOjT6pivmq1YPGLdbhce4rDfmNLadgefbk
+         SN6Yw9r8Ee0eMq96gdYj6SxZjfeojZt+aNShH+r54rAOUQwJWzp78GCwBZxV7pkPlJKR
+         0bWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684888159; x=1687480159;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=p+iGDu91GXvHaUJ4/GkDIwXiVromlKTEDnrVX/jdHHE=;
-        b=ihXjWonXv0sLjy2YTszkj3e1QkrnmvcBUF/nkQQ6bHAndLDdfMpydA2NvQHx1Qsxzf
-         fufr+8UAWD4pkHgPcRNhgzgRCPHeZIMkcfJU5FQe9Q4F/sYnEa7TO0d68nW3uIoAP7b8
-         R239PRhBC6sLpA5yn0Z7iiPAF/RJEc/J5+jAiPqjmUgv2ASKxkaEfcPO2UYxqPQ9UDWz
-         GCykDGu+qNViGmOtq92QnIDVxhHhIT966uKIErHQNB1hS4/Vt2/SAZHV9avdcQo+DuhU
-         o4Y9Jm1reNSrrlk0AsvgMpPC2zElwI02Mz8kCbnmkGFYTO5XYY/FAp1bQWIP1L3UGKnB
-         CGrw==
-X-Gm-Message-State: AC+VfDxMycKQQhfJ0xGrMtJ3oOkgMoObkGPUIbeHRsTgeHXv1BfQ36H+
-        sIqpcSIHvDBBp4KbIEOpgdXx2g==
-X-Google-Smtp-Source: ACHHUZ4WC86fv/HCojVq6Z7bo1LnEN2P8Qa/JJdhSbqAvm7x1JKXoIG4BePTyVsmdwlyiuzkRQj4Vw==
-X-Received: by 2002:a17:902:e847:b0:1af:90ce:5263 with SMTP id t7-20020a170902e84700b001af90ce5263mr107385plg.26.1684888158675;
-        Tue, 23 May 2023 17:29:18 -0700 (PDT)
-Received: from [2620:0:1008:11:c789:c1fb:6667:1766] ([2620:0:1008:11:c789:c1fb:6667:1766])
-        by smtp.gmail.com with ESMTPSA id n20-20020a17090a929400b0024de0de6ec8sm137193pjo.17.2023.05.23.17.29.17
+        d=1e100.net; s=20221208; t=1684919552; x=1687511552;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=U42ZMi69LkuMmwlkT8gzfK1DF8x9wNWEQyXj1QE5qjo=;
+        b=VQ2C1aiBhvQKmpWXZjdJ5slNHPBmHvIRfEGyRr+ScwBYvHLcAw0VZQ2Few9Xscfpsm
+         TU8qUJpJCMngDrdRshk+cbOfmXJRRKzCZaElmzURgH4KZI7evzOYfpwHW7dizzQiXDC/
+         Uyl6njqFMNqHNkQ85NyB9i0kyw1FNj1JSx7kibIGXzjS/u04FFvaSsGz+FJ739284Dz3
+         ZBHtCVJoG+3ZPY4cbQlfM5848/n6BpcyyVPRzuDQO37q1TYcqXLAt2W6k+cpBl6WlpQq
+         7j6yZelJ4iDFyGfdiM+zIiBmKXY4CZBm0nogfVDyi2njTfOuKdn/GvwPoeYlcf3CrH0H
+         4KHw==
+X-Gm-Message-State: AC+VfDwCrSImIOBQhmM5q122j3mErYiMFKxw9sKN7stNvqjCnjtL/p7+
+        qYoh84+d/+xq47OrabS0U3mCZQ0zR/w=
+X-Google-Smtp-Source: ACHHUZ4JMBlNjvv04AxefQ8Kl/fjXpsNkLjLiTTWtVuyOU7QArtRgGLipstyojlA3XCdoTSUSedzcQ==
+X-Received: by 2002:a05:6512:208:b0:4f3:7a59:d19 with SMTP id a8-20020a056512020800b004f37a590d19mr4657335lfo.59.1684919552023;
+        Wed, 24 May 2023 02:12:32 -0700 (PDT)
+Received: from localhost.localdomain ([188.243.217.78])
+        by smtp.gmail.com with ESMTPSA id o17-20020a056512051100b004f3789c8bd5sm1640453lfb.132.2023.05.24.02.12.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 May 2023 17:29:18 -0700 (PDT)
-Date:   Tue, 23 May 2023 17:29:17 -0700 (PDT)
-From:   David Rientjes <rientjes@google.com>
-To:     Vlastimil Babka <vbabka@suse.cz>
-cc:     Christoph Lameter <cl@linux.com>,
-        Pekka Enberg <penberg@kernel.org>,
-        Joonsoo Kim <iamjoonsoo.kim@lge.com>,
-        Roman Gushchin <roman.gushchin@linux.dev>,
-        Hyeonggon Yoo <42.hyeyoo@gmail.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Wed, 24 May 2023 02:12:31 -0700 (PDT)
+From:   Alexander Shiyan <eagle.alexander923@gmail.com>
+To:     linux-omap@vger.kernel.org
+Cc:     devicetree@vger.kernel.org,
+        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
         Tony Lindgren <tony@atomide.com>,
-        Qin Jian <qinjian@cqplus1.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Dinh Nguyen <dinguyen@kernel.org>,
-        "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        "David S . Miller" <davem@davemloft.net>,
-        Richard Weinberger <richard@nod.at>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-um@lists.infradead.org, linux-mm@kvack.org
-Subject: Re: [PATCH] mm/slab: rename CONFIG_SLAB to CONFIG_SLAB_DEPRECATED
-In-Reply-To: <20230523091139.21449-1-vbabka@suse.cz>
-Message-ID: <be109b49-8510-5887-72ae-738db9945619@google.com>
-References: <20230523091139.21449-1-vbabka@suse.cz>
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Alexander Shiyan <eagle.alexander923@gmail.com>
+Subject: [PATCH] ARM: dts: am335x-myirtech: Add missing NAND wait pin definition
+Date:   Wed, 24 May 2023 12:11:56 +0300
+Message-Id: <20230524091157.775960-1-eagle.alexander923@gmail.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED,USER_IN_DEF_DKIM_WL,
-        USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, 23 May 2023, Vlastimil Babka wrote:
+The NAND wait pin is connected to the GPMC, but this is not mentioned
+in the DT bindings. Let's fix this.
 
-> As discussed at LSF/MM [1] [2] and with no objections raised there,
-> deprecate the SLAB allocator. Rename the user-visible option so that
-> users with CONFIG_SLAB=y get a new prompt with explanation during make
-> oldconfig, while make olddefconfig will just switch to SLUB.
-> 
-> In all defconfigs with CONFIG_SLAB=y remove the line so those also
-> switch to SLUB. Regressions due to the switch should be reported to
-> linux-mm and slab maintainers.
-> 
-> [1] https://lore.kernel.org/all/4b9fc9c6-b48c-198f-5f80-811a44737e5f@suse.cz/
-> [2] https://lwn.net/Articles/932201/
-> 
-> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
+---
+ arch/arm/boot/dts/am335x-myirtech-myc.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-Acked-by: David Rientjes <rientjes@google.com>
+diff --git a/arch/arm/boot/dts/am335x-myirtech-myc.dtsi b/arch/arm/boot/dts/am335x-myirtech-myc.dtsi
+index 6eea18b29355..38bc7d41baa7 100644
+--- a/arch/arm/boot/dts/am335x-myirtech-myc.dtsi
++++ b/arch/arm/boot/dts/am335x-myirtech-myc.dtsi
+@@ -127,6 +127,7 @@ nand0: nand@0,0 {
+ 		gpmc,bus-turnaround-ns = <0>;
+ 		gpmc,cycle2cycle-delay-ns = <0>;
+ 		gpmc,clk-activation-ns = <0>;
++		gpmc,wait-pin = <0>;
+ 		gpmc,wr-access-ns = <40>;
+ 		gpmc,wr-data-mux-bus-ns = <0>;
+ 		ti,elm-id = <&elm>;
+-- 
+2.39.1
 
-The Kconfig option says that SLAB will be removed in a few cycles.  I 
-think we should wait until at least the next LTS kernel is forked at the 
-end of the year so that users who upgrade to only the LTS releases can be 
-prompted for this change and surface any concerns.  Slab allocation is a 
-critical subsystem, so I presume this is the safest and most responsible 
-way to do the SLAB deprecation.  Hopefully that timeline works for 
-everybody.
