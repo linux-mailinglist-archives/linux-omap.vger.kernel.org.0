@@ -2,67 +2,110 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 06EB471458E
-	for <lists+linux-omap@lfdr.de>; Mon, 29 May 2023 09:34:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 64DB6714CE7
+	for <lists+linux-omap@lfdr.de>; Mon, 29 May 2023 17:21:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229626AbjE2HeR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 29 May 2023 03:34:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51574 "EHLO
+        id S229816AbjE2PVG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 29 May 2023 11:21:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229807AbjE2HeQ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 29 May 2023 03:34:16 -0400
-Received: from mail.feshiecree.pl (mail.feshiecree.pl [89.40.114.103])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBF3710C
-        for <linux-omap@vger.kernel.org>; Mon, 29 May 2023 00:33:02 -0700 (PDT)
-Received: by mail.feshiecree.pl (Postfix, from userid 1001)
-        id 4FFDD83BC5; Mon, 29 May 2023 08:31:12 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=feshiecree.pl;
-        s=mail; t=1685345533;
-        bh=hFxZwVw4rIL+JwfEOGI47p+fdoVOAeqVswP6NWoHSHQ=;
-        h=Date:From:To:Subject:From;
-        b=qI5D5SEYKwQL3ubTtxUTG7s8TbrkiCASUemIGeAE7SqXB8QqB8NvmL4rAYFyAbcTl
-         wJEvjxXMwFFljFupOtaQRSpPH092JWH+ByJ8qV8Jv65Ig2w45bFeNyogVm10kRrWVi
-         2KQSnuiHdXl2btPoBEU+N6TO/sSx90vHR78nKIXY0B6fXWX/XAY9ORn88474gmAQvg
-         G3mse465JMT6qt8II9NVL3GojCuivLt8GimWa+pI8MEVkiYXqAjqtYvXrSrdgQWDj6
-         Wx9TzANbwsyihpTs7VEtSAvGVhunMF+siVz+ht3Yoblgur4JSsYXkbOXgJVVcAHQzX
-         OsTHOlswuUiUg==
-Received: by mail.feshiecree.pl for <linux-omap@vger.kernel.org>; Mon, 29 May 2023 07:30:35 GMT
-Message-ID: <20230529074503-0.1.2t.hsf0.0.doz6rgemke@feshiecree.pl>
-Date:   Mon, 29 May 2023 07:30:35 GMT
-From:   "Krystian Wieczorek" <krystian.wieczorek@feshiecree.pl>
-To:     <linux-omap@vger.kernel.org>
-Subject: W sprawie samochodu
-X-Mailer: mail.feshiecree.pl
+        with ESMTP id S229485AbjE2PVF (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 29 May 2023 11:21:05 -0400
+Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB2D1C4
+        for <linux-omap@vger.kernel.org>; Mon, 29 May 2023 08:21:03 -0700 (PDT)
+Received: by mail-wr1-x436.google.com with SMTP id ffacd0b85a97d-30a8fa6e6fcso2088314f8f.1
+        for <linux-omap@vger.kernel.org>; Mon, 29 May 2023 08:21:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20221208.gappssmtp.com; s=20221208; t=1685373662; x=1687965662;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=TBUyi7GtvvTumLP5OPVjGqROpV802wvk7yxqnFgwTHY=;
+        b=Msn7AW1khWORLn/oD/9VF15pkuplmldeqTa1sZH7PRTWzL9284dima5XY3ropCTDrd
+         WkoMXDtdqR2n738N6PCPiPJ7E+Q8wE750FrMkHSK3SzZACRvtCw5iA2sX1itxo2rxocV
+         Fryn5uTbDazceFQSQs0WI+0snyV8iQ1u0Lvd1K0VD4vQE+Gpxg5byq/SO/4P3c9QRBMR
+         Tmv9l3R0W2rhDamU+x4TbngiA/DTWk3G47cgTVkWibvno3Ok+m2yBUFrPuNpCjRUbMbq
+         lWtstpgFgaVncvS0Yj0/IPViUMLvBEpXEGMMunEziBT4rQZZ4A4MOaa+Lfxd8h2+fOYq
+         sB3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685373662; x=1687965662;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=TBUyi7GtvvTumLP5OPVjGqROpV802wvk7yxqnFgwTHY=;
+        b=FnMZ/ALvp+8kOXDfeRd/7xncfvr/CCkHFserPXcqGXVjjvvduu09ZoBqYByFSyMUSv
+         9qmBJjy+vxtOsNodsqfdfeWH0yGZZyzppKwnX8HYSxewq4lfqYasuyKbruaz2FZ3JyT+
+         s0fZ5IYw4+zNLtNYLRmhcQwzzkMyCuhXGCCFvX/m/vNK962K8Fd5/+F3YSVG6OeQagxt
+         9hAaJcWY8vxJEHaASuLOHL/4xQk5kF1cWeGx2MxjlVIIleYGT6VyAjEN170KpOKgxXl3
+         dC+x8pJ6Dh3B25x7yzFj7x9pOwzyVEPzPCzdzrRtfPa7vh2oPC3sHEeqX/0rRWS1hCbd
+         7jNg==
+X-Gm-Message-State: AC+VfDzoY4jrw3nXfsD4PjQnZ+hj2X2UhVrHlnvoMbcpApZ5kUz9znJK
+        teOk7DXzoIuW/0WRUuA2k3mbgA==
+X-Google-Smtp-Source: ACHHUZ5QsPruAv4u4ZJBUO5E7KlnTJFL6JDOEHss86t1fBqmlCJvSruzkrQftYsvmoGskysj74HOAA==
+X-Received: by 2002:a5d:4e82:0:b0:30a:eadb:791b with SMTP id e2-20020a5d4e82000000b0030aeadb791bmr2551244wru.29.1685373662138;
+        Mon, 29 May 2023 08:21:02 -0700 (PDT)
+Received: from [192.168.1.91] (192.201.68.85.rev.sfr.net. [85.68.201.192])
+        by smtp.gmail.com with ESMTPSA id y4-20020a056000108400b0030abe7c36b1sm241306wrw.93.2023.05.29.08.21.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 29 May 2023 08:21:01 -0700 (PDT)
+Message-ID: <2c970ea3-e927-4ea1-f378-a600e834cc9d@baylibre.com>
+Date:   Mon, 29 May 2023 17:21:00 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SORBS_DUL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v3 1/2] gpio: tps65219: add GPIO support for TPS65219 PMIC
+Content-Language: en-US
+To:     andy.shevchenko@gmail.com
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Tony Lindgren <tony@atomide.com>, Lee Jones <lee@kernel.org>,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-omap@vger.kernel.org,
+        Jonathan Cormier <jcormier@criticallink.com>
+References: <20230511-tps65219-add-gpio-support-v3-0-19837a34d820@baylibre.com>
+ <20230511-tps65219-add-gpio-support-v3-1-19837a34d820@baylibre.com>
+ <ZHD3VtFDYUyy_Std@surfacebook>
+From:   jerome Neanne <jneanne@baylibre.com>
+In-Reply-To: <ZHD3VtFDYUyy_Std@surfacebook>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Dzie=C5=84 dobry,
-
-chcieliby=C5=9Bmy zapewni=C4=87 Pa=C5=84stwu kompleksowe rozwi=C4=85zania=
-, je=C5=9Bli chodzi o system monitoringu GPS.
-
-Precyzyjne monitorowanie pojazd=C3=B3w na mapach cyfrowych, =C5=9Bledzeni=
-e ich parametr=C3=B3w eksploatacyjnych w czasie rzeczywistym oraz kontrol=
-a paliwa to kluczowe funkcjonalno=C5=9Bci naszego systemu.=20
-
-Organizowanie pracy pracownik=C3=B3w jest dzi=C4=99ki temu prostsze i bar=
-dziej efektywne, a oszcz=C4=99dno=C5=9Bci i optymalizacja w zakresie pono=
-szonych koszt=C3=B3w, maj=C4=85 dla ka=C5=BCdego przedsi=C4=99biorcy ogro=
-mne znaczenie.
-
-Dopasujemy nasz=C4=85 ofert=C4=99 do Pa=C5=84stwa oczekiwa=C5=84 i potrze=
-b organizacji. Czy mogliby=C5=9Bmy porozmawia=C4=87 o naszej propozycji?
 
 
-Pozdrawiam
-Krystian Wieczorek
+On 26/05/2023 20:15, andy.shevchenko@gmail.com wrote:
+> ...
+> 
+> Missing bits.h
+> 
+>> +#include <linux/gpio/driver.h>
+>> +#include <linux/mfd/tps65219.h>
+>> +#include <linux/module.h>
+>> +#include <linux/platform_device.h>
+>> +#include <linux/regmap.h>
+>
+
+Thanks for your review.Just to be sure on this particular point:
+Your recommendation here it to include explicitly bits.h.
+
+I can see BIT_MASK(n) defined in linux/bits.h
+BIT(n) is defined in vdso/bits.h
+ From what I can see, BIT(n) is broadly used across kernel but 
+BIT_MASK(n) sounds to be the Linux strict way...
+
+In current version I'm using BIT(n) macro not BIT_MASK(n).
+Do you recommend to replace every BIT(n) currently used with BIT_MASK(n)?
+Sorry for asking dumb questions. Just trying to make sure I 
+correctly/fully understand your feedback... And do it all right for the 
+next iteration.
+
+Regards,
+Jerome.
