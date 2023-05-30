@@ -2,150 +2,122 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AE12F7169C7
-	for <lists+linux-omap@lfdr.de>; Tue, 30 May 2023 18:36:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FD4A716C60
+	for <lists+linux-omap@lfdr.de>; Tue, 30 May 2023 20:26:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232366AbjE3Qgb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 30 May 2023 12:36:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51524 "EHLO
+        id S230472AbjE3S0i (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 30 May 2023 14:26:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232386AbjE3Qga (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 30 May 2023 12:36:30 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BFDB102;
-        Tue, 30 May 2023 09:36:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-        t=1685464486; i=deller@gmx.de;
-        bh=pOnsu0UXhUHtGMUl6LOAOO/2VX+PoRE/+1EqzwG2Cg4=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=B7fIKKrQB9UvoHgfyoiG1mlA8TRJsMMbvbIivpHjuhxZh2cGge7JwgxftMMNqDLWx
-         jrDZPN8j85Lu/sheR3KNEHOC7EtpZ9+Qvh6rE6kQLAZwEmkjnq/XTWBMA1AALngeE8
-         +z76w1ohrptQaoVMio+qIsBNJSJYEVycWkO8TOlMGvvn72x/HrMxrG21wxp2833+j6
-         vZCk8Ei0v5Es/JRWWuXpStNfFw/HWInM7fuDYW1XFx6vuASvTzqGb9cPv814chcYJq
-         xez0llu4RZA00pY55s8sQ4UFfuLp9bSMSEUgI6BZhtsewKH1+dwX3o68GNzISqI50n
-         yoFE3NfsALPIQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.145.122]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MA7Ka-1pwrZ13OSQ-00BeAa; Tue, 30
- May 2023 18:34:46 +0200
-Message-ID: <7eed2e10-05af-1ebc-1285-eb17b3113183@gmx.de>
-Date:   Tue, 30 May 2023 18:34:40 +0200
+        with ESMTP id S233514AbjE3S0e (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 30 May 2023 14:26:34 -0400
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0771E6E;
+        Tue, 30 May 2023 11:26:07 -0700 (PDT)
+Received: by mail-ed1-x533.google.com with SMTP id 4fb4d7f45d1cf-514ab6cb529so172876a12.1;
+        Tue, 30 May 2023 11:26:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20221208; t=1685471164; x=1688063164;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=TX09eRyh2V+06r3hdUijrkXGuVotskNATb8x3BsCrEE=;
+        b=IKndNRiDwsk+JGNXGyumbxCDA2GulAj+EENcOSPQ4kPsL46ECzdaQ2sGGHJQfLU26v
+         hxGY1ZY82KKJ5yXP9ikkwiowF4E+9gtYyNvFoD+YmZjJCSXLLKTJA7sJ+xvUYdxaHrRe
+         uL1vQHDMaciJYX3Sveuc0aGJ4UwYH5+/kjhOE2O9JnVddmOs3ta1SEWy3gt7XQlsYnJm
+         oV4snD+SVNBidEP7ORI4k0468ZGjx5L7V4b7uFHkKE61I+cM+tV65b5La7sESW1KIN7S
+         pfeOShULPeJ0lwEEvQdKCvS+YLZuePvgL0LKDXJ/G6zCj1Pp4IEhE6dqOG4woX+3w2X3
+         pDqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685471164; x=1688063164;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TX09eRyh2V+06r3hdUijrkXGuVotskNATb8x3BsCrEE=;
+        b=bmg06+tgKLBPgjDUg8meZDSgugQMlrF7iYkfrlHk95FQZfgJ2fAnxSMz6ucBHmrUVX
+         AJZ7/oINzF//R+MYzsQxJ3tgjPZ3e3CpVBrTG6hYlbPKc61uipN2D1iCK7NzkAofj6LL
+         jtIjlO6+5sbEp1G8Pv/vAecm56CHsfyuZwEhiNYWFt2VrCQO8M4tqZ5Wt4S7yMvP/0ji
+         AgUsbvCK7+rCWVLYgFj0Wf/USd3uCbv/wmtIehdabEFQGkbyDVMoDwQQld+DaSn1XBKk
+         57IgFBs0SgQhoTN1d/7bK0AuuEd0ISJ/ZwxBQdvRnn/mOYN1xNXgDS/KzXh8bIayLLUg
+         okCw==
+X-Gm-Message-State: AC+VfDxDKTMcsJgpGGLvdMKAlAHkcsPNcGuzmsWf0TG4+AqdB8V71NWg
+        /bpyvtGXYNsqWFfS/PwRqgBXSvcjMV8Tog==
+X-Google-Smtp-Source: ACHHUZ53500ev8GHZXPQuqo45ZHNBtwysiLuApCXe72ZTfTN7orNRiM9EmqwIPnKQFVWL+uAuWULuw==
+X-Received: by 2002:a17:907:9448:b0:958:46aa:7f99 with SMTP id dl8-20020a170907944800b0095846aa7f99mr9517494ejc.7.1685471164030;
+        Tue, 30 May 2023 11:26:04 -0700 (PDT)
+Received: from localhost.localdomain ([2a02:810a:9640:26a8:d56e:8fdf:f926:4676])
+        by smtp.gmail.com with ESMTPSA id b13-20020a1709065e4d00b00965e9b435dfsm7623642eju.65.2023.05.30.11.26.03
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 30 May 2023 11:26:03 -0700 (PDT)
+From:   Franziska Naepelt <franziska.naepelt@googlemail.com>
+X-Google-Original-From: Franziska Naepelt <franziska.naepelt@gmail.com>
+To:     linux-omap@vger.kernel.org
+Cc:     aaro.koskinen@iki.fi, jmkrzyszt@gmail.com, tony@atomide.com,
+        linux@armlinux.org.uk, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org,
+        Franziska Naepelt <franziska.naepelt@gmail.com>
+Subject: [PATCH] ARM: omap: Fix checkpatch issues
+Date:   Tue, 30 May 2023 20:24:03 +0200
+Message-Id: <20230530182403.35646-1-franziska.naepelt@gmail.com>
+X-Mailer: git-send-email 2.39.2 (Apple Git-143)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH 00/51] video: fbdev: Convert to platform remove callback
- returning void
-Content-Language: en-US
-To:     =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>, Stephen Kitt <steve@sk2.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Tony Lindgren <tony@atomide.com>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Michal Simek <michal.simek@xilinx.com>,
-        Wang Qing <wangqing@vivo.com>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Peter Jones <pjones@redhat.com>,
-        Xuezhi Zhang <zhangxuezhi1@coolpad.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Gaosheng Cui <cuigaosheng1@huawei.com>,
-        Rob Herring <robh@kernel.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Alexander Shiyan <shc_work@mail.ru>,
-        Florian Tobias Schandinat <FlorianSchandinat@gmx.de>,
-        Xu Panda <xu.panda@zte.com.cn>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Kristoffer Ericson <kristoffer.ericson@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Yang Yingliang <yangyingliang@huawei.com>,
-        kernel@pengutronix.de, Arnd Bergmann <arnd@arndb.de>,
-        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
-        Yu Zhe <yuzhe@nfschina.com>,
-        ye xingchen <ye.xingchen@zte.com.cn>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Jiasheng Jiang <jiasheng@iscas.ac.cn>,
-        Zeng Heng <zengheng4@huawei.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Brown <broonie@kernel.org>,
-        Fabio Estevam <festevam@gmail.com>,
-        Hyunwoo Kim <imv4bel@gmail.com>, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Yihao Han <hanyihao@vivo.com>, Timur Tabi <timur@kernel.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Zhang Qilong <zhangqilong3@huawei.com>,
-        Dongliang Mu <dzm91@hust.edu.cn>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Shawn Guo <shawnguo@kernel.org>
-References: <20230318235428.272091-1-u.kleine-koenig@pengutronix.de>
- <ff758418-f1da-e297-1829-251b8a5b1ec3@gmx.de>
- <20230530140239.qevvxcuaqufv6hwj@pengutronix.de>
- <3010bce3-cc66-4ad6-50b1-7bc66bd532d4@gmx.de>
- <20230530162728.sexlrqhkoflvuu7m@pengutronix.de>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <20230530162728.sexlrqhkoflvuu7m@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:E++EmP+ym2sEOCl+bnTWXEklw76bBN9S6rNejjTq73I4UK8y854
- Hc2XhIoXumxSTayvEn1bBCEKO2+p0L9Ol4z+GmyiVAIGiLPb0HPcXFigbWHv6+SrHvaNmBG
- UVjlaTve4Psci2F+HjfMDs1M70QYgUjPsi7w2Pjaatl1uJvkvXRSQmNyhhM3pRh/gWVVTS1
- KCEdyXPe213BtsJf6ujfw==
-UI-OutboundReport: notjunk:1;M01:P0:CwI8Wmu5Jnc=;MyaDuNCNBCBC+oQPgzvrelDRKne
- YjWKextfx8T29KC+o2bk1QsCs83qmg/B/6ZbDgJUGkzM04fTFdddPxCXitvZiA1ycrX0rbcdJ
- h+xkcKqLqg+nOHxZQyUud8xXdtzYnDws294Lwm+/ZrrZIKhgcNJjm7WrPIWYSDxS4++AAUzHn
- DDT7Eixqzi8I+rdGeDidw38jU/6Ua/a5g8Kh1Or5VpwMe/fKggMfnRJDsGqFeTFnjE6RQ9beE
- bPgtuT2Tsct4RdCCmulIxH+ZFoXWURzSU08SvfnklfensZoCGfe9p4Y1Oa32o6BnAnie9QFja
- HRQayGKMf3mi0zNSayDJYX7YnW0Z+2tqj6tQ7gY7462MPKLi+T6YweLFfUGQJNTF0wyKu8XuE
- Xl4A6E4kMgKaoJR40xvZfZiruX41xZwYJylqVub9MVyX0vn5AuXu2fVT8f5L7Zlu0bgDwhhWj
- KRRXYeY1eaNIkgdSub94z3lc8zQuF+WVPkkgpxitzVhIBcUCon1bQJJmuWTpU5riHi6ZFmWL1
- J+JDXKp/26Cfn7MmrtATuw9bJOYnIDHPFIHu1dinKsF9dWQGjPgU5xgamYh5AJi8dhJsKzH/P
- b5WXezheLM95KesLT2hqwmLT4MVkaE6aA/3jZO0gWhkiON4I8HdMOtohEjhuXFFd/FJ2D1+KH
- q8SppRt/+MsRRnruYORQl/fkSRwLWcTKR0pGhX/7SHsqT+qFZpE4S3xC62sybQnWcSqM1DL6f
- VcvPGvLCud59BDZrB1NMyY9Bb06C48kMLbTgKVMbejkBkAH+hefKlpLLXfT6gb9AwS2Kn4Spj
- Kia0fSrp5uM88/LLzpXY6FhvCtHsNJB74bKD1nDHiWUUfTl7iosxczDOWfFFEsZTqOaUdHTdm
- deVuyEEy88YN9KxWOjiCu3k/gugAcOOM6umlCIvdriQeC3TqS1tpKgilFCnA0zLjm5euEYVbz
- DBsze8AZDXwAeojJ7w92yanCCpI=
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 5/30/23 18:27, Uwe Kleine-K=C3=B6nig wrote:
-> Hello Helge,
->
-> On Tue, May 30, 2023 at 06:12:09PM +0200, Helge Deller wrote:
->> Btw... I cleaned up some minor whitespace issues in patch 3 (au1100fb).
->
-> We both did some different cleanup, on top of your
-> 87be5a5d9a5c5b00505181eedbee62134f07d11d we could further cleanup doing
->
-> diff --git a/drivers/video/fbdev/au1100fb.c b/drivers/video/fbdev/au1100=
-fb.c
-> index fb38557a9b63..648d6cac86e8 100644
-> --- a/drivers/video/fbdev/au1100fb.c
-> +++ b/drivers/video/fbdev/au1100fb.c
-> @@ -590,7 +590,7 @@ static struct platform_driver au1100fb_driver =3D {
->   	.probe		=3D au1100fb_drv_probe,
->   	.remove_new	=3D au1100fb_drv_remove,
->   	.suspend	=3D au1100fb_drv_suspend,
-> -        .resume		=3D au1100fb_drv_resume,
-> +	.resume		=3D au1100fb_drv_resume,
->   };
->   module_platform_driver(au1100fb_driver);
->
-> Feel free to squash this into 87be5a5d9a5c5b00505181eedbee62134f07d11d.
-> If you want to apply it separately, either tell me to post a proper
-> patch, or apply it under your name with my Suggested-by -- whatever
-> suits you best.
+This removes the following checkpatch issues:
+- ERROR: space required after that ',' (ctx:VxV)
+- WARNING: Comparisons should place the constant on the right side of the test
 
-I've squashed it into your patch.
+Signed-off-by: Franziska Naepelt <franziska.naepelt@gmail.com>
+---
+ arch/arm/mach-omap1/sram-init.c | 2 +-
+ arch/arm/mach-omap2/sram.c      | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-Thanks!
-Helge
+diff --git a/arch/arm/mach-omap1/sram-init.c b/arch/arm/mach-omap1/sram-init.c
+index 26427d6be896..4cd4b50130ba 100644
+--- a/arch/arm/mach-omap1/sram-init.c
++++ b/arch/arm/mach-omap1/sram-init.c
+@@ -23,7 +23,7 @@
+ 
+ #define OMAP1_SRAM_PA		0x20000000
+ #define SRAM_BOOTLOADER_SZ	0x80
+-#define ROUND_DOWN(value,boundary)	((value) & (~((boundary)-1)))
++#define ROUND_DOWN(value, boundary)	((value) & (~((boundary)-1)))
+ 
+ static void __iomem *omap_sram_base;
+ static unsigned long omap_sram_start;
+diff --git a/arch/arm/mach-omap2/sram.c b/arch/arm/mach-omap2/sram.c
+index 815d390109d2..e4c012ac4d28 100644
+--- a/arch/arm/mach-omap2/sram.c
++++ b/arch/arm/mach-omap2/sram.c
+@@ -45,7 +45,7 @@
+ 
+ #define GP_DEVICE		0x300
+ 
+-#define ROUND_DOWN(value,boundary)	((value) & (~((boundary)-1)))
++#define ROUND_DOWN(value, boundary)	((value) & (~((boundary)-1)))
+ 
+ static unsigned long omap_sram_start;
+ static unsigned long omap_sram_size;
+@@ -118,7 +118,7 @@ static void omap_sram_reset(void)
+  */
+ static int is_sram_locked(void)
+ {
+-	if (OMAP2_DEVICE_TYPE_GP == omap_type()) {
++	if (omap_type() == OMAP2_DEVICE_TYPE_GP) {
+ 		/* RAMFW: R/W access to all initiators for all qualifier sets */
+ 		if (cpu_is_omap242x()) {
+ 			writel_relaxed(0xFF, OMAP24XX_VA_REQINFOPERM0); /* all q-vects */
+
+base-commit: 7877cb91f1081754a1487c144d85dc0d2e2e7fc4
+-- 
+2.39.2 (Apple Git-143)
 
