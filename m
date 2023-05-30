@@ -2,33 +2,41 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2AA4D71697F
-	for <lists+linux-omap@lfdr.de>; Tue, 30 May 2023 18:31:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE12F7169C7
+	for <lists+linux-omap@lfdr.de>; Tue, 30 May 2023 18:36:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233145AbjE3Qa6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 30 May 2023 12:30:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45714 "EHLO
+        id S232366AbjE3Qgb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 30 May 2023 12:36:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233560AbjE3Qaf (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 30 May 2023 12:30:35 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E944B18F
-        for <linux-omap@vger.kernel.org>; Tue, 30 May 2023 09:30:13 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1q42CF-0000dq-8p; Tue, 30 May 2023 18:27:43 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1q42C1-003ury-3q; Tue, 30 May 2023 18:27:29 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1q42C0-009Yrb-9p; Tue, 30 May 2023 18:27:28 +0200
-Date:   Tue, 30 May 2023 18:27:28 +0200
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Helge Deller <deller@gmx.de>
+        with ESMTP id S232386AbjE3Qga (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 30 May 2023 12:36:30 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BFDB102;
+        Tue, 30 May 2023 09:36:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+        t=1685464486; i=deller@gmx.de;
+        bh=pOnsu0UXhUHtGMUl6LOAOO/2VX+PoRE/+1EqzwG2Cg4=;
+        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=B7fIKKrQB9UvoHgfyoiG1mlA8TRJsMMbvbIivpHjuhxZh2cGge7JwgxftMMNqDLWx
+         jrDZPN8j85Lu/sheR3KNEHOC7EtpZ9+Qvh6rE6kQLAZwEmkjnq/XTWBMA1AALngeE8
+         +z76w1ohrptQaoVMio+qIsBNJSJYEVycWkO8TOlMGvvn72x/HrMxrG21wxp2833+j6
+         vZCk8Ei0v5Es/JRWWuXpStNfFw/HWInM7fuDYW1XFx6vuASvTzqGb9cPv814chcYJq
+         xez0llu4RZA00pY55s8sQ4UFfuLp9bSMSEUgI6BZhtsewKH1+dwX3o68GNzISqI50n
+         yoFE3NfsALPIQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.60] ([94.134.145.122]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MA7Ka-1pwrZ13OSQ-00BeAa; Tue, 30
+ May 2023 18:34:46 +0200
+Message-ID: <7eed2e10-05af-1ebc-1285-eb17b3113183@gmx.de>
+Date:   Tue, 30 May 2023 18:34:40 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH 00/51] video: fbdev: Convert to platform remove callback
+ returning void
+Content-Language: en-US
+To:     =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>
 Cc:     Ulf Hansson <ulf.hansson@linaro.org>, Stephen Kitt <steve@sk2.org>,
         Geert Uytterhoeven <geert+renesas@glider.be>,
         Tony Lindgren <tony@atomide.com>,
@@ -69,83 +77,75 @@ Cc:     Ulf Hansson <ulf.hansson@linaro.org>, Stephen Kitt <steve@sk2.org>,
         Dongliang Mu <dzm91@hust.edu.cn>,
         Thomas Zimmermann <tzimmermann@suse.de>,
         Shawn Guo <shawnguo@kernel.org>
-Subject: Re: [PATCH 00/51] video: fbdev: Convert to platform remove callback
- returning void
-Message-ID: <20230530162728.sexlrqhkoflvuu7m@pengutronix.de>
 References: <20230318235428.272091-1-u.kleine-koenig@pengutronix.de>
  <ff758418-f1da-e297-1829-251b8a5b1ec3@gmx.de>
  <20230530140239.qevvxcuaqufv6hwj@pengutronix.de>
  <3010bce3-cc66-4ad6-50b1-7bc66bd532d4@gmx.de>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="qztz57ioqwbtiw2f"
-Content-Disposition: inline
-In-Reply-To: <3010bce3-cc66-4ad6-50b1-7bc66bd532d4@gmx.de>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-omap@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+ <20230530162728.sexlrqhkoflvuu7m@pengutronix.de>
+From:   Helge Deller <deller@gmx.de>
+In-Reply-To: <20230530162728.sexlrqhkoflvuu7m@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:E++EmP+ym2sEOCl+bnTWXEklw76bBN9S6rNejjTq73I4UK8y854
+ Hc2XhIoXumxSTayvEn1bBCEKO2+p0L9Ol4z+GmyiVAIGiLPb0HPcXFigbWHv6+SrHvaNmBG
+ UVjlaTve4Psci2F+HjfMDs1M70QYgUjPsi7w2Pjaatl1uJvkvXRSQmNyhhM3pRh/gWVVTS1
+ KCEdyXPe213BtsJf6ujfw==
+UI-OutboundReport: notjunk:1;M01:P0:CwI8Wmu5Jnc=;MyaDuNCNBCBC+oQPgzvrelDRKne
+ YjWKextfx8T29KC+o2bk1QsCs83qmg/B/6ZbDgJUGkzM04fTFdddPxCXitvZiA1ycrX0rbcdJ
+ h+xkcKqLqg+nOHxZQyUud8xXdtzYnDws294Lwm+/ZrrZIKhgcNJjm7WrPIWYSDxS4++AAUzHn
+ DDT7Eixqzi8I+rdGeDidw38jU/6Ua/a5g8Kh1Or5VpwMe/fKggMfnRJDsGqFeTFnjE6RQ9beE
+ bPgtuT2Tsct4RdCCmulIxH+ZFoXWURzSU08SvfnklfensZoCGfe9p4Y1Oa32o6BnAnie9QFja
+ HRQayGKMf3mi0zNSayDJYX7YnW0Z+2tqj6tQ7gY7462MPKLi+T6YweLFfUGQJNTF0wyKu8XuE
+ Xl4A6E4kMgKaoJR40xvZfZiruX41xZwYJylqVub9MVyX0vn5AuXu2fVT8f5L7Zlu0bgDwhhWj
+ KRRXYeY1eaNIkgdSub94z3lc8zQuF+WVPkkgpxitzVhIBcUCon1bQJJmuWTpU5riHi6ZFmWL1
+ J+JDXKp/26Cfn7MmrtATuw9bJOYnIDHPFIHu1dinKsF9dWQGjPgU5xgamYh5AJi8dhJsKzH/P
+ b5WXezheLM95KesLT2hqwmLT4MVkaE6aA/3jZO0gWhkiON4I8HdMOtohEjhuXFFd/FJ2D1+KH
+ q8SppRt/+MsRRnruYORQl/fkSRwLWcTKR0pGhX/7SHsqT+qFZpE4S3xC62sybQnWcSqM1DL6f
+ VcvPGvLCud59BDZrB1NMyY9Bb06C48kMLbTgKVMbejkBkAH+hefKlpLLXfT6gb9AwS2Kn4Spj
+ Kia0fSrp5uM88/LLzpXY6FhvCtHsNJB74bKD1nDHiWUUfTl7iosxczDOWfFFEsZTqOaUdHTdm
+ deVuyEEy88YN9KxWOjiCu3k/gugAcOOM6umlCIvdriQeC3TqS1tpKgilFCnA0zLjm5euEYVbz
+ DBsze8AZDXwAeojJ7w92yanCCpI=
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On 5/30/23 18:27, Uwe Kleine-K=C3=B6nig wrote:
+> Hello Helge,
+>
+> On Tue, May 30, 2023 at 06:12:09PM +0200, Helge Deller wrote:
+>> Btw... I cleaned up some minor whitespace issues in patch 3 (au1100fb).
+>
+> We both did some different cleanup, on top of your
+> 87be5a5d9a5c5b00505181eedbee62134f07d11d we could further cleanup doing
+>
+> diff --git a/drivers/video/fbdev/au1100fb.c b/drivers/video/fbdev/au1100=
+fb.c
+> index fb38557a9b63..648d6cac86e8 100644
+> --- a/drivers/video/fbdev/au1100fb.c
+> +++ b/drivers/video/fbdev/au1100fb.c
+> @@ -590,7 +590,7 @@ static struct platform_driver au1100fb_driver =3D {
+>   	.probe		=3D au1100fb_drv_probe,
+>   	.remove_new	=3D au1100fb_drv_remove,
+>   	.suspend	=3D au1100fb_drv_suspend,
+> -        .resume		=3D au1100fb_drv_resume,
+> +	.resume		=3D au1100fb_drv_resume,
+>   };
+>   module_platform_driver(au1100fb_driver);
+>
+> Feel free to squash this into 87be5a5d9a5c5b00505181eedbee62134f07d11d.
+> If you want to apply it separately, either tell me to post a proper
+> patch, or apply it under your name with my Suggested-by -- whatever
+> suits you best.
 
---qztz57ioqwbtiw2f
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I've squashed it into your patch.
 
-Hello Helge,
+Thanks!
+Helge
 
-On Tue, May 30, 2023 at 06:12:09PM +0200, Helge Deller wrote:
-> Btw... I cleaned up some minor whitespace issues in patch 3 (au1100fb).
-
-We both did some different cleanup, on top of your
-87be5a5d9a5c5b00505181eedbee62134f07d11d we could further cleanup doing
-
-diff --git a/drivers/video/fbdev/au1100fb.c b/drivers/video/fbdev/au1100fb.c
-index fb38557a9b63..648d6cac86e8 100644
---- a/drivers/video/fbdev/au1100fb.c
-+++ b/drivers/video/fbdev/au1100fb.c
-@@ -590,7 +590,7 @@ static struct platform_driver au1100fb_driver =3D {
- 	.probe		=3D au1100fb_drv_probe,
- 	.remove_new	=3D au1100fb_drv_remove,
- 	.suspend	=3D au1100fb_drv_suspend,
--        .resume		=3D au1100fb_drv_resume,
-+	.resume		=3D au1100fb_drv_resume,
- };
- module_platform_driver(au1100fb_driver);
-=20
-Feel free to squash this into 87be5a5d9a5c5b00505181eedbee62134f07d11d.
-If you want to apply it separately, either tell me to post a proper
-patch, or apply it under your name with my Suggested-by -- whatever
-suits you best.
-
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---qztz57ioqwbtiw2f
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmR2I+8ACgkQj4D7WH0S
-/k7CEgf9HN29rwU092Bc2Tl1Vf/PyR+jNepuopjfzHl2b6k+lm5QOL98qbjIcNMo
-1XlmG713mqZsuV4dnvLg9foBP0z2RbGZR6QrhOx2KlQ+B7NouQ4/VfcQME/EVvRy
-rGMW6isCJ2moPgrRcAlpA9/fgsnCCT9Xxk/ZwCp9BkubbPsSh0bZDcN0uN+nilnL
-SkvEZ5dvvckOPQtWUFj4bo2CSCzpU7OX8f01r3JDdXKy63Bk8NHy9aeY+SCYRr0h
-56gx6kaDuaOu3oj07R7P2zhgkGYXj/9aNHFh92LDZ9tLS9+M4cEJYEjKg6SfaS7T
-25jqnMhHVhSdcupCuCJ/WcrQX/uMHA==
-=5BaR
------END PGP SIGNATURE-----
-
---qztz57ioqwbtiw2f--
