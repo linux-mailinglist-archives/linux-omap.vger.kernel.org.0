@@ -2,151 +2,89 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 57D38716334
-	for <lists+linux-omap@lfdr.de>; Tue, 30 May 2023 16:08:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D585B716498
+	for <lists+linux-omap@lfdr.de>; Tue, 30 May 2023 16:43:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232942AbjE3OI5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 30 May 2023 10:08:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52408 "EHLO
+        id S229997AbjE3Ond (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 30 May 2023 10:43:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52308 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232941AbjE3OIy (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 30 May 2023 10:08:54 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C106100
-        for <linux-omap@vger.kernel.org>; Tue, 30 May 2023 07:08:44 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1q400v-0004ps-Ru; Tue, 30 May 2023 16:07:53 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1q400o-003tfR-8p; Tue, 30 May 2023 16:07:46 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1q400n-009WHq-B9; Tue, 30 May 2023 16:07:45 +0200
-Date:   Tue, 30 May 2023 16:07:42 +0200
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Bjorn Helgaas <bhelgaas@google.com>
-Cc:     Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-        Joyce Ooi <joyce.ooi@intel.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Jim Quinlan <jim2101024@gmail.com>,
-        Nicolas Saenz Julienne <nsaenz@kernel.org>,
+        with ESMTP id S229668AbjE3Ond (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 30 May 2023 10:43:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46ECD8F;
+        Tue, 30 May 2023 07:43:32 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C57AE62D95;
+        Tue, 30 May 2023 14:43:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A84B6C4339B;
+        Tue, 30 May 2023 14:43:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1685457811;
+        bh=xNs8m24vD/RjSAGjEwvUKepcpTCIxfktl7qmXjLlGKY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=i579FhuWiS1GV+82+X0fTorQKPesAzJcBj2uDCMSY5C9itryHvjwJ9DU6CQOxG+64
+         NIOj5T3Nk0cUd6a/W5EsVmFv0H+mKCjvhi4rs4ceN4eYCq19opGRo8PTs0ILJ940uG
+         HxVut4SuvetGXLIGXRpR6eCuj2mARQ0O2SsJr96M=
+Date:   Tue, 30 May 2023 15:43:28 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Jiri Slaby <jirislaby@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@intel.com>,
+        Dhruva Gole <d-gole@ti.com>,
+        Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        John Ogness <john.ogness@linutronix.de>,
+        Johan Hovold <johan@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
         Vignesh Raghavendra <vigneshr@ti.com>,
-        Tom Joseph <tjoseph@cadence.com>,
-        Shawn Guo <shawn.guo@linaro.org>,
-        Rahul Tanwar <rtanwar@maxlinear.com>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Serge Semin <Sergey.Semin@baikalelectronics.ru>,
-        Vidya Sagar <vidyas@nvidia.com>,
-        Jisheng Zhang <jszhang@kernel.org>,
-        Miaoqian Lin <linmq006@gmail.com>, Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Jianjun Wang <jianjun.wang@mediatek.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Sergio Paracuellos <sergio.paracuellos@gmail.com>,
-        Shawn Lin <shawn.lin@rock-chips.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Toan Le <toan@os.amperecomputing.com>,
-        Rob Herring <robh@kernel.org>, linux-pci@vger.kernel.org,
-        linux-rockchip@lists.infradead.org,
-        Broadcom internal kernel review list 
-        <bcm-kernel-feedback-list@broadcom.com>,
-        linux-rpi-kernel@lists.infradead.org, kernel@pengutronix.de,
-        linux-arm-msm@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-Subject: Re: [PATCH 00/15] PCI: Convert to platform remove callback returning
- void
-Message-ID: <20230530140742.ebbrxmpieuphbmz3@pengutronix.de>
-References: <20230321193208.366561-1-u.kleine-koenig@pengutronix.de>
+        linux-omap@vger.kernel.org,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org
+Subject: Re: [PATCH v12 1/1] serial: core: Start managing serial controllers
+ to enable runtime PM
+Message-ID: <2023053007-disabled-traffic-9812@gregkh>
+References: <20230525113034.46880-1-tony@atomide.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="qk26xz6flafy3g2q"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230321193208.366561-1-u.kleine-koenig@pengutronix.de>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-omap@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+In-Reply-To: <20230525113034.46880-1-tony@atomide.com>
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Thu, May 25, 2023 at 02:30:30PM +0300, Tony Lindgren wrote:
+> We want to enable runtime PM for serial port device drivers in a generic
+> way. To do this, we want to have the serial core layer manage the
+> registered physical serial controller devices.
+> 
+> To manage serial controllers, let's set up a struct bus and struct device
+> for the serial core controller as suggested by Greg and Jiri. The serial
+> core controller devices are children of the physical serial port device.
+> The serial core controller device is needed to support multiple different
+> kind of ports connected to single physical serial port device.
+> 
+> Let's also set up a struct device for the serial core port. The serial
+> core port instances are children of the serial core controller device.
+> 
+> With the serial core port device we can now flush pending TX on the
+> runtime PM resume as suggested by Johan.
+> 
+> Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Suggested-by: Jiri Slaby <jirislaby@kernel.org>
+> Suggested-by: Johan Hovold <johan@kernel.org>
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> ---
 
---qk26xz6flafy3g2q
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Thanks for sticking with this, looks good now so I've queued it up in my
+tree.
 
-Hello Bjorn,
-
-On Tue, Mar 21, 2023 at 08:31:53PM +0100, Uwe Kleine-K=F6nig wrote:
-> this series adapts the platform drivers below drivers/pci to use the
-> .remove_new() callback. Compared to the traditional .remove() callback
-> .remove_new() returns no value. This is a good thing because the driver c=
-ore
-> doesn't (and cannot) cope for errors during remove. The only effect of a
-> non-zero return value in .remove() is that the driver core emits a warnin=
-g. The
-> device is removed anyhow and an early return from .remove() usually yield=
-s a
-> resource leak.
->=20
-> By changing the remove callback to return void driver authors cannot
-> reasonably assume any more that there is some kind of cleanup later.
->=20
-> All drivers were easy to convert as they all returned zero in their
-> remove callback. Only for iproc the conversion wasn't trivial, the other
-> were converted using coccinelle.
->=20
-> There are no interdependencies between these patches. So even if there
-> are some concerns for individual patches, I ask you to apply the
-> remaining set. Then I only have to care for the review feedback of the
-> refused patches. (Having said that I don't expect any serious objection,
-> just things like squashing or separating patches, or maybe I picked a
-> wrong subject prefix.)
-
-These patches wait for application for quite some time now. They apply
-just fine to v6.4-rc1 and next/master. Would be great to get them in
-during the next merge window and ideally give them some time in next
-before.
-
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---qk26xz6flafy3g2q
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmR2Ay0ACgkQj4D7WH0S
-/k5qnwgAnpUxpx4rn6WEsDH7Xm3DdX2vIesYJvk7oOO95SBT/vP6MAkPvzaDUJfe
-WVi/Oz1Ka8FPwOop8vkbb8M3nQIjNjB9OfI+6fW+55MvN9guFPI/Utl1TIscmgQz
-YnH2pnHF7uIzKApPtniNZJ6CDy1deepI9SK9Vyx/eMbuppFuUfVz5NR+vdR8e1FA
-o+DEn8E+tjfjwSb0FdxgTv+Subwm4oPwuYrhyv3bJZ17YenL7OoGc8coPdQr13BS
-Mq7t/nM05p/vZtkey55UWA3E+SEsbGz64ikmcv1hfwGVq2aRi8qO+aCUnhe3LX9m
-GZAiwIh4ypdjtDXIIMwGjMatqA4QQA==
-=tfIE
------END PGP SIGNATURE-----
-
---qk26xz6flafy3g2q--
+greg k-h
