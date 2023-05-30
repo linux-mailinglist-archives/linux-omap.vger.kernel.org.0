@@ -2,115 +2,101 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 39E757157C9
-	for <lists+linux-omap@lfdr.de>; Tue, 30 May 2023 10:00:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D2F60715A59
+	for <lists+linux-omap@lfdr.de>; Tue, 30 May 2023 11:39:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229837AbjE3IAa (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 30 May 2023 04:00:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52754 "EHLO
+        id S230196AbjE3Jjl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 30 May 2023 05:39:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229473AbjE3IA3 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 30 May 2023 04:00:29 -0400
-Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 756A2C9
-        for <linux-omap@vger.kernel.org>; Tue, 30 May 2023 01:00:27 -0700 (PDT)
-Received: by mail-wr1-x42d.google.com with SMTP id ffacd0b85a97d-309382efe13so2604096f8f.2
-        for <linux-omap@vger.kernel.org>; Tue, 30 May 2023 01:00:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20221208.gappssmtp.com; s=20221208; t=1685433626; x=1688025626;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Oi5cyxzC3+NP4WFp104cxanaFNMsvwaBhA2yhJz87ao=;
-        b=FKNBr7ODLDGPyplbcdDyuqyYIbMDFMB91lgmUBE8Z8fIM1vdnWCRxK5t+4zSDAxOQe
-         +GysBXe8MItNFn54hUSvIyuORrnaVllTUP7SOPmdcJUz0AbYylXIdcOWX4qR0j+bunS+
-         DivOm121O8Cvb3kmjaeNcXzq1MgfL2Cm7AbasSRaO4rqhBr3+tUhWjO6ckUKBkbqynL2
-         +HQjTOXJYiPJzm9Q0saSZlOlObvXdAYwp9hHnHQoEBcDLKgdIkqXJeotu2nh0MkdTiUq
-         kQJKxflt0RMy21IV+jrA0l+uTuT0r8ylU+iB3IY9md8yKxjZOf9Vk0X+M9WFeS6RjJLB
-         2mAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685433626; x=1688025626;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Oi5cyxzC3+NP4WFp104cxanaFNMsvwaBhA2yhJz87ao=;
-        b=gx28O8e+Uxhamtnns3r+2xSO9PJmka1e+INiU5RH630Q7qp2cW3VvrZWeCm1lgTMoI
-         57Nyx+Z+CXWUBx1d+USQ7vMbH77P8aYuNNGCOdPhYsu4toaKlRgAZZB51/Th3x69GnCy
-         A+ZmTh5C8/XGwtcLm2ZljyYWpKOYfEx1R4cdNhKLXsWrUlikCDGTL3m54K6TDAQ0kcKg
-         oJDeSKlmMgvScaSgOQZqlGCPHmEAXSk+l/DOEPld20jQcRGtP23ufGIg/fNK+POceTa0
-         S9lnCuLGXSwuUYnEib8xwEBScpyTegMtMLsu6duKaYdMNyUWp/0fxeC7wyvgW0XDLSnl
-         jR1w==
-X-Gm-Message-State: AC+VfDzuQFzypWsBFdXZlRwmDAUW8BgC5AKJ27f0hIPPe+Od87OIuz8D
-        zngjF5ZTR12mZ6dcqtCsuwNUQQ==
-X-Google-Smtp-Source: ACHHUZ4sElmQNI9IoZcrEoP6bqPGFkS1UWyATZlwF9CbxAMaju6OiXJvlndUkxmSYQZqW4deOzhaAw==
-X-Received: by 2002:a5d:678f:0:b0:309:4a5b:508f with SMTP id v15-20020a5d678f000000b003094a5b508fmr826416wru.24.1685433626057;
-        Tue, 30 May 2023 01:00:26 -0700 (PDT)
-Received: from [127.0.1.1] (laubervilliers-658-1-213-31.w90-63.abo.wanadoo.fr. [90.63.244.31])
-        by smtp.gmail.com with ESMTPSA id m6-20020a7bce06000000b003f6050d35c9sm16409978wmc.20.2023.05.30.01.00.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 May 2023 01:00:25 -0700 (PDT)
-From:   Jerome Neanne <jneanne@baylibre.com>
-Date:   Tue, 30 May 2023 10:00:00 +0200
-Subject: [PATCH v4 2/2] mfd: tps65219: Add gpio cell instance
+        with ESMTP id S229550AbjE3Jjk (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 30 May 2023 05:39:40 -0400
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 299BBFC;
+        Tue, 30 May 2023 02:39:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1685439577; x=1716975577;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=EilXIOvUaLl6Wbm/Y1NuawMKvR7ssqkmCU3WRLSqQPs=;
+  b=2FMHPj05fwHXm5WAAun6rvJUVbsgFB+m6GteUEJ1R9YycQJJpc0QzyBu
+   m6K2QWC4UEhmn1iaDEbwJ/jNJVFpbo16eUsol62ErHBn2W3GCPmKanR1n
+   8e6thTzVkpSoVw3nwEnSEMEdgEj4SK06ZxLZokowgkVnECerM7Qw78taR
+   qdFoM7PBypOiocFvrc7HZNpR1tqdVGvf3CmwWd5AyGXT2nunPUiPt7hPr
+   W/PTkI72iL96OaSy7DgvhmxOEj0NzOmjU067QdYCt5miEmRKjpbzbOcuA
+   YVD/Ij9cblbJNiOnnJhZm2iEHoZHTHzFIPnhhA4OHDFdaAirmQdeEbPru
+   Q==;
+X-IronPort-AV: E=Sophos;i="6.00,203,1681196400"; 
+   d="scan'208";a="217918973"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa2.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 30 May 2023 02:39:36 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.21; Tue, 30 May 2023 02:39:35 -0700
+Received: from m18063-ThinkPad-T460p.mchp-main.com (10.10.115.15) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
+ 15.1.2507.21 via Frontend Transport; Tue, 30 May 2023 02:39:31 -0700
+From:   Claudiu Beznea <claudiu.beznea@microchip.com>
+To:     <mturquette@baylibre.com>, <sboyd@kernel.org>,
+        <luca.ceresoli@bootlin.com>, <nm@ti.com>, <kristo@kernel.org>,
+        <ssantosh@kernel.org>, <michal.simek@xilinx.com>
+CC:     <aford173@gmail.com>, <mike.looijmans@topic.nl>,
+        <robert.hancock@calian.com>, <shawn.guo@linaro.org>,
+        <fabio.estevam@freescale.com>, <linux-clk@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-omap@vger.kernel.org>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>
+Subject: [PATCH 0/8] clk: check memory returned by {devm_}kasprintf()
+Date:   Tue, 30 May 2023 12:39:05 +0300
+Message-ID: <20230530093913.1656095-1-claudiu.beznea@microchip.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230511-tps65219-add-gpio-support-v4-2-b5d6a764d722@baylibre.com>
-References: <20230511-tps65219-add-gpio-support-v4-0-b5d6a764d722@baylibre.com>
-In-Reply-To: <20230511-tps65219-add-gpio-support-v4-0-b5d6a764d722@baylibre.com>
-To:     Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Tony Lindgren <tony@atomide.com>, Lee Jones <lee@kernel.org>
-Cc:     khilman@baylibre.com, msp@baylibre.com, francesco@dolcini.it,
-        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-omap@vger.kernel.org,
-        Jonathan Cormier <jcormier@criticallink.com>,
-        Jerome Neanne <jneanne@baylibre.com>
-X-Mailer: b4 0.12.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1685433622; l=1009;
- i=jneanne@baylibre.com; s=20230511; h=from:subject:message-id;
- bh=nMeCcxVhE7+un5EdrNfRU6JWVC4UNE7togljBBNu77I=;
- b=CpMbAoke2LTSOlEvyBOPwWQ/t8EJB7RkrlhYL58Ne/IDVV+v7WO9zYk1NSLbdr9YicrxGsimz
- r+eqMMZrvTbD7u+p+JvcHOis13q1EkFHBL6e9+RWoJSeiXecH2qcWjE
-X-Developer-Key: i=jneanne@baylibre.com; a=ed25519;
- pk=5rvbqNoG+28jQjC9/50ToY7TgKWf9rJukuCI8b6jkUo=
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-tps65219 PMIC GPIOs are exposed in a standard way:
-gpiodetect
-gpiochip0 [tps65219-gpio] (3 lines)
+Hi,
 
-tps65219-gpios is incorrect cell name (plural):
-Changed to tps65219-gpio (singular)
+While browsing some code I noticed that there are places where pointer
+returned by devm_kasprintf() or kasprintf() is not checked. Thus I've
+tooked the chance and fixed this (by updating kmerr.cocci script,
+changes published at [1]). Along with it some other places where
+resources may need to be freed on failure paths were updated.
 
-Co-developed-by: Jonathan Cormier <jcormier@criticallink.com>
-Signed-off-by: Jonathan Cormier <jcormier@criticallink.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Jerome Neanne <jneanne@baylibre.com>
----
- drivers/mfd/tps65219.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thank you,
+Claudiu Beznea
 
-diff --git a/drivers/mfd/tps65219.c b/drivers/mfd/tps65219.c
-index 0e402fda206b..e1d090ba4258 100644
---- a/drivers/mfd/tps65219.c
-+++ b/drivers/mfd/tps65219.c
-@@ -106,7 +106,7 @@ static const struct mfd_cell tps65219_cells[] = {
- 		.resources = tps65219_regulator_resources,
- 		.num_resources = ARRAY_SIZE(tps65219_regulator_resources),
- 	},
--	{ .name = "tps65219-gpios", },
-+	{ .name = "tps65219-gpio", },
- };
- 
- static const struct mfd_cell tps65219_pwrbutton_cell = {
+[1] https://lore.kernel.org/all/20230530074044.1603426-1-claudiu.beznea@microchip.com/
+
+Claudiu Beznea (8):
+  clk: vc5: check memory returned by kasprintf()
+  clk: cdce925: check return value of kasprintf()
+  clk: si5341: return error if one synth clock registration fails
+  clk: si5341: check return value of {devm_}kasprintf()
+  clk: si5341: free unused memory on probe failure
+  clk: keystone: sci-clk: check return value of kasprintf()
+  clk: ti: clkctrl: check return value of kasprintf()
+  clk: clocking-wizard: check return value of devm_kasprintf()
+
+ drivers/clk/clk-cdce925.c                  | 12 +++++++
+ drivers/clk/clk-si5341.c                   | 38 +++++++++++++---------
+ drivers/clk/clk-versaclock5.c              | 29 +++++++++++++++++
+ drivers/clk/keystone/sci-clk.c             |  2 ++
+ drivers/clk/ti/clkctrl.c                   |  7 ++++
+ drivers/clk/xilinx/clk-xlnx-clock-wizard.c |  5 +++
+ 6 files changed, 78 insertions(+), 15 deletions(-)
 
 -- 
 2.34.1
