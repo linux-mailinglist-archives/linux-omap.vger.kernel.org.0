@@ -2,40 +2,32 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 706107174ED
-	for <lists+linux-omap@lfdr.de>; Wed, 31 May 2023 06:12:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CFAA37174FD
+	for <lists+linux-omap@lfdr.de>; Wed, 31 May 2023 06:17:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233134AbjEaEMc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 31 May 2023 00:12:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58328 "EHLO
+        id S232344AbjEaERF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 31 May 2023 00:17:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233641AbjEaEMa (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 31 May 2023 00:12:30 -0400
+        with ESMTP id S230401AbjEaERE (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 31 May 2023 00:17:04 -0400
 Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A6223C9;
-        Tue, 30 May 2023 21:12:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D603CBE;
+        Tue, 30 May 2023 21:17:03 -0700 (PDT)
 Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 23E33813A;
-        Wed, 31 May 2023 04:12:29 +0000 (UTC)
-Date:   Wed, 31 May 2023 07:12:27 +0300
+        by muru.com (Postfix) with ESMTPS id 2F9728164;
+        Wed, 31 May 2023 04:17:03 +0000 (UTC)
+Date:   Wed, 31 May 2023 07:17:01 +0300
 From:   Tony Lindgren <tony@atomide.com>
-To:     Claudiu Beznea <claudiu.beznea@microchip.com>
-Cc:     mturquette@baylibre.com, sboyd@kernel.org,
-        luca.ceresoli@bootlin.com, nm@ti.com, kristo@kernel.org,
-        ssantosh@kernel.org, michal.simek@xilinx.com, aford173@gmail.com,
-        mike.looijmans@topic.nl, robert.hancock@calian.com,
-        shawn.guo@linaro.org, fabio.estevam@freescale.com,
-        linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org
-Subject: Re: [PATCH 6/8] clk: keystone: sci-clk: check return value of
- kasprintf()
-Message-ID: <20230531041227.GG14287@atomide.com>
-References: <20230530093913.1656095-1-claudiu.beznea@microchip.com>
- <20230530093913.1656095-7-claudiu.beznea@microchip.com>
+To:     Ladislav Michl <oss-lists@triops.cz>
+Cc:     linux-rtc@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCH] rtc: rtc-twl: add NVRAM support
+Message-ID: <20230531041701.GH14287@atomide.com>
+References: <ZDf7qZTiml0ijD2g@lenoch>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230530093913.1656095-7-claudiu.beznea@microchip.com>
+In-Reply-To: <ZDf7qZTiml0ijD2g@lenoch>
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
@@ -45,9 +37,10 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Claudiu Beznea <claudiu.beznea@microchip.com> [230530 09:41]:
-> kasprintf() returns a pointer to dynamically allocated memory.
-> Pointer could be NULL in case allocation fails. Check pointer validity.
-> Identified with coccinelle (kmerr.cocci script).
+* Ladislav Michl <oss-lists@triops.cz> [230413 12:56]:
+> From: Ladislav Michl <ladis@linux-mips.org>
+> Date: Sat, 28 May 2022 19:36:13 +0200
+> 
+> Export SRAM using nvmem.
 
 Reviewed-by: Tony Lindgren <tony@atomide.com>
