@@ -2,22 +2,22 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ECB14719AB5
-	for <lists+linux-omap@lfdr.de>; Thu,  1 Jun 2023 13:11:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7265A719D3A
+	for <lists+linux-omap@lfdr.de>; Thu,  1 Jun 2023 15:20:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233111AbjFALLv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 1 Jun 2023 07:11:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60126 "EHLO
+        id S232571AbjFANUY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 1 Jun 2023 09:20:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232380AbjFALLu (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 1 Jun 2023 07:11:50 -0400
+        with ESMTP id S230268AbjFANUX (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 1 Jun 2023 09:20:23 -0400
 Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id E0693107;
-        Thu,  1 Jun 2023 04:11:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6414397;
+        Thu,  1 Jun 2023 06:20:14 -0700 (PDT)
 Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 3E08380F1;
-        Thu,  1 Jun 2023 11:11:48 +0000 (UTC)
-Date:   Thu, 1 Jun 2023 14:11:47 +0300
+        by muru.com (Postfix) with ESMTPS id 4C6A380F1;
+        Thu,  1 Jun 2023 13:20:13 +0000 (UTC)
+Date:   Thu, 1 Jun 2023 16:20:12 +0300
 From:   Tony Lindgren <tony@atomide.com>
 To:     Marek Szyprowski <m.szyprowski@samsung.com>
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -34,15 +34,16 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org
 Subject: Re: [PATCH v12 1/1] serial: core: Start managing serial controllers
  to enable runtime PM
-Message-ID: <20230601111147.GA14287@atomide.com>
+Message-ID: <20230601132012.GB14287@atomide.com>
 References: <20230525113034.46880-1-tony@atomide.com>
  <CGME20230601110030eucas1p2eed547c326a51a6110100fb50799d136@eucas1p2.samsung.com>
  <88d9edfe-2f39-b15f-f513-463eac6bf473@samsung.com>
+ <20230601111147.GA14287@atomide.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <88d9edfe-2f39-b15f-f513-463eac6bf473@samsung.com>
+In-Reply-To: <20230601111147.GA14287@atomide.com>
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
@@ -52,64 +53,56 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
-
-* Marek Szyprowski <m.szyprowski@samsung.com> [230601 11:00]:
-> Hi Tony,
+* Tony Lindgren <tony@atomide.com> [230601 11:12]:
+> * Marek Szyprowski <m.szyprowski@samsung.com> [230601 11:00]:
+> > This patch landed in today's linux next-20230601 as commit 84a9582fd203 
+> > ("serial: core: Start managing serial controllers to enable runtime 
+> > PM"). Unfortunately it breaks booting some of my test boards. This can 
+> > be easily reproduced with QEMU and ARM64 virt machine. The last message 
+> > I see in the log is:
+> > 
+> > [    3.084743] Run /sbin/init as init process
 > 
-> On 25.05.2023 13:30, Tony Lindgren wrote:
-> > We want to enable runtime PM for serial port device drivers in a generic
-> > way. To do this, we want to have the serial core layer manage the
-> > registered physical serial controller devices.
-> >
-> > To manage serial controllers, let's set up a struct bus and struct device
-> > for the serial core controller as suggested by Greg and Jiri. The serial
-> > core controller devices are children of the physical serial port device.
-> > The serial core controller device is needed to support multiple different
-> > kind of ports connected to single physical serial port device.
-> >
-> > Let's also set up a struct device for the serial core port. The serial
-> > core port instances are children of the serial core controller device.
-> >
-> > With the serial core port device we can now flush pending TX on the
-> > runtime PM resume as suggested by Johan.
-> >
-> > Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > Suggested-by: Jiri Slaby <jirislaby@kernel.org>
-> > Suggested-by: Johan Hovold <johan@kernel.org>
-> > Signed-off-by: Tony Lindgren <tony@atomide.com>
-> 
-> This patch landed in today's linux next-20230601 as commit 84a9582fd203 
-> ("serial: core: Start managing serial controllers to enable runtime 
-> PM"). Unfortunately it breaks booting some of my test boards. This can 
-> be easily reproduced with QEMU and ARM64 virt machine. The last message 
-> I see in the log is:
-> 
-> [    3.084743] Run /sbin/init as init process
+> OK thanks for the report. I wonder if this issue is specific to ttyAM
+> serial port devices somehow?
 
-OK thanks for the report. I wonder if this issue is specific to ttyAM
-serial port devices somehow?
+Looks like the problem happens with serial port drivers that use
+arch_initcall():
 
-> I've tried a hack posted here by Steven Price, but unfortunately it 
-> doesn't fix my issue. Reverting $subject on top of next-20230601 fixes 
-> the boot.
+$ git grep arch_initcall drivers/tty/serial/
+drivers/tty/serial/amba-pl011.c:arch_initcall(pl011_init);
+drivers/tty/serial/mps2-uart.c:arch_initcall(mps2_uart_init);
+drivers/tty/serial/mvebu-uart.c:arch_initcall(mvebu_uart_init);
+drivers/tty/serial/pic32_uart.c:arch_initcall(pic32_uart_init);
+drivers/tty/serial/serial_base_bus.c:arch_initcall(serial_base_init);
+drivers/tty/serial/xilinx_uartps.c:arch_initcall(cdns_uart_init);
 
-OK
+We have serial_base_bus use module_init() so the serial core controller
+and port device associated with the physical serial port are not probed.
 
-> Here is my qemu test command (nothing really special...):
-> 
-> qemu-system-aarch64 -kernel Image -append "console=ttyAMA0 
-> no_console_suspend root=/dev/vda rootwait ip=::::target::off" -M virt 
-> -cpu cortex-a57 -smp 2 -m 1024 -device 
-> virtio-blk-device,drive=virtio-blk0 -device 
-> virtio-blk-device,drive=virtio-blk1 -drive 
-> file=qemu-virt-rootfs.raw,id=virtio-blk1,if=none,format=raw -drive 
-> file=initrd,id=virtio-blk0,if=none,format=raw -netdev user,id=user 
-> -device virtio-net-device,netdev=user -display none
+The patch below should fix the problem you're seeing, care to test and
+if it works I'll post a proper fix?
 
-OK thanks I'll try to reproduce it.
+Note that if we ever have cases where uart_add_one_port() gets called
+even earlier, we should just call serial_base_init() directly when
+adding the first port.
 
 Regards,
 
 Tony
+
+8< ------------------
+diff --git a/drivers/tty/serial/serial_base_bus.c b/drivers/tty/serial/serial_base_bus.c
+--- a/drivers/tty/serial/serial_base_bus.c
++++ b/drivers/tty/serial/serial_base_bus.c
+@@ -186,7 +186,7 @@ static int serial_base_init(void)
+ 
+ 	return ret;
+ }
+-module_init(serial_base_init);
++arch_initcall(serial_base_init);
+ 
+ static void serial_base_exit(void)
+ {
+-- 
+2.40.1
