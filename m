@@ -2,29 +2,38 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F94E719A0A
-	for <lists+linux-omap@lfdr.de>; Thu,  1 Jun 2023 12:44:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FCD8719A32
+	for <lists+linux-omap@lfdr.de>; Thu,  1 Jun 2023 12:53:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232635AbjFAKog (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 1 Jun 2023 06:44:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45990 "EHLO
+        id S232499AbjFAKxd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 1 Jun 2023 06:53:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51036 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231954AbjFAKoe (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 1 Jun 2023 06:44:34 -0400
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id BC9D19D;
-        Thu,  1 Jun 2023 03:44:33 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id E9B7180F1;
-        Thu,  1 Jun 2023 10:44:32 +0000 (UTC)
-Date:   Thu, 1 Jun 2023 13:44:31 +0300
-From:   Tony Lindgren <tony@atomide.com>
-To:     Steven Price <steven.price@arm.com>
+        with ESMTP id S232146AbjFAKxc (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 1 Jun 2023 06:53:32 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 3D1C8107;
+        Thu,  1 Jun 2023 03:53:31 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3CE902F4;
+        Thu,  1 Jun 2023 03:54:16 -0700 (PDT)
+Received: from [10.1.26.32] (e122027.cambridge.arm.com [10.1.26.32])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 185603F7D8;
+        Thu,  1 Jun 2023 03:53:28 -0700 (PDT)
+Message-ID: <fca99838-991d-66a7-0c2c-16ae901e3935@arm.com>
+Date:   Thu, 1 Jun 2023 11:53:27 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v12 1/1] serial: core: Start managing serial controllers
+ to enable runtime PM
+Content-Language: en-GB
+To:     Tony Lindgren <tony@atomide.com>
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Jiri Slaby <jirislaby@kernel.org>,
         Andy Shevchenko <andriy.shevchenko@intel.com>,
         Dhruva Gole <d-gole@ti.com>,
-        Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
+        =?UTF-8?Q?Ilpo_J=c3=a4rvinen?= <ilpo.jarvinen@linux.intel.com>,
         John Ogness <john.ogness@linutronix.de>,
         Johan Hovold <johan@kernel.org>,
         Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
@@ -32,55 +41,64 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         linux-omap@vger.kernel.org,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org
-Subject: Re: [PATCH v12 1/1] serial: core: Start managing serial controllers
- to enable runtime PM
-Message-ID: <20230601104431.GX14287@atomide.com>
 References: <20230525113034.46880-1-tony@atomide.com>
  <f44b5fb0-2345-df07-abab-c04abd6f8a13@arm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f44b5fb0-2345-df07-abab-c04abd6f8a13@arm.com>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+ <20230601104431.GX14287@atomide.com>
+From:   Steven Price <steven.price@arm.com>
+In-Reply-To: <20230601104431.GX14287@atomide.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
-
-* Steven Price <steven.price@arm.com> [230601 10:04]:
-> I haven't studied this change in detail, but I assume the bug is that
-> serial_base_port_device_remove() shouldn't be dropping port_mutex. The
-> below hack gets my board booting again.
-
-You're right. I wonder how I managed to miss that.. Care to post a proper
-fix for this or do you want me to post it?
-
-> Thanks,
+On 01/06/2023 11:44, Tony Lindgren wrote:
+> Hi,
 > 
-> Steve
+> * Steven Price <steven.price@arm.com> [230601 10:04]:
+>> I haven't studied this change in detail, but I assume the bug is that
+>> serial_base_port_device_remove() shouldn't be dropping port_mutex. The
+>> below hack gets my board booting again.
 > 
-> Hack fix:
-> ----8<----
-> diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
-> index 29bd5ede0b25..044e4853341a 100644
-> --- a/drivers/tty/serial/serial_core.c
-> +++ b/drivers/tty/serial/serial_core.c
-> @@ -3234,8 +3234,7 @@ static void serial_core_remove_one_port(struct uart_driver *drv,
->         wait_event(state->remove_wait, !atomic_read(&state->refcount));
->         state->uart_port = NULL;
->         mutex_unlock(&port->mutex);
-> -out:
-> -       mutex_unlock(&port_mutex);
-> +out:;
->  }
+> You're right. I wonder how I managed to miss that.. Care to post a proper
+> fix for this or do you want me to post it?
 
-Seems you can remove out here and just do a return earlier instead of goto.
+I'll post a proper fix shortly. Thanks for the confirmation of the fix.
 
-Regards,
+>> Thanks,
+>>
+>> Steve
+>>
+>> Hack fix:
+>> ----8<----
+>> diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
+>> index 29bd5ede0b25..044e4853341a 100644
+>> --- a/drivers/tty/serial/serial_core.c
+>> +++ b/drivers/tty/serial/serial_core.c
+>> @@ -3234,8 +3234,7 @@ static void serial_core_remove_one_port(struct uart_driver *drv,
+>>         wait_event(state->remove_wait, !atomic_read(&state->refcount));
+>>         state->uart_port = NULL;
+>>         mutex_unlock(&port->mutex);
+>> -out:
+>> -       mutex_unlock(&port_mutex);
+>> +out:;
+>>  }
+> 
+> Seems you can remove out here and just do a return earlier instead of goto.
 
-Tony
+Yes, this was just the smallest change. I'll do it properly with an
+early return in the proper patch.
+
+Thanks,
+
+Steve
+
+> Regards,
+> 
+> Tony
+
