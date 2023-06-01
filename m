@@ -2,143 +2,182 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D51F719A66
-	for <lists+linux-omap@lfdr.de>; Thu,  1 Jun 2023 13:00:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 977B3719A6B
+	for <lists+linux-omap@lfdr.de>; Thu,  1 Jun 2023 13:00:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232230AbjFAK7u (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 1 Jun 2023 06:59:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53406 "EHLO
+        id S232172AbjFALAi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 1 Jun 2023 07:00:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53682 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233322AbjFAK7m (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 1 Jun 2023 06:59:42 -0400
-Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8137012C;
-        Thu,  1 Jun 2023 03:59:22 -0700 (PDT)
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 351Ax8s5121002;
-        Thu, 1 Jun 2023 05:59:08 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1685617148;
-        bh=Su7R47v4W5yO6beC23P257B1E8f3gfa6U+NgWZ0c6fE=;
-        h=From:To:CC:Subject:Date;
-        b=ILYoAtU434Bw9nLblRFw0m8HJnE2yBrkz5O91voAn1RFqb4HjzLJTt0rEpd70S5js
-         MSyhffXPvZIoyUahdsQ397ivTu8wWV5fyldw0HNzAfLMASfH6rMD02GQQfaJgH94Mf
-         5xgjFPnA8+1Uqt2Uz+lXQzO32ch8AwyRwFWEMAO8=
-Received: from DLEE105.ent.ti.com (dlee105.ent.ti.com [157.170.170.35])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 351Ax8nS087594
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 1 Jun 2023 05:59:08 -0500
-Received: from DLEE103.ent.ti.com (157.170.170.33) by DLEE105.ent.ti.com
- (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 1
- Jun 2023 05:59:07 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE103.ent.ti.com
- (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Thu, 1 Jun 2023 05:59:07 -0500
-Received: from fllv0122.itg.ti.com (fllv0122.itg.ti.com [10.247.120.72])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 351Ax7ZJ027859;
-        Thu, 1 Jun 2023 05:59:07 -0500
-Received: from localhost (uda0501179.dhcp.ti.com [10.24.69.114])
-        by fllv0122.itg.ti.com (8.14.7/8.14.7) with ESMTP id 351Ax6BY024592;
-        Thu, 1 Jun 2023 05:59:06 -0500
-From:   MD Danish Anwar <danishanwar@ti.com>
-To:     Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>
-CC:     <rogerq@kernel.org>, <vigneshr@ti.org>, <nm@ti.com>, <srk@ti.com>,
-        <danishanwar@ti.com>, <linux-kernel@vger.kernel.org>,
-        <linux-remoteproc@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>
-Subject: [PATCH] remoteproc: pru: add support for configuring GPMUX based on client setup
-Date:   Thu, 1 Jun 2023 16:29:04 +0530
-Message-ID: <20230601105904.3204260-1-danishanwar@ti.com>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S232906AbjFALAg (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 1 Jun 2023 07:00:36 -0400
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0A5512F
+        for <linux-omap@vger.kernel.org>; Thu,  1 Jun 2023 04:00:34 -0700 (PDT)
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20230601110031euoutp02f5895d31076abe55d63a369885c287f6~kg-ERRScR0280802808euoutp02g
+        for <linux-omap@vger.kernel.org>; Thu,  1 Jun 2023 11:00:31 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20230601110031euoutp02f5895d31076abe55d63a369885c287f6~kg-ERRScR0280802808euoutp02g
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1685617231;
+        bh=rpaMuZCPHPmqWYgD17bbXFAhzzVhr52QHcgZSwIiN4U=;
+        h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+        b=dzrR4pblbtDqZnSax2QSFxX9PWIQogdjnSh8wLhEv6uj5+E+47UJwA8XV36Ir/5Qx
+         OLs1tBnDx6bvKN4o0yHe3wqUmydavb2kmk9tQnNGff8WLAIqv7dVElR7gfSPbDvqs4
+         uOaCbQTDmqTUwfY5nD+w98ig4SNxj3QasCocPUcE=
+Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
+        20230601110031eucas1p221d36e00d0488d1d902369ad75710789~kg-DzZl2b1539915399eucas1p20;
+        Thu,  1 Jun 2023 11:00:31 +0000 (GMT)
+Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
+        eusmges2new.samsung.com (EUCPMTA) with SMTP id AC.64.11320.F4A78746; Thu,  1
+        Jun 2023 12:00:31 +0100 (BST)
+Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+        20230601110030eucas1p2eed547c326a51a6110100fb50799d136~kg-C8R1d42445024450eucas1p2G;
+        Thu,  1 Jun 2023 11:00:30 +0000 (GMT)
+Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
+        eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20230601110030eusmtrp23f6209f6474c61b91efe846faadc612e~kg-C7jyTp1117411174eusmtrp2d;
+        Thu,  1 Jun 2023 11:00:30 +0000 (GMT)
+X-AuditID: cbfec7f4-993ff70000022c38-ab-64787a4f6706
+Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
+        eusmgms2.samsung.com (EUCPMTA) with SMTP id 51.D4.14344.E4A78746; Thu,  1
+        Jun 2023 12:00:30 +0100 (BST)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+        20230601110029eusmtip21dd25ce8bd00135494037f2ed594a7a8~kg-CP1GUn1801218012eusmtip2L;
+        Thu,  1 Jun 2023 11:00:29 +0000 (GMT)
+Message-ID: <88d9edfe-2f39-b15f-f513-463eac6bf473@samsung.com>
+Date:   Thu, 1 Jun 2023 13:00:29 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0)
+        Gecko/20100101 Thunderbird/102.11.0
+Subject: Re: [PATCH v12 1/1] serial: core: Start managing serial controllers
+ to enable runtime PM
+Content-Language: en-US
+To:     Tony Lindgren <tony@atomide.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>
+Cc:     Andy Shevchenko <andriy.shevchenko@intel.com>,
+        Dhruva Gole <d-gole@ti.com>,
+        =?UTF-8?Q?Ilpo_J=c3=a4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        John Ogness <john.ogness@linutronix.de>,
+        Johan Hovold <johan@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        linux-omap@vger.kernel.org,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org
+From:   Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <20230525113034.46880-1-tony@atomide.com>
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrNKsWRmVeSWpSXmKPExsWy7djP87r+VRUpBqs6RC1mLlvObtHbNJ3J
+        YtrFScwWLWs9LJoXr2ez6NzRw2Lxbq6MRdONHlaLbVfmM1pc3jWHzWL2kn4WizOLe9kt9l/x
+        svh/9gO7A5/Ht6+TWDwW73nJ5LFpVSebx7tz59g95p0M9Ng/dw27x/Eb25k8Pm+SC+CI4rJJ
+        Sc3JLEst0rdL4Mp42N7GXNAhVLG4u5+9gfEHXxcjJ4eEgInErgUrmLoYuTiEBFYwSnTdPsoK
+        4XxhlLj07gMzSJWQwGdGia3b7LsYOcA6Lv+Wh6hZzijR934jM4TzkVHi7boWFpAiXgE7iQvH
+        eUB6WQRUJB4dmsoOYvMKCEqcnPmEBcQWFUiV+DZ3ByuILSyQLDHj/yOwXcwC4hK3nsxnArFF
+        BKok3u89ADafWeAss0Tzpv1gg9gEDCW63naxgdicAmYSuz6tZYNolpdo3jobrEFCYDmnxJbO
+        40wQf7pIdNz4xQZhC0u8Or6FHcKWkfi/cz4TREM7o8SC3/ehnAmMEg3PbzFCVFlL3DkH0s0B
+        tEJTYv0ufYiwo8Sm1jfskGDhk7jxVhDiCD6JSdumM0OEeSU62oQgqtUkZh1fB7f24IVLzBMY
+        lWYhhcssJP/PQvLOLIS9CxhZVjGKp5YW56anFhvlpZbrFSfmFpfmpesl5+duYgSmt9P/jn/Z
+        wbj81Ue9Q4xMHIyHGCU4mJVEeIXCylOEeFMSK6tSi/Lji0pzUosPMUpzsCiJ82rbnkwWEkhP
+        LEnNTk0tSC2CyTJxcEo1MGVqzYji3HdMy0fmw8UPEe9WHH80e8b83Fvqbdu0sngln4TmCLKL
+        +R81XaiaeP5fYFj51qXCn6sYBTtT2TJWaH3u2Xgp8M4moYr/SspfFj3brHU8OEv50Gz1sxbb
+        N/xTZGZNuSomwBW+JWmBlNCDp0I6CpsfTO+f3TZvyovzLzUE9rt0X6/oXfXuj5Nk5Lcdiifr
+        syw1xNuzLM2cogsY7dsVHd+HT9vMJ6asl3F0o2PU8p+HpJ89Zlk/zZP31N3VprYc8orsxxud
+        bI6wmUbrG4c67Z2x1dU+NHpd+U8OFaFlzWvv7iuqk4rbfuDo2z3z63irpm9dz7f2paeu1KMZ
+        580ubBOePbH40c1mmYl6bkosxRmJhlrMRcWJAHV1mAPeAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrLIsWRmVeSWpSXmKPExsVy+t/xe7p+VRUpBgeuSlvMXLac3aK3aTqT
+        xbSLk5gtWtZ6WDQvXs9m0bmjh8Xi3VwZi6YbPawW267MZ7S4vGsOm8XsJf0sFmcW97Jb7L/i
+        ZfH/7Ad2Bz6Pb18nsXgs3vOSyWPTqk42j3fnzrF7zDsZ6LF/7hp2j+M3tjN5fN4kF8ARpWdT
+        lF9akqqQkV9cYqsUbWhhpGdoaaFnZGKpZ2hsHmtlZKqkb2eTkpqTWZZapG+XoJfxsL2NuaBD
+        qGJxdz97A+MPvi5GDg4JAROJy7/luxi5OIQEljJKzJn4jaWLkRMoLiNxcloDK4QtLPHnWhcb
+        RNF7RomfRxcwgzTzCthJXDjOA1LDIqAi8ejQVHYQm1dAUOLkzCdgc0QFUiV6v6xgBLGFBZIl
+        Zvx/xAxiMwuIS9x6Mp8JxBYRqJHYuHQqC8h8ZoGzzBJbTm0CGyQkYCpxZNN+sCI2AUOJrrcg
+        R3BycAqYSez6tJYNYpCZRNfWLkYIW16ieets5gmMQrOQ3DELyb5ZSFpmIWlZwMiyilEktbQ4
+        Nz232EivODG3uDQvXS85P3cTIzCetx37uWUH48pXH/UOMTJxMB5ilOBgVhLhFQorTxHiTUms
+        rEotyo8vKs1JLT7EaAoMjInMUqLJ+cCEklcSb2hmYGpoYmZpYGppZqwkzutZ0JEoJJCeWJKa
+        nZpakFoE08fEwSnVwCR3/QaLgUl32vvSY+xG1yqOGl/VM1ALPa/tz5O9OPjsvcpNLWe/3r9R
+        ujs7R7pLj2Fr8M3EvzvTL1wp8DjnFPw/5p+SRF1I/esEj5yfHtuevE7g0RK2tz9x7IeLp8fm
+        z+slVD68f9ObfjXAJYD134ESbflfF6bO/3c4deVj9beOxcl/JMTiEoLfs1VJLGxI/1O2vPMM
+        t/QeoZzHponL1tx7f+vzdpZNgpetjzZ6n3x8g4uhdPaC5pzF0Xs1LPx6mJUnlJY+yp4xKbbF
+        sufwFtaXuc3zbzVHVWen3v+R80w0Y/b+6f67fi0syjp9IrxKe/URn/IpUepy0+77TAtyNa17
+        +yEk4FqC9WfF1IodOUosxRmJhlrMRcWJAErIrgBwAwAA
+X-CMS-MailID: 20230601110030eucas1p2eed547c326a51a6110100fb50799d136
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20230601110030eucas1p2eed547c326a51a6110100fb50799d136
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20230601110030eucas1p2eed547c326a51a6110100fb50799d136
+References: <20230525113034.46880-1-tony@atomide.com>
+        <CGME20230601110030eucas1p2eed547c326a51a6110100fb50799d136@eucas1p2.samsung.com>
+X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Tero Kristo <t-kristo@ti.com>
+Hi Tony,
 
-Client device node property ti,pruss-gp-mux-sel can now be used to
-configure the GPMUX config value for PRU.
+On 25.05.2023 13:30, Tony Lindgren wrote:
+> We want to enable runtime PM for serial port device drivers in a generic
+> way. To do this, we want to have the serial core layer manage the
+> registered physical serial controller devices.
+>
+> To manage serial controllers, let's set up a struct bus and struct device
+> for the serial core controller as suggested by Greg and Jiri. The serial
+> core controller devices are children of the physical serial port device.
+> The serial core controller device is needed to support multiple different
+> kind of ports connected to single physical serial port device.
+>
+> Let's also set up a struct device for the serial core port. The serial
+> core port instances are children of the serial core controller device.
+>
+> With the serial core port device we can now flush pending TX on the
+> runtime PM resume as suggested by Johan.
+>
+> Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Suggested-by: Jiri Slaby <jirislaby@kernel.org>
+> Suggested-by: Johan Hovold <johan@kernel.org>
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
 
-Signed-off-by: Tero Kristo <t-kristo@ti.com>
-Signed-off-by: Suman Anna <s-anna@ti.com>
-Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
----
- drivers/remoteproc/pru_rproc.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+This patch landed in today's linux next-20230601 as commit 84a9582fd203 
+("serial: core: Start managing serial controllers to enable runtime 
+PM"). Unfortunately it breaks booting some of my test boards. This can 
+be easily reproduced with QEMU and ARM64 virt machine. The last message 
+I see in the log is:
 
-diff --git a/drivers/remoteproc/pru_rproc.c b/drivers/remoteproc/pru_rproc.c
-index 2874c8d324f7..29d3a5a930c1 100644
---- a/drivers/remoteproc/pru_rproc.c
-+++ b/drivers/remoteproc/pru_rproc.c
-@@ -109,6 +109,7 @@ struct pru_private_data {
-  * @dbg_single_step: debug state variable to set PRU into single step mode
-  * @dbg_continuous: debug state variable to restore PRU execution mode
-  * @evt_count: number of mapped events
-+ * @gpmux_save: saved value for gpmux config
-  */
- struct pru_rproc {
- 	int id;
-@@ -127,6 +128,7 @@ struct pru_rproc {
- 	u32 dbg_single_step;
- 	u32 dbg_continuous;
- 	u8 evt_count;
-+	u8 gpmux_save;
- };
- 
- static inline u32 pru_control_read_reg(struct pru_rproc *pru, unsigned int reg)
-@@ -228,6 +230,7 @@ struct rproc *pru_rproc_get(struct device_node *np, int index,
- 	struct device *dev;
- 	const char *fw_name;
- 	int ret;
-+	u32 mux;
- 
- 	rproc = __pru_rproc_get(np, index);
- 	if (IS_ERR(rproc))
-@@ -252,6 +255,22 @@ struct rproc *pru_rproc_get(struct device_node *np, int index,
- 	if (pru_id)
- 		*pru_id = pru->id;
- 
-+	ret = pruss_cfg_get_gpmux(pru->pruss, pru->id, &pru->gpmux_save);
-+	if (ret) {
-+		dev_err(dev, "failed to get cfg gpmux: %d\n", ret);
-+		goto err;
-+	}
-+
-+	ret = of_property_read_u32_index(np, "ti,pruss-gp-mux-sel", index,
-+					 &mux);
-+	if (!ret) {
-+		ret = pruss_cfg_set_gpmux(pru->pruss, pru->id, mux);
-+		if (ret) {
-+			dev_err(dev, "failed to set cfg gpmux: %d\n", ret);
-+			goto err;
-+		}
-+	}
-+
- 	ret = of_property_read_string_index(np, "firmware-name", index,
- 					    &fw_name);
- 	if (!ret) {
-@@ -290,6 +309,8 @@ void pru_rproc_put(struct rproc *rproc)
- 
- 	pru = rproc->priv;
- 
-+	pruss_cfg_set_gpmux(pru->pruss, pru->id, pru->gpmux_save);
-+
- 	pru_rproc_set_firmware(rproc, NULL);
- 
- 	mutex_lock(&pru->lock);
+[    3.084743] Run /sbin/init as init process
+
+I've tried a hack posted here by Steven Price, but unfortunately it 
+doesn't fix my issue. Reverting $subject on top of next-20230601 fixes 
+the boot.
+
+Here is my qemu test command (nothing really special...):
+
+qemu-system-aarch64 -kernel Image -append "console=ttyAMA0 
+no_console_suspend root=/dev/vda rootwait ip=::::target::off" -M virt 
+-cpu cortex-a57 -smp 2 -m 1024 -device 
+virtio-blk-device,drive=virtio-blk0 -device 
+virtio-blk-device,drive=virtio-blk1 -drive 
+file=qemu-virt-rootfs.raw,id=virtio-blk1,if=none,format=raw -drive 
+file=initrd,id=virtio-blk0,if=none,format=raw -netdev user,id=user 
+-device virtio-net-device,netdev=user -display none
+
+
+ > ...
+
+Best regards
 -- 
-2.34.1
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
 
