@@ -2,73 +2,84 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE0E471FEB3
-	for <lists+linux-omap@lfdr.de>; Fri,  2 Jun 2023 12:13:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EB1971FEB5
+	for <lists+linux-omap@lfdr.de>; Fri,  2 Jun 2023 12:13:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234014AbjFBKNX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 2 Jun 2023 06:13:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39662 "EHLO
+        id S235132AbjFBKNg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 2 Jun 2023 06:13:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235247AbjFBKNV (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 2 Jun 2023 06:13:21 -0400
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1B157C0
-        for <linux-omap@vger.kernel.org>; Fri,  2 Jun 2023 03:13:18 -0700 (PDT)
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id C82998111;
-        Fri,  2 Jun 2023 10:13:16 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     soc@kernel.org
-Cc:     arm@kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        "Tony Lindgren" <tony@atomide.com>
-Subject: [GIT PULL 3/3] Devicetree changes for omaps for v6.5
-Date:   Fri,  2 Jun 2023 13:13:07 +0300
-Message-ID: <pull-1685700720-242492@atomide.com-3>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <pull-1685700720-242492@atomide.com>
-References: <pull-1685700720-242492@atomide.com>
+        with ESMTP id S234416AbjFBKNf (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 2 Jun 2023 06:13:35 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7B85C0;
+        Fri,  2 Jun 2023 03:13:34 -0700 (PDT)
+From:   John Ogness <john.ogness@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1685700812;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=M7GzoTaph3PJwwLQgPyik4Eh+bbnZRkPzskpAeL6aSA=;
+        b=GG3G5mL0bgKlxf6U+FJBDL6Q1lUEIKeL4TxsOPB4fSfBkk/fcfVyWWUUtHTLjysXvihtjX
+        dg/Seh5PS7j7QK8kubfn/HKaB7/ZGg32l+FqXnwtp/F2PYanop+GXVgwZaSB6EkgPisrPn
+        ggoMEaq4XMMOL2r2rylrdWLpFiOqzEBJD+mv+6BjNvwaq7B/HZguez5Q5EooMkyH84lBZv
+        14tq4SpYgp3gpUBXRKME+aWk0wr+c912N7Vn4rkCZf0UoVV8TlTC8NMG7Z6UCJViu5Ts2o
+        knwkQycTe/KoOm1C4W6hDbK2YxTF4GgwTOyOwQ4sVhhYA2FZ8QmEQGHOl0OasA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1685700812;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=M7GzoTaph3PJwwLQgPyik4Eh+bbnZRkPzskpAeL6aSA=;
+        b=mZtG4RT88sue4AZKYDqVM5VkrPwnXz/sPSOFAK7alYyAi80FpCRuwryq9FZ70KRmumsdmx
+        VsglgIllqcsaEDDA==
+To:     Chen-Yu Tsai <wenst@chromium.org>, Tony Lindgren <tony@atomide.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@intel.com>,
+        Dhruva Gole <d-gole@ti.com>,
+        Ilpo =?utf-8?Q?J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Johan Hovold <johan@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        linux-omap@vger.kernel.org,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
+        =?utf-8?Q?N=C3=ADcolas_F=2E_R=2E_A=2E_Prado?= 
+        <nfraprado@collabora.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH v12 1/1] serial: core: Start managing serial controllers
+ to enable runtime PM
+In-Reply-To: <20230602083335.GA181647@google.com>
+References: <20230525113034.46880-1-tony@atomide.com>
+ <20230602083335.GA181647@google.com>
+Date:   Fri, 02 Jun 2023 12:19:28 +0206
+Message-ID: <87a5xii33r.fsf@jogness.linutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,INVALID_DATE_TZ_ABSURD,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: "Tony Lindgren" <tony@atomide.com>
+On 2023-06-02, Chen-Yu Tsai <wenst@chromium.org> wrote:
+> This patch, in linux-next since 20230601, unfortunately breaks
+> MediaTek based Chromebooks. The kernel hangs during the probe of the
+> serial ports, which use the 8250_mtk driver.
 
-The following changes since commit ac9a78681b921877518763ba0e89202254349d1b:
+Are you sure it is this patch? Have you bisected it?
 
-  Linux 6.4-rc1 (2023-05-07 13:34:35 -0700)
+Unfortunately next-20230601 also brought in a series that added
+spinlocking to the 8250 driver. That may be the issue here instead.
 
-are available in the Git repository at:
+For 8250 bug reports we really need to bisection.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v6.5/dt-signed
-
-for you to fetch changes up to 445d5be64be82c11505c41d75a4bde3af41d619b:
-
-  ARM: dts: omap4: add initial support for Epson Moverio BT-200 (2023-05-31 08:23:48 +0300)
-
-----------------------------------------------------------------
-Devicetree changes for omaps for v6.5
-
-A non-urgent fix for gpmc,wait-pin property for am335x-myirtech-myc, and
-initial support for Epson Moverio BT-200 AR glasses.
-
-----------------------------------------------------------------
-Alexander Shiyan (1):
-      ARM: dts: am335x-myirtech: Add missing NAND wait pin definition
-
-Andreas Kemnade (1):
-      ARM: dts: omap4: add initial support for Epson Moverio BT-200
-
- arch/arm/boot/dts/Makefile                 |   1 +
- arch/arm/boot/dts/am335x-myirtech-myc.dtsi |   1 +
- arch/arm/boot/dts/omap4-epson-embt2ws.dts  | 450 +++++++++++++++++++++++++++++
- 3 files changed, 452 insertions(+)
- create mode 100644 arch/arm/boot/dts/omap4-epson-embt2ws.dts
+John Ogness
