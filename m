@@ -2,70 +2,88 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6832A7204F3
-	for <lists+linux-omap@lfdr.de>; Fri,  2 Jun 2023 16:54:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57C5B720B0C
+	for <lists+linux-omap@lfdr.de>; Fri,  2 Jun 2023 23:37:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236302AbjFBOyf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 2 Jun 2023 10:54:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50164 "EHLO
+        id S235360AbjFBVhj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 2 Jun 2023 17:37:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236262AbjFBOyV (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 2 Jun 2023 10:54:21 -0400
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE75EE62;
-        Fri,  2 Jun 2023 07:54:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1685717651; x=1717253651;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=y53sMR24ZEtw6YFFN78RDscItf1umgQZI1yJzYfS/mw=;
-  b=bakh7aT704hmVD+Z3xH06MmXIoCi5ymcCPhHrbySd5Md7a6CkEqZJ2Xp
-   gl+mFljgWYZJxv45RjnMkE94pRuNBqttzyz9XduHKNZWI3PTrEtpO+ctq
-   GW8vFQUkhqrh8qQJpKWrBZ0fjpGWC45ZpJ5OrJHGqn9tAMa8o/JoOtg1d
-   1BsKIuvnYE4TE+I84U6sHMmBmcYR9ulr8zvGSxwHD1kODzwFytPQt+7pl
-   W3UysjKNFfSgEm1VB8HbBDc0B4fb8iaifZTvpKwKAoYmu4SwdzXKFuQ1T
-   ++xNMLXYZaN3fd1UfRnHSDEfaWL1M+HkYnwQihCeGvfYvzzoZW9Jg/Sxm
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10729"; a="335500572"
-X-IronPort-AV: E=Sophos;i="6.00,213,1681196400"; 
-   d="scan'208";a="335500572"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2023 07:53:56 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10729"; a="658297330"
-X-IronPort-AV: E=Sophos;i="6.00,213,1681196400"; 
-   d="scan'208";a="658297330"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga003.jf.intel.com with ESMTP; 02 Jun 2023 07:53:53 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1q56A3-000fU6-1I;
-        Fri, 02 Jun 2023 17:53:51 +0300
-Date:   Fri, 2 Jun 2023 17:53:51 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>, Dhruva Gole <d-gole@ti.com>,
-        Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        John Ogness <john.ogness@linutronix.de>,
-        Johan Hovold <johan@kernel.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        with ESMTP id S236246AbjFBVhi (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 2 Jun 2023 17:37:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FEC51B5;
+        Fri,  2 Jun 2023 14:37:37 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CE6BA61ED3;
+        Fri,  2 Jun 2023 21:37:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC9ACC433D2;
+        Fri,  2 Jun 2023 21:37:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1685741856;
+        bh=1FcV/MmMD469O1FQZ7KzmQXuisSwf/qS6Cx5HeBprRU=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=G1SmzjFN1fwdTVy/JX+tcplLxTUjUTUxEYFqWy36jkRCY8CssArfmtY6hLyIJ+eEl
+         Bsh5696NyIdCrSPjt2TUjM0RFMQlO0wpybcSRG6UraTxRxGXt4VITakX9oYodhFdyh
+         rfKi2TNtnhoeQ1oqNFE8gfgG28MlI7yJP3b9ig8g9v5cVOy5x4enFGWy4eo4eOhL/D
+         t0558CmqNSsrs8MIMUgAirdzk2AkEhL549O1T9Ri7JyW34yBjFQ+ghpcI6WWPzIPLi
+         /OsVnvTW9zVJhYn0W1r/GVQ7YvbUz4DhG+Daqqs+lJJtWaWxaXh3OmZq4hyGtUOW+P
+         FAVYBtTinWEBw==
+Date:   Fri, 2 Jun 2023 16:37:34 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+Cc:     Bjorn Helgaas <bhelgaas@google.com>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+        Joyce Ooi <joyce.ooi@intel.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Jim Quinlan <jim2101024@gmail.com>,
+        Nicolas Saenz Julienne <nsaenz@kernel.org>,
         Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-omap@vger.kernel.org, linux-serial@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] serial: core: Fix error handling for
- serial_core_ctrl_device_add()
-Message-ID: <ZHoCf50NnIeseQT8@smile.fi.intel.com>
-References: <20230602070007.59268-1-tony@atomide.com>
+        Tom Joseph <tjoseph@cadence.com>,
+        Shawn Guo <shawn.guo@linaro.org>,
+        Rahul Tanwar <rtanwar@maxlinear.com>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Serge Semin <Sergey.Semin@baikalelectronics.ru>,
+        Vidya Sagar <vidyas@nvidia.com>,
+        Jisheng Zhang <jszhang@kernel.org>,
+        Miaoqian Lin <linmq006@gmail.com>, Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Jianjun Wang <jianjun.wang@mediatek.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Sergio Paracuellos <sergio.paracuellos@gmail.com>,
+        Shawn Lin <shawn.lin@rock-chips.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Toan Le <toan@os.amperecomputing.com>,
+        Rob Herring <robh@kernel.org>, linux-pci@vger.kernel.org,
+        linux-rockchip@lists.infradead.org,
+        Broadcom internal kernel review list 
+        <bcm-kernel-feedback-list@broadcom.com>,
+        linux-rpi-kernel@lists.infradead.org, kernel@pengutronix.de,
+        linux-arm-msm@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+Subject: Re: [PATCH 00/15] PCI: Convert to platform remove callback returning
+ void
+Message-ID: <ZHphHkNLO4tEJIm/@bhelgaas>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20230602070007.59268-1-tony@atomide.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230530140742.ebbrxmpieuphbmz3@pengutronix.de>
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -73,49 +91,44 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, Jun 02, 2023 at 10:00:05AM +0300, Tony Lindgren wrote:
-> Checking for NULL is incorrect as serial_base_ctrl_add() uses ERR_PTR().
+On Tue, May 30, 2023 at 04:07:42PM +0200, Uwe Kleine-König wrote:
+> Hello Bjorn,
 > 
-> Let's also pass any returned error along, there's no reason to translate
-> all errors to -ENODEV.
+> On Tue, Mar 21, 2023 at 08:31:53PM +0100, Uwe Kleine-König wrote:
+> > this series adapts the platform drivers below drivers/pci to use the
+> > .remove_new() callback. Compared to the traditional .remove() callback
+> > .remove_new() returns no value. This is a good thing because the driver core
+> > doesn't (and cannot) cope for errors during remove. The only effect of a
+> > non-zero return value in .remove() is that the driver core emits a warning. The
+> > device is removed anyhow and an early return from .remove() usually yields a
+> > resource leak.
+> > 
+> > By changing the remove callback to return void driver authors cannot
+> > reasonably assume any more that there is some kind of cleanup later.
+> > 
+> > All drivers were easy to convert as they all returned zero in their
+> > remove callback. Only for iproc the conversion wasn't trivial, the other
+> > were converted using coccinelle.
+> > 
+> > There are no interdependencies between these patches. So even if there
+> > are some concerns for individual patches, I ask you to apply the
+> > remaining set. Then I only have to care for the review feedback of the
+> > refused patches. (Having said that I don't expect any serious objection,
+> > just things like squashing or separating patches, or maybe I picked a
+> > wrong subject prefix.)
+> 
+> These patches wait for application for quite some time now. They apply
+> just fine to v6.4-rc1 and next/master. Would be great to get them in
+> during the next merge window and ideally give them some time in next
+> before.
 
-Jiri already asked the same question I have had on a glance, and this all
-solved here, so
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Thanks, these seem fine to me, and Lorenzo normally takes care of
+drivers/pci/controller/.  Lorenzo, if it's easier to have me apply
+them, that's fine, too, just let me know.
 
-> Fixes: 84a9582fd203 ("serial: core: Start managing serial controllers to enable runtime PM")
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
-> ---
-> 
-> Changes since v1:
-> 
-> - Stop translating all errors to -ENODEV
-> 
-> - There's no need to use IS_ERR_OR_NULL() as noted by Jiri
-> 
-> ---
->  drivers/tty/serial/serial_core.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
-> --- a/drivers/tty/serial/serial_core.c
-> +++ b/drivers/tty/serial/serial_core.c
-> @@ -3342,8 +3342,8 @@ int serial_core_register_port(struct uart_driver *drv, struct uart_port *port)
->  	ctrl_dev = serial_core_ctrl_find(drv, port->dev, port->ctrl_id);
->  	if (!ctrl_dev) {
->  		new_ctrl_dev = serial_core_ctrl_device_add(port);
-> -		if (!new_ctrl_dev) {
-> -			ret = -ENODEV;
-> +		if (IS_ERR(new_ctrl_dev)) {
-> +			ret = PTR_ERR(new_ctrl_dev);
->  			goto err_unlock;
->  		}
->  		ctrl_dev = new_ctrl_dev;
-> -- 
-> 2.41.0
+The only tweaks I would make would be:
 
--- 
-With Best Regards,
-Andy Shevchenko
+  PCI: j721e: Convert to platform remove callback returning void
+  PCI: dwc: Convert to platform remove callback returning void
 
-
+to match the git history.
