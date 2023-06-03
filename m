@@ -2,25 +2,42 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 95BC1720E24
-	for <lists+linux-omap@lfdr.de>; Sat,  3 Jun 2023 08:35:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8ADC372133E
+	for <lists+linux-omap@lfdr.de>; Sat,  3 Jun 2023 23:57:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231782AbjFCGfg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 3 Jun 2023 02:35:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37356 "EHLO
+        id S229501AbjFCV50 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 3 Jun 2023 17:57:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51860 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229523AbjFCGff (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 3 Jun 2023 02:35:35 -0400
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 27276E58;
-        Fri,  2 Jun 2023 23:35:35 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 668D4804D;
-        Sat,  3 Jun 2023 06:35:34 +0000 (UTC)
-Date:   Sat, 3 Jun 2023 09:35:33 +0300
-From:   Tony Lindgren <tony@atomide.com>
-To:     John Ogness <john.ogness@linutronix.de>
-Cc:     Chen-Yu Tsai <wenst@chromium.org>,
+        with ESMTP id S229463AbjFCV5Z (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 3 Jun 2023 17:57:25 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBE5BFD;
+        Sat,  3 Jun 2023 14:57:23 -0700 (PDT)
+Received: from mercury (unknown [185.254.75.45])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: sre)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 65E4A6602B7B;
+        Sat,  3 Jun 2023 22:57:21 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1685829441;
+        bh=hJv1+07zztxnXaWB2lGLhpwvzjwzOPI66T01+jArZXQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=i+6zwYvDfkcEW67V2s8wtEUsRo+LG6xkCsd1FhS3pQ7RyKPIZH8NGTpoWuJBnoFSj
+         sWudrVLaPg3txEwfu/KRQNgJnDzqLlSSdUYB/7KKYl5xWXXrLKggqchaUhMDRNWaaM
+         pKxfY9cJSLO+MHLf06v2q5S3T4grbhX7NUPGEdvkeZWoadv79OJKEWrez5VOIelpMe
+         7BFzw7kOMgfvmU2YU/ZWjcNJRRSLa31JngHg2en7AyfyPGMTWmlUztaWRjStSEvh3v
+         Y+U3iazDDbitswzonWPDBuC1OMqgfjvclRzPR7ZeCuGh5vJvLw00gkNP7zMHYKcL1O
+         e7IEV8YEzXGTQ==
+Received: by mercury (Postfix, from userid 1000)
+        id 03463106090A; Sat,  3 Jun 2023 23:57:18 +0200 (CEST)
+Date:   Sat, 3 Jun 2023 23:57:18 +0200
+From:   Sebastian Reichel <sebastian.reichel@collabora.com>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     John Ogness <john.ogness@linutronix.de>,
+        Chen-Yu Tsai <wenst@chromium.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Jiri Slaby <jirislaby@kernel.org>,
         Andy Shevchenko <andriy.shevchenko@intel.com>,
@@ -39,17 +56,19 @@ Cc:     Chen-Yu Tsai <wenst@chromium.org>,
         linux-mediatek@lists.infradead.org
 Subject: Re: [PATCH v12 1/1] serial: core: Start managing serial controllers
  to enable runtime PM
-Message-ID: <20230603063533.GS14287@atomide.com>
+Message-ID: <20230603215718.ca5hdzdsj4btnlc2@mercury.elektranox.org>
 References: <20230525113034.46880-1-tony@atomide.com>
  <20230602083335.GA181647@google.com>
  <87a5xii33r.fsf@jogness.linutronix.de>
  <20230603054139.GR14287@atomide.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="tneo32rghtw2mwkv"
 Content-Disposition: inline
 In-Reply-To: <20230603054139.GR14287@atomide.com>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,58 +76,48 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Tony Lindgren <tony@atomide.com> [230603 05:41]:
-> I don't think 8250_mtk needs to do register access before and after the
-> serial port registration, but if it does, then adding custom read/write
-> functions can be done that do not rely on initialized port like
-> serial_out().
 
-Oh but mtk8250_runtime_suspend() calls serial_in(up, MTK_UART_DEBUG0), so
-yeah if that gets called before registration is complete it causes a NULL
-pointer exception. If the serial_ctrl and serial_port devices do runtime
-suspend before port registration completes, things will fail.
+--tneo32rghtw2mwkv
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Sounds like doing pm_runtime_resume_and_get() in mtk8250_probe() might
-fix the issue. Still seems that adding a custom read function for
-mtk8250_runtime_suspend() to use instead of calling serial_in() should
-not be needed.
+Hi,
 
-An experimental untested patch below, maye it helps?
+On Sat, Jun 03, 2023 at 08:41:39AM +0300, Tony Lindgren wrote:
+> Looking at the kernelci.org test boot results for Linux next [0], seems
+> this issue is somehow 8250_mtk specific. I don't think the rk3399 boot
+> issue is serial port related.
 
-Regards,
+The rk3399-gru-kevin board is broken because of a change from me
+renaming CONFIG_MFD_RK808 to CONFIG_MFD_RK8XX and forgetting to
+update the defconfig :( This means the board is missing its PMIC
+driver. It should be fixed once the defconfig update is queued:
 
-Tony
+https://lore.kernel.org/all/20230518040541.299189-1-sebastian.reichel@collabora.com/
 
-8< ------
-diff --git a/drivers/tty/serial/8250/8250_mtk.c b/drivers/tty/serial/8250/8250_mtk.c
---- a/drivers/tty/serial/8250/8250_mtk.c
-+++ b/drivers/tty/serial/8250/8250_mtk.c
-@@ -588,20 +588,24 @@ static int mtk8250_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, data);
- 
- 	pm_runtime_enable(&pdev->dev);
--	err = mtk8250_runtime_resume(&pdev->dev);
-+	err = pm_runtime_resume_and_get(&pdev->dev);
- 	if (err)
- 		goto err_pm_disable;
- 
- 	data->line = serial8250_register_8250_port(&uart);
- 	if (data->line < 0) {
- 		err = data->line;
--		goto err_pm_disable;
-+		goto err_pm_put;
- 	}
- 
- 	data->rx_wakeup_irq = platform_get_irq_optional(pdev, 1);
- 
-+	pm_runtime_put_sync(&pdev->dev);
-+
- 	return 0;
- 
-+err_pm_put:
-+	pm_runtime_put_sync(&pdev->dev);
- err_pm_disable:
- 	pm_runtime_disable(&pdev->dev);
- 
--- 
-2.41.0
+Unfortuantely nobody seems to feel responsible for the generic arm
+defconfig files :(
+
+-- Sebastian
+
+--tneo32rghtw2mwkv
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmR7tzsACgkQ2O7X88g7
++pqWzQ//Uie7CBnwn5JUIsHsI4pPtgldOe3Z8n7rWBzZvYXWIfkk/BJg1Dw8i+Xx
+QFeJoehfNn02Lkznixt6ZsIL6iVQketP/BfKSFl/QFV/LkKqqRn8lqdwOtDi3ek5
+LVEN0nbMCI6KMNFZgnIU0Vg6L7RLKA/PgAZ9n0FT/rnKQBj3yJCE9/UaqdxFmZ2Q
+GMSOWPh21szOK9nd+9irXGLtJBirdSK+uzkwIt8zs/Ff2NiUPbHw+cArDb1qZwJ5
+t7fLF9HkbrDViQtJr5eHdmVhXT4WIPZbeob2tKUy37weZemNXd9LTOjJlAxu7voa
+swsc/jVZJCjQrySnn1MFmL8nV/Ae+MDq/EceDR5JpiiS/NN4AtdzV+ieRcqhf10a
+Amni6QCMoe4nqMEFAPsdOTe1obH5qiTYhRohkIBjrQQ4CgCUDk6fvlq7LFjpW+ZD
+BNsVHk9jlO+VKMclFLAmgWb4gV3HF68SE2cpOCtYINFmaAqxRfiboeIEsGDGOuA7
+869iSzU5Z1m9Cz0huFRH6QaDIMCI4+WWikekGuTT3vuFdh4OgH/1ZNdSz2RizkGi
+oQV08HqL8tkufUhFeiLUfDZhz6LmNzanlMcQZbEzlOyN9FOqXSZ4/BhPCLJtzMrT
+tjDdjj0wFg7NgAJI+v6n71GpVDzWMNufTt+ppYm7GNRsveW+Dt8=
+=oc53
+-----END PGP SIGNATURE-----
+
+--tneo32rghtw2mwkv--
