@@ -2,56 +2,55 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A264721508
-	for <lists+linux-omap@lfdr.de>; Sun,  4 Jun 2023 08:04:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37CA5721849
+	for <lists+linux-omap@lfdr.de>; Sun,  4 Jun 2023 17:50:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230202AbjFDGEq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 4 Jun 2023 02:04:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38184 "EHLO
+        id S231809AbjFDPuH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 4 Jun 2023 11:50:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229462AbjFDGEn (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 4 Jun 2023 02:04:43 -0400
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B37E5120;
-        Sat,  3 Jun 2023 23:04:38 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id B52C0804D;
-        Sun,  4 Jun 2023 06:04:37 +0000 (UTC)
-Date:   Sun, 4 Jun 2023 09:04:36 +0300
-From:   Tony Lindgren <tony@atomide.com>
-To:     Sebastian Reichel <sebastian.reichel@collabora.com>
-Cc:     John Ogness <john.ogness@linutronix.de>,
-        Chen-Yu Tsai <wenst@chromium.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Dhruva Gole <d-gole@ti.com>,
-        Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
-        Johan Hovold <johan@kernel.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-omap@vger.kernel.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
-        =?utf-8?B?TsOtY29sYXMgRi4gUi4gQS4=?= Prado 
-        <nfraprado@collabora.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH v12 1/1] serial: core: Start managing serial controllers
- to enable runtime PM
-Message-ID: <20230604060436.GT14287@atomide.com>
-References: <20230525113034.46880-1-tony@atomide.com>
- <20230602083335.GA181647@google.com>
- <87a5xii33r.fsf@jogness.linutronix.de>
- <20230603054139.GR14287@atomide.com>
- <20230603215718.ca5hdzdsj4btnlc2@mercury.elektranox.org>
+        with ESMTP id S231805AbjFDPuH (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 4 Jun 2023 11:50:07 -0400
+X-Greylist: delayed 450 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 04 Jun 2023 08:50:06 PDT
+Received: from smtp.smtpout.orange.fr (smtp-29.smtpout.orange.fr [80.12.242.29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 8FAFDDA
+        for <linux-omap@vger.kernel.org>; Sun,  4 Jun 2023 08:50:06 -0700 (PDT)
+Received: from pop-os.home ([86.243.2.178])
+        by smtp.orange.fr with ESMTPA
+        id 5psGqNLaQt9zc5psGqXS2j; Sun, 04 Jun 2023 17:42:35 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+        s=t20230301; t=1685893355;
+        bh=KSBCYH83xSlnxT9AqAr79v1PKm1DqpwXR0ggzhv2kFU=;
+        h=From:To:Cc:Subject:Date;
+        b=ZnL1ytK8458koQso49BCpWyOcEi755OnD8/aYZ70UWHbQUaXQ+XkwqFZLGG5+hG3Z
+         yaXTsYtK78QlhCXUpeznPk5AA2jU+eMpncJPkdKMUeAq8OcE53BPbyQ+T7f6CiQ7YP
+         zaQ6Wn66OPz1XYNoYQZH1LfM5PZRmm/Xg+BUaWjIxN9fHA97i0qZD7zpcpg7E+8+LX
+         UULF2+Wtpp9xj9ZFJyAa0pMqitEleMxEPKAUnIVNlsEpfr3PmbaXLiDiLnHrLjkNkk
+         Z6TIBh6/JrK674jq06KhMIcKUqxWNsn5aFWtT93SOOx+NN4lk8Ao7QlFbeKf9msp5Y
+         m4SnGCinLe35A==
+X-ME-Helo: pop-os.home
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sun, 04 Jun 2023 17:42:35 +0200
+X-ME-IP: 86.243.2.178
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     Helge Deller <deller@gmx.de>, Imre Deak <imre.deak@nokia.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Krzysztof Helt <krzysztof.h1@wp.pl>,
+        Juha Yrjola <juha.yrjola@solidboot.com>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        linux-fbdev@vger.kernel.org, linux-omap@vger.kernel.org,
+        dri-devel@lists.freedesktop.org
+Subject: [PATCH] video: fbdev: omapfb: lcd_mipid: Fix an error handling path in mipid_spi_probe()
+Date:   Sun,  4 Jun 2023 17:42:28 +0200
+Message-Id: <f17221571f619c0829db56354f2b74d22f6702a7.1685893329.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230603215718.ca5hdzdsj4btnlc2@mercury.elektranox.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -59,31 +58,35 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
+If 'mipid_detect()' fails, we must free 'md' to avoid a memory leak.
 
-* Sebastian Reichel <sebastian.reichel@collabora.com> [230603 21:57]:
-> On Sat, Jun 03, 2023 at 08:41:39AM +0300, Tony Lindgren wrote:
-> > Looking at the kernelci.org test boot results for Linux next [0], seems
-> > this issue is somehow 8250_mtk specific. I don't think the rk3399 boot
-> > issue is serial port related.
-> 
-> The rk3399-gru-kevin board is broken because of a change from me
-> renaming CONFIG_MFD_RK808 to CONFIG_MFD_RK8XX and forgetting to
-> update the defconfig :( This means the board is missing its PMIC
-> driver. It should be fixed once the defconfig update is queued:
-> 
-> https://lore.kernel.org/all/20230518040541.299189-1-sebastian.reichel@collabora.com/
+Fixes: 66d2f99d0bb5 ("omapfb: add support for MIPI-DCS compatible LCDs")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ drivers/video/fbdev/omap/lcd_mipid.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-OK thanks for the info.
-
-> Unfortuantely nobody seems to feel responsible for the generic arm
-> defconfig files :(
-
-You could put together a git branch with the defconfig changes and
-send a pull request to the SoC maintainers if it does not get picked
-up before that.
-
-Regards,
-
-Tony
+diff --git a/drivers/video/fbdev/omap/lcd_mipid.c b/drivers/video/fbdev/omap/lcd_mipid.c
+index e4a7f0b824ff..a0fc4570403b 100644
+--- a/drivers/video/fbdev/omap/lcd_mipid.c
++++ b/drivers/video/fbdev/omap/lcd_mipid.c
+@@ -571,11 +571,15 @@ static int mipid_spi_probe(struct spi_device *spi)
+ 
+ 	r = mipid_detect(md);
+ 	if (r < 0)
+-		return r;
++		goto free_md;
+ 
+ 	omapfb_register_panel(&md->panel);
+ 
+ 	return 0;
++
++free_md:
++	kfree(md);
++	return r;
+ }
+ 
+ static void mipid_spi_remove(struct spi_device *spi)
+-- 
+2.34.1
 
