@@ -2,72 +2,169 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0643A722A2C
-	for <lists+linux-omap@lfdr.de>; Mon,  5 Jun 2023 17:03:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5406E722D9D
+	for <lists+linux-omap@lfdr.de>; Mon,  5 Jun 2023 19:26:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232650AbjFEPDz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 5 Jun 2023 11:03:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46574 "EHLO
+        id S233033AbjFER0m (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 5 Jun 2023 13:26:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46976 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231945AbjFEPDy (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 5 Jun 2023 11:03:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0540DDA;
-        Mon,  5 Jun 2023 08:03:54 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8EDC262097;
-        Mon,  5 Jun 2023 15:03:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87A3BC433D2;
-        Mon,  5 Jun 2023 15:03:52 +0000 (UTC)
-Date:   Mon, 5 Jun 2023 17:03:50 +0200
-From:   Greg KH <greg@kroah.com>
-To:     Thomas Zimmermann <tzimmermann@suse.de>
-Cc:     daniel@ffwll.ch, javierm@redhat.com, sam@ravnborg.org,
-        deller@gmx.de, geert+renesas@glider.be, lee@kernel.org,
-        daniel.thompson@linaro.org, jingoohan1@gmail.com,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-sh@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-staging@lists.linux.dev
-Subject: Re: [PATCH 30/30] fbdev: Make support for userspace interfaces
- configurable
-Message-ID: <2023060542-daydream-dares-d494@gregkh>
-References: <20230605144812.15241-1-tzimmermann@suse.de>
- <20230605144812.15241-31-tzimmermann@suse.de>
+        with ESMTP id S232623AbjFER0k (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 5 Jun 2023 13:26:40 -0400
+Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16EDE9E
+        for <linux-omap@vger.kernel.org>; Mon,  5 Jun 2023 10:26:39 -0700 (PDT)
+Received: by mail-pl1-x62a.google.com with SMTP id d9443c01a7336-1b011cffe7fso23568845ad.1
+        for <linux-omap@vger.kernel.org>; Mon, 05 Jun 2023 10:26:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1685985998; x=1688577998;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=oZqfyldacC0XDQdlgcybeOtmpOKByOPh6WjeVTF62fI=;
+        b=zHj/glthhqgShaVchA3kSlzmwRY1tu52DszjiLxHcQu4qoc/Guv3EPCzIvWg2KPeNb
+         rCXdG49EbGfe+X72cuW9RHxS3QRqLfxGcCZq8RYA2EYEVatWZp3BRIBqZQDGn9CxC0SJ
+         1HgYv876+yPQzJGFGojPFisVcd481SL8Lt3Zma1YkYooSEa4Q5VISP0Qt6L3pv8Eg73m
+         Ps1PFvKHxIWN+lU+k2XX0cWIhrZomTguaZo76gC/R5JJF+K5do82HWBsPc3r22qXMsv5
+         zZAPXxY60v8/pqBiIyMqGSWS12DaYmG0Q3LNmofbCsfK+8IWu+Un/XFnBO0bcm6SaQ6/
+         bKrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685985998; x=1688577998;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oZqfyldacC0XDQdlgcybeOtmpOKByOPh6WjeVTF62fI=;
+        b=d/PvzKhUvf9XlsdKJ9F9McE0EBN1V5sPFmW/PoLoFRDuAGbJm1t3GBZdA9IEsyGJNp
+         qaPoLmUCbJHHVAON4n3ZcTU5gEQ8GbZmSrQIuMkUMWsp4X0L3B4a5nkaqoeTQwoDDOS8
+         uLAKYHE8I/M7u2bqee8+t/ms9bXKVdd4eB8zTtv2u3ATpI3lam5IlTK7uflYASOcrMYW
+         YXiUYHAdn/33GvC07YC9oEEu2jqK8GOJO4oAHavhK9JaT1NzoyBcM09aYK1q3E4V17JQ
+         gdXWWypQpYubwYjnw0NlghA9LqnlXIjefKOg2EqJlvX2yOTkg+xXa6D4CQZqF9PNPUbp
+         cAjg==
+X-Gm-Message-State: AC+VfDyN+4Z7EpoQLKOhciY9XIcbT90Vsrg7b+7Ih67GCc31knTNoA8F
+        vr+js6e9oweaQX289OfDokknIA==
+X-Google-Smtp-Source: ACHHUZ5JvrGlGppWeBFVmmK+Ax40IK7f9ZR/h7+HCqrLeKIfBaX7AWDP6dUJVCsCnHCuJREMmCBrMQ==
+X-Received: by 2002:a17:902:b183:b0:1b2:1a4f:5825 with SMTP id s3-20020a170902b18300b001b21a4f5825mr1249848plr.19.1685985998519;
+        Mon, 05 Jun 2023 10:26:38 -0700 (PDT)
+Received: from p14s ([2604:3d09:148c:c800:e5f9:abc2:7e8d:5257])
+        by smtp.gmail.com with ESMTPSA id 11-20020a170902c20b00b001b061dcdb6bsm6872663pll.28.2023.06.05.10.26.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Jun 2023 10:26:38 -0700 (PDT)
+Date:   Mon, 5 Jun 2023 11:26:35 -0600
+From:   Mathieu Poirier <mathieu.poirier@linaro.org>
+To:     MD Danish Anwar <danishanwar@ti.com>
+Cc:     Bjorn Andersson <andersson@kernel.org>, rogerq@kernel.org,
+        vigneshr@ti.org, nm@ti.com, srk@ti.com,
+        linux-kernel@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH] remoteproc: pru: add support for configuring GPMUX based
+ on client setup
+Message-ID: <ZH4aywQoA9gy2OWU@p14s>
+References: <20230601105904.3204260-1-danishanwar@ti.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230605144812.15241-31-tzimmermann@suse.de>
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20230601105904.3204260-1-danishanwar@ti.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Jun 05, 2023 at 04:48:12PM +0200, Thomas Zimmermann wrote:
-> Add Kconfig option CONFIG_FB_DEVICE and make the virtual fbdev
-> device optional. If the new option has not been selected, fbdev
-> does not create a files in devfs or sysfs.
-> 
-> Most modern Linux systems run a DRM-based graphics stack that uses
-> the kernel's framebuffer console, but has otherwise deprecated fbdev
-> support. Yet fbdev userspace interfaces are still present.
-> 
-> The option makes it possible to use the fbdev subsystem as console
-> implementation without support for userspace. This closes potential
-> entry points to manipulate kernel or I/O memory via framebuffers. It
-> also prevents the execution of driver code via ioctl or sysfs, both
-> of which might allow malicious software to exploit bugs in the fbdev
-> code.
-> 
-> A small number of fbdev drivers require struct fbinfo.dev to be
-> initialized, usually for the support of sysfs interface. Make these
-> drivers depend on FB_DEVICE. They can later be fixed if necessary.
-> 
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Hi MD,
 
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+On Thu, Jun 01, 2023 at 04:29:04PM +0530, MD Danish Anwar wrote:
+> From: Tero Kristo <t-kristo@ti.com>
+> 
+> Client device node property ti,pruss-gp-mux-sel can now be used to
+> configure the GPMUX config value for PRU.
+> 
+> Signed-off-by: Tero Kristo <t-kristo@ti.com>
+> Signed-off-by: Suman Anna <s-anna@ti.com>
+> Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
+> ---
+>  drivers/remoteproc/pru_rproc.c | 21 +++++++++++++++++++++
+>  1 file changed, 21 insertions(+)
+> 
+> diff --git a/drivers/remoteproc/pru_rproc.c b/drivers/remoteproc/pru_rproc.c
+> index 2874c8d324f7..29d3a5a930c1 100644
+> --- a/drivers/remoteproc/pru_rproc.c
+> +++ b/drivers/remoteproc/pru_rproc.c
+> @@ -109,6 +109,7 @@ struct pru_private_data {
+>   * @dbg_single_step: debug state variable to set PRU into single step mode
+>   * @dbg_continuous: debug state variable to restore PRU execution mode
+>   * @evt_count: number of mapped events
+> + * @gpmux_save: saved value for gpmux config
+>   */
+>  struct pru_rproc {
+>  	int id;
+> @@ -127,6 +128,7 @@ struct pru_rproc {
+>  	u32 dbg_single_step;
+>  	u32 dbg_continuous;
+>  	u8 evt_count;
+> +	u8 gpmux_save;
+>  };
+>  
+>  static inline u32 pru_control_read_reg(struct pru_rproc *pru, unsigned int reg)
+> @@ -228,6 +230,7 @@ struct rproc *pru_rproc_get(struct device_node *np, int index,
+>  	struct device *dev;
+>  	const char *fw_name;
+>  	int ret;
+> +	u32 mux;
+>  
+>  	rproc = __pru_rproc_get(np, index);
+>  	if (IS_ERR(rproc))
+> @@ -252,6 +255,22 @@ struct rproc *pru_rproc_get(struct device_node *np, int index,
+>  	if (pru_id)
+>  		*pru_id = pru->id;
+>  
+> +	ret = pruss_cfg_get_gpmux(pru->pruss, pru->id, &pru->gpmux_save);
+> +	if (ret) {
+> +		dev_err(dev, "failed to get cfg gpmux: %d\n", ret);
+> +		goto err;
+> +	}
+> +
+> +	ret = of_property_read_u32_index(np, "ti,pruss-gp-mux-sel", index,
+> +					 &mux);
+> +	if (!ret) {
+> +		ret = pruss_cfg_set_gpmux(pru->pruss, pru->id, mux);
+> +		if (ret) {
+> +			dev_err(dev, "failed to set cfg gpmux: %d\n", ret);
+> +			goto err;
+> +		}
+> +	}
+> +
+
+It would have been nice to be told in a cover letter that pruss_cfg_get_gpmux()
+is in linux-next so that I don't have to go fish for it...
+
+I am fine with the code in this patch, though the changelog is cryptic and could
+be enhanced to say "why" this is needed.  The above could use some comments to
+make sure people looking at this code understand that an error from
+of_property_read_u32_index() is acceptable for backward compatibility.
+
+Here I have to suppose pruss_cfg_get_gpmux() has been added to Nishanth's tree.
+As such the only way for me to apply your patch is if Nishanth sends me a pull
+request for the patchset that introduced pruss_cfg_get_gpmux().  You can also
+resend this in the next cycle.
+
+Thanks,
+Mathieu
+
+>  	ret = of_property_read_string_index(np, "firmware-name", index,
+>  					    &fw_name);
+>  	if (!ret) {
+> @@ -290,6 +309,8 @@ void pru_rproc_put(struct rproc *rproc)
+>  
+>  	pru = rproc->priv;
+>  
+> +	pruss_cfg_set_gpmux(pru->pruss, pru->id, pru->gpmux_save);
+> +
+>  	pru_rproc_set_firmware(rproc, NULL);
+>  
+>  	mutex_lock(&pru->lock);
+> -- 
+> 2.34.1
+> 
