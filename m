@@ -2,53 +2,53 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EDD647236C9
-	for <lists+linux-omap@lfdr.de>; Tue,  6 Jun 2023 07:26:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D1BB7236D0
+	for <lists+linux-omap@lfdr.de>; Tue,  6 Jun 2023 07:28:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229596AbjFFF0e (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 6 Jun 2023 01:26:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45876 "EHLO
+        id S231947AbjFFF2h (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 6 Jun 2023 01:28:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232252AbjFFF0a (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 6 Jun 2023 01:26:30 -0400
-Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A74E19C
-        for <linux-omap@vger.kernel.org>; Mon,  5 Jun 2023 22:26:27 -0700 (PDT)
-Received: by mail-wm1-x32c.google.com with SMTP id 5b1f17b1804b1-3f7ebb2b82cso698925e9.2
-        for <linux-omap@vger.kernel.org>; Mon, 05 Jun 2023 22:26:27 -0700 (PDT)
+        with ESMTP id S230121AbjFFF2g (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 6 Jun 2023 01:28:36 -0400
+Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E495C1A7
+        for <linux-omap@vger.kernel.org>; Mon,  5 Jun 2023 22:28:34 -0700 (PDT)
+Received: by mail-wm1-x336.google.com with SMTP id 5b1f17b1804b1-3f736e0c9b1so25210515e9.3
+        for <linux-omap@vger.kernel.org>; Mon, 05 Jun 2023 22:28:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1686029186; x=1688621186;
+        d=linaro.org; s=google; t=1686029313; x=1688621313;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=dDsCLYgxw0cAllMIv7aPZnktih/2jRXLUmlxWaBI1IA=;
-        b=IwxvokNMCgzhhXOUSzqxqBgRxmi+htg/TlgMk4ZYeM32beHp0ygBO8euxAR0AQm+1o
-         c41sqH0a03Ang8oPH4q5RE2TIZ7EzDBicWi5Upqo1LS+VH8cHLDoXkXA27jwp8wo48rf
-         eZmiyl/UL9g3tnTKk1UqirKGm7+TsJwBv75CZSJH9zuV9IOtgE6Ar+SpSBJxi9gqZ6mz
-         BpNyY5nVfJPTkaELNR9yt+4F16iw3qCLjesDjgrzXMwNg4ryEavCgFDHvFNOiEnpPwU9
-         qlbDzpvSAdN661d7mnDQUfmS53+gK8Qv4j+Yvm6y3AX2CWfAiZFODcAcPaKId8yVzZ1t
-         9Olg==
+        bh=mJOXSF88DjPrnCYvhp794YSBiOIag1Qb+70cCdfwYxU=;
+        b=kPBHfTSe+3iTgyI53dScjnFVlv+5aI5Dq2IL68wZAwPflgnKzBa09ymP0f7PGhDCZX
+         CrqY3Jlrpz2aX1JIXn/3FX+D/nRO2hcfOZI6PaMbbOlNIMoNvzO305kQaMJaAWjpH7Gx
+         PWfaDq871RrRGMSrPWtOSI5GOstsH9UNXUegz2AVPdcc0DYDa7SVK0V2LhLq1rCL5/Rj
+         CMEm+84URhyrfyZ4zlxBlxDZxstC+d5zEMsTVICDBCOK/OToigswOLCtsiFJoA3NjumT
+         iPH6Uo0dSBFMa9CA0dMPHfyM9TtnsdladS07MzE+lJnRjEP1u6Mzt6XLhlioBaAXsvtO
+         wCCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686029186; x=1688621186;
+        d=1e100.net; s=20221208; t=1686029313; x=1688621313;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=dDsCLYgxw0cAllMIv7aPZnktih/2jRXLUmlxWaBI1IA=;
-        b=Y3gLkicUDv94MiCOsPwNoeaaYopZFtmNcWS8M2V+WiApoTNDskvvx2V/Zd9KnJBhCE
-         ikwo/mU+o11ZzlOyIJFu5rZq2ElL7Msit28Uj1i5mJmz2b/9/xc23lJbvEmBwnaSkWqI
-         BKR6mqFU8PB/ylXZUSryf2TJS93RcnCvs1xb88L6RvPC4xMrZ235bPsNPOCEUpWoNhFm
-         acMNVZMcYy7DTe3jJCIO0t3wXOokxGSfuwLqgSnpjCgUoH1fiMSaI/BsRJW3R4jku+74
-         7ZNUz4VNdBoe1Ep5CoI0uO5adXCQLxegU2vCjwzBu75UR0e9tJkaEGK2gTBPO3H1TLvK
-         QM7A==
-X-Gm-Message-State: AC+VfDwG+cnlj17wXP7Be23uE7ssyoxqCPIR4ZtvEtla7aCXOWRMsdTL
-        IBXxAuUPLBzcLZXT6Sbekw1K5w==
-X-Google-Smtp-Source: ACHHUZ7O2HWP67RgSNqCAyjbTAYsyzDWwhj4EAisp0m7UY5KYbL/2OK6vhedUYAPw7jtmm/0lF9awg==
-X-Received: by 2002:a7b:cc8e:0:b0:3f6:766:f76f with SMTP id p14-20020a7bcc8e000000b003f60766f76fmr979213wma.36.1686029185900;
-        Mon, 05 Jun 2023 22:26:25 -0700 (PDT)
+        bh=mJOXSF88DjPrnCYvhp794YSBiOIag1Qb+70cCdfwYxU=;
+        b=iAUKrT2BL5avQETbrZa1Tj/+XKQ8sC5Y1OQ9drpPMW/gPlgiKw2SWbkfEW2nYgjs+o
+         u1Wx6IfOFDlrBRn2z0uPnLlaR94dBGHVfkRdGcH8UsnWUueQL/3/VhDrKA1KyU3h/frW
+         ZTYnIN2xOGYk+1X9qAySs95JWCUNhuC+wIoB3M6sxJy0SvaGbVS8ToHThNJ+FH+Sr8C6
+         5sU9UhCgxmBqYrkNkmo0Ha6hITvxNXvWpy4kDTASfue+32ngfxWE/Rr2TRP+LP2xh+SE
+         ht3oNjyXVwVp5fow3oVKIiaOFSHrWhnx7DdAu6KJlS+hLuzgWVhNbpKwywF1lB899ZvY
+         qYpQ==
+X-Gm-Message-State: AC+VfDwFyKLcLRC5+hMv3U55XKJXZ/8XoNGUNLtD9YKIhPDb2n1RpP/U
+        jEdEJ5Ozll2I4TVdqwAbiAANqA==
+X-Google-Smtp-Source: ACHHUZ53mQ64foMYdD4WiJ9aXcXW/Mh9UVrYMszuUl5utsyKjRZqTF91fgc6UpYXQ5nOqZPoVHtjhQ==
+X-Received: by 2002:a1c:770d:0:b0:3f4:2770:f7e9 with SMTP id t13-20020a1c770d000000b003f42770f7e9mr976047wmi.17.1686029313452;
+        Mon, 05 Jun 2023 22:28:33 -0700 (PDT)
 Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id f18-20020a1cc912000000b003f4e3ed98ffsm12686196wmb.35.2023.06.05.22.26.22
+        by smtp.gmail.com with ESMTPSA id f4-20020a7bc8c4000000b003f7e717c770sm3198157wml.23.2023.06.05.22.28.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Jun 2023 22:26:23 -0700 (PDT)
-Date:   Tue, 6 Jun 2023 08:26:19 +0300
+        Mon, 05 Jun 2023 22:28:31 -0700 (PDT)
+Date:   Tue, 6 Jun 2023 08:28:28 +0300
 From:   Dan Carpenter <dan.carpenter@linaro.org>
 To:     Thomas Zimmermann <tzimmermann@suse.de>
 Cc:     daniel@ffwll.ch, javierm@redhat.com, sam@ravnborg.org,
@@ -57,15 +57,15 @@ Cc:     daniel@ffwll.ch, javierm@redhat.com, sam@ravnborg.org,
         linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
         linux-sh@vger.kernel.org, linux-omap@vger.kernel.org,
         linux-staging@lists.linux.dev
-Subject: Re: [PATCH 11/30] fbdev/ep93xx-fb: Do not assign to struct
- fb_info.dev
-Message-ID: <dbff5ba5-f34f-41d3-b8d5-2bfb7d34df5b@kadam.mountain>
+Subject: Re: [PATCH 18/30] fbdev/radeonfb: Use hardware device as backlight
+ parent
+Message-ID: <f1bb576e-88cb-4c5d-a7a6-d45ffc48edb3@kadam.mountain>
 References: <20230605144812.15241-1-tzimmermann@suse.de>
- <20230605144812.15241-12-tzimmermann@suse.de>
+ <20230605144812.15241-19-tzimmermann@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230605144812.15241-12-tzimmermann@suse.de>
+In-Reply-To: <20230605144812.15241-19-tzimmermann@suse.de>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
@@ -76,17 +76,15 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Jun 05, 2023 at 04:47:53PM +0200, Thomas Zimmermann wrote:
-> Do not assing the Linux device to struct fb_info.dev. The call to
-> register_framebuffer() initializes the field to the fbdev device.
-> Drivers should not override its value.
-> 
-> Fixes a bug where the driver incorrectly decreases the hardware
-> device's reference counter and leaks the fbdev device.
+On Mon, Jun 05, 2023 at 04:48:00PM +0200, Thomas Zimmermann wrote:
+> Use the hardware device in struct fb_info.device as parent of the
+> backlight device. Aligns the driver with the rest of the codebase
+> and prepares fbdev for making struct fb_info.dev optional.
 > 
 > Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Benjamin Herrenschmidt <benh@kernel.crashing.org>
 
-Fixes: 88017bda96a5 ("ep93xx video driver")
+You left out the Cc:
 
 regards,
 dan carpenter
