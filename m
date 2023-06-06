@@ -2,203 +2,241 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4464F723AF1
-	for <lists+linux-omap@lfdr.de>; Tue,  6 Jun 2023 10:05:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 88EAE723CDE
+	for <lists+linux-omap@lfdr.de>; Tue,  6 Jun 2023 11:17:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232009AbjFFIFe (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 6 Jun 2023 04:05:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40226 "EHLO
+        id S236305AbjFFJRR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 6 Jun 2023 05:17:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232402AbjFFIFd (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 6 Jun 2023 04:05:33 -0400
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C002E8;
-        Tue,  6 Jun 2023 01:05:31 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id 2A6AF1FD63;
-        Tue,  6 Jun 2023 08:05:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1686038730; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=XndozJCgoZNXI3aAYUD133YM+XIBF5aNLUt6SIsorvY=;
-        b=QVKNx4V6ee3EJzbcqWn5MCRpWpFNmUpKkIRvdfq2Ov7CdaMShfwOLe6RH/IGh3Advikykk
-        13++0bSs/UuPnDl27jQ0H/Niu0FI/69HIQ9v9j9GK6eH3U3nXWm7eVOFGYRSJDY78X4VlQ
-        HmDe1nW27S4DsdycXlVwBxmEJ2Hbm6Q=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1686038730;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=XndozJCgoZNXI3aAYUD133YM+XIBF5aNLUt6SIsorvY=;
-        b=1FCBJ8lyuOx0Tc1/0eX+hg63jCXor0WJUBn9NE7s5AjFvuPnYUM07axxo7GwXLpv9iO/iS
-        cjsuop8KteAu3zAA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id C9DEF13519;
-        Tue,  6 Jun 2023 08:05:29 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id RNM3MMnofmSTIwAAMHmgww
-        (envelope-from <tzimmermann@suse.de>); Tue, 06 Jun 2023 08:05:29 +0000
-Message-ID: <37860c28-8b9b-448f-98d3-80ad427d1315@suse.de>
-Date:   Tue, 6 Jun 2023 10:05:29 +0200
+        with ESMTP id S235961AbjFFJRN (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 6 Jun 2023 05:17:13 -0400
+Received: from mail-vs1-xe32.google.com (mail-vs1-xe32.google.com [IPv6:2607:f8b0:4864:20::e32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16500E49
+        for <linux-omap@vger.kernel.org>; Tue,  6 Jun 2023 02:17:03 -0700 (PDT)
+Received: by mail-vs1-xe32.google.com with SMTP id ada2fe7eead31-43b4c75b6bbso521749137.2
+        for <linux-omap@vger.kernel.org>; Tue, 06 Jun 2023 02:17:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1686043022; x=1688635022;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Khb/i5f1eJZ0J6xeiDfa7TucSC94mz6ND/CCe3oa97c=;
+        b=MfAG+IuBokCFoq6NH0TfQ3LdRjyZ4XQHnhklH/9QDPZAO+l05Tgr5r4mdDo/GRSe/W
+         tTqsoN/TLZw5KbHQWjvZh4f06ku1WTxTK5RA4jDeJg4iRl3GgI206Ry/4rVkCBQTt1Zy
+         bNTbtrtrKfP6ajPOKPQ2ZFN4Fv/e59vfvCT+Q=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686043022; x=1688635022;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Khb/i5f1eJZ0J6xeiDfa7TucSC94mz6ND/CCe3oa97c=;
+        b=M6LmUW/ckD4//tuD4Wv16Z4lIdG5Ala4Bw3ZZgCjc4foQSpZ+BePltgN1cLPKgyhvu
+         liaaCsmv1/RCy2ucoUqKR9M0XzEhddeV6ci+C5mccnKKPugAbba5ZNcPRSePLbQ1yVNs
+         N7BJejSHZg+KLkcynMgoQzchFAjrUwWTAj5IhIKfJ1cxrqrUVUiJ5fbFXftv9AGJIX/R
+         nxKhUAdv5Ap1m0WHoMViItPanbSZ08psr2/WwWuEF9RuWQpd7c1q5g+oxwJFeKFrjXpB
+         MIn1EGQKt/QhVmjGM5SVefkhwGqyVWZaUFHbrit0g/zK+Cqe16kJcCdtHbcrAOwCYZfP
+         RA6g==
+X-Gm-Message-State: AC+VfDytjjSha2tV0UxFhnDCNl3gCMoplxbzhVWcX1xp+JO+PUKOPVmj
+        fXkVsIyQunyzKek4EQKq5F4uluYdfLFfewCet5B93w==
+X-Google-Smtp-Source: ACHHUZ4Q5xZF3lkjNlUB6Gn9V6AQgQZ2sq3mqzhEAjK9Sn0NJJMwCpu52xY+BZ6AAOUkIEC/8Il2gpm8IN/ybT89ztU=
+X-Received: by 2002:a05:6102:2d6:b0:434:7757:f025 with SMTP id
+ h22-20020a05610202d600b004347757f025mr947556vsh.0.1686043022440; Tue, 06 Jun
+ 2023 02:17:02 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.2
-Subject: Re: [PATCH 02/30] backlight/gpio_backlight: Compare against struct
- fb_info.device
-Content-Language: en-US
-To:     Dan Carpenter <dan.carpenter@linaro.org>
-Cc:     "Ruhl, Michael J" <michael.j.ruhl@intel.com>,
-        "daniel@ffwll.ch" <daniel@ffwll.ch>,
-        "javierm@redhat.com" <javierm@redhat.com>,
-        "sam@ravnborg.org" <sam@ravnborg.org>,
-        "deller@gmx.de" <deller@gmx.de>,
-        "geert+renesas@glider.be" <geert+renesas@glider.be>,
-        "lee@kernel.org" <lee@kernel.org>,
-        "daniel.thompson@linaro.org" <daniel.thompson@linaro.org>,
-        "jingoohan1@gmail.com" <jingoohan1@gmail.com>,
-        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
-        Rich Felker <dalias@libc.org>,
-        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
-        "linux-staging@lists.linux.dev" <linux-staging@lists.linux.dev>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>
-References: <20230605144812.15241-1-tzimmermann@suse.de>
- <20230605144812.15241-3-tzimmermann@suse.de>
- <IA1PR11MB641847841A33FE16F9B96BA7C14DA@IA1PR11MB6418.namprd11.prod.outlook.com>
- <7d4e340c-e20a-5824-4d59-b93bc1ba4153@suse.de>
- <9ed217b1-3a05-4daf-9e6f-52453a8b5f3e@kadam.mountain>
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-In-Reply-To: <9ed217b1-3a05-4daf-9e6f-52453a8b5f3e@kadam.mountain>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------FT645muoP4UYsk8x6zGzU9g1"
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+References: <20230525113034.46880-1-tony@atomide.com> <20230602083335.GA181647@google.com>
+ <87a5xii33r.fsf@jogness.linutronix.de> <20230603054139.GR14287@atomide.com>
+ <20230603063533.GS14287@atomide.com> <20230605061511.GW14287@atomide.com>
+ <CAGXv+5Fbx7eTxP0ep6DV+jyronAWxYvu2M-g=MjHGRhjSXUc=w@mail.gmail.com>
+ <20230605122447.GY14287@atomide.com> <CAGXv+5HwL+R5QpO3pHGQd9qAxu2pCMDjYvdni1HjiC8eEE38mg@mail.gmail.com>
+ <20230605131803.GA14287@atomide.com>
+In-Reply-To: <20230605131803.GA14287@atomide.com>
+From:   Chen-Yu Tsai <wenst@chromium.org>
+Date:   Tue, 6 Jun 2023 17:16:50 +0800
+Message-ID: <CAGXv+5GR9TEaNrj4B21H2iukS2kWW=rtoWkoVnWewVsrbcG0Hw@mail.gmail.com>
+Subject: Re: [PATCH v12 1/1] serial: core: Start managing serial controllers
+ to enable runtime PM
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     John Ogness <john.ogness@linutronix.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@intel.com>,
+        Dhruva Gole <d-gole@ti.com>,
+        =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Johan Hovold <johan@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        linux-omap@vger.kernel.org,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
+        =?UTF-8?B?TsOtY29sYXMgRi4gUi4gQS4gUHJhZG8=?= 
+        <nfraprado@collabora.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        linux-mediatek@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------FT645muoP4UYsk8x6zGzU9g1
-Content-Type: multipart/mixed; boundary="------------eqU8fPQ0Xbx8jOyzxNNlYeqm";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: "Ruhl, Michael J" <michael.j.ruhl@intel.com>,
- "daniel@ffwll.ch" <daniel@ffwll.ch>, "javierm@redhat.com"
- <javierm@redhat.com>, "sam@ravnborg.org" <sam@ravnborg.org>,
- "deller@gmx.de" <deller@gmx.de>,
- "geert+renesas@glider.be" <geert+renesas@glider.be>,
- "lee@kernel.org" <lee@kernel.org>,
- "daniel.thompson@linaro.org" <daniel.thompson@linaro.org>,
- "jingoohan1@gmail.com" <jingoohan1@gmail.com>,
- "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
- Rich Felker <dalias@libc.org>,
- "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
- "linux-staging@lists.linux.dev" <linux-staging@lists.linux.dev>,
- "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>
-Message-ID: <37860c28-8b9b-448f-98d3-80ad427d1315@suse.de>
-Subject: Re: [PATCH 02/30] backlight/gpio_backlight: Compare against struct
- fb_info.device
-References: <20230605144812.15241-1-tzimmermann@suse.de>
- <20230605144812.15241-3-tzimmermann@suse.de>
- <IA1PR11MB641847841A33FE16F9B96BA7C14DA@IA1PR11MB6418.namprd11.prod.outlook.com>
- <7d4e340c-e20a-5824-4d59-b93bc1ba4153@suse.de>
- <9ed217b1-3a05-4daf-9e6f-52453a8b5f3e@kadam.mountain>
-In-Reply-To: <9ed217b1-3a05-4daf-9e6f-52453a8b5f3e@kadam.mountain>
+On Mon, Jun 5, 2023 at 9:18=E2=80=AFPM Tony Lindgren <tony@atomide.com> wro=
+te:
+>
+> * Chen-Yu Tsai <wenst@chromium.org> [230605 13:01]:
+> > On Mon, Jun 5, 2023 at 8:24=E2=80=AFPM Tony Lindgren <tony@atomide.com>=
+ wrote:
+> > >
+> > > * Chen-Yu Tsai <wenst@chromium.org> [230605 11:34]:
+> > > > On Mon, Jun 5, 2023 at 2:15=E2=80=AFPM Tony Lindgren <tony@atomide.=
+com> wrote:
+> > > > > diff --git a/drivers/tty/serial/8250/8250_mtk.c b/drivers/tty/ser=
+ial/8250/8250_mtk.c
+> > > > > --- a/drivers/tty/serial/8250/8250_mtk.c
+> > > > > +++ b/drivers/tty/serial/8250/8250_mtk.c
+> > > > > @@ -425,11 +439,10 @@ mtk8250_set_termios(struct uart_port *port,=
+ struct ktermios *termios,
+> > > > >  static int __maybe_unused mtk8250_runtime_suspend(struct device =
+*dev)
+> > > > >  {
+> > > > >         struct mtk8250_data *data =3D dev_get_drvdata(dev);
+> > > > > -       struct uart_8250_port *up =3D serial8250_get_port(data->l=
+ine);
+> > > > >
+> > > > >         /* wait until UART in idle status */
+> > > > >         while
+> > > > > -               (serial_in(up, MTK_UART_DEBUG0));
+> > > > > +               (mtk8250_read(data, MTK_UART_DEBUG0));
+> > > >
+> > > > I believe it still gets stuck here sometimes.
+> > >
+> > > Hmm so maybe you need to mtk8250_write(data, 0, MTK_UART_RATE_FIX) in
+> > > probe before pm_runtime_resume_and_get() that enables the baud clock?
+> > > That's something I changed, so maybe it messes up things.
+> >
+> > I think it has something to do with the do_pm() function calling
+> > the callbacks directly, then also calling runtime PM.
+>
+> Yeah I'm not following really what's going on there.. So then I guess the
+> call for mtk8250_write(data, 0, MTK_UART_RATE_FIX) should be after the
+> pm_runtime_resume_and_get() call.
+>
+> > > Looking at the 8250_mtk git log, it's runtime PM functions seem to on=
+ly
+> > > currently manage the baud clock so register access should be doable
+> > > without runtime PM resume?
+> >
+> > Actually it only manages the bus clock. The baud clock is simply the sy=
+stem
+> > XTAL which is not gateble.
+>
+> OK
+>
+> > > > With your earlier patch, it could get through registering the port,=
+ and
+> > > > the console would show
+> > > >
+> > > >     11002000.serial: ttyS0 at MMIO 0x11002000 (irq =3D 240, base_ba=
+ud =3D
+> > > > 1625000) is a ST16650V2
+> > > >
+> > > > for the console UART.
+> > >
+> > > OK
+> > >
+> > > > Angelo mentioned that we should be using SLEEP_REQ/SLEEP_ACK regist=
+ers
+> > > > in the MTK UART hardware.
+> > > >
+> > > > I tried reworking it into your patch here, but it causes issues wit=
+h the
+> > > > UART-based Bluetooth on one of my devices. After the UART runtime s=
+uspends
+> > > > and resumes, something is off and causes the transfers during Bluet=
+ooth
+> > > > init to become corrupt.
+> > > >
+> > > > I'll try some more stuff, but the existing code seems timing depend=
+ent.
+> > > > If I add too many printk statements to the runtime suspend/resume
+> > > > callbacks, things seem to work. One time I even ended up with broke=
+n
+> > > > UARTs but otherwise booted up the system.
+> > >
+> > > Well another thing that now changes is that we now runtime suspend th=
+e
+> > > port at the end of the probe. What the 8250_mtk probe was doing earli=
+er
+> > > it was leaving the port baud clock enabled, but runtime PM disabled
+> > > until mtk8250_do_pm() I guess.
+> >
+> > I guess that's the biggest difference? Since the *bus* clock gets disab=
+led,
+> > any access will hang. Is it enough to just support runtime PM? Or do I =
+have
+> > to also have UART_CAP_RPM?
+>
+> Maybe try changing pm_runtime_put_sync() at the end of the probe to just
+> pm_runtime_put_noidle()? Then the driver should be back to where it was
+> with clocks enabled but runtime PM suspended.
+>
+> I don't think you need UART_CAP_RPM right now unless 8250_mtk adds suppor=
+t
+> for autosuspend. That stuff will get replaced by the serial_core generic
+> PM patch from Andy. I think in it's current form 8250_mtk just gets enabl=
+ed
+> when the port is opened, and disabled when the port is closed. And gets
+> disabled for system suspend.
 
---------------eqU8fPQ0Xbx8jOyzxNNlYeqm
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+I ended up following 8250_dw's design, which seemed less convoluted.
+The original code was waaay too convoluted.
 
-SGkNCg0KQW0gMDYuMDYuMjMgdW0gMDk6NDkgc2NocmllYiBEYW4gQ2FycGVudGVyOg0KPiBP
-biBUdWUsIEp1biAwNiwgMjAyMyBhdCAwOToyNDo0OEFNICswMjAwLCBUaG9tYXMgWmltbWVy
-bWFubiB3cm90ZToNCj4+IEhpDQo+Pg0KPj4gQW0gMDUuMDYuMjMgdW0gMjI6MTkgc2Nocmll
-YiBSdWhsLCBNaWNoYWVsIEo6DQo+Pj4+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+
-Pj4+IEZyb206IGRyaS1kZXZlbCA8ZHJpLWRldmVsLWJvdW5jZXNAbGlzdHMuZnJlZWRlc2t0
-b3Aub3JnPiBPbiBCZWhhbGYgT2YNCj4+Pj4gVGhvbWFzIFppbW1lcm1hbm4NCj4+Pj4gU2Vu
-dDogTW9uZGF5LCBKdW5lIDUsIDIwMjMgMTA6NDggQU0NCj4+Pj4gVG86IGRhbmllbEBmZnds
-bC5jaDsgamF2aWVybUByZWRoYXQuY29tOyBzYW1AcmF2bmJvcmcub3JnOw0KPj4+PiBkZWxs
-ZXJAZ214LmRlOyBnZWVydCtyZW5lc2FzQGdsaWRlci5iZTsgbGVlQGtlcm5lbC5vcmc7DQo+
-Pj4+IGRhbmllbC50aG9tcHNvbkBsaW5hcm8ub3JnOyBqaW5nb29oYW4xQGdtYWlsLmNvbQ0K
-Pj4+PiBDYzogbGludXgtZmJkZXZAdmdlci5rZXJuZWwub3JnOyBSaWNoIEZlbGtlciA8ZGFs
-aWFzQGxpYmMub3JnPjsgbGludXgtDQo+Pj4+IHNoQHZnZXIua2VybmVsLm9yZzsgbGludXgt
-c3RhZ2luZ0BsaXN0cy5saW51eC5kZXY7IGRyaS0NCj4+Pj4gZGV2ZWxAbGlzdHMuZnJlZWRl
-c2t0b3Aub3JnOyBUaG9tYXMgWmltbWVybWFubg0KPj4+PiA8dHppbW1lcm1hbm5Ac3VzZS5k
-ZT47IEpvaG4gUGF1bCBBZHJpYW4gR2xhdWJpdHogPGdsYXViaXR6QHBoeXNpay5mdS0NCj4+
-Pj4gYmVybGluLmRlPjsgbGludXgtb21hcEB2Z2VyLmtlcm5lbC5vcmcNCj4+Pj4gU3ViamVj
-dDogW1BBVENIIDAyLzMwXSBiYWNrbGlnaHQvZ3Bpb19iYWNrbGlnaHQ6IENvbXBhcmUgYWdh
-aW5zdCBzdHJ1Y3QNCj4+Pj4gZmJfaW5mby5kZXZpY2UNCj4+Pj4NCj4+Pj4gU3RydWN0IGdw
-aW9fYmFja2xpZ2h0X3BsYXRmb3JtX2RhdGEgcmVmZXJzIHRvIGEgcGxhdGZvcm0gZGV2aWNl
-IHdpdGhpbg0KPj4+PiB0aGUgTGludXggZGV2aWNlIGhpZXJhcmNoeS4gVGhlIHRlc3QgaW4g
-Z3Bpb19iYWNrbGlnaHRfY2hlY2tfZmIoKQ0KPj4+PiBjb21wYXJlcyBpdCBhZ2FpbnN0IHRo
-ZSBmYmRldiBkZXZpY2UgaW4gc3RydWN0IGZiX2luZm8uZGV2LCB3aGljaA0KPj4+PiBpcyBk
-aWZmZXJlbnQuIEZpeCB0aGUgdGVzdCBieSBjb21wYXJpbmcgdG8gc3RydWN0IGZiX2luZm8u
-ZGV2aWNlLg0KPj4+Pg0KPj4+PiBGaXhlcyBhIGJ1ZyBpbiB0aGUgYmFja2xpZ2h0IGRyaXZl
-ciBhbmQgcHJlcGFyZXMgZmJkZXYgZm9yIG1ha2luZw0KPj4+PiBzdHJ1Y3QgZmJfaW5mby5k
-ZXYgb3B0aW9uYWwuDQo+Pj4NCj4+PiBJIG9ubHkgc2VlIGEgcmVuYW1lIGZyb20gZmJkZXYg
-IHRvIGRldi4uLg0KPj4+DQo+Pj4gSXMgdGhlcmUgbWlzc2luZyBjb2RlPw0KPj4NCj4+IEFz
-IFNhbSBzYWlkLCB0aGUgY29tcGFyZSBvcGVyYXRpb24gdXNlZCB0aGUgd3JvbmcgZGV2aWNl
-IGZyb20gZmJfaW5mby4NCj4+DQo+PiBJIGFsc28gY2hhbmdlZCB0aGUgbmFtaW5nIG9mIGEg
-ZmV3IGZpZWxkcyBpbiB0aGVzZSBiYWNrbGlnaHQgZHJpdmVycy4gSQ0KPj4gY291bGQgbW92
-ZSB0aGVzZSByZW5hbWVzIGludG8gYSBzZXBhcmF0ZSBwYXRjaCBpZiB0aGF0IG1ha2VzIHRo
-aW5ncyBlYXNpZXINCj4+IGZvciByZXZpZXdlcnMuDQo+Pg0KPj4+DQo+Pj4gV291bGQgIGEg
-Zml4ZXM6IGJlIHVzZWZ1bD8NCj4+DQo+PiBUaGF0IHdvdWxkIGJlIGNvbW1pdCA4Yjc3MGUz
-Yzk4MjQgKCJiYWNrbGlnaHQ6IEFkZCBHUElPLWJhc2VkIGJhY2tsaWdodA0KPj4gZHJpdmVy
-IikgZnJvbSAyMDEzLiBNYXliZSBhIGJpdCBvbGQgYWxyZWFkeSwgYnV0IEkgY2FuIHN1cmVs
-eSBhZGQgaXQuDQo+IA0KPiBEb24ndCBhZGQgdGhlIEZpeGVzIHRhZyB0byB0aGlzIG9uZSBi
-ZWNhdXNlIGl0IGRvZXNuJ3QgZml4IGFueXRoaW5nLCBpdA0KPiBqdXN0IHJlbmFtZXMgc3R1
-ZmYuICBUaGUgcmVhbCBmaXggaXMgbGF0ZXI/ICBUbyBiZSBob25lc3QsIGl0IHdhcyBraW5k
-DQo+IG9mIGRpZmZpY3VsdCB0byBzZWUgd2hlcmUgdGhlIGFjdHVhbCBmaXggd2FzLg0KPiAN
-Cj4gRml4ZXMgdGFncyBmb3Igb2xkIGNvZGUgaXMgZmluZS4uLiAgSSBsaWtlIHRvIGtub3cg
-d2h5IGJ1Z3MgYXJlDQo+IGludHJvZHVjZWQuICBXYXMgaXQgYWRkaW5nIGEgZmVhdHVyZSBv
-ciBwYXJ0IG9mIGZpeCBmb3Igc29tZXRoaW5nIGVsc2UNCj4gb3IgYSBjbGVhbnVwPw0KDQpZ
-b3UncmUgbm90IHRoZSBmaXJzdCB0byBjb21wbGFpbiBhYm91dCB0aGUgcmVuYW1pbmcuIEkn
-bGwgc3BsaXQgZWFjaCANCmJhY2tsaWdodCBwYXRjaCBpbnRvIGEgYnVnLWZpeCBhbmQgYSBy
-ZW5hbWUgcGF0Y2ggdGhlbi4gVGhlIGJ1Z2ZpeCB3aWxsIA0KZ2V0IHRoZSBGaXhlcyB0YWcu
-DQoNCkJlc3QgcmVnYXJkcw0KVGhvbWFzDQoNCj4gDQo+IHJlZ2FyZHMsDQo+IGRhbiBjYXJw
-ZW50ZXINCj4gDQoNCi0tIA0KVGhvbWFzIFppbW1lcm1hbm4NCkdyYXBoaWNzIERyaXZlciBE
-ZXZlbG9wZXINClNVU0UgU29mdHdhcmUgU29sdXRpb25zIEdlcm1hbnkgR21iSA0KRnJhbmtl
-bnN0cmFzc2UgMTQ2LCA5MDQ2MSBOdWVybmJlcmcsIEdlcm1hbnkNCkdGOiBJdm8gVG90ZXYs
-IEFuZHJldyBNeWVycywgQW5kcmV3IE1jRG9uYWxkLCBCb3VkaWVuIE1vZXJtYW4NCkhSQiAz
-NjgwOSAoQUcgTnVlcm5iZXJnKQ0K
+BTW, the Bluetooth breakage seems like a different problem. It works
+on v6.4-rc5, but breaks somewhere between that and next, before the
+runtime PM series. This particular device has a Qualcomm WiFi/BT chip
+with the Bluetooth part going through UART. The btqca reports a bunch
+of frame reassembly errors during and after initialization:
 
---------------eqU8fPQ0Xbx8jOyzxNNlYeqm--
+Bluetooth: hci0: setting up ROME/QCA6390
+Bluetooth: hci0: Frame reassembly failed (-84)
+Bluetooth: hci0: QCA Product ID   :0x00000008
+Bluetooth: hci0: QCA SOC Version  :0x00000044
+Bluetooth: hci0: QCA ROM Version  :0x00000302
+Bluetooth: hci0: QCA Patch Version:0x00000111
+Bluetooth: hci0: QCA controller version 0x00440302
+Bluetooth: hci0: QCA Downloading qca/rampatch_00440302.bin
+Bluetooth: hci0: Frame reassembly failed (-84)
+Bluetooth: hci0: QCA Downloading qca/nvm_00440302_i2s.bin
+Bluetooth: hci0: QCA setup on UART is completed
+Bluetooth: hci0: Opcode 0x1002 failed: -110
+Bluetooth: hci0: command 0x1002 tx timeout
+Bluetooth: hci0: crash the soc to collect controller dump
+Bluetooth: hci0: QCA collecting dump of size:196608
+Bluetooth: hci0: Frame reassembly failed (-84)
+...
+Bluetooth: hci0: Frame reassembly failed (-84)
+Bluetooth: Received HCI_IBS_WAKE_ACK in tx state 0
+Bluetooth: hci0: Frame reassembly failed (-84)
+...
+Bluetooth: hci0: Frame reassembly failed (-84)
+Bluetooth: hci0: Frame reassembly failed (-90)
+Bluetooth: hci0: Frame reassembly failed (-84)
+...
+Bluetooth: hci0: Frame reassembly failed (-84)
+Bluetooth: hci0: Injecting HCI hardware error event
 
---------------FT645muoP4UYsk8x6zGzU9g1
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
+However on a different device that has a Realtek WiFi/BT chip,
+it doesn't seem to run into errors.
 
------BEGIN PGP SIGNATURE-----
+Just putting it out there in case anyone else runs into it.
 
-wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmR+6MkFAwAAAAAACgkQlh/E3EQov+DU
-4xAAkjuOkq4QAb/E99uDAHmtnDEX1Fcy31zIYeV3X7NMCN0d1FVH0F10L9/dlSiULgm0Lm70J/M1
-jmTryNBB/aHBj14hQg1AlwxJb8UMtmOVp5/iInDRS1yxVatxYsrJTzkmzQKR3goBhFP7NlGctqwH
-CRUlQkVCQQSL78hvwL1iv6D162QnXxCzJqMKLRIyHgPve610jIw/LGLhij5I4vr8r/ReQVcQ9Nt9
-qyNPpqzN+aC4ZpOCQqIXAM5s8Yp27P/Gd283dQaDdrZPJPExsh6a+x4fTBzvizSHM4SWBeX/Eggq
-0fVgzuSDTnu7IEGAXuXNIbP0TaUsQpgggDboirpLmsFV6IxLtIke2bG7ke884gPn4Dl6n7eG+vQF
-JHVZli52cVY2WWu6QQpLLFO9JVxLLBZAJ7ZWQ+Z7jy2U+3D+JIpo1+wQBJ/cDAQSyj1/KjvxAwxp
-SxkUhVOs+WAZW/Wk7ck+gtPB3EcWzfuozjZN58zR5DaKEF/0MVEuAMRSrpkCuhBtz4DKe0tXfGx0
-iOwUp9dRfcZBr7F0xEUbxIgTI8J0V06APXdCcj9FMUs8S76pG25IT5z6s+7BxP75v2aUux5qC3Nx
-rySglS/nku1sGOy5yHZpLt5LNSCbwhryhX90bpPA+EzSMiOPbtFZXWG8xBt68YcI9c8NuIlNjnHm
-IRQ=
-=2KVc
------END PGP SIGNATURE-----
 
---------------FT645muoP4UYsk8x6zGzU9g1--
+Thank you for your help on this.
+
+ChenYu
