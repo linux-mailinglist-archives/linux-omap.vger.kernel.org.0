@@ -2,72 +2,84 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D1BB7236D0
-	for <lists+linux-omap@lfdr.de>; Tue,  6 Jun 2023 07:28:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0FE17238EF
+	for <lists+linux-omap@lfdr.de>; Tue,  6 Jun 2023 09:25:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231947AbjFFF2h (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 6 Jun 2023 01:28:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46250 "EHLO
+        id S236298AbjFFHZP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 6 Jun 2023 03:25:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230121AbjFFF2g (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 6 Jun 2023 01:28:36 -0400
-Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E495C1A7
-        for <linux-omap@vger.kernel.org>; Mon,  5 Jun 2023 22:28:34 -0700 (PDT)
-Received: by mail-wm1-x336.google.com with SMTP id 5b1f17b1804b1-3f736e0c9b1so25210515e9.3
-        for <linux-omap@vger.kernel.org>; Mon, 05 Jun 2023 22:28:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1686029313; x=1688621313;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=mJOXSF88DjPrnCYvhp794YSBiOIag1Qb+70cCdfwYxU=;
-        b=kPBHfTSe+3iTgyI53dScjnFVlv+5aI5Dq2IL68wZAwPflgnKzBa09ymP0f7PGhDCZX
-         CrqY3Jlrpz2aX1JIXn/3FX+D/nRO2hcfOZI6PaMbbOlNIMoNvzO305kQaMJaAWjpH7Gx
-         PWfaDq871RrRGMSrPWtOSI5GOstsH9UNXUegz2AVPdcc0DYDa7SVK0V2LhLq1rCL5/Rj
-         CMEm+84URhyrfyZ4zlxBlxDZxstC+d5zEMsTVICDBCOK/OToigswOLCtsiFJoA3NjumT
-         iPH6Uo0dSBFMa9CA0dMPHfyM9TtnsdladS07MzE+lJnRjEP1u6Mzt6XLhlioBaAXsvtO
-         wCCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686029313; x=1688621313;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mJOXSF88DjPrnCYvhp794YSBiOIag1Qb+70cCdfwYxU=;
-        b=iAUKrT2BL5avQETbrZa1Tj/+XKQ8sC5Y1OQ9drpPMW/gPlgiKw2SWbkfEW2nYgjs+o
-         u1Wx6IfOFDlrBRn2z0uPnLlaR94dBGHVfkRdGcH8UsnWUueQL/3/VhDrKA1KyU3h/frW
-         ZTYnIN2xOGYk+1X9qAySs95JWCUNhuC+wIoB3M6sxJy0SvaGbVS8ToHThNJ+FH+Sr8C6
-         5sU9UhCgxmBqYrkNkmo0Ha6hITvxNXvWpy4kDTASfue+32ngfxWE/Rr2TRP+LP2xh+SE
-         ht3oNjyXVwVp5fow3oVKIiaOFSHrWhnx7DdAu6KJlS+hLuzgWVhNbpKwywF1lB899ZvY
-         qYpQ==
-X-Gm-Message-State: AC+VfDwFyKLcLRC5+hMv3U55XKJXZ/8XoNGUNLtD9YKIhPDb2n1RpP/U
-        jEdEJ5Ozll2I4TVdqwAbiAANqA==
-X-Google-Smtp-Source: ACHHUZ53mQ64foMYdD4WiJ9aXcXW/Mh9UVrYMszuUl5utsyKjRZqTF91fgc6UpYXQ5nOqZPoVHtjhQ==
-X-Received: by 2002:a1c:770d:0:b0:3f4:2770:f7e9 with SMTP id t13-20020a1c770d000000b003f42770f7e9mr976047wmi.17.1686029313452;
-        Mon, 05 Jun 2023 22:28:33 -0700 (PDT)
-Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id f4-20020a7bc8c4000000b003f7e717c770sm3198157wml.23.2023.06.05.22.28.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Jun 2023 22:28:31 -0700 (PDT)
-Date:   Tue, 6 Jun 2023 08:28:28 +0300
-From:   Dan Carpenter <dan.carpenter@linaro.org>
-To:     Thomas Zimmermann <tzimmermann@suse.de>
-Cc:     daniel@ffwll.ch, javierm@redhat.com, sam@ravnborg.org,
-        deller@gmx.de, geert+renesas@glider.be, lee@kernel.org,
-        daniel.thompson@linaro.org, jingoohan1@gmail.com,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-sh@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-staging@lists.linux.dev
-Subject: Re: [PATCH 18/30] fbdev/radeonfb: Use hardware device as backlight
- parent
-Message-ID: <f1bb576e-88cb-4c5d-a7a6-d45ffc48edb3@kadam.mountain>
-References: <20230605144812.15241-1-tzimmermann@suse.de>
- <20230605144812.15241-19-tzimmermann@suse.de>
+        with ESMTP id S236078AbjFFHYy (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 6 Jun 2023 03:24:54 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44013118;
+        Tue,  6 Jun 2023 00:24:53 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id E5BFC218B5;
+        Tue,  6 Jun 2023 07:24:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1686036291; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=L5SCb/oYucC6QlBE32qYQ71fXz63nTIlLduJZz1gjR4=;
+        b=h5xeeuKeHoEVsnxDVZCiG7JRVt3x1DOUXSWskgYHnKXt5WvMpg1SPA/9wWnaOWOsOw2UGQ
+        fq+9rwDO/owvpVtFrWs+GG+y3yo9NiP8sWvtjQLDSIb4mJHuRRP6Z6cn7d9lsOeNQKYCs9
+        F7xe//HcwEm/t6y1A28MV9VgQUkbUCs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1686036291;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=L5SCb/oYucC6QlBE32qYQ71fXz63nTIlLduJZz1gjR4=;
+        b=K37GjmjBQVc91lGOF6/K9PhltXno4bNTKicq6JldixN/2V8aOc92WKOgZg1+zAKrhr/fwR
+        nOlzjf00lye+LhCw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 2627713519;
+        Tue,  6 Jun 2023 07:24:50 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id fnv2AkLffmRtCwAAMHmgww
+        (envelope-from <tzimmermann@suse.de>); Tue, 06 Jun 2023 07:24:50 +0000
+Message-ID: <7d4e340c-e20a-5824-4d59-b93bc1ba4153@suse.de>
+Date:   Tue, 6 Jun 2023 09:24:48 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230605144812.15241-19-tzimmermann@suse.de>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.2
+Subject: Re: [PATCH 02/30] backlight/gpio_backlight: Compare against struct
+ fb_info.device
+To:     "Ruhl, Michael J" <michael.j.ruhl@intel.com>,
+        "daniel@ffwll.ch" <daniel@ffwll.ch>,
+        "javierm@redhat.com" <javierm@redhat.com>,
+        "sam@ravnborg.org" <sam@ravnborg.org>,
+        "deller@gmx.de" <deller@gmx.de>,
+        "geert+renesas@glider.be" <geert+renesas@glider.be>,
+        "lee@kernel.org" <lee@kernel.org>,
+        "daniel.thompson@linaro.org" <daniel.thompson@linaro.org>,
+        "jingoohan1@gmail.com" <jingoohan1@gmail.com>
+Cc:     "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
+        Rich Felker <dalias@libc.org>,
+        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
+        "linux-staging@lists.linux.dev" <linux-staging@lists.linux.dev>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>
+References: <20230605144812.15241-1-tzimmermann@suse.de>
+ <20230605144812.15241-3-tzimmermann@suse.de>
+ <IA1PR11MB641847841A33FE16F9B96BA7C14DA@IA1PR11MB6418.namprd11.prod.outlook.com>
+Content-Language: en-US
+From:   Thomas Zimmermann <tzimmermann@suse.de>
+In-Reply-To: <IA1PR11MB641847841A33FE16F9B96BA7C14DA@IA1PR11MB6418.namprd11.prod.outlook.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------kexGFT0rhicXNSd80q93tDPl"
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -76,16 +88,145 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Jun 05, 2023 at 04:48:00PM +0200, Thomas Zimmermann wrote:
-> Use the hardware device in struct fb_info.device as parent of the
-> backlight device. Aligns the driver with the rest of the codebase
-> and prepares fbdev for making struct fb_info.dev optional.
-> 
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Benjamin Herrenschmidt <benh@kernel.crashing.org>
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------kexGFT0rhicXNSd80q93tDPl
+Content-Type: multipart/mixed; boundary="------------wYz2oZQmcUevf310fkVd0Nat";
+ protected-headers="v1"
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: "Ruhl, Michael J" <michael.j.ruhl@intel.com>,
+ "daniel@ffwll.ch" <daniel@ffwll.ch>, "javierm@redhat.com"
+ <javierm@redhat.com>, "sam@ravnborg.org" <sam@ravnborg.org>,
+ "deller@gmx.de" <deller@gmx.de>,
+ "geert+renesas@glider.be" <geert+renesas@glider.be>,
+ "lee@kernel.org" <lee@kernel.org>,
+ "daniel.thompson@linaro.org" <daniel.thompson@linaro.org>,
+ "jingoohan1@gmail.com" <jingoohan1@gmail.com>
+Cc: "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
+ Rich Felker <dalias@libc.org>,
+ "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
+ "linux-staging@lists.linux.dev" <linux-staging@lists.linux.dev>,
+ "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>
+Message-ID: <7d4e340c-e20a-5824-4d59-b93bc1ba4153@suse.de>
+Subject: Re: [PATCH 02/30] backlight/gpio_backlight: Compare against struct
+ fb_info.device
+References: <20230605144812.15241-1-tzimmermann@suse.de>
+ <20230605144812.15241-3-tzimmermann@suse.de>
+ <IA1PR11MB641847841A33FE16F9B96BA7C14DA@IA1PR11MB6418.namprd11.prod.outlook.com>
+In-Reply-To: <IA1PR11MB641847841A33FE16F9B96BA7C14DA@IA1PR11MB6418.namprd11.prod.outlook.com>
 
-You left out the Cc:
+--------------wYz2oZQmcUevf310fkVd0Nat
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-regards,
-dan carpenter
+SGkNCg0KQW0gMDUuMDYuMjMgdW0gMjI6MTkgc2NocmllYiBSdWhsLCBNaWNoYWVsIEo6DQo+
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPj4gRnJvbTogZHJpLWRldmVsIDxkcmkt
+ZGV2ZWwtYm91bmNlc0BsaXN0cy5mcmVlZGVza3RvcC5vcmc+IE9uIEJlaGFsZiBPZg0KPj4g
+VGhvbWFzIFppbW1lcm1hbm4NCj4+IFNlbnQ6IE1vbmRheSwgSnVuZSA1LCAyMDIzIDEwOjQ4
+IEFNDQo+PiBUbzogZGFuaWVsQGZmd2xsLmNoOyBqYXZpZXJtQHJlZGhhdC5jb207IHNhbUBy
+YXZuYm9yZy5vcmc7DQo+PiBkZWxsZXJAZ214LmRlOyBnZWVydCtyZW5lc2FzQGdsaWRlci5i
+ZTsgbGVlQGtlcm5lbC5vcmc7DQo+PiBkYW5pZWwudGhvbXBzb25AbGluYXJvLm9yZzsgamlu
+Z29vaGFuMUBnbWFpbC5jb20NCj4+IENjOiBsaW51eC1mYmRldkB2Z2VyLmtlcm5lbC5vcmc7
+IFJpY2ggRmVsa2VyIDxkYWxpYXNAbGliYy5vcmc+OyBsaW51eC0NCj4+IHNoQHZnZXIua2Vy
+bmVsLm9yZzsgbGludXgtc3RhZ2luZ0BsaXN0cy5saW51eC5kZXY7IGRyaS0NCj4+IGRldmVs
+QGxpc3RzLmZyZWVkZXNrdG9wLm9yZzsgVGhvbWFzIFppbW1lcm1hbm4NCj4+IDx0emltbWVy
+bWFubkBzdXNlLmRlPjsgSm9obiBQYXVsIEFkcmlhbiBHbGF1Yml0eiA8Z2xhdWJpdHpAcGh5
+c2lrLmZ1LQ0KPj4gYmVybGluLmRlPjsgbGludXgtb21hcEB2Z2VyLmtlcm5lbC5vcmcNCj4+
+IFN1YmplY3Q6IFtQQVRDSCAwMi8zMF0gYmFja2xpZ2h0L2dwaW9fYmFja2xpZ2h0OiBDb21w
+YXJlIGFnYWluc3Qgc3RydWN0DQo+PiBmYl9pbmZvLmRldmljZQ0KPj4NCj4+IFN0cnVjdCBn
+cGlvX2JhY2tsaWdodF9wbGF0Zm9ybV9kYXRhIHJlZmVycyB0byBhIHBsYXRmb3JtIGRldmlj
+ZSB3aXRoaW4NCj4+IHRoZSBMaW51eCBkZXZpY2UgaGllcmFyY2h5LiBUaGUgdGVzdCBpbiBn
+cGlvX2JhY2tsaWdodF9jaGVja19mYigpDQo+PiBjb21wYXJlcyBpdCBhZ2FpbnN0IHRoZSBm
+YmRldiBkZXZpY2UgaW4gc3RydWN0IGZiX2luZm8uZGV2LCB3aGljaA0KPj4gaXMgZGlmZmVy
+ZW50LiBGaXggdGhlIHRlc3QgYnkgY29tcGFyaW5nIHRvIHN0cnVjdCBmYl9pbmZvLmRldmlj
+ZS4NCj4+DQo+PiBGaXhlcyBhIGJ1ZyBpbiB0aGUgYmFja2xpZ2h0IGRyaXZlciBhbmQgcHJl
+cGFyZXMgZmJkZXYgZm9yIG1ha2luZw0KPj4gc3RydWN0IGZiX2luZm8uZGV2IG9wdGlvbmFs
+Lg0KPiANCj4gSSBvbmx5IHNlZSBhIHJlbmFtZSBmcm9tIGZiZGV2ICB0byBkZXYuLi4NCj4g
+DQo+IElzIHRoZXJlIG1pc3NpbmcgY29kZT8NCg0KQXMgU2FtIHNhaWQsIHRoZSBjb21wYXJl
+IG9wZXJhdGlvbiB1c2VkIHRoZSB3cm9uZyBkZXZpY2UgZnJvbSBmYl9pbmZvLg0KDQpJIGFs
+c28gY2hhbmdlZCB0aGUgbmFtaW5nIG9mIGEgZmV3IGZpZWxkcyBpbiB0aGVzZSBiYWNrbGln
+aHQgZHJpdmVycy4gSSANCmNvdWxkIG1vdmUgdGhlc2UgcmVuYW1lcyBpbnRvIGEgc2VwYXJh
+dGUgcGF0Y2ggaWYgdGhhdCBtYWtlcyB0aGluZ3MgDQplYXNpZXIgZm9yIHJldmlld2Vycy4N
+Cg0KPiANCj4gV291bGQgIGEgZml4ZXM6IGJlIHVzZWZ1bD8NCg0KVGhhdCB3b3VsZCBiZSBj
+b21taXQgOGI3NzBlM2M5ODI0ICgiYmFja2xpZ2h0OiBBZGQgR1BJTy1iYXNlZCBiYWNrbGln
+aHQgDQpkcml2ZXIiKSBmcm9tIDIwMTMuIE1heWJlIGEgYml0IG9sZCBhbHJlYWR5LCBidXQg
+SSBjYW4gc3VyZWx5IGFkZCBpdC4NCg0KQmVzdCByZWdhcmRzDQpUaG9tYXMNCg0KPiANCj4g
+TQ0KPiANCj4+IFNpZ25lZC1vZmYtYnk6IFRob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFu
+bkBzdXNlLmRlPg0KPj4gQ2M6IFJpY2ggRmVsa2VyIDxkYWxpYXNAbGliYy5vcmc+DQo+PiBD
+YzogSm9obiBQYXVsIEFkcmlhbiBHbGF1Yml0eiA8Z2xhdWJpdHpAcGh5c2lrLmZ1LWJlcmxp
+bi5kZT4NCj4+IENjOiBMZWUgSm9uZXMgPGxlZUBrZXJuZWwub3JnPg0KPj4gQ2M6IERhbmll
+bCBUaG9tcHNvbiA8ZGFuaWVsLnRob21wc29uQGxpbmFyby5vcmc+DQo+PiBDYzogSmluZ29v
+IEhhbiA8amluZ29vaGFuMUBnbWFpbC5jb20+DQo+PiBDYzogbGludXgtc2hAdmdlci5rZXJu
+ZWwub3JnDQo+PiAtLS0NCj4+IGFyY2gvc2gvYm9hcmRzL21hY2gtZWNvdmVjMjQvc2V0dXAu
+YyAgICAgICAgIHwgMiArLQ0KPj4gZHJpdmVycy92aWRlby9iYWNrbGlnaHQvZ3Bpb19iYWNr
+bGlnaHQuYyAgICAgfCA2ICsrKy0tLQ0KPj4gaW5jbHVkZS9saW51eC9wbGF0Zm9ybV9kYXRh
+L2dwaW9fYmFja2xpZ2h0LmggfCAyICstDQo+PiAzIGZpbGVzIGNoYW5nZWQsIDUgaW5zZXJ0
+aW9ucygrKSwgNSBkZWxldGlvbnMoLSkNCj4+DQo+PiBkaWZmIC0tZ2l0IGEvYXJjaC9zaC9i
+b2FyZHMvbWFjaC1lY292ZWMyNC9zZXR1cC5jIGIvYXJjaC9zaC9ib2FyZHMvbWFjaC0NCj4+
+IGVjb3ZlYzI0L3NldHVwLmMNCj4+IGluZGV4IDY3NGRhN2ViZDhiNy4uMzEwNTEzNjQ2Yzli
+IDEwMDY0NA0KPj4gLS0tIGEvYXJjaC9zaC9ib2FyZHMvbWFjaC1lY292ZWMyNC9zZXR1cC5j
+DQo+PiArKysgYi9hcmNoL3NoL2JvYXJkcy9tYWNoLWVjb3ZlYzI0L3NldHVwLmMNCj4+IEBA
+IC0zODYsNyArMzg2LDcgQEAgc3RhdGljIHN0cnVjdCBwcm9wZXJ0eV9lbnRyeSBncGlvX2Jh
+Y2tsaWdodF9wcm9wc1tdID0gew0KPj4gfTsNCj4+DQo+PiBzdGF0aWMgc3RydWN0IGdwaW9f
+YmFja2xpZ2h0X3BsYXRmb3JtX2RhdGEgZ3Bpb19iYWNrbGlnaHRfZGF0YSA9IHsNCj4+IC0J
+LmZiZGV2ID0gJmxjZGNfZGV2aWNlLmRldiwNCj4+ICsJLmRldiA9ICZsY2RjX2RldmljZS5k
+ZXYsDQo+PiB9Ow0KPj4NCj4+IHN0YXRpYyBjb25zdCBzdHJ1Y3QgcGxhdGZvcm1fZGV2aWNl
+X2luZm8gZ3Bpb19iYWNrbGlnaHRfZGV2aWNlX2luZm8gPSB7DQo+PiBkaWZmIC0tZ2l0IGEv
+ZHJpdmVycy92aWRlby9iYWNrbGlnaHQvZ3Bpb19iYWNrbGlnaHQuYw0KPj4gYi9kcml2ZXJz
+L3ZpZGVvL2JhY2tsaWdodC9ncGlvX2JhY2tsaWdodC5jDQo+PiBpbmRleCA2Zjc4ZDkyOGYw
+NTQuLmQzYmVhNDI0MDdmMSAxMDA2NDQNCj4+IC0tLSBhL2RyaXZlcnMvdmlkZW8vYmFja2xp
+Z2h0L2dwaW9fYmFja2xpZ2h0LmMNCj4+ICsrKyBiL2RyaXZlcnMvdmlkZW8vYmFja2xpZ2h0
+L2dwaW9fYmFja2xpZ2h0LmMNCj4+IEBAIC0xNyw3ICsxNyw3IEBADQo+PiAjaW5jbHVkZSA8
+bGludXgvc2xhYi5oPg0KPj4NCj4+IHN0cnVjdCBncGlvX2JhY2tsaWdodCB7DQo+PiAtCXN0
+cnVjdCBkZXZpY2UgKmZiZGV2Ow0KPj4gKwlzdHJ1Y3QgZGV2aWNlICpkZXY7DQo+PiAJc3Ry
+dWN0IGdwaW9fZGVzYyAqZ3Bpb2Q7DQo+PiB9Ow0KPj4NCj4+IEBAIC0zNSw3ICszNSw3IEBA
+IHN0YXRpYyBpbnQgZ3Bpb19iYWNrbGlnaHRfY2hlY2tfZmIoc3RydWN0DQo+PiBiYWNrbGln
+aHRfZGV2aWNlICpibCwNCj4+IHsNCj4+IAlzdHJ1Y3QgZ3Bpb19iYWNrbGlnaHQgKmdibCA9
+IGJsX2dldF9kYXRhKGJsKTsNCj4+DQo+PiAtCXJldHVybiBnYmwtPmZiZGV2ID09IE5VTEwg
+fHwgZ2JsLT5mYmRldiA9PSBpbmZvLT5kZXY7DQo+PiArCXJldHVybiAhZ2JsLT5kZXYgfHwg
+Z2JsLT5kZXYgPT0gaW5mby0+ZGV2aWNlOw0KPj4gfQ0KPj4NCj4+IHN0YXRpYyBjb25zdCBz
+dHJ1Y3QgYmFja2xpZ2h0X29wcyBncGlvX2JhY2tsaWdodF9vcHMgPSB7DQo+PiBAQCAtNTks
+NyArNTksNyBAQCBzdGF0aWMgaW50IGdwaW9fYmFja2xpZ2h0X3Byb2JlKHN0cnVjdCBwbGF0
+Zm9ybV9kZXZpY2UNCj4+ICpwZGV2KQ0KPj4gCQlyZXR1cm4gLUVOT01FTTsNCj4+DQo+PiAJ
+aWYgKHBkYXRhKQ0KPj4gLQkJZ2JsLT5mYmRldiA9IHBkYXRhLT5mYmRldjsNCj4+ICsJCWdi
+bC0+ZGV2ID0gcGRhdGEtPmRldjsNCj4+DQo+PiAJZGVmX3ZhbHVlID0gZGV2aWNlX3Byb3Bl
+cnR5X3JlYWRfYm9vbChkZXYsICJkZWZhdWx0LW9uIik7DQo+Pg0KPj4gZGlmZiAtLWdpdCBh
+L2luY2x1ZGUvbGludXgvcGxhdGZvcm1fZGF0YS9ncGlvX2JhY2tsaWdodC5oDQo+PiBiL2lu
+Y2x1ZGUvbGludXgvcGxhdGZvcm1fZGF0YS9ncGlvX2JhY2tsaWdodC5oDQo+PiBpbmRleCAx
+YThiNWIxOTQ2ZmUuLjMyM2ZiZjVmNzYxMyAxMDA2NDQNCj4+IC0tLSBhL2luY2x1ZGUvbGlu
+dXgvcGxhdGZvcm1fZGF0YS9ncGlvX2JhY2tsaWdodC5oDQo+PiArKysgYi9pbmNsdWRlL2xp
+bnV4L3BsYXRmb3JtX2RhdGEvZ3Bpb19iYWNrbGlnaHQuaA0KPj4gQEAgLTgsNyArOCw3IEBA
+DQo+PiBzdHJ1Y3QgZGV2aWNlOw0KPj4NCj4+IHN0cnVjdCBncGlvX2JhY2tsaWdodF9wbGF0
+Zm9ybV9kYXRhIHsNCj4+IC0Jc3RydWN0IGRldmljZSAqZmJkZXY7DQo+PiArCXN0cnVjdCBk
+ZXZpY2UgKmRldjsNCj4+IH07DQo+Pg0KPj4gI2VuZGlmDQo+PiAtLQ0KPj4gMi40MC4xDQo+
+IA0KDQotLSANClRob21hcyBaaW1tZXJtYW5uDQpHcmFwaGljcyBEcml2ZXIgRGV2ZWxvcGVy
+DQpTVVNFIFNvZnR3YXJlIFNvbHV0aW9ucyBHZXJtYW55IEdtYkgNCkZyYW5rZW5zdHJhc3Nl
+IDE0NiwgOTA0NjEgTnVlcm5iZXJnLCBHZXJtYW55DQpHRjogSXZvIFRvdGV2LCBBbmRyZXcg
+TXllcnMsIEFuZHJldyBNY0RvbmFsZCwgQm91ZGllbiBNb2VybWFuDQpIUkIgMzY4MDkgKEFH
+IE51ZXJuYmVyZykNCg==
 
+--------------wYz2oZQmcUevf310fkVd0Nat--
+
+--------------kexGFT0rhicXNSd80q93tDPl
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature"
+
+-----BEGIN PGP SIGNATURE-----
+
+wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmR+30AFAwAAAAAACgkQlh/E3EQov+Bg
++BAAi3FmK5SYmQ5jtSn+2vWqx1iKMKJZdzfS+AfP8r8/WLxE7OwdiFV7GExSM2APHkZa6+ct4m5e
+rY4+82oO9+MiOUuNVha9toyKblBgpj6qqw9WEbgzvEZtWVOvet3IlG9InXakEHLDHgYrw7Kq546s
+n/Lc5OXrx0SuZALwwv6TD8uFYuJ6vp6R836kvVPr7Zy4drRu74YD8hyy+sPdvX3VFccFHaWyQShY
+WtVKlrzjfM02+TiumohtlP/duPUdIOwYuZbEHIJu3jO86FBRRsBHceId9H++2PdHXBP1q+FKowoN
+1lrn1mETaHn5V1SY5vhmiXcDfcMlhBPCBZUbxQx2TlsjDPAfmRHeZic8jzQknm9aVxXG/1CGiWIE
+Kpgaq9O6gHV6hUhQhKvxHTgmyUsO4Uh8b2zcRMSVzKMKXjKzvCI4JYJamUxHHBXYs8jOpoYcth1A
+zIIF+I9TqULs6fWGfaaSXwgUOoPDpeRXOh5TnSfRSw3WT0r2LQ+RITm8b/h4sdKoKdtMtRw1lSme
+UtPp5Ob/7VLpnwfip/84KELFkONvXlvS00eeBfjda/swKneGHnKsALIg1TxABxN06H4wU4rOiJjo
+Jfw0RQaqdo2YH4o2aqjHkq8115tKd9Qe/5NLzhlHaNCuBu86QzAXhuXSWCnqa0nxv35E2w6zSyFX
+Jgc=
+=tSw9
+-----END PGP SIGNATURE-----
+
+--------------kexGFT0rhicXNSd80q93tDPl--
