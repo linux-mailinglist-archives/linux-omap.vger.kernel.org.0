@@ -2,109 +2,120 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C3F22724649
-	for <lists+linux-omap@lfdr.de>; Tue,  6 Jun 2023 16:37:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D9B072477C
+	for <lists+linux-omap@lfdr.de>; Tue,  6 Jun 2023 17:20:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237370AbjFFOg6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 6 Jun 2023 10:36:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40680 "EHLO
+        id S230320AbjFFPUB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 6 Jun 2023 11:20:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45714 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233693AbjFFOg5 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 6 Jun 2023 10:36:57 -0400
-Received: from mail-qk1-x72a.google.com (mail-qk1-x72a.google.com [IPv6:2607:f8b0:4864:20::72a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06F3D10CA;
-        Tue,  6 Jun 2023 07:36:51 -0700 (PDT)
-Received: by mail-qk1-x72a.google.com with SMTP id af79cd13be357-75e4497597cso235658885a.2;
-        Tue, 06 Jun 2023 07:36:50 -0700 (PDT)
+        with ESMTP id S238660AbjFFPUA (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 6 Jun 2023 11:20:00 -0400
+Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9724E62
+        for <linux-omap@vger.kernel.org>; Tue,  6 Jun 2023 08:19:58 -0700 (PDT)
+Received: by mail-lf1-x12e.google.com with SMTP id 2adb3069b0e04-4f4e71a09a7so7587625e87.1
+        for <linux-omap@vger.kernel.org>; Tue, 06 Jun 2023 08:19:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686062210; x=1688654210;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/pHfhgJpmyYHKAj9H1AH6OpEbFEZgptlDbr8iBk/Wos=;
-        b=j/8Muj0Jskxwh51gbdolgS/TzJHxJvOle6Tp5pRV7vUCGcGOIMNG6xLwme6+/jK9ex
-         +D2dg8WZI5bHLjrBk0p2Jceg5hQ9toCaLE5PywYI8al7dIqlzc1+70PorZp2XMA6tEMZ
-         6aO3yX+uID2xVnGZjkjeSS7BUKPeiRR9eUYBsdw3/U/Af2xSFj4byHVp8WeMChKubBSV
-         rjdKQpWNWtQpVe0OvWugf7VkrKPG5texNqHMHsSW8523EaXTM5Nec+Y/6OR3sVDVwNyp
-         sFdGQQ/4kPkqsT/E5jOxa4RSkcHYuaHH/u1R35heqljtviIc7+nrC+Z7ZYGlExGBT1r0
-         EHMw==
+        d=gmail.com; s=20221208; t=1686064797; x=1688656797;
+        h=content-transfer-encoding:to:subject:message-id:date:from:sender
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=PXSnykSl2m8GUoGHPGyHMUT1Oob4xT3ddV97ZlLQSfo=;
+        b=gFhgmpMY05DjQ8KsKO/uybTiJ9yKPK2xD+mrm86hZm3kxTo0gvsPmO0dg1Zk44zvV4
+         exLmOivLJFGJMFyRwmA43Vo1gbtXtDiPD80eITDxvuEtrcRP0H4ybDXbek9y6dGBIAdk
+         nX4bsHQpZyoX4QV1tsGw5ZX7qvNuQmW2EOdfi02Kw08k1NnUcSiobTiO9cCh70ovT1Ia
+         VnrlZxy5SHVU28JlRHN2jpSpAFL9fPDbHKEgpfnRVSf/nMGp+GszSWrtUkt63qZI/w0D
+         VEaR91u11dtZBtb/EsevqMkevj7oRgMFyMHOnbrr2rfXiwqQca1rhc2nJDUuQfwN5h5X
+         psGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686062210; x=1688654210;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/pHfhgJpmyYHKAj9H1AH6OpEbFEZgptlDbr8iBk/Wos=;
-        b=LuHymNYuyFxaRDLSVfB9BVfrXcPYcKhEKXYwZKjadtqzqR1QPQmaE78GZtQAAotEzo
-         +VOPVJ0EdOGzrQAbChaLeKN05uOc0P+AjRhmQJwNXsvaen/jZ16IBKNnAKxybazGOj7A
-         R0T9R4w8NLonQ0253qJcaI8SXaMfzpmBV86KC1kOMRweZce1p4pZewwaAzl4fOQHiRDc
-         BSzXdhptagwe8x/3MuE2pxdPUIaTTjpY8PGXcXWSxHZvCVay4eim57rSdiqwNmmmKHON
-         8fRd6pnfGFYr+di2Ke+SK59WjGwTnJOKehIp8EbNFpx8Gi+79IS/3g/AjnujhgC/UxRU
-         V0jw==
-X-Gm-Message-State: AC+VfDwjPlfmw9ONM29nyMKgfVaMLwQQskSJEfTA8nWj3sROSA9hERwZ
-        93Xfy5wc3DxqF9duUUrrHK2yGbOUm1gipH+Z/dk=
-X-Google-Smtp-Source: ACHHUZ5hPolR27BbcFXkbeEHThpkvtUWrhy6uOFaajbFQCLbRF+UBSxD82ZTDoQp4Mw84aLjYdUGp8gv+mBI32zJvGg=
-X-Received: by 2002:a05:6214:1c8e:b0:56a:d94d:6deb with SMTP id
- ib14-20020a0562141c8e00b0056ad94d6debmr2510370qvb.25.1686062210042; Tue, 06
- Jun 2023 07:36:50 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1686064797; x=1688656797;
+        h=content-transfer-encoding:to:subject:message-id:date:from:sender
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PXSnykSl2m8GUoGHPGyHMUT1Oob4xT3ddV97ZlLQSfo=;
+        b=Uk/HLaAG2mwU03JBBIEXktgF6R4EUfVc07qq4lqfU+Pt1llHwvr/1c1wL8kTePBK18
+         IDrq1NJd6Tp4WS9ubHa+GPKIbjRCA/bYHWbL5o4t6cEYB0TqfXP6t0BNo5A9V+0A/Af/
+         w99iMo39ntmMjUpxGqXss7p8ycjkO78I/dVfkLORpXfhHy8g1DXJtV0OEZS5X9I/hZxX
+         Pld9F39i3qG92ldFWc8R4MI9zOUSel/jbUnWE8lnlkjz6aJOZVfHzR4jrCTb0V/wCUGQ
+         ohC0wjjjJB3G+mc4ehR5EkN8+Rgcil5b0yv9sAQ7UjmyLKS0oMFWIH/gbcDl8X00NND2
+         sfJQ==
+X-Gm-Message-State: AC+VfDxUVBu+ffbv974gAayhfkixMQcHlWZ+MlBQbzM4D4PR3OK8g5Sp
+        ZNZD94or69OSVzp65XVnNTlUtqL24SDGzZ7Mc0g=
+X-Google-Smtp-Source: ACHHUZ5Bnc8SwAKxEjMAjEKFmdYjpebbkLljMTFnQAv85r7Hx5hcuzvq30JLw7RoxUyeqYz79wwD4jxUqh3vYW3vLHs=
+X-Received: by 2002:a05:6512:33c5:b0:4f4:f38a:4423 with SMTP id
+ d5-20020a05651233c500b004f4f38a4423mr5677644lfg.27.1686064796697; Tue, 06 Jun
+ 2023 08:19:56 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230511-tps65219-add-gpio-support-v4-0-b5d6a764d722@baylibre.com>
- <20230511-tps65219-add-gpio-support-v4-1-b5d6a764d722@baylibre.com>
- <ZHXZBCwk6tTu8gjY@surfacebook> <e487f966-aafb-7d21-935d-b1d0ac7c21ac@baylibre.com>
-In-Reply-To: <e487f966-aafb-7d21-935d-b1d0ac7c21ac@baylibre.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 6 Jun 2023 17:36:14 +0300
-Message-ID: <CAHp75Vfu0V_nqy-0tdOM31onZn-P+mGDXJO5CnC4GkuVqYvvdQ@mail.gmail.com>
-Subject: Re: [PATCH v4 1/2] gpio: tps65219: add GPIO support for TPS65219 PMIC
-To:     jerome Neanne <jneanne@baylibre.com>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Tony Lindgren <tony@atomide.com>, Lee Jones <lee@kernel.org>,
-        khilman@baylibre.com, msp@baylibre.com, francesco@dolcini.it,
-        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-omap@vger.kernel.org,
-        Jonathan Cormier <jcormier@criticallink.com>
+Sender: traoreseriba174@gmail.com
+Received: by 2002:a2e:8506:0:b0:2b1:b972:80e1 with HTTP; Tue, 6 Jun 2023
+ 08:19:55 -0700 (PDT)
+From:   Maya olivier <madamoliviermaya@gmail.com>
+Date:   Tue, 6 Jun 2023 08:19:55 -0700
+X-Google-Sender-Auth: mW5_BVm4uCr6nQhKewon7buTT3o
+Message-ID: <CAKViA0XbyYvDnKXdMQjxVoM++uvCRnbWwaUhNbbL0FNXqy1rww@mail.gmail.com>
+Subject: Have a nice weekend,
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+X-Spam-Status: Yes, score=6.1 required=5.0 tests=ADVANCE_FEE_5_NEW_MONEY,
+        BAYES_50,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,FREEMAIL_REPLY,LOTS_OF_MONEY,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        UNDISC_MONEY autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:12e listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [traoreseriba174[at]gmail.com]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [traoreseriba174[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  1.0 FREEMAIL_REPLY From and body contain different freemails
+        *  3.0 ADVANCE_FEE_5_NEW_MONEY Advance Fee fraud and lots of money
+        *  1.3 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, Jun 6, 2023 at 3:45=E2=80=AFPM jerome Neanne <jneanne@baylibre.com>=
- wrote:
-> On 30/05/2023 13:07, andy.shevchenko@gmail.com wrote:
-> > Tue, May 30, 2023 at 09:59:59AM +0200, Jerome Neanne kirjoitti:
-
-...
-
-> >> Datasheet describes specific usage for non standard GPIO.
-> >> Link: https://www.ti.com/lit/ds/symlink/tps65219.pdf
-> >
-> > Can you convert this to be a Datasheet tag? Currently even Link is *not=
-* a tag
-> > because there must be no blank lines in the tag block.
-> >
-> >> Co-developed-by: Jonathan Cormier <jcormier@criticallink.com>
-> >> Signed-off-by: Jonathan Cormier <jcormier@criticallink.com>
-> >> Signed-off-by: Jerome Neanne <jneanne@baylibre.com>
-> >
-> I misinterpreted this comment. I looked at wrong examples but I think I
-> understand now that the right usage is to have all the tags grouped
-> together into one block which is delimited by blank lines before and
-> after the whole block.
-
-(Note, there is no "after", tag block is the last in the commit message)
-
-> I'll then do this and put all the Datasheet/Link into the tag block.
-> Stop putting Links inside the commit message right after I refer to it.
-> https://www.kernel.org/doc/html/latest/process/5.Posting.html#patch-forma=
-tting-and-changelogs
-
---=20
-With Best Regards,
-Andy Shevchenko
+I am Mrs. Maya Oliver,
+From the United Kingdom. Firstly, I am married to Mr. Patrick Oliver,
+A diamond and gold merchant who owns a small gold Mine in Thailand
+Bangkok; He died of Cardiovascular Disease in mid-March 2011. During
+his lifetime he deposited the sum of =E2=82=AC 12.7 Euros in a bank in Bang=
+kok
+the capital city of Thailand. The deposited money was from the sale of
+the shares, death benefits payment and entitlements of my deceased
+husband by his company. Since his death I decided not to remarry, when
+my late husband was Alive he deposited the sum of =E2=82=AC 12.7 Million Eu=
+ro)
+Twelve million, Seven hundred Thousand Euro) in a bank in Thailand,
+Presently this money is Still in the bank. And My Doctor told me that
+I don't have much time to leave because of the cancer problem, having
+known my condition I decided to hand you over this fund to take Care
+of the less-privileged people
+Meanwhile i have concluded with the bank to transfer the funds to you,
+through the listed options below 1, Money gram 2, ATM card,3 RIA 4,
+Online Transfer
+ Please i will be glad to hear from you before i can send you the
+contact details of the bank.
+You can contact the bank for the transaction with the email below:
+transferriamoney0@gmail.com
+Mrs. Maya Oliver
