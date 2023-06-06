@@ -2,179 +2,115 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 67464724871
-	for <lists+linux-omap@lfdr.de>; Tue,  6 Jun 2023 18:03:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F3CC724CAC
+	for <lists+linux-omap@lfdr.de>; Tue,  6 Jun 2023 21:14:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237627AbjFFQDN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 6 Jun 2023 12:03:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42336 "EHLO
+        id S239549AbjFFTOA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 6 Jun 2023 15:14:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233062AbjFFQDM (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 6 Jun 2023 12:03:12 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 037E712D
-        for <linux-omap@vger.kernel.org>; Tue,  6 Jun 2023 09:03:11 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1q6Z8u-0001e5-46; Tue, 06 Jun 2023 18:02:44 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1q6Z8l-005Xat-NX; Tue, 06 Jun 2023 18:02:35 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1q6Z8k-00BkQ7-PH; Tue, 06 Jun 2023 18:02:34 +0200
-Date:   Tue, 6 Jun 2023 18:02:34 +0200
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-        Miaoqian Lin <linmq006@gmail.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-pci@vger.kernel.org,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jisheng Zhang <jszhang@kernel.org>,
-        Toan Le <toan@os.amperecomputing.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Rob Herring <robh@kernel.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        linux-rockchip@lists.infradead.org,
-        Joyce Ooi <joyce.ooi@intel.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Jianjun Wang <jianjun.wang@mediatek.com>,
-        Sergio Paracuellos <sergio.paracuellos@gmail.com>,
-        Rahul Tanwar <rtanwar@maxlinear.com>,
-        Jim Quinlan <jim2101024@gmail.com>,
-        Broadcom internal kernel review list 
-        <bcm-kernel-feedback-list@broadcom.com>,
-        linux-arm-msm@vger.kernel.org,
-        Shawn Lin <shawn.lin@rock-chips.com>,
-        Nicolas Saenz Julienne <nsaenz@kernel.org>,
-        linux-tegra@vger.kernel.org, kernel@pengutronix.de,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Ray Jui <rjui@broadcom.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        linux-mediatek@lists.infradead.org,
-        linux-rpi-kernel@lists.infradead.org,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Vidya Sagar <vidyas@nvidia.com>,
-        Serge Semin <Sergey.Semin@baikalelectronics.ru>,
-        Tom Joseph <tjoseph@cadence.com>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Shawn Guo <shawn.guo@linaro.org>,
-        Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-Subject: Re: [PATCH 00/15] PCI: Convert to platform remove callback returning
- void
-Message-ID: <20230606160234.elcvyqlz2j3mggih@pengutronix.de>
-References: <20230530140742.ebbrxmpieuphbmz3@pengutronix.de>
- <ZHphHkNLO4tEJIm/@bhelgaas>
+        with ESMTP id S239186AbjFFTNo (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 6 Jun 2023 15:13:44 -0400
+Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E45881728
+        for <linux-omap@vger.kernel.org>; Tue,  6 Jun 2023 12:13:13 -0700 (PDT)
+Received: by mail-lj1-x231.google.com with SMTP id 38308e7fff4ca-2b1bb2fc9c6so47965481fa.0
+        for <linux-omap@vger.kernel.org>; Tue, 06 Jun 2023 12:13:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1686078792; x=1688670792;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZA9rQfuTuqMm7L4rY7JdHmHFP9ipyFjfGT8l696KaLE=;
+        b=vLc1ML2qr3C12ZYpWpoyaYhHj0XIOe8Njbe6tedoFST7tai7/M5t+EDQudAS5OF5fI
+         7os6Kmn0Lyc+boAbg8vRBciqi1msjsu72IBo8fyoCX3Ov7MfKtvFAAQ9pgEZQS8JblJ+
+         xviNlYe/0EGavOwUWR0njwHprykxc2mjk6qfpv3zoSLZzg7ir9YAurVfpHQrF1xQqdtZ
+         yJ3ZaEy9YLUqs59eZAXtlQyOzQfrEpgTfRfzthTKl+AX7APrE8TXh1BDH2jtg4wri7HH
+         n2+U2ccLFQKoU6Qtxw7KrK31/upkrfDpOWeWCVNGPZcDO1KMkiO5dIPtCvRkimqSeJN+
+         k2+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686078792; x=1688670792;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZA9rQfuTuqMm7L4rY7JdHmHFP9ipyFjfGT8l696KaLE=;
+        b=WEJLNNrM8piyddOA08ncMXnz1v1dkuZoGAvlLCH6lRZHYIEBI+ZoYjpdaMjE0mGWQN
+         SLEPs/TiIhlDfuKKvGF62cFSmXjvuIuxAG7jZk23NXAKWYkM0vi4H39Dy/8utysXa3+C
+         hQixJCo7HWFT4eFcSxt4ZlSzFrG2yFt1+PL7klH2VujvvxKNdpoU6RGQFUF6XS04kYo3
+         qQ8YdwDfB2mASKwjDgwDa6MaGQE2Nhr2z7LSorBI3X5dqd4maxdZTD+MOo/2oO1SHM5c
+         IOOMKcXZT0fWanLFnQrGQ8VDDxqCCFpuWCd/nfA80Ufj1SmPIqhRSbWCrUodxlS3Z5Cz
+         /DTA==
+X-Gm-Message-State: AC+VfDwDcuRJhblycDsjlJ0g4Q2f1V+sArEijrkwib64Y2lQKKZ2kEyA
+        /jyaB/iYlaTR3ExNr13UotKFCA==
+X-Google-Smtp-Source: ACHHUZ5hIzfSf9Id8op7bMrggT6dyfvWxlvGZYvBblpZ5phSJdaSXH7BjMIp7vBZT6Idca1Nd8MtHg==
+X-Received: by 2002:a2e:b0e1:0:b0:2b0:4c72:98ff with SMTP id h1-20020a2eb0e1000000b002b04c7298ffmr1440823ljl.7.1686078792034;
+        Tue, 06 Jun 2023 12:13:12 -0700 (PDT)
+Received: from Fecusia.lan (c-05d8225c.014-348-6c756e10.bbcust.telenor.se. [92.34.216.5])
+        by smtp.gmail.com with ESMTPSA id z19-20020a2e8853000000b002af15f2a735sm1972480ljj.111.2023.06.06.12.13.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Jun 2023 12:13:11 -0700 (PDT)
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+        Tony Lindgren <tony@atomide.com>, soc@kernel.org,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc:     linux-omap@vger.kernel.org, linux-input@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH] Input: ads7846 - Fix usage of match data
+Date:   Tue,  6 Jun 2023 21:13:04 +0200
+Message-Id: <20230606191304.3804174-1-linus.walleij@linaro.org>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="zxsm4y3nhwayyseu"
-Content-Disposition: inline
-In-Reply-To: <ZHphHkNLO4tEJIm/@bhelgaas>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-omap@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+device_get_match_data() returns the match data directly, fix
+this up and fix the probe crash.
 
---zxsm4y3nhwayyseu
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Fixes: 767d83361aaa ("Input: ads7846 - Convert to use software nodes")
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+---
+This patch needs to be applied to the SoC tree where the
+offending patch is residing.
+---
+ drivers/input/touchscreen/ads7846.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-Hello,
+diff --git a/drivers/input/touchscreen/ads7846.c b/drivers/input/touchscreen/ads7846.c
+index 40eb27f1b23f..fe6fe8acd8a6 100644
+--- a/drivers/input/touchscreen/ads7846.c
++++ b/drivers/input/touchscreen/ads7846.c
+@@ -1117,20 +1117,13 @@ MODULE_DEVICE_TABLE(of, ads7846_dt_ids);
+ static const struct ads7846_platform_data *ads7846_get_props(struct device *dev)
+ {
+ 	struct ads7846_platform_data *pdata;
+-	const struct platform_device_id *pdev_id;
+ 	u32 value;
+ 
+-	pdev_id = device_get_match_data(dev);
+-	if (!pdev_id) {
+-		dev_err(dev, "Unknown device model\n");
+-		return ERR_PTR(-EINVAL);
+-	}
+-
+ 	pdata = devm_kzalloc(dev, sizeof(*pdata), GFP_KERNEL);
+ 	if (!pdata)
+ 		return ERR_PTR(-ENOMEM);
+ 
+-	pdata->model = (unsigned long)pdev_id->driver_data;
++	pdata->model = (u32)device_get_match_data(dev);
+ 
+ 	device_property_read_u16(dev, "ti,vref-delay-usecs",
+ 				 &pdata->vref_delay_usecs);
+-- 
+2.34.1
 
-[dropped Tom Joseph and Joyce Ooi from Cc:, my last mail in this thread
-resulted in a bounce for their addresses.]
-
-On Fri, Jun 02, 2023 at 04:37:34PM -0500, Bjorn Helgaas wrote:
-> On Tue, May 30, 2023 at 04:07:42PM +0200, Uwe Kleine-K=F6nig wrote:
-> > Hello Bjorn,
-> >=20
-> > On Tue, Mar 21, 2023 at 08:31:53PM +0100, Uwe Kleine-K=F6nig wrote:
-> > > this series adapts the platform drivers below drivers/pci to use the
-> > > .remove_new() callback. Compared to the traditional .remove() callback
-> > > .remove_new() returns no value. This is a good thing because the driv=
-er core
-> > > doesn't (and cannot) cope for errors during remove. The only effect o=
-f a
-> > > non-zero return value in .remove() is that the driver core emits a wa=
-rning. The
-> > > device is removed anyhow and an early return from .remove() usually y=
-ields a
-> > > resource leak.
-> > >=20
-> > > By changing the remove callback to return void driver authors cannot
-> > > reasonably assume any more that there is some kind of cleanup later.
-> > >=20
-> > > All drivers were easy to convert as they all returned zero in their
-> > > remove callback. Only for iproc the conversion wasn't trivial, the ot=
-her
-> > > were converted using coccinelle.
-> > >=20
-> > > There are no interdependencies between these patches. So even if there
-> > > are some concerns for individual patches, I ask you to apply the
-> > > remaining set. Then I only have to care for the review feedback of the
-> > > refused patches. (Having said that I don't expect any serious objecti=
-on,
-> > > just things like squashing or separating patches, or maybe I picked a
-> > > wrong subject prefix.)
-> >=20
-> > These patches wait for application for quite some time now. They apply
-> > just fine to v6.4-rc1 and next/master. Would be great to get them in
-> > during the next merge window and ideally give them some time in next
-> > before.
->=20
-> Thanks, these seem fine to me, and Lorenzo normally takes care of
-> drivers/pci/controller/.  Lorenzo, if it's easier to have me apply
-> them, that's fine, too, just let me know.
->=20
-> The only tweaks I would make would be:
->=20
->   PCI: j721e: Convert to platform remove callback returning void
->   PCI: dwc: Convert to platform remove callback returning void
-
-If it's easier for you (or Lorenzo) I can resend with these tweaks.
-Otherwise if these are adapted when applying them, that's fine for me,
-too. Just tell me if I should do anything here.
-
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---zxsm4y3nhwayyseu
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmR/WJkACgkQj4D7WH0S
-/k6o4QgAswvhCfm74HQnoTwnC+IoMm4EP1uz/xxeEg2IRLGbrC34TS1Z84R+TfOq
-npW+Bvfva1xto9TqFtxPapMCURjsueSiw5mqKI4wkMiNqBPBmCoR1kzsPM4zY/v1
-hI83Ar+x5UD94+L6lMpQKKl4diNnzFZPAJGX5576Pb/OsrYPBelBsiD2CPyas+ij
-CvVl7AhNVPfTIr8db3ngHUE+Dc47kiTXmrgk9PMd7v4gFWRMLmF0jcRLX5Ri0TbA
-G4d95IrdAHIC/okElC+mPjfp6Ilgzlhvaxupaw26oS0mEKSqG9ZOZh5E17boefVN
-cISjXwl3/zNxHdQUilLemtYFK/fyTQ==
-=aXLj
------END PGP SIGNATURE-----
-
---zxsm4y3nhwayyseu--
