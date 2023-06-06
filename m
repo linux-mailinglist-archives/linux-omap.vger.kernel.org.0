@@ -2,241 +2,169 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 88EAE723CDE
-	for <lists+linux-omap@lfdr.de>; Tue,  6 Jun 2023 11:17:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B1A2723DFF
+	for <lists+linux-omap@lfdr.de>; Tue,  6 Jun 2023 11:41:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236305AbjFFJRR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 6 Jun 2023 05:17:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58372 "EHLO
+        id S236799AbjFFJln (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 6 Jun 2023 05:41:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235961AbjFFJRN (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 6 Jun 2023 05:17:13 -0400
-Received: from mail-vs1-xe32.google.com (mail-vs1-xe32.google.com [IPv6:2607:f8b0:4864:20::e32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16500E49
-        for <linux-omap@vger.kernel.org>; Tue,  6 Jun 2023 02:17:03 -0700 (PDT)
-Received: by mail-vs1-xe32.google.com with SMTP id ada2fe7eead31-43b4c75b6bbso521749137.2
-        for <linux-omap@vger.kernel.org>; Tue, 06 Jun 2023 02:17:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1686043022; x=1688635022;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Khb/i5f1eJZ0J6xeiDfa7TucSC94mz6ND/CCe3oa97c=;
-        b=MfAG+IuBokCFoq6NH0TfQ3LdRjyZ4XQHnhklH/9QDPZAO+l05Tgr5r4mdDo/GRSe/W
-         tTqsoN/TLZw5KbHQWjvZh4f06ku1WTxTK5RA4jDeJg4iRl3GgI206Ry/4rVkCBQTt1Zy
-         bNTbtrtrKfP6ajPOKPQ2ZFN4Fv/e59vfvCT+Q=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686043022; x=1688635022;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Khb/i5f1eJZ0J6xeiDfa7TucSC94mz6ND/CCe3oa97c=;
-        b=M6LmUW/ckD4//tuD4Wv16Z4lIdG5Ala4Bw3ZZgCjc4foQSpZ+BePltgN1cLPKgyhvu
-         liaaCsmv1/RCy2ucoUqKR9M0XzEhddeV6ci+C5mccnKKPugAbba5ZNcPRSePLbQ1yVNs
-         N7BJejSHZg+KLkcynMgoQzchFAjrUwWTAj5IhIKfJ1cxrqrUVUiJ5fbFXftv9AGJIX/R
-         nxKhUAdv5Ap1m0WHoMViItPanbSZ08psr2/WwWuEF9RuWQpd7c1q5g+oxwJFeKFrjXpB
-         MIn1EGQKt/QhVmjGM5SVefkhwGqyVWZaUFHbrit0g/zK+Cqe16kJcCdtHbcrAOwCYZfP
-         RA6g==
-X-Gm-Message-State: AC+VfDytjjSha2tV0UxFhnDCNl3gCMoplxbzhVWcX1xp+JO+PUKOPVmj
-        fXkVsIyQunyzKek4EQKq5F4uluYdfLFfewCet5B93w==
-X-Google-Smtp-Source: ACHHUZ4Q5xZF3lkjNlUB6Gn9V6AQgQZ2sq3mqzhEAjK9Sn0NJJMwCpu52xY+BZ6AAOUkIEC/8Il2gpm8IN/ybT89ztU=
-X-Received: by 2002:a05:6102:2d6:b0:434:7757:f025 with SMTP id
- h22-20020a05610202d600b004347757f025mr947556vsh.0.1686043022440; Tue, 06 Jun
- 2023 02:17:02 -0700 (PDT)
+        with ESMTP id S236507AbjFFJlf (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 6 Jun 2023 05:41:35 -0400
+Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B58F610F3;
+        Tue,  6 Jun 2023 02:40:58 -0700 (PDT)
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 3569ei3w057409;
+        Tue, 6 Jun 2023 04:40:44 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1686044444;
+        bh=w8SrY+ikkcMi7SM9PmtVDxwhrCdH5GJSMEEsUmqJS5s=;
+        h=Date:Subject:To:CC:References:From:In-Reply-To;
+        b=o435kgmjuDhakcO6daN39eT4zwGfSCqW/SwSDOkAGMSJQOCI6EHlZ2UmStlTLX3Vr
+         BBcOBOUGJiYABA1jtyugir6DcumnDp9+ftRrjDwrB7XlTluGxE1uA/hWRxB/Kb8PSq
+         7piu/BwppWwgCxifx9cWwNppqZEbnYIm70XrEReU=
+Received: from DFLE103.ent.ti.com (dfle103.ent.ti.com [10.64.6.24])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 3569eicD088715
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 6 Jun 2023 04:40:44 -0500
+Received: from DFLE108.ent.ti.com (10.64.6.29) by DFLE103.ent.ti.com
+ (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 6
+ Jun 2023 04:40:44 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE108.ent.ti.com
+ (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Tue, 6 Jun 2023 04:40:44 -0500
+Received: from [10.24.69.114] (ileaxei01-snat.itg.ti.com [10.180.69.5])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 3569eeL3125049;
+        Tue, 6 Jun 2023 04:40:41 -0500
+Message-ID: <773f4723-65f4-9bad-6ab3-bda65e5a4319@ti.com>
+Date:   Tue, 6 Jun 2023 15:10:40 +0530
 MIME-Version: 1.0
-References: <20230525113034.46880-1-tony@atomide.com> <20230602083335.GA181647@google.com>
- <87a5xii33r.fsf@jogness.linutronix.de> <20230603054139.GR14287@atomide.com>
- <20230603063533.GS14287@atomide.com> <20230605061511.GW14287@atomide.com>
- <CAGXv+5Fbx7eTxP0ep6DV+jyronAWxYvu2M-g=MjHGRhjSXUc=w@mail.gmail.com>
- <20230605122447.GY14287@atomide.com> <CAGXv+5HwL+R5QpO3pHGQd9qAxu2pCMDjYvdni1HjiC8eEE38mg@mail.gmail.com>
- <20230605131803.GA14287@atomide.com>
-In-Reply-To: <20230605131803.GA14287@atomide.com>
-From:   Chen-Yu Tsai <wenst@chromium.org>
-Date:   Tue, 6 Jun 2023 17:16:50 +0800
-Message-ID: <CAGXv+5GR9TEaNrj4B21H2iukS2kWW=rtoWkoVnWewVsrbcG0Hw@mail.gmail.com>
-Subject: Re: [PATCH v12 1/1] serial: core: Start managing serial controllers
- to enable runtime PM
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     John Ogness <john.ogness@linutronix.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Dhruva Gole <d-gole@ti.com>,
-        =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Johan Hovold <johan@kernel.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-omap@vger.kernel.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
-        =?UTF-8?B?TsOtY29sYXMgRi4gUi4gQS4gUHJhZG8=?= 
-        <nfraprado@collabora.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        linux-mediatek@lists.infradead.org
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [EXTERNAL] Re: [PATCH] remoteproc: pru: add support for
+ configuring GPMUX based on client setup
+Content-Language: en-US
+To:     Mathieu Poirier <mathieu.poirier@linaro.org>,
+        MD Danish Anwar <danishanwar@ti.com>
+CC:     Bjorn Andersson <andersson@kernel.org>, <rogerq@kernel.org>,
+        <nm@ti.com>, <srk@ti.com>, <linux-kernel@vger.kernel.org>,
+        <linux-remoteproc@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>
+References: <20230601105904.3204260-1-danishanwar@ti.com>
+ <ZH4aywQoA9gy2OWU@p14s>
+From:   Md Danish Anwar <a0501179@ti.com>
+Organization: Texas Instruments
+In-Reply-To: <ZH4aywQoA9gy2OWU@p14s>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Jun 5, 2023 at 9:18=E2=80=AFPM Tony Lindgren <tony@atomide.com> wro=
-te:
->
-> * Chen-Yu Tsai <wenst@chromium.org> [230605 13:01]:
-> > On Mon, Jun 5, 2023 at 8:24=E2=80=AFPM Tony Lindgren <tony@atomide.com>=
- wrote:
-> > >
-> > > * Chen-Yu Tsai <wenst@chromium.org> [230605 11:34]:
-> > > > On Mon, Jun 5, 2023 at 2:15=E2=80=AFPM Tony Lindgren <tony@atomide.=
-com> wrote:
-> > > > > diff --git a/drivers/tty/serial/8250/8250_mtk.c b/drivers/tty/ser=
-ial/8250/8250_mtk.c
-> > > > > --- a/drivers/tty/serial/8250/8250_mtk.c
-> > > > > +++ b/drivers/tty/serial/8250/8250_mtk.c
-> > > > > @@ -425,11 +439,10 @@ mtk8250_set_termios(struct uart_port *port,=
- struct ktermios *termios,
-> > > > >  static int __maybe_unused mtk8250_runtime_suspend(struct device =
-*dev)
-> > > > >  {
-> > > > >         struct mtk8250_data *data =3D dev_get_drvdata(dev);
-> > > > > -       struct uart_8250_port *up =3D serial8250_get_port(data->l=
-ine);
-> > > > >
-> > > > >         /* wait until UART in idle status */
-> > > > >         while
-> > > > > -               (serial_in(up, MTK_UART_DEBUG0));
-> > > > > +               (mtk8250_read(data, MTK_UART_DEBUG0));
-> > > >
-> > > > I believe it still gets stuck here sometimes.
-> > >
-> > > Hmm so maybe you need to mtk8250_write(data, 0, MTK_UART_RATE_FIX) in
-> > > probe before pm_runtime_resume_and_get() that enables the baud clock?
-> > > That's something I changed, so maybe it messes up things.
-> >
-> > I think it has something to do with the do_pm() function calling
-> > the callbacks directly, then also calling runtime PM.
->
-> Yeah I'm not following really what's going on there.. So then I guess the
-> call for mtk8250_write(data, 0, MTK_UART_RATE_FIX) should be after the
-> pm_runtime_resume_and_get() call.
->
-> > > Looking at the 8250_mtk git log, it's runtime PM functions seem to on=
-ly
-> > > currently manage the baud clock so register access should be doable
-> > > without runtime PM resume?
-> >
-> > Actually it only manages the bus clock. The baud clock is simply the sy=
-stem
-> > XTAL which is not gateble.
->
-> OK
->
-> > > > With your earlier patch, it could get through registering the port,=
- and
-> > > > the console would show
-> > > >
-> > > >     11002000.serial: ttyS0 at MMIO 0x11002000 (irq =3D 240, base_ba=
-ud =3D
-> > > > 1625000) is a ST16650V2
-> > > >
-> > > > for the console UART.
-> > >
-> > > OK
-> > >
-> > > > Angelo mentioned that we should be using SLEEP_REQ/SLEEP_ACK regist=
-ers
-> > > > in the MTK UART hardware.
-> > > >
-> > > > I tried reworking it into your patch here, but it causes issues wit=
-h the
-> > > > UART-based Bluetooth on one of my devices. After the UART runtime s=
-uspends
-> > > > and resumes, something is off and causes the transfers during Bluet=
-ooth
-> > > > init to become corrupt.
-> > > >
-> > > > I'll try some more stuff, but the existing code seems timing depend=
-ent.
-> > > > If I add too many printk statements to the runtime suspend/resume
-> > > > callbacks, things seem to work. One time I even ended up with broke=
-n
-> > > > UARTs but otherwise booted up the system.
-> > >
-> > > Well another thing that now changes is that we now runtime suspend th=
-e
-> > > port at the end of the probe. What the 8250_mtk probe was doing earli=
-er
-> > > it was leaving the port baud clock enabled, but runtime PM disabled
-> > > until mtk8250_do_pm() I guess.
-> >
-> > I guess that's the biggest difference? Since the *bus* clock gets disab=
-led,
-> > any access will hang. Is it enough to just support runtime PM? Or do I =
-have
-> > to also have UART_CAP_RPM?
->
-> Maybe try changing pm_runtime_put_sync() at the end of the probe to just
-> pm_runtime_put_noidle()? Then the driver should be back to where it was
-> with clocks enabled but runtime PM suspended.
->
-> I don't think you need UART_CAP_RPM right now unless 8250_mtk adds suppor=
-t
-> for autosuspend. That stuff will get replaced by the serial_core generic
-> PM patch from Andy. I think in it's current form 8250_mtk just gets enabl=
-ed
-> when the port is opened, and disabled when the port is closed. And gets
-> disabled for system suspend.
+Hi Mathieu,
 
-I ended up following 8250_dw's design, which seemed less convoluted.
-The original code was waaay too convoluted.
+On 05/06/23 10:56 pm, Mathieu Poirier wrote:
+> Hi MD,
+> 
+> On Thu, Jun 01, 2023 at 04:29:04PM +0530, MD Danish Anwar wrote:
+>> From: Tero Kristo <t-kristo@ti.com>
+>>
+>> Client device node property ti,pruss-gp-mux-sel can now be used to
+>> configure the GPMUX config value for PRU.
+>>
+>> Signed-off-by: Tero Kristo <t-kristo@ti.com>
+>> Signed-off-by: Suman Anna <s-anna@ti.com>
+>> Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
+>> ---
+>>  drivers/remoteproc/pru_rproc.c | 21 +++++++++++++++++++++
+>>  1 file changed, 21 insertions(+)
+>>
+>> diff --git a/drivers/remoteproc/pru_rproc.c b/drivers/remoteproc/pru_rproc.c
+>> index 2874c8d324f7..29d3a5a930c1 100644
+>> --- a/drivers/remoteproc/pru_rproc.c
+>> +++ b/drivers/remoteproc/pru_rproc.c
+>> @@ -109,6 +109,7 @@ struct pru_private_data {
+>>   * @dbg_single_step: debug state variable to set PRU into single step mode
+>>   * @dbg_continuous: debug state variable to restore PRU execution mode
+>>   * @evt_count: number of mapped events
+>> + * @gpmux_save: saved value for gpmux config
+>>   */
+>>  struct pru_rproc {
+>>  	int id;
+>> @@ -127,6 +128,7 @@ struct pru_rproc {
+>>  	u32 dbg_single_step;
+>>  	u32 dbg_continuous;
+>>  	u8 evt_count;
+>> +	u8 gpmux_save;
+>>  };
+>>  
+>>  static inline u32 pru_control_read_reg(struct pru_rproc *pru, unsigned int reg)
+>> @@ -228,6 +230,7 @@ struct rproc *pru_rproc_get(struct device_node *np, int index,
+>>  	struct device *dev;
+>>  	const char *fw_name;
+>>  	int ret;
+>> +	u32 mux;
+>>  
+>>  	rproc = __pru_rproc_get(np, index);
+>>  	if (IS_ERR(rproc))
+>> @@ -252,6 +255,22 @@ struct rproc *pru_rproc_get(struct device_node *np, int index,
+>>  	if (pru_id)
+>>  		*pru_id = pru->id;
+>>  
+>> +	ret = pruss_cfg_get_gpmux(pru->pruss, pru->id, &pru->gpmux_save);
+>> +	if (ret) {
+>> +		dev_err(dev, "failed to get cfg gpmux: %d\n", ret);
+>> +		goto err;
+>> +	}
+>> +
+>> +	ret = of_property_read_u32_index(np, "ti,pruss-gp-mux-sel", index,
+>> +					 &mux);
+>> +	if (!ret) {
+>> +		ret = pruss_cfg_set_gpmux(pru->pruss, pru->id, mux);
+>> +		if (ret) {
+>> +			dev_err(dev, "failed to set cfg gpmux: %d\n", ret);
+>> +			goto err;
+>> +		}
+>> +	}
+>> +
+> 
+> It would have been nice to be told in a cover letter that pruss_cfg_get_gpmux()
+> is in linux-next so that I don't have to go fish for it...
+> 
 
-BTW, the Bluetooth breakage seems like a different problem. It works
-on v6.4-rc5, but breaks somewhere between that and next, before the
-runtime PM series. This particular device has a Qualcomm WiFi/BT chip
-with the Bluetooth part going through UART. The btqca reports a bunch
-of frame reassembly errors during and after initialization:
+My bad, I should have mentioned it. This patch depends on the soc: ti: pruss
+series [1] which is merged to Nishant's tree and is part of 'linux-next' but
+this isn't yet part of mainline linux.
 
-Bluetooth: hci0: setting up ROME/QCA6390
-Bluetooth: hci0: Frame reassembly failed (-84)
-Bluetooth: hci0: QCA Product ID   :0x00000008
-Bluetooth: hci0: QCA SOC Version  :0x00000044
-Bluetooth: hci0: QCA ROM Version  :0x00000302
-Bluetooth: hci0: QCA Patch Version:0x00000111
-Bluetooth: hci0: QCA controller version 0x00440302
-Bluetooth: hci0: QCA Downloading qca/rampatch_00440302.bin
-Bluetooth: hci0: Frame reassembly failed (-84)
-Bluetooth: hci0: QCA Downloading qca/nvm_00440302_i2s.bin
-Bluetooth: hci0: QCA setup on UART is completed
-Bluetooth: hci0: Opcode 0x1002 failed: -110
-Bluetooth: hci0: command 0x1002 tx timeout
-Bluetooth: hci0: crash the soc to collect controller dump
-Bluetooth: hci0: QCA collecting dump of size:196608
-Bluetooth: hci0: Frame reassembly failed (-84)
-...
-Bluetooth: hci0: Frame reassembly failed (-84)
-Bluetooth: Received HCI_IBS_WAKE_ACK in tx state 0
-Bluetooth: hci0: Frame reassembly failed (-84)
-...
-Bluetooth: hci0: Frame reassembly failed (-84)
-Bluetooth: hci0: Frame reassembly failed (-90)
-Bluetooth: hci0: Frame reassembly failed (-84)
-...
-Bluetooth: hci0: Frame reassembly failed (-84)
-Bluetooth: hci0: Injecting HCI hardware error event
+> I am fine with the code in this patch, though the changelog is cryptic and could
+> be enhanced to say "why" this is needed.  The above could use some comments to
+> make sure people looking at this code understand that an error from
+> of_property_read_u32_index() is acceptable for backward compatibility.
+> 
+> Here I have to suppose pruss_cfg_get_gpmux() has been added to Nishanth's tree.
+> As such the only way for me to apply your patch is if Nishanth sends me a pull
+> request for the patchset that introduced pruss_cfg_get_gpmux().  You can also
+> resend this in the next cycle.
 
-However on a different device that has a Realtek WiFi/BT chip,
-it doesn't seem to run into errors.
+I will fix the changelog and send the next revision in the next cycle.
 
-Just putting it out there in case anyone else runs into it.
+> 
+> Thanks,
+> Mathieu
+> 
 
+[1] https://lore.kernel.org/all/20230414045542.3249939-1-danishanwar@ti.com/
 
-Thank you for your help on this.
-
-ChenYu
+-- 
+Thanks and Regards,
+Danish.
