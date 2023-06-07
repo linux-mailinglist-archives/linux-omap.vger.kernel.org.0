@@ -2,331 +2,223 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E185B72663C
-	for <lists+linux-omap@lfdr.de>; Wed,  7 Jun 2023 18:45:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA429726846
+	for <lists+linux-omap@lfdr.de>; Wed,  7 Jun 2023 20:18:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229955AbjFGQpF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 7 Jun 2023 12:45:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33950 "EHLO
+        id S230046AbjFGSSG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 7 Jun 2023 14:18:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35232 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229681AbjFGQpF (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 7 Jun 2023 12:45:05 -0400
-Received: from fgw20-7.mail.saunalahti.fi (fgw20-7.mail.saunalahti.fi [62.142.5.81])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F9EE1FC2
-        for <linux-omap@vger.kernel.org>; Wed,  7 Jun 2023 09:45:03 -0700 (PDT)
-Received: from localhost (88-113-24-87.elisa-laajakaista.fi [88.113.24.87])
-        by fgw20.mail.saunalahti.fi (Halon) with ESMTP
-        id a4297c9e-0552-11ee-b3cf-005056bd6ce9;
-        Wed, 07 Jun 2023 19:45:00 +0300 (EEST)
-From:   andy.shevchenko@gmail.com
-Date:   Wed, 7 Jun 2023 19:44:59 +0300
-To:     Jerome Neanne <jneanne@baylibre.com>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Tony Lindgren <tony@atomide.com>, Lee Jones <lee@kernel.org>,
-        khilman@baylibre.com, msp@baylibre.com, francesco@dolcini.it,
-        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-omap@vger.kernel.org,
-        Jonathan Cormier <jcormier@criticallink.com>
-Subject: Re: [PATCH v5 1/2] gpio: tps65219: add GPIO support for TPS65219 PMIC
-Message-ID: <ZIC0C9r6U35NBFL9@surfacebook>
-References: <20230511-tps65219-add-gpio-support-v5-0-ebb94281c854@baylibre.com>
- <20230511-tps65219-add-gpio-support-v5-1-ebb94281c854@baylibre.com>
+        with ESMTP id S231144AbjFGSSE (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 7 Jun 2023 14:18:04 -0400
+Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83F321FDE
+        for <linux-omap@vger.kernel.org>; Wed,  7 Jun 2023 11:17:39 -0700 (PDT)
+Received: by mail-ej1-x635.google.com with SMTP id a640c23a62f3a-977d4a1cf0eso618260166b.1
+        for <linux-omap@vger.kernel.org>; Wed, 07 Jun 2023 11:17:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1686161850; x=1688753850;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=prDRECWq9gF2HlqhPhhfLHooXy3hmv9x6uJRavIYoMM=;
+        b=K8CKxwxxN45RRYaTH7NPm1PcmY5u9Gf+agf79C9mZHlN8CYjn0SvqEmRzpevWMmaj0
+         mhpDpp0KtIdV3xImPBNLj/6AalyMVyBbvf4X+LboPXyX3/mLFTSI5X+EDBye1KGVuQm2
+         9PLdOHTQuzN6xcm4aatFX34Swjx7jlpQ21OCyutgc/ClFDXHALAPNaF3fP8ybwDpBo4n
+         xFAVxB5O9J9gpHslhAfiEwdyPj4h2ctQ0k2tNERAnpI6L/qkR3zQQwCh5QP7Pp1aE8n4
+         9znUQsLY05jSaorR006Bdcc8zqOIDdEGKP/qUY5fUyfDEkd/nBxypOV9pwbcbIbWYjk4
+         C39w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686161850; x=1688753850;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=prDRECWq9gF2HlqhPhhfLHooXy3hmv9x6uJRavIYoMM=;
+        b=F6IqgQMt6G0KvlcDYkKzevVuf+49t1VOLiupqW3vmKzwX79fuTmErPDf2RQQC48kCI
+         PO9vo0FqfJvmKB62WFgQvwVcpBme2Ntvwz2cxGHoVbrTfrMTX+h8sr6QMELvZvOOuZS5
+         8HacalV/5BxgtnUVurrBSp26pcXYWtsOvrABVmbKCuMFfCJM0GujC8KzQGSBK7ltUhEX
+         K3wHznRVDc4Ja9icjrNmjLMWh/O7o1yn1lVRKoJFb0/4EptPK3d23E36E81+5y7ZOriR
+         p/cUZPi9snxq7P6YEfw06xbKejIR7qe82Ib0e/niI7Pn4oshfg3OLlKF3WuS4AzGU2KJ
+         0Nzw==
+X-Gm-Message-State: AC+VfDwiJCJsDLPEsQvGZX9vSlv5kIqfWCSrWpvSlGotxaWfZsNpKFPF
+        oGoXQHTWW3ZMoLugwvRw3wt0LMRpEvP7a+xIt6Q=
+X-Google-Smtp-Source: ACHHUZ6yoYhGvQnkxo1NhlbZPThR0OVI8Y6NmV6ZpfuYehTZsNtv3pdMlOHWJLxpGXA/52ORFV87KQ==
+X-Received: by 2002:a17:907:1606:b0:94a:7b2c:205e with SMTP id hb6-20020a170907160600b0094a7b2c205emr6065400ejc.72.1686161849737;
+        Wed, 07 Jun 2023 11:17:29 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.219.26])
+        by smtp.gmail.com with ESMTPSA id gu19-20020a170906f29300b0096a1ba4e0d1sm7262812ejb.32.2023.06.07.11.17.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 07 Jun 2023 11:17:29 -0700 (PDT)
+Message-ID: <a4134777-e43c-4b74-58d8-bff0c0d1a6f6@linaro.org>
+Date:   Wed, 7 Jun 2023 20:17:26 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230511-tps65219-add-gpio-support-v5-1-ebb94281c854@baylibre.com>
-X-Spam-Status: No, score=0.7 required=5.0 tests=BAYES_00,DKIM_ADSP_CUSTOM_MED,
-        FORGED_GMAIL_RCVD,FREEMAIL_FROM,NML_ADSP_CUSTOM_MED,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.2
+Subject: Re: [PATCH v6 1/1] dt-bindings: pinctrl: Update pinctrl-single to use
+ yaml
+Content-Language: en-US
+To:     Tony Lindgren <tony@atomide.com>, Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>
+Cc:     linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        Nishanth Menon <nm@ti.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        devicetree@vger.kernel.org, linux-gpio@vger.kernel.org
+References: <20230605095216.18864-1-tony@atomide.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230605095216.18864-1-tony@atomide.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Wed, Jun 07, 2023 at 04:39:31PM +0200, Jerome Neanne kirjoitti:
-> Add support for TPS65219 PMICs GPIO interface.
+On 05/06/2023 11:52, Tony Lindgren wrote:
+> Update binding for yaml and remove the old related txt bindings. Note that
+> we are also adding the undocumented pinctrl-single,slew-rate property. And
+> we only use the first example from the old binding.
 > 
-> 3 GPIO pins:
-> - GPIO0 only is IO but input mode reserved for MULTI_DEVICE_ENABLE usage.
-> - GPIO1 and GPIO2 are Output only and referred as GPO1 and GPO2 in spec.
-> 
-> GPIO0 is statically configured as input or output prior to Linux boot.
-> it is used for MULTI_DEVICE_ENABLE function.
-> This setting is statically configured by NVM.
-> GPIO0 can't be used as a generic GPIO (specification Table 8-34).
-> It's either a GPO when MULTI_DEVICE_EN=0 or a GPI when MULTI_DEVICE_EN=1.
-> 
-> Datasheet describes specific usage for non standard GPIO.
-
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-
-I forgot if I asked about gpio-regmap use possibility, but it can be done
-as a followup if seems valuable.
-
-> Datasheet: https://www.ti.com/lit/ds/symlink/tps65219.pdf
-> Co-developed-by: Jonathan Cormier <jcormier@criticallink.com>
-> Signed-off-by: Jonathan Cormier <jcormier@criticallink.com>
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-> Signed-off-by: Jerome Neanne <jneanne@baylibre.com>
+> Cc: Nishanth Menon <nm@ti.com>
+> Cc: Vignesh Raghavendra <vigneshr@ti.com>
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
 > ---
->  MAINTAINERS                  |   1 +
->  drivers/gpio/Kconfig         |  16 ++++
->  drivers/gpio/Makefile        |   1 +
->  drivers/gpio/gpio-tps65219.c | 185 +++++++++++++++++++++++++++++++++++++++++++
->  4 files changed, 203 insertions(+)
 > 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index c0cde28c62c6..d912b7465e84 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -15398,6 +15398,7 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap.git
->  F:	arch/arm/configs/omap2plus_defconfig
->  F:	arch/arm/mach-omap2/
->  F:	drivers/bus/ti-sysc.c
-> +F:	drivers/gpio/gpio-tps65219.c
->  F:	drivers/i2c/busses/i2c-omap.c
->  F:	drivers/irqchip/irq-omap-intc.c
->  F:	drivers/mfd/*omap*.c
-> diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-> index 5521f060d58e..047af064335d 100644
-> --- a/drivers/gpio/Kconfig
-> +++ b/drivers/gpio/Kconfig
-> @@ -1440,6 +1440,22 @@ config GPIO_TPS65218
->  	  Select this option to enable GPIO driver for the TPS65218
->  	  chip family.
->  
-> +config GPIO_TPS65219
-> +	tristate "TPS65219 GPIO"
-> +	depends on MFD_TPS65219
-> +	default MFD_TPS65219
-> +	help
-> +	  Select this option to enable GPIO driver for the TPS65219 chip
-> +	  family.
-> +	  GPIO0 is statically configured as either input or output prior to
-> +	  Linux boot. It is used for MULTI_DEVICE_ENABLE function. This setting
-> +	  is statically configured by NVM. GPIO0 can't be used as a generic
-> +	  GPIO. It's either a GPO when MULTI_DEVICE_EN=0 or a GPI when
-> +	  MULTI_DEVICE_EN=1.
-> +
-> +	  This driver can also be built as a module. If so, the module will be
-> +	  called gpio_tps65219.
-> +
->  config GPIO_TPS6586X
->  	bool "TPS6586X GPIO"
->  	depends on MFD_TPS6586X
-> diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
-> index 20036af3acb1..7843b16f5d59 100644
-> --- a/drivers/gpio/Makefile
-> +++ b/drivers/gpio/Makefile
-> @@ -160,6 +160,7 @@ obj-$(CONFIG_GPIO_TN48M_CPLD)		+= gpio-tn48m.o
->  obj-$(CONFIG_GPIO_TPIC2810)		+= gpio-tpic2810.o
->  obj-$(CONFIG_GPIO_TPS65086)		+= gpio-tps65086.o
->  obj-$(CONFIG_GPIO_TPS65218)		+= gpio-tps65218.o
-> +obj-$(CONFIG_GPIO_TPS65219)		+= gpio-tps65219.o
->  obj-$(CONFIG_GPIO_TPS6586X)		+= gpio-tps6586x.o
->  obj-$(CONFIG_GPIO_TPS65910)		+= gpio-tps65910.o
->  obj-$(CONFIG_GPIO_TPS65912)		+= gpio-tps65912.o
-> diff --git a/drivers/gpio/gpio-tps65219.c b/drivers/gpio/gpio-tps65219.c
+> Changes since v5:
+> - Fix issues noted by Krzysztof
+
+
+
+> diff --git a/Documentation/devicetree/bindings/pinctrl/pinctrl-single.yaml b/Documentation/devicetree/bindings/pinctrl/pinctrl-single.yaml
 > new file mode 100644
-> index 000000000000..7b38aa360112
 > --- /dev/null
-> +++ b/drivers/gpio/gpio-tps65219.c
-> @@ -0,0 +1,185 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * GPIO driver for TI TPS65219 PMICs
-> + *
-> + * Copyright (C) 2022 Texas Instruments Incorporated - http://www.ti.com/
-> + */
+> +++ b/Documentation/devicetree/bindings/pinctrl/pinctrl-single.yaml
+> @@ -0,0 +1,206 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/pinctrl/pinctrl-single.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +#include <linux/bits.h>
-> +#include <linux/gpio/driver.h>
-> +#include <linux/mfd/tps65219.h>
-> +#include <linux/module.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/regmap.h>
-> +
-> +#define TPS65219_GPIO0_DIR_MASK		BIT(3)
-> +#define TPS65219_GPIO0_OFFSET		2
-> +#define TPS65219_GPIO0_IDX		0
-> +#define TPS65219_GPIO_DIR_IN		1
-> +#define TPS65219_GPIO_DIR_OUT		0
-> +
-> +struct tps65219_gpio {
-> +	struct gpio_chip gpio_chip;
-> +	struct tps65219 *tps;
-> +};
-> +
-> +static int tps65219_gpio_get_direction(struct gpio_chip *gc, unsigned int offset)
-> +{
-> +	struct tps65219_gpio *gpio = gpiochip_get_data(gc);
-> +	int ret, val;
-> +
-> +	if (offset != TPS65219_GPIO0_IDX)
-> +		return GPIO_LINE_DIRECTION_OUT;
-> +
-> +	ret = regmap_read(gpio->tps->regmap, TPS65219_REG_MFP_1_CONFIG, &val);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return !!(val & TPS65219_GPIO0_DIR_MASK);
-> +}
-> +
-> +static int tps65219_gpio_get(struct gpio_chip *gc, unsigned int offset)
-> +{
-> +	struct tps65219_gpio *gpio = gpiochip_get_data(gc);
-> +	struct device *dev = gpio->tps->dev;
-> +	int ret, val;
-> +
-> +	if (offset != TPS65219_GPIO0_IDX) {
-> +		dev_err(dev, "GPIO%d is output only, cannot get\n", offset);
-> +		return -ENOTSUPP;
-> +	}
-> +
-> +	ret = regmap_read(gpio->tps->regmap, TPS65219_REG_MFP_CTRL, &val);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = !!(val & BIT(TPS65219_MFP_GPIO_STATUS_MASK));
-> +	dev_warn(dev, "GPIO%d = %d, MULTI_DEVICE_ENABLE, not a standard GPIO\n", offset, ret);
-> +
-> +	/*
-> +	 * Depending on NVM config, return an error if direction is output, otherwise the GPIO0
-> +	 * status bit.
-> +	 */
-> +
-> +	if (tps65219_gpio_get_direction(gc, offset) == TPS65219_GPIO_DIR_OUT)
-> +		return -ENOTSUPP;
-> +
-> +	return ret;
-> +}
-> +
-> +static void tps65219_gpio_set(struct gpio_chip *gc, unsigned int offset, int value)
-> +{
-> +	struct tps65219_gpio *gpio = gpiochip_get_data(gc);
-> +	struct device *dev = gpio->tps->dev;
-> +	int v, mask, bit;
-> +
-> +	bit = (offset == TPS65219_GPIO0_IDX) ? TPS65219_GPIO0_OFFSET : offset - 1;
-> +
-> +	mask = BIT(bit);
-> +	v = value ? mask : 0;
-> +
-> +	if (regmap_update_bits(gpio->tps->regmap, TPS65219_REG_GENERAL_CONFIG, mask, v))
-> +		dev_err(dev, "GPIO%d, set to value %d failed.\n", offset, value);
-> +}
-> +
-> +static int tps65219_gpio_change_direction(struct gpio_chip *gc, unsigned int offset,
-> +					  unsigned int direction)
-> +{
-> +	struct tps65219_gpio *gpio = gpiochip_get_data(gc);
-> +	struct device *dev = gpio->tps->dev;
-> +
-> +	/*
-> +	 * Documentation is stating that GPIO0 direction must not be changed in Linux:
-> +	 * Table 8-34. MFP_1_CONFIG(3): MULTI_DEVICE_ENABLE, should only be changed in INITIALIZE
-> +	 * state (prior to ON Request).
-> +	 * Set statically by NVM, changing direction in application can cause a hang.
-> +	 * Below can be used for test purpose only.
-> +	 */
-> +
-> +	if (IS_ENABLED(CONFIG_DEBUG_GPIO)) {
-> +		int ret = regmap_update_bits(gpio->tps->regmap, TPS65219_REG_MFP_1_CONFIG,
-> +					     TPS65219_GPIO0_DIR_MASK, direction);
-> +		if (ret) {
-> +			dev_err(dev,
-> +				"GPIO DEBUG enabled: Fail to change direction to %u for GPIO%d.\n",
-> +				direction, offset);
-> +			return ret;
-> +		}
-> +	}
-> +
-> +	dev_err(dev,
-> +		"GPIO%d direction set by NVM, change to %u failed, not allowed by specification\n",
-> +		 offset, direction);
-> +
-> +	return -ENOTSUPP;
-> +}
-> +
-> +static int tps65219_gpio_direction_input(struct gpio_chip *gc, unsigned int offset)
-> +{
-> +	struct tps65219_gpio *gpio = gpiochip_get_data(gc);
-> +	struct device *dev = gpio->tps->dev;
-> +
-> +	if (offset != TPS65219_GPIO0_IDX) {
-> +		dev_err(dev, "GPIO%d is output only, cannot change to input\n", offset);
-> +		return -ENOTSUPP;
-> +	}
-> +
-> +	if (tps65219_gpio_get_direction(gc, offset) == TPS65219_GPIO_DIR_IN)
-> +		return 0;
-> +
-> +	return tps65219_gpio_change_direction(gc, offset, TPS65219_GPIO_DIR_IN);
-> +}
-> +
-> +static int tps65219_gpio_direction_output(struct gpio_chip *gc, unsigned int offset, int value)
-> +{
-> +	tps65219_gpio_set(gc, offset, value);
-> +	if (offset != TPS65219_GPIO0_IDX)
-> +		return 0;
-> +
-> +	if (tps65219_gpio_get_direction(gc, offset) == TPS65219_GPIO_DIR_OUT)
-> +		return 0;
-> +
-> +	return tps65219_gpio_change_direction(gc, offset, TPS65219_GPIO_DIR_OUT);
-> +}
-> +
-> +static const struct gpio_chip tps65219_template_chip = {
-> +	.label			= "tps65219-gpio",
-> +	.owner			= THIS_MODULE,
-> +	.get_direction		= tps65219_gpio_get_direction,
-> +	.direction_input	= tps65219_gpio_direction_input,
-> +	.direction_output	= tps65219_gpio_direction_output,
-> +	.get			= tps65219_gpio_get,
-> +	.set			= tps65219_gpio_set,
-> +	.base			= -1,
-> +	.ngpio			= 3,
-> +	.can_sleep		= true,
-> +};
-> +
-> +static int tps65219_gpio_probe(struct platform_device *pdev)
-> +{
-> +	struct tps65219 *tps = dev_get_drvdata(pdev->dev.parent);
-> +	struct tps65219_gpio *gpio;
-> +
-> +	gpio = devm_kzalloc(&pdev->dev, sizeof(*gpio), GFP_KERNEL);
-> +	if (!gpio)
-> +		return -ENOMEM;
-> +
-> +	gpio->tps = tps;
-> +	gpio->gpio_chip = tps65219_template_chip;
-> +	gpio->gpio_chip.parent = tps->dev;
-> +
-> +	return devm_gpiochip_add_data(&pdev->dev, &gpio->gpio_chip, gpio);
-> +}
-> +
-> +static struct platform_driver tps65219_gpio_driver = {
-> +	.driver = {
-> +		.name = "tps65219-gpio",
-> +	},
-> +	.probe = tps65219_gpio_probe,
-> +};
-> +module_platform_driver(tps65219_gpio_driver);
-> +
-> +MODULE_ALIAS("platform:tps65219-gpio");
-> +MODULE_AUTHOR("Jonathan Cormier <jcormier@criticallink.com>");
-> +MODULE_DESCRIPTION("TPS65219 GPIO driver");
-> +MODULE_LICENSE("GPL");
-> 
-> -- 
-> 2.34.1
-> 
+> +title: Pinctrl driver for hardware with a single register for one or more pins
 
--- 
-With Best Regards,
-Andy Shevchenko
+I asked to drop the driver references but it is still here. Bindings are
+not describing drivers.
 
+"Generic Pin Controller with a Single Register for One or More Pins"
+
+
+> +
+> +maintainers:
+> +  - Tony Lindgren <tony@atomide.com>
+> +
+> +description:
+> +  Some pin controller devices use a single register for one or more pins. The
+> +  range of pin control registers can vary from one to many for each controller
+> +  instance. Some SoCs from Altera, Broadcom, HiSilicon, Ralink, and TI have this
+> +  kind of pin controller instances.
+> +
+> +properties:
+> +  compatible:
+> +    oneOf:
+> +      - enum:
+> +          - pinctrl-single
+> +          - pinconf-single
+> +      - items:
+> +          - enum:
+> +              - ti,am437-padconf
+> +              - ti,dra7-padconf
+> +              - ti,omap2420-padconf
+> +              - ti,omap2430-padconf
+> +              - ti,omap3-padconf
+> +              - ti,omap4-padconf
+> +              - ti,omap5-padconf
+> +          - const: pinctrl-single
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupt-controller: true
+> +
+> +  '#interrupt-cells':
+> +    const: 1
+> +
+> +  '#address-cells':
+> +    const: 1
+> +
+> +  '#size-cells':
+> +    const: 0
+> +
+> +  '#pinctrl-cells':
+> +    description:
+> +      Number of cells. Usually 2, consisting of register offset, pin configuration
+> +      value, and pinmux mode. Some controllers may use 1 for just offset and value.
+> +    enum: [ 1, 2 ]
+> +
+> +  pinctrl-single,bit-per-mux:
+> +    description: Optional flag to indicate register controls more than one pin
+> +    type: boolean
+> +
+> +  pinctrl-single,function-mask:
+> +    description: Mask of the allowed register bits
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +
+> +  pinctrl-single,function-off:
+> +    description: Optional function off mode for disabled state
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +
+> +  pinctrl-single,register-width:
+> +    description: Width of pin specific bits in the register
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    enum: [ 8, 16, 32 ]
+> +
+> +  pinctrl-single,gpio-range:
+> +    description: Optional list of pin base, nr pins & gpio function
+> +    $ref: /schemas/types.yaml#/definitions/phandle-array
+> +    items:
+> +      - items:
+> +          - description: phandle of a gpio-range node
+> +          - description: pin base
+> +          - description: number of pins
+> +          - description: gpio function
+> +
+> +  '#gpio-range-cells':
+> +    description: No longer needed, may exist in older files for gpio-ranges
+> +    deprecated: true
+> +    const: 3
+> +
+> +  gpio-range:
+> +    description: Optional node for gpio range cells
+> +    type: object
+> +    additionalProperties: false
+> +    properties:
+> +      '#pinctrl-single,gpio-range-cells':
+> +        description: Number of gpio range cells
+> +        const: 3
+> +        $ref: /schemas/types.yaml#/definitions/uint32
+> +
+> +patternProperties:
+> +  '-pins$|-pin':
+
+you did not implement my comments fully, probably we misunderstood each
+other. Why do you allow anything after '-pin'? Let's make it pure suffix
+for both cases: '-pins?$'
+
+
+> +    description:
+> +      Pin group node name using naming ending in -pins, or having -pin
+> +      in the node name
+> +    type: object
+> +    additionalProperties: false
+> +
+
+
+Best regards,
+Krzysztof
 
