@@ -2,76 +2,77 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B9EB725541
-	for <lists+linux-omap@lfdr.de>; Wed,  7 Jun 2023 09:17:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DCBE7255CF
+	for <lists+linux-omap@lfdr.de>; Wed,  7 Jun 2023 09:36:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234897AbjFGHRY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 7 Jun 2023 03:17:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50534 "EHLO
+        id S239329AbjFGHgL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 7 Jun 2023 03:36:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235405AbjFGHRX (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 7 Jun 2023 03:17:23 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAA3A198B;
-        Wed,  7 Jun 2023 00:17:22 -0700 (PDT)
-Received: from [IPV6:2001:b07:2ed:14ed:a962:cd4d:a84:1eab] (unknown [IPv6:2001:b07:2ed:14ed:a962:cd4d:a84:1eab])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (No client certificate requested)
-        (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 1DE336606EB0;
-        Wed,  7 Jun 2023 08:17:20 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1686122241;
-        bh=D80LMK+36KFKk3hvSjD4i/C4Qajq5CzPucr2mCsl7Ms=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=Q8NXF4L43kBDu2vl4rwJfHwYJfa8ZKCyBCO6AGcZzx8dXBeiaQ6Ohl0hrJGBxYzDQ
-         CFRrqR0faSqpFZlhA+sGmVq0htN7ZZf/UFkheeGxYcAiMzQACuOZyZ1qm2N6VIBoed
-         +q6JoMdIWmmbS3yWaZ0KIF+Ubm9JHe6xRqBc7sNsq7Gllii8pAgfF8/iwsvxqFHVhQ
-         8u6Kgq3oIqGuPJ9pq5rPeXZ90uUYUZ+aDr1QNsXu4m3v/Asfr1hBRpP9OlyjnLQpoq
-         Af8aBDhWiY153oNSvAOCiTm0gbo4JePrOr/+r6MVMJdSd1ic6efukvF/drWc1w4DLv
-         Te0Lyh1vfBjMA==
-Message-ID: <6138a97f-1b8b-f33f-8be5-e2141314dbd7@collabora.com>
-Date:   Wed, 7 Jun 2023 09:17:17 +0200
+        with ESMTP id S239786AbjFGHfq (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 7 Jun 2023 03:35:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4CFC270B
+        for <linux-omap@vger.kernel.org>; Wed,  7 Jun 2023 00:31:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1686123063;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=86qJ/vtJ5+0COg+eCE9cC1XNW8WWzhrqJj3XV1HnHmU=;
+        b=cC85HVmSd57663wHKBzWS660CqmmQp21p51no3stSxMP1joBJwL+j1rDuj3KBPHgE9C8YC
+        AHhZIfxb1dr/P5PNEZ2xva+git0HZGVNSbC/q/PicG03FiL7ER2x4Qh3B7EgHN9NR0oyju
+        TWaBRAGWIafnocXcHzQ+MwWwxUqQOtg=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-146-xA4gYbzNOFyQdx77x4Ojfw-1; Wed, 07 Jun 2023 03:31:02 -0400
+X-MC-Unique: xA4gYbzNOFyQdx77x4Ojfw-1
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-3f5df65f9f4so33536285e9.2
+        for <linux-omap@vger.kernel.org>; Wed, 07 Jun 2023 00:31:01 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686123060; x=1688715060;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=86qJ/vtJ5+0COg+eCE9cC1XNW8WWzhrqJj3XV1HnHmU=;
+        b=URvBP0AeeG0PmY/97T8nPkxR1NGhpdQbJztaqm2ZW/rNDIQR10fKy8TZPnTt9V1e/4
+         wgmwqnSPAaAN7MSsRFtba9hn9wPLtBsP/6pAbBQ0GcbN4PH2EZyCo0yuUpTxc5B672+t
+         MiJnWRqimdJaWqSeyRRN+bQ1O1rrQfsptyTvsPLnGMjBjZHvAv44jeeI7F8Sa+1vL9jF
+         vYZbjFRz7DPzAxDEWVnq+dWdiLd06C0yI8p53jshQZhN/VgcXQaIKgEcY/IuD6NEA6VF
+         9J1yhWnRwdU1sdw+ysqdnCGxbm+2lGosK0LrYQGLge/TcewOkPfO4Nb8iF4HL+L7P6zM
+         MnaA==
+X-Gm-Message-State: AC+VfDyO7og3kfVViBpSaZO7L1DBynZkZlIrlRJgUWzLc2yNTt5f/uYf
+        cTSMXlJqdbhqgU2JaLqDP7Q+4uv4zNymYgangI2uSbBIH2h+M+i4YJcyc7ympSD2hAYIBCqn4IU
+        0I6enBD6es3ACbFPwUttfWg==
+X-Received: by 2002:a05:600c:2117:b0:3f4:2328:b5c2 with SMTP id u23-20020a05600c211700b003f42328b5c2mr3787352wml.35.1686123060797;
+        Wed, 07 Jun 2023 00:31:00 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5uGo6zRkvpQ5estM3pdndUe5o7FAstx3xMsdIS0ZhyvoEoxkSKZkfhbKkJxPjpvFo09QUYlQ==
+X-Received: by 2002:a05:600c:2117:b0:3f4:2328:b5c2 with SMTP id u23-20020a05600c211700b003f42328b5c2mr3787327wml.35.1686123060473;
+        Wed, 07 Jun 2023 00:31:00 -0700 (PDT)
+Received: from localhost (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
+        by smtp.gmail.com with ESMTPSA id y6-20020a7bcd86000000b003f4ddde398csm1142560wmj.21.2023.06.07.00.31.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 Jun 2023 00:31:00 -0700 (PDT)
+From:   Javier Martinez Canillas <javierm@redhat.com>
+To:     Thomas Zimmermann <tzimmermann@suse.de>, daniel@ffwll.ch,
+        sam@ravnborg.org, deller@gmx.de, geert+renesas@glider.be,
+        lee@kernel.org, daniel.thompson@linaro.org, jingoohan1@gmail.com
+Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-sh@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-staging@lists.linux.dev,
+        Thomas Zimmermann <tzimmermann@suse.de>
+Subject: Re: [PATCH 01/30] backlight/bd6107: Compare against struct
+ fb_info.device
+In-Reply-To: <20230605144812.15241-2-tzimmermann@suse.de>
+References: <20230605144812.15241-1-tzimmermann@suse.de>
+ <20230605144812.15241-2-tzimmermann@suse.de>
+Date:   Wed, 07 Jun 2023 09:30:59 +0200
+Message-ID: <87bkhrhgp8.fsf@minerva.mail-host-address-is-not-set>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.2
-Subject: Re: [PATCH v12 1/1] serial: core: Start managing serial controllers
- to enable runtime PM
-Content-Language: en-US
-To:     Chen-Yu Tsai <wenst@chromium.org>, Tony Lindgren <tony@atomide.com>
-Cc:     John Ogness <john.ogness@linutronix.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Dhruva Gole <d-gole@ti.com>,
-        =?UTF-8?Q?Ilpo_J=c3=a4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Johan Hovold <johan@kernel.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-omap@vger.kernel.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
-        =?UTF-8?B?TsOtY29sYXMgRi4gUi4gQS4gUHJhZG8=?= 
-        <nfraprado@collabora.com>, linux-mediatek@lists.infradead.org
-References: <20230602083335.GA181647@google.com>
- <87a5xii33r.fsf@jogness.linutronix.de> <20230603054139.GR14287@atomide.com>
- <20230603063533.GS14287@atomide.com> <20230605061511.GW14287@atomide.com>
- <CAGXv+5Fbx7eTxP0ep6DV+jyronAWxYvu2M-g=MjHGRhjSXUc=w@mail.gmail.com>
- <20230605122447.GY14287@atomide.com>
- <CAGXv+5HwL+R5QpO3pHGQd9qAxu2pCMDjYvdni1HjiC8eEE38mg@mail.gmail.com>
- <20230605131803.GA14287@atomide.com>
- <CAGXv+5GR9TEaNrj4B21H2iukS2kWW=rtoWkoVnWewVsrbcG0Hw@mail.gmail.com>
- <20230606122059.GC14287@atomide.com>
- <CAGXv+5ERwrFgpWBUBTkoawfyyTHU9w=Owiy-2BbCXHwEpZk1tA@mail.gmail.com>
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-In-Reply-To: <CAGXv+5ERwrFgpWBUBTkoawfyyTHU9w=Owiy-2BbCXHwEpZk1tA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -79,37 +80,28 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Il 07/06/23 06:46, Chen-Yu Tsai ha scritto:
-> On Tue, Jun 6, 2023 at 8:21 PM Tony Lindgren <tony@atomide.com> wrote:
->>
->> * Chen-Yu Tsai <wenst@chromium.org> [230606 09:17]:
->>> I ended up following 8250_dw's design, which seemed less convoluted.
->>> The original code was waaay too convoluted.
->>
->> OK that looks good to me thanks. Good to hear you got it sorted out.
->>
->> The 8250_dw style runtime PM is a good solution for simple cases. Where
->> it won't work are SoCs where runtime PM calls need to propagate up the
->> bus hierarchy. For example, 8250_omap needs runtime PM calls for the
->> interconnect and power domain to get register access working.
-> 
-> Good to know. On MediaTek platforms I don't think there are any power
-> domains covering the basic peripherals. (Or it's hidden from the kernel.)
-> 
+Thomas Zimmermann <tzimmermann@suse.de> writes:
 
-On (relatively) new SoCs, basic peripherals are always powered, you're correct.
+> Struct bd6107_platform_data refers to a platform device within
+> the Linux device hierarchy. The test in bd6107_backlight_check_fb()
+> compares it against the fbdev device in struct fb_info.dev, which
+> is different. Fix the test by comparing to struct fb_info.device.
+>
+> Fixes a bug in the backlight driver and prepares fbdev for making
+> struct fb_info.dev optional.
+>
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: Lee Jones <lee@kernel.org>
+> Cc: Daniel Thompson <daniel.thompson@linaro.org>
+> Cc: Jingoo Han <jingoohan1@gmail.com>
+> ---
 
-Cheers,
-Angelo
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
 
->>> BTW, the Bluetooth breakage seems like a different problem.
->>
->> OK seems like we're good to go then :)
-> 
-> Yup. After a bit more testing, it seems the Bluetooth problem is more like
-> an undervolt issue. If I have WiFi and BT probe at the same time, Bluetooth
-> fails. If they probe separately, everything works fine.
-> 
-> ChenYu
+-- 
+Best regards,
 
+Javier Martinez Canillas
+Core Platforms
+Red Hat
 
