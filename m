@@ -2,109 +2,295 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B06B7726AEE
-	for <lists+linux-omap@lfdr.de>; Wed,  7 Jun 2023 22:21:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D77A726C80
+	for <lists+linux-omap@lfdr.de>; Wed,  7 Jun 2023 22:33:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232504AbjFGUVD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 7 Jun 2023 16:21:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45732 "EHLO
+        id S233900AbjFGUdv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 7 Jun 2023 16:33:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232580AbjFGUUx (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 7 Jun 2023 16:20:53 -0400
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DCEA213C;
-        Wed,  7 Jun 2023 13:20:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1686169232; x=1717705232;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=wbuPh7uoz71kWZlfYlZFIXDMM491BC7Ay1rgJkxp/uA=;
-  b=eBBa8XRXbOvpaDL2GyEeDzVZzweHzJMDQqdIX3GieA3/ZH5o/uMIzJGJ
-   naSsD3Do9MARKWKLRgCaRtcz3/SXatKiCOAX7VR7ColHLVsdlUpESu/D7
-   YYGC8h6gHsdPNx4mh54QXXsn+ZTH/Fxi7jvS8OD3XrMc0izdThtp+K1Ji
-   cQmCgTYKJZF1i14eQmnkUahrLsq0pnpKVMOY7bZLgVhhUAs5YBuuHhQA3
-   ahzBnMbzgvTeGqjF4qPMW4KSDZrScO/HrTex9Ptd3BZa4Q7GxlX4IODDD
-   O5FBAMXM/phwEABUa1yxDZHXDgiN3xeJMTEtsmU7StSJn0xkhI2rThqUr
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10734"; a="354586472"
-X-IronPort-AV: E=Sophos;i="6.00,225,1681196400"; 
-   d="scan'208";a="354586472"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jun 2023 13:20:11 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10734"; a="712817834"
-X-IronPort-AV: E=Sophos;i="6.00,225,1681196400"; 
-   d="scan'208";a="712817834"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga007.fm.intel.com with ESMTP; 07 Jun 2023 13:20:07 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@intel.com>)
-        id 1q6zdV-001zlx-0Y;
-        Wed, 07 Jun 2023 23:20:05 +0300
-Date:   Wed, 7 Jun 2023 23:20:04 +0300
-From:   Andy Shevchenko <andriy.shevchenko@intel.com>
-To:     Chen-Yu Tsai <wenst@chromium.org>
-Cc:     Tony Lindgren <tony@atomide.com>,
-        John Ogness <john.ogness@linutronix.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>, Dhruva Gole <d-gole@ti.com>,
-        Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Johan Hovold <johan@kernel.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-serial@vger.kernel.org,
-        =?iso-8859-1?Q?N=EDcolas_F=2E_R=2E_A=2E?= Prado 
-        <nfraprado@collabora.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH v12 1/1] serial: core: Start managing serial controllers
- to enable runtime PM
-Message-ID: <ZIDmdLDNitoSJrUO@smile.fi.intel.com>
-References: <20230603054139.GR14287@atomide.com>
- <20230603063533.GS14287@atomide.com>
- <20230605061511.GW14287@atomide.com>
- <CAGXv+5Fbx7eTxP0ep6DV+jyronAWxYvu2M-g=MjHGRhjSXUc=w@mail.gmail.com>
- <20230605122447.GY14287@atomide.com>
- <CAGXv+5HwL+R5QpO3pHGQd9qAxu2pCMDjYvdni1HjiC8eEE38mg@mail.gmail.com>
- <20230605131803.GA14287@atomide.com>
- <CAGXv+5GR9TEaNrj4B21H2iukS2kWW=rtoWkoVnWewVsrbcG0Hw@mail.gmail.com>
- <20230606122059.GC14287@atomide.com>
- <CAGXv+5ERwrFgpWBUBTkoawfyyTHU9w=Owiy-2BbCXHwEpZk1tA@mail.gmail.com>
+        with ESMTP id S233854AbjFGUdp (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 7 Jun 2023 16:33:45 -0400
+X-Greylist: delayed 3314 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 07 Jun 2023 13:33:41 PDT
+Received: from mailrelay2-1.pub.mailoutpod2-cph3.one.com (mailrelay2-1.pub.mailoutpod2-cph3.one.com [IPv6:2a02:2350:5:401::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D963FC
+        for <linux-omap@vger.kernel.org>; Wed,  7 Jun 2023 13:33:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ravnborg.org; s=rsa1;
+        h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
+         from:date:from;
+        bh=ncnGoiPqkg7aXXCnLm3f8qp+53kbkQEpzVt1NSpcJHU=;
+        b=olBwmGZQPNol3RziKI2JYVqficg8GD4aBJXxxev0l0+F0TIsIq/xOuNEH+ON7RvC7oRtACcL+6aUf
+         m7gnvbIWsx1i/Kn1HKWoYwTVNvDk5FfxKrg1iBMn+fWSqOC2lnL22KQ9kEcWTAVwJDJEIJgNH6qxbY
+         mjieEAxF93ISxwdEM1fMkCqq8vz4Z8ZvayGRjS0leegNQokXUgymPixTORC3+qSb1Yh6V1PoP/097A
+         3EWVjSxpfCBS1Uhxjaw2XP1JAXqi7rtArVQPJjrbT4XdvrAHZWeVFOY+eQsHwpBs3ra2iPl5+esXtE
+         gEEbTR0ZgHQPtp4ywMqIxXQ7y7nB+tA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed;
+        d=ravnborg.org; s=ed1;
+        h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
+         from:date:from;
+        bh=ncnGoiPqkg7aXXCnLm3f8qp+53kbkQEpzVt1NSpcJHU=;
+        b=vBW9762Q35LRhOnP7iqPanbyreWOBxciZsFsgYPYv8yk5HW2LLR3Yk/4eK1BHqDhwsOtIofr1rIKp
+         jgA0VW2CA==
+X-HalOne-ID: 93e8a00c-0572-11ee-b707-13111ccb208d
+Received: from ravnborg.org (2-105-2-98-cable.dk.customer.tdc.net [2.105.2.98])
+        by mailrelay2 (Halon) with ESMTPSA
+        id 93e8a00c-0572-11ee-b707-13111ccb208d;
+        Wed, 07 Jun 2023 20:33:38 +0000 (UTC)
+Date:   Wed, 7 Jun 2023 22:33:37 +0200
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     Thomas Zimmermann <tzimmermann@suse.de>
+Cc:     daniel@ffwll.ch, javierm@redhat.com, deller@gmx.de,
+        geert+renesas@glider.be, lee@kernel.org,
+        daniel.thompson@linaro.org, jingoohan1@gmail.com,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-sh@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-staging@lists.linux.dev
+Subject: Re: [PATCH 27/30] fbdev/core: Move procfs code to separate file
+Message-ID: <20230607203337.GD670717@ravnborg.org>
+References: <20230605144812.15241-1-tzimmermann@suse.de>
+ <20230605144812.15241-28-tzimmermann@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGXv+5ERwrFgpWBUBTkoawfyyTHU9w=Owiy-2BbCXHwEpZk1tA@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20230605144812.15241-28-tzimmermann@suse.de>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Jun 07, 2023 at 12:46:51PM +0800, Chen-Yu Tsai wrote:
-> On Tue, Jun 6, 2023 at 8:21 PM Tony Lindgren <tony@atomide.com> wrote:
+Hi Thomas,
 
-...
+On Mon, Jun 05, 2023 at 04:48:09PM +0200, Thomas Zimmermann wrote:
+> Move fbdev's procfs code into a separate file and contain it in
+> init and cleanup helpers. No functional changes.
+Maybe add:
+Delete the unused for_each_registered_fb while touching the code.
 
-> After a bit more testing, it seems the Bluetooth problem is more like
-> an undervolt issue.
+The change to use proc_remove is not really documented.
+But code looks ok.
 
-Undercurrent I believe.
-Just my pedantic 2 cents and electronics engineer by education :-)
-
-> If I have WiFi and BT probe at the same time, Bluetooth
-> fails. If they probe separately, everything works fine.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+I am not fan that we have introduced a few globals again.
+But it looks like the way to go for now.
+> 
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+With an improved changelog:
+Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
+> ---
+>  drivers/video/fbdev/core/Makefile      |  1 +
+>  drivers/video/fbdev/core/fb_internal.h | 12 ++++-
+>  drivers/video/fbdev/core/fb_procfs.c   | 62 ++++++++++++++++++++++++++
+>  drivers/video/fbdev/core/fbmem.c       | 51 +++------------------
+>  4 files changed, 80 insertions(+), 46 deletions(-)
+>  create mode 100644 drivers/video/fbdev/core/fb_procfs.c
+> 
+> diff --git a/drivers/video/fbdev/core/Makefile b/drivers/video/fbdev/core/Makefile
+> index eee3295bc225..665320160f70 100644
+> --- a/drivers/video/fbdev/core/Makefile
+> +++ b/drivers/video/fbdev/core/Makefile
+> @@ -3,6 +3,7 @@ obj-$(CONFIG_FB_NOTIFY)           += fb_notify.o
+>  obj-$(CONFIG_FB)                  += fb.o
+>  fb-y                              := fb_backlight.o \
+>                                       fb_info.o \
+> +                                     fb_procfs.o \
+>                                       fbmem.o fbmon.o fbcmap.o fbsysfs.o \
+>                                       modedb.o fbcvt.o fb_cmdline.o fb_io_fops.o
+>  fb-$(CONFIG_FB_DEFERRED_IO)       += fb_defio.o
+> diff --git a/drivers/video/fbdev/core/fb_internal.h b/drivers/video/fbdev/core/fb_internal.h
+> index 0b9640ae7a3d..51f7c9f04e45 100644
+> --- a/drivers/video/fbdev/core/fb_internal.h
+> +++ b/drivers/video/fbdev/core/fb_internal.h
+> @@ -3,7 +3,17 @@
+>  #ifndef _FB_INTERNAL_H
+>  #define _FB_INTERNAL_H
+>  
+> -struct fb_info;
+> +#include <linux/fb.h>
+> +#include <linux/mutex.h>
+> +
+> +/* fbmem.c */
+> +extern struct mutex registration_lock;
+> +extern struct fb_info *registered_fb[FB_MAX];
+> +extern int num_registered_fb;
+> +
+> +/* fb_procfs.c */
+> +int fb_init_procfs(void);
+> +void fb_cleanup_procfs(void);
+>  
+>  /* fbsysfs.c */
+>  int fb_device_create(struct fb_info *fb_info);
+> diff --git a/drivers/video/fbdev/core/fb_procfs.c b/drivers/video/fbdev/core/fb_procfs.c
+> new file mode 100644
+> index 000000000000..59641142f8aa
+> --- /dev/null
+> +++ b/drivers/video/fbdev/core/fb_procfs.c
+> @@ -0,0 +1,62 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +#include <linux/proc_fs.h>
+> +
+> +#include "fb_internal.h"
+> +
+> +static struct proc_dir_entry *fb_proc_dir_entry;
+> +
+> +static void *fb_seq_start(struct seq_file *m, loff_t *pos)
+> +{
+> +	mutex_lock(&registration_lock);
+> +
+> +	return (*pos < FB_MAX) ? pos : NULL;
+> +}
+> +
+> +static void fb_seq_stop(struct seq_file *m, void *v)
+> +{
+> +	mutex_unlock(&registration_lock);
+> +}
+> +
+> +static void *fb_seq_next(struct seq_file *m, void *v, loff_t *pos)
+> +{
+> +	(*pos)++;
+> +
+> +	return (*pos < FB_MAX) ? pos : NULL;
+> +}
+> +
+> +static int fb_seq_show(struct seq_file *m, void *v)
+> +{
+> +	int i = *(loff_t *)v;
+> +	struct fb_info *fi = registered_fb[i];
+> +
+> +	if (fi)
+> +		seq_printf(m, "%d %s\n", fi->node, fi->fix.id);
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct seq_operations __maybe_unused fb_proc_seq_ops = {
+> +	.start	= fb_seq_start,
+> +	.stop	= fb_seq_stop,
+> +	.next	= fb_seq_next,
+> +	.show	= fb_seq_show,
+> +};
+> +
+> +int fb_init_procfs(void)
+> +{
+> +	struct proc_dir_entry *proc;
+> +
+> +	proc = proc_create_seq("fb", 0, NULL, &fb_proc_seq_ops);
+> +	if (!proc)
+> +		return -ENOMEM;
+> +
+> +	fb_proc_dir_entry = proc;
+> +
+> +	return 0;
+> +}
+> +
+> +void fb_cleanup_procfs(void)
+> +{
+> +	proc_remove(fb_proc_dir_entry);
+> +}
+> diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
+> index 66532774d351..de1e45240161 100644
+> --- a/drivers/video/fbdev/core/fbmem.c
+> +++ b/drivers/video/fbdev/core/fbmem.c
+> @@ -24,9 +24,7 @@
+>  #include <linux/vt.h>
+>  #include <linux/init.h>
+>  #include <linux/linux_logo.h>
+> -#include <linux/proc_fs.h>
+>  #include <linux/platform_device.h>
+> -#include <linux/seq_file.h>
+>  #include <linux/console.h>
+>  #include <linux/kmod.h>
+>  #include <linux/err.h>
+> @@ -48,13 +46,9 @@
+>  
+>  #define FBPIXMAPSIZE	(1024 * 8)
+>  
+> -static DEFINE_MUTEX(registration_lock);
+> -
+> +DEFINE_MUTEX(registration_lock);
+>  struct fb_info *registered_fb[FB_MAX] __read_mostly;
+>  int num_registered_fb __read_mostly;
+> -#define for_each_registered_fb(i)		\
+> -	for (i = 0; i < FB_MAX; i++)		\
+> -		if (!registered_fb[i]) {} else
+>  
+>  bool fb_center_logo __read_mostly;
+>  
+> @@ -705,40 +699,6 @@ int fb_show_logo(struct fb_info *info, int rotate) { return 0; }
+>  EXPORT_SYMBOL(fb_prepare_logo);
+>  EXPORT_SYMBOL(fb_show_logo);
+>  
+> -static void *fb_seq_start(struct seq_file *m, loff_t *pos)
+> -{
+> -	mutex_lock(&registration_lock);
+> -	return (*pos < FB_MAX) ? pos : NULL;
+> -}
+> -
+> -static void *fb_seq_next(struct seq_file *m, void *v, loff_t *pos)
+> -{
+> -	(*pos)++;
+> -	return (*pos < FB_MAX) ? pos : NULL;
+> -}
+> -
+> -static void fb_seq_stop(struct seq_file *m, void *v)
+> -{
+> -	mutex_unlock(&registration_lock);
+> -}
+> -
+> -static int fb_seq_show(struct seq_file *m, void *v)
+> -{
+> -	int i = *(loff_t *)v;
+> -	struct fb_info *fi = registered_fb[i];
+> -
+> -	if (fi)
+> -		seq_printf(m, "%d %s\n", fi->node, fi->fix.id);
+> -	return 0;
+> -}
+> -
+> -static const struct seq_operations __maybe_unused proc_fb_seq_ops = {
+> -	.start	= fb_seq_start,
+> -	.next	= fb_seq_next,
+> -	.stop	= fb_seq_stop,
+> -	.show	= fb_seq_show,
+> -};
+> -
+>  /*
+>   * We hold a reference to the fb_info in file->private_data,
+>   * but if the current registered fb has changed, we don't
+> @@ -1624,8 +1584,9 @@ fbmem_init(void)
+>  {
+>  	int ret;
+>  
+> -	if (!proc_create_seq("fb", 0, NULL, &proc_fb_seq_ops))
+> -		return -ENOMEM;
+> +	ret = fb_init_procfs();
+> +	if (ret)
+> +		return ret;
+>  
+>  	ret = register_chrdev(FB_MAJOR, "fb", &fb_fops);
+>  	if (ret) {
+> @@ -1648,7 +1609,7 @@ fbmem_init(void)
+>  err_class:
+>  	unregister_chrdev(FB_MAJOR, "fb");
+>  err_chrdev:
+> -	remove_proc_entry("fb", NULL);
+> +	fb_cleanup_procfs();
+>  	return ret;
+>  }
+>  
+> @@ -1659,7 +1620,7 @@ fbmem_exit(void)
+>  {
+>  	fb_console_exit();
+>  
+> -	remove_proc_entry("fb", NULL);
+> +	fb_cleanup_procfs();
+>  	class_destroy(fb_class);
+>  	unregister_chrdev(FB_MAJOR, "fb");
+>  }
+> -- 
+> 2.40.1
