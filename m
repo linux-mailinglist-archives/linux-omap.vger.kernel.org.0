@@ -2,97 +2,142 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F82B7259D9
-	for <lists+linux-omap@lfdr.de>; Wed,  7 Jun 2023 11:14:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5644A725F02
+	for <lists+linux-omap@lfdr.de>; Wed,  7 Jun 2023 14:22:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236500AbjFGJOm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 7 Jun 2023 05:14:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37256 "EHLO
+        id S239948AbjFGMWC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 7 Jun 2023 08:22:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35468 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239911AbjFGJOU (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 7 Jun 2023 05:14:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 864B51BFB
-        for <linux-omap@vger.kernel.org>; Wed,  7 Jun 2023 02:12:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1686129141;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+        with ESMTP id S240713AbjFGMVu (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 7 Jun 2023 08:21:50 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED7561BD4;
+        Wed,  7 Jun 2023 05:21:48 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id 67249218B8;
+        Wed,  7 Jun 2023 12:21:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1686140507; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=B3BIYD3PXMtQvTPGQV01/1k0Hmx/7PJYivm+5X8kP8U=;
-        b=O+IETPrpEKa5dZUBQt2NtWpk9csmzf3XlIbfvYXhRQyGDov4ThNqiSRuLbAQFf0DO92KaE
-        Wvmnuxky8x4QhIc1CqB9mYrxaRADznaMPy/OMvpyhO6GTGyxl4waEC6HpZILJfIGVzs0z2
-        DJKr+KE6MwDS9vbpvjJ3or6EsnSdvPw=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-400-clViu8UtMRie3KD9UuCUtA-1; Wed, 07 Jun 2023 05:12:20 -0400
-X-MC-Unique: clViu8UtMRie3KD9UuCUtA-1
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-30e4943ca7fso1216163f8f.3
-        for <linux-omap@vger.kernel.org>; Wed, 07 Jun 2023 02:12:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686129139; x=1688721139;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=B3BIYD3PXMtQvTPGQV01/1k0Hmx/7PJYivm+5X8kP8U=;
-        b=JzeFhYIMDO/RWJHhIepwtiioBHgaEow9Gjt9gerlfppOfNYvYZ2dUdWPtSbOkAqcmM
-         AHod+4TdV9RGXUWbS21ARvCDV9VfGHO8yo4C9YC3ExM/RYibTWZJZMbaJapjS8xC1cv8
-         Mck5ZydKVywqil1dFiZJZC66aIfClS/DZzojY/OsInLctQvCTJlm9K3moCa5K9T+9puL
-         ZbikF2vUAeNy8nFNkdLV2N+WYYkjsuUQFp6973Xk7doCiEJzvgoqQ7WWujpFfzb2sDMU
-         7xgpdTYI3jzwhVn0dsvRHyUAnAuu27lvGR3Y8IQmrwxyMiAlZjrQ3mhbVUuYzKOn9ASt
-         D6qg==
-X-Gm-Message-State: AC+VfDz+DF7KxIWOXt3P6I52ARIp5FrXuKkZzwipTOO9xxmeCEkqB2oK
-        rYDLk+MlUKVnQ6fmkXWya5IdVimyeaNvJKPLrufya1akZoIZeiDlOxoa9ezA0msuvVyspJo9Xfo
-        vvPxXwg846GyvV308m411Ug==
-X-Received: by 2002:a5d:55c6:0:b0:30e:38d3:cc4f with SMTP id i6-20020a5d55c6000000b0030e38d3cc4fmr3742546wrw.36.1686129139399;
-        Wed, 07 Jun 2023 02:12:19 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5wzUZfsA9VSizf9bxaqukgTVAwDp5W+57tfKmlffItPyQVvcHhSQ5E8wYACr5/gCv7xQF2rA==
-X-Received: by 2002:a5d:55c6:0:b0:30e:38d3:cc4f with SMTP id i6-20020a5d55c6000000b0030e38d3cc4fmr3742525wrw.36.1686129139085;
-        Wed, 07 Jun 2023 02:12:19 -0700 (PDT)
-Received: from localhost (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
-        by smtp.gmail.com with ESMTPSA id o10-20020a1c750a000000b003f60101074dsm1447712wmc.33.2023.06.07.02.12.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Jun 2023 02:12:18 -0700 (PDT)
-From:   Javier Martinez Canillas <javierm@redhat.com>
-To:     Thomas Zimmermann <tzimmermann@suse.de>, daniel@ffwll.ch,
-        sam@ravnborg.org, deller@gmx.de, geert+renesas@glider.be,
-        lee@kernel.org, daniel.thompson@linaro.org, jingoohan1@gmail.com
-Cc:     linux-fbdev@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-staging@lists.linux.dev, dri-devel@lists.freedesktop.org,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        linux-omap@vger.kernel.org
-Subject: Re: [PATCH 21/30] fbdev/sm501fb: Output message with fb_err()
-In-Reply-To: <20230605144812.15241-22-tzimmermann@suse.de>
-References: <20230605144812.15241-1-tzimmermann@suse.de>
- <20230605144812.15241-22-tzimmermann@suse.de>
-Date:   Wed, 07 Jun 2023 11:12:18 +0200
-Message-ID: <87o7lreivh.fsf@minerva.mail-host-address-is-not-set>
+        bh=ta2FRAbQj0UwuOoAp0yjJ66hb4vAKW3txPGg2Eqa/ls=;
+        b=J/il2DV+GzNOLLIrsNjkeK2yO6zhHV1LqiURxOr63dIyG/NiMamaLNk+kPxwOy5NgQRG8s
+        yTwchZBE8UBHQtTgXr1/Q9y9PsoDYzzxivwcgAYmy1s/FuepZ1/McbnxAnpaRtG1I5JF5a
+        6OTPXe+jNemR936GMPghkUvQXP3ivvs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1686140507;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=ta2FRAbQj0UwuOoAp0yjJ66hb4vAKW3txPGg2Eqa/ls=;
+        b=qwEx/5STfYKT3dNkZTXOoEkepTtUZxat+Ty2hciE7ZXt4+PcgqCN6KYkP+4UPraz5myCHp
+        bwaDYDlB9klcKwAg==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 27AAC13776;
+        Wed,  7 Jun 2023 12:21:47 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id bWDpCFt2gGQBQgAAMHmgww
+        (envelope-from <tzimmermann@suse.de>); Wed, 07 Jun 2023 12:21:47 +0000
+Message-ID: <8c2db8a0-048c-af17-85f6-ac0946ce0f0f@suse.de>
+Date:   Wed, 7 Jun 2023 14:21:46 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.2
+Subject: Re: [PATCH 00/30] fbdev: Make userspace interfaces optional
+Content-Language: en-US
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-staging@lists.linux.dev,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Helge Deller <deller@gmx.de>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Jingoo Han <jingoohan1@gmail.com>, Lee Jones <lee@kernel.org>,
+        Sam Ravnborg <sam@ravnborg.org>
+References: <20230605144812.15241-1-tzimmermann@suse.de>
+ <16a8f34a-d4f9-2e1d-02cf-e4c53f89c006@web.de>
+From:   Thomas Zimmermann <tzimmermann@suse.de>
+In-Reply-To: <16a8f34a-d4f9-2e1d-02cf-e4c53f89c006@web.de>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------FW1FeVQdL1giSXp8BKAshSuA"
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Thomas Zimmermann <tzimmermann@suse.de> writes:
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------FW1FeVQdL1giSXp8BKAshSuA
+Content-Type: multipart/mixed; boundary="------------7Epbi9PEVe6pPjkkKh0YiBGj";
+ protected-headers="v1"
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: Markus Elfring <Markus.Elfring@web.de>
+Cc: dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+ linux-omap@vger.kernel.org, linux-sh@vger.kernel.org,
+ linux-staging@lists.linux.dev, Daniel Thompson <daniel.thompson@linaro.org>,
+ Daniel Vetter <daniel@ffwll.ch>, Geert Uytterhoeven
+ <geert+renesas@glider.be>, Helge Deller <deller@gmx.de>,
+ Javier Martinez Canillas <javierm@redhat.com>,
+ Jingoo Han <jingoohan1@gmail.com>, Lee Jones <lee@kernel.org>,
+ Sam Ravnborg <sam@ravnborg.org>
+Message-ID: <8c2db8a0-048c-af17-85f6-ac0946ce0f0f@suse.de>
+Subject: Re: [PATCH 00/30] fbdev: Make userspace interfaces optional
+References: <20230605144812.15241-1-tzimmermann@suse.de>
+ <16a8f34a-d4f9-2e1d-02cf-e4c53f89c006@web.de>
+In-Reply-To: <16a8f34a-d4f9-2e1d-02cf-e4c53f89c006@web.de>
 
-> Fix case were dev_err() is being called with struct fb_info.dev.
-> Use fb_err() instead.
->
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> ---
+--------------7Epbi9PEVe6pPjkkKh0YiBGj
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+DQoNCkFtIDA3LjA2LjIzIHVtIDE0OjA2IHNjaHJpZWIgTWFya3VzIEVsZnJpbmc6DQo+PiBN
+b2Rlcm4gTGludXggZGlzdHJvYnV0aW9ucyBoYXZlIGFkb3B0ZWQgRFJNIGRyaXZlcnMgZm9y
+IGdyYXBoaWNzDQo+PiBvdXRwdXQgYW5kIHVzZSBmYmRldiBvbmx5IGZvciB0aGUga2VybmVs
+J3MgZnJhbWVidWZmZXIgY29uc29sZS4NCj4gDQo+IFdvdWxkIHlvdSBsaWtlIHRvIGF2b2lk
+IGEgdHlwbyBpbiBzdWJzZXF1ZW50IGNvdmVyIGxldHRlcnM/DQoNCkhhISBJdCBzYXlzICdk
+aXN0cm9idXRpb25zJy4NCg0KPiANCj4gUmVnYXJkcywNCj4gTWFya3VzDQoNCi0tIA0KVGhv
+bWFzIFppbW1lcm1hbm4NCkdyYXBoaWNzIERyaXZlciBEZXZlbG9wZXINClNVU0UgU29mdHdh
+cmUgU29sdXRpb25zIEdlcm1hbnkgR21iSA0KRnJhbmtlbnN0cmFzc2UgMTQ2LCA5MDQ2MSBO
+dWVybmJlcmcsIEdlcm1hbnkNCkdGOiBJdm8gVG90ZXYsIEFuZHJldyBNeWVycywgQW5kcmV3
+IE1jRG9uYWxkLCBCb3VkaWVuIE1vZXJtYW4NCkhSQiAzNjgwOSAoQUcgTnVlcm5iZXJnKQ0K
 
--- 
-Best regards,
 
-Javier Martinez Canillas
-Core Platforms
-Red Hat
+--------------7Epbi9PEVe6pPjkkKh0YiBGj--
 
+--------------FW1FeVQdL1giSXp8BKAshSuA
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature"
+
+-----BEGIN PGP SIGNATURE-----
+
+wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmSAdloFAwAAAAAACgkQlh/E3EQov+CX
+jg/9FNBf8ZoZQO+eosw1vBEZ9nuaT0FLZyWHr9yNEU33bOLCa5mmAi3B1TRjYwdSk7shlRf73twX
+YRuSuMrW/2ODEiN2DVkaf8jSOCbZgZxcPHYZRJiHKThM7ApQxlRSZ+mjD3QPNpWwp8x0LumHcN+V
+dYjdR0/LZCp47I5sIsIr6BUP67GEqaBjy2UY1SKdAKIhlAlD4YJmPwrC/bJ+HZCBkDFuaimu4qAV
+YkKXc2qIXo7wLgFCKW10q/Jgk6Duph4BrHK/ypbZd/5Tgeb+NgV9gq6L9QQzOpIzKFO42zYoSWXl
+stDmdBcxM+cdcLW0b4b+veBIRI44YJUt/0vv//SliYQw8wGUHqDKM1zSckdqVYdL9MqZWXlBUIjH
+3yUrOmdyjhnoFdY+PjgqmP2mX8I/uYgQjPXWYDyhI8tWxMIgjyFZtlT2tGO6B0PktrBfLv/5lqTO
+qei+gMMJydV0ceV8M0usD1SVEdkFeR4/CtjHxotSfj670KWWRczIP78PxWoW/OWMWEatidEv14z2
++czkANOTrdRickPxEjBxaPYTnZcZQE8yGsdW6ufhnsQdcT/Uv1LN55509+C2QMHVwDng70u60Gdx
+AYKRWTZKRXfvjHmOD3GmgT3M4ZMR9kg4LMdB79fPEa3jyq4o2Im13Jt5ylFPIz/NLf9qY366H6yp
+z9Y=
+=GLVN
+-----END PGP SIGNATURE-----
+
+--------------FW1FeVQdL1giSXp8BKAshSuA--
