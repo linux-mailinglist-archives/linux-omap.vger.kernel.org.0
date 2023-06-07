@@ -2,210 +2,116 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 964D27263E8
-	for <lists+linux-omap@lfdr.de>; Wed,  7 Jun 2023 17:16:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F107726464
+	for <lists+linux-omap@lfdr.de>; Wed,  7 Jun 2023 17:26:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239237AbjFGPP7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 7 Jun 2023 11:15:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58524 "EHLO
+        id S240625AbjFGP0E convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-omap@lfdr.de>); Wed, 7 Jun 2023 11:26:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235659AbjFGPP6 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 7 Jun 2023 11:15:58 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6BB611F;
-        Wed,  7 Jun 2023 08:15:53 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id 80B4F21A0B;
-        Wed,  7 Jun 2023 15:15:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1686150952; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=8vl5u8vRd8gmXacQqWuDyAXg2T++oslac8ZS8H/bk1s=;
-        b=Jr86aCkGOEamH92bj1KwEgUt5B9I038hyWmHdRUJJzOcuT5V/MNQx3tsXhjmaQEPIfu9N2
-        9L7W3NnLZXDC3U4g2U/qy6IRZuU8qGvioTk8OljhxqrQSnjcnzXpijneU8LMd0HPtavF/j
-        3KG+UHPExtc3lZv5eaEVrn1nOhcS97Q=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1686150952;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=8vl5u8vRd8gmXacQqWuDyAXg2T++oslac8ZS8H/bk1s=;
-        b=zVx7yuZ/wNO9bkjC5SJXZsjOa+Z7l8O6UBJ9uT2DPoHSBj4Ov4Xcxb3cOaK/IC50QkwGpK
-        3+BeNlBI3MTAX1AA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 409141346D;
-        Wed,  7 Jun 2023 15:15:52 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id oZy/DiifgGT0JwAAMHmgww
-        (envelope-from <tzimmermann@suse.de>); Wed, 07 Jun 2023 15:15:52 +0000
-Message-ID: <e5d88ca8-66fe-b5ee-cb6b-2dc8f3a3fb26@suse.de>
-Date:   Wed, 7 Jun 2023 17:15:51 +0200
+        with ESMTP id S241079AbjFGPZd (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 7 Jun 2023 11:25:33 -0400
+Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com [209.85.219.180])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 388A72715;
+        Wed,  7 Jun 2023 08:25:11 -0700 (PDT)
+Received: by mail-yb1-f180.google.com with SMTP id 3f1490d57ef6-ba8151a744fso8656731276.2;
+        Wed, 07 Jun 2023 08:25:11 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686151462; x=1688743462;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=EQN/vgm9QEjhz2CmAuEj3hHoQIOxHnpZb3XEwqj7JAE=;
+        b=BhoJONJB89aWQLa8PPpUz7j2h1iUSUQgV28+VYxYzxmPQSep/0bBOErdHW1zHLr5tR
+         /HwC4h2nm78YvOPiDlq4ecZ+oa16McDI6XodAI8M5cr7dpoIOe+sqkYnMYlWH0ucdzzG
+         9EcF7C0bdindUAl4UbIjQ0Ulqvw8nF3fxMVa5zacA4wMjY2f9eWPO53DoCVH+fNnrVOJ
+         poaLyrgdXIXJexhTQaWAbTvuKWIEbMn7MsleUtD3+fG/dzCMxXj+a91TECwtG0k8LPvw
+         3GWBGW2ypDU+cLy4AZqhsKPTa0S8E+khIMGAfTcpJ8pGp68GX75XBs3nwuShDg07Yap6
+         R8sg==
+X-Gm-Message-State: AC+VfDxJCZBuX65sDCpEgWDUrdRZ8thNxUVqkEQMAGZndAziuRAUgxIC
+        +fOAn0E5RNvCAXFZezlz16I01sAfdx7s+g==
+X-Google-Smtp-Source: ACHHUZ4hZ5mQV9UZxtOfx7Xp52RJIhgGUFeWy1THCvMb3QQmVkJx6lBLEdNQIkLBlEfHNPn6TtQBTw==
+X-Received: by 2002:a0d:d7cf:0:b0:565:dff1:d1e2 with SMTP id z198-20020a0dd7cf000000b00565dff1d1e2mr7634371ywd.18.1686151462189;
+        Wed, 07 Jun 2023 08:24:22 -0700 (PDT)
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com. [209.85.128.175])
+        by smtp.gmail.com with ESMTPSA id j188-20020a0df9c5000000b0055a07e36659sm4777371ywf.145.2023.06.07.08.24.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 07 Jun 2023 08:24:21 -0700 (PDT)
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-565ba53f434so84021437b3.3;
+        Wed, 07 Jun 2023 08:24:21 -0700 (PDT)
+X-Received: by 2002:a0d:d44b:0:b0:565:8c16:a0e1 with SMTP id
+ w72-20020a0dd44b000000b005658c16a0e1mr8139475ywd.13.1686151460917; Wed, 07
+ Jun 2023 08:24:20 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.2
-Subject: Re: [PATCH 30/30] fbdev: Make support for userspace interfaces
- configurable
-Content-Language: en-US
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
+References: <20230605144812.15241-1-tzimmermann@suse.de> <20230605144812.15241-31-tzimmermann@suse.de>
+ <CAMuHMdVP2hrgXaZvASnHJ4M+VXaTCtfbeVXrq2dsEJqcs3G6ZA@mail.gmail.com> <e5d88ca8-66fe-b5ee-cb6b-2dc8f3a3fb26@suse.de>
+In-Reply-To: <e5d88ca8-66fe-b5ee-cb6b-2dc8f3a3fb26@suse.de>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Wed, 7 Jun 2023 17:24:09 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdWBUKTgfCD9VLDFh_Tm1J-NJQHpxODs-TuYM7V-dtmGjA@mail.gmail.com>
+Message-ID: <CAMuHMdWBUKTgfCD9VLDFh_Tm1J-NJQHpxODs-TuYM7V-dtmGjA@mail.gmail.com>
+Subject: Re: [PATCH 30/30] fbdev: Make support for userspace interfaces configurable
+To:     Thomas Zimmermann <tzimmermann@suse.de>
 Cc:     daniel@ffwll.ch, javierm@redhat.com, sam@ravnborg.org,
         deller@gmx.de, lee@kernel.org, daniel.thompson@linaro.org,
         jingoohan1@gmail.com, linux-fbdev@vger.kernel.org,
         dri-devel@lists.freedesktop.org, linux-sh@vger.kernel.org,
         linux-omap@vger.kernel.org, linux-staging@lists.linux.dev
-References: <20230605144812.15241-1-tzimmermann@suse.de>
- <20230605144812.15241-31-tzimmermann@suse.de>
- <CAMuHMdVP2hrgXaZvASnHJ4M+VXaTCtfbeVXrq2dsEJqcs3G6ZA@mail.gmail.com>
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-In-Reply-To: <CAMuHMdVP2hrgXaZvASnHJ4M+VXaTCtfbeVXrq2dsEJqcs3G6ZA@mail.gmail.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------M6rYvO9rIW03zBgN0h0bpi1s"
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------M6rYvO9rIW03zBgN0h0bpi1s
-Content-Type: multipart/mixed; boundary="------------ldQ1fhfowxh97luX777uhDg3";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: daniel@ffwll.ch, javierm@redhat.com, sam@ravnborg.org, deller@gmx.de,
- lee@kernel.org, daniel.thompson@linaro.org, jingoohan1@gmail.com,
- linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-sh@vger.kernel.org, linux-omap@vger.kernel.org,
- linux-staging@lists.linux.dev
-Message-ID: <e5d88ca8-66fe-b5ee-cb6b-2dc8f3a3fb26@suse.de>
-Subject: Re: [PATCH 30/30] fbdev: Make support for userspace interfaces
- configurable
-References: <20230605144812.15241-1-tzimmermann@suse.de>
- <20230605144812.15241-31-tzimmermann@suse.de>
- <CAMuHMdVP2hrgXaZvASnHJ4M+VXaTCtfbeVXrq2dsEJqcs3G6ZA@mail.gmail.com>
-In-Reply-To: <CAMuHMdVP2hrgXaZvASnHJ4M+VXaTCtfbeVXrq2dsEJqcs3G6ZA@mail.gmail.com>
+Hi Thomas,
 
---------------ldQ1fhfowxh97luX777uhDg3
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+On Wed, Jun 7, 2023 at 5:15 PM Thomas Zimmermann <tzimmermann@suse.de> wrote:
+> Am 07.06.23 um 10:48 schrieb Geert Uytterhoeven:
+> > On Mon, Jun 5, 2023 at 4:48 PM Thomas Zimmermann <tzimmermann@suse.de> wrote:
+> >> --- a/drivers/video/fbdev/Kconfig
+> >> +++ b/drivers/video/fbdev/Kconfig
+> >> @@ -57,6 +57,15 @@ config FIRMWARE_EDID
+> >>            combination with certain motherboards and monitors are known to
+> >>            suffer from this problem.
+> >>
+> >> +config FB_DEVICE
+> >> +        bool "Provide legacy /dev/fb* device"
+> >
+> > Perhaps "default y if !DRM", although that does not help for a
+> > mixed drm/fbdev kernel build?
+>
+> We could simply set it to "default y".  But OTOH is it worth making it a
+> default? Distributions will set it to the value they need/want. The very
+> few people that build their own kernels to get certain fbdev drivers
+> will certainly be able to enable the option by hand as well.
 
-SGkNCg0KQW0gMDcuMDYuMjMgdW0gMTA6NDggc2NocmllYiBHZWVydCBVeXR0ZXJob2V2ZW46
-DQo+IEhpIFRob21hcywNCj4gDQo+IFRoYW5rcyBmb3IgeW91ciBwYXRjaCENCj4gDQo+IE9u
-IE1vbiwgSnVuIDUsIDIwMjMgYXQgNDo0OOKAr1BNIFRob21hcyBaaW1tZXJtYW5uIDx0emlt
-bWVybWFubkBzdXNlLmRlPiB3cm90ZToNCj4+IEFkZCBLY29uZmlnIG9wdGlvbiBDT05GSUdf
-RkJfREVWSUNFIGFuZCBtYWtlIHRoZSB2aXJ0dWFsIGZiZGV2DQo+PiBkZXZpY2Ugb3B0aW9u
-YWwuIElmIHRoZSBuZXcgb3B0aW9uIGhhcyBub3QgYmVlbiBzZWxlY3RlZCwgZmJkZXYNCj4+
-IGRvZXMgbm90IGNyZWF0ZSBhIGZpbGVzIGluIGRldmZzIG9yIHN5c2ZzLg0KPj4NCj4+IE1v
-c3QgbW9kZXJuIExpbnV4IHN5c3RlbXMgcnVuIGEgRFJNLWJhc2VkIGdyYXBoaWNzIHN0YWNr
-IHRoYXQgdXNlcw0KPj4gdGhlIGtlcm5lbCdzIGZyYW1lYnVmZmVyIGNvbnNvbGUsIGJ1dCBo
-YXMgb3RoZXJ3aXNlIGRlcHJlY2F0ZWQgZmJkZXYNCj4+IHN1cHBvcnQuIFlldCBmYmRldiB1
-c2Vyc3BhY2UgaW50ZXJmYWNlcyBhcmUgc3RpbGwgcHJlc2VudC4NCj4+DQo+PiBUaGUgb3B0
-aW9uIG1ha2VzIGl0IHBvc3NpYmxlIHRvIHVzZSB0aGUgZmJkZXYgc3Vic3lzdGVtIGFzIGNv
-bnNvbGUNCj4+IGltcGxlbWVudGF0aW9uIHdpdGhvdXQgc3VwcG9ydCBmb3IgdXNlcnNwYWNl
-LiBUaGlzIGNsb3NlcyBwb3RlbnRpYWwNCj4+IGVudHJ5IHBvaW50cyB0byBtYW5pcHVsYXRl
-IGtlcm5lbCBvciBJL08gbWVtb3J5IHZpYSBmcmFtZWJ1ZmZlcnMuIEl0DQo+IA0KPiBJJ2Qg
-bGVhdmUgb3V0IHRoZSBwYXJ0IGFib3V0IG1hbmlwdWxhdGluZyBrZXJuZWwgbWVtb3J5LCBh
-cyB0aGF0J3MgYQ0KPiBkcml2ZXIgYnVnLCBpZiBwb3NzaWJsZS4NCg0KVGhlIGRyaXZlci9j
-b3JlIGRpc3RpbmN0aW9uIGlzIHNvbWV3aGF0IGZ1enp5OiB0aGUgcmVjZW50IGJ1ZyB3aXRo
-IE9PQiANCmFjY2VzcyB3YXMgaW50cm9kdWNlZCBhY2NpZGVudGFsbHkgaW4gc2hhcmVkIGhl
-bHBlciBjb2RlIHdpdGhpbiBEUk0uDQoNCkFuZCB3aGVuZXZlciBJIHdhbnQgdG8gbW9kaWZ5
-IHRoZSBmYmRldiBjb2RlLCBJIGhhdmUgdG8gc3RhcnQgYnVnZml4aW5nIA0KZmlyc3QuIEp1
-c3QgbG9vayBhdCB0aGlzIHBhdGNoc2V0LiBBIGdvb2QgbnVtYmVyIG9mIHRoZSBwYXRjaGVz
-IGFyZSANCmJ1Z2ZpeGVzLiBEcml2ZXIgb3Igbm90LCBJIG5vIGxvbmdlciB0cnVzdCBhbnkg
-b2YgdGhlIGZiZGV2IGNvZGUgdG8gZ2V0IA0KYW55dGhpbmcgcmlnaHQuDQoNCg0KPiANCj4+
-IGFsc28gcHJldmVudHMgdGhlIGV4ZWN1dGlvbiBvZiBkcml2ZXIgY29kZSB2aWEgaW9jdGwg
-b3Igc3lzZnMsIGJvdGgNCj4+IG9mIHdoaWNoIG1pZ2h0IGFsbG93IG1hbGljaW91cyBzb2Z0
-d2FyZSB0byBleHBsb2l0IGJ1Z3MgaW4gdGhlIGZiZGV2DQo+PiBjb2RlLg0KPiANCj4gT2Yg
-Y291cnNlIGRpc2FibGluZyBpb2N0bHMgcmVkdWNlcyB0aGUgYXR0YWNrIHN1cmZhY2UsIGFu
-ZCB0aGlzIGlzIG5vdA0KPiBsaW1pdGVkIHRvIGZiZGV2Li4uIDstKQ0KDQpPdGhlciBzdWJz
-eXN0ZW1zIHNob3VsZCBkbyB0aGUgc2FtZSB3aGVyZSBwb3NzaWJsZS4gVGhlIHNwZWNpZmlj
-IHByb2JsZW0gDQp3aXRoIERSTS1wbHVzLWZiZGV2IGlzIHRoYXQgdGhlIGZiZGV2IGRldmlj
-ZSBkb2Vzbid0IHByb3ZpZGUgYW55IA0KYWRkaXRpb25hbCB2YWx1ZS4gSXQncyB0b28gbGlt
-aXRlZCBpbiBmdW5jdGlvbmFsaXR5IChldmVuIGJ5IGZiZGV2IA0Kc3RhbmRhcmRzKSwgYSBw
-b3NzaWJsZSBzb3VyY2UgZm9yIGJ1Z3MsIGFuZCB0b2RheSdzIHVzZXJzcGFjZSB3YW50cyBE
-Uk0gDQpmdW5jdGlvbmFsaXR5Lg0KDQoNCj4gDQo+IEknbSB3b25kZXJpbmcgaWYgaXQgd291
-bGQgYmUgd29ydGh3aGlsZSB0byBvcHRpb25hbGx5IHByb3ZpZGUgYSBtb3JlDQo+IGxpbWl0
-ZWQgdXNlcnNwYWNlIEFQSSBmb3IgcmVhbCBmYmRldiBkcml2ZXJzOg0KPiAgICAxLiBObyBh
-Y2Nlc3MgdG8gTU1JTywgb25seSB0byB0aGUgbWFwcGVkIGZyYW1lIGJ1ZmZlciwNCj4gICAg
-Mi4gTm8gZHJpdmVyLXNwZWNpZmljIGlvY3Rscywgb25seSB0aGUgc3RhbmRhcmQgb25lcy4N
-Cg0KVGhhdCBpc3N1ZSBpcyBvbmx5IHJlbGV2YW50IHRvIGZiZGV2IGRyaXZlcnMgYW5kIHdv
-dWxkIGJlIGEgc2VwYXJhdGUgDQpwYXRjaHNldC4gTXkgY29uY2VybiBsaWVzIHdpdGggdGhl
-IGN1cnJlbnQgZGlzdHJpYnV0aW9ucywgd2hpY2ggZG9uJ3QgDQpuZWVkIHRoZSBmYmRldiBk
-ZXZpY2UgYW5kIHNob3VsZG4ndCBwcm92aWRlIGl0IGZvciB0aGUgZ2l2ZW4gcmVhc29ucy4N
-Cg0KDQo+IA0KPj4gQSBzbWFsbCBudW1iZXIgb2YgZmJkZXYgZHJpdmVycyByZXF1aXJlIHN0
-cnVjdCBmYmluZm8uZGV2IHRvIGJlDQo+PiBpbml0aWFsaXplZCwgdXN1YWxseSBmb3IgdGhl
-IHN1cHBvcnQgb2Ygc3lzZnMgaW50ZXJmYWNlLiBNYWtlIHRoZXNlDQo+PiBkcml2ZXJzIGRl
-cGVuZCBvbiBGQl9ERVZJQ0UuIFRoZXkgY2FuIGxhdGVyIGJlIGZpeGVkIGlmIG5lY2Vzc2Fy
-eS4NCj4+DQo+PiBTaWduZWQtb2ZmLWJ5OiBUaG9tYXMgWmltbWVybWFubiA8dHppbW1lcm1h
-bm5Ac3VzZS5kZT4NCj4gDQo+PiAtLS0gYS9kcml2ZXJzL3ZpZGVvL2ZiZGV2L0tjb25maWcN
-Cj4+ICsrKyBiL2RyaXZlcnMvdmlkZW8vZmJkZXYvS2NvbmZpZw0KPj4gQEAgLTU3LDYgKzU3
-LDE1IEBAIGNvbmZpZyBGSVJNV0FSRV9FRElEDQo+PiAgICAgICAgICAgIGNvbWJpbmF0aW9u
-IHdpdGggY2VydGFpbiBtb3RoZXJib2FyZHMgYW5kIG1vbml0b3JzIGFyZSBrbm93biB0bw0K
-Pj4gICAgICAgICAgICBzdWZmZXIgZnJvbSB0aGlzIHByb2JsZW0uDQo+Pg0KPj4gK2NvbmZp
-ZyBGQl9ERVZJQ0UNCj4+ICsgICAgICAgIGJvb2wgIlByb3ZpZGUgbGVnYWN5IC9kZXYvZmIq
-IGRldmljZSINCj4gDQo+IFBlcmhhcHMgImRlZmF1bHQgeSBpZiAhRFJNIiwgYWx0aG91Z2gg
-dGhhdCBkb2VzIG5vdCBoZWxwIGZvciBhDQo+IG1peGVkIGRybS9mYmRldiBrZXJuZWwgYnVp
-bGQ/DQoNCldlIGNvdWxkIHNpbXBseSBzZXQgaXQgdG8gImRlZmF1bHQgeSIuICBCdXQgT1RP
-SCBpcyBpdCB3b3J0aCBtYWtpbmcgaXQgYSANCmRlZmF1bHQ/IERpc3RyaWJ1dGlvbnMgd2ls
-bCBzZXQgaXQgdG8gdGhlIHZhbHVlIHRoZXkgbmVlZC93YW50LiBUaGUgdmVyeSANCmZldyBw
-ZW9wbGUgdGhhdCBidWlsZCB0aGVpciBvd24ga2VybmVscyB0byBnZXQgY2VydGFpbiBmYmRl
-diBkcml2ZXJzIA0Kd2lsbCBjZXJ0YWlubHkgYmUgYWJsZSB0byBlbmFibGUgdGhlIG9wdGlv
-biBieSBoYW5kIGFzIHdlbGwuDQoNCg0KPiANCj4gT3IgcmVzZXJ2ZSAiRkIiIGZvciByZWFs
-IGZiZGV2IGRyaXZlcnMsIGFuZCBpbnRyb2R1Y2UgYSBuZXcgRkJfQ09SRSwNCj4gdG8gYmUg
-c2VsZWN0ZWQgYnkgYm90aCBGQiBhbmQgRFJNX0ZCREVWX0VNVUxBVElPTj8NCj4gVGhlbiBG
-Ql9ERVZJQ0UgY2FuIGRlcGVuZCBvbiBGQl9DT1JFLCBhbmQgZGVmYXVsdCB0byB5IGlmIEZC
-Lg0KDQpUaGF0IHdvdWxkbid0IHdvcmsuIEluIFR1bWJsZXdlZWQsIHdlIHN0aWxsIGhhdmUg
-ZWZpZmIgYW5kIHZlc2FmYiANCmVuYWJsZWQgdW5kZXIgY2VydGFpbiBjb25kaXRpb25zOyBt
-ZXJlbHkgZm9yIHRoZSBrZXJuZWwgY29uc29sZS4gV2UnZCANCmhhdmUgdG8gZW5hYmxlIENP
-TkZJR19GQiwgd2hpY2ggd291bGQgYnJpbmcgYmFjayB0aGUgZGV2aWNlLg0KDQpCZXN0IHJl
-Z2FyZHMNClRob21hcw0KDQo+IA0KPj4gKyAgICAgICAgZGVwZW5kcyBvbiBGQg0KPj4gKyAg
-ICAgICAgaGVscA0KPj4gKyAgICAgICAgIFNheSBZIGhlcmUgaWYgeW91IHdhbnQgdGhlIGxl
-Z2FjeSAvZGV2L2ZiKiBkZXZpY2UgZmlsZS4gSXQncw0KPj4gKyAgICAgICAgIG9ubHkgcmVx
-dWlyZWQgaWYgeW91IGhhdmUgdXNlcnNwYWNlIHByb2dyYW1zIHRoYXQgZGVwZW5kIG9uDQo+
-PiArICAgICAgICAgZmJkZXYgZm9yIGdyYXBoaWNzIG91dHB1dC4gVGhpcyBkb2VzIG5vdCBl
-ZmZlY3QgdGhlIGZyYW1lYnVmZmVyDQo+IA0KPiBhZmZlY3QNCj4gDQo+PiArICAgICAgICAg
-Y29uc29sZS4NCj4+ICsNCj4+ICAgY29uZmlnIEZCX0REQw0KPj4gICAgICAgICAgdHJpc3Rh
-dGUNCj4+ICAgICAgICAgIGRlcGVuZHMgb24gRkINCj4gDQo+IEdye29ldGplLGVldGluZ31z
-LA0KPiANCj4gICAgICAgICAgICAgICAgICAgICAgICAgIEdlZXJ0DQo+IA0KDQotLSANClRo
-b21hcyBaaW1tZXJtYW5uDQpHcmFwaGljcyBEcml2ZXIgRGV2ZWxvcGVyDQpTVVNFIFNvZnR3
-YXJlIFNvbHV0aW9ucyBHZXJtYW55IEdtYkgNCkZyYW5rZW5zdHJhc3NlIDE0NiwgOTA0NjEg
-TnVlcm5iZXJnLCBHZXJtYW55DQpHRjogSXZvIFRvdGV2LCBBbmRyZXcgTXllcnMsIEFuZHJl
-dyBNY0RvbmFsZCwgQm91ZGllbiBNb2VybWFuDQpIUkIgMzY4MDkgKEFHIE51ZXJuYmVyZykN
-Cg==
+Defaulting to "n" (the default) means causing regressions when these
+few people use an existing defconfig.
 
---------------ldQ1fhfowxh97luX777uhDg3--
+> > Or reserve "FB" for real fbdev drivers, and introduce a new FB_CORE,
+> > to be selected by both FB and DRM_FBDEV_EMULATION?
+> > Then FB_DEVICE can depend on FB_CORE, and default to y if FB.
+>
+> That wouldn't work. In Tumbleweed, we still have efifb and vesafb
+> enabled under certain conditions; merely for the kernel console. We'd
+> have to enable CONFIG_FB, which would bring back the device.
 
---------------M6rYvO9rIW03zBgN0h0bpi1s
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
+"Default y" does not mean that you cannot disable FB_DEVICE, so
+you are not forced to bring back the device?
 
------BEGIN PGP SIGNATURE-----
+Gr{oetje,eeting}s,
 
-wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmSAnycFAwAAAAAACgkQlh/E3EQov+AA
-RA/+O6OQaSWfIQF4ij57SxCcn92MCARiu8rooX7hgUe43bDKp36LMMgNLaJeADaVDM6Y9s/B3iZv
-8dL7+pFJz8Ikx6RFeOGvpeS+yJMLNJ/cRTb3j3uNx9Xz32qJIwjQa46SnK2ERBf6D5jkZ9iH9KQd
-QU4E4VUVVr0E4M8x0PWS6BSxAswTwRP2qibhrGV/ifY+Ym7/1gBYu5I5CYExGoDInt7Vfsrt09sP
-gb5Aa4BvIOuONrcoCS00zm8auznjLFcLi8UG9pLiZ46hDwhR8fSz7rRIOEOT2GBwnPBn06KRxj0c
-JkA4b1zWTwqr8hu1k+TtZpnChLs0+yCv1F5qL7JDdgksP4kHoJ03r9jLfy0wU7zGrBD8fIOdro6N
-mzEUOXcBKA8XB5VymAHcH2z6BrlWNDuIMDB4yZDJI3RKRVGpxV3tK0vKCSESCOOf1h/Vbv+ZYHCi
-t/EObl4IX2M+aoKIq/ChNeUtOm5A8K8LFxNWP2cdo5NCdQOfUJTtxXB72XYXOraQ26g7EDc/bxpF
-nSOGxGCtEbBKRnyI1YqAfvbdIELAPVPfo7y5+YSldjub0s75jQVOlT3D/xT47zBVEc+JJOQ65+Wq
-cG554/DAyGXIKIZAMrIBkkGU48jtJccDd9Dw3YLi7FaV8lyvFGkbgC0HO5BnCIkM9kkygJmEoVjM
-Tlk=
-=wozr
------END PGP SIGNATURE-----
+                        Geert
 
---------------M6rYvO9rIW03zBgN0h0bpi1s--
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
