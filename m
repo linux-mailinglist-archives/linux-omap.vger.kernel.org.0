@@ -2,173 +2,171 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B6C072724F
-	for <lists+linux-omap@lfdr.de>; Thu,  8 Jun 2023 00:55:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE5847272B6
+	for <lists+linux-omap@lfdr.de>; Thu,  8 Jun 2023 01:08:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230445AbjFGWzg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 7 Jun 2023 18:55:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54258 "EHLO
+        id S230099AbjFGXIc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 7 Jun 2023 19:08:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33658 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232317AbjFGWzZ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 7 Jun 2023 18:55:25 -0400
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2AB22690
-        for <linux-omap@vger.kernel.org>; Wed,  7 Jun 2023 15:55:13 -0700 (PDT)
-Received: by mail-ej1-x635.google.com with SMTP id a640c23a62f3a-97458c97333so914166b.2
-        for <linux-omap@vger.kernel.org>; Wed, 07 Jun 2023 15:55:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686178513; x=1688770513;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=lwmqmz3SLTAm/5XHn54kA2Qkz1KiGdBlOiEDAaxIk1A=;
-        b=h4j71OFNDV5FfvldtjCh/L+Qg71oYHcBnHuDB5srtk996zsBHlbD8SaqVv65TPPNSR
-         D55ZWk68qXdEmt+kIdXRugiaujZb/weZnFCTHcuZcbiNqcbtWT0X7OlskYnP/y/1JDzr
-         WbOZ68AcZfM/aHW4up57fkOGafclaBar/hLOCFBtTjAlCxKYQtVTvq0W4SECGmO4CUql
-         dig397pPxdZX0OTvC2J8JrOzuSqogeJM29duG5G1BgaFsW6donzZWRU1Jz4x6qDKSWR9
-         w6/41Hy1gwVz7zf6M5uQKiqeQS7jHj9sppdk3jRa//N+UQ6Qg+lxAaHE7mp4Zy+a5Adc
-         Kv2w==
+        with ESMTP id S229958AbjFGXIb (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 7 Jun 2023 19:08:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3CF010DE
+        for <linux-omap@vger.kernel.org>; Wed,  7 Jun 2023 16:07:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1686179270;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=CzPJdjd02VNeNLl14O4tReNjsYBGUu/pZADGgCv1i2o=;
+        b=P0B575QpeGCgdIRunxcKZOFm3Srw3NZJdBG4UNe9tWC2u2lcF5yYG3+G6farNIgqgzFUDT
+        tBZ1J+52yQ3TCH0HgMhVLtGBpAzdtVq3x5ysno9LcwRsBFS8ctknPCjWBp1HcYhio7ncd2
+        08gPqcJuDCYimYEjKS8jnw915vzNqzc=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-659-vtPURXhWNFCmk0Xgt1AQYg-1; Wed, 07 Jun 2023 19:07:49 -0400
+X-MC-Unique: vtPURXhWNFCmk0Xgt1AQYg-1
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-3f5fc8581a9so39389665e9.0
+        for <linux-omap@vger.kernel.org>; Wed, 07 Jun 2023 16:07:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686178513; x=1688770513;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=lwmqmz3SLTAm/5XHn54kA2Qkz1KiGdBlOiEDAaxIk1A=;
-        b=PoK1ILHvGonMKL/yuoSV6KoTEIwjBci+OyS4F+kcdMPFpOUEZ84J2tXqC2zhIcjT3j
-         6VRt/cx60bVO3cUCzJsH54wFu4YldzYR58Qoz/DP6w/4wplGJd0tFzQV5JoKd5Lwog/o
-         MBHboNLOEOFehlojBIwI3BC/6en6qDuySjlhRQwBXQ6kHB4f2d5hcs27kDEuPz/Y6Sxj
-         45IdlcOmjIp3tQNf/Gfcbshiev30PazP037QjlybfpsyyjdZ6SUBLNkqV/X4pzl01urg
-         6AiRuKYz3MknWN3HPYAuSD3tktDkn4AyB3L9Qzehn45+ZxHTxvjpiRa6yb2f1U46iGfW
-         0NeQ==
-X-Gm-Message-State: AC+VfDwsxhfQSVOVzx1o7Q4wEbJI2bduiJ8mIY/JO2nqQqX6lEDQDJq6
-        OU3FHK8JtXKobaNOo5kEG4N4iSfsbG6iaImMI36LN2rrYHP3YA==
-X-Google-Smtp-Source: ACHHUZ5q9v5E8VuN7LGrTh1boUYVANIIUnJnBwlK4YNL8XVT+z7GalrAexguq0b795Op+2qoCUEoHnMN8sFXq0M0ebg=
-X-Received: by 2002:a17:907:8a15:b0:96f:d154:54f7 with SMTP id
- sc21-20020a1709078a1500b0096fd15454f7mr7113590ejc.42.1686178492570; Wed, 07
- Jun 2023 15:54:52 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1686179268; x=1688771268;
+        h=content-transfer-encoding:mime-version:message-id:date:references
+         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=CzPJdjd02VNeNLl14O4tReNjsYBGUu/pZADGgCv1i2o=;
+        b=Po7rxdInePDPUKYAxV305kO7s2gOgojSZmDyiz7eR0zr6oTYlSNOFzsweFt9JITDvP
+         H+mefYVBdSQ5fBkxYc/yuqlyy5g1Jr11JlMUXaYMWrOslGk6Ng9JCDuvycaI/XRrb2W7
+         /f6vfW5rbJvPtwHWB2HrRGyjrgqoPlDwZoxTT6ey6QJqU4m8bRUyuITg2FiNyH8lOPfl
+         dyhKhRv8197vGBi5slHwC7zDIijRtXDNns+Ylw2fd8DqqRAscM5tZIqxgpO9ZbxCcrz/
+         SpCWt7GvqQKxTCR847WQAuZlPMJa6kIaxIGWNh64Xc7z38Wds68hPCrKncxKeDdEqN9G
+         gw8A==
+X-Gm-Message-State: AC+VfDx2oy3EnLbJbucihb3G+a5xfFMqReq52yT5NXtCAakSw7voEj33
+        BAOGzPfvZMYsQg+RZgpslqHSd20SewtizqjtVdm1TAYHTdUNAakgLaDN6Jx1HVxiFJF0gxJyLH3
+        KFkogbS4yf0MDJV2mnrJZXg==
+X-Received: by 2002:a05:600c:287:b0:3f6:f7c:b3fa with SMTP id 7-20020a05600c028700b003f60f7cb3famr5617454wmk.31.1686179268612;
+        Wed, 07 Jun 2023 16:07:48 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7yuzlNYlFd9At+efr6s7V++AJjpo4wp6t37d3PBdQ42FjEQ40JOh3bqJjvNUUJHF19hKrWRw==
+X-Received: by 2002:a05:600c:287:b0:3f6:f7c:b3fa with SMTP id 7-20020a05600c028700b003f60f7cb3famr5617443wmk.31.1686179268312;
+        Wed, 07 Jun 2023 16:07:48 -0700 (PDT)
+Received: from localhost (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
+        by smtp.gmail.com with ESMTPSA id l8-20020a7bc448000000b003f42328b5d9sm96487wmi.39.2023.06.07.16.07.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 Jun 2023 16:07:47 -0700 (PDT)
+From:   Javier Martinez Canillas <javierm@redhat.com>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>
+Cc:     daniel.thompson@linaro.org, linux-staging@lists.linux.dev,
+        linux-sh@vger.kernel.org, jingoohan1@gmail.com, deller@gmx.de,
+        lee@kernel.org, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, linux-omap@vger.kernel.org,
+        sam@ravnborg.org
+Subject: Re: [PATCH 30/30] fbdev: Make support for userspace interfaces
+ configurable
+In-Reply-To: <CAMuHMdWBUKTgfCD9VLDFh_Tm1J-NJQHpxODs-TuYM7V-dtmGjA@mail.gmail.com>
+References: <20230605144812.15241-1-tzimmermann@suse.de>
+ <20230605144812.15241-31-tzimmermann@suse.de>
+ <CAMuHMdVP2hrgXaZvASnHJ4M+VXaTCtfbeVXrq2dsEJqcs3G6ZA@mail.gmail.com>
+ <e5d88ca8-66fe-b5ee-cb6b-2dc8f3a3fb26@suse.de>
+ <CAMuHMdWBUKTgfCD9VLDFh_Tm1J-NJQHpxODs-TuYM7V-dtmGjA@mail.gmail.com>
+Date:   Thu, 08 Jun 2023 01:07:47 +0200
+Message-ID: <873532eurg.fsf@minerva.mail-host-address-is-not-set>
 MIME-Version: 1.0
-Received: by 2002:a54:2409:0:b0:217:72a9:f646 with HTTP; Wed, 7 Jun 2023
- 15:54:52 -0700 (PDT)
-Reply-To: unitednationcompensationcoordinatortreasury@hotmail.com
-From:   "UNITED NATION DEPUTY SECRETARY-GENERAL (U.N)" 
-        <successikolo@gmail.com>
-Date:   Wed, 7 Jun 2023 15:54:52 -0700
-Message-ID: <CADFNGJ8vkgORi1jPvvhP+FQnPCNqs4cr588+_a-ywDXpqf+qKA@mail.gmail.com>
-Subject: CONTACT DHL OFFICE IMMEDIATELY FOR YOUR ATM MASTER CARD 1.5 MILLION,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=6.6 required=5.0 tests=ADVANCE_FEE_3_NEW_FRM_MNY,
-        BAYES_50,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FILL_THIS_FORM,FORM_FRAUD_5,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        LOTS_OF_MONEY,MONEY_FORM,MONEY_FRAUD_5,MONEY_FREEMAIL_REPTO,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,
-        T_FILL_THIS_FORM_LOAN,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM,UNDISC_MONEY
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:635 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [successikolo[at]gmail.com]
-        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  2.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  0.2 MONEY_FREEMAIL_REPTO Lots of money from someone using free
-        *      email?
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-        *  0.0 FILL_THIS_FORM Fill in a form with personal information
-        *  0.0 T_FILL_THIS_FORM_LOAN Answer loan question(s)
-        *  0.0 MONEY_FORM Lots of money if you fill out a form
-        *  1.3 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-        *  0.0 ADVANCE_FEE_3_NEW_FRM_MNY Advance Fee fraud form and lots of
-        *      money
-        *  0.2 MONEY_FRAUD_5 Lots of money and many fraud phrases
-        *  0.0 FORM_FRAUD_5 Fill a form and many fraud phrases
-X-Spam-Level: ******
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-UNITED NATION DEPUTY SECRETARY-GENERAL.
+Geert Uytterhoeven <geert@linux-m68k.org> writes:
 
-This is to official inform you that we have been having meetings for
-the past three (3) weeks which ended two days ago with MR. JIM YONG
-KIM the world bank president and other seven continent presidents on
-the congress we treated on solution to scam victim problems.
+Hello Geert and Thomas,
 
- Note: we have decided to contact you following the reports we
-received from anti-fraud international monitoring group your
-name/email has been submitted to us therefore the united nations have
-agreed to compensate you with the sum of (USD$ 1.5 Million) this
-compensation is also including international business that failed you
-in the past due to government problems etc.
+> Hi Thomas,
+>
+> On Wed, Jun 7, 2023 at 5:15=E2=80=AFPM Thomas Zimmermann <tzimmermann@sus=
+e.de> wrote:
+>> Am 07.06.23 um 10:48 schrieb Geert Uytterhoeven:
+>> > On Mon, Jun 5, 2023 at 4:48=E2=80=AFPM Thomas Zimmermann <tzimmermann@=
+suse.de> wrote:
+>> >> --- a/drivers/video/fbdev/Kconfig
+>> >> +++ b/drivers/video/fbdev/Kconfig
+>> >> @@ -57,6 +57,15 @@ config FIRMWARE_EDID
+>> >>            combination with certain motherboards and monitors are kno=
+wn to
+>> >>            suffer from this problem.
+>> >>
+>> >> +config FB_DEVICE
+>> >> +        bool "Provide legacy /dev/fb* device"
+>> >
+>> > Perhaps "default y if !DRM", although that does not help for a
+>> > mixed drm/fbdev kernel build?
+>>
+>> We could simply set it to "default y".  But OTOH is it worth making it a
+>> default? Distributions will set it to the value they need/want. The very
+>> few people that build their own kernels to get certain fbdev drivers
+>> will certainly be able to enable the option by hand as well.
+>
+> Defaulting to "n" (the default) means causing regressions when these
+> few people use an existing defconfig.
+>
 
- We have arranged your payment through our ATM Master Card and
-deposited it in DHL Office to deliver it to you which is the latest
-instruction from the World Bank president MR. JIM YONG KIM, For your
-information=E2=80=99s, the delivery charges already paid by U.N treasury, t=
-he
-only money you will send to DHL office south Korea is
-($500). for security keeping fee, U.N coordinator already paid for
-others charges fees for delivery except the security keeping fee, the
-director of DHL refused to collect the security keeping fee from U.N
-coordinator, the Director of DHL office said that they don=E2=80=99t know
-exactly time you will contact them to reconfirm your details to avoid
-counting demur-rage that is why they refused collecting the ($500) .
-for security keeping fee.
+Having "dfault y if !DRM" makes sense to me. I guess is a corner case but
+at least it won't silently be disabled for users that only want fbdev as
+Geert mentioned.
 
- Therefore be advice to contact DHL Office agent south Korea. Rev:John
-Lee Tae-seok
-who is in position to deliver your ATM
-Master Card to your location address, contact DHL Office immediately
-with the bellow email & phone number as listed below.
+I wouldn't call it a regression though, because AFAIK the Kconfig options
+are not a stable API ?
 
- Contact name: John Lee Tae-seok
+>> > Or reserve "FB" for real fbdev drivers, and introduce a new FB_CORE,
+>> > to be selected by both FB and DRM_FBDEV_EMULATION?
+>> > Then FB_DEVICE can depend on FB_CORE, and default to y if FB.
 
- Email:( dhlgeneralheadquartersrepublic@gmail.com )
+Funny that you mention because it's exactly what I attempted in the past:
 
- Do not hesitate to Contact Rev: John Lee Tae-seok, as soon as you
+https://lore.kernel.org/all/20210827100531.1578604-1-javierm@redhat.com/T/#u
 
- read this message. Email:( dhlgeneralheadquartersrepublic@gmail.com )
+>>
+>> That wouldn't work. In Tumbleweed, we still have efifb and vesafb
+>> enabled under certain conditions; merely for the kernel console. We'd
+>> have to enable CONFIG_FB, which would bring back the device.
+>
+> "Default y" does not mean that you cannot disable FB_DEVICE, so
+> you are not forced to bring back the device?
+>
 
- Make sure you reconfirmed DHL Office your details ASAP as stated
-below to avoid wrong delivery.
+I think we can have both to make the kernel more configurable:
 
- Your full name..........
+1) Allow to only disable fbdev user-space APIs (/dev/fb?, /proc/fb, etc),
+   which is what the series is doing with the new FB_DEVICE config symbol.
 
- Home address:.........
+2) Allow to disable all "native" fbdev drivers and only keep the DRM fbdev
+   emulation layer. That's what my series attempted to do with the FB_CORE
+   Kconfig symbol.
 
- Your country...........
+I believe that there are use cases for both, for example as Thomas' said
+many distros are disabling all the fbdev drivers and their user-space only
+requires DRM/KMS, so makes sense to not expose any fbdev uAPI at all.
 
- Your city..............
+But may be that other users want the opposite, they have an old user-space
+that requires fbdev, but is running on newer hardware that only have a DRM
+driver. So they will want DRM fbdev emulation but none fbdev driver at all.
 
- Telephone......
+That's why I think that FB_DEVICE and FB_CORE are complementary and we can
+support any combination of the two, if you agree there are uses for either.
 
- Occupation:.......
+--=20
+Best regards,
 
- Age:=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6..
+Javier Martinez Canillas
+Core Platforms
+Red Hat
 
- Let us know as soon as possible you receive your ATM MasterCard
-for proper verification.
-
- Regards,
-
- Mrs Vivian kakadu.
-
- DEPUTY SECRETARY-GENERAL (U.N)
