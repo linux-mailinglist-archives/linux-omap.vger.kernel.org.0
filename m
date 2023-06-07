@@ -2,96 +2,198 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BFFA57262E8
-	for <lists+linux-omap@lfdr.de>; Wed,  7 Jun 2023 16:36:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0E2B726306
+	for <lists+linux-omap@lfdr.de>; Wed,  7 Jun 2023 16:39:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234667AbjFGOf7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 7 Jun 2023 10:35:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59886 "EHLO
+        id S240770AbjFGOjl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 7 Jun 2023 10:39:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241075AbjFGOf5 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 7 Jun 2023 10:35:57 -0400
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D6851BEA
-        for <linux-omap@vger.kernel.org>; Wed,  7 Jun 2023 07:35:55 -0700 (PDT)
-Received: by mail-wm1-x32b.google.com with SMTP id 5b1f17b1804b1-3f6da07feb2so73430855e9.0
-        for <linux-omap@vger.kernel.org>; Wed, 07 Jun 2023 07:35:55 -0700 (PDT)
+        with ESMTP id S240396AbjFGOjk (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 7 Jun 2023 10:39:40 -0400
+Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69D1C1BF7
+        for <linux-omap@vger.kernel.org>; Wed,  7 Jun 2023 07:39:38 -0700 (PDT)
+Received: by mail-wm1-x32c.google.com with SMTP id 5b1f17b1804b1-3f735259fa0so45572965e9.1
+        for <linux-omap@vger.kernel.org>; Wed, 07 Jun 2023 07:39:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1686148554; x=1688740554;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=deFx223UAn6/3WPT3CB+BedQKRrIofGGQo7Oraihby4=;
-        b=mYOEVqMXw3Q8wvGV5v2RZzRwA+4Mqjcm8fYX68tNivJRV3fglrj3h0DcBeYSamGejq
-         ULZmGnjzhGkRqyROnr3h3tUWSqfdhmrlodjnU5PurkxosQcs+9Xs/B1kOCDfCBPwM0ob
-         cwEGiwsDqLFApd9QD8kVF2hvKBgPSnUvGRf3MrHJ5QV7vsExHJgJBotMyJKJ6RdIB6gO
-         97kw7YXhqniAjmMT9Pc8L5iL67j7UhaRR4Wq4AQB7V/EFovLVM7zr1ZuWRPA3cUZfXai
-         PZP2NmBhNI8YcR4+lgb8NImAo1g17jDE+RSoPWX+j/fPBsVch9FNgb12N89oTBmtUM3l
-         hWnQ==
+        d=baylibre-com.20221208.gappssmtp.com; s=20221208; t=1686148777; x=1688740777;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=1GcYfQXbJmH+P+okZGHVb5WVmSZydMCLOywQQa1xU8c=;
+        b=ZPPI2dVEc5hp8ewqPynawtru3GCxCZPf6xGnhu6MHYni8F2Gnrf+crK2MVmQL5sR4U
+         Gkp5BCvJ2iFfWv5nWiqNWJ87QDNSIVYF0rEIeA712Bt7v6yoGFlw2xX2DOld4DKhZgNB
+         vdlF4k1Xygn3yGKS5XLKjr6FDTPLMYX+wSBMMBAn2NoqJ+lNLo4G5qhiS6aCI0jRU/Fy
+         wTenv14TG3XD3Hbxs4m5H0ZmVHZMH76qPGSX4HIegSupRa/nIkoppLdEMs3PJUiSN3CD
+         axQXJMeOmz6YlGAwCQA7osO50buxeG7t89cRSi0JFcrILCVD4aO8wyxbJ8awkfDdU2bM
+         cCGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686148554; x=1688740554;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20221208; t=1686148777; x=1688740777;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=deFx223UAn6/3WPT3CB+BedQKRrIofGGQo7Oraihby4=;
-        b=Xq7VWAIravf2eV7QeSkGQE0RNVK6JnGTGtWzrRS/N+5p4UMRdCGkygrtylhfwHwKNP
-         NdRVmB0SHQQ496T47dcFBq8bNCcG+/lHbtoGMdGVw7PSh2lQWrTp8GfuEFkuuIaC8hTa
-         nNgDqbo84qqPLJIX+utYE1yscdPhUGGIpxwy+t0uxQoe/0rn67E7SfjwlaEgAb9mLBxo
-         eY7+yOP26UeFNDJG9n6IrgkhJe4oBMwUFEVx8NSP0MZYlvFwyWlg/k/HrTy4NkuEo1/h
-         2KVCfuHA8oeFJceAYaAaHCluVC6NthbBSdFIfA6QyxpD3OS2+u52MUxaPz8d+VTgiGR0
-         rO8w==
-X-Gm-Message-State: AC+VfDxrC98TK1dPjSTp/CH57p6nXgsNVDH7hGTKz+a+aNrs5YgYH2qt
-        JewtpF7/brce8ev7odSDX1hrfmDhFcUBzugtfzq+Yg==
-X-Google-Smtp-Source: ACHHUZ6rr+HgEVIoVLyykSTfTB2HiarNlmmYZrEKCS2/KijlnRwxvv+5UXoQuaCyA+JqF/Hdo4PK9o4GyOi/AVPIoAk=
-X-Received: by 2002:a7b:cc93:0:b0:3f6:af2:8471 with SMTP id
- p19-20020a7bcc93000000b003f60af28471mr4912522wma.26.1686148553863; Wed, 07
- Jun 2023 07:35:53 -0700 (PDT)
+        bh=1GcYfQXbJmH+P+okZGHVb5WVmSZydMCLOywQQa1xU8c=;
+        b=HH6ZRZin6ZDS4iYf36y6JiEyq7STmxDDYcKe9OTfbEI0J9A1JvBycWcJb/CBYWQXkD
+         Ag+u2YDTy4FpEp+TqeUaJs5s9OI8t7oWdjXZP4u0A6Jjwyl7B+dcC2A+99mJ27D6sAvm
+         CfwOmBQCTzKsPTX5cads7+Fcrh7CnIYtxCscZs2OnYN7HboL4hJ96CAN6L8npVuRKvk3
+         mYcgzuyWB/AicBjptCpL5BZYNYWnRTI4WTkoqoAyEkU7/EeVZrG8YID/NC9f+bSGjVei
+         Sy6O1rnQFuXMj5Q8UN/gNvAwXC0WtRqxRTuYVnE63MHh0IHkmG1Ovlkbo2YAGUjnH02O
+         rN0g==
+X-Gm-Message-State: AC+VfDxGAI+5UqqPRZuc4Nm0ujUqNnLcCUH/b2hqGUYuzXL2mV3YO+Xw
+        eJZ3UxQjnTAprU1a7DT6FQAYwA==
+X-Google-Smtp-Source: ACHHUZ7aQ3eIVra/EYBsnLrW849H9HQ1yWGsVn89GVF+qIOu/DlliUweO7FhT2OLUA1340zXJGbeLA==
+X-Received: by 2002:a05:600c:2041:b0:3f7:a80a:c66c with SMTP id p1-20020a05600c204100b003f7a80ac66cmr7534980wmg.0.1686148776871;
+        Wed, 07 Jun 2023 07:39:36 -0700 (PDT)
+Received: from [127.0.1.1] (192.201.68.85.rev.sfr.net. [85.68.201.192])
+        by smtp.gmail.com with ESMTPSA id 24-20020a05600c021800b003f7ea771b5dsm2380720wmi.1.2023.06.07.07.39.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 Jun 2023 07:39:36 -0700 (PDT)
+From:   Jerome Neanne <jneanne@baylibre.com>
+Subject: [PATCH v5 0/2] Add support for TI TPS65219 PMIC GPIO interface.
+Date:   Wed, 07 Jun 2023 16:39:30 +0200
+Message-Id: <20230511-tps65219-add-gpio-support-v5-0-ebb94281c854@baylibre.com>
 MIME-Version: 1.0
-References: <20230601105904.3204260-1-danishanwar@ti.com> <ZH4aywQoA9gy2OWU@p14s>
- <20230605204552.x4ctuzos4rysldwj@sessions>
-In-Reply-To: <20230605204552.x4ctuzos4rysldwj@sessions>
-From:   Mathieu Poirier <mathieu.poirier@linaro.org>
-Date:   Wed, 7 Jun 2023 08:35:43 -0600
-Message-ID: <CANLsYkyOhtaWbgKX9kkkLUtMkZbAp5t+JA7BNYULXf9r_FmNNw@mail.gmail.com>
-Subject: Re: [PATCH] remoteproc: pru: add support for configuring GPMUX based
- on client setup
-To:     Nishanth Menon <nm@ti.com>
-Cc:     MD Danish Anwar <danishanwar@ti.com>,
-        Bjorn Andersson <andersson@kernel.org>, rogerq@kernel.org,
-        vigneshr@ti.org, srk@ti.com, linux-kernel@vger.kernel.org,
-        linux-remoteproc@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKKWgGQC/43PTW7EIAwF4KuMWNdTMOSvq96j6gKCM6FqAAETd
+ TTK3UtmU7XqIssn2Z+f7yxTcpTZy+nOEq0uu+BraJ5ObJy1vxA4WzNDjpI3QkCJuW1QDKCthUt
+ 0AfI1xpAKSERjjSKOQ8fqvtGZwCTtx3kX5lLiNeaSSC/Pi86FEle8QbnPxkST+3r0eHuveUphg
+ TLX2Z/riEoI2cvu3HcKWwUCPjxp7+nV6NunM4nOY1h2bna5hHR7fLXijh55YEXg0PKJTKtsqwb
+ 92917rfIwJismhlpXS2V75P9g6jCmKmYa2+quVusQ/2Dbtn0DhnHKXcoBAAA=
+To:     Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Tony Lindgren <tony@atomide.com>, Lee Jones <lee@kernel.org>
+Cc:     khilman@baylibre.com, msp@baylibre.com, francesco@dolcini.it,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-omap@vger.kernel.org,
+        Jonathan Cormier <jcormier@criticallink.com>,
+        Jerome Neanne <jneanne@baylibre.com>
+X-Mailer: b4 0.12.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1686148775; l=3974;
+ i=jneanne@baylibre.com; s=20230511; h=from:subject:message-id;
+ bh=ayyGJqZuPvp+7hoYN3nxbJTiAaL3qNszicDwYunMJzQ=;
+ b=zNK9dWkMh1R0CRGRe3DZW8Cza09Bx1whF0JJpQwy7+9jktk9HM9t3O07bLj3BmmGkwVL/kn3s
+ 4Ts5+YpqWO8BKsa6BoHUbDSeQfY/0bJbt2N+cejioi5BCNckPaIgn1i
+X-Developer-Key: i=jneanne@baylibre.com; a=ed25519;
+ pk=5rvbqNoG+28jQjC9/50ToY7TgKWf9rJukuCI8b6jkUo=
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, 5 Jun 2023 at 14:45, Nishanth Menon <nm@ti.com> wrote:
->
-> On 11:26-20230605, Mathieu Poirier wrote:
-> [...]
-> > Here I have to suppose pruss_cfg_get_gpmux() has been added to Nishanth's tree.
-> > As such the only way for me to apply your patch is if Nishanth sends me a pull
-> > request for the patchset that introduced pruss_cfg_get_gpmux().  You can also
-> > resend this in the next cycle.
->
-> Yes, I had pulled this in [1] along with a few other driver fixes. I
-> can send you an immutable tag to pull for your tree, if that helps the
-> process along though, it might have a unrelated driver fixup patch as
-> part of the series though..
->
+Changes in v5:
+- andy.shevchenko review:
+	- Use ENOTSUPP instead of EOPNOTSUPP.
+        - Nits:
+                - Use Datasheet tag in commit message and cover.
+		- Indentation, use 80 column width for Kconfig and 100
+		  colums for C files.
+		- Format comment.
+- Link to v4: https://lore.kernel.org/r/20230511-tps65219-add-gpio-support-v4-0-b5d6a764d722@baylibre.com
 
-MD has indicated he would rework his patch and send a new revision in
-the next cycle.
+GPIO interface consist in 3 pins:
+Two GPIOS are output only: GPO1, GPO2.
 
-> [1] https://lore.kernel.org/all/168434617580.1538524.11482827517408254591.b4-ty@ti.com/
-> [2] https://git.kernel.org/pub/scm/linux/kernel/git/ti/linux.git/log/?h=ti-drivers-soc-next
-> --
-> Regards,
-> Nishanth Menon
-> Key (0xDDB5849D1736249D) / Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
+GPIO0 is used for multi device support:
+- The input-functionality is only used in multi-PMIC configuration
+- In single-PMIC, it can be used as an output
+
+The configuration is static and flashed in NVM in factory.
+Description tps65219.pdf chapter 7.3.13
+
+Linux must not change MULTI_DEVICE_ENABLE bit at run time.
+
+This was done for test purpose only to check input/output
+correct behavior on EVM board (no access to different NVM config).
+
+Tested on k3-am62x-lp-sk board. This board MULTI_DEVICE_ENABLE=0
+
+Despite the register bits are out of order,
+driver is remapping in natural order:
+GPIO0 is gpiochip line 0
+GPO1/2 are gpiochip line 1/2
+
+Initial version by Jon Cormier on TI Mainline.
+Ported upstream by Jerome Neanne
+
+Changes in v4:
+- andy.shevchenko review:
+	- Nits:
+		- move blank line before link in this cover.
+		- Kconfig indentation.
+		- Formatting: Comments; indentation; line length 100.
+		- Do not split string literals.
+	- Add var *dev = gpio->tps->dev and replace to get shorter blocks.
+	- Evaluate GPIO0 MULTI_DEVICE_ENABLE only once.
+	- Explicit include of bits.h
+Change to CONFIG_DEBUG_GPIO: debug options from Kconfig for GPIO only.
+
+- Link to v3: https://lore.kernel.org/r/20230511-tps65219-add-gpio-support-v3-0-19837a34d820@baylibre.com
+
+Changes in v3:
+- Linus Walleij Review:
+	- put test code under IS_ENABLED(DEBUG)
+- Bartosz Golaszewski Review:
+	- nits: alphabetical ordering for includes, newline after
+	  return, 
+	- Add error message on regmap_update_bits failure.
+	- Change variable name in: tps65219_template_chip so that it's
+	  clear that gpio_chip get's a copy of this template structure.
+
+- Link to v2: https://lore.kernel.org/r/20230511-tps65219-add-gpio-support-v2-0-60feb64d649a@baylibre.com
+Changes in v2:
+andy.shevchenko review:
+	- Typo and indentation in commit message.
+	- Clarify Co-developer role.
+	- Specify name for module.
+	- Code simplification for tps65219_gpio_set
+	- Put test code into #if 0 ... #endif to make it easier to re-use
+	- Formatting for .driver
+	- remove dupplicated error management => dead code
+
+- Link to v1: https://lore.kernel.org/all/20230224113837.874264-1-jneanne@baylibre.com/
+
+Datasheet: https://www.ti.com/lit/ds/symlink/tps65219.pdf
+Co-developed-by: Jonathan Cormier <jcormier@criticallink.com>
+Signed-off-by: Jonathan Cormier <jcormier@criticallink.com>
+Signed-off-by: Jerome Neanne <jneanne@baylibre.com>
+
+Jerome Neanne (2):
+  gpio: tps65219: add GPIO support for TPS65219 PMIC
+  mfd: tps65219: Add gpio cell instance
+
+ MAINTAINERS                  |   1 +
+ drivers/gpio/Kconfig         |  13 +++
+ drivers/gpio/Makefile        |   1 +
+ drivers/gpio/gpio-tps65219.c | 167 +++++++++++++++++++++++++++++++++++
+ drivers/mfd/tps65219.c       |   7 +-
+ 5 files changed, 188 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/gpio/gpio-tps65219.c
+
+--
+2.34.1
+
+---
+Jerome Neanne (2):
+      gpio: tps65219: add GPIO support for TPS65219 PMIC
+      mfd: tps65219: Add gpio cell instance
+
+ MAINTAINERS                  |   1 +
+ drivers/gpio/Kconfig         |  16 ++++
+ drivers/gpio/Makefile        |   1 +
+ drivers/gpio/gpio-tps65219.c | 185 +++++++++++++++++++++++++++++++++++++++++++
+ drivers/mfd/tps65219.c       |   2 +-
+ 5 files changed, 204 insertions(+), 1 deletion(-)
+---
+base-commit: 8ded96e4d9a6da88bdbad61350cc6147b7c0c00c
+change-id: 20230511-tps65219-add-gpio-support-322bdb4e0297
+
+Best regards,
+-- 
+Jerome Neanne <jneanne@baylibre.com>
+
