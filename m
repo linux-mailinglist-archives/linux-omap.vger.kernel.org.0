@@ -2,223 +2,113 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA429726846
-	for <lists+linux-omap@lfdr.de>; Wed,  7 Jun 2023 20:18:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E97D97269FF
+	for <lists+linux-omap@lfdr.de>; Wed,  7 Jun 2023 21:41:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230046AbjFGSSG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 7 Jun 2023 14:18:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35232 "EHLO
+        id S231238AbjFGTlk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 7 Jun 2023 15:41:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231144AbjFGSSE (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 7 Jun 2023 14:18:04 -0400
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83F321FDE
-        for <linux-omap@vger.kernel.org>; Wed,  7 Jun 2023 11:17:39 -0700 (PDT)
-Received: by mail-ej1-x635.google.com with SMTP id a640c23a62f3a-977d4a1cf0eso618260166b.1
-        for <linux-omap@vger.kernel.org>; Wed, 07 Jun 2023 11:17:39 -0700 (PDT)
+        with ESMTP id S231359AbjFGTlj (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 7 Jun 2023 15:41:39 -0400
+X-Greylist: delayed 964 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 07 Jun 2023 12:41:36 PDT
+Received: from mailrelay3-1.pub.mailoutpod2-cph3.one.com (mailrelay3-1.pub.mailoutpod2-cph3.one.com [IPv6:2a02:2350:5:402::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 386232100
+        for <linux-omap@vger.kernel.org>; Wed,  7 Jun 2023 12:41:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1686161850; x=1688753850;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=prDRECWq9gF2HlqhPhhfLHooXy3hmv9x6uJRavIYoMM=;
-        b=K8CKxwxxN45RRYaTH7NPm1PcmY5u9Gf+agf79C9mZHlN8CYjn0SvqEmRzpevWMmaj0
-         mhpDpp0KtIdV3xImPBNLj/6AalyMVyBbvf4X+LboPXyX3/mLFTSI5X+EDBye1KGVuQm2
-         9PLdOHTQuzN6xcm4aatFX34Swjx7jlpQ21OCyutgc/ClFDXHALAPNaF3fP8ybwDpBo4n
-         xFAVxB5O9J9gpHslhAfiEwdyPj4h2ctQ0k2tNERAnpI6L/qkR3zQQwCh5QP7Pp1aE8n4
-         9znUQsLY05jSaorR006Bdcc8zqOIDdEGKP/qUY5fUyfDEkd/nBxypOV9pwbcbIbWYjk4
-         C39w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686161850; x=1688753850;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=prDRECWq9gF2HlqhPhhfLHooXy3hmv9x6uJRavIYoMM=;
-        b=F6IqgQMt6G0KvlcDYkKzevVuf+49t1VOLiupqW3vmKzwX79fuTmErPDf2RQQC48kCI
-         PO9vo0FqfJvmKB62WFgQvwVcpBme2Ntvwz2cxGHoVbrTfrMTX+h8sr6QMELvZvOOuZS5
-         8HacalV/5BxgtnUVurrBSp26pcXYWtsOvrABVmbKCuMFfCJM0GujC8KzQGSBK7ltUhEX
-         K3wHznRVDc4Ja9icjrNmjLMWh/O7o1yn1lVRKoJFb0/4EptPK3d23E36E81+5y7ZOriR
-         p/cUZPi9snxq7P6YEfw06xbKejIR7qe82Ib0e/niI7Pn4oshfg3OLlKF3WuS4AzGU2KJ
-         0Nzw==
-X-Gm-Message-State: AC+VfDwiJCJsDLPEsQvGZX9vSlv5kIqfWCSrWpvSlGotxaWfZsNpKFPF
-        oGoXQHTWW3ZMoLugwvRw3wt0LMRpEvP7a+xIt6Q=
-X-Google-Smtp-Source: ACHHUZ6yoYhGvQnkxo1NhlbZPThR0OVI8Y6NmV6ZpfuYehTZsNtv3pdMlOHWJLxpGXA/52ORFV87KQ==
-X-Received: by 2002:a17:907:1606:b0:94a:7b2c:205e with SMTP id hb6-20020a170907160600b0094a7b2c205emr6065400ejc.72.1686161849737;
-        Wed, 07 Jun 2023 11:17:29 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.219.26])
-        by smtp.gmail.com with ESMTPSA id gu19-20020a170906f29300b0096a1ba4e0d1sm7262812ejb.32.2023.06.07.11.17.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 07 Jun 2023 11:17:29 -0700 (PDT)
-Message-ID: <a4134777-e43c-4b74-58d8-bff0c0d1a6f6@linaro.org>
-Date:   Wed, 7 Jun 2023 20:17:26 +0200
+        d=ravnborg.org; s=rsa1;
+        h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
+         from:date:from;
+        bh=kSzGrhZeHHFA6vfrZ2LR8W+Xuz6bQ2NOc+2ymmMNnM0=;
+        b=h76YaDkQ9KEY86SkBJIK7Zu4Enw0wNpHBcVhmUgBpVjydT2hAS48Fnof+OaILkoaBDq1/iv2MvciJ
+         zFCHwPg6zxBLmjCVK1BOiWPQVAvcYJ1j2+T+aKRUj1xG8LbcxWtzm/CWEskimaYbT6ZDM5BH2jkIH7
+         lTx51IzydhS8dOzNDsY42jQSYhHtemMvMZiA2KUS3Bqg3P+WgHnX4Hk0pEbysfuGF4JkfCrO5TMz50
+         s7n8laMYfpl3dbdP2H3sV1/u76Zan9yUfQ1bJACzSxpks406V0+UvNp2GZnvf3RAlLlyxVyo5SBxO7
+         fbuBjGDL7jRpFlpn29TGdyQNE+2YITA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed;
+        d=ravnborg.org; s=ed1;
+        h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
+         from:date:from;
+        bh=kSzGrhZeHHFA6vfrZ2LR8W+Xuz6bQ2NOc+2ymmMNnM0=;
+        b=vboEswhlVEDQlrEBHy9SKyPCu7hxQ/FQGvK2EVLt3AfPI8xQHLCiCGcuYD0YlmIxPuNcTUIsJMfSB
+         1ypYZxqAg==
+X-HalOne-ID: 0f4d33df-0569-11ee-8726-b90637070a9d
+Received: from ravnborg.org (2-105-2-98-cable.dk.customer.tdc.net [2.105.2.98])
+        by mailrelay3 (Halon) with ESMTPSA
+        id 0f4d33df-0569-11ee-8726-b90637070a9d;
+        Wed, 07 Jun 2023 19:25:29 +0000 (UTC)
+Date:   Wed, 7 Jun 2023 21:25:28 +0200
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     Thomas Zimmermann <tzimmermann@suse.de>
+Cc:     daniel@ffwll.ch, javierm@redhat.com, deller@gmx.de,
+        geert+renesas@glider.be, lee@kernel.org,
+        daniel.thompson@linaro.org, jingoohan1@gmail.com,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-sh@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-staging@lists.linux.dev,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Pavel Machek <pavel@ucw.cz>, linux-pm@vger.kernel.org
+Subject: Re: [PATCH 24/30] fbdev/core: Pass Linux device to pm_vt_switch_*()
+ functions
+Message-ID: <20230607192528.GA670717@ravnborg.org>
+References: <20230605144812.15241-1-tzimmermann@suse.de>
+ <20230605144812.15241-25-tzimmermann@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.2
-Subject: Re: [PATCH v6 1/1] dt-bindings: pinctrl: Update pinctrl-single to use
- yaml
-Content-Language: en-US
-To:     Tony Lindgren <tony@atomide.com>, Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        Nishanth Menon <nm@ti.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        devicetree@vger.kernel.org, linux-gpio@vger.kernel.org
-References: <20230605095216.18864-1-tony@atomide.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230605095216.18864-1-tony@atomide.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230605144812.15241-25-tzimmermann@suse.de>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 05/06/2023 11:52, Tony Lindgren wrote:
-> Update binding for yaml and remove the old related txt bindings. Note that
-> we are also adding the undocumented pinctrl-single,slew-rate property. And
-> we only use the first example from the old binding.
+On Mon, Jun 05, 2023 at 04:48:06PM +0200, Thomas Zimmermann wrote:
+> Pass the Linux device to pm_vt_switch_*() instead of the virtual
+> fbdev device. Prepares fbdev for making struct fb_info.dev optional.
 > 
-> Cc: Nishanth Menon <nm@ti.com>
-> Cc: Vignesh Raghavendra <vigneshr@ti.com>
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> The type of device that is passed to the PM functions does not matter
+> much. It is only a token within the internal list of known devices.
+> The PM functions do not refer to any of the device's properties or its
+> type.
+> 
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Cc: Pavel Machek <pavel@ucw.cz>
+> Cc: linux-pm@vger.kernel.org
+Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
 > ---
+>  drivers/video/fbdev/core/fbmem.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 > 
-> Changes since v5:
-> - Fix issues noted by Krzysztof
-
-
-
-> diff --git a/Documentation/devicetree/bindings/pinctrl/pinctrl-single.yaml b/Documentation/devicetree/bindings/pinctrl/pinctrl-single.yaml
-> new file mode 100644
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/pinctrl/pinctrl-single.yaml
-> @@ -0,0 +1,206 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/pinctrl/pinctrl-single.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Pinctrl driver for hardware with a single register for one or more pins
-
-I asked to drop the driver references but it is still here. Bindings are
-not describing drivers.
-
-"Generic Pin Controller with a Single Register for One or More Pins"
-
-
-> +
-> +maintainers:
-> +  - Tony Lindgren <tony@atomide.com>
-> +
-> +description:
-> +  Some pin controller devices use a single register for one or more pins. The
-> +  range of pin control registers can vary from one to many for each controller
-> +  instance. Some SoCs from Altera, Broadcom, HiSilicon, Ralink, and TI have this
-> +  kind of pin controller instances.
-> +
-> +properties:
-> +  compatible:
-> +    oneOf:
-> +      - enum:
-> +          - pinctrl-single
-> +          - pinconf-single
-> +      - items:
-> +          - enum:
-> +              - ti,am437-padconf
-> +              - ti,dra7-padconf
-> +              - ti,omap2420-padconf
-> +              - ti,omap2430-padconf
-> +              - ti,omap3-padconf
-> +              - ti,omap4-padconf
-> +              - ti,omap5-padconf
-> +          - const: pinctrl-single
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupt-controller: true
-> +
-> +  '#interrupt-cells':
-> +    const: 1
-> +
-> +  '#address-cells':
-> +    const: 1
-> +
-> +  '#size-cells':
-> +    const: 0
-> +
-> +  '#pinctrl-cells':
-> +    description:
-> +      Number of cells. Usually 2, consisting of register offset, pin configuration
-> +      value, and pinmux mode. Some controllers may use 1 for just offset and value.
-> +    enum: [ 1, 2 ]
-> +
-> +  pinctrl-single,bit-per-mux:
-> +    description: Optional flag to indicate register controls more than one pin
-> +    type: boolean
-> +
-> +  pinctrl-single,function-mask:
-> +    description: Mask of the allowed register bits
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +
-> +  pinctrl-single,function-off:
-> +    description: Optional function off mode for disabled state
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +
-> +  pinctrl-single,register-width:
-> +    description: Width of pin specific bits in the register
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    enum: [ 8, 16, 32 ]
-> +
-> +  pinctrl-single,gpio-range:
-> +    description: Optional list of pin base, nr pins & gpio function
-> +    $ref: /schemas/types.yaml#/definitions/phandle-array
-> +    items:
-> +      - items:
-> +          - description: phandle of a gpio-range node
-> +          - description: pin base
-> +          - description: number of pins
-> +          - description: gpio function
-> +
-> +  '#gpio-range-cells':
-> +    description: No longer needed, may exist in older files for gpio-ranges
-> +    deprecated: true
-> +    const: 3
-> +
-> +  gpio-range:
-> +    description: Optional node for gpio range cells
-> +    type: object
-> +    additionalProperties: false
-> +    properties:
-> +      '#pinctrl-single,gpio-range-cells':
-> +        description: Number of gpio range cells
-> +        const: 3
-> +        $ref: /schemas/types.yaml#/definitions/uint32
-> +
-> +patternProperties:
-> +  '-pins$|-pin':
-
-you did not implement my comments fully, probably we misunderstood each
-other. Why do you allow anything after '-pin'? Let's make it pure suffix
-for both cases: '-pins?$'
-
-
-> +    description:
-> +      Pin group node name using naming ending in -pins, or having -pin
-> +      in the node name
-> +    type: object
-> +    additionalProperties: false
-> +
-
-
-Best regards,
-Krzysztof
-
+> diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
+> index 329d16e49a90..f91ae7d4c94d 100644
+> --- a/drivers/video/fbdev/core/fbmem.c
+> +++ b/drivers/video/fbdev/core/fbmem.c
+> @@ -1478,9 +1478,9 @@ static int do_register_framebuffer(struct fb_info *fb_info)
+>  		INIT_LIST_HEAD(&fb_info->modelist);
+>  
+>  	if (fb_info->skip_vt_switch)
+> -		pm_vt_switch_required(fb_info->dev, false);
+> +		pm_vt_switch_required(fb_info->device, false);
+>  	else
+> -		pm_vt_switch_required(fb_info->dev, true);
+> +		pm_vt_switch_required(fb_info->device, true);
+>  
+>  	fb_var_to_videomode(&mode, &fb_info->var);
+>  	fb_add_videomode(&mode, &fb_info->modelist);
+> @@ -1520,7 +1520,7 @@ static void unlink_framebuffer(struct fb_info *fb_info)
+>  
+>  	device_destroy(fb_class, MKDEV(FB_MAJOR, i));
+>  
+> -	pm_vt_switch_unregister(fb_info->dev);
+> +	pm_vt_switch_unregister(fb_info->device);
+>  
+>  	unbind_console(fb_info);
+>  
+> -- 
+> 2.40.1
