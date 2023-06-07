@@ -2,100 +2,120 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE44372568F
-	for <lists+linux-omap@lfdr.de>; Wed,  7 Jun 2023 09:56:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 975BA7257E6
+	for <lists+linux-omap@lfdr.de>; Wed,  7 Jun 2023 10:35:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235522AbjFGH4b (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 7 Jun 2023 03:56:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46742 "EHLO
+        id S238224AbjFGIf2 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-omap@lfdr.de>); Wed, 7 Jun 2023 04:35:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41730 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235154AbjFGH4a (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 7 Jun 2023 03:56:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C449D10DE
-        for <linux-omap@vger.kernel.org>; Wed,  7 Jun 2023 00:55:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1686124542;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=tzwKDEeExwlnpVxIio+gh6QukNcWAFoM0lG5LiuVXys=;
-        b=HuuBJK36EksWvyRjsptVOhvlMnoybeuJ8PR+wNYlrY6OfsvKQkn83mi+zYyhRu8xsu0SYm
-        u4CDjKd/+HDRfTA8ZmTW9qKT9lvVjIlE/jzKwYwy9LqcBH7SjbuynzBzIM/CQ0jz0pdnup
-        3tfbff9ojREJoeWKzoIqtkD0dFIMSwM=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-460-tZbqn4iAM4iiDkqxMpAcSg-1; Wed, 07 Jun 2023 03:55:40 -0400
-X-MC-Unique: tZbqn4iAM4iiDkqxMpAcSg-1
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-3f7ecc15771so1647325e9.1
-        for <linux-omap@vger.kernel.org>; Wed, 07 Jun 2023 00:55:40 -0700 (PDT)
+        with ESMTP id S234168AbjFGIfZ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 7 Jun 2023 04:35:25 -0400
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4DD41982;
+        Wed,  7 Jun 2023 01:35:14 -0700 (PDT)
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-565a022ef06so87636017b3.3;
+        Wed, 07 Jun 2023 01:35:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686124539; x=1688716539;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tzwKDEeExwlnpVxIio+gh6QukNcWAFoM0lG5LiuVXys=;
-        b=iLYyYsWLROZiZlugGsTEBf8hg1NsrcRXPZIRl2q/fN7/8kofVzzZAcPZtSJz+jAo0h
-         qUT2VozU555cq55Hi4tXv1CMvWHyRcIHxIvojRp0WSJH2qJoWNNZ28gyN66IDEMLheDt
-         haZ0G4BTer48WejS2XuE9GTiHAu//9KLvxLpx6nBV5P4Byov92SgJKY0SLm80CZ/CkhT
-         4V+V/lZb6C1SrpR/x/hkt5cYAw+DyK5f52yLuSSXkGn5frJ5vRGunRVG359yIuMC+jVE
-         uCMnkV8LB8Whi24LcBvafxbd3GEGylQrkn25ssHKtDvdkjP+BM9Xonbv70aJcoSeN4WW
-         QSiQ==
-X-Gm-Message-State: AC+VfDzQlcLsrhBPJEG6GKkcfGsGBm2ViVhxUJjoYQ7MDjyGe22wYYjx
-        f58iYItrvuvGxQQL+3MUY+YJUWe87WFzMBEP54bK7L9Szjq+/R/FFBTfYsPgko8NxnTQlOTpYdN
-        2WPiQHWDZ07LQak7t1AwaLA==
-X-Received: by 2002:a05:600c:b89:b0:3f7:3284:4e51 with SMTP id fl9-20020a05600c0b8900b003f732844e51mr8903488wmb.4.1686124539609;
-        Wed, 07 Jun 2023 00:55:39 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7XsE1MIBLkrKPsF0to0MXFrankIK5l3IfIsZWE8tI4gRDcEz1ZX1KmYbQPpdwp7XOKQIbPMQ==
-X-Received: by 2002:a05:600c:b89:b0:3f7:3284:4e51 with SMTP id fl9-20020a05600c0b8900b003f732844e51mr8903472wmb.4.1686124539336;
-        Wed, 07 Jun 2023 00:55:39 -0700 (PDT)
-Received: from localhost (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
-        by smtp.gmail.com with ESMTPSA id j27-20020a05600c1c1b00b003f4283f5c1bsm6978981wms.2.2023.06.07.00.55.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Jun 2023 00:55:39 -0700 (PDT)
-From:   Javier Martinez Canillas <javierm@redhat.com>
-To:     Thomas Zimmermann <tzimmermann@suse.de>, daniel@ffwll.ch,
-        sam@ravnborg.org, deller@gmx.de, geert+renesas@glider.be,
-        lee@kernel.org, daniel.thompson@linaro.org, jingoohan1@gmail.com
-Cc:     linux-fbdev@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-staging@lists.linux.dev, dri-devel@lists.freedesktop.org,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        linux-omap@vger.kernel.org
-Subject: Re: [PATCH 08/30] fbdev/broadsheetfb: Call device_remove_file()
- with hardware device
-In-Reply-To: <20230605144812.15241-9-tzimmermann@suse.de>
-References: <20230605144812.15241-1-tzimmermann@suse.de>
- <20230605144812.15241-9-tzimmermann@suse.de>
-Date:   Wed, 07 Jun 2023 09:55:37 +0200
-Message-ID: <87r0qng0zq.fsf@minerva.mail-host-address-is-not-set>
+        d=1e100.net; s=20221208; t=1686126914; x=1688718914;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Tl7bhCDuACQlGnVS8msclVNyzt7m2ZyWzQXQ4o8Ijq4=;
+        b=kc12nZ0zzhD/mWcBpuVb6YSqQF3J58KU1mN4x4APVAPx+qrbT4GWlaTZ8iGcKEti+s
+         0Cr8CaDVrFfpwxGlqK6j4fAM6dWPVrrq+S7ge2aruSiKEYgMklgG4ytZVC72b2JpvKHh
+         /Y9aO2rtRFLVbgTwKDYt4c1ieaNs5sMcpsKsZ/sy/p1XjkylChGYogpdAcmbzrWpePXz
+         t+Q7D3nDoCDHfNOKaXDwYzytHY4Nwk5/EYGU1w/twEPtjL2oemX+JsMiYTD1S0FuOzvX
+         Z1bH+e4hmKmbAe8XBEnFVuYyIMsaq8KG3q5Dqpp1uGEmTcu+f//m9ONxy0apjQ0fCJhH
+         /5gw==
+X-Gm-Message-State: AC+VfDzpa1Es2PTfkjV+eI9Wz0p9OZvY/yGvPEjWMpRbaaw7z0Mr9biw
+        DtH0E5gYGQL/gF9SPCK4OO17uYg+0kTd5A==
+X-Google-Smtp-Source: ACHHUZ6+q+bWGCCNEb7LRIE8rPHQsuEMz5nwVgDOkemeqltn8GraLgqFrW3C0Bha67iP8R0QwF/YTQ==
+X-Received: by 2002:a81:a190:0:b0:561:e2dc:fc60 with SMTP id y138-20020a81a190000000b00561e2dcfc60mr5774362ywg.25.1686126913731;
+        Wed, 07 Jun 2023 01:35:13 -0700 (PDT)
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com. [209.85.128.180])
+        by smtp.gmail.com with ESMTPSA id h66-20020a0dde45000000b0055d7f00d4f7sm4609617ywe.22.2023.06.07.01.35.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 07 Jun 2023 01:35:12 -0700 (PDT)
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-565a022ef06so87635367b3.3;
+        Wed, 07 Jun 2023 01:35:12 -0700 (PDT)
+X-Received: by 2002:a0d:eac5:0:b0:568:f2c:ee40 with SMTP id
+ t188-20020a0deac5000000b005680f2cee40mr4715739ywe.3.1686126912094; Wed, 07
+ Jun 2023 01:35:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+References: <20230605144812.15241-1-tzimmermann@suse.de>
+In-Reply-To: <20230605144812.15241-1-tzimmermann@suse.de>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Wed, 7 Jun 2023 10:35:00 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdUNAg5MYQVOnVhYeHKnciHci1Ly6v8DbdBp_P_9YEu=Zg@mail.gmail.com>
+Message-ID: <CAMuHMdUNAg5MYQVOnVhYeHKnciHci1Ly6v8DbdBp_P_9YEu=Zg@mail.gmail.com>
+Subject: Re: [PATCH 00/30] fbdev: Make userspace interfaces optional
+To:     Thomas Zimmermann <tzimmermann@suse.de>
+Cc:     daniel@ffwll.ch, javierm@redhat.com, sam@ravnborg.org,
+        deller@gmx.de, lee@kernel.org, daniel.thompson@linaro.org,
+        jingoohan1@gmail.com, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-sh@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-staging@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Thomas Zimmermann <tzimmermann@suse.de> writes:
+Hi Thomas,
 
-> Call device_remove_file() with the same device that has been used
-> for device_create_file(), which is the hardware device stored in
-> struct fb_info.device. Prepares fbdev for making struct fb_info.dev
-> optional.
+Thanks for your series!
+
+Over the past few days, I have been giving this some thought, that's
+why I am replying only now...
+
+On Mon, Jun 5, 2023 at 4:48 PM Thomas Zimmermann <tzimmermann@suse.de> wrote:
+> Add the new config option FB_DEVICE. If enabled, fbdev provides
+> traditional userspace interfaces in devfs, sysfs and procfs, such
+> as /dev/fb0 or /proc/fb.
 >
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> ---
+> Modern Linux distrobutions have adopted DRM drivers for graphics
+> output and use fbdev only for the kernel's framebuffer console.
+> Userspace has also moved on, with no new fbdev code being written
+> and existing support being removed.
+>
+> OTOH, fbdev provides userspace a way of accessing kernel or I/O
+> memory, which might compromise the system's security. See the recent
 
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+True, in some form...
+The amount of "kernel memory" that can be accessed is controlled by
+the fbdev driver (or by the DRM fbdev emulation). Nothing unsafe here.
+The I/O memory that can be accessed (if any) is controlled by the
+fbdev driver, and the full capabilities (e.g. DMA to random addresses)
+exported depend on the actual hardware.
+
+> commit c8687694bb1f ("drm/fbdev-generic: prohibit potential
+> out-of-bounds access") for an example. Disabling fbdev userspace
+
+IMHO that's not a good example for the point you're trying to make,
+but merely bad bounds checking in kernel copying code...
+
+> interfaces is therefore a useful feature to limit unecessary
+> exposure of fbdev code to processes of low privilegues.
+
+This actually depends on the permissions on /dev/fb*...
+
+BTW, I am wondering if it would be possible to write a DRM emulation
+layer on top of (basic, e.g. no MMIO, just fb) fbdev?
+
+Gr{oetje,eeting}s,
+
+                        Geert
 
 -- 
-Best regards,
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-Javier Martinez Canillas
-Core Platforms
-Red Hat
-
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
