@@ -2,94 +2,79 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C5297279D5
-	for <lists+linux-omap@lfdr.de>; Thu,  8 Jun 2023 10:21:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96803727A8E
+	for <lists+linux-omap@lfdr.de>; Thu,  8 Jun 2023 10:55:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235211AbjFHIVo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 8 Jun 2023 04:21:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59292 "EHLO
+        id S234666AbjFHIzh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 8 Jun 2023 04:55:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48376 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235091AbjFHIVk (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 8 Jun 2023 04:21:40 -0400
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDD8DE43;
-        Thu,  8 Jun 2023 01:21:37 -0700 (PDT)
-Received: from ip5b412278.dynamic.kabel-deutschland.de ([91.65.34.120] helo=diego.localnet)
-        by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <heiko@sntech.de>)
-        id 1q7AtT-0004g7-L9; Thu, 08 Jun 2023 10:21:19 +0200
-From:   Heiko =?ISO-8859-1?Q?St=FCbner?= <heiko@sntech.de>
-To:     MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Rob Herring <robh+dt@kernel.org>,
+        with ESMTP id S234760AbjFHIzh (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 8 Jun 2023 04:55:37 -0400
+Received: from muru.com (muru.com [72.249.23.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 550309E;
+        Thu,  8 Jun 2023 01:55:36 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 5A7C780E0;
+        Thu,  8 Jun 2023 08:55:35 +0000 (UTC)
+Date:   Thu, 8 Jun 2023 11:55:34 +0300
+From:   Tony Lindgren <tony@atomide.com>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
-        =?ISO-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc:     Alexander Stein <alexander.stein@ew.tq-group.com>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        devicetree@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-        linux-rockchip@lists.infradead.org
-Subject: Re: [PATCH 3/3] arm64: dts: Replace deprecated extcon-usb-gpio
- id-gpio/vbus-gpio properties
-Date:   Thu, 08 Jun 2023 10:21:18 +0200
-Message-ID: <1820986.VLH7GnMWUR@diego>
-In-Reply-To: <20230608081153.441455-3-alexander.stein@ew.tq-group.com>
-References: <20230608081153.441455-1-alexander.stein@ew.tq-group.com>
- <20230608081153.441455-3-alexander.stein@ew.tq-group.com>
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        Nishanth Menon <nm@ti.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        devicetree@vger.kernel.org, linux-gpio@vger.kernel.org
+Subject: Re: [PATCH v6 1/1] dt-bindings: pinctrl: Update pinctrl-single to
+ use yaml
+Message-ID: <20230608085534.GE14287@atomide.com>
+References: <20230605095216.18864-1-tony@atomide.com>
+ <a4134777-e43c-4b74-58d8-bff0c0d1a6f6@linaro.org>
+ <20230608063639.GD14287@atomide.com>
+ <19710587-533c-f6df-9842-06a8e2db263c@linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,T_SPF_HELO_TEMPERROR autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <19710587-533c-f6df-9842-06a8e2db263c@linaro.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Am Donnerstag, 8. Juni 2023, 10:11:53 CEST schrieb Alexander Stein:
-> Use id-gpios and vbus-gpios instead.
+* Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> [230608 06:57]:
+> On 08/06/2023 08:36, Tony Lindgren wrote:
+> > * Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> [230607 18:17]:
+> >> On 05/06/2023 11:52, Tony Lindgren wrote:
+> >>> +patternProperties:
+> >>> +  '-pins$|-pin':
+> >>
+> >> you did not implement my comments fully, probably we misunderstood each
+> >> other. Why do you allow anything after '-pin'? Let's make it pure suffix
+> >> for both cases: '-pins?$'
+> > 
+> > I'll check what kind of node renaming that would cause. At least TI
+> > arm64 SoCs use naming like -pins-default and -pins-wakeup. Is your
+> > preference to rename all those nodes to -default-pins and -wakeup-pins?
 > 
-> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> ---
->  arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi                 | 2 +-
+> No, pattern matching TI SoC is fine, but your current also doesn't. Or
+> rather - matches by mistake. You do not allow anything after -pins.
 
-Acked-by: Heiko Stuebner <heiko@sntech.de> #rockchip
+So after the earlier dts node name clean-up, looks like it's only few hundred
+TI pins to rename. Not sure I want to add SoC specific handling for TI. Folks
+will try to use -pins-default, -pins-sleep, -pins-idle etc..
 
+How about let's just fix the remaining dts files and then we can only
+allow -pin or -pins suffix? The match would be just '-pins$|-pin$ with a
+preference for -pins as it's a group that might get more pins added to it
+later on.
 
->  23 files changed, 26 insertions(+), 26 deletions(-)
+Regards,
 
-> diff --git a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-> index aa3e21bd6c8f4..20e3f41efe97f 100644
-> --- a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-> +++ b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-> @@ -27,7 +27,7 @@ module_led: led-0 {
->  
->  	extcon_usb3: extcon-usb3 {
->  		compatible = "linux,extcon-usb-gpio";
-> -		id-gpio = <&gpio1 RK_PC2 GPIO_ACTIVE_HIGH>;
-> +		id-gpios = <&gpio1 RK_PC2 GPIO_ACTIVE_HIGH>;
->  		pinctrl-names = "default";
->  		pinctrl-0 = <&usb3_id>;
->  	};
-> 
-
-
-
-
+Tony
