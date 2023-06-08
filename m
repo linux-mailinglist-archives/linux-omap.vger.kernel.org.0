@@ -2,105 +2,87 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 568E272845E
-	for <lists+linux-omap@lfdr.de>; Thu,  8 Jun 2023 17:57:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4957A72A70E
+	for <lists+linux-omap@lfdr.de>; Sat, 10 Jun 2023 02:30:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236178AbjFHP5c (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 8 Jun 2023 11:57:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46392 "EHLO
+        id S232602AbjFJAak convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-omap@lfdr.de>); Fri, 9 Jun 2023 20:30:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237672AbjFHP5a (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 8 Jun 2023 11:57:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A36761FCC;
-        Thu,  8 Jun 2023 08:57:15 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0397463188;
-        Thu,  8 Jun 2023 15:57:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C79C0C4339B;
-        Thu,  8 Jun 2023 15:57:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686239834;
-        bh=mecH44HKv66DOIzb6Cw7QlFUnI1jG2hQESu+9Iq7z0s=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=gmTwoGlBOFxuW3U7WjM9jDKF6jaDGwvSfgLS2gMLB3TrsKkjoaV87riWf4s+I830C
-         JWWtavKcosH0j49IiUnqYe2xCOD+BrZfbE+59OHmhjjbb45bQ/Cs7bA6dorYHCz5Ni
-         +5Er/qVJ1EHaTF/lyMf8H5QUPkcKmtv6jK3KsEFhclr2iQoCbkI0J6zvGKNKKJvW/6
-         mWzIybnytBozw1Uoyw3Odt7lpXQC6Z7uxcXiAYrstIHLKh4kImHetejrUPJwnGB+te
-         X0zO59VDgkgS4pRR1udZjkFnhgjRNDZg6OPc4qJ0JzKTejrstpoGwt+ArT9QDITK3v
-         g1b0zfZj5imdA==
-Date:   Thu, 8 Jun 2023 16:57:09 +0100
-From:   Lee Jones <lee@kernel.org>
-To:     Jerome Neanne <jneanne@baylibre.com>
-Cc:     tony@atomide.com, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org, khilman@baylibre.com, nm@ti.com,
-        afd@ti.com, msp@baylibre.com
-Subject: Re: [RESEND PATCH v3] mfd: tps65219: Add support for soft shutdown
- via sys-off API
-Message-ID: <20230608155709.GA3572061@google.com>
-References: <20230608071947.3467751-1-jneanne@baylibre.com>
+        with ESMTP id S231154AbjFJAah (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 9 Jun 2023 20:30:37 -0400
+X-Greylist: delayed 971 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 09 Jun 2023 17:30:36 PDT
+Received: from es.pcb.gov.my (es.pcb.gov.my [202.75.7.35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1C0DB3A81
+        for <linux-omap@vger.kernel.org>; Fri,  9 Jun 2023 17:30:35 -0700 (PDT)
+X-ASG-Debug-ID: 1686355820-1488a971bf06bd0005-g9IbbW
+Received: from mail.pcb.gov.my (mail.pcb.gov.my [10.28.173.47]) by es.pcb.gov.my with ESMTP id CG4g2691qlo3ehvc for <linux-omap@vger.kernel.org>; Sat, 10 Jun 2023 08:13:22 +0800 (+08)
+X-Barracuda-Envelope-From: herdayu@pcb.gov.my
+Received: from [193.169.254.61] (193.169.254.61) by EXCHANGE01.BPA.pcb.gov.my
+ (10.28.173.47) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.721.2; Fri, 9 Jun 2023
+ 01:18:56 +0800
+Reply-To: <alicewalt63@gmail.com>
+X-Barracuda-Effective-Source-IP: UNKNOWN[193.169.254.61]
+X-Barracuda-Apparent-Source-IP: 193.169.254.61
+From:   Alice Walton <herdayu@pcb.gov.my>
+To:     <linux-omap@vger.kernel.org>
+Subject: =?UTF-8?B?xI1lc3RpdGFt?=
+Date:   Thu, 8 Jun 2023 10:18:50 -0700
+X-ASG-Orig-Subj: =?UTF-8?B?xI1lc3RpdGFt?=
+Message-ID: <20230608101850.A038100CEB10011D@pcb.gov.my>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230608071947.3467751-1-jneanne@baylibre.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8BIT
+X-ClientProxiedBy: EXCHANGE01.BPA.pcb.gov.my (10.28.173.47) To
+ EXCHANGE01.BPA.pcb.gov.my (10.28.173.47)
+X-Barracuda-Connect: mail.pcb.gov.my[10.28.173.47]
+X-Barracuda-Start-Time: 1686355996
+X-Barracuda-URL: https://10.28.173.25:443/cgi-mod/mark.cgi
+X-Barracuda-License: Expired
+X-Barracuda-BRTS-Status: 1
+X-Virus-Scanned: by bsmtpd at pcb.gov.my
+X-Barracuda-Scan-Msg-Size: 570
+X-Spam-Status: Yes, score=7.4 required=5.0 tests=BAYES_50,
+        FREEMAIL_FORGED_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,LOTS_OF_MONEY,
+        MONEY_FREEMAIL_REPTO,RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_SOFTFAIL,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: *  3.3 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
+        *      [193.169.254.61 listed in zen.spamhaus.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [alicewalt63[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.7 SPF_SOFTFAIL SPF: sender does not match SPF record (softfail)
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        *  0.2 MONEY_FREEMAIL_REPTO Lots of money from someone using free
+        *      email?
+        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, 08 Jun 2023, Jerome Neanne wrote:
+čestitam,
 
-> Use new API for power-off mode support:
-> Link: https://lwn.net/Articles/894511/
-> Link: https://lore.kernel.org/all/7hfseqa7l0.fsf@baylibre.com/
-> 
-> sys-off API allows support of shutdown handler and restart handler.
-> 
-> Shutdown was not supported before that enhancement.
-> This is required for platform that are not using PSCI.
-> 
-> Test:
-> - restart:
->   # reboot
->   Default is cold reset:
->   # cat /sys/kernel/reboot/mode
->   Switch boot mode to warm reset:
->   # echo warm > /sys/kernel/reboot/mode
-> - power-off:
->   # halt
-> 
-> Tested on AM62-LP-SK board.
-> 
-> Signed-off-by: Jerome Neanne <jneanne@baylibre.com>
-> Suggested-by: Andrew Davis <afd@ti.com>
-> Reviewed-by: Andrew Davis <afd@ti.com>
-> ---
-> 
-> Notes:
->     Change-log v3 to v2
->     v2: Link: https://lore.kernel.org/lkml/20230511122100.2225417-1-jneanne@baylibre.com/
->     Lee Jones Review:
->     nits: rm not needed line wraps and restore a cr deleted not related with the patch.
->     
->     Change-log v2 to v1
->     v1: Link: https://lore.kernel.org/all/20230203140150.13071-1-jneanne@baylibre.com/
->     Andrew Davis Review:
->     - Use new helpers devm_register_restart_handler and devm_register_power_off_handler
->     Vignesh Raghavendra:
->     - Fix typo on board name in commit message
-> 
->  drivers/mfd/tps65219.c | 38 ++++++++++++++++++++++++++++----------
->  1 file changed, 28 insertions(+), 10 deletions(-)
+      Vaša e-pošta osvojila je 5.000.000,00 USD od strane Alice 
+Walton 2023 humanitarnog programa podrške donacijama. 
+Kontaktirajte nas za više pojedinosti o tome kako možete 
+zatražiti svoj donacijski fond.
 
-Applied, thanks
+Hvala i Bog blagoslovio
+Zaklada Alice Walton
+=========================================
+Congratulation,
 
--- 
-Lee Jones [李琼斯]
+     Your email has won $5,000,000.00 USD by Alice Walton 2023 
+humanitarian donation support program. Contact us for more 
+details on how you can claim your donation fund.
+
+Thanks And God Bless
+Alice Walton Foundation
