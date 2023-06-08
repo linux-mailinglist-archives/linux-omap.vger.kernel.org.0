@@ -2,79 +2,82 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 96803727A8E
-	for <lists+linux-omap@lfdr.de>; Thu,  8 Jun 2023 10:55:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23BF272801F
+	for <lists+linux-omap@lfdr.de>; Thu,  8 Jun 2023 14:35:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234666AbjFHIzh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 8 Jun 2023 04:55:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48376 "EHLO
+        id S234018AbjFHMe7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 8 Jun 2023 08:34:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234760AbjFHIzh (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 8 Jun 2023 04:55:37 -0400
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 550309E;
-        Thu,  8 Jun 2023 01:55:36 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 5A7C780E0;
-        Thu,  8 Jun 2023 08:55:35 +0000 (UTC)
-Date:   Thu, 8 Jun 2023 11:55:34 +0300
-From:   Tony Lindgren <tony@atomide.com>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        Nishanth Menon <nm@ti.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        devicetree@vger.kernel.org, linux-gpio@vger.kernel.org
-Subject: Re: [PATCH v6 1/1] dt-bindings: pinctrl: Update pinctrl-single to
- use yaml
-Message-ID: <20230608085534.GE14287@atomide.com>
-References: <20230605095216.18864-1-tony@atomide.com>
- <a4134777-e43c-4b74-58d8-bff0c0d1a6f6@linaro.org>
- <20230608063639.GD14287@atomide.com>
- <19710587-533c-f6df-9842-06a8e2db263c@linaro.org>
+        with ESMTP id S236157AbjFHMew (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 8 Jun 2023 08:34:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 835261FDF;
+        Thu,  8 Jun 2023 05:34:51 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1814264D27;
+        Thu,  8 Jun 2023 12:34:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 433F0C433EF;
+        Thu,  8 Jun 2023 12:34:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1686227690;
+        bh=s8uRf6ILDhBHCnhDd8+nAGZMi3XQ0o46ths1HzP+BVQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=GY9DNorE7X3V5Mzsv56Kq74WoD34bZAcBoXH9lZMT6KPm9vT6AknTz/JPSUBTrk+d
+         ymsTKgjoPeCvai8bPH26i1VAfWHNfK1McSR415GyOkFQUm6Yx24DqNgmFS0bgw2vwl
+         NeTkyQ/R8hEE9gio/34vD7foOHHx7bspPleuaGxlTs5y4RGymtLIaSY9OfmitIVvis
+         6XfU8ILPJ1sf1jbJZHvEIRvI590zxluIqxa3TPF2xX5c02RNHq0puaeBcZhKc5BBSg
+         yp9+Mhtcg2rt/lA2ahcx4AHYrsgx0f+xAli4SmyVcmBX46FBIlkdpguY02gJDHQ2Ux
+         QuZzR6g0kFyjw==
+Date:   Thu, 8 Jun 2023 13:34:45 +0100
+From:   Lee Jones <lee@kernel.org>
+To:     Jerome Neanne <jneanne@baylibre.com>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Tony Lindgren <tony@atomide.com>, khilman@baylibre.com,
+        msp@baylibre.com, francesco@dolcini.it,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-omap@vger.kernel.org,
+        Jonathan Cormier <jcormier@criticallink.com>
+Subject: Re: [PATCH v5 2/2] mfd: tps65219: Add gpio cell instance
+Message-ID: <20230608123445.GG1930705@google.com>
+References: <20230511-tps65219-add-gpio-support-v5-0-ebb94281c854@baylibre.com>
+ <20230511-tps65219-add-gpio-support-v5-2-ebb94281c854@baylibre.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <19710587-533c-f6df-9842-06a8e2db263c@linaro.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230511-tps65219-add-gpio-support-v5-2-ebb94281c854@baylibre.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> [230608 06:57]:
-> On 08/06/2023 08:36, Tony Lindgren wrote:
-> > * Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> [230607 18:17]:
-> >> On 05/06/2023 11:52, Tony Lindgren wrote:
-> >>> +patternProperties:
-> >>> +  '-pins$|-pin':
-> >>
-> >> you did not implement my comments fully, probably we misunderstood each
-> >> other. Why do you allow anything after '-pin'? Let's make it pure suffix
-> >> for both cases: '-pins?$'
-> > 
-> > I'll check what kind of node renaming that would cause. At least TI
-> > arm64 SoCs use naming like -pins-default and -pins-wakeup. Is your
-> > preference to rename all those nodes to -default-pins and -wakeup-pins?
+On Wed, 07 Jun 2023, Jerome Neanne wrote:
+
+> tps65219 PMIC GPIOs are exposed in a standard way:
+> gpiodetect
+> gpiochip0 [tps65219-gpio] (3 lines)
 > 
-> No, pattern matching TI SoC is fine, but your current also doesn't. Or
-> rather - matches by mistake. You do not allow anything after -pins.
+> tps65219-gpios is incorrect cell name (plural):
+> Changed to tps65219-gpio (singular)
+> 
+> Co-developed-by: Jonathan Cormier <jcormier@criticallink.com>
+> Signed-off-by: Jonathan Cormier <jcormier@criticallink.com>
+> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+> Signed-off-by: Jerome Neanne <jneanne@baylibre.com>
+> ---
+>  drivers/mfd/tps65219.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-So after the earlier dts node name clean-up, looks like it's only few hundred
-TI pins to rename. Not sure I want to add SoC specific handling for TI. Folks
-will try to use -pins-default, -pins-sleep, -pins-idle etc..
+Applied, thanks
 
-How about let's just fix the remaining dts files and then we can only
-allow -pin or -pins suffix? The match would be just '-pins$|-pin$ with a
-preference for -pins as it's a group that might get more pins added to it
-later on.
-
-Regards,
-
-Tony
+-- 
+Lee Jones [李琼斯]
