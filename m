@@ -2,60 +2,90 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CFACB72AC17
-	for <lists+linux-omap@lfdr.de>; Sat, 10 Jun 2023 16:05:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D71A72B20D
+	for <lists+linux-omap@lfdr.de>; Sun, 11 Jun 2023 15:24:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233311AbjFJOFb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 10 Jun 2023 10:05:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59844 "EHLO
+        id S229624AbjFKNYa (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 11 Jun 2023 09:24:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229749AbjFJOFa (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 10 Jun 2023 10:05:30 -0400
+        with ESMTP id S229455AbjFKNY3 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 11 Jun 2023 09:24:29 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 357801984;
-        Sat, 10 Jun 2023 07:05:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D8A7BC;
+        Sun, 11 Jun 2023 06:24:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C61CF60FB5;
-        Sat, 10 Jun 2023 14:05:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C84AC433D2;
-        Sat, 10 Jun 2023 14:05:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A6FAC6125D;
+        Sun, 11 Jun 2023 13:24:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D4A6C433D2;
+        Sun, 11 Jun 2023 13:24:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686405928;
-        bh=4F32DwLg6Rr6AdgDkL7pW4vNiCCunXcliQBuqU3PDZs=;
-        h=From:Date:Subject:To:Cc:From;
-        b=jJXddgvFvvVQIt0qsHhZExQrU8HbU0NPGLLOCg+pKXvcWRH9N2wllaBlyjbbQUbHW
-         DTPzy5p6L3uqqI7Xn8+OCArOqrqRJe+/TJNgK+cZJFpT2clwP34vmw1yex6EerT8DA
-         VuARGRknNfB9JQiistZOgxtMg7++czuft9JjZhu3xWi1g36lgkeeWuuBrdTKV4jebt
-         6VSofvyA4CCVSsUU3JL1RPU1msHwj/qkvUzMUoI0ABIba+hLntxHG6s/zRwQwmbTT1
-         vVWez0zdOPWtrimbu3frGtRO7vC/B2efn/C0oZfMYNThOHgMScbMUyIh1ZINbPUoQe
-         I0UKMyQ6/8W7Q==
-From:   Mark Brown <broonie@kernel.org>
-Date:   Sat, 10 Jun 2023 15:05:21 +0100
-Subject: [PATCH] mfd: twl6040: Use maple tree register cache
+        s=k20201202; t=1686489866;
+        bh=g9njtkoojqRfUI49HT2MGfWzoAKuf1DOFdEq/kUvHsA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=DGC5PWnLkcdaGgKC8g7aXKlp+cTXW37FdG3MVsm8EY5hOfYkx9wU/GrdAySg2Oi3E
+         dOVMl4KJhdYBu2De+eoiciAURQiPsCqJ9ietIqhfXZzIiJ/qHaNTEP+6cbbfGxU3OF
+         S1V2x+n0xz8qtn3BiYOFuIupPFOSQz5yy55SQRQJKpTgLcEvlJGss24Pfra8lHGfqX
+         flOVS0h/DWl7SNIHBe4o1Tckr5hlYu9wiNquAWD9glhB7l1BDGN6MfJfYQi4jaXF/p
+         CbfeGdAXGcgQoXEiIlRZ2gExfM0ZoxVnZVNTIqcbZJpWvcddhXHRqZboEHi89XhF++
+         jIjqIIdIQw+Hg==
+Received: by pali.im (Postfix)
+        id D08BB7FD; Sun, 11 Jun 2023 15:24:23 +0200 (CEST)
+Date:   Sun, 11 Jun 2023 15:24:23 +0200
+From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+        Joyce Ooi <joyce.ooi@intel.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Jim Quinlan <jim2101024@gmail.com>,
+        Nicolas Saenz Julienne <nsaenz@kernel.org>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Tom Joseph <tjoseph@cadence.com>,
+        Shawn Guo <shawn.guo@linaro.org>,
+        Rahul Tanwar <rtanwar@maxlinear.com>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Serge Semin <Sergey.Semin@baikalelectronics.ru>,
+        Vidya Sagar <vidyas@nvidia.com>,
+        Jisheng Zhang <jszhang@kernel.org>,
+        Miaoqian Lin <linmq006@gmail.com>, Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Jianjun Wang <jianjun.wang@mediatek.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Sergio Paracuellos <sergio.paracuellos@gmail.com>,
+        Shawn Lin <shawn.lin@rock-chips.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Toan Le <toan@os.amperecomputing.com>,
+        Rob Herring <robh@kernel.org>, linux-pci@vger.kernel.org,
+        linux-rockchip@lists.infradead.org,
+        Broadcom internal kernel review list 
+        <bcm-kernel-feedback-list@broadcom.com>,
+        linux-rpi-kernel@lists.infradead.org, kernel@pengutronix.de,
+        linux-arm-msm@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+Subject: Re: [PATCH 00/15] PCI: Convert to platform remove callback returning
+ void
+Message-ID: <20230611132423.milnj2pnvjqzwino@pali>
+References: <20230530140742.ebbrxmpieuphbmz3@pengutronix.de>
+ <ZHphHkNLO4tEJIm/@bhelgaas>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230609-mfd-twl6040-maple-v1-1-3493d051cd6f@kernel.org>
-X-B4-Tracking: v=1; b=H4sIACCDhGQC/x2NQQqDMBAAvyJ77sKaqph+pXiIutGlGmUjWhD/3
- tjjDAxzQmQVjvDKTlDeJcoSEuSPDLrRhYFR+sRgyDypIouz73E7pooKwtmtEyNZKkpb1zb3BlL
- XusjYqgvdeJfHop9br8pevv/Vu7muH3oTmjx6AAAA
-To:     Tony Lindgren <tony@atomide.com>, Lee Jones <lee@kernel.org>
-Cc:     linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>
-X-Mailer: b4 0.13-dev-bfdf5
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1021; i=broonie@kernel.org;
- h=from:subject:message-id; bh=4F32DwLg6Rr6AdgDkL7pW4vNiCCunXcliQBuqU3PDZs=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBkhIMl7Ky+j1H5GvBqGWhJUIsVw4YhB2O94Esarh8W
- jq23PpiJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCZISDJQAKCRAk1otyXVSH0NomB/
- 0f6DiDSaBQn7vG3WQWnkmXH5PDTbx3lmwRgTZ/WksgUHBcd+oe3sKn8VZofduwHovMSm9Bu2aKuHPA
- oMBUzL0xFfREjtAwEU6mYsP/i7ut58Ow67Xk7/lfaMjfiMuF4biIBES5CjJlnMsbZeF+SjO3URsWZR
- +0gcAhYI97IVhwzderXyjh8IncmITsOYlLAPFGSE9OIOStfP66yCtlh2TG1Kw2W+P1ngT4+/+MI9Jj
- LFQGmlPEjcXnLyAV32jOKXM4zgenuZT8kZ7WRUGoLaPs9jqkGQQm8HS2P021AKJbgFO8+jQHwKXHFT
- a5PwGqX+rrI220WeH/10Yc1Qp5rQfZ
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZHphHkNLO4tEJIm/@bhelgaas>
+User-Agent: NeoMutt/20180716
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -66,35 +96,54 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The twl6040 is only capable of performing single register read and write
-operations which means it gains no advantage from using a rbtree register
-cache, convert it to using the more modern maple tree register cache
-instead. This should be more efficient.
+On Friday 02 June 2023 16:37:34 Bjorn Helgaas wrote:
+> On Tue, May 30, 2023 at 04:07:42PM +0200, Uwe Kleine-König wrote:
+> > Hello Bjorn,
+> > 
+> > On Tue, Mar 21, 2023 at 08:31:53PM +0100, Uwe Kleine-König wrote:
+> > > this series adapts the platform drivers below drivers/pci to use the
+> > > .remove_new() callback. Compared to the traditional .remove() callback
+> > > .remove_new() returns no value. This is a good thing because the driver core
+> > > doesn't (and cannot) cope for errors during remove. The only effect of a
+> > > non-zero return value in .remove() is that the driver core emits a warning. The
+> > > device is removed anyhow and an early return from .remove() usually yields a
+> > > resource leak.
+> > > 
+> > > By changing the remove callback to return void driver authors cannot
+> > > reasonably assume any more that there is some kind of cleanup later.
+> > > 
+> > > All drivers were easy to convert as they all returned zero in their
+> > > remove callback. Only for iproc the conversion wasn't trivial, the other
+> > > were converted using coccinelle.
+> > > 
+> > > There are no interdependencies between these patches. So even if there
+> > > are some concerns for individual patches, I ask you to apply the
+> > > remaining set. Then I only have to care for the review feedback of the
+> > > refused patches. (Having said that I don't expect any serious objection,
+> > > just things like squashing or separating patches, or maybe I picked a
+> > > wrong subject prefix.)
+> > 
+> > These patches wait for application for quite some time now. They apply
+> > just fine to v6.4-rc1 and next/master. Would be great to get them in
+> > during the next merge window and ideally give them some time in next
+> > before.
+> 
+> Thanks, these seem fine to me, and Lorenzo normally takes care of
+> drivers/pci/controller/.  Lorenzo, if it's easier to have me apply
+> them, that's fine, too, just let me know.
+> 
+> The only tweaks I would make would be:
+> 
+>   PCI: j721e: Convert to platform remove callback returning void
+>   PCI: dwc: Convert to platform remove callback returning void
+> 
+> to match the git history.
 
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/mfd/twl6040.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Hello Bjorn, it should be expected that other changes for PCIe drivers
+sent by other people which were sent to the list before this patch
+series and are still waiting for the review (because are without
+comments), would be processed before and patches sent later.
 
-diff --git a/drivers/mfd/twl6040.c b/drivers/mfd/twl6040.c
-index e982119bbefa..523439a16b7c 100644
---- a/drivers/mfd/twl6040.c
-+++ b/drivers/mfd/twl6040.c
-@@ -608,7 +608,7 @@ static const struct regmap_config twl6040_regmap_config = {
- 	.volatile_reg = twl6040_volatile_reg,
- 	.writeable_reg = twl6040_writeable_reg,
- 
--	.cache_type = REGCACHE_RBTREE,
-+	.cache_type = REGCACHE_MAPLE,
- 	.use_single_read = true,
- 	.use_single_write = true,
- };
-
----
-base-commit: 9561de3a55bed6bdd44a12820ba81ec416e705a7
-change-id: 20230609-mfd-twl6040-maple-0904598891f2
-
-Best regards,
--- 
-Mark Brown <broonie@kernel.org>
-
+Also I would like to point out that in past I have sent fixes for PCIe
+mvebu driver, which is currently in the broken state. And this is also
+on waiting on the list.
