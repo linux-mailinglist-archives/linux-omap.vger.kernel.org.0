@@ -2,39 +2,41 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A76DD72CB57
-	for <lists+linux-omap@lfdr.de>; Mon, 12 Jun 2023 18:20:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EDCD72CDB5
+	for <lists+linux-omap@lfdr.de>; Mon, 12 Jun 2023 20:17:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233344AbjFLQUT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 12 Jun 2023 12:20:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57680 "EHLO
+        id S230348AbjFLSRc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 12 Jun 2023 14:17:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235814AbjFLQTn (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 12 Jun 2023 12:19:43 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92ABB1728;
-        Mon, 12 Jun 2023 09:19:30 -0700 (PDT)
+        with ESMTP id S229742AbjFLSRc (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 12 Jun 2023 14:17:32 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10D8693;
+        Mon, 12 Jun 2023 11:17:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 26D4561DF5;
-        Mon, 12 Jun 2023 16:19:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 369B1C4339B;
-        Mon, 12 Jun 2023 16:19:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A1F2662CAE;
+        Mon, 12 Jun 2023 18:17:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A08B2C433EF;
+        Mon, 12 Jun 2023 18:17:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686586769;
-        bh=OTJAkzUB/kHEz+zDpGNc9vDTw+iMQ7TJ/wo3kRt6WNE=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=CCG/J7Hk7a7Pqayi8Dhv4V5Lo1gKzDd2gONXFYj9dZ3ZlZsjrC3VfeL99tkG8oXFv
-         xWdp4qVMK0MopWl4sfLAXlJg2OrAm/XFsPasvOIh6LQCGt7aa7bQd7zpD1TFNkbIU9
-         L1jxyebl9sLVd2W9lZZTRnLyhkOJYK3XZGm6jEO0rnjypc3oze2wFCaSBtLsKc83Gs
-         PboYwpcQKg6IbNC1xzF3lx3VIfAVL0Aa9/tP4w7+I/dUsDNefxPJmfYtREE5tTIKk7
-         Jn1iBRGaC/y9DoMdE+4K1As0RtgR13AwOkAC0v2pyyRAfvbyFCrNiHrhaE2JHkncKF
-         OwBnmjtJoxSCQ==
-Date:   Mon, 12 Jun 2023 11:19:27 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>
-Cc:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        s=k20201202; t=1686593850;
+        bh=aIVis3zgOCngnfMmwgBuVeG+/iKrmnOowlmIUV+paHI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=n5n/9orbod8cmo3ZlSZq+q3v9s1JEnf2Sa4uJLUMrgOII1qaquSOhuepHl3fIUF2n
+         +dncfZDS6aLE7N8e/fDxJJes4MFT7sS240EjejOXi0oHxsUrf8fhC1jiWKkOPIjQbW
+         newqIPRW6XIZzq8JySqv1eMuk1ZeGSksIt+JaOAbFd2NJ+vHD9K4BQR1vcHQjvyOFY
+         yojO9w2pWRuJXETvSoPOoKqIYvGSs3gAnEmbky9i+u83nxU9v8UtiLImEDmvnb31Ue
+         Io4TaH78Rz41ZMfnyO1IAijddSeTN0ZEvAZjX/feIO4kwYYP+zSxf7KmDUznHkciU+
+         MeB6+M43iQovA==
+Received: by pali.im (Postfix)
+        id A820E7EB; Mon, 12 Jun 2023 20:17:26 +0200 (CEST)
+Date:   Mon, 12 Jun 2023 20:17:26 +0200
+From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>,
         Bjorn Helgaas <bhelgaas@google.com>,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
@@ -75,14 +77,17 @@ Cc:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?=
         <angelogioacchino.delregno@collabora.com>
 Subject: Re: [PATCH 00/15] PCI: Convert to platform remove callback returning
  void
-Message-ID: <20230612161927.GA1335109@bhelgaas>
+Message-ID: <20230612181726.itcctpkq57tfmdmo@pali>
+References: <20230611132423.milnj2pnvjqzwino@pali>
+ <20230612161927.GA1335109@bhelgaas>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230611132423.milnj2pnvjqzwino@pali>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+In-Reply-To: <20230612161927.GA1335109@bhelgaas>
+User-Agent: NeoMutt/20180716
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -91,37 +96,45 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sun, Jun 11, 2023 at 03:24:23PM +0200, Pali Rohár wrote:
-> On Friday 02 June 2023 16:37:34 Bjorn Helgaas wrote:
-> > On Tue, May 30, 2023 at 04:07:42PM +0200, Uwe Kleine-König wrote:
-> > > On Tue, Mar 21, 2023 at 08:31:53PM +0100, Uwe Kleine-König wrote:
-> > > > this series adapts the platform drivers below drivers/pci to
-> > > > use the .remove_new() callback. Compared to the traditional
-> > > > .remove() callback .remove_new() returns no value. This is a
-> > > > good thing because the driver core doesn't (and cannot) cope
-> > > > for errors during remove. The only effect of a non-zero return
-> > > > value in .remove() is that the driver core emits a warning.
-> > > > The device is removed anyhow and an early return from
-> > > > .remove() usually yields a resource leak.
-> ...
+On Monday 12 June 2023 11:19:27 Bjorn Helgaas wrote:
+> On Sun, Jun 11, 2023 at 03:24:23PM +0200, Pali RohÃ¡r wrote:
+> > On Friday 02 June 2023 16:37:34 Bjorn Helgaas wrote:
+> > > On Tue, May 30, 2023 at 04:07:42PM +0200, Uwe Kleine-KÃ¶nig wrote:
+> > > > On Tue, Mar 21, 2023 at 08:31:53PM +0100, Uwe Kleine-KÃ¶nig wrote:
+> > > > > this series adapts the platform drivers below drivers/pci to
+> > > > > use the .remove_new() callback. Compared to the traditional
+> > > > > .remove() callback .remove_new() returns no value. This is a
+> > > > > good thing because the driver core doesn't (and cannot) cope
+> > > > > for errors during remove. The only effect of a non-zero return
+> > > > > value in .remove() is that the driver core emits a warning.
+> > > > > The device is removed anyhow and an early return from
+> > > > > .remove() usually yields a resource leak.
+> > ...
+> 
+> > Hello Bjorn, it should be expected that other changes for PCIe drivers
+> > sent by other people which were sent to the list before this patch
+> > series and are still waiting for the review (because are without
+> > comments), would be processed before and patches sent later.
+> 
+> I don't think it's necessary to delay simple, easily-reviewed changes
+> behind more complicated ones.
+> 
+> > Also I would like to point out that in past I have sent fixes for PCIe
+> > mvebu driver, which is currently in the broken state. And this is also
+> > on waiting on the list.
+> 
+> Thanks for this reminder.  Would you mind reposting them?  I poked
+> around in patchwork and I must be doing something wrong because I
+> can't find *any* patches from you, though obviously there are many.
+> 
+> If you repost them at least we'll know unambiguously what is on the
+> table.
+> 
+> Bjorn
 
-> Hello Bjorn, it should be expected that other changes for PCIe drivers
-> sent by other people which were sent to the list before this patch
-> series and are still waiting for the review (because are without
-> comments), would be processed before and patches sent later.
-
-I don't think it's necessary to delay simple, easily-reviewed changes
-behind more complicated ones.
-
-> Also I would like to point out that in past I have sent fixes for PCIe
-> mvebu driver, which is currently in the broken state. And this is also
-> on waiting on the list.
-
-Thanks for this reminder.  Would you mind reposting them?  I poked
-around in patchwork and I must be doing something wrong because I
-can't find *any* patches from you, though obviously there are many.
-
-If you repost them at least we'll know unambiguously what is on the
-table.
-
-Bjorn
+Well, my patches I reposted more times. And some were also reposted by
+other people. I do not know if they are in patchwork, but they are in
+email archive. For example last repost of aardvark patches are here:
+https://lore.kernel.org/linux-pci/20220927141926.8895-1-kabel@kernel.org/
+And some other aardvark are also here:
+https://lore.kernel.org/linux-pci/20220711120626.11492-1-pali@kernel.org/
