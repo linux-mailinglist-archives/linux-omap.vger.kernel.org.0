@@ -2,171 +2,113 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB8F972C895
-	for <lists+linux-omap@lfdr.de>; Mon, 12 Jun 2023 16:31:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F13F072C8B9
+	for <lists+linux-omap@lfdr.de>; Mon, 12 Jun 2023 16:38:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238646AbjFLObn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 12 Jun 2023 10:31:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43288 "EHLO
+        id S233318AbjFLOiR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 12 Jun 2023 10:38:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235257AbjFLOb3 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 12 Jun 2023 10:31:29 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45B871985;
-        Mon, 12 Jun 2023 07:29:39 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0AA0762A34;
-        Mon, 12 Jun 2023 14:27:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89300C433D2;
-        Mon, 12 Jun 2023 14:27:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686580041;
-        bh=rxg1S6IQcpSNyoLhkAT/bGn9HA6mUeGJAAfQyEFiPa0=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=pk0Ui3pyQoQKq52oTwRo1B3KHkOWDh6YSVV+nZJQXBU1zGZt2/5guwx2ZSwdDlDA0
-         LbcaMIbj75RL/t/247CjpWjUGG1813yoIvPV1UAt4I77BcNsq5ECPgIbjezgT9ZkAL
-         swt1oP4XOsup2IrlpgXAYf7SCaKWMBGUheNviJovgRXcDC3VJaNtWsibtbh8Te3MEK
-         1HLE2X70p6rSyikSkCeieOfjno7f0Sm5oA/sVWoxKJGXV2pjkqYEQyzJFXKADYeW03
-         ffZ6vUKXMymGQwC74j7ZoHAjtpA1SfY/ZeIeYrm8LqNaIR9OH6Ll4DGDlcA03WmuT5
-         cWq7D3AoYB1mg==
-Message-ID: <f0329c00-8d5a-ba89-c793-608f85cf70b3@kernel.org>
-Date:   Mon, 12 Jun 2023 17:27:14 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH 3/3] net: ethernet: ti-cpsw: fix linking built-in code to
- modules
-Content-Language: en-US
-To:     Arnd Bergmann <arnd@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Cc:     Grygorii Strashko <grygorii.strashko@ti.com>,
-        linux-omap@vger.kernel.org, Vignesh Raghavendra <vigneshr@ti.com>,
-        Nishanth Menon <nm@ti.com>, Tero Kristo <kristo@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Mao Wenan <maowenan@huawei.com>, Andrew Lunn <andrew@lunn.ch>,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        John Fastabend <john.fastabend@gmail.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Vladimir Oltean <vladimir.oltean@nxp.com>, bpf@vger.kernel.org
+        with ESMTP id S230354AbjFLOiR (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 12 Jun 2023 10:38:17 -0400
+Received: from out4-smtp.messagingengine.com (out4-smtp.messagingengine.com [66.111.4.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 301D8CD;
+        Mon, 12 Jun 2023 07:38:16 -0700 (PDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+        by mailout.nyi.internal (Postfix) with ESMTP id 8A2DC5C0116;
+        Mon, 12 Jun 2023 10:38:15 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute6.internal (MEProxy); Mon, 12 Jun 2023 10:38:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+        :cc:content-type:content-type:date:date:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to:sender
+        :subject:subject:to:to; s=fm1; t=1686580695; x=1686667095; bh=ZL
+        tbf+vkYKNwbdqr4ijTHLZjINUGdnp8fp3QuAY9ODo=; b=k4ZWeOyVjN5AfscYB9
+        Yz1mj4b49D9gMZwziq6qpkFlWVWLR+EKhBmAUIS0WzgvxGANmi+CCyxsJf6nmyyA
+        cnCHsOg/fDvRNYnF9zwp7E7HDk7dDcOZrheQHwYjq1sb7zVc225lLTC604U3Jr2F
+        mdpFZfyh4Bbe5gtlDcWa4dDQXhe80hwG3be4coPD2XHgbg9nqDWoMO5pR8KIKQ0f
+        HnCVV8HD2NHb2DKPUQlHSdAc8uek6NQsvMWF470Z2EQngZmk5+3xUsydcr4LwWoD
+        J6yj7TntqrfqXcza7U2redn4vyPX8RpCq8dyyFu0TVorP2Jrk0mUqcF0RqQxEK7x
+        LM+g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm2; t=1686580695; x=1686667095; bh=ZLtbf+vkYKNwb
+        dqr4ijTHLZjINUGdnp8fp3QuAY9ODo=; b=g8BdJH2bXvlnCZYt6VW4QrbIsuFQ9
+        og0difewC1j1os/5sq0KVExEbXrOVKizJ15akK4c0rdc8bMamhTR1pz7hDjuSTPX
+        G175lQBA8P70pM8gQWNadhNGs526wB4nboj89+vUW5jc2xEOicqcbNGGq68hXJQV
+        3nnaeBD42fGsgNJASmBj5udAbqnd2RyDsk3JfnCxvGypTAJGOD3drVjuICdtXtd3
+        B1qXFDbTlvV+EBi0qTsX40Jkl6h2YiICJg5/PQNK9kJ0ymlVN9eRREWjZ1lOFeXq
+        tjeKjSZy3EzS6wdQW6WpNXW0qDDjUwJF+SrKybnZiuIlOX9UC+cRbqRdg==
+X-ME-Sender: <xms:1y2HZDWDAhBG8gTDDPxuNiSpvbyAxLRPAL-2cEA3Ls33Z2Nnr0kvdg>
+    <xme:1y2HZLmXxUUmSP2MiJG2bI2w__QLkh5ESyCKjq0ivtUjmYNjrdS8nX7cUk6SukreC
+    g_senb_pqrbqP_KmyA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrgeduhedgjeejucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
+    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
+    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
+    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
+    hrnhgusegrrhhnuggsrdguvg
+X-ME-Proxy: <xmx:1y2HZPYnXn8RBJ9NZarTzXwvFx9gTIHXE17Eo0bog66PczrwbWNR7w>
+    <xmx:1y2HZOVzqUJJWPRLhgB57v08nAP0ZIfyy3ezMlQc_7YWpQTHm6chPg>
+    <xmx:1y2HZNnapUm6j95AJOVobbGi-dDuWUWVYlw-3dWqL-U7Q8s3G304Cg>
+    <xmx:1y2HZNEtrrhUUZLhzYvpo4MnM-i0sEieG0Ns2ajPXdJx2SQzqHIZbw>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id 224EBB60086; Mon, 12 Jun 2023 10:38:15 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-492-g08e3be04ba-fm-20230607.003-g08e3be04
+Mime-Version: 1.0
+Message-Id: <3b5bc8f7-6d6d-48a1-9536-4a50110fabe6@app.fastmail.com>
+In-Reply-To: <f0329c00-8d5a-ba89-c793-608f85cf70b3@kernel.org>
 References: <20230612124024.520720-1-arnd@kernel.org>
  <20230612124024.520720-3-arnd@kernel.org>
-From:   Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <20230612124024.520720-3-arnd@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+ <f0329c00-8d5a-ba89-c793-608f85cf70b3@kernel.org>
+Date:   Mon, 12 Jun 2023 16:37:54 +0200
+From:   "Arnd Bergmann" <arnd@arndb.de>
+To:     "Roger Quadros" <rogerq@kernel.org>,
+        "Arnd Bergmann" <arnd@kernel.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        "Eric Dumazet" <edumazet@google.com>,
+        "Jakub Kicinski" <kuba@kernel.org>,
+        "Paolo Abeni" <pabeni@redhat.com>
+Cc:     "Grygorii Strashko" <grygorii.strashko@ti.com>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        "Vignesh Raghavendra" <vigneshr@ti.com>,
+        "Nishanth Menon" <nm@ti.com>, "Tero Kristo" <kristo@kernel.org>,
+        "Randy Dunlap" <rdunlap@infradead.org>,
+        "Mao Wenan" <maowenan@huawei.com>, "Andrew Lunn" <andrew@lunn.ch>,
+        Netdev <netdev@vger.kernel.org>, linux-kernel@vger.kernel.org,
+        "Alexei Starovoitov" <ast@kernel.org>,
+        "Daniel Borkmann" <daniel@iogearbox.net>,
+        "Jesper Dangaard Brouer" <hawk@kernel.org>,
+        "John Fastabend" <john.fastabend@gmail.com>,
+        "Simon Horman" <simon.horman@corigine.com>,
+        "Vladimir Oltean" <vladimir.oltean@nxp.com>, bpf@vger.kernel.org
+Subject: Re: [PATCH 3/3] net: ethernet: ti-cpsw: fix linking built-in code to modules
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Arnd,
+On Mon, Jun 12, 2023, at 16:27, Roger Quadros wrote:
+> On 12/06/2023 15:40, Arnd Bergmann wrote:
 
-On 12/06/2023 15:40, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> There are six variants of the cpsw driver, sharing various parts of
-> the code: davinci-emac, cpsw, cpsw-switchdev, netcp, netcp_ethss and
-> am65-cpsw-nuss.
-> 
-> I noticed that this means some files can be linked into more than
-> one loadable module, or even part of vmlinux but also linked into
-> a loadable module, both of which mess up assumptions of the build
-> system.
-> 
-> Change this back to having separate modules for each portion that
-> can be linked standalone, exporting symbols as needed:
-> 
->  - ti-cpsw-common.ko now contains both cpsw-common.o and
->    davinci_cpdma.o as they are always used together
-> 
->  - ti-cpsw-priv.ko contains cpsw_priv.o, cpsw_sl.o and cpsw_ethtool.o,
->    which are the core of the cpsw and cpsw-new drivers.
-> 
->  - ti-cpsw-ale.o is the one standalone module that is used by all
->    except davinci_emac.
-> 
-> Each of these will be built-in if any of its users are built-in,
-> otherwise it's a loadable module if there is at least one module
-> using it. I did not bring back the separate Kconfig symbols for
-> this, but just handle it using Makefile logic.
-> 
-> Note: ideally this is something that Kbuild complains about, but
-> usually we just notice when something using THIS_MODULS misbehaves
-> in a way that a user notices.
-> 
-> Fixes: 99f6297182729 ("net: ethernet: ti: cpsw: drop TI_DAVINCI_CPDMA config option")
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> ---
->  drivers/net/ethernet/ti/Makefile        | 29 +++++++++++-----------
->  drivers/net/ethernet/ti/cpsw_ale.c      | 23 +++++++++++++++++
->  drivers/net/ethernet/ti/cpsw_ethtool.c  | 25 +++++++++++++++++++
->  drivers/net/ethernet/ti/cpsw_priv.c     | 33 +++++++++++++++++++++++++
->  drivers/net/ethernet/ti/cpsw_sl.c       |  8 ++++++
->  drivers/net/ethernet/ti/davinci_cpdma.c | 27 ++++++++++++++++++++
->  6 files changed, 130 insertions(+), 15 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/ti/Makefile b/drivers/net/ethernet/ti/Makefile
-> index 75f761efbea71..d1f44f7667a96 100644
-> --- a/drivers/net/ethernet/ti/Makefile
-> +++ b/drivers/net/ethernet/ti/Makefile
-> @@ -3,28 +3,27 @@
->  # Makefile for the TI network device drivers.
->  #
->  
-> -obj-$(CONFIG_TI_CPSW) += cpsw-common.o
-> -obj-$(CONFIG_TI_DAVINCI_EMAC) += cpsw-common.o
-> -obj-$(CONFIG_TI_CPSW_SWITCHDEV) += cpsw-common.o
-> +ti-cpsw-common-y += cpsw-common.o davinci_cpdma.o
-> +ti-cpsw-priv-y += cpsw_priv.o cpsw_sl.o cpsw_ethtool.o
-> +ti-cpsw-ale-y += cpsw_ale.o
->  
->  obj-$(CONFIG_TLAN) += tlan.o
->  obj-$(CONFIG_CPMAC) += cpmac.o
-> -obj-$(CONFIG_TI_DAVINCI_EMAC) += ti_davinci_emac.o
-> -ti_davinci_emac-y := davinci_emac.o davinci_cpdma.o
-> +obj-$(CONFIG_TI_DAVINCI_EMAC) += davinci_emac.o ti-cpsw-common.o
->  obj-$(CONFIG_TI_DAVINCI_MDIO) += davinci_mdio.o
->  obj-$(CONFIG_TI_CPSW_PHY_SEL) += cpsw-phy-sel.o
->  obj-$(CONFIG_TI_CPTS) += cpts.o
-> -obj-$(CONFIG_TI_CPSW) += ti_cpsw.o
-> -ti_cpsw-y := cpsw.o davinci_cpdma.o cpsw_ale.o cpsw_priv.o cpsw_sl.o cpsw_ethtool.o
-> -obj-$(CONFIG_TI_CPSW_SWITCHDEV) += ti_cpsw_new.o
-> -ti_cpsw_new-y := cpsw_switchdev.o cpsw_new.o davinci_cpdma.o cpsw_ale.o cpsw_sl.o cpsw_priv.o cpsw_ethtool.o
-> +obj-$(CONFIG_TI_CPSW) += ti_cpsw.o ti-cpsw-common.o ti-cpsw-priv.o ti-cpsw-ale.o
-> +ti_cpsw-y := cpsw.o
-> +obj-$(CONFIG_TI_CPSW_SWITCHDEV) += ti_cpsw_new.o ti-cpsw-common.o ti-cpsw-priv.o ti-cpsw-ale.o
-> +ti_cpsw_new-y := cpsw_switchdev.o cpsw_new.o
->  
-> -obj-$(CONFIG_TI_KEYSTONE_NETCP) += keystone_netcp.o
-> -keystone_netcp-y := netcp_core.o cpsw_ale.o
-> -obj-$(CONFIG_TI_KEYSTONE_NETCP_ETHSS) += keystone_netcp_ethss.o
-> -keystone_netcp_ethss-y := netcp_ethss.o netcp_sgmii.o netcp_xgbepcsr.o cpsw_ale.o
-> +obj-$(CONFIG_TI_KEYSTONE_NETCP) += keystone_netcp.o ti-cpsw-ale.o
-> +keystone_netcp-y := netcp_core.o
-> +obj-$(CONFIG_TI_KEYSTONE_NETCP_ETHSS) += keystone_netcp_ethss.o ti-cpsw-ale.o
-> +keystone_netcp_ethss-y := netcp_ethss.o netcp_sgmii.o netcp_xgbepcsr.o
->  
-> -obj-$(CONFIG_TI_K3_AM65_CPSW_NUSS) += ti-am65-cpsw-nuss.o
-> -ti-am65-cpsw-nuss-y := am65-cpsw-nuss.o cpsw_sl.o am65-cpsw-ethtool.o cpsw_ale.o k3-cppi-desc-pool.o am65-cpsw-qos.o
-> +obj-$(CONFIG_TI_K3_AM65_CPSW_NUSS) += ti-am65-cpsw-nuss.o ti-cpsw-priv.o ti-cpsw-ale.o
+> cpsw_priv.o and cpsw_ethtool.o (included in ti-cpsw-priv.o) are not 
+> required by ti-am65-cpsw-nuss.
+> It only needs cpsw_sl.o
 
-cpsw_priv.o and cpsw_ethtool.o (included in ti-cpsw-priv.o) are not required by ti-am65-cpsw-nuss.
-It only needs cpsw_sl.o
+Ok, I see. I'll split that out into yet another module then, and
+give it another day of randconfig tests.
 
--- 
-cheers,
--roger
+     Arnd
