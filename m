@@ -2,316 +2,171 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D96572C7C8
-	for <lists+linux-omap@lfdr.de>; Mon, 12 Jun 2023 16:15:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB8F972C895
+	for <lists+linux-omap@lfdr.de>; Mon, 12 Jun 2023 16:31:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238086AbjFLOPD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 12 Jun 2023 10:15:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55946 "EHLO
+        id S238646AbjFLObn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 12 Jun 2023 10:31:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237633AbjFLOOe (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 12 Jun 2023 10:14:34 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0C0B198D;
-        Mon, 12 Jun 2023 07:14:09 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        with ESMTP id S235257AbjFLOb3 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 12 Jun 2023 10:31:29 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45B871985;
+        Mon, 12 Jun 2023 07:29:39 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id 7470722838;
-        Mon, 12 Jun 2023 14:14:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1686579248; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=QGqfM+IVMMvM7bmJQvhd9Ci0kyAq3E3rKtUzog5kgLc=;
-        b=DCVcGuxm+1X0KZMyHU64Zur1DF9Fm3my2LIFQWQLIrvO3ivVEkKBdRVTxuf9w8JsqbnoqD
-        o6rQuyt75Fc80rZW67J1K5QeD/OUFu46NgOLw5m+2uqJ9VAP6bNatf+l197gDuc4R9L/oN
-        HB/xC26gBSelQuEGmidJChzXAVhWiWQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1686579248;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=QGqfM+IVMMvM7bmJQvhd9Ci0kyAq3E3rKtUzog5kgLc=;
-        b=BRUI7PQzl8t42AJqp2ObQ3JkW2PckUyqTBMkf8K3mMnZY9NWscZXsrBRNVbyggoMLTRPIS
-        CkHvfogckeBLDJDA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 188271357F;
-        Mon, 12 Jun 2023 14:14:08 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id wIsEBTAoh2RwGQAAMHmgww
-        (envelope-from <tzimmermann@suse.de>); Mon, 12 Jun 2023 14:14:08 +0000
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-To:     daniel@ffwll.ch, javierm@redhat.com, sam@ravnborg.org,
-        deller@gmx.de, geert+renesas@glider.be, lee@kernel.org,
-        daniel.thompson@linaro.org, jingoohan1@gmail.com,
-        dan.carpenter@linaro.org, michael.j.ruhl@intel.com
-Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-sh@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH v2 38/38] fbdev: Make support for userspace interfaces configurable
-Date:   Mon, 12 Jun 2023 16:08:16 +0200
-Message-ID: <20230612141352.29939-39-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612141352.29939-1-tzimmermann@suse.de>
-References: <20230612141352.29939-1-tzimmermann@suse.de>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0AA0762A34;
+        Mon, 12 Jun 2023 14:27:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89300C433D2;
+        Mon, 12 Jun 2023 14:27:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1686580041;
+        bh=rxg1S6IQcpSNyoLhkAT/bGn9HA6mUeGJAAfQyEFiPa0=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=pk0Ui3pyQoQKq52oTwRo1B3KHkOWDh6YSVV+nZJQXBU1zGZt2/5guwx2ZSwdDlDA0
+         LbcaMIbj75RL/t/247CjpWjUGG1813yoIvPV1UAt4I77BcNsq5ECPgIbjezgT9ZkAL
+         swt1oP4XOsup2IrlpgXAYf7SCaKWMBGUheNviJovgRXcDC3VJaNtWsibtbh8Te3MEK
+         1HLE2X70p6rSyikSkCeieOfjno7f0Sm5oA/sVWoxKJGXV2pjkqYEQyzJFXKADYeW03
+         ffZ6vUKXMymGQwC74j7ZoHAjtpA1SfY/ZeIeYrm8LqNaIR9OH6Ll4DGDlcA03WmuT5
+         cWq7D3AoYB1mg==
+Message-ID: <f0329c00-8d5a-ba89-c793-608f85cf70b3@kernel.org>
+Date:   Mon, 12 Jun 2023 17:27:14 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 3/3] net: ethernet: ti-cpsw: fix linking built-in code to
+ modules
+Content-Language: en-US
+To:     Arnd Bergmann <arnd@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>
+Cc:     Grygorii Strashko <grygorii.strashko@ti.com>,
+        linux-omap@vger.kernel.org, Vignesh Raghavendra <vigneshr@ti.com>,
+        Nishanth Menon <nm@ti.com>, Tero Kristo <kristo@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Mao Wenan <maowenan@huawei.com>, Andrew Lunn <andrew@lunn.ch>,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Vladimir Oltean <vladimir.oltean@nxp.com>, bpf@vger.kernel.org
+References: <20230612124024.520720-1-arnd@kernel.org>
+ <20230612124024.520720-3-arnd@kernel.org>
+From:   Roger Quadros <rogerq@kernel.org>
+In-Reply-To: <20230612124024.520720-3-arnd@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Add Kconfig option CONFIG_FB_DEVICE and make the virtual fbdev
-device optional. If the new option has not been selected, fbdev
-does not create files in devfs, sysfs or procfs.
+Hi Arnd,
 
-Most modern Linux systems run a DRM-based graphics stack that uses
-the kernel's framebuffer console, but has otherwise deprecated fbdev
-support. Yet fbdev userspace interfaces are still present.
+On 12/06/2023 15:40, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> There are six variants of the cpsw driver, sharing various parts of
+> the code: davinci-emac, cpsw, cpsw-switchdev, netcp, netcp_ethss and
+> am65-cpsw-nuss.
+> 
+> I noticed that this means some files can be linked into more than
+> one loadable module, or even part of vmlinux but also linked into
+> a loadable module, both of which mess up assumptions of the build
+> system.
+> 
+> Change this back to having separate modules for each portion that
+> can be linked standalone, exporting symbols as needed:
+> 
+>  - ti-cpsw-common.ko now contains both cpsw-common.o and
+>    davinci_cpdma.o as they are always used together
+> 
+>  - ti-cpsw-priv.ko contains cpsw_priv.o, cpsw_sl.o and cpsw_ethtool.o,
+>    which are the core of the cpsw and cpsw-new drivers.
+> 
+>  - ti-cpsw-ale.o is the one standalone module that is used by all
+>    except davinci_emac.
+> 
+> Each of these will be built-in if any of its users are built-in,
+> otherwise it's a loadable module if there is at least one module
+> using it. I did not bring back the separate Kconfig symbols for
+> this, but just handle it using Makefile logic.
+> 
+> Note: ideally this is something that Kbuild complains about, but
+> usually we just notice when something using THIS_MODULS misbehaves
+> in a way that a user notices.
+> 
+> Fixes: 99f6297182729 ("net: ethernet: ti: cpsw: drop TI_DAVINCI_CPDMA config option")
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+>  drivers/net/ethernet/ti/Makefile        | 29 +++++++++++-----------
+>  drivers/net/ethernet/ti/cpsw_ale.c      | 23 +++++++++++++++++
+>  drivers/net/ethernet/ti/cpsw_ethtool.c  | 25 +++++++++++++++++++
+>  drivers/net/ethernet/ti/cpsw_priv.c     | 33 +++++++++++++++++++++++++
+>  drivers/net/ethernet/ti/cpsw_sl.c       |  8 ++++++
+>  drivers/net/ethernet/ti/davinci_cpdma.c | 27 ++++++++++++++++++++
+>  6 files changed, 130 insertions(+), 15 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/ti/Makefile b/drivers/net/ethernet/ti/Makefile
+> index 75f761efbea71..d1f44f7667a96 100644
+> --- a/drivers/net/ethernet/ti/Makefile
+> +++ b/drivers/net/ethernet/ti/Makefile
+> @@ -3,28 +3,27 @@
+>  # Makefile for the TI network device drivers.
+>  #
+>  
+> -obj-$(CONFIG_TI_CPSW) += cpsw-common.o
+> -obj-$(CONFIG_TI_DAVINCI_EMAC) += cpsw-common.o
+> -obj-$(CONFIG_TI_CPSW_SWITCHDEV) += cpsw-common.o
+> +ti-cpsw-common-y += cpsw-common.o davinci_cpdma.o
+> +ti-cpsw-priv-y += cpsw_priv.o cpsw_sl.o cpsw_ethtool.o
+> +ti-cpsw-ale-y += cpsw_ale.o
+>  
+>  obj-$(CONFIG_TLAN) += tlan.o
+>  obj-$(CONFIG_CPMAC) += cpmac.o
+> -obj-$(CONFIG_TI_DAVINCI_EMAC) += ti_davinci_emac.o
+> -ti_davinci_emac-y := davinci_emac.o davinci_cpdma.o
+> +obj-$(CONFIG_TI_DAVINCI_EMAC) += davinci_emac.o ti-cpsw-common.o
+>  obj-$(CONFIG_TI_DAVINCI_MDIO) += davinci_mdio.o
+>  obj-$(CONFIG_TI_CPSW_PHY_SEL) += cpsw-phy-sel.o
+>  obj-$(CONFIG_TI_CPTS) += cpts.o
+> -obj-$(CONFIG_TI_CPSW) += ti_cpsw.o
+> -ti_cpsw-y := cpsw.o davinci_cpdma.o cpsw_ale.o cpsw_priv.o cpsw_sl.o cpsw_ethtool.o
+> -obj-$(CONFIG_TI_CPSW_SWITCHDEV) += ti_cpsw_new.o
+> -ti_cpsw_new-y := cpsw_switchdev.o cpsw_new.o davinci_cpdma.o cpsw_ale.o cpsw_sl.o cpsw_priv.o cpsw_ethtool.o
+> +obj-$(CONFIG_TI_CPSW) += ti_cpsw.o ti-cpsw-common.o ti-cpsw-priv.o ti-cpsw-ale.o
+> +ti_cpsw-y := cpsw.o
+> +obj-$(CONFIG_TI_CPSW_SWITCHDEV) += ti_cpsw_new.o ti-cpsw-common.o ti-cpsw-priv.o ti-cpsw-ale.o
+> +ti_cpsw_new-y := cpsw_switchdev.o cpsw_new.o
+>  
+> -obj-$(CONFIG_TI_KEYSTONE_NETCP) += keystone_netcp.o
+> -keystone_netcp-y := netcp_core.o cpsw_ale.o
+> -obj-$(CONFIG_TI_KEYSTONE_NETCP_ETHSS) += keystone_netcp_ethss.o
+> -keystone_netcp_ethss-y := netcp_ethss.o netcp_sgmii.o netcp_xgbepcsr.o cpsw_ale.o
+> +obj-$(CONFIG_TI_KEYSTONE_NETCP) += keystone_netcp.o ti-cpsw-ale.o
+> +keystone_netcp-y := netcp_core.o
+> +obj-$(CONFIG_TI_KEYSTONE_NETCP_ETHSS) += keystone_netcp_ethss.o ti-cpsw-ale.o
+> +keystone_netcp_ethss-y := netcp_ethss.o netcp_sgmii.o netcp_xgbepcsr.o
+>  
+> -obj-$(CONFIG_TI_K3_AM65_CPSW_NUSS) += ti-am65-cpsw-nuss.o
+> -ti-am65-cpsw-nuss-y := am65-cpsw-nuss.o cpsw_sl.o am65-cpsw-ethtool.o cpsw_ale.o k3-cppi-desc-pool.o am65-cpsw-qos.o
+> +obj-$(CONFIG_TI_K3_AM65_CPSW_NUSS) += ti-am65-cpsw-nuss.o ti-cpsw-priv.o ti-cpsw-ale.o
 
-The option makes it possible to use the fbdev subsystem as console
-implementation without support for userspace. This closes potential
-entry points to manipulate kernel or I/O memory via framebuffers. It
-also prevents the execution of driver code via ioctl or sysfs, both
-of which might allow malicious software to exploit bugs in the fbdev
-code.
+cpsw_priv.o and cpsw_ethtool.o (included in ti-cpsw-priv.o) are not required by ti-am65-cpsw-nuss.
+It only needs cpsw_sl.o
 
-A small number of fbdev drivers require struct fbinfo.dev to be
-initialized, usually for the support of sysfs interface. Make these
-drivers depend on FB_DEVICE. They can later be fixed if necessary.
-
-v2:
-	* set FB_DEVICE default to y (Geert)
-	* comment on {get,put}_device() (Sam)
-	* Kconfig fixes (Sam)
-	* add TODO item about FB_DEVICE dependencies (Sam)
-
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
----
- Documentation/gpu/todo.rst               | 13 ++++++++
- drivers/staging/fbtft/Kconfig            |  1 +
- drivers/video/fbdev/Kconfig              | 13 ++++++++
- drivers/video/fbdev/core/Makefile        |  7 +++--
- drivers/video/fbdev/core/fb_internal.h   | 38 ++++++++++++++++++++++++
- drivers/video/fbdev/omap2/omapfb/Kconfig |  2 +-
- include/linux/fb.h                       |  2 ++
- 7 files changed, 72 insertions(+), 4 deletions(-)
-
-diff --git a/Documentation/gpu/todo.rst b/Documentation/gpu/todo.rst
-index 68bdafa0284f5..f226f934ca5af 100644
---- a/Documentation/gpu/todo.rst
-+++ b/Documentation/gpu/todo.rst
-@@ -452,6 +452,19 @@ Contact: Thomas Zimmermann <tzimmermann@suse.de>
- 
- Level: Starter
- 
-+Remove driver dependencies on FB_DEVICE
-+---------------------------------------
-+
-+A number of fbdev drivers provide attributes via sysfs and therefore depend
-+on CONFIG_FB_DEVICE to be selected. Review each driver and attempt to make
-+any dependencies on CONFIG_FB_DEVICE optional. At the minimum, the respective
-+code in the driver could be conditionalized via ifdef CONFIG_FB_DEVICE. Not
-+all drivers might be able to drop CONFIG_FB_DEVICE.
-+
-+Contact: Thomas Zimmermann <tzimmermann@suse.de>
-+
-+Level: Starter
-+
- 
- Core refactorings
- =================
-diff --git a/drivers/staging/fbtft/Kconfig b/drivers/staging/fbtft/Kconfig
-index 4d29e8c1014e0..5dda3c65a38e7 100644
---- a/drivers/staging/fbtft/Kconfig
-+++ b/drivers/staging/fbtft/Kconfig
-@@ -2,6 +2,7 @@
- menuconfig FB_TFT
- 	tristate "Support for small TFT LCD display modules"
- 	depends on FB && SPI
-+	depends on FB_DEVICE
- 	depends on GPIOLIB || COMPILE_TEST
- 	select FB_SYS_FILLRECT
- 	select FB_SYS_COPYAREA
-diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
-index f82357d4f84da..19eaca5e04283 100644
---- a/drivers/video/fbdev/Kconfig
-+++ b/drivers/video/fbdev/Kconfig
-@@ -57,6 +57,16 @@ config FIRMWARE_EDID
- 	  combination with certain motherboards and monitors are known to
- 	  suffer from this problem.
- 
-+config FB_DEVICE
-+	bool "Provide legacy /dev/fb* device"
-+	depends on FB
-+	default y
-+	help
-+	  Say Y here if you want the legacy /dev/fb* device file and
-+	  interfaces within sysfs anc procfs. It is only required if you
-+	  have userspace programs that depend on fbdev for graphics output.
-+	  This does not effect the framebuffer console. If unsure, say N.
-+
- config FB_DDC
- 	tristate
- 	depends on FB
-@@ -1545,6 +1555,7 @@ config FB_3DFX_I2C
- config FB_VOODOO1
- 	tristate "3Dfx Voodoo Graphics (sst1) support"
- 	depends on FB && PCI
-+	depends on FB_DEVICE
- 	select FB_CFB_FILLRECT
- 	select FB_CFB_COPYAREA
- 	select FB_CFB_IMAGEBLIT
-@@ -1863,6 +1874,7 @@ config FB_SH_MOBILE_LCDC
- 	tristate "SuperH Mobile LCDC framebuffer support"
- 	depends on FB && HAVE_CLK && HAS_IOMEM
- 	depends on SUPERH || ARCH_RENESAS || COMPILE_TEST
-+	depends on FB_DEVICE
- 	select FB_SYS_FILLRECT
- 	select FB_SYS_COPYAREA
- 	select FB_SYS_IMAGEBLIT
-@@ -1932,6 +1944,7 @@ config FB_SMSCUFX
- config FB_UDL
- 	tristate "Displaylink USB Framebuffer support"
- 	depends on FB && USB
-+	depends on FB_DEVICE
- 	select FB_MODE_HELPERS
- 	select FB_SYS_FILLRECT
- 	select FB_SYS_COPYAREA
-diff --git a/drivers/video/fbdev/core/Makefile b/drivers/video/fbdev/core/Makefile
-index eea5938f74238..9150bafd9e899 100644
---- a/drivers/video/fbdev/core/Makefile
-+++ b/drivers/video/fbdev/core/Makefile
-@@ -2,12 +2,13 @@
- obj-$(CONFIG_FB_NOTIFY)           += fb_notify.o
- obj-$(CONFIG_FB)                  += fb.o
- fb-y                              := fb_backlight.o \
--                                     fb_chrdev.o \
-                                      fb_info.o \
--                                     fb_procfs.o \
--                                     fbmem.o fbmon.o fbcmap.o fbsysfs.o \
-+                                     fbmem.o fbmon.o fbcmap.o \
-                                      modedb.o fbcvt.o fb_cmdline.o fb_io_fops.o
- fb-$(CONFIG_FB_DEFERRED_IO)       += fb_defio.o
-+fb-$(CONFIG_FB_DEVICE)            += fb_chrdev.o \
-+                                     fb_procfs.o \
-+                                     fbsysfs.o
- 
- ifeq ($(CONFIG_FRAMEBUFFER_CONSOLE),y)
- fb-y				  += fbcon.o bitblit.o softcursor.o
-diff --git a/drivers/video/fbdev/core/fb_internal.h b/drivers/video/fbdev/core/fb_internal.h
-index 0b43c0cd50968..4c8d509a00265 100644
---- a/drivers/video/fbdev/core/fb_internal.h
-+++ b/drivers/video/fbdev/core/fb_internal.h
-@@ -3,12 +3,22 @@
- #ifndef _FB_INTERNAL_H
- #define _FB_INTERNAL_H
- 
-+#include <linux/device.h>
- #include <linux/fb.h>
- #include <linux/mutex.h>
- 
- /* fb_devfs.c */
-+#if defined(CONFIG_FB_DEVICE)
- int fb_register_chrdev(void);
- void fb_unregister_chrdev(void);
-+#else
-+static inline int fb_register_chrdev(void)
-+{
-+	return 0;
-+}
-+static inline void fb_unregister_chrdev(void)
-+{ }
-+#endif
- 
- /* fbmem.c */
- extern struct class *fb_class;
-@@ -19,11 +29,39 @@ struct fb_info *get_fb_info(unsigned int idx);
- void put_fb_info(struct fb_info *fb_info);
- 
- /* fb_procfs.c */
-+#if defined(CONFIG_FB_DEVICE)
- int fb_init_procfs(void);
- void fb_cleanup_procfs(void);
-+#else
-+static inline int fb_init_procfs(void)
-+{
-+	return 0;
-+}
-+static inline void fb_cleanup_procfs(void)
-+{ }
-+#endif
- 
- /* fbsysfs.c */
-+#if defined(CONFIG_FB_DEVICE)
- int fb_device_create(struct fb_info *fb_info);
- void fb_device_destroy(struct fb_info *fb_info);
-+#else
-+static inline int fb_device_create(struct fb_info *fb_info)
-+{
-+	/*
-+	 * Acquire a reference on the parent device to avoid
-+	 * unplug operations behind our back. With the fbdev
-+	 * device enabled, this is performed within register_device().
-+	 */
-+	get_device(fb_info->device);
-+
-+	return 0;
-+}
-+static inline void fb_device_destroy(struct fb_info *fb_info)
-+{
-+	/* Undo the get_device() from fb_device_create() */
-+	put_device(fb_info->device);
-+}
-+#endif
- 
- #endif
-diff --git a/drivers/video/fbdev/omap2/omapfb/Kconfig b/drivers/video/fbdev/omap2/omapfb/Kconfig
-index 69f9cb03507ef..21069fdb7cc21 100644
---- a/drivers/video/fbdev/omap2/omapfb/Kconfig
-+++ b/drivers/video/fbdev/omap2/omapfb/Kconfig
-@@ -5,9 +5,9 @@ config OMAP2_VRFB
- menuconfig FB_OMAP2
- 	tristate "OMAP2+ frame buffer support"
- 	depends on FB
-+	depends on FB_DEVICE
- 	depends on DRM_OMAP = n
- 	depends on GPIOLIB
--
- 	select FB_OMAP2_DSS
- 	select OMAP2_VRFB if ARCH_OMAP2 || ARCH_OMAP3
- 	select FB_CFB_FILLRECT
-diff --git a/include/linux/fb.h b/include/linux/fb.h
-index 541a0e3ce21f4..40ed1028160c0 100644
---- a/include/linux/fb.h
-+++ b/include/linux/fb.h
-@@ -481,7 +481,9 @@ struct fb_info {
- 
- 	const struct fb_ops *fbops;
- 	struct device *device;		/* This is the parent */
-+#if defined(CONFIG_FB_DEVICE)
- 	struct device *dev;		/* This is this fb device */
-+#endif
- 	int class_flag;                    /* private sysfs flags */
- #ifdef CONFIG_FB_TILEBLITTING
- 	struct fb_tile_ops *tileops;    /* Tile Blitting */
 -- 
-2.41.0
-
+cheers,
+-roger
