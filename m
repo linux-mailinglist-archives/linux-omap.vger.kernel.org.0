@@ -2,113 +2,100 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F13F072C8B9
-	for <lists+linux-omap@lfdr.de>; Mon, 12 Jun 2023 16:38:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1835672C922
+	for <lists+linux-omap@lfdr.de>; Mon, 12 Jun 2023 17:01:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233318AbjFLOiR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 12 Jun 2023 10:38:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50562 "EHLO
+        id S238451AbjFLPA7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 12 Jun 2023 11:00:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230354AbjFLOiR (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 12 Jun 2023 10:38:17 -0400
-Received: from out4-smtp.messagingengine.com (out4-smtp.messagingengine.com [66.111.4.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 301D8CD;
-        Mon, 12 Jun 2023 07:38:16 -0700 (PDT)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-        by mailout.nyi.internal (Postfix) with ESMTP id 8A2DC5C0116;
-        Mon, 12 Jun 2023 10:38:15 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute6.internal (MEProxy); Mon, 12 Jun 2023 10:38:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-        :cc:content-type:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm1; t=1686580695; x=1686667095; bh=ZL
-        tbf+vkYKNwbdqr4ijTHLZjINUGdnp8fp3QuAY9ODo=; b=k4ZWeOyVjN5AfscYB9
-        Yz1mj4b49D9gMZwziq6qpkFlWVWLR+EKhBmAUIS0WzgvxGANmi+CCyxsJf6nmyyA
-        cnCHsOg/fDvRNYnF9zwp7E7HDk7dDcOZrheQHwYjq1sb7zVc225lLTC604U3Jr2F
-        mdpFZfyh4Bbe5gtlDcWa4dDQXhe80hwG3be4coPD2XHgbg9nqDWoMO5pR8KIKQ0f
-        HnCVV8HD2NHb2DKPUQlHSdAc8uek6NQsvMWF470Z2EQngZmk5+3xUsydcr4LwWoD
-        J6yj7TntqrfqXcza7U2redn4vyPX8RpCq8dyyFu0TVorP2Jrk0mUqcF0RqQxEK7x
-        LM+g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm2; t=1686580695; x=1686667095; bh=ZLtbf+vkYKNwb
-        dqr4ijTHLZjINUGdnp8fp3QuAY9ODo=; b=g8BdJH2bXvlnCZYt6VW4QrbIsuFQ9
-        og0difewC1j1os/5sq0KVExEbXrOVKizJ15akK4c0rdc8bMamhTR1pz7hDjuSTPX
-        G175lQBA8P70pM8gQWNadhNGs526wB4nboj89+vUW5jc2xEOicqcbNGGq68hXJQV
-        3nnaeBD42fGsgNJASmBj5udAbqnd2RyDsk3JfnCxvGypTAJGOD3drVjuICdtXtd3
-        B1qXFDbTlvV+EBi0qTsX40Jkl6h2YiICJg5/PQNK9kJ0ymlVN9eRREWjZ1lOFeXq
-        tjeKjSZy3EzS6wdQW6WpNXW0qDDjUwJF+SrKybnZiuIlOX9UC+cRbqRdg==
-X-ME-Sender: <xms:1y2HZDWDAhBG8gTDDPxuNiSpvbyAxLRPAL-2cEA3Ls33Z2Nnr0kvdg>
-    <xme:1y2HZLmXxUUmSP2MiJG2bI2w__QLkh5ESyCKjq0ivtUjmYNjrdS8nX7cUk6SukreC
-    g_senb_pqrbqP_KmyA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrgeduhedgjeejucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:1y2HZPYnXn8RBJ9NZarTzXwvFx9gTIHXE17Eo0bog66PczrwbWNR7w>
-    <xmx:1y2HZOVzqUJJWPRLhgB57v08nAP0ZIfyy3ezMlQc_7YWpQTHm6chPg>
-    <xmx:1y2HZNnapUm6j95AJOVobbGi-dDuWUWVYlw-3dWqL-U7Q8s3G304Cg>
-    <xmx:1y2HZNEtrrhUUZLhzYvpo4MnM-i0sEieG0Ns2ajPXdJx2SQzqHIZbw>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 224EBB60086; Mon, 12 Jun 2023 10:38:15 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-492-g08e3be04ba-fm-20230607.003-g08e3be04
-Mime-Version: 1.0
-Message-Id: <3b5bc8f7-6d6d-48a1-9536-4a50110fabe6@app.fastmail.com>
-In-Reply-To: <f0329c00-8d5a-ba89-c793-608f85cf70b3@kernel.org>
-References: <20230612124024.520720-1-arnd@kernel.org>
- <20230612124024.520720-3-arnd@kernel.org>
- <f0329c00-8d5a-ba89-c793-608f85cf70b3@kernel.org>
-Date:   Mon, 12 Jun 2023 16:37:54 +0200
-From:   "Arnd Bergmann" <arnd@arndb.de>
-To:     "Roger Quadros" <rogerq@kernel.org>,
-        "Arnd Bergmann" <arnd@kernel.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        "Eric Dumazet" <edumazet@google.com>,
-        "Jakub Kicinski" <kuba@kernel.org>,
-        "Paolo Abeni" <pabeni@redhat.com>
-Cc:     "Grygorii Strashko" <grygorii.strashko@ti.com>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        "Vignesh Raghavendra" <vigneshr@ti.com>,
-        "Nishanth Menon" <nm@ti.com>, "Tero Kristo" <kristo@kernel.org>,
-        "Randy Dunlap" <rdunlap@infradead.org>,
-        "Mao Wenan" <maowenan@huawei.com>, "Andrew Lunn" <andrew@lunn.ch>,
-        Netdev <netdev@vger.kernel.org>, linux-kernel@vger.kernel.org,
-        "Alexei Starovoitov" <ast@kernel.org>,
-        "Daniel Borkmann" <daniel@iogearbox.net>,
-        "Jesper Dangaard Brouer" <hawk@kernel.org>,
-        "John Fastabend" <john.fastabend@gmail.com>,
-        "Simon Horman" <simon.horman@corigine.com>,
-        "Vladimir Oltean" <vladimir.oltean@nxp.com>, bpf@vger.kernel.org
-Subject: Re: [PATCH 3/3] net: ethernet: ti-cpsw: fix linking built-in code to modules
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S238381AbjFLPA6 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 12 Jun 2023 11:00:58 -0400
+Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEA76CC
+        for <linux-omap@vger.kernel.org>; Mon, 12 Jun 2023 08:00:56 -0700 (PDT)
+Received: by mail-wm1-x330.google.com with SMTP id 5b1f17b1804b1-3f70fc4682aso31453525e9.1
+        for <linux-omap@vger.kernel.org>; Mon, 12 Jun 2023 08:00:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1686582055; x=1689174055;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=/UCUFMga2EMcERlpB49Y2fRq+ymUyOKrUgYsHf0ed/0=;
+        b=L7nqJsGZJ4kjY557qHqALuPae3RMHgvnYVpXo9/i2LZxf+CHtnV8BP7RS0uaMpPTwT
+         X+6kER9YLs5NxP7uKsF8cHFD32Ls6Scn2FTrCk9nnG09Yp6PZMYOkG1tQkgHjBix6xY7
+         xuhU29+n8M9LCoUamZ9pqUzT8dDv7DywYHg8fIZMxw8t7F+5VYUwNYFTYo9GfgqeretD
+         EmsVU0NZjuohlcKKvHC1OpmyXxOWixpyOSKcW7xV3NEfYWS56ZHkZZAui0yWoIrkt/Qe
+         cHuDOT6CHhLJpMAmKvexEECF0ia6zcRfZkBvR9gopfAI64jbHon5ing/2AKGWvSwP9r3
+         IlEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686582055; x=1689174055;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/UCUFMga2EMcERlpB49Y2fRq+ymUyOKrUgYsHf0ed/0=;
+        b=Jxl5AjrFcOjBWuNgDDFbRuotyQ3kAAqYHmaTSeka59fzeha4IjaKpPCbfEEJAYySZs
+         FaNvTXHU60Uu56pyN/YIJxGpJzI1dwh1lHI2H5gJNfAfZnLGBpRLk+5R9Y5ovTths1C+
+         cUDtu6psml4FgooDGek6AfZK/P8hE61ij/8dKlCtBJaA6NkZZ6geDKTPfbcXiMbojSUx
+         nSCnWbZyqE1GSI0tZUyn8+vkVb/Z510+ifiFzykv6W+dyJRsnECIThSBl0tNNz2/OKhc
+         ai6Hbylh+ff0Jm7dOEuOS2GAElGsmi4v7ybhYkPxZDojK4278kkT925f2gpL5hu/pKTO
+         Cbdg==
+X-Gm-Message-State: AC+VfDxW/dhCbWuGn3oiD+W0wvq4MB46kapszgoeeCzyIMSWTsRJfGyh
+        KTrDAdP72O6BJnXGgiNGLLL09A==
+X-Google-Smtp-Source: ACHHUZ5u3c8rRm+E7KnayrCIdvayKld94mEi/X7AbulId0IMRsAxTcEdEsJfHEZekp046ksej9BC6w==
+X-Received: by 2002:a05:600c:21c4:b0:3f7:e48b:9752 with SMTP id x4-20020a05600c21c400b003f7e48b9752mr5759053wmj.32.1686582054775;
+        Mon, 12 Jun 2023 08:00:54 -0700 (PDT)
+Received: from localhost ([102.36.222.112])
+        by smtp.gmail.com with ESMTPSA id f9-20020a7bc8c9000000b003f8140763c7sm6545492wml.30.2023.06.12.08.00.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Jun 2023 08:00:53 -0700 (PDT)
+Date:   Mon, 12 Jun 2023 18:00:50 +0300
+From:   Dan Carpenter <dan.carpenter@linaro.org>
+To:     Thomas Zimmermann <tzimmermann@suse.de>
+Cc:     daniel@ffwll.ch, javierm@redhat.com, sam@ravnborg.org,
+        deller@gmx.de, geert+renesas@glider.be, lee@kernel.org,
+        daniel.thompson@linaro.org, jingoohan1@gmail.com,
+        michael.j.ruhl@intel.com, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-sh@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-staging@lists.linux.dev,
+        linux-kernel@vger.kernel.org,
+        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v2 01/38] backlight/bd6107: Compare against struct
+ fb_info.device
+Message-ID: <573e1bac-57a6-466c-ab69-28366a300143@kadam.mountain>
+References: <20230612141352.29939-1-tzimmermann@suse.de>
+ <20230612141352.29939-2-tzimmermann@suse.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230612141352.29939-2-tzimmermann@suse.de>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Jun 12, 2023, at 16:27, Roger Quadros wrote:
-> On 12/06/2023 15:40, Arnd Bergmann wrote:
+On Mon, Jun 12, 2023 at 04:07:39PM +0200, Thomas Zimmermann wrote:
+> Struct bd6107_platform_data refers to a platform device within
+> the Linux device hierarchy. The test in bd6107_backlight_check_fb()
+> compares it against the fbdev device in struct fb_info.dev, which
+> is different. Fix the test by comparing to struct fb_info.device.
+> 
+> Fixes a bug in the backlight driver and prepares fbdev for making
+> struct fb_info.dev optional.
+> 
+> v2:
+> 	* move renames into separate patch (Javier, Sam, Michael)
+> 
 
-> cpsw_priv.o and cpsw_ethtool.o (included in ti-cpsw-priv.o) are not 
-> required by ti-am65-cpsw-nuss.
-> It only needs cpsw_sl.o
+Thanks.  This helps a lot.  I stared at this for a long time without
+seeing the fix.  Then I misunderstood Sam's review comments (my fault,
+they were clear in retrospect) so I got completely lost.
 
-Ok, I see. I'll split that out into yet another module then, and
-give it another day of randconfig tests.
+regards,
+dan carpenter
 
-     Arnd
