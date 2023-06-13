@@ -2,55 +2,55 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6AC1F72DF18
-	for <lists+linux-omap@lfdr.de>; Tue, 13 Jun 2023 12:19:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FCFE72DF2F
+	for <lists+linux-omap@lfdr.de>; Tue, 13 Jun 2023 12:21:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240118AbjFMKT1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 13 Jun 2023 06:19:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50812 "EHLO
+        id S241705AbjFMKVj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 13 Jun 2023 06:21:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51174 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240043AbjFMKTS (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 13 Jun 2023 06:19:18 -0400
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE00019F
-        for <linux-omap@vger.kernel.org>; Tue, 13 Jun 2023 03:19:15 -0700 (PDT)
-Received: by mail-lf1-x131.google.com with SMTP id 2adb3069b0e04-4f644dffd71so6577039e87.1
-        for <linux-omap@vger.kernel.org>; Tue, 13 Jun 2023 03:19:15 -0700 (PDT)
+        with ESMTP id S240613AbjFMKVC (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 13 Jun 2023 06:21:02 -0400
+Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 715D51BC1
+        for <linux-omap@vger.kernel.org>; Tue, 13 Jun 2023 03:20:48 -0700 (PDT)
+Received: by mail-wr1-x431.google.com with SMTP id ffacd0b85a97d-30c4775d05bso3728822f8f.2
+        for <linux-omap@vger.kernel.org>; Tue, 13 Jun 2023 03:20:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1686651554; x=1689243554;
+        d=linaro.org; s=google; t=1686651647; x=1689243647;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=gdr35NVvZt5grZEtwTcOPCBT+aQqpwrBlFz/EyaAZAY=;
-        b=MT0jfmQ3GaGeOaRdULj4v+tzEv/qyqc7kkboNHxFk95UTYxahYr1Wu/ReM1jUPq7Y7
-         5PnBXZMc96XvR2x5cF5Mo4g9VQzuxuve1smXA/x1s28HNaT0qoVmHkCdJF7zlce98Yah
-         Vaz6sEnoempjBHWeWrMDdGTGYwd16RzI8vGSIoX30PXPM8N1PCsjDICvwfsV33xxQ+bM
-         3PnDWmo4w56mPiOZQCh1PHZLXr662z+H0LyPnJ7YST9C+8Z8gHzx5BPW6C5bxnqP8edq
-         V+sYD+GUUs+oixU+TF6PE9SL7pob/GuO+3XieGjKuBrvD4M3luTpfPbY6LVciutjW5jy
-         DfQQ==
+        bh=LS1QZFq4PW+Cu7XRqqcuTNZQ+bcaoFopTjwE2sqYaSo=;
+        b=odVd10yqz/T7OpVfq0G9VoZpLJ1BBVQ4kllhXUxAlpGSNXvZUOcJfB+/Dw896mY3cV
+         AkDLdyyIN/0WjGsZw80p50HitmPdSlyiDihqvpTCWqjypydLtMDkZ8YQTybvmo9THfWh
+         E6oVQOWqgPq0BqAAcw252YF7rieVwW8qhHMRmX0uuEWlm13VmWZaKovxh4KID1jELONh
+         zmYSJ+nmRkCIF8FRlATHPNJWKvjSidkKwf/CcVn5SGpV+u/M+cmGd2Cdu24KWQXI0qNb
+         E4vLrwTHIAgmrCHcO/1IsbiBkChyd8dqEING+nDPzzaeNCfaqyKBT9PcR9BhFfjANPe0
+         L07A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686651554; x=1689243554;
+        d=1e100.net; s=20221208; t=1686651647; x=1689243647;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gdr35NVvZt5grZEtwTcOPCBT+aQqpwrBlFz/EyaAZAY=;
-        b=KJh/6gK1X9CKlYAY5ZtLgYSzUb+KlT1lkrHeuLZCL6hfRuhLiPYNDVYfPPLOhf7SQg
-         QHxFxS1GJfUOz1Q8B8IqPT0MuejYhaO4mAQ3nDjcAzowiCbyjOime88w8Sc6tqOPJKqN
-         mV3VfrcvDYVJ5Vh0B2fnh9kuUFRgfrFUEHvqY1Iq8zTXKotXbzBA43r9Q3Uc/e700ESJ
-         +4yZ4i3q8etfomAw2Q5WXz5rQS/VXWt9bvaANRIWw+2jalFjX46CX+EnCKpq7fTDBRuo
-         vmafGkKBfGcy7sapbCUOq6JAMVi2C50Y18zzTvoUACmVV3NQji6Jra+JOFh1ArNv+lBe
-         2fxA==
-X-Gm-Message-State: AC+VfDwXgcONFdOjUJaHdDzzw7mrsnzMSwCeRlndxx0XIU/hhxRhLKYy
-        63Pbrxze+vEO2HU/o4rbyGIG/w==
-X-Google-Smtp-Source: ACHHUZ6PKN8jwmaGHls2F2gl2akc40go/8ljLq7Qwlu5jF0CTKmMviLXMRWLeIbs9+JRw390KY37Rg==
-X-Received: by 2002:ac2:5b9a:0:b0:4f3:9136:9cd0 with SMTP id o26-20020ac25b9a000000b004f391369cd0mr5734769lfn.44.1686651553968;
-        Tue, 13 Jun 2023 03:19:13 -0700 (PDT)
+        bh=LS1QZFq4PW+Cu7XRqqcuTNZQ+bcaoFopTjwE2sqYaSo=;
+        b=La1xY3g/e7kWZOuB1IarXAXYoINUibwrqVljt7WnOxEf1tVe6fh2zLqSTUETd1PpuA
+         3H6b2DUq5Fs3azo9C7/XkZQ06EblfChg8YXlH7FGm5Nghg6AKTnsogN0vbaS5mJ2SdhK
+         fa9he5rqNUhPrh+7e3+/wnvCyQBSOXgnw6hxn/x9A/hHX4TglSJ99jH5qug3O+z3Vgvx
+         tl0cUFyMIQOMbe5bG6SnjWFv4BhZ6e1OK3v7p+qRDmm2SbSf3sgRZk2GOuzOd29zL66i
+         0OcPF3YyuDUEqRfosKY+UQFot6AI85bm6Ifa1WtutSaKSuPoO8lRjkDWykvfKyVjAZev
+         Drmg==
+X-Gm-Message-State: AC+VfDxbdslBqvJMZXPeEMbJF9pQeSe2vVD17pWCjwb/u4PZk+hDSZJX
+        CcqfRi6sYi5HXVVxrtl3ENaA+A==
+X-Google-Smtp-Source: ACHHUZ4mLybWRM2xTNVY4PZztaDFQwXjC4NSKZcZAbwZFCFt4OyBZrpM11GOww0BAaWgtIStwFNbIg==
+X-Received: by 2002:adf:e30b:0:b0:309:53f3:6e3e with SMTP id b11-20020adfe30b000000b0030953f36e3emr5803184wrj.69.1686651646533;
+        Tue, 13 Jun 2023 03:20:46 -0700 (PDT)
 Received: from ?IPV6:2a05:6e02:1041:c10:d6bf:b78b:2fff:653a? ([2a05:6e02:1041:c10:d6bf:b78b:2fff:653a])
-        by smtp.googlemail.com with ESMTPSA id n6-20020a7bcbc6000000b003f6f6a6e769sm13838413wmi.17.2023.06.13.03.19.12
+        by smtp.googlemail.com with ESMTPSA id q2-20020adffec2000000b0030632833e74sm14918579wrs.11.2023.06.13.03.20.45
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 13 Jun 2023 03:19:13 -0700 (PDT)
-Message-ID: <16e72927-b3b0-7191-e05c-74acb5a77859@linaro.org>
-Date:   Tue, 13 Jun 2023 12:19:12 +0200
+        Tue, 13 Jun 2023 03:20:46 -0700 (PDT)
+Message-ID: <3ab066e3-97f5-8bd1-eaae-3d790432fb6f@linaro.org>
+Date:   Tue, 13 Jun 2023 12:20:44 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
@@ -78,7 +78,7 @@ Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -110,10 +110,6 @@ On 13/06/2023 11:56, Yangtao Li wrote:
 > +		dev_err(dev, "Failed to allocate device resource data\n");
 >   		return -ENOMEM;
 > +	}
-
-When an allocation fails, there is a callstack showed. It is not 
-necessary to print an error in this case.
-
 >   
 >   	ret = thermal_add_hwmon_sysfs(tz);
 >   	if (ret) {
@@ -122,7 +118,12 @@ necessary to print an error in this case.
 >   		return ret;
 >   	}
 
-That should not display an error. The call site will take care of that.
+Sorry, I commented to quickly this patch. Please discard my last 
+comment. I think it is a good improvement.
+
+Can you replace the dev_err to dev_warn ?
+
+Thanks
 
 -- 
 <http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
