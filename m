@@ -2,55 +2,59 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 09DD872DFF6
-	for <lists+linux-omap@lfdr.de>; Tue, 13 Jun 2023 12:44:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FE9872E00D
+	for <lists+linux-omap@lfdr.de>; Tue, 13 Jun 2023 12:47:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239638AbjFMKoE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 13 Jun 2023 06:44:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39478 "EHLO
+        id S242031AbjFMKry (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 13 Jun 2023 06:47:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242002AbjFMKn5 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 13 Jun 2023 06:43:57 -0400
-Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 503D6129
-        for <linux-omap@vger.kernel.org>; Tue, 13 Jun 2023 03:43:55 -0700 (PDT)
-Received: by mail-wr1-x42d.google.com with SMTP id ffacd0b85a97d-30aea656e36so3744451f8f.1
-        for <linux-omap@vger.kernel.org>; Tue, 13 Jun 2023 03:43:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1686653034; x=1689245034;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=lLutf+KjWhvbo43jAnwMCduq5kRauIVlF499sKJllbw=;
-        b=Tebomd8VGnHhE+w+b5CDwdcS6jy9JR89a+qkbngyLC3vc5+twB5SNidRwHh8NSOpTS
-         8eixPLK7D9svCm4RQ2GP30c3/796+q4cnYUMOlCy6c40JEPNXkEkS7wrcrdVaUEZSpBD
-         gkFF/FftbPA51jZWmI0j8ob+kCrNOdaqU8QdhcbGMFklAApFOnRrXOxr1P5swptKYNSQ
-         UhhygDT75/rVeDlcxd07SdAfiga5m8drWXG0wieQRnmDOEWbdLLPegxwmL+T0ifjxOY/
-         WIT42o16znUkIkH3rckPRfxp5Zbb5kcGoo79bKSgFm5CR8AkMxcaCxCsJwB05IMDV3co
-         1Cqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686653034; x=1689245034;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lLutf+KjWhvbo43jAnwMCduq5kRauIVlF499sKJllbw=;
-        b=czYwt2T3bq9579baKYXZ8U6eNDokGq+XBASLHjNJZj5MMMy6j8SYrYvc+3oS/Yj26n
-         hztZ4zAbPdF/6k2zwmxjnFuYcmoD6bFnghl/JLOLdyPKlmTN2hgF/MX4J/IgKKD36bbn
-         5yR6IrYR+od7J6EkSAvMzEZSbDIICPc8aM1jkSkTJZxS19vnnbcDFhlwvMn8cWWs76kV
-         7h47Fe1cfGJgZmaOPFGGrOOeLK64PdVg/XeIGG7XJbnwxlUoPAS2zHiGxwABD78RUpM3
-         be2sAq4H0HlxlMS3kX1Ecro9E3uYNmpErGGLlNn2j6IZV+sWTOTU1nU0Rf2v0rZiJQAC
-         ZCNw==
-X-Gm-Message-State: AC+VfDyJP0SIlpE+LbgdfomWCU1dGWRrdS1L3VdL3uQsK/sixNNfr+2t
-        mljkm+YObYWRnSIfE36uIVhN9w==
-X-Google-Smtp-Source: ACHHUZ68YtIfx45+cpnaYyoXbSrtLiflqoiv4n5LwHVoZuuqCHc2tdBqIZicnmX+p5XeiXBR68Vz0w==
-X-Received: by 2002:a5d:4dd0:0:b0:306:43ad:b34e with SMTP id f16-20020a5d4dd0000000b0030643adb34emr6204325wru.18.1686653033700;
-        Tue, 13 Jun 2023 03:43:53 -0700 (PDT)
-Received: from aspen.lan (aztw-34-b2-v4wan-166919-cust780.vm26.cable.virginm.net. [82.37.195.13])
-        by smtp.gmail.com with ESMTPSA id n7-20020adff087000000b0030ae5a0516csm14960636wro.17.2023.06.13.03.43.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Jun 2023 03:43:53 -0700 (PDT)
-Date:   Tue, 13 Jun 2023 11:43:51 +0100
-From:   Daniel Thompson <daniel.thompson@linaro.org>
-To:     Thomas Zimmermann <tzimmermann@suse.de>
+        with ESMTP id S242030AbjFMKrw (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 13 Jun 2023 06:47:52 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE53F1AD;
+        Tue, 13 Jun 2023 03:47:50 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id 48AA72213E;
+        Tue, 13 Jun 2023 10:47:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1686653269; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=c3fhYdVUr0tRLaaukczpen+StPe7TUnaAnjtsiCIZ2s=;
+        b=tdqBaQl0pM7QXRNqnNkkV7fRdFCZ3I4rbdThW7TEZZdnmPFQb1oVlDr7EHK3gWtsdfD4e2
+        MtKY75Qm/uLPgIZOgYTkJ2OlaQKhj4BNTdGA2Knvvgd72iKiazhq/IF1jKwgyk8PIRb7OB
+        /3jSZLCvym/lzkd/r32KuLer7mbzDds=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1686653269;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=c3fhYdVUr0tRLaaukczpen+StPe7TUnaAnjtsiCIZ2s=;
+        b=yyjG8vmaT01YVpsvIlIprlvIsyvd8WnCZbFEY0qVJByyZzlM558Aj+/peI35jk6oYhyrgf
+        s4FlWVWmtCGS1kDA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id F0CE313483;
+        Tue, 13 Jun 2023 10:47:48 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id 7M8HOlRJiGTGfAAAMHmgww
+        (envelope-from <tzimmermann@suse.de>); Tue, 13 Jun 2023 10:47:48 +0000
+Message-ID: <9a390f13-4ad3-cddc-64f7-8a1737965242@suse.de>
+Date:   Tue, 13 Jun 2023 12:47:48 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.2
+Subject: Re: [PATCH v2 01/38] backlight/bd6107: Compare against struct
+ fb_info.device
+Content-Language: en-US
+To:     Daniel Thompson <daniel.thompson@linaro.org>
 Cc:     daniel@ffwll.ch, javierm@redhat.com, sam@ravnborg.org,
         deller@gmx.de, geert+renesas@glider.be, lee@kernel.org,
         jingoohan1@gmail.com, dan.carpenter@linaro.org,
@@ -58,121 +62,107 @@ Cc:     daniel@ffwll.ch, javierm@redhat.com, sam@ravnborg.org,
         dri-devel@lists.freedesktop.org, linux-sh@vger.kernel.org,
         linux-omap@vger.kernel.org, linux-staging@lists.linux.dev,
         linux-kernel@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH v2 38/38] fbdev: Make support for userspace interfaces
- configurable
-Message-ID: <20230613104351.GG169438@aspen.lan>
+        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+        stable@vger.kernel.org
 References: <20230612141352.29939-1-tzimmermann@suse.de>
- <20230612141352.29939-39-tzimmermann@suse.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230612141352.29939-39-tzimmermann@suse.de>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+ <20230612141352.29939-2-tzimmermann@suse.de>
+ <20230613103730.GA169438@aspen.lan>
+From:   Thomas Zimmermann <tzimmermann@suse.de>
+In-Reply-To: <20230613103730.GA169438@aspen.lan>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------Bih0PagUpBHQXHTR42b2H5ZP"
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Jun 12, 2023 at 04:08:16PM +0200, Thomas Zimmermann wrote:
-> Add Kconfig option CONFIG_FB_DEVICE and make the virtual fbdev
-> device optional. If the new option has not been selected, fbdev
-> does not create files in devfs, sysfs or procfs.
->
-> Most modern Linux systems run a DRM-based graphics stack that uses
-> the kernel's framebuffer console, but has otherwise deprecated fbdev
-> support. Yet fbdev userspace interfaces are still present.
->
-> The option makes it possible to use the fbdev subsystem as console
-> implementation without support for userspace. This closes potential
-> entry points to manipulate kernel or I/O memory via framebuffers. It
-> also prevents the execution of driver code via ioctl or sysfs, both
-> of which might allow malicious software to exploit bugs in the fbdev
-> code.
->
-> A small number of fbdev drivers require struct fbinfo.dev to be
-> initialized, usually for the support of sysfs interface. Make these
-> drivers depend on FB_DEVICE. They can later be fixed if necessary.
->
-> v2:
-> 	* set FB_DEVICE default to y (Geert)
-> 	* comment on {get,put}_device() (Sam)
-> 	* Kconfig fixes (Sam)
-> 	* add TODO item about FB_DEVICE dependencies (Sam)
->
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
-> ---
->  Documentation/gpu/todo.rst               | 13 ++++++++
->  drivers/staging/fbtft/Kconfig            |  1 +
->  drivers/video/fbdev/Kconfig              | 13 ++++++++
->  drivers/video/fbdev/core/Makefile        |  7 +++--
->  drivers/video/fbdev/core/fb_internal.h   | 38 ++++++++++++++++++++++++
->  drivers/video/fbdev/omap2/omapfb/Kconfig |  2 +-
->  include/linux/fb.h                       |  2 ++
->  7 files changed, 72 insertions(+), 4 deletions(-)
->
-> diff --git a/Documentation/gpu/todo.rst b/Documentation/gpu/todo.rst
-> index 68bdafa0284f5..f226f934ca5af 100644
-> --- a/Documentation/gpu/todo.rst
-> +++ b/Documentation/gpu/todo.rst
-> @@ -452,6 +452,19 @@ Contact: Thomas Zimmermann <tzimmermann@suse.de>
->
->  Level: Starter
->
-> +Remove driver dependencies on FB_DEVICE
-> +---------------------------------------
-> +
-> +A number of fbdev drivers provide attributes via sysfs and therefore depend
-> +on CONFIG_FB_DEVICE to be selected. Review each driver and attempt to make
-> +any dependencies on CONFIG_FB_DEVICE optional. At the minimum, the respective
-> +code in the driver could be conditionalized via ifdef CONFIG_FB_DEVICE. Not
-> +all drivers might be able to drop CONFIG_FB_DEVICE.
-> +
-> +Contact: Thomas Zimmermann <tzimmermann@suse.de>
-> +
-> +Level: Starter
-> +
->
->  Core refactorings
->  =================
-> diff --git a/drivers/staging/fbtft/Kconfig b/drivers/staging/fbtft/Kconfig
-> index 4d29e8c1014e0..5dda3c65a38e7 100644
-> --- a/drivers/staging/fbtft/Kconfig
-> +++ b/drivers/staging/fbtft/Kconfig
-> @@ -2,6 +2,7 @@
->  menuconfig FB_TFT
->  	tristate "Support for small TFT LCD display modules"
->  	depends on FB && SPI
-> +	depends on FB_DEVICE
->  	depends on GPIOLIB || COMPILE_TEST
->  	select FB_SYS_FILLRECT
->  	select FB_SYS_COPYAREA
-> diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
-> index f82357d4f84da..19eaca5e04283 100644
-> --- a/drivers/video/fbdev/Kconfig
-> +++ b/drivers/video/fbdev/Kconfig
-> @@ -57,6 +57,16 @@ config FIRMWARE_EDID
->  	  combination with certain motherboards and monitors are known to
->  	  suffer from this problem.
->
-> +config FB_DEVICE
-> +	bool "Provide legacy /dev/fb* device"
-> +	depends on FB
-> +	default y
-> +	help
-> +	  Say Y here if you want the legacy /dev/fb* device file and
-> +	  interfaces within sysfs anc procfs. It is only required if you
-> +	  have userspace programs that depend on fbdev for graphics output.
-> +	  This does not effect the framebuffer console. If unsure, say N.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------Bih0PagUpBHQXHTR42b2H5ZP
+Content-Type: multipart/mixed; boundary="------------kN8YWHBXTOAX040efj8X6bTV";
+ protected-headers="v1"
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: Daniel Thompson <daniel.thompson@linaro.org>
+Cc: daniel@ffwll.ch, javierm@redhat.com, sam@ravnborg.org, deller@gmx.de,
+ geert+renesas@glider.be, lee@kernel.org, jingoohan1@gmail.com,
+ dan.carpenter@linaro.org, michael.j.ruhl@intel.com,
+ linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-sh@vger.kernel.org, linux-omap@vger.kernel.org,
+ linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
+ Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+ stable@vger.kernel.org
+Message-ID: <9a390f13-4ad3-cddc-64f7-8a1737965242@suse.de>
+Subject: Re: [PATCH v2 01/38] backlight/bd6107: Compare against struct
+ fb_info.device
+References: <20230612141352.29939-1-tzimmermann@suse.de>
+ <20230612141352.29939-2-tzimmermann@suse.de>
+ <20230613103730.GA169438@aspen.lan>
+In-Reply-To: <20230613103730.GA169438@aspen.lan>
 
-Nitpicking but this *is* documentation so:
-s/effect/affect/
+--------------kN8YWHBXTOAX040efj8X6bTV
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
+SGkNCg0KQW0gMTMuMDYuMjMgdW0gMTI6Mzcgc2NocmllYiBEYW5pZWwgVGhvbXBzb246DQo+
+IE9uIE1vbiwgSnVuIDEyLCAyMDIzIGF0IDA0OjA3OjM5UE0gKzAyMDAsIFRob21hcyBaaW1t
+ZXJtYW5uIHdyb3RlOg0KPj4gU3RydWN0IGJkNjEwN19wbGF0Zm9ybV9kYXRhIHJlZmVycyB0
+byBhIHBsYXRmb3JtIGRldmljZSB3aXRoaW4NCj4+IHRoZSBMaW51eCBkZXZpY2UgaGllcmFy
+Y2h5LiBUaGUgdGVzdCBpbiBiZDYxMDdfYmFja2xpZ2h0X2NoZWNrX2ZiKCkNCj4+IGNvbXBh
+cmVzIGl0IGFnYWluc3QgdGhlIGZiZGV2IGRldmljZSBpbiBzdHJ1Y3QgZmJfaW5mby5kZXYs
+IHdoaWNoDQo+PiBpcyBkaWZmZXJlbnQuIEZpeCB0aGUgdGVzdCBieSBjb21wYXJpbmcgdG8g
+c3RydWN0IGZiX2luZm8uZGV2aWNlLg0KPj4NCj4+IEZpeGVzIGEgYnVnIGluIHRoZSBiYWNr
+bGlnaHQgZHJpdmVyIGFuZCBwcmVwYXJlcyBmYmRldiBmb3IgbWFraW5nDQo+PiBzdHJ1Y3Qg
+ZmJfaW5mby5kZXYgb3B0aW9uYWwuDQo+Pg0KPj4gdjI6DQo+PiAJKiBtb3ZlIHJlbmFtZXMg
+aW50byBzZXBhcmF0ZSBwYXRjaCAoSmF2aWVyLCBTYW0sIE1pY2hhZWwpDQo+Pg0KPj4gRml4
+ZXM6IDY3YjQzZTU5MDQxNSAoImJhY2tsaWdodDogQWRkIFJPSE0gQkQ2MTA3IGJhY2tsaWdo
+dCBkcml2ZXIiKQ0KPj4gU2lnbmVkLW9mZi1ieTogVGhvbWFzIFppbW1lcm1hbm4gPHR6aW1t
+ZXJtYW5uQHN1c2UuZGU+DQo+PiBDYzogTGF1cmVudCBQaW5jaGFydCA8bGF1cmVudC5waW5j
+aGFydCtyZW5lc2FzQGlkZWFzb25ib2FyZC5jb20+DQo+PiBDYzogTGVlIEpvbmVzIDxsZWVA
+a2VybmVsLm9yZz4NCj4+IENjOiBEYW5pZWwgVGhvbXBzb24gPGRhbmllbC50aG9tcHNvbkBs
+aW5hcm8ub3JnPg0KPj4gQ2M6IEppbmdvbyBIYW4gPGppbmdvb2hhbjFAZ21haWwuY29tPg0K
+Pj4gQ2M6IGRyaS1kZXZlbEBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4+IENjOiA8c3RhYmxl
+QHZnZXIua2VybmVsLm9yZz4gIyB2My4xMisNCj4+IFJldmlld2VkLWJ5OiBKYXZpZXIgTWFy
+dGluZXogQ2FuaWxsYXMgPGphdmllcm1AcmVkaGF0LmNvbT4NCj4gDQo+IFJldmlld2VkLWJ5
+OiBEYW5pZWwgVGhvbXBzb24gPGRhbmllbC50aG9tcHNvbkBsaW5hcm8ub3JnPg0KDQpUaGFu
+a3MgZm9yIGdvaW5nIHRocm91Z2ggdGhlIGJhY2tsaWdodCBwYXRjaGVzLg0KDQo+IA0KPiAN
+Cj4gRGFuaWVsLg0KPiANCj4gUFMgUGxlYXNlIGRvbid0IHRyZWF0IHRoaXMgYXMgYW4gQWNr
+ZWQtYnksIGlmIHlvdSB3YW50IHRvIGxhbmQgdGhpcw0KPiAgICAgcGF0Y2hzZXQgdmlhIGEg
+c2luZ2xlIHRyZWUgcGxlYXNlIGNvb3JkaW5hdGUgd2l0aCBMZWUgSm9uZXMhDQoNCkknZCBs
+aWtlIHRvIG1lcmdlIHRoZW0gdmlhIGRybS1taXNjLW5leHQgdG9nZXRoZXIgd2l0aCB0aGUg
+cmVzdCBvZiB0aGUgDQpwYXRjaHNldC4gSXQncyBub3QgRFJNLCBidXQgZmJkZXYgcGF0Y2hl
+cyBvZnRlbiBnbyB0aHJvdWdoIHRoYXQgdHJlZSANCnF1aXRlIG9mdGVuLg0KDQpCZXN0IHJl
+Z2FyZHMNClRob21hcw0KDQotLSANClRob21hcyBaaW1tZXJtYW5uDQpHcmFwaGljcyBEcml2
+ZXIgRGV2ZWxvcGVyDQpTVVNFIFNvZnR3YXJlIFNvbHV0aW9ucyBHZXJtYW55IEdtYkgNCkZy
+YW5rZW5zdHJhc3NlIDE0NiwgOTA0NjEgTnVlcm5iZXJnLCBHZXJtYW55DQpHRjogSXZvIFRv
+dGV2LCBBbmRyZXcgTXllcnMsIEFuZHJldyBNY0RvbmFsZCwgQm91ZGllbiBNb2VybWFuDQpI
+UkIgMzY4MDkgKEFHIE51ZXJuYmVyZykNCg==
 
-Daniel.
+--------------kN8YWHBXTOAX040efj8X6bTV--
+
+--------------Bih0PagUpBHQXHTR42b2H5ZP
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature"
+
+-----BEGIN PGP SIGNATURE-----
+
+wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmSISVQFAwAAAAAACgkQlh/E3EQov+DI
+iQ/7BKHWYUoMmnyorQ8yHtBI1XVxUNzbBJ0OGTBT4b82riNpqOq9KfyBGnmOJcEey66W74EmBU5V
+L4vlnw9VTD4BVQsw/iwIArnUrpazJ+GmYABhFM6I3BR8ZUwY61HH8PX8NeMje/nG4Md9n7ugOyzt
+mQerA5bh9exoD7hytk3CuDeEwpVfk+AvMOovuUwuUsKXOcK+s6oQiRfGSd4q+DrKQbD04JGy1IBf
+3ZR9s0dSIuBzZFwhqr+fUcAuuhZSxq6Fpd5okO6mhDlX+G6eeKuFaeL4hg51TJQe2wPokqZjatnG
+8qG9wA5+0uBdaDW620DSVpyUdAZZAKs5DLmKsM80SyBseZSXddy7Zo3958kbbl7pfcP3j3hlJiUI
+fMXMUY6y9syT/DVUXRVjiYb5qX7tO4W+gi8gBSNkdC99c4JwvhWFiobs4Lru0iM4ePC3LNCnt7Ma
+QZ9jbQlvu16Ke+9EIoA0bIxL0181S+19JHBftQzBAgbmXnB7pGZa9UIng8t0tGaLXMClLxmXC+lD
++ryZgyLhc76mKMxQWy2CbJyM6Aynyq0U0P5DLsMkOBGDmqpLg5nQw6VC0INkEKnzIBq0cRTFEwry
+UwPWiBj1XzooWK/LiDPxdXqHFeibjHLzSCyxrdASPCFlhiw1A7SZWwYwsaP8+pS3KeM80gZPBcKq
+cwE=
+=cAD4
+-----END PGP SIGNATURE-----
+
+--------------Bih0PagUpBHQXHTR42b2H5ZP--
