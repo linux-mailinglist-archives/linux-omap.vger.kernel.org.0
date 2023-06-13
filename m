@@ -2,111 +2,97 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A670372E36A
-	for <lists+linux-omap@lfdr.de>; Tue, 13 Jun 2023 14:56:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15F8D72E9F3
+	for <lists+linux-omap@lfdr.de>; Tue, 13 Jun 2023 19:35:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239863AbjFMM4e (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 13 Jun 2023 08:56:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51182 "EHLO
+        id S239438AbjFMRdb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 13 Jun 2023 13:33:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239139AbjFMM4c (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 13 Jun 2023 08:56:32 -0400
-Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 135EF1734;
-        Tue, 13 Jun 2023 05:56:30 -0700 (PDT)
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 35DCtlqE086407;
-        Tue, 13 Jun 2023 07:55:47 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1686660947;
-        bh=m3aWRYVccVyv3TBm3CQBhQSLQ8Afh0rwU1mPnybKOSM=;
-        h=Date:Subject:To:CC:References:From:In-Reply-To;
-        b=YbXTTZrIY+UGenKDmM/cnVARAJ7p9b2bkDm1ar7gDhRT7bIkCvpkwibosjYvgjLae
-         63bZObWKZFTzLmbfN45ZlZJrDJ8wPl/j5e2se5bX19Uned4epzQ4Vb8vWd/pz3VDRN
-         bBdHMeZYl0QWiJWF/oAMLaC8k8N6YWMk5xGFlFcU=
-Received: from DFLE115.ent.ti.com (dfle115.ent.ti.com [10.64.6.36])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 35DCtlO3121434
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 13 Jun 2023 07:55:47 -0500
-Received: from DFLE113.ent.ti.com (10.64.6.34) by DFLE115.ent.ti.com
- (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 13
- Jun 2023 07:55:47 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE113.ent.ti.com
- (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Tue, 13 Jun 2023 07:55:47 -0500
-Received: from [10.250.64.104] (ileaxei01-snat2.itg.ti.com [10.180.69.6])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 35DCtZPm112555;
-        Tue, 13 Jun 2023 07:55:36 -0500
-Message-ID: <4ee9c4dc-7dfc-3cb8-089d-c1535ab2531c@ti.com>
-Date:   Tue, 13 Jun 2023 18:25:34 +0530
+        with ESMTP id S235168AbjFMRdQ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 13 Jun 2023 13:33:16 -0400
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a02:c205:3004:2154::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14F8419BC;
+        Tue, 13 Jun 2023 10:33:11 -0700 (PDT)
+Received: from p5dc58481.dip0.t-ipconnect.de ([93.197.132.129] helo=aktux)
+        by mail.andi.de1.cc with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <andreas@kemnade.info>)
+        id 1q97t5-0000T3-Nz; Tue, 13 Jun 2023 19:32:59 +0200
+Date:   Tue, 13 Jun 2023 19:32:57 +0200
+From:   Andreas Kemnade <andreas@kemnade.info>
+To:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        conor+dt@kernel.org, tony@atomide.com, afd@ti.com,
+        andreas@kemnade.info, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCH v7 0/2] dt-bindings: omap: Convert omap.txt to yaml
+Message-ID: <20230613193257.267ad763@aktux>
+In-Reply-To: <20230515074512.66226-1-andreas@kemnade.info>
+References: <20230515074512.66226-1-andreas@kemnade.info>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.24; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.2
-Subject: Re: [PATCH v3 08/12] thermal/drivers/ti-soc: remove redundant msg in
- ti_thermal_expose_sensor()
-To:     Yangtao Li <frank.li@vivo.com>, <glaroque@baylibre.com>,
-        <rafael@kernel.org>, <daniel.lezcano@linaro.org>,
-        <amitk@kernel.org>, <rui.zhang@intel.com>, <shawnguo@kernel.org>,
-        <s.hauer@pengutronix.de>, <kernel@pengutronix.de>,
-        <festevam@gmail.com>, <linux-imx@nxp.com>,
-        <thara.gopinath@gmail.com>, <agross@kernel.org>,
-        <andersson@kernel.org>, <konrad.dybcio@linaro.org>,
-        <anarsoul@gmail.com>, <tiny.windzz@gmail.com>, <wens@csie.org>,
-        <jernej.skrabec@gmail.com>, <samuel@sholland.org>,
-        <thierry.reding@gmail.com>, <jonathanh@nvidia.com>,
-        <edubezval@gmail.com>, <matthias.bgg@gmail.com>,
-        <angelogioacchino.delregno@collabora.com>, <bchihi@baylibre.com>,
-        <niklas.soderlund+renesas@ragnatech.se>, <wenst@chromium.org>
-CC:     <linux-pm@vger.kernel.org>, <linux-amlogic@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-arm-msm@vger.kernel.org>, <linux-sunxi@lists.linux.dev>,
-        <linux-tegra@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>
-References: <20230613114904.15749-1-frank.li@vivo.com>
- <20230613114904.15749-8-frank.li@vivo.com>
-Content-Language: en-US
-From:   "J, KEERTHY" <j-keerthy@ti.com>
-In-Reply-To: <20230613114904.15749-8-frank.li@vivo.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Hi,
 
+any action still expected from my side?
+people gave R-bys...
+So looks like it is ready for the dt-folks to pick it up.
 
-On 6/13/2023 5:19 PM, Yangtao Li wrote:
-> The upper-layer devm_thermal_add_hwmon_sysfs() function can directly
-> print error information.
+Regards,
+Andreas
 
-Acked-by: Keerthy <j-keerthy@ti.com>
+On Mon, 15 May 2023 09:45:10 +0200
+Andreas Kemnade <andreas@kemnade.info> wrote:
 
+> Convert board compatibles to yaml and add the new yaml file to
+> MAINTAINERS so that emails are properly distributed
 > 
-> Signed-off-by: Yangtao Li <frank.li@vivo.com>
-> ---
->   drivers/thermal/ti-soc-thermal/ti-thermal-common.c | 3 +--
->   1 file changed, 1 insertion(+), 2 deletions(-)
+> Changes in V7:
+>  - checked for lost compatibles
+>  - remove conversions with pattern matches probably allowing
+>    too much
 > 
-> diff --git a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-> index 6a5335931f4d..d414a4b7a94a 100644
-> --- a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-> +++ b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-> @@ -182,8 +182,7 @@ int ti_thermal_expose_sensor(struct ti_bandgap *bgp, int id,
->   	ti_bandgap_write_update_interval(bgp, data->sensor_id,
->   					 TI_BANDGAP_UPDATE_INTERVAL_MS);
->   
-> -	if (devm_thermal_add_hwmon_sysfs(bgp->dev, data->ti_thermal))
-> -		dev_warn(bgp->dev, "failed to add hwmon sysfs attributes\n");
-> +	devm_thermal_add_hwmon_sysfs(bgp->dev, data->ti_thermal); >
->   	return 0;
->   }
+> Changes in V6:
+>  - reflect the rename also in the file header
+> 
+> Changes in V5:
+>  - renamed the new file to ti/omap.yaml
+> 
+> Changes in V4:
+>  - fix order 
+>  - re-add dra7 to .txt to have it sorted out later
+> 
+> Changes in V3:
+>  - update MAINTAINERS
+>  - remove converted stuff from .txt
+> 
+> Changes in V2:
+> - renamed file
+> - fixed gta04
+> - added Openpandora, Epson Moverio BT-200
+> - drop example
+> - remove descriptions if just reformatting the name
+> 
+> Andreas Kemnade (1):
+>   MAINTAINERS: add board bindings list to OMAP2+ files
+> 
+> Andrew Davis (1):
+>   dt-bindings: omap: Partially convert omap.txt to yaml
+> 
+>  .../devicetree/bindings/arm/omap/omap.txt     |  99 ----------
+>  .../devicetree/bindings/arm/ti/omap.yaml      | 176 ++++++++++++++++++
+>  MAINTAINERS                                   |   1 +
+>  3 files changed, 177 insertions(+), 99 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/arm/ti/omap.yaml
+> 
+
