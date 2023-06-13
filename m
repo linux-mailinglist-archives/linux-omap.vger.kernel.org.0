@@ -2,97 +2,90 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 15F8D72E9F3
-	for <lists+linux-omap@lfdr.de>; Tue, 13 Jun 2023 19:35:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D4BE72EB2F
+	for <lists+linux-omap@lfdr.de>; Tue, 13 Jun 2023 20:44:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239438AbjFMRdb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 13 Jun 2023 13:33:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59926 "EHLO
+        id S239009AbjFMSoB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 13 Jun 2023 14:44:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235168AbjFMRdQ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 13 Jun 2023 13:33:16 -0400
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a02:c205:3004:2154::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14F8419BC;
-        Tue, 13 Jun 2023 10:33:11 -0700 (PDT)
-Received: from p5dc58481.dip0.t-ipconnect.de ([93.197.132.129] helo=aktux)
-        by mail.andi.de1.cc with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <andreas@kemnade.info>)
-        id 1q97t5-0000T3-Nz; Tue, 13 Jun 2023 19:32:59 +0200
-Date:   Tue, 13 Jun 2023 19:32:57 +0200
-From:   Andreas Kemnade <andreas@kemnade.info>
-To:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        conor+dt@kernel.org, tony@atomide.com, afd@ti.com,
-        andreas@kemnade.info, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: Re: [PATCH v7 0/2] dt-bindings: omap: Convert omap.txt to yaml
-Message-ID: <20230613193257.267ad763@aktux>
-In-Reply-To: <20230515074512.66226-1-andreas@kemnade.info>
-References: <20230515074512.66226-1-andreas@kemnade.info>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.24; x86_64-pc-linux-gnu)
+        with ESMTP id S235326AbjFMSoA (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 13 Jun 2023 14:44:00 -0400
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2D7C1BDB
+        for <linux-omap@vger.kernel.org>; Tue, 13 Jun 2023 11:43:58 -0700 (PDT)
+Received: by mail-ej1-x62a.google.com with SMTP id a640c23a62f3a-978863fb00fso1024327866b.3
+        for <linux-omap@vger.kernel.org>; Tue, 13 Jun 2023 11:43:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1686681837; x=1689273837;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=qQ8iVB7gobTZ8BQruGLcdSEO5h1oBHrdRGDjmhAOvCM=;
+        b=zU3Xo3HozTeKE1o40JuVJuq9vYtZ4EkEKet/l8SVVT5g1OrQjBJkUebse3tG6s7SDX
+         PLVlkEXNkN/CNLyi4Ty9X4SUF4GA5pcxpmgzLJWPad7r/CpidbwM8AX4rCcNr09m863o
+         oSgb7VCFnE1cOOrUF37Awdfwk25oNyxuHUMdacnLvA6BfA7s4Ww/xyuApzMqvorZgcvH
+         hIh0pZFMFb4Ls8TW744q8m/gwrEdxVgwYkF7T1kE26OKfKxrEYxm5mmyoNVXFJaBvgY1
+         uWHTzuNVeKISJjBaYC492ykbUs6NvEupl8oglBsB4R7/maa1ohnGu/sjDIyqBeJGLzk+
+         A3IA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686681837; x=1689273837;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qQ8iVB7gobTZ8BQruGLcdSEO5h1oBHrdRGDjmhAOvCM=;
+        b=VkrarQKv1pd/Q4LpbxoAIsLUjM2xbDvVKxf8kdl+0ELj/nJVrgEWIUp76LqFzc2ncu
+         jNCZcNVH4fMRKivcOU2JGNStYlhqBVwxHOd5ix6jFtRhZMoyr7uFMQEcAmTIVyBQYCW3
+         6J05wiMnHOywMLHEzO9d5AkAF1uSjZmGmwr/Jayc4V0mNFi4v5h8PJpAcB1UR6H7/U5D
+         gsDT6jLuZ2MhTC8om4LwdEApCSg5pJLzoHBLhkcRCd0IsfcMedqvyVsDUd/jQ5sMdHBb
+         oYHoRvhJ4Ahi0cJC6Thn91pQzUz+2J3kEAo8U29NbQA2KkPuluQX/O+lRYqnEsqSu9RW
+         HJ1g==
+X-Gm-Message-State: AC+VfDzkobX3ChceNlGcc7cw/qA7MqwpGw/92/tK6mCoBQC2Qu5iGOnL
+        mD4sBkCbLrIpJGEojSzFd+O7PQ==
+X-Google-Smtp-Source: ACHHUZ5TllWLsWtFnI+oG6zhMaKQWMv660yQOdw0v+qvTp4pkYq7CNN5Dieh3DdpBDIUsqEoNo8X+g==
+X-Received: by 2002:a17:907:7f1e:b0:974:76:dcdd with SMTP id qf30-20020a1709077f1e00b009740076dcddmr16204308ejc.55.1686681837374;
+        Tue, 13 Jun 2023 11:43:57 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.219.26])
+        by smtp.gmail.com with ESMTPSA id n24-20020a170906379800b0096a6bf89259sm6962660ejc.167.2023.06.13.11.43.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 13 Jun 2023 11:43:56 -0700 (PDT)
+Message-ID: <37ef78ee-b290-ecfb-504d-cef5653d23f2@linaro.org>
+Date:   Tue, 13 Jun 2023 20:43:55 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v7 0/2] dt-bindings: omap: Convert omap.txt to yaml
+Content-Language: en-US
+To:     Andreas Kemnade <andreas@kemnade.info>, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+        tony@atomide.com, afd@ti.com, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
+References: <20230515074512.66226-1-andreas@kemnade.info>
+ <20230613193257.267ad763@aktux>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230613193257.267ad763@aktux>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
+On 13/06/2023 19:32, Andreas Kemnade wrote:
+> Hi,
+> 
+> any action still expected from my side?
+> people gave R-bys...
+> So looks like it is ready for the dt-folks to pick it up.
+> 
 
-any action still expected from my side?
-people gave R-bys...
-So looks like it is ready for the dt-folks to pick it up.
+It's SoC file, isn't it? Then goes via SoC tree.
 
-Regards,
-Andreas
-
-On Mon, 15 May 2023 09:45:10 +0200
-Andreas Kemnade <andreas@kemnade.info> wrote:
-
-> Convert board compatibles to yaml and add the new yaml file to
-> MAINTAINERS so that emails are properly distributed
-> 
-> Changes in V7:
->  - checked for lost compatibles
->  - remove conversions with pattern matches probably allowing
->    too much
-> 
-> Changes in V6:
->  - reflect the rename also in the file header
-> 
-> Changes in V5:
->  - renamed the new file to ti/omap.yaml
-> 
-> Changes in V4:
->  - fix order 
->  - re-add dra7 to .txt to have it sorted out later
-> 
-> Changes in V3:
->  - update MAINTAINERS
->  - remove converted stuff from .txt
-> 
-> Changes in V2:
-> - renamed file
-> - fixed gta04
-> - added Openpandora, Epson Moverio BT-200
-> - drop example
-> - remove descriptions if just reformatting the name
-> 
-> Andreas Kemnade (1):
->   MAINTAINERS: add board bindings list to OMAP2+ files
-> 
-> Andrew Davis (1):
->   dt-bindings: omap: Partially convert omap.txt to yaml
-> 
->  .../devicetree/bindings/arm/omap/omap.txt     |  99 ----------
->  .../devicetree/bindings/arm/ti/omap.yaml      | 176 ++++++++++++++++++
->  MAINTAINERS                                   |   1 +
->  3 files changed, 177 insertions(+), 99 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/arm/ti/omap.yaml
-> 
+Best regards,
+Krzysztof
 
