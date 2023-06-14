@@ -2,165 +2,206 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A633B730166
-	for <lists+linux-omap@lfdr.de>; Wed, 14 Jun 2023 16:13:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AFCE3730B54
+	for <lists+linux-omap@lfdr.de>; Thu, 15 Jun 2023 01:17:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236812AbjFNONQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 14 Jun 2023 10:13:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41960 "EHLO
+        id S234969AbjFNXRC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 14 Jun 2023 19:17:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235340AbjFNONP (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 14 Jun 2023 10:13:15 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D255CD;
-        Wed, 14 Jun 2023 07:13:14 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id E695921A27;
-        Wed, 14 Jun 2023 14:13:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1686751992; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=AXWk6CUvSgl2P4YJqAhXvTVbwqxUPGzo3E+LIQWooSI=;
-        b=Uzm0HlGQ0v+BDSs40EBKzyurOvOS9Jev8U90j1YhQzVpaUHMOwQ9eQl5TsE6Ub/k1khjm0
-        I2t7De+ZDz+yghYtyxDGJDOzkkTOebOlI1zUcfJwRLkAsu0INteoflheEP6ae4I8/IP9mP
-        JvCZDVHceToTHPL3qp+24NEQHmMOFMw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1686751992;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=AXWk6CUvSgl2P4YJqAhXvTVbwqxUPGzo3E+LIQWooSI=;
-        b=tyKL14vhY7af13xcxWb/qt2Bg82IxT03rMqZnPv6npmXGpKMuCWJ1p61BtBeYdFgFN72s5
-        0tJhND7fkwjTBrAg==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 8BD461391E;
-        Wed, 14 Jun 2023 14:13:12 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id M+YTIfjKiWTCdAAAMHmgww
-        (envelope-from <tzimmermann@suse.de>); Wed, 14 Jun 2023 14:13:12 +0000
-Message-ID: <5720dbc1-a3e4-2b23-28cd-f889d3a5a4fc@suse.de>
-Date:   Wed, 14 Jun 2023 16:13:11 +0200
+        with ESMTP id S233697AbjFNXQ7 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 14 Jun 2023 19:16:59 -0400
+Received: from mail-io1-f42.google.com (mail-io1-f42.google.com [209.85.166.42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F342295D;
+        Wed, 14 Jun 2023 16:16:18 -0700 (PDT)
+Received: by mail-io1-f42.google.com with SMTP id ca18e2360f4ac-777a78739ccso395088839f.3;
+        Wed, 14 Jun 2023 16:16:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686784543; x=1689376543;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=W6h1SH+KPupH0y0aqvJqt12V2TdAsnl1nbLJ9iHmf7o=;
+        b=c9mO3cZc9HIdEEAwryrFM3HCOSlQl9hsjiX6xewL8ai2zO153ZPR0gc1RHCMBs3gVj
+         Kz/Zjk0xZymBn5As4Pc8ITrjXtasO/t9zAVPmkbhMCTOTvhobKaSVCzWJw2KMDDZaHlt
+         0y8DaP7sv1MBMsdXbJUJaLf56Jn3ycg01kRfRmaniM/Jjsl8SXLHMXnOs6malf6uVpwN
+         L0FFkf9e86a2U0i6TnyH8K6Ws1CgvNecHySjlItBCe74UVXuSluLBTlcxavFpXxdVk4i
+         oYn0kMKmHPJbOSeKEdQRN1kUVYSZuvlJkSA9ICVL4zQJCWs6ooIjvQJcATwRY/dxbxdd
+         BKnw==
+X-Gm-Message-State: AC+VfDzvOKS3TPP4lTJMvLfryR00Rckq/pwHUDuCdNAadJ+yzN/SZnO4
+        46vwnklClq6OLNYB5tIarJfNkhlySw==
+X-Google-Smtp-Source: ACHHUZ7wQeyYnIwDBLnmBdri7Vyhsn6rPMIrim2mugZblLdL62WV8QD9wkuKJT5uzWp1PU2osL8HPA==
+X-Received: by 2002:a05:6602:196:b0:777:b7f9:18f1 with SMTP id m22-20020a056602019600b00777b7f918f1mr16682656ioo.17.1686784542761;
+        Wed, 14 Jun 2023 16:15:42 -0700 (PDT)
+Received: from robh_at_kernel.org ([64.188.179.250])
+        by smtp.gmail.com with ESMTPSA id f13-20020a5ec60d000000b007749b74ab18sm5680520iok.15.2023.06.14.16.15.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Jun 2023 16:15:41 -0700 (PDT)
+Received: (nullmailer pid 3103614 invoked by uid 1000);
+        Wed, 14 Jun 2023 23:15:39 -0000
+Date:   Wed, 14 Jun 2023 17:15:38 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc:     MyungJoo Ham <myungjoo.ham@samsung.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        devicetree@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+        linux-rockchip@lists.infradead.org
+Subject: Re: [PATCH 1/3] dt-bindings: extcon-usb-gpio: convert to DT schema
+ format
+Message-ID: <20230614231538.GA3075226-robh@kernel.org>
+References: <20230608081153.441455-1-alexander.stein@ew.tq-group.com>
+ <5217a54e-353b-bd48-68fa-d2104accfeb9@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.2
-Subject: Re: [PATCH v3 01/38] backlight/bd6107: Compare against struct
- fb_info.device
-Content-Language: en-US
-To:     Lee Jones <lee@kernel.org>
-Cc:     daniel@ffwll.ch, javierm@redhat.com, sam@ravnborg.org,
-        deller@gmx.de, geert+renesas@glider.be, daniel.thompson@linaro.org,
-        jingoohan1@gmail.com, dan.carpenter@linaro.org,
-        michael.j.ruhl@intel.com, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-sh@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-staging@lists.linux.dev,
-        linux-kernel@vger.kernel.org,
-        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-        stable@vger.kernel.org
-References: <20230613110953.24176-1-tzimmermann@suse.de>
- <20230613110953.24176-2-tzimmermann@suse.de>
- <20230614135157.GU3635807@google.com>
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-In-Reply-To: <20230614135157.GU3635807@google.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------jFKBPLLaVKDIAocIfs4ThSlI"
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5217a54e-353b-bd48-68fa-d2104accfeb9@linaro.org>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------jFKBPLLaVKDIAocIfs4ThSlI
-Content-Type: multipart/mixed; boundary="------------qMR6e1eJ6r4sR49vitWQ2hp2";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Lee Jones <lee@kernel.org>
-Cc: daniel@ffwll.ch, javierm@redhat.com, sam@ravnborg.org, deller@gmx.de,
- geert+renesas@glider.be, daniel.thompson@linaro.org, jingoohan1@gmail.com,
- dan.carpenter@linaro.org, michael.j.ruhl@intel.com,
- linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-sh@vger.kernel.org, linux-omap@vger.kernel.org,
- linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
- Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
- stable@vger.kernel.org
-Message-ID: <5720dbc1-a3e4-2b23-28cd-f889d3a5a4fc@suse.de>
-Subject: Re: [PATCH v3 01/38] backlight/bd6107: Compare against struct
- fb_info.device
-References: <20230613110953.24176-1-tzimmermann@suse.de>
- <20230613110953.24176-2-tzimmermann@suse.de>
- <20230614135157.GU3635807@google.com>
-In-Reply-To: <20230614135157.GU3635807@google.com>
+On Mon, Jun 12, 2023 at 10:29:16AM +0200, Krzysztof Kozlowski wrote:
+> On 08/06/2023 10:11, Alexander Stein wrote:
+> > Convert the binding to DT schema format. Change the GPIO properties to new
+> > naming convention using -gpios as well.
+> > 
+> > Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> > ---
+> >  .../bindings/extcon/extcon-usb-gpio.txt       | 21 --------
+> >  .../bindings/extcon/extcon-usb-gpio.yaml      | 52 +++++++++++++++++++
+> >  2 files changed, 52 insertions(+), 21 deletions(-)
+> >  delete mode 100644 Documentation/devicetree/bindings/extcon/extcon-usb-gpio.txt
+> >  create mode 100644 Documentation/devicetree/bindings/extcon/extcon-usb-gpio.yaml
+> > 
+> > diff --git a/Documentation/devicetree/bindings/extcon/extcon-usb-gpio.txt b/Documentation/devicetree/bindings/extcon/extcon-usb-gpio.txt
+> > deleted file mode 100644
+> > index dfc14f71e81fb..0000000000000
+> > --- a/Documentation/devicetree/bindings/extcon/extcon-usb-gpio.txt
+> > +++ /dev/null
+> > @@ -1,21 +0,0 @@
+> > -USB GPIO Extcon device
+> > -
+> > -This is a virtual device used to generate USB cable states from the USB ID pin
+> > -connected to a GPIO pin.
+> > -
+> > -Required properties:
+> > -- compatible: Should be "linux,extcon-usb-gpio"
+> > -
+> > -Either one of id-gpio or vbus-gpio must be present. Both can be present as well.
+> > -- id-gpio: gpio for USB ID pin. See gpio binding.
+> > -- vbus-gpio: gpio for USB VBUS pin.
+> > -
+> > -Example: Examples of extcon-usb-gpio node in dra7-evm.dts as listed below:
+> > -	extcon_usb1 {
+> > -		compatible = "linux,extcon-usb-gpio";
+> > -		id-gpio = <&gpio6 1 GPIO_ACTIVE_HIGH>;
+> > -	}
+> > -
+> > -	&omap_dwc3_1 {
+> > -		extcon = <&extcon_usb1>;
+> > -	};
+> > diff --git a/Documentation/devicetree/bindings/extcon/extcon-usb-gpio.yaml b/Documentation/devicetree/bindings/extcon/extcon-usb-gpio.yaml
+> > new file mode 100644
+> > index 0000000000000..3a71d848dc7a8
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/extcon/extcon-usb-gpio.yaml
+> > @@ -0,0 +1,52 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/extcon/extcon-usb-gpio.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: USB GPIO Extcon device
+> > +
+> > +maintainers:
+> > +  - Alexander Stein <alexander.stein@ew.tq-group.com>
+> > +
+> > +description: |
 
---------------qMR6e1eJ6r4sR49vitWQ2hp2
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+Don't need '|'
 
-SGkNCg0KQW0gMTQuMDYuMjMgdW0gMTU6NTEgc2NocmllYiBMZWUgSm9uZXM6DQo+IE9uIFR1
-ZSwgMTMgSnVuIDIwMjMsIFRob21hcyBaaW1tZXJtYW5uIHdyb3RlOg0KPiANCj4+IFN0cnVj
-dCBiZDYxMDdfcGxhdGZvcm1fZGF0YSByZWZlcnMgdG8gYSBwbGF0Zm9ybSBkZXZpY2Ugd2l0
-aGluDQo+PiB0aGUgTGludXggZGV2aWNlIGhpZXJhcmNoeS4gVGhlIHRlc3QgaW4gYmQ2MTA3
-X2JhY2tsaWdodF9jaGVja19mYigpDQo+PiBjb21wYXJlcyBpdCBhZ2FpbnN0IHRoZSBmYmRl
-diBkZXZpY2UgaW4gc3RydWN0IGZiX2luZm8uZGV2LCB3aGljaA0KPj4gaXMgZGlmZmVyZW50
-LiBGaXggdGhlIHRlc3QgYnkgY29tcGFyaW5nIHRvIHN0cnVjdCBmYl9pbmZvLmRldmljZS4N
-Cj4+DQo+PiBGaXhlcyBhIGJ1ZyBpbiB0aGUgYmFja2xpZ2h0IGRyaXZlciBhbmQgcHJlcGFy
-ZXMgZmJkZXYgZm9yIG1ha2luZw0KPj4gc3RydWN0IGZiX2luZm8uZGV2IG9wdGlvbmFsLg0K
-Pj4NCj4+IHYyOg0KPj4gCSogbW92ZSByZW5hbWVzIGludG8gc2VwYXJhdGUgcGF0Y2ggKEph
-dmllciwgU2FtLCBNaWNoYWVsKQ0KPj4NCj4+IEZpeGVzOiA2N2I0M2U1OTA0MTUgKCJiYWNr
-bGlnaHQ6IEFkZCBST0hNIEJENjEwNyBiYWNrbGlnaHQgZHJpdmVyIikNCj4+IFNpZ25lZC1v
-ZmYtYnk6IFRob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPg0KPj4gQ2M6
-IExhdXJlbnQgUGluY2hhcnQgPGxhdXJlbnQucGluY2hhcnQrcmVuZXNhc0BpZGVhc29uYm9h
-cmQuY29tPg0KPj4gQ2M6IExlZSBKb25lcyA8bGVlQGtlcm5lbC5vcmc+DQo+PiBDYzogRGFu
-aWVsIFRob21wc29uIDxkYW5pZWwudGhvbXBzb25AbGluYXJvLm9yZz4NCj4+IENjOiBKaW5n
-b28gSGFuIDxqaW5nb29oYW4xQGdtYWlsLmNvbT4NCj4+IENjOiBkcmktZGV2ZWxAbGlzdHMu
-ZnJlZWRlc2t0b3Aub3JnDQo+PiBDYzogPHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmc+ICMgdjMu
-MTIrDQo+PiBSZXZpZXdlZC1ieTogSmF2aWVyIE1hcnRpbmV6IENhbmlsbGFzIDxqYXZpZXJt
-QHJlZGhhdC5jb20+DQo+PiBSZXZpZXdlZC1ieTogU2FtIFJhdm5ib3JnIDxzYW1AcmF2bmJv
-cmcub3JnPg0KPj4gUmV2aWV3ZWQtYnk6IERhbmllbCBUaG9tcHNvbiA8ZGFuaWVsLnRob21w
-c29uQGxpbmFyby5vcmc+DQo+PiAtLS0NCj4+ICAgZHJpdmVycy92aWRlby9iYWNrbGlnaHQv
-YmQ2MTA3LmMgfCAyICstDQo+PiAgIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwg
-MSBkZWxldGlvbigtKQ0KPiANCj4gQ2FuIHRoZSBCYWNrbGlnaHQgcGF0Y2hlcyBiZSBhcHBs
-aWVkIHdpdGhvdXQgdGhlIG90aGVycyBhbmQgdmlzYSB2ZXJzYT8NCg0KVW5mb3J0dW5hdGVs
-eSBub3QuIFRoZSByZXN0IG9mIHRoZSBzZXJpZXMgcmVxdWlyZXMgdGhlIGJhY2tsaWdodCBw
-YXRjaGVzLg0KDQpCZXN0IHJlZ2FyZHMNClRob21hcw0KDQo+IA0KDQotLSANClRob21hcyBa
-aW1tZXJtYW5uDQpHcmFwaGljcyBEcml2ZXIgRGV2ZWxvcGVyDQpTVVNFIFNvZnR3YXJlIFNv
-bHV0aW9ucyBHZXJtYW55IEdtYkgNCkZyYW5rZW5zdHJhc3NlIDE0NiwgOTA0NjEgTnVlcm5i
-ZXJnLCBHZXJtYW55DQpHRjogSXZvIFRvdGV2LCBBbmRyZXcgTXllcnMsIEFuZHJldyBNY0Rv
-bmFsZCwgQm91ZGllbiBNb2VybWFuDQpIUkIgMzY4MDkgKEFHIE51ZXJuYmVyZykNCg==
+> > +  This is a virtual device used to generate USB cable states from the
+> > +  USB ID pin connected to a GPIO pin.
 
---------------qMR6e1eJ6r4sR49vitWQ2hp2--
+Please add 'deprecated: true' here. New designs should use a USB 
+connector node binding.
 
---------------jFKBPLLaVKDIAocIfs4ThSlI
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
+> > +
+> > +properties:
+> > +  compatible:
+> > +    const: linux,extcon-usb-gpio
+> > +
+> > +  id-gpios:
+> > +    description: An input gpio for USB ID pin.
+> > +    maxItems: 1
+> > +
+> > +  vbus-gpios:
+> > +    description: An input gpio for USB VBus pin, used to detect presence of
+> > +      VBUS 5V.
+> > +    maxItems: 1
+> > +
+> > +required:
+> > +  - compatible
+> > +
+> > +anyOf:
+> 
+> oneOf instead
 
------BEGIN PGP SIGNATURE-----
+anyOf is correct. Both can be present.
 
-wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmSJyvcFAwAAAAAACgkQlh/E3EQov+DO
-uhAAsRBpTfNB2nRslH0VsoSwy6Po5YGk5E4vLJymwShH9bCMu2X+HxfG2JUWFVz7+LXPm/MYwZze
-0NAeaWjs2ft9FCSEzYVlCnhkpjZsa2Gf1u79S3ZMJHTWuacUji/M2mL2IZZCtG+EsCJmHPqWP+oI
-RRmzkZF3VLjE4nu8AKqSUF8P9d4CjOoTy7iUHhZ/OuAYv1pdHlJ6nLUv4m0gwsizgJNcF4Z9LeCa
-oqAVidYe/TebhOgC6rv3C5gTZnMoBfT9ICYFrGhLUKublhYI+xFGkYk5sx6vQLMJXwSMNu7KK4L+
-g4uoytQwFdTF+H1IhZS3ZQ3Le+9yX3HrQ82qqzKgKcTX370CCvX+qbC+EzcRzp6C2gyVkyMMTOVm
-Rvugdp+Z5CLyMyd6YW3IrGnitajR1ZyM7oTuJNuVV6ErLbKsX0DV0pAwu5u/Ai3adOvuXcrzZV9f
-pAbMBx7lXfMdy+3vVOQDyhoS5LltgbwcPq/yBZXLJkd6KtwFLNCqPYzPu0JzeVK5/Bb+ACsnA1be
-6hq9h8Ga3DHeGNrQ9yU92vSfVF9PUC68y2Ei5sobO2WtgwtG9tG4XYexbumRo1waMuseZ9c+LS1s
-0guFuxEWPTz4Kf96yXCzDPmz8NZ+reH2c+QqTlTnspHykEdA2O3QA5EHH4BFPSku3Ya0SX+LRkBE
-Fek=
-=elwI
------END PGP SIGNATURE-----
-
---------------jFKBPLLaVKDIAocIfs4ThSlI--
+> 
+> > +  - required:
+> > +      - id-gpios
+> > +  - required:
+> > +      - vbus-gpios
+> > +
+> > +additionalProperties: false
+> > +
+> > +examples:
+> > +  - |
+> > +    #include <dt-bindings/gpio/gpio.h>
+> > +
+> > +    extcon_usb1 {
+> 
+> No underscores, generic node names, so just "extcon-usb"
+> 
+> > +      compatible = "linux,extcon-usb-gpio";
+> > +      id-gpios = <&gpio6 1 GPIO_ACTIVE_HIGH>;
+> > +      vbus-gpios = <&gpio6 2 GPIO_ACTIVE_HIGH>;
+> > +    };
+> > +
+> > +    usb-controller {
+> > +      extcon = <&extcon_usb1>;
+> > +    };
+> 
+> Drop controller, no need to add consumers in a provider's binding.
+> 
+> Best regards,
+> Krzysztof
+> 
