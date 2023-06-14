@@ -2,37 +2,37 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0522F72F751
-	for <lists+linux-omap@lfdr.de>; Wed, 14 Jun 2023 10:05:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EEF0F72F768
+	for <lists+linux-omap@lfdr.de>; Wed, 14 Jun 2023 10:08:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230303AbjFNIFo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 14 Jun 2023 04:05:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40468 "EHLO
+        id S243540AbjFNIIs (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 14 Jun 2023 04:08:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43468 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243113AbjFNIFl (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 14 Jun 2023 04:05:41 -0400
+        with ESMTP id S243553AbjFNIIf (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 14 Jun 2023 04:08:35 -0400
 Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id CC67B13E;
-        Wed, 14 Jun 2023 01:05:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 530701FCC;
+        Wed, 14 Jun 2023 01:08:09 -0700 (PDT)
 Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 29C6C8027;
-        Wed, 14 Jun 2023 08:05:35 +0000 (UTC)
-Date:   Wed, 14 Jun 2023 11:05:33 +0300
+        by muru.com (Postfix) with ESMTPS id B59988027;
+        Wed, 14 Jun 2023 08:07:41 +0000 (UTC)
+Date:   Wed, 14 Jun 2023 11:07:40 +0300
 From:   Tony Lindgren <tony@atomide.com>
-To:     Rob Herring <robh@kernel.org>
-Cc:     =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        Paul Walmsley <paul@pwsan.com>,
-        Russell King <linux@armlinux.org.uk>,
+To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc:     Russell King <linux@armlinux.org.uk>,
+        Peter 'p2' De Schrijver <peter.de-schrijver@nokia.com>,
+        Kevin Hilman <khilman@deeprootsystems.com>,
         linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ARM: omap2: Use of_range_to_resource() for "ranges"
- parsing
-Message-ID: <20230614080533.GG14287@atomide.com>
-References: <20230609183252.1767487-1-robh@kernel.org>
+        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: Re: [PATCH][next] ARM: OMAP2+: Fix -Warray-bounds warning in
+ _pwrdm_state_switch()
+Message-ID: <20230614080740.GH14287@atomide.com>
+References: <ZIFVGwImU3kpaGeH@work>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230609183252.1767487-1-robh@kernel.org>
+In-Reply-To: <ZIFVGwImU3kpaGeH@work>
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
@@ -42,11 +42,21 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Rob Herring <robh@kernel.org> [230609 21:33]:
-> "ranges" is a standard property with common parsing functions. Users
-> shouldn't be implementing their own parsing of it. Use the recently
-> added of_range_to_resource() function instead for OMAP hwmod.
+* Gustavo A. R. Silva <gustavoars@kernel.org> [230608 07:11]:
+> If function pwrdm_read_prev_pwrst() returns -EINVAL, we will end
+> up accessing array pwrdm->state_counter through negative index
+> -22. This is wrong and the compiler is legitimately warning us
+> about this potential problem.
+> 
+> Fix this by sanity checking the value stored in variable _prev_
+> before accessing array pwrdm->state_counter.
+> 
+> Address the following -Warray-bounds warning:
+> arch/arm/mach-omap2/powerdomain.c:178:45: warning: array subscript -22 is below array bounds of 'unsigned int[4]' [-Warray-bounds]
 
-Thanks applying into omap-for-v6.5/cleanup.
+Thanks applying into omap-for-v6.5/cleanup, seems this can wait
+for the merge window.
+
+Regards,
 
 Tony
