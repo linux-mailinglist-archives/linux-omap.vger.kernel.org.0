@@ -2,40 +2,40 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FD8C731BFF
-	for <lists+linux-omap@lfdr.de>; Thu, 15 Jun 2023 16:59:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A46F4731C03
+	for <lists+linux-omap@lfdr.de>; Thu, 15 Jun 2023 16:59:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240856AbjFOO66 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 15 Jun 2023 10:58:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40432 "EHLO
+        id S1343674AbjFOO7A (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 15 Jun 2023 10:59:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40436 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344302AbjFOO6p (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 15 Jun 2023 10:58:45 -0400
+        with ESMTP id S244879AbjFOO6r (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 15 Jun 2023 10:58:47 -0400
 Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77E1C2959;
-        Thu, 15 Jun 2023 07:58:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C6AA2964;
+        Thu, 15 Jun 2023 07:58:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1686841121; x=1718377121;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=zgfCGkjFE32Qyv+c8tjvbMyhW7/rTfwjuyV/vvuXDWE=;
-  b=M24yxVr82HDQ5H0j2LDd3i71i+Kr5wDyyC8YsrG795wztQUWFAdZZZXE
-   CxIhNFbm6jq8NstPShIHph+irQ/9d2aAxSjvvEevjdcrF2EEw8Lv7ypbl
-   /cwR/gs5aeQZoZCFs/6O+FVtHevmr+WGyutaTrjlP327fV2GJ58TQrF25
-   DojntEd5g8c/CrEz4vyY1sz8yZBYY/KqmJbEgbBKDlq4YwyZN1umzk1Tn
-   t+e+bH+VK0bV3cAopVNM+8VwXK24f8l8see7VCXDsT87+VvKKE9AM5YZg
-   pphI2mBZ95g4QQd58iJnYEMFQpqqxPIkDz/FKico7ImlMWF8Y0IMpknoe
-   g==;
+  t=1686841125; x=1718377125;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=fwIpw1kBoGzwnr4u38UFEGe+NM5XQoO6XRmgydwFiVg=;
+  b=f+P4OezTwM/18JbHLSDLYQ2itn2P9xsm/q/EufD32LKPpXAZaxVULkSW
+   MRv6trX89tdrbxwZeSJgUwlQpZ46w+Oe0qSCl5afwODOkX7Tl/M9mlHuN
+   7IMuWd1OE2ZAcgDlDvHQ8fXDBsOsk7Qa7h8JMSXBR0+qms3RP4qLrgNYK
+   8Ce+JS6iyocRCAzfldKB7G/bVRgBxLCK5vA/Hyn8DsHtoLezHHkXJeJ3E
+   5tTztv485K66pxkwxi1TQvbXA72m4d3GwaMKmMeXWJlh5vTk8w3+xs1wF
+   4w4oFEIKMHFRtXJ4o2+uDNA7R6UH+akxMf8KQ6wN+ea1fyM43Khq9uMfv
+   w==;
 X-IronPort-AV: E=Sophos;i="6.00,245,1681164000"; 
-   d="scan'208";a="31453606"
+   d="scan'208";a="31453607"
 Received: from vtuxmail01.tq-net.de ([10.115.0.20])
-  by mx1.tq-group.com with ESMTP; 15 Jun 2023 16:58:38 +0200
+  by mx1.tq-group.com with ESMTP; 15 Jun 2023 16:58:39 +0200
 Received: from steina-w.tq-net.de (unknown [10.123.53.21])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by vtuxmail01.tq-net.de (Postfix) with ESMTPSA id 307A8280084;
+        by vtuxmail01.tq-net.de (Postfix) with ESMTPSA id 94CCC280085;
         Thu, 15 Jun 2023 16:58:38 +0200 (CEST)
 From:   Alexander Stein <alexander.stein@ew.tq-group.com>
 To:     MyungJoo Ham <myungjoo.ham@samsung.com>,
@@ -62,10 +62,12 @@ Cc:     Alexander Stein <alexander.stein@ew.tq-group.com>,
         linux-arm-kernel@lists.infradead.org,
         linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
         linux-rockchip@lists.infradead.org
-Subject: [PATCH v2 1/3] dt-bindings: extcon-usb-gpio: convert to DT schema format
-Date:   Thu, 15 Jun 2023 16:58:36 +0200
-Message-Id: <20230615145838.1526919-1-alexander.stein@ew.tq-group.com>
+Subject: [PATCH v2 2/3] ARM: dts: Replace deprecated extcon-usb-gpio id-gpio/vbus-gpio properties
+Date:   Thu, 15 Jun 2023 16:58:37 +0200
+Message-Id: <20230615145838.1526919-2-alexander.stein@ew.tq-group.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230615145838.1526919-1-alexander.stein@ew.tq-group.com>
+References: <20230615145838.1526919-1-alexander.stein@ew.tq-group.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -77,107 +79,164 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Convert the binding to DT schema format. Change the GPIO properties to new
-naming convention using -gpios as well.
+Use id-gpios and vbus-gpios instead.
 
 Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 ---
-Changes in v2:
-* Mark extcon-usb-gpio as deprecated
-* Fix YAML format
-* Fix example node
-* Remove unneeded consumer node in example
+ arch/arm/boot/dts/am571x-idk.dts          | 4 ++--
+ arch/arm/boot/dts/am5729-beagleboneai.dts | 2 +-
+ arch/arm/boot/dts/am572x-idk-common.dtsi  | 4 ++--
+ arch/arm/boot/dts/dra7-evm-common.dtsi    | 4 ++--
+ arch/arm/boot/dts/dra71-evm.dts           | 4 ++--
+ arch/arm/boot/dts/dra72-evm-common.dtsi   | 4 ++--
+ arch/arm/boot/dts/dra76-evm.dts           | 4 ++--
+ arch/arm/boot/dts/imx6qdl-colibri.dtsi    | 2 +-
+ arch/arm/boot/dts/imx7-colibri.dtsi       | 2 +-
+ 9 files changed, 15 insertions(+), 15 deletions(-)
 
- .../bindings/extcon/extcon-usb-gpio.txt       | 21 --------
- .../bindings/extcon/extcon-usb-gpio.yaml      | 51 +++++++++++++++++++
- 2 files changed, 51 insertions(+), 21 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/extcon/extcon-usb-gpio.txt
- create mode 100644 Documentation/devicetree/bindings/extcon/extcon-usb-gpio.yaml
-
-diff --git a/Documentation/devicetree/bindings/extcon/extcon-usb-gpio.txt b/Documentation/devicetree/bindings/extcon/extcon-usb-gpio.txt
-deleted file mode 100644
-index dfc14f71e81fb..0000000000000
---- a/Documentation/devicetree/bindings/extcon/extcon-usb-gpio.txt
-+++ /dev/null
-@@ -1,21 +0,0 @@
--USB GPIO Extcon device
--
--This is a virtual device used to generate USB cable states from the USB ID pin
--connected to a GPIO pin.
--
--Required properties:
--- compatible: Should be "linux,extcon-usb-gpio"
--
--Either one of id-gpio or vbus-gpio must be present. Both can be present as well.
--- id-gpio: gpio for USB ID pin. See gpio binding.
--- vbus-gpio: gpio for USB VBUS pin.
--
--Example: Examples of extcon-usb-gpio node in dra7-evm.dts as listed below:
--	extcon_usb1 {
--		compatible = "linux,extcon-usb-gpio";
--		id-gpio = <&gpio6 1 GPIO_ACTIVE_HIGH>;
--	}
--
--	&omap_dwc3_1 {
--		extcon = <&extcon_usb1>;
--	};
-diff --git a/Documentation/devicetree/bindings/extcon/extcon-usb-gpio.yaml b/Documentation/devicetree/bindings/extcon/extcon-usb-gpio.yaml
-new file mode 100644
-index 0000000000000..136f865b87816
---- /dev/null
-+++ b/Documentation/devicetree/bindings/extcon/extcon-usb-gpio.yaml
-@@ -0,0 +1,51 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/extcon/extcon-usb-gpio.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: USB GPIO Extcon device
-+
-+maintainers:
-+  - Alexander Stein <alexander.stein@ew.tq-group.com>
-+
-+description:
-+  This is a virtual device used to generate USB cable states from the
-+  USB ID pin connected to a GPIO pin.
-+  Deprecated, use USB connector node instead.
-+
-+deprecated: true
-+
-+properties:
-+  compatible:
-+    const: linux,extcon-usb-gpio
-+
-+  id-gpios:
-+    description: An input gpio for USB ID pin.
-+    maxItems: 1
-+
-+  vbus-gpios:
-+    description: An input gpio for USB VBus pin, used to detect presence of
-+      VBUS 5V.
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+
-+anyOf:
-+  - required:
-+      - id-gpios
-+  - required:
-+      - vbus-gpios
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/gpio/gpio.h>
-+
-+    extcon-usb1 {
-+      compatible = "linux,extcon-usb-gpio";
-+      id-gpios = <&gpio6 1 GPIO_ACTIVE_HIGH>;
-+      vbus-gpios = <&gpio6 2 GPIO_ACTIVE_HIGH>;
-+    };
+diff --git a/arch/arm/boot/dts/am571x-idk.dts b/arch/arm/boot/dts/am571x-idk.dts
+index 48425020281a9..322cf79d22e99 100644
+--- a/arch/arm/boot/dts/am571x-idk.dts
++++ b/arch/arm/boot/dts/am571x-idk.dts
+@@ -168,8 +168,8 @@ blue3-led {
+ };
+ 
+ &extcon_usb2 {
+-	id-gpio = <&gpio5 7 GPIO_ACTIVE_HIGH>;
+-	vbus-gpio = <&gpio7 22 GPIO_ACTIVE_HIGH>;
++	id-gpios = <&gpio5 7 GPIO_ACTIVE_HIGH>;
++	vbus-gpios = <&gpio7 22 GPIO_ACTIVE_HIGH>;
+ };
+ 
+ &sn65hvs882 {
+diff --git a/arch/arm/boot/dts/am5729-beagleboneai.dts b/arch/arm/boot/dts/am5729-beagleboneai.dts
+index 149cfafb90bfc..c5272302eb11a 100644
+--- a/arch/arm/boot/dts/am5729-beagleboneai.dts
++++ b/arch/arm/boot/dts/am5729-beagleboneai.dts
+@@ -197,7 +197,7 @@ brcmf_pwrseq: brcmf_pwrseq {
+ 	extcon_usb1: extcon_usb1 {
+ 		compatible = "linux,extcon-usb-gpio";
+ 		ti,enable-id-detection;
+-		id-gpio = <&gpio3 13 GPIO_ACTIVE_HIGH>;
++		id-gpios = <&gpio3 13 GPIO_ACTIVE_HIGH>;
+ 	};
+ };
+ 
+diff --git a/arch/arm/boot/dts/am572x-idk-common.dtsi b/arch/arm/boot/dts/am572x-idk-common.dtsi
+index 1d66278c3a722..3fca84819dc0c 100644
+--- a/arch/arm/boot/dts/am572x-idk-common.dtsi
++++ b/arch/arm/boot/dts/am572x-idk-common.dtsi
+@@ -169,8 +169,8 @@ blue3-led {
+ };
+ 
+ &extcon_usb2 {
+-	id-gpio = <&gpio3 16 GPIO_ACTIVE_HIGH>;
+-	vbus-gpio = <&gpio3 26 GPIO_ACTIVE_HIGH>;
++	id-gpios = <&gpio3 16 GPIO_ACTIVE_HIGH>;
++	vbus-gpios = <&gpio3 26 GPIO_ACTIVE_HIGH>;
+ };
+ 
+ &sn65hvs882 {
+diff --git a/arch/arm/boot/dts/dra7-evm-common.dtsi b/arch/arm/boot/dts/dra7-evm-common.dtsi
+index 4cdffd6db7407..ed5199d7acd84 100644
+--- a/arch/arm/boot/dts/dra7-evm-common.dtsi
++++ b/arch/arm/boot/dts/dra7-evm-common.dtsi
+@@ -15,12 +15,12 @@ chosen {
+ 
+ 	extcon_usb1: extcon_usb1 {
+ 		compatible = "linux,extcon-usb-gpio";
+-		id-gpio = <&pcf_gpio_21 1 GPIO_ACTIVE_HIGH>;
++		id-gpios = <&pcf_gpio_21 1 GPIO_ACTIVE_HIGH>;
+ 	};
+ 
+ 	extcon_usb2: extcon_usb2 {
+ 		compatible = "linux,extcon-usb-gpio";
+-		id-gpio = <&pcf_gpio_21 2 GPIO_ACTIVE_HIGH>;
++		id-gpios = <&pcf_gpio_21 2 GPIO_ACTIVE_HIGH>;
+ 	};
+ 
+ 	sound0: sound0 {
+diff --git a/arch/arm/boot/dts/dra71-evm.dts b/arch/arm/boot/dts/dra71-evm.dts
+index a643644430315..f747ac56eb927 100644
+--- a/arch/arm/boot/dts/dra71-evm.dts
++++ b/arch/arm/boot/dts/dra71-evm.dts
+@@ -293,11 +293,11 @@ &hdmi {
+ };
+ 
+ &extcon_usb1 {
+-	vbus-gpio = <&pcf_lcd 14 GPIO_ACTIVE_HIGH>;
++	vbus-gpios = <&pcf_lcd 14 GPIO_ACTIVE_HIGH>;
+ };
+ 
+ &extcon_usb2 {
+-	vbus-gpio = <&pcf_lcd 15 GPIO_ACTIVE_HIGH>;
++	vbus-gpios = <&pcf_lcd 15 GPIO_ACTIVE_HIGH>;
+ };
+ 
+ &ipu2 {
+diff --git a/arch/arm/boot/dts/dra72-evm-common.dtsi b/arch/arm/boot/dts/dra72-evm-common.dtsi
+index 31ab0c60ca75e..f8151c61488e1 100644
+--- a/arch/arm/boot/dts/dra72-evm-common.dtsi
++++ b/arch/arm/boot/dts/dra72-evm-common.dtsi
+@@ -96,12 +96,12 @@ evm_3v3_sd: fixedregulator-sd {
+ 
+ 	extcon_usb1: extcon_usb1 {
+ 		compatible = "linux,extcon-usb-gpio";
+-		id-gpio = <&pcf_gpio_21 1 GPIO_ACTIVE_HIGH>;
++		id-gpios = <&pcf_gpio_21 1 GPIO_ACTIVE_HIGH>;
+ 	};
+ 
+ 	extcon_usb2: extcon_usb2 {
+ 		compatible = "linux,extcon-usb-gpio";
+-		id-gpio = <&pcf_gpio_21 2 GPIO_ACTIVE_HIGH>;
++		id-gpios = <&pcf_gpio_21 2 GPIO_ACTIVE_HIGH>;
+ 	};
+ 
+ 	hdmi0: connector {
+diff --git a/arch/arm/boot/dts/dra76-evm.dts b/arch/arm/boot/dts/dra76-evm.dts
+index 57868ac60d298..cf9c3d35b0499 100644
+--- a/arch/arm/boot/dts/dra76-evm.dts
++++ b/arch/arm/boot/dts/dra76-evm.dts
+@@ -533,11 +533,11 @@ &pcie1_ep {
+ };
+ 
+ &extcon_usb1 {
+-	vbus-gpio = <&pcf_lcd 14 GPIO_ACTIVE_HIGH>;
++	vbus-gpios = <&pcf_lcd 14 GPIO_ACTIVE_HIGH>;
+ };
+ 
+ &extcon_usb2 {
+-	vbus-gpio = <&pcf_lcd 15 GPIO_ACTIVE_HIGH>;
++	vbus-gpios = <&pcf_lcd 15 GPIO_ACTIVE_HIGH>;
+ };
+ 
+ &m_can0 {
+diff --git a/arch/arm/boot/dts/imx6qdl-colibri.dtsi b/arch/arm/boot/dts/imx6qdl-colibri.dtsi
+index 5709957075044..11d9c7a2dacb1 100644
+--- a/arch/arm/boot/dts/imx6qdl-colibri.dtsi
++++ b/arch/arm/boot/dts/imx6qdl-colibri.dtsi
+@@ -26,7 +26,7 @@ backlight: backlight {
+ 
+ 	extcon_usbc_det: usbc-det {
+ 		compatible = "linux,extcon-usb-gpio";
+-		id-gpio = <&gpio7 12 GPIO_ACTIVE_HIGH>; /* SODIMM 137 / USBC_DET */
++		id-gpios = <&gpio7 12 GPIO_ACTIVE_HIGH>; /* SODIMM 137 / USBC_DET */
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&pinctrl_usbc_det>;
+ 	};
+diff --git a/arch/arm/boot/dts/imx7-colibri.dtsi b/arch/arm/boot/dts/imx7-colibri.dtsi
+index 104580d51d745..9fe51884af79f 100644
+--- a/arch/arm/boot/dts/imx7-colibri.dtsi
++++ b/arch/arm/boot/dts/imx7-colibri.dtsi
+@@ -29,7 +29,7 @@ chosen {
+ 
+ 	extcon_usbc_det: usbc-det {
+ 		compatible = "linux,extcon-usb-gpio";
+-		id-gpio = <&gpio7 14 GPIO_ACTIVE_HIGH>; /* SODIMM 137 / USBC_DET */
++		id-gpios = <&gpio7 14 GPIO_ACTIVE_HIGH>; /* SODIMM 137 / USBC_DET */
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&pinctrl_usbc_det>;
+ 	};
 -- 
 2.34.1
 
