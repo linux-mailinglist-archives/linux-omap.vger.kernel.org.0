@@ -2,236 +2,147 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 85B2B732ED0
-	for <lists+linux-omap@lfdr.de>; Fri, 16 Jun 2023 12:37:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00AE07333BD
+	for <lists+linux-omap@lfdr.de>; Fri, 16 Jun 2023 16:37:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345296AbjFPKh2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 16 Jun 2023 06:37:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56500 "EHLO
+        id S1344177AbjFPOhx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 16 Jun 2023 10:37:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345502AbjFPKfM (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 16 Jun 2023 06:35:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B5505FE0;
-        Fri, 16 Jun 2023 03:29:17 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        with ESMTP id S1344132AbjFPOhx (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 16 Jun 2023 10:37:53 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 630362D73;
+        Fri, 16 Jun 2023 07:37:52 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C015B6369D;
-        Fri, 16 Jun 2023 10:28:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E97AC433C8;
-        Fri, 16 Jun 2023 10:28:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686911313;
-        bh=3CbL4JijAxo+bsQDBGIBoVS7vhas3J5mZQDTE8VWiPg=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Fd3ew7+IyIRisALt15QvzVeLyf5CbEMTmHPz3GV1qRus68BHXKAyb5tcJ3iQEM35G
-         HAEPBFX3idHV74l+j0L6pKL1rKkTgyGaY5iqcaH8ycjLERwhkTZTA24ENdTpV9KQS6
-         IDJK8BXCDLqjT64fn9UOpNl9DtNoAlzb4b1xag6bNFAYSE+RzNII7uELQUqqwmlyL8
-         z4pdkF1LbZwpExgQIE9QB8WkqKBd5I0AQxZ6np6ZP5V9MHnkv0SELTqNMyYfBMILil
-         zdsyFELpqmU8ys1WLoh87IFgwCFZzqyCdoDRW++UTZIrgBosHBBSpmhYSurMcLQ2vz
-         Rhb/AxjHHz1mQ==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>, Sasha Levin <sashal@kernel.org>,
-        bcousson@baylibre.com, tony@atomide.com, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        nicolas.ferre@microchip.com, alexandre.belloni@bootlin.com,
-        claudiu.beznea@microchip.com, shawnguo@kernel.org,
-        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.4 4/8] ARM: dts: Fix erroneous ADS touchscreen polarities
-Date:   Fri, 16 Jun 2023 06:28:17 -0400
-Message-Id: <20230616102821.674153-4-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230616102821.674153-1-sashal@kernel.org>
-References: <20230616102821.674153-1-sashal@kernel.org>
+        by smtp-out1.suse.de (Postfix) with ESMTPS id 1203421BD7;
+        Fri, 16 Jun 2023 14:37:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1686926271; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=/pc5e01Az30d0Y7EOVtqX1ghgv8iymBCr4cTKd6NYVc=;
+        b=pxiGv5A2Uk44sRbQW8ymLZStrLHP4hKSsy0fjcizLCRTrfOsJG0muZR3LEEx8hedi2Y12c
+        UN/AmOPNHmjpHGLP/iSfI0oOSh599hdlydntQLyGKqzf04bxSwv3phpZ4hWZoW7Gyw4RhJ
+        16UYf+QqbKlh7hTKgcFgoNPyizpCKl8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1686926271;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=/pc5e01Az30d0Y7EOVtqX1ghgv8iymBCr4cTKd6NYVc=;
+        b=xbba1t2427WO4fkI830Ss7ilzxtJFad8dVD0KbNe0PbI0dCLW0VWSnO2LCR54TUdKusRHB
+        iSViPIkRyVy1g7Dw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 9CDB71330B;
+        Fri, 16 Jun 2023 14:37:50 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id z3+tJL5zjGRFaQAAMHmgww
+        (envelope-from <tzimmermann@suse.de>); Fri, 16 Jun 2023 14:37:50 +0000
+Message-ID: <9f74b8de-9a1b-2547-5eab-d4b4349a6a81@suse.de>
+Date:   Fri, 16 Jun 2023 16:37:49 +0200
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.247
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.2
+Subject: Re: [PATCH v3 01/38] backlight/bd6107: Compare against struct
+ fb_info.device
+Content-Language: en-US
+From:   Thomas Zimmermann <tzimmermann@suse.de>
+To:     Lee Jones <lee@kernel.org>
+Cc:     daniel.thompson@linaro.org,
+        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+        linux-kernel@vger.kernel.org, geert+renesas@glider.be,
+        linux-sh@vger.kernel.org, jingoohan1@gmail.com, deller@gmx.de,
+        linux-staging@lists.linux.dev, javierm@redhat.com,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        michael.j.ruhl@intel.com, stable@vger.kernel.org,
+        linux-omap@vger.kernel.org, sam@ravnborg.org,
+        dan.carpenter@linaro.org
+References: <20230613110953.24176-1-tzimmermann@suse.de>
+ <20230613110953.24176-2-tzimmermann@suse.de>
+ <20230614135157.GU3635807@google.com>
+ <5720dbc1-a3e4-2b23-28cd-f889d3a5a4fc@suse.de>
+In-Reply-To: <5720dbc1-a3e4-2b23-28cd-f889d3a5a4fc@suse.de>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------uqxf1PmsVcgGFzKAiF8s860m"
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Linus Walleij <linus.walleij@linaro.org>
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------uqxf1PmsVcgGFzKAiF8s860m
+Content-Type: multipart/mixed; boundary="------------Kge1wVVwVTDuGXE1lqDWar4A";
+ protected-headers="v1"
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: Lee Jones <lee@kernel.org>
+Cc: daniel.thompson@linaro.org,
+ Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+ linux-kernel@vger.kernel.org, geert+renesas@glider.be,
+ linux-sh@vger.kernel.org, jingoohan1@gmail.com, deller@gmx.de,
+ linux-staging@lists.linux.dev, javierm@redhat.com,
+ dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+ michael.j.ruhl@intel.com, stable@vger.kernel.org,
+ linux-omap@vger.kernel.org, sam@ravnborg.org, dan.carpenter@linaro.org
+Message-ID: <9f74b8de-9a1b-2547-5eab-d4b4349a6a81@suse.de>
+Subject: Re: [PATCH v3 01/38] backlight/bd6107: Compare against struct
+ fb_info.device
+References: <20230613110953.24176-1-tzimmermann@suse.de>
+ <20230613110953.24176-2-tzimmermann@suse.de>
+ <20230614135157.GU3635807@google.com>
+ <5720dbc1-a3e4-2b23-28cd-f889d3a5a4fc@suse.de>
+In-Reply-To: <5720dbc1-a3e4-2b23-28cd-f889d3a5a4fc@suse.de>
 
-[ Upstream commit 4a672d500bfd6bb87092c33d5a2572c3d0a1cf83 ]
+--------------Kge1wVVwVTDuGXE1lqDWar4A
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-Several device tree files get the polarity of the pendown-gpios
-wrong: this signal is active low. Fix up all incorrect flags, so
-that operating systems can rely on the flag being correctly set.
+SGkgTGVlDQoNCkFtIDE0LjA2LjIzIHVtIDE2OjEzIHNjaHJpZWIgVGhvbWFzIFppbW1lcm1h
+bm46DQpbLi4uXQ0KPj4gQ2FuIHRoZSBCYWNrbGlnaHQgcGF0Y2hlcyBiZSBhcHBsaWVkIHdp
+dGhvdXQgdGhlIG90aGVycyBhbmQgdmlzYSB2ZXJzYT8NCj4gDQo+IFVuZm9ydHVuYXRlbHkg
+bm90LiBUaGUgcmVzdCBvZiB0aGUgc2VyaWVzIHJlcXVpcmVzIHRoZSBiYWNrbGlnaHQgcGF0
+Y2hlcy4NCg0KQXJlIHlvdSBPSyB3aXRoIHRoZSBwYXRjaGVzIGdvaW5nIHRocm91Z2ggZHJt
+Pw0KDQpCZXN0IHJlZ2FyZHMNClRob21hcw0KDQo+IA0KPiBCZXN0IHJlZ2FyZHMNCj4gVGhv
+bWFzDQo+IA0KPj4NCj4gDQoNCi0tIA0KVGhvbWFzIFppbW1lcm1hbm4NCkdyYXBoaWNzIERy
+aXZlciBEZXZlbG9wZXINClNVU0UgU29mdHdhcmUgU29sdXRpb25zIEdlcm1hbnkgR21iSA0K
+RnJhbmtlbnN0cmFzc2UgMTQ2LCA5MDQ2MSBOdWVybmJlcmcsIEdlcm1hbnkNCkdGOiBJdm8g
+VG90ZXYsIEFuZHJldyBNeWVycywgQW5kcmV3IE1jRG9uYWxkLCBCb3VkaWVuIE1vZXJtYW4N
+CkhSQiAzNjgwOSAoQUcgTnVlcm5iZXJnKQ0K
 
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20230510105156.1134320-1-linus.walleij@linaro.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/arm/boot/dts/am57xx-cl-som-am57x.dts          | 2 +-
- arch/arm/boot/dts/at91sam9261ek.dts                | 2 +-
- arch/arm/boot/dts/imx7d-pico-hobbit.dts            | 2 +-
- arch/arm/boot/dts/imx7d-sdb.dts                    | 2 +-
- arch/arm/boot/dts/omap3-cm-t3x.dtsi                | 2 +-
- arch/arm/boot/dts/omap3-devkit8000-lcd-common.dtsi | 2 +-
- arch/arm/boot/dts/omap3-lilly-a83x.dtsi            | 2 +-
- arch/arm/boot/dts/omap3-overo-common-lcd35.dtsi    | 2 +-
- arch/arm/boot/dts/omap3-overo-common-lcd43.dtsi    | 2 +-
- arch/arm/boot/dts/omap3-pandora-common.dtsi        | 2 +-
- arch/arm/boot/dts/omap5-cm-t54.dts                 | 2 +-
- 11 files changed, 11 insertions(+), 11 deletions(-)
+--------------Kge1wVVwVTDuGXE1lqDWar4A--
 
-diff --git a/arch/arm/boot/dts/am57xx-cl-som-am57x.dts b/arch/arm/boot/dts/am57xx-cl-som-am57x.dts
-index e86d4795e0244..e542a9f59e936 100644
---- a/arch/arm/boot/dts/am57xx-cl-som-am57x.dts
-+++ b/arch/arm/boot/dts/am57xx-cl-som-am57x.dts
-@@ -527,7 +527,7 @@ touchscreen@1 {
- 
- 		interrupt-parent = <&gpio1>;
- 		interrupts = <31 0>;
--		pendown-gpio = <&gpio1 31 0>;
-+		pendown-gpio = <&gpio1 31 GPIO_ACTIVE_LOW>;
- 
- 
- 		ti,x-min = /bits/ 16 <0x0>;
-diff --git a/arch/arm/boot/dts/at91sam9261ek.dts b/arch/arm/boot/dts/at91sam9261ek.dts
-index c4ef74fea97c2..ee90ea09e781f 100644
---- a/arch/arm/boot/dts/at91sam9261ek.dts
-+++ b/arch/arm/boot/dts/at91sam9261ek.dts
-@@ -156,7 +156,7 @@ tsc2046@2 {
- 					compatible = "ti,ads7843";
- 					interrupts-extended = <&pioC 2 IRQ_TYPE_EDGE_BOTH>;
- 					spi-max-frequency = <3000000>;
--					pendown-gpio = <&pioC 2 GPIO_ACTIVE_HIGH>;
-+					pendown-gpio = <&pioC 2 GPIO_ACTIVE_LOW>;
- 
- 					ti,x-min = /bits/ 16 <150>;
- 					ti,x-max = /bits/ 16 <3830>;
-diff --git a/arch/arm/boot/dts/imx7d-pico-hobbit.dts b/arch/arm/boot/dts/imx7d-pico-hobbit.dts
-index d917dc4f2f227..6ad39dca70096 100644
---- a/arch/arm/boot/dts/imx7d-pico-hobbit.dts
-+++ b/arch/arm/boot/dts/imx7d-pico-hobbit.dts
-@@ -64,7 +64,7 @@ ads7846@0 {
- 		interrupt-parent = <&gpio2>;
- 		interrupts = <7 0>;
- 		spi-max-frequency = <1000000>;
--		pendown-gpio = <&gpio2 7 0>;
-+		pendown-gpio = <&gpio2 7 GPIO_ACTIVE_LOW>;
- 		vcc-supply = <&reg_3p3v>;
- 		ti,x-min = /bits/ 16 <0>;
- 		ti,x-max = /bits/ 16 <4095>;
-diff --git a/arch/arm/boot/dts/imx7d-sdb.dts b/arch/arm/boot/dts/imx7d-sdb.dts
-index 363d1f57a608b..88e62801b82e1 100644
---- a/arch/arm/boot/dts/imx7d-sdb.dts
-+++ b/arch/arm/boot/dts/imx7d-sdb.dts
-@@ -176,7 +176,7 @@ tsc2046@0 {
- 		pinctrl-0 = <&pinctrl_tsc2046_pendown>;
- 		interrupt-parent = <&gpio2>;
- 		interrupts = <29 0>;
--		pendown-gpio = <&gpio2 29 GPIO_ACTIVE_HIGH>;
-+		pendown-gpio = <&gpio2 29 GPIO_ACTIVE_LOW>;
- 		touchscreen-max-pressure = <255>;
- 		wakeup-source;
- 	};
-diff --git a/arch/arm/boot/dts/omap3-cm-t3x.dtsi b/arch/arm/boot/dts/omap3-cm-t3x.dtsi
-index cdb632df152a1..11ae189441954 100644
---- a/arch/arm/boot/dts/omap3-cm-t3x.dtsi
-+++ b/arch/arm/boot/dts/omap3-cm-t3x.dtsi
-@@ -227,7 +227,7 @@ ads7846@0 {
- 
- 		interrupt-parent = <&gpio2>;
- 		interrupts = <25 0>;		/* gpio_57 */
--		pendown-gpio = <&gpio2 25 GPIO_ACTIVE_HIGH>;
-+		pendown-gpio = <&gpio2 25 GPIO_ACTIVE_LOW>;
- 
- 		ti,x-min = /bits/ 16 <0x0>;
- 		ti,x-max = /bits/ 16 <0x0fff>;
-diff --git a/arch/arm/boot/dts/omap3-devkit8000-lcd-common.dtsi b/arch/arm/boot/dts/omap3-devkit8000-lcd-common.dtsi
-index 3decc2d78a6ca..a7f99ae0c1fe9 100644
---- a/arch/arm/boot/dts/omap3-devkit8000-lcd-common.dtsi
-+++ b/arch/arm/boot/dts/omap3-devkit8000-lcd-common.dtsi
-@@ -54,7 +54,7 @@ ads7846@0 {
- 
- 		interrupt-parent = <&gpio1>;
- 		interrupts = <27 0>;		/* gpio_27 */
--		pendown-gpio = <&gpio1 27 GPIO_ACTIVE_HIGH>;
-+		pendown-gpio = <&gpio1 27 GPIO_ACTIVE_LOW>;
- 
- 		ti,x-min = /bits/ 16 <0x0>;
- 		ti,x-max = /bits/ 16 <0x0fff>;
-diff --git a/arch/arm/boot/dts/omap3-lilly-a83x.dtsi b/arch/arm/boot/dts/omap3-lilly-a83x.dtsi
-index c22833d4e5685..fba69b3f79c2b 100644
---- a/arch/arm/boot/dts/omap3-lilly-a83x.dtsi
-+++ b/arch/arm/boot/dts/omap3-lilly-a83x.dtsi
-@@ -311,7 +311,7 @@ tsc2046@0 {
- 		interrupt-parent = <&gpio1>;
- 		interrupts = <8 0>;   /* boot6 / gpio_8 */
- 		spi-max-frequency = <1000000>;
--		pendown-gpio = <&gpio1 8 GPIO_ACTIVE_HIGH>;
-+		pendown-gpio = <&gpio1 8 GPIO_ACTIVE_LOW>;
- 		vcc-supply = <&reg_vcc3>;
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&tsc2048_pins>;
-diff --git a/arch/arm/boot/dts/omap3-overo-common-lcd35.dtsi b/arch/arm/boot/dts/omap3-overo-common-lcd35.dtsi
-index 185ce53de0ece..0523a369a4d75 100644
---- a/arch/arm/boot/dts/omap3-overo-common-lcd35.dtsi
-+++ b/arch/arm/boot/dts/omap3-overo-common-lcd35.dtsi
-@@ -149,7 +149,7 @@ ads7846@0 {
- 
- 		interrupt-parent = <&gpio4>;
- 		interrupts = <18 0>;			/* gpio_114 */
--		pendown-gpio = <&gpio4 18 GPIO_ACTIVE_HIGH>;
-+		pendown-gpio = <&gpio4 18 GPIO_ACTIVE_LOW>;
- 
- 		ti,x-min = /bits/ 16 <0x0>;
- 		ti,x-max = /bits/ 16 <0x0fff>;
-diff --git a/arch/arm/boot/dts/omap3-overo-common-lcd43.dtsi b/arch/arm/boot/dts/omap3-overo-common-lcd43.dtsi
-index 7fe0f9148232b..d340eb722f129 100644
---- a/arch/arm/boot/dts/omap3-overo-common-lcd43.dtsi
-+++ b/arch/arm/boot/dts/omap3-overo-common-lcd43.dtsi
-@@ -160,7 +160,7 @@ ads7846@0 {
- 
- 		interrupt-parent = <&gpio4>;
- 		interrupts = <18 0>;			/* gpio_114 */
--		pendown-gpio = <&gpio4 18 GPIO_ACTIVE_HIGH>;
-+		pendown-gpio = <&gpio4 18 GPIO_ACTIVE_LOW>;
- 
- 		ti,x-min = /bits/ 16 <0x0>;
- 		ti,x-max = /bits/ 16 <0x0fff>;
-diff --git a/arch/arm/boot/dts/omap3-pandora-common.dtsi b/arch/arm/boot/dts/omap3-pandora-common.dtsi
-index 150d5be42d278..4ea5656825de7 100644
---- a/arch/arm/boot/dts/omap3-pandora-common.dtsi
-+++ b/arch/arm/boot/dts/omap3-pandora-common.dtsi
-@@ -651,7 +651,7 @@ tsc2046@0 {
- 		pinctrl-0 = <&penirq_pins>;
- 		interrupt-parent = <&gpio3>;
- 		interrupts = <30 IRQ_TYPE_NONE>;	/* GPIO_94 */
--		pendown-gpio = <&gpio3 30 GPIO_ACTIVE_HIGH>;
-+		pendown-gpio = <&gpio3 30 GPIO_ACTIVE_LOW>;
- 		vcc-supply = <&vaux4>;
- 
- 		ti,x-min = /bits/ 16 <0>;
-diff --git a/arch/arm/boot/dts/omap5-cm-t54.dts b/arch/arm/boot/dts/omap5-cm-t54.dts
-index e78d3718f145d..d38781025eef8 100644
---- a/arch/arm/boot/dts/omap5-cm-t54.dts
-+++ b/arch/arm/boot/dts/omap5-cm-t54.dts
-@@ -354,7 +354,7 @@ ads7846@0 {
- 
- 		interrupt-parent = <&gpio1>;
- 		interrupts = <15 0>;			/* gpio1_wk15 */
--		pendown-gpio = <&gpio1 15 GPIO_ACTIVE_HIGH>;
-+		pendown-gpio = <&gpio1 15 GPIO_ACTIVE_LOW>;
- 
- 
- 		ti,x-min = /bits/ 16 <0x0>;
--- 
-2.39.2
+--------------uqxf1PmsVcgGFzKAiF8s860m
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature"
 
+-----BEGIN PGP SIGNATURE-----
+
+wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmSMc70FAwAAAAAACgkQlh/E3EQov+AF
+FxAAzH7H+UtNiH0YBxQX3fM2qFKzS4qSWBlg3K501Pyci6J+5eAgKYuhwGctklh9HKO9dmkB/Lpt
+X0sRCnnRHSC2K6Ofu4hQOrRv2T51Yz17z9G69YDW0/iDtgkMev1WebyKSyJ2YxJXts5HJffY1hq6
+dBToDogmi+X2RBHKVXDTyIqn0nYt9KAk4EjhmUbkQ4Kdp383yBGdJma0UykmQfznIhNQLNtw3fjv
+TKPM2FzgxpR43x4aUDz12DxdEmsP+DA+6F3iECiW0LiRAvprHE3/9c7vkdhO4hz/NIZuNoGO/HTz
+0TygMS9qSTpeB4+OR502PUp65ZrcK67SoSZ9v/WOntFeQ9zYe+L3rLyvt3/fkbOYWBKF9MgQ33mx
+qrn4cFZSusXpUk4V2p+Ks+XfJP0YIalvFf1dATRQGZYhOYh0oGZPDc+G1EMjpO7uYxKxwE34HJ6i
+zPxtr7lEF0tbvTbIfdF6pkyxK50km6SPWiKRqxn5Nts83C3aw/xAfbpcSeUNYiF5/XErJm5ZSniR
+gwzNaQHAVLgND/Ui5Sh6iM0PpIbfbXRRG4uEpRsXFDE7ArGMQDUbTv6yweN9rQUppjOTUMp49jNM
+hD3j/9H9RSWJZKGxXREFTvP9k2XW82h5450VmiWR4b/Jg386iUX+7jumgmVmf/WOKP+Q4+b8hAqF
+Znk=
+=2ezj
+-----END PGP SIGNATURE-----
+
+--------------uqxf1PmsVcgGFzKAiF8s860m--
