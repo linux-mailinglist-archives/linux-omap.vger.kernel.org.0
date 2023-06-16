@@ -2,114 +2,96 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FD0D73262D
-	for <lists+linux-omap@lfdr.de>; Fri, 16 Jun 2023 06:22:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B890732976
+	for <lists+linux-omap@lfdr.de>; Fri, 16 Jun 2023 10:05:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229653AbjFPEWi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 16 Jun 2023 00:22:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51910 "EHLO
+        id S232573AbjFPIEn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 16 Jun 2023 04:04:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229468AbjFPEWh (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 16 Jun 2023 00:22:37 -0400
-Received: from mg.richtek.com (mg.richtek.com [220.130.44.152])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 3A0B22D50;
-        Thu, 15 Jun 2023 21:22:33 -0700 (PDT)
-X-MailGates: (flag:4,DYNAMIC,BADHELO,RELAY,NOHOST:PASS)(compute_score:DE
-        LIVER,40,3)
-Received: from 192.168.10.46
-        by mg.richtek.com with MailGates ESMTP Server V5.0(18391:0:AUTH_RELAY)
-        (envelope-from <cy_huang@richtek.com>); Fri, 16 Jun 2023 12:22:18 +0800 (CST)
-Received: from ex3.rt.l (192.168.10.46) by ex3.rt.l (192.168.10.46) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.25; Fri, 16 Jun
- 2023 12:22:17 +0800
-Received: from linuxcarl2.richtek.com (192.168.10.154) by ex3.rt.l
- (192.168.10.45) with Microsoft SMTP Server id 15.2.1118.25 via Frontend
- Transport; Fri, 16 Jun 2023 12:22:17 +0800
-Date:   Fri, 16 Jun 2023 12:22:17 +0800
-From:   ChiYuan Huang <cy_huang@richtek.com>
-To:     <broonie@kernel.org>
-CC:     <tony@atomide.com>, <lgirdwood@gmail.com>, <jneanne@baylibre.com>,
-        <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] regulator: tps65219: Fix pointer assignment in
- tps65219_get_rdev_by_name()
-Message-ID: <20230616042217.GA3996@linuxcarl2.richtek.com>
-References: <1686884364-31447-1-git-send-email-cy_huang@richtek.com>
+        with ESMTP id S245098AbjFPIEh (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 16 Jun 2023 04:04:37 -0400
+Received: from mail.durme.pl (mail.durme.pl [217.182.69.186])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EED93295B
+        for <linux-omap@vger.kernel.org>; Fri, 16 Jun 2023 01:04:13 -0700 (PDT)
+Received: by mail.durme.pl (Postfix, from userid 1002)
+        id E22304D1EB; Fri, 16 Jun 2023 08:01:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=durme.pl; s=mail;
+        t=1686902545; bh=hFxZwVw4rIL+JwfEOGI47p+fdoVOAeqVswP6NWoHSHQ=;
+        h=Date:From:To:Subject:From;
+        b=mi3iGJUrpmyGcFsBKwB8MAZoJmdjdIttL6uAX6Y0EwGGCUX0rNEeLxSxX0YNCAGOh
+         BdU4Qu5IJZfl/qzrmv+1Z2FJzh/+7f4FYly207MG+bLSal/+gOPrzc/On41vEK/c8l
+         IyPEbBF9BWA4nEM5LJ4ryp6nVSUNqZJkniJaq/QQ8cMha+ghPkxxetHhmcnVSbEhTk
+         OIxjseVw+8bddHc7uqB1WYZ2KKg/jWpl1JO1GwEm9rrrEmAVNbFqGaYnPSxA/y0hIb
+         ZYYitR6gcMFLpf67ZMoOsr08Xc88t1qPSV6BEkYg/gUAWaiaLzQhCK0D1ldrJiSrwo
+         +xSzQ6yUdEySQ==
+Received: by mail.durme.pl for <linux-omap@vger.kernel.org>; Fri, 16 Jun 2023 08:00:46 GMT
+Message-ID: <20230616064502-0.1.2j.bich.0.rc360e12c5@durme.pl>
+Date:   Fri, 16 Jun 2023 08:00:46 GMT
+From:   "Krystian Wieczorek" <krystian.wieczorek@durme.pl>
+To:     <linux-omap@vger.kernel.org>
+Subject: W sprawie samochodu
+X-Mailer: mail.durme.pl
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1686884364-31447-1-git-send-email-cy_huang@richtek.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: Yes, score=5.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SBL_CSS,
+        RCVD_IN_VALIDITY_RPBL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED,URIBL_CSS_A,URIBL_DBL_SPAM autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: *  0.0 URIBL_BLOCKED ADMINISTRATOR NOTICE: The query to URIBL was
+        *      blocked.  See
+        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
+        *      for more information.
+        *      [URIs: durme.pl]
+        *  2.5 URIBL_DBL_SPAM Contains a spam URL listed in the Spamhaus DBL
+        *      blocklist
+        *      [URIs: durme.pl]
+        *  3.3 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
+        *      [217.182.69.186 listed in zen.spamhaus.org]
+        *  0.1 URIBL_CSS_A Contains URL's A record listed in the Spamhaus CSS
+        *      blocklist
+        *      [URIs: durme.pl]
+        * -1.9 BAYES_00 BODY: Bayes spam probability is 0 to 1%
+        *      [score: 0.0000]
+        *  1.3 RCVD_IN_VALIDITY_RPBL RBL: Relay in Validity RPBL,
+        *      https://senderscore.org/blocklistlookup/
+        *      [217.182.69.186 listed in bl.score.senderscore.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, Jun 16, 2023 at 10:59:24AM +0800, cy_huang@richtek.com wrote:
-> From: ChiYuan Huang <cy_huang@richtek.com>
-> 
-> For the pointer assignment in function body, double pointer must be used as
-> the input parameter.
-> 
-> Fixes: c12ac5fc3e0a ("regulator: drivers: Add TI TPS65219 PMIC regulators support")
-> Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
+Dzie=C5=84 dobry,
 
-Please ignore it. Krzysztof's patch already fix it and applied.
-https://lore.kernel.org/lkml/20230507144656.192800-1-krzysztof.kozlowski@linaro.org/
-> ---
-> Hi,
-> 
-> I try to fix W=1 build warning for tps65219-regulator.
-> 
-> W=1
->     warning: parameter ‘dev’ set but not used [-Wunused-but-set-parameter]
->     struct regulator_dev *dev)
->                          ^~~~~
-> But the issue is not what the warning message described.
-> 
-> In tps65219_get_rdev_by_name(), it must return the found rdev and assign it
-> in 'dev' pointer. Due to pointer assignment issue, it doesn't.
-> 
-> The original code may not cause any problem. But it always takes the last
-> registered regulator rdev for all tps65219 regulator interrupts.
-> ---
->  drivers/regulator/tps65219-regulator.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/regulator/tps65219-regulator.c b/drivers/regulator/tps65219-regulator.c
-> index b1719ee990ab..8971b507a79a 100644
-> --- a/drivers/regulator/tps65219-regulator.c
-> +++ b/drivers/regulator/tps65219-regulator.c
-> @@ -289,13 +289,13 @@ static irqreturn_t tps65219_regulator_irq_handler(int irq, void *data)
->  
->  static int tps65219_get_rdev_by_name(const char *regulator_name,
->  				     struct regulator_dev *rdevtbl[7],
-> -				     struct regulator_dev *dev)
-> +				     struct regulator_dev **dev)
->  {
->  	int i;
->  
->  	for (i = 0; i < ARRAY_SIZE(regulators); i++) {
->  		if (strcmp(regulator_name, regulators[i].name) == 0) {
-> -			dev = rdevtbl[i];
-> +			*dev = rdevtbl[i];
->  			return 0;
->  		}
->  	}
-> @@ -348,7 +348,7 @@ static int tps65219_regulator_probe(struct platform_device *pdev)
->  		irq_data[i].dev = tps->dev;
->  		irq_data[i].type = irq_type;
->  
-> -		tps65219_get_rdev_by_name(irq_type->regulator_name, rdevtbl, rdev);
-> +		tps65219_get_rdev_by_name(irq_type->regulator_name, rdevtbl, &rdev);
->  		if (IS_ERR(rdev)) {
->  			dev_err(tps->dev, "Failed to get rdev for %s\n",
->  				irq_type->regulator_name);
-> -- 
-> 2.40.1
-> 
+chcieliby=C5=9Bmy zapewni=C4=87 Pa=C5=84stwu kompleksowe rozwi=C4=85zania=
+, je=C5=9Bli chodzi o system monitoringu GPS.
+
+Precyzyjne monitorowanie pojazd=C3=B3w na mapach cyfrowych, =C5=9Bledzeni=
+e ich parametr=C3=B3w eksploatacyjnych w czasie rzeczywistym oraz kontrol=
+a paliwa to kluczowe funkcjonalno=C5=9Bci naszego systemu.=20
+
+Organizowanie pracy pracownik=C3=B3w jest dzi=C4=99ki temu prostsze i bar=
+dziej efektywne, a oszcz=C4=99dno=C5=9Bci i optymalizacja w zakresie pono=
+szonych koszt=C3=B3w, maj=C4=85 dla ka=C5=BCdego przedsi=C4=99biorcy ogro=
+mne znaczenie.
+
+Dopasujemy nasz=C4=85 ofert=C4=99 do Pa=C5=84stwa oczekiwa=C5=84 i potrze=
+b organizacji. Czy mogliby=C5=9Bmy porozmawia=C4=87 o naszej propozycji?
+
+
+Pozdrawiam
+Krystian Wieczorek
