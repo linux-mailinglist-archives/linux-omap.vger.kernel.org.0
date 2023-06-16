@@ -2,36 +2,36 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 63804732DDB
-	for <lists+linux-omap@lfdr.de>; Fri, 16 Jun 2023 12:28:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C773732E3F
+	for <lists+linux-omap@lfdr.de>; Fri, 16 Jun 2023 12:30:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344440AbjFPK2C (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 16 Jun 2023 06:28:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50672 "EHLO
+        id S1343968AbjFPKah (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 16 Jun 2023 06:30:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344149AbjFPK1i (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 16 Jun 2023 06:27:38 -0400
+        with ESMTP id S1344612AbjFPK3b (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 16 Jun 2023 06:29:31 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F012230C7;
-        Fri, 16 Jun 2023 03:26:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 737EE3AB7;
+        Fri, 16 Jun 2023 03:27:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B5C90635FB;
-        Fri, 16 Jun 2023 10:26:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35876C433C8;
-        Fri, 16 Jun 2023 10:26:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D69716367E;
+        Fri, 16 Jun 2023 10:27:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ABA3C433CA;
+        Fri, 16 Jun 2023 10:27:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686911165;
-        bh=X1aQh2/kWrgnsIHleJC02XwqsQMEyxzHpDqhA0Bokd8=;
+        s=k20201202; t=1686911225;
+        bh=0Xnp/5UGH8gC7nrXOWCcUhrhAP4Kklg4/G24G43ICh4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GYX2RN3YRumCwrsTah8c0RDeb7SRBsPlVrHuEVZVI64ESwV4UAczmhY9FehzHo5RV
-         Lia7gnY8Ffcvx/eaKdHYBV0yRmPnVhCMkc8F0EzBIJU2T/SgVTO7jKRFKFiknHNV2f
-         N3HLBgl9VrlHIQ4UPIR4fkRSQL4Im1D8MQKNfvCrcZfNSmTmpcp+aVEebpZeCj8IwH
-         QRMZSVWTgxH9pMWOwKThETGPZKD1UE8aZdcX2neu6hQh1EHf+yYiBC+ssjqvof2Hji
-         ZGvGt5DnLbLoHOt8LmJGjeWE6wGwrAmqOQQEm3tktOBx1KRQ3m97yMrFt/TpYg6Im5
-         IHxu9Lu30satw==
+        b=jOsaxJ9Tx7SSsPdeBi/OwzTCwH9bp6zrmiIpZ/M3snTDHOmQRB5wBGAaAayGPXU24
+         +kIuo6ECEtn5b4AZridHZNFruEmvA+IV6PiZ8QVw9RVJ9SXVhq56eNgzwIEvbfF2ee
+         vk9lXOURqbyZjKOyRLGdUji1gEqb8mxd3onV4A911QJ7U6voCEvHO5ILY1QWmeFw8K
+         Y/KciKbT6LqKLYbGsDkDyFncDEz6U+3n+SZp65jWrX6vxfYmwpG8RGBgnajPomGUos
+         uD75IcCIi7+HRPqNNyKVRDkxvssXfeCVjpEiLsEP+Jj5W06+gaAYsdzImscNpy3jeA
+         lG1NfY1mvePgQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Linus Walleij <linus.walleij@linaro.org>,
@@ -42,16 +42,16 @@ Cc:     Linus Walleij <linus.walleij@linaro.org>,
         claudiu.beznea@microchip.com, shawnguo@kernel.org,
         linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.3 21/30] ARM: dts: Fix erroneous ADS touchscreen polarities
-Date:   Fri, 16 Jun 2023 06:25:09 -0400
-Message-Id: <20230616102521.673087-21-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 18/26] ARM: dts: Fix erroneous ADS touchscreen polarities
+Date:   Fri, 16 Jun 2023 06:26:15 -0400
+Message-Id: <20230616102625.673454-18-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230616102521.673087-1-sashal@kernel.org>
-References: <20230616102521.673087-1-sashal@kernel.org>
+In-Reply-To: <20230616102625.673454-1-sashal@kernel.org>
+References: <20230616102625.673454-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.3.8
+X-stable-base: Linux 6.1.34
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -220,7 +220,7 @@ index 559853764487f..4c3b6bab179cc 100644
  
  		ti,x-min = /bits/ 16 <0>;
 diff --git a/arch/arm/boot/dts/omap5-cm-t54.dts b/arch/arm/boot/dts/omap5-cm-t54.dts
-index 2d87b9fc230ee..af288d63a26a4 100644
+index ca759b7b8a580..e62ea8b6d53fd 100644
 --- a/arch/arm/boot/dts/omap5-cm-t54.dts
 +++ b/arch/arm/boot/dts/omap5-cm-t54.dts
 @@ -354,7 +354,7 @@ ads7846@0 {
