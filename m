@@ -2,36 +2,36 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C773732E3F
-	for <lists+linux-omap@lfdr.de>; Fri, 16 Jun 2023 12:30:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19C9F732E73
+	for <lists+linux-omap@lfdr.de>; Fri, 16 Jun 2023 12:32:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343968AbjFPKah (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 16 Jun 2023 06:30:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50910 "EHLO
+        id S1344959AbjFPKcj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 16 Jun 2023 06:32:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344612AbjFPK3b (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 16 Jun 2023 06:29:31 -0400
+        with ESMTP id S1344966AbjFPKbD (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 16 Jun 2023 06:31:03 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 737EE3AB7;
-        Fri, 16 Jun 2023 03:27:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 203C55255;
+        Fri, 16 Jun 2023 03:27:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D69716367E;
-        Fri, 16 Jun 2023 10:27:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ABA3C433CA;
-        Fri, 16 Jun 2023 10:27:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CC29A635B5;
+        Fri, 16 Jun 2023 10:27:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 696D9C433C0;
+        Fri, 16 Jun 2023 10:27:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686911225;
-        bh=0Xnp/5UGH8gC7nrXOWCcUhrhAP4Kklg4/G24G43ICh4=;
+        s=k20201202; t=1686911261;
+        bh=UbXRtPZOIByk2u49TFyd0vWllNrCE2figmWL1X9uiak=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jOsaxJ9Tx7SSsPdeBi/OwzTCwH9bp6zrmiIpZ/M3snTDHOmQRB5wBGAaAayGPXU24
-         +kIuo6ECEtn5b4AZridHZNFruEmvA+IV6PiZ8QVw9RVJ9SXVhq56eNgzwIEvbfF2ee
-         vk9lXOURqbyZjKOyRLGdUji1gEqb8mxd3onV4A911QJ7U6voCEvHO5ILY1QWmeFw8K
-         Y/KciKbT6LqKLYbGsDkDyFncDEz6U+3n+SZp65jWrX6vxfYmwpG8RGBgnajPomGUos
-         uD75IcCIi7+HRPqNNyKVRDkxvssXfeCVjpEiLsEP+Jj5W06+gaAYsdzImscNpy3jeA
-         lG1NfY1mvePgQ==
+        b=W0ZrMIZJRh6ZoVv7bcTW4huwIoaH4EYPqOEP5H8SJ53VJ0Zl5C+3yPjEeCpbZ9VJQ
+         2dGUDSOSN0KJlJcvt97DRAEg1avIQgNrdeCZtO+4q05tU1YjzHgHp6Q4B8/0w55+Ob
+         5RuIugVXIiiXwSnIFxYvAlGYHIJUTebsQBV2YkBpTj8k3MEnZibXSrr7dGS0NtQhre
+         VP44b9IULky272jdpNKSYhq+ocdP38YUKQ9P4BL6DgJB7e6Bz+pKXTqkHfLwUF+mjq
+         HFCpYocJLrIIUypwe/9GDREyfRxGj1jlwCTFfxnkpJs5kwSkK3K1pITdRDUpp7iEDD
+         prhA7QiLOKXYw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Linus Walleij <linus.walleij@linaro.org>,
@@ -42,16 +42,16 @@ Cc:     Linus Walleij <linus.walleij@linaro.org>,
         claudiu.beznea@microchip.com, shawnguo@kernel.org,
         linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.1 18/26] ARM: dts: Fix erroneous ADS touchscreen polarities
-Date:   Fri, 16 Jun 2023 06:26:15 -0400
-Message-Id: <20230616102625.673454-18-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 09/16] ARM: dts: Fix erroneous ADS touchscreen polarities
+Date:   Fri, 16 Jun 2023 06:27:12 -0400
+Message-Id: <20230616102721.673775-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230616102625.673454-1-sashal@kernel.org>
-References: <20230616102625.673454-1-sashal@kernel.org>
+In-Reply-To: <20230616102721.673775-1-sashal@kernel.org>
+References: <20230616102721.673775-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.34
+X-stable-base: Linux 5.15.117
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -90,7 +90,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  11 files changed, 11 insertions(+), 11 deletions(-)
 
 diff --git a/arch/arm/boot/dts/am57xx-cl-som-am57x.dts b/arch/arm/boot/dts/am57xx-cl-som-am57x.dts
-index 2fc9a5d5e0c0d..625b9b311b49d 100644
+index 2e94f32d9dfca..5de82729eb7ed 100644
 --- a/arch/arm/boot/dts/am57xx-cl-som-am57x.dts
 +++ b/arch/arm/boot/dts/am57xx-cl-som-am57x.dts
 @@ -527,7 +527,7 @@ touchscreen@1 {
@@ -103,7 +103,7 @@ index 2fc9a5d5e0c0d..625b9b311b49d 100644
  
  		ti,x-min = /bits/ 16 <0x0>;
 diff --git a/arch/arm/boot/dts/at91sam9261ek.dts b/arch/arm/boot/dts/at91sam9261ek.dts
-index 88869ca874d1a..045cb253f23a6 100644
+index beed819609e8d..8f3b483bb64dd 100644
 --- a/arch/arm/boot/dts/at91sam9261ek.dts
 +++ b/arch/arm/boot/dts/at91sam9261ek.dts
 @@ -156,7 +156,7 @@ tsc2046@2 {
@@ -129,7 +129,7 @@ index d917dc4f2f227..6ad39dca70096 100644
  		ti,x-min = /bits/ 16 <0>;
  		ti,x-max = /bits/ 16 <4095>;
 diff --git a/arch/arm/boot/dts/imx7d-sdb.dts b/arch/arm/boot/dts/imx7d-sdb.dts
-index f483bc0afe5ea..234e5fc647b22 100644
+index 4e1a6cde90fe3..4e62ed2df11dd 100644
 --- a/arch/arm/boot/dts/imx7d-sdb.dts
 +++ b/arch/arm/boot/dts/imx7d-sdb.dts
 @@ -205,7 +205,7 @@ tsc2046@0 {
@@ -168,7 +168,7 @@ index 3decc2d78a6ca..a7f99ae0c1fe9 100644
  		ti,x-min = /bits/ 16 <0x0>;
  		ti,x-max = /bits/ 16 <0x0fff>;
 diff --git a/arch/arm/boot/dts/omap3-lilly-a83x.dtsi b/arch/arm/boot/dts/omap3-lilly-a83x.dtsi
-index c595afe4181d7..d310b5c7bac36 100644
+index 73d477898ec2a..06e7cf96c6639 100644
 --- a/arch/arm/boot/dts/omap3-lilly-a83x.dtsi
 +++ b/arch/arm/boot/dts/omap3-lilly-a83x.dtsi
 @@ -311,7 +311,7 @@ tsc2046@0 {
@@ -207,7 +207,7 @@ index 7e30f9d45790e..d95a0e130058c 100644
  		ti,x-min = /bits/ 16 <0x0>;
  		ti,x-max = /bits/ 16 <0x0fff>;
 diff --git a/arch/arm/boot/dts/omap3-pandora-common.dtsi b/arch/arm/boot/dts/omap3-pandora-common.dtsi
-index 559853764487f..4c3b6bab179cc 100644
+index 37608af6c07f5..ca6d777ebf843 100644
 --- a/arch/arm/boot/dts/omap3-pandora-common.dtsi
 +++ b/arch/arm/boot/dts/omap3-pandora-common.dtsi
 @@ -651,7 +651,7 @@ tsc2046@0 {
