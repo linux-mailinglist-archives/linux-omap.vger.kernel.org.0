@@ -2,28 +2,28 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 40E0D734395
-	for <lists+linux-omap@lfdr.de>; Sat, 17 Jun 2023 22:37:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93E2D734393
+	for <lists+linux-omap@lfdr.de>; Sat, 17 Jun 2023 22:37:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346507AbjFQUg5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        id S1346481AbjFQUg5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
         Sat, 17 Jun 2023 16:36:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41846 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346491AbjFQUgw (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 17 Jun 2023 16:36:52 -0400
+        with ESMTP id S1346479AbjFQUgx (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 17 Jun 2023 16:36:53 -0400
 Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C85EB172C;
-        Sat, 17 Jun 2023 13:36:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E30A0B9;
+        Sat, 17 Jun 2023 13:36:52 -0700 (PDT)
 Received: from localhost.localdomain (178.176.79.248) by msexch01.omp.ru
  (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.986.14; Sat, 17 Jun
  2023 23:36:48 +0300
 From:   Sergey Shtylyov <s.shtylyov@omp.ru>
 To:     Ulf Hansson <ulf.hansson@linaro.org>, <linux-mmc@vger.kernel.org>
-CC:     Aaro Koskinen <aaro.koskinen@iki.fi>, <linux-omap@vger.kernel.org>
-Subject: [PATCH v3 05/12] mmc: omap: fix deferred probing
-Date:   Sat, 17 Jun 2023 23:36:15 +0300
-Message-ID: <20230617203622.6812-6-s.shtylyov@omp.ru>
+CC:     <linux-omap@vger.kernel.org>
+Subject: [PATCH v3 06/12] mmc: omap_hsmmc: fix deferred probing
+Date:   Sat, 17 Jun 2023 23:36:16 +0300
+Message-ID: <20230617203622.6812-7-s.shtylyov@omp.ru>
 X-Mailer: git-send-email 2.26.3
 In-Reply-To: <20230617203622.6812-1-s.shtylyov@omp.ru>
 References: <20230617203622.6812-1-s.shtylyov@omp.ru>
@@ -46,7 +46,8 @@ X-KSE-AntiSpam-Info: LuaCore: 517 517 b0056c19d8e10afbb16cb7aad7258dedb0179a79
 X-KSE-AntiSpam-Info: {rep_avail}
 X-KSE-AntiSpam-Info: {Tracking_no_received}
 X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: omp.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2
+X-KSE-AntiSpam-Info: omp.ru:7.1.1;178.176.79.248:7.1.2,7.4.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2
+X-KSE-AntiSpam-Info: {iprep_blacklist}
 X-KSE-AntiSpam-Info: ApMailHostAddress: 178.176.79.248
 X-KSE-AntiSpam-Info: Rate: 0
 X-KSE-AntiSpam-Info: Status: not_detected
@@ -80,24 +81,29 @@ Fixes: 9ec36cafe43b ("of/irq: do irq resolution in platform_get_irq")
 Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
 ---
 Changes in version 2:
-- updated the fix due to the surrounding code change.
+- refreshed the patch.
 
- drivers/mmc/host/omap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mmc/host/omap_hsmmc.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mmc/host/omap.c b/drivers/mmc/host/omap.c
-index ce78edfb402b..86454f1182bb 100644
---- a/drivers/mmc/host/omap.c
-+++ b/drivers/mmc/host/omap.c
-@@ -1343,7 +1343,7 @@ static int mmc_omap_probe(struct platform_device *pdev)
+diff --git a/drivers/mmc/host/omap_hsmmc.c b/drivers/mmc/host/omap_hsmmc.c
+index 517dde777413..1e0f2d7774bd 100644
+--- a/drivers/mmc/host/omap_hsmmc.c
++++ b/drivers/mmc/host/omap_hsmmc.c
+@@ -1791,9 +1791,11 @@ static int omap_hsmmc_probe(struct platform_device *pdev)
+ 	}
  
- 	irq = platform_get_irq(pdev, 0);
- 	if (irq < 0)
--		return -ENXIO;
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	irq = platform_get_irq(pdev, 0);
+-	if (res == NULL || irq < 0)
++	if (!res)
+ 		return -ENXIO;
++	irq = platform_get_irq(pdev, 0);
++	if (irq < 0)
 +		return irq;
  
- 	host->virt_base = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
- 	if (IS_ERR(host->virt_base))
+ 	base = devm_ioremap_resource(&pdev->dev, res);
+ 	if (IS_ERR(base))
 -- 
 2.26.3
 
