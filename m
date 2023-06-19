@@ -2,122 +2,86 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 86B2D734502
-	for <lists+linux-omap@lfdr.de>; Sun, 18 Jun 2023 07:56:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 807DA734DB9
+	for <lists+linux-omap@lfdr.de>; Mon, 19 Jun 2023 10:31:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229531AbjFRF4H (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 18 Jun 2023 01:56:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43620 "EHLO
+        id S229700AbjFSIbf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 19 Jun 2023 04:31:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35682 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229456AbjFRF4G (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 18 Jun 2023 01:56:06 -0400
-Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A184310D0;
-        Sat, 17 Jun 2023 22:56:04 -0700 (PDT)
-Received: by mail-wr1-x434.google.com with SMTP id ffacd0b85a97d-3090d3e9c92so2260807f8f.2;
-        Sat, 17 Jun 2023 22:56:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1687067762; x=1689659762;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+NX5ZV664S/3sQaZAuC+xeosJghTMxUMI70alZxPa5Y=;
-        b=paCHA7pjmnWe/IxKblZOvVLJCQMFIcAb2uKzUfv6t5CZ3G1g9hXPWQ58MUXkuXmstv
-         O6R1T7qbyg22aeMnmfS9GKuJZkCptCgv8gl02U7bx3vOy2jTgX9WGMkbt+o0JvCUs+kW
-         bA+mts79t+1rkGlZnKT8v1xPOjTDI1mljmSht/lqTrAYza1MktBdvcCYHnJBJ3J90SAU
-         firfpBvpMPctU6fXBfPySyg6YIq2gUqqEkiphtZ3ZvVVDwpz2lqwWwcsITHzvTMXTJzj
-         W+8jF/PwHqlykUASb2AVCXVaYe1soMWghMN1QCjmmR0zFF3GU948sIjFP62ppXVd7WfZ
-         ffYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687067762; x=1689659762;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+NX5ZV664S/3sQaZAuC+xeosJghTMxUMI70alZxPa5Y=;
-        b=XTEPlWfZmGQJqteKwDhh3yd9fDvZKL6BlNYC7dZbN9tG3GPSZbyyL+aGJMyFtIGg4o
-         3RDNpWAteFnrXJ5yLDVcORZO2fKTjXjIEY5dt2bho042NxNGhvH2eCejxh9fK/yeXu9j
-         I01H5wQRVp4ClgIl0SmZBYjdNkJuhtOHuE8tHpokWKeTLTJM+HWpdq8wLTdABoY8ZZ2R
-         ojSHqojuEOwWfGfjKlmjAtPpGF1edcCjNngvqSCqEn8bGvSGiO/pukV5lDUrz1s3KeNB
-         1REGn6k22jzap3BCWqiWaleRlJLZKzlI9jMhcZAM5WNHtor2dixkhOQscSa1fqauB+q7
-         L0pQ==
-X-Gm-Message-State: AC+VfDydmw0oDciI9oFayGSNQis3NpHBTMGZICbezHJn5aXzMlHxxdAl
-        2gsRd3//jKXH7vav6MRsN24=
-X-Google-Smtp-Source: ACHHUZ6BOZ2LQ6J+Y8YIuDzGK/TfPStSIUARP0Kxc41zdevAjVxrE87pnYjBbRb1udZcUfffG4tAww==
-X-Received: by 2002:adf:f5c8:0:b0:307:9473:fe26 with SMTP id k8-20020adff5c8000000b003079473fe26mr4901839wrp.26.1687067762314;
-        Sat, 17 Jun 2023 22:56:02 -0700 (PDT)
-Received: from jernej-laptop.localnet (82-149-1-233.dynamic.telemach.net. [82.149.1.233])
-        by smtp.gmail.com with ESMTPSA id s14-20020a170906354e00b009888b71c368sm154616eja.152.2023.06.17.22.56.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 17 Jun 2023 22:56:01 -0700 (PDT)
-From:   Jernej =?utf-8?B?xaBrcmFiZWM=?= <jernej.skrabec@gmail.com>
-To:     glaroque@baylibre.com, rafael@kernel.org,
-        daniel.lezcano@linaro.org, amitk@kernel.org, rui.zhang@intel.com,
-        shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-        festevam@gmail.com, linux-imx@nxp.com, thara.gopinath@gmail.com,
-        agross@kernel.org, andersson@kernel.org, konrad.dybcio@linaro.org,
-        anarsoul@gmail.com, tiny.windzz@gmail.com, wens@csie.org,
-        samuel@sholland.org, thierry.reding@gmail.com,
-        jonathanh@nvidia.com, edubezval@gmail.com, j-keerthy@ti.com,
-        matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
-        bchihi@baylibre.com, niklas.soderlund+renesas@ragnatech.se,
-        wenst@chromium.org, Yangtao Li <frank.li@vivo.com>
-Cc:     linux-pm@vger.kernel.org, linux-amlogic@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, linux-sunxi@lists.linux.dev,
-        linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, Yangtao Li <frank.li@vivo.com>
-Subject: Re: [PATCH v3 02/12] thermal/drivers/sun8i: remove redundant msg in
- sun8i_ths_register()
-Date:   Sun, 18 Jun 2023 07:55:59 +0200
-Message-ID: <2684470.mvXUDI8C0e@jernej-laptop>
-In-Reply-To: <20230613114904.15749-2-frank.li@vivo.com>
-References: <20230613114904.15749-1-frank.li@vivo.com>
- <20230613114904.15749-2-frank.li@vivo.com>
+        with ESMTP id S229513AbjFSIbe (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 19 Jun 2023 04:31:34 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1B36100;
+        Mon, 19 Jun 2023 01:31:31 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4BCA160B6A;
+        Mon, 19 Jun 2023 08:31:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74B53C433C0;
+        Mon, 19 Jun 2023 08:31:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1687163490;
+        bh=TSClhyLxMq70prBNpTrAH2YWH7SlNfqgmwDHchD6LfQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=PY4fO0jI1EenTiaTEn7YbZkXv+X4uOusGhGJSQ5cpbMuzjsq0PtUfJY80qRjxYYP/
+         /+4xXEQqyNf8H6T5PG9x2tzr4utR6AhcALc+EMikMR07zuKTQC1UlBNaPqQ8AVJ9/a
+         lNaxRd/uB+U6TjPHnmEYp3t0Zk2vmXtqQRFw7bulTxYhq8oa6/hAhJnWQILdWV6Cd8
+         Dv8VbjXZ1vim6y5Hwjoqog+/cdfCUG76hwFzqo8CXqnbokFYCaJ91vzOTvyqbtR+1I
+         PSmLAzIwJ31DZom3VRvY3Mzis1o2rNS2REyLDDlmrdJBeuaQBX4pIsIgid9xr+Ilrz
+         tr72a36h2M3xQ==
+Date:   Mon, 19 Jun 2023 09:31:24 +0100
+From:   Lee Jones <lee@kernel.org>
+To:     Thomas Zimmermann <tzimmermann@suse.de>
+Cc:     daniel.thompson@linaro.org,
+        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+        linux-kernel@vger.kernel.org, geert+renesas@glider.be,
+        linux-sh@vger.kernel.org, jingoohan1@gmail.com, deller@gmx.de,
+        linux-staging@lists.linux.dev, javierm@redhat.com,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        michael.j.ruhl@intel.com, stable@vger.kernel.org,
+        linux-omap@vger.kernel.org, sam@ravnborg.org,
+        dan.carpenter@linaro.org
+Subject: Re: [PATCH v3 01/38] backlight/bd6107: Compare against struct
+ fb_info.device
+Message-ID: <20230619083124.GO3635807@google.com>
+References: <20230613110953.24176-1-tzimmermann@suse.de>
+ <20230613110953.24176-2-tzimmermann@suse.de>
+ <20230614135157.GU3635807@google.com>
+ <5720dbc1-a3e4-2b23-28cd-f889d3a5a4fc@suse.de>
+ <9f74b8de-9a1b-2547-5eab-d4b4349a6a81@suse.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <9f74b8de-9a1b-2547-5eab-d4b4349a6a81@suse.de>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Dne torek, 13. junij 2023 ob 13:48:54 CEST je Yangtao Li napisal(a):
-> The upper-layer devm_thermal_add_hwmon_sysfs() function can directly
-> print error information.
+On Fri, 16 Jun 2023, Thomas Zimmermann wrote:
+
+> Hi Lee
 > 
-> Signed-off-by: Yangtao Li <frank.li@vivo.com>
-
-Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-
-Best regards,
-Jernej
-
-> ---
->  drivers/thermal/sun8i_thermal.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
+> Am 14.06.23 um 16:13 schrieb Thomas Zimmermann:
+> [...]
+> > > Can the Backlight patches be applied without the others and visa versa?
+> > 
+> > Unfortunately not. The rest of the series requires the backlight patches.
 > 
-> diff --git a/drivers/thermal/sun8i_thermal.c b/drivers/thermal/sun8i_thermal.c
-> index 793ddce72132..066f9fed9b86 100644
-> --- a/drivers/thermal/sun8i_thermal.c
-> +++ b/drivers/thermal/sun8i_thermal.c
-> @@ -475,9 +475,7 @@ static int sun8i_ths_register(struct ths_device *tmdev)
->  		if (IS_ERR(tmdev->sensor[i].tzd))
->  			return PTR_ERR(tmdev->sensor[i].tzd);
->  
-> -		if (devm_thermal_add_hwmon_sysfs(tmdev->dev, tmdev->sensor[i].tzd))
-> -			dev_warn(tmdev->dev,
-> -				 "Failed to add hwmon sysfs attributes\n");
-> +		devm_thermal_add_hwmon_sysfs(tmdev->dev, tmdev->sensor[i].tzd);
->  	}
->  
->  	return 0;
-> 
+> Are you OK with the patches going through drm?
 
+Shouldn't be an issue.
 
+Please ensure my Ack is added to each patch, even if you have to RESEND.
 
-
+-- 
+Lee Jones [李琼斯]
