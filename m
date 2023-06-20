@@ -2,43 +2,43 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C32D773749F
-	for <lists+linux-omap@lfdr.de>; Tue, 20 Jun 2023 20:54:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 739507374B2
+	for <lists+linux-omap@lfdr.de>; Tue, 20 Jun 2023 20:55:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229871AbjFTSyv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 20 Jun 2023 14:54:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43258 "EHLO
+        id S230273AbjFTSzY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 20 Jun 2023 14:55:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229899AbjFTSyu (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 20 Jun 2023 14:54:50 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6E071709;
-        Tue, 20 Jun 2023 11:54:48 -0700 (PDT)
+        with ESMTP id S230194AbjFTSzM (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 20 Jun 2023 14:55:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C916C10FE;
+        Tue, 20 Jun 2023 11:55:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 78EED61418;
-        Tue, 20 Jun 2023 18:54:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0138C433C9;
-        Tue, 20 Jun 2023 18:54:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 624F5613DC;
+        Tue, 20 Jun 2023 18:55:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD0E1C433C0;
+        Tue, 20 Jun 2023 18:55:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1687287287;
-        bh=ZYIZKFicfFpqIOEEuXOhoBEptadkESpp8fc+wtCMmnk=;
+        s=k20201202; t=1687287309;
+        bh=BeCIA0r73Z23vTxNBc+IRhxLfrH0TL74bXKV96Z7b4M=;
         h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-        b=mUX7HzlnzTuz2kzpMDFcHuTraYkmvlqpNRPpEXpgrirfD5GhIovaOzMuG+eslB6Ek
-         jkkEDGoz7uMA20rPD4qgNxUyWfnNvV523djd1xx7VjH++c9YKBHoy/0EsaJWz7vke/
-         Mem4jUTB+u3iGp5iGCUmOxCVwcX/XfTw5oalJykLllaWbsOAMRixn7gi5JhQV3g3wD
-         5X3euvdiaHZeh7vGnhD3eNGy6zHXx24J6+ojsFm8wTtzH1bmmJERCGDqfkST+kZhbo
-         XOenGZmMsQ2A/lM2uRM4JGqaZPh0hcYK9Gkr0g2OXUGXPa3AfM/COW1PZf0bYC8t5f
-         XrdcA0YXNANFA==
-Message-ID: <27776482982dc2ad2017411dce645fcc.sboyd@kernel.org>
+        b=ALPKKpDG9i0OYWqAmIX9DoVLRPQ+I2fciBL/aCuooIvG+GSukq4Bn2jGfaC7qPhLx
+         ijLasLzpKruRm78O1hYOt7/6o47NKUwxrmFqn8PHnZAYnSokeEJsRBgK2I/6Cq3pSg
+         L7HWckvet0seafgezkNCFyoCvhrxWZ1Lk/UxarSqJvs1nr2LpTIGjQ71XDMoer0UgV
+         Nx8zJev+oj5mVGwE74+BT/HzdRUPoiddSmzJywZheXR6fPrefEF+4AIsSvZf8KUjek
+         JkNgMG87SUTRbYhtORt0RjA8/ib9dAj5jmGApvSmin08Xiqp6QUSnuDTcLx7ZKcczq
+         DJ3L1ImvnTlOQ==
+Message-ID: <37bb097111f6ae999f8fad5f8720d942.sboyd@kernel.org>
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20230530093913.1656095-5-claudiu.beznea@microchip.com>
-References: <20230530093913.1656095-1-claudiu.beznea@microchip.com> <20230530093913.1656095-5-claudiu.beznea@microchip.com>
-Subject: Re: [PATCH 4/8] clk: si5341: check return value of {devm_}kasprintf()
+In-Reply-To: <20230530093913.1656095-6-claudiu.beznea@microchip.com>
+References: <20230530093913.1656095-1-claudiu.beznea@microchip.com> <20230530093913.1656095-6-claudiu.beznea@microchip.com>
+Subject: Re: [PATCH 5/8] clk: si5341: free unused memory on probe failure
 From:   Stephen Boyd <sboyd@kernel.org>
 Cc:     aford173@gmail.com, mike.looijmans@topic.nl,
         robert.hancock@calian.com, shawn.guo@linaro.org,
@@ -49,10 +49,10 @@ Cc:     aford173@gmail.com, mike.looijmans@topic.nl,
 To:     Claudiu Beznea <claudiu.beznea@microchip.com>, kristo@kernel.org,
         luca.ceresoli@bootlin.com, michal.simek@xilinx.com,
         mturquette@baylibre.com, nm@ti.com, ssantosh@kernel.org
-Date:   Tue, 20 Jun 2023 11:54:44 -0700
+Date:   Tue, 20 Jun 2023 11:55:06 -0700
 User-Agent: alot/0.10
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -61,12 +61,13 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Quoting Claudiu Beznea (2023-05-30 02:39:09)
-> {devm_}kasprintf() returns a pointer to dynamically allocated memory.
-> Pointer could be NULL in case allocation fails. Check pointer validity.
-> Identified with coccinelle (kmerr.cocci script).
+Quoting Claudiu Beznea (2023-05-30 02:39:10)
+> Pointers from synth_clock_names[] should be freed at the end of probe
+> either on probe success or failure path.
 >=20
-> Fixes: 3044a860fd09 ("clk: Add Si5341/Si5340 driver")
+> Fixes: b7bbf6ec4940 ("clk: si5341: Allow different output VDD_SEL values")
+> Fixes: 9b13ff4340df ("clk: si5341: Add sysfs properties to allow checking=
+/resetting device faults")
 > Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
 > ---
 
