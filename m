@@ -2,183 +2,184 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C45D273BF42
-	for <lists+linux-omap@lfdr.de>; Fri, 23 Jun 2023 22:14:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 164FD73C237
+	for <lists+linux-omap@lfdr.de>; Fri, 23 Jun 2023 23:13:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229611AbjFWUOZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 23 Jun 2023 16:14:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42638 "EHLO
+        id S231974AbjFWVNd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 23 Jun 2023 17:13:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231177AbjFWUOX (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 23 Jun 2023 16:14:23 -0400
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2100.outbound.protection.outlook.com [40.107.94.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 994132726;
-        Fri, 23 Jun 2023 13:14:22 -0700 (PDT)
+        with ESMTP id S230355AbjFWVN3 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 23 Jun 2023 17:13:29 -0400
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2103.outbound.protection.outlook.com [40.107.22.103])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7542189;
+        Fri, 23 Jun 2023 14:13:26 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=OnvcqRziGUuV1DHNTj1D7Pjo4bGk61HdAQ3yPK/tH8gwpOatpIfhZWRrXNbnkdNpeCmvwmdUlEsxck40mHivjTqTfH09/iot/A6bK/1bHF78oQnrzFGUlvL6n8Pptm5lCX2Q6rEC/rVZkExGaR06C6L3P67N2cFK7SpMPsQ0JPrVy917uE3lcT7WhjKT0j3PvbcB+IOAHv3exu+dWMFr3xx9NX5O7O2mD6Qi3YGA++N8QGELQ9IZre4KFkhyNKuyQOi+qKmlcSdm0UVo4LynZMlc0fDrhEnyEAkicPNlu4rjD4wRGLFwLG+oX+LzMDrMiM/DIScDTIZJnxo6o6EGGg==
+ b=BsZ3pAMtDlZM1X4vvxziwS8KKof6/rFy7GvE/pNI6gl2O8CFjBYb5ZdRubheefMVRy0x9zoS+gp8lHb+52yrJXA1ySYdtcmK//Qloh3a6JnyNzxiCC6jOZM7um/I7T+FShJw4x5nvLhR0Ge5kl3eGbATr432GLCPDQOmIgStm3lb4MsB7vEO+wDaGhm7XeoEHUYGu+OlLRbBwO7mFUd5ipg/cLoxRDGRVPmkkRdsgyBpHJFJVhiphikv8JlOs6ksY2ELUhir009D/v+gAe+4gX6obQ9e7HU39YSLUbp+tUfItA76+jal2X3FOYz7NqAX/TS3MyvVwGkb5O5cklXxvA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=c5l9RZcOUkUw8aQxrfzMmUk9+bpk/jDDHQ2EbRl/Cl0=;
- b=PbooH4aZIp4fOlsja5mn2axfkrAtqTJUuGYYGj6WMHylFk4AP0mxu6i7+sKCykO6HU5KR9+MeQRSWSCT3Sp1PkqlAdrPaPK1HbN5lgY0+QqlLnO95YZ6EhaSzFbXQofKebt/4Jf5DWIWZEzx+aHh5ttOcqdUtGUY3jn1WFCxcAXjIiZrfQHe1YU5Fl1NNcVOdeU1jQ8GpGPeoslBRpJXQ0Fp34KxGDkU11NWmH/1LUoeFD2ftXbiVLF3LjkELbAbvjfheZo/kRlJyDoHg80KU7SIxhBO+nyr5mIctlNtGJvmO868XzY/Mp1evaJKRLih35WSzfqJ4wzgRc3NJzDDQw==
+ bh=Tv82/JG2yYj1NUniIrwiSwP7xS6yGsoUSaEkMcQUtuU=;
+ b=MCZ9Bl/cBWqduWV1Lvoa7H6O5UmNJa0/B0UpSENSGddFd1WCSACqRp+tIMVuAWttTTu9nQVKNSj+f/GZ8rhu1McPvVXzNTl6Vgb56bZB4THsTB5fvXDtIvLwAlS1s1HX9bXr+v/Dgm+cJNXiXnFkNP1Z/uoK7PsN09z8S+aDdWI32TZLPrm6w+/XoigKvLoM5YBDPhjk57lHKGX7+QKlgRm80vqlDfpu1SA+WeoVgTWisdcAJjeChUjDRvRkDx435PBu8htuFX06XxtS3m+/OP3Vh4XRLcsmRbr83MR8c+eTI1w+nQlrHh5wt/yFYAKu9pgeeiaQFPa+W9ko3y2EjA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=corigine.com; dmarc=pass action=none header.from=corigine.com;
- dkim=pass header.d=corigine.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=corigine.onmicrosoft.com; s=selector2-corigine-onmicrosoft-com;
+ smtp.mailfrom=victronenergy.com; dmarc=pass action=none
+ header.from=victronenergy.com; dkim=pass header.d=victronenergy.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=victronenergy.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=c5l9RZcOUkUw8aQxrfzMmUk9+bpk/jDDHQ2EbRl/Cl0=;
- b=TbNDaQDQLeuGdc14HzEW7+hMPR41WAO5Gd5o8kROMjUeuHp1ZHmerYlGc/27q5c0NS/FWzROnlH/rylolNXMIpddg8FeWB3rL8MxNz003D8WTqi8dVKdM3ymmChjO/BNhq9gVUYFKSlJig7zMfU8BxKP/mwwJx2OS6uc4BuBHaQ=
+ bh=Tv82/JG2yYj1NUniIrwiSwP7xS6yGsoUSaEkMcQUtuU=;
+ b=cJEkM8aT8aEEsJajSu/JL8vOwYY+roVL+dLeiVAbOmpiUKXrN84MqRnDhTHlb4M3H3EagwYSBlk0OVFJCJvmgPmjP3VT1DkdFp+S9WeV4kFEzwMpPiXtAFV3GswDKFW4+60L5TvyMSfrjmCGvE+yhndymbj+G6hikSAwsiLHtwU=
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=corigine.com;
-Received: from PH0PR13MB4842.namprd13.prod.outlook.com (2603:10b6:510:78::6)
- by PH0PR13MB5315.namprd13.prod.outlook.com (2603:10b6:510:f9::5) with
+ header.d=none;dmarc=none action=none header.from=victronenergy.com;
+Received: from DB9PR07MB8679.eurprd07.prod.outlook.com (2603:10a6:10:30e::14)
+ by DB9PR07MB9365.eurprd07.prod.outlook.com (2603:10a6:10:456::17) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.24; Fri, 23 Jun
- 2023 20:14:18 +0000
-Received: from PH0PR13MB4842.namprd13.prod.outlook.com
- ([fe80::eb8f:e482:76e0:fe6e]) by PH0PR13MB4842.namprd13.prod.outlook.com
- ([fe80::eb8f:e482:76e0:fe6e%5]) with mapi id 15.20.6521.023; Fri, 23 Jun 2023
- 20:14:18 +0000
-Date:   Fri, 23 Jun 2023 22:14:12 +0200
-From:   Simon Horman <simon.horman@corigine.com>
-To:     =?utf-8?B?TcOlbnMgUnVsbGfDpXJk?= <mans@mansr.com>
-Cc:     Tony Lindgren <tony@atomide.com>,
-        Jeroen Hofstee <jhofstee@victronenergy.com>,
-        netdev@vger.kernel.org, Mugunthan V N <mugunthanvnm@ti.com>,
+ 2023 21:13:24 +0000
+Received: from DB9PR07MB8679.eurprd07.prod.outlook.com
+ ([fe80::8013:d5b9:e8ef:36c1]) by DB9PR07MB8679.eurprd07.prod.outlook.com
+ ([fe80::8013:d5b9:e8ef:36c1%3]) with mapi id 15.20.6521.026; Fri, 23 Jun 2023
+ 21:13:24 +0000
+Message-ID: <de546232-0638-318a-535f-169184933a20@victronenergy.com>
+Date:   Fri, 23 Jun 2023 23:13:22 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v2] net: cpsw: fix obtaining mac address for am3517
+Content-Language: en-US
+To:     Simon Horman <simon.horman@corigine.com>,
+        =?UTF-8?B?TcOlbnMgUnVsbGfDpXJk?= <mans@mansr.com>
+Cc:     Tony Lindgren <tony@atomide.com>, netdev@vger.kernel.org,
+        Mugunthan V N <mugunthanvnm@ti.com>,
         Grygorii Strashko <grygorii.strashko@ti.com>,
         "open list:TI ETHERNET SWITCH DRIVER (CPSW)" 
         <linux-omap@vger.kernel.org>,
         open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] net: cpsw: fix obtaining mac address for am3517
-Message-ID: <ZJX9FBBvOTv10IO4@corigine.com>
 References: <1477668756-2651-1-git-send-email-jhofstee@victronenergy.com>
  <20161028155213.2t3nwwe3lqaynaer@atomide.com>
  <d8ad5cab-5183-cddf-fa9a-4e7b9b8c9377@victronenergy.com>
- <20161028181914.mskebckucukzhxhz@atomide.com>
- <yw1x7cru445g.fsf@mansr.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+ <20161028181914.mskebckucukzhxhz@atomide.com> <yw1x7cru445g.fsf@mansr.com>
+ <ZJX9FBBvOTv10IO4@corigine.com>
+From:   Jeroen Hofstee <jhofstee@victronenergy.com>
+In-Reply-To: <ZJX9FBBvOTv10IO4@corigine.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <yw1x7cru445g.fsf@mansr.com>
-X-ClientProxiedBy: AS4P190CA0037.EURP190.PROD.OUTLOOK.COM
- (2603:10a6:20b:5d1::18) To PH0PR13MB4842.namprd13.prod.outlook.com
- (2603:10b6:510:78::6)
+X-ClientProxiedBy: AS4P251CA0008.EURP251.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5d2::16) To DB9PR07MB8679.eurprd07.prod.outlook.com
+ (2603:10a6:10:30e::14)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR13MB4842:EE_|PH0PR13MB5315:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9b825153-bd1e-42b6-bc98-08db74266ca6
+X-MS-TrafficTypeDiagnostic: DB9PR07MB8679:EE_|DB9PR07MB9365:EE_
+X-MS-Office365-Filtering-Correlation-Id: a999b888-0a41-4fc7-e89c-08db742eae2a
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: PP06zi9zUwm/fZhqSUUhKNASoT/ZfWZxars2H8EEZBqowhrFa4zQFxL5RfCd/Z90WDFGmYmuopuSGXVHdPPZhSGQNxfTIhFVj/SA3s0DLG6/wKaSpbS7pnfptDnCKffNaOkdFveBVKX8vZ3i9+PRcJ+BvyArCCSifVknCVgpGuxEpBs2+SdjCc8F3MHv/XYcc2o2QkV6WttE8jpvPOhUS4t+N1wZaz0MWmCI3j2Uz0VqYieollywvnw8f0CtBRc5nlWNCPY7eltRV2HsP+zjbIELinw0VAbmrlRLNwtv4OpUuM5v73k11+z6Yddl8krF+Vclhgvto4zn6mUncDrVNv244HXNGODHJKxfguKjj21rf2hkAHh5uB2l7aa7qBKIpS5cyHQITCPojGnMbjMveTiqim9QNVRnj54xuHYo9KrwqlVGEGW2A1GMuDHBfff7byjnT988fS3Hjarye2inx0+SrDkVnoLywdZ9MEyBX4pf9GoHmC6fciV/zdT7Ckk1H7FtkCrhx982fZq+jf7yZbWOkjQbm4VqpniePiKQgiEdocHCG7ElbW9yGv+XCJutkQkOkDMdszTmln31ZVlUUIZJkANafdmlXDWVfF2z1Bc=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR13MB4842.namprd13.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(396003)(376002)(39830400003)(136003)(346002)(366004)(451199021)(54906003)(6512007)(4326008)(6666004)(966005)(186003)(36756003)(2906002)(478600001)(86362001)(2616005)(316002)(44832011)(8936002)(66946007)(6916009)(66476007)(66556008)(5660300002)(53546011)(6506007)(6486002)(38100700002)(8676002)(41300700001);DIR:OUT;SFP:1102;
+X-Microsoft-Antispam-Message-Info: Sq6rd2Hs2zc+hijuZKh2McTl2hIs7nKsb9/MtD8Zt16SGm7fGFHlsGneVaS/3b28RP6OxvLrSOITf/zZTkOdQU5xzOWOawE4Sv1rM7PVtVC6MRaaRkr2PxC6MBzAiBWWkDxy8iYrIxt4oXRxh9OrpAwNkOtDUzvBgoRSI+VmsNI3cTitBreDEkFaMR13D3q7y1+jMtOy1RdMOS33SX7JVJUpFl/+Bpul5Bsi0F3PMDTr5/Zr3QXm3rOq8PHbSC92rpDgdw3+5WVNdKUTPfLGH9krGROWSZAavHGwdKQDA0EORyguawUYGU/tXgvGRHGIvESQuZqJY8QMEeuEbGxITGOPHDOl9JWdkJeHhDBR+lT+pVL+AdJVOKDst2EHdI5VcY/utR9ZxJ6wvQbKVVbEjCOgsc3JzUoRgFCsHJBPpigtkZUTQS+lHV9JWskPLJtwPqqj3BmUxdqSbtQOkRuoAKkDZjj4IzJNR9MmW86SiEpBQ2beG2Y6+0VTRKB7wiZOCvwGYfUChactOYUb4VeA8kapX40exHO5K8DWQPIYe0CcVuPkQTrTR5iSKyr9rbAAdbd5v9NHr/9LwRyO31XgQ4qbPaEWX6t2NMxTuvo4r52adf0czjoIZLTq+2vTo+bPGhGwhOHNW5vNTjkDLlfu/QKtNhs3UmUG0G1mLdVE3sos8z7IPwAIru+dlqWkk224Go5Hl566uRYZv9kHNrdRsg==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR07MB8679.eurprd07.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(366004)(376002)(39850400004)(136003)(396003)(346002)(451199021)(31686004)(53546011)(6512007)(186003)(6486002)(478600001)(110136005)(54906003)(2616005)(86362001)(31696002)(66476007)(66946007)(4326008)(66556008)(6506007)(41300700001)(66574015)(316002)(38100700002)(5660300002)(2906002)(8936002)(8676002)(36756003)(45980500001)(43740500002);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WjBZQmhXS1Y3REtLS25QQ3NxbitxSkl6U3lZTUU5WnYrQVFtQ3d2dDBKV2Nj?=
- =?utf-8?B?QW5iUVRDenI3TUVLUFo5ZmJNMlpxYUJiaXFqYXM5eXRSVHZkOXc3ZVJrYUgy?=
- =?utf-8?B?bXBkeGRHWDlkN2RKRk82NTRubkhKdFFJOHdaQW1MTmx4a3dKMVZVdzRFOFNS?=
- =?utf-8?B?bjJXRXlKTVoyRVZiTHV6T2dNdTh4cG5sY1pWSkJpL25rZjNOWHhhTE9QSEJR?=
- =?utf-8?B?a2hXWWk0REVidTYreEhwcHNlSDJOZTFleVJ3Y29aTEYyUFg5dTA1MXBQOVBv?=
- =?utf-8?B?MFhSTk1BQ09BdHg0aDRyQjBBaXhsQi95MlJuaUVaL1VPM0NBSHJlekpnbUFu?=
- =?utf-8?B?czI3YmV3S1poL2NrZXhDbjBiM3VnTE5TZ0pzNGJQSnN1Uk4rWnFpa3FraFhv?=
- =?utf-8?B?YThIU29WRitJejAvTWJjNWcrcEk2N203VEVNSEpYVmlTdjU4b215dWNVdzVR?=
- =?utf-8?B?MWlWbEZRb1lpeXBPQ3VRbXN4aWpDTlJVa3FVdy9sVUQvdkdIUG5vRkpVY0tq?=
- =?utf-8?B?alFaR1htcjBhVkp2UGFQSEgwbnhxeEFpK1pJSGNZbHRwTlB6M211aytiY3ov?=
- =?utf-8?B?MmFUK1NMaHdSQUJQU0daSHR6OVY1OHp4OEprZEM3cTZYQzVIWmYrSlAvL0ky?=
- =?utf-8?B?RTAwalJCNUlPUkg2bTlGYk1iTzFjcEZ4dXhGakZwbkVKN3Y4UGc4ZDBSMWMz?=
- =?utf-8?B?MWNRWXJOM2RFKzJLTFNLQ0lSN29xMDdYZE5icnpCNVcvZXFVTzNrZzlzSllZ?=
- =?utf-8?B?eTl2YktMaDh0N2l6UnRKMWhNQ0VwTVlMOW4wYjRQYVd6ZUVZdHoxSGRid2Rr?=
- =?utf-8?B?c3prSmlTUG1aOERpQ2x0SktsaHRaVjJlaGFFWUt3cTZIaVY0OHRMRUMzanlE?=
- =?utf-8?B?SnIyNysrMU9aZGloeVMwKy9SNHFoNGlXZVZ2ZUZoNVkxTmxsSEgzSFBtTWlG?=
- =?utf-8?B?TTRtdGFoNEJPOEE0NTZvNGEvbTRmRk01NjFMWE5vRmNiMHZHb3Y4dTJUbWpy?=
- =?utf-8?B?b1NZUnMrQjhMaHJ6SkMwNEM4SjJLYjZKbU9BcUd3Vyt5bjJidWZWYnlydml2?=
- =?utf-8?B?R2ZLU3cxMWFzRWdkR3pLVXgxZW5kUUNvVENwZXNON1FnSUlKVitnbDMzdWxx?=
- =?utf-8?B?VVl4bmZhVW9YeDhBQlk4eW1KcE9oZU5lZmR4bU5yRWlPUjJRK0JYR2tiSXJi?=
- =?utf-8?B?enpyWHNrSzQxb3QyV1hldno5Nis5WFo2NGFYWWVHU0pyN2RKSUZHQXFwaTEw?=
- =?utf-8?B?NlJyTGQxUlBRZkhrS1N6bHFuYXk1amNMWDBjL0crNlhOS3lGNmJELzhyeVRK?=
- =?utf-8?B?d2ZWUHAxL3pheHZEQzFLL0xKU09nQk4yR2FPTXpFQzZrMk9XWUp6U3VFaVRS?=
- =?utf-8?B?Mm9taTA1MUttRDV3OThPRWJ3b2lpU1ZYTEJuYzJ4WHBSdVRacFlJd1BZcXlq?=
- =?utf-8?B?TzNlZ2ZZTFVkVVplTEgvbUpRTkdFQlFXUTRVd0I5Y251cW45dnpHVlhKNW1q?=
- =?utf-8?B?bTh5Rm5rUGJtOUhmQ3ErYi9OTmxoTkdldk1mUW95TkhzRDF3T2hoZTI4ajBI?=
- =?utf-8?B?eFJNc0VDZEdIcEJYWU5pLzZZNjQ5WGlDVCtJMTJwaHhYZjZiTmZkanpYam1R?=
- =?utf-8?B?WW9wZXFxM1cxa0M5a0k0MjU0b0JIUW5VOFYzTFgyVU1PQ3N3aWsvUkVnRlhX?=
- =?utf-8?B?bVJsRmI2R1lPZzJRYWZmS0RRNDdwVWhxWjVWNzVFSXZWeURCSFdlMUdLMmo0?=
- =?utf-8?B?ZzFBUE1sZDcwYkdWckdyRWMwQUNJZ0xsbVQrQTQwamZqOFVNdWhaRU1KcFVh?=
- =?utf-8?B?SFB1Y3ZZRllDeTBaYkNaKzU3SkwzR0JTWWxpOHBmcVdRNndSQlBxOVA3ajJo?=
- =?utf-8?B?UU1VUkhnbGRjY1JkenpKbFlXcERxM1djQUdQbzZkR1FmOVlOa0RSS2JJeW1k?=
- =?utf-8?B?YUJ6Z2NzNktveGdxeC8vQ0pNaHVMWlJQWjg2WXRiYjhVamJCdDNDaXZ0TER4?=
- =?utf-8?B?WUpkTmsvUnJEQm5FK1pIdURBV3ltSGgzR0Q0MGFKUUhWZFNiZE1JaUtUU1J2?=
- =?utf-8?B?ZngyMHNrU2ltRjV6MERqU1pVKzkzUmVzOGplczVzYURtRzlabi8wS3FJMGo5?=
- =?utf-8?B?ck9yV1pxUjRLVkFpYzFZaVF1RlpmREEzUW1xVU1OT0JoeG9seU0yeTBKdGpK?=
- =?utf-8?B?Y1hpT3krMHZMVC83UVQvdzFFRnZkTVI2dzRDOW01V2lpOGZDbllPUTNLWXhl?=
- =?utf-8?B?NmludSsxSlZZOWtnRWRlaXZUdjFBPT0=?=
-X-OriginatorOrg: corigine.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9b825153-bd1e-42b6-bc98-08db74266ca6
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR13MB4842.namprd13.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SEcydldZZDZhZUo1KzVKUithcjExVzNPeDlUWWowa2pOQkV3MldvbFlFTXhV?=
+ =?utf-8?B?SWd6YzZVaXh6b3ZZU2tEbW02UEh5OXI4cmhGbmZkWHE2eFhZN2Z0WXpNTndF?=
+ =?utf-8?B?YXZPRHBMdkhZRG1uTk52NnQ5azUrMHhSdjF6c3BSTy9jQ205ZUxTV2prNGJw?=
+ =?utf-8?B?RmlINGZnNk9nMUI3cExaUTNhejczUjJOK1NXR2V1Y0hkR0UzbVI5Qm5ZNkJH?=
+ =?utf-8?B?MmM0ZTBUNEloRUtPYlpvWVVlNkVkVWZjelk1NTdjSnM3dXV0Y1dMaWVyTm9q?=
+ =?utf-8?B?cXk2TzdKVWtWLzIwQWZZckJaZ1ozUUNxYmo4THJodUNlbTdXWHBIR2JicTZo?=
+ =?utf-8?B?RGxpZVJUaFhsaWNoZDJLVWdJSUhqNU5ZcExOS0ZuUFVoOHJ6ZmVMMXRHT0NT?=
+ =?utf-8?B?UkpJQms1U2QrZzN2MGhTU2FzSlM4MHNvRkhZNHVFTGZhaWFFK3NCNUI1U3hC?=
+ =?utf-8?B?MFdFRjZDWFlHdFNCRDlUK2lBYWNNU2FSUVVrelBxR2FPcmkxVWt2bVJWdy8y?=
+ =?utf-8?B?NmxXT2lXQWIrdmh5MGlxNFoyUjlFK1JMWURaYjcrUmVId1RmTWMzOSs3c3Fk?=
+ =?utf-8?B?Y3BQeVJDZW9PcXFNYWpibjVvTmMvNVdNaklnNXdMdjB1UEhTa0hMS1JXczVo?=
+ =?utf-8?B?c3c3R1dlS2E1Snd6UVE4dW9hSFh2cVgwMGtJZXRXYWlMZEJCbUFWWDBaYXV3?=
+ =?utf-8?B?MlpRaUdSbmJDa3dURXV6aGxrR0hmeHdaT0ZiVjN5N05ac1kxNm54b3Y4UTVt?=
+ =?utf-8?B?RWxQNXMrMGdhR3IwS2ZzVVRydVJPUWRlRHFUdG1wTWw0Q3pkUzBRaUxLbFNk?=
+ =?utf-8?B?RENHK3hVYnBnL2k2UGhGeTZSUFJnTld4K0dBckNnOXFpVnRQTXdnZ291ckI3?=
+ =?utf-8?B?OVZ5Q0tCanJXZUlDMmFhRUNhdmlpdms3Q3o3cXFFK3UyRVl1cHJ5K3RyRVl1?=
+ =?utf-8?B?K09rd2hDUmt0RFZJbGRjUHJnRXZBdTBVZFVFcEtYVWt5ZCsxQ2UxL1ZaUS96?=
+ =?utf-8?B?NndEMFIySTR4QlNNRTU4Sm00RmFNS2gxeTFXWG5oK2xtOVY4WXVSTVFvb2s0?=
+ =?utf-8?B?Y1E0Yk91REUybkFDWk9IK2c4NXVDWjNNaWZmYmk4RkRRMnIwWm1SR2JYampj?=
+ =?utf-8?B?Ri9ac1Z3RFRpdTBjYm1WRW8rcnFsVTE0aFFURExUdDhBclY0Y1pZZktsRmJC?=
+ =?utf-8?B?dUJwQzFZcENQS1N0L1NPcG14c0Vza0tvSi9URGJwbTBZa0lMeGxtQ1M5K282?=
+ =?utf-8?B?dG80c2hGMUZlcSsxcXZ2QjFsVUJVVit5Q2o5enJVQkRzVEMwSlVvbUZuaUh2?=
+ =?utf-8?B?TEovQVM2RTduR3JCeFZUUlkrdFc4b0RRcEVsWUJ6czFVZk1RaEdsNnJTdk5U?=
+ =?utf-8?B?UEZyTGl3K2Nqb2JUQ254Y0ZDTG1IY0hBM0FhZCtneXcvcGNUMzJNeGlVSFRp?=
+ =?utf-8?B?Zk9yZXVDanBiSVVVTzdjV295d011VUJZdnBpRTdwYVRPWm1vSDZPdVZydlpW?=
+ =?utf-8?B?Q08rMFcyNVljV2FRYWNPUGt1a1ZVbFZCYXBVcVQ1M1B2QmJNdFVieTRkNXVD?=
+ =?utf-8?B?QU1zdmp4V1cvb3J3OGtWL2dPUytVTUhNemtsOTB2c085ZCszZEVRZmJ1cUIy?=
+ =?utf-8?B?SFBjdkFLTWpMdUdaQnVQa1dNR3hsWnRxZ1h5N2RlN21HbE1uazJMUkF5YnRD?=
+ =?utf-8?B?SFNmWjhwbklveGc2b1lGSllRdW96SG1VUytGMlRxcWJnN01SZmxwbExlZzZh?=
+ =?utf-8?B?NUlva1Q4eGtLYUwybmo1YXdyZnZGOFVwSUlZcWdFbVJwWk5yaXlXWENOeVFK?=
+ =?utf-8?B?aU1OL1ovRW02L1pWdFRsaU1BZWFwa3dQYTlvNGtycU9YcG41QjlBR3M2ajRU?=
+ =?utf-8?B?cklkcHNEekd6MmZvVW9NWFp5WVhubkNOYTVaaUJ3WEdSOTFkTnRQYm5BZ1Yr?=
+ =?utf-8?B?bGhqc3FZZTBBODdJcVVxR1dsaDBoQU5JTTh2MXJZODBWenUySHhWUmE2bzZi?=
+ =?utf-8?B?ZzBVRk1KYnhGWm5sMC80V2hqVndwTXRQYmV0eTdBakV5VkxRRE85aGZValpO?=
+ =?utf-8?B?STdPc1d2SE9Ta3Q4eElBSW5IMUE0NFF2Y1BuWGVsSm1nazIzeEZaUVcrY3Mw?=
+ =?utf-8?B?Y2owNXhrdEdjNHZnTU9VS2Y0TjFtTEIyZnpEN0p3U1JtOU5jemh2dFdkQ09V?=
+ =?utf-8?B?OW1KeHlCTnU4S29qbWtwSk1FT2djQ1hrdG1jeTk2YUNXcXdHczJQdjBCLzJq?=
+ =?utf-8?B?ZVN0VTg1cUt0SXhKRzRQZWNOZWd3PT0=?=
+X-OriginatorOrg: victronenergy.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a999b888-0a41-4fc7-e89c-08db742eae2a
+X-MS-Exchange-CrossTenant-AuthSource: DB9PR07MB8679.eurprd07.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jun 2023 20:14:18.5930
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jun 2023 21:13:24.4108
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: fe128f2c-073b-4c20-818e-7246a585940c
+X-MS-Exchange-CrossTenant-Id: 60b95f08-3558-4e94-b0f8-d690c498e225
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1PYXjbicyM3yAENlC3NPj18QoG6BQfNdpfy/gILI+7jA6syrCdpEqFY+eANyi8WxDVkiOKsNTsJwHXVu40O0KhNaqeS6rw+tMKBH6bhv80E=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR13MB5315
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-MS-Exchange-CrossTenant-UserPrincipalName: afz5icBFQbGlqReWReiVrAI1rM2CNpltMgwW+cBAp08VAp2WXUoP4n/yVlLrxdyAnBjyW9E+QY1ifJPbb4rvruIvtJbbsV9Nv7bIvlM9NqY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR07MB9365
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, Jun 23, 2023 at 03:58:03PM +0100, Måns Rullgård wrote:
-> Tony Lindgren <tony@atomide.com> writes:
-> 
-> > * Jeroen Hofstee <jhofstee@victronenergy.com> [161028 11:19]:
-> >> Hello Tony,
-> >> 
-> >> On 28-10-16 17:52, Tony Lindgren wrote:
-> >> > * Jeroen Hofstee <jhofstee@victronenergy.com> [161028 08:33]:
-> >> > > Commit b6745f6e4e63 ("drivers: net: cpsw: davinci_emac: move reading mac
-> >> > > id to common file") did not only move the code for an am3517, it also
-> >> > > added the slave parameter, resulting in an invalid (all zero) mac address
-> >> > > being returned for an am3517, since it only has a single emac and the slave
-> >> > > parameter is pointing to the second. So simply always read the first and
-> >> > > valid mac-address for a ti,am3517-emac.
-> >> > And others davinci_emac.c users can have more than one. So is the
-> >> > reason the slave parameter points to the second instance because
-> >> > of the location in the hardware?
-> >> 
-> >> Sort of, the slave parameter gets determined by the fact if there is one
-> >> or two register range(s) associated with the davinci_emac. In davinci_emac.c
-> >> 
-> >>     res_ctrl = platform_get_resource(pdev, IORESOURCE_MEM, 1);
-> >>     ...
-> >>     rc = davinci_emac_try_get_mac(pdev, res_ctrl ? 0 : 1,
-> >>                           priv->mac_addr);
-> >> 
-> >> So it there are two ranges, the slave param becomes 0. It there is only one,
-> >> it
-> >> will be 1. Since the am3517 only has a single regs entry it ends up with
-> >> slave 1,
-> >> while there is only a single davinci_emac.
-> >
-> > OK thanks for clarifying it:
-> >
-> > Acked-by: Tony Lindgren <tony@atomide.com>
-> 
-> Is there some reason this patch was never picked up, or was it simply
-> forgotten?
 
-I feel like I am missing something here.
+On 23-06-2023 22:14, Simon Horman wrote:
+> On Fri, Jun 23, 2023 at 03:58:03PM +0100, Måns Rullgård wrote:
+>> Tony Lindgren <tony@atomide.com> writes:
+>>
+>>> * Jeroen Hofstee <jhofstee@victronenergy.com> [161028 11:19]:
+>>>> Hello Tony,
+>>>>
+>>>> On 28-10-16 17:52, Tony Lindgren wrote:
+>>>>> * Jeroen Hofstee <jhofstee@victronenergy.com> [161028 08:33]:
+>>>>>> Commit b6745f6e4e63 ("drivers: net: cpsw: davinci_emac: move reading mac
+>>>>>> id to common file") did not only move the code for an am3517, it also
+>>>>>> added the slave parameter, resulting in an invalid (all zero) mac address
+>>>>>> being returned for an am3517, since it only has a single emac and the slave
+>>>>>> parameter is pointing to the second. So simply always read the first and
+>>>>>> valid mac-address for a ti,am3517-emac.
+>>>>> And others davinci_emac.c users can have more than one. So is the
+>>>>> reason the slave parameter points to the second instance because
+>>>>> of the location in the hardware?
+>>>> Sort of, the slave parameter gets determined by the fact if there is one
+>>>> or two register range(s) associated with the davinci_emac. In davinci_emac.c
+>>>>
+>>>>      res_ctrl = platform_get_resource(pdev, IORESOURCE_MEM, 1);
+>>>>      ...
+>>>>      rc = davinci_emac_try_get_mac(pdev, res_ctrl ? 0 : 1,
+>>>>                            priv->mac_addr);
+>>>>
+>>>> So it there are two ranges, the slave param becomes 0. It there is only one,
+>>>> it
+>>>> will be 1. Since the am3517 only has a single regs entry it ends up with
+>>>> slave 1,
+>>>> while there is only a single davinci_emac.
+>>> OK thanks for clarifying it:
+>>>
+>>> Acked-by: Tony Lindgren <tony@atomide.com>
+>> Is there some reason this patch was never picked up, or was it simply
+>> forgotten?
+> I feel like I am missing something here.
 
-The patch possibly dates back to 2016 - but I can't tell because
-lore.kernel.org doesn't know either.
+That is a weird response, you feel like something is missing, while
+it is a recognized bug, acknowledged by the maintainer at that time
+and apparently still not fixed and Måns simply asked it there is a
+reason for that.
 
-https://lore.kernel.org/netdev/20161028155213.2t3nwwe3lqaynaer@atomide.com/
+This is not a really helpful response,
 
-And I see you asked almost the same question in 2019.
+Jeroen
 
-If it is still relevant, perhaps it would be good to repost it
-for review.
