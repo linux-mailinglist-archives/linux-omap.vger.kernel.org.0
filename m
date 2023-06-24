@@ -2,56 +2,41 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F8EC73C303
-	for <lists+linux-omap@lfdr.de>; Fri, 23 Jun 2023 23:41:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBE9873CAC1
+	for <lists+linux-omap@lfdr.de>; Sat, 24 Jun 2023 14:18:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231501AbjFWVl1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 23 Jun 2023 17:41:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37206 "EHLO
+        id S231854AbjFXMSP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 24 Jun 2023 08:18:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230355AbjFWVl0 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 23 Jun 2023 17:41:26 -0400
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6849BE8;
-        Fri, 23 Jun 2023 14:41:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-        bh=WQCx5S2rzLd7RjvqC6LDqFRCoPVDdf+dtn8GX4ji/qw=; b=JnnXEtIGu6tZGGHN5/q8q6daj3
-        7lBAOb+CZlE8Q8ycc8GwVRgXk2p5SW/8zk5uR06Ebrvv8fPzn4pbEM7NfokWIbXNqWEAaso9EPvob
-        /yJ/ldkkKHwdzyzIceh8iTNtqB+yzfWatxdFxzOFidPd6JkhuMjQnA0zMB0no+tb5Ts0=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-        (envelope-from <andrew@lunn.ch>)
-        id 1qCoWk-00HOhO-4M; Fri, 23 Jun 2023 23:41:10 +0200
-Date:   Fri, 23 Jun 2023 23:41:10 +0200
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Jeroen Hofstee <jhofstee@victronenergy.com>
-Cc:     Simon Horman <simon.horman@corigine.com>,
-        =?iso-8859-1?Q?M=E5ns_Rullg=E5rd?= <mans@mansr.com>,
-        Tony Lindgren <tony@atomide.com>, netdev@vger.kernel.org,
-        Mugunthan V N <mugunthanvnm@ti.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        "open list:TI ETHERNET SWITCH DRIVER (CPSW)" 
-        <linux-omap@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] net: cpsw: fix obtaining mac address for am3517
-Message-ID: <675a346b-faed-4e86-87e7-b332da540055@lunn.ch>
-References: <1477668756-2651-1-git-send-email-jhofstee@victronenergy.com>
- <20161028155213.2t3nwwe3lqaynaer@atomide.com>
- <d8ad5cab-5183-cddf-fa9a-4e7b9b8c9377@victronenergy.com>
- <20161028181914.mskebckucukzhxhz@atomide.com>
- <yw1x7cru445g.fsf@mansr.com>
- <ZJX9FBBvOTv10IO4@corigine.com>
- <de546232-0638-318a-535f-169184933a20@victronenergy.com>
+        with ESMTP id S231707AbjFXMSO (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 24 Jun 2023 08:18:14 -0400
+X-Greylist: delayed 323 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 24 Jun 2023 05:18:13 PDT
+Received: from unicorn.mansr.com (unicorn.mansr.com [81.2.72.234])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DA502112;
+        Sat, 24 Jun 2023 05:18:13 -0700 (PDT)
+Received: from raven.mansr.com (raven.mansr.com [IPv6:2001:8b0:ca0d:1::3])
+        by unicorn.mansr.com (Postfix) with ESMTPS id A640A15360;
+        Sat, 24 Jun 2023 13:12:48 +0100 (BST)
+Received: by raven.mansr.com (Postfix, from userid 51770)
+        id 99CBA219FD1; Sat, 24 Jun 2023 13:12:48 +0100 (BST)
+From:   Mans Rullgard <mans@mansr.com>
+To:     Grygorii Strashko <grygorii.strashko@ti.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, linux-omap@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Jeroen Hofstee <jhofstee@victronenergy.com>,
+        Tony Lindgren <tony@atomide.com>
+Subject: [RESEND][PATCH] net: cpsw: fix obtaining mac address for am3517
+Date:   Sat, 24 Jun 2023 13:10:59 +0100
+Message-ID: <20230624121211.19711-1-mans@mansr.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <de546232-0638-318a-535f-169184933a20@victronenergy.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -59,20 +44,39 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-> > I feel like I am missing something here.
-> 
-> That is a weird response, you feel like something is missing
+From: Jeroen Hofstee <jhofstee@victronenergy.com>
 
-There is. The patch.
+Commit b6745f6e4e63 ("drivers: net: cpsw: davinci_emac: move reading mac
+id to common file") did not only move the code for an am3517, it also
+added the slave parameter, resulting in an invalid (all zero) mac address
+being returned for an am3517, since it only has a single emac and the slave
+parameter is pointing to the second. So simply always read the first and
+valid mac-address.
 
-Maintainers have a slightly better memory than a goldfish, but given
-the high volume of patches, we don't remember threads from 2016. Also,
-all our infrastructure has limited memory, this patch is not in lore,
-and it is not in patchworks. So in terms of getting merged, it does
-not exist.
+Signed-off-by: Jeroen Hofstee <jhofstee@victronenergy.com>
+Acked-by: Tony Lindgren <tony@atomide.com>
+---
+ drivers/net/ethernet/ti/cpsw-common.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-We do however recommend that if a patch has not been merged within 2
-weeks, it is rebased, any Acked-by: etc tags are added and the patch
-reposted.
+diff --git a/drivers/net/ethernet/ti/cpsw-common.c b/drivers/net/ethernet/ti/cpsw-common.c
+index bfa81bbfce3f..465dc15f059d 100644
+--- a/drivers/net/ethernet/ti/cpsw-common.c
++++ b/drivers/net/ethernet/ti/cpsw-common.c
+@@ -74,8 +74,12 @@ int ti_cm_get_macid(struct device *dev, int slave, u8 *mac_addr)
+ 	if (of_machine_is_compatible("ti,am33xx"))
+ 		return cpsw_am33xx_cm_get_macid(dev, 0x630, slave, mac_addr);
+ 
++	/*
++	 * There is only one emac / mac address on an am3517 so ignore the
++	 * slave = 1 and always get the macid from slave 0.
++	 */
+ 	if (of_device_is_compatible(dev->of_node, "ti,am3517-emac"))
+-		return davinci_emac_3517_get_macid(dev, 0x110, slave, mac_addr);
++		return davinci_emac_3517_get_macid(dev, 0x110, 0, mac_addr);
+ 
+ 	if (of_device_is_compatible(dev->of_node, "ti,dm816-emac"))
+ 		return cpsw_am33xx_cm_get_macid(dev, 0x30, slave, mac_addr);
+-- 
+2.41.0
 
-	Andrew
