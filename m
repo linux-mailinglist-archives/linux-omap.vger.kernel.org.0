@@ -2,113 +2,56 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B86B73DF92
-	for <lists+linux-omap@lfdr.de>; Mon, 26 Jun 2023 14:44:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B79D8740C31
+	for <lists+linux-omap@lfdr.de>; Wed, 28 Jun 2023 11:02:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229998AbjFZMob (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 26 Jun 2023 08:44:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40272 "EHLO
+        id S234296AbjF1JBz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 28 Jun 2023 05:01:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231218AbjFZMoL (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 26 Jun 2023 08:44:11 -0400
-Received: from APC01-TYZ-obe.outbound.protection.outlook.com (mail-tyzapc01on2133.outbound.protection.outlook.com [40.107.117.133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 305A51AB;
-        Mon, 26 Jun 2023 05:44:10 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=mcVSkrTeoFGLfdhFmEF9DKV7ezdkGk6qxGYpBPFsa7LZ4h1EP+6GO7ltQErOyWKsuHM04EZE8VY5eDrCUEZePS/j9nsjKEamF0pXzFKH44Naibu6P2oMAb1W/se72fHzlGTadscenY22BrsO+jWzzZoOO0D7xWB6pALPzdL63x9dUhVXhu8IaWGJIzIards0QWUMXfKcJFsljLpbiZhEmBgekJwOJ1zhhxyF9QlKnlplv7AE+4rvh00qWptivO420WgC+vxkjVUxcO9YNQ+TWqUMelyHL2DcRt8XI2lfWVb7AjNZzkpbv3jPP/ibi+8gEjTojP3HbnS2aGRomJV1ig==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QI00eUvuJ3p1dpdEmTbYMMg6JzFYG8FVxweSUEdPXms=;
- b=CtkAxYDl2q+e7ZJwbl1Qdxid6RfjKE5mmU5hVL+ChPwNMxSvOzQtQ75Rty/meIs1aX/uIJWxgj58JqPrQc+nXroyDZyOiXrYtVOjsx2xeUilVA0xkN/65pfi3FQnEhvqcqYe3BRki/10juS+JV/B9jkoZqAFBBiq4UzpfrVWmfYRZtVz3tekBGOdNWiAlOG2XeZ0/rjR30s5D8yfUHo5t/plfpsHRhcFP828XYQPq8bmGsFfH7RDCRANbjjPxMZX7vUOoj4s3nR6pdAz3wZhc9lqtrUPbE1r4bs4KFYRtExtqNy9p3ImVgMRL1maslC/Sz2sXjU1a+slOSkfrf+jTw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
- dkim=pass header.d=vivo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QI00eUvuJ3p1dpdEmTbYMMg6JzFYG8FVxweSUEdPXms=;
- b=R9My/m3LK9j9AfrEhFvIhc78ZvUC5Ds6ulPfAJ9cASCY2Fx+Vv+AIPyyY/U5zAwXqxSyJON4kBpQ5aJ0j2BAco0LAuaDAh/Ng/q2HyWhC2XkVrjDYAatktdHBlzJyQlbQgTeDNLklhwSZnb126XPlibyhsfxhSBm/LueX5wohIIErX30nQl/Wcz5pnkdyuZvqmt1VrM4ZbkSQlgBw/r4Zqd9AXaIqfM3j9DAb14/84rdxCJsfk1zt/Q2e4iNF6GVA3jhS1gd0TtfkywE6tVajIioSalpyTgFY7a8cp9NlxvmeRiuufJ+g4mGBeMy2XwuNX4dqPanPgD+hfFXtA6cpA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=vivo.com;
-Received: from SEZPR06MB5269.apcprd06.prod.outlook.com (2603:1096:101:78::6)
- by SEZPR06MB5320.apcprd06.prod.outlook.com (2603:1096:101:7f::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.23; Mon, 26 Jun
- 2023 12:44:07 +0000
-Received: from SEZPR06MB5269.apcprd06.prod.outlook.com
- ([fe80::fa0e:6c06:7474:285c]) by SEZPR06MB5269.apcprd06.prod.outlook.com
- ([fe80::fa0e:6c06:7474:285c%5]) with mapi id 15.20.6521.023; Mon, 26 Jun 2023
- 12:44:07 +0000
-From:   Yangtao Li <frank.li@vivo.com>
-To:     Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>
-Cc:     Yangtao Li <frank.li@vivo.com>, linux-pm@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 6/6] drivers/thermal/ti-soc-thermal: Use devm_platform_get_and_ioremap_resource()
-Date:   Mon, 26 Jun 2023 20:43:33 +0800
-Message-Id: <20230626124334.15100-6-frank.li@vivo.com>
-X-Mailer: git-send-email 2.39.0
-In-Reply-To: <20230626124334.15100-1-frank.li@vivo.com>
-References: <20230626124334.15100-1-frank.li@vivo.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI2PR02CA0003.apcprd02.prod.outlook.com
- (2603:1096:4:194::13) To SEZPR06MB5269.apcprd06.prod.outlook.com
- (2603:1096:101:78::6)
+        with ESMTP id S234288AbjF1IZz (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 28 Jun 2023 04:25:55 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF9421FED
+        for <linux-omap@vger.kernel.org>; Wed, 28 Jun 2023 01:17:20 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1qEQMS-0006Pg-Oi; Wed, 28 Jun 2023 10:17:12 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1qEQMR-00Acx5-H7; Wed, 28 Jun 2023 10:17:11 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1qEQMQ-000ThB-Hs; Wed, 28 Jun 2023 10:17:10 +0200
+Date:   Wed, 28 Jun 2023 10:17:10 +0200
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Bjorn Andersson <andersson@kernel.org>
+Cc:     Ohad Ben-Cohen <ohad@wizery.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-omap@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, kernel@pengutronix.de
+Subject: Re: [PATCH 0/3] hwspinlock: Convert to platform remove callback
+ returning void
+Message-ID: <20230628081710.xfvgl6ktf2pforoj@pengutronix.de>
+References: <20230314180020.2865734-1-u.kleine-koenig@pengutronix.de>
+ <20230412171610.ji5czj5c77banf6d@pengutronix.de>
+ <20230530135621.34psftds7ymrdvmt@pengutronix.de>
+ <970927f9-f3b8-3c92-e581-a28e3522196c@linux.alibaba.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SEZPR06MB5269:EE_|SEZPR06MB5320:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8cfa6f25-9ac1-4d58-0f00-08db764307f6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: dZ6O/rVxIFaY41fZOmaXvKk2UHMFUSLdydSDJOa82cc/0yHm5d2t27QhtJWDHfdM5CxrXCp8AaPq8bYCUDHcE7622svmODnaT6fS9tX189u0O2YpQ/TzdspuwKvgVIjf97RJKyuYkA4Qf/lsAL+6Lx6WBSxVhycho0WZbpJ76BygHlBM0Mch+CcKdSXypBp/UgHrPYdbZI+qikkHrZMAlB02AE7lN9s73SwO8HiGNzjPZa1XGCJ8s8geRDww2r/t7J97bwbin3Qz/YGYLJnXicSH5V/poQDMk27B/rhj2JT2eOmgB0t054G40AEq9waOp8ErI2+4kxc/dBmoM8+gqw1TPS/O7RJvklvZC6m0fPOyaYvv/o4UNMfhBrtR7oUMXMOkoYSNj9VhSAkParHzdjjIfoQxXjkx4lvdl/7mjgriwMzoe+iZvMbQ2EnN76n3zO9nx8K2yhFqAx0bVzMX0i7LP+AKyHpILzy1Jux4oeWLJ2zJm3QpryywELcSgMT9cRkive+uGlYib8x5GqLtv8Dv3I1S0HcDx/s7RAapd2jgTbJRqKBPKG3pId3pFYXI76fYm9BSuVPzrMxsYFhPddLA2cMHMwWmaCDLOkUUfG3X9vGxXp3LT2Zz80T6TIF2
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SEZPR06MB5269.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(366004)(39860400002)(136003)(346002)(396003)(376002)(451199021)(2906002)(4744005)(6486002)(52116002)(6666004)(38350700002)(38100700002)(83380400001)(2616005)(6512007)(26005)(186003)(41300700001)(110136005)(86362001)(478600001)(36756003)(66476007)(66556008)(4326008)(66946007)(316002)(6506007)(1076003)(5660300002)(8676002)(8936002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?kbCsAraBX2rsdlfCI1w9+746zrqaBfFwB9rwvnZqddVNAnSyYs+BFLgeENJ3?=
- =?us-ascii?Q?DdJA60hj2nOXLyByeS8/4nzb30kHIgKrVky7oLpbV+HZrbyKQSvvzyj4RuN5?=
- =?us-ascii?Q?Kq5MxmUntLbQhayPRMicKp6n8B1ypIgA3RuQPZG7CPDkNOxM6YH35SvuJIr+?=
- =?us-ascii?Q?/HJ6QsHwGCSDZV2QpammqttmeqhLpYuJpWwbpCT8p5hkFoJh8hbd+qEBWzzY?=
- =?us-ascii?Q?b0jepYdQWBOfrJsgvms7dYNcBGubE0RFWUhngMVv57QY3ecmwG6KmJX+0sg6?=
- =?us-ascii?Q?3xDJIAhfqjBVhRDsMRl5XfMJ7CUCwzVyI472v28tQFwQsWIoto4IaV56nOZ7?=
- =?us-ascii?Q?rU+LAP7MahYvQUmTS3UPAxly+c4BVECXHnd0oTwp7c9B4qMS2NaXeikzBZ9N?=
- =?us-ascii?Q?QFOYroN41gUr2Cs8e8qOeYuYzY6YVHT+h1fXPOI0HGEE3icywnr5MTmC1xl1?=
- =?us-ascii?Q?l739P4m1yWWdyTTqoHzx9o1TTYwoXlJ220Q39IUVbNMd+w1F8ts3dX9jHtTK?=
- =?us-ascii?Q?fV1Y1eR49JFHtkXas9+7x4Ktyo/eaMIOjEx+dwe+d58XHfS6pPBfqKxgwoQR?=
- =?us-ascii?Q?0i2Dm5yH/yKm6x4da57n2+aY3ZojokYvtyh0XCkUx33mzRqEz0g1A292lcMj?=
- =?us-ascii?Q?YM5MRWAnRASUBNxMrMQdTfTZgJmZ2IuoxzHzirPWmhOIftswk/HhmTjIwfwh?=
- =?us-ascii?Q?HNr1WjHhWnymh6ia2YlZqudGxLpoOcyy57cOmrlVKp8UDm0zBjCHT+uscQWz?=
- =?us-ascii?Q?DUnRoQ5L1+IoPv7YyQ7U5w23pZ2bz5M8TNYAGJeLLPOvWZZLpgXRe77o6GRv?=
- =?us-ascii?Q?UouA64CBle8tC8v+bfeHexXCTK9/ueGIuFkdkOAGbwKgylw2Uz1P0ntJ/Cua?=
- =?us-ascii?Q?9u8dR/2rmIHmOHbW0YWI9RQM5kii/Xja75w2FbiDJ4xzMRO0A6ca7oLMHvBS?=
- =?us-ascii?Q?3kX7cAaxLqa6lLLjzuqIPJq80jQJWVkke64VwUi7Mq2ZbzLZyZaBVZ0rHqji?=
- =?us-ascii?Q?qoFWhwap1b0mSxsT7QjamHXcETgwYPZD7H3lfYPF/sE3Q9H29I0nnCiy7jZq?=
- =?us-ascii?Q?KDInZH/4xEoElvn+kLXVXiJxGdInxNTbn3UAMcYt9kXT5CDCzYZ5t2yPL5it?=
- =?us-ascii?Q?PeWa9DYcP+vtmOs26r+foQhySzTzkU9JFqVrM877U9wPsQoJyguBlkOR581g?=
- =?us-ascii?Q?fwQFBXC9/UQVvoE0o2b26+DeBHTg3l0bmkVHrWLAlpGARCU9H26Je5tecJYU?=
- =?us-ascii?Q?iB791TOSvytLUcwI17dnhDV+h+3U7rJ38rGrfcynGFxyoGKOPxGzEgPwuWUJ?=
- =?us-ascii?Q?wgzRwVDIxQNUqKKtUMk3KBReYMys89LbPDuWSDatrS/yaqHEgiQA7hF0T5B1?=
- =?us-ascii?Q?tJdTPwLfVCWDS2RJNbVh3kzgUlTM+3T+TGK1d1CwDAqoDuS01fzqaODrRER2?=
- =?us-ascii?Q?wAbR8WfGAuBFiQbnv2HGfKpl2DGa6X7orBdQXz9g+/6ImYNJpNkdd0kk3j6p?=
- =?us-ascii?Q?D9OpplWfQrp4wibeAH/4NHXWEIui/urPHtaLYbjO03yaRRInJ1uSjro9sEFp?=
- =?us-ascii?Q?1MSCFq/oFlRFtxn9eDLSXSbaP5OxHTeQJLtTBmAb?=
-X-OriginatorOrg: vivo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8cfa6f25-9ac1-4d58-0f00-08db764307f6
-X-MS-Exchange-CrossTenant-AuthSource: SEZPR06MB5269.apcprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jun 2023 12:44:07.3677
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: o7StTcf7TNJpn28jfsWCaUIFsXmKjo0+iCQ7FnVOK7wx38wtCHKhq4xFQvsEmb4HL/rbullCuq/TUIp47NDTLQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SEZPR06MB5320
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="7ylt64rlld765h22"
+Content-Disposition: inline
+In-Reply-To: <970927f9-f3b8-3c92-e581-a28e3522196c@linux.alibaba.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-omap@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -116,31 +59,95 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Convert platform_get_resource(), devm_ioremap_resource() to a single
-call to devm_platform_get_and_ioremap_resource(), as this is exactly
-what this function does.
 
-Signed-off-by: Yangtao Li <frank.li@vivo.com>
----
- drivers/thermal/ti-soc-thermal/ti-bandgap.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+--7ylt64rlld765h22
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/thermal/ti-soc-thermal/ti-bandgap.c b/drivers/thermal/ti-soc-thermal/ti-bandgap.c
-index a1c9a1530183..0066b9150920 100644
---- a/drivers/thermal/ti-soc-thermal/ti-bandgap.c
-+++ b/drivers/thermal/ti-soc-thermal/ti-bandgap.c
-@@ -847,10 +847,9 @@ static struct ti_bandgap *ti_bandgap_build(struct platform_device *pdev)
- 	do {
- 		void __iomem *chunk;
- 
--		res = platform_get_resource(pdev, IORESOURCE_MEM, i);
-+		chunk = devm_platform_get_and_ioremap_resource(pdev, i, &res);
- 		if (!res)
- 			break;
--		chunk = devm_ioremap_resource(&pdev->dev, res);
- 		if (i == 0)
- 			bgp->base = chunk;
- 		if (IS_ERR(chunk))
--- 
-2.39.0
+Hello,
 
+On Wed, May 31, 2023 at 09:12:40AM +0800, Baolin Wang wrote:
+> On 5/30/2023 9:56 PM, Uwe Kleine-K=F6nig wrote:
+> > On Wed, Apr 12, 2023 at 07:16:10PM +0200, Uwe Kleine-K=F6nig wrote:
+> > > On Tue, Mar 14, 2023 at 07:00:20PM +0100, Uwe Kleine-K=F6nig wrote:
+> > > > Hello,
+> > > >=20
+> > > > this patch series adapts the platform drivers below drivers/hwspinl=
+ock to use
+> > > > the .remove_new() callback. Compared to the traditional .remove() c=
+allback
+> > > > .remove_new() returns no value. This is a good thing because the dr=
+iver core
+> > > > doesn't (and cannot) cope for errors during remove. The only effect=
+ of a
+> > > > non-zero return value in .remove() is that the driver core emits a =
+warning. The
+> > > > device is removed anyhow and an early return from .remove() usually=
+ yields a
+> > > > resource leak.
+> > > >=20
+> > > > By changing the remove callback to return void driver authors canno=
+t reasonably
+> > > > assume any more that there is some kind of cleanup later.
+> > > >=20
+> > > > The omap driver could return -EBUSY. This is first changed to return
+> > > > zero to drop the duplicated error message. I assume this error path=
+ is
+> > > > dangerous. For sure the platform device binding goes away and so
+> > > > devm_platform_ioremap_resource is undone. So probably the user of t=
+he
+> > > > hwspinlock that prevented its removal will soon access an unmapped
+> > > > virtual address resulting in an oops. This is true with and without=
+ my
+> > > > patch. IMHO hwspin_lock_unregister() shouldn't return an error code=
+ but
+> > > > care that all users go away and then return void.
+> > > >=20
+> > > > After this change the two platform_drivers can be trivially convert=
+ed to
+> > > > .remove_new().
+> > >=20
+> > > Gentle ping!
+> > >=20
+> > > Who is supposed to apply this series (or point out a good reason to n=
+ot
+> > > do that)?
+> >=20
+> > Still no maintainer feedback on my series :-\ Would a resend help?
+>=20
+> For the whole patchset,
+> Acked-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>=20
+> I think Bjorn can help to apply this patchset, Bjorn?
+
+up to now he didn't. I guess it's to late now for v6.5-rc1, but can at
+least someone pick it up for the next cycle?
+
+It still applies fine to current Linus's master. With am -3 it also
+still applies to current next. If a resend would help, please tell me
+what I should choose as base.
+
+Best regards
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--7ylt64rlld765h22
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmSb7IUACgkQj4D7WH0S
+/k4uoQf/bVx+G71b8Djc5P93dWX79txtD1lRxu58l6ncqUkmf8CZe6GXqLIBoyQv
+FOiNlLyEe4P2Dne91SoBGVOraKNzYYeqA8Wi5HVWUW9rdlirr58HGb+5lR3KWDwY
+APqR8sxkAiqNKQyeMDo8PZUgCMVGiGsMoOe0Muzp4s3uVCh60lB5yLkLEjAGwl8c
+9616TUr54Z3zCU3c+SGqWhxmIRb1TmgR6ZC7HO4ZwFQVlQesPG1lBDoLJvOkXhwB
+jPSQsarxB4QtHwbmnMXgkwzS2LFKnEeBlEzt+bl+K9jlSOY9cCid2mwnZCG5JErJ
+Mvgs4a/slk5+50qnX+axOUbb0R5dxw==
+=qZWf
+-----END PGP SIGNATURE-----
+
+--7ylt64rlld765h22--
