@@ -2,144 +2,62 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 56454741533
-	for <lists+linux-omap@lfdr.de>; Wed, 28 Jun 2023 17:37:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71476742108
+	for <lists+linux-omap@lfdr.de>; Thu, 29 Jun 2023 09:33:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232349AbjF1Pcq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 28 Jun 2023 11:32:46 -0400
-Received: from mga02.intel.com ([134.134.136.20]:53515 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232234AbjF1Pc3 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 28 Jun 2023 11:32:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1687966348; x=1719502348;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=1tDiKollzsfCXGV+rVmP0hmFqWtqHNqcUethxH+1FHg=;
-  b=GApZaMPlGRGY8SSVi8X594qIiWkpDh388LSvIQOwJ9BNCe7uXIkjucry
-   UXFZ2IPswT787HTNF72SSsVTaIVI2yHhQMu5yexveYM52A7jpfFP7CZnc
-   P+0ixHmBDsdr2YGPzHiOHf6rK0V/Bi8i3PrO4MHv7xN62m+d6Dy+fU40l
-   AajzU5Bim1k7H57pDq9JDWUfijSxl0YgSEObe3wN4W1ZrRJHLb/RvpqU6
-   7j4G0DLcRONI3yJSb/HlxTLv99m1y6D3avqpBsVc/4zDkceHsB81yIibG
-   bdBUMfidqtaAOBIMuOCUqqAIG24lby+JvPTBHp9gmPxFWY3UfG4A6otqd
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10755"; a="351666446"
-X-IronPort-AV: E=Sophos;i="6.01,165,1684825200"; 
-   d="scan'208";a="351666446"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jun 2023 08:32:18 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10755"; a="720270169"
-X-IronPort-AV: E=Sophos;i="6.01,165,1684825200"; 
-   d="scan'208";a="720270169"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga007.fm.intel.com with ESMTP; 28 Jun 2023 08:32:13 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id ABFBB51E; Wed, 28 Jun 2023 18:32:14 +0300 (EEST)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Saravana Kannan <saravanak@google.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-        Tony Lindgren <tony@atomide.com>, linux-kernel@vger.kernel.org,
-        linux-clk@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-omap@vger.kernel.org
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Peter De Schrijver <pdeschrijver@nvidia.com>,
-        Prashant Gaikwad <pgaikwad@nvidia.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Tero Kristo <kristo@kernel.org>,
-        Andy Shevchenko <andy@kernel.org>
-Subject: [PATCH v1 4/4] clk: ti: Replace kstrdup() + strreplace() with kstrdup_and_replace()
-Date:   Wed, 28 Jun 2023 18:32:11 +0300
-Message-Id: <20230628153211.52988-5-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.40.0.1.gaa8946217a0b
-In-Reply-To: <20230628153211.52988-1-andriy.shevchenko@linux.intel.com>
-References: <20230628153211.52988-1-andriy.shevchenko@linux.intel.com>
+        id S232173AbjF2HdN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 29 Jun 2023 03:33:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53892 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232288AbjF2HcZ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 29 Jun 2023 03:32:25 -0400
+Received: from mail.lokoho.com (mail.lokoho.com [217.61.105.98])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88EBB30FF
+        for <linux-omap@vger.kernel.org>; Thu, 29 Jun 2023 00:32:17 -0700 (PDT)
+Received: by mail.lokoho.com (Postfix, from userid 1001)
+        id 7EFC383D24; Thu, 29 Jun 2023 08:30:59 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lokoho.com; s=mail;
+        t=1688023864; bh=Z0N5VlX9/JlryGOL5I747Le9USomZJCRNNGRT3LbbKc=;
+        h=Date:From:To:Subject:From;
+        b=A8ezXZsk6MUk8YE6tFQ7p/ANQmx7Fzoi6UoFp20iKT65dbw+mXfQzou2pJGHLP0f0
+         BGcxHax3eK/w/dfQXkKgCQlSW4eGCfhkod6WmDzyqeHphSh18VFbR4OjV+s4rPokur
+         vhzzL+emmECnwlQ7UGRez0bhUbLCg9t6tMYIVBRRS3H4bw7JvbEv/RgBOn/FNw8uuI
+         CHlvNowEEDkpHwKlTtOUd4fV6Uy8Mob/g1XvXz+dr7WiUyp+0rBONY1jrKafkuruY1
+         BwiZBilJn6ex/xAjrMb4QifkROrjlGVFu2JHjMUAljBhC2kYrQa3yNtbjF2RDCyu31
+         2i77jlk0KqfRA==
+Received: by mail.lokoho.com for <linux-omap@vger.kernel.org>; Thu, 29 Jun 2023 07:30:21 GMT
+Message-ID: <20230629074502-0.1.6y.2swj4.0.ncnt354h66@lokoho.com>
+Date:   Thu, 29 Jun 2023 07:30:21 GMT
+From:   "Adam Charachuta" <adam.charachuta@lokoho.com>
+To:     <linux-omap@vger.kernel.org>
+Subject: =?UTF-8?Q?S=C5=82owa_kluczowe_do_wypozycjonowania?=
+X-Mailer: mail.lokoho.com
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
+        lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Replace open coded functionalify of kstrdup_and_replace() with a call.
+Dzie=C5=84 dobry,
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/clk/ti/clk.c     | 4 ++--
- drivers/clk/ti/clkctrl.c | 9 +++++----
- 2 files changed, 7 insertions(+), 6 deletions(-)
+zapozna=C5=82em si=C4=99 z Pa=C5=84stwa ofert=C4=85 i z przyjemno=C5=9Bci=
+=C4=85 przyznaj=C4=99, =C5=BCe przyci=C4=85ga uwag=C4=99 i zach=C4=99ca d=
+o dalszych rozm=C3=B3w.=20
 
-diff --git a/drivers/clk/ti/clk.c b/drivers/clk/ti/clk.c
-index 3d636938a739..1862958ab412 100644
---- a/drivers/clk/ti/clk.c
-+++ b/drivers/clk/ti/clk.c
-@@ -16,6 +16,7 @@
- #include <linux/of_address.h>
- #include <linux/list.h>
- #include <linux/regmap.h>
-+#include <linux/string_helpers.h>
- #include <linux/memblock.h>
- #include <linux/device.h>
- 
-@@ -123,10 +124,9 @@ static struct device_node *ti_find_clock_provider(struct device_node *from,
- 	const char *n;
- 	char *tmp;
- 
--	tmp = kstrdup(name, GFP_KERNEL);
-+	tmp = kstrdup_and_replace(name, '-', '_', GFP_KERNEL);
- 	if (!tmp)
- 		return NULL;
--	strreplace(tmp, '-', '_');
- 
- 	/* Node named "clock" with "clock-output-names" */
- 	for_each_of_allnodes_from(from, np) {
-diff --git a/drivers/clk/ti/clkctrl.c b/drivers/clk/ti/clkctrl.c
-index 8c40f10280b7..607e34d8e289 100644
---- a/drivers/clk/ti/clkctrl.c
-+++ b/drivers/clk/ti/clkctrl.c
-@@ -13,6 +13,7 @@
- #include <linux/of_address.h>
- #include <linux/clk/ti.h>
- #include <linux/delay.h>
-+#include <linux/string_helpers.h>
- #include <linux/timekeeping.h>
- #include "clock.h"
- 
-@@ -473,11 +474,11 @@ static const char * __init clkctrl_get_name(struct device_node *np)
- 	const int prefix_len = 11;
- 	const char *compat;
- 	const char *output;
-+	const char *end;
- 	char *name;
- 
- 	if (!of_property_read_string_index(np, "clock-output-names", 0,
- 					   &output)) {
--		const char *end;
- 		int len;
- 
- 		len = strlen(output);
-@@ -491,13 +492,13 @@ static const char * __init clkctrl_get_name(struct device_node *np)
- 
- 	of_property_for_each_string(np, "compatible", prop, compat) {
- 		if (!strncmp("ti,clkctrl-", compat, prefix_len)) {
-+			end = compat + prefix_len;
- 			/* Two letter minimum name length for l3, l4 etc */
--			if (strnlen(compat + prefix_len, 16) < 2)
-+			if (strnlen(end, 16) < 2)
- 				continue;
--			name = kasprintf(GFP_KERNEL, "%s", compat + prefix_len);
-+			name = kstrdup_and_replace(end, '-', '_', GFP_KERNEL);
- 			if (!name)
- 				continue;
--			strreplace(name, '-', '_');
- 
- 			return name;
- 		}
--- 
-2.40.0.1.gaa8946217a0b
+Pomy=C5=9Bla=C5=82em, =C5=BCe mo=C5=BCe m=C3=B3g=C5=82bym mie=C4=87 sw=C3=
+=B3j wk=C5=82ad w Pa=C5=84stwa rozw=C3=B3j i pom=C3=B3c dotrze=C4=87 z t=C4=
+=85 ofert=C4=85 do wi=C4=99kszego grona odbiorc=C3=B3w. Pozycjonuj=C4=99 =
+strony www, dzi=C4=99ki czemu generuj=C4=85 =C5=9Bwietny ruch w sieci.
 
+Mo=C5=BCemy porozmawia=C4=87 w najbli=C5=BCszym czasie?
+
+
+Pozdrawiam
+Adam Charachuta
