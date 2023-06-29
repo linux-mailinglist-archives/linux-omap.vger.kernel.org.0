@@ -2,62 +2,111 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 71476742108
-	for <lists+linux-omap@lfdr.de>; Thu, 29 Jun 2023 09:33:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 890977426FC
+	for <lists+linux-omap@lfdr.de>; Thu, 29 Jun 2023 15:10:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232173AbjF2HdN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 29 Jun 2023 03:33:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53892 "EHLO
+        id S231557AbjF2NKe (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 29 Jun 2023 09:10:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38338 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232288AbjF2HcZ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 29 Jun 2023 03:32:25 -0400
-Received: from mail.lokoho.com (mail.lokoho.com [217.61.105.98])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88EBB30FF
-        for <linux-omap@vger.kernel.org>; Thu, 29 Jun 2023 00:32:17 -0700 (PDT)
-Received: by mail.lokoho.com (Postfix, from userid 1001)
-        id 7EFC383D24; Thu, 29 Jun 2023 08:30:59 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lokoho.com; s=mail;
-        t=1688023864; bh=Z0N5VlX9/JlryGOL5I747Le9USomZJCRNNGRT3LbbKc=;
-        h=Date:From:To:Subject:From;
-        b=A8ezXZsk6MUk8YE6tFQ7p/ANQmx7Fzoi6UoFp20iKT65dbw+mXfQzou2pJGHLP0f0
-         BGcxHax3eK/w/dfQXkKgCQlSW4eGCfhkod6WmDzyqeHphSh18VFbR4OjV+s4rPokur
-         vhzzL+emmECnwlQ7UGRez0bhUbLCg9t6tMYIVBRRS3H4bw7JvbEv/RgBOn/FNw8uuI
-         CHlvNowEEDkpHwKlTtOUd4fV6Uy8Mob/g1XvXz+dr7WiUyp+0rBONY1jrKafkuruY1
-         BwiZBilJn6ex/xAjrMb4QifkROrjlGVFu2JHjMUAljBhC2kYrQa3yNtbjF2RDCyu31
-         2i77jlk0KqfRA==
-Received: by mail.lokoho.com for <linux-omap@vger.kernel.org>; Thu, 29 Jun 2023 07:30:21 GMT
-Message-ID: <20230629074502-0.1.6y.2swj4.0.ncnt354h66@lokoho.com>
-Date:   Thu, 29 Jun 2023 07:30:21 GMT
-From:   "Adam Charachuta" <adam.charachuta@lokoho.com>
-To:     <linux-omap@vger.kernel.org>
-Subject: =?UTF-8?Q?S=C5=82owa_kluczowe_do_wypozycjonowania?=
-X-Mailer: mail.lokoho.com
+        with ESMTP id S229615AbjF2NKd (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 29 Jun 2023 09:10:33 -0400
+Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9B502D60
+        for <linux-omap@vger.kernel.org>; Thu, 29 Jun 2023 06:10:29 -0700 (PDT)
+Received: by mail-wm1-x336.google.com with SMTP id 5b1f17b1804b1-3fb4146e8ceso6769175e9.0
+        for <linux-omap@vger.kernel.org>; Thu, 29 Jun 2023 06:10:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20221208.gappssmtp.com; s=20221208; t=1688044228; x=1690636228;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=VItU8HW70st6V8J8MISUt/JOqLi21m2A756zbojdNMc=;
+        b=HdGsFrpTob1y2/e3wRPz1UeRcwZ0DiwPVms16eSe+/HyHniDYA37WEHZ5Y60PNhJja
+         b3X5DoNIn9ax/gqP85NsCpRO6iCYz3ax4tY/OuZTElwYDJP+MRh1b4jyQOLKBR+I/B+G
+         bFWWxphQGCblRS7Oit5liqCTVwkRscCLvF2CGAt2pj30nn1MlB5XpW5EYQeflwAuTtts
+         Ktx3MDvY8A/waPvTuUIlAolac1+8xCE8zhTgON8766QweJoAhp5Z+K92ZBvzt5ASqXBp
+         kOr/cNoe4WcHp/Mocj8x9Uc9R+n3fvgFjF3ySmYnkCSaJs29Ilpn4d3QY5OJfSkllWYz
+         VG7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688044228; x=1690636228;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=VItU8HW70st6V8J8MISUt/JOqLi21m2A756zbojdNMc=;
+        b=LmUWlVTK/QciFcCgTKzGh5bfwhM+/gM8ejnI2bSTxY8o4UNEy7Os8GXZLrHGygm3hR
+         AKYNawmm4vJWrRCw+WCXy3CSuAPLiKXxHfm5Uo3fy51LE+RgQxweMOzF3dfRHVpx02k3
+         PXUTp5i7NgnP6d14pf53dIMn6Y+HESkNK9Zn2da9ILbRcJP8rDjHRJRJwaKpbiocXPlz
+         1mUHjFU5XcA8jQ+XCmNz6bW0Aqjkzr3kes9q8RUwKvupc5yXhANCSCxjae9liqWlSiBX
+         caMTwwVkaIB7KHad0H7xURxx6xMJGTpZdjeXSSlpQHLpDJzKn/39KkdRVtZKdmzZNAEz
+         Avbw==
+X-Gm-Message-State: AC+VfDzRcypGiJ9Iu9tSS98JtquTX27B6GoCBJLji1J+qYOyDPCd1shf
+        vCNJvwoa/WU+AqHRDnTjH5JgZw==
+X-Google-Smtp-Source: ACHHUZ6HE00YizRhBI6hxzj6Lkxz0YnEWYDsqVRUDcXxb+GkugvQIGw672zIBlmxTlcrREh+AQA3iQ==
+X-Received: by 2002:a05:600c:3644:b0:3fb:a2b6:8dfd with SMTP id y4-20020a05600c364400b003fba2b68dfdmr5943020wmq.32.1688044228139;
+        Thu, 29 Jun 2023 06:10:28 -0700 (PDT)
+Received: from [127.0.1.1] ([77.205.21.223])
+        by smtp.gmail.com with ESMTPSA id v4-20020a05600c214400b003fa95890484sm11885899wml.20.2023.06.29.06.10.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Jun 2023 06:10:27 -0700 (PDT)
+From:   Julien Panis <jpanis@baylibre.com>
+Subject: [PATCH 0/3] Configure usb0 as peripheral on am335x boards
+Date:   Thu, 29 Jun 2023 15:09:54 +0200
+Message-Id: <20230629-usb0-as-peripheral-v1-0-167f78a11746@baylibre.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKOCnWQC/x3N0QrCMAyF4VcZuTbQVjemryJepDVbA7OWREUYe
+ 3c7L38OH2cFYxU2uHQrKH/E5Fla+EMHKVOZGeXeGoILRzeEM74tOiTD2lzNrLSg72kid0rBjz0
+ 0GMkYo1JJeacPshfrPlTlSb7/t+tt237l5FNSfQAAAA==
+To:     Tony Lindgren <tony@atomide.com>, Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>
+Cc:     linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, vigneshr@ti.com, nm@ti.com,
+        Julien Panis <jpanis@baylibre.com>
+X-Mailer: b4 0.12.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1688044226; l=994;
+ i=jpanis@baylibre.com; s=20230526; h=from:subject:message-id;
+ bh=o90YNbzVP/LtweeHx56MaIg0Ldsz+J7DwexvicBarJ8=;
+ b=AkYcWqHrfTA7UmVjPbGJl1k9MoNSK9+UPOxWTKhBe2tkAshcsZrXg9h0wowm5XQHP2/GaOXQm
+ 6QiH9JI9XE/APq0qK+xLmtjs4RRe4o2leyX5+xqtLf53mFnOqqN+K8/
+X-Developer-Key: i=jpanis@baylibre.com; a=ed25519;
+ pk=8eSM4/xkiHWz2M1Cw1U3m2/YfPbsUdEJPCWY3Mh9ekQ=
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Dzie=C5=84 dobry,
+This series configures usb0 dr_mode as 'peripheral' for am335x-evm,
+am335x-evmsk, and am335x-icev2. This USB port is mainly used for
+RNDIS and DFU.
 
-zapozna=C5=82em si=C4=99 z Pa=C5=84stwa ofert=C4=85 i z przyjemno=C5=9Bci=
-=C4=85 przyznaj=C4=99, =C5=BCe przyci=C4=85ga uwag=C4=99 i zach=C4=99ca d=
-o dalszych rozm=C3=B3w.=20
+Initially, a series was submitted to overlay dr_mode in u-boot specific
+device trees ('<board>-u-boot.dtsi'):
+https://lore.kernel.org/all/20230621-fix_usb_ether_init-v2-0-ff121f0e8d7a@baylibre.com/
 
-Pomy=C5=9Bla=C5=82em, =C5=BCe mo=C5=BCe m=C3=B3g=C5=82bym mie=C4=87 sw=C3=
-=B3j wk=C5=82ad w Pa=C5=84stwa rozw=C3=B3j i pom=C3=B3c dotrze=C4=87 z t=C4=
-=85 ofert=C4=85 do wi=C4=99kszego grona odbiorc=C3=B3w. Pozycjonuj=C4=99 =
-strony www, dzi=C4=99ki czemu generuj=C4=85 =C5=9Bwietny ruch w sieci.
+It was finally decided to modify linux device trees.
 
-Mo=C5=BCemy porozmawia=C4=87 w najbli=C5=BCszym czasie?
+Signed-off-by: Julien Panis <jpanis@baylibre.com>
+---
+Julien Panis (3):
+      ARM: dts: am335x-evm: Use usb0 as peripheral
+      ARM: dts: am335x-evmsk: Use usb0 as peripheral
+      ARM: dts: am335x-icev2: Use usb0 as peripheral
 
+ arch/arm/boot/dts/am335x-evm.dts   | 4 ++++
+ arch/arm/boot/dts/am335x-evmsk.dts | 4 ++++
+ arch/arm/boot/dts/am335x-icev2.dts | 4 ++++
+ 3 files changed, 12 insertions(+)
+---
+base-commit: 3a8a670eeeaa40d87bd38a587438952741980c18
+change-id: 20230629-usb0-as-peripheral-15afa04c2185
 
-Pozdrawiam
-Adam Charachuta
+Best regards,
+-- 
+Julien Panis <jpanis@baylibre.com>
+
