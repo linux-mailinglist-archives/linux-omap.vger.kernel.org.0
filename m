@@ -2,36 +2,44 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CFB5E7435AA
-	for <lists+linux-omap@lfdr.de>; Fri, 30 Jun 2023 09:20:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65F447435B4
+	for <lists+linux-omap@lfdr.de>; Fri, 30 Jun 2023 09:23:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232006AbjF3HUv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 30 Jun 2023 03:20:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48066 "EHLO
+        id S229508AbjF3HW6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 30 Jun 2023 03:22:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48784 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229945AbjF3HUu (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 30 Jun 2023 03:20:50 -0400
+        with ESMTP id S229945AbjF3HW5 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 30 Jun 2023 03:22:57 -0400
 Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 67C8EE61;
-        Fri, 30 Jun 2023 00:20:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A329D10EC;
+        Fri, 30 Jun 2023 00:22:56 -0700 (PDT)
 Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 7680180FE;
-        Fri, 30 Jun 2023 07:20:48 +0000 (UTC)
-Date:   Fri, 30 Jun 2023 10:20:47 +0300
+        by muru.com (Postfix) with ESMTPS id 1B0A380FE;
+        Fri, 30 Jun 2023 07:22:56 +0000 (UTC)
+Date:   Fri, 30 Jun 2023 10:22:54 +0300
 From:   Tony Lindgren <tony@atomide.com>
-To:     Julien Panis <jpanis@baylibre.com>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>, linux-omap@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        vigneshr@ti.com, nm@ti.com
-Subject: Re: [PATCH 0/3] Configure usb0 as peripheral on am335x boards
-Message-ID: <20230630072047.GK14287@atomide.com>
-References: <20230629-usb0-as-peripheral-v1-0-167f78a11746@baylibre.com>
+To:     =?utf-8?B?TcOlbnMgUnVsbGfDpXJk?= <mans@mansr.com>
+Cc:     Andrew Lunn <andrew@lunn.ch>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, linux-omap@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jeroen Hofstee <jhofstee@victronenergy.com>
+Subject: Re: [RESEND][PATCH] net: cpsw: fix obtaining mac address for am3517
+Message-ID: <20230630072254.GL14287@atomide.com>
+References: <20230624121211.19711-1-mans@mansr.com>
+ <ad0ec6ac-2760-4a03-8cee-0d933aea98eb@lunn.ch>
+ <yw1x352h3plc.fsf@mansr.com>
+ <457ae95b-8838-4c10-821c-379ed622ef41@lunn.ch>
+ <yw1xy1k92ahj.fsf@mansr.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230629-usb0-as-peripheral-v1-0-167f78a11746@baylibre.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <yw1xy1k92ahj.fsf@mansr.com>
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
@@ -43,21 +51,18 @@ X-Mailing-List: linux-omap@vger.kernel.org
 
 Hi,
 
-* Julien Panis <jpanis@baylibre.com> [230629 13:10]:
-> This series configures usb0 dr_mode as 'peripheral' for am335x-evm,
-> am335x-evmsk, and am335x-icev2. This USB port is mainly used for
-> RNDIS and DFU.
-
-Is this a mini-B connector? Just wondering if it was originally attempted
-to be configured as OTG or how it ended up with a host configuration..
-
-> Initially, a series was submitted to overlay dr_mode in u-boot specific
-> device trees ('<board>-u-boot.dtsi'):
-> https://lore.kernel.org/all/20230621-fix_usb_ether_init-v2-0-ff121f0e8d7a@baylibre.com/
+* Måns Rullgård <mans@mansr.com> [230624 14:36]:
+> Andrew Lunn <andrew@lunn.ch> writes:
+> > I assume you also want this back ported to stable? Please add a Fixed:
+> > tag, and a Cc: stable@vger.kernel.org tag. And set the patch subject
+> > to [PATCH net v3] to indicate this is for the net tree, not net-next.
 > 
-> It was finally decided to modify linux device trees.
+> I give up.  It's not worth my time.  This is why people hoard patches
+> rather than sending them upstream.
 
-Do we need these as fixes? If so is there a fixes tag for these?
+Maybe just give it one more go filing the proper paperwork :) It would be
+nice to have it in stable too so IMO it's worth the few more hoops to
+addthe tags for automating picking it to stable kernels.
 
 Regards,
 
