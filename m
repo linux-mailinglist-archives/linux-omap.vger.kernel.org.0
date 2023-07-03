@@ -2,45 +2,61 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C2536745FD9
-	for <lists+linux-omap@lfdr.de>; Mon,  3 Jul 2023 17:27:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 989BA746017
+	for <lists+linux-omap@lfdr.de>; Mon,  3 Jul 2023 17:51:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230484AbjGCP14 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 3 Jul 2023 11:27:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58100 "EHLO
+        id S229915AbjGCPvK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 3 Jul 2023 11:51:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229793AbjGCP1z (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 3 Jul 2023 11:27:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A4C9E70;
-        Mon,  3 Jul 2023 08:27:53 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0C0E360F53;
-        Mon,  3 Jul 2023 15:27:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C99FC433C8;
-        Mon,  3 Jul 2023 15:27:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1688398072;
-        bh=6JElBzuIBOpjOrTnPoZBAhdfC4cekLjJpRnVZgfMtvo=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=pUEOBkgMhDCgUoT7ntwgcBP7ZbZ2CRQd6gozFg8DovqLMWXSsaMEEY3Ytnwldyd++
-         6eR+kd382Awwg+xDxlpQ4/ID3HLPgvfSlqZGCYms+672b1Cja4AtAfDeX3E8EsQ4iX
-         7QoLS7qBNQVzZVYt42DIlttF3VqAvCeojABD4neehHycqGr4C4MP9OBpT1+oJqUCVp
-         GYVzlRIp9iBO8d84QmFxghMyg9w6HhghOCkR7/7fSwZSf3O2Ms2j0e0Ek3G8u83GpJ
-         RdwbQzwHGMurT6uwBXQWot/nxB+OpOk25dlcVFlsUguMDhtMGUmJqxv9nO4CMy8POG
-         3io9xuvNgE70Q==
-Message-ID: <73a4545a-e149-261a-a0c5-a526e8740bd5@kernel.org>
-Date:   Mon, 3 Jul 2023 18:27:47 +0300
+        with ESMTP id S230121AbjGCPvJ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 3 Jul 2023 11:51:09 -0400
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 344D9CD
+        for <linux-omap@vger.kernel.org>; Mon,  3 Jul 2023 08:51:07 -0700 (PDT)
+Received: by mail-wm1-x32a.google.com with SMTP id 5b1f17b1804b1-3fba5a8af2cso47183015e9.3
+        for <linux-omap@vger.kernel.org>; Mon, 03 Jul 2023 08:51:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20221208.gappssmtp.com; s=20221208; t=1688399465; x=1690991465;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=nToOaFFb7Yah/0oWYDXxyn35HQ2cDLw7R7eaZRYCDPY=;
+        b=YKvDFs2Oy2TzMYx528oGqvtoNVyHbM1Zjdn/JaUPRNljJJZ3WIW6YsDYQInbhYko2m
+         SUf1e3FDOdR2n6DVhvnM0dMRoWwG6XFQQ9zaX0PuOP14NOJHyck5lUZjBemwCloXNv1Q
+         XhEddi3H1MT7sJw3+rRiVEuQS0scIlwVynCioWUJTtOGCbEmjn9TMBgYsF5cmKso/HGm
+         Uyr6Ll3t1ybwejAKJEN3ii3hlh/53l42G8W/l9/1yLkk4bPkR1GT+7XFrL3Y/6ICFqJM
+         9iDftsXJV35HvD6Qp4yvskucJWNAsCXEo4yFa4b3CEif+EvuGL4ASytL6i0SQo1iF6lL
+         GO3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688399465; x=1690991465;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=nToOaFFb7Yah/0oWYDXxyn35HQ2cDLw7R7eaZRYCDPY=;
+        b=GECyBfeL6bKWG9SbrS4EdKdlqMU8r5LRE7cL84EFeo6NS0lf3824w1Tnvg+UI4P3bE
+         EnTGQC37WvYVsdDkPBoSpClspcuitN5vj15K4FjPSN4lmehXZ4Za5s4i5U7nwkeN+aul
+         XGKNi/pg/GWYHQ8ZPPHiOpRk93WK60h+J6rly0fnJw+LHmYQC/8t09uACNpxTb3haJkP
+         Ip75ysb7shMfDry+BagcJMgaVXpceOgvIkx5p5ulaJaNcRT04AA7huaJlxsGru0Drlx9
+         jnjLIvzZt+DtSqztRzhG3dDwsgHBBcobxLC8sYcp1PEpFKBLPSxKjsn/52mXWYxuRLqd
+         FzyA==
+X-Gm-Message-State: AC+VfDz9jhVJ4EGRNxNwGi0u/NNcwZSMbT94Q3oehsX9LRFyd0Nf4X0y
+        5wxbFFIVfL3XD+BAxiaeHa0ChA==
+X-Google-Smtp-Source: ACHHUZ54jcD/MBjy6F4Yqf6Ekyb9RrUIEbOxW19tjq7VIUkk+8z67EnalI70htsAqH9Xid6lxnrfQw==
+X-Received: by 2002:a05:600c:21d6:b0:3fb:b299:6eba with SMTP id x22-20020a05600c21d600b003fbb2996ebamr7904522wmj.4.1688399465627;
+        Mon, 03 Jul 2023 08:51:05 -0700 (PDT)
+Received: from [192.168.35.121] ([77.205.21.54])
+        by smtp.gmail.com with ESMTPSA id z12-20020a1c4c0c000000b003fa9554fb30sm22753833wmf.44.2023.07.03.08.51.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 03 Jul 2023 08:51:05 -0700 (PDT)
+Message-ID: <6d485ee7-9b8a-626e-da8a-bbff37bcde61@baylibre.com>
+Date:   Mon, 3 Jul 2023 17:51:03 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
+ Thunderbird/102.12.0
 Subject: Re: [PATCH 0/3] Configure usb0 as peripheral on am335x boards
 Content-Language: en-US
-To:     Julien Panis <jpanis@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>
+To:     Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>
 Cc:     Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>, linux-omap@vger.kernel.org,
@@ -53,78 +69,79 @@ References: <20230629-usb0-as-peripheral-v1-0-167f78a11746@baylibre.com>
  <babf5f20-ddf4-74bf-1788-f8e356acaa92@baylibre.com>
  <9ef45899-c766-e839-522a-3b048f8106f7@kernel.org>
  <6a51d860-2d20-6c35-3935-985d5b41853e@baylibre.com>
-From:   Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <6a51d860-2d20-6c35-3935-985d5b41853e@baylibre.com>
-Content-Type: text/plain; charset=UTF-8
+ <73a4545a-e149-261a-a0c5-a526e8740bd5@kernel.org>
+From:   Julien Panis <jpanis@baylibre.com>
+In-Reply-To: <73a4545a-e149-261a-a0c5-a526e8740bd5@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-
-
-On 03/07/2023 17:14, Julien Panis wrote:
-> On 7/3/23 15:44, Roger Quadros wrote:
->>
->> On 03/07/2023 14:56, Julien Panis wrote:
->>> On 6/30/23 21:40, Roger Quadros wrote:
->>>> Hi,
->>>>
->>>> On 30/06/2023 11:30, Julien Panis wrote:
->>>>> Hello Tony,
+On 7/3/23 17:27, Roger Quadros wrote:
+>
+> On 03/07/2023 17:14, Julien Panis wrote:
+>> On 7/3/23 15:44, Roger Quadros wrote:
+>>> On 03/07/2023 14:56, Julien Panis wrote:
+>>>> On 6/30/23 21:40, Roger Quadros wrote:
+>>>>> Hi,
 >>>>>
->>>>> On 6/30/23 09:20, Tony Lindgren wrote:
->>>>>> Hi,
+>>>>> On 30/06/2023 11:30, Julien Panis wrote:
+>>>>>> Hello Tony,
 >>>>>>
->>>>>> * Julien Panis <jpanis@baylibre.com> [230629 13:10]:
->>>>>>> This series configures usb0 dr_mode as 'peripheral' for am335x-evm,
->>>>>>> am335x-evmsk, and am335x-icev2. This USB port is mainly used for
->>>>>>> RNDIS and DFU.
->>>>>> Is this a mini-B connector? Just wondering if it was originally attempted
->>>>>> to be configured as OTG or how it ended up with a host configuration..
->>>>> It's a micro USB-AB connector.
->>>>> I don't know how it ended up with a host configuration, it looks like an oversight.
->>>>> Maybe Vignesh or Nishanth can confirm (?)
->>>> usb0 role should be "otg".
->>>> It is rightly so in Linux DT. am33xx.dtsi contains "otg" and all AM335x board files inherit from it.
+>>>>>> On 6/30/23 09:20, Tony Lindgren wrote:
+>>>>>>> Hi,
+>>>>>>>
+>>>>>>> * Julien Panis <jpanis@baylibre.com> [230629 13:10]:
+>>>>>>>> This series configures usb0 dr_mode as 'peripheral' for am335x-evm,
+>>>>>>>> am335x-evmsk, and am335x-icev2. This USB port is mainly used for
+>>>>>>>> RNDIS and DFU.
+>>>>>>> Is this a mini-B connector? Just wondering if it was originally attempted
+>>>>>>> to be configured as OTG or how it ended up with a host configuration..
+>>>>>> It's a micro USB-AB connector.
+>>>>>> I don't know how it ended up with a host configuration, it looks like an oversight.
+>>>>>> Maybe Vignesh or Nishanth can confirm (?)
+>>>>> usb0 role should be "otg".
+>>>>> It is rightly so in Linux DT. am33xx.dtsi contains "otg" and all AM335x board files inherit from it.
+>>>>>
+>>>>> So I don't think setting it to "peripheral" in u-boot is the right thing to do.
+>>>> This series is for kernel (not for u-boot).
+>>>> Why is it a problem to set usb0 as 'peripheral' in kernel for the 3 board dts ?
 >>>>
->>>> So I don't think setting it to "peripheral" in u-boot is the right thing to do.
->>> This series is for kernel (not for u-boot).
->>> Why is it a problem to set usb0 as 'peripheral' in kernel for the 3 board dts ?
+>>>> With usb0 not set as 'peripheral', the 3 boards (am335x-evm, evm-sk, icev2)
+>>>> do not boot with uboot 2023.04. This error is returned, with LOG_LEVEL=5:
+>>>>       No USB device found
+>>>>       USB ether init failed
+>>>>       initcall sequence 8ffdbba4 failed at call 808024d9 (err=-19)
+>>>>       ### ERROR ### Please RESET the board ###
+>>>> This error is also returned with usb0 as 'otg'.
+>>> This error is at u-boot correct? This will need further investigation.
 >>>
->>> With usb0 not set as 'peripheral', the 3 boards (am335x-evm, evm-sk, icev2)
->>> do not boot with uboot 2023.04. This error is returned, with LOG_LEVEL=5:
->>>      No USB device found
->>>      USB ether init failed
->>>      initcall sequence 8ffdbba4 failed at call 808024d9 (err=-19)
->>>      ### ERROR ### Please RESET the board ###
->>> This error is also returned with usb0 as 'otg'.
->> This error is at u-boot correct? This will need further investigation.
->>
->> Does it function correctly in Linux when kept as 'otg'?
->>
-> 
-> This error is at u-boot level, indeed. I add Tom Rini to this thread, since he
-> was involved in the discussion here:
-> https://lore.kernel.org/all/20230621-fix_usb_ether_init-v2-0-ff121f0e8d7a@baylibre.com/
-> If dr_mode is set as 'peripheral' in '<board>-u-boot.dtsi' and kept as 'otg'
-> in linux, it functions correctly in linux.
+>>> Does it function correctly in Linux when kept as 'otg'?
+>>>
+>> This error is at u-boot level, indeed. I add Tom Rini to this thread, since he
+>> was involved in the discussion here:
+>> https://lore.kernel.org/all/20230621-fix_usb_ether_init-v2-0-ff121f0e8d7a@baylibre.com/
+>> If dr_mode is set as 'peripheral' in '<board>-u-boot.dtsi' and kept as 'otg'
+>> in linux, it functions correctly in linux.
+> OK.
+>
+> So NAK for this patch series as we don't want to break 'otg' on Linux.
+>
+> u-boot doesn't support 'otg' mode. So we need to force it either to
+> 'peripheral' or 'host'.
+>
+> One solution would be to have 'peripheral' in am335x-*-u-boot.dts?
+>
 
-OK.
+OK. In other words, we just need to reconsider my previous u-boot series. :-)
+I was setting usb0 as 'peripheral' in 'am335x-*-u-boot.dts' here:
+https://lore.kernel.org/all/20230621-fix_usb_ether_init-v2-0-ff121f0e8d7a@baylibre.com/
 
-So NAK for this patch series as we don't want to break 'otg' on Linux.
-
-u-boot doesn't support 'otg' mode. So we need to force it either to
-'peripheral' or 'host'.
-
-One solution would be to have 'peripheral' in am335x-*-u-boot.dts?
-
--- 
-cheers,
--roger
+Julien
