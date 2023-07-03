@@ -2,110 +2,84 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 26369745DA2
-	for <lists+linux-omap@lfdr.de>; Mon,  3 Jul 2023 15:44:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB37E745E1D
+	for <lists+linux-omap@lfdr.de>; Mon,  3 Jul 2023 16:05:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231297AbjGCNoX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 3 Jul 2023 09:44:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59268 "EHLO
+        id S230106AbjGCOFD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 3 Jul 2023 10:05:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229608AbjGCNoW (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 3 Jul 2023 09:44:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B9A9E5A;
-        Mon,  3 Jul 2023 06:44:21 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8E71060F4B;
-        Mon,  3 Jul 2023 13:44:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1006C433C7;
-        Mon,  3 Jul 2023 13:44:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1688391860;
-        bh=3OalVom3i/o15fhhviP0iWfIaM4zX2VkZSJCW9xDX4w=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=mrlyEnMZhO/WRRDMnScTjs1sNuS6ms1OijmFb7tsdNqgmdgGSDTdVrqn5JogCNmDZ
-         h8i9Z0qGM9BHJRX7KAzEA207A0FJd9Vj4LQ+sVEePg9zJjJG2nbwTWbjQlYU4OUkk3
-         USAkHhwgRa00xnZ0D8BtihEk+kaWNwYFdGNg8Tr88jqmdOOsG/cF0/KFni9Vxil+Dq
-         KYCOTUJhTLGUc/jRIjyYIf8JC3jeVDGpBT15lQrWvfGIrUpCu8fvTo9nycRYiswPmj
-         fnA4788psG8MI7ZAJEiESJM5xN9NAADQolt2tFLApFibRlAy72+TV/KNKu6wbnjgRb
-         IzubSW8aZI8QQ==
-Message-ID: <9ef45899-c766-e839-522a-3b048f8106f7@kernel.org>
-Date:   Mon, 3 Jul 2023 16:44:14 +0300
+        with ESMTP id S229614AbjGCOFC (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 3 Jul 2023 10:05:02 -0400
+X-Greylist: delayed 906 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 03 Jul 2023 07:05:01 PDT
+Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1980106;
+        Mon,  3 Jul 2023 07:05:01 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1688392179; cv=none; 
+        d=zohomail.com; s=zohoarc; 
+        b=SP9ImYKJXEf65WKqag/ju5y526ZfAFIBV4itRdPacBQ3+yv5KnCru8ASuO9Hlo1Gt2oK5OjGfBVUSMXqhHesfFw44l8G58ol9rDbTZs4DUmr2mNbiu8R7n5wTKI8SpMtNvhTnFheLb4J/UW25OjOE1YUX+l1vx5BFFQaQfHSCDs=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+        t=1688392179; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
+        bh=0juxJGr0V0mWBkxuSy/zAkO1ju2c9SqaUoNVC94Ta+g=; 
+        b=DX6QQuBCyOLO33f2JL3SPON+PDyKnDqY1eJlK7uslPKmFb4TRsfiJgmyoGAQztmM7A8PKEZK+FLdZdB8gsIsKBIY7lsV6kcJNwhVBuvbkVjUmHLbEUBwrCT7wWyc8/wZWC1zStk5lUGlH6HoxgGCe+XO8Lghe/GrXoaadX9RSFw=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+        dkim=pass  header.i=linux.beauty;
+        spf=pass  smtp.mailfrom=me@linux.beauty;
+        dmarc=pass header.from=<me@linux.beauty>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1688392178;
+        s=zmail; d=linux.beauty; i=me@linux.beauty;
+        h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:References:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+        bh=0juxJGr0V0mWBkxuSy/zAkO1ju2c9SqaUoNVC94Ta+g=;
+        b=HWnuovJb6yqvdgTAK2CNyPNMuAPlm0fFmH8WjjDVWS0zulM3dFFROXLQSFR/CqSV
+        SmRDdJwch6aB7hRBeuhgl35fz65Jn4i+LDo+6X6IBx8lnPlgfa1Pq9/V20UT1owcSFJ
+        WugwavBR6h6CxjQqQP3VeKrrITPPXzcFwAyMXimw=
+Received: from mail.zoho.com by mx.zohomail.com
+        with SMTP id 1688392177737939.3774690465508; Mon, 3 Jul 2023 06:49:37 -0700 (PDT)
+Date:   Mon, 03 Jul 2023 21:49:37 +0800
+From:   Li Chen <me@linux.beauty>
+To:     "Achal Verma" <a-verma1@ti.com>
+Cc:     "Vignesh Raghavendra" <vigneshr@ti.com>,
+        "Tom Joseph" <tjoseph@cadence.com>,
+        "Lorenzo Pieralisi" <lpieralisi@kernel.org>,
+        "Krzysztof Wilczy_ski" <kw@linux.com>,
+        "Rob Herring" <robh@kernel.org>,
+        "Bjorn Helgaas" <bhelgaas@google.com>,
+        "linux-omap" <linux-omap@vger.kernel.org>,
+        "linux-pci" <linux-pci@vger.kernel.org>,
+        "linux-arm-kernel" <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel" <linux-kernel@vger.kernel.org>
+Message-ID: <1891c041807.fea67a55448140.3454059194195387266@linux.beauty>
+In-Reply-To: <20230703112914.68806-1-a-verma1@ti.com>
+References: <20230703112914.68806-1-a-verma1@ti.com>
+Subject: Re: [PATCH] PCI: j721e: Fix delay before PERST# deassert
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH 0/3] Configure usb0 as peripheral on am335x boards
-Content-Language: en-US
-To:     Julien Panis <jpanis@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>, linux-omap@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        vigneshr@ti.com, nm@ti.com
-References: <20230629-usb0-as-peripheral-v1-0-167f78a11746@baylibre.com>
- <20230630072047.GK14287@atomide.com>
- <f4fa80fd-1a6a-4718-0287-f5288cd9d912@baylibre.com>
- <7f44798b-e2bf-1620-da37-ca13bfd07a21@kernel.org>
- <babf5f20-ddf4-74bf-1788-f8e356acaa92@baylibre.com>
-From:   Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <babf5f20-ddf4-74bf-1788-f8e356acaa92@baylibre.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Importance: Medium
+User-Agent: Zoho Mail
+X-Mailer: Zoho Mail
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Hi Achal,
+ ---- On Mon, 03 Jul 2023 19:29:14 +0800  Achal Verma  wrote --- 
+ > As per the PCIe Card Electromechanical specification REV. 3.0, PERST#
+ > signal should be de-asserted after minimum 100ms from the time power-rails
+ > become stable. Current delay of 100us is observed to be not enough on some
+ > custom platform implemented using TI's K3 SOCs.
+ > 
+ > So, to ensure 100ms delay to give sufficient time for power-rails and
+ > refclk to become stable, change delay from 100us to 100ms.
 
+What problems could arise if the delay is too small? Would some endpoints not be able to detect it?
 
-On 03/07/2023 14:56, Julien Panis wrote:
-> On 6/30/23 21:40, Roger Quadros wrote:
->> Hi,
->>
->> On 30/06/2023 11:30, Julien Panis wrote:
->>> Hello Tony,
->>>
->>> On 6/30/23 09:20, Tony Lindgren wrote:
->>>> Hi,
->>>>
->>>> * Julien Panis <jpanis@baylibre.com> [230629 13:10]:
->>>>> This series configures usb0 dr_mode as 'peripheral' for am335x-evm,
->>>>> am335x-evmsk, and am335x-icev2. This USB port is mainly used for
->>>>> RNDIS and DFU.
->>>> Is this a mini-B connector? Just wondering if it was originally attempted
->>>> to be configured as OTG or how it ended up with a host configuration..
->>> It's a micro USB-AB connector.
->>> I don't know how it ended up with a host configuration, it looks like an oversight.
->>> Maybe Vignesh or Nishanth can confirm (?)
->> usb0 role should be "otg".
->> It is rightly so in Linux DT. am33xx.dtsi contains "otg" and all AM335x board files inherit from it.
->>
->> So I don't think setting it to "peripheral" in u-boot is the right thing to do.
-> 
-> This series is for kernel (not for u-boot).
-> Why is it a problem to set usb0 as 'peripheral' in kernel for the 3 board dts ?
-> 
-> With usb0 not set as 'peripheral', the 3 boards (am335x-evm, evm-sk, icev2)
-> do not boot with uboot 2023.04. This error is returned, with LOG_LEVEL=5:
->     No USB device found
->     USB ether init failed
->     initcall sequence 8ffdbba4 failed at call 808024d9 (err=-19)
->     ### ERROR ### Please RESET the board ###
-> This error is also returned with usb0 as 'otg'.
-
-This error is at u-boot correct? This will need further investigation.
-
-Does it function correctly in Linux when kept as 'otg'?
-
--- 
-cheers,
--roger
+Regards,
+Li
