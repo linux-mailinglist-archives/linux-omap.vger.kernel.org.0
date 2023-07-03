@@ -2,115 +2,103 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E0474745BBB
-	for <lists+linux-omap@lfdr.de>; Mon,  3 Jul 2023 13:56:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BC12745C47
+	for <lists+linux-omap@lfdr.de>; Mon,  3 Jul 2023 14:33:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231482AbjGCL46 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 3 Jul 2023 07:56:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33274 "EHLO
+        id S230052AbjGCMdI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 3 Jul 2023 08:33:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49322 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230119AbjGCL45 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 3 Jul 2023 07:56:57 -0400
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E047C109
-        for <linux-omap@vger.kernel.org>; Mon,  3 Jul 2023 04:56:55 -0700 (PDT)
-Received: by mail-wm1-x330.google.com with SMTP id 5b1f17b1804b1-3fbc244d384so39885155e9.0
-        for <linux-omap@vger.kernel.org>; Mon, 03 Jul 2023 04:56:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20221208.gappssmtp.com; s=20221208; t=1688385414; x=1690977414;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=TTq4B8VQydiZBj9HRWXj7S7KM5zH7YsDOhpU1L0DXi4=;
-        b=IEoMrr0Ski5D2vzSr0VAQh5kNAU7257QhAft+YiErVJ9WunpDECW4kav+qfqa8TdBa
-         4aYSZt67yCoGIiwL3OjCOL6XhnPsCV3PX/xyTGlfJ7SNEaHXKnGhmfwUNd/wR6fo1+7n
-         L63xfGVlUeJ6DclBLXgIleEWkuHNM9AJiFT7L+eOhFSZ8WB00mw3mqGfOBNAcb2OK8YP
-         VxmbHN3b3oBnK8G2byqiO7Hcw8tzsNHqFpYjAR8Ghw5EuiYILv5ndcnVD6XcdtS4iZaf
-         nv5qddQ/PUEtu9PGxgYDGMcANb7Z4OLAR5VKtmL7E7+MbG0/CcuXG9ZRj/yWTwZJHRkf
-         +Giw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688385414; x=1690977414;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=TTq4B8VQydiZBj9HRWXj7S7KM5zH7YsDOhpU1L0DXi4=;
-        b=Ghvcp1BbKL+cA7qvf85fOZkbHwCNVLxl3fcAbUvkNVVhVMKDT+jvhDwW0sS2DODWhV
-         s7PBWBHOK96vwXh6fFo1m+csJcocietzZE/UhVUuEITGI2x/avsIpC66VH+MtAV/bybp
-         E9szvq0OTNCdSnSxyvi86syqRMXJ7O6YnDJu29LcCzW1PsDSzBoFRzOexsg00sBymXNi
-         kdr2KAa8XIOIo8J0TxV9Hd6nATOH86xqH4M6vVxvSB+9kq6RzN4ra9S/KEGfD+uocHOo
-         7MdfYAb03d/tBXDHasGwqUmiX/2nSa+5JDz3lwLOwECf+HejP/1TvAYvYiMVTUqI4fle
-         sbLA==
-X-Gm-Message-State: AC+VfDxEPiTF9SlHeXApC42O2vC+uRT1M13nxKrGATsPc34c9+K/+tIs
-        Ikeo7Cv/Qe4KnUn4xdbXNihti+ycYQKdkVFBOqI=
-X-Google-Smtp-Source: ACHHUZ5CW2k7JvgHdwNLhg2i8HEeB/5xPMDUQZX5RoLenIKDPWRe8KP9Flewwh8BRzeQh9yYMTS06Q==
-X-Received: by 2002:a05:600c:3787:b0:3fb:ac73:f7d9 with SMTP id o7-20020a05600c378700b003fbac73f7d9mr7607357wmr.32.1688385414262;
-        Mon, 03 Jul 2023 04:56:54 -0700 (PDT)
-Received: from [192.168.35.121] ([77.205.22.13])
-        by smtp.gmail.com with ESMTPSA id n24-20020a7bcbd8000000b003fbca05faa9sm8198120wmi.24.2023.07.03.04.56.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 03 Jul 2023 04:56:53 -0700 (PDT)
-Message-ID: <babf5f20-ddf4-74bf-1788-f8e356acaa92@baylibre.com>
-Date:   Mon, 3 Jul 2023 13:56:52 +0200
+        with ESMTP id S229793AbjGCMdH (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 3 Jul 2023 08:33:07 -0400
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C641194
+        for <linux-omap@vger.kernel.org>; Mon,  3 Jul 2023 05:33:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1688387587; x=1719923587;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=fU/QG6pc0BirOf5sX3bW9ERTsqh7E1ut80wR4Gp6F6k=;
+  b=g7QSDJyo6BYGdTSTyx0p9svU4cBENiSK7E2ZBCBhMY2TQNEkvvBNUzgf
+   gl9ujo17qo1NwzzKGPBYGrs/wUDSlvmVvQA+cuuH8gNeZR+5NVM2qg1t6
+   D9gh19H+dJT0oJt2TGHmtoh5ewyw/m3atCQJtY0Bkg8ZPuyFiBY44fgrr
+   dh4o7o+xNDnlPIlDTtguEgdoHcgtCvSbIOx06fXN/G5KJRPCQhqyfYvEL
+   MovmGjLFhADrw3myQ8wthYtCWlHxLzBYwOgNrWw0z+BH/a7Jby4Rm4u2z
+   7PI4RvB4yx/GaDxEE/n1kiF/rrCLInKAWFPcK2Uao77ZlZmDb2GImFLBk
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10759"; a="426554463"
+X-IronPort-AV: E=Sophos;i="6.01,178,1684825200"; 
+   d="scan'208";a="426554463"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2023 05:33:06 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10759"; a="753734134"
+X-IronPort-AV: E=Sophos;i="6.01,178,1684825200"; 
+   d="scan'208";a="753734134"
+Received: from lkp-server01.sh.intel.com (HELO 783282924a45) ([10.239.97.150])
+  by orsmga001.jf.intel.com with ESMTP; 03 Jul 2023 05:33:04 -0700
+Received: from kbuild by 783282924a45 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qGIjn-000HN5-2f;
+        Mon, 03 Jul 2023 12:33:03 +0000
+Date:   Mon, 3 Jul 2023 20:32:36 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Guo Mengqi <guomengqi3@huawei.com>, tony@atomide.com,
+        haojian.zhuang@linaro.org, linus.walleij@linaro.org
+Cc:     oe-kbuild-all@lists.linux.dev,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        guomengqi3@huawei.com
+Subject: Re: [PATCH] pinctrl: single: Fix memleak in pcs_dt_node_to_map
+Message-ID: <202307032015.Tba9DLXz-lkp@intel.com>
+References: <20230703081716.15810-1-guomengqi3@huawei.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 0/3] Configure usb0 as peripheral on am335x boards
-Content-Language: en-US
-To:     Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>, linux-omap@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        vigneshr@ti.com, nm@ti.com
-References: <20230629-usb0-as-peripheral-v1-0-167f78a11746@baylibre.com>
- <20230630072047.GK14287@atomide.com>
- <f4fa80fd-1a6a-4718-0287-f5288cd9d912@baylibre.com>
- <7f44798b-e2bf-1620-da37-ca13bfd07a21@kernel.org>
-From:   Julien Panis <jpanis@baylibre.com>
-In-Reply-To: <7f44798b-e2bf-1620-da37-ca13bfd07a21@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230703081716.15810-1-guomengqi3@huawei.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 6/30/23 21:40, Roger Quadros wrote:
-> Hi,
->
-> On 30/06/2023 11:30, Julien Panis wrote:
->> Hello Tony,
->>
->> On 6/30/23 09:20, Tony Lindgren wrote:
->>> Hi,
->>>
->>> * Julien Panis <jpanis@baylibre.com> [230629 13:10]:
->>>> This series configures usb0 dr_mode as 'peripheral' for am335x-evm,
->>>> am335x-evmsk, and am335x-icev2. This USB port is mainly used for
->>>> RNDIS and DFU.
->>> Is this a mini-B connector? Just wondering if it was originally attempted
->>> to be configured as OTG or how it ended up with a host configuration..
->> It's a micro USB-AB connector.
->> I don't know how it ended up with a host configuration, it looks like an oversight.
->> Maybe Vignesh or Nishanth can confirm (?)
-> usb0 role should be "otg".
-> It is rightly so in Linux DT. am33xx.dtsi contains "otg" and all AM335x board files inherit from it.
->
-> So I don't think setting it to "peripheral" in u-boot is the right thing to do.
+Hi Guo,
 
-This series is for kernel (not for u-boot).
-Why is it a problem to set usb0 as 'peripheral' in kernel for the 3 board dts ?
+kernel test robot noticed the following build errors:
 
-With usb0 not set as 'peripheral', the 3 boards (am335x-evm, evm-sk, icev2)
-do not boot with uboot 2023.04. This error is returned, with LOG_LEVEL=5:
-     No USB device found
-     USB ether init failed
-     initcall sequence 8ffdbba4 failed at call 808024d9 (err=-19)
-     ### ERROR ### Please RESET the board ###
-This error is also returned with usb0 as 'otg'.
+[auto build test ERROR on linusw-pinctrl/devel]
+[also build test ERROR on linusw-pinctrl/for-next linus/master v6.4 next-20230703]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Julien Panis
+url:    https://github.com/intel-lab-lkp/linux/commits/Guo-Mengqi/pinctrl-single-Fix-memleak-in-pcs_dt_node_to_map/20230703-162502
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/linusw/linux-pinctrl.git devel
+patch link:    https://lore.kernel.org/r/20230703081716.15810-1-guomengqi3%40huawei.com
+patch subject: [PATCH] pinctrl: single: Fix memleak in pcs_dt_node_to_map
+config: riscv-allmodconfig (https://download.01.org/0day-ci/archive/20230703/202307032015.Tba9DLXz-lkp@intel.com/config)
+compiler: riscv64-linux-gcc (GCC) 12.3.0
+reproduce: (https://download.01.org/0day-ci/archive/20230703/202307032015.Tba9DLXz-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202307032015.Tba9DLXz-lkp@intel.com/
+
+All errors (new ones prefixed by >>, old ones prefixed by <<):
+
+>> ERROR: modpost: "pinmux_func_name_to_selector" [drivers/pinctrl/pinctrl-single.ko] undefined!
+
+Kconfig warnings: (for reference only)
+   WARNING: unmet direct dependencies detected for IOMMU_IO_PGTABLE_LPAE
+   Depends on [n]: IOMMU_SUPPORT [=y] && (ARM || ARM64 || COMPILE_TEST [=n]) && !GENERIC_ATOMIC64 [=n]
+   Selected by [y]:
+   - IPMMU_VMSA [=y] && IOMMU_SUPPORT [=y] && (ARCH_RENESAS [=y] || COMPILE_TEST [=n]) && !GENERIC_ATOMIC64 [=n]
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
