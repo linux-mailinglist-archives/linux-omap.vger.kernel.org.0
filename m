@@ -2,111 +2,115 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A9D3745B0E
-	for <lists+linux-omap@lfdr.de>; Mon,  3 Jul 2023 13:29:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0474745BBB
+	for <lists+linux-omap@lfdr.de>; Mon,  3 Jul 2023 13:56:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230149AbjGCL3i (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 3 Jul 2023 07:29:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46284 "EHLO
+        id S231482AbjGCL46 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 3 Jul 2023 07:56:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229917AbjGCL3i (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 3 Jul 2023 07:29:38 -0400
-Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2421EC;
-        Mon,  3 Jul 2023 04:29:36 -0700 (PDT)
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 363BTG9b095606;
-        Mon, 3 Jul 2023 06:29:16 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1688383756;
-        bh=xDtP2HJQgfk6AN7TtOP/ryebO14+ERJGMm36HhtgU2Q=;
-        h=From:To:CC:Subject:Date;
-        b=klnc0xG8vrmpvDuVqdSlRNoClaR9Dz3fUQpMr+kcL1fTWNRJ0RBeESehAs6qKwC1h
-         hau/3fOOAe/kAeT51HIRpJylQFRzIE1HfevMGUlqDZ3lVOUv5tU1pPesFuDJMKPlcW
-         e8QnIkiz2UIkGMLep8PiaMEXigBmr1mweeQIuv90=
-Received: from DFLE109.ent.ti.com (dfle109.ent.ti.com [10.64.6.30])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 363BTFx7048757
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 3 Jul 2023 06:29:15 -0500
-Received: from DFLE107.ent.ti.com (10.64.6.28) by DFLE109.ent.ti.com
- (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 3
- Jul 2023 06:29:15 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE107.ent.ti.com
- (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Mon, 3 Jul 2023 06:29:15 -0500
-Received: from localhost (ileaxei01-snat2.itg.ti.com [10.180.69.6])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 363BTERL001690;
-        Mon, 3 Jul 2023 06:29:15 -0500
-From:   Achal Verma <a-verma1@ti.com>
-To:     Vignesh Raghavendra <vigneshr@ti.com>,
-        Tom Joseph <tjoseph@cadence.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Krzysztof Wilczy_ski <kw@linux.com>,
-        Rob Herring <robh@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>
-CC:     <linux-omap@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, Achal Verma <a-verma1@ti.com>
-Subject: [PATCH] PCI: j721e: Fix delay before PERST# deassert
-Date:   Mon, 3 Jul 2023 16:59:14 +0530
-Message-ID: <20230703112914.68806-1-a-verma1@ti.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S230119AbjGCL45 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 3 Jul 2023 07:56:57 -0400
+Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E047C109
+        for <linux-omap@vger.kernel.org>; Mon,  3 Jul 2023 04:56:55 -0700 (PDT)
+Received: by mail-wm1-x330.google.com with SMTP id 5b1f17b1804b1-3fbc244d384so39885155e9.0
+        for <linux-omap@vger.kernel.org>; Mon, 03 Jul 2023 04:56:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20221208.gappssmtp.com; s=20221208; t=1688385414; x=1690977414;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=TTq4B8VQydiZBj9HRWXj7S7KM5zH7YsDOhpU1L0DXi4=;
+        b=IEoMrr0Ski5D2vzSr0VAQh5kNAU7257QhAft+YiErVJ9WunpDECW4kav+qfqa8TdBa
+         4aYSZt67yCoGIiwL3OjCOL6XhnPsCV3PX/xyTGlfJ7SNEaHXKnGhmfwUNd/wR6fo1+7n
+         L63xfGVlUeJ6DclBLXgIleEWkuHNM9AJiFT7L+eOhFSZ8WB00mw3mqGfOBNAcb2OK8YP
+         VxmbHN3b3oBnK8G2byqiO7Hcw8tzsNHqFpYjAR8Ghw5EuiYILv5ndcnVD6XcdtS4iZaf
+         nv5qddQ/PUEtu9PGxgYDGMcANb7Z4OLAR5VKtmL7E7+MbG0/CcuXG9ZRj/yWTwZJHRkf
+         +Giw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688385414; x=1690977414;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=TTq4B8VQydiZBj9HRWXj7S7KM5zH7YsDOhpU1L0DXi4=;
+        b=Ghvcp1BbKL+cA7qvf85fOZkbHwCNVLxl3fcAbUvkNVVhVMKDT+jvhDwW0sS2DODWhV
+         s7PBWBHOK96vwXh6fFo1m+csJcocietzZE/UhVUuEITGI2x/avsIpC66VH+MtAV/bybp
+         E9szvq0OTNCdSnSxyvi86syqRMXJ7O6YnDJu29LcCzW1PsDSzBoFRzOexsg00sBymXNi
+         kdr2KAa8XIOIo8J0TxV9Hd6nATOH86xqH4M6vVxvSB+9kq6RzN4ra9S/KEGfD+uocHOo
+         7MdfYAb03d/tBXDHasGwqUmiX/2nSa+5JDz3lwLOwECf+HejP/1TvAYvYiMVTUqI4fle
+         sbLA==
+X-Gm-Message-State: AC+VfDxEPiTF9SlHeXApC42O2vC+uRT1M13nxKrGATsPc34c9+K/+tIs
+        Ikeo7Cv/Qe4KnUn4xdbXNihti+ycYQKdkVFBOqI=
+X-Google-Smtp-Source: ACHHUZ5CW2k7JvgHdwNLhg2i8HEeB/5xPMDUQZX5RoLenIKDPWRe8KP9Flewwh8BRzeQh9yYMTS06Q==
+X-Received: by 2002:a05:600c:3787:b0:3fb:ac73:f7d9 with SMTP id o7-20020a05600c378700b003fbac73f7d9mr7607357wmr.32.1688385414262;
+        Mon, 03 Jul 2023 04:56:54 -0700 (PDT)
+Received: from [192.168.35.121] ([77.205.22.13])
+        by smtp.gmail.com with ESMTPSA id n24-20020a7bcbd8000000b003fbca05faa9sm8198120wmi.24.2023.07.03.04.56.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 03 Jul 2023 04:56:53 -0700 (PDT)
+Message-ID: <babf5f20-ddf4-74bf-1788-f8e356acaa92@baylibre.com>
+Date:   Mon, 3 Jul 2023 13:56:52 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH 0/3] Configure usb0 as peripheral on am335x boards
+Content-Language: en-US
+To:     Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>, linux-omap@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        vigneshr@ti.com, nm@ti.com
+References: <20230629-usb0-as-peripheral-v1-0-167f78a11746@baylibre.com>
+ <20230630072047.GK14287@atomide.com>
+ <f4fa80fd-1a6a-4718-0287-f5288cd9d912@baylibre.com>
+ <7f44798b-e2bf-1620-da37-ca13bfd07a21@kernel.org>
+From:   Julien Panis <jpanis@baylibre.com>
+In-Reply-To: <7f44798b-e2bf-1620-da37-ca13bfd07a21@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-As per the PCIe Card Electromechanical specification REV. 3.0, PERST#
-signal should be de-asserted after minimum 100ms from the time power-rails
-become stable. Current delay of 100us is observed to be not enough on some
-custom platform implemented using TI's K3 SOCs.
+On 6/30/23 21:40, Roger Quadros wrote:
+> Hi,
+>
+> On 30/06/2023 11:30, Julien Panis wrote:
+>> Hello Tony,
+>>
+>> On 6/30/23 09:20, Tony Lindgren wrote:
+>>> Hi,
+>>>
+>>> * Julien Panis <jpanis@baylibre.com> [230629 13:10]:
+>>>> This series configures usb0 dr_mode as 'peripheral' for am335x-evm,
+>>>> am335x-evmsk, and am335x-icev2. This USB port is mainly used for
+>>>> RNDIS and DFU.
+>>> Is this a mini-B connector? Just wondering if it was originally attempted
+>>> to be configured as OTG or how it ended up with a host configuration..
+>> It's a micro USB-AB connector.
+>> I don't know how it ended up with a host configuration, it looks like an oversight.
+>> Maybe Vignesh or Nishanth can confirm (?)
+> usb0 role should be "otg".
+> It is rightly so in Linux DT. am33xx.dtsi contains "otg" and all AM335x board files inherit from it.
+>
+> So I don't think setting it to "peripheral" in u-boot is the right thing to do.
 
-So, to ensure 100ms delay to give sufficient time for power-rails and
-refclk to become stable, change delay from 100us to 100ms.
+This series is for kernel (not for u-boot).
+Why is it a problem to set usb0 as 'peripheral' in kernel for the 3 board dts ?
 
-From PCIe Card Electromechanical specification REV. 3.0 section 2.6.2:
-TPVPERL: Power stable to PERST# inactive - 100ms
-T-PERST-CLK: REFCLK stable before PERST# inactive - 100 usec.
+With usb0 not set as 'peripheral', the 3 boards (am335x-evm, evm-sk, icev2)
+do not boot with uboot 2023.04. This error is returned, with LOG_LEVEL=5:
+     No USB device found
+     USB ether init failed
+     initcall sequence 8ffdbba4 failed at call 808024d9 (err=-19)
+     ### ERROR ### Please RESET the board ###
+This error is also returned with usb0 as 'otg'.
 
-Fixes: f3e25911a430 ("PCI: j721e: Add TI J721E PCIe driver")
-Signed-off-by: Achal Verma <a-verma1@ti.com>
----
- drivers/pci/controller/cadence/pci-j721e.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
-index e70213c9060a..fa2b4c11d2c4 100644
---- a/drivers/pci/controller/cadence/pci-j721e.c
-+++ b/drivers/pci/controller/cadence/pci-j721e.c
-@@ -499,13 +499,12 @@ static int j721e_pcie_probe(struct platform_device *pdev)
- 		/*
- 		 * "Power Sequencing and Reset Signal Timings" table in
- 		 * PCI EXPRESS CARD ELECTROMECHANICAL SPECIFICATION, REV. 3.0
--		 * indicates PERST# should be deasserted after minimum of 100us
--		 * once REFCLK is stable. The REFCLK to the connector in RC
--		 * mode is selected while enabling the PHY. So deassert PERST#
--		 * after 100 us.
-+		 * indicates PERST# should be deasserted after minimum of 100ms
-+		 * after power rails achieve specified operating limits and
-+		 * within this period reference clock should also become stable.
- 		 */
- 		if (gpiod) {
--			usleep_range(100, 200);
-+			msleep(100);
- 			gpiod_set_value_cansleep(gpiod, 1);
- 		}
- 
--- 
-2.25.1
-
+Julien Panis
