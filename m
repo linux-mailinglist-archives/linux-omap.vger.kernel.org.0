@@ -2,57 +2,74 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EC05748856
-	for <lists+linux-omap@lfdr.de>; Wed,  5 Jul 2023 17:49:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F838748972
+	for <lists+linux-omap@lfdr.de>; Wed,  5 Jul 2023 18:47:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232725AbjGEPtr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 5 Jul 2023 11:49:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58860 "EHLO
+        id S231286AbjGEQrU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 5 Jul 2023 12:47:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57878 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233041AbjGEPte (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 5 Jul 2023 11:49:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A570B19BA;
-        Wed,  5 Jul 2023 08:49:30 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3A61161607;
-        Wed,  5 Jul 2023 15:49:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A42CC433CA;
-        Wed,  5 Jul 2023 15:49:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1688572169;
-        bh=Wk/EDtW10p6pp6WTwmzgYg6QrckaCsMdnVGkAU0iNaM=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=E84fDqN41ael8RB8O2f19tkcvhuFrd6zuDsO1tXY+Z69XQqtcA8ljbDN3XG9xIvif
-         b7leT2sE2Va1DD2f17avNwUaKmLa34lG+4mlM4x85RPbEOknw69N/pYzYezhSFqqup
-         0KKeAOQsCvZy5uN4LSh+o5Cuu/ii46NBVP7cgrdoJfcSF79vYVfpa9zPF4oSC8QeIC
-         XEIYuhbcxhv3IHSSnzV4/Pyj4lk+mtohnz6+vdgt9RJYCgiy69Qbpig58lUkHLagBQ
-         3mTvoW1lDdZm3CXh2XjueeU6y+5BW3v9XYvGubIqP3WSEdI1gyDCiM2XQ4xtlhDH0t
-         XX/gNQXDhk1xQ==
-Date:   Wed, 5 Jul 2023 10:49:27 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     "Verma, Achal" <a-verma1@ti.com>
-Cc:     Vignesh Raghavendra <vigneshr@ti.com>,
-        Tom Joseph <tjoseph@cadence.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Krzysztof Wilczy_ski <kw@linux.com>,
-        Rob Herring <robh@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [EXTERNAL] Re: [PATCH] PCI: j721e: Fix delay before PERST#
- deassert
-Message-ID: <20230705154927.GA62511@bhelgaas>
+        with ESMTP id S229793AbjGEQrU (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 5 Jul 2023 12:47:20 -0400
+X-Greylist: delayed 1466 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 05 Jul 2023 09:47:18 PDT
+Received: from vern.gendns.com (vern.gendns.com [98.142.107.122])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7CBF10C3;
+        Wed,  5 Jul 2023 09:47:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:From:References:To:Subject:MIME-Version:Date:Message-ID:Sender:
+        Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=wcPRR4CqUAZ/m80TOLg7mrR9VzFvX30Kf7EKwxfW274=; b=NF4MgRQk9Gdh8tb2t7BsaQ4F0N
+        J6VlmKTyFrNQ+5VhlYxAZuLv2STcuLbvH4j/ISbjGXdqCZNp0JRM7DjCWTDbtmyvjOTATwhCUWKhM
+        DHtBZABEvqZ00j0s0jRALmJefSmM88B9CNz5FlQK3zp5/ZDzC727+9Uz1a9VoLg73F+vzh7WXig3i
+        Khl1yTmTXDmlmkuA5YRo45A1pp529wGEuG3EC+aVls/BTO8ptXfBCKT1jqUaqEtDA/CdgUzQVrYBk
+        U3MT3RuEGDz6jgog48EiGtMsyrXl9GYkIGqONkR155KZHqoeRGWtSebljtMck6dSbeMiBIW86jWH1
+        2fhX06Vw==;
+Received: from ip98-183-112-42.ok.ok.cox.net ([98.183.112.42]:56616 helo=[192.168.0.142])
+        by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.96)
+        (envelope-from <david@lechnology.com>)
+        id 1qH5H6-00056J-2U;
+        Wed, 05 Jul 2023 12:22:49 -0400
+Message-ID: <161958d9-d84a-9e55-7878-7774b51dec7e@lechnology.com>
+Date:   Wed, 5 Jul 2023 11:22:45 -0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a245938e-2140-5f77-ab91-6cfbd3ddf66c@ti.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 1/2] ARM: dts: ti: add missing space before {
+Content-Language: en-US
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>, Nishanth Menon <nm@ti.com>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Tero Kristo <kristo@kernel.org>,
+        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
+References: <20230705145755.292927-1-krzysztof.kozlowski@linaro.org>
+From:   David Lechner <david@lechnology.com>
+In-Reply-To: <20230705145755.292927-1-krzysztof.kozlowski@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - vern.gendns.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - lechnology.com
+X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -60,41 +77,12 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, Jul 04, 2023 at 09:36:43PM +0530, Verma, Achal wrote:
-> On 7/3/2023 9:51 PM, Bjorn Helgaas wrote:
-> > In subject, "Fix" doesn't convey much information.  Does it increase?
-> > Decrease?  How much time are we talking about?  PERST# deassert is at
-> > one end of the delay; what event is at the other end?
+On 7/5/23 9:57 AM, Krzysztof Kozlowski wrote:
+> Add missing whitespace between node name/label and opening {.
 > 
-> How about "Increase delay to 100ms for PERST# deassert from moment
-> power-rails achieve operating limits"
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> ---
 
-Maybe something like "Delay 100ms T_PVPERL from power stable to PERST#
-inactive" to match the language in the spec?
+Reviewed-by: David Lechner <david@lechnology.com>
 
-> > Is this delay for the benefit of the Root Port or for the attached
-> > Endpoint?  If the latter, my guess is that some Endpoints might
-> > tolerate the current shorter delay, while others might require
-> > more, and it doesn't sound like "TI's K3 SoC" would be relevant
-> > here.
->
-> Its for the endpoints, TI's EVB doesn't exhibit any issues with
-> 100us delay but some customer reported the issue with shorter delay.
 
-I wouldn't bother mentioning "some custom platform implemented using
-TI's K3 SOCs" then, because the problem is that the driver didn't
-observe T_PVPERL, so the problem will happen with some endpoints but
-not others.
-
-> > Numbers like 100ms that come from the PCIe specs should have #defines
-> > for them.  If we don't have one already, can you add one, please?
->
-> Sure, will do it in next revision but should this go in some generic PCI
-> header file or just pci-j721e.c
-
-I think it should be in drivers/pci/pci.h so all the controller
-drivers can use the same thing.  Obviously none of them *currently*
-use it, although there are a bunch of "msleep(100)" and a few comments
-that mention T_PVPERL.
-
-Bjorn
