@@ -2,39 +2,26 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA801748DBA
-	for <lists+linux-omap@lfdr.de>; Wed,  5 Jul 2023 21:25:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF894748E74
+	for <lists+linux-omap@lfdr.de>; Wed,  5 Jul 2023 21:56:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234280AbjGETZl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 5 Jul 2023 15:25:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37408 "EHLO
+        id S232565AbjGET41 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 5 Jul 2023 15:56:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234156AbjGETZ3 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 5 Jul 2023 15:25:29 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E51804C03;
-        Wed,  5 Jul 2023 12:23:19 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1460C616CC;
-        Wed,  5 Jul 2023 19:23:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3813CC433C7;
-        Wed,  5 Jul 2023 19:23:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1688584990;
-        bh=XkVpsUMAas5eIwMCK29P6mupS9x7AHoqzqeWqww4zek=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=eNl7MYi731YwNgsgM/VwIqWPCoZUNk0bnt3+OStb36lZZCm+6qhcnoPIgV5j+ziht
-         hVr94DU8Jay65as+NyTdkTyby1mDqoTxh1IjK1SHgJSbHhCGbwi5pNEGv8sMiOByOh
-         GKDQZHyNXX+mpxM2tpRqOn4YfMtGFVhZ4qrLn9OBxraO1IZwBGCiSBuzuJTbnkYGXI
-         lqnMqho2MgW3jb/iSaYQTBHqlsR2P1tvYKXreKn4uenMO9QoTIT6MRg3nkvq+27Jds
-         24ZU6wAVtUcid427JvedRqKRIxbIuzDoaI7Nvy33/HD/uvStyPDZaQfCx/8pW2Rzwx
-         +IGEg0bKCFjDw==
-Date:   Wed, 5 Jul 2023 20:23:03 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Andreas Kemnade <andreas@kemnade.info>
+        with ESMTP id S233712AbjGET4W (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 5 Jul 2023 15:56:22 -0400
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a02:c205:3004:2154::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 200F9172B;
+        Wed,  5 Jul 2023 12:56:21 -0700 (PDT)
+Received: from p5dcc37f0.dip0.t-ipconnect.de ([93.204.55.240] helo=aktux)
+        by mail.andi.de1.cc with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <andreas@kemnade.info>)
+        id 1qH8bl-0017gV-0E; Wed, 05 Jul 2023 21:56:13 +0200
+Date:   Wed, 5 Jul 2023 21:56:11 +0200
+From:   Andreas Kemnade <andreas@kemnade.info>
+To:     Mark Brown <broonie@kernel.org>
 Cc:     bcousson@baylibre.com, tony@atomide.com, robh+dt@kernel.org,
         krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
         lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com,
@@ -42,60 +29,57 @@ Cc:     bcousson@baylibre.com, tony@atomide.com, robh+dt@kernel.org,
         dmitry.torokhov@gmail.com, linux-omap@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         alsa-devel@alsa-project.org
-Subject: Re: [PATCH 3/3] ARM: dts: omap4: embt2ws: Add audio support
-Message-ID: <9014a59b-5972-484e-ac70-c013e049b140@sirena.org.uk>
+Subject: Re: [PATCH 2/3] ASoC: tlv320aic3x: use BCLK instead of MCLK if not
+ in master mode
+Message-ID: <20230705215611.5f96584e@aktux>
+In-Reply-To: <15d3fc6e-d294-4968-bc7d-66307efc92db@sirena.org.uk>
 References: <20230705190324.355282-1-andreas@kemnade.info>
- <20230705190324.355282-4-andreas@kemnade.info>
+        <20230705190324.355282-3-andreas@kemnade.info>
+        <15d3fc6e-d294-4968-bc7d-66307efc92db@sirena.org.uk>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="pcNKJC6KNSizl/+7"
-Content-Disposition: inline
-In-Reply-To: <20230705190324.355282-4-andreas@kemnade.info>
-X-Cookie: Don't feed the bats tonight.
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Wed, 5 Jul 2023 20:21:58 +0100
+Mark Brown <broonie@kernel.org> wrote:
 
---pcNKJC6KNSizl/+7
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> On Wed, Jul 05, 2023 at 09:03:23PM +0200, Andreas Kemnade wrote:
+> 
+> > +	/* probably no mclk if not master, so rely on bitclk */
+> > +	if (!aic3x->master)
+> > +		clk_id = 2;
+> > +  
+> 
+> This is fairly clearly a massive hack, we're just silently ignoring the
+> clock we were asked to configure and choosing another one which is
+> likely at a different rate to that we were expecting and sadly the
+> driver didn't provide an automatic mode due to how old it is.  We also
+> appear to try to use the configured clock rate during PLL setup which
+> still happens in hw_params() even with this change which is a bit of a
+> concern here.  Are you sure hw_params ends up doing the right thing, and
+> that there are no other systems that get broken by this (perhaps ones
+> sending a lower BCLK for example)?
 
-On Wed, Jul 05, 2023 at 09:03:24PM +0200, Andreas Kemnade wrote:
+Yes, I am not that happy myself with that one. Possible victim is
+keystone-k2g-evm.dts. 
+I looked for if (master) things and found the pll enable/disable connected to it.
+But that is not the whole story...
+> 
+> It would be nicer to set the clock via the DT bindings, ideally with the
+> clock bindings...
 
-> +	sound {
-> +		compatible = "simple-audio-card";
+I found no path from these simple-audio-card things to provide a clk_id 
+to set_dai_sysclk. I would of course prefer such a thing. Do I have overlooked
+something?
 
-For new usage audio-graph-card2 is preferred, it's a superset of the
-functionality and much more flexible.
-
-> +		simple-audio-card,codec {
-> +			sound-dai = <&tlv320aic3x>;
-> +			system-clock-frequency = <24000000>;
-> +		};
-> +	};
-
-Are you *sure* the BCLK always comes out at this rate?
-
---pcNKJC6KNSizl/+7
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmSlwxcACgkQJNaLcl1U
-h9AxHQf/dak+OKZYRo/pero4Ava2YorLLQDCh8ADYq1T+GPQnaWaBTdq0golyC18
-AlqjHoluidxXdpB3UWSe9x0dlvNCpGCuVXnlWOTXDEG8DSK3S0PPbbNEEslMQh8c
-SBLHqRGCn2PQkurZiWVJYHRmkM79+HlVSC58kHit3ErbDsesSCrdyPSAl8UspAo7
-/jtUhvbU7+NmPj9DQ7JDwdJrQouIel015F1YmjLPHBzlMecQ0kernj55wb0l0K/N
-ytyuHhQyyadBVaGh0x9EoctC3/Nbk1ETR45Xlg9eIlSGwUTnyDzF/PhmlT9CVj6s
-ZrL++EXT411pHGrqVeBIgUE9Ht9fpg==
-=QPu1
------END PGP SIGNATURE-----
-
---pcNKJC6KNSizl/+7--
+Regards,
+Andreas
