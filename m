@@ -2,52 +2,53 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FD3F748709
-	for <lists+linux-omap@lfdr.de>; Wed,  5 Jul 2023 16:58:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6C0F748707
+	for <lists+linux-omap@lfdr.de>; Wed,  5 Jul 2023 16:58:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232731AbjGEO6O (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        id S232754AbjGEO6O (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
         Wed, 5 Jul 2023 10:58:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33252 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232871AbjGEO6C (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 5 Jul 2023 10:58:02 -0400
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 798128F
-        for <linux-omap@vger.kernel.org>; Wed,  5 Jul 2023 07:58:01 -0700 (PDT)
-Received: by mail-ej1-x629.google.com with SMTP id a640c23a62f3a-992e22c09edso492041666b.2
-        for <linux-omap@vger.kernel.org>; Wed, 05 Jul 2023 07:58:01 -0700 (PDT)
+        with ESMTP id S232901AbjGEO6F (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 5 Jul 2023 10:58:05 -0400
+Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 735DD8F
+        for <linux-omap@vger.kernel.org>; Wed,  5 Jul 2023 07:58:04 -0700 (PDT)
+Received: by mail-ed1-x52f.google.com with SMTP id 4fb4d7f45d1cf-51d8fa4dbf9so7790448a12.1
+        for <linux-omap@vger.kernel.org>; Wed, 05 Jul 2023 07:58:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1688569080; x=1691161080;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=9TXmyffj6SDIx2DlhbRmyINxNWCM9g8iPJmckmavVI0=;
-        b=eza3My4Ao3j9TghRrLi5iuA6532Yv8j10igwzA6GPNFf7gVBb43uQ1IQg4smmoA1De
-         HJ4N5cVqwnLAdf7EU7cO+gBBlcAfx82/5f1WDlD234mBdcOmr/MJcHZQVzDVKLe3B7Td
-         isPQUgTT+zEvYvXPlajkMdUOiczzoac3y6trVnt0yLXiwhoxPNDyJknEcNpYq2wDmDIs
-         vevYCfqPJphpfne1Rt0kw46nlazbprYt6dvn4rbpDvDKXPj70K02ApnDD+l6hPHEtju0
-         GYi9u1ebG2TpUGsPbajGyyEOt+s8etxCpHXDJRO6nfy/99K5wc6wDN19yhhsbKVJ/gZG
-         SmAQ==
+        d=linaro.org; s=google; t=1688569083; x=1691161083;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5fjbN9MhrOokWS8H/YBowH32Th5SmbEyc+P8XzYTH7o=;
+        b=uHR0LFTER1l1KHF+aQD2SZFlfTfG6JSXS6PqtYS+SWgorP1+9q/x4kIs+lL2siN3zB
+         BPYyDu572METTDtPPrfP1stYa+U6IfqpC9eNgKD/Bi+X00Lj9b6WgAIAc4YwZ8BOlrT9
+         uyzLDTrwSxRQsYdiWpx1AskOfHYGr9KAk0Np1Y3HhJvkQWh/buOyTTOI7lNX38qNSXfs
+         lX4KWCecfsx2j1QnX4D89ms37s5+8FqRf1MxMdtW9L01hX/g2IlHd1PzEcai/kKGABpE
+         4SomMbq0W7q3bRbHTAlR4DFfCwMyV3vQ9677O2KSQR0/38Cp0FQYdHvgbX5Iork6bsnW
+         MnFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688569080; x=1691161080;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9TXmyffj6SDIx2DlhbRmyINxNWCM9g8iPJmckmavVI0=;
-        b=PnFRuJuT51uDdnzpNPE992Er+zNzxVTA6ikMOj1Je775Q/Baq0OqjpXuQAHX8RnfL6
-         jtuzkFgCMv2FDTR2wxmlumHkPSQiw/St4wmBB+prxyTOd38S5i0mGKka2MeIg7oaGs16
-         4feIObcwy3NUNkyrW0Z1jUnvecyPOijox2rs/MrpMym33+oJYFmH1vav2QsimXdiXjzF
-         5no154FM6cO0PwzdTl34sLqcvfMl8gVLOn+1MO6wU+GVWTvFS0ApMYqcCvZEVwtSI7Bu
-         DkvWdv3QFtFH0SjASU0NHMTIp4NpVhe76+9SluW2eH9jFF+129WMO1+cygZAemhfwD2M
-         nnSQ==
-X-Gm-Message-State: ABy/qLb7gNtJjdT2FW90jK6KqEnhP121Cs3xCouKWlmJ+ESQB5jxlM/c
-        QF+MsTPkN2mYQ3R1QA8Rfbc2Pw==
-X-Google-Smtp-Source: APBJJlEbtA05Ax7aea+dVyf3c8SLdBrzK2FOyV4V9q1C8xtMUNRr5C5jxL3lrdZNSbn2yzI1sBVYuQ==
-X-Received: by 2002:a17:906:27d8:b0:992:a90a:5d1f with SMTP id k24-20020a17090627d800b00992a90a5d1fmr13016183ejc.68.1688569080031;
-        Wed, 05 Jul 2023 07:58:00 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1688569083; x=1691161083;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5fjbN9MhrOokWS8H/YBowH32Th5SmbEyc+P8XzYTH7o=;
+        b=KEpX4vz5wYDeBth6Ptu75MrMy3jTnGr90tHRdGcw9VDRTGG8qMuAhhBXf5sAR8ABFt
+         /z79F7JWfKZDDgT8ldAxJh825iY+Hnc59syBpJMDZ8W3XbCUB/bITlSOfTGenLxa1iQu
+         fiDDM92QahMD8ehK2b9Sqh9Paz9wBltEoT+Z/no6Xnkac5iT1BYih3bIGNR7oLEqcUxD
+         hCnZKpugYi3pSWG0BkFikNMRlg9RLTDWJ5G7OGN32y3maJ4NqfoMHg6mCFNcaTfJGYO4
+         arTZiDn7aoa4Xj1DFXoGXnOM4Cs9sG9QR2a2PWVdgGfMA2+skhEKjxENXXu3ydiqdq5L
+         HiFQ==
+X-Gm-Message-State: ABy/qLYUeHKlJnLlDWFiL+2nBgw/jA4hLR4+VS/IUATamS9oLsNOdwuW
+        njCscl16P/Yj8L3sAWi2zy6whg==
+X-Google-Smtp-Source: APBJJlHgxSBcqzePg1do2YuIG5KsbfCaide4OMeZyfuIezmCGpdIeZjaDF6DF2IgpnfBvvYmplZPtg==
+X-Received: by 2002:a17:906:35c5:b0:982:9662:a679 with SMTP id p5-20020a17090635c500b009829662a679mr13352335ejb.9.1688569082959;
+        Wed, 05 Jul 2023 07:58:02 -0700 (PDT)
 Received: from krzk-bin.. ([178.197.219.26])
-        by smtp.gmail.com with ESMTPSA id t19-20020a170906065300b009882e53a42csm14650339ejb.81.2023.07.05.07.57.57
+        by smtp.gmail.com with ESMTPSA id t19-20020a170906065300b009882e53a42csm14650339ejb.81.2023.07.05.07.58.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Jul 2023 07:57:59 -0700 (PDT)
+        Wed, 05 Jul 2023 07:58:02 -0700 (PDT)
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 To:     David Lechner <david@lechnology.com>,
         Bartosz Golaszewski <brgl@bgdev.pl>,
@@ -62,16 +63,18 @@ To:     David Lechner <david@lechnology.com>,
         linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
 Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 1/2] ARM: dts: ti: add missing space before {
-Date:   Wed,  5 Jul 2023 16:57:54 +0200
-Message-Id: <20230705145755.292927-1-krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 2/2] arm64: dts: ti: add missing space before {
+Date:   Wed,  5 Jul 2023 16:57:55 +0200
+Message-Id: <20230705145755.292927-2-krzysztof.kozlowski@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230705145755.292927-1-krzysztof.kozlowski@linaro.org>
+References: <20230705145755.292927-1-krzysztof.kozlowski@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -82,77 +85,115 @@ Add missing whitespace between node name/label and opening {.
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- arch/arm/boot/dts/ti/davinci/da850-lego-ev3.dts | 2 +-
- arch/arm/boot/dts/ti/keystone/keystone-k2l.dtsi | 2 +-
- arch/arm/boot/dts/ti/omap/am437x-idk-evm.dts    | 8 ++++----
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ arch/arm64/boot/dts/ti/k3-am625-sk.dts                 | 2 +-
+ arch/arm64/boot/dts/ti/k3-am64-main.dtsi               | 4 ++--
+ arch/arm64/boot/dts/ti/k3-j721e-main.dtsi              | 2 +-
+ arch/arm64/boot/dts/ti/k3-j721s2-common-proc-board.dts | 2 +-
+ arch/arm64/boot/dts/ti/k3-j721s2-mcu-wakeup.dtsi       | 2 +-
+ arch/arm64/boot/dts/ti/k3-j784s4-evm.dts               | 2 +-
+ arch/arm64/boot/dts/ti/k3-j784s4-mcu-wakeup.dtsi       | 2 +-
+ 7 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm/boot/dts/ti/davinci/da850-lego-ev3.dts b/arch/arm/boot/dts/ti/davinci/da850-lego-ev3.dts
-index afd04a423856..17a1632a8ac1 100644
---- a/arch/arm/boot/dts/ti/davinci/da850-lego-ev3.dts
-+++ b/arch/arm/boot/dts/ti/davinci/da850-lego-ev3.dts
-@@ -391,7 +391,7 @@ &spi1 {
+diff --git a/arch/arm64/boot/dts/ti/k3-am625-sk.dts b/arch/arm64/boot/dts/ti/k3-am625-sk.dts
+index 3f9ef4053aa6..7c98c1b855d1 100644
+--- a/arch/arm64/boot/dts/ti/k3-am625-sk.dts
++++ b/arch/arm64/boot/dts/ti/k3-am625-sk.dts
+@@ -212,7 +212,7 @@ &ospi0 {
  	pinctrl-names = "default";
- 	cs-gpios = <&gpio 44 GPIO_ACTIVE_LOW>;
+ 	pinctrl-0 = <&ospi0_pins_default>;
  
--	display@0{
-+	display@0 {
- 		compatible = "lego,ev3-lcd";
- 		reg = <0>;
- 		spi-max-frequency = <10000000>;
-diff --git a/arch/arm/boot/dts/ti/keystone/keystone-k2l.dtsi b/arch/arm/boot/dts/ti/keystone/keystone-k2l.dtsi
-index 8949578e62e8..2062fe561642 100644
---- a/arch/arm/boot/dts/ti/keystone/keystone-k2l.dtsi
-+++ b/arch/arm/boot/dts/ti/keystone/keystone-k2l.dtsi
-@@ -137,7 +137,7 @@ uart01_spi2_pins: uart01-spi2-pins {
- 				>;
- 			};
- 
--			dfesync_rp1_pins: dfesync-rp1-pins{
-+			dfesync_rp1_pins: dfesync-rp1-pins {
- 				pinctrl-single,bits = <
- 					/* DFESYNC_RP1_SEL */
- 					0x0 0x0 0x2
-diff --git a/arch/arm/boot/dts/ti/omap/am437x-idk-evm.dts b/arch/arm/boot/dts/ti/omap/am437x-idk-evm.dts
-index 863552393c07..edaddc7b6a5e 100644
---- a/arch/arm/boot/dts/ti/omap/am437x-idk-evm.dts
-+++ b/arch/arm/boot/dts/ti/omap/am437x-idk-evm.dts
-@@ -58,7 +58,7 @@ vdd_core: fixed-regulator-vdd_core {
- 		vin-supply = <&vdd_corereg>;
+-	flash@0{
++	flash@0 {
+ 		compatible = "jedec,spi-nor";
+ 		reg = <0x0>;
+ 		spi-tx-bus-width = <8>;
+diff --git a/arch/arm64/boot/dts/ti/k3-am64-main.dtsi b/arch/arm64/boot/dts/ti/k3-am64-main.dtsi
+index 1664d9f0241c..a57ea7130ca3 100644
+--- a/arch/arm64/boot/dts/ti/k3-am64-main.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am64-main.dtsi
+@@ -733,7 +733,7 @@ timesync_router: pinctrl@a40000 {
+ 		pinctrl-single,function-mask = <0x000107ff>;
  	};
  
--	v1_8dreg: fixed-regulator-v1_8dreg{
-+	v1_8dreg: fixed-regulator-v1_8dreg {
- 		compatible = "regulator-fixed";
- 		regulator-name = "V1_8DREG";
- 		regulator-min-microvolt = <1800000>;
-@@ -68,7 +68,7 @@ v1_8dreg: fixed-regulator-v1_8dreg{
- 		vin-supply = <&v24_0d>;
+-	usbss0: cdns-usb@f900000{
++	usbss0: cdns-usb@f900000 {
+ 		compatible = "ti,am64-usb";
+ 		reg = <0x00 0xf900000 0x00 0x100>;
+ 		power-domains = <&k3_pds 161 TI_SCI_PD_EXCLUSIVE>;
+@@ -744,7 +744,7 @@ usbss0: cdns-usb@f900000{
+ 		#address-cells = <2>;
+ 		#size-cells = <2>;
+ 		ranges;
+-		usb0: usb@f400000{
++		usb0: usb@f400000 {
+ 			compatible = "cdns,usb3";
+ 			reg = <0x00 0xf400000 0x00 0x10000>,
+ 			      <0x00 0xf410000 0x00 0x10000>,
+diff --git a/arch/arm64/boot/dts/ti/k3-j721e-main.dtsi b/arch/arm64/boot/dts/ti/k3-j721e-main.dtsi
+index 649628685c32..575435c1a984 100644
+--- a/arch/arm64/boot/dts/ti/k3-j721e-main.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-j721e-main.dtsi
+@@ -660,7 +660,7 @@ wiz1_refclk_dig: refclk-dig {
+ 			assigned-clock-parents = <&k3_clks 293 13>;
+ 		};
+ 
+-		wiz1_cmn_refclk_dig_div: cmn-refclk-dig-div{
++		wiz1_cmn_refclk_dig_div: cmn-refclk-dig-div {
+ 			clocks = <&wiz1_refclk_dig>;
+ 			#clock-cells = <0>;
+ 		};
+diff --git a/arch/arm64/boot/dts/ti/k3-j721s2-common-proc-board.dts b/arch/arm64/boot/dts/ti/k3-j721s2-common-proc-board.dts
+index 04d4739d7245..092ab1e14ba5 100644
+--- a/arch/arm64/boot/dts/ti/k3-j721s2-common-proc-board.dts
++++ b/arch/arm64/boot/dts/ti/k3-j721s2-common-proc-board.dts
+@@ -407,7 +407,7 @@ &ospi1 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&mcu_fss0_ospi1_pins_default>;
+ 
+-	flash@0{
++	flash@0 {
+ 		compatible = "jedec,spi-nor";
+ 		reg = <0x0>;
+ 		spi-tx-bus-width = <1>;
+diff --git a/arch/arm64/boot/dts/ti/k3-j721s2-mcu-wakeup.dtsi b/arch/arm64/boot/dts/ti/k3-j721s2-mcu-wakeup.dtsi
+index e7dd947a1814..736ec5fa0ea2 100644
+--- a/arch/arm64/boot/dts/ti/k3-j721s2-mcu-wakeup.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-j721s2-mcu-wakeup.dtsi
+@@ -440,7 +440,7 @@ mcu_spi2: spi@40320000 {
+ 		status = "disabled";
  	};
  
--	v1_8d: fixed-regulator-v1_8d{
-+	v1_8d: fixed-regulator-v1_8d {
- 		compatible = "regulator-fixed";
- 		regulator-name = "V1_8D";
- 		regulator-min-microvolt = <1800000>;
-@@ -78,7 +78,7 @@ v1_8d: fixed-regulator-v1_8d{
- 		vin-supply = <&v1_8dreg>;
+-	mcu_navss: bus@28380000{
++	mcu_navss: bus@28380000 {
+ 		compatible = "simple-mfd";
+ 		#address-cells = <2>;
+ 		#size-cells = <2>;
+diff --git a/arch/arm64/boot/dts/ti/k3-j784s4-evm.dts b/arch/arm64/boot/dts/ti/k3-j784s4-evm.dts
+index 430b8a2c5df5..7ad152a1b90f 100644
+--- a/arch/arm64/boot/dts/ti/k3-j784s4-evm.dts
++++ b/arch/arm64/boot/dts/ti/k3-j784s4-evm.dts
+@@ -499,7 +499,7 @@ &ospi1 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&mcu_fss0_ospi1_pins_default>;
+ 
+-	flash@0{
++	flash@0 {
+ 		compatible = "jedec,spi-nor";
+ 		reg = <0x0>;
+ 		spi-tx-bus-width = <1>;
+diff --git a/arch/arm64/boot/dts/ti/k3-j784s4-mcu-wakeup.dtsi b/arch/arm64/boot/dts/ti/k3-j784s4-mcu-wakeup.dtsi
+index 657fb1d72512..740ee794d7b9 100644
+--- a/arch/arm64/boot/dts/ti/k3-j784s4-mcu-wakeup.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-j784s4-mcu-wakeup.dtsi
+@@ -441,7 +441,7 @@ mcu_spi2: spi@40320000 {
+ 		status = "disabled";
  	};
  
--	v1_5dreg: fixed-regulator-v1_5dreg{
-+	v1_5dreg: fixed-regulator-v1_5dreg {
- 		compatible = "regulator-fixed";
- 		regulator-name = "V1_5DREG";
- 		regulator-min-microvolt = <1500000>;
-@@ -88,7 +88,7 @@ v1_5dreg: fixed-regulator-v1_5dreg{
- 		vin-supply = <&v24_0d>;
- 	};
- 
--	v1_5d: fixed-regulator-v1_5d{
-+	v1_5d: fixed-regulator-v1_5d {
- 		compatible = "regulator-fixed";
- 		regulator-name = "V1_5D";
- 		regulator-min-microvolt = <1500000>;
+-	mcu_navss: bus@28380000{
++	mcu_navss: bus@28380000 {
+ 		compatible = "simple-bus";
+ 		#address-cells = <2>;
+ 		#size-cells = <2>;
 -- 
 2.34.1
 
