@@ -2,59 +2,53 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2291F749B52
-	for <lists+linux-omap@lfdr.de>; Thu,  6 Jul 2023 14:02:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9829874A37C
+	for <lists+linux-omap@lfdr.de>; Thu,  6 Jul 2023 19:58:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230445AbjGFMCq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 6 Jul 2023 08:02:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54954 "EHLO
+        id S229672AbjGFR57 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 6 Jul 2023 13:57:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232364AbjGFMCo (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 6 Jul 2023 08:02:44 -0400
+        with ESMTP id S229501AbjGFR57 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 6 Jul 2023 13:57:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AEAA1732;
-        Thu,  6 Jul 2023 05:02:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4904C199F;
+        Thu,  6 Jul 2023 10:57:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B52466191C;
-        Thu,  6 Jul 2023 12:02:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E96F7C433C8;
-        Thu,  6 Jul 2023 12:02:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D8B4461140;
+        Thu,  6 Jul 2023 17:57:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F233C433C8;
+        Thu,  6 Jul 2023 17:57:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1688644963;
-        bh=h9LrxEnYQVUI2MkYbCyF11apaeJLH2yAAAdmse5JAiI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=kgNGcSYcVE3AYRdE7H5V5oVuZshVvy40hrtdXktEGVucVAOLL46WDITONePSeKoF+
-         d6uL6r+0bGKEO3p8ByHwgUyqZla17pk98qO0LWHtPo+mwmcSWYi3Y+7Zq5z7+zXV2f
-         0nj08ntYMRPHtY4ioUOYb+vl1I69A2+pQYOIwAG5WcGJGDFZw+pHtJJmVjLeNpFPr8
-         Hf0p9hK6ShXKXDMVgJolstggzMi7wK/T23G2SERuqk8RcKIx+fCQq9bolIEQXuBcfY
-         jYkDUCCWXCfIrne3ltvC3uBt6b105Q1Q0Og+odusezuXA1B3YzL1mrlSgrdlO2UTVk
-         JU/e+u5jGTYOg==
-Date:   Thu, 6 Jul 2023 13:02:36 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Andreas Kemnade <andreas@kemnade.info>
-Cc:     bcousson@baylibre.com, tony@atomide.com, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com,
-        peter.ujfalusi@gmail.com, jarkko.nikula@bitmer.com,
-        dmitry.torokhov@gmail.com, linux-omap@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        alsa-devel@alsa-project.org
-Subject: Re: [PATCH 2/3] ASoC: tlv320aic3x: use BCLK instead of MCLK if not
- in master mode
-Message-ID: <eeba3297-acdb-45ca-a80d-40d8b3a90231@sirena.org.uk>
-References: <20230705190324.355282-1-andreas@kemnade.info>
- <20230705190324.355282-3-andreas@kemnade.info>
- <15d3fc6e-d294-4968-bc7d-66307efc92db@sirena.org.uk>
- <20230705215611.5f96584e@aktux>
+        s=k20201202; t=1688666277;
+        bh=F0YCEMz+odMRbJqorHQE3V8C/7tKkwnudxHV68TPaNk=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=tyg0mflToQ+t1YTLf03Rb3HotFd44LCSdV8mOF8CDfjjcIVAGSfNnmOZrwy5Rt599
+         9aiRQenEh7raYpqYohB2snebRwfWrcCN/W37GB9WxUSixwIwYpGbnvtgRqcKQPLHvj
+         abMtiXbemSry0vIk5shP5vhSBychVo3kExxy8v4C+ch+pWAYn3sJ7MOD/SDvRuQQdR
+         Pz0xdmnXCUY39qFwdGS6CkBQ1o4yhNNfK+h8NDX8DCYMRsO3vitatFcYgXQzkH+ofr
+         1WZ8l6R3nFu1hxuDpz5AxfT21Llp+DGn/cH5RQkeU+IDzbQ/cQGXGJJ/fQSoNiYXWO
+         ZcJKRIQDkGmew==
+Date:   Thu, 6 Jul 2023 12:57:55 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Achal Verma <a-verma1@ti.com>
+Cc:     Vignesh Raghavendra <vigneshr@ti.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Krzysztof Wilczy_ski <kw@linux.com>,
+        Rob Herring <robh@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] PCI: j721e: Delay 100ms T_PVPERL from power stable to
+ PERST# inactive
+Message-ID: <20230706175755.GA104094@bhelgaas>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="UomsMsmcZLuNBQaC"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230705215611.5f96584e@aktux>
-X-Cookie: Being ugly isn't illegal.  Yet.
+In-Reply-To: <20230706043438.407600-1-a-verma1@ti.com>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -65,41 +59,78 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Thu, Jul 06, 2023 at 10:04:38AM +0530, Achal Verma wrote:
+> As per the PCIe Card Electromechanical specification REV. 5.0, PERST#
+> signal should be de-asserted after minimum 100ms from the time power-rails
+> become stable.
+> So, to ensure 100ms delay to give sufficient time for power-rails and
+> refclk to become stable, change delay from 100us to 100ms.
 
---UomsMsmcZLuNBQaC
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Looks like the above is intended to be two paragraphs.  Add a blank
+line between, or rewrap into a single paragraph if you prefer that.
 
-On Wed, Jul 05, 2023 at 09:56:11PM +0200, Andreas Kemnade wrote:
-> Mark Brown <broonie@kernel.org> wrote:
+> From PCIe Card Electromechanical specification REV. 5.0 section 2.9.2:
+> TPVPERL: Power stable to PERST# inactive - 100ms
+> T-PERST-CLK: REFCLK stable before PERST# inactive - 100 usec.
 
-> > It would be nicer to set the clock via the DT bindings, ideally with the
-> > clock bindings...
+Is T-PERST-CLK relevant here?  Omit if not.
 
-> I found no path from these simple-audio-card things to provide a clk_id=
-=20
-> to set_dai_sysclk. I would of course prefer such a thing. Do I have overl=
-ooked
-> something?
+> Fixes: f3e25911a430 ("PCI: j721e: Add TI J721E PCIe driver")
+> Signed-off-by: Achal Verma <a-verma1@ti.com>
+> ---
+>  drivers/pci/controller/cadence/pci-j721e.c | 11 +++++------
+>  drivers/pci/pci.h                          |  2 ++
+>  2 files changed, 7 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
+> index e70213c9060a..a3c8273b7320 100644
+> --- a/drivers/pci/controller/cadence/pci-j721e.c
+> +++ b/drivers/pci/controller/cadence/pci-j721e.c
+> @@ -498,14 +498,13 @@ static int j721e_pcie_probe(struct platform_device *pdev)
+>  
+>  		/*
+>  		 * "Power Sequencing and Reset Signal Timings" table in
+> -		 * PCI EXPRESS CARD ELECTROMECHANICAL SPECIFICATION, REV. 3.0
+> -		 * indicates PERST# should be deasserted after minimum of 100us
+> -		 * once REFCLK is stable. The REFCLK to the connector in RC
+> -		 * mode is selected while enabling the PHY. So deassert PERST#
+> -		 * after 100 us.
+> +		 * PCI EXPRESS CARD ELECTROMECHANICAL SPECIFICATION, REV. 5.0
+> +		 * indicates PERST# should be deasserted after minimum of 100ms
+> +		 * after power rails achieve specified operating limits and
+> +		 * within this period reference clock should also become stable.
+>  		 */
+>  		if (gpiod) {
+> -			usleep_range(100, 200);
+> +			msleep(PCI_TPVPERL_DELAY);
+>  			gpiod_set_value_cansleep(gpiod, 1);
+>  		}
+>  
+> diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
+> index a4c397434057..7482cff16fef 100644
+> --- a/drivers/pci/pci.h
+> +++ b/drivers/pci/pci.h
+> @@ -13,6 +13,8 @@
+>  
+>  #define PCIE_LINK_RETRAIN_TIMEOUT_MS	1000
+>  
+> +#define PCI_TPVPERL_DELAY	100	/* msec; see PCIe r5.0, sec 2.9.2 */
 
-Since we already have clock bindings we should use those to configure
-the clocks, there's several drivers that have added this support already
-- look for clock providers.
+Perhaps make the name "PCIE_..." since this is a PCIe-specific time.
 
---UomsMsmcZLuNBQaC
-Content-Type: application/pgp-signature; name="signature.asc"
+Also add "_MS" to the name so it's easy to verify that users are using
+the correct mechanism (usleep/msleep/etc).
 
------BEGIN PGP SIGNATURE-----
+Otherwise looks good to me, thanks!
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmSmrVsACgkQJNaLcl1U
-h9Aiigf+Ou9AA4di16Yf4y+H1mj8NnkVAid2OFXa6NQ0mptBZxo5im31eX6esarn
-GnrzN6qYs06qcNO/mOZepRaEuSgIUZlWLqaMAdOawiCHVgSuqkYHGtpTbZnjxDOP
-KSoqrumSBJOtyoKIh3ZT2YxrWcD193dkFDXILJB1jbpSQpMpe7D09Jgj1uCys0Xs
-JO6U5l0/pc5gZSmPpQnKNk2kDA/Y5ec7C+TXdffpc9T98s9xFHBq2lkVAfz+1T96
-ARQcsL9sa9rxo7L1opX98iqszsQ4roWK7WfdcGeUWt4tpF+6bLNuKc8jT8ZGPCmq
-RYMPCFF4pCILcLF1sIjozgLtc3OiAA==
-=RAi2
------END PGP SIGNATURE-----
-
---UomsMsmcZLuNBQaC--
+>  extern const unsigned char pcie_link_speed[];
+>  extern bool pci_early_dump;
+>  
+> -- 
+> 2.25.1
+> 
+> 
+> _______________________________________________
+> linux-arm-kernel mailing list
+> linux-arm-kernel@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
