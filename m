@@ -2,45 +2,47 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF894748E74
-	for <lists+linux-omap@lfdr.de>; Wed,  5 Jul 2023 21:56:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A92D74941F
+	for <lists+linux-omap@lfdr.de>; Thu,  6 Jul 2023 05:21:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232565AbjGET41 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 5 Jul 2023 15:56:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59086 "EHLO
+        id S232282AbjGFDVc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 5 Jul 2023 23:21:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233712AbjGET4W (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 5 Jul 2023 15:56:22 -0400
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a02:c205:3004:2154::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 200F9172B;
-        Wed,  5 Jul 2023 12:56:21 -0700 (PDT)
-Received: from p5dcc37f0.dip0.t-ipconnect.de ([93.204.55.240] helo=aktux)
-        by mail.andi.de1.cc with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <andreas@kemnade.info>)
-        id 1qH8bl-0017gV-0E; Wed, 05 Jul 2023 21:56:13 +0200
-Date:   Wed, 5 Jul 2023 21:56:11 +0200
-From:   Andreas Kemnade <andreas@kemnade.info>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     bcousson@baylibre.com, tony@atomide.com, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com,
-        peter.ujfalusi@gmail.com, jarkko.nikula@bitmer.com,
-        dmitry.torokhov@gmail.com, linux-omap@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        alsa-devel@alsa-project.org
-Subject: Re: [PATCH 2/3] ASoC: tlv320aic3x: use BCLK instead of MCLK if not
- in master mode
-Message-ID: <20230705215611.5f96584e@aktux>
-In-Reply-To: <15d3fc6e-d294-4968-bc7d-66307efc92db@sirena.org.uk>
-References: <20230705190324.355282-1-andreas@kemnade.info>
-        <20230705190324.355282-3-andreas@kemnade.info>
-        <15d3fc6e-d294-4968-bc7d-66307efc92db@sirena.org.uk>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
+        with ESMTP id S229527AbjGFDVb (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 5 Jul 2023 23:21:31 -0400
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5A5C1BC3
+        for <linux-omap@vger.kernel.org>; Wed,  5 Jul 2023 20:21:29 -0700 (PDT)
+Received: from kwepemm600013.china.huawei.com (unknown [172.30.72.53])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4QxMHc2rb6zqVc1;
+        Thu,  6 Jul 2023 11:21:00 +0800 (CST)
+Received: from [10.174.178.156] (10.174.178.156) by
+ kwepemm600013.china.huawei.com (7.193.23.68) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Thu, 6 Jul 2023 11:21:26 +0800
+Message-ID: <9a490082-bc30-8a7e-2d19-fcd212771a4b@huawei.com>
+Date:   Thu, 6 Jul 2023 11:21:26 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.2
+Subject: Re: [PATCH] pinctrl: single: Fix memleak in pcs_dt_node_to_map
+To:     Linus Walleij <linus.walleij@linaro.org>
+CC:     <tony@atomide.com>, <haojian.zhuang@linaro.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-omap@vger.kernel.org>
+References: <20230703081716.15810-1-guomengqi3@huawei.com>
+ <CACRpkdaW5j0mRbwv7rvAKiwBBe_bArqCKRv+UPCPxwX8GJ3Qkg@mail.gmail.com>
+From:   "guomengqi (A)" <guomengqi3@huawei.com>
+In-Reply-To: <CACRpkdaW5j0mRbwv7rvAKiwBBe_bArqCKRv+UPCPxwX8GJ3Qkg@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.178.156]
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ kwepemm600013.china.huawei.com (7.193.23.68)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
         SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -49,37 +51,45 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, 5 Jul 2023 20:21:58 +0100
-Mark Brown <broonie@kernel.org> wrote:
 
-> On Wed, Jul 05, 2023 at 09:03:23PM +0200, Andreas Kemnade wrote:
-> 
-> > +	/* probably no mclk if not master, so rely on bitclk */
-> > +	if (!aic3x->master)
-> > +		clk_id = 2;
-> > +  
-> 
-> This is fairly clearly a massive hack, we're just silently ignoring the
-> clock we were asked to configure and choosing another one which is
-> likely at a different rate to that we were expecting and sadly the
-> driver didn't provide an automatic mode due to how old it is.  We also
-> appear to try to use the configured clock rate during PLL setup which
-> still happens in hw_params() even with this change which is a bit of a
-> concern here.  Are you sure hw_params ends up doing the right thing, and
-> that there are no other systems that get broken by this (perhaps ones
-> sending a lower BCLK for example)?
+在 2023/7/4 17:18, Linus Walleij 写道:
+> On Mon, Jul 3, 2023 at 10:24 AM Guo Mengqi <guomengqi3@huawei.com> wrote:
+>
+>> In a reliability test which repeatedly load and remove a module,
+>> I found some kmalloc-256 memory leaks in pinctrl-single.
+>>
+>> pcs_dt_node_to_map() will recognize a dt_node and
+>> make a mapping for it. Along the way some pinctrl functions and groups
+>> are registered in pinctrl-single controller. These functions/groups are
+>> registered once and not removed during the system lifetime.
+>>
+>> When the client module loads again, pcs_dt_node_to_map() fail to consider
+>> this situation, create the same set of resources, and does not release or
+>> use them.
+>>
+>> To fix this, add a check at the start of pcs_parse_one_pinctrl_entry/
+>> pcs_parse_bits_in_pinctrl_entry. If the target is found,
+>> then all the resource allocation and parsing work can be skipped,
+>> just set the mapping with existing function/group information.
+>>
+>> Fixes: 8b8b091bf07f ("pinctrl: Add one-register-per-pin type device tree
+>> based pinctrl driver")
+>>
+>> Signed-off-by: Guo Mengqi <guomengqi3@huawei.com>
+> Good catch!
+>
+> I expect Tony to review the patch in-depth.
 
-Yes, I am not that happy myself with that one. Possible victim is
-keystone-k2g-evm.dts. 
-I looked for if (master) things and found the pll enable/disable connected to it.
-But that is not the whole story...
-> 
-> It would be nicer to set the clock via the DT bindings, ideally with the
-> clock bindings...
+Thank you :)
 
-I found no path from these simple-audio-card things to provide a clk_id 
-to set_dai_sysclk. I would of course prefer such a thing. Do I have overlooked
-something?
-
-Regards,
-Andreas
+>> -static int pinmux_func_name_to_selector(struct pinctrl_dev *pctldev,
+>> +int pinmux_func_name_to_selector(struct pinctrl_dev *pctldev,
+>>                                          const char *function)
+>>   {
+>>          const struct pinmux_ops *ops = pctldev->desc->pmxops;
+> It appears you need to add EXPORT_SYMBOL_GPL() for this function
+> so the module can build. (This is why the build robot complains.)
+Yes, it happens when config=M. I will send a v2 patch later to fix this.
+> Yours,
+> Linus Walleij
+> .
