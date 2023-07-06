@@ -2,45 +2,37 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D1A4749477
-	for <lists+linux-omap@lfdr.de>; Thu,  6 Jul 2023 05:51:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AA5B749491
+	for <lists+linux-omap@lfdr.de>; Thu,  6 Jul 2023 06:08:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232711AbjGFDvn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 5 Jul 2023 23:51:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33722 "EHLO
+        id S233182AbjGFEIN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 6 Jul 2023 00:08:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38184 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231868AbjGFDvm (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 5 Jul 2023 23:51:42 -0400
+        with ESMTP id S232583AbjGFEIE (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 6 Jul 2023 00:08:04 -0400
 Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 040951BD3;
-        Wed,  5 Jul 2023 20:51:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 3FA671FC3
+        for <linux-omap@vger.kernel.org>; Wed,  5 Jul 2023 21:07:57 -0700 (PDT)
 Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id F0BE3807E;
-        Thu,  6 Jul 2023 03:51:39 +0000 (UTC)
-Date:   Thu, 6 Jul 2023 06:51:38 +0300
+        by muru.com (Postfix) with ESMTPS id 8926A807E;
+        Thu,  6 Jul 2023 04:07:56 +0000 (UTC)
+Date:   Thu, 6 Jul 2023 07:07:55 +0300
 From:   Tony Lindgren <tony@atomide.com>
-To:     Julien Panis <jpanis@baylibre.com>
-Cc:     Roger Quadros <rogerq@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>, linux-omap@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        vigneshr@ti.com, nm@ti.com, Tom Rini <trini@konsulko.com>
-Subject: Re: [PATCH 0/3] Configure usb0 as peripheral on am335x boards
-Message-ID: <20230706035138.GA5089@atomide.com>
-References: <20230629-usb0-as-peripheral-v1-0-167f78a11746@baylibre.com>
- <20230630072047.GK14287@atomide.com>
- <f4fa80fd-1a6a-4718-0287-f5288cd9d912@baylibre.com>
- <7f44798b-e2bf-1620-da37-ca13bfd07a21@kernel.org>
- <babf5f20-ddf4-74bf-1788-f8e356acaa92@baylibre.com>
- <9ef45899-c766-e839-522a-3b048f8106f7@kernel.org>
- <6a51d860-2d20-6c35-3935-985d5b41853e@baylibre.com>
- <73a4545a-e149-261a-a0c5-a526e8740bd5@kernel.org>
- <6d485ee7-9b8a-626e-da8a-bbff37bcde61@baylibre.com>
+To:     "guomengqi (A)" <guomengqi3@huawei.com>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        haojian.zhuang@linaro.org, linux-arm-kernel@lists.infradead.org,
+        linux-omap@vger.kernel.org
+Subject: Re: [PATCH] pinctrl: single: Fix memleak in pcs_dt_node_to_map
+Message-ID: <20230706040755.GB5089@atomide.com>
+References: <20230703081716.15810-1-guomengqi3@huawei.com>
+ <CACRpkdaW5j0mRbwv7rvAKiwBBe_bArqCKRv+UPCPxwX8GJ3Qkg@mail.gmail.com>
+ <9a490082-bc30-8a7e-2d19-fcd212771a4b@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <6d485ee7-9b8a-626e-da8a-bbff37bcde61@baylibre.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <9a490082-bc30-8a7e-2d19-fcd212771a4b@huawei.com>
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
@@ -52,15 +44,52 @@ X-Mailing-List: linux-omap@vger.kernel.org
 
 Hi,
 
-* Julien Panis <jpanis@baylibre.com> [230703 15:51]:
-> OK. In other words, we just need to reconsider my previous u-boot series. :-)
-> I was setting usb0 as 'peripheral' in 'am335x-*-u-boot.dts' here:
-> https://lore.kernel.org/all/20230621-fix_usb_ether_init-v2-0-ff121f0e8d7a@baylibre.com/
+* guomengqi (A) <guomengqi3@huawei.com> [230706 03:21]:
+> 在 2023/7/4 17:18, Linus Walleij 写道:
+> > On Mon, Jul 3, 2023 at 10:24 AM Guo Mengqi <guomengqi3@huawei.com> wrote:
+> > 
+> > > In a reliability test which repeatedly load and remove a module,
+> > > I found some kmalloc-256 memory leaks in pinctrl-single.
+> > > 
+> > > pcs_dt_node_to_map() will recognize a dt_node and
+> > > make a mapping for it. Along the way some pinctrl functions and groups
+> > > are registered in pinctrl-single controller. These functions/groups are
+> > > registered once and not removed during the system lifetime.
+> > > 
+> > > When the client module loads again, pcs_dt_node_to_map() fail to consider
+> > > this situation, create the same set of resources, and does not release or
+> > > use them.
+> > > 
+> > > To fix this, add a check at the start of pcs_parse_one_pinctrl_entry/
+> > > pcs_parse_bits_in_pinctrl_entry. If the target is found,
+> > > then all the resource allocation and parsing work can be skipped,
+> > > just set the mapping with existing function/group information.
+> > > 
+> > > Fixes: 8b8b091bf07f ("pinctrl: Add one-register-per-pin type device tree
+> > > based pinctrl driver")
+> > > 
+> > > Signed-off-by: Guo Mengqi <guomengqi3@huawei.com>
+> > Good catch!
+> > 
+> > I expect Tony to review the patch in-depth.
+> 
+> Thank you :)
 
-It would be best to not change the dts as it's describing the hardware
-capabilities. Instead, it would be better to parse the capability in the
-driver to handle a dual-role wired usb-ab connector as peripheral only in
-u-boot.
+Thanks for looking into it. I wonder if we can rely on naming for
+pinmux_func_name_to_selector() though. Can things change in a way where
+we need to release everything and reparse? Mostly wondering what happens
+with DT overlays?
+
+> > > -static int pinmux_func_name_to_selector(struct pinctrl_dev *pctldev,
+> > > +int pinmux_func_name_to_selector(struct pinctrl_dev *pctldev,
+> > >                                          const char *function)
+> > >   {
+> > >          const struct pinmux_ops *ops = pctldev->desc->pmxops;
+> > It appears you need to add EXPORT_SYMBOL_GPL() for this function
+> > so the module can build. (This is why the build robot complains.)
+> Yes, it happens when config=M. I will send a v2 patch later to fix this.
+
+That change might be worth doing in any case if there is need for it.
 
 Regards,
 
