@@ -2,83 +2,108 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C033774BD8E
-	for <lists+linux-omap@lfdr.de>; Sat,  8 Jul 2023 15:03:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 80BCC74C476
+	for <lists+linux-omap@lfdr.de>; Sun,  9 Jul 2023 15:59:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230088AbjGHNDh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 8 Jul 2023 09:03:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37780 "EHLO
+        id S232907AbjGIN7v (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 9 Jul 2023 09:59:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229462AbjGHNDh (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 8 Jul 2023 09:03:37 -0400
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a02:c205:3004:2154::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64ECC1994;
-        Sat,  8 Jul 2023 06:03:35 -0700 (PDT)
-Received: from p5dc58ef9.dip0.t-ipconnect.de ([93.197.142.249] helo=aktux)
-        by mail.andi.de1.cc with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <andreas@kemnade.info>)
-        id 1qI7ar-001Dj3-76; Sat, 08 Jul 2023 15:03:21 +0200
-Date:   Sat, 8 Jul 2023 15:03:19 +0200
-From:   Andreas Kemnade <andreas@kemnade.info>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     bcousson@baylibre.com, tony@atomide.com, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com,
-        peter.ujfalusi@gmail.com, jarkko.nikula@bitmer.com,
-        dmitry.torokhov@gmail.com, linux-omap@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        alsa-devel@alsa-project.org
-Subject: Re: [PATCH 2/3] ASoC: tlv320aic3x: use BCLK instead of MCLK if not
- in master mode
-Message-ID: <20230708150319.202789c1@aktux>
-In-Reply-To: <eeba3297-acdb-45ca-a80d-40d8b3a90231@sirena.org.uk>
-References: <20230705190324.355282-1-andreas@kemnade.info>
-        <20230705190324.355282-3-andreas@kemnade.info>
-        <15d3fc6e-d294-4968-bc7d-66307efc92db@sirena.org.uk>
-        <20230705215611.5f96584e@aktux>
-        <eeba3297-acdb-45ca-a80d-40d8b3a90231@sirena.org.uk>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
+        with ESMTP id S231330AbjGIN7u (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 9 Jul 2023 09:59:50 -0400
+Received: from mail.208.org (unknown [183.242.55.162])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97D67115
+        for <linux-omap@vger.kernel.org>; Sun,  9 Jul 2023 06:59:44 -0700 (PDT)
+Received: from mail.208.org (email.208.org [127.0.0.1])
+        by mail.208.org (Postfix) with ESMTP id 4QzTK94dQZzBJBg0
+        for <linux-omap@vger.kernel.org>; Sun,  9 Jul 2023 21:59:41 +0800 (CST)
+Authentication-Results: mail.208.org (amavisd-new); dkim=pass
+        reason="pass (just generated, assumed good)" header.d=208.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=208.org; h=
+        content-transfer-encoding:content-type:message-id:user-agent
+        :references:in-reply-to:subject:to:from:date:mime-version; s=
+        dkim; t=1688911181; x=1691503182; bh=XC2qRso5yr3ArD1O8ps0Wm+4qpk
+        guIyDAXINZk+B5kI=; b=yczk9CDG35PSKq/mIbDf98zLT7sAgybx21LtojWHkvk
+        PHN7C9FhjmX8kyNamBy3iQXyCoinm0atjqf1M5d7ChSh+Y5RETNR3cjilgMLHhou
+        lijFjtau8frR4JVnIwBsPPa03dkm58y3or37EUJfzYdKd3Zj093nW5Q+aRUiMn8r
+        b7KtMJENsLjH+ImBzl7D5LyCPeavW7278zXHdgRvmwhyqYzjn4q29XxPnAGc6Z6s
+        cdzauZUxmZ1L7+Pb1bkuSSYBhNhHzyy+uOhPr+09/hVuy7I9KX0x0zGeHqMUHV16
+        6UJA/BAlV6GyPME1MeLiyoAVlK+LweEiILuRP6CenGA==
+X-Virus-Scanned: amavisd-new at mail.208.org
+Received: from mail.208.org ([127.0.0.1])
+        by mail.208.org (mail.208.org [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id wbB1Onh-vK_z for <linux-omap@vger.kernel.org>;
+        Sun,  9 Jul 2023 21:59:41 +0800 (CST)
+Received: from localhost (email.208.org [127.0.0.1])
+        by mail.208.org (Postfix) with ESMTPSA id 4QzTK92Nx0zBHXkb;
+        Sun,  9 Jul 2023 21:59:41 +0800 (CST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Date:   Sun, 09 Jul 2023 21:59:41 +0800
+From:   xuanzhenggang001@208suo.com
+To:     tony@atomide.com
+Cc:     linux@armlinux.org.uk, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] ARM: OMAP2+: prefer 'unsigned int' to bare use of 'unsigned'
+In-Reply-To: <20230709135705.59832-1-denghuilong@cdjrlc.com>
+References: <20230709135705.59832-1-denghuilong@cdjrlc.com>
+User-Agent: Roundcube Webmail
+Message-ID: <7efba6a4aae52649aa05756263c0a955@208suo.com>
+X-Sender: xuanzhenggang001@208suo.com
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,DKIM_INVALID,
+        DKIM_SIGNED,RDNS_NONE,SPF_HELO_FAIL,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
+arch/arm/mach-omap2/display.c:73: WARNING: Prefer 'unsigned int' to bare 
+use of 'unsigned'
+arch/arm/mach-omap2/display.c:111: WARNING: Prefer 'unsigned int' to 
+bare use of 'unsigned'
+arch/arm/mach-omap2/display.c:119: WARNING: Prefer 'unsigned int' to 
+bare use of 'unsigned'
 
-On Thu, 6 Jul 2023 13:02:36 +0100
-Mark Brown <broonie@kernel.org> wrote:
+Signed-off-by: Zhenggang Xuan <xuanzhenggang001@208suo.com>
+---
+  arch/arm/mach-omap2/display.c | 6 +++---
+  1 file changed, 3 insertions(+), 3 deletions(-)
 
-> On Wed, Jul 05, 2023 at 09:56:11PM +0200, Andreas Kemnade wrote:
-> > Mark Brown <broonie@kernel.org> wrote:  
-> 
-> > > It would be nicer to set the clock via the DT bindings, ideally with the
-> > > clock bindings...  
-> 
-> > I found no path from these simple-audio-card things to provide a clk_id 
-> > to set_dai_sysclk. I would of course prefer such a thing. Do I have overlooked
-> > something?  
-> 
-> Since we already have clock bindings we should use those to configure
-> the clocks, there's several drivers that have added this support already
-> - look for clock providers.
+diff --git a/arch/arm/mach-omap2/display.c 
+b/arch/arm/mach-omap2/display.c
+index dbec3bb9fbf4..c7a39d497e47 100644
+--- a/arch/arm/mach-omap2/display.c
++++ b/arch/arm/mach-omap2/display.c
+@@ -70,7 +70,7 @@ static struct platform_device omap_display_device = {
 
-ok, looking around:
-Just to make sure I am not running in a bad direction: Do you think
-tlv320aic32x4{,-clk}.c is a good example? It is ignoring clk_id. 
-I was mentally bound to have to use clk_id there, so I did not found a good
-solution.
+  static struct regmap *omap4_dsi_mux_syscon;
 
-So I guess I have to configure the chip as a master and using mclk and compare
-register dumps with the state we have now and the state after the changes,
-additionally to check bclk functionality directly.
+-static int omap4_dsi_mux_pads(int dsi_id, unsigned lanes)
++static int omap4_dsi_mux_pads(int dsi_id, unsigned int lanes)
+  {
+      u32 enable_mask, enable_shift;
+      u32 pipd_mask, pipd_shift;
+@@ -108,7 +108,7 @@ static int omap4_dsi_mux_pads(int dsi_id, unsigned 
+lanes)
+      return 0;
+  }
 
-Regards,
-Andreas
+-static int omap_dsi_enable_pads(int dsi_id, unsigned lane_mask)
++static int omap_dsi_enable_pads(int dsi_id, unsigned int lane_mask)
+  {
+      if (cpu_is_omap44xx())
+          return omap4_dsi_mux_pads(dsi_id, lane_mask);
+@@ -116,7 +116,7 @@ static int omap_dsi_enable_pads(int dsi_id, unsigned 
+lane_mask)
+      return 0;
+  }
+
+-static void omap_dsi_disable_pads(int dsi_id, unsigned lane_mask)
++static void omap_dsi_disable_pads(int dsi_id, unsigned int lane_mask)
+  {
+      if (cpu_is_omap44xx())
+          omap4_dsi_mux_pads(dsi_id, 0);
