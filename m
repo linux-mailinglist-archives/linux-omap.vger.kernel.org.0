@@ -2,125 +2,92 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7985674E94D
-	for <lists+linux-omap@lfdr.de>; Tue, 11 Jul 2023 10:44:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF84374EB68
+	for <lists+linux-omap@lfdr.de>; Tue, 11 Jul 2023 12:03:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229921AbjGKIn7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 11 Jul 2023 04:43:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54030 "EHLO
+        id S231373AbjGKKD5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 11 Jul 2023 06:03:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230398AbjGKIn6 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 11 Jul 2023 04:43:58 -0400
-Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C84FAAD
-        for <linux-omap@vger.kernel.org>; Tue, 11 Jul 2023 01:43:57 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1689065018; cv=none; 
-        d=zohomail.com; s=zohoarc; 
-        b=S3cTy0fsLuxO5P+6GpmQtIqvI7lr0Dqi0eY2pKCHqPewx7bymVIhkiQ83Io+iS8nSsHMkZZefkMvfK9KlVZQA190phU6vYT4bfbYZZFwa3QGy1atBo0KAFKitF8qta/Wnmj1lygrv+HnItGXwrfjnyXGfTSxW+FV6FXlTS8RQJE=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-        t=1689065018; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
-        bh=27498WPSjMT1LxPrnU8cRaKTNK5njVp4Ji5jHwrXcnE=; 
-        b=i4YJZZQX2YKhPLzpaCqtd/VXM/0688Lr352U19TQxJs20/l9jM+UCL6JsIEbknCf5db156NUaR/IaQ6v/j1DuF8Fi7WMaUZhWGFT+CYVZB1p+r4Llcglc1ZaMLZXaK54YizWfsEMCX7wTP+BhGgL5y7QHEuGWRS32v62GCZQL+s=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-        dkim=pass  header.i=linux.beauty;
-        spf=pass  smtp.mailfrom=me@linux.beauty;
-        dmarc=pass header.from=<me@linux.beauty>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1689065018;
-        s=zmail; d=linux.beauty; i=me@linux.beauty;
-        h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:References:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-        bh=27498WPSjMT1LxPrnU8cRaKTNK5njVp4Ji5jHwrXcnE=;
-        b=enn5OXLldmHjVz3OsfTE6HG8RPulw4xUYK2vzqwXYDsy939W5WXdUQXmBsFKVEkv
-        kKGYdX/4y+nZSqX2h5cDxj+6upZ8EtE/6NXIcZ+wcpwG4y7G+CCyyIiRSFqEREaP0v6
-        4bhJ+knrvBxYCHuVi2XreLPCgEE9mGwFX0f/h2D8=
-Received: from mail.zoho.com by mx.zohomail.com
-        with SMTP id 1689065018098331.1410899810264; Tue, 11 Jul 2023 01:43:38 -0700 (PDT)
-Date:   Tue, 11 Jul 2023 16:43:38 +0800
-From:   Li Chen <me@linux.beauty>
-To:     "Verma, Achal" <a-verma1@ti.com>
-Cc:     "Vignesh Raghavendra" <vigneshr@ti.com>,
-        "Tom Joseph" <tjoseph@cadence.com>,
-        "Lorenzo Pieralisi" <lpieralisi@kernel.org>,
-        =?UTF-8?Q?=22Krzysztof_Wilczy=C5=84ski=22?= <kw@linux.com>,
-        "Rob Herring" <robh@kernel.org>,
-        "Bjorn Helgaas" <bhelgaas@google.com>,
-        "linux-omap" <linux-omap@vger.kernel.org>,
-        "linux-pci" <linux-pci@vger.kernel.org>,
-        "linux-arm-kernel" <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel" <linux-kernel@vger.kernel.org>
-Message-ID: <189441ed2ad.124e883f62543235.4120232059297538219@linux.beauty>
-In-Reply-To: <ac95ffd2-50c6-f715-5c37-f658bacf4ca4@ti.com>
-References: <1892e291fa4.1219137911620526.2248312811348305435@linux.beauty> <ac95ffd2-50c6-f715-5c37-f658bacf4ca4@ti.com>
-Subject: Re: [PATCH 1/2] PCI: j721e: Allow async probe
+        with ESMTP id S230230AbjGKKDm (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 11 Jul 2023 06:03:42 -0400
+Received: from mail-oa1-x30.google.com (mail-oa1-x30.google.com [IPv6:2001:4860:4864:20::30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E02F412E;
+        Tue, 11 Jul 2023 03:03:38 -0700 (PDT)
+Received: by mail-oa1-x30.google.com with SMTP id 586e51a60fabf-1b449890ef5so4267656fac.1;
+        Tue, 11 Jul 2023 03:03:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1689069818; x=1691661818;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=f+EdWg+i/tz1eYpH9ck9/qmxGmzdGcH8THqJbinUddk=;
+        b=NyI0NAaMqg06KA6hwBSQgBEB85LCB8gClAXi9s9KdtyJxX2aBORKelElCulIdppHS6
+         B2KpbjTxVS2+wUc9g/u+o+ZwR99AGXRU021BosfNDYuk/lbxfTcwf4poeCIl1pjSfmvJ
+         5jkEpuK/djrhv1A7k5tWeHiTtBppXhqwoEPSSNpCFuvfRbFDru0owVW8nZGMH4e28CJA
+         37otT/of6vfb688RtJjgE4uuPquRo2iO+FPZYJPBc0xkoWD8nJuSeik7gJXt88UxhuU5
+         ynGI8Mdwz40F9nADl3/OzgmP0F+m9xzz5dHEj+Nekn9xjmNXbRk7FYYufVHEanQb1xEP
+         DNog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689069818; x=1691661818;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=f+EdWg+i/tz1eYpH9ck9/qmxGmzdGcH8THqJbinUddk=;
+        b=DKtFHwI4mNYoktvamMJLiGBJsqpCY93EK9gWGWO10vn2JMIvQNDT/Rj/cl8I84rs63
+         Rcxz8M7GSP+5VkEgNcGlr1xDilPjTDjJrohMQciOsVJwcBLrfecx3sQbe0GkgH3fxLXz
+         PiakuBuepb7i52GHEjoMMAXMhlokEdb851OAffuZBc3b4MbmM6IMTs+H60iR9zRwJYE/
+         5PwBzAsA9ML7Javyk2+G3r8HJNxzGkA1l+rP5evhgPZhcB8ORqWLo5QSg4+0AYJRUuau
+         VgrkDaLyb19strSLRCBPafLA/9K0eoIBzBcZQvABDiU5YyTagILGctjtD3J1+Gfx5fz8
+         3bMA==
+X-Gm-Message-State: ABy/qLa0mi2bB/HsgkcvRIOdss77wEjB7kFexQvYoFJQTE/H0NVtzovP
+        MG/wDDcLjwjycMI0l92EVdQwH1o1k420cwygTJU=
+X-Google-Smtp-Source: APBJJlGGsUuf+V3qoT11Pogf+mqcTAutGtQX8L+sFbR9xMxcqCOg1dWiYkpNfhV8TDJxJAkM3OI/WYW3QCrNv2zauGo=
+X-Received: by 2002:a05:6870:420f:b0:1a5:4e57:e5d1 with SMTP id
+ u15-20020a056870420f00b001a54e57e5d1mr19457972oac.49.1689069818163; Tue, 11
+ Jul 2023 03:03:38 -0700 (PDT)
 MIME-Version: 1.0
+References: <20230710130113.14563-1-tzimmermann@suse.de> <20230710130113.14563-10-tzimmermann@suse.de>
+ <CANiq72=9PoV3FOcXx9FdiSLePKXDG4BSY_5-jddBkqDL=ua3FA@mail.gmail.com>
+ <733273ad-89e1-d952-37ee-bb75c3ab8188@suse.de> <CANiq72kPh2KE=ADUxhPyyr7noWhC0fkzmDu8EBn_20focnZqtw@mail.gmail.com>
+ <745347ca-a369-eb01-eac4-75c09cf9e67f@suse.de>
+In-Reply-To: <745347ca-a369-eb01-eac4-75c09cf9e67f@suse.de>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Tue, 11 Jul 2023 12:03:27 +0200
+Message-ID: <CANiq72kg_2PxmSnyj_X7Rak0-fmPP+W-+2EKFjyXCetw7w+mGA@mail.gmail.com>
+Subject: Re: [PATCH 09/17] auxdisplay: Remove flag FBINFO_FLAG_DEFAULT from
+ fbdev drivers
+To:     Thomas Zimmermann <tzimmermann@suse.de>
+Cc:     deller@gmx.de, javierm@redhat.com, linux-sh@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        amd-gfx@lists.freedesktop.org, linux-input@vger.kernel.org,
+        linux-media@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        linux-staging@lists.linux.dev,
+        linux-arm-kernel@lists.infradead.org,
+        linux-geode@lists.infradead.org, linux-nvidia@lists.surfsouth.com,
+        linux-hyperv@vger.kernel.org, linux-omap@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Robin van der Gracht <robin@protonic.nl>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Importance: Medium
-User-Agent: Zoho Mail
-X-Mailer: Zoho Mail
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Tue, Jul 11, 2023 at 8:10=E2=80=AFAM Thomas Zimmermann <tzimmermann@suse=
+.de> wrote:
+>
+> I'd like to take the patchset into drm-misc. It's part of a larger
+> cleanup of the fbdev modules and its interfaces.
 
- ---- On Tue, 11 Jul 2023 14:16:01 +0800  Verma, Achal  wrote ---=20
- >=20
- >=20
- > On 7/7/2023 7:53 AM, Li Chen wrote:
- > > From: Li Chen lchen@ambarella.com>
- > >=20
- > > I observed that on Ambarella SoC, which also utilizes
- > > the Cadence controller, the boot time increases by 1
- > > second when no endpoints (including switch) are connected
- > > to PCIe. This increase is caused by cdns_pcie_host_wait_for_link.
- > >=20
- > > Enabling async probe can eliminate this boot time increase.
- > >=20
- > > I guess j721e also has this issue.
- > I have tested this along with:
- > https://lore.kernel.org=20
- > /all/1892e2ae15f.f7e5dc061620757.4339091752690983066@linux.beauty/
- >=20
- > But I couldn't find second patch in this series.
+Sounds good, thanks!
 
-Sorry for my mistake, the second patch is just the link you mentioned(https=
-://lore.kernel.org/all/1892e2ae15f.f7e5dc061620757.4339091752690983066@linu=
-x.beauty/), I accidentally removed its "2/2" prefix.
-
-Should I post v2 to fix the subject issue?
-
- > >=20
- > > Signed-off-by: Li Chen lchen@ambarella.com>
- > Tested-by: Achal Verma a-verma1@ti.com>
- > > ---
- > >   drivers/pci/controller/cadence/pci-j721e.c | 1 +
- > >   1 file changed, 1 insertion(+)
- > >=20
- > > diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/=
-controller/cadence/pci-j721e.c
- > > index e70213c9060a..660c13bdb606 100644
- > > --- a/drivers/pci/controller/cadence/pci-j721e.c
- > > +++ b/drivers/pci/controller/cadence/pci-j721e.c
- > > @@ -561,6 +561,7 @@ static struct platform_driver j721e_pcie_driver =
-=3D {
- > >   =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0.name=C2=A0=C2=A0=C2=
-=A0=C2=A0=3D "j721e-pcie",
- > >   =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0.of_match_table =3D =
-of_j721e_pcie_match,
- > >   =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0.suppress_bind_attrs=
- =3D true,
- > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0.probe_type =3D PROBE=
-_PREFER_ASYNCHRONOUS,
- > >   =C2=A0=C2=A0=C2=A0=C2=A0},
- > >   };
- > >   builtin_platform_driver(j721e_pcie_driver);
- >=20
-
-Regards,
-Li
+Cheers,
+Miguel
