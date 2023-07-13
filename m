@@ -2,61 +2,68 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D52A752469
-	for <lists+linux-omap@lfdr.de>; Thu, 13 Jul 2023 15:57:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A57D7526FE
+	for <lists+linux-omap@lfdr.de>; Thu, 13 Jul 2023 17:30:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232321AbjGMN47 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-omap@lfdr.de>); Thu, 13 Jul 2023 09:56:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51454 "EHLO
+        id S232467AbjGMP3r (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 13 Jul 2023 11:29:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231279AbjGMN46 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 13 Jul 2023 09:56:58 -0400
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD829273C;
-        Thu, 13 Jul 2023 06:56:30 -0700 (PDT)
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.95)
-          with esmtps (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1qJwo0-003uyK-7j; Thu, 13 Jul 2023 15:56:28 +0200
-Received: from p57bd9f0d.dip0.t-ipconnect.de ([87.189.159.13] helo=suse-laptop.fritz.box)
-          by inpost2.zedat.fu-berlin.de (Exim 4.95)
-          with esmtpsa (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1qJwnz-002qWA-Vd; Thu, 13 Jul 2023 15:56:28 +0200
-Message-ID: <6d04a1b87a9820d8ae23191092665f2dcb17ce19.camel@physik.fu-berlin.de>
-Subject: Re: [PATCH v2 08/18] sh: Assign FB_MODE_IS_UNKNOWN to struct
- fb_videomode.flag
-From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-To:     Thomas Zimmermann <tzimmermann@suse.de>, deller@gmx.de,
-        javierm@redhat.com
-Cc:     linux-sh@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org,
-        linux-input@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, linux-staging@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org,
-        linux-geode@lists.infradead.org, linux-nvidia@lists.surfsouth.com,
-        linux-hyperv@vger.kernel.org, linux-omap@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>
-Date:   Thu, 13 Jul 2023 15:56:26 +0200
-In-Reply-To: <4622810f8bceb66f212fa09d34b10f0d2d71a35d.camel@physik.fu-berlin.de>
-References: <20230713130338.31086-1-tzimmermann@suse.de>
-         <20230713130338.31086-9-tzimmermann@suse.de>
-         <4622810f8bceb66f212fa09d34b10f0d2d71a35d.camel@physik.fu-berlin.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-User-Agent: Evolution 3.48.4 
+        with ESMTP id S234848AbjGMP3Z (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 13 Jul 2023 11:29:25 -0400
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E0BB270D
+        for <linux-omap@vger.kernel.org>; Thu, 13 Jul 2023 08:29:20 -0700 (PDT)
+Received: by mail-wm1-x32b.google.com with SMTP id 5b1f17b1804b1-3fbc59de0e2so7828045e9.3
+        for <linux-omap@vger.kernel.org>; Thu, 13 Jul 2023 08:29:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1689262158; x=1691854158;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=bvorNFqMSX8ACtoTn3BNxYt1T0LQ1+7ZO8SCvDuABRw=;
+        b=HMKOIRayek2v4Eor/fh9F0UbWg2v63hgHmIILsZLb24m5aJ+xqVOFnco/KTttsBl58
+         HybGnfrxz5SJBLG8Nm7zmZBirggzS53jnFMUC+dJGpQznuKHfh6Z4GvlmKtloULiIqPW
+         j3FlNEyoVP4zi4uSy4thl8IdcoAoOfxmymfqM07CNXh+5uDO8aeNpGZdzSE3eh6C3qpO
+         irvAAghUf4oYBEtu5vSLGGQL6bGqW9Gcmp2rNPs9EwkNq9Y+wMAY9q28i+vDKgz0o4NP
+         qXxbWsp7TCJRiIQL9GMOvTJdJs5qIdRkTLHejS+JJSR/5OPV9Z6oh/+AI7ugXSf0uZsU
+         lhtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689262158; x=1691854158;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=bvorNFqMSX8ACtoTn3BNxYt1T0LQ1+7ZO8SCvDuABRw=;
+        b=lhvBywst817uwXfrBHh8G080JNXGcYcgGBRwj5DBnlHm0x8hR5eiYp3DI3esmhjpih
+         +0EwT95cuLdXejQd221Xj5PpIYDhNsnyaPT47k4cV8f7rqrV+KsoHYzYL+DepXqnwqr5
+         uRxpeoIzQPSN4S5mLdEXPAir8vbvQRsTImqt5LiWTj5lNtaF85VLGYp88Tfc6Cr5BBHq
+         294scf2PyYvRlxhF3YMp2gDthlbQd/cWumKbYik1XChb5TB4/4dpVo7rKTwLv1kbu0zv
+         1nkNhWiM4M1sYNHVSboCSfNg6VzeJIeMZ/EVlAOwZnvvpj9Hfbm3pqeU8F+nQ7/2oVsf
+         79Sg==
+X-Gm-Message-State: ABy/qLatWVlO3ZwZiqnKjtE9AngI90gt7YxDo0ewEbSsVNC2tKfaCAak
+        09BKy02XSWw/55YYVX7iDuEQyg==
+X-Google-Smtp-Source: APBJJlF9fzD6f+m7q5e2ZIPud12RUS44xuHF0k0gGsym8H22KUv9ey00hO3qQ3WQX7c34HDnpA3CxA==
+X-Received: by 2002:a7b:cd96:0:b0:3fc:10:b25b with SMTP id y22-20020a7bcd96000000b003fc0010b25bmr1705589wmj.21.1689262158634;
+        Thu, 13 Jul 2023 08:29:18 -0700 (PDT)
+Received: from krzk-bin.. ([178.197.223.104])
+        by smtp.gmail.com with ESMTPSA id l10-20020adffe8a000000b00315995837aesm8226597wrr.36.2023.07.13.08.29.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Jul 2023 08:29:18 -0700 (PDT)
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>, linux-omap@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH] ARM: dts: omap3-devkit8000: correct ethernet reg addresses (split)
+Date:   Thu, 13 Jul 2023 17:29:13 +0200
+Message-Id: <20230713152913.82846-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 87.189.159.13
-X-ZEDAT-Hint: PO
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -65,58 +72,28 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Thomas!
+The davicom,dm9000 Ethernet Controller accepts two reg addresses.
 
-On Thu, 2023-07-13 at 15:53 +0200, John Paul Adrian Glaubitz wrote:
-> On Thu, 2023-07-13 at 14:58 +0200, Thomas Zimmermann wrote:
-> > Assign FB_MODE_IS_UNKNOWN to sh7763fb_videomode.flag instead of
-> > FBINFO_FLAG_DEFAULT. Both are 0, so the stored value does not change.
-> > 
-> > FBINFO_FLAG_DEFAULT is a flag for a framebuffer in struct fb_info.
-> > Flags for videomodes are prefixed with FB_MODE_.
-> > 
-> > v2:
-> > 	* assign FB_MODE_IS_UNKNOWN (Adrian)
-> > 
-> > Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> > Acked-by: Sam Ravnborg <sam@ravnborg.org>
-> > Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-> > Cc: Rich Felker <dalias@libc.org>
-> > Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-> > ---
-> >  arch/sh/boards/mach-sh7763rdp/setup.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/arch/sh/boards/mach-sh7763rdp/setup.c b/arch/sh/boards/mach-sh7763rdp/setup.c
-> > index 97e715e4e9b3..e25193001ea0 100644
-> > --- a/arch/sh/boards/mach-sh7763rdp/setup.c
-> > +++ b/arch/sh/boards/mach-sh7763rdp/setup.c
-> > @@ -119,7 +119,7 @@ static struct fb_videomode sh7763fb_videomode = {
-> >  	.vsync_len = 1,
-> >  	.sync = 0,
-> >  	.vmode = FB_VMODE_NONINTERLACED,
-> > -	.flag = FBINFO_FLAG_DEFAULT,
-> > +	.flag = FB_MODE_IS_UNKNOWN,
-> >  };
-> >  
-> >  static struct sh7760fb_platdata sh7763fb_def_pdata = {
-> 
-> Acked-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+ arch/arm/boot/dts/ti/omap/omap3-devkit8000-common.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Ah, just one tiny request: Could you change the subject to include the
-board name, i.e.:
-
-	sh: mach-sh7763rdp: Assign FB_MODE_IS_UNKNOWN to struct fb_videomode.flag
-
-?
-
-I wasn't paying close attention to the path of the file being changed when
-I first looked at your patch. Sorry for that.
-
-Adrian
-
+diff --git a/arch/arm/boot/dts/ti/omap/omap3-devkit8000-common.dtsi b/arch/arm/boot/dts/ti/omap/omap3-devkit8000-common.dtsi
+index 3b9838f1bb6b..07d5894ebb74 100644
+--- a/arch/arm/boot/dts/ti/omap/omap3-devkit8000-common.dtsi
++++ b/arch/arm/boot/dts/ti/omap/omap3-devkit8000-common.dtsi
+@@ -275,8 +275,8 @@ filesystem@680000 {
+ 
+ 	ethernet@6,0 {
+ 		compatible = "davicom,dm9000";
+-		reg =  <6 0x000 2
+-			6 0x400 2>; /* CS6, offset 0 and 0x400, IO size 2 */
++		reg =  <6 0x000 2>,
++		       <6 0x400 2>; /* CS6, offset 0 and 0x400, IO size 2 */
+ 		bank-width = <2>;
+ 		interrupt-parent = <&gpio1>;
+ 		interrupts = <25 IRQ_TYPE_LEVEL_LOW>;
 -- 
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer
-`. `'   Physicist
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+2.34.1
+
