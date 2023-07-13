@@ -2,53 +2,60 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CB0C752411
-	for <lists+linux-omap@lfdr.de>; Thu, 13 Jul 2023 15:41:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CA28752448
+	for <lists+linux-omap@lfdr.de>; Thu, 13 Jul 2023 15:53:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234495AbjGMNlg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 13 Jul 2023 09:41:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43244 "EHLO
+        id S231393AbjGMNx4 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-omap@lfdr.de>); Thu, 13 Jul 2023 09:53:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234480AbjGMNlg (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 13 Jul 2023 09:41:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E01E173B;
-        Thu, 13 Jul 2023 06:41:35 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E00B5612FC;
-        Thu, 13 Jul 2023 13:41:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6342C433C7;
-        Thu, 13 Jul 2023 13:41:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689255694;
-        bh=8Ot7D/Ueg2Zj0abBjyFlVTgcPMEBuvL2hmZIQcytkd8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=chj4FQk3oC3GzqwAA5u8pzxm+Lu1dekSyLQ6igB3JLH+CHi20cNY1SvUPtwWtEImj
-         9IcnixaoxcVBA0h599emjrW1a/y5eAFBhdUY7oERsK1lNLjcFaV7D0C4MwjrLF1mnV
-         sjMGjSiwgkSIRMqQQqI2ed9VMRUIP3UYUZwSa9arZ6MvvG6DNORSmE4UsI5pkscpao
-         IgUps4Uwn87xH/Rn/EucoHOBNVrdzNmocCRow4iY0mt3Ok7k+tlJ1+IlzkMdlS4YjH
-         UQbAZx5IF4xrHokU+Nk7b2Oyc2RHH2oeuQJUhNZVXFq5iOua5lRwMo1du1nUPpQqJZ
-         +ojArZ//G9M9w==
-Date:   Thu, 13 Jul 2023 14:41:29 +0100
-From:   Lee Jones <lee@kernel.org>
-To:     Yangtao Li <frank.li@vivo.com>
-Cc:     Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 5/7] mfd: omap-usb-host: Convert to
- devm_platform_ioremap_resource()
-Message-ID: <20230713134129.GA10768@google.com>
-References: <20230706113939.1178-1-frank.li@vivo.com>
- <20230706113939.1178-5-frank.li@vivo.com>
+        with ESMTP id S231250AbjGMNxy (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 13 Jul 2023 09:53:54 -0400
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99E1A211F;
+        Thu, 13 Jul 2023 06:53:51 -0700 (PDT)
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.95)
+          with esmtps (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1qJwlO-003u9E-2D; Thu, 13 Jul 2023 15:53:46 +0200
+Received: from p57bd9f0d.dip0.t-ipconnect.de ([87.189.159.13] helo=suse-laptop.fritz.box)
+          by inpost2.zedat.fu-berlin.de (Exim 4.95)
+          with esmtpsa (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1qJwlN-002pvx-QH; Thu, 13 Jul 2023 15:53:45 +0200
+Message-ID: <4622810f8bceb66f212fa09d34b10f0d2d71a35d.camel@physik.fu-berlin.de>
+Subject: Re: [PATCH v2 08/18] sh: Assign FB_MODE_IS_UNKNOWN to struct
+ fb_videomode.flag
+From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+To:     Thomas Zimmermann <tzimmermann@suse.de>, deller@gmx.de,
+        javierm@redhat.com
+Cc:     linux-sh@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+        linux-input@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, linux-staging@lists.linux.dev,
+        linux-arm-kernel@lists.infradead.org,
+        linux-geode@lists.infradead.org, linux-nvidia@lists.surfsouth.com,
+        linux-hyperv@vger.kernel.org, linux-omap@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>
+Date:   Thu, 13 Jul 2023 15:53:44 +0200
+In-Reply-To: <20230713130338.31086-9-tzimmermann@suse.de>
+References: <20230713130338.31086-1-tzimmermann@suse.de>
+         <20230713130338.31086-9-tzimmermann@suse.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+User-Agent: Evolution 3.48.4 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230706113939.1178-5-frank.li@vivo.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 87.189.159.13
+X-ZEDAT-Hint: PO
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,16 +64,43 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, 06 Jul 2023, Yangtao Li wrote:
-
-> Use devm_platform_ioremap_resource() to simplify code.
+On Thu, 2023-07-13 at 14:58 +0200, Thomas Zimmermann wrote:
+> Assign FB_MODE_IS_UNKNOWN to sh7763fb_videomode.flag instead of
+> FBINFO_FLAG_DEFAULT. Both are 0, so the stored value does not change.
 > 
-> Signed-off-by: Yangtao Li <frank.li@vivo.com>
+> FBINFO_FLAG_DEFAULT is a flag for a framebuffer in struct fb_info.
+> Flags for videomodes are prefixed with FB_MODE_.
+> 
+> v2:
+> 	* assign FB_MODE_IS_UNKNOWN (Adrian)
+> 
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Acked-by: Sam Ravnborg <sam@ravnborg.org>
+> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+> Cc: Rich Felker <dalias@libc.org>
+> Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 > ---
->  drivers/mfd/omap-usb-host.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
+>  arch/sh/boards/mach-sh7763rdp/setup.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/sh/boards/mach-sh7763rdp/setup.c b/arch/sh/boards/mach-sh7763rdp/setup.c
+> index 97e715e4e9b3..e25193001ea0 100644
+> --- a/arch/sh/boards/mach-sh7763rdp/setup.c
+> +++ b/arch/sh/boards/mach-sh7763rdp/setup.c
+> @@ -119,7 +119,7 @@ static struct fb_videomode sh7763fb_videomode = {
+>  	.vsync_len = 1,
+>  	.sync = 0,
+>  	.vmode = FB_VMODE_NONINTERLACED,
+> -	.flag = FBINFO_FLAG_DEFAULT,
+> +	.flag = FB_MODE_IS_UNKNOWN,
+>  };
+>  
+>  static struct sh7760fb_platdata sh7763fb_def_pdata = {
 
-Applied, thanks
+Acked-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 
 -- 
-Lee Jones [李琼斯]
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer
+`. `'   Physicist
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
