@@ -2,63 +2,69 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 690607527F7
-	for <lists+linux-omap@lfdr.de>; Thu, 13 Jul 2023 18:02:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4E3675323B
+	for <lists+linux-omap@lfdr.de>; Fri, 14 Jul 2023 08:47:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235017AbjGMQCs (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 13 Jul 2023 12:02:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57666 "EHLO
+        id S234750AbjGNGrW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 14 Jul 2023 02:47:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233618AbjGMQCq (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 13 Jul 2023 12:02:46 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F44226B2;
-        Thu, 13 Jul 2023 09:02:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-        Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-        Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-        bh=FGfECluQ+8FqgloN5y7njhMRYgbNQmkghpgv24LmuxM=; b=0XY4/FQJa9khQp7bFpbGplPtrB
-        5SpA/Xwz1+y5xMC8TkQ/RIwD1YWvtpubNsS1DOufMRk8U8ZOw4QBT/2OcdaSsugIN7fvQtpI7FoTv
-        cytb12hmpQ++kNkMjOGEjV3X0J/VuBhB9uSnfg9JjtfUZNml3TMudThtLyoBgiurIyPLTXfpsW1zN
-        ZtXFfJPqxyrJBHJb3985aNxuQmUFSYt3wjhQoX2i+JeMJunamtLIY8iXJ5jgN3F/OMabSTImubkKK
-        MN74NscjU6mryhy24nJ4dBieOuA4YvnVsMsArDKWNb60xY8A4s7oL4npScU177xtucZj0Dk4Lyl65
-        o8/EadpQ==;
-Received: from [2601:1c2:980:9ec0::2764]
-        by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-        id 1qJym9-003r1C-08;
-        Thu, 13 Jul 2023 16:02:41 +0000
-Message-ID: <801dbd65-ee7f-526d-6cd8-27cb0291c4ba@infradead.org>
-Date:   Thu, 13 Jul 2023 09:02:39 -0700
+        with ESMTP id S234986AbjGNGq6 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 14 Jul 2023 02:46:58 -0400
+Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CED430E2;
+        Thu, 13 Jul 2023 23:46:34 -0700 (PDT)
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 36E6kBnn116158;
+        Fri, 14 Jul 2023 01:46:11 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1689317171;
+        bh=51ygtQqbjia4BNqCGeTzY/PWLEnrB51JEBAW1iWjYps=;
+        h=Date:Subject:To:CC:References:From:In-Reply-To;
+        b=fJ+J0NHdY++G9H2fThwS039bgwc1y5MWHuZByQxeVy3Sow7VUXgkHMEvZkmZ8A4Bg
+         M5qln6ojA518kKzyjtG0oaLuqQW9hc1mYIAXCQ8dNlmBx0O2T0jflGRrejO1P8HG1S
+         2Wt+ZmSw0O8x2RfviukuPK8JC3dWVXViWUkJHJfM=
+Received: from DFLE109.ent.ti.com (dfle109.ent.ti.com [10.64.6.30])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 36E6kBwa051681
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 14 Jul 2023 01:46:11 -0500
+Received: from DFLE104.ent.ti.com (10.64.6.25) by DFLE109.ent.ti.com
+ (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 14
+ Jul 2023 01:46:11 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE104.ent.ti.com
+ (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Fri, 14 Jul 2023 01:46:11 -0500
+Received: from [172.24.19.15] (ileaxei01-snat.itg.ti.com [10.180.69.5])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 36E6k7RU097881;
+        Fri, 14 Jul 2023 01:46:08 -0500
+Message-ID: <eb1dd448-8cec-13a0-c782-92950de52085@ti.com>
+Date:   Fri, 14 Jul 2023 12:16:07 +0530
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v2 18/18] fbdev: Document that framebuffer_alloc() returns
- zero'ed data
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v3] PCI: j721e: Delay 100ms T_PVPERL from power stable to
+ PERST# inactive
+To:     Vignesh Raghavendra <vigneshr@ti.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Krzysztof Wilczy_ski <kw@linux.com>,
+        Rob Herring <robh@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>
+CC:     <linux-omap@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, Achal Verma <a-verma1@ti.com>
+References: <20230707095119.447952-1-a-verma1@ti.com>
 Content-Language: en-US
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>
-Cc:     deller@gmx.de, javierm@redhat.com, linux-sh@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        amd-gfx@lists.freedesktop.org, linux-input@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        linux-staging@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org,
-        linux-geode@lists.infradead.org, linux-nvidia@lists.surfsouth.com,
-        linux-hyperv@vger.kernel.org, linux-omap@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
-        Miguel Ojeda <ojeda@kernel.org>
-References: <20230713130338.31086-1-tzimmermann@suse.de>
- <20230713130338.31086-19-tzimmermann@suse.de>
- <CANiq72mbLmMKph8aiz4apNF9n3MtVO-nhM9rEWYApZbSVAO9Qw@mail.gmail.com>
-From:   Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <CANiq72mbLmMKph8aiz4apNF9n3MtVO-nhM9rEWYApZbSVAO9Qw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+From:   "Verma, Achal" <a-verma1@ti.com>
+In-Reply-To: <20230707095119.447952-1-a-verma1@ti.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -67,31 +73,69 @@ X-Mailing-List: linux-omap@vger.kernel.org
 
 
 
-On 7/13/23 06:21, Miguel Ojeda wrote:
-> On Thu, Jul 13, 2023 at 3:03 PM Thomas Zimmermann <tzimmermann@suse.de> wrote:
->>
->> Most fbdev drivers depend on framebuffer_alloc() to initialize the
->> allocated memory to 0. Document this guarantee.
->>
->> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
->> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
->> Cc: Helge Deller <deller@gmx.de>
+On 7/7/2023 3:21 PM, Achal Verma wrote:
+> As per the PCIe Card Electromechanical specification REV. 5.0, PERST#
+> signal should be de-asserted after minimum 100ms from the time power-rails
+> become stable. So, to ensure 100ms delay to give sufficient time for
+> power-rails and refclk to become stable, change delay from 100us to 100ms.
 > 
-> Thanks for sending this! Maybe this would be best earlier in the
-> series, so that later patches make more sense (since they use the
-> guarantee), but it is not a big deal.
+>  From PCIe Card Electromechanical specification REV. 5.0 section 2.9.2:
+> TPVPERL: Power stable to PERST# inactive - 100ms
 > 
->> + * aligned to sizeof(long). Both, the instance of struct fb_info and
->> + * the driver private data, are cleared to zero.
-> 
-> I think both commas may be best omitted (but I am not a native speaker).
+> Fixes: f3e25911a430 ("PCI: j721e: Add TI J721E PCIe driver")
+> Signed-off-by: Achal Verma <a-verma1@ti.com>
+Hello Bjorn,
 
-Yes, it would be better to omit them.
+Could you please bless this with "Reviewed-by" tag.
 
-> Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
+Thanks,
+Achal Verma
+> ---
 > 
-> Cheers,
-> Miguel
-
--- 
-~Randy
+> Changes from v2:
+> * Fix commit message.
+> 
+> Change from v1:
+> * Add macro for delay value.
+> 
+>   drivers/pci/controller/cadence/pci-j721e.c | 11 +++++------
+>   drivers/pci/pci.h                          |  2 ++
+>   2 files changed, 7 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
+> index e70213c9060a..32b6a7dc3cff 100644
+> --- a/drivers/pci/controller/cadence/pci-j721e.c
+> +++ b/drivers/pci/controller/cadence/pci-j721e.c
+> @@ -498,14 +498,13 @@ static int j721e_pcie_probe(struct platform_device *pdev)
+>   
+>   		/*
+>   		 * "Power Sequencing and Reset Signal Timings" table in
+> -		 * PCI EXPRESS CARD ELECTROMECHANICAL SPECIFICATION, REV. 3.0
+> -		 * indicates PERST# should be deasserted after minimum of 100us
+> -		 * once REFCLK is stable. The REFCLK to the connector in RC
+> -		 * mode is selected while enabling the PHY. So deassert PERST#
+> -		 * after 100 us.
+> +		 * PCI EXPRESS CARD ELECTROMECHANICAL SPECIFICATION, REV. 5.0
+> +		 * indicates PERST# should be deasserted after minimum of 100ms
+> +		 * after power rails achieve specified operating limits and
+> +		 * within this period reference clock should also become stable.
+>   		 */
+>   		if (gpiod) {
+> -			usleep_range(100, 200);
+> +			msleep(PCIE_TPVPERL_DELAY_MS);
+>   			gpiod_set_value_cansleep(gpiod, 1);
+>   		}
+>   
+> diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
+> index a4c397434057..6ab2367e5867 100644
+> --- a/drivers/pci/pci.h
+> +++ b/drivers/pci/pci.h
+> @@ -13,6 +13,8 @@
+>   
+>   #define PCIE_LINK_RETRAIN_TIMEOUT_MS	1000
+>   
+> +#define PCIE_TPVPERL_DELAY_MS	100	/* see PCIe CEM r5.0, sec 2.9.2 */
+> +
+>   extern const unsigned char pcie_link_speed[];
+>   extern bool pci_early_dump;
+>   
