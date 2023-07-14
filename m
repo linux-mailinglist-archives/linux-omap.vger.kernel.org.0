@@ -2,81 +2,59 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C1C3754168
-	for <lists+linux-omap@lfdr.de>; Fri, 14 Jul 2023 19:55:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 295ED7541F7
+	for <lists+linux-omap@lfdr.de>; Fri, 14 Jul 2023 20:01:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236450AbjGNRvw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 14 Jul 2023 13:51:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38554 "EHLO
+        id S236547AbjGNR67 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 14 Jul 2023 13:58:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236501AbjGNRvn (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 14 Jul 2023 13:51:43 -0400
-Received: from mail-il1-f169.google.com (mail-il1-f169.google.com [209.85.166.169])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6039235B7;
-        Fri, 14 Jul 2023 10:51:24 -0700 (PDT)
-Received: by mail-il1-f169.google.com with SMTP id e9e14a558f8ab-345d6dc271dso9717815ab.0;
-        Fri, 14 Jul 2023 10:51:24 -0700 (PDT)
+        with ESMTP id S236876AbjGNR6O (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 14 Jul 2023 13:58:14 -0400
+Received: from mail-io1-xd32.google.com (mail-io1-xd32.google.com [IPv6:2607:f8b0:4864:20::d32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A58DE1BD4;
+        Fri, 14 Jul 2023 10:57:49 -0700 (PDT)
+Received: by mail-io1-xd32.google.com with SMTP id ca18e2360f4ac-78666994bc2so90382239f.0;
+        Fri, 14 Jul 2023 10:57:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689357002; x=1691949002;
+        d=1e100.net; s=20221208; t=1689357086; x=1691949086;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=+f9hPpq/FXIH2pHQG9BDcclVOF3HlSLvSdnqDrW8SI0=;
-        b=Jm/Iij8cFfdgf2PJr7ntOaY3gjcwNWbifeGjloE8C0NLPJpB7i00FUt7RBg5Nz86O9
-         Y0I38BVhhYc3sZTFspKUPNW16z2fDKFC/w1PqaB2ZtPv7nh4qog24xaQEKkcZsezHnIe
-         VQUbCpHQviLjI0DyUdjS/zwOLJg3mS42MD6t/YYkvsS76KiZX1rxIcfqxNrbkNW8kkV3
-         9RoPte1q7kt1KIy7AA4l+FO6pT5B1Oae6la45Qgpt8iydlKm/N9gzN/mUnyHRSZO7NDC
-         ShlUzOCWhdnvRDa88tc2TWmvVT3jwkAj35U+XXu2o0Y9HWpP0G/iO0lUGeuT2ccBxtgy
-         66Yg==
-X-Gm-Message-State: ABy/qLaVGn/2OYKeVwpihufJicj7ZYBcz/X6tdf/+hO2i/pJ2ToWi76G
-        vGVYR9NlequlOA+rOkbwjQ==
-X-Google-Smtp-Source: APBJJlEmRadOVoGt8KXkozByqFztIzgh8zxRONlCM8tFyXmfW6xPPXdHjET1RPuYiepJ5yWUm0smmA==
-X-Received: by 2002:a92:d08c:0:b0:347:693a:a52b with SMTP id h12-20020a92d08c000000b00347693aa52bmr4722888ilh.6.1689357001812;
-        Fri, 14 Jul 2023 10:50:01 -0700 (PDT)
+        bh=tsm18Z/x+l+oB943/XiV2kuKPcdxzHAhIxFuPRhImLE=;
+        b=QBNZsBu9hmnVp2P8ZWjG65b36gOrlcvmphn+vlGf53MGz1d1zVu/FnMmOQPmEEMZIS
+         VelPW3OGf/jyOXAHGhjvoLd2Z7J+vjclo0M8x6C6Uz838DRAPQAkVrgfM9+G6kgQGPNB
+         6sjFDUSrDrl2XAWoV7Qgj0jCkJOQqn+mdxWplk2qCi67/CanLwOg94S6P4LdSFsJEpJX
+         TKPocKSkySBOfWCbozP5sX8lzKS8WO7A7y7b1ZDRJvXrnG4vBIYFc/oRnSR4IiallSFC
+         HYP5IYbVjLYAkawgnP5oT2r2GoDdf42ggJU/Xs90tHcUy3U8nSQvCtotURhhyZXIJ1yW
+         yCxQ==
+X-Gm-Message-State: ABy/qLbcmawuDItYenG9WlG2HLg0mgN+S7mQ4KDa6EDTHuvwnjHFKoJQ
+        OakQkhlVSz2OXxmjoGCoTw==
+X-Google-Smtp-Source: APBJJlEBjHZ93+83bg5vG9zxP+ye50/ZV4Ps/NTZz7ryBzH4IRLL0LhGABVbLueVX73r4x7dl56wHQ==
+X-Received: by 2002:a5e:a916:0:b0:785:fbe8:1da0 with SMTP id c22-20020a5ea916000000b00785fbe81da0mr5454406iod.15.1689357086619;
+        Fri, 14 Jul 2023 10:51:26 -0700 (PDT)
 Received: from robh_at_kernel.org ([64.188.179.250])
-        by smtp.gmail.com with ESMTPSA id c13-20020a92dc8d000000b00345da2c4776sm2856766iln.81.2023.07.14.10.49.59
+        by smtp.gmail.com with ESMTPSA id dm26-20020a0566023b9a00b0077a1d1029fcsm2850098iob.28.2023.07.14.10.51.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Jul 2023 10:50:01 -0700 (PDT)
-Received: (nullmailer pid 4063470 invoked by uid 1000);
-        Fri, 14 Jul 2023 17:49:33 -0000
+        Fri, 14 Jul 2023 10:51:25 -0700 (PDT)
+Received: (nullmailer pid 4065617 invoked by uid 1000);
+        Fri, 14 Jul 2023 17:50:38 -0000
 From:   Rob Herring <robh@kernel.org>
-To:     Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Cristian Ciocaltea <cristian.ciocaltea@gmail.com>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Saravanan Sekar <sravanhome@gmail.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Liviu Dudau <liviu.dudau@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>
-Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-actions@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com
-Subject: [PATCH] regulator: Explicitly include correct DT includes
-Date:   Fri, 14 Jul 2023 11:49:28 -0600
-Message-Id: <20230714174930.4063320-1-robh@kernel.org>
+To:     Helge Deller <deller@gmx.de>, Michal Simek <michal.simek@amd.com>
+Cc:     devicetree@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: [PATCH] fb: Explicitly include correct DT includes
+Date:   Fri, 14 Jul 2023 11:50:34 -0600
+Message-Id: <20230714175035.4065508-1-robh@kernel.org>
 X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
         FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -94,524 +72,313 @@ explicitly include the correct includes.
 
 Signed-off-by: Rob Herring <robh@kernel.org>
 ---
- drivers/regulator/act8945a-regulator.c      | 2 +-
- drivers/regulator/atc260x-regulator.c       | 3 ++-
- drivers/regulator/axp20x-regulator.c        | 1 -
- drivers/regulator/cpcap-regulator.c         | 2 +-
- drivers/regulator/fan53555.c                | 2 +-
- drivers/regulator/fixed.c                   | 1 -
- drivers/regulator/ltc3589.c                 | 1 -
- drivers/regulator/max77826-regulator.c      | 1 -
- drivers/regulator/mp5416.c                  | 2 +-
- drivers/regulator/mp886x.c                  | 2 +-
- drivers/regulator/mpq7920.c                 | 1 -
- drivers/regulator/mt6315-regulator.c        | 2 +-
- drivers/regulator/mt6359-regulator.c        | 3 ++-
- drivers/regulator/mtk-dvfsrc-regulator.c    | 3 +--
- drivers/regulator/pbias-regulator.c         | 1 -
- drivers/regulator/pca9450-regulator.c       | 1 -
- drivers/regulator/pwm-regulator.c           | 2 +-
- drivers/regulator/qcom-rpmh-regulator.c     | 1 -
- drivers/regulator/qcom_smd-regulator.c      | 1 -
- drivers/regulator/qcom_usb_vbus-regulator.c | 1 -
- drivers/regulator/rk808-regulator.c         | 3 ++-
- drivers/regulator/rt5759-regulator.c        | 2 +-
- drivers/regulator/stm32-pwr.c               | 3 +--
- drivers/regulator/stm32-vrefbuf.c           | 2 +-
- drivers/regulator/sy8824x.c                 | 2 +-
- drivers/regulator/sy8827n.c                 | 2 +-
- drivers/regulator/tps6286x-regulator.c      | 2 +-
- drivers/regulator/tps6287x-regulator.c      | 2 +-
- drivers/regulator/tps65218-regulator.c      | 2 +-
- drivers/regulator/tps65219-regulator.c      | 2 +-
- drivers/regulator/tps6594-regulator.c       | 2 +-
- drivers/regulator/twl-regulator.c           | 1 -
- drivers/regulator/twl6030-regulator.c       | 1 -
- drivers/regulator/uniphier-regulator.c      | 2 +-
- drivers/regulator/vctrl-regulator.c         | 2 +-
- drivers/regulator/vexpress-regulator.c      | 3 ++-
- 36 files changed, 28 insertions(+), 38 deletions(-)
+ drivers/video/fbdev/bw2.c                                | 3 ++-
+ drivers/video/fbdev/cg14.c                               | 3 ++-
+ drivers/video/fbdev/cg3.c                                | 3 ++-
+ drivers/video/fbdev/cg6.c                                | 3 ++-
+ drivers/video/fbdev/ffb.c                                | 3 ++-
+ drivers/video/fbdev/grvga.c                              | 3 +--
+ drivers/video/fbdev/leo.c                                | 3 ++-
+ drivers/video/fbdev/mb862xx/mb862xxfb_accel.c            | 4 +---
+ drivers/video/fbdev/mb862xx/mb862xxfbdrv.c               | 6 +++---
+ drivers/video/fbdev/omap2/omapfb/displays/panel-dsi-cm.c | 2 +-
+ drivers/video/fbdev/p9100.c                              | 3 ++-
+ drivers/video/fbdev/platinumfb.c                         | 4 ++--
+ drivers/video/fbdev/sbuslib.c                            | 6 +++---
+ drivers/video/fbdev/sunxvr1000.c                         | 3 ++-
+ drivers/video/fbdev/sunxvr2500.c                         | 2 +-
+ drivers/video/fbdev/sunxvr500.c                          | 2 +-
+ drivers/video/fbdev/tcx.c                                | 3 ++-
+ drivers/video/fbdev/xilinxfb.c                           | 5 ++---
+ 18 files changed, 33 insertions(+), 28 deletions(-)
 
-diff --git a/drivers/regulator/act8945a-regulator.c b/drivers/regulator/act8945a-regulator.c
-index e26264529b74..24cbdd833863 100644
---- a/drivers/regulator/act8945a-regulator.c
-+++ b/drivers/regulator/act8945a-regulator.c
-@@ -8,7 +8,7 @@
-  */
- 
- #include <linux/module.h>
--#include <linux/of_device.h>
-+#include <linux/of.h>
- #include <linux/platform_device.h>
- #include <linux/regmap.h>
- #include <linux/regulator/driver.h>
-diff --git a/drivers/regulator/atc260x-regulator.c b/drivers/regulator/atc260x-regulator.c
-index 87e237d740bc..09fe51464090 100644
---- a/drivers/regulator/atc260x-regulator.c
-+++ b/drivers/regulator/atc260x-regulator.c
-@@ -7,7 +7,8 @@
- 
- #include <linux/mfd/atc260x/core.h>
- #include <linux/module.h>
+diff --git a/drivers/video/fbdev/bw2.c b/drivers/video/fbdev/bw2.c
+index 025d663dc6fd..39f438de0d6b 100644
+--- a/drivers/video/fbdev/bw2.c
++++ b/drivers/video/fbdev/bw2.c
+@@ -17,7 +17,8 @@
+ #include <linux/init.h>
+ #include <linux/fb.h>
+ #include <linux/mm.h>
 -#include <linux/of_device.h>
 +#include <linux/of.h>
 +#include <linux/platform_device.h>
- #include <linux/regmap.h>
- #include <linux/regulator/driver.h>
  
-diff --git a/drivers/regulator/axp20x-regulator.c b/drivers/regulator/axp20x-regulator.c
-index 810f90f3e2a1..c657820b0bbb 100644
---- a/drivers/regulator/axp20x-regulator.c
-+++ b/drivers/regulator/axp20x-regulator.c
-@@ -20,7 +20,6 @@
- #include <linux/mfd/axp20x.h>
- #include <linux/module.h>
- #include <linux/of.h>
+ #include <asm/io.h>
+ #include <asm/fbio.h>
+diff --git a/drivers/video/fbdev/cg14.c b/drivers/video/fbdev/cg14.c
+index 832a82f45c80..90fdc9d9bf5a 100644
+--- a/drivers/video/fbdev/cg14.c
++++ b/drivers/video/fbdev/cg14.c
+@@ -17,7 +17,8 @@
+ #include <linux/fb.h>
+ #include <linux/mm.h>
+ #include <linux/uaccess.h>
 -#include <linux/of_device.h>
++#include <linux/of.h>
++#include <linux/platform_device.h>
+ 
+ #include <asm/io.h>
+ #include <asm/fbio.h>
+diff --git a/drivers/video/fbdev/cg3.c b/drivers/video/fbdev/cg3.c
+index 6335cd364c74..98c60f72046a 100644
+--- a/drivers/video/fbdev/cg3.c
++++ b/drivers/video/fbdev/cg3.c
+@@ -17,7 +17,8 @@
+ #include <linux/init.h>
+ #include <linux/fb.h>
+ #include <linux/mm.h>
+-#include <linux/of_device.h>
++#include <linux/of.h>
++#include <linux/platform_device.h>
+ 
+ #include <asm/io.h>
+ #include <asm/fbio.h>
+diff --git a/drivers/video/fbdev/cg6.c b/drivers/video/fbdev/cg6.c
+index 6884572efea1..6427b85f1a94 100644
+--- a/drivers/video/fbdev/cg6.c
++++ b/drivers/video/fbdev/cg6.c
+@@ -17,7 +17,8 @@
+ #include <linux/init.h>
+ #include <linux/fb.h>
+ #include <linux/mm.h>
+-#include <linux/of_device.h>
++#include <linux/of.h>
++#include <linux/platform_device.h>
+ 
+ #include <asm/io.h>
+ #include <asm/fbio.h>
+diff --git a/drivers/video/fbdev/ffb.c b/drivers/video/fbdev/ffb.c
+index c6d3111dcbb0..c473841eb6ff 100644
+--- a/drivers/video/fbdev/ffb.c
++++ b/drivers/video/fbdev/ffb.c
+@@ -16,7 +16,8 @@
+ #include <linux/fb.h>
+ #include <linux/mm.h>
+ #include <linux/timer.h>
+-#include <linux/of_device.h>
++#include <linux/of.h>
++#include <linux/platform_device.h>
+ 
+ #include <asm/io.h>
+ #include <asm/upa.h>
+diff --git a/drivers/video/fbdev/grvga.c b/drivers/video/fbdev/grvga.c
+index 9aa15be29ea9..d4a9a58b3691 100644
+--- a/drivers/video/fbdev/grvga.c
++++ b/drivers/video/fbdev/grvga.c
+@@ -12,8 +12,7 @@
+ 
  #include <linux/platform_device.h>
- #include <linux/regmap.h>
- #include <linux/regulator/driver.h>
-diff --git a/drivers/regulator/cpcap-regulator.c b/drivers/regulator/cpcap-regulator.c
-index 1fd79fb17303..6958d154442b 100644
---- a/drivers/regulator/cpcap-regulator.c
-+++ b/drivers/regulator/cpcap-regulator.c
-@@ -12,7 +12,7 @@
- #include <linux/err.h>
- #include <linux/module.h>
- #include <linux/of.h>
+ #include <linux/dma-mapping.h>
 -#include <linux/of_platform.h>
-+#include <linux/platform_device.h>
- #include <linux/regmap.h>
- #include <linux/regulator/driver.h>
- #include <linux/regulator/machine.h>
-diff --git a/drivers/regulator/fan53555.c b/drivers/regulator/fan53555.c
-index 289c06e09f47..48f312167e53 100644
---- a/drivers/regulator/fan53555.c
-+++ b/drivers/regulator/fan53555.c
-@@ -12,7 +12,7 @@
- #include <linux/err.h>
- #include <linux/i2c.h>
- #include <linux/module.h>
 -#include <linux/of_device.h>
 +#include <linux/of.h>
- #include <linux/param.h>
- #include <linux/platform_device.h>
- #include <linux/regmap.h>
-diff --git a/drivers/regulator/fixed.c b/drivers/regulator/fixed.c
-index 364d1a2683b7..55130efae9b8 100644
---- a/drivers/regulator/fixed.c
-+++ b/drivers/regulator/fixed.c
-@@ -25,7 +25,6 @@
- #include <linux/gpio/consumer.h>
- #include <linux/slab.h>
- #include <linux/of.h>
--#include <linux/of_device.h>
- #include <linux/regulator/of_regulator.h>
- #include <linux/regulator/machine.h>
- #include <linux/clk.h>
-diff --git a/drivers/regulator/ltc3589.c b/drivers/regulator/ltc3589.c
-index e9751c206d95..cf931b8c36dc 100644
---- a/drivers/regulator/ltc3589.c
-+++ b/drivers/regulator/ltc3589.c
-@@ -10,7 +10,6 @@
  #include <linux/module.h>
  #include <linux/kernel.h>
- #include <linux/of.h>
--#include <linux/of_device.h>
- #include <linux/regmap.h>
- #include <linux/regulator/driver.h>
- #include <linux/regulator/of_regulator.h>
-diff --git a/drivers/regulator/max77826-regulator.c b/drivers/regulator/max77826-regulator.c
-index 3855f5e686d8..5590cdf615b7 100644
---- a/drivers/regulator/max77826-regulator.c
-+++ b/drivers/regulator/max77826-regulator.c
-@@ -9,7 +9,6 @@
- #include <linux/init.h>
- #include <linux/err.h>
- #include <linux/of.h>
--#include <linux/of_device.h>
- #include <linux/platform_device.h>
- #include <linux/regulator/driver.h>
- #include <linux/regulator/of_regulator.h>
-diff --git a/drivers/regulator/mp5416.c b/drivers/regulator/mp5416.c
-index 3886b252fbe7..d068ac93d373 100644
---- a/drivers/regulator/mp5416.c
-+++ b/drivers/regulator/mp5416.c
-@@ -10,7 +10,7 @@
- #include <linux/i2c.h>
- #include <linux/init.h>
- #include <linux/module.h>
--#include <linux/of_device.h>
-+#include <linux/of.h>
- #include <linux/platform_device.h>
- #include <linux/regmap.h>
- #include <linux/regulator/driver.h>
-diff --git a/drivers/regulator/mp886x.c b/drivers/regulator/mp886x.c
-index ede1b1e58002..9911be2e6bac 100644
---- a/drivers/regulator/mp886x.c
-+++ b/drivers/regulator/mp886x.c
-@@ -9,7 +9,7 @@
- #include <linux/gpio/consumer.h>
- #include <linux/i2c.h>
- #include <linux/module.h>
--#include <linux/of_device.h>
-+#include <linux/of.h>
- #include <linux/regmap.h>
- #include <linux/regulator/driver.h>
- #include <linux/regulator/of_regulator.h>
-diff --git a/drivers/regulator/mpq7920.c b/drivers/regulator/mpq7920.c
-index bf677c535edc..4926c229109b 100644
---- a/drivers/regulator/mpq7920.c
-+++ b/drivers/regulator/mpq7920.c
-@@ -11,7 +11,6 @@
- #include <linux/init.h>
- #include <linux/err.h>
- #include <linux/of.h>
--#include <linux/of_device.h>
- #include <linux/platform_device.h>
- #include <linux/regulator/driver.h>
- #include <linux/regulator/of_regulator.h>
-diff --git a/drivers/regulator/mt6315-regulator.c b/drivers/regulator/mt6315-regulator.c
-index 8047081ea2f7..2608a6652d77 100644
---- a/drivers/regulator/mt6315-regulator.c
-+++ b/drivers/regulator/mt6315-regulator.c
-@@ -3,7 +3,7 @@
- // Copyright (c) 2021 MediaTek Inc.
- 
- #include <linux/module.h>
--#include <linux/of_device.h>
-+#include <linux/of.h>
- #include <linux/regmap.h>
- #include <linux/regulator/driver.h>
- #include <linux/regulator/machine.h>
-diff --git a/drivers/regulator/mt6359-regulator.c b/drivers/regulator/mt6359-regulator.c
-index 3eb86ec21d08..5cf6448fb05f 100644
---- a/drivers/regulator/mt6359-regulator.c
-+++ b/drivers/regulator/mt6359-regulator.c
-@@ -2,12 +2,13 @@
- //
- // Copyright (c) 2021 MediaTek Inc.
- 
-+#include <linux/platform_device.h>
- #include <linux/platform_device.h>
- #include <linux/mfd/mt6359/registers.h>
- #include <linux/mfd/mt6359p/registers.h>
- #include <linux/mfd/mt6397/core.h>
- #include <linux/module.h>
--#include <linux/of_device.h>
-+#include <linux/of.h>
- #include <linux/regmap.h>
- #include <linux/regulator/driver.h>
- #include <linux/regulator/machine.h>
-diff --git a/drivers/regulator/mtk-dvfsrc-regulator.c b/drivers/regulator/mtk-dvfsrc-regulator.c
-index efca67207a5a..f1280d45265d 100644
---- a/drivers/regulator/mtk-dvfsrc-regulator.c
-+++ b/drivers/regulator/mtk-dvfsrc-regulator.c
-@@ -6,8 +6,7 @@
- #include <linux/init.h>
- #include <linux/module.h>
- #include <linux/platform_device.h>
--#include <linux/of_device.h>
--#include <linux/of_platform.h>
-+#include <linux/of_.h>
- #include <linux/regulator/driver.h>
- #include <linux/regulator/of_regulator.h>
- #include <linux/soc/mediatek/mtk_dvfsrc.h>
-diff --git a/drivers/regulator/pbias-regulator.c b/drivers/regulator/pbias-regulator.c
-index 0c9873e9abdc..cd5a0d7e4455 100644
---- a/drivers/regulator/pbias-regulator.c
-+++ b/drivers/regulator/pbias-regulator.c
-@@ -25,7 +25,6 @@
- #include <linux/regmap.h>
- #include <linux/slab.h>
- #include <linux/of.h>
--#include <linux/of_device.h>
- 
- struct pbias_reg_info {
- 	u32 enable;
-diff --git a/drivers/regulator/pca9450-regulator.c b/drivers/regulator/pca9450-regulator.c
-index 91bfb7e026c9..2ab365d2749f 100644
---- a/drivers/regulator/pca9450-regulator.c
-+++ b/drivers/regulator/pca9450-regulator.c
-@@ -11,7 +11,6 @@
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/of.h>
--#include <linux/of_device.h>
- #include <linux/platform_device.h>
- #include <linux/regulator/driver.h>
- #include <linux/regulator/machine.h>
-diff --git a/drivers/regulator/pwm-regulator.c b/drivers/regulator/pwm-regulator.c
-index b64d99695b84..2aff6db748e2 100644
---- a/drivers/regulator/pwm-regulator.c
-+++ b/drivers/regulator/pwm-regulator.c
-@@ -10,11 +10,11 @@
- #include <linux/module.h>
- #include <linux/init.h>
- #include <linux/err.h>
-+#include <linux/platform_device.h>
- #include <linux/regulator/driver.h>
- #include <linux/regulator/machine.h>
- #include <linux/regulator/of_regulator.h>
- #include <linux/of.h>
--#include <linux/of_device.h>
- #include <linux/pwm.h>
- #include <linux/gpio/consumer.h>
- 
-diff --git a/drivers/regulator/qcom-rpmh-regulator.c b/drivers/regulator/qcom-rpmh-regulator.c
-index f3b280af0773..ec1b50721ec6 100644
---- a/drivers/regulator/qcom-rpmh-regulator.c
-+++ b/drivers/regulator/qcom-rpmh-regulator.c
-@@ -7,7 +7,6 @@
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/of.h>
--#include <linux/of_device.h>
- #include <linux/platform_device.h>
- #include <linux/slab.h>
  #include <linux/string.h>
-diff --git a/drivers/regulator/qcom_smd-regulator.c b/drivers/regulator/qcom_smd-regulator.c
-index 18189f35db68..f53ada076252 100644
---- a/drivers/regulator/qcom_smd-regulator.c
-+++ b/drivers/regulator/qcom_smd-regulator.c
-@@ -6,7 +6,6 @@
- 
- #include <linux/module.h>
- #include <linux/of.h>
+diff --git a/drivers/video/fbdev/leo.c b/drivers/video/fbdev/leo.c
+index 3ffc0a725f89..89ca48235dbe 100644
+--- a/drivers/video/fbdev/leo.c
++++ b/drivers/video/fbdev/leo.c
+@@ -16,8 +16,9 @@
+ #include <linux/init.h>
+ #include <linux/fb.h>
+ #include <linux/mm.h>
 -#include <linux/of_device.h>
- #include <linux/platform_device.h>
- #include <linux/regulator/driver.h>
- #include <linux/regulator/of_regulator.h>
-diff --git a/drivers/regulator/qcom_usb_vbus-regulator.c b/drivers/regulator/qcom_usb_vbus-regulator.c
-index 57ec613f4a0a..cd94ed67621f 100644
---- a/drivers/regulator/qcom_usb_vbus-regulator.c
-+++ b/drivers/regulator/qcom_usb_vbus-regulator.c
-@@ -8,7 +8,6 @@
- #include <linux/err.h>
- #include <linux/kernel.h>
- #include <linux/of.h>
--#include <linux/of_device.h>
- #include <linux/platform_device.h>
- #include <linux/regulator/driver.h>
- #include <linux/regulator/of_regulator.h>
-diff --git a/drivers/regulator/rk808-regulator.c b/drivers/regulator/rk808-regulator.c
-index 460525ed006c..867a2cf243f6 100644
---- a/drivers/regulator/rk808-regulator.c
-+++ b/drivers/regulator/rk808-regulator.c
-@@ -17,9 +17,10 @@
- #include <linux/delay.h>
- #include <linux/gpio.h>
- #include <linux/module.h>
--#include <linux/of_device.h>
+ #include <linux/io.h>
 +#include <linux/of.h>
- #include <linux/of_gpio.h>
- #include <linux/mfd/rk808.h>
 +#include <linux/platform_device.h>
- #include <linux/regulator/driver.h>
- #include <linux/regulator/of_regulator.h>
- #include <linux/gpio/consumer.h>
-diff --git a/drivers/regulator/rt5759-regulator.c b/drivers/regulator/rt5759-regulator.c
-index 90555a9ef1b0..c2553dcee050 100644
---- a/drivers/regulator/rt5759-regulator.c
-+++ b/drivers/regulator/rt5759-regulator.c
-@@ -4,7 +4,7 @@
- #include <linux/i2c.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
--#include <linux/of_device.h>
-+#include <linux/of.h>
- #include <linux/regmap.h>
- #include <linux/regulator/driver.h>
- #include <linux/regulator/of_regulator.h>
-diff --git a/drivers/regulator/stm32-pwr.c b/drivers/regulator/stm32-pwr.c
-index 4c60eddad60d..85b0102fb9b1 100644
---- a/drivers/regulator/stm32-pwr.c
-+++ b/drivers/regulator/stm32-pwr.c
-@@ -6,8 +6,7 @@
- #include <linux/io.h>
- #include <linux/iopoll.h>
- #include <linux/module.h>
--#include <linux/of_address.h>
--#include <linux/of_device.h>
-+#include <linux/of.h>
- #include <linux/platform_device.h>
- #include <linux/regulator/driver.h>
- #include <linux/regulator/of_regulator.h>
-diff --git a/drivers/regulator/stm32-vrefbuf.c b/drivers/regulator/stm32-vrefbuf.c
-index f5ccc7dd309a..717144cbe0f9 100644
---- a/drivers/regulator/stm32-vrefbuf.c
-+++ b/drivers/regulator/stm32-vrefbuf.c
-@@ -10,7 +10,7 @@
- #include <linux/io.h>
- #include <linux/iopoll.h>
- #include <linux/module.h>
--#include <linux/of_device.h>
-+#include <linux/of.h>
- #include <linux/platform_device.h>
- #include <linux/regulator/driver.h>
- #include <linux/regulator/of_regulator.h>
-diff --git a/drivers/regulator/sy8824x.c b/drivers/regulator/sy8824x.c
-index d0703105c439..d49c0cba09fb 100644
---- a/drivers/regulator/sy8824x.c
-+++ b/drivers/regulator/sy8824x.c
-@@ -8,7 +8,7 @@
  
- #include <linux/module.h>
- #include <linux/i2c.h>
--#include <linux/of_device.h>
-+#include <linux/of.h>
- #include <linux/regmap.h>
- #include <linux/regulator/driver.h>
- #include <linux/regulator/of_regulator.h>
-diff --git a/drivers/regulator/sy8827n.c b/drivers/regulator/sy8827n.c
-index 433959b43549..f11ff38b36c9 100644
---- a/drivers/regulator/sy8827n.c
-+++ b/drivers/regulator/sy8827n.c
-@@ -9,7 +9,7 @@
- #include <linux/gpio/consumer.h>
- #include <linux/module.h>
- #include <linux/i2c.h>
--#include <linux/of_device.h>
-+#include <linux/of.h>
- #include <linux/regmap.h>
- #include <linux/regulator/driver.h>
- #include <linux/regulator/of_regulator.h>
-diff --git a/drivers/regulator/tps6286x-regulator.c b/drivers/regulator/tps6286x-regulator.c
-index b1c4b5120745..c06f6d1dc737 100644
---- a/drivers/regulator/tps6286x-regulator.c
-+++ b/drivers/regulator/tps6286x-regulator.c
-@@ -4,7 +4,7 @@
- #include <linux/err.h>
- #include <linux/i2c.h>
- #include <linux/module.h>
--#include <linux/of_device.h>
-+#include <linux/of.h>
- #include <linux/regmap.h>
- #include <linux/regulator/of_regulator.h>
- #include <linux/regulator/machine.h>
-diff --git a/drivers/regulator/tps6287x-regulator.c b/drivers/regulator/tps6287x-regulator.c
-index b1c0963586ac..19a4a300a963 100644
---- a/drivers/regulator/tps6287x-regulator.c
-+++ b/drivers/regulator/tps6287x-regulator.c
-@@ -8,8 +8,8 @@
+ #include <asm/fbio.h>
  
- #include <linux/err.h>
- #include <linux/i2c.h>
+diff --git a/drivers/video/fbdev/mb862xx/mb862xxfb_accel.c b/drivers/video/fbdev/mb862xx/mb862xxfb_accel.c
+index 61aed7fc0b8d..c35a7479fbf2 100644
+--- a/drivers/video/fbdev/mb862xx/mb862xxfb_accel.c
++++ b/drivers/video/fbdev/mb862xx/mb862xxfb_accel.c
+@@ -15,9 +15,7 @@
+ #include <linux/module.h>
+ #include <linux/pci.h>
+ #include <linux/slab.h>
+-#if defined(CONFIG_OF)
+-#include <linux/of_platform.h>
+-#endif
++
+ #include "mb862xxfb.h"
+ #include "mb862xx_reg.h"
+ #include "mb862xxfb_accel.h"
+diff --git a/drivers/video/fbdev/mb862xx/mb862xxfbdrv.c b/drivers/video/fbdev/mb862xx/mb862xxfbdrv.c
+index b5c8fcab9940..9dc347d163cf 100644
+--- a/drivers/video/fbdev/mb862xx/mb862xxfbdrv.c
++++ b/drivers/video/fbdev/mb862xx/mb862xxfbdrv.c
+@@ -18,11 +18,11 @@
+ #include <linux/init.h>
+ #include <linux/interrupt.h>
+ #include <linux/pci.h>
+-#if defined(CONFIG_OF)
++#include <linux/of.h>
+ #include <linux/of_address.h>
+ #include <linux/of_irq.h>
+-#include <linux/of_platform.h>
+-#endif
++#include <linux/platform_device.h>
++
+ #include "mb862xxfb.h"
+ #include "mb862xx_reg.h"
+ 
+diff --git a/drivers/video/fbdev/omap2/omapfb/displays/panel-dsi-cm.c b/drivers/video/fbdev/omap2/omapfb/displays/panel-dsi-cm.c
+index ba94a0a7bd4f..77fce1223a64 100644
+--- a/drivers/video/fbdev/omap2/omapfb/displays/panel-dsi-cm.c
++++ b/drivers/video/fbdev/omap2/omapfb/displays/panel-dsi-cm.c
+@@ -15,12 +15,12 @@
+ #include <linux/gpio/consumer.h>
+ #include <linux/interrupt.h>
+ #include <linux/jiffies.h>
 +#include <linux/mod_devicetable.h>
  #include <linux/module.h>
+ #include <linux/platform_device.h>
+ #include <linux/sched/signal.h>
+ #include <linux/slab.h>
+ #include <linux/workqueue.h>
 -#include <linux/of_device.h>
- #include <linux/regmap.h>
- #include <linux/regulator/of_regulator.h>
- #include <linux/regulator/machine.h>
-diff --git a/drivers/regulator/tps65218-regulator.c b/drivers/regulator/tps65218-regulator.c
-index 13985883e5f0..f44b5767099c 100644
---- a/drivers/regulator/tps65218-regulator.c
-+++ b/drivers/regulator/tps65218-regulator.c
-@@ -8,12 +8,12 @@
-  */
  
- #include <linux/kernel.h>
-+#include <linux/mod_devicetable.h>
- #include <linux/module.h>
- #include <linux/device.h>
+ #include <video/omapfb_dss.h>
+ #include <video/mipi_display.h>
+diff --git a/drivers/video/fbdev/p9100.c b/drivers/video/fbdev/p9100.c
+index 0876962c52eb..e2e747cae9b1 100644
+--- a/drivers/video/fbdev/p9100.c
++++ b/drivers/video/fbdev/p9100.c
+@@ -15,7 +15,8 @@
  #include <linux/init.h>
- #include <linux/err.h>
- #include <linux/platform_device.h>
--#include <linux/of_device.h>
- #include <linux/regmap.h>
- #include <linux/regulator/of_regulator.h>
- #include <linux/regulator/driver.h>
-diff --git a/drivers/regulator/tps65219-regulator.c b/drivers/regulator/tps65219-regulator.c
-index 8971b507a79a..b4065356392f 100644
---- a/drivers/regulator/tps65219-regulator.c
-+++ b/drivers/regulator/tps65219-regulator.c
-@@ -15,8 +15,8 @@
- #include <linux/device.h>
- #include <linux/init.h>
- #include <linux/err.h>
-+#include <linux/of.h>
- #include <linux/platform_device.h>
--#include <linux/of_device.h>
- #include <linux/regmap.h>
- #include <linux/regulator/of_regulator.h>
- #include <linux/regulator/driver.h>
-diff --git a/drivers/regulator/tps6594-regulator.c b/drivers/regulator/tps6594-regulator.c
-index d5a574ec6d12..25ef102c8270 100644
---- a/drivers/regulator/tps6594-regulator.c
-+++ b/drivers/regulator/tps6594-regulator.c
-@@ -9,7 +9,7 @@
- #include <linux/init.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
+ #include <linux/fb.h>
+ #include <linux/mm.h>
 -#include <linux/of_device.h>
 +#include <linux/of.h>
- #include <linux/platform_device.h>
- #include <linux/regmap.h>
- #include <linux/regulator/driver.h>
-diff --git a/drivers/regulator/twl-regulator.c b/drivers/regulator/twl-regulator.c
-index 3e724f5345de..5bacfcebf59a 100644
---- a/drivers/regulator/twl-regulator.c
-+++ b/drivers/regulator/twl-regulator.c
-@@ -12,7 +12,6 @@
- #include <linux/err.h>
- #include <linux/platform_device.h>
- #include <linux/of.h>
--#include <linux/of_device.h>
- #include <linux/regulator/driver.h>
- #include <linux/regulator/machine.h>
- #include <linux/regulator/of_regulator.h>
-diff --git a/drivers/regulator/twl6030-regulator.c b/drivers/regulator/twl6030-regulator.c
-index f9c695f9bde8..6eed0f6e0adb 100644
---- a/drivers/regulator/twl6030-regulator.c
-+++ b/drivers/regulator/twl6030-regulator.c
-@@ -13,7 +13,6 @@
- #include <linux/err.h>
- #include <linux/platform_device.h>
- #include <linux/of.h>
--#include <linux/of_device.h>
- #include <linux/regulator/driver.h>
- #include <linux/regulator/machine.h>
- #include <linux/regulator/of_regulator.h>
-diff --git a/drivers/regulator/uniphier-regulator.c b/drivers/regulator/uniphier-regulator.c
-index 7e2785e10dc6..1d8304b88bd6 100644
---- a/drivers/regulator/uniphier-regulator.c
-+++ b/drivers/regulator/uniphier-regulator.c
-@@ -7,7 +7,7 @@
- #include <linux/clk.h>
- #include <linux/io.h>
- #include <linux/module.h>
--#include <linux/of_device.h>
-+#include <linux/of.h>
- #include <linux/platform_device.h>
- #include <linux/regmap.h>
- #include <linux/regulator/driver.h>
-diff --git a/drivers/regulator/vctrl-regulator.c b/drivers/regulator/vctrl-regulator.c
-index 85dca90233f6..2796580a3a3c 100644
---- a/drivers/regulator/vctrl-regulator.c
-+++ b/drivers/regulator/vctrl-regulator.c
-@@ -10,7 +10,7 @@
- #include <linux/init.h>
- #include <linux/module.h>
- #include <linux/of.h>
--#include <linux/of_device.h>
 +#include <linux/platform_device.h>
- #include <linux/regulator/coupler.h>
- #include <linux/regulator/driver.h>
- #include <linux/regulator/of_regulator.h>
-diff --git a/drivers/regulator/vexpress-regulator.c b/drivers/regulator/vexpress-regulator.c
-index b545dbc70a4d..6687077e9a97 100644
---- a/drivers/regulator/vexpress-regulator.c
-+++ b/drivers/regulator/vexpress-regulator.c
+ 
+ #include <asm/io.h>
+ #include <asm/fbio.h>
+diff --git a/drivers/video/fbdev/platinumfb.c b/drivers/video/fbdev/platinumfb.c
+index f8283fcd5edb..b27f43b3616e 100644
+--- a/drivers/video/fbdev/platinumfb.c
++++ b/drivers/video/fbdev/platinumfb.c
+@@ -30,9 +30,9 @@
+ #include <linux/fb.h>
+ #include <linux/init.h>
+ #include <linux/nvram.h>
++#include <linux/of.h>
+ #include <linux/of_address.h>
+-#include <linux/of_device.h>
+-#include <linux/of_platform.h>
++#include <linux/platform_device.h>
+ 
+ #include "macmodes.h"
+ #include "platinumfb.h"
+diff --git a/drivers/video/fbdev/sbuslib.c b/drivers/video/fbdev/sbuslib.c
+index 7f79db827b07..4d524db5c4f2 100644
+--- a/drivers/video/fbdev/sbuslib.c
++++ b/drivers/video/fbdev/sbuslib.c
+@@ -11,7 +11,7 @@
+ #include <linux/fb.h>
+ #include <linux/mm.h>
+ #include <linux/uaccess.h>
+-#include <linux/of_device.h>
++#include <linux/of.h>
+ 
+ #include <asm/fbio.h>
+ 
+@@ -48,7 +48,7 @@ int sbusfb_mmap_helper(struct sbus_mmap_map *map,
+ 	unsigned long map_offset = 0;
+ 	unsigned long off;
+ 	int i;
+-                                        
++
+ 	if (!(vma->vm_flags & (VM_SHARED | VM_MAYSHARE)))
+ 		return -EINVAL;
+ 
+@@ -72,7 +72,7 @@ int sbusfb_mmap_helper(struct sbus_mmap_map *map,
+ #define POFF_MASK	(PAGE_MASK|0x1UL)
+ #else
+ #define POFF_MASK	(PAGE_MASK)
+-#endif				
++#endif
+ 				map_offset = (physbase + map[i].poff) & POFF_MASK;
+ 				break;
+ 			}
+diff --git a/drivers/video/fbdev/sunxvr1000.c b/drivers/video/fbdev/sunxvr1000.c
+index 490bd9a14763..17d61e1d11a6 100644
+--- a/drivers/video/fbdev/sunxvr1000.c
++++ b/drivers/video/fbdev/sunxvr1000.c
 @@ -8,7 +8,8 @@
- #include <linux/device.h>
- #include <linux/err.h>
- #include <linux/module.h>
+ #include <linux/kernel.h>
+ #include <linux/fb.h>
+ #include <linux/init.h>
 -#include <linux/of_device.h>
-+#include <linux/mod_devicetable.h>
++#include <linux/of.h>
 +#include <linux/platform_device.h>
- #include <linux/regulator/driver.h>
- #include <linux/regulator/machine.h>
- #include <linux/regulator/of_regulator.h>
+ 
+ struct gfb_info {
+ 	struct fb_info		*info;
+diff --git a/drivers/video/fbdev/sunxvr2500.c b/drivers/video/fbdev/sunxvr2500.c
+index 2cab4b9be68a..e64ec7d0caf9 100644
+--- a/drivers/video/fbdev/sunxvr2500.c
++++ b/drivers/video/fbdev/sunxvr2500.c
+@@ -10,7 +10,7 @@
+ #include <linux/fb.h>
+ #include <linux/pci.h>
+ #include <linux/init.h>
+-#include <linux/of_device.h>
++#include <linux/of.h>
+ 
+ #include <asm/io.h>
+ 
+diff --git a/drivers/video/fbdev/sunxvr500.c b/drivers/video/fbdev/sunxvr500.c
+index 6ec358af1256..c4e01e871483 100644
+--- a/drivers/video/fbdev/sunxvr500.c
++++ b/drivers/video/fbdev/sunxvr500.c
+@@ -10,7 +10,7 @@
+ #include <linux/fb.h>
+ #include <linux/pci.h>
+ #include <linux/init.h>
+-#include <linux/of_device.h>
++#include <linux/of.h>
+ 
+ #include <asm/io.h>
+ 
+diff --git a/drivers/video/fbdev/tcx.c b/drivers/video/fbdev/tcx.c
+index fc3ac2301b45..255eb57aefa2 100644
+--- a/drivers/video/fbdev/tcx.c
++++ b/drivers/video/fbdev/tcx.c
+@@ -17,7 +17,8 @@
+ #include <linux/init.h>
+ #include <linux/fb.h>
+ #include <linux/mm.h>
+-#include <linux/of_device.h>
++#include <linux/of.h>
++#include <linux/platform_device.h>
+ 
+ #include <asm/io.h>
+ #include <asm/fbio.h>
+diff --git a/drivers/video/fbdev/xilinxfb.c b/drivers/video/fbdev/xilinxfb.c
+index 2aa3a528277f..542baddd54ad 100644
+--- a/drivers/video/fbdev/xilinxfb.c
++++ b/drivers/video/fbdev/xilinxfb.c
+@@ -24,14 +24,13 @@
+ #include <linux/module.h>
+ #include <linux/kernel.h>
+ #include <linux/errno.h>
++#include <linux/platform_device.h>
+ #include <linux/string.h>
+ #include <linux/mm.h>
+ #include <linux/fb.h>
+ #include <linux/init.h>
+ #include <linux/dma-mapping.h>
+-#include <linux/of_device.h>
+-#include <linux/of_platform.h>
+-#include <linux/of_address.h>
++#include <linux/of.h>
+ #include <linux/io.h>
+ #include <linux/slab.h>
+ 
 -- 
 2.40.1
 
