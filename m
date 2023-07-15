@@ -2,140 +2,195 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 84A2B7549AD
-	for <lists+linux-omap@lfdr.de>; Sat, 15 Jul 2023 17:12:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F3536754ABD
+	for <lists+linux-omap@lfdr.de>; Sat, 15 Jul 2023 20:34:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230043AbjGOPMA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 15 Jul 2023 11:12:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58752 "EHLO
+        id S230315AbjGOSeN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 15 Jul 2023 14:34:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230087AbjGOPL4 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 15 Jul 2023 11:11:56 -0400
-Received: from mail-il1-x133.google.com (mail-il1-x133.google.com [IPv6:2607:f8b0:4864:20::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3924630D8
-        for <linux-omap@vger.kernel.org>; Sat, 15 Jul 2023 08:11:50 -0700 (PDT)
-Received: by mail-il1-x133.google.com with SMTP id e9e14a558f8ab-3461053677eso6531785ab.0
-        for <linux-omap@vger.kernel.org>; Sat, 15 Jul 2023 08:11:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ieee.org; s=google; t=1689433909; x=1692025909;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=x9XlpRMNdAAEFImKOS7TDT4umEsjSeY77+bJ4P1MRe8=;
-        b=KpbiwA9NRF8+W6tdUk7oAEajedYliLcT3fLwx1hKWNPafETFpJG9nnPmhVRp1UdI1a
-         ec9mVwfBesk49WkdsrPfeQTQNowRCIhbKJuP16XD7dO7TZekJ8yDxNsj6kgUO5dmVinN
-         O/xItmOPmt9BnCnKdfjfmpm5zf8eizKb7wHPU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689433909; x=1692025909;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=x9XlpRMNdAAEFImKOS7TDT4umEsjSeY77+bJ4P1MRe8=;
-        b=KFkTJvSLjCrgRDWY5aKUdnOaYsw6gKaUdtm/Ak5k1wz6Z7WVK1Y/lWc+F3rlIN4MAQ
-         6CRRH6sb5hfZtuRuLS8x3rQ/Aa4mBGeNpDi2LFJ2T11yVAxNwoa7W1TcBJj22fbV58VI
-         65QMKDlWDtiaGB6nIxCZo+pjKeesa0U3QFDZoYESB4H8PY3bam+Phkqw5TPe7JuPFqv9
-         VrsH+apc0iCGDTvkSo8/Gc/zbpNiyuvf/wpok//nArg/RWlAAdUcLlH61Jfurmzm3zwt
-         VZXYsXOSBh5u+W3s9UuXB2BlmgWZ+SaiciJQuADw0+LVq4HU60ICSx46EIGzhJU+FH1o
-         UEZg==
-X-Gm-Message-State: ABy/qLb9jwMhRM3Ox6llX8KcjDLsNFCTd+FaGCDpj0DQBjHRU5Ev3lNg
-        WhXlr3xDdujrdaLRHRrl6fehIA==
-X-Google-Smtp-Source: APBJJlGJVqbBu5lKEA54CgyQF24n/fOTJfhIYz9w3XH4VGOvH3KCmWksDsEmgsEiSCeG83sO26Hgmw==
-X-Received: by 2002:a05:6e02:1148:b0:343:ef5e:8286 with SMTP id o8-20020a056e02114800b00343ef5e8286mr3847417ill.7.1689433909634;
-        Sat, 15 Jul 2023 08:11:49 -0700 (PDT)
-Received: from [10.211.55.3] (c-98-61-227-136.hsd1.mn.comcast.net. [98.61.227.136])
-        by smtp.googlemail.com with ESMTPSA id f8-20020a056638022800b0042b2959e6dcsm3321388jaq.87.2023.07.15.08.11.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 15 Jul 2023 08:11:48 -0700 (PDT)
-Message-ID: <1c6175fc-496a-843c-c8c5-2173e065eaa8@ieee.org>
-Date:   Sat, 15 Jul 2023 10:11:46 -0500
+        with ESMTP id S229500AbjGOSeM (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 15 Jul 2023 14:34:12 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2DE22702;
+        Sat, 15 Jul 2023 11:34:10 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id 2CA3321A71;
+        Sat, 15 Jul 2023 18:34:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1689446049; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=RYeCd7HoR8uEw1k7ZVr0OZS9nvGsn4cIaqKR0z4Onsc=;
+        b=fQJ8Ed37zO2h2xpVGJHgeXgbFlMYWZiQyR2E1Vj6U9o3crxeMk6Dolw/GHlDs3gCiDCgEg
+        XjM6dYEHOsZpNig4WvurwGD2dKKAXItEsx1ugA2u1eeSyvSjJgOSdhbKIZ2/Z56MXGxR1q
+        r2BHnxcno8Eubp53rXNArviIQXb9i5I=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1689446049;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=RYeCd7HoR8uEw1k7ZVr0OZS9nvGsn4cIaqKR0z4Onsc=;
+        b=yP408vg2SsLg1wW8YSLEtC9aqf9lJsv3y5D2L3sOOFaAgOiRrUy+nW21jIkbG7JG9RUM9X
+        Yua0AAwib+ee/1Dg==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id E3F5D133F7;
+        Sat, 15 Jul 2023 18:34:08 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id HExLNqDmsmQlfwAAMHmgww
+        (envelope-from <tzimmermann@suse.de>); Sat, 15 Jul 2023 18:34:08 +0000
+Message-ID: <317a9fd8-0ae9-daa0-012b-3908ca248b74@suse.de>
+Date:   Sat, 15 Jul 2023 20:34:08 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] net: Explicitly include correct DT includes
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH] fb: Explicitly include correct DT includes
+To:     Rob Herring <robh@kernel.org>, Helge Deller <deller@gmx.de>,
+        Michal Simek <michal.simek@amd.com>
+Cc:     devicetree@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+References: <20230714175035.4065508-1-robh@kernel.org>
 Content-Language: en-US
-To:     Rob Herring <robh@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Alex Elder <elder@kernel.org>
-Cc:     devicetree@vger.kernel.org, linux-can@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
-        linux-mediatek@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-        linux-renesas-soc@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-amlogic@lists.infradead.org, linux-oxnas@groups.io,
-        linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-wpan@vger.kernel.org, ath10k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
-        wcn36xx@lists.infradead.org
-References: <20230714174809.4060885-1-robh@kernel.org>
-From:   Alex Elder <elder@ieee.org>
-In-Reply-To: <20230714174809.4060885-1-robh@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
+From:   Thomas Zimmermann <tzimmermann@suse.de>
+In-Reply-To: <20230714175035.4065508-1-robh@kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------fKlGCpVLu7rfpmAw9xHrErQE"
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 7/14/23 12:48 PM, Rob Herring wrote:
-> The DT of_device.h and of_platform.h date back to the separate
-> of_platform_bus_type before it as merged into the regular platform bus.
-> As part of that merge prepping Arm DT support 13 years ago, they
-> "temporarily" include each other. They also include platform_device.h
-> and of.h. As a result, there's a pretty much random mix of those include
-> files used throughout the tree. In order to detangle these headers and
-> replace the implicit includes with struct declarations, users need to
-> explicitly include the correct includes.
-> 
-> Signed-off-by: Rob Herring <robh@kernel.org>
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------fKlGCpVLu7rfpmAw9xHrErQE
+Content-Type: multipart/mixed; boundary="------------Aa0Mf3WyZj0EdxJytzy7LFbU";
+ protected-headers="v1"
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: Rob Herring <robh@kernel.org>, Helge Deller <deller@gmx.de>,
+ Michal Simek <michal.simek@amd.com>
+Cc: devicetree@vger.kernel.org, linux-fbdev@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Message-ID: <317a9fd8-0ae9-daa0-012b-3908ca248b74@suse.de>
+Subject: Re: [PATCH] fb: Explicitly include correct DT includes
+References: <20230714175035.4065508-1-robh@kernel.org>
+In-Reply-To: <20230714175035.4065508-1-robh@kernel.org>
 
-(I significantly reduced the addressee list to permit the message
-to be sent.)
+--------------Aa0Mf3WyZj0EdxJytzy7LFbU
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-For "drivers/net/ipa/ipa_main.c":
+SGkNCg0KQW0gMTQuMDcuMjMgdW0gMTk6NTAgc2NocmllYiBSb2IgSGVycmluZzoNCj4gVGhl
+IERUIG9mX2RldmljZS5oIGFuZCBvZl9wbGF0Zm9ybS5oIGRhdGUgYmFjayB0byB0aGUgc2Vw
+YXJhdGUNCj4gb2ZfcGxhdGZvcm1fYnVzX3R5cGUgYmVmb3JlIGl0IGFzIG1lcmdlZCBpbnRv
+IHRoZSByZWd1bGFyIHBsYXRmb3JtIGJ1cy4NCj4gQXMgcGFydCBvZiB0aGF0IG1lcmdlIHBy
+ZXBwaW5nIEFybSBEVCBzdXBwb3J0IDEzIHllYXJzIGFnbywgdGhleQ0KPiAidGVtcG9yYXJp
+bHkiIGluY2x1ZGUgZWFjaCBvdGhlci4gVGhleSBhbHNvIGluY2x1ZGUgcGxhdGZvcm1fZGV2
+aWNlLmgNCj4gYW5kIG9mLmguIEFzIGEgcmVzdWx0LCB0aGVyZSdzIGEgcHJldHR5IG11Y2gg
+cmFuZG9tIG1peCBvZiB0aG9zZSBpbmNsdWRlDQo+IGZpbGVzIHVzZWQgdGhyb3VnaG91dCB0
+aGUgdHJlZS4gSW4gb3JkZXIgdG8gZGV0YW5nbGUgdGhlc2UgaGVhZGVycyBhbmQNCj4gcmVw
+bGFjZSB0aGUgaW1wbGljaXQgaW5jbHVkZXMgd2l0aCBzdHJ1Y3QgZGVjbGFyYXRpb25zLCB1
+c2VycyBuZWVkIHRvDQo+IGV4cGxpY2l0bHkgaW5jbHVkZSB0aGUgY29ycmVjdCBpbmNsdWRl
+cy4NCj4gDQo+IFNpZ25lZC1vZmYtYnk6IFJvYiBIZXJyaW5nIDxyb2JoQGtlcm5lbC5vcmc+
+DQpbLi4uXQ0KPiAgIA0KPiBAQCAtNDgsNyArNDgsNyBAQCBpbnQgc2J1c2ZiX21tYXBfaGVs
+cGVyKHN0cnVjdCBzYnVzX21tYXBfbWFwICptYXAsDQo+ICAgCXVuc2lnbmVkIGxvbmcgbWFw
+X29mZnNldCA9IDA7DQo+ICAgCXVuc2lnbmVkIGxvbmcgb2ZmOw0KPiAgIAlpbnQgaTsNCj4g
+LQ0KPiArDQoNClRoZSB2YXJpb3VzIHdoaXRlc3BhY2UgZml4ZXMgc2hvdWxkIHJhdGhlciBn
+byBpbnRvIGEgc2VwYXJhdGUgcGF0Y2guIFlvdSANCmNhbiBhZGQNCg0KUmV2aWV3ZWQtYnk6
+IFRob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPg0KDQp0byB0aGUgd2hp
+dGVzcGFjZSBmaXggYW5kIHRoZSBpbmNsdWRlIGNsZWFudXAuDQoNCkJlc3QgcmVnYXJkcw0K
+VGhvbWFzDQoNCj4gICAJaWYgKCEodm1hLT52bV9mbGFncyAmIChWTV9TSEFSRUQgfCBWTV9N
+QVlTSEFSRSkpKQ0KPiAgIAkJcmV0dXJuIC1FSU5WQUw7DQo+ICAgDQo+IEBAIC03Miw3ICs3
+Miw3IEBAIGludCBzYnVzZmJfbW1hcF9oZWxwZXIoc3RydWN0IHNidXNfbW1hcF9tYXAgKm1h
+cCwNCj4gICAjZGVmaW5lIFBPRkZfTUFTSwkoUEFHRV9NQVNLfDB4MVVMKQ0KPiAgICNlbHNl
+DQo+ICAgI2RlZmluZSBQT0ZGX01BU0sJKFBBR0VfTUFTSykNCj4gLSNlbmRpZgkJCQkNCj4g
+KyNlbmRpZg0KPiAgIAkJCQltYXBfb2Zmc2V0ID0gKHBoeXNiYXNlICsgbWFwW2ldLnBvZmYp
+ICYgUE9GRl9NQVNLOw0KPiAgIAkJCQlicmVhazsNCj4gICAJCQl9DQo+IGRpZmYgLS1naXQg
+YS9kcml2ZXJzL3ZpZGVvL2ZiZGV2L3N1bnh2cjEwMDAuYyBiL2RyaXZlcnMvdmlkZW8vZmJk
+ZXYvc3VueHZyMTAwMC5jDQo+IGluZGV4IDQ5MGJkOWExNDc2My4uMTdkNjFlMWQxMWE2IDEw
+MDY0NA0KPiAtLS0gYS9kcml2ZXJzL3ZpZGVvL2ZiZGV2L3N1bnh2cjEwMDAuYw0KPiArKysg
+Yi9kcml2ZXJzL3ZpZGVvL2ZiZGV2L3N1bnh2cjEwMDAuYw0KPiBAQCAtOCw3ICs4LDggQEAN
+Cj4gICAjaW5jbHVkZSA8bGludXgva2VybmVsLmg+DQo+ICAgI2luY2x1ZGUgPGxpbnV4L2Zi
+Lmg+DQo+ICAgI2luY2x1ZGUgPGxpbnV4L2luaXQuaD4NCj4gLSNpbmNsdWRlIDxsaW51eC9v
+Zl9kZXZpY2UuaD4NCj4gKyNpbmNsdWRlIDxsaW51eC9vZi5oPg0KPiArI2luY2x1ZGUgPGxp
+bnV4L3BsYXRmb3JtX2RldmljZS5oPg0KPiAgIA0KPiAgIHN0cnVjdCBnZmJfaW5mbyB7DQo+
+ICAgCXN0cnVjdCBmYl9pbmZvCQkqaW5mbzsNCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvdmlk
+ZW8vZmJkZXYvc3VueHZyMjUwMC5jIGIvZHJpdmVycy92aWRlby9mYmRldi9zdW54dnIyNTAw
+LmMNCj4gaW5kZXggMmNhYjRiOWJlNjhhLi5lNjRlYzdkMGNhZjkgMTAwNjQ0DQo+IC0tLSBh
+L2RyaXZlcnMvdmlkZW8vZmJkZXYvc3VueHZyMjUwMC5jDQo+ICsrKyBiL2RyaXZlcnMvdmlk
+ZW8vZmJkZXYvc3VueHZyMjUwMC5jDQo+IEBAIC0xMCw3ICsxMCw3IEBADQo+ICAgI2luY2x1
+ZGUgPGxpbnV4L2ZiLmg+DQo+ICAgI2luY2x1ZGUgPGxpbnV4L3BjaS5oPg0KPiAgICNpbmNs
+dWRlIDxsaW51eC9pbml0Lmg+DQo+IC0jaW5jbHVkZSA8bGludXgvb2ZfZGV2aWNlLmg+DQo+
+ICsjaW5jbHVkZSA8bGludXgvb2YuaD4NCj4gICANCj4gICAjaW5jbHVkZSA8YXNtL2lvLmg+
+DQo+ICAgDQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3ZpZGVvL2ZiZGV2L3N1bnh2cjUwMC5j
+IGIvZHJpdmVycy92aWRlby9mYmRldi9zdW54dnI1MDAuYw0KPiBpbmRleCA2ZWMzNThhZjEy
+NTYuLmM0ZTAxZTg3MTQ4MyAxMDA2NDQNCj4gLS0tIGEvZHJpdmVycy92aWRlby9mYmRldi9z
+dW54dnI1MDAuYw0KPiArKysgYi9kcml2ZXJzL3ZpZGVvL2ZiZGV2L3N1bnh2cjUwMC5jDQo+
+IEBAIC0xMCw3ICsxMCw3IEBADQo+ICAgI2luY2x1ZGUgPGxpbnV4L2ZiLmg+DQo+ICAgI2lu
+Y2x1ZGUgPGxpbnV4L3BjaS5oPg0KPiAgICNpbmNsdWRlIDxsaW51eC9pbml0Lmg+DQo+IC0j
+aW5jbHVkZSA8bGludXgvb2ZfZGV2aWNlLmg+DQo+ICsjaW5jbHVkZSA8bGludXgvb2YuaD4N
+Cj4gICANCj4gICAjaW5jbHVkZSA8YXNtL2lvLmg+DQo+ICAgDQo+IGRpZmYgLS1naXQgYS9k
+cml2ZXJzL3ZpZGVvL2ZiZGV2L3RjeC5jIGIvZHJpdmVycy92aWRlby9mYmRldi90Y3guYw0K
+PiBpbmRleCBmYzNhYzIzMDFiNDUuLjI1NWViNTdhZWZhMiAxMDA2NDQNCj4gLS0tIGEvZHJp
+dmVycy92aWRlby9mYmRldi90Y3guYw0KPiArKysgYi9kcml2ZXJzL3ZpZGVvL2ZiZGV2L3Rj
+eC5jDQo+IEBAIC0xNyw3ICsxNyw4IEBADQo+ICAgI2luY2x1ZGUgPGxpbnV4L2luaXQuaD4N
+Cj4gICAjaW5jbHVkZSA8bGludXgvZmIuaD4NCj4gICAjaW5jbHVkZSA8bGludXgvbW0uaD4N
+Cj4gLSNpbmNsdWRlIDxsaW51eC9vZl9kZXZpY2UuaD4NCj4gKyNpbmNsdWRlIDxsaW51eC9v
+Zi5oPg0KPiArI2luY2x1ZGUgPGxpbnV4L3BsYXRmb3JtX2RldmljZS5oPg0KPiAgIA0KPiAg
+ICNpbmNsdWRlIDxhc20vaW8uaD4NCj4gICAjaW5jbHVkZSA8YXNtL2ZiaW8uaD4NCj4gZGlm
+ZiAtLWdpdCBhL2RyaXZlcnMvdmlkZW8vZmJkZXYveGlsaW54ZmIuYyBiL2RyaXZlcnMvdmlk
+ZW8vZmJkZXYveGlsaW54ZmIuYw0KPiBpbmRleCAyYWEzYTUyODI3N2YuLjU0MmJhZGRkNTRh
+ZCAxMDA2NDQNCj4gLS0tIGEvZHJpdmVycy92aWRlby9mYmRldi94aWxpbnhmYi5jDQo+ICsr
+KyBiL2RyaXZlcnMvdmlkZW8vZmJkZXYveGlsaW54ZmIuYw0KPiBAQCAtMjQsMTQgKzI0LDEz
+IEBADQo+ICAgI2luY2x1ZGUgPGxpbnV4L21vZHVsZS5oPg0KPiAgICNpbmNsdWRlIDxsaW51
+eC9rZXJuZWwuaD4NCj4gICAjaW5jbHVkZSA8bGludXgvZXJybm8uaD4NCj4gKyNpbmNsdWRl
+IDxsaW51eC9wbGF0Zm9ybV9kZXZpY2UuaD4NCj4gICAjaW5jbHVkZSA8bGludXgvc3RyaW5n
+Lmg+DQo+ICAgI2luY2x1ZGUgPGxpbnV4L21tLmg+DQo+ICAgI2luY2x1ZGUgPGxpbnV4L2Zi
+Lmg+DQo+ICAgI2luY2x1ZGUgPGxpbnV4L2luaXQuaD4NCj4gICAjaW5jbHVkZSA8bGludXgv
+ZG1hLW1hcHBpbmcuaD4NCj4gLSNpbmNsdWRlIDxsaW51eC9vZl9kZXZpY2UuaD4NCj4gLSNp
+bmNsdWRlIDxsaW51eC9vZl9wbGF0Zm9ybS5oPg0KPiAtI2luY2x1ZGUgPGxpbnV4L29mX2Fk
+ZHJlc3MuaD4NCj4gKyNpbmNsdWRlIDxsaW51eC9vZi5oPg0KPiAgICNpbmNsdWRlIDxsaW51
+eC9pby5oPg0KPiAgICNpbmNsdWRlIDxsaW51eC9zbGFiLmg+DQo+ICAgDQoNCi0tIA0KVGhv
+bWFzIFppbW1lcm1hbm4NCkdyYXBoaWNzIERyaXZlciBEZXZlbG9wZXINClNVU0UgU29mdHdh
+cmUgU29sdXRpb25zIEdlcm1hbnkgR21iSA0KRnJhbmtlbnN0cmFzc2UgMTQ2LCA5MDQ2MSBO
+dWVybmJlcmcsIEdlcm1hbnkNCkdGOiBJdm8gVG90ZXYsIEFuZHJldyBNeWVycywgQW5kcmV3
+IE1jRG9uYWxkLCBCb3VkaWVuIE1vZXJtYW4NCkhSQiAzNjgwOSAoQUcgTnVlcm5iZXJnKQ0K
 
-Acked-by: Alex Elder <elder@linaro.org>
 
-> ---
->   drivers/net/can/bxcan.c                                 | 1 -
->   drivers/net/can/ifi_canfd/ifi_canfd.c                   | 1 -
-. . .
->   drivers/net/ieee802154/ca8210.c                         | 1 -
->   drivers/net/ipa/ipa_main.c                              | 2 +-
->   drivers/net/pcs/pcs-rzn1-miic.c                         | 1 +
->   drivers/net/phy/marvell-88x2222.c                       | 1 -
->   drivers/net/phy/mediatek-ge-soc.c                       | 2 --
->   drivers/net/wireless/ath/ath10k/ahb.c                   | 2 +-
->   drivers/net/wireless/ath/ath11k/qmi.c                   | 1 -
->   drivers/net/wireless/ath/wcn36xx/main.c                 | 3 +--
->   drivers/net/wireless/intersil/orinoco/airport.c         | 2 +-
->   drivers/net/wireless/mediatek/mt76/mt7915/soc.c         | 1 -
->   drivers/net/wireless/silabs/wfx/bus_sdio.c              | 2 +-
->   net/core/of_net.c                                       | 1 +
->   124 files changed, 110 insertions(+), 120 deletions(-)
+--------------Aa0Mf3WyZj0EdxJytzy7LFbU--
 
-. . .
+--------------fKlGCpVLu7rfpmAw9xHrErQE
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature"
 
-> diff --git a/drivers/net/ipa/ipa_main.c b/drivers/net/ipa/ipa_main.c
-> index 6a2f2fc2f501..da853353a5c7 100644
-> --- a/drivers/net/ipa/ipa_main.c
-> +++ b/drivers/net/ipa/ipa_main.c
-> @@ -13,8 +13,8 @@
->   #include <linux/firmware.h>
->   #include <linux/module.h>
->   #include <linux/of.h>
-> -#include <linux/of_device.h>
->   #include <linux/of_address.h>
-> +#include <linux/platform_device.h>
->   #include <linux/pm_runtime.h>
->   #include <linux/firmware/qcom/qcom_scm.h>
->   #include <linux/soc/qcom/mdt_loader.h>
+-----BEGIN PGP SIGNATURE-----
 
-. . .
+wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmSy5qAFAwAAAAAACgkQlh/E3EQov+DV
+hg//Xw0qaGOqIuiMoHIxPoO8/jbT0356p1A2GRp52n9+r+rHkHF4HBkb7K4W9jjF+5tjpd7chkiB
+8qEqheekrCWZ6Vg8ZqIDmJPes4pHsd56bExm6Jk8yTa7rShbN9Jdogm44a3TVOXcOVM+gHl0h3Jh
+GbksvdQX1g+l4EzK4UlFOBJit/oLHofORyKyki0I4a0kVyPbYj6ynVvwVIlFQbocybEUVTLfTGz7
+cHPzSdv7hsngyXhdqjzGNX4EMEwktcP42IXHv4Jrcxu2e4rILtJvmXvK5ku5t/FX6yMpxSU3oaaP
+t13+3PS/JVSt/S3X+kyQwazL2Jx4BBrWNRNlL1Dbm80OzdntELHprVOCvB+ZTq6Yz5OUfJbdh+00
+3SU6nfvCKNtOmEhaYyGE5XSlQPcjs43SABM5lqIZbdozKVB0EUPsRkOfa05ZrAykwha36qgUjDqf
+z4u9moi7/bPNo7REdwXW0ogALg+q3FFq3HfW2umUmh3Pu+YdMVBr7FF0yzzdyBN4IRrv0QljXhgl
+XjJgXl7r9Ize6S5GzfCVM7QUuR/LTL6vcP/wUy/Awemx6odLnVvxnKQipgrP6/dATviNyXPB5IrK
+5E32NfllUy4qk3XvVBbRV8Yr7OsXq0tn6jSQFvwDbU8QpeyPt+ERYjqMD1S+hDHoars/jf8eFkUb
+qtw=
+=Utls
+-----END PGP SIGNATURE-----
+
+--------------fKlGCpVLu7rfpmAw9xHrErQE--
