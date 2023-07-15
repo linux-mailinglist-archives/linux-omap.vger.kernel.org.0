@@ -2,76 +2,56 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B22E3754B80
-	for <lists+linux-omap@lfdr.de>; Sat, 15 Jul 2023 20:55:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA2A3754CB2
+	for <lists+linux-omap@lfdr.de>; Sun, 16 Jul 2023 00:10:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231572AbjGOSy5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 15 Jul 2023 14:54:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50156 "EHLO
+        id S230172AbjGOWKX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 15 Jul 2023 18:10:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55906 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230474AbjGOSyC (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 15 Jul 2023 14:54:02 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2705A30FD;
-        Sat, 15 Jul 2023 11:53:59 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        with ESMTP id S230127AbjGOWKW (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 15 Jul 2023 18:10:22 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 652212726;
+        Sat, 15 Jul 2023 15:10:21 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id D31A621B48;
-        Sat, 15 Jul 2023 18:53:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1689447233; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=rN7iXgHdNfoVTGsKEMlM6qhA1C0OhaHzC+3XBqWokqM=;
-        b=0CLO+Jl4RJxV02TQgGz1lVL0Z9mSQ1j0P+DgJ0nbU3UREBFXn2S5HeoaA8EFIUrK8+tzuG
-        kTXqLC5ehTyt80dsVHiDLOBo2qQe1dSoc8WH+TmzBpFIYDvstFzOhzYqpjWqEoNBLAnMl7
-        R7fqYYnu/SFLBf1BHOVJWcubFCaLJXE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1689447233;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=rN7iXgHdNfoVTGsKEMlM6qhA1C0OhaHzC+3XBqWokqM=;
-        b=+mXK0HAm21mj2g3flnXhM/kuVloOtSTQJd3/Y+ZO6agZVwZtFaRZLjGgxErCwRwNTikJWj
-        JChxhkeFZob60KAQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 7463E13A23;
-        Sat, 15 Jul 2023 18:53:53 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id UIB4G0HrsmQCBwAAMHmgww
-        (envelope-from <tzimmermann@suse.de>); Sat, 15 Jul 2023 18:53:53 +0000
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-To:     deller@gmx.de, javierm@redhat.com, geert@linux-m68k.org,
-        dan.carpenter@linaro.org
-Cc:     linux-sh@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org,
-        linux-input@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, linux-staging@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org,
-        linux-geode@lists.infradead.org, linux-hyperv@vger.kernel.org,
-        linux-omap@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        kvm@vger.kernel.org, Thomas Zimmermann <tzimmermann@suse.de>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Sui Jingfeng <suijingfeng@loongson.cn>
-Subject: [PATCH v4 18/18] fbdev: Document that framebuffer_alloc() returns zero'ed data
-Date:   Sat, 15 Jul 2023 20:52:00 +0200
-Message-ID: <20230715185343.7193-19-tzimmermann@suse.de>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 02A4860C56;
+        Sat, 15 Jul 2023 22:10:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA487C433C9;
+        Sat, 15 Jul 2023 22:10:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689459020;
+        bh=Jd9MzyCNjvrdhHyp0jt7uhMJ31aCXnfMCKMeGTA8M4I=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=EX4Q5c5K0T5LCF0I/zVVfPT4pNYDlGVAP0cdL4gTqif5gf6hFiMSlLw4ubNVQfcZG
+         xf/0qHk0GzjdYxccsch0uBaI4pd/i5yHzq/SIyxckczRssBjLhYZFQHy7Nwlwif9kD
+         zwZi0PffjjwJ2Nx82FPP637TIO2D1khbK6N7krazl3hYiAZ2dNNmGXuAg4Dj5oC6nq
+         vpohLZeRLXpbq3FuYKMabjA0PYjt/7ggrpI0ztjLMDrXtRxzClYe8bmEwrmUjcYRSt
+         8vIKGdX4gaDe0wjGt2oNzB8KhDnrjqyZq3YNJp82RRG2l9p3LKauld5sN9eua4p59S
+         uKARgTk/lV7rg==
+From:   Bjorn Andersson <andersson@kernel.org>
+To:     Ohad Ben-Cohen <ohad@wizery.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+Cc:     Baolin Wang <baolin.wang@linux.alibaba.com>,
+        linux-omap@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+        kernel@pengutronix.de, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 0/3] hwspinlock: Convert to platform remove callback returning void
+Date:   Sat, 15 Jul 2023 15:13:35 -0700
+Message-ID: <168945921471.1805013.10154599886454244230.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230715185343.7193-1-tzimmermann@suse.de>
-References: <20230715185343.7193-1-tzimmermann@suse.de>
+In-Reply-To: <20230314180020.2865734-1-u.kleine-koenig@pengutronix.de>
+References: <20230314180020.2865734-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -79,35 +59,27 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Most fbdev drivers depend on framebuffer_alloc() to initialize the
-allocated memory to 0. Document this guarantee.
 
-v3:
-	* slightly reword the sentence (Miguel)
+On Tue, 14 Mar 2023 19:00:20 +0100, Uwe Kleine-König wrote:
+> this patch series adapts the platform drivers below drivers/hwspinlock to use
+> the .remove_new() callback. Compared to the traditional .remove() callback
+> .remove_new() returns no value. This is a good thing because the driver core
+> doesn't (and cannot) cope for errors during remove. The only effect of a
+> non-zero return value in .remove() is that the driver core emits a warning. The
+> device is removed anyhow and an early return from .remove() usually yields a
+> resource leak.
+> 
+> [...]
 
-Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
-Reviewed-by: Sui Jingfeng <suijingfeng@loongson.cn>
-Cc: Helge Deller <deller@gmx.de>
----
- drivers/video/fbdev/core/fb_info.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Applied, thanks!
 
-diff --git a/drivers/video/fbdev/core/fb_info.c b/drivers/video/fbdev/core/fb_info.c
-index 8bdbefdd4b70..4847ebe50d7d 100644
---- a/drivers/video/fbdev/core/fb_info.c
-+++ b/drivers/video/fbdev/core/fb_info.c
-@@ -13,7 +13,8 @@
-  *
-  * Creates a new frame buffer info structure. Also reserves @size bytes
-  * for driver private data (info->par). info->par (if any) will be
-- * aligned to sizeof(long).
-+ * aligned to sizeof(long). The new instances of struct fb_info and
-+ * the driver private data are both cleared to zero.
-  *
-  * Returns the new structure, or NULL if an error occurred.
-  *
+[1/3] hwspinlock: omap: Emit only one error message for errors in .remove()
+      commit: 72a3a509f992b6bd182b3380913fe7b4f801075f
+[2/3] hwspinlock: omap: Convert to platform remove callback returning void
+      commit: 4cf16b6b743e0bbe3128cf97a193ee37110d597b
+[3/3] hwspinlock: u8500: Convert to platform remove callback returning void
+      commit: 9519793bb6a731a3dd2453ad8515e8866e84c48e
+
+Best regards,
 -- 
-2.41.0
-
+Bjorn Andersson <andersson@kernel.org>
