@@ -2,105 +2,140 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F10877548BC
-	for <lists+linux-omap@lfdr.de>; Sat, 15 Jul 2023 15:25:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84A2B7549AD
+	for <lists+linux-omap@lfdr.de>; Sat, 15 Jul 2023 17:12:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229709AbjGONZ4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 15 Jul 2023 09:25:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60352 "EHLO
+        id S230043AbjGOPMA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 15 Jul 2023 11:12:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229482AbjGONZz (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 15 Jul 2023 09:25:55 -0400
-Received: from m12.mail.163.com (m12.mail.163.com [220.181.12.216])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6322D130
-        for <linux-omap@vger.kernel.org>; Sat, 15 Jul 2023 06:25:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-        s=s110527; h=From:Subject:Date:Message-Id; bh=6OpRiJ9dgJrUBOEZNF
-        94oNDctrqTYwJHTR2r8xy1+Gk=; b=DDaKTZglWkF1LIPY9xiyf8guSHudmvwX3B
-        1HzAPhhfc8gWzZc5vuutKeJrO3PFrvecDVjwlEYhoAEVmw7Wch7ljy6n08oMGhkh
-        Z+ZnbYAaNZJNpUJIJidGbe6HDY5OCtFvFlLnJnVHKpRIs2I2+r/wkbQSUv4hIw5w
-        jxY0a5pSs=
-Received: from localhost.localdomain (unknown [202.112.113.212])
-        by zwqz-smtp-mta-g1-3 (Coremail) with SMTP id _____wAnlwM5nrJkfA2FAQ--.11690S4;
-        Sat, 15 Jul 2023 21:25:37 +0800 (CST)
-From:   Yuanjun Gong <ruc_gongyuanjun@163.com>
-To:     Yuanjun Gong <ruc_gongyuanjun@163.com>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        linux-omap@vger.kernel.org
-Subject: [PATCH 1/1] mmc: fix potential memleaks in mmc_omap_new_slot
-Date:   Sat, 15 Jul 2023 21:24:49 +0800
-Message-Id: <20230715132449.2217-1-ruc_gongyuanjun@163.com>
-X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID: _____wAnlwM5nrJkfA2FAQ--.11690S4
-X-Coremail-Antispam: 1Uf129KBjvJXoW7CF1ruFWxtrWkZw13Zw47Arb_yoW8CrWkpF
-        sYvFykKFy5Ar4fJrWrJa1kX3ZY9r1xGay8Wrs2gw1xZF1ayr1kKasrKFyYvrn5CFykXr4a
-        gFWrXrW8CF9xWaDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0JUUb18UUUUU=
-X-Originating-IP: [202.112.113.212]
-X-CM-SenderInfo: 5uxfsw5rqj53pdqm30i6rwjhhfrp/1tbiUROt5WDESR8NWAAAst
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_BL,RCVD_IN_MSPIKE_L4,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S230087AbjGOPL4 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 15 Jul 2023 11:11:56 -0400
+Received: from mail-il1-x133.google.com (mail-il1-x133.google.com [IPv6:2607:f8b0:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3924630D8
+        for <linux-omap@vger.kernel.org>; Sat, 15 Jul 2023 08:11:50 -0700 (PDT)
+Received: by mail-il1-x133.google.com with SMTP id e9e14a558f8ab-3461053677eso6531785ab.0
+        for <linux-omap@vger.kernel.org>; Sat, 15 Jul 2023 08:11:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ieee.org; s=google; t=1689433909; x=1692025909;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=x9XlpRMNdAAEFImKOS7TDT4umEsjSeY77+bJ4P1MRe8=;
+        b=KpbiwA9NRF8+W6tdUk7oAEajedYliLcT3fLwx1hKWNPafETFpJG9nnPmhVRp1UdI1a
+         ec9mVwfBesk49WkdsrPfeQTQNowRCIhbKJuP16XD7dO7TZekJ8yDxNsj6kgUO5dmVinN
+         O/xItmOPmt9BnCnKdfjfmpm5zf8eizKb7wHPU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689433909; x=1692025909;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=x9XlpRMNdAAEFImKOS7TDT4umEsjSeY77+bJ4P1MRe8=;
+        b=KFkTJvSLjCrgRDWY5aKUdnOaYsw6gKaUdtm/Ak5k1wz6Z7WVK1Y/lWc+F3rlIN4MAQ
+         6CRRH6sb5hfZtuRuLS8x3rQ/Aa4mBGeNpDi2LFJ2T11yVAxNwoa7W1TcBJj22fbV58VI
+         65QMKDlWDtiaGB6nIxCZo+pjKeesa0U3QFDZoYESB4H8PY3bam+Phkqw5TPe7JuPFqv9
+         VrsH+apc0iCGDTvkSo8/Gc/zbpNiyuvf/wpok//nArg/RWlAAdUcLlH61Jfurmzm3zwt
+         VZXYsXOSBh5u+W3s9UuXB2BlmgWZ+SaiciJQuADw0+LVq4HU60ICSx46EIGzhJU+FH1o
+         UEZg==
+X-Gm-Message-State: ABy/qLb9jwMhRM3Ox6llX8KcjDLsNFCTd+FaGCDpj0DQBjHRU5Ev3lNg
+        WhXlr3xDdujrdaLRHRrl6fehIA==
+X-Google-Smtp-Source: APBJJlGJVqbBu5lKEA54CgyQF24n/fOTJfhIYz9w3XH4VGOvH3KCmWksDsEmgsEiSCeG83sO26Hgmw==
+X-Received: by 2002:a05:6e02:1148:b0:343:ef5e:8286 with SMTP id o8-20020a056e02114800b00343ef5e8286mr3847417ill.7.1689433909634;
+        Sat, 15 Jul 2023 08:11:49 -0700 (PDT)
+Received: from [10.211.55.3] (c-98-61-227-136.hsd1.mn.comcast.net. [98.61.227.136])
+        by smtp.googlemail.com with ESMTPSA id f8-20020a056638022800b0042b2959e6dcsm3321388jaq.87.2023.07.15.08.11.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 15 Jul 2023 08:11:48 -0700 (PDT)
+Message-ID: <1c6175fc-496a-843c-c8c5-2173e065eaa8@ieee.org>
+Date:   Sat, 15 Jul 2023 10:11:46 -0500
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] net: Explicitly include correct DT includes
+Content-Language: en-US
+To:     Rob Herring <robh@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Alex Elder <elder@kernel.org>
+Cc:     devicetree@vger.kernel.org, linux-can@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
+        linux-mediatek@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+        linux-renesas-soc@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-amlogic@lists.infradead.org, linux-oxnas@groups.io,
+        linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-wpan@vger.kernel.org, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+        wcn36xx@lists.infradead.org
+References: <20230714174809.4060885-1-robh@kernel.org>
+From:   Alex Elder <elder@ieee.org>
+In-Reply-To: <20230714174809.4060885-1-robh@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-'mmc' allocated by mmc_alloc_host is not freed on the error paths
-of gpiod_get_index_optional(), causing memory leaks.
+On 7/14/23 12:48 PM, Rob Herring wrote:
+> The DT of_device.h and of_platform.h date back to the separate
+> of_platform_bus_type before it as merged into the regular platform bus.
+> As part of that merge prepping Arm DT support 13 years ago, they
+> "temporarily" include each other. They also include platform_device.h
+> and of.h. As a result, there's a pretty much random mix of those include
+> files used throughout the tree. In order to detangle these headers and
+> replace the implicit includes with struct declarations, users need to
+> explicitly include the correct includes.
+> 
+> Signed-off-by: Rob Herring <robh@kernel.org>
 
-Signed-off-by: Yuanjun Gong <ruc_gongyuanjun@163.com>
----
- drivers/mmc/host/omap.c | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+(I significantly reduced the addressee list to permit the message
+to be sent.)
 
-diff --git a/drivers/mmc/host/omap.c b/drivers/mmc/host/omap.c
-index 6a259563690d..eeb5a1b493d9 100644
---- a/drivers/mmc/host/omap.c
-+++ b/drivers/mmc/host/omap.c
-@@ -1261,19 +1261,25 @@ static int mmc_omap_new_slot(struct mmc_omap_host *host, int id)
- 	/* Check for some optional GPIO controls */
- 	slot->vsd = gpiod_get_index_optional(host->dev, "vsd",
- 					     id, GPIOD_OUT_LOW);
--	if (IS_ERR(slot->vsd))
--		return dev_err_probe(host->dev, PTR_ERR(slot->vsd),
-+	if (IS_ERR(slot->vsd)){
-+		r = dev_err_probe(host->dev, PTR_ERR(slot->vsd),
- 				     "error looking up VSD GPIO\n");
-+		goto err_free_host;
-+	}
- 	slot->vio = gpiod_get_index_optional(host->dev, "vio",
- 					     id, GPIOD_OUT_LOW);
--	if (IS_ERR(slot->vio))
--		return dev_err_probe(host->dev, PTR_ERR(slot->vio),
-+	if (IS_ERR(slot->vio)){
-+		r = dev_err_probe(host->dev, PTR_ERR(slot->vio),
- 				     "error looking up VIO GPIO\n");
-+		goto err_free_host;
-+	}
- 	slot->cover = gpiod_get_index_optional(host->dev, "cover",
- 						id, GPIOD_IN);
--	if (IS_ERR(slot->cover))
--		return dev_err_probe(host->dev, PTR_ERR(slot->cover),
-+	if (IS_ERR(slot->cover)){
-+		r = dev_err_probe(host->dev, PTR_ERR(slot->cover),
- 				     "error looking up cover switch GPIO\n");
-+		goto err_free_host;
-+	}		
- 
- 	host->slots[id] = slot;
- 
-@@ -1333,6 +1339,7 @@ static int mmc_omap_new_slot(struct mmc_omap_host *host, int id)
- 		device_remove_file(&mmc->class_dev, &dev_attr_slot_name);
- err_remove_host:
- 	mmc_remove_host(mmc);
-+err_free_host:
- 	mmc_free_host(mmc);
- 	return r;
- }
--- 
-2.17.1
+For "drivers/net/ipa/ipa_main.c":
 
+Acked-by: Alex Elder <elder@linaro.org>
+
+> ---
+>   drivers/net/can/bxcan.c                                 | 1 -
+>   drivers/net/can/ifi_canfd/ifi_canfd.c                   | 1 -
+. . .
+>   drivers/net/ieee802154/ca8210.c                         | 1 -
+>   drivers/net/ipa/ipa_main.c                              | 2 +-
+>   drivers/net/pcs/pcs-rzn1-miic.c                         | 1 +
+>   drivers/net/phy/marvell-88x2222.c                       | 1 -
+>   drivers/net/phy/mediatek-ge-soc.c                       | 2 --
+>   drivers/net/wireless/ath/ath10k/ahb.c                   | 2 +-
+>   drivers/net/wireless/ath/ath11k/qmi.c                   | 1 -
+>   drivers/net/wireless/ath/wcn36xx/main.c                 | 3 +--
+>   drivers/net/wireless/intersil/orinoco/airport.c         | 2 +-
+>   drivers/net/wireless/mediatek/mt76/mt7915/soc.c         | 1 -
+>   drivers/net/wireless/silabs/wfx/bus_sdio.c              | 2 +-
+>   net/core/of_net.c                                       | 1 +
+>   124 files changed, 110 insertions(+), 120 deletions(-)
+
+. . .
+
+> diff --git a/drivers/net/ipa/ipa_main.c b/drivers/net/ipa/ipa_main.c
+> index 6a2f2fc2f501..da853353a5c7 100644
+> --- a/drivers/net/ipa/ipa_main.c
+> +++ b/drivers/net/ipa/ipa_main.c
+> @@ -13,8 +13,8 @@
+>   #include <linux/firmware.h>
+>   #include <linux/module.h>
+>   #include <linux/of.h>
+> -#include <linux/of_device.h>
+>   #include <linux/of_address.h>
+> +#include <linux/platform_device.h>
+>   #include <linux/pm_runtime.h>
+>   #include <linux/firmware/qcom/qcom_scm.h>
+>   #include <linux/soc/qcom/mdt_loader.h>
+
+. . .
