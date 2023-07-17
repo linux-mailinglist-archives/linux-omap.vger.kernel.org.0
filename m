@@ -2,59 +2,49 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3177C7567BC
-	for <lists+linux-omap@lfdr.de>; Mon, 17 Jul 2023 17:23:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BDC01757026
+	for <lists+linux-omap@lfdr.de>; Tue, 18 Jul 2023 01:00:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231617AbjGQPXf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 17 Jul 2023 11:23:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56450 "EHLO
+        id S230515AbjGQXAz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 17 Jul 2023 19:00:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52648 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231511AbjGQPXd (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 17 Jul 2023 11:23:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C8DB173F;
-        Mon, 17 Jul 2023 08:23:10 -0700 (PDT)
+        with ESMTP id S229722AbjGQXAy (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 17 Jul 2023 19:00:54 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC60219A1;
+        Mon, 17 Jul 2023 16:00:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A8FA461134;
-        Mon, 17 Jul 2023 15:22:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E725C433CC;
-        Mon, 17 Jul 2023 15:22:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8D3F6612E4;
+        Mon, 17 Jul 2023 22:59:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EBBBC433C8;
+        Mon, 17 Jul 2023 22:59:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689607345;
-        bh=s72Q/8XYhHQvzmI1VDsEoAqOtnrO5eU9UNP8CV8UKys=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=C0emZjBNCquR9Voe1+urrx1DBzBKr/jIAPVcl7u3QyWptIgTEaYmI2gncVVzCgAS5
-         UsJ3cmZgP5/bjdGONrJUV/8N+Qg3CZcPU9NQ8I231bshDjHFaaq8IRPUKlOty/uLJq
-         asTt8cRYh9EedkxLKjIOeHO6MkHuxL+gwcBMRVq66EArGgNGRm67cPUWwJJvCakvko
-         VkdbEJ8bQWgSTaXdf7jKSuxVfcwLBmk+N8o3hvYCcSK44mUiRfpl0VyIosk4kYBuYA
-         cVoo29w8Fc9X9JkzfvMXlZBP6bz6III07Lk8epOGDkmTQpyYYFGYa5VS408LD0Ocz6
-         miuGXx/6g/rHg==
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2b70bfc8db5so68917131fa.2;
-        Mon, 17 Jul 2023 08:22:25 -0700 (PDT)
-X-Gm-Message-State: ABy/qLb6r7vEQcoB/oVi8BsUDQUTIyc1oM0mclHmSRC2imggsEIpWmC3
-        l6BqYIJiyj62F4aljrvlOBfqsxrJH3Yw34rL0A==
-X-Google-Smtp-Source: APBJJlFjUVuF8cT9Mjizg85yzlG3XoHjjgUIN2M6YkcqSURtLtAQSGtjkKNJqo2G7fj6obony0hWhkxkfR/W6HeRCjA=
-X-Received: by 2002:a2e:9d84:0:b0:2b6:e76b:1e50 with SMTP id
- c4-20020a2e9d84000000b002b6e76b1e50mr9175045ljj.41.1689607343110; Mon, 17 Jul
- 2023 08:22:23 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230714175035.4065508-1-robh@kernel.org> <317a9fd8-0ae9-daa0-012b-3908ca248b74@suse.de>
-In-Reply-To: <317a9fd8-0ae9-daa0-012b-3908ca248b74@suse.de>
+        s=k20201202; t=1689634797;
+        bh=f4dpWd1j2PaSct6KkkWMV6D3aNGQhrnp1Irz3n7TOxo=;
+        h=From:To:Cc:Subject:Date:From;
+        b=ZF/V9Rh76Uvzf5bLkDsX24rckkexgIKjmNcJnH6XqXWX18l5UZpOgWdjNDld3qNBU
+         u67beRicWG5tR1H4XZxwfWEJXLYGQKGvG+75ud2Kgwk/B0YeCtLBckRZl2zB/x5ypz
+         wsJzgOZymTf5njooRRc9XAizbOg4vK/gYEaFb8z0XKE+TMQgfrBbwnJwpIZQpiMHt6
+         HvFDKAq+h+59nFh9HWF9pjQuqkLj0UCN7rXnv5eH0YVnDGC1rnwvQmBelALxuF/E2m
+         oy+04VYNVQQuBJxBEYPreftMWNQ9ELMpV2iy3D0D50sfz4zmznMPsbUzLFatEMsLZT
+         /JI0Fq/8r4/Sg==
+Received: (nullmailer pid 3211975 invoked by uid 1000);
+        Mon, 17 Jul 2023 22:54:54 -0000
 From:   Rob Herring <robh@kernel.org>
-Date:   Mon, 17 Jul 2023 09:22:10 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqJ2bkBU0WQG2jt755c_V4x4uR36Dvt2qEeXv52zCWeUmw@mail.gmail.com>
-Message-ID: <CAL_JsqJ2bkBU0WQG2jt755c_V4x4uR36Dvt2qEeXv52zCWeUmw@mail.gmail.com>
-Subject: Re: [PATCH] fb: Explicitly include correct DT includes
-To:     Thomas Zimmermann <tzimmermann@suse.de>
-Cc:     Helge Deller <deller@gmx.de>, Michal Simek <michal.simek@amd.com>,
-        devicetree@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To:     Tony Lindgren <tony@atomide.com>,
+        Russell King <linux@armlinux.org.uk>
+Cc:     linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] ARM: omap2: Explicitly include correct DT includes
+Date:   Mon, 17 Jul 2023 16:54:52 -0600
+Message-Id: <20230717225452.3211901-1-robh@kernel.org>
+X-Mailer: git-send-email 2.40.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -65,39 +55,52 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sat, Jul 15, 2023 at 12:34=E2=80=AFPM Thomas Zimmermann <tzimmermann@sus=
-e.de> wrote:
->
-> Hi
->
-> Am 14.07.23 um 19:50 schrieb Rob Herring:
-> > The DT of_device.h and of_platform.h date back to the separate
-> > of_platform_bus_type before it as merged into the regular platform bus.
-> > As part of that merge prepping Arm DT support 13 years ago, they
-> > "temporarily" include each other. They also include platform_device.h
-> > and of.h. As a result, there's a pretty much random mix of those includ=
-e
-> > files used throughout the tree. In order to detangle these headers and
-> > replace the implicit includes with struct declarations, users need to
-> > explicitly include the correct includes.
-> >
-> > Signed-off-by: Rob Herring <robh@kernel.org>
-> [...]
-> >
-> > @@ -48,7 +48,7 @@ int sbusfb_mmap_helper(struct sbus_mmap_map *map,
-> >       unsigned long map_offset =3D 0;
-> >       unsigned long off;
-> >       int i;
-> > -
-> > +
->
-> The various whitespace fixes should rather go into a separate patch. You
-> can add
->
-> Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
->
-> to the whitespace fix and the include cleanup.
+The DT of_device.h and of_platform.h date back to the separate
+of_platform_bus_type before it was merged into the regular platform bus.
+As part of that merge prepping Arm DT support 13 years ago, they
+"temporarily" include each other. They also include platform_device.h
+and of.h. As a result, there's a pretty much random mix of those include
+files used throughout the tree. In order to detangle these headers and
+replace the implicit includes with struct declarations, users need to
+explicitly include the correct includes.
+---
+ arch/arm/mach-omap2/board-generic.c | 3 +--
+ arch/arm/mach-omap2/omap4-common.c  | 3 +--
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-Indeed. I missed dropping the whitespace change.
+diff --git a/arch/arm/mach-omap2/board-generic.c b/arch/arm/mach-omap2/board-generic.c
+index 10d2f078e4a8..fde6ccb3df6e 100644
+--- a/arch/arm/mach-omap2/board-generic.c
++++ b/arch/arm/mach-omap2/board-generic.c
+@@ -9,11 +9,10 @@
+  * to support the OMAP2+ device tree boards with an unique board file.
+  */
+ #include <linux/io.h>
+-#include <linux/of_irq.h>
+-#include <linux/of_platform.h>
+ #include <linux/irqdomain.h>
+ #include <linux/clocksource.h>
+ #include <linux/clockchips.h>
++#include <linux/mod_devicetable.h>
+ 
+ #include <asm/setup.h>
+ #include <asm/mach/arch.h>
+diff --git a/arch/arm/mach-omap2/omap4-common.c b/arch/arm/mach-omap2/omap4-common.c
+index d9ed2a5dcd5e..5d924b85b694 100644
+--- a/arch/arm/mach-omap2/omap4-common.c
++++ b/arch/arm/mach-omap2/omap4-common.c
+@@ -12,10 +12,9 @@
+ #include <linux/io.h>
+ #include <linux/irq.h>
+ #include <linux/irqchip.h>
+-#include <linux/platform_device.h>
+ #include <linux/memblock.h>
++#include <linux/of.h>
+ #include <linux/of_irq.h>
+-#include <linux/of_platform.h>
+ #include <linux/export.h>
+ #include <linux/irqchip/arm-gic.h>
+ #include <linux/of_address.h>
+-- 
+2.40.1
 
-Rob
