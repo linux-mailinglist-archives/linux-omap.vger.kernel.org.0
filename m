@@ -2,119 +2,120 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AF527579F2
-	for <lists+linux-omap@lfdr.de>; Tue, 18 Jul 2023 12:58:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 806B6757D25
+	for <lists+linux-omap@lfdr.de>; Tue, 18 Jul 2023 15:19:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230218AbjGRK6X (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 18 Jul 2023 06:58:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55940 "EHLO
+        id S231752AbjGRNTP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 18 Jul 2023 09:19:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54862 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231901AbjGRK6P (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 18 Jul 2023 06:58:15 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C8C0E77;
-        Tue, 18 Jul 2023 03:58:14 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C711B61514;
-        Tue, 18 Jul 2023 10:58:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 626C4C433C8;
-        Tue, 18 Jul 2023 10:58:09 +0000 (UTC)
-Message-ID: <263b3c0f-53cf-14b6-b956-e0f5b03c95b5@xs4all.nl>
-Date:   Tue, 18 Jul 2023 12:58:07 +0200
+        with ESMTP id S230336AbjGRNTO (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 18 Jul 2023 09:19:14 -0400
+Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A677D1;
+        Tue, 18 Jul 2023 06:19:13 -0700 (PDT)
+Received: by mail-yb1-xb2a.google.com with SMTP id 3f1490d57ef6-cae0ad435b6so5953210276.0;
+        Tue, 18 Jul 2023 06:19:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1689686352; x=1692278352;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=L9BGs7xI1AaJFp00lJtBHCoa+K3WPXj0QFbQu1Le0FU=;
+        b=QPpWpaLveDkg243J973nDhKq8ZJtdvedq9X3flX6x8LNllZ7kA9fOKmvwgJv5ZONep
+         58Wnjibdnk8mflSLJzZR3s0ZBke+3pZAfFcjZOebavDtprFO89g8F2cRBlcLOW5W8mwz
+         2MSZAFVgZ3H92m9mULMu/d/ID33eAt5o7zL4BySGzO86t6vYRn2mxIx+baolOr1ElhJ6
+         QFdHu70Eyc5K8IV/j/e22qs4sGQdUhRfZVmGIDfGsK70+yXqxeSQeSmGzrmDro8uupLf
+         BPvKdQYYzdqYjM1l+WRM8up+Zl9y7yK4YlBLr77QNhhzqM7mMY0sXEbvzF7+w/Z8hBvq
+         X/wg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689686352; x=1692278352;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=L9BGs7xI1AaJFp00lJtBHCoa+K3WPXj0QFbQu1Le0FU=;
+        b=IsJAN+hXBElp2p++7eWOE6vwlJSpv4Cxfcfs5Oys1sA+gGmun6I7+cFt0yzCytCGe6
+         kwDW/PepjX7CYYG5/2e744V245g18IlABXM625Ni0RY2l9wewP8r3Voyem+qYkBSjuaH
+         gzbzCPImHlj8Z2Vp0dDhnqz33R72tYjVnfdkc019A3v2Il7F3OZS3Kt1HNGRuU2XLHDj
+         Apb21QEdGQ8BNZ0l/MVNM32TnJ4JabLd+TXEVut4p5RWXafCzV8xY/o1lStt+tvz9tUz
+         htx1m6xRvAN5CFrNHTeF0XaLV8x/zL0SWgr3z174BKQzWOjpz4XZpDKh2jkXZaLYf6Dt
+         HjSA==
+X-Gm-Message-State: ABy/qLYRsshMOg2wVsVbwJeA8QsL1cmpmU6QZZKk/m20+aKCLlODewZo
+        /r+MgPwkKPUrS4oZJTX7OSl1jlB9BnY06I9mwvs=
+X-Google-Smtp-Source: APBJJlGawmRv8zoQzo3nfFjxiQUi7804ixGt8T7mFLMLzmF8j1hYkyXfHDRw/w+W17EyqjdZSbmYCeEbn7IF/6LPLQ0=
+X-Received: by 2002:a25:4091:0:b0:c39:50fe:79be with SMTP id
+ n139-20020a254091000000b00c3950fe79bemr13253934yba.61.1689686352401; Tue, 18
+ Jul 2023 06:19:12 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v4 11/18] media: Remove flag FBINFO_FLAG_DEFAULT from
- fbdev drivers
-Content-Language: en-US
-To:     Thomas Zimmermann <tzimmermann@suse.de>, deller@gmx.de,
-        javierm@redhat.com, geert@linux-m68k.org, dan.carpenter@linaro.org
-Cc:     linux-sh@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org,
-        linux-input@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, linux-staging@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org,
-        linux-geode@lists.infradead.org, linux-hyperv@vger.kernel.org,
-        linux-omap@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        kvm@vger.kernel.org, Sam Ravnborg <sam@ravnborg.org>,
-        Andy Walls <awalls@md.metrocast.net>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>
-References: <20230715185343.7193-1-tzimmermann@suse.de>
- <20230715185343.7193-12-tzimmermann@suse.de>
-From:   Hans Verkuil <hverkuil@xs4all.nl>
-In-Reply-To: <20230715185343.7193-12-tzimmermann@suse.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.1 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230714174525.4055475-1-robh@kernel.org>
+In-Reply-To: <20230714174525.4055475-1-robh@kernel.org>
+From:   Romain Perier <romain.perier@gmail.com>
+Date:   Tue, 18 Jul 2023 15:19:01 +0200
+Message-ID: <CABgxDoJ_t0QF=XTy2zJn4rbv5X95c6+ABsvtCF=3rWcbYVUnPQ@mail.gmail.com>
+Subject: Re: [PATCH] gpio: Explicitly include correct DT includes
+To:     Rob Herring <robh@kernel.org>
+Cc:     Alban Bedel <albeu@free.fr>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Andy Shevchenko <andy@kernel.org>,
+        Doug Berger <opendmb@gmail.com>,
+        Broadcom internal kernel review list 
+        <bcm-kernel-feedback-list@broadcom.com>,
+        Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Daniel Palmer <daniel@thingy.jp>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Kevin Hilman <khilman@kernel.org>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>,
+        Srinivas Neeli <srinivas.neeli@amd.com>,
+        Michal Simek <michal.simek@amd.com>,
+        Nandor Han <nandor.han@ge.com>, devicetree@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-rockchip@lists.infradead.org, linux-tegra@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Thomas,
+Hi,
 
-On 15/07/2023 20:51, Thomas Zimmermann wrote:
-> The flag FBINFO_FLAG_DEFAULT is 0 and has no effect, as struct
-> fbinfo.flags has been allocated to zero by kzalloc(). So do not
-> set it.
-> 
-> Flags should signal differences from the default values. After cleaning
-> up all occurrences of FBINFO_DEFAULT, the token will be removed.
-> 
-> v2:
-> 	* fix commit message (Miguel)
-> 
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Acked-by: Sam Ravnborg <sam@ravnborg.org>
-> Cc: Andy Walls <awalls@md.metrocast.net>
-> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-> Cc: Hans Verkuil <hverkuil@xs4all.nl>
-> ---
->  drivers/media/pci/ivtv/ivtvfb.c              | 1 -
->  drivers/media/test-drivers/vivid/vivid-osd.c | 1 -
->  2 files changed, 2 deletions(-)
+Le ven. 14 juil. 2023 =C3=A0 19:45, Rob Herring <robh@kernel.org> a =C3=A9c=
+rit :
+>
+> The DT of_device.h and of_platform.h date back to the separate
+> of_platform_bus_type before it as merged into the regular platform bus.
+> As part of that merge prepping Arm DT support 13 years ago, they
+> "temporarily" include each other. They also include platform_device.h
+> and of.h. As a result, there's a pretty much random mix of those include
+> files used throughout the tree. In order to detangle these headers and
+> replace the implicit includes with struct declarations, users need to
+> explicitly include the correct includes.
+>
+> Signed-off-by: Rob Herring <robh@kernel.org>
 
-I can take this patches for 6.6, unless you prefer to have this whole series
-merged in one go?
-
-In that case you can use my:
-
-Reviewed-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+For the mstar part,
+Acked-by: Romain Perier <romain.perier@gmail.com>
 
 Regards,
-
-	Hans
-
-> 
-> diff --git a/drivers/media/pci/ivtv/ivtvfb.c b/drivers/media/pci/ivtv/ivtvfb.c
-> index 0aeb9daaee4c..23c8c094e791 100644
-> --- a/drivers/media/pci/ivtv/ivtvfb.c
-> +++ b/drivers/media/pci/ivtv/ivtvfb.c
-> @@ -1048,7 +1048,6 @@ static int ivtvfb_init_vidmode(struct ivtv *itv)
->  	/* Generate valid fb_info */
->  
->  	oi->ivtvfb_info.node = -1;
-> -	oi->ivtvfb_info.flags = FBINFO_FLAG_DEFAULT;
->  	oi->ivtvfb_info.par = itv;
->  	oi->ivtvfb_info.var = oi->ivtvfb_defined;
->  	oi->ivtvfb_info.fix = oi->ivtvfb_fix;
-> diff --git a/drivers/media/test-drivers/vivid/vivid-osd.c b/drivers/media/test-drivers/vivid/vivid-osd.c
-> index ec25edc679b3..051f1805a16d 100644
-> --- a/drivers/media/test-drivers/vivid/vivid-osd.c
-> +++ b/drivers/media/test-drivers/vivid/vivid-osd.c
-> @@ -310,7 +310,6 @@ static int vivid_fb_init_vidmode(struct vivid_dev *dev)
->  	/* Generate valid fb_info */
->  
->  	dev->fb_info.node = -1;
-> -	dev->fb_info.flags = FBINFO_FLAG_DEFAULT;
->  	dev->fb_info.par = dev;
->  	dev->fb_info.var = dev->fb_defined;
->  	dev->fb_info.fix = dev->fb_fix;
-
