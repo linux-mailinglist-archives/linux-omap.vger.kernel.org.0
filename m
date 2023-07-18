@@ -2,105 +2,92 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BDC01757026
-	for <lists+linux-omap@lfdr.de>; Tue, 18 Jul 2023 01:00:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 80358757152
+	for <lists+linux-omap@lfdr.de>; Tue, 18 Jul 2023 03:20:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230515AbjGQXAz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 17 Jul 2023 19:00:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52648 "EHLO
+        id S230286AbjGRBUA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 17 Jul 2023 21:20:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229722AbjGQXAy (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 17 Jul 2023 19:00:54 -0400
+        with ESMTP id S229562AbjGRBT7 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 17 Jul 2023 21:19:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC60219A1;
-        Mon, 17 Jul 2023 16:00:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB76BA6;
+        Mon, 17 Jul 2023 18:19:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8D3F6612E4;
-        Mon, 17 Jul 2023 22:59:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EBBBC433C8;
-        Mon, 17 Jul 2023 22:59:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5DCF9612DD;
+        Tue, 18 Jul 2023 01:19:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C194C433C7;
+        Tue, 18 Jul 2023 01:19:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689634797;
-        bh=f4dpWd1j2PaSct6KkkWMV6D3aNGQhrnp1Irz3n7TOxo=;
-        h=From:To:Cc:Subject:Date:From;
-        b=ZF/V9Rh76Uvzf5bLkDsX24rckkexgIKjmNcJnH6XqXWX18l5UZpOgWdjNDld3qNBU
-         u67beRicWG5tR1H4XZxwfWEJXLYGQKGvG+75ud2Kgwk/B0YeCtLBckRZl2zB/x5ypz
-         wsJzgOZymTf5njooRRc9XAizbOg4vK/gYEaFb8z0XKE+TMQgfrBbwnJwpIZQpiMHt6
-         HvFDKAq+h+59nFh9HWF9pjQuqkLj0UCN7rXnv5eH0YVnDGC1rnwvQmBelALxuF/E2m
-         oy+04VYNVQQuBJxBEYPreftMWNQ9ELMpV2iy3D0D50sfz4zmznMPsbUzLFatEMsLZT
-         /JI0Fq/8r4/Sg==
-Received: (nullmailer pid 3211975 invoked by uid 1000);
-        Mon, 17 Jul 2023 22:54:54 -0000
-From:   Rob Herring <robh@kernel.org>
-To:     Tony Lindgren <tony@atomide.com>,
-        Russell King <linux@armlinux.org.uk>
-Cc:     linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] ARM: omap2: Explicitly include correct DT includes
-Date:   Mon, 17 Jul 2023 16:54:52 -0600
-Message-Id: <20230717225452.3211901-1-robh@kernel.org>
-X-Mailer: git-send-email 2.40.1
+        s=k20201202; t=1689643197;
+        bh=sYoyjrCdqnfVe37hT1J702BYuzzCTd2Ci/rrKV27qAA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=eyHhuCAmVfOTgZNTYuPvST8Bws6XubJbHhqIq5hpG7rbrMQmiyRNF7eAkP5+adYpq
+         Q3Ds5pXDtGuqwAb1Dt4MOgkvAFA5zFdvP9C+mfTSUxupFIcQdjqftN+gpLHeLqPz8D
+         9XiBua8nNfLbfEDTljM19v3s9fF7OEfurK5xMArximWKqmER/uUH2ksGVzTzCepQt7
+         3KnIWEXRE2Q23OrFJEyaljhgIuZSHn+gFMwFArfSqnWUAj0nTuXoS5W5LAnIkut2pa
+         PgncX5CSMg9/fuqpH8SDX/bmsLgI+y0OdpvVYQaLhYsLW1R2tbOqFFJzg5IP0whzZ7
+         u8pR9qdF6P2xw==
+Date:   Tue, 18 Jul 2023 09:19:42 +0800
+From:   Shawn Guo <shawnguo@kernel.org>
+To:     Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc:     MyungJoo Ham <myungjoo.ham@samsung.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        devicetree@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+        linux-rockchip@lists.infradead.org
+Subject: Re: [PATCH v2 3/3] arm64: dts: Replace deprecated extcon-usb-gpio
+ id-gpio/vbus-gpio properties
+Message-ID: <20230718011942.GQ9559@dragon>
+References: <20230615145838.1526919-1-alexander.stein@ew.tq-group.com>
+ <20230615145838.1526919-3-alexander.stein@ew.tq-group.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230615145838.1526919-3-alexander.stein@ew.tq-group.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The DT of_device.h and of_platform.h date back to the separate
-of_platform_bus_type before it was merged into the regular platform bus.
-As part of that merge prepping Arm DT support 13 years ago, they
-"temporarily" include each other. They also include platform_device.h
-and of.h. As a result, there's a pretty much random mix of those include
-files used throughout the tree. In order to detangle these headers and
-replace the implicit includes with struct declarations, users need to
-explicitly include the correct includes.
----
- arch/arm/mach-omap2/board-generic.c | 3 +--
- arch/arm/mach-omap2/omap4-common.c  | 3 +--
- 2 files changed, 2 insertions(+), 4 deletions(-)
+On Thu, Jun 15, 2023 at 04:58:38PM +0200, Alexander Stein wrote:
+> Use id-gpios and vbus-gpios instead.
+> 
+> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> Acked-by: Heiko Stuebner <heiko@sntech.de> #rockchip
+> Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com> #mediatek
+> ---
+> Changes in v2:
+> * Added Heiko's A-b for rockchip
+> * Added Matthias' R-b for mediatek
+> 
+>  arch/arm64/boot/dts/freescale/imx8mp-msc-sm2s.dtsi            | 2 +-
+>  arch/arm64/boot/dts/freescale/imx8mq-tqma8mq-mba8mx.dts       | 2 +-
 
-diff --git a/arch/arm/mach-omap2/board-generic.c b/arch/arm/mach-omap2/board-generic.c
-index 10d2f078e4a8..fde6ccb3df6e 100644
---- a/arch/arm/mach-omap2/board-generic.c
-+++ b/arch/arm/mach-omap2/board-generic.c
-@@ -9,11 +9,10 @@
-  * to support the OMAP2+ device tree boards with an unique board file.
-  */
- #include <linux/io.h>
--#include <linux/of_irq.h>
--#include <linux/of_platform.h>
- #include <linux/irqdomain.h>
- #include <linux/clocksource.h>
- #include <linux/clockchips.h>
-+#include <linux/mod_devicetable.h>
- 
- #include <asm/setup.h>
- #include <asm/mach/arch.h>
-diff --git a/arch/arm/mach-omap2/omap4-common.c b/arch/arm/mach-omap2/omap4-common.c
-index d9ed2a5dcd5e..5d924b85b694 100644
---- a/arch/arm/mach-omap2/omap4-common.c
-+++ b/arch/arm/mach-omap2/omap4-common.c
-@@ -12,10 +12,9 @@
- #include <linux/io.h>
- #include <linux/irq.h>
- #include <linux/irqchip.h>
--#include <linux/platform_device.h>
- #include <linux/memblock.h>
-+#include <linux/of.h>
- #include <linux/of_irq.h>
--#include <linux/of_platform.h>
- #include <linux/export.h>
- #include <linux/irqchip/arm-gic.h>
- #include <linux/of_address.h>
--- 
-2.40.1
-
+Acked-by: Shawn Guo <shawnguo@kernel.org>
