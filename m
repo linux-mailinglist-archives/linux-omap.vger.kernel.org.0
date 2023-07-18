@@ -2,365 +2,171 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A152757FA7
-	for <lists+linux-omap@lfdr.de>; Tue, 18 Jul 2023 16:33:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D864875816D
+	for <lists+linux-omap@lfdr.de>; Tue, 18 Jul 2023 17:55:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233312AbjGROd1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 18 Jul 2023 10:33:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52046 "EHLO
+        id S233766AbjGRPzW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 18 Jul 2023 11:55:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233372AbjGROc7 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 18 Jul 2023 10:32:59 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB94C1BFF;
-        Tue, 18 Jul 2023 07:32:31 -0700 (PDT)
+        with ESMTP id S233763AbjGRPzV (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 18 Jul 2023 11:55:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA4781705;
+        Tue, 18 Jul 2023 08:55:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 57170615D8;
-        Tue, 18 Jul 2023 14:32:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03CAAC433C7;
-        Tue, 18 Jul 2023 14:32:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6D76A61632;
+        Tue, 18 Jul 2023 15:55:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A56FC433B9;
+        Tue, 18 Jul 2023 15:55:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689690750;
-        bh=eB/FeB1sGjf+0FZWSPXn/TL4skvhQzrenrp3THkJTqs=;
-        h=From:To:Cc:Subject:Date:From;
-        b=OpwvZzfjNPNbFB8hdrDTNUGjxZST0VETiSemlpcgT6S0ObyZQaNDKCFEFyr6wzad6
-         mj8Dh7rxgfPUaLGBO5tYJyuGkoPHNSKaHtZAEuPyzBdWoYXaeDlmVUoSPBUZ2fv9Ib
-         gKLeA5Rl1UqD9eTYDDfJ3xB+TnVuQwKLKALrweTlZzuhadQtjVVPx/hRaIoRmFHagG
-         rc9F9ACaR+YwR+OMoTd+BGypKXSPA657ly29AIy5wESJHFbIeDySNncyLMnjGvhVYG
-         ULf8yJSAl3lItzYl/8XwlhVKlZ0PHlLZUAkgy0mDjFYCW8J5LUsJLV066ViM81ulUT
-         6M/GExQov1tIA==
-Received: (nullmailer pid 1067250 invoked by uid 1000);
-        Tue, 18 Jul 2023 14:32:28 -0000
-From:   Rob Herring <robh@kernel.org>
-To:     Helge Deller <deller@gmx.de>, Michal Simek <michal.simek@amd.com>
-Cc:     devicetree@vger.kernel.org,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v2] fb: Explicitly include correct DT includes
-Date:   Tue, 18 Jul 2023 08:32:26 -0600
-Message-Id: <20230718143227.1067178-1-robh@kernel.org>
-X-Mailer: git-send-email 2.40.1
+        s=k20201202; t=1689695717;
+        bh=XkxaNzMQrlndpmaZ6Ahex4//qnr2RKplzVyK9NA4FAs=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=bX5cTij+x74/dC4QWY3+zwYhnrlKfd4bd+c6mzDOa1cLDbU2o7xP5r85fBjHD2z9I
+         l8TmTQP14ByqW0OOZzgqxP0yQ4VCdLyacPMuTzUQYHnWsP3oJujRfnJHnbtNyOcLFy
+         b8gCnLR3hqFkOXSNmDgQWr9gqJxdrnyzkh0GoR9B6zBxq/d8yGXnMwmliYrvOmzgJ3
+         6Igf/XmWqlfRWEfIFOgaVN6lkZFLONHsUmCqxq0l15oTbyqqbXsLg2q3OjAu8lctd9
+         aI3mVU9RGSMJisZFb2m48ABZzssm9K5kx0nd6TanKixpFU/aqPWbrM8P83HLAWlr+p
+         +jQiEa1Ec8lsA==
+Date:   Tue, 18 Jul 2023 10:55:15 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Achal Verma <a-verma1@ti.com>
+Cc:     Vignesh Raghavendra <vigneshr@ti.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Krzysztof Wilczy_ski <kw@linux.com>,
+        Rob Herring <robh@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] PCI: j721e: Delay 100ms T_PVPERL from power stable to
+ PERST# inactive
+Message-ID: <20230718155515.GA483233@bhelgaas>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230707095119.447952-1-a-verma1@ti.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The DT of_device.h and of_platform.h date back to the separate
-of_platform_bus_type before it as merged into the regular platform bus.
-As part of that merge prepping Arm DT support 13 years ago, they
-"temporarily" include each other. They also include platform_device.h
-and of.h. As a result, there's a pretty much random mix of those include
-files used throughout the tree. In order to detangle these headers and
-replace the implicit includes with struct declarations, users need to
-explicitly include the correct includes.
+On Fri, Jul 07, 2023 at 03:21:19PM +0530, Achal Verma wrote:
+> As per the PCIe Card Electromechanical specification REV. 5.0, PERST#
+> signal should be de-asserted after minimum 100ms from the time power-rails
+> become stable. So, to ensure 100ms delay to give sufficient time for
+> power-rails and refclk to become stable, change delay from 100us to 100ms.
+> 
+> From PCIe Card Electromechanical specification REV. 5.0 section 2.9.2:
+> TPVPERL: Power stable to PERST# inactive - 100ms
+> 
+> Fixes: f3e25911a430 ("PCI: j721e: Add TI J721E PCIe driver")
+> Signed-off-by: Achal Verma <a-verma1@ti.com>
+> ---
+> 
+> Changes from v2:
+> * Fix commit message.
+> 
+> Change from v1:
+> * Add macro for delay value.
+> 
+>  drivers/pci/controller/cadence/pci-j721e.c | 11 +++++------
+>  drivers/pci/pci.h                          |  2 ++
+>  2 files changed, 7 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
+> index e70213c9060a..32b6a7dc3cff 100644
+> --- a/drivers/pci/controller/cadence/pci-j721e.c
+> +++ b/drivers/pci/controller/cadence/pci-j721e.c
+> @@ -498,14 +498,13 @@ static int j721e_pcie_probe(struct platform_device *pdev)
+>  
+>  		/*
+>  		 * "Power Sequencing and Reset Signal Timings" table in
+> -		 * PCI EXPRESS CARD ELECTROMECHANICAL SPECIFICATION, REV. 3.0
+> -		 * indicates PERST# should be deasserted after minimum of 100us
+> -		 * once REFCLK is stable. The REFCLK to the connector in RC
+> -		 * mode is selected while enabling the PHY. So deassert PERST#
+> -		 * after 100 us.
+> +		 * PCI EXPRESS CARD ELECTROMECHANICAL SPECIFICATION, REV. 5.0
+> +		 * indicates PERST# should be deasserted after minimum of 100ms
+> +		 * after power rails achieve specified operating limits and
+> +		 * within this period reference clock should also become stable.
 
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Rob Herring <robh@kernel.org>
----
-v2:
- - Drop whitespace changes in sbuslib.c
----
- drivers/video/fbdev/bw2.c                                | 3 ++-
- drivers/video/fbdev/cg14.c                               | 3 ++-
- drivers/video/fbdev/cg3.c                                | 3 ++-
- drivers/video/fbdev/cg6.c                                | 3 ++-
- drivers/video/fbdev/ffb.c                                | 3 ++-
- drivers/video/fbdev/grvga.c                              | 3 +--
- drivers/video/fbdev/leo.c                                | 3 ++-
- drivers/video/fbdev/mb862xx/mb862xxfb_accel.c            | 4 +---
- drivers/video/fbdev/mb862xx/mb862xxfbdrv.c               | 6 +++---
- drivers/video/fbdev/omap2/omapfb/displays/panel-dsi-cm.c | 2 +-
- drivers/video/fbdev/p9100.c                              | 3 ++-
- drivers/video/fbdev/platinumfb.c                         | 4 ++--
- drivers/video/fbdev/sbuslib.c                            | 2 +-
- drivers/video/fbdev/sunxvr1000.c                         | 3 ++-
- drivers/video/fbdev/sunxvr2500.c                         | 2 +-
- drivers/video/fbdev/sunxvr500.c                          | 2 +-
- drivers/video/fbdev/tcx.c                                | 3 ++-
- drivers/video/fbdev/xilinxfb.c                           | 5 ++---
- 18 files changed, 31 insertions(+), 26 deletions(-)
+I think the problem is not that the current code is *wrong*, because
+we do need to observe T_PERST-CLK, but that it failed to *also*
+account for T_PVPERL.
 
-diff --git a/drivers/video/fbdev/bw2.c b/drivers/video/fbdev/bw2.c
-index 025d663dc6fd..39f438de0d6b 100644
---- a/drivers/video/fbdev/bw2.c
-+++ b/drivers/video/fbdev/bw2.c
-@@ -17,7 +17,8 @@
- #include <linux/init.h>
- #include <linux/fb.h>
- #include <linux/mm.h>
--#include <linux/of_device.h>
-+#include <linux/of.h>
-+#include <linux/platform_device.h>
- 
- #include <asm/io.h>
- #include <asm/fbio.h>
-diff --git a/drivers/video/fbdev/cg14.c b/drivers/video/fbdev/cg14.c
-index 832a82f45c80..90fdc9d9bf5a 100644
---- a/drivers/video/fbdev/cg14.c
-+++ b/drivers/video/fbdev/cg14.c
-@@ -17,7 +17,8 @@
- #include <linux/fb.h>
- #include <linux/mm.h>
- #include <linux/uaccess.h>
--#include <linux/of_device.h>
-+#include <linux/of.h>
-+#include <linux/platform_device.h>
- 
- #include <asm/io.h>
- #include <asm/fbio.h>
-diff --git a/drivers/video/fbdev/cg3.c b/drivers/video/fbdev/cg3.c
-index 6335cd364c74..98c60f72046a 100644
---- a/drivers/video/fbdev/cg3.c
-+++ b/drivers/video/fbdev/cg3.c
-@@ -17,7 +17,8 @@
- #include <linux/init.h>
- #include <linux/fb.h>
- #include <linux/mm.h>
--#include <linux/of_device.h>
-+#include <linux/of.h>
-+#include <linux/platform_device.h>
- 
- #include <asm/io.h>
- #include <asm/fbio.h>
-diff --git a/drivers/video/fbdev/cg6.c b/drivers/video/fbdev/cg6.c
-index 6884572efea1..6427b85f1a94 100644
---- a/drivers/video/fbdev/cg6.c
-+++ b/drivers/video/fbdev/cg6.c
-@@ -17,7 +17,8 @@
- #include <linux/init.h>
- #include <linux/fb.h>
- #include <linux/mm.h>
--#include <linux/of_device.h>
-+#include <linux/of.h>
-+#include <linux/platform_device.h>
- 
- #include <asm/io.h>
- #include <asm/fbio.h>
-diff --git a/drivers/video/fbdev/ffb.c b/drivers/video/fbdev/ffb.c
-index c6d3111dcbb0..c473841eb6ff 100644
---- a/drivers/video/fbdev/ffb.c
-+++ b/drivers/video/fbdev/ffb.c
-@@ -16,7 +16,8 @@
- #include <linux/fb.h>
- #include <linux/mm.h>
- #include <linux/timer.h>
--#include <linux/of_device.h>
-+#include <linux/of.h>
-+#include <linux/platform_device.h>
- 
- #include <asm/io.h>
- #include <asm/upa.h>
-diff --git a/drivers/video/fbdev/grvga.c b/drivers/video/fbdev/grvga.c
-index 9aa15be29ea9..d4a9a58b3691 100644
---- a/drivers/video/fbdev/grvga.c
-+++ b/drivers/video/fbdev/grvga.c
-@@ -12,8 +12,7 @@
- 
- #include <linux/platform_device.h>
- #include <linux/dma-mapping.h>
--#include <linux/of_platform.h>
--#include <linux/of_device.h>
-+#include <linux/of.h>
- #include <linux/module.h>
- #include <linux/kernel.h>
- #include <linux/string.h>
-diff --git a/drivers/video/fbdev/leo.c b/drivers/video/fbdev/leo.c
-index 3ffc0a725f89..89ca48235dbe 100644
---- a/drivers/video/fbdev/leo.c
-+++ b/drivers/video/fbdev/leo.c
-@@ -16,8 +16,9 @@
- #include <linux/init.h>
- #include <linux/fb.h>
- #include <linux/mm.h>
--#include <linux/of_device.h>
- #include <linux/io.h>
-+#include <linux/of.h>
-+#include <linux/platform_device.h>
- 
- #include <asm/fbio.h>
- 
-diff --git a/drivers/video/fbdev/mb862xx/mb862xxfb_accel.c b/drivers/video/fbdev/mb862xx/mb862xxfb_accel.c
-index 61aed7fc0b8d..c35a7479fbf2 100644
---- a/drivers/video/fbdev/mb862xx/mb862xxfb_accel.c
-+++ b/drivers/video/fbdev/mb862xx/mb862xxfb_accel.c
-@@ -15,9 +15,7 @@
- #include <linux/module.h>
- #include <linux/pci.h>
- #include <linux/slab.h>
--#if defined(CONFIG_OF)
--#include <linux/of_platform.h>
--#endif
-+
- #include "mb862xxfb.h"
- #include "mb862xx_reg.h"
- #include "mb862xxfb_accel.h"
-diff --git a/drivers/video/fbdev/mb862xx/mb862xxfbdrv.c b/drivers/video/fbdev/mb862xx/mb862xxfbdrv.c
-index b5c8fcab9940..9dc347d163cf 100644
---- a/drivers/video/fbdev/mb862xx/mb862xxfbdrv.c
-+++ b/drivers/video/fbdev/mb862xx/mb862xxfbdrv.c
-@@ -18,11 +18,11 @@
- #include <linux/init.h>
- #include <linux/interrupt.h>
- #include <linux/pci.h>
--#if defined(CONFIG_OF)
-+#include <linux/of.h>
- #include <linux/of_address.h>
- #include <linux/of_irq.h>
--#include <linux/of_platform.h>
--#endif
-+#include <linux/platform_device.h>
-+
- #include "mb862xxfb.h"
- #include "mb862xx_reg.h"
- 
-diff --git a/drivers/video/fbdev/omap2/omapfb/displays/panel-dsi-cm.c b/drivers/video/fbdev/omap2/omapfb/displays/panel-dsi-cm.c
-index ba94a0a7bd4f..77fce1223a64 100644
---- a/drivers/video/fbdev/omap2/omapfb/displays/panel-dsi-cm.c
-+++ b/drivers/video/fbdev/omap2/omapfb/displays/panel-dsi-cm.c
-@@ -15,12 +15,12 @@
- #include <linux/gpio/consumer.h>
- #include <linux/interrupt.h>
- #include <linux/jiffies.h>
-+#include <linux/mod_devicetable.h>
- #include <linux/module.h>
- #include <linux/platform_device.h>
- #include <linux/sched/signal.h>
- #include <linux/slab.h>
- #include <linux/workqueue.h>
--#include <linux/of_device.h>
- 
- #include <video/omapfb_dss.h>
- #include <video/mipi_display.h>
-diff --git a/drivers/video/fbdev/p9100.c b/drivers/video/fbdev/p9100.c
-index 0876962c52eb..e2e747cae9b1 100644
---- a/drivers/video/fbdev/p9100.c
-+++ b/drivers/video/fbdev/p9100.c
-@@ -15,7 +15,8 @@
- #include <linux/init.h>
- #include <linux/fb.h>
- #include <linux/mm.h>
--#include <linux/of_device.h>
-+#include <linux/of.h>
-+#include <linux/platform_device.h>
- 
- #include <asm/io.h>
- #include <asm/fbio.h>
-diff --git a/drivers/video/fbdev/platinumfb.c b/drivers/video/fbdev/platinumfb.c
-index f8283fcd5edb..b27f43b3616e 100644
---- a/drivers/video/fbdev/platinumfb.c
-+++ b/drivers/video/fbdev/platinumfb.c
-@@ -30,9 +30,9 @@
- #include <linux/fb.h>
- #include <linux/init.h>
- #include <linux/nvram.h>
-+#include <linux/of.h>
- #include <linux/of_address.h>
--#include <linux/of_device.h>
--#include <linux/of_platform.h>
-+#include <linux/platform_device.h>
- 
- #include "macmodes.h"
- #include "platinumfb.h"
-diff --git a/drivers/video/fbdev/sbuslib.c b/drivers/video/fbdev/sbuslib.c
-index 7f79db827b07..21e9fd8e69e2 100644
---- a/drivers/video/fbdev/sbuslib.c
-+++ b/drivers/video/fbdev/sbuslib.c
-@@ -11,7 +11,7 @@
- #include <linux/fb.h>
- #include <linux/mm.h>
- #include <linux/uaccess.h>
--#include <linux/of_device.h>
-+#include <linux/of.h>
- 
- #include <asm/fbio.h>
- 
-diff --git a/drivers/video/fbdev/sunxvr1000.c b/drivers/video/fbdev/sunxvr1000.c
-index 490bd9a14763..17d61e1d11a6 100644
---- a/drivers/video/fbdev/sunxvr1000.c
-+++ b/drivers/video/fbdev/sunxvr1000.c
-@@ -8,7 +8,8 @@
- #include <linux/kernel.h>
- #include <linux/fb.h>
- #include <linux/init.h>
--#include <linux/of_device.h>
-+#include <linux/of.h>
-+#include <linux/platform_device.h>
- 
- struct gfb_info {
- 	struct fb_info		*info;
-diff --git a/drivers/video/fbdev/sunxvr2500.c b/drivers/video/fbdev/sunxvr2500.c
-index 2cab4b9be68a..e64ec7d0caf9 100644
---- a/drivers/video/fbdev/sunxvr2500.c
-+++ b/drivers/video/fbdev/sunxvr2500.c
-@@ -10,7 +10,7 @@
- #include <linux/fb.h>
- #include <linux/pci.h>
- #include <linux/init.h>
--#include <linux/of_device.h>
-+#include <linux/of.h>
- 
- #include <asm/io.h>
- 
-diff --git a/drivers/video/fbdev/sunxvr500.c b/drivers/video/fbdev/sunxvr500.c
-index 6ec358af1256..c4e01e871483 100644
---- a/drivers/video/fbdev/sunxvr500.c
-+++ b/drivers/video/fbdev/sunxvr500.c
-@@ -10,7 +10,7 @@
- #include <linux/fb.h>
- #include <linux/pci.h>
- #include <linux/init.h>
--#include <linux/of_device.h>
-+#include <linux/of.h>
- 
- #include <asm/io.h>
- 
-diff --git a/drivers/video/fbdev/tcx.c b/drivers/video/fbdev/tcx.c
-index fc3ac2301b45..255eb57aefa2 100644
---- a/drivers/video/fbdev/tcx.c
-+++ b/drivers/video/fbdev/tcx.c
-@@ -17,7 +17,8 @@
- #include <linux/init.h>
- #include <linux/fb.h>
- #include <linux/mm.h>
--#include <linux/of_device.h>
-+#include <linux/of.h>
-+#include <linux/platform_device.h>
- 
- #include <asm/io.h>
- #include <asm/fbio.h>
-diff --git a/drivers/video/fbdev/xilinxfb.c b/drivers/video/fbdev/xilinxfb.c
-index 2aa3a528277f..542baddd54ad 100644
---- a/drivers/video/fbdev/xilinxfb.c
-+++ b/drivers/video/fbdev/xilinxfb.c
-@@ -24,14 +24,13 @@
- #include <linux/module.h>
- #include <linux/kernel.h>
- #include <linux/errno.h>
-+#include <linux/platform_device.h>
- #include <linux/string.h>
- #include <linux/mm.h>
- #include <linux/fb.h>
- #include <linux/init.h>
- #include <linux/dma-mapping.h>
--#include <linux/of_device.h>
--#include <linux/of_platform.h>
--#include <linux/of_address.h>
-+#include <linux/of.h>
- #include <linux/io.h>
- #include <linux/slab.h>
- 
--- 
-2.40.1
+There are two delays before deasserting PERST#:
 
+  T_PVPERL: delay after power becomes stable
+  T_PERST-CLK: delay after REFCLK becomes stable
+
+I assume power is enabled by phy_power_on(), and REFCLK is enabled by
+clk_prepare_enable():
+
+  cdns_pcie_init_phy
+    cdns_pcie_enable_phy
+      phy_power_on             <-- power becomes stable
+  clk_prepare_enable           <-- REFCLK becomes stable
+  if (gpiod)
+    usleep_range
+    gpiod_set_value_cansleep(gpiod, 1)   <-- deassert PERST#
+
+I don't actually know if phy_power_on() guarantees that power is
+stable before it returns.  But I guess that's our assumption?
+Similarly for clk_prepare_enable().
+
+In any case, we have to observe both delays.  They overlap, and
+T_PVPERL is 1000 times longer than T_PERST-CLK, so there might be
+enough slop in an msleep(100) to cover both, but I think I would do
+the simple-minded:
+
+  msleep(PCIE_TPVPERL_MS);
+  usleep_range(PCIE_TPERST_CLK_US, 2 * PCIE_TPERST_CLK_US);
+
+This is slightly more conservative than necessary because they
+overlap, but at least it shows that we thought about both of them.
+
+>  		if (gpiod) {
+> -			usleep_range(100, 200);
+> +			msleep(PCIE_TPVPERL_DELAY_MS);
+>  			gpiod_set_value_cansleep(gpiod, 1);
+
+I wish this local variable were named something like "perst_gpiod"
+instead of "gpiod".  We already know from its use in
+gpiod_set_value_cansleep() that it's a GPIO.  What's NOT obvious from
+the context is that this is the PERST# signal.
+
+Tangent: it looks like the DT "reset" property that I'm assuming
+controls PERST# is optional.  How do we enforce these delays if that
+property is missing?
+
+> diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
+> index a4c397434057..6ab2367e5867 100644
+> --- a/drivers/pci/pci.h
+> +++ b/drivers/pci/pci.h
+> @@ -13,6 +13,8 @@
+>  
+>  #define PCIE_LINK_RETRAIN_TIMEOUT_MS	1000
+>  
+> +#define PCIE_TPVPERL_DELAY_MS	100	/* see PCIe CEM r5.0, sec 2.9.2 */
+> +
+>  extern const unsigned char pcie_link_speed[];
+>  extern bool pci_early_dump;
+>  
+> -- 
+> 2.25.1
+> 
+> 
+> _______________________________________________
+> linux-arm-kernel mailing list
+> linux-arm-kernel@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
