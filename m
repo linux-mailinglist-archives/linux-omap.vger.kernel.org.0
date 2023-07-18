@@ -2,208 +2,119 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A9FAB7578B6
-	for <lists+linux-omap@lfdr.de>; Tue, 18 Jul 2023 12:00:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AF527579F2
+	for <lists+linux-omap@lfdr.de>; Tue, 18 Jul 2023 12:58:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231484AbjGRKAc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 18 Jul 2023 06:00:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52936 "EHLO
+        id S230218AbjGRK6X (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 18 Jul 2023 06:58:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231627AbjGRKAS (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 18 Jul 2023 06:00:18 -0400
-Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CCB5188;
-        Tue, 18 Jul 2023 03:00:16 -0700 (PDT)
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 36I9wkGR021989;
-        Tue, 18 Jul 2023 04:58:46 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1689674326;
-        bh=I05cpe/5PNH+nd3/lltH/WL4YOk+fvTtXZQyDgYqHVA=;
-        h=Date:Subject:To:CC:References:From:In-Reply-To;
-        b=KAlrUlH00MufWrrkhwith2WtivgjZ453MLQCRnG8HKpdeb0KsZLKOP2WdAxdqC/CS
-         xexnzqixR4ZegZljXX2ICTqGwdMFAkh6yiqgbCmEdjlSIIUXTDqXLAA6Wq3OC3Py+E
-         zS2+qSIe1axmxD8hfCkITzMKsctsTcn5PWGePFM0=
-Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 36I9wkaG022008
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 18 Jul 2023 04:58:46 -0500
-Received: from DFLE114.ent.ti.com (10.64.6.35) by DFLE113.ent.ti.com
- (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 18
- Jul 2023 04:58:46 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE114.ent.ti.com
- (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Tue, 18 Jul 2023 04:58:46 -0500
-Received: from [172.24.227.217] (ileaxei01-snat2.itg.ti.com [10.180.69.6])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 36I9wePe095601;
-        Tue, 18 Jul 2023 04:58:40 -0500
-Message-ID: <78c1a348-8dd7-032f-62ce-d0dad360972a@ti.com>
-Date:   Tue, 18 Jul 2023 15:28:39 +0530
+        with ESMTP id S231901AbjGRK6P (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 18 Jul 2023 06:58:15 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C8C0E77;
+        Tue, 18 Jul 2023 03:58:14 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C711B61514;
+        Tue, 18 Jul 2023 10:58:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 626C4C433C8;
+        Tue, 18 Jul 2023 10:58:09 +0000 (UTC)
+Message-ID: <263b3c0f-53cf-14b6-b956-e0f5b03c95b5@xs4all.nl>
+Date:   Tue, 18 Jul 2023 12:58:07 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [EXTERNAL] Re: [PATCH v9 2/2] net: ti: icssg-prueth: Add ICSSG
- ethernet driver
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v4 11/18] media: Remove flag FBINFO_FLAG_DEFAULT from
+ fbdev drivers
 Content-Language: en-US
-To:     Paolo Abeni <pabeni@redhat.com>,
-        MD Danish Anwar <danishanwar@ti.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Roger Quadros <rogerq@kernel.org>,
-        Simon Horman <simon.horman@corigine.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>
-CC:     <nm@ti.com>, <srk@ti.com>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>
-References: <20230714094432.1834489-1-danishanwar@ti.com>
- <20230714094432.1834489-3-danishanwar@ti.com>
- <78b82c086c91be61d6a15582a7dc6f52b92f1b3e.camel@redhat.com>
-From:   Md Danish Anwar <a0501179@ti.com>
-Organization: Texas Instruments
-In-Reply-To: <78b82c086c91be61d6a15582a7dc6f52b92f1b3e.camel@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+To:     Thomas Zimmermann <tzimmermann@suse.de>, deller@gmx.de,
+        javierm@redhat.com, geert@linux-m68k.org, dan.carpenter@linaro.org
+Cc:     linux-sh@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+        linux-input@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, linux-staging@lists.linux.dev,
+        linux-arm-kernel@lists.infradead.org,
+        linux-geode@lists.infradead.org, linux-hyperv@vger.kernel.org,
+        linux-omap@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        kvm@vger.kernel.org, Sam Ravnborg <sam@ravnborg.org>,
+        Andy Walls <awalls@md.metrocast.net>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>
+References: <20230715185343.7193-1-tzimmermann@suse.de>
+ <20230715185343.7193-12-tzimmermann@suse.de>
+From:   Hans Verkuil <hverkuil@xs4all.nl>
+In-Reply-To: <20230715185343.7193-12-tzimmermann@suse.de>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.1 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Paolo,
+Hi Thomas,
 
-On 18/07/23 1:52 pm, Paolo Abeni wrote:
-> On Fri, 2023-07-14 at 15:14 +0530, MD Danish Anwar wrote:
->> +static int prueth_netdev_init(struct prueth *prueth,
->> +			      struct device_node *eth_node)
->> +{
->> +	int ret, num_tx_chn = PRUETH_MAX_TX_QUEUES;
->> +	struct prueth_emac *emac;
->> +	struct net_device *ndev;
->> +	enum prueth_port port;
->> +	enum prueth_mac mac;
->> +
->> +	port = prueth_node_port(eth_node);
->> +	if (port == PRUETH_PORT_INVALID)
->> +		return -EINVAL;
->> +
->> +	mac = prueth_node_mac(eth_node);
->> +	if (mac == PRUETH_MAC_INVALID)
->> +		return -EINVAL;
->> +
->> +	ndev = alloc_etherdev_mq(sizeof(*emac), num_tx_chn);
->> +	if (!ndev)
->> +		return -ENOMEM;
->> +
->> +	emac = netdev_priv(ndev);
->> +	prueth->emac[mac] = emac;
->> +	emac->prueth = prueth;
->> +	emac->ndev = ndev;
->> +	emac->port_id = port;
->> +	emac->cmd_wq = create_singlethread_workqueue("icssg_cmd_wq");
->> +	if (!emac->cmd_wq) {
->> +		ret = -ENOMEM;
->> +		goto free_ndev;
->> +	}
->> +	INIT_WORK(&emac->rx_mode_work, emac_ndo_set_rx_mode_work);
->> +
->> +	ret = pruss_request_mem_region(prueth->pruss,
->> +				       port == PRUETH_PORT_MII0 ?
->> +				       PRUSS_MEM_DRAM0 : PRUSS_MEM_DRAM1,
->> +				       &emac->dram);
->> +	if (ret) {
->> +		dev_err(prueth->dev, "unable to get DRAM: %d\n", ret);
->> +		ret = -ENOMEM;
->> +		goto free_wq;
->> +	}
->> +
->> +	emac->tx_ch_num = 1;
->> +
->> +	SET_NETDEV_DEV(ndev, prueth->dev);
->> +	spin_lock_init(&emac->lock);
->> +	mutex_init(&emac->cmd_lock);
->> +
->> +	emac->phy_node = of_parse_phandle(eth_node, "phy-handle", 0);
->> +	if (!emac->phy_node && !of_phy_is_fixed_link(eth_node)) {
->> +		dev_err(prueth->dev, "couldn't find phy-handle\n");
->> +		ret = -ENODEV;
->> +		goto free;
->> +	} else if (of_phy_is_fixed_link(eth_node)) {
->> +		ret = of_phy_register_fixed_link(eth_node);
->> +		if (ret) {
->> +			ret = dev_err_probe(prueth->dev, ret,
->> +					    "failed to register fixed-link phy\n");
->> +			goto free;
->> +		}
->> +
->> +		emac->phy_node = eth_node;
->> +	}
->> +
->> +	ret = of_get_phy_mode(eth_node, &emac->phy_if);
->> +	if (ret) {
->> +		dev_err(prueth->dev, "could not get phy-mode property\n");
->> +		goto free;
->> +	}
->> +
->> +	if (emac->phy_if != PHY_INTERFACE_MODE_MII &&
->> +	    !phy_interface_mode_is_rgmii(emac->phy_if)) {
->> +		dev_err(prueth->dev, "PHY mode unsupported %s\n", phy_modes(emac->phy_if));
->> +		ret = -EINVAL;
->> +		goto free;
->> +	}
->> +
->> +	/* AM65 SR2.0 has TX Internal delay always enabled by hardware
->> +	 * and it is not possible to disable TX Internal delay. The below
->> +	 * switch case block describes how we handle different phy modes
->> +	 * based on hardware restriction.
->> +	 */
->> +	switch (emac->phy_if) {
->> +	case PHY_INTERFACE_MODE_RGMII_ID:
->> +		emac->phy_if = PHY_INTERFACE_MODE_RGMII_RXID;
->> +		break;
->> +	case PHY_INTERFACE_MODE_RGMII_TXID:
->> +		emac->phy_if = PHY_INTERFACE_MODE_RGMII;
->> +		break;
->> +	case PHY_INTERFACE_MODE_RGMII:
->> +	case PHY_INTERFACE_MODE_RGMII_RXID:
->> +		dev_err(prueth->dev, "RGMII mode without TX delay is not supported");
->> +		return -EINVAL;
+On 15/07/2023 20:51, Thomas Zimmermann wrote:
+> The flag FBINFO_FLAG_DEFAULT is 0 and has no effect, as struct
+> fbinfo.flags has been allocated to zero by kzalloc(). So do not
+> set it.
 > 
-> At this point ndev prueth->emac[mac] == emac, so the caller will try to
-> clean it up via prueth_netdev_exit(), which in turn expects the device
-> being fully initialized, while this is not. Notably the napi instance
-> has not being registered yet.
+> Flags should signal differences from the default values. After cleaning
+> up all occurrences of FBINFO_DEFAULT, the token will be removed.
 > 
-> You should 'goto free;' above and possibly move the 'ndev prueth-
->> emac[mac] = emac' assignment at the end of this function.
+> v2:
+> 	* fix commit message (Miguel)
 > 
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Acked-by: Sam Ravnborg <sam@ravnborg.org>
+> Cc: Andy Walls <awalls@md.metrocast.net>
+> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+> Cc: Hans Verkuil <hverkuil@xs4all.nl>
+> ---
+>  drivers/media/pci/ivtv/ivtvfb.c              | 1 -
+>  drivers/media/test-drivers/vivid/vivid-osd.c | 1 -
+>  2 files changed, 2 deletions(-)
 
-Sure Paolo. Instead of returning -EINVAL in this switch case, I will do the
-below change.
+I can take this patches for 6.6, unless you prefer to have this whole series
+merged in one go?
 
-	ret = -EINVAL
-	goto free;
+In that case you can use my:
 
-Also I will move the 'ndev prueth-> emac[mac] = emac' assignment at the end of
-this function.
+Reviewed-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-Please let me know if you have any more comments / suggestions. I will try to
-address them and send a next revision.
+Regards,
 
--- 
-Thanks and Regards,
-Danish.
+	Hans
+
+> 
+> diff --git a/drivers/media/pci/ivtv/ivtvfb.c b/drivers/media/pci/ivtv/ivtvfb.c
+> index 0aeb9daaee4c..23c8c094e791 100644
+> --- a/drivers/media/pci/ivtv/ivtvfb.c
+> +++ b/drivers/media/pci/ivtv/ivtvfb.c
+> @@ -1048,7 +1048,6 @@ static int ivtvfb_init_vidmode(struct ivtv *itv)
+>  	/* Generate valid fb_info */
+>  
+>  	oi->ivtvfb_info.node = -1;
+> -	oi->ivtvfb_info.flags = FBINFO_FLAG_DEFAULT;
+>  	oi->ivtvfb_info.par = itv;
+>  	oi->ivtvfb_info.var = oi->ivtvfb_defined;
+>  	oi->ivtvfb_info.fix = oi->ivtvfb_fix;
+> diff --git a/drivers/media/test-drivers/vivid/vivid-osd.c b/drivers/media/test-drivers/vivid/vivid-osd.c
+> index ec25edc679b3..051f1805a16d 100644
+> --- a/drivers/media/test-drivers/vivid/vivid-osd.c
+> +++ b/drivers/media/test-drivers/vivid/vivid-osd.c
+> @@ -310,7 +310,6 @@ static int vivid_fb_init_vidmode(struct vivid_dev *dev)
+>  	/* Generate valid fb_info */
+>  
+>  	dev->fb_info.node = -1;
+> -	dev->fb_info.flags = FBINFO_FLAG_DEFAULT;
+>  	dev->fb_info.par = dev;
+>  	dev->fb_info.var = dev->fb_defined;
+>  	dev->fb_info.fix = dev->fb_fix;
+
