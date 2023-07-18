@@ -2,92 +2,70 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 80358757152
-	for <lists+linux-omap@lfdr.de>; Tue, 18 Jul 2023 03:20:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89BC6757335
+	for <lists+linux-omap@lfdr.de>; Tue, 18 Jul 2023 07:30:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230286AbjGRBUA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 17 Jul 2023 21:20:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57622 "EHLO
+        id S230472AbjGRFa3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 18 Jul 2023 01:30:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229562AbjGRBT7 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 17 Jul 2023 21:19:59 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB76BA6;
-        Mon, 17 Jul 2023 18:19:58 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5DCF9612DD;
-        Tue, 18 Jul 2023 01:19:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C194C433C7;
-        Tue, 18 Jul 2023 01:19:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689643197;
-        bh=sYoyjrCdqnfVe37hT1J702BYuzzCTd2Ci/rrKV27qAA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=eyHhuCAmVfOTgZNTYuPvST8Bws6XubJbHhqIq5hpG7rbrMQmiyRNF7eAkP5+adYpq
-         Q3Ds5pXDtGuqwAb1Dt4MOgkvAFA5zFdvP9C+mfTSUxupFIcQdjqftN+gpLHeLqPz8D
-         9XiBua8nNfLbfEDTljM19v3s9fF7OEfurK5xMArximWKqmER/uUH2ksGVzTzCepQt7
-         3KnIWEXRE2Q23OrFJEyaljhgIuZSHn+gFMwFArfSqnWUAj0nTuXoS5W5LAnIkut2pa
-         PgncX5CSMg9/fuqpH8SDX/bmsLgI+y0OdpvVYQaLhYsLW1R2tbOqFFJzg5IP0whzZ7
-         u8pR9qdF6P2xw==
-Date:   Tue, 18 Jul 2023 09:19:42 +0800
-From:   Shawn Guo <shawnguo@kernel.org>
-To:     Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc:     MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        devicetree@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-        linux-rockchip@lists.infradead.org
-Subject: Re: [PATCH v2 3/3] arm64: dts: Replace deprecated extcon-usb-gpio
- id-gpio/vbus-gpio properties
-Message-ID: <20230718011942.GQ9559@dragon>
-References: <20230615145838.1526919-1-alexander.stein@ew.tq-group.com>
- <20230615145838.1526919-3-alexander.stein@ew.tq-group.com>
+        with ESMTP id S231167AbjGRFaH (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 18 Jul 2023 01:30:07 -0400
+Received: from muru.com (muru.com [72.249.23.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D733D172A
+        for <linux-omap@vger.kernel.org>; Mon, 17 Jul 2023 22:29:45 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 6696380AE;
+        Tue, 18 Jul 2023 05:29:21 +0000 (UTC)
+Date:   Tue, 18 Jul 2023 08:29:20 +0300
+From:   Tony Lindgren <tony@atomide.com>
+To:     "guomengqi (A)" <guomengqi3@huawei.com>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        haojian.zhuang@linaro.org, linux-arm-kernel@lists.infradead.org,
+        linux-omap@vger.kernel.org
+Subject: Re: [PATCH] pinctrl: single: Fix memleak in pcs_dt_node_to_map
+Message-ID: <20230718052920.GG5194@atomide.com>
+References: <20230703081716.15810-1-guomengqi3@huawei.com>
+ <CACRpkdaW5j0mRbwv7rvAKiwBBe_bArqCKRv+UPCPxwX8GJ3Qkg@mail.gmail.com>
+ <9a490082-bc30-8a7e-2d19-fcd212771a4b@huawei.com>
+ <20230706040755.GB5089@atomide.com>
+ <7b9d0af0-6990-9696-0dc2-acef2543b2a8@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230615145838.1526919-3-alexander.stein@ew.tq-group.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <7b9d0af0-6990-9696-0dc2-acef2543b2a8@huawei.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, Jun 15, 2023 at 04:58:38PM +0200, Alexander Stein wrote:
-> Use id-gpios and vbus-gpios instead.
-> 
-> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> Acked-by: Heiko Stuebner <heiko@sntech.de> #rockchip
-> Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com> #mediatek
-> ---
-> Changes in v2:
-> * Added Heiko's A-b for rockchip
-> * Added Matthias' R-b for mediatek
-> 
->  arch/arm64/boot/dts/freescale/imx8mp-msc-sm2s.dtsi            | 2 +-
->  arch/arm64/boot/dts/freescale/imx8mq-tqma8mq-mba8mx.dts       | 2 +-
+Hi,
 
-Acked-by: Shawn Guo <shawnguo@kernel.org>
+* guomengqi (A) <guomengqi3@huawei.com> [230712 10:00]:
+> 在 2023/7/6 12:07, Tony Lindgren 写道:
+> > Thanks for looking into it. I wonder if we can rely on naming for
+> > pinmux_func_name_to_selector() though. Can things change in a way where
+> > we need to release everything and reparse? Mostly wondering what happens
+> > with DT overlays?
+> 
+> Let me confirm, you mean when the pin controller dtsi changed at runtime,
+> some functions and groups can change silently while the dt-node name remains
+> same, so the old data needs to be released and reparsed, right?
+> 
+> I don't know much about DT overlays. I can look deeper into revelant codes,
+> maybe do some experiments too.
+> 
+> My guess now is DT overlay will first remove the old parsed nodes, then
+> create new ones. If so, the modification to pcs_dt_node_to_map() in this
+> patch is not affected.
+
+OK yeah good to check it to confirm.
+
+Regards,
+
+Tony
