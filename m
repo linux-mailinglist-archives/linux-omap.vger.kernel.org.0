@@ -2,73 +2,73 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E3C18758D31
-	for <lists+linux-omap@lfdr.de>; Wed, 19 Jul 2023 07:34:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFAFC758D36
+	for <lists+linux-omap@lfdr.de>; Wed, 19 Jul 2023 07:36:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229928AbjGSFei (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 19 Jul 2023 01:34:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59036 "EHLO
+        id S229888AbjGSFgm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 19 Jul 2023 01:36:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229451AbjGSFei (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 19 Jul 2023 01:34:38 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29BB01BF5;
-        Tue, 18 Jul 2023 22:34:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689744877; x=1721280877;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=OBalWpngnhMPgJxMwpZBYm8SQHbLKJ7zpmUckfVSeh4=;
-  b=XGXnNMd6dfsFWPi2DOExfF9EO63uYLtde0kNCJwD8B/iRBO/Os2j7Gf4
-   D+8P9Z9Vlq6nDaEPev5t0rvZyZ9EQ2HvKHks9SvRVm8hM85MGRdnJeEUd
-   wlUPwoNd7qct/eoW83oTfK22+eqcl5zoC5IuQORvGp9ZX44ESbQMraYfg
-   1YRvUujR62AImoV43tb9V2Fo/BooYv3+I3ipB5cB66zBN7GJrhxMYiat5
-   dL8WqLhPeYYVSbbNak+WjKMr/n8c2wBSLLDkLwCwGqcEkPvetZKiffXOr
-   /v2+qN+CJhCHX7Cv1Z08me3mG0ZpCwNKe17pTccy0SSFxfFXil/esOgVK
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10775"; a="369022924"
-X-IronPort-AV: E=Sophos;i="6.01,215,1684825200"; 
-   d="scan'208";a="369022924"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2023 22:34:36 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10775"; a="789289419"
-X-IronPort-AV: E=Sophos;i="6.01,215,1684825200"; 
-   d="scan'208";a="789289419"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga008.fm.intel.com with ESMTP; 18 Jul 2023 22:34:33 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qLzpX-00DKc8-1C;
-        Wed, 19 Jul 2023 08:34:31 +0300
-Date:   Wed, 19 Jul 2023 08:34:31 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Jiri Slaby <jirislaby@kernel.org>
-Cc:     Tony Lindgren <tony@atomide.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        with ESMTP id S230215AbjGSFgl (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 19 Jul 2023 01:36:41 -0400
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05B191FCE;
+        Tue, 18 Jul 2023 22:36:37 -0700 (PDT)
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-51e429e1eabso9158629a12.2;
+        Tue, 18 Jul 2023 22:36:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689744995; x=1690349795;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=EDbeeMAF25Dt1BLMyZ5tpgdRlA71spcND6k71f+vr88=;
+        b=Kac+cDLtfIQQL/p7AgVoQVUaBt6jVdlaxuo3XKSgdc1zvk8shdgr+sdmCs29uukn2a
+         dBEcX54moIIj8wdr5NYXLAdGD2VQiz8d/fpGbpcyU0aYPo66Xa+Ve1sp6YwCSCgrqgbX
+         pZqnVEZdG/Noc9gNiX1r765lK0Z0y0nqxAga02iCoMbR+Qrhaddk5dF6oY3nXg5Z5mnc
+         KWUcJ6jxjJu2tuAJqMc0YMvaBBYX2GH4YW95Ih0YAom0IZQHxu0ngQmkvkeA6OWRO/Jw
+         q1okLT/NxVPCLG9AyK/MokQ9sJ15dhLVD2enUorfjE14XGiRjJUi0QHgUvF6w2uCaGd/
+         +z4A==
+X-Gm-Message-State: ABy/qLbDq4qVHb/dAhPriIyUR2dq2CTKAxq4nSZvU1ItW/mrJ7aWIh49
+        +JowqScMyclP5RWw+V3Rfvo=
+X-Google-Smtp-Source: APBJJlGNPQr57woYj+uSYDG4JDiEkyWIfNLgHXtdJ5skgjW8Rk0FryOdDQSZiMoW9lDCVvkERD9Vtw==
+X-Received: by 2002:aa7:c0cd:0:b0:51d:d30c:f1e3 with SMTP id j13-20020aa7c0cd000000b0051dd30cf1e3mr1476517edp.16.1689744995419;
+        Tue, 18 Jul 2023 22:36:35 -0700 (PDT)
+Received: from [192.168.1.58] (185-219-167-24-static.vivo.cz. [185.219.167.24])
+        by smtp.gmail.com with ESMTPSA id p10-20020aa7d30a000000b0050cc4461fc5sm2167113edq.92.2023.07.18.22.36.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 18 Jul 2023 22:36:34 -0700 (PDT)
+Message-ID: <c0061557-1dc7-0442-b5e0-3e528d0bebb1@kernel.org>
+Date:   Wed, 19 Jul 2023 07:36:33 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] serial: core: Add support for dev_name:0.0 naming for
+ kernel console
+Content-Language: en-US
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andy Shevchenko <andriy.shevchenko@intel.com>,
         Dhruva Gole <d-gole@ti.com>,
-        Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        =?UTF-8?Q?Ilpo_J=c3=a4rvinen?= <ilpo.jarvinen@linux.intel.com>,
         John Ogness <john.ogness@linutronix.de>,
         Johan Hovold <johan@kernel.org>,
         Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
         Vignesh Raghavendra <vigneshr@ti.com>,
         linux-omap@vger.kernel.org, linux-serial@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] serial: core: Fix serial core port id to not use
- port->line
-Message-ID: <ZLd154hdaSG2lnue@smile.fi.intel.com>
-References: <20230719051235.46396-1-tony@atomide.com>
- <82c49602-8c6e-51c2-6f73-28fb9b458db8@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <82c49602-8c6e-51c2-6f73-28fb9b458db8@kernel.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+References: <20230719051525.46494-1-tony@atomide.com>
+ <35758c24-1543-6f96-7957-b371dc94e59d@kernel.org>
+ <20230719052811.GH5194@atomide.com>
+ <87431096-e883-c90d-853e-44a463c0e8f2@kernel.org>
+ <20230719053220.GI5194@atomide.com>
+From:   Jiri Slaby <jirislaby@kernel.org>
+In-Reply-To: <20230719053220.GI5194@atomide.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -76,20 +76,62 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Jul 19, 2023 at 07:26:41AM +0200, Jiri Slaby wrote:
-> On 19. 07. 23, 7:12, Tony Lindgren wrote:
-
-...
-
-> >   	int			ctrl_id;		/* optional serial core controller id */
-> > +	int			port_id;		/* optional serial core port id */
+On 19. 07. 23, 7:32, Tony Lindgren wrote:
+> * Jiri Slaby <jirislaby@kernel.org> [230719 05:29]:
+>> On 19. 07. 23, 7:28, Tony Lindgren wrote:
+>>> * Jiri Slaby <jirislaby@kernel.org> [230719 05:25]:
+>>>> On 19. 07. 23, 7:15, Tony Lindgren wrote:
+>>>>> +/*
+>>>>> + * Add preferred console if configured on kernel command line with naming
+>>>>> + * "console=dev_name:0.0".
+>>>>> + */
+>>>>> +static int serial_core_add_preferred_console(struct uart_driver *drv,
+>>>>> +					     struct uart_port *port)
+>>>>> +{
+>>>>> +	char *port_match, *opt, *name;
+>>>>> +	int len, ret = 0;
+>>>>> +
+>>>>> +	port_match = kasprintf(GFP_KERNEL, "console=%s:%i.%i",
+>>>>> +			       dev_name(port->dev), port->ctrl_id,
+>>>>> +			       port->port_id);
+>>>>> +	if (!port_match)
+>>>>> +		return -ENOMEM;
+>>>>> +
+>>>>> +	opt = strstr(saved_command_line, port_match);
+>>>>> +	if (!opt)
+>>>>> +		goto free_port_match;
+>>>>> +
+>>>>> +	len = strlen(port_match);
+>>>>> +
+>>>>> +	if (strlen(opt) > len + 1 && opt[len] == ',')
+>>>>> +		opt += len + 1;
+>>>>> +	else
+>>>>> +		opt = NULL;
+>>>>> +
+>>>>> +	name = kstrdup(drv->dev_name, GFP_KERNEL);
+>>>>
+>>>> Why do you dup the name here?
+>>>
+>>> I was getting ignoring const warning, but maybe the right solution is
+>>> to just use const char *name here.. Let me check.
+>>
+>> So fix add_preferred_console() instead ;).
 > 
-> Can the id be negative? If not, please use uint.
+> Let's see what kind of trouble changing it to use const char *name
+> might be.
 
-Does this suggestion apply to ctrl_id as well?
+I don't see any, the string is copied internally. So it should be 
+straightforward. Actually all three parameters of 
+__add_preferred_console() should be const, IMO. But that involves 
+changing struct console_cmdline. But that should be straightforward too.
 
+
+Aside from that, why do you parse saved_command_line on your own? 
+Instead of using setup() or other commonly used mechanisms for command 
+line handling?
+
+thanks,
 -- 
-With Best Regards,
-Andy Shevchenko
-
+js
+suse labs
 
