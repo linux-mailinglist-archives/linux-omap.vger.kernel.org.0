@@ -2,100 +2,157 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E2391759CB3
-	for <lists+linux-omap@lfdr.de>; Wed, 19 Jul 2023 19:47:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6417F759D0A
+	for <lists+linux-omap@lfdr.de>; Wed, 19 Jul 2023 20:04:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229609AbjGSRrP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 19 Jul 2023 13:47:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36256 "EHLO
+        id S230158AbjGSSET (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 19 Jul 2023 14:04:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45460 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229941AbjGSRrO (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 19 Jul 2023 13:47:14 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A46671FCB;
-        Wed, 19 Jul 2023 10:47:12 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 30AAB617C7;
-        Wed, 19 Jul 2023 17:47:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A4EBC433C7;
-        Wed, 19 Jul 2023 17:47:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689788831;
-        bh=7kL4h42G7ZH1MZ9Zs075t+pMGhnJufVDO5ELr+Wq6PM=;
-        h=From:To:In-Reply-To:References:Subject:Date:From;
-        b=YXpV3WP66mJ6HviOlag1r7RRPg2KscCMlnHplMUaELPPR0sD2FkWFG1hV8UDPBQuK
-         c2w2WcpoX+HlLTUYjS12beVuvFzqjY1q9GGyOLtI1u2aTwpcsgA1hQhNzNv6m9A6pk
-         oauGJUPtRe78dzLYyPXmdsZAsCB+i3ea1NcKRPbwogB8sCfOwGkbafe1+PxZVSP3rL
-         8Fg3ShLO0vnQ+06SU8Q8SLtj8RFrkrsWOvR0M9m9OuyfC1N8Vz3uiXCPbnPXR7n1r3
-         WI77LuCLWCBuQvj8i/Eecx74wRCbAPa05C+jjLtCxM47APARYNilhI+5/mxmupfe7c
-         Nw9FJwW6mP4ow==
-From:   Mark Brown <broonie@kernel.org>
-To:     bcousson@baylibre.com, tony@atomide.com, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com,
-        peter.ujfalusi@gmail.com, jarkko.nikula@bitmer.com,
-        dmitry.torokhov@gmail.com, linux-omap@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        alsa-devel@alsa-project.org, Andreas Kemnade <andreas@kemnade.info>
-In-Reply-To: <20230705190324.355282-1-andreas@kemnade.info>
-References: <20230705190324.355282-1-andreas@kemnade.info>
-Subject: Re: (subset) [PATCH 0/3] ARM: omap4: embt2ws: Add audio support
-Message-Id: <168978882827.125745.5619053137283320178.b4-ty@kernel.org>
-Date:   Wed, 19 Jul 2023 18:47:08 +0100
+        with ESMTP id S229657AbjGSSES (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 19 Jul 2023 14:04:18 -0400
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BE8D1FC1;
+        Wed, 19 Jul 2023 11:04:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1689789857; x=1721325857;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=k0ST5eRJQGf1AMKFy/YtWddswHjc7qS0Az8Lzm+dNQw=;
+  b=GFkVzdVNQa8XFb3mq042BiowUzD46mxdMrGz9vBvvha51he3zeiHnZTJ
+   xbW+G6oJ7UxUdbb2KPDgww/0mI0iQQtufZfx4Q0+7lErFEm8qlVzgb/fF
+   jB9GoKa9kcixqVkeuqmoMb1noMs6SShx1fMeHDwzIV0S/l7NUEQflBkkn
+   XTeYNEgd8mlsfPeV4pwbzwXU6mvgWh3h2idSnpGDMMIjs8MlfxfaV8si3
+   aVBphyzTbyx0IpdAVPL4Cq0eiqIvgTq9dMFkGaKcO6DH0UWzXOI6RUWo4
+   +oMKTDHCngYFJl/iNT/c6rOndcprR4go/EZo/iEZsF3aBTselTXlDzcVz
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10776"; a="366577142"
+X-IronPort-AV: E=Sophos;i="6.01,216,1684825200"; 
+   d="scan'208";a="366577142"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jul 2023 11:04:17 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10776"; a="794136515"
+X-IronPort-AV: E=Sophos;i="6.01,216,1684825200"; 
+   d="scan'208";a="794136515"
+Received: from lkp-server02.sh.intel.com (HELO 36946fcf73d7) ([10.239.97.151])
+  by fmsmga004.fm.intel.com with ESMTP; 19 Jul 2023 11:04:13 -0700
+Received: from kbuild by 36946fcf73d7 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qMBX2-0005MD-0F;
+        Wed, 19 Jul 2023 18:04:12 +0000
+Date:   Thu, 20 Jul 2023 02:03:15 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Tony Lindgren <tony@atomide.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>
+Cc:     oe-kbuild-all@lists.linux.dev,
+        Andy Shevchenko <andriy.shevchenko@intel.com>,
+        Dhruva Gole <d-gole@ti.com>,
+        Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        John Ogness <john.ogness@linutronix.de>,
+        Johan Hovold <johan@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        linux-omap@vger.kernel.org, linux-serial@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] serial: core: Add support for dev_name:0.0 naming for
+ kernel console
+Message-ID: <202307200137.Wk1s5BY7-lkp@intel.com>
+References: <20230719051525.46494-1-tony@atomide.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13-dev-099c9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230719051525.46494-1-tony@atomide.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, 05 Jul 2023 21:03:21 +0200, Andreas Kemnade wrote:
-> Add audio support for Epson Moverio BT-200.
-> In the vendor kernel, the MCBSP side is used as master,
-> so do it here also that way.
-> 
-> Andreas Kemnade (3):
->   ASoC: ti: omap-mcbsp: Ignore errors for getting fck_src
->   ASoC: tlv320aic3x: use BCLK instead of MCLK if not in master mode
->   ARM: dts: omap4: embt2ws: Add audio support
-> 
-> [...]
+Hi Tony,
 
-Applied to
+kernel test robot noticed the following build errors:
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+[auto build test ERROR on tty/tty-testing]
+[also build test ERROR on tty/tty-next tty/tty-linus usb/usb-testing usb/usb-next usb/usb-linus linus/master v6.5-rc2 next-20230719]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Thanks!
+url:    https://github.com/intel-lab-lkp/linux/commits/Tony-Lindgren/serial-core-Add-support-for-dev_name-0-0-naming-for-kernel-console/20230719-131657
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/tty.git tty-testing
+patch link:    https://lore.kernel.org/r/20230719051525.46494-1-tony%40atomide.com
+patch subject: [PATCH] serial: core: Add support for dev_name:0.0 naming for kernel console
+config: x86_64-defconfig (https://download.01.org/0day-ci/archive/20230720/202307200137.Wk1s5BY7-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+reproduce: (https://download.01.org/0day-ci/archive/20230720/202307200137.Wk1s5BY7-lkp@intel.com/reproduce)
 
-[1/3] ASoC: ti: omap-mcbsp: Ignore errors for getting fck_src
-      commit: 82e7c8b93a0614b1725e0ea11d0a77b04e058716
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202307200137.Wk1s5BY7-lkp@intel.com/
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+All errors (new ones prefixed by >>):
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+   drivers/tty/serial/serial_core.c: In function 'serial_core_add_preferred_console':
+>> drivers/tty/serial/serial_core.c:3337:36: error: 'struct uart_port' has no member named 'port_id'
+    3337 |                                port->port_id);
+         |                                    ^~
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+vim +3337 drivers/tty/serial/serial_core.c
 
-Thanks,
-Mark
+  3324	
+  3325	/*
+  3326	 * Add preferred console if configured on kernel command line with naming
+  3327	 * "console=dev_name:0.0".
+  3328	 */
+  3329	static int serial_core_add_preferred_console(struct uart_driver *drv,
+  3330						     struct uart_port *port)
+  3331	{
+  3332		char *port_match, *opt, *name;
+  3333		int len, ret = 0;
+  3334	
+  3335		port_match = kasprintf(GFP_KERNEL, "console=%s:%i.%i",
+  3336				       dev_name(port->dev), port->ctrl_id,
+> 3337				       port->port_id);
+  3338		if (!port_match)
+  3339			return -ENOMEM;
+  3340	
+  3341		opt = strstr(saved_command_line, port_match);
+  3342		if (!opt)
+  3343			goto free_port_match;
+  3344	
+  3345		len = strlen(port_match);
+  3346	
+  3347		if (strlen(opt) > len + 1 && opt[len] == ',')
+  3348			opt += len + 1;
+  3349		else
+  3350			opt = NULL;
+  3351	
+  3352		name = kstrdup(drv->dev_name, GFP_KERNEL);
+  3353		if (!name) {
+  3354			ret = -ENOMEM;
+  3355			goto free_port_match;
+  3356		}
+  3357	
+  3358		add_preferred_console(name, port->line, opt);
+  3359	
+  3360		kfree(name);
+  3361	
+  3362	free_port_match:
+  3363		kfree(port_match);
+  3364	
+  3365		return ret;
+  3366	}
+  3367	
 
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
