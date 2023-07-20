@@ -2,129 +2,74 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 524E675A522
-	for <lists+linux-omap@lfdr.de>; Thu, 20 Jul 2023 06:35:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 194DF75A558
+	for <lists+linux-omap@lfdr.de>; Thu, 20 Jul 2023 07:10:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229682AbjGTEfr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 20 Jul 2023 00:35:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59204 "EHLO
+        id S229503AbjGTFKc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 20 Jul 2023 01:10:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229477AbjGTEfr (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 20 Jul 2023 00:35:47 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 649CF1FD5;
-        Wed, 19 Jul 2023 21:35:46 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 01C5A61711;
-        Thu, 20 Jul 2023 04:35:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DA84C433C7;
-        Thu, 20 Jul 2023 04:35:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689827745;
-        bh=d9AKXeTNlZzlG6Phg9AfyhYmnmjPYT0tp1CULN8PnW0=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=tdUV0RbGmzIwaSAjaKh1P8L51/7NeYy5KHuzTpZOA8DKcu95ZMO98l2AIdF8ssFLk
-         +hVY7sxUBU/CPgVDRlj7bhcDWQYwSu/XTdzZsWv/KpW+U6zSZeTsp/odnEpgJdJy3m
-         Flr51URsP0sXic6+U+vwqDFj66/q5UwK5ABjyJJw+97lIBIT7cDvifPW8b0mqXUltF
-         c6+YbvPcUBNLp2j1AlRGARLJwSBrUC/2pL4IMfUbkkhqCnAsdNT41rT0DKRb5DHCYM
-         4OEypzDEWCnyRuqkLiy550qt/hqle4rqyVOq8AM9GP3IL+LLyMw0u81HBR3bQCkcaF
-         5oQssBwS6uE2A==
-Date:   Wed, 19 Jul 2023 21:35:43 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     MD Danish Anwar <danishanwar@ti.com>
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        Roger Quadros <rogerq@kernel.org>,
-        Simon Horman <simon.horman@corigine.com>,
+        with ESMTP id S229451AbjGTFKa (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 20 Jul 2023 01:10:30 -0400
+Received: from muru.com (muru.com [72.249.23.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id E1364EC
+        for <linux-omap@vger.kernel.org>; Wed, 19 Jul 2023 22:10:29 -0700 (PDT)
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id 4658980F7;
+        Thu, 20 Jul 2023 05:10:28 +0000 (UTC)
+From:   Tony Lindgren <tony@atomide.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@intel.com>,
+        Dhruva Gole <d-gole@ti.com>,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        John Ogness <john.ogness@linutronix.de>,
+        Johan Hovold <johan@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
         Vignesh Raghavendra <vigneshr@ti.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>, <nm@ti.com>, <srk@ti.com>,
-        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH v10 2/2] net: ti: icssg-prueth: Add ICSSG ethernet
- driver
-Message-ID: <20230719213543.0380e13e@kernel.org>
-In-Reply-To: <20230719082755.3399424-3-danishanwar@ti.com>
-References: <20230719082755.3399424-1-danishanwar@ti.com>
-        <20230719082755.3399424-3-danishanwar@ti.com>
+        linux-omap@vger.kernel.org
+Subject: [PATCH v2 0/3] Serial core controller port device name fixes
+Date:   Thu, 20 Jul 2023 08:10:13 +0300
+Message-ID: <20230720051021.14961-1-tony@atomide.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The patch is too big to review.
+A few issues have been found with device naming for the serial core
+controller port device. These issues currently affect mostly the output
+for /sys/bus/serial-base/devices, but need to be also fixed to avoid
+port addressing issues later on. It would be good to get these fixes into
+the -rc cycle to avoid folks possibly trying to use the incorrect sysfs
+port device names for finding uart ports for example.
 
-Please break it apart separating into individual features, targeting
-around 10 patches in the series. That will make it easier for reviewers
-to take a look at the features in which they have expertise.
+Regards,
 
-See two things which jumped out at me immediately below:
+Tony
 
-On Wed, 19 Jul 2023 13:57:55 +0530 MD Danish Anwar wrote:
-> +	ICSSG_STATS(rx_crc_error_frames),
+Changes since v1:
+- Port id cannot be negative as noted by Jiri
 
-> +	ICSSG_STATS(rx_max_size_error_frames),
-> +	ICSSG_STATS(rx_frame_min_size),
-> +	ICSSG_STATS(rx_min_size_error_frames),
-> +	ICSSG_STATS(rx_overrun_frames),
+- Controller id cannot be negative as noted by Andy
 
-> +	ICSSG_STATS(rx_64B_frames),
-> +	ICSSG_STATS(rx_bucket1_frames),
-> +	ICSSG_STATS(rx_bucket2_frames),
-> +	ICSSG_STATS(rx_bucket3_frames),
-> +	ICSSG_STATS(rx_bucket4_frames),
-> +	ICSSG_STATS(rx_bucket5_frames),
-> +	ICSSG_STATS(rx_total_bytes),
-> +	ICSSG_STATS(rx_tx_total_bytes),
-> +	/* Tx */
-> +	ICSSG_STATS(tx_good_frames),
-> +	ICSSG_STATS(tx_broadcast_frames),
-> +	ICSSG_STATS(tx_multicast_frames),
-> +	ICSSG_STATS(tx_odd_nibble_frames),
-> +	ICSSG_STATS(tx_underflow_errors),
-> +	ICSSG_STATS(tx_frame_max_size),
-> +	ICSSG_STATS(tx_max_size_error_frames),
-> +	ICSSG_STATS(tx_frame_min_size),
-> +	ICSSG_STATS(tx_min_size_error_frames),
-> +	ICSSG_STATS(tx_bucket1_size),
-> +	ICSSG_STATS(tx_bucket2_size),
-> +	ICSSG_STATS(tx_bucket3_size),
-> +	ICSSG_STATS(tx_bucket4_size),
-> +	ICSSG_STATS(tx_64B_frames),
-> +	ICSSG_STATS(tx_bucket1_frames),
-> +	ICSSG_STATS(tx_bucket2_frames),
-> +	ICSSG_STATS(tx_bucket3_frames),
-> +	ICSSG_STATS(tx_bucket4_frames),
-> +	ICSSG_STATS(tx_bucket5_frames),
-> +	ICSSG_STATS(tx_total_bytes),
+- Port name is missing the controller instance as noted by Andy
 
-Please use standard stats:
-https://docs.kernel.org/next/networking/statistics.html
+Tony Lindgren (3):
+  serial: core: Controller id cannot be negative
+  serial: core: Fix serial core port id to not use port->line
+  serial: core: Fix serial core controller port name to show controller
+    id
 
-And do not duplicate those stats in the ethool -S output.
+ drivers/tty/serial/8250/8250_core.c  |  2 ++
+ drivers/tty/serial/serial_base_bus.c | 33 ++++++++++++++++++----------
+ include/linux/serial_core.h          |  3 ++-
+ 3 files changed, 25 insertions(+), 13 deletions(-)
 
-> +static const char emac_ethtool_priv_flags[][ETH_GSTRING_LEN] = {
-> +	"iet-frame-preemption",
-> +	"iet-mac-verify",
-> +};
-
-What are these? We have a proper ethtool API for frame preemption.
 -- 
-pw-bot: cr
+2.41.0
