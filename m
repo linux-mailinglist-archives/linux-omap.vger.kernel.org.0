@@ -2,142 +2,396 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C8CD475A561
-	for <lists+linux-omap@lfdr.de>; Thu, 20 Jul 2023 07:11:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBC7375A632
+	for <lists+linux-omap@lfdr.de>; Thu, 20 Jul 2023 08:20:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229750AbjGTFK7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 20 Jul 2023 01:10:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36142 "EHLO
+        id S229890AbjGTGUV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 20 Jul 2023 02:20:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229832AbjGTFK4 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 20 Jul 2023 01:10:56 -0400
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 83EFB269E;
-        Wed, 19 Jul 2023 22:10:50 -0700 (PDT)
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 3CF7D80F7;
-        Thu, 20 Jul 2023 05:10:47 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Dhruva Gole <d-gole@ti.com>,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        John Ogness <john.ogness@linutronix.de>,
-        Johan Hovold <johan@kernel.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-omap@vger.kernel.org, linux-serial@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v2 3/3] serial: core: Fix serial core controller port name to show controller id
-Date:   Thu, 20 Jul 2023 08:10:16 +0300
-Message-ID: <20230720051021.14961-4-tony@atomide.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230720051021.14961-1-tony@atomide.com>
-References: <20230720051021.14961-1-tony@atomide.com>
+        with ESMTP id S229591AbjGTGUU (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 20 Jul 2023 02:20:20 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EFAB210C;
+        Wed, 19 Jul 2023 23:20:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1689833997; x=1690438797; i=deller@gmx.de;
+ bh=GqbM9uazU1aG9mZPA7y4FkFMh3oOFi2SYaKQzQeo6RU=;
+ h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+ b=F+uctR4DarX5dfuN+E+FYCY+87t9IBUFLA6PyyY9o+C5ZUiz11Nq9n3o93iWRMhnI9Qr0LX
+ 3lf0H99EdBweZjJUTV0BEr+b9QkABB3TneYvJ3vwT2aidUehyKe6HLCNYGWW+4MWMUkZfyu+3
+ f6H5R2DKUpMdICvoqbtlUJ3ipoohMo/bm4w6ZF37RTv8sNOv0w4VKOLA9ieXaIJXd6Y23W3Z+
+ H4YzsWmmq9Kib5WtsFvxUZ99gp4HmyUPxecuaZJDEo0tR6o/9uRc6HCQSQLe5M7Hh+ereL9XI
+ 5p015nPXYPP9VvmBTc4SDHWVCr1HXcR3IuHoUM2OJI/iQegO8brA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.60] ([94.134.153.9]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MGQj7-1q8NSi2Es1-00Go1r; Thu, 20
+ Jul 2023 08:19:57 +0200
+Message-ID: <7217d0fe-7b06-7213-f939-3e2d9b2f6b5a@gmx.de>
+Date:   Thu, 20 Jul 2023 08:19:54 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v2] fb: Explicitly include correct DT includes
+Content-Language: en-US
+To:     Rob Herring <robh@kernel.org>, Michal Simek <michal.simek@amd.com>
+Cc:     devicetree@vger.kernel.org,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+References: <20230718143227.1067178-1-robh@kernel.org>
+From:   Helge Deller <deller@gmx.de>
+In-Reply-To: <20230718143227.1067178-1-robh@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:tzrjxkOY0OvdPVtGD9X87Pcn8+yA2eAF2PSQLlfJ/953Dzxj2k6
+ JnOGMkm8SyGB0piIsyKXTKuoeSmKpDrooJzB7nCQqL1VcbuTqEkoLtQ/TMXsuodhZGcnjab
+ ib0ctJU5kGHVK+U8+dRrhnrmX/IfhQrVUcWWphWwN49NJbbppLpkqrEZqyukj022OebAwkT
+ vqmz6PtZaDQ6OQh1Zydrg==
+UI-OutboundReport: notjunk:1;M01:P0:MHdg98xXBVI=;vI3z3MFtGHabpbietwhGBnnHUtU
+ ofP3Mi5Urf6AibhoBasPEBc2apbV066cYbbeffvqq92n69ptV+Gfobqpss5t78XNaMLjBhZfa
+ CJERbSj+/0xpgtVj6Y2Oneeksg34/kdbOIr44g1/GoUqOtj6s2OnvYAB1oe1LQ8PuzFKulRpp
+ +sAqE7VV0P6eC9Qi0pWaoruwBvMKj4BpVFQBgRjPMWjEGY29Cz0DPUt1+37f/OBa4z6aTi4Nw
+ 2oFxpFdoybrZAvNKkzSVPYBczgoMa0feYtnMWxUYnRBHEzrNMvd7PCshCffMZojiQWhNDGh9R
+ kqgEhJaD/6R1Vz0TeBzcv+ryPVTlTrOhxVy/SwLbUG87jum1Zh9k+4zNh9xGd6tCi0l7WeIWv
+ ajP0Tu7NOViRutgJCL7TtbcPsXVlzAZBqMnLu9YtPdN7eE0xVwW7TyNkBVEUi0pAyBW4XoJJ0
+ hDId2lsWx+k/LQ+DlEMFnmFlaZD4xmz8KfQttXyUklb1tboHJI2+eblSr6AD7nkexjR4deqVW
+ qclAWlZ+EHSaSkbs1xd3H0IdW+5c663kaOFuyHCWiSbQts/PS8thegFiP1BbVz4KTAg9n31iz
+ uer0X1lNQcV3OEcHl7aIqRPWwepyItuESM+vAK8/Srwf/s7fOu+GrttnnparhrCMEAVW7GQZs
+ v53WNXfb1iFj2PulqQKij3/v9+0mGJBbeTGCsUeX6JKY2vbKrc6jX6G/V9yVJ410eJ+jjCi9D
+ vZZDfb3s9JgtpVZwAYAJFtL3cqW2NOXT+EIAzKBkZaizR48wX7d0Gy5LjdhZ6XDXBszNJo2kI
+ imzVa4ujfiLF1yMEyN828O+w4GOnGxsEBC9rC+rBOUTeGQULT70sOdpwyFNx8wZA/GBjCUKfa
+ 2TAD9GSxSop/Ea3FnKAVVHY8Ewo0Ynyq5ToAQwR7qhSER01+87/seHVp2kEUBGIbV7qmIImb/
+ 08PKukElyAMOJ7FUxXupnL5vHws=
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-We are missing the serial core controller id for the serial core port
-name. Let's fix the issue for sane /sys/bus/serial-core/devices, and to
-avoid issues addressing serial ports later on.
+On 7/18/23 16:32, Rob Herring wrote:
+> The DT of_device.h and of_platform.h date back to the separate
+> of_platform_bus_type before it as merged into the regular platform bus.
+> As part of that merge prepping Arm DT support 13 years ago, they
+> "temporarily" include each other. They also include platform_device.h
+> and of.h. As a result, there's a pretty much random mix of those include
+> files used throughout the tree. In order to detangle these headers and
+> replace the implicit includes with struct declarations, users need to
+> explicitly include the correct includes.
+>
+> Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Signed-off-by: Rob Herring <robh@kernel.org>
 
-Fixes: 84a9582fd203 ("serial: core: Start managing serial controllers to enable runtime PM")
-Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Closes: https://lore.kernel.org/linux-serial/20230719051613.46569-1-tony@atomide.com/T/#m0f358e91262f7f56198ba9d0a7100809e9e35cc5
-Signed-off-by: Tony Lindgren <tony@atomide.com>
----
- drivers/tty/serial/serial_base_bus.c | 33 ++++++++++++++++++----------
- 1 file changed, 21 insertions(+), 12 deletions(-)
+applied to fbdev git tree.
 
-diff --git a/drivers/tty/serial/serial_base_bus.c b/drivers/tty/serial/serial_base_bus.c
---- a/drivers/tty/serial/serial_base_bus.c
-+++ b/drivers/tty/serial/serial_base_bus.c
-@@ -19,6 +19,14 @@
- 
- static bool serial_base_initialized;
- 
-+static const struct device_type serial_ctrl_type = {
-+	.name = "ctrl",
-+};
-+
-+static const struct device_type serial_port_type = {
-+	.name = "port",
-+};
-+
- static int serial_base_match(struct device *dev, struct device_driver *drv)
- {
- 	int len = strlen(drv->name);
-@@ -48,7 +56,8 @@ static int serial_base_device_init(struct uart_port *port,
- 				   struct device *parent_dev,
- 				   const struct device_type *type,
- 				   void (*release)(struct device *dev),
--				   int id)
-+				   unsigned int ctrl_id,
-+				   unsigned int port_id)
- {
- 	device_initialize(dev);
- 	dev->type = type;
-@@ -61,13 +70,17 @@ static int serial_base_device_init(struct uart_port *port,
- 		return -EPROBE_DEFER;
- 	}
- 
--	return dev_set_name(dev, "%s.%s.%d", type->name, dev_name(port->dev), id);
-+	if (type == &serial_ctrl_type)
-+		return dev_set_name(dev, "%s.%s.%d", type->name,
-+				    dev_name(port->dev), ctrl_id);
-+	else if (type == &serial_port_type)
-+		return dev_set_name(dev, "%s.%s.%d.%d", type->name,
-+				    dev_name(port->dev), ctrl_id,
-+				    port_id);
-+	else
-+		return -EINVAL;
- }
- 
--static const struct device_type serial_ctrl_type = {
--	.name = "ctrl",
--};
--
- static void serial_base_ctrl_release(struct device *dev)
- {
- 	struct serial_ctrl_device *ctrl_dev = to_serial_base_ctrl_device(dev);
-@@ -96,7 +109,7 @@ struct serial_ctrl_device *serial_base_ctrl_add(struct uart_port *port,
- 	err = serial_base_device_init(port, &ctrl_dev->dev,
- 				      parent, &serial_ctrl_type,
- 				      serial_base_ctrl_release,
--				      port->ctrl_id);
-+				      port->ctrl_id, 0);
- 	if (err)
- 		goto err_put_device;
- 
-@@ -112,10 +125,6 @@ struct serial_ctrl_device *serial_base_ctrl_add(struct uart_port *port,
- 	return ERR_PTR(err);
- }
- 
--static const struct device_type serial_port_type = {
--	.name = "port",
--};
--
- static void serial_base_port_release(struct device *dev)
- {
- 	struct serial_port_device *port_dev = to_serial_base_port_device(dev);
-@@ -136,7 +145,7 @@ struct serial_port_device *serial_base_port_add(struct uart_port *port,
- 	err = serial_base_device_init(port, &port_dev->dev,
- 				      &ctrl_dev->dev, &serial_port_type,
- 				      serial_base_port_release,
--				      port->port_id);
-+				      port->ctrl_id, port->port_id);
- 	if (err)
- 		goto err_put_device;
- 
--- 
-2.41.0
+Thanks!
+Helge
+
+> ---
+> v2:
+>   - Drop whitespace changes in sbuslib.c
+> ---
+>   drivers/video/fbdev/bw2.c                                | 3 ++-
+>   drivers/video/fbdev/cg14.c                               | 3 ++-
+>   drivers/video/fbdev/cg3.c                                | 3 ++-
+>   drivers/video/fbdev/cg6.c                                | 3 ++-
+>   drivers/video/fbdev/ffb.c                                | 3 ++-
+>   drivers/video/fbdev/grvga.c                              | 3 +--
+>   drivers/video/fbdev/leo.c                                | 3 ++-
+>   drivers/video/fbdev/mb862xx/mb862xxfb_accel.c            | 4 +---
+>   drivers/video/fbdev/mb862xx/mb862xxfbdrv.c               | 6 +++---
+>   drivers/video/fbdev/omap2/omapfb/displays/panel-dsi-cm.c | 2 +-
+>   drivers/video/fbdev/p9100.c                              | 3 ++-
+>   drivers/video/fbdev/platinumfb.c                         | 4 ++--
+>   drivers/video/fbdev/sbuslib.c                            | 2 +-
+>   drivers/video/fbdev/sunxvr1000.c                         | 3 ++-
+>   drivers/video/fbdev/sunxvr2500.c                         | 2 +-
+>   drivers/video/fbdev/sunxvr500.c                          | 2 +-
+>   drivers/video/fbdev/tcx.c                                | 3 ++-
+>   drivers/video/fbdev/xilinxfb.c                           | 5 ++---
+>   18 files changed, 31 insertions(+), 26 deletions(-)
+>
+> diff --git a/drivers/video/fbdev/bw2.c b/drivers/video/fbdev/bw2.c
+> index 025d663dc6fd..39f438de0d6b 100644
+> --- a/drivers/video/fbdev/bw2.c
+> +++ b/drivers/video/fbdev/bw2.c
+> @@ -17,7 +17,8 @@
+>   #include <linux/init.h>
+>   #include <linux/fb.h>
+>   #include <linux/mm.h>
+> -#include <linux/of_device.h>
+> +#include <linux/of.h>
+> +#include <linux/platform_device.h>
+>
+>   #include <asm/io.h>
+>   #include <asm/fbio.h>
+> diff --git a/drivers/video/fbdev/cg14.c b/drivers/video/fbdev/cg14.c
+> index 832a82f45c80..90fdc9d9bf5a 100644
+> --- a/drivers/video/fbdev/cg14.c
+> +++ b/drivers/video/fbdev/cg14.c
+> @@ -17,7 +17,8 @@
+>   #include <linux/fb.h>
+>   #include <linux/mm.h>
+>   #include <linux/uaccess.h>
+> -#include <linux/of_device.h>
+> +#include <linux/of.h>
+> +#include <linux/platform_device.h>
+>
+>   #include <asm/io.h>
+>   #include <asm/fbio.h>
+> diff --git a/drivers/video/fbdev/cg3.c b/drivers/video/fbdev/cg3.c
+> index 6335cd364c74..98c60f72046a 100644
+> --- a/drivers/video/fbdev/cg3.c
+> +++ b/drivers/video/fbdev/cg3.c
+> @@ -17,7 +17,8 @@
+>   #include <linux/init.h>
+>   #include <linux/fb.h>
+>   #include <linux/mm.h>
+> -#include <linux/of_device.h>
+> +#include <linux/of.h>
+> +#include <linux/platform_device.h>
+>
+>   #include <asm/io.h>
+>   #include <asm/fbio.h>
+> diff --git a/drivers/video/fbdev/cg6.c b/drivers/video/fbdev/cg6.c
+> index 6884572efea1..6427b85f1a94 100644
+> --- a/drivers/video/fbdev/cg6.c
+> +++ b/drivers/video/fbdev/cg6.c
+> @@ -17,7 +17,8 @@
+>   #include <linux/init.h>
+>   #include <linux/fb.h>
+>   #include <linux/mm.h>
+> -#include <linux/of_device.h>
+> +#include <linux/of.h>
+> +#include <linux/platform_device.h>
+>
+>   #include <asm/io.h>
+>   #include <asm/fbio.h>
+> diff --git a/drivers/video/fbdev/ffb.c b/drivers/video/fbdev/ffb.c
+> index c6d3111dcbb0..c473841eb6ff 100644
+> --- a/drivers/video/fbdev/ffb.c
+> +++ b/drivers/video/fbdev/ffb.c
+> @@ -16,7 +16,8 @@
+>   #include <linux/fb.h>
+>   #include <linux/mm.h>
+>   #include <linux/timer.h>
+> -#include <linux/of_device.h>
+> +#include <linux/of.h>
+> +#include <linux/platform_device.h>
+>
+>   #include <asm/io.h>
+>   #include <asm/upa.h>
+> diff --git a/drivers/video/fbdev/grvga.c b/drivers/video/fbdev/grvga.c
+> index 9aa15be29ea9..d4a9a58b3691 100644
+> --- a/drivers/video/fbdev/grvga.c
+> +++ b/drivers/video/fbdev/grvga.c
+> @@ -12,8 +12,7 @@
+>
+>   #include <linux/platform_device.h>
+>   #include <linux/dma-mapping.h>
+> -#include <linux/of_platform.h>
+> -#include <linux/of_device.h>
+> +#include <linux/of.h>
+>   #include <linux/module.h>
+>   #include <linux/kernel.h>
+>   #include <linux/string.h>
+> diff --git a/drivers/video/fbdev/leo.c b/drivers/video/fbdev/leo.c
+> index 3ffc0a725f89..89ca48235dbe 100644
+> --- a/drivers/video/fbdev/leo.c
+> +++ b/drivers/video/fbdev/leo.c
+> @@ -16,8 +16,9 @@
+>   #include <linux/init.h>
+>   #include <linux/fb.h>
+>   #include <linux/mm.h>
+> -#include <linux/of_device.h>
+>   #include <linux/io.h>
+> +#include <linux/of.h>
+> +#include <linux/platform_device.h>
+>
+>   #include <asm/fbio.h>
+>
+> diff --git a/drivers/video/fbdev/mb862xx/mb862xxfb_accel.c b/drivers/vid=
+eo/fbdev/mb862xx/mb862xxfb_accel.c
+> index 61aed7fc0b8d..c35a7479fbf2 100644
+> --- a/drivers/video/fbdev/mb862xx/mb862xxfb_accel.c
+> +++ b/drivers/video/fbdev/mb862xx/mb862xxfb_accel.c
+> @@ -15,9 +15,7 @@
+>   #include <linux/module.h>
+>   #include <linux/pci.h>
+>   #include <linux/slab.h>
+> -#if defined(CONFIG_OF)
+> -#include <linux/of_platform.h>
+> -#endif
+> +
+>   #include "mb862xxfb.h"
+>   #include "mb862xx_reg.h"
+>   #include "mb862xxfb_accel.h"
+> diff --git a/drivers/video/fbdev/mb862xx/mb862xxfbdrv.c b/drivers/video/=
+fbdev/mb862xx/mb862xxfbdrv.c
+> index b5c8fcab9940..9dc347d163cf 100644
+> --- a/drivers/video/fbdev/mb862xx/mb862xxfbdrv.c
+> +++ b/drivers/video/fbdev/mb862xx/mb862xxfbdrv.c
+> @@ -18,11 +18,11 @@
+>   #include <linux/init.h>
+>   #include <linux/interrupt.h>
+>   #include <linux/pci.h>
+> -#if defined(CONFIG_OF)
+> +#include <linux/of.h>
+>   #include <linux/of_address.h>
+>   #include <linux/of_irq.h>
+> -#include <linux/of_platform.h>
+> -#endif
+> +#include <linux/platform_device.h>
+> +
+>   #include "mb862xxfb.h"
+>   #include "mb862xx_reg.h"
+>
+> diff --git a/drivers/video/fbdev/omap2/omapfb/displays/panel-dsi-cm.c b/=
+drivers/video/fbdev/omap2/omapfb/displays/panel-dsi-cm.c
+> index ba94a0a7bd4f..77fce1223a64 100644
+> --- a/drivers/video/fbdev/omap2/omapfb/displays/panel-dsi-cm.c
+> +++ b/drivers/video/fbdev/omap2/omapfb/displays/panel-dsi-cm.c
+> @@ -15,12 +15,12 @@
+>   #include <linux/gpio/consumer.h>
+>   #include <linux/interrupt.h>
+>   #include <linux/jiffies.h>
+> +#include <linux/mod_devicetable.h>
+>   #include <linux/module.h>
+>   #include <linux/platform_device.h>
+>   #include <linux/sched/signal.h>
+>   #include <linux/slab.h>
+>   #include <linux/workqueue.h>
+> -#include <linux/of_device.h>
+>
+>   #include <video/omapfb_dss.h>
+>   #include <video/mipi_display.h>
+> diff --git a/drivers/video/fbdev/p9100.c b/drivers/video/fbdev/p9100.c
+> index 0876962c52eb..e2e747cae9b1 100644
+> --- a/drivers/video/fbdev/p9100.c
+> +++ b/drivers/video/fbdev/p9100.c
+> @@ -15,7 +15,8 @@
+>   #include <linux/init.h>
+>   #include <linux/fb.h>
+>   #include <linux/mm.h>
+> -#include <linux/of_device.h>
+> +#include <linux/of.h>
+> +#include <linux/platform_device.h>
+>
+>   #include <asm/io.h>
+>   #include <asm/fbio.h>
+> diff --git a/drivers/video/fbdev/platinumfb.c b/drivers/video/fbdev/plat=
+inumfb.c
+> index f8283fcd5edb..b27f43b3616e 100644
+> --- a/drivers/video/fbdev/platinumfb.c
+> +++ b/drivers/video/fbdev/platinumfb.c
+> @@ -30,9 +30,9 @@
+>   #include <linux/fb.h>
+>   #include <linux/init.h>
+>   #include <linux/nvram.h>
+> +#include <linux/of.h>
+>   #include <linux/of_address.h>
+> -#include <linux/of_device.h>
+> -#include <linux/of_platform.h>
+> +#include <linux/platform_device.h>
+>
+>   #include "macmodes.h"
+>   #include "platinumfb.h"
+> diff --git a/drivers/video/fbdev/sbuslib.c b/drivers/video/fbdev/sbuslib=
+.c
+> index 7f79db827b07..21e9fd8e69e2 100644
+> --- a/drivers/video/fbdev/sbuslib.c
+> +++ b/drivers/video/fbdev/sbuslib.c
+> @@ -11,7 +11,7 @@
+>   #include <linux/fb.h>
+>   #include <linux/mm.h>
+>   #include <linux/uaccess.h>
+> -#include <linux/of_device.h>
+> +#include <linux/of.h>
+>
+>   #include <asm/fbio.h>
+>
+> diff --git a/drivers/video/fbdev/sunxvr1000.c b/drivers/video/fbdev/sunx=
+vr1000.c
+> index 490bd9a14763..17d61e1d11a6 100644
+> --- a/drivers/video/fbdev/sunxvr1000.c
+> +++ b/drivers/video/fbdev/sunxvr1000.c
+> @@ -8,7 +8,8 @@
+>   #include <linux/kernel.h>
+>   #include <linux/fb.h>
+>   #include <linux/init.h>
+> -#include <linux/of_device.h>
+> +#include <linux/of.h>
+> +#include <linux/platform_device.h>
+>
+>   struct gfb_info {
+>   	struct fb_info		*info;
+> diff --git a/drivers/video/fbdev/sunxvr2500.c b/drivers/video/fbdev/sunx=
+vr2500.c
+> index 2cab4b9be68a..e64ec7d0caf9 100644
+> --- a/drivers/video/fbdev/sunxvr2500.c
+> +++ b/drivers/video/fbdev/sunxvr2500.c
+> @@ -10,7 +10,7 @@
+>   #include <linux/fb.h>
+>   #include <linux/pci.h>
+>   #include <linux/init.h>
+> -#include <linux/of_device.h>
+> +#include <linux/of.h>
+>
+>   #include <asm/io.h>
+>
+> diff --git a/drivers/video/fbdev/sunxvr500.c b/drivers/video/fbdev/sunxv=
+r500.c
+> index 6ec358af1256..c4e01e871483 100644
+> --- a/drivers/video/fbdev/sunxvr500.c
+> +++ b/drivers/video/fbdev/sunxvr500.c
+> @@ -10,7 +10,7 @@
+>   #include <linux/fb.h>
+>   #include <linux/pci.h>
+>   #include <linux/init.h>
+> -#include <linux/of_device.h>
+> +#include <linux/of.h>
+>
+>   #include <asm/io.h>
+>
+> diff --git a/drivers/video/fbdev/tcx.c b/drivers/video/fbdev/tcx.c
+> index fc3ac2301b45..255eb57aefa2 100644
+> --- a/drivers/video/fbdev/tcx.c
+> +++ b/drivers/video/fbdev/tcx.c
+> @@ -17,7 +17,8 @@
+>   #include <linux/init.h>
+>   #include <linux/fb.h>
+>   #include <linux/mm.h>
+> -#include <linux/of_device.h>
+> +#include <linux/of.h>
+> +#include <linux/platform_device.h>
+>
+>   #include <asm/io.h>
+>   #include <asm/fbio.h>
+> diff --git a/drivers/video/fbdev/xilinxfb.c b/drivers/video/fbdev/xilinx=
+fb.c
+> index 2aa3a528277f..542baddd54ad 100644
+> --- a/drivers/video/fbdev/xilinxfb.c
+> +++ b/drivers/video/fbdev/xilinxfb.c
+> @@ -24,14 +24,13 @@
+>   #include <linux/module.h>
+>   #include <linux/kernel.h>
+>   #include <linux/errno.h>
+> +#include <linux/platform_device.h>
+>   #include <linux/string.h>
+>   #include <linux/mm.h>
+>   #include <linux/fb.h>
+>   #include <linux/init.h>
+>   #include <linux/dma-mapping.h>
+> -#include <linux/of_device.h>
+> -#include <linux/of_platform.h>
+> -#include <linux/of_address.h>
+> +#include <linux/of.h>
+>   #include <linux/io.h>
+>   #include <linux/slab.h>
+>
+
