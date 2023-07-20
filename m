@@ -2,139 +2,118 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A87CA75B11C
-	for <lists+linux-omap@lfdr.de>; Thu, 20 Jul 2023 16:21:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACC5475B242
+	for <lists+linux-omap@lfdr.de>; Thu, 20 Jul 2023 17:17:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232172AbjGTOVg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 20 Jul 2023 10:21:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52674 "EHLO
+        id S231271AbjGTPRp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 20 Jul 2023 11:17:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230226AbjGTOVe (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 20 Jul 2023 10:21:34 -0400
-Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1169F2135
-        for <linux-omap@vger.kernel.org>; Thu, 20 Jul 2023 07:21:33 -0700 (PDT)
-Received: by mail-lj1-x231.google.com with SMTP id 38308e7fff4ca-2b6f943383eso12412311fa.2
-        for <linux-omap@vger.kernel.org>; Thu, 20 Jul 2023 07:21:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1689862891; x=1690467691;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=5bM5fwQZuavzr0KLXlSpBqYe6ZYyOnK6tAtOA/McGh0=;
-        b=spUGuRcegEQPc3fc25t8itt8SEf8ygAVohrhUn1ujEk4I9NT0xUvIMs1yqyuWqxNFr
-         fBngMP/QWUKoSJ4W5c8y5CIpFFLT2NdGs7KcRmUv/FP+F2rq6dMQaol9zCqPj/y+WTED
-         2PSRgpO+AuKpqQjbbAcTkKACjlLeF1nbuCreWEGmYWXHj2dY5nBdA3c0ybQNAqoK1TUq
-         kekBLt7Ich29WT7xHej4Hzg7GCemUc/EmRGwPy7fQEuunSvGNdqxqNwLHTK/PQwA40Dp
-         BwJdBbnoarNMLasaotpymgCSCXe725rnTO/e+1odjR+bU2WyYT4CLBrdqgOxxsPSCDk1
-         B2qg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689862891; x=1690467691;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5bM5fwQZuavzr0KLXlSpBqYe6ZYyOnK6tAtOA/McGh0=;
-        b=IJ83uVnF0UE7wjnFJEOUEBpX9fqwV2gQNk8HYGiPC321y6+kj5AKg/XzKJv2G1e/41
-         nDKEG/Xa4XbXym+TYefvrsVV770ql/G4v2vNOuzzaWnyk4LY5lasLx2ZnJv31njhXMG2
-         Ds2qPoPcqC80CElcrlamnvx+rXamVtEX8Q6cgEvfshfm+F7FW5xh9LsZvsEwdWj5I0Rk
-         e75Bqq7/R3ZEKHEDUpVJ4pTcKnnnvkhhJ/AEB9rViV2BKEaEn1ILXmjv4skBeIfF5F5o
-         T8FWs7mjfK7EcerBk59c1nXBlJgCvXK4IH+jzD4q5oxysm3nOiCiYSah7ecky4FW7tPl
-         4urQ==
-X-Gm-Message-State: ABy/qLZaWRbvGqxKAEOtFc3d7Vl+HXd+ZsKQla81Kc6D0zPUqKqdwGsB
-        E09y7cG6Tc9zgyYiqJ/PqCjqmw==
-X-Google-Smtp-Source: APBJJlFpdXWglTYxIM2Ehzj8JoGpf26cOv1zlpe0BemO3ScIjse7kYRRtbcG/801j62owMtgpgABCA==
-X-Received: by 2002:a2e:3310:0:b0:2b6:d137:b5a1 with SMTP id d16-20020a2e3310000000b002b6d137b5a1mr2400228ljc.43.1689862891321;
-        Thu, 20 Jul 2023 07:21:31 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.223.104])
-        by smtp.gmail.com with ESMTPSA id c10-20020a056000104a00b0031434cebcd8sm1490017wrx.33.2023.07.20.07.21.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Jul 2023 07:21:30 -0700 (PDT)
-Message-ID: <2b5b982d-5a9f-810a-ec3f-df65e6c8b83b@linaro.org>
-Date:   Thu, 20 Jul 2023 16:21:28 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2 3/3] arm64: dts: Replace deprecated extcon-usb-gpio
- id-gpio/vbus-gpio properties
-Content-Language: en-US
-To:     Alexander Stein <alexander.stein@ew.tq-group.com>,
-        MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        with ESMTP id S232327AbjGTPRo (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 20 Jul 2023 11:17:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A1F013E;
+        Thu, 20 Jul 2023 08:17:44 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id ACE6161B46;
+        Thu, 20 Jul 2023 15:17:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65510C433C9;
+        Thu, 20 Jul 2023 15:17:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689866263;
+        bh=qYHzhCAUIzF07jkVYTmVpGY6QuZJidrqSGysBgEQ+mg=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=P16yasElhZTEVFOLsqDGNj4lriTO6FsUW8YABCZuFpIMFix1NMiwqPaxeOXOJGNOk
+         VfOItlUQjULagwjy03aN/moX4p0fVX1uyxELFFx7ST2p8Y2LanDjA80FYWJYqo902U
+         B1dPtPEPCXdcO2vuWr+smF+q+CudYO+XVVfGf4muamAjCqLdYs5ly7RxarL53ghMO1
+         c7z4tglFywO9GUJRvnBTv0bIV43yd7al05bkCq1t3oVmo4Q8veUrMy96QxeUPfZzHU
+         5XBwXPyYA9MApwhmFlvKbYMA+lkCuL/2H3vC+cqcQMFlqFT90CDLJVT0Z8BkAASI1o
+         Buaey1/Wipc4w==
+Date:   Thu, 20 Jul 2023 08:17:41 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Md Danish Anwar <a0501179@ti.com>
+Cc:     MD Danish Anwar <danishanwar@ti.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Roger Quadros <rogerq@kernel.org>,
+        Simon Horman <simon.horman@corigine.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Richard Cochran <richardcochran@gmail.com>,
         Conor Dooley <conor+dt@kernel.org>,
-        =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Heiko Stuebner <heiko@sntech.de>
-Cc:     Pengutronix Kernel Team <kernel@pengutronix.de>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        devicetree@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-        linux-rockchip@lists.infradead.org
-References: <20230615145838.1526919-1-alexander.stein@ew.tq-group.com>
- <20230615145838.1526919-3-alexander.stein@ew.tq-group.com>
- <8374cb80-749a-401d-2d88-48001ad614c2@linaro.org>
- <2640608.BddDVKsqQX@steina-w>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <2640608.BddDVKsqQX@steina-w>
-Content-Type: text/plain; charset=UTF-8
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>, <nm@ti.com>, <srk@ti.com>,
+        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [EXTERNAL] Re: [PATCH v10 2/2] net: ti: icssg-prueth: Add ICSSG
+ ethernet driver
+Message-ID: <20230720081741.0c32d5e6@kernel.org>
+In-Reply-To: <17cd1e70-73bc-78d5-7e9d-7b133d6f464b@ti.com>
+References: <20230719082755.3399424-1-danishanwar@ti.com>
+        <20230719082755.3399424-3-danishanwar@ti.com>
+        <20230719213543.0380e13e@kernel.org>
+        <17cd1e70-73bc-78d5-7e9d-7b133d6f464b@ti.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 20/07/2023 15:58, Alexander Stein wrote:
-> Hi Krzysztof,
+On Thu, 20 Jul 2023 17:12:50 +0530 Md Danish Anwar wrote:
+> Patch 1: Introduce Firmware mapping for the driver (icss_switch_map.h)
 > 
-> Am Donnerstag, 20. Juli 2023, 10:07:04 CEST schrieb Krzysztof Kozlowski:
->> On 15/06/2023 16:58, Alexander Stein wrote:
->>> Use id-gpios and vbus-gpios instead.
->>>
->>> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
->>> Acked-by: Heiko Stuebner <heiko@sntech.de> #rockchip
->>> Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com> #mediatek
->>> ---
->>> Changes in v2:
->>> * Added Heiko's A-b for rockchip
->>> * Added Matthias' R-b for mediatek
->>
->> Please split patches per subsystem, so this could be applied. Or send it
->> through soc tree, but you chosen the middle way - neither per subsystem
->> nor via soc tree - so it went nowhere :(
+> Patch 2: Introduce mii helper APIs. (icssg_mii_rt.h and icssg_mii_cfg.h). This
+> patch will also introduce basic prueth and emac structures in icssg_prueth.h as
+> these structures will be used by the helper APIs.
 > 
-> How do you distinguish that? 
+> Patch 3: Introduce firmware configuration and classification APIs.
+> (icssg_classifier.c, icssg_config.h and icssg_config.c)
+> 
+> Patch 4: Introduce APIs for ICSSG Queues (icssg_queues.c)
+> 
+> Patch 5: Introduce ICSSG Ethernet driver. (icssg_prueth.c and icssg_prueth.h)
+> This patch will enable the driver and basic functionality can work after this
+> patch. This patch will be using all the APIs introduced earlier. This patch
+> will also include Kconfig and Makefile changes.
+> 
+> Patch 6: Enable standard statistics via ndo_get_stats64
+> 
+> Patch 7: Introduce ethtool ops for ICSSG
+> 
+> Patch 8: Introduce power management support (suspend / resume APIs)
+> 
+> However this structure of patches will introduce some APIs earlier (in patch
+> 2,3 and 4) which will be used later by patch 5. I hope it will be OK to
+> introduce APIs and macros earlier and use them later.
+> 
+> This restructuring will shorten all the individual patches. However patch 5
+> will still be a bit large as patch 5 introduces all the neccessary APIs as
+> driver probe / remove, ndo open / close, tx/rx etc.
+> 
+> Currnetly this single patch has close to 4000 insertion and is touching 12
+> files. After restructring patch 5 will have around 1800 insertions and will
+> touch only 4 files (icssg_prueth.c, icssg_prueth.h, Kconfig, Makefile). This is
+> still significant improvement.
+> 
+> Please let me know if this is OK.
 
-You create multiple patches per each DTS subdirectory. Then you send
-entire patchset to all people (might create too many Cc addresses) or
-patch-per-maintainers.
+SGTM, thanks! One patch still being larger than others is a bit
+inevitable.
 
-> Almost all maintainers and mailing lists from 
+> Also this patch has Reviewed-By tag of Andrew. Can I carry forward his
+> Reviewed-By tag in all patches or do I need to drop it?
 
-Yes, and they can only Ack it. If you wanted it to go via SoC, you
-should have Cc Soc. Since you didn't then it was not the intention, so
-only the first option is left - split per subsystem.
-
-> get_maintainer.pl output for patch 1 are also included in the list for patch 2 
-> & 3? Do you want me to send two series (1 binding patch and 2 DT patches), 
-> which you will receive both of them?
-
-
-Best regards,
-Krzysztof
-
+If the code is identical I reckon you can carry it.
