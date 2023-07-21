@@ -2,141 +2,241 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D2D7275BF8B
-	for <lists+linux-omap@lfdr.de>; Fri, 21 Jul 2023 09:22:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84F0975C142
+	for <lists+linux-omap@lfdr.de>; Fri, 21 Jul 2023 10:20:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230257AbjGUHWp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 21 Jul 2023 03:22:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52652 "EHLO
+        id S229757AbjGUIT6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 21 Jul 2023 04:19:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33028 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230208AbjGUHWd (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 21 Jul 2023 03:22:33 -0400
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6B3E730D2;
-        Fri, 21 Jul 2023 00:22:25 -0700 (PDT)
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id E612D807E;
-        Fri, 21 Jul 2023 07:22:22 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Dhruva Gole <d-gole@ti.com>,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        John Ogness <john.ogness@linutronix.de>,
-        Johan Hovold <johan@kernel.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
-        linux-omap@vger.kernel.org
-Subject: [PATCH v3 3/3] serial: core: Fix serial core controller port name to show controller id
-Date:   Fri, 21 Jul 2023 10:21:42 +0300
-Message-ID: <20230721072147.59121-4-tony@atomide.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721072147.59121-1-tony@atomide.com>
-References: <20230721072147.59121-1-tony@atomide.com>
+        with ESMTP id S229666AbjGUIT5 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 21 Jul 2023 04:19:57 -0400
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49215ED;
+        Fri, 21 Jul 2023 01:19:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1689927595; x=1721463595;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=pNttBeZZhZdP5VWzICYQ/ABTkjg95x/HctL8gjTLrOU=;
+  b=BQy3zmLdmD3LYsimm9u+T8AL33gsuUaIhD5CljTUcURqETfTR64MihhH
+   aqH9i0CpALWK6aMp5YjveabYC+Gg6ObyyirWLLNd2unVD17OmvjBeBsnl
+   N5VldQbyojOKL8kmXXIE/mye0UuZ6lv1gRrYL941ILWO8wlZVQ6r9KTn6
+   JZW9sFJJjaSQ4UQ/ReBEtjm/TTJyT5RIjeGSfrZQvHJQppXxwc6m1olNP
+   EZIYkA0+y8DfUZnqUEbzqdVxK5qlfRS0FDjujw3LNJDFDUK9MLrFEKmHq
+   e3S+zCHcusy0d219/5v4FlXvC0MCnaqSNb07j6VJ+sNG34jKLiAdu8y24
+   Q==;
+X-IronPort-AV: E=Sophos;i="6.01,220,1684792800"; 
+   d="scan'208";a="32048265"
+Received: from vtuxmail01.tq-net.de ([10.115.0.20])
+  by mx1.tq-group.com with ESMTP; 21 Jul 2023 10:19:53 +0200
+Received: from steina-w.tq-net.de (unknown [10.123.53.21])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by vtuxmail01.tq-net.de (Postfix) with ESMTPSA id 5B690280078;
+        Fri, 21 Jul 2023 10:19:53 +0200 (CEST)
+From:   Alexander Stein <alexander.stein@ew.tq-group.com>
+To:     Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Heiko Stuebner <heiko@sntech.de>
+Cc:     Alexander Stein <alexander.stein@ew.tq-group.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        devicetree@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+        linux-rockchip@lists.infradead.org
+Subject: [PATCH v3 1/2] ARM: dts: Replace deprecated extcon-usb-gpio id-gpio/vbus-gpio properties
+Date:   Fri, 21 Jul 2023 10:19:47 +0200
+Message-Id: <20230721081948.1185360-1-alexander.stein@ew.tq-group.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-We are missing the serial core controller id for the serial core port
-name. Let's fix the issue for sane /sys/bus/serial-core/devices, and to
-avoid issues addressing serial ports later on.
+Use id-gpios and vbus-gpios instead.
 
-Fixes: 84a9582fd203 ("serial: core: Start managing serial controllers to enable runtime PM")
-Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 ---
- drivers/tty/serial/serial_base_bus.c | 33 ++++++++++++++++++----------
- 1 file changed, 21 insertions(+), 12 deletions(-)
+Changes in v3:
+* Rebased to next-20230721
+* Split from bindings patch
 
-diff --git a/drivers/tty/serial/serial_base_bus.c b/drivers/tty/serial/serial_base_bus.c
---- a/drivers/tty/serial/serial_base_bus.c
-+++ b/drivers/tty/serial/serial_base_bus.c
-@@ -19,6 +19,14 @@
+ arch/arm/boot/dts/nxp/imx/imx6qdl-colibri.dtsi    | 2 +-
+ arch/arm/boot/dts/nxp/imx/imx7-colibri.dtsi       | 2 +-
+ arch/arm/boot/dts/ti/omap/am571x-idk.dts          | 4 ++--
+ arch/arm/boot/dts/ti/omap/am5729-beagleboneai.dts | 2 +-
+ arch/arm/boot/dts/ti/omap/am572x-idk-common.dtsi  | 4 ++--
+ arch/arm/boot/dts/ti/omap/dra7-evm-common.dtsi    | 4 ++--
+ arch/arm/boot/dts/ti/omap/dra71-evm.dts           | 4 ++--
+ arch/arm/boot/dts/ti/omap/dra72-evm-common.dtsi   | 4 ++--
+ arch/arm/boot/dts/ti/omap/dra76-evm.dts           | 4 ++--
+ 9 files changed, 15 insertions(+), 15 deletions(-)
+
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-colibri.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-colibri.dtsi
+index 570995707504..11d9c7a2dacb 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6qdl-colibri.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-colibri.dtsi
+@@ -26,7 +26,7 @@ backlight: backlight {
  
- static bool serial_base_initialized;
+ 	extcon_usbc_det: usbc-det {
+ 		compatible = "linux,extcon-usb-gpio";
+-		id-gpio = <&gpio7 12 GPIO_ACTIVE_HIGH>; /* SODIMM 137 / USBC_DET */
++		id-gpios = <&gpio7 12 GPIO_ACTIVE_HIGH>; /* SODIMM 137 / USBC_DET */
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&pinctrl_usbc_det>;
+ 	};
+diff --git a/arch/arm/boot/dts/nxp/imx/imx7-colibri.dtsi b/arch/arm/boot/dts/nxp/imx/imx7-colibri.dtsi
+index 104580d51d74..9fe51884af79 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx7-colibri.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx7-colibri.dtsi
+@@ -29,7 +29,7 @@ chosen {
  
-+static const struct device_type serial_ctrl_type = {
-+	.name = "ctrl",
-+};
-+
-+static const struct device_type serial_port_type = {
-+	.name = "port",
-+};
-+
- static int serial_base_match(struct device *dev, struct device_driver *drv)
- {
- 	int len = strlen(drv->name);
-@@ -48,7 +56,8 @@ static int serial_base_device_init(struct uart_port *port,
- 				   struct device *parent_dev,
- 				   const struct device_type *type,
- 				   void (*release)(struct device *dev),
--				   int id)
-+				   unsigned int ctrl_id,
-+				   unsigned int port_id)
- {
- 	device_initialize(dev);
- 	dev->type = type;
-@@ -61,13 +70,17 @@ static int serial_base_device_init(struct uart_port *port,
- 		return -EPROBE_DEFER;
- 	}
+ 	extcon_usbc_det: usbc-det {
+ 		compatible = "linux,extcon-usb-gpio";
+-		id-gpio = <&gpio7 14 GPIO_ACTIVE_HIGH>; /* SODIMM 137 / USBC_DET */
++		id-gpios = <&gpio7 14 GPIO_ACTIVE_HIGH>; /* SODIMM 137 / USBC_DET */
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&pinctrl_usbc_det>;
+ 	};
+diff --git a/arch/arm/boot/dts/ti/omap/am571x-idk.dts b/arch/arm/boot/dts/ti/omap/am571x-idk.dts
+index 48425020281a..322cf79d22e9 100644
+--- a/arch/arm/boot/dts/ti/omap/am571x-idk.dts
++++ b/arch/arm/boot/dts/ti/omap/am571x-idk.dts
+@@ -168,8 +168,8 @@ blue3-led {
+ };
  
--	return dev_set_name(dev, "%s.%s.%d", type->name, dev_name(port->dev), id);
-+	if (type == &serial_ctrl_type)
-+		return dev_set_name(dev, "%s.%s.%d", type->name,
-+				    dev_name(port->dev), ctrl_id);
-+	else if (type == &serial_port_type)
-+		return dev_set_name(dev, "%s.%s.%d.%d", type->name,
-+				    dev_name(port->dev), ctrl_id,
-+				    port_id);
-+	else
-+		return -EINVAL;
- }
+ &extcon_usb2 {
+-	id-gpio = <&gpio5 7 GPIO_ACTIVE_HIGH>;
+-	vbus-gpio = <&gpio7 22 GPIO_ACTIVE_HIGH>;
++	id-gpios = <&gpio5 7 GPIO_ACTIVE_HIGH>;
++	vbus-gpios = <&gpio7 22 GPIO_ACTIVE_HIGH>;
+ };
  
--static const struct device_type serial_ctrl_type = {
--	.name = "ctrl",
--};
--
- static void serial_base_ctrl_release(struct device *dev)
- {
- 	struct serial_ctrl_device *ctrl_dev = to_serial_base_ctrl_device(dev);
-@@ -96,7 +109,7 @@ struct serial_ctrl_device *serial_base_ctrl_add(struct uart_port *port,
- 	err = serial_base_device_init(port, &ctrl_dev->dev,
- 				      parent, &serial_ctrl_type,
- 				      serial_base_ctrl_release,
--				      port->ctrl_id);
-+				      port->ctrl_id, 0);
- 	if (err)
- 		goto err_put_device;
+ &sn65hvs882 {
+diff --git a/arch/arm/boot/dts/ti/omap/am5729-beagleboneai.dts b/arch/arm/boot/dts/ti/omap/am5729-beagleboneai.dts
+index 149cfafb90bf..c5272302eb11 100644
+--- a/arch/arm/boot/dts/ti/omap/am5729-beagleboneai.dts
++++ b/arch/arm/boot/dts/ti/omap/am5729-beagleboneai.dts
+@@ -197,7 +197,7 @@ brcmf_pwrseq: brcmf_pwrseq {
+ 	extcon_usb1: extcon_usb1 {
+ 		compatible = "linux,extcon-usb-gpio";
+ 		ti,enable-id-detection;
+-		id-gpio = <&gpio3 13 GPIO_ACTIVE_HIGH>;
++		id-gpios = <&gpio3 13 GPIO_ACTIVE_HIGH>;
+ 	};
+ };
  
-@@ -112,10 +125,6 @@ struct serial_ctrl_device *serial_base_ctrl_add(struct uart_port *port,
- 	return ERR_PTR(err);
- }
+diff --git a/arch/arm/boot/dts/ti/omap/am572x-idk-common.dtsi b/arch/arm/boot/dts/ti/omap/am572x-idk-common.dtsi
+index 1d66278c3a72..3fca84819dc0 100644
+--- a/arch/arm/boot/dts/ti/omap/am572x-idk-common.dtsi
++++ b/arch/arm/boot/dts/ti/omap/am572x-idk-common.dtsi
+@@ -169,8 +169,8 @@ blue3-led {
+ };
  
--static const struct device_type serial_port_type = {
--	.name = "port",
--};
--
- static void serial_base_port_release(struct device *dev)
- {
- 	struct serial_port_device *port_dev = to_serial_base_port_device(dev);
-@@ -136,7 +145,7 @@ struct serial_port_device *serial_base_port_add(struct uart_port *port,
- 	err = serial_base_device_init(port, &port_dev->dev,
- 				      &ctrl_dev->dev, &serial_port_type,
- 				      serial_base_port_release,
--				      port->port_id);
-+				      port->ctrl_id, port->port_id);
- 	if (err)
- 		goto err_put_device;
+ &extcon_usb2 {
+-	id-gpio = <&gpio3 16 GPIO_ACTIVE_HIGH>;
+-	vbus-gpio = <&gpio3 26 GPIO_ACTIVE_HIGH>;
++	id-gpios = <&gpio3 16 GPIO_ACTIVE_HIGH>;
++	vbus-gpios = <&gpio3 26 GPIO_ACTIVE_HIGH>;
+ };
  
+ &sn65hvs882 {
+diff --git a/arch/arm/boot/dts/ti/omap/dra7-evm-common.dtsi b/arch/arm/boot/dts/ti/omap/dra7-evm-common.dtsi
+index 4cdffd6db740..ed5199d7acd8 100644
+--- a/arch/arm/boot/dts/ti/omap/dra7-evm-common.dtsi
++++ b/arch/arm/boot/dts/ti/omap/dra7-evm-common.dtsi
+@@ -15,12 +15,12 @@ chosen {
+ 
+ 	extcon_usb1: extcon_usb1 {
+ 		compatible = "linux,extcon-usb-gpio";
+-		id-gpio = <&pcf_gpio_21 1 GPIO_ACTIVE_HIGH>;
++		id-gpios = <&pcf_gpio_21 1 GPIO_ACTIVE_HIGH>;
+ 	};
+ 
+ 	extcon_usb2: extcon_usb2 {
+ 		compatible = "linux,extcon-usb-gpio";
+-		id-gpio = <&pcf_gpio_21 2 GPIO_ACTIVE_HIGH>;
++		id-gpios = <&pcf_gpio_21 2 GPIO_ACTIVE_HIGH>;
+ 	};
+ 
+ 	sound0: sound0 {
+diff --git a/arch/arm/boot/dts/ti/omap/dra71-evm.dts b/arch/arm/boot/dts/ti/omap/dra71-evm.dts
+index a64364443031..f747ac56eb92 100644
+--- a/arch/arm/boot/dts/ti/omap/dra71-evm.dts
++++ b/arch/arm/boot/dts/ti/omap/dra71-evm.dts
+@@ -293,11 +293,11 @@ &hdmi {
+ };
+ 
+ &extcon_usb1 {
+-	vbus-gpio = <&pcf_lcd 14 GPIO_ACTIVE_HIGH>;
++	vbus-gpios = <&pcf_lcd 14 GPIO_ACTIVE_HIGH>;
+ };
+ 
+ &extcon_usb2 {
+-	vbus-gpio = <&pcf_lcd 15 GPIO_ACTIVE_HIGH>;
++	vbus-gpios = <&pcf_lcd 15 GPIO_ACTIVE_HIGH>;
+ };
+ 
+ &ipu2 {
+diff --git a/arch/arm/boot/dts/ti/omap/dra72-evm-common.dtsi b/arch/arm/boot/dts/ti/omap/dra72-evm-common.dtsi
+index 31ab0c60ca75..f8151c61488e 100644
+--- a/arch/arm/boot/dts/ti/omap/dra72-evm-common.dtsi
++++ b/arch/arm/boot/dts/ti/omap/dra72-evm-common.dtsi
+@@ -96,12 +96,12 @@ evm_3v3_sd: fixedregulator-sd {
+ 
+ 	extcon_usb1: extcon_usb1 {
+ 		compatible = "linux,extcon-usb-gpio";
+-		id-gpio = <&pcf_gpio_21 1 GPIO_ACTIVE_HIGH>;
++		id-gpios = <&pcf_gpio_21 1 GPIO_ACTIVE_HIGH>;
+ 	};
+ 
+ 	extcon_usb2: extcon_usb2 {
+ 		compatible = "linux,extcon-usb-gpio";
+-		id-gpio = <&pcf_gpio_21 2 GPIO_ACTIVE_HIGH>;
++		id-gpios = <&pcf_gpio_21 2 GPIO_ACTIVE_HIGH>;
+ 	};
+ 
+ 	hdmi0: connector {
+diff --git a/arch/arm/boot/dts/ti/omap/dra76-evm.dts b/arch/arm/boot/dts/ti/omap/dra76-evm.dts
+index 57868ac60d29..cf9c3d35b049 100644
+--- a/arch/arm/boot/dts/ti/omap/dra76-evm.dts
++++ b/arch/arm/boot/dts/ti/omap/dra76-evm.dts
+@@ -533,11 +533,11 @@ &pcie1_ep {
+ };
+ 
+ &extcon_usb1 {
+-	vbus-gpio = <&pcf_lcd 14 GPIO_ACTIVE_HIGH>;
++	vbus-gpios = <&pcf_lcd 14 GPIO_ACTIVE_HIGH>;
+ };
+ 
+ &extcon_usb2 {
+-	vbus-gpio = <&pcf_lcd 15 GPIO_ACTIVE_HIGH>;
++	vbus-gpios = <&pcf_lcd 15 GPIO_ACTIVE_HIGH>;
+ };
+ 
+ &m_can0 {
 -- 
-2.41.0
+2.34.1
+
