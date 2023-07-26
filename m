@@ -2,138 +2,147 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EA1C7633E8
-	for <lists+linux-omap@lfdr.de>; Wed, 26 Jul 2023 12:36:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FC27763447
+	for <lists+linux-omap@lfdr.de>; Wed, 26 Jul 2023 12:51:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233186AbjGZKgd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 26 Jul 2023 06:36:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59592 "EHLO
+        id S232397AbjGZKvj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 26 Jul 2023 06:51:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40168 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232167AbjGZKgc (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 26 Jul 2023 06:36:32 -0400
-Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 118EF2126;
-        Wed, 26 Jul 2023 03:36:30 -0700 (PDT)
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 36QAaDvp045912;
-        Wed, 26 Jul 2023 05:36:13 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1690367773;
-        bh=AsQ7eL3/H2JJHOml5th1RT/qIatR0oms1Ab+63AsSdY=;
-        h=Date:Subject:To:CC:References:From:In-Reply-To;
-        b=oO2vlJsRYavoQbpnR7BH7gv/D6zsLsuKLq8VVi5DAQcF5dI92qLsXfFhlduzSrmeH
-         ArZM4IJpCeczHcpAVUPJDp8KPKaVcK0Lo5i2oIt3GC/hjn3Gth5hPMbAnAnK6d49+b
-         cwvbg8c/vCB7LtynoQBuBk2cuAEcXDjkBhsWlmO4=
-Received: from DLEE114.ent.ti.com (dlee114.ent.ti.com [157.170.170.25])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 36QAaDhR058238
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 26 Jul 2023 05:36:13 -0500
-Received: from DLEE114.ent.ti.com (157.170.170.25) by DLEE114.ent.ti.com
- (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Wed, 26
- Jul 2023 05:36:13 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE114.ent.ti.com
- (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Wed, 26 Jul 2023 05:36:13 -0500
-Received: from [172.24.227.217] (ileaxei01-snat.itg.ti.com [10.180.69.5])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 36QAa7iP077859;
-        Wed, 26 Jul 2023 05:36:07 -0500
-Message-ID: <296b0e98-4012-09f6-84cd-6f87a85f095f@ti.com>
-Date:   Wed, 26 Jul 2023 16:06:06 +0530
+        with ESMTP id S231978AbjGZKvg (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 26 Jul 2023 06:51:36 -0400
+Received: from mail-oi1-x231.google.com (mail-oi1-x231.google.com [IPv6:2607:f8b0:4864:20::231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FD63F7
+        for <linux-omap@vger.kernel.org>; Wed, 26 Jul 2023 03:51:35 -0700 (PDT)
+Received: by mail-oi1-x231.google.com with SMTP id 5614622812f47-3a1d9b64837so4560262b6e.0
+        for <linux-omap@vger.kernel.org>; Wed, 26 Jul 2023 03:51:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1690368694; x=1690973494;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=CZTtpzIiuK1AETB2vADwBKUbLtqg5KfLHMSdy41Ytto=;
+        b=h0RWUfckruSir+Bt+RHX9cKNs51q/Xt8uBkPMKqZIvNxG5nIV2FiVLEwGl0n4oWJwh
+         XmURT5sHCYl38Ak8fysjpSk4JS4QPv9REtIBlmsPBg6uXON0FXyRe2inYIFJP6tkV5hR
+         0IbtZv61tVlP34jnOg/lpS3C5KNJCXTF3enNrB1HPRGRL/G4QG7MBrtnA6QLj5cxHAlS
+         KYtHQBbCJd97fvlKFWIqd0R48t7WCp+DN2phoqPTS5urC+7y8nypvpwTep4vDgJ3KH3W
+         0DzAUFrj//hz/KcKIVIXl+oZI0sYKmL+A5d/02SUrjTrNP9F74SxYnqpmd/jP6upOv6v
+         AYSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690368694; x=1690973494;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=CZTtpzIiuK1AETB2vADwBKUbLtqg5KfLHMSdy41Ytto=;
+        b=gyJIu2gk32KnUL3dxsmiiS6N28gbouNqCks2sru78YI69DAtLHnDtODB9o0ObfQRsc
+         M2dWkhkm2AwSQUemUaPT5ILxAjFlBZ0Ny75jZG9BqE0GElrZrvLrvzVN+6xyxEQ/q2hV
+         crUB01NoPbk0qSHY98HFtWaer0mLEy161x559Kr8sH3A+61p3jRONg3tPRzagvdhzdyj
+         wMzdd5E2H6qzFwTaA5DfTwatjdB3J4c5L8q8wUSN1bMrkOOCPDfgAVZ2pjDDiD/i+5xA
+         qZoqMf9sRUg6ixeWBb0Ahwwn6H64LSPRhgUU1Db40x0j484xXVgVMxTkGW77gll/IFbf
+         hLsg==
+X-Gm-Message-State: ABy/qLZhCRunUzrEu/Ra6GbLUYtdx35CZLF11T9sDwJLkOEc0AY2tT/u
+        suIDbQM4suUY4W+ENgNVX/V/8fb2CEY9WrwANezbmw==
+X-Google-Smtp-Source: APBJJlEZRYsJijGWZj0AQQkID81DiZA6zTvLQmJVKjCjSDRsSHRi20fBJcacAwhgScdzgJBpYX4Qo39UfsylKQfZk1M=
+X-Received: by 2002:a05:6808:1923:b0:3a1:f047:6314 with SMTP id
+ bf35-20020a056808192300b003a1f0476314mr2376204oib.13.1690368694580; Wed, 26
+ Jul 2023 03:51:34 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [EXTERNAL] Re: [PATCH v11 07/10] net: ti: icssg-prueth: Add ICSSG
- Stats
-Content-Language: en-US
-To:     Jakub Kicinski <kuba@kernel.org>,
-        MD Danish Anwar <danishanwar@ti.com>
-CC:     Randy Dunlap <rdunlap@infradead.org>,
-        Roger Quadros <rogerq@kernel.org>,
-        Simon Horman <simon.horman@corigine.com>,
+References: <CA+G9fYtAi8NQ_5LNku3oik6b0243xhGFt2WyxERNE+eNqLbNOw@mail.gmail.com>
+ <76665dd9-1cbc-4b3a-b466-18a54cd74c1c@app.fastmail.com> <CA+G9fYuEVLeJX485ZbPNnvbViYUecNsewGiMi+54mNVnL-XBGA@mail.gmail.com>
+ <40807832-9e26-403a-b7b7-3979d4984b23@app.fastmail.com>
+In-Reply-To: <40807832-9e26-403a-b7b7-3979d4984b23@app.fastmail.com>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Wed, 26 Jul 2023 16:21:23 +0530
+Message-ID: <CA+G9fYuAZp21xcJNJB=GtbRzPm2Y0pPkBR1Dff4-8s9wu53phg@mail.gmail.com>
+Subject: Re: x15: Unable to handle kernel NULL pointer dereference at virtual
+ address 00000004 when read : pci_generic_config_read
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     linux-pci@vger.kernel.org,
+        Dan Carpenter <dan.carpenter@linaro.org>,
+        =?UTF-8?B?RGFuaWVsIETDrWF6?= <daniel.diaz@linaro.org>,
+        Anders Roxell <anders.roxell@linaro.org>,
+        Kishon Vijay Abraham I <kishon@kernel.org>,
         Vignesh Raghavendra <vigneshr@ti.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>, <nm@ti.com>, <srk@ti.com>,
-        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>
-References: <20230724112934.2637802-1-danishanwar@ti.com>
- <20230724112934.2637802-8-danishanwar@ti.com>
- <20230725205014.04e4bba3@kernel.org>
-From:   Md Danish Anwar <a0501179@ti.com>
-Organization: Texas Instruments
-In-Reply-To: <20230725205014.04e4bba3@kernel.org>
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
+        Benjamin Copeland <ben.copeland@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Jakub
+On Wed, 26 Jul 2023 at 16:04, Arnd Bergmann <arnd@arndb.de> wrote:
+>
+> On Wed, Jul 26, 2023, at 11:59, Naresh Kamboju wrote:
+> > On Tue, 20 Jun 2023 at 14:10, Arnd Bergmann <arnd@arndb.de> wrote:
+> >>
+> >> On Tue, Jun 20, 2023, at 10:00, Naresh Kamboju wrote:
+> >> > We have been noticing the following kernel crash on x15 device while running
+> >> > LTP fs proc01 testing with Linux stable rc 6.x kernels.
+> >>
+> >> Do you know if this is a regression with this kernel version compared
+> >> to older kernels running the same tests, or an added testcase in LTP
+> >> that exercises a code path that may have been broken for longer?
+> ...
+> >>
+> >> I have not disassembled the vmlinux file, but I can see that the
+> >> offset into the NULL pointer is '4', which does not match the
+> >> structur offsets for bus->ops or ops->map_bus.
+> >>
+> >> I also see that if map_bus returns NULL, we treat that as
+> >> an error, but if it returns '4', that is taken as a pointer,
+> >> which is my best guess at what is happening here.
+> >>
+> >> map_bus() seems to be either dw_pcie_other_conf_map_bus() or
+> >> dw_pcie_own_conf_map_bus(), since the dra7 does not have its
+> >> own variant but inherits these from the dwc pci driver.
+> >>
+> >> I think this is caused by the combination of two bugs:
+> >>
+> >> - something prevents the dra7-pcie driver from probing the
+> >>   device correctly, ultimately failing with the "failed to
+> >>   request irq" message.
+> >>
+> >> - The error handling in dra7xx_pcie_probe() fails to clean
+> >>   up after the first problem, leaving the PCIe host
+> >>   in a broken state instead of removing it entirely.
+> >
+> > The reported kernel crash is continuously happening on the
+> > BeagleBoard x15 device while running LTP fs tests on stable rc 6.4.7-rc1.
+>
+> Ok, so you think there is an additional regression between
+> 6.4.6 and 6.4.7-rc1? on top of the two that you have not bisected?
 
-On 26/07/23 9:20 am, Jakub Kicinski wrote:
-> On Mon, 24 Jul 2023 16:59:31 +0530 MD Danish Anwar wrote:
->> +	/* Rx */
->> +	ICSSG_STATS(rx_packets, true),
->> +	ICSSG_STATS(rx_broadcast_frames, false),
->> +	ICSSG_STATS(rx_multicast_frames, false),
-> 
-> There is a standard stat for mcast.
-> 
+Sure.
+We need to find out more details like when it got started
+and need to check this crash on the mainline kernel and
+stable rc branches.
 
-Sure. I will add multicast stats via .ndo_get_stats64 instead of ethtool.
 
->> +	ICSSG_STATS(rx_crc_errors, true),
->> +	ICSSG_STATS(rx_mii_error_frames, false),
->> +	ICSSG_STATS(rx_odd_nibble_frames, false),
->> +	ICSSG_STATS(rx_frame_max_size, false),
->> +	ICSSG_STATS(rx_max_size_error_frames, false),
->> +	ICSSG_STATS(rx_frame_min_size, false),
->> +	ICSSG_STATS(rx_min_size_error_frames, false),
->> +	ICSSG_STATS(rx_over_errors, true),
->> +	ICSSG_STATS(rx_class0_hits, false),
->> +	ICSSG_STATS(rx_class1_hits, false),
->> +	ICSSG_STATS(rx_class2_hits, false),
->> +	ICSSG_STATS(rx_class3_hits, false),
->> +	ICSSG_STATS(rx_class4_hits, false),
->> +	ICSSG_STATS(rx_class5_hits, false),
->> +	ICSSG_STATS(rx_class6_hits, false),
->> +	ICSSG_STATS(rx_class7_hits, false),
->> +	ICSSG_STATS(rx_class8_hits, false),
->> +	ICSSG_STATS(rx_class9_hits, false),
->> +	ICSSG_STATS(rx_class10_hits, false),
->> +	ICSSG_STATS(rx_class11_hits, false),
->> +	ICSSG_STATS(rx_class12_hits, false),
->> +	ICSSG_STATS(rx_class13_hits, false),
->> +	ICSSG_STATS(rx_class14_hits, false),
->> +	ICSSG_STATS(rx_class15_hits, false),
->> +	ICSSG_STATS(rx_smd_frags, false),
->> +	ICSSG_STATS(rx_bucket1_size, false),
->> +	ICSSG_STATS(rx_bucket2_size, false),
->> +	ICSSG_STATS(rx_bucket3_size, false),
->> +	ICSSG_STATS(rx_bucket4_size, false),
-> 
-> Are the bucket sizes configurable? Can we set the bucket sizes
-> to standard RMON ones and use ethtool RMON stats?
+>
+> I don't see any changes in drivers/pci/ after 6.4.5, so I'm
+> even more confused now.
+>
+> > soundcore display_connector
+> > [ 1195.601104] CPU: 0 PID: 4876 Comm: proc01 Not tainted 6.4.7-rc1 #1
+> > [ 1195.607330] Hardware name: Generic DRA74X (Flattened Device Tree)
+> > [ 1195.613464] PC is at pci_generic_config_read+0x34/0x8c
+> > [ 1195.618621] LR is at pci_generic_config_read+0x1c/0x8c
+>
+> This looks identical to the first bugs that you reported, so I'd
+> suggest you keep trying to narrow down when that one started rather
+> than looking at the latest stable-rc.
 
-The bucket sizes are not configurable. Bucket size is read from hardware and is
-fixed. I don't think we can configure bucket size and use ethtool RMON stats.
-It's better to dump bucket sizes via ethtool -S.
+Thanks for the suggestions.
 
--- 
-Thanks and Regards,
-Danish.
+>
+>      Arnd
+
+-Naresh
