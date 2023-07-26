@@ -2,215 +2,232 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB8BF762E83
-	for <lists+linux-omap@lfdr.de>; Wed, 26 Jul 2023 09:47:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38131763301
+	for <lists+linux-omap@lfdr.de>; Wed, 26 Jul 2023 12:00:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232723AbjGZHrq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 26 Jul 2023 03:47:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40152 "EHLO
+        id S231324AbjGZKAN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 26 Jul 2023 06:00:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232140AbjGZHrQ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 26 Jul 2023 03:47:16 -0400
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2091.outbound.protection.outlook.com [40.107.244.91])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 585A03C32;
-        Wed, 26 Jul 2023 00:42:27 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=U1AOfbuM+7tKYDUxw4VlNM+ojMjV6t31vwZwgdPRRXSTK5aWMv+vsaas8n8/d6WFbhbjodgSzoRTwvl40UjQsYwbZQUZm1VeeUjT2j4x47cgI5/8nc2WsSueccFOkv4a4/7rC++fIRHKlqpktAPxrWWnbikKGO/RTjJiuQFewpTk7TGUhocNoemfPVt9zn/D5SKb8SKEfNu3P5QCQMNvtebgBaHnjMmwpYyzTAVgla5gdMvYvtxmtfF4M0il9T7oVpl36mWVJct/QU+Qgb4vOGzqxdV5RvCet9CHXBBxY5oASRkWKIoYUapB5iQ00NFlWCslkeWaXps5NqgwNRDWpw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mfK5Mqei6tosDyVAsQotaEz4wVcJD/feM3nGjlxYb2I=;
- b=VIY07L9fsv0qOZOZme8UXK7A0yPHqw4b7tARcSl98oR4WPGC+xoThZjPOEHaw0hiRUn5wAWqIm+z49O4lvlcIbHAwTX+0safGbnW9EnYanLVsk8r3FgF/YdDQF37XF6W4rCjMX6dTsRYZCbILj5oXokQ6lowrCtM7VCGJZW8uixRMiFcp9qiCFsK35dMBImsw7oRz1eBDhdVl5PMCjLxWjcUGFIMDX8KKcHEEsQOq3P3kYDBt6K66VF5niMVjgDc1SrdZc4fJo4blvG0DM6m7EcfoHcRgK75RmxF0FdkpKmkTiuGCiHNz9FUR+uk8/VauisL+HtoSYmBLPk7eQJAvw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=corigine.com; dmarc=pass action=none header.from=corigine.com;
- dkim=pass header.d=corigine.com; arc=none
+        with ESMTP id S233258AbjGZJ7v (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 26 Jul 2023 05:59:51 -0400
+Received: from mail-vk1-xa2d.google.com (mail-vk1-xa2d.google.com [IPv6:2607:f8b0:4864:20::a2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 492202135
+        for <linux-omap@vger.kernel.org>; Wed, 26 Jul 2023 02:59:43 -0700 (PDT)
+Received: by mail-vk1-xa2d.google.com with SMTP id 71dfb90a1353d-48651709fa5so132269e0c.1
+        for <linux-omap@vger.kernel.org>; Wed, 26 Jul 2023 02:59:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=corigine.onmicrosoft.com; s=selector2-corigine-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mfK5Mqei6tosDyVAsQotaEz4wVcJD/feM3nGjlxYb2I=;
- b=tmdxW3C/nHnyH2gS5jvNQhisN7dCt5ywir0HBGZEOuuxP3msZ5us0Q3pfaGEzL5W4pVhw7mINmbzJyQtyfpJ5wOgkFzi7as/up9alkT1pGgZwc2D1htZLNV3J5jMPw/+xbxrujZnN7XIRzEV2ptjox3UdgYV/t3u8IAXi7oO3Ik=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=corigine.com;
-Received: from PH0PR13MB4842.namprd13.prod.outlook.com (2603:10b6:510:78::6)
- by PH7PR13MB6540.namprd13.prod.outlook.com (2603:10b6:510:2fe::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6609.33; Wed, 26 Jul
- 2023 07:42:25 +0000
-Received: from PH0PR13MB4842.namprd13.prod.outlook.com
- ([fe80::fde7:9821:f2d9:101d]) by PH0PR13MB4842.namprd13.prod.outlook.com
- ([fe80::fde7:9821:f2d9:101d%7]) with mapi id 15.20.6609.032; Wed, 26 Jul 2023
- 07:42:25 +0000
-Date:   Wed, 26 Jul 2023 09:42:17 +0200
-From:   Simon Horman <simon.horman@corigine.com>
-To:     Md Danish Anwar <a0501179@ti.com>
-Cc:     MD Danish Anwar <danishanwar@ti.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Roger Quadros <rogerq@kernel.org>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>, nm@ti.com, srk@ti.com,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        netdev@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [EXTERNAL] Re: [EXTERNAL] Re: [PATCH v11 03/10] net: ti:
- icssg-prueth: Add Firmware config and classification APIs.
-Message-ID: <ZMDOWecss/9F+0nb@corigine.com>
-References: <20230724112934.2637802-1-danishanwar@ti.com>
- <20230724112934.2637802-4-danishanwar@ti.com>
- <ZL94/L1RMlU5TiAb@corigine.com>
- <b2016718-b8e4-a1f8-92ed-f0d9e3cb9c17@ti.com>
- <ZL99WfF7iuzeMP78@corigine.com>
- <5a4b293f-7729-ee03-2432-cd49ff92d809@ti.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5a4b293f-7729-ee03-2432-cd49ff92d809@ti.com>
-X-ClientProxiedBy: AM8P251CA0020.EURP251.PROD.OUTLOOK.COM
- (2603:10a6:20b:21b::25) To PH0PR13MB4842.namprd13.prod.outlook.com
- (2603:10b6:510:78::6)
+        d=linaro.org; s=google; t=1690365582; x=1690970382;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=ggMmbTgfOxRgqR/7a08sk0qOVDEQkI5+XHkBaieC530=;
+        b=uATWBBwu87+ofJu1k+q+vlEK8a4aiWyR2Xz0mv2857whZoXU/a8vGVEC0OcVC2dMoi
+         cqVBwrdnfBWGL4funHSzsZvdkAdXrYFEaSvEMwQwr5m4c7KQNbS5XXqhuCx7SGsm7KWg
+         hG9h47OFBOGfUcUnVgZwkl7ZkZXgetlaf5j6gBj80o8D9s2JYtfT2XtPAR+GWXkleEOa
+         UWmNubI9nCGV9o8lzwZL+9GIU4sYGxdI4S8T1Eey12rsAhvtsgaFInWe9uJuxSLshwsh
+         6v1uIX6lQ/lbbZOHGofpqTVZS8HWYol84zFl7iVbcFE1v9ly6Fz5NYCHyaz55hDtskP/
+         yN8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690365582; x=1690970382;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ggMmbTgfOxRgqR/7a08sk0qOVDEQkI5+XHkBaieC530=;
+        b=Ozp8yoUyECPoIPnNmuv3Dag8XiU9HtXYY2q/ubOA+F1pUYtPSaBPfXruB5mGWoIjDQ
+         KHFiq5u7Lp7Kp3pvI5/EmJc0nOykf+oUMNLr9heovpnS3lY/dw1IFrfcs9sdixzMAszQ
+         0tM+kvngGTqJye7g1Q05zfK8EbPQwAvhKRGN+TwDBZDXz9hXrFsqHtQmRzvGzkZrG0V/
+         gqhCI7vtvjezTy8eETYq4YnfDN2KBt6lQycKzlXgIg+9RqFshH9AhBrRhuuLJ8JUhpok
+         n/Eg+Ccwp5TnX2yMo6YpqgqfQ4SW2mo7SHt1OXfeqbEr4lJTzc/YRZn8zN+XYhpyQPeP
+         D7DA==
+X-Gm-Message-State: ABy/qLYlQ7SEQNMHcU6Xz6djg22BlCfoRFDfuJagedMvboMItihW164i
+        4IQI7Co5/diOcfSEPJctWERgW+2fuLC2kPJ+16BHDg==
+X-Google-Smtp-Source: APBJJlGhCRaMo8KRs4HdEZ9utTDa3wOi7tZCcs5hQVcQ2r193d9n09NEEtLNzBE1KAz4dQWj4Ck2DWiPE/03PVyNcvk=
+X-Received: by 2002:a67:be13:0:b0:447:4b52:5c8 with SMTP id
+ x19-20020a67be13000000b004474b5205c8mr683637vsq.26.1690365582137; Wed, 26 Jul
+ 2023 02:59:42 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR13MB4842:EE_|PH7PR13MB6540:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4c11b621-5d7d-42ed-4c5a-08db8dabdab6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: SSOM9dkACHaDuAH0Q9EHeJtKrenNEEvdW2qCmRvRK1b/JhRJ2Iwq6nnD6PVFGUqi7jAzzs1tBnt6Tme+/6x/j/N0GhDp5BhMHhujQITBRiU23rBOdc1Oq3lI4xKY1oH/mwO+fXv1GvXgPMJtTONl/C4VEUUTmCnRm6iy5voGC/VvLXM3V+R5rGE2p8VLbcCzLQqgWHduVe0PsbgGToJw33p/t0Bys4mM6DhTGlY4UFWz0Kef3OVMMBYZCnzvjPkKMIgaLmcpnzX7jVOMtWwzRlLqDulv05rQL7BIAfWjz6+CE0gaYPTweQjWhTWAzEw2U+nrnT005/ce2x0Wk8Kq4C2Pn0RsoytxTP7ley0kKtp1FtqIX6dyF7Wm+aIiMSR0gzXmPbRv8K7dY7Qk5kql0wX3ZQ6l/MUIHpeM3uWg0qoNK5nlvvNenFNs1ZstRAvqkdNq6CcHSRtMNMvkmyVJFvVLCycJQpSO1kAu5W0rvu4rXawxQkCRKDnXh1+4uMMq2w80e/0hiCKJ8h26cyLTU2DnmMz5L2R0OZJh8AoeqAcQmY8wZw4He3ONnp11DhK8wXf73Y9aPwXRgcRiT4MRuxfhWpWYjuXRX0VY5jPt2rQ=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR13MB4842.namprd13.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(39840400004)(366004)(376002)(136003)(346002)(396003)(451199021)(36756003)(7416002)(44832011)(86362001)(2906002)(83380400001)(53546011)(186003)(6506007)(38100700002)(6512007)(6486002)(6666004)(54906003)(4326008)(66556008)(6916009)(316002)(66476007)(2616005)(8936002)(5660300002)(66946007)(41300700001)(478600001)(8676002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?PzwdvUX0iNntN7rw0VidNvr5M1noN271byhhEPBUKAVDV9ZTZBAmq2rIKMKV?=
- =?us-ascii?Q?DGhdj3GbpnyLw9wSkohy75hbtZOpdGIGfxndRHlIYvZc/XFi9OKbO7i3gelB?=
- =?us-ascii?Q?ZgJn9Rg2Zv/ikE+0al95Oi3zjigJs7Fp7XS9gkyI5Gi4gZJHJBPUoQ3EXMvC?=
- =?us-ascii?Q?3txFpjYq1OAGB+Yao03oa6Qpl01yQ5fAgrS1fD6kVmjgY0U8wQDaHB+BhE6K?=
- =?us-ascii?Q?YjpU8aH7g7y7w53NZj4QW2vAK62HTwF7c5fy0CmTpIAwH4bL9JLh8RnPxktM?=
- =?us-ascii?Q?DAopyCJlYP96LR3/gzWnQBFh0gPcq5wgAE+G0lQ7aEskC48F4j28V1PQNR3g?=
- =?us-ascii?Q?NZ0V8PCfucwr6clt5fGIWiJ+93qIJNM8JptYSANVBfWjjc3g0dpz/fvsbgVt?=
- =?us-ascii?Q?dID6sZQyS90BIEAHTY4PltJnOWHYkzO/D/Tx1uIJUd0q2FdOFL4M0mBcai3t?=
- =?us-ascii?Q?5jFMgnSNoNjFroM+5wXpBKRahjAfDrFBuYmM2KxPBZXsG+TgoXs1fYl6f3+P?=
- =?us-ascii?Q?8IrBmumg9om47hBVqnz62xIMT1sFrLpxfgb83/w9tu/Rcf83CpUwXLMCNmxd?=
- =?us-ascii?Q?tKonKGlNLcbNJu/Lduma13M13GUFP9gGycwvPZsUP/HYXs0hwoAkU0bQnOUU?=
- =?us-ascii?Q?vYc1GoXNpStb/aqZr8HnZYuJEY2YimpqH6mFEzDldpjIyqRxzzZMbVuYtP63?=
- =?us-ascii?Q?KjicKF150cRfir2uqkNVlng5zyWGGo0KYdd2wu5R6/iVOg6ux2UwFWXVDrgk?=
- =?us-ascii?Q?e9GyCEwfX5ronw999NTFJau0jzfWF7d2itOSkiKg/f8O89FslHTFbIFXMS15?=
- =?us-ascii?Q?pFZWBiLzZpjFmnVJX9ujVcM/SRtvKYrmlVDbFE+Lre2VLLv37YF3/Jd56bEM?=
- =?us-ascii?Q?1p0D2kRnrHTn7J5b/l2K5hTf6NPgaJgFRCp+Qm7xhd94UmygwREVhxf3rMqc?=
- =?us-ascii?Q?nngXyQTwrV/qEbjqUDOBJ9R9fMfzGvvVGUb6raoPLl2Z5heSgpgHtqzvhuju?=
- =?us-ascii?Q?lLlPWRgFezgjAD3BZEAMiXXfgFHrrR+bfBV7tbOJa3hsJjH/HY8IoDzx1QXG?=
- =?us-ascii?Q?RuwqP9r+kKlhO6avSxHU9HfPcjlz9Kyo+9ZUf3bkKN2EEY1Ory/vF3dpT/DU?=
- =?us-ascii?Q?Lbh67jarvJRYMb3KUyGH5wIu7W79w1qL6wFuDB11b51giQehsVxq+oLbwEn4?=
- =?us-ascii?Q?gnfM2YWtQxp9MYGVvGbVJ++nYPG9bdbZUJOow9zAqNKdGAItN6EKFKdO6Vhy?=
- =?us-ascii?Q?+2BIhljfjO/Ws36aVG8K4Run+Ve6AjJmZDWoCikpqOTZe6fJWPqok7PrMT8p?=
- =?us-ascii?Q?/pjRDkuvGepNyCR0mAwYmZaI0Aa6sdpgehW7pypDzrqHhXwMKrk3LauoKZiS?=
- =?us-ascii?Q?X5neREUpDrLhtDRidx67mYLENy0vE62/zZfOTy4Eocf8HxIXBPjgRK18oKHZ?=
- =?us-ascii?Q?TLEAQk8/k04Z48qdU5KXyKR+4GHkE0fDk+jwP1dIsEHPOjurwchAzdseTdJj?=
- =?us-ascii?Q?aWKtxaopgJUT6VPwks//gpaRd3LgC+mFRQgllHdP2yY45S0BUh4i/w8+cjj5?=
- =?us-ascii?Q?McZQerDF3eOgjVaISIwIqikaueTL1rxokvGo70PsXwHhMXpV2g6WnKt33sJb?=
- =?us-ascii?Q?zOSHo2T81O5v7NeWXdICGyjirehzTl0XL+lfr3sSQkbL42b+45q9mc0cNh+D?=
- =?us-ascii?Q?Hhuh/w=3D=3D?=
-X-OriginatorOrg: corigine.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4c11b621-5d7d-42ed-4c5a-08db8dabdab6
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR13MB4842.namprd13.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jul 2023 07:42:25.4158
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: fe128f2c-073b-4c20-818e-7246a585940c
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Q8C33K5u8FiIccNCQpfaxNm904ebdPzBLuKauFfd5kPMOaxGUobyNuuRGc8XOK7x2pXpM3DMhIx+FxjMknt/LPeOmGzOa+pzTSzNhZGuRWE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR13MB6540
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+References: <CA+G9fYtAi8NQ_5LNku3oik6b0243xhGFt2WyxERNE+eNqLbNOw@mail.gmail.com>
+ <76665dd9-1cbc-4b3a-b466-18a54cd74c1c@app.fastmail.com>
+In-Reply-To: <76665dd9-1cbc-4b3a-b466-18a54cd74c1c@app.fastmail.com>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Wed, 26 Jul 2023 15:29:31 +0530
+Message-ID: <CA+G9fYuEVLeJX485ZbPNnvbViYUecNsewGiMi+54mNVnL-XBGA@mail.gmail.com>
+Subject: Re: x15: Unable to handle kernel NULL pointer dereference at virtual
+ address 00000004 when read : pci_generic_config_read
+To:     Arnd Bergmann <arnd@arndb.de>, linux-pci@vger.kernel.org
+Cc:     Dan Carpenter <dan.carpenter@linaro.org>,
+        =?UTF-8?B?RGFuaWVsIETDrWF6?= <daniel.diaz@linaro.org>,
+        Anders Roxell <anders.roxell@linaro.org>,
+        Kishon Vijay Abraham I <kishon@kernel.org>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        linux-omap@vger.kernel.org,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
+        Benjamin Copeland <ben.copeland@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, Jul 25, 2023 at 01:28:21PM +0530, Md Danish Anwar wrote:
-> On 25/07/23 1:14 pm, Simon Horman wrote:
-> > On Tue, Jul 25, 2023 at 01:10:30PM +0530, Md Danish Anwar wrote:
-> >> Hi Simon,
-> >>
-> >> On 25/07/23 12:55 pm, Simon Horman wrote:
-> >>> On Mon, Jul 24, 2023 at 04:59:27PM +0530, MD Danish Anwar wrote:
-> >>>> Add icssg_config.h / .c and icssg_classifier.c files. These are firmware
-> >>>> configuration and classification related files. These will be used by
-> >>>> ICSSG ethernet driver.
-> >>>>
-> >>>> Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
-> >>>> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-> >>>
-> >>> Hi Danish,
-> >>>
-> >>> some feedback from my side.
-> >>>
-> >>
-> >> Thanks for the feedback.
-> >>
-> >>> ...
-> >>>
-> >>>> diff --git a/drivers/net/ethernet/ti/icssg_classifier.c b/drivers/net/ethernet/ti/icssg_classifier.c
-> >>>
-> >>> ...
-> >>>
-> >>>> +void icssg_class_set_mac_addr(struct regmap *miig_rt, int slice, u8 *mac)
-> >>>
-> >>> This function appears to be unused.
-> >>> Perhaps it would be better placed in a later patch?
-> >>>
-> >>> Or perhaps not, if it makes it hard to split up the patches nicely.
-> >>> In which case, perhaps the __maybe_unused annotation could be added,
-> >>> temporarily.
-> >>>
-> >>
-> >> Due to splitting the patch into 8-9 patches, I had to introduce these helper
-> >> APIs earlier. All these APIs are helper APIs, they will be used in patch 6
-> >> (Introduce ICSSG Prueth driver).
-> >>
-> >> I had this concern that some APIs which will be used later but introduced
-> >> earlier can create some warnings, before splitting the patches.
-> >>
-> >> I had raised this concern in [1] and asked Jakub if it would be OK to introduce
-> >> these APIs earlier. Jakub said it would be fine [2], so I went ahead with this
-> >> approach.
-> >>
-> >> It will make very hard to break patches if these APIs are introduced and used
-> >> in same patch.
-> > 
-> > Thanks, I understand.
-> > 
-> > In that case my suggestion is to, temporarily, add __maybe_unused,
-> > which will allow static analysis tools to work more cleanly over the
-> > series. It is just a suggestion, not a hard requirement.
-> > 
-> > Probably something along those lines applies to all the
-> > review I provided in my previous email. Please use your discretion here.
-> 
-> For now I think I will leave it as it is. Let reviewers review all other
-> patches. Let's see if there are any other comments on all the patches in this
-> series. If there are any more comments on other patches, then while re-spinning
-> next revision I will keep this in mind and try to add __maybe_unused tags in
-> all APIs that are used later.
+On Tue, 20 Jun 2023 at 14:10, Arnd Bergmann <arnd@arndb.de> wrote:
+>
+> On Tue, Jun 20, 2023, at 10:00, Naresh Kamboju wrote:
+> > We have been noticing the following kernel crash on x15 device while running
+> > LTP fs proc01 testing with Linux stable rc 6.x kernels.
+>
+> Do you know if this is a regression with this kernel version compared
+> to older kernels running the same tests, or an added testcase in LTP
+> that exercises a code path that may have been broken for longer?
+>
+> > Starting kernel ...
+> >
+> > [    0.000000] Booting Linux on physical CPU 0x0
+> > [    0.000000] Linux version 6.3.9-rc1 (tuxmake@tuxmake)
+> > (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld
+> > (GNU Binutils for Debian) 2.35.2) #1 SMP @1687172533
+> > [    0.000000] CPU: ARMv7 Processor [412fc0f2] revision 2 (ARMv7), cr=10c5387d
+> > [    0.000000] CPU: div instructions available: patching division code
+> > [    0.000000] CPU: PIPT / VIPT nonaliasing data cache, PIPT instruction cache
+> > [    0.000000] OF: fdt: Machine model: TI AM5728 BeagleBoard-X15
+> >
+> > ..
+> > LTP fs tests running
+> >
+> > cd /opt/ltp
+> > ./runltp -f fs
+> >
+> > atch/ltp-lyYeJYjM8Y/fs_di-4743
+> >              Loops: 10
+> >     Data File Size: 30
+> > fs_di       0  TINFO  :  Test Started
+> > fs_di       0  TINFO  :  Completed Loop 1
+> > fs_di       0  TINFO  :  Completed Loop 2
+> > fs_di       0  TINFO  :  Completed Loop 3
+> > fs_di       0  TINFO  :  Completed Loop 4
+> > fs_di       0  TINFO  :  Completed Loop 5
+> > fs_di       0  TINFO  :  Completed Loop 6
+> > fs_di       0  TINFO  :  Completed Loop 7
+> > fs_di       0  TINFO  :  Completed Loop 8
+> > fs_di       0  TINFO  :  Completed Loop 9
+> > fs_di       0  TINFO  :  Completed Loop 10
+> > fs_di      10  TPASS  :  Test Successful
+> > [ 1212.864074] 8<--- cut here ---
+> > [ 1212.867156] Unable to handle kernel NULL pointer dereference at
+> > virtual address 00000004 when read
+> > [ 1212.876159] [00000004] *pgd=fb342835
+> > [ 1212.879760] Internal error: Oops: 17 [#1] SMP ARM
+> > [ 1212.884490] Modules linked in: etnaviv gpu_sched
+> > snd_soc_simple_card snd_soc_simple_card_utils onboard_usb_hub
+> > snd_soc_davinci_mcasp snd_soc_ti_udma snd_soc_ti_edma snd_soc_ti_sdma
+> > snd_soc_core ac97_bus snd_pcm_dmaengine snd_pcm cfg80211 snd_timer snd
+> > soundcore bluetooth display_connector
+> > [ 1212.910217] CPU: 0 PID: 4855 Comm: proc01 Not tainted 6.3.9-rc1 #1
+> > [ 1212.916442] Hardware name: Generic DRA74X (Flattened Device Tree)
+> > [ 1212.922546] PC is at pci_generic_config_read+0x34/0x8c
+> > [ 1212.927734] LR is at pci_generic_config_read+0x1c/0x8c
+>
+> It looks like the PCIe bus is not set up correctly, I also
+> see these messages in the log indicating a problem with it:
+>
+> [    3.334503] dra7-pcie 51000000.pcie: host bridge /ocp/target-module@51000000/pcie@51000000 ranges:
+> [    3.343627] dra7-pcie 51000000.pcie:       IO 0x0020003000..0x0020012fff -> 0x0000000000
+> [    3.351806] dra7-pcie 51000000.pcie:      MEM 0x0020013000..0x002fffffff -> 0x0020013000
+> [    3.362030] dra7-pcie 51000000.pcie: iATU: unroll F, 16 ob, 4 ib, align 4K, limit 4G
+> [    4.370635] dra7-pcie 51000000.pcie: Phy link never came up
+> [    4.376831] dra7-pcie 51000000.pcie: PCI host bridge to bus 0000:00
+> [    4.383148] pci_bus 0000:00: root bus resource [bus 00-ff]
+> [    4.388702] pci_bus 0000:00: root bus resource [io  0x0000-0xffff]
+> [    4.394927] pci_bus 0000:00: root bus resource [mem 0x20013000-0x2fffffff]
+> [    4.401885] pci 0000:00:00.0: [104c:8888] type 01 class 0x060400
+> [    4.407958] pci 0000:00:00.0: reg 0x10: [mem 0x00000000-0x000fffff]
+> [    4.414245] pci 0000:00:00.0: reg 0x14: [mem 0x00000000-0x0000ffff]
+> [    4.420654] pci 0000:00:00.0: supports D1
+> [    4.424682] pci 0000:00:00.0: PME# supported from D0 D1 D3hot
+> [    4.437499] PCI: bus0: Fast back to back transfers disabled
+> [    4.443389] PCI: bus1: Fast back to back transfers enabled
+> [    4.448974] pci 0000:00:00.0: BAR 0: assigned [mem 0x20100000-0x201fffff]
+> [    4.455810] pci 0000:00:00.0: BAR 1: assigned [mem 0x20020000-0x2002ffff]
+> [    4.462646] pci 0000:00:00.0: PCI bridge to [bus 01-ff]
+> [    4.468322] pcieport 0000:00:00.0: PME: Signaling with IRQ 135
+> [    4.474487] genirq: Threaded irq requested with handler=NULL and !ONESHOT for dra7xx-pcie-main (irq 132)
+> [    4.484100] dra7-pcie 51000000.pcie: failed to request irq
+> [    4.489685] dra7-pcie: probe of 51000000.pcie failed with error -22
+> [    4.503967] pcie-clkctrl:0000:0: failed to disable
+>
+> The function that crashed is
+>
+> int pci_generic_config_read(struct pci_bus *bus, unsigned int devfn,
+>                             int where, int size, u32 *val)
+> {
+>         void __iomem *addr;
+>
+>         addr = bus->ops->map_bus(bus, devfn, where);
+>         if (!addr)
+>                 return PCIBIOS_DEVICE_NOT_FOUND;
+>
+>         if (size == 1)
+>                 *val = readb(addr);
+>         else if (size == 2)
+>                 *val = readw(addr);
+>         else
+>                 *val = readl(addr);
+>
+>         return PCIBIOS_SUCCESSFUL;
+> }
+>
+> I have not disassembled the vmlinux file, but I can see that the
+> offset into the NULL pointer is '4', which does not match the
+> structur offsets for bus->ops or ops->map_bus.
+>
+> I also see that if map_bus returns NULL, we treat that as
+> an error, but if it returns '4', that is taken as a pointer,
+> which is my best guess at what is happening here.
+>
+> map_bus() seems to be either dw_pcie_other_conf_map_bus() or
+> dw_pcie_own_conf_map_bus(), since the dra7 does not have its
+> own variant but inherits these from the dwc pci driver.
+>
+> I think this is caused by the combination of two bugs:
+>
+> - something prevents the dra7-pcie driver from probing the
+>   device correctly, ultimately failing with the "failed to
+>   request irq" message.
+>
+> - The error handling in dra7xx_pcie_probe() fails to clean
+>   up after the first problem, leaving the PCIe host
+>   in a broken state instead of removing it entirely.
 
-Sure, that sounds reasonable.
+The reported kernel crash is continuously happening on the
+BeagleBoard x15 device while running LTP fs tests on stable rc 6.4.7-rc1.
 
-> The idea behind splitting the patches was to get them reviewed individually as
-> it is quite difficult to get one big patch reviewed as explained by Jakub. And
-> these warnings were expected. If there are any other comments on this series, I
-> will try to address all of them together in next revision.
+fs_di      10  TPASS  :  Test Successful
+[ 1195.556701] 8<--- cut here ---
+[ 1195.559783] Unable to handle kernel NULL pointer dereference at
+virtual address 00000004 when read
+[ 1195.568786] [00000004] *pgd=00000000
+[ 1195.572387] Internal error: Oops: 5 [#1] SMP ARM
+[ 1195.577026] Modules linked in: etnaviv gpu_sched
+snd_soc_simple_card snd_soc_simple_card_utils onboard_usb_hub
+snd_soc_davinci_mcasp snd_soc_ti_udma snd_soc_ti_edma snd_soc_ti_sdma
+snd_soc_core ac97_bus snd_pcm_dmaengine snd_pcm snd_timer snd
+soundcore display_connector
+[ 1195.601104] CPU: 0 PID: 4876 Comm: proc01 Not tainted 6.4.7-rc1 #1
+[ 1195.607330] Hardware name: Generic DRA74X (Flattened Device Tree)
+[ 1195.613464] PC is at pci_generic_config_read+0x34/0x8c
+[ 1195.618621] LR is at pci_generic_config_read+0x1c/0x8c
 
-Yes, I understand.
-Thanks for splitting things up into multiple patches.
-I know that is a lot of work. But it is very helpful.
+Links,
+ - https://lkft.validation.linaro.org/scheduler/job/6619189#L3236
+ - https://storage.tuxsuite.com/public/linaro/lkft/builds/2T3uHpNM7MkE9BOTcs22aOVCDnw/
 
-> Meanwhile, Please let me know if you have any comments on other patches
-> in this series.
+- Naresh
 
-Will do, but I nothing to add at this time.
+>
+>        Arnd
