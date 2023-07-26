@@ -2,151 +2,138 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 63F007633E1
-	for <lists+linux-omap@lfdr.de>; Wed, 26 Jul 2023 12:34:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EA1C7633E8
+	for <lists+linux-omap@lfdr.de>; Wed, 26 Jul 2023 12:36:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232785AbjGZKet (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 26 Jul 2023 06:34:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58774 "EHLO
+        id S233186AbjGZKgd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 26 Jul 2023 06:36:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59592 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232167AbjGZKes (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 26 Jul 2023 06:34:48 -0400
-Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com [66.111.4.27])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44C9B2127;
-        Wed, 26 Jul 2023 03:34:43 -0700 (PDT)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-        by mailout.nyi.internal (Postfix) with ESMTP id E20615C00E1;
-        Wed, 26 Jul 2023 06:34:39 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute6.internal (MEProxy); Wed, 26 Jul 2023 06:34:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-        :cc:content-type:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm2; t=1690367679; x=1690454079; bh=5V
-        vawHwISs141Hz7Wc6ZcS682GbwIMf1XURxVyfXwaA=; b=SwyIbga4W4OElXCLwW
-        dQ8fySDusevZSkiFzdbTHnRRXEsqFLdVfkq4HqcvUjfiem0Pzvt8iMdjLgKfa7TT
-        XL3lsRlfQF5yRy3VrWMjveYSAmpO19uN8J3MXkH5s26E9hX5Q0mLORsdpd3FKBsm
-        uBzXdWlxeGxeGAPxezL1BQgDfxX0mdKLJKViGDXd62hR/i0Y2M4el4k6dZDD/njm
-        LxBMkFH+HILy0pNIoYNcDW8Z6Vt1t/F26xHwR4ea7lI6ZbUtd40o54IS0to0q9z7
-        LkTH7LZPEl+1qVc7H0pudQEmMNwJuwv5Pke13FLgHBtYF4/WbLdQrG4Bdbh6tzCM
-        bsbQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm3; t=1690367679; x=1690454079; bh=5VvawHwISs141
-        Hz7Wc6ZcS682GbwIMf1XURxVyfXwaA=; b=Ke3gMf9u2YUFAs/ORmM+G9RoTjQts
-        5uc0NZutEvEbvam/V3O8u7i/y20hX9xGj+t+9LQNsX7C/OZ/1wGhsatkTzq9WnaU
-        QZr8J5xY68H5zGJDVNgvgURvnJGQeye3K5in4oD31xQ0SP+dYS1k3OOTSEswzZJa
-        a3iL5giWfh5lZ3XMDhC57xQ+lK2wf7Pg/Q8Xe60rjFtWMCtXWyeBYyIMn5khafQl
-        x2vc/cC06cBPjEjIrqDSUFKqG3xITOZTMPXBpcDQ0decV0A8KQlW8UnpacoicGsp
-        HDkumj/mPQ9y4yP7Ggx4B9tqNxw8ievRLZg6ouLy2N8QU1KZMdxk/TSRw==
-X-ME-Sender: <xms:v_bAZD0s3xUiYytEtjvHrnkTiv6e7ZuhRiK-pX9e-IM6NPvqcCdj_A>
-    <xme:v_bAZCHA9sdY_Du2hx93Cj7v-v0aYUxm22H086LjqiFOCmMdk79Dw3oOwVZD4Wfom
-    IBKXjdIMB0YXSLrd2Q>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedriedvgddvkecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdetrhhn
-    ugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtth
-    gvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedtkeet
-    ffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrh
-    hnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:v_bAZD7MeYjzDGb598tkBDT20yiZox3kdiHYKxam3sRA5TWdofBNaw>
-    <xmx:v_bAZI0WZ9thZP5sHt1KABNbiglcxTEkoyvsj9NHI28DkrgTCiVjtQ>
-    <xmx:v_bAZGEMZ1V-GJEMmiiBdqATuqz92TxYWDKoI26fy9sNsgpBhswMgA>
-    <xmx:v_bAZJD0UriU7nIVeI2tcJeSFTA94hvagmTH-iVaQN1GxlycHxxaLQ>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 32B8DB60089; Wed, 26 Jul 2023 06:34:39 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-592-ga9d4a09b4b-fm-defalarms-20230725.001-ga9d4a09b
-Mime-Version: 1.0
-Message-Id: <40807832-9e26-403a-b7b7-3979d4984b23@app.fastmail.com>
-In-Reply-To: <CA+G9fYuEVLeJX485ZbPNnvbViYUecNsewGiMi+54mNVnL-XBGA@mail.gmail.com>
-References: <CA+G9fYtAi8NQ_5LNku3oik6b0243xhGFt2WyxERNE+eNqLbNOw@mail.gmail.com>
- <76665dd9-1cbc-4b3a-b466-18a54cd74c1c@app.fastmail.com>
- <CA+G9fYuEVLeJX485ZbPNnvbViYUecNsewGiMi+54mNVnL-XBGA@mail.gmail.com>
-Date:   Wed, 26 Jul 2023 12:34:17 +0200
-From:   "Arnd Bergmann" <arnd@arndb.de>
-To:     "Naresh Kamboju" <naresh.kamboju@linaro.org>,
-        linux-pci@vger.kernel.org
-Cc:     "Dan Carpenter" <dan.carpenter@linaro.org>,
-        =?UTF-8?Q?Daniel_D=C3=ADaz?= <daniel.diaz@linaro.org>,
-        "Anders Roxell" <anders.roxell@linaro.org>,
-        "Kishon Vijay Abraham I" <kishon@kernel.org>,
-        "Vignesh Raghavendra" <vigneshr@ti.com>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        "Lorenzo Pieralisi" <lpieralisi@kernel.org>,
-        "Jingoo Han" <jingoohan1@gmail.com>,
-        "Gustavo Pimentel" <gustavo.pimentel@synopsys.com>,
-        "Benjamin Copeland" <ben.copeland@linaro.org>
-Subject: Re: x15: Unable to handle kernel NULL pointer dereference at virtual address
- 00000004 when read : pci_generic_config_read
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,T_SCC_BODY_TEXT_LINE,
-        T_SPF_TEMPERROR,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S232167AbjGZKgc (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 26 Jul 2023 06:36:32 -0400
+Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 118EF2126;
+        Wed, 26 Jul 2023 03:36:30 -0700 (PDT)
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 36QAaDvp045912;
+        Wed, 26 Jul 2023 05:36:13 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1690367773;
+        bh=AsQ7eL3/H2JJHOml5th1RT/qIatR0oms1Ab+63AsSdY=;
+        h=Date:Subject:To:CC:References:From:In-Reply-To;
+        b=oO2vlJsRYavoQbpnR7BH7gv/D6zsLsuKLq8VVi5DAQcF5dI92qLsXfFhlduzSrmeH
+         ArZM4IJpCeczHcpAVUPJDp8KPKaVcK0Lo5i2oIt3GC/hjn3Gth5hPMbAnAnK6d49+b
+         cwvbg8c/vCB7LtynoQBuBk2cuAEcXDjkBhsWlmO4=
+Received: from DLEE114.ent.ti.com (dlee114.ent.ti.com [157.170.170.25])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 36QAaDhR058238
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 26 Jul 2023 05:36:13 -0500
+Received: from DLEE114.ent.ti.com (157.170.170.25) by DLEE114.ent.ti.com
+ (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Wed, 26
+ Jul 2023 05:36:13 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE114.ent.ti.com
+ (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Wed, 26 Jul 2023 05:36:13 -0500
+Received: from [172.24.227.217] (ileaxei01-snat.itg.ti.com [10.180.69.5])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 36QAa7iP077859;
+        Wed, 26 Jul 2023 05:36:07 -0500
+Message-ID: <296b0e98-4012-09f6-84cd-6f87a85f095f@ti.com>
+Date:   Wed, 26 Jul 2023 16:06:06 +0530
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [EXTERNAL] Re: [PATCH v11 07/10] net: ti: icssg-prueth: Add ICSSG
+ Stats
+Content-Language: en-US
+To:     Jakub Kicinski <kuba@kernel.org>,
+        MD Danish Anwar <danishanwar@ti.com>
+CC:     Randy Dunlap <rdunlap@infradead.org>,
+        Roger Quadros <rogerq@kernel.org>,
+        Simon Horman <simon.horman@corigine.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Richard Cochran <richardcochran@gmail.com>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>, <nm@ti.com>, <srk@ti.com>,
+        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>
+References: <20230724112934.2637802-1-danishanwar@ti.com>
+ <20230724112934.2637802-8-danishanwar@ti.com>
+ <20230725205014.04e4bba3@kernel.org>
+From:   Md Danish Anwar <a0501179@ti.com>
+Organization: Texas Instruments
+In-Reply-To: <20230725205014.04e4bba3@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Jul 26, 2023, at 11:59, Naresh Kamboju wrote:
-> On Tue, 20 Jun 2023 at 14:10, Arnd Bergmann <arnd@arndb.de> wrote:
->>
->> On Tue, Jun 20, 2023, at 10:00, Naresh Kamboju wrote:
->> > We have been noticing the following kernel crash on x15 device while running
->> > LTP fs proc01 testing with Linux stable rc 6.x kernels.
->>
->> Do you know if this is a regression with this kernel version compared
->> to older kernels running the same tests, or an added testcase in LTP
->> that exercises a code path that may have been broken for longer?
-...
->>
->> I have not disassembled the vmlinux file, but I can see that the
->> offset into the NULL pointer is '4', which does not match the
->> structur offsets for bus->ops or ops->map_bus.
->>
->> I also see that if map_bus returns NULL, we treat that as
->> an error, but if it returns '4', that is taken as a pointer,
->> which is my best guess at what is happening here.
->>
->> map_bus() seems to be either dw_pcie_other_conf_map_bus() or
->> dw_pcie_own_conf_map_bus(), since the dra7 does not have its
->> own variant but inherits these from the dwc pci driver.
->>
->> I think this is caused by the combination of two bugs:
->>
->> - something prevents the dra7-pcie driver from probing the
->>   device correctly, ultimately failing with the "failed to
->>   request irq" message.
->>
->> - The error handling in dra7xx_pcie_probe() fails to clean
->>   up after the first problem, leaving the PCIe host
->>   in a broken state instead of removing it entirely.
->
-> The reported kernel crash is continuously happening on the
-> BeagleBoard x15 device while running LTP fs tests on stable rc 6.4.7-rc1.
+Hi Jakub
 
-Ok, so you think there is an additional regression between
-6.4.6 and 6.4.7-rc1? on top of the two that you have not bisected?
+On 26/07/23 9:20 am, Jakub Kicinski wrote:
+> On Mon, 24 Jul 2023 16:59:31 +0530 MD Danish Anwar wrote:
+>> +	/* Rx */
+>> +	ICSSG_STATS(rx_packets, true),
+>> +	ICSSG_STATS(rx_broadcast_frames, false),
+>> +	ICSSG_STATS(rx_multicast_frames, false),
+> 
+> There is a standard stat for mcast.
+> 
 
-I don't see any changes in drivers/pci/ after 6.4.5, so I'm
-even more confused now.
+Sure. I will add multicast stats via .ndo_get_stats64 instead of ethtool.
 
-> soundcore display_connector
-> [ 1195.601104] CPU: 0 PID: 4876 Comm: proc01 Not tainted 6.4.7-rc1 #1
-> [ 1195.607330] Hardware name: Generic DRA74X (Flattened Device Tree)
-> [ 1195.613464] PC is at pci_generic_config_read+0x34/0x8c
-> [ 1195.618621] LR is at pci_generic_config_read+0x1c/0x8c
+>> +	ICSSG_STATS(rx_crc_errors, true),
+>> +	ICSSG_STATS(rx_mii_error_frames, false),
+>> +	ICSSG_STATS(rx_odd_nibble_frames, false),
+>> +	ICSSG_STATS(rx_frame_max_size, false),
+>> +	ICSSG_STATS(rx_max_size_error_frames, false),
+>> +	ICSSG_STATS(rx_frame_min_size, false),
+>> +	ICSSG_STATS(rx_min_size_error_frames, false),
+>> +	ICSSG_STATS(rx_over_errors, true),
+>> +	ICSSG_STATS(rx_class0_hits, false),
+>> +	ICSSG_STATS(rx_class1_hits, false),
+>> +	ICSSG_STATS(rx_class2_hits, false),
+>> +	ICSSG_STATS(rx_class3_hits, false),
+>> +	ICSSG_STATS(rx_class4_hits, false),
+>> +	ICSSG_STATS(rx_class5_hits, false),
+>> +	ICSSG_STATS(rx_class6_hits, false),
+>> +	ICSSG_STATS(rx_class7_hits, false),
+>> +	ICSSG_STATS(rx_class8_hits, false),
+>> +	ICSSG_STATS(rx_class9_hits, false),
+>> +	ICSSG_STATS(rx_class10_hits, false),
+>> +	ICSSG_STATS(rx_class11_hits, false),
+>> +	ICSSG_STATS(rx_class12_hits, false),
+>> +	ICSSG_STATS(rx_class13_hits, false),
+>> +	ICSSG_STATS(rx_class14_hits, false),
+>> +	ICSSG_STATS(rx_class15_hits, false),
+>> +	ICSSG_STATS(rx_smd_frags, false),
+>> +	ICSSG_STATS(rx_bucket1_size, false),
+>> +	ICSSG_STATS(rx_bucket2_size, false),
+>> +	ICSSG_STATS(rx_bucket3_size, false),
+>> +	ICSSG_STATS(rx_bucket4_size, false),
+> 
+> Are the bucket sizes configurable? Can we set the bucket sizes
+> to standard RMON ones and use ethtool RMON stats?
 
-This looks identical to the first bugs that you reported, so I'd
-suggest you keep trying to narrow down when that one started rather
-than looking at the latest stable-rc.
+The bucket sizes are not configurable. Bucket size is read from hardware and is
+fixed. I don't think we can configure bucket size and use ethtool RMON stats.
+It's better to dump bucket sizes via ethtool -S.
 
-     Arnd
+-- 
+Thanks and Regards,
+Danish.
