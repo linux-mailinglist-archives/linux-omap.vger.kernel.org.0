@@ -2,232 +2,394 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 38131763301
-	for <lists+linux-omap@lfdr.de>; Wed, 26 Jul 2023 12:00:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93F2A7633BF
+	for <lists+linux-omap@lfdr.de>; Wed, 26 Jul 2023 12:32:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231324AbjGZKAN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 26 Jul 2023 06:00:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41812 "EHLO
+        id S231817AbjGZKcM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 26 Jul 2023 06:32:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56970 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233258AbjGZJ7v (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 26 Jul 2023 05:59:51 -0400
-Received: from mail-vk1-xa2d.google.com (mail-vk1-xa2d.google.com [IPv6:2607:f8b0:4864:20::a2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 492202135
-        for <linux-omap@vger.kernel.org>; Wed, 26 Jul 2023 02:59:43 -0700 (PDT)
-Received: by mail-vk1-xa2d.google.com with SMTP id 71dfb90a1353d-48651709fa5so132269e0c.1
-        for <linux-omap@vger.kernel.org>; Wed, 26 Jul 2023 02:59:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1690365582; x=1690970382;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ggMmbTgfOxRgqR/7a08sk0qOVDEQkI5+XHkBaieC530=;
-        b=uATWBBwu87+ofJu1k+q+vlEK8a4aiWyR2Xz0mv2857whZoXU/a8vGVEC0OcVC2dMoi
-         cqVBwrdnfBWGL4funHSzsZvdkAdXrYFEaSvEMwQwr5m4c7KQNbS5XXqhuCx7SGsm7KWg
-         hG9h47OFBOGfUcUnVgZwkl7ZkZXgetlaf5j6gBj80o8D9s2JYtfT2XtPAR+GWXkleEOa
-         UWmNubI9nCGV9o8lzwZL+9GIU4sYGxdI4S8T1Eey12rsAhvtsgaFInWe9uJuxSLshwsh
-         6v1uIX6lQ/lbbZOHGofpqTVZS8HWYol84zFl7iVbcFE1v9ly6Fz5NYCHyaz55hDtskP/
-         yN8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690365582; x=1690970382;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ggMmbTgfOxRgqR/7a08sk0qOVDEQkI5+XHkBaieC530=;
-        b=Ozp8yoUyECPoIPnNmuv3Dag8XiU9HtXYY2q/ubOA+F1pUYtPSaBPfXruB5mGWoIjDQ
-         KHFiq5u7Lp7Kp3pvI5/EmJc0nOykf+oUMNLr9heovpnS3lY/dw1IFrfcs9sdixzMAszQ
-         0tM+kvngGTqJye7g1Q05zfK8EbPQwAvhKRGN+TwDBZDXz9hXrFsqHtQmRzvGzkZrG0V/
-         gqhCI7vtvjezTy8eETYq4YnfDN2KBt6lQycKzlXgIg+9RqFshH9AhBrRhuuLJ8JUhpok
-         n/Eg+Ccwp5TnX2yMo6YpqgqfQ4SW2mo7SHt1OXfeqbEr4lJTzc/YRZn8zN+XYhpyQPeP
-         D7DA==
-X-Gm-Message-State: ABy/qLYlQ7SEQNMHcU6Xz6djg22BlCfoRFDfuJagedMvboMItihW164i
-        4IQI7Co5/diOcfSEPJctWERgW+2fuLC2kPJ+16BHDg==
-X-Google-Smtp-Source: APBJJlGhCRaMo8KRs4HdEZ9utTDa3wOi7tZCcs5hQVcQ2r193d9n09NEEtLNzBE1KAz4dQWj4Ck2DWiPE/03PVyNcvk=
-X-Received: by 2002:a67:be13:0:b0:447:4b52:5c8 with SMTP id
- x19-20020a67be13000000b004474b5205c8mr683637vsq.26.1690365582137; Wed, 26 Jul
- 2023 02:59:42 -0700 (PDT)
+        with ESMTP id S232670AbjGZKcL (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 26 Jul 2023 06:32:11 -0400
+Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B334E2122;
+        Wed, 26 Jul 2023 03:32:08 -0700 (PDT)
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 36QAVU3x047918;
+        Wed, 26 Jul 2023 05:31:30 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1690367490;
+        bh=m3pLVcWfCNHKle+Prtr0F3fWJakR3djoJ+m4zdXCUYo=;
+        h=Date:Subject:To:CC:References:From:In-Reply-To;
+        b=ZRs34GvEgzhM6RepC+uHn5yCMRqfORen2RH7d9y1aB+fMsgvI8xTNtaMY1P/38ri/
+         5OyG8zE40xm0vjyMMbwtcK+oCvsN7eCXs6bD44O+2Ye1JaSm8+7b2V0pUkY4qQBiMn
+         i+ti2+vfCq8KoWfCRawBZELA27MV9NhWhoXHsL6U=
+Received: from DFLE115.ent.ti.com (dfle115.ent.ti.com [10.64.6.36])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 36QAVUVY055843
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 26 Jul 2023 05:31:30 -0500
+Received: from DFLE113.ent.ti.com (10.64.6.34) by DFLE115.ent.ti.com
+ (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Wed, 26
+ Jul 2023 05:31:30 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE113.ent.ti.com
+ (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Wed, 26 Jul 2023 05:31:30 -0500
+Received: from [172.24.227.217] (ileaxei01-snat2.itg.ti.com [10.180.69.6])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 36QAVOIV081651;
+        Wed, 26 Jul 2023 05:31:24 -0500
+Message-ID: <9b11e602-6503-863a-f825-b595effd5e1d@ti.com>
+Date:   Wed, 26 Jul 2023 16:01:23 +0530
 MIME-Version: 1.0
-References: <CA+G9fYtAi8NQ_5LNku3oik6b0243xhGFt2WyxERNE+eNqLbNOw@mail.gmail.com>
- <76665dd9-1cbc-4b3a-b466-18a54cd74c1c@app.fastmail.com>
-In-Reply-To: <76665dd9-1cbc-4b3a-b466-18a54cd74c1c@app.fastmail.com>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Wed, 26 Jul 2023 15:29:31 +0530
-Message-ID: <CA+G9fYuEVLeJX485ZbPNnvbViYUecNsewGiMi+54mNVnL-XBGA@mail.gmail.com>
-Subject: Re: x15: Unable to handle kernel NULL pointer dereference at virtual
- address 00000004 when read : pci_generic_config_read
-To:     Arnd Bergmann <arnd@arndb.de>, linux-pci@vger.kernel.org
-Cc:     Dan Carpenter <dan.carpenter@linaro.org>,
-        =?UTF-8?B?RGFuaWVsIETDrWF6?= <daniel.diaz@linaro.org>,
-        Anders Roxell <anders.roxell@linaro.org>,
-        Kishon Vijay Abraham I <kishon@kernel.org>,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [EXTERNAL] Re: [PATCH v11 06/10] net: ti: icssg-prueth: Add ICSSG
+ ethernet driver
+Content-Language: en-US
+To:     Jakub Kicinski <kuba@kernel.org>,
+        MD Danish Anwar <danishanwar@ti.com>
+CC:     Randy Dunlap <rdunlap@infradead.org>,
+        Roger Quadros <rogerq@kernel.org>,
+        Simon Horman <simon.horman@corigine.com>,
         Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-omap@vger.kernel.org,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
-        Benjamin Copeland <ben.copeland@linaro.org>
+        Andrew Lunn <andrew@lunn.ch>,
+        Richard Cochran <richardcochran@gmail.com>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>, <nm@ti.com>, <srk@ti.com>,
+        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>
+References: <20230724112934.2637802-1-danishanwar@ti.com>
+ <20230724112934.2637802-7-danishanwar@ti.com>
+ <20230725210939.56d77726@kernel.org>
+From:   Md Danish Anwar <a0501179@ti.com>
+Organization: Texas Instruments
+In-Reply-To: <20230725210939.56d77726@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, 20 Jun 2023 at 14:10, Arnd Bergmann <arnd@arndb.de> wrote:
->
-> On Tue, Jun 20, 2023, at 10:00, Naresh Kamboju wrote:
-> > We have been noticing the following kernel crash on x15 device while running
-> > LTP fs proc01 testing with Linux stable rc 6.x kernels.
->
-> Do you know if this is a regression with this kernel version compared
-> to older kernels running the same tests, or an added testcase in LTP
-> that exercises a code path that may have been broken for longer?
->
-> > Starting kernel ...
-> >
-> > [    0.000000] Booting Linux on physical CPU 0x0
-> > [    0.000000] Linux version 6.3.9-rc1 (tuxmake@tuxmake)
-> > (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld
-> > (GNU Binutils for Debian) 2.35.2) #1 SMP @1687172533
-> > [    0.000000] CPU: ARMv7 Processor [412fc0f2] revision 2 (ARMv7), cr=10c5387d
-> > [    0.000000] CPU: div instructions available: patching division code
-> > [    0.000000] CPU: PIPT / VIPT nonaliasing data cache, PIPT instruction cache
-> > [    0.000000] OF: fdt: Machine model: TI AM5728 BeagleBoard-X15
-> >
-> > ..
-> > LTP fs tests running
-> >
-> > cd /opt/ltp
-> > ./runltp -f fs
-> >
-> > atch/ltp-lyYeJYjM8Y/fs_di-4743
-> >              Loops: 10
-> >     Data File Size: 30
-> > fs_di       0  TINFO  :  Test Started
-> > fs_di       0  TINFO  :  Completed Loop 1
-> > fs_di       0  TINFO  :  Completed Loop 2
-> > fs_di       0  TINFO  :  Completed Loop 3
-> > fs_di       0  TINFO  :  Completed Loop 4
-> > fs_di       0  TINFO  :  Completed Loop 5
-> > fs_di       0  TINFO  :  Completed Loop 6
-> > fs_di       0  TINFO  :  Completed Loop 7
-> > fs_di       0  TINFO  :  Completed Loop 8
-> > fs_di       0  TINFO  :  Completed Loop 9
-> > fs_di       0  TINFO  :  Completed Loop 10
-> > fs_di      10  TPASS  :  Test Successful
-> > [ 1212.864074] 8<--- cut here ---
-> > [ 1212.867156] Unable to handle kernel NULL pointer dereference at
-> > virtual address 00000004 when read
-> > [ 1212.876159] [00000004] *pgd=fb342835
-> > [ 1212.879760] Internal error: Oops: 17 [#1] SMP ARM
-> > [ 1212.884490] Modules linked in: etnaviv gpu_sched
-> > snd_soc_simple_card snd_soc_simple_card_utils onboard_usb_hub
-> > snd_soc_davinci_mcasp snd_soc_ti_udma snd_soc_ti_edma snd_soc_ti_sdma
-> > snd_soc_core ac97_bus snd_pcm_dmaengine snd_pcm cfg80211 snd_timer snd
-> > soundcore bluetooth display_connector
-> > [ 1212.910217] CPU: 0 PID: 4855 Comm: proc01 Not tainted 6.3.9-rc1 #1
-> > [ 1212.916442] Hardware name: Generic DRA74X (Flattened Device Tree)
-> > [ 1212.922546] PC is at pci_generic_config_read+0x34/0x8c
-> > [ 1212.927734] LR is at pci_generic_config_read+0x1c/0x8c
->
-> It looks like the PCIe bus is not set up correctly, I also
-> see these messages in the log indicating a problem with it:
->
-> [    3.334503] dra7-pcie 51000000.pcie: host bridge /ocp/target-module@51000000/pcie@51000000 ranges:
-> [    3.343627] dra7-pcie 51000000.pcie:       IO 0x0020003000..0x0020012fff -> 0x0000000000
-> [    3.351806] dra7-pcie 51000000.pcie:      MEM 0x0020013000..0x002fffffff -> 0x0020013000
-> [    3.362030] dra7-pcie 51000000.pcie: iATU: unroll F, 16 ob, 4 ib, align 4K, limit 4G
-> [    4.370635] dra7-pcie 51000000.pcie: Phy link never came up
-> [    4.376831] dra7-pcie 51000000.pcie: PCI host bridge to bus 0000:00
-> [    4.383148] pci_bus 0000:00: root bus resource [bus 00-ff]
-> [    4.388702] pci_bus 0000:00: root bus resource [io  0x0000-0xffff]
-> [    4.394927] pci_bus 0000:00: root bus resource [mem 0x20013000-0x2fffffff]
-> [    4.401885] pci 0000:00:00.0: [104c:8888] type 01 class 0x060400
-> [    4.407958] pci 0000:00:00.0: reg 0x10: [mem 0x00000000-0x000fffff]
-> [    4.414245] pci 0000:00:00.0: reg 0x14: [mem 0x00000000-0x0000ffff]
-> [    4.420654] pci 0000:00:00.0: supports D1
-> [    4.424682] pci 0000:00:00.0: PME# supported from D0 D1 D3hot
-> [    4.437499] PCI: bus0: Fast back to back transfers disabled
-> [    4.443389] PCI: bus1: Fast back to back transfers enabled
-> [    4.448974] pci 0000:00:00.0: BAR 0: assigned [mem 0x20100000-0x201fffff]
-> [    4.455810] pci 0000:00:00.0: BAR 1: assigned [mem 0x20020000-0x2002ffff]
-> [    4.462646] pci 0000:00:00.0: PCI bridge to [bus 01-ff]
-> [    4.468322] pcieport 0000:00:00.0: PME: Signaling with IRQ 135
-> [    4.474487] genirq: Threaded irq requested with handler=NULL and !ONESHOT for dra7xx-pcie-main (irq 132)
-> [    4.484100] dra7-pcie 51000000.pcie: failed to request irq
-> [    4.489685] dra7-pcie: probe of 51000000.pcie failed with error -22
-> [    4.503967] pcie-clkctrl:0000:0: failed to disable
->
-> The function that crashed is
->
-> int pci_generic_config_read(struct pci_bus *bus, unsigned int devfn,
->                             int where, int size, u32 *val)
-> {
->         void __iomem *addr;
->
->         addr = bus->ops->map_bus(bus, devfn, where);
->         if (!addr)
->                 return PCIBIOS_DEVICE_NOT_FOUND;
->
->         if (size == 1)
->                 *val = readb(addr);
->         else if (size == 2)
->                 *val = readw(addr);
->         else
->                 *val = readl(addr);
->
->         return PCIBIOS_SUCCESSFUL;
-> }
->
-> I have not disassembled the vmlinux file, but I can see that the
-> offset into the NULL pointer is '4', which does not match the
-> structur offsets for bus->ops or ops->map_bus.
->
-> I also see that if map_bus returns NULL, we treat that as
-> an error, but if it returns '4', that is taken as a pointer,
-> which is my best guess at what is happening here.
->
-> map_bus() seems to be either dw_pcie_other_conf_map_bus() or
-> dw_pcie_own_conf_map_bus(), since the dra7 does not have its
-> own variant but inherits these from the dwc pci driver.
->
-> I think this is caused by the combination of two bugs:
->
-> - something prevents the dra7-pcie driver from probing the
->   device correctly, ultimately failing with the "failed to
->   request irq" message.
->
-> - The error handling in dra7xx_pcie_probe() fails to clean
->   up after the first problem, leaving the PCIe host
->   in a broken state instead of removing it entirely.
+Hi Jakub,
 
-The reported kernel crash is continuously happening on the
-BeagleBoard x15 device while running LTP fs tests on stable rc 6.4.7-rc1.
+On 26/07/23 9:39 am, Jakub Kicinski wrote:
+> On Mon, 24 Jul 2023 16:59:30 +0530 MD Danish Anwar wrote:
+>>  drivers/net/ethernet/ti/Kconfig        |   13 +
+>>  drivers/net/ethernet/ti/Makefile       |    3 +
+>>  drivers/net/ethernet/ti/icssg_prueth.c | 1831 ++++++++++++++++++++++++
+>>  drivers/net/ethernet/ti/icssg_prueth.h |   48 +
+> 
+> Please create a sub-directory for the driver.
+> 
+>> +static int prueth_ndev_add_tx_napi(struct prueth_emac *emac)
+>> +{
+>> +	struct prueth *prueth = emac->prueth;
+>> +	int i, ret;
+>> +
+>> +	for (i = 0; i < emac->tx_ch_num; i++) {
+>> +		struct prueth_tx_chn *tx_chn = &emac->tx_chns[i];
+>> +
+>> +		netif_napi_add_tx_weight(emac->ndev, &tx_chn->napi_tx,
+>> +					 emac_napi_tx_poll, NAPI_POLL_WEIGHT);
+> 
+> Skip specifying weight, please.
+> 
 
-fs_di      10  TPASS  :  Test Successful
-[ 1195.556701] 8<--- cut here ---
-[ 1195.559783] Unable to handle kernel NULL pointer dereference at
-virtual address 00000004 when read
-[ 1195.568786] [00000004] *pgd=00000000
-[ 1195.572387] Internal error: Oops: 5 [#1] SMP ARM
-[ 1195.577026] Modules linked in: etnaviv gpu_sched
-snd_soc_simple_card snd_soc_simple_card_utils onboard_usb_hub
-snd_soc_davinci_mcasp snd_soc_ti_udma snd_soc_ti_edma snd_soc_ti_sdma
-snd_soc_core ac97_bus snd_pcm_dmaengine snd_pcm snd_timer snd
-soundcore display_connector
-[ 1195.601104] CPU: 0 PID: 4876 Comm: proc01 Not tainted 6.4.7-rc1 #1
-[ 1195.607330] Hardware name: Generic DRA74X (Flattened Device Tree)
-[ 1195.613464] PC is at pci_generic_config_read+0x34/0x8c
-[ 1195.618621] LR is at pci_generic_config_read+0x1c/0x8c
+Sure, Will change this to 'netif_napi_add_tx(emac->ndev, &tx_chn->
+emac_napi_tx_poll);'
 
-Links,
- - https://lkft.validation.linaro.org/scheduler/job/6619189#L3236
- - https://storage.tuxsuite.com/public/linaro/lkft/builds/2T3uHpNM7MkE9BOTcs22aOVCDnw/
+>> +/**
+>> + * emac_ndo_start_xmit - EMAC Transmit function
+>> + * @skb: SKB pointer
+>> + * @ndev: EMAC network adapter
+>> + *
+>> + * Called by the system to transmit a packet  - we queue the packet in
+>> + * EMAC hardware transmit queue
+>> + * Doesn't wait for completion we'll check for TX completion in
+>> + * emac_tx_complete_packets().
+>> + *
+>> + * Return: enum netdev_tx
+>> + */
+>> +static enum netdev_tx emac_ndo_start_xmit(struct sk_buff *skb, struct net_device *ndev)
+>> +{
+>> +	struct cppi5_host_desc_t *first_desc, *next_desc, *cur_desc;
+>> +	struct prueth_emac *emac = netdev_priv(ndev);
+>> +	struct netdev_queue *netif_txq;
+>> +	struct prueth_tx_chn *tx_chn;
+>> +	dma_addr_t desc_dma, buf_dma;
+>> +	int i, ret = 0, q_idx;
+>> +	void **swdata;
+>> +	u32 pkt_len;
+>> +	u32 *epib;
+>> +
+>> +	pkt_len = skb_headlen(skb);
+>> +	q_idx = skb_get_queue_mapping(skb);
+>> +
+>> +	tx_chn = &emac->tx_chns[q_idx];
+>> +	netif_txq = netdev_get_tx_queue(ndev, q_idx);
+>> +
+>> +	/* Map the linear buffer */
+>> +	buf_dma = dma_map_single(tx_chn->dma_dev, skb->data, pkt_len, DMA_TO_DEVICE);
+>> +	if (dma_mapping_error(tx_chn->dma_dev, buf_dma)) {
+>> +		netdev_err(ndev, "tx: failed to map skb buffer\n");
+>> +		ret = NETDEV_TX_BUSY;
+> 
+> Drop it if it can't be mapped and return OK. What's going to re-enable
+> the queue in this case?
+> 
 
-- Naresh
+Sure. I will drop the packet and return NETDEV_TX_OK.
 
->
->        Arnd
+>> +		goto drop_stop_q;
+>> +	}
+>> +
+>> +	first_desc = k3_cppi_desc_pool_alloc(tx_chn->desc_pool);
+>> +	if (!first_desc) {
+>> +		netdev_dbg(ndev, "tx: failed to allocate descriptor\n");
+>> +		dma_unmap_single(tx_chn->dma_dev, buf_dma, pkt_len, DMA_TO_DEVICE);
+>> +		ret = NETDEV_TX_BUSY;
+>> +		goto drop_stop_q_busy;
+>> +	}
+>> +
+>> +	cppi5_hdesc_init(first_desc, CPPI5_INFO0_HDESC_EPIB_PRESENT,
+>> +			 PRUETH_NAV_PS_DATA_SIZE);
+>> +	cppi5_hdesc_set_pkttype(first_desc, 0);
+>> +	epib = first_desc->epib;
+>> +	epib[0] = 0;
+>> +	epib[1] = 0;
+>> +
+>> +	/* set dst tag to indicate internal qid at the firmware which is at
+>> +	 * bit8..bit15. bit0..bit7 indicates port num for directed
+>> +	 * packets in case of switch mode operation
+>> +	 */
+>> +	cppi5_desc_set_tags_ids(&first_desc->hdr, 0, (emac->port_id | (q_idx << 8)));
+>> +	k3_udma_glue_tx_dma_to_cppi5_addr(tx_chn->tx_chn, &buf_dma);
+>> +	cppi5_hdesc_attach_buf(first_desc, buf_dma, pkt_len, buf_dma, pkt_len);
+>> +	swdata = cppi5_hdesc_get_swdata(first_desc);
+>> +	*swdata = skb;
+>> +
+>> +	if (!skb_is_nonlinear(skb))
+>> +		goto tx_push;
+> 
+> Why the goto? The loop won't be entered.
+> 
+
+skb_is_nonlinear() will return true when skb is fragmented i.e.
+skb_shinfo(skb)->nr_frags > 0.
+
+Makes sense to drop the if condition. As for non-fragmented skb,
+skb_shinfo(skb)->nr_frags = 0 and we won't enter for loop and will eventually
+reach at label tx_push.
+
+I will drop the if condition.
+
+>> +	/* Handle the case where skb is fragmented in pages */
+>> +	cur_desc = first_desc;
+>> +	for (i = 0; i < skb_shinfo(skb)->nr_frags; i++) {
+>> +		skb_frag_t *frag = &skb_shinfo(skb)->frags[i];
+>> +		u32 frag_size = skb_frag_size(frag);
+>> +
+>> +		next_desc = k3_cppi_desc_pool_alloc(tx_chn->desc_pool);
+>> +		if (!next_desc) {
+>> +			netdev_err(ndev,
+>> +				   "tx: failed to allocate frag. descriptor\n");
+>> +			ret = NETDEV_TX_BUSY;
+>> +			goto drop_free_descs;
+>> +		}
+>> +
+>> +		buf_dma = skb_frag_dma_map(tx_chn->dma_dev, frag, 0, frag_size,
+>> +					   DMA_TO_DEVICE);
+>> +		if (dma_mapping_error(tx_chn->dma_dev, buf_dma)) {
+>> +			netdev_err(ndev, "tx: Failed to map skb page\n");
+>> +			k3_cppi_desc_pool_free(tx_chn->desc_pool, next_desc);
+>> +			ret = NETDEV_TX_BUSY;
+>> +			goto drop_free_descs;
+> 
+> this label frees the skb, you can't return BUSY
+> 
+
+Sure. Will return OK here.
+
+>> +		}
+>> +
+>> +		cppi5_hdesc_reset_hbdesc(next_desc);
+>> +		k3_udma_glue_tx_dma_to_cppi5_addr(tx_chn->tx_chn, &buf_dma);
+>> +		cppi5_hdesc_attach_buf(next_desc,
+>> +				       buf_dma, frag_size, buf_dma, frag_size);
+>> +
+>> +		desc_dma = k3_cppi_desc_pool_virt2dma(tx_chn->desc_pool,
+>> +						      next_desc);
+>> +		k3_udma_glue_tx_dma_to_cppi5_addr(tx_chn->tx_chn, &desc_dma);
+>> +		cppi5_hdesc_link_hbdesc(cur_desc, desc_dma);
+>> +
+>> +		pkt_len += frag_size;
+>> +		cur_desc = next_desc;
+>> +	}
+>> +	WARN_ON(pkt_len != skb->len);
+> 
+> WARN_ON_ONCE() if at all
+> 
+
+Sure.
+
+>> +
+>> +tx_push:
+>> +	/* report bql before sending packet */
+>> +	netdev_tx_sent_queue(netif_txq, pkt_len);
+>> +
+>> +	cppi5_hdesc_set_pktlen(first_desc, pkt_len);
+>> +	desc_dma = k3_cppi_desc_pool_virt2dma(tx_chn->desc_pool, first_desc);
+>> +	/* cppi5_desc_dump(first_desc, 64); */
+>> +
+>> +	skb_tx_timestamp(skb);  /* SW timestamp if SKBTX_IN_PROGRESS not set */
+>> +	ret = k3_udma_glue_push_tx_chn(tx_chn->tx_chn, first_desc, desc_dma);
+>> +	if (ret) {
+>> +		netdev_err(ndev, "tx: push failed: %d\n", ret);
+>> +		goto drop_free_descs;
+>> +	}
+>> +
+>> +	if (k3_cppi_desc_pool_avail(tx_chn->desc_pool) < MAX_SKB_FRAGS) {
+>> +		netif_tx_stop_queue(netif_txq);
+>> +		/* Barrier, so that stop_queue visible to other cpus */
+>> +		smp_mb__after_atomic();
+>> +
+>> +		if (k3_cppi_desc_pool_avail(tx_chn->desc_pool) >=
+>> +		    MAX_SKB_FRAGS)
+> 
+> MAX_FRAGS + 1?
+> 
+
+I think MAX_SKB_FRAGS is OK. If the available pool = MAX_SKB_FRAGS we should be
+able to wake the queue.
+
+>> +			netif_tx_wake_queue(netif_txq);
+>> +	}
+>> +
+>> +	return NETDEV_TX_OK;
+> 
+> 
+>> +static int emac_napi_rx_poll(struct napi_struct *napi_rx, int budget)
+>> +{
+>> +	struct prueth_emac *emac = prueth_napi_to_emac(napi_rx);
+>> +	int rx_flow = PRUETH_RX_FLOW_DATA;
+>> +	int flow = PRUETH_MAX_RX_FLOWS;
+>> +	int num_rx = 0;
+>> +	int cur_budget;
+>> +	int ret;
+>> +
+>> +	while (flow--) {
+>> +		cur_budget = budget - num_rx;
+>> +
+>> +		while (cur_budget--) {
+>> +			ret = emac_rx_packet(emac, flow);
+>> +			if (ret)
+>> +				break;
+>> +			num_rx++;
+>> +		}
+>> +
+>> +		if (num_rx >= budget)
+>> +			break;
+>> +	}
+>> +
+>> +	if (num_rx < budget) {
+>> +		napi_complete(napi_rx);
+> 
+> Prefer using napi_complete_done()
+> 
+
+Sure.
+
+>> +		enable_irq(emac->rx_chns.irq[rx_flow]);
+>> +	}
+>> +
+>> +	return num_rx;
+>> +}
+> 
+>> +static void emac_ndo_tx_timeout(struct net_device *ndev, unsigned int txqueue)
+>> +{
+>> +	struct prueth_emac *emac = netdev_priv(ndev);
+>> +
+>> +	if (netif_msg_tx_err(emac))
+>> +		netdev_err(ndev, "xmit timeout");
+> 
+> Core already prints something, you can drop this.
+> 
+
+Sure, I will drop this print.
+
+>> +	ndev->stats.tx_errors++;
+>> +}
+> 
+>> +static void emac_ndo_set_rx_mode_work(struct work_struct *work)
+>> +{
+>> +	struct prueth_emac *emac = container_of(work, struct prueth_emac, rx_mode_work);
+>> +	struct net_device *ndev = emac->ndev;
+>> +	bool promisc, allmulti;
+>> +
+>> +	if (!netif_running(ndev))
+>> +		return;
+>> +
+>> +	promisc = ndev->flags & IFF_PROMISC;
+>> +	allmulti = ndev->flags & IFF_ALLMULTI;
+>> +	emac_set_port_state(emac, ICSSG_EMAC_PORT_UC_FLOODING_DISABLE);
+>> +	emac_set_port_state(emac, ICSSG_EMAC_PORT_MC_FLOODING_DISABLE);
+>> +
+>> +	if (promisc) {
+>> +		emac_set_port_state(emac, ICSSG_EMAC_PORT_UC_FLOODING_ENABLE);
+>> +		emac_set_port_state(emac, ICSSG_EMAC_PORT_MC_FLOODING_ENABLE);
+>> +		return;
+>> +	}
+>> +
+>> +	if (allmulti) {
+>> +		emac_set_port_state(emac, ICSSG_EMAC_PORT_MC_FLOODING_ENABLE);
+>> +		return;
+>> +	}
+>> +
+>> +	if (!netdev_mc_empty(ndev)) {
+>> +		emac_set_port_state(emac, ICSSG_EMAC_PORT_MC_FLOODING_ENABLE);
+>> +		return;
+>> +	}
+>> +}
+> 
+> There's no need for locking in this work?
+> 
+
+No I don't think any lock is required here. emac_set_port_state() aquires lock
+before updating port status. Also emac_ndo_set_rx_mode_work() is scheduled by a
+singlethreaded workqueue.
+
+>> +	netif_napi_add(ndev, &emac->napi_rx,
+>> +		       emac_napi_rx_poll);
+> 
+> nit: fits on a line
+
+Sure I will move it to one line.
+> 
+>> +static struct platform_driver prueth_driver = {
+>> +	.probe = prueth_probe,
+>> +	.remove = prueth_remove,
+> 
+> Please use .remove_new (which has a void return).
+
+Sure I will use .remove_new instead of .remove
+
+Please let me know if this looks ok to you. I will try to address these and
+send next revision.
+
+-- 
+Thanks and Regards,
+Danish.
