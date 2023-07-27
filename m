@@ -2,87 +2,70 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E617764FA0
-	for <lists+linux-omap@lfdr.de>; Thu, 27 Jul 2023 11:26:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BBDD7650AB
+	for <lists+linux-omap@lfdr.de>; Thu, 27 Jul 2023 12:12:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232707AbjG0J0Z (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 27 Jul 2023 05:26:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50982 "EHLO
+        id S233341AbjG0KMC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 27 Jul 2023 06:12:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232856AbjG0JZ6 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 27 Jul 2023 05:25:58 -0400
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D59E5241;
-        Thu, 27 Jul 2023 02:15:41 -0700 (PDT)
-Received: from kwepemi500008.china.huawei.com (unknown [172.30.72.54])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4RBQ7q6X5GzrRqy;
-        Thu, 27 Jul 2023 17:14:31 +0800 (CST)
-Received: from huawei.com (10.90.53.73) by kwepemi500008.china.huawei.com
- (7.221.188.139) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 27 Jul
- 2023 17:15:26 +0800
-From:   Ruan Jinjie <ruanjinjie@huawei.com>
-To:     <j-keerthy@ti.com>, <linus.walleij@linaro.org>, <brgl@bgdev.pl>,
-        <andy@kernel.org>, <grygorii.strashko@ti.com>,
-        <ssantosh@kernel.org>, <khilman@kernel.org>,
-        <linux-gpio@vger.kernel.org>, <linux-omap@vger.kernel.org>
-CC:     <ruanjinjie@huawei.com>
-Subject: [PATCH -next] gpio: Remove redundant dev_err_probe()
-Date:   Thu, 27 Jul 2023 17:14:46 +0800
-Message-ID: <20230727091446.859984-1-ruanjinjie@huawei.com>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S233407AbjG0KMA (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 27 Jul 2023 06:12:00 -0400
+Received: from mgamail.intel.com (unknown [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D7A010FC;
+        Thu, 27 Jul 2023 03:11:50 -0700 (PDT)
+X-IronPort-AV: E=McAfee;i="6600,9927,10783"; a="347881764"
+X-IronPort-AV: E=Sophos;i="6.01,234,1684825200"; 
+   d="scan'208";a="347881764"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2023 03:11:49 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10783"; a="762114514"
+X-IronPort-AV: E=Sophos;i="6.01,234,1684825200"; 
+   d="scan'208";a="762114514"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga001.jf.intel.com with ESMTP; 27 Jul 2023 03:11:47 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andy@kernel.org>)
+        id 1qOxyD-00GfuY-0g;
+        Thu, 27 Jul 2023 13:11:45 +0300
+Date:   Thu, 27 Jul 2023 13:11:44 +0300
+From:   Andy Shevchenko <andy@kernel.org>
+To:     Ruan Jinjie <ruanjinjie@huawei.com>
+Cc:     j-keerthy@ti.com, linus.walleij@linaro.org, brgl@bgdev.pl,
+        grygorii.strashko@ti.com, ssantosh@kernel.org, khilman@kernel.org,
+        linux-gpio@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCH -next] gpio: Remove redundant dev_err_probe()
+Message-ID: <ZMJC4B9Z2pVRDEOJ@smile.fi.intel.com>
+References: <20230727091446.859984-1-ruanjinjie@huawei.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.90.53.73]
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- kwepemi500008.china.huawei.com (7.221.188.139)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230727091446.859984-1-ruanjinjie@huawei.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-3.5 required=5.0 tests=BAYES_00,MAY_BE_FORGED,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-There is no need to call the dev_err_probe() function directly to print
-a custom message when handling an error from platform_get_irq() function as
-it is going to display an appropriate error message in case of a failure.
+On Thu, Jul 27, 2023 at 05:14:46PM +0800, Ruan Jinjie wrote:
+> There is no need to call the dev_err_probe() function directly to print
+> a custom message when handling an error from platform_get_irq() function as
+> it is going to display an appropriate error message in case of a failure.
 
-Signed-off-by: Ruan Jinjie <ruanjinjie@huawei.com>
----
- drivers/gpio/gpio-davinci.c | 2 +-
- drivers/gpio/gpio-omap.c    | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+Please, split on per-driver basis.
+The code wise it's okay, you may add to each patch in v2
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
 
-diff --git a/drivers/gpio/gpio-davinci.c b/drivers/gpio/gpio-davinci.c
-index fff510d86e31..8db5717bdabe 100644
---- a/drivers/gpio/gpio-davinci.c
-+++ b/drivers/gpio/gpio-davinci.c
-@@ -236,7 +236,7 @@ static int davinci_gpio_probe(struct platform_device *pdev)
- 	for (i = 0; i < nirq; i++) {
- 		chips->irqs[i] = platform_get_irq(pdev, i);
- 		if (chips->irqs[i] < 0)
--			return dev_err_probe(dev, chips->irqs[i], "IRQ not populated\n");
-+			return chips->irqs[i];
- 	}
- 
- 	chips->chip.label = dev_name(dev);
-diff --git a/drivers/gpio/gpio-omap.c b/drivers/gpio/gpio-omap.c
-index 2b78fde74e30..21c8cfedfd64 100644
---- a/drivers/gpio/gpio-omap.c
-+++ b/drivers/gpio/gpio-omap.c
-@@ -1415,7 +1415,7 @@ static int omap_gpio_probe(struct platform_device *pdev)
- 	if (bank->irq <= 0) {
- 		if (!bank->irq)
- 			bank->irq = -ENXIO;
--		return dev_err_probe(dev, bank->irq, "can't get irq resource\n");
-+		return bank->irq;
- 	}
- 
- 	bank->chip.parent = dev;
+>  drivers/gpio/gpio-davinci.c | 2 +-
+>  drivers/gpio/gpio-omap.c    | 2 +-
+
 -- 
-2.34.1
+With Best Regards,
+Andy Shevchenko
+
 
