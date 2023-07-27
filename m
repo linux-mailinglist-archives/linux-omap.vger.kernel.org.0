@@ -2,108 +2,87 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C7A1764F80
-	for <lists+linux-omap@lfdr.de>; Thu, 27 Jul 2023 11:23:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E617764FA0
+	for <lists+linux-omap@lfdr.de>; Thu, 27 Jul 2023 11:26:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231219AbjG0JXd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 27 Jul 2023 05:23:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47248 "EHLO
+        id S232707AbjG0J0Z (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 27 Jul 2023 05:26:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231587AbjG0JWz (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 27 Jul 2023 05:22:55 -0400
-Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E799430F7;
-        Thu, 27 Jul 2023 02:13:06 -0700 (PDT)
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 36R9ClEM057559;
-        Thu, 27 Jul 2023 04:12:47 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1690449167;
-        bh=UMJv1zhoAkuL+8u7yVRzA38imljTc6TwiPqib+okbo8=;
-        h=Date:Subject:To:CC:References:From:In-Reply-To;
-        b=qI4Ii7B9LfPg5YAAYuqWAHEIl/pxy/t8IW4+x9b0rlY5EK32Fo0BPAkUic67smXET
-         LGaYw/fEfnVi2VkIqNGDzCgxZRWfQxMUy9ke+nZmiD1nRJNJ8UifD9licp0RZvH40l
-         /lqgqEPlrviU5D5OaR60lCVFRFigZdL5IY9DF/oU=
-Received: from DFLE104.ent.ti.com (dfle104.ent.ti.com [10.64.6.25])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 36R9ClCk015693
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 27 Jul 2023 04:12:47 -0500
-Received: from DFLE101.ent.ti.com (10.64.6.22) by DFLE104.ent.ti.com
- (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 27
- Jul 2023 04:12:47 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE101.ent.ti.com
- (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Thu, 27 Jul 2023 04:12:47 -0500
-Received: from [10.249.135.225] (ileaxei01-snat.itg.ti.com [10.180.69.5])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 36R9Cesi026479;
-        Thu, 27 Jul 2023 04:12:41 -0500
-Message-ID: <354e3bb2-268c-e7ed-ead0-a68a05e2d591@ti.com>
-Date:   Thu, 27 Jul 2023 14:42:39 +0530
+        with ESMTP id S232856AbjG0JZ6 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 27 Jul 2023 05:25:58 -0400
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D59E5241;
+        Thu, 27 Jul 2023 02:15:41 -0700 (PDT)
+Received: from kwepemi500008.china.huawei.com (unknown [172.30.72.54])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4RBQ7q6X5GzrRqy;
+        Thu, 27 Jul 2023 17:14:31 +0800 (CST)
+Received: from huawei.com (10.90.53.73) by kwepemi500008.china.huawei.com
+ (7.221.188.139) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 27 Jul
+ 2023 17:15:26 +0800
+From:   Ruan Jinjie <ruanjinjie@huawei.com>
+To:     <j-keerthy@ti.com>, <linus.walleij@linaro.org>, <brgl@bgdev.pl>,
+        <andy@kernel.org>, <grygorii.strashko@ti.com>,
+        <ssantosh@kernel.org>, <khilman@kernel.org>,
+        <linux-gpio@vger.kernel.org>, <linux-omap@vger.kernel.org>
+CC:     <ruanjinjie@huawei.com>
+Subject: [PATCH -next] gpio: Remove redundant dev_err_probe()
+Date:   Thu, 27 Jul 2023 17:14:46 +0800
+Message-ID: <20230727091446.859984-1-ruanjinjie@huawei.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [EXTERNAL] Re: [EXTERNAL] Re: [PATCH v11 06/10] net: ti:
- icssg-prueth: Add ICSSG ethernet driver
-Content-Language: en-US
-To:     Jakub Kicinski <kuba@kernel.org>
-CC:     MD Danish Anwar <danishanwar@ti.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Roger Quadros <rogerq@kernel.org>,
-        Simon Horman <simon.horman@corigine.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>, <nm@ti.com>, <srk@ti.com>,
-        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>
-References: <20230724112934.2637802-1-danishanwar@ti.com>
- <20230724112934.2637802-7-danishanwar@ti.com>
- <20230725210939.56d77726@kernel.org>
- <9b11e602-6503-863a-f825-b595effd5e1d@ti.com>
- <20230726083707.623da581@kernel.org>
-From:   "Anwar, Md Danish" <a0501179@ti.com>
-In-Reply-To: <20230726083707.623da581@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.90.53.73]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ kwepemi500008.china.huawei.com (7.221.188.139)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 7/26/2023 9:07 PM, Jakub Kicinski wrote:
-> On Wed, 26 Jul 2023 16:01:23 +0530 Md Danish Anwar wrote:
->> I think MAX_SKB_FRAGS is OK. If the available pool = MAX_SKB_FRAGS we should be
->> able to wake the queue.
-> 
-> MAX_SKB_FRAGS only counts frags and you also need space to map the head, no?
-> 
-> In general we advise to wait until there's at least 2 * MAX_SKB_FRAGS
-> to avoid frequent sleep/wake cycles. But IDK how long your queue is,
-> maybe it's too much.
-> 
->> No I don't think any lock is required here. emac_set_port_state() aquires lock
->> before updating port status. Also emac_ndo_set_rx_mode_work() is scheduled by a
->> singlethreaded workqueue.
-> 
-> if (netif_running()) outside of any locks is usually a red flag, but if
-> you're confident it's fine it's fine :)
+There is no need to call the dev_err_probe() function directly to print
+a custom message when handling an error from platform_get_irq() function as
+it is going to display an appropriate error message in case of a failure.
 
-Sure Jakub. I will keep these as it is.
+Signed-off-by: Ruan Jinjie <ruanjinjie@huawei.com>
+---
+ drivers/gpio/gpio-davinci.c | 2 +-
+ drivers/gpio/gpio-omap.c    | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/gpio/gpio-davinci.c b/drivers/gpio/gpio-davinci.c
+index fff510d86e31..8db5717bdabe 100644
+--- a/drivers/gpio/gpio-davinci.c
++++ b/drivers/gpio/gpio-davinci.c
+@@ -236,7 +236,7 @@ static int davinci_gpio_probe(struct platform_device *pdev)
+ 	for (i = 0; i < nirq; i++) {
+ 		chips->irqs[i] = platform_get_irq(pdev, i);
+ 		if (chips->irqs[i] < 0)
+-			return dev_err_probe(dev, chips->irqs[i], "IRQ not populated\n");
++			return chips->irqs[i];
+ 	}
+ 
+ 	chips->chip.label = dev_name(dev);
+diff --git a/drivers/gpio/gpio-omap.c b/drivers/gpio/gpio-omap.c
+index 2b78fde74e30..21c8cfedfd64 100644
+--- a/drivers/gpio/gpio-omap.c
++++ b/drivers/gpio/gpio-omap.c
+@@ -1415,7 +1415,7 @@ static int omap_gpio_probe(struct platform_device *pdev)
+ 	if (bank->irq <= 0) {
+ 		if (!bank->irq)
+ 			bank->irq = -ENXIO;
+-		return dev_err_probe(dev, bank->irq, "can't get irq resource\n");
++		return bank->irq;
+ 	}
+ 
+ 	bank->chip.parent = dev;
 -- 
-Thanks and Regards,
-Md Danish Anwar
+2.34.1
+
