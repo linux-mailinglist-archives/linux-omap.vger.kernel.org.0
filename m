@@ -2,70 +2,251 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BBDD7650AB
-	for <lists+linux-omap@lfdr.de>; Thu, 27 Jul 2023 12:12:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC666765245
+	for <lists+linux-omap@lfdr.de>; Thu, 27 Jul 2023 13:29:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233341AbjG0KMC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 27 Jul 2023 06:12:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47966 "EHLO
+        id S231622AbjG0L3D (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 27 Jul 2023 07:29:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233407AbjG0KMA (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 27 Jul 2023 06:12:00 -0400
-Received: from mgamail.intel.com (unknown [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D7A010FC;
-        Thu, 27 Jul 2023 03:11:50 -0700 (PDT)
-X-IronPort-AV: E=McAfee;i="6600,9927,10783"; a="347881764"
-X-IronPort-AV: E=Sophos;i="6.01,234,1684825200"; 
-   d="scan'208";a="347881764"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2023 03:11:49 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10783"; a="762114514"
-X-IronPort-AV: E=Sophos;i="6.01,234,1684825200"; 
-   d="scan'208";a="762114514"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga001.jf.intel.com with ESMTP; 27 Jul 2023 03:11:47 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andy@kernel.org>)
-        id 1qOxyD-00GfuY-0g;
-        Thu, 27 Jul 2023 13:11:45 +0300
-Date:   Thu, 27 Jul 2023 13:11:44 +0300
-From:   Andy Shevchenko <andy@kernel.org>
-To:     Ruan Jinjie <ruanjinjie@huawei.com>
-Cc:     j-keerthy@ti.com, linus.walleij@linaro.org, brgl@bgdev.pl,
-        grygorii.strashko@ti.com, ssantosh@kernel.org, khilman@kernel.org,
-        linux-gpio@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: Re: [PATCH -next] gpio: Remove redundant dev_err_probe()
-Message-ID: <ZMJC4B9Z2pVRDEOJ@smile.fi.intel.com>
-References: <20230727091446.859984-1-ruanjinjie@huawei.com>
+        with ESMTP id S229946AbjG0L3C (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 27 Jul 2023 07:29:02 -0400
+Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F16910DB;
+        Thu, 27 Jul 2023 04:29:00 -0700 (PDT)
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 36RBSYRD116890;
+        Thu, 27 Jul 2023 06:28:34 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1690457314;
+        bh=/hSTTZuYmPZTbcpu/ll/m2wzoDudhc/szdN8/Qc0Ar4=;
+        h=From:To:CC:Subject:Date;
+        b=tK7kprJJKdCOJiwVkuCnlr5M0oEjY9eFRZLE58m/j0kpnikkdCeDk0IFb6sJqLPdi
+         be/S6snTgHOsRKVuRM6b9dI4qWQs42mmIPNbNMEOEvGbkUvLQmvGpuj88iVft7KIL5
+         RNLbZFfct4+mGJd5js4FeimpKC8Z96WrZtIwdG6s=
+Received: from DFLE110.ent.ti.com (dfle110.ent.ti.com [10.64.6.31])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 36RBSYjs104575
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 27 Jul 2023 06:28:34 -0500
+Received: from DFLE115.ent.ti.com (10.64.6.36) by DFLE110.ent.ti.com
+ (10.64.6.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 27
+ Jul 2023 06:28:34 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE115.ent.ti.com
+ (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Thu, 27 Jul 2023 06:28:34 -0500
+Received: from fllv0122.itg.ti.com (fllv0122.itg.ti.com [10.247.120.72])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 36RBSYWx092039;
+        Thu, 27 Jul 2023 06:28:34 -0500
+Received: from localhost (uda0501179.dhcp.ti.com [172.24.227.217])
+        by fllv0122.itg.ti.com (8.14.7/8.14.7) with ESMTP id 36RBSXeq029036;
+        Thu, 27 Jul 2023 06:28:34 -0500
+From:   MD Danish Anwar <danishanwar@ti.com>
+To:     Randy Dunlap <rdunlap@infradead.org>,
+        Roger Quadros <rogerq@kernel.org>,
+        Simon Horman <simon.horman@corigine.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Richard Cochran <richardcochran@gmail.com>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        MD Danish Anwar <danishanwar@ti.com>
+CC:     <nm@ti.com>, <srk@ti.com>, <linux-kernel@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>
+Subject: [PATCH v12 00/10] Introduce ICSSG based ethernet Driver
+Date:   Thu, 27 Jul 2023 16:58:17 +0530
+Message-ID: <20230727112827.3977534-1-danishanwar@ti.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230727091446.859984-1-ruanjinjie@huawei.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-3.5 required=5.0 tests=BAYES_00,MAY_BE_FORGED,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, Jul 27, 2023 at 05:14:46PM +0800, Ruan Jinjie wrote:
-> There is no need to call the dev_err_probe() function directly to print
-> a custom message when handling an error from platform_get_irq() function as
-> it is going to display an appropriate error message in case of a failure.
+The Programmable Real-time Unit and Industrial Communication Subsystem
+Gigabit (PRU_ICSSG) is a low-latency microcontroller subsystem in the TI
+SoCs. This subsystem is provided for the use cases like the implementation
+of custom peripheral interfaces, offloading of tasks from the other
+processor cores of the SoC, etc.
 
-Please, split on per-driver basis.
-The code wise it's okay, you may add to each patch in v2
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
+The subsystem includes many accelerators for data processing like
+multiplier and multiplier-accumulator. It also has peripherals like
+UART, MII/RGMII, MDIO, etc. Every ICSSG core includes two 32-bit
+load/store RISC CPU cores called PRUs.
 
->  drivers/gpio/gpio-davinci.c | 2 +-
->  drivers/gpio/gpio-omap.c    | 2 +-
+The above features allow it to be used for implementing custom firmware
+based peripherals like ethernet.
+
+This series adds the YAML documentation and the driver with basic EMAC
+support for TI AM654 Silicon Rev 2 SoC with the PRU_ICSSG Sub-system.
+running dual-EMAC firmware.
+This currently supports basic EMAC with 1Gbps and 100Mbps link. 10M and
+half-duplex modes are not yet supported because they require the support
+of an IEP, which will be added later.
+Advanced features like switch-dev and timestamping will be added later. 
+
+This is the v12 of the patch series [v1]. This version of the patchset 
+addresses comments made on v11.
+
+There series doesn't have any dependency.
+
+Changes from v11 to v12 :
+*) Rebased the series on latest net-next.
+*) Addressed Jakub's comments on ndo_xmit API.
+*) Added hooks to .get_rmon_stats for the driver. Now tx / rx bucket size 
+   and frame counts per bucket will be fetched by ethtool_rmon_stats instead
+   of ethtool -S.
+*) Added __maybe_unused tags to unused config and classifier APIs in patch
+   2,3 and 4. These tags are later removed in patch 6. 
+
+Changes from v10 to v11 :
+*) Rebased the series on latest net-next.
+*) Split the ICSSG driver introduction patch into 9 different patches as
+   asked by Jakub.
+*) Introduced new patch(patch 8/10) to dump Standard network interface
+   staticstics via ndo_get_stats64. Now certain stats that are reported by
+   ICSSG hardware and are also part of struct rtnl_link_stats64, will be 
+   reported by ndo_get_stats64. While other stats that are not part of the
+   struct rtnl_link_stats64 will be reported by ethtool -S. These stats 
+   are not duplicated.
+
+Changes from v9 to v10 :
+*) Rebased the series on latest net-next.
+*) Moved 'ndev prueth->emac[mac] == emac' assignment to the end of function
+   prueth_netdev_init().
+*) In unsupported phy_mode switch case instead of returning -EINVAL, store
+   the error code in ret and 'goto free'
+
+Changes from v8 to v9 :
+*) Rebased the series on latest net-next.
+*) Fixed smatch and sparse warnings as pointed by Simon.
+*) Fixed leaky ndev in prueth_netdev_init() as asked by Simon.
+
+Changes from v7 to v8 :
+*) Rebased the series on 6.5-rc1.
+*) Fixed few formattings. 
+
+Changes from v6 to v7 :
+*) Added RB tag of Rob in patch 1 of this series.
+*) Addressed Simon's comment on patch 2 of the series.
+*) Rebased patchset on next-20230428 linux-next.
+
+Changes from v5 to v6 :
+*) Added RB tag of Andrew Lunn in patch 2 of this series.
+*) Addressed Rob's comment on patch 1 of the series.
+*) Rebased patchset on next-20230421 linux-next.
+
+Changes from v4 to v5 :
+*) Re-arranged properties section in ti,icssg-prueth.yaml file.
+*) Added requirement for minimum one ethernet port.
+*) Fixed some minor formatting errors as asked by Krzysztof.
+*) Dropped SGMII mode from enum mii_mode as SGMII mode is not currently
+   supported by the driver.
+*) Added switch-case block to handle different phy modes by ICSSG driver.
+
+Changes from v3 to v4 :
+*) Addressed Krzysztof's comments and fixed dt_binding_check errors in 
+   patch 1/2.
+*) Added interrupt-extended property in ethernet-ports properties section.
+*) Fixed comments in file icssg_switch_map.h according to the Linux coding
+   style in patch 2/2. Added Documentation of structures in patch 2/2.
+
+Changes from v2 to v3 :
+*) Addressed Rob and Krzysztof's comments on patch 1 of this series.
+   Fixed indentation. Removed description and pinctrl section from 
+   ti,icssg-prueth.yaml file.
+*) Addressed Krzysztof, Paolo, Randy, Andrew and Christophe's comments on 
+   patch 2 of this seires.
+*) Fixed blanklines in Kconfig and Makefile. Changed structures to const 
+   as suggested by Krzysztof.
+*) Fixed while loop logic in emac_tx_complete_packets() API as suggested 
+   by Paolo. Previously in the loop's last iteration 'budget' was 0 and 
+   napi_consume_skb would wrongly assume the caller is not in NAPI context
+   Now, budget won't be zero in last iteration of loop. 
+*) Removed inline functions addr_to_da1() and addr_to_da0() as asked by 
+   Andrew.
+*) Added dev_err_probe() instead of dev_err() as suggested by Christophe.
+*) In ti,icssg-prueth.yaml file, in the patternProperties section of 
+   ethernet-ports, kept the port name as "port" instead of "ethernet-port" 
+   as all other drivers were using "port". Will change it if is compulsory 
+   to use "ethernet-port".
+
+[v1] https://lore.kernel.org/all/20220506052433.28087-1-p-mohan@ti.com/
+[v2] https://lore.kernel.org/all/20220531095108.21757-1-p-mohan@ti.com/
+[v3] https://lore.kernel.org/all/20221223110930.1337536-1-danishanwar@ti.com/
+[v4] https://lore.kernel.org/all/20230206060708.3574472-1-danishanwar@ti.com/
+[v5] https://lore.kernel.org/all/20230210114957.2667963-1-danishanwar@ti.com/
+[v6] https://lore.kernel.org/all/20230424053233.2338782-1-danishanwar@ti.com/
+[v7] https://lore.kernel.org/all/20230502061650.2716736-1-danishanwar@ti.com/
+[v8] https://lore.kernel.org/all/20230710053550.89160-1-danishanwar@ti.com/
+[v9] https://lore.kernel.org/all/20230714094432.1834489-1-danishanwar@ti.com/
+[v10] https://lore.kernel.org/all/20230719082755.3399424-1-danishanwar@ti.com/
+[v11] https://lore.kernel.org/netdev/20230724112934.2637802-1-danishanwar@ti.com/
+
+Thanks and Regards,
+Md Danish Anwar
+
+MD Danish Anwar (9):
+  net: ti: icssg-prueth: Add Firmware Interface for ICSSG Ethernet
+    driver.
+  net: ti: icssg-prueth: Add mii helper apis and macros
+  net: ti: icssg-prueth: Add Firmware config and classification APIs.
+  net: ti: icssg-prueth: Add icssg queues APIs and macros
+  dt-bindings: net: Add ICSSG Ethernet
+  net: ti: icssg-prueth: Add ICSSG Stats
+  net: ti: icssg-prueth: Add Standard network staticstics
+  net: ti: icssg-prueth: Add ethtool ops for ICSSG Ethernet driver
+  net: ti: icssg-prueth: Add Power management support
+
+Roger Quadros (1):
+  net: ti: icssg-prueth: Add ICSSG ethernet driver
+
+ .../bindings/net/ti,icssg-prueth.yaml         |  184 ++
+ drivers/net/ethernet/ti/Kconfig               |   13 +
+ drivers/net/ethernet/ti/Makefile              |   10 +
+ .../net/ethernet/ti/icssg/icssg_classifier.c  |  367 ++++
+ drivers/net/ethernet/ti/icssg/icssg_config.c  |  450 ++++
+ drivers/net/ethernet/ti/icssg/icssg_config.h  |  200 ++
+ drivers/net/ethernet/ti/icssg/icssg_ethtool.c |  188 ++
+ drivers/net/ethernet/ti/icssg/icssg_mii_cfg.c |  120 ++
+ drivers/net/ethernet/ti/icssg/icssg_mii_rt.h  |  151 ++
+ drivers/net/ethernet/ti/icssg/icssg_prueth.c  | 1901 +++++++++++++++++
+ drivers/net/ethernet/ti/icssg/icssg_prueth.h  |  262 +++
+ drivers/net/ethernet/ti/icssg/icssg_queues.c  |   38 +
+ drivers/net/ethernet/ti/icssg/icssg_stats.c   |   57 +
+ drivers/net/ethernet/ti/icssg/icssg_stats.h   |  158 ++
+ .../net/ethernet/ti/icssg/icssg_switch_map.h  |  234 ++
+ 15 files changed, 4333 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/net/ti,icssg-prueth.yaml
+ create mode 100644 drivers/net/ethernet/ti/icssg/icssg_classifier.c
+ create mode 100644 drivers/net/ethernet/ti/icssg/icssg_config.c
+ create mode 100644 drivers/net/ethernet/ti/icssg/icssg_config.h
+ create mode 100644 drivers/net/ethernet/ti/icssg/icssg_ethtool.c
+ create mode 100644 drivers/net/ethernet/ti/icssg/icssg_mii_cfg.c
+ create mode 100644 drivers/net/ethernet/ti/icssg/icssg_mii_rt.h
+ create mode 100644 drivers/net/ethernet/ti/icssg/icssg_prueth.c
+ create mode 100644 drivers/net/ethernet/ti/icssg/icssg_prueth.h
+ create mode 100644 drivers/net/ethernet/ti/icssg/icssg_queues.c
+ create mode 100644 drivers/net/ethernet/ti/icssg/icssg_stats.c
+ create mode 100644 drivers/net/ethernet/ti/icssg/icssg_stats.h
+ create mode 100644 drivers/net/ethernet/ti/icssg/icssg_switch_map.h
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.34.1
 
