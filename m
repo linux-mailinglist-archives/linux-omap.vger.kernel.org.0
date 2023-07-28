@@ -2,32 +2,32 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D0C8A767B97
-	for <lists+linux-omap@lfdr.de>; Sat, 29 Jul 2023 04:43:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1124A767BCC
+	for <lists+linux-omap@lfdr.de>; Sat, 29 Jul 2023 05:01:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231783AbjG2Cni (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 28 Jul 2023 22:43:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40432 "EHLO
+        id S229457AbjG2DBV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 28 Jul 2023 23:01:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45878 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230219AbjG2Cni (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 28 Jul 2023 22:43:38 -0400
+        with ESMTP id S234835AbjG2DBS (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 28 Jul 2023 23:01:18 -0400
 Received: from mail.durme.pl (mail.durme.pl [217.182.69.186])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95EAB2D54
-        for <linux-omap@vger.kernel.org>; Fri, 28 Jul 2023 19:43:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03D9D49FE
+        for <linux-omap@vger.kernel.org>; Fri, 28 Jul 2023 20:00:41 -0700 (PDT)
 Received: by mail.durme.pl (Postfix, from userid 1002)
-        id 00A5F4AA8D; Mon, 24 Jul 2023 07:55:31 +0000 (UTC)
+        id 625EB8262B; Fri, 28 Jul 2023 08:00:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=durme.pl; s=mail;
-        t=1690186278; bh=hFxZwVw4rIL+JwfEOGI47p+fdoVOAeqVswP6NWoHSHQ=;
+        t=1690536584; bh=hFxZwVw4rIL+JwfEOGI47p+fdoVOAeqVswP6NWoHSHQ=;
         h=Date:From:To:Subject:From;
-        b=Ia6/cc3n94l9AdOhSmFYANjsOlNQznSBSMgCo9RmE8xWurM+qTYNOdUldcMOCseu2
-         8owEIAzVL129/OcwmKgjqAbRbDaMJZ8pc5AcW5LhO2/CjYra4byPb1IXdqw9dpVLUn
-         aCCmmZJ15dLrR388nkGFXm+HShqAHkrYjP8VHsz2DoNrd3lY9mXd5pOx5VJ/TxdS0G
-         UNe4WnIWhl+Bho53no2g1mRUp4ID5nEpd5l5xiXiPfhifnJoTlWgYwgsZMIev5kjEt
-         Fwrp0FkMVJTRJzdYY0SAMEa9AotbNA+ivttTRfVypgzjMLbmHrn5Qdl2ehJbFOfRcz
-         osN+lci5EKJ8g==
-Received: by mail.durme.pl for <linux-omap@vger.kernel.org>; Mon, 24 Jul 2023 07:55:14 GMT
-Message-ID: <20230724064501-0.1.39.do0i.0.pr92ok047d@durme.pl>
-Date:   Mon, 24 Jul 2023 07:55:14 GMT
+        b=Cmp2GWLdH6H7/qeDgxbGrqcJqmDONBt1z0joL8d7qmzo8IrsDJ6e+/GFJrjalfSUB
+         D7Qg7j7aYyjqJc9LaJaNRGNW35NeqbdIaoPKdHnJCZVwd+TtjHYLAfwznZnf5Ohh7o
+         VbEmXPGxk82ofaFJKaL+bqMzuTYe+5b/xKpCVpocWY+mDxzjZ1mNKuNGEMYvrW4YDY
+         rU3DYk0Nd3CYdEl38icqIZKG/eAGiM96wuOdvPvrCBRNLwU8Gi3GKSdzd/LtAS73GC
+         uKbYQDXz1QhhoW+8TGA2lS6z9L5C25DYuyOeXxv7ryR5subgnjA77Bfq0pmObBrZIP
+         RGtKxsId9Ohyg==
+Received: by mail.durme.pl for <linux-omap@vger.kernel.org>; Fri, 28 Jul 2023 08:00:22 GMT
+Message-ID: <20230728064501-0.1.3d.do0i.0.8vn11qat7a@durme.pl>
+Date:   Fri, 28 Jul 2023 08:00:22 GMT
 From:   "Krystian Wieczorek" <krystian.wieczorek@durme.pl>
 To:     <linux-omap@vger.kernel.org>
 Subject: W sprawie samochodu
@@ -36,9 +36,9 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
