@@ -2,126 +2,132 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A452B7675C8
-	for <lists+linux-omap@lfdr.de>; Fri, 28 Jul 2023 20:47:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DE6C767759
+	for <lists+linux-omap@lfdr.de>; Fri, 28 Jul 2023 23:01:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232284AbjG1SrT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 28 Jul 2023 14:47:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55268 "EHLO
+        id S232732AbjG1VBj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 28 Jul 2023 17:01:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51184 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231391AbjG1SrS (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 28 Jul 2023 14:47:18 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E33ECE;
-        Fri, 28 Jul 2023 11:47:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1690570020; x=1691174820; i=deller@gmx.de;
- bh=TWdhuznP6svLtP2k0AYOc8UJXlgY851VcQeWvocX93E=;
- h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
- b=krow+iMR5z+8TjUZEv8RoCypmJBthFidne0f0Dr087co9p8ukFhHQqXGQvQSdOtPG5r5gZx
- IUtY0CLuZYzzfAgro1Oykyq0ZmZQ3IazP4weRKFewTD2m/FUM9/JWLVl24hMIqhoxNEy31cD+
- Swhuke8JihnXSNJECVgl9O4kL7ANE2nulDrfny5f5Krw6kRiNnA1xY3NYDmVjpojk+M2tha/Z
- 9vKyu8OQwhVgDc3d/L1iof/zYX5pdjxJoVgiVBV3abgy9q6ieA5dxTI5rFJB1hFCsQeNwxqPR
- kNPbIhe5phT09iBc2+rVGgcpBBDFZ0lVzpuxw2Yx4trTu7oOSgRQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.159.73]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MHG8m-1qci1s0Q3E-00DDDM; Fri, 28
- Jul 2023 20:47:00 +0200
-Message-ID: <c1a4b7c9-50f2-c43f-277d-c2af9ccc0b50@gmx.de>
-Date:   Fri, 28 Jul 2023 20:46:59 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 00/47] fbdev: Use I/O helpers
-To:     Thomas Zimmermann <tzimmermann@suse.de>, javierm@redhat.com,
-        sam@ravnborg.org
-Cc:     linux-media@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        with ESMTP id S232490AbjG1VBi (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 28 Jul 2023 17:01:38 -0400
+Received: from mailrelay3-1.pub.mailoutpod2-cph3.one.com (mailrelay3-1.pub.mailoutpod2-cph3.one.com [IPv6:2a02:2350:5:402::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DB5F4490
+        for <linux-omap@vger.kernel.org>; Fri, 28 Jul 2023 14:01:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ravnborg.org; s=rsa1;
+        h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
+         from:date:from;
+        bh=2M7I6GspW66DQLncO4JKL/r3gVWBlh/Z61h7j/4ZXwQ=;
+        b=VmorxddsvliAc2zCAOdnHcnfpXk3HL6FA27GlnhkXSDoGE0taO0g/r11MTt0+sI0kBn9KF5g/nrJO
+         YBHws5h7tg8z3vU2AXdiQl9zEYuH8U/rlDvV9qOR0LqdOqrOTT8Q280NatZ58QFneNl5qS40d2PF4M
+         EUS5sJGrrFwpIycoYicR9+NrqKdO9dYIH7hOkxrBCPEzDbnuW5lyt3OSZ3qejIsC5BlnWolgnIV57W
+         oWgE09YqMgvptwaf+e3S6UG3fSVu9ZZWZQL0aj4IVi0oMKAI1oKRsI8Jyw+i3pIMQPCcYbWIvLP5Ea
+         2ZNE/tlQONtqNXH1lFqn6N8xJ+w3WZQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed;
+        d=ravnborg.org; s=ed1;
+        h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
+         from:date:from;
+        bh=2M7I6GspW66DQLncO4JKL/r3gVWBlh/Z61h7j/4ZXwQ=;
+        b=dkD1HMHNc3u2lokBeS9EgDAhIVt0/YZ+STE3czXIeWa0urEuoYnPhcLDxQzwHTeu678MjBdhgtiY7
+         JMYlTDXDg==
+X-HalOne-ID: eaf56fd1-2d89-11ee-8d0f-b90637070a9d
+Received: from ravnborg.org (2-105-2-98-cable.dk.customer.tdc.net [2.105.2.98])
+        by mailrelay3 (Halon) with ESMTPSA
+        id eaf56fd1-2d89-11ee-8d0f-b90637070a9d;
+        Fri, 28 Jul 2023 21:01:29 +0000 (UTC)
+Date:   Fri, 28 Jul 2023 23:01:27 +0200
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     Helge Deller <deller@gmx.de>
+Cc:     Thomas Zimmermann <tzimmermann@suse.de>, javierm@redhat.com,
+        linux-media@vger.kernel.org, linux-fbdev@vger.kernel.org,
         dri-devel@lists.freedesktop.org,
         linux-arm-kernel@lists.infradead.org,
         linux-geode@lists.infradead.org, linux-omap@vger.kernel.org,
         kvm@vger.kernel.org
+Subject: Re: [PATCH 00/47] fbdev: Use I/O helpers
+Message-ID: <20230728210127.GA1156027@ravnborg.org>
 References: <20230728182234.10680-1-tzimmermann@suse.de>
-Content-Language: en-US
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <20230728182234.10680-1-tzimmermann@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:mrdzwn1CSRSisnuhJOLPF6uj7/3M6meeGVkXi26o5IsUh8/KUJr
- fI9auGK009NoI2IebwA2FevOwmrdXHJWCtbqV25eeNHK5TScbrMOlDn8eOHihbluto+n/Px
- GK5oiYYdUtwzZ5CaxaVtbyW3Cijg0QluO2wEWEea3vq6BFqL7YUgT5OLU2Zn3PVlT6u8GJH
- uYA4d2+kh6KBNwj845fXg==
-UI-OutboundReport: notjunk:1;M01:P0:Y7TGlYt57KE=;VjOBdZNiXYoebbD38ogCLzcHcmZ
- T/LRrNaK7ny5ilMErdZG7X22kX2/ZqAGmq3C6orIMb/nAKIje39DIonJ+B5uSWVF5t0DHE5F7
- pA5MMqbVHMLej5POT52GOB9toBiK4hCCA7S8jS2H/ZQXTUWgq3aePUvUXrz8TvzR8WrviCgoT
- rxmKmubR0ivh6C9WWoPytQDEd9OMD2bGVvKD230ix3xFnheBp0DNH/pYuFc2IDcHJ4dWz9cT+
- woDFW1QSht9QUE56FNC4xUV8k4sumi95pbYH54OOq1MOPbIG2w7YEifXM7W9UljmXHyY6G/Af
- oGHk4dK3WfJNjpfLB+M6QYrkRssRQ6aVSXKfzrpWwJPhIzsOj7AYTFSDGBBGtA3e8HnCzTKT5
- kNBBVKsIuTC1tOjrvZ78Vim0dt7flPhE9kGFHtCZPzMQ4N6j/cZPdiO7sGve6/nqoIZB+IFNU
- wVCk4aMjBnvLxthxkEzHUfIfoRZuS12ShDfuiRL+poxtOEit5HnT/9N7i0aCpEUjD1VyZxO22
- wN0DDidAU/jXhIW+4va+ODz0c9xCkxycPiUcoUCYEeM5G0JLay//34f2AAlPCc70I4+Jf5in+
- OfepmhEqSMh6sIO33HB5IbWQkLVJuKqODckhZA2OmvU5Uc+GkIcra9Jabb8tGFFPbKJjRBY91
- vNJZE1CcxW8RosSXBYFttZSX1BXSQNi/+FfpFbrO2bS9yuHRUQ3d5IDbevy6xEPt+why9Q+R5
- 8V37Sq+QfQrO5ZLc+kMok0OV2bpeE6mY9M1IFN3Hm5RO9drKmdLpzIQUb//FJPgOVbqgibJp0
- VK21/ASBIOaLqnKrS9/Fknb7dnY5/HCBsJig9OnS6SYC1HQ4WPuHcIvSgJbz4n5tiyojiOMZG
- tX4h9ZagGGBcrekJKv9JK/qboKnxEC911j58ifgemfSbe91+7eJn0EYA6qx+NSqviE5CcgmhR
- bdxu+Q==
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+ <c1a4b7c9-50f2-c43f-277d-c2af9ccc0b50@gmx.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c1a4b7c9-50f2-c43f-277d-c2af9ccc0b50@gmx.de>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 7/28/23 18:39, Thomas Zimmermann wrote:
-> Most fbdev drivers operate on I/O memory.
+Hi Helge,
 
-Just nitpicking here:
-What is I/O memory?
-Isn't it either memory, or I/O ?
-I mean, I would never think of the cfb* draw functions under I/O.
+On Fri, Jul 28, 2023 at 08:46:59PM +0200, Helge Deller wrote:
+> On 7/28/23 18:39, Thomas Zimmermann wrote:
+> > Most fbdev drivers operate on I/O memory.
+> 
+> Just nitpicking here:
+> What is I/O memory?
+> Isn't it either memory, or I/O ?
+> I mean, I would never think of the cfb* draw functions under I/O.
+> 
+> > And most of those use the
+> > default implementations for file I/O and console drawing. Convert all
+> > these low-hanging fruits to the fb_ops initializer macro and Kconfig
+> > token for fbdev I/O helpers.
+> 
+> I do see the motivation for your patch, but I think the
+> macro names are very misleading.
+> 
+> You have:
+> #define __FB_DEFAULT_IO_OPS_RDWR \
+>         .fb_read        = fb_io_read, \
+>         .fb_write       = fb_io_write
+> 
+> #define __FB_DEFAULT_IO_OPS_DRAW \
+>         .fb_fillrect    = cfb_fillrect, \
+>         .fb_copyarea    = cfb_copyarea, \
+>         .fb_imageblit   = cfb_imageblit
+> 
+> #define __FB_DEFAULT_IO_OPS_MMAP \
+>         .fb_mmap        = NULL /* default implementation */
+> 
+> #define FB_DEFAULT_IO_OPS \
+>         __FB_DEFAULT_IO_OPS_RDWR, \
+>         __FB_DEFAULT_IO_OPS_DRAW, \
+>         __FB_DEFAULT_IO_OPS_MMAP
+> 
+> I think FB_DEFAULT_IO_OPS is OK for read/write/mmap.
+> But I would suggest to split out __FB_DEFAULT_IO_OPS_DRAW.
+> Something like:
+> #define FB_DEFAULT_IO_OPS \
+>         __FB_DEFAULT_IO_OPS_RDWR, \
+>         __FB_DEFAULT_IO_OPS_MMAP
 
-> And most of those use the
-> default implementations for file I/O and console drawing. Convert all
-> these low-hanging fruits to the fb_ops initializer macro and Kconfig
-> token for fbdev I/O helpers.
 
-I do see the motivation for your patch, but I think the
-macro names are very misleading.
+> #define FB_DEFAULT_CFB_OPS \
+>         .fb_fillrect    = cfb_fillrect, \
+>         .fb_copyarea    = cfb_copyarea, \
+>         .fb_imageblit   = cfb_imageblit
 
-You have:
-#define __FB_DEFAULT_IO_OPS_RDWR \
-         .fb_read        =3D fb_io_read, \
-         .fb_write       =3D fb_io_write
+The prefix cfb, I have recently learned, equals color frame buffer.
+They are named such for purely historical reasons.
 
-#define __FB_DEFAULT_IO_OPS_DRAW \
-         .fb_fillrect    =3D cfb_fillrect, \
-         .fb_copyarea    =3D cfb_copyarea, \
-         .fb_imageblit   =3D cfb_imageblit
+What is important is where the data are copied as we have two
+implementations of for example copyarea - one using system memory, the
+other using IO memory.
 
-#define __FB_DEFAULT_IO_OPS_MMAP \
-         .fb_mmap        =3D NULL /* default implementation */
+The naming FB_DEFAULT_IO_OPS says this is the defaults to IO memory
+operations, which tell what they do and avoid the strange cfb acronym.
 
-#define FB_DEFAULT_IO_OPS \
-         __FB_DEFAULT_IO_OPS_RDWR, \
-         __FB_DEFAULT_IO_OPS_DRAW, \
-         __FB_DEFAULT_IO_OPS_MMAP
+Reserve cfb for color frame buffers only - and maybe in the end rename
+the three cfbcopyarea, cfbfillrect, cfbimgblt to use the io prefix.
+Which is much simpler to do after this series - and nice extra benefit.
 
-I think FB_DEFAULT_IO_OPS is OK for read/write/mmap.
-But I would suggest to split out __FB_DEFAULT_IO_OPS_DRAW.
-Something like:
-#define FB_DEFAULT_IO_OPS \
-         __FB_DEFAULT_IO_OPS_RDWR, \
-         __FB_DEFAULT_IO_OPS_MMAP
-#define FB_DEFAULT_CFB_OPS \
-         .fb_fillrect    =3D cfb_fillrect, \
-         .fb_copyarea    =3D cfb_copyarea, \
-         .fb_imageblit   =3D cfb_imageblit
+I hope this properly explains why I like the current naming and
+acked it when the macros were introduced.
 
-and then add FB_DEFAULT_IO_OPS *and* FB_DEFAULT_CFB_OPS
-to the various struct fb_ops in the drivers.
-
-Helge
+	Sam
