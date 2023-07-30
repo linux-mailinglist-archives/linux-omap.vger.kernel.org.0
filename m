@@ -2,105 +2,111 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EB9F76866D
-	for <lists+linux-omap@lfdr.de>; Sun, 30 Jul 2023 18:27:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E77707687E5
+	for <lists+linux-omap@lfdr.de>; Sun, 30 Jul 2023 22:23:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229544AbjG3Q1T (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 30 Jul 2023 12:27:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33488 "EHLO
+        id S229628AbjG3UXj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 30 Jul 2023 16:23:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229487AbjG3Q1S (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 30 Jul 2023 12:27:18 -0400
-Received: from viti.kaiser.cx (viti.kaiser.cx [IPv6:2a01:238:43fe:e600:cd0c:bd4a:7a3:8e9f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30E4910D7;
-        Sun, 30 Jul 2023 09:27:15 -0700 (PDT)
-Received: from martin by viti.kaiser.cx with local (Exim 4.89)
-        (envelope-from <martin@viti.kaiser.cx>)
-        id 1qQ9Fi-0003fq-1p; Sun, 30 Jul 2023 18:26:42 +0200
-Date:   Sun, 30 Jul 2023 18:26:42 +0200
-From:   Martin Kaiser <martin@kaiser.cx>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Fabio Estevam <festevam@gmail.com>,
-        Arnd Bergmann <arnd@kernel.org>, soc@kernel.org,
-        Russell King <linux@armlinux.org.uk>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Hartley Sweeten <hsweeten@visionengravers.com>,
-        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-        Andre Przywara <andre.przywara@arm.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        Tony Lindgren <tony@atomide.com>, Andrew Lunn <andrew@lunn.ch>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Viresh Kumar <vireshk@kernel.org>,
-        Shiraz Hashim <shiraz.linux.kernel@gmail.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        linux-clk@vger.kernel.org, linux-usb@vger.kernel.org
-Subject: Re: [PATCH 05/13] ARM: imx: remove unused mx25_revision()
-Message-ID: <20230730162642.ib6hfbw5zgeked6h@viti.kaiser.cx>
-References: <20230516153109.514251-1-arnd@kernel.org>
- <20230516153109.514251-6-arnd@kernel.org>
- <CAOMZO5B0stW2X6YqPTTKDpCOAzPDvm=4HT8jfBAgbTy11gnKgg@mail.gmail.com>
- <4e026f08-d733-4b01-ab47-e921d041e74e@app.fastmail.com>
- <20230517154525.ljoamjlfhpejtizm@viti.kaiser.cx>
- <0808604b-a26e-43b8-83da-2c3dc12446d2@app.fastmail.com>
+        with ESMTP id S229478AbjG3UXi (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 30 Jul 2023 16:23:38 -0400
+Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A49A4E78;
+        Sun, 30 Jul 2023 13:23:37 -0700 (PDT)
+Received: by mail-wr1-x429.google.com with SMTP id ffacd0b85a97d-31771bb4869so4108939f8f.0;
+        Sun, 30 Jul 2023 13:23:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1690748616; x=1691353416;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/vYtuaLSa3SGm5E8omUOIenjmbSci2X5VPEYpr2AFA4=;
+        b=ZtXACvOSAuWFvc3YOp2Alqp5WlBQl0KfEyzpuv6eY8gclBHIvs0aajZvCYwU/VVwKk
+         yHRxigtS8j2wKitnrMiNg/s+VsC2hoZCpuWCEEKOk2p1G4CEOKz5nTyb/d0TVlAD7gEF
+         T9DwcNSaMXeZ9M0XuvZ1tyVFm1TaqKFKISZR8+5DY5eCteH+Aeazz5nXPsSY5CQ/0Nz3
+         23GTR6lBAuMQcDrR6f8ey44/PnPt9qnMKEpRWwX64KtUgLjKYkYJgc78dL+wSgofrFRU
+         XtOPv223adiEn2JE4xvdyuP8mvSUyBZxRWuNGmvj3AmKa59gFCLcC4KrAkqrSEj5r2RU
+         3sfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690748616; x=1691353416;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/vYtuaLSa3SGm5E8omUOIenjmbSci2X5VPEYpr2AFA4=;
+        b=a9i+EjfHKrpdcLPmRP2C/s5TPgpDC5ThrkFQHZHH/S+HFuyo8bAiIwB3Qc5bPNBdpU
+         hk7uhFwYCGdTf8iOIVVXJDXAQhygPyiONyC2SwnyaUhl4yfrJYkgRx6db34U4I6YBr4j
+         9GTz8umktfV856smIHZFxyDYgYAXaJ65Ze2SReN061Gw2+IUI6PxSlyoiXVsBmxPsGg2
+         acobrPwSEiuu56k3akXePEMFJbASapg4+gJTDGB+/hKHA8+FYJIy85iMeLlIQySOSSr/
+         Ilic07iOtbggc49mRtuxhv0J39HaQYkVTzqkA/JywcqIQp/O9/xXGzzJJoVVP5bHcNOe
+         yUIQ==
+X-Gm-Message-State: ABy/qLYFUjXW7hzkwkCvHQGOc1iBwIE5OKd11tw8VUjaCOGsbqY5DhXo
+        1D93IeZzdO3V+x4xyc6GEYhRYs5a/5y96A==
+X-Google-Smtp-Source: APBJJlHzJ/scDx/KxfBt5DF6cNHWYrD53yHSjsI6HW8/9R06q8uIAOH959VKXhAax0YHT4vqXJ/lpQ==
+X-Received: by 2002:a5d:5101:0:b0:314:3ca0:c8c2 with SMTP id s1-20020a5d5101000000b003143ca0c8c2mr561546wrt.11.1690748615883;
+        Sun, 30 Jul 2023 13:23:35 -0700 (PDT)
+Received: from tpt440p.steeds.sam ([2602:fbf6:10:a::2])
+        by smtp.gmail.com with ESMTPSA id e5-20020a5d5005000000b00311d8c2561bsm10814398wrt.60.2023.07.30.13.23.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 30 Jul 2023 13:23:35 -0700 (PDT)
+From:   "Sicelo A. Mhlongo" <absicsz@gmail.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-omap@vger.kernel.org, "Sicelo A. Mhlongo" <absicsz@gmail.com>
+Subject: [PATCH] bus: omap_l3_smx: identify timeout source before rebooting
+Date:   Sun, 30 Jul 2023 22:22:40 +0200
+Message-Id: <20230730202240.898519-1-absicsz@gmail.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0808604b-a26e-43b8-83da-2c3dc12446d2@app.fastmail.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-Sender: Martin Kaiser <martin@viti.kaiser.cx>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Arnd,
+Identify and print the error source before rebooting the board due to an l3
+application timeout error, by delaying the BUG_ON. This is helpful when
+debugging, e.g. via serial.
 
-Arnd Bergmann (arnd@arndb.de) wrote:
+Signed-off-by: Sicelo A. Mhlongo <absicsz@gmail.com>
+---
+ drivers/bus/omap_l3_smx.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-> >> I'll leave it up to you, if you want to merge Martin's patches or
-> >> a replacement for the soc-imx driver through the imx tree for 6.5,
-> >> I'll drop my patch from this series, otherwise I'll keep it for now
-> >> and we can still do it better at later point.
+diff --git a/drivers/bus/omap_l3_smx.c b/drivers/bus/omap_l3_smx.c
+index bb1606f5ce2d..70f4903d5468 100644
+--- a/drivers/bus/omap_l3_smx.c
++++ b/drivers/bus/omap_l3_smx.c
+@@ -170,11 +170,9 @@ static irqreturn_t omap3_l3_app_irq(int irq, void *_l3)
+ 		status = omap3_l3_readll(l3->rt, L3_SI_FLAG_STATUS_0);
+ 		/*
+ 		 * if we have a timeout error, there's nothing we can
+-		 * do besides rebooting the board. So let's BUG on any
+-		 * of such errors and handle the others. timeout error
+-		 * is severe and not expected to occur.
++		 * do besides rebooting the board after identifying the
++		 * error source.
+ 		 */
+-		BUG_ON(status & L3_STATUS_0_TIMEOUT_MASK);
+ 	} else {
+ 		status = omap3_l3_readll(l3->rt, L3_SI_FLAG_STATUS_1);
+ 		/* No timeout error for debug sources */
+@@ -190,6 +188,12 @@ static irqreturn_t omap3_l3_app_irq(int irq, void *_l3)
+ 		ret |= omap3_l3_block_irq(l3, error, error_addr);
+ 	}
+ 
++	/*
++	 * BUG on application timeout errors since they are severe and not
++	 * expected to occur.
++	 */
++	BUG_ON(status & L3_STATUS_0_TIMEOUT_MASK);
++
+ 	/* Clear the status register */
+ 	clear = (L3_AGENT_STATUS_CLEAR_IA << int_type) |
+ 		L3_AGENT_STATUS_CLEAR_TA;
+-- 
+2.40.1
 
-> > I suggest we merge my patches for imx25 first and then clean up all the
-> > older imx families to use the common functions.
-
-> > I've just rebased the patches against today's linux-next. My understanding
-> > is that they have to go through the clk tree.
-
-> This never happened, right? I see that mx25_revision() is still in the
-> tree without any users, so I can't easily turn on the warning by default
-> yet. Should I just go ahead and remove it for 5.6, or do you expect to
-> have your patch ready in time for the merge window?
-
-sorry for delaying your series.
-
-So far, there's been no response to my patches from the clk maintainers.
-Let me resend the patches one final time. If we don't hear anything back
-within a week or so, feel free to remove mx25_revision (and probably all
-of arch/arm/mach-imx/cpu-imx25.c) for the 6.6 merge window.
-
-Thanks,
-Martin
