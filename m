@@ -2,86 +2,105 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 72B0C76858D
-	for <lists+linux-omap@lfdr.de>; Sun, 30 Jul 2023 15:23:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EB9F76866D
+	for <lists+linux-omap@lfdr.de>; Sun, 30 Jul 2023 18:27:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229915AbjG3NXM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 30 Jul 2023 09:23:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56960 "EHLO
+        id S229544AbjG3Q1T (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 30 Jul 2023 12:27:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229602AbjG3NXL (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 30 Jul 2023 09:23:11 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAA5DCA;
-        Sun, 30 Jul 2023 06:23:10 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 58B8960C59;
-        Sun, 30 Jul 2023 13:23:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 117F6C433C8;
-        Sun, 30 Jul 2023 13:22:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690723389;
-        bh=aKQ6zX5k8uIcjBF07axyeQZQbvOI44YmLbkG4ePV7a4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=EUc9R2fD3LNYnghaSowLatJqOC0h3Y2XynN6kqFmy+/1gQtN/wJWL5LHHL082jjy0
-         IABgpRJt3vZ9qo55KWopUKXkl8e+bE6luBhHk+tdF6Zq/f0HxW0J3LZ8SYs8mQrc3Y
-         PbwBY2nG3bE0iT9E/yQX2+fLqFvSNt8eLRtly+jFQtml7+8sBsKTjqI0gMe8boRTgR
-         p+jQ9Bn8JgTdmDQPZEsFxzMMyDdWNxPu5kBS06tQ3lMAOb2y0+KxkvJVGE3nkKEMVY
-         /gTDJgH+UTRye4U/s/vI2LemmXQ+/txfKNc3NYCSnXBPE8SOWckXJo37ioRByB1Bmb
-         oKmDqoCTKgYbw==
-Date:   Sun, 30 Jul 2023 21:22:52 +0800
-From:   Shawn Guo <shawnguo@kernel.org>
-To:     Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc:     MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
+        with ESMTP id S229487AbjG3Q1S (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 30 Jul 2023 12:27:18 -0400
+Received: from viti.kaiser.cx (viti.kaiser.cx [IPv6:2a01:238:43fe:e600:cd0c:bd4a:7a3:8e9f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30E4910D7;
+        Sun, 30 Jul 2023 09:27:15 -0700 (PDT)
+Received: from martin by viti.kaiser.cx with local (Exim 4.89)
+        (envelope-from <martin@viti.kaiser.cx>)
+        id 1qQ9Fi-0003fq-1p; Sun, 30 Jul 2023 18:26:42 +0200
+Date:   Sun, 30 Jul 2023 18:26:42 +0200
+From:   Martin Kaiser <martin@kaiser.cx>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Fabio Estevam <festevam@gmail.com>,
+        Arnd Bergmann <arnd@kernel.org>, soc@kernel.org,
+        Russell King <linux@armlinux.org.uk>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Hartley Sweeten <hsweeten@visionengravers.com>,
+        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+        Andre Przywara <andre.przywara@arm.com>,
+        Shawn Guo <shawnguo@kernel.org>,
         Sascha Hauer <s.hauer@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Heiko Stuebner <heiko@sntech.de>,
         Pengutronix Kernel Team <kernel@pengutronix.de>,
         NXP Linux Team <linux-imx@nxp.com>,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-omap@vger.kernel.org, linux-mediatek@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, linux-rockchip@lists.infradead.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH v4 4/6] arm64: dts: freescale: Replace deprecated
- extcon-usb-gpio id-gpio/vbus-gpio properties
-Message-ID: <20230730132252.GQ151430@dragon>
-References: <20230724103914.1779027-1-alexander.stein@ew.tq-group.com>
- <20230724103914.1779027-5-alexander.stein@ew.tq-group.com>
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+        Tony Lindgren <tony@atomide.com>, Andrew Lunn <andrew@lunn.ch>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Viresh Kumar <vireshk@kernel.org>,
+        Shiraz Hashim <shiraz.linux.kernel@gmail.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        linux-clk@vger.kernel.org, linux-usb@vger.kernel.org
+Subject: Re: [PATCH 05/13] ARM: imx: remove unused mx25_revision()
+Message-ID: <20230730162642.ib6hfbw5zgeked6h@viti.kaiser.cx>
+References: <20230516153109.514251-1-arnd@kernel.org>
+ <20230516153109.514251-6-arnd@kernel.org>
+ <CAOMZO5B0stW2X6YqPTTKDpCOAzPDvm=4HT8jfBAgbTy11gnKgg@mail.gmail.com>
+ <4e026f08-d733-4b01-ab47-e921d041e74e@app.fastmail.com>
+ <20230517154525.ljoamjlfhpejtizm@viti.kaiser.cx>
+ <0808604b-a26e-43b8-83da-2c3dc12446d2@app.fastmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230724103914.1779027-5-alexander.stein@ew.tq-group.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <0808604b-a26e-43b8-83da-2c3dc12446d2@app.fastmail.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+Sender: Martin Kaiser <martin@viti.kaiser.cx>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Jul 24, 2023 at 12:39:11PM +0200, Alexander Stein wrote:
-> Use id-gpios and vbus-gpios instead.
-> 
-> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-> Acked-by: Shawn Guo <shawnguo@kernel.org>
-> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Hi Arnd,
 
-Applied, thanks!
+Arnd Bergmann (arnd@arndb.de) wrote:
+
+> >> I'll leave it up to you, if you want to merge Martin's patches or
+> >> a replacement for the soc-imx driver through the imx tree for 6.5,
+> >> I'll drop my patch from this series, otherwise I'll keep it for now
+> >> and we can still do it better at later point.
+
+> > I suggest we merge my patches for imx25 first and then clean up all the
+> > older imx families to use the common functions.
+
+> > I've just rebased the patches against today's linux-next. My understanding
+> > is that they have to go through the clk tree.
+
+> This never happened, right? I see that mx25_revision() is still in the
+> tree without any users, so I can't easily turn on the warning by default
+> yet. Should I just go ahead and remove it for 5.6, or do you expect to
+> have your patch ready in time for the merge window?
+
+sorry for delaying your series.
+
+So far, there's been no response to my patches from the clk maintainers.
+Let me resend the patches one final time. If we don't hear anything back
+within a week or so, feel free to remove mx25_revision (and probably all
+of arch/arm/mach-imx/cpu-imx25.c) for the 6.6 merge window.
+
+Thanks,
+Martin
