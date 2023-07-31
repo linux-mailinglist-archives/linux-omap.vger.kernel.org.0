@@ -2,83 +2,80 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B7990768FF7
-	for <lists+linux-omap@lfdr.de>; Mon, 31 Jul 2023 10:21:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C740769221
+	for <lists+linux-omap@lfdr.de>; Mon, 31 Jul 2023 11:45:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231368AbjGaIVp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 31 Jul 2023 04:21:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39282 "EHLO
+        id S232304AbjGaJpb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 31 Jul 2023 05:45:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231336AbjGaIVT (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 31 Jul 2023 04:21:19 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EC05E7A;
-        Mon, 31 Jul 2023 01:20:24 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CF30160F99;
-        Mon, 31 Jul 2023 08:20:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 3E9D4C433AD;
-        Mon, 31 Jul 2023 08:20:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690791623;
-        bh=iFw1eTT0uqbhzj8JDGSr0fgbWXoLNoGg8HGa6Krj/BE=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=pdzuiheNxcAIUt7dl4VvftR6KVgfb4WfHYzXw7S4BW3HMeL0KMuaUJegDV4ye1i2q
-         xt+IXuw4p4K/OydDVMCVezK9Voc5opQc2n1uQHW+pCcF2S8wyiKFcuPa64UxEPUtvQ
-         G1Iwdhc79AaODYjflPpqOtbjQJnp2U4Fo+ECkhcQA/WYz7nibFltasYOX6TfOGyiQm
-         DkftOEw0qo8qS7YQ1KRXR6FKZrHxTFzDS6vQd6ySIF1lkhclBxDg0VactJ9YcERA3Q
-         lruw6F4hQjhGdeD4QZ4puijNgB6y1lT949oNG2pypUD5bnAAqPINZFgkA0SmN19lHN
-         qOipMmAtNgTCQ==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 1B4A1E96AC0;
-        Mon, 31 Jul 2023 08:20:23 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S231225AbjGaJpQ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 31 Jul 2023 05:45:16 -0400
+Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E3301BD3;
+        Mon, 31 Jul 2023 02:44:44 -0700 (PDT)
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 36V9hmeh015520;
+        Mon, 31 Jul 2023 04:43:48 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1690796628;
+        bh=PNDJgPhDyZZF07yezO62ol3eDMZ2xv3gX7r6Ga4oJL0=;
+        h=Date:Subject:To:CC:References:From:In-Reply-To;
+        b=daZ7mM9pSZxgqPnxeeE2iySGDmOZ94eeIJN6JlOvbfOQulr7fgJ2AJ302a56VzjNM
+         9yXDV/D4zrCVgleHVHjKz6WKosXnVPas2u+zihhhCPd4C25nicfRDGqHZ5cxd/Hpjv
+         rO2n6EETWGdv8EDx5xI8+wwMgQ45t+PbUEclIs4Q=
+Received: from DLEE105.ent.ti.com (dlee105.ent.ti.com [157.170.170.35])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 36V9hmw2005748
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 31 Jul 2023 04:43:48 -0500
+Received: from DLEE103.ent.ti.com (157.170.170.33) by DLEE105.ent.ti.com
+ (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 31
+ Jul 2023 04:43:48 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE103.ent.ti.com
+ (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Mon, 31 Jul 2023 04:43:48 -0500
+Received: from [172.24.227.217] (ileaxei01-snat.itg.ti.com [10.180.69.5])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 36V9hfHP020585;
+        Mon, 31 Jul 2023 04:43:42 -0500
+Message-ID: <cad30510-19d8-a50b-d5a8-f4ef07724f65@ti.com>
+Date:   Mon, 31 Jul 2023 15:13:41 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v3 net-next] net: flow_dissector: Use 64bits for used_keys
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <169079162310.10005.11385616493848955483.git-patchwork-notify@kernel.org>
-Date:   Mon, 31 Jul 2023 08:20:23 +0000
-References: <20230728232215.2071351-1-rkannoth@marvell.com>
-In-Reply-To: <20230728232215.2071351-1-rkannoth@marvell.com>
-To:     Ratheesh Kannoth <rkannoth@marvell.com>
-Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        vladimir.oltean@nxp.com, claudiu.manoil@nxp.com,
-        alexandre.belloni@bootlin.com, andrew@lunn.ch,
-        f.fainelli@gmail.com, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, olteanv@gmail.com,
-        michael.chan@broadcom.com, rajur@chelsio.com,
-        yisen.zhuang@huawei.com, salil.mehta@huawei.com,
-        jesse.brandeburg@intel.com, anthony.l.nguyen@intel.com,
-        taras.chornyi@plvision.eu, saeedm@nvidia.com, leon@kernel.org,
-        idosch@nvidia.com, petrm@nvidia.com, horatiu.vultur@microchip.com,
-        lars.povlsen@microchip.com, Steen.Hegelund@microchip.com,
-        daniel.machon@microchip.com, simon.horman@corigine.com,
-        aelior@marvell.com, manishc@marvell.com, ecree.xilinx@gmail.com,
-        habetsm.xilinx@gmail.com, peppe.cavallaro@st.com,
-        alexandre.torgue@foss.st.com, joabreu@synopsys.com,
-        mcoquelin.stm32@gmail.com, pablo@netfilter.org,
-        kadlec@netfilter.org, fw@strlen.de,
-        muhammad.husaini.zulkifli@intel.com, coreteam@netfilter.org,
-        ioana.ciornei@nxp.com, wojciech.drewek@intel.com,
-        gerhard@engleder-embedded.com, oss-drivers@corigine.com,
-        shenjian15@huawei.com, wentao.jia@corigine.com,
-        linux-net-drivers@amd.com, huangguangbin2@huawei.com,
-        hui.zhou@corigine.com, linux-rdma@vger.kernel.org,
-        louis.peens@corigine.com, zdoychev@maxlinear.com,
-        intel-wired-lan@lists.osuosl.org, wenjuan.geng@corigine.com,
-        grygorii.strashko@ti.com, kurt@linutronix.de,
-        UNGLinuxDriver@microchip.com, netfilter-devel@vger.kernel.org,
-        lanhao@huawei.com, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, shmulik.ladkani@gmail.com,
-        d-tatianin@yandex-team.ru,
-        linux-stm32@st-md-mailman.stormreply.com, jdamato@fastly.com
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [EXTERNAL] Re: [PATCH v12 06/10] net: ti: icssg-prueth: Add ICSSG
+ ethernet driver
+Content-Language: en-US
+To:     Jakub Kicinski <kuba@kernel.org>,
+        MD Danish Anwar <danishanwar@ti.com>
+CC:     Randy Dunlap <rdunlap@infradead.org>,
+        Roger Quadros <rogerq@kernel.org>,
+        Simon Horman <simon.horman@corigine.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Richard Cochran <richardcochran@gmail.com>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>, <nm@ti.com>, <srk@ti.com>,
+        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>
+References: <20230727112827.3977534-1-danishanwar@ti.com>
+ <20230727112827.3977534-7-danishanwar@ti.com>
+ <20230728172543.2d5f5660@kernel.org>
+From:   Md Danish Anwar <a0501179@ti.com>
+Organization: Texas Instruments
+In-Reply-To: <20230728172543.2d5f5660@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -86,28 +83,29 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hello:
-
-This patch was applied to netdev/net-next.git (main)
-by David S. Miller <davem@davemloft.net>:
-
-On Sat, 29 Jul 2023 04:52:15 +0530 you wrote:
-> As 32bits of dissector->used_keys are exhausted,
-> increase the size to 64bits.
+On 29/07/23 5:55 am, Jakub Kicinski wrote:
+> On Thu, 27 Jul 2023 16:58:23 +0530 MD Danish Anwar wrote:
+>> +/* Classifier helpers */
+>> +void icssg_class_set_mac_addr(struct regmap *miig_rt, int slice, u8 *mac);
+>> +void icssg_class_set_host_mac_addr(struct regmap *miig_rt, const u8 *mac);
+>> +void icssg_class_disable(struct regmap *miig_rt, int slice);
+>> +void icssg_class_default(struct regmap *miig_rt, int slice, bool allmulti);
+>> +void icssg_ft1_set_mac_addr(struct regmap *miig_rt, int slice, u8 *mac_addr);
+>> +
+>> +/* Buffer queue helpers */
+>> +int icssg_queue_pop(struct prueth *prueth, u8 queue);
+>> +void icssg_queue_push(struct prueth *prueth, int queue, u16 addr);
+>> +u32 icssg_queue_level(struct prueth *prueth, int queue);
 > 
-> This is base change for ESP/AH flow dissector patch.
-> Please find patch and discussions at
-> https://lore.kernel.org/netdev/ZMDNjD46BvZ5zp5I@corigine.com/T/#t
-> 
-> [...]
+> If you create the prototypes when the functions are added there will 
+> be less need for __maybe_unused. Compiler only cares about prototypes
+> existing, not whether actual callers are in place.
 
-Here is the summary with links:
-  - [v3,net-next] net: flow_dissector: Use 64bits for used_keys
-    https://git.kernel.org/netdev/net-next/c/2b3082c6ef3b
+So no need to use __maybe_unused tags if I create the prototype in the same
+patch where functions are added. This will significantly reduce the number of
+__maybe_unused tags. I will try to add the prototypes in the same patch where
+these functions are added and drop __maybe_unused tags for them.
 
-You are awesome, thank you!
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Thanks and Regards,
+Danish.
