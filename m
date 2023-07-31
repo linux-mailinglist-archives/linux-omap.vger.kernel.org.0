@@ -2,68 +2,83 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D379768FAA
-	for <lists+linux-omap@lfdr.de>; Mon, 31 Jul 2023 10:09:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7990768FF7
+	for <lists+linux-omap@lfdr.de>; Mon, 31 Jul 2023 10:21:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230296AbjGaIJc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 31 Jul 2023 04:09:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34020 "EHLO
+        id S231368AbjGaIVp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 31 Jul 2023 04:21:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39282 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230264AbjGaIJK (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 31 Jul 2023 04:09:10 -0400
-Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3E3B46BC;
-        Mon, 31 Jul 2023 01:05:26 -0700 (PDT)
-Received: by mail-wr1-x431.google.com with SMTP id ffacd0b85a97d-31768ce2e81so4527388f8f.1;
-        Mon, 31 Jul 2023 01:05:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690790725; x=1691395525;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Bu+ldcCKjLm0By1TmlLv7z+ZXLa3JOlu2tgT86KevJE=;
-        b=GNRv0eAbDzmjHpi1DlXwJ95tIbez1DBL+ofA2gR6RVZ5xprg6Mfq7zHrRWcMUPtPWw
-         QFC7eVF4PFB+qXsDqYuTIcpsV+c+ctoZWudaH4cw4pd62G6/r79+vKt8qqBbJZ0kukm0
-         y1Dk9AKzcuVG+8RPXkJrld9yf7lFKGxeZvMOmbFDjzcORbA9nnkBEs6uwTsOsnQZ7DUl
-         zSq8dGpMuUz1yJ8JbfQ2B3akY/ZaK7x+FR1SE1K91tETsK06xp55WUEEB1paGcZhQ7GG
-         zRyw9pEv+XRATXMBiwA5PDDNQQqfOnAmZizKb0Qveibac7Bnc0kG1uJjNJ+AlvGiNZbR
-         y6Fg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690790725; x=1691395525;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Bu+ldcCKjLm0By1TmlLv7z+ZXLa3JOlu2tgT86KevJE=;
-        b=It5GOOTf5bZe4eMzgClVMiupaYIgCvvdaGi5F0iuN6cBQYlkL01jsG5igzYvOfCawg
-         eLGXc8vSPPccdm9aA5S5JMhT8y86dvI3WyNvRtdHYCH5pP7283/SNKyJhnTsn4NaOv8V
-         WM9NOwqgOZrQRJGWbqyLvV+WbPpImSN3hC3Vn3UPFcYGqDBNGIykmcnembLE7/D/Mfjv
-         to241phZe/BflINJjygZTtfL8fth05yyM7YLSgBz+g09/yRpOHI0bFQ5dAVdZ9O1ngr/
-         fp62/LabNBclM8WxPOB/i7su+BvPEYc8qZ4JkOAjmT+CFDaiVl1npAd+zka2lWxOAlki
-         T5wg==
-X-Gm-Message-State: ABy/qLYz8kJOwIdABuykLKewCIJmizWqkqcnts2rtwtzPd6sv2poJxVv
-        BxjQ4PuZE19FvCEdUCDjHYKUjBwOq172FQ==
-X-Google-Smtp-Source: APBJJlGvO37k0LxsUADsH0Ij1wCI+iXVLeoWAn+9wFPQRUPbRc/orjVcetM+lI4iciHT8ds2TY8urQ==
-X-Received: by 2002:a5d:4207:0:b0:317:71ee:912a with SMTP id n7-20020a5d4207000000b0031771ee912amr7041697wrq.18.1690790724776;
-        Mon, 31 Jul 2023 01:05:24 -0700 (PDT)
-Received: from tp440p.steeds.sam ([2602:fbf6:10:a::2])
-        by smtp.gmail.com with ESMTPSA id e40-20020a5d5968000000b0031431fb40fasm12171461wri.89.2023.07.31.01.05.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Jul 2023 01:05:24 -0700 (PDT)
-Date:   Mon, 31 Jul 2023 10:05:11 +0200
-From:   Sicelo <absicsz@gmail.com>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: Re: [PATCH] bus: omap_l3_smx: identify timeout source before
- rebooting
-Message-ID: <ZMdrN7IqJsASyifi@tp440p.steeds.sam>
-References: <20230730202240.898519-1-absicsz@gmail.com>
- <20230731052904.GB5194@atomide.com>
+        with ESMTP id S231336AbjGaIVT (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 31 Jul 2023 04:21:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EC05E7A;
+        Mon, 31 Jul 2023 01:20:24 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CF30160F99;
+        Mon, 31 Jul 2023 08:20:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 3E9D4C433AD;
+        Mon, 31 Jul 2023 08:20:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1690791623;
+        bh=iFw1eTT0uqbhzj8JDGSr0fgbWXoLNoGg8HGa6Krj/BE=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=pdzuiheNxcAIUt7dl4VvftR6KVgfb4WfHYzXw7S4BW3HMeL0KMuaUJegDV4ye1i2q
+         xt+IXuw4p4K/OydDVMCVezK9Voc5opQc2n1uQHW+pCcF2S8wyiKFcuPa64UxEPUtvQ
+         G1Iwdhc79AaODYjflPpqOtbjQJnp2U4Fo+ECkhcQA/WYz7nibFltasYOX6TfOGyiQm
+         DkftOEw0qo8qS7YQ1KRXR6FKZrHxTFzDS6vQd6ySIF1lkhclBxDg0VactJ9YcERA3Q
+         lruw6F4hQjhGdeD4QZ4puijNgB6y1lT949oNG2pypUD5bnAAqPINZFgkA0SmN19lHN
+         qOipMmAtNgTCQ==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 1B4A1E96AC0;
+        Mon, 31 Jul 2023 08:20:23 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230731052904.GB5194@atomide.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v3 net-next] net: flow_dissector: Use 64bits for used_keys
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <169079162310.10005.11385616493848955483.git-patchwork-notify@kernel.org>
+Date:   Mon, 31 Jul 2023 08:20:23 +0000
+References: <20230728232215.2071351-1-rkannoth@marvell.com>
+In-Reply-To: <20230728232215.2071351-1-rkannoth@marvell.com>
+To:     Ratheesh Kannoth <rkannoth@marvell.com>
+Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        vladimir.oltean@nxp.com, claudiu.manoil@nxp.com,
+        alexandre.belloni@bootlin.com, andrew@lunn.ch,
+        f.fainelli@gmail.com, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, olteanv@gmail.com,
+        michael.chan@broadcom.com, rajur@chelsio.com,
+        yisen.zhuang@huawei.com, salil.mehta@huawei.com,
+        jesse.brandeburg@intel.com, anthony.l.nguyen@intel.com,
+        taras.chornyi@plvision.eu, saeedm@nvidia.com, leon@kernel.org,
+        idosch@nvidia.com, petrm@nvidia.com, horatiu.vultur@microchip.com,
+        lars.povlsen@microchip.com, Steen.Hegelund@microchip.com,
+        daniel.machon@microchip.com, simon.horman@corigine.com,
+        aelior@marvell.com, manishc@marvell.com, ecree.xilinx@gmail.com,
+        habetsm.xilinx@gmail.com, peppe.cavallaro@st.com,
+        alexandre.torgue@foss.st.com, joabreu@synopsys.com,
+        mcoquelin.stm32@gmail.com, pablo@netfilter.org,
+        kadlec@netfilter.org, fw@strlen.de,
+        muhammad.husaini.zulkifli@intel.com, coreteam@netfilter.org,
+        ioana.ciornei@nxp.com, wojciech.drewek@intel.com,
+        gerhard@engleder-embedded.com, oss-drivers@corigine.com,
+        shenjian15@huawei.com, wentao.jia@corigine.com,
+        linux-net-drivers@amd.com, huangguangbin2@huawei.com,
+        hui.zhou@corigine.com, linux-rdma@vger.kernel.org,
+        louis.peens@corigine.com, zdoychev@maxlinear.com,
+        intel-wired-lan@lists.osuosl.org, wenjuan.geng@corigine.com,
+        grygorii.strashko@ti.com, kurt@linutronix.de,
+        UNGLinuxDriver@microchip.com, netfilter-devel@vger.kernel.org,
+        lanhao@huawei.com, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, shmulik.ladkani@gmail.com,
+        d-tatianin@yandex-team.ru,
+        linux-stm32@st-md-mailman.stormreply.com, jdamato@fastly.com
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,55 +86,28 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
+Hello:
 
-On Mon, Jul 31, 2023 at 08:29:04AM +0300, Tony Lindgren wrote:
-> * Sicelo A. Mhlongo <absicsz@gmail.com> [230730 20:23]:
-> > Identify and print the error source before rebooting the board due to an l3
-> > application timeout error, by delaying the BUG_ON. This is helpful when
-> > debugging, e.g. via serial.
+This patch was applied to netdev/net-next.git (main)
+by David S. Miller <davem@davemloft.net>:
+
+On Sat, 29 Jul 2023 04:52:15 +0530 you wrote:
+> As 32bits of dissector->used_keys are exhausted,
+> increase the size to 64bits.
 > 
-> Makes sense to try to show some information, but please see the question
-> below.
+> This is base change for ESP/AH flow dissector patch.
+> Please find patch and discussions at
+> https://lore.kernel.org/netdev/ZMDNjD46BvZ5zp5I@corigine.com/T/#t
 > 
-> > diff --git a/drivers/bus/omap_l3_smx.c b/drivers/bus/omap_l3_smx.c
-> > index bb1606f5ce2d..70f4903d5468 100644
-> > --- a/drivers/bus/omap_l3_smx.c
-> > +++ b/drivers/bus/omap_l3_smx.c
-> > @@ -170,11 +170,9 @@ static irqreturn_t omap3_l3_app_irq(int irq, void *_l3)
-> >  		status = omap3_l3_readll(l3->rt, L3_SI_FLAG_STATUS_0);
-> >  		/*
-> >  		 * if we have a timeout error, there's nothing we can
-> > -		 * do besides rebooting the board. So let's BUG on any
-> > -		 * of such errors and handle the others. timeout error
-> > -		 * is severe and not expected to occur.
-> > +		 * do besides rebooting the board after identifying the
-> > +		 * error source.
-> >  		 */
-> > -		BUG_ON(status & L3_STATUS_0_TIMEOUT_MASK);
-> >  	} else {
-> >  		status = omap3_l3_readll(l3->rt, L3_SI_FLAG_STATUS_1);
-> >  		/* No timeout error for debug sources */
-> > @@ -190,6 +188,12 @@ static irqreturn_t omap3_l3_app_irq(int irq, void *_l3)
-> >  		ret |= omap3_l3_block_irq(l3, error, error_addr);
-> >  	}
-> >  
-> > +	/*
-> > +	 * BUG on application timeout errors since they are severe and not
-> > +	 * expected to occur.
-> > +	 */
-> > +	BUG_ON(status & L3_STATUS_0_TIMEOUT_MASK);
-> 
-> Aren't you now checking the bit for both L3_SI_FLAG_STATUS_0 and
-> L3_SI_FLAG_STATUS_1 register values? I think it should be only for register
-> L3_SI_FLAG_STATUS_0 value?
-> 
+> [...]
 
-Ah, you are right. It should be:
+Here is the summary with links:
+  - [v3,net-next] net: flow_dissector: Use 64bits for used_keys
+    https://git.kernel.org/netdev/net-next/c/2b3082c6ef3b
 
-    `BUG_ON(!int_type && status & L3_STATUS_0_TIMEOUT_MASK);`
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-I'll send in a v2.
 
-Thanks
-Sicelo
