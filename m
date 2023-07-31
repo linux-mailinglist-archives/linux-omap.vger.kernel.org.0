@@ -2,169 +2,67 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DED5676ACAE
-	for <lists+linux-omap@lfdr.de>; Tue,  1 Aug 2023 11:18:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41CE776B3DA
+	for <lists+linux-omap@lfdr.de>; Tue,  1 Aug 2023 13:52:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231294AbjHAJSE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 1 Aug 2023 05:18:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43238 "EHLO
+        id S234414AbjHALwf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 1 Aug 2023 07:52:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46442 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232110AbjHAJR1 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 1 Aug 2023 05:17:27 -0400
-Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8EDA1FE8;
-        Tue,  1 Aug 2023 02:16:27 -0700 (PDT)
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 3719FgIU066693;
-        Tue, 1 Aug 2023 04:15:42 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1690881342;
-        bh=1cDlk5nQTkGkrYDGAtT1DqReE4dFrRfYsSqMaXOFOrQ=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=V7eyo7zv5xmzapeFnpw+BvTWX+ccH7aihStTygQ7zvYyP4q+SNLEfabEcfctGV1TK
-         MVYOt+nzN+6NqT7eTNjszAqkfHF4Hh21OUZuFBhATsNWHArMWS2c8Y4i2ceMII8X8L
-         bB6kup+eCRvl5j+FipJFQF0rVl0SNme4XIeYHAEs=
-Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 3719FgDe066944
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 1 Aug 2023 04:15:42 -0500
-Received: from DLEE113.ent.ti.com (157.170.170.24) by DLEE115.ent.ti.com
- (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 1
- Aug 2023 04:15:42 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE113.ent.ti.com
- (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Tue, 1 Aug 2023 04:15:42 -0500
-Received: from fllv0122.itg.ti.com (fllv0122.itg.ti.com [10.247.120.72])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 3719FgRj038531;
-        Tue, 1 Aug 2023 04:15:42 -0500
-Received: from localhost (uda0501179.dhcp.ti.com [172.24.227.217])
-        by fllv0122.itg.ti.com (8.14.7/8.14.7) with ESMTP id 3719Ff8o016141;
-        Tue, 1 Aug 2023 04:15:41 -0500
-From:   MD Danish Anwar <danishanwar@ti.com>
-To:     Randy Dunlap <rdunlap@infradead.org>,
-        Roger Quadros <rogerq@kernel.org>,
-        Simon Horman <simon.horman@corigine.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        MD Danish Anwar <danishanwar@ti.com>
-CC:     <nm@ti.com>, <srk@ti.com>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>
-Subject: [PATCH v13 10/10] net: ti: icssg-prueth: Add Power management support
-Date:   Tue, 1 Aug 2023 14:44:28 +0530
-Message-ID: <20230801091428.1359979-11-danishanwar@ti.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230801091428.1359979-1-danishanwar@ti.com>
-References: <20230801091428.1359979-1-danishanwar@ti.com>
+        with ESMTP id S234416AbjHALwb (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 1 Aug 2023 07:52:31 -0400
+Received: from mail.cothiafon.pl (mail.cothiafon.pl [217.61.106.23])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42EF510FD
+        for <linux-omap@vger.kernel.org>; Tue,  1 Aug 2023 04:52:27 -0700 (PDT)
+Received: by mail.cothiafon.pl (Postfix, from userid 1002)
+        id 1F28F83C37; Mon, 31 Jul 2023 10:36:43 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=cothiafon.pl; s=mail;
+        t=1690792643; bh=dwoca0X6C9VXklO/zRgFQCPapTk5LFz4tKaENdvy6Po=;
+        h=Date:From:To:Subject:From;
+        b=GkxMGVL1Onyc8+nkxkIDOY+TDLthk8Dn8N4ZX39ZF9GwMoLJqsJT0Bkw8dn/97nPa
+         5fo2TjksuXqdoALACYxtNp9FiNNq/OBY8tnTmhsm+P4zbFdqSPfgDPFIpqHGXyt7kC
+         97mmPjkzkIlTf8VYgZg6z4tDGhYDBgs9ZSq9aaxNwWmp/+Hksr6o0bUhUDs3oItjR1
+         XcANzlCSUQcIynxQFYAh5inmFe9j06+EaTeL137KR3rUd26h61R39hMY94+jaJPBHc
+         Bq1zEvFqVVBSv6f+2qVCLZQ59ia9dG6C+/NMTK8p44ua3d/+3ppcN+WjePOq6rJZBR
+         XdxTLVAsVv6eA==
+Received: by mail.cothiafon.pl for <linux-omap@vger.kernel.org>; Mon, 31 Jul 2023 08:35:48 GMT
+Message-ID: <20230731095940-0.1.28.onp0.0.bgwto2rr5a@cothiafon.pl>
+Date:   Mon, 31 Jul 2023 08:35:48 GMT
+From:   =?UTF-8?Q? "Rados=C5=82aw_Grabowski" ?= 
+        <radoslaw.grabowski@cothiafon.pl>
+To:     <linux-omap@vger.kernel.org>
+Subject: W sprawie samochodu
+X-Mailer: mail.cothiafon.pl
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Add suspend / resume APIs to support power management in ICSSG ethernet
-driver.
+Dzie=C5=84 dobry,
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
----
- drivers/net/ethernet/ti/icssg/icssg_prueth.c | 57 ++++++++++++++++++++
- 1 file changed, 57 insertions(+)
+chcieliby=C5=9Bmy zapewni=C4=87 Pa=C5=84stwu kompleksowe rozwi=C4=85zania=
+, je=C5=9Bli chodzi o system monitoringu GPS.
 
-diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.c b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-index 80721d82f6c5..47b941fb0198 100644
---- a/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-+++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-@@ -1813,6 +1813,62 @@ static void prueth_remove(struct platform_device *pdev)
- 		prueth_put_cores(prueth, ICSS_SLICE0);
- }
- 
-+#ifdef CONFIG_PM_SLEEP
-+static int prueth_suspend(struct device *dev)
-+{
-+	struct prueth *prueth = dev_get_drvdata(dev);
-+	struct net_device *ndev;
-+	int i, ret;
-+
-+	for (i = 0; i < PRUETH_NUM_MACS; i++) {
-+		ndev = prueth->registered_netdevs[i];
-+
-+		if (!ndev)
-+			continue;
-+
-+		if (netif_running(ndev)) {
-+			netif_device_detach(ndev);
-+			ret = emac_ndo_stop(ndev);
-+			if (ret < 0) {
-+				netdev_err(ndev, "failed to stop: %d", ret);
-+				return ret;
-+			}
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+static int prueth_resume(struct device *dev)
-+{
-+	struct prueth *prueth = dev_get_drvdata(dev);
-+	struct net_device *ndev;
-+	int i, ret;
-+
-+	for (i = 0; i < PRUETH_NUM_MACS; i++) {
-+		ndev = prueth->registered_netdevs[i];
-+
-+		if (!ndev)
-+			continue;
-+
-+		if (netif_running(ndev)) {
-+			ret = emac_ndo_open(ndev);
-+			if (ret < 0) {
-+				netdev_err(ndev, "failed to start: %d", ret);
-+				return ret;
-+			}
-+			netif_device_attach(ndev);
-+		}
-+	}
-+
-+	return 0;
-+}
-+#endif /* CONFIG_PM_SLEEP */
-+
-+static const struct dev_pm_ops prueth_dev_pm_ops = {
-+	SET_SYSTEM_SLEEP_PM_OPS(prueth_suspend, prueth_resume)
-+};
-+
- static const struct prueth_pdata am654_icssg_pdata = {
- 	.fdqring_mode = K3_RINGACC_RING_MODE_MESSAGE,
- 	.quirk_10m_link_issue = 1,
-@@ -1830,6 +1886,7 @@ static struct platform_driver prueth_driver = {
- 	.driver = {
- 		.name = "icssg-prueth",
- 		.of_match_table = prueth_dt_match,
-+		.pm = &prueth_dev_pm_ops,
- 	},
- };
- module_platform_driver(prueth_driver);
--- 
-2.34.1
+Precyzyjne monitorowanie pojazd=C3=B3w na mapach cyfrowych, =C5=9Bledzeni=
+e ich parametr=C3=B3w eksploatacyjnych w czasie rzeczywistym oraz kontrol=
+a paliwa to kluczowe funkcjonalno=C5=9Bci naszego systemu.=20
 
+Organizowanie pracy pracownik=C3=B3w jest dzi=C4=99ki temu prostsze i bar=
+dziej efektywne, a oszcz=C4=99dno=C5=9Bci i optymalizacja w zakresie pono=
+szonych koszt=C3=B3w, maj=C4=85 dla ka=C5=BCdego przedsi=C4=99biorcy ogro=
+mne znaczenie.
+
+Dopasujemy nasz=C4=85 ofert=C4=99 do Pa=C5=84stwa oczekiwa=C5=84 i potrze=
+b organizacji. Czy mogliby=C5=9Bmy porozmawia=C4=87 o naszej propozycji?
+
+
+Pozdrawiam
+Rados=C5=82aw Grabowski
