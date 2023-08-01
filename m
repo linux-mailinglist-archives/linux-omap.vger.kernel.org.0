@@ -2,145 +2,336 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B912276AB8A
-	for <lists+linux-omap@lfdr.de>; Tue,  1 Aug 2023 10:59:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACCDA76ACA0
+	for <lists+linux-omap@lfdr.de>; Tue,  1 Aug 2023 11:17:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231628AbjHAI7h (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 1 Aug 2023 04:59:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58554 "EHLO
+        id S232557AbjHAJRR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 1 Aug 2023 05:17:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231189AbjHAI7g (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 1 Aug 2023 04:59:36 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD20F1B3;
-        Tue,  1 Aug 2023 01:59:35 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id 8176A21DE3;
-        Tue,  1 Aug 2023 08:59:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1690880374; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=+n5FyM61czAC0cNQApOWBqsHom9yWlZFCtaioWuc11U=;
-        b=X5/FMNpEswYuv0+kpUq7bmzjeGEeX7kgW/bMVqSU3Nj5IjMMsbE+i7IULO/cOCSBEZEq7Y
-        Z4HlN5GaTPHjGH4r9WNggLn9O7LXX8IlKKj+26KZKkJ0z1Yh/zs8VNQlLDJHEtKe3ZfcZ7
-        ZOosELtHMb2vJ8tTi4pbPtEydkdoniE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1690880374;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=+n5FyM61czAC0cNQApOWBqsHom9yWlZFCtaioWuc11U=;
-        b=SRO93G9RQUBzlaw2K3PuM0JnsVC8tNz0058QbCUqow/EXsZLz9HRvg7LNcm0jEqilewQeu
-        Z7AibYscOsue7zDg==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 4616413919;
-        Tue,  1 Aug 2023 08:59:34 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id M2fxD3bJyGTFNAAAMHmgww
-        (envelope-from <tzimmermann@suse.de>); Tue, 01 Aug 2023 08:59:34 +0000
-Message-ID: <262a0b9d-5d9b-11cf-535d-5b00376ae223@suse.de>
-Date:   Tue, 1 Aug 2023 10:59:33 +0200
+        with ESMTP id S229931AbjHAJQy (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 1 Aug 2023 05:16:54 -0400
+Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F85A26AF;
+        Tue,  1 Aug 2023 02:15:52 -0700 (PDT)
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 3719Eg6N126127;
+        Tue, 1 Aug 2023 04:14:42 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1690881282;
+        bh=6VOstsz3UCxzxiDJWRTo/lthIJRQdfEPdFrQeQ4nh3U=;
+        h=From:To:CC:Subject:Date:In-Reply-To:References;
+        b=xiMFt3WQzUyYmVbUJ65Re7njD0Rqv7Zlk5v27ewD19PQqZnJ94iK6wiq0uuRo4bzj
+         ZziLKhJf1W97Co0L2t6PfXA49k1AhH3Fx73oesWVl7dK6OZNoawdvZieqcW641KREL
+         kexvGFmavfpAbA0fVmnw8qIXM/c/HoeXEnMSp3jo=
+Received: from DLEE101.ent.ti.com (dlee101.ent.ti.com [157.170.170.31])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 3719Egj9110282
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 1 Aug 2023 04:14:42 -0500
+Received: from DLEE105.ent.ti.com (157.170.170.35) by DLEE101.ent.ti.com
+ (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 1
+ Aug 2023 04:14:42 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE105.ent.ti.com
+ (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Tue, 1 Aug 2023 04:14:41 -0500
+Received: from fllv0122.itg.ti.com (fllv0122.itg.ti.com [10.247.120.72])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 3719Efkd045324;
+        Tue, 1 Aug 2023 04:14:41 -0500
+Received: from localhost (uda0501179.dhcp.ti.com [172.24.227.217])
+        by fllv0122.itg.ti.com (8.14.7/8.14.7) with ESMTP id 3719EfK9015823;
+        Tue, 1 Aug 2023 04:14:41 -0500
+From:   MD Danish Anwar <danishanwar@ti.com>
+To:     Randy Dunlap <rdunlap@infradead.org>,
+        Roger Quadros <rogerq@kernel.org>,
+        Simon Horman <simon.horman@corigine.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Richard Cochran <richardcochran@gmail.com>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        MD Danish Anwar <danishanwar@ti.com>
+CC:     <nm@ti.com>, <srk@ti.com>, <linux-kernel@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>
+Subject: [PATCH v13 01/10] net: ti: icssg-prueth: Add Firmware Interface for ICSSG Ethernet driver.
+Date:   Tue, 1 Aug 2023 14:44:19 +0530
+Message-ID: <20230801091428.1359979-2-danishanwar@ti.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230801091428.1359979-1-danishanwar@ti.com>
+References: <20230801091428.1359979-1-danishanwar@ti.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.1
-Subject: Re: [PATCH 00/47] fbdev: Use I/O helpers
-To:     Sam Ravnborg <sam@ravnborg.org>
-Cc:     deller@gmx.de, javierm@redhat.com, linux-media@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-geode@lists.infradead.org, linux-omap@vger.kernel.org,
-        kvm@vger.kernel.org
-References: <20230728182234.10680-1-tzimmermann@suse.de>
- <20230728183906.GB1144760@ravnborg.org>
-Content-Language: en-US
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-In-Reply-To: <20230728183906.GB1144760@ravnborg.org>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------BzkB9EkYd4VfUqQscAQPwSQh"
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------BzkB9EkYd4VfUqQscAQPwSQh
-Content-Type: multipart/mixed; boundary="------------aTidrU0u0f9EzPXN2GV9xjyr";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Sam Ravnborg <sam@ravnborg.org>
-Cc: deller@gmx.de, javierm@redhat.com, linux-media@vger.kernel.org,
- linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-arm-kernel@lists.infradead.org, linux-geode@lists.infradead.org,
- linux-omap@vger.kernel.org, kvm@vger.kernel.org
-Message-ID: <262a0b9d-5d9b-11cf-535d-5b00376ae223@suse.de>
-Subject: Re: [PATCH 00/47] fbdev: Use I/O helpers
-References: <20230728182234.10680-1-tzimmermann@suse.de>
- <20230728183906.GB1144760@ravnborg.org>
-In-Reply-To: <20230728183906.GB1144760@ravnborg.org>
+Add firmware interface related headers and macros for ICSSG Ethernet
+driver. These macros will be later used by the ICSSG ethernet driver.
 
---------------aTidrU0u0f9EzPXN2GV9xjyr
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
+---
+ .../net/ethernet/ti/icssg/icssg_switch_map.h  | 234 ++++++++++++++++++
+ 1 file changed, 234 insertions(+)
+ create mode 100644 drivers/net/ethernet/ti/icssg/icssg_switch_map.h
 
-SGkgU2FtDQoNCkFtIDI4LjA3LjIzIHVtIDIwOjM5IHNjaHJpZWIgU2FtIFJhdm5ib3JnOg0K
-PiBIaSBUaG9tYXMsDQo+IA0KPiBPbiBGcmksIEp1bCAyOCwgMjAyMyBhdCAwNjozOTo0M1BN
-ICswMjAwLCBUaG9tYXMgWmltbWVybWFubiB3cm90ZToNCj4+IE1vc3QgZmJkZXYgZHJpdmVy
-cyBvcGVyYXRlIG9uIEkvTyBtZW1vcnkuIEFuZCBtb3N0IG9mIHRob3NlIHVzZSB0aGUNCj4+
-IGRlZmF1bHQgaW1wbGVtZW50YXRpb25zIGZvciBmaWxlIEkvTyBhbmQgY29uc29sZSBkcmF3
-aW5nLiBDb252ZXJ0IGFsbA0KPj4gdGhlc2UgbG93LWhhbmdpbmcgZnJ1aXRzIHRvIHRoZSBm
-Yl9vcHMgaW5pdGlhbGl6ZXIgbWFjcm8gYW5kIEtjb25maWcNCj4+IHRva2VuIGZvciBmYmRl
-diBJL08gaGVscGVycy4NCj4+DQo+PiBUaGUgZmJkZXYgSS9PIGhlbHBlcnMgYXJlIGVhc2ls
-eSBncmVwLWFibGUuIEluIGEgbGF0ZXIgcGF0Y2gsIHRoZXkgY2FuDQo+PiBiZSBsZWZ0IHRv
-IGVtcHR5IHZhbHVlcyBpZiB0aGUgcnNwLiBmdW50aW9uYWxpdHksIHN1Y2ggYXMgZmlsZSBJ
-L08gb3INCj4+IGNvbnNvbGUsIGhhcyBiZWVuIGRpc2FibGVkLg0KPiANCj4gRGlkIHlvdSBt
-aXNzIHNtNzUwIG9yIHdhcyBpdCBsZWZ0IG91dCBvbiBwdXJwb3NlPw0KPiBBcyBpdCBoaWRl
-IGluIHN0YWdpbmcgaXQgaXMgZWFzeSB0byBtaXNzLg0KDQpOb3cgSSByZW1lbWJlcmVkIHdo
-eSBJIGxlZnQgb3V0IHNtNzUwZmIuIEl0IG1vZGlmaWVzIHRoZSBmdW5jdGlvbiANCnBvaW50
-ZXJzIGF0IHNvbWUgcG9pbnQgYXQNCg0KaHR0cHM6Ly9lbGl4aXIuYm9vdGxpbi5jb20vbGlu
-dXgvbGF0ZXN0L3NvdXJjZS9kcml2ZXJzL3N0YWdpbmcvc203NTBmYi9zbTc1MC5jI0w3NDEN
-Cg0KU28gdGhlIGRyaXZlciB1c2VzIGEgbm9uLXRyaXZpYWwgZmJfb3BzIHNldHVwIGFuZCBp
-cyB3b3J0aCBhIGRpZmZlcmVudCBmaXguDQoNCkJlc3QgcmVnYXJkcw0KVGhvbWFzDQoNCj4g
-DQo+IAlTYW0NCg0KLS0gDQpUaG9tYXMgWmltbWVybWFubg0KR3JhcGhpY3MgRHJpdmVyIERl
-dmVsb3Blcg0KU1VTRSBTb2Z0d2FyZSBTb2x1dGlvbnMgR2VybWFueSBHbWJIDQpGcmFua2Vu
-c3RyYXNzZSAxNDYsIDkwNDYxIE51ZXJuYmVyZywgR2VybWFueQ0KR0Y6IEl2byBUb3Rldiwg
-QW5kcmV3IE15ZXJzLCBBbmRyZXcgTWNEb25hbGQsIEJvdWRpZW4gTW9lcm1hbg0KSFJCIDM2
-ODA5IChBRyBOdWVybmJlcmcpDQo=
+diff --git a/drivers/net/ethernet/ti/icssg/icssg_switch_map.h b/drivers/net/ethernet/ti/icssg/icssg_switch_map.h
+new file mode 100644
+index 000000000000..424a7e945ea8
+--- /dev/null
++++ b/drivers/net/ethernet/ti/icssg/icssg_switch_map.h
+@@ -0,0 +1,234 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Texas Instruments ICSSG Ethernet driver
++ *
++ * Copyright (C) 2022 Texas Instruments Incorporated - https://www.ti.com/
++ *
++ */
++
++#ifndef __NET_TI_ICSSG_SWITCH_MAP_H
++#define __NET_TI_ICSSG_SWITCH_MAP_H
++
++/************************* Ethernet Switch Constants *********************/
++
++/* if bucket size is changed in firmware then this too should be changed
++ * because it directly impacts FDB ageing calculation
++ */
++#define NUMBER_OF_FDB_BUCKET_ENTRIES            (4)
++
++/* This is fixed in ICSSG */
++#define SIZE_OF_FDB                             (2048)
++
++#define FW_LINK_SPEED_1G                           (0x00)
++#define FW_LINK_SPEED_100M                         (0x01)
++#define FW_LINK_SPEED_10M                          (0x02)
++#define FW_LINK_SPEED_HD                           (0x80)
++
++/* Time after which FDB entries are checked for aged out values.
++ * Values are in nanoseconds
++ */
++#define FDB_AGEING_TIMEOUT_OFFSET                          0x0014
++
++/* Default VLAN tag for Host Port */
++#define HOST_PORT_DF_VLAN_OFFSET                           0x001C
++
++/* Same as HOST_PORT_DF_VLAN_OFFSET */
++#define EMAC_ICSSG_SWITCH_PORT0_DEFAULT_VLAN_OFFSET        HOST_PORT_DF_VLAN_OFFSET
++
++/* Default VLAN tag for P1 Port */
++#define P1_PORT_DF_VLAN_OFFSET                             0x0020
++
++/* Same as P1_PORT_DF_VLAN_OFFSET */
++#define EMAC_ICSSG_SWITCH_PORT1_DEFAULT_VLAN_OFFSET        P1_PORT_DF_VLAN_OFFSET
++
++/* default VLAN tag for P2 Port */
++#define P2_PORT_DF_VLAN_OFFSET                             0x0024
++
++/* Same as P2_PORT_DF_VLAN_OFFSET */
++#define EMAC_ICSSG_SWITCH_PORT2_DEFAULT_VLAN_OFFSET        P2_PORT_DF_VLAN_OFFSET
++
++/* VLAN-FID Table offset. 4096 VIDs. 2B per VID = 8KB = 0x2000 */
++#define VLAN_STATIC_REG_TABLE_OFFSET                       0x0100
++
++/* VLAN-FID Table offset for EMAC  */
++#define EMAC_ICSSG_SWITCH_DEFAULT_VLAN_TABLE_OFFSET        VLAN_STATIC_REG_TABLE_OFFSET
++
++/* Packet descriptor Q reserved memory */
++#define PORT_DESC0_HI                                      0x2104
++
++/* Packet descriptor Q reserved memory */
++#define PORT_DESC0_LO                                      0x2F6C
++
++/* Packet descriptor Q reserved memory */
++#define PORT_DESC1_HI                                      0x3DD4
++
++/* Packet descriptor Q reserved memory */
++#define PORT_DESC1_LO                                      0x4C3C
++
++/* Packet descriptor Q reserved memory */
++#define HOST_DESC0_HI                                      0x5AA4
++
++/* Packet descriptor Q reserved memory */
++#define HOST_DESC0_LO                                      0x5F0C
++
++/* Packet descriptor Q reserved memory */
++#define HOST_DESC1_HI                                      0x6374
++
++/* Packet descriptor Q reserved memory */
++#define HOST_DESC1_LO                                      0x67DC
++
++/* Special packet descriptor Q reserved memory */
++#define HOST_SPPD0                                         0x7AAC
++
++/* Special acket descriptor Q reserved memory */
++#define HOST_SPPD1                                         0x7EAC
++
++/* IEP count cycle counter*/
++#define TIMESYNC_FW_WC_CYCLECOUNT_OFFSET                   0x83EC
++
++/* IEP count hi roll over count */
++#define TIMESYNC_FW_WC_HI_ROLLOVER_COUNT_OFFSET            0x83F4
++
++/* IEP count hi sw counter */
++#define TIMESYNC_FW_WC_COUNT_HI_SW_OFFSET_OFFSET           0x83F8
++
++/* Set clock descriptor */
++#define TIMESYNC_FW_WC_SETCLOCK_DESC_OFFSET                0x83FC
++
++/* IEP count syncout reduction factor */
++#define TIMESYNC_FW_WC_SYNCOUT_REDUCTION_FACTOR_OFFSET     0x843C
++
++/* IEP count syncout reduction counter */
++#define TIMESYNC_FW_WC_SYNCOUT_REDUCTION_COUNT_OFFSET      0x8440
++
++/* IEP count syncout start time cycle counter */
++#define TIMESYNC_FW_WC_SYNCOUT_START_TIME_CYCLECOUNT_OFFSET 0x8444
++
++/* Control variable to generate SYNC1 */
++#define TIMESYNC_FW_WC_ISOM_PIN_SIGNAL_EN_OFFSET           0x844C
++
++/* SystemTime Sync0 periodicity */
++#define TIMESYNC_FW_ST_SYNCOUT_PERIOD_OFFSET               0x8450
++
++/* pktTxDelay for P1 = link speed dependent p1 mac delay + p1 phy delay */
++#define TIMESYNC_FW_WC_PKTTXDELAY_P1_OFFSET                0x8454
++
++/* pktTxDelay for P2 = link speed dependent p2 mac delay + p2 phy delay */
++#define TIMESYNC_FW_WC_PKTTXDELAY_P2_OFFSET                0x8458
++
++/* Set clock operation done signal for next task */
++#define TIMESYNC_FW_SIG_PNFW_OFFSET                        0x845C
++
++/* Set clock operation done signal for next task */
++#define TIMESYNC_FW_SIG_TIMESYNCFW_OFFSET                  0x8460
++
++/* New list is copied at this time */
++#define TAS_CONFIG_CHANGE_TIME                             0x000C
++
++/* config change error counter */
++#define TAS_CONFIG_CHANGE_ERROR_COUNTER                    0x0014
++
++/* TAS List update pending flag */
++#define TAS_CONFIG_PENDING                                 0x0018
++
++/* TAS list update trigger flag */
++#define TAS_CONFIG_CHANGE                                  0x0019
++
++/* List length for new TAS schedule */
++#define TAS_ADMIN_LIST_LENGTH                              0x001A
++
++/* Currently active TAS list index */
++#define TAS_ACTIVE_LIST_INDEX                              0x001B
++
++/* Cycle time for the new TAS schedule */
++#define TAS_ADMIN_CYCLE_TIME                               0x001C
++
++/* Cycle counts remaining till the TAS list update */
++#define TAS_CONFIG_CHANGE_CYCLE_COUNT                      0x0020
++
++/* Base Flow ID for sending  Packets to Host for Slice0 */
++#define PSI_L_REGULAR_FLOW_ID_BASE_OFFSET                  0x0024
++
++/* Same as PSI_L_REGULAR_FLOW_ID_BASE_OFFSET */
++#define EMAC_ICSSG_SWITCH_PSI_L_REGULAR_FLOW_ID_BASE_OFFSET PSI_L_REGULAR_FLOW_ID_BASE_OFFSET
++
++/* Base Flow ID for sending mgmt and Tx TS to Host for Slice0 */
++#define PSI_L_MGMT_FLOW_ID_OFFSET                          0x0026
++
++/* Same as PSI_L_MGMT_FLOW_ID_OFFSET */
++#define EMAC_ICSSG_SWITCH_PSI_L_MGMT_FLOW_ID_BASE_OFFSET   PSI_L_MGMT_FLOW_ID_OFFSET
++
++/* Queue number for Special  Packets written here */
++#define SPL_PKT_DEFAULT_PRIORITY                           0x0028
++
++/* Express Preemptible Queue Mask */
++#define EXPRESS_PRE_EMPTIVE_Q_MASK                         0x0029
++
++/* Port1/Port2 Default Queue number for untagged  Packets, only 1B is used */
++#define QUEUE_NUM_UNTAGGED                                 0x002A
++
++/* Stores the table used for priority regeneration. 1B per PCP/Queue */
++#define PORT_Q_PRIORITY_REGEN_OFFSET                       0x002C
++
++/* For marking Packet as priority/express (this feature is disabled) or
++ * cut-through/S&F.
++ */
++#define EXPRESS_PRE_EMPTIVE_Q_MAP                          0x0034
++
++/* Stores the table used for priority mapping. 1B per PCP/Queue */
++#define PORT_Q_PRIORITY_MAPPING_OFFSET                     0x003C
++
++/* Used to notify the FW of the current link speed */
++#define PORT_LINK_SPEED_OFFSET                             0x00A8
++
++/* TAS gate mask for windows list0 */
++#define TAS_GATE_MASK_LIST0                                0x0100
++
++/* TAS gate mask for windows list1 */
++#define TAS_GATE_MASK_LIST1                                0x0350
++
++/* Memory to Enable/Disable Preemption on TX side */
++#define PRE_EMPTION_ENABLE_TX                              0x05A0
++
++/* Active State of Preemption on TX side */
++#define PRE_EMPTION_ACTIVE_TX                              0x05A1
++
++/* Memory to Enable/Disable Verify State Machine Preemption */
++#define PRE_EMPTION_ENABLE_VERIFY                          0x05A2
++
++/* Verify Status of State Machine */
++#define PRE_EMPTION_VERIFY_STATUS                          0x05A3
++
++/* Non Final Fragment Size supported by Link Partner */
++#define PRE_EMPTION_ADD_FRAG_SIZE_REMOTE                   0x05A4
++
++/* Non Final Fragment Size supported by Firmware */
++#define PRE_EMPTION_ADD_FRAG_SIZE_LOCAL                    0x05A6
++
++/* Time in ms the State machine waits for respond Packet */
++#define PRE_EMPTION_VERIFY_TIME                            0x05A8
++
++/* Memory used for R30 related management commands */
++#define MGR_R30_CMD_OFFSET                                 0x05AC
++
++/* HW Buffer Pool0 base address */
++#define BUFFER_POOL_0_ADDR_OFFSET                          0x05BC
++
++/* 16B for Host Egress MSMC Q (Pre-emptible) context */
++#define HOST_RX_Q_PRE_CONTEXT_OFFSET                       0x0684
++
++/* Buffer for 8 FDB entries to be added by 'Add Multiple FDB entries IOCTL' */
++#define FDB_CMD_BUFFER                                     0x0894
++
++/* TAS queue max sdu length list */
++#define TAS_QUEUE_MAX_SDU_LIST                             0x08FA
++
++/* Used by FW to generate random number with the SEED value */
++#define HD_RAND_SEED_OFFSET                                0x0934
++
++/* 16B for Host Egress MSMC Q (Express) context */
++#define HOST_RX_Q_EXP_CONTEXT_OFFSET                       0x0940
++
++/* Start of 32 bits PA_STAT counters */
++#define PA_STAT_32b_START_OFFSET                           0x0080
++
++#endif /* __NET_TI_ICSSG_SWITCH_MAP_H  */
+-- 
+2.34.1
 
---------------aTidrU0u0f9EzPXN2GV9xjyr--
-
---------------BzkB9EkYd4VfUqQscAQPwSQh
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
-
------BEGIN PGP SIGNATURE-----
-
-wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmTIyXUFAwAAAAAACgkQlh/E3EQov+Bn
-HQ/+ODtOPqObgHXWg2w+jOR71p47BMldUjo6XgKZkB828Vd59NnkIn6AHgfNkXjbARd3snAP0jSQ
-wG5X1dHQeWH5lAJjmbWhXtmdS0h3bfKOIJvc9b+v4KpUmjqqg9t56Q9rQTBjRT3/9IvyO5wQsbiz
-r7Nipp5Zmr+Q1xQtA5qEx2qPI1qpAC3koizWr6y9kVaUkgZFgHPHbkgjuI7EB64BXiOo33n70Cn/
-m0gMmn9LHzwOi4qN20gtQkVAbPR5G4GXjaRYS9Rgm1zKb9gPP67oVCXvEUiTRkDOH0hW3cr18g/C
-6wsi+8o+WpxpS5mGcfAL7JV8k+T95WCQKFyNuq1lZ1K9wekGwhvPYJOBsu/HfMtuQiiuH9nM132t
-pn+dKRllAg2oWSEG4SgtwWudNqrY/IR20IjiATLz14Fr4LXkjuBMigwDLHhuHGvImYTP2/BYhm6G
-LEhnqwo7nuPHJTqBfLWrC3hPdqYse65Nx4HqelsqTImGOG1tFosGRGhAgCYgt8lEYgXfvd2cHP1y
-+3cwpix3VXZbgY2IvCDTWaDuLMCJrJGQ4cgAGWfa5qOocVEqvxV8af6QrvcevpO1/oNfdjZMICXL
-S+BvnmOP1pjT8SBa4ghbmWeFmmruFRvU3PiFR+oW/hGfjIzqnQivj+6nD7AFnNoRpBpKemh2VSIz
-2Kg=
-=8Dsu
------END PGP SIGNATURE-----
-
---------------BzkB9EkYd4VfUqQscAQPwSQh--
