@@ -2,55 +2,73 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD6B676A40B
-	for <lists+linux-omap@lfdr.de>; Tue,  1 Aug 2023 00:16:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B912276AB8A
+	for <lists+linux-omap@lfdr.de>; Tue,  1 Aug 2023 10:59:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230205AbjGaWQp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 31 Jul 2023 18:16:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44344 "EHLO
+        id S231628AbjHAI7h (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 1 Aug 2023 04:59:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230007AbjGaWQo (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 31 Jul 2023 18:16:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4DB5B2;
-        Mon, 31 Jul 2023 15:16:43 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        with ESMTP id S231189AbjHAI7g (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 1 Aug 2023 04:59:36 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD20F1B3;
+        Tue,  1 Aug 2023 01:59:35 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 588746130B;
-        Mon, 31 Jul 2023 22:16:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 969F5C433C8;
-        Mon, 31 Jul 2023 22:16:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690841802;
-        bh=7PYksuUVbqNm+X5BgFbgzL54hc7z3GGbyqf4A9vkXTs=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=aG//2HxJx27ed2Ap2c0rN8KCPkjq+tVThqXN8cJotDeubuvsY+xaMFt/H2SeQafTM
-         7sBXv7xP2mqWBjHXSiM+fDY8rrl6xKa6vJOxwul9snJdNa/HNPrC+i/ZlgcLWRkXT5
-         qnCVDZQoALrNJxAe93fPfdZDYii5XtXqSx98XbpCr0RYde5ebqUsHJP5vQ6kfaQBhU
-         hIxg3iKcilOEI6nAVH/tD8Q0J3Z2VNpXAJW+dAVl8aBnnf2hwKMIYN8gBKY9RZQ4d5
-         Rr44rSHdf5w9UkHvNlC2kPPm8yu9VvXgF1biCtb57uRdVV1MRZfWeBto7ndmuyjtS6
-         JlIde3WGELm0g==
-Received: by mercury (Postfix, from userid 1000)
-        id 2B66C10622DC; Tue,  1 Aug 2023 00:16:40 +0200 (CEST)
-Date:   Tue, 1 Aug 2023 00:16:40 +0200
-From:   Sebastian Reichel <sre@kernel.org>
-To:     "Sicelo A. Mhlongo" <absicsz@gmail.com>
-Cc:     linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Tony Lindgren <tony@atomide.com>
-Subject: Re: [PATCH v2] bus: omap_l3_smx: identify timeout source before
- rebooting
-Message-ID: <20230731221640.6lugeimfg4f53rs2@mercury.elektranox.org>
-References: <20230731210347.1048060-1-absicsz@gmail.com>
+        by smtp-out1.suse.de (Postfix) with ESMTPS id 8176A21DE3;
+        Tue,  1 Aug 2023 08:59:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1690880374; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=+n5FyM61czAC0cNQApOWBqsHom9yWlZFCtaioWuc11U=;
+        b=X5/FMNpEswYuv0+kpUq7bmzjeGEeX7kgW/bMVqSU3Nj5IjMMsbE+i7IULO/cOCSBEZEq7Y
+        Z4HlN5GaTPHjGH4r9WNggLn9O7LXX8IlKKj+26KZKkJ0z1Yh/zs8VNQlLDJHEtKe3ZfcZ7
+        ZOosELtHMb2vJ8tTi4pbPtEydkdoniE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1690880374;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=+n5FyM61czAC0cNQApOWBqsHom9yWlZFCtaioWuc11U=;
+        b=SRO93G9RQUBzlaw2K3PuM0JnsVC8tNz0058QbCUqow/EXsZLz9HRvg7LNcm0jEqilewQeu
+        Z7AibYscOsue7zDg==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 4616413919;
+        Tue,  1 Aug 2023 08:59:34 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id M2fxD3bJyGTFNAAAMHmgww
+        (envelope-from <tzimmermann@suse.de>); Tue, 01 Aug 2023 08:59:34 +0000
+Message-ID: <262a0b9d-5d9b-11cf-535d-5b00376ae223@suse.de>
+Date:   Tue, 1 Aug 2023 10:59:33 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="wjjw6qqbon2w45qk"
-Content-Disposition: inline
-In-Reply-To: <20230731210347.1048060-1-absicsz@gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.1
+Subject: Re: [PATCH 00/47] fbdev: Use I/O helpers
+To:     Sam Ravnborg <sam@ravnborg.org>
+Cc:     deller@gmx.de, javierm@redhat.com, linux-media@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-geode@lists.infradead.org, linux-omap@vger.kernel.org,
+        kvm@vger.kernel.org
+References: <20230728182234.10680-1-tzimmermann@suse.de>
+ <20230728183906.GB1144760@ravnborg.org>
+Content-Language: en-US
+From:   Thomas Zimmermann <tzimmermann@suse.de>
+In-Reply-To: <20230728183906.GB1144760@ravnborg.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------BzkB9EkYd4VfUqQscAQPwSQh"
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,87 +76,71 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------BzkB9EkYd4VfUqQscAQPwSQh
+Content-Type: multipart/mixed; boundary="------------aTidrU0u0f9EzPXN2GV9xjyr";
+ protected-headers="v1"
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: Sam Ravnborg <sam@ravnborg.org>
+Cc: deller@gmx.de, javierm@redhat.com, linux-media@vger.kernel.org,
+ linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-arm-kernel@lists.infradead.org, linux-geode@lists.infradead.org,
+ linux-omap@vger.kernel.org, kvm@vger.kernel.org
+Message-ID: <262a0b9d-5d9b-11cf-535d-5b00376ae223@suse.de>
+Subject: Re: [PATCH 00/47] fbdev: Use I/O helpers
+References: <20230728182234.10680-1-tzimmermann@suse.de>
+ <20230728183906.GB1144760@ravnborg.org>
+In-Reply-To: <20230728183906.GB1144760@ravnborg.org>
 
---wjjw6qqbon2w45qk
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+--------------aTidrU0u0f9EzPXN2GV9xjyr
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-Hi,
+SGkgU2FtDQoNCkFtIDI4LjA3LjIzIHVtIDIwOjM5IHNjaHJpZWIgU2FtIFJhdm5ib3JnOg0K
+PiBIaSBUaG9tYXMsDQo+IA0KPiBPbiBGcmksIEp1bCAyOCwgMjAyMyBhdCAwNjozOTo0M1BN
+ICswMjAwLCBUaG9tYXMgWmltbWVybWFubiB3cm90ZToNCj4+IE1vc3QgZmJkZXYgZHJpdmVy
+cyBvcGVyYXRlIG9uIEkvTyBtZW1vcnkuIEFuZCBtb3N0IG9mIHRob3NlIHVzZSB0aGUNCj4+
+IGRlZmF1bHQgaW1wbGVtZW50YXRpb25zIGZvciBmaWxlIEkvTyBhbmQgY29uc29sZSBkcmF3
+aW5nLiBDb252ZXJ0IGFsbA0KPj4gdGhlc2UgbG93LWhhbmdpbmcgZnJ1aXRzIHRvIHRoZSBm
+Yl9vcHMgaW5pdGlhbGl6ZXIgbWFjcm8gYW5kIEtjb25maWcNCj4+IHRva2VuIGZvciBmYmRl
+diBJL08gaGVscGVycy4NCj4+DQo+PiBUaGUgZmJkZXYgSS9PIGhlbHBlcnMgYXJlIGVhc2ls
+eSBncmVwLWFibGUuIEluIGEgbGF0ZXIgcGF0Y2gsIHRoZXkgY2FuDQo+PiBiZSBsZWZ0IHRv
+IGVtcHR5IHZhbHVlcyBpZiB0aGUgcnNwLiBmdW50aW9uYWxpdHksIHN1Y2ggYXMgZmlsZSBJ
+L08gb3INCj4+IGNvbnNvbGUsIGhhcyBiZWVuIGRpc2FibGVkLg0KPiANCj4gRGlkIHlvdSBt
+aXNzIHNtNzUwIG9yIHdhcyBpdCBsZWZ0IG91dCBvbiBwdXJwb3NlPw0KPiBBcyBpdCBoaWRl
+IGluIHN0YWdpbmcgaXQgaXMgZWFzeSB0byBtaXNzLg0KDQpOb3cgSSByZW1lbWJlcmVkIHdo
+eSBJIGxlZnQgb3V0IHNtNzUwZmIuIEl0IG1vZGlmaWVzIHRoZSBmdW5jdGlvbiANCnBvaW50
+ZXJzIGF0IHNvbWUgcG9pbnQgYXQNCg0KaHR0cHM6Ly9lbGl4aXIuYm9vdGxpbi5jb20vbGlu
+dXgvbGF0ZXN0L3NvdXJjZS9kcml2ZXJzL3N0YWdpbmcvc203NTBmYi9zbTc1MC5jI0w3NDEN
+Cg0KU28gdGhlIGRyaXZlciB1c2VzIGEgbm9uLXRyaXZpYWwgZmJfb3BzIHNldHVwIGFuZCBp
+cyB3b3J0aCBhIGRpZmZlcmVudCBmaXguDQoNCkJlc3QgcmVnYXJkcw0KVGhvbWFzDQoNCj4g
+DQo+IAlTYW0NCg0KLS0gDQpUaG9tYXMgWmltbWVybWFubg0KR3JhcGhpY3MgRHJpdmVyIERl
+dmVsb3Blcg0KU1VTRSBTb2Z0d2FyZSBTb2x1dGlvbnMgR2VybWFueSBHbWJIDQpGcmFua2Vu
+c3RyYXNzZSAxNDYsIDkwNDYxIE51ZXJuYmVyZywgR2VybWFueQ0KR0Y6IEl2byBUb3Rldiwg
+QW5kcmV3IE15ZXJzLCBBbmRyZXcgTWNEb25hbGQsIEJvdWRpZW4gTW9lcm1hbg0KSFJCIDM2
+ODA5IChBRyBOdWVybmJlcmcpDQo=
 
-On Mon, Jul 31, 2023 at 11:03:47PM +0200, Sicelo A. Mhlongo wrote:
-> Identify and print the error source before rebooting the board due
-> to an l3 application timeout error, by delaying the BUG_ON. This
-> is helpful when debugging, e.g. via serial.
->=20
-> Signed-off-by: Sicelo A. Mhlongo <absicsz@gmail.com>
-> ---
->  drivers/bus/omap_l3_smx.c | 12 ++++++++----
->  1 file changed, 8 insertions(+), 4 deletions(-)
->=20
-> diff --git a/drivers/bus/omap_l3_smx.c b/drivers/bus/omap_l3_smx.c
-> index bb1606f5ce2d..0ccde12e33c0 100644
-> --- a/drivers/bus/omap_l3_smx.c
-> +++ b/drivers/bus/omap_l3_smx.c
-> @@ -170,11 +170,9 @@ static irqreturn_t omap3_l3_app_irq(int irq, void *_=
-l3)
->  		status =3D omap3_l3_readll(l3->rt, L3_SI_FLAG_STATUS_0);
->  		/*
->  		 * if we have a timeout error, there's nothing we can
-> -		 * do besides rebooting the board. So let's BUG on any
-> -		 * of such errors and handle the others. timeout error
-> -		 * is severe and not expected to occur.
-> +		 * do besides rebooting the board after identifying the
-> +		 * error source.
->  		 */
-> -		BUG_ON(status & L3_STATUS_0_TIMEOUT_MASK);
->  	} else {
->  		status =3D omap3_l3_readll(l3->rt, L3_SI_FLAG_STATUS_1);
->  		/* No timeout error for debug sources */
+--------------aTidrU0u0f9EzPXN2GV9xjyr--
 
-I think it's sensible to just remove the comments from both if/else
-branches. They no longer make sense in this place. Afterwards you
-should remove the curly brackets to follow kernel coding style.
-
-> @@ -190,6 +188,12 @@ static irqreturn_t omap3_l3_app_irq(int irq, void *_=
-l3)
->  		ret |=3D omap3_l3_block_irq(l3, error, error_addr);
->  	}
-> =20
-> +	/*
-> +	 * BUG on application timeout errors since they are severe and not
-> +	 * expected to occur.
-> +	 */
-
-I suggest using the original text. It does mention "there's nothing
-we can do besides rebooting the board".
-
-> +	BUG_ON(!int_type && status & L3_STATUS_0_TIMEOUT_MASK);
-> +
->  	/* Clear the status register */
->  	clear =3D (L3_AGENT_STATUS_CLEAR_IA << int_type) |
->  		L3_AGENT_STATUS_CLEAR_TA;
-
--- Sebastian
-
---wjjw6qqbon2w45qk
-Content-Type: application/pgp-signature; name="signature.asc"
+--------------BzkB9EkYd4VfUqQscAQPwSQh
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmTIMrsACgkQ2O7X88g7
-+po+Cg/7BlaNwDcx4J3LqVhi6t+7ugBk2ufUde2MnqrVPxvwnFssPfEoRfOZsf/W
-HWPfF1rkdwegg96vUMwWVQxdOdgvY6X1JkXravdaPD8hfrp9b73ApB2uChr+ZVLh
-IN0ymqembLpAhVAKBKKFz1B4LKztRRdzpXTXb4YxfKV3/kiCp45ZoUNxdMX3Zjp6
-LUz5YIvR47pOPGK3eiaKnW4Y7oukWxRsG8gRKvXZdWzi/+LgfO/p8S5vlCyAJoah
-cAf71Lvrtl7x/AW3ipb9FgFVEVNYEPQdjv65rDinBwuiaA+335ZoK0NG8oxLFxYc
-4cuUn/yVHYVPSUUQEaToLjbCBPJQL2qOTrd1/NEr5mgKCgYopncluAs9i53jgdXy
-XttUmlDKPeiAAedH6e+VKEa0u+6YS81DWba5KosNTKvGFpBBN2CRSb1VoJI00n3e
-cj2uFsv+ldxDzhAIrGpuxL4iL34qNLyomMUFndARaFcZ13nRWWaiBw4btGD9F64c
-0W0sgvMcbXcIgo5kVxK+92E0yQbYmqSZwrnN6opMF5Km2OPKK++q3DixmSCzyGez
-5M9OObYk5zD9/bveWyl5XA0AgEaaaiw8rUuruz4Na0kDgk3NyBkuEwEucpCxrO8R
-N2GC35kaGAW2pR6LE4VMP/OfeQ+OeNmpMABt7jFhHriSJSbkCoo=
-=du+q
+wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmTIyXUFAwAAAAAACgkQlh/E3EQov+Bn
+HQ/+ODtOPqObgHXWg2w+jOR71p47BMldUjo6XgKZkB828Vd59NnkIn6AHgfNkXjbARd3snAP0jSQ
+wG5X1dHQeWH5lAJjmbWhXtmdS0h3bfKOIJvc9b+v4KpUmjqqg9t56Q9rQTBjRT3/9IvyO5wQsbiz
+r7Nipp5Zmr+Q1xQtA5qEx2qPI1qpAC3koizWr6y9kVaUkgZFgHPHbkgjuI7EB64BXiOo33n70Cn/
+m0gMmn9LHzwOi4qN20gtQkVAbPR5G4GXjaRYS9Rgm1zKb9gPP67oVCXvEUiTRkDOH0hW3cr18g/C
+6wsi+8o+WpxpS5mGcfAL7JV8k+T95WCQKFyNuq1lZ1K9wekGwhvPYJOBsu/HfMtuQiiuH9nM132t
+pn+dKRllAg2oWSEG4SgtwWudNqrY/IR20IjiATLz14Fr4LXkjuBMigwDLHhuHGvImYTP2/BYhm6G
+LEhnqwo7nuPHJTqBfLWrC3hPdqYse65Nx4HqelsqTImGOG1tFosGRGhAgCYgt8lEYgXfvd2cHP1y
++3cwpix3VXZbgY2IvCDTWaDuLMCJrJGQ4cgAGWfa5qOocVEqvxV8af6QrvcevpO1/oNfdjZMICXL
+S+BvnmOP1pjT8SBa4ghbmWeFmmruFRvU3PiFR+oW/hGfjIzqnQivj+6nD7AFnNoRpBpKemh2VSIz
+2Kg=
+=8Dsu
 -----END PGP SIGNATURE-----
 
---wjjw6qqbon2w45qk--
+--------------BzkB9EkYd4VfUqQscAQPwSQh--
