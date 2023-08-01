@@ -2,121 +2,99 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2341A76BD9E
-	for <lists+linux-omap@lfdr.de>; Tue,  1 Aug 2023 21:23:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E3FE76C0F1
+	for <lists+linux-omap@lfdr.de>; Wed,  2 Aug 2023 01:33:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232082AbjHATXa (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 1 Aug 2023 15:23:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52152 "EHLO
+        id S230523AbjHAXd5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 1 Aug 2023 19:33:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232144AbjHATX2 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 1 Aug 2023 15:23:28 -0400
-Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADF299C;
-        Tue,  1 Aug 2023 12:23:27 -0700 (PDT)
-Received: by mail-wm1-x334.google.com with SMTP id 5b1f17b1804b1-3fbd33a57b6so66021185e9.2;
-        Tue, 01 Aug 2023 12:23:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690917806; x=1691522606;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=tlk6j8VV67xBiOXhkkLv1ZO7Ahk1E6BY8WoLyYVNMug=;
-        b=UYzqulpjcLYc93ibI7pV7LkMJrbhG+EhG4tGkg1bb+zZDLSx/je74kmggGqE4u5xtQ
-         4SuwuS8uxiPsOG55BrauC1Ud1h4Wfld4SyRVMzOV76GPO20ujwITdQWaFvH5bq1PuMNW
-         VsJkwnKUO/s/Y2fX2627Aqt5ne+g02cd3iGLy7Q0A7D2fG5FAfO9Xmmbjdy473OkVpjE
-         6X6uVKNr+x/Y7w6l8FC0Tji3cR3mX59cXMJdKkeH+NFwJKSG7eAXtfXrmyO7LUWppWp1
-         C4YCvsS0JzxIeyoZoikNwOmao0l5oMP6qffsni3tNv7UhmrIqjbysm555J4ODV3TbZEu
-         fZFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690917806; x=1691522606;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=tlk6j8VV67xBiOXhkkLv1ZO7Ahk1E6BY8WoLyYVNMug=;
-        b=FtQByuZQ6IqSIZ8lmq6FbDYmaTza2z0GtJTRTi1KLWbxTCcW/VT/2EnIUWtsquJLlq
-         FJz+tq/djrqWbEf9b9gKwaLKWhjwoV37MB/0h1Z+7YYkTFIAtBXMAhcNJnxCD5aFVJtM
-         +xIOIkNqZEgKEIIc44EhqHQE6+NbPIUXNdsGwfhPlSQ7OqiFVy/cHWVaquelHSHzkPyy
-         u7DmXAwxFj0X+lYE6C5s59ULaZZ5UqdvbjASvGxv+DM4AyihLvJbc8qcd2pbJCnv5YLv
-         jVJ0StOI68znAi2AipbOxSIB08SQ3mMmcx1MmpG0Ize4GV2+E6Z3bsxExU+Su7axK51I
-         UFYA==
-X-Gm-Message-State: ABy/qLZfdVW9OKCpQ3V7mTphJOhS65/uLXdsbOgHkeDKTiSuYmPC/1aM
-        7aGIkielqI0lkS1sOfarlUNnghmVpbsRBJ1t
-X-Google-Smtp-Source: APBJJlHkLCPO6wXTQd+QQ6GHrr3bApuwv25MFWtutmy46mhyw1ovpsntGhdUUzyWTbLU3bi2/6/EwQ==
-X-Received: by 2002:a05:600c:2216:b0:3fe:16d3:7d60 with SMTP id z22-20020a05600c221600b003fe16d37d60mr3411254wml.9.1690917805870;
-        Tue, 01 Aug 2023 12:23:25 -0700 (PDT)
-Received: from tpt440p.steeds.sam ([2602:fbf6:10:a::2])
-        by smtp.gmail.com with ESMTPSA id n6-20020a5d4206000000b00317a04131c5sm7895582wrq.57.2023.08.01.12.23.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Aug 2023 12:23:25 -0700 (PDT)
-From:   "Sicelo A. Mhlongo" <absicsz@gmail.com>
-To:     linux-omap@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, maemo-leste@lists.dyne.org,
-        "Sicelo A. Mhlongo" <absicsz@gmail.com>
-Subject: [PATCH v3] bus: omap_l3_smx: identify timeout cause before rebooting
-Date:   Tue,  1 Aug 2023 21:22:40 +0200
-Message-Id: <20230801192240.1063764-1-absicsz@gmail.com>
-X-Mailer: git-send-email 2.40.1
+        with ESMTP id S230399AbjHAXd4 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 1 Aug 2023 19:33:56 -0400
+Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B177268E;
+        Tue,  1 Aug 2023 16:33:54 -0700 (PDT)
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 371NXi4G022334;
+        Tue, 1 Aug 2023 18:33:44 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1690932824;
+        bh=gx+cskALCcYlkgApV6e1s5eBIaxIV+QhYxQ6AIInkcg=;
+        h=From:To:CC:Subject:Date;
+        b=GRvkEGcw3zq99clo1xycR1p1vcVMJgIQBxnr41Ig+YR9SKeFQyk16klFehvmTElCI
+         tudx06mhiJGPNDjz3M5MPVM0DMzZT2z2VRotlSiAgF2/3LE6D8P4n4oOCRzUqvGPPL
+         +AWyZkroZe67O4dQFkhzE4u22wmbXScLtJmienaY=
+Received: from DFLE102.ent.ti.com (dfle102.ent.ti.com [10.64.6.23])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 371NXiph064876
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 1 Aug 2023 18:33:44 -0500
+Received: from DFLE104.ent.ti.com (10.64.6.25) by DFLE102.ent.ti.com
+ (10.64.6.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 1
+ Aug 2023 18:33:43 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE104.ent.ti.com
+ (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Tue, 1 Aug 2023 18:33:42 -0500
+Received: from localhost (ileaxei01-snat.itg.ti.com [10.180.69.5])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 371NXhKa096375;
+        Tue, 1 Aug 2023 18:33:43 -0500
+From:   Nishanth Menon <nm@ti.com>
+To:     Rob Herring <robh+dt@kernel.org>, Stephen Boyd <sboyd@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>
+CC:     Tony Lindgren <tony@atomide.com>,
+        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Vibhore Vardhan <vibhore@ti.com>, Dhruva Gole <d-gole@ti.com>,
+        <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-pm@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, Nishanth Menon <nm@ti.com>
+Subject: [PATCH V2 0/2] dt-bindings: opp/cpufreq: Convert ti-cpufreq to json schema
+Date:   Tue, 1 Aug 2023 18:33:39 -0500
+Message-ID: <20230801233341.1416552-1-nm@ti.com>
+X-Mailer: git-send-email 2.40.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Identify and print the error source before rebooting the board due to an l3
-timeout error. This is helpful when debugging, e.g. via serial.
+Hi,
 
-Signed-off-by: Sicelo A. Mhlongo <absicsz@gmail.com>
----
- drivers/bus/omap_l3_smx.c | 21 ++++++++++-----------
- 1 file changed, 10 insertions(+), 11 deletions(-)
+Convert the long pending free-form text bindings of ti-cpufreq and
+omap5-opp-supply bindings to json-schema.
 
-diff --git a/drivers/bus/omap_l3_smx.c b/drivers/bus/omap_l3_smx.c
-index bb1606f5ce2d..8e1a38bfcd8b 100644
---- a/drivers/bus/omap_l3_smx.c
-+++ b/drivers/bus/omap_l3_smx.c
-@@ -166,19 +166,10 @@ static irqreturn_t omap3_l3_app_irq(int irq, void *_l3)
- 	irqreturn_t ret = IRQ_NONE;
- 
- 	int_type = irq == l3->app_irq ? L3_APPLICATION_ERROR : L3_DEBUG_ERROR;
--	if (!int_type) {
-+	if (!int_type)
- 		status = omap3_l3_readll(l3->rt, L3_SI_FLAG_STATUS_0);
--		/*
--		 * if we have a timeout error, there's nothing we can
--		 * do besides rebooting the board. So let's BUG on any
--		 * of such errors and handle the others. timeout error
--		 * is severe and not expected to occur.
--		 */
--		BUG_ON(status & L3_STATUS_0_TIMEOUT_MASK);
--	} else {
-+	else
- 		status = omap3_l3_readll(l3->rt, L3_SI_FLAG_STATUS_1);
--		/* No timeout error for debug sources */
--	}
- 
- 	/* identify the error source */
- 	err_source = __ffs(status);
-@@ -190,6 +181,14 @@ static irqreturn_t omap3_l3_app_irq(int irq, void *_l3)
- 		ret |= omap3_l3_block_irq(l3, error, error_addr);
- 	}
- 
-+	/*
-+	 * if we have a timeout error, there's nothing we can
-+	 * do besides rebooting the board. So let's BUG on any
-+	 * of such errors and handle the others. timeout error
-+	 * is severe and not expected to occur.
-+	 */
-+	BUG_ON(!int_type && status & L3_STATUS_0_TIMEOUT_MASK);
-+
- 	/* Clear the status register */
- 	clear = (L3_AGENT_STATUS_CLEAR_IA << int_type) |
- 		L3_AGENT_STATUS_CLEAR_TA;
+Changes from V1:
+* Tony has picked up 1-3 of v1 dt cleanups[1]
+* Fixup the bindings for the various review comments received.
+
+V1: https://lore.kernel.org/all/20230724153911.1376830-1-nm@ti.com/
+
+Nishanth Menon (2):
+  dt-bindings: opp: Convert ti-omap5-opp-supply to json schema
+  dt-bindings: cpufreq: Convert ti-cpufreq to json schema
+
+ .../bindings/cpufreq/ti-cpufreq.txt           | 132 ------------------
+ .../opp/operating-points-v2-ti-cpu.yaml       |  88 ++++++++++++
+ .../bindings/opp/ti,omap-opp-supply.yaml      | 103 ++++++++++++++
+ .../bindings/opp/ti-omap5-opp-supply.txt      |  63 ---------
+ 4 files changed, 191 insertions(+), 195 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/cpufreq/ti-cpufreq.txt
+ create mode 100644 Documentation/devicetree/bindings/opp/operating-points-v2-ti-cpu.yaml
+ create mode 100644 Documentation/devicetree/bindings/opp/ti,omap-opp-supply.yaml
+ delete mode 100644 Documentation/devicetree/bindings/opp/ti-omap5-opp-supply.txt
+
+[1] https://lore.kernel.org/all/20230731062551.GH5194@atomide.com/
 -- 
-2.40.1
+2.40.0
 
