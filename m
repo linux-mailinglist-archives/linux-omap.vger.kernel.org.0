@@ -2,150 +2,112 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2623176D7AB
-	for <lists+linux-omap@lfdr.de>; Wed,  2 Aug 2023 21:24:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFD6176DFFD
+	for <lists+linux-omap@lfdr.de>; Thu,  3 Aug 2023 08:01:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229771AbjHBTYu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 2 Aug 2023 15:24:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37702 "EHLO
+        id S232386AbjHCGBx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 3 Aug 2023 02:01:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229495AbjHBTYt (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 2 Aug 2023 15:24:49 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AE91119;
-        Wed,  2 Aug 2023 12:24:48 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 27F6361AE1;
-        Wed,  2 Aug 2023 19:24:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40F7BC433C7;
-        Wed,  2 Aug 2023 19:24:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691004287;
-        bh=ceVwIDyjSpFimVYJA8IpCtR5gV/pCzomVlAV3sy7vK8=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=DVEWldMGeNvP66mevWA8PK/kEqqZkNcCybPk+5q6lc4jhziWzj+L4cr9l5j10oFWw
-         MtWiCnFHp5OMEuBxN+GvukCdaRDJj/GO8ZJBOWcd4KK53IDFjCkY4vE5JLp8ZS5QBQ
-         rkwaOJf/o4NCAkQaPOqojwL2eK2Be6GLt7URxpSmSb2f82l7Cl2ubCa5HsQuGpN3Up
-         V0uTawhQ1GCiVUD/Tl2XksQxaQ1lZSDsswgp2fucwZJN7B53z21xjNMQmObtjUpicV
-         eZLA/LOeD5v7pjJPxJ+uAEiyFyamxcpdn8Hptps3zDjVm2uQ2zeWNjrW/LyRFsNvY/
-         Y1HsTEDpLRt6A==
-Date:   Wed, 2 Aug 2023 14:24:45 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     "Verma, Achal" <a-verma1@ti.com>
-Cc:     Vignesh Raghavendra <vigneshr@ti.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Krzysztof Wilczy_ski <kw@linux.com>,
-        Rob Herring <robh@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [EXTERNAL] Re: [PATCH v3] PCI: j721e: Delay 100ms T_PVPERL from
- power stable to PERST# inactive
-Message-ID: <20230802192445.GA64939@bhelgaas>
+        with ESMTP id S232288AbjHCGBw (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 3 Aug 2023 02:01:52 -0400
+Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63DDDE6F;
+        Wed,  2 Aug 2023 23:01:51 -0700 (PDT)
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 37361bNw091891;
+        Thu, 3 Aug 2023 01:01:37 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1691042497;
+        bh=Eq3fAhTV5YV3oUQ6BBvL8m3xQDKMmG4eYt87dBmZskM=;
+        h=Date:From:To:CC:Subject:References:In-Reply-To;
+        b=BWBOQzbfwI/tP0jfhhO+BFyd+4h3QYnjnlbRx082FdlcvxnfNJnTNvhj1TwcqXeiQ
+         r0YHV+DLzADY5MvQm0iOGl294vyO/AFnoXdB0tuTgkz5JQUM+7B9VO/wYQSfy0CB6T
+         nIV6YIWuRVQos+ubIn83Xt8/x4N45YSSEe6FAv70=
+Received: from DLEE101.ent.ti.com (dlee101.ent.ti.com [157.170.170.31])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 37361bsj002604
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 3 Aug 2023 01:01:37 -0500
+Received: from DLEE101.ent.ti.com (157.170.170.31) by DLEE101.ent.ti.com
+ (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 3
+ Aug 2023 01:01:37 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE101.ent.ti.com
+ (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Thu, 3 Aug 2023 01:01:37 -0500
+Received: from localhost (ileaxei01-snat2.itg.ti.com [10.180.69.6])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 37361a3o015863;
+        Thu, 3 Aug 2023 01:01:36 -0500
+Date:   Thu, 3 Aug 2023 11:31:35 +0530
+From:   Dhruva Gole <d-gole@ti.com>
+To:     Nishanth Menon <nm@ti.com>
+CC:     Rob Herring <robh+dt@kernel.org>, Stephen Boyd <sboyd@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Tony Lindgren <tony@atomide.com>,
+        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Vibhore Vardhan <vibhore@ti.com>, <linux-omap@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-pm@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH V2 2/2] dt-bindings: cpufreq: Convert ti-cpufreq to json
+ schema
+Message-ID: <20230803060135.cichqctmjhajt2hq@dhruva>
+References: <20230801233341.1416552-1-nm@ti.com>
+ <20230801233341.1416552-3-nm@ti.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <8951d4fd-279d-8a78-65a3-daeb4befa899@ti.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <20230801233341.1416552-3-nm@ti.com>
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Aug 02, 2023 at 02:38:02PM +0530, Verma, Achal wrote:
-> On 7/18/2023 9:25 PM, Bjorn Helgaas wrote:
-> > On Fri, Jul 07, 2023 at 03:21:19PM +0530, Achal Verma wrote:
-> > > As per the PCIe Card Electromechanical specification REV. 5.0, PERST#
-> > > signal should be de-asserted after minimum 100ms from the time power-rails
-> > > become stable. So, to ensure 100ms delay to give sufficient time for
-> > > power-rails and refclk to become stable, change delay from 100us to 100ms.
-> > > 
-> > >  From PCIe Card Electromechanical specification REV. 5.0 section 2.9.2:
-> > > TPVPERL: Power stable to PERST# inactive - 100ms
-> > > 
-> > > Fixes: f3e25911a430 ("PCI: j721e: Add TI J721E PCIe driver")
-> > > Signed-off-by: Achal Verma <a-verma1@ti.com>
-> > > ---
-> > > 
-> > > Changes from v2:
-> > > * Fix commit message.
-> > > 
-> > > Change from v1:
-> > > * Add macro for delay value.
-> > > 
-> > >   drivers/pci/controller/cadence/pci-j721e.c | 11 +++++------
-> > >   drivers/pci/pci.h                          |  2 ++
-> > >   2 files changed, 7 insertions(+), 6 deletions(-)
-> > > 
-> > > diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
-> > > index e70213c9060a..32b6a7dc3cff 100644
-> > > --- a/drivers/pci/controller/cadence/pci-j721e.c
-> > > +++ b/drivers/pci/controller/cadence/pci-j721e.c
-> > > @@ -498,14 +498,13 @@ static int j721e_pcie_probe(struct platform_device *pdev)
-> > >   		/*
-> > >   		 * "Power Sequencing and Reset Signal Timings" table in
-> > > -		 * PCI EXPRESS CARD ELECTROMECHANICAL SPECIFICATION, REV. 3.0
-> > > -		 * indicates PERST# should be deasserted after minimum of 100us
-> > > -		 * once REFCLK is stable. The REFCLK to the connector in RC
-> > > -		 * mode is selected while enabling the PHY. So deassert PERST#
-> > > -		 * after 100 us.
-> > > +		 * PCI EXPRESS CARD ELECTROMECHANICAL SPECIFICATION, REV. 5.0
-> > > +		 * indicates PERST# should be deasserted after minimum of 100ms
-> > > +		 * after power rails achieve specified operating limits and
-> > > +		 * within this period reference clock should also become stable.
-> > 
-> > I think the problem is not that the current code is *wrong*, because
-> > we do need to observe T_PERST-CLK, but that it failed to *also*
-> > account for T_PVPERL.
-> > 
-> > There are two delays before deasserting PERST#:
-> > 
-> >    T_PVPERL: delay after power becomes stable
-> >    T_PERST-CLK: delay after REFCLK becomes stable
-> > 
-> > I assume power is enabled by phy_power_on(), and REFCLK is enabled by
-> > clk_prepare_enable():
-> > 
-> >    cdns_pcie_init_phy
-> >      cdns_pcie_enable_phy
-> >        phy_power_on             <-- power becomes stable
-> >    clk_prepare_enable           <-- REFCLK becomes stable
-> >    if (gpiod)
-> >      usleep_range
-> >      gpiod_set_value_cansleep(gpiod, 1)   <-- deassert PERST#
-> > 
-> > I don't actually know if phy_power_on() guarantees that power is
-> > stable before it returns.  But I guess that's our assumption?
-> > Similarly for clk_prepare_enable().
-> > 
-> > In any case, we have to observe both delays.  They overlap, and
-> > T_PVPERL is 1000 times longer than T_PERST-CLK, so there might be
-> > enough slop in an msleep(100) to cover both, but I think I would do
-> > the simple-minded:
-> > 
-> >    msleep(PCIE_TPVPERL_MS);
-> >    usleep_range(PCIE_TPERST_CLK_US, 2 * PCIE_TPERST_CLK_US);
-> > 
-> I think adding 100us more is not required since as you said and as also
-> mentioned in CEM spec, 100ms covers for both power rails and refclock to
-> get stable and 2 consecutive sleep call looks different to me.
-> But if still required (please let me know), will do the suggested change,
-> along with other fixes you asked below.
+On Aug 01, 2023 at 18:33:41 -0500, Nishanth Menon wrote:
+> Move the ti-cpufreq binding over to opp and convert convert the free
 
-If REFCLK is stable when clk_prepare_enable() returns, and we don't
-start the msleep(PCIE_TPVPERL_MS) until then, it should be safe.  
-Maybe mention T_PERST-CLK in a comment, e.g.,
+Minor nitpik, maybe can be fixed while applying the patch. Checkpatch caught this,
+Possible repeated word: 'convert'
 
-  PCIe CEM r5.0, sec 2.2.1, requires both T_PVPERL (100ms) between
-  power stable and PERST# inactive and T_PERST_CLK (100us) between
-  REFCLK stable and PERST# inactive.  Starting the T_PVPERL delay
-  after REFCLK is stable means that delay covers T_PERST_CLK as well.
+> text binding to json-schema.
+> 
+> Signed-off-by: Nishanth Menon <nm@ti.com>
+> ---
 
-Bjorn
+Otherwise, LGTM
+
+Reviewed-by: Dhruva Gole <d-gole@ti.com>
+
+> Changes since V1:
+> - Fixup $subject of the patch to indicate json schema rather than yaml.
+> - Change filename to matchup with binding compatible
+> - Dropped un-used labels
+> - Dropped "|" in "description"
+> 
+> V1: https://lore.kernel.org/all/20230724153911.1376830-6-nm@ti.com/
+> 
+> Side note: cleanups in dt is picked up on Tony's tree:
+> https://lore.kernel.org/all/20230731062551.GH5194@atomide.com/
+> 
+>  .../bindings/cpufreq/ti-cpufreq.txt           | 132 ------------------
+>  .../opp/operating-points-v2-ti-cpu.yaml       |  88 ++++++++++++
+>  2 files changed, 88 insertions(+), 132 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/cpufreq/ti-cpufreq.txt
+>  create mode 100644 Documentation/devicetree/bindings/opp/operating-points-v2-ti-cpu.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/cpufreq/ti-cpufreq.txt b/Documentation/devicetree/bindings/cpufreq/ti-cpufreq.txt
+> deleted file mode 100644
+[..snip..]
+
+-- 
+Best regards,
+Dhruva Gole <d-gole@ti.com>
