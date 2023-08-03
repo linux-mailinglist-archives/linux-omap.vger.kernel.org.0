@@ -2,111 +2,125 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B548D76F352
-	for <lists+linux-omap@lfdr.de>; Thu,  3 Aug 2023 21:18:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F040A76F48D
+	for <lists+linux-omap@lfdr.de>; Thu,  3 Aug 2023 23:16:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230415AbjHCTSp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 3 Aug 2023 15:18:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56896 "EHLO
+        id S229475AbjHCVQ0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 3 Aug 2023 17:16:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231127AbjHCTSn (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 3 Aug 2023 15:18:43 -0400
-Received: from mail-qk1-x72f.google.com (mail-qk1-x72f.google.com [IPv6:2607:f8b0:4864:20::72f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EC2C35BE;
-        Thu,  3 Aug 2023 12:18:41 -0700 (PDT)
-Received: by mail-qk1-x72f.google.com with SMTP id af79cd13be357-76758b855edso114661785a.0;
-        Thu, 03 Aug 2023 12:18:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691090319; x=1691695119;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cn6LA5zi+jJ8uMg/k1zD8LVyDKk8sr2d1EdjLuZgbUk=;
-        b=lVwCNrhvJUgz2qvTclStLwRiLou7BWCen3WdwmijmaUWDNcEMjcIJqsp0GjikxGNzH
-         v6U1IxbkSeyJ+N/SCWp7yrI3QODMrQRzuzF6Ljo2aFG6IylWrUj02yDidWEyht5JXu85
-         8spILvAnS76WEGH0WfzMHtvsfKiNxxa+6ymre4QYiLL/qDJgh1Eqn7xlOG5XMalGU3NB
-         clNOVKvO0uPM7ICVauhRL2tskGLFY5AJDCyEKtJ4wzPEl/lzvxk69C7KZFfcGFyWMhRT
-         Hyrz2AkBNMe2h2IdQwsIvdCFl3gKH76c9VtNhR/0Md5DjAAL/ctefxtKgFv0wzMR/D2u
-         nq2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691090319; x=1691695119;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cn6LA5zi+jJ8uMg/k1zD8LVyDKk8sr2d1EdjLuZgbUk=;
-        b=KVwyseG4nJ0WMWJDGo1pCpQn29yznnSTBdmO3IPAAGoxUQxU7tUViaPublMtQn0x+t
-         Txm/zGUUMEab3NT9ZOf/7f+M5cB+tTl5xXgPShigfbSkp24nq8PLrki064djTi6MOizx
-         /U5kQyUlisrxyNDGLDbAgDxp1z7Q1W7sgUsbfYhfs3daAKfqjOl6Jxjhug5sSxGtP9Bb
-         GzJhYyKlDOo+oG5chzGC+lcC1NF4+z5XyL7P5vrn0b8q2nOGu6H503MacSoKArJoWnfl
-         xmPhZicROK4DNSULX19qhRv6KUicTVIqwgAUAFYFSAOvxsKcs0awWylqKEYzBAvWWWJK
-         CAig==
-X-Gm-Message-State: ABy/qLbEugcWMzQcw97cj0JqqYlKbwSWLrQ5NQ5+AhWGrPlbLsz8DzRZ
-        BJMFemv3g82bNII9S5XKqHjF1Wkqs+k=
-X-Google-Smtp-Source: APBJJlESw8lMtsxA24LFj9NOntuxQMkmaPyUBjtM3XmbQ2WMAmkT5wO2PSDyPabRhRa3p3o71LtNdw==
-X-Received: by 2002:a05:620a:454b:b0:76c:a3bc:7fc2 with SMTP id u11-20020a05620a454b00b0076ca3bc7fc2mr21287793qkp.34.1691090319445;
-        Thu, 03 Aug 2023 12:18:39 -0700 (PDT)
-Received: from localhost.localdomain (pppoe-209-91-167-254.vianet.ca. [209.91.167.254])
-        by smtp.gmail.com with ESMTPSA id n20-20020a0ce494000000b0063762ab2f90sm108897qvl.83.2023.08.03.12.18.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Aug 2023 12:18:38 -0700 (PDT)
-From:   Trevor Woerner <twoerner@gmail.com>
-To:     linux-kernel@vger.kernel.org, Tony Lindgren <tony@atomide.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Huacai Chen <chenhuacai@kernel.org>,
-        WANG Xuerui <kernel@xen0n.name>
-Cc:     linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        loongarch@lists.linux.dev
-Subject: [PATCH 4/4] arch/*/configs/*_defconfig cleanup: drop CONFIG_NFT_OBJREF
-Date:   Thu,  3 Aug 2023 15:18:18 -0400
-Message-ID: <20230803191821.36793-5-twoerner@gmail.com>
-X-Mailer: git-send-email 2.41.0.327.gaa9166bcc0ba
-In-Reply-To: <20230803191821.36793-1-twoerner@gmail.com>
-References: <20230803191821.36793-1-twoerner@gmail.com>
+        with ESMTP id S230369AbjHCVQY (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 3 Aug 2023 17:16:24 -0400
+Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4575E212B;
+        Thu,  3 Aug 2023 14:15:50 -0700 (PDT)
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 373LFWTb093898;
+        Thu, 3 Aug 2023 16:15:32 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1691097332;
+        bh=EykX/fSWMDfipxutXXuVj15oqbyV5u2JGSo7DRMwIaQ=;
+        h=Date:From:To:CC:Subject:References:In-Reply-To;
+        b=OOCWpb+PtMJ4i/j1cga2VjQ9IIX7wT1FPy7dkFNhK0VdXf5FALEg4h5HrfUWyaSFz
+         WhVAg7wqpkjSJhb+sP+TN5jw/GFwLDMpTR1us5+E/RnC7CVrrT20eEYbMunvFnRQ8w
+         7ifsUupDmvv2R5IXwCAEMMnOgKmS0kCPtSu/R5wE=
+Received: from DFLE107.ent.ti.com (dfle107.ent.ti.com [10.64.6.28])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 373LFWx9039379
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 3 Aug 2023 16:15:32 -0500
+Received: from DFLE113.ent.ti.com (10.64.6.34) by DFLE107.ent.ti.com
+ (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 3
+ Aug 2023 16:15:32 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE113.ent.ti.com
+ (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Thu, 3 Aug 2023 16:15:32 -0500
+Received: from localhost (ileaxei01-snat.itg.ti.com [10.180.69.5])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 373LFWXS040988;
+        Thu, 3 Aug 2023 16:15:32 -0500
+Date:   Thu, 3 Aug 2023 16:15:32 -0500
+From:   Nishanth Menon <nm@ti.com>
+To:     Conor Dooley <conor@kernel.org>
+CC:     Dhruva Gole <d-gole@ti.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Tony Lindgren <tony@atomide.com>, <linux-gpio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-omap@vger.kernel.org>, Vignesh Raghavendra <vigneshr@ti.com>
+Subject: Re: [PATCH V2] dt-bindings: pinctrl: pinctrl-single: add am625
+ compatible
+Message-ID: <20230803211532.ge4yr5r6pwprlyml@bonsai>
+References: <20230803150955.611717-1-d-gole@ti.com>
+ <20230803-antennae-donut-6cae9d43d791@spud>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20230803-antennae-donut-6cae9d43d791@spud>
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Drop CONFIG_NFT_OBJREF as it was removed in commit d037abc2414b
-("netfilter: nft_objref: make it builtin").
+On 16:29-20230803, Conor Dooley wrote:
+> On Thu, Aug 03, 2023 at 08:39:55PM +0530, Dhruva Gole wrote:
+> > Add the am625 compatible property to add support for the new
+> > wakeup enable and status bits positions
+> > 
+> > Cc: Nishanth Menon <nm@ti.com>
+> > Cc: Vignesh Raghavendra <vigneshr@ti.com>
+> > CC: Tony Lindgren <tony@atomide.com>
+> > Signed-off-by: Dhruva Gole <d-gole@ti.com>
+> 
+> Acked-by: Conor Dooley <conor.dooley@microchip.com>
+> 
+> Thanks,
+> Conor.
+> 
+> > ---
+> > 
+> > Base: tag: next-20230731 + below "depends on" patch
+> > Depends on: https://lore.kernel.org/linux-omap/20230731061908.GG5194@atomide.com/T/
+> > 
+> > v1 -> v2 changes:
+> > rename to use am625 instead of am6
+> > 
+> > link to previous version:
+> > https://lore.kernel.org/all/20230803092311.604610-1-d-gole@ti.com/
+> > 
+> >  Documentation/devicetree/bindings/pinctrl/pinctrl-single.yaml | 1 +
+> >  1 file changed, 1 insertion(+)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/pinctrl/pinctrl-single.yaml b/Documentation/devicetree/bindings/pinctrl/pinctrl-single.yaml
+> > index b6b6bcd7074b..902469986fff 100644
+> > --- a/Documentation/devicetree/bindings/pinctrl/pinctrl-single.yaml
+> > +++ b/Documentation/devicetree/bindings/pinctrl/pinctrl-single.yaml
+> > @@ -23,6 +23,7 @@ properties:
+> >            - pinconf-single
+> >        - items:
+> >            - enum:
+> > +              - ti,am625-padconf
+> >                - ti,am437-padconf
 
-Signed-off-by: Trevor Woerner <twoerner@gmail.com>
----
- arch/arm/configs/omap2plus_defconfig       | 1 -
- arch/loongarch/configs/loongson3_defconfig | 1 -
- 2 files changed, 2 deletions(-)
+please keep this sorted.
+> >                - ti,dra7-padconf
+> >                - ti,omap2420-padconf
+> > -- 
+> > 2.34.1
+> > 
 
-diff --git a/arch/arm/configs/omap2plus_defconfig b/arch/arm/configs/omap2plus_defconfig
-index 98fbd16e17ce..b2f0862f4bd9 100644
---- a/arch/arm/configs/omap2plus_defconfig
-+++ b/arch/arm/configs/omap2plus_defconfig
-@@ -98,7 +98,6 @@ CONFIG_NFT_MASQ=m
- CONFIG_NFT_REDIR=m
- CONFIG_NFT_NAT=m
- CONFIG_NFT_TUNNEL=m
--CONFIG_NFT_OBJREF=m
- CONFIG_NFT_QUEUE=m
- CONFIG_NFT_QUOTA=m
- CONFIG_NFT_REJECT=m
-diff --git a/arch/loongarch/configs/loongson3_defconfig b/arch/loongarch/configs/loongson3_defconfig
-index 04665c517c74..4700655b2bcb 100644
---- a/arch/loongarch/configs/loongson3_defconfig
-+++ b/arch/loongarch/configs/loongson3_defconfig
-@@ -137,7 +137,6 @@ CONFIG_NFT_MASQ=m
- CONFIG_NFT_REDIR=m
- CONFIG_NFT_NAT=m
- CONFIG_NFT_TUNNEL=m
--CONFIG_NFT_OBJREF=m
- CONFIG_NFT_QUEUE=m
- CONFIG_NFT_QUOTA=m
- CONFIG_NFT_REJECT=m
+
+
 -- 
-2.41.0.327.gaa9166bcc0ba
-
+Regards,
+Nishanth Menon
+Key (0xDDB5849D1736249D) / Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
