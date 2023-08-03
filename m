@@ -2,41 +2,42 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E388F76EDCF
-	for <lists+linux-omap@lfdr.de>; Thu,  3 Aug 2023 17:17:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A603B76EE14
+	for <lists+linux-omap@lfdr.de>; Thu,  3 Aug 2023 17:27:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234544AbjHCPRI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 3 Aug 2023 11:17:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47852 "EHLO
+        id S237124AbjHCP1x (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 3 Aug 2023 11:27:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235211AbjHCPRI (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 3 Aug 2023 11:17:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6003CE75;
-        Thu,  3 Aug 2023 08:17:06 -0700 (PDT)
+        with ESMTP id S237126AbjHCP1u (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 3 Aug 2023 11:27:50 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 445A53A85;
+        Thu,  3 Aug 2023 08:27:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E847A61DF3;
-        Thu,  3 Aug 2023 15:17:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A334BC433C8;
-        Thu,  3 Aug 2023 15:17:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CD61561DF8;
+        Thu,  3 Aug 2023 15:27:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41F12C433C9;
+        Thu,  3 Aug 2023 15:27:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691075825;
-        bh=LNlFY8r0rZ0GR1yOKg9X0+pzM4ebRtAw7S93DLMNDwc=;
+        s=k20201202; t=1691076465;
+        bh=HebtrT+FvWTW4Qoj0iQhJkBGJFGGesCcCI9C4O78+z4=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Fd+kbFpuW4Nw3RZmyDiTaptdo5jcre+w5/5LkJpXMrj8+2+9EWTgtsXCVTeesQfBA
-         lbvEaWr4jwNb54qE4I642udRoZf33ic0WxMHqbtENr969acnlOKblUSAIWWbqMKQ5R
-         RQusVCsXUtC5dia1TgEwo9GxFh89HWvDOA79sllcQLWwKBg75iAQlAE2x+72L5cNUc
-         28x+lxRj048TqTtOWvCUIKY/Md57whq1B54XxhQTTa8b4xQKt1uIAh/5Gbz2WfVS1m
-         rzXuL2nWOch03zQejFWi2kdHZkgtXyC2UYPenzsBqr0zo6yINasUyNQx0t3XiO2XmS
-         0eG+tDCpR2uYQ==
-Date:   Thu, 3 Aug 2023 17:16:59 +0200
-From:   Simon Horman <horms@kernel.org>
+        b=lHwXWs3kLCI9fnfkK3skYvdL16N5zzLxymEl2WJN9faARVEwjCMphRqQmNovlCTjP
+         aRoqR8SFLQg05lc4G1+hv3cstBURlzL32mXYRrCSWbFh4TPWYinymAlrTQeNsAykdY
+         fgyLgGQyXa90TLBVfT/QUB31WJcYxZkT7DN3UQQHq61fSzXgkgOiDOZJ30Rm1ra8XG
+         jWNjDiDqMjlRUQ8qDI/h4081wptQIQrLvYcDJfWaH5VqiNrzPFhUtq0cq3UZPRDncT
+         xsoURIoGOABkepVtDRP24Pra5Iy+gEYUXwenAfNRuqqHmNevOkR2zIuLtGucXm7sd6
+         GFUDlzLFsyQnQ==
+Date:   Thu, 3 Aug 2023 16:27:39 +0100
+From:   Conor Dooley <conor@kernel.org>
 To:     MD Danish Anwar <danishanwar@ti.com>
 Cc:     Randy Dunlap <rdunlap@infradead.org>,
         Roger Quadros <rogerq@kernel.org>,
+        Simon Horman <simon.horman@corigine.com>,
         Vignesh Raghavendra <vigneshr@ti.com>,
         Andrew Lunn <andrew@lunn.ch>,
         Richard Cochran <richardcochran@gmail.com>,
@@ -50,16 +51,17 @@ Cc:     Randy Dunlap <rdunlap@infradead.org>,
         linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
         netdev@vger.kernel.org, linux-omap@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 2/4] net: ti: icss-iep: Add IEP driver
-Message-ID: <ZMvE63ooNyoRZK/y@kernel.org>
+Subject: Re: [PATCH 1/4] dt-bindings: net: Add ICSS IEP
+Message-ID: <20230803-guacamole-buddy-d8179f11615e@spud>
 References: <20230803110153.3309577-1-danishanwar@ti.com>
- <20230803110153.3309577-3-danishanwar@ti.com>
+ <20230803110153.3309577-2-danishanwar@ti.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="Szg8jUrBoYIrXJg5"
 Content-Disposition: inline
-In-Reply-To: <20230803110153.3309577-3-danishanwar@ti.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+In-Reply-To: <20230803110153.3309577-2-danishanwar@ti.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -68,32 +70,85 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, Aug 03, 2023 at 04:31:51PM +0530, MD Danish Anwar wrote:
-> From: Roger Quadros <rogerq@ti.com>
-> 
-> Add a driver for Industrial Ethernet Peripheral (IEP) block of PRUSS to
-> support timestamping of ethernet packets and thus support PTP and PPS
-> for PRU ethernet ports.
-> 
-> Signed-off-by: Roger Quadros <rogerq@ti.com>
-> Signed-off-by: Lokesh Vutla <lokeshvutla@ti.com>
-> Signed-off-by: Murali Karicheri <m-karicheri2@ti.com>
-> Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
-> Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
 
-...
+--Szg8jUrBoYIrXJg5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> +static int icss_iep_pps_enable(struct icss_iep *iep, int on)
-> +{
-> +	int ret = 0;
-> +	struct timespec64 ts;
-> +	struct ptp_clock_request rq;
-> +	unsigned long flags;
-> +	u64 ns;
+On Thu, Aug 03, 2023 at 04:31:50PM +0530, MD Danish Anwar wrote:
+> From: Md Danish Anwar <danishanwar@ti.com>
+>=20
+> Add DT binding documentation for ICSS IEP module.
+>=20
+> Signed-off-by: Md Danish Anwar <danishanwar@ti.com>
+> ---
+>  .../devicetree/bindings/net/ti,icss-iep.yaml  | 37 +++++++++++++++++++
+>  1 file changed, 37 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/net/ti,icss-iep.yaml
+>=20
+> diff --git a/Documentation/devicetree/bindings/net/ti,icss-iep.yaml b/Doc=
+umentation/devicetree/bindings/net/ti,icss-iep.yaml
+> new file mode 100644
+> index 000000000000..79cd72b330a6
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/net/ti,icss-iep.yaml
+> @@ -0,0 +1,37 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/net/ti,icss-iep.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Texas Instruments ICSS Industrial Ethernet Peripheral (IEP) module
+> +
+> +maintainers:
+> +  - Md Danish Anwar <danishanwar@ti.com>
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - ti,am654-icss-iep   # for K3 AM65x, J721E and AM64x SoCs
 
-For networking code, please arrange local variables in reverse xmas tree
-order - longest line to shortest.
+No. ti,am654-icss-iep is for am654. You should really have compatibles
+specific to the SoC - is there a reason why this has not been done?
 
-https://github.com/ecree-solarflare/xmastree is your friend here.
 
-...
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  clocks:
+> +    maxItems: 1
+> +    description: phandle to the IEP source clock
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - clocks
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    icssg0_iep0: iep@2e000 {
+> +        compatible =3D "ti,am654-icss-iep";
+> +        reg =3D <0x2e000 0x1000>;
+> +        clocks =3D <&icssg0_iepclk_mux>;
+> +    };
+> --=20
+> 2.34.1
+>=20
+
+--Szg8jUrBoYIrXJg5
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZMvHagAKCRB4tDGHoIJi
+0oA9AQDxymufAtPzH28krZy4nohqru7kyIVsevPrc8ILMh3a3gD+Jg9SDu9c/zGg
+fLRLWoHQPXwuRfHpkz8sKhEz/SClMQ0=
+=AJJT
+-----END PGP SIGNATURE-----
+
+--Szg8jUrBoYIrXJg5--
