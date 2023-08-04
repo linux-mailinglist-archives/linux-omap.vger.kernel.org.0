@@ -2,37 +2,61 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A21B770299
-	for <lists+linux-omap@lfdr.de>; Fri,  4 Aug 2023 16:10:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8BD5770325
+	for <lists+linux-omap@lfdr.de>; Fri,  4 Aug 2023 16:31:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230216AbjHDOKH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 4 Aug 2023 10:10:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42584 "EHLO
+        id S231744AbjHDOba (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 4 Aug 2023 10:31:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230089AbjHDOKG (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 4 Aug 2023 10:10:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69674198C;
-        Fri,  4 Aug 2023 07:10:05 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E6C906203B;
-        Fri,  4 Aug 2023 14:10:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5682C433C8;
-        Fri,  4 Aug 2023 14:10:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691158204;
-        bh=UWitlbycvGbarZEVsXx6MkJ1vRTMyQOcOFtKt+TUFAk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=DtdZzMIvpQdTMIuitLzYZGRQMzQinbKsL3ia9lAXkVYBjGP4QtByWEioWeLQjNDTj
-         gkrKCF1IfzwuCy45JI7eXrI96q2Y5TYwXrVR0DMB/q4nqClark4es3Nmxx0oFCDGjB
-         s5B3MpG6RIVTETqK3lzdNkkrrb9/xOgMiDFdPH6M=
-Date:   Fri, 4 Aug 2023 16:10:01 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Saravana Kannan <saravanak@google.com>,
+        with ESMTP id S231728AbjHDOb2 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 4 Aug 2023 10:31:28 -0400
+Received: from mail-oo1-xc32.google.com (mail-oo1-xc32.google.com [IPv6:2607:f8b0:4864:20::c32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6F7749D4;
+        Fri,  4 Aug 2023 07:31:26 -0700 (PDT)
+Received: by mail-oo1-xc32.google.com with SMTP id 006d021491bc7-56ced49d51aso1464387eaf.1;
+        Fri, 04 Aug 2023 07:31:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1691159486; x=1691764286;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QYpBxe18O9ebx8igO3q7NyRd87YtCT0rdfN3zvPApgI=;
+        b=oijhw6yEfQ/Gr63RM7nAd84ZnPjQT+kXrBumKbnAHcZ4rHRReLEa3+OYzfOI7ES2+E
+         wepTnpwSnOATN4OWihc3m/kXP+2Uaz636mAO83udM/+B1nJXj3FJ+YGGSfdbvmeKvo9k
+         S6JQkEs052p8EV+sJRgCRme6glKP0tiuCJLAYITu7JzxSmRB+i5/+ma1dgrAikK5C3aU
+         l/z0GakzVcs4b3FcdPnxVuQksom/v49f2EaY33QX2Md4YKqZM3GbNHOURg+TcgL0Hjp/
+         6bZyr4f+EHt1CSnLLHPaViy8eMwP8OXjjzfwK5IMH/cwAIc59gzvViZVyiX9XTiKQd/V
+         TdSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691159486; x=1691764286;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QYpBxe18O9ebx8igO3q7NyRd87YtCT0rdfN3zvPApgI=;
+        b=WlwFI0JEVP6gN3pfaIuViKCAaukVDiGClpACGNs8934MYnXSuxrGsQvSit+A/jZOJ5
+         XcIUNXnpHgrZtzrzKjczgz8hjrOZiRAw7i5GB66LSI2F0rcdsnalX5JjEPYssk4snrrA
+         xiVRosjo5cM8CQAeXEuDkOMHUAujNeOqb1hW0xJDBuNdoqqddjMWzMklGJVnquRvOT0r
+         Hml6YEP0jqhFCHj5/6rE++g6jhLM7fAFVAmlIJcAndAFT26DtLepl9tgI9ICDJKR7Bj9
+         f5nutuvuG/ZtUy/f0r9hwLXZRt8sfUjl/g9XMFVbb+VTYAIUHHC6mXroUECdubfJ5iMF
+         uUVA==
+X-Gm-Message-State: AOJu0Ywno39+e3MPWbSD8D8lwjPD/tidRsfN8JCP6MVOvuLNFcHTMJPB
+        M4aXl5tkkutHh10Xyi+M1a+qvu4kj/RRjs07yXc=
+X-Google-Smtp-Source: AGHT+IESHPgcOp8j8ide4iiYmR9cnMaZoujqhuQMLW3XIceF7oxnQJ75jegw8XXhWyQ1VXTyTa35EFzqtZUoEOsBi0I=
+X-Received: by 2002:a4a:ce98:0:b0:56c:d045:2aba with SMTP id
+ f24-20020a4ace98000000b0056cd0452abamr1782436oos.4.1691159485904; Fri, 04 Aug
+ 2023 07:31:25 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230628153211.52988-1-andriy.shevchenko@linux.intel.com>
+ <20230628153211.52988-3-andriy.shevchenko@linux.intel.com> <2023080456-ride-unrobed-b738@gregkh>
+In-Reply-To: <2023080456-ride-unrobed-b738@gregkh>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Fri, 4 Aug 2023 17:30:49 +0300
+Message-ID: <CAHp75Vcb-uTh0r4YKACAcBwePHjs8Rn0R44NN+oyz11tbCG0Sw@mail.gmail.com>
+Subject: Re: [PATCH v1 2/4] driver core: Replace kstrdup() + strreplace() with kstrdup_and_replace()
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Saravana Kannan <saravanak@google.com>,
         Stephen Boyd <sboyd@kernel.org>,
         Dario Binacchi <dario.binacchi@amarulasolutions.com>,
         Tony Lindgren <tony@atomide.com>, linux-kernel@vger.kernel.org,
@@ -46,67 +70,35 @@ Cc:     Saravana Kannan <saravanak@google.com>,
         Jonathan Hunter <jonathanh@nvidia.com>,
         Tero Kristo <kristo@kernel.org>,
         Andy Shevchenko <andy@kernel.org>
-Subject: Re: [PATCH v1 2/4] driver core: Replace kstrdup() + strreplace()
- with kstrdup_and_replace()
-Message-ID: <2023080456-ride-unrobed-b738@gregkh>
-References: <20230628153211.52988-1-andriy.shevchenko@linux.intel.com>
- <20230628153211.52988-3-andriy.shevchenko@linux.intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230628153211.52988-3-andriy.shevchenko@linux.intel.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Jun 28, 2023 at 06:32:09PM +0300, Andy Shevchenko wrote:
-> Replace open coded functionalify of kstrdup_and_replace() with a call.
-> 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
->  drivers/base/core.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/base/core.c b/drivers/base/core.c
-> index 3dff5037943e..af0ee691520a 100644
-> --- a/drivers/base/core.c
-> +++ b/drivers/base/core.c
-> @@ -17,7 +17,6 @@
->  #include <linux/kstrtox.h>
->  #include <linux/module.h>
->  #include <linux/slab.h>
-> -#include <linux/string.h>
->  #include <linux/kdev_t.h>
->  #include <linux/notifier.h>
->  #include <linux/of.h>
-> @@ -28,6 +27,7 @@
->  #include <linux/netdevice.h>
->  #include <linux/sched/signal.h>
->  #include <linux/sched/mm.h>
-> +#include <linux/string_helpers.h>
->  #include <linux/swiotlb.h>
->  #include <linux/sysfs.h>
->  #include <linux/dma-map-ops.h> /* for dma_default_coherent */
-> @@ -3910,10 +3910,9 @@ const char *device_get_devnode(const struct device *dev,
->  		return dev_name(dev);
->  
->  	/* replace '!' in the name with '/' */
-> -	s = kstrdup(dev_name(dev), GFP_KERNEL);
-> +	s = kstrdup_and_replace(dev_name(dev), '!', '/', GFP_KERNEL);
->  	if (!s)
->  		return NULL;
-> -	strreplace(s, '!', '/');
->  	return *tmp = s;
->  }
->  
-> -- 
-> 2.40.0.1.gaa8946217a0b
-> 
+On Fri, Aug 4, 2023 at 5:10=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Wed, Jun 28, 2023 at 06:32:09PM +0300, Andy Shevchenko wrote:
+> > Replace open coded functionalify of kstrdup_and_replace() with a call.
 
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Oh, here is a typo.
+
+...
+
+> Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+Thank you, Greg!
+
+Stephen, can you take the series now (okay, I think I need to send a
+new version with all tags and typos fixed)?
+
+--=20
+With Best Regards,
+Andy Shevchenko
