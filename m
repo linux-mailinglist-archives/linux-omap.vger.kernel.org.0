@@ -2,239 +2,132 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2788376FB6E
-	for <lists+linux-omap@lfdr.de>; Fri,  4 Aug 2023 09:53:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E8D376FCFA
+	for <lists+linux-omap@lfdr.de>; Fri,  4 Aug 2023 11:14:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232525AbjHDHxU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 4 Aug 2023 03:53:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43784 "EHLO
+        id S230257AbjHDJOo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 4 Aug 2023 05:14:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59332 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230286AbjHDHxU (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 4 Aug 2023 03:53:20 -0400
-Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EDEC12B;
-        Fri,  4 Aug 2023 00:53:17 -0700 (PDT)
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 3747r1lR025083;
-        Fri, 4 Aug 2023 02:53:01 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1691135581;
-        bh=g8uzit682Uc1QI+ZIByUJ9wM9C2KZ2Ov7ypqL7jWhDo=;
-        h=Date:Subject:To:CC:References:From:In-Reply-To;
-        b=lu0gcYjtGILKpXqOOX9XQxvpsDZHSPNix+iZg4DfyGha8TASx6XG4hJoS3G56Cp1y
-         AqWXkxlmeloup8mYyNO9CWl3phAi90tz8xcJLEQMI/WeydCPcf/lbq0IN7KRJobQ7n
-         Dq5lbA39IaRdtbMI5V9p3bFB6bPZ6vcD8ekSK6ck=
-Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 3747r1e7008634
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 4 Aug 2023 02:53:01 -0500
-Received: from DFLE105.ent.ti.com (10.64.6.26) by DFLE113.ent.ti.com
- (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 4
- Aug 2023 02:53:01 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE105.ent.ti.com
- (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Fri, 4 Aug 2023 02:53:01 -0500
-Received: from [10.249.129.145] (ileaxei01-snat2.itg.ti.com [10.180.69.6])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 3747qvLm054544;
-        Fri, 4 Aug 2023 02:52:58 -0500
-Message-ID: <c95cd3e2-8cc0-cc65-9d62-2edb23adc292@ti.com>
-Date:   Fri, 4 Aug 2023 13:22:56 +0530
+        with ESMTP id S229513AbjHDJOQ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 4 Aug 2023 05:14:16 -0400
+Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91C224C04
+        for <linux-omap@vger.kernel.org>; Fri,  4 Aug 2023 02:11:46 -0700 (PDT)
+Received: by mail-lf1-x131.google.com with SMTP id 2adb3069b0e04-4fe3b86cec1so3141764e87.2
+        for <linux-omap@vger.kernel.org>; Fri, 04 Aug 2023 02:11:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1691140305; x=1691745105;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ow13SfisQOUHbzNkWlMHIU18WsxR8eceIlVT+VrxD7s=;
+        b=L3hjMkUuUtVV6dQjcuo7CEn+FI9JlxKPAjME2IFasWP1Rm1nQcoAJYq3ESqwutaBa4
+         AOsHa2CyfuzhPnjzFl1c74Gi2cW798SBxiOyJWixy8H1MAVWKYGuCdd+1Xky0iJNCw+J
+         5IN0dgEmGitguOWneEmm2x9FVV6O2HXnZ8ezKhjJyMrdkNNFMiiZDxk6uWG7iBIMrk/C
+         lLzxt2H2zSp3E3GV9ieTuf994x8DbIPw4IwL3WGd4JLTp8wcE8hryrZLR7JEs4wFr35r
+         SJ5B0w9irF++fr7fXp7lRR6WILAd7McOd6M72oF3FKFsGQHg5q/yXqXAKcQ70GDzKD7y
+         y0NQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691140305; x=1691745105;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ow13SfisQOUHbzNkWlMHIU18WsxR8eceIlVT+VrxD7s=;
+        b=OcgUAyDB3vnBEiqgHBuHN4+MR1n/ZaiGC41K3qzmAFx8pETOMdeZowJ6G+hSIAhsOT
+         OaQQukjoE4UGT6DP+QrM1ip07YkvjuFcv33vgu9GDgsLcDt3fuQaUkRTHuGDS+Ud/gtZ
+         i7PercJua2TW1Z9qDEVFnA08fMz4nePy4qDCvvTBhsPw+YOupBaSAwKOaWgnvpQc42BH
+         BMnqlzyFI9V58rtldMWqUooLtOrHugxGcfSYrHuFL+xGuu+LjCWTP6bMbdjlreqJjd8f
+         sdb6nKT0qeJNsakKXEbzGfg8eWpv/K6bi1v/wDBUVIy4CZ1OL2bQ0x0lFxskYbX5jTxw
+         PDQA==
+X-Gm-Message-State: AOJu0Yw/+DQl1A6n/2QGx5A/CSnODCgeLUYlknngTGnbYFhv6+3T0pvq
+        GDNK4PwvUfbp0kHd4KFOgHjYVw==
+X-Google-Smtp-Source: AGHT+IGsziEtS4tLm1obcD3rJck3ew85jir+T5w67DgtMEYauRmwcDNsV8ch/pJ5W+6E7zPK+FBhcA==
+X-Received: by 2002:a05:6512:3685:b0:4fe:5860:7abe with SMTP id d5-20020a056512368500b004fe58607abemr751274lfs.7.1691140304724;
+        Fri, 04 Aug 2023 02:11:44 -0700 (PDT)
+Received: from [192.168.1.101] (abyk53.neoplus.adsl.tpnet.pl. [83.9.30.53])
+        by smtp.gmail.com with ESMTPSA id u21-20020ac25195000000b004fde41a2059sm294574lfi.305.2023.08.04.02.11.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 04 Aug 2023 02:11:44 -0700 (PDT)
+Message-ID: <5ade5d29-5d9d-0d68-c3d8-de61ca90bb81@linaro.org>
+Date:   Fri, 4 Aug 2023 11:11:42 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [EXTERNAL] Re: [PATCH] PCI: cadence: Set the AFS bit in Device
- Capabilities 2 Register
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] arm64: defconfig: Enable PRUSS as module
 Content-Language: en-US
-To:     Bjorn Helgaas <helgaas@kernel.org>
-CC:     Vignesh Raghavendra <vigneshr@ti.com>,
-        Tom Joseph <tjoseph@cadence.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Krzysztof Wilczy_ski <kw@linux.com>,
-        Rob Herring <robh@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        <linux-omap@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, Achal Verma <a-verma1@ti.com>
-References: <20230802161953.GA60043@bhelgaas>
-From:   "Verma, Achal" <a-verma1@ti.com>
-In-Reply-To: <20230802161953.GA60043@bhelgaas>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+To:     MD Danish Anwar <danishanwar@ti.com>, Peng Fan <peng.fan@nxp.com>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
+        =?UTF-8?B?TsOtY29sYXMgRi4gUi4gQS4gUHJhZG8=?= 
+        <nfraprado@collabora.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Bjorn Andersson <quic_bjorande@quicinc.com>,
+        Will Deacon <will@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>, srk@ti.com,
+        nm@ti.com, vigneshr@ti.com
+Cc:     linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-omap@vger.kernel.org
+References: <20230804061811.3999129-1-danishanwar@ti.com>
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
+ 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
+ izWDgYvmBE8=
+In-Reply-To: <20230804061811.3999129-1-danishanwar@ti.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-
-
-On 8/2/2023 9:49 PM, Bjorn Helgaas wrote:
-> In subject, "Advertise ARI Forwarding Supported".
-Ok
+On 4.08.2023 08:18, MD Danish Anwar wrote:
+> Enables PRUSS as kernel module for TI SoCs.
 > 
-> It's not obvious that "AFS" refers to ARI Forwarding Supported, and
-> the bit name is enough; we don't need to know that it's in Dev Cap 2.
-> "Advertise" shows that we're just *advertising* the functionality, not
-> *enabling* it.
-> 
-> On Wed, Aug 02, 2023 at 04:00:59PM +0530, Achal Verma wrote:
->> J7 PCIe Root Complex has ARI Forwarding Support, means supporting
->> forwarding of TLPs addressed to functions with function number greater than
->> 7 but some PCIe instances on J7 have this bit cleared which results in
->> failure of forwarding of TLPs destined for function number > 7.
->> Setting the AFS bit in Device Capabilities 2 Register explicitly, resolves
->> the issue and leads to successful access to function number > 7.
-> 
-> s/AFS/ARI Forwarding Supported/
-> 
->> Some observations:
->> 1. J7200-EVB has single PCIe instance(PCIe1) for which ARIFwd bit is not
->>     set. Enumeration gracefully fails for funciton number greater than 7 but
->>     later read/write access to these funcitons results in a crash.
-> 
-> By "ARIFwd bit" here, I assume you mean PCI_EXP_DEVCAP2_ARI in the Root
-> Port?  Maybe you can use the #define to make this more greppable.
-> 
-will replace with PCI_EXP_DEVCAP2_ARI
-> s/funciton/function/ (twice)
-> 
-> If we don't enumerate function numbers greater than 7, we shouldn't
-> have pci_dev structs for them, so why are there later read/write
-> config accesses to them?
-> 
-> If the Root Port doesn't advertise ARI Forwarding Supported,
-> bridge->ari_enabled will not be set, and we shouldn't even try to
-> enumerate functions greater than 7.  So it's not that enumeration
-> *fails*; it just doesn't happen at all.
-> 
->> 2. On J721E-EVB, PCIe1 instance has ARIFwd bit set while it is cleared for
->>     PCIe0 instance. This issue combined with errata i2086
->>     (Unsupported Request (UR) Response Results in External Abort) results in
->>     SERROR while scanning multi-function endpoint device.
-> 
-> Is the SERROR when scanning under PCIe0 or under PCIe1?
-> 
-> I'm not clear on what's happening here:
-> 
->    1) Root Port advertises PCI_EXP_DEVCAP2_ARI, we set
->       bridge->ari_enabled and scan functions > 7, we do a config read
->       to function 8, get a UR response (as expected during enumeration)
->       and that results in SERROR?
-> 
->    2) Root Port *doesn't* advertise PCI_EXP_DEVCAP2_ARI, we don't set
->       bridge->ari_enabled, so we don't try config read to function 8,
->       and something blows up later?
-> 
->    3) Something else?
-> 
-Hello Bjorn,
+> Reviewed-by: Christian Gmeiner <christian.gmeiner@gmail.com>
+> Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
+> ---
+As an outsider, I have no idea what this does, and the Kconfig help
+message doesn't say much more either.
 
-There are multiple issues which are leading to different behavior on 
-different platforms.
+Could you please add a short summary about what sort of hardware
+is driven by this driver?
 
-1. PCI_EXP_DEVCAP2_ARI is not set.
-
-Consider scenario:
-J7200 (RC) --- J721E (EP with 1 PF and 4 VFs)
-
-PF enumerates successfully on J7200 but bringing up 4 associated VFs 
-(echo 4 > /sys/bus/pci/devices/<device>/sriov_numvfs) doesn't workout. 
-First VF gets devfn = 6 and then +1 for next one on wards. 6 and 7 are 
-setup fine but 8 and 9 fails and UR is received while accessing them. 
-Accessing VFs > 7 doesn't go through the ARI support check and directly 
-calls pci_setup_device(). So, since PCI_EXP_DEVCAP2_ARI is not set, 
-unable to access VFs > 7.
-
-do_serror+0x34/0x88
-el1_error+0x8c/0x10c
-pci_generic_config_read+0x90/0xd0
-cdns_ti_pcie_config_read+0x14/0x28
-pci_bus_read_config_word+0x78/0xd0
-__pci_bus_find_cap_start+0x2c/0x78
-pci_find_capability+0x38/0x90
-set_pcie_port_type+0x2c/0x150
-pci_setup_device+0x90/0x728
-pci_iov_add_virtfn+0xe4/0x2e0
-sriov_enable+0x1f0/0x440
-pci_sriov_configure_simple+0x34/0x80
-sriov_numvfs_store+0xa4/0x190
-
-
-Same issue happens when J7200 RC is replaced by J721E PCIe0 in above 
-setup but because of errata i2086 in this case, UR response results in 
-SERROR too.
-
-2. PCI_ARI_CAP_NFN field in PCI_ARI_CAP for last function is not set to 
-0 which marks current function as last but instead set to current_fn+1, 
-which leads to reading of vendor ID for current_fn+1 which doesn't 
-exists, giving UR response.
-
-Consider scenario:
-J721E(PCIe1 as RC) ----- J721E (EP with 1PF)
-PCIe1 has PCI_EXP_DEVCAP2_ARI set , so it reads the PCI_ARI_CAP_NFN 
-field of EP to get the next function number, now since at last function 
-(PF=0) PCI_ARI_CAP_NFN field is set to 1 and not to 0, RC tries to 
-access devfn=1 , which results in UR along with SERROR because of errata 
-i2086.
-For this I had pushed the workaround
-https://lore.kernel.org/all/20230316065455.191785-1-a-verma1@ti.com/
-
-do_serror+0x34/0x88
-el1_error+0x8c/0x10c
-pci_generic_config_read+0x38/0xd0
-cdns_ti_pcie_config_read+0x14/0x28
-pci_bus_read_config_dword+0x7c/0xd0
-pci_bus_generic_read_dev_vendor_id+0x30/0x1a8
-pci_bus_read_dev_vendor_id+0x48/0x68
-pci_scan_single_device+0x74/0xf0
-pci_scan_slot+0x70/0x118
-pci_scan_child_bus_extend+0x50/0x290
-pci_scan_bridge_extend+0x294/0x578
-pci_scan_child_bus_extend+0x1dc/0x290
-pci_scan_root_bus_bridge+0x60/0xd0
-pci_host_probe+0x14/0xc0
-cdns_pcie_host_setup+0x52c/0x8e0
-j721e_pcie_probe+0x48c/0x818
-platform_drv_probe+0x50/0xa0
-
-
->> @@ -507,6 +507,7 @@ int cdns_pcie_host_setup(struct cdns_pcie_rc *rc)
->>   	struct cdns_pcie *pcie;
->>   	struct resource *res;
->>   	int ret;
->> +	u32 pcie_cap2;
->>   
->>   	bridge = pci_host_bridge_from_priv(rc);
->>   	if (!bridge)
->> @@ -536,6 +537,12 @@ int cdns_pcie_host_setup(struct cdns_pcie_rc *rc)
->>   	if (rc->quirk_detect_quiet_flag)
->>   		cdns_pcie_detect_quiet_min_delay_set(&rc->pcie);
->>   
->> +	if (rc->set_afs_bit) {
->> +		pcie_cap2 = cdns_pcie_rp_readl(pcie, CDNS_PCIE_RP_CAP_OFFSET + PCI_EXP_DEVCAP2);
->> +		pcie_cap2 |= PCI_EXP_DEVCAP2_ARI;
->> +		cdns_pcie_rp_writel(pcie, CDNS_PCIE_RP_CAP_OFFSET + PCI_EXP_DEVCAP2, pcie_cap2);
->> +	}
-> 
-> This seems like a j721e defect; why does the workaround need to be in
-> the generic cadence code?
-
-This register setting has to go between 
-devm_platform_ioremap_resource_byname(pdev, "reg") and 
-cdns_pcie_start_link() which is in pcie-cadence-host.c
-
-And this will be done only if private data field set_afs_bit is true, 
-other quirks are also done in similar way.
-
-Regards,
-Achal Verma
-
-> 
-> Bjorn
+Konrad
