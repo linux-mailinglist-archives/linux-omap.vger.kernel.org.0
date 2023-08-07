@@ -2,66 +2,100 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F118771C28
-	for <lists+linux-omap@lfdr.de>; Mon,  7 Aug 2023 10:20:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01F80771F0B
+	for <lists+linux-omap@lfdr.de>; Mon,  7 Aug 2023 13:00:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230394AbjHGIUH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 7 Aug 2023 04:20:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54408 "EHLO
+        id S231139AbjHGLAE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 7 Aug 2023 07:00:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39424 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229487AbjHGIUG (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 7 Aug 2023 04:20:06 -0400
-X-Greylist: delayed 589 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 07 Aug 2023 01:20:04 PDT
-Received: from mail.wownow24.com (mail.wownow24.com [94.177.230.243])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFDE910EF
-        for <linux-omap@vger.kernel.org>; Mon,  7 Aug 2023 01:20:04 -0700 (PDT)
-Received: by mail.wownow24.com (Postfix, from userid 1001)
-        id 08AAC83080; Mon,  7 Aug 2023 09:10:48 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wownow24.com; s=mail;
-        t=1691395849; bh=x9T7/X5dPfTlbNyLzlCZN4jD7cG5+UEf0V0g2YAP0IM=;
-        h=Date:From:To:Subject:From;
-        b=GUwnz6gd2k2JeNhkv/2VxVECJrMsfDIxljUiJDnKpbxh3TvZATLoImUcU9wkSQyQa
-         JGOyTjg4nHJDY3yXHqlfJcPvutEKqXF6+ialCh83wlV4KaxdHAcsfx2IVJK8e/ZXDn
-         oDrozerv2hMgdxt3xAsR8cr2KeYIPJJpREfZSQUHf5kk+Cnbj1codJo1SrZl3mrgMm
-         wEZQpp1EKP0GbozyHBUsN18J8TKE4r+83W+WM32/sLm/Plw7yLADSoTbIpigLM8sL1
-         8cEXmvmhHXSFDoG0fCBzTHEdiRmNo3PJCBT9AkyoHUE+u44RlFVrBuuMkMcgJ2oRmh
-         Z3XVFkLq6sh3g==
-Received: by mail.wownow24.com for <linux-omap@vger.kernel.org>; Mon,  7 Aug 2023 08:10:45 GMT
-Message-ID: <20230807074500-0.1.56.emha.0.aqe3540wjo@wownow24.com>
-Date:   Mon,  7 Aug 2023 08:10:45 GMT
-From:   "Kurt Birky" <kurt.birky@wownow24.com>
-To:     <linux-omap@vger.kernel.org>
-Subject: Free 60-Day Trial: Enhance Your Production Processes
-X-Mailer: mail.wownow24.com
+        with ESMTP id S229870AbjHGLAD (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 7 Aug 2023 07:00:03 -0400
+Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C9B010FA;
+        Mon,  7 Aug 2023 04:00:02 -0700 (PDT)
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 377AxPwc125087;
+        Mon, 7 Aug 2023 05:59:26 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1691405966;
+        bh=zIb5NWlNzuRthnlBwvxMOdCwjv4fHZQSeTCCDRgx7uM=;
+        h=From:To:CC:Subject:Date;
+        b=s8MBzh2rSA9dpxeAtRKktVKLO49bCFZ1tSqvtdG+1Ih2PnFi+Q0RfgbUklRg6Yrt3
+         SKEYwgfAgvM1luMEtLH0B8uYA2nR9hLA0vJAOrPKG58Eow3cqyPgRjwdISltZAzX1Y
+         VrNb7tBFj+kaZWCmcUZC1zC2O6gKQqdnXwzS/hA4=
+Received: from DLEE114.ent.ti.com (dlee114.ent.ti.com [157.170.170.25])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 377AxPIl083418
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 7 Aug 2023 05:59:25 -0500
+Received: from DLEE110.ent.ti.com (157.170.170.21) by DLEE114.ent.ti.com
+ (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 7
+ Aug 2023 05:59:25 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE110.ent.ti.com
+ (157.170.170.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Mon, 7 Aug 2023 05:59:25 -0500
+Received: from fllv0122.itg.ti.com (fllv0122.itg.ti.com [10.247.120.72])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 377AxPJf069815;
+        Mon, 7 Aug 2023 05:59:25 -0500
+Received: from localhost (uda0501179.dhcp.ti.com [172.24.227.217])
+        by fllv0122.itg.ti.com (8.14.7/8.14.7) with ESMTP id 377AxOVj028026;
+        Mon, 7 Aug 2023 05:59:25 -0500
+From:   MD Danish Anwar <danishanwar@ti.com>
+To:     <nm@ti.com>, <vigneshr@ti.com>
+CC:     Peng Fan <peng.fan@nxp.com>,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+        =?UTF-8?q?N=C3=ADcolas=20F=2E=20R=2E=20A=2E=20Prado?= 
+        <nfraprado@collabora.com>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Bjorn Andersson <quic_bjorande@quicinc.com>,
+        Will Deacon <will@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>, <srk@ti.com>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-omap@vger.kernel.org>
+Subject: [PATCH v3] arm64: defconfig: Enable PRUSS as module
+Date:   Mon, 7 Aug 2023 16:29:19 +0530
+Message-ID: <20230807105919.2611138-1-danishanwar@ti.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=0.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi!
+Enables PRUSS as kernel module for TI SoCs.
 
-We have created a tool for automatic data collection from production stat=
-ions that can improve your work and increase the efficiency of processes.
+Reviewed-by: Christian Gmeiner <christian.gmeiner@gmail.com>
+Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
+---
+ arch/arm64/configs/defconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-Quick to install and easy to use, the solution will provide you with valu=
-able data on performance indicators for the entire factory and individual=
- machines. The tool clearly indicates when the machine/line slows down, w=
-hat downtimes it has, and so you know when to react.
+diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
+index bf13d5c46578..0aecdf43a5d1 100644
+--- a/arch/arm64/configs/defconfig
++++ b/arch/arm64/configs/defconfig
+@@ -1339,6 +1339,7 @@ CONFIG_ARCH_TEGRA_186_SOC=y
+ CONFIG_ARCH_TEGRA_194_SOC=y
+ CONFIG_ARCH_TEGRA_234_SOC=y
+ CONFIG_TI_SCI_PM_DOMAINS=y
++CONFIG_TI_PRUSS=m
+ CONFIG_ARM_IMX_BUS_DEVFREQ=y
+ CONFIG_ARM_IMX8M_DDRC_DEVFREQ=m
+ CONFIG_ARM_MEDIATEK_CCI_DEVFREQ=m
+-- 
+2.34.1
 
-You receive valuable knowledge about the production status and the reason=
-s for possible delays. Thanks to the ability to react immediately to emer=
-ging problems and symptoms, you increase your work efficiency by several =
-dozen percent.
-
-Do you want to test such a solution for free in your company?
-
-
-Best regards
-Kurt Birky
