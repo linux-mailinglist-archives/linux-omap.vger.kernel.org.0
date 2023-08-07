@@ -2,162 +2,158 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 332CB771406
-	for <lists+linux-omap@lfdr.de>; Sun,  6 Aug 2023 10:51:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C65177190C
+	for <lists+linux-omap@lfdr.de>; Mon,  7 Aug 2023 06:39:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229983AbjHFIvO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 6 Aug 2023 04:51:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57804 "EHLO
+        id S229918AbjHGEjd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 7 Aug 2023 00:39:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229932AbjHFIvM (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 6 Aug 2023 04:51:12 -0400
-Received: from JPN01-OS0-obe.outbound.protection.outlook.com (mail-os0jpn01olkn2105.outbound.protection.outlook.com [40.92.98.105])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A20A419AB;
-        Sun,  6 Aug 2023 01:51:11 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=L70oV5c2C72gsALVeqCIXgCTSPkq76R+EIeo9X49vuuoKxLmErVmXBOUCAtiZmYH4iE06tc2VxF87yRMEI1INw3J0Z/Y/lM4KWVAwQAllyGFOkfiwpBv8x5rFmZJmz6zpIY6TTHJcVZ+8pwbyelCHBUlRxWmvJF0OuCpkinJ6cPDe1Kqf1s6cUzj9wOqewroZD8RbmYUuMmQIZz8RFAWScl+L65JUr9AjXkHYbCy7tkwKFAP9d3ow4qFsTLxssVfNbQmKgLiok8NL8Oar5kCs3pqsu60EPGpfwi9zicpchRORscxpo3okxcrFXq87wygCxZxo0sqMbllSstSHSVg7w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2Khh81vYBKAaFr7jdyAXoN0n0+VShZktqdwggVFOv0Q=;
- b=O2GUDX7eGYxzm/DwYvcs6cAoI1RFIQ/0iJFbEOWnd6QKIhu3TH5tK0iPde1GOxBsqPomRA3seMv17iU1g5QY8HcSzj/4i5rIJCODtnnX5NEGxJx4TR7feKmiTeUUxjwDuS57Dqrv9UzH5krwFqXuYrCFCb/oIgW9oVH2jOVslGqRh+8gM4oDeOlAb3MxB1XGUA/DflaSVPdI88mDbXh8wIOwX8TOWIMXdqfoVZ9/sO+fApaMC+3lt/D6Ubd4a493BOT6X8MdOAqjZBstCtRynJ9BaqRUJ4pDXbtWQN7XcjlH/imVuDmVVVLvSHWGsndQtN5pJl2uCSAkInxS7kBFlA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2Khh81vYBKAaFr7jdyAXoN0n0+VShZktqdwggVFOv0Q=;
- b=ZkbKG4c215fNU+BVr5WdVNuy+rxcppMXNXyl8CSWps3nMc9m9C5urD50y8tF7LBXxiVwnzWGs0nqSAkR+dp9q974sblM7TJsykaXsMtuG/anGi+J9p00UTeGGhKgdBJj9LWQaAWMnj0HBHOXf1BFM84LEFrnSHfjETEEDSKBtPVABQeHbkWbEIV0SXeJLFJ8C1jjT24oGP7MERTEy4sRlYYnOYmYM4FECmpZjKNMSkIf3bLi3lBvbzJiAOgwPxcPP/a+TFDNX0eyJb1OPJJVU/cpHwb63zunLrzuF1pGisdibC3m6G/7NRdJ72MSL4yQ2AjVgbQIgaP8GqI05Gba8w==
-Received: from TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:23e::10)
- by OS3P286MB2744.JPNP286.PROD.OUTLOOK.COM (2603:1096:604:1f2::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6652.25; Sun, 6 Aug
- 2023 08:51:07 +0000
-Received: from TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM
- ([fe80::e67d:f61a:b248:f597]) by TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM
- ([fe80::e67d:f61a:b248:f597%3]) with mapi id 15.20.6652.025; Sun, 6 Aug 2023
- 08:51:07 +0000
-From:   Shengyu Qu <wiagn233@outlook.com>
-To:     bcousson@baylibre.com, tony@atomide.com, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Shengyu Qu <wiagn233@outlook.com>,
-        Robert Nelson <robertcnelson@gmail.com>
-Subject: [PATCH v2 2/2] ARM: dts: am335x-bone-common: Add GPIO PHY reset on revision C3 board
-Date:   Sun,  6 Aug 2023 16:50:44 +0800
-Message-ID: <TY3P286MB26113797A3B2EC7E0348BBB2980FA@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230806085044.1917-1-wiagn233@outlook.com>
-References: <20230806085044.1917-1-wiagn233@outlook.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-TMN:  [VtcDqVYiCXUdq5keDeYzGRdxgwbdzdYv]
-X-ClientProxiedBy: TY2PR06CA0024.apcprd06.prod.outlook.com
- (2603:1096:404:42::36) To TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:23e::10)
-X-Microsoft-Original-Message-ID: <20230806085044.1917-3-wiagn233@outlook.com>
+        with ESMTP id S229513AbjHGEjc (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 7 Aug 2023 00:39:32 -0400
+Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D51B10F6;
+        Sun,  6 Aug 2023 21:39:30 -0700 (PDT)
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 3774d59W095336;
+        Sun, 6 Aug 2023 23:39:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1691383145;
+        bh=APCpSccY3IAvSeWWn8YjMyI7Inx0AhMlTsgMSw5GeC8=;
+        h=Date:Subject:To:CC:References:From:In-Reply-To;
+        b=F5ukYQvc7oof3VcOmi5WyZkf2tFmsZPpws5cgIUcOB7oEoP9Yssgo8sjFKcQF8P9Q
+         Rg45D3LpunD2S5YWcXZ27MsVaDpxy9slVao5AUbt8AOYa0/DvjFvrm9eP/oESCHvSI
+         /lw3N7UU4krz2MiGRvxjpH4gkP6XTYd6pMOYCTJ4=
+Received: from DLEE105.ent.ti.com (dlee105.ent.ti.com [157.170.170.35])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 3774d5LA106623
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Sun, 6 Aug 2023 23:39:05 -0500
+Received: from DLEE109.ent.ti.com (157.170.170.41) by DLEE105.ent.ti.com
+ (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Sun, 6
+ Aug 2023 23:39:04 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE109.ent.ti.com
+ (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Sun, 6 Aug 2023 23:39:04 -0500
+Received: from [172.24.227.217] (ileaxei01-snat.itg.ti.com [10.180.69.5])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 3774cw28066389;
+        Sun, 6 Aug 2023 23:38:58 -0500
+Message-ID: <296d8c57-67aa-cb0a-8bab-538c52fb41e4@ti.com>
+Date:   Mon, 7 Aug 2023 10:08:57 +0530
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TY3P286MB2611:EE_|OS3P286MB2744:EE_
-X-MS-Office365-Filtering-Correlation-Id: bd9b87c8-e33d-4ef6-6e19-08db965a45fe
-X-MS-Exchange-SLBlob-MailProps: cn60g5V53KP4aUvNHKWy0hRLxv0NStfyR6wGQg6pdK9lxGBOmfRxubC2bJSr+c/nLqtgVHsGfAH8D3tOjkZlDOtyCQAKmgU+bq9mN+RPeU7mcotpHd10auiTDd3Hr3yTL3maBcj07lZONVvLnKUFSs7Bj+znE5i0i9KPiTZaUXWlHosN5nDWRdZ/d4pjj1i+iILoKabsZPD7ObzTVaw9Ligryx9q60bXOEuNhJvRC5VrMNre1YwXIBoIXNPlSLIvWPz5YYKaBpjWzQFUQ6Xlwxz4GmDPkKBccKPgZApzIbS34l5G6PWK07FGmTtFOdTl0eDvK1lEkcqk8/05gQaTS2Xd+BR4VAHsb4VrfP86tzDTGUhwpTJUqOKnPEFGRD7tWOE48VKIHzc+QIHFj/1rQAXg8Ji7V+PKMFRErj4rAF3gBgQIvmviV/q2AE9zLVWzvK80KYzlNEplkleNgh4Ig6Y/4r9HzV3IluSwY6aSGWnIkAavVHS0tZlNisBpxnwr9rj83YtrfDfUqy7mPmZ00tyTzLjHOqblVuauhvAyzh2ARnEGlOhwLz3mSL0uxqLkogJfzE22y+9njuuoYWEWOYphRNIIrJaOROPZnskJme3T+39kh309merTKwVwkb8rWsGSkDNiNPQkpKTVLdy9DaufhUwn59KhoRV5cvf27GDG9hSg3Lj3k5UuFnwwtQLxMNUccMQhWBwM8iuA7MHVlVMP2N5XJmHcD3XzMfiSDo7xNHGRx77FddfThIhv71clrNxRPNZCrduTpi9SNr15iegjhFStpGEN7p3cqheX5doS/qY5/cTjDSUFZZyKy1Wu5/gnBprrF6hUYLa5RGrrDh43kt5KrHMhfgmM2P48nqKuXTFDlDwJug==
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: gZniCwfN5Y6wv9YynI6MlVO3eZAOlMkto3LJMEZuS51V0qBGMNATpL3Pw4bTpeIQ0ikz45zCHc3NrjNf665dot/zwnVeAzArmeu51VyzGbW2NJDl1iv0RMFKvnebNGpHOSTvPSYCR0ffNbmDOctmcZNp/EHePtcYE5vIREa2GxQOYMir4G7poxLbjdJi6RzPgter2rU0poBFnvvulC5LFXtB2Zc4C5gcZD7s7G3DiHkzNfvT/C1Ne5xUsX2uoNcT8wsFHvPH3fBPadvrLU9fMcz7iXlejRASjHycAvVYL0FkSUX6Hz7N5/HCAPYq+tcU7bvYdCgsO3HFgqIkJiUNmGCyXAiG+zk2jFwdsaj01j62ye2E8X2pnykz4eD1TfgY+9JpnDTT5atTRLBrNTcOhr6sgx2HE/5n0ZseWz9Eaj5mR/Z1u1UiqfsPoxY8l4/Kq5olMqBSZfAjBTDReNBUMLcq/AXXwL+fFkH21FNQjmMaYVKLlZ3dpZm7Fv24BLm48FvtYUjJFfZ9neFr5HLfvQUsU655CG6warnVrBF83fmpbBSPs8NSWnbOgPKPYzCq5MaB+sz9T625twUPB46R3nZt2QuW4Ng1xewq4uRap+wtdw78V7u9TRqwMyjUC6h6
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?fkww3DAIYD/vx8F2DFSRejEzeNaPjTI3UdQzuwzHGVhWFwquRNP9hTJ3Zlzf?=
- =?us-ascii?Q?ToAZ5SP1x8dhD29bxpF+ESzwe5b25iRzbvSgOawbP84/ZuvFUtyIhEW72YCt?=
- =?us-ascii?Q?nU5YlzefM+qnm1PFmrD8U2j00uYzfpRgD+SuZXtHKk9+quRP/PyVrTF4m4lR?=
- =?us-ascii?Q?RDGLrtaAmg0SmZGiDVI0EbQjZVTi8SWswrioyl+UVOcBwRM07sAaEvfNagO2?=
- =?us-ascii?Q?M1o1U5XPh3ebdDvugWEN/Nq3HRAWnQgM02nyc55tEyxS0EhY6Il2tCCResFb?=
- =?us-ascii?Q?dpBKGVI1Ksii4i56LFvyAC6LZGl0odILP0ZLQsmZJyaLV9XQzLbVFfO1a7il?=
- =?us-ascii?Q?6pcqBt0iYnNICGBw7H01MkUh/1hkzOiTV/e4SNbIOclyuq/caHTWkuPVEsZZ?=
- =?us-ascii?Q?TMdz0TsKsLtcQUcPto/eLyfirhezQ6MVJA3sAJwjE6sf8FGdBQlulwG/hjQy?=
- =?us-ascii?Q?pjiLM4afwk0S6riaJIiwF9/ktmtXGb83QGi1FmH0JpRWOe8qQRPSOinIk7YV?=
- =?us-ascii?Q?jUKH2vp0/3dKLzEfLYhs3AcPJYszjb1ClXX10hI750q4smoQCntChnGrchMf?=
- =?us-ascii?Q?RcakNk9oVrwlffk4Q9zfiSONRMH6LYctvUmutE9veAm1Ph9vkpmhT01fw4Tt?=
- =?us-ascii?Q?Yp8DakFqH+MAPRn8s2rUSB93glUt6N+fD96QLFKhR1cn+R40bOIN/Ns5EmQE?=
- =?us-ascii?Q?gPCVagYX4o4MqIV+Ncdn2Xv+guKugaQUvvgR6KJp/KLrxUyKMCoyh3KunBPv?=
- =?us-ascii?Q?ka6u4iGIcD2NOjAlNi2uWvFy+6r8fHZ7GcluuPUS/k6sEGrMGhhOR072cOR6?=
- =?us-ascii?Q?8mM5+jTwJYiOUnnvR2M6y03m/g/pfUXL2b/F04srhzZ0E4JAGLPMxJ0pfwQP?=
- =?us-ascii?Q?aTEvQAvNmUoRvVKm5gtCrRK3d5uyTnY6QPu8FQgYnpIU6w7Yz6EYGhQcs5Ma?=
- =?us-ascii?Q?/dzm2eg/YCpYKk4ImSHqvldLKyFxFbO9BWyT3d1xTnSmMyi9B81P6Eiugd/j?=
- =?us-ascii?Q?RGjJ5TIvPWhM9swjwqaYs19b859d3Jts6dGGEYMSaiCQ5gO1I0pPWzWLzG4J?=
- =?us-ascii?Q?9xip8AnfyH9alGn/fggRL8oQXtjfIyQsjo7l8faIfTMMwOB3gbiSEBTT+lM4?=
- =?us-ascii?Q?oDzjwjzeGV4GAaL+PWb/Y4pI8c4eLI2eNUj10CFw4aQVl+VAKHstL4QUFAXW?=
- =?us-ascii?Q?BldGLeIol3j+UCY4hgTD6cuhEAfVsAPPmfqFew=3D=3D?=
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bd9b87c8-e33d-4ef6-6e19-08db965a45fe
-X-MS-Exchange-CrossTenant-AuthSource: TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Aug 2023 08:51:07.1951
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS3P286MB2744
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [EXTERNAL] Re: [PATCH 1/4] dt-bindings: net: Add ICSS IEP
+Content-Language: en-US
+To:     Conor Dooley <conor@kernel.org>
+CC:     MD Danish Anwar <danishanwar@ti.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Roger Quadros <rogerq@kernel.org>,
+        Simon Horman <simon.horman@corigine.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Richard Cochran <richardcochran@gmail.com>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>, <nm@ti.com>, <srk@ti.com>,
+        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>
+References: <20230803110153.3309577-1-danishanwar@ti.com>
+ <20230803110153.3309577-2-danishanwar@ti.com>
+ <20230803-guacamole-buddy-d8179f11615e@spud>
+ <d3d53a4f-a1f8-09d4-77e8-a881829fac68@ti.com>
+ <20230804-uncombed-escalate-d46b38ce37a2@spud>
+From:   Md Danish Anwar <a0501179@ti.com>
+Organization: Texas Instruments
+In-Reply-To: <20230804-uncombed-escalate-d46b38ce37a2@spud>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-6.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-This patch adds ethernet PHY reset GPIO config for Beaglebone Black
-series boards with revision C3. This fixes a random phy startup failure
-bug discussed at [1]. The GPIO pin used for reset is not used on older
-revisions, so it is ok to apply to all board revisions. The reset timing
-was discussed and tested at [2].
+On 04/08/23 9:05 pm, Conor Dooley wrote:
+> On Fri, Aug 04, 2023 at 11:56:19AM +0530, Md Danish Anwar wrote:
+>> Hi Conor,
+>>
+>> On 03/08/23 8:57 pm, Conor Dooley wrote:
+>>> On Thu, Aug 03, 2023 at 04:31:50PM +0530, MD Danish Anwar wrote:
+>>>> From: Md Danish Anwar <danishanwar@ti.com>
+>>>>
+>>>> Add DT binding documentation for ICSS IEP module.
+>>>>
+>>>> Signed-off-by: Md Danish Anwar <danishanwar@ti.com>
+>>>> ---
+>>>>  .../devicetree/bindings/net/ti,icss-iep.yaml  | 37 +++++++++++++++++++
+>>>>  1 file changed, 37 insertions(+)
+>>>>  create mode 100644 Documentation/devicetree/bindings/net/ti,icss-iep.yaml
+>>>>
+>>>> diff --git a/Documentation/devicetree/bindings/net/ti,icss-iep.yaml b/Documentation/devicetree/bindings/net/ti,icss-iep.yaml
+>>>> new file mode 100644
+>>>> index 000000000000..79cd72b330a6
+>>>> --- /dev/null
+>>>> +++ b/Documentation/devicetree/bindings/net/ti,icss-iep.yaml
+>>>> @@ -0,0 +1,37 @@
+>>>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+>>>> +%YAML 1.2
+>>>> +---
+>>>> +$id: http://devicetree.org/schemas/net/ti,icss-iep.yaml#
+>>>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>>>> +
+>>>> +title: Texas Instruments ICSS Industrial Ethernet Peripheral (IEP) module
+>>>> +
+>>>> +maintainers:
+>>>> +  - Md Danish Anwar <danishanwar@ti.com>
+>>>> +
+>>>> +properties:
+>>>> +  compatible:
+>>>> +    enum:
+>>>> +      - ti,am654-icss-iep   # for K3 AM65x, J721E and AM64x SoCs
+>>>
+>>> No. ti,am654-icss-iep is for am654. You should really have compatibles
+>>> specific to the SoC - is there a reason why this has not been done?
+>>>
+>>
+>> Yes, ti,am654-icss-iep is for am654. You are right, the compatibles should be
+>> specific to SoC. Currently the upstream support is being added for only AM65x.
+>>
+>> I will remove J721E and AM64x SoCs from the comment above and these compatibles
+>> when their support is enabled in future.
+> 
+> So the comment was totally wrong? Or does the same code work for all 3
+> of these SoC types & you used the same compatible on each of the 3?
 
-[1] https://forum.digikey.com/t/ethernet-device-is-not-detecting-on-ubuntu-20-04-lts-on-bbg/19948
-[2] https://forum.beagleboard.org/t/recognizing-a-beaglebone-black-rev-c3-board/31249/
+Comment was not totally wrong, the same compatible currently works for all
+these 3 SoCs as the same code works for them.
 
-Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
-Signed-off-by: Shengyu Qu <wiagn233@outlook.com>
----
-Changes since v1:
- - Using /**/ rather than // to comment
----
- arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi | 8 ++++++++
- 1 file changed, 8 insertions(+)
+But for now as we are upstreaming only for AM65x, I will only keep am65x in the
+comment.
 
-diff --git a/arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi b/arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi
-index 7b784a87efc6..96451c8a815c 100644
---- a/arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi
-+++ b/arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi
-@@ -145,6 +145,8 @@ davinci_mdio_default: davinci-mdio-default-pins {
- 			/* MDIO */
- 			AM33XX_PADCONF(AM335X_PIN_MDIO, PIN_INPUT_PULLUP | SLEWCTRL_FAST, MUX_MODE0)
- 			AM33XX_PADCONF(AM335X_PIN_MDC, PIN_OUTPUT_PULLUP, MUX_MODE0)
-+			/* Added to support GPIO controlled PHY reset */
-+			AM33XX_PADCONF(AM335X_PIN_UART0_CTSN, PIN_OUTPUT_PULLUP, MUX_MODE7)
- 		>;
- 	};
- 
-@@ -153,6 +155,8 @@ davinci_mdio_sleep: davinci-mdio-sleep-pins {
- 			/* MDIO reset value */
- 			AM33XX_PADCONF(AM335X_PIN_MDIO, PIN_INPUT_PULLDOWN, MUX_MODE7)
- 			AM33XX_PADCONF(AM335X_PIN_MDC, PIN_INPUT_PULLDOWN, MUX_MODE7)
-+			/* Added to support GPIO controlled PHY reset */
-+			AM33XX_PADCONF(AM335X_PIN_UART0_CTSN, PIN_INPUT_PULLDOWN, MUX_MODE7)
- 		>;
- 	};
- 
-@@ -378,6 +382,10 @@ &davinci_mdio_sw {
- 
- 	ethphy0: ethernet-phy@0 {
- 		reg = <0>;
-+		/* Support GPIO reset on revision C3 boards */
-+		reset-gpios = <&gpio1 8 GPIO_ACTIVE_LOW>;
-+		reset-assert-us = <300>;
-+		reset-deassert-us = <6500>;
- 	};
- };
- 
+> 
+> Thanks,
+> Conor.
+> 
+> 
+>> Below is the updated compatible property.
+>>
+>> properties:
+>>   compatible:
+>>     enum:
+>>       - ti,am654-icss-iep   # for K3 AM65x SoCs
+
 -- 
-2.41.0
-
+Thanks and Regards,
+Danish.
