@@ -2,109 +2,110 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2026277236F
-	for <lists+linux-omap@lfdr.de>; Mon,  7 Aug 2023 14:09:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C90757725D4
+	for <lists+linux-omap@lfdr.de>; Mon,  7 Aug 2023 15:33:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232838AbjHGMJF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 7 Aug 2023 08:09:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43600 "EHLO
+        id S234014AbjHGNdw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 7 Aug 2023 09:33:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232499AbjHGMJE (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 7 Aug 2023 08:09:04 -0400
-Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD1D195;
-        Mon,  7 Aug 2023 05:09:03 -0700 (PDT)
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 377C8TbD123376;
-        Mon, 7 Aug 2023 07:08:29 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1691410109;
-        bh=HPfzbM7oNbyfW57kvap8c6blYiDjkmk5BN0fvHXFECw=;
-        h=Date:From:To:CC:Subject:References:In-Reply-To;
-        b=A5dm5TyfpNcSaFYrmeYYukWDkWE0w/hNz5mjBcZSjy2pCExIRdfYVGEPFKBbDpUCa
-         mYEZUCfJG/LQLqa9AH65PX5Grj4vWGwyd46B/wYbuzdFKcWjS45BuzyjPmcd8GtQ1D
-         dZYlYHh0ykPW0SejiLUIMFlJaJhbg8MD/JCAyIyg=
-Received: from DLEE106.ent.ti.com (dlee106.ent.ti.com [157.170.170.36])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 377C8Tsb110254
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 7 Aug 2023 07:08:29 -0500
-Received: from DLEE102.ent.ti.com (157.170.170.32) by DLEE106.ent.ti.com
- (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 7
- Aug 2023 07:08:28 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE102.ent.ti.com
- (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Mon, 7 Aug 2023 07:08:28 -0500
-Received: from localhost (ileaxei01-snat2.itg.ti.com [10.180.69.6])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 377C8SYt095933;
-        Mon, 7 Aug 2023 07:08:28 -0500
-Date:   Mon, 7 Aug 2023 07:08:28 -0500
-From:   Nishanth Menon <nm@ti.com>
-To:     MD Danish Anwar <danishanwar@ti.com>
-CC:     <vigneshr@ti.com>, Peng Fan <peng.fan@nxp.com>,
-        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
-        =?utf-8?B?TsOtY29sYXMgRi4gUi4gQS4=?= Prado 
-        <nfraprado@collabora.com>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Bjorn Andersson <quic_bjorande@quicinc.com>,
-        Will Deacon <will@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>, <srk@ti.com>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-omap@vger.kernel.org>
-Subject: Re: [PATCH v3] arm64: defconfig: Enable PRUSS as module
-Message-ID: <20230807120828.voznckdnhvnyzqnf@accurate>
-References: <20230807105919.2611138-1-danishanwar@ti.com>
+        with ESMTP id S234050AbjHGNdu (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 7 Aug 2023 09:33:50 -0400
+Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C736198C
+        for <linux-omap@vger.kernel.org>; Mon,  7 Aug 2023 06:33:32 -0700 (PDT)
+Received: by mail-yb1-xb2f.google.com with SMTP id 3f1490d57ef6-d3522283441so3690601276.0
+        for <linux-omap@vger.kernel.org>; Mon, 07 Aug 2023 06:33:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1691415210; x=1692020010;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=en68Hk5YkXu0QzfPLpo4IL6bAGnqYjgXL/o6plCTV7k=;
+        b=Ibb8gGvtNpS9mXokJnl9/y9PaAkxssmL5HrYU3QgoPIRuRrzBTi7Sddme3kPhwa/cz
+         se3PrdLp03h/Kn/u3Mhg6Hd2TE3OzMuRHt8aLAyF8axqMrij0c9obTm9U/O/OBuHZMvk
+         3eor4w23MX9PuMT/fYZX3h1zFTtaUTnwZkpzJmbgsXAOlwrdRLOOIWAX5lFgn6zIeQT+
+         kmnUkq0VjJ4M41gt3bNIh2vd9vjfeSeXUKOUZhZAxNz6sWKpwLjKrW47f2U99y6+QSms
+         AU5slnJZ2CLzYr294LVnNuny+gIrJFZr0cij4VR5NG+rTIFc8sQEdREiFKFKU0Q97u/Q
+         NNjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691415210; x=1692020010;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=en68Hk5YkXu0QzfPLpo4IL6bAGnqYjgXL/o6plCTV7k=;
+        b=fLDpLGeOdCCkeKgqEpooBF06IACP5SHmn7jOe4iYVAZcwKkrhHDv0gQwQjgpRuurwX
+         poROZBs4XduZ03oXHGv0jIav7+G2n9m88rem/rGEM1kzPje4eg6qyzJIM0g4fMql8EVs
+         EZ6RYZF2uXdpcfa+KFjkzTbfjqf88gYAcNrZrSgN07g3XBlwZATqB5z7JsTIDrAza3dU
+         M3o2RH/t9819foXOZw82zuHxe6VtHDRu9AMkoxDqLjaQstU8GFOP70kFUp07mSJSRq2c
+         YL0355h0q+aQNmmT32ZVCzpLvvpnwSn0Z3yMc3fhIH6vFdE0i+rp6k3FKZDxtWtPtz4D
+         fBqA==
+X-Gm-Message-State: AOJu0YwgcjGL0YgDa5vGK0S1NAkVnQSO592vlDFjAyL2GZht63zti0B2
+        nmUwot6gPcxVgwdjcG4Pz6wOzxgI4XlsmaaXvRuXWg==
+X-Google-Smtp-Source: AGHT+IGQPsx5D6IyG2kU5dOvzyCUpWr87ALPQZqBoCIrbm5TPADd32SF6ZybnoqgVU98baZxTUYykMbZn94oFyeRojQ=
+X-Received: by 2002:a25:ea53:0:b0:d07:bce0:be77 with SMTP id
+ o19-20020a25ea53000000b00d07bce0be77mr6273439ybe.61.1691415210619; Mon, 07
+ Aug 2023 06:33:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20230807105919.2611138-1-danishanwar@ti.com>
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230721082654.27036-1-tony@atomide.com>
+In-Reply-To: <20230721082654.27036-1-tony@atomide.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Mon, 7 Aug 2023 15:33:19 +0200
+Message-ID: <CACRpkdbOMAGYm2WBJ_opNyfmo55MdMA5YaGiqf_DanCCwix6Ug@mail.gmail.com>
+Subject: Re: [PATCH v7 1/1] dt-bindings: pinctrl: Update pinctrl-single to use yaml
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        Nishanth Menon <nm@ti.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        devicetree@vger.kernel.org, linux-gpio@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 16:29-20230807, MD Danish Anwar wrote:
-> Enables PRUSS as kernel module for TI SoCs.
+On Fri, Jul 21, 2023 at 10:27=E2=80=AFAM Tony Lindgren <tony@atomide.com> w=
+rote:
 
-
-You still have'nt addressed the review feedback from v1. what is
-PRUSS? What boards are using it?
-
-> 
-> Reviewed-by: Christian Gmeiner <christian.gmeiner@gmail.com>
-> Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
+> Update binding for yaml and remove the old related txt bindings. Note tha=
+t
+> we are also adding the undocumented pinctrl-single,slew-rate property. An=
+d
+> we only use the first example from the old binding.
+>
+> As we are mostly using a generic compatible across various SoCs, let's no=
+t
+> start adding matches for random pin group node naming. Let's standardize =
+on
+> pin group node name ending in -pins with an optional instance number
+> suffix.
+>
+> As a pin group may have additional pins added to it later on, let's alway=
+s
+> use -pins rather than -pin for the gropu name.
+>
+> Most of the dts files have been updated already for the pin group node
+> names with a few changes still pending.
+>
+> Cc: Nishanth Menon <nm@ti.com>
+> Cc: Vignesh Raghavendra <vigneshr@ti.com>
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
 > ---
->  arch/arm64/configs/defconfig | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
-> index bf13d5c46578..0aecdf43a5d1 100644
-> --- a/arch/arm64/configs/defconfig
-> +++ b/arch/arm64/configs/defconfig
-> @@ -1339,6 +1339,7 @@ CONFIG_ARCH_TEGRA_186_SOC=y
->  CONFIG_ARCH_TEGRA_194_SOC=y
->  CONFIG_ARCH_TEGRA_234_SOC=y
->  CONFIG_TI_SCI_PM_DOMAINS=y
-> +CONFIG_TI_PRUSS=m
->  CONFIG_ARM_IMX_BUS_DEVFREQ=y
->  CONFIG_ARM_IMX8M_DDRC_DEVFREQ=m
->  CONFIG_ARM_MEDIATEK_CCI_DEVFREQ=m
-> -- 
-> 2.34.1
-> 
+>
+> Changes since v6:
 
--- 
-Regards,
-Nishanth Menon
-Key (0xDDB5849D1736249D) / Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
+Phew!
+
+Patch applied. Any remaining issues can certainly be fixed in tree.
+
+Yours,
+Linus Walleij
