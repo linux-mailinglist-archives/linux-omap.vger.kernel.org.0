@@ -2,105 +2,128 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 74D74773DC0
-	for <lists+linux-omap@lfdr.de>; Tue,  8 Aug 2023 18:23:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D95FC77403D
+	for <lists+linux-omap@lfdr.de>; Tue,  8 Aug 2023 19:00:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229492AbjHHQWg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 8 Aug 2023 12:22:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38864 "EHLO
+        id S233924AbjHHRAy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 8 Aug 2023 13:00:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232507AbjHHQUb (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 8 Aug 2023 12:20:31 -0400
-Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 557BB93D7;
-        Tue,  8 Aug 2023 08:49:05 -0700 (PDT)
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 378Dn4Sc092506;
-        Tue, 8 Aug 2023 08:49:04 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1691502544;
-        bh=/diXiEy5Rar3GP8DL1v0Kz97W27qEYMY8d8jEN9wuNI=;
-        h=Date:From:To:CC:Subject:References:In-Reply-To;
-        b=xQc13KDzs4rY/5Yh0KhwxXxbTGu21K+p5MPQfIpXeULdCoaHjZ3C7H+tWKqs+R0a/
-         mPYU2n776xTrRr9yuKjigGyTYSX2EeQK6t5eKP/GEMnTRBnX7fDvB3OHKaI15O1I7h
-         kAGsMc6e+6/GT6gmAtQpO08ULv0a/IqbxsVx8T3Y=
-Received: from DLEE109.ent.ti.com (dlee109.ent.ti.com [157.170.170.41])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 378Dn4Jp003971
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 8 Aug 2023 08:49:04 -0500
-Received: from DLEE100.ent.ti.com (157.170.170.30) by DLEE109.ent.ti.com
- (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 8
- Aug 2023 08:49:04 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE100.ent.ti.com
- (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Tue, 8 Aug 2023 08:49:03 -0500
-Received: from localhost (ileaxei01-snat.itg.ti.com [10.180.69.5])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 378Dn31e046024;
-        Tue, 8 Aug 2023 08:49:03 -0500
-Date:   Tue, 8 Aug 2023 08:49:03 -0500
-From:   Nishanth Menon <nm@ti.com>
-To:     Dhruva Gole <d-gole@ti.com>
-CC:     Tero Kristo <kristo@kernel.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        <linux-pm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-omap@vger.kernel.org>,
-        "Kevin Hilman" <khilman@baylibre.com>, Vignesh R <vigneshr@ti.com>,
-        Georgi Vlaev <g-vlaev@ti.com>
-Subject: Re: [PATCH V7 2/4] firmware: ti_sci: Add support for querying the
- firmware caps
-Message-ID: <20230808134903.vqrq7wxsgg5id4dj@crewmate>
-References: <20230804115037.754994-1-d-gole@ti.com>
- <20230804115037.754994-3-d-gole@ti.com>
+        with ESMTP id S232608AbjHHRAH (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 8 Aug 2023 13:00:07 -0400
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21D7747E8
+        for <linux-omap@vger.kernel.org>; Tue,  8 Aug 2023 09:00:29 -0700 (PDT)
+Received: by mail-ej1-x630.google.com with SMTP id a640c23a62f3a-99357737980so849873866b.2
+        for <linux-omap@vger.kernel.org>; Tue, 08 Aug 2023 09:00:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1691510399; x=1692115199;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=q6MY1hiBmbwXLoucjEj2Xi2SFMUgMZzIdibN/5/2L+I=;
+        b=aFySu5tLzj5pfn9DmIh/A2nWaZDusHC78TY6Evs8ZgdaijhStYTfW5KRQ+0M3KIseH
+         EGKgh0PNPz/00RqL+AOExsw9wlFWq6FaAE6IbVQggeAF4NTYrijqBaypfPVhyYeORzDW
+         TqgoUWyVwv3P6qvXxorj3oy47phkX+1GxsoDLd5wzwvnvFNaIES1CYE+qCIn0seEOWgc
+         oEnkzyC7hTDj3JK+XqvjjDLK1BCKwwzm8qdFDk/jah1AQ+7FEvvlz656Lq25uyIRhI9N
+         OVEKU28k4QVXVKJFmH6A7xhsQdH8X++mFymdXH6A5n5Woehc7PjEnL5ZjS3VZiPXcJM6
+         JAfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691510399; x=1692115199;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=q6MY1hiBmbwXLoucjEj2Xi2SFMUgMZzIdibN/5/2L+I=;
+        b=Kn8cA2WyEtkWyaaQTjLKEHw5M8sBo92bt6XcHEt7bvX3AFuVXOADOzp/CQf6wBvrsu
+         5fGRVSd9/tKmnbrCxsJmkTi7C0510dxfTIqLErxKzGcvSbiv7QJIiqmrRt5vwUiGhBIe
+         VxCGu5jMbdok2HqFv+QQYitod5aqGVFQgoWUIiNZP1K9XDMwCeZ1XKV8nCpqQxjM+RuG
+         XG621yT1PDO9TovI/Z7QogWyZJkkiSXI9l74lFsE2HLiLH7QH3bRkzbRzp8sXIcvo9PF
+         OmZXUCnhI9WhiPA6gRZvKZz3fUGa4e5LZDURsi3cE+/LvGTqpFquNZmPGMsJ+jIdfcAw
+         CcNw==
+X-Gm-Message-State: AOJu0YwP8AzJdaguyF7cEWpnYD7KTYNfBAiUJW6xmP7BLYdYTzKmujIp
+        tV2JBPvlhjgilx0ohah7Zn3DmqS4xq7VptKKUlk=
+X-Google-Smtp-Source: AGHT+IEFM3DwvG4gSvRW8WGApgoleljA2c2Cr/zQIjyrhjF0UV2hAUM2hKy+et7OFD1S77hBApF2qg==
+X-Received: by 2002:a17:906:54:b0:999:26d3:b815 with SMTP id 20-20020a170906005400b0099926d3b815mr13144104ejg.64.1691506434441;
+        Tue, 08 Aug 2023 07:53:54 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.222.113])
+        by smtp.gmail.com with ESMTPSA id rk22-20020a170907215600b00982a92a849asm6796311ejb.91.2023.08.08.07.53.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 08 Aug 2023 07:53:53 -0700 (PDT)
+Message-ID: <8e7cf088-e206-746d-0360-16479b1a33c3@linaro.org>
+Date:   Tue, 8 Aug 2023 16:53:51 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20230804115037.754994-3-d-gole@ti.com>
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH] dt-bindings: remoteproc: pru: Add Interrupt property
+Content-Language: en-US
+To:     Md Danish Anwar <a0501179@ti.com>, Conor Dooley <conor@kernel.org>,
+        MD Danish Anwar <danishanwar@ti.com>
+Cc:     Suman Anna <s-anna@ti.com>, Conor Dooley <conor+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-remoteproc@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, vigneshr@ti.com, srk@ti.com,
+        nm@ti.com
+References: <20230807110836.2612730-1-danishanwar@ti.com>
+ <20230807-euphemism-trailing-ef4130dc7437@spud>
+ <910a4a98-712a-5517-5a5b-ffb962f83463@ti.com>
+ <1ade44f5-b3d1-dcde-6819-9e944f3b115d@linaro.org>
+ <5ca41ad1-4f42-f71a-4b5f-f2b6def42cb1@ti.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <5ca41ad1-4f42-f71a-4b5f-f2b6def42cb1@ti.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 17:20-20230804, Dhruva Gole wrote:
-> From: Georgi Vlaev <g-vlaev@ti.com>
+On 08/08/2023 12:57, Md Danish Anwar wrote:
+> On 08/08/23 3:48 pm, Krzysztof Kozlowski wrote:
+>> On 08/08/2023 11:44, Md Danish Anwar wrote:
+>>>>>    properties:
+>>>>>      compatible:
+>>>>> @@ -171,6 +181,9 @@ examples:
+>>>>>                <0x22400 0x100>;
+>>>>>          reg-names = "iram", "control", "debug";
+>>>>>          firmware-name = "am65x-pru0_0-fw";
+>>>>> +        interrupt-parent = <&icssg0_intc>;
+>>>>> +        interrupts = <16 2 2>;
+>>>>> +        interrupt-names = "vring";
+>>>>>        };
+>>>>
+>>>> These examples would probably be more helpful if they used the
+>>>> appropriate defines, no?
+>>>>
+>>>
+>>> PRUSS Interrupt controller doesn't have any appropriate defines. This doesn't
+>>> use GIC so defines from arm-gic.h can not be used here. These are specific to
+>>> PRUSS INTC.
+>>>
+>>> I think these example are OK. Please let me know if this is OK to you.
+>>
+>> But isn't "2" type of the interrupt?
+>>
+>> Best regards,
+>> Krzysztof
+>>
 > 
-[...]
+> As per the description of interrupts property in ti,pruss-intc.yaml [1]
+> 
+> Cell 1 is PRU System event number, cell 2 is PRU channel and cell 3 is PRU
+> host_event (target). None of them is type of interrupt. So that's why they all
+> are hardcoded. I don't think we can use IRQ_TYPE macros here.
 
-> +	/*
-> +	 * fw_caps 1st bit is used to check Generic capability. Other than
-> +	 * that the 1:4 bits are used for various LPM capabilities.
-> +	 * The API is buggy on SYSFW 9.00 and below, on some devices.
-> +	 * Hence, to avoid any sort of bugs arising due to garbage values
-> +	 * Let's allow the fw_caps to be set to whatever the firmware
-> +	 * says only on devices listed under has_lpm. These devices should
-> +	 * have lpm features tested and implemented in the firmware
-> +	 * and only then should they be added to has_lpm struct.
-> +	 * Otherwise, set the value to 1 that is the default.
-> +	 */
-> +	if (fw_caps && soc_device_match(has_lpm))
-> +		*fw_caps = resp->fw_caps;
-> +	else
-> +		*fw_caps = resp->fw_caps & MSG_FLAG_CAPS_GENERIC;
+OK, thanks for clarifying this.
 
-Fix your firmware please. drop the has_lpm stuff.. that is what caps is
-for.
+Best regards,
+Krzysztof
 
-As part of ti_sci_setup_ops you get info where you can check ABI version
-where this is valid and which is not, ti_sci_msg_cmd_query_fw_caps can
-be populated based on that check. That is the reason info is passed to
-setup_ops and why we have ABI IDs in the first place.
-
-[...]
-
--- 
-Regards,
-Nishanth Menon
-Key (0xDDB5849D1736249D) / Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
