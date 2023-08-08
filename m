@@ -2,70 +2,62 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 29D717745A7
-	for <lists+linux-omap@lfdr.de>; Tue,  8 Aug 2023 20:44:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6D0D7747EE
+	for <lists+linux-omap@lfdr.de>; Tue,  8 Aug 2023 21:22:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230353AbjHHSot (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 8 Aug 2023 14:44:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60528 "EHLO
+        id S235854AbjHHTWf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 8 Aug 2023 15:22:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60374 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230390AbjHHSoQ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 8 Aug 2023 14:44:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E6DF155BC;
-        Tue,  8 Aug 2023 09:40:49 -0700 (PDT)
+        with ESMTP id S236184AbjHHTWA (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 8 Aug 2023 15:22:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EA1310E9C8;
+        Tue,  8 Aug 2023 09:45:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C7F78624A3;
-        Tue,  8 Aug 2023 10:42:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A410EC433C7;
-        Tue,  8 Aug 2023 10:42:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5E096624A6;
+        Tue,  8 Aug 2023 10:48:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3F57C433C8;
+        Tue,  8 Aug 2023 10:48:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691491356;
-        bh=JGo7EBuRfvMkPe2azYS3kN7ld2w91JHGAUkojy0rktE=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=kS/Q6i3nQ9+WnKOSFTu7PB+OQVPot1K2wUD0sTEvdRrNj4jVLKU4NG5mGsGwk2VSY
-         UhUjaaUoswvJqZ/6VjJddcyrwNLSBfB2qmxYgFHInd1f1a4dKiHcyoYRUaq3ht1620
-         yk0aYI6UI+bxzZCd7NPIZVIaDk9UrXOQ0xzx51ZO7Kwn1n4Ui3PFnRWslmawb4ZlnD
-         6noMzGM+9rOUK1DtPdUAAsZ7JOlfDkdkIgapoyzNv3uO8KmpQ9bFArym8hwrLS6ynr
-         T7FFaP8Jg7BJUfNQNa3fc0TS5qoKowHVWTP7c+b1Hw6IEZXXI5F3mpL1x/H4Y4nP/e
-         KZXCcq5rUNuXQ==
-Message-ID: <e98f134a-a57a-3cbc-3cb1-378d6b411406@kernel.org>
-Date:   Tue, 8 Aug 2023 13:42:28 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH v2 2/5] dt-bindings: net: Add iep property in ICSSG dt
- binding
-Content-Language: en-US
-To:     MD Danish Anwar <danishanwar@ti.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Simon Horman <simon.horman@corigine.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Richard Cochran <richardcochran@gmail.com>,
+        s=k20201202; t=1691491687;
+        bh=g4Al6u/oxW9sOdVO40WZiYWYztfE/tWlGU1STUdbHRs=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=rsIaGXcA79+KRvi55vDwZcaycKr5Mc/tVkLjU9fnNOY0UZLyw4vPkks1ugyvNMdZv
+         srirx/T+v64qvDgrub2wSDxGiS/PYNi3uuTSQoz89p7MJQy3+2poNJRzUWKNVWRLpg
+         wQP0U7Mdof49bv8EQ0mxaWPbO00xd64PzEDXDyLSCKUw1N6Kwpdr+2B21tHFn1aTwp
+         E2oma7Au+eu76VP9dHf8q2a11dhwdmCzggYmbElo7c2WGOjSEHsYn3sM6kZdXQeANH
+         EvYNDPEwf6tVZEpntFzO6jB/RyIpiIdleHwr0hQTx3SD77GNmeoiHOgVaKiRK8405H
+         RaOFRZFBn8QcQ==
+Date:   Tue, 8 Aug 2023 11:48:02 +0100
+From:   Conor Dooley <conor@kernel.org>
+To:     Md Danish Anwar <a0501179@ti.com>
+Cc:     MD Danish Anwar <danishanwar@ti.com>, Suman Anna <s-anna@ti.com>,
         Conor Dooley <conor+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>
-Cc:     nm@ti.com, srk@ti.com, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, netdev@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-References: <20230807110048.2611456-1-danishanwar@ti.com>
- <20230807110048.2611456-3-danishanwar@ti.com>
-From:   Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <20230807110048.2611456-3-danishanwar@ti.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-remoteproc@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, vigneshr@ti.com, srk@ti.com,
+        nm@ti.com
+Subject: Re: [PATCH] dt-bindings: remoteproc: pru: Add Interrupt property
+Message-ID: <20230808-unwomanly-generic-67d20f0e51cd@spud>
+References: <20230807110836.2612730-1-danishanwar@ti.com>
+ <20230807-euphemism-trailing-ef4130dc7437@spud>
+ <910a4a98-712a-5517-5a5b-ffb962f83463@ti.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="RzfM45YTf9+4RvqO"
+Content-Disposition: inline
+In-Reply-To: <910a4a98-712a-5517-5a5b-ffb962f83463@ti.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -73,45 +65,79 @@ List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
 
+--RzfM45YTf9+4RvqO
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 07/08/2023 14:00, MD Danish Anwar wrote:
-> Add iep node in ICSSG driver dt binding document.
+On Tue, Aug 08, 2023 at 03:14:31PM +0530, Md Danish Anwar wrote:
+> Hi Conor,
+>=20
+> On 07/08/23 8:09 pm, Conor Dooley wrote:
+> > On Mon, Aug 07, 2023 at 04:38:36PM +0530, MD Danish Anwar wrote:
+> >> Add interrupts and interrupt-names protperties for PRU and RTU cores.
+> >>
+> >> Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
+> >> ---
+> >>  .../bindings/remoteproc/ti,pru-rproc.yaml     | 22 +++++++++++++++++++
+> >>  1 file changed, 22 insertions(+)
+> >>
+> >> diff --git a/Documentation/devicetree/bindings/remoteproc/ti,pru-rproc=
+=2Eyaml b/Documentation/devicetree/bindings/remoteproc/ti,pru-rproc.yaml
+> >> index cd55d80137f7..6970316943bb 100644
+> >> --- a/Documentation/devicetree/bindings/remoteproc/ti,pru-rproc.yaml
+> >> +++ b/Documentation/devicetree/bindings/remoteproc/ti,pru-rproc.yaml
+> >> @@ -66,6 +66,16 @@ properties:
+> >>        Should contain the name of the default firmware image
+> >>        file located on the firmware search path.
+> >> =20
+> >> +  interrupts:
+> >> +    maxItems: 1
+> >> +    description:
+> >> +      Interrupt specifiers enable the virtio/rpmsg communication betw=
+een MPU
+> >> +      and the PRU/RTU cores.
+> >> +
+> >> +  interrupt-names:
+> >> +    items:
+> >> +      - const: vring
+> >> +
+> >>  if:
+> >>    properties:
+> >>      compatible:
+> >> @@ -171,6 +181,9 @@ examples:
+> >>                <0x22400 0x100>;
+> >>          reg-names =3D "iram", "control", "debug";
+> >>          firmware-name =3D "am65x-pru0_0-fw";
+> >> +        interrupt-parent =3D <&icssg0_intc>;
+> >> +        interrupts =3D <16 2 2>;
+> >> +        interrupt-names =3D "vring";
+> >>        };
+> >=20
+> > These examples would probably be more helpful if they used the
+> > appropriate defines, no?
+> >=20
+>=20
+> PRUSS Interrupt controller doesn't have any appropriate defines. This doe=
+sn't
+> use GIC so defines from arm-gic.h can not be used here. These are specifi=
+c to
+> PRUSS INTC.
 
-s/iep/IEP here and in subject
-s/dt/DT here and in subject
+I was deliberately vague in case the gic stuff applied too, but my main
+question was about the standard defines used for interrupt types.
 
-> 
-> Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
-> ---
->  Documentation/devicetree/bindings/net/ti,icssg-prueth.yaml | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/net/ti,icssg-prueth.yaml b/Documentation/devicetree/bindings/net/ti,icssg-prueth.yaml
-> index 8ec30b3eb760..36870238f92f 100644
-> --- a/Documentation/devicetree/bindings/net/ti,icssg-prueth.yaml
-> +++ b/Documentation/devicetree/bindings/net/ti,icssg-prueth.yaml
-> @@ -52,6 +52,12 @@ properties:
->      description:
->        phandle to MII_RT module's syscon regmap
->  
-> +  ti,iep:
-> +    $ref: /schemas/types.yaml#/definitions/phandle-array
-> +    maxItems: 2
-> +    description:
-> +      phandle to IEP (Industrial Ethernet Peripheral) for ICSSG driver
-> +
->    interrupts:
->      maxItems: 2
->      description:
-> @@ -155,6 +161,7 @@ examples:
->                      "tx1-0", "tx1-1", "tx1-2", "tx1-3",
->                      "rx0", "rx1";
->          ti,mii-g-rt = <&icssg2_mii_g_rt>;
-> +        ti,iep = <&icssg2_iep0>, <&icssg2_iep1>;
->          interrupt-parent = <&icssg2_intc>;
->          interrupts = <24 0 2>, <25 1 3>;
->          interrupt-names = "tx_ts0", "tx_ts1";
+> I think these example are OK. Please let me know if this is OK to you.
 
--- 
-cheers,
--roger
+--RzfM45YTf9+4RvqO
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZNIdYgAKCRB4tDGHoIJi
+0sfFAQDUGTaUH2VxL1ST+sf18hKE5yCqpFEUkOJu+bgGPLkmuQD/XAUCs4HrdF2v
+1lu3PdJ0QSaQoDb36Qrpa6k3hHGvUQg=
+=l++a
+-----END PGP SIGNATURE-----
+
+--RzfM45YTf9+4RvqO--
