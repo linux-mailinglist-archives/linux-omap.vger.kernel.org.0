@@ -2,110 +2,105 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A241773E0C
-	for <lists+linux-omap@lfdr.de>; Tue,  8 Aug 2023 18:25:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74D74773DC0
+	for <lists+linux-omap@lfdr.de>; Tue,  8 Aug 2023 18:23:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232517AbjHHQZa (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 8 Aug 2023 12:25:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42656 "EHLO
+        id S229492AbjHHQWg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 8 Aug 2023 12:22:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232530AbjHHQYK (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 8 Aug 2023 12:24:10 -0400
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5DACAD01
-        for <linux-omap@vger.kernel.org>; Tue,  8 Aug 2023 08:49:55 -0700 (PDT)
-Received: by mail-ed1-x52c.google.com with SMTP id 4fb4d7f45d1cf-51cff235226so12327429a12.0
-        for <linux-omap@vger.kernel.org>; Tue, 08 Aug 2023 08:49:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1691509784; x=1692114584;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qejuevXVg8c+kej4ztr9ux7GUIQQ5z+UOyvSNuEDXRw=;
-        b=l995gZ6iJunNHcHB2KJ36Yb/aSODX7hpyJo/rVrWMrL7hNAWyJfiDq5Yyw1mr0GVx8
-         FYk4CMdfziNELLsw0JUxcsrCuGvAEg36X+DR03/7+Fw5z79Y+YqvBJDTbpvUHqw7iaHP
-         +7SdGXNZ4mry6J8nak5nZCzePW4NvdTnKi4952xIjBC2BfiX5a5UGQ5Len+lV/wXfb9n
-         1BVXSWkIIhzo46s2xQhRH8/c9WTRL4CR2kOksaG9VOMpP7tAsglwXDGgBcwSacChOlPu
-         7UJGRCBLwboFa/NZGwHAeLXvJ2Dtnj6h1M6FCs5URfq3hE3d6acYcp6+De2UgyXueD9U
-         pzEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691509784; x=1692114584;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qejuevXVg8c+kej4ztr9ux7GUIQQ5z+UOyvSNuEDXRw=;
-        b=Qwsln/bS3DQmOFQHMFYAvFYen5h3n5kGCNYuRPi1Vf/qJw8vzT8YgehQmjgS80GEzq
-         sdkBEnz8Ch6FtrCECr3M+4UnyJAmCJIcUV0peRiiGgLe9ORO5gOAT1yYPNKHZPiLvsNB
-         fYRyBSZdiq+Rk7NFc5x6lIqyFNY8X3IzQQgL/e07pAcRGLdKygUiBXeVKauXyXc45Vu0
-         C4DEZy4BJPQwR9dDWKSTLfyaMssBaSdZwLVaO7kNP5EWZ5STb3NI1qK6r41gDeuqq8Bn
-         tETBEWz2/seiYteTqGKSHRtD5HX1PUgVBxAfXyKZnvxEIn5v4Apzr3tnXclHttkrJmm+
-         xUCQ==
-X-Gm-Message-State: AOJu0Yyx/TTGs996X5INnIpPzgWQPqAb1BtpnARwHJN9+jS9U3JJWrZj
-        i61L+qUHk8FHzCx7F2XLrwCZF67wNvvoqj0y62g=
-X-Google-Smtp-Source: AGHT+IFQaReEoylTuoBa3pq7fPTiDA0ZX2U+hTy0EvkesIRlzxiuW1TvGZ9HVbCDFIPha62GXZlwgw==
-X-Received: by 2002:a2e:9c89:0:b0:2b6:b7c3:bb89 with SMTP id x9-20020a2e9c89000000b002b6b7c3bb89mr3403498lji.18.1691502411764;
-        Tue, 08 Aug 2023 06:46:51 -0700 (PDT)
-Received: from [127.0.1.1] ([85.235.12.238])
-        by smtp.gmail.com with ESMTPSA id u23-20020a2e8557000000b002b93d66b82asm2284493ljj.112.2023.08.08.06.46.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Aug 2023 06:46:51 -0700 (PDT)
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Tue, 08 Aug 2023 15:46:38 +0200
-Subject: [PATCH 11/11] regulator: bd71815: Drop useless header
+        with ESMTP id S232507AbjHHQUb (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 8 Aug 2023 12:20:31 -0400
+Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 557BB93D7;
+        Tue,  8 Aug 2023 08:49:05 -0700 (PDT)
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 378Dn4Sc092506;
+        Tue, 8 Aug 2023 08:49:04 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1691502544;
+        bh=/diXiEy5Rar3GP8DL1v0Kz97W27qEYMY8d8jEN9wuNI=;
+        h=Date:From:To:CC:Subject:References:In-Reply-To;
+        b=xQc13KDzs4rY/5Yh0KhwxXxbTGu21K+p5MPQfIpXeULdCoaHjZ3C7H+tWKqs+R0a/
+         mPYU2n776xTrRr9yuKjigGyTYSX2EeQK6t5eKP/GEMnTRBnX7fDvB3OHKaI15O1I7h
+         kAGsMc6e+6/GT6gmAtQpO08ULv0a/IqbxsVx8T3Y=
+Received: from DLEE109.ent.ti.com (dlee109.ent.ti.com [157.170.170.41])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 378Dn4Jp003971
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 8 Aug 2023 08:49:04 -0500
+Received: from DLEE100.ent.ti.com (157.170.170.30) by DLEE109.ent.ti.com
+ (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 8
+ Aug 2023 08:49:04 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE100.ent.ti.com
+ (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Tue, 8 Aug 2023 08:49:03 -0500
+Received: from localhost (ileaxei01-snat.itg.ti.com [10.180.69.5])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 378Dn31e046024;
+        Tue, 8 Aug 2023 08:49:03 -0500
+Date:   Tue, 8 Aug 2023 08:49:03 -0500
+From:   Nishanth Menon <nm@ti.com>
+To:     Dhruva Gole <d-gole@ti.com>
+CC:     Tero Kristo <kristo@kernel.org>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        <linux-pm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-omap@vger.kernel.org>,
+        "Kevin Hilman" <khilman@baylibre.com>, Vignesh R <vigneshr@ti.com>,
+        Georgi Vlaev <g-vlaev@ti.com>
+Subject: Re: [PATCH V7 2/4] firmware: ti_sci: Add support for querying the
+ firmware caps
+Message-ID: <20230808134903.vqrq7wxsgg5id4dj@crewmate>
+References: <20230804115037.754994-1-d-gole@ti.com>
+ <20230804115037.754994-3-d-gole@ti.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230808-descriptors-regulator-v1-11-939b5e84dd18@linaro.org>
-References: <20230808-descriptors-regulator-v1-0-939b5e84dd18@linaro.org>
-In-Reply-To: <20230808-descriptors-regulator-v1-0-939b5e84dd18@linaro.org>
-To:     Tony Lindgren <tony@atomide.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org,
-        Linus Walleij <linus.walleij@linaro.org>
-X-Mailer: b4 0.12.3
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20230804115037.754994-3-d-gole@ti.com>
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The bd71815 regulator driver includes the legacy header
-<linux/gpio.h> for no reason, it is already using the proper
-<linux/gpio/consumer.h> include. Drop the include.
+On 17:20-20230804, Dhruva Gole wrote:
+> From: Georgi Vlaev <g-vlaev@ti.com>
+> 
+[...]
 
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
----
- drivers/regulator/bd71815-regulator.c | 1 -
- 1 file changed, 1 deletion(-)
+> +	/*
+> +	 * fw_caps 1st bit is used to check Generic capability. Other than
+> +	 * that the 1:4 bits are used for various LPM capabilities.
+> +	 * The API is buggy on SYSFW 9.00 and below, on some devices.
+> +	 * Hence, to avoid any sort of bugs arising due to garbage values
+> +	 * Let's allow the fw_caps to be set to whatever the firmware
+> +	 * says only on devices listed under has_lpm. These devices should
+> +	 * have lpm features tested and implemented in the firmware
+> +	 * and only then should they be added to has_lpm struct.
+> +	 * Otherwise, set the value to 1 that is the default.
+> +	 */
+> +	if (fw_caps && soc_device_match(has_lpm))
+> +		*fw_caps = resp->fw_caps;
+> +	else
+> +		*fw_caps = resp->fw_caps & MSG_FLAG_CAPS_GENERIC;
 
-diff --git a/drivers/regulator/bd71815-regulator.c b/drivers/regulator/bd71815-regulator.c
-index 475b1e0110e7..26192d55a685 100644
---- a/drivers/regulator/bd71815-regulator.c
-+++ b/drivers/regulator/bd71815-regulator.c
-@@ -18,7 +18,6 @@
- #include <linux/regulator/driver.h>
- #include <linux/delay.h>
- #include <linux/slab.h>
--#include <linux/gpio.h>
- #include <linux/mfd/rohm-generic.h>
- #include <linux/mfd/rohm-bd71815.h>
- #include <linux/regulator/of_regulator.h>
+Fix your firmware please. drop the has_lpm stuff.. that is what caps is
+for.
+
+As part of ti_sci_setup_ops you get info where you can check ABI version
+where this is valid and which is not, ti_sci_msg_cmd_query_fw_caps can
+be populated based on that check. That is the reason info is passed to
+setup_ops and why we have ABI IDs in the first place.
+
+[...]
 
 -- 
-2.34.1
-
+Regards,
+Nishanth Menon
+Key (0xDDB5849D1736249D) / Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
