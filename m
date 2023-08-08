@@ -2,68 +2,63 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 51958774055
-	for <lists+linux-omap@lfdr.de>; Tue,  8 Aug 2023 19:02:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C232774296
+	for <lists+linux-omap@lfdr.de>; Tue,  8 Aug 2023 19:47:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234000AbjHHRBy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 8 Aug 2023 13:01:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48030 "EHLO
+        id S232893AbjHHRqv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 8 Aug 2023 13:46:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53016 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232884AbjHHRBO (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 8 Aug 2023 13:01:14 -0400
+        with ESMTP id S231458AbjHHRpp (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 8 Aug 2023 13:45:45 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 088F3869F;
-        Tue,  8 Aug 2023 09:00:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4F1F9005;
+        Tue,  8 Aug 2023 09:20:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 06CDF624B9;
-        Tue,  8 Aug 2023 11:14:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F348C433C8;
-        Tue,  8 Aug 2023 11:14:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E8A74624D4;
+        Tue,  8 Aug 2023 11:28:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FF5CC433C8;
+        Tue,  8 Aug 2023 11:28:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691493253;
-        bh=sAm2uSemSdC7wo/jlRjYJ6TC3JrZAOV8ZIf3L52huEw=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=nD1Ge5TLwwUninYbo3LAr0Vwj7Jh+T8C+vA+AlwjT909+AnRdMBs5A9E14/i1xDmi
-         mkoQdDUr+CsBIKRIfuuwC7pAPoYSioeMVwRskQs5C9KTfV05UA1klPeC2/ruFXx+XK
-         JC13mY2VMGpVA2eqiAY9CBeyn3ogsoWVpTddmPrUukGffbW52RgbH5JvUamk2+82Ol
-         z2zUHPg/S4USpNKmU/oYiIDToCaStJ6pOYTYdkVvZcsnFxBV0BdHX/bZKjeyYRhC4v
-         CBchh0H89gKTASPRL7C6ZGBJPt6APzWNY0xBlZ9WIJWqPS+3jBsIxpPWpmaY4Y6E4v
-         AKeTNbvvGuw6A==
-Message-ID: <a333e70a-88ba-750d-34ce-6c8fa91e355b@kernel.org>
-Date:   Tue, 8 Aug 2023 14:14:06 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH v2 5/5] net: ti: icssg-prueth: am65x SR2.0 add 10M full
- duplex support
-Content-Language: en-US
-To:     MD Danish Anwar <danishanwar@ti.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Simon Horman <simon.horman@corigine.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Richard Cochran <richardcochran@gmail.com>,
+        s=k20201202; t=1691494108;
+        bh=UkivAZmLW9i4huYTFXBK1YV0BryRlhOAytfJztzlggU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=rZ97j+5hLGMVbKHdZ1aViwNCvIbQgg/S4qMWRigfT01dPG1Vgt0pod5bCV01KlhCF
+         BvXzq0suUk+PXfRLLZE0JUfG1i4EirOSb3gBQjc+/dZjEL6IACywl3JXwyQtNtEX1/
+         LCtoht/QdFfiEkLInSeta+ki3qbeB3QJ9wPHEHXLZ585G8ei3+jn2IhPLVJ92/DOZj
+         rn5l+5kXMEEFl6hctodJT7YHMHHPXDNy3ks9K6zDJwONIeFhljJuUJ2hAjOKN9OTD+
+         kw1yHnBoeZx0iuHp6rk0FJWBVxDBYsweTNPDpRYM7blAT8ebE+mmPlfrJnIOjz1m9F
+         xwNHfa4Qv9lyw==
+Date:   Tue, 8 Aug 2023 12:28:22 +0100
+From:   Conor Dooley <conor@kernel.org>
+To:     Md Danish Anwar <a0501179@ti.com>
+Cc:     MD Danish Anwar <danishanwar@ti.com>, Suman Anna <s-anna@ti.com>,
         Conor Dooley <conor+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>
-Cc:     nm@ti.com, srk@ti.com, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, netdev@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-References: <20230807110048.2611456-1-danishanwar@ti.com>
- <20230807110048.2611456-6-danishanwar@ti.com>
-From:   Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <20230807110048.2611456-6-danishanwar@ti.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-remoteproc@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, vigneshr@ti.com, srk@ti.com,
+        nm@ti.com
+Subject: Re: [PATCH] dt-bindings: remoteproc: pru: Add Interrupt property
+Message-ID: <20230808-bazooka-uncoated-a3401d94b063@spud>
+References: <20230807110836.2612730-1-danishanwar@ti.com>
+ <20230807-euphemism-trailing-ef4130dc7437@spud>
+ <910a4a98-712a-5517-5a5b-ffb962f83463@ti.com>
+ <20230808-unwomanly-generic-67d20f0e51cd@spud>
+ <cd74e31f-8bc6-445b-9c33-51e53a439cd2@ti.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="NwSvyREEgDmJNJA5"
+Content-Disposition: inline
+In-Reply-To: <cd74e31f-8bc6-445b-9c33-51e53a439cd2@ti.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -73,164 +68,94 @@ List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
 
+--NwSvyREEgDmJNJA5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 07/08/2023 14:00, MD Danish Anwar wrote:
-> From: Grygorii Strashko <grygorii.strashko@ti.com>
-> 
-> For AM65x SR2.0 it's required to enable IEP1 in raw 64bit mode which is
-> used by PRU FW to monitor the link and apply w/a for 10M link issue.
-> Note. No public errata available yet.
-> 
-> Without this w/a the PRU FW will stuck if link state changes under TX
-> traffic pressure.
-> 
-> Hence, add support for 10M full duplex for AM65x SR2.0:
->  - add new IEP API to enable IEP, but without PTP support
->  - add pdata quirk_10m_link_issue to enable 10M link issue w/a.
-> 
-> Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
-> Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
-> Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
-> ---
->  drivers/net/ethernet/ti/icssg/icss_iep.c     | 26 ++++++++++++++++++++
->  drivers/net/ethernet/ti/icssg/icss_iep.h     |  2 ++
->  drivers/net/ethernet/ti/icssg/icssg_config.c |  6 +++++
->  drivers/net/ethernet/ti/icssg/icssg_prueth.c | 17 +++++++++++--
->  4 files changed, 49 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/ti/icssg/icss_iep.c b/drivers/net/ethernet/ti/icssg/icss_iep.c
-> index 455c803dea36..527f17430f05 100644
-> --- a/drivers/net/ethernet/ti/icssg/icss_iep.c
-> +++ b/drivers/net/ethernet/ti/icssg/icss_iep.c
-> @@ -721,6 +721,32 @@ void icss_iep_put(struct icss_iep *iep)
->  }
->  EXPORT_SYMBOL_GPL(icss_iep_put);
->  
-> +void icss_iep_init_fw(struct icss_iep *iep)
-> +{
-> +	/* start IEP for FW use in raw 64bit mode, no PTP support */
-> +	iep->clk_tick_time = iep->def_inc;
-> +	iep->cycle_time_ns = 0;
-> +	iep->ops = NULL;
-> +	iep->clockops_data = NULL;
-> +	icss_iep_set_default_inc(iep, iep->def_inc);
-> +	icss_iep_set_compensation_inc(iep, iep->def_inc);
-> +	icss_iep_set_compensation_count(iep, 0);
-> +	regmap_write(iep->map, ICSS_IEP_SYNC_PWIDTH_REG, iep->refclk_freq / 10); /* 100 ms pulse */
-> +	regmap_write(iep->map, ICSS_IEP_SYNC0_PERIOD_REG, 0);
-> +	if (iep->plat_data->flags & ICSS_IEP_SLOW_COMPEN_REG_SUPPORT)
-> +		icss_iep_set_slow_compensation_count(iep, 0);
-> +
-> +	icss_iep_enable(iep);
-> +	icss_iep_settime(iep, 0);
-> +}
-> +EXPORT_SYMBOL_GPL(icss_iep_init_fw);
-> +
-> +void icss_iep_exit_fw(struct icss_iep *iep)
-> +{
-> +	icss_iep_disable(iep);
-> +}
-> +EXPORT_SYMBOL_GPL(icss_iep_exit_fw);
-> +
->  int icss_iep_init(struct icss_iep *iep, const struct icss_iep_clockops *clkops,
->  		  void *clockops_data, u32 cycle_time_ns)
->  {
-> diff --git a/drivers/net/ethernet/ti/icssg/icss_iep.h b/drivers/net/ethernet/ti/icssg/icss_iep.h
-> index 9c7f4d0a0916..803a4b714893 100644
-> --- a/drivers/net/ethernet/ti/icssg/icss_iep.h
-> +++ b/drivers/net/ethernet/ti/icssg/icss_iep.h
-> @@ -35,5 +35,7 @@ int icss_iep_exit(struct icss_iep *iep);
->  int icss_iep_get_count_low(struct icss_iep *iep);
->  int icss_iep_get_count_hi(struct icss_iep *iep);
->  int icss_iep_get_ptp_clock_idx(struct icss_iep *iep);
-> +void icss_iep_init_fw(struct icss_iep *iep);
-> +void icss_iep_exit_fw(struct icss_iep *iep);
->  
->  #endif /* __NET_TI_ICSS_IEP_H */
-> diff --git a/drivers/net/ethernet/ti/icssg/icssg_config.c b/drivers/net/ethernet/ti/icssg/icssg_config.c
-> index ab648d3efe85..4c2b5d496670 100644
-> --- a/drivers/net/ethernet/ti/icssg/icssg_config.c
-> +++ b/drivers/net/ethernet/ti/icssg/icssg_config.c
-> @@ -210,6 +210,9 @@ void icssg_config_ipg(struct prueth_emac *emac)
->  	case SPEED_100:
->  		icssg_mii_update_ipg(prueth->mii_rt, slice, MII_RT_TX_IPG_100M);
->  		break;
-> +	case SPEED_10:
-> +		icssg_mii_update_ipg(prueth->mii_rt, slice, MII_RT_TX_IPG_100M);
-> +		break;
->  	default:
->  		/* Other links speeds not supported */
->  		netdev_err(emac->ndev, "Unsupported link speed\n");
-> @@ -440,6 +443,9 @@ void icssg_config_set_speed(struct prueth_emac *emac)
->  	case SPEED_100:
->  		fw_speed = FW_LINK_SPEED_100M;
->  		break;
-> +	case SPEED_10:
-> +		fw_speed = FW_LINK_SPEED_10M;
-> +		break;
->  	default:
->  		/* Other links speeds not supported */
->  		netdev_err(emac->ndev, "Unsupported link speed\n");
-> diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.c b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-> index b82a718fd602..216918162960 100644
-> --- a/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-> +++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-> @@ -1131,7 +1131,6 @@ static int emac_phy_connect(struct prueth_emac *emac)
->  
->  	/* remove unsupported modes */
->  	phy_remove_link_mode(ndev->phydev, ETHTOOL_LINK_MODE_10baseT_Half_BIT);
-> -	phy_remove_link_mode(ndev->phydev, ETHTOOL_LINK_MODE_10baseT_Full_BIT);
->  	phy_remove_link_mode(ndev->phydev, ETHTOOL_LINK_MODE_100baseT_Half_BIT);
->  	phy_remove_link_mode(ndev->phydev, ETHTOOL_LINK_MODE_1000baseT_Half_BIT);
->  	phy_remove_link_mode(ndev->phydev, ETHTOOL_LINK_MODE_Pause_BIT);
-> @@ -2081,13 +2080,20 @@ static int prueth_probe(struct platform_device *pdev)
->  		goto free_pool;
->  	}
->  
-> +	if (prueth->pdata.quirk_10m_link_issue) {
-> +		/* Enable IEP1 for FW in 64bit mode as W/A for 10M FD link detect issue under TX
-> +		 * traffic.
-> +		 */
-> +		icss_iep_init_fw(prueth->iep1);
+On Tue, Aug 08, 2023 at 04:30:32PM +0530, Md Danish Anwar wrote:
+> On 08/08/23 4:18 pm, Conor Dooley wrote:
+> > On Tue, Aug 08, 2023 at 03:14:31PM +0530, Md Danish Anwar wrote:
+> >> On 07/08/23 8:09 pm, Conor Dooley wrote:
+> >>> On Mon, Aug 07, 2023 at 04:38:36PM +0530, MD Danish Anwar wrote:
+> >>>> Add interrupts and interrupt-names protperties for PRU and RTU cores.
+> >>>>
+> >>>> Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
+> >>>> ---
+> >>>>  .../bindings/remoteproc/ti,pru-rproc.yaml     | 22 ++++++++++++++++=
++++
+> >>>>  1 file changed, 22 insertions(+)
+> >>>>
+> >>>> diff --git a/Documentation/devicetree/bindings/remoteproc/ti,pru-rpr=
+oc.yaml b/Documentation/devicetree/bindings/remoteproc/ti,pru-rproc.yaml
+> >>>> index cd55d80137f7..6970316943bb 100644
+> >>>> --- a/Documentation/devicetree/bindings/remoteproc/ti,pru-rproc.yaml
+> >>>> +++ b/Documentation/devicetree/bindings/remoteproc/ti,pru-rproc.yaml
+> >>>> @@ -66,6 +66,16 @@ properties:
+> >>>>        Should contain the name of the default firmware image
+> >>>>        file located on the firmware search path.
+> >>>> =20
+> >>>> +  interrupts:
+> >>>> +    maxItems: 1
+> >>>> +    description:
+> >>>> +      Interrupt specifiers enable the virtio/rpmsg communication be=
+tween MPU
+> >>>> +      and the PRU/RTU cores.
+> >>>> +
+> >>>> +  interrupt-names:
+> >>>> +    items:
+> >>>> +      - const: vring
+> >>>> +
+> >>>>  if:
+> >>>>    properties:
+> >>>>      compatible:
+> >>>> @@ -171,6 +181,9 @@ examples:
+> >>>>                <0x22400 0x100>;
+> >>>>          reg-names =3D "iram", "control", "debug";
+> >>>>          firmware-name =3D "am65x-pru0_0-fw";
+> >>>> +        interrupt-parent =3D <&icssg0_intc>;
+> >>>> +        interrupts =3D <16 2 2>;
+> >>>> +        interrupt-names =3D "vring";
+> >>>>        };
+> >>>
+> >>> These examples would probably be more helpful if they used the
+> >>> appropriate defines, no?
+> >>>
+> >>
+> >> PRUSS Interrupt controller doesn't have any appropriate defines. This =
+doesn't
+> >> use GIC so defines from arm-gic.h can not be used here. These are spec=
+ific to
+> >> PRUSS INTC.
+> >=20
+> > I was deliberately vague in case the gic stuff applied too, but my main
+> > question was about the standard defines used for interrupt types.
+> >=20
+>=20
+> There are no standard defines for these interrupt types. However I can cr=
+eate a
+> new .h file defining all the three interrupt cells and their values for b=
+oth
+> PRU and RTU cores if you think that is required. Otherwise we can go with
+> hardcoded values.
+>=20
+> Please let me know what you think should be done here.
 
-This is the only place where IEP1 is used.
-You should add all IEP1 related code in this patch.
+It'd be good to reference to the documentation for the cells, I don't
+think adding a header is necessary here.
 
-> +	}
-> +
->  	/* setup netdev interfaces */
->  	if (eth0_node) {
->  		ret = prueth_netdev_init(prueth, eth0_node);
->  		if (ret) {
->  			dev_err_probe(dev, ret, "netdev init %s failed\n",
->  				      eth0_node->name);
-> -			goto netdev_exit;
-> +			goto exit_iep;
->  		}
->  		prueth->emac[PRUETH_MAC0]->iep = prueth->iep0;
->  	}
-> @@ -2158,6 +2164,10 @@ static int prueth_probe(struct platform_device *pdev)
->  		prueth_netdev_exit(prueth, eth_node);
->  	}
->  
-> +exit_iep:
-> +	if (prueth->pdata.quirk_10m_link_issue)
-> +		icss_iep_exit_fw(prueth->iep1);
-> +
->  free_pool:
->  	gen_pool_free(prueth->sram_pool,
->  		      (unsigned long)prueth->msmcram.va, msmc_ram_size);
-> @@ -2203,6 +2213,9 @@ static void prueth_remove(struct platform_device *pdev)
->  		prueth_netdev_exit(prueth, eth_node);
->  	}
->  
-> +	if (prueth->pdata.quirk_10m_link_issue)
-> +		icss_iep_exit_fw(prueth->iep1);
-> +
->  	icss_iep_put(prueth->iep1);
->  	icss_iep_put(prueth->iep0);
->  
+Thanks,
+Conor.
 
--- 
-cheers,
--roger
+--NwSvyREEgDmJNJA5
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZNIm1gAKCRB4tDGHoIJi
+0tOtAQCfCBZovM5h/DFSNCYnfyXE2fsxd2ohVBEMEPk/DVcwhgD/Q16z85gw+G0U
+S6cjm/OHhUkYWI+it8xAji3FtYYPCwY=
+=oc4g
+-----END PGP SIGNATURE-----
+
+--NwSvyREEgDmJNJA5--
