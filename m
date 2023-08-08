@@ -2,60 +2,54 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E20E774AAF
-	for <lists+linux-omap@lfdr.de>; Tue,  8 Aug 2023 22:33:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE130774EA3
+	for <lists+linux-omap@lfdr.de>; Wed,  9 Aug 2023 00:49:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233931AbjHHUd0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 8 Aug 2023 16:33:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39462 "EHLO
+        id S231374AbjHHWty (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 8 Aug 2023 18:49:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51332 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234747AbjHHUdH (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 8 Aug 2023 16:33:07 -0400
+        with ESMTP id S229884AbjHHWty (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 8 Aug 2023 18:49:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B95E5AC6E;
-        Tue,  8 Aug 2023 10:02:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 163341FD8;
+        Tue,  8 Aug 2023 15:49:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3697F61AA9;
-        Tue,  8 Aug 2023 17:02:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9664C433CA;
-        Tue,  8 Aug 2023 17:02:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D8AD662E00;
+        Tue,  8 Aug 2023 22:49:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12891C433C7;
+        Tue,  8 Aug 2023 22:49:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691514155;
-        bh=ATXpfxlq2nkVzaslrJEtPL7Am1LPKQ5nq2x9hWexo9A=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=VqehRm5FttgFzXgTZNvxsHCKo6dwAPk9EklpjDPrze+zGQ+Q8VGADnGr1umjHfufn
-         54ZxjciXNdsAUhOnNio5g1VoPdfLfz8bb232ZZun7gZLuTw0nO1HPzD27FrjK0Gv70
-         quYZ5DCR+obScBWw/Z7bS+2kGU0POXpNeFX+Bf0VwNrRC7JZTV9emjZK/OUNADAQDV
-         /hdPRsou1GAGvQyzTD1Z9y2gxhfdD1TBXuHkVQ3/Q9vQ7nNIyDaPBuCnNTUtNM8St/
-         eODKIgaOXVmx71/hIp17f4x9k0FaIwkj0La8EvHUr8jjjcl207KBfeNcHy2UhNztrz
-         dgJdKXDILsQ/w==
-From:   Mark Brown <broonie@kernel.org>
-To:     Tony Lindgren <tony@atomide.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Matti Vaittinen <mazziesaccount@gmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>
-Cc:     linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org
-In-Reply-To: <20230808-descriptors-regulator-v1-0-939b5e84dd18@linaro.org>
-References: <20230808-descriptors-regulator-v1-0-939b5e84dd18@linaro.org>
-Subject: Re: [PATCH 00/11] Regulator legacy GPIO header removal
-Message-Id: <169151415259.72832.7760300817402372059.b4-ty@kernel.org>
-Date:   Tue, 08 Aug 2023 18:02:32 +0100
+        s=k20201202; t=1691534952;
+        bh=vazB5ubdA1Xae9qWpSwshgsUyH+SQh5z62VSNnbq7aA=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=oaoP151C3Thr8C+TVhNJJF3Uh7I/I/tkRw6LH57T6uC4CJ45XHol+7CqPzxhm41CM
+         h5Xb2UYDOJWFnQiSYOOkEa78Y7NXBjVXizlET2owFcyktNZluqVlGgXH7dL1F0QFv3
+         7eY4AXTwgWjB2yzyjqQVJ2izoI7f/p3hVDiH+91W6kMI7DL2lTzp8vJDbWECaSUr+k
+         3QO/856nhXkzPj8XLzpqIJdk3w4EPwhL8Nfp69hN2JfGKs4S4g+JRl0onx/XNNWkm7
+         rgZ9C3vwbB1JBhwRwteiZXb5je6FJ3PEwWmRbMRAazUgz3kshmF5NI90KLYDhllBqP
+         ZEufbfeSWwzyQ==
+Date:   Tue, 8 Aug 2023 17:49:10 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     "Verma, Achal" <a-verma1@ti.com>
+Cc:     Vignesh Raghavendra <vigneshr@ti.com>,
+        Tom Joseph <tjoseph@cadence.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Krzysztof Wilczy_ski <kw@linux.com>,
+        Rob Herring <robh@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [EXTERNAL] Re: [PATCH] PCI: cadence: Set the AFS bit in Device
+ Capabilities 2 Register
+Message-ID: <20230808224910.GA334895@bhelgaas>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13-dev-034f2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c95cd3e2-8cc0-cc65-9d62-2edb23adc292@ti.com>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -65,57 +59,106 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, 08 Aug 2023 15:46:27 +0200, Linus Walleij wrote:
-> This removes some low hanging dangling <linux/gpio.h>
-> includes.
+On Fri, Aug 04, 2023 at 01:22:56PM +0530, Verma, Achal wrote:
+> On 8/2/2023 9:49 PM, Bjorn Helgaas wrote:
+> > In subject, "Advertise ARI Forwarding Supported".
+> Ok
+> > 
+> > It's not obvious that "AFS" refers to ARI Forwarding Supported, and
+> > the bit name is enough; we don't need to know that it's in Dev Cap 2.
+> > "Advertise" shows that we're just *advertising* the functionality, not
+> > *enabling* it.
+> > 
+> > On Wed, Aug 02, 2023 at 04:00:59PM +0530, Achal Verma wrote:
+> > > J7 PCIe Root Complex has ARI Forwarding Support, means supporting
+> > > forwarding of TLPs addressed to functions with function number greater than
+> > > 7 but some PCIe instances on J7 have this bit cleared which results in
+> > > failure of forwarding of TLPs destined for function number > 7.
+> > > Setting the AFS bit in Device Capabilities 2 Register explicitly, resolves
+> > > the issue and leads to successful access to function number > 7.
+> > 
+> > s/AFS/ARI Forwarding Supported/
+> > 
+> > > Some observations:
+> > > 1. J7200-EVB has single PCIe instance(PCIe1) for which ARIFwd bit is not
+> > >     set. Enumeration gracefully fails for funciton number greater than 7 but
+> > >     later read/write access to these funcitons results in a crash.
+> > 
+> > By "ARIFwd bit" here, I assume you mean PCI_EXP_DEVCAP2_ARI in the Root
+> > Port?  Maybe you can use the #define to make this more greppable.
+> > 
+> will replace with PCI_EXP_DEVCAP2_ARI
+> > s/funciton/function/ (twice)
+> > 
+> > If we don't enumerate function numbers greater than 7, we shouldn't
+> > have pci_dev structs for them, so why are there later read/write
+> > config accesses to them?
+> > 
+> > If the Root Port doesn't advertise ARI Forwarding Supported,
+> > bridge->ari_enabled will not be set, and we shouldn't even try to
+> > enumerate functions greater than 7.  So it's not that enumeration
+> > *fails*; it just doesn't happen at all.
+> > 
+> > > 2. On J721E-EVB, PCIe1 instance has ARIFwd bit set while it is cleared for
+> > >     PCIe0 instance. This issue combined with errata i2086
+> > >     (Unsupported Request (UR) Response Results in External Abort) results in
+> > >     SERROR while scanning multi-function endpoint device.
+> > 
+> > Is the SERROR when scanning under PCIe0 or under PCIe1?
+> > 
+> > I'm not clear on what's happening here:
+> > 
+> >    1) Root Port advertises PCI_EXP_DEVCAP2_ARI, we set
+> >       bridge->ari_enabled and scan functions > 7, we do a config read
+> >       to function 8, get a UR response (as expected during enumeration)
+> >       and that results in SERROR?
+> > 
+> >    2) Root Port *doesn't* advertise PCI_EXP_DEVCAP2_ARI, we don't set
+> >       bridge->ari_enabled, so we don't try config read to function 8,
+> >       and something blows up later?
+> > 
+> >    3) Something else?
+> > 
+> Hello Bjorn,
 > 
+> There are multiple issues which are leading to different behavior on
+> different platforms.
 > 
+> 1. PCI_EXP_DEVCAP2_ARI is not set.
+> 
+> Consider scenario:
+> J7200 (RC) --- J721E (EP with 1 PF and 4 VFs)
+> 
+> PF enumerates successfully on J7200 but bringing up 4 associated VFs (echo 4
+> > /sys/bus/pci/devices/<device>/sriov_numvfs) doesn't workout. First VF gets
+> devfn = 6 and then +1 for next one on wards. 6 and 7 are setup fine but 8
+> and 9 fails and UR is received while accessing them. Accessing VFs > 7
+> doesn't go through the ARI support check and directly calls
+> pci_setup_device(). So, since PCI_EXP_DEVCAP2_ARI is not set, unable to
+> access VFs > 7.
+> 
+> do_serror+0x34/0x88
+> el1_error+0x8c/0x10c
+> pci_generic_config_read+0x90/0xd0
+> cdns_ti_pcie_config_read+0x14/0x28
+> pci_bus_read_config_word+0x78/0xd0
+> __pci_bus_find_cap_start+0x2c/0x78
+> pci_find_capability+0x38/0x90
+> set_pcie_port_type+0x2c/0x150
+> pci_setup_device+0x90/0x728
+> pci_iov_add_virtfn+0xe4/0x2e0
+> sriov_enable+0x1f0/0x440
+> pci_sriov_configure_simple+0x34/0x80
+> sriov_numvfs_store+0xa4/0x190
 
-Applied to
+Thanks!  Obviously you should make the Root Port advertise
+PCI_EXP_DEVCAP2_ARI if you want to use that functionality.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-next
+But I think the fact that we add a device with fn > 7 when ARI is not
+enabled is also an underlying defect in iov.c.  
 
-Thanks!
+sriov_init() already checks whether ARI is enabled, and I think we
+should probably remember that somewhere and use it in
+pci_iov_add_virtfn() to avoid adding VFs with fn > 7.
 
-[01/11] regulator: tps65910: Drop useless header
-        commit: 9b966639b0cc742a9c4b6329a8e27128e4424cf1
-[02/11] regulator: s2mpa01: Drop useless header
-        commit: d0d58fe27b344fb6d0edb5fd2038372b5e5ed95b
-[03/11] regulator: rpi-panel-attiny: Drop useless header
-        commit: 052eff402fb754f3472833cb679ceef954ebf2a0
-[04/11] regulator: rk808: Drop useless headers
-        (no commit info)
-[05/11] regulator: rc5t583: Drop useless header
-        commit: 2f26d97863f05b83b8f7872aff81ecb9d6b76b50
-[06/11] regulator: mt6311: Drop useless header
-        commit: 4eb351fb89d68efeaca3625dccbbf492f5450801
-[07/11] regulator: mcp16502: Drop useless header
-        commit: 2e903eac35ec0ea1f44af5a53d87d98309295fc3
-[08/11] regulator: max20086: Drop useless header
-        commit: d150c73aa233d6469392282ef648dba5fd4b4821
-[09/11] regulator: lp8755: Drop useless header
-        commit: e4d48f64fcd469feeb09fc452f8cd1dfc00b43f6
-[10/11] regulator: bd71828: Drop useless header
-        commit: a5c9a1444088099c6d52939ed2f34049d5d00b5f
-[11/11] regulator: bd71815: Drop useless header
-        commit: f321708da4db6b15a8691dc64b2d5169234937bc
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+Bjorn
