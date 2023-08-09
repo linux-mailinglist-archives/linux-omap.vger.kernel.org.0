@@ -2,38 +2,34 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 231D97756B8
-	for <lists+linux-omap@lfdr.de>; Wed,  9 Aug 2023 11:55:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70F187756BB
+	for <lists+linux-omap@lfdr.de>; Wed,  9 Aug 2023 11:56:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230018AbjHIJzZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 9 Aug 2023 05:55:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58710 "EHLO
+        id S231611AbjHIJ4i (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 9 Aug 2023 05:56:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229446AbjHIJzZ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 9 Aug 2023 05:55:25 -0400
+        with ESMTP id S231596AbjHIJ4i (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 9 Aug 2023 05:56:38 -0400
 Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id BC22C1FCA;
-        Wed,  9 Aug 2023 02:55:24 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 0F0538105;
-        Wed,  9 Aug 2023 09:55:24 +0000 (UTC)
-Date:   Wed, 9 Aug 2023 12:55:22 +0300
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id F21D21FDE;
+        Wed,  9 Aug 2023 02:56:37 -0700 (PDT)
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id 6314A8105;
+        Wed,  9 Aug 2023 09:56:36 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
-To:     Dhruva Gole <d-gole@ti.com>
-Cc:     linux-omap@vger.kernel.org, Dave Gerlach <d-gerlach@ti.com>,
-        Faiz Abbas <faiz_abbas@ti.com>,
+To:     linux-omap@vger.kernel.org
+Cc:     Dhruva Gole <d-gole@ti.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Keerthy <j-keerthy@ti.com>, Kevin Hilman <khilman@baylibre.com>,
         Nishanth Menon <nm@ti.com>, linux-kernel@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2 1/3] bus: ti-sysc: Fix build warning for 64-bit build
-Message-ID: <20230809095522.GG11676@atomide.com>
-References: <20230809092722.11000-1-tony@atomide.com>
- <20230809094059.7dzf7kihenxoor47@dhruva>
+Subject: [PATCH] bus: ti-sysc: Fix a build warning with W=1 for sysconfig
+Date:   Wed,  9 Aug 2023 12:56:33 +0300
+Message-ID: <20230809095633.34025-1-tony@atomide.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230809094059.7dzf7kihenxoor47@dhruva>
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
@@ -43,17 +39,25 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Dhruva Gole <d-gole@ti.com> [230809 09:41]:
-> Maybe something unrelated to this patch, but the driver has some minor
-> warning when built with W=1:
-> 
-> make W=1 ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- drivers/bus/ti-sysc.o
-> 
-> drivers/bus/ti-sysc.c:156: warning: Function parameter or member 'sysconfig' not described in 'sysc'
+Dhruva reported a build warning with W=1 for "Function parameter or member
+'sysconfig' not described in 'sysc'". Let's document sysconfig to fix this.
 
-Thanks yes it's unrelated, looks like sysconfig is not documented. I'll
-send a patch for that separately.
+Reported-by: Dhruva Gole <d-gole@ti.com>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+---
+ drivers/bus/ti-sysc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Regards,
-
-Tony
+diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+--- a/drivers/bus/ti-sysc.c
++++ b/drivers/bus/ti-sysc.c
+@@ -109,6 +109,7 @@ static const char * const clock_names[SYSC_MAX_CLOCKS] = {
+  * @cookie: data used by legacy platform callbacks
+  * @name: name if available
+  * @revision: interconnect target module revision
++ * @sysconfig: saved sysconfig register value
+  * @reserved: target module is reserved and already in use
+  * @enabled: sysc runtime enabled status
+  * @needs_resume: runtime resume needed on resume from suspend
+-- 
+2.41.0
