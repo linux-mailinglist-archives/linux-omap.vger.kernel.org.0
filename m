@@ -2,78 +2,80 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6784F776327
-	for <lists+linux-omap@lfdr.de>; Wed,  9 Aug 2023 17:00:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC8207768A2
+	for <lists+linux-omap@lfdr.de>; Wed,  9 Aug 2023 21:25:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231564AbjHIPAn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 9 Aug 2023 11:00:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44950 "EHLO
+        id S233810AbjHITZf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 9 Aug 2023 15:25:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45108 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230044AbjHIPAm (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 9 Aug 2023 11:00:42 -0400
-Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66F6BEE;
-        Wed,  9 Aug 2023 08:00:41 -0700 (PDT)
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 379F0Dbs007717;
-        Wed, 9 Aug 2023 10:00:13 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1691593213;
-        bh=i7bVCI+bG8yEkvK35K3cSP5/2aCwy76gPfSYzYfAe9k=;
-        h=Date:Subject:To:CC:References:From:In-Reply-To;
-        b=DY40GdSO3gGinENEsD+wo4qhSAQ4Yh/Zh7fzsSBrnHd55ucWXGFIWEz3ICZqOsdSR
-         9qd15qSCMEroMBYRk3iuN+Iq4B1dYf7xryM2Imtf3LZ5u58KSmUeZoDuyuULQamhmj
-         f6SmIlj3Tebj/Y9dPd+umScVxV/AiLKnKhfjC884=
-Received: from DLEE108.ent.ti.com (dlee108.ent.ti.com [157.170.170.38])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 379F0Dtv029675
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 9 Aug 2023 10:00:13 -0500
-Received: from DLEE106.ent.ti.com (157.170.170.36) by DLEE108.ent.ti.com
- (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Wed, 9
- Aug 2023 10:00:12 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE106.ent.ti.com
- (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Wed, 9 Aug 2023 10:00:13 -0500
-Received: from [10.250.38.120] (ileaxei01-snat2.itg.ti.com [10.180.69.6])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 379F0BWH057964;
-        Wed, 9 Aug 2023 10:00:11 -0500
-Message-ID: <b43ee5ca-2aab-445a-e24b-cbc95f9186ea@ti.com>
-Date:   Wed, 9 Aug 2023 10:00:11 -0500
+        with ESMTP id S233462AbjHITZU (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 9 Aug 2023 15:25:20 -0400
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D5D54691;
+        Wed,  9 Aug 2023 12:24:17 -0700 (PDT)
+Received: by mail-wm1-x32b.google.com with SMTP id 5b1f17b1804b1-3fe4cdb72b9so993375e9.0;
+        Wed, 09 Aug 2023 12:24:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1691609056; x=1692213856;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=v0OupzEUCI9LUKIXmkOERrh940bGOq6qhg8B+pfcxgs=;
+        b=HV2fSypLOEmAvKFieQ92XaiApHN6K95hfIOek/2M6i8dqTdlYi8Gs9lj1HkpIJ4+DX
+         lYuHRnDZMsPGS9XeEyRwVUodGtUN608KVx2uupAwc95D/Jmx3itbMUgFBqJaf4BuPlJ6
+         UmFI+QOczemah6/HHgs+YXJD/sxerHPhr+EsBfoD2OXxl3uKd+XiTLTYQHyqJ09k8L94
+         NLN/ijhpcV5gvFH4I6KBndXdmkSGILOISdnhuSQymd9Fk84CqubeMTm1nLeNT5xiyRgm
+         q0ZGXb5gNvmHKcdaJ5CF24+F+EVvTtx/y84yiD+A+fv8S7iJIU3ZXWWt1ba69RdWcOoT
+         6VMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691609056; x=1692213856;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=v0OupzEUCI9LUKIXmkOERrh940bGOq6qhg8B+pfcxgs=;
+        b=QzhuKt4oGudelpJ4ly0txl43KWpZxOaNOhn/IEEjrYK5MfgNKKBrI8i3vOiOOWRPsR
+         EHoPf03U4KB0RtWlbezm7u0qRvyyPijc0tGoe3KcirqmHiktJnLBNXWAvNccNyMMNfZc
+         ymZY6evArHRgPPrVB+xU3YGz2F2FpJYK8MFP7X/EMRobrNtDpNyvY12NtLDE4T9z5J8t
+         BIpxq9MI+pnO7gt4m0FvLR+mfMAO46yKsPyLI/wfhWTDEtIiMFfY9qCUTGidvYfTxX7B
+         kzD+N3msQUyPeiIgU50xrEBADM3G8hiAy0PrMrirt3zTtw70CxMkNz4G/aLjrX/h73pa
+         W2Aw==
+X-Gm-Message-State: AOJu0YzFljwbRjlJO9F5fMXJd3cHxO2Ba9Tl7ASehiwpNP6JtAIbQsOB
+        4ZvHFUTpxLiPLHm3l4/rvEA=
+X-Google-Smtp-Source: AGHT+IEDQ0jEC9DLkLjjDcq9vtTgHzcHQeZHytemLaVScSTO7uZiV8+UdY7Oq7vRBWlqUo3xR6nIwQ==
+X-Received: by 2002:a7b:c395:0:b0:3fe:18a3:b3c with SMTP id s21-20020a7bc395000000b003fe18a30b3cmr62612wmj.12.1691609055409;
+        Wed, 09 Aug 2023 12:24:15 -0700 (PDT)
+Received: from [127.0.1.1] ([91.230.2.244])
+        by smtp.gmail.com with ESMTPSA id y9-20020a7bcd89000000b003fba6a0c881sm2776208wmj.43.2023.08.09.12.24.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Aug 2023 12:24:15 -0700 (PDT)
+From:   Benjamin Bara <bbara93@gmail.com>
+Subject: [PATCH v2 0/6] regulator: pca9450: register restart handlers
+Date:   Wed, 09 Aug 2023 21:24:02 +0200
+Message-Id: <20230809-pca9450-reboot-v2-0-b98b4f8139d5@skidata.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v3 3/5] net: ti: icss-iep: Add IEP driver
-Content-Language: en-US
-To:     MD Danish Anwar <danishanwar@ti.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Roger Quadros <rogerq@kernel.org>,
-        Simon Horman <simon.horman@corigine.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>
-CC:     <nm@ti.com>, <srk@ti.com>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>
-References: <20230809114906.21866-1-danishanwar@ti.com>
- <20230809114906.21866-4-danishanwar@ti.com>
-From:   Andrew Davis <afd@ti.com>
-In-Reply-To: <20230809114906.21866-4-danishanwar@ti.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED
+X-B4-Tracking: v=1; b=H4sIANLn02QC/13MQQrCMBCF4auUWRtJppFUV95DukjSiR3EpiShK
+ KV3NxbcuPwfvG+FTIkpw6VZIdHCmeNUAw8N+NFOdxI81AaU2EqDWszenvVJikQuxiKkaxFVF7y
+ xCPU0Jwr82sFbX3vkXGJ67/6ivuuPMv/UooQUvqPBoXFBS33NDx5ssUcfn9Bv2/YB8Pchw64AA
+ AA=
+To:     Lee Jones <lee@kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+        peng.fan@oss.nxp.com, rafael.j.wysocki@intel.com,
+        Jerome Neanne <jneanne@baylibre.com>
+Cc:     linux-kernel@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-omap@vger.kernel.org,
+        Benjamin Bara <benjamin.bara@skidata.com>,
+        Thierry Reding <treding@nvidia.com>
+X-Mailer: b4 0.12.3
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -81,116 +83,60 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 8/9/23 6:49 AM, MD Danish Anwar wrote:
-> From: Roger Quadros <rogerq@ti.com>
-> 
-> Add a driver for Industrial Ethernet Peripheral (IEP) block of PRUSS to
-> support timestamping of ethernet packets and thus support PTP and PPS
-> for PRU ethernet ports.
-> 
-> Signed-off-by: Roger Quadros <rogerq@ti.com>
-> Signed-off-by: Lokesh Vutla <lokeshvutla@ti.com>
-> Signed-off-by: Murali Karicheri <m-karicheri2@ti.com>
-> Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
-> Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
-> ---
->   drivers/net/ethernet/ti/Kconfig          |  12 +
->   drivers/net/ethernet/ti/Makefile         |   1 +
->   drivers/net/ethernet/ti/icssg/icss_iep.c | 935 +++++++++++++++++++++++
->   drivers/net/ethernet/ti/icssg/icss_iep.h |  38 +
->   4 files changed, 986 insertions(+)
->   create mode 100644 drivers/net/ethernet/ti/icssg/icss_iep.c
->   create mode 100644 drivers/net/ethernet/ti/icssg/icss_iep.h
-> 
-> diff --git a/drivers/net/ethernet/ti/Kconfig b/drivers/net/ethernet/ti/Kconfig
-> index 63e510b6860f..88b5b1b47779 100644
-> --- a/drivers/net/ethernet/ti/Kconfig
-> +++ b/drivers/net/ethernet/ti/Kconfig
-> @@ -186,6 +186,7 @@ config CPMAC
->   config TI_ICSSG_PRUETH
->   	tristate "TI Gigabit PRU Ethernet driver"
->   	select PHYLIB
-> +	select TI_ICSS_IEP
+Hi!
 
-Why not save selecting this until you add its use in the ICSSG_PRUETH driver in the next patch.
+This series implements two restart handler registrations for the pca9450
+(6/6). As the pca9450 supports both, cold and warm resets, and there
+exist at least one other PMIC implementation which also implements a
+warm and a cold reset (tps65219), 1-5/6 should simplify/clarify the
+distinction process between warm/soft and cold/hard resets/restarts.
+Instead of deciding in the handler, this should be done during
+registration. The series is a follow-up to Dmitry's feedback, regarding
+checking the reboot_mode in the handler [1].
 
-[...]
+As the cold handler queue is executed before the warm handler queue
+(when the reboot_mode is not changed/specified), cold handlers are
+implicitly executed with a higher prio and therefore the default
+registration can be used.
 
-> +
-> +static u32 icss_iep_readl(struct icss_iep *iep, int reg)
-> +{
-> +	return readl(iep->base + iep->plat_data->reg_offs[reg]);
-> +}
+This series is based on linux-next and 6/6 depends on [2].
 
-Do these one line functions really add anything? Actually why
-not use the regmap you have here.
+Thanks & best regards,
+Benjamin
 
-[...]
+[1] https://lore.kernel.org/all/7eddaf8c-ab04-7670-fc45-15f0fce5eff2@collabora.com/
+[2] https://lore.kernel.org/all/20230327-tegra-pmic-reboot-v7-3-18699d5dcd76@skidata.com/
 
-> +static void icss_iep_enable(struct icss_iep *iep)
-> +{
-> +	regmap_update_bits(iep->map, ICSS_IEP_GLOBAL_CFG_REG,
-> +			   IEP_GLOBAL_CFG_CNT_ENABLE,
-> +			   IEP_GLOBAL_CFG_CNT_ENABLE);
+---
+Changes in v2:
+- rebase to next-20230809
+- improve commit messages
+- use helper (with implicit priority) instead of explicit priority
+- fallback to warm handler if hard/cold requested but failed
+- Link to v1: https://lore.kernel.org/r/20230727-pca9450-reboot-v1-0-c8edb27bf404@skidata.com
 
-Have you looked into regmap_fields?
+---
+Benjamin Bara (6):
+      kernel/reboot: distinguish between cold and warm
+      mfd: rk8xx: Specify restart mode
+      soc/tegra: pmc: Specify restart mode
+      mfd: tps65219: Specify restart mode
+      kernel/reboot: remove generic restart mode
+      regulator: pca9450: register restart handlers
 
-[...]
+ drivers/mfd/rk8xx-core.c              |  6 +--
+ drivers/mfd/tps65219.c                | 17 +++++--
+ drivers/regulator/pca9450-regulator.c | 59 ++++++++++++++++++++++++
+ drivers/soc/tegra/pmc.c               |  2 +-
+ include/linux/reboot.h                | 23 +++++++---
+ include/linux/regulator/pca9450.h     |  7 +++
+ kernel/reboot.c                       | 84 +++++++++++++++++++++++++++++------
+ 7 files changed, 170 insertions(+), 28 deletions(-)
+---
+base-commit: 21ef7b1e17d039053edaeaf41142423810572741
+change-id: 20230724-pca9450-reboot-0b32218fc7a2
 
-> +
-> +	if (!!(iep->latch_enable & BIT(index)) == !!on)
-> +		goto exit;
-> +
+Best regards,
+-- 
+Benjamin Bara <benjamin.bara@skidata.com>
 
-There has to be a better way to write this logic..
-
-[...]
-
-> +
-> +static const struct of_device_id icss_iep_of_match[];
-> +
-
-Why the forward declaration?
-
-> +static int icss_iep_probe(struct platform_device *pdev)
-> +{
-> +	struct device *dev = &pdev->dev;
-> +	struct icss_iep *iep;
-> +	struct clk *iep_clk;
-> +
-> +	iep = devm_kzalloc(dev, sizeof(*iep), GFP_KERNEL);
-> +	if (!iep)
-> +		return -ENOMEM;
-> +
-> +	iep->dev = dev;
-> +	iep->base = devm_platform_ioremap_resource(pdev, 0);
-> +	if (IS_ERR(iep->base))
-> +		return -ENODEV;
-> +
-> +	iep_clk = devm_clk_get(dev, NULL);
-> +	if (IS_ERR(iep_clk))
-> +		return PTR_ERR(iep_clk);
-> +
-> +	iep->refclk_freq = clk_get_rate(iep_clk);
-> +
-> +	iep->def_inc = NSEC_PER_SEC / iep->refclk_freq;	/* ns per clock tick */
-> +	if (iep->def_inc > IEP_MAX_DEF_INC) {
-> +		dev_err(dev, "Failed to set def_inc %d.  IEP_clock is too slow to be supported\n",
-> +			iep->def_inc);
-> +		return -EINVAL;
-> +	}
-> +
-> +	iep->plat_data = of_device_get_match_data(dev);
-
-Directly using of_*() functions is often wrong, try just device_get_match_data().
-
-[...]
-
-> +static struct platform_driver icss_iep_driver = {
-> +	.driver = {
-> +		.name = "icss-iep",
-> +		.of_match_table = of_match_ptr(icss_iep_of_match),
-
-This driver cannot work without OF, using of_match_ptr() is not needed.
-
-Andrew
