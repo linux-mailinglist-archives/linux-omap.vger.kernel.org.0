@@ -2,53 +2,52 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A3D187777EA
-	for <lists+linux-omap@lfdr.de>; Thu, 10 Aug 2023 14:13:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 836837778D8
+	for <lists+linux-omap@lfdr.de>; Thu, 10 Aug 2023 14:53:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234776AbjHJMM0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 10 Aug 2023 08:12:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42996 "EHLO
+        id S235437AbjHJMx2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 10 Aug 2023 08:53:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234749AbjHJMMZ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 10 Aug 2023 08:12:25 -0400
-Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4841726B1;
-        Thu, 10 Aug 2023 05:12:24 -0700 (PDT)
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 37ACBomG032763;
-        Thu, 10 Aug 2023 07:11:50 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1691669510;
-        bh=kp91PrHjs1WM2izjm0PgsCJNWBWSWA0box+2Wy3ZnrE=;
-        h=Date:Subject:To:CC:References:From:In-Reply-To;
-        b=XsAvofXzE+8SlfTElobc6QnbOXudvzJK3htRtSRwFdQNsfDOXzFGGCw3TBEpBstCa
-         wKycc0GXtMxheZMjBPBz1jt1DOkkt1BMhq52hru8D9e+wL+egiERvoZ15kuVS72WhL
-         5z3ebMIZ461tW41KzayigKVD3FbmohSGlmxpe8FI=
-Received: from DLEE100.ent.ti.com (dlee100.ent.ti.com [157.170.170.30])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 37ACBoDT084799
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 10 Aug 2023 07:11:50 -0500
-Received: from DLEE100.ent.ti.com (157.170.170.30) by DLEE100.ent.ti.com
- (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 10
- Aug 2023 07:11:49 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE100.ent.ti.com
- (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Thu, 10 Aug 2023 07:11:49 -0500
-Received: from [172.24.227.217] (ileaxei01-snat.itg.ti.com [10.180.69.5])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 37ACBh8u006339;
-        Thu, 10 Aug 2023 07:11:44 -0500
-Message-ID: <80071066-bec4-c2dd-8ad3-932e8d9e27c1@ti.com>
-Date:   Thu, 10 Aug 2023 17:41:43 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v3 3/5] net: ti: icss-iep: Add IEP driver
-Content-Language: en-US
-To:     Roger Quadros <rogerq@kernel.org>, Andrew Davis <afd@ti.com>,
+        with ESMTP id S233199AbjHJMx1 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 10 Aug 2023 08:53:27 -0400
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6748026A8;
+        Thu, 10 Aug 2023 05:53:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1691672006; x=1723208006;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=mJ+/b00F9kPexO4v/gdgxth24IwvwYtglje3VG8O1nU=;
+  b=ycsRBXovdMOTzEo334IVqLnJ9Z9f8t9kPKsD0boEGnm2ZeihMr1y9OaX
+   381MolbPiH8q3S8xZh7pNzuVwVaFziSjWmUH0G5FQJALXiSg+GJLfi+wN
+   3kIJSiV7Aob5uh0nfJyiOkSX1p9TMR0XgBuWhrdXgCY/vGn32NLNWz6jE
+   4WnjEXNhtrUr8dNuCBb+2lE8yS6NC0LVBEwVT27DpJylmzYEfGtH/nyyN
+   3vU/8Im9KxY8P12CQxWxAlD7N6oFtNP1TuOHh9swcB1ATgnMOZii8PQYE
+   5pnL99tvYIFpNEZ/ZwkiByUqdZo/3VJBqbwk4VMK9FvDAtQHN72I6gRj5
+   w==;
+X-IronPort-AV: E=Sophos;i="6.01,162,1684825200"; 
+   d="asc'?scan'208";a="229166856"
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa2.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 10 Aug 2023 05:53:24 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.21; Thu, 10 Aug 2023 05:52:53 -0700
+Received: from wendy (10.10.115.15) by chn-vm-ex01.mchp-main.com
+ (10.10.85.143) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21 via Frontend
+ Transport; Thu, 10 Aug 2023 05:52:49 -0700
+Date:   Thu, 10 Aug 2023 13:52:11 +0100
+From:   Conor Dooley <conor.dooley@microchip.com>
+To:     Md Danish Anwar <a0501179@ti.com>
+CC:     Conor Dooley <conor@kernel.org>,
         MD Danish Anwar <danishanwar@ti.com>,
         Randy Dunlap <rdunlap@infradead.org>,
+        Roger Quadros <rogerq@kernel.org>,
         Simon Horman <simon.horman@corigine.com>,
         Vignesh Raghavendra <vigneshr@ti.com>,
         Andrew Lunn <andrew@lunn.ch>,
@@ -59,119 +58,132 @@ To:     Roger Quadros <rogerq@kernel.org>, Andrew Davis <afd@ti.com>,
         Paolo Abeni <pabeni@redhat.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>
-CC:     <nm@ti.com>, <srk@ti.com>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>, <nm@ti.com>, <srk@ti.com>,
+        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-omap@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [EXTERNAL] Re: [PATCH v3 1/5] dt-bindings: net: Add ICSS IEP
+Message-ID: <20230810-drippy-draw-8e8a63164e46@wendy>
 References: <20230809114906.21866-1-danishanwar@ti.com>
- <20230809114906.21866-4-danishanwar@ti.com>
- <b43ee5ca-2aab-445a-e24b-cbc95f9186ea@ti.com>
- <c7ddb12d-ae18-5fc2-9729-c88ea73b21d7@ti.com>
- <1b05b4ae-00e7-0f90-9c63-7da8797bdb6a@kernel.org>
-From:   Md Danish Anwar <a0501179@ti.com>
-Organization: Texas Instruments
-In-Reply-To: <1b05b4ae-00e7-0f90-9c63-7da8797bdb6a@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+ <20230809114906.21866-2-danishanwar@ti.com>
+ <20230809-cardboard-falsify-6cc9c09d8577@spud>
+ <0b619ec5-9a86-a449-e8db-b12cca115b93@ti.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="diS/Ua0hOZdswhas"
+Content-Disposition: inline
+In-Reply-To: <0b619ec5-9a86-a449-e8db-b12cca115b93@ti.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 10/08/23 5:35 pm, Roger Quadros wrote:
-> 
-> 
-> On 10/08/2023 14:50, Md Danish Anwar wrote:
->> Hi Andrew,
->>
->> On 09/08/23 8:30 pm, Andrew Davis wrote:
->>> On 8/9/23 6:49 AM, MD Danish Anwar wrote:
->>>> From: Roger Quadros <rogerq@ti.com>
->>>>
->>>> Add a driver for Industrial Ethernet Peripheral (IEP) block of PRUSS to
->>>> support timestamping of ethernet packets and thus support PTP and PPS
->>>> for PRU ethernet ports.
->>>>
->>>> Signed-off-by: Roger Quadros <rogerq@ti.com>
->>>> Signed-off-by: Lokesh Vutla <lokeshvutla@ti.com>
->>>> Signed-off-by: Murali Karicheri <m-karicheri2@ti.com>
->>>> Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
->>>> Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
->>>> ---
->>>>   drivers/net/ethernet/ti/Kconfig          |  12 +
->>>>   drivers/net/ethernet/ti/Makefile         |   1 +
->>>>   drivers/net/ethernet/ti/icssg/icss_iep.c | 935 +++++++++++++++++++++++
->>>>   drivers/net/ethernet/ti/icssg/icss_iep.h |  38 +
->>>>   4 files changed, 986 insertions(+)
->>>>   create mode 100644 drivers/net/ethernet/ti/icssg/icss_iep.c
->>>>   create mode 100644 drivers/net/ethernet/ti/icssg/icss_iep.h
->>>>
->>>> diff --git a/drivers/net/ethernet/ti/Kconfig b/drivers/net/ethernet/ti/Kconfig
->>>> index 63e510b6860f..88b5b1b47779 100644
->>>> --- a/drivers/net/ethernet/ti/Kconfig
->>>> +++ b/drivers/net/ethernet/ti/Kconfig
->>>> @@ -186,6 +186,7 @@ config CPMAC
->>>>   config TI_ICSSG_PRUETH
->>>>       tristate "TI Gigabit PRU Ethernet driver"
->>>>       select PHYLIB
->>>> +    select TI_ICSS_IEP
->>>
->>> Why not save selecting this until you add its use in the ICSSG_PRUETH driver in
->>> the next patch.
->>>
->>
->> The next patch is only adding changes to icssg-prueth .c /.h files. This patch
->> is adding changes to Kconfig and the Makefile. To keep it that way selecting
->> this is added in this patch. No worries, I will move this to next patch.
->>
->>> [...]
->>>
->>>> +
->>>> +static u32 icss_iep_readl(struct icss_iep *iep, int reg)
->>>> +{
->>>> +    return readl(iep->base + iep->plat_data->reg_offs[reg]);
->>>> +}
->>>
->>> Do these one line functions really add anything? Actually why
->>> not use the regmap you have here.
->>
->> These one line functions are not really adding anything but they are acting as
->> a wrapper around readl /writel and providing some sort of encapsulation as
->> directly calling readl will result in a little complicated code.
->>
->> /* WIth One line function */
->> ts_lo = icss_iep_readl(iep, ICSS_IEP_COUNT_REG0);
->>
->> /* Without one line function */
->> ts_lo = readl(iep->base, iep->plat_data->reg_offs[ICSS_IEP_COUNT_REG0]);
->>
->> Previously regmap was used in this driver. But in older commit [1] in
->> 5.10-ti-linux-kernel (Before I picked the driver for upstream) it got changed
->> to readl / writel stating that regmap_read / write is too slow. IEP is time
->> sensitive and needs faster read and write, probably because of this they
->> changed it.
-> 
-> This is true. Can you please pick the exact reasoning mentioned there
-> and put it as a comment where you use read/writel() instead of regmap()
-> so we don't forget this and accidentally switch it back to regmap()
-> in the future.
-> 
+--diS/Ua0hOZdswhas
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Sure I can add this comment wherever we use readl / writel().
+On Thu, Aug 10, 2023 at 03:23:11PM +0530, Md Danish Anwar wrote:
+> On 10/08/23 3:07 am, Conor Dooley wrote:
+> > On Wed, Aug 09, 2023 at 05:19:02PM +0530, MD Danish Anwar wrote:
+> >> Add DT binding documentation for ICSS IEP module.
+> >>
+> >> Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
+> >> ---
+> >>  .../devicetree/bindings/net/ti,icss-iep.yaml  | 37 +++++++++++++++++++
+> >>  1 file changed, 37 insertions(+)
+> >>  create mode 100644 Documentation/devicetree/bindings/net/ti,icss-iep.=
+yaml
+> >>
+> >> diff --git a/Documentation/devicetree/bindings/net/ti,icss-iep.yaml b/=
+Documentation/devicetree/bindings/net/ti,icss-iep.yaml
+> >> new file mode 100644
+> >> index 000000000000..adae240cfd53
+> >> --- /dev/null
+> >> +++ b/Documentation/devicetree/bindings/net/ti,icss-iep.yaml
+> >> @@ -0,0 +1,37 @@
+> >> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> >> +%YAML 1.2
+> >> +---
+> >> +$id: http://devicetree.org/schemas/net/ti,icss-iep.yaml#
+> >> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> >> +
+> >> +title: Texas Instruments ICSS Industrial Ethernet Peripheral (IEP) mo=
+dule
+> >=20
+> > Does the module here refer to the hw component or to the linux kernel
+> > module?
+> >=20
+>=20
+> The module here refers to the hardware component.
 
-> I think this is only required for read/write to the IEP count register and
-> SYNC_CTRL_REG when doing gettime/settime.
-> 
+Sweet, thanks.
 
-Yes. This is only used in SYNC_CTRL_REG and IEP counters.
+> >> +
+> >> +maintainers:
+> >> +  - Md Danish Anwar <danishanwar@ti.com>
+> >> +
+> >> +properties:
+> >> +  compatible:
+> >> +    enum:
+> >> +      - ti,am654-icss-iep   # for all TI K3 SoCs
+> >=20
+> > *sigh* Please at least give me a chance to reply to the conversation on
+> > the previous versions of the series before sending more, that's the
+> > second time with this series :/
+>=20
+> My bad, I should have waited for your response. I will hold on posting ne=
+xt
+> version until your response is received.
+>=20
+> > Right now this looks worse to me than what we started with given the
+> > comment is even broader. I have not changed my mind re: what I said on
+> > the previous version.
+> >=20
+>=20
+> OK, so in the previous version [1] your reply was to have specific compat=
+ibles
+> as bindings with "ti-am654-icss-iep" as a fall back. I will go with this =
+only.
+>=20
+> Does the below looks good to you? Here "ti,am642-icss-iep" and
+> "ti,j721e-icss-iep" are different compatibles for different SoCs where as
+> "ti,am654-icss-iep" is the fall back. Compatible "ti,am654-icss-iep" will=
+ go in
+> the driver.
+>=20
+> properties:
+>   compatible:
+>     oneOf:
+>       - items:
+>           - enum:
+>               - ti,am642-icss-iep
+>               - ti,j721e-icss-iep
+>           - const: ti,am654-icss-iep
+>=20
+>       - items:
+>           - const: ti,am654-icss-iep
 
--- 
-Thanks and Regards,
-Danish.
+This one doesn't need to be an items list, since there is only one item.
+It should be able to just be const:. I much prefer this approach.
+
+Thanks,
+Conor.
+
+--diS/Ua0hOZdswhas
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZNTdewAKCRB4tDGHoIJi
+0iMoAQCDOBl0Qa9rDfRGu4AnjpAIUepfbUnc63ThpYDzbWaJ+wD/e5Y5S1Ae5ZBa
+5xbzDkOAnzsbPwqtnhkcByShucEghg4=
+=yxL7
+-----END PGP SIGNATURE-----
+
+--diS/Ua0hOZdswhas--
