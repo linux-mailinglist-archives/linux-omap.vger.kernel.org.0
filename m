@@ -2,53 +2,52 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C3837774F2
-	for <lists+linux-omap@lfdr.de>; Thu, 10 Aug 2023 11:53:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 141FD77777E
+	for <lists+linux-omap@lfdr.de>; Thu, 10 Aug 2023 13:50:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233763AbjHJJxn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 10 Aug 2023 05:53:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56418 "EHLO
+        id S231659AbjHJLup (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 10 Aug 2023 07:50:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230304AbjHJJxm (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 10 Aug 2023 05:53:42 -0400
-Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B33110CF;
-        Thu, 10 Aug 2023 02:53:41 -0700 (PDT)
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 37A9rIxN072696;
-        Thu, 10 Aug 2023 04:53:18 -0500
+        with ESMTP id S230205AbjHJLuo (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 10 Aug 2023 07:50:44 -0400
+Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9146D125;
+        Thu, 10 Aug 2023 04:50:43 -0700 (PDT)
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 37ABoHk9040014;
+        Thu, 10 Aug 2023 06:50:17 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1691661198;
-        bh=jKsz+QezJgKkJLCN1kbDV84OpiUUPkN/WbTbkJt1HdY=;
+        s=ti-com-17Q1; t=1691668217;
+        bh=FE7E5AGWhpz4jXEjj/FP6DfavRJUIthZ9J1868D/XLo=;
         h=Date:Subject:To:CC:References:From:In-Reply-To;
-        b=xUm5EL9LUwZFMYXKAEvp6+dtJWq+cUyu58mA4Nzl7c0xNoKd0FwuXZ85/kXCag7I0
-         JP0bty0+TFU0DZhdLK0t6o1Pi5JLA+vqKea6mElYLh9Qp3Tb0ygQY7q0LWqBORc6av
-         syLGxXF+ZFJkiKm3XP9tg2KeATyTIGlw/wOnDKak=
-Received: from DLEE106.ent.ti.com (dlee106.ent.ti.com [157.170.170.36])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 37A9rIrZ028007
+        b=WUA0ne0xjbd4zm2nlNRoOZz9h4rVcuBu5XCzQ5NGfIKcMRG1HYb49XyweGNmJHZ2H
+         9y5zdrbnHETbnAHsoJGROZlY4bXFWKLbAGE0VkqeHPzErHASqYmFC7rszEt/YWoPMx
+         jzqZb8B4DfIBAFL7ItV4k9AFuoSrR90z1uSz7cPE=
+Received: from DLEE100.ent.ti.com (dlee100.ent.ti.com [157.170.170.30])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 37ABoHlQ072490
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 10 Aug 2023 04:53:18 -0500
-Received: from DLEE112.ent.ti.com (157.170.170.23) by DLEE106.ent.ti.com
- (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
+        Thu, 10 Aug 2023 06:50:17 -0500
+Received: from DLEE110.ent.ti.com (157.170.170.21) by DLEE100.ent.ti.com
+ (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 10
- Aug 2023 04:53:18 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE112.ent.ti.com
- (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
+ Aug 2023 06:50:17 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE110.ent.ti.com
+ (157.170.170.21) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Thu, 10 Aug 2023 04:53:18 -0500
-Received: from [172.24.227.217] (ileaxei01-snat2.itg.ti.com [10.180.69.6])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 37A9rBvY110323;
-        Thu, 10 Aug 2023 04:53:12 -0500
-Message-ID: <0b619ec5-9a86-a449-e8db-b12cca115b93@ti.com>
-Date:   Thu, 10 Aug 2023 15:23:11 +0530
+ Frontend Transport; Thu, 10 Aug 2023 06:50:17 -0500
+Received: from [172.24.227.217] (ileaxei01-snat.itg.ti.com [10.180.69.5])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 37ABoBqe076317;
+        Thu, 10 Aug 2023 06:50:11 -0500
+Message-ID: <c7ddb12d-ae18-5fc2-9729-c88ea73b21d7@ti.com>
+Date:   Thu, 10 Aug 2023 17:20:10 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [EXTERNAL] Re: [PATCH v3 1/5] dt-bindings: net: Add ICSS IEP
+Subject: Re: [PATCH v3 3/5] net: ti: icss-iep: Add IEP driver
 Content-Language: en-US
-To:     Conor Dooley <conor@kernel.org>,
-        MD Danish Anwar <danishanwar@ti.com>
-CC:     Randy Dunlap <rdunlap@infradead.org>,
+To:     Andrew Davis <afd@ti.com>, MD Danish Anwar <danishanwar@ti.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
         Roger Quadros <rogerq@kernel.org>,
         Simon Horman <simon.horman@corigine.com>,
         Vignesh Raghavendra <vigneshr@ti.com>,
@@ -60,18 +59,19 @@ CC:     Randy Dunlap <rdunlap@infradead.org>,
         Paolo Abeni <pabeni@redhat.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>, <nm@ti.com>, <srk@ti.com>,
-        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>
+CC:     <nm@ti.com>, <srk@ti.com>, <linux-kernel@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>
 References: <20230809114906.21866-1-danishanwar@ti.com>
- <20230809114906.21866-2-danishanwar@ti.com>
- <20230809-cardboard-falsify-6cc9c09d8577@spud>
+ <20230809114906.21866-4-danishanwar@ti.com>
+ <b43ee5ca-2aab-445a-e24b-cbc95f9186ea@ti.com>
 From:   Md Danish Anwar <a0501179@ti.com>
 Organization: Texas Instruments
-In-Reply-To: <20230809-cardboard-falsify-6cc9c09d8577@spud>
+In-Reply-To: <b43ee5ca-2aab-445a-e24b-cbc95f9186ea@ti.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
@@ -83,141 +83,176 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Conor,
+Hi Andrew,
 
-On 10/08/23 3:07 am, Conor Dooley wrote:
-> Hey,
-> 
-> On Wed, Aug 09, 2023 at 05:19:02PM +0530, MD Danish Anwar wrote:
->> Add DT binding documentation for ICSS IEP module.
+On 09/08/23 8:30 pm, Andrew Davis wrote:
+> On 8/9/23 6:49 AM, MD Danish Anwar wrote:
+>> From: Roger Quadros <rogerq@ti.com>
 >>
+>> Add a driver for Industrial Ethernet Peripheral (IEP) block of PRUSS to
+>> support timestamping of ethernet packets and thus support PTP and PPS
+>> for PRU ethernet ports.
+>>
+>> Signed-off-by: Roger Quadros <rogerq@ti.com>
+>> Signed-off-by: Lokesh Vutla <lokeshvutla@ti.com>
+>> Signed-off-by: Murali Karicheri <m-karicheri2@ti.com>
+>> Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
 >> Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
 >> ---
->>  .../devicetree/bindings/net/ti,icss-iep.yaml  | 37 +++++++++++++++++++
->>  1 file changed, 37 insertions(+)
->>  create mode 100644 Documentation/devicetree/bindings/net/ti,icss-iep.yaml
+>>   drivers/net/ethernet/ti/Kconfig          |  12 +
+>>   drivers/net/ethernet/ti/Makefile         |   1 +
+>>   drivers/net/ethernet/ti/icssg/icss_iep.c | 935 +++++++++++++++++++++++
+>>   drivers/net/ethernet/ti/icssg/icss_iep.h |  38 +
+>>   4 files changed, 986 insertions(+)
+>>   create mode 100644 drivers/net/ethernet/ti/icssg/icss_iep.c
+>>   create mode 100644 drivers/net/ethernet/ti/icssg/icss_iep.h
 >>
->> diff --git a/Documentation/devicetree/bindings/net/ti,icss-iep.yaml b/Documentation/devicetree/bindings/net/ti,icss-iep.yaml
->> new file mode 100644
->> index 000000000000..adae240cfd53
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/net/ti,icss-iep.yaml
->> @@ -0,0 +1,37 @@
->> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
->> +%YAML 1.2
->> +---
->> +$id: http://devicetree.org/schemas/net/ti,icss-iep.yaml#
->> +$schema: http://devicetree.org/meta-schemas/core.yaml#
->> +
->> +title: Texas Instruments ICSS Industrial Ethernet Peripheral (IEP) module
+>> diff --git a/drivers/net/ethernet/ti/Kconfig b/drivers/net/ethernet/ti/Kconfig
+>> index 63e510b6860f..88b5b1b47779 100644
+>> --- a/drivers/net/ethernet/ti/Kconfig
+>> +++ b/drivers/net/ethernet/ti/Kconfig
+>> @@ -186,6 +186,7 @@ config CPMAC
+>>   config TI_ICSSG_PRUETH
+>>       tristate "TI Gigabit PRU Ethernet driver"
+>>       select PHYLIB
+>> +    select TI_ICSS_IEP
 > 
-> Does the module here refer to the hw component or to the linux kernel
-> module?
+> Why not save selecting this until you add its use in the ICSSG_PRUETH driver in
+> the next patch.
 > 
 
-The module here refers to the hardware component.
+The next patch is only adding changes to icssg-prueth .c /.h files. This patch
+is adding changes to Kconfig and the Makefile. To keep it that way selecting
+this is added in this patch. No worries, I will move this to next patch.
 
->> +
->> +maintainers:
->> +  - Md Danish Anwar <danishanwar@ti.com>
->> +
->> +properties:
->> +  compatible:
->> +    enum:
->> +      - ti,am654-icss-iep   # for all TI K3 SoCs
-> 
-> *sigh* Please at least give me a chance to reply to the conversation on
-> the previous versions of the series before sending more, that's the
-> second time with this series :/
-
-My bad, I should have waited for your response. I will hold on posting next
-version until your response is received.
-
-> Right now this looks worse to me than what we started with given the
-> comment is even broader. I have not changed my mind re: what I said on
-> the previous version.
-> 
-
-OK, so in the previous version [1] your reply was to have specific compatibles
-as bindings with "ti-am654-icss-iep" as a fall back. I will go with this only.
-
-Does the below looks good to you? Here "ti,am642-icss-iep" and
-"ti,j721e-icss-iep" are different compatibles for different SoCs where as
-"ti,am654-icss-iep" is the fall back. Compatible "ti,am654-icss-iep" will go in
-the driver.
-
-properties:
-  compatible:
-    oneOf:
-      - items:
-          - enum:
-              - ti,am642-icss-iep
-              - ti,j721e-icss-iep
-          - const: ti,am654-icss-iep
-
-      - items:
-          - const: ti,am654-icss-iep
-
-examples:
-  - |
-
-    /* AM65x */
-    icssg0_iep0: iep@2e000 {
-        compatible = "ti,am654-icss-iep";
-        reg = <0x2e000 0x1000>;
-        clocks = <&icssg0_iepclk_mux>;
-    };
-
-    /* J721E */
-    icssg0_iep0: iep@2f000 {
-        compatible = "ti,j721e-icss-iep","ti,am654-icss-iep";
-        reg = <0x2e000 0x1000>;
-        clocks = <&icssg0_iepclk_mux>;
-    };
-
-
-    /* AM64x */
-    icssg0_iep0: iep@2b000 {
-        compatible = "ti,am642-icss-iep", "ti,am654-icss-iep";
-        reg = <0x2e000 0x1000>;
-        clocks = <&icssg0_iepclk_mux>;
-    };
-
-
-Please let me know if the compatible property and the example looks OK to you.
-Also please let me know if some other change is required. I will send next
-revision after your confirmation.
-
-> Thanks,
-> Conor.
+> [...]
 > 
 >> +
->> +  reg:
->> +    maxItems: 1
->> +
->> +  clocks:
->> +    maxItems: 1
->> +    description: phandle to the IEP source clock
->> +
->> +required:
->> +  - compatible
->> +  - reg
->> +  - clocks
->> +
->> +additionalProperties: false
->> +
->> +examples:
->> +  - |
->> +    icssg0_iep0: iep@2e000 {
->> +        compatible = "ti,am654-icss-iep";
->> +        reg = <0x2e000 0x1000>;
->> +        clocks = <&icssg0_iepclk_mux>;
->> +    };
->> -- 
->> 2.34.1
->>
+>> +static u32 icss_iep_readl(struct icss_iep *iep, int reg)
+>> +{
+>> +    return readl(iep->base + iep->plat_data->reg_offs[reg]);
+>> +}
+> 
+> Do these one line functions really add anything? Actually why
+> not use the regmap you have here.
 
-[1] https://lore.kernel.org/all/20230808-nutmeg-mashing-543b41e56aa1@spud/
+These one line functions are not really adding anything but they are acting as
+a wrapper around readl /writel and providing some sort of encapsulation as
+directly calling readl will result in a little complicated code.
+
+/* WIth One line function */
+ts_lo = icss_iep_readl(iep, ICSS_IEP_COUNT_REG0);
+
+/* Without one line function */
+ts_lo = readl(iep->base, iep->plat_data->reg_offs[ICSS_IEP_COUNT_REG0]);
+
+Previously regmap was used in this driver. But in older commit [1] in
+5.10-ti-linux-kernel (Before I picked the driver for upstream) it got changed
+to readl / writel stating that regmap_read / write is too slow. IEP is time
+sensitive and needs faster read and write, probably because of this they
+changed it.
+
+> 
+> [...]
+> 
+>> +static void icss_iep_enable(struct icss_iep *iep)
+>> +{
+>> +    regmap_update_bits(iep->map, ICSS_IEP_GLOBAL_CFG_REG,
+>> +               IEP_GLOBAL_CFG_CNT_ENABLE,
+>> +               IEP_GLOBAL_CFG_CNT_ENABLE);
+> 
+> Have you looked into regmap_fields?
+> 
+
+No I hadn't. But now I looked into regmap_fields, seems to be another way to
+update the bits, instead of passing mask and value, regmap_filed_read / write
+only takes the value. But for that we will need to create a regmap field. If
+you want me to switch to regmap_fields instead of regmap_update_bits I can make
+the changes. But I am fine with regmap_update_bits().
+
+> [...]
+> 
+>> +
+>> +    if (!!(iep->latch_enable & BIT(index)) == !!on)
+>> +        goto exit;
+>> +
+> 
+> There has to be a better way to write this logic..
+> 
+> [...]
+> 
+>> +
+>> +static const struct of_device_id icss_iep_of_match[];
+>> +
+> 
+> Why the forward declaration?
+
+I will remove this, I don't see any reason for this.
+
+> 
+>> +static int icss_iep_probe(struct platform_device *pdev)
+>> +{
+>> +    struct device *dev = &pdev->dev;
+>> +    struct icss_iep *iep;
+>> +    struct clk *iep_clk;
+>> +
+>> +    iep = devm_kzalloc(dev, sizeof(*iep), GFP_KERNEL);
+>> +    if (!iep)
+>> +        return -ENOMEM;
+>> +
+>> +    iep->dev = dev;
+>> +    iep->base = devm_platform_ioremap_resource(pdev, 0);
+>> +    if (IS_ERR(iep->base))
+>> +        return -ENODEV;
+>> +
+>> +    iep_clk = devm_clk_get(dev, NULL);
+>> +    if (IS_ERR(iep_clk))
+>> +        return PTR_ERR(iep_clk);
+>> +
+>> +    iep->refclk_freq = clk_get_rate(iep_clk);
+>> +
+>> +    iep->def_inc = NSEC_PER_SEC / iep->refclk_freq;    /* ns per clock tick */
+>> +    if (iep->def_inc > IEP_MAX_DEF_INC) {
+>> +        dev_err(dev, "Failed to set def_inc %d.  IEP_clock is too slow to be
+>> supported\n",
+>> +            iep->def_inc);
+>> +        return -EINVAL;
+>> +    }
+>> +
+>> +    iep->plat_data = of_device_get_match_data(dev);
+> 
+> Directly using of_*() functions is often wrong, try just device_get_match_data().
+> 
+
+Sure. I will change to device_get_match_data().
+
+> [...]
+> 
+>> +static struct platform_driver icss_iep_driver = {
+>> +    .driver = {
+>> +        .name = "icss-iep",
+>> +        .of_match_table = of_match_ptr(icss_iep_of_match),
+> 
+> This driver cannot work without OF, using of_match_ptr() is not needed.
+> 
+
+Sure, I will drop of_match_ptr().
+
+> Andrew
+
+
+For reading and updating registers, we can have
+	1. icss_iep_readl / writel and regmap_update_bits() OR
+	2. regmap_read / write and regmap_update_bits() OR
+	3. icss_iep_readl / writel and regmap_fields OR
+	4. regmap_read / write and regmap_fields
+	
+
+Currently we are using 1. Please let me know if you are fine with this and I
+can continue using 1. If not, please let me know your recommendation out of this 4.
+
+[1]
+https://git.ti.com/cgit/ti-linux-kernel/ti-linux-kernel/commit/?h=linux-5.10.y&id=f4f45bf71cad5be232536d63a0557d13a7eed162
 
 -- 
 Thanks and Regards,
