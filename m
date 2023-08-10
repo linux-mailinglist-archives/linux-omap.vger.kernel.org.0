@@ -2,163 +2,111 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC6A8776B0A
-	for <lists+linux-omap@lfdr.de>; Wed,  9 Aug 2023 23:37:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99457776F67
+	for <lists+linux-omap@lfdr.de>; Thu, 10 Aug 2023 07:15:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232105AbjHIVh2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 9 Aug 2023 17:37:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55792 "EHLO
+        id S229765AbjHJFPJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 10 Aug 2023 01:15:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231251AbjHIVh2 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 9 Aug 2023 17:37:28 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A75201BCF;
-        Wed,  9 Aug 2023 14:37:27 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4527664364;
-        Wed,  9 Aug 2023 21:37:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8D91C433C8;
-        Wed,  9 Aug 2023 21:37:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691617046;
-        bh=9qPuQzBmdbGwMNrRlFUGd+Pi8pcueWOYHNimZFJXi2c=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=JV2nBNuOF3tp7mq2BscW1kFHEyvKNfFZVD6jBkHRuAwH7pRFtXEfNuFbBswtWfw+C
-         +75lmYRrfdjwAGlDgNQ1GoKTAkKVsrx4lywAftjdiSCTj/mNe8q0Uy+ag4RxlrpGC3
-         VItdTXJTSOv3Ad+HyX77jMP3mPYmOXBz4HQaUAfFH2E3NX91/it2SzETfgY6UMqHS5
-         6Z2wZwkHd4UZkCPZWxJG7aK1FHvyHs1eCVCMxPn7nWx8Xacql9DAVb1KjUF9aMP7EL
-         Dg+fU27o6pTM0jYFpeuenOy82Ffw8FEuL+U+J0TZsS0Per30bJSytFXBU0OL6eCIB/
-         YDPSmfyezGEqQ==
-Date:   Wed, 9 Aug 2023 22:37:20 +0100
-From:   Conor Dooley <conor@kernel.org>
-To:     MD Danish Anwar <danishanwar@ti.com>
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        Roger Quadros <rogerq@kernel.org>,
-        Simon Horman <simon.horman@corigine.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>, nm@ti.com, srk@ti.com,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        netdev@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v3 1/5] dt-bindings: net: Add ICSS IEP
-Message-ID: <20230809-cardboard-falsify-6cc9c09d8577@spud>
-References: <20230809114906.21866-1-danishanwar@ti.com>
- <20230809114906.21866-2-danishanwar@ti.com>
+        with ESMTP id S231250AbjHJFPI (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 10 Aug 2023 01:15:08 -0400
+Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB8E410E;
+        Wed,  9 Aug 2023 22:15:07 -0700 (PDT)
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 37A5EaLJ081113;
+        Thu, 10 Aug 2023 00:14:36 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1691644476;
+        bh=9g+CfPvUuUYpLQqijmxdNIEY2znEf4DiXeN0qUn9s8o=;
+        h=From:To:CC:Subject:Date:In-Reply-To:References;
+        b=RR2cF+5bvmmACeLovWA08gEN+c57CE25/wE7r9lVL6LmvxfjNn3v2JHv3oSM1h8XU
+         80HAz7gcvClYFb6Tro16iYdj+ZUFgU40UCFlsv55LiIIB/hwvagcW4msQw8iLMObB6
+         W2m8zQ/FlRV9+1/2fytsC1PUblaNqouzJyn0R5t8=
+Received: from DFLE101.ent.ti.com (dfle101.ent.ti.com [10.64.6.22])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 37A5Ea4s117251
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 10 Aug 2023 00:14:36 -0500
+Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE101.ent.ti.com
+ (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 10
+ Aug 2023 00:14:34 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE111.ent.ti.com
+ (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Thu, 10 Aug 2023 00:14:34 -0500
+Received: from localhost (ileaxei01-snat.itg.ti.com [10.180.69.5])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 37A5EYLd021776;
+        Thu, 10 Aug 2023 00:14:34 -0500
+From:   Nishanth Menon <nm@ti.com>
+To:     <danishanwar@ti.com>, <vigneshr@ti.com>
+CC:     Nishanth Menon <nm@ti.com>, <peng.fan@nxp.com>, <srk@ti.com>,
+        <linux-omap@vger.kernel.org>, <rafal@milecki.pl>,
+        <konrad.dybcio@linaro.org>, <catalin.marinas@arm.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Arnd Bergmann <arnd@arndb.de>, <linux-kernel@vger.kernel.org>,
+        <krzysztof.kozlowski@linaro.org>, <christian.gmeiner@gmail.com>,
+        <quic_bjorande@quicinc.com>, <geert+renesas@glider.be>,
+        <nfraprado@collabora.com>, <will@kernel.org>
+Subject: Re: [PATCH v4] arm64: defconfig: Enable TI PRUSS
+Date:   Thu, 10 Aug 2023 00:14:33 -0500
+Message-ID: <169164446249.18714.16221986005820294003.b4-ty@ti.com>
+X-Mailer: git-send-email 2.37.2
+In-Reply-To: <20230808130131.3081482-1-danishanwar@ti.com>
+References: <20230808130131.3081482-1-danishanwar@ti.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="03Hx+6F635l/g8Vg"
-Content-Disposition: inline
-In-Reply-To: <20230809114906.21866-2-danishanwar@ti.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Hi MD Danish Anwar,
 
---03Hx+6F635l/g8Vg
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Tue, 8 Aug 2023 18:31:31 +0530, MD Danish Anwar wrote:
+> The Programmable Realtime Unit - Industrial Communication Subsystem
+> (PRU-ICSS) known as PRUSS, is a low-latency microcontroller subsystem
+> used for industrial networking and other hard real-time functions in
+> the TI K3 SoCs such as AM654x, AM64x.
+> 
+> AM654x-EVM, AM64xx-EVM, and iot2050 use the PRUSS driver.
+> 
+> [...]
 
-Hey,
+I have applied the following to branch ti-k3-config-next on [1].
+Thank you!
 
-On Wed, Aug 09, 2023 at 05:19:02PM +0530, MD Danish Anwar wrote:
-> Add DT binding documentation for ICSS IEP module.
->=20
-> Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
-> ---
->  .../devicetree/bindings/net/ti,icss-iep.yaml  | 37 +++++++++++++++++++
->  1 file changed, 37 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/net/ti,icss-iep.yaml
->=20
-> diff --git a/Documentation/devicetree/bindings/net/ti,icss-iep.yaml b/Doc=
-umentation/devicetree/bindings/net/ti,icss-iep.yaml
-> new file mode 100644
-> index 000000000000..adae240cfd53
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/net/ti,icss-iep.yaml
-> @@ -0,0 +1,37 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/net/ti,icss-iep.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Texas Instruments ICSS Industrial Ethernet Peripheral (IEP) module
+[1/1] arm64: defconfig: Enable TI PRUSS
+      commit: b7314d6938759d6da8b9992d0eade4606daf72a6
 
-Does the module here refer to the hw component or to the linux kernel
-module?
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent up the chain during
+the next merge window (or sooner if it is a relevant bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-> +
-> +maintainers:
-> +  - Md Danish Anwar <danishanwar@ti.com>
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - ti,am654-icss-iep   # for all TI K3 SoCs
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-*sigh* Please at least give me a chance to reply to the conversation on
-the previous versions of the series before sending more, that's the
-second time with this series :/
-Right now this looks worse to me than what we started with given the
-comment is even broader. I have not changed my mind re: what I said on
-the previous version.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-Thanks,
-Conor.
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    maxItems: 1
-> +    description: phandle to the IEP source clock
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - clocks
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    icssg0_iep0: iep@2e000 {
-> +        compatible =3D "ti,am654-icss-iep";
-> +        reg =3D <0x2e000 0x1000>;
-> +        clocks =3D <&icssg0_iepclk_mux>;
-> +    };
-> --=20
-> 2.34.1
->=20
+[1] git://git.kernel.org/pub/scm/linux/kernel/git/ti/linux.git
+-- 
 
---03Hx+6F635l/g8Vg
-Content-Type: application/pgp-signature; name="signature.asc"
+Regards,
+Nishanth Menon
+Key (0xDDB5849D1736249D) / Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZNQHEAAKCRB4tDGHoIJi
-0prnAP98Ul51Huk5I/s+3dku6NL7+ZhlDyE/ty6iIxYKwUJhrwD/UkHvU0wCVJ0b
-qxRow4PAxLFJsy54Ob7bPKeaxaWo4gI=
-=BxI+
------END PGP SIGNATURE-----
-
---03Hx+6F635l/g8Vg--
