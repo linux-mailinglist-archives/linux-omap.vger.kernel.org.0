@@ -2,30 +2,32 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 70731777448
-	for <lists+linux-omap@lfdr.de>; Thu, 10 Aug 2023 11:19:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 49FA7777449
+	for <lists+linux-omap@lfdr.de>; Thu, 10 Aug 2023 11:19:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234699AbjHJJTp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 10 Aug 2023 05:19:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41628 "EHLO
+        id S232404AbjHJJTr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 10 Aug 2023 05:19:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234919AbjHJJTZ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 10 Aug 2023 05:19:25 -0400
+        with ESMTP id S233395AbjHJJT0 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 10 Aug 2023 05:19:26 -0400
 Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C7D8449ED
-        for <linux-omap@vger.kernel.org>; Thu, 10 Aug 2023 02:17:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A725D49EF
+        for <linux-omap@vger.kernel.org>; Thu, 10 Aug 2023 02:17:25 -0700 (PDT)
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 8883D80A9;
-        Thu, 10 Aug 2023 09:17:02 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id E592A8107;
+        Thu, 10 Aug 2023 09:17:04 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     soc@kernel.org
 Cc:     arm@kernel.org, linux-omap@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
         "Tony Lindgren" <tony@atomide.com>
-Subject: [GIT PULL 1/4] Devicetree binding changes for omaps for v6.6
-Date:   Thu, 10 Aug 2023 12:16:50 +0300
-Message-ID: <pull-1691658952-110529@atomide.com>
+Subject: [GIT PULL 2/4] Maintainer file list update for omaps for v6.6
+Date:   Thu, 10 Aug 2023 12:16:51 +0300
+Message-ID: <pull-1691658952-110529@atomide.com-2>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <pull-1691658952-110529@atomide.com>
+References: <pull-1691658952-110529@atomide.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -45,22 +47,20 @@ The following changes since commit 06c2afb862f9da8dc5efa4b6076a0e48c3fbaaa5:
 
 are available in the Git repository at:
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v6.6/dt-bindings-signed
+  git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v6.6/maintainers-signed
 
-for you to fetch changes up to c5a5583ecfa02a858983a0cad710201fe0eea03f:
+for you to fetch changes up to fda31904ffbc7231898198333804fa551b681387:
 
-  dt-bindings: omap: Partially convert omap.txt to yaml (2023-07-31 09:09:21 +0300)
-
-----------------------------------------------------------------
-Devicetree binding changes for omaps for v6.6
-
-Just one change to get started on SoC yaml binding changes for omaps.
+  MAINTAINERS: add board bindings list to OMAP2+ files (2023-07-31 09:11:14 +0300)
 
 ----------------------------------------------------------------
-Andrew Davis (1):
-      dt-bindings: omap: Partially convert omap.txt to yaml
+Maintainer file list update for omaps for v6.6
 
- .../devicetree/bindings/arm/omap/omap.txt          |  99 ------------
- Documentation/devicetree/bindings/arm/ti/omap.yaml | 176 +++++++++++++++++++++
- 2 files changed, 176 insertions(+), 99 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/arm/ti/omap.yaml
+Adds the new SoC specific yaml file to MAINTAINERS.
+
+----------------------------------------------------------------
+Andreas Kemnade (1):
+      MAINTAINERS: add board bindings list to OMAP2+ files
+
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
