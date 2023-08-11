@@ -2,97 +2,124 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 85915778E34
-	for <lists+linux-omap@lfdr.de>; Fri, 11 Aug 2023 13:50:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C18A87792E7
+	for <lists+linux-omap@lfdr.de>; Fri, 11 Aug 2023 17:21:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234509AbjHKLuN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 11 Aug 2023 07:50:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45082 "EHLO
+        id S236537AbjHKPVy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 11 Aug 2023 11:21:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229568AbjHKLuM (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 11 Aug 2023 07:50:12 -0400
-Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C04FDF5;
-        Fri, 11 Aug 2023 04:50:11 -0700 (PDT)
-Received: by mail-wr1-x42e.google.com with SMTP id ffacd0b85a97d-31963263938so153669f8f.2;
-        Fri, 11 Aug 2023 04:50:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691754610; x=1692359410;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=wGWZmoxclOfYzjyLvlkmT9ZvCsngcDBgs2bkB2Nywss=;
-        b=pBN+qqjGO1QbfDKIjzNz8G7jeM/UOCH2Sh7E3KRZ3bnS8RfYXKr69Mvdcqs96FR/Ns
-         UcFmc0q925DmPBGwNbSKgBrz7TcgeEnMrvu95pEYFTIenBBa1RWnZ0NLsJ+6dfNg26uL
-         rc79wFU8CW2FJZh1wBPQ2TbzV6z4qZWCRJsN2MGsbR1VrekzC/Ux2SR/z0Av06rTeVJC
-         f7BthkKD67wg4i4q49cpMHJOXTf0qjecn07GWIMKvN46/XVFQX6F6csetmWlEYGKbwrl
-         mIoXF1EHpS5qoPflWxl2dEDNbf+Xe09zMw1TOp+7LnQlJ+quOvkhUyD7gFu3jUvJBTYP
-         cNsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691754610; x=1692359410;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wGWZmoxclOfYzjyLvlkmT9ZvCsngcDBgs2bkB2Nywss=;
-        b=EQ3LWxVDhs57E6c1hKAaFt58uxrnyKQrWMrkW0MMbbkcoKAEiIe5dvDVG0xRIjoKcl
-         ZxCKHGA2PDgJptX4AoS4olHSBrWJCX41yZwWNherTvleDORLFKob+S/9cEcwXwhknpNt
-         lFD+i72W5GthQanVbBf6RxYZ09vfvpomUvOI4TQ+4VMb12W9aRvWDNZ4lUWxMwseo/Py
-         JkiGXkTCVV/UW6VEvx00w84NOjntsW1EDp4DYt67pXqghdoVbJ4chttHYyZSK1bDEzFu
-         yHFk4J1lvERKvrGMQQxHyO/qd4wLWM44voXu8zGl+wcWx6lZBvQLqEBmdHJCQQ29Er6I
-         67lg==
-X-Gm-Message-State: AOJu0YzWff9rmr7Qq9T0VxIg8ou2p1CJxlDll/xZSSxdRQlORnxrEv9y
-        FGIusbDU4B6aROnmcF6v4jSUPAdnUDEWeA==
-X-Google-Smtp-Source: AGHT+IHxOpNfP5KhsUVYz2tljOeekHXqxP/1CF/kBgRPV54BRkf4pGGrzPQbS3kxOTTtSmru2ja7cw==
-X-Received: by 2002:adf:f1d2:0:b0:317:e04c:6791 with SMTP id z18-20020adff1d2000000b00317e04c6791mr1184420wro.62.1691754609805;
-        Fri, 11 Aug 2023 04:50:09 -0700 (PDT)
-Received: from gba-Precision-5530.kat.ac.za ([196.24.39.242])
-        by smtp.gmail.com with ESMTPSA id v9-20020a5d6b09000000b0031759e6b43fsm5240070wrw.39.2023.08.11.04.50.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Aug 2023 04:50:09 -0700 (PDT)
-From:   Grant B Adams <nemith592@gmail.com>
-Cc:     linux-omap@vger.kernel.org, tony@atomide.com,
-        Grant B Adams <nemith592@gmail.com>, Bin Liu <b-liu@ti.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] usb: musb: dsps: Fix vbus vs tps65217-charger irq conflict
-Date:   Fri, 11 Aug 2023 13:48:56 +0200
-Message-Id: <20230811114856.35486-1-nemith592@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S236587AbjHKPVf (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 11 Aug 2023 11:21:35 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF5AE4486;
+        Fri, 11 Aug 2023 08:21:13 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6BB19674F1;
+        Fri, 11 Aug 2023 15:21:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF790C433C7;
+        Fri, 11 Aug 2023 15:21:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1691767272;
+        bh=5yH/QY0qbIeK4kDqXoIZQCS0/v2CF5kLwjwQr2aVdjY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=EXaNGE0ZDh36EgpW73kbhp8ZlQ8lfBJQKH2mYDG1xWouw9mNnArbV9fPQQR3QW/EC
+         1j4uKlH9R/LfVx94e8U1ama48jB02z/LGyGrbEz48iv0ipnVNA5CjJthdDrl4dQYCb
+         ym31+dc+S0vnSqayAs0KlngcXtKQHzYes2ZHAp4Xw+QTRptBe885Sbf5ov9Fj2hE7P
+         5gJNkbhVvAXDLZ+LMdxbx5lG+TA6x1Q6P8ceNah88GqEmvMGqES6NquxdsIqJEfqb3
+         tjKcGKlbneKOwjH2m/0vDsvb1Lc5O9y8tQfstXc+7pBa6P7k+8zp7GL1ApXT275qob
+         9Ti1fYZ66BuAw==
+Date:   Fri, 11 Aug 2023 16:21:07 +0100
+From:   Conor Dooley <conor@kernel.org>
+To:     Md Danish Anwar <a0501179@ti.com>
+Cc:     MD Danish Anwar <danishanwar@ti.com>, Suman Anna <s-anna@ti.com>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-remoteproc@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, vigneshr@ti.com, srk@ti.com,
+        nm@ti.com
+Subject: Re: [PATCH] dt-bindings: remoteproc: pru: Add Interrupt property
+Message-ID: <20230811-ladylike-snore-abba84731921@spud>
+References: <20230807110836.2612730-1-danishanwar@ti.com>
+ <20230807-euphemism-trailing-ef4130dc7437@spud>
+ <910a4a98-712a-5517-5a5b-ffb962f83463@ti.com>
+ <20230808-unwomanly-generic-67d20f0e51cd@spud>
+ <cd74e31f-8bc6-445b-9c33-51e53a439cd2@ti.com>
+ <20230808-bazooka-uncoated-a3401d94b063@spud>
+ <e49fb304-bd5d-5013-815f-5933a2a170c4@ti.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="UvC4hbAhKTdVUBxb"
+Content-Disposition: inline
+In-Reply-To: <e49fb304-bd5d-5013-815f-5933a2a170c4@ti.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Enabling the tps65217-charger driver/module causes an interrupt conflict
-with the vbus driver resulting in a probe failure.
-The conflict is resolved by changing both driver's threaded interrupt
-request function from IRQF_ONESHOT to IRQF_SHARED.
 
-Signed-off-by: Grant B Adams <nemith592@gmail.com>
----
- drivers/usb/musb/musb_dsps.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+--UvC4hbAhKTdVUBxb
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/usb/musb/musb_dsps.c b/drivers/usb/musb/musb_dsps.c
-index 9119b1d51370..cbb45de5a76f 100644
---- a/drivers/usb/musb/musb_dsps.c
-+++ b/drivers/usb/musb/musb_dsps.c
-@@ -851,7 +851,7 @@ static int dsps_setup_optional_vbus_irq(struct platform_device *pdev,
- 
- 	error = devm_request_threaded_irq(glue->dev, glue->vbus_irq,
- 					  NULL, dsps_vbus_threaded_irq,
--					  IRQF_ONESHOT,
-+					  IRQF_SHARED,
- 					  "vbus", glue);
- 	if (error) {
- 		glue->vbus_irq = 0;
--- 
-2.34.1
+On Fri, Aug 11, 2023 at 04:48:28PM +0530, Md Danish Anwar wrote:
 
+> >> There are no standard defines for these interrupt types. However I can=
+ create a
+> >> new .h file defining all the three interrupt cells and their values fo=
+r both
+> >> PRU and RTU cores if you think that is required. Otherwise we can go w=
+ith
+> >> hardcoded values.
+> >>
+> >> Please let me know what you think should be done here.
+> >=20
+> > It'd be good to reference to the documentation for the cells, I don't
+> > think adding a header is necessary here.
+> >=20
+>=20
+> How should I reference to the documentation for the cells?
+>=20
+> Should I just add the details of cells in description of interrupt proper=
+ty here.
+>=20
+>   interrupts:
+>     maxItems: 1
+>     description:
+>       Interrupt specifiers enable the virtio/rpmsg communication between =
+MPU
+>       and the PRU/RTU cores. The value of the interrupts should be the PRU
+>       System event number [cell 1], PRU channel [cell 2] and PRU host_eve=
+nt
+>       (target) [cell 3].
+>=20
+> Please let me know if this looks OK to you.
+
+I was thinking there'd be an binding for the interrupt controller that
+you could mentioned.
+
+--UvC4hbAhKTdVUBxb
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZNZR4wAKCRB4tDGHoIJi
+0qvEAP99WX3NcLAixv8zdFz//y+7gtEByx3Dyc+XHWDHa7YrJAD9EBJnZ3J7vwcW
+vT8XG04W7Q7owcS/c87Q6QIPDBR2RAc=
+=Yd3F
+-----END PGP SIGNATURE-----
+
+--UvC4hbAhKTdVUBxb--
