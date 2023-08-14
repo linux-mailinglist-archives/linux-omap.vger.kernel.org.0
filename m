@@ -2,134 +2,141 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EC9477B0B2
-	for <lists+linux-omap@lfdr.de>; Mon, 14 Aug 2023 07:15:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4260B77B115
+	for <lists+linux-omap@lfdr.de>; Mon, 14 Aug 2023 08:07:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232720AbjHNFO2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 14 Aug 2023 01:14:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54106 "EHLO
+        id S231730AbjHNGG6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 14 Aug 2023 02:06:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233183AbjHNFOV (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 14 Aug 2023 01:14:21 -0400
-Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F98FE5F;
-        Sun, 13 Aug 2023 22:14:19 -0700 (PDT)
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 37E5E41C078228;
-        Mon, 14 Aug 2023 00:14:04 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1691990044;
-        bh=zgU1is/ey29ER1sZI03mQdYN+tGRD2RBHOYFCdNCr2I=;
-        h=Date:Subject:To:CC:References:From:In-Reply-To;
-        b=gKRirqPpgGaTQi8/d3ej9TvBfwXg4bbFtPJ+uXj9aT7I8ZhNSlQCoyLvXwGdC1/Os
-         5RY/VQI5MUQs0fsrMXD8ywHd0yRImfFJNHuESwAJxRunwsyJ/N1zqlB5+tRQcL9zWg
-         lXRytkKKJzt/nBShx9SU0tdvT7lVRIw0vgOc5etc=
-Received: from DLEE110.ent.ti.com (dlee110.ent.ti.com [157.170.170.21])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 37E5E4r4024156
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 14 Aug 2023 00:14:04 -0500
-Received: from DLEE112.ent.ti.com (157.170.170.23) by DLEE110.ent.ti.com
- (157.170.170.21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 14
- Aug 2023 00:14:03 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE112.ent.ti.com
- (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Mon, 14 Aug 2023 00:14:03 -0500
-Received: from [172.24.227.217] (ileaxei01-snat2.itg.ti.com [10.180.69.6])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 37E5DwQv038047;
-        Mon, 14 Aug 2023 00:13:59 -0500
-Message-ID: <ce22155c-31b9-3dd1-8336-275fa92c234d@ti.com>
-Date:   Mon, 14 Aug 2023 10:43:58 +0530
+        with ESMTP id S233732AbjHNGGH (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 14 Aug 2023 02:06:07 -0400
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2FEF199B;
+        Sun, 13 Aug 2023 23:05:38 -0700 (PDT)
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+        by mx0b-0016f401.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37E5dnKn028174;
+        Sun, 13 Aug 2023 23:04:53 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=pfpt0220; bh=2e/DgbPH5Z735BTpVc79AFms8kX4Gp8CjDRy+gF54Og=;
+ b=E/8P5/+jNOFDXnIeAK6eLktq00L60xiKYdb2qKHYNE+xCpg5uzwBma5HNeeDm5+xDr/z
+ PtUPN2CVxipoL7xIRglPjHM0nr73ebcCfiBNHKO+ejsrYpyGT1z5owXlVZBvcqnjQTMi
+ xVpi7MTLbBxFyMgVXN2gotRa8b8ZGbhZzCnaie9FgVwAx0KVLDEe3Z0Hs/va3cj30eI3
+ bQep63FV2AJCT9K2ToAglpvTN/WgrwwX8gb7FG8I4boMHs0BV/6m7+XurB6k5AN7oOOW
+ iqus7BoMwgqKR+ia384IF8M69kir+dL0CX57DDgO8auPhc0KzwAXvTjo5NFnI/q/asdB kQ== 
+Received: from dc5-exch02.marvell.com ([199.233.59.182])
+        by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 3se9kj4xs9-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
+        Sun, 13 Aug 2023 23:04:52 -0700
+Received: from DC5-EXCH02.marvell.com (10.69.176.39) by DC5-EXCH02.marvell.com
+ (10.69.176.39) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Sun, 13 Aug
+ 2023 23:04:50 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH02.marvell.com
+ (10.69.176.39) with Microsoft SMTP Server id 15.0.1497.48 via Frontend
+ Transport; Sun, 13 Aug 2023 23:04:50 -0700
+Received: from marvell-OptiPlex-7090.marvell.com (unknown [10.28.36.165])
+        by maili.marvell.com (Postfix) with ESMTP id A95D13F707E;
+        Sun, 13 Aug 2023 23:04:25 -0700 (PDT)
+From:   Ratheesh Kannoth <rkannoth@marvell.com>
+To:     <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>, <ast@kernel.org>, <daniel@iogearbox.net>,
+        <hawk@kernel.org>, <john.fastabend@gmail.com>,
+        <jiawenwu@trustnetic.com>, <mengyuanlou@net-swift.com>,
+        <yang.lee@linux.alibaba.com>, <error27@gmail.com>,
+        <linyunsheng@huawei.com>, <linux-hyperv@vger.kernel.org>,
+        <kys@microsoft.com>, <haiyangz@microsoft.com>,
+        <wei.liu@kernel.org>, <decui@microsoft.com>,
+        <longli@microsoft.com>, <shradhagupta@linux.microsoft.com>,
+        <linux-hwmon@vger.kernel.org>, <michael.chan@broadcom.com>,
+        <richardcochran@gmail.com>, <jdelvare@suse.com>,
+        <linux@roeck-us.net>, <yisen.zhuang@huawei.com>,
+        <salil.mehta@huawei.com>, <linux-arm-kernel@lists.infradead.org>,
+        <linux-mediatek@lists.infradead.org>, <nbd@nbd.name>,
+        <john@phrozen.org>, <sean.wang@mediatek.com>,
+        <Mark-MC.Lee@mediatek.com>, <lorenzo@kernel.org>,
+        <matthias.bgg@gmail.com>,
+        <angelogioacchino.delregno@collabora.com>, <linux@armlinux.org.uk>,
+        <linux-rdma@vger.kernel.org>, <saeedm@nvidia.com>,
+        <leon@kernel.org>, <gerhard@engleder-embedded.com>,
+        <maciej.fijalkowski@intel.com>, <alexanderduyck@fb.com>,
+        <wei.fang@nxp.com>, <shenwei.wang@nxp.com>,
+        <xiaoning.wang@nxp.com>, <linux-imx@nxp.com>,
+        <lgirdwood@gmail.com>, <broonie@kernel.org>,
+        <jaswinder.singh@linaro.org>, <ilias.apalodimas@linaro.org>,
+        <UNGLinuxDriver@microchip.com>, <horatiu.vultur@microchip.com>,
+        <linux-omap@vger.kernel.org>, <grygorii.strashko@ti.com>,
+        <simon.horman@corigine.com>, <vladimir.oltean@nxp.com>,
+        <rkannoth@marvell.com>, <aleksander.lobakin@intel.com>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <alexandre.torgue@foss.st.com>, <joabreu@synopsys.com>,
+        <mcoquelin.stm32@gmail.com>, <p.zabel@pengutronix.de>,
+        <thomas.petazzoni@bootlin.com>, <mw@semihalf.com>,
+        <sgoutham@marvell.com>, <gakula@marvell.com>,
+        <sbhatta@marvell.com>, <hkelam@marvell.com>,
+        <xen-devel@lists.xenproject.org>, <jgross@suse.com>,
+        <sstabellini@kernel.org>, <oleksandr_tyshchenko@epam.com>,
+        <linux-wireless@vger.kernel.org>, <ryder.lee@mediatek.com>,
+        <shayne.chen@mediatek.com>, <kvalo@kernel.org>,
+        <andrii@kernel.org>, <martin.lau@linux.dev>, <song@kernel.org>,
+        <yonghong.song@linux.dev>, <kpsingh@kernel.org>, <sdf@google.com>,
+        <haoluo@google.com>, <jolsa@kernel.org>
+Subject: [PATCH v1 net] page_pool: Cap queue size to 32k.
+Date:   Mon, 14 Aug 2023 11:34:11 +0530
+Message-ID: <20230814060411.2401817-1-rkannoth@marvell.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] dt-bindings: remoteproc: pru: Add Interrupt property
-Content-Language: en-US
-To:     Conor Dooley <conor@kernel.org>
-CC:     MD Danish Anwar <danishanwar@ti.com>, Suman Anna <s-anna@ti.com>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-remoteproc@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <vigneshr@ti.com>,
-        <srk@ti.com>, <nm@ti.com>
-References: <20230807110836.2612730-1-danishanwar@ti.com>
- <20230807-euphemism-trailing-ef4130dc7437@spud>
- <910a4a98-712a-5517-5a5b-ffb962f83463@ti.com>
- <20230808-unwomanly-generic-67d20f0e51cd@spud>
- <cd74e31f-8bc6-445b-9c33-51e53a439cd2@ti.com>
- <20230808-bazooka-uncoated-a3401d94b063@spud>
- <e49fb304-bd5d-5013-815f-5933a2a170c4@ti.com>
- <20230811-ladylike-snore-abba84731921@spud>
-From:   Md Danish Anwar <a0501179@ti.com>
-Organization: Texas Instruments
-In-Reply-To: <20230811-ladylike-snore-abba84731921@spud>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-6.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-GUID: aFZU2RAx_UAE8R4K6KZZzbh7PQU3_GNE
+X-Proofpoint-ORIG-GUID: aFZU2RAx_UAE8R4K6KZZzbh7PQU3_GNE
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-08-13_24,2023-08-10_01,2023-05-22_02
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 11/08/23 8:51 pm, Conor Dooley wrote:
-> On Fri, Aug 11, 2023 at 04:48:28PM +0530, Md Danish Anwar wrote:
-> 
->>>> There are no standard defines for these interrupt types. However I can create a
->>>> new .h file defining all the three interrupt cells and their values for both
->>>> PRU and RTU cores if you think that is required. Otherwise we can go with
->>>> hardcoded values.
->>>>
->>>> Please let me know what you think should be done here.
->>>
->>> It'd be good to reference to the documentation for the cells, I don't
->>> think adding a header is necessary here.
->>>
->>
->> How should I reference to the documentation for the cells?
->>
->> Should I just add the details of cells in description of interrupt property here.
->>
->>   interrupts:
->>     maxItems: 1
->>     description:
->>       Interrupt specifiers enable the virtio/rpmsg communication between MPU
->>       and the PRU/RTU cores. The value of the interrupts should be the PRU
->>       System event number [cell 1], PRU channel [cell 2] and PRU host_event
->>       (target) [cell 3].
->>
->> Please let me know if this looks OK to you.
-> 
-> I was thinking there'd be an binding for the interrupt controller that
-> you could mentioned.
+Clamp to 32k instead of returning error.
 
-There is a binding for interrupt-controller [1] that I can mention. I tried using
+Please find discussion at
+https://lore.kernel.org/lkml/
+CY4PR1801MB1911E15D518A77535F6E51E2D308A@CY4PR1801MB1911.
+namprd18.prod.outlook.com/T/
 
-- $ref: /schemas/interrupt-controller/ti,pruss-intc.yaml#
+Fixes: ff7d6b27f894 ("page_pool: refurbish version of page_pool code")
+Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
 
-But it was throwing dt binding errors so I didn't add the ref.
+---
+ChangeLog:
+v0 -> v1: Rebase && commit message changes
+---
+ net/core/page_pool.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-I will mention this file name in the description of the property like below,
-
-     description:
-       Interrupt specifiers enable the virtio/rpmsg communication between MPU
-       and the PRU/RTU cores. For the values of the interrupt cells please
-       refer to interrupt-controller/ti,pruss-intc.yaml schema.
-
-Please let me know if this looks OK to you.
-
-[1]
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/devicetree/bindings/interrupt-controller/ti,pruss-intc.yaml
-
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index a3e12a61d456..e9dc8d8966ad 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -171,9 +171,10 @@ static int page_pool_init(struct page_pool *pool,
+ 	if (pool->p.pool_size)
+ 		ring_qsize = pool->p.pool_size;
+ 
+-	/* Sanity limit mem that can be pinned down */
++	/* Cap queue size to 32k */
+ 	if (ring_qsize > 32768)
+-		return -E2BIG;
++		ring_qsize = 32768;
++
+ 
+ 	/* DMA direction is either DMA_FROM_DEVICE or DMA_BIDIRECTIONAL.
+ 	 * DMA_BIDIRECTIONAL is for allowing page used for DMA sending,
 -- 
-Thanks and Regards,
-Danish.
+2.25.1
+
