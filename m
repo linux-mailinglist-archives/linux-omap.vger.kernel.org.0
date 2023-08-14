@@ -2,87 +2,113 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4823077C29D
-	for <lists+linux-omap@lfdr.de>; Mon, 14 Aug 2023 23:46:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FA9877C395
+	for <lists+linux-omap@lfdr.de>; Tue, 15 Aug 2023 00:39:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232469AbjHNVpk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 14 Aug 2023 17:45:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52662 "EHLO
+        id S230267AbjHNWjK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 14 Aug 2023 18:39:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42596 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233036AbjHNVpf (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 14 Aug 2023 17:45:35 -0400
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1A4AE4;
-        Mon, 14 Aug 2023 14:45:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-        bh=ZtiLIxUxettw/9WPmtk9jiRQnxhuPfVkvX66bN2dsfc=; b=n9xT7/JPtATflackQJVEhyYLmk
-        baUOEc4jwag8znz8+ttPq98EHFVtB7IVXV9ZvA39id95TgczEAu347l0fxvZBkzUbxTGqnZ40z2lA
-        0fp8nLyCXwOMRqCB2Zy4H5LYL8fQ3R0PPA8qDVsFR0uIDEL77JAzGeajW5R8bE/J84bo=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-        (envelope-from <andrew@lunn.ch>)
-        id 1qVfNF-0045vH-Tw; Mon, 14 Aug 2023 23:45:17 +0200
-Date:   Mon, 14 Aug 2023 23:45:17 +0200
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Graeme Smecher <gsmecher@threespeedlogic.com>
-Cc:     Grygorii Strashko <grygorii.strashko@ti.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Shay Agroskin <shayagr@amazon.com>,
-        Rob Herring <robh@kernel.org>,
-        Yang Yingliang <yangyingliang@huawei.com>,
-        Marek Majtyka <alardam@gmail.com>, linux-omap@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: ti/cpsw_new: Expose the same module parameters as
- ti/cpsw.
-Message-ID: <e53ac28b-c896-4f8d-a8b0-371f92c4ad5a@lunn.ch>
-References: <20230814211323.3272487-1-gsmecher@threespeedlogic.com>
+        with ESMTP id S232241AbjHNWio (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 14 Aug 2023 18:38:44 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 021AAAB;
+        Mon, 14 Aug 2023 15:38:43 -0700 (PDT)
+Received: from [192.168.2.208] (109-252-150-127.dynamic.spd-mgts.ru [109.252.150.127])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: dmitry.osipenko)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 46CC566071A3;
+        Mon, 14 Aug 2023 23:38:41 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1692052722;
+        bh=BjUydujNsGl7AkwVT/LuTkmCIWTEV3NBa6yNtCfHTqY=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=NGhn5jq26xePnjedA4fZpXU4FmWC8u3WB0XMg7ALYUQByn1OqFbzCgP59pDqn4bDl
+         E0y3aWHSOuVbRDt0X3y+eM8YS4GLczboXwBBaxjC9r3EQz9BFmmxjuHqBgidNjB2kD
+         D5NbOC0rDMC2+AtJmH+anESIPB68Sr2B+S3COFadaMuMAQoR/W28CPONg8ZaxCefTF
+         cJKfhUUjI45JrOQK64b2Yrp/Kyc8rmGM4ASnCICoulLnKxC7IgH5o37BU8N2c6mLDY
+         Vw94b4o3ZujNzSSMOWPpV9L48ATdFbX0YQHeS8ScSBli3pLRDTFNKcdFTWp2hgo6CV
+         i6gKrB/4vr7ZQ==
+Message-ID: <76da3727-a4da-ac70-aa8e-b362b9114061@collabora.com>
+Date:   Tue, 15 Aug 2023 01:38:38 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230814211323.3272487-1-gsmecher@threespeedlogic.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2 3/6] soc/tegra: pmc: Specify restart mode
+Content-Language: en-US
+To:     Benjamin Bara <bbara93@gmail.com>, Lee Jones <lee@kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>, peng.fan@oss.nxp.com,
+        rafael.j.wysocki@intel.com, Jerome Neanne <jneanne@baylibre.com>
+Cc:     linux-kernel@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-omap@vger.kernel.org,
+        Benjamin Bara <benjamin.bara@skidata.com>,
+        Thierry Reding <treding@nvidia.com>
+References: <20230809-pca9450-reboot-v2-0-b98b4f8139d5@skidata.com>
+ <20230809-pca9450-reboot-v2-3-b98b4f8139d5@skidata.com>
+From:   Dmitry Osipenko <dmitry.osipenko@collabora.com>
+In-Reply-To: <20230809-pca9450-reboot-v2-3-b98b4f8139d5@skidata.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Aug 14, 2023 at 02:13:21PM -0700, Graeme Smecher wrote:
-> The "old" CPSW driver (cpsw.c) exports the following module parameters:
+On 8/9/23 22:24, Benjamin Bara wrote:
+> From: Benjamin Bara <benjamin.bara@skidata.com>
 > 
-> 	- ti_cpsw.debug_level
-> 	- ti_cpsw.ale_ageout
-> 	- ti_cpsw.rx_packet_max
-> 	- ti_cpsw.descs_pool_size
+> The current restart handler registration does not specify whether the
+> restart is a cold or a warm one. Now, as do_kernel_restart() knows about
+> the type, the priorization is implicitly done (cold restarts are
+> executed first) and the reboot_mode kernel parameter (which is currently
+> mostly ignored) can be respected.
 > 
-> This patch exposes the same parameters for the "new" CPSW driver:
+> Acked-by: Thierry Reding <treding@nvidia.com>
+> Signed-off-by: Benjamin Bara <benjamin.bara@skidata.com>
+> ---
+> v2:
+> - improve commit message
+> ---
+>  drivers/soc/tegra/pmc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> 	- ti_cpsw_new.debug_level
-> 	- ti_cpsw_new.ale_ageout
-> 	- ti_cpsw_new.rx_packet_max
-> 	- ti_cpsw_new.descs_pool_size
+> diff --git a/drivers/soc/tegra/pmc.c b/drivers/soc/tegra/pmc.c
+> index 162f52456f65..4f42febb9b0f 100644
+> --- a/drivers/soc/tegra/pmc.c
+> +++ b/drivers/soc/tegra/pmc.c
+> @@ -2962,7 +2962,7 @@ static int tegra_pmc_probe(struct platform_device *pdev)
+>  	}
+>  
+>  	err = devm_register_sys_off_handler(&pdev->dev,
+> -					    SYS_OFF_MODE_RESTART,
+> +					    SYS_OFF_MODE_RESTART_WARM,
+>  					    SYS_OFF_PRIO_LOW,
+>  					    tegra_pmc_restart_handler, NULL);
+>  	if (err) {
 > 
-> It seems like consistency between the two drivers is a reasonable goal.
 
-The new driver was written because the old driver had a lot of bad
-practices. module parameters are bad practices, there are better APIs
-to use. So that is why they are not present.
+You have tegra-pmc restart handler that uses low priority. And then
+you're adding cold/warm handlers to tps65219 and pca9450 drivers with a
+default priorities. Hence this cold/warm separation of handlers doesn't
+do any practical difference in yours case because tegra-pmc will never
+be used as it did before your changes?
 
-ethtool has an API to set debug_level. descs_pool_size sounds a lot
-like ethtool --set-ring. I don't know what the other two do, but look
-to see if ethtool has an option to set them.
+Previously you wanted to make tps6586x driver to skip the warm reboot,
+but you're not touching tps6586x in this patchset. There is no real
+problem that is solved by these patches?
 
-    Andrew
+-- 
+Best regards,
+Dmitry
 
----
-pw-bot: cr
