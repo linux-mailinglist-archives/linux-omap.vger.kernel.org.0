@@ -2,136 +2,134 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 77D7D77A2B2
-	for <lists+linux-omap@lfdr.de>; Sat, 12 Aug 2023 22:45:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EC9477B0B2
+	for <lists+linux-omap@lfdr.de>; Mon, 14 Aug 2023 07:15:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230122AbjHLUpM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 12 Aug 2023 16:45:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48646 "EHLO
+        id S232720AbjHNFO2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 14 Aug 2023 01:14:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54106 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229480AbjHLUpL (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 12 Aug 2023 16:45:11 -0400
-Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 786FA10F2;
-        Sat, 12 Aug 2023 13:45:14 -0700 (PDT)
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 37CKj0el089686;
-        Sat, 12 Aug 2023 15:45:00 -0500
+        with ESMTP id S233183AbjHNFOV (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 14 Aug 2023 01:14:21 -0400
+Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F98FE5F;
+        Sun, 13 Aug 2023 22:14:19 -0700 (PDT)
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 37E5E41C078228;
+        Mon, 14 Aug 2023 00:14:04 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1691873100;
-        bh=qs98ZG5d9WEE5HuZu48lVDNnMP0B6h7oimiTl2Sa3j8=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=G6VXDDfa48ICViV9UhbFOpqnUCubfDhvg56vIBLbeGNZllPAT48PyhuWnRwLERk7Q
-         FCnAQwil+lz9CVFmXBHCWeW+pXowqUDB80QERCvXYQe/seVhfitpKtbbWY6Rqy0Y5V
-         E6RkkFIpYjbQvxD/UosVYflb+6LvtkvUA8c0XdeQ=
-Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 37CKj0CC076204
+        s=ti-com-17Q1; t=1691990044;
+        bh=zgU1is/ey29ER1sZI03mQdYN+tGRD2RBHOYFCdNCr2I=;
+        h=Date:Subject:To:CC:References:From:In-Reply-To;
+        b=gKRirqPpgGaTQi8/d3ej9TvBfwXg4bbFtPJ+uXj9aT7I8ZhNSlQCoyLvXwGdC1/Os
+         5RY/VQI5MUQs0fsrMXD8ywHd0yRImfFJNHuESwAJxRunwsyJ/N1zqlB5+tRQcL9zWg
+         lXRytkKKJzt/nBShx9SU0tdvT7lVRIw0vgOc5etc=
+Received: from DLEE110.ent.ti.com (dlee110.ent.ti.com [157.170.170.21])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 37E5E4r4024156
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Sat, 12 Aug 2023 15:45:00 -0500
-Received: from DLEE100.ent.ti.com (157.170.170.30) by DLEE115.ent.ti.com
- (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Sat, 12
- Aug 2023 15:44:59 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE100.ent.ti.com
- (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
+        Mon, 14 Aug 2023 00:14:04 -0500
+Received: from DLEE112.ent.ti.com (157.170.170.23) by DLEE110.ent.ti.com
+ (157.170.170.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 14
+ Aug 2023 00:14:03 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE112.ent.ti.com
+ (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Sat, 12 Aug 2023 15:44:59 -0500
-Received: from localhost (ileaxei01-snat.itg.ti.com [10.180.69.5])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 37CKixqD067906;
-        Sat, 12 Aug 2023 15:44:59 -0500
-From:   Achal Verma <a-verma1@ti.com>
-To:     Vignesh Raghavendra <vigneshr@ti.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Krzysztof Wilczy_ski <kw@linux.com>,
-        Rob Herring <robh@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>
-CC:     <linux-omap@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, Achal Verma <a-verma1@ti.com>
-Subject: [PATCH 2/2] PCI: cadence: Clear the ARI Capability Next Function Number of the last function
-Date:   Sun, 13 Aug 2023 02:14:55 +0530
-Message-ID: <20230812204455.479510-3-a-verma1@ti.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230812204455.479510-1-a-verma1@ti.com>
-References: <20230812204455.479510-1-a-verma1@ti.com>
+ Frontend Transport; Mon, 14 Aug 2023 00:14:03 -0500
+Received: from [172.24.227.217] (ileaxei01-snat2.itg.ti.com [10.180.69.6])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 37E5DwQv038047;
+        Mon, 14 Aug 2023 00:13:59 -0500
+Message-ID: <ce22155c-31b9-3dd1-8336-275fa92c234d@ti.com>
+Date:   Mon, 14 Aug 2023 10:43:58 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] dt-bindings: remoteproc: pru: Add Interrupt property
+Content-Language: en-US
+To:     Conor Dooley <conor@kernel.org>
+CC:     MD Danish Anwar <danishanwar@ti.com>, Suman Anna <s-anna@ti.com>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-remoteproc@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <vigneshr@ti.com>,
+        <srk@ti.com>, <nm@ti.com>
+References: <20230807110836.2612730-1-danishanwar@ti.com>
+ <20230807-euphemism-trailing-ef4130dc7437@spud>
+ <910a4a98-712a-5517-5a5b-ffb962f83463@ti.com>
+ <20230808-unwomanly-generic-67d20f0e51cd@spud>
+ <cd74e31f-8bc6-445b-9c33-51e53a439cd2@ti.com>
+ <20230808-bazooka-uncoated-a3401d94b063@spud>
+ <e49fb304-bd5d-5013-815f-5933a2a170c4@ti.com>
+ <20230811-ladylike-snore-abba84731921@spud>
+From:   Md Danish Anwar <a0501179@ti.com>
+Organization: Texas Instruments
+In-Reply-To: <20230811-ladylike-snore-abba84731921@spud>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-6.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Jasko-EXT Wojciech <wojciech.jasko-EXT@continental-corporation.com>
+On 11/08/23 8:51 pm, Conor Dooley wrote:
+> On Fri, Aug 11, 2023 at 04:48:28PM +0530, Md Danish Anwar wrote:
+> 
+>>>> There are no standard defines for these interrupt types. However I can create a
+>>>> new .h file defining all the three interrupt cells and their values for both
+>>>> PRU and RTU cores if you think that is required. Otherwise we can go with
+>>>> hardcoded values.
+>>>>
+>>>> Please let me know what you think should be done here.
+>>>
+>>> It'd be good to reference to the documentation for the cells, I don't
+>>> think adding a header is necessary here.
+>>>
+>>
+>> How should I reference to the documentation for the cells?
+>>
+>> Should I just add the details of cells in description of interrupt property here.
+>>
+>>   interrupts:
+>>     maxItems: 1
+>>     description:
+>>       Interrupt specifiers enable the virtio/rpmsg communication between MPU
+>>       and the PRU/RTU cores. The value of the interrupts should be the PRU
+>>       System event number [cell 1], PRU channel [cell 2] and PRU host_event
+>>       (target) [cell 3].
+>>
+>> Please let me know if this looks OK to you.
+> 
+> I was thinking there'd be an binding for the interrupt controller that
+> you could mentioned.
 
-Next Function Number field in ARI Capability Register for last function
-must be zero by default as per the PCIe specification, indicating there
-is no next higher number function but that's not happening in our case,
-so this patch clears the Next Function Number field for last function used.
+There is a binding for interrupt-controller [1] that I can mention. I tried using
 
-Signed-off-by: Jasko-EXT Wojciech <wojciech.jasko-EXT@continental-corporation.com>
-Signed-off-by: Achal Verma <a-verma1@ti.com>
-Reviewed-by: Vignesh Raghavendra <vigneshr@ti.com>
----
- drivers/pci/controller/cadence/pcie-cadence-ep.c | 14 +++++++++++++-
- drivers/pci/controller/cadence/pcie-cadence.h    |  6 ++++++
- 2 files changed, 19 insertions(+), 1 deletion(-)
+- $ref: /schemas/interrupt-controller/ti,pruss-intc.yaml#
 
-diff --git a/drivers/pci/controller/cadence/pcie-cadence-ep.c b/drivers/pci/controller/cadence/pcie-cadence-ep.c
-index b8b655d4047e..8742b2f594fd 100644
---- a/drivers/pci/controller/cadence/pcie-cadence-ep.c
-+++ b/drivers/pci/controller/cadence/pcie-cadence-ep.c
-@@ -565,7 +565,8 @@ static int cdns_pcie_ep_start(struct pci_epc *epc)
- 	struct cdns_pcie *pcie = &ep->pcie;
- 	struct device *dev = pcie->dev;
- 	int max_epfs = sizeof(epc->function_num_map) * 8;
--	int ret, value, epf;
-+	int ret, epf, last_fn;
-+	u32 reg, value;
- 
- 	/*
- 	 * BIT(0) is hardwired to 1, hence function 0 is always enabled
-@@ -573,6 +574,17 @@ static int cdns_pcie_ep_start(struct pci_epc *epc)
- 	 */
- 	cdns_pcie_writel(pcie, CDNS_PCIE_LM_EP_FUNC_CFG, epc->function_num_map);
- 
-+	/*
-+	 * Next function field in ARI_CAP_AND_CTR register for last function
-+	 * should be 0.
-+	 * Clearing Next Function Number field for the last function used.
-+	 */
-+	last_fn = find_last_bit(&epc->function_num_map, BITS_PER_LONG);
-+	reg     = CDNS_PCIE_CORE_PF_I_ARI_CAP_AND_CTRL(last_fn);
-+	value  = cdns_pcie_readl(pcie, reg);
-+	value &= ~CDNS_PCIE_ARI_CAP_NFN_MASK;
-+	cdns_pcie_writel(pcie, reg, value);
-+
- 	if (ep->quirk_disable_flr) {
- 		for (epf = 0; epf < max_epfs; epf++) {
- 			if (!(epc->function_num_map & BIT(epf)))
-diff --git a/drivers/pci/controller/cadence/pcie-cadence.h b/drivers/pci/controller/cadence/pcie-cadence.h
-index 7a5d05f3febc..adcab11e62cd 100644
---- a/drivers/pci/controller/cadence/pcie-cadence.h
-+++ b/drivers/pci/controller/cadence/pcie-cadence.h
-@@ -130,6 +130,12 @@
- #define CDNS_PCIE_EP_FUNC_DEV_CAP_OFFSET	0xc0
- #define CDNS_PCIE_EP_FUNC_SRIOV_CAP_OFFSET	0x200
- 
-+/*
-+ * Endpoint PF Registers
-+ */
-+#define CDNS_PCIE_CORE_PF_I_ARI_CAP_AND_CTRL(fn)	(0x144 + (fn) * 0x1000)
-+#define CDNS_PCIE_ARI_CAP_NFN_MASK	GENMASK(15, 8)
-+
- /*
-  * Root Port Registers (PCI configuration space for the root port function)
-  */
+But it was throwing dt binding errors so I didn't add the ref.
+
+I will mention this file name in the description of the property like below,
+
+     description:
+       Interrupt specifiers enable the virtio/rpmsg communication between MPU
+       and the PRU/RTU cores. For the values of the interrupt cells please
+       refer to interrupt-controller/ti,pruss-intc.yaml schema.
+
+Please let me know if this looks OK to you.
+
+[1]
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/devicetree/bindings/interrupt-controller/ti,pruss-intc.yaml
+
 -- 
-2.25.1
-
+Thanks and Regards,
+Danish.
