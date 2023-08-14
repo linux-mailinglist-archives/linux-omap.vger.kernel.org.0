@@ -2,90 +2,74 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A428677BD60
-	for <lists+linux-omap@lfdr.de>; Mon, 14 Aug 2023 17:48:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D69077C132
+	for <lists+linux-omap@lfdr.de>; Mon, 14 Aug 2023 22:02:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229640AbjHNPrr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 14 Aug 2023 11:47:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47412 "EHLO
+        id S231955AbjHNUBo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 14 Aug 2023 16:01:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229938AbjHNPrU (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 14 Aug 2023 11:47:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE6CF10CE;
-        Mon, 14 Aug 2023 08:47:19 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 62AF663DE9;
-        Mon, 14 Aug 2023 15:47:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6EF6C433C7;
-        Mon, 14 Aug 2023 15:47:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692028038;
-        bh=6GSu3pjMz8Et0gMkn69TwZo/5r8JBRUlijAeo9TCKPQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=E7Uf5C86CtHU5Ihf+elugH9Uxu+wt/novAeYIKjE2rBf8m4HRQIQRZssm4qloO/BC
-         ot07osQfYkSDampv4CSumUWSQfgO0J+O5OPm8un5qIg9tF5SlcUJWh59vZn/RFiV96
-         nMTFNBsbTSmGRn+J4e59P/ZZ+z4loH4HDD+VTmsJkvn/JvDi6wLmksVWnL8vUOrFcK
-         30nj5BtTQVY37WuTtV0I4IDcwlxCsx2aKGBw8rV6Xhweka1eLOZU0A44ffD5/bW3db
-         IjiSsqKXnNoItFl9uqcOZQ0RYKHA1b/7ULWlWZdT9uOEYLkTl5hSYeJZk/80vRAWEs
-         2I8ra6SrjXweA==
-Date:   Mon, 14 Aug 2023 16:47:13 +0100
-From:   Conor Dooley <conor@kernel.org>
-To:     MD Danish Anwar <danishanwar@ti.com>
-Cc:     Suman Anna <s-anna@ti.com>, Conor Dooley <conor+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-remoteproc@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, vigneshr@ti.com, srk@ti.com,
-        nm@ti.com
-Subject: Re: [PATCH v2] dt-bindings: remoteproc: pru: Add Interrupt property
-Message-ID: <20230814-ellipse-backfield-1fd05a2d765e@spud>
-References: <20230814095141.3526684-1-danishanwar@ti.com>
+        with ESMTP id S232313AbjHNUBR (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 14 Aug 2023 16:01:17 -0400
+X-Greylist: delayed 60 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 14 Aug 2023 13:01:16 PDT
+Received: from h1.cmg2.smtp.forpsi.com (h1.cmg2.smtp.forpsi.com [81.2.195.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EE921719
+        for <linux-omap@vger.kernel.org>; Mon, 14 Aug 2023 13:01:16 -0700 (PDT)
+Received: from lenoch ([91.218.190.200])
+        by cmgsmtp with ESMTPSA
+        id VdjYqXUkJv5uIVdjZqjjko; Mon, 14 Aug 2023 22:00:14 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=triops.cz; s=f2019;
+        t=1692043214; bh=VXmefjFl0zW0wmfjV/i8nsnPFN6ufqgMuy2mg0wWOvQ=;
+        h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+        b=Ssyls8qCET3ouxCVoNHkGWYdB+3GpSvSXZA4E5XPAj0q6PM/3ZBLw3YqmvGe7y9nc
+         Hv/qGrnfaVt6DTVI/sc9MbYZ+lkejaSEIBYB0yQiO6K5XfRt+Vq0Nk5vbxBBOU4Gip
+         fZgKda6W+GZNTClic9Izz7hxjzpPRoMcIWa7Ciy3AwJAZqJLJbT6azf+ISb3dU/UZJ
+         PUzKjmv3QCoZJQgYTxSzr7QeukPW9pu3QlsztM+Q12kzMV2aYWjGvbkNjSA1A1It+H
+         aBd9CbAUVanK3o2mUpPIgehX5nmUqt/SyMazmjwteEm9wDoK2ZnRgLKovktK8XMxVA
+         q5knjT1xhYVWg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=triops.cz; s=f2019;
+        t=1692043214; bh=VXmefjFl0zW0wmfjV/i8nsnPFN6ufqgMuy2mg0wWOvQ=;
+        h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+        b=Ssyls8qCET3ouxCVoNHkGWYdB+3GpSvSXZA4E5XPAj0q6PM/3ZBLw3YqmvGe7y9nc
+         Hv/qGrnfaVt6DTVI/sc9MbYZ+lkejaSEIBYB0yQiO6K5XfRt+Vq0Nk5vbxBBOU4Gip
+         fZgKda6W+GZNTClic9Izz7hxjzpPRoMcIWa7Ciy3AwJAZqJLJbT6azf+ISb3dU/UZJ
+         PUzKjmv3QCoZJQgYTxSzr7QeukPW9pu3QlsztM+Q12kzMV2aYWjGvbkNjSA1A1It+H
+         aBd9CbAUVanK3o2mUpPIgehX5nmUqt/SyMazmjwteEm9wDoK2ZnRgLKovktK8XMxVA
+         q5knjT1xhYVWg==
+Date:   Mon, 14 Aug 2023 22:00:12 +0200
+From:   Ladislav Michl <oss-lists@triops.cz>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     linux-rtc@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCH] rtc: rtc-twl: add NVRAM support
+Message-ID: <ZNqHzE+vn/RNoAtn@lenoch>
+References: <ZDf7qZTiml0ijD2g@lenoch>
+ <20230531041701.GH14287@atomide.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="kH60MhqjYS1JGdzg"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230814095141.3526684-1-danishanwar@ti.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20230531041701.GH14287@atomide.com>
+X-CMAE-Envelope: MS4wfJS/d65Y1A68uRc27IIg6upQ/JblrZ1MhGljs7MUt/MbPMbEv0+lqmW35ZFAxdoHjju/FAT4xM2ueEjEGOv8r4CFF0XzzBXBvftVO6OPeeQmUQIZ0w/i
+ qDE5KHDnV0XyQtGzgksiZ5d6WR09xuVFxxer/yRW+/kMs7O/YFjo6e/xk68cVYHYMxbs3mgihhVuFUV6rCr1xxh4ig9E7r89Cyg+WK7SfalTiHSMNkbo9OzT
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H5,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Wed, May 31, 2023 at 07:17:01AM +0300, Tony Lindgren wrote:
+> * Ladislav Michl <oss-lists@triops.cz> [230413 12:56]:
+> > From: Ladislav Michl <ladis@linux-mips.org>
+> > Date: Sat, 28 May 2022 19:36:13 +0200
+> > 
+> > Export SRAM using nvmem.
+> 
+> Reviewed-by: Tony Lindgren <tony@atomide.com>
 
---kH60MhqjYS1JGdzg
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, Aug 14, 2023 at 03:21:41PM +0530, MD Danish Anwar wrote:
-> Add interrupts and interrupt-names protperties for PRU and RTU cores.
->=20
-> Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
-
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Gentle ping... Is anyone going to merge this patch?
 
 Thanks,
-Conor.
-
---kH60MhqjYS1JGdzg
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZNpMgQAKCRB4tDGHoIJi
-0u22AP9QEsPEUyj1AWb0YGo781kJJHa6/Yow29+AedrY1bTlowD/dcj9ziQoP1z+
-gyUWVK3hHq1DKUDGRfORHuX4O1yljAE=
-=V0Y0
------END PGP SIGNATURE-----
-
---kH60MhqjYS1JGdzg--
+	l.
