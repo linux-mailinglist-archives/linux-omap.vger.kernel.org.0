@@ -2,159 +2,72 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E901177EBBC
-	for <lists+linux-omap@lfdr.de>; Wed, 16 Aug 2023 23:27:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7602B77EED9
+	for <lists+linux-omap@lfdr.de>; Thu, 17 Aug 2023 03:49:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346407AbjHPV0z (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 16 Aug 2023 17:26:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32940 "EHLO
+        id S1347361AbjHQBtY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 16 Aug 2023 21:49:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230328AbjHPV0Z (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 16 Aug 2023 17:26:25 -0400
-X-Greylist: delayed 1802 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 16 Aug 2023 14:26:24 PDT
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a02:c205:3004:2154::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35B201BE8
-        for <linux-omap@vger.kernel.org>; Wed, 16 Aug 2023 14:26:24 -0700 (PDT)
-Received: from p200300ccff49da001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff49:da00:1a3d:a2ff:febf:d33a] helo=aktux)
-        by mail.andi.de1.cc with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <andreas@kemnade.info>)
-        id 1qWN6G-002hco-8F; Wed, 16 Aug 2023 22:26:40 +0200
-Received: from andi by aktux with local (Exim 4.96)
-        (envelope-from <andreas@kemnade.info>)
-        id 1qWN6F-001MPV-1i;
-        Wed, 16 Aug 2023 22:26:39 +0200
-From:   Andreas Kemnade <andreas@kemnade.info>
-To:     jic23@kernel.org, lars@metafoo.de, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        andreas@kemnade.info, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org
-Subject: [PATCH] dt-bindings: iio: adc: Add TI TWL603X GPADC
-Date:   Wed, 16 Aug 2023 22:26:14 +0200
-Message-Id: <20230816202614.324457-1-andreas@kemnade.info>
-X-Mailer: git-send-email 2.39.2
+        with ESMTP id S1347596AbjHQBtU (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 16 Aug 2023 21:49:20 -0400
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C47B270A;
+        Wed, 16 Aug 2023 18:49:18 -0700 (PDT)
+Received: from kwepemi500012.china.huawei.com (unknown [172.30.72.57])
+        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4RR7Dq3LjMz1GDjn;
+        Thu, 17 Aug 2023 09:47:55 +0800 (CST)
+Received: from huawei.com (10.90.53.73) by kwepemi500012.china.huawei.com
+ (7.221.188.12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Thu, 17 Aug
+ 2023 09:49:16 +0800
+From:   Li Zetao <lizetao1@huawei.com>
+To:     <edubezval@gmail.com>, <j-keerthy@ti.com>, <rafael@kernel.org>,
+        <daniel.lezcano@linaro.org>, <amitk@kernel.org>,
+        <rui.zhang@intel.com>
+CC:     <lizetao1@huawei.com>, <linux-pm@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>
+Subject: [PATCH -next] thermal: ti-soc-thermal: Use helper function IS_ERR_OR_NULL()
+Date:   Thu, 17 Aug 2023 09:49:00 +0800
+Message-ID: <20230817014900.3094512-1-lizetao1@huawei.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.90.53.73]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ kwepemi500012.china.huawei.com (7.221.188.12)
+X-CFilter-Loop: Reflected
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Document TI TWL603X GPADC devicetree bindings.
-A driver is already there, the compatibles are used, but not documented.
-Use two separate files to reference only the allowed compatible in
-a future YAML version of
-Documentation/devicetree/bindings/mfd/twl-family.txt
+Use IS_ERR_OR_NULL() to detect an error pointer or a null pointer
+open-coding to simplify the code.
 
-Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+Signed-off-by: Li Zetao <lizetao1@huawei.com>
 ---
- .../bindings/iio/adc/ti,twl6030-gpadc.yaml    | 42 +++++++++++++++++++
- .../bindings/iio/adc/ti,twl6032-gpadc.yaml    | 42 +++++++++++++++++++
- 2 files changed, 84 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,twl6030-gpadc.yaml
- create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,twl6032-gpadc.yaml
+ drivers/thermal/ti-soc-thermal/ti-bandgap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/ti,twl6030-gpadc.yaml b/Documentation/devicetree/bindings/iio/adc/ti,twl6030-gpadc.yaml
-new file mode 100644
-index 000000000000..08bc0468f616
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/adc/ti,twl6030-gpadc.yaml
-@@ -0,0 +1,42 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/adc/ti,twl6030-gpadc.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: GPADC subsystem in the TWL6030 power module
-+
-+maintainers:
-+  - Jonathan Cameron <jic23@kernel.org>
-+
-+description:
-+  The GPADC subsystem in the TWL6030 consists of a 10-bit ADC
-+  combined with a 15-input analog multiplexer.
-+
-+properties:
-+  compatible:
-+    const: ti,twl6030-gpadc
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  "#io-channel-cells":
-+    const: 1
-+
-+required:
-+  - compatible
-+  - interrupts
-+  - "#io-channel-cells"
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    twl {
-+        gpadc {
-+            compatible = "ti,twl6030-gpadc";
-+            interrupts = <3>;
-+            #io-channel-cells = <1>;
-+        };
-+    };
-+...
-diff --git a/Documentation/devicetree/bindings/iio/adc/ti,twl6032-gpadc.yaml b/Documentation/devicetree/bindings/iio/adc/ti,twl6032-gpadc.yaml
-new file mode 100644
-index 000000000000..70acec533277
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/adc/ti,twl6032-gpadc.yaml
-@@ -0,0 +1,42 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/adc/ti,twl6032-gpadc.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: GPADC subsystem in the TWL6032 power module
-+
-+maintainers:
-+  - Jonathan Cameron <jic23@kernel.org>
-+
-+description:
-+  The GPADC subsystem in the TWL6032 consists of a 10-bit ADC
-+  combined with a 19-input analog multiplexer.
-+
-+properties:
-+  compatible:
-+    const: ti,twl6032-gpadc
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  "#io-channel-cells":
-+    const: 1
-+
-+required:
-+  - compatible
-+  - interrupts
-+  - "#io-channel-cells"
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    twl {
-+        gpadc {
-+            compatible = "ti,twl6032-gpadc";
-+            interrupts = <3>;
-+            #io-channel-cells = <1>;
-+        };
-+    };
-+...
+diff --git a/drivers/thermal/ti-soc-thermal/ti-bandgap.c b/drivers/thermal/ti-soc-thermal/ti-bandgap.c
+index a1c9a1530183..0c2eb9c6e58b 100644
+--- a/drivers/thermal/ti-soc-thermal/ti-bandgap.c
++++ b/drivers/thermal/ti-soc-thermal/ti-bandgap.c
+@@ -314,7 +314,7 @@ int ti_bandgap_adc_to_mcelsius(struct ti_bandgap *bgp, int adc_val, int *t)
+  */
+ static inline int ti_bandgap_validate(struct ti_bandgap *bgp, int id)
+ {
+-	if (!bgp || IS_ERR(bgp)) {
++	if (IS_ERR_OR_NULL(bgp)) {
+ 		pr_err("%s: invalid bandgap pointer\n", __func__);
+ 		return -EINVAL;
+ 	}
 -- 
-2.39.2
+2.34.1
 
