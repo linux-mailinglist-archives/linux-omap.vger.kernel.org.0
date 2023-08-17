@@ -2,57 +2,69 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B130677F397
-	for <lists+linux-omap@lfdr.de>; Thu, 17 Aug 2023 11:37:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E20E77F589
+	for <lists+linux-omap@lfdr.de>; Thu, 17 Aug 2023 13:46:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232563AbjHQJhL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 17 Aug 2023 05:37:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57572 "EHLO
+        id S1350432AbjHQLqU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 17 Aug 2023 07:46:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349916AbjHQJgh (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 17 Aug 2023 05:36:37 -0400
-Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 950DB2724;
-        Thu, 17 Aug 2023 02:36:35 -0700 (PDT)
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 37H9aMbv130389;
-        Thu, 17 Aug 2023 04:36:22 -0500
+        with ESMTP id S1350426AbjHQLp7 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 17 Aug 2023 07:45:59 -0400
+Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 646A4198C;
+        Thu, 17 Aug 2023 04:45:57 -0700 (PDT)
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 37HBjYSc074780;
+        Thu, 17 Aug 2023 06:45:34 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1692264982;
-        bh=cM2v5idW6LPns03CXo999YFb/jfLx+ptnb6APGeD3xc=;
+        s=ti-com-17Q1; t=1692272734;
+        bh=/YvZHFijQAOOUb/hxHeFZFqv3Q7xfF5U1eY9Z9/kDVo=;
         h=From:To:CC:Subject:Date;
-        b=JCpoUKTSRGM3I9svuYGs0nI+tSY9C83ZPgI4YIT+b4Mls6wBNs55eiR7Dg93VZB2C
-         YN8M0nrmEAOY8U7lQyCWcHLkfTBPTx6uQEUCEr83L/Fhp7hbUgfHXV4DcoGSuFMMde
-         HasRk0xKB45E/33Mi0GYhPDzeRcb0lamgZEgjH0s=
-Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 37H9aM5T048780
+        b=nl+T11tMHNmxoIeWHsT87cUrNB3Y7tO2rvfwXMnxkVhcRsMGsGAHp4+rmasXmmQmC
+         H5xYqDNDdTLTklEIMv+Ag80TLRuouVRKzWgSH98all5mzf03H0blqf1OIuB3SBlb/b
+         jiA0X6lvtTwSd9jj82gx1jXWnfl+hbEQcYQJaRoY=
+Received: from DFLE100.ent.ti.com (dfle100.ent.ti.com [10.64.6.21])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 37HBjYHU003072
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 17 Aug 2023 04:36:22 -0500
-Received: from DFLE109.ent.ti.com (10.64.6.30) by DFLE114.ent.ti.com
- (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
+        Thu, 17 Aug 2023 06:45:34 -0500
+Received: from DFLE114.ent.ti.com (10.64.6.35) by DFLE100.ent.ti.com
+ (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 17
- Aug 2023 04:36:21 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE109.ent.ti.com
- (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
+ Aug 2023 06:45:34 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Thu, 17 Aug 2023 04:36:21 -0500
-Received: from localhost (ileaxei01-snat2.itg.ti.com [10.180.69.6])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 37H9aK5Y007933;
-        Thu, 17 Aug 2023 04:36:20 -0500
-From:   Achal Verma <a-verma1@ti.com>
-To:     Vignesh Raghavendra <vigneshr@ti.com>,
-        Tom Joseph <tjoseph@cadence.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Krzysztof Wilczy_ski <kw@linux.com>,
-        Rob Herring <robh@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>
-CC:     <linux-omap@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, Achal Verma <a-verma1@ti.com>
-Subject: [PATCH v5] PCI: j721e: Delay T_PVPERL+TPERST_CLK before PERST# inactive
-Date:   Thu, 17 Aug 2023 15:06:19 +0530
-Message-ID: <20230817093619.1079267-1-a-verma1@ti.com>
-X-Mailer: git-send-email 2.25.1
+ Frontend Transport; Thu, 17 Aug 2023 06:45:34 -0500
+Received: from fllv0122.itg.ti.com (fllv0122.itg.ti.com [10.247.120.72])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 37HBjYIp097174;
+        Thu, 17 Aug 2023 06:45:34 -0500
+Received: from localhost (uda0501179.dhcp.ti.com [172.24.227.217])
+        by fllv0122.itg.ti.com (8.14.7/8.14.7) with ESMTP id 37HBjXuQ002765;
+        Thu, 17 Aug 2023 06:45:33 -0500
+From:   MD Danish Anwar <danishanwar@ti.com>
+To:     Randy Dunlap <rdunlap@infradead.org>,
+        Roger Quadros <rogerq@kernel.org>,
+        Simon Horman <simon.horman@corigine.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Richard Cochran <richardcochran@gmail.com>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        MD Danish Anwar <danishanwar@ti.com>
+CC:     <nm@ti.com>, <srk@ti.com>, <linux-kernel@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>
+Subject: [PATCH v5 0/5] Introduce IEP driver and packet timestamping support 
+Date:   Thu, 17 Aug 2023 17:15:22 +0530
+Message-ID: <20230817114527.1585631-1-danishanwar@ti.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -67,99 +79,85 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-As per the PCIe Card Electromechanical specification REV. 5.0, PERST#
-signal should be de-asserted after minimum 100ms from the time power-rails
-achieve specified operating limits and 100us after reference clock gets
-stable.
+This series introduces Industrial Ethernet Peripheral (IEP) driver to
+support timestamping of ethernet packets and thus support PTP and PPS
+for PRU ICSSG ethernet ports.
 
-From PCIe Card Electromechanical specification REV. 5.0 section 2.9.2:
-TPVPERL: Power stable to PERST# inactive - 100ms
-TPERST_CLK: REFCLK stable before PERST# inactive - 100us
+This series also adds 10M full duplex support for ICSSG ethernet driver.
 
-Fixes: f3e25911a430 ("PCI: j721e: Add TI J721E PCIe driver")
-Signed-off-by: Achal Verma <a-verma1@ti.com>
----
- drivers/pci/controller/cadence/pci-j721e.c | 30 +++++++++++-----------
- drivers/pci/pci.h                          |  3 +++
- 2 files changed, 18 insertions(+), 15 deletions(-)
+There are two IEP instances. IEP0 is used for packet timestamping while IEP1
+is used for 10M full duplex support.
 
-diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
-index e70213c9060a..b09924b010ab 100644
---- a/drivers/pci/controller/cadence/pci-j721e.c
-+++ b/drivers/pci/controller/cadence/pci-j721e.c
-@@ -34,6 +34,8 @@
- #define J721E_PCIE_USER_LINKSTATUS	0x14
- #define LINK_STATUS			GENMASK(1, 0)
- 
-+#define PERST_INACTIVE_US (PCIE_TPVPERL_MS*USEC_PER_MSEC + PCIE_TPERST_CLK_US)
-+
- enum link_status {
- 	NO_RECEIVERS_DETECTED,
- 	LINK_TRAINING_IN_PROGRESS,
-@@ -359,7 +361,7 @@ static int j721e_pcie_probe(struct platform_device *pdev)
- 	struct j721e_pcie *pcie;
- 	struct cdns_pcie_rc *rc = NULL;
- 	struct cdns_pcie_ep *ep = NULL;
--	struct gpio_desc *gpiod;
-+	struct gpio_desc *perst_gpiod;
- 	void __iomem *base;
- 	struct clk *clk;
- 	u32 num_lanes;
-@@ -468,11 +470,10 @@ static int j721e_pcie_probe(struct platform_device *pdev)
- 
- 	switch (mode) {
- 	case PCI_MODE_RC:
--		gpiod = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_LOW);
--		if (IS_ERR(gpiod)) {
--			ret = PTR_ERR(gpiod);
--			if (ret != -EPROBE_DEFER)
--				dev_err(dev, "Failed to get reset GPIO\n");
-+		perst_gpiod = devm_gpiod_get(dev, "reset", GPIOD_OUT_LOW);
-+		if (IS_ERR(perst_gpiod)) {
-+			ret = PTR_ERR(perst_gpiod);
-+			dev_err(dev, "Failed to get reset GPIO\n");
- 			goto err_get_sync;
- 		}
- 
-@@ -498,16 +499,15 @@ static int j721e_pcie_probe(struct platform_device *pdev)
- 
- 		/*
- 		 * "Power Sequencing and Reset Signal Timings" table in
--		 * PCI EXPRESS CARD ELECTROMECHANICAL SPECIFICATION, REV. 3.0
--		 * indicates PERST# should be deasserted after minimum of 100us
--		 * once REFCLK is stable. The REFCLK to the connector in RC
--		 * mode is selected while enabling the PHY. So deassert PERST#
--		 * after 100 us.
-+		 * PCI EXPRESS CARD ELECTROMECHANICAL SPECIFICATION, REV. 5.0
-+		 * indicates PERST# should be deasserted after minimum of 100ms
-+		 * after power rails achieve specified operating limits and
-+		 * 100us after reference clock gets stable.
-+		 * PERST_INACTIVE_US accounts for both delays.
- 		 */
--		if (gpiod) {
--			usleep_range(100, 200);
--			gpiod_set_value_cansleep(gpiod, 1);
--		}
-+
-+		fsleep(PERST_INACTIVE_US);
-+		gpiod_set_value_cansleep(perst_gpiod, 1);
- 
- 		ret = cdns_pcie_host_setup(rc);
- 		if (ret < 0) {
-diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-index a4c397434057..80d520be34e6 100644
---- a/drivers/pci/pci.h
-+++ b/drivers/pci/pci.h
-@@ -13,6 +13,9 @@
- 
- #define PCIE_LINK_RETRAIN_TIMEOUT_MS	1000
- 
-+#define PCIE_TPVPERL_MS		100	/* see PCIe CEM r5.0, sec 2.9.2 */
-+#define PCIE_TPERST_CLK_US	100
-+
- extern const unsigned char pcie_link_speed[];
- extern bool pci_early_dump;
- 
+This is v5 of the series [v1]. It addresses comments made on [v4].
+This series is based on linux-next(#next-20230817).
+
+Changes from v4 to v5:
+*) Added comments on why we are using readl / writel instead of regmap_read()
+   / write() in icss_iep_gettime() / settime() APIs as asked by Roger.
+
+Change from v3 to v4:
+*) Changed compatible in iep dt bindings. Now each SoC has their own compatible
+   in the binding with "ti,am654-icss-iep" as a fallback as asked by Conor.
+*) Addressed Andew's comments and removed helper APIs icss_iep_readl() / 
+   writel(). Now the settime/gettime APIs directly use readl() / writel().
+*) Moved selecting TI_ICSS_IEP in Kconfig from patch 3 to patch 4.
+*) Removed forward declaration of icss_iep_of_match in patch 3.
+*) Replaced use of of_device_get_match_data() to device_get_match_data() in
+   patch 3.
+*) Removed of_match_ptr() from patch 3 as it is not needed.
+
+Changes from v2 to v3:
+*) Addressed Roger's comment and moved IEP1 related changes in patch 5.
+*) Addressed Roger's comment and moved icss_iep.c / .h changes from patch 4
+   to patch 3.
+*) Added support for multiple timestamping in patch 4 as asked by Roger.
+*) Addressed Andrew's comment and added comment in case SPEED_10 in
+   icssg_config_ipg() API.
+*) Kept compatible as "ti,am654-icss-iep" for all TI K3 SoCs
+
+Changes from v1 to v2:
+*) Addressed Simon's comment to fix reverse xmas tree declaration. Some APIs
+   in patch 3 and 4 were not following reverse xmas tree variable declaration.
+   Fixed it in this version.
+*) Addressed Conor's comments and removed unsupported SoCs from compatible
+   comment in patch 1. 
+*) Addded patch 2 which was not part of v1. Patch 2, adds IEP node to dt
+   bindings for ICSSG.
+
+[v1] https://lore.kernel.org/all/20230803110153.3309577-1-danishanwar@ti.com/
+[v2] https://lore.kernel.org/all/20230807110048.2611456-1-danishanwar@ti.com/
+[v3] https://lore.kernel.org/all/20230809114906.21866-1-danishanwar@ti.com/
+[v4] https://lore.kernel.org/all/20230814100847.3531480-1-danishanwar@ti.com/
+
+Thanks and Regards,
+Md Danish Anwar
+
+Grygorii Strashko (1):
+  net: ti: icssg-prueth: am65x SR2.0 add 10M full duplex support
+
+MD Danish Anwar (2):
+  dt-bindings: net: Add ICSS IEP
+  dt-bindings: net: Add IEP property in ICSSG DT binding
+
+Roger Quadros (2):
+  net: ti: icss-iep: Add IEP driver
+  net: ti: icssg-prueth: add packet timestamping and ptp support
+
+ .../devicetree/bindings/net/ti,icss-iep.yaml  |  61 ++
+ .../bindings/net/ti,icssg-prueth.yaml         |   7 +
+ drivers/net/ethernet/ti/Kconfig               |  12 +
+ drivers/net/ethernet/ti/Makefile              |   1 +
+ drivers/net/ethernet/ti/icssg/icss_iep.c      | 965 ++++++++++++++++++
+ drivers/net/ethernet/ti/icssg/icss_iep.h      |  41 +
+ drivers/net/ethernet/ti/icssg/icssg_config.c  |   7 +
+ drivers/net/ethernet/ti/icssg/icssg_ethtool.c |  21 +
+ drivers/net/ethernet/ti/icssg/icssg_prueth.c  | 451 +++++++-
+ drivers/net/ethernet/ti/icssg/icssg_prueth.h  |  28 +-
+ 10 files changed, 1586 insertions(+), 8 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/ti,icss-iep.yaml
+ create mode 100644 drivers/net/ethernet/ti/icssg/icss_iep.c
+ create mode 100644 drivers/net/ethernet/ti/icssg/icss_iep.h
+
 -- 
-2.25.1
+2.34.1
 
