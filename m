@@ -2,78 +2,70 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6309A77F597
-	for <lists+linux-omap@lfdr.de>; Thu, 17 Aug 2023 13:47:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF71A77F5AA
+	for <lists+linux-omap@lfdr.de>; Thu, 17 Aug 2023 13:51:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350452AbjHQLqx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 17 Aug 2023 07:46:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43886 "EHLO
+        id S1350468AbjHQLui (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 17 Aug 2023 07:50:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59566 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350492AbjHQLqf (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 17 Aug 2023 07:46:35 -0400
-Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F00B1728;
-        Thu, 17 Aug 2023 04:46:34 -0700 (PDT)
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 37HBk84K071241;
-        Thu, 17 Aug 2023 06:46:08 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1692272768;
-        bh=o3Oxg+6C/VrYnbdmY/PLawbgRXKwiUORRbh7X1gYHGo=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=D4zJTWL/AOiTXZwsbKTZFGdO4mfWJ5xGOgsKhvDBf1yccKXrKp/JPqZavPg61yN43
-         5cw6TrLDJCpdRy027NovVWk9k/fk0u6UB6xNSBnfpA+iLJGCoy3S94P3WIZKna6j5y
-         3M5ZQrQyk21SelNCkFd/q+1dZ/FAgpJxJsbYFhuw=
-Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 37HBk80B094506
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 17 Aug 2023 06:46:08 -0500
-Received: from DFLE107.ent.ti.com (10.64.6.28) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 17
- Aug 2023 06:46:08 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE107.ent.ti.com
- (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Thu, 17 Aug 2023 06:46:07 -0500
-Received: from lelv0854.itg.ti.com (lelv0854.itg.ti.com [10.181.64.140])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 37HBk7rw098092;
-        Thu, 17 Aug 2023 06:46:07 -0500
-Received: from localhost (uda0501179.dhcp.ti.com [172.24.227.217])
-        by lelv0854.itg.ti.com (8.14.7/8.14.7) with ESMTP id 37HBk7dO000569;
-        Thu, 17 Aug 2023 06:46:07 -0500
-From:   MD Danish Anwar <danishanwar@ti.com>
-To:     Randy Dunlap <rdunlap@infradead.org>,
-        Roger Quadros <rogerq@kernel.org>,
-        Simon Horman <simon.horman@corigine.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        MD Danish Anwar <danishanwar@ti.com>
-CC:     <nm@ti.com>, <srk@ti.com>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>
-Subject: [PATCH v5 5/5] net: ti: icssg-prueth: am65x SR2.0 add 10M full duplex support
-Date:   Thu, 17 Aug 2023 17:15:27 +0530
-Message-ID: <20230817114527.1585631-6-danishanwar@ti.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230817114527.1585631-1-danishanwar@ti.com>
-References: <20230817114527.1585631-1-danishanwar@ti.com>
+        with ESMTP id S1350569AbjHQLuf (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 17 Aug 2023 07:50:35 -0400
+Received: from mail-qt1-x82e.google.com (mail-qt1-x82e.google.com [IPv6:2607:f8b0:4864:20::82e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2832115;
+        Thu, 17 Aug 2023 04:50:24 -0700 (PDT)
+Received: by mail-qt1-x82e.google.com with SMTP id d75a77b69052e-40fee14093dso44631971cf.1;
+        Thu, 17 Aug 2023 04:50:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1692273023; x=1692877823;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=M9lCWWjQi5kUWQlvBUeWc9Nf3lu8DPVL2qmfP5rbSH8=;
+        b=B318olWAbT4vuUsbtKYjkoZiRsrsxPFHyrZi3TtEFEtKW9h3HQ8f6p1ZRi50SrnyCG
+         C+D/x4gkGvmid46CM4iXEfUFE/yZ3ytdCcH2N6gOXu9JZt+aFx2UTxLKt4xfP2VdVVI8
+         9KxUpxSEK/gl17voSaMvhohVkORyM75jnOhS6ZqlAdHN8jCbQ46aMLX6QNlopN9nlm5v
+         B8fDbFD99P3xAkGmWSEP5pwRciF8F/RY59tT57mvUlskrhHRrzWLLdIqcq1fp+i8Z3kO
+         U6rIOCAZeq4vLtZrsIy+OCSK5It0dkOBIEwEcUtjRUUjwn3n1IgunVaOVGRFTcGvBwEs
+         xkUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692273023; x=1692877823;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=M9lCWWjQi5kUWQlvBUeWc9Nf3lu8DPVL2qmfP5rbSH8=;
+        b=H+UtAJUpCIt9K2/sFmoQV7/NREdGRPpsxaGvrNF6v/1z+QgjXIFlseOmO/qMwwAGUs
+         HWIPWtHxO39MkXLyadMSiB94pzJpXRqIj7etXpTy/ccajcjwMSzoomuH5Df1EN049+Ln
+         Q8mM++1Aa7AReWDSLXRqHC3ccCWNEFkJhcwi8E9vln1L4yCx1/iAockBU90la6OqxQcG
+         tBM+UW6R4PXYKh8VE/djR5cS6mr3c1ZHPTJ69yKhRPOIXoNkCvzfU+sTAAAN4dmF+O9z
+         bdEVKmaUWdcUb6X5eSB7VOuJKYKddbDtwFCEB4VTiQV7um75tbq0CgQBQl4FcKv5S8vW
+         0nfA==
+X-Gm-Message-State: AOJu0YxkDIOJjJwpotbfevcsgesRcke+brjkC0a6H2Y2Aek6iZ7Guq3w
+        s+p1v+bfn6Z0y2Q1JINvOZ3u6ZOG38s=
+X-Google-Smtp-Source: AGHT+IGwqjtGvtLsdAOqh0kLYJ3VIFiib/773UCebXn1X0RAhfGf45yDH3EG+elLFhKYLA0K3GB07Q==
+X-Received: by 2002:ac8:584d:0:b0:407:fb08:c44e with SMTP id h13-20020ac8584d000000b00407fb08c44emr4743578qth.5.1692273023167;
+        Thu, 17 Aug 2023 04:50:23 -0700 (PDT)
+Received: from localhost.localdomain (pppoe-209-91-167-254.vianet.ca. [209.91.167.254])
+        by smtp.gmail.com with ESMTPSA id h8-20020ac85148000000b0040ff387de83sm5142149qtn.45.2023.08.17.04.50.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Aug 2023 04:50:22 -0700 (PDT)
+From:   Trevor Woerner <twoerner@gmail.com>
+To:     linux-kernel@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
+        Tony Lindgren <tony@atomide.com>
+Cc:     linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
+        linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-omap@vger.kernel.org
+Subject: [PATCH v3 1/4] arch/arm/configs/*_defconfig cleanup
+Date:   Thu, 17 Aug 2023 07:50:11 -0400
+Message-ID: <20230817115017.35663-2-twoerner@gmail.com>
+X-Mailer: git-send-email 2.41.0.327.gaa9166bcc0ba
+In-Reply-To: <20230817115017.35663-1-twoerner@gmail.com>
+References: <20230817115017.35663-1-twoerner@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS autolearn=ham
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UPPERCASE_50_75 autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -81,189 +73,127 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Grygorii Strashko <grygorii.strashko@ti.com>
+Drop CONFIG_NF_LOG_NETDEV as it was removed in commit 1510618e45cb
+("netfilter: nf_log_netdev: merge with nf_log_syslog").
 
-For AM65x SR2.0 it's required to enable IEP1 in raw 64bit mode which is
-used by PRU FW to monitor the link and apply w/a for 10M link issue.
-Note. No public errata available yet.
+Drop CONFIG_NFT_COUNTER as it was removed in commit 023223dfbfb3
+("netfilter: nf_tables: make counter support built-in").
 
-Without this w/a the PRU FW will stuck if link state changes under TX
-traffic pressure.
+Drop CONFIG_NF_FLOW_TABLE_IPV6 and CONFIG_NF_FLOW_TABLE_IPV4 as they were
+removed in commit c42ba4290b21 ("netfilter: flowtable: remove ipv4/ipv6
+modules").
 
-Hence, add support for 10M full duplex for AM65x SR2.0:
- - add new IEP API to enable IEP, but without PTP support
- - add pdata quirk_10m_link_issue to enable 10M link issue w/a.
+Drop CONFIG_NF_LOG_BRIDGE as it was removed in commit 77ccee96a674
+("netfilter: nf_log_bridge: merge with nf_log_syslog").
 
-Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
-Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
+Drop CONFIG_IP_NF_TARGET_CLUSTERIP from any remaining arm defconfigs as it
+was removed in commit 9db5d918e2c0 ("netfilter: ip_tables: remove clusterip
+target").
+
+Drop CONFIG_USB_MUSB_AM35X as it was removed in commit 57f8e00d8a82 ("usb:
+musb: Drop old unused am35x glue layer").
+
+Drop CONFIG_NFT_OBJREF as it was removed in commit d037abc2414b
+("netfilter: nft_objref: make it builtin").
+
+Signed-off-by: Trevor Woerner <twoerner@gmail.com>
 ---
- drivers/net/ethernet/ti/icssg/icss_iep.c     | 26 +++++++++++++++++++
- drivers/net/ethernet/ti/icssg/icss_iep.h     |  2 ++
- drivers/net/ethernet/ti/icssg/icssg_config.c |  7 +++++
- drivers/net/ethernet/ti/icssg/icssg_prueth.c | 27 ++++++++++++++++++--
- drivers/net/ethernet/ti/icssg/icssg_prueth.h |  2 ++
- 5 files changed, 62 insertions(+), 2 deletions(-)
+ arch/arm/configs/keystone_defconfig  | 1 -
+ arch/arm/configs/multi_v7_defconfig  | 1 -
+ arch/arm/configs/omap2plus_defconfig | 8 --------
+ 3 files changed, 10 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/icssg/icss_iep.c b/drivers/net/ethernet/ti/icssg/icss_iep.c
-index bcc056bf45da..4cf2a52e4378 100644
---- a/drivers/net/ethernet/ti/icssg/icss_iep.c
-+++ b/drivers/net/ethernet/ti/icssg/icss_iep.c
-@@ -727,6 +727,32 @@ void icss_iep_put(struct icss_iep *iep)
- }
- EXPORT_SYMBOL_GPL(icss_iep_put);
- 
-+void icss_iep_init_fw(struct icss_iep *iep)
-+{
-+	/* start IEP for FW use in raw 64bit mode, no PTP support */
-+	iep->clk_tick_time = iep->def_inc;
-+	iep->cycle_time_ns = 0;
-+	iep->ops = NULL;
-+	iep->clockops_data = NULL;
-+	icss_iep_set_default_inc(iep, iep->def_inc);
-+	icss_iep_set_compensation_inc(iep, iep->def_inc);
-+	icss_iep_set_compensation_count(iep, 0);
-+	regmap_write(iep->map, ICSS_IEP_SYNC_PWIDTH_REG, iep->refclk_freq / 10); /* 100 ms pulse */
-+	regmap_write(iep->map, ICSS_IEP_SYNC0_PERIOD_REG, 0);
-+	if (iep->plat_data->flags & ICSS_IEP_SLOW_COMPEN_REG_SUPPORT)
-+		icss_iep_set_slow_compensation_count(iep, 0);
-+
-+	icss_iep_enable(iep);
-+	icss_iep_settime(iep, 0);
-+}
-+EXPORT_SYMBOL_GPL(icss_iep_init_fw);
-+
-+void icss_iep_exit_fw(struct icss_iep *iep)
-+{
-+	icss_iep_disable(iep);
-+}
-+EXPORT_SYMBOL_GPL(icss_iep_exit_fw);
-+
- int icss_iep_init(struct icss_iep *iep, const struct icss_iep_clockops *clkops,
- 		  void *clockops_data, u32 cycle_time_ns)
- {
-diff --git a/drivers/net/ethernet/ti/icssg/icss_iep.h b/drivers/net/ethernet/ti/icssg/icss_iep.h
-index 9c7f4d0a0916..803a4b714893 100644
---- a/drivers/net/ethernet/ti/icssg/icss_iep.h
-+++ b/drivers/net/ethernet/ti/icssg/icss_iep.h
-@@ -35,5 +35,7 @@ int icss_iep_exit(struct icss_iep *iep);
- int icss_iep_get_count_low(struct icss_iep *iep);
- int icss_iep_get_count_hi(struct icss_iep *iep);
- int icss_iep_get_ptp_clock_idx(struct icss_iep *iep);
-+void icss_iep_init_fw(struct icss_iep *iep);
-+void icss_iep_exit_fw(struct icss_iep *iep);
- 
- #endif /* __NET_TI_ICSS_IEP_H */
-diff --git a/drivers/net/ethernet/ti/icssg/icssg_config.c b/drivers/net/ethernet/ti/icssg/icssg_config.c
-index ab648d3efe85..933b84666574 100644
---- a/drivers/net/ethernet/ti/icssg/icssg_config.c
-+++ b/drivers/net/ethernet/ti/icssg/icssg_config.c
-@@ -210,6 +210,10 @@ void icssg_config_ipg(struct prueth_emac *emac)
- 	case SPEED_100:
- 		icssg_mii_update_ipg(prueth->mii_rt, slice, MII_RT_TX_IPG_100M);
- 		break;
-+	case SPEED_10:
-+		/* IPG for 10M is same as 100M */
-+		icssg_mii_update_ipg(prueth->mii_rt, slice, MII_RT_TX_IPG_100M);
-+		break;
- 	default:
- 		/* Other links speeds not supported */
- 		netdev_err(emac->ndev, "Unsupported link speed\n");
-@@ -440,6 +444,9 @@ void icssg_config_set_speed(struct prueth_emac *emac)
- 	case SPEED_100:
- 		fw_speed = FW_LINK_SPEED_100M;
- 		break;
-+	case SPEED_10:
-+		fw_speed = FW_LINK_SPEED_10M;
-+		break;
- 	default:
- 		/* Other links speeds not supported */
- 		netdev_err(emac->ndev, "Unsupported link speed\n");
-diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.c b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-index 1bcb4e174652..410612f43cbd 100644
---- a/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-+++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-@@ -1149,7 +1149,6 @@ static int emac_phy_connect(struct prueth_emac *emac)
- 
- 	/* remove unsupported modes */
- 	phy_remove_link_mode(ndev->phydev, ETHTOOL_LINK_MODE_10baseT_Half_BIT);
--	phy_remove_link_mode(ndev->phydev, ETHTOOL_LINK_MODE_10baseT_Full_BIT);
- 	phy_remove_link_mode(ndev->phydev, ETHTOOL_LINK_MODE_100baseT_Half_BIT);
- 	phy_remove_link_mode(ndev->phydev, ETHTOOL_LINK_MODE_1000baseT_Half_BIT);
- 	phy_remove_link_mode(ndev->phydev, ETHTOOL_LINK_MODE_Pause_BIT);
-@@ -2090,13 +2089,29 @@ static int prueth_probe(struct platform_device *pdev)
- 		goto free_pool;
- 	}
- 
-+	prueth->iep1 = icss_iep_get_idx(np, 1);
-+	if (IS_ERR(prueth->iep1)) {
-+		ret = dev_err_probe(dev, PTR_ERR(prueth->iep1), "iep1 get failed\n");
-+		icss_iep_put(prueth->iep0);
-+		prueth->iep0 = NULL;
-+		prueth->iep1 = NULL;
-+		goto free_pool;
-+	}
-+
-+	if (prueth->pdata.quirk_10m_link_issue) {
-+		/* Enable IEP1 for FW in 64bit mode as W/A for 10M FD link detect issue under TX
-+		 * traffic.
-+		 */
-+		icss_iep_init_fw(prueth->iep1);
-+	}
-+
- 	/* setup netdev interfaces */
- 	if (eth0_node) {
- 		ret = prueth_netdev_init(prueth, eth0_node);
- 		if (ret) {
- 			dev_err_probe(dev, ret, "netdev init %s failed\n",
- 				      eth0_node->name);
--			goto netdev_exit;
-+			goto exit_iep;
- 		}
- 		prueth->emac[PRUETH_MAC0]->iep = prueth->iep0;
- 	}
-@@ -2167,6 +2182,10 @@ static int prueth_probe(struct platform_device *pdev)
- 		prueth_netdev_exit(prueth, eth_node);
- 	}
- 
-+exit_iep:
-+	if (prueth->pdata.quirk_10m_link_issue)
-+		icss_iep_exit_fw(prueth->iep1);
-+
- free_pool:
- 	gen_pool_free(prueth->sram_pool,
- 		      (unsigned long)prueth->msmcram.va, msmc_ram_size);
-@@ -2212,6 +2231,10 @@ static void prueth_remove(struct platform_device *pdev)
- 		prueth_netdev_exit(prueth, eth_node);
- 	}
- 
-+	if (prueth->pdata.quirk_10m_link_issue)
-+		icss_iep_exit_fw(prueth->iep1);
-+
-+	icss_iep_put(prueth->iep1);
- 	icss_iep_put(prueth->iep0);
- 
- 	gen_pool_free(prueth->sram_pool,
-diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.h b/drivers/net/ethernet/ti/icssg/icssg_prueth.h
-index a56ab4cdc83c..3fe80a8758d3 100644
---- a/drivers/net/ethernet/ti/icssg/icssg_prueth.h
-+++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.h
-@@ -208,6 +208,7 @@ struct prueth_pdata {
-  * @icssg_hwcmdseq: seq counter or HWQ messages
-  * @emacs_initialized: num of EMACs/ext ports that are up/running
-  * @iep0: pointer to IEP0 device
-+ * @iep1: pointer to IEP1 device
-  */
- struct prueth {
- 	struct device *dev;
-@@ -231,6 +232,7 @@ struct prueth {
- 	u8 icssg_hwcmdseq;
- 	int emacs_initialized;
- 	struct icss_iep *iep0;
-+	struct icss_iep *iep1;
- };
- 
- struct emac_tx_ts_response {
+diff --git a/arch/arm/configs/keystone_defconfig b/arch/arm/configs/keystone_defconfig
+index 1cb145633a91..61179b75cf1f 100644
+--- a/arch/arm/configs/keystone_defconfig
++++ b/arch/arm/configs/keystone_defconfig
+@@ -98,7 +98,6 @@ CONFIG_IP_NF_MATCH_TTL=y
+ CONFIG_IP_NF_FILTER=y
+ CONFIG_IP_NF_TARGET_REJECT=y
+ CONFIG_IP_NF_MANGLE=y
+-CONFIG_IP_NF_TARGET_CLUSTERIP=y
+ CONFIG_IP_NF_TARGET_ECN=y
+ CONFIG_IP_NF_TARGET_TTL=y
+ CONFIG_IP_NF_RAW=y
+diff --git a/arch/arm/configs/multi_v7_defconfig b/arch/arm/configs/multi_v7_defconfig
+index c7b2550d706c..497274c81ea2 100644
+--- a/arch/arm/configs/multi_v7_defconfig
++++ b/arch/arm/configs/multi_v7_defconfig
+@@ -851,7 +851,6 @@ CONFIG_USB_MUSB_HDRC=m
+ CONFIG_USB_MUSB_SUNXI=m
+ CONFIG_USB_MUSB_TUSB6010=m
+ CONFIG_USB_MUSB_OMAP2PLUS=m
+-CONFIG_USB_MUSB_AM35X=m
+ CONFIG_USB_MUSB_DSPS=m
+ CONFIG_USB_MUSB_UX500=m
+ CONFIG_USB_UX500_DMA=y
+diff --git a/arch/arm/configs/omap2plus_defconfig b/arch/arm/configs/omap2plus_defconfig
+index b685018dcf54..b2f0862f4bd9 100644
+--- a/arch/arm/configs/omap2plus_defconfig
++++ b/arch/arm/configs/omap2plus_defconfig
+@@ -78,7 +78,6 @@ CONFIG_IP_PNP_BOOTP=y
+ CONFIG_IP_PNP_RARP=y
+ CONFIG_NETFILTER=y
+ CONFIG_NF_CONNTRACK=m
+-CONFIG_NF_LOG_NETDEV=m
+ CONFIG_NF_CONNTRACK_ZONES=y
+ CONFIG_NF_CONNTRACK_EVENTS=y
+ CONFIG_NF_CONNTRACK_TIMEOUT=y
+@@ -92,7 +91,6 @@ CONFIG_NF_TABLES_INET=y
+ CONFIG_NF_TABLES_NETDEV=y
+ CONFIG_NFT_NUMGEN=m
+ CONFIG_NFT_CT=m
+-CONFIG_NFT_COUNTER=m
+ CONFIG_NFT_CONNLIMIT=m
+ CONFIG_NFT_LOG=m
+ CONFIG_NFT_LIMIT=m
+@@ -100,7 +98,6 @@ CONFIG_NFT_MASQ=m
+ CONFIG_NFT_REDIR=m
+ CONFIG_NFT_NAT=m
+ CONFIG_NFT_TUNNEL=m
+-CONFIG_NFT_OBJREF=m
+ CONFIG_NFT_QUEUE=m
+ CONFIG_NFT_QUOTA=m
+ CONFIG_NFT_REJECT=m
+@@ -179,7 +176,6 @@ CONFIG_NETFILTER_XT_MATCH_TIME=m
+ CONFIG_NETFILTER_XT_MATCH_U32=m
+ CONFIG_NFT_DUP_IPV4=m
+ CONFIG_NFT_FIB_IPV4=m
+-CONFIG_NF_FLOW_TABLE_IPV4=m
+ CONFIG_IP_NF_IPTABLES=m
+ CONFIG_IP_NF_MATCH_AH=m
+ CONFIG_IP_NF_MATCH_ECN=m
+@@ -193,14 +189,12 @@ CONFIG_IP_NF_TARGET_MASQUERADE=m
+ CONFIG_IP_NF_TARGET_NETMAP=m
+ CONFIG_IP_NF_TARGET_REDIRECT=m
+ CONFIG_IP_NF_MANGLE=m
+-CONFIG_IP_NF_TARGET_CLUSTERIP=m
+ CONFIG_IP_NF_TARGET_ECN=m
+ CONFIG_IP_NF_TARGET_TTL=m
+ CONFIG_IP_NF_RAW=m
+ CONFIG_IP_NF_SECURITY=m
+ CONFIG_NFT_DUP_IPV6=m
+ CONFIG_NFT_FIB_IPV6=m
+-CONFIG_NF_FLOW_TABLE_IPV6=m
+ CONFIG_IP6_NF_IPTABLES=m
+ CONFIG_IP6_NF_MATCH_AH=m
+ CONFIG_IP6_NF_MATCH_EUI64=m
+@@ -225,7 +219,6 @@ CONFIG_IP6_NF_TARGET_NPT=m
+ CONFIG_NF_TABLES_BRIDGE=m
+ CONFIG_NFT_BRIDGE_META=m
+ CONFIG_NFT_BRIDGE_REJECT=m
+-CONFIG_NF_LOG_BRIDGE=m
+ CONFIG_BRIDGE=m
+ CONFIG_BRIDGE_VLAN_FILTERING=y
+ CONFIG_VLAN_8021Q=m
+@@ -560,7 +553,6 @@ CONFIG_USB_STORAGE=m
+ CONFIG_USB_MUSB_HDRC=m
+ CONFIG_USB_MUSB_TUSB6010=m
+ CONFIG_USB_MUSB_OMAP2PLUS=m
+-CONFIG_USB_MUSB_AM35X=m
+ CONFIG_USB_MUSB_DSPS=m
+ CONFIG_USB_INVENTRA_DMA=y
+ CONFIG_USB_TI_CPPI41_DMA=y
 -- 
-2.34.1
+2.41.0.327.gaa9166bcc0ba
 
