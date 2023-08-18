@@ -2,57 +2,92 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B857D78078A
-	for <lists+linux-omap@lfdr.de>; Fri, 18 Aug 2023 10:57:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71654780860
+	for <lists+linux-omap@lfdr.de>; Fri, 18 Aug 2023 11:31:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358786AbjHRI43 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 18 Aug 2023 04:56:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33784 "EHLO
+        id S1359145AbjHRJbI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 18 Aug 2023 05:31:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1358795AbjHRIz5 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 18 Aug 2023 04:55:57 -0400
-X-Greylist: delayed 1202 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 18 Aug 2023 01:55:55 PDT
-Received: from mail.leachkin.pl (mail.leachkin.pl [217.61.97.203])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B6F430F5
-        for <linux-omap@vger.kernel.org>; Fri, 18 Aug 2023 01:55:55 -0700 (PDT)
-Received: by mail.leachkin.pl (Postfix, from userid 1001)
-        id 0F57B841F2; Fri, 18 Aug 2023 09:16:08 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leachkin.pl; s=mail;
-        t=1692346574; bh=elHzctRz/z3PfTIhGYJKd0TeBTmca98Y+JNgX4gfsPI=;
-        h=Date:From:To:Subject:From;
-        b=TwI9mQtb5iCPbDzLcLjv/1KC3pNlnofVIo7pLO5e8mINVftSuN03djTUAkX3wpBwL
-         kGC81+Jz0wV5sRQGmeVm0xU/hRgAtLfzFTzDmT5Y2ALcw5zKqfabxv2aOzf1cjxqnK
-         AM8we6b0QOJepyFzGLNHV1EFitGUCzG2WTshQHGK/9B9T83kbsNV4NxBIyVAXziK6k
-         dFedlE4MvMrRMkr+iaa5rjok5o6LuXJM+uxulALTr1a57lJA6XSboGBqnATfxUyoe3
-         LCZm+N0rWXLMKAfRk3d1Lv1bZUM+tmx+AZpDrIpwq2hhL5KeMCX/tugxjS77UE6pml
-         8JSGSvhYMvcaA==
-Received: by mail.leachkin.pl for <linux-omap@vger.kernel.org>; Fri, 18 Aug 2023 08:15:51 GMT
-Message-ID: <20230818074501-0.1.4u.ctyg.0.fqim9qjpfi@leachkin.pl>
-Date:   Fri, 18 Aug 2023 08:15:51 GMT
-From:   "Jakub Lemczak" <jakub.lemczak@leachkin.pl>
-To:     <linux-omap@vger.kernel.org>
-Subject: =?UTF-8?Q?Pytanie_o_samoch=C3=B3d?=
-X-Mailer: mail.leachkin.pl
+        with ESMTP id S1359126AbjHRJak (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 18 Aug 2023 05:30:40 -0400
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D936E3A88;
+        Fri, 18 Aug 2023 02:30:36 -0700 (PDT)
+Received: from kwepemi500012.china.huawei.com (unknown [172.30.72.57])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4RRxNk0sV0zFqlR;
+        Fri, 18 Aug 2023 17:27:34 +0800 (CST)
+Received: from huawei.com (10.90.53.73) by kwepemi500012.china.huawei.com
+ (7.221.188.12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Fri, 18 Aug
+ 2023 17:30:33 +0800
+From:   Li Zetao <lizetao1@huawei.com>
+To:     <linus.walleij@linaro.org>, <brgl@bgdev.pl>, <andy@kernel.org>,
+        <j-keerthy@ti.com>, <vz@mleia.com>, <thierry.reding@gmail.com>,
+        <u.kleine-koenig@pengutronix.de>, <grygorii.strashko@ti.com>,
+        <ssantosh@kernel.org>, <khilman@kernel.org>,
+        <shubhrajyoti.datta@amd.com>, <srinivas.neeli@amd.com>,
+        <michal.simek@amd.com>
+CC:     <lizetao1@huawei.com>, <linux-gpio@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-pwm@vger.kernel.org>, <linux-omap@vger.kernel.org>
+Subject: [PATCH -next 00/11] gpio: Use devm_clk_get_*() helper function to simplify the drivers.
+Date:   Fri, 18 Aug 2023 17:30:07 +0800
+Message-ID: <20230818093018.1051434-1-lizetao1@huawei.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=1.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_VALIDITY_RPBL,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: *
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.90.53.73]
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ kwepemi500012.china.huawei.com (7.221.188.12)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Dzie=C5=84 dobry,
+Commit 7ef9651e9792 ("clk: Provide new devm_clk helpers for prepared
+and enabled clocks") provides a a series of new helper function for
+prepared and enabled clocks when a driver keeps a clock prepared
+(or enabled) during the whole lifetime of the driver. So where drivers
+get clocks and enable them immediately, it can be combined into a single
+function devm_clk_get_*(). Moreover, the unprepare and disable function
+has been registered to devm_clk_state, and before devm_clk_state is
+released, the clocks will be unprepareed and disable, so it is unnecessary
+to unprepare and disable clock explicitly when remove drivers or in the
+error handling path.
 
-Czy interesuje Pa=C5=84stwa rozwi=C4=85zanie umo=C5=BCliwiaj=C4=85ce moni=
-torowanie samochod=C3=B3w firmowych oraz optymalizacj=C4=99 koszt=C3=B3w =
-ich utrzymania?=20
+Li Zetao (11):
+  gpio: cadence: Use helper function devm_clk_get_enabled()
+  gpio: davinci: Use helper function devm_clk_get_enabled()
+  gpio: ftgpio010: Use helper function devm_clk_get_enabled()
+  gpio: lpc18xx: Use helper function devm_clk_get_enabled()
+  gpio: mb86s7x: Use helper function devm_clk_get_optional_enabled()
+  gpio: mvebu: Use helper function devm_clk_get_enabled()
+  gpio: mxc: Use helper function devm_clk_get_optional_enabled()
+  gpio: omap: Use helper function devm_clk_get_prepared()
+  gpio: stp-xway: Use helper function devm_clk_get_enabled()
+  gpio: xilinx: Use helper function devm_clk_get_optional_enabled()
+  gpio: zynq: Use helper function devm_clk_get_enabled()
 
+ drivers/gpio/gpio-cadence.c   | 20 +++++---------------
+ drivers/gpio/gpio-davinci.c   | 13 ++-----------
+ drivers/gpio/gpio-ftgpio010.c | 29 +++++++----------------------
+ drivers/gpio/gpio-lpc18xx.c   | 14 +++-----------
+ drivers/gpio/gpio-mb86s7x.c   |  8 +-------
+ drivers/gpio/gpio-mvebu.c     |  4 +---
+ drivers/gpio/gpio-mxc.c       |  9 +--------
+ drivers/gpio/gpio-omap.c      |  8 +-------
+ drivers/gpio/gpio-stp-xway.c  | 10 ++--------
+ drivers/gpio/gpio-xilinx.c    | 14 +++-----------
+ drivers/gpio/gpio-zynq.c      | 13 +++----------
+ 11 files changed, 29 insertions(+), 113 deletions(-)
 
-Pozdrawiam,
-Jakub Lemczak
+-- 
+2.34.1
+
