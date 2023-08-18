@@ -2,37 +2,37 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 52B66780FCD
-	for <lists+linux-omap@lfdr.de>; Fri, 18 Aug 2023 18:07:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC78C780FF5
+	for <lists+linux-omap@lfdr.de>; Fri, 18 Aug 2023 18:11:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378409AbjHRQGq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 18 Aug 2023 12:06:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45888 "EHLO
+        id S1378414AbjHRQLC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 18 Aug 2023 12:11:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54128 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1378370AbjHRQGY (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 18 Aug 2023 12:06:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CC23E42;
-        Fri, 18 Aug 2023 09:06:23 -0700 (PDT)
+        with ESMTP id S1378477AbjHRQKq (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 18 Aug 2023 12:10:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E4C030F3;
+        Fri, 18 Aug 2023 09:10:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D66B96229C;
-        Fri, 18 Aug 2023 16:06:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EB79C433CB;
-        Fri, 18 Aug 2023 16:06:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D4A76611F4;
+        Fri, 18 Aug 2023 16:10:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65662C433C8;
+        Fri, 18 Aug 2023 16:10:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692374782;
-        bh=EoYVlCSaMjt1FNqDa7AtSicffrGdqGkmFF3s27VbJWw=;
+        s=k20201202; t=1692375044;
+        bh=92lIiukMG0yN5rbB/xvTrlXq9iNH0UDN9N143jJIljE=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=IKiPudNZh1rYFPelfnBrJQyXYPyOaWa15O7WLSHhH3f+8P7j6ndeVeToo2QM27w0M
-         e7PvXHStfzUaeSar4K4e4lzZva7h1th9NUB0W1KJ+kz2+37vzQco3IiIEDt2XaeALm
-         e2R+k2jaH8ofwu9aifqBWKUTqcyyWmVaf4di7F9Vbfm8bwHVPT6pSjR2eeaf14zgZj
-         6KzafLcaV09IL0UAizOy/qjMEdYPbDzjLg8qQr/+LOigfQwj97yi16z3akM5KwNs+2
-         0Ui+59gcL0iFsnTtT9LasiBospMLYKywGWdfRvl7eE8Vb+lhFfV2UCm7SPuJsvc60p
-         cCJn+JWLYjslw==
-Date:   Fri, 18 Aug 2023 17:06:16 +0100
+        b=MM/dOXny8x+CcyEOHoaUyqAWJHhSHPgVPNcBHV0Sa1UKC5pu56hQIhFFaKcV+Vnry
+         JaF6edNIABJnMqgXamZus4htecG7AquOcHbsJv4n5Pb+ZCedVtNLjLCpJpCMPK/cl8
+         ZozLtH6AjgCwi5O8drHX/gEyTB0YlezmY4jOM9w3V63hSIkJcNXag2Yy6jmWPHcPLL
+         IwydNDNG79mcxxgtfefHrz/Ie3X3zWH5SeTqZP5s+gDhlH1izhuptFFF8pV/4hqvK0
+         fW4KPzaR86cAdAdFb+OkXyyeT96yqlPShaafpY/uRp85K5BwSiNfCKOM5/87vKvbuo
+         4wCpVipsFTKow==
+Date:   Fri, 18 Aug 2023 17:10:38 +0100
 From:   Lee Jones <lee@kernel.org>
 To:     Benjamin Bara <bbara93@gmail.com>
 Cc:     Thierry Reding <thierry.reding@gmail.com>,
@@ -46,17 +46,17 @@ Cc:     Thierry Reding <thierry.reding@gmail.com>,
         linux-kernel@vger.kernel.org, linux-tegra@vger.kernel.org,
         linux-omap@vger.kernel.org,
         Benjamin Bara <benjamin.bara@skidata.com>
-Subject: Re: [PATCH v2 2/6] mfd: rk8xx: Specify restart mode
-Message-ID: <20230818160616.GA986605@google.com>
+Subject: Re: [PATCH v2 4/6] mfd: tps65219: Specify restart mode
+Message-ID: <20230818161038.GB986605@google.com>
 References: <20230809-pca9450-reboot-v2-0-b98b4f8139d5@skidata.com>
- <20230809-pca9450-reboot-v2-2-b98b4f8139d5@skidata.com>
+ <20230809-pca9450-reboot-v2-4-b98b4f8139d5@skidata.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230809-pca9450-reboot-v2-2-b98b4f8139d5@skidata.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+In-Reply-To: <20230809-pca9450-reboot-v2-4-b98b4f8139d5@skidata.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -79,31 +79,45 @@ On Wed, 09 Aug 2023, Benjamin Bara wrote:
 > ---
 > v2:
 > - improve commit message
-> - use registration helper instead
 > ---
->  drivers/mfd/rk8xx-core.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+>  drivers/mfd/tps65219.c | 17 +++++++++++++----
+>  1 file changed, 13 insertions(+), 4 deletions(-)
 > 
-> diff --git a/drivers/mfd/rk8xx-core.c b/drivers/mfd/rk8xx-core.c
-> index 11a831e92da8..7faf8e1189f7 100644
-> --- a/drivers/mfd/rk8xx-core.c
-> +++ b/drivers/mfd/rk8xx-core.c
-> @@ -696,9 +696,9 @@ int rk8xx_probe(struct device *dev, int variant, unsigned int irq, struct regmap
->  		switch (rk808->variant) {
->  		case RK809_ID:
->  		case RK817_ID:
-> -			ret = devm_register_sys_off_handler(dev,
-> -							    SYS_OFF_MODE_RESTART, SYS_OFF_PRIO_HIGH,
-> -							    &rk808_restart, rk808);
-> +			ret = devm_register_cold_restart_handler(dev,
-> +								 &rk808_restart,
-> +								 rk808);
+> diff --git a/drivers/mfd/tps65219.c b/drivers/mfd/tps65219.c
+> index 0e0c42e4fdfc..85752b93256e 100644
+> --- a/drivers/mfd/tps65219.c
+> +++ b/drivers/mfd/tps65219.c
+> @@ -278,12 +278,21 @@ static int tps65219_probe(struct i2c_client *client)
+>  		}
+>  	}
+>  
+> -	ret = devm_register_restart_handler(tps->dev,
+> -					    tps65219_restart_handler,
+> -					    tps);
+> +	ret = devm_register_cold_restart_handler(tps->dev,
+> +						 tps65219_restart_handler,
+> +						 tps);
+>  
+>  	if (ret) {
+> -		dev_err(tps->dev, "cannot register restart handler, %d\n", ret);
+> +		dev_err(tps->dev, "cannot register cold restart handler, %d\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	ret = devm_register_warm_restart_handler(tps->dev,
+> +						 tps65219_restart_handler,
+> +						 tps);
+> +
 
-These wraps are now superfluous.
+Sorry, why do we have to now register 2 restart handlers?
 
->  			if (ret)
->  				dev_warn(dev, "failed to register rst handler, %d\n", ret);
->  			break;
+Seems like a regression?
+
+> +	if (ret) {
+> +		dev_err(tps->dev, "cannot register warm restart handler, %d\n", ret);
+>  		return ret;
+>  	}
+>  
 > 
 > -- 
 > 2.34.1
