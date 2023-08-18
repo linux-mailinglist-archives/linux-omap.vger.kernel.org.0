@@ -2,41 +2,46 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F706780B64
-	for <lists+linux-omap@lfdr.de>; Fri, 18 Aug 2023 13:48:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6BD1780C08
+	for <lists+linux-omap@lfdr.de>; Fri, 18 Aug 2023 14:45:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376480AbjHRLsC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 18 Aug 2023 07:48:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47288 "EHLO
+        id S1359492AbjHRMpF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 18 Aug 2023 08:45:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376725AbjHRLra (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 18 Aug 2023 07:47:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08D7F30E6;
-        Fri, 18 Aug 2023 04:47:29 -0700 (PDT)
+        with ESMTP id S1359585AbjHRMoh (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 18 Aug 2023 08:44:37 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E67B3A8D;
+        Fri, 18 Aug 2023 05:44:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 91644653E4;
-        Fri, 18 Aug 2023 11:47:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A6A2C433C8;
-        Fri, 18 Aug 2023 11:47:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AFB1B673D6;
+        Fri, 18 Aug 2023 12:44:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E3A0C433C8;
+        Fri, 18 Aug 2023 12:44:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692359248;
-        bh=kQCjU+mVZk93ddvGtri/QJoYzc994kW+5bwhHWH/UPM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=AvNdoBiQdrf5a6u4Jdi4AIl4bJeTD2d8X6lFjWTy7/FE3sCygu0Vu29wxMkN2vei4
-         U1jc08PYjrtGRxFMaxsfYO9YSbOs7iqf8BDg/OITjI2SL42agGvojyMoZpZ9H7voQD
-         P5WPZfBcCs3xawyuow6O7YsWfF+p+eMbncvrZRasZQcYDfA98WphSOoYhkGNOtcZO0
-         1jD4iwNTTwCt+uEiPyO9sggCeFVjRcd2tPna/4Bd8ebii7DZ7KDHKCJ3q0pxyI+V6S
-         DHykulMbj5jmz53ln/5TUMLc0fpgYo62Am2lD1GXBWHs3fV6HXaYiLNPdrTW88NMbI
-         dIYihvCDleLtA==
-Date:   Fri, 18 Aug 2023 13:47:21 +0200
-From:   Simon Horman <horms@kernel.org>
-To:     MD Danish Anwar <danishanwar@ti.com>
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        Roger Quadros <rogerq@kernel.org>,
+        s=k20201202; t=1692362675;
+        bh=FNb2SVuYvlLFocySdsYx+8V0njmhNeTW7yGsOfooywE=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=G/drKLHCSyueU5bKmxxpqyI4simi9nIfnkAxFxjDnWAniy4/SW59YhZB9c7hxU8H2
+         TF77VqXAL/qerdtEQP+r71icmKSmAdrntcWqtYyLWud7BzEm9Nr4OvcKJwYBT6qREv
+         lwu9i3m4can4mSm42grJPlIlf2HDGUGpUDmIw4/72fylZVasltJm4Ka97d6YAW7yU+
+         2+0wYTB+ddEtBwL479wUrr6OTx8nZcmBD20Gn/w2Y2C3ghYUfaA/7a38PNOGAN3RSy
+         heAC5qwf0I4O2dsWL1ObTTWynLwnq75wWBq5V3Ms8JZX3IY1pauRmTDoK9QX0up7au
+         52COAK2wvxoZA==
+Message-ID: <5d077342-435f-2829-ba2a-cdf763b6b8e1@kernel.org>
+Date:   Fri, 18 Aug 2023 15:44:26 +0300
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH v5 0/5] Introduce IEP driver and packet timestamping
+ support
+To:     MD Danish Anwar <danishanwar@ti.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Simon Horman <simon.horman@corigine.com>,
         Vignesh Raghavendra <vigneshr@ti.com>,
         Andrew Lunn <andrew@lunn.ch>,
         Richard Cochran <richardcochran@gmail.com>,
@@ -46,21 +51,19 @@ Cc:     Randy Dunlap <rdunlap@infradead.org>,
         Paolo Abeni <pabeni@redhat.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>, nm@ti.com, srk@ti.com,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        netdev@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v5 0/5] Introduce IEP driver and packet timestamping
- support
-Message-ID: <ZN9aSTUOT+SKESQS@vergenet.net>
+        "David S. Miller" <davem@davemloft.net>
+Cc:     nm@ti.com, srk@ti.com, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, netdev@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
 References: <20230817114527.1585631-1-danishanwar@ti.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Language: en-US
+From:   Roger Quadros <rogerq@kernel.org>
 In-Reply-To: <20230817114527.1585631-1-danishanwar@ti.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-10.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -68,7 +71,9 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, Aug 17, 2023 at 05:15:22PM +0530, MD Danish Anwar wrote:
+
+
+On 17/08/2023 14:45, MD Danish Anwar wrote:
 > This series introduces Industrial Ethernet Peripheral (IEP) driver to
 > support timestamping of ethernet packets and thus support PTP and PPS
 > for PRU ICSSG ethernet ports.
@@ -132,8 +137,23 @@ On Thu, Aug 17, 2023 at 05:15:22PM +0530, MD Danish Anwar wrote:
 > Roger Quadros (2):
 >   net: ti: icss-iep: Add IEP driver
 >   net: ti: icssg-prueth: add packet timestamping and ptp support
+> 
+>  .../devicetree/bindings/net/ti,icss-iep.yaml  |  61 ++
+>  .../bindings/net/ti,icssg-prueth.yaml         |   7 +
+>  drivers/net/ethernet/ti/Kconfig               |  12 +
+>  drivers/net/ethernet/ti/Makefile              |   1 +
+>  drivers/net/ethernet/ti/icssg/icss_iep.c      | 965 ++++++++++++++++++
+>  drivers/net/ethernet/ti/icssg/icss_iep.h      |  41 +
+>  drivers/net/ethernet/ti/icssg/icssg_config.c  |   7 +
+>  drivers/net/ethernet/ti/icssg/icssg_ethtool.c |  21 +
+>  drivers/net/ethernet/ti/icssg/icssg_prueth.c  | 451 +++++++-
+>  drivers/net/ethernet/ti/icssg/icssg_prueth.h  |  28 +-
+>  10 files changed, 1586 insertions(+), 8 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/net/ti,icss-iep.yaml
+>  create mode 100644 drivers/net/ethernet/ti/icssg/icss_iep.c
+>  create mode 100644 drivers/net/ethernet/ti/icssg/icss_iep.h
+> 
 
-For series,
+For this series:
 
-Reviewed-by: Simon Horman <horms@kernel.org>
-
+Reviewed-by: Roger Quadros <rogerq@kernel.org>
