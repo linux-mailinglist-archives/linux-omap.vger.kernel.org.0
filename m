@@ -2,37 +2,37 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CC78C780FF5
-	for <lists+linux-omap@lfdr.de>; Fri, 18 Aug 2023 18:11:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D604781000
+	for <lists+linux-omap@lfdr.de>; Fri, 18 Aug 2023 18:13:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378414AbjHRQLC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 18 Aug 2023 12:11:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54128 "EHLO
+        id S1378475AbjHRQMi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 18 Aug 2023 12:12:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1378477AbjHRQKq (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 18 Aug 2023 12:10:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E4C030F3;
-        Fri, 18 Aug 2023 09:10:45 -0700 (PDT)
+        with ESMTP id S1378517AbjHRQMM (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 18 Aug 2023 12:12:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D03C4213;
+        Fri, 18 Aug 2023 09:12:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D4A76611F4;
-        Fri, 18 Aug 2023 16:10:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65662C433C8;
-        Fri, 18 Aug 2023 16:10:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DF2DA63283;
+        Fri, 18 Aug 2023 16:12:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45906C433C8;
+        Fri, 18 Aug 2023 16:12:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692375044;
-        bh=92lIiukMG0yN5rbB/xvTrlXq9iNH0UDN9N143jJIljE=;
+        s=k20201202; t=1692375127;
+        bh=nhXaS1ILNMTtOOyTp0Qc/n36yZYia81Kcw5EtjMJ4PU=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=MM/dOXny8x+CcyEOHoaUyqAWJHhSHPgVPNcBHV0Sa1UKC5pu56hQIhFFaKcV+Vnry
-         JaF6edNIABJnMqgXamZus4htecG7AquOcHbsJv4n5Pb+ZCedVtNLjLCpJpCMPK/cl8
-         ZozLtH6AjgCwi5O8drHX/gEyTB0YlezmY4jOM9w3V63hSIkJcNXag2Yy6jmWPHcPLL
-         IwydNDNG79mcxxgtfefHrz/Ie3X3zWH5SeTqZP5s+gDhlH1izhuptFFF8pV/4hqvK0
-         fW4KPzaR86cAdAdFb+OkXyyeT96yqlPShaafpY/uRp85K5BwSiNfCKOM5/87vKvbuo
-         4wCpVipsFTKow==
-Date:   Fri, 18 Aug 2023 17:10:38 +0100
+        b=vRZSc8c0N5HHbodOqhOc1b10LJdMdUMqCK1yb4IEPu4RES6OMr5KZOu1uxQoucf7/
+         E8A4q9BpYY7kEIHJydRvQPP7EMx++kV1yq0GX/cfyS/uSD5rykdCTSrHpE27HxSL9d
+         58ZjD0VQoWiYSI29GfdA6lnY+TBe7zsXldvtnQUrSIjO3KNmKfQd1R/n4W93cVbKjR
+         Sw56cgOlmGgy2HRO1/JQMh7QCMxQX0pTXzoerlj4kqlxXIt3lfE3s944XoTd0EcaMs
+         fRWCBcm0Z4fY3AuaUIrENcHm7p69w24p4OlOhhDmU4717EAuvuT1oSq15WUEy4LjTT
+         YsyyyUeTQRrOA==
+Date:   Fri, 18 Aug 2023 17:12:01 +0100
 From:   Lee Jones <lee@kernel.org>
 To:     Benjamin Bara <bbara93@gmail.com>
 Cc:     Thierry Reding <thierry.reding@gmail.com>,
@@ -45,18 +45,18 @@ Cc:     Thierry Reding <thierry.reding@gmail.com>,
         Jerome Neanne <jneanne@baylibre.com>,
         linux-kernel@vger.kernel.org, linux-tegra@vger.kernel.org,
         linux-omap@vger.kernel.org,
-        Benjamin Bara <benjamin.bara@skidata.com>
-Subject: Re: [PATCH v2 4/6] mfd: tps65219: Specify restart mode
-Message-ID: <20230818161038.GB986605@google.com>
+        Benjamin Bara <benjamin.bara@skidata.com>,
+        Thierry Reding <treding@nvidia.com>
+Subject: Re: [PATCH v2 0/6] regulator: pca9450: register restart handlers
+Message-ID: <20230818161201.GC986605@google.com>
 References: <20230809-pca9450-reboot-v2-0-b98b4f8139d5@skidata.com>
- <20230809-pca9450-reboot-v2-4-b98b4f8139d5@skidata.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230809-pca9450-reboot-v2-4-b98b4f8139d5@skidata.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+In-Reply-To: <20230809-pca9450-reboot-v2-0-b98b4f8139d5@skidata.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -66,61 +66,66 @@ X-Mailing-List: linux-omap@vger.kernel.org
 
 On Wed, 09 Aug 2023, Benjamin Bara wrote:
 
-> From: Benjamin Bara <benjamin.bara@skidata.com>
+> Hi!
 > 
-> The current restart handler registration does not specify whether the
-> restart is a cold or a warm one. Instead, cold ones are typically
-> registered with a HIGH prio. Now, as do_kernel_restart() knows about the
-> type, the priorization is implicitly done (cold restarts are executed
-> first) and the reboot_mode kernel parameter (which is currently mostly
-> ignored) can be respected.
+> This series implements two restart handler registrations for the pca9450
+> (6/6). As the pca9450 supports both, cold and warm resets, and there
+> exist at least one other PMIC implementation which also implements a
+> warm and a cold reset (tps65219), 1-5/6 should simplify/clarify the
+> distinction process between warm/soft and cold/hard resets/restarts.
+> Instead of deciding in the handler, this should be done during
+> registration. The series is a follow-up to Dmitry's feedback, regarding
+> checking the reboot_mode in the handler [1].
 > 
-> Signed-off-by: Benjamin Bara <benjamin.bara@skidata.com>
+> As the cold handler queue is executed before the warm handler queue
+> (when the reboot_mode is not changed/specified), cold handlers are
+> implicitly executed with a higher prio and therefore the default
+> registration can be used.
+> 
+> This series is based on linux-next and 6/6 depends on [2].
+> 
+> Thanks & best regards,
+> Benjamin
+> 
+> [1] https://lore.kernel.org/all/7eddaf8c-ab04-7670-fc45-15f0fce5eff2@collabora.com/
+> [2] https://lore.kernel.org/all/20230327-tegra-pmic-reboot-v7-3-18699d5dcd76@skidata.com/
+> 
 > ---
-> v2:
-> - improve commit message
+> Changes in v2:
+> - rebase to next-20230809
+> - improve commit messages
+> - use helper (with implicit priority) instead of explicit priority
+> - fallback to warm handler if hard/cold requested but failed
+> - Link to v1: https://lore.kernel.org/r/20230727-pca9450-reboot-v1-0-c8edb27bf404@skidata.com
+> 
 > ---
->  drivers/mfd/tps65219.c | 17 +++++++++++++----
->  1 file changed, 13 insertions(+), 4 deletions(-)
+> Benjamin Bara (6):
+>       kernel/reboot: distinguish between cold and warm
+>       mfd: rk8xx: Specify restart mode
+>       soc/tegra: pmc: Specify restart mode
+>       mfd: tps65219: Specify restart mode
+>       kernel/reboot: remove generic restart mode
+>       regulator: pca9450: register restart handlers
+
+What are they interdependencies between them all?
+
+Should they all be applied at once?
+
+>  drivers/mfd/rk8xx-core.c              |  6 +--
+>  drivers/mfd/tps65219.c                | 17 +++++--
+>  drivers/regulator/pca9450-regulator.c | 59 ++++++++++++++++++++++++
+>  drivers/soc/tegra/pmc.c               |  2 +-
+>  include/linux/reboot.h                | 23 +++++++---
+>  include/linux/regulator/pca9450.h     |  7 +++
+>  kernel/reboot.c                       | 84 +++++++++++++++++++++++++++++------
+>  7 files changed, 170 insertions(+), 28 deletions(-)
+> ---
+> base-commit: 21ef7b1e17d039053edaeaf41142423810572741
+> change-id: 20230724-pca9450-reboot-0b32218fc7a2
 > 
-> diff --git a/drivers/mfd/tps65219.c b/drivers/mfd/tps65219.c
-> index 0e0c42e4fdfc..85752b93256e 100644
-> --- a/drivers/mfd/tps65219.c
-> +++ b/drivers/mfd/tps65219.c
-> @@ -278,12 +278,21 @@ static int tps65219_probe(struct i2c_client *client)
->  		}
->  	}
->  
-> -	ret = devm_register_restart_handler(tps->dev,
-> -					    tps65219_restart_handler,
-> -					    tps);
-> +	ret = devm_register_cold_restart_handler(tps->dev,
-> +						 tps65219_restart_handler,
-> +						 tps);
->  
->  	if (ret) {
-> -		dev_err(tps->dev, "cannot register restart handler, %d\n", ret);
-> +		dev_err(tps->dev, "cannot register cold restart handler, %d\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	ret = devm_register_warm_restart_handler(tps->dev,
-> +						 tps65219_restart_handler,
-> +						 tps);
-> +
-
-Sorry, why do we have to now register 2 restart handlers?
-
-Seems like a regression?
-
-> +	if (ret) {
-> +		dev_err(tps->dev, "cannot register warm restart handler, %d\n", ret);
->  		return ret;
->  	}
->  
-> 
+> Best regards,
 > -- 
-> 2.34.1
+> Benjamin Bara <benjamin.bara@skidata.com>
 > 
 
 -- 
