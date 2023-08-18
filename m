@@ -2,83 +2,112 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 979DA780EE0
-	for <lists+linux-omap@lfdr.de>; Fri, 18 Aug 2023 17:15:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 52B66780FCD
+	for <lists+linux-omap@lfdr.de>; Fri, 18 Aug 2023 18:07:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351221AbjHRPPP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 18 Aug 2023 11:15:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53190 "EHLO
+        id S1378409AbjHRQGq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 18 Aug 2023 12:06:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1378121AbjHRPO5 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 18 Aug 2023 11:14:57 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A60B44231;
-        Fri, 18 Aug 2023 08:14:27 -0700 (PDT)
-X-IronPort-AV: E=McAfee;i="6600,9927,10806"; a="363278999"
-X-IronPort-AV: E=Sophos;i="6.01,183,1684825200"; 
-   d="scan'208";a="363278999"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2023 08:14:07 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10806"; a="858726915"
-X-IronPort-AV: E=Sophos;i="6.01,183,1684825200"; 
-   d="scan'208";a="858726915"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga004.jf.intel.com with ESMTP; 18 Aug 2023 08:14:02 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andy@kernel.org>)
-        id 1qX1Am-00DNyr-0o;
-        Fri, 18 Aug 2023 18:14:00 +0300
-Date:   Fri, 18 Aug 2023 18:13:59 +0300
-From:   Andy Shevchenko <andy@kernel.org>
-To:     Li Zetao <lizetao1@huawei.com>
-Cc:     linus.walleij@linaro.org, brgl@bgdev.pl, j-keerthy@ti.com,
-        vz@mleia.com, thierry.reding@gmail.com,
-        u.kleine-koenig@pengutronix.de, grygorii.strashko@ti.com,
-        ssantosh@kernel.org, khilman@kernel.org,
-        shubhrajyoti.datta@amd.com, srinivas.neeli@amd.com,
-        michal.simek@amd.com, linux-gpio@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-pwm@vger.kernel.org,
-        linux-omap@vger.kernel.org
-Subject: Re: [PATCH -next 11/11] gpio: zynq: Use helper function
- devm_clk_get_enabled()
-Message-ID: <ZN+Kt2SxLDSAudYR@smile.fi.intel.com>
-References: <20230818093018.1051434-1-lizetao1@huawei.com>
- <20230818093018.1051434-12-lizetao1@huawei.com>
+        with ESMTP id S1378370AbjHRQGY (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 18 Aug 2023 12:06:24 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CC23E42;
+        Fri, 18 Aug 2023 09:06:23 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D66B96229C;
+        Fri, 18 Aug 2023 16:06:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EB79C433CB;
+        Fri, 18 Aug 2023 16:06:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1692374782;
+        bh=EoYVlCSaMjt1FNqDa7AtSicffrGdqGkmFF3s27VbJWw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=IKiPudNZh1rYFPelfnBrJQyXYPyOaWa15O7WLSHhH3f+8P7j6ndeVeToo2QM27w0M
+         e7PvXHStfzUaeSar4K4e4lzZva7h1th9NUB0W1KJ+kz2+37vzQco3IiIEDt2XaeALm
+         e2R+k2jaH8ofwu9aifqBWKUTqcyyWmVaf4di7F9Vbfm8bwHVPT6pSjR2eeaf14zgZj
+         6KzafLcaV09IL0UAizOy/qjMEdYPbDzjLg8qQr/+LOigfQwj97yi16z3akM5KwNs+2
+         0Ui+59gcL0iFsnTtT9LasiBospMLYKywGWdfRvl7eE8Vb+lhFfV2UCm7SPuJsvc60p
+         cCJn+JWLYjslw==
+Date:   Fri, 18 Aug 2023 17:06:16 +0100
+From:   Lee Jones <lee@kernel.org>
+To:     Benjamin Bara <bbara93@gmail.com>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+        peng.fan@oss.nxp.com, rafael.j.wysocki@intel.com,
+        Jerome Neanne <jneanne@baylibre.com>,
+        linux-kernel@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-omap@vger.kernel.org,
+        Benjamin Bara <benjamin.bara@skidata.com>
+Subject: Re: [PATCH v2 2/6] mfd: rk8xx: Specify restart mode
+Message-ID: <20230818160616.GA986605@google.com>
+References: <20230809-pca9450-reboot-v2-0-b98b4f8139d5@skidata.com>
+ <20230809-pca9450-reboot-v2-2-b98b4f8139d5@skidata.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230818093018.1051434-12-lizetao1@huawei.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_SOFTFAIL autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230809-pca9450-reboot-v2-2-b98b4f8139d5@skidata.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, Aug 18, 2023 at 05:30:18PM +0800, Li Zetao wrote:
-> Since commit 7ef9651e9792 ("clk: Provide new devm_clk helpers for
-> prepared and enabled clocks"), devm_clk_get() and clk_prepare_enable()
-> can now be replaced by devm_clk_get_enabled() when the driver enables
-> (and possibly prepares) the clocks for the whole lifetime of the device.
-> Moreover, it is no longer necessary to unprepare and disable the clocks
-> explicitly.
+On Wed, 09 Aug 2023, Benjamin Bara wrote:
 
-...
+> From: Benjamin Bara <benjamin.bara@skidata.com>
+> 
+> The current restart handler registration does not specify whether the
+> restart is a cold or a warm one. Instead, cold ones are typically
+> registered with a HIGH prio. Now, as do_kernel_restart() knows about the
+> type, the priorization is implicitly done (cold restarts are executed
+> first) and the reboot_mode kernel parameter (which is currently mostly
+> ignored) can be respected.
+> 
+> Signed-off-by: Benjamin Bara <benjamin.bara@skidata.com>
+> ---
+> v2:
+> - improve commit message
+> - use registration helper instead
+> ---
+>  drivers/mfd/rk8xx-core.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/mfd/rk8xx-core.c b/drivers/mfd/rk8xx-core.c
+> index 11a831e92da8..7faf8e1189f7 100644
+> --- a/drivers/mfd/rk8xx-core.c
+> +++ b/drivers/mfd/rk8xx-core.c
+> @@ -696,9 +696,9 @@ int rk8xx_probe(struct device *dev, int variant, unsigned int irq, struct regmap
+>  		switch (rk808->variant) {
+>  		case RK809_ID:
+>  		case RK817_ID:
+> -			ret = devm_register_sys_off_handler(dev,
+> -							    SYS_OFF_MODE_RESTART, SYS_OFF_PRIO_HIGH,
+> -							    &rk808_restart, rk808);
+> +			ret = devm_register_cold_restart_handler(dev,
+> +								 &rk808_restart,
+> +								 rk808);
 
-> -		return dev_err_probe(&pdev->dev, PTR_ERR(gpio->clk), "input clock not found.\n");
-> +		return dev_err_probe(&pdev->dev, PTR_ERR(gpio->clk),
-> +				     "input clock not found or unable to enable clock.\n");
+These wraps are now superfluous.
 
-With this change dropped,
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
+>  			if (ret)
+>  				dev_warn(dev, "failed to register rst handler, %d\n", ret);
+>  			break;
+> 
+> -- 
+> 2.34.1
+> 
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+Lee Jones [李琼斯]
