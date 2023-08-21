@@ -2,128 +2,128 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F2F817828AE
-	for <lists+linux-omap@lfdr.de>; Mon, 21 Aug 2023 14:12:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30F69782BAE
+	for <lists+linux-omap@lfdr.de>; Mon, 21 Aug 2023 16:24:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234380AbjHUMMU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 21 Aug 2023 08:12:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37768 "EHLO
+        id S235931AbjHUOYl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 21 Aug 2023 10:24:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232786AbjHUMMU (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 21 Aug 2023 08:12:20 -0400
-Received: from mail-ua1-x934.google.com (mail-ua1-x934.google.com [IPv6:2607:f8b0:4864:20::934])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 717A4EC
-        for <linux-omap@vger.kernel.org>; Mon, 21 Aug 2023 05:12:12 -0700 (PDT)
-Received: by mail-ua1-x934.google.com with SMTP id a1e0cc1a2514c-7a257fabae5so461805241.2
-        for <linux-omap@vger.kernel.org>; Mon, 21 Aug 2023 05:12:12 -0700 (PDT)
+        with ESMTP id S235934AbjHUOYk (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 21 Aug 2023 10:24:40 -0400
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B326DB
+        for <linux-omap@vger.kernel.org>; Mon, 21 Aug 2023 07:24:38 -0700 (PDT)
+Received: by mail-lf1-x133.google.com with SMTP id 2adb3069b0e04-4fe1b00fce2so4982441e87.3
+        for <linux-omap@vger.kernel.org>; Mon, 21 Aug 2023 07:24:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20221208.gappssmtp.com; s=20221208; t=1692619931; x=1693224731;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NCkbxK8SDHIlpboWoSgSQlBN5th7HtJtXxIERiulQiM=;
-        b=APSyrpMPYPetYFPwGu8psh4/T58NHYXfo9EmQxVEB2eEqAtwPDsGR3yPcXtsEoDizg
-         w1F8zZDM7Ptgp0oFHZ2Hv7K0RJ//2OdiynAnnVqrADpivsx2HvPJ3EMezJLjKanSq2wy
-         yv3eYRNpLIZqZv1ePBKU5YvnlGXSq0YXZia2PpZdjJ/LsaRSmhezJXTQxVLByq4+RzOS
-         DVCA7B//1n0TmHBocoy5pXrEnNg2cJsRIOxPu/E6Lg0C2ha+BT9MfZsU4a34l2Mc7vR2
-         prDXeGEyloWpFbrL8/UaIrpNkvaHxkjUj0mwwuCyYnB8iO0FmwTjKdxGRiRgarandfsU
-         jATA==
+        d=baylibre-com.20221208.gappssmtp.com; s=20221208; t=1692627876; x=1693232676;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=gPDn+AM+nE1Msl9ECDPxx14WMyfdDVEac2xAC1ONR/Q=;
+        b=dnqNzoj12sR7v5evYG572J590KzB7lFQ2vyMLE8f26x0lrLOZUIjmrjq0+ZUTnjgaT
+         FDunUJIM0DmqOsnO0gfk0tCQMcmHjhDEde20zcKRt9uzZoEmriHH27I6nlF8xmRoKecH
+         Oy4XXKQUsWFJ71amaPXz7KwtiEwsMjNZHD+pLCtzYSmXoyEaGruwDdfKA0mdgfT8F4TQ
+         3JKq2vnPKRkNSMbcMx3TjoOz6Fyz1OpP9wXFy3TYYynjrUzym2oyXghVUsFO6iQ16mKN
+         u6PKGM2GFMQ1v3bz+jV+nEJ8VP3E2bGfAEXXcmvozX0cImxfCwNXFVSvGPu3lDanxWGj
+         EGTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692619931; x=1693224731;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NCkbxK8SDHIlpboWoSgSQlBN5th7HtJtXxIERiulQiM=;
-        b=avMOquQpXCPL6+BdvBeIARupjlexFCN3Nyb7tknVDi/CeIjQOUqDZZJTyixrrlLxul
-         LhqwGW0/K2Ben+QGtQSvZ0RmJSvaUZ4Pvlvbdm9gkQqWgz97UQPKJn0sqa6YucoQBo7d
-         9Eh83votM3upenmsmnxSChpceiAre5WpN5MKbJXIKsQQnHCiERANnZPdblebHE4nEpi2
-         042zygjG3aYnwmMFMJM8y2RmuasPLAFmrFox1ARjSV6n3p9EF0gwzFdTPBnux42K9YxO
-         l053PJScRWh2ywnPihRYLPIKomk0WxL2Yc1h1GO31X3PAf3EjLOGmn4UcFao7DdEH5uM
-         iRhQ==
-X-Gm-Message-State: AOJu0YwW1SnhzFICvSbDLUyUSzL5sxN0wAnlKHFCEOqof/lquJg7EOK3
-        i32X9alW7nGws0TSMsp0iFTmcHSyQ+aMxD+cI6iq8Q==
-X-Google-Smtp-Source: AGHT+IGHcHrwZNfxOKdf2tsjJKS8zYT08VjF5/gr7zXAHlAkKDYkTuAjyI5dqrEVndNjZDgESvqCukBqG1iovoR8L2s=
-X-Received: by 2002:a67:ce9a:0:b0:443:9248:3410 with SMTP id
- c26-20020a67ce9a000000b0044392483410mr5577281vse.32.1692619931538; Mon, 21
- Aug 2023 05:12:11 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1692627876; x=1693232676;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=gPDn+AM+nE1Msl9ECDPxx14WMyfdDVEac2xAC1ONR/Q=;
+        b=iCfCK1OWZS9sJA52HtLuAxZRs/G98sX01Hw4QVusXKpNXho6n9POMndyEj6XxvrXtM
+         DM8kUQeJ9BM4CF/O/tf0+Yeg7qPWt6doQlhzadCkDXv089aBbFCflP+9+sVonSApZYze
+         +UEyBrsp4pVO01ampUX1EnAxC9APoUTrGVDQxg3Ep9nEvvKZZOyx7XQQTUXyac2dA7b0
+         MJVR3xnd/j/1pUnXCufhZoZihL1sKyy2Y8enV2Ry2qZj3f91TxP8WCjtC/wUqpDdZzcf
+         /d3tlBdY/tUHoQweN9K1oj7nTmMhDJSRx9pWRRZ/YPT0MqwkJnAFTOhoI182rx1iqGrF
+         RG+Q==
+X-Gm-Message-State: AOJu0Yz9c8EEcheNe2Y1z4uKWLAVqGSPkfIvb6HVGBGPD2DcEvrJEbjV
+        cWQqRZqcCuNYREfvJtSTmZZBHZ9LRAHN+xIlKXg=
+X-Google-Smtp-Source: AGHT+IErsrF8B8YUvfsJbD0GYuz/5Mc2vKk2fKEIpuGgnaLF/jRF94m8u602U0V/kVxaJ6y4EXauDw==
+X-Received: by 2002:a05:6512:31c8:b0:4fe:5133:1213 with SMTP id j8-20020a05651231c800b004fe51331213mr5604650lfe.12.1692627876421;
+        Mon, 21 Aug 2023 07:24:36 -0700 (PDT)
+Received: from [127.0.1.1] ([86.71.62.228])
+        by smtp.gmail.com with ESMTPSA id k9-20020a056402048900b0052540e85390sm6020340edv.43.2023.08.21.07.24.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Aug 2023 07:24:36 -0700 (PDT)
+From:   Julien Panis <jpanis@baylibre.com>
+Date:   Mon, 21 Aug 2023 16:24:18 +0200
+Subject: [PATCH] bus: ti-sysc: Use fsleep() instead of usleep_range() in
+ sysc_reset()
 MIME-Version: 1.0
-References: <20230818093018.1051434-1-lizetao1@huawei.com> <20230818093018.1051434-8-lizetao1@huawei.com>
-In-Reply-To: <20230818093018.1051434-8-lizetao1@huawei.com>
-From:   Bartosz Golaszewski <brgl@bgdev.pl>
-Date:   Mon, 21 Aug 2023 14:12:00 +0200
-Message-ID: <CAMRc=MesfV23yvYoXebuDJXuUxPAV2D8fNQcND0WQxexydgoAQ@mail.gmail.com>
-Subject: Re: [PATCH -next 07/11] gpio: mxc: Use helper function devm_clk_get_optional_enabled()
-To:     Li Zetao <lizetao1@huawei.com>
-Cc:     linus.walleij@linaro.org, andy@kernel.org, j-keerthy@ti.com,
-        vz@mleia.com, thierry.reding@gmail.com,
-        u.kleine-koenig@pengutronix.de, grygorii.strashko@ti.com,
-        ssantosh@kernel.org, khilman@kernel.org,
-        shubhrajyoti.datta@amd.com, srinivas.neeli@amd.com,
-        michal.simek@amd.com, linux-gpio@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-pwm@vger.kernel.org,
-        linux-omap@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20230821-fix-ti-sysc-reset-v1-1-5a0a5d8fae55@baylibre.com>
+X-B4-Tracking: v=1; b=H4sIAJFz42QC/x3NwQrCMBCE4Vcpe3YhSRsRX0U8JHG0ezDKbihK6
+ bubevwZPmYlgwqMzsNKikVMXrWHPwxU5lQfYLn1puDC6E7B810+3ITta4UVhsax+OPkoh+nmKm
+ 7nAycNdUy7/KZrEH34a3o+n92uW7bDwXj9mR8AAAA
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+        vigneshr@ti.com, Julien Panis <jpanis@baylibre.com>
+X-Mailer: b4 0.12.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1692627875; l=1644;
+ i=jpanis@baylibre.com; s=20230526; h=from:subject:message-id;
+ bh=wosjVAPxqS63TYMds7orC3rBPMd9IvKzazAuLflW8Ho=;
+ b=XIJ5qxcY8LwWlb2BWKQPb8v3jg2fVGyFGZ8lAlf9CaK84wSxCFPdhAILXwqfNS7rdgvnUT1GT
+ q3Ru+mNSU/eCsC8+jidCRnOqeGYT8YR2lqg4VnaWxL2rwmGFkM/1Vc/
+X-Developer-Key: i=jpanis@baylibre.com; a=ed25519;
+ pk=8eSM4/xkiHWz2M1Cw1U3m2/YfPbsUdEJPCWY3Mh9ekQ=
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, Aug 18, 2023 at 11:30=E2=80=AFAM Li Zetao <lizetao1@huawei.com> wro=
-te:
->
-> Since commit 7ef9651e9792 ("clk: Provide new devm_clk helpers for
-> prepared and enabled clocks"), devm_clk_get_optional() and
-> clk_prepare_enable() can now be replaced by
-> devm_clk_get_optional_enabled() when the driver enables (and possibly
-> prepares) the clocks for the whole lifetime of the device. Moreover,
-> it is no longer necessary to unprepare and disable the clocks explicitly.
->
-> Signed-off-by: Li Zetao <lizetao1@huawei.com>
-> ---
->  drivers/gpio/gpio-mxc.c | 9 +--------
->  1 file changed, 1 insertion(+), 8 deletions(-)
->
-> diff --git a/drivers/gpio/gpio-mxc.c b/drivers/gpio/gpio-mxc.c
-> index 004c6ad7ce52..4cb455b2bdee 100644
-> --- a/drivers/gpio/gpio-mxc.c
-> +++ b/drivers/gpio/gpio-mxc.c
-> @@ -452,16 +452,10 @@ static int mxc_gpio_probe(struct platform_device *p=
-dev)
->                 return port->irq;
->
->         /* the controller clock is optional */
-> -       port->clk =3D devm_clk_get_optional(&pdev->dev, NULL);
-> +       port->clk =3D devm_clk_get_optional_enabled(&pdev->dev, NULL);
->         if (IS_ERR(port->clk))
->                 return PTR_ERR(port->clk);
->
-> -       err =3D clk_prepare_enable(port->clk);
-> -       if (err) {
-> -               dev_err(&pdev->dev, "Unable to enable clock.\n");
-> -               return err;
-> -       }
-> -
->         if (of_device_is_compatible(np, "fsl,imx7d-gpio"))
->                 port->power_off =3D true;
->
-> @@ -535,7 +529,6 @@ static int mxc_gpio_probe(struct platform_device *pde=
-v)
->  out_bgio:
->         pm_runtime_disable(&pdev->dev);
->         pm_runtime_put_noidle(&pdev->dev);
-> -       clk_disable_unprepare(port->clk);
->         dev_info(&pdev->dev, "%s failed with errno %d\n", __func__, err);
->         return err;
->  }
-> --
-> 2.34.1
->
+The am335x-evm started producing boot errors because of subtle timing
+changes:
 
-Applied, thanks!
+Unhandled fault: external abort on non-linefetch (0x1008) at 0xf03c1010
+...
+sysc_reset from sysc_probe+0xf60/0x1514
+sysc_probe from platform_probe+0x5c/0xbc
+...
 
-Bart
+The fix consists in using the appropriate sleep function in sysc reset.
+For flexible sleeping, fsleep is recommended. Here, sysc delay parameter
+can take any value in [0 - 255] us range. As a result, fsleep() should
+be used, calling udelay() for a sysc delay lower than 10 us.
+
+Signed-off-by: Julien Panis <jpanis@baylibre.com>
+Fixes: e709ed70d122 ("bus: ti-sysc: Fix missing reset delay handling")
+---
+Fix boot errors for am335x-evm in sysc_reset(), by using fsleep() instead
+of usleep_range() function. Thus, udelay() will be called if the configured
+sysc delay is lower than 10 us (which is usually the case, since the value
+set in the device tree is currently 2 us).
+---
+ drivers/bus/ti-sysc.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+index 4cb23b9e06ea..59b8bdd9203e 100644
+--- a/drivers/bus/ti-sysc.c
++++ b/drivers/bus/ti-sysc.c
+@@ -2147,8 +2147,7 @@ static int sysc_reset(struct sysc *ddata)
+ 	}
+ 
+ 	if (ddata->cfg.srst_udelay)
+-		usleep_range(ddata->cfg.srst_udelay,
+-			     ddata->cfg.srst_udelay * 2);
++		fsleep(ddata->cfg.srst_udelay);
+ 
+ 	if (ddata->post_reset_quirk)
+ 		ddata->post_reset_quirk(ddata);
+
+---
+base-commit: f7757129e3dea336c407551c98f50057c22bb266
+change-id: 20230821-fix-ti-sysc-reset-5c164051345b
+
+Best regards,
+-- 
+Julien Panis <jpanis@baylibre.com>
+
