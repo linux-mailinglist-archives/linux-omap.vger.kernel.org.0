@@ -2,76 +2,71 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 30F69782BAE
-	for <lists+linux-omap@lfdr.de>; Mon, 21 Aug 2023 16:24:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6D84782D62
+	for <lists+linux-omap@lfdr.de>; Mon, 21 Aug 2023 17:37:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235931AbjHUOYl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 21 Aug 2023 10:24:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38062 "EHLO
+        id S236427AbjHUPhD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 21 Aug 2023 11:37:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235934AbjHUOYk (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 21 Aug 2023 10:24:40 -0400
-Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B326DB
-        for <linux-omap@vger.kernel.org>; Mon, 21 Aug 2023 07:24:38 -0700 (PDT)
-Received: by mail-lf1-x133.google.com with SMTP id 2adb3069b0e04-4fe1b00fce2so4982441e87.3
-        for <linux-omap@vger.kernel.org>; Mon, 21 Aug 2023 07:24:38 -0700 (PDT)
+        with ESMTP id S236423AbjHUPhC (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 21 Aug 2023 11:37:02 -0400
+Received: from mail-vk1-xa30.google.com (mail-vk1-xa30.google.com [IPv6:2607:f8b0:4864:20::a30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EF74E2;
+        Mon, 21 Aug 2023 08:37:01 -0700 (PDT)
+Received: by mail-vk1-xa30.google.com with SMTP id 71dfb90a1353d-48d0db157efso481707e0c.1;
+        Mon, 21 Aug 2023 08:37:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20221208.gappssmtp.com; s=20221208; t=1692627876; x=1693232676;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=gPDn+AM+nE1Msl9ECDPxx14WMyfdDVEac2xAC1ONR/Q=;
-        b=dnqNzoj12sR7v5evYG572J590KzB7lFQ2vyMLE8f26x0lrLOZUIjmrjq0+ZUTnjgaT
-         FDunUJIM0DmqOsnO0gfk0tCQMcmHjhDEde20zcKRt9uzZoEmriHH27I6nlF8xmRoKecH
-         Oy4XXKQUsWFJ71amaPXz7KwtiEwsMjNZHD+pLCtzYSmXoyEaGruwDdfKA0mdgfT8F4TQ
-         3JKq2vnPKRkNSMbcMx3TjoOz6Fyz1OpP9wXFy3TYYynjrUzym2oyXghVUsFO6iQ16mKN
-         u6PKGM2GFMQ1v3bz+jV+nEJ8VP3E2bGfAEXXcmvozX0cImxfCwNXFVSvGPu3lDanxWGj
-         EGTg==
+        d=gmail.com; s=20221208; t=1692632220; x=1693237020;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0xyVHx1jRHtcJdeUzOo6rApb73WW21TZmOmliSqn3Mo=;
+        b=C9IYT3+OtUW9hwweWvu3GiC1mPSXAKKkf5CvbN45O6kJgQa/GIZAh1Mk0IKAjv6rlP
+         kTKx7DrtRTGVuSPdoYltArXgJvfuGB5j/YyTWQ18onlBGeXTLUvs75NdULQCf99A2zns
+         UyWqmIhKFpyX/5Jo8I6jj4dB38OZH2FEyDiN0lm2ACX7ytHpCtzQLz8uvYwUnRJ8EVUQ
+         2lcjjRwoRkWZSUD9C7tpLam32Kyq66bkPHKqqLmMJyc6Cx1y5btKLIu4ima4+PtJXSJu
+         TCbNhWcrBYxnb/aYEQmJLWhJT2lmTBrqwgjLZTuDDd7EmQdB66WWEyOk7wH/71+ey2yQ
+         ZzGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692627876; x=1693232676;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gPDn+AM+nE1Msl9ECDPxx14WMyfdDVEac2xAC1ONR/Q=;
-        b=iCfCK1OWZS9sJA52HtLuAxZRs/G98sX01Hw4QVusXKpNXho6n9POMndyEj6XxvrXtM
-         DM8kUQeJ9BM4CF/O/tf0+Yeg7qPWt6doQlhzadCkDXv089aBbFCflP+9+sVonSApZYze
-         +UEyBrsp4pVO01ampUX1EnAxC9APoUTrGVDQxg3Ep9nEvvKZZOyx7XQQTUXyac2dA7b0
-         MJVR3xnd/j/1pUnXCufhZoZihL1sKyy2Y8enV2Ry2qZj3f91TxP8WCjtC/wUqpDdZzcf
-         /d3tlBdY/tUHoQweN9K1oj7nTmMhDJSRx9pWRRZ/YPT0MqwkJnAFTOhoI182rx1iqGrF
-         RG+Q==
-X-Gm-Message-State: AOJu0Yz9c8EEcheNe2Y1z4uKWLAVqGSPkfIvb6HVGBGPD2DcEvrJEbjV
-        cWQqRZqcCuNYREfvJtSTmZZBHZ9LRAHN+xIlKXg=
-X-Google-Smtp-Source: AGHT+IErsrF8B8YUvfsJbD0GYuz/5Mc2vKk2fKEIpuGgnaLF/jRF94m8u602U0V/kVxaJ6y4EXauDw==
-X-Received: by 2002:a05:6512:31c8:b0:4fe:5133:1213 with SMTP id j8-20020a05651231c800b004fe51331213mr5604650lfe.12.1692627876421;
-        Mon, 21 Aug 2023 07:24:36 -0700 (PDT)
-Received: from [127.0.1.1] ([86.71.62.228])
-        by smtp.gmail.com with ESMTPSA id k9-20020a056402048900b0052540e85390sm6020340edv.43.2023.08.21.07.24.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Aug 2023 07:24:36 -0700 (PDT)
-From:   Julien Panis <jpanis@baylibre.com>
-Date:   Mon, 21 Aug 2023 16:24:18 +0200
-Subject: [PATCH] bus: ti-sysc: Use fsleep() instead of usleep_range() in
- sysc_reset()
+        d=1e100.net; s=20221208; t=1692632220; x=1693237020;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0xyVHx1jRHtcJdeUzOo6rApb73WW21TZmOmliSqn3Mo=;
+        b=LQ9zT4tSREzV4DYUhlfxN9MJfvUnvBapkjpVeQoexCMv1/+tJaq4eZKndWa7DL3/iP
+         /+gjuyn+FFzQbdM/1FI+78MsKsouoorsSWcDYmfOJR970kQigXm9NJ+jLdu5ahS+GUlj
+         cfsUe2ASoNQ6G2NJgQ8o4kAakRLEKdbYTgwRE+TeVFbFm5VsAfIGv/0U9nkogXoJjlsp
+         ZI9CVDn5d1BvuKrb8d90OTRdyF6EY+2vQdMd2gaM+VSzVpEALxhjRyURIH5WlwrR2/bw
+         CRFlr+xAFFQ7mRCsq8X6hsSBv7V18k4NTBnoURvuf3IOAvZS+SEvR1u4oPoNHZMAy/Ny
+         5U5g==
+X-Gm-Message-State: AOJu0YwRJ/zsgPBX0Ej7+WtU2xr2uA4fWU4Oh10U4cMmp1LqMhMpUzqc
+        GTWAODz/bpUZMBKnqe0BToQei8u/AoKgjQ1grdEPKhfMciM=
+X-Google-Smtp-Source: AGHT+IF5/v+rHolsxAAStdBDux4Y1lDOsbPIWa+OZFr/WjW9nAhGLgjS7+TCkBPZcczXIon7gB3pqgs7vJbUFJmqIsk=
+X-Received: by 2002:a1f:ed84:0:b0:48d:1fcd:9723 with SMTP id
+ l126-20020a1fed84000000b0048d1fcd9723mr2586888vkh.1.1692632220125; Mon, 21
+ Aug 2023 08:37:00 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230821-fix-ti-sysc-reset-v1-1-5a0a5d8fae55@baylibre.com>
-X-B4-Tracking: v=1; b=H4sIAJFz42QC/x3NwQrCMBCE4Vcpe3YhSRsRX0U8JHG0ezDKbihK6
- bubevwZPmYlgwqMzsNKikVMXrWHPwxU5lQfYLn1puDC6E7B810+3ITta4UVhsax+OPkoh+nmKm
- 7nAycNdUy7/KZrEH34a3o+n92uW7bDwXj9mR8AAAA
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-        vigneshr@ti.com, Julien Panis <jpanis@baylibre.com>
-X-Mailer: b4 0.12.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1692627875; l=1644;
- i=jpanis@baylibre.com; s=20230526; h=from:subject:message-id;
- bh=wosjVAPxqS63TYMds7orC3rBPMd9IvKzazAuLflW8Ho=;
- b=XIJ5qxcY8LwWlb2BWKQPb8v3jg2fVGyFGZ8lAlf9CaK84wSxCFPdhAILXwqfNS7rdgvnUT1GT
- q3Ru+mNSU/eCsC8+jidCRnOqeGYT8YR2lqg4VnaWxL2rwmGFkM/1Vc/
-X-Developer-Key: i=jpanis@baylibre.com; a=ed25519;
- pk=8eSM4/xkiHWz2M1Cw1U3m2/YfPbsUdEJPCWY3Mh9ekQ=
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+References: <20230818151039.40566-1-twoerner@gmail.com> <20230818151039.40566-2-twoerner@gmail.com>
+In-Reply-To: <20230818151039.40566-2-twoerner@gmail.com>
+From:   Robert Nelson <robertcnelson@gmail.com>
+Date:   Mon, 21 Aug 2023 10:36:34 -0500
+Message-ID: <CAOCHtYgdxeoOvTcFjwB=iqLD5K4JzeoRF8zeQPzM_1nLh5ReYA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/4] ARM: dts: am335x-pocketbeagle: update LED information
+To:     Trevor Woerner <twoerner@gmail.com>
+Cc:     drew@beagleboard.org,
+        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -79,51 +74,55 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The am335x-evm started producing boot errors because of subtle timing
-changes:
+On Sun, Aug 20, 2023 at 5:24=E2=80=AFAM Trevor Woerner <twoerner@gmail.com>=
+ wrote:
+>
+> The "label" property is deprecated. Replace the "label" property with
+> "color" and "description" properties.
+>
+> Signed-off-by: Trevor Woerner <twoerner@gmail.com>
+> ---
+>  arch/arm/boot/dts/ti/omap/am335x-pocketbeagle.dts | 13 +++++++++----
+>  1 file changed, 9 insertions(+), 4 deletions(-)
+>
+> diff --git a/arch/arm/boot/dts/ti/omap/am335x-pocketbeagle.dts b/arch/arm=
+/boot/dts/ti/omap/am335x-pocketbeagle.dts
+> index 5dfe4d4bab93..1c11245f6864 100644
+> --- a/arch/arm/boot/dts/ti/omap/am335x-pocketbeagle.dts
+> +++ b/arch/arm/boot/dts/ti/omap/am335x-pocketbeagle.dts
+> @@ -8,6 +8,7 @@
+>
+>  #include "am33xx.dtsi"
+>  #include "am335x-osd335x-common.dtsi"
+> +#include <dt-bindings/leds/common.h>
+>
+>  / {
+>         model =3D "TI AM335x PocketBeagle";
+> @@ -24,28 +25,32 @@ leds {
+>                 compatible =3D "gpio-leds";
+>
+>                 led-usr0 {
+> -                       label =3D "beaglebone:green:usr0";
+> +                       color =3D <LED_COLOR_ID_BLUE>;
+> +                       function =3D LED_FUNCTION_HEARTBEAT;
 
-Unhandled fault: external abort on non-linefetch (0x1008) at 0xf03c1010
-...
-sysc_reset from sysc_probe+0xf60/0x1514
-sysc_probe from platform_probe+0x5c/0xbc
-...
+So some background, while the LED are not Green, and this is not the Beagle=
+Bone.
 
-The fix consists in using the appropriate sleep function in sysc reset.
-For flexible sleeping, fsleep is recommended. Here, sysc delay parameter
-can take any value in [0 - 255] us range. As a result, fsleep() should
-be used, calling udelay() for a sysc delay lower than 10 us.
+We used these specific labels to keep all user documents going back to
+the original BeagleBone (white) (with 3.8.x kernel), the same so users
+could easily blink an led from user-space even on newer boards.
 
-Signed-off-by: Julien Panis <jpanis@baylibre.com>
-Fixes: e709ed70d122 ("bus: ti-sysc: Fix missing reset delay handling")
----
-Fix boot errors for am335x-evm in sysc_reset(), by using fsleep() instead
-of usleep_range() function. Thus, udelay() will be called if the configured
-sysc delay is lower than 10 us (which is usually the case, since the value
-set in the device tree is currently 2 us).
----
- drivers/bus/ti-sysc.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+So it became our un-official abi for new users for the BeagleBoard
+family of devices..
 
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-index 4cb23b9e06ea..59b8bdd9203e 100644
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -2147,8 +2147,7 @@ static int sysc_reset(struct sysc *ddata)
- 	}
- 
- 	if (ddata->cfg.srst_udelay)
--		usleep_range(ddata->cfg.srst_udelay,
--			     ddata->cfg.srst_udelay * 2);
-+		fsleep(ddata->cfg.srst_udelay);
- 
- 	if (ddata->post_reset_quirk)
- 		ddata->post_reset_quirk(ddata);
+It's even what we do on the BeaglePlay..
 
----
-base-commit: f7757129e3dea336c407551c98f50057c22bb266
-change-id: 20230821-fix-ti-sysc-reset-5c164051345b
+https://git.beagleboard.org/beagleboard/BeagleBoard-DeviceTrees/-/blob/v5.1=
+0.x-ti-unified/src/arm64/k3-am625-beagleplay.dts#L179-217
 
-Best regards,
--- 
-Julien Panis <jpanis@baylibre.com>
+Regards,
 
+--=20
+Robert Nelson
+https://rcn-ee.com/
