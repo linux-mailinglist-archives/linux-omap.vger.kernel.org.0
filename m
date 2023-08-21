@@ -2,127 +2,126 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B6D84782D62
-	for <lists+linux-omap@lfdr.de>; Mon, 21 Aug 2023 17:37:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1521F782DAE
+	for <lists+linux-omap@lfdr.de>; Mon, 21 Aug 2023 18:01:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236427AbjHUPhD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 21 Aug 2023 11:37:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49554 "EHLO
+        id S232976AbjHUQB0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 21 Aug 2023 12:01:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59114 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236423AbjHUPhC (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 21 Aug 2023 11:37:02 -0400
-Received: from mail-vk1-xa30.google.com (mail-vk1-xa30.google.com [IPv6:2607:f8b0:4864:20::a30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EF74E2;
-        Mon, 21 Aug 2023 08:37:01 -0700 (PDT)
-Received: by mail-vk1-xa30.google.com with SMTP id 71dfb90a1353d-48d0db157efso481707e0c.1;
-        Mon, 21 Aug 2023 08:37:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1692632220; x=1693237020;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0xyVHx1jRHtcJdeUzOo6rApb73WW21TZmOmliSqn3Mo=;
-        b=C9IYT3+OtUW9hwweWvu3GiC1mPSXAKKkf5CvbN45O6kJgQa/GIZAh1Mk0IKAjv6rlP
-         kTKx7DrtRTGVuSPdoYltArXgJvfuGB5j/YyTWQ18onlBGeXTLUvs75NdULQCf99A2zns
-         UyWqmIhKFpyX/5Jo8I6jj4dB38OZH2FEyDiN0lm2ACX7ytHpCtzQLz8uvYwUnRJ8EVUQ
-         2lcjjRwoRkWZSUD9C7tpLam32Kyq66bkPHKqqLmMJyc6Cx1y5btKLIu4ima4+PtJXSJu
-         TCbNhWcrBYxnb/aYEQmJLWhJT2lmTBrqwgjLZTuDDd7EmQdB66WWEyOk7wH/71+ey2yQ
-         ZzGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692632220; x=1693237020;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0xyVHx1jRHtcJdeUzOo6rApb73WW21TZmOmliSqn3Mo=;
-        b=LQ9zT4tSREzV4DYUhlfxN9MJfvUnvBapkjpVeQoexCMv1/+tJaq4eZKndWa7DL3/iP
-         /+gjuyn+FFzQbdM/1FI+78MsKsouoorsSWcDYmfOJR970kQigXm9NJ+jLdu5ahS+GUlj
-         cfsUe2ASoNQ6G2NJgQ8o4kAakRLEKdbYTgwRE+TeVFbFm5VsAfIGv/0U9nkogXoJjlsp
-         ZI9CVDn5d1BvuKrb8d90OTRdyF6EY+2vQdMd2gaM+VSzVpEALxhjRyURIH5WlwrR2/bw
-         CRFlr+xAFFQ7mRCsq8X6hsSBv7V18k4NTBnoURvuf3IOAvZS+SEvR1u4oPoNHZMAy/Ny
-         5U5g==
-X-Gm-Message-State: AOJu0YwRJ/zsgPBX0Ej7+WtU2xr2uA4fWU4Oh10U4cMmp1LqMhMpUzqc
-        GTWAODz/bpUZMBKnqe0BToQei8u/AoKgjQ1grdEPKhfMciM=
-X-Google-Smtp-Source: AGHT+IF5/v+rHolsxAAStdBDux4Y1lDOsbPIWa+OZFr/WjW9nAhGLgjS7+TCkBPZcczXIon7gB3pqgs7vJbUFJmqIsk=
-X-Received: by 2002:a1f:ed84:0:b0:48d:1fcd:9723 with SMTP id
- l126-20020a1fed84000000b0048d1fcd9723mr2586888vkh.1.1692632220125; Mon, 21
- Aug 2023 08:37:00 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230818151039.40566-1-twoerner@gmail.com> <20230818151039.40566-2-twoerner@gmail.com>
-In-Reply-To: <20230818151039.40566-2-twoerner@gmail.com>
-From:   Robert Nelson <robertcnelson@gmail.com>
-Date:   Mon, 21 Aug 2023 10:36:34 -0500
-Message-ID: <CAOCHtYgdxeoOvTcFjwB=iqLD5K4JzeoRF8zeQPzM_1nLh5ReYA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/4] ARM: dts: am335x-pocketbeagle: update LED information
-To:     Trevor Woerner <twoerner@gmail.com>
-Cc:     drew@beagleboard.org,
-        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        with ESMTP id S232964AbjHUQBZ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 21 Aug 2023 12:01:25 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F7A8100;
+        Mon, 21 Aug 2023 09:01:24 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A2726630D6;
+        Mon, 21 Aug 2023 16:01:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46C7DC433C8;
+        Mon, 21 Aug 2023 16:01:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1692633683;
+        bh=aX4uOZqx4fuKGR4vLazYSCKmLEo9pLv6Ch7nrty5dEs=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ZYKpyWrsAwMxX28B1d1pdBPaZQ2kJZQGINDkwdh1aUmJj0Trs/jhyB6SlUfbeGwq6
+         X9Ivl9Pj+IC/EEMghk/YeV6VC7xygOyYqcEwkVSYXZLRbMm74ARf7SOYKeXuKavTlU
+         qI3JW9qOa3Vm3kecdy2KaIskEVhHGBi3uu+TUH5bkRXX3RdAHNysR4ZRhFvXhyTFOe
+         BC2LjPM4VspI3JCz9U4Ro8M7StLxXxEH6bIKLUV386YUQotI2x5/5ZG80pV8uYETOd
+         q0fZFSJXpJUcdfXkBCK2vX7SNrOdn/QewNx9spqsQ7xoeX2VlWndtpnnxmLJsOa/4e
+         TZ0s/b51DPXAw==
+Received: (nullmailer pid 1743429 invoked by uid 1000);
+        Mon, 21 Aug 2023 16:01:20 -0000
+Date:   Mon, 21 Aug 2023 11:01:20 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     MD Danish Anwar <danishanwar@ti.com>
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        Roger Quadros <rogerq@kernel.org>,
+        Simon Horman <simon.horman@corigine.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Richard Cochran <richardcochran@gmail.com>,
         Conor Dooley <conor+dt@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>, nm@ti.com, srk@ti.com,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        netdev@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2 2/5] dt-bindings: net: Add iep property in ICSSG dt
+ binding
+Message-ID: <20230821160120.GA1734560-robh@kernel.org>
+References: <20230807110048.2611456-1-danishanwar@ti.com>
+ <20230807110048.2611456-3-danishanwar@ti.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230807110048.2611456-3-danishanwar@ti.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sun, Aug 20, 2023 at 5:24=E2=80=AFAM Trevor Woerner <twoerner@gmail.com>=
- wrote:
->
-> The "label" property is deprecated. Replace the "label" property with
-> "color" and "description" properties.
->
-> Signed-off-by: Trevor Woerner <twoerner@gmail.com>
+On Mon, Aug 07, 2023 at 04:30:45PM +0530, MD Danish Anwar wrote:
+> Add iep node in ICSSG driver dt binding document.
+
+Why?
+
+Bindings are for h/w, not drivers. You are adding a property, not a 
+node. Would be nice to know what 'iep' is without having to look at the 
+diff (e.g. when running 'git log').
+
+> 
+> Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
 > ---
->  arch/arm/boot/dts/ti/omap/am335x-pocketbeagle.dts | 13 +++++++++----
->  1 file changed, 9 insertions(+), 4 deletions(-)
->
-> diff --git a/arch/arm/boot/dts/ti/omap/am335x-pocketbeagle.dts b/arch/arm=
-/boot/dts/ti/omap/am335x-pocketbeagle.dts
-> index 5dfe4d4bab93..1c11245f6864 100644
-> --- a/arch/arm/boot/dts/ti/omap/am335x-pocketbeagle.dts
-> +++ b/arch/arm/boot/dts/ti/omap/am335x-pocketbeagle.dts
-> @@ -8,6 +8,7 @@
->
->  #include "am33xx.dtsi"
->  #include "am335x-osd335x-common.dtsi"
-> +#include <dt-bindings/leds/common.h>
->
->  / {
->         model =3D "TI AM335x PocketBeagle";
-> @@ -24,28 +25,32 @@ leds {
->                 compatible =3D "gpio-leds";
->
->                 led-usr0 {
-> -                       label =3D "beaglebone:green:usr0";
-> +                       color =3D <LED_COLOR_ID_BLUE>;
-> +                       function =3D LED_FUNCTION_HEARTBEAT;
+>  Documentation/devicetree/bindings/net/ti,icssg-prueth.yaml | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/net/ti,icssg-prueth.yaml b/Documentation/devicetree/bindings/net/ti,icssg-prueth.yaml
+> index 8ec30b3eb760..36870238f92f 100644
+> --- a/Documentation/devicetree/bindings/net/ti,icssg-prueth.yaml
+> +++ b/Documentation/devicetree/bindings/net/ti,icssg-prueth.yaml
+> @@ -52,6 +52,12 @@ properties:
+>      description:
+>        phandle to MII_RT module's syscon regmap
+>  
+> +  ti,iep:
+> +    $ref: /schemas/types.yaml#/definitions/phandle-array
 
-So some background, while the LED are not Green, and this is not the Beagle=
-Bone.
+phandle-array really means matrix, so you need to fully describe the 
+items constraints.
 
-We used these specific labels to keep all user documents going back to
-the original BeagleBone (white) (with 3.8.x kernel), the same so users
-could easily blink an led from user-space even on newer boards.
+> +    maxItems: 2
 
-So it became our un-official abi for new users for the BeagleBoard
-family of devices..
+2 phandles or 1 phandle and 1 arg? Looks like the former from the 
+example, so:
 
-It's even what we do on the BeaglePlay..
+maxItems: 2
+items:
+  maxItems: 1
 
-https://git.beagleboard.org/beagleboard/BeagleBoard-DeviceTrees/-/blob/v5.1=
-0.x-ti-unified/src/arm64/k3-am625-beagleplay.dts#L179-217
-
-Regards,
-
---=20
-Robert Nelson
-https://rcn-ee.com/
+> +    description:
+> +      phandle to IEP (Industrial Ethernet Peripheral) for ICSSG driver
+> +
+>    interrupts:
+>      maxItems: 2
+>      description:
+> @@ -155,6 +161,7 @@ examples:
+>                      "tx1-0", "tx1-1", "tx1-2", "tx1-3",
+>                      "rx0", "rx1";
+>          ti,mii-g-rt = <&icssg2_mii_g_rt>;
+> +        ti,iep = <&icssg2_iep0>, <&icssg2_iep1>;
+>          interrupt-parent = <&icssg2_intc>;
+>          interrupts = <24 0 2>, <25 1 3>;
+>          interrupt-names = "tx_ts0", "tx_ts1";
+> -- 
+> 2.34.1
+> 
