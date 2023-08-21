@@ -2,145 +2,128 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 952A4781FF0
-	for <lists+linux-omap@lfdr.de>; Sun, 20 Aug 2023 22:39:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2F817828AE
+	for <lists+linux-omap@lfdr.de>; Mon, 21 Aug 2023 14:12:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232037AbjHTUj0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 20 Aug 2023 16:39:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33464 "EHLO
+        id S234380AbjHUMMU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 21 Aug 2023 08:12:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37768 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231940AbjHTUjN (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 20 Aug 2023 16:39:13 -0400
-Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBBA444BA
-        for <linux-omap@vger.kernel.org>; Sun, 20 Aug 2023 13:35:16 -0700 (PDT)
-Received: by mail-wm1-x32c.google.com with SMTP id 5b1f17b1804b1-3fee5ddc23eso12173075e9.1
-        for <linux-omap@vger.kernel.org>; Sun, 20 Aug 2023 13:35:16 -0700 (PDT)
+        with ESMTP id S232786AbjHUMMU (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 21 Aug 2023 08:12:20 -0400
+Received: from mail-ua1-x934.google.com (mail-ua1-x934.google.com [IPv6:2607:f8b0:4864:20::934])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 717A4EC
+        for <linux-omap@vger.kernel.org>; Mon, 21 Aug 2023 05:12:12 -0700 (PDT)
+Received: by mail-ua1-x934.google.com with SMTP id a1e0cc1a2514c-7a257fabae5so461805241.2
+        for <linux-omap@vger.kernel.org>; Mon, 21 Aug 2023 05:12:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1692563675; x=1693168475;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=UTB3I1d2dOK1JlBCBmFpfVDR6TsDJNbHoAjcns5dz18=;
-        b=qP1v8T/raKveU6SJZixB0+pszHmCqZIRCwvMlLjsNb9mVEqqlVjGhChaK+QqJSMMXv
-         vKm1G0F5qF6BsdJ5Q2LCMD9cL05vZZQj2f7rPLlxHco/ka48OBcjC0w8nczrYbWbdetf
-         RBcS5igv8kE7+6DWxAm1vEmX5PnWppP8jZTggJhr21QH6UuwoKDADkU5nfCKPqnpFLay
-         PPJm8yBfEws78tWe1zP2TA2+J8+8k3JZ1cZlIEAHgQeYt0H8FWvODgcw7q8OLmkAfpSi
-         aN0gI0Lpq8lEIxAkK0914eWRZn0ki1j0jPfBXfZz4Vmaub+QeIRTdQ0rqo0H2P1eEwAP
-         dm5g==
+        d=bgdev-pl.20221208.gappssmtp.com; s=20221208; t=1692619931; x=1693224731;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NCkbxK8SDHIlpboWoSgSQlBN5th7HtJtXxIERiulQiM=;
+        b=APSyrpMPYPetYFPwGu8psh4/T58NHYXfo9EmQxVEB2eEqAtwPDsGR3yPcXtsEoDizg
+         w1F8zZDM7Ptgp0oFHZ2Hv7K0RJ//2OdiynAnnVqrADpivsx2HvPJ3EMezJLjKanSq2wy
+         yv3eYRNpLIZqZv1ePBKU5YvnlGXSq0YXZia2PpZdjJ/LsaRSmhezJXTQxVLByq4+RzOS
+         DVCA7B//1n0TmHBocoy5pXrEnNg2cJsRIOxPu/E6Lg0C2ha+BT9MfZsU4a34l2Mc7vR2
+         prDXeGEyloWpFbrL8/UaIrpNkvaHxkjUj0mwwuCyYnB8iO0FmwTjKdxGRiRgarandfsU
+         jATA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692563675; x=1693168475;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UTB3I1d2dOK1JlBCBmFpfVDR6TsDJNbHoAjcns5dz18=;
-        b=AfZBaKWLcjEf1DGqJsLmVyUVfnWt+dN1TAAG1SdAxFzvmImMffh2Eymywl1GOHnerh
-         u86ebmLevJatYD/C6Z83XjmCXjEb2p9Mf5Ri+iuzKNrUryg29tUP8F8R7qi2RGNP3Fnf
-         LKqRiZFEKq8ul6W0TOHSvusmL7hZW/Nx+DveHHVMg3zWDJCNJyB/HOvZVLtT3tQIrmUV
-         OlT5oq7XyKleToBSPB2Zh/BAGrznmQehVc7i4mLZuFnjuI4nfYNWiguxJ3EfY6QXr7fY
-         WUpw5dcuXDZQHyD63lMGph4yiLPspsRtXnv7pcH15qscv3rxjdXGpm2jycGOphgztcHP
-         vU+w==
-X-Gm-Message-State: AOJu0YzVzWUXWlXGHmFm9U194LEq3jnb8nJRfRAqL1PsWAX0daVMutGQ
-        ZNBjL7bwG0u1G7pH873ZfhYoLw==
-X-Google-Smtp-Source: AGHT+IEqDyhvLvFU8YCyTFZ/G+6hQsHWbfuVsMIai85g16w8+0nFXnOrYA1YWKnlFMd45brHG0dUhg==
-X-Received: by 2002:a5d:5267:0:b0:319:7b6f:4a5d with SMTP id l7-20020a5d5267000000b003197b6f4a5dmr3416380wrc.52.1692563675393;
-        Sun, 20 Aug 2023 13:34:35 -0700 (PDT)
-Received: from [192.168.0.22] ([77.252.47.198])
-        by smtp.gmail.com with ESMTPSA id z13-20020a1709063acd00b0099bd7b26639sm5211898ejd.6.2023.08.20.13.34.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 20 Aug 2023 13:34:35 -0700 (PDT)
-Message-ID: <84388311-c92c-812e-53bd-35daf8821a16@linaro.org>
-Date:   Sun, 20 Aug 2023 22:34:33 +0200
+        d=1e100.net; s=20221208; t=1692619931; x=1693224731;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NCkbxK8SDHIlpboWoSgSQlBN5th7HtJtXxIERiulQiM=;
+        b=avMOquQpXCPL6+BdvBeIARupjlexFCN3Nyb7tknVDi/CeIjQOUqDZZJTyixrrlLxul
+         LhqwGW0/K2Ben+QGtQSvZ0RmJSvaUZ4Pvlvbdm9gkQqWgz97UQPKJn0sqa6YucoQBo7d
+         9Eh83votM3upenmsmnxSChpceiAre5WpN5MKbJXIKsQQnHCiERANnZPdblebHE4nEpi2
+         042zygjG3aYnwmMFMJM8y2RmuasPLAFmrFox1ARjSV6n3p9EF0gwzFdTPBnux42K9YxO
+         l053PJScRWh2ywnPihRYLPIKomk0WxL2Yc1h1GO31X3PAf3EjLOGmn4UcFao7DdEH5uM
+         iRhQ==
+X-Gm-Message-State: AOJu0YwW1SnhzFICvSbDLUyUSzL5sxN0wAnlKHFCEOqof/lquJg7EOK3
+        i32X9alW7nGws0TSMsp0iFTmcHSyQ+aMxD+cI6iq8Q==
+X-Google-Smtp-Source: AGHT+IGHcHrwZNfxOKdf2tsjJKS8zYT08VjF5/gr7zXAHlAkKDYkTuAjyI5dqrEVndNjZDgESvqCukBqG1iovoR8L2s=
+X-Received: by 2002:a67:ce9a:0:b0:443:9248:3410 with SMTP id
+ c26-20020a67ce9a000000b0044392483410mr5577281vse.32.1692619931538; Mon, 21
+ Aug 2023 05:12:11 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH v2] dt-bindings: iio: adc: Add TI TWL603X GPADC
-Content-Language: en-US
-To:     Andreas Kemnade <andreas@kemnade.info>, jic23@kernel.org,
-        lars@metafoo.de, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
-References: <20230820123229.530371-1-andreas@kemnade.info>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230820123229.530371-1-andreas@kemnade.info>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-6.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+References: <20230818093018.1051434-1-lizetao1@huawei.com> <20230818093018.1051434-8-lizetao1@huawei.com>
+In-Reply-To: <20230818093018.1051434-8-lizetao1@huawei.com>
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+Date:   Mon, 21 Aug 2023 14:12:00 +0200
+Message-ID: <CAMRc=MesfV23yvYoXebuDJXuUxPAV2D8fNQcND0WQxexydgoAQ@mail.gmail.com>
+Subject: Re: [PATCH -next 07/11] gpio: mxc: Use helper function devm_clk_get_optional_enabled()
+To:     Li Zetao <lizetao1@huawei.com>
+Cc:     linus.walleij@linaro.org, andy@kernel.org, j-keerthy@ti.com,
+        vz@mleia.com, thierry.reding@gmail.com,
+        u.kleine-koenig@pengutronix.de, grygorii.strashko@ti.com,
+        ssantosh@kernel.org, khilman@kernel.org,
+        shubhrajyoti.datta@amd.com, srinivas.neeli@amd.com,
+        michal.simek@amd.com, linux-gpio@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-pwm@vger.kernel.org,
+        linux-omap@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 20/08/2023 14:32, Andreas Kemnade wrote:
-> Document TI TWL603X GPADC devicetree bindings.
-> A driver is already there, the compatibles are used, but not documented.
-> 
-> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+On Fri, Aug 18, 2023 at 11:30=E2=80=AFAM Li Zetao <lizetao1@huawei.com> wro=
+te:
+>
+> Since commit 7ef9651e9792 ("clk: Provide new devm_clk helpers for
+> prepared and enabled clocks"), devm_clk_get_optional() and
+> clk_prepare_enable() can now be replaced by
+> devm_clk_get_optional_enabled() when the driver enables (and possibly
+> prepares) the clocks for the whole lifetime of the device. Moreover,
+> it is no longer necessary to unprepare and disable the clocks explicitly.
+>
+> Signed-off-by: Li Zetao <lizetao1@huawei.com>
 > ---
+>  drivers/gpio/gpio-mxc.c | 9 +--------
+>  1 file changed, 1 insertion(+), 8 deletions(-)
+>
+> diff --git a/drivers/gpio/gpio-mxc.c b/drivers/gpio/gpio-mxc.c
+> index 004c6ad7ce52..4cb455b2bdee 100644
+> --- a/drivers/gpio/gpio-mxc.c
+> +++ b/drivers/gpio/gpio-mxc.c
+> @@ -452,16 +452,10 @@ static int mxc_gpio_probe(struct platform_device *p=
+dev)
+>                 return port->irq;
+>
+>         /* the controller clock is optional */
+> -       port->clk =3D devm_clk_get_optional(&pdev->dev, NULL);
+> +       port->clk =3D devm_clk_get_optional_enabled(&pdev->dev, NULL);
+>         if (IS_ERR(port->clk))
+>                 return PTR_ERR(port->clk);
+>
+> -       err =3D clk_prepare_enable(port->clk);
+> -       if (err) {
+> -               dev_err(&pdev->dev, "Unable to enable clock.\n");
+> -               return err;
+> -       }
+> -
+>         if (of_device_is_compatible(np, "fsl,imx7d-gpio"))
+>                 port->power_off =3D true;
+>
+> @@ -535,7 +529,6 @@ static int mxc_gpio_probe(struct platform_device *pde=
+v)
+>  out_bgio:
+>         pm_runtime_disable(&pdev->dev);
+>         pm_runtime_put_noidle(&pdev->dev);
+> -       clk_disable_unprepare(port->clk);
+>         dev_info(&pdev->dev, "%s failed with errno %d\n", __func__, err);
+>         return err;
+>  }
+> --
+> 2.34.1
+>
 
-Please provide changelog after ---.
+Applied, thanks!
 
-
->  .../bindings/iio/adc/ti,twl6030-gpadc.yaml    | 45 +++++++++++++++++++
->  1 file changed, 45 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,twl6030-gpadc.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/ti,twl6030-gpadc.yaml b/Documentation/devicetree/bindings/iio/adc/ti,twl6030-gpadc.yaml
-> new file mode 100644
-> index 000000000000..5b075237bcfd
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/ti,twl6030-gpadc.yaml
-> @@ -0,0 +1,45 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/adc/ti,twl6030-gpadc.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: GPADC subsystem in the TWL6030 power module
-> +
-> +maintainers:
-> +  - Andreas Kemnade <andreas@kemnade.info>
-> +
-> +description:
-> +  The GPADC subsystem in the TWL603X consists of a 10-bit ADC
-> +  combined with a 15-input analog multiplexer in the TWL6030 resp. a
-> +  19-input analog muliplexer in the TWL6032.
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - ti,twl6030-gpadc
-> +      - ti,twl6032-gpadc
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  "#io-channel-cells":
-> +    const: 1
-> +
-> +required:
-> +  - compatible
-> +  - interrupts
-> +  - "#io-channel-cells"
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    twl {
-
-Just skip the twl node. Anyway, the parent device binding should include
-complete example.
-
-
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
-Best regards,
-Krzysztof
-
+Bart
