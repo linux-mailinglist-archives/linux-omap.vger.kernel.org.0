@@ -2,99 +2,135 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB4E07841E2
-	for <lists+linux-omap@lfdr.de>; Tue, 22 Aug 2023 15:22:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C2BFC78443F
+	for <lists+linux-omap@lfdr.de>; Tue, 22 Aug 2023 16:31:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235977AbjHVNWW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 22 Aug 2023 09:22:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41990 "EHLO
+        id S236740AbjHVObJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 22 Aug 2023 10:31:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234984AbjHVNWV (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 22 Aug 2023 09:22:21 -0400
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DE25BE;
-        Tue, 22 Aug 2023 06:22:19 -0700 (PDT)
-Received: by mail-lf1-x12d.google.com with SMTP id 2adb3069b0e04-4fe11652b64so6823643e87.0;
-        Tue, 22 Aug 2023 06:22:19 -0700 (PDT)
+        with ESMTP id S235456AbjHVObI (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 22 Aug 2023 10:31:08 -0400
+Received: from mail-qt1-x835.google.com (mail-qt1-x835.google.com [IPv6:2607:f8b0:4864:20::835])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28F2AFB;
+        Tue, 22 Aug 2023 07:31:06 -0700 (PDT)
+Received: by mail-qt1-x835.google.com with SMTP id d75a77b69052e-4103aa6229cso24522861cf.2;
+        Tue, 22 Aug 2023 07:31:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1692710537; x=1693315337;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=wGWZmoxclOfYzjyLvlkmT9ZvCsngcDBgs2bkB2Nywss=;
-        b=MU+J9C1wcQYK1gVd6TaxkuHqX/vrIL2N+Xf4RY2de74ButEFa7v7SxadrbCpR1MGTS
-         Q/hFE7B9FkMWdi1sI/HhrIES+xG6AD8xtd2RG3WCR4167UVWEcTXxvHbWe65BkzTfj0o
-         9M+oxOi6klLSM/D2il+R3H0zzRSavyvt3bwCyEaGASZ5h7rRhvmtOl444QrxE4lPyt4T
-         HeLSSmIr9Pco68I7488aywjAKKjJN8FRB3T7Y0FjlfoAvPWuZ2+32jfgfwH3HuPQ08iR
-         uauXbpiTa+KhwC0wUIBLs569C0/4zzOWI5GKIK7tVYzPw6fmZsgl28jasITLIbMDSIUv
-         RYlA==
+        d=gmail.com; s=20221208; t=1692714665; x=1693319465;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ij4iII3kET4AquK7NA+5uE9piCz+Tm+vsG2ScePYKZA=;
+        b=ndo9Uyr5d3TqW/Ju7EDXM5ytELrSZEUmUZAgLB0XMolZ4fexP5oTWUgHy8hrgtWcfE
+         88o+gLrDy4XEBCsNyaZ69jKPR3HW6rJyc9OsnPn7JTxTqb9noLfy8ROX1nUsRqpXp76f
+         7NPHM6T0ArVAJzW9FfXWEWmkjHwaIF1T/ifmonJdEAvamgZe7UGizq+EE76lzgb640mR
+         6J24nHAhY55j85N9g7OKuOCqoUn4DhNoTBUc11tAvJ4F5/6asWuoUt82u5x7Fvwn/YsI
+         WoQW+5jXW2uIsnDH7znkl9+kGGy0zp6a9wo6o/oTR1EA44p5IsCj2FGBmeKRs06UjJ+j
+         EFeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692710537; x=1693315337;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wGWZmoxclOfYzjyLvlkmT9ZvCsngcDBgs2bkB2Nywss=;
-        b=AqQswqTXtyJenE7iUC0KA84g6FUfrf1NX7M3DSlraMphRfVQCIGp5eD9EO4eFl/4wr
-         rny/MMgzS5JqqgmnXleXkGfMZgAcw2Km2zI8SVv9VenrQcHuGORqNruxvUo0TCcktH20
-         oDLUbHoPgGgElJVk+4L4qsAk84d6POqHO8s1r34DA0nogiCnD+h8xLoi53XVRSXAsFXZ
-         AGZw/zFzligzh5RFsYtVSjuDQTymvGY1tlKdtJKvY7c40mms/P52pMmU8yMc7g9wFYyO
-         sIlQ1VX3t5z+gHxROg6NbvMlOv0CLTjIN9UwngfuwmeRiAusXlT66yNqxLdF4Y+jJV+m
-         IHWw==
-X-Gm-Message-State: AOJu0Yw4XIQD7YiV/q2em+MRmmWSZDXDkem2lUq67a7Ho9smoNvgQmxw
-        kp5GE3nPv05HBZVXC5ZapWH6jvp7/hmIoQ==
-X-Google-Smtp-Source: AGHT+IETp5Dr++LaS88bS0SWHxpcPKsyakg7Le7M3QyrWJ3aj7P0kb/fJ9wcgyjvLYdZbuMMot66Ew==
-X-Received: by 2002:ac2:4d90:0:b0:4f8:5905:8e0a with SMTP id g16-20020ac24d90000000b004f859058e0amr6176696lfe.6.1692710536887;
-        Tue, 22 Aug 2023 06:22:16 -0700 (PDT)
-Received: from localhost.localdomain ([102.39.140.247])
-        by smtp.gmail.com with ESMTPSA id k11-20020a05640212cb00b005233f2635fbsm7575696edx.21.2023.08.22.06.22.13
+        d=1e100.net; s=20221208; t=1692714665; x=1693319465;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ij4iII3kET4AquK7NA+5uE9piCz+Tm+vsG2ScePYKZA=;
+        b=H2XlByEtddTHGGVlQRO/7X7zxA+mZVZLKUFlnZSp+9SoU0+2fKDkC7eCxVW/QspjH2
+         XSJcrCvFsC7GM7oVkM8ixBpme/41BnmuZJPMOBGE3donzJ3U/tCFyYRXxE9bPnuZPMRi
+         EyCBp9zWHUxlVsh6Vw3ingoyYIHtyn75uSlEh1WeSAgz4AvPx2yGcv36AIWrMrZmOkQo
+         NlnkyA29Fg0J1VJW8Pm/xMt6hxjcvjpZ6l8XnPP/uRdsz1H3YBEhobgwejaDNu9fS6Db
+         hqpvA5lwHgz0gy8UckPSurpOCxLH3+n/bFtKYL25QsQ2egrqZO+Xpa4uuKIB5U7YQklT
+         SNSg==
+X-Gm-Message-State: AOJu0Yzt0IovdbL32bMleLGBioVJjJ4F6ksHTShxDUPg7Lc1KIywAE/P
+        3BFqZLzot6YwYOKwlAC0se8=
+X-Google-Smtp-Source: AGHT+IF1Je84nJKuJClnYcJ9eAiQjLLg+oLwcKU4O6UcUV8ucxBFV6300FTQzqTnctRAHEEqEr6YgA==
+X-Received: by 2002:ac8:5a55:0:b0:40f:df11:8bef with SMTP id o21-20020ac85a55000000b0040fdf118befmr11766976qta.52.1692714665214;
+        Tue, 22 Aug 2023 07:31:05 -0700 (PDT)
+Received: from localhost.localdomain (pppoe-209-91-167-254.vianet.ca. [209.91.167.254])
+        by smtp.gmail.com with ESMTPSA id e19-20020ac86713000000b00407ffb2c24dsm3055750qtp.63.2023.08.22.07.31.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Aug 2023 06:22:16 -0700 (PDT)
-From:   Grant B Adams <nemith592@gmail.com>
-Cc:     linux-omap@vger.kernel.org, tony@atomide.com,
-        Grant B Adams <nemith592@gmail.com>,
-        Sebastian Reichel <sre@kernel.org>, Bin Liu <b-liu@ti.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-usb@vger.kernel.org
-Subject: [PATCH 2/2] usb: musb: dsps: Fix vbus vs tps65217-charger irq conflict
-Date:   Tue, 22 Aug 2023 15:22:02 +0200
-Message-Id: <20230822132202.19659-1-nemith592@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        Tue, 22 Aug 2023 07:31:04 -0700 (PDT)
+From:   Trevor Woerner <twoerner@gmail.com>
+To:     robertcnelson@gmail.com, drew@beagleboard.org,
+        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>
+Cc:     linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: [PATCH v3 1/4] ARM: dts: am335x-pocketbeagle: update LED information
+Date:   Tue, 22 Aug 2023 10:30:47 -0400
+Message-ID: <20230822143051.7640-2-twoerner@gmail.com>
+X-Mailer: git-send-email 2.41.0.327.gaa9166bcc0ba
+In-Reply-To: <20230822143051.7640-1-twoerner@gmail.com>
+References: <20230822143051.7640-1-twoerner@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Enabling the tps65217-charger driver/module causes an interrupt conflict
-with the vbus driver resulting in a probe failure.
-The conflict is resolved by changing both driver's threaded interrupt
-request function from IRQF_ONESHOT to IRQF_SHARED.
+Add the "color" and "description" properties.
 
-Signed-off-by: Grant B Adams <nemith592@gmail.com>
+Signed-off-by: Trevor Woerner <twoerner@gmail.com>
 ---
- drivers/usb/musb/musb_dsps.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boot/dts/ti/omap/am335x-pocketbeagle.dts | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/usb/musb/musb_dsps.c b/drivers/usb/musb/musb_dsps.c
-index 9119b1d51370..cbb45de5a76f 100644
---- a/drivers/usb/musb/musb_dsps.c
-+++ b/drivers/usb/musb/musb_dsps.c
-@@ -851,7 +851,7 @@ static int dsps_setup_optional_vbus_irq(struct platform_device *pdev,
+diff --git a/arch/arm/boot/dts/ti/omap/am335x-pocketbeagle.dts b/arch/arm/boot/dts/ti/omap/am335x-pocketbeagle.dts
+index 5dfe4d4bab93..667dded1a167 100644
+--- a/arch/arm/boot/dts/ti/omap/am335x-pocketbeagle.dts
++++ b/arch/arm/boot/dts/ti/omap/am335x-pocketbeagle.dts
+@@ -8,6 +8,7 @@
  
- 	error = devm_request_threaded_irq(glue->dev, glue->vbus_irq,
- 					  NULL, dsps_vbus_threaded_irq,
--					  IRQF_ONESHOT,
-+					  IRQF_SHARED,
- 					  "vbus", glue);
- 	if (error) {
- 		glue->vbus_irq = 0;
+ #include "am33xx.dtsi"
+ #include "am335x-osd335x-common.dtsi"
++#include <dt-bindings/leds/common.h>
+ 
+ / {
+ 	model = "TI AM335x PocketBeagle";
+@@ -25,6 +26,8 @@ leds {
+ 
+ 		led-usr0 {
+ 			label = "beaglebone:green:usr0";
++			color = <LED_COLOR_ID_BLUE>;
++			function = LED_FUNCTION_HEARTBEAT;
+ 			gpios = <&gpio1 21 GPIO_ACTIVE_HIGH>;
+ 			linux,default-trigger = "heartbeat";
+ 			default-state = "off";
+@@ -32,6 +35,8 @@ led-usr0 {
+ 
+ 		led-usr1 {
+ 			label = "beaglebone:green:usr1";
++			color = <LED_COLOR_ID_BLUE>;
++			function = LED_FUNCTION_DISK_ACTIVITY;
+ 			gpios = <&gpio1 22 GPIO_ACTIVE_HIGH>;
+ 			linux,default-trigger = "mmc0";
+ 			default-state = "off";
+@@ -39,6 +44,8 @@ led-usr1 {
+ 
+ 		led-usr2 {
+ 			label = "beaglebone:green:usr2";
++			color = <LED_COLOR_ID_BLUE>;
++			function = LED_FUNCTION_CPU;
+ 			gpios = <&gpio1 23 GPIO_ACTIVE_HIGH>;
+ 			linux,default-trigger = "cpu0";
+ 			default-state = "off";
+@@ -46,6 +53,8 @@ led-usr2 {
+ 
+ 		led-usr3 {
+ 			label = "beaglebone:green:usr3";
++			color = <LED_COLOR_ID_BLUE>;
++			function = LED_FUNCTION_INDICATOR;
+ 			gpios = <&gpio1 24 GPIO_ACTIVE_HIGH>;
+ 			default-state = "off";
+ 		};
 -- 
-2.34.1
+2.41.0.327.gaa9166bcc0ba
 
