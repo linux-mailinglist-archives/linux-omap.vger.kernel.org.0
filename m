@@ -2,74 +2,67 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 624AE7837BE
-	for <lists+linux-omap@lfdr.de>; Tue, 22 Aug 2023 04:07:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8146783B3A
+	for <lists+linux-omap@lfdr.de>; Tue, 22 Aug 2023 09:55:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232225AbjHVCHt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 21 Aug 2023 22:07:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52918 "EHLO
+        id S233568AbjHVHzo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 22 Aug 2023 03:55:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232118AbjHVCHo (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 21 Aug 2023 22:07:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E401CD1;
-        Mon, 21 Aug 2023 19:07:35 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6674C632B3;
-        Tue, 22 Aug 2023 02:07:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3B89C433C8;
-        Tue, 22 Aug 2023 02:07:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692670054;
-        bh=BXif2ZDawun47IOKfLhj4S7BpMJpIaoTJhgi8oGmLek=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=jV6fqwsp148gdiGN8tYn7z8S9oY70wEjuHPgKS2Cw5CBCy1doN13UZBv9hPBJKLBH
-         3cIq3CO3772DJZp766/VTIoKwvFjFWlGntWjVNyItRGgfdWrWAf3yVZXHKnmeDMuFz
-         bl0FMla3d6UCxJLCPu1JpYEHdwRUMkcpwFCUf5Oj5xvabz2NYP6cypU4w8P5/C+sNK
-         Eviz8uU3d3zfqGsAjDYV6dMCm3O4mM6izFfSswPj8S5+9F30v+WfclK5rUPtCi0hKf
-         ETDN1BmgYW7hLflr7ZTR8D0A4j3Hgp6KjeMHT4ggfmAQjXJkCmXJZ3YQSWS/FBnOwN
-         LgycsJPgIwxxQ==
-Date:   Mon, 21 Aug 2023 19:07:32 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Richard Cochran <richardcochran@gmail.com>
-Cc:     MD Danish Anwar <danishanwar@ti.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Roger Quadros <rogerq@kernel.org>,
-        Simon Horman <simon.horman@corigine.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>, <nm@ti.com>, <srk@ti.com>,
-        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH v5 0/5] Introduce IEP driver and packet timestamping
- support
-Message-ID: <20230821190732.62710f21@kernel.org>
-In-Reply-To: <20230817114527.1585631-1-danishanwar@ti.com>
-References: <20230817114527.1585631-1-danishanwar@ti.com>
+        with ESMTP id S231759AbjHVHzn (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 22 Aug 2023 03:55:43 -0400
+Received: from mail.venturelinkbiz.com (mail.venturelinkbiz.com [51.195.119.142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FD50196
+        for <linux-omap@vger.kernel.org>; Tue, 22 Aug 2023 00:55:40 -0700 (PDT)
+Received: by mail.venturelinkbiz.com (Postfix, from userid 1002)
+        id 296AB45379; Tue, 22 Aug 2023 07:55:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=venturelinkbiz.com;
+        s=mail; t=1692690938;
+        bh=Mjfq+hZZ0+rPTC06HjjASvlnsTMgj1yAndWxi/OAu2M=;
+        h=Date:From:To:Subject:From;
+        b=qgjkNi+E8gb96Bak2Fo6xxYqnS3/NIK/C+ZAeapb1msIDGMManwbHVh13lrTbqyY3
+         bYHOQ8Z6dqmJ1c4Sk/OsAqZJPC9NJt06I9tW4HAhx69a5WctLCxw/yiWOVDyxEdVaR
+         An04llZUJ1L5SeTc8AGO/7YlIMZkPd/Ba0patg4/d5PemZGwT/qzVorsR9FTjtaBuM
+         nBl93TH4a43PoknNaikSelKXeO+1beoB7c3Cby2ByW8tPdLKN3cU8LEaYzLPqGbMXU
+         zKBCtvSFSwFGCn1clBepFIfZw7ft9xLxGbln6bN7pDisJooGXhxAtv3E+wIs8E3t0m
+         5jKv/d6/kw/qA==
+Received: by mail.venturelinkbiz.com for <linux-omap@vger.kernel.org>; Tue, 22 Aug 2023 07:55:31 GMT
+Message-ID: <20230822064500-0.1.1x.536k.0.bq34qm7oel@venturelinkbiz.com>
+Date:   Tue, 22 Aug 2023 07:55:31 GMT
+From:   "Michal Rmoutil" <michal.rmoutil@venturelinkbiz.com>
+To:     <linux-omap@vger.kernel.org>
+Subject: =?UTF-8?Q?Syst=C3=A9m_sledov=C3=A1n=C3=AD_a_optimalizace_v=C3=BDroby?=
+X-Mailer: mail.venturelinkbiz.com
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,URIBL_CSS_A,
+        URIBL_DBL_SPAM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, 17 Aug 2023 17:15:22 +0530 MD Danish Anwar wrote:
-> This series introduces Industrial Ethernet Peripheral (IEP) driver to
-> support timestamping of ethernet packets and thus support PTP and PPS
-> for PRU ICSSG ethernet ports.
+Dobr=C3=A9 r=C3=A1no
 
-Richard, let us know if you'd like to TAL or we're good to apply.
+Zn=C3=A1te syst=C3=A9m, kter=C3=BD nejen hl=C3=ADd=C3=A1, ale i optimaliz=
+uje v=C3=BDrobu a p=C5=99in=C3=A1=C5=A1=C3=AD st=C3=A1l=C3=BD p=C5=99=C3=AD=
+jem?
+
+D=C3=ADky nejnov=C4=9Bj=C5=A1=C3=ADm technologi=C3=ADm a anal=C3=BDze dat=
+ na=C5=A1e =C5=99e=C5=A1en=C3=AD identifikuje oblasti optimalizace, zv=C3=
+=BD=C5=A1en=C3=AD efektivity a sn=C3=AD=C5=BEen=C3=AD n=C3=A1klad=C5=AF. =
+Na=C5=A1i klienti zaznamenali n=C3=A1r=C5=AFst p=C5=99=C3=ADjm=C5=AF v pr=
+=C5=AFm=C4=9Bru o 20 % a dnes si to m=C5=AF=C5=BEete vyzkou=C5=A1et na 60=
+ dn=C3=AD zdarma.
+
+Pokud chcete dal=C5=A1=C3=AD podrobnosti, odpov=C4=9Bzte pros=C3=ADm na k=
+ontaktn=C3=AD =C4=8D=C3=ADslo.
+
+
+Pozdravy
+Michal Rmoutil
