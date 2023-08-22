@@ -2,67 +2,131 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D8146783B3A
-	for <lists+linux-omap@lfdr.de>; Tue, 22 Aug 2023 09:55:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB5BA783C7C
+	for <lists+linux-omap@lfdr.de>; Tue, 22 Aug 2023 11:07:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233568AbjHVHzo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 22 Aug 2023 03:55:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57050 "EHLO
+        id S234193AbjHVJHR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 22 Aug 2023 05:07:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231759AbjHVHzn (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 22 Aug 2023 03:55:43 -0400
-Received: from mail.venturelinkbiz.com (mail.venturelinkbiz.com [51.195.119.142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FD50196
-        for <linux-omap@vger.kernel.org>; Tue, 22 Aug 2023 00:55:40 -0700 (PDT)
-Received: by mail.venturelinkbiz.com (Postfix, from userid 1002)
-        id 296AB45379; Tue, 22 Aug 2023 07:55:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=venturelinkbiz.com;
-        s=mail; t=1692690938;
-        bh=Mjfq+hZZ0+rPTC06HjjASvlnsTMgj1yAndWxi/OAu2M=;
-        h=Date:From:To:Subject:From;
-        b=qgjkNi+E8gb96Bak2Fo6xxYqnS3/NIK/C+ZAeapb1msIDGMManwbHVh13lrTbqyY3
-         bYHOQ8Z6dqmJ1c4Sk/OsAqZJPC9NJt06I9tW4HAhx69a5WctLCxw/yiWOVDyxEdVaR
-         An04llZUJ1L5SeTc8AGO/7YlIMZkPd/Ba0patg4/d5PemZGwT/qzVorsR9FTjtaBuM
-         nBl93TH4a43PoknNaikSelKXeO+1beoB7c3Cby2ByW8tPdLKN3cU8LEaYzLPqGbMXU
-         zKBCtvSFSwFGCn1clBepFIfZw7ft9xLxGbln6bN7pDisJooGXhxAtv3E+wIs8E3t0m
-         5jKv/d6/kw/qA==
-Received: by mail.venturelinkbiz.com for <linux-omap@vger.kernel.org>; Tue, 22 Aug 2023 07:55:31 GMT
-Message-ID: <20230822064500-0.1.1x.536k.0.bq34qm7oel@venturelinkbiz.com>
-Date:   Tue, 22 Aug 2023 07:55:31 GMT
-From:   "Michal Rmoutil" <michal.rmoutil@venturelinkbiz.com>
-To:     <linux-omap@vger.kernel.org>
-Subject: =?UTF-8?Q?Syst=C3=A9m_sledov=C3=A1n=C3=AD_a_optimalizace_v=C3=BDroby?=
-X-Mailer: mail.venturelinkbiz.com
-MIME-Version: 1.0
+        with ESMTP id S234192AbjHVJHR (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 22 Aug 2023 05:07:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80AFA189
+        for <linux-omap@vger.kernel.org>; Tue, 22 Aug 2023 02:06:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1692695193;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=zITVam9mib7MXNblWRDDnWwcdZNI0hXQ9sYLmaBnbrA=;
+        b=JyWTJ9Dz0p0ux2OZQZKRzphEH6HByHiZ3Ub+yiCufigxFwfw0je6DrRmXvd8DXaRA2bljb
+        Ku5DCTIyyMM/p1PPC7M5LyLjfy6Q6hWej2talwtGh4gRdvcPMJhRGpOocTEVHmkjwyPWFr
+        zcbSROCJGD9RpEeROX0lWBtYL9aPyHg=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-227-NqhkzlFSMfynAemfj0DBvw-1; Tue, 22 Aug 2023 05:06:32 -0400
+X-MC-Unique: NqhkzlFSMfynAemfj0DBvw-1
+Received: by mail-ed1-f71.google.com with SMTP id 4fb4d7f45d1cf-523464082ffso576380a12.1
+        for <linux-omap@vger.kernel.org>; Tue, 22 Aug 2023 02:06:32 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692695191; x=1693299991;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=zITVam9mib7MXNblWRDDnWwcdZNI0hXQ9sYLmaBnbrA=;
+        b=iktXjePPMvciEitf/c7+6fOvpS5BM8C+3liC+g4q71pCsSxVuC2P1WBtqwsw3IJtjK
+         303FAF4CH9s4fPEeZoV2iHv8lMEklbnuxDn27ir16FfJhjXcSya5AXTSgS4gKRybN9pR
+         /TVWoPnhjVfTPbHbAh4NwVsKrZIqPD+Je/Fvh1d+RhtxIjINL7uXk3mwucBnJg8FF+4v
+         W5aJAfCwstE0p6GJDnoUIVpStYtDFkADKH3OvoRZKJBCeYJLNy0JnMLHw8O+4RnXULNY
+         XFu+lYwIGNsgbcliTjbh7Ww9i5pg6bpyW3X4bhzN+tu5LSXX7q88xhd6cZHys8makbec
+         Kf6A==
+X-Gm-Message-State: AOJu0YyYA7LPUXzfpMX2eShsRGyIbQuEB8STGRxnBnRQuPXjgODqadSu
+        AYeew2DvTXNaejmiQx1DE548VpFeqVLWJL0xVaHOa1Cc2Fkw82yBccuuXt7mZ+MQn/isgR7u+t5
+        YeqC+/RVa4z9oe1TDoljkbQ==
+X-Received: by 2002:a05:6402:1d4c:b0:51e:5dd8:fc59 with SMTP id dz12-20020a0564021d4c00b0051e5dd8fc59mr7217540edb.1.1692695191299;
+        Tue, 22 Aug 2023 02:06:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHfZmPyXgiJ/NkAWWGBQMgHJy5FIu7B+DH5lu1nGvadCAiFsyleJ/rv4GEtyfZ7KoxM594bRw==
+X-Received: by 2002:a05:6402:1d4c:b0:51e:5dd8:fc59 with SMTP id dz12-20020a0564021d4c00b0051e5dd8fc59mr7217526edb.1.1692695191035;
+        Tue, 22 Aug 2023 02:06:31 -0700 (PDT)
+Received: from gerbillo.redhat.com (146-241-241-4.dyn.eolo.it. [146.241.241.4])
+        by smtp.gmail.com with ESMTPSA id f4-20020a05640214c400b00528922bb53bsm675146edx.76.2023.08.22.02.06.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Aug 2023 02:06:30 -0700 (PDT)
+Message-ID: <4e79fe7d5363e69ed116f440db162dcb41b54ecc.camel@redhat.com>
+Subject: Re: [PATCH v5 2/5] dt-bindings: net: Add IEP property in ICSSG DT
+ binding
+From:   Paolo Abeni <pabeni@redhat.com>
+To:     MD Danish Anwar <danishanwar@ti.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Roger Quadros <rogerq@kernel.org>,
+        Simon Horman <simon.horman@corigine.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Richard Cochran <richardcochran@gmail.com>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>
+Cc:     nm@ti.com, srk@ti.com, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, netdev@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Date:   Tue, 22 Aug 2023 11:06:28 +0200
+In-Reply-To: <20230817114527.1585631-3-danishanwar@ti.com>
+References: <20230817114527.1585631-1-danishanwar@ti.com>
+         <20230817114527.1585631-3-danishanwar@ti.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,URIBL_CSS_A,
-        URIBL_DBL_SPAM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ***
+User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
+MIME-Version: 1.0
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Dobr=C3=A9 r=C3=A1no
+On Thu, 2023-08-17 at 17:15 +0530, MD Danish Anwar wrote:
+> Add IEP node in ICSSG driver DT binding document.
+>=20
+> Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+> Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
+> ---
+>  Documentation/devicetree/bindings/net/ti,icssg-prueth.yaml | 7 +++++++
+>  1 file changed, 7 insertions(+)
+>=20
+> diff --git a/Documentation/devicetree/bindings/net/ti,icssg-prueth.yaml b=
+/Documentation/devicetree/bindings/net/ti,icssg-prueth.yaml
+> index 8ec30b3eb760..a736d1424ea4 100644
+> --- a/Documentation/devicetree/bindings/net/ti,icssg-prueth.yaml
+> +++ b/Documentation/devicetree/bindings/net/ti,icssg-prueth.yaml
+> @@ -52,6 +52,12 @@ properties:
+>      description:
+>        phandle to MII_RT module's syscon regmap
+> =20
+> +  ti,iep:
+> +    $ref: /schemas/types.yaml#/definitions/phandle-array
+> +    maxItems: 2
+> +    description:
+> +      phandle to IEP (Industrial Ethernet Peripheral) for ICSSG driver
 
-Zn=C3=A1te syst=C3=A9m, kter=C3=BD nejen hl=C3=ADd=C3=A1, ale i optimaliz=
-uje v=C3=BDrobu a p=C5=99in=C3=A1=C5=A1=C3=AD st=C3=A1l=C3=BD p=C5=99=C3=AD=
-jem?
+It looks like the feedback given by Rob on v2:
 
-D=C3=ADky nejnov=C4=9Bj=C5=A1=C3=ADm technologi=C3=ADm a anal=C3=BDze dat=
- na=C5=A1e =C5=99e=C5=A1en=C3=AD identifikuje oblasti optimalizace, zv=C3=
-=BD=C5=A1en=C3=AD efektivity a sn=C3=AD=C5=BEen=C3=AD n=C3=A1klad=C5=AF. =
-Na=C5=A1i klienti zaznamenali n=C3=A1r=C5=AFst p=C5=99=C3=ADjm=C5=AF v pr=
-=C5=AFm=C4=9Bru o 20 % a dnes si to m=C5=AF=C5=BEete vyzkou=C5=A1et na 60=
- dn=C3=AD zdarma.
+https://lore.kernel.org/all/20230821160120.GA1734560-robh@kernel.org/
 
-Pokud chcete dal=C5=A1=C3=AD podrobnosti, odpov=C4=9Bzte pros=C3=ADm na k=
-ontaktn=C3=AD =C4=8D=C3=ADslo.
+still applies here, I guess you need to address it.
 
+Cheers,
 
-Pozdravy
-Michal Rmoutil
+Paolo
+
+--
+pw-bot: cr
+
