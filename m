@@ -2,96 +2,158 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A65E6783CE0
-	for <lists+linux-omap@lfdr.de>; Tue, 22 Aug 2023 11:27:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28E0C783D6C
+	for <lists+linux-omap@lfdr.de>; Tue, 22 Aug 2023 11:59:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234298AbjHVJ1t (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 22 Aug 2023 05:27:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33892 "EHLO
+        id S234540AbjHVJ7o (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 22 Aug 2023 05:59:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234283AbjHVJ1s (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 22 Aug 2023 05:27:48 -0400
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C0C43CC8;
-        Tue, 22 Aug 2023 02:27:46 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id A9F4980A6;
-        Tue, 22 Aug 2023 09:27:45 +0000 (UTC)
-Date:   Tue, 22 Aug 2023 12:27:44 +0300
-From:   Tony Lindgren <tony@atomide.com>
-To:     Julien Panis <jpanis@baylibre.com>
-Cc:     linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-        vigneshr@ti.com
-Subject: Re: [PATCH] bus: ti-sysc: Use fsleep() instead of usleep_range() in
- sysc_reset()
-Message-ID: <20230822092744.GT11676@atomide.com>
-References: <20230821-fix-ti-sysc-reset-v1-1-5a0a5d8fae55@baylibre.com>
+        with ESMTP id S231879AbjHVJ7n (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 22 Aug 2023 05:59:43 -0400
+Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E0151A1;
+        Tue, 22 Aug 2023 02:59:40 -0700 (PDT)
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 37M9xDx5043179;
+        Tue, 22 Aug 2023 04:59:13 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1692698353;
+        bh=QRzPf/FcKrblgEfblvA0zxjSS4jdhnqJtDgCZxVhdvc=;
+        h=Date:Subject:To:CC:References:From:In-Reply-To;
+        b=wPy3RnLWPKDtwlY+KLT5zzVfDudmgJ6MFHlbSly0sSKlvy6Aeipht47cq/Hn+aZFW
+         px1CyPldEfOnYBtVJkELFW2K+yrZ4l4NdP9yYOxbXjtPGiEfZVgmP7MfOHKP9WH+j4
+         4Qip8UMiIKahiqL5keGrucQSQqkQpnaaurtgW1n8=
+Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 37M9xDSZ112183
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 22 Aug 2023 04:59:13 -0500
+Received: from DFLE103.ent.ti.com (10.64.6.24) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 22
+ Aug 2023 04:59:13 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE103.ent.ti.com
+ (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Tue, 22 Aug 2023 04:59:13 -0500
+Received: from [172.24.227.217] (ileaxei01-snat2.itg.ti.com [10.180.69.6])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 37M9x6j8038709;
+        Tue, 22 Aug 2023 04:59:07 -0500
+Message-ID: <81330882-e8bc-558c-f1bf-9a10108973af@ti.com>
+Date:   Tue, 22 Aug 2023 15:29:06 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230821-fix-ti-sysc-reset-v1-1-5a0a5d8fae55@baylibre.com>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [EXTERNAL] Re: [PATCH v2 2/5] dt-bindings: net: Add iep property
+ in ICSSG dt binding
+Content-Language: en-US
+To:     Rob Herring <robh@kernel.org>, MD Danish Anwar <danishanwar@ti.com>
+CC:     Randy Dunlap <rdunlap@infradead.org>,
+        Roger Quadros <rogerq@kernel.org>,
+        Simon Horman <simon.horman@corigine.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Richard Cochran <richardcochran@gmail.com>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>, <nm@ti.com>, <srk@ti.com>,
+        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>
+References: <20230807110048.2611456-1-danishanwar@ti.com>
+ <20230807110048.2611456-3-danishanwar@ti.com>
+ <20230821160120.GA1734560-robh@kernel.org>
+From:   Md Danish Anwar <a0501179@ti.com>
+Organization: Texas Instruments
+In-Reply-To: <20230821160120.GA1734560-robh@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Julien Panis <jpanis@baylibre.com> [230821 14:24]:
-> The am335x-evm started producing boot errors because of subtle timing
-> changes:
-> 
-> Unhandled fault: external abort on non-linefetch (0x1008) at 0xf03c1010
-> ...
-> sysc_reset from sysc_probe+0xf60/0x1514
-> sysc_probe from platform_probe+0x5c/0xbc
-> ...
-> 
-> The fix consists in using the appropriate sleep function in sysc reset.
-> For flexible sleeping, fsleep is recommended. Here, sysc delay parameter
-> can take any value in [0 - 255] us range. As a result, fsleep() should
-> be used, calling udelay() for a sysc delay lower than 10 us.
-> 
-> Signed-off-by: Julien Panis <jpanis@baylibre.com>
-> Fixes: e709ed70d122 ("bus: ti-sysc: Fix missing reset delay handling")
-> ---
-> Fix boot errors for am335x-evm in sysc_reset(), by using fsleep() instead
-> of usleep_range() function. Thus, udelay() will be called if the configured
-> sysc delay is lower than 10 us (which is usually the case, since the value
-> set in the device tree is currently 2 us).
+Hi Rob,
 
-OK, interesting. Yeah I've only ever seen values of 2 us needed here.
+On 21/08/23 9:31 pm, Rob Herring wrote:
+> On Mon, Aug 07, 2023 at 04:30:45PM +0530, MD Danish Anwar wrote:
+>> Add iep node in ICSSG driver dt binding document.
+> 
+> Why?
+> 
+> Bindings are for h/w, not drivers. You are adding a property, not a 
 
-Regards,
+I will change the above to "Add IEP property in ICSSG hardware DT binding
+document."
 
-Tony
+> node. Would be nice to know what 'iep' is without having to look at the 
+> diff (e.g. when running 'git log').
+> 
 
-> ---
->  drivers/bus/ti-sysc.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
+Sure, I will provide description of IEP in the commit message.
+
+>>
+>> Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
+>> ---
+>>  Documentation/devicetree/bindings/net/ti,icssg-prueth.yaml | 7 +++++++
+>>  1 file changed, 7 insertions(+)
+>>
+>> diff --git a/Documentation/devicetree/bindings/net/ti,icssg-prueth.yaml b/Documentation/devicetree/bindings/net/ti,icssg-prueth.yaml
+>> index 8ec30b3eb760..36870238f92f 100644
+>> --- a/Documentation/devicetree/bindings/net/ti,icssg-prueth.yaml
+>> +++ b/Documentation/devicetree/bindings/net/ti,icssg-prueth.yaml
+>> @@ -52,6 +52,12 @@ properties:
+>>      description:
+>>        phandle to MII_RT module's syscon regmap
+>>  
+>> +  ti,iep:
+>> +    $ref: /schemas/types.yaml#/definitions/phandle-array
 > 
-> diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-> index 4cb23b9e06ea..59b8bdd9203e 100644
-> --- a/drivers/bus/ti-sysc.c
-> +++ b/drivers/bus/ti-sysc.c
-> @@ -2147,8 +2147,7 @@ static int sysc_reset(struct sysc *ddata)
->  	}
->  
->  	if (ddata->cfg.srst_udelay)
-> -		usleep_range(ddata->cfg.srst_udelay,
-> -			     ddata->cfg.srst_udelay * 2);
-> +		fsleep(ddata->cfg.srst_udelay);
->  
->  	if (ddata->post_reset_quirk)
->  		ddata->post_reset_quirk(ddata);
+> phandle-array really means matrix, so you need to fully describe the 
+> items constraints.
 > 
-> ---
-> base-commit: f7757129e3dea336c407551c98f50057c22bb266
-> change-id: 20230821-fix-ti-sysc-reset-5c164051345b
+>> +    maxItems: 2
 > 
-> Best regards,
-> -- 
-> Julien Panis <jpanis@baylibre.com>
+> 2 phandles or 1 phandle and 1 arg? Looks like the former from the 
+
+It's 2 phandles.
+
+> example, so:
 > 
+> maxItems: 2
+> items:
+>   maxItems: 1
+> 
+
+Sure, I will change the item constraints to above.
+
+>> +    description:
+>> +      phandle to IEP (Industrial Ethernet Peripheral) for ICSSG driver
+>> +
+>>    interrupts:
+>>      maxItems: 2
+>>      description:
+>> @@ -155,6 +161,7 @@ examples:
+>>                      "tx1-0", "tx1-1", "tx1-2", "tx1-3",
+>>                      "rx0", "rx1";
+>>          ti,mii-g-rt = <&icssg2_mii_g_rt>;
+>> +        ti,iep = <&icssg2_iep0>, <&icssg2_iep1>;
+>>          interrupt-parent = <&icssg2_intc>;
+>>          interrupts = <24 0 2>, <25 1 3>;
+>>          interrupt-names = "tx_ts0", "tx_ts1";
+>> -- 
+>> 2.34.1
+>>
+
+-- 
+Thanks and Regards,
+Danish.
