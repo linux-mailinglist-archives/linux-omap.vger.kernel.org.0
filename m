@@ -2,89 +2,99 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F47D7840DF
-	for <lists+linux-omap@lfdr.de>; Tue, 22 Aug 2023 14:35:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D9477841DB
+	for <lists+linux-omap@lfdr.de>; Tue, 22 Aug 2023 15:21:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229668AbjHVMf1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 22 Aug 2023 08:35:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43208 "EHLO
+        id S235976AbjHVNVJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 22 Aug 2023 09:21:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229525AbjHVMf1 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 22 Aug 2023 08:35:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5EBB196;
-        Tue, 22 Aug 2023 05:35:25 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 74773655C3;
-        Tue, 22 Aug 2023 12:35:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4165DC433C8;
-        Tue, 22 Aug 2023 12:35:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692707724;
-        bh=QbQ7MAct0KMZDWDEaE6Yv6uUdfFsPx5IUZRMtL4IpOY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ltGRzM3cMRk7uUSi2ppA/ts1mwLk6Z3Sk9wIXROu9fRr+Ie5P2lvs6v1+D5emHPFE
-         Np79bfZ/+58cBZFyJ0EZ6cOE/wijxJfdX2Jz44Y7Yl0Z5uHIqiPcm9U6GX5KGOY8FE
-         CijIb5e9LR6UZ/35+tvqz2mogX0rLxMPuylDOaP0=
-Date:   Tue, 22 Aug 2023 14:35:22 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Grant B Adams <nemith592@gmail.com>
+        with ESMTP id S235977AbjHVNVJ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 22 Aug 2023 09:21:09 -0400
+Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEF8618B;
+        Tue, 22 Aug 2023 06:21:07 -0700 (PDT)
+Received: by mail-ed1-x52d.google.com with SMTP id 4fb4d7f45d1cf-523bf06f7f8so5364566a12.1;
+        Tue, 22 Aug 2023 06:21:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1692710466; x=1693315266;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=7u0D1vKsgp+LzrkxafeIdw43ha9lu5raeDJAVDWxoo8=;
+        b=cZwaRC3X2zDR0oj+ZR+Axpm6IjYOrIyh4H6kiJ206iG3Q5SM6vHIsx+kyuS1vlXwWo
+         AEEo2iAHs1W5XQ6iMxQRdIH+j1ZxXvksmhMcHQBtO0tub71ygab7VO5DCFtDDQoBSCYC
+         fYcgtVIgs8AzwX7WoEhBp6iJljuIbcnrIRWZlGYB4D3/Tsc8llHgUriCRxs4KCBQ4jiw
+         pFOetxlCOiNe68vpUHMaDqb+UHvYQ7hAFcmnKLgvkQ57ZYuJJTsKuXaCgOls1a5sfi0N
+         0ShSVG95vUJOqCWzlsbqv6rejro/Hbk6p0jMxCRKjpFt1OqeRLxRRljwesXS/c3wUNca
+         LzBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692710466; x=1693315266;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7u0D1vKsgp+LzrkxafeIdw43ha9lu5raeDJAVDWxoo8=;
+        b=SGnWlesolpmzG/WrDSgbTAGue4r77WbLcRhA41fzinoGtz47ZjJbfu0M8ThPH89w9C
+         ZMCkiJLQv5KAZGvskvYjNt0JCXqIhPLFiE9fzC/47IQ93vGH4cqD7obfijLXhi6OjX+Z
+         +ebeyo+L1OZlRYPnOccIC5Jtb5fRFFNsOpqXw93mfddZaI3kzUBF8GOgne+0EH9XaSoN
+         vnE5dkIEQjrZeOSCUPZd1Pvl7To1gpsNs/XuvWVIYfBiXpIzaQTdr/5txmo0HHd/xcqm
+         jLqDnJdbi2hogNo/WTXhYbFMmt3sL2H37SaRAi1a/704GpUhJZjlq0rCRQ2z7PLjBjUU
+         zj+w==
+X-Gm-Message-State: AOJu0Yzj1xhquQhSyzFjlbq660rSC72JEXqyxfBnwCwtefbOX8b5mr52
+        DKDkapN3LyxHMJ5n9sfajBX1uiVmOe/SXg==
+X-Google-Smtp-Source: AGHT+IFUVTI6k19eR4xuknD+vKQzdm0gfqs/b2MGnOosJG8jTdAOtaVMgsMwmYfDYT+IAOu1YT3WmA==
+X-Received: by 2002:a05:6402:648:b0:52a:943:9ab5 with SMTP id u8-20020a056402064800b0052a09439ab5mr4952530edx.31.1692710465748;
+        Tue, 22 Aug 2023 06:21:05 -0700 (PDT)
+Received: from localhost.localdomain ([102.39.140.247])
+        by smtp.gmail.com with ESMTPSA id c4-20020aa7df04000000b00523b1335618sm7582034edy.97.2023.08.22.06.21.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Aug 2023 06:21:05 -0700 (PDT)
+From:   Grant B Adams <nemith592@gmail.com>
 Cc:     linux-omap@vger.kernel.org, tony@atomide.com,
-        Bin Liu <b-liu@ti.com>, linux-usb@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] usb: musb: dsps: Fix vbus vs tps65217-charger irq
- conflict
-Message-ID: <2023082210-vaguely-tiring-7e2b@gregkh>
-References: <20230811114856.35486-1-nemith592@gmail.com>
+        Grant B Adams <nemith592@gmail.com>,
+        Sebastian Reichel <sre@kernel.org>, Bin Liu <b-liu@ti.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-usb@vger.kernel.org
+Subject: [PATCH 1/2] power: supply: Fix tps65217-charger vs vbus irq conflict
+Date:   Tue, 22 Aug 2023 15:19:53 +0200
+Message-Id: <20230822131953.19582-1-nemith592@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230811114856.35486-1-nemith592@gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, Aug 11, 2023 at 01:48:56PM +0200, Grant B Adams wrote:
-> Enabling the tps65217-charger driver/module causes an interrupt conflict
-> with the vbus driver resulting in a probe failure.
-> The conflict is resolved by changing both driver's threaded interrupt
-> request function from IRQF_ONESHOT to IRQF_SHARED.
-> 
-> Signed-off-by: Grant B Adams <nemith592@gmail.com>
-> ---
->  drivers/usb/musb/musb_dsps.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/usb/musb/musb_dsps.c b/drivers/usb/musb/musb_dsps.c
-> index 9119b1d51370..cbb45de5a76f 100644
-> --- a/drivers/usb/musb/musb_dsps.c
-> +++ b/drivers/usb/musb/musb_dsps.c
-> @@ -851,7 +851,7 @@ static int dsps_setup_optional_vbus_irq(struct platform_device *pdev,
->  
->  	error = devm_request_threaded_irq(glue->dev, glue->vbus_irq,
->  					  NULL, dsps_vbus_threaded_irq,
-> -					  IRQF_ONESHOT,
-> +					  IRQF_SHARED,
->  					  "vbus", glue);
->  	if (error) {
->  		glue->vbus_irq = 0;
-> -- 
-> 2.34.1
-> 
+Enabling the tps65217-charger driver/module causes an interrupt conflict
+with the vbus driver resulting in a probe failure.
+The conflict is resolved by changing both driver's threaded interrupt
+request function from IRQF_ONESHOT to IRQF_SHARED.
 
-Where is patch 1/2 of this series?
+Signed-off-by: Grant B Adams <nemith592@gmail.com>
+---
+ drivers/power/supply/tps65217_charger.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Please resend the whole series.
+diff --git a/drivers/power/supply/tps65217_charger.c b/drivers/power/supply/tps65217_charger.c
+index a4bc9f2a10bc..6f68becdbfd0 100644
+--- a/drivers/power/supply/tps65217_charger.c
++++ b/drivers/power/supply/tps65217_charger.c
+@@ -238,7 +238,7 @@ static int tps65217_charger_probe(struct platform_device *pdev)
+ 	for (i = 0; i < NUM_CHARGER_IRQS; i++) {
+ 		ret = devm_request_threaded_irq(&pdev->dev, irq[i], NULL,
+ 						tps65217_charger_irq,
+-						IRQF_ONESHOT, "tps65217-charger",
++						IRQF_SHARED, "tps65217-charger",
+ 						charger);
+ 		if (ret) {
+ 			dev_err(charger->dev,
+-- 
+2.34.1
 
-thanks,
-
-greg k-h
