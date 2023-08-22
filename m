@@ -2,54 +2,62 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C6A0B783477
-	for <lists+linux-omap@lfdr.de>; Mon, 21 Aug 2023 23:05:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 624AE7837BE
+	for <lists+linux-omap@lfdr.de>; Tue, 22 Aug 2023 04:07:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230372AbjHUU5v (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 21 Aug 2023 16:57:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46422 "EHLO
+        id S232225AbjHVCHt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 21 Aug 2023 22:07:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229642AbjHUU5u (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 21 Aug 2023 16:57:50 -0400
+        with ESMTP id S232118AbjHVCHo (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 21 Aug 2023 22:07:44 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59848C7;
-        Mon, 21 Aug 2023 13:57:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E401CD1;
+        Mon, 21 Aug 2023 19:07:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D6B4862ADB;
-        Mon, 21 Aug 2023 20:57:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20A3BC433C7;
-        Mon, 21 Aug 2023 20:57:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6674C632B3;
+        Tue, 22 Aug 2023 02:07:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3B89C433C8;
+        Tue, 22 Aug 2023 02:07:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692651468;
-        bh=PF6X5SwvaOhtmmfjP6qY7/WWdtOLsngVMo7QWig8ffs=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=YO2Ds2MHgrs75HGv/pODkl51YVRrILHA4ymHlDRFOOdLd+Be8/GNVP5DYiMbPL+Nq
-         3xm/ly78G/zH5Iyds6S+aZEYD1LSWA9AISpihqbx9kDEQ4JocdloXiClXFhavaNZBk
-         VaYoHuRtUJemCVWXE77ludOg/4Baw77Xd+96BK3Qt2oD5Yl8a55d6tgUVEHhBUo8sT
-         EjZuM79Sounco7X6YkTqUmxUVZaFQ/TwJmIa5YpE2E6ndtgGNpXUYUeBC1RZlE2ec/
-         hnrajHnkFYmFK0AhKrGmn9drqpYm/OgS7RIlyA7Q3eu9aIjZQ47AB2LUr+A/s0hesQ
-         TgZKTO6yy5Pjw==
-Received: (nullmailer pid 2280185 invoked by uid 1000);
-        Mon, 21 Aug 2023 20:57:45 -0000
-Date:   Mon, 21 Aug 2023 15:57:45 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Andreas Kemnade <andreas@kemnade.info>
-Cc:     mturquette@baylibre.com, sboyd@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        bcousson@baylibre.com, tony@atomide.com, linux-clk@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org
-Subject: Re: [PATCH 1/3] dt-bindings: clock: add TWL6032 32K clocks
-Message-ID: <20230821205745.GA2270173-robh@kernel.org>
-References: <20230819134147.456060-1-andreas@kemnade.info>
- <20230819134147.456060-2-andreas@kemnade.info>
+        s=k20201202; t=1692670054;
+        bh=BXif2ZDawun47IOKfLhj4S7BpMJpIaoTJhgi8oGmLek=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=jV6fqwsp148gdiGN8tYn7z8S9oY70wEjuHPgKS2Cw5CBCy1doN13UZBv9hPBJKLBH
+         3cIq3CO3772DJZp766/VTIoKwvFjFWlGntWjVNyItRGgfdWrWAf3yVZXHKnmeDMuFz
+         bl0FMla3d6UCxJLCPu1JpYEHdwRUMkcpwFCUf5Oj5xvabz2NYP6cypU4w8P5/C+sNK
+         Eviz8uU3d3zfqGsAjDYV6dMCm3O4mM6izFfSswPj8S5+9F30v+WfclK5rUPtCi0hKf
+         ETDN1BmgYW7hLflr7ZTR8D0A4j3Hgp6KjeMHT4ggfmAQjXJkCmXJZ3YQSWS/FBnOwN
+         LgycsJPgIwxxQ==
+Date:   Mon, 21 Aug 2023 19:07:32 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Richard Cochran <richardcochran@gmail.com>
+Cc:     MD Danish Anwar <danishanwar@ti.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Roger Quadros <rogerq@kernel.org>,
+        Simon Horman <simon.horman@corigine.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>, <nm@ti.com>, <srk@ti.com>,
+        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH v5 0/5] Introduce IEP driver and packet timestamping
+ support
+Message-ID: <20230821190732.62710f21@kernel.org>
+In-Reply-To: <20230817114527.1585631-1-danishanwar@ti.com>
+References: <20230817114527.1585631-1-danishanwar@ti.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230819134147.456060-2-andreas@kemnade.info>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -59,69 +67,9 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sat, Aug 19, 2023 at 03:41:45PM +0200, Andreas Kemnade wrote:
-> To be able to be referenced from a future yaml-version of
-> mfd/twl-family.txt depending on toplevel compatible have a separate file
-> for the 6032
+On Thu, 17 Aug 2023 17:15:22 +0530 MD Danish Anwar wrote:
+> This series introduces Industrial Ethernet Peripheral (IEP) driver to
+> support timestamping of ethernet packets and thus support PTP and PPS
+> for PRU ICSSG ethernet ports.
 
-Really, the parent needs to be done first...
-
-> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-> ---
->  .../bindings/clock/ti,twl6032-clk.yaml        | 38 +++++++++++++++++++
->  1 file changed, 38 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/clock/ti,twl6032-clk.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/clock/ti,twl6032-clk.yaml b/Documentation/devicetree/bindings/clock/ti,twl6032-clk.yaml
-> new file mode 100644
-> index 0000000000000..aebd9f8d761a2
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/clock/ti,twl6032-clk.yaml
-> @@ -0,0 +1,38 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/clock/ti,twl6032-clk.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Clocks of the TWL6032 PMIC
-> +
-> +maintainers:
-> +  - Andreas Kemnade <andreas@kemnade.info>
-> +
-> +description:
-> +  The TWL6032 has some 32Khz clock outputs which can be controlled.
-
-outputs? Seems like only 1 with no clock cells to specify which one.
-
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - ti,twl6032-clk32kaudio
-> +      - ti,twl6032-clk32kg
-
-Or is it 1 output per compatible? I hope not.
-
-> +
-> +  '#clock-cells':
-> +    const: 0
-> +
-> +required:
-> +  - compatible
-> +  - '#clock-cells'
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    twl {
-> +        clk32kaudio {
-> +            compatible = "ti,twl6032-clk32kaudio";
-> +            #clock-cells = <0>;
-> +        };
-
-You don't need a child node to be a clock provider. Just add 
-#clock-cells to the parent node.
-
-Rob
+Richard, let us know if you'd like to TAL or we're good to apply.
