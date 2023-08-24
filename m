@@ -2,73 +2,72 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 094FC786813
-	for <lists+linux-omap@lfdr.de>; Thu, 24 Aug 2023 09:05:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 704C878681F
+	for <lists+linux-omap@lfdr.de>; Thu, 24 Aug 2023 09:10:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240290AbjHXHFE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 24 Aug 2023 03:05:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43142 "EHLO
+        id S240249AbjHXHKC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 24 Aug 2023 03:10:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232625AbjHXHEe (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 24 Aug 2023 03:04:34 -0400
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46FE7E4B
-        for <linux-omap@vger.kernel.org>; Thu, 24 Aug 2023 00:04:31 -0700 (PDT)
-Received: by mail-ej1-x629.google.com with SMTP id a640c23a62f3a-99d937b83efso830530266b.3
-        for <linux-omap@vger.kernel.org>; Thu, 24 Aug 2023 00:04:31 -0700 (PDT)
+        with ESMTP id S240298AbjHXHJ3 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 24 Aug 2023 03:09:29 -0400
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DE051AD
+        for <linux-omap@vger.kernel.org>; Thu, 24 Aug 2023 00:09:26 -0700 (PDT)
+Received: by mail-ed1-x534.google.com with SMTP id 4fb4d7f45d1cf-5280ef23593so7875269a12.3
+        for <linux-omap@vger.kernel.org>; Thu, 24 Aug 2023 00:09:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1692860670; x=1693465470;
+        d=linaro.org; s=google; t=1692860964; x=1693465764;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=epDel6TpPlgTi6sKB5gJ0l72hGnrt57/HnyL5WYVXDQ=;
-        b=KunHaC32uuSn1ziqE8KkBJSfNk48n7Be1u2t8yEB5C4r7BpE9/tCow/xRQFLAg23Qj
-         3b7kuORbbrgXKbEp3/NxQgls1lhJoLTMJJGw2d+A6jWaSDmtXAZjeAoC2IrAUDwIdaP7
-         bT9MuOHBlHcWKQAW9sxKJMK7Hj1xw0+adGhJQH19cG/ubssUL2yPV0Kz1MLUOMvH0qvP
-         jjQA0UmK8TnGH4whqUywmLDPI5SvJC2J0nvZmS++A0GcxmP9DM5/WYH7/pDAuLkEUs3X
-         Ys9/1jvAiN1e5NN+EtU+tiDraomqHeBI0nUnAjJ5Q78PPDDgiJo7thwmKxiZuwXmfkeS
-         zO/w==
+        bh=2jPyWvXn53+Ri3DMXwy23u6DWod2sy7gyH7yQg33cwQ=;
+        b=z722U1KJ+xYzP/H4uwgNt+mpwlr2QKVRGOIvXwWWhRPxKCfPUxq9eh2cpXuC+Y/9JJ
+         jELUwcFvGfOs8kPi3oMnsYJ3rYzKxnLpRlhK/d2rC3FEPXV/2o41xAsB65wStyO+eKqf
+         OW9nYu0EWsCsH5JFcyltZbYP9pdUYViBq3TP6DNRyDNu+U93nwnxmbswAFf4ZyUMJFIn
+         ZBenrEANRQRH4cXkNOy869Kq4EXC2E48gtGgj53PgKXNh8qk3K9njLUGlPP/bFmJfzb+
+         hQTynSHUyh+H6bQ29fRvgvIdMba5cAEOSl7EXFJBdJs8ysrTDoegQF9ZoBfD7v/c5ja3
+         acYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692860670; x=1693465470;
+        d=1e100.net; s=20221208; t=1692860964; x=1693465764;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=epDel6TpPlgTi6sKB5gJ0l72hGnrt57/HnyL5WYVXDQ=;
-        b=QSaWQ1PNNX7BiYgx5VjhEG5S55M8/mpEf+Js/yBxd9dflw44OWYiCbFvDZKqwJMJM0
-         /s2K/sO/05Ifra85mICkJtIzgHHeOEGWUB2sshfe/gWloYYIaLFf68QoCWp9vsAOfa4H
-         4zVREm+Lve0Ui0ucQXDKWoDgAeE7y6vgT6G8jE5chfQRc6miBewUN6O89w9xkbgxahDv
-         LooAMzM0y7uimb4ucWsDUQ51m1bZXy7siYmp2UDMYCLg49BjRkcspzSSKNCzpdfo6Z/Q
-         Lhpj2xo+S24WM1if2b/DgtPMFWivrd4P+b/3LhmVSfsQ473rwoTLLn7p+2Zp4JA22GgM
-         xKpg==
-X-Gm-Message-State: AOJu0Yyyxj+Cx7lFLn9r1Ji+NxmYvjBUJkwG1aZUoGbMm/Rme/w5ctfY
-        i/BhtlAPQ0DVZjTKu/8jNLfp/A==
-X-Google-Smtp-Source: AGHT+IE6R8i7XgIiAOlH2YmrMpDPdKnhhvHKTIFGgOMKQWjbC1Id3mCTDOtL8JrM7L+8mawHUqjSCg==
-X-Received: by 2002:a17:906:310d:b0:99b:ed53:5c12 with SMTP id 13-20020a170906310d00b0099bed535c12mr10628973ejx.17.1692860669780;
-        Thu, 24 Aug 2023 00:04:29 -0700 (PDT)
+        bh=2jPyWvXn53+Ri3DMXwy23u6DWod2sy7gyH7yQg33cwQ=;
+        b=B8J2HkxhehWP1u7t/uBIN6WZNdkxXgn4DUXv+RxX/8ZgOTb+eY5+sSV0YJGFRoCN0F
+         YSO05sa1BqLZKU/5pjQrdRLL2nGEXaRgnV5xDF/y2YRIxp+DOKtpCgOo8PipSDf8NIXM
+         pXa58l3hk8sPsQCBTB5H5wIVWZ2BKBGe9ZuUflNvBZhy6SKmNF+PrWaKX2Wrb3yeYuOG
+         yK14HfYyjZGCpjzQf/E8UzuRf0kn1yAEYL0LmlCqmm/lnNuHu0p5194J9E7oCqgWZggo
+         ywRnAqMO0a8gxd02DnWkllqTMBnPko8lW3D82zv1HsRz6a4HrxhQjsBpLd0BJOsZRasC
+         jgdw==
+X-Gm-Message-State: AOJu0YzrEOP+H6TiHVHvdKJ+PmzIqMRhY+ym+6l22J/k/sGtTsErrWvn
+        V94l+98I9KSM4mBz51jq8XTPdg==
+X-Google-Smtp-Source: AGHT+IErz7N1ky2M5rOVizPYGZ7g0DYRQMGtp5g0kTurjLC9ZcaXYSTRIs4+x32FgOE8Xn3OZpwZyg==
+X-Received: by 2002:a17:907:7715:b0:9a1:f21e:cdfe with SMTP id kw21-20020a170907771500b009a1f21ecdfemr2417857ejc.58.1692860964425;
+        Thu, 24 Aug 2023 00:09:24 -0700 (PDT)
 Received: from [192.168.0.22] ([77.252.47.198])
-        by smtp.gmail.com with ESMTPSA id lz16-20020a170906fb1000b0099297782aa9sm10416058ejb.49.2023.08.24.00.04.28
+        by smtp.gmail.com with ESMTPSA id v8-20020a1709060b4800b0099bc8db97bcsm10529998ejg.131.2023.08.24.00.09.23
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 24 Aug 2023 00:04:29 -0700 (PDT)
-Message-ID: <9edcfc47-ed89-8074-6bde-d747ae73de25@linaro.org>
-Date:   Thu, 24 Aug 2023 09:04:28 +0200
+        Thu, 24 Aug 2023 00:09:23 -0700 (PDT)
+Message-ID: <429b8559-c539-d60e-fb68-bfc3f8a58fbf@linaro.org>
+Date:   Thu, 24 Aug 2023 09:09:22 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.14.0
-Subject: Re: [PATCH 2/3] clk: twl: add clock driver for TWL6032
+Subject: Re: [PATCH 1/3] dt-bindings: clock: add TWL6032 32K clocks
 Content-Language: en-US
 To:     Andreas Kemnade <andreas@kemnade.info>,
-        Stephen Boyd <sboyd@kernel.org>
-Cc:     bcousson@baylibre.com, conor+dt@kernel.org,
-        devicetree@vger.kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, mturquette@baylibre.com,
-        robh+dt@kernel.org, tony@atomide.com
+        Rob Herring <robh@kernel.org>
+Cc:     mturquette@baylibre.com, sboyd@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+        bcousson@baylibre.com, tony@atomide.com, linux-clk@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org
 References: <20230819134147.456060-1-andreas@kemnade.info>
- <20230819134147.456060-3-andreas@kemnade.info>
- <a65a7d976be4212ef71fe32c4ed2dacb.sboyd@kernel.org>
- <20230823165159.108875d0@aktux>
+ <20230819134147.456060-2-andreas@kemnade.info>
+ <20230821205745.GA2270173-robh@kernel.org> <20230823173807.0b80a70a@aktux>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230823165159.108875d0@aktux>
+In-Reply-To: <20230823173807.0b80a70a@aktux>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -81,45 +80,119 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 23/08/2023 16:51, Andreas Kemnade wrote:
-> On Tue, 22 Aug 2023 15:34:59 -0700
-> Stephen Boyd <sboyd@kernel.org> wrote:
+On 23/08/2023 17:38, Andreas Kemnade wrote:
+> On Mon, 21 Aug 2023 15:57:45 -0500
+> Rob Herring <robh@kernel.org> wrote:
 > 
->> Quoting Andreas Kemnade (2023-08-19 06:41:46)
->>> diff --git a/drivers/clk/clk-twl.c b/drivers/clk/clk-twl.c
->>> new file mode 100644
->>> index 0000000000000..deb5742393bac
->>> --- /dev/null
->>> +++ b/drivers/clk/clk-twl.c
-> [...]
->>> +
->>> +static struct platform_driver twl_clks_driver = {
->>> +       .driver = {
->>> +               .name = "twl-clk",
->>> +               .of_match_table = twl_clks_of_match,
->>> +       },
->>> +       .probe = twl_clks_probe,
->>> +       .remove_new = twl_clks_remove,
->>> +};
->>> +
->>> +module_platform_driver(twl_clks_driver);
->>> +
->>> +MODULE_DESCRIPTION("Clock driver for TWL Series Devices");
->>> +MODULE_ALIAS("platform:twl-clk");  
+>> On Sat, Aug 19, 2023 at 03:41:45PM +0200, Andreas Kemnade wrote:
+>>> To be able to be referenced from a future yaml-version of
+>>> mfd/twl-family.txt depending on toplevel compatible have a separate
+>>> file for the 6032  
 >>
->> This alias is unnecessary?
+>> Really, the parent needs to be done first...
 >>
-> The question is whether this driver should have a separate dt
-> node (and if a separate node, then one per clock as the clk-palmas
-> driver) or not. See Rob's review of the binding document.
-> So we have basically #clock-cells = <1>; in the twl parent
-> and a call to mfd_add_device() there in the former case and I guess
-> that alias is needed then.
-> 
+> well, for some other subdevices, a yaml is already in the tree
+> and Krzysztof recently added a R-By to another one.
 
-You should not need the alias in any of these cases. platform alias for
-platform driver means you have incomplete tables and use alias instead
-of tables. Preference is to use tables.
+Yep, but I am not checking every possible parent-child relationship. It
+would not be even possible...
+
+> 
+> But if the clocks should not have a node, then it is obvious.
+> What would be the route to conversion here: Is a conversion
+> of mfd/twl-family.txt without specifying subnodes ok for the first step,
+> maybe with additionalProperties: yes?
+
+Yes.
+
+> 
+> 
+>>> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+>>> ---
+>>>  .../bindings/clock/ti,twl6032-clk.yaml        | 38
+>>> +++++++++++++++++++ 1 file changed, 38 insertions(+)
+>>>  create mode 100644
+>>> Documentation/devicetree/bindings/clock/ti,twl6032-clk.yaml
+>>>
+>>> diff --git
+>>> a/Documentation/devicetree/bindings/clock/ti,twl6032-clk.yaml
+>>> b/Documentation/devicetree/bindings/clock/ti,twl6032-clk.yaml new
+>>> file mode 100644 index 0000000000000..aebd9f8d761a2 --- /dev/null
+>>> +++ b/Documentation/devicetree/bindings/clock/ti,twl6032-clk.yaml
+>>> @@ -0,0 +1,38 @@
+>>> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+>>> +%YAML 1.2
+>>> +---
+>>> +$id: http://devicetree.org/schemas/clock/ti,twl6032-clk.yaml#
+>>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>>> +
+>>> +title: Clocks of the TWL6032 PMIC
+>>> +
+>>> +maintainers:
+>>> +  - Andreas Kemnade <andreas@kemnade.info>
+>>> +
+>>> +description:
+>>> +  The TWL6032 has some 32Khz clock outputs which can be
+>>> controlled.  
+>>
+>> outputs? Seems like only 1 with no clock cells to specify which one.
+>>
+>>> +
+>>> +properties:
+>>> +  compatible:
+>>> +    enum:
+>>> +      - ti,twl6032-clk32kaudio
+>>> +      - ti,twl6032-clk32kg  
+>>
+>> Or is it 1 output per compatible? I hope not.
+>>
+> yes, it is. It was inspired by the clk-palmas driver:
+
+Creating nodes for single clocks is rather antipattern. Also, many early
+designs of drivers and bindings assumed mapping 1-to-1 between driver
+and DT nodes. This is also considered an antipattern now.
+
+> $ grep palmas.*32 arch/arm/boot/dts/ti/omap/omap5-*
+> arch/arm/boot/dts/ti/omap/omap5-board-common.dtsi:
+> clk32kgaudio: palmas_clk32k@1 {
+> arch/arm/boot/dts/ti/omap/omap5-board-common.dtsi:
+> 	compatible = "ti,palmas-clk32kgaudio";
+> 
+> Well, we have the CLK_IGNORE_UNUSED, so if we use #clock-cells = 1,
+> an unused clock will not be touched by the kernel, right?
+
+I don't understand what OS flag has anything to do with clock-cells...
+
+> 
+>>> +
+>>> +  '#clock-cells':
+>>> +    const: 0
+>>> +
+>>> +required:
+>>> +  - compatible
+>>> +  - '#clock-cells'
+>>> +
+>>> +additionalProperties: false
+>>> +
+>>> +examples:
+>>> +  - |
+>>> +    twl {
+>>> +        clk32kaudio {
+>>> +            compatible = "ti,twl6032-clk32kaudio";
+>>> +            #clock-cells = <0>;
+>>> +        };  
+>>
+>> You don't need a child node to be a clock provider. Just add 
+>> #clock-cells to the parent node.
+>>
+> hmm, we have child nodes there for every subdevice in that family,
+> even if I doubt it is totally technically required.
+> So why should the clk device be an exception? 
+
+There is no rule of having nodes for subdevices, thus there cannot be
+such exception. The rule is nodes are created when needed, not to match
+some consistency of Linux drivers.
+
 
 Best regards,
 Krzysztof
