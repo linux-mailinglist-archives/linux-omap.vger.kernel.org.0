@@ -2,77 +2,81 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 704C878681F
-	for <lists+linux-omap@lfdr.de>; Thu, 24 Aug 2023 09:10:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92612786A19
+	for <lists+linux-omap@lfdr.de>; Thu, 24 Aug 2023 10:32:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240249AbjHXHKC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 24 Aug 2023 03:10:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50702 "EHLO
+        id S229901AbjHXIbm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 24 Aug 2023 04:31:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240298AbjHXHJ3 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 24 Aug 2023 03:09:29 -0400
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DE051AD
-        for <linux-omap@vger.kernel.org>; Thu, 24 Aug 2023 00:09:26 -0700 (PDT)
-Received: by mail-ed1-x534.google.com with SMTP id 4fb4d7f45d1cf-5280ef23593so7875269a12.3
-        for <linux-omap@vger.kernel.org>; Thu, 24 Aug 2023 00:09:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1692860964; x=1693465764;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=2jPyWvXn53+Ri3DMXwy23u6DWod2sy7gyH7yQg33cwQ=;
-        b=z722U1KJ+xYzP/H4uwgNt+mpwlr2QKVRGOIvXwWWhRPxKCfPUxq9eh2cpXuC+Y/9JJ
-         jELUwcFvGfOs8kPi3oMnsYJ3rYzKxnLpRlhK/d2rC3FEPXV/2o41xAsB65wStyO+eKqf
-         OW9nYu0EWsCsH5JFcyltZbYP9pdUYViBq3TP6DNRyDNu+U93nwnxmbswAFf4ZyUMJFIn
-         ZBenrEANRQRH4cXkNOy869Kq4EXC2E48gtGgj53PgKXNh8qk3K9njLUGlPP/bFmJfzb+
-         hQTynSHUyh+H6bQ29fRvgvIdMba5cAEOSl7EXFJBdJs8ysrTDoegQF9ZoBfD7v/c5ja3
-         acYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692860964; x=1693465764;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2jPyWvXn53+Ri3DMXwy23u6DWod2sy7gyH7yQg33cwQ=;
-        b=B8J2HkxhehWP1u7t/uBIN6WZNdkxXgn4DUXv+RxX/8ZgOTb+eY5+sSV0YJGFRoCN0F
-         YSO05sa1BqLZKU/5pjQrdRLL2nGEXaRgnV5xDF/y2YRIxp+DOKtpCgOo8PipSDf8NIXM
-         pXa58l3hk8sPsQCBTB5H5wIVWZ2BKBGe9ZuUflNvBZhy6SKmNF+PrWaKX2Wrb3yeYuOG
-         yK14HfYyjZGCpjzQf/E8UzuRf0kn1yAEYL0LmlCqmm/lnNuHu0p5194J9E7oCqgWZggo
-         ywRnAqMO0a8gxd02DnWkllqTMBnPko8lW3D82zv1HsRz6a4HrxhQjsBpLd0BJOsZRasC
-         jgdw==
-X-Gm-Message-State: AOJu0YzrEOP+H6TiHVHvdKJ+PmzIqMRhY+ym+6l22J/k/sGtTsErrWvn
-        V94l+98I9KSM4mBz51jq8XTPdg==
-X-Google-Smtp-Source: AGHT+IErz7N1ky2M5rOVizPYGZ7g0DYRQMGtp5g0kTurjLC9ZcaXYSTRIs4+x32FgOE8Xn3OZpwZyg==
-X-Received: by 2002:a17:907:7715:b0:9a1:f21e:cdfe with SMTP id kw21-20020a170907771500b009a1f21ecdfemr2417857ejc.58.1692860964425;
-        Thu, 24 Aug 2023 00:09:24 -0700 (PDT)
-Received: from [192.168.0.22] ([77.252.47.198])
-        by smtp.gmail.com with ESMTPSA id v8-20020a1709060b4800b0099bc8db97bcsm10529998ejg.131.2023.08.24.00.09.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 24 Aug 2023 00:09:23 -0700 (PDT)
-Message-ID: <429b8559-c539-d60e-fb68-bfc3f8a58fbf@linaro.org>
-Date:   Thu, 24 Aug 2023 09:09:22 +0200
+        with ESMTP id S240541AbjHXIb2 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 24 Aug 2023 04:31:28 -0400
+Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A88B9172D;
+        Thu, 24 Aug 2023 01:31:24 -0700 (PDT)
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 37O8V4Jh075375;
+        Thu, 24 Aug 2023 03:31:04 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1692865864;
+        bh=vOkj4zAoo62uwYWmtr0A2SD6qiUs4QCmudTT6wYuduo=;
+        h=Date:Subject:To:CC:References:From:In-Reply-To;
+        b=Ea/mkAOXqoJ25E1s+ejDOtb0Ot1GwNS1wqH4hslzh8ebJ1metrQr/KqV7N4gEnfN6
+         RSELm3jYE0L15pYTvQWzFWi7FBRN6YTsBvpDOzfa73No1gGhzijLG44KdKep4/tp7X
+         SkTmlq+PO2Op/p7XPUVVERm9SlI1JuPai1S4DlzE=
+Received: from DFLE100.ent.ti.com (dfle100.ent.ti.com [10.64.6.21])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 37O8V4ba037931
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 24 Aug 2023 03:31:04 -0500
+Received: from DFLE112.ent.ti.com (10.64.6.33) by DFLE100.ent.ti.com
+ (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 24
+ Aug 2023 03:31:04 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE112.ent.ti.com
+ (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Thu, 24 Aug 2023 03:31:04 -0500
+Received: from [172.24.227.35] (ileaxei01-snat2.itg.ti.com [10.180.69.6])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 37O8Uv93055459;
+        Thu, 24 Aug 2023 03:30:58 -0500
+Message-ID: <6d1b6571-20d4-a4a9-5c46-adb2c9938abb@ti.com>
+Date:   Thu, 24 Aug 2023 14:00:56 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH 1/3] dt-bindings: clock: add TWL6032 32K clocks
+ Thunderbird/102.13.0
+Subject: Re: [EXTERNAL] Re: [PATCH v6 1/5] dt-bindings: net: Add ICSS IEP
 Content-Language: en-US
-To:     Andreas Kemnade <andreas@kemnade.info>,
-        Rob Herring <robh@kernel.org>
-Cc:     mturquette@baylibre.com, sboyd@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        bcousson@baylibre.com, tony@atomide.com, linux-clk@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org
-References: <20230819134147.456060-1-andreas@kemnade.info>
- <20230819134147.456060-2-andreas@kemnade.info>
- <20230821205745.GA2270173-robh@kernel.org> <20230823173807.0b80a70a@aktux>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230823173807.0b80a70a@aktux>
-Content-Type: text/plain; charset=UTF-8
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        MD Danish Anwar <danishanwar@ti.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Roger Quadros <rogerq@kernel.org>,
+        Simon Horman <simon.horman@corigine.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Richard Cochran <richardcochran@gmail.com>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>
+CC:     <nm@ti.com>, <srk@ti.com>, <linux-kernel@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>
+References: <20230823113254.292603-1-danishanwar@ti.com>
+ <20230823113254.292603-2-danishanwar@ti.com>
+ <d5a343c8-c384-6eea-94bf-e0c4f96e5fb0@linaro.org>
+From:   Md Danish Anwar <a0501179@ti.com>
+Organization: Texas Instruments
+In-Reply-To: <d5a343c8-c384-6eea-94bf-e0c4f96e5fb0@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -80,120 +84,102 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 23/08/2023 17:38, Andreas Kemnade wrote:
-> On Mon, 21 Aug 2023 15:57:45 -0500
-> Rob Herring <robh@kernel.org> wrote:
+On 24/08/23 12:13 pm, Krzysztof Kozlowski wrote:
+> On 23/08/2023 13:32, MD Danish Anwar wrote:
+>> Add a DT binding document for the ICSS Industrial Ethernet Peripheral(IEP)
+>> hardware. IEP supports packet timestamping, PTP and PPS.
+>>
+>> Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
 > 
->> On Sat, Aug 19, 2023 at 03:41:45PM +0200, Andreas Kemnade wrote:
->>> To be able to be referenced from a future yaml-version of
->>> mfd/twl-family.txt depending on toplevel compatible have a separate
->>> file for the 6032  
+> Really? Where?
+> 
+>> Reviewed-by: Roger Quadros <rogerq@kernel.org>
+> 
+> Now you are making things up. Please stop faking tags.
+> 
+>> Reviewed-by: Simon Horman <horms@kernel.org>
+> 
+> Where?
+> 
+>> Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
+>> ---
+>>  .../devicetree/bindings/net/ti,icss-iep.yaml  | 61 +++++++++++++++++++
+>>  1 file changed, 61 insertions(+)
+>>  create mode 100644 Documentation/devicetree/bindings/net/ti,icss-iep.yaml
 >>
->> Really, the parent needs to be done first...
->>
-> well, for some other subdevices, a yaml is already in the tree
-> and Krzysztof recently added a R-By to another one.
+>> diff --git a/Documentation/devicetree/bindings/net/ti,icss-iep.yaml b/Documentation/devicetree/bindings/net/ti,icss-iep.yaml
+>> new file mode 100644
+>> index 000000000000..75668bea8614
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/net/ti,icss-iep.yaml
+>> @@ -0,0 +1,61 @@
+>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+>> +%YAML 1.2
+>> +---
+>> +$id: http://devicetree.org/schemas/net/ti,icss-iep.yaml#
+>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>> +
+>> +title: Texas Instruments ICSS Industrial Ethernet Peripheral (IEP) module
+>> +
+>> +maintainers:
+>> +  - Md Danish Anwar <danishanwar@ti.com>
+>> +
+>> +properties:
+>> +  compatible:
+>> +    oneOf:
+>> +      - items:
+>> +          - enum:
+>> +              - ti,am642-icss-iep
+>> +              - ti,j721e-icss-iep
+>> +          - const: ti,am654-icss-iep
+>> +
+>> +      - const: ti,am654-icss-iep
+>> +
+>> +
+>> +  reg:
+>> +    maxItems: 1
+>> +
+>> +  clocks:
+>> +    maxItems: 1
+>> +    description: phandle to the IEP source clock
+>> +
+>> +required:
+>> +  - compatible
+>> +  - reg
+>> +  - clocks
+>> +
+>> +additionalProperties: false
+>> +
+>> +examples:
+>> +  - |
+>> +
+> 
+> Drop stray blank line
+> 
 
-Yep, but I am not checking every possible parent-child relationship. It
-would not be even possible...
+I will drop this blank line.
+
+>> +    /* AM65x */
+>> +    icssg0_iep0: iep@2e000 {
+>> +        compatible = "ti,am654-icss-iep";
+>> +        reg = <0x2e000 0x1000>;
+>> +        clocks = <&icssg0_iepclk_mux>;
+>> +    };
+> 
+> Choose one example.
+> 
+
+I will only keep one example (AM65x) and drop other examples.
 
 > 
-> But if the clocks should not have a node, then it is obvious.
-> What would be the route to conversion here: Is a conversion
-> of mfd/twl-family.txt without specifying subnodes ok for the first step,
-> maybe with additionalProperties: yes?
-
-Yes.
-
+> Best regards,
+> Krzysztof
 > 
-> 
->>> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
->>> ---
->>>  .../bindings/clock/ti,twl6032-clk.yaml        | 38
->>> +++++++++++++++++++ 1 file changed, 38 insertions(+)
->>>  create mode 100644
->>> Documentation/devicetree/bindings/clock/ti,twl6032-clk.yaml
->>>
->>> diff --git
->>> a/Documentation/devicetree/bindings/clock/ti,twl6032-clk.yaml
->>> b/Documentation/devicetree/bindings/clock/ti,twl6032-clk.yaml new
->>> file mode 100644 index 0000000000000..aebd9f8d761a2 --- /dev/null
->>> +++ b/Documentation/devicetree/bindings/clock/ti,twl6032-clk.yaml
->>> @@ -0,0 +1,38 @@
->>> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
->>> +%YAML 1.2
->>> +---
->>> +$id: http://devicetree.org/schemas/clock/ti,twl6032-clk.yaml#
->>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
->>> +
->>> +title: Clocks of the TWL6032 PMIC
->>> +
->>> +maintainers:
->>> +  - Andreas Kemnade <andreas@kemnade.info>
->>> +
->>> +description:
->>> +  The TWL6032 has some 32Khz clock outputs which can be
->>> controlled.  
->>
->> outputs? Seems like only 1 with no clock cells to specify which one.
->>
->>> +
->>> +properties:
->>> +  compatible:
->>> +    enum:
->>> +      - ti,twl6032-clk32kaudio
->>> +      - ti,twl6032-clk32kg  
->>
->> Or is it 1 output per compatible? I hope not.
->>
-> yes, it is. It was inspired by the clk-palmas driver:
 
-Creating nodes for single clocks is rather antipattern. Also, many early
-designs of drivers and bindings assumed mapping 1-to-1 between driver
-and DT nodes. This is also considered an antipattern now.
+I will make above changes and remove Roger's RB from patch 3 and 4 as he is the
+author of those patches. With these changes I will send next revision today. If
+there is anything else, please let me know.
 
-> $ grep palmas.*32 arch/arm/boot/dts/ti/omap/omap5-*
-> arch/arm/boot/dts/ti/omap/omap5-board-common.dtsi:
-> clk32kgaudio: palmas_clk32k@1 {
-> arch/arm/boot/dts/ti/omap/omap5-board-common.dtsi:
-> 	compatible = "ti,palmas-clk32kgaudio";
-> 
-> Well, we have the CLK_IGNORE_UNUSED, so if we use #clock-cells = 1,
-> an unused clock will not be touched by the kernel, right?
-
-I don't understand what OS flag has anything to do with clock-cells...
-
-> 
->>> +
->>> +  '#clock-cells':
->>> +    const: 0
->>> +
->>> +required:
->>> +  - compatible
->>> +  - '#clock-cells'
->>> +
->>> +additionalProperties: false
->>> +
->>> +examples:
->>> +  - |
->>> +    twl {
->>> +        clk32kaudio {
->>> +            compatible = "ti,twl6032-clk32kaudio";
->>> +            #clock-cells = <0>;
->>> +        };  
->>
->> You don't need a child node to be a clock provider. Just add 
->> #clock-cells to the parent node.
->>
-> hmm, we have child nodes there for every subdevice in that family,
-> even if I doubt it is totally technically required.
-> So why should the clk device be an exception? 
-
-There is no rule of having nodes for subdevices, thus there cannot be
-such exception. The rule is nodes are created when needed, not to match
-some consistency of Linux drivers.
-
-
-Best regards,
-Krzysztof
-
+-- 
+Thanks and Regards,
+Danish.
