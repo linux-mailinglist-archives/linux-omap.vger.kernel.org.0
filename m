@@ -2,61 +2,52 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B6FF7867B7
-	for <lists+linux-omap@lfdr.de>; Thu, 24 Aug 2023 08:47:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26DC87867C0
+	for <lists+linux-omap@lfdr.de>; Thu, 24 Aug 2023 08:48:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235604AbjHXGrP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 24 Aug 2023 02:47:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45422 "EHLO
+        id S240181AbjHXGsU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 24 Aug 2023 02:48:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240221AbjHXGqe (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 24 Aug 2023 02:46:34 -0400
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 146601702
-        for <linux-omap@vger.kernel.org>; Wed, 23 Aug 2023 23:46:24 -0700 (PDT)
-Received: by mail-ed1-x530.google.com with SMTP id 4fb4d7f45d1cf-522bd411679so7967917a12.0
-        for <linux-omap@vger.kernel.org>; Wed, 23 Aug 2023 23:46:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1692859582; x=1693464382;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=oXR3CLIiBpyvmVut/UsFSeJ12pMtKuMLIAGEGf/cnUY=;
-        b=sG93NB9Frtt3O2iyPXQ7pNypV6CrimUE/f9SueEl3Ja5LUQpFoLlab/HRnVgr0koMS
-         8l+cfasEzC7LSWqNwEaVJlwlCJNEbxWGnEB1GonfR7rBa/+wE6Zzt6DvwIC7QNe+OA7m
-         OGCUv6PbWjpADA05mIL7MNcrSOvmf8E4en0tShJi8yB/RYa8lks3egttsM3gdKVy1XnL
-         NOolGMxkfz2V4QUbkMd4D1Wdg3e7Jsy76aNZevsAsRYNvfLnQtKuVImA3lCGa9qV457H
-         PlZ7KeUfaVZvEKQYBzRG7g3r0sGcyHtS851lYoSQGYLl4+95HSlsWjn1kAMRbWoHxuH1
-         GVdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692859582; x=1693464382;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=oXR3CLIiBpyvmVut/UsFSeJ12pMtKuMLIAGEGf/cnUY=;
-        b=EDfZNyE9eecpNf8RiPgqa/Er9O3k3AErSVoGiHmQ3Nor/m3mLEid78Lhjr9tVtZSvi
-         p4IFANuzXe0pItoCKTaiPPgTqESl/gqDIvRsbuR+DCEq0amZFEL0liIKTVlQm+2pnPcI
-         Mmby3SUNYMbPz0n7oCsMEeYL7RM1I5t8W9UEWSnmNlzCjdGCcOACZG3bmqXZt3+Via9h
-         OuL09t2GLce2gHdofp3Xs7V7HodHenydWHPk3RCC6MKwevI+jXO9XByUj0N5ZEbNPSEg
-         dfhntihLMipIYPWI94P/0GAgpzFe0Fkp4A5B3zG8dp4fE7SuWw7T83JrruZYQWB6uiel
-         d/jg==
-X-Gm-Message-State: AOJu0YwKxlkDbLThvk3nKjm2+Sj1lxhOHWa4Vr2mQGk+rE4vCOj55SeE
-        RfZJtsrBfWAcVBETU6eG4U33FA==
-X-Google-Smtp-Source: AGHT+IHJcELVd4pq2Oe8iCIJlVRhuMf1x1yH2JxW4qWladkF/S3emBT2Iv80j4TO2slzAIWzWh1eow==
-X-Received: by 2002:aa7:c718:0:b0:52a:943:9abd with SMTP id i24-20020aa7c718000000b0052a09439abdmr9065547edq.30.1692859582450;
-        Wed, 23 Aug 2023 23:46:22 -0700 (PDT)
-Received: from [192.168.0.22] ([77.252.47.198])
-        by smtp.gmail.com with ESMTPSA id r5-20020aa7cb85000000b0052348d74865sm10167643edt.61.2023.08.23.23.46.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 23 Aug 2023 23:46:22 -0700 (PDT)
-Message-ID: <ba603c1f-6f2c-6408-bc71-41aa0e7d4ee8@linaro.org>
-Date:   Thu, 24 Aug 2023 08:46:20 +0200
+        with ESMTP id S240212AbjHXGr4 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 24 Aug 2023 02:47:56 -0400
+Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BCBE1AD;
+        Wed, 23 Aug 2023 23:47:53 -0700 (PDT)
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 37O6lSBk028331;
+        Thu, 24 Aug 2023 01:47:28 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1692859648;
+        bh=+IA2pl+lG56MbJeQoZlwP7IgF4PHZJTAaXqBzsq5h04=;
+        h=Date:Subject:To:CC:References:From:In-Reply-To;
+        b=o1LZ0iqjQUE9GpjGxnzHMgbttC2jH15qq7WyTi5mNk2peVqs8i8rmrQjpmXE9RCZb
+         Bi8dG/cWhCey5t9TPVsvWtgXt2teFJd021K1odnNcCzO7of63OhrYaZb96sLduK75c
+         QpQUy+lseeajh1Dz6CUvwp3Cn0QhubFwA3bevFUc=
+Received: from DFLE104.ent.ti.com (dfle104.ent.ti.com [10.64.6.25])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 37O6lSUP025908
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 24 Aug 2023 01:47:28 -0500
+Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE104.ent.ti.com
+ (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 24
+ Aug 2023 01:47:28 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE111.ent.ti.com
+ (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Thu, 24 Aug 2023 01:47:28 -0500
+Received: from [172.24.227.35] (ileaxei01-snat2.itg.ti.com [10.180.69.6])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 37O6lKmu087746;
+        Thu, 24 Aug 2023 01:47:21 -0500
+Message-ID: <a91e7db9-e442-acff-befd-2fa63e209b0a@ti.com>
+Date:   Thu, 24 Aug 2023 12:17:20 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH v6 3/5] net: ti: icss-iep: Add IEP driver
+ Thunderbird/102.13.0
+Subject: Re: [EXTERNAL] Re: [PATCH v6 1/5] dt-bindings: net: Add ICSS IEP
 Content-Language: en-US
-To:     MD Danish Anwar <danishanwar@ti.com>,
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        MD Danish Anwar <danishanwar@ti.com>,
         Randy Dunlap <rdunlap@infradead.org>,
         Roger Quadros <rogerq@kernel.org>,
         Simon Horman <simon.horman@corigine.com>,
@@ -70,43 +61,127 @@ To:     MD Danish Anwar <danishanwar@ti.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Eric Dumazet <edumazet@google.com>,
         "David S. Miller" <davem@davemloft.net>
-Cc:     nm@ti.com, srk@ti.com, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, netdev@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+CC:     <nm@ti.com>, <srk@ti.com>, <linux-kernel@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>
 References: <20230823113254.292603-1-danishanwar@ti.com>
- <20230823113254.292603-4-danishanwar@ti.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230823113254.292603-4-danishanwar@ti.com>
-Content-Type: text/plain; charset=UTF-8
+ <20230823113254.292603-2-danishanwar@ti.com>
+ <d5a343c8-c384-6eea-94bf-e0c4f96e5fb0@linaro.org>
+From:   Md Danish Anwar <a0501179@ti.com>
+Organization: Texas Instruments
+In-Reply-To: <d5a343c8-c384-6eea-94bf-e0c4f96e5fb0@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 23/08/2023 13:32, MD Danish Anwar wrote:
-> From: Roger Quadros <rogerq@ti.com>
+Hi Krzysztof,
+
+On 24/08/23 12:13 pm, Krzysztof Kozlowski wrote:
+> On 23/08/2023 13:32, MD Danish Anwar wrote:
+>> Add a DT binding document for the ICSS Industrial Ethernet Peripheral(IEP)
+>> hardware. IEP supports packet timestamping, PTP and PPS.
+>>
+>> Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
 > 
-> Add a driver for Industrial Ethernet Peripheral (IEP) block of PRUSS to
-> support timestamping of ethernet packets and thus support PTP and PPS
-> for PRU ethernet ports.
+> Really? Where?
+
+Conor gave his RB tag for patch 1 and 2 in v4
+https://lore.kernel.org/all/20230814-quarters-cahoots-1fbd583baad9@spud/
 > 
-> Signed-off-by: Roger Quadros <rogerq@ti.com>
-> Signed-off-by: Lokesh Vutla <lokeshvutla@ti.com>
-> Signed-off-by: Murali Karicheri <m-karicheri2@ti.com>
-> Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
-> Reviewed-by: Roger Quadros <rogerq@kernel.org>
-> Reviewed-by: Simon Horman <horms@kernel.org>
+>> Reviewed-by: Roger Quadros <rogerq@kernel.org>
+> 
+> Now you are making things up. Please stop faking tags.
 
-So more of the tags appear... And one of authors (Roger) also is
-reviewer... I would be surprised if author did not approve own code.
+Roger provided his RB tag in v5 for all the patches
+https://lore.kernel.org/all/5d077342-435f-2829-ba2a-cdf763b6b8e1@kernel.org/
+> 
+>> Reviewed-by: Simon Horman <horms@kernel.org>
+> 
+> Where?
+> 
 
-What's happening here?
+Simon gave his RB tag for all the patches of this series in v5
+https://lore.kernel.org/all/ZN9aSTUOT+SKESQS@vergenet.net/
 
-Best regards,
-Krzysztof
+>> Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
+>> ---
+>>  .../devicetree/bindings/net/ti,icss-iep.yaml  | 61 +++++++++++++++++++
+>>  1 file changed, 61 insertions(+)
+>>  create mode 100644 Documentation/devicetree/bindings/net/ti,icss-iep.yaml
+>>
+>> diff --git a/Documentation/devicetree/bindings/net/ti,icss-iep.yaml b/Documentation/devicetree/bindings/net/ti,icss-iep.yaml
+>> new file mode 100644
+>> index 000000000000..75668bea8614
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/net/ti,icss-iep.yaml
+>> @@ -0,0 +1,61 @@
+>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+>> +%YAML 1.2
+>> +---
+>> +$id: http://devicetree.org/schemas/net/ti,icss-iep.yaml#
+>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>> +
+>> +title: Texas Instruments ICSS Industrial Ethernet Peripheral (IEP) module
+>> +
+>> +maintainers:
+>> +  - Md Danish Anwar <danishanwar@ti.com>
+>> +
+>> +properties:
+>> +  compatible:
+>> +    oneOf:
+>> +      - items:
+>> +          - enum:
+>> +              - ti,am642-icss-iep
+>> +              - ti,j721e-icss-iep
+>> +          - const: ti,am654-icss-iep
+>> +
+>> +      - const: ti,am654-icss-iep
+>> +
+>> +
+>> +  reg:
+>> +    maxItems: 1
+>> +
+>> +  clocks:
+>> +    maxItems: 1
+>> +    description: phandle to the IEP source clock
+>> +
+>> +required:
+>> +  - compatible
+>> +  - reg
+>> +  - clocks
+>> +
+>> +additionalProperties: false
+>> +
+>> +examples:
+>> +  - |
+>> +
+> 
+> Drop stray blank line
+> 
+>> +    /* AM65x */
+>> +    icssg0_iep0: iep@2e000 {
+>> +        compatible = "ti,am654-icss-iep";
+>> +        reg = <0x2e000 0x1000>;
+>> +        clocks = <&icssg0_iepclk_mux>;
+>> +    };
+> 
+> Choose one example.
+> 
+> 
+> Best regards,
+> Krzysztof
+> 
 
+-- 
+Thanks and Regards,
+Danish.
