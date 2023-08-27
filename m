@@ -2,99 +2,111 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE0BA789B8E
-	for <lists+linux-omap@lfdr.de>; Sun, 27 Aug 2023 08:42:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A0AD789BF0
+	for <lists+linux-omap@lfdr.de>; Sun, 27 Aug 2023 09:54:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229623AbjH0GV6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 27 Aug 2023 02:21:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34506 "EHLO
+        id S229882AbjH0HyE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 27 Aug 2023 03:54:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45644 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229644AbjH0GVu (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 27 Aug 2023 02:21:50 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53A9C183;
-        Sat, 26 Aug 2023 23:21:48 -0700 (PDT)
+        with ESMTP id S229847AbjH0Hxx (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 27 Aug 2023 03:53:53 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FCEF100;
+        Sun, 27 Aug 2023 00:53:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D148861BFD;
-        Sun, 27 Aug 2023 06:21:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 27B7AC433C9;
-        Sun, 27 Aug 2023 06:21:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3DAED60BA3;
+        Sun, 27 Aug 2023 07:53:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8482C433C7;
+        Sun, 27 Aug 2023 07:53:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693117307;
-        bh=6UUXpO9T2ZjC/jSRr1ot3zZfncDhgWdLHcdF5xDh8zk=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=FO5tXPdOEjpQmNZOqrRATWIad10KITbXuBLgewxwStt1JiDPZCd0dhDxMzc66WPxV
-         yiklSu54L3pE4rHSiCdpcfV0+j1ZdKGc6DLDVpr0FPps2G4R+RUu7wilxXlyWJpize
-         6kEmJAnGOliHg5rcHU5vvhJxB5HepbCR8ScvCGR65WXFUOm8U/HY+MiKAo62TeqBIX
-         pnAQN+sGNzxJv1ditKAvOpny/ODkllPi176IecAYDCYjtCh9Q/mfeChQ7OUq01MWUS
-         TSDLBXdBLWvMq8HE2opTzevd9JQTE8lYywNRcwawF+DM7rVkaV240dX/whs59B1E9q
-         0RP6Zh6oKuV+A==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 0BB27E33083;
-        Sun, 27 Aug 2023 06:21:47 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        s=k20201202; t=1693122829;
+        bh=ELQCtO1Zd3q5C9Y0nTZAqeXcZ3jFC9IKfb9OyAxP4/I=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=vDB0+XOMKs5lgDU2WQkzNwza4ImSxI7Wqzf1NwN/0CbHPkkF70JNZwvgsZlCXs2d1
+         djwRZ0P36rMenREaIJErIokoDTb8+p92QpowOZyzp9g2xQr5mDiMrQvSZtGNmplHzt
+         KEv/o3qzHboUzmyMdDeMlwttsfec/6GiMvfPs+2J3bCO0bkHeTh14NCh2nER6cyZ5M
+         +gKibB04hl655+utWGLo+R+2l1Yx2orlsdfcK7bW0mQt72yDwVlUnrcdJQFiqhvTTb
+         7A/yjSrCn6C1uNSeaXXMeZwbZiXGiNnFid9HhqNg/YIdGjWWxuKrfZhnEyVf/Y2lZU
+         GuyHGsZRSD41w==
+Message-ID: <0ec82a6f-3689-3695-3f47-df55cd8b6429@kernel.org>
+Date:   Sun, 27 Aug 2023 09:53:44 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v7 0/5] Introduce IEP driver and packet timestamping support
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <169311730704.334.2679024548095794148.git-patchwork-notify@kernel.org>
-Date:   Sun, 27 Aug 2023 06:21:47 +0000
-References: <20230824114618.877730-1-danishanwar@ti.com>
-In-Reply-To: <20230824114618.877730-1-danishanwar@ti.com>
-To:     MD Danish Anwar <danishanwar@ti.com>
-Cc:     rdunlap@infradead.org, rogerq@kernel.org,
-        simon.horman@corigine.com, vigneshr@ti.com, andrew@lunn.ch,
-        richardcochran@gmail.com, conor+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, robh+dt@kernel.org,
-        pabeni@redhat.com, kuba@kernel.org, edumazet@google.com,
-        davem@davemloft.net, nm@ti.com, srk@ti.com,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        netdev@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH v4 2/2] dt-bindings: media: remove nokia,n900-ir as
+ pwm-ir-tx is compatible
+To:     Sean Young <sean@mess.org>
+Cc:     linux-media@vger.kernel.org, Tony Lindgren <tony@atomide.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-pwm@vger.kernel.org,
+        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
+        =?UTF-8?Q?Pali_Roh=c3=a1r?= <pali.rohar@gmail.com>,
+        Pavel Machek <pavel@ucw.cz>,
+        Timo Kokkonen <timo.t.kokkonen@iki.fi>
+References: <20230826171711.366710-1-sean@mess.org>
+ <2b81baae-cd50-e46f-f560-33b3d186cb24@kernel.org>
+ <ZOpi5fpDIoJOLnN9@gofer.mess.org>
+Content-Language: en-US
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+In-Reply-To: <ZOpi5fpDIoJOLnN9@gofer.mess.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hello:
-
-This series was applied to netdev/net-next.git (main)
-by David S. Miller <davem@davemloft.net>:
-
-On Thu, 24 Aug 2023 17:16:13 +0530 you wrote:
-> This series introduces Industrial Ethernet Peripheral (IEP) driver to
-> support timestamping of ethernet packets and thus support PTP and PPS
-> for PRU ICSSG ethernet ports.
+On 26/08/2023 22:39, Sean Young wrote:
+> On Sat, Aug 26, 2023 at 09:54:04PM +0200, Krzysztof Kozlowski wrote:
+>> On 26/08/2023 19:17, Sean Young wrote:
+>>> The generic pwm-ir-tx driver works for the Nokia n900, so nokia,n900-ir
+>>> can be removed.
+>>>
+>>> Signed-off-by: Sean Young <sean@mess.org>
+>>
+>> Please use scripts/get_maintainers.pl to get a list of necessary people
+>> and lists to CC. It might happen, that command when run on an older
+>> kernel, gives you outdated entries. Therefore please be sure you base
+>> your patches on recent Linux kernel.
+>>
+>> You missed at least devicetree list (maybe more), so this won't be
+>> tested by automated tooling. Performing review on untested code might be
+>> a waste of time.
 > 
-> This series also adds 10M full duplex support for ICSSG ethernet driver.
+> You are right, I -- again -- messed up. The Cc: list for 1/2 and 2/2 got
+> mixed up.
 > 
-> There are two IEP instances. IEP0 is used for packet timestamping while IEP1
-> is used for 10M full duplex support.
+> I am sorry about this, it's getting embarrassing now.
 > 
-> [...]
+> Is there any tooling which does this automagically? I'm copying and
+> pasting the output of scripts/get_maintainers.pl into shell scripts,
+> which is very error-prone (as evidenced by today's mistake).
 
-Here is the summary with links:
-  - [v7,1/5] dt-bindings: net: Add ICSS IEP
-    https://git.kernel.org/netdev/net-next/c/f0035689c036
-  - [v7,2/5] dt-bindings: net: Add IEP property in ICSSG
-    https://git.kernel.org/netdev/net-next/c/b12056278378
-  - [v7,3/5] net: ti: icss-iep: Add IEP driver
-    https://git.kernel.org/netdev/net-next/c/c1e0230eeaab
-  - [v7,4/5] net: ti: icssg-prueth: add packet timestamping and ptp support
-    https://git.kernel.org/netdev/net-next/c/186734c15886
-  - [v7,5/5] net: ti: icssg-prueth: am65x SR2.0 add 10M full duplex support
-    https://git.kernel.org/netdev/net-next/c/443a2367ba3c
+I am using this:
+https://github.com/krzk/tools/blob/master/linux/.bash_aliases_linux#L91
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Other option, sending each patch to separate recipients, is:
+[sendemail.linux]
+	tocmd ="scripts/get_maintainer.pl --no-git --no-git-fallback --no-l
+--no-roles --no-rolestats"
+	cccmd ="scripts/get_maintainer.pl --no-git --no-git-fallback --no-m
+--no-roles --no-rolestats"
+	confirm = always
 
+and then git send-email --identity=....
+
+Best regards,
+Krzysztof
 
