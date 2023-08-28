@@ -2,67 +2,100 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D1EE078A282
-	for <lists+linux-omap@lfdr.de>; Mon, 28 Aug 2023 00:11:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB27778A47A
+	for <lists+linux-omap@lfdr.de>; Mon, 28 Aug 2023 04:07:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229806AbjH0WKy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 27 Aug 2023 18:10:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34920 "EHLO
+        id S229564AbjH1CGr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 27 Aug 2023 22:06:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229500AbjH0WK0 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 27 Aug 2023 18:10:26 -0400
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13B92B6;
-        Sun, 27 Aug 2023 15:10:23 -0700 (PDT)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 85E35FF803;
-        Sun, 27 Aug 2023 22:10:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1693174222;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=YcUiYaXf7zns/L2Dectt4uDXbRSaTrhVVpjU0ADd+Jc=;
-        b=YFn6AHAiCNYA6ly7xSE1qADo+8KP50aUKUi1vN4MXIfMyVljxfywT+iDlHPeVVeBztP7gm
-        vXSDGXbZDLgkt9DL3r2JfzSnADmjuLdqEEqP5jTJN/sjL/WP4HKJVwgrIHUYw2LKlPnHVQ
-        zFPyyvyGrp05GofwPasDaTuuZ1eCUdgWLBu9suudHviC9ej1ZDbpJ0k4+KLfYfrY4JktSK
-        dLjR2Ndw9sbM4nY+Inbh4paELjdJutPF0uRzbpNWICCiVmtr/mdGQ58ZhRidq5s3lIkKUh
-        mII6NxHBVwUqi8KXUDDseMZ7nOJh3lZKhz4L3SP3YmyXzVwAYqYt46rQcgEfPA==
-Date:   Mon, 28 Aug 2023 00:10:22 +0200
-From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
-To:     linux-rtc@vger.kernel.org, Ladislav Michl <oss-lists@triops.cz>
-Cc:     linux-omap@vger.kernel.org
-Subject: Re: [PATCH] rtc: rtc-twl: add NVRAM support
-Message-ID: <169317420110.540243.15370748706612079038.b4-ty@bootlin.com>
-References: <ZDf7qZTiml0ijD2g@lenoch>
+        with ESMTP id S229831AbjH1CGV (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 27 Aug 2023 22:06:21 -0400
+Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18371CFD;
+        Sun, 27 Aug 2023 19:06:03 -0700 (PDT)
+Received: by mail-pl1-x62d.google.com with SMTP id d9443c01a7336-1c0a4333e03so5775515ad.0;
+        Sun, 27 Aug 2023 19:06:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1693188362; x=1693793162;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=YKYYZEyVm+BiUsLPy2rcN9Etj63llB8S5gjiMWg5j8E=;
+        b=aPTb49Iyfk6AfzUdyFj1UD7ONuB3gucR0+MsrGm4JqAMsBawzcqP8AF0eaEVPuTxWm
+         FAt90WGRYTXisQEiyitP+Q9C4+sNsgHn5JzhyRqcPaE5d6KzKu/LtKQb/SbqkQaB+0OE
+         9NJFHXpR7jI7eRN1/ljYGdLHyqhVGd76lyAgbaIC1pW5VCCw2Ir7UW+PYOX2MDeQgsHU
+         qcZvCGrlYvWknB4hVU6OrApwe8Vt96NykrOft9f6leoLFXTruizy8CMrhAHIJr4S1EUc
+         CJ2p0YfsESQOKmJkpGuN5lS/OUl1nrPs+udbFLmjPL/eU3eCg1rxQt1wu7o80MmeDuvi
+         iV8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693188362; x=1693793162;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YKYYZEyVm+BiUsLPy2rcN9Etj63llB8S5gjiMWg5j8E=;
+        b=W7uVm5Wp8+q7cTgwj2r1paMuLJ8YWYoZDdc+cG38Sv04E2k5VUJkG8mkkf3dJlP1Y/
+         uueVZ8JPyVkmfeopPsAWCKzf+KttmvED+w27goaN60VB4i+G1/lLaK833v/aT9UebVb3
+         R6u4F8D8JT/xhG0XcINxUrdK6cw8y9RwCxBOmHtOGA/1l2yOHW+hTkITMb3jXeraYTvy
+         CmUWQJ1YxyCaq9qyoBTY43FY2RK+wqSVt77GG9164902p6m3JD9SwicM+lRYdCCMHXad
+         +q7rwVoDtbuVb9Si0YpN7ZWHNSXay+TXAe2uWRd4pMi+Beu4tD2nn3mEHzKkEZCEBb+E
+         C93Q==
+X-Gm-Message-State: AOJu0YxJz7uqLymmX6QH+58mVw9QI/mdFZKZThc4nYbuZg1iuRrPuCFY
+        53hz1oY9VzOLBy/fLXVxJtY=
+X-Google-Smtp-Source: AGHT+IE5+jf1rQRanBF2mhIbGjT/QURbaONE4gwwEnEIF16YRCLRbOzpogstUkxWv0CwKqPi+patUQ==
+X-Received: by 2002:a17:90a:64c9:b0:263:2312:60c2 with SMTP id i9-20020a17090a64c900b00263231260c2mr22013816pjm.3.1693188362363;
+        Sun, 27 Aug 2023 19:06:02 -0700 (PDT)
+Received: from hoboy.vegasvil.org ([2601:640:8000:54:e2d5:5eff:fea5:802f])
+        by smtp.gmail.com with ESMTPSA id mg24-20020a17090b371800b002630c9d78aasm5834501pjb.5.2023.08.27.19.06.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 27 Aug 2023 19:06:01 -0700 (PDT)
+Date:   Sun, 27 Aug 2023 19:05:58 -0700
+From:   Richard Cochran <richardcochran@gmail.com>
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     MD Danish Anwar <danishanwar@ti.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Roger Quadros <rogerq@kernel.org>,
+        Simon Horman <simon.horman@corigine.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>, nm@ti.com, srk@ti.com,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        netdev@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v5 0/5] Introduce IEP driver and packet timestamping
+ support
+Message-ID: <ZOwBBjNz4IiIEr4V@hoboy.vegasvil.org>
+References: <20230817114527.1585631-1-danishanwar@ti.com>
+ <20230821190732.62710f21@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZDf7qZTiml0ijD2g@lenoch>
-X-GND-Sasl: alexandre.belloni@bootlin.com
-X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20230821190732.62710f21@kernel.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-
-On Thu, 13 Apr 2023 14:55:05 +0200, Ladislav Michl wrote:
-> Export SRAM using nvmem.
+On Mon, Aug 21, 2023 at 07:07:32PM -0700, Jakub Kicinski wrote:
+> On Thu, 17 Aug 2023 17:15:22 +0530 MD Danish Anwar wrote:
+> > This series introduces Industrial Ethernet Peripheral (IEP) driver to
+> > support timestamping of ethernet packets and thus support PTP and PPS
+> > for PRU ICSSG ethernet ports.
 > 
-> 
+> Richard, let us know if you'd like to TAL or we're good to apply.
 
-Applied, thanks!
+Sorry, I was at the thermal spa last week and not reading email!
 
-[1/1] rtc: rtc-twl: add NVRAM support
-      commit: 7130856f56054a031c492d37896cbcbfd04a61b5
+LGTM
 
-Best regards,
-
--- 
-Alexandre Belloni, co-owner and COO, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Thanks,
+Richard
