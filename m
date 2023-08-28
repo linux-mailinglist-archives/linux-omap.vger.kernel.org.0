@@ -2,100 +2,66 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB27778A47A
-	for <lists+linux-omap@lfdr.de>; Mon, 28 Aug 2023 04:07:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BB7678A6CD
+	for <lists+linux-omap@lfdr.de>; Mon, 28 Aug 2023 09:52:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229564AbjH1CGr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 27 Aug 2023 22:06:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54008 "EHLO
+        id S229804AbjH1HwS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 28 Aug 2023 03:52:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229831AbjH1CGV (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 27 Aug 2023 22:06:21 -0400
-Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18371CFD;
-        Sun, 27 Aug 2023 19:06:03 -0700 (PDT)
-Received: by mail-pl1-x62d.google.com with SMTP id d9443c01a7336-1c0a4333e03so5775515ad.0;
-        Sun, 27 Aug 2023 19:06:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1693188362; x=1693793162;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=YKYYZEyVm+BiUsLPy2rcN9Etj63llB8S5gjiMWg5j8E=;
-        b=aPTb49Iyfk6AfzUdyFj1UD7ONuB3gucR0+MsrGm4JqAMsBawzcqP8AF0eaEVPuTxWm
-         FAt90WGRYTXisQEiyitP+Q9C4+sNsgHn5JzhyRqcPaE5d6KzKu/LtKQb/SbqkQaB+0OE
-         9NJFHXpR7jI7eRN1/ljYGdLHyqhVGd76lyAgbaIC1pW5VCCw2Ir7UW+PYOX2MDeQgsHU
-         qcZvCGrlYvWknB4hVU6OrApwe8Vt96NykrOft9f6leoLFXTruizy8CMrhAHIJr4S1EUc
-         CJ2p0YfsESQOKmJkpGuN5lS/OUl1nrPs+udbFLmjPL/eU3eCg1rxQt1wu7o80MmeDuvi
-         iV8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693188362; x=1693793162;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YKYYZEyVm+BiUsLPy2rcN9Etj63llB8S5gjiMWg5j8E=;
-        b=W7uVm5Wp8+q7cTgwj2r1paMuLJ8YWYoZDdc+cG38Sv04E2k5VUJkG8mkkf3dJlP1Y/
-         uueVZ8JPyVkmfeopPsAWCKzf+KttmvED+w27goaN60VB4i+G1/lLaK833v/aT9UebVb3
-         R6u4F8D8JT/xhG0XcINxUrdK6cw8y9RwCxBOmHtOGA/1l2yOHW+hTkITMb3jXeraYTvy
-         CmUWQJ1YxyCaq9qyoBTY43FY2RK+wqSVt77GG9164902p6m3JD9SwicM+lRYdCCMHXad
-         +q7rwVoDtbuVb9Si0YpN7ZWHNSXay+TXAe2uWRd4pMi+Beu4tD2nn3mEHzKkEZCEBb+E
-         C93Q==
-X-Gm-Message-State: AOJu0YxJz7uqLymmX6QH+58mVw9QI/mdFZKZThc4nYbuZg1iuRrPuCFY
-        53hz1oY9VzOLBy/fLXVxJtY=
-X-Google-Smtp-Source: AGHT+IE5+jf1rQRanBF2mhIbGjT/QURbaONE4gwwEnEIF16YRCLRbOzpogstUkxWv0CwKqPi+patUQ==
-X-Received: by 2002:a17:90a:64c9:b0:263:2312:60c2 with SMTP id i9-20020a17090a64c900b00263231260c2mr22013816pjm.3.1693188362363;
-        Sun, 27 Aug 2023 19:06:02 -0700 (PDT)
-Received: from hoboy.vegasvil.org ([2601:640:8000:54:e2d5:5eff:fea5:802f])
-        by smtp.gmail.com with ESMTPSA id mg24-20020a17090b371800b002630c9d78aasm5834501pjb.5.2023.08.27.19.06.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Aug 2023 19:06:01 -0700 (PDT)
-Date:   Sun, 27 Aug 2023 19:05:58 -0700
-From:   Richard Cochran <richardcochran@gmail.com>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     MD Danish Anwar <danishanwar@ti.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Roger Quadros <rogerq@kernel.org>,
-        Simon Horman <simon.horman@corigine.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>, nm@ti.com, srk@ti.com,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        netdev@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v5 0/5] Introduce IEP driver and packet timestamping
- support
-Message-ID: <ZOwBBjNz4IiIEr4V@hoboy.vegasvil.org>
-References: <20230817114527.1585631-1-danishanwar@ti.com>
- <20230821190732.62710f21@kernel.org>
+        with ESMTP id S229850AbjH1HwK (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 28 Aug 2023 03:52:10 -0400
+Received: from mail.bizcodes.pl (mail.bizcodes.pl [151.80.57.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26DC8114
+        for <linux-omap@vger.kernel.org>; Mon, 28 Aug 2023 00:52:06 -0700 (PDT)
+Received: by mail.bizcodes.pl (Postfix, from userid 1002)
+        id 4A023A2E3B; Mon, 28 Aug 2023 07:50:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=bizcodes.pl; s=mail;
+        t=1693209066; bh=5QPMt7jNntM5ZbstM20BWsHIeLbmRE8lVU4Iu89IleQ=;
+        h=Date:From:To:Subject:From;
+        b=PBHs1g48SGbRVJD45Fp9ohFHbR949pKra448zTdNgDm0Q6/C5u/OnN+KEwxOrhPTy
+         AzGQvQmNrVYXwCF107WOKtx3TvLfP6+p31agwp5bYvs50ei0MruOjxmnQpjYfXzmNK
+         zB0XgIrr5EHhgn+BGzGcILtRRSTEAfKOsh19O35BWOzkN9Bkrdr0z+5NJUO5dLwyWy
+         QAnYhASZZ8VII3JArYp/jAyZADM/MxG/LJUkBfLUmHnLA77O8xHeRAprQzj4+NaCn6
+         wCDONKx92pwDwQ2CkuJBIPyQJ8/lZ+4UmIuLJXiCczikJolKfyBkP3oEuCMyow44az
+         S4q1cCn1i9KjA==
+Received: by mail.bizcodes.pl for <linux-omap@vger.kernel.org>; Mon, 28 Aug 2023 07:50:38 GMT
+Message-ID: <20230828064500-0.1.bb.1cipj.0.9ftcs7wgbh@bizcodes.pl>
+Date:   Mon, 28 Aug 2023 07:50:38 GMT
+From:   "Marcin Chruszcz" <marcin.chruszcz@bizcodes.pl>
+To:     <linux-omap@vger.kernel.org>
+Subject: Prezentacja
+X-Mailer: mail.bizcodes.pl
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230821190732.62710f21@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Aug 21, 2023 at 07:07:32PM -0700, Jakub Kicinski wrote:
-> On Thu, 17 Aug 2023 17:15:22 +0530 MD Danish Anwar wrote:
-> > This series introduces Industrial Ethernet Peripheral (IEP) driver to
-> > support timestamping of ethernet packets and thus support PTP and PPS
-> > for PRU ICSSG ethernet ports.
-> 
-> Richard, let us know if you'd like to TAL or we're good to apply.
+Dzie=C5=84 dobry!
 
-Sorry, I was at the thermal spa last week and not reading email!
+Czy m=C3=B3g=C5=82bym przedstawi=C4=87 rozwi=C4=85zanie, kt=C3=B3re umo=C5=
+=BCliwia monitoring ka=C5=BCdego auta w czasie rzeczywistym w tym jego po=
+zycj=C4=99, zu=C5=BCycie paliwa i przebieg?
 
-LGTM
+Dodatkowo nasze narz=C4=99dzie minimalizuje koszty utrzymania samochod=C3=
+=B3w, skraca czas przejazd=C3=B3w, a tak=C5=BCe tworzenie planu tras czy =
+dostaw.
 
-Thanks,
-Richard
+Z naszej wiedzy i do=C5=9Bwiadczenia korzysta ju=C5=BC ponad 49 tys. Klie=
+nt=C3=B3w. Monitorujemy 809 000 pojazd=C3=B3w na ca=C5=82ym =C5=9Bwiecie,=
+ co jest nasz=C4=85 najlepsz=C4=85 wizyt=C3=B3wk=C4=85.
+
+Bardzo prosz=C4=99 o e-maila zwrotnego, je=C5=9Bli mogliby=C5=9Bmy wsp=C3=
+=B3lnie om=C3=B3wi=C4=87 potencja=C5=82 wykorzystania takiego rozwi=C4=85=
+zania w Pa=C5=84stwa firmie.
+
+
+Pozdrawiam
+Marcin Chruszcz
