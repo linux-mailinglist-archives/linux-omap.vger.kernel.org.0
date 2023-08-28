@@ -2,38 +2,43 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 50ED678B476
-	for <lists+linux-omap@lfdr.de>; Mon, 28 Aug 2023 17:32:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF85578B54E
+	for <lists+linux-omap@lfdr.de>; Mon, 28 Aug 2023 18:25:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230489AbjH1PcL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 28 Aug 2023 11:32:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43340 "EHLO
+        id S231815AbjH1QYn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 28 Aug 2023 12:24:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35262 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230236AbjH1Pb4 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 28 Aug 2023 11:31:56 -0400
-Received: from relmlie5.idc.renesas.com (relmlor1.renesas.com [210.160.252.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 38DECA8;
-        Mon, 28 Aug 2023 08:31:54 -0700 (PDT)
-X-IronPort-AV: E=Sophos;i="6.02,207,1688396400"; 
-   d="scan'208";a="174228511"
-Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
-  by relmlie5.idc.renesas.com with ESMTP; 29 Aug 2023 00:31:53 +0900
-Received: from localhost.localdomain (unknown [10.226.92.234])
-        by relmlir5.idc.renesas.com (Postfix) with ESMTP id EC83C40065DD;
-        Tue, 29 Aug 2023 00:31:51 +0900 (JST)
-From:   Biju Das <biju.das.jz@bp.renesas.com>
-To:     Tony Lindgren <tony@atomide.com>, Lee Jones <lee@kernel.org>
-Cc:     Biju Das <biju.das.jz@bp.renesas.com>, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v2 2/2] mfd: palmas: Make similar OF and ID table
-Date:   Mon, 28 Aug 2023 16:31:44 +0100
-Message-Id: <20230828153144.75479-3-biju.das.jz@bp.renesas.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230828153144.75479-1-biju.das.jz@bp.renesas.com>
-References: <20230828153144.75479-1-biju.das.jz@bp.renesas.com>
+        with ESMTP id S232404AbjH1QYV (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 28 Aug 2023 12:24:21 -0400
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a02:c205:3004:2154::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6999CE3;
+        Mon, 28 Aug 2023 09:24:16 -0700 (PDT)
+Received: from p5dcc30c7.dip0.t-ipconnect.de ([93.204.48.199] helo=aktux)
+        by mail.andi.de1.cc with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <andreas@kemnade.info>)
+        id 1qaf2D-0036xV-Vr; Mon, 28 Aug 2023 18:24:14 +0200
+Date:   Mon, 28 Aug 2023 18:24:12 +0200
+From:   Andreas Kemnade <andreas@kemnade.info>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     Stephen Boyd <sboyd@kernel.org>, bcousson@baylibre.com,
+        conor+dt@kernel.org, devicetree@vger.kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        mturquette@baylibre.com, robh+dt@kernel.org, tony@atomide.com
+Subject: Re: [PATCH 2/3] clk: twl: add clock driver for TWL6032
+Message-ID: <20230828182412.16d4aea6@aktux>
+In-Reply-To: <9edcfc47-ed89-8074-6bde-d747ae73de25@linaro.org>
+References: <20230819134147.456060-1-andreas@kemnade.info>
+        <20230819134147.456060-3-andreas@kemnade.info>
+        <a65a7d976be4212ef71fe32c4ed2dacb.sboyd@kernel.org>
+        <20230823165159.108875d0@aktux>
+        <9edcfc47-ed89-8074-6bde-d747ae73de25@linaro.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -42,48 +47,31 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Make similar OF and ID table to extend support for ID match using
-i2c_match_data(). Currently it works only for OF match tables as the
-driver_data is wrong for ID match.
+Hi,
 
-While at it, drop the inner leading commas for ID  table.
+On Thu, 24 Aug 2023 09:04:28 +0200
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
 
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
----
-v1->v2:
- * Removed trailing comma in the terminator entry for ID table
----
- drivers/mfd/palmas.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+> >>> +
+> >>> +MODULE_DESCRIPTION("Clock driver for TWL Series Devices");
+> >>> +MODULE_ALIAS("platform:twl-clk");    
+> >>
+> >> This alias is unnecessary?
+> >>  
+> > The question is whether this driver should have a separate dt
+> > node (and if a separate node, then one per clock as the clk-palmas
+> > driver) or not. See Rob's review of the binding document.
+> > So we have basically #clock-cells = <1>; in the twl parent
+> > and a call to mfd_add_device() there in the former case and I guess
+> > that alias is needed then.
+> >   
+> 
+> You should not need the alias in any of these cases. platform alias for
+> platform driver means you have incomplete tables and use alias instead
+> of tables. Preference is to use tables.
 
-diff --git a/drivers/mfd/palmas.c b/drivers/mfd/palmas.c
-index 3ac9dec2b117..7fc886f4f80e 100644
---- a/drivers/mfd/palmas.c
-+++ b/drivers/mfd/palmas.c
-@@ -513,7 +513,7 @@ static int palmas_i2c_probe(struct i2c_client *i2c)
- 	palmas->dev = &i2c->dev;
- 	palmas->irq = i2c->irq;
- 
--	driver_data = device_get_match_data(&i2c->dev);
-+	driver_data = i2c_get_match_data(i2c);
- 	palmas->features = driver_data->features;
- 
- 	for (i = 0; i < PALMAS_NUM_CLIENTS; i++) {
-@@ -699,10 +699,10 @@ static const struct of_device_id of_palmas_match_tbl[] = {
- MODULE_DEVICE_TABLE(of, of_palmas_match_tbl);
- 
- static const struct i2c_device_id palmas_i2c_id[] = {
--	{ "palmas", },
--	{ "twl6035", },
--	{ "twl6037", },
--	{ "tps65913", },
-+	{ "palmas", (kernel_ulong_t)&palmas_data },
-+	{ "twl6035", (kernel_ulong_t)&palmas_data },
-+	{ "twl6037", (kernel_ulong_t)&palmas_data },
-+	{ "tps65913", (kernel_ulong_t)&palmas_data },
- 	{ /* end */ }
- };
- MODULE_DEVICE_TABLE(i2c, palmas_i2c_id);
--- 
-2.25.1
+Is there a general consensus that MODULE_ALIAS("platform:.*") should be
+exorcised? Of course for this new driver I will avoid it now anyways.
 
+Regards,
+Andreas
