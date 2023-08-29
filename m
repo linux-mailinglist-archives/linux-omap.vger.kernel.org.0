@@ -2,65 +2,93 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D6BB278BFC1
-	for <lists+linux-omap@lfdr.de>; Tue, 29 Aug 2023 09:59:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A31E78C7E3
+	for <lists+linux-omap@lfdr.de>; Tue, 29 Aug 2023 16:47:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232531AbjH2H7K (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 29 Aug 2023 03:59:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54830 "EHLO
+        id S236222AbjH2Oqm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 29 Aug 2023 10:46:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37716 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231731AbjH2H6w (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 29 Aug 2023 03:58:52 -0400
-X-Greylist: delayed 935 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 29 Aug 2023 00:58:49 PDT
-Received: from mail.profitpathwaygo.com (mail.profitpathwaygo.com [141.94.21.238])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E23D113
-        for <linux-omap@vger.kernel.org>; Tue, 29 Aug 2023 00:58:49 -0700 (PDT)
-Received: by mail.profitpathwaygo.com (Postfix, from userid 1002)
-        id 4CEA148559; Tue, 29 Aug 2023 07:31:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=profitpathwaygo.com;
-        s=mail; t=1693294328;
-        bh=qp3Ofokho6Ql+WtI8ZPVilyHYhskXL7fod7u9CWs8W4=;
-        h=Date:From:To:Subject:From;
-        b=okWIE30eZXx6eg4sOlkSv1bPV2cph3/4PMNQoRxcnCSGFzZCoud8l70Hu7UFE40Al
-         678QT++5GQ+773gvwqUpJKADZlfxP54MzcojghOibBlhTFsMAND4rIpe+IROnsO6mw
-         bt+5/9hoBQ80ic6JtBG847QzzBV/jm+8TL76y6/w8zFsM38PlaALUQrNGUtIIt4UIj
-         Igc0qH/mKHgeW0o+Z3k5NdP8t3OtpdjzeWvqCWMrGiOBcfSWMkUOVHhK8Yz8iJOd3M
-         IsYooQip/roMhYFIcSBR1wgCD4zoTKZFXLj/+V5a20HdCRSR5wsOoXFZ58GngGaOPp
-         d3Uvq5diKI2Eg==
-Received: by mail.profitpathwaygo.com for <linux-omap@vger.kernel.org>; Tue, 29 Aug 2023 07:31:02 GMT
-Message-ID: <20230829064500-0.1.1f.e1er.0.vb9n7olilh@profitpathwaygo.com>
-Date:   Tue, 29 Aug 2023 07:31:02 GMT
-From:   "Adam Charachuta" <adam.charachuta@profitpathwaygo.com>
-To:     <linux-omap@vger.kernel.org>
-Subject: =?UTF-8?Q?S=C5=82owa_kluczowe_do_wypozycjonowania_?=
-X-Mailer: mail.profitpathwaygo.com
+        with ESMTP id S237113AbjH2Oqj (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 29 Aug 2023 10:46:39 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13C741A6;
+        Tue, 29 Aug 2023 07:46:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1693320391; x=1724856391;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=QIr6BJEeXYWl1/G59Qm0C6xyhTPqQoRk2a4GFtsPX54=;
+  b=nyG07AVHA8SuwmCeimOGM1L7XYEbckkH7/e4c+aMseQdWYVL2KznGCGs
+   VGlfaDQIaAhtPpVkhbePABjkTF2Xu0JTGfz1d/IBd3rRhBmYAUXMU6NPi
+   PNyHIUywsWvJ6xaQ8V1jS8guZIyk4Q6dxUxzFWR6XnXoFjfwNLn9QFCB4
+   58xc8EJydjTzDoxHFLKhvMjI9mUqxkGeZ610VRvB4TZtgUatneQ5TDBAL
+   JAYioyA6OFU3NdxN3JbhfwHjkdW4t0UGtJI/kKElvez96F08Bgs9G+vDz
+   4cu5jMzCOk2z19vUSt17PaJFfKbr6StcXgvHO9iL8tOcIQWjv9eSy1PBd
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10817"; a="406379118"
+X-IronPort-AV: E=Sophos;i="6.02,210,1688454000"; 
+   d="scan'208";a="406379118"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Aug 2023 07:46:28 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10817"; a="985368160"
+X-IronPort-AV: E=Sophos;i="6.02,210,1688454000"; 
+   d="scan'208";a="985368160"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga006.fm.intel.com with ESMTP; 29 Aug 2023 07:46:26 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1qazz7-004uDP-14;
+        Tue, 29 Aug 2023 17:46:25 +0300
+Date:   Tue, 29 Aug 2023 17:46:24 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Biju Das <biju.das.jz@bp.renesas.com>
+Cc:     Tony Lindgren <tony@atomide.com>, Lee Jones <lee@kernel.org>,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] mfd: palmas: Make similar OF and ID table
+Message-ID: <ZO4EwAgDU0yefC/t@smile.fi.intel.com>
+References: <20230828153144.75479-1-biju.das.jz@bp.renesas.com>
+ <20230828153144.75479-3-biju.das.jz@bp.renesas.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SBL_CSS,SPF_HELO_NONE,
-        SPF_PASS,URIBL_CSS_A,URIBL_DBL_SPAM autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Level: ***
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230828153144.75479-3-biju.das.jz@bp.renesas.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Dzie=C5=84 dobry,
+On Mon, Aug 28, 2023 at 04:31:44PM +0100, Biju Das wrote:
+> Make similar OF and ID table to extend support for ID match using
+> i2c_match_data(). Currently it works only for OF match tables as the
+> driver_data is wrong for ID match.
 
-zapozna=C5=82em si=C4=99 z Pa=C5=84stwa ofert=C4=85 i z przyjemno=C5=9Bci=
-=C4=85 przyznaj=C4=99, =C5=BCe przyci=C4=85ga uwag=C4=99 i zach=C4=99ca d=
-o dalszych rozm=C3=B3w.=20
+...
 
-Pomy=C5=9Bla=C5=82em, =C5=BCe mo=C5=BCe m=C3=B3g=C5=82bym mie=C4=87 sw=C3=
-=B3j wk=C5=82ad w Pa=C5=84stwa rozw=C3=B3j i pom=C3=B3c dotrze=C4=87 z t=C4=
-=85 ofert=C4=85 do wi=C4=99kszego grona odbiorc=C3=B3w. Pozycjonuj=C4=99 =
-strony www, dzi=C4=99ki czemu generuj=C4=85 =C5=9Bwietny ruch w sieci.
+> While at it, drop the inner leading commas for ID  table.
 
-Mo=C5=BCemy porozmawia=C4=87 w najbli=C5=BCszym czasie?
+Are you sure?
+
+------------------v
+> -	{ "palmas", },
+> -	{ "twl6035", },
+> -	{ "twl6037", },
+> -	{ "tps65913", },
+> +	{ "palmas", (kernel_ulong_t)&palmas_data },
+> +	{ "twl6035", (kernel_ulong_t)&palmas_data },
+> +	{ "twl6037", (kernel_ulong_t)&palmas_data },
+> +	{ "tps65913", (kernel_ulong_t)&palmas_data },
+
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
-Pozdrawiam serdecznie
-Adam Charachuta
