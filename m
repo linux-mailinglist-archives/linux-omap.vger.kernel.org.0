@@ -2,446 +2,153 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C748278FEDD
-	for <lists+linux-omap@lfdr.de>; Fri,  1 Sep 2023 16:19:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CB527905C0
+	for <lists+linux-omap@lfdr.de>; Sat,  2 Sep 2023 09:27:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237630AbjIAOTj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 1 Sep 2023 10:19:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40928 "EHLO
+        id S1351729AbjIBH15 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 2 Sep 2023 03:27:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231776AbjIAOTj (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 1 Sep 2023 10:19:39 -0400
-Received: from gofer.mess.org (gofer.mess.org [88.97.38.141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC546173A;
-        Fri,  1 Sep 2023 07:19:28 -0700 (PDT)
-Received: by gofer.mess.org (Postfix, from userid 501)
-        id A7D71100803; Fri,  1 Sep 2023 15:19:27 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mess.org; s=2020;
-        t=1693577967; bh=nNEkDW1hd+Pqsob44LPZfPTtMTQ2WjZZgJsrx2Boteo=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UXZYx5BN5E/sqWWLu+3ZqYLT3pSI45aCykSIK7zljhgDGxXaStfuk7u6iKP+/eFyM
-         1SXSL40tSc12lJ2WV/S8yzl6uecWwkCxEtWeLPd7dsdj7zlylLpXX6quwvDXfc33oO
-         keYTE2dfvpo+f1OqJpGAEDE2uxZNcDxKBO2p3QFhU0mX0NClu0g9Lm2+4+WMWlyNcn
-         UiL8Yyt2jTtS6oYr/JhvkDrHadoUjtjMxBuAo4anMzjacWa+EFgljCYe7I8Sp4Jgc7
-         pC4bxzkxRP7a6uQvvWsvtlAUNwr9oCLpumUQBTn0LuboZfzeJHqP6eODC4J/5yVV1A
-         w8/eBCdCcgdVA==
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-        lindbergh.monkeyblade.net
-X-Spam-Level: 
+        with ESMTP id S1351718AbjIBH14 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 2 Sep 2023 03:27:56 -0400
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.167])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE4761707
+        for <linux-omap@vger.kernel.org>; Sat,  2 Sep 2023 00:27:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1693639662; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=o/xO9p7gQBXezbCxBOisyIxEmgFUOryLB6qmVnNXlIWiJ+LjecTxFa7E+I8UC1rLND
+    oGOBfP9C+uCZHbRH+axzIsQqCC40h/gwbVf3Q0xg7FhZp0JjztiHO/7aZ7HMgBw98xDQ
+    zUs+UQjfVF8y4MLrNENa+JE2z8X6R8hz1dxx2bQOqCx+piL+bE+Tae3SH6dOrMG76Rva
+    zVtsN/V99iTr2SluXaXRywKztlWpNIKVu/ofqigAc5ytJ0AH+oP2P/Mfmuqa6dI2z8MP
+    zZtpB5KLbRJ4+E0uclq9PzmF3hkMi2Rzf+LF4d+Dg5jpzMCJvgjGN8QKOZDjnrWxZs7S
+    2Eiw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1693639662;
+    s=strato-dkim-0002; d=strato.com;
+    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=+3b1NnU12xbrBmixBzmgivgpxVziSz8o6Izzja7DwLE=;
+    b=e0rYYP4AJrgA2Wmm3LdWWRS3hYgrRkdNnG4+cvUJmzqecw1UwjTYrBnUcPdHP/+W7k
+    0s02vbO3HEQb0XTa024eCfU6BASy+f4cHP15Tl1ccI8JtU1QQtzqpuDz4w6FtiMP9cZn
+    MVJKJPSX2fe7sy7p0qF0cKgJOLbDBKPoU7sQXCgOT40YYLGMB/lnGi0MHFZJ+E0T9ZIN
+    GKqaHm/fJsvuHAqTFexMcEPgF/OAvHOxhr0Y3+H06Ent37sAmOk4b4guaYHtkB5Ws+2g
+    8JjaIGgy/WcFnCaGL5wG12qCJFIb1/gj+e8J77FhD9AWB4zLwMlZjcbAbPpYRfOkXy84
+    3YEw==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1693639662;
+    s=strato-dkim-0002; d=goldelico.com;
+    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=+3b1NnU12xbrBmixBzmgivgpxVziSz8o6Izzja7DwLE=;
+    b=JGMu1J9zhMFsK9oT8YMWC4BxDfdU2s4iVmp6PwnIl/3ZrTA/uqKSPlFRtuTHVmCaZ/
+    t++Wuigf7xYJlVqWhXcEmDgZvqJxarN/Ww7eXNQPoxfo5dq5M5ceFCvzK9WhWTscc12e
+    cukQtLV0cRRIqJAGie2a2+PhESlGVzXu2ldtGhavKdyWZEvaz+AtTo1BNqk8UCLWScRK
+    d8L0Q1N3BpW7sl/YiVjHTL8N+kF1vYuTQK8TiUviSkoWeG6rzEJcVSoVaWsVuDGhLMl0
+    BjrcPYiZDYKVtawXhyHM7P2tcBKHWuzUH7gEpW3HKRNTmheZduhr7CCG/nQAUYbwyfWV
+    IISw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1693639662;
+    s=strato-dkim-0003; d=goldelico.com;
+    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=+3b1NnU12xbrBmixBzmgivgpxVziSz8o6Izzja7DwLE=;
+    b=uPNGeYK+sn8vKA0txEwBi0NlNU/RLEfcnLXXnhae+mvPZXpSozWRdthx17iZGw0G14
+    4nbBgi6MXv6WMZ3ARVAQ==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj5Apz9PSN6LgsXcGZhzY="
+Received: from smtpclient.apple
+    by smtp.strato.de (RZmta 49.8.2 DYNA|AUTH)
+    with ESMTPSA id 04cbadz827RgAhU
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
+        (Client did not present a certificate);
+    Sat, 2 Sep 2023 09:27:42 +0200 (CEST)
+Content-Type: text/plain;
+        charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.4\))
+Subject: ABE/AESS on modern kernel: clocks, hwmods etc.
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
+In-Reply-To: <ZPLYG16mwiwt9G9R@dalakolonin.se>
+Date:   Sat, 2 Sep 2023 09:27:41 +0200
+Cc:     =?utf-8?Q?Patrik_Dahlstr=C3=B6m?= <risca@dalakolonin.se>,
+        Andreas Kemnade <andreas@kemnade.info>,
+        letux-kernel@openphoenux.org, kernel@pyra-handheld.com,
+        linux-omap@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <CB775A6F-FDB6-4639-B386-8E8BEE4CD88C@goldelico.com>
+References: <53bc74ae-a2d5-40d5-8d51-bc0f062fcd15@email.android.com>
+ <45F44D32-E846-4A53-BA20-9C78CD4411F3@goldelico.com>
+ <ZO4SWw/rbJH5Dpbq@dalakolonin.se>
+ <A029FB33-9FBB-4CE5-92D5-597E10B3A032@goldelico.com>
+ <ZPH5Yr3w7ruN/io0@dalakolonin.se>
+ <05B47ED4-CA2C-4754-ABB1-0591E9018E57@goldelico.com>
+ <ZPLYG16mwiwt9G9R@dalakolonin.se>
+To:     Tony Lindgren <tony@atomide.com>
+X-Mailer: Apple Mail (2.3696.120.41.1.4)
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
-Received: from localhost.localdomain (bigcore.mess.org [IPv6:2a02:8011:d000:212:44e0:1480:5a2d:d8ed])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by gofer.mess.org (Postfix) with ESMTPSA id 7289D1007F6;
-        Fri,  1 Sep 2023 15:19:23 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mess.org; s=2020;
-        t=1693577963; bh=nNEkDW1hd+Pqsob44LPZfPTtMTQ2WjZZgJsrx2Boteo=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JkIQ9LLXFpXa016/XwlttjNyKOJaO3SP/CTYGhEGtYm8wEyuSb1I4vkN0Bqw0KkoU
-         Z7PS7QEeZgSw89tk1MQSSwXZIX3gGZ+L0xrvSBtFDoJSfpxHxPB/1JI5CiGUpyaK3/
-         yLW7fa3IIlX4dw0DpmBnOm+DHHihdGs2+yphtanSXeWwBlzKIas+yM19u7c9DFAZ1t
-         wrN9wnQSMk4JQjxmTkOYG5e6kZQ5quHnQnrIqPjoRgdPZjoO/cl7a9xd6IqSaj2nc7
-         evp2vq/JsetwsPc4uI2Fju/SE/Z8K3zzxh85kgZjwjZ4JpuoCKLs34NBvXcKxJHA4O
-         mV4rL/TD9TvTA==
-From:   Sean Young <sean@mess.org>
-To:     linux-media@vger.kernel.org, Tony Lindgren <tony@atomide.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-Cc:     Timo Kokkonen <timo.t.kokkonen@iki.fi>,
-        =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali.rohar@gmail.com>,
-        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
-        "Sicelo A . Mhlongo" <absicsz@gmail.com>,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org
-Subject: [PATCH v5 2/2] media: rc: remove ir-rx51 in favour of generic pwm-ir-tx
-Date:   Fri,  1 Sep 2023 15:18:56 +0100
-Message-ID: <e5325e826935f0bd8566152b6a5fa799b2429d43.1693577725.git.sean@mess.org>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <cover.1693577725.git.sean@mess.org>
-References: <cover.1693577725.git.sean@mess.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
+        lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The ir-rx51 is a pwm-based TX driver specific to the N900. This can be
-handled entirely by the generic pwm-ir-tx driver, and in fact the
-pwm-ir-tx driver has been compatible with ir-rx51 from the start.
+Hi Tony,
+we are still struggling with ABE/AESS on the OMAP4/5 (PandaES, Pyra, =
+OMAP5UEVM, BT-200).
 
-Note that the suspend code in the ir-rx51 driver is unnecessary, since
-during transmit, the process is not in interruptable sleep. The process
-is not put to sleep until the transmit completes.
+Symptoms are that
+* pmem access will be broken after initializing the ABE-DSP
+* it seems the AES DSP is not running (and leads to timeouts when =
+sending audio data to the buffers)
+* boot issues on BT-200
 
-Cc: Timo Kokkonen <timo.t.kokkonen@iki.fi>
-Cc: Pali Rohár <pali.rohar@gmail.com>
-Cc: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
-Tested-by: Sicelo A. Mhlongo <absicsz@gmail.com>
-Signed-off-by: Sean Young <sean@mess.org>
----
- arch/arm/configs/omap2plus_defconfig |   1 -
- drivers/media/rc/Kconfig             |  10 -
- drivers/media/rc/Makefile            |   1 -
- drivers/media/rc/ir-rx51.c           | 285 ---------------------------
- drivers/media/rc/pwm-ir-tx.c         |   1 +
- 5 files changed, 1 insertion(+), 297 deletions(-)
- delete mode 100644 drivers/media/rc/ir-rx51.c
+What we have found is that a TI kernel v3.8 works on the OMAP5EVM but =
+newer kernels start to fail.
 
-diff --git a/arch/arm/configs/omap2plus_defconfig b/arch/arm/configs/omap2plus_defconfig
-index b685018dcf54..ef39ab57b75a 100644
---- a/arch/arm/configs/omap2plus_defconfig
-+++ b/arch/arm/configs/omap2plus_defconfig
-@@ -484,7 +484,6 @@ CONFIG_LIRC=y
- CONFIG_RC_DEVICES=y
- CONFIG_IR_GPIO_TX=m
- CONFIG_IR_PWM_TX=m
--CONFIG_IR_RX51=m
- CONFIG_IR_SPI=m
- CONFIG_MEDIA_SUPPORT=m
- CONFIG_V4L_PLATFORM_DRIVERS=y
-diff --git a/drivers/media/rc/Kconfig b/drivers/media/rc/Kconfig
-index 922c790b577e..d1b98dd5bee6 100644
---- a/drivers/media/rc/Kconfig
-+++ b/drivers/media/rc/Kconfig
-@@ -337,16 +337,6 @@ config IR_REDRAT3
- 	   To compile this driver as a module, choose M here: the
- 	   module will be called redrat3.
- 
--config IR_RX51
--	tristate "Nokia N900 IR transmitter diode"
--	depends on (OMAP_DM_TIMER && PWM_OMAP_DMTIMER && ARCH_OMAP2PLUS || COMPILE_TEST) && RC_CORE
--	help
--	   Say Y or M here if you want to enable support for the IR
--	   transmitter diode built in the Nokia N900 (RX51) device.
--
--	   The driver uses omap DM timers for generating the carrier
--	   wave and pulses.
--
- config IR_SERIAL
- 	tristate "Homebrew Serial Port Receiver"
- 	depends on HAS_IOPORT
-diff --git a/drivers/media/rc/Makefile b/drivers/media/rc/Makefile
-index a9285266e944..2bca6f7f07bc 100644
---- a/drivers/media/rc/Makefile
-+++ b/drivers/media/rc/Makefile
-@@ -43,7 +43,6 @@ obj-$(CONFIG_IR_MTK) += mtk-cir.o
- obj-$(CONFIG_IR_NUVOTON) += nuvoton-cir.o
- obj-$(CONFIG_IR_PWM_TX) += pwm-ir-tx.o
- obj-$(CONFIG_IR_REDRAT3) += redrat3.o
--obj-$(CONFIG_IR_RX51) += ir-rx51.o
- obj-$(CONFIG_IR_SERIAL) += serial_ir.o
- obj-$(CONFIG_IR_SPI) += ir-spi.o
- obj-$(CONFIG_IR_STREAMZAP) += streamzap.o
-diff --git a/drivers/media/rc/ir-rx51.c b/drivers/media/rc/ir-rx51.c
-deleted file mode 100644
-index adbbe639a261..000000000000
---- a/drivers/media/rc/ir-rx51.c
-+++ /dev/null
-@@ -1,285 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-or-later
--/*
-- *  Copyright (C) 2008 Nokia Corporation
-- *
-- *  Based on lirc_serial.c
-- */
--#include <linux/clk.h>
--#include <linux/module.h>
--#include <linux/platform_device.h>
--#include <linux/wait.h>
--#include <linux/pwm.h>
--#include <linux/of.h>
--#include <linux/hrtimer.h>
--
--#include <media/rc-core.h>
--
--#define WBUF_LEN 256
--
--struct ir_rx51 {
--	struct rc_dev *rcdev;
--	struct pwm_device *pwm;
--	struct pwm_state state;
--	struct hrtimer timer;
--	struct device	     *dev;
--	wait_queue_head_t     wqueue;
--
--	unsigned int	freq;		/* carrier frequency */
--	unsigned int	duty_cycle;	/* carrier duty cycle */
--	int		wbuf[WBUF_LEN];
--	int		wbuf_index;
--	unsigned long	device_is_open;
--};
--
--static inline void ir_rx51_on(struct ir_rx51 *ir_rx51)
--{
--	ir_rx51->state.enabled = true;
--	pwm_apply_state(ir_rx51->pwm, &ir_rx51->state);
--}
--
--static inline void ir_rx51_off(struct ir_rx51 *ir_rx51)
--{
--	ir_rx51->state.enabled = false;
--	pwm_apply_state(ir_rx51->pwm, &ir_rx51->state);
--}
--
--static int init_timing_params(struct ir_rx51 *ir_rx51)
--{
--	ir_rx51->state.period = DIV_ROUND_CLOSEST(NSEC_PER_SEC, ir_rx51->freq);
--	pwm_set_relative_duty_cycle(&ir_rx51->state, ir_rx51->duty_cycle, 100);
--
--	return 0;
--}
--
--static enum hrtimer_restart ir_rx51_timer_cb(struct hrtimer *timer)
--{
--	struct ir_rx51 *ir_rx51 = container_of(timer, struct ir_rx51, timer);
--	ktime_t now;
--
--	if (ir_rx51->wbuf_index < 0) {
--		dev_err_ratelimited(ir_rx51->dev,
--				    "BUG wbuf_index has value of %i\n",
--				    ir_rx51->wbuf_index);
--		goto end;
--	}
--
--	/*
--	 * If we happen to hit an odd latency spike, loop through the
--	 * pulses until we catch up.
--	 */
--	do {
--		u64 ns;
--
--		if (ir_rx51->wbuf_index >= WBUF_LEN)
--			goto end;
--		if (ir_rx51->wbuf[ir_rx51->wbuf_index] == -1)
--			goto end;
--
--		if (ir_rx51->wbuf_index % 2)
--			ir_rx51_off(ir_rx51);
--		else
--			ir_rx51_on(ir_rx51);
--
--		ns = US_TO_NS(ir_rx51->wbuf[ir_rx51->wbuf_index]);
--		hrtimer_add_expires_ns(timer, ns);
--
--		ir_rx51->wbuf_index++;
--
--		now = timer->base->get_time();
--
--	} while (hrtimer_get_expires_tv64(timer) < now);
--
--	return HRTIMER_RESTART;
--end:
--	/* Stop TX here */
--	ir_rx51_off(ir_rx51);
--	ir_rx51->wbuf_index = -1;
--
--	wake_up_interruptible(&ir_rx51->wqueue);
--
--	return HRTIMER_NORESTART;
--}
--
--static int ir_rx51_tx(struct rc_dev *dev, unsigned int *buffer,
--		      unsigned int count)
--{
--	struct ir_rx51 *ir_rx51 = dev->priv;
--
--	if (count > WBUF_LEN)
--		return -EINVAL;
--
--	memcpy(ir_rx51->wbuf, buffer, count * sizeof(unsigned int));
--
--	/* Wait any pending transfers to finish */
--	wait_event_interruptible(ir_rx51->wqueue, ir_rx51->wbuf_index < 0);
--
--	init_timing_params(ir_rx51);
--	if (count < WBUF_LEN)
--		ir_rx51->wbuf[count] = -1; /* Insert termination mark */
--
--	/*
--	 * REVISIT: Adjust latency requirements so the device doesn't go in too
--	 * deep sleep states with pm_qos_add_request().
--	 */
--
--	ir_rx51_on(ir_rx51);
--	ir_rx51->wbuf_index = 1;
--	hrtimer_start(&ir_rx51->timer,
--		      ns_to_ktime(US_TO_NS(ir_rx51->wbuf[0])),
--		      HRTIMER_MODE_REL);
--	/*
--	 * Don't return back to the userspace until the transfer has
--	 * finished
--	 */
--	wait_event_interruptible(ir_rx51->wqueue, ir_rx51->wbuf_index < 0);
--
--	/* REVISIT: Remove pm_qos constraint, we can sleep again */
--
--	return count;
--}
--
--static int ir_rx51_open(struct rc_dev *dev)
--{
--	struct ir_rx51 *ir_rx51 = dev->priv;
--
--	if (test_and_set_bit(1, &ir_rx51->device_is_open))
--		return -EBUSY;
--
--	ir_rx51->pwm = pwm_get(ir_rx51->dev, NULL);
--	if (IS_ERR(ir_rx51->pwm)) {
--		int res = PTR_ERR(ir_rx51->pwm);
--
--		dev_err(ir_rx51->dev, "pwm_get failed: %d\n", res);
--		return res;
--	}
--
--	return 0;
--}
--
--static void ir_rx51_release(struct rc_dev *dev)
--{
--	struct ir_rx51 *ir_rx51 = dev->priv;
--
--	hrtimer_cancel(&ir_rx51->timer);
--	ir_rx51_off(ir_rx51);
--	pwm_put(ir_rx51->pwm);
--
--	clear_bit(1, &ir_rx51->device_is_open);
--}
--
--static struct ir_rx51 ir_rx51 = {
--	.duty_cycle	= 50,
--	.wbuf_index	= -1,
--};
--
--static int ir_rx51_set_duty_cycle(struct rc_dev *dev, u32 duty)
--{
--	struct ir_rx51 *ir_rx51 = dev->priv;
--
--	ir_rx51->duty_cycle = duty;
--
--	return 0;
--}
--
--static int ir_rx51_set_tx_carrier(struct rc_dev *dev, u32 carrier)
--{
--	struct ir_rx51 *ir_rx51 = dev->priv;
--
--	if (carrier > 500000 || carrier < 20000)
--		return -EINVAL;
--
--	ir_rx51->freq = carrier;
--
--	return 0;
--}
--
--#ifdef CONFIG_PM
--
--static int ir_rx51_suspend(struct platform_device *dev, pm_message_t state)
--{
--	/*
--	 * In case the device is still open, do not suspend. Normally
--	 * this should not be a problem as lircd only keeps the device
--	 * open only for short periods of time. We also don't want to
--	 * get involved with race conditions that might happen if we
--	 * were in a middle of a transmit. Thus, we defer any suspend
--	 * actions until transmit has completed.
--	 */
--	if (test_and_set_bit(1, &ir_rx51.device_is_open))
--		return -EAGAIN;
--
--	clear_bit(1, &ir_rx51.device_is_open);
--
--	return 0;
--}
--
--static int ir_rx51_resume(struct platform_device *dev)
--{
--	return 0;
--}
--
--#else
--
--#define ir_rx51_suspend	NULL
--#define ir_rx51_resume	NULL
--
--#endif /* CONFIG_PM */
--
--static int ir_rx51_probe(struct platform_device *dev)
--{
--	struct pwm_device *pwm;
--	struct rc_dev *rcdev;
--
--	pwm = pwm_get(&dev->dev, NULL);
--	if (IS_ERR(pwm))
--		return dev_err_probe(&dev->dev, PTR_ERR(pwm), "pwm_get failed\n");
--
--	/* Use default, in case userspace does not set the carrier */
--	ir_rx51.freq = DIV_ROUND_CLOSEST_ULL(pwm_get_period(pwm), NSEC_PER_SEC);
--	pwm_init_state(pwm, &ir_rx51.state);
--	pwm_put(pwm);
--
--	hrtimer_init(&ir_rx51.timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
--	ir_rx51.timer.function = ir_rx51_timer_cb;
--
--	ir_rx51.dev = &dev->dev;
--
--	rcdev = devm_rc_allocate_device(&dev->dev, RC_DRIVER_IR_RAW_TX);
--	if (!rcdev)
--		return -ENOMEM;
--
--	rcdev->priv = &ir_rx51;
--	rcdev->open = ir_rx51_open;
--	rcdev->close = ir_rx51_release;
--	rcdev->tx_ir = ir_rx51_tx;
--	rcdev->s_tx_duty_cycle = ir_rx51_set_duty_cycle;
--	rcdev->s_tx_carrier = ir_rx51_set_tx_carrier;
--	rcdev->driver_name = KBUILD_MODNAME;
--
--	ir_rx51.rcdev = rcdev;
--
--	return devm_rc_register_device(&dev->dev, ir_rx51.rcdev);
--}
--
--static const struct of_device_id ir_rx51_match[] = {
--	{
--		.compatible = "nokia,n900-ir",
--	},
--	{},
--};
--MODULE_DEVICE_TABLE(of, ir_rx51_match);
--
--static struct platform_driver ir_rx51_platform_driver = {
--	.probe		= ir_rx51_probe,
--	.suspend	= ir_rx51_suspend,
--	.resume		= ir_rx51_resume,
--	.driver		= {
--		.name	= KBUILD_MODNAME,
--		.of_match_table = of_match_ptr(ir_rx51_match),
--	},
--};
--module_platform_driver(ir_rx51_platform_driver);
--
--MODULE_DESCRIPTION("IR TX driver for Nokia RX51");
--MODULE_AUTHOR("Nokia Corporation");
--MODULE_LICENSE("GPL");
-diff --git a/drivers/media/rc/pwm-ir-tx.c b/drivers/media/rc/pwm-ir-tx.c
-index 7732054c4621..c5f37c03af9c 100644
---- a/drivers/media/rc/pwm-ir-tx.c
-+++ b/drivers/media/rc/pwm-ir-tx.c
-@@ -23,6 +23,7 @@ struct pwm_ir {
- 
- static const struct of_device_id pwm_ir_of_match[] = {
- 	{ .compatible = "pwm-ir-tx", },
-+	{ .compatible = "nokia,n900-ir" },
- 	{ },
- };
- MODULE_DEVICE_TABLE(of, pwm_ir_of_match);
--- 
-2.42.0
+A major observation ist that hwmods have been removed in smaller pieces =
+and the last removal
+was in v5.6: c33ff4c864d2b ARM: OMAP2+: Drop unused PRM defines for =
+omap4
+
+There are also some other unknown factors in our code where we do not =
+know how to port to modern
+kernels:
+* there is a context lost code but how to make use of it?
+* pmem fails unless we disable omap_aess_write_event_generator(aess, =
+EVENT_TIMER);
+
+It seems as if clocks and code like omap_hwmod_aess_preprogram() is =
+missing. Especially for the
+omap4 we have found no equivalent to aess_fclk which exists for omap5 =
+and dra7.
+Nowhere is a reference using the abe_iclk node.
+
+This would mean that power/clock management for ABE/AESS is =
+incomplete/missing.
+
+So maybe can you review our device tree definitions?
+Our patched DTS is included here:
+
+https://github.com/goldelico/letux-kernel/tree/letux/aess-v12
+=
+https://github.com/goldelico/letux-kernel/tree/letux/aess-v12/arch/arm/boo=
+t/dts/ti/omap
+
+and compare e.g. with the old hwmods code which is doing quite special =
+AESS setup like
+
+=
+https://elixir.bootlin.com/linux/v4.18.20/source/arch/arm/mach-omap2/omap_=
+hwmod_reset.c#L43
+=
+https://elixir.bootlin.com/linux/v4.18.20/source/include/sound/aess.h#L37
+
+I hope that I properly summarized the discussions with Patrik and =
+Andreas who please add if
+I forgot something important.
+
+BR and thanks,
+Nikolaus
 
