@@ -2,110 +2,96 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 494FD79116D
-	for <lists+linux-omap@lfdr.de>; Mon,  4 Sep 2023 08:34:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C060791BAF
+	for <lists+linux-omap@lfdr.de>; Mon,  4 Sep 2023 18:38:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233764AbjIDGei (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 4 Sep 2023 02:34:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39836 "EHLO
+        id S233930AbjIDQiB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 4 Sep 2023 12:38:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230333AbjIDGei (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 4 Sep 2023 02:34:38 -0400
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 80466109
-        for <linux-omap@vger.kernel.org>; Sun,  3 Sep 2023 23:34:34 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 6EB2280A3;
-        Mon,  4 Sep 2023 06:34:33 +0000 (UTC)
-Date:   Mon, 4 Sep 2023 09:34:32 +0300
-From:   Tony Lindgren <tony@atomide.com>
-To:     Andreas Kemnade <andreas@kemnade.info>
-Cc:     "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Patrik =?utf-8?Q?Dahlstr=C3=B6m?= <risca@dalakolonin.se>,
-        letux-kernel@openphoenux.org, kernel@pyra-handheld.com,
-        linux-omap@vger.kernel.org
-Subject: Re: ABE/AESS on modern kernel: clocks, hwmods etc.
-Message-ID: <20230904063432.GV11676@atomide.com>
-References: <53bc74ae-a2d5-40d5-8d51-bc0f062fcd15@email.android.com>
- <45F44D32-E846-4A53-BA20-9C78CD4411F3@goldelico.com>
- <ZO4SWw/rbJH5Dpbq@dalakolonin.se>
- <A029FB33-9FBB-4CE5-92D5-597E10B3A032@goldelico.com>
- <ZPH5Yr3w7ruN/io0@dalakolonin.se>
- <05B47ED4-CA2C-4754-ABB1-0591E9018E57@goldelico.com>
- <ZPLYG16mwiwt9G9R@dalakolonin.se>
- <CB775A6F-FDB6-4639-B386-8E8BEE4CD88C@goldelico.com>
- <20230902122635.2482b0cf@aktux>
+        with ESMTP id S234344AbjIDQiB (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 4 Sep 2023 12:38:01 -0400
+Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com [IPv6:2607:f8b0:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57CEB9D;
+        Mon,  4 Sep 2023 09:37:58 -0700 (PDT)
+Received: by mail-pg1-x529.google.com with SMTP id 41be03b00d2f7-56c2e882416so818598a12.3;
+        Mon, 04 Sep 2023 09:37:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1693845477; x=1694450277; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=6EPYeYpUMgvRUbOsFbzGxI3AkdC2ZNuAukK/JdwUVeA=;
+        b=MNsc08FNFft+XYkveoMzFSl6M6IyFRs6YP2DxU9Hrbnm/lpNq2QbCYmw7EQ+H6a9Sx
+         LfXi8twfoheRZ4Td7jXu8vZRT2KwmjVIQZL8O2ImYwW8fwTMNPkBGFnNnh2MFZ+jZ8i+
+         fv/UgEgaLMSi7v/MezLREyXE0hXhhH9xy+nRxnRb2NdMNpChluEhDvxnJjfQrxAGtRSJ
+         9t1wz+Y/qDvZEPFpHg/9O01M4VlXxFi24cqdoZj0NisMqUpZk03CHXmnEqtqeV4kDvln
+         FCDVOdCoeVA05vEUM4tmOpLb7GlJsrafSQG8Hx3t5asRzmOmI1w6/UNjK+hfAEkTFsJ+
+         t3zw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693845477; x=1694450277;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6EPYeYpUMgvRUbOsFbzGxI3AkdC2ZNuAukK/JdwUVeA=;
+        b=RAsry2h7AMy9dlrFyYXtsBHixW65+8YjPRPB9UJ114ptpySUjIGcadpaPfz4JJyCpS
+         Ht0ynzF+BWf2boNgTCigCU5EVCnWUTc1Il+siZB7sEpx5Cirk9RefY41BK+CjTR38ylL
+         x1GtBqiiTC4IZ3X2POmzSdHbPHsoQ6k/Evxxa+whCU3mQWD2KE9psVsOOreXEJW0+wUY
+         EEgTvZQA3aktA9VuiOXlpRDGLew6pgP9QXKRx6a9zsxtvnipubD/u6fZtiJ9mEVOyiqQ
+         DoeUhZZ2w4J/ZPamhiorXjrvbEpdSpWZYJjDZxQRncS1osvGMree3W/VH64oHRhW6TRK
+         cwAg==
+X-Gm-Message-State: AOJu0Yzn/wn6uxWdDRVnfB1kvtewf23PjkDjcy8g7odD1J7bN9ESO6gi
+        pfVtPX4YZfhF3ulESBU6/bko8NN0oJza1Zx44zBk5n4SOy8=
+X-Google-Smtp-Source: AGHT+IGwNwZ0KsmJJEXnkWX1ATQ9qyQ5o0gKg7iJ2dp1fUTAV1iyxvgSQRFUb+poruAKOOFW9V+Y78JAI1xyJuKjbQE=
+X-Received: by 2002:a17:90a:4f4a:b0:268:6060:c184 with SMTP id
+ w10-20020a17090a4f4a00b002686060c184mr8280762pjl.45.1693845477194; Mon, 04
+ Sep 2023 09:37:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230902122635.2482b0cf@aktux>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+From:   Adam Ford <aford173@gmail.com>
+Date:   Mon, 4 Sep 2023 11:37:46 -0500
+Message-ID: <CAHCN7xJjK=BaNHa=+OKzOmFtNRYKX_APTp5Zj3g-X_iQcpyK6g@mail.gmail.com>
+Subject: 6.1.y Regression found on AM3517
+To:     Linux-OMAP <linux-omap@vger.kernel.org>,
+        Saravana Kannan <saravanak@google.com>
+Cc:     stable <stable@vger.kernel.org>, Tony Lindgren <tony@atomide.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Andreas Kemnade <andreas@kemnade.info> [230902 10:26]:
-> On Sat, 2 Sep 2023 09:27:41 +0200
-> "H. Nikolaus Schaller" <hns@goldelico.com> wrote:
-> 
-> > Hi Tony,
-> > we are still struggling with ABE/AESS on the OMAP4/5 (PandaES, Pyra, OMAP5UEVM, BT-200).
-> > 
-> > Symptoms are that
-> > * pmem access will be broken after initializing the ABE-DSP
-> > * it seems the AES DSP is not running (and leads to timeouts when sending audio data to the buffers)
-> > * boot issues on BT-200
-> > 
-> > What we have found is that a TI kernel v3.8 works on the OMAP5EVM but newer kernels start to fail.
+I have an AM3517-EVM board that I am trying to use the latest 6.1.y
+stable, currently 6.1.51.
 
-OK. Sounds like the usual trying to catch up out of tree code with the
-mainline kernel :) We do have a better infrastructure in place now for
-using various accelerators with standard Linux generic frameworks now,
-so it should not be that hard to update the driver code.
+With git bisect, I narrowed the regression between 6.1.15 and 6.1.16 to commit
+eaf9b5612a47 ("driver core: fw_devlink: Don't purge child fwnode's
+consumer links")
 
-> > A major observation ist that hwmods have been removed in smaller pieces and the last removal
-> > was in v5.6: c33ff4c864d2b ARM: OMAP2+: Drop unused PRM defines for omap4
-> > 
-> > There are also some other unknown factors in our code where we do not know how to port to modern
-> > kernels:
-> > * there is a context lost code but how to make use of it?
+In the regression, 48002000.scm appears as not ready.  This affects a
+variety of dependent peripherals making them unavailable:
 
-For now, you can just check if context got lost on runtime PM resume based
-on some device registers. Linux does not have any framework available right
-now to make use of the context lost registers. And the context is only lost
-if the module power domain is shut off, which is mostly not happening with
-the mainline kernel either.
+wl12xx_buf platform: supplier 48002000.scm not ready
+wl12xx_vmmc2 platform: supplier wl12xx_buf not ready
+48050000.dss platform: supplier display@0 not ready
+48064800.ehci platform: supplier hsusb1_phy not ready
+backlight platform: supplier 48002000.scm not ready
+display@0 platform: supplier backlight not ready
+dmtimer-pwm@11 platform: supplier 48002000.scm not ready
+hsusb1_phy platform: supplier 48002000.scm not ready
+gpio-leds platform: supplier 48002000.scm not ready
+480b4000.mmc platform: supplier wl12xx_vmmc2 not ready
 
-> > * pmem fails unless we disable omap_aess_write_event_generator(aess, EVENT_TIMER);
+If I build 6.1.51 but I checkout drivers/base/core.c from commit
+2455b81afe68 ("driver core: fw_devlink: Add DL_FLAG_CYCLE support to
+device links"),
+the regression is gone.
 
-No idea about this one, but this might be doable with generic pwm code
-now with the dmtimers. See for example how the ir-rx51 is getting phased
-away and replaced with the generci pwm ir driver.
+I checked the 6.5 kernel, and it appears fine, so I think there is a
+possible backport commit missing, and I was hoping Saravana or Tony
+might have a suggestion as to which one(s) I should try.  I don't know
+if this is found on other OMAP3 boards, but I wouldn't be surprised.
 
-> > It seems as if clocks and code like omap_hwmod_aess_preprogram() is missing. Especially for the
-> > omap4 we have found no equivalent to aess_fclk which exists for omap5 and dra7.
-> > Nowhere is a reference using the abe_iclk node.
-> > 
-> for omap4 I guess the 
->                         clocks = <&abe_clkctrl OMAP4_AESS_CLKCTRL 0>;
-> 
-> in omap4-l4-abe.dtsi should be enough and correcly referencing fclk?
-
-Yeah the clocks chould be there and should use addressing like Andreas is
-showing.
-
-The replacement for omap_hwmod_aess_preprogam that should do the trick is
-sysc_module_enable_quirk_aess() based on AESS module detection. See "aess" in
-ti-sysc.c. If the AESS module has different revision register values other
-than 0x40000000, then new entries need to be added.
-
-Not sure which dts file(s) to look at in your git tree, maybe send some
-RFC patches to the mailing lists on adding support?
-
-Regards,
-
-Tony
+adam
