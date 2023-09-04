@@ -2,96 +2,70 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C060791BAF
-	for <lists+linux-omap@lfdr.de>; Mon,  4 Sep 2023 18:38:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4534979247B
+	for <lists+linux-omap@lfdr.de>; Tue,  5 Sep 2023 17:59:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233930AbjIDQiB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 4 Sep 2023 12:38:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44348 "EHLO
+        id S231429AbjIEP7D (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 5 Sep 2023 11:59:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234344AbjIDQiB (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 4 Sep 2023 12:38:01 -0400
-Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com [IPv6:2607:f8b0:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57CEB9D;
-        Mon,  4 Sep 2023 09:37:58 -0700 (PDT)
-Received: by mail-pg1-x529.google.com with SMTP id 41be03b00d2f7-56c2e882416so818598a12.3;
-        Mon, 04 Sep 2023 09:37:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1693845477; x=1694450277; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=6EPYeYpUMgvRUbOsFbzGxI3AkdC2ZNuAukK/JdwUVeA=;
-        b=MNsc08FNFft+XYkveoMzFSl6M6IyFRs6YP2DxU9Hrbnm/lpNq2QbCYmw7EQ+H6a9Sx
-         LfXi8twfoheRZ4Td7jXu8vZRT2KwmjVIQZL8O2ImYwW8fwTMNPkBGFnNnh2MFZ+jZ8i+
-         fv/UgEgaLMSi7v/MezLREyXE0hXhhH9xy+nRxnRb2NdMNpChluEhDvxnJjfQrxAGtRSJ
-         9t1wz+Y/qDvZEPFpHg/9O01M4VlXxFi24cqdoZj0NisMqUpZk03CHXmnEqtqeV4kDvln
-         FCDVOdCoeVA05vEUM4tmOpLb7GlJsrafSQG8Hx3t5asRzmOmI1w6/UNjK+hfAEkTFsJ+
-         t3zw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693845477; x=1694450277;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=6EPYeYpUMgvRUbOsFbzGxI3AkdC2ZNuAukK/JdwUVeA=;
-        b=RAsry2h7AMy9dlrFyYXtsBHixW65+8YjPRPB9UJ114ptpySUjIGcadpaPfz4JJyCpS
-         Ht0ynzF+BWf2boNgTCigCU5EVCnWUTc1Il+siZB7sEpx5Cirk9RefY41BK+CjTR38ylL
-         x1GtBqiiTC4IZ3X2POmzSdHbPHsoQ6k/Evxxa+whCU3mQWD2KE9psVsOOreXEJW0+wUY
-         EEgTvZQA3aktA9VuiOXlpRDGLew6pgP9QXKRx6a9zsxtvnipubD/u6fZtiJ9mEVOyiqQ
-         DoeUhZZ2w4J/ZPamhiorXjrvbEpdSpWZYJjDZxQRncS1osvGMree3W/VH64oHRhW6TRK
-         cwAg==
-X-Gm-Message-State: AOJu0Yzn/wn6uxWdDRVnfB1kvtewf23PjkDjcy8g7odD1J7bN9ESO6gi
-        pfVtPX4YZfhF3ulESBU6/bko8NN0oJza1Zx44zBk5n4SOy8=
-X-Google-Smtp-Source: AGHT+IGwNwZ0KsmJJEXnkWX1ATQ9qyQ5o0gKg7iJ2dp1fUTAV1iyxvgSQRFUb+poruAKOOFW9V+Y78JAI1xyJuKjbQE=
-X-Received: by 2002:a17:90a:4f4a:b0:268:6060:c184 with SMTP id
- w10-20020a17090a4f4a00b002686060c184mr8280762pjl.45.1693845477194; Mon, 04
- Sep 2023 09:37:57 -0700 (PDT)
+        with ESMTP id S1354109AbjIEJj7 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 5 Sep 2023 05:39:59 -0400
+X-Greylist: delayed 4353 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 05 Sep 2023 02:39:56 PDT
+Received: from mail.equinoxrise.pl (mail.equinoxrise.pl [217.61.112.157])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5A351A8
+        for <linux-omap@vger.kernel.org>; Tue,  5 Sep 2023 02:39:56 -0700 (PDT)
+Received: by mail.equinoxrise.pl (Postfix, from userid 1002)
+        id A360F833E8; Mon,  4 Sep 2023 09:41:37 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=equinoxrise.pl;
+        s=mail; t=1693813334;
+        bh=v6OgBfK5dN7P5dQ0wCu59rOfZaiqziJeLNblJ8dOcGI=;
+        h=Date:From:To:Subject:From;
+        b=VRTi3tvjLywySHO8S5WiHAiaQPCYJJxC/mJ9PaOcEmN4jdUDXaSDW/fQym5N6i2Tc
+         LB86klV4NKWzsSQCGoOVVr0W64Y+ECk2fOa7C3Wprn9aF+5YZSch4CL6WcCf5+TQI4
+         wfRVptlBlPVid3Sa+S8d2a67IVceZVV3jG8hunfGaiEZd78/FKtZU9ml43CBsOfyJY
+         RoHxRlqkVHGMGCCmDc1BsD6XwobU9C3W+LIeDyvGfKJnT4EG0KDTLnq3YYaraKxmW2
+         d5zHlK0ZEb2IVQjaEUZDS7fudVChLY2nvi0Rq1TAmxa2JDzc8DpHgwsSqph56vkpWo
+         oRJVC916br5MQ==
+Received: by mail.equinoxrise.pl for <linux-omap@vger.kernel.org>; Mon,  4 Sep 2023 07:40:34 GMT
+Message-ID: <20230904084500-0.1.7.ro9.0.xlcqsaqcdq@equinoxrise.pl>
+Date:   Mon,  4 Sep 2023 07:40:34 GMT
+From:   "Mateusz Talaga" <mateusz.talaga@equinoxrise.pl>
+To:     <linux-omap@vger.kernel.org>
+Subject: Prezentacja
+X-Mailer: mail.equinoxrise.pl
 MIME-Version: 1.0
-From:   Adam Ford <aford173@gmail.com>
-Date:   Mon, 4 Sep 2023 11:37:46 -0500
-Message-ID: <CAHCN7xJjK=BaNHa=+OKzOmFtNRYKX_APTp5Zj3g-X_iQcpyK6g@mail.gmail.com>
-Subject: 6.1.y Regression found on AM3517
-To:     Linux-OMAP <linux-omap@vger.kernel.org>,
-        Saravana Kannan <saravanak@google.com>
-Cc:     stable <stable@vger.kernel.org>, Tony Lindgren <tony@atomide.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS,URIBL_CSS_A,URIBL_DBL_SPAM
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-I have an AM3517-EVM board that I am trying to use the latest 6.1.y
-stable, currently 6.1.51.
+Dzie=C5=84 dobry!
 
-With git bisect, I narrowed the regression between 6.1.15 and 6.1.16 to commit
-eaf9b5612a47 ("driver core: fw_devlink: Don't purge child fwnode's
-consumer links")
+Czy m=C3=B3g=C5=82bym przedstawi=C4=87 rozwi=C4=85zanie, kt=C3=B3re umo=C5=
+=BCliwia monitoring ka=C5=BCdego auta w czasie rzeczywistym w tym jego po=
+zycj=C4=99, zu=C5=BCycie paliwa i przebieg?
 
-In the regression, 48002000.scm appears as not ready.  This affects a
-variety of dependent peripherals making them unavailable:
+Dodatkowo nasze narz=C4=99dzie minimalizuje koszty utrzymania samochod=C3=
+=B3w, skraca czas przejazd=C3=B3w, a tak=C5=BCe tworzenie planu tras czy =
+dostaw.
 
-wl12xx_buf platform: supplier 48002000.scm not ready
-wl12xx_vmmc2 platform: supplier wl12xx_buf not ready
-48050000.dss platform: supplier display@0 not ready
-48064800.ehci platform: supplier hsusb1_phy not ready
-backlight platform: supplier 48002000.scm not ready
-display@0 platform: supplier backlight not ready
-dmtimer-pwm@11 platform: supplier 48002000.scm not ready
-hsusb1_phy platform: supplier 48002000.scm not ready
-gpio-leds platform: supplier 48002000.scm not ready
-480b4000.mmc platform: supplier wl12xx_vmmc2 not ready
+Z naszej wiedzy i do=C5=9Bwiadczenia korzysta ju=C5=BC ponad 49 tys. Klie=
+nt=C3=B3w. Monitorujemy 809 000 pojazd=C3=B3w na ca=C5=82ym =C5=9Bwiecie,=
+ co jest nasz=C4=85 najlepsz=C4=85 wizyt=C3=B3wk=C4=85.
 
-If I build 6.1.51 but I checkout drivers/base/core.c from commit
-2455b81afe68 ("driver core: fw_devlink: Add DL_FLAG_CYCLE support to
-device links"),
-the regression is gone.
+Bardzo prosz=C4=99 o e-maila zwrotnego, je=C5=9Bli mogliby=C5=9Bmy wsp=C3=
+=B3lnie om=C3=B3wi=C4=87 potencja=C5=82 wykorzystania takiego rozwi=C4=85=
+zania w Pa=C5=84stwa firmie.
 
-I checked the 6.5 kernel, and it appears fine, so I think there is a
-possible backport commit missing, and I was hoping Saravana or Tony
-might have a suggestion as to which one(s) I should try.  I don't know
-if this is found on other OMAP3 boards, but I wouldn't be surprised.
 
-adam
+Pozdrawiam
+Mateusz Talaga
