@@ -2,37 +2,37 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 91D4F79246C
-	for <lists+linux-omap@lfdr.de>; Tue,  5 Sep 2023 17:58:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 06158792481
+	for <lists+linux-omap@lfdr.de>; Tue,  5 Sep 2023 17:59:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231139AbjIEP66 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 5 Sep 2023 11:58:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42420 "EHLO
+        id S231589AbjIEP7G (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 5 Sep 2023 11:59:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354596AbjIEMuh (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 5 Sep 2023 08:50:37 -0400
-Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [85.215.255.83])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EE3FDF
-        for <linux-omap@vger.kernel.org>; Tue,  5 Sep 2023 05:50:33 -0700 (PDT)
+        with ESMTP id S1354607AbjIEMxb (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 5 Sep 2023 08:53:31 -0400
+Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [85.215.255.80])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 726DB1A6
+        for <linux-omap@vger.kernel.org>; Tue,  5 Sep 2023 05:53:27 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; t=1693918225; cv=none;
     d=strato.com; s=strato-dkim-0002;
-    b=gnAtcqaSnLnNewn37hFtNxhUlKvlEqrF0GxeXBrRfU3cc1VG3SuIC8Fq+1mu3YDJyE
-    IyA5e3CfCQh/ioX9UZIg8C5KAhI3CGWil3dhm3CimdAT82sdal2yohcOyOrFt3CUrX0X
-    dyMzfrV8KkH3J0O36IYpjXPeh7Qw5TNBeKvhFDCOQ9M26zspBJ1I2zAsvAIPR6kBPUqv
-    fwF54/gaXvJkQCgE04e2kIiJtCC4ScXizbkoekKCD0G9cQUDKsezv/fhX3UU5wMbyPu4
-    q7EcKSd8NbquBTx+vMVgd8hBXxS1hdQJzJSPnDdYRyV6YpbeDl6d/YFgQZSziV65U1la
-    PPYQ==
+    b=VYtshvKsNszhkW/RTGEGIwbgFCnPIFq7aqnHyYXbKC1xU6ZeysK6DLz/sP813j2J1N
+    +4jANa3Rx3v2ZhuZ6MP69MtaqF7PL2oBx0RoYSkWyvlGRQuomAHKgFpVz7UZuJj5+wF9
+    qZuVqAaigyngsSjGsD+k6BP1F0OyK9pL7CYG6tqP9VLCTuXuJ+XNOXLhI71Jaeipkn7u
+    28eQddWpmLPMFTG2YjQdVk42giBRQVwDm8LRIQGv+V/hFYOZJD9Yt7ZJ82dIk6uggdNy
+    pXo411jBIT1pZm1+njh24yS2ntJCad/UesEyKdaeOzRX9JIr5Fa7F2o4nn52bbHbZFHn
+    uoLA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1693918225;
     s=strato-dkim-0002; d=strato.com;
     h=References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Cc:Date:
     From:Subject:Sender;
-    bh=97jgT7ubO9fpCR8zFFXRO0momnaATvtViaPFm0jve0w=;
-    b=tVUp4f1jtaHE2lzYIJsW5jKLV5CA+Le5AbTZwZ9e1/uRBmgydlkL1HtGTTxYshdbWP
-    r7znGa/0Z5U3mtI9T3sXJtliKkIA38TF/bDCXl/yFOOz5+v9R6AyRBumYYFzGXd+Z8of
-    +43erfxUAydbQdAsfquFaHRhgMF+WGu4wzanS+a2sJpO5ZWrBTQNMW13JnUUZX160die
-    k4FbFJ36Qbildm7T6hC1MxxlJ6dsTjQ/v2HAGOvuRgNo8BsulQEQOZd+n/FI4njRQYFO
-    ohHlW//hPVGEI7gvBDfdzml6Jezv2Ckx5apRaw2TFBSa1HWP1b82SfB+NmnLQa9Uu87C
-    Ibbw==
+    bh=Swn/M0GufsoQQ8tcNjfSJjPTQPXNruvk1DKccYgp+pQ=;
+    b=tHPRkphKqf5xv41w3Qk2yX37oA1NpBWKaRmB62na3QtetZWPcNQYt7C0sa0UAsvLk6
+    Ogx7ZUa4qgOhfffRis1UphJWWt4qYpChQNpchWpvo0XkHyUSom5W/eDSNjJOfCUF9ySY
+    kMbcY0+dJ5lYg0ypEgWaPNRBoLp0w5H6vaV99ylk7jl5uQ+W+YZt/6txb8zQouENRMym
+    nOLTq7vQz73g/jd+4ISI2XcpUosJHGH0Hp9EcQf0EcCoYppbUmYkShr9SiXbULK5eWZW
+    XbRyLO+mF4oMrfE4SYBOLYCEch/qVwcEqWBcZ8Yt125a1Y0Qd53WuPYtaoIWBIrzwQEt
+    bb3w==
 ARC-Authentication-Results: i=1; strato.com;
     arc=none;
     dkim=none
@@ -41,27 +41,27 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1693918225;
     s=strato-dkim-0002; d=goldelico.com;
     h=References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Cc:Date:
     From:Subject:Sender;
-    bh=97jgT7ubO9fpCR8zFFXRO0momnaATvtViaPFm0jve0w=;
-    b=Ds1cJMt4ahHcR2AZZ8lNdXWJXIs+gG5xv5EDi/Wvqdaa9R3KmmYd19cwRqfhGNsLbv
-    OcAGfM+3SwrPVPUwGMccMoPLVaViUTpvSKIU4fa9zg+JiG5BUV0QI5x6XMftmrlpnUQ/
-    ZXSChx+A7CaNu67LdNamx8fG+8LoAbHDNGeHlRjL8cTTptBZJKepmHifrkXiWUHdq+Rb
-    DN/Bp1ZHGSrS/hyk0+yEitv2j3nmYRUD13Fnqdw1XVylmjn8YQtxE3GnhdRZXW5qvn9E
-    DN9LKQYIt5HQD38nvyJgC84LWkzfyPAeSbJdYZW3XXTqdcMuOtT/00dIR1fOqTSmnhl4
-    56Zg==
+    bh=Swn/M0GufsoQQ8tcNjfSJjPTQPXNruvk1DKccYgp+pQ=;
+    b=FN19gDAHTFETjOOVnfHx6Qv3nnak7FBO4tmPzjo95txmTgY9j2aYGU2FtCYS7N+JGG
+    TUwjHwBu0oduapDYJ1zGNBSdYM+MhAhh7KtnD0tjKnQdYBEs5temZ9zUcRB/t+dy2DIZ
+    f+vrub8F5zplXdnTEqa/ohpAIdCRNEwKBnWT6McWB1cLP0Kln+NzcRNWA4kzhsmAY2Zm
+    9X9PIAOVEtYwYoHl6sZAQOiaPBpKl0WokQrIWKXySZQRwmUpwnePxV3wuGoEXJasCG9/
+    fZrhSyvHFowzIcBy61lhtLuzCLJYktYVCAwbI/tnxKcFCEDYFK1hMBh5GPQnWo7conHj
+    WQIQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1693918225;
     s=strato-dkim-0003; d=goldelico.com;
     h=References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Cc:Date:
     From:Subject:Sender;
-    bh=97jgT7ubO9fpCR8zFFXRO0momnaATvtViaPFm0jve0w=;
-    b=deZKFfkkyK+dN4fnWvCS1Rd6+bs6kmP+MsT3Zz+578kuDwaCpKVxV05Finue49h+Jk
-    U3izE+XnnN9sVx/mF+Cg==
+    bh=Swn/M0GufsoQQ8tcNjfSJjPTQPXNruvk1DKccYgp+pQ=;
+    b=xhTUeW8D0dyYF/CVC6KmrqQBabrkToA3MXqKhjhNWanOYk+rliNe9TS+JbDdS5dXG9
+    MkSksnBenh69kB4233Cw==
 X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9o1iTDUhfN4hi3qVZrW7J"
 Received: from localhost.localdomain
     by smtp.strato.de (RZmta 49.8.2 DYNA|AUTH)
-    with ESMTPSA id 04cbadz85CoOLbK
+    with ESMTPSA id 04cbadz85CoPLbL
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
         (Client did not present a certificate);
-    Tue, 5 Sep 2023 14:50:24 +0200 (CEST)
+    Tue, 5 Sep 2023 14:50:25 +0200 (CEST)
 From:   "H. Nikolaus Schaller" <hns@goldelico.com>
 To:     Tony Lindgren <tony@atomide.com>,
         Andreas Kemnade <andreas@kemnade.info>,
@@ -70,9 +70,9 @@ To:     Tony Lindgren <tony@atomide.com>,
 Cc:     letux-kernel@openphoenux.org, kernel@pyra-handheld.com,
         linux-omap@vger.kernel.org,
         "H. Nikolaus Schaller" <hns@goldelico.com>
-Subject: [RFC 5/6] ARM: DTS: omap4-l4-abe: add an aess (audio DSP of OMAP4 and OMAP5) child
-Date:   Tue,  5 Sep 2023 14:50:14 +0200
-Message-ID: <535d7f940a97ec12f6551fd2ca8a9343d8ae3674.1693918215.git.hns@goldelico.com>
+Subject: [RFC 6/6] ARM: DTS: omap4-panda-common: enable aess, add phandles for aess and mcbsp1/2/3
+Date:   Tue,  5 Sep 2023 14:50:15 +0200
+Message-ID: <070fc6758feb53d2b66372d38924d96ad2822b64.1693918215.git.hns@goldelico.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <cover.1693918214.git.hns@goldelico.com>
 References: <cover.1693918214.git.hns@goldelico.com>
@@ -88,115 +88,72 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-make the aess module a child of the target-module.
-
-Define ranges, register names, interrupts, dmas.
+and extend audio-routing.
 
 Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
 ---
- arch/arm/boot/dts/ti/omap/omap4-l4-abe.dtsi | 75 +++++++++++++++------
- 1 file changed, 56 insertions(+), 19 deletions(-)
+ .../boot/dts/ti/omap/omap4-panda-common.dtsi  | 22 +++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/ti/omap/omap4-l4-abe.dtsi b/arch/arm/boot/dts/ti/omap/omap4-l4-abe.dtsi
-index a8d66240d17d5..7ca7b369b4e59 100644
---- a/arch/arm/boot/dts/ti/omap/omap4-l4-abe.dtsi
-+++ b/arch/arm/boot/dts/ti/omap/omap4-l4-abe.dtsi
-@@ -41,12 +41,14 @@ segment@0 {					/* 0x40100000 */
- 			 <0x0003d000 0x0003d000 0x001000>,	/* ap 23 */
- 			 <0x0003e000 0x0003e000 0x001000>,	/* ap 24 */
- 			 <0x0003f000 0x0003f000 0x001000>,	/* ap 25 */
--			 <0x00080000 0x00080000 0x010000>,	/* ap 26 */
--			 <0x00080000 0x00080000 0x001000>,	/* ap 27 */
--			 <0x000a0000 0x000a0000 0x010000>,	/* ap 28 */
--			 <0x000a0000 0x000a0000 0x001000>,	/* ap 29 */
--			 <0x000c0000 0x000c0000 0x010000>,	/* ap 30 */
--			 <0x000c0000 0x000c0000 0x001000>,	/* ap 31 */
-+			 <0x00080000 0x00080000 0x010000>,	/* dmem */
-+			 <0x00090000 0x00090000 0x001000>,	/* dmem */
-+			 <0x000a0000 0x000a0000 0x010000>,	/* cmem */
-+			 <0x000b0000 0x000b0000 0x001000>,	/* cmem */
-+			 <0x000c0000 0x000c0000 0x010000>,	/* smem */
-+			 <0x000d0000 0x000d0000 0x001000>,	/* smem */
-+			 <0x000e0000 0x000e0000 0x010000>,	/* pmem */
-+			 <0x000f0000 0x000f0000 0x001000>,	/* pmem */
- 			 <0x000f1000 0x000f1000 0x001000>,	/* ap 32 */
- 			 <0x000f2000 0x000f2000 0x001000>,	/* ap 33 */
+diff --git a/arch/arm/boot/dts/ti/omap/omap4-panda-common.dtsi b/arch/arm/boot/dts/ti/omap/omap4-panda-common.dtsi
+index f528511c2537b..3409cb693d1d5 100644
+--- a/arch/arm/boot/dts/ti/omap/omap4-panda-common.dtsi
++++ b/arch/arm/boot/dts/ti/omap/omap4-panda-common.dtsi
+@@ -82,21 +82,31 @@ sound: sound {
+ 		ti,model = "PandaBoard";
  
-@@ -77,12 +79,14 @@ segment@0 {					/* 0x40100000 */
- 			 <0x4903d000 0x4903d000 0x001000>,	/* ap 23 */
- 			 <0x4903e000 0x4903e000 0x001000>,	/* ap 24 */
- 			 <0x4903f000 0x4903f000 0x001000>,	/* ap 25 */
--			 <0x49080000 0x49080000 0x010000>,	/* ap 26 */
--			 <0x49080000 0x49080000 0x001000>,	/* ap 27 */
--			 <0x490a0000 0x490a0000 0x010000>,	/* ap 28 */
--			 <0x490a0000 0x490a0000 0x001000>,	/* ap 29 */
--			 <0x490c0000 0x490c0000 0x010000>,	/* ap 30 */
--			 <0x490c0000 0x490c0000 0x001000>,	/* ap 31 */
-+			 <0x49080000 0x49080000 0x010000>,	/* dmem */
-+			 <0x49090000 0x49090000 0x001000>,	/* dmem */
-+			 <0x490a0000 0x490a0000 0x010000>,	/* cmem */
-+			 <0x490b0000 0x490b0000 0x001000>,	/* cmem */
-+			 <0x490c0000 0x490c0000 0x010000>,	/* smem */
-+			 <0x490d0000 0x490d0000 0x001000>,	/* smem */
-+			 <0x490e0000 0x490e0000 0x010000>,	/* pmem */
-+			 <0x490f0000 0x490f0000 0x001000>,	/* pmem */
- 			 <0x490f1000 0x490f1000 0x001000>,	/* ap 32 */
- 			 <0x490f2000 0x490f2000 0x001000>;	/* ap 33 */
+ 		ti,mclk-freq = <38400000>;
++		ti,mclk-freq = <38400000>;	// CHECKME: 19200000?
  
-@@ -482,14 +486,47 @@ target-module@f1000 {			/* 0x401f1000, ap 32 20.0 */
- 			clock-names = "fck";
- 			#address-cells = <1>;
- 			#size-cells = <1>;
--			ranges = <0x0 0xf1000 0x1000>,
--				 <0x490f1000 0x490f1000 0x1000>;
+ 		ti,mcpdm = <&mcpdm>;
++		ti,mcbsp1 = <&mcbsp1>;	/* bluetooth */
++		ti,mcbsp2 = <&mcbsp2>;	/* fm radio */
++		ti,mcbsp3 = <&mcbsp3>;	/* modem */
  
--			/*
--			 * No child device binding or driver in mainline.
--			 * See Android tree and related upstreaming efforts
--			 * for the old driver.
--			 */
-+			/* CHECKME: OMAP4 and OMAP5 may differ in memory sizes, here we define more than available... */
-+			ranges = <0 0xf1000 0x1000>, /* MPU private access */
-+				 <0x80000 0x80000 0x10000>, /* DMEM 64KiB - MPU */
-+				 <0xa0000 0xa0000 0x10000>, /* CMEM 6KiB - MPU */
-+				 <0xc0000 0xc0000 0x10000>, /* SMEM 64KiB - MPU */
-+				 <0xe0000 0xe0000 0x10000>, /* PMEM 8KiB - MPU */
-+				 <0x490f1000 0x490f1000 0x10000>, /* L3 Interconnect */
-+				 <0x49080000 0x49080000 0x10000>, /* DMEM 64KiB - L3 */
-+				 <0x490a0000 0x490a0000 0x10000>, /* CMEM 6KiB - L3 */
-+				 <0x490ce000 0x490c0000 0x10000>, /* SMEM 64KiB - L3 */
-+				 <0x490e0000 0x490e0000 0x10000>; /* PMEM 8KiB - L3 */
-+
-+			aess: aess {
-+				compatible = "ti,omap4-aess";
-+				status = "disabled";
-+				reg = <0 0xfff>, /* MPU private access */
-+				      <0x80000 0xffff>, /* DMEM - MPU */
-+				      <0xa0000 0xffff>, /* CMEM - MPU */
-+				      <0xc0000 0xffff>, /* SMEM - MPU */
-+				      <0xe0000 0xffff>, /* PMEM - MPU */
-+				      <0x490f1000 0xfff>, /* L3 Interconnect */
-+				      <0x49080000 0xffff>, /* DMEM - L3 */
-+				      <0x490a0000 0xffff>, /* CMEM - L3 */
-+				      <0x490ce000 0xffff>, /* SMEM - L3 */
-+				      <0x490e0000 0xffff>; /* PMEM - L3 */
-+				reg-names = "mpu", "dmem", "cmem", "smem", "pmem",
-+				      "dma", "dmem_dma", "cmem_dma", "smem_dma",
-+				      "pmem_dma";
-+				interrupts = <GIC_SPI 99 IRQ_TYPE_LEVEL_HIGH>;
-+				dmas = <&sdma 101>,
-+				      <&sdma 102>,
-+				      <&sdma 103>,
-+				      <&sdma 104>,
-+				      <&sdma 105>,
-+				      <&sdma 106>,
-+				      <&sdma 107>,
-+				      <&sdma 108>;
-+				dma-names = "fifo0", "fifo1", "fifo2", "fifo3", "fifo4",
-+				      "fifo5", "fifo6", "fifo7";
-+			};
- 		};
+ 		ti,twl6040 = <&twl6040>;
++		ti,aess = <&aess>;
+ 
+ 		/* Audio routing */
+ 		ti,audio-routing =
+ 			"Headset Stereophone", "HSOL",
+ 			"Headset Stereophone", "HSOR",
+-			"Ext Spk", "HFL",
+-			"Ext Spk", "HFR",
++			"Earphone Spk", "EP",
+ 			"Line Out", "AUXL",
+ 			"Line Out", "AUXR",
++			"Vibrator", "VIBRAL",
++			"Vibrator", "VIBRAR",
+ 			"HSMIC", "Headset Mic",
+ 			"Headset Mic", "Headset Mic Bias",
++			"MAINMIC", "Main Handset Mic",
++			"Main Handset Mic", "Main Mic Bias",
++			"SUBMIC", "Sub Handset Mic",
++			"Sub Handset Mic", "Main Mic Bias",
+ 			"AFML", "Line In",
+ 			"AFMR", "Line In";
  	};
+@@ -227,6 +237,10 @@ hdmi_connector_in: endpoint {
+ 	};
+ };
+ 
++&aess {
++	status = "okay";
++};
++
+ &omap4_pmx_core {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <
+@@ -517,6 +531,10 @@ &mcbsp1 {
+ 	status = "okay";
+ };
+ 
++&mcbsp2 {
++	status = "okay";
++};
++
+ &twl_usb_comparator {
+ 	usb-supply = <&vusb>;
  };
 -- 
 2.42.0
