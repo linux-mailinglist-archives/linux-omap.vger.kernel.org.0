@@ -2,52 +2,60 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 370E1792454
-	for <lists+linux-omap@lfdr.de>; Tue,  5 Sep 2023 17:58:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4032B792473
+	for <lists+linux-omap@lfdr.de>; Tue,  5 Sep 2023 17:59:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230129AbjIEP6r (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 5 Sep 2023 11:58:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46840 "EHLO
+        id S231232AbjIEP7A (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 5 Sep 2023 11:59:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354824AbjIEOpT (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 5 Sep 2023 10:45:19 -0400
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a02:c205:3004:2154::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19F99197
-        for <linux-omap@vger.kernel.org>; Tue,  5 Sep 2023 07:45:12 -0700 (PDT)
-Received: from pd9e2f2ad.dip0.t-ipconnect.de ([217.226.242.173] helo=aktux)
-        by mail.andi.de1.cc with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <andreas@kemnade.info>)
-        id 1qdXIV-003OAX-Cs; Tue, 05 Sep 2023 16:44:55 +0200
-Date:   Tue, 5 Sep 2023 16:44:53 +0200
-From:   Andreas Kemnade <andreas@kemnade.info>
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     Tony Lindgren <tony@atomide.com>,
-        Patrik =?UTF-8?B?RGFobHN0csO2bQ==?= <risca@dalakolonin.se>,
-        letux-kernel@openphoenux.org, kernel@pyra-handheld.com,
-        linux-omap@vger.kernel.org,
-        =?UTF-8?B?UMOpdGVy?= Ujfalusi <peter.ujfalusi@gmail.com>
-Subject: Re: ABE/AESS on modern kernel: clocks, hwmods etc.
-Message-ID: <20230905164453.3be3f33a@aktux>
-In-Reply-To: <9CF135C5-85B6-47CC-985C-FE6F4B24407D@goldelico.com>
-References: <45F44D32-E846-4A53-BA20-9C78CD4411F3@goldelico.com>
-        <ZO4SWw/rbJH5Dpbq@dalakolonin.se>
-        <A029FB33-9FBB-4CE5-92D5-597E10B3A032@goldelico.com>
-        <ZPH5Yr3w7ruN/io0@dalakolonin.se>
-        <05B47ED4-CA2C-4754-ABB1-0591E9018E57@goldelico.com>
-        <ZPLYG16mwiwt9G9R@dalakolonin.se>
-        <CB775A6F-FDB6-4639-B386-8E8BEE4CD88C@goldelico.com>
-        <20230902122635.2482b0cf@aktux>
-        <20230904063432.GV11676@atomide.com>
-        <03375B42-C86E-4B37-98C2-C1FBA7AB68B6@goldelico.com>
-        <20230905061208.GW11676@atomide.com>
-        <9CF135C5-85B6-47CC-985C-FE6F4B24407D@goldelico.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
+        with ESMTP id S1354848AbjIEPCr (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 5 Sep 2023 11:02:47 -0400
+Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E927D18D;
+        Tue,  5 Sep 2023 08:02:43 -0700 (PDT)
+Received: by mail-pl1-x634.google.com with SMTP id d9443c01a7336-1c1f7f7151fso13006985ad.1;
+        Tue, 05 Sep 2023 08:02:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1693926163; x=1694530963; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=NurAmI/o4Nt/FTksqJKmVIyAtt3h8f2QUxfQ9OayLBI=;
+        b=GIi1KQth8ZxKAYpus1z2bOG5wqr++/N5M9Nsk9HZCbL4Gxmiuf0m+KhHMnuM1elg5w
+         iQV/oQ21UYjVrP10ezCN8hUVncRwE9/0NgLvuscDOtytneLqj4Xj6PUE1Z+hIetGUtlA
+         16bVKnvr6fBha+GnGqrNxivUpIZWkXwuQJ+j+ie08YNDhSyKlR8stp0YDWefSt+Izn87
+         2ydZz3dbwjA36+Ml3C4BGfIut5mClMpGO0VR1IUiIbStCbs45ILmmyUirEiTs0bjAS/l
+         r7cFacwyt0PWHQc1gsKces3Ddte+K5kXTS5c8za9kTBUBW1AxrNVJTrObXvE0GdblZS1
+         scxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693926163; x=1694530963;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=NurAmI/o4Nt/FTksqJKmVIyAtt3h8f2QUxfQ9OayLBI=;
+        b=fGjyL01rePkHKhyGXrIhm1ypi2SbPPPrFnu+C022EdWP+GeHr8wRliX9F8z5iwh57i
+         oojnF5DxCY4KBo+lYsj+lte71Q38GAuW2l9mpnghRPj7jykgFnlckLIoqzaiSZQkrTQ5
+         TijvhNOgtEY4U6JW7q/26Mcc8157mL+d9GOZ4c/Q5GFR63O8VdAwq97U2aMFoEg2S5yq
+         mZxjXmT55SSV6yYX9o6s89KpCzrmZvuKi6yMqq5t+sno0KOK9VyGeXLuuI/pGQ9auvKj
+         j70UsQdrVmmzdqewdysXO/CFHMGbmcx+G32XyVlppzp33eWfzXoCKHNilrRm7nZEtsWe
+         Sv0g==
+X-Gm-Message-State: AOJu0YyvIO+9U0hMF9U/tge39xh/NPdtJZP6GFYuWX2fzQAKz6KVCaXC
+        BIzrnM4GHZIE2Ek/ghjm+VhgkyXNZGL4DR/WGTXY7ChBOfI=
+X-Google-Smtp-Source: AGHT+IGfE6p37dWMCRhNNFzvrFcn53nX6bxZBRLPS1JBPnx8zrNDJEBxkj1JJ9XsMTYzGQ6Gj4oevDz50W7zEqNuy8E=
+X-Received: by 2002:a17:90a:bb97:b0:268:2543:723 with SMTP id
+ v23-20020a17090abb9700b0026825430723mr10297064pjr.5.1693926162287; Tue, 05
+ Sep 2023 08:02:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,T_SPF_HELO_TEMPERROR,T_SPF_TEMPERROR
+From:   Adam Ford <aford173@gmail.com>
+Date:   Tue, 5 Sep 2023 10:02:30 -0500
+Message-ID: <CAHCN7xLQH8cksj8OxpvqAF_7uk_Gn-5+ROd7MfUo75EL580+iw@mail.gmail.com>
+Subject: AM3517 Timer busy regression on 6.1.y branch
+To:     Linux-OMAP <linux-omap@vger.kernel.org>,
+        Tony Lindgren <tony@atomide.com>
+Cc:     stable <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,28 +63,30 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, 5 Sep 2023 14:42:03 +0200
-"H. Nikolaus Schaller" <hns@goldelico.com> wrote:
+Tony et al
+,
+I am trying to run the 6.1.y branch on an AM3517-EVM.
 
-> Hi Tony,
-> 
-> > Am 05.09.2023 um 08:12 schrieb Tony Lindgren <tony@atomide.com>:
-> > 
-> > The key observation is that the abe_iclk references in the DTS seem to be nowhere referenced  
-> >> (which may or may not be an issue):
-> >> 
-> >> https://github.com/goldelico/letux-kernel/blob/letux/aess-v12/arch/arm/boot/dts/ti/omap/omap44xx-clocks.dtsi#L509
-> >> https://github.com/goldelico/letux-kernel/blob/letux/aess-v12/arch/arm/boot/dts/ti/omap/omap54xx-clocks.dtsi#L161  
-> > 
-> > So I guess the ick is in the dts the ocp_abe_iclk@528 for omap4 and
-> > abe_iclk@528 for omap5. Seems like the driver should request them, I recall
-> > that the interconnect target module does not need the ick to access sysc
-> > and revision registers.  
-> 
-> Yes, that is what I suspect but I don't know how to request them.
-> 
-add ,"ick" to the clock-names line in the target-module?
-and ,<&ocp_abe_iclk> to the target module?
+There are two GPT that throw an error:
 
-Regards,
-Andreas
+ ti-sysc: probe of 48318000.target-module failed with error -16
+ ti-sysc: probe of 49032000.target-module failed with error -16
+
+I did some minor investigation and found sysc_check_active_timer() is
+returning the busy condition.
+
+I tracked this back a bit further and found that if I revert commit
+a12315d6d270  ("bus: ti-sysc: Make omap3 gpt12 quirk handling SoC
+specific"), this error condition goes away.
+
+It almost looks to me like sysc_check_active_timer is defaulting to
+-EBUSY when the SoC is not 3430, but the sysc_soc_match[] doesn't
+appear to match to AM3517.
+
+I think the proper solution is to treat the AM35* as 3430.  Do you
+agree with that approach?
+
+If so, I'll submit a patch with a fixes tag. I am also wondering how
+far back I should mark the fixes tag.
+
+adam
