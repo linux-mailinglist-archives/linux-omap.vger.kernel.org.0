@@ -2,39 +2,38 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 11F7679247E
-	for <lists+linux-omap@lfdr.de>; Tue,  5 Sep 2023 17:59:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB247792461
+	for <lists+linux-omap@lfdr.de>; Tue,  5 Sep 2023 17:58:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231513AbjIEP7E convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-omap@lfdr.de>); Tue, 5 Sep 2023 11:59:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32876 "EHLO
+        id S230325AbjIEP6w (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 5 Sep 2023 11:58:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60838 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353459AbjIEGRp (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 5 Sep 2023 02:17:45 -0400
+        with ESMTP id S1353517AbjIEG2V (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 5 Sep 2023 02:28:21 -0400
 Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B07DEE6;
-        Mon,  4 Sep 2023 23:17:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id CB0D4CC4;
+        Mon,  4 Sep 2023 23:28:17 -0700 (PDT)
 Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 070D380A3;
-        Tue,  5 Sep 2023 06:17:41 +0000 (UTC)
-Date:   Tue, 5 Sep 2023 09:17:39 +0300
+        by muru.com (Postfix) with ESMTPS id 46DA780A3;
+        Tue,  5 Sep 2023 06:28:17 +0000 (UTC)
+Date:   Tue, 5 Sep 2023 09:28:15 +0300
 From:   Tony Lindgren <tony@atomide.com>
-To:     Bagas Sanjaya <bagasdotme@gmail.com>
-Cc:     Adam Ford <aford173@gmail.com>,
-        Linux OMAP <linux-omap@vger.kernel.org>,
-        Saravana Kannan <saravanak@google.com>,
-        Linux Stable <stable@vger.kernel.org>,
-        Linux Regressions <regressions@lists.linux.dev>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: 6.1.y Regression found on AM3517
-Message-ID: <20230905061739.GX11676@atomide.com>
-References: <CAHCN7xJjK=BaNHa=+OKzOmFtNRYKX_APTp5Zj3g-X_iQcpyK6g@mail.gmail.com>
- <ZPZ2zTS9loj06u31@debian.me>
+To:     Andreas Kemnade <andreas@kemnade.info>
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        jic23@kernel.org, lars@metafoo.de, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: iio: adc: Add TI TWL603X GPADC
+Message-ID: <20230905062815.GY11676@atomide.com>
+References: <20230816202614.324457-1-andreas@kemnade.info>
+ <426d78d6-9fa6-bfeb-b36a-fba264097a27@linaro.org>
+ <20230819221903.726a1c39@aktux>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8BIT
-In-Reply-To: <ZPZ2zTS9loj06u31@debian.me>
+In-Reply-To: <20230819221903.726a1c39@aktux>
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -43,54 +42,21 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Bagas Sanjaya <bagasdotme@gmail.com> [230905 00:31]:
-> On Mon, Sep 04, 2023 at 11:37:46AM -0500, Adam Ford wrote:
-> > I have an AM3517-EVM board that I am trying to use the latest 6.1.y
-> > stable, currently 6.1.51.
+* Andreas Kemnade <andreas@kemnade.info> [230820 00:11]:
+> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+> > On 16/08/2023 22:26, Andreas Kemnade wrote:
+> > > +title: GPADC subsystem in the TWL6030 power module
+> > > +
+> > > +maintainers:
+> > > +  - Jonathan Cameron <jic23@kernel.org>  
 > > 
-> > With git bisect, I narrowed the regression between 6.1.15 and 6.1.16 to commit
-> > eaf9b5612a47 ("driver core: fw_devlink: Don't purge child fwnode's
-> > consumer links")
+> > This should be rather someone knowing or having or caring about this
+> > particular hardware, not subsystem maintainer.
 > > 
-> > In the regression, 48002000.scm appears as not ready.  This affects a
-> > variety of dependent peripherals making them unavailable:
-> > 
-> > wl12xx_buf platform: supplier 48002000.scm not ready
-> > wl12xx_vmmc2 platform: supplier wl12xx_buf not ready
-> > 48050000.dss platform: supplier display@0 not ready
-> > 48064800.ehci platform: supplier hsusb1_phy not ready
-> > backlight platform: supplier 48002000.scm not ready
-> > display@0 platform: supplier backlight not ready
-> > dmtimer-pwm@11 platform: supplier 48002000.scm not ready
-> > hsusb1_phy platform: supplier 48002000.scm not ready
-> > gpio-leds platform: supplier 48002000.scm not ready
-> > 480b4000.mmc platform: supplier wl12xx_vmmc2 not ready
-> > 
-> > If I build 6.1.51 but I checkout drivers/base/core.c from commit
-> > 2455b81afe68 ("driver core: fw_devlink: Add DL_FLAG_CYCLE support to
-> > device links"),
-> > the regression is gone.
+> Hmm, I have the twl6032, but not the twl6030. So probably
+> Tony (OMAP-Maintainer) or me?
 
-Adam, maybe check if 6.1 stable series is missing something to be
-backported from this mailing list thread:
-
-https://lore.kernel.org/lkml/20230207014207.1678715-2-saravanak@google.com/
-
-That email thread version seemed to work for me based on my reply in the
-thread. I recall issues with the earlier revisions but don't remember
-what fixed them.
-
-> > I checked the 6.5 kernel, and it appears fine, so I think there is a
-> > possible backport commit missing, and I was hoping Saravana or Tony
-> > might have a suggestion as to which one(s) I should try.  I don't know
-> > if this is found on other OMAP3 boards, but I wouldn't be surprised.
-> > 
-> 
-> Thanks for the regression report. I'm adding it to regzbot as stable-specific
-> entry:
-> 
-> #regzbot ^introduced: eaf9b5612a47f0
-> #regzbot title: keeping consumer links of child fwnode doesn't prepare AM3517-EVM suppliers
+Please add yourself :)
 
 Regards,
 
