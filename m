@@ -2,53 +2,53 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D364792DE5
-	for <lists+linux-omap@lfdr.de>; Tue,  5 Sep 2023 20:55:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8897D792DEB
+	for <lists+linux-omap@lfdr.de>; Tue,  5 Sep 2023 20:55:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239011AbjIESz1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 5 Sep 2023 14:55:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41162 "EHLO
+        id S240323AbjIESzY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 5 Sep 2023 14:55:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235426AbjIESzU (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 5 Sep 2023 14:55:20 -0400
-Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD870B6
-        for <linux-omap@vger.kernel.org>; Tue,  5 Sep 2023 11:54:46 -0700 (PDT)
-Received: by mail-wm1-x32a.google.com with SMTP id 5b1f17b1804b1-401f503b529so28407605e9.0
-        for <linux-omap@vger.kernel.org>; Tue, 05 Sep 2023 11:54:46 -0700 (PDT)
+        with ESMTP id S239072AbjIESzV (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 5 Sep 2023 14:55:21 -0400
+Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 806A9E59
+        for <linux-omap@vger.kernel.org>; Tue,  5 Sep 2023 11:54:48 -0700 (PDT)
+Received: by mail-wm1-x32e.google.com with SMTP id 5b1f17b1804b1-402d0eda361so20531735e9.0
+        for <linux-omap@vger.kernel.org>; Tue, 05 Sep 2023 11:54:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1693940030; x=1694544830; darn=vger.kernel.org;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1693940032; x=1694544832; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Y08y4soco06KI/f6qh6fDW5G+nl2ifTZ323XD3WrKbY=;
-        b=tEOX8ffapuX8dZqoUK+7STrJbAT2ZJ/8+Q9lohfNmYgx2Oz7/FpwJgEY1KNzsYQzbY
-         MbaKtvq6EdCGQSy1g5oS+eGaUBch8AJX+LltwEgC2EuV+lNaSx8CQsp5Vr9JNUk9O4wM
-         wYEZAMbUTJvCGllMf4/UzC2dy8crvuO5N5Q6o5D+co01SU/emD1k19QDhLP7YVslRXbv
-         mJ1nmWifpof5PDEEqvMFw2hCaIvph3gDdseOrmRXMETv7Vj1ZDc8w6J1Eh0xWHrbS4u+
-         EQwSl7vvMtbeO1xQRW2i2t6CU5Ko0TcMUV5aWnReCD3egrka24S84fC+fWPfW+jW17WY
-         LrNQ==
+        bh=UrAFFOP3UXm+2vTLeazN1us+BKa1tnA/xN1dYjhLvHM=;
+        b=MQWbDF4rE965sDGpw+Z8xVUKRHWw3YwzcUYhTRpv6IjQmey/WoA0wHY8VDz3R0Gs38
+         ONt/xesxsRZkGk1oQAbVZ3/Xb76GeT7pfbvfb4yr9zqV/VjJ5K2WB6AlPVPvoo50v0VM
+         k8osQxqM9YtwOMW+1OwNpMmpWUQOpl+gVSuTgLVkExdc/SXvLBOJbw1sLo5ay63Ho/fb
+         YddhACrq0zNDPR8OLrpkxFlpuOCulETe0g8uTQKCP3PPXZZ52MdDVgn9LSEANBfDGdLV
+         nm2HV2DtdgVJ9nmvVVDfsHadpACFPjc9utovdDApP0UYgxae8AB0ZTtfWUDNP5Wf+vfS
+         eyUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693940030; x=1694544830;
+        d=1e100.net; s=20221208; t=1693940032; x=1694544832;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Y08y4soco06KI/f6qh6fDW5G+nl2ifTZ323XD3WrKbY=;
-        b=JoqOf9uDFVOi2vePhStONBKCGhz46F0AcminnYxFdL8VZGGVawM90ZweH4xzsOa3hn
-         jraHdtom85MjzmFx/hcb0g4sWaIz8EzpWjYz0EvsHCdn00wthej/Ci0L9tvpH+rPywAR
-         RlrNNAkdm/eeJ4viF2+DqJa8gQ1NJGmRx227hPKqeHcnuJb2T7fy0ngs3bAQaF/H6/Jy
-         YcgM82mhNzjkvdWHqDwtbO2SUxrKJPwQLtskYyoOE35dMiLrW/+PX4Qnx0Hpiix1MdMU
-         W+7qs3zXva+irBH0Zz0PeUbLT9L02qZrLYvjkYfLqJcq6DXJLbLzJHNS20waX7ZkOzAi
-         JJIQ==
-X-Gm-Message-State: AOJu0YwIRK415dKMhSmG7UEYOfSLOgvWy64OTMZPrtZAiFj8cds5drdm
-        xJLWSo4RxJhVQUfP9b1VR2oDtA==
-X-Google-Smtp-Source: AGHT+IEgNpZG6hg0L74CESnSvpfFz6XeLAbhQH8cNkX0kwXYqx/uTGgV7V6lKbCtezy+q5QbzDETKg==
-X-Received: by 2002:a05:600c:21cd:b0:401:38dc:8916 with SMTP id x13-20020a05600c21cd00b0040138dc8916mr474754wmj.10.1693940030455;
-        Tue, 05 Sep 2023 11:53:50 -0700 (PDT)
+        bh=UrAFFOP3UXm+2vTLeazN1us+BKa1tnA/xN1dYjhLvHM=;
+        b=X4KraSV1NowH7hEAE2vQmog7/sfsvxoT9i6UI5A56bgcKtULMbDSTY3rWurm5E3gXM
+         UIYBxpgPQCTbRZfR3R7tMBDjQwCMIjMy4BygQO3iOyVvoBZVuCYcr2r8b9lXpLP5Maal
+         2s8esvu+7ZlPYBVBPOjMJJdcPgJ2NSDeBTNgsM2XOtDDNZYMaatyhQDNYCYJvBFCtadk
+         bj52GVCMr+z2rno4u13wsSuSnN/7X4gUosITG+7pMyWQWunVu/f216TGPlzomKdBBnQy
+         x/Ngzter/Cp1rYqoogCVaVQr23YU+ZPOHMgOXc554+Ewc4ih3gFwGxg4oXBxZ7lJrO37
+         SMkw==
+X-Gm-Message-State: AOJu0Yxd8B77tm49nztcYE2U3VvaBdXj8g45pmotxtliw2jYMWSfQpwX
+        XsSQHM0LcGGPMxJrzbJW0pJxH/ZLDTRSVelEDeU=
+X-Google-Smtp-Source: AGHT+IG5rvnvzkhR7zSqbm37o4SyQS5DF2Q3QExpMFHirbdRnNeCry1xvOOt3d5Fk7gOho9h35WBqA==
+X-Received: by 2002:a05:600c:11ce:b0:3fe:2011:a7ce with SMTP id b14-20020a05600c11ce00b003fe2011a7cemr453840wmi.6.1693940031710;
+        Tue, 05 Sep 2023 11:53:51 -0700 (PDT)
 Received: from brgl-uxlite.home ([2a01:cb1d:334:ac00:7a54:5dbc:6d09:48b7])
-        by smtp.gmail.com with ESMTPSA id 17-20020a05600c249100b003fbc30825fbsm17550010wms.39.2023.09.05.11.53.49
+        by smtp.gmail.com with ESMTPSA id 17-20020a05600c249100b003fbc30825fbsm17550010wms.39.2023.09.05.11.53.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Sep 2023 11:53:49 -0700 (PDT)
+        Tue, 05 Sep 2023 11:53:51 -0700 (PDT)
 From:   Bartosz Golaszewski <brgl@bgdev.pl>
 To:     Aaro Koskinen <aaro.koskinen@iki.fi>,
         Janusz Krzysztofik <jmkrzyszt@gmail.com>,
@@ -68,17 +68,17 @@ Cc:     linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
         linux-acpi@vger.kernel.org, timestamp@lists.linux.dev,
         linux-tegra@vger.kernel.org, platform-driver-x86@vger.kernel.org,
         Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 20/21] gpio: sysfs: drop the mention of gpiochip_find() from sysfs code
-Date:   Tue,  5 Sep 2023 20:53:08 +0200
-Message-Id: <20230905185309.131295-21-brgl@bgdev.pl>
+Subject: [PATCH 21/21] gpiolib: remove gpiochip_find()
+Date:   Tue,  5 Sep 2023 20:53:09 +0200
+Message-Id: <20230905185309.131295-22-brgl@bgdev.pl>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230905185309.131295-1-brgl@bgdev.pl>
 References: <20230905185309.131295-1-brgl@bgdev.pl>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -87,27 +87,62 @@ X-Mailing-List: linux-omap@vger.kernel.org
 
 From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-We have removed all callers of gpiochip_find() so don't mention it in
-gpiolib-sysfs.c.
+With all users of gpiochip_find() converted to using gpio_device_find(),
+we can now remove this function from the kernel.
 
 Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 ---
- drivers/gpio/gpiolib-sysfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpio/gpiolib.c      | 22 ----------------------
+ include/linux/gpio/driver.h |  3 ---
+ 2 files changed, 25 deletions(-)
 
-diff --git a/drivers/gpio/gpiolib-sysfs.c b/drivers/gpio/gpiolib-sysfs.c
-index 50503a4525eb..6f309a3b2d9a 100644
---- a/drivers/gpio/gpiolib-sysfs.c
-+++ b/drivers/gpio/gpiolib-sysfs.c
-@@ -814,7 +814,7 @@ static int __init gpiolib_sysfs_init(void)
- 		 * gpiochip_sysfs_register() acquires a mutex. This is unsafe
- 		 * and needs to be fixed.
- 		 *
--		 * Also it would be nice to use gpiochip_find() here so we
-+		 * Also it would be nice to use gpio_device_find() here so we
- 		 * can keep gpio_chips local to gpiolib.c, but the yield of
- 		 * gpio_lock prevents us from doing this.
- 		 */
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index 90e8c3d8b6f6..bd700fb4871e 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -1081,28 +1081,6 @@ void gpiochip_remove(struct gpio_chip *gc)
+ }
+ EXPORT_SYMBOL_GPL(gpiochip_remove);
+ 
+-/*
+- * FIXME: This will be removed soon.
+- *
+- * This function is depracated, don't use.
+- */
+-struct gpio_chip *gpiochip_find(void *data,
+-				int (*match)(struct gpio_chip *gc,
+-					     void *data))
+-{
+-	struct gpio_device *gdev;
+-	struct gpio_chip *gc = NULL;
+-
+-	gdev = gpio_device_find(data, match);
+-	if (gdev) {
+-		gc = gdev->chip;
+-		gpio_device_put(gdev);
+-	}
+-
+-	return gc;
+-}
+-EXPORT_SYMBOL_GPL(gpiochip_find);
+-
+ /**
+  * gpio_device_find() - find a specific GPIO device
+  * @data: data to pass to match function
+diff --git a/include/linux/gpio/driver.h b/include/linux/gpio/driver.h
+index bb9ec741bfda..7d2bf464478a 100644
+--- a/include/linux/gpio/driver.h
++++ b/include/linux/gpio/driver.h
+@@ -603,9 +603,6 @@ int devm_gpiochip_add_data_with_key(struct device *dev, struct gpio_chip *gc,
+ 				    void *data, struct lock_class_key *lock_key,
+ 				    struct lock_class_key *request_key);
+ 
+-struct gpio_chip *gpiochip_find(void *data,
+-				int (*match)(struct gpio_chip *gc, void *data));
+-
+ struct gpio_device *gpio_device_find(void *data,
+ 				     int (*match)(struct gpio_chip *gc,
+ 						  void *data));
 -- 
 2.39.2
 
