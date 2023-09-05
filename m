@@ -2,147 +2,133 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8897D792DEB
-	for <lists+linux-omap@lfdr.de>; Tue,  5 Sep 2023 20:55:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18521792FB6
+	for <lists+linux-omap@lfdr.de>; Tue,  5 Sep 2023 22:15:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240323AbjIESzY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 5 Sep 2023 14:55:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41172 "EHLO
+        id S236899AbjIEUOl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 5 Sep 2023 16:14:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58450 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239072AbjIESzV (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 5 Sep 2023 14:55:21 -0400
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 806A9E59
-        for <linux-omap@vger.kernel.org>; Tue,  5 Sep 2023 11:54:48 -0700 (PDT)
-Received: by mail-wm1-x32e.google.com with SMTP id 5b1f17b1804b1-402d0eda361so20531735e9.0
-        for <linux-omap@vger.kernel.org>; Tue, 05 Sep 2023 11:54:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1693940032; x=1694544832; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UrAFFOP3UXm+2vTLeazN1us+BKa1tnA/xN1dYjhLvHM=;
-        b=MQWbDF4rE965sDGpw+Z8xVUKRHWw3YwzcUYhTRpv6IjQmey/WoA0wHY8VDz3R0Gs38
-         ONt/xesxsRZkGk1oQAbVZ3/Xb76GeT7pfbvfb4yr9zqV/VjJ5K2WB6AlPVPvoo50v0VM
-         k8osQxqM9YtwOMW+1OwNpMmpWUQOpl+gVSuTgLVkExdc/SXvLBOJbw1sLo5ay63Ho/fb
-         YddhACrq0zNDPR8OLrpkxFlpuOCulETe0g8uTQKCP3PPXZZ52MdDVgn9LSEANBfDGdLV
-         nm2HV2DtdgVJ9nmvVVDfsHadpACFPjc9utovdDApP0UYgxae8AB0ZTtfWUDNP5Wf+vfS
-         eyUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693940032; x=1694544832;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UrAFFOP3UXm+2vTLeazN1us+BKa1tnA/xN1dYjhLvHM=;
-        b=X4KraSV1NowH7hEAE2vQmog7/sfsvxoT9i6UI5A56bgcKtULMbDSTY3rWurm5E3gXM
-         UIYBxpgPQCTbRZfR3R7tMBDjQwCMIjMy4BygQO3iOyVvoBZVuCYcr2r8b9lXpLP5Maal
-         2s8esvu+7ZlPYBVBPOjMJJdcPgJ2NSDeBTNgsM2XOtDDNZYMaatyhQDNYCYJvBFCtadk
-         bj52GVCMr+z2rno4u13wsSuSnN/7X4gUosITG+7pMyWQWunVu/f216TGPlzomKdBBnQy
-         x/Ngzter/Cp1rYqoogCVaVQr23YU+ZPOHMgOXc554+Ewc4ih3gFwGxg4oXBxZ7lJrO37
-         SMkw==
-X-Gm-Message-State: AOJu0Yxd8B77tm49nztcYE2U3VvaBdXj8g45pmotxtliw2jYMWSfQpwX
-        XsSQHM0LcGGPMxJrzbJW0pJxH/ZLDTRSVelEDeU=
-X-Google-Smtp-Source: AGHT+IG5rvnvzkhR7zSqbm37o4SyQS5DF2Q3QExpMFHirbdRnNeCry1xvOOt3d5Fk7gOho9h35WBqA==
-X-Received: by 2002:a05:600c:11ce:b0:3fe:2011:a7ce with SMTP id b14-20020a05600c11ce00b003fe2011a7cemr453840wmi.6.1693940031710;
-        Tue, 05 Sep 2023 11:53:51 -0700 (PDT)
-Received: from brgl-uxlite.home ([2a01:cb1d:334:ac00:7a54:5dbc:6d09:48b7])
-        by smtp.gmail.com with ESMTPSA id 17-20020a05600c249100b003fbc30825fbsm17550010wms.39.2023.09.05.11.53.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Sep 2023 11:53:51 -0700 (PDT)
-From:   Bartosz Golaszewski <brgl@bgdev.pl>
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Dipen Patel <dipenp@nvidia.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <markgross@kernel.org>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-acpi@vger.kernel.org, timestamp@lists.linux.dev,
-        linux-tegra@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 21/21] gpiolib: remove gpiochip_find()
-Date:   Tue,  5 Sep 2023 20:53:09 +0200
-Message-Id: <20230905185309.131295-22-brgl@bgdev.pl>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230905185309.131295-1-brgl@bgdev.pl>
-References: <20230905185309.131295-1-brgl@bgdev.pl>
-MIME-Version: 1.0
+        with ESMTP id S243741AbjIEUO1 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 5 Sep 2023 16:14:27 -0400
+X-Greylist: delayed 327 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 05 Sep 2023 13:14:06 PDT
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 282591711;
+        Tue,  5 Sep 2023 13:14:06 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28D04C433D9;
+        Tue,  5 Sep 2023 18:08:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1693937337;
+        bh=VVC3ib3yzE5r+s4aYfv/gsIn3joMY0xc0kaVf9r7Pjo=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=Glp/DEi794B19AMkAOdIIUixhFhfqKy+S3zCb/RYTWw5CVfyaOr7GzrqrSqy5Q23T
+         gEMybJBxWZVovfCR+BIeD8IMVKlYaRw0omHeILDvJ8l4PNrz3bJG9vDv63rmvcNkXu
+         RQZ2vY5NCGYbUMj/pKIq0U+9ZEQph85omsAF1BMSo/9z7VsmiDr7MYp0au9wbndkz1
+         I0SaBQTjBzUk4k+rHLKT+ejWyvyjDlKRPB5gSu2YlvP/iQT+D/+bjKv72we8T6zw3b
+         9JyCyU9O/Of7wJvahxZPIR6oYIGCzR20UJcnZVuy5OqYIxLGzT3FgncoqpMQdPyZmF
+         gptmozQSDwfhQ==
+Received: (nullmailer pid 3699774 invoked by uid 1000);
+        Tue, 05 Sep 2023 18:08:55 -0000
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+MIME-Version: 1.0
+From:   Rob Herring <robh@kernel.org>
+To:     Achal Verma <a-verma1@ti.com>
+Cc:     Vignesh Raghavendra <vigneshr@ti.com>,
+        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-pci@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Krzysztof Wilczy_ski <kw@linux.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>
+In-Reply-To: <20230905114816.2993628-2-a-verma1@ti.com>
+References: <20230905114816.2993628-1-a-verma1@ti.com>
+ <20230905114816.2993628-2-a-verma1@ti.com>
+Message-Id: <169393733505.3699703.7061210607519627009.robh@kernel.org>
+Subject: Re: [RFC PATCH 1/2] dt-bindings: PCI: ti,j721e-pci-*: Add
+ "ti,syscon-pcie-refclk-out" property
+Date:   Tue, 05 Sep 2023 13:08:55 -0500
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-With all users of gpiochip_find() converted to using gpio_device_find(),
-we can now remove this function from the kernel.
+On Tue, 05 Sep 2023 17:18:15 +0530, Achal Verma wrote:
+> Added "ti,syscon-pcie-refclk-out" property to specify the ACSPCIE clock
+> buffer register offset in SYSCON, which would be used to enable serdes
+> reference clock output.
+> 
+> Signed-off-by: Achal Verma <a-verma1@ti.com>
+> ---
+>  .../bindings/pci/ti,j721e-pci-host.yaml       | 53 +++++++++++++++++++
+>  1 file changed, 53 insertions(+)
+> 
 
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
----
- drivers/gpio/gpiolib.c      | 22 ----------------------
- include/linux/gpio/driver.h |  3 ---
- 2 files changed, 25 deletions(-)
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index 90e8c3d8b6f6..bd700fb4871e 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -1081,28 +1081,6 @@ void gpiochip_remove(struct gpio_chip *gc)
- }
- EXPORT_SYMBOL_GPL(gpiochip_remove);
- 
--/*
-- * FIXME: This will be removed soon.
-- *
-- * This function is depracated, don't use.
-- */
--struct gpio_chip *gpiochip_find(void *data,
--				int (*match)(struct gpio_chip *gc,
--					     void *data))
--{
--	struct gpio_device *gdev;
--	struct gpio_chip *gc = NULL;
--
--	gdev = gpio_device_find(data, match);
--	if (gdev) {
--		gc = gdev->chip;
--		gpio_device_put(gdev);
--	}
--
--	return gc;
--}
--EXPORT_SYMBOL_GPL(gpiochip_find);
--
- /**
-  * gpio_device_find() - find a specific GPIO device
-  * @data: data to pass to match function
-diff --git a/include/linux/gpio/driver.h b/include/linux/gpio/driver.h
-index bb9ec741bfda..7d2bf464478a 100644
---- a/include/linux/gpio/driver.h
-+++ b/include/linux/gpio/driver.h
-@@ -603,9 +603,6 @@ int devm_gpiochip_add_data_with_key(struct device *dev, struct gpio_chip *gc,
- 				    void *data, struct lock_class_key *lock_key,
- 				    struct lock_class_key *request_key);
- 
--struct gpio_chip *gpiochip_find(void *data,
--				int (*match)(struct gpio_chip *gc, void *data));
--
- struct gpio_device *gpio_device_find(void *data,
- 				     int (*match)(struct gpio_chip *gc,
- 						  void *data));
--- 
-2.39.2
+yamllint warnings/errors:
+./Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml:171:6: [error] missing starting space in comment (comments)
+./Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml:172:6: [error] missing starting space in comment (comments)
+./Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml:173:6: [error] missing starting space in comment (comments)
+./Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml:174:6: [error] missing starting space in comment (comments)
+./Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml:177:10: [error] missing starting space in comment (comments)
+./Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml:178:10: [error] missing starting space in comment (comments)
+./Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml:180:9: [error] syntax error: expected <block end>, but found '<block mapping start>' (syntax)
+./Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml:197:18: [error] missing starting space in comment (comments)
+./Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml:198:18: [error] missing starting space in comment (comments)
+./Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml:199:17: [warning] wrong indentation: expected 8 but found 16 (indentation)
+
+dtschema/dtc warnings/errors:
+make[2]: *** Deleting file 'Documentation/devicetree/bindings/pci/ti,j721e-pci-host.example.dts'
+Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml:180:9: expected <block end>, but found '<block mapping start>'
+make[2]: *** [Documentation/devicetree/bindings/Makefile:26: Documentation/devicetree/bindings/pci/ti,j721e-pci-host.example.dts] Error 1
+make[2]: *** Waiting for unfinished jobs....
+Traceback (most recent call last):
+  File "/usr/bin/yamllint", line 33, in <module>
+    sys.exit(load_entry_point('yamllint==1.29.0', 'console_scripts', 'yamllint')())
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/yamllint/cli.py", line 228, in run
+    prob_level = show_problems(problems, file, args_format=args.format,
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/yamllint/cli.py", line 113, in show_problems
+    for problem in problems:
+  File "/usr/lib/python3/dist-packages/yamllint/linter.py", line 200, in _run
+    for problem in get_cosmetic_problems(buffer, conf, filepath):
+  File "/usr/lib/python3/dist-packages/yamllint/linter.py", line 137, in get_cosmetic_problems
+    for problem in rule.check(rule_conf,
+  File "/usr/lib/python3/dist-packages/yamllint/rules/indentation.py", line 583, in check
+    yield from _check(conf, token, prev, next, nextnext, context)
+  File "/usr/lib/python3/dist-packages/yamllint/rules/indentation.py", line 344, in _check
+    if expected < 0:
+       ^^^^^^^^^^^^
+TypeError: '<' not supported between instances of 'NoneType' and 'int'
+./Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml:180:9: expected <block end>, but found '<block mapping start>'
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml: ignoring, error parsing file
+make[1]: *** [/builds/robherring/dt-review-ci/linux/Makefile:1500: dt_binding_check] Error 2
+make: *** [Makefile:234: __sub-make] Error 2
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20230905114816.2993628-2-a-verma1@ti.com
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
 
