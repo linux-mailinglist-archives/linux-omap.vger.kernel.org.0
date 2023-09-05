@@ -2,46 +2,39 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BAFA779247F
-	for <lists+linux-omap@lfdr.de>; Tue,  5 Sep 2023 17:59:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11F7679247E
+	for <lists+linux-omap@lfdr.de>; Tue,  5 Sep 2023 17:59:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231537AbjIEP7F (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 5 Sep 2023 11:59:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45108 "EHLO
+        id S231513AbjIEP7E convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-omap@lfdr.de>); Tue, 5 Sep 2023 11:59:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353379AbjIEGMO (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 5 Sep 2023 02:12:14 -0400
+        with ESMTP id S1353459AbjIEGRp (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 5 Sep 2023 02:17:45 -0400
 Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 5C08BE6
-        for <linux-omap@vger.kernel.org>; Mon,  4 Sep 2023 23:12:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B07DEE6;
+        Mon,  4 Sep 2023 23:17:41 -0700 (PDT)
 Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 716E180A3;
-        Tue,  5 Sep 2023 06:12:09 +0000 (UTC)
-Date:   Tue, 5 Sep 2023 09:12:08 +0300
+        by muru.com (Postfix) with ESMTPS id 070D380A3;
+        Tue,  5 Sep 2023 06:17:41 +0000 (UTC)
+Date:   Tue, 5 Sep 2023 09:17:39 +0300
 From:   Tony Lindgren <tony@atomide.com>
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     Andreas Kemnade <andreas@kemnade.info>,
-        Patrik =?utf-8?Q?Dahlstr=C3=B6m?= <risca@dalakolonin.se>,
-        letux-kernel@openphoenux.org, kernel@pyra-handheld.com,
-        linux-omap@vger.kernel.org,
-        =?utf-8?B?UMOpdGVy?= Ujfalusi <peter.ujfalusi@gmail.com>
-Subject: Re: ABE/AESS on modern kernel: clocks, hwmods etc.
-Message-ID: <20230905061208.GW11676@atomide.com>
-References: <45F44D32-E846-4A53-BA20-9C78CD4411F3@goldelico.com>
- <ZO4SWw/rbJH5Dpbq@dalakolonin.se>
- <A029FB33-9FBB-4CE5-92D5-597E10B3A032@goldelico.com>
- <ZPH5Yr3w7ruN/io0@dalakolonin.se>
- <05B47ED4-CA2C-4754-ABB1-0591E9018E57@goldelico.com>
- <ZPLYG16mwiwt9G9R@dalakolonin.se>
- <CB775A6F-FDB6-4639-B386-8E8BEE4CD88C@goldelico.com>
- <20230902122635.2482b0cf@aktux>
- <20230904063432.GV11676@atomide.com>
- <03375B42-C86E-4B37-98C2-C1FBA7AB68B6@goldelico.com>
+To:     Bagas Sanjaya <bagasdotme@gmail.com>
+Cc:     Adam Ford <aford173@gmail.com>,
+        Linux OMAP <linux-omap@vger.kernel.org>,
+        Saravana Kannan <saravanak@google.com>,
+        Linux Stable <stable@vger.kernel.org>,
+        Linux Regressions <regressions@lists.linux.dev>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: 6.1.y Regression found on AM3517
+Message-ID: <20230905061739.GX11676@atomide.com>
+References: <CAHCN7xJjK=BaNHa=+OKzOmFtNRYKX_APTp5Zj3g-X_iQcpyK6g@mail.gmail.com>
+ <ZPZ2zTS9loj06u31@debian.me>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <03375B42-C86E-4B37-98C2-C1FBA7AB68B6@goldelico.com>
+Content-Transfer-Encoding: 8BIT
+In-Reply-To: <ZPZ2zTS9loj06u31@debian.me>
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -50,62 +43,55 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* H. Nikolaus Schaller <hns@goldelico.com> [230904 18:07]:
-> > Am 04.09.2023 um 08:34 schrieb Tony Lindgren <tony@atomide.com>:
-> > No idea about this one, but this might be doable with generic pwm code
-> > now with the dmtimers. See for example how the ir-rx51 is getting phased
-> > away and replaced with the generci pwm ir driver.
-> 
-> This is not PWM. It writes to some register shared with the AESS DSP and we assume that the
-> DSP firmware should be started. I have put Péter on CC, maybe he knows something.
-
-Hmm sorry I somehow thought it was using a dmtimer. There are references to
-ABE_GPT5_FCLK to ABE_GPT8_FCLK in the TRM but maybe those are separate
-and the driver is not tinkering with the timer register directly hopefully.
-
-> >>> It seems as if clocks and code like omap_hwmod_aess_preprogram() is missing. Especially for the
-> >>> omap4 we have found no equivalent to aess_fclk which exists for omap5 and dra7.
-> >>> Nowhere is a reference using the abe_iclk node.
-> >>> 
-> >> for omap4 I guess the 
-> >>                        clocks = <&abe_clkctrl OMAP4_AESS_CLKCTRL 0>;
-> >> 
-> >> in omap4-l4-abe.dtsi should be enough and correcly referencing fclk?
+* Bagas Sanjaya <bagasdotme@gmail.com> [230905 00:31]:
+> On Mon, Sep 04, 2023 at 11:37:46AM -0500, Adam Ford wrote:
+> > I have an AM3517-EVM board that I am trying to use the latest 6.1.y
+> > stable, currently 6.1.51.
 > > 
-> > Yeah the clocks chould be there and should use addressing like Andreas is
-> > showing.
+> > With git bisect, I narrowed the regression between 6.1.15 and 6.1.16 to commit
+> > eaf9b5612a47 ("driver core: fw_devlink: Don't purge child fwnode's
+> > consumer links")
+> > 
+> > In the regression, 48002000.scm appears as not ready.  This affects a
+> > variety of dependent peripherals making them unavailable:
+> > 
+> > wl12xx_buf platform: supplier 48002000.scm not ready
+> > wl12xx_vmmc2 platform: supplier wl12xx_buf not ready
+> > 48050000.dss platform: supplier display@0 not ready
+> > 48064800.ehci platform: supplier hsusb1_phy not ready
+> > backlight platform: supplier 48002000.scm not ready
+> > display@0 platform: supplier backlight not ready
+> > dmtimer-pwm@11 platform: supplier 48002000.scm not ready
+> > hsusb1_phy platform: supplier 48002000.scm not ready
+> > gpio-leds platform: supplier 48002000.scm not ready
+> > 480b4000.mmc platform: supplier wl12xx_vmmc2 not ready
+> > 
+> > If I build 6.1.51 but I checkout drivers/base/core.c from commit
+> > 2455b81afe68 ("driver core: fw_devlink: Add DL_FLAG_CYCLE support to
+> > device links"),
+> > the regression is gone.
+
+Adam, maybe check if 6.1 stable series is missing something to be
+backported from this mailing list thread:
+
+https://lore.kernel.org/lkml/20230207014207.1678715-2-saravanak@google.com/
+
+That email thread version seemed to work for me based on my reply in the
+thread. I recall issues with the earlier revisions but don't remember
+what fixed them.
+
+> > I checked the 6.5 kernel, and it appears fine, so I think there is a
+> > possible backport commit missing, and I was hoping Saravana or Tony
+> > might have a suggestion as to which one(s) I should try.  I don't know
+> > if this is found on other OMAP3 boards, but I wouldn't be surprised.
+> > 
 > 
-> Well, according to my analysis the fclk may be there but the iclk is missing or not initialized.
-> That could explain why we get L3 problems as soon as we try to start the AESS-DSP.
-
-OK
-
-> The key observation is that the abe_iclk references in the DTS seem to be nowhere referenced
-> (which may or may not be an issue):
->
-> https://github.com/goldelico/letux-kernel/blob/letux/aess-v12/arch/arm/boot/dts/ti/omap/omap44xx-clocks.dtsi#L509
-> https://github.com/goldelico/letux-kernel/blob/letux/aess-v12/arch/arm/boot/dts/ti/omap/omap54xx-clocks.dtsi#L161
-
-So I guess the ick is in the dts the ocp_abe_iclk@528 for omap4 and
-abe_iclk@528 for omap5. Seems like the driver should request them, I recall
-that the interconnect target module does not need the ick to access sysc
-and revision registers.
-
-> The branch where all changes are sitting can be inspected here:
+> Thanks for the regression report. I'm adding it to regzbot as stable-specific
+> entry:
 > 
-> https://github.com/goldelico/letux-kernel/commits/letux/aess-v12?after=567e9011a67f4ed0824c2989a5d5f73ca0139461+63&branch=letux%2Faess-v12&qualified_name=refs%2Fheads%2Fletux%2Faess-v12
-> 
-> They are all tagged ARM: DTS: omap4 or omap5.
+> #regzbot ^introduced: eaf9b5612a47f0
+> #regzbot title: keeping consumer links of child fwnode doesn't prepare AM3517-EVM suppliers
 
-Hmm the "we don't need separate target modules" patch is wrong, the modules
-may have separate clocks and power domains, and flushing a posted write to
-one module does not flush write to the other module. This can lead into hard
-to track down bugs accessing separate modules. The dts module data I
-generated from the hardware AP registers for each SoC so the module ranges
-should be correct.
-
-> Hope this helps. Otherwise we have to prepare a cleaned up version of the DTS changes as a patch series.
-
-Yeah nice,
+Regards,
 
 Tony
