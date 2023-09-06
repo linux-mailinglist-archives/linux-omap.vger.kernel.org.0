@@ -2,50 +2,82 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4468E793A98
-	for <lists+linux-omap@lfdr.de>; Wed,  6 Sep 2023 13:03:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DEC5E793CD7
+	for <lists+linux-omap@lfdr.de>; Wed,  6 Sep 2023 14:39:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237753AbjIFLDn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 6 Sep 2023 07:03:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54860 "EHLO
+        id S236845AbjIFMjs (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 6 Sep 2023 08:39:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236949AbjIFLDn (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 6 Sep 2023 07:03:43 -0400
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 764501BB;
-        Wed,  6 Sep 2023 04:03:39 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 9CAFB8050;
-        Wed,  6 Sep 2023 11:03:38 +0000 (UTC)
-Date:   Wed, 6 Sep 2023 14:03:37 +0300
-From:   Tony Lindgren <tony@atomide.com>
+        with ESMTP id S229459AbjIFMjs (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 6 Sep 2023 08:39:48 -0400
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B734B173F;
+        Wed,  6 Sep 2023 05:39:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+        bh=Xb9J4LP3xZ2oCJfCq0aBcb0/gSpvzJwkl3eC5fo8Ixw=; b=wCTDDvJsjAgurjMV1TTkETRul3
+        bt+Rb+7CCIOZv3qLD75tcy03T6a64UzqtcVwKUMlppDnJW+WF7hG6rWHYI3jBhGDexZ3pDOb/X6vO
+        nO/sNhTrZ1s466RjBDwf+p6uY8L8TW6+zhfQsYKwz2qxmrdPmNMvhSgT/ILGi0Wc/hSA=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1qdroE-005u0C-0Y; Wed, 06 Sep 2023 14:39:02 +0200
+Date:   Wed, 6 Sep 2023 14:39:01 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
 To:     Adam Ford <aford173@gmail.com>
 Cc:     linux-omap@vger.kernel.org, aford@beaconembedded.com,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] bus: ti-sysc: Fix missing AM35xx SoC matching
-Message-ID: <20230906110337.GC11676@atomide.com>
-References: <20230906093244.99292-1-aford173@gmail.com>
+        =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH 1/2] net: ethernet: davinci_emac: Use MAC Address from
+ Device Tree
+Message-ID: <8cf5b8d1-5f03-438a-94bb-5691dee8cc86@lunn.ch>
+References: <20230906095143.99806-1-aford173@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230906093244.99292-1-aford173@gmail.com>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <20230906095143.99806-1-aford173@gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Adam Ford <aford173@gmail.com> [230906 12:33]:
-> Fix this by treating the AM35xx as a SOC_3430, and the error
-> conditions will disappear.
+On Wed, Sep 06, 2023 at 04:51:42AM -0500, Adam Ford wrote:
+> Currently there is a device tree entry called "local-mac-address"
+> which can be filled by the bootloader or manually set.This is
+> useful when the user does not want to use the MAC address
+> programmed into the SoC.
+> 
+> Currently, the davinci_emac reads the MAC from the DT, copies
+> it from pdata->mac_addr to priv->mac_addr, then blindly overwrites
+> it by reading from registers in the SoC, and falls back to a
+> random MAC if it's still not valid.  This completely ignores any
+> MAC address in the device tree.
+> 
+> In order to use the local-mac-address, check to see if the contents
+> of priv->mac_addr are valid before falling back to reading from the
+> SoC when the MAC address is not valid.
+> 
+> Signed-off-by: Adam Ford <aford173@gmail.com>
 
-Looks good to me except let's just add SOC_AM35 to enum sysc_soc rather
-than tag am3517 with SOC_3430. We already have checks for SOC_3430 for
-several devices and the quirks may not be compatible across AM35 and 3430.
+There is the potential for regressions here, since behaviour is being
+changed. But i do think what you are doing make sense.
 
-Regards,
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-Tony
+    Andrew
