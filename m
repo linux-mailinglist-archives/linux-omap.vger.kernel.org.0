@@ -2,76 +2,110 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C1AD27936A8
-	for <lists+linux-omap@lfdr.de>; Wed,  6 Sep 2023 09:58:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29595793855
+	for <lists+linux-omap@lfdr.de>; Wed,  6 Sep 2023 11:33:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231901AbjIFH6s (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 6 Sep 2023 03:58:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38308 "EHLO
+        id S237110AbjIFJd4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 6 Sep 2023 05:33:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230070AbjIFH6s (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 6 Sep 2023 03:58:48 -0400
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 176F61AB;
-        Wed,  6 Sep 2023 00:58:44 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 32ACC8050;
-        Wed,  6 Sep 2023 07:58:43 +0000 (UTC)
-Date:   Wed, 6 Sep 2023 10:58:41 +0300
-From:   Tony Lindgren <tony@atomide.com>
-To:     Adam Ford <aford173@gmail.com>
-Cc:     Linux-OMAP <linux-omap@vger.kernel.org>,
-        stable <stable@vger.kernel.org>
-Subject: Re: AM3517 Timer busy regression on 6.1.y branch
-Message-ID: <20230906075841.GB11676@atomide.com>
-References: <CAHCN7xLQH8cksj8OxpvqAF_7uk_Gn-5+ROd7MfUo75EL580+iw@mail.gmail.com>
+        with ESMTP id S237277AbjIFJdt (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 6 Sep 2023 05:33:49 -0400
+Received: from mail-io1-xd2c.google.com (mail-io1-xd2c.google.com [IPv6:2607:f8b0:4864:20::d2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 767B71985;
+        Wed,  6 Sep 2023 02:32:53 -0700 (PDT)
+Received: by mail-io1-xd2c.google.com with SMTP id ca18e2360f4ac-79536bc6697so119821039f.1;
+        Wed, 06 Sep 2023 02:32:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1693992772; x=1694597572; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=mupUPPSzcJJRakpj7WwBk32eQdNzGLMXaNaR5uYzp8A=;
+        b=Dzy44+sOzdbwhd4QcnIg0YHTHu55rWSzdCZOeeKK+defqfmBN75i+pU8rq4c/4tOet
+         A+UqVIiF8etQOehGHwSbnEIam161FLezBcOqJpw5VamgqKQlHjty7CSxwhPlbd4m6n2W
+         hd0kvsvzRDGk4/oyxKVedLIp40c0hu4PN0CNvSdjtLH8TMkyHze9liTQzkMIvG0peDeU
+         x0QUJDpA6QOwr6JL0g+MBMdCxtSlzKNDSDgcaacVGQKNV9If7myzLCRdCr0CQZl4gEyN
+         9ct51igsu5VfiAVKRV2Xo9ao7ToMnYf4B/8bm9nDMuzj3nVqpmESg3e3L9hcsjyk3G/F
+         Ow4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693992772; x=1694597572;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=mupUPPSzcJJRakpj7WwBk32eQdNzGLMXaNaR5uYzp8A=;
+        b=Lc9YzqzJDnTeL0cLWKrfJyI5nlLmW6GypI7UFX1PuZbMXLNjzXUOWXsJbu5eS6CGzs
+         Txm9DxPjUtusp9wUBgVBVNisunpGT8SNOo7dzAbtsuxYEKwOsbj2dWP0Qq4w5GC4uQ+f
+         XjyYcQFlqbSoJ8j8tgFSnJx7g5UF63O4NTJgvCYrvDsrtxAimwjNV0pbRIW9iYKAcOga
+         qwawfHO8RWR4vLoDlho7m9U+qocPVgxoNm6Iqt/FHYDCpisdFyTieKNrnrHbSpA9G54q
+         TqQMT/YE5fQVpY051kVstm3osE1VigiWStf686/IR5OrVL94jdouUS1pUiZbEnnYaIT6
+         OWaQ==
+X-Gm-Message-State: AOJu0YyRvyyosPw3A7rgLogBxL5Ae3PVav1YJ+dp1xzzzNsftq5vHecU
+        yUZm7uRCShHBNjSNhvopsDSypxZGprI=
+X-Google-Smtp-Source: AGHT+IE/SxiZTAwA6/WLLQiLQA7rDnQp1XnmilfdxbosDcDYc7XRyk31gS9W2/PZj8txrfKloPKY3Q==
+X-Received: by 2002:a5e:db07:0:b0:784:314f:8d68 with SMTP id q7-20020a5edb07000000b00784314f8d68mr16922177iop.1.1693992772074;
+        Wed, 06 Sep 2023 02:32:52 -0700 (PDT)
+Received: from aford-B741.lan ([2601:447:d001:897f:b68d:99e6:78c9:f0e6])
+        by smtp.gmail.com with ESMTPSA id s10-20020a02cf2a000000b0042b320c13aasm4792732jar.89.2023.09.06.02.32.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 Sep 2023 02:32:50 -0700 (PDT)
+From:   Adam Ford <aford173@gmail.com>
+To:     linux-omap@vger.kernel.org
+Cc:     aford@beaconembedded.com, Adam Ford <aford173@gmail.com>,
+        Tony Lindgren <tony@atomide.com>, linux-kernel@vger.kernel.org
+Subject: [PATCH] bus: ti-sysc: Fix missing AM35xx SoC matching
+Date:   Wed,  6 Sep 2023 04:32:44 -0500
+Message-Id: <20230906093244.99292-1-aford173@gmail.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHCN7xLQH8cksj8OxpvqAF_7uk_Gn-5+ROd7MfUo75EL580+iw@mail.gmail.com>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
+Commit feaa8baee82a ("bus: ti-sysc: Implement SoC revision handling")
+created a list of SoC types searching for strings based on names
+and wildcards which associates the SoC to different families.
 
-* Adam Ford <aford173@gmail.com> [230905 15:02]:
-> Tony et al
-> ,
-> I am trying to run the 6.1.y branch on an AM3517-EVM.
-> 
-> There are two GPT that throw an error:
-> 
->  ti-sysc: probe of 48318000.target-module failed with error -16
->  ti-sysc: probe of 49032000.target-module failed with error -16
+The OMAP34xx and OMAP35xx are treated as SOC_3430 while
+OMAP36xx and OMAP37xx are treated as SOC_3630, but the AM35xx
+isn't listed.
 
-These two timers are in use as clocksource and clockevent reserved
-by timer-ti-dm-systimer.
+The AM35xx is mostly an OMAP3430, and a later commit a12315d6d270
+("bus: ti-sysc: Make omap3 gpt12 quirk handling SoC specific") looks
+for the SOC type and behaves in a certain way if it's SOC_3430.
 
-> I did some minor investigation and found sysc_check_active_timer() is
-> returning the busy condition.
-> 
-> I tracked this back a bit further and found that if I revert commit
-> a12315d6d270  ("bus: ti-sysc: Make omap3 gpt12 quirk handling SoC
-> specific"), this error condition goes away.
-> 
-> It almost looks to me like sysc_check_active_timer is defaulting to
-> -EBUSY when the SoC is not 3430, but the sysc_soc_match[] doesn't
-> appear to match to AM3517.
-> 
-> I think the proper solution is to treat the AM35* as 3430.  Do you
-> agree with that approach?
-> 
-> If so, I'll submit a patch with a fixes tag. I am also wondering how
-> far back I should mark the fixes tag.
+This caused a regression on the AM3517 causing it to return two
+errors:
 
-Yes am3517 is very similar to 3430. Sounds like the patch would
-be needed also against the current kernels, right?
+ ti-sysc: probe of 48318000.target-module failed with error -16
+ ti-sysc: probe of 49032000.target-module failed with error -16
 
-Regards,
+Fix this by treating the AM35xx as a SOC_3430, and the error
+conditions will disappear.
 
-Tony
+Fixes: a12315d6d270 ("bus: ti-sysc: Make omap3 gpt12 quirk handling SoC specific")
+Fixes: feaa8baee82a ("bus: ti-sysc: Implement SoC revision handling")
+
+Signed-off-by: Adam Ford <aford173@gmail.com>
+
+diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+index eb4e7bee1e20..5d7779747941 100644
+--- a/drivers/bus/ti-sysc.c
++++ b/drivers/bus/ti-sysc.c
+@@ -3025,6 +3025,7 @@ static void ti_sysc_idle(struct work_struct *work)
+ static const struct soc_device_attribute sysc_soc_match[] = {
+ 	SOC_FLAG("OMAP242*", SOC_2420),
+ 	SOC_FLAG("OMAP243*", SOC_2430),
++	SOC_FLAG("AM35*", SOC_3430),
+ 	SOC_FLAG("OMAP3[45]*", SOC_3430),
+ 	SOC_FLAG("OMAP3[67]*", SOC_3630),
+ 	SOC_FLAG("OMAP443*", SOC_4430),
+-- 
+2.39.2
+
