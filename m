@@ -2,133 +2,189 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 18521792FB6
-	for <lists+linux-omap@lfdr.de>; Tue,  5 Sep 2023 22:15:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A3787935F3
+	for <lists+linux-omap@lfdr.de>; Wed,  6 Sep 2023 09:10:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236899AbjIEUOl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 5 Sep 2023 16:14:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58450 "EHLO
+        id S230099AbjIFHKp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 6 Sep 2023 03:10:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243741AbjIEUO1 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 5 Sep 2023 16:14:27 -0400
-X-Greylist: delayed 327 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 05 Sep 2023 13:14:06 PDT
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 282591711;
-        Tue,  5 Sep 2023 13:14:06 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28D04C433D9;
-        Tue,  5 Sep 2023 18:08:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693937337;
-        bh=VVC3ib3yzE5r+s4aYfv/gsIn3joMY0xc0kaVf9r7Pjo=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=Glp/DEi794B19AMkAOdIIUixhFhfqKy+S3zCb/RYTWw5CVfyaOr7GzrqrSqy5Q23T
-         gEMybJBxWZVovfCR+BIeD8IMVKlYaRw0omHeILDvJ8l4PNrz3bJG9vDv63rmvcNkXu
-         RQZ2vY5NCGYbUMj/pKIq0U+9ZEQph85omsAF1BMSo/9z7VsmiDr7MYp0au9wbndkz1
-         I0SaBQTjBzUk4k+rHLKT+ejWyvyjDlKRPB5gSu2YlvP/iQT+D/+bjKv72we8T6zw3b
-         9JyCyU9O/Of7wJvahxZPIR6oYIGCzR20UJcnZVuy5OqYIxLGzT3FgncoqpMQdPyZmF
-         gptmozQSDwfhQ==
-Received: (nullmailer pid 3699774 invoked by uid 1000);
-        Tue, 05 Sep 2023 18:08:55 -0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+        with ESMTP id S230155AbjIFHKp (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 6 Sep 2023 03:10:45 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63CDDE4F;
+        Wed,  6 Sep 2023 00:10:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1693984240; x=1725520240;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=CzVsvBBCQyE6nmVgfBDTPc4IJEBFPNuhlR6CIA56RSY=;
+  b=jh/OGLjnnh+SnvwGZL7DuwN60omR4cuAf2PX0vJQ7p/CET3lBGgpZJR5
+   7rjsb1HNryP1TBaRL/jk98Y422kNMsKrOVWp7KOOZosizmmytsIDyYmxf
+   UQqbe0mltBJ4CM564EqEsMh/4fubF0TZ//RsrvAFbfgjKcdz6h9N0R/an
+   F+lCVtfGBuzhnmh6DLJ/3+26qxG9Jx7cjiK4hSrVR9l2C+C3lY/wmowZb
+   HuzC2ExpL/6BzIntGnhIca6vkn6qCvVoaU9XJTDTIrgVzcYKik44HxU+B
+   vA0UOJgeBpPVy7bFaVQmyIT9RYibrXr1qW++ahSFmQ5ksD3eYTVpfLkRC
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10824"; a="407993429"
+X-IronPort-AV: E=Sophos;i="6.02,231,1688454000"; 
+   d="scan'208";a="407993429"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Sep 2023 00:10:39 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10824"; a="734933655"
+X-IronPort-AV: E=Sophos;i="6.02,231,1688454000"; 
+   d="scan'208";a="734933655"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga007.jf.intel.com with ESMTP; 06 Sep 2023 00:10:33 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1001)
+        id 1DF7F30D; Wed,  6 Sep 2023 10:10:32 +0300 (EEST)
+Date:   Wed, 6 Sep 2023 10:10:32 +0300
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     Bartosz Golaszewski <brgl@bgdev.pl>
+Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Dipen Patel <dipenp@nvidia.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <markgross@kernel.org>,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-acpi@vger.kernel.org, timestamp@lists.linux.dev,
+        linux-tegra@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: Re: [PATCH 08/21] gpio: acpi: provide
+ acpi_gpio_device_free_interrupts()
+Message-ID: <20230906071032.GA1599918@black.fi.intel.com>
+References: <20230905185309.131295-1-brgl@bgdev.pl>
+ <20230905185309.131295-9-brgl@bgdev.pl>
 MIME-Version: 1.0
-From:   Rob Herring <robh@kernel.org>
-To:     Achal Verma <a-verma1@ti.com>
-Cc:     Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-pci@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Krzysztof Wilczy_ski <kw@linux.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>
-In-Reply-To: <20230905114816.2993628-2-a-verma1@ti.com>
-References: <20230905114816.2993628-1-a-verma1@ti.com>
- <20230905114816.2993628-2-a-verma1@ti.com>
-Message-Id: <169393733505.3699703.7061210607519627009.robh@kernel.org>
-Subject: Re: [RFC PATCH 1/2] dt-bindings: PCI: ti,j721e-pci-*: Add
- "ti,syscon-pcie-refclk-out" property
-Date:   Tue, 05 Sep 2023 13:08:55 -0500
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230905185309.131295-9-brgl@bgdev.pl>
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Hi,
 
-On Tue, 05 Sep 2023 17:18:15 +0530, Achal Verma wrote:
-> Added "ti,syscon-pcie-refclk-out" property to specify the ACSPCIE clock
-> buffer register offset in SYSCON, which would be used to enable serdes
-> reference clock output.
+On Tue, Sep 05, 2023 at 08:52:56PM +0200, Bartosz Golaszewski wrote:
+> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 > 
-> Signed-off-by: Achal Verma <a-verma1@ti.com>
+> We're moving away from public functions that take struct gpio_chip as
+> argument as the chip - unlike struct gpio_device - is owned by its
+> provider and tied to its lifetime.
+> 
+> Provide an alternative to acpi_gpiochip_free_interrupts().
+
+Looks good to me, few minor comments below.
+
+> 
+> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+
 > ---
->  .../bindings/pci/ti,j721e-pci-host.yaml       | 53 +++++++++++++++++++
->  1 file changed, 53 insertions(+)
+>  drivers/gpio/gpiolib-acpi.c | 29 +++++++++++++++++++++++------
+>  include/linux/gpio/driver.h | 12 ++++++++++++
+>  2 files changed, 35 insertions(+), 6 deletions(-)
 > 
+> diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
+> index fbda452fb4d6..5633e39396bc 100644
+> --- a/drivers/gpio/gpiolib-acpi.c
+> +++ b/drivers/gpio/gpiolib-acpi.c
+> @@ -558,12 +558,9 @@ void acpi_gpiochip_request_interrupts(struct gpio_chip *chip)
+>  }
+>  EXPORT_SYMBOL_GPL(acpi_gpiochip_request_interrupts);
+>  
+> -/**
+> - * acpi_gpiochip_free_interrupts() - Free GPIO ACPI event interrupts.
+> - * @chip:      GPIO chip
+> - *
+> - * Free interrupts associated with GPIO ACPI event method for the given
+> - * GPIO chip.
+> +/*
+> + * This function is deprecated, use acpi_gpio_device_free_interrupts()
+> + * instead.
+>   */
+>  void acpi_gpiochip_free_interrupts(struct gpio_chip *chip)
+>  {
+> @@ -604,6 +601,26 @@ void acpi_gpiochip_free_interrupts(struct gpio_chip *chip)
+>  }
+>  EXPORT_SYMBOL_GPL(acpi_gpiochip_free_interrupts);
+>  
+> +/**
+> + * acpi_gpio_device_free_interrupts() - Free GPIO ACPI event interrupts.
+> + * @chip	GPIO device
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+Should be:
 
-yamllint warnings/errors:
-./Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml:171:6: [error] missing starting space in comment (comments)
-./Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml:172:6: [error] missing starting space in comment (comments)
-./Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml:173:6: [error] missing starting space in comment (comments)
-./Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml:174:6: [error] missing starting space in comment (comments)
-./Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml:177:10: [error] missing starting space in comment (comments)
-./Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml:178:10: [error] missing starting space in comment (comments)
-./Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml:180:9: [error] syntax error: expected <block end>, but found '<block mapping start>' (syntax)
-./Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml:197:18: [error] missing starting space in comment (comments)
-./Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml:198:18: [error] missing starting space in comment (comments)
-./Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml:199:17: [warning] wrong indentation: expected 8 but found 16 (indentation)
+@chip: GPIO device
 
-dtschema/dtc warnings/errors:
-make[2]: *** Deleting file 'Documentation/devicetree/bindings/pci/ti,j721e-pci-host.example.dts'
-Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml:180:9: expected <block end>, but found '<block mapping start>'
-make[2]: *** [Documentation/devicetree/bindings/Makefile:26: Documentation/devicetree/bindings/pci/ti,j721e-pci-host.example.dts] Error 1
-make[2]: *** Waiting for unfinished jobs....
-Traceback (most recent call last):
-  File "/usr/bin/yamllint", line 33, in <module>
-    sys.exit(load_entry_point('yamllint==1.29.0', 'console_scripts', 'yamllint')())
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/lib/python3/dist-packages/yamllint/cli.py", line 228, in run
-    prob_level = show_problems(problems, file, args_format=args.format,
-                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/lib/python3/dist-packages/yamllint/cli.py", line 113, in show_problems
-    for problem in problems:
-  File "/usr/lib/python3/dist-packages/yamllint/linter.py", line 200, in _run
-    for problem in get_cosmetic_problems(buffer, conf, filepath):
-  File "/usr/lib/python3/dist-packages/yamllint/linter.py", line 137, in get_cosmetic_problems
-    for problem in rule.check(rule_conf,
-  File "/usr/lib/python3/dist-packages/yamllint/rules/indentation.py", line 583, in check
-    yield from _check(conf, token, prev, next, nextnext, context)
-  File "/usr/lib/python3/dist-packages/yamllint/rules/indentation.py", line 344, in _check
-    if expected < 0:
-       ^^^^^^^^^^^^
-TypeError: '<' not supported between instances of 'NoneType' and 'int'
-./Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml:180:9: expected <block end>, but found '<block mapping start>'
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml: ignoring, error parsing file
-make[1]: *** [/builds/robherring/dt-review-ci/linux/Makefile:1500: dt_binding_check] Error 2
-make: *** [Makefile:234: __sub-make] Error 2
+> + *
+> + * Free interrupts associated with GPIO ACPI event method for the given
+> + * GPIO device.
+> + */
+> +void acpi_gpio_device_free_interrupts(struct gpio_device *gdev)
+> +{
+> +	struct gpio_chip *gc;
+> +
+> +	/* TODO: protect gdev->chip once SRCU is in place in GPIOLIB. */
+> +	gc = gdev->chip;
+> +	if (!gc)
+> +		return;
+> +
+> +	acpi_gpiochip_free_interrupts(gc);
+> +}
+> +EXPORT_SYMBOL_GPL(acpi_gpio_device_free_interrupts);
+> +
+>  int acpi_dev_add_driver_gpios(struct acpi_device *adev,
+>  			      const struct acpi_gpio_mapping *gpios)
+>  {
+> diff --git a/include/linux/gpio/driver.h b/include/linux/gpio/driver.h
+> index b68b3493b29d..47906bc56b3d 100644
+> --- a/include/linux/gpio/driver.h
+> +++ b/include/linux/gpio/driver.h
+> @@ -835,4 +835,16 @@ static inline struct fwnode_handle *gpiochip_node_get_first(struct device *dev)
+>  	return NULL;
+>  }
+>  
+> +/*
+> + * FIXME: Remove this once the only driver that uses it - android tablets -
+> + * becomes a good citizen and stops abusing GPIOLIB.
 
-doc reference errors (make refcheckdocs):
+There are a acouple of more when grepping for acpi_gpiochip_free_interrupts().
 
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20230905114816.2993628-2-a-verma1@ti.com
+I'm not entirely sure why these functions are exposed to the drivers in
+the first place. IMHO GPIOLIB should deal with these but perhaps there
+is some good reason these drivers do it...
 
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
+> + */
+> +#ifdef CONFIG_ACPI
+> +void acpi_gpio_device_free_interrupts(struct gpio_device *gdev);
+> +#else
+> +static inline void acpi_gpio_device_free_interrupts(struct gpio_device *gdev)
+> +{
+> +}
 
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
+I would put these {} to the same line:
 
-pip3 install dtschema --upgrade
+static inline void acpi_gpio_device_free_interrupts(struct gpio_device *gdev) { }
 
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
-
+> +#endif
+> +
+>  #endif /* __LINUX_GPIO_DRIVER_H */
+> -- 
+> 2.39.2
