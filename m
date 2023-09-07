@@ -2,57 +2,57 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD2B0797AE2
-	for <lists+linux-omap@lfdr.de>; Thu,  7 Sep 2023 19:55:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 64E4E797939
+	for <lists+linux-omap@lfdr.de>; Thu,  7 Sep 2023 19:07:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237564AbjIGRze (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 7 Sep 2023 13:55:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57364 "EHLO
+        id S240018AbjIGRHI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 7 Sep 2023 13:07:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239463AbjIGRze (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 7 Sep 2023 13:55:34 -0400
-Received: from mail-qt1-x82d.google.com (mail-qt1-x82d.google.com [IPv6:2607:f8b0:4864:20::82d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C29F191
-        for <linux-omap@vger.kernel.org>; Thu,  7 Sep 2023 10:55:07 -0700 (PDT)
-Received: by mail-qt1-x82d.google.com with SMTP id d75a77b69052e-4121130e7afso8519701cf.2
-        for <linux-omap@vger.kernel.org>; Thu, 07 Sep 2023 10:55:07 -0700 (PDT)
+        with ESMTP id S233702AbjIGRHI (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 7 Sep 2023 13:07:08 -0400
+Received: from mail-ua1-x932.google.com (mail-ua1-x932.google.com [IPv6:2607:f8b0:4864:20::932])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 567511FC2
+        for <linux-omap@vger.kernel.org>; Thu,  7 Sep 2023 10:06:41 -0700 (PDT)
+Received: by mail-ua1-x932.google.com with SMTP id a1e0cc1a2514c-79a10807b4fso470036241.2
+        for <linux-omap@vger.kernel.org>; Thu, 07 Sep 2023 10:06:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1694109301; x=1694714101; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1694106312; x=1694711112; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=wBdELFiF0kNq2P4ovxPr1G/v1B3B5Z0Pa4x1EdUn7xY=;
-        b=Wn5uFrkHB3Cd3BnQviRbSAzuqmmdJGWuU1xnhPo2o1tx9uCc08WtTTcdegevvTpLRG
-         rwglsGf0qKbxtoNkmk2gTo7iSKLPElHTQ2uugc0FwKanOEwoRkKfCn5eHf4gF3hqPfsy
-         npfZgYagjH6+qqwk6uygnGlpoTAfpq9RSMU7pzjqYyVQDF9CFMymad9laCVg5X6xUYjt
-         aUPH9hKtbI/blGSrv0nMY8Ns1u5Yy7PcUmjSF2JkFm1XJE3P68aK5AC8ierFfOxu33Xa
-         qZj7Cp0/kBLpspGAyrpA8zcvQ4rfl3OrzFmy9qTALBXyNQIhpEBTlAVHHp2q4adZoH77
-         u2ow==
+        bh=IXtSDuwLHBAGfIvJXN98Bc/TjY2BpOjtqu3XNPdnEAg=;
+        b=QgBwf4R/gEcVWkx9UKuXti7DdQ4Zr+D+FGQVzvQlhhqx7JpA2smWbablUcRT6Neh4x
+         9Hw9rDkcyb6gMdOgbEHlxjO0PlzDWe93xk7sfeSMudICYU8G0rLRYgUsY/Z9aJXgfmBZ
+         XZwGbGq+7wPWAam/Vzg3cKIGZ2HMCX2o8Qqjzdm/HxSFNqOLYz6mbnuJ4K529WzqEy0f
+         lHalPYW7Xf5y2xalNRL2ZAn6jGFtVjSxxzMtxzFFECG7+bywo/Tg3PLK8MNN3/rC+slz
+         6Sn/hZ5zDXjEFQPzKZgijk0rk8flenybB2J6gPzfssKK90OC6M51fWYtb4YBFDzKtbMn
+         TR+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694109301; x=1694714101;
+        d=1e100.net; s=20221208; t=1694106312; x=1694711112;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=wBdELFiF0kNq2P4ovxPr1G/v1B3B5Z0Pa4x1EdUn7xY=;
-        b=obKlVPhiteaQR8s80a4xyAh5nZfY2zSFI1h88zXVX3i0whXiFbRN56MKHt7U9jJzOI
-         ZfdhyCebZbp8CgSqU8g35DQGLzY7/yQWUKQWGu0QE55rQ+L30ugdaj59TAGGNb6O3gks
-         hdDO6JfhCBOszkW6HVbxtRX4Hwz0tzKXj8G1Tt+EUPqItcytR7M8YNk8h1CcMADYehgg
-         s9NIhakoQBm/5eLpehF5JlqMO6HwrXMVemxSdETVLpFeS3qneZa70ZJOK5QO9kAvGJu3
-         sPpm4qpNbl/DJkkNyUAwFofvPpzsZLQ4IbDrwPz5HKu8rmIyHxFiIxk+0UGV5jcjzGhU
-         k10w==
-X-Gm-Message-State: AOJu0YwH7EYgIPFaYZe2oapiyjWFg2vPE11jXsJ1rQar80e9A/Myo0ot
-        iPNV9NLjAo+G5YkXNTsPbnl82ScnNUVXnJ1OGLdz3EA60AR0P1jSTt0=
-X-Google-Smtp-Source: AGHT+IGquAMmj4BV1IgcH+0hlmwrCPO8RvK5dDPIHBFPHMvw3mBi9yKQYdiyjPsOt1CRLSecOSiNHyNGSnbycipPFpA=
-X-Received: by 2002:a25:4057:0:b0:d7f:1ef3:66a9 with SMTP id
- n84-20020a254057000000b00d7f1ef366a9mr10826771yba.15.1694071032928; Thu, 07
- Sep 2023 00:17:12 -0700 (PDT)
+        bh=IXtSDuwLHBAGfIvJXN98Bc/TjY2BpOjtqu3XNPdnEAg=;
+        b=ZshJby67lQpoK98GUii6I1N9Bvm8pcCTZX4+ZPM4ev0KMASQUgbBI8Bbxs6nqKQPrL
+         Ub4zZfYvhshqm/gfZFvfQpmv8xWA5V1Gec5ox+Kkj/Jfu/TJ61G7Biq2rN8nIjNCEviq
+         mLU0+diNyeC9T+1FSq3C8KdlzGEAkYIqHEEPFLJ+/Prg5ODw+KD1IwziflfXj97Of34I
+         8F5AJJJuK7XOgGQMj20ZqPdY8ZZgcbbw3LgcfoMmzoWC26SiYK0r7/GL3xnnuKQ/Ftlt
+         vizwXi7/jC2H9uwoorqosRFKc6pRM7VYviui3CdFibYdCtQ9enwXxcz5XfY2n6+NwfNC
+         IrAw==
+X-Gm-Message-State: AOJu0YxiLUtL0NZUI+RfURS5CzSFZEmYIBjm42t7TpyrRV+x20XSYcsx
+        u2ZuChJ1ezvE+ZJDgWfwKTHz0TMBP7gTHAw7Q47oyaRBYyrZVGWb6yU=
+X-Google-Smtp-Source: AGHT+IFBssMxe62b6gjC3N4aS6mxtu2dG9GSPKFawDHtfKqDxWyo3xiYEaVk7D6s0DhtiZ21qOVsU28YZ+Ws9GvtAJ0=
+X-Received: by 2002:a5b:791:0:b0:d1f:6886:854a with SMTP id
+ b17-20020a5b0791000000b00d1f6886854amr17648637ybq.9.1694071162023; Thu, 07
+ Sep 2023 00:19:22 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230905185309.131295-1-brgl@bgdev.pl> <20230905185309.131295-8-brgl@bgdev.pl>
-In-Reply-To: <20230905185309.131295-8-brgl@bgdev.pl>
+References: <20230905185309.131295-1-brgl@bgdev.pl> <20230905185309.131295-10-brgl@bgdev.pl>
+In-Reply-To: <20230905185309.131295-10-brgl@bgdev.pl>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Thu, 7 Sep 2023 09:17:01 +0200
-Message-ID: <CACRpkdbdcPv1LHL2W-enKBJ2OARpduoOJkQ64oL6GSOfmmD3qQ@mail.gmail.com>
-Subject: Re: [PATCH 07/21] gpiolib: provide gpio_device_get_base()
+Date:   Thu, 7 Sep 2023 09:19:09 +0200
+Message-ID: <CACRpkdazRyhqHhH+Ock3U0wFRkd_U5QUTZmOeTFoXx-Pe_jCRw@mail.gmail.com>
+Subject: Re: [PATCH 09/21] gpiolib: reluctantly provide gpio_device_get_chip()
 To:     Bartosz Golaszewski <brgl@bgdev.pl>
 Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
         Janusz Krzysztofik <jmkrzyszt@gmail.com>,
@@ -87,28 +87,17 @@ wrote:
 
 > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 >
-> Let's start adding getters for the opaque struct gpio_device. Start with
-> a function allowing to retrieve the base GPIO number.
+> The process of converting all unauthorized users of struct gpio_chip to
+> using dedicated struct gpio_device function will be long so in the
+> meantime we must provide a way of retrieving the pointer to struct
+> gpio_chip from a GPIO device.
 >
 > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-I guess you have a solid usecase for drivers needing to do this
-crazy thing, because I suppose you feel as much as me that
-this should rather be gpiolib-internal and confined to
-drivers/gpio/gpiolib.h?
+Yeah, sigh. Maybe add a notice to drivers/gpio/TODO that this needs
+to happen long time.
 
-If you add a valid reason for making this globally visible outside
-of drivers/[gpio|pinctrl] to the commit message I guess I can live
-with it because we need to think of the bigger picture:
-Acked-by: Linus Walleij <linus.walleij@linaro.org>
-
-It brings to mind the now confusing "base" inside of
-struct gpio_chip. We all know it should go away, but since it
-is never used during the lifetime of the gpio_chip - or SHOULD
-never be used - it should rather be an argument to
-[devm_]gpiochip_add_data( .... int base);...
-
-Maybe something we should add to our TODO file.
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
 Yours,
 Linus Walleij
