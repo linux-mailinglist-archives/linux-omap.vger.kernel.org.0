@@ -2,128 +2,159 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B789E796E48
-	for <lists+linux-omap@lfdr.de>; Thu,  7 Sep 2023 03:02:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD50B79701C
+	for <lists+linux-omap@lfdr.de>; Thu,  7 Sep 2023 07:29:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239496AbjIGBCR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 6 Sep 2023 21:02:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57212 "EHLO
+        id S232540AbjIGF3r (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 7 Sep 2023 01:29:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242475AbjIGBCP (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 6 Sep 2023 21:02:15 -0400
-Received: from mail-io1-xd31.google.com (mail-io1-xd31.google.com [IPv6:2607:f8b0:4864:20::d31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DAEF19A9;
-        Wed,  6 Sep 2023 18:02:10 -0700 (PDT)
-Received: by mail-io1-xd31.google.com with SMTP id ca18e2360f4ac-7926de0478eso41165239f.0;
-        Wed, 06 Sep 2023 18:02:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1694048529; x=1694653329; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7/DXugYCFStEpH1nhWSNJ8V029K3x9zRJrVOGlTmzEA=;
-        b=HoWhdEYMC0v4PCOUK9FULoVO1bCsJ2r2zLzH+ZoYoykUk1Kf+CUGd0PsBtbZXiPKME
-         KuJublpp2pVj3uC7M36pJQmPk35HNTLKPNKvo52yUb8H1YI30cwingllnbAbdaBwH7K+
-         IPsMgeS4nUkBUPC1rceNH5d+BZBTpf54FP9fGXzno8+fD5Nj12z5kjC5y5HE5oEnlSrv
-         ieyeakujHZ4bJPMgVC8grjVH7AGGFK28BPKIUjRQNdKWeQdnaFZBNFz+H7VhO1P9oz3j
-         qa0wJ1uadHKfv8S3d8FhClgffuQbIWjgLioeWwmhnKeTMjOlEmFkVPGcEITmcjwgeKwb
-         Edsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1694048529; x=1694653329;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7/DXugYCFStEpH1nhWSNJ8V029K3x9zRJrVOGlTmzEA=;
-        b=eWlgh+lXTyplvr0HaAU99B5E0Z313M9quiLZ9a2UE1J2gGd0Xt8afWbzlhe+pbilny
-         E85B8nk2NbzUfX5XlBdAp3P2P1ED31Sh51PNo48ZzDbGrV7aEe0BlUoriLY2E8qqLEID
-         7BFdWt7y/rnxrBmC7R2JKMrxHASBDeOgOrwqYdvQmXa/OXi9FdsB8VzEn4+M8oM+CH9K
-         6Xx8Kv/4Wjr/3KRblY5Hqn7PRu4AtzEhuFOX8ABl0mxPnEnWM278Qvg8pRQhIK+igkCK
-         Gnns+ISSRXDf9depG37NCMklwDHrVE/ZtVeZQADMOrPzX8v3ASTAsDfzUwtWgsvEL9/V
-         Lr8w==
-X-Gm-Message-State: AOJu0Yyy5W8/llbcOBqcbFHUIe8DRQHdVaX6tdTYkh21kiJ6BXagWSeX
-        /Smjd4iEvVUNN1T+gTWCDhGmcM7+Npw=
-X-Google-Smtp-Source: AGHT+IEqFvuoaXTrmoy65dl7YvW9l9GkL6URsEAlkIWuCCKho4pAB0L5qrmHqTTpaNpLtr3HwSJjpQ==
-X-Received: by 2002:a92:c548:0:b0:34f:115a:158f with SMTP id a8-20020a92c548000000b0034f115a158fmr1516039ilj.14.1694048529224;
-        Wed, 06 Sep 2023 18:02:09 -0700 (PDT)
-Received: from aford-B741.lan ([2601:447:d001:897f:c24d:eb45:b814:f30b])
-        by smtp.gmail.com with ESMTPSA id v6-20020a02b906000000b0042ff466c9bdsm5389796jan.127.2023.09.06.18.02.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Sep 2023 18:02:08 -0700 (PDT)
-From:   Adam Ford <aford173@gmail.com>
-To:     linux-omap@vger.kernel.org
-Cc:     aford@beaconembedded.com, Adam Ford <aford173@gmail.com>,
-        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        "Derald D. Woods" <woods.technical@gmail.com>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] arm: dts: am3517-evm: Enable Ethernet PHY Interrupt
-Date:   Wed,  6 Sep 2023 20:01:59 -0500
-Message-Id: <20230907010159.330555-2-aford173@gmail.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230907010159.330555-1-aford173@gmail.com>
-References: <20230907010159.330555-1-aford173@gmail.com>
+        with ESMTP id S230153AbjIGF3q (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 7 Sep 2023 01:29:46 -0400
+Received: from muru.com (muru.com [72.249.23.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D142C1B2
+        for <linux-omap@vger.kernel.org>; Wed,  6 Sep 2023 22:29:42 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id A233E8050;
+        Thu,  7 Sep 2023 05:29:41 +0000 (UTC)
+Date:   Thu, 7 Sep 2023 08:29:40 +0300
+From:   Tony Lindgren <tony@atomide.com>
+To:     "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc:     Andreas Kemnade <andreas@kemnade.info>,
+        Patrik =?utf-8?Q?Dahlstr=C3=B6m?= <risca@dalakolonin.se>,
+        peter.ujfalusi@gmail.com, letux-kernel@openphoenux.org,
+        kernel@pyra-handheld.com, linux-omap@vger.kernel.org
+Subject: Re: [RFC 5/6] ARM: DTS: omap4-l4-abe: add an aess (audio DSP of
+ OMAP4 and OMAP5) child
+Message-ID: <20230907052940.GF11676@atomide.com>
+References: <cover.1693918214.git.hns@goldelico.com>
+ <535d7f940a97ec12f6551fd2ca8a9343d8ae3674.1693918215.git.hns@goldelico.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <535d7f940a97ec12f6551fd2ca8a9343d8ae3674.1693918215.git.hns@goldelico.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The Ethernet PHY interrupt pin is routed to GPIO_58.  Create a
-PHY node to configure this GPIO for the interrupt to avoid polling.
+Hi,
 
-Signed-off-by: Adam Ford <aford173@gmail.com>
+* H. Nikolaus Schaller <hns@goldelico.com> [230905 15:58]:
+> make the aess module a child of the target-module.
 
-diff --git a/arch/arm/boot/dts/ti/omap/am3517-evm.dts b/arch/arm/boot/dts/ti/omap/am3517-evm.dts
-index 738189ddc8d5..19869ef906a8 100644
---- a/arch/arm/boot/dts/ti/omap/am3517-evm.dts
-+++ b/arch/arm/boot/dts/ti/omap/am3517-evm.dts
-@@ -172,11 +172,24 @@ hsusb1_phy: hsusb1_phy {
- &davinci_emac {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&ethernet_pins>;
-+	phy-mode = "rmii";
-+	phy-handle = <&ethphy0>;
- 	status = "okay";
- };
- 
- &davinci_mdio {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
- 	status = "okay";
-+
-+	ethphy0: ethernet-phy@0 {
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&enet_phy_pins>;
-+		compatible = "ethernet-phy-ieee802.3-c22";
-+		reg = <0>;
-+		interrupt-parent = <&gpio2>;
-+		interrupts = <26 IRQ_TYPE_LEVEL_LOW>;	/* gpio_58 */
-+	};
- };
- 
- &dss {
-@@ -257,6 +270,12 @@ OMAP3_CORE1_IOPAD(0x2210, PIN_INPUT_PULLDOWN | MUX_MODE0) /* rmii_50mhz_clk */
- 		>;
- 	};
- 
-+	enet_phy_pins: pinmux_ent_phy_pins {
-+		pinctrl-single,pins = <
-+			OMAP3_CORE1_IOPAD(0x20bc, PIN_INPUT | MUX_MODE4)	/* gpmc_ncs7.gpio_57 */
-+		>;
-+	};
-+
- 	i2c2_pins: i2c2-pins {
- 		pinctrl-single,pins = <
- 			OMAP3_CORE1_IOPAD(0x21be, PIN_INPUT_PULLUP | MUX_MODE0)  /* i2c2_scl */
--- 
-2.39.2
+How about something like this for the patch description:
 
+"Move aess specific memory ranges to the aess module and remove the entries
+ generated from the hardware ap registers. There is no need to set up
+ separate child device nodes for aess as these are all memory ranges used
+ only by the aess driver."
+
+And then just combine this patch with the one removing the entries
+generated from ap registers.
+
+> diff --git a/arch/arm/boot/dts/ti/omap/omap4-l4-abe.dtsi b/arch/arm/boot/dts/ti/omap/omap4-l4-abe.dtsi
+> index a8d66240d17d5..7ca7b369b4e59 100644
+> --- a/arch/arm/boot/dts/ti/omap/omap4-l4-abe.dtsi
+> +++ b/arch/arm/boot/dts/ti/omap/omap4-l4-abe.dtsi
+> @@ -41,12 +41,14 @@ segment@0 {					/* 0x40100000 */
+>  			 <0x0003d000 0x0003d000 0x001000>,	/* ap 23 */
+>  			 <0x0003e000 0x0003e000 0x001000>,	/* ap 24 */
+>  			 <0x0003f000 0x0003f000 0x001000>,	/* ap 25 */
+> -			 <0x00080000 0x00080000 0x010000>,	/* ap 26 */
+> -			 <0x00080000 0x00080000 0x001000>,	/* ap 27 */
+> -			 <0x000a0000 0x000a0000 0x010000>,	/* ap 28 */
+> -			 <0x000a0000 0x000a0000 0x001000>,	/* ap 29 */
+> -			 <0x000c0000 0x000c0000 0x010000>,	/* ap 30 */
+> -			 <0x000c0000 0x000c0000 0x001000>,	/* ap 31 */
+> +			 <0x00080000 0x00080000 0x010000>,	/* dmem */
+> +			 <0x00090000 0x00090000 0x001000>,	/* dmem */
+> +			 <0x000a0000 0x000a0000 0x010000>,	/* cmem */
+> +			 <0x000b0000 0x000b0000 0x001000>,	/* cmem */
+> +			 <0x000c0000 0x000c0000 0x010000>,	/* smem */
+> +			 <0x000d0000 0x000d0000 0x001000>,	/* smem */
+> +			 <0x000e0000 0x000e0000 0x010000>,	/* pmem */
+> +			 <0x000f0000 0x000f0000 0x001000>,	/* pmem */
+>  			 <0x000f1000 0x000f1000 0x001000>,	/* ap 32 */
+>  			 <0x000f2000 0x000f2000 0x001000>,	/* ap 33 */
+>  
+
+So looks like pmem has no ranges defined in the ap registers, just add the
+new ranges with comments like "dmem interrconnect" "pmem, not listed in ap".
+
+Right now this change is hard to read as it's not obvious what is changing as
+you're adding the new ranges and changing comments for the existing ranges.
+
+Please keep the ap entry reference for the existing ones, not sure we need
+comments for the existing ranges. Probably best to add comments in a separate
+patch to keep the range changes readable.
+
+> @@ -482,14 +486,47 @@ target-module@f1000 {			/* 0x401f1000, ap 32 20.0 */
+>  			clock-names = "fck";
+>  			#address-cells = <1>;
+>  			#size-cells = <1>;
+> -			ranges = <0x0 0xf1000 0x1000>,
+> -				 <0x490f1000 0x490f1000 0x1000>;
+>  
+> -			/*
+> -			 * No child device binding or driver in mainline.
+> -			 * See Android tree and related upstreaming efforts
+> -			 * for the old driver.
+> -			 */
+> +			/* CHECKME: OMAP4 and OMAP5 may differ in memory sizes, here we define more than available... */
+> +			ranges = <0 0xf1000 0x1000>, /* MPU private access */
+> +				 <0x80000 0x80000 0x10000>, /* DMEM 64KiB - MPU */
+> +				 <0xa0000 0xa0000 0x10000>, /* CMEM 6KiB - MPU */
+> +				 <0xc0000 0xc0000 0x10000>, /* SMEM 64KiB - MPU */
+> +				 <0xe0000 0xe0000 0x10000>, /* PMEM 8KiB - MPU */
+> +				 <0x490f1000 0x490f1000 0x10000>, /* L3 Interconnect */
+> +				 <0x49080000 0x49080000 0x10000>, /* DMEM 64KiB - L3 */
+> +				 <0x490a0000 0x490a0000 0x10000>, /* CMEM 6KiB - L3 */
+> +				 <0x490ce000 0x490c0000 0x10000>, /* SMEM 64KiB - L3 */
+> +				 <0x490e0000 0x490e0000 0x10000>; /* PMEM 8KiB - L3 */
+> +
+> +			aess: aess {
+> +				compatible = "ti,omap4-aess";
+> +				status = "disabled";
+> +				reg = <0 0xfff>, /* MPU private access */
+> +				      <0x80000 0xffff>, /* DMEM - MPU */
+> +				      <0xa0000 0xffff>, /* CMEM - MPU */
+> +				      <0xc0000 0xffff>, /* SMEM - MPU */
+> +				      <0xe0000 0xffff>, /* PMEM - MPU */
+> +				      <0x490f1000 0xfff>, /* L3 Interconnect */
+> +				      <0x49080000 0xffff>, /* DMEM - L3 */
+> +				      <0x490a0000 0xffff>, /* CMEM - L3 */
+> +				      <0x490ce000 0xffff>, /* SMEM - L3 */
+> +				      <0x490e0000 0xffff>; /* PMEM - L3 */
+> +				reg-names = "mpu", "dmem", "cmem", "smem", "pmem",
+> +				      "dma", "dmem_dma", "cmem_dma", "smem_dma",
+> +				      "pmem_dma";
+> +				interrupts = <GIC_SPI 99 IRQ_TYPE_LEVEL_HIGH>;
+> +				dmas = <&sdma 101>,
+> +				      <&sdma 102>,
+> +				      <&sdma 103>,
+> +				      <&sdma 104>,
+> +				      <&sdma 105>,
+> +				      <&sdma 106>,
+> +				      <&sdma 107>,
+> +				      <&sdma 108>;
+> +				dma-names = "fifo0", "fifo1", "fifo2", "fifo3", "fifo4",
+> +				      "fifo5", "fifo6", "fifo7";
+> +			};
+>  		};
+>  	};
+>  };
+
+Hmm so what registers is the driver accessing in the l3 interconnect
+registers named dma above? If there's something sysc and syss register
+related it's better off done in a generic way in ti-sysc.c.
+
+In general looks OK to me for the ti,omap4-aess child device. Yeah seems
+like no need to set up separate child device nodes for the memory ranges.
+
+Regards,
+
+Tony
