@@ -2,70 +2,119 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ECD15797CF7
-	for <lists+linux-omap@lfdr.de>; Thu,  7 Sep 2023 21:47:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 55B62797B81
+	for <lists+linux-omap@lfdr.de>; Thu,  7 Sep 2023 20:19:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231124AbjIGTrY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 7 Sep 2023 15:47:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56214 "EHLO
+        id S1343710AbjIGSTP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 7 Sep 2023 14:19:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229954AbjIGTrX (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 7 Sep 2023 15:47:23 -0400
-X-Greylist: delayed 4199 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 07 Sep 2023 12:47:18 PDT
-Received: from mail.moosomin24.com (mail.moosomin24.com [217.61.112.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C92BCE9
-        for <linux-omap@vger.kernel.org>; Thu,  7 Sep 2023 12:47:18 -0700 (PDT)
-Received: by mail.moosomin24.com (Postfix, from userid 1002)
-        id 299B1824D5; Thu,  7 Sep 2023 12:11:06 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=moosomin24.com;
-        s=mail; t=1694081470;
-        bh=sxkamsLepnJSy5ikFDKOiyq8RChcIfs44Djo0bti1MM=;
-        h=Date:From:To:Subject:From;
-        b=QI/A4gq1Uz/A2wMdShSaiGGpV0IpkXM2VCyoKaeBgfxFxwiit3HosSvgZLn3LUGr9
-         ZJg0jVt2ZeVM5ISW5YSgD/bs0KDGk+pzF92R6upP9gYD5LcDsumSygE5LziNv3jAAl
-         totQ4pbAbFaSdokfpDDUm/rNmFAcRqP+Ft1sPh2zDey+T3ZbAjO2PNE0YLPpzVbus7
-         icGD0h7Ok5wlMQgki0PVHHpLTJoLx003Olvqqc57MfO63jz1L+ojTFgqu+bFWjSg9p
-         99pByzSDC0kd65HXOF9lB1umNmdAWGxpPMbJyrr5rMBrXEcr/SN9ZhLT5Z2/bO2hft
-         c47Xxr0h0m71A==
-Received: by mail.moosomin24.com for <linux-omap@vger.kernel.org>; Thu,  7 Sep 2023 10:10:58 GMT
-Message-ID: <20230907113853-0.1.26.2ols.0.co9nm2ilqn@moosomin24.com>
-Date:   Thu,  7 Sep 2023 10:10:58 GMT
-From:   "Philipp Raber" <philipp.raber@moosomin24.com>
-To:     <linux-omap@vger.kernel.org>
-Subject: Metalworking and welding
-X-Mailer: mail.moosomin24.com
+        with ESMTP id S232978AbjIGSTP (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 7 Sep 2023 14:19:15 -0400
+Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 707EA1705;
+        Thu,  7 Sep 2023 11:18:59 -0700 (PDT)
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.2.0)
+ id 567bb54194be6a4c; Thu, 7 Sep 2023 20:18:57 +0200
+Authentication-Results: v370.home.net.pl; spf=softfail (domain owner 
+   discourages use of this host) smtp.mailfrom=rjwysocki.net 
+   (client-ip=195.136.19.94; helo=[195.136.19.94]; 
+   envelope-from=rjw@rjwysocki.net; receiver=<UNKNOWN>)
+Received: from kreacher.localnet (unknown [195.136.19.94])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by v370.home.net.pl (Postfix) with ESMTPSA id D03936636D6;
+        Thu,  7 Sep 2023 20:18:56 +0200 (CEST)
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Linux PM <linux-pm@vger.kernel.org>
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Zhang Rui <rui.zhang@intel.com>, linux-omap@vger.kernel.org,
+        Amit Kucheria <amitk@kernel.org>, Keerthy <j-keerthy@ti.com>
+Subject: [PATCH v1] thermal: Constify the trip argument of the .get_trend() zone callback
+Date:   Thu, 07 Sep 2023 20:18:56 +0200
+Message-ID: <5709115.DvuYhMxLoT@kreacher>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=1.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        URIBL_ABUSE_SURBL autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: *
+X-CLIENT-IP: 195.136.19.94
+X-CLIENT-HOSTNAME: 195.136.19.94
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedviedrudehhedguddvfecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpeffffffkefgheehffelteeiveeffeevhfelteejvddvieejjeelvdeiheeuveeuffenucfkphepudelhedrudefiedrudelrdelgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduleehrddufeeirdduledrleegpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeelpdhrtghpthhtoheplhhinhhugidqphhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrnhhivghlrdhlvgiitggrnhhosehlihhnrghrohdrohhrghdprhgtphht
+ thhopehsrhhinhhivhgrshdrphgrnhgurhhuvhgruggrsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtoheprhhuihdriihhrghnghesihhnthgvlhdrtghomh
+X-DCC--Metrics: v370.home.net.pl 1024; Body=9 Fuz1=9 Fuz2=9
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Good morning,
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-We specialize in serial production of metal elements.
+Add 'const' to the definition of the 'trip' argument of the
+.get_trend() thermal zone callback to indicate that the trip point
+passed to it should not be modified by it and adjust the
+callback functions implementing it, thermal_get_trend() in the
+ACPI thermal driver and __ti_thermal_get_trend(), accordingly.
 
-You do not have to resort to the services of subcontractors - we offer yo=
-u comprehensive services
-Support from design to production to transportation, which guarantees sho=
-rt delivery times orders and lower costs.
+No intentional functional impact.
 
-We have an extensive machine park and a large team of specialists, thanks=
- to which we can offer services such as laser sheet metal cutting, pipe a=
-nd profile bending, welding and powder coating.
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+ drivers/acpi/thermal.c                             |    2 +-
+ drivers/thermal/ti-soc-thermal/ti-thermal-common.c |    3 ++-
+ include/linux/thermal.h                            |    4 ++--
+ 3 files changed, 5 insertions(+), 4 deletions(-)
 
-The main area of our production is currently storage and transport trolle=
-ys. We produce transport pallets, scissor lifts, furniture elements, buil=
-ding formwork and much more.
+Index: linux-pm/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
+===================================================================
+--- linux-pm.orig/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
++++ linux-pm/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
+@@ -110,7 +110,8 @@ static inline int __ti_thermal_get_temp(
+ }
+ 
+ static int __ti_thermal_get_trend(struct thermal_zone_device *tz,
+-				  struct thermal_trip *trip, enum thermal_trend *trend)
++				  const struct thermal_trip *trip,
++				  enum thermal_trend *trend)
+ {
+ 	struct ti_thermal_data *data = thermal_zone_device_priv(tz);
+ 	struct ti_bandgap *bgp;
+Index: linux-pm/include/linux/thermal.h
+===================================================================
+--- linux-pm.orig/include/linux/thermal.h
++++ linux-pm/include/linux/thermal.h
+@@ -80,8 +80,8 @@ struct thermal_zone_device_ops {
+ 	int (*set_trip_hyst) (struct thermal_zone_device *, int, int);
+ 	int (*get_crit_temp) (struct thermal_zone_device *, int *);
+ 	int (*set_emul_temp) (struct thermal_zone_device *, int);
+-	int (*get_trend) (struct thermal_zone_device *, struct thermal_trip *,
+-			  enum thermal_trend *);
++	int (*get_trend) (struct thermal_zone_device *,
++			  const struct thermal_trip *, enum thermal_trend *);
+ 	void (*hot)(struct thermal_zone_device *);
+ 	void (*critical)(struct thermal_zone_device *);
+ };
+Index: linux-pm/drivers/acpi/thermal.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/thermal.c
++++ linux-pm/drivers/acpi/thermal.c
+@@ -531,7 +531,7 @@ static int thermal_get_temp(struct therm
+ }
+ 
+ static int thermal_get_trend(struct thermal_zone_device *thermal,
+-			     struct thermal_trip *trip,
++			     const struct thermal_trip *trip,
+ 			     enum thermal_trend *trend)
+ {
+ 	struct acpi_thermal *tz = thermal_zone_device_priv(thermal);
 
-If you have any need regarding this, please send me a message.
 
 
-Greetings
-Philipp Raber
