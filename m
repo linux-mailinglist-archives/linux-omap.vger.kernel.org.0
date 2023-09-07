@@ -2,128 +2,113 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB87A797584
-	for <lists+linux-omap@lfdr.de>; Thu,  7 Sep 2023 17:52:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CB72797397
+	for <lists+linux-omap@lfdr.de>; Thu,  7 Sep 2023 17:28:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235836AbjIGPrk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 7 Sep 2023 11:47:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37508 "EHLO
+        id S244800AbjIGP2D (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 7 Sep 2023 11:28:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344793AbjIGPdu (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 7 Sep 2023 11:33:50 -0400
-Received: from mail-ot1-x334.google.com (mail-ot1-x334.google.com [IPv6:2607:f8b0:4864:20::334])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63FD8135
-        for <linux-omap@vger.kernel.org>; Thu,  7 Sep 2023 08:33:25 -0700 (PDT)
-Received: by mail-ot1-x334.google.com with SMTP id 46e09a7af769-6bcac140aaaso830256a34.2
-        for <linux-omap@vger.kernel.org>; Thu, 07 Sep 2023 08:33:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1694100769; x=1694705569; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BYCw6MjcMH0VBXX64k2n7JI1Ap28j06fLMRRfYT33EM=;
-        b=KUQLMcLYv2gf+qTyk6LTA4MfyeQpo7B8iOvuAzU3fdatXOlv9N21BdeGg+W6rgelE1
-         0ciXmXHeT/xL5Hh8CVdTc+FnWV9Be3NB9Y2bnqXo1Gt03hATMNAkDE4dopGDj9N681mD
-         LprCOpW62JfLv+h+bZaDprnvk0mM0Fhkq6Q9q8ncos9K1QG9VHuK1be8TvnAM5n51bNY
-         Qjv6sIZ7IaDuLGQwaGdxPZRgOr+L0IOzs26AaR3jdDnXMgUPJ76suyAPdPVxT5BaoH9O
-         KdLEE0cWOhmHxXrBU8eS3YHZ7gkBs5wbhdQ+2KITvcNueqHGCmNB3fKeMPEYLY8xWEkL
-         jvcw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1694100769; x=1694705569;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BYCw6MjcMH0VBXX64k2n7JI1Ap28j06fLMRRfYT33EM=;
-        b=HhgvQCmPPtCo2edlx6AVDqLpb5QXT46C2h5CW2Em6+pY/TxNdlfnbk7sRk/ug9DlW+
-         ukXX0HiXboLG9RxorxXzS43d/ywhyW39D2538Nu5tVhs/fSVOsIyVkrTOatRWqsrDHXn
-         78Z1ankefdYZRjNddsr0KubLZkOURq5yU0HpqgNCO1Vbh0pxoyuGp/04lXnftBGnD261
-         HaAtZIYeIiqO6OWAP/ZgJOF1iCTMmY1xIIdqqI1h4pHHv6sZpB0KqIR7k66q3jniOGR+
-         XD9w2xxsCDHkCnV4u9OLKyNqHKl7ZXqS6sqFwP3Py5ZGCGsqxW1lwGgpAj+TW+esESQM
-         taTA==
-X-Gm-Message-State: AOJu0Yzb7QeE/BYYQdcWslVSBlL1Xq4jxHeshMc2d7/4ofC0z3b4ZBnO
-        otCJ+1N589h2et8X/9YSeGjSGNhF67KKx2mbdUre3LQT2L9pYQuF
-X-Google-Smtp-Source: AGHT+IEKK3pIZHt2QRqcId7nWRc2DLGZhZ7BIVl+nPAXJnwX2Sf45+9R0pQFVmMx9pkduIAsjCSxAhDM52WNmcfhZPQ=
-X-Received: by 2002:a67:fa11:0:b0:44d:6290:e422 with SMTP id
- i17-20020a67fa11000000b0044d6290e422mr4850316vsq.35.1694073434785; Thu, 07
- Sep 2023 00:57:14 -0700 (PDT)
+        with ESMTP id S231864AbjIGPV7 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 7 Sep 2023 11:21:59 -0400
+Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com [64.147.123.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F39EE1700;
+        Thu,  7 Sep 2023 08:21:26 -0700 (PDT)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+        by mailout.west.internal (Postfix) with ESMTP id 4628B3200921;
+        Thu,  7 Sep 2023 06:11:47 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute5.internal (MEProxy); Thu, 07 Sep 2023 06:11:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+        :cc:content-type:content-type:date:date:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to:sender
+        :subject:subject:to:to; s=fm1; t=1694081506; x=1694167906; bh=EZ
+        T6EnA3YabROgKZ7V+W9exHIuOjPiCl6NxOF1soN9U=; b=xAbnZGGnS26+dKZuFM
+        JJ9Q/LP83Fk2oA7vUHJgxjPuMktibog+u9gFMPqITJcZTLADYfgGjYfuyA+hIgpy
+        UZ0PJ7YnaKlDjpwHqZdZipYvLmuNtiyrdBEAjyaJjqU6pTabR7ItN36z3lwhpmXs
+        fvtiu0mTHRzZpFj+I45yd9bxVW5zKED/+1aCZxcyb3ZHIcAuoJ3tpNsPmKev+cCb
+        yNuoZy9vW1r0nXPmLM0PNfhWBwCiMRsfOKcdCT7P3LiIwHLYXW5Qa8awoYbQu9XA
+        fkpuw6HrCJhhvMXFhaZnWBSYl/eRazd8A2AkeBiJPfTx8oJgT1nYcQarGfpiUTzZ
+        3nlw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm1; t=1694081506; x=1694167906; bh=EZT6EnA3YabRO
+        gKZ7V+W9exHIuOjPiCl6NxOF1soN9U=; b=WeI7TMT0kmnj7BpJTHA+/mKJxHLnA
+        OabayLtZUBFxbF1MUNKkaCwqHQoIsSRelpkuxhRSXzyOmyOkbZ8tAGBCrZXRoqsp
+        KRsFDkq6APoFkXAfBI8tinW/iz8wqVUN8vjDX1Hs6wTDVnhvsZnfyiJH2IKjlZ9Z
+        7geKfsxeBgrXB2KI33HelMATDyF+Cr5EZw0yAZFypceWTzdzwMwDIA6HLjME71eM
+        qn3VBBhUJ0utdR6tOvutgpbDX2zNr8iWYdsHm5bw2usx2eP0EAZWHILjxaLoD9eA
+        YVFGeVbkzAuynBV9RfFqV3VVpEb68L2XQCiIWoFLw0PdKu2svW34JKQuQ==
+X-ME-Sender: <xms:4aH5ZHsHds3V0ipUOOV1zJyBPznKR_WsO-5nW6tiU9MGH5ewW08mPQ>
+    <xme:4aH5ZIfNU11SHBEaMmaEvGDQ-BGvbuv_sEUOiV6JICfG0dgR-EQeQkgvEBa5ppOk1
+    bvgIt-Fz2fu2A>
+X-ME-Received: <xmr:4aH5ZKwkKolW7ggAF7C6NgoEx-SDMCFAms8NDKFUIHhALKjqoIN4NsutmNc>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudehhedgvdehucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
+    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepheegvd
+    evvdeljeeugfdtudduhfekledtiefhveejkeejuefhtdeufefhgfehkeetnecuvehluhhs
+    thgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorg
+    hhrdgtohhm
+X-ME-Proxy: <xmx:4aH5ZGORV396Z-xwS_71WoNaFIqg28zD8p-KPpF8Fj8skpK8C00n0Q>
+    <xmx:4aH5ZH-dbwLMRZTS323_B-WH-sLWA7btzK0cRLr3vsZrnQMceLZ1yg>
+    <xmx:4aH5ZGXFACVuo9kvBS59nBceVR1ZW3XNUP31J6zjtjW-2JUIN5t1Qg>
+    <xmx:4qH5ZHxBMEYMGjScKU9TdoNo-gxPzpvdOYz_xoq1S84DA6O9teoiZg>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 7 Sep 2023 06:11:45 -0400 (EDT)
+Date:   Thu, 7 Sep 2023 11:11:44 +0100
+From:   Greg KH <greg@kroah.com>
+To:     Adam Ford <aford173@gmail.com>
+Cc:     stable <stable@vger.kernel.org>, Tony Lindgren <tony@atomide.com>,
+        Linux-OMAP <linux-omap@vger.kernel.org>
+Subject: Re: of: property: Simplify of_link_to_phandle()
+Message-ID: <2023090715-charity-numerous-f6f0@gregkh>
+References: <CAHCN7x+GLhYyEMq0h0Sa3m9JMuZf0g7=FpT==uFOg=w7OQ=qUw@mail.gmail.com>
 MIME-Version: 1.0
-References: <20230905185309.131295-1-brgl@bgdev.pl> <20230905185309.131295-8-brgl@bgdev.pl>
- <CACRpkdbdcPv1LHL2W-enKBJ2OARpduoOJkQ64oL6GSOfmmD3qQ@mail.gmail.com>
-In-Reply-To: <CACRpkdbdcPv1LHL2W-enKBJ2OARpduoOJkQ64oL6GSOfmmD3qQ@mail.gmail.com>
-From:   Bartosz Golaszewski <brgl@bgdev.pl>
-Date:   Thu, 7 Sep 2023 09:57:03 +0200
-Message-ID: <CAMRc=McSBBeHi5jDVYOF6s1etfQzYRNLo25LeY+DWG_2tEf7=w@mail.gmail.com>
-Subject: Re: [PATCH 07/21] gpiolib: provide gpio_device_get_base()
-To:     Linus Walleij <linus.walleij@linaro.org>,
-        Dipen Patel <dipenp@nvidia.com>
-Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <markgross@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-acpi@vger.kernel.org, timestamp@lists.linux.dev,
-        linux-tegra@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.4 required=5.0 tests=BAYES_00,DATE_IN_PAST_06_12,
-        DKIM_SIGNED,DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHCN7x+GLhYyEMq0h0Sa3m9JMuZf0g7=FpT==uFOg=w7OQ=qUw@mail.gmail.com>
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,
+        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, Sep 7, 2023 at 9:17=E2=80=AFAM Linus Walleij <linus.walleij@linaro.=
-org> wrote:
->
-> On Tue, Sep 5, 2023 at 8:53=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev.pl=
-> wrote:
->
-> > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> >
-> > Let's start adding getters for the opaque struct gpio_device. Start wit=
-h
-> > a function allowing to retrieve the base GPIO number.
-> >
-> > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->
-> I guess you have a solid usecase for drivers needing to do this
-> crazy thing, because I suppose you feel as much as me that
-> this should rather be gpiolib-internal and confined to
-> drivers/gpio/gpiolib.h?
->
-> If you add a valid reason for making this globally visible outside
-> of drivers/[gpio|pinctrl] to the commit message I guess I can live
-> with it because we need to think of the bigger picture:
-> Acked-by: Linus Walleij <linus.walleij@linaro.org>
->
-> It brings to mind the now confusing "base" inside of
-> struct gpio_chip. We all know it should go away, but since it
-> is never used during the lifetime of the gpio_chip - or SHOULD
-> never be used - it should rather be an argument to
-> [devm_]gpiochip_add_data( .... int base);...
->
-> Maybe something we should add to our TODO file.
->
-> Yours,
-> Linus Walleij
+On Wed, Sep 06, 2023 at 06:49:07PM -0500, Adam Ford wrote:
+> Stable Group,
+> 
+> Please apply commit 4a032827daa8 ("of: property: Simplify of_link_to_phandle()")
+> to the 6.1.y stable branch.  It was originally part of a series that
+> was only partially applied to 6.1.  Being partially applied left 6.1.y
+> in a state where a bunch of peripherals were deferred indefinitely on
+> the am3517-evm.
+> 
+> wl12xx_buf platform: supplier 48002000.scm not ready
+> wl12xx_vmmc2 platform: supplier wl12xx_buf not ready
+> 48050000.dss platform: supplier display@0 not ready
+> 48064800.ehci platform: supplier hsusb1_phy not ready
+> backlight platform: supplier 48002000.scm not ready
+> display@0 platform: supplier backlight not ready
+> dmtimer-pwm@11 platform: supplier 48002000.scm not ready
+> hsusb1_phy platform: supplier 48002000.scm not ready
+> gpio-leds platform: supplier 48002000.scm not ready
+> 480b4000.mmc platform: supplier wl12xx_vmmc2 not ready
+> 
+> With the above commit applied, it appears to address most of the
+> deferred peripherals.
+> 
+> Fixes: eaf9b5612a47 ("driver core: fw_devlink: Don't purge child
+> fwnode's consumer links")
+> Signed-off-by:  Adam Ford <aford173@gmail.com>
 
-For this series it's the HTE driver that uses it and I don't have a
-good idea about how to change it. Dipen?
+Now queued up, thanks.
 
-I would also love to make pinctrl not use the internal GPIOLIB header
-so it'll be another user, unless you can figure out a way to not use
-gc->base? :)
-
-I think we're stuck with it for now.
-
-Bart
+greg k-h
