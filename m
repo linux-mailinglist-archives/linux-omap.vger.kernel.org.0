@@ -2,119 +2,105 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 55B62797B81
-	for <lists+linux-omap@lfdr.de>; Thu,  7 Sep 2023 20:19:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE81E797FDB
+	for <lists+linux-omap@lfdr.de>; Fri,  8 Sep 2023 02:51:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343710AbjIGSTP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 7 Sep 2023 14:19:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44124 "EHLO
+        id S237515AbjIHAwA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 7 Sep 2023 20:52:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232978AbjIGSTP (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 7 Sep 2023 14:19:15 -0400
-Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 707EA1705;
-        Thu,  7 Sep 2023 11:18:59 -0700 (PDT)
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.2.0)
- id 567bb54194be6a4c; Thu, 7 Sep 2023 20:18:57 +0200
-Authentication-Results: v370.home.net.pl; spf=softfail (domain owner 
-   discourages use of this host) smtp.mailfrom=rjwysocki.net 
-   (client-ip=195.136.19.94; helo=[195.136.19.94]; 
-   envelope-from=rjw@rjwysocki.net; receiver=<UNKNOWN>)
-Received: from kreacher.localnet (unknown [195.136.19.94])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id D03936636D6;
-        Thu,  7 Sep 2023 20:18:56 +0200 (CEST)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux PM <linux-pm@vger.kernel.org>
-Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Zhang Rui <rui.zhang@intel.com>, linux-omap@vger.kernel.org,
-        Amit Kucheria <amitk@kernel.org>, Keerthy <j-keerthy@ti.com>
-Subject: [PATCH v1] thermal: Constify the trip argument of the .get_trend() zone callback
-Date:   Thu, 07 Sep 2023 20:18:56 +0200
-Message-ID: <5709115.DvuYhMxLoT@kreacher>
+        with ESMTP id S229973AbjIHAv7 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 7 Sep 2023 20:51:59 -0400
+Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BADEE1BCD;
+        Thu,  7 Sep 2023 17:51:55 -0700 (PDT)
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 3876MXZO013925;
+        Thu, 7 Sep 2023 01:22:33 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1694067753;
+        bh=dmHQ4+JHJoxXwyufU8OSB2/JsOl0PKV4+Zpva0/qYLw=;
+        h=Date:From:To:CC:Subject:References:In-Reply-To;
+        b=y1U8uCwqTTJp09BY0uELCL50LwCIqiIs2k9iIjvxtxUVmJHhRt3DqktSqq8lNKWQs
+         uPOp2Oe9y8q0Eor2JlpJOQeRwjjCw9W6Qwv1nW2wwwd/PMqTs5F28xImGKsvaYNC0R
+         UIDzuEJwDQiC7RbxjpvWaJoDdfFGBaWrmf7D4H2A=
+Received: from DLEE106.ent.ti.com (dlee106.ent.ti.com [157.170.170.36])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 3876MXYH107990
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 7 Sep 2023 01:22:33 -0500
+Received: from DLEE114.ent.ti.com (157.170.170.25) by DLEE106.ent.ti.com
+ (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 7
+ Sep 2023 01:22:33 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE114.ent.ti.com
+ (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Thu, 7 Sep 2023 01:22:33 -0500
+Received: from localhost (ileaxei01-snat.itg.ti.com [10.180.69.5])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 3876MWfB122970;
+        Thu, 7 Sep 2023 01:22:32 -0500
+Date:   Thu, 7 Sep 2023 11:52:31 +0530
+From:   Dhruva Gole <d-gole@ti.com>
+To:     Tony Lindgren <tony@atomide.com>
+CC:     <linux-omap@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Keerthy <j-keerthy@ti.com>, Kevin Hilman <khilman@baylibre.com>,
+        Nishanth Menon <nm@ti.com>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <vibhore@ti.com>
+Subject: Re: [PATCH] bus: ti-sysc: Fix SYSC_QUIRK_SWSUP_SIDLE_ACT handling
+ for uart wake-up
+Message-ID: <20230907062231.muwzvje726wlqnqw@dhruva.dhcp.ti.com>
+References: <20230907055441.19476-1-tony@atomide.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 195.136.19.94
-X-CLIENT-HOSTNAME: 195.136.19.94
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedviedrudehhedguddvfecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpeffffffkefgheehffelteeiveeffeevhfelteejvddvieejjeelvdeiheeuveeuffenucfkphepudelhedrudefiedrudelrdelgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduleehrddufeeirdduledrleegpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeelpdhrtghpthhtoheplhhinhhugidqphhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrnhhivghlrdhlvgiitggrnhhosehlihhnrghrohdrohhrghdprhgtphht
- thhopehsrhhinhhivhgrshdrphgrnhgurhhuvhgruggrsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtoheprhhuihdriihhrghnghesihhnthgvlhdrtghomh
-X-DCC--Metrics: v370.home.net.pl 1024; Body=9 Fuz1=9 Fuz2=9
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20230907055441.19476-1-tony@atomide.com>
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Sep 07, 2023 at 08:54:41 +0300, Tony Lindgren wrote:
+> The uarts should be tagged with SYSC_QUIRK_SWSUP_SIDLE instead of
+> SYSC_QUIRK_SWSUP_SIDLE_ACT. The difference is that SYSC_QUIRK_SWSUP_SIDLE
+> is used to force idle target modules rather than block idle during usage.
+> 
+> The SYSC_QUIRK_SWSUP_SIDLE_ACT should disable autoidle and wake-up when
+> a target module is active, and configure autoidle and wake-up when a
+> target module is inactive. We are missing configuring the target module
+> on sysc_disable_module(), and missing toggling of the wake-up bit.
+> 
+> Let's fix the issue to allow uart wake-up to work.
+> 
+> Fixes: fb685f1c190e ("bus: ti-sysc: Handle swsup idle mode quirks")
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> ---
+>  drivers/bus/ti-sysc.c | 22 +++++++++++++++++-----
+>  1 file changed, 17 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+> --- a/drivers/bus/ti-sysc.c
+> +++ b/drivers/bus/ti-sysc.c
 
-Add 'const' to the definition of the 'trip' argument of the
-.get_trend() thermal zone callback to indicate that the trip point
-passed to it should not be modified by it and adjust the
-callback functions implementing it, thermal_get_trend() in the
-ACPI thermal driver and __ti_thermal_get_trend(), accordingly.
+Thanks for the fix Tony,
+I have tested this on a TI SK-AM62x with deepsleep and am able to wakeup
+with keypress on the wake_uart.
 
-No intentional functional impact.
+For anyone else who wants to give this a shot, the required patches for
+deepsleep and DT related changes have been pushed to my branch on github
+[0].
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/acpi/thermal.c                             |    2 +-
- drivers/thermal/ti-soc-thermal/ti-thermal-common.c |    3 ++-
- include/linux/thermal.h                            |    4 ++--
- 3 files changed, 5 insertions(+), 4 deletions(-)
+Hence,
+Tested-by: Dhruva Gole <d-gole@ti.com>
 
-Index: linux-pm/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-===================================================================
---- linux-pm.orig/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-+++ linux-pm/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-@@ -110,7 +110,8 @@ static inline int __ti_thermal_get_temp(
- }
- 
- static int __ti_thermal_get_trend(struct thermal_zone_device *tz,
--				  struct thermal_trip *trip, enum thermal_trend *trend)
-+				  const struct thermal_trip *trip,
-+				  enum thermal_trend *trend)
- {
- 	struct ti_thermal_data *data = thermal_zone_device_priv(tz);
- 	struct ti_bandgap *bgp;
-Index: linux-pm/include/linux/thermal.h
-===================================================================
---- linux-pm.orig/include/linux/thermal.h
-+++ linux-pm/include/linux/thermal.h
-@@ -80,8 +80,8 @@ struct thermal_zone_device_ops {
- 	int (*set_trip_hyst) (struct thermal_zone_device *, int, int);
- 	int (*get_crit_temp) (struct thermal_zone_device *, int *);
- 	int (*set_emul_temp) (struct thermal_zone_device *, int);
--	int (*get_trend) (struct thermal_zone_device *, struct thermal_trip *,
--			  enum thermal_trend *);
-+	int (*get_trend) (struct thermal_zone_device *,
-+			  const struct thermal_trip *, enum thermal_trend *);
- 	void (*hot)(struct thermal_zone_device *);
- 	void (*critical)(struct thermal_zone_device *);
- };
-Index: linux-pm/drivers/acpi/thermal.c
-===================================================================
---- linux-pm.orig/drivers/acpi/thermal.c
-+++ linux-pm/drivers/acpi/thermal.c
-@@ -531,7 +531,7 @@ static int thermal_get_temp(struct therm
- }
- 
- static int thermal_get_trend(struct thermal_zone_device *thermal,
--			     struct thermal_trip *trip,
-+			     const struct thermal_trip *trip,
- 			     enum thermal_trend *trend)
- {
- 	struct acpi_thermal *tz = thermal_zone_device_priv(thermal);
+[0] https://github.com/DhruvaG2000/v-linux/commits/v6.5-rc7_wkuart
 
-
-
+-- 
+Best regards,
+Dhruva Gole <d-gole@ti.com>
