@@ -2,57 +2,57 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 64E4E797939
-	for <lists+linux-omap@lfdr.de>; Thu,  7 Sep 2023 19:07:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2A26797754
+	for <lists+linux-omap@lfdr.de>; Thu,  7 Sep 2023 18:24:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240018AbjIGRHI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 7 Sep 2023 13:07:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46194 "EHLO
+        id S235240AbjIGQYS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 7 Sep 2023 12:24:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46904 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233702AbjIGRHI (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 7 Sep 2023 13:07:08 -0400
-Received: from mail-ua1-x932.google.com (mail-ua1-x932.google.com [IPv6:2607:f8b0:4864:20::932])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 567511FC2
-        for <linux-omap@vger.kernel.org>; Thu,  7 Sep 2023 10:06:41 -0700 (PDT)
-Received: by mail-ua1-x932.google.com with SMTP id a1e0cc1a2514c-79a10807b4fso470036241.2
-        for <linux-omap@vger.kernel.org>; Thu, 07 Sep 2023 10:06:41 -0700 (PDT)
+        with ESMTP id S238035AbjIGQMO (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 7 Sep 2023 12:12:14 -0400
+Received: from mail-yw1-x1129.google.com (mail-yw1-x1129.google.com [IPv6:2607:f8b0:4864:20::1129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5F3959C9
+        for <linux-omap@vger.kernel.org>; Thu,  7 Sep 2023 09:09:16 -0700 (PDT)
+Received: by mail-yw1-x1129.google.com with SMTP id 00721157ae682-5922b96c5fcso11147187b3.0
+        for <linux-omap@vger.kernel.org>; Thu, 07 Sep 2023 09:09:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1694106312; x=1694711112; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1694102858; x=1694707658; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=IXtSDuwLHBAGfIvJXN98Bc/TjY2BpOjtqu3XNPdnEAg=;
-        b=QgBwf4R/gEcVWkx9UKuXti7DdQ4Zr+D+FGQVzvQlhhqx7JpA2smWbablUcRT6Neh4x
-         9Hw9rDkcyb6gMdOgbEHlxjO0PlzDWe93xk7sfeSMudICYU8G0rLRYgUsY/Z9aJXgfmBZ
-         XZwGbGq+7wPWAam/Vzg3cKIGZ2HMCX2o8Qqjzdm/HxSFNqOLYz6mbnuJ4K529WzqEy0f
-         lHalPYW7Xf5y2xalNRL2ZAn6jGFtVjSxxzMtxzFFECG7+bywo/Tg3PLK8MNN3/rC+slz
-         6Sn/hZ5zDXjEFQPzKZgijk0rk8flenybB2J6gPzfssKK90OC6M51fWYtb4YBFDzKtbMn
-         TR+Q==
+        bh=KDyS14lOc9gIdV8qqpJN7dVOi7FiXE2O1crBwgTrNhg=;
+        b=IEdmuhphSqgGlp2x+AuixQLt4D1isxZWO+g4YTCWHM1IjuOOGHkOZp3bZxqhms+4oI
+         bxcG1Pr7QWA30qGZxKamFXQDnZHrTtpmjDx4M2Cc5eepmtIVWEwgpLXqe19gbWDLu+UW
+         IrP8qhG7EhtaopncXFPqotGWsq55o3NiaFsowOLWsx2ox474/yJHYHVR/rI0AlEQpKa9
+         YWXb5tRU2xqvRbEA/s/Ye4jF30IBycf5kIebL8ZbWntV0B5A7yfYFD+KPFGctB0o/3/X
+         rONjy5deohFotz/6ni3lvpctxj/JrdCUornWzSKtQ05+w5EP30ZjQEHqxzRHHmhx8C66
+         BBdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1694106312; x=1694711112;
+        d=1e100.net; s=20221208; t=1694102858; x=1694707658;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=IXtSDuwLHBAGfIvJXN98Bc/TjY2BpOjtqu3XNPdnEAg=;
-        b=ZshJby67lQpoK98GUii6I1N9Bvm8pcCTZX4+ZPM4ev0KMASQUgbBI8Bbxs6nqKQPrL
-         Ub4zZfYvhshqm/gfZFvfQpmv8xWA5V1Gec5ox+Kkj/Jfu/TJ61G7Biq2rN8nIjNCEviq
-         mLU0+diNyeC9T+1FSq3C8KdlzGEAkYIqHEEPFLJ+/Prg5ODw+KD1IwziflfXj97Of34I
-         8F5AJJJuK7XOgGQMj20ZqPdY8ZZgcbbw3LgcfoMmzoWC26SiYK0r7/GL3xnnuKQ/Ftlt
-         vizwXi7/jC2H9uwoorqosRFKc6pRM7VYviui3CdFibYdCtQ9enwXxcz5XfY2n6+NwfNC
-         IrAw==
-X-Gm-Message-State: AOJu0YxiLUtL0NZUI+RfURS5CzSFZEmYIBjm42t7TpyrRV+x20XSYcsx
-        u2ZuChJ1ezvE+ZJDgWfwKTHz0TMBP7gTHAw7Q47oyaRBYyrZVGWb6yU=
-X-Google-Smtp-Source: AGHT+IFBssMxe62b6gjC3N4aS6mxtu2dG9GSPKFawDHtfKqDxWyo3xiYEaVk7D6s0DhtiZ21qOVsU28YZ+Ws9GvtAJ0=
-X-Received: by 2002:a5b:791:0:b0:d1f:6886:854a with SMTP id
- b17-20020a5b0791000000b00d1f6886854amr17648637ybq.9.1694071162023; Thu, 07
- Sep 2023 00:19:22 -0700 (PDT)
+        bh=KDyS14lOc9gIdV8qqpJN7dVOi7FiXE2O1crBwgTrNhg=;
+        b=TDpuanb1yCycVE7ZRhijTrujATtwTpvRDcrv0cpOvBOTa9Fv3UjJcpeS1xdyLCSul8
+         8jlJJtjT6M6Oa7KCXIiH+wiVdXzDotmT/KxHz+iR8AcLX50urorWSPIHOQ/JI0IhHit+
+         Rb+MzctwTqKw30pHYTW9XPQwXsIxlxuSZHlJzo7C2eMj9KDJpEghKAKIjCqhqR9cxmew
+         LMLAqES4pTOVe9uZ3GXiosefbNw01buBE+8tLIbiGH+XfytItW1rIhvWkaAai8iWF5nK
+         RTXAGgh5qGJtHgGTvxnMpwcW6KHlufmyG57mArxo3AOJEBDvTRviEvrr6qFmaBg7rfNB
+         6Xug==
+X-Gm-Message-State: AOJu0YwuCyds63BDTI9J2akVaYeH78X2zB3pL1NascyOV6t/0w2Xth/H
+        GUjzl9cLePoBip4HAG+/VXJAYUcFXfBRX/RnOcDgU19WWEBHfjvX
+X-Google-Smtp-Source: AGHT+IGJ2fOJYbfgZwCYkGOqpBoV8zRdwms0YQyjwmM812KoO4CG3kmEhKK7s/PjKGQeVe41+y3pVjBhSp9/fdWja/U=
+X-Received: by 2002:a25:408a:0:b0:d06:49e9:a29c with SMTP id
+ n132-20020a25408a000000b00d0649e9a29cmr19754022yba.34.1694071374753; Thu, 07
+ Sep 2023 00:22:54 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230905185309.131295-1-brgl@bgdev.pl> <20230905185309.131295-10-brgl@bgdev.pl>
-In-Reply-To: <20230905185309.131295-10-brgl@bgdev.pl>
+References: <20230905185309.131295-1-brgl@bgdev.pl> <20230905185309.131295-13-brgl@bgdev.pl>
+In-Reply-To: <20230905185309.131295-13-brgl@bgdev.pl>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Thu, 7 Sep 2023 09:19:09 +0200
-Message-ID: <CACRpkdazRyhqHhH+Ock3U0wFRkd_U5QUTZmOeTFoXx-Pe_jCRw@mail.gmail.com>
-Subject: Re: [PATCH 09/21] gpiolib: reluctantly provide gpio_device_get_chip()
+Date:   Thu, 7 Sep 2023 09:22:43 +0200
+Message-ID: <CACRpkdYJhP5otaFXbn49sK_33GJMy85MszyD9rqoQT1-fqd9dA@mail.gmail.com>
+Subject: Re: [PATCH 12/21] hte: allow building modules with COMPILE_TEST enabled
 To:     Bartosz Golaszewski <brgl@bgdev.pl>
 Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
         Janusz Krzysztofik <jmkrzyszt@gmail.com>,
@@ -87,17 +87,13 @@ wrote:
 
 > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 >
-> The process of converting all unauthorized users of struct gpio_chip to
-> using dedicated struct gpio_device function will be long so in the
-> meantime we must provide a way of retrieving the pointer to struct
-> gpio_chip from a GPIO device.
+> Allow building all HTE modules with COMPILE_TEST Kconfig option enabled.
 >
 > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-Yeah, sigh. Maybe add a notice to drivers/gpio/TODO that this needs
-to happen long time.
-
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+This should be a separate patch should it not?
+Just send it separately to Dipen so he can merge it.
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
 
 Yours,
 Linus Walleij
