@@ -2,44 +2,44 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A759798F62
-	for <lists+linux-omap@lfdr.de>; Fri,  8 Sep 2023 21:32:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 906DB7990B4
+	for <lists+linux-omap@lfdr.de>; Fri,  8 Sep 2023 22:02:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344781AbjIHTcH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 8 Sep 2023 15:32:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35528 "EHLO
+        id S232195AbjIHUCU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 8 Sep 2023 16:02:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344833AbjIHTcC (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 8 Sep 2023 15:32:02 -0400
+        with ESMTP id S235196AbjIHUCT (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 8 Sep 2023 16:02:19 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B298410CA;
-        Fri,  8 Sep 2023 12:31:34 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7C44C433AD;
-        Fri,  8 Sep 2023 19:31:33 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91EA0A3;
+        Fri,  8 Sep 2023 13:02:15 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 304C6C433BA;
+        Fri,  8 Sep 2023 19:33:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694201494;
+        s=k20201202; t=1694201621;
         bh=xoOLMqcuyPH4UTuc0ZznVTA/lU5nY+YsFXGNg86K7n4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fmWPjGf+rSvhki8tWvB92Q4kT7ZsLCok/96m49lFmdAQsk1WiFjfMVGG59V7vKt9r
-         SX59qBT/4w21Af+uCkl5LehOaIF4kDJ3ZBRZpruFIMZmc1MhwSyKw0AIpdK+VVRycT
-         PlVtuSMgy2LnegdyNehFIN3OLfHBvtd+Rdgfl1Bbq383MkgZjM5Ky5BeFD47myPVNl
-         r5sIqY8yirIPnwurn/cvQjSL7FJEZlkwRUTo9OjQ/fucACy50XKWu8T3hgYd/jNo2K
-         pUbN/e3GqSQo0g5fAvjZLgpNelBawr4BNdYvoUAHcCqam+y/grUXMwFtdh6OGio7Dx
-         sf/RDlGy6G+5A==
+        b=QzydwON1sFJRDV1/mAzEQDxa/ztYVu6K2O3EP0cdstBI2xSLl6zBJ8k9yIE0wHAQT
+         AWrw7cP54Z2FaiSRMHv+2Id3O/+cZdDvAlC4cYo/7N+xiKwS8waoE1Sf5frTnCUhpS
+         I3yrIVDbHG1XSv5MVcd8qiSAqryR0IpX2YfQGuQVpJlo10PSY5xTldGygqyjPt6qKo
+         KlGG9sQJ0h80Q452gd/OUiWp/EyBk7SqmX5FfWIIvwz+ILleQhG8XvnCEfjlhxqbV6
+         OhHBsEKHIl7IB+bylqZkA9GJmB0XsWKfmspDY/nqINoXOhgHLbDHifN2ei5RVaO/Wu
+         YzRRVbxYBQc7g==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Tony Lindgren <tony@atomide.com>, Nishanth Menon <nm@ti.com>,
         Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.5 29/36] bus: ti-sysc: Configure uart quirks for k3 SoC
-Date:   Fri,  8 Sep 2023 15:28:40 -0400
-Message-Id: <20230908192848.3462476-29-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.4 24/31] bus: ti-sysc: Configure uart quirks for k3 SoC
+Date:   Fri,  8 Sep 2023 15:31:53 -0400
+Message-Id: <20230908193201.3462957-24-sashal@kernel.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230908192848.3462476-1-sashal@kernel.org>
-References: <20230908192848.3462476-1-sashal@kernel.org>
+In-Reply-To: <20230908193201.3462957-1-sashal@kernel.org>
+References: <20230908193201.3462957-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.5.2
+X-stable-base: Linux 6.4.15
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
