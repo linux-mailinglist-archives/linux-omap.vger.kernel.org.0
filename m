@@ -2,44 +2,44 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F696799029
-	for <lists+linux-omap@lfdr.de>; Fri,  8 Sep 2023 21:37:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A976799049
+	for <lists+linux-omap@lfdr.de>; Fri,  8 Sep 2023 21:38:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237072AbjIHThc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 8 Sep 2023 15:37:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39558 "EHLO
+        id S1345189AbjIHTiZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 8 Sep 2023 15:38:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60990 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345076AbjIHThQ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 8 Sep 2023 15:37:16 -0400
+        with ESMTP id S1345434AbjIHTiK (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 8 Sep 2023 15:38:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F147D10E9;
-        Fri,  8 Sep 2023 12:36:49 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1D27C433CC;
-        Fri,  8 Sep 2023 19:36:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50D6719A5;
+        Fri,  8 Sep 2023 12:37:47 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06BBDC116A3;
+        Fri,  8 Sep 2023 19:36:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694201797;
-        bh=upTihrOKcy1P+yUcGaX/OgNP0IT5nq2po6zEz9oie0M=;
+        s=k20201202; t=1694201805;
+        bh=5h0O3rQdeMsZoaTuF4Cbju62ne9FoNMAjVH6bTLCMv4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PCb7urnCeKwLWkMmnbbhmBSHxb9lez4r4FHr9sEJtxE4rUq7j9KYvLfObJETbrjtl
-         1AwinzxaA293/vF5lu5ss3aM5dVq9md3okJeU2oCkI5cLl+92iEXObmKaNzqQM07nY
-         GoDY83A0QFl+3A7rOIp9THPoNyfK/egumJQdZkr038HN9+aY7FxPZq5fvusLPlhrTd
-         InnGjUcQ40YExsMcvaxru4PQdHxoBExGiGC3TZbt2p1OuqwT4WPuuRDlNLPosZUVlx
-         BoE9QmmuOvGZsfaFy7Dv1mxA1fW0Ai1zhPRFCuasn1YZEdbDTVPX1b71sozrW3S6bH
-         d7oCbA6dkIt2g==
+        b=qOE9/x6vSnxpIWYjFKogSQ9efMt+O0BCfIO6cujXVMyq+Dcqi3oOl+EAAjBpK0ICG
+         ThToz2gNgh6Okm+PJmyXvewYWk/wZc1EH0+x7EVSx9sHMcP7dbANlHuzVeUnMHeqP3
+         j5niTb+zF9Lx2C7Ra23Rw2bH86lHl4cld2+8ZQ4CY+QbNaAvheqIdTvKWbeiYXVq3V
+         wRnMQp+A04i8nacJ+yYimQOft/FE/Uu73fIr71EuInqTawCUcfrVcy18AXmT8XfhEF
+         4Be2hfQmdB4IhmmIFmQv8aHIzVU+EaPvBe2wKprPlkPfPt5bllhV8/goQD1vMPNbd5
+         qI0yoiCQCjiQw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Tony Lindgren <tony@atomide.com>, Nishanth Menon <nm@ti.com>,
         Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 7/9] bus: ti-sysc: Configure uart quirks for k3 SoC
-Date:   Fri,  8 Sep 2023 15:36:08 -0400
-Message-Id: <20230908193611.3463821-7-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 2/4] bus: ti-sysc: Configure uart quirks for k3 SoC
+Date:   Fri,  8 Sep 2023 15:36:38 -0400
+Message-Id: <20230908193641.3463943-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230908193611.3463821-1-sashal@kernel.org>
-References: <20230908193611.3463821-1-sashal@kernel.org>
+In-Reply-To: <20230908193641.3463943-1-sashal@kernel.org>
+References: <20230908193641.3463943-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.10.194
+X-stable-base: Linux 5.4.256
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -69,10 +69,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+)
 
 diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-index fcfe4d16cc149..1bec5e04397ff 100644
+index e1a9838c96655..b542c2b2aef49 100644
 --- a/drivers/bus/ti-sysc.c
 +++ b/drivers/bus/ti-sysc.c
-@@ -1504,6 +1504,8 @@ static const struct sysc_revision_quirk sysc_revision_quirks[] = {
+@@ -1379,6 +1379,8 @@ static const struct sysc_revision_quirk sysc_revision_quirks[] = {
  		   SYSC_QUIRK_SWSUP_SIDLE | SYSC_QUIRK_LEGACY_IDLE),
  	SYSC_QUIRK("uart", 0, 0x50, 0x54, 0x58, 0x47422e03, 0xffffffff,
  		   SYSC_QUIRK_SWSUP_SIDLE | SYSC_QUIRK_LEGACY_IDLE),
