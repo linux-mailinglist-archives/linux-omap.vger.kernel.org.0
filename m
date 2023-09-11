@@ -2,85 +2,80 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 84B8779C2CE
-	for <lists+linux-omap@lfdr.de>; Tue, 12 Sep 2023 04:28:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95C0A79C2E8
+	for <lists+linux-omap@lfdr.de>; Tue, 12 Sep 2023 04:31:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237751AbjILC2g (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 11 Sep 2023 22:28:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34902 "EHLO
+        id S238839AbjILCbp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 11 Sep 2023 22:31:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237703AbjILC2J (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 11 Sep 2023 22:28:09 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B1F6134D3C;
-        Mon, 11 Sep 2023 18:52:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24B41C433BF;
-        Mon, 11 Sep 2023 21:46:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694468775;
-        bh=vY7vawU4FZYoEgdX4LDl+2Hb+tqanE/PYLPwILCYrzU=;
-        h=From:To:Cc:Subject:Date:From;
-        b=Jq/ie0C175g+KTBPmu5n84htYUDAi1mRxI4NyK4fvQTjM/LuZlK054qvUoGSVWBzb
-         lqMpADHgNYUdroXydWBpFZlhaQozAOY4m5iRRFs+I+ZmhO4muIR2bLcUeQhezgf45G
-         21njU3Mvd9JBaEWU50PZVrC8Zwj7Ta9k0bijWDJofATThy0FTB86ha/WcMscp+Ie44
-         t2aD14HVwW71epMXTsOf9x21tQr6Ug90O2jsy3XTAe1LosUODEYb8zExGVkKorjx6e
-         eU+/aYK3spBILJv7mFcFNwbKv740fdloCJf8IQpISjz7v75RYqWIvga+qJ6atpsIPV
-         8iMopSVxgiPiQ==
-Received: (nullmailer pid 2201291 invoked by uid 1000);
-        Mon, 11 Sep 2023 21:46:13 -0000
-From:   Rob Herring <robh@kernel.org>
-To:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>
-Cc:     linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] arm: dts: omap: Apply am57xx-idk overlays to base dtbs
-Date:   Mon, 11 Sep 2023 16:46:02 -0500
-Message-Id: <20230911214609.2201040-1-robh@kernel.org>
-X-Mailer: git-send-email 2.40.1
+        with ESMTP id S239282AbjILCb1 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 11 Sep 2023 22:31:27 -0400
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a02:c205:3004:2154::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B21C11224DC;
+        Mon, 11 Sep 2023 18:56:26 -0700 (PDT)
+Received: from p200300ccff36fa001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff36:fa00:1a3d:a2ff:febf:d33a] helo=aktux)
+        by mail.andi.de1.cc with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <andreas@kemnade.info>)
+        id 1qfpAD-003crG-Gw; Tue, 12 Sep 2023 00:13:49 +0200
+Received: from andi by aktux with local (Exim 4.96)
+        (envelope-from <andreas@kemnade.info>)
+        id 1qfpAC-006ECc-2f;
+        Tue, 12 Sep 2023 00:13:48 +0200
+From:   Andreas Kemnade <andreas@kemnade.info>
+To:     dmitry.torokhov@gmail.com, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+        lee@kernel.org, bcousson@baylibre.com, tony@atomide.com,
+        mturquette@baylibre.com, sboyd@kernel.org, andreas@kemnade.info,
+        linux-input@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-clk@vger.kernel.org
+Subject: [PATCH v3 0/5] ARM: omap: omap4-embt2ws: 32K clock for WLAN
+Date:   Tue, 12 Sep 2023 00:13:41 +0200
+Message-Id: <20230911221346.1484543-1-andreas@kemnade.info>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-DT overlays in tree need to be applied to a base DTB to validate they
-apply, to run schema checks on them, and to catch any errors at compile
-time.
+To have WLAN working properly, enable a 32K clock of the TWL6032.
+In earlier tests, it was still enabled from a previous boot into
+the vendor system.
 
-Signed-off-by: Rob Herring <robh@kernel.org>
----
-Note that I have no idea if this combination of overlays makes sense.
----
- arch/arm/boot/dts/ti/omap/Makefile | 7 +++++++
- 1 file changed, 7 insertions(+)
+Changes in V3:
+- maintainer change in binding doc
+- fix references to binding doc
+- additionalProperties: false
+- remove subdevices also from examples until
+  subdevices are referenced/added
 
-diff --git a/arch/arm/boot/dts/ti/omap/Makefile b/arch/arm/boot/dts/ti/omap/Makefile
-index d2b590004fed..d0c76d09fe70 100644
---- a/arch/arm/boot/dts/ti/omap/Makefile
-+++ b/arch/arm/boot/dts/ti/omap/Makefile
-@@ -129,6 +129,11 @@ dtb-$(CONFIG_SOC_AM43XX) += \
- am57xx-evm-dtbs := am57xx-beagle-x15.dtb am57xx-evm.dtbo
- am57xx-evm-reva3-dtbs := am57xx-beagle-x15-revc.dtb am57xx-evm.dtbo
- 
-+am571x-idk-overlays-dtbs := am571x-idk.dtb \
-+	am571x-idk-touchscreen.dtbo am57xx-idk-lcd-osd101t2587.dtbo
-+am572x-idk-overlays-dtbs := am572x-idk.dtb \
-+	am572x-idk-touchscreen.dtbo am57xx-idk-lcd-osd101t2045.dtbo
-+
- dtb-$(CONFIG_SOC_DRA7XX) += \
- 	am57xx-beagle-x15.dtb \
- 	am57xx-beagle-x15-revb1.dtb \
-@@ -145,6 +150,8 @@ dtb-$(CONFIG_SOC_DRA7XX) += \
- 	am574x-idk.dtb \
- 	am57xx-idk-lcd-osd101t2045.dtbo \
- 	am57xx-idk-lcd-osd101t2587.dtbo \
-+	am571x-idk-overlays.dtb \
-+	am572x-idk-overlays.dtb \
- 	dra7-evm.dtb \
- 	dra72-evm.dtb \
- 	dra72-evm-revc.dtb \
+Changes in V2:
+- no separate device node for the clock
+- converted toplevel node of TWL
+
+Andreas Kemnade (5):
+  dt-bindings: mfd: convert twl-family.txt to json-schema
+  dt-bindings: mfd: ti,twl: Add clock provider properties
+  mfd: twl-core: Add a clock subdevice for the TWL6032
+  clk: twl: add clock driver for TWL6032
+  ARM: dts: omap4-embt2ws: enable 32K clock on WLAN
+
+ .../bindings/input/twl4030-pwrbutton.txt      |   2 +-
+ .../devicetree/bindings/mfd/ti,twl.yaml       |  67 ++++++
+ .../devicetree/bindings/mfd/twl-family.txt    |  46 ----
+ .../boot/dts/ti/omap/omap4-epson-embt2ws.dts  |   8 +
+ drivers/clk/Kconfig                           |   9 +
+ drivers/clk/Makefile                          |   1 +
+ drivers/clk/clk-twl.c                         | 197 ++++++++++++++++++
+ drivers/mfd/twl-core.c                        |  16 ++
+ 8 files changed, 299 insertions(+), 47 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/mfd/ti,twl.yaml
+ delete mode 100644 Documentation/devicetree/bindings/mfd/twl-family.txt
+ create mode 100644 drivers/clk/clk-twl.c
+
 -- 
-2.40.1
+2.39.2
 
