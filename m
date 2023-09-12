@@ -2,239 +2,133 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D0CF679D6FB
-	for <lists+linux-omap@lfdr.de>; Tue, 12 Sep 2023 19:00:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D84C79D779
+	for <lists+linux-omap@lfdr.de>; Tue, 12 Sep 2023 19:23:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230317AbjILRAb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 12 Sep 2023 13:00:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40296 "EHLO
+        id S233220AbjILRXf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 12 Sep 2023 13:23:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229711AbjILRAb (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 12 Sep 2023 13:00:31 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DD0C110;
-        Tue, 12 Sep 2023 10:00:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F1C9C433C7;
-        Tue, 12 Sep 2023 17:00:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694538027;
-        bh=VKf+7mRnpD2MDhj4UGeW8ro+cl13lnQ53ziiE1OJT88=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=NKaOg4c0sZUmU8oV1bsyaODd1/DrzLwRaJ1nmcObHEHx6fmLQUwTfshUgU7NeTtRW
-         8XCHJ74a7u/Q4Mm8xE1tZaC4rirK1AV38X50aUrBUODUzWeXPjGEA4r6d/w4hrGXes
-         xiWST19xmsYIDnmfXHBR3S+fLx4AR6bTexGMhJs2s1AVl5cC9fvIaU52lVf5PfLQjA
-         VpJ46Anq1Cz96Km00SbBlGRLaamqg8dBbzOUAI5EG81LSigdZEfr0SWE4f9IMTx7SG
-         t4fHXQUTjLNcSUi5nFNIfBt8llErAemI5RcENi8JJ9KmrK0RPFfl9T15OMpg6dVS6d
-         EX/toYHl1ZbWA==
-Date:   Tue, 12 Sep 2023 18:00:21 +0100
-From:   Conor Dooley <conor@kernel.org>
-To:     Andreas Kemnade <andreas@kemnade.info>
-Cc:     dmitry.torokhov@gmail.com, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        lee@kernel.org, bcousson@baylibre.com, tony@atomide.com,
-        mturquette@baylibre.com, sboyd@kernel.org,
+        with ESMTP id S230488AbjILRXe (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 12 Sep 2023 13:23:34 -0400
+X-Greylist: delayed 450 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 12 Sep 2023 10:23:30 PDT
+Received: from smtp.smtpout.orange.fr (smtp-28.smtpout.orange.fr [80.12.242.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 8A2A410D9
+        for <linux-omap@vger.kernel.org>; Tue, 12 Sep 2023 10:23:30 -0700 (PDT)
+Received: from [192.168.1.18] ([86.243.2.178])
+        by smtp.orange.fr with ESMTPA
+        id g6zSq6dtZ3ISpg6zSqZ0YH; Tue, 12 Sep 2023 19:15:57 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+        s=t20230301; t=1694538957;
+        bh=AfOWrkTi8ZBiDYWOws0Egwd9wQjQnAJJDX+E9T7oIq4=;
+        h=Date:Subject:To:References:From:In-Reply-To;
+        b=BUobmzeJhgsZWHZVQ4Z3p3tC0qCNHSrFh1byXYPwtDY9hGF43NLiS5gOfCx44ub20
+         mqBDVNKq4hCt6NRWvKHdX8Kvkj/fzcZEdHjmzhg6zdCg/DBNXWbdi3dGk/l3RjbyG9
+         +iR7LFgN5luK1Jga8mYk/4Ib41yu0KXpK4XRcO7l+eJzWzEddmPMkX6HwP13hWKdgD
+         thjUcZpSWVr2P7LoeHHYhG/93HlRqeYa87DpNzy4phTiCNZ+pHPOzScPQmOpjVcNXW
+         PS8Lq8956SOOKgNqZrgpvspV6E7lPeKItUY/lpLvIwkKc2VAARtiaAsJkTb0b6KEme
+         Fh8TZdwaDzT3w==
+X-ME-Helo: [192.168.1.18]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Tue, 12 Sep 2023 19:15:57 +0200
+X-ME-IP: 86.243.2.178
+Message-ID: <a9b646c7-2c02-8a69-a4c8-7e981a630eef@wanadoo.fr>
+Date:   Tue, 12 Sep 2023 19:15:54 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.0
+Subject: Re: [PATCH v3 4/5] clk: twl: add clock driver for TWL6032
+To:     Andreas Kemnade <andreas@kemnade.info>, dmitry.torokhov@gmail.com,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        conor+dt@kernel.org, lee@kernel.org, bcousson@baylibre.com,
+        tony@atomide.com, mturquette@baylibre.com, sboyd@kernel.org,
         linux-input@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
         linux-clk@vger.kernel.org
-Subject: Re: [PATCH v3 1/5] dt-bindings: mfd: convert twl-family.txt to
- json-schema
-Message-ID: <20230912-precise-anvil-14e4772c8a5f@spud>
 References: <20230911221346.1484543-1-andreas@kemnade.info>
- <20230911221346.1484543-2-andreas@kemnade.info>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="IsDaPVul3HCmyTmu"
-Content-Disposition: inline
-In-Reply-To: <20230911221346.1484543-2-andreas@kemnade.info>
+ <20230911221346.1484543-5-andreas@kemnade.info>
+Content-Language: fr
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20230911221346.1484543-5-andreas@kemnade.info>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-
---IsDaPVul3HCmyTmu
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Tue, Sep 12, 2023 at 12:13:42AM +0200, Andreas Kemnade wrote:
-> Convert the TWL[46]030 binding to DT schema format. To do it as a step by
-> step work, do not include / handle nodes for subdevices yet, just convert
-> things with minimal corrections. There are already some bindings for its
-> subdevices in the tree.
->=20
+Le 12/09/2023 à 00:13, Andreas Kemnade a écrit :
+> The TWL6032 has some clock outputs which are controlled like
+> fixed-voltage regulators, in some drivers for these chips
+> found in the wild, just the regulator api is abused for controlling
+> them, so simply use something similar to the regulator functions.
+> Due to a lack of hardware available for testing, leave out the
+> TWL6030-specific part of those functions.
+> 
 > Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
 > ---
->  .../bindings/input/twl4030-pwrbutton.txt      |  2 +-
->  .../devicetree/bindings/mfd/ti,twl.yaml       | 64 +++++++++++++++++++
->  .../devicetree/bindings/mfd/twl-family.txt    | 46 -------------
->  3 files changed, 65 insertions(+), 47 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/mfd/ti,twl.yaml
->  delete mode 100644 Documentation/devicetree/bindings/mfd/twl-family.txt
->=20
-> diff --git a/Documentation/devicetree/bindings/input/twl4030-pwrbutton.tx=
-t b/Documentation/devicetree/bindings/input/twl4030-pwrbutton.txt
-> index f5021214edecb..6c201a2ba8acf 100644
-> --- a/Documentation/devicetree/bindings/input/twl4030-pwrbutton.txt
-> +++ b/Documentation/devicetree/bindings/input/twl4030-pwrbutton.txt
-> @@ -1,7 +1,7 @@
->  Texas Instruments TWL family (twl4030) pwrbutton module
-> =20
->  This module is part of the TWL4030. For more details about the whole
-> -chip see Documentation/devicetree/bindings/mfd/twl-family.txt.
-> +chip see Documentation/devicetree/bindings/mfd/ti,twl.yaml.
-> =20
->  This module provides a simple power button event via an Interrupt.
-> =20
-> diff --git a/Documentation/devicetree/bindings/mfd/ti,twl.yaml b/Document=
-ation/devicetree/bindings/mfd/ti,twl.yaml
-> new file mode 100644
-> index 0000000000000..f125b254a4b93
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/mfd/ti,twl.yaml
-> @@ -0,0 +1,64 @@
-> +# SPDX-License-Identifier: GPL-2.0
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/mfd/ti,twl.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Texas Instruments TWL family
-> +
-> +maintainers:
-> +  - Andreas Kemnade <andreas@kemnade.info>
-> +
-> +description: |
+>   drivers/clk/Kconfig   |   9 ++
+>   drivers/clk/Makefile  |   1 +
+>   drivers/clk/clk-twl.c | 197 ++++++++++++++++++++++++++++++++++++++++++
+>   3 files changed, 207 insertions(+)
+>   create mode 100644 drivers/clk/clk-twl.c
+> 
 
-FWIW the | is not needed here, but that's w/e.
+...
 
-This seems fine to me though,
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+> +static int twl_clks_probe(struct platform_device *pdev)
+> +{
+> +	struct clk_hw_onecell_data *clk_data;
+> +	const struct twl_clks_data *hw_data;
+> +
+> +	struct twl_clock_info *cinfo;
+> +	int ret;
+> +	int i;
+> +	int count;
+> +
+> +	hw_data = twl6032_clks;
+> +	for (count = 0; hw_data[count].init.name; count++)
+> +		;
 
-Thanks,
-Conor.
+Nit: does removing the /* sentinel */ and using 
+ARRAY_SIZE(twl_clks_data) would make sense and be simpler?
 
-> +  The TWLs are Integrated Power Management Chips.
-> +  Some version might contain much more analog function like
-> +  USB transceiver or Audio amplifier.
-> +  These chips are connected to an i2c bus.
-> +
-> +properties:
-> +  compatible:
-> +    description:
-> +      TWL4030 for integrated power-management/audio CODEC device used in=
- OMAP3
-> +      based boards
-> +      TWL6030/32 for integrated power-management used in OMAP4 based boa=
-rds
-> +    enum:
-> +      - ti,twl4030
-> +      - ti,twl6030
-> +      - ti,twl6032
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  interrupt-controller: true
-> +
-> +  "#interrupt-cells":
-> +    const: 1
-> +
-> +additionalProperties: false
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +  - interrupt-controller
-> +  - "#interrupt-cells"
-> +
-> +examples:
-> +  - |
-> +    i2c {
-> +      #address-cells =3D <1>;
-> +      #size-cells =3D <0>;
-> +
-> +      pmic@48 {
-> +        compatible =3D "ti,twl6030";
-> +        reg =3D <0x48>;
-> +        interrupts =3D <39>; /* IRQ_SYS_1N cascaded to gic */
-> +        interrupt-controller;
-> +        #interrupt-cells =3D <1>;
-> +        interrupt-parent =3D <&gic>;
-> +      };
-> +    };
-> +
-> diff --git a/Documentation/devicetree/bindings/mfd/twl-family.txt b/Docum=
-entation/devicetree/bindings/mfd/twl-family.txt
-> deleted file mode 100644
-> index c2f9302965dea..0000000000000
-> --- a/Documentation/devicetree/bindings/mfd/twl-family.txt
-> +++ /dev/null
-> @@ -1,46 +0,0 @@
-> -Texas Instruments TWL family
-> -
-> -The TWLs are Integrated Power Management Chips.
-> -Some version might contain much more analog function like
-> -USB transceiver or Audio amplifier.
-> -These chips are connected to an i2c bus.
-> -
-> -
-> -Required properties:
-> -- compatible : Must be "ti,twl4030";
-> -  For Integrated power-management/audio CODEC device used in OMAP3
-> -  based boards
-> -- compatible : Must be "ti,twl6030";
-> -  For Integrated power-management used in OMAP4 based boards
-> -- interrupts : This i2c device has an IRQ line connected to the main SoC
-> -- interrupt-controller : Since the twl support several interrupts intern=
-ally,
-> -  it is considered as an interrupt controller cascaded to the SoC one.
-> -- #interrupt-cells =3D <1>;
-> -
-> -Optional node:
-> -- Child nodes contain in the twl. The twl family is made of several vari=
-ants
-> -  that support a different number of features.
-> -  The children nodes will thus depend of the capability of the variant.
-> -
-> -
-> -Example:
-> -/*
-> - * Integrated Power Management Chip
-> - * https://www.ti.com/lit/ds/symlink/twl6030.pdf
-> - */
-> -twl@48 {
-> -    compatible =3D "ti,twl6030";
-> -    reg =3D <0x48>;
-> -    interrupts =3D <39>; /* IRQ_SYS_1N cascaded to gic */
-> -    interrupt-controller;
-> -    #interrupt-cells =3D <1>;
-> -    interrupt-parent =3D <&gic>;
-> -    #address-cells =3D <1>;
-> -    #size-cells =3D <0>;
-> -
-> -    twl_rtc {
-> -        compatible =3D "ti,twl_rtc";
-> -        interrupts =3D <11>;
-> -        reg =3D <0>;
-> -    };
-> -};
-> --=20
-> 2.39.2
->=20
+CJ
 
---IsDaPVul3HCmyTmu
-Content-Type: application/pgp-signature; name="signature.asc"
+> +
+> +	clk_data = devm_kzalloc(&pdev->dev,
+> +				struct_size(clk_data, hws, count),
+> +				GFP_KERNEL);
+> +	if (!clk_data)
+> +		return -ENOMEM;
+> +
+> +	clk_data->num = count;
+> +	cinfo = devm_kcalloc(&pdev->dev, count, sizeof(*cinfo), GFP_KERNEL);
+> +	if (!cinfo)
+> +		return -ENOMEM;
+> +
+> +	for (i = 0; i < count; i++) {
+> +		cinfo[i].base = hw_data[i].base;
+> +		cinfo[i].dev = &pdev->dev;
+> +		cinfo[i].hw.init = &hw_data[i].init;
+> +		ret = devm_clk_hw_register(&pdev->dev, &cinfo[i].hw);
+> +		if (ret) {
+> +			dev_err(&pdev->dev, "Fail to register clock %s, %d\n",
+> +				hw_data[i].init.name, ret);
+> +			return ret;
+> +		}
+> +		clk_data->hws[i] = &cinfo[i].hw;
+> +	}
+> +
+> +	ret = devm_of_clk_add_hw_provider(&pdev->dev,
+> +					  of_clk_hw_onecell_get, clk_data);
+> +	if (ret < 0)
+> +		dev_err(&pdev->dev, "Fail to add clock driver, %d\n", ret);
+> +
+> +	return ret;
 
------BEGIN PGP SIGNATURE-----
+Nit: should there be a V4, some prefer return 0 to be more explicit.
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZQCZJQAKCRB4tDGHoIJi
-0jftAQDPwdZ0AbsyNv+TRVvMV5bY5+An1i7vRseyDOSIyn0FygEAgBrCOGsaspl+
-0aurM+OsQrEUbtK66wg5vN4zWVoP3ww=
-=/JLB
------END PGP SIGNATURE-----
+> +}
 
---IsDaPVul3HCmyTmu--
+...
+
