@@ -2,154 +2,84 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 15BFF79CA7C
-	for <lists+linux-omap@lfdr.de>; Tue, 12 Sep 2023 10:45:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07DB279CFCB
+	for <lists+linux-omap@lfdr.de>; Tue, 12 Sep 2023 13:24:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232773AbjILIpw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 12 Sep 2023 04:45:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53988 "EHLO
+        id S234684AbjILLYr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 12 Sep 2023 07:24:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233011AbjILIpf (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 12 Sep 2023 04:45:35 -0400
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22FB01721
-        for <linux-omap@vger.kernel.org>; Tue, 12 Sep 2023 01:45:01 -0700 (PDT)
-Received: by mail-lf1-x135.google.com with SMTP id 2adb3069b0e04-5008d16cc36so9092433e87.2
-        for <linux-omap@vger.kernel.org>; Tue, 12 Sep 2023 01:45:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1694508299; x=1695113099; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=A9cYVknfBAeu75UVlteP6kQhTPhNkOUCF7HIJ1iSBek=;
-        b=BHJcFJQj+7Gi989PrwVufeL0/jVprTH/C98ODqnBmTKUQyrDmVeS+gmDEvvFTUqLHk
-         sG5Ed5/6iCkbaYGnip1T5A9NAijo/m82GAy6AH/e+NBYIbeJmy6setNWtHNLS4I4Lxjv
-         SdLkWow07BnWbycPOJKQtgv52o30B2WFCbmOBbunrbAiXM84Gf+GyEuEirm8/SKVPju9
-         CHuutqLjF/pR5TgcEJzHrvbM4re0JS8xiXTl2E5ZO243h+7yrDaUvbZv8vSQdiaC5Ogc
-         lOeCsKqZ5D6Rt5GfN7QHyJ39juUp68mRF7gPeQihI40u/Ms6YuiFeAOdbnD00hy1YQKL
-         6B7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694508299; x=1695113099;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=A9cYVknfBAeu75UVlteP6kQhTPhNkOUCF7HIJ1iSBek=;
-        b=jL7vDvezgQQY10laAwRDlz6tSIwWecjFYUDPEcDcbk6WKqiVL5FZGflTTZAE5Gu8v0
-         R2fE6zxW+SOQbLJZEpKSLZjr4JgJNtSpV+b0yPSxRWt0TDaHI5EU9I747hkhH2K7yj3+
-         gRVRV9BnBs/oIyxGgltMM2aNgJzlPjWLhPDdWIu+8tCDA/CjmFAdm9gTCzLHC+8UHksP
-         c3m0sivl+eTIxdo8KUacd1R6pLB2tq2ym1ljdPwUlqxF2MmtCfzzYgm+aYfeW9Ux5EHY
-         WYrIOEd52DR33PlEHmo98djl/9HcdwbB04TLNMXXcR7BOn752CJgL4o86HsZmPaHpdpL
-         rMkA==
-X-Gm-Message-State: AOJu0Yy1u6f9HaB+oW8SKw2ErNDHf1qwcJ0UfZE+NeYmmYMkyTXhH2zj
-        p93vXAPoIA3pR6XjJNmXPhQJng==
-X-Google-Smtp-Source: AGHT+IGSOMHXkbKBRndy/P+lUWb4Fd6BypQox95rPMLgRNO93FsXEf3VhT1aIAsksiNcS/whalhFWg==
-X-Received: by 2002:ac2:498f:0:b0:500:d960:8b6f with SMTP id f15-20020ac2498f000000b00500d9608b6fmr8976952lfl.67.1694508299373;
-        Tue, 12 Sep 2023 01:44:59 -0700 (PDT)
-Received: from [127.0.1.1] ([85.235.12.238])
-        by smtp.gmail.com with ESMTPSA id u4-20020a056512040400b004fdc0f2caafsm1671525lfk.48.2023.09.12.01.44.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Sep 2023 01:44:58 -0700 (PDT)
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Tue, 12 Sep 2023 10:44:52 +0200
-Subject: [PATCH] OMAP/gpio: drop MPUIO static base
+        with ESMTP id S234696AbjILLYX (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 12 Sep 2023 07:24:23 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FB0D2D5D;
+        Tue, 12 Sep 2023 04:14:41 -0700 (PDT)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1qg1Lr-00047D-Rj; Tue, 12 Sep 2023 13:14:39 +0200
+Message-ID: <be21241b-7f59-419b-823f-a6d66adacc87@leemhuis.info>
+Date:   Tue, 12 Sep 2023 13:14:39 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230912-omap-mpuio-base-v1-1-290d9bd24b23@linaro.org>
-X-B4-Tracking: v=1; b=H4sIAAMlAGUC/x3MMQqAMAxA0atIZgO2CqJXEYdUU81gWxoUQby7x
- fEN/z+gnIUVxuqBzJeoxFBg6gqWncLGKGsx2Ma2zWAsxoMSHumUiI6UcaDV0eL7znoHpUqZvdz
- /cZrf9wPfdjC1YQAAAA==
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Kevin Hilman <khilman@kernel.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Andy Shevchenko <andy@kernel.org>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-gpio@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>
-X-Mailer: b4 0.12.3
+User-Agent: Mozilla Thunderbird
+Subject: Re: 6.1.y Regression found on AM3517
+Content-Language: en-US, de-DE
+To:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc:     Linux OMAP <linux-omap@vger.kernel.org>,
+        Linux Stable <stable@vger.kernel.org>,
+        Linux Regressions <regressions@lists.linux.dev>
+References: <CAHCN7xJjK=BaNHa=+OKzOmFtNRYKX_APTp5Zj3g-X_iQcpyK6g@mail.gmail.com>
+ <ZPZ2zTS9loj06u31@debian.me> <20230905061739.GX11676@atomide.com>
+ <CAHCN7xJo=pJkcChHm9AsNQGCJuHXgpRKKRK9ckEwdk3U-41ukw@mail.gmail.com>
+From:   "Linux regression tracking #update (Thorsten Leemhuis)" 
+        <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <CAHCN7xJo=pJkcChHm9AsNQGCJuHXgpRKKRK9ckEwdk3U-41ukw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1694517281;6d41b9ee;
+X-HE-SMSGID: 1qg1Lr-00047D-Rj
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The OMAP GPIO driver hardcodes the MPIO chip base, but there
-is no point: we have already moved all consumers over to using
-descriptor look-ups.
+[TLDR: This mail in primarily relevant for Linux kernel regression
+tracking. See link in footer if these mails annoy you.]
 
-Drop the MPUIO GPIO base and use dynamic assignment.
+On 06.09.23 12:59, Adam Ford wrote:
+> On Tue, Sep 5, 2023 at 11:25 AM Tony Lindgren <tony@atomide.com> wrote:
+>> * Bagas Sanjaya <bagasdotme@gmail.com> [230905 00:31]:
+>>> On Mon, Sep 04, 2023 at 11:37:46AM -0500, Adam Ford wrote:
+>>>> I have an AM3517-EVM board that I am trying to use the latest 6.1.y
+>>>> stable, currently 6.1.51.
+>>>>
+>>>> With git bisect, I narrowed the regression between 6.1.15 and 6.1.16 to commit
+>>>> eaf9b5612a47 ("driver core: fw_devlink: Don't purge child fwnode's
+>>>> consumer links")
+>>>>
+>>>> In the regression, 48002000.scm appears as not ready.  This affects a
+>>>> variety of dependent peripherals making them unavailable:
+> [...]
+> Indeed, it does appear that a patch was missing from the back-ported series.
+> 
+> Applying commit 4a032827daa8 ("of: property: Simplify
+> of_link_to_phandle()") to the 6.1.y branch appears
+> to fix the regression.
+> 
+> Thanks for the pointer to the series.
+> 
+> Stable group,
+> 
+> Do I need to send a separate e-mail requesting the backporting of that
+> commit to the 6.1.y branch?
 
-Root out the unused instances of the OMAP_MPUIO() macro and
-delete the unused OMAP_GPIO_IS_MPUIO() macro.
+Stable team picked this up, hence:
 
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
----
-Maybe Bartosz can merge this into the GPIO tree with Tony's
-et al blessing?
----
- arch/arm/mach-omap1/board-palmte.c      | 5 -----
- drivers/gpio/gpio-omap.c                | 3 +--
- include/linux/platform_data/gpio-omap.h | 3 ---
- 3 files changed, 1 insertion(+), 10 deletions(-)
+#regzbot fix: of: property: Simplify of_link_to_phandle()
+#regzbot ignore-activity
 
-diff --git a/arch/arm/mach-omap1/board-palmte.c b/arch/arm/mach-omap1/board-palmte.c
-index 7e061d671fde..c917cb2c6e17 100644
---- a/arch/arm/mach-omap1/board-palmte.c
-+++ b/arch/arm/mach-omap1/board-palmte.c
-@@ -51,11 +51,6 @@
- #define PALMTE_HDQ_GPIO		11
- #define PALMTE_HEADPHONES_GPIO	14
- #define PALMTE_SPEAKER_GPIO	15
--#define PALMTE_DC_GPIO		OMAP_MPUIO(2)
--#define PALMTE_MMC_SWITCH_GPIO	OMAP_MPUIO(4)
--#define PALMTE_MMC1_GPIO	OMAP_MPUIO(6)
--#define PALMTE_MMC2_GPIO	OMAP_MPUIO(7)
--#define PALMTE_MMC3_GPIO	OMAP_MPUIO(11)
- 
- static const unsigned int palmte_keymap[] = {
- 	KEY(0, 0, KEY_F1),		/* Calendar */
-diff --git a/drivers/gpio/gpio-omap.c b/drivers/gpio/gpio-omap.c
-index a927680c66f8..262ec0c1c658 100644
---- a/drivers/gpio/gpio-omap.c
-+++ b/drivers/gpio/gpio-omap.c
-@@ -1048,15 +1048,14 @@ static int omap_gpio_chip_init(struct gpio_bank *bank, struct device *pm_dev)
- 		bank->chip.label = "mpuio";
- 		if (bank->regs->wkup_en)
- 			bank->chip.parent = &omap_mpuio_device.dev;
--		bank->chip.base = OMAP_MPUIO(0);
- 	} else {
- 		label = devm_kasprintf(bank->chip.parent, GFP_KERNEL, "gpio-%d-%d",
- 				       gpio, gpio + bank->width - 1);
- 		if (!label)
- 			return -ENOMEM;
- 		bank->chip.label = label;
--		bank->chip.base = -1;
- 	}
-+	bank->chip.base = -1;
- 	bank->chip.ngpio = bank->width;
- 
- 	irq = &bank->chip.irq;
-diff --git a/include/linux/platform_data/gpio-omap.h b/include/linux/platform_data/gpio-omap.h
-index f377817ce75c..cdd8cfb424f5 100644
---- a/include/linux/platform_data/gpio-omap.h
-+++ b/include/linux/platform_data/gpio-omap.h
-@@ -144,9 +144,6 @@
- 
- #define OMAP_MAX_GPIO_LINES		192
- 
--#define OMAP_MPUIO(nr)		(OMAP_MAX_GPIO_LINES + (nr))
--#define OMAP_GPIO_IS_MPUIO(nr)	((nr) >= OMAP_MAX_GPIO_LINES)
--
- #ifndef __ASSEMBLER__
- struct omap_gpio_reg_offs {
- 	u16 revision;
-
----
-base-commit: 0bb80ecc33a8fb5a682236443c1e740d5c917d1d
-change-id: 20230912-omap-mpuio-base-9adbacf742fb
-
-Best regards,
--- 
-Linus Walleij <linus.walleij@linaro.org>
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+That page also explains what to do if mails like this annoy you.
 
