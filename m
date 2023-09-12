@@ -2,76 +2,94 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F5397BC617
-	for <lists+linux-omap@lfdr.de>; Sat,  7 Oct 2023 10:35:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F9D27BC87C
+	for <lists+linux-omap@lfdr.de>; Sat,  7 Oct 2023 17:03:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234141AbjJGIfL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 7 Oct 2023 04:35:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46638 "EHLO
+        id S1343696AbjJGPDo convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-omap@lfdr.de>); Sat, 7 Oct 2023 11:03:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232558AbjJGIfL (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 7 Oct 2023 04:35:11 -0400
+        with ESMTP id S229824AbjJGPDn (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 7 Oct 2023 11:03:43 -0400
 Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a02:c205:3004:2154::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14F1C83;
-        Sat,  7 Oct 2023 01:35:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DB58B9;
+        Sat,  7 Oct 2023 08:03:42 -0700 (PDT)
 Received: from p5dc58360.dip0.t-ipconnect.de ([93.197.131.96] helo=aktux)
         by mail.andi.de1.cc with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.94.2)
         (envelope-from <andreas@kemnade.info>)
-        id 1qp2m5-004c4z-Ex; Sat, 07 Oct 2023 10:35:01 +0200
-Date:   Sat, 7 Oct 2023 10:34:59 +0200
+        id 1qp8q5-004cjc-Ky; Sat, 07 Oct 2023 17:03:33 +0200
+Date:   Tue, 12 Sep 2023 20:56:47 +0200
 From:   Andreas Kemnade <andreas@kemnade.info>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     =?UTF-8?B?UMOpdGVy?= Ujfalusi <peter.ujfalusi@gmail.com>,
-        bcousson@baylibre.com, robh+dt@kernel.org,
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     dmitry.torokhov@gmail.com, robh+dt@kernel.org,
         krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        lgirdwood@gmail.com, broonie@kernel.org, perex@perex.cz,
-        tiwai@suse.com, jarkko.nikula@bitmer.com,
-        dmitry.torokhov@gmail.com, linux-omap@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        alsa-devel@alsa-project.org
-Subject: Re: [PATCH 1/3] ASoC: ti: omap-mcbsp: Ignore errors for getting
- fck_src
-Message-ID: <20231007103459.29998aa8@aktux>
-In-Reply-To: <20231007074159.GX34982@atomide.com>
-References: <20230705190324.355282-1-andreas@kemnade.info>
-        <20230705190324.355282-2-andreas@kemnade.info>
-        <7d58d52d-2087-45af-b29e-2515b63ead13@gmail.com>
-        <20230920063353.GQ5285@atomide.com>
-        <dac768d2-2c66-4d6b-b3d3-d1ef69103c76@gmail.com>
-        <20230921121626.GT5285@atomide.com>
-        <20231006102348.GK34982@atomide.com>
-        <20231006213003.0fbac87a@aktux>
-        <20231007062518.GM34982@atomide.com>
-        <20231007091156.588d7ba1@aktux>
-        <20231007074159.GX34982@atomide.com>
+        lee@kernel.org, bcousson@baylibre.com, tony@atomide.com,
+        mturquette@baylibre.com, sboyd@kernel.org,
+        linux-input@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-clk@vger.kernel.org
+Subject: Re: [PATCH v3 4/5] clk: twl: add clock driver for TWL6032
+Message-ID: <20230912205647.4be3b753@aktux>
+In-Reply-To: <a9b646c7-2c02-8a69-a4c8-7e981a630eef@wanadoo.fr>
+References: <20230911221346.1484543-1-andreas@kemnade.info>
+        <20230911221346.1484543-5-andreas@kemnade.info>
+        <a9b646c7-2c02-8a69-a4c8-7e981a630eef@wanadoo.fr>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=1.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_96_XX,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sat, 7 Oct 2023 10:41:59 +0300
-Tony Lindgren <tony@atomide.com> wrote:
+On Tue, 12 Sep 2023 19:15:54 +0200
+Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
 
-> * Andreas Kemnade <andreas@kemnade.info> [231007 07:12]:
-> > Well, it is a regression caused by your fix. Without it (and not reverting
-> > the already applied ignore patch), runtime is properly suspended. Don't know
-> > why yet.  
+> Le 12/09/2023 à 00:13, Andreas Kemnade a écrit :
+> > The TWL6032 has some clock outputs which are controlled like
+> > fixed-voltage regulators, in some drivers for these chips
+> > found in the wild, just the regulator api is abused for controlling
+> > them, so simply use something similar to the regulator functions.
+> > Due to a lack of hardware available for testing, leave out the
+> > TWL6030-specific part of those functions.
+> > 
+> > Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+> > ---
+> >   drivers/clk/Kconfig   |   9 ++
+> >   drivers/clk/Makefile  |   1 +
+> >   drivers/clk/clk-twl.c | 197 ++++++++++++++++++++++++++++++++++++++++++
+> >   3 files changed, 207 insertions(+)
+> >   create mode 100644 drivers/clk/clk-twl.c
+> >   
 > 
-> We return early from omap2_mcbsp_set_clks_src() with IS_ERR(fck_src) and
-> the runtime PM functions never get called?
+> ...
 > 
-no, we do not. This patch we are talking about to do it in a better way made
-its way into mainline v6.6-rc1. The other pieces of sound support did not,
-they need rework.
+> > +static int twl_clks_probe(struct platform_device *pdev)
+> > +{
+> > +	struct clk_hw_onecell_data *clk_data;
+> > +	const struct twl_clks_data *hw_data;
+> > +
+> > +	struct twl_clock_info *cinfo;
+> > +	int ret;
+> > +	int i;
+> > +	int count;
+> > +
+> > +	hw_data = twl6032_clks;
+> > +	for (count = 0; hw_data[count].init.name; count++)
+> > +		;  
+> 
+> Nit: does removing the /* sentinel */ and using 
+> ARRAY_SIZE(twl_clks_data) would make sense and be simpler?
+> 
+well, I would like to have it prepared for different arrays
+passed in some device data in the future, so I am choosing that
+approach.
 
 Regards,
 Andreas
