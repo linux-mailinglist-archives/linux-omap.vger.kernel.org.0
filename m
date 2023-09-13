@@ -2,93 +2,81 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6244F79E777
-	for <lists+linux-omap@lfdr.de>; Wed, 13 Sep 2023 14:02:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 553F479E7A8
+	for <lists+linux-omap@lfdr.de>; Wed, 13 Sep 2023 14:11:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239976AbjIMMCh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 13 Sep 2023 08:02:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36702 "EHLO
+        id S240412AbjIMMLW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 13 Sep 2023 08:11:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239632AbjIMMCg (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 13 Sep 2023 08:02:36 -0400
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC9CE19AC;
-        Wed, 13 Sep 2023 05:02:32 -0700 (PDT)
+        with ESMTP id S240371AbjIMMLT (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 13 Sep 2023 08:11:19 -0400
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCC6819A8;
+        Wed, 13 Sep 2023 05:11:14 -0700 (PDT)
 Received: from [192.168.88.20] (91-154-35-171.elisa-laajakaista.fi [91.154.35.171])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id D9911BEB;
-        Wed, 13 Sep 2023 14:00:58 +0200 (CEST)
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 01C0DBEB;
+        Wed, 13 Sep 2023 14:09:38 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1694606459;
-        bh=cswXhRm1e1DcA5shIZXc+UdI9/fAUQAb3D1e4uW/sS4=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=D0s47RcRZq5Dle5bWezeRXWqB2YlSXsj8GyHlBQcINOj2NEqKt+qy9MtXPPLdYfCU
-         ai3SewP2FH7mo25fxHBCodpG24BOq+Qlx/i+JkWxHFr4eh5R7lym5JxOMuDTi+We1M
-         XRu5RxyQGEQNR34PN/tV6PMMDW1ADtKFFGkC0PkQ=
-Message-ID: <0cd10461-aff1-9302-3d36-dd2ba609195a@ideasonboard.com>
-Date:   Wed, 13 Sep 2023 15:02:28 +0300
+        s=mail; t=1694606979;
+        bh=UeFdlu2oKUftOF98iCKd1KzwJ9Kg3oJeD3NVvC7NQFo=;
+        h=Date:Subject:To:References:Cc:From:In-Reply-To:From;
+        b=Tyz8o+uXQ2MS5aTNhKirIoFfduj3Wnc1TSOGnHE4otufVm526erBjYzW0Agk2ZFRa
+         EC/SxoblTAcWOHBV5kw9P5Z39NSQfYWhpzy8hCt1abB679g4701n2iRh+gsy3tDojo
+         2koZTEoM+Wm044E+ZhMZldVrNn7tEXvp9MQIKTbs=
+Message-ID: <48972ab0-e4ed-11b2-31fb-ad93695a4db1@ideasonboard.com>
+Date:   Wed, 13 Sep 2023 15:11:08 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.0
-Subject: Re: [PATCH] drm/omap: dsi: Fix deferred probe warnings
+Subject: Re: [RFC PATCH] drm: omapdrm: dsi: add refsel also for omap4
 Content-Language: en-US
-To:     Tony Lindgren <tony@atomide.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc:     David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
-        Sebastian Reichel <sre@kernel.org>,
-        dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20230412073954.20601-1-tony@atomide.com>
- <20230412085044.GP11253@pendragon.ideasonboard.com>
- <2bf56c04-733b-24a5-a344-166a94cd51f7@ideasonboard.com>
- <20230412085926.GR11253@pendragon.ideasonboard.com>
- <20230913073755.GE5285@atomide.com>
+To:     Andreas Kemnade <andreas@kemnade.info>
+References: <20230913065911.1551166-1-andreas@kemnade.info>
+Cc:     airlied@gmail.com, daniel@ffwll.ch, u.kleine-koenig@pengutronix.de,
+        arnd@arndb.de, laurent.pinchart@ideasonboard.com,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org,
+        Sebastian Reichel <sre@kernel.org>
 From:   Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-In-Reply-To: <20230913073755.GE5285@atomide.com>
+In-Reply-To: <20230913065911.1551166-1-andreas@kemnade.info>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 13/09/2023 10:37, Tony Lindgren wrote:
-> * Laurent Pinchart <laurent.pinchart@ideasonboard.com> [230412 11:59]:
->> On Wed, Apr 12, 2023 at 11:55:34AM +0300, Tomi Valkeinen wrote:
->>> On 12/04/2023 11:50, Laurent Pinchart wrote:
->>>> Hi Tony,
->>>>
->>>> Thank you for the patch.
->>>>
->>>> On Wed, Apr 12, 2023 at 10:39:53AM +0300, Tony Lindgren wrote:
->>>>> We may not have dsi->dsidev initialized during probe, and that can
->>>>> lead into various dsi related warnings as omap_dsi_host_detach() gets
->>>>> called with dsi->dsidev set to NULL.
->>>>>
->>>>> The warnings can be "Fixed dependency cycle(s)" followed by a
->>>>> WARNING: CPU: 0 PID: 787 at drivers/gpu/drm/omapdrm/dss/dsi.c:4414.
->>>>
->>>> How can this happen ? I assume .detach() can't be called without a
->>>> priori successful call to .attach(), that that sets dsi->dsidev.
->>>
->>> I had a quick look, and the driver calls mipi_dsi_host_register() in
->>> probe, and mipi_dsi_host_unregister() in remove.
->>>
->>> mipi_dsi_host_unregister() always calls mipi_dsi_detach(), but I don't
->>> think mipi_dsi_host_register() always calls attach, which happens later
->>> when the peripheral probes.
->>
->> Is this something that should be addressed in the DRM MIPI DSI helpers,
->> to only detach after an attach ?
-> 
-> Tomi, any comments on detach after attach?
+On 13/09/2023 09:59, Andreas Kemnade wrote:
+> Some 3.0 source has it set behind a if (omap4).
+> Maybe it is helpful maybe not, at least in the omap4460
+> trm these bits are marked as reserved.
+> But maybe some dsi video mode panel starts magically working.
 
-I sent a comment to the patch.
+Sorry, what does this mean? That this fixes something, or you are just 
+guessing?
 
-As Laurent said, I think this really should be fixed in the framework 
-side. Calling detach in drivers without attach feels just plain wrong.
-
-However, I don't see any harm in the patch (but perhaps some changes 
-needed as per my comments), and it will fix the issue for omapdrm, until 
-someone has the time and energy to look at a real fix.
+I'm somewhat sure that the upstream driver used to work on omap4 sdp, 
+which has two DSI panels. But I can't even remember what omap4 version 
+it had.
 
   Tomi
+
+> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+> ---
+>   drivers/gpu/drm/omapdrm/dss/dsi.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/omapdrm/dss/dsi.c b/drivers/gpu/drm/omapdrm/dss/dsi.c
+> index 60189a23506a1..e2f576cd9f63c 100644
+> --- a/drivers/gpu/drm/omapdrm/dss/dsi.c
+> +++ b/drivers/gpu/drm/omapdrm/dss/dsi.c
+> @@ -4505,7 +4505,7 @@ static const struct dss_pll_hw dss_omap4_dsi_pll_hw = {
+>   	.has_stopmode = true,
+>   	.has_freqsel = false,
+>   	.has_selfreqdco = false,
+> -	.has_refsel = false,
+> +	.has_refsel = true,
+>   };
+>   
+>   static const struct dss_pll_hw dss_omap5_dsi_pll_hw = {
 
