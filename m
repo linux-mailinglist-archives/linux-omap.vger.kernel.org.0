@@ -2,65 +2,90 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2341E79E20A
-	for <lists+linux-omap@lfdr.de>; Wed, 13 Sep 2023 10:27:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA36D79E764
+	for <lists+linux-omap@lfdr.de>; Wed, 13 Sep 2023 13:59:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238770AbjIMI1R (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 13 Sep 2023 04:27:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32902 "EHLO
+        id S240518AbjIML76 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 13 Sep 2023 07:59:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60568 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233957AbjIMI1R (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 13 Sep 2023 04:27:17 -0400
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A24F4198C;
-        Wed, 13 Sep 2023 01:27:13 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 03B028088;
-        Wed, 13 Sep 2023 08:27:13 +0000 (UTC)
-Date:   Wed, 13 Sep 2023 11:27:11 +0300
-From:   Tony Lindgren <tony@atomide.com>
-To:     Julien Panis <jpanis@baylibre.com>
-Cc:     linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-        vigneshr@ti.com
-Subject: Re: [PATCH] bus: ti-sysc: Use fsleep() instead of usleep_range() in
- sysc_reset()
-Message-ID: <20230913082711.GH5285@atomide.com>
-References: <20230821-fix-ti-sysc-reset-v1-1-5a0a5d8fae55@baylibre.com>
- <20230822092744.GT11676@atomide.com>
+        with ESMTP id S240492AbjIML76 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 13 Sep 2023 07:59:58 -0400
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98CA219A8;
+        Wed, 13 Sep 2023 04:59:54 -0700 (PDT)
+Received: from [192.168.88.20] (91-154-35-171.elisa-laajakaista.fi [91.154.35.171])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id E5E7316C4;
+        Wed, 13 Sep 2023 13:58:19 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1694606300;
+        bh=ayRV34rsRfdF8woE+GQhfjAi3GQIYlaUEPoIV8k2xps=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=UzGe5cj2D9Tns1M8L6m3ueyaS3BOi0cZ6U8xa77eVjNqMDeB2lpW5SjpYkc7PUj1O
+         xotPgAXmXDHIbb1fbJ+pSFqnpf6qFXGh5Ir0Rw0iGrMXuTd/M3+vO7WFTyNFb/yqsB
+         pNOzj4czWbm/JROAS7pIQt3sO+ZCfzZ35sFTdhKs=
+Message-ID: <9daacd2f-0dbf-dddc-9403-b802447896a2@ideasonboard.com>
+Date:   Wed, 13 Sep 2023 14:59:48 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230822092744.GT11676@atomide.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.0
+Subject: Re: [PATCH] drm/omap: dsi: Fix deferred probe warnings
+Content-Language: en-US
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@gmail.com>
+References: <20230412073954.20601-1-tony@atomide.com>
+From:   Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+In-Reply-To: <20230412073954.20601-1-tony@atomide.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Tony Lindgren <tony@atomide.com> [230822 09:27]:
-> * Julien Panis <jpanis@baylibre.com> [230821 14:24]:
-> > The am335x-evm started producing boot errors because of subtle timing
-> > changes:
-> > 
-> > Unhandled fault: external abort on non-linefetch (0x1008) at 0xf03c1010
-> > ...
-> > sysc_reset from sysc_probe+0xf60/0x1514
-> > sysc_probe from platform_probe+0x5c/0xbc
-> > ...
-> > 
-> > The fix consists in using the appropriate sleep function in sysc reset.
-> > For flexible sleeping, fsleep is recommended. Here, sysc delay parameter
-> > can take any value in [0 - 255] us range. As a result, fsleep() should
-> > be used, calling udelay() for a sysc delay lower than 10 us.
-> > 
-> > Signed-off-by: Julien Panis <jpanis@baylibre.com>
-> > Fixes: e709ed70d122 ("bus: ti-sysc: Fix missing reset delay handling")
-> > ---
-> > Fix boot errors for am335x-evm in sysc_reset(), by using fsleep() instead
-> > of usleep_range() function. Thus, udelay() will be called if the configured
-> > sysc delay is lower than 10 us (which is usually the case, since the value
-> > set in the device tree is currently 2 us).
+On 12/04/2023 10:39, Tony Lindgren wrote:
+> We may not have dsi->dsidev initialized during probe, and that can
+> lead into various dsi related warnings as omap_dsi_host_detach() gets
+> called with dsi->dsidev set to NULL.
 > 
-> OK, interesting. Yeah I've only ever seen values of 2 us needed here.
+> The warnings can be "Fixed dependency cycle(s)" followed by a
+> WARNING: CPU: 0 PID: 787 at drivers/gpu/drm/omapdrm/dss/dsi.c:4414.
+> 
+> Let's fix the warnings by checking for a valid dsi->dsidev.
+> 
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> ---
+>   drivers/gpu/drm/omapdrm/dss/dsi.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/omapdrm/dss/dsi.c b/drivers/gpu/drm/omapdrm/dss/dsi.c
+> --- a/drivers/gpu/drm/omapdrm/dss/dsi.c
+> +++ b/drivers/gpu/drm/omapdrm/dss/dsi.c
+> @@ -4411,7 +4411,7 @@ static int omap_dsi_host_detach(struct mipi_dsi_host *host,
+>   {
+>   	struct dsi_data *dsi = host_to_omap(host);
+>   
+> -	if (WARN_ON(dsi->dsidev != client))
+> +	if (dsi->dsidev && WARN_ON(dsi->dsidev != client))
+>   		return -EINVAL;
+>   
+>   	cancel_delayed_work_sync(&dsi->dsi_disable_work);
 
-Applied into fixes thanks
+Shouldn't this rather be
 
-Tony
+if (!dsi->dsidev)
+	return 0;
+
+before the if (WARN_ON(dsi->dsidev != client)) line?
+
+If dsi->dsidev is NULL, then attach hasn't been called, and we shouldn't 
+do anything in the detach callback either.
+
+With your change we'll end up doing all the work in the detach callback, 
+without ever doing their counterpart in the attach side.
+
+  Tomi
+
