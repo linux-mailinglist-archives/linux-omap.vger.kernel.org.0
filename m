@@ -2,81 +2,62 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 23B7A79E84E
-	for <lists+linux-omap@lfdr.de>; Wed, 13 Sep 2023 14:50:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF28579E870
+	for <lists+linux-omap@lfdr.de>; Wed, 13 Sep 2023 14:58:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236061AbjIMMum (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 13 Sep 2023 08:50:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46676 "EHLO
+        id S240680AbjIMM6W (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 13 Sep 2023 08:58:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231620AbjIMMum (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 13 Sep 2023 08:50:42 -0400
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 817CD19B1;
-        Wed, 13 Sep 2023 05:50:38 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id EC6FE8088;
-        Wed, 13 Sep 2023 12:50:37 +0000 (UTC)
-Date:   Wed, 13 Sep 2023 15:50:36 +0300
-From:   Tony Lindgren <tony@atomide.com>
-To:     Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Daniel Vetter <daniel@ffwll.ch>,
-        David Airlie <airlied@gmail.com>
-Subject: Re: [PATCH] drm/omap: dsi: Fix deferred probe warnings
-Message-ID: <20230913125036.GM5285@atomide.com>
-References: <20230412073954.20601-1-tony@atomide.com>
- <9daacd2f-0dbf-dddc-9403-b802447896a2@ideasonboard.com>
+        with ESMTP id S239713AbjIMM6W (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 13 Sep 2023 08:58:22 -0400
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F022E19B4;
+        Wed, 13 Sep 2023 05:58:17 -0700 (PDT)
+Received: from [192.168.88.20] (91-154-35-171.elisa-laajakaista.fi [91.154.35.171])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 9B5C5BEB;
+        Wed, 13 Sep 2023 14:56:43 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1694609804;
+        bh=M7dKeNMIT1EMz75IrJ+oFJE2UlePCjaNN7ef/pgxLyg=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=dRNsrWFAOavc+qboaBX4mH9+K0nLBzN9++lrDVX/oDuhRmE0I4ZUyvotTi7gWIPe6
+         EdYkwgNxzdqd8d9L8auDMb3SvtQpfrr2TwBsBsJg1nOxASG2hbJl7ljSTDqa1aH9QW
+         xjtP7tZhcuSC69KZoW6074r7ocS/nmsVOujKz4j8=
+Message-ID: <9efde4d8-385d-54da-fb0d-55625d3c4571@ideasonboard.com>
+Date:   Wed, 13 Sep 2023 15:58:11 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9daacd2f-0dbf-dddc-9403-b802447896a2@ideasonboard.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.0
+Subject: Re: [RFC PATCH] drm: omapdrm: dsi: add refsel also for omap4
+Content-Language: en-US
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Andreas Kemnade <andreas@kemnade.info>, airlied@gmail.com,
+        daniel@ffwll.ch, u.kleine-koenig@pengutronix.de, arnd@arndb.de,
+        laurent.pinchart@ideasonboard.com, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        Sebastian Reichel <sre@kernel.org>
+References: <20230913065911.1551166-1-andreas@kemnade.info>
+ <48972ab0-e4ed-11b2-31fb-ad93695a4db1@ideasonboard.com>
+ <20230913124828.GL5285@atomide.com>
+From:   Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+In-Reply-To: <20230913124828.GL5285@atomide.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Tomi Valkeinen <tomi.valkeinen@ideasonboard.com> [230913 11:59]:
-> On 12/04/2023 10:39, Tony Lindgren wrote:
-> > We may not have dsi->dsidev initialized during probe, and that can
-> > lead into various dsi related warnings as omap_dsi_host_detach() gets
-> > called with dsi->dsidev set to NULL.
-> > 
-> > The warnings can be "Fixed dependency cycle(s)" followed by a
-> > WARNING: CPU: 0 PID: 787 at drivers/gpu/drm/omapdrm/dss/dsi.c:4414.
-> > 
-> > Let's fix the warnings by checking for a valid dsi->dsidev.
-> > 
-> > Signed-off-by: Tony Lindgren <tony@atomide.com>
-> > ---
-> >   drivers/gpu/drm/omapdrm/dss/dsi.c | 2 +-
-> >   1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/gpu/drm/omapdrm/dss/dsi.c b/drivers/gpu/drm/omapdrm/dss/dsi.c
-> > --- a/drivers/gpu/drm/omapdrm/dss/dsi.c
-> > +++ b/drivers/gpu/drm/omapdrm/dss/dsi.c
-> > @@ -4411,7 +4411,7 @@ static int omap_dsi_host_detach(struct mipi_dsi_host *host,
-> >   {
-> >   	struct dsi_data *dsi = host_to_omap(host);
-> > -	if (WARN_ON(dsi->dsidev != client))
-> > +	if (dsi->dsidev && WARN_ON(dsi->dsidev != client))
-> >   		return -EINVAL;
-> >   	cancel_delayed_work_sync(&dsi->dsi_disable_work);
+On 13/09/2023 15:48, Tony Lindgren wrote:
+> * Tomi Valkeinen <tomi.valkeinen@ideasonboard.com> [230913 12:11]:
+>> I'm somewhat sure that the upstream driver used to work on omap4 sdp, which
+>> has two DSI panels. But I can't even remember what omap4 version it had.
 > 
-> Shouldn't this rather be
-> 
-> if (!dsi->dsidev)
-> 	return 0;
-> 
-> before the if (WARN_ON(dsi->dsidev != client)) line?
-> 
-> If dsi->dsidev is NULL, then attach hasn't been called, and we shouldn't do
-> anything in the detach callback either.
-> 
-> With your change we'll end up doing all the work in the detach callback,
-> without ever doing their counterpart in the attach side.
+> I think those were both dsi command mode panels though, not video mode?
 
-Oops, I'll check that thanks.
+Yes, true. If the PLL is totally wrong due to refsel, I'm sure a command 
+mode panel would also fail. But it's true that video mode panels are 
+more sensitive to the clock rate.
 
-Tony
+  Tomi
+
