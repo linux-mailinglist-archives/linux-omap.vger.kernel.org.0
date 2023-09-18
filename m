@@ -2,39 +2,67 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BFB57A5443
-	for <lists+linux-omap@lfdr.de>; Mon, 18 Sep 2023 22:43:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C6867A5485
+	for <lists+linux-omap@lfdr.de>; Mon, 18 Sep 2023 22:54:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229478AbjIRUnO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 18 Sep 2023 16:43:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44426 "EHLO
+        id S229885AbjIRUyj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 18 Sep 2023 16:54:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53534 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229632AbjIRUnN (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 18 Sep 2023 16:43:13 -0400
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C15F9119
-        for <linux-omap@vger.kernel.org>; Mon, 18 Sep 2023 13:43:07 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1qiL4y-0007TN-C4; Mon, 18 Sep 2023 22:42:48 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1qiL4x-007Ikd-Lh; Mon, 18 Sep 2023 22:42:47 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1qiL4x-002mqN-B3; Mon, 18 Sep 2023 22:42:47 +0200
-From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     "David S. Miller" <davem@davemloft.net>,
+        with ESMTP id S229678AbjIRUyi (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 18 Sep 2023 16:54:38 -0400
+Received: from mail-qv1-xf35.google.com (mail-qv1-xf35.google.com [IPv6:2607:f8b0:4864:20::f35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80FF010F;
+        Mon, 18 Sep 2023 13:54:32 -0700 (PDT)
+Received: by mail-qv1-xf35.google.com with SMTP id 6a1803df08f44-6561c09ead6so26573566d6.1;
+        Mon, 18 Sep 2023 13:54:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1695070471; x=1695675271; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=3JKOIoxjAMpIMhlbFLnI66RFMTxES9Lx9Tg51O/hoxQ=;
+        b=DAWne48y9mrma4iHxVLNNejLW5EsAzip9NtC1NIkZNplCo2yw4KSLT89Yw6mX0W7b4
+         HH8QsJepoCJjrb+SpGSHnBDYXohusfHtXocAPI1JbfSFUXhP3GooeaLyBpnDIcD8rM/u
+         aZosC0f31Y83UpW5vYRtqlIFgKPZJ43mhxXI65IYZl/xz79DpDBP76xPEKcL7dS1m44f
+         Nv2idHX8akVzsLHu0FQNIre8HzjNTnmnyfMsFC2rWhAGpeiQtCghCNedS7v1PEOpIzcc
+         s+WMJWeF58c3rsFGt1hGCr5iQwOwl1EGX8EdBe4O2x/hp/KlOlgebOfYylv+7yq5xqmm
+         cwFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695070471; x=1695675271;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=3JKOIoxjAMpIMhlbFLnI66RFMTxES9Lx9Tg51O/hoxQ=;
+        b=AoujEkolbwdbmb3dpbNxkerab1sVRwPcgEcZnG6AcivIcFm65tVwBXo7Po/16S2ed/
+         GUfNmq6q0KLHnC+hpb8CNanKLDId4iFQ4zb3o4tCAxN/h9fSrYB/VU3CfckmJ6MfIWKd
+         uhof2eghBZeE4UtIT1ERS9SxoIFznIDDwxwlNvSYne++pBMt//TfK+SU1XwpZwZMnB9/
+         X6Ba+Dv7K/OoUZyiRUXqbD5XEn2vqKPSSKC9DRc0afAUVrt2Vt6sWFsiTVpbRbjSJgH1
+         ocizWXQhOHyvX3SuY3BaGY+ry8lTl9tF7oPwgFm6G7Zub09xRLihjHpNWzkXGQx9ugnb
+         YCog==
+X-Gm-Message-State: AOJu0Yx2zpEnwkyytmKDxXTmGLoQYD0gS4LjO0wd3MHAJH3PrC1fVlTM
+        d/J3eLQVHJiV7/sEKr2yaL8=
+X-Google-Smtp-Source: AGHT+IEeDcfxx5E7MUkRKktvg+P5mdOgPZw4O5XC0zUqrlKQT2E6ixUqyqYrH9qxnPAEOXW5th/aOw==
+X-Received: by 2002:a0c:e4c9:0:b0:658:574:5b84 with SMTP id g9-20020a0ce4c9000000b0065805745b84mr4277949qvm.6.1695070471526;
+        Mon, 18 Sep 2023 13:54:31 -0700 (PDT)
+Received: from [10.67.49.139] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id w26-20020a0ca81a000000b00655e2005350sm3745460qva.9.2023.09.18.13.54.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 18 Sep 2023 13:54:30 -0700 (PDT)
+Message-ID: <05cfcbdd-ebc2-b494-4d18-f643e436a80c@gmail.com>
+Date:   Mon, 18 Sep 2023 13:54:28 -0700
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH net-next 49/54] net: ethernet: ti: Convert to platform
+ remove callback returning void
+Content-Language: en-US
+To:     =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+        "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>
-Cc:     Florian Fainelli <f.fainelli@gmail.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
+Cc:     Grygorii Strashko <grygorii.strashko@ti.com>,
         Marc Kleine-Budde <mkl@pengutronix.de>,
         Nathan Chancellor <nathan@kernel.org>,
         Nathan Huckleberry <nhuck@google.com>,
@@ -46,171 +74,40 @@ Cc:     Florian Fainelli <f.fainelli@gmail.com>,
         Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
         Arnd Bergmann <arnd@arndb.de>, netdev@vger.kernel.org,
         kernel@pengutronix.de, linux-omap@vger.kernel.org
-Subject: [PATCH net-next 49/54] net: ethernet: ti: Convert to platform remove callback returning void
-Date:   Mon, 18 Sep 2023 22:42:21 +0200
-Message-Id: <20230918204227.1316886-50-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230918204227.1316886-1-u.kleine-koenig@pengutronix.de>
 References: <20230918204227.1316886-1-u.kleine-koenig@pengutronix.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5112; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=GAzMPmTXiHRYGL72nZp+bTQHer1MdGrU4/9n6vQGbZE=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBlCLYbKcwv4juvlGF2GyxUT/eBKwQwSyvbq2/GL QtGUYa2R9GJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZQi2GwAKCRCPgPtYfRL+ ThBqB/0QH054ARQK0eHP4ODSndxB3JFel3Ybp97YrfdkNGp4IMU5XaW5dHQLtvLou2PfI2bGp07 oQVblhLa+cb79spIxftIXiqSKicm+zcliwW9cr6sZa5wYnVlPCj28prPcJs8d0wn6Q/J0VSVXFO B0RBY3vtt9aeK5yFdKJGt7Ka0SPBNJsKq5Rs9jRzZABH3UM3F1NoAAR4LE0/j4wQCDIMB8erkxG l/UNVpxjmo3zGYnavkPUO2ai6KDVb+bmtwk8jMA53w83jZp7hw5m7bSZOiK0ogWcEhpyJkiN7FI RvfeyQq7v4scquY3H4ikvZDR0/9+w1iAlHDCyuJCxPDxLQyv
-X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+ <20230918204227.1316886-50-u.kleine-koenig@pengutronix.de>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20230918204227.1316886-50-u.kleine-koenig@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-omap@vger.kernel.org
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The .remove() callback for a platform driver returns an int which makes
-many driver authors wrongly assume it's possible to do error handling by
-returning an error code. However the value returned is ignored (apart
-from emitting a warning) and this typically results in resource leaks.
-To improve here there is a quest to make the remove callback return
-void. In the first step of this quest all drivers are converted to
-.remove_new() which already returns void. Eventually after all drivers
-are converted, .remove_new() is renamed to .remove().
+On 9/18/23 13:42, Uwe Kleine-König wrote:
+> The .remove() callback for a platform driver returns an int which makes
+> many driver authors wrongly assume it's possible to do error handling by
+> returning an error code. However the value returned is ignored (apart
+> from emitting a warning) and this typically results in resource leaks.
+> To improve here there is a quest to make the remove callback return
+> void. In the first step of this quest all drivers are converted to
+> .remove_new() which already returns void. Eventually after all drivers
+> are converted, .remove_new() is renamed to .remove().
+> 
+> Trivially convert these drivers from always returning zero in the remove
+> callback to the void returning variant.
+> 
+> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+> ---
+>   drivers/net/ethernet/ti/cpmac.c        | 6 ++----
 
-Trivially convert these drivers from always returning zero in the remove
-callback to the void returning variant.
-
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
----
- drivers/net/ethernet/ti/cpmac.c        | 6 ++----
- drivers/net/ethernet/ti/davinci_emac.c | 6 ++----
- drivers/net/ethernet/ti/davinci_mdio.c | 6 ++----
- drivers/net/ethernet/ti/netcp_core.c   | 5 ++---
- 4 files changed, 8 insertions(+), 15 deletions(-)
-
-diff --git a/drivers/net/ethernet/ti/cpmac.c b/drivers/net/ethernet/ti/cpmac.c
-index 80eeeb463c4f..bc9b5d18427d 100644
---- a/drivers/net/ethernet/ti/cpmac.c
-+++ b/drivers/net/ethernet/ti/cpmac.c
-@@ -1151,14 +1151,12 @@ static int cpmac_probe(struct platform_device *pdev)
- 	return rc;
- }
- 
--static int cpmac_remove(struct platform_device *pdev)
-+static void cpmac_remove(struct platform_device *pdev)
- {
- 	struct net_device *dev = platform_get_drvdata(pdev);
- 
- 	unregister_netdev(dev);
- 	free_netdev(dev);
--
--	return 0;
- }
- 
- static struct platform_driver cpmac_driver = {
-@@ -1166,7 +1164,7 @@ static struct platform_driver cpmac_driver = {
- 		.name 	= "cpmac",
- 	},
- 	.probe 	= cpmac_probe,
--	.remove = cpmac_remove,
-+	.remove_new = cpmac_remove,
- };
- 
- int __init cpmac_init(void)
-diff --git a/drivers/net/ethernet/ti/davinci_emac.c b/drivers/net/ethernet/ti/davinci_emac.c
-index 2eb9d5a32588..5d756df133eb 100644
---- a/drivers/net/ethernet/ti/davinci_emac.c
-+++ b/drivers/net/ethernet/ti/davinci_emac.c
-@@ -2002,7 +2002,7 @@ static int davinci_emac_probe(struct platform_device *pdev)
-  * Called when removing the device driver. We disable clock usage and release
-  * the resources taken up by the driver and unregister network device
-  */
--static int davinci_emac_remove(struct platform_device *pdev)
-+static void davinci_emac_remove(struct platform_device *pdev)
- {
- 	struct net_device *ndev = platform_get_drvdata(pdev);
- 	struct emac_priv *priv = netdev_priv(ndev);
-@@ -2022,8 +2022,6 @@ static int davinci_emac_remove(struct platform_device *pdev)
- 	if (of_phy_is_fixed_link(np))
- 		of_phy_deregister_fixed_link(np);
- 	free_netdev(ndev);
--
--	return 0;
- }
- 
- static int davinci_emac_suspend(struct device *dev)
-@@ -2076,7 +2074,7 @@ static struct platform_driver davinci_emac_driver = {
- 		.of_match_table = davinci_emac_of_match,
- 	},
- 	.probe = davinci_emac_probe,
--	.remove = davinci_emac_remove,
-+	.remove_new = davinci_emac_remove,
- };
- 
- /**
-diff --git a/drivers/net/ethernet/ti/davinci_mdio.c b/drivers/net/ethernet/ti/davinci_mdio.c
-index 89b6d23e9937..628c87dc1d28 100644
---- a/drivers/net/ethernet/ti/davinci_mdio.c
-+++ b/drivers/net/ethernet/ti/davinci_mdio.c
-@@ -673,7 +673,7 @@ static int davinci_mdio_probe(struct platform_device *pdev)
- 	return ret;
- }
- 
--static int davinci_mdio_remove(struct platform_device *pdev)
-+static void davinci_mdio_remove(struct platform_device *pdev)
- {
- 	struct davinci_mdio_data *data = platform_get_drvdata(pdev);
- 
-@@ -686,8 +686,6 @@ static int davinci_mdio_remove(struct platform_device *pdev)
- 
- 	pm_runtime_dont_use_autosuspend(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
--
--	return 0;
- }
- 
- #ifdef CONFIG_PM
-@@ -766,7 +764,7 @@ static struct platform_driver davinci_mdio_driver = {
- 		.of_match_table = of_match_ptr(davinci_mdio_of_mtable),
- 	},
- 	.probe = davinci_mdio_probe,
--	.remove = davinci_mdio_remove,
-+	.remove_new = davinci_mdio_remove,
- };
- 
- static int __init davinci_mdio_init(void)
-diff --git a/drivers/net/ethernet/ti/netcp_core.c b/drivers/net/ethernet/ti/netcp_core.c
-index d829113c16ee..11b90e1da0c6 100644
---- a/drivers/net/ethernet/ti/netcp_core.c
-+++ b/drivers/net/ethernet/ti/netcp_core.c
-@@ -2228,7 +2228,7 @@ static int netcp_probe(struct platform_device *pdev)
- 	return ret;
- }
- 
--static int netcp_remove(struct platform_device *pdev)
-+static void netcp_remove(struct platform_device *pdev)
- {
- 	struct netcp_device *netcp_device = platform_get_drvdata(pdev);
- 	struct netcp_intf *netcp_intf, *netcp_tmp;
-@@ -2256,7 +2256,6 @@ static int netcp_remove(struct platform_device *pdev)
- 	pm_runtime_put_sync(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
- 	platform_set_drvdata(pdev, NULL);
--	return 0;
- }
- 
- static const struct of_device_id of_match[] = {
-@@ -2271,7 +2270,7 @@ static struct platform_driver netcp_driver = {
- 		.of_match_table	= of_match,
- 	},
- 	.probe = netcp_probe,
--	.remove = netcp_remove,
-+	.remove_new = netcp_remove,
- };
- module_platform_driver(netcp_driver);
- 
+Reviewed-by: Florian Fainelli <f.fainelli@gmail.com> # cpmac
 -- 
-2.40.1
+Florian
 
