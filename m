@@ -2,197 +2,152 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE0697A63C2
-	for <lists+linux-omap@lfdr.de>; Tue, 19 Sep 2023 14:51:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 52FE27A655F
+	for <lists+linux-omap@lfdr.de>; Tue, 19 Sep 2023 15:38:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232223AbjISMv0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 19 Sep 2023 08:51:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38518 "EHLO
+        id S232403AbjISNiY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 19 Sep 2023 09:38:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232207AbjISMvZ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 19 Sep 2023 08:51:25 -0400
-Received: from mail-qk1-x736.google.com (mail-qk1-x736.google.com [IPv6:2607:f8b0:4864:20::736])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E67A3F5;
-        Tue, 19 Sep 2023 05:51:18 -0700 (PDT)
-Received: by mail-qk1-x736.google.com with SMTP id af79cd13be357-76dc7b0da9fso342302585a.1;
-        Tue, 19 Sep 2023 05:51:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695127877; x=1695732677; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aUSFGHFYd5WcIYIhM1XDG+I8py/W3+tKiKFLrkCLv8U=;
-        b=aR/HMAaMFJFHL2JcxAl94bkIuX0BFxnXXtNflaV6poeP4FgXWPGYoW1ILQtQMIeroj
-         3l3DCM/n5Jc1CMg2oJQXaZ0QMa18kY0bSDU5h6uvSbKFLVSUqHtatMfGPzviafYH49js
-         4Xeb0EbjXki3ZygErSJAApAC4HssrNeP4v/BYbn8xXqLC1yxsjbtbsjm35AKYqa4dZzs
-         qU7WEuaajkeI3nS0lxVfi/q2rqVdgUheVgLuGe0hV7sHA/1jXyf7nIMYeAszcESmFj8I
-         mhFCHP2WsHmK22gYkDQnruy+B/MpkKIJtG9HVJ2Veh4Fw0E3M7ubHpeK2DnEqWoCe6hP
-         rkXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695127877; x=1695732677;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aUSFGHFYd5WcIYIhM1XDG+I8py/W3+tKiKFLrkCLv8U=;
-        b=oMaU2QBtl9uhedBi81IqWoH8Zl1vg/31qUt0E4AC2Wu5sz15hT68BPmw+aJGRQy3ps
-         CWxFDd6mVQgtAnjgi9mJqIhCrSHQJTv2LFGZYav3WdRmMY4YNHzv8DJN/lexszu+RpNh
-         C7aUitQJbQwCbjHnKjihT56wjMyLjglpsSoaC3OWrbcpcWCuYUv8a12QRBuWjqd8sIOZ
-         UVuWsfUiSJhS38y7U9LG8FNedcU800vIdaSIW/kzTe5OZ7JaCfWkewdU9VdKITuXuYlH
-         msF8P++EOT7MKVQnE5AhbGFZo/oNyNyolOKJr/UjvlZX+p7R+UY1Q7eov7yjY2x/pX9M
-         cJLg==
-X-Gm-Message-State: AOJu0Yx+fKQfcOY3TVMBCnsWLgGBpelFm6SqjeYMxNKetbSKmAGllKHl
-        e7CReQjyps+NYuipJLCzqXyCXmw0jH6Hyw==
-X-Google-Smtp-Source: AGHT+IGDc+JnxgDWxiIhBYGrddjqysKVcRLkpOZcaIESpnxdkgGjemG9SnH5wVjMz8KjrhwM7ESjzQ==
-X-Received: by 2002:a05:620a:4544:b0:768:1db5:d9d1 with SMTP id u4-20020a05620a454400b007681db5d9d1mr12315999qkp.5.1695127877328;
-        Tue, 19 Sep 2023 05:51:17 -0700 (PDT)
-Received: from localhost.localdomain (pppoe-209-91-167-254.vianet.ca. [209.91.167.254])
-        by smtp.gmail.com with ESMTPSA id y7-20020a37e307000000b007676f3859fasm3936508qki.30.2023.09.19.05.51.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Sep 2023 05:51:16 -0700 (PDT)
-From:   Trevor Woerner <twoerner@gmail.com>
-To:     linux-kernel@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
-        Tony Lindgren <tony@atomide.com>
-Cc:     soc@kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-omap@vger.kernel.org
-Subject: [PATCH v4 1/1] ARM: defconfig: cleanup orphaned CONFIGs
-Date:   Tue, 19 Sep 2023 08:51:11 -0400
-Message-ID: <20230919125112.15515-2-twoerner@gmail.com>
-X-Mailer: git-send-email 2.41.0.327.gaa9166bcc0ba
-In-Reply-To: <20230919125112.15515-1-twoerner@gmail.com>
-References: <20230919125112.15515-1-twoerner@gmail.com>
+        with ESMTP id S232425AbjISNiR (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 19 Sep 2023 09:38:17 -0400
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.166])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB212EC;
+        Tue, 19 Sep 2023 06:38:10 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1695130657; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=fmNCdrliKmKlDo9QFTbljpsJthBV+utp8y7CMMjQS2cI7k4YGcLSaoOZ/gNUBE9sF7
+    bUIQMKzJLh30qi/eZxLqTpEK7Gz44KiS9SXW/ePRMxca7wFe+uOcBfXxsuchE1QXNXd6
+    66qKlGTAz+xlK5ynlDjvPCGmXzsLam9mxWTHm5Ss9sJoUR3NUj4M38xUgkQjwqh7xuHD
+    y3nJ7JgPTG13aiYXb+rfDB4RUWoNbkQLA3b9XLqvBt0DCcHrsTkZKGzCRhlFMk0TaJtv
+    R6nzuexHMXYZZb1FRSWE/SKc/GN6SImfH5ma52vsC/znrLlOD4keN+aQHhsWqezs8/jr
+    h/+Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1695130657;
+    s=strato-dkim-0002; d=strato.com;
+    h=Message-ID:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=C+Lkr4ss6MZINaRjRWZbodjkKT7ulOoKXpAu4jeNUT0=;
+    b=qAK5LNPrtWq9JY4GDjefVmvqwUJ2sEwqglqxTPy3dLaDT+pIYRaezv/8uokyl0ZVk5
+    IVc51zFv1yb541MSm0zm4jRf2djdJ6q8V9QJr81y+l/+BTtqMoDqFiq1Nk4FVdqpw8RG
+    3YXyenqF1KRadAVnCoy30I1Yh9wXfEdbuzrIHSCGfKj6LHywzH0HzCknZzEEWsuobqfy
+    uS5aoojhsGVwYf/YG3rvDq9KixgxxOp5UHEnRRptsFkf63eo+zgVp71f1b2QS0/i7dVb
+    eCiEMRFOMh7riFMtu2IcQhBzhmFsb8HM3DEF8a7bq3EykafzSTldAJGwdakHyPVGiimY
+    6Ujg==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1695130657;
+    s=strato-dkim-0002; d=goldelico.com;
+    h=Message-ID:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=C+Lkr4ss6MZINaRjRWZbodjkKT7ulOoKXpAu4jeNUT0=;
+    b=ZMdtX+2xP1lj3TfciIVF5fsah7wY+MfWwpbvVQttJWfya/seJu5lk4WsgZi/JOO+jC
+    E92uty4UKec96v8dATYwSAjSVH2SE1KsgoT0MzXExJild6lYv7xie7jyMU+mEx9K+a4+
+    wsLqDT13loVkRwIzRCL5N2yKewPT0Wk1ihmmKC2FwhJenM9b+50ORsh+zgY0SRmOUE6K
+    tbXf9f4N3Z3n03VyJNyaMdhxyR314FWO9iIMFlWT540BOuM8qg/TXctKK0Hm1LNvirKU
+    rZbyeR+3h7JOpBUbZ0fu2fFSMuHI95OMBZL+gRkEQBNlhHlfNC5iyc+x2OHkjfEwhRIS
+    TpIw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1695130657;
+    s=strato-dkim-0003; d=goldelico.com;
+    h=Message-ID:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=C+Lkr4ss6MZINaRjRWZbodjkKT7ulOoKXpAu4jeNUT0=;
+    b=ifLmEvTKOnMXlMzR3QBCX0YGjjxz8aTIuO14dJRB3MjzPCwotBsh4xxAE0dXltYj8h
+    14bzI3TlgCCkbFK7ASCA==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9o1iTDUhfN4hi3qVZrWLJ"
+Received: from localhost.localdomain
+    by smtp.strato.de (RZmta 49.8.2 DYNA|AUTH)
+    with ESMTPSA id Y04dd7z8JDbYhZC
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+    Tue, 19 Sep 2023 15:37:34 +0200 (CEST)
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
+To:     Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, tony@atomide.com,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Douglas Anderson <dianders@chromium.org>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>, sre@kernel.org,
+        "H. Nikolaus Schaller" <hns@goldelico.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Arnd Bergmann <arnd@arndb.de>
+Cc:     dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, letux-kernel@openphoenux.org,
+        kernel@pyra-handheld.com
+Subject: [PATCH] omap: dsi: do not WARN on detach if dsidev was never attached
+Date:   Tue, 19 Sep 2023 15:37:28 +0200
+Message-ID: <929c46beecf77f2ebfa9f8c9b1c09f6ec610c31a.1695130648.git.hns@goldelico.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,UPPERCASE_50_75
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="us-ascii"
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Drop CONFIG_NF_LOG_NETDEV as it was removed in commit 1510618e45cb
-("netfilter: nf_log_netdev: merge with nf_log_syslog").
+dsi_init_output() called by dsi_probe() may fail. In that
+case mipi_dsi_host_unregister() is called which may call
+omap_dsi_host_detach() with uninitialized dsi->dsidev
+because omap_dsi_host_attach() was never called before.
 
-Drop CONFIG_NFT_COUNTER as it was removed in commit 023223dfbfb3
-("netfilter: nf_tables: make counter support built-in").
+This happens if the panel driver asks for an EPROBE_DEFER.
 
-Drop CONFIG_NF_FLOW_TABLE_IPV6 and CONFIG_NF_FLOW_TABLE_IPV4 as they were
-removed in commit c42ba4290b21 ("netfilter: flowtable: remove ipv4/ipv6
-modules").
+So let's suppress the WARN() in this special case.
 
-Drop CONFIG_NF_LOG_BRIDGE as it was removed in commit 77ccee96a674
-("netfilter: nf_log_bridge: merge with nf_log_syslog").
+[    7.416759] WARNING: CPU: 0 PID: 32 at drivers/gpu/drm/omapdrm/dss/dsi.c:4419 omap_dsi_host_detach+0x3c/0xbc [omapdrm]
+[    7.436053] Modules linked in: ina2xx_adc snd_soc_ts3a227e bq2429x_charger bq27xxx_battery_i2c(+) bq27xxx_battery ina2xx tca8418_keypad as5013(+) omapdrm hci_uart cec palmas_pwrbutton btbcm bmp280_spi palmas_gpadc bluetooth usb3503 ecdh_generic bmc150_accel_i2c bmg160_i2c ecc bmc150_accel_core bmg160_core bmc150_magn_i2c bmp280_i2c bmc150_magn bno055 industrialio_triggered_buffer bmp280 kfifo_buf snd_soc_omap_aess display_connector drm_kms_helper syscopyarea snd_soc_omap_mcbsp snd_soc_ti_sdma sysfillrect ti_tpd12s015 sysimgblt fb_sys_fops wwan_on_off snd_soc_gtm601 generic_adc_battery drm snd_soc_w2cbw003_bt industrialio drm_panel_orientation_quirks pwm_bl pwm_omap_dmtimer ip_tables x_tables ipv6 autofs4
+[    7.507068] CPU: 0 PID: 32 Comm: kworker/u4:2 Tainted: G        W          6.1.0-rc3-letux-lpae+ #11107
+[    7.516964] Hardware name: Generic OMAP5 (Flattened Device Tree)
+[    7.523284] Workqueue: events_unbound deferred_probe_work_func
+[    7.529456]  unwind_backtrace from show_stack+0x10/0x14
+[    7.534972]  show_stack from dump_stack_lvl+0x40/0x4c
+[    7.540315]  dump_stack_lvl from __warn+0xb0/0x164
+[    7.545379]  __warn from warn_slowpath_fmt+0x70/0x9c
+[    7.550625]  warn_slowpath_fmt from omap_dsi_host_detach+0x3c/0xbc [omapdrm]
+[    7.558137]  omap_dsi_host_detach [omapdrm] from mipi_dsi_remove_device_fn+0x10/0x20
+[    7.566376]  mipi_dsi_remove_device_fn from device_for_each_child+0x60/0x94
+[    7.573729]  device_for_each_child from mipi_dsi_host_unregister+0x20/0x54
+[    7.580992]  mipi_dsi_host_unregister from dsi_probe+0x5d8/0x744 [omapdrm]
+[    7.588315]  dsi_probe [omapdrm] from platform_probe+0x58/0xa8
+[    7.594542]  platform_probe from really_probe+0x144/0x2ac
+[    7.600249]  really_probe from __driver_probe_device+0xc4/0xd8
+[    7.606411]  __driver_probe_device from driver_probe_device+0x3c/0xb8
+[    7.613216]  driver_probe_device from __device_attach_driver+0x58/0xbc
+[    7.620115]  __device_attach_driver from bus_for_each_drv+0xa0/0xb4
+[    7.626737]  bus_for_each_drv from __device_attach+0xdc/0x150
+[    7.632808]  __device_attach from bus_probe_device+0x28/0x80
+[    7.638792]  bus_probe_device from deferred_probe_work_func+0x84/0xa0
+[    7.645595]  deferred_probe_work_func from process_one_work+0x1a4/0x2d8
+[    7.652587]  process_one_work from worker_thread+0x214/0x2b8
+[    7.658567]  worker_thread from kthread+0xe4/0xf0
+[    7.663542]  kthread from ret_from_fork+0x14/0x1c
+[    7.668515] Exception stack(0xf01b5fb0 to 0xf01b5ff8)
+[    7.673827] 5fa0:                                     00000000 00000000 00000000 00000000
+[    7.682435] 5fc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+[    7.691038] 5fe0: 00000000 00000000 00000000 00000000 00000013 00000000
 
-Drop CONFIG_IP_NF_TARGET_CLUSTERIP from any remaining arm defconfigs as it
-was removed in commit 9db5d918e2c0 ("netfilter: ip_tables: remove clusterip
-target").
-
-Drop CONFIG_USB_MUSB_AM35X as it was removed in commit 57f8e00d8a82 ("usb:
-musb: Drop old unused am35x glue layer").
-
-Drop CONFIG_NFT_OBJREF as it was removed in commit d037abc2414b
-("netfilter: nft_objref: make it builtin").
-
-Signed-off-by: Trevor Woerner <twoerner@gmail.com>
+Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
 ---
- arch/arm/configs/keystone_defconfig  | 1 -
- arch/arm/configs/multi_v7_defconfig  | 1 -
- arch/arm/configs/omap2plus_defconfig | 8 --------
- 3 files changed, 10 deletions(-)
+ drivers/gpu/drm/omapdrm/dss/dsi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/configs/keystone_defconfig b/arch/arm/configs/keystone_defconfig
-index d95686d19401..59c4835ffc97 100644
---- a/arch/arm/configs/keystone_defconfig
-+++ b/arch/arm/configs/keystone_defconfig
-@@ -98,7 +98,6 @@ CONFIG_IP_NF_MATCH_TTL=y
- CONFIG_IP_NF_FILTER=y
- CONFIG_IP_NF_TARGET_REJECT=y
- CONFIG_IP_NF_MANGLE=y
--CONFIG_IP_NF_TARGET_CLUSTERIP=y
- CONFIG_IP_NF_TARGET_ECN=y
- CONFIG_IP_NF_TARGET_TTL=y
- CONFIG_IP_NF_RAW=y
-diff --git a/arch/arm/configs/multi_v7_defconfig b/arch/arm/configs/multi_v7_defconfig
-index 23fc49f23d25..9d280a6d9bfe 100644
---- a/arch/arm/configs/multi_v7_defconfig
-+++ b/arch/arm/configs/multi_v7_defconfig
-@@ -857,7 +857,6 @@ CONFIG_USB_MUSB_HDRC=m
- CONFIG_USB_MUSB_SUNXI=m
- CONFIG_USB_MUSB_TUSB6010=m
- CONFIG_USB_MUSB_OMAP2PLUS=m
--CONFIG_USB_MUSB_AM35X=m
- CONFIG_USB_MUSB_DSPS=m
- CONFIG_USB_MUSB_UX500=m
- CONFIG_USB_UX500_DMA=y
-diff --git a/arch/arm/configs/omap2plus_defconfig b/arch/arm/configs/omap2plus_defconfig
-index b685018dcf54..b2f0862f4bd9 100644
---- a/arch/arm/configs/omap2plus_defconfig
-+++ b/arch/arm/configs/omap2plus_defconfig
-@@ -78,7 +78,6 @@ CONFIG_IP_PNP_BOOTP=y
- CONFIG_IP_PNP_RARP=y
- CONFIG_NETFILTER=y
- CONFIG_NF_CONNTRACK=m
--CONFIG_NF_LOG_NETDEV=m
- CONFIG_NF_CONNTRACK_ZONES=y
- CONFIG_NF_CONNTRACK_EVENTS=y
- CONFIG_NF_CONNTRACK_TIMEOUT=y
-@@ -92,7 +91,6 @@ CONFIG_NF_TABLES_INET=y
- CONFIG_NF_TABLES_NETDEV=y
- CONFIG_NFT_NUMGEN=m
- CONFIG_NFT_CT=m
--CONFIG_NFT_COUNTER=m
- CONFIG_NFT_CONNLIMIT=m
- CONFIG_NFT_LOG=m
- CONFIG_NFT_LIMIT=m
-@@ -100,7 +98,6 @@ CONFIG_NFT_MASQ=m
- CONFIG_NFT_REDIR=m
- CONFIG_NFT_NAT=m
- CONFIG_NFT_TUNNEL=m
--CONFIG_NFT_OBJREF=m
- CONFIG_NFT_QUEUE=m
- CONFIG_NFT_QUOTA=m
- CONFIG_NFT_REJECT=m
-@@ -179,7 +176,6 @@ CONFIG_NETFILTER_XT_MATCH_TIME=m
- CONFIG_NETFILTER_XT_MATCH_U32=m
- CONFIG_NFT_DUP_IPV4=m
- CONFIG_NFT_FIB_IPV4=m
--CONFIG_NF_FLOW_TABLE_IPV4=m
- CONFIG_IP_NF_IPTABLES=m
- CONFIG_IP_NF_MATCH_AH=m
- CONFIG_IP_NF_MATCH_ECN=m
-@@ -193,14 +189,12 @@ CONFIG_IP_NF_TARGET_MASQUERADE=m
- CONFIG_IP_NF_TARGET_NETMAP=m
- CONFIG_IP_NF_TARGET_REDIRECT=m
- CONFIG_IP_NF_MANGLE=m
--CONFIG_IP_NF_TARGET_CLUSTERIP=m
- CONFIG_IP_NF_TARGET_ECN=m
- CONFIG_IP_NF_TARGET_TTL=m
- CONFIG_IP_NF_RAW=m
- CONFIG_IP_NF_SECURITY=m
- CONFIG_NFT_DUP_IPV6=m
- CONFIG_NFT_FIB_IPV6=m
--CONFIG_NF_FLOW_TABLE_IPV6=m
- CONFIG_IP6_NF_IPTABLES=m
- CONFIG_IP6_NF_MATCH_AH=m
- CONFIG_IP6_NF_MATCH_EUI64=m
-@@ -225,7 +219,6 @@ CONFIG_IP6_NF_TARGET_NPT=m
- CONFIG_NF_TABLES_BRIDGE=m
- CONFIG_NFT_BRIDGE_META=m
- CONFIG_NFT_BRIDGE_REJECT=m
--CONFIG_NF_LOG_BRIDGE=m
- CONFIG_BRIDGE=m
- CONFIG_BRIDGE_VLAN_FILTERING=y
- CONFIG_VLAN_8021Q=m
-@@ -560,7 +553,6 @@ CONFIG_USB_STORAGE=m
- CONFIG_USB_MUSB_HDRC=m
- CONFIG_USB_MUSB_TUSB6010=m
- CONFIG_USB_MUSB_OMAP2PLUS=m
--CONFIG_USB_MUSB_AM35X=m
- CONFIG_USB_MUSB_DSPS=m
- CONFIG_USB_INVENTRA_DMA=y
- CONFIG_USB_TI_CPPI41_DMA=y
+diff --git a/drivers/gpu/drm/omapdrm/dss/dsi.c b/drivers/gpu/drm/omapdrm/dss/dsi.c
+index ea63c64d3a1ab..c37eb6b1b9a39 100644
+--- a/drivers/gpu/drm/omapdrm/dss/dsi.c
++++ b/drivers/gpu/drm/omapdrm/dss/dsi.c
+@@ -4411,7 +4411,7 @@ static int omap_dsi_host_detach(struct mipi_dsi_host *host,
+ {
+ 	struct dsi_data *dsi = host_to_omap(host);
+ 
+-	if (WARN_ON(dsi->dsidev != client))
++	if (!dsi->dsidev || WARN_ON(dsi->dsidev != client))
+ 		return -EINVAL;
+ 
+ 	cancel_delayed_work_sync(&dsi->dsi_disable_work);
 -- 
-2.41.0.327.gaa9166bcc0ba
+2.42.0
 
