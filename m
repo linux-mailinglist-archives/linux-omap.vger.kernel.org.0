@@ -2,136 +2,62 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 92F757A6AAA
-	for <lists+linux-omap@lfdr.de>; Tue, 19 Sep 2023 20:25:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 64A8D7A725B
+	for <lists+linux-omap@lfdr.de>; Wed, 20 Sep 2023 07:50:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232043AbjISSZx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 19 Sep 2023 14:25:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54724 "EHLO
+        id S231455AbjITFuW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 20 Sep 2023 01:50:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232038AbjISSZw (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 19 Sep 2023 14:25:52 -0400
-Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA0F1BC;
-        Tue, 19 Sep 2023 11:25:46 -0700 (PDT)
-Received: by mail-lj1-x232.google.com with SMTP id 38308e7fff4ca-2b974031aeaso98782121fa.0;
-        Tue, 19 Sep 2023 11:25:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695147945; x=1695752745; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ohVVUXRSTVuwmwAI3dwryx4B5iagEHAMRt/He7o75f4=;
-        b=jp0GFkljx52gWiKUgBj/a11EURcrOvQSgg3Ix4W0DnsxRQNJpPDjRwN9R3LhpdH8CN
-         elAcK6HIqwwXxU/1tY2ZWSDUQAUrNbnf8fsXmdX1V/2bj25ccJZnq6zcCjguUQu1onHH
-         eHjtaDO+Ze23sBSv64Dt0oO/n7o7FhjtnYO3CILIUP/iorXBpPrvhKNHFzFdg+isczXE
-         UKo+Roo7otsQ7MCPD63OtqIBiqHA5s0Od+BA6JoEFDa8rBygmnd9RPj9UM/87lBn3Xop
-         gEYuxo2d0nObkSfUGoDN6Lds/DJ/u/sqf+uh6OXAapl+ICx08H8jfow94k4Gk+fprvEU
-         r9OQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695147945; x=1695752745;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ohVVUXRSTVuwmwAI3dwryx4B5iagEHAMRt/He7o75f4=;
-        b=RL/7jsHIoG1xQIgYFOrGAG4nZTtvwflxi9L5x+g8VuIZlaR5BZlH70NCxcNjt8+1pH
-         2xmtKRsIyqxQsV1Brr+JG2Za8+q9SHB8gWWn4zNfAnB7e+YGnXHyk78O+aJ5WOXpyiyO
-         y3KOJGVui2HK20u2B5URkNE0xoI7btXiXplDJaPrAK+8ahWT3kkWyHJZ8Ryx58jU9y0e
-         z1WQ2MYz+YP9jWf20KBvpX+/WZhiaXeiorRhaWyN6S0vOmRqMFRGnxd4R8F03FtAjTLd
-         kXDASnYi00ZcGFUE8GkR7vjo0GfaYVWU8CROROwaDo74MUSGzci8LvPKuEFUdzWJb8fn
-         /UcA==
-X-Gm-Message-State: AOJu0Yy5Qo9puFD+T5RD5lbnBLRlKD7IAZOl9wj6RBTWa/kIg2LpWX04
-        j8aBEGLlxk4TikOOmQHF7saYRU/dTbXujXaZ
-X-Google-Smtp-Source: AGHT+IHS2kHXLsSi9+Qc6kPfDaaUR2ud2Y+VIWJcZzSIwgpvpy69kUc/3cPfs//vca3zpn1ZEjnE9A==
-X-Received: by 2002:a05:6512:3da7:b0:502:fd1a:9fa0 with SMTP id k39-20020a0565123da700b00502fd1a9fa0mr515169lfv.53.1695147944529;
-        Tue, 19 Sep 2023 11:25:44 -0700 (PDT)
-Received: from [10.0.0.42] (host-85-29-92-32.kaisa-laajakaista.fi. [85.29.92.32])
-        by smtp.gmail.com with ESMTPSA id m30-20020a056512015e00b004fbad09317csm2370415lfo.189.2023.09.19.11.25.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 19 Sep 2023 11:25:44 -0700 (PDT)
-Message-ID: <7d58d52d-2087-45af-b29e-2515b63ead13@gmail.com>
-Date:   Tue, 19 Sep 2023 21:25:42 +0300
+        with ESMTP id S232380AbjITFuU (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 20 Sep 2023 01:50:20 -0400
+Received: from muru.com (muru.com [72.249.23.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 7C6A394;
+        Tue, 19 Sep 2023 22:50:15 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id DFB3580A0;
+        Wed, 20 Sep 2023 05:50:14 +0000 (UTC)
+Date:   Wed, 20 Sep 2023 08:50:13 +0300
+From:   Tony Lindgren <tony@atomide.com>
+To:     "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc:     Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Douglas Anderson <dianders@chromium.org>,
+        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>, sre@kernel.org,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Arnd Bergmann <arnd@arndb.de>, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        letux-kernel@openphoenux.org, kernel@pyra-handheld.com
+Subject: Re: [PATCH] omap: dsi: do not WARN on detach if dsidev was never
+ attached
+Message-ID: <20230920055013.GP5285@atomide.com>
+References: <929c46beecf77f2ebfa9f8c9b1c09f6ec610c31a.1695130648.git.hns@goldelico.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] ASoC: ti: omap-mcbsp: Ignore errors for getting
- fck_src
-Content-Language: en-US
-To:     Andreas Kemnade <andreas@kemnade.info>, bcousson@baylibre.com,
-        tony@atomide.com, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        lgirdwood@gmail.com, broonie@kernel.org, perex@perex.cz,
-        tiwai@suse.com, jarkko.nikula@bitmer.com,
-        dmitry.torokhov@gmail.com, linux-omap@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        alsa-devel@alsa-project.org
-References: <20230705190324.355282-1-andreas@kemnade.info>
- <20230705190324.355282-2-andreas@kemnade.info>
-From:   =?UTF-8?Q?P=C3=A9ter_Ujfalusi?= <peter.ujfalusi@gmail.com>
-In-Reply-To: <20230705190324.355282-2-andreas@kemnade.info>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <929c46beecf77f2ebfa9f8c9b1c09f6ec610c31a.1695130648.git.hns@goldelico.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-
-
-On 7/5/23 22:03, Andreas Kemnade wrote:
-> Commit 349355ce3a05 ("ARM: OMAP2+: Drop legacy platform data for omap4 mcbsp")
-> dropped prcm_fck for omap4,
-
-it also dropped the pad_fck for that matter.
-
-> so the clk_src might not be >available making the
-> clk_get(src) fail.
-
-Wow, so OMAP4 audio is pretty broken if would ever need to select FCLK?
-By default we don't on OMAP4, but this is astonishing.
-
-> In such cases, rely on the devicetree to assign
-> the correct parent.
-
-You cannot rely on DT to dynamically select the FCLK parent for
-different use cases.
-The dai_set_dai_sysclk() cannot select between internal or external
-source of the reference clock and DT cannot handle this.
-If one sampling frequency is available with pad_fck while other is only
-possible with internal clock then this is no longer possible.
-
-> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-> ---
->  sound/soc/ti/omap-mcbsp.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+* H. Nikolaus Schaller <hns@goldelico.com> [230919 13:38]:
+> dsi_init_output() called by dsi_probe() may fail. In that
+> case mipi_dsi_host_unregister() is called which may call
+> omap_dsi_host_detach() with uninitialized dsi->dsidev
+> because omap_dsi_host_attach() was never called before.
 > 
-> diff --git a/sound/soc/ti/omap-mcbsp.c b/sound/soc/ti/omap-mcbsp.c
-> index 21fa7b9787997..f9fe96b61852b 100644
-> --- a/sound/soc/ti/omap-mcbsp.c
-> +++ b/sound/soc/ti/omap-mcbsp.c
-> @@ -70,8 +70,8 @@ static int omap2_mcbsp_set_clks_src(struct omap_mcbsp *mcbsp, u8 fck_src_id)
->  
->  	fck_src = clk_get(mcbsp->dev, src);
->  	if (IS_ERR(fck_src)) {
-> -		dev_err(mcbsp->dev, "CLKS: could not clk_get() %s\n", src);
-> -		return -EINVAL;
-> +		dev_info(mcbsp->dev, "CLKS: could not clk_get() %s\n", src);
-> +		return 0;
+> This happens if the panel driver asks for an EPROBE_DEFER.
+> 
+> So let's suppress the WARN() in this special case.
 
-I would rather have some clock alias for OMAP4/5 to provide the clocks
-that we need for the fclk.
-If we did not got the clock we needed to select we cannot say that all
-is good, carry on.
-Normally the machine driver does this and it thinks that we switched
-clocks while we did not and the clocking is all wrong now.
+Reviewed-by: Tony Lindgren <tony@atomide.com>
 
->  	}
->  
->  	pm_runtime_put_sync(mcbsp->dev);
+Thanks,
 
--- 
-Péter
+Tony
