@@ -2,78 +2,97 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E76E57A83BA
-	for <lists+linux-omap@lfdr.de>; Wed, 20 Sep 2023 15:46:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 784197A8790
+	for <lists+linux-omap@lfdr.de>; Wed, 20 Sep 2023 16:52:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235100AbjITNqI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 20 Sep 2023 09:46:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44576 "EHLO
+        id S234974AbjITOwl convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-omap@lfdr.de>); Wed, 20 Sep 2023 10:52:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234925AbjITNqI (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 20 Sep 2023 09:46:08 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8488DE4;
-        Wed, 20 Sep 2023 06:46:01 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58BAEC433C7;
-        Wed, 20 Sep 2023 13:45:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695217561;
-        bh=Af/2hG8Rettl0ksgOXBNHtUqLQxI55gP+9ND2DeTVIo=;
-        h=From:To:In-Reply-To:References:Subject:Date:From;
-        b=ogFLbZAprynFzuWPsOYcf3ijDaslsOyOwEWAXskXuFQiisw2fyFotXVRqwRZM0Tko
-         rKbUo5QHujkA/LGhyMnYjjBrknPTupyJwwvxtnd4kzWbUUlcUb+ycfGpCOrRtLIwBf
-         NQJxFVFqhVLcHtXc0ph6a5MQbiJNlgm27N0cAenUmOaJYZm0WVcQOubhdJN0Q0sL4I
-         kd4Hzbgrjw6JBgrOy2GaIVLJpdky3sQbTcYArwyQWtEiaMl6aBp4OGkDIC1q6L7L94
-         zq0VRBu+UKN03h6bA/LWAUNDVt453WlnD+mZgPqP/NsSTTn1daT9qX5a9rLMSBfz9t
-         epQ5Fo4VswRQA==
-From:   Lee Jones <lee@kernel.org>
-To:     dmitry.torokhov@gmail.com, robh+dt@kernel.org,
+        with ESMTP id S234330AbjITOwl (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 20 Sep 2023 10:52:41 -0400
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a02:c205:3004:2154::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56C70A9;
+        Wed, 20 Sep 2023 07:52:34 -0700 (PDT)
+Received: from pd9e2f2b6.dip0.t-ipconnect.de ([217.226.242.182] helo=aktux)
+        by mail.andi.de1.cc with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <andreas@kemnade.info>)
+        id 1qiyYh-0040UG-5J; Wed, 20 Sep 2023 16:52:06 +0200
+Date:   Wed, 20 Sep 2023 16:52:04 +0200
+From:   Andreas Kemnade <andreas@kemnade.info>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     =?UTF-8?B?UMOpdGVy?= Ujfalusi <peter.ujfalusi@gmail.com>,
+        bcousson@baylibre.com, robh+dt@kernel.org,
         krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        lee@kernel.org, bcousson@baylibre.com, tony@atomide.com,
-        mturquette@baylibre.com, sboyd@kernel.org,
-        linux-input@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-clk@vger.kernel.org, Andreas Kemnade <andreas@kemnade.info>
-In-Reply-To: <20230916100515.1650336-1-andreas@kemnade.info>
-References: <20230916100515.1650336-1-andreas@kemnade.info>
-Subject: Re: (subset) [PATCH v4 0/5] ARM: omap: omap4-embt2ws: 32K clock
- for WLAN
-Message-Id: <169521755809.3445505.9877509885722763259.b4-ty@kernel.org>
-Date:   Wed, 20 Sep 2023 14:45:58 +0100
+        lgirdwood@gmail.com, broonie@kernel.org, perex@perex.cz,
+        tiwai@suse.com, jarkko.nikula@bitmer.com,
+        dmitry.torokhov@gmail.com, linux-omap@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        alsa-devel@alsa-project.org
+Subject: Re: [PATCH 1/3] ASoC: ti: omap-mcbsp: Ignore errors for getting
+ fck_src
+Message-ID: <20230920165204.0fbc0ff3@aktux>
+In-Reply-To: <20230920063353.GQ5285@atomide.com>
+References: <20230705190324.355282-1-andreas@kemnade.info>
+        <20230705190324.355282-2-andreas@kemnade.info>
+        <7d58d52d-2087-45af-b29e-2515b63ead13@gmail.com>
+        <20230920063353.GQ5285@atomide.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.12.2
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,T_SPF_HELO_TEMPERROR,T_SPF_TEMPERROR
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sat, 16 Sep 2023 12:05:10 +0200, Andreas Kemnade wrote:
-> To have WLAN working properly, enable a 32K clock of the TWL6032.
-> In earlier tests, it was still enabled from a previous boot into
-> the vendor system.
+Hi,
+
+On Wed, 20 Sep 2023 09:33:53 +0300
+Tony Lindgren <tony@atomide.com> wrote:
+
+> Hi,
 > 
-> Changes in V4:
-> - use dev_err_probe in clk probe()
-> - R-by
+> * Péter Ujfalusi <peter.ujfalusi@gmail.com> [230919 18:25]:
+> > 
+> > 
+> > On 7/5/23 22:03, Andreas Kemnade wrote:  
+> > > Commit 349355ce3a05 ("ARM: OMAP2+: Drop legacy platform data for omap4 mcbsp")
+> > > dropped prcm_fck for omap4,  
 > 
-> [...]
+> The prcm_fck should be there in the dts for each mcbsp interconnect targe
+> module as "fck" alias and get's enabled/disabled when the mcbsp driver
+> calls runtime PM.
+> 
+> So maybe the description should explain that things broke as the aliases
+> for prcm_fck and pad_ck no longer get added.
+> 
+> > it also dropped the pad_fck for that matter.  
+> 
+> OK so an alias is needed for that too.
+> 
+> That's the MCPDM_CLKCTRL pad_clks_ck alias, right? Seems like the
+> pad_clks_ck should be claimed by the mcpdm and mcbsp drivers if they are
+> used? I guess it would be for some external device use case?
+> 
+> > > so the clk_src might not be >available making the
+> > > clk_get(src) fail.  
+> > 
+> > Wow, so OMAP4 audio is pretty broken if would ever need to select FCLK?
+> > By default we don't on OMAP4, but this is astonishing.  
+> 
+> So sounds like we just got lucky because of -ENOSUCHUSERS? The mcbsp works
+> for me, not sure how come I'm not seeing this issue, does it now only work
+> for the default clock source?
+> 
+Well, I did not run into any problems (besides of no sound output)
+as long as I tried to use the codec side as bitclock/frameclock-master and
+that is what droid4 does...
 
-Applied, thanks!
-
-[1/5] dt-bindings: mfd: convert twl-family.txt to json-schema
-      commit: 098e2d6fd72fc99097af33e6e8cb4cd0921a26ac
-[2/5] dt-bindings: mfd: ti,twl: Add clock provider properties
-      commit: eb9fba08e386ff98818de12b40a5ee1443129229
-[3/5] mfd: twl-core: Add a clock subdevice for the TWL6032
-      commit: 3e359099b245227c6729dd5f81f2757dea5d4656
-
---
-Lee Jones [李琼斯]
-
+Regards,
+Andreas
