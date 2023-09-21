@@ -2,70 +2,131 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A37077AA01D
-	for <lists+linux-omap@lfdr.de>; Thu, 21 Sep 2023 22:32:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EACFA7AA4C5
+	for <lists+linux-omap@lfdr.de>; Fri, 22 Sep 2023 00:20:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231240AbjIUUct (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 21 Sep 2023 16:32:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57746 "EHLO
+        id S232808AbjIUWUY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 21 Sep 2023 18:20:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231549AbjIUUcc (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 21 Sep 2023 16:32:32 -0400
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 9EB268B4E4;
-        Thu, 21 Sep 2023 10:41:34 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id BA1328109;
-        Thu, 21 Sep 2023 12:16:27 +0000 (UTC)
-Date:   Thu, 21 Sep 2023 15:16:26 +0300
-From:   Tony Lindgren <tony@atomide.com>
-To:     =?utf-8?B?UMOpdGVy?= Ujfalusi <peter.ujfalusi@gmail.com>
-Cc:     Andreas Kemnade <andreas@kemnade.info>, bcousson@baylibre.com,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        conor+dt@kernel.org, lgirdwood@gmail.com, broonie@kernel.org,
-        perex@perex.cz, tiwai@suse.com, jarkko.nikula@bitmer.com,
-        dmitry.torokhov@gmail.com, linux-omap@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        alsa-devel@alsa-project.org
-Subject: Re: [PATCH 1/3] ASoC: ti: omap-mcbsp: Ignore errors for getting
- fck_src
-Message-ID: <20230921121626.GT5285@atomide.com>
-References: <20230705190324.355282-1-andreas@kemnade.info>
- <20230705190324.355282-2-andreas@kemnade.info>
- <7d58d52d-2087-45af-b29e-2515b63ead13@gmail.com>
- <20230920063353.GQ5285@atomide.com>
- <dac768d2-2c66-4d6b-b3d3-d1ef69103c76@gmail.com>
+        with ESMTP id S231905AbjIUWUV (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 21 Sep 2023 18:20:21 -0400
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18DBEA70DA;
+        Thu, 21 Sep 2023 11:00:45 -0700 (PDT)
+Received: from [192.168.88.20] (91-154-35-171.elisa-laajakaista.fi [91.154.35.171])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 2D9361221;
+        Thu, 21 Sep 2023 12:52:12 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1695293533;
+        bh=evsrHftkQwFAxL8amZWxtP/1lqAGbj0iizDgAfNOiGc=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=GTpuehWEjiEy2hxVAiR3Ku96s1dd8dttvDDsLbOHZRECt4msxNU2ugIxPPfebTFlU
+         J0zud40J3oO+9Q8xmfAO5kmQA+78GfHwIfTOcUmtxpLfr3V+Jkl999w+IkBMUq8a7Y
+         tIdh3m6JY89vtWMo3GYl+qufioD85LlAq+SbhKQU=
+Message-ID: <6200f2c7-4e56-ee07-ec1e-589ba81c1b32@ideasonboard.com>
+Date:   Thu, 21 Sep 2023 13:53:45 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <dac768d2-2c66-4d6b-b3d3-d1ef69103c76@gmail.com>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH] omap: dsi: do not WARN on detach if dsidev was never
+ attached
+Content-Language: en-US
+To:     "H. Nikolaus Schaller" <hns@goldelico.com>, tony@atomide.com,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Douglas Anderson <dianders@chromium.org>,
+        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+        sre@kernel.org,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Arnd Bergmann <arnd@arndb.de>
+Cc:     dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, letux-kernel@openphoenux.org,
+        kernel@pyra-handheld.com
+References: <929c46beecf77f2ebfa9f8c9b1c09f6ec610c31a.1695130648.git.hns@goldelico.com>
+From:   Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+In-Reply-To: <929c46beecf77f2ebfa9f8c9b1c09f6ec610c31a.1695130648.git.hns@goldelico.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Péter Ujfalusi <peter.ujfalusi@gmail.com> [230920 17:40]:
-> It is not the parent's fck, it is the PRCM clock which is selected as
-> the sourcee of the clock generator (CLKS) for BCLK/FSYNC. That is the
-> functional clock as well for the McBSP instance.
+Hi,
 
-Oh OK
-
-> Out of reset it is using the PRCM source which is fine in all current users.
-> I would do this fix or workaround in a different way: instead of
-> ignoring the error, avoid it in the first place. Do nothing if the
-> already selected clock is requested.
-> That would remove the error and will fail in case the reparenting is not
-> working -> boards will know this and might be able to do something about
-> it in a reasonable way.
+On 19/09/2023 16:37, H. Nikolaus Schaller wrote:
+> dsi_init_output() called by dsi_probe() may fail. In that
+> case mipi_dsi_host_unregister() is called which may call
+> omap_dsi_host_detach() with uninitialized dsi->dsidev
+> because omap_dsi_host_attach() was never called before.
 > 
-> How that sounds?
+> This happens if the panel driver asks for an EPROBE_DEFER.
+> 
+> So let's suppress the WARN() in this special case.
+> 
+> [    7.416759] WARNING: CPU: 0 PID: 32 at drivers/gpu/drm/omapdrm/dss/dsi.c:4419 omap_dsi_host_detach+0x3c/0xbc [omapdrm]
+> [    7.436053] Modules linked in: ina2xx_adc snd_soc_ts3a227e bq2429x_charger bq27xxx_battery_i2c(+) bq27xxx_battery ina2xx tca8418_keypad as5013(+) omapdrm hci_uart cec palmas_pwrbutton btbcm bmp280_spi palmas_gpadc bluetooth usb3503 ecdh_generic bmc150_accel_i2c bmg160_i2c ecc bmc150_accel_core bmg160_core bmc150_magn_i2c bmp280_i2c bmc150_magn bno055 industrialio_triggered_buffer bmp280 kfifo_buf snd_soc_omap_aess display_connector drm_kms_helper syscopyarea snd_soc_omap_mcbsp snd_soc_ti_sdma sysfillrect ti_tpd12s015 sysimgblt fb_sys_fops wwan_on_off snd_soc_gtm601 generic_adc_battery drm snd_soc_w2cbw003_bt industrialio drm_panel_orientation_quirks pwm_bl pwm_omap_dmtimer ip_tables x_tables ipv6 autofs4
+> [    7.507068] CPU: 0 PID: 32 Comm: kworker/u4:2 Tainted: G        W          6.1.0-rc3-letux-lpae+ #11107
+> [    7.516964] Hardware name: Generic OMAP5 (Flattened Device Tree)
+> [    7.523284] Workqueue: events_unbound deferred_probe_work_func
+> [    7.529456]  unwind_backtrace from show_stack+0x10/0x14
+> [    7.534972]  show_stack from dump_stack_lvl+0x40/0x4c
+> [    7.540315]  dump_stack_lvl from __warn+0xb0/0x164
+> [    7.545379]  __warn from warn_slowpath_fmt+0x70/0x9c
+> [    7.550625]  warn_slowpath_fmt from omap_dsi_host_detach+0x3c/0xbc [omapdrm]
+> [    7.558137]  omap_dsi_host_detach [omapdrm] from mipi_dsi_remove_device_fn+0x10/0x20
+> [    7.566376]  mipi_dsi_remove_device_fn from device_for_each_child+0x60/0x94
+> [    7.573729]  device_for_each_child from mipi_dsi_host_unregister+0x20/0x54
+> [    7.580992]  mipi_dsi_host_unregister from dsi_probe+0x5d8/0x744 [omapdrm]
+> [    7.588315]  dsi_probe [omapdrm] from platform_probe+0x58/0xa8
+> [    7.594542]  platform_probe from really_probe+0x144/0x2ac
+> [    7.600249]  really_probe from __driver_probe_device+0xc4/0xd8
+> [    7.606411]  __driver_probe_device from driver_probe_device+0x3c/0xb8
+> [    7.613216]  driver_probe_device from __device_attach_driver+0x58/0xbc
+> [    7.620115]  __device_attach_driver from bus_for_each_drv+0xa0/0xb4
+> [    7.626737]  bus_for_each_drv from __device_attach+0xdc/0x150
+> [    7.632808]  __device_attach from bus_probe_device+0x28/0x80
+> [    7.638792]  bus_probe_device from deferred_probe_work_func+0x84/0xa0
+> [    7.645595]  deferred_probe_work_func from process_one_work+0x1a4/0x2d8
+> [    7.652587]  process_one_work from worker_thread+0x214/0x2b8
+> [    7.658567]  worker_thread from kthread+0xe4/0xf0
+> [    7.663542]  kthread from ret_from_fork+0x14/0x1c
+> [    7.668515] Exception stack(0xf01b5fb0 to 0xf01b5ff8)
+> [    7.673827] 5fa0:                                     00000000 00000000 00000000 00000000
+> [    7.682435] 5fc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+> [    7.691038] 5fe0: 00000000 00000000 00000000 00000000 00000013 00000000
+> 
+> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
+> ---
+>   drivers/gpu/drm/omapdrm/dss/dsi.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/omapdrm/dss/dsi.c b/drivers/gpu/drm/omapdrm/dss/dsi.c
+> index ea63c64d3a1ab..c37eb6b1b9a39 100644
+> --- a/drivers/gpu/drm/omapdrm/dss/dsi.c
+> +++ b/drivers/gpu/drm/omapdrm/dss/dsi.c
+> @@ -4411,7 +4411,7 @@ static int omap_dsi_host_detach(struct mipi_dsi_host *host,
+>   {
+>   	struct dsi_data *dsi = host_to_omap(host);
+>   
+> -	if (WARN_ON(dsi->dsidev != client))
+> +	if (!dsi->dsidev || WARN_ON(dsi->dsidev != client))
+>   		return -EINVAL;
+>   
+>   	cancel_delayed_work_sync(&dsi->dsi_disable_work);
 
-Sounds good to me :)
+I sent a patch to the DSI framework code,
+"[PATCH] drm/mipi-dsi: Fix detach call without attach".
 
-Tony
+If that fixes the issue (please test, I don't have a suitable platform), 
+perhaps it's a better fix as detach really shouldn't be called if attach 
+has not been called.
+
+  Tomi
+
