@@ -2,131 +2,130 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EACFA7AA4C5
-	for <lists+linux-omap@lfdr.de>; Fri, 22 Sep 2023 00:20:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA6897AB3C8
+	for <lists+linux-omap@lfdr.de>; Fri, 22 Sep 2023 16:38:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232808AbjIUWUY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 21 Sep 2023 18:20:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36026 "EHLO
+        id S230146AbjIVOi3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 22 Sep 2023 10:38:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231905AbjIUWUV (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 21 Sep 2023 18:20:21 -0400
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18DBEA70DA;
-        Thu, 21 Sep 2023 11:00:45 -0700 (PDT)
-Received: from [192.168.88.20] (91-154-35-171.elisa-laajakaista.fi [91.154.35.171])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 2D9361221;
-        Thu, 21 Sep 2023 12:52:12 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1695293533;
-        bh=evsrHftkQwFAxL8amZWxtP/1lqAGbj0iizDgAfNOiGc=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=GTpuehWEjiEy2hxVAiR3Ku96s1dd8dttvDDsLbOHZRECt4msxNU2ugIxPPfebTFlU
-         J0zud40J3oO+9Q8xmfAO5kmQA+78GfHwIfTOcUmtxpLfr3V+Jkl999w+IkBMUq8a7Y
-         tIdh3m6JY89vtWMo3GYl+qufioD85LlAq+SbhKQU=
-Message-ID: <6200f2c7-4e56-ee07-ec1e-589ba81c1b32@ideasonboard.com>
-Date:   Thu, 21 Sep 2023 13:53:45 +0300
+        with ESMTP id S230043AbjIVOi2 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 22 Sep 2023 10:38:28 -0400
+Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 908CCC6;
+        Fri, 22 Sep 2023 07:38:21 -0700 (PDT)
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 38MEcFVt008143;
+        Fri, 22 Sep 2023 09:38:15 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1695393495;
+        bh=Eee8a+E2/jFWUh8wC5+yOkHEwssjC3CMYXAC/DK7r4E=;
+        h=Date:Subject:To:CC:References:From:In-Reply-To;
+        b=mGDfkeOeGpehapirML7OM4iwVrmzav33rGsiadIVmXRXxsjSyQnvTD9vFKfaK31L0
+         PLYiIBqGXZV0UuJ0AGMgaCznjUsYDj2Az9IvGMxZLxy6w14dXy1nZVWDIgq3DBfMNO
+         7OfMMLGDTmpxPyom6KfIQNRpAefMw/Dm6Tg3NfEA=
+Received: from DLEE100.ent.ti.com (dlee100.ent.ti.com [157.170.170.30])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 38MEcFCa088172
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 22 Sep 2023 09:38:15 -0500
+Received: from DLEE111.ent.ti.com (157.170.170.22) by DLEE100.ent.ti.com
+ (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 22
+ Sep 2023 09:38:14 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE111.ent.ti.com
+ (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Fri, 22 Sep 2023 09:38:14 -0500
+Received: from [10.250.38.120] (ileaxei01-snat2.itg.ti.com [10.180.69.6])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 38MEcEZj062901;
+        Fri, 22 Sep 2023 09:38:14 -0500
+Message-ID: <28c862d9-ca39-2dda-86dd-9ccc206c3a1d@ti.com>
+Date:   Fri, 22 Sep 2023 09:38:14 -0500
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
-Subject: Re: [PATCH] omap: dsi: do not WARN on detach if dsidev was never
- attached
+Subject: Re: [PATCH] arm: dts: omap: Apply am57xx-idk overlays to base dtbs
+To:     Tony Lindgren <tony@atomide.com>, Rob Herring <robh@kernel.org>
+CC:     =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        <linux-omap@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+References: <20230911214609.2201040-1-robh@kernel.org>
+ <20230912065946.GC5285@atomide.com>
 Content-Language: en-US
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>, tony@atomide.com,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Douglas Anderson <dianders@chromium.org>,
-        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
-        sre@kernel.org,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Arnd Bergmann <arnd@arndb.de>
-Cc:     dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, letux-kernel@openphoenux.org,
-        kernel@pyra-handheld.com
-References: <929c46beecf77f2ebfa9f8c9b1c09f6ec610c31a.1695130648.git.hns@goldelico.com>
-From:   Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-In-Reply-To: <929c46beecf77f2ebfa9f8c9b1c09f6ec610c31a.1695130648.git.hns@goldelico.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From:   Andrew Davis <afd@ti.com>
+In-Reply-To: <20230912065946.GC5285@atomide.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-5.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
+On 9/12/23 1:59 AM, Tony Lindgren wrote:
+> * Rob Herring <robh@kernel.org> [230911 21:46]:
+>> DT overlays in tree need to be applied to a base DTB to validate they
+>> apply, to run schema checks on them, and to catch any errors at compile
+>> time.
+>>
+>> Signed-off-by: Rob Herring <robh@kernel.org>
+>> ---
+>> Note that I have no idea if this combination of overlays makes sense.
+> 
 
-On 19/09/2023 16:37, H. Nikolaus Schaller wrote:
-> dsi_init_output() called by dsi_probe() may fail. In that
-> case mipi_dsi_host_unregister() is called which may call
-> omap_dsi_host_detach() with uninitialized dsi->dsidev
-> because omap_dsi_host_attach() was never called before.
+It does make sense, but it is only one of many valid combinations. I'm
+guessing the goal here is just to make sure they all get applied in
+at least one way so the scheme check runs. In that case this is fine
+other than it might give the impression this is the only valid combinations.
+
+Also now we end up with these odd `am57{1,2}x-idk-overlays.dtb` files
+which also might confuse folks, I wonder if there is some way to
+apply and check, but not ship/install these..
+
+Andrew
+
+> Adding Andrew to review this.
 > 
-> This happens if the panel driver asks for an EPROBE_DEFER.
+> Regards,
 > 
-> So let's suppress the WARN() in this special case.
+> Tony
 > 
-> [    7.416759] WARNING: CPU: 0 PID: 32 at drivers/gpu/drm/omapdrm/dss/dsi.c:4419 omap_dsi_host_detach+0x3c/0xbc [omapdrm]
-> [    7.436053] Modules linked in: ina2xx_adc snd_soc_ts3a227e bq2429x_charger bq27xxx_battery_i2c(+) bq27xxx_battery ina2xx tca8418_keypad as5013(+) omapdrm hci_uart cec palmas_pwrbutton btbcm bmp280_spi palmas_gpadc bluetooth usb3503 ecdh_generic bmc150_accel_i2c bmg160_i2c ecc bmc150_accel_core bmg160_core bmc150_magn_i2c bmp280_i2c bmc150_magn bno055 industrialio_triggered_buffer bmp280 kfifo_buf snd_soc_omap_aess display_connector drm_kms_helper syscopyarea snd_soc_omap_mcbsp snd_soc_ti_sdma sysfillrect ti_tpd12s015 sysimgblt fb_sys_fops wwan_on_off snd_soc_gtm601 generic_adc_battery drm snd_soc_w2cbw003_bt industrialio drm_panel_orientation_quirks pwm_bl pwm_omap_dmtimer ip_tables x_tables ipv6 autofs4
-> [    7.507068] CPU: 0 PID: 32 Comm: kworker/u4:2 Tainted: G        W          6.1.0-rc3-letux-lpae+ #11107
-> [    7.516964] Hardware name: Generic OMAP5 (Flattened Device Tree)
-> [    7.523284] Workqueue: events_unbound deferred_probe_work_func
-> [    7.529456]  unwind_backtrace from show_stack+0x10/0x14
-> [    7.534972]  show_stack from dump_stack_lvl+0x40/0x4c
-> [    7.540315]  dump_stack_lvl from __warn+0xb0/0x164
-> [    7.545379]  __warn from warn_slowpath_fmt+0x70/0x9c
-> [    7.550625]  warn_slowpath_fmt from omap_dsi_host_detach+0x3c/0xbc [omapdrm]
-> [    7.558137]  omap_dsi_host_detach [omapdrm] from mipi_dsi_remove_device_fn+0x10/0x20
-> [    7.566376]  mipi_dsi_remove_device_fn from device_for_each_child+0x60/0x94
-> [    7.573729]  device_for_each_child from mipi_dsi_host_unregister+0x20/0x54
-> [    7.580992]  mipi_dsi_host_unregister from dsi_probe+0x5d8/0x744 [omapdrm]
-> [    7.588315]  dsi_probe [omapdrm] from platform_probe+0x58/0xa8
-> [    7.594542]  platform_probe from really_probe+0x144/0x2ac
-> [    7.600249]  really_probe from __driver_probe_device+0xc4/0xd8
-> [    7.606411]  __driver_probe_device from driver_probe_device+0x3c/0xb8
-> [    7.613216]  driver_probe_device from __device_attach_driver+0x58/0xbc
-> [    7.620115]  __device_attach_driver from bus_for_each_drv+0xa0/0xb4
-> [    7.626737]  bus_for_each_drv from __device_attach+0xdc/0x150
-> [    7.632808]  __device_attach from bus_probe_device+0x28/0x80
-> [    7.638792]  bus_probe_device from deferred_probe_work_func+0x84/0xa0
-> [    7.645595]  deferred_probe_work_func from process_one_work+0x1a4/0x2d8
-> [    7.652587]  process_one_work from worker_thread+0x214/0x2b8
-> [    7.658567]  worker_thread from kthread+0xe4/0xf0
-> [    7.663542]  kthread from ret_from_fork+0x14/0x1c
-> [    7.668515] Exception stack(0xf01b5fb0 to 0xf01b5ff8)
-> [    7.673827] 5fa0:                                     00000000 00000000 00000000 00000000
-> [    7.682435] 5fc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-> [    7.691038] 5fe0: 00000000 00000000 00000000 00000000 00000013 00000000
-> 
-> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
 > ---
->   drivers/gpu/drm/omapdrm/dss/dsi.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/gpu/drm/omapdrm/dss/dsi.c b/drivers/gpu/drm/omapdrm/dss/dsi.c
-> index ea63c64d3a1ab..c37eb6b1b9a39 100644
-> --- a/drivers/gpu/drm/omapdrm/dss/dsi.c
-> +++ b/drivers/gpu/drm/omapdrm/dss/dsi.c
-> @@ -4411,7 +4411,7 @@ static int omap_dsi_host_detach(struct mipi_dsi_host *host,
->   {
->   	struct dsi_data *dsi = host_to_omap(host);
->   
-> -	if (WARN_ON(dsi->dsidev != client))
-> +	if (!dsi->dsidev || WARN_ON(dsi->dsidev != client))
->   		return -EINVAL;
->   
->   	cancel_delayed_work_sync(&dsi->dsi_disable_work);
-
-I sent a patch to the DSI framework code,
-"[PATCH] drm/mipi-dsi: Fix detach call without attach".
-
-If that fixes the issue (please test, I don't have a suitable platform), 
-perhaps it's a better fix as detach really shouldn't be called if attach 
-has not been called.
-
-  Tomi
-
+>>   arch/arm/boot/dts/ti/omap/Makefile | 7 +++++++
+>>   1 file changed, 7 insertions(+)
+>>
+>> diff --git a/arch/arm/boot/dts/ti/omap/Makefile b/arch/arm/boot/dts/ti/omap/Makefile
+>> index d2b590004fed..d0c76d09fe70 100644
+>> --- a/arch/arm/boot/dts/ti/omap/Makefile
+>> +++ b/arch/arm/boot/dts/ti/omap/Makefile
+>> @@ -129,6 +129,11 @@ dtb-$(CONFIG_SOC_AM43XX) += \
+>>   am57xx-evm-dtbs := am57xx-beagle-x15.dtb am57xx-evm.dtbo
+>>   am57xx-evm-reva3-dtbs := am57xx-beagle-x15-revc.dtb am57xx-evm.dtbo
+>>   
+>> +am571x-idk-overlays-dtbs := am571x-idk.dtb \
+>> +	am571x-idk-touchscreen.dtbo am57xx-idk-lcd-osd101t2587.dtbo
+>> +am572x-idk-overlays-dtbs := am572x-idk.dtb \
+>> +	am572x-idk-touchscreen.dtbo am57xx-idk-lcd-osd101t2045.dtbo
+>> +
+>>   dtb-$(CONFIG_SOC_DRA7XX) += \
+>>   	am57xx-beagle-x15.dtb \
+>>   	am57xx-beagle-x15-revb1.dtb \
+>> @@ -145,6 +150,8 @@ dtb-$(CONFIG_SOC_DRA7XX) += \
+>>   	am574x-idk.dtb \
+>>   	am57xx-idk-lcd-osd101t2045.dtbo \
+>>   	am57xx-idk-lcd-osd101t2587.dtbo \
+>> +	am571x-idk-overlays.dtb \
+>> +	am572x-idk-overlays.dtb \
+>>   	dra7-evm.dtb \
+>>   	dra72-evm.dtb \
+>>   	dra72-evm-revc.dtb \
+>> -- 
+>> 2.40.1
+>>
