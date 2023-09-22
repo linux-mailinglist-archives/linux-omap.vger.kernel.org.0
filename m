@@ -2,130 +2,95 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA6897AB3C8
-	for <lists+linux-omap@lfdr.de>; Fri, 22 Sep 2023 16:38:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C5947AB5CC
+	for <lists+linux-omap@lfdr.de>; Fri, 22 Sep 2023 18:23:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230146AbjIVOi3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 22 Sep 2023 10:38:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46328 "EHLO
+        id S231285AbjIVQXu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 22 Sep 2023 12:23:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230043AbjIVOi2 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 22 Sep 2023 10:38:28 -0400
-Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 908CCC6;
-        Fri, 22 Sep 2023 07:38:21 -0700 (PDT)
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 38MEcFVt008143;
-        Fri, 22 Sep 2023 09:38:15 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1695393495;
-        bh=Eee8a+E2/jFWUh8wC5+yOkHEwssjC3CMYXAC/DK7r4E=;
-        h=Date:Subject:To:CC:References:From:In-Reply-To;
-        b=mGDfkeOeGpehapirML7OM4iwVrmzav33rGsiadIVmXRXxsjSyQnvTD9vFKfaK31L0
-         PLYiIBqGXZV0UuJ0AGMgaCznjUsYDj2Az9IvGMxZLxy6w14dXy1nZVWDIgq3DBfMNO
-         7OfMMLGDTmpxPyom6KfIQNRpAefMw/Dm6Tg3NfEA=
-Received: from DLEE100.ent.ti.com (dlee100.ent.ti.com [157.170.170.30])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 38MEcFCa088172
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 22 Sep 2023 09:38:15 -0500
-Received: from DLEE111.ent.ti.com (157.170.170.22) by DLEE100.ent.ti.com
- (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 22
- Sep 2023 09:38:14 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE111.ent.ti.com
- (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Fri, 22 Sep 2023 09:38:14 -0500
-Received: from [10.250.38.120] (ileaxei01-snat2.itg.ti.com [10.180.69.6])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 38MEcEZj062901;
-        Fri, 22 Sep 2023 09:38:14 -0500
-Message-ID: <28c862d9-ca39-2dda-86dd-9ccc206c3a1d@ti.com>
-Date:   Fri, 22 Sep 2023 09:38:14 -0500
+        with ESMTP id S230126AbjIVQXt (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 22 Sep 2023 12:23:49 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EA1919C;
+        Fri, 22 Sep 2023 09:23:44 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB637C433C7;
+        Fri, 22 Sep 2023 16:23:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1695399823;
+        bh=N6AxtFtkqnMy8GL9TKaW0bmzOTpf5iWTpKPHQH1zQ6Y=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=h2RmYlC+naq65dXlHhsTYzhR5UN0B+QFn6gxO2k+CHaMM1GcFRM1f3q+MM0Rq5bGm
+         Yxdw5/wRavg6Z54McAm/TCUaKbsfSrSWdZb8PNjlS4r5uOxa75Cgh4Y8sVh7T3Ccsk
+         yuS648MAnIkds3HTlVXjNbFIZgqm9whuKTwar0uHtEwXzhv0X4ULvNJWiE/9y61pRs
+         eOMynB8HeXUPJOjeof5HEuLIjvz+ihXKhv8EC/0iTNq6JfMJ6eQlRCtmqnUIcLXwJg
+         J2nA9Q+PBAYH68EsUnzs4g/MxyAq0LTbHqIFEOSOCMmuYxEnY1IcpyD9op+DoG+Pun
+         yF/Wpof4yBzyQ==
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-50337b43ee6so3805451e87.3;
+        Fri, 22 Sep 2023 09:23:43 -0700 (PDT)
+X-Gm-Message-State: AOJu0YxqbvpknAFysGGPR6xU4EdiIuSKytYblFdhSka2MhvheYFeCBgB
+        X6ZLtGAYRQ2DJ4CKCryI2EPwuoH8ME2RMTt82Q==
+X-Google-Smtp-Source: AGHT+IFL2X4bMn8orgzNZf0JDqyiiAU4MnhfWwec0CEOtHYtLl1AOA2Ss5IqRERK3lPns8mo81cdhfnvadgZ8kCn8LE=
+X-Received: by 2002:a05:6512:312d:b0:502:9c4e:d46a with SMTP id
+ p13-20020a056512312d00b005029c4ed46amr28657lfd.32.1695399822017; Fri, 22 Sep
+ 2023 09:23:42 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
+References: <20230911214609.2201040-1-robh@kernel.org> <20230912065946.GC5285@atomide.com>
+ <28c862d9-ca39-2dda-86dd-9ccc206c3a1d@ti.com>
+In-Reply-To: <28c862d9-ca39-2dda-86dd-9ccc206c3a1d@ti.com>
+From:   Rob Herring <robh@kernel.org>
+Date:   Fri, 22 Sep 2023 11:23:29 -0500
+X-Gmail-Original-Message-ID: <CAL_Jsq+8jisrwEqzz7tZnsV9g2+LmThwpO7sHRFA-zh+6q8XuA@mail.gmail.com>
+Message-ID: <CAL_Jsq+8jisrwEqzz7tZnsV9g2+LmThwpO7sHRFA-zh+6q8XuA@mail.gmail.com>
 Subject: Re: [PATCH] arm: dts: omap: Apply am57xx-idk overlays to base dtbs
-To:     Tony Lindgren <tony@atomide.com>, Rob Herring <robh@kernel.org>
-CC:     =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
+To:     Andrew Davis <afd@ti.com>
+Cc:     Tony Lindgren <tony@atomide.com>,
+        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        <linux-omap@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-References: <20230911214609.2201040-1-robh@kernel.org>
- <20230912065946.GC5285@atomide.com>
-Content-Language: en-US
-From:   Andrew Davis <afd@ti.com>
-In-Reply-To: <20230912065946.GC5285@atomide.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-5.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        Conor Dooley <conor+dt@kernel.org>, linux-omap@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 9/12/23 1:59 AM, Tony Lindgren wrote:
-> * Rob Herring <robh@kernel.org> [230911 21:46]:
->> DT overlays in tree need to be applied to a base DTB to validate they
->> apply, to run schema checks on them, and to catch any errors at compile
->> time.
->>
->> Signed-off-by: Rob Herring <robh@kernel.org>
->> ---
->> Note that I have no idea if this combination of overlays makes sense.
-> 
+On Fri, Sep 22, 2023 at 9:38=E2=80=AFAM Andrew Davis <afd@ti.com> wrote:
+>
+> On 9/12/23 1:59 AM, Tony Lindgren wrote:
+> > * Rob Herring <robh@kernel.org> [230911 21:46]:
+> >> DT overlays in tree need to be applied to a base DTB to validate they
+> >> apply, to run schema checks on them, and to catch any errors at compil=
+e
+> >> time.
+> >>
+> >> Signed-off-by: Rob Herring <robh@kernel.org>
+> >> ---
+> >> Note that I have no idea if this combination of overlays makes sense.
+> >
+>
+> It does make sense, but it is only one of many valid combinations. I'm
+> guessing the goal here is just to make sure they all get applied in
+> at least one way so the scheme check runs. In that case this is fine
+> other than it might give the impression this is the only valid combinatio=
+ns.
 
-It does make sense, but it is only one of many valid combinations. I'm
-guessing the goal here is just to make sure they all get applied in
-at least one way so the scheme check runs. In that case this is fine
-other than it might give the impression this is the only valid combinations.
+I only care that an overlay is applied to one base. You should care
+about any combination a user might do in a bootloader because who
+wants to debug a failure a) on a board and b) in the bootloader.
 
-Also now we end up with these odd `am57{1,2}x-idk-overlays.dtb` files
-which also might confuse folks, I wonder if there is some way to
-apply and check, but not ship/install these..
+> Also now we end up with these odd `am57{1,2}x-idk-overlays.dtb` files
+> which also might confuse folks, I wonder if there is some way to
+> apply and check, but not ship/install these..
 
-Andrew
+There's already a config option, CONFIG_OF_ALL_DTBS, which adds
+$(dtb-) entries to the build. So if you have "dtb- +=3D
+foo-overlays.dtb" it will only be built in that case. Note that they'd
+probably get installed too, but who installs allyesconfig builds.
 
-> Adding Andrew to review this.
-> 
-> Regards,
-> 
-> Tony
-> 
-> ---
->>   arch/arm/boot/dts/ti/omap/Makefile | 7 +++++++
->>   1 file changed, 7 insertions(+)
->>
->> diff --git a/arch/arm/boot/dts/ti/omap/Makefile b/arch/arm/boot/dts/ti/omap/Makefile
->> index d2b590004fed..d0c76d09fe70 100644
->> --- a/arch/arm/boot/dts/ti/omap/Makefile
->> +++ b/arch/arm/boot/dts/ti/omap/Makefile
->> @@ -129,6 +129,11 @@ dtb-$(CONFIG_SOC_AM43XX) += \
->>   am57xx-evm-dtbs := am57xx-beagle-x15.dtb am57xx-evm.dtbo
->>   am57xx-evm-reva3-dtbs := am57xx-beagle-x15-revc.dtb am57xx-evm.dtbo
->>   
->> +am571x-idk-overlays-dtbs := am571x-idk.dtb \
->> +	am571x-idk-touchscreen.dtbo am57xx-idk-lcd-osd101t2587.dtbo
->> +am572x-idk-overlays-dtbs := am572x-idk.dtb \
->> +	am572x-idk-touchscreen.dtbo am57xx-idk-lcd-osd101t2045.dtbo
->> +
->>   dtb-$(CONFIG_SOC_DRA7XX) += \
->>   	am57xx-beagle-x15.dtb \
->>   	am57xx-beagle-x15-revb1.dtb \
->> @@ -145,6 +150,8 @@ dtb-$(CONFIG_SOC_DRA7XX) += \
->>   	am574x-idk.dtb \
->>   	am57xx-idk-lcd-osd101t2045.dtbo \
->>   	am57xx-idk-lcd-osd101t2587.dtbo \
->> +	am571x-idk-overlays.dtb \
->> +	am572x-idk-overlays.dtb \
->>   	dra7-evm.dtb \
->>   	dra72-evm.dtb \
->>   	dra72-evm-revc.dtb \
->> -- 
->> 2.40.1
->>
+Rob
