@@ -2,95 +2,83 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C5947AB5CC
-	for <lists+linux-omap@lfdr.de>; Fri, 22 Sep 2023 18:23:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A576C7ABE9F
+	for <lists+linux-omap@lfdr.de>; Sat, 23 Sep 2023 09:51:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231285AbjIVQXu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 22 Sep 2023 12:23:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49254 "EHLO
+        id S230338AbjIWHvN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 23 Sep 2023 03:51:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230126AbjIVQXt (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 22 Sep 2023 12:23:49 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EA1919C;
-        Fri, 22 Sep 2023 09:23:44 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB637C433C7;
-        Fri, 22 Sep 2023 16:23:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695399823;
-        bh=N6AxtFtkqnMy8GL9TKaW0bmzOTpf5iWTpKPHQH1zQ6Y=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=h2RmYlC+naq65dXlHhsTYzhR5UN0B+QFn6gxO2k+CHaMM1GcFRM1f3q+MM0Rq5bGm
-         Yxdw5/wRavg6Z54McAm/TCUaKbsfSrSWdZb8PNjlS4r5uOxa75Cgh4Y8sVh7T3Ccsk
-         yuS648MAnIkds3HTlVXjNbFIZgqm9whuKTwar0uHtEwXzhv0X4ULvNJWiE/9y61pRs
-         eOMynB8HeXUPJOjeof5HEuLIjvz+ihXKhv8EC/0iTNq6JfMJ6eQlRCtmqnUIcLXwJg
-         J2nA9Q+PBAYH68EsUnzs4g/MxyAq0LTbHqIFEOSOCMmuYxEnY1IcpyD9op+DoG+Pun
-         yF/Wpof4yBzyQ==
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-50337b43ee6so3805451e87.3;
-        Fri, 22 Sep 2023 09:23:43 -0700 (PDT)
-X-Gm-Message-State: AOJu0YxqbvpknAFysGGPR6xU4EdiIuSKytYblFdhSka2MhvheYFeCBgB
-        X6ZLtGAYRQ2DJ4CKCryI2EPwuoH8ME2RMTt82Q==
-X-Google-Smtp-Source: AGHT+IFL2X4bMn8orgzNZf0JDqyiiAU4MnhfWwec0CEOtHYtLl1AOA2Ss5IqRERK3lPns8mo81cdhfnvadgZ8kCn8LE=
-X-Received: by 2002:a05:6512:312d:b0:502:9c4e:d46a with SMTP id
- p13-20020a056512312d00b005029c4ed46amr28657lfd.32.1695399822017; Fri, 22 Sep
- 2023 09:23:42 -0700 (PDT)
+        with ESMTP id S229808AbjIWHvM (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 23 Sep 2023 03:51:12 -0400
+Received: from shiva.jussieu.fr (shiva.jussieu.fr [134.157.0.129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id E4A0D11D;
+        Sat, 23 Sep 2023 00:51:05 -0700 (PDT)
+Received: from mailix1.insp.jussieu.fr (mailix1.insp.jussieu.fr [134.157.37.11])
+          by shiva.jussieu.fr (8.15.2/jtpda-5.4) with ESMTP id 38N7mEO5035034
+          ; Sat, 23 Sep 2023 09:48:14 +0200 (CEST)
+X-Ids:  164
+Received: from hordix.insp.jussieu.fr (hordix.insp.jussieu.fr [134.157.37.9])
+        by mailix1.insp.jussieu.fr (Postfix-INSP-2.10.1) with ESMTPSA id EE6E9C06B5F6;
+        Sat, 23 Sep 2023 09:48:08 +0200 (CEST)
+Received: from [105.112.214.216] ([105.112.214.216]) by
+ webmail.insp.jussieu.fr (Horde Framework) with HTTPS; Sat, 23 Sep 2023
+ 07:48:08 +0000
+Date:   Sat, 23 Sep 2023 07:48:08 +0000
+Message-ID: <20230923074808.Horde.cbloaD0KutWc0KgVIYXLh1O@webmail.insp.jussieu.fr>
+From:   Victoria Cleland <lamya.essaoui@insp.upmc.fr>
+Subject: Hallo
+Reply-to: v.cleland10@aol.com
+User-Agent: Horde Application Framework 5
+Organization: Institut des NanoSciences de Paris
+X-InspUpmcSession: essaoui
+Content-Type: text/plain; charset=utf-8; format=flowed; DelSp=Yes
 MIME-Version: 1.0
-References: <20230911214609.2201040-1-robh@kernel.org> <20230912065946.GC5285@atomide.com>
- <28c862d9-ca39-2dda-86dd-9ccc206c3a1d@ti.com>
-In-Reply-To: <28c862d9-ca39-2dda-86dd-9ccc206c3a1d@ti.com>
-From:   Rob Herring <robh@kernel.org>
-Date:   Fri, 22 Sep 2023 11:23:29 -0500
-X-Gmail-Original-Message-ID: <CAL_Jsq+8jisrwEqzz7tZnsV9g2+LmThwpO7sHRFA-zh+6q8XuA@mail.gmail.com>
-Message-ID: <CAL_Jsq+8jisrwEqzz7tZnsV9g2+LmThwpO7sHRFA-zh+6q8XuA@mail.gmail.com>
-Subject: Re: [PATCH] arm: dts: omap: Apply am57xx-idk overlays to base dtbs
-To:     Andrew Davis <afd@ti.com>
-Cc:     Tony Lindgren <tony@atomide.com>,
-        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>, linux-omap@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Miltered: at jchkmail2.reseau.jussieu.fr with ID 650E983E.001 by Joe's j-chkmail (http : // j-chkmail dot ensmp dot fr)!
+X-j-chkmail-Enveloppe: 650E983E.001 from mailix1.insp.jussieu.fr/mailix1.insp.jussieu.fr/134.157.37.11/mailix1.insp.jussieu.fr/<lamya.essaoui@insp.upmc.fr>
+X-Spam-Status: Yes, score=5.7 required=5.0 tests=BAYES_50,
+        FREEMAIL_FORGED_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,MISSING_HEADERS,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        REPLYTO_WITHOUT_TO_CC,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: *  0.0 RCVD_IN_DNSWL_BLOCKED RBL: ADMINISTRATOR NOTICE: The query to
+        *      DNSWL was blocked.  See
+        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
+        *      for more information.
+        *      [134.157.0.129 listed in list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.0 RCVD_IN_MSPIKE_H3 RBL: Good reputation (+3)
+        *      [134.157.0.129 listed in wl.mailspike.net]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [v.cleland10[at]aol.com]
+        *  1.0 MISSING_HEADERS Missing To: header
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  1.6 REPLYTO_WITHOUT_TO_CC No description available.
+        *  0.0 RCVD_IN_MSPIKE_WL Mailspike good senders
+        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, Sep 22, 2023 at 9:38=E2=80=AFAM Andrew Davis <afd@ti.com> wrote:
->
-> On 9/12/23 1:59 AM, Tony Lindgren wrote:
-> > * Rob Herring <robh@kernel.org> [230911 21:46]:
-> >> DT overlays in tree need to be applied to a base DTB to validate they
-> >> apply, to run schema checks on them, and to catch any errors at compil=
-e
-> >> time.
-> >>
-> >> Signed-off-by: Rob Herring <robh@kernel.org>
-> >> ---
-> >> Note that I have no idea if this combination of overlays makes sense.
-> >
->
-> It does make sense, but it is only one of many valid combinations. I'm
-> guessing the goal here is just to make sure they all get applied in
-> at least one way so the scheme check runs. In that case this is fine
-> other than it might give the impression this is the only valid combinatio=
-ns.
 
-I only care that an overlay is applied to one base. You should care
-about any combination a user might do in a bootloader because who
-wants to debug a failure a) on a board and b) in the bootloader.
+23. September 2023.
 
-> Also now we end up with these odd `am57{1,2}x-idk-overlays.dtb` files
-> which also might confuse folks, I wonder if there is some way to
-> apply and check, but not ship/install these..
+Hallo,
 
-There's already a config option, CONFIG_OF_ALL_DTBS, which adds
-$(dtb-) entries to the build. So if you have "dtb- +=3D
-foo-overlays.dtb" it will only be built in that case. Note that they'd
-probably get installed too, but who installs allyesconfig builds.
+Ich möchte Ihnen einen Geschäftsvorschlag mitteilen. Für weitere  
+Details antworten Sie auf Englisch.
 
-Rob
+Grüße
+Frau Victoria Cleland
+_________________________
+Sekretärin: Lamya Essaoui
+
