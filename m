@@ -2,83 +2,95 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A576C7ABE9F
-	for <lists+linux-omap@lfdr.de>; Sat, 23 Sep 2023 09:51:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F7E27ACB8B
+	for <lists+linux-omap@lfdr.de>; Sun, 24 Sep 2023 21:02:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230338AbjIWHvN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 23 Sep 2023 03:51:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49750 "EHLO
+        id S230090AbjIXTCg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 24 Sep 2023 15:02:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59006 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229808AbjIWHvM (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 23 Sep 2023 03:51:12 -0400
-Received: from shiva.jussieu.fr (shiva.jussieu.fr [134.157.0.129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id E4A0D11D;
-        Sat, 23 Sep 2023 00:51:05 -0700 (PDT)
-Received: from mailix1.insp.jussieu.fr (mailix1.insp.jussieu.fr [134.157.37.11])
-          by shiva.jussieu.fr (8.15.2/jtpda-5.4) with ESMTP id 38N7mEO5035034
-          ; Sat, 23 Sep 2023 09:48:14 +0200 (CEST)
-X-Ids:  164
-Received: from hordix.insp.jussieu.fr (hordix.insp.jussieu.fr [134.157.37.9])
-        by mailix1.insp.jussieu.fr (Postfix-INSP-2.10.1) with ESMTPSA id EE6E9C06B5F6;
-        Sat, 23 Sep 2023 09:48:08 +0200 (CEST)
-Received: from [105.112.214.216] ([105.112.214.216]) by
- webmail.insp.jussieu.fr (Horde Framework) with HTTPS; Sat, 23 Sep 2023
- 07:48:08 +0000
-Date:   Sat, 23 Sep 2023 07:48:08 +0000
-Message-ID: <20230923074808.Horde.cbloaD0KutWc0KgVIYXLh1O@webmail.insp.jussieu.fr>
-From:   Victoria Cleland <lamya.essaoui@insp.upmc.fr>
-Subject: Hallo
-Reply-to: v.cleland10@aol.com
-User-Agent: Horde Application Framework 5
-Organization: Institut des NanoSciences de Paris
-X-InspUpmcSession: essaoui
-Content-Type: text/plain; charset=utf-8; format=flowed; DelSp=Yes
+        with ESMTP id S229997AbjIXTC2 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 24 Sep 2023 15:02:28 -0400
+Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67837FB
+        for <linux-omap@vger.kernel.org>; Sun, 24 Sep 2023 12:02:22 -0700 (PDT)
+Received: by mail-wm1-x331.google.com with SMTP id 5b1f17b1804b1-405524e6769so15855425e9.1
+        for <linux-omap@vger.kernel.org>; Sun, 24 Sep 2023 12:02:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1695582141; x=1696186941; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=SWFO82OJRYgOOb4Wcic+eTuDC/ArVTubTGTDywYSbzc=;
+        b=EQTvLB4/KPMaNDnSHZOBXt6alw8iLa1iSxGyVnRDvsIPP/3mke9g15fmL4yYsZLb2x
+         KujetD6l0jtCSj6YfdaQGGslHfUFsDQyxb/lp+BqmlWsYp/7fSlIGQ6AE+7mZ+9WZcPu
+         W7r9U+RLRziR0AS0LjqDKq81CzIjAf0a3KsR9GDx35cIubnXJV/lVZ3zC6hsaeDdXagk
+         hY2KClfCL8hyrAvYlS+Ja+b6iXwVjYwy+exrP/ra6o4LIdzu3/akxijAUeTtw9SLzCp9
+         nvUj7ZuGg64yMhKhe1rZ5K/kPSaCKosaF+UkOcNwpU/raKHVKEYCqOCijZLgLR64bctY
+         cpXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695582141; x=1696186941;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SWFO82OJRYgOOb4Wcic+eTuDC/ArVTubTGTDywYSbzc=;
+        b=Wp7t5uySzUpdD9UEMAQQbiDHyrYbxqo26OlNYkNmFc0CwjeUVX4B0b4gKXB0zTkSjP
+         sEyXog/9m2U1qY9n+tlWzwUPzkRgt+Y0h37HlPjfHQ7kWVO8o3M5Ix3oHvLJwU6W76s0
+         4dcUaJlQQcszI8MgpZeukUA2pne7/HhCs6dsCPaVd0xx/3ohddoPulCxPbSfEYTouAht
+         ENe6b09qn5bYW/U0EDNHWK2Zv37W35J3igP7pUBFCXT70eBA5qfr7T36naih+pzXlAoe
+         wflf5bzaUAMLCiwCk8VfH5SByZOJ/JwLHVPGKj49uoEtXpzDdaXveaFMcFeF5YRh3FZu
+         QCuw==
+X-Gm-Message-State: AOJu0YziqjOhYh54mNRO7cVD8JVrvQuZ5L6JNFcobwbN4eOXAdyaF4k4
+        Hc3yRgSrU3iL1ljwSd/I+/qC2w==
+X-Google-Smtp-Source: AGHT+IGvIpya5xYZx8UP+clOr5taqAlEPDk6qq95Fp3D28P19k6rc0DjSP2/4NtsuZPojlLQeISVcA==
+X-Received: by 2002:a7b:ca4e:0:b0:405:3924:3cad with SMTP id m14-20020a7bca4e000000b0040539243cadmr4096134wml.15.1695582140804;
+        Sun, 24 Sep 2023 12:02:20 -0700 (PDT)
+Received: from krzk-bin.. ([178.197.219.100])
+        by smtp.gmail.com with ESMTPSA id v2-20020a1cf702000000b003feae747ff2sm12980507wmh.35.2023.09.24.12.02.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 24 Sep 2023 12:02:20 -0700 (PDT)
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>, linux-omap@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH] ARM: dts: omap3-devkit8000: correct ethernet reg addresses (split)
+Date:   Sun, 24 Sep 2023 21:02:06 +0200
+Message-Id: <169558197844.54884.5866852884871225928.b4-ty@linaro.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230713152913.82846-1-krzysztof.kozlowski@linaro.org>
+References: <20230713152913.82846-1-krzysztof.kozlowski@linaro.org>
 MIME-Version: 1.0
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Miltered: at jchkmail2.reseau.jussieu.fr with ID 650E983E.001 by Joe's j-chkmail (http : // j-chkmail dot ensmp dot fr)!
-X-j-chkmail-Enveloppe: 650E983E.001 from mailix1.insp.jussieu.fr/mailix1.insp.jussieu.fr/134.157.37.11/mailix1.insp.jussieu.fr/<lamya.essaoui@insp.upmc.fr>
-X-Spam-Status: Yes, score=5.7 required=5.0 tests=BAYES_50,
-        FREEMAIL_FORGED_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,MISSING_HEADERS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        REPLYTO_WITHOUT_TO_CC,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: *  0.0 RCVD_IN_DNSWL_BLOCKED RBL: ADMINISTRATOR NOTICE: The query to
-        *      DNSWL was blocked.  See
-        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
-        *      for more information.
-        *      [134.157.0.129 listed in list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.0 RCVD_IN_MSPIKE_H3 RBL: Good reputation (+3)
-        *      [134.157.0.129 listed in wl.mailspike.net]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [v.cleland10[at]aol.com]
-        *  1.0 MISSING_HEADERS Missing To: header
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  1.6 REPLYTO_WITHOUT_TO_CC No description available.
-        *  0.0 RCVD_IN_MSPIKE_WL Mailspike good senders
-        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
-X-Spam-Level: *****
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
 
-23. September 2023.
+On Thu, 13 Jul 2023 17:29:13 +0200, Krzysztof Kozlowski wrote:
+> The davicom,dm9000 Ethernet Controller accepts two reg addresses.
+> 
+> 
 
-Hallo,
+Patches were waiting long enough on the lists. I assume there are no objections,
+at least none were shared, and this just slipped through the cracks. I applied
+to my tree for further soc pull request, but if anyone wants to take it
+instead, let me know.
 
-Ich möchte Ihnen einen Geschäftsvorschlag mitteilen. Für weitere  
-Details antworten Sie auf Englisch.
+Applied, thanks!
 
-Grüße
-Frau Victoria Cleland
-_________________________
-Sekretärin: Lamya Essaoui
+[1/1] ARM: dts: omap3-devkit8000: correct ethernet reg addresses (split)
+      https://git.kernel.org/krzk/linux-dt/c/33d6227fcd1a8b68bf8d5e68f69a931dc87eac81
 
+Best regards,
+-- 
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
