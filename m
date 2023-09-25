@@ -2,48 +2,60 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 44AD87ACCF2
-	for <lists+linux-omap@lfdr.de>; Mon, 25 Sep 2023 01:40:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CADA7AD0AD
+	for <lists+linux-omap@lfdr.de>; Mon, 25 Sep 2023 08:54:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229614AbjIXXkL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 24 Sep 2023 19:40:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39118 "EHLO
+        id S231518AbjIYGyI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 25 Sep 2023 02:54:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229480AbjIXXkL (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 24 Sep 2023 19:40:11 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F05D0DA;
-        Sun, 24 Sep 2023 16:40:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1695598804; x=1727134804;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=tTLXRE1soXSYBY2G5ExuJtYE7YESikpbce6IZI55gSg=;
-  b=RieCc0P6A+XXmrbpiJmnFvY+6T0UgPiKv4En2c/oFupqG4GuwEs3nLY+
-   ZtApjmPJ4BNKyOHLX9jfr9xw7rHdFdYstfanzn77eFwR9XyadHhw/kBS4
-   6Ey3jx3F+2Wn7BNO6Y0O/XoPlDCZ+jo8ciAdd3Z7Mpxe38kpB4CE1roau
-   ywrLJRWc6Lmz0coLMPqvsqKmk5eIqp3tK5w2qia8hfX2oeYGwYHvFFzkN
-   RRnfvapJsZkbmw/B7hFIY+yRW+SQUSpdqgJ46Hwr8/xrgyiJeXHHTEj6F
-   nHyJrq6QoxWvQU+G7w8s6EjGvxVXrPvUCrhEEU7WifBNtmoG11KzeZ5sk
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10843"; a="381042092"
-X-IronPort-AV: E=Sophos;i="6.03,174,1694761200"; 
-   d="scan'208";a="381042092"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2023 16:40:04 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10843"; a="838402627"
-X-IronPort-AV: E=Sophos;i="6.03,174,1694761200"; 
-   d="scan'208";a="838402627"
-Received: from lkp-server02.sh.intel.com (HELO 32c80313467c) ([10.239.97.151])
-  by FMSMGA003.fm.intel.com with ESMTP; 24 Sep 2023 16:40:00 -0700
-Received: from kbuild by 32c80313467c with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qkYhi-0000bx-2V;
-        Sun, 24 Sep 2023 23:39:58 +0000
-Date:   Mon, 25 Sep 2023 07:39:57 +0800
-From:   kernel test robot <lkp@intel.com>
+        with ESMTP id S231533AbjIYGyH (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 25 Sep 2023 02:54:07 -0400
+Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51EADCE
+        for <linux-omap@vger.kernel.org>; Sun, 24 Sep 2023 23:54:01 -0700 (PDT)
+Received: by mail-lj1-x230.google.com with SMTP id 38308e7fff4ca-2bfea381255so94940731fa.3
+        for <linux-omap@vger.kernel.org>; Sun, 24 Sep 2023 23:54:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1695624839; x=1696229639; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=76B/2ldLWNg041stQYBo6syPGhn15cocvV0xv35lTBQ=;
+        b=nUY5M3O1eW5nGKBvqvShSDdiy8GNDC3rxSoJitvufY6n3pxxp3Mb/OEAqnppRfChaZ
+         psthVVKVRRuSglD+qLjrGCkkr60w1L36LlmSWKZPdlN4EaS5OLBmaId1WdU6DYI2DY2i
+         NbCLg7m2FaPNKUyUy9lEQcSRTifwjYE5QKk8eTZEE+dK27tndH6Gu2gsQRF2OC+m+sMX
+         iei0Y+mS61LIbTe14xoR5If1K3sGu21j87M28VqKzqv1HUaJZlgMJTTkd0ZgYaWMihmx
+         X3YxA+DxHzb3JVsY7VRas9R6wR/SawExxj8teFPeBmyt9CehzQZ8kxwuNRo2Lt3lEkzt
+         0+/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695624839; x=1696229639;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=76B/2ldLWNg041stQYBo6syPGhn15cocvV0xv35lTBQ=;
+        b=o63f5vqdRpgsKHrS5YkDSRiSnEF7stEfnvw9qSYzm+vCml9SObLYYhJdCzzrt+TUwO
+         eDLLF7v1yxv1Fa8o6rKcLOt/hLVteUXEgJkjMfQ7yIK0DmKpOYyoFfV5ZjtX0vB6MjL5
+         tHsmGuQZSRm47swX7aqwpl/HZe0waP54O7dhVCBDyLDGFMg8a1xnvMktj/fLcNWngdxX
+         n76xtFrec9tXa8RxdXRPhQ8yFIKBa7sz9AZObOAi51TQ9T9c72qzgmUjSIum8axJSYcJ
+         7Y7I5MfmxpJHSuBugf7ZaQAmQ+0RTRkkSuiAlElLdvARTaQCARLsIcClq4YNO7SKIb9p
+         J7eQ==
+X-Gm-Message-State: AOJu0Yy+O/OHbq/jaXmG1eAM7/BBIKU5z2pITMBXKq0/jGJU7//Go8zQ
+        qrNWJSsFOVPuW5ox4IYIajWXVQ==
+X-Google-Smtp-Source: AGHT+IFSL3h4hwRHeiH+yuBquKU3yCLvAS1FdwRqLSjZvfwJq3Y+1YvdOyspmnRJsIVhk3WeHD36nw==
+X-Received: by 2002:a2e:9b96:0:b0:2bc:b9c7:7ba8 with SMTP id z22-20020a2e9b96000000b002bcb9c77ba8mr4835512lji.43.1695624839472;
+        Sun, 24 Sep 2023 23:53:59 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.219.100])
+        by smtp.gmail.com with ESMTPSA id g27-20020a170906349b00b0099bc0daf3d7sm5843290ejb.182.2023.09.24.23.53.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 24 Sep 2023 23:53:58 -0700 (PDT)
+Message-ID: <27a838e1-28ed-48a6-86fa-1b7e67f694f8@linaro.org>
+Date:   Mon, 25 Sep 2023 08:53:56 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/3] ARM: dts: omap: omap4-embt2ws: Add IMU at control
+ unit
+Content-Language: en-US
 To:     Andreas Kemnade <andreas@kemnade.info>, jic23@kernel.org,
         lars@metafoo.de, robh+dt@kernel.org,
         krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
@@ -52,61 +64,83 @@ To:     Andreas Kemnade <andreas@kemnade.info>, jic23@kernel.org,
         andy.shevchenko@gmail.com, linux-iio@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-omap@vger.kernel.org
-Cc:     oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH 1/3] dt-bindings: iio: imu: mpu6050: Add level shifter
-Message-ID: <202309250753.7v7FAzek-lkp@intel.com>
-References: <20230924222559.2038721-2-andreas@kemnade.info>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230924222559.2038721-2-andreas@kemnade.info>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+References: <20230924222559.2038721-1-andreas@kemnade.info>
+ <20230924222559.2038721-4-andreas@kemnade.info>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <20230924222559.2038721-4-andreas@kemnade.info>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Andreas,
+On 25/09/2023 00:25, Andreas Kemnade wrote:
+> Add also the level-shifter flag to avoid probe failure in magnetometer
+> probe.
+> 
+> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+> ---
 
-kernel test robot noticed the following build warnings:
 
-[auto build test WARNING on jic23-iio/togreg]
-[also build test WARNING on robh/for-next linus/master v6.6-rc3 next-20230921]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+>  &keypad {
+> @@ -530,6 +539,12 @@ OMAP4_IOPAD(0x0fc, PIN_INPUT | MUX_MODE0)       /* abe_mcbsp2_fsx */
+>  		>;
+>  	};
+>  
+> +	mpu9150_pins: pinmux_mpu9150_pins {
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Andreas-Kemnade/dt-bindings-iio-imu-mpu6050-Add-level-shifter/20230925-062804
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/20230924222559.2038721-2-andreas%40kemnade.info
-patch subject: [PATCH 1/3] dt-bindings: iio: imu: mpu6050: Add level shifter
-compiler: loongarch64-linux-gcc (GCC) 13.2.0
-reproduce: (https://download.01.org/0day-ci/archive/20230925/202309250753.7v7FAzek-lkp@intel.com/reproduce)
+No underscores in node names.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202309250753.7v7FAzek-lkp@intel.com/
+Best regards,
+Krzysztof
 
-dtcheck warnings: (new ones prefixed by >>)
->> Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml: properties:invensense,level-shifter: True is not of type 'object'
-   	hint: Vendor specific properties must have a type and description unless they have a defined, common suffix.
-   	from schema $id: http://devicetree.org/meta-schemas/vendor-props.yaml#
->> Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml: properties:invensense,level-shifter: More than one condition true in oneOf schema:
-   	{'description': 'Vendor specific properties must have a type and '
-   	                'description unless they have a defined, common '
-   	                'suffix.',
-   	 'oneOf': [{'additionalProperties': False,
-   	            'description': 'A vendor boolean property can use "type: '
-   	                           'boolean"',
-   	            'properties': {'deprecated': True,
-   	                           'description': True,
-   	                           'type': {'const': 'boolean'}},
-   	            'required': ['type', 'description']},
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
