@@ -2,66 +2,74 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B5D97ADA2A
-	for <lists+linux-omap@lfdr.de>; Mon, 25 Sep 2023 16:37:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FEBA7ADB1D
+	for <lists+linux-omap@lfdr.de>; Mon, 25 Sep 2023 17:14:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231160AbjIYOhD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 25 Sep 2023 10:37:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60292 "EHLO
+        id S232556AbjIYPOh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 25 Sep 2023 11:14:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229537AbjIYOhD (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 25 Sep 2023 10:37:03 -0400
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A1B2101;
-        Mon, 25 Sep 2023 07:36:54 -0700 (PDT)
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id 916EF1C001E; Mon, 25 Sep 2023 16:36:52 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
-        t=1695652612;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=A7Kx6EcoVfeBKi/SbwuwCQZldltNiCrHCuxYKrSTkLM=;
-        b=bTgxHCrLGiy6IbyXRORlo36rCN9vZbwl0l3j/og4gJKP1+jG7UozXISxwxIFXeRVHzoFeT
-        Z0lDrMBrDnppBRrH9QBhubb025oZjEU3iJ4BWvtIF3HfMJyOrliUZroTZqI9tWOcH0cpbi
-        RcMPC5Yquju+aFsap1ThfO1Nfh0dsU0=
-Date:   Mon, 25 Sep 2023 16:36:43 +0200
-From:   Pavel Machek <pavel@ucw.cz>
-To:     kernel list <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        linux-omap@vger.kernel.org, tony@atomide.com, sre@kernel.org,
-        nekit1000@gmail.com, mpartap@gmx.net, merlijn@wizzup.org,
-        martin_rysavy@centrum.cz, phone-devel@vger.kernel.org,
-        maemo-leste@lists.dyne.org
-Subject: droid4 -- weird behaviour when attempting to use usb host
-Message-ID: <ZRGa+0OFNluV4T5t@localhost>
+        with ESMTP id S232594AbjIYPOg (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 25 Sep 2023 11:14:36 -0400
+Received: from mail-vs1-xe44.google.com (mail-vs1-xe44.google.com [IPv6:2607:f8b0:4864:20::e44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26B3F111
+        for <linux-omap@vger.kernel.org>; Mon, 25 Sep 2023 08:14:29 -0700 (PDT)
+Received: by mail-vs1-xe44.google.com with SMTP id ada2fe7eead31-45260b91a29so2935848137.2
+        for <linux-omap@vger.kernel.org>; Mon, 25 Sep 2023 08:14:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=happybizdata-com.20230601.gappssmtp.com; s=20230601; t=1695654868; x=1696259668; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=BtNfrxgf4X+cTsDMONzKl75qRElkb7tAwQe0Ph+Ar2Q=;
+        b=j4+1lOKQ75Eteyh3mYqAyulI5GJlyRFQpsBL2yBKWMLLGcf7Nb/I7hdZsguNApdfDt
+         rqeZSBiexuk1yh83iBi+uNIsWm0MZ763QD5dQgOMttnfNsxdbVv++xlQyitQXpdiN/p7
+         Dc5yozavczGK0Gl0GkFK1iFKMzXCKLqzINCixYXmCdv8R6fdILdfGcoNCxJpIzhDpo2Z
+         AUtBUsgjzCu11bNqil8hpXgEFGmSYx56yz5mRltmJBAMvpe8DZZWaLy/2AXEepBtZ24S
+         71KB4AI3pTR6oZZ3r7tiNd/ODzvNAzaaHF4yZbPbjNVUH9WwrQC8VMcDsGBzEabFZsAw
+         zmDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695654868; x=1696259668;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=BtNfrxgf4X+cTsDMONzKl75qRElkb7tAwQe0Ph+Ar2Q=;
+        b=mPwuKDiv/oyWsG928OVLoSZese6pskhhZmXZkJUtYYsGr7Ruz6Mxgo65SNoDi61yBe
+         1CPHkT/FANmVnwu2iBmD/uLq3MzCVeeionDS5/xlrZpEgE1+NP0wHBo63OLcpwk2k/oy
+         0vyZpKmSYG3ONk92k0nLrwm8qqFji+hGb4BB1bqetTzXQc00sDNaolO0K9KvTQ9fqa5p
+         uHiN3VZ4nuH5Y3QgIohhqs6eoaJFHF1W1hcDmvwUhGeu2bF7MkxeM84LsLNhtMb5NQc7
+         dJdhj4gr15epQTW/vSe4i6ZTi+NyQWQrzn2jgm8J1KfBFGdFqUfICB2DJZVbsDxKeQes
+         U40g==
+X-Gm-Message-State: AOJu0YzhZ77YFYivABhR+XJ4i4eCW/kBsouwkjz1VlzFIVS8HU8XR9S8
+        zsDYPe06yKb7pRSes/SWoK3nXt4YCaOcxCvWsdXT4Q==
+X-Google-Smtp-Source: AGHT+IExQPiZeST6UBNLhESqww9YHARUad58911NAde7hcBWx2F6ERBPJHqYcyUSazR13vV6oN3kFh0eB9Fgb/bu72c=
+X-Received: by 2002:a67:f842:0:b0:452:5c6d:78c9 with SMTP id
+ b2-20020a67f842000000b004525c6d78c9mr4218569vsp.12.1695654868281; Mon, 25 Sep
+ 2023 08:14:28 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+From:   Sofia Gonzales <sofia@happybizdata.com>
+Date:   Mon, 25 Sep 2023 10:14:15 -0500
+Message-ID: <CAMh3ZMJ_yEt0YCimcbJ+BwwJSX+PGktO6dGS1gmSQ1snAUqVpg@mail.gmail.com>
+Subject: RE: HIMSS Global Health Conference Email List 2023
+To:     Sofia Gonzales <sofia@happybizdata.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi!
+Hi,
 
-I'm having some fun with usb host. Good news is it works with
-externally powered hub... after a while. I get some error messages
-about inability to go host mode, but with enough patience it
-eventually does enter host mode and I see my keyboard/mouse.
+Would you be interested in acquiring the Healthcare Information and
+Management Systems Society Email List?
 
-And usually in that process, one of my cpu cores disappear. top no
-longer shows 2 cores, and I was wondering for a while if d4 is
-single-core system. It is not, my two cores are back after reboot.
+Number of Contacts: 45,486
+Cost: $1,918
 
-That's with 6.1.9 kernel from leste. Ideas how to debug this would be
-welcome. (Do you use usb host?)
+Interested? Email me back; I would love to provide more information on the list.
 
-Best regards,
-							Pavel
---=20
+Kind Regards,
+Sofia Gonzales
+Marketing Coordinator
