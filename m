@@ -2,60 +2,61 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D0BA67AEDE9
-	for <lists+linux-omap@lfdr.de>; Tue, 26 Sep 2023 15:25:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 332167AEDEA
+	for <lists+linux-omap@lfdr.de>; Tue, 26 Sep 2023 15:25:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232778AbjIZNZq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        id S232437AbjIZNZq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
         Tue, 26 Sep 2023 09:25:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50822 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232437AbjIZNZp (ORCPT
+        with ESMTP id S229604AbjIZNZp (ORCPT
         <rfc822;linux-omap@vger.kernel.org>); Tue, 26 Sep 2023 09:25:45 -0400
 Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A5C2E6
-        for <linux-omap@vger.kernel.org>; Tue, 26 Sep 2023 06:25:37 -0700 (PDT)
-Received: by mail-lf1-x129.google.com with SMTP id 2adb3069b0e04-504427aae4fso7906738e87.1
-        for <linux-omap@vger.kernel.org>; Tue, 26 Sep 2023 06:25:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9550B101
+        for <linux-omap@vger.kernel.org>; Tue, 26 Sep 2023 06:25:38 -0700 (PDT)
+Received: by mail-lf1-x129.google.com with SMTP id 2adb3069b0e04-5041335fb9cso14071136e87.0
+        for <linux-omap@vger.kernel.org>; Tue, 26 Sep 2023 06:25:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1695734735; x=1696339535; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1695734737; x=1696339537; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=7XQ+0fmcxQn7hNEx2giW0ptNoy4+ucZSflc29tgLhQk=;
-        b=nqTbwMB0SgKy2vYKBDGvTSbVSKUqFDqLUOJBeXATrrnpY2D0jSD4IFU/FMlx0QHokM
-         ntuj341ib9KaQTRwpyWlsA0zvHL36ZAoEglywEJWpuDgUCv9Pmk+zYsumUOf34UuFut5
-         HtvRZguMXhKYc3XpvygV8IHYeLa4NuS9B/cSpBgKAH0KBo76YYdoCqCNzywh7DOW+gy3
-         VPewmz/8pRshL68ULxJtw+J0BkMWgnFoKVeE0PRKks6U2g7hnsDk2Xm1S9q2S8vEDHWF
-         EmLccx8NhgJi48s9zlH+uLBtrPsUVhxe3UFpBHMPpGWr4aDJeEpY5uiCi3nRjiRkFXqV
-         T26A==
+        bh=AQREjlFdBBHyFFcqZ7B0gSxB7/oIU5kFAtRf/hN0PRg=;
+        b=ffhWtff7BOQVYOSwv121Ol3vNNPlSOc7qiCXXa837pZRFirr1//M7WZHdsVTqMr3pG
+         h9WjH77hd6bPFstYYEYWiJ7+z+ZU4xYBq5dCAWGHISIuOp6dBMIYhNKsyFt3siygHSv0
+         fEJdaVIF+m4HysE2QgRycVq6LCW8kpIeZYnIqn7RmEcR9xx/JiXDJQkYKbhjN3ScliJs
+         SVfSFwVNWHtz2KufAR3/0PCHVzaxz6LKezifpYLrcOltpP7E9DWIBXHj4hE/w4y5181n
+         DJXhh9QNxJMAMt31G4+OS4N+joIRUETXAngVVIyIXzVU6o1dcDMPmfGfAmV0EINLJqUL
+         rThw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695734735; x=1696339535;
+        d=1e100.net; s=20230601; t=1695734737; x=1696339537;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=7XQ+0fmcxQn7hNEx2giW0ptNoy4+ucZSflc29tgLhQk=;
-        b=IMwWYOZoyfQhhDU3/yqT8jpCY/JBu4ax4iunvyINZWnOcHmt7cLwcduoGKhMNZB0qH
-         ZQTwvmCzXnTeTuFqt5CO2hNloHpcb/2F24ERh1832trOm7BZG0w7MoO7MW8Sl7vGDX1K
-         Q1vPLtCK4R/MtDrmhyYAITzFGPgZv+rikuQovHdswNVuDfIc+afcaAfrD53g5c3cBqfV
-         4FTUwVhPgK7eYRCNqFAscT0ybtmq9mpYVgAt/UHZcYYvb++rzN/HDc2FVvUOarEcU/9R
-         JcjsOC1hTzhMguxM0IEgtK/ewk1AfeaFrSHFkQ6y0gCk4klhEi74Uw/kN8CzsDPSTcuh
-         liyg==
-X-Gm-Message-State: AOJu0YwnnnW/z+p6iYpnp6b1X8TERS9/U4A2OnrY7aUnojMKh5b0trEN
-        dFZ/r7lxvCFEGHl9ROnsdothrA==
-X-Google-Smtp-Source: AGHT+IFPY5U0WllM4x+pCqepZzgVMk893pXwxBLYC4R7FotIFz3M4lxB3pAWd8pzSINV2/2J4ivVlA==
-X-Received: by 2002:ac2:4c45:0:b0:501:c6d8:6029 with SMTP id o5-20020ac24c45000000b00501c6d86029mr998788lfk.33.1695734735650;
-        Tue, 26 Sep 2023 06:25:35 -0700 (PDT)
+        bh=AQREjlFdBBHyFFcqZ7B0gSxB7/oIU5kFAtRf/hN0PRg=;
+        b=UcojEFdTUU2UhfohuZEipNlHcoEEEokDk1d1uFP3uSBG+RHXhQ1zAkRaIORivLZRcG
+         /NHb7y7+7IUEU2JyqzOgFKLwQHowJZGGfOg9jMve0kKUlNbVktHmW2bYcebyiFEe7SNF
+         N+Gk2XWKrTOc4TwFCWQyAotSGNGPD0yf6pef4bpmna2AyZCGvt8z2dadxyLS05h5l6NF
+         Nz5tfEr/zLKb5Rk7/O7XWvx87LlJwozr+2vJm/KEZKx5EarRSX6ApXkKh7sj4RBjtrrk
+         /vvi4n3/nAQifTMJwZCPLuxpLGKkd52HnlZdEzeTq6ipKz/+C2BDrgpeE4b8C/bQQ1GU
+         vf8g==
+X-Gm-Message-State: AOJu0Yzx8Bc6REQkGdh2lRSrPLzBObd0r/U0oi4zscxM1XMdqxg6hbaO
+        sP3HAxTk04iDCjlMsShJr3WzvQ==
+X-Google-Smtp-Source: AGHT+IHMuys/v1z41Pq9CuIIy/ftelPDGx7bWyJ6wtsGQexyv6AD5OHzXbCy8nEIXF0Y020uO07SZQ==
+X-Received: by 2002:a05:6512:104f:b0:500:b7dc:6c90 with SMTP id c15-20020a056512104f00b00500b7dc6c90mr9505051lfb.36.1695734736594;
+        Tue, 26 Sep 2023 06:25:36 -0700 (PDT)
 Received: from [127.0.1.1] ([85.235.12.238])
-        by smtp.gmail.com with ESMTPSA id eq25-20020a056512489900b0050307bf2bcdsm2221540lfb.247.2023.09.26.06.25.34
+        by smtp.gmail.com with ESMTPSA id eq25-20020a056512489900b0050307bf2bcdsm2221540lfb.247.2023.09.26.06.25.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Sep 2023 06:25:35 -0700 (PDT)
+        Tue, 26 Sep 2023 06:25:36 -0700 (PDT)
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Tue, 26 Sep 2023 15:25:29 +0200
-Subject: [PATCH 1/5] ASoC: ti: Convert N810 ASoC to GPIO descriptors
+Date:   Tue, 26 Sep 2023 15:25:30 +0200
+Subject: [PATCH 2/5] ASoC: ti: Convert RX51 to use exclusively GPIO
+ descriptors
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230926-descriptors-asoc-ti-v1-1-60cf4f8adbc5@linaro.org>
+Message-Id: <20230926-descriptors-asoc-ti-v1-2-60cf4f8adbc5@linaro.org>
 References: <20230926-descriptors-asoc-ti-v1-0-60cf4f8adbc5@linaro.org>
 In-Reply-To: <20230926-descriptors-asoc-ti-v1-0-60cf4f8adbc5@linaro.org>
 To:     Tony Lindgren <tony@atomide.com>,
@@ -77,128 +78,86 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The N810 uses GPIO descriptors pretty much exclusively, but not
-for ASoC, so let's fix it. Register the pins in a descriptor table
-in the machine since the ASoC device is not using device tree.
+The RX51/Nokia n900 uses the legacy GPIO header to convert a GPIO
+back to the global GPIO numberspace and then the jack using it
+in the snd_soc_jack_add_gpios() call immediately looks up the
+corresponding descriptor again.
 
-Use static locals for the GPIO descriptors because I'm not able
-to experient with better state storage on any real hardware. Others
-using the N810 can come afterwards and improve this.
+The snd_soc_jack_add_gpios() handles GPIOs passed with devices
+just fine: pass in the device instead, and rename the GPIO
+to match the property in the device tree, and it should work
+all the same but without all the trouble.
 
 Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 ---
- arch/arm/mach-omap2/board-n8x0.c | 10 ++++++++++
- sound/soc/ti/n810.c              | 31 +++++++++++++++++--------------
- 2 files changed, 27 insertions(+), 14 deletions(-)
+ sound/soc/ti/rx51.c | 19 ++++---------------
+ 1 file changed, 4 insertions(+), 15 deletions(-)
 
-diff --git a/arch/arm/mach-omap2/board-n8x0.c b/arch/arm/mach-omap2/board-n8x0.c
-index 8e3b5068d4ab..31755a378c73 100644
---- a/arch/arm/mach-omap2/board-n8x0.c
-+++ b/arch/arm/mach-omap2/board-n8x0.c
-@@ -498,6 +498,15 @@ struct menelaus_platform_data n8x0_menelaus_platform_data = {
- 	.late_init = n8x0_menelaus_late_init,
- };
+diff --git a/sound/soc/ti/rx51.c b/sound/soc/ti/rx51.c
+index 322c398d209b..047f852c79a9 100644
+--- a/sound/soc/ti/rx51.c
++++ b/sound/soc/ti/rx51.c
+@@ -10,7 +10,6 @@
+  */
  
-+static struct gpiod_lookup_table nokia810_asoc_gpio_table = {
-+	.dev_id = "soc-audio",
-+	.table = {
-+		GPIO_LOOKUP("gpio-0-15", 10, "headset", GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP("gpio-80-111", 21, "speaker", GPIO_ACTIVE_HIGH),
-+		{ }
-+	},
-+};
-+
- static int __init n8x0_late_initcall(void)
- {
- 	if (!board_caps)
-@@ -505,6 +514,7 @@ static int __init n8x0_late_initcall(void)
- 
- 	n8x0_mmc_init();
- 	n8x0_usb_init();
-+	gpiod_add_lookup_table(&nokia810_asoc_gpio_table);
- 
- 	return 0;
- }
-diff --git a/sound/soc/ti/n810.c b/sound/soc/ti/n810.c
-index ed217b34f846..71a2a90bad2b 100644
---- a/sound/soc/ti/n810.c
-+++ b/sound/soc/ti/n810.c
-@@ -15,14 +15,14 @@
- #include <sound/soc.h>
- 
- #include <asm/mach-types.h>
+ #include <linux/delay.h>
 -#include <linux/gpio.h>
-+#include <linux/gpio/consumer.h>
+ #include <linux/platform_device.h>
+ #include <linux/gpio/consumer.h>
  #include <linux/module.h>
- #include <linux/platform_data/asoc-ti-mcbsp.h>
+@@ -33,7 +32,6 @@ enum {
  
- #include "omap-mcbsp.h"
+ struct rx51_audio_pdata {
+ 	struct gpio_desc *tvout_selection_gpio;
+-	struct gpio_desc *jack_detection_gpio;
+ 	struct gpio_desc *eci_sw_gpio;
+ 	struct gpio_desc *speaker_amp_gpio;
+ };
+@@ -198,7 +196,7 @@ static struct snd_soc_jack rx51_av_jack;
  
--#define N810_HEADSET_AMP_GPIO	10
--#define N810_SPEAKER_AMP_GPIO	101
-+static struct gpio_desc *n810_headset_amp;
-+static struct gpio_desc *n810_speaker_amp;
- 
- enum {
- 	N810_JACK_DISABLED,
-@@ -187,9 +187,9 @@ static int n810_spk_event(struct snd_soc_dapm_widget *w,
- 			  struct snd_kcontrol *k, int event)
+ static struct snd_soc_jack_gpio rx51_av_jack_gpios[] = {
+ 	{
+-		.name = "avdet-gpio",
++		.name = "jack-detection",
+ 		.report = SND_JACK_HEADSET,
+ 		.invert = 1,
+ 		.debounce_time = 200,
+@@ -263,7 +261,6 @@ static const struct snd_kcontrol_new aic34_rx51_controls[] = {
+ static int rx51_aic34_init(struct snd_soc_pcm_runtime *rtd)
  {
- 	if (SND_SOC_DAPM_EVENT_ON(event))
--		gpio_set_value(N810_SPEAKER_AMP_GPIO, 1);
-+		gpiod_set_value(n810_speaker_amp, 1);
- 	else
--		gpio_set_value(N810_SPEAKER_AMP_GPIO, 0);
-+		gpiod_set_value(n810_speaker_amp, 0);
+ 	struct snd_soc_card *card = rtd->card;
+-	struct rx51_audio_pdata *pdata = snd_soc_card_get_drvdata(card);
+ 	int err;
  
- 	return 0;
- }
-@@ -198,9 +198,9 @@ static int n810_jack_event(struct snd_soc_dapm_widget *w,
- 			   struct snd_kcontrol *k, int event)
- {
- 	if (SND_SOC_DAPM_EVENT_ON(event))
--		gpio_set_value(N810_HEADSET_AMP_GPIO, 1);
-+		gpiod_set_value(n810_headset_amp, 1);
- 	else
--		gpio_set_value(N810_HEADSET_AMP_GPIO, 0);
-+		gpiod_set_value(n810_headset_amp, 0);
- 
- 	return 0;
- }
-@@ -327,14 +327,19 @@ static int __init n810_soc_init(void)
- 	clk_set_parent(sys_clkout2_src, func96m_clk);
- 	clk_set_rate(sys_clkout2, 12000000);
- 
--	if (WARN_ON((gpio_request(N810_HEADSET_AMP_GPIO, "hs_amp") < 0) ||
--		    (gpio_request(N810_SPEAKER_AMP_GPIO, "spk_amp") < 0))) {
--		err = -EINVAL;
-+	n810_headset_amp = devm_gpiod_get(&n810_snd_device->dev,
-+					  "headphone", GPIOD_OUT_LOW);
-+	if (IS_ERR(n810_headset_amp)) {
-+		err = PTR_ERR(n810_headset_amp);
- 		goto err4;
+ 	snd_soc_limit_volume(card, "TPA6130A2 Headphone Playback Volume", 42);
+@@ -283,9 +280,9 @@ static int rx51_aic34_init(struct snd_soc_pcm_runtime *rtd)
+ 		return err;
  	}
  
--	gpio_direction_output(N810_HEADSET_AMP_GPIO, 0);
--	gpio_direction_output(N810_SPEAKER_AMP_GPIO, 0);
-+	n810_speaker_amp = devm_gpiod_get(&n810_snd_device->dev,
-+					  "speaker", GPIOD_OUT_LOW);
-+	if (IS_ERR(n810_speaker_amp)) {
-+		err = PTR_ERR(n810_speaker_amp);
-+		goto err4;
-+	}
+-	/* prepare gpio for snd_soc_jack_add_gpios */
+-	rx51_av_jack_gpios[0].gpio = desc_to_gpio(pdata->jack_detection_gpio);
+-	devm_gpiod_put(card->dev, pdata->jack_detection_gpio);
++	rx51_av_jack_gpios[0].gpiod_dev = card->dev;
++	/* Name is assigned in the struct */
++	rx51_av_jack_gpios[0].idx = 0;
  
- 	return 0;
- err4:
-@@ -351,8 +356,6 @@ static int __init n810_soc_init(void)
+ 	err = snd_soc_jack_add_gpios(&rx51_av_jack,
+ 				     ARRAY_SIZE(rx51_av_jack_gpios),
+@@ -425,14 +422,6 @@ static int rx51_soc_probe(struct platform_device *pdev)
+ 		return PTR_ERR(pdata->tvout_selection_gpio);
+ 	}
  
- static void __exit n810_soc_exit(void)
- {
--	gpio_free(N810_SPEAKER_AMP_GPIO);
--	gpio_free(N810_HEADSET_AMP_GPIO);
- 	clk_put(sys_clkout2_src);
- 	clk_put(sys_clkout2);
- 	clk_put(func96m_clk);
+-	pdata->jack_detection_gpio = devm_gpiod_get(card->dev,
+-						    "jack-detection",
+-						    GPIOD_ASIS);
+-	if (IS_ERR(pdata->jack_detection_gpio)) {
+-		dev_err(card->dev, "could not get jack detection gpio\n");
+-		return PTR_ERR(pdata->jack_detection_gpio);
+-	}
+-
+ 	pdata->eci_sw_gpio = devm_gpiod_get(card->dev, "eci-switch",
+ 					    GPIOD_OUT_HIGH);
+ 	if (IS_ERR(pdata->eci_sw_gpio)) {
 
 -- 
 2.34.1
