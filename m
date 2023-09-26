@@ -2,74 +2,58 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 29C597AEDED
-	for <lists+linux-omap@lfdr.de>; Tue, 26 Sep 2023 15:25:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AFDDC7AF4EC
+	for <lists+linux-omap@lfdr.de>; Tue, 26 Sep 2023 22:18:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233773AbjIZNZs (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 26 Sep 2023 09:25:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50862 "EHLO
+        id S235787AbjIZUS1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 26 Sep 2023 16:18:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40316 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233704AbjIZNZr (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 26 Sep 2023 09:25:47 -0400
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36A3BF3
-        for <linux-omap@vger.kernel.org>; Tue, 26 Sep 2023 06:25:41 -0700 (PDT)
-Received: by mail-lf1-x129.google.com with SMTP id 2adb3069b0e04-504427aae4fso7906917e87.1
-        for <linux-omap@vger.kernel.org>; Tue, 26 Sep 2023 06:25:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1695734739; x=1696339539; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=hr5amuTNg43g84vy8vdnricessR4/d7Wx6XjZcS7tVE=;
-        b=IU2+sSheFDmaHqtfzz4eiQBOZH+Je7jF83gMwSxvtD81GsYgv4YlP20JSs3+SptnGG
-         tAMRYitizY1tOoaWfWDJRV1wrukcA8pfNiHfAiLP8TSiszOtpmmHgBrU++Kp3f8+Kp5x
-         Hb/cIO3RNXOBFZr0ivNDay8kjZrvOOK4Du5158FSFNkFFWqzovPG60XaXSG9DINp8Av8
-         Zl3v2DTB8uBbMaXofWK234uqIksMBTC18n45uGL5mkrvRU+SGjsNOu+wskCtyH+nF8IY
-         nBtCr3vdgwNTUdoKKE26+B5BpL3Bpi0As8RIpUdDAUcxFJf73TSuAeE64MeNu9asomih
-         eeFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695734739; x=1696339539;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hr5amuTNg43g84vy8vdnricessR4/d7Wx6XjZcS7tVE=;
-        b=BbcEWDiwYAfy+u19VIRJyPMRUnfC+TbE4zVl/75hfwh9aF3ffc+uBseU7XXs8MrRxC
-         j8Har00wqB9GTqX/E6bh88GQpV6Bi8aSOj0UBAq7HDab51AGV8isSZzEKj6r+sl60PqK
-         O1KLd9OQa6rtv1Aqhs9we7mC5Px7SSt/J/bxz6nksZPw4RZrHTs6dXO9uRZ3LN4pE/KZ
-         rlobiCu4Pp0cmoU3xFPRgUzk50g6DD6rwg/uZaZDKs/8KogIwgAcjXn2giV9sdy4bmvQ
-         hyZT8dIqKjBykUJd0ldZgNseeqF6gSML7cX2gUngro9xvMx38VmlYQCmHyznVWggb/uP
-         tYig==
-X-Gm-Message-State: AOJu0YxWyw6bFQ4ThUiiTIkc7dlaSp++OntBC8lvMEVrBam2kv4opva5
-        x2nK56WSzxN2onGxwiDLFBTsoA==
-X-Google-Smtp-Source: AGHT+IGhCkADecUplAXbs0IyJ40nh2sd47gAxE7FjpqNC2VQj9VPtPn0k3sCnuX/N/x/fkycKRNmpg==
-X-Received: by 2002:a05:6512:114d:b0:501:bf37:262a with SMTP id m13-20020a056512114d00b00501bf37262amr1239953lfg.32.1695734739514;
-        Tue, 26 Sep 2023 06:25:39 -0700 (PDT)
-Received: from [127.0.1.1] ([85.235.12.238])
-        by smtp.gmail.com with ESMTPSA id eq25-20020a056512489900b0050307bf2bcdsm2221540lfb.247.2023.09.26.06.25.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Sep 2023 06:25:39 -0700 (PDT)
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Tue, 26 Sep 2023 15:25:33 +0200
-Subject: [PATCH 5/5] ASoC: ti: osk5912: Drop unused include
+        with ESMTP id S233232AbjIZUS1 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 26 Sep 2023 16:18:27 -0400
+Received: from gofer.mess.org (gofer.mess.org [88.97.38.141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F0BC193;
+        Tue, 26 Sep 2023 13:18:18 -0700 (PDT)
+Received: by gofer.mess.org (Postfix, from userid 1000)
+        id E979E1000B2; Tue, 26 Sep 2023 21:18:16 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mess.org; s=2020;
+        t=1695759496; bh=T2t6tUV8F3RVHU1NTNGqT5xpfoZaTbVdG1BjZ0eXs5U=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ZPjwXYcjtXvLSniQ86lo5+xTlypyv4zAqmj+uztkYev+AEyI6GDQFsBV4FpN+6E9h
+         dYIJ33tUeCJWG/DXqk1vajUIKdUTys4INNIVAMcykCeiHPxsGoNBTd1DEDjpfeImKh
+         1LWROf7Sk2j4Bdh0rGx/9jg3KZrLqEZCbSlrRZ6MUW4vcsOtC95Ktwlqg5qfCwis/H
+         Ve2d/qmWEd3JXm0YmYkd/vyn7t2Dy5wvGeIlw0ed1daTMe19aBbCJNNwYgKWQASKog
+         J7ytGkPbUAuDR1XLprXZ1wzig+zhfz2EoEq/qWwvqviy4zYAV2qxfBTtxfaX4s96Ja
+         Tzk/e6bII+G5w==
+Date:   Tue, 26 Sep 2023 21:18:16 +0100
+From:   Sean Young <sean@mess.org>
+To:     Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+Cc:     linux-media@vger.kernel.org, Tony Lindgren <tony@atomide.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Timo Kokkonen <timo.t.kokkonen@iki.fi>,
+        Pali =?iso-8859-1?Q?Roh=E1r?= <pali.rohar@gmail.com>,
+        "Sicelo A . Mhlongo" <absicsz@gmail.com>,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org
+Subject: Re: [PATCH v5 2/2] media: rc: remove ir-rx51 in favour of generic
+ pwm-ir-tx
+Message-ID: <ZRM8iLORjKw3z/h5@gofer.mess.org>
+References: <cover.1693577725.git.sean@mess.org>
+ <e5325e826935f0bd8566152b6a5fa799b2429d43.1693577725.git.sean@mess.org>
+ <99f0042f-538c-bcaf-96fd-bac24a87f88e@gmail.com>
+ <ZRKFUb1vRtn82bgn@gofer.mess.org>
+ <1715e2bf-5d02-4f20-1476-29a1fdf350b1@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230926-descriptors-asoc-ti-v1-5-60cf4f8adbc5@linaro.org>
-References: <20230926-descriptors-asoc-ti-v1-0-60cf4f8adbc5@linaro.org>
-In-Reply-To: <20230926-descriptors-asoc-ti-v1-0-60cf4f8adbc5@linaro.org>
-To:     Tony Lindgren <tony@atomide.com>,
-        Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-        Jarkko Nikula <jarkko.nikula@bitmer.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
-Cc:     linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        alsa-devel@alsa-project.org,
-        Linus Walleij <linus.walleij@linaro.org>
-X-Mailer: b4 0.12.3
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1715e2bf-5d02-4f20-1476-29a1fdf350b1@gmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -77,27 +61,96 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-This driver includes the legacy header <linux/gpio.h> but doesn't
-use it. Drop the include.
+On Tue, Sep 26, 2023 at 03:43:18PM +0300, Ivaylo Dimitrov wrote:
+> On 26.09.23 г. 10:16 ч., Sean Young wrote:
+> > On Mon, Sep 25, 2023 at 07:06:44PM +0300, Ivaylo Dimitrov wrote:
+> > > On 1.09.23 г. 17:18 ч., Sean Young wrote:
+> > > > The ir-rx51 is a pwm-based TX driver specific to the N900. This can be
+> > > > handled entirely by the generic pwm-ir-tx driver, and in fact the
+> > > > pwm-ir-tx driver has been compatible with ir-rx51 from the start.
+> > > > 
+> > > 
+> > > Unfortunately, pwm-ir-tx does not work on n900. My investigation shows that
+> > > for some reason usleep_range() sleeps for at least 300-400 us more than what
+> > > interval it is requested to sleep. I played with cyclictest from rt-tests
+> > > package and it gives similar results - increasing the priority helps, but I
+> > > was not able to make it sleep for less that 300 us in average. I tried
+> > > cpu_latency_qos_add_request() in pwm-ir-tx, but it made no difference.
+> > > 
+> > > I get similar results on motorola droid4 (OMAP4), albeit there average sleep
+> > > is in 200-300 us range, which makes me believe that either OMAPs have issues
+> > > with hrtimers or the config we use has some issue which leads to scheduler
+> > > latency. Or, something else...
+> > 
+> > The pwm-ir-tx driver does suffer from this problem, but I was under the
+> > impression that the ir-rx51 has the same problem.
+> > 
+> 
+> Could you elaborate on the "pwm-ir-tx driver does suffer from this problem"?
+> Where do you see that?
 
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
----
- sound/soc/ti/osk5912.c | 1 -
- 1 file changed, 1 deletion(-)
+So on a raspberry pi (model 3b), if I use the pwm-ir-tx driver, I get random
+delays of up to 100us. It's a bit random and certainly depends on the load.
 
-diff --git a/sound/soc/ti/osk5912.c b/sound/soc/ti/osk5912.c
-index 2790c8915f55..12f0c3a15201 100644
---- a/sound/soc/ti/osk5912.c
-+++ b/sound/soc/ti/osk5912.c
-@@ -14,7 +14,6 @@
- #include <sound/soc.h>
- 
- #include <asm/mach-types.h>
--#include <linux/gpio.h>
- #include <linux/module.h>
- #include <linux/platform_data/asoc-ti-mcbsp.h>
- 
+I'm measuring using a logic analyzer.
 
--- 
-2.34.1
+There have been reports by others on different machines with random delays
+and/or transmit failures (as in the receiver occassionally fails to decode
+the IR). I usually suggest they use the gpio-ir-tx driver, which does work
+as far as I know (the signal looks perfect with a logic analyzer).
 
+So far I've taken the view that the driver works ok for most situations,
+since IR is usually fine with upto 100us missing here or there.
+
+The gpio-ir-tx driver works much better because it does the entire send 
+under spinlock - obviously that has its own problems, because an IR transmit
+can be 10s or even 100s of milliseconds.
+
+I've never known of a solution to the pwm-ir-tx driver. If using hrtimers
+directly improves the situation even a bit, then that would be great.
+
+> ir-rx51 does not suffer from the same problem (albeit it has its own one,
+> see bellow)
+> 
+> > > In either case help is appreciated to dig further trying to find the reason
+> > > for such a big delay.
+> > 
+> > pwm-ir-tx uses usleep_range() and ir-rx51 uses hrtimers. I thought that
+> > usleep_range() uses hrtimers; however if you're not seeing the same delay
+> > on ir-rx51 then maybe it's time to switch pwm-ir-tx to hrtimers.
+> > 
+> 
+> usleep_range() is backed by hrtimers already, however the difference comes
+> from how hrtimer is used in ir-rx51: it uses timer callback function that
+> gets called in softirq context, while usleep_range() puts the task in
+> TASK_UNINTERRUPTIBLE state and then calls schedule_hrtimeout_range(). For
+> some reason it takes at least 200-400 us (on average) even on OMAP4 to
+> switch back to TASK_RUNNING state.
+> 
+> The issue with ir-rx51 and the way it uses hrtimers is that it calls
+> pwm_apply_state() from hrtimer function, which is not ok, per the comment
+> here
+> https://elixir.bootlin.com/linux/v6.6-rc3/source/drivers/pwm/core.c#L502
+> 
+> I can make pwm-ir-tx switch to hrtimers, that's not an issue, but I am
+> afraid that there is some general scheduler or timers (or something else)
+> issue that manifests itself with usleep_range() misbehaving.
+
+If we can switch pwm-ir-tx to hrtimers, that would be great.
+
+The ir-rx51 removal patches have already been queued to media_staging;
+we may have to remove them from there if we can't solve this problem.
+
+> > I don't have a n900 to test on, unfortunately.
+> > 
+> 
+> I have and once I have an idea what's going on will port pwm-ir-tx to
+> hrtimers, if needed. Don't want to do it now as I am afraid the completion I
+> will have to use will have the same latency problems as usleep_range()
+
+That would be fantastic. Please do keep us up to date with how you are
+getting on. Like I said, it would be nice to this resolved before the next
+merge window.
+
+Thanks,
+Sean
