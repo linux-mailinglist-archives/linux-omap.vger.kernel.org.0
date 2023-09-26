@@ -2,61 +2,60 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 332167AEDEA
+	by mail.lfdr.de (Postfix) with ESMTP id BC73F7AEDEB
 	for <lists+linux-omap@lfdr.de>; Tue, 26 Sep 2023 15:25:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232437AbjIZNZq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 26 Sep 2023 09:25:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50830 "EHLO
+        id S229604AbjIZNZr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 26 Sep 2023 09:25:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229604AbjIZNZp (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 26 Sep 2023 09:25:45 -0400
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9550B101
-        for <linux-omap@vger.kernel.org>; Tue, 26 Sep 2023 06:25:38 -0700 (PDT)
-Received: by mail-lf1-x129.google.com with SMTP id 2adb3069b0e04-5041335fb9cso14071136e87.0
-        for <linux-omap@vger.kernel.org>; Tue, 26 Sep 2023 06:25:38 -0700 (PDT)
+        with ESMTP id S233704AbjIZNZq (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 26 Sep 2023 09:25:46 -0400
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 794A310A
+        for <linux-omap@vger.kernel.org>; Tue, 26 Sep 2023 06:25:39 -0700 (PDT)
+Received: by mail-lf1-x12c.google.com with SMTP id 2adb3069b0e04-503012f4e71so12013968e87.0
+        for <linux-omap@vger.kernel.org>; Tue, 26 Sep 2023 06:25:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1695734737; x=1696339537; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1695734738; x=1696339538; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=AQREjlFdBBHyFFcqZ7B0gSxB7/oIU5kFAtRf/hN0PRg=;
-        b=ffhWtff7BOQVYOSwv121Ol3vNNPlSOc7qiCXXa837pZRFirr1//M7WZHdsVTqMr3pG
-         h9WjH77hd6bPFstYYEYWiJ7+z+ZU4xYBq5dCAWGHISIuOp6dBMIYhNKsyFt3siygHSv0
-         fEJdaVIF+m4HysE2QgRycVq6LCW8kpIeZYnIqn7RmEcR9xx/JiXDJQkYKbhjN3ScliJs
-         SVfSFwVNWHtz2KufAR3/0PCHVzaxz6LKezifpYLrcOltpP7E9DWIBXHj4hE/w4y5181n
-         DJXhh9QNxJMAMt31G4+OS4N+joIRUETXAngVVIyIXzVU6o1dcDMPmfGfAmV0EINLJqUL
-         rThw==
+        bh=PP4dsIT0hsQMnKCfQfmUy8AzAauOm+H9b2ueCh3mGC0=;
+        b=sOm22iwHIneeLfztEjXX4qhZuTy9sCPxsrrZhSsyIJLL5ku+rbYJCj9vvbCJa2uPzB
+         9l2uAoFcyeRZOhIg41RNYxyzS8iXPiNQhWpj/ErogkEt25FkC9TvA3yfDdEIM2AyuVSK
+         Jrb+NPun47vWZA677Mnmm+s4NiITgrR1JTkyVCuMrZWvkL3riqoEIhTeD/JtWLWG/kZl
+         LL8KbAvyJTBM2Fb99cl25el8DmUfzohVuiBrgT3Fe5YDwnst9UnsN7zuvp5x0kSM7L9W
+         9wrdxKFZOa2MTpqroKBIz2Yvt5JnjxO86NnZAEwC3vVz+z7PSExBx1u5+a7PV1Mnyqtd
+         pyfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695734737; x=1696339537;
+        d=1e100.net; s=20230601; t=1695734738; x=1696339538;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=AQREjlFdBBHyFFcqZ7B0gSxB7/oIU5kFAtRf/hN0PRg=;
-        b=UcojEFdTUU2UhfohuZEipNlHcoEEEokDk1d1uFP3uSBG+RHXhQ1zAkRaIORivLZRcG
-         /NHb7y7+7IUEU2JyqzOgFKLwQHowJZGGfOg9jMve0kKUlNbVktHmW2bYcebyiFEe7SNF
-         N+Gk2XWKrTOc4TwFCWQyAotSGNGPD0yf6pef4bpmna2AyZCGvt8z2dadxyLS05h5l6NF
-         Nz5tfEr/zLKb5Rk7/O7XWvx87LlJwozr+2vJm/KEZKx5EarRSX6ApXkKh7sj4RBjtrrk
-         /vvi4n3/nAQifTMJwZCPLuxpLGKkd52HnlZdEzeTq6ipKz/+C2BDrgpeE4b8C/bQQ1GU
-         vf8g==
-X-Gm-Message-State: AOJu0Yzx8Bc6REQkGdh2lRSrPLzBObd0r/U0oi4zscxM1XMdqxg6hbaO
-        sP3HAxTk04iDCjlMsShJr3WzvQ==
-X-Google-Smtp-Source: AGHT+IHMuys/v1z41Pq9CuIIy/ftelPDGx7bWyJ6wtsGQexyv6AD5OHzXbCy8nEIXF0Y020uO07SZQ==
-X-Received: by 2002:a05:6512:104f:b0:500:b7dc:6c90 with SMTP id c15-20020a056512104f00b00500b7dc6c90mr9505051lfb.36.1695734736594;
-        Tue, 26 Sep 2023 06:25:36 -0700 (PDT)
+        bh=PP4dsIT0hsQMnKCfQfmUy8AzAauOm+H9b2ueCh3mGC0=;
+        b=g4tX+UK0xg6T1KSFvcToSuWzHRbPsStlWasntjrH2gvc/vxtxrtLbY4X5j1w2LLAoe
+         ApYDCMr++PzuA2XNwjYA1jd5gpcO2HJ1e+U1j/N2YFdAkMbTfmQ+vUgsrh4l+WjPhMwm
+         JwsvSXIpIn8hkSuCOs6hVj5lK2QiB3SsHrwU6qu6OPzWAvPCaN9ZmAIGQa2stw02V97W
+         6t1XlB34Z3AFaw89Xd+W+dZq/ByYGgo4f8+Ob4/YOUDns9pu8bQJRnQuWYPbPJrb18de
+         xEfHX9r4VzoPWPzz8WzrZC5fKO3D3N0oYJmZN3U5WICSHcdQ8RdRf3+yXkfuwadUiMk8
+         if4A==
+X-Gm-Message-State: AOJu0YxIGgUNxcrVU6u6/tGcS4wJJD8tFRuFrdC7b2qMMaf9rYyk1Q9m
+        /mcOxOrYMbvFiABXLMN5GVR8CA==
+X-Google-Smtp-Source: AGHT+IHjNjM07GGKUJBQohAZCxjfCTTm3uisP+onS6McTyzKEkNGgzi9C5o8RDP6x4JphD2R52UnRg==
+X-Received: by 2002:a05:6512:304b:b0:503:2567:c42f with SMTP id b11-20020a056512304b00b005032567c42fmr1048278lfb.0.1695734737749;
+        Tue, 26 Sep 2023 06:25:37 -0700 (PDT)
 Received: from [127.0.1.1] ([85.235.12.238])
-        by smtp.gmail.com with ESMTPSA id eq25-20020a056512489900b0050307bf2bcdsm2221540lfb.247.2023.09.26.06.25.35
+        by smtp.gmail.com with ESMTPSA id eq25-20020a056512489900b0050307bf2bcdsm2221540lfb.247.2023.09.26.06.25.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Sep 2023 06:25:36 -0700 (PDT)
+        Tue, 26 Sep 2023 06:25:37 -0700 (PDT)
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Tue, 26 Sep 2023 15:25:30 +0200
-Subject: [PATCH 2/5] ASoC: ti: Convert RX51 to use exclusively GPIO
- descriptors
+Date:   Tue, 26 Sep 2023 15:25:31 +0200
+Subject: [PATCH 3/5] ASoC: ti: Convert TWL4030 to use GPIO descriptors
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230926-descriptors-asoc-ti-v1-2-60cf4f8adbc5@linaro.org>
+Message-Id: <20230926-descriptors-asoc-ti-v1-3-60cf4f8adbc5@linaro.org>
 References: <20230926-descriptors-asoc-ti-v1-0-60cf4f8adbc5@linaro.org>
 In-Reply-To: <20230926-descriptors-asoc-ti-v1-0-60cf4f8adbc5@linaro.org>
 To:     Tony Lindgren <tony@atomide.com>,
@@ -78,86 +77,101 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The RX51/Nokia n900 uses the legacy GPIO header to convert a GPIO
-back to the global GPIO numberspace and then the jack using it
-in the snd_soc_jack_add_gpios() call immediately looks up the
-corresponding descriptor again.
+The TWL4030 is actually only ever populated from the device tree,
+so we can just pass the right device and headphone jack GPIO name
+to snd_soc_jack_add_gpios() and it will pick the right GPIO right
+from the device tree.
 
-The snd_soc_jack_add_gpios() handles GPIOs passed with devices
-just fine: pass in the device instead, and rename the GPIO
-to match the property in the device tree, and it should work
-all the same but without all the trouble.
+The platform data patch is unused (no in-tree users of the pdata
+method) but these can use GPIO descriptor tables rather than global
+GPIO numbers if they need this.
 
 Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 ---
- sound/soc/ti/rx51.c | 19 ++++---------------
- 1 file changed, 4 insertions(+), 15 deletions(-)
+ include/linux/platform_data/omap-twl4030.h |  3 ---
+ sound/soc/ti/omap-twl4030.c                | 20 ++++++++------------
+ 2 files changed, 8 insertions(+), 15 deletions(-)
 
-diff --git a/sound/soc/ti/rx51.c b/sound/soc/ti/rx51.c
-index 322c398d209b..047f852c79a9 100644
---- a/sound/soc/ti/rx51.c
-+++ b/sound/soc/ti/rx51.c
-@@ -10,7 +10,6 @@
-  */
- 
- #include <linux/delay.h>
--#include <linux/gpio.h>
- #include <linux/platform_device.h>
- #include <linux/gpio/consumer.h>
- #include <linux/module.h>
-@@ -33,7 +32,6 @@ enum {
- 
- struct rx51_audio_pdata {
- 	struct gpio_desc *tvout_selection_gpio;
--	struct gpio_desc *jack_detection_gpio;
- 	struct gpio_desc *eci_sw_gpio;
- 	struct gpio_desc *speaker_amp_gpio;
- };
-@@ -198,7 +196,7 @@ static struct snd_soc_jack rx51_av_jack;
- 
- static struct snd_soc_jack_gpio rx51_av_jack_gpios[] = {
- 	{
--		.name = "avdet-gpio",
-+		.name = "jack-detection",
- 		.report = SND_JACK_HEADSET,
- 		.invert = 1,
- 		.debounce_time = 200,
-@@ -263,7 +261,6 @@ static const struct snd_kcontrol_new aic34_rx51_controls[] = {
- static int rx51_aic34_init(struct snd_soc_pcm_runtime *rtd)
- {
- 	struct snd_soc_card *card = rtd->card;
--	struct rx51_audio_pdata *pdata = snd_soc_card_get_drvdata(card);
- 	int err;
- 
- 	snd_soc_limit_volume(card, "TPA6130A2 Headphone Playback Volume", 42);
-@@ -283,9 +280,9 @@ static int rx51_aic34_init(struct snd_soc_pcm_runtime *rtd)
- 		return err;
- 	}
- 
--	/* prepare gpio for snd_soc_jack_add_gpios */
--	rx51_av_jack_gpios[0].gpio = desc_to_gpio(pdata->jack_detection_gpio);
--	devm_gpiod_put(card->dev, pdata->jack_detection_gpio);
-+	rx51_av_jack_gpios[0].gpiod_dev = card->dev;
-+	/* Name is assigned in the struct */
-+	rx51_av_jack_gpios[0].idx = 0;
- 
- 	err = snd_soc_jack_add_gpios(&rx51_av_jack,
- 				     ARRAY_SIZE(rx51_av_jack_gpios),
-@@ -425,14 +422,6 @@ static int rx51_soc_probe(struct platform_device *pdev)
- 		return PTR_ERR(pdata->tvout_selection_gpio);
- 	}
- 
--	pdata->jack_detection_gpio = devm_gpiod_get(card->dev,
--						    "jack-detection",
--						    GPIOD_ASIS);
--	if (IS_ERR(pdata->jack_detection_gpio)) {
--		dev_err(card->dev, "could not get jack detection gpio\n");
--		return PTR_ERR(pdata->jack_detection_gpio);
--	}
+diff --git a/include/linux/platform_data/omap-twl4030.h b/include/linux/platform_data/omap-twl4030.h
+index 0dd851ea1c72..7fcb55fe21c9 100644
+--- a/include/linux/platform_data/omap-twl4030.h
++++ b/include/linux/platform_data/omap-twl4030.h
+@@ -37,9 +37,6 @@ struct omap_tw4030_pdata {
+ 	bool	has_digimic0;
+ 	bool	has_digimic1;
+ 	u8	has_linein;
 -
- 	pdata->eci_sw_gpio = devm_gpiod_get(card->dev, "eci-switch",
- 					    GPIOD_OUT_HIGH);
- 	if (IS_ERR(pdata->eci_sw_gpio)) {
+-	/* Jack detect GPIO or  <= 0 if it is not implemented */
+-	int jack_detect;
+ };
+ 
+ #endif /* _OMAP_TWL4030_H_ */
+diff --git a/sound/soc/ti/omap-twl4030.c b/sound/soc/ti/omap-twl4030.c
+index 950eec44503b..c7055bb424e6 100644
+--- a/sound/soc/ti/omap-twl4030.c
++++ b/sound/soc/ti/omap-twl4030.c
+@@ -20,8 +20,6 @@
+ #include <linux/platform_data/omap-twl4030.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
+-#include <linux/gpio.h>
+-#include <linux/of_gpio.h>
+ 
+ #include <sound/core.h>
+ #include <sound/pcm.h>
+@@ -31,7 +29,6 @@
+ #include "omap-mcbsp.h"
+ 
+ struct omap_twl4030 {
+-	int jack_detect;	/* board can detect jack events */
+ 	struct snd_soc_jack hs_jack;
+ };
+ 
+@@ -130,7 +127,7 @@ static struct snd_soc_jack_pin hs_jack_pins[] = {
+ /* Headset jack detection gpios */
+ static struct snd_soc_jack_gpio hs_jack_gpios[] = {
+ 	{
+-		.name = "hsdet-gpio",
++		.name = "ti,jack-det",
+ 		.report = SND_JACK_HEADSET,
+ 		.debounce_time = 200,
+ 	},
+@@ -151,9 +148,13 @@ static int omap_twl4030_init(struct snd_soc_pcm_runtime *rtd)
+ 	struct omap_twl4030 *priv = snd_soc_card_get_drvdata(card);
+ 	int ret = 0;
+ 
+-	/* Headset jack detection only if it is supported */
+-	if (priv->jack_detect > 0) {
+-		hs_jack_gpios[0].gpio = priv->jack_detect;
++	/*
++	 * This is a bit of a hack, but the GPIO is optional so we
++	 * only want to add the jack detection if the GPIO is there.
++	 */
++	if (of_property_present(card->dev->of_node, "ti,jack-det-gpio")) {
++		hs_jack_gpios[0].gpiod_dev = card->dev;
++		hs_jack_gpios[0].idx = 0;
+ 
+ 		ret = snd_soc_card_jack_new_pins(rtd->card, "Headset Jack",
+ 						 SND_JACK_HEADSET,
+@@ -279,9 +280,6 @@ static int omap_twl4030_probe(struct platform_device *pdev)
+ 			omap_twl4030_dai_links[1].platforms->of_node = dai_node;
+ 		}
+ 
+-		priv->jack_detect = of_get_named_gpio(node,
+-						      "ti,jack-det-gpio", 0);
+-
+ 		/* Optional: audio routing can be provided */
+ 		prop = of_find_property(node, "ti,audio-routing", NULL);
+ 		if (prop) {
+@@ -302,8 +300,6 @@ static int omap_twl4030_probe(struct platform_device *pdev)
+ 
+ 		if (!pdata->voice_connected)
+ 			card->num_links = 1;
+-
+-		priv->jack_detect = pdata->jack_detect;
+ 	} else {
+ 		dev_err(&pdev->dev, "Missing pdata\n");
+ 		return -ENODEV;
 
 -- 
 2.34.1
