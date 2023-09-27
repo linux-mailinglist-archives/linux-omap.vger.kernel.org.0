@@ -2,91 +2,109 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ACC477B04DD
-	for <lists+linux-omap@lfdr.de>; Wed, 27 Sep 2023 15:03:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02EF17B0966
+	for <lists+linux-omap@lfdr.de>; Wed, 27 Sep 2023 17:55:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231718AbjI0NDi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 27 Sep 2023 09:03:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56920 "EHLO
+        id S232635AbjI0PzN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 27 Sep 2023 11:55:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52438 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231378AbjI0NDh (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 27 Sep 2023 09:03:37 -0400
-Received: from mail-ot1-x333.google.com (mail-ot1-x333.google.com [IPv6:2607:f8b0:4864:20::333])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CCBFF5;
-        Wed, 27 Sep 2023 06:03:36 -0700 (PDT)
-Received: by mail-ot1-x333.google.com with SMTP id 46e09a7af769-6c0a42a469dso6704955a34.2;
-        Wed, 27 Sep 2023 06:03:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695819815; x=1696424615; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3Fpft+7FBdM1m9ee7BDEtS5cHOizfIyHuc5HqY5mYFU=;
-        b=V74wnztkoEK4Va58pyyybtdaSpTCrJ8aFvJduEw1QwiqD1hqtSHI4TVUm9nCy6JmYT
-         XiytNWC5DERLmHhegUHj5uuRxHlYMbHavPooeouALtpW99kxjCZg32sZaIxqRs3FcvST
-         niviYYDaiqntuscvD/twdFKLs8bnPr+Aa8Vmb3PUrK2lmvMd2f9rdJC+Up0hNJARXnhA
-         /kfCffB/xJmG/0d16nU1jsJ37keVOsXEQP4IKGb6ddEWvODmhZNtPDfyKcroEjs/9mvO
-         Uvy427sHWaStbFPfU730nQwuPxounJtWvGRUn+vYr/naXWuSfLT7S6+BUEx68uWPVJis
-         hR8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695819815; x=1696424615;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3Fpft+7FBdM1m9ee7BDEtS5cHOizfIyHuc5HqY5mYFU=;
-        b=GCscGmgxSJ6yoPf/3Y5z8gFNxZGzyHiS7GZ1R07xecakSTtPxGZaPtofTZsHDROcgx
-         w6EJVDNe9Nas2q2vQ9zrPl/ls3po3bGPMThow13Jy7wno1KQIaBCK/0VejDEeJfOiYbH
-         Jr2IhdMD6I8yfPH0hx4YPGGvvilSa0ozgcWadpuanSRi1yo5pnNBPffTTUDgr8hLdlXm
-         3ivpjmjemdZ/m3qGCOFScxEWGtxz1PDikqTFcJ8GgU/5XZ8Ex1Jpq6P4agukykXnH+V3
-         ZqQx1LEBJuVAzmvxeN5TIpr1GIYHXowy4iF34LpkZuyc5V6LDoV9EsJR2qn+rJzuZjMg
-         3Qhg==
-X-Gm-Message-State: AOJu0YztjqAi5fGeX3dpAOfqtyKv71PlFZyWt1wicHMRLVv61o/kUDvZ
-        IH7+/mrYFpVo6kaI/TNHfLcQrlkhOOv8Zfy3tT4Mc0Of5XI=
-X-Google-Smtp-Source: AGHT+IGiOn5xsl2j8AsXAHR7BfPhRCPfq8l/DFHg/u1vcOKe8MsoBRv/0tSgPZ37BMvuLgt5vDKNF+uuyaodKzo9Z/8=
-X-Received: by 2002:a9d:7ace:0:b0:6bd:67c:ba9c with SMTP id
- m14-20020a9d7ace000000b006bd067cba9cmr1746902otn.35.1695819815569; Wed, 27
- Sep 2023 06:03:35 -0700 (PDT)
+        with ESMTP id S232650AbjI0PzC (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 27 Sep 2023 11:55:02 -0400
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 838FD10DB;
+        Wed, 27 Sep 2023 08:52:27 -0700 (PDT)
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id 6EE071C002E; Wed, 27 Sep 2023 17:52:25 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
+        t=1695829945;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=gKmlF24D9wEYZmpPY4pyhX2RZKAFbVwikfJcj8WeaM0=;
+        b=oO1c9uhQ2eI5cunUP9Zglr8sb92Noy1qFKhmSpB8VGObMguJ5N7hwEEMiybrDyAHHvU8ss
+        wjoU8hwybc60n/+zprXid9vQ2OsKhSwhAW+c2Kb9gkg1VkMig2GDmeyD10Q2h/Whfl6aU8
+        ZEA3J/LTB1acZQZQJbaOWptd79iIZok=
+Date:   Wed, 27 Sep 2023 17:52:17 +0200
+From:   Pavel Machek <pavel@ucw.cz>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     kernel list <linux-kernel@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        linux-omap@vger.kernel.org, sre@kernel.org, nekit1000@gmail.com,
+        mpartap@gmx.net, merlijn@wizzup.org, martin_rysavy@centrum.cz,
+        phone-devel@vger.kernel.org, maemo-leste@lists.dyne.org
+Subject: Re: droid4 -- weird behaviour when attempting to use usb host
+Message-ID: <ZRRPsWQiTP21hozK@duo.ucw.cz>
+References: <ZRGa+0OFNluV4T5t@localhost>
+ <20230926071415.GW5285@atomide.com>
 MIME-Version: 1.0
-References: <20230926203739.2119963-1-andreas@kemnade.info> <20230926203739.2119963-3-andreas@kemnade.info>
-In-Reply-To: <20230926203739.2119963-3-andreas@kemnade.info>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 27 Sep 2023 16:02:59 +0300
-Message-ID: <CAHp75VfkZwYimkT6ki6+jPEZ7gNcWbg7c8ZJ8mXbEYxpmSqmTA@mail.gmail.com>
-Subject: Re: [PATCH v2 2/3] iio: imu: mpu6050: add level shifter flag
-To:     Andreas Kemnade <andreas@kemnade.info>
-Cc:     jic23@kernel.org, lars@metafoo.de, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        bcousson@baylibre.com, tony@atomide.com,
-        jean-baptiste.maneyrol@tdk.com, chenhuiz@axis.com,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="dNROfh5L9PZtEJdO"
+Content-Disposition: inline
+In-Reply-To: <20230926071415.GW5285@atomide.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, Sep 26, 2023 at 11:38=E2=80=AFPM Andreas Kemnade <andreas@kemnade.i=
-nfo> wrote:
->
-> Some boards fail in magnetometer probe if level shifter flag is not set,
-> definition was found in a 3.0 vendor kernel.
 
-I would rather use the more standard (IIUC the versioning here)
-"...in the vendor Linux kernel v3.0." (also note article change).
+--dNROfh5L9PZtEJdO
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Same for all cases below.
+Hi!
 
-I believe Jonathan can update this when applying, otherwise the code looks =
-fine,
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> > I'm having some fun with usb host. Good news is it works with
+> > externally powered hub... after a while. I get some error messages
+> > about inability to go host mode, but with enough patience it
+> > eventually does enter host mode and I see my keyboard/mouse.
+> >=20
+> > And usually in that process, one of my cpu cores disappear. top no
+> > longer shows 2 cores, and I was wondering for a while if d4 is
+> > single-core system. It is not, my two cores are back after reboot.
+> >=20
+> > That's with 6.1.9 kernel from leste. Ideas how to debug this would be
+> > welcome. (Do you use usb host?)
+>=20
+> You are using a "proper" non-standard usb micro-b cable that grounds
+> the id pin, right?
 
+Yes.
+
+> If not, try with one of those as it allows the hardware to do what it's
+> supposed to do.
+>=20
+> And presumably you don't have a hacked usb hub that feeds back the
+> vbus to your phone, right?
+
+Do have hacked hub. Or more precisely, have device that needs external
+power (spinning rust), and hub passes it back to the device.
+
+I'll retry with a keyboard... but I recall it behaved funny with that, too.
+
+> If you have, that should not be used as the pmic can feed vbus.
+
+Well, my plan was to use it as a desktop, and external power is useful
+that as Droid battery is not that big.
+
+Best regards,
+								Pavel
 --=20
-With Best Regards,
-Andy Shevchenko
+People of Russia, stop Putin before his war on Ukraine escalates.
+
+--dNROfh5L9PZtEJdO
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZRRPsQAKCRAw5/Bqldv6
+8ra8AKC7lzjBB+3yYRhK28e2x1T8h8LbwwCgqUR1vYbz8ywFk9hMmsDOjdNra2g=
+=ItwB
+-----END PGP SIGNATURE-----
+
+--dNROfh5L9PZtEJdO--
