@@ -2,112 +2,75 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5112C7B0ACF
-	for <lists+linux-omap@lfdr.de>; Wed, 27 Sep 2023 19:06:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83C247B0B1C
+	for <lists+linux-omap@lfdr.de>; Wed, 27 Sep 2023 19:33:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229567AbjI0RGT convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-omap@lfdr.de>); Wed, 27 Sep 2023 13:06:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56974 "EHLO
+        id S229583AbjI0RdG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 27 Sep 2023 13:33:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229522AbjI0RGT (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 27 Sep 2023 13:06:19 -0400
-X-Greylist: delayed 907 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 27 Sep 2023 10:06:15 PDT
-Received: from sender-of-o49.zoho.eu (sender11-of-o53.zoho.eu [31.186.226.239])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAADF95;
-        Wed, 27 Sep 2023 10:06:15 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1695833431; cv=none; 
-        d=zohomail.eu; s=zohoarc; 
-        b=hotgoDEPYTwzrbPtF5xB3V1zHmZgMpbqYamrkCWowv4aY1gfZVZsIFPlmMs9+i8KCCxQVC7AGrYz42Uj/z/P0mLnvVPDBTI4nZOFV8czeD+LiJnhUAIwFfMaeTmUMaJbsqvR+44LTxjRKwHMkhiZBFGJVDLaUha48S9E8QST5I0=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-        t=1695833431; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-        bh=/KrHy5tQAsIei5Iqu5rYZG0GhfjNKeGvw6jsZ0TcLY8=; 
-        b=T+nkQv4IoPSVfjqN9+ddTcBlo0Gg7I6YmAmnVvlLFC2TM5OzT3RDFq3yoJHYmgcSsTA2LWdiOtnFk/e8zZeqOlsjPAop+PHfs7Bvu2KTHGY5XS0dju/IlCNRvK0jwjxB/X8qE1WTY5aPFFv2iz5zz8g518QJ3FyUDJ6coSbs3/0=
-ARC-Authentication-Results: i=1; mx.zohomail.eu;
-        spf=pass  smtp.mailfrom=devnull@uvos.xyz;
-        dmarc=pass header.from=<devnull@uvos.xyz>
-Received: from [10.0.0.2] (ip-037-201-240-143.um10.pools.vodafone-ip.de [37.201.240.143]) by mx.zoho.eu
-        with SMTPS id 1695833428206965.6284300956125; Wed, 27 Sep 2023 18:50:28 +0200 (CEST)
-Message-ID: <994d5d7187a96fa48ade9244bcc9bd57465bf487.camel@uvos.xyz>
-Subject: Re: droid4 -- weird behaviour when attempting to use usb host
-From:   Unknown <devnull@uvos.xyz>
-To:     Pavel Machek <pavel@ucw.cz>, Tony Lindgren <tony@atomide.com>
-Cc:     kernel list <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        linux-omap@vger.kernel.org, sre@kernel.org, nekit1000@gmail.com,
-        mpartap@gmx.net, merlijn@wizzup.org, martin_rysavy@centrum.cz,
-        phone-devel@vger.kernel.org, maemo-leste@lists.dyne.org
-Date:   Wed, 27 Sep 2023 18:50:26 +0200
-In-Reply-To: <ZRRPsWQiTP21hozK@duo.ucw.cz>
-References: <ZRGa+0OFNluV4T5t@localhost> <20230926071415.GW5285@atomide.com>
-         <ZRRPsWQiTP21hozK@duo.ucw.cz>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-User-Agent: Evolution 3.48.4 
+        with ESMTP id S229437AbjI0RdD (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 27 Sep 2023 13:33:03 -0400
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a02:c205:3004:2154::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45362B4;
+        Wed, 27 Sep 2023 10:32:59 -0700 (PDT)
+Received: from p200300ccff4287001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff42:8700:1a3d:a2ff:febf:d33a] helo=aktux)
+        by mail.andi.de1.cc with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <andreas@kemnade.info>)
+        id 1qlYP1-004Exv-Lj; Wed, 27 Sep 2023 19:32:47 +0200
+Received: from andi by aktux with local (Exim 4.96)
+        (envelope-from <andreas@kemnade.info>)
+        id 1qlYP0-0091bC-1w;
+        Wed, 27 Sep 2023 19:32:46 +0200
+From:   Andreas Kemnade <andreas@kemnade.info>
+To:     jic23@kernel.org, lars@metafoo.de, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+        bcousson@baylibre.com, tony@atomide.com, andreas@kemnade.info,
+        chenhuiz@axis.com, jean-baptiste.maneyrol@tdk.com,
+        andy.shevchenko@gmail.com, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org
+Subject: [PATCH v3 0/3] ARM: omap: omap4-embt2ws: Add IMU on control unit
+Date:   Wed, 27 Sep 2023 19:32:42 +0200
+Message-Id: <20230927173245.2151083-1-andreas@kemnade.info>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-X-ZohoMailClient: External
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, 2023-09-27 at 17:52 +0200, Pavel Machek wrote:
-> Hi!
-> 
-> > > I'm having some fun with usb host. Good news is it works with
-> > > externally powered hub... after a while. I get some error
-> > > messages
-> > > about inability to go host mode, but with enough patience it
-> > > eventually does enter host mode and I see my keyboard/mouse.
-> > > 
-> > > And usually in that process, one of my cpu cores disappear. top
-> > > no
-> > > longer shows 2 cores, and I was wondering for a while if d4 is
-> > > single-core system. It is not, my two cores are back after
-> > > reboot.
-> > > 
-> > > That's with 6.1.9 kernel from leste. Ideas how to debug this
-> > > would be
-> > > welcome. (Do you use usb host?)
-> > 
-> > You are using a "proper" non-standard usb micro-b cable that
-> > grounds
-> > the id pin, right?
-> 
-> Yes.
-> 
-> > If not, try with one of those as it allows the hardware to do what
-> > it's
-> > supposed to do.
-> > 
-> > And presumably you don't have a hacked usb hub that feeds back the
-> > vbus to your phone, right?
-> 
-> Do have hacked hub. Or more precisely, have device that needs
-> external
-> power (spinning rust), and hub passes it back to the device.
-> 
-> I'll retry with a keyboard... but I recall it behaved funny with
-> that, too.
-> 
-> > If you have, that should not be used as the pmic can feed vbus.
-> 
-> Well, my plan was to use it as a desktop, and external power is
-> useful
-> that as Droid battery is not that big.
-> 
-> Best regards,
->                                                                 Pavel
+Contrary to the IMU at the head, a bit needs to be set to
+make probe of the magnetometer successful.
 
-I use usb host quite a bit with xt875, mostly to have a keyboard.
-I have noted that several hubs i have don't work reliably, im not sure
-why. Its possible that they use or request too mutch power from the
-port as cpcap has a pretty small vbus out limit.
+Changes in V3:
+- correct another - vs _ issue in device tree
+- more standard kernel version description
 
-All my regular otg adapters work fine however.
+Changes in V2:
+- add types in binding doc
+- more description / comments in binding doc
+- limit register change to imu9150
+- correct node name in device tree (- vs _)
 
-I also have a powered hub that works quite well, its item 373697032160
-on ebay
+Andreas Kemnade (3):
+  dt-bindings: iio: imu: mpu6050: Add level shifter
+  iio: imu: mpu6050: add level shifter flag
+  ARM: dts: omap: omap4-embt2ws: Add IMU at control unit
+
+ .../bindings/iio/imu/invensense,mpu6050.yaml    |  5 +++++
+ .../boot/dts/ti/omap/omap4-epson-embt2ws.dts    | 17 ++++++++++++++++-
+ drivers/iio/imu/inv_mpu6050/inv_mpu_aux.c       | 13 +++++++++++++
+ drivers/iio/imu/inv_mpu6050/inv_mpu_core.c      |  3 +++
+ drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h       |  1 +
+ 5 files changed, 38 insertions(+), 1 deletion(-)
+
+-- 
+2.39.2
 
