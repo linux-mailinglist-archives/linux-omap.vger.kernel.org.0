@@ -2,96 +2,112 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 149EE7B0A1C
-	for <lists+linux-omap@lfdr.de>; Wed, 27 Sep 2023 18:29:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5112C7B0ACF
+	for <lists+linux-omap@lfdr.de>; Wed, 27 Sep 2023 19:06:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230000AbjI0Q3N (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 27 Sep 2023 12:29:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32994 "EHLO
+        id S229567AbjI0RGT convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-omap@lfdr.de>); Wed, 27 Sep 2023 13:06:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56974 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229692AbjI0Q3M (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 27 Sep 2023 12:29:12 -0400
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a02:c205:3004:2154::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6198391;
-        Wed, 27 Sep 2023 09:29:10 -0700 (PDT)
-Received: from p5dcc3085.dip0.t-ipconnect.de ([93.204.48.133] helo=aktux)
-        by mail.andi.de1.cc with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <andreas@kemnade.info>)
-        id 1qlXPO-004Eov-0C; Wed, 27 Sep 2023 18:29:05 +0200
-Date:   Wed, 27 Sep 2023 18:29:03 +0200
-From:   Andreas Kemnade <andreas@kemnade.info>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     bcousson@baylibre.com, tony@atomide.com, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ARM: dts: omap4-embt2ws: Add Bluetooth
-Message-ID: <20230927182903.4cf1527f@aktux>
-In-Reply-To: <be991b32-018a-478d-bd74-6c79ea1c788e@linaro.org>
-References: <20230926204204.2120316-1-andreas@kemnade.info>
-        <be991b32-018a-478d-bd74-6c79ea1c788e@linaro.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
+        with ESMTP id S229522AbjI0RGT (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 27 Sep 2023 13:06:19 -0400
+X-Greylist: delayed 907 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 27 Sep 2023 10:06:15 PDT
+Received: from sender-of-o49.zoho.eu (sender11-of-o53.zoho.eu [31.186.226.239])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAADF95;
+        Wed, 27 Sep 2023 10:06:15 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1695833431; cv=none; 
+        d=zohomail.eu; s=zohoarc; 
+        b=hotgoDEPYTwzrbPtF5xB3V1zHmZgMpbqYamrkCWowv4aY1gfZVZsIFPlmMs9+i8KCCxQVC7AGrYz42Uj/z/P0mLnvVPDBTI4nZOFV8czeD+LiJnhUAIwFfMaeTmUMaJbsqvR+44LTxjRKwHMkhiZBFGJVDLaUha48S9E8QST5I0=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
+        t=1695833431; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+        bh=/KrHy5tQAsIei5Iqu5rYZG0GhfjNKeGvw6jsZ0TcLY8=; 
+        b=T+nkQv4IoPSVfjqN9+ddTcBlo0Gg7I6YmAmnVvlLFC2TM5OzT3RDFq3yoJHYmgcSsTA2LWdiOtnFk/e8zZeqOlsjPAop+PHfs7Bvu2KTHGY5XS0dju/IlCNRvK0jwjxB/X8qE1WTY5aPFFv2iz5zz8g518QJ3FyUDJ6coSbs3/0=
+ARC-Authentication-Results: i=1; mx.zohomail.eu;
+        spf=pass  smtp.mailfrom=devnull@uvos.xyz;
+        dmarc=pass header.from=<devnull@uvos.xyz>
+Received: from [10.0.0.2] (ip-037-201-240-143.um10.pools.vodafone-ip.de [37.201.240.143]) by mx.zoho.eu
+        with SMTPS id 1695833428206965.6284300956125; Wed, 27 Sep 2023 18:50:28 +0200 (CEST)
+Message-ID: <994d5d7187a96fa48ade9244bcc9bd57465bf487.camel@uvos.xyz>
+Subject: Re: droid4 -- weird behaviour when attempting to use usb host
+From:   Unknown <devnull@uvos.xyz>
+To:     Pavel Machek <pavel@ucw.cz>, Tony Lindgren <tony@atomide.com>
+Cc:     kernel list <linux-kernel@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        linux-omap@vger.kernel.org, sre@kernel.org, nekit1000@gmail.com,
+        mpartap@gmx.net, merlijn@wizzup.org, martin_rysavy@centrum.cz,
+        phone-devel@vger.kernel.org, maemo-leste@lists.dyne.org
+Date:   Wed, 27 Sep 2023 18:50:26 +0200
+In-Reply-To: <ZRRPsWQiTP21hozK@duo.ucw.cz>
+References: <ZRGa+0OFNluV4T5t@localhost> <20230926071415.GW5285@atomide.com>
+         <ZRRPsWQiTP21hozK@duo.ucw.cz>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+User-Agent: Evolution 3.48.4 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-ZohoMailClient: External
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-
-
-On Wed, 27 Sep 2023 09:56:28 +02Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
-
-> On 26/09/2023 22:42, Andreas Kemnade wrote:
-> > Since the required clock is now available, add bluetooth.
-> > 
-> > Note: Firmware (bts file) from device vendor reroutes tx for some time
-> > during initialisation and later put it back, producing timeouts in
-> > bluetooth initialisation but ignoring that command leads to proper
-> > initialisation.
-> > 
-> > Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-> > ---
-> > Depends on: https://lore.kernel.org/linux-omap/20230916100515.1650336-6-andreas@kemnade.info/T/#u
-> >  arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts | 10 ++++++----
-> >  1 file changed, 6 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts b/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts
-> > index 9d2f2d8639496..25b80385dc1f0 100644
-> > --- a/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts
-> > +++ b/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts
-> > @@ -478,10 +478,12 @@ &uart2 {
-> >  	interrupts-extended = <&wakeupgen GIC_SPI 73 IRQ_TYPE_LEVEL_HIGH
-> >  			       &omap4_pmx_core OMAP4_UART2_RX>;
-> >  
-> > -	/*
-> > -	 * BT + GPS in WL1283 in WG7500 requiring CLK32KAUDIO of pmic
-> > -	 * which does not have a driver
-> > -	 */
-> > +	bluetooth: tiwi {  
+On Wed, 2023-09-27 at 17:52 +0200, Pavel Machek wrote:
+> Hi!
 > 
-> Node names should be generic. See also an explanation and list of
-> examples (not exhaustive) in DT specification:
-> https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
+> > > I'm having some fun with usb host. Good news is it works with
+> > > externally powered hub... after a while. I get some error
+> > > messages
+> > > about inability to go host mode, but with enough patience it
+> > > eventually does enter host mode and I see my keyboard/mouse.
+> > > 
+> > > And usually in that process, one of my cpu cores disappear. top
+> > > no
+> > > longer shows 2 cores, and I was wondering for a while if d4 is
+> > > single-core system. It is not, my two cores are back after
+> > > reboot.
+> > > 
+> > > That's with 6.1.9 kernel from leste. Ideas how to debug this
+> > > would be
+> > > welcome. (Do you use usb host?)
+> > 
+> > You are using a "proper" non-standard usb micro-b cable that
+> > grounds
+> > the id pin, right?
 > 
-> E.g. "bluetooth"
+> Yes.
 > 
-well, that is what I get currently as a reward from the kernel for describing
-the hardware and so the motivation for the patch, not necessarily the most important
-functionality.
+> > If not, try with one of those as it allows the hardware to do what
+> > it's
+> > supposed to do.
+> > 
+> > And presumably you don't have a hacked usb hub that feeds back the
+> > vbus to your phone, right?
+> 
+> Do have hacked hub. Or more precisely, have device that needs
+> external
+> power (spinning rust), and hub passes it back to the device.
+> 
+> I'll retry with a keyboard... but I recall it behaved funny with
+> that, too.
+> 
+> > If you have, that should not be used as the pmic can feed vbus.
+> 
+> Well, my plan was to use it as a desktop, and external power is
+> useful
+> that as Droid battery is not that big.
+> 
+> Best regards,
+>                                                                 Pavel
 
-But the over the uart runs the ti shared transport protocol (also there is
-a non dt compatible driver in drivers/misc/ti-st) which provides more than Bluetooth,
-e.g. it also provides at least GNSS and FM (although it do not know if it works in this particular
-hardware). GPS/GNSS should work.
+I use usb host quite a bit with xt875, mostly to have a keyboard.
+I have noted that several hubs i have don't work reliably, im not sure
+why. Its possible that they use or request too mutch power from the
+port as cpcap has a pretty small vbus out limit.
 
-So the node name would be bluetoothgnss then? Well, I think we do not need the label then.
+All my regular otg adapters work fine however.
 
-Regards,
-Andreas
+I also have a powered hub that works quite well, its item 373697032160
+on ebay
+
