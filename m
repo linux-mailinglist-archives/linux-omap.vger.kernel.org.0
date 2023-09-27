@@ -2,128 +2,66 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E644D7AFCE8
-	for <lists+linux-omap@lfdr.de>; Wed, 27 Sep 2023 09:48:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CFB367AFC40
+	for <lists+linux-omap@lfdr.de>; Wed, 27 Sep 2023 09:42:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230213AbjI0HsQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 27 Sep 2023 03:48:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40468 "EHLO
+        id S229458AbjI0Hmt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 27 Sep 2023 03:42:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230140AbjI0Hrj (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 27 Sep 2023 03:47:39 -0400
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 768541B7;
-        Wed, 27 Sep 2023 00:47:38 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id E4DC51F8BD;
-        Wed, 27 Sep 2023 07:47:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1695800856; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=nyztPihry+uYWVQVQilr9GF3JEmaojYG/GDs/5jbvgg=;
-        b=rHGHbynxiC201XZf419py+7wmacbnv7TvFX6pL8BmBQmCu3jxALTfunKlMmemhQB/UwxLE
-        ZBlrt/jR3yfiS91k3QpYnT4cwDdvDPBerZS3ZYz+kiQi5Pluj4lT8s0BTpbDFcXEmUL0Fx
-        a8n5SMYiuhtFUsaNX1X1DMzIKlXz9fw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1695800856;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=nyztPihry+uYWVQVQilr9GF3JEmaojYG/GDs/5jbvgg=;
-        b=bsi9xPfXPtJYkKZOeDjG2LSjbZRJca7H7r4qHipe8HYJhIj+7lJt/AV335m+SgoLhaLaI/
-        1rVsDDIKV9XQxyAA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id A8F431338F;
-        Wed, 27 Sep 2023 07:47:36 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id 4PVRKBjeE2XvUQAAMHmgww
-        (envelope-from <tzimmermann@suse.de>); Wed, 27 Sep 2023 07:47:36 +0000
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-To:     deller@gmx.de, javierm@redhat.com, sam@ravnborg.org, arnd@arndb.de,
-        daniel@ffwll.ch
-Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-nvidia@lists.surfsouth.com, linux-omap@vger.kernel.org,
-        linux-parisc@vger.kernel.org,
-        Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH 46/46] fbdev/vt8623fb: Initialize fb_ops to fbdev I/O-memory helpers
-Date:   Wed, 27 Sep 2023 09:27:19 +0200
-Message-ID: <20230927074722.6197-47-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230927074722.6197-1-tzimmermann@suse.de>
-References: <20230927074722.6197-1-tzimmermann@suse.de>
+        with ESMTP id S230015AbjI0Hms (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 27 Sep 2023 03:42:48 -0400
+Received: from mail.bizcodes.pl (mail.bizcodes.pl [151.80.57.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5E21BF
+        for <linux-omap@vger.kernel.org>; Wed, 27 Sep 2023 00:42:46 -0700 (PDT)
+Received: by mail.bizcodes.pl (Postfix, from userid 1002)
+        id A519CA399F; Wed, 27 Sep 2023 07:41:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=bizcodes.pl; s=mail;
+        t=1695800496; bh=5QPMt7jNntM5ZbstM20BWsHIeLbmRE8lVU4Iu89IleQ=;
+        h=Date:From:To:Subject:From;
+        b=QGyZI3hhn6Jbw+vuJg0WEy2iN5EolbItF7hodRlBnyT57LeX9Sscgng2CBsVl48lz
+         NRjqcciWEyWWEocGgv/7TzXv23F7Phx8maVjhlgXwmdtPJuBbtMrZNYcMrkYkFHAiw
+         D6hbq+J199IVYpj+dSR+OuAWMdLsf6G+lSniZh2b93yKv+apm5/w+JyRYRY+iOoIHq
+         WEZEP8rxLG6TGFT6ktL2K9/qVfOzHp19Phi3i3QKPSSMHyN4np8hSEjlzKTM5aVmV9
+         WDwib9ZUvbOQGYE2m0L4m+CYsFST3lvFQms9IQ/8qv68kgaeAySIeTVQ5XBU1oe/4i
+         vlAmNydKsFAYw==
+Received: by mail.bizcodes.pl for <linux-omap@vger.kernel.org>; Wed, 27 Sep 2023 07:41:02 GMT
+Message-ID: <20230927064500-0.1.by.1fx9k.0.v2e2hnd6ee@bizcodes.pl>
+Date:   Wed, 27 Sep 2023 07:41:02 GMT
+From:   "Marcin Chruszcz" <marcin.chruszcz@bizcodes.pl>
+To:     <linux-omap@vger.kernel.org>
+Subject: Prezentacja
+X-Mailer: mail.bizcodes.pl
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Initialize the instance of struct fb_ops with fbdev initializer
-macros for framebuffers in I/O address space. Set the read/write,
-draw and mmap callbacks to the correct implementation and avoid
-implicit defaults. Also select the necessary I/O helpers in Kconfig.
+Dzie=C5=84 dobry!
 
-Fbdev drivers sometimes rely on the callbacks being NULL for a
-default implementation to be invoked; hence requiring the I/O
-helpers to be built in any case. Setting all callbacks in all
-drivers explicitly will allow to make the I/O helpers optional.
-This benefits systems that do not use these functions.
+Czy m=C3=B3g=C5=82bym przedstawi=C4=87 rozwi=C4=85zanie, kt=C3=B3re umo=C5=
+=BCliwia monitoring ka=C5=BCdego auta w czasie rzeczywistym w tym jego po=
+zycj=C4=99, zu=C5=BCycie paliwa i przebieg?
 
-No functional changes.
+Dodatkowo nasze narz=C4=99dzie minimalizuje koszty utrzymania samochod=C3=
+=B3w, skraca czas przejazd=C3=B3w, a tak=C5=BCe tworzenie planu tras czy =
+dostaw.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
----
- drivers/video/fbdev/Kconfig    | 1 +
- drivers/video/fbdev/vt8623fb.c | 2 ++
- 2 files changed, 3 insertions(+)
+Z naszej wiedzy i do=C5=9Bwiadczenia korzysta ju=C5=BC ponad 49 tys. Klie=
+nt=C3=B3w. Monitorujemy 809 000 pojazd=C3=B3w na ca=C5=82ym =C5=9Bwiecie,=
+ co jest nasz=C4=85 najlepsz=C4=85 wizyt=C3=B3wk=C4=85.
 
-diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
-index dab0e49a66d20..20e0167bf20c9 100644
---- a/drivers/video/fbdev/Kconfig
-+++ b/drivers/video/fbdev/Kconfig
-@@ -1359,6 +1359,7 @@ config FB_VT8623
- 	select FB_CFB_FILLRECT
- 	select FB_CFB_COPYAREA
- 	select FB_CFB_IMAGEBLIT
-+	select FB_IOMEM_FOPS
- 	select FB_TILEBLITTING
- 	select FB_SVGALIB
- 	select VGASTATE
-diff --git a/drivers/video/fbdev/vt8623fb.c b/drivers/video/fbdev/vt8623fb.c
-index 034333ee6e455..f8d022cb61e8d 100644
---- a/drivers/video/fbdev/vt8623fb.c
-+++ b/drivers/video/fbdev/vt8623fb.c
-@@ -644,6 +644,7 @@ static const struct fb_ops vt8623fb_ops = {
- 	.owner		= THIS_MODULE,
- 	.fb_open	= vt8623fb_open,
- 	.fb_release	= vt8623fb_release,
-+	__FB_DEFAULT_IOMEM_OPS_RDWR,
- 	.fb_check_var	= vt8623fb_check_var,
- 	.fb_set_par	= vt8623fb_set_par,
- 	.fb_setcolreg	= vt8623fb_setcolreg,
-@@ -652,6 +653,7 @@ static const struct fb_ops vt8623fb_ops = {
- 	.fb_fillrect	= vt8623fb_fillrect,
- 	.fb_copyarea	= cfb_copyarea,
- 	.fb_imageblit	= vt8623fb_imageblit,
-+	__FB_DEFAULT_IOMEM_OPS_MMAP,
- 	.fb_get_caps    = svga_get_caps,
- };
- 
--- 
-2.42.0
+Bardzo prosz=C4=99 o e-maila zwrotnego, je=C5=9Bli mogliby=C5=9Bmy wsp=C3=
+=B3lnie om=C3=B3wi=C4=87 potencja=C5=82 wykorzystania takiego rozwi=C4=85=
+zania w Pa=C5=84stwa firmie.
 
+
+Pozdrawiam
+Marcin Chruszcz
