@@ -2,65 +2,70 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C170F7AFD25
-	for <lists+linux-omap@lfdr.de>; Wed, 27 Sep 2023 09:56:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F6047AFD29
+	for <lists+linux-omap@lfdr.de>; Wed, 27 Sep 2023 09:57:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230062AbjI0H4e (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 27 Sep 2023 03:56:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48752 "EHLO
+        id S230033AbjI0H5I (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 27 Sep 2023 03:57:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230017AbjI0H4d (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 27 Sep 2023 03:56:33 -0400
-Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E685112A
-        for <linux-omap@vger.kernel.org>; Wed, 27 Sep 2023 00:56:31 -0700 (PDT)
-Received: by mail-ed1-x535.google.com with SMTP id 4fb4d7f45d1cf-53406799540so7214025a12.1
-        for <linux-omap@vger.kernel.org>; Wed, 27 Sep 2023 00:56:31 -0700 (PDT)
+        with ESMTP id S230000AbjI0H5H (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 27 Sep 2023 03:57:07 -0400
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A010126
+        for <linux-omap@vger.kernel.org>; Wed, 27 Sep 2023 00:57:05 -0700 (PDT)
+Received: by mail-ej1-x632.google.com with SMTP id a640c23a62f3a-9a64619d8fbso1345516366b.0
+        for <linux-omap@vger.kernel.org>; Wed, 27 Sep 2023 00:57:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1695801390; x=1696406190; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1695801423; x=1696406223; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=96ebBgx1uSlbR8rPTJiSyqkFJrYOiTjIL7us7h3SKyE=;
-        b=tsGqzCl+8UuWu9S/JlNDmNAZLDaJVtzke9OoDG1mOivTBa5HbJvrwXu6xb7kTluMQH
-         B5g9kVcTFJX7YzceKCKVF+mSR0xNpoClzmt52IC0OBc4zKCULHxkjZ8e+r7IaNAmztqN
-         DdGUuOl/ZRbUV3208/yCueffPQqryPZ26pFAIphMLZn51OTO97P5V9LE4zMhahn7FkSU
-         hgZRUxW4R2pZJu3WDKMQlBKrIxLtv6XneVogPQnTBji6NPnk6W/y/AYH//elkZzfryg+
-         92h/1H/xeL1X9OP8sou29fv3SejImq3FE2IiiAOpyBqBgYMhDb2Wigu5eLiNOB9FDTbp
-         ZZjA==
+        bh=G6qcjno+1zTbyZy3oHtVK6lgUt4U3JQtrPZBgB3GEp4=;
+        b=qb+H3EG4YrLMjUf36Az5tFbEGNEAwFvd4fyCkEMq23t4tur2frxb00RNOVWUwiJhQ7
+         /c8WJg44Ac23/soUVbJky5u43ycpWMzSLyEvpj1bUlqdZtuyJmX/OITOMEV8FZp/yneQ
+         6zfWCJe9apVoHjGuA5JOswuNXMVB10q5eKmENEcPMv6O7/cZBxIvLKEYr4PgmOqTsAii
+         jPq8uwJRX245PRWkRy0bOL8QgtVxXVK5/Cx4wqK3coQZxoa4y2eNMg2wLeRJ+AAoLXsU
+         G5f8b3lyHAVMLweEB5+MDNl+TkzG7u3Y2ur9S5pEKOuOHox0XfmwJud5E6qVMLZ6Oupa
+         RC5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695801390; x=1696406190;
+        d=1e100.net; s=20230601; t=1695801423; x=1696406223;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=96ebBgx1uSlbR8rPTJiSyqkFJrYOiTjIL7us7h3SKyE=;
-        b=nfkx6OMiOxKHlu1M76bt5+YU6uP4P5wJGyCknSWLo7BlPOMvxur1LDkZZD8D1Eg0ro
-         KGbq3dCXm22IF9elfyyqUMLuR0+nk+5LlbiWVQu9lF6qIVbYfRVxlP1WJ+E+M8KBkw55
-         1592rHmJOihdZceI918t5kQ5h4lt1zXPIOka9e44i21P/FEvP1RWSKB9NdmtTs/uK9eQ
-         Iq2/8phxiSIoe7yFAtUzUButQVKsK7v0Md/OzC8Y48hdFlvNpKgB4l04+Zvr8BG6yMcE
-         84pjQjhGh9kX0O/YafuS8g4YoeHt1nwrVfbNjZhQii0TxtYyAkc7G8zj8lDnO2Xjov1X
-         kzTw==
-X-Gm-Message-State: AOJu0YzOF8HpnxrSHW3/w4UWHbzAGdWZHRAMRWx58b+5BPB6JyB0ICXQ
-        AMXoMkz4oVatbjikDOAiauZU9A==
-X-Google-Smtp-Source: AGHT+IE/+vV2N0BC0BpdUGGHLkhFgZnIDdSYdpwLbgx9oIa7dkp4+4CPHsuOaFVi9hmwJggC+Uw2rw==
-X-Received: by 2002:a17:906:10da:b0:9a5:c9a4:ba1a with SMTP id v26-20020a17090610da00b009a5c9a4ba1amr1147664ejv.59.1695801390443;
-        Wed, 27 Sep 2023 00:56:30 -0700 (PDT)
+        bh=G6qcjno+1zTbyZy3oHtVK6lgUt4U3JQtrPZBgB3GEp4=;
+        b=lG9i2Aj4SHjocjAXfyMU7y2+mrToyIAIqHhovoGNtqoTsllIU8I5QNmM/zBR8XkV+x
+         RrLjUOEa1SJYRj+AVqKeDRjnD/SC1VqFyErVydzyp0BVYyInzA5Z9XvOKfX3nENM8GXK
+         DdDBlaMNIjTJH5UfbdQoYvw1RSf8Htl5J0x7SvOV2MO1alu15pJ7h/5qS2UozA2tlAFf
+         woM7beuP41jLqhZymtaB9lOmnv75OeO+POkQhhamAlzk0x96ErFVvzKjwp7F5emwgx+f
+         x/h/XR+o4sw+qu3xRXJzyDRgV8QZqFk4gF8WOIVvhs8Hue++xZ0HqVC4rJkjrpCbEYKh
+         I4rA==
+X-Gm-Message-State: AOJu0YwPsUXzEGKc4V9mvPxmS1j017/UwRMbiL+X97PBlFcMfgAbCEl2
+        Hqtd3IQ4pjzuZ9BVw3LbCpYoHQ==
+X-Google-Smtp-Source: AGHT+IHbHseys7ButVUwKibA5PCwnJwlZhiyl16BTUVQe6h1n528HbZWVv3sqikuXMetDvvYS7xC/w==
+X-Received: by 2002:a17:906:29c:b0:9a1:debe:6b9b with SMTP id 28-20020a170906029c00b009a1debe6b9bmr886358ejf.35.1695801423529;
+        Wed, 27 Sep 2023 00:57:03 -0700 (PDT)
 Received: from [192.168.1.160] (host-87-4-82-94.retail.telecomitalia.it. [87.4.82.94])
-        by smtp.gmail.com with ESMTPSA id vb5-20020a170907d04500b009b299529709sm2198845ejc.132.2023.09.27.00.56.28
+        by smtp.gmail.com with ESMTPSA id vb5-20020a170907d04500b009b299529709sm2198845ejc.132.2023.09.27.00.57.01
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 27 Sep 2023 00:56:30 -0700 (PDT)
-Message-ID: <be991b32-018a-478d-bd74-6c79ea1c788e@linaro.org>
-Date:   Wed, 27 Sep 2023 09:56:28 +0200
+        Wed, 27 Sep 2023 00:57:03 -0700 (PDT)
+Message-ID: <63c5fab2-281d-4354-b20b-b2bbb82d7ff6@linaro.org>
+Date:   Wed, 27 Sep 2023 09:57:01 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ARM: dts: omap4-embt2ws: Add Bluetooth
+Subject: Re: [PATCH v2 3/3] ARM: dts: omap: omap4-embt2ws: Add IMU at control
+ unit
 Content-Language: en-US
-To:     Andreas Kemnade <andreas@kemnade.info>, bcousson@baylibre.com,
-        tony@atomide.com, robh+dt@kernel.org,
+To:     Andreas Kemnade <andreas@kemnade.info>, jic23@kernel.org,
+        lars@metafoo.de, robh+dt@kernel.org,
         krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20230926204204.2120316-1-andreas@kemnade.info>
+        bcousson@baylibre.com, tony@atomide.com,
+        jean-baptiste.maneyrol@tdk.com, chenhuiz@axis.com,
+        andy.shevchenko@gmail.com, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org
+References: <20230926203739.2119963-1-andreas@kemnade.info>
+ <20230926203739.2119963-4-andreas@kemnade.info>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -106,7 +111,7 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20230926204204.2120316-1-andreas@kemnade.info>
+In-Reply-To: <20230926203739.2119963-4-andreas@kemnade.info>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -119,40 +124,44 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 26/09/2023 22:42, Andreas Kemnade wrote:
-> Since the required clock is now available, add bluetooth.
-> 
-> Note: Firmware (bts file) from device vendor reroutes tx for some time
-> during initialisation and later put it back, producing timeouts in
-> bluetooth initialisation but ignoring that command leads to proper
-> initialisation.
+On 26/09/2023 22:37, Andreas Kemnade wrote:
+> Add also the level-shifter flag to avoid probe failure in magnetometer
+> probe.
 > 
 > Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
 > ---
-> Depends on: https://lore.kernel.org/linux-omap/20230916100515.1650336-6-andreas@kemnade.info/T/#u
->  arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts | 10 ++++++----
->  1 file changed, 6 insertions(+), 4 deletions(-)
+>  .../boot/dts/ti/omap/omap4-epson-embt2ws.dts    | 17 ++++++++++++++++-
+>  1 file changed, 16 insertions(+), 1 deletion(-)
 > 
 > diff --git a/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts b/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts
-> index 9d2f2d8639496..25b80385dc1f0 100644
+> index cd4f858d846ab..0cc66e158a8d5 100644
 > --- a/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts
 > +++ b/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts
-> @@ -478,10 +478,12 @@ &uart2 {
->  	interrupts-extended = <&wakeupgen GIC_SPI 73 IRQ_TYPE_LEVEL_HIGH
->  			       &omap4_pmx_core OMAP4_UART2_RX>;
+> @@ -391,7 +391,16 @@ tlv320aic3x: codec@18 {
+>  		reset-gpios = <&gpio2 23 GPIO_ACTIVE_LOW>;
+>  	};
 >  
-> -	/*
-> -	 * BT + GPS in WL1283 in WG7500 requiring CLK32KAUDIO of pmic
-> -	 * which does not have a driver
-> -	 */
-> +	bluetooth: tiwi {
+> -	/* TODO: mpu9150 at control unit, seems to require quirks */
+> +	mpu9150: imu@68 {
+> +		compatible = "invensense,mpu9150";
+> +		reg = <0x68>;
+> +
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&mpu9150_pins>;
+> +		interrupt-parent = <&gpio2>;
+> +		interrupt = <7 IRQ_TYPE_LEVEL_HIGH>;
+> +		invensense,level-shifter;
+> +	};
+>  };
+>  
+>  &keypad {
+> @@ -530,6 +539,12 @@ OMAP4_IOPAD(0x0fc, PIN_INPUT | MUX_MODE0)       /* abe_mcbsp2_fsx */
+>  		>;
+>  	};
+>  
+> +	mpu9150_pins: pinmux_mpu9150-pins {
 
-Node names should be generic. See also an explanation and list of
-examples (not exhaustive) in DT specification:
-https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
-
-E.g. "bluetooth"
-
+Not much improved.
 
 Best regards,
 Krzysztof
