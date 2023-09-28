@@ -2,107 +2,177 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B78E7B10BC
-	for <lists+linux-omap@lfdr.de>; Thu, 28 Sep 2023 04:29:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D97FF7B11CD
+	for <lists+linux-omap@lfdr.de>; Thu, 28 Sep 2023 06:55:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229469AbjI1C3S (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 27 Sep 2023 22:29:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50294 "EHLO
+        id S230210AbjI1EzH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 28 Sep 2023 00:55:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229437AbjI1C3S (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 27 Sep 2023 22:29:18 -0400
-Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1E3AB7;
-        Wed, 27 Sep 2023 19:29:16 -0700 (PDT)
-Received: by mail-pl1-x633.google.com with SMTP id d9443c01a7336-1c0ecb9a075so92794155ad.2;
-        Wed, 27 Sep 2023 19:29:16 -0700 (PDT)
+        with ESMTP id S230203AbjI1EzF (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 28 Sep 2023 00:55:05 -0400
+Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B13DD139
+        for <linux-omap@vger.kernel.org>; Wed, 27 Sep 2023 21:55:03 -0700 (PDT)
+Received: by mail-ej1-x635.google.com with SMTP id a640c23a62f3a-9ae75ece209so1419322466b.3
+        for <linux-omap@vger.kernel.org>; Wed, 27 Sep 2023 21:55:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695868156; x=1696472956; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nG7bj/7CYT96iOMQmtse7TOJSFKIa4UezWf2iE4PEvE=;
-        b=JtZaJFatyFf9y1FreBzXZVERY5VEw+eu0u9vuzwEm9Wy6ubvE/rCZL95DJgC0YSEgk
-         dbDLxbxcOreW7hvcOTS52lmOLZqt4Uvv6GMh2m8wB+ybwvxWjwdQrK6cA4Wg4LsXGIFa
-         bVuZJnbzcxPkqImgQnJXJnAiNLWtPzqN33GH0MXDDeSBjEL6aIutM4L0ezxQ84ke+XeH
-         4v+N3mIITA7h216C3dqyqp1MJK4MMarMUBsrs58eAUJqGJkxtPWowDmd7XNgUwd2sjfy
-         XliMdYejaD+RGMFs3XDLl7ajXPLioBhinYjo3d9FbS5zXtskC5IpoGl04cXy1DZEzTq8
-         5wVQ==
+        d=linaro.org; s=google; t=1695876902; x=1696481702; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=EJzDx2Q6nxZ+DWJMtFRfSZYTpolzYPfGhsHuRSrEKc0=;
+        b=EKzk6BImnX69tO7583aNdG72Q5H0VQtVH6PmrOGI+8m7o03tpVWjulVafAAczF9EbH
+         WFv18onUrVkF/lRCY3LhM5zqG8EvzPxtWhMUn1kvSDEx+ttCxqh0Vkx76Hp9fkXzWlph
+         m1RAGzmXDQH8Iu6My45r6OBJ2eo1yb3B3eChZ/LYgLlRiC/7OUlwe1qcX5IWitDMgW8k
+         QIngZRpoar/F4PlDApZsL1+bJn+I1em6GIkiKuIOjOcs75l7tDDymCLf0uJXYPWon1jM
+         aSlr0q8GeSMlFs/FKYaLHlyJvoBcsOVZZNkFJItgXYnLddmzg+NzeJaxkjZG2DBB2Zdj
+         cOwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695868156; x=1696472956;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nG7bj/7CYT96iOMQmtse7TOJSFKIa4UezWf2iE4PEvE=;
-        b=unAm0oB8wedhu5aoybDU+diGd183bYd892MYicAgHkLnZ2fy+bv77l0+a01KYfXtyY
-         Jaxrqri54Jkhu2pAaySBwbYsnmBdCjED+qsYrkq+mBdjbZfe6lhGLrWnpSSDZj92KzvQ
-         buZETO5zMAyRV1IunUZ7WQgI+4u3IL1ylg4AuS4l2rVRrueLuT2gu4nP6+X5uL33TtKc
-         AllNGRAnKKrEl7+dfKu+uxy5sWgKyXTaG0BI8C9icsTdnSOKdULtSXpyhMlzpFseIMY8
-         FKlAWPKnktgC02/vOIZpvuoHjS8Hf7epJF1/Z2vqnlHeVXG1ysF9wgArFLqMq/5CyB0M
-         xwKQ==
-X-Gm-Message-State: AOJu0Yy+6PvXvvnMY0m43/OlQ8wUBPvdqQb01Oo7X9IxGsuXwN/WxEwv
-        tUlddvvwsP/6Bdn9sZYtmMxEmSA3DeC+TYqlHfwKmoNm
-X-Google-Smtp-Source: AGHT+IHE+J9+PCCpTolKsXgabIXkyyjxEemfilvMDA9kojoN8aRInCiVaGad6KrsXMEhphmmI6D7ZB6fyXgrxFHASU0=
-X-Received: by 2002:a17:90a:c256:b0:268:2543:723 with SMTP id
- d22-20020a17090ac25600b0026825430723mr3285091pjx.5.1695868155780; Wed, 27 Sep
- 2023 19:29:15 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1695876902; x=1696481702;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=EJzDx2Q6nxZ+DWJMtFRfSZYTpolzYPfGhsHuRSrEKc0=;
+        b=tx6S/9NL1lkWlCDo1Za2fv+su5B6YHNI5CEhhjd2oujO/XS8EFQo/qJt3SRE8CaoE9
+         zFud1WEdxZSvH4YQvp8gITKaYtjp/rbjtyqBJGwLBXFNHSTYNkmT6PzVrCTnNVplXdZi
+         bPFhiswKoTGnHSMYlwCupcNXixRmg817HL85UqIFRnP6uUptRUrzWOczihUCYmh/gwGw
+         YBksxl+84Fn1AsB4DETvLE1WpZWgBei8xpYFYNltsQnc3MYDqq3kWMyHmLKWvTw4YqUv
+         hQg4sxxbjZ1kHxtNVNdW82ZNrx5DR3oUCBS9tRVwqf3wCq3Ry0kJ5iFUCVkmXqyCpY/W
+         pNng==
+X-Gm-Message-State: AOJu0Yzzyk1Zyi6SzYR8NC4DY/SQ9mr8SHxKNst7wwNSaF9n6ShjYYIp
+        8g0jN6Ntn5pMm49j5K0dzGsy6A==
+X-Google-Smtp-Source: AGHT+IHACU5tHsuZ4EvgrKipDUERUw5JqVpj7Q+M3eWKWUApcch67+gkqynZubl+rC/1s3suEWX+5Q==
+X-Received: by 2002:a17:906:28e:b0:9ae:552a:3d3f with SMTP id 14-20020a170906028e00b009ae552a3d3fmr181199ejf.28.1695876902123;
+        Wed, 27 Sep 2023 21:55:02 -0700 (PDT)
+Received: from [192.168.1.231] (host-87-4-82-94.retail.telecomitalia.it. [87.4.82.94])
+        by smtp.gmail.com with ESMTPSA id y22-20020a170906449600b009adc77fe165sm10082708ejo.118.2023.09.27.21.55.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 27 Sep 2023 21:55:01 -0700 (PDT)
+Message-ID: <f488a583-6229-4e6b-a22e-4abb224895fe@linaro.org>
+Date:   Thu, 28 Sep 2023 06:54:59 +0200
 MIME-Version: 1.0
-References: <20230906095143.99806-1-aford173@gmail.com> <20230906095143.99806-2-aford173@gmail.com>
-In-Reply-To: <20230906095143.99806-2-aford173@gmail.com>
-From:   Adam Ford <aford173@gmail.com>
-Date:   Wed, 27 Sep 2023 21:29:04 -0500
-Message-ID: <CAHCN7x+w-W8FPqSmM+SSVUAshjM4gRQrnYMj1h=GrzouO4EiDA@mail.gmail.com>
-Subject: Re: [PATCH 2/2] arm: dts: am3517: Configure ethernet alias
-To:     linux-omap@vger.kernel.org
-Cc:     aford@beaconembedded.com,
-        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ARM: dts: omap4-embt2ws: Add Bluetooth
+Content-Language: en-US
+To:     Andreas Kemnade <andreas@kemnade.info>
+Cc:     bcousson@baylibre.com, tony@atomide.com, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20230926204204.2120316-1-andreas@kemnade.info>
+ <be991b32-018a-478d-bd74-6c79ea1c788e@linaro.org>
+ <20230927182903.4cf1527f@aktux>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <20230927182903.4cf1527f@aktux>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Sep 6, 2023 at 4:52=E2=80=AFAM Adam Ford <aford173@gmail.com> wrote=
-:
->
-> The AM3517 has one ethernet controller called davinci_emac.
-> Configuring the alias allows the MAC address to be passed
-> from the bootloader to Linux.
+On 27/09/2023 18:29, Andreas Kemnade wrote:
+> 
+> 
+> On Wed, 27 Sep 2023 09:56:28 +02Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+> 
+>> On 26/09/2023 22:42, Andreas Kemnade wrote:
+>>> Since the required clock is now available, add bluetooth.
+>>>
+>>> Note: Firmware (bts file) from device vendor reroutes tx for some time
+>>> during initialisation and later put it back, producing timeouts in
+>>> bluetooth initialisation but ignoring that command leads to proper
+>>> initialisation.
+>>>
+>>> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+>>> ---
+>>> Depends on: https://lore.kernel.org/linux-omap/20230916100515.1650336-6-andreas@kemnade.info/T/#u
+>>>  arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts | 10 ++++++----
+>>>  1 file changed, 6 insertions(+), 4 deletions(-)
+>>>
+>>> diff --git a/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts b/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts
+>>> index 9d2f2d8639496..25b80385dc1f0 100644
+>>> --- a/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts
+>>> +++ b/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts
+>>> @@ -478,10 +478,12 @@ &uart2 {
+>>>  	interrupts-extended = <&wakeupgen GIC_SPI 73 IRQ_TYPE_LEVEL_HIGH
+>>>  			       &omap4_pmx_core OMAP4_UART2_RX>;
+>>>  
+>>> -	/*
+>>> -	 * BT + GPS in WL1283 in WG7500 requiring CLK32KAUDIO of pmic
+>>> -	 * which does not have a driver
+>>> -	 */
+>>> +	bluetooth: tiwi {  
+>>
+>> Node names should be generic. See also an explanation and list of
+>> examples (not exhaustive) in DT specification:
+>> https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
+>>
+>> E.g. "bluetooth"
+>>
+> well, that is what I get currently as a reward from the kernel for describing
+> the hardware and so the motivation for the patch, not necessarily the most important
+> functionality.
+> 
+> But the over the uart runs the ti shared transport protocol (also there is
+> a non dt compatible driver in drivers/misc/ti-st) which provides more than Bluetooth,
+> e.g. it also provides at least GNSS and FM (although it do not know if it works in this particular
+> hardware). GPS/GNSS should work.
+> 
+> So the node name would be bluetoothgnss then? Well, I think we do not need the label then.
 
-Gentle nudge on this series
+bluetooth-gnss would work for me if it was accepted by bindings... but
+it is not, so this leaves you so far with "bluetooth".
 
-adam
->
-> Signed-off-by: Adam Ford <aford173@gmail.com>
->
-> diff --git a/arch/arm/boot/dts/ti/omap/am3517.dtsi b/arch/arm/boot/dts/ti=
-/omap/am3517.dtsi
-> index fbfc956f4e4d..77e58e686fb1 100644
-> --- a/arch/arm/boot/dts/ti/omap/am3517.dtsi
-> +++ b/arch/arm/boot/dts/ti/omap/am3517.dtsi
-> @@ -15,6 +15,7 @@ / {
->         aliases {
->                 serial3 =3D &uart4;
->                 can =3D &hecc;
-> +               ethernet =3D &davinci_emac;
->         };
->
->         cpus {
-> --
-> 2.39.2
->
+Best regards,
+Krzysztof
+
