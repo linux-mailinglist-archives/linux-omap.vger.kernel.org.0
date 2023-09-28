@@ -2,137 +2,70 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B4F2D7B137E
-	for <lists+linux-omap@lfdr.de>; Thu, 28 Sep 2023 09:05:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C87E7B13D9
+	for <lists+linux-omap@lfdr.de>; Thu, 28 Sep 2023 09:08:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230202AbjI1HF1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 28 Sep 2023 03:05:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41686 "EHLO
+        id S231491AbjI1HIK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 28 Sep 2023 03:08:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230081AbjI1HF0 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 28 Sep 2023 03:05:26 -0400
-Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9769BE
-        for <linux-omap@vger.kernel.org>; Thu, 28 Sep 2023 00:05:24 -0700 (PDT)
-Received: by mail-wr1-x436.google.com with SMTP id ffacd0b85a97d-3231df68584so8521055f8f.1
-        for <linux-omap@vger.kernel.org>; Thu, 28 Sep 2023 00:05:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1695884723; x=1696489523; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=JK5FKcmSKFk/poFkH6WaIiPHJq3+6nK77MGlhBlv5xc=;
-        b=eMabU90bnM4dFTt5f8JHuzgfBY/en3tQqKF4Kyc1cADJDDJyL/JlrMz6oDwWn4w0n1
-         KvmDxZSpD3c8I2zwFi4kb1IgaLIkYod90qxoriKKlmIAFeVFRmu0ZLR4L4goNGCH0uwg
-         FNkT6/RjOx6tua2r4wJzKDXFn8avoK8jQhkRxQGAAfP2YqQ96G9CT0vA9FOvAD5fwrcL
-         DJn1rJWcRSkY5w+YLdmqtZRTM1qbpU3klvi9UwZBY87CW+AJMt/3ABHiKC6jt9a+0L9P
-         5d5LbrEyTRGp2IQ7jmWZ/QYJjSCCZOkQ8AmqiFHPnzxrAu6Li0E3pc/nU4313SerGrfH
-         un8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695884723; x=1696489523;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JK5FKcmSKFk/poFkH6WaIiPHJq3+6nK77MGlhBlv5xc=;
-        b=qT8I0cPMMaek12n67EFWsBbclUC9kzFf0FSxU0uwnQHZ8qtQAFtwuk3mLVoAiW5j1g
-         UuHpQcbNr+DRcvMb3SUrLzAdeMR1nIJFkryAKKgVcNRlVsHlN51tnNmA0c1oTNAO3FwU
-         dtxwBuYDXgqtU5c0NCXU0iBYEJDZBwYR/7GobZrudONK38VeMFvkUgE+IMOSaxVRDzLG
-         1vguXMuIOD85zdTy+/YsyB5GSeZqTYs40LAfP3q7UZfRB6eU6OKbub9czJBIfADvioQA
-         SVKyKnOxXlwN4471rnLHlkfUk5xtIoa5F/DTgeqbmoX5IUXQkW7iNqSTNXLAtgj/XMD/
-         X44g==
-X-Gm-Message-State: AOJu0Yxcf96NMxOSn/vlFPZSfr98WJDCbjVeR8wNMJvP3kCBiKQEr7Wu
-        EVsHe07nKkd/e//dsBDKoEftXw==
-X-Google-Smtp-Source: AGHT+IHtRxKk7CXcPNdMQTTEBVfCDemBFx4pebeQoAgF8nP7IxdEu3s1ozmEdmztrqIM2F97b6iYUw==
-X-Received: by 2002:a5d:5b17:0:b0:31f:a4fa:130a with SMTP id bx23-20020a5d5b17000000b0031fa4fa130amr465227wrb.14.1695884723076;
-        Thu, 28 Sep 2023 00:05:23 -0700 (PDT)
-Received: from ?IPV6:2a05:6e02:1041:c10:c49e:e1a5:3210:b8c0? ([2a05:6e02:1041:c10:c49e:e1a5:3210:b8c0])
-        by smtp.googlemail.com with ESMTPSA id bv19-20020a0560001f1300b0032327b70ef6sm10037825wrb.70.2023.09.28.00.05.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 28 Sep 2023 00:05:22 -0700 (PDT)
-Message-ID: <d8515a00-4d41-2d23-09ca-30f474fcbabd@linaro.org>
-Date:   Thu, 28 Sep 2023 09:05:20 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 00/31] thermal: Convert to platform remove callback
- returning void
-Content-Language: en-US
-To:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>
-Cc:     Guillaume La Roque <glaroque@baylibre.com>,
-        Amit Kucheria <amitk@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>, linux-pm@vger.kernel.org,
-        linux-amlogic@lists.infradead.org, kernel@pengutronix.de,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
+        with ESMTP id S231283AbjI1HHZ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 28 Sep 2023 03:07:25 -0400
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0065B1AC
+        for <linux-omap@vger.kernel.org>; Thu, 28 Sep 2023 00:07:21 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1qll78-0002OF-HC; Thu, 28 Sep 2023 09:07:10 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1qll76-009WBJ-GR; Thu, 28 Sep 2023 09:07:08 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1qll76-005ZWt-6N; Thu, 28 Sep 2023 09:07:08 +0200
+From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>
+Cc:     Mun Yew Tham <mun.yew.tham@intel.com>,
+        Andy Shevchenko <andy@kernel.org>, linux-gpio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Doug Berger <opendmb@gmail.com>,
         Florian Fainelli <florian.fainelli@broadcom.com>,
         Broadcom internal kernel review list 
         <bcm-kernel-feedback-list@broadcom.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Kevin Hilman <khilman@kernel.org>, linux-omap@vger.kernel.org,
+        Heiko Stuebner <heiko@sntech.de>,
+        linux-rockchip@lists.infradead.org,
+        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
         Ray Jui <rjui@broadcom.com>,
         Scott Branden <sbranden@broadcom.com>,
-        =?UTF-8?Q?Niklas_S=c3=b6derlund?= 
-        <niklas.soderlund+renesas@ragnatech.se>,
-        Heiko Stuebner <heiko@sntech.de>,
-        ye xingchen <ye.xingchen@zte.com.cn>,
-        linux-rpi-kernel@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        Balsam CHIHI <bchihi@baylibre.com>,
-        Adam Ward <DLG-Adam.Ward.opensource@dm.renesas.com>,
-        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Support Opensource <support.opensource@diasemi.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Yang Yingliang <yangyingliang@huawei.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        =?UTF-8?B?TsOtY29sYXMgRi4gUi4gQS4gUHJhZG8=?= 
-        <nfraprado@collabora.com>,
-        Alexandre Mergnat <amergnat@baylibre.com>,
-        Chen-Yu Tsai <wenst@chromium.org>,
-        Chen Jiahao <chenjiahao16@huawei.com>,
-        linux-mediatek@lists.infradead.org,
-        Thara Gopinath <thara.gopinath@gmail.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        linux-arm-msm@vger.kernel.org,
-        =?UTF-8?Q?Niklas_S=c3=b6derlund?= <niklas.soderlund@ragnatech.se>,
-        linux-renesas-soc@vger.kernel.org,
-        linux-rockchip@lists.infradead.org,
-        Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        linux-samsung-soc@vger.kernel.org,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Rob Herring <robh@kernel.org>,
-        Minghao Chi <chi.minghao@zte.com.cn>,
-        linux-stm32@st-md-mailman.stormreply.com,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Johan Hovold <johan+linaro@kernel.org>,
-        linux-tegra@vger.kernel.org,
-        Mikko Perttunen <mperttunen@nvidia.com>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Keerthy <j-keerthy@ti.com>, linux-omap@vger.kernel.org,
-        Masami Hiramatsu <mhiramat@kernel.org>
-References: <20230927193736.2236447-1-u.kleine-koenig@pengutronix.de>
- <CAJZ5v0guyQ-SpNHXYBG2F_WyCSvgjXocGBy61Ep1Cy5-H-MOsQ@mail.gmail.com>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <CAJZ5v0guyQ-SpNHXYBG2F_WyCSvgjXocGBy61Ep1Cy5-H-MOsQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+        Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>,
+        Srinivas Neeli <srinivas.neeli@amd.com>,
+        Michal Simek <michal.simek@amd.com>
+Subject: [PATCH 00/23] gpio: Convert to platform remove callback returning void
+Date:   Thu, 28 Sep 2023 09:06:43 +0200
+Message-Id: <20230928070706.2290137-1-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.40.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3428; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=9nVFxGPuj5YEs5+UoDMSL9lOpLvMcm5LijwLBu1OgY0=; b=owGbwMvMwMXY3/A7olbonx/jabUkhlRRlbi37y8E5iUprBU55fWONSpc9UxszTNr5mun8j+Uu t92X/2zk9GYhYGRi0FWTJHFvnFNplWVXGTn2n+XYQaxMoFMYeDiFICJ/GDmYJil6yYgrW5zzHXJ 6dTP9rPmfYzPaTlix2sdEyfhGtR3wz3vHlP8hks+y7sf31E3iunNkhfz2hv77caTbTEMqVa7dj+ y+qGr88P5JN+etWlKf0uO1hmGC2vMYOzSPvLm6mb2JWeW2zqsXiXT9iM+tLrhiEVCryy7Q3fA0e 1+/atYj/aFbme9s3/b9ujfr3X/Gi/0NWxJY+xK65DJM3ewlxcW7C59v3nRhPULzgUdmqnXe932l 3N8nkRxx7VcvUvyJuyX3v7jiPIQ8/X5lZLWm3PL0iZ0rs/GtbPnz1P/9n9n1vHpARYrGnkL95na v6h3Ktr4J3rdVU1jXr2On9obKhMEsw6I/7yw7/zMlohkAA==
+X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-omap@vger.kernel.org
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -140,40 +73,77 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 27/09/2023 21:45, Rafael J. Wysocki wrote:
-> Hi,
-> 
-> On Wed, Sep 27, 2023 at 9:38 PM Uwe Kleine-König
-> <u.kleine-koenig@pengutronix.de> wrote:
->>
->> Hello,
->>
->> this series converts all platform drivers below drivers/thermal to use
->> .remove_new(). The motivation is to get rid of an integer return code
->> that is (mostly) ignored by the platform driver core and error prone on
->> the driver side.
->>
->> See commit 5c5a7680e67b ("platform: Provide a remove callback that
->> returns no value") for an extended explanation and the eventual goal.
->>
->> There are no interdependencies between the patches. As there are still
->> quite a few drivers to convert, I'm happy about every patch that makes
->> it in. So even if there is a merge conflict with one patch until you
->> apply or a subject prefix is suboptimal, please apply the remainder of
->> this series anyhow.
-> 
-> I think I'll go ahead and apply all of this in one go (for 6.7).
-> 
-> Daniel, any objections?
+Hello,
 
-No objection, for the series:
+this series converts all platform drivers below drivers/gpio to use
+.remove_new(). The motivation is to get rid of an integer return code
+that is (mostly) ignored by the platform driver core and error prone on
+the driver side.
 
-Acked-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+See commit 5c5a7680e67b ("platform: Provide a remove callback that
+returns no value") for an extended explanation and the eventual goal.
 
+There are no interdependencies between the patches. As there are still
+quite a few drivers to convert, I'm happy about every patch that makes
+it in. So even if there is a merge conflict with one patch until you
+apply or a subject prefix is suboptimal, please apply the remainder of
+this series anyhow.
+
+Best regards
+Uwe
+
+Uwe Kleine-König (23):
+  gpio: altera: Convert to platform remove callback returning void
+  gpio: amdpt: Convert to platform remove callback returning void
+  gpio: brcmstb: Convert to platform remove callback returning void
+  gpio: cadence: Convert to platform remove callback returning void
+  gpio: dln2: Convert to platform remove callback returning void
+  gpio: ftgpio010: Convert to platform remove callback returning void
+  gpio: grgpio: Convert to platform remove callback returning void
+  gpio: ljca: Convert to platform remove callback returning void
+  gpio: lpc18xx: Convert to platform remove callback returning void
+  gpio: mb86s7x: Convert to platform remove callback returning void
+  gpio: mm-lantiq: Convert to platform remove callback returning void
+  gpio: mpc5200: Convert to platform remove callback returning void
+  gpio: mpc8xxx: Convert to platform remove callback returning void
+  gpio: omap: Convert to platform remove callback returning void
+  gpio: rcar: Convert to platform remove callback returning void
+  gpio: rockchip: Convert to platform remove callback returning void
+  gpio: tb10x: Convert to platform remove callback returning void
+  gpio: ts5500: Convert to platform remove callback returning void
+  gpio: uniphier: Convert to platform remove callback returning void
+  gpio: xgene-sb: Convert to platform remove callback returning void
+  gpio: xgs-iproc: Convert to platform remove callback returning void
+  gpio: xilinx: Convert to platform remove callback returning void
+  gpio: zynq: Convert to platform remove callback returning void
+
+ drivers/gpio/gpio-altera.c    | 6 ++----
+ drivers/gpio/gpio-amdpt.c     | 6 ++----
+ drivers/gpio/gpio-brcmstb.c   | 6 ++----
+ drivers/gpio/gpio-cadence.c   | 6 ++----
+ drivers/gpio/gpio-dln2.c      | 6 ++----
+ drivers/gpio/gpio-ftgpio010.c | 6 ++----
+ drivers/gpio/gpio-grgpio.c    | 6 ++----
+ drivers/gpio/gpio-ljca.c      | 5 ++---
+ drivers/gpio/gpio-lpc18xx.c   | 6 ++----
+ drivers/gpio/gpio-mb86s7x.c   | 6 ++----
+ drivers/gpio/gpio-mm-lantiq.c | 6 ++----
+ drivers/gpio/gpio-mpc5200.c   | 8 +++-----
+ drivers/gpio/gpio-mpc8xxx.c   | 6 ++----
+ drivers/gpio/gpio-omap.c      | 6 ++----
+ drivers/gpio/gpio-rcar.c      | 5 ++---
+ drivers/gpio/gpio-rockchip.c  | 6 ++----
+ drivers/gpio/gpio-tb10x.c     | 6 ++----
+ drivers/gpio/gpio-ts5500.c    | 6 ++----
+ drivers/gpio/gpio-uniphier.c  | 6 ++----
+ drivers/gpio/gpio-xgene-sb.c  | 6 ++----
+ drivers/gpio/gpio-xgs-iproc.c | 6 ++----
+ drivers/gpio/gpio-xilinx.c    | 6 ++----
+ drivers/gpio/gpio-zynq.c      | 5 ++---
+ 23 files changed, 47 insertions(+), 90 deletions(-)
+
+
+base-commit: 719136e5c24768ebdf80b9daa53facebbdd377c3
 -- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+2.40.1
 
