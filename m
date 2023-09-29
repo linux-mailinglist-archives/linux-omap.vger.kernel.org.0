@@ -2,102 +2,110 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C8CD07B37C7
-	for <lists+linux-omap@lfdr.de>; Fri, 29 Sep 2023 18:20:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFC727B3AE3
+	for <lists+linux-omap@lfdr.de>; Fri, 29 Sep 2023 22:01:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233215AbjI2QUP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 29 Sep 2023 12:20:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38346 "EHLO
+        id S233152AbjI2UBV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 29 Sep 2023 16:01:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42580 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232878AbjI2QUO (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 29 Sep 2023 12:20:14 -0400
-Received: from gofer.mess.org (gofer.mess.org [IPv6:2a02:8011:d000:212::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBEA7BE;
-        Fri, 29 Sep 2023 09:20:11 -0700 (PDT)
-Received: by gofer.mess.org (Postfix, from userid 1000)
-        id 6408D1000B2; Fri, 29 Sep 2023 17:20:09 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mess.org; s=2020;
-        t=1696004409; bh=NO7U8jxZgUpWr0WrNZxuq6hy5u2FsN8FVLFZSQC6DGs=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=io8J1gWqNgAp0oYQnqnXaZ0ODjPn8YiBFoeog8mMiW+afnyzuONlL0UGmD40NmA3x
-         b5dbj86ikrbxYLBjtnLZlcGCLLbaUEOikPOO6geNK+t5IjAJ1l6hrDJ9rf0LjnANGr
-         lCugOdBmh3Lj2GZdb2KblJRDuelBK7zEl/EOCmIQSCjuMUA8SFqDB50K9NJIEHtAGI
-         7V/wHYWH7/7o08N66Hk/Tmo+A2nQny1HqHn4rYPPbwj9bhcliogFb8J8OdH1fspeOC
-         YD2bpjXh0AGXNv4iwxaf92HcL7aiJ0I2FYvX28GRCQoGKc6EuXCeU0qxh+qsrjkUAB
-         F3HxtdV4skF5w==
-Date:   Fri, 29 Sep 2023 17:20:09 +0100
-From:   Sean Young <sean@mess.org>
-To:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
-Cc:     linux-media@vger.kernel.org, Tony Lindgren <tony@atomide.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Timo Kokkonen <timo.t.kokkonen@iki.fi>,
-        Pali =?iso-8859-1?Q?Roh=E1r?= <pali.rohar@gmail.com>,
-        "Sicelo A . Mhlongo" <absicsz@gmail.com>,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org
-Subject: Re: [PATCH v5 2/2] media: rc: remove ir-rx51 in favour of generic
- pwm-ir-tx
-Message-ID: <ZRb5OWvx3GxYWf9g@gofer.mess.org>
-References: <cover.1693577725.git.sean@mess.org>
- <e5325e826935f0bd8566152b6a5fa799b2429d43.1693577725.git.sean@mess.org>
- <99f0042f-538c-bcaf-96fd-bac24a87f88e@gmail.com>
- <ZRKFUb1vRtn82bgn@gofer.mess.org>
- <1715e2bf-5d02-4f20-1476-29a1fdf350b1@gmail.com>
- <ZRM8iLORjKw3z/h5@gofer.mess.org>
- <179c4674-aa5c-0573-6d1f-ea6f2694d156@gmail.com>
+        with ESMTP id S232748AbjI2UBV (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 29 Sep 2023 16:01:21 -0400
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a02:c205:3004:2154::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBCF4113;
+        Fri, 29 Sep 2023 13:01:17 -0700 (PDT)
+Received: from p200300ccff0afb001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff0a:fb00:1a3d:a2ff:febf:d33a] helo=aktux)
+        by mail.andi.de1.cc with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <andreas@kemnade.info>)
+        id 1qmJfX-004LE9-9J; Fri, 29 Sep 2023 22:00:58 +0200
+Received: from andi by aktux with local (Exim 4.96)
+        (envelope-from <andreas@kemnade.info>)
+        id 1qmJfW-009eQM-1O;
+        Fri, 29 Sep 2023 22:00:58 +0200
+From:   Andreas Kemnade <andreas@kemnade.info>
+To:     dmitry.torokhov@gmail.com, Jonathan.Cameron@huawei.com,
+        andreas@kemnade.info, robh@kernel.org, frank.li@vivo.com,
+        linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, tony@atomide.com
+Subject: [RFC PATCH] Input: omap4-keypad: react on keypresses if device is runtime-suspended
+Date:   Fri, 29 Sep 2023 22:00:46 +0200
+Message-Id: <20230929200046.2300333-1-andreas@kemnade.info>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <179c4674-aa5c-0573-6d1f-ea6f2694d156@gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hello Uwe,
+According to SWPU235AB, table 26-6, fclk is required to generate events
+at least on OMAP4460, so keep fclk enabled all the time the device
+is opened.
 
-Just wanted to run an idea by you.
+Suggested-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+---
+Open questions:
+- Should we rather (or also use) padconf irqs?
+- It seems not to be required everywhere. Does it harm somewhere?
 
-On Fri, Sep 29, 2023 at 11:49:52AM +0300, Ivaylo Dimitrov wrote:
-> On 26.09.23 г. 23:18 ч., Sean Young wrote:
-> > I've never known of a solution to the pwm-ir-tx driver. If using hrtimers
-> > directly improves the situation even a bit, then that would be great.
-> 
-> The issue with hrtimers is that we cannot use them directly, as
-> pwm_apply_state() may sleep, but hrtimer function is called in atomic
-> context.
+ drivers/input/keyboard/omap4-keypad.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-I've also been looking at this problem and came to same conclusion: the
-fact that pwm_apply_state() sleeps is a huge problem.
+diff --git a/drivers/input/keyboard/omap4-keypad.c b/drivers/input/keyboard/omap4-keypad.c
+index 773e55eed88b1..a7585a09c48b4 100644
+--- a/drivers/input/keyboard/omap4-keypad.c
++++ b/drivers/input/keyboard/omap4-keypad.c
+@@ -11,6 +11,7 @@
+ #include <linux/module.h>
+ #include <linux/interrupt.h>
+ #include <linux/platform_device.h>
++#include <linux/clk.h>
+ #include <linux/errno.h>
+ #include <linux/io.h>
+ #include <linux/of.h>
+@@ -83,6 +84,7 @@ struct omap4_keypad {
+ 	bool no_autorepeat;
+ 	u64 keys;
+ 	unsigned short *keymap;
++	struct clk *fck;
+ };
+ 
+ static int kbd_readl(struct omap4_keypad *keypad_data, u32 offset)
+@@ -211,6 +213,8 @@ static int omap4_keypad_open(struct input_dev *input)
+ 
+ 	disable_irq(keypad_data->irq);
+ 
++	clk_prepare_enable(keypad_data->fck);
++
+ 	kbd_writel(keypad_data, OMAP4_KBD_CTRL,
+ 			OMAP4_DEF_CTRL_NOSOFTMODE |
+ 			(OMAP4_KEYPAD_PTV_DIV_128 << OMAP4_DEF_CTRL_PTV_SHIFT));
+@@ -258,6 +262,7 @@ static void omap4_keypad_close(struct input_dev *input)
+ 	disable_irq(keypad_data->irq);
+ 	omap4_keypad_stop(keypad_data);
+ 	enable_irq(keypad_data->irq);
++	clk_disable_unprepare(keypad_data->fck);
+ 
+ 	pm_runtime_mark_last_busy(dev);
+ 	pm_runtime_put_autosuspend(dev);
+@@ -356,6 +361,11 @@ static int omap4_keypad_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	keypad_data->irq = irq;
++	keypad_data->fck = devm_clk_get(&pdev->dev, "fck");
++	if (IS_ERR(keypad_data->fck))
++		return dev_err_probe(&pdev->dev, PTR_ERR(keypad_data->fck),
++				     "unable to get fck");
++
+ 	mutex_init(&keypad_data->lock);
+ 	platform_set_drvdata(pdev, keypad_data);
+ 
+-- 
+2.39.2
 
-1) The vast majority of pwm drivers don't sleep, or could even be converted
-   to spinlocks (e.g pwm-sifive.c could use spinlocks, as far as I can see).
-
-2) Sure, some pwm devices are on i2c busses, so the driver needs to sleep.
-   Those devices aren't great for what we're trying to do here, since the
-   sleeping may cause delays and affect the generated signal.
-
-What would be ideal here is to have pwm-ir-tx work in atomic context if
-a non-sleeping pwm device is used, and another (non-optimal) code path
-for sleeping pwm drivers. We could even just refuse to run on sleeping pwm
-drivers.
-
-Uwe what do you think of this idea? The pwm api could have a
-bool pwm_may_sleep(struct pwm *pwm) function, and pwm_apply_state() does 
-not contain might_sleep() - only the driver-specific apply calls might_sleep().
-
-It would be nice if this could all be done at compile time through e.g. a
-device tree attribute.
-
-Thanks,
-
-Sean
