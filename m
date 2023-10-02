@@ -2,66 +2,39 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E58D7B4C2F
-	for <lists+linux-omap@lfdr.de>; Mon,  2 Oct 2023 09:05:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F1727B4C8D
+	for <lists+linux-omap@lfdr.de>; Mon,  2 Oct 2023 09:32:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235626AbjJBHFI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 2 Oct 2023 03:05:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57258 "EHLO
+        id S235641AbjJBHcu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 2 Oct 2023 03:32:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235600AbjJBHFH (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 2 Oct 2023 03:05:07 -0400
-Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1FDFAC
-        for <linux-omap@vger.kernel.org>; Mon,  2 Oct 2023 00:05:04 -0700 (PDT)
-Received: by mail-lf1-x134.google.com with SMTP id 2adb3069b0e04-5048156976cso8775794e87.2
-        for <linux-omap@vger.kernel.org>; Mon, 02 Oct 2023 00:05:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1696230303; x=1696835103; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=p3WSZwdkcjvjhe/gpQ76zvJY2T86inbO4LfRqWd0a6w=;
-        b=ksWP/7+mKfoT3XgCC8dSHq1yVW+YAzhXLiSqv+lFg+MMbnn8OoaZaFeasaC/YQY0GX
-         hCJA0/c8c+uEXLGcyGd/sTf0lBfqdhQ9h6HgkOjefqvO0D8fHnE6hf95oSKZ3vtY+cTy
-         vAYFa9mGRieVXYt6VsYeiWmrh1jXhmxahpeCnsdtbbMauvip132/ePrXm6VaxDHC0OBF
-         rhM3tuNRyPv4BCczZMWYekwiA0JXo8omg0KamZyhydAGH8u5dNvzM6WSXJPygcHB4Yj2
-         DzhO5DThzqRomVA5Jp2baM+AsgEkfRBv1AqoZdHmf7uaQWfgL87aq1BNfA5rDuKLJ7RP
-         O7/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696230303; x=1696835103;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=p3WSZwdkcjvjhe/gpQ76zvJY2T86inbO4LfRqWd0a6w=;
-        b=Hnf9oTxqzqa13CfCG5KC3V+pFxnp56DkxcsIHRq6P1P6vstgUvDXLpVpEM8hU5VdQa
-         KFvBp3dtqNBhiYLpa1l+fpNQiMdnye1Su1fj1+bET1eEwy5uVG72CQpH/Y/k1HxaBOcu
-         zai8OoEQKrO94B5alzNHjgvxvC382PI3/IZ1w6FAd8dP/T3Hoepyy6PjCoItd5nikEMM
-         jrE7r9Z5PZExF35K5Y62qbe8rgQp9Y8noeNS3n+Y9GelhSpp4VRx7BizrmpoHurFkrDW
-         xThGv9jGnx1fYqIy9VBqHQly1sZdWpNQYcS8SbIw3ZJ/DHf4TFLsp5rMNCMES+zCDzd1
-         L6PA==
-X-Gm-Message-State: AOJu0Yygc1MxCBfuPtMOKKBo1TFzHQ3nHbu9ELMv5XPi8M0LLDdUVr0W
-        Tdn4+gEyrSPHgEzAsgxaAJTBsQ==
-X-Google-Smtp-Source: AGHT+IGwerErhtnDVzz1WhrfkBcTpmotFSKxSZgpYhF5J+JqODTofqGXeokFOz10GvBV3SwrupD0uQ==
-X-Received: by 2002:a05:6512:691:b0:504:7ff8:3430 with SMTP id t17-20020a056512069100b005047ff83430mr9907489lfe.10.1696230303039;
-        Mon, 02 Oct 2023 00:05:03 -0700 (PDT)
-Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id o14-20020a05600c4fce00b00405d9a950a2sm6256010wmq.28.2023.10.02.00.05.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Oct 2023 00:05:02 -0700 (PDT)
-Date:   Mon, 2 Oct 2023 10:04:59 +0300
-From:   Dan Carpenter <dan.carpenter@linaro.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
-        Paul Walmsley <paul@pwsan.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Russell King <linux@armlinux.org.uk>,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] ARM: omap2: fix a debug printk
-Message-ID: <c126dc33-233a-4776-806f-9dff0e73a181@moroto.mountain>
+        with ESMTP id S235630AbjJBHcu (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 2 Oct 2023 03:32:50 -0400
+Received: from mail.bizcodes.pl (mail.bizcodes.pl [151.80.57.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C9C6BC
+        for <linux-omap@vger.kernel.org>; Mon,  2 Oct 2023 00:32:44 -0700 (PDT)
+Received: by mail.bizcodes.pl (Postfix, from userid 1002)
+        id E3E49A3BD7; Mon,  2 Oct 2023 07:30:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=bizcodes.pl; s=mail;
+        t=1696231917; bh=5QPMt7jNntM5ZbstM20BWsHIeLbmRE8lVU4Iu89IleQ=;
+        h=Date:From:To:Subject:From;
+        b=DCmJKSaOzSB4kcp8R/eGDq6EwLIWJioKC9y73wQloHfBt184lYVJiTErvHVJBILPg
+         l1shIB8pUqHcJfe/g+UM3jvQa0NK0X3NbqZDEH2JAF6vDh/6FAc4sD566M6x4Kllet
+         4v4pG/iVeVoDeXExDQUbfAoh/v9Pj3KhPPRU52C6i8tKu7ymFmsXWR6A+SIWtRZyqP
+         1Zk4vL6cjQ5xZSJVY5IVKtrUPi9aBBO6xAwEBVCkzJP7aRk3NUJkMubzC7CE5j3Nb8
+         Pf5j959jsBEXZj2j0HLQvLftVcOV68SVNkMq71biddJYcxgtDYQnVBAtX0VebYGCSy
+         5ozxdj8fpezpQ==
+Received: by mail.bizcodes.pl for <linux-omap@vger.kernel.org>; Mon,  2 Oct 2023 07:30:38 GMT
+Message-ID: <20231002064500-0.1.c1.1fx9k.0.im806jfck8@bizcodes.pl>
+Date:   Mon,  2 Oct 2023 07:30:38 GMT
+From:   "Marcin Chruszcz" <marcin.chruszcz@bizcodes.pl>
+To:     <linux-omap@vger.kernel.org>
+Subject: Prezentacja
+X-Mailer: mail.bizcodes.pl
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -71,28 +44,24 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The %pR format string takes a pointer to struct resource, but this is
-passing a pointer to a pointer which it will print wrong information.
+Dzie=C5=84 dobry!
 
-Fixes: c63f5b454885 ("ARM: omap2: Use of_range_to_resource() for "ranges" parsing")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
----
- arch/arm/mach-omap2/omap_hwmod.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Czy m=C3=B3g=C5=82bym przedstawi=C4=87 rozwi=C4=85zanie, kt=C3=B3re umo=C5=
+=BCliwia monitoring ka=C5=BCdego auta w czasie rzeczywistym w tym jego po=
+zycj=C4=99, zu=C5=BCycie paliwa i przebieg?
 
-diff --git a/arch/arm/mach-omap2/omap_hwmod.c b/arch/arm/mach-omap2/omap_hwmod.c
-index 1e17b5f77588..ba71928c0fcb 100644
---- a/arch/arm/mach-omap2/omap_hwmod.c
-+++ b/arch/arm/mach-omap2/omap_hwmod.c
-@@ -2209,7 +2209,7 @@ int omap_hwmod_parse_module_range(struct omap_hwmod *oh,
- 		return err;
- 
- 	pr_debug("omap_hwmod: %s %pOFn at %pR\n",
--		 oh->name, np, &res);
-+		 oh->name, np, res);
- 
- 	if (oh && oh->mpu_rt_idx) {
- 		omap_hwmod_fix_mpu_rt_idx(oh, np, res);
--- 
-2.39.2
+Dodatkowo nasze narz=C4=99dzie minimalizuje koszty utrzymania samochod=C3=
+=B3w, skraca czas przejazd=C3=B3w, a tak=C5=BCe tworzenie planu tras czy =
+dostaw.
 
+Z naszej wiedzy i do=C5=9Bwiadczenia korzysta ju=C5=BC ponad 49 tys. Klie=
+nt=C3=B3w. Monitorujemy 809 000 pojazd=C3=B3w na ca=C5=82ym =C5=9Bwiecie,=
+ co jest nasz=C4=85 najlepsz=C4=85 wizyt=C3=B3wk=C4=85.
+
+Bardzo prosz=C4=99 o e-maila zwrotnego, je=C5=9Bli mogliby=C5=9Bmy wsp=C3=
+=B3lnie om=C3=B3wi=C4=87 potencja=C5=82 wykorzystania takiego rozwi=C4=85=
+zania w Pa=C5=84stwa firmie.
+
+
+Pozdrawiam
+Marcin Chruszcz
