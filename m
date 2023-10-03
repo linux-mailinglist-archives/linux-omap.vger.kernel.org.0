@@ -2,79 +2,81 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B3A647B66E3
-	for <lists+linux-omap@lfdr.de>; Tue,  3 Oct 2023 12:56:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28D487B6865
+	for <lists+linux-omap@lfdr.de>; Tue,  3 Oct 2023 13:57:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239713AbjJCK4r (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 3 Oct 2023 06:56:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33670 "EHLO
+        id S240493AbjJCL5l (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 3 Oct 2023 07:57:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239867AbjJCK4p (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 3 Oct 2023 06:56:45 -0400
-Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33858EA;
-        Tue,  3 Oct 2023 03:56:40 -0700 (PDT)
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 393AuF0X088168;
-        Tue, 3 Oct 2023 05:56:15 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1696330575;
-        bh=J+Q0ZtjZFk83NaGx62OOqN/1axfwRqE1uczTFxxZV3A=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=pn3ZxkgqVRt8kjoIQnvSUQNrgl8dHwi45CvkUdg0c7zcojZsIDA0zQBM3oo1uPbEP
-         E71N//Icf/gjTDGVMzsNwze92QvM8+EtcxjadDUcuW805CbO3IkjMFr9fGNnsW1KuX
-         Eq89FCcPGkQN3BGomxB9nGQD2pT/OX3n6m/qXbmk=
-Received: from DLEE106.ent.ti.com (dlee106.ent.ti.com [157.170.170.36])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 393AuFvH093753
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 3 Oct 2023 05:56:15 -0500
-Received: from DLEE107.ent.ti.com (157.170.170.37) by DLEE106.ent.ti.com
- (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 3
- Oct 2023 05:56:15 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE107.ent.ti.com
- (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Tue, 3 Oct 2023 05:56:15 -0500
-Received: from fllv0122.itg.ti.com (fllv0122.itg.ti.com [10.247.120.72])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 393AuEdJ123329;
-        Tue, 3 Oct 2023 05:56:14 -0500
-Received: from localhost (danish-tpc.dhcp.ti.com [10.24.69.199])
-        by fllv0122.itg.ti.com (8.14.7/8.14.7) with ESMTP id 393AuEbo007928;
-        Tue, 3 Oct 2023 05:56:14 -0500
-From:   MD Danish Anwar <danishanwar@ti.com>
-To:     Vignesh Raghavendra <vigneshr@ti.com>, Nishanth Menon <nm@ti.com>
-CC:     Peng Fan <peng.fan@nxp.com>, Udit Kumar <u-kumar1@ti.com>,
-        =?UTF-8?q?N=C3=ADcolas=20F=2E=20R=2E=20A=2E=20Prado?= 
-        <nfraprado@collabora.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Bjorn Andersson <quic_bjorande@quicinc.com>,
-        Will Deacon <will@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
-        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        Tero Kristo <kristo@kernel.org>, <linux-omap@vger.kernel.org>,
-        <srk@ti.com>, <r-gunasekaran@ti.com>,
-        MD Danish Anwar <danishanwar@ti.com>
-Subject: [PATCH v4 4/4] arm64: defconfig: Enable TI_ICSSG_PRUETH
-Date:   Tue, 3 Oct 2023 16:25:39 +0530
-Message-ID: <20231003105539.1698436-5-danishanwar@ti.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231003105539.1698436-1-danishanwar@ti.com>
-References: <20231003105539.1698436-1-danishanwar@ti.com>
+        with ESMTP id S232058AbjJCL5k (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 3 Oct 2023 07:57:40 -0400
+Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A447A3;
+        Tue,  3 Oct 2023 04:57:37 -0700 (PDT)
+Received: by mail-wr1-x42d.google.com with SMTP id ffacd0b85a97d-32325534cfaso817001f8f.3;
+        Tue, 03 Oct 2023 04:57:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1696334256; x=1696939056; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=VANSwdMtKQG22oVUynGC+nLSUv43BbxBHTaM2yqQ5MY=;
+        b=nH7HD3qA0sSuOAc77mAqVP+Ij9L1p3KHUQ+V6Gxl0aLpoQC8v2KlfNbipFsJs+0H56
+         cuDl7QtozqwVvajK3QV/aSmp+c1j/uIzXpB0Uy2DbbkYUpBqSO9Z85Bhhs6L223pl0U9
+         DVHLPPaDJN7g2+ksq7jzZ0t1kwoIcAiky6qHZPSXTPd+4zRJXOfDMq32zAyNLwIRUV9t
+         mHvth+GX6X4QOsaFlQOAw86IpzeaZqdOQsJ40VGyhzPgPPKaffxknlamHc077ksug5l+
+         7tTuScLwMzy1qGpvo9DccNRMCT7qDZtLjGfH9tPp9+HvslhDnlKCt36x+CPqqsOcyoRR
+         GGIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696334256; x=1696939056;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=VANSwdMtKQG22oVUynGC+nLSUv43BbxBHTaM2yqQ5MY=;
+        b=bCTHVBn+VJ/IQ05z7JUIPLfBtxcEniihevBe2gX60Tzk1HiYjVcDZcGpkZeFwXRkhS
+         ogBNkbuyt8fQGB1IP4LqhxVSWi+WlbkkVkwCpbHC4P7nS9Qvdg1r3qxAgwmyWlfXxD7Y
+         ecqWp2QHcOvHgbm1bBA2wlQswMnAiLoWXeYvEQWZSYpuD+CK2KeJmPPEmHW0DQyia911
+         4ffbuWaIJoVBB8blk7BgX5OT8sxrlkGibIjt1t1BDO81IXj/JrAelXLIkKWZLwJyqzpZ
+         eTl5dQTlDjStA/KG6gPBQz2pbPsAPJzEvIpUhtrdHjNybX/4uZxo2x/Fpe9SkrVgU5NX
+         4hSg==
+X-Gm-Message-State: AOJu0YyyZtWPd/NgdHpk0qbZhXfYnV6/c1s6sDZyJqKxPvKptIHyz+rC
+        7UHdo51cFBcXGbGq/rpFzZQ=
+X-Google-Smtp-Source: AGHT+IHwU9MkpQUrxS9gP8cSDIFn9YMWzv+pZGgz/jIthHTNFSKYtbYBY0OX9S2z4qaS6LNmYqIYNA==
+X-Received: by 2002:a5d:5b17:0:b0:31f:a4fa:130a with SMTP id bx23-20020a5d5b17000000b0031fa4fa130amr14501035wrb.14.1696334255710;
+        Tue, 03 Oct 2023 04:57:35 -0700 (PDT)
+Received: from ?IPV6:2a02:8071:b783:140:927c:82ba:d32d:99c1? ([2a02:8071:b783:140:927c:82ba:d32d:99c1])
+        by smtp.gmail.com with ESMTPSA id o4-20020adfcf04000000b00326f0ca3566sm1401367wrj.50.2023.10.03.04.57.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 03 Oct 2023 04:57:35 -0700 (PDT)
+Message-ID: <62d3678a-a23d-4619-95de-145026629ba8@gmail.com>
+Date:   Tue, 3 Oct 2023 13:57:33 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v12 1/1] serial: core: Start managing serial controllers
+ to enable runtime PM
+To:     Tony Lindgren <tony@atomide.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>
+Cc:     Andy Shevchenko <andriy.shevchenko@intel.com>,
+        Dhruva Gole <d-gole@ti.com>,
+        =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        John Ogness <john.ogness@linutronix.de>,
+        Johan Hovold <johan@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        linux-omap@vger.kernel.org,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org
+References: <20230525113034.46880-1-tony@atomide.com>
+Content-Language: en-US
+From:   Maximilian Luz <luzmaximilian@gmail.com>
+In-Reply-To: <20230525113034.46880-1-tony@atomide.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -82,31 +84,73 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The Programmable Real-time Unit and Industrial Communication Subsystem
-Gigabit (PRU_ICSSG) is a low-latency microcontroller subsystem in the TI
-K3 SoCs such as AM654x, AM64x. This subsystem is provided for the use
-cases like implementation of custom peripheral interfaces, offloading of
-tasks from the other processor cores of the SoC, etc.
+On 5/25/23 13:30, Tony Lindgren wrote:
+> We want to enable runtime PM for serial port device drivers in a generic
+> way. To do this, we want to have the serial core layer manage the
+> registered physical serial controller devices.
+> 
+> To manage serial controllers, let's set up a struct bus and struct device
+> for the serial core controller as suggested by Greg and Jiri. The serial
+> core controller devices are children of the physical serial port device.
+> The serial core controller device is needed to support multiple different
+> kind of ports connected to single physical serial port device.
+> 
+> Let's also set up a struct device for the serial core port. The serial
+> core port instances are children of the serial core controller device.
+> 
+> With the serial core port device we can now flush pending TX on the
+> runtime PM resume as suggested by Johan.
 
-Currently AM654x-EVM uses ICSSG driver.
+Hi,
 
-Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
+Unfortunately, this patch (now commit 84a9582fd203 with v6.5) breaks suspend on
+a bunch of Microsoft Surface devices (confirmed via git bisect).
+
+The root cause is that when we enter system suspend with the serial port in
+runtime suspend, all transfers will be paused until the serial port is
+runtime-resumed, which will only happen after complete() is called, so
+basically after we are done resuming the system. In short: This patch
+essentially blocks all serial communication in system suspend transitions.
+
+The affected devices have an EC (the Surface Aggregator Module) which needs
+some communication when entering system suspend. In particular, we need to tell
+it to stop sending us events, turn off the keyboard backlight, and transition
+it to a lower power mode. With this patch, all of these operations now time
+out, preventing us from entering suspend.
+
+A bad workaround is to disable runtime PM, e.g. via
+
+   echo on > /sys/bus/serial-base/devices/dw-apb-uart.4:0/dw-apb-uart.4:0.0/power/control
+
+or the diff attached below, but obviously that's not a great solution and can
+be broken quite easily from userspace in the same way (and without users really
+actively doing so through tools like TLP).
+
+Any ideas on how this can be fixed without reverting?
+
+See also https://github.com/linux-surface/linux-surface/issues/1258.
+
+Regards,
+Max
+
 ---
- arch/arm64/configs/defconfig | 1 +
- 1 file changed, 1 insertion(+)
+  drivers/tty/serial/serial_port.c | 2 ++
+  1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
-index 66bfbef73324..b7cbc7b38d63 100644
---- a/arch/arm64/configs/defconfig
-+++ b/arch/arm64/configs/defconfig
-@@ -368,6 +368,7 @@ CONFIG_SNI_NETSEC=y
- CONFIG_STMMAC_ETH=m
- CONFIG_DWMAC_TEGRA=m
- CONFIG_TI_K3_AM65_CPSW_NUSS=y
-+CONFIG_TI_ICSSG_PRUETH=m
- CONFIG_QCOM_IPA=m
- CONFIG_MESON_GXL_PHY=m
- CONFIG_AQUANTIA_PHY=y
+diff --git a/drivers/tty/serial/serial_port.c b/drivers/tty/serial/serial_port.c
+index 862423237007..6ceacea5e790 100644
+--- a/drivers/tty/serial/serial_port.c
++++ b/drivers/tty/serial/serial_port.c
+@@ -55,6 +55,8 @@ static int serial_port_probe(struct device *dev)
+  	pm_runtime_set_autosuspend_delay(dev, SERIAL_PORT_AUTOSUSPEND_DELAY_MS);
+  	pm_runtime_use_autosuspend(dev);
+  
++	pm_runtime_forbid(dev);
++
+  	return 0;
+  }
+  
 -- 
-2.34.1
+2.42.0
+
 
