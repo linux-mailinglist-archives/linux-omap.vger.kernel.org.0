@@ -2,237 +2,82 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 344307B7FC2
-	for <lists+linux-omap@lfdr.de>; Wed,  4 Oct 2023 14:50:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 181877B82C1
+	for <lists+linux-omap@lfdr.de>; Wed,  4 Oct 2023 16:53:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242514AbjJDMut (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 4 Oct 2023 08:50:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57706 "EHLO
+        id S242995AbjJDOx2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 4 Oct 2023 10:53:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242506AbjJDMuo (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 4 Oct 2023 08:50:44 -0400
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.54])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 742C9A6;
-        Wed,  4 Oct 2023 05:50:40 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1696423831; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=G/+Y78j+TnQSG034HncO/+EMPJEyanQsdIXLcYPxTkb+xZjEPKlBcGvdYKRHXlS3pb
-    1LH24Xg5P8ZnL5U1ggkySAx5PbsJ1aTiFY9mppJ1Vc57ZIEtIYlnZIsdtXFAerG5SPGz
-    +FRWTp/hviKLv1UpciOQxAlV5p3GxjaW3uTFtqu2VMFDC0YA/JzHHT0rC/zUo6YW/AzD
-    Kg7n4ykrkBjcbu27b/XEceUbT2shYtOKGzPob046IU02ZwxFtYgkrcO5vIdkvIUCGbzv
-    EOxrTeHOk0f9T1bidLh7A1KtdIVQUYhP/6jijn/AdDesYQ8mKTm855O9Wr0euU0e4Hw8
-    dhvA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1696423831;
-    s=strato-dkim-0002; d=strato.com;
-    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=4w3ts48X7eZ6ydMiR/OMyQRliO+hTozCQIcKRpSezrU=;
-    b=BZ+SLxrej5baOZeZE2tHezC2T29dMkwHKx0rvc/O7pI+ZzL7hea97NWTy4fGJ0sIHf
-    7Qfe586t38AcE53fLxPVY3V7YyvgpzuwrLP3LrVGCEpPP9KhKAD8Ss6fvaa/p/dBEp+/
-    RUvzX0RQHls5jVdwYhhTTN9wfZzl/42Z0RoBMHaLU84OKoTd/Yan4EgQehuaeLGrxNZs
-    sQJcvdLQeBpdFjE4Nh1WXj9l7wOsBxyR2ZwbJka661ybxVBfWddSjX4iA4rYv/A/1EEW
-    4MMazbVad1F2DpVrZgAy/gItsAWEAzlEq9eOiIFsC8T4zIqcFMteB7LtyamgapmgzPw3
-    /F5w==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1696423831;
-    s=strato-dkim-0002; d=goldelico.com;
-    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=4w3ts48X7eZ6ydMiR/OMyQRliO+hTozCQIcKRpSezrU=;
-    b=peRdb80hI0aDXh5TdtDwv4pKBwHxyypLfekPGJfQJXLq4ptcDyqt0pkIR3En0gsAbU
-    vpwY68bJVrhxEGt6495hRzAfu2GirMadczN8SdhoravCBimm7TEC+Jvnh11VuNC6LjXu
-    sazTeUkoHrFt+0gGg9IfGUTT1SfuezMxbKUOcjfao+yiU55vzIGOToyEHiBpCqqeZPNz
-    EOj1FDqzoFOxofGbWAN1hBfADz0/DFOEJ1YPm0FpvKABLaB+WffPhTWmh25pvzKlEHC9
-    oqnxv272hNYjz0tG6AI7PXzaCZjXTYgImirVZh9A7hLmRKLm0fHKpW0umS49dtkpU0ks
-    5j8w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1696423831;
-    s=strato-dkim-0003; d=goldelico.com;
-    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=4w3ts48X7eZ6ydMiR/OMyQRliO+hTozCQIcKRpSezrU=;
-    b=5/8JS2gcmNbwBITHRNrbB5vH8gYKHKhW6Opez0C5nVkrIz05A+WjpettRsSfo8Y5Sz
-    rxpTAbArt5cecvEkaFAw==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj5Apz9PSN6LgsXcGeo3Q="
-Received: from smtpclient.apple
-    by smtp.strato.de (RZmta 49.8.2 DYNA|AUTH)
-    with ESMTPSA id Y04dd7z94CoVjSY
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
-        (Client did not present a certificate);
-    Wed, 4 Oct 2023 14:50:31 +0200 (CEST)
-Content-Type: text/plain;
-        charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.4\))
-Subject: Re: [PATCH] ARM: dts: omap3-gta04: Drop superfluous omap36xx
- compatible
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <42806B60-E48B-4AA9-B375-E9F65F59AB87@goldelico.com>
-Date:   Wed, 4 Oct 2023 14:50:30 +0200
-Cc:     bcousson@baylibre.com, Tony Lindgren <tony@atomide.com>,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        conor+dt@kernel.org, linux-omap@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <6B245439-F9FE-4931-A0DE-81F825BB5FE5@goldelico.com>
-References: <20231004065323.2408615-1-andreas@kemnade.info>
- <12323F42-3611-4685-8981-F6A18C4A5862@goldelico.com>
- <20231004130353.01228376@aktux>
- <FF3A3F35-E264-4D28-AFAC-EFA2ADB69F40@goldelico.com>
- <20231004135449.591b3f6c@aktux>
- <42806B60-E48B-4AA9-B375-E9F65F59AB87@goldelico.com>
-To:     Andreas Kemnade <andreas@kemnade.info>
-X-Mailer: Apple Mail (2.3696.120.41.1.4)
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S233853AbjJDOx1 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 4 Oct 2023 10:53:27 -0400
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a02:c205:3004:2154::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5AD2CE;
+        Wed,  4 Oct 2023 07:53:21 -0700 (PDT)
+Received: from pd9e2f797.dip0.t-ipconnect.de ([217.226.247.151] helo=aktux)
+        by mail.andi.de1.cc with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <andreas@kemnade.info>)
+        id 1qo3FU-004W21-9o; Wed, 04 Oct 2023 16:53:15 +0200
+Date:   Wed, 4 Oct 2023 16:53:14 +0200
+From:   Andreas Kemnade <andreas@kemnade.info>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     bcousson@baylibre.com, tony@atomide.com, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] ARM: dts: omap4-embt2ws: Add Bluetooth
+Message-ID: <20231004165314.1a9fb486@aktux>
+In-Reply-To: <8e37d1ff-be19-4f70-a1a6-9a013a61782b@linaro.org>
+References: <20231004070309.2408745-1-andreas@kemnade.info>
+        <8e37d1ff-be19-4f70-a1a6-9a013a61782b@linaro.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Hi,
 
+On Wed, 4 Oct 2023 09:59:59 +0200
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
 
-> Am 04.10.2023 um 14:42 schrieb H. Nikolaus Schaller =
-<hns@goldelico.com>:
->=20
->=20
->=20
->> Am 04.10.2023 um 13:54 schrieb Andreas Kemnade =
-<andreas@kemnade.info>:
->>=20
->> On Wed, 4 Oct 2023 13:39:03 +0200
->> "H. Nikolaus Schaller" <hns@goldelico.com> wrote:
->>=20
->>>> Am 04.10.2023 um 13:03 schrieb Andreas Kemnade =
-<andreas@kemnade.info>:
->>>>=20
->>>> On Wed, 4 Oct 2023 12:50:16 +0200
->>>> "H. Nikolaus Schaller" <hns@goldelico.com> wrote:
->>>>=20
->>>>> Hi Andreas,
->>>>>=20
->>>>>> Am 04.10.2023 um 08:53 schrieb Andreas Kemnade =
-<andreas@kemnade.info>:
->>>>>>=20
->>>>>> Drop omap36xx compatible as done in other omap3630 devices.
->>>>>> This has apparently fallen through the lattice.
->>>>>>=20
->>>>>> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
->>>>>> ---
->>>>>> arch/arm/boot/dts/ti/omap/omap3-gta04.dtsi | 2 +-
->>>>>> 1 file changed, 1 insertion(+), 1 deletion(-)
->>>>>>=20
->>>>>> diff --git a/arch/arm/boot/dts/ti/omap/omap3-gta04.dtsi =
-b/arch/arm/boot/dts/ti/omap/omap3-gta04.dtsi
->>>>>> index b6b27e93857f..3661340009e7 100644
->>>>>> --- a/arch/arm/boot/dts/ti/omap/omap3-gta04.dtsi
->>>>>> +++ b/arch/arm/boot/dts/ti/omap/omap3-gta04.dtsi
->>>>>> @@ -11,7 +11,7 @@
->>>>>>=20
->>>>>> / {
->>>>>> 	model =3D "OMAP3 GTA04";
->>>>>> -	compatible =3D "goldelico,gta04", "ti,omap3630", =
-"ti,omap36xx", "ti,omap3";   =20
->>>>>=20
->>>>> there seem to be some more references to ti,omap36xx:
->>>>>=20
->>>>> arch/arm/boot/dts/ti/omap/omap3-lilly-a83x.dtsi:	compatible =3D =
-"incostartec,omap3-lilly-a83x", "ti,omap3630", "ti,omap36xx", =
-"ti,omap3"; =20
->>>>=20
->>>> apperently all the dtsi are fallen through the lattice when =
-handling the dts.
->>>>=20
->>>>=20
->>>>> arch/arm/mach-omap2/board-generic.c:	"ti,omap36xx",
->>>>> drivers/clk/ti/dpll.c:	     =
-of_machine_is_compatible("ti,omap36xx")) &&
->>>>> drivers/cpufreq/ti-cpufreq.c:	{ .compatible =3D "ti,omap36xx", =
-.data =3D &omap36xx_soc_data, },
->>>>>=20
->>>>> So are you sure that we can remove it without replacement or code =
-fixes in dpll and cpufreq (board-generic is probably no issue)?
->>>>>=20
->>>> see discussion of:
->>>>=20
->>>> commit e341f338180c84cd98af3016cf5bcfde45a041fb
->>>> Author: Andrew Davis <afd@ti.com>
->>>> Date:   Thu Feb 16 09:33:38 2023 -0600
->>>>=20
->>>>  ARM: dts: omap: Drop ti,omap36xx compatible =20
->>>=20
->>> Ah, I wasn't aware of this.
->>>=20
->>>>=20
->>>> all the places also basically check for omap36xx || omap3630. =20
->>>=20
->>>=20
->>> Yes, I have checked but drivers/cpufreq/ti-cpufreq.c seems to be an
->>> exception (unless I am missing some other patch).
->>>=20
->> No:
->>       { .compatible =3D "ti,omap36xx", .data =3D &omap36xx_soc_data, =
-},
->>       { .compatible =3D "ti,omap3630", .data =3D &omap36xx_soc_data, =
-},
->=20
-> Well, in v6.6-rc4 I see:
->=20
-> static const struct of_device_id ti_cpufreq_of_match[] =3D {
-> 	{ .compatible =3D "ti,am33xx", .data =3D &am3x_soc_data, },
-> 	{ .compatible =3D "ti,am3517", .data =3D &am3517_soc_data, },
-> 	{ .compatible =3D "ti,am43", .data =3D &am4x_soc_data, },
-> 	{ .compatible =3D "ti,dra7", .data =3D &dra7_soc_data },
-> 	{ .compatible =3D "ti,omap34xx", .data =3D &omap34xx_soc_data, =
-},
-> 	{ .compatible =3D "ti,omap36xx", .data =3D &omap36xx_soc_data, =
-},
-> 	{ .compatible =3D "ti,am625", .data =3D &am625_soc_data, },
-> 	{ .compatible =3D "ti,am62a7", .data =3D &am625_soc_data, },
-> 	/* legacy */
-> 	{ .compatible =3D "ti,omap3430", .data =3D &omap34xx_soc_data, =
-},
-> 	{ .compatible =3D "ti,omap3630", .data =3D &omap36xx_soc_data, =
-},
-> 	{},
-> };
->=20
-> Either the "/* legacy */" or the "ti,omap36xx" seems as if it should =
-be removed.
-> But it seems to break the systematic approach of this table.
->=20
->> The bindings also only specify omap3630.
->=20
-> What I think is that the background was (before bindings documentation
-> was invented) that there are drivers covering all variants of omap36xx
-> (incl. am37xx and dm37xx) and some parts specific to a single version.
+[...]
+> > diff --git a/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts b/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts
+> > index 46a80eacf771..6a790124bcf5 100644
+> > --- a/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts
+> > +++ b/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts
+> > @@ -447,10 +447,12 @@ &uart2 {
+> >  	interrupts-extended = <&wakeupgen GIC_SPI 73 IRQ_TYPE_LEVEL_HIGH
+> >  			       &omap4_pmx_core OMAP4_UART2_RX>;
+> >  
+> > -	/*
+> > -	 * BT + GPS in WL1283 in WG7500 requiring CLK32KAUDIO of pmic
+> > -	 * which does not have a driver
+> > -	 */
+> > +	bluetooth-gnss {  
+> 
+> If you changed the bindings, please share a link. If not, this is not
+> currently accepted and dtbs_check should point it out.
+> 
 
-Ah, there is indeed an issue with removing omap36xx and replacing by
-omap3630.
+according to dtbs_check:
 
-What about the PVR/SGX driver. This needs a compatible that can =
-distinguish
-between the DM3725 and DM3730. The first is w/o SGX and the second one
-with. Having all summarized as omap3630 does not allow to load the
-PVR/SGX driver based on the board specific compatible entry.
+good:
+- bluetooth-gnss
+- bluettooth-gnss
 
-AFAIR this was the original idea behind=20
+bad:
+- bluettooth-gnnss
+- tiwi (still there in pandaboards)
 
-	compatible =3D "goldelico,gta04", "ti,omap3630", "ti,omap36xx", =
-"ti,omap3";=20
-
-Only with this we can make the SGX driver depend on "ti,omap3630" and =
-all
-other general omap36xx stuff on "ti,omap36xx".
-
-So it seems as if there was a reason to have both, and the omap36xx is =
-not
-completely superflous to be dropped.
-
-BR,
-Nikolaus
+Regards,
+Andreas
 
