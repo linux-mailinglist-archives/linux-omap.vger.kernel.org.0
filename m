@@ -2,115 +2,212 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 596357B7E92
-	for <lists+linux-omap@lfdr.de>; Wed,  4 Oct 2023 14:01:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27E497B7F7D
+	for <lists+linux-omap@lfdr.de>; Wed,  4 Oct 2023 14:43:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242280AbjJDMBP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 4 Oct 2023 08:01:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55894 "EHLO
+        id S233193AbjJDMnC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 4 Oct 2023 08:43:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55308 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233297AbjJDMBO (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 4 Oct 2023 08:01:14 -0400
-Received: from mail-ua1-x934.google.com (mail-ua1-x934.google.com [IPv6:2607:f8b0:4864:20::934])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E293D7
-        for <linux-omap@vger.kernel.org>; Wed,  4 Oct 2023 05:01:10 -0700 (PDT)
-Received: by mail-ua1-x934.google.com with SMTP id a1e0cc1a2514c-7ae12c28776so869904241.0
-        for <linux-omap@vger.kernel.org>; Wed, 04 Oct 2023 05:01:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1696420869; x=1697025669; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5VxF9d0mojGG7o4cVpSUHCY76AoqXAbBRiV4n80jKEw=;
-        b=oHwv6/DPYak/DiW3035/fi4o8vRulpJFL0nXAb1L5f5gW1bFQLIyz8cbFCYnMHUseq
-         8x9SmHPE79FkiEj1M7fKZX3HEpq2T7M9fzoC720BtQVXC5zw8PsjPWRMPzK/ZCQ6/nhJ
-         7MYHuApyLSVuLlJL7NaJ1dM2Q0R7TcVaEXQvH8YZSqHKKW6Sf7mUv6leK8FRU3rgHxVl
-         S1ETvyihTnfD0chxYCSydvEmqQx1RJVPrNzRZPoHNiTTtYU5giP8d33q1Aisrjq3Viyx
-         ajhhPkb+txsnhHvKJvp7PH+lbVkPjUQpwaYmMVgrFq0Ts+E/q/01c/zTSj+tCi47R95Y
-         bzbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696420869; x=1697025669;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5VxF9d0mojGG7o4cVpSUHCY76AoqXAbBRiV4n80jKEw=;
-        b=cz3qgN3sduO+vxL7Iu6X1T2nIXMIp4n1T4ERWOn3tmsHkvi07N5uhsMtjHzihUCmpw
-         IZpA6SoO6M3VpkjM/1NsfstV0GRpmhtCcu/ugOJUgdADm1a8FPHm5ibEraTzl2YmVM4L
-         Av3axVAC/JSgKxDcaGXw3O3UE8jP4I/0CU0bf/IRycdZkQWfCk3/F7V8NDGZEWArhlfL
-         si3XxvS8VupnygFbn/0kLjA3XMnm6XZYWGYT6ltBO0C0UjFVMFUHCA62gGXD178E1Li/
-         7cSG910sdthDqAqufVNbSS08IpQUtD/hXeVAyRzOfM6Df3zDDAqRbPOq9Uxqn2VPJCv3
-         eKfg==
-X-Gm-Message-State: AOJu0Ywe5CGwpVYK1PDbZTNYBOjsuG3jYDxAnhdcFasUfFFyixyTY//d
-        AyNr8EFVNb3pzjJ9T0g8KtvrxxlchghCRfDIYiEbGQ==
-X-Google-Smtp-Source: AGHT+IEx3AgtVmbiogi6y/J2HxxHzWhr7s02jCF0ZQyoHV8FsEEVFDac4kKEaiIaQ5/oedvf5e19/1rxUgniaHEkusM=
-X-Received: by 2002:a67:efc8:0:b0:44e:9afe:c5b9 with SMTP id
- s8-20020a67efc8000000b0044e9afec5b9mr1545555vsp.23.1696420869527; Wed, 04 Oct
- 2023 05:01:09 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230905185309.131295-1-brgl@bgdev.pl> <20230905185309.131295-15-brgl@bgdev.pl>
- <CACRpkda9=VULj4Cy_sit-UpUQnVEbS-RJKAeULVCw8ZCRTq1sw@mail.gmail.com>
-In-Reply-To: <CACRpkda9=VULj4Cy_sit-UpUQnVEbS-RJKAeULVCw8ZCRTq1sw@mail.gmail.com>
-From:   Bartosz Golaszewski <brgl@bgdev.pl>
-Date:   Wed, 4 Oct 2023 14:00:58 +0200
-Message-ID: <CAMRc=MdTk1B4MEh9C624Upm_EcaQgJd9OU-AGfU0G-DU1+qk6A@mail.gmail.com>
-Subject: Re: [RFT PATCH 14/21] hte: tegra194: don't access struct gpio_chip
-To:     Linus Walleij <linus.walleij@linaro.org>,
-        Dipen Patel <dipenp@nvidia.com>
-Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <markgross@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-acpi@vger.kernel.org, timestamp@lists.linux.dev,
-        linux-tegra@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+        with ESMTP id S233115AbjJDMnB (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 4 Oct 2023 08:43:01 -0400
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.51])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 526D193;
+        Wed,  4 Oct 2023 05:42:57 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1696423368; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=bIIs/wQ662AGCMQ60bRN/Bq5J6nEwQHOBLka3URcQVRdnncc40qzpOaDOHIPNiSTPC
+    9GDVNVT4M4aURTdiYhv7s9BRg7sOvEIe+QfV0exqErVN6Eybv0MKB/aVS8H8cyy+JBFY
+    kWMZ6x0PyI93sQzyduewHLTRa9q0623xtGbuxQMREbR4QMAYtmcmfUH47Z/23ZVsaSmL
+    3sTD6CmoGE0uHgwA1c8CVJMjuxmqGUY5bUWGA/wGUF5chytVSq9yNipkWaxRJMJ7sHrR
+    9KY4VbhXfUpCVEoLO1iPkddvkkBzUw+otoFQO/jXGA/0zRyuU4oHrc/LHDIPShnmT7lx
+    EDAQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1696423368;
+    s=strato-dkim-0002; d=strato.com;
+    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=1tOW5l3WTyj5E5hPy7McNdTfJh1oCo+gm00ZLJ7Z+6Q=;
+    b=cPEaat+lHijQ7wiL2bRXuNazWrinDZ7euMR+r7nvAew8ppP8JyzAixHh0V08N144Sn
+    mADP/ZEEGfWWYPTJc2MsowgnZr5fIATGvHn7JkxcFq449Yg0cxvFi+SUsckS5FakSaYe
+    SdYOshvIDYr+i+iYZWOi7+HUYPtRHHUO/nv1KlmvKnir1B4Zb3cyrmnXLG1VJRnS+Tm7
+    qNL6HZvPK4CKV9Z69Qtqk4rPYjAFTZIgnl8lqkQyvCDIZ4ZTHFVzU4Mpn9o+zRiBO1JB
+    3OLnQZjuUspdAPyTdSgSiN5fD0+BqYdT1ucJtm4zQ/vrwZId+c9hAqmmjFoiabqtAAKU
+    IGjQ==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1696423368;
+    s=strato-dkim-0002; d=goldelico.com;
+    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=1tOW5l3WTyj5E5hPy7McNdTfJh1oCo+gm00ZLJ7Z+6Q=;
+    b=dpX5Wl1MfnYvKmZPaj36LN1USilkJ+F9xK6SRDM8T9IKpFZn/m8btLFR0pJdOud2U6
+    IJoI5hUrhm5VeN/IgslhCXU2njeHUk5pvh8KnBWrAOf8+gXleWS6XShQKE63boAqcmFY
+    1xA7sqvpBue5APx0Q1s612JR5/pZIXJ232jotcVcrcpjow3viQZJcp/42zctM9Yzjn8P
+    XXivX2wLBWbKuVI2D0+9wxdMVqIEcaqyUNDKJBun1A3i8NySVMqf4bM/zYCJqB/PeQBy
+    pYdiC+OyWD2hog3q4HGOypUdYLZIyrE5ECjL1QbERtABt8CThVGZ2awmMusGP+eDw7l3
+    1Snw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1696423368;
+    s=strato-dkim-0003; d=goldelico.com;
+    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=1tOW5l3WTyj5E5hPy7McNdTfJh1oCo+gm00ZLJ7Z+6Q=;
+    b=CpNKpbhUOLbMZaCx7RZB97Q3iX71jZDxh1Qs8h4lIZJyemrCmK/lga3XQWcByb/2SN
+    UCEfDPR+YmQvkmsF1zDQ==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj5Apz9PSN6LgsXcGeo3Q="
+Received: from smtpclient.apple
+    by smtp.strato.de (RZmta 49.8.2 DYNA|AUTH)
+    with ESMTPSA id Y04dd7z94CgljPp
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
+        (Client did not present a certificate);
+    Wed, 4 Oct 2023 14:42:47 +0200 (CEST)
+Content-Type: text/plain;
+        charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.4\))
+Subject: Re: [PATCH] ARM: dts: omap3-gta04: Drop superfluous omap36xx
+ compatible
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
+In-Reply-To: <20231004135449.591b3f6c@aktux>
+Date:   Wed, 4 Oct 2023 14:42:47 +0200
+Cc:     bcousson@baylibre.com, Tony Lindgren <tony@atomide.com>,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        conor+dt@kernel.org, linux-omap@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Message-Id: <42806B60-E48B-4AA9-B375-E9F65F59AB87@goldelico.com>
+References: <20231004065323.2408615-1-andreas@kemnade.info>
+ <12323F42-3611-4685-8981-F6A18C4A5862@goldelico.com>
+ <20231004130353.01228376@aktux>
+ <FF3A3F35-E264-4D28-AFAC-EFA2ADB69F40@goldelico.com>
+ <20231004135449.591b3f6c@aktux>
+To:     Andreas Kemnade <andreas@kemnade.info>
+X-Mailer: Apple Mail (2.3696.120.41.1.4)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, Sep 7, 2023 at 9:28=E2=80=AFAM Linus Walleij <linus.walleij@linaro.=
-org> wrote:
->
-> On Tue, Sep 5, 2023 at 8:53=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev.pl=
-> wrote:
->
-> > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> >
-> > Using struct gpio_chip is not safe as it will disappear if the
-> > underlying driver is unbound for any reason. Switch to using reference
-> > counted struct gpio_device and its dedicated accessors.
-> >
-> > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->
-> As Andy points out add <linux/cleanup.h>, with that fixed:
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
->
-> I think this can be merged into the gpio tree after leaving some
-> slack for the HTE maintainer to look at it, things look so much
-> better after this.
->
-> Yours,
-> Linus Walleij
 
-Dipen,
 
-if you could give this patch a test and possibly ack it for me to take
-it through the GPIO tree (or go the immutable tag from HTE route) then
-it would be great. This is the last user of gpiochip_find() treewide,
-so with it we could remove it entirely for v6.7.
+> Am 04.10.2023 um 13:54 schrieb Andreas Kemnade <andreas@kemnade.info>:
+>=20
+> On Wed, 4 Oct 2023 13:39:03 +0200
+> "H. Nikolaus Schaller" <hns@goldelico.com> wrote:
+>=20
+>>> Am 04.10.2023 um 13:03 schrieb Andreas Kemnade =
+<andreas@kemnade.info>:
+>>>=20
+>>> On Wed, 4 Oct 2023 12:50:16 +0200
+>>> "H. Nikolaus Schaller" <hns@goldelico.com> wrote:
+>>>=20
+>>>> Hi Andreas,
+>>>>=20
+>>>>> Am 04.10.2023 um 08:53 schrieb Andreas Kemnade =
+<andreas@kemnade.info>:
+>>>>>=20
+>>>>> Drop omap36xx compatible as done in other omap3630 devices.
+>>>>> This has apparently fallen through the lattice.
+>>>>>=20
+>>>>> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+>>>>> ---
+>>>>> arch/arm/boot/dts/ti/omap/omap3-gta04.dtsi | 2 +-
+>>>>> 1 file changed, 1 insertion(+), 1 deletion(-)
+>>>>>=20
+>>>>> diff --git a/arch/arm/boot/dts/ti/omap/omap3-gta04.dtsi =
+b/arch/arm/boot/dts/ti/omap/omap3-gta04.dtsi
+>>>>> index b6b27e93857f..3661340009e7 100644
+>>>>> --- a/arch/arm/boot/dts/ti/omap/omap3-gta04.dtsi
+>>>>> +++ b/arch/arm/boot/dts/ti/omap/omap3-gta04.dtsi
+>>>>> @@ -11,7 +11,7 @@
+>>>>>=20
+>>>>> / {
+>>>>> 	model =3D "OMAP3 GTA04";
+>>>>> -	compatible =3D "goldelico,gta04", "ti,omap3630", "ti,omap36xx", =
+"ti,omap3";   =20
+>>>>=20
+>>>> there seem to be some more references to ti,omap36xx:
+>>>>=20
+>>>> arch/arm/boot/dts/ti/omap/omap3-lilly-a83x.dtsi:	compatible =3D =
+"incostartec,omap3-lilly-a83x", "ti,omap3630", "ti,omap36xx", =
+"ti,omap3"; =20
+>>>=20
+>>> apperently all the dtsi are fallen through the lattice when handling =
+the dts.
+>>>=20
+>>>=20
+>>>> arch/arm/mach-omap2/board-generic.c:	"ti,omap36xx",
+>>>> drivers/clk/ti/dpll.c:	     =
+of_machine_is_compatible("ti,omap36xx")) &&
+>>>> drivers/cpufreq/ti-cpufreq.c:	{ .compatible =3D "ti,omap36xx", =
+.data =3D &omap36xx_soc_data, },
+>>>>=20
+>>>> So are you sure that we can remove it without replacement or code =
+fixes in dpll and cpufreq (board-generic is probably no issue)?
+>>>>=20
+>>> see discussion of:
+>>>=20
+>>> commit e341f338180c84cd98af3016cf5bcfde45a041fb
+>>> Author: Andrew Davis <afd@ti.com>
+>>> Date:   Thu Feb 16 09:33:38 2023 -0600
+>>>=20
+>>>   ARM: dts: omap: Drop ti,omap36xx compatible =20
+>>=20
+>> Ah, I wasn't aware of this.
+>>=20
+>>>=20
+>>> all the places also basically check for omap36xx || omap3630. =20
+>>=20
+>>=20
+>> Yes, I have checked but drivers/cpufreq/ti-cpufreq.c seems to be an
+>> exception (unless I am missing some other patch).
+>>=20
+> No:
+>        { .compatible =3D "ti,omap36xx", .data =3D &omap36xx_soc_data, =
+},
+>        { .compatible =3D "ti,omap3630", .data =3D &omap36xx_soc_data, =
+},
 
-Bart
+Well, in v6.6-rc4 I see:
+
+static const struct of_device_id ti_cpufreq_of_match[] =3D {
+	{ .compatible =3D "ti,am33xx", .data =3D &am3x_soc_data, },
+	{ .compatible =3D "ti,am3517", .data =3D &am3517_soc_data, },
+	{ .compatible =3D "ti,am43", .data =3D &am4x_soc_data, },
+	{ .compatible =3D "ti,dra7", .data =3D &dra7_soc_data },
+	{ .compatible =3D "ti,omap34xx", .data =3D &omap34xx_soc_data, =
+},
+	{ .compatible =3D "ti,omap36xx", .data =3D &omap36xx_soc_data, =
+},
+	{ .compatible =3D "ti,am625", .data =3D &am625_soc_data, },
+	{ .compatible =3D "ti,am62a7", .data =3D &am625_soc_data, },
+	/* legacy */
+	{ .compatible =3D "ti,omap3430", .data =3D &omap34xx_soc_data, =
+},
+	{ .compatible =3D "ti,omap3630", .data =3D &omap36xx_soc_data, =
+},
+	{},
+};
+
+Either the "/* legacy */" or the "ti,omap36xx" seems as if it should be =
+removed.
+But it seems to break the systematic approach of this table.
+
+> The bindings also only specify omap3630.
+
+What I think is that the background was (before bindings documentation
+was invented) that there are drivers covering all variants of omap36xx
+(incl. am37xx and dm37xx) and some parts specific to a single version.
+
+So maybe it could have been missing in the bindings?
+
+Anyways it seems to need some cleanup to remove all references to=20
+omap36xx before it is forgotten...
+
+BR,
+Nikolaus=
