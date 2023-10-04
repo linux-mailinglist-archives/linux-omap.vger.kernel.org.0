@@ -2,163 +2,156 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2AE307B75EB
-	for <lists+linux-omap@lfdr.de>; Wed,  4 Oct 2023 02:36:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84DB97B77AF
+	for <lists+linux-omap@lfdr.de>; Wed,  4 Oct 2023 08:17:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232024AbjJDAgV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 3 Oct 2023 20:36:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59220 "EHLO
+        id S232648AbjJDGRO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 4 Oct 2023 02:17:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229794AbjJDAgV (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 3 Oct 2023 20:36:21 -0400
-Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A11CA6;
-        Tue,  3 Oct 2023 17:36:18 -0700 (PDT)
-Received: by mail-ed1-x533.google.com with SMTP id 4fb4d7f45d1cf-53447d0241eso2808843a12.3;
-        Tue, 03 Oct 2023 17:36:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696379776; x=1696984576; darn=vger.kernel.org;
-        h=mime-version:references:in-reply-to:message-id:date:subject:cc:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=9XJRvSjw9vE3ViTEA7+Fc+ROzh6Ut2Xh1WXhdCCyUoM=;
-        b=SJnvMIYlfk71S+W3PJ+xoj9DqYbrE83H8xqquNwV94TBGXJTBSFkdAkz4SCqlarYME
-         qDlPjAF/Tt9h+gRE5VEgzmIYk6OcLQ0YckprDAau4Aoy4FbqW/lP9agMQReihIgIiWHN
-         JcXO5BJUrskKjEvHu1iRkzE3Q4CgXuVfYEBC/7xutkU5owvuefir5SmvpZrnJ0UweF1i
-         gqbJlBjOizNlT8t5gBEtLqMi2hTTTrzVGW67E4TqoWdLMvVegwFXNFP6KFPvuh6NsH9f
-         pmhHyWavFvr2rOomlcytckNr6dDQAxSzw411G8LCiUAF/a6UbwKplKHiCXucTVXNwXtc
-         vEgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696379776; x=1696984576;
-        h=mime-version:references:in-reply-to:message-id:date:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9XJRvSjw9vE3ViTEA7+Fc+ROzh6Ut2Xh1WXhdCCyUoM=;
-        b=rDgjaVCkEOAa78aP/rV/QO2SzMrOTPCv3Awu6y9MvrxYIlEcbG397vVjC8QSG1HS85
-         9kCJhNSwkG+w+njriA/T0JskUG7ZLfJsCBHW69e5WDiIY6kwfi6aEYV1IN7LX/qMfKye
-         A5CG1qaROgg1E86ZzpCqdk4h42Ih4Fw6O2CUt85g0LvaX8tTHJqsApWDSWVlcfBT3yaB
-         1bIRgomLH7Ob1zIegJlZhQYOWyG3g3JbKNH+Imwho4I+Nkct147LXhSJM5JULZXdBkHZ
-         s6lou70COBzOgTL/BcjYA9ql+zWMOTWcrmZ6Tkicm+ZvhhbTIZb0tyi5HzQVj66MTcO/
-         0/fg==
-X-Gm-Message-State: AOJu0YyuH/g4eUtRTvPBELMTRV3Iw7hEHiJT0s/OBIirRbhv4xpo74vt
-        vjtFb5S3UxZ00VGTvxWeUa8=
-X-Google-Smtp-Source: AGHT+IHmdDNcvb1k/uz4FIW9trWjcu9894h81mL2637ya7mGbZk+fy69n/xEa9hiU+L3T6dxpq2o7A==
-X-Received: by 2002:aa7:c409:0:b0:530:a925:77a6 with SMTP id j9-20020aa7c409000000b00530a92577a6mr653446edq.8.1696379776395;
-        Tue, 03 Oct 2023 17:36:16 -0700 (PDT)
-Received: from dell.localnet (77-255-201-154.dynamic.inetia.pl. [77.255.201.154])
-        by smtp.gmail.com with ESMTPSA id c4-20020a056402120400b00537963f692esm1575392edw.0.2023.10.03.17.36.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Oct 2023 17:36:15 -0700 (PDT)
-From:   Janusz Krzysztofik <jmkrzyszt@gmail.com>
-To:     Linus Walleij <linus.walleij@linaro.org>,
-        Tony Lindgren <tony@atomide.com>
-Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Kevin Hilman <khilman@kernel.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Andy Shevchenko <andy@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-gpio@vger.kernel.org
-Subject: Re: [PATCH] OMAP/gpio: drop MPUIO static base
-Date:   Wed, 04 Oct 2023 02:36:13 +0200
-Message-ID: <2298936.ElGaqSPkdT@dell>
-In-Reply-To: <20230926070953.GV5285@atomide.com>
-References: <20230912-omap-mpuio-base-v1-1-290d9bd24b23@linaro.org>
- <20230926070953.GV5285@atomide.com>
+        with ESMTP id S232537AbjJDGRO (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 4 Oct 2023 02:17:14 -0400
+Received: from muru.com (muru.com [72.249.23.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id EC5DCAF;
+        Tue,  3 Oct 2023 23:17:10 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id E9E7C80A7;
+        Wed,  4 Oct 2023 06:17:09 +0000 (UTC)
+Date:   Wed, 4 Oct 2023 09:17:08 +0300
+From:   Tony Lindgren <tony@atomide.com>
+To:     Maximilian Luz <luzmaximilian@gmail.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@intel.com>,
+        Dhruva Gole <d-gole@ti.com>,
+        Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
+        John Ogness <john.ogness@linutronix.de>,
+        Johan Hovold <johan@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        linux-omap@vger.kernel.org,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org
+Subject: Re: [PATCH v12 1/1] serial: core: Start managing serial controllers
+ to enable runtime PM
+Message-ID: <20231004061708.GD34982@atomide.com>
+References: <20230525113034.46880-1-tony@atomide.com>
+ <62d3678a-a23d-4619-95de-145026629ba8@gmail.com>
+ <20231003121455.GB34982@atomide.com>
+ <20231003122137.GC34982@atomide.com>
+ <dc7af79d-bca8-4967-80fe-e90907204932@gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart4836419.GXAFRqVoOG";
- micalg="pgp-sha256"; protocol="application/pgp-signature"
-X-Spam-Status: No, score=-0.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,HK_RANDOM_ENVFROM,
-        HK_RANDOM_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <dc7af79d-bca8-4967-80fe-e90907204932@gmail.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
---nextPart4836419.GXAFRqVoOG
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"; protected-headers="v1"
-From: Janusz Krzysztofik <jmkrzyszt@gmail.com>
-Subject: Re: [PATCH] OMAP/gpio: drop MPUIO static base
-Date: Wed, 04 Oct 2023 02:36:13 +0200
-Message-ID: <2298936.ElGaqSPkdT@dell>
-In-Reply-To: <20230926070953.GV5285@atomide.com>
-MIME-Version: 1.0
+* Maximilian Luz <luzmaximilian@gmail.com> [231003 22:09]:
+> On 10/3/23 14:21, Tony Lindgren wrote:
+> > * Tony Lindgren <tony@atomide.com> [231003 12:15]:
+> > > Hi,
+> > > 
+> > > * Maximilian Luz <luzmaximilian@gmail.com> [231003 11:57]:
+> > > > A bad workaround is to disable runtime PM, e.g. via
+> > > > 
+> > > >    echo on > /sys/bus/serial-base/devices/dw-apb-uart.4:0/dw-apb-uart.4:0.0/power/control
+> > > 
+> > > If the touchscreen controller driver(s) are using serdev they are
+> > > children of the dw-apb-uart.4:0.0 and can use runtime PM calls to
+> > > block the parent device from idling as necessary. The hierarchy
+> > > unless changed using ignore_children.
+> > 
+> > Sorry about all the typos, I meant "the hierarchy works unless changed"
+> > above. The rest of the typos are easier to decipher probably :)
+> 
+> Unfortunately that doesn't quite line up with what I can see on v6.5.5. The
+> serdev controller seems to be a child of dw-apb-uart.4, a platform device. The
+> serial-base and serdev devices are siblings. According to sysfs:
+> 
+>     /sys/bus/platform/devices/dw-apb-uart.4
+>     ├── driver -> ../../../../bus/platform/drivers/dw-apb-uart
+>     ├── subsystem -> ../../../../bus/platform
+>     │
+>     ├── dw-apb-uart.4:0
+>     │  ├── driver -> ../../../../../bus/serial-base/drivers/ctrl
+>     │  ├── subsystem -> ../../../../../bus/serial-base
+>     │  │
+>     │  └── dw-apb-uart.4:0.0
+>     │     ├── driver -> ../../../../../../bus/serial-base/drivers/port
+>     │     └── subsystem -> ../../../../../../bus/serial-base
+>     │
+>     └── serial0
+>        ├── subsystem -> ../../../../../bus/serial
+>        │
+>        └── serial0-0
+>           ├── driver -> ../../../../../../bus/serial/drivers/surface_serial_hub
+>           └── subsystem -> ../../../../../../bus/serial
 
-Hi Linus, Tony,
+The hierachy above is correct. Looks like I pasted the wrong device above,
+I meant dw-apb-uart.4, sorry about the extra confusion added. Eventually
+the serdev device could be a child of dw-apb-uart.4:0.0 at some point as
+it's specific to a serial port instance, but for now that should not be
+needed.
 
-Dnia wtorek, 26 wrze=C5=9Bnia 2023 09:09:53 CEST Tony Lindgren pisze:
-> * Linus Walleij <linus.walleij@linaro.org> [230912 08:45]:
-> > The OMAP GPIO driver hardcodes the MPIO chip base, but there
-> > is no point: we have already moved all consumers over to using
-> > descriptor look-ups.
-> >=20
-> > Drop the MPUIO GPIO base and use dynamic assignment.
+If serial0-0 is runtime PM active, then dw-apb-uart.4 is runtime PM active
+also unless ingore_children is set.
 
-On my OMAP1510 based ams_delta with the patch applied on top of v6.6-rc4:
+> Runtime suspend on serial0-0 is disabled/not set up at all. So I assume that if
+> it were a descendent of dw-apb-uart.4:0.0, things should have worked
+> out-of-the-box.
 
-root@amsdelta:~# cat /sys/kernel/debug/gpio=20
-gpiochip0: GPIOs 512-527, parent: platform/omap_gpio.0, mpuio:
- gpio-512 (                    |data                ) in  lo=20
- gpio-513 (                    |data                ) in  lo=20
- gpio-514 (                    |data                ) in  lo=20
- gpio-515 (                    |data                ) in  lo=20
- gpio-516 (                    |data                ) in  lo=20
- gpio-517 (                    |data                ) in  lo=20
- gpio-518 (                    |data                ) in  lo=20
- gpio-519 (                    |data                ) in  lo=20
+Hmm yes so maybe the issue is not with surface_serial_hub, but with serial
+port device being nable to resume after __device_suspend_late() has
+disabled runtime PM like you've been saying.
 
-gpiochip1: GPIOs 528-543, parent: platform/omap_gpio.1, gpio-0-15:
- gpio-528 (                    |keybrd_data         ) in  lo=20
- gpio-529 (                    |keybrd_clk          ) in  lo IRQ=20
- gpio-530 (                    |modem_irq           ) in  lo=20
- gpio-532 (                    |hook_switch         ) in  hi IRQ=20
- gpio-540 (                    |rdy                 ) in  hi=20
+If the issue is with the serial port not being able to runtime resume, then
+the patch below should help. Care to give it a try?
 
-gpiochip2: GPIOs 544-551, parent: platform/basic-mmio-gpio.0, latch1:
- gpio-544 (                    |camera              ) out lo=20
-=2E..
+Regards,
 
-GPIO based hardware seems to be working correctly.  I'm only not sure if=20
-we should maybe change the name to something else than gpio-0-15 (mpuio=20
-looks OK).
+Tony
 
-> >=20
-> > Root out the unused instances of the OMAP_MPUIO() macro and
-> > delete the unused OMAP_GPIO_IS_MPUIO() macro.
-> >=20
-> > Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-> > ---
-> > Maybe Bartosz can merge this into the GPIO tree with Tony's
-> > et al blessing?
->=20
-> Best to wait for Tested-by from Aaro on this one.
->=20
-> As far as I'm concerned, good to see this:
->=20
-> Reviewed-by: Tony Lindgren <tony@atomide.com>
-
-Tested-by: Janusz Krzysztofik <jmkrzyszt@gmail.com>
---nextPart4836419.GXAFRqVoOG
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEEnyr6IsGnTYAeAkHJ2WqSnltsjBoFAmUcs30ACgkQ2WqSnlts
-jBrU9Qf9F6VXtPldEIdUb7pt3KTUg58jkYvLTvNhaMxSQqqjU1Q/xkMtpw+LPEDu
-DYdApDvzsunX458kK6XW3biK43fNMTAda6dYCRGIY993q4y9UIbpwyEqezIoJgAs
-cs3lx8wrFDGKAXhISeDfYry9PjDv5YOwRqI6efF0NBSb7hhxkHn46mKdblBl0CIR
-HpNzQahyC6fE4bBGdZ+TgArmLC5C4vxBc+VNWXQMAmuNk24J7Vpw9mgViflMaclE
-8E6prcJQ8R8bilvQzDTB5jLYQhb+K4jVdiwqKdzHHfCVA3ftvNm8sWpP8VmN6Wr3
-9O8MIfAyDbmk9ML33M/3LIK2Mamibg==
-=wcDK
------END PGP SIGNATURE-----
-
---nextPart4836419.GXAFRqVoOG--
-
-
-
+8< ------------------
+diff --git a/drivers/tty/serial/serial_port.c b/drivers/tty/serial/serial_port.c
+--- a/drivers/tty/serial/serial_port.c
++++ b/drivers/tty/serial/serial_port.c
+@@ -46,8 +46,27 @@ static int serial_port_runtime_resume(struct device *dev)
+ 	return 0;
+ }
+ 
+-static DEFINE_RUNTIME_DEV_PM_OPS(serial_port_pm,
+-				 NULL, serial_port_runtime_resume, NULL);
++/*
++ * Allow serdev devices to talk to hardware during system suspend.
++ * Assumes the serial port hardware controller device driver calls
++ * pm_runtime_force_suspend() and pm_runtime_force_resume() for
++ * system suspend as needed.
++ */
++static int serial_port_prepare(struct device *dev)
++{
++	return pm_runtime_resume_and_get(dev);
++}
++
++static void serial_port_complete(struct device *dev)
++{
++	pm_runtime_put_sync(dev);
++}
++
++static const struct dev_pm_ops __maybe_unused serial_port_pm = {
++	SET_RUNTIME_PM_OPS(NULL, serial_port_runtime_resume, NULL)
++	.prepare = serial_port_prepare,
++	.complete = serial_port_complete,
++};
+ 
+ static int serial_port_probe(struct device *dev)
+ {
+-- 
+2.42.0
