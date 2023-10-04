@@ -2,92 +2,89 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A9AD67B7CC6
-	for <lists+linux-omap@lfdr.de>; Wed,  4 Oct 2023 12:01:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5882D7B7D0B
+	for <lists+linux-omap@lfdr.de>; Wed,  4 Oct 2023 12:24:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241777AbjJDKBa (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 4 Oct 2023 06:01:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53832 "EHLO
+        id S242162AbjJDKYA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 4 Oct 2023 06:24:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241950AbjJDKB3 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 4 Oct 2023 06:01:29 -0400
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 11C929E;
-        Wed,  4 Oct 2023 03:01:26 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 4819E80BD;
-        Wed,  4 Oct 2023 10:01:25 +0000 (UTC)
-Date:   Wed, 4 Oct 2023 13:01:23 +0300
-From:   Tony Lindgren <tony@atomide.com>
-To:     Johan Hovold <johan@kernel.org>
-Cc:     Maximilian Luz <luzmaximilian@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Dhruva Gole <d-gole@ti.com>,
-        Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
-        John Ogness <john.ogness@linutronix.de>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-omap@vger.kernel.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org
-Subject: Re: [PATCH v12 1/1] serial: core: Start managing serial controllers
- to enable runtime PM
-Message-ID: <20231004100123.GH34982@atomide.com>
-References: <20230525113034.46880-1-tony@atomide.com>
- <62d3678a-a23d-4619-95de-145026629ba8@gmail.com>
- <20231003121455.GB34982@atomide.com>
- <20231003122137.GC34982@atomide.com>
- <dc7af79d-bca8-4967-80fe-e90907204932@gmail.com>
- <20231004061708.GD34982@atomide.com>
- <ZR0Q7YUwgQV5TLhQ@hovoldconsulting.com>
- <20231004090320.GE34982@atomide.com>
- <ZR0s7dEh19lTid6-@hovoldconsulting.com>
+        with ESMTP id S242168AbjJDKX6 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 4 Oct 2023 06:23:58 -0400
+Received: from mail-yw1-x112d.google.com (mail-yw1-x112d.google.com [IPv6:2607:f8b0:4864:20::112d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BCFA101
+        for <linux-omap@vger.kernel.org>; Wed,  4 Oct 2023 03:23:50 -0700 (PDT)
+Received: by mail-yw1-x112d.google.com with SMTP id 00721157ae682-5a200028437so23798917b3.1
+        for <linux-omap@vger.kernel.org>; Wed, 04 Oct 2023 03:23:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1696415029; x=1697019829; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nyfjVAMzv/bLxGsL52LyGKbSX5nZSxF64UbLJwC2Pt0=;
+        b=k9BBUc2AVetmYzXqtqI3pbjgIhMho46WtVNMYEgIECpTC/cpWwNn13Kgoed5pd8KBc
+         O7CIYChWpSlFndEJkQdBF2pws+kVL4LQxfXP9VF67xMKAF3S2sR5hONCB3xDLDTED0GP
+         BXHo+D2T+2UNfcFfHgYPZZLjeH9ucjriFg6tXmw+GPyFqbyUIL+K2EAzwNgqF1wPjHLP
+         E2V8fgmlpje3EyVzk1jqKTDOgIGk4/HQVkJe7AG5mTQUguWqiXpZjQkm9DlFvRvDZ5X5
+         ft+17Dw5cAgENWM1u4EGqZ+RqLMEg9wj45IMTAN8YA0lidx8sjp9v1oPWI3qFD3CqCmr
+         R/cw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696415029; x=1697019829;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nyfjVAMzv/bLxGsL52LyGKbSX5nZSxF64UbLJwC2Pt0=;
+        b=TdcnvNFWqxqf98jNd+pmeGlTEKgaA62InSuZQ5D8QGsYE1DepfDzzJndbY70Tuo4Wq
+         nuuxO4SvWv9wvLr26xnCDRoghsrNyMAZbXhmrNBilMOXtkHdZW1SAzGhyBslF5CM3H97
+         TOBSImebjUI/jCFrN3DEyrz0S4Yl+en8kcLGOUvublL2xoRLs8XQ9fy84qq6B3WrGIMF
+         3lrtvNXIwIq83aMmQ31PkyaU60DiMZBHAcHVH96E1KGpGl8NyMveAyB5mNOMtnrYH+fP
+         bLHY9sxKxYnHmMhXQw0U3ZHgCH175J5CrfcNwLS2klbizjk8mVf4uG6onYnQ9vPckBdp
+         +OaQ==
+X-Gm-Message-State: AOJu0YyCknqwYAbK8wHGCaLWzBKxL4qADQCL1S4GIv9uUhdro1xNWDy7
+        h29hTfbWnsZ+6OyXDF25ImWUaRFPiN3DHx15lYUQfQ==
+X-Google-Smtp-Source: AGHT+IE0th6pEihyn2DBN0vwAeClnm8XTARfQrOeMoqRc9CMo3yMnCn1iGwUEhcUFn1RDG4x6PvDA5Lird8UHhV2vVg=
+X-Received: by 2002:a0d:d690:0:b0:59b:eb64:bcc5 with SMTP id
+ y138-20020a0dd690000000b0059beb64bcc5mr2136386ywd.8.1696415029221; Wed, 04
+ Oct 2023 03:23:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZR0s7dEh19lTid6-@hovoldconsulting.com>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230912-omap-mpuio-base-v1-1-290d9bd24b23@linaro.org>
+ <20230926070953.GV5285@atomide.com> <2298936.ElGaqSPkdT@dell>
+In-Reply-To: <2298936.ElGaqSPkdT@dell>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Wed, 4 Oct 2023 12:23:37 +0200
+Message-ID: <CACRpkdZEHh=odohqRdGLF0vDvQU-gQQKTdV7uwXP9XzC0rAZ5Q@mail.gmail.com>
+Subject: Re: [PATCH] OMAP/gpio: drop MPUIO static base
+To:     Janusz Krzysztofik <jmkrzyszt@gmail.com>
+Cc:     Tony Lindgren <tony@atomide.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Kevin Hilman <khilman@kernel.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Andy Shevchenko <andy@kernel.org>,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-gpio@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Johan Hovold <johan@kernel.org> [231004 09:14]:
-> On Wed, Oct 04, 2023 at 12:03:20PM +0300, Tony Lindgren wrote:
-> > The serial port device and serdev device are siblings of the physical
-> > serial port controller device as seen in the hierarcy printed out by
-> > Maximilian.
-> 
-> Yeah, and that's precisely the broken part. Keeping the serdev
-> controller active is supposed to keep the serial controller active. Your
-> serial core rework appears to have broken just that.
+Ji Janusz,
 
-Hmm OK good point, tx can currently have an extra delay if a serdev
-device is active, and the serial port controller device is not active.
+On Wed, Oct 4, 2023 at 2:36=E2=80=AFAM Janusz Krzysztofik <jmkrzyszt@gmail.=
+com> wrote:
 
-So we can check for active port->dev instead of &port_dev->dev though
-to know when when start_tx() is safe to do as below.
+> Tested-by: Janusz Krzysztofik <jmkrzyszt@gmail.com>
 
-Thanks.
+Wow thanks a lot Janusz, I was really scared that this patch would not work
+but here we are!
 
-Tony
-
-8< -----------------
-diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
-index 6207f0051f23d..defecc5b04422 100644
---- a/drivers/tty/serial/serial_core.c
-+++ b/drivers/tty/serial/serial_core.c
-@@ -156,7 +156,7 @@ static void __uart_start(struct uart_state *state)
- 	 * enabled, serial_port_runtime_resume() calls start_tx() again
- 	 * after enabling the device.
- 	 */
--	if (pm_runtime_active(&port_dev->dev))
-+	if (!pm_runtime_enabled(port->dev) || pm_runtime_active(port->dev))
- 		port->ops->start_tx(port);
- 	pm_runtime_mark_last_busy(&port_dev->dev);
- 	pm_runtime_put_autosuspend(&port_dev->dev);
+Yours,
+Linus Walleij
