@@ -2,77 +2,108 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C56097BA329
-	for <lists+linux-omap@lfdr.de>; Thu,  5 Oct 2023 17:52:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB9F67BA4CA
+	for <lists+linux-omap@lfdr.de>; Thu,  5 Oct 2023 18:11:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235203AbjJEPwV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 5 Oct 2023 11:52:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42184 "EHLO
+        id S238905AbjJEQK5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 5 Oct 2023 12:10:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54186 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234278AbjJEPvE (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 5 Oct 2023 11:51:04 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C53826079B;
-        Thu,  5 Oct 2023 07:07:44 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 700E6C32790;
-        Thu,  5 Oct 2023 11:37:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696505879;
-        bh=LOAxG0Jr81YYuWH9A6gH/itFYQmM7Ke3vuSJ0R6KdxE=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=jTUZKHsqapDRDpNErIirrcgRtUXDMt/GpYIuCVb48ZRw0tcIQwRxE5FOxVpdXAgzi
-         Y0indAMT0oUT+CsAbyRP/1I1HA8/aAN2S0B//2j+bN2e+n8e0EPVxzNECn5WnFOfwN
-         BvRF+WBJH/hDRFjUNWsfNfXTQZroBM1ERmdq4EP7gQYbBV0hvb0pBbErsKHGFp7uoQ
-         QqNbEPwmKe7KndRb5Erj5sO9K95GjgJzg00LE5sca5IgY6sajLg7MmPQwy+EMFRVI2
-         /ThvTt5fWCqEkEkRIyZ3J83uEy/sB8G9ObaQ7MqC9QieMiUQvIAvNNccB9hgIAqZTg
-         J8y3sDSOL5YPA==
-From:   Lee Jones <lee@kernel.org>
-To:     Lee Jones <lee@kernel.org>, Tony Lindgren <tony@atomide.com>,
-        Mark Brown <broonie@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
-In-Reply-To: <20231001-mfd-ti-maple-v1-0-0657862de3f6@kernel.org>
-References: <20231001-mfd-ti-maple-v1-0-0657862de3f6@kernel.org>
-Subject: Re: [PATCH 0/7] mfd: ti: Convert to maple tree register cache
-Message-Id: <169650587815.706993.16199144308620450017.b4-ty@kernel.org>
-Date:   Thu, 05 Oct 2023 12:37:58 +0100
+        with ESMTP id S240063AbjJEQKJ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 5 Oct 2023 12:10:09 -0400
+Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52CC08C27;
+        Thu,  5 Oct 2023 08:52:27 -0700 (PDT)
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 3955e7Cv037929;
+        Thu, 5 Oct 2023 00:40:07 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1696484407;
+        bh=iacW/bffmnzgmS8vl8HxLPwXy/XTDkcCnrPlXbOzKeI=;
+        h=Date:Subject:To:CC:References:From:In-Reply-To;
+        b=XASewxDbXR9MjecUGxfHiVjJW3Q7Mvwc/beYKngZC2Q1+XGQ9EW/0W5EoOu4IjssR
+         dLRlVcc2rnuebB9L+6wt3/ylpzdXrki2FNZpbRB3lC6DXenX0yDGtjGeWHpqYxlRiC
+         WdwFA9OLCpOARfJECcmAPTzVatLTTcCOdd1hLd1U=
+Received: from DLEE108.ent.ti.com (dlee108.ent.ti.com [157.170.170.38])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 3955e7Dl021794
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 5 Oct 2023 00:40:07 -0500
+Received: from DLEE102.ent.ti.com (157.170.170.32) by DLEE108.ent.ti.com
+ (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 5
+ Oct 2023 00:40:07 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE102.ent.ti.com
+ (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Thu, 5 Oct 2023 00:40:07 -0500
+Received: from [10.24.69.31] (ileaxei01-snat.itg.ti.com [10.180.69.5])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 3955e1fl034891;
+        Thu, 5 Oct 2023 00:40:02 -0500
+Message-ID: <fba767da-ae4d-9fb8-b637-955363a57540@ti.com>
+Date:   Thu, 5 Oct 2023 11:10:00 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.12.2
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [EXTERNAL] Re: [PATCH net-next v3] net: ti: icssg_prueth: add
+ TAPRIO offload support
+Content-Language: en-US
+To:     Jakub Kicinski <kuba@kernel.org>
+CC:     Andrew Lunn <andrew@lunn.ch>, Roger Quadros <rogerq@kernel.org>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Richard Cochran <richardcochran@gmail.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>, <vladimir.oltean@nxp.com>,
+        Simon Horman <horms@kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <srk@ti.com>,
+        <r-gunasekaran@ti.com>, <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Roger Quadros <rogerq@ti.com>,
+        Vinicius Costa Gomes <vinicius.gomes@intel.com>
+References: <20230928103000.186304-1-danishanwar@ti.com>
+ <20231004135833.6efdbced@kernel.org>
+From:   MD Danish Anwar <danishanwar@ti.com>
+In-Reply-To: <20231004135833.6efdbced@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sun, 01 Oct 2023 11:27:47 +0100, Mark Brown wrote:
-> The maple tree based register cache is based on a more modern data
-> structure and makes more current implementation decisions than the
-> rbtree cache, convert the TI drivers that use rbtree caches to use
-> maple tree instead.
+On 05/10/23 02:28, Jakub Kicinski wrote:
+> On Thu, 28 Sep 2023 16:00:00 +0530 MD Danish Anwar wrote:
+>> +/**
+>> + * Config state machine variables. See IEEE Std 802.1Q-2018 8.6.8.4
+>> + */
 > 
+> Please use correct kdoc format with all members documented or not use
+> the /** marker.
 > 
 
-Applied, thanks!
+Sure. I will update the documentation with correct kdoc format.
 
-[1/7] mfd: tps65086: Convert to use maple tree register cache
-      commit: aa732bb3da329abc28b4eee89efd974acb5b8c36
-[2/7] mfd: tps65090: Convert to use maple tree register cache
-      commit: 21a3beab2dbf6c0f3fdc45a14dfffbe2d1c53e79
-[3/7] mfd: tps65128: Convert to use maple tree register cache
-      commit: d252f0f6c8df10559cca85bc8824e9b7c45c1c51
-[4/7] mfd: tps6586x: Convert to use maple tree register cache
-      commit: 0c16d3d6b758aca06c7c550cc43b8a0368525bba
-[5/7] mfd: tps65910: Convert to use maple tree register cache
-      commit: f77a3bcff35c1c8bccb347f2f7cf3e25af782984
-[6/7] mfd: tps65912: Convert to use maple tree register cache
-      commit: 6e554a744ff576223275fbedafccf9d88581b1fd
-[7/7] mfd: twl: Convert to use maple tree register cache
-      commit: 680d253c3ba0674b8da269e5c51e6caaa623cad5
+>> +struct tas_config_list {
+>> +	/* New list is copied at this time */
+>> +	u64 config_change_time;
+>> +	/* config change error counter, incremented if
+>> +	 * admin->BaseTime < current time and TAS_enabled is true
+>> +	 */
+>> +	u32 config_change_error_counter;
+>> +	/* True if list update is pending */
+>> +	u8 config_pending;
+>> +	/* Set to true when application trigger updating of admin list
+>> +	 * to active list, cleared when configChangeTime is updated
+>> +	 */
+>> +	u8 config_change;
+>> +};
 
---
-Lee Jones [李琼斯]
-
+-- 
+Thanks and Regards,
+Danish
