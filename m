@@ -2,37 +2,31 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F9297BC585
-	for <lists+linux-omap@lfdr.de>; Sat,  7 Oct 2023 09:24:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E85F87BC5A2
+	for <lists+linux-omap@lfdr.de>; Sat,  7 Oct 2023 09:37:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343598AbjJGHYp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 7 Oct 2023 03:24:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33822 "EHLO
+        id S1343689AbjJGHhn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 7 Oct 2023 03:37:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232644AbjJGHYp (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 7 Oct 2023 03:24:45 -0400
+        with ESMTP id S1343632AbjJGHhm (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 7 Oct 2023 03:37:42 -0400
 Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id DD05BB9;
-        Sat,  7 Oct 2023 00:24:43 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 56403809E;
-        Sat,  7 Oct 2023 07:24:43 +0000 (UTC)
-Date:   Sat, 7 Oct 2023 10:24:42 +0300
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 89B13B9;
+        Sat,  7 Oct 2023 00:37:41 -0700 (PDT)
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id 8FB07809E;
+        Sat,  7 Oct 2023 07:37:40 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Andreas Kemnade <andreas@kemnade.info>, bcousson@baylibre.com,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        conor+dt@kernel.org, linux-omap@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] ARM: dts: omap4-embt2ws: Add Bluetooth
-Message-ID: <20231007072442.GW34982@atomide.com>
-References: <20231004070309.2408745-1-andreas@kemnade.info>
- <6b4968d9-80d3-4a5a-b42e-3982825e45e9@linaro.org>
- <20231007070015.GS34982@atomide.com>
+To:     linux-omap@vger.kernel.org
+Cc:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        devicetree@vger.kernel.org
+Subject: [PATCH] ARM: dts: omap4-embt2ws: Fix pinctrl single node name warning
+Date:   Sat,  7 Oct 2023 10:37:33 +0300
+Message-ID: <20231007073733.45087-1-tony@atomide.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231007070015.GS34982@atomide.com>
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
@@ -42,32 +36,30 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Tony Lindgren <tony@atomide.com> [231007 07:00]:
-> * Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> [231005 08:47]:
-> > On 04/10/2023 09:03, Andreas Kemnade wrote:
-> > > Since the required clock is now available, add bluetooth.
-> > > 
-> > > Note: Firmware (bts file) from device vendor reroutes tx for some time
-> > > during initialisation and later put it back, producing timeouts in
-> > > bluetooth initialisation but ignoring that command leads to proper
-> > > initialisation.
-> > > 
-> > > Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-> > > ---
-> > 
-> > 
-> > Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> 
-> Applying into omap-for-v6.7/dt thanks.
+Looks like one pinctrl single binding warning sneaked in while we were
+implementing the yaml binding. Let's fix the 'pinmux-wl12xx-gpio' does not
+match any of the regexes warning by adding -pins suffix.
 
-Looks like this causes the following #clock-cells warning so dropping
-this patch.
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+---
+ arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Regards,
+---
 
-Tony
+Trivial patch to fix a warning, applying into omap-for-v6.7/dt
 
-arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts:457.17-462.4: Warning (clocks_property):
-/ocp/interconnect@48000000/segment@0/target-module@6c000/serial@0/bluetooth-gnss:
-Missing property '#clock-cells' in node /ocp/interconnect@48000000/segment@0/targe
-
+diff --git a/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts b/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts
+--- a/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts
++++ b/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts
+@@ -441,7 +441,7 @@ OMAP4_IOPAD(0x176, PIN_INPUT_PULLUP | MUX_MODE2) /* sdmmc3_clk */
+ 		>;
+ 	};
+ 
+-	wl12xx_gpio: pinmux-wl12xx-gpio {
++	wl12xx_gpio: pinmux-wl12xx-gpio-pins {
+ 		pinctrl-single,pins = <
+ 			OMAP4_IOPAD(0x1c8, PIN_OUTPUT | MUX_MODE3)  /* gpio_24 / WLAN_EN */
+ 		>;
+-- 
+2.42.0
