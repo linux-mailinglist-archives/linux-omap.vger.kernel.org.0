@@ -2,36 +2,40 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BBA7A7BC54A
-	for <lists+linux-omap@lfdr.de>; Sat,  7 Oct 2023 09:00:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC7147BC550
+	for <lists+linux-omap@lfdr.de>; Sat,  7 Oct 2023 09:01:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343608AbjJGHAT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 7 Oct 2023 03:00:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40258 "EHLO
+        id S1343578AbjJGHBa (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 7 Oct 2023 03:01:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47256 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343578AbjJGHAS (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 7 Oct 2023 03:00:18 -0400
+        with ESMTP id S1343627AbjJGHBV (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 7 Oct 2023 03:01:21 -0400
 Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 42174BF;
-        Sat,  7 Oct 2023 00:00:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1BE68C5;
+        Sat,  7 Oct 2023 00:01:19 -0700 (PDT)
 Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id AE4DD809E;
-        Sat,  7 Oct 2023 07:00:16 +0000 (UTC)
-Date:   Sat, 7 Oct 2023 10:00:15 +0300
+        by muru.com (Postfix) with ESMTPS id 8FDB7809E;
+        Sat,  7 Oct 2023 07:01:18 +0000 (UTC)
+Date:   Sat, 7 Oct 2023 10:01:17 +0300
 From:   Tony Lindgren <tony@atomide.com>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Andreas Kemnade <andreas@kemnade.info>, bcousson@baylibre.com,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        conor+dt@kernel.org, linux-omap@vger.kernel.org,
+To:     Adam Ford <aford173@gmail.com>
+Cc:     linux-omap@vger.kernel.org, aford@beaconembedded.com,
+        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        "Derald D. Woods" <woods.technical@gmail.com>,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] ARM: dts: omap4-embt2ws: Add Bluetooth
-Message-ID: <20231007070015.GS34982@atomide.com>
-References: <20231004070309.2408745-1-andreas@kemnade.info>
- <6b4968d9-80d3-4a5a-b42e-3982825e45e9@linaro.org>
+Subject: Re: [PATCH V3 2/2] arm: dts: am3517-evm: Enable Ethernet PHY
+ Interrupt
+Message-ID: <20231007070117.GT34982@atomide.com>
+References: <20231005000402.50879-1-aford173@gmail.com>
+ <20231005000402.50879-2-aford173@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <6b4968d9-80d3-4a5a-b42e-3982825e45e9@linaro.org>
+In-Reply-To: <20231005000402.50879-2-aford173@gmail.com>
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
@@ -41,21 +45,10 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> [231005 08:47]:
-> On 04/10/2023 09:03, Andreas Kemnade wrote:
-> > Since the required clock is now available, add bluetooth.
-> > 
-> > Note: Firmware (bts file) from device vendor reroutes tx for some time
-> > during initialisation and later put it back, producing timeouts in
-> > bluetooth initialisation but ignoring that command leads to proper
-> > initialisation.
-> > 
-> > Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-> > ---
-> 
-> 
-> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+* Adam Ford <aford173@gmail.com> [231005 00:04]:
+> The Ethernet PHY interrupt pin is routed to GPIO_58.  Create a
+> PHY node to configure this GPIO for the interrupt to avoid polling.
 
-Applying into omap-for-v6.7/dt thanks.
+Thanks applying both into omap-for-v6.7/dt.
 
 Tony
