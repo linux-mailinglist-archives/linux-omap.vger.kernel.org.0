@@ -2,37 +2,41 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 19DE17BC5B0
-	for <lists+linux-omap@lfdr.de>; Sat,  7 Oct 2023 09:43:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B30D7BC5B2
+	for <lists+linux-omap@lfdr.de>; Sat,  7 Oct 2023 09:44:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343665AbjJGHnl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 7 Oct 2023 03:43:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50624 "EHLO
+        id S1343712AbjJGHoK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 7 Oct 2023 03:44:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343611AbjJGHnj (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 7 Oct 2023 03:43:39 -0400
+        with ESMTP id S1343611AbjJGHoJ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 7 Oct 2023 03:44:09 -0400
 Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6B4BEB9;
-        Sat,  7 Oct 2023 00:43:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id BBF92BD;
+        Sat,  7 Oct 2023 00:44:08 -0700 (PDT)
 Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id DE389809E;
-        Sat,  7 Oct 2023 07:43:35 +0000 (UTC)
-Date:   Sat, 7 Oct 2023 10:43:34 +0300
+        by muru.com (Postfix) with ESMTPS id 33BD5809E;
+        Sat,  7 Oct 2023 07:44:08 +0000 (UTC)
+Date:   Sat, 7 Oct 2023 10:44:06 +0300
 From:   Tony Lindgren <tony@atomide.com>
-To:     Dan Carpenter <dan.carpenter@linaro.org>
-Cc:     Rob Herring <robh@kernel.org>,
-        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        Paul Walmsley <paul@pwsan.com>,
-        Russell King <linux@armlinux.org.uk>,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] ARM: omap2: fix a debug printk
-Message-ID: <20231007074334.GY34982@atomide.com>
-References: <c126dc33-233a-4776-806f-9dff0e73a181@moroto.mountain>
+To:     Randy Dunlap <rdunlap@infradead.org>
+Cc:     linux-kernel@vger.kernel.org, kernel test robot <lkp@intel.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Vaibhav Hiremath <hvaibhav@ti.com>,
+        Felipe Balbi <balbi@ti.com>,
+        Xunlei Pang <pang.xunlei@linaro.org>,
+        John Stultz <john.stultz@linaro.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH] ARM: OMAP: timer32K: fix all kernel-doc warnings
+Message-ID: <20231007074406.GZ34982@atomide.com>
+References: <20231007001603.24972-1-rdunlap@infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <c126dc33-233a-4776-806f-9dff0e73a181@moroto.mountain>
+In-Reply-To: <20231007001603.24972-1-rdunlap@infradead.org>
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
@@ -42,15 +46,16 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Dan Carpenter <dan.carpenter@linaro.org> [231002 10:05]:
-> The %pR format string takes a pointer to struct resource, but this is
-> passing a pointer to a pointer which it will print wrong information.
+* Randy Dunlap <rdunlap@infradead.org> [231007 03:16]:
+> Fix kernel-doc warnings reported by the kernel test robot:
 > 
-> Fixes: c63f5b454885 ("ARM: omap2: Use of_range_to_resource() for "ranges" parsing")
-> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+> timer32k.c:186: warning: cannot understand function prototype: 'struct timespec64 persistent_ts; '
+> timer32k.c:191: warning: Function parameter or member 'ts' not described in 'omap_read_persistent_clock64'
+> timer32k.c:216: warning: Function parameter or member 'vbase' not described in 'omap_init_clocksource_32k'
+> timer32k.c:216: warning: Excess function parameter 'pbase' description in 'omap_init_clocksource_32k'
+> timer32k.c:216: warning: Excess function parameter 'size' description in 'omap_init_clocksource_32k'
+> timer32k.c:216: warning: No description found for return value of 'omap_init_clocksource_32k'
 
 Thanks applying into fixes.
-
-Regards,
 
 Tony
