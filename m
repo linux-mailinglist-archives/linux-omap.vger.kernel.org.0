@@ -2,125 +2,110 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B14E97BC33E
-	for <lists+linux-omap@lfdr.de>; Sat,  7 Oct 2023 02:16:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB0A17BC4FC
+	for <lists+linux-omap@lfdr.de>; Sat,  7 Oct 2023 08:25:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233794AbjJGAQH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 6 Oct 2023 20:16:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51744 "EHLO
+        id S1343576AbjJGGZW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 7 Oct 2023 02:25:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233696AbjJGAQH (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 6 Oct 2023 20:16:07 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABF30BE;
-        Fri,  6 Oct 2023 17:16:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-        MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-        Content-ID:Content-Description:In-Reply-To:References;
-        bh=Tx7VhSKfhB/BAKmLe8z7FqjkSdVa9zklLy9NfKVnpaM=; b=f+UL4dr15vOTP1w1SwnfoGiCm5
-        lGei2sZ6q3tI6BzAN9WHqXoXFO3Sjxct/6j8DWHJYVEkOFNvhz5G/oAlnBU+Nq7qNUqEApmf2aeKq
-        oY0tW/IbcnopSskKtYrApnqMjP7DaFPeynQyIwI4Ta1I4xWl0wgLZ+2lPMs6k/+krCH7YmYC+B7rS
-        qCkbJqGvKHynKP6o82pF4jHHcxPezFUEz6G7Lo/5PVe0r51TECtDTjLpigDW5iPqSOL9XUmH4uxds
-        +4Dsx8DquOkl7pQDzo7BVKYqjSuL0xra7nlHr+NbMjlh9Fb4vr1FkkQjKSjHRA37MmEpBGqIHxsor
-        OVoonlHA==;
-Received: from [50.53.46.231] (helo=bombadil.infradead.org)
-        by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-        id 1qouzE-006hCS-21;
-        Sat, 07 Oct 2023 00:16:04 +0000
-From:   Randy Dunlap <rdunlap@infradead.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        kernel test robot <lkp@intel.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Vaibhav Hiremath <hvaibhav@ti.com>,
-        Felipe Balbi <balbi@ti.com>, Tony Lindgren <tony@atomide.com>,
-        Xunlei Pang <pang.xunlei@linaro.org>,
-        John Stultz <john.stultz@linaro.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: [PATCH] ARM: OMAP: timer32K: fix all kernel-doc warnings
-Date:   Fri,  6 Oct 2023 17:16:03 -0700
-Message-ID: <20231007001603.24972-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.42.0
+        with ESMTP id S1343532AbjJGGZV (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 7 Oct 2023 02:25:21 -0400
+Received: from muru.com (muru.com [72.249.23.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 3BBDDBF;
+        Fri,  6 Oct 2023 23:25:20 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 7E0F980E0;
+        Sat,  7 Oct 2023 06:25:19 +0000 (UTC)
+Date:   Sat, 7 Oct 2023 09:25:18 +0300
+From:   Tony Lindgren <tony@atomide.com>
+To:     Andreas Kemnade <andreas@kemnade.info>
+Cc:     =?utf-8?B?UMOpdGVy?= Ujfalusi <peter.ujfalusi@gmail.com>,
+        bcousson@baylibre.com, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+        lgirdwood@gmail.com, broonie@kernel.org, perex@perex.cz,
+        tiwai@suse.com, jarkko.nikula@bitmer.com,
+        dmitry.torokhov@gmail.com, linux-omap@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        alsa-devel@alsa-project.org
+Subject: Re: [PATCH 1/3] ASoC: ti: omap-mcbsp: Ignore errors for getting
+ fck_src
+Message-ID: <20231007062518.GM34982@atomide.com>
+References: <20230705190324.355282-1-andreas@kemnade.info>
+ <20230705190324.355282-2-andreas@kemnade.info>
+ <7d58d52d-2087-45af-b29e-2515b63ead13@gmail.com>
+ <20230920063353.GQ5285@atomide.com>
+ <dac768d2-2c66-4d6b-b3d3-d1ef69103c76@gmail.com>
+ <20230921121626.GT5285@atomide.com>
+ <20231006102348.GK34982@atomide.com>
+ <20231006213003.0fbac87a@aktux>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231006213003.0fbac87a@aktux>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Fix kernel-doc warnings reported by the kernel test robot:
+* Andreas Kemnade <andreas@kemnade.info> [231006 19:30]:
+> On Fri, 6 Oct 2023 13:23:48 +0300
+> Tony Lindgren <tony@atomide.com> wrote:
+> > Here's what I think the regression fix for omap4 clocks would be, the
+> > old main_clk is not the same as the module clock that we get by default.
+> > If this looks OK I'll do a similar fix also for omap5.
+> > 
+> > Or is something else also needed?
+> > 
+> 
+> hmm,
+> audio output works, the waring is away, but something new is here:
 
-timer32k.c:186: warning: cannot understand function prototype: 'struct timespec64 persistent_ts; '
-timer32k.c:191: warning: Function parameter or member 'ts' not described in 'omap_read_persistent_clock64'
-timer32k.c:216: warning: Function parameter or member 'vbase' not described in 'omap_init_clocksource_32k'
-timer32k.c:216: warning: Excess function parameter 'pbase' description in 'omap_init_clocksource_32k'
-timer32k.c:216: warning: Excess function parameter 'size' description in 'omap_init_clocksource_32k'
-timer32k.c:216: warning: No description found for return value of 'omap_init_clocksource_32k'
+OK good to hear it works, I'll send out fixes for omap4 and 5, seems
+the runtime PM warning is something different.
 
-Fixes: a451570c008b ("ARM: OMAP: 32k counter: Provide y2038-safe omap_read_persistent_clock() replacement")
-Fixes: 1fe97c8f6a1d ("ARM: OMAP: Make OMAP clocksource source selection using kernel param")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/all/202310070106.8QSyJOm3-lkp@intel.com/
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Vaibhav Hiremath <hvaibhav@ti.com>
-Cc: Felipe Balbi <balbi@ti.com>
-Cc: Tony Lindgren <tony@atomide.com>
-Cc: Xunlei Pang <pang.xunlei@linaro.org>
-Cc: John Stultz <john.stultz@linaro.org>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
-Cc: Janusz Krzysztofik <jmkrzyszt@gmail.com>
-Cc: linux-omap@vger.kernel.org
-Cc: linux-arm-kernel@lists.infradead.org
----
- arch/arm/mach-omap1/timer32k.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+> omap-mcbsp 40124000.mcbsp: Runtime PM usage count underflow!
+> # cat /sys/bus/platform/devices/40124000.mcbsp/power/runtime_status 
+> active
+> 
+> even with no sound.
 
-diff -- a/arch/arm/mach-omap1/timer32k.c b/arch/arm/mach-omap1/timer32k.c
---- a/arch/arm/mach-omap1/timer32k.c
-+++ b/arch/arm/mach-omap1/timer32k.c
-@@ -176,17 +176,18 @@ static u64 notrace omap_32k_read_sched_c
- 	return sync32k_cnt_reg ? readl_relaxed(sync32k_cnt_reg) : 0;
- }
+I guess if the mcbsp instance is not used, runtime PM is enabled but
+pm_runtime_resume_and_get() is never called by ASoC?
+
+If so then the following might be a fix, not familiar with runtime PM
+done by ASoC though and not sure if some kind of locking would be
+needed here.
+
+Regards,
+
+Tony
+
+8< ------------------------
+diff --git a/sound/soc/ti/omap-mcbsp.c b/sound/soc/ti/omap-mcbsp.c
+index fdabed5133e83..b399d86f22777 100644
+--- a/sound/soc/ti/omap-mcbsp.c
++++ b/sound/soc/ti/omap-mcbsp.c
+@@ -74,14 +74,16 @@ static int omap2_mcbsp_set_clks_src(struct omap_mcbsp *mcbsp, u8 fck_src_id)
+ 		return 0;
+ 	}
  
-+static struct timespec64 persistent_ts;
-+static cycles_t cycles;
-+static unsigned int persistent_mult, persistent_shift;
-+
- /**
-  * omap_read_persistent_clock64 -  Return time from a persistent clock.
-+ * @ts: &struct timespec64 for the returned time
-  *
-  * Reads the time from a source which isn't disabled during PM, the
-  * 32k sync timer.  Convert the cycles elapsed since last read into
-  * nsecs and adds to a monotonically increasing timespec64.
-  */
--static struct timespec64 persistent_ts;
--static cycles_t cycles;
--static unsigned int persistent_mult, persistent_shift;
--
- static void omap_read_persistent_clock64(struct timespec64 *ts)
- {
- 	unsigned long long nsecs;
-@@ -206,10 +207,9 @@ static void omap_read_persistent_clock64
- /**
-  * omap_init_clocksource_32k - setup and register counter 32k as a
-  * kernel clocksource
-- * @pbase: base addr of counter_32k module
-- * @size: size of counter_32k to map
-+ * @vbase: base addr of counter_32k module
-  *
-- * Returns 0 upon success or negative error code upon failure.
-+ * Returns: %0 upon success or negative error code upon failure.
-  *
-  */
- static int __init omap_init_clocksource_32k(void __iomem *vbase)
+-	pm_runtime_put_sync(mcbsp->dev);
++	if (mcbsp->active)
++		pm_runtime_put_sync(mcbsp->dev);
+ 
+ 	r = clk_set_parent(mcbsp->fclk, fck_src);
+ 	if (r)
+ 		dev_err(mcbsp->dev, "CLKS: could not clk_set_parent() to %s\n",
+ 			src);
+ 
+-	pm_runtime_get_sync(mcbsp->dev);
++	if (mcbsp->active)
++		pm_runtime_get_sync(mcbsp->dev);
+ 
+ 	clk_put(fck_src);
+ 
