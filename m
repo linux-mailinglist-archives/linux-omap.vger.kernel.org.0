@@ -2,97 +2,153 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C2D517BD543
-	for <lists+linux-omap@lfdr.de>; Mon,  9 Oct 2023 10:32:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D47D37BD6D7
+	for <lists+linux-omap@lfdr.de>; Mon,  9 Oct 2023 11:24:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234407AbjJIIcS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 9 Oct 2023 04:32:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49826 "EHLO
+        id S1345800AbjJIJX7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 9 Oct 2023 05:23:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234378AbjJIIcR (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 9 Oct 2023 04:32:17 -0400
-Received: from mx0b-001ae601.pphosted.com (mx0b-001ae601.pphosted.com [67.231.152.168])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 671C4A3;
-        Mon,  9 Oct 2023 01:32:15 -0700 (PDT)
-Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
-        by mx0b-001ae601.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 3998Ns1d003054;
-        Mon, 9 Oct 2023 03:31:03 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=
-        date:from:to:cc:subject:message-id:references:mime-version
-        :content-type:in-reply-to; s=PODMain02222019; bh=4MULa8LIRZTV5cI
-        iahOJgFs1cV3PfMr3tjK0c8f3GSE=; b=H43PPY3zCVBdf0vPDwEGXiKLlM9HDYb
-        pV+PuJsdYW5fsV5FZNri3Oi2KHTBJf++lnEHX6h6VcYfVUvVtaCZMQQPBb7vw1l0
-        jQXamdETdZPKveOQxCtMKf5JPK7TwCJIDNMMYDeJvp1Cvfz5e0eb9yH6TJ2TWM/T
-        knltDk6ZBuzEdb9rCaJfTO3jyGj0mdwyMV+Fkqq68LpOKNFJLijQByj92atLVoti
-        x5aUALB3lTBscn0mDG5cJKawJBs9vL4P9lErVKxxPEVatNs2syXn3CqhGt2FIn26
-        juwEDXs28eGa4CuKTajeUsIVf/KKqCRqldYlvKOf2x6odatLP4HXvew==
-Received: from ediex02.ad.cirrus.com ([84.19.233.68])
-        by mx0b-001ae601.pphosted.com (PPS) with ESMTPS id 3tkhhah27e-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 09 Oct 2023 03:31:03 -0500 (CDT)
-Received: from ediex02.ad.cirrus.com (198.61.84.81) by ediex02.ad.cirrus.com
- (198.61.84.81) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.37; Mon, 9 Oct
- 2023 09:31:01 +0100
-Received: from ediswmail.ad.cirrus.com (198.61.86.93) by
- anon-ediex02.ad.cirrus.com (198.61.84.81) with Microsoft SMTP Server id
- 15.2.1118.37 via Frontend Transport; Mon, 9 Oct 2023 09:31:01 +0100
-Received: from ediswmail.ad.cirrus.com (ediswmail.ad.cirrus.com [198.61.86.93])
-        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id BD1C811AC;
-        Mon,  9 Oct 2023 08:31:01 +0000 (UTC)
-Date:   Mon, 9 Oct 2023 08:31:01 +0000
-From:   Charles Keepax <ckeepax@opensource.cirrus.com>
-To:     Rob Herring <robh@kernel.org>
-CC:     Richard Fitzgerald <rf@opensource.cirrus.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        David Lechner <david@lechnology.com>,
-        Sekhar Nori <nsekhar@ti.com>, Andy Gross <agross@kernel.org>,
+        with ESMTP id S1345742AbjJIJXM (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 9 Oct 2023 05:23:12 -0400
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69A8F125
+        for <linux-omap@vger.kernel.org>; Mon,  9 Oct 2023 02:23:04 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1qpmTE-0006sS-FJ; Mon, 09 Oct 2023 11:22:36 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1qpmTB-000NWK-WD; Mon, 09 Oct 2023 11:22:34 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1qpmTB-00C4om-Lw; Mon, 09 Oct 2023 11:22:33 +0200
+From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Tony Lindgren <tony@atomide.com>,
+        Haojian Zhuang <haojian.zhuang@linaro.org>,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Yangtao Li <frank.li@vivo.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        linux-stm32@st-md-mailman.stormreply.com,
+        Charles Keepax <ckeepax@opensource.cirrus.com>,
+        Richard Fitzgerald <rf@opensource.cirrus.com>,
+        alsa-devel@alsa-project.org, patches@opensource.cirrus.com,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andy Shevchenko <andy@kernel.org>,
+        Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
+        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+        Jesper Nilsson <jesper.nilsson@axis.com>,
+        Lars Persson <lars.persson@axis.com>,
+        linux-arm-kernel@axis.com, Heiko Stuebner <heiko@sntech.de>,
+        linux-rockchip@lists.infradead.org, Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Heiko Stuebner <heiko@sntech.de>,
-        "Krzysztof Kozlowski" <krzysztof.kozlowski@linaro.org>,
-        Sylwester Nawrocki <s.nawrocki@samsung.com>,
-        Tomasz Figa <tomasz.figa@gmail.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Tero Kristo <kristo@kernel.org>,
-        <patches@opensource.cirrus.com>, <linux-clk@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-rockchip@lists.infradead.org>,
-        <linux-samsung-soc@vger.kernel.org>, <linux-omap@vger.kernel.org>
-Subject: Re: [PATCH] clk: Use device_get_match_data()
-Message-ID: <20231009083101.GS103419@ediswmail.ad.cirrus.com>
-References: <20231006213959.334439-1-robh@kernel.org>
+        linux-arm-msm@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        linux-renesas-soc@vger.kernel.org
+Subject: [PATCH 00/20] pinctrl: Convert to platform remove callback returning void
+Date:   Mon,  9 Oct 2023 10:38:36 +0200
+Message-Id: <20231009083856.222030-1-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20231006213959.334439-1-robh@kernel.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Proofpoint-ORIG-GUID: FlYp9zqwQvX4Bbg0m_XlIGcUY-KCFqlB
-X-Proofpoint-GUID: FlYp9zqwQvX4Bbg0m_XlIGcUY-KCFqlB
-X-Proofpoint-Spam-Reason: safe
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3496; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=pt9OZIbEVRO7CYphejzNzNKVBdTQOuLMQfjMm/xdSsg=; b=owGbwMvMwMXY3/A7olbonx/jabUkhlTl3b98hd42/517xHB/gviiPU/9MqwUZ0mXf7uieqT57 e1Tr4s5OxmNWRgYuRhkxRRZ7BvXZFpVyUV2rv13GWYQKxPIFAYuTgGYiNF79n9mT5b+PJ2R+ikl wLMnduL/rK7Z79ojXnBnnL3QVfV6IeOf7r+yDxdeUQ/VNbcoUj9/TSL8bE71Y7sDqxerpXI6VEs /1P97Z0YuT218uWOkw/O0NY6abDVGc6fHL8n96l+lGaq7OrdAK4Ax5VjhrnRrd5OA6peWBvlTb3 AyXvpSMPXrLx65FXyMmsnHnqZ+uvjL8HBZBXOtsu7S3Jpkh9r2xaYef+NnftHqsljaMnF9yufEf 1E6pW1rZr69u0fZs2RLfUdYQdgLp/hzIZpzmerWsjlmfmDdx9Wlc7RYWop3kxrz7+18KXNuV655 FaFwVYNlX9ml35+UxAPLrx9fo8B+cpJOMQ9zsGQi0zFOAA==
+X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-omap@vger.kernel.org
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, Oct 06, 2023 at 04:39:58PM -0500, Rob Herring wrote:
-> Use preferred device_get_match_data() instead of of_match_device() to
-> get the driver match data. With this, adjust the includes to explicitly
-> include the correct headers.
-> 
-> Signed-off-by: Rob Herring <robh@kernel.org>
-> ---
+Hello,
 
-For the Lochnagar bit:
+after three minor improvements/simplifications this series converts all
+platform_drivers below drivers/pinctrl to .remove_new().
 
-Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com> 
+See commit 5c5a7680e67b ("platform: Provide a remove callback that
+returns no value") for an extended explanation and the eventual goal.
 
-Thanks,
-Charles
+The only interdependencies in this series are the patches that touch a
+single driver (that is (1, 13), (2, 12), (3, 20)). As there are still
+quite a few drivers to convert, I'm happy about every patch that makes
+it in. So even if there is a merge conflict with one patch until you
+apply (or a different concern that doesn't apply to all patches), please
+apply the remainder of this series anyhow. I'll come back to the part
+that you (maybe) skipped at a later point.
+
+Best regards
+Uwe
+
+Uwe Kleine-König (20):
+  pinctrl: stmfx: Improve error message in .remove()'s error path
+  pinctrl: single: Drop if block with always false condition
+  pinctrl: ti: ti-iodelay: Drop if block with always false condition
+  pinctrl: cirrus: madera-core: Convert to platform remove callback
+    returning void
+  pinctrl: intel: cherryview: Convert to platform remove callback
+    returning void
+  pinctrl: intel: lynxpoint: Convert to platform remove callback
+    returning void
+  pinctrl: nomadik: abx500: Convert to platform remove callback
+    returning void
+  pinctrl: amd: Convert to platform remove callback returning void
+  pinctrl: artpec6: Convert to platform remove callback returning void
+  pinctrl: as3722: Convert to platform remove callback returning void
+  pinctrl: rockchip: Convert to platform remove callback returning void
+  pinctrl: single: Convert to platform remove callback returning void
+  pinctrl: stmfx: Convert to platform remove callback returning void
+  pinctrl: tb10x: Convert to platform remove callback returning void
+  pinctrl: qcom: spmi-gpio: Convert to platform remove callback
+    returning void
+  pinctrl: qcom: spmi-mpp: Convert to platform remove callback returning
+    void
+  pinctrl: qcom: ssbi-gpio: Convert to platform remove callback
+    returning void
+  pinctrl: qcom: ssbi-mpp: Convert to platform remove callback returning
+    void
+  pinctrl: renesas: rzn1: Convert to platform remove callback returning
+    void
+  pinctrl: ti: ti-iodelay: Convert to platform remove callback returning
+    void
+
+ drivers/pinctrl/cirrus/pinctrl-madera-core.c |  6 ++----
+ drivers/pinctrl/intel/pinctrl-cherryview.c   |  6 ++----
+ drivers/pinctrl/intel/pinctrl-lynxpoint.c    |  5 ++---
+ drivers/pinctrl/nomadik/pinctrl-abx500.c     |  5 ++---
+ drivers/pinctrl/pinctrl-amd.c                |  6 ++----
+ drivers/pinctrl/pinctrl-artpec6.c            |  6 ++----
+ drivers/pinctrl/pinctrl-as3722.c             |  5 ++---
+ drivers/pinctrl/pinctrl-rockchip.c           |  6 ++----
+ drivers/pinctrl/pinctrl-single.c             |  9 ++-------
+ drivers/pinctrl/pinctrl-stmfx.c              | 16 ++++++++++------
+ drivers/pinctrl/pinctrl-tb10x.c              |  6 ++----
+ drivers/pinctrl/qcom/pinctrl-spmi-gpio.c     |  5 ++---
+ drivers/pinctrl/qcom/pinctrl-spmi-mpp.c      |  5 ++---
+ drivers/pinctrl/qcom/pinctrl-ssbi-gpio.c     |  6 ++----
+ drivers/pinctrl/qcom/pinctrl-ssbi-mpp.c      |  6 ++----
+ drivers/pinctrl/renesas/pinctrl-rzn1.c       |  6 ++----
+ drivers/pinctrl/ti/pinctrl-ti-iodelay.c      | 11 ++---------
+ 17 files changed, 42 insertions(+), 73 deletions(-)
+
+
+base-commit: 0bb80ecc33a8fb5a682236443c1e740d5c917d1d
+-- 
+2.40.1
+
