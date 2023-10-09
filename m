@@ -2,317 +2,673 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4758B7BE67B
-	for <lists+linux-omap@lfdr.de>; Mon,  9 Oct 2023 18:34:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E27347BE810
+	for <lists+linux-omap@lfdr.de>; Mon,  9 Oct 2023 19:31:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377206AbjJIQel (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 9 Oct 2023 12:34:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49484 "EHLO
+        id S1377953AbjJIRbF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 9 Oct 2023 13:31:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376275AbjJIQek (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 9 Oct 2023 12:34:40 -0400
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2043.outbound.protection.outlook.com [40.107.237.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D738299;
-        Mon,  9 Oct 2023 09:34:38 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=EmCF8QDQzswu5YtNVx82l203xZWy/y0eb4N1p8l/7G6oEwRRkIsw7ZGkTt1EKS6mk1qUPABTTD3vaIBsd4Iepjc6yNf9N7v2L4I+XMffc+8b94PSns2+lshwfb6fdQGAtH62Ls20RH7TE/EYkL5/CEI/EBbMuSu3Sb6l8a38yKsxxTiJGxFB5yzJdaxvCSIFInNbetyW0uuX0251UVFwFGF4H8VUkYhuxAqDqOjX/EuL916jKFK9gCsHYjQR82/ZElbhUSM1HG8Q4JBHnaqwB6FJQQU1ngAqOzZJzgr8pG33j/lEMoeY4qCTSI9LF+gY/oJCAt4wVt3HWt4MbQYWnA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=x3fqncxQ8Q7mOz0eDPZDV3DpInYKsAbgegNxirhMGe0=;
- b=P2ksezEj2KOyd+3W1bqo4+rqqh/v9ve56w0Vxar+03IeN9FyB+C8PitK05VgxHBia/jL/RgzGhf1CEtTDwvlZIf0DImc9D8JQR38avur0zYsTwtpo/fFeuvuw2Vk/tVIPTKd9UswSILke8XsIxo0geh7WObT3oyZppMZhlNJrzMcHlMxHufidxlsdaM170maEQDWREntdiNLgd/eOgHMsJlfJigae5NQ+1jYhBimXaRiPfdKG8p/mDkKMqjitVCWfniHv2RwwUqK933BWOPKrixnAgEAbBZSyAhTyA7Kbt2GgwGfN4RYOSh1SOwFy5K+bYIgMn4ynkPzdhnMDs1u7g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=x3fqncxQ8Q7mOz0eDPZDV3DpInYKsAbgegNxirhMGe0=;
- b=VMkT+5Gv8ZaxU/J0f5t5ZZ/DOHebtyYUWMqRQqfsDP8Go473pOqMQhDN0bGnMhol4iydj5n/AeAgn8B8IeVZlk5PDYDnCXbDMYgdfnYiZRnFUUNFHxTrQfi50Kzaya6iBnXFHQu18EX7zs4Fh9dWk+hg3Q9bcGrLYFpHARrEE9K3AwZRpNVLYRlNIN0ZsqrrUvD4+a9eCtGCXsQTJparwn5q3MMkwUemd9RZD9c9cVVaiZP3PkcrnelAQTpvghpD7wfj/ybibhifKISj+9hDf0WXjZTlSjy8U9UaJodFd4S5p1iuszDGOvCEA5pIBpsWgMBUWVNaXmgPM9sj6T6kgw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from IA1PR12MB6604.namprd12.prod.outlook.com (2603:10b6:208:3a0::7)
- by BL0PR12MB4993.namprd12.prod.outlook.com (2603:10b6:208:17e::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6863.38; Mon, 9 Oct
- 2023 16:34:36 +0000
-Received: from IA1PR12MB6604.namprd12.prod.outlook.com
- ([fe80::8814:146:e28e:6eea]) by IA1PR12MB6604.namprd12.prod.outlook.com
- ([fe80::8814:146:e28e:6eea%4]) with mapi id 15.20.6863.032; Mon, 9 Oct 2023
- 16:34:36 +0000
-Message-ID: <3a54df71-d5cc-f538-75b8-f2193e27d65b@nvidia.com>
-Date:   Mon, 9 Oct 2023 09:34:31 -0700
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [RFT PATCH 14/21] hte: tegra194: don't access struct gpio_chip
-Content-Language: en-US
-To:     Bartosz Golaszewski <brgl@bgdev.pl>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <markgross@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-acpi@vger.kernel.org, timestamp@lists.linux.dev,
-        linux-tegra@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-References: <20230905185309.131295-1-brgl@bgdev.pl>
- <20230905185309.131295-15-brgl@bgdev.pl>
- <CACRpkda9=VULj4Cy_sit-UpUQnVEbS-RJKAeULVCw8ZCRTq1sw@mail.gmail.com>
- <CAMRc=MdTk1B4MEh9C624Upm_EcaQgJd9OU-AGfU0G-DU1+qk6A@mail.gmail.com>
- <36b17290-c643-8d8e-e82b-49afa6b34fbb@nvidia.com>
- <3624e973-d09a-d211-c6d0-d0ffb8c20c4b@nvidia.com>
- <90b5f887-8af4-a80d-ea4d-cf2199752de4@nvidia.com>
- <0e7cae42-0b81-c038-8beb-49102feea8a6@nvidia.com>
- <CAMRc=McSG6qajxt6P3vWQEeT63Pk5tggD05pUoMD1zd5ApZxgA@mail.gmail.com>
- <647d3b52-1daf-175d-d5c2-45653dd2604c@nvidia.com>
- <CAMRc=Mc_+LxcbV+=KPwAh4DinJAAetHrK+W3jbNp4AZBzg63TA@mail.gmail.com>
- <b0f37601-39d6-618e-fa16-3b1c9e7c0e2c@nvidia.com>
- <CAMRc=MfSGY691-sFhx8GeP43g0xGk1JzNa=9q5oemQoHHAM-5Q@mail.gmail.com>
-X-Nvconfidentiality: public
-From:   Dipen Patel <dipenp@nvidia.com>
-In-Reply-To: <CAMRc=MfSGY691-sFhx8GeP43g0xGk1JzNa=9q5oemQoHHAM-5Q@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SJ0PR05CA0142.namprd05.prod.outlook.com
- (2603:10b6:a03:33d::27) To IA1PR12MB6604.namprd12.prod.outlook.com
- (2603:10b6:208:3a0::7)
+        with ESMTP id S1377863AbjJIRa7 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 9 Oct 2023 13:30:59 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A65F113;
+        Mon,  9 Oct 2023 10:30:56 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57EEDC433C7;
+        Mon,  9 Oct 2023 17:30:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1696872655;
+        bh=Y+JRjQjy6aEMVusw3+mI2JFX4h/wKJooksD3bi06J5M=;
+        h=From:To:Cc:Subject:Date:From;
+        b=W+Ynaydm3yaAhrbiYCrKk9nCoglhA4dmwU1qKuPEFIdu4MmFvwE7P7tNioGw3aCHp
+         0xxU5l7Vf8fNdnRuXKh2jeWB04Q+iR2aqMlgMw7s8vPD5HY7IDSaIeBo00B9yzjFlN
+         Ewm7IXFr24hyXgGvIBBv6nfd55mXNfWoAPbApjVFYCRfzArgLLuGz9aR4cA6OfwWRH
+         S839eo9JM1e0m90ifVYEOhDKQelwquT1QLub5Fd2HRbgeWZxc9I7mInHMwPy3+2v3N
+         xFCMkp2xx4oSP1e57Zz6JPkf09HpBuRNt0a+/WgoCBV3oDFhKMajbNw0Ci/0deRBvH
+         F9ixT+Mm9lG6w==
+Received: (nullmailer pid 2492231 invoked by uid 1000);
+        Mon, 09 Oct 2023 17:30:52 -0000
+From:   Rob Herring <robh@kernel.org>
+To:     Joyce Ooi <joyce.ooi@intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+        Iyappan Subramanian <iyappan@os.amperecomputing.com>,
+        Keyur Chudgar <keyur@os.amperecomputing.com>,
+        Quan Nguyen <quan@os.amperecomputing.com>,
+        Wei Fang <wei.fang@nxp.com>,
+        Shenwei Wang <shenwei.wang@nxp.com>,
+        Clark Wang <xiaoning.wang@nxp.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Pantelis Antoniou <pantelis.antoniou@gmail.com>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Jose Abreu <joabreu@synopsys.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Russell King <linux@armlinux.org.uk>
+Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org
+Subject: [PATCH net-next] net: ethernet: Use device_get_match_data()
+Date:   Mon,  9 Oct 2023 12:28:58 -0500
+Message-ID: <20231009172923.2457844-3-robh@kernel.org>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA1PR12MB6604:EE_|BL0PR12MB4993:EE_
-X-MS-Office365-Filtering-Correlation-Id: e7061cd3-2ef6-4a7c-c3ab-08dbc8e5a05e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: gEmGPDBNCCULMNglZRhE5TB2Hn734bxBHrxnlV6UOKQ+nRKYkZEpRU2xe0E+GDEkyb8N3eUZ/++5ugoBk+fYNV4IANjcuohy36BUEm7CmRXezsiS9YVbI2saAqIgAIfroQLPs1Cv9A0RZ3WIxnB7GGcaXE1ID5YrgcNtCnc0QbpI1iOvLiUnhLFP+vx9DkrLN8DqIX+IdzrMOkeJi2HH2SwxYjRSC0sswG50QXC54k54uOCrCDaejHYoSOW38xpmhgR+urYEf1zM3+t6F+dt/4ZJAVUCXMJejEMMvSgSk28dHTE4mkP1bz/sJlnQlrEunxWhUt9kZ+Tw7GFcn9pGuF+cHtMKWyZRkqct1eaBisHnJ7FELAbsOVhc3vQg9vZF6cJUhBlWIuv054tqZDxy8gqSLchSOiOiCsZtipfL0Z5XUG7ixtnx+j7qDCv8RD5crOGR17PRpBsRy5vjLMsDXy/zAAZYWXQFpHDlXTtNqfJZgt3YD/ghEq3q6f5rMn2aTuwwgvIkIpcYm6iJEBMzDNatFSYt4MaAMTfeQlH6Nodu3i6nNbfZvxZ6pzuRVsOKEPfFPDx/npfPflPIHX+kOCUPzRNfq0uEdjM78YxtIEjiu7F/NGrE08MYf1U7+1NXnodAEYm956wd4yFZ2pUMpV7hUmQT+FqpwT5sTrrFkBUCMvNH/baPGSQ0gS1HPi1t
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR12MB6604.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376002)(136003)(396003)(39860400002)(346002)(366004)(230922051799003)(186009)(64100799003)(451199024)(1800799009)(31686004)(26005)(2616005)(53546011)(86362001)(31696002)(36756003)(38100700002)(83380400001)(8676002)(7416002)(8936002)(6506007)(2906002)(4326008)(478600001)(6512007)(6666004)(5660300002)(41300700001)(6486002)(316002)(966005)(6916009)(66476007)(66556008)(54906003)(66946007)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UjJCR0x2V2FBanBvL3BmelB5V0dabHB2UXBRWXdtSW9vQnM0L0RLYVlFVjB6?=
- =?utf-8?B?MjJDVlEzcEtRZ0pJUlpObStHWThDcHRRTk01Wms3RVJ5Mlg2T2ZmVm51NVRC?=
- =?utf-8?B?LzNzRnErSm1qZGFWK0JPdDBFVXpuL3JIOHEvc3pKT0xWTDh3Q2dHUmsreTIv?=
- =?utf-8?B?UTBHTUQwYVlqalhZN01ub20rbFF4U0wxUlJwVmEzbjdWNWVpTDV1MG5mSk5H?=
- =?utf-8?B?THRncnVjTW92cWcxQW1xbjhPMW9mekJicmN3ZFZNeGd2S1I0bnAxTXRiZHpt?=
- =?utf-8?B?SjB5UDVuZmw5UXUxc1Qya3ZvMHg2WkY4bE5sWGljdTZ6eEtRZ0RhdXZZTDVD?=
- =?utf-8?B?ZmcyQ0E1ODlxZzBWWkQ5KytBcG9jYVNURThzSWhDTmhCdXY2eUtNRHF5Szd3?=
- =?utf-8?B?VStyUTFFS0IxaFFxdWFsdW9vcHJEdThoRFVmaHJvbTFNWFFoaktQR01iTEhP?=
- =?utf-8?B?ZHZXUnM3NWU4Q2JmUkJYMHduWHhhQ01wUENEWUE0T1hWZ1NZd0xJQUEreG1i?=
- =?utf-8?B?eHordmZMa0wrYXdEUTA3YXVNYkgydC9JQ05kblFKbzB3VjRyNG1oMjZ4YnRv?=
- =?utf-8?B?eFpmRnpyeGUyVVZZRm1EbFI2U29JbXRyaTc2MHJJRzlBYkw0QVgzMUQ5U1FZ?=
- =?utf-8?B?bHBteVFKL0xIbWhyaHVvSGxrZXEwbUJKMjMzbkc1MWs5RUppY0FEeHdxd2JP?=
- =?utf-8?B?NERmY0lscGc0MXNWVzh0Q1ZPNXcza1U4eTkzdkhTUG9md3JKa2pUNDQxOVFG?=
- =?utf-8?B?VVJNOXk3dTY4SExhYTNmckhFaWd3c1oyMXIzZVYvdkxnVk9aVnFmKzdrS1hM?=
- =?utf-8?B?ejNmRWNzaVg5RzVCZDNydDEzbkU2YlFpY0p0WWN1NkM0WTNzM3BCWm92czlN?=
- =?utf-8?B?TGVyTHRvY0RWN2ptY2FiYW56ODdMY1ZuRnByMFVYYnNtK2REWHpVSU4xSXp4?=
- =?utf-8?B?bVI0QXlTdHdSanFFcFFXOFRXVjNaS2owRVRnTXl3aEZwWUpLajNkOUZHcVFE?=
- =?utf-8?B?Q0RHbklmQ2NkeDM0VEp2Sk5xWUlLWm9FcmdaQ2tzQUwwTUZzREhyVTQ3SEFO?=
- =?utf-8?B?R296UzJoOXBPQXpMTCtiY0Mzdm96SURHQXlGVm91TDNhZ0JIcVRJRURFc2dE?=
- =?utf-8?B?bzBYcExYd1lJNjh0emQzbkJmOHg2enhXY2ltSy9XN3BxT2dQTW9zNFFpWnRK?=
- =?utf-8?B?UnB0K1RzSDNJaU1DRlJ5WURrQUx0WGk2Q1MxMVdoNStsSUlvd01MY2pVZTh3?=
- =?utf-8?B?bnVxUCtCOXI5OHcxMVk0c05KeFFoem1rU1BKa0huNFFuOVR2b1lCa1JqVFVM?=
- =?utf-8?B?N3VXSk9KNmN4aUpCaHZDbmtONGo2cXVZdVJ3L3BPOU9IMjJiRFlNdnFLLytZ?=
- =?utf-8?B?KzBHQmlkUEJtd3ZrZlZWWFdGVVIzK1lqRS83V1E3KzVqN1o0b3dHcTlzY1p3?=
- =?utf-8?B?Q3JGOC9VR3VQODFrUDFNUWxrd0h3Z3RCSzVSNVVwSW8vYlBaZGcwQjJCN3RZ?=
- =?utf-8?B?UWpIRERSUk42UGlnZkJkbE95OSsyN0E2Z0k5cnErR2p4SHEweUEwR3Y4dkdR?=
- =?utf-8?B?T3djOVBCMUw4TTdxdXhaZVpybDlEZkp3bHVkME1hcU43OFk2RUloaVh5T1ow?=
- =?utf-8?B?S0gwQkNtbS80VUV0b1lGNVF1UTVDNFNpN0hEQlBFVnVkNGhjM1EyeWc2MUNU?=
- =?utf-8?B?MUZOSGl2cnZVWGRvQVR6aDc3SjZZYUJQU25OTzNXRERHbUlCYXR0bmNUVkkx?=
- =?utf-8?B?VzJzMlMzNHUrWmU5d3B6VEpKd2tCeGZjNDN1b1lSaFhTZ0hsc0oyNzhoRVNI?=
- =?utf-8?B?a3lrSHoyWEFRT2ZvR2RVZjN5UGs5RHNBYVlDM2tGWCtFUWg5WmkvZEJqaDMv?=
- =?utf-8?B?Zzh5aFpUNUhpQklCOFQ2RVZ6ejB1Tmx6MDhKRjgzMnBybHdsWXRUODJZNEYr?=
- =?utf-8?B?Uk12bWtmV1BTdXBodkVlaXNKU2Z5eG5TbE45NDdLMDVtMzEwK2t6WnlpYkcz?=
- =?utf-8?B?VW9ZRU5oRCs4Tkg1UU82TzlqbWZzVmhlZHVqeURTMzBGVysyaGZhTTgvR2Vv?=
- =?utf-8?B?aTkyRVZoa0pxRmFENHlKUlFyd28rak56K0k5cC9iVzgrNzFmYkd0TWlGZHJS?=
- =?utf-8?Q?9oS3RslhHI2tJh/QX3ZgNE63f?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e7061cd3-2ef6-4a7c-c3ab-08dbc8e5a05e
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR12MB6604.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Oct 2023 16:34:36.8206
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: f0omvlxKCew17giFiSAwzme8V0R6xWbFaGwcNF+pwcmXWBA+pMScqh2Q1X5LOJWjCTqnuG8qlaEao369MXJ9ag==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL0PR12MB4993
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 10/8/23 11:48 PM, Bartosz Golaszewski wrote:
-> On Thu, Oct 5, 2023 at 9:43 PM Dipen Patel <dipenp@nvidia.com> wrote:
->>
->> On 10/5/23 12:05 PM, Bartosz Golaszewski wrote:
->>> On Thu, Oct 5, 2023 at 8:12 PM Dipen Patel <dipenp@nvidia.com> wrote:
->>>>
->>>> On 10/5/23 6:48 AM, Bartosz Golaszewski wrote:
->>>>> On Thu, Oct 5, 2023 at 1:52 AM Dipen Patel <dipenp@nvidia.com> wrote:
->>>>>>
->>>>>> On 10/4/23 3:54 PM, Dipen Patel wrote:
->>>>>>> On 10/4/23 1:33 PM, Dipen Patel wrote:
->>>>>>>> On 10/4/23 1:30 PM, Dipen Patel wrote:
->>>>>>>>> On 10/4/23 5:00 AM, Bartosz Golaszewski wrote:
->>>>>>>>>> On Thu, Sep 7, 2023 at 9:28 AM Linus Walleij <linus.walleij@linaro.org> wrote:
->>>>>>>>>>>
->>>>>>>>>>> On Tue, Sep 5, 2023 at 8:53 PM Bartosz Golaszewski <brgl@bgdev.pl> wrote:
->>>>>>>>>>>
->>>>>>>>>>>> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->>>>>>>>>>>>
->>>>>>>>>>>> Using struct gpio_chip is not safe as it will disappear if the
->>>>>>>>>>>> underlying driver is unbound for any reason. Switch to using reference
->>>>>>>>>>>> counted struct gpio_device and its dedicated accessors.
->>>>>>>>>>>>
->>>>>>>>>>>> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->>>>>>>>>>>
->>>>>>>>>>> As Andy points out add <linux/cleanup.h>, with that fixed:
->>>>>>>>>>> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
->>>>>>>>>>>
->>>>>>>>>>> I think this can be merged into the gpio tree after leaving some
->>>>>>>>>>> slack for the HTE maintainer to look at it, things look so much
->>>>>>>>>>> better after this.
->>>>>>>>>>>
->>>>>>>>>>> Yours,
->>>>>>>>>>> Linus Walleij
->>>>>>>>>>
->>>>>>>>>> Dipen,
->>>>>>>>>>
->>>>>>>>>> if you could give this patch a test and possibly ack it for me to take
->>>>>>>>>> it through the GPIO tree (or go the immutable tag from HTE route) then
->>>>>>>>>> it would be great. This is the last user of gpiochip_find() treewide,
->>>>>>>>>> so with it we could remove it entirely for v6.7.
->>>>>>>>>
->>>>>>>>> Progress so far for the RFT...
->>>>>>>>>
->>>>>>>>> I tried applying the patch series on 6.6-rc1 and it did not apply cleanly,
->>>>>>>>> some patches I needed to manually apply and correct. With all this, it failed
->>>>>>>>> compilation at some spi/spi-bcm2835 driver. I disabled that and was able to
->>>>>>>>> compile. I thought I should let you know this part.
->>>>>>>>>
->>>>>>>>> Now, I tried to test the hte and it seems to fail finding the gpio device,
->>>>>>>>> roughly around this place [1]. I thought it would be your patch series so
->>>>>>>>> tried to just use 6.6rc1 without your patches and it still failed at the
->>>>>>>>> same place. I have to trace back now from which kernel version it broke.
->>>>>>>>
->>>>>>>> [1].
->>>>>>>> https://git.kernel.org/pub/scm/linux/kernel/git/pateldipen1984/linux.git/tree/drivers/hte/hte-tegra194.c?h=for-next#n781
->>>>>>>>
->>>>>>>> of course with your patches it would fail for the gdev instead of the chip.
->>>>>>>
->>>>>>> Small update:
->>>>>>>
->>>>>>> I put some debugging prints in the gpio match function in the hte-tegra194.c as
->>>>>>> below:
->>>>>>>
->>>>>>> static int tegra_gpiochip_match(struct gpio_chip *chip, void *data)
->>>>>>>  {
->>>>>>> +       struct device_node *node = data;
->>>>>>> +       struct fwnode_handle *fw = of_node_to_fwnode(data);
->>>>>>> +       if (!fw || !chip->fwnode)
->>>>>>> +               pr_err("dipen patel: fw is null\n");
->>>>>>>
->>>>>>> -       pr_err("%s:%d\n", __func__, __LINE__);
->>>>>>> +       pr_err("dipen patel, %s:%d: %s, %s, %s, match?:%d, fwnode name:%s\n",
->>>>>>> __func__, __LINE__, chip->label, node->name, node->full_name, (chip->fwnode ==
->>>>>>> fw), fw->dev->init_name);
->>>>>>>         return chip->fwnode == of_node_to_fwnode(data);
->>>>>>>  }
->>>>>>>
->>>>>>> The output of the printfs looks like below:
->>>>>>> [    3.955194] dipen patel: fw is null -----> this message started appearing
->>>>>>> when I added !chip->fwnode test in the if condition line.
->>>>>>>
->>>>>>> [    3.958864] dipen patel, tegra_gpiochip_match:689: tegra234-gpio, gpio,
->>>>>>> gpio@c2f0000, match?:0, fwnode name:(null)
->>>>>>>
->>>>>>> I conclude that chip->fwnode is empty. Any idea in which conditions that node
->>>>>>> would be empty?
->>>>>>
->>>>>> sorry for spamming, one last message before I sign off for the day....
->>>>>>
->>>>>> Seems, adding below in the tegra gpio driver resolved the issue I am facing, I
->>>>>> was able to verify your patch series.
->>>>>>
->>>>>> diff --git a/drivers/gpio/gpio-tegra186.c b/drivers/gpio/gpio-tegra186.c
->>>>>> index d87dd06db40d..a56c159d7136 100644
->>>>>> --- a/drivers/gpio/gpio-tegra186.c
->>>>>> +++ b/drivers/gpio/gpio-tegra186.c
->>>>>> @@ -989,6 +989,8 @@ static int tegra186_gpio_probe(struct platform_device *pdev)
->>>>>>                 offset += port->pins;
->>>>>>         }
->>>>>>
->>>>>> +       gpio->gpio.fwnode = of_node_to_fwnode(pdev->dev.of_node);
->>>>>> +
->>>>>>         return devm_gpiochip_add_data(&pdev->dev, &gpio->gpio, gpio);
->>>>>>  }
->>>>>>
->>>>>> Now, few follow up questions:
->>>>>> 1) is this the correct way of setting the chip fwnode in the gpio driver?
->>>>>
->>>>> You shouldn't need this. This driver already does:
->>>>>
->>>>>     gpio->gpio.parent = &pdev->dev;
->>>>>
->>>>> so fwnode should be assigned in gpiochip_add_data_with_key(). Can you
->>>>> check why this doesn't happen?
->>>>
->>>> I do not see anywhere chip->fwnode being set in the gpiochip_add_* function.
->>>> The only reference I see is here [1]. Does it mean I need to change my match
->>>> function from:
->>>>
->>>> chip->fwnode == of_node_to_fwnode(data)
->>>>
->>>> to:
->>>> dev_fwnode(chip->parent) == of_node_to_fwnode(data)?
->>>
->>> No! chip->fwnode is only used to let GPIOLIB know which fwnode to
->>> assign to the GPIO device (struct gpio_device).
->> What do you suggest I should use for the match as I do not see chip->fwnode
->> being set?
->>
-> 
-> This is most likely going to be a longer discussion. I suggest that in
-> the meantime you just assign the gc->fwnode pointer explicitly from
-> the platform device in the tegra GPIO driver and use it in the lookup
-> function. Note that this is NOT wrong or a hack. It's just that most
-> devices don't need to be looked up using gpio_device_find().
+Use preferred device_get_match_data() instead of of_match_device() to
+get the driver match data. With this, adjust the includes to explicitly
+include the correct headers.
 
-Sure, at the same time, I am also find to use any other method/s.
-> 
-> Bart
-> 
->>>
->>> Bart
->>>
->>>>
->>>> [1]:
->>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/gpio/gpiolib.c?h=v6.6-rc1#n767
->>>>
->>>>>
->>>>> Bart
->>>>>
->>>>>> 2) Or should I use something else in hte matching function instead of fwnode so
->>>>>> to avoid adding above line in the gpio driver?
->>>>>>
->>>>>>>
->>>>>>>>>
->>>>>>>>>>
->>>>>>>>>> Bart
->>>>>>>>>
->>>>>>>>
->>>>>>>
->>>>>>
->>>>
->>
+Signed-off-by: Rob Herring <robh@kernel.org>
+---
+ drivers/net/ethernet/altera/altera_tse.h      |  2 +-
+ drivers/net/ethernet/altera/altera_tse_main.c | 13 ++----
+ drivers/net/ethernet/amd/xgbe/xgbe-platform.c | 42 +------------------
+ .../net/ethernet/apm/xgene/xgene_enet_main.c  | 15 +------
+ .../net/ethernet/apm/xgene/xgene_enet_main.h  |  3 +-
+ drivers/net/ethernet/freescale/fec_main.c     | 12 +++---
+ .../ethernet/freescale/fs_enet/fs_enet-main.c | 18 ++++----
+ .../net/ethernet/freescale/fs_enet/mii-fec.c  | 10 ++---
+ drivers/net/ethernet/freescale/fsl_pq_mdio.c  | 12 ++----
+ drivers/net/ethernet/hisilicon/hix5hd2_gmac.c | 11 ++---
+ .../stmicro/stmmac/dwmac-intel-plat.c         |  9 ++--
+ drivers/net/ethernet/ti/davinci_emac.c        | 12 ++----
+ drivers/net/ethernet/ti/icssg/icssg_prueth.c  | 13 ++----
+ 13 files changed, 40 insertions(+), 132 deletions(-)
+
+diff --git a/drivers/net/ethernet/altera/altera_tse.h b/drivers/net/ethernet/altera/altera_tse.h
+index db5eed06e92d..82f2363a45cd 100644
+--- a/drivers/net/ethernet/altera/altera_tse.h
++++ b/drivers/net/ethernet/altera/altera_tse.h
+@@ -472,7 +472,7 @@ struct altera_tse_private {
+ 	/* ethtool msglvl option */
+ 	u32 msg_enable;
+ 
+-	struct altera_dmaops *dmaops;
++	const struct altera_dmaops *dmaops;
+ 
+ 	struct phylink *phylink;
+ 	struct phylink_config phylink_config;
+diff --git a/drivers/net/ethernet/altera/altera_tse_main.c b/drivers/net/ethernet/altera/altera_tse_main.c
+index 1b1799985d1d..1c8763be0e4b 100644
+--- a/drivers/net/ethernet/altera/altera_tse_main.c
++++ b/drivers/net/ethernet/altera/altera_tse_main.c
+@@ -29,13 +29,13 @@
+ #include <linux/mii.h>
+ #include <linux/mdio/mdio-regmap.h>
+ #include <linux/netdevice.h>
+-#include <linux/of_device.h>
++#include <linux/of.h>
+ #include <linux/of_mdio.h>
+ #include <linux/of_net.h>
+-#include <linux/of_platform.h>
+ #include <linux/pcs-lynx.h>
+ #include <linux/phy.h>
+ #include <linux/platform_device.h>
++#include <linux/property.h>
+ #include <linux/regmap.h>
+ #include <linux/skbuff.h>
+ #include <asm/cacheflush.h>
+@@ -82,8 +82,6 @@ MODULE_PARM_DESC(dma_tx_num, "Number of descriptors in the TX list");
+ 
+ #define TXQUEUESTOP_THRESHHOLD	2
+ 
+-static const struct of_device_id altera_tse_ids[];
+-
+ static inline u32 tse_tx_avail(struct altera_tse_private *priv)
+ {
+ 	return priv->tx_cons + priv->tx_ring_size - priv->tx_prod - 1;
+@@ -1133,7 +1131,6 @@ static int request_and_map(struct platform_device *pdev, const char *name,
+  */
+ static int altera_tse_probe(struct platform_device *pdev)
+ {
+-	const struct of_device_id *of_id = NULL;
+ 	struct regmap_config pcs_regmap_cfg;
+ 	struct altera_tse_private *priv;
+ 	struct mdio_regmap_config mrc;
+@@ -1159,11 +1156,7 @@ static int altera_tse_probe(struct platform_device *pdev)
+ 	priv->dev = ndev;
+ 	priv->msg_enable = netif_msg_init(debug, default_msg_level);
+ 
+-	of_id = of_match_device(altera_tse_ids, &pdev->dev);
+-
+-	if (of_id)
+-		priv->dmaops = (struct altera_dmaops *)of_id->data;
+-
++	priv->dmaops = device_get_match_data(&pdev->dev);
+ 
+ 	if (priv->dmaops &&
+ 	    priv->dmaops->altera_dtype == ALTERA_DTYPE_SGDMA) {
+diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-platform.c b/drivers/net/ethernet/amd/xgbe/xgbe-platform.c
+index 91842a5e161b..9131020d06af 100644
+--- a/drivers/net/ethernet/amd/xgbe/xgbe-platform.c
++++ b/drivers/net/ethernet/amd/xgbe/xgbe-platform.c
+@@ -123,9 +123,7 @@
+ #include <linux/io.h>
+ #include <linux/of.h>
+ #include <linux/of_net.h>
+-#include <linux/of_address.h>
+ #include <linux/of_platform.h>
+-#include <linux/of_device.h>
+ #include <linux/clk.h>
+ #include <linux/property.h>
+ #include <linux/acpi.h>
+@@ -135,17 +133,6 @@
+ #include "xgbe-common.h"
+ 
+ #ifdef CONFIG_ACPI
+-static const struct acpi_device_id xgbe_acpi_match[];
+-
+-static struct xgbe_version_data *xgbe_acpi_vdata(struct xgbe_prv_data *pdata)
+-{
+-	const struct acpi_device_id *id;
+-
+-	id = acpi_match_device(xgbe_acpi_match, pdata->dev);
+-
+-	return id ? (struct xgbe_version_data *)id->driver_data : NULL;
+-}
+-
+ static int xgbe_acpi_support(struct xgbe_prv_data *pdata)
+ {
+ 	struct device *dev = pdata->dev;
+@@ -173,11 +160,6 @@ static int xgbe_acpi_support(struct xgbe_prv_data *pdata)
+ 	return 0;
+ }
+ #else   /* CONFIG_ACPI */
+-static struct xgbe_version_data *xgbe_acpi_vdata(struct xgbe_prv_data *pdata)
+-{
+-	return NULL;
+-}
+-
+ static int xgbe_acpi_support(struct xgbe_prv_data *pdata)
+ {
+ 	return -EINVAL;
+@@ -185,17 +167,6 @@ static int xgbe_acpi_support(struct xgbe_prv_data *pdata)
+ #endif  /* CONFIG_ACPI */
+ 
+ #ifdef CONFIG_OF
+-static const struct of_device_id xgbe_of_match[];
+-
+-static struct xgbe_version_data *xgbe_of_vdata(struct xgbe_prv_data *pdata)
+-{
+-	const struct of_device_id *id;
+-
+-	id = of_match_device(xgbe_of_match, pdata->dev);
+-
+-	return id ? (struct xgbe_version_data *)id->data : NULL;
+-}
+-
+ static int xgbe_of_support(struct xgbe_prv_data *pdata)
+ {
+ 	struct device *dev = pdata->dev;
+@@ -244,11 +215,6 @@ static struct platform_device *xgbe_of_get_phy_pdev(struct xgbe_prv_data *pdata)
+ 	return phy_pdev;
+ }
+ #else   /* CONFIG_OF */
+-static struct xgbe_version_data *xgbe_of_vdata(struct xgbe_prv_data *pdata)
+-{
+-	return NULL;
+-}
+-
+ static int xgbe_of_support(struct xgbe_prv_data *pdata)
+ {
+ 	return -EINVAL;
+@@ -290,12 +256,6 @@ static struct platform_device *xgbe_get_phy_pdev(struct xgbe_prv_data *pdata)
+ 	return phy_pdev;
+ }
+ 
+-static struct xgbe_version_data *xgbe_get_vdata(struct xgbe_prv_data *pdata)
+-{
+-	return pdata->use_acpi ? xgbe_acpi_vdata(pdata)
+-			       : xgbe_of_vdata(pdata);
+-}
+-
+ static int xgbe_platform_probe(struct platform_device *pdev)
+ {
+ 	struct xgbe_prv_data *pdata;
+@@ -321,7 +281,7 @@ static int xgbe_platform_probe(struct platform_device *pdev)
+ 	pdata->use_acpi = dev->of_node ? 0 : 1;
+ 
+ 	/* Get the version data */
+-	pdata->vdata = xgbe_get_vdata(pdata);
++	pdata->vdata = (struct xgbe_version_data *)device_get_match_data(dev);
+ 
+ 	phy_pdev = xgbe_get_phy_pdev(pdata);
+ 	if (!phy_pdev) {
+diff --git a/drivers/net/ethernet/apm/xgene/xgene_enet_main.c b/drivers/net/ethernet/apm/xgene/xgene_enet_main.c
+index b5d9f9a55b7f..56f2b3c229af 100644
+--- a/drivers/net/ethernet/apm/xgene/xgene_enet_main.c
++++ b/drivers/net/ethernet/apm/xgene/xgene_enet_main.c
+@@ -2018,7 +2018,6 @@ static int xgene_enet_probe(struct platform_device *pdev)
+ 	struct xgene_enet_pdata *pdata;
+ 	struct device *dev = &pdev->dev;
+ 	void (*link_state)(struct work_struct *);
+-	const struct of_device_id *of_id;
+ 	int ret;
+ 
+ 	ndev = alloc_etherdev_mqs(sizeof(struct xgene_enet_pdata),
+@@ -2039,19 +2038,7 @@ static int xgene_enet_probe(struct platform_device *pdev)
+ 			  NETIF_F_GRO |
+ 			  NETIF_F_SG;
+ 
+-	of_id = of_match_device(xgene_enet_of_match, &pdev->dev);
+-	if (of_id) {
+-		pdata->enet_id = (uintptr_t)of_id->data;
+-	}
+-#ifdef CONFIG_ACPI
+-	else {
+-		const struct acpi_device_id *acpi_id;
+-
+-		acpi_id = acpi_match_device(xgene_enet_acpi_match, &pdev->dev);
+-		if (acpi_id)
+-			pdata->enet_id = (enum xgene_enet_id) acpi_id->driver_data;
+-	}
+-#endif
++	pdata->enet_id = (enum xgene_enet_id)device_get_match_data(&pdev->dev);
+ 	if (!pdata->enet_id) {
+ 		ret = -ENODEV;
+ 		goto err;
+diff --git a/drivers/net/ethernet/apm/xgene/xgene_enet_main.h b/drivers/net/ethernet/apm/xgene/xgene_enet_main.h
+index 643f5e646740..bce2c19e3f22 100644
+--- a/drivers/net/ethernet/apm/xgene/xgene_enet_main.h
++++ b/drivers/net/ethernet/apm/xgene/xgene_enet_main.h
+@@ -15,9 +15,10 @@
+ #include <linux/efi.h>
+ #include <linux/irq.h>
+ #include <linux/io.h>
+-#include <linux/of_platform.h>
++#include <linux/of.h>
+ #include <linux/of_net.h>
+ #include <linux/of_mdio.h>
++#include <linux/platform_device.h>
+ #include <linux/mdio/mdio-xgene.h>
+ #include <linux/module.h>
+ #include <net/ip.h>
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index 77c8e9cfb445..e0c991e792a4 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -52,11 +52,11 @@
+ #include <linux/clk.h>
+ #include <linux/crc32.h>
+ #include <linux/platform_device.h>
++#include <linux/property.h>
+ #include <linux/mdio.h>
+ #include <linux/phy.h>
+ #include <linux/fec.h>
+ #include <linux/of.h>
+-#include <linux/of_device.h>
+ #include <linux/of_mdio.h>
+ #include <linux/of_net.h>
+ #include <linux/regulator/consumer.h>
+@@ -4292,14 +4292,13 @@ fec_probe(struct platform_device *pdev)
+ 	phy_interface_t interface;
+ 	struct net_device *ndev;
+ 	int i, irq, ret = 0;
+-	const struct of_device_id *of_id;
+ 	static int dev_id;
+ 	struct device_node *np = pdev->dev.of_node, *phy_node;
+ 	int num_tx_qs;
+ 	int num_rx_qs;
+ 	char irq_name[8];
+ 	int irq_cnt;
+-	struct fec_devinfo *dev_info;
++	const struct fec_devinfo *dev_info;
+ 
+ 	fec_enet_get_queue_num(pdev, &num_tx_qs, &num_rx_qs);
+ 
+@@ -4314,10 +4313,9 @@ fec_probe(struct platform_device *pdev)
+ 	/* setup board info structure */
+ 	fep = netdev_priv(ndev);
+ 
+-	of_id = of_match_device(fec_dt_ids, &pdev->dev);
+-	if (of_id)
+-		pdev->id_entry = of_id->data;
+-	dev_info = (struct fec_devinfo *)pdev->id_entry->driver_data;
++	dev_info = device_get_match_data(&pdev->dev);
++	if (!dev_info)
++		dev_info = (const struct fec_devinfo *)pdev->id_entry->driver_data;
+ 	if (dev_info)
+ 		fep->quirks = dev_info->quirks;
+ 
+diff --git a/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c b/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c
+index a6dfc8807d3d..cf392faa6105 100644
+--- a/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c
++++ b/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c
+@@ -35,10 +35,9 @@
+ #include <linux/fs.h>
+ #include <linux/platform_device.h>
+ #include <linux/phy.h>
++#include <linux/property.h>
+ #include <linux/of.h>
+ #include <linux/of_mdio.h>
+-#include <linux/of_platform.h>
+-#include <linux/of_gpio.h>
+ #include <linux/of_net.h>
+ #include <linux/pgtable.h>
+ 
+@@ -884,9 +883,9 @@ static const struct ethtool_ops fs_ethtool_ops = {
+ /**************************************************************************************/
+ 
+ #ifdef CONFIG_FS_ENET_HAS_FEC
+-#define IS_FEC(match) ((match)->data == &fs_fec_ops)
++#define IS_FEC(ops) ((ops) == &fs_fec_ops)
+ #else
+-#define IS_FEC(match) 0
++#define IS_FEC(ops) 0
+ #endif
+ 
+ static const struct net_device_ops fs_enet_netdev_ops = {
+@@ -903,10 +902,9 @@ static const struct net_device_ops fs_enet_netdev_ops = {
+ #endif
+ };
+ 
+-static const struct of_device_id fs_enet_match[];
+ static int fs_enet_probe(struct platform_device *ofdev)
+ {
+-	const struct of_device_id *match;
++	const struct fs_ops *ops;
+ 	struct net_device *ndev;
+ 	struct fs_enet_private *fep;
+ 	struct fs_platform_info *fpi;
+@@ -916,15 +914,15 @@ static int fs_enet_probe(struct platform_device *ofdev)
+ 	const char *phy_connection_type;
+ 	int privsize, len, ret = -ENODEV;
+ 
+-	match = of_match_device(fs_enet_match, &ofdev->dev);
+-	if (!match)
++	ops = device_get_match_data(&ofdev->dev);
++	if (!ops)
+ 		return -EINVAL;
+ 
+ 	fpi = kzalloc(sizeof(*fpi), GFP_KERNEL);
+ 	if (!fpi)
+ 		return -ENOMEM;
+ 
+-	if (!IS_FEC(match)) {
++	if (!IS_FEC(ops)) {
+ 		data = of_get_property(ofdev->dev.of_node, "fsl,cpm-command", &len);
+ 		if (!data || len != 4)
+ 			goto out_free_fpi;
+@@ -986,7 +984,7 @@ static int fs_enet_probe(struct platform_device *ofdev)
+ 	fep->dev = &ofdev->dev;
+ 	fep->ndev = ndev;
+ 	fep->fpi = fpi;
+-	fep->ops = match->data;
++	fep->ops = ops;
+ 
+ 	ret = fep->ops->setup_data(ndev);
+ 	if (ret)
+diff --git a/drivers/net/ethernet/freescale/fs_enet/mii-fec.c b/drivers/net/ethernet/freescale/fs_enet/mii-fec.c
+index a1e777a4b75f..7bb69727952a 100644
+--- a/drivers/net/ethernet/freescale/fs_enet/mii-fec.c
++++ b/drivers/net/ethernet/freescale/fs_enet/mii-fec.c
+@@ -30,9 +30,10 @@
+ #include <linux/ethtool.h>
+ #include <linux/bitops.h>
+ #include <linux/platform_device.h>
++#include <linux/property.h>
++#include <linux/of.h>
+ #include <linux/of_address.h>
+ #include <linux/of_mdio.h>
+-#include <linux/of_platform.h>
+ #include <linux/pgtable.h>
+ 
+ #include <asm/irq.h>
+@@ -96,20 +97,15 @@ static int fs_enet_fec_mii_write(struct mii_bus *bus, int phy_id, int location,
+ 
+ }
+ 
+-static const struct of_device_id fs_enet_mdio_fec_match[];
+ static int fs_enet_mdio_probe(struct platform_device *ofdev)
+ {
+-	const struct of_device_id *match;
+ 	struct resource res;
+ 	struct mii_bus *new_bus;
+ 	struct fec_info *fec;
+ 	int (*get_bus_freq)(struct device *);
+ 	int ret = -ENOMEM, clock, speed;
+ 
+-	match = of_match_device(fs_enet_mdio_fec_match, &ofdev->dev);
+-	if (!match)
+-		return -EINVAL;
+-	get_bus_freq = match->data;
++	get_bus_freq = device_get_match_data(&ofdev->dev);
+ 
+ 	new_bus = mdiobus_alloc();
+ 	if (!new_bus)
+diff --git a/drivers/net/ethernet/freescale/fsl_pq_mdio.c b/drivers/net/ethernet/freescale/fsl_pq_mdio.c
+index eee675a25b2c..70dd982a5edc 100644
+--- a/drivers/net/ethernet/freescale/fsl_pq_mdio.c
++++ b/drivers/net/ethernet/freescale/fsl_pq_mdio.c
+@@ -19,9 +19,10 @@
+ #include <linux/delay.h>
+ #include <linux/module.h>
+ #include <linux/mii.h>
++#include <linux/of.h>
+ #include <linux/of_address.h>
+ #include <linux/of_mdio.h>
+-#include <linux/of_device.h>
++#include <linux/property.h>
+ 
+ #include <asm/io.h>
+ #if IS_ENABLED(CONFIG_UCC_GETH)
+@@ -407,8 +408,6 @@ static void set_tbipa(const u32 tbipa_val, struct platform_device *pdev,
+ 
+ static int fsl_pq_mdio_probe(struct platform_device *pdev)
+ {
+-	const struct of_device_id *id =
+-		of_match_device(fsl_pq_mdio_match, &pdev->dev);
+ 	const struct fsl_pq_mdio_data *data;
+ 	struct device_node *np = pdev->dev.of_node;
+ 	struct resource res;
+@@ -417,15 +416,12 @@ static int fsl_pq_mdio_probe(struct platform_device *pdev)
+ 	struct mii_bus *new_bus;
+ 	int err;
+ 
+-	if (!id) {
++	data = device_get_match_data(&pdev->dev);
++	if (!data) {
+ 		dev_err(&pdev->dev, "Failed to match device\n");
+ 		return -ENODEV;
+ 	}
+ 
+-	data = id->data;
+-
+-	dev_dbg(&pdev->dev, "found %s compatible node\n", id->compatible);
+-
+ 	new_bus = mdiobus_alloc_size(sizeof(*priv));
+ 	if (!new_bus)
+ 		return -ENOMEM;
+diff --git a/drivers/net/ethernet/hisilicon/hix5hd2_gmac.c b/drivers/net/ethernet/hisilicon/hix5hd2_gmac.c
+index 506fa3d8bbee..1a972b093a42 100644
+--- a/drivers/net/ethernet/hisilicon/hix5hd2_gmac.c
++++ b/drivers/net/ethernet/hisilicon/hix5hd2_gmac.c
+@@ -7,7 +7,8 @@
+ #include <linux/interrupt.h>
+ #include <linux/etherdevice.h>
+ #include <linux/platform_device.h>
+-#include <linux/of_device.h>
++#include <linux/property.h>
++#include <linux/of.h>
+ #include <linux/of_net.h>
+ #include <linux/of_mdio.h>
+ #include <linux/reset.h>
+@@ -1094,7 +1095,6 @@ static int hix5hd2_dev_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
+ 	struct device_node *node = dev->of_node;
+-	const struct of_device_id *of_id = NULL;
+ 	struct net_device *ndev;
+ 	struct hix5hd2_priv *priv;
+ 	struct mii_bus *bus;
+@@ -1110,12 +1110,7 @@ static int hix5hd2_dev_probe(struct platform_device *pdev)
+ 	priv->dev = dev;
+ 	priv->netdev = ndev;
+ 
+-	of_id = of_match_device(hix5hd2_of_match, dev);
+-	if (!of_id) {
+-		ret = -EINVAL;
+-		goto out_free_netdev;
+-	}
+-	priv->hw_cap = (unsigned long)of_id->data;
++	priv->hw_cap = (unsigned long)device_get_match_data(dev);
+ 
+ 	priv->base = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(priv->base)) {
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel-plat.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel-plat.c
+index 70edc5232379..d68f0c4e7835 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel-plat.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel-plat.c
+@@ -7,8 +7,8 @@
+ #include <linux/ethtool.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
+-#include <linux/of_device.h>
+ #include <linux/platform_device.h>
++#include <linux/property.h>
+ #include <linux/stmmac.h>
+ 
+ #include "dwmac4.h"
+@@ -76,7 +76,6 @@ static int intel_eth_plat_probe(struct platform_device *pdev)
+ {
+ 	struct plat_stmmacenet_data *plat_dat;
+ 	struct stmmac_resources stmmac_res;
+-	const struct of_device_id *match;
+ 	struct intel_dwmac *dwmac;
+ 	unsigned long rate;
+ 	int ret;
+@@ -98,10 +97,8 @@ static int intel_eth_plat_probe(struct platform_device *pdev)
+ 	dwmac->dev = &pdev->dev;
+ 	dwmac->tx_clk = NULL;
+ 
+-	match = of_match_device(intel_eth_plat_match, &pdev->dev);
+-	if (match && match->data) {
+-		dwmac->data = (const struct intel_dwmac_data *)match->data;
+-
++	dwmac->data = device_get_match_data(&pdev->dev);
++	if (dwmac->data) {
+ 		if (dwmac->data->fix_mac_speed)
+ 			plat_dat->fix_mac_speed = dwmac->data->fix_mac_speed;
+ 
+diff --git a/drivers/net/ethernet/ti/davinci_emac.c b/drivers/net/ethernet/ti/davinci_emac.c
+index 5d756df133eb..23f8bc1cd20d 100644
+--- a/drivers/net/ethernet/ti/davinci_emac.c
++++ b/drivers/net/ethernet/ti/davinci_emac.c
+@@ -38,6 +38,7 @@
+ #include <linux/dma-mapping.h>
+ #include <linux/clk.h>
+ #include <linux/platform_device.h>
++#include <linux/property.h>
+ #include <linux/regmap.h>
+ #include <linux/semaphore.h>
+ #include <linux/phy.h>
+@@ -47,10 +48,7 @@
+ #include <linux/pm_runtime.h>
+ #include <linux/davinci_emac.h>
+ #include <linux/of.h>
+-#include <linux/of_address.h>
+-#include <linux/of_device.h>
+ #include <linux/of_mdio.h>
+-#include <linux/of_irq.h>
+ #include <linux/of_net.h>
+ #include <linux/mfd/syscon.h>
+ 
+@@ -1726,13 +1724,10 @@ static const struct net_device_ops emac_netdev_ops = {
+ #endif
+ };
+ 
+-static const struct of_device_id davinci_emac_of_match[];
+-
+ static struct emac_platform_data *
+ davinci_emac_of_get_pdata(struct platform_device *pdev, struct emac_priv *priv)
+ {
+ 	struct device_node *np;
+-	const struct of_device_id *match;
+ 	const struct emac_platform_data *auxdata;
+ 	struct emac_platform_data *pdata = NULL;
+ 
+@@ -1779,9 +1774,8 @@ davinci_emac_of_get_pdata(struct platform_device *pdev, struct emac_priv *priv)
+ 		pdata->interrupt_disable = auxdata->interrupt_disable;
+ 	}
+ 
+-	match = of_match_device(davinci_emac_of_match, &pdev->dev);
+-	if (match && match->data) {
+-		auxdata = match->data;
++	auxdata = device_get_match_data(&pdev->dev);
++	if (auxdata) {
+ 		pdata->version = auxdata->version;
+ 		pdata->hw_ram_addr = auxdata->hw_ram_addr;
+ 	}
+diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.c b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
+index 6635b28bc672..79e896972392 100644
+--- a/drivers/net/ethernet/ti/icssg/icssg_prueth.c
++++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
+@@ -19,11 +19,11 @@
+ #include <linux/mfd/syscon.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
+-#include <linux/of_irq.h>
+ #include <linux/of_mdio.h>
+ #include <linux/of_net.h>
+-#include <linux/of_platform.h>
++#include <linux/platform_device.h>
+ #include <linux/phy.h>
++#include <linux/property.h>
+ #include <linux/remoteproc/pruss.h>
+ #include <linux/regmap.h>
+ #include <linux/remoteproc.h>
+@@ -1934,8 +1934,6 @@ static void prueth_put_cores(struct prueth *prueth, int slice)
+ 		pru_rproc_put(prueth->pru[slice]);
+ }
+ 
+-static const struct of_device_id prueth_dt_match[];
+-
+ static int prueth_probe(struct platform_device *pdev)
+ {
+ 	struct device_node *eth_node, *eth_ports_node;
+@@ -1944,7 +1942,6 @@ static int prueth_probe(struct platform_device *pdev)
+ 	struct genpool_data_align gp_data = {
+ 		.align = SZ_64K,
+ 	};
+-	const struct of_device_id *match;
+ 	struct device *dev = &pdev->dev;
+ 	struct device_node *np;
+ 	struct prueth *prueth;
+@@ -1954,17 +1951,13 @@ static int prueth_probe(struct platform_device *pdev)
+ 
+ 	np = dev->of_node;
+ 
+-	match = of_match_device(prueth_dt_match, dev);
+-	if (!match)
+-		return -ENODEV;
+-
+ 	prueth = devm_kzalloc(dev, sizeof(*prueth), GFP_KERNEL);
+ 	if (!prueth)
+ 		return -ENOMEM;
+ 
+ 	dev_set_drvdata(dev, prueth);
+ 	prueth->pdev = pdev;
+-	prueth->pdata = *(const struct prueth_pdata *)match->data;
++	prueth->pdata = *(const struct prueth_pdata *)device_get_match_data(dev);
+ 
+ 	prueth->dev = dev;
+ 	eth_ports_node = of_get_child_by_name(np, "ethernet-ports");
+-- 
+2.42.0
 
