@@ -2,326 +2,353 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DEAD7BE894
-	for <lists+linux-omap@lfdr.de>; Mon,  9 Oct 2023 19:46:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BC487BEC79
+	for <lists+linux-omap@lfdr.de>; Mon,  9 Oct 2023 23:14:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345624AbjJIRql (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 9 Oct 2023 13:46:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47016 "EHLO
+        id S1378151AbjJIVOQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 9 Oct 2023 17:14:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234587AbjJIRqj (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 9 Oct 2023 13:46:39 -0400
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2089.outbound.protection.outlook.com [40.107.94.89])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C6A2AF;
-        Mon,  9 Oct 2023 10:46:37 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RCxovDdVrXyk/nnCBcoJhzBnPWn9vDMfCwpyaKsf2TMeRCxhp++6Vtehd7KMtAFMCJ5mXVEuwtwqAHgHWe5/Hlt65A9Rj5aWEiSBAYGJv5kNnNhCrfiBe+d7dXhErapj2ozNF+m2ktc/uiHu6YM0ASBEiMIFFHqZoDGqh9ZkS8NKl7cvEu6uOGOUxWFRVNIrPl1/TLoSTlBvIOtQ0IjQRo4rBGalWzgUWqgezqYY+U6dJ4suhljrO4cdE+peqFbGvHMdxp16OQhNhyAab3RAsgbnt0tVaw2GI7cPMRsy647FhU0u76VELwl/u3IfKB5p0pX43h2GOZTJPft3qq/rBA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hgPoizulzTeD8xeGBXMrepjQQEusDby8l0YcbpWXQI0=;
- b=fWlR9XOFjr4We3sJ5r8X/90M5bUprzRvZlGK9oLbI6X3c7UzkpfoRyMefqX8x5aXQTlqP7OahuBhyPoYQ6soi7OSbQp8hcdrUmZxlonFvFTeHGCETRh/te++rlzsDjsOUlAKgUveFaQZ0q3y/eB4pVQY9n//4X3FtBpA6EsykAFHKNqiAO1f7mDZh3m6ZuG2axz3lsr0huMTwJS15k0kR24Z5FSWsz2VRRyCsXIChB9F1rFBgG9hB06Q1By/zF0ub3RD/4hQ37daf5n7GfsKsIxVX7w2BlDo/Xi/Jw47LnqklVVu0IjViTJTEFttxlMSUHTdua2v8cxSIpK+MR5NKg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hgPoizulzTeD8xeGBXMrepjQQEusDby8l0YcbpWXQI0=;
- b=lCTbUt0TOmd2byJ98tsN5/jKhcwGH9qMtpIetHrFgv9GboH0KCH7gYr0q60XZOGWSs8/uFkXS94dD1IY1/oeMD8Y2t0GbN0w3Wi6GOxj4iqM50U1rPHTfwz5EYX/Oj7lbsbUkLVV0bnzuSaeEJVRbZ7CNuC6N8nTLRlF9JY06bo8o/fOMROW6cYYyTpNGGNXFHEZjCbK+10X5N6t9NShWRBzYOrn5W2k2RVHlObMAF40IQDfsDoK6iu5q4WeX1zuNzrDJMcMO8LtxGIepaTo/loAJpY4MDb8dm71cebmevlRFaMKhbPaNdAyzaSsjy3gjS/d7LHq9w5Ts/g7GqMCag==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from IA1PR12MB6604.namprd12.prod.outlook.com (2603:10b6:208:3a0::7)
- by DS7PR12MB8323.namprd12.prod.outlook.com (2603:10b6:8:da::7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6863.36; Mon, 9 Oct 2023 17:46:33 +0000
-Received: from IA1PR12MB6604.namprd12.prod.outlook.com
- ([fe80::8814:146:e28e:6eea]) by IA1PR12MB6604.namprd12.prod.outlook.com
- ([fe80::8814:146:e28e:6eea%4]) with mapi id 15.20.6863.032; Mon, 9 Oct 2023
- 17:46:33 +0000
-Message-ID: <b3ea777a-9471-0458-af2b-32a2adef4dec@nvidia.com>
-Date:   Mon, 9 Oct 2023 10:46:28 -0700
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [RFT PATCH 14/21] hte: tegra194: don't access struct gpio_chip
-Content-Language: en-US
-From:   Dipen Patel <dipenp@nvidia.com>
-To:     Bartosz Golaszewski <brgl@bgdev.pl>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <markgross@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-acpi@vger.kernel.org, timestamp@lists.linux.dev,
-        linux-tegra@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-References: <20230905185309.131295-1-brgl@bgdev.pl>
- <20230905185309.131295-15-brgl@bgdev.pl>
- <CACRpkda9=VULj4Cy_sit-UpUQnVEbS-RJKAeULVCw8ZCRTq1sw@mail.gmail.com>
- <CAMRc=MdTk1B4MEh9C624Upm_EcaQgJd9OU-AGfU0G-DU1+qk6A@mail.gmail.com>
- <36b17290-c643-8d8e-e82b-49afa6b34fbb@nvidia.com>
- <3624e973-d09a-d211-c6d0-d0ffb8c20c4b@nvidia.com>
- <90b5f887-8af4-a80d-ea4d-cf2199752de4@nvidia.com>
- <0e7cae42-0b81-c038-8beb-49102feea8a6@nvidia.com>
- <CAMRc=McSG6qajxt6P3vWQEeT63Pk5tggD05pUoMD1zd5ApZxgA@mail.gmail.com>
- <647d3b52-1daf-175d-d5c2-45653dd2604c@nvidia.com>
- <CAMRc=Mc_+LxcbV+=KPwAh4DinJAAetHrK+W3jbNp4AZBzg63TA@mail.gmail.com>
- <b0f37601-39d6-618e-fa16-3b1c9e7c0e2c@nvidia.com>
- <CAMRc=MfSGY691-sFhx8GeP43g0xGk1JzNa=9q5oemQoHHAM-5Q@mail.gmail.com>
- <3a54df71-d5cc-f538-75b8-f2193e27d65b@nvidia.com>
-In-Reply-To: <3a54df71-d5cc-f538-75b8-f2193e27d65b@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SJ0PR03CA0275.namprd03.prod.outlook.com
- (2603:10b6:a03:39e::10) To IA1PR12MB6604.namprd12.prod.outlook.com
- (2603:10b6:208:3a0::7)
+        with ESMTP id S1378652AbjJIVOO (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 9 Oct 2023 17:14:14 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DB6392;
+        Mon,  9 Oct 2023 14:14:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57DD6C433C8;
+        Mon,  9 Oct 2023 21:14:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1696886052;
+        bh=i4X/vNFkCjPk4yHPDzSDoFpjb66LQuRc1sygQ/O3xKM=;
+        h=From:To:Cc:Subject:Date:From;
+        b=CWIri7A6oxBeh3cQs4ZB5m0ts1YQvjE5P9iz31i0NipnWDBTs7+naZtGVs65xxfkl
+         kgpZL2e0OX3vuBf17HFaK1XPJEjDnx3Ozn2ApWwGs/eeWs4azGMEuBBo4iWEN+BurE
+         X9+/s974r6WMrtu+ckgRIGvIcofTS8g2B2aMC9+VnFTdZTsntHH1tVrNhBXgybZ0o7
+         upVTLfCaAwkj3MMNcz8+yzCJfJEwgvYfERDgyTRU2LdKHjyIC9oD8yxMGJL4N52EZi
+         fQWJH3ETj1Jlk0woqkHXUKsVGLnIifv3gQJV5MV3G3AevO2IWGp0IrZl5++rDEavUr
+         fX7VpxSmKpxYw==
+Received: (nullmailer pid 3245330 invoked by uid 1000);
+        Mon, 09 Oct 2023 21:14:08 -0000
+From:   Rob Herring <robh@kernel.org>
+To:     Lee Jones <lee@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Tony Lindgren <tony@atomide.com>
+Cc:     linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: [PATCH] mfd: Use device_get_match_data()
+Date:   Mon,  9 Oct 2023 16:13:33 -0500
+Message-ID: <20231009211356.3242037-3-robh@kernel.org>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA1PR12MB6604:EE_|DS7PR12MB8323:EE_
-X-MS-Office365-Filtering-Correlation-Id: dfc6035b-2f15-4580-0a16-08dbc8efad37
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: MHuVX08q9G4/93LkdqaSox1tWdPt2kcptrlkzhM6/f0kozPZ61bC4CMrYxjxNZmwUeCw7RVCD8KzanJtbBW9z8Pujo6oiPv055dyW9B6HlF9+RcEZ6UmuHtWyUnmDMcZoZ9Kp8kZOCzx9xO1VXg4J8kSLxm8XhAnbpE0A8Q3aQUsM5bYetMtMVNPiDp4RsX7qD/lL/g3mLt9hmjX4JUuFnHzia9PiY/2VRNLFlbEkfNkZNqAlG3sePL0ePuMbeDMmTvqM0s0S9rkEDZbJGXk59VORPjSm4RnSEGtuVPJVeVDLzHr+qFJUZYsk4XCuLWw1NJMGidTsZ+8juvZ9222ypEByw74HIU64im+ERXa1SlNFRyhkwpWr64EBzwrKtBvvQl3/MDPwh8/LnJLE9FTQcsBDoWscu4G4L8Ozu4HygSbGSPr6QN5nUAjTcgcRXdYSsRwiil9a9hFmfhaMYz5bzEgYaxZCEY4eTvYIkXlfEy4XLKPJoEpPo4p5F3mz22lBypwLJ273zWz7B25B4OVq9pTFk9AwnXeCDeYQwMoGmEygKJk2vwXi4+bp+JWF0Fl6brjWfzSxF0y3RFhnDg5rLUBYFjH1fjXsTNDjJpSqcBZoDuIekQ+hPM6DwxV/Bs4oUOSKc7lfTlcUupUPzJpBnA+F3jbGDcmOZxxQQup5dB0MHUV0cV309hcoP5ebYlH
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR12MB6604.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(396003)(39860400002)(376002)(136003)(346002)(230922051799003)(186009)(1800799009)(64100799003)(451199024)(2906002)(6506007)(53546011)(83380400001)(2616005)(7416002)(26005)(66476007)(316002)(54906003)(6916009)(66946007)(66556008)(8936002)(4326008)(5660300002)(41300700001)(6666004)(966005)(478600001)(6512007)(6486002)(8676002)(36756003)(38100700002)(86362001)(31696002)(31686004)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bFN5UHZGN3A1MkFiWDYrK3p2bUU3ODBvNjJydCtNSGF5cnU0NVpJcHBacGNp?=
- =?utf-8?B?bXBSck1ianhQaUVlUWdjMnlDT2JRMUlMQktEUC91U0REcGw3R3lJeDJqaWlx?=
- =?utf-8?B?My91UVhBRmZiTHA1Vi9vLzZReHVpYmU1dFpXYUNJMzJxeVFiOElQbFMxa2xl?=
- =?utf-8?B?Y3ZRaVBmNjJGcldTeTBYdDFDU2hNcXEzMFo3Q0J3MC94NU1NSHMrZGlobDJU?=
- =?utf-8?B?V1hsbThxVDNrR0hNaXRzN0h3MTZjUEkrQzJpbHN4dHFrTUcvUVFyc1ZrQm1j?=
- =?utf-8?B?aGNHTjJoZnIxTFYwb2YyWGIzZllqNmViWDIyb0dSSmd2cmV0SWtLZHZ5Y1M1?=
- =?utf-8?B?ZXYwclZzTDk2NWtpbGtaOGVtdVJaZ3haSzFnWFByYVZOMXpBWTdDSklaeEJ6?=
- =?utf-8?B?Mm1OdjVONG4ySG9XU09OamJURyt6dzBtT05UQzBVcVNZcnI3ZDErbmNKZkNz?=
- =?utf-8?B?SkVQbFJSTGF4aThvaGFnbTJlemtYVjVIUWJKWDhFNUNEbFY4eEIwbEFmQXpZ?=
- =?utf-8?B?cVh0RWlGbGdZVEljYWI0WDdoN0xScndVWmh4bXZmcGJ0YXpPdjRTaGtCNVQx?=
- =?utf-8?B?L2hnSHJSVHFRK2xIc0dKK3ZmVUFKbzdnYmNDb2RJS0JqWVJDTHp5N3FJK0FR?=
- =?utf-8?B?WlhoRi8xeVY1OHd0VWVQQXl6MTZHb2RYTEhaRjBmVERXcGV4eVcreDVrc213?=
- =?utf-8?B?YU5ReVZ4RERaQzNZTXh1SlBnd1dxUE5aNXJ3RzVZdDRjN2NPaUtKazQrTTZV?=
- =?utf-8?B?elZOQURuSFQ3b0lIN1FoVDJUTXYrMU5kbnVuUUl2bXJvTzVMT3dyVXd1RWFr?=
- =?utf-8?B?bFdOczN6TjhEZkxpTHlRRUZCRUpvQVNEdzV0WFRnRkI5amI4VFVzd3FXZ051?=
- =?utf-8?B?TklRT3JLZTB5MGM3akVrZkRyT2ZxbmMyTmV3SkNEOUU4NXNpQkt3MHRkRlhX?=
- =?utf-8?B?VmgvZWU4dm1oaHB2ZnZZbDkxai9weXl2bDVjQmliZzRzL2ZuT3hFNTBiZ1ZR?=
- =?utf-8?B?cWtEaWQ4UHlmRXlBRjFQN2xwWFpNWVRRajlXWG5wWEwxd1A0cmhkK3RnWUpQ?=
- =?utf-8?B?NWt5TytqTk5yeDAwRCtHZGJPYmFMbFlLM2JNWWhtVXdjVW4zUmxVWUtyUStO?=
- =?utf-8?B?RDNXeEwwNlRyaWNtRjZ5MzZXMHV3ZUZadEs5YWxyak56aXlLR3BpY0tDUkhP?=
- =?utf-8?B?RmtYMS9OZXl4TkNSdXpNeDJYanJoV1ppNWJnaVNyd2tmNUIrVTdRMVBsUnFw?=
- =?utf-8?B?aVZsUnVhTFl2R2pQTDJOUjByNVVOVGQ0aXRkWXRiTGh4RTROVVIzakdBWGtX?=
- =?utf-8?B?Mk5Mb2U1WVo3dTZiQzJONHY5T2dEdUNkNmlWNDdaVUVlMUMrYTFPZ0J3dWh0?=
- =?utf-8?B?TEgvc0tuaTVkcm9nMkFuR0tzaEJXMll1a3NhK0dkSHhaTDlXN0d0d1NLR0xx?=
- =?utf-8?B?OXJSZFg3WWxQMWVvYnVlaUxwTWQvNGEycEM4VkRMZUZCa2VHN3cwTEJaMS9D?=
- =?utf-8?B?RzhjS1lvWEJZWGM0OG41NEN1UFpzajQ5ZW9TVWJ4R2J2ZTNlalhKRHBYTHhN?=
- =?utf-8?B?ZkJjb040ZDVkbzQ2QzhKdzhkZUI4ZGRDckRwd3FlZVdTVDJSTzE5VTU5SVlx?=
- =?utf-8?B?Q0o4RjVIWUp2NlljS1RIdmRXUXR4VmloV2VGamVaSnF1dTNYKzd6ZTFUSjIz?=
- =?utf-8?B?TWlVNnNuYmJjdk1iMW9TVURrRktjVzVzNExleDdIQ05PR2JjWHVnVktmRGVy?=
- =?utf-8?B?c1hxcmFDWktzRUpGU2ZlL1RaNGJQOTZ1UDMyL1lFb24ya2F5TEJKdVZ5Z0NW?=
- =?utf-8?B?SmtTZU5XRjBNT0NSdjFPaGRBTFIvbnNEWUdsUTFKWk14dlB2QlZ4WUpxV2RC?=
- =?utf-8?B?bzI5aE5YYVNmL1AvZVBlZkl4SEVNRllWWjBjZ2pEVlIxLzZ1T0hnajNWY2JC?=
- =?utf-8?B?L3RySk5xVUdFc1Rsb2UxRWduWkxHcjE1REdHMDJNdUtiK1BLOE9NR1E1bXNt?=
- =?utf-8?B?M0t5b0dKc0lBSjFSeDd2NmkrbFZSMkI3S0tQNnU4YUVwTThaa09VQkE4VEhB?=
- =?utf-8?B?UEZTcy96YTVvOEMxRlhseHJMVG5ZaDBycTgrQjh1eWkrRzJpc1FDa3RQbUxG?=
- =?utf-8?Q?gwXee6et4NSSGsJfDzyvwBmc+?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dfc6035b-2f15-4580-0a16-08dbc8efad37
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR12MB6604.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Oct 2023 17:46:33.4220
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /E0s9DozjuZtUT6tZrNsgiOJAvhQaiTm4qbG3mafOWcx7tz4mRZe9weGXp3SQHvsJfUiKFjC+i/ums9glf1Udg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB8323
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 10/9/23 9:34 AM, Dipen Patel wrote:
-> On 10/8/23 11:48 PM, Bartosz Golaszewski wrote:
->> On Thu, Oct 5, 2023 at 9:43 PM Dipen Patel <dipenp@nvidia.com> wrote:
->>>
->>> On 10/5/23 12:05 PM, Bartosz Golaszewski wrote:
->>>> On Thu, Oct 5, 2023 at 8:12 PM Dipen Patel <dipenp@nvidia.com> wrote:
->>>>>
->>>>> On 10/5/23 6:48 AM, Bartosz Golaszewski wrote:
->>>>>> On Thu, Oct 5, 2023 at 1:52 AM Dipen Patel <dipenp@nvidia.com> wrote:
->>>>>>>
->>>>>>> On 10/4/23 3:54 PM, Dipen Patel wrote:
->>>>>>>> On 10/4/23 1:33 PM, Dipen Patel wrote:
->>>>>>>>> On 10/4/23 1:30 PM, Dipen Patel wrote:
->>>>>>>>>> On 10/4/23 5:00 AM, Bartosz Golaszewski wrote:
->>>>>>>>>>> On Thu, Sep 7, 2023 at 9:28 AM Linus Walleij <linus.walleij@linaro.org> wrote:
->>>>>>>>>>>>
->>>>>>>>>>>> On Tue, Sep 5, 2023 at 8:53 PM Bartosz Golaszewski <brgl@bgdev.pl> wrote:
->>>>>>>>>>>>
->>>>>>>>>>>>> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->>>>>>>>>>>>>
->>>>>>>>>>>>> Using struct gpio_chip is not safe as it will disappear if the
->>>>>>>>>>>>> underlying driver is unbound for any reason. Switch to using reference
->>>>>>>>>>>>> counted struct gpio_device and its dedicated accessors.
->>>>>>>>>>>>>
->>>>>>>>>>>>> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->>>>>>>>>>>>
->>>>>>>>>>>> As Andy points out add <linux/cleanup.h>, with that fixed:
->>>>>>>>>>>> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
->>>>>>>>>>>>
->>>>>>>>>>>> I think this can be merged into the gpio tree after leaving some
->>>>>>>>>>>> slack for the HTE maintainer to look at it, things look so much
->>>>>>>>>>>> better after this.
->>>>>>>>>>>>
->>>>>>>>>>>> Yours,
->>>>>>>>>>>> Linus Walleij
->>>>>>>>>>>
->>>>>>>>>>> Dipen,
->>>>>>>>>>>
->>>>>>>>>>> if you could give this patch a test and possibly ack it for me to take
->>>>>>>>>>> it through the GPIO tree (or go the immutable tag from HTE route) then
->>>>>>>>>>> it would be great. This is the last user of gpiochip_find() treewide,
->>>>>>>>>>> so with it we could remove it entirely for v6.7.
->>>>>>>>>>
->>>>>>>>>> Progress so far for the RFT...
->>>>>>>>>>
->>>>>>>>>> I tried applying the patch series on 6.6-rc1 and it did not apply cleanly,
->>>>>>>>>> some patches I needed to manually apply and correct. With all this, it failed
->>>>>>>>>> compilation at some spi/spi-bcm2835 driver. I disabled that and was able to
->>>>>>>>>> compile. I thought I should let you know this part.
->>>>>>>>>>
->>>>>>>>>> Now, I tried to test the hte and it seems to fail finding the gpio device,
->>>>>>>>>> roughly around this place [1]. I thought it would be your patch series so
->>>>>>>>>> tried to just use 6.6rc1 without your patches and it still failed at the
->>>>>>>>>> same place. I have to trace back now from which kernel version it broke.
->>>>>>>>>
->>>>>>>>> [1].
->>>>>>>>> https://git.kernel.org/pub/scm/linux/kernel/git/pateldipen1984/linux.git/tree/drivers/hte/hte-tegra194.c?h=for-next#n781
->>>>>>>>>
->>>>>>>>> of course with your patches it would fail for the gdev instead of the chip.
->>>>>>>>
->>>>>>>> Small update:
->>>>>>>>
->>>>>>>> I put some debugging prints in the gpio match function in the hte-tegra194.c as
->>>>>>>> below:
->>>>>>>>
->>>>>>>> static int tegra_gpiochip_match(struct gpio_chip *chip, void *data)
->>>>>>>>  {
->>>>>>>> +       struct device_node *node = data;
->>>>>>>> +       struct fwnode_handle *fw = of_node_to_fwnode(data);
->>>>>>>> +       if (!fw || !chip->fwnode)
->>>>>>>> +               pr_err("dipen patel: fw is null\n");
->>>>>>>>
->>>>>>>> -       pr_err("%s:%d\n", __func__, __LINE__);
->>>>>>>> +       pr_err("dipen patel, %s:%d: %s, %s, %s, match?:%d, fwnode name:%s\n",
->>>>>>>> __func__, __LINE__, chip->label, node->name, node->full_name, (chip->fwnode ==
->>>>>>>> fw), fw->dev->init_name);
->>>>>>>>         return chip->fwnode == of_node_to_fwnode(data);
->>>>>>>>  }
->>>>>>>>
->>>>>>>> The output of the printfs looks like below:
->>>>>>>> [    3.955194] dipen patel: fw is null -----> this message started appearing
->>>>>>>> when I added !chip->fwnode test in the if condition line.
->>>>>>>>
->>>>>>>> [    3.958864] dipen patel, tegra_gpiochip_match:689: tegra234-gpio, gpio,
->>>>>>>> gpio@c2f0000, match?:0, fwnode name:(null)
->>>>>>>>
->>>>>>>> I conclude that chip->fwnode is empty. Any idea in which conditions that node
->>>>>>>> would be empty?
->>>>>>>
->>>>>>> sorry for spamming, one last message before I sign off for the day....
->>>>>>>
->>>>>>> Seems, adding below in the tegra gpio driver resolved the issue I am facing, I
->>>>>>> was able to verify your patch series.
->>>>>>>
->>>>>>> diff --git a/drivers/gpio/gpio-tegra186.c b/drivers/gpio/gpio-tegra186.c
->>>>>>> index d87dd06db40d..a56c159d7136 100644
->>>>>>> --- a/drivers/gpio/gpio-tegra186.c
->>>>>>> +++ b/drivers/gpio/gpio-tegra186.c
->>>>>>> @@ -989,6 +989,8 @@ static int tegra186_gpio_probe(struct platform_device *pdev)
->>>>>>>                 offset += port->pins;
->>>>>>>         }
->>>>>>>
->>>>>>> +       gpio->gpio.fwnode = of_node_to_fwnode(pdev->dev.of_node);
->>>>>>> +
->>>>>>>         return devm_gpiochip_add_data(&pdev->dev, &gpio->gpio, gpio);
->>>>>>>  }
->>>>>>>
->>>>>>> Now, few follow up questions:
->>>>>>> 1) is this the correct way of setting the chip fwnode in the gpio driver?
->>>>>>
->>>>>> You shouldn't need this. This driver already does:
->>>>>>
->>>>>>     gpio->gpio.parent = &pdev->dev;
->>>>>>
->>>>>> so fwnode should be assigned in gpiochip_add_data_with_key(). Can you
->>>>>> check why this doesn't happen?
->>>>>
->>>>> I do not see anywhere chip->fwnode being set in the gpiochip_add_* function.
->>>>> The only reference I see is here [1]. Does it mean I need to change my match
->>>>> function from:
->>>>>
->>>>> chip->fwnode == of_node_to_fwnode(data)
->>>>>
->>>>> to:
->>>>> dev_fwnode(chip->parent) == of_node_to_fwnode(data)?
->>>>
->>>> No! chip->fwnode is only used to let GPIOLIB know which fwnode to
->>>> assign to the GPIO device (struct gpio_device).
->>> What do you suggest I should use for the match as I do not see chip->fwnode
->>> being set?
->>>
->>
->> This is most likely going to be a longer discussion. I suggest that in
->> the meantime you just assign the gc->fwnode pointer explicitly from
->> the platform device in the tegra GPIO driver and use it in the lookup
->> function. Note that this is NOT wrong or a hack. It's just that most
->> devices don't need to be looked up using gpio_device_find().
-> 
-> Sure, at the same time, I am also find to use any other method/s.
+Use preferred device_get_match_data() instead of of_match_device() to
+get the driver match data. With this, adjust the includes to explicitly
+include the correct headers.
 
-(Correction) I am also fine*
+Signed-off-by: Rob Herring <robh@kernel.org>
+---
+ drivers/mfd/axp20x.c           | 22 +++-------------------
+ drivers/mfd/hi6421-pmic-core.c |  9 +++------
+ drivers/mfd/mxs-lradc.c        |  9 ++-------
+ drivers/mfd/qcom-spmi-pmic.c   |  6 ++++--
+ drivers/mfd/qcom_rpm.c         |  8 ++++----
+ drivers/mfd/tps65910.c         | 11 ++---------
+ drivers/mfd/twl4030-power.c    |  9 +++------
+ drivers/mfd/twl6030-irq.c      | 10 +++++-----
+ 8 files changed, 26 insertions(+), 58 deletions(-)
 
-With patch
-https://patchwork.ozlabs.org/project/linux-gpio/patch/20231009173858.723686-1-dipenp@nvidia.com/
-
-Tested-by: Dipen Patel <dipenp@nvidia.com>
-
->>
->> Bart
->>
->>>>
->>>> Bart
->>>>
->>>>>
->>>>> [1]:
->>>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/gpio/gpiolib.c?h=v6.6-rc1#n767
->>>>>
->>>>>>
->>>>>> Bart
->>>>>>
->>>>>>> 2) Or should I use something else in hte matching function instead of fwnode so
->>>>>>> to avoid adding above line in the gpio driver?
->>>>>>>
->>>>>>>>
->>>>>>>>>>
->>>>>>>>>>>
->>>>>>>>>>> Bart
->>>>>>>>>>
->>>>>>>>>
->>>>>>>>
->>>>>>>
->>>>>
->>>
-> 
+diff --git a/drivers/mfd/axp20x.c b/drivers/mfd/axp20x.c
+index d93189b0230d..deaa969bab4e 100644
+--- a/drivers/mfd/axp20x.c
++++ b/drivers/mfd/axp20x.c
+@@ -22,7 +22,8 @@
+ #include <linux/mfd/axp20x.h>
+ #include <linux/mfd/core.h>
+ #include <linux/module.h>
+-#include <linux/of_device.h>
++#include <linux/of.h>
++#include <linux/property.h>
+ #include <linux/reboot.h>
+ #include <linux/regmap.h>
+ #include <linux/regulator/consumer.h>
+@@ -1131,27 +1132,10 @@ static int axp20x_power_off(struct sys_off_data *data)
+ int axp20x_match_device(struct axp20x_dev *axp20x)
+ {
+ 	struct device *dev = axp20x->dev;
+-	const struct acpi_device_id *acpi_id;
+-	const struct of_device_id *of_id;
+ 	const struct mfd_cell *cells_no_irq = NULL;
+ 	int nr_cells_no_irq = 0;
+ 
+-	if (dev->of_node) {
+-		of_id = of_match_device(dev->driver->of_match_table, dev);
+-		if (!of_id) {
+-			dev_err(dev, "Unable to match OF ID\n");
+-			return -ENODEV;
+-		}
+-		axp20x->variant = (long)of_id->data;
+-	} else {
+-		acpi_id = acpi_match_device(dev->driver->acpi_match_table, dev);
+-		if (!acpi_id || !acpi_id->driver_data) {
+-			dev_err(dev, "Unable to match ACPI ID and data\n");
+-			return -ENODEV;
+-		}
+-		axp20x->variant = (long)acpi_id->driver_data;
+-	}
+-
++	axp20x->variant = (long)device_get_match_data(dev);
+ 	switch (axp20x->variant) {
+ 	case AXP152_ID:
+ 		axp20x->nr_cells = ARRAY_SIZE(axp152_cells);
+diff --git a/drivers/mfd/hi6421-pmic-core.c b/drivers/mfd/hi6421-pmic-core.c
+index a6a890537a1e..5af24a438329 100644
+--- a/drivers/mfd/hi6421-pmic-core.c
++++ b/drivers/mfd/hi6421-pmic-core.c
+@@ -15,8 +15,9 @@
+ #include <linux/mfd/core.h>
+ #include <linux/mfd/hi6421-pmic.h>
+ #include <linux/module.h>
+-#include <linux/of_device.h>
++#include <linux/of.h>
+ #include <linux/platform_device.h>
++#include <linux/property.h>
+ #include <linux/regmap.h>
+ 
+ static const struct mfd_cell hi6421_devs[] = {
+@@ -50,16 +51,12 @@ MODULE_DEVICE_TABLE(of, of_hi6421_pmic_match);
+ static int hi6421_pmic_probe(struct platform_device *pdev)
+ {
+ 	struct hi6421_pmic *pmic;
+-	const struct of_device_id *id;
+ 	const struct mfd_cell *subdevs;
+ 	enum hi6421_type type;
+ 	void __iomem *base;
+ 	int n_subdevs, ret;
+ 
+-	id = of_match_device(of_hi6421_pmic_match, &pdev->dev);
+-	if (!id)
+-		return -EINVAL;
+-	type = (uintptr_t)id->data;
++	type = (uintptr_t)device_get_match_data(&pdev->dev);
+ 
+ 	pmic = devm_kzalloc(&pdev->dev, sizeof(*pmic), GFP_KERNEL);
+ 	if (!pmic)
+diff --git a/drivers/mfd/mxs-lradc.c b/drivers/mfd/mxs-lradc.c
+index 21f3033d6eb5..ec1b356562b9 100644
+--- a/drivers/mfd/mxs-lradc.c
++++ b/drivers/mfd/mxs-lradc.c
+@@ -16,8 +16,8 @@
+ #include <linux/mfd/mxs-lradc.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
+-#include <linux/of_device.h>
+ #include <linux/platform_device.h>
++#include <linux/property.h>
+ #include <linux/slab.h>
+ 
+ #define ADC_CELL		0
+@@ -125,7 +125,6 @@ MODULE_DEVICE_TABLE(of, mxs_lradc_dt_ids);
+ 
+ static int mxs_lradc_probe(struct platform_device *pdev)
+ {
+-	const struct of_device_id *of_id;
+ 	struct device *dev = &pdev->dev;
+ 	struct device_node *node = dev->of_node;
+ 	struct mxs_lradc *lradc;
+@@ -138,11 +137,7 @@ static int mxs_lradc_probe(struct platform_device *pdev)
+ 	if (!lradc)
+ 		return -ENOMEM;
+ 
+-	of_id = of_match_device(mxs_lradc_dt_ids, &pdev->dev);
+-	if (!of_id)
+-		return -EINVAL;
+-
+-	lradc->soc = (uintptr_t)of_id->data;
++	lradc->soc = (enum mxs_lradc_id)device_get_match_data(&pdev->dev);
+ 
+ 	lradc->clk = devm_clk_get(&pdev->dev, NULL);
+ 	if (IS_ERR(lradc->clk)) {
+diff --git a/drivers/mfd/qcom-spmi-pmic.c b/drivers/mfd/qcom-spmi-pmic.c
+index 7e2cd79d17eb..4899af64bf10 100644
+--- a/drivers/mfd/qcom-spmi-pmic.c
++++ b/drivers/mfd/qcom-spmi-pmic.c
+@@ -8,10 +8,12 @@
+ #include <linux/gfp.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
++#include <linux/of.h>
++#include <linux/of_device.h>
++#include <linux/of_platform.h>
+ #include <linux/spmi.h>
+ #include <linux/types.h>
+ #include <linux/regmap.h>
+-#include <linux/of_platform.h>
+ #include <soc/qcom/qcom-spmi-pmic.h>
+ 
+ #define PMIC_REV2		0x101
+@@ -236,7 +238,7 @@ static int pmic_spmi_probe(struct spmi_device *sdev)
+ 	if (!ctx)
+ 		return -ENOMEM;
+ 
+-	ctx->num_usids = (uintptr_t)of_device_get_match_data(&sdev->dev);
++	ctx->num_usids = (uintptr_t)device_get_match_data(&sdev->dev);
+ 
+ 	/* Only the first slave id for a PMIC contains this information */
+ 	if (sdev->usid % ctx->num_usids == 0) {
+diff --git a/drivers/mfd/qcom_rpm.c b/drivers/mfd/qcom_rpm.c
+index 086611322874..27446f43e3f3 100644
+--- a/drivers/mfd/qcom_rpm.c
++++ b/drivers/mfd/qcom_rpm.c
+@@ -7,6 +7,8 @@
+ 
+ #include <linux/module.h>
+ #include <linux/platform_device.h>
++#include <linux/property.h>
++#include <linux/of.h>
+ #include <linux/of_platform.h>
+ #include <linux/io.h>
+ #include <linux/interrupt.h>
+@@ -528,7 +530,6 @@ static irqreturn_t qcom_rpm_wakeup_interrupt(int irq, void *dev)
+ 
+ static int qcom_rpm_probe(struct platform_device *pdev)
+ {
+-	const struct of_device_id *match;
+ 	struct device_node *syscon_np;
+ 	struct qcom_rpm *rpm;
+ 	u32 fw_version[3];
+@@ -570,10 +571,9 @@ static int qcom_rpm_probe(struct platform_device *pdev)
+ 	if (irq_wakeup < 0)
+ 		return irq_wakeup;
+ 
+-	match = of_match_device(qcom_rpm_of_match, &pdev->dev);
+-	if (!match)
++	rpm->data = device_get_match_data(&pdev->dev);
++	if (!rpm->data)
+ 		return -ENODEV;
+-	rpm->data = match->data;
+ 
+ 	rpm->status_regs = devm_platform_get_and_ioremap_resource(pdev, 0, NULL);
+ 	if (IS_ERR(rpm->status_regs))
+diff --git a/drivers/mfd/tps65910.c b/drivers/mfd/tps65910.c
+index 41408df1712f..dce6ad668dbf 100644
+--- a/drivers/mfd/tps65910.c
++++ b/drivers/mfd/tps65910.c
+@@ -19,7 +19,7 @@
+ #include <linux/regmap.h>
+ #include <linux/mfd/tps65910.h>
+ #include <linux/of.h>
+-#include <linux/of_device.h>
++#include <linux/property.h>
+ 
+ static const struct resource rtc_resources[] = {
+ 	{
+@@ -374,16 +374,9 @@ static struct tps65910_board *tps65910_parse_dt(struct i2c_client *client,
+ 	struct device_node *np = client->dev.of_node;
+ 	struct tps65910_board *board_info;
+ 	unsigned int prop;
+-	const struct of_device_id *match;
+ 	int ret;
+ 
+-	match = of_match_device(tps65910_of_match, &client->dev);
+-	if (!match) {
+-		dev_err(&client->dev, "Failed to find matching dt id\n");
+-		return NULL;
+-	}
+-
+-	*chip_id  = (unsigned long)match->data;
++	*chip_id  = (unsigned long)device_get_match_data(&client->dev);
+ 
+ 	board_info = devm_kzalloc(&client->dev, sizeof(*board_info),
+ 			GFP_KERNEL);
+diff --git a/drivers/mfd/twl4030-power.c b/drivers/mfd/twl4030-power.c
+index e35b0f788c50..1595e9c76132 100644
+--- a/drivers/mfd/twl4030-power.c
++++ b/drivers/mfd/twl4030-power.c
+@@ -27,8 +27,8 @@
+ #include <linux/pm.h>
+ #include <linux/mfd/twl.h>
+ #include <linux/platform_device.h>
++#include <linux/property.h>
+ #include <linux/of.h>
+-#include <linux/of_device.h>
+ 
+ #include <asm/mach-types.h>
+ 
+@@ -883,7 +883,6 @@ static int twl4030_power_probe(struct platform_device *pdev)
+ {
+ 	const struct twl4030_power_data *pdata = dev_get_platdata(&pdev->dev);
+ 	struct device_node *node = pdev->dev.of_node;
+-	const struct of_device_id *match;
+ 	int err = 0;
+ 	int err2 = 0;
+ 	u8 val;
+@@ -904,10 +903,8 @@ static int twl4030_power_probe(struct platform_device *pdev)
+ 		return err;
+ 	}
+ 
+-	match = of_match_device(of_match_ptr(twl4030_power_of_match),
+-				&pdev->dev);
+-	if (match && match->data)
+-		pdata = match->data;
++	if (node)
++		pdata = device_get_match_data(&pdev->dev);
+ 
+ 	if (pdata) {
+ 		err = twl4030_power_configure_scripts(pdata);
+diff --git a/drivers/mfd/twl6030-irq.c b/drivers/mfd/twl6030-irq.c
+index 3c03681c124c..f9fce8408c2c 100644
+--- a/drivers/mfd/twl6030-irq.c
++++ b/drivers/mfd/twl6030-irq.c
+@@ -24,10 +24,10 @@
+ #include <linux/kthread.h>
+ #include <linux/mfd/twl.h>
+ #include <linux/platform_device.h>
++#include <linux/property.h>
+ #include <linux/suspend.h>
+ #include <linux/of.h>
+ #include <linux/irqdomain.h>
+-#include <linux/of_device.h>
+ 
+ #include "twl-core.h"
+ 
+@@ -368,10 +368,10 @@ int twl6030_init_irq(struct device *dev, int irq_num)
+ 	int			nr_irqs;
+ 	int			status;
+ 	u8			mask[3];
+-	const struct of_device_id *of_id;
++	const int		*irq_tbl;
+ 
+-	of_id = of_match_device(twl6030_of_match, dev);
+-	if (!of_id || !of_id->data) {
++	irq_tbl = device_get_match_data(dev);
++	if (!irq_tbl) {
+ 		dev_err(dev, "Unknown TWL device model\n");
+ 		return -EINVAL;
+ 	}
+@@ -409,7 +409,7 @@ int twl6030_init_irq(struct device *dev, int irq_num)
+ 
+ 	twl6030_irq->pm_nb.notifier_call = twl6030_irq_pm_notifier;
+ 	atomic_set(&twl6030_irq->wakeirqs, 0);
+-	twl6030_irq->irq_mapping_tbl = of_id->data;
++	twl6030_irq->irq_mapping_tbl = irq_tbl;
+ 
+ 	twl6030_irq->irq_domain =
+ 		irq_domain_add_linear(node, nr_irqs,
+-- 
+2.42.0
 
