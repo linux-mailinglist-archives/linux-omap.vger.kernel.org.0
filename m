@@ -2,63 +2,68 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E8B817BFA21
-	for <lists+linux-omap@lfdr.de>; Tue, 10 Oct 2023 13:44:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0FB77BFDA0
+	for <lists+linux-omap@lfdr.de>; Tue, 10 Oct 2023 15:36:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231453AbjJJLo4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 10 Oct 2023 07:44:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42736 "EHLO
+        id S232266AbjJJNgg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 10 Oct 2023 09:36:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51286 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231244AbjJJLoz (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 10 Oct 2023 07:44:55 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEAFE9D;
-        Tue, 10 Oct 2023 04:44:52 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57613C433C9;
-        Tue, 10 Oct 2023 11:44:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696938292;
-        bh=VC+x3Y/F4Qrg2tx3eHXgksT4LBINTp7diDgIAns//EE=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=tLfERQnEFbPfemzTphhNmBNQ/alGED5ET/yZctDg3dKrzyqNcu6UJXB8OFe2W67Fp
-         aHIaHszIrQztKk8QJmLUlWNPqNFoPLpnYQDdkTa+NCmuHbihGRYUSWx2jVcVL0dj4j
-         Yoyl3jVWIVkUMuzkZtmcDQAsOZAgI0I0lz83N3hWluEKwzWVHYEPSWeT/57lugaQVq
-         kAQlfHwAMTRRxua90XxwY1m5WvrHUGnGUlBE8K7PkicU30DH5CcgVKaK/t4NbjMs+B
-         JO1fvPNu8WGWqq0w1mpNTTQoEXyq2xLI9n729i3Zgi2SkK3oSMyUp2gIhWpaQ74Zhh
-         5wFGG461dGQbw==
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-504427aae4fso8074084e87.1;
-        Tue, 10 Oct 2023 04:44:52 -0700 (PDT)
-X-Gm-Message-State: AOJu0YyQ794ifvUiHM4x7iqTbbNG9+Dft1qtFSOBxIwQUAs00IZmQga9
-        OicUkZDRtrqJlCx6DDb/5Mn5/wL/spubplsiRg==
-X-Google-Smtp-Source: AGHT+IGAClhimcIf+YAzz2GCzR0wdzr7YTMHCXm3mvTiQBxYs/lkyUsWdSQuybb0savjSn2f8QaT9SjgK+8co/BPV8g=
-X-Received: by 2002:ac2:5a10:0:b0:503:224f:9c55 with SMTP id
- q16-20020ac25a10000000b00503224f9c55mr12742893lfn.8.1696938290524; Tue, 10
- Oct 2023 04:44:50 -0700 (PDT)
+        with ESMTP id S232164AbjJJNgg (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 10 Oct 2023 09:36:36 -0400
+Received: from mail-yw1-x1133.google.com (mail-yw1-x1133.google.com [IPv6:2607:f8b0:4864:20::1133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B883A9
+        for <linux-omap@vger.kernel.org>; Tue, 10 Oct 2023 06:36:34 -0700 (PDT)
+Received: by mail-yw1-x1133.google.com with SMTP id 00721157ae682-5a7c93507d5so4620887b3.2
+        for <linux-omap@vger.kernel.org>; Tue, 10 Oct 2023 06:36:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1696944994; x=1697549794; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6wXiqvYDT0weE8ui/Sbgni0MhTf5BD51PKqeFfPGPxw=;
+        b=n6W295mv4kAxT9n/ho2+UbufdEmNyndozwP6FgRjEa8aH0Mjk/ceZTEENT/j9bmCUJ
+         E8bJPfBqw3kNOvwfw2CyxoQleamYkajrCK4DTw48dYp2mxLdwokgvjmcjLmubwaCFiRk
+         nYMwFSdP0xkXnHVvzj+1585P7bkPbcw7kBbupIA7HmUa99FWZF8VQIrOcWJZtFdGFiH5
+         R7DGskUmFA9ERrkGf6HbrtAz5Z/oMTct98b8HA1v19P26AjCaIsrf/QMsAeQVy6nMPkj
+         sL1J+dzSYsTybPwMzx+HKmvklAxDkoogQ2LwnkJ4P4WhdKCf8R5BbiF2guApA1upY+jr
+         S4MQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696944994; x=1697549794;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6wXiqvYDT0weE8ui/Sbgni0MhTf5BD51PKqeFfPGPxw=;
+        b=h7eag/G6mWizkdJHzvZHb30Qr8BGBOQgodzC8Oj/3vRMv0zYtnbbwmZhho0uRvGfcF
+         e5lWCWLSaz16nPfxW4T/RxGsDy3YbYkxc6b2IyqPyxtMPIfVYidFM+SAutoxt5l3qIuz
+         AYnhNznFaw9RLj3rWmv+UU3g025+dlpqx1fSFEE96J9zM3KX0ne6EklaLOjv6/tfB55k
+         cwUOB/qou9+phwkqsWQ2mHZ9tAdlpkOviw7u/e091S696Qw7ASKYS0/Lx8k0Zkr9xWzP
+         ZeyKpliS2kpleW4jVtj1kk4/XscS6brYggwjcamz2iI/nNWhgwzXP0fcqOb1GV+gACb7
+         gfXw==
+X-Gm-Message-State: AOJu0Yw8gp2Dd7Uf0SpRl1dzxOXCKVdPMul4n5Fyn0tET6g+AWWbjUg7
+        RMDf0FV1m62hhpFuZ+DKjXU+scVYgAMUwbKzXGhPlQ==
+X-Google-Smtp-Source: AGHT+IHsWswayOAuTJAjdAMTyZ+dNvJUEXkXvz/1XH+y4Ttw4D9hAMEjlNkq1LxFqqsRR7ICw5yWWKwX0zI5mhbxKh8=
+X-Received: by 2002:a0d:cc90:0:b0:5a7:d016:bffa with SMTP id
+ o138-20020a0dcc90000000b005a7d016bffamr634809ywd.8.1696944993840; Tue, 10 Oct
+ 2023 06:36:33 -0700 (PDT)
 MIME-Version: 1.0
-References: <20231009211356.3242037-3-robh@kernel.org> <CAGb2v66ZHD8mMMNVwp+sTYT6DAFDUrP8ydeTo7KW+uUtBRM3bQ@mail.gmail.com>
-In-Reply-To: <CAGb2v66ZHD8mMMNVwp+sTYT6DAFDUrP8ydeTo7KW+uUtBRM3bQ@mail.gmail.com>
-From:   Rob Herring <robh@kernel.org>
-Date:   Tue, 10 Oct 2023 06:44:38 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqJ4yCNnvg=CfY6_NbcgED9FuExK6SDTxDERFHK7Hp9-+g@mail.gmail.com>
-Message-ID: <CAL_JsqJ4yCNnvg=CfY6_NbcgED9FuExK6SDTxDERFHK7Hp9-+g@mail.gmail.com>
-Subject: Re: [PATCH] mfd: Use device_get_match_data()
-To:     wens@csie.org
-Cc:     Lee Jones <lee@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Tony Lindgren <tony@atomide.com>, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, linux-omap@vger.kernel.org
+References: <20231009083856.222030-1-u.kleine-koenig@pengutronix.de> <20231009083856.222030-3-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20231009083856.222030-3-u.kleine-koenig@pengutronix.de>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Tue, 10 Oct 2023 15:36:23 +0200
+Message-ID: <CACRpkdYq0_kYJUyb90nFmW9SRrphQggepLP-OXdHeEWN4b9xcw@mail.gmail.com>
+Subject: Re: [PATCH 02/20] pinctrl: single: Drop if block with always false condition
+To:     =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+Cc:     Tony Lindgren <tony@atomide.com>,
+        Haojian Zhuang <haojian.zhuang@linaro.org>,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -66,26 +71,19 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, Oct 10, 2023 at 3:27=E2=80=AFAM Chen-Yu Tsai <wens@csie.org> wrote:
+On Mon, Oct 9, 2023 at 11:22=E2=80=AFAM Uwe Kleine-K=C3=B6nig
+<u.kleine-koenig@pengutronix.de> wrote:
+
+
+> pcs_remove() is only called after pcs_probe() completed successfully. In
+> this case platform_set_drvdata() was called with a non-NULL argument and
+> so platform_get_drvdata() won't return NULL.
 >
-> On Tue, Oct 10, 2023 at 5:14=E2=80=AFAM Rob Herring <robh@kernel.org> wro=
-te:
-> >
-> > Use preferred device_get_match_data() instead of of_match_device() to
-> > get the driver match data. With this, adjust the includes to explicitly
-> > include the correct headers.
-> >
-> > Signed-off-by: Rob Herring <robh@kernel.org>
-> > ---
-> >  drivers/mfd/axp20x.c           | 22 +++-------------------
+> Simplify by removing the if block with the always false condition.
 >
-> I'd keep the error message, but otherwise for axp20x,
+> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
 
-Why? It can't happen. We already matched successfully in order to
-probe, so matching again in probe is redundant and won't fail.
+Patch applied.
 
-> Reviewed-by: Chen-Yu Tsai <wens@csie.org>
-
-Thanks.
-
-Rob
+Yours,
+Linus Walleij
