@@ -2,106 +2,101 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD2B97C02CD
-	for <lists+linux-omap@lfdr.de>; Tue, 10 Oct 2023 19:35:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 43FD57C04CF
+	for <lists+linux-omap@lfdr.de>; Tue, 10 Oct 2023 21:41:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232266AbjJJRfQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 10 Oct 2023 13:35:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45506 "EHLO
+        id S234289AbjJJTlw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 10 Oct 2023 15:41:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233870AbjJJRfP (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 10 Oct 2023 13:35:15 -0400
-Received: from mx.skole.hr (mx2.hosting.skole.hr [161.53.165.186])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11AC69E
-        for <linux-omap@vger.kernel.org>; Tue, 10 Oct 2023 10:35:13 -0700 (PDT)
-Received: from mx2.hosting.skole.hr (localhost.localdomain [127.0.0.1])
-        by mx.skole.hr (mx.skole.hr) with ESMTP id 5AB7B864B4;
-        Tue, 10 Oct 2023 19:27:43 +0200 (CEST)
-From:   =?utf-8?q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
-Date:   Tue, 10 Oct 2023 19:27:26 +0200
-Subject: [PATCH v6 9/9] MAINTAINERS: add myself as Marvell PXA1908
- maintainer
+        with ESMTP id S229502AbjJJTlv (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 10 Oct 2023 15:41:51 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25CA5DB;
+        Tue, 10 Oct 2023 12:41:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35D94C433C8;
+        Tue, 10 Oct 2023 19:41:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1696966907;
+        bh=YbjcVPLcZSTQEmDpKd/PlJwKdY9kwZW4f2hfoRMYoIU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=UUQ3ZaPZAwveJxmaNiOlKKQp+kxSRUP5C7euw0+Tbfx/+OL+XcfcvaOq5WSwdL9j2
+         ZFiobaBI8at/xf6jf/L3Oq68/kVx1e76sjYK+F6ZAHFO8rAqXGaGL7BcUZjVbChkKV
+         H6fYG3G+w71RCAmaKrPiHp4r0QXmUcAQu0eYJlIsMmgKUCgr1R1NOkfSTGc6RIuP+t
+         fwGQA25z1Wu6PYGyN20l2jYBiNDm6lcZ0WPOA+Rlrk3GrZwQoe4T87smFv1MK232Hz
+         symlBQYLtGl8KKEidMI6fwC8QxwF0/UuhrZhuq61Da4J07Hj43ecPWxEJE5sVVnlE5
+         CHxyfdDwrqomQ==
+Date:   Tue, 10 Oct 2023 21:41:44 +0200
+From:   Wolfram Sang <wsa@kernel.org>
+To:     Rob Herring <robh@kernel.org>
+Cc:     Gregory CLEMENT <gregory.clement@bootlin.com>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+        Tony Lindgren <tony@atomide.com>, Vignesh R <vigneshr@ti.com>,
+        linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org
+Subject: Re: [PATCH] i2c: Use device_get_match_data()
+Message-ID: <ZSWo+FoFBYTqwIGd@shikoro>
+Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Gregory CLEMENT <gregory.clement@bootlin.com>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+        Tony Lindgren <tony@atomide.com>, Vignesh R <vigneshr@ti.com>,
+        linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org
+References: <20231006224446.443015-1-robh@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20231010-pxa1908-lkml-v6-9-b2fe09240cf8@skole.hr>
-References: <20231010-pxa1908-lkml-v6-0-b2fe09240cf8@skole.hr>
-In-Reply-To: <20231010-pxa1908-lkml-v6-0-b2fe09240cf8@skole.hr>
-To:     Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Haojian Zhuang <haojian.zhuang@linaro.org>,
-        Lubomir Rintel <lkundrak@v3.sk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Tony Luck <tony.luck@intel.com>,
-        "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-Cc:     linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-hardening@vger.kernel.org,
-        =?utf-8?q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
-X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=908;
- i=duje.mihanovic@skole.hr; h=from:subject:message-id;
- bh=DFkFmWpL42a9uWB0nGtydXY8FHW5qBEo4bLkmrXA9us=;
- b=owEBbQKS/ZANAwAIAZoRnrBCLZbhAcsmYgBlJYl5WjZg8QhwIAcaDKEP/msa5uKIqJUNjcPss
- i4vg/GKSJOJAjMEAAEIAB0WIQRT351NnD/hEPs2LXiaEZ6wQi2W4QUCZSWJeQAKCRCaEZ6wQi2W
- 4VUKEACSbAQnaBn9klVqvXdvLM+kNm6pUAIIE/rRn5J4k7jpcW+wOLHoGTNjnXkgq7aW7L720yF
- aHCrch53X5gfWk47u8QIU2r1SN+3L+Mq6Z6zG75CevWDxRlMu6nzVQyVEE57TsihLBvzxvury8c
- lX28gLPUymfkl8u2fqJ9WF6/S9gUUYj5UuX3Pr/c37OEPC4TGJAI1PCc2gWsa/T0UVIim82vSEm
- uwiLFD2dOXZdwK8xyscziKphAdYf4hl+jPXmg24bZIqpe507PSUW/XFOk9tC2k/5ypJvIP8mcT8
- VtjiVVfI+RpAWw3VWJ51j1uy1S61PoreeG/qcxSR8DrYEZYpo+XOzGXEfw7beWf9+QJbR0zvexN
- S1l5kYonPYq1AEg+DPb84mw6ceNF577y981dXr9B9MXEYrrUg4aQqGjDrE1FdufmDHI4SllfrEt
- ZU8ZnCjzy84T+v+LPPuDHHfImEorL49fJagk7jTom2R/86PBlUT05wf0XGftC/o84gcJ9V/OgmF
- 9ZneerNcwzowvRd1E58Fc8NI0TXaDJfoKAW8jzYc876A0vDRkvlhykO6hrBujwqMgWbtGMSJFFE
- v1wGrv0sMcRmJdldPv1Rdv0duqPdLElUv1y9syDwZv25iIaIangQgQhKseh1qVWQdGGEIJt83+a
- CsxeEqUHFfyEpOw==
-X-Developer-Key: i=duje.mihanovic@skole.hr; a=openpgp;
- fpr=53DF9D4D9C3FE110FB362D789A119EB0422D96E1
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="tp39jzaLqYpPOoAn"
+Content-Disposition: inline
+In-Reply-To: <20231006224446.443015-1-robh@kernel.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Add myself as the maintainer for Marvell PXA1908 SoC support.
 
-Signed-off-by: Duje Mihanović <duje.mihanovic@skole.hr>
----
- MAINTAINERS | 9 +++++++++
- 1 file changed, 9 insertions(+)
+--tp39jzaLqYpPOoAn
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 6c4cce45a09d..38c99e687976 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2312,6 +2312,15 @@ F:	drivers/irqchip/irq-mvebu-*
- F:	drivers/pinctrl/mvebu/
- F:	drivers/rtc/rtc-armada38x.c
- 
-+ARM/Marvell PXA1908 SOC support
-+M:	Duje Mihanović <duje.mihanovic@skole.hr>
-+L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
-+S:	Maintained
-+T:	git https://gitlab.com/LegoLivesMatter/linux
-+F:	arch/arm64/boot/dts/marvell/pxa1908*
-+F:	drivers/clk/mmp/clk-of-pxa1908.c
-+F:	include/dt-bindings/clock/marvell,pxa1908.h
-+
- ARM/Mediatek RTC DRIVER
- M:	Eddie Huang <eddie.huang@mediatek.com>
- M:	Sean Wang <sean.wang@mediatek.com>
+On Fri, Oct 06, 2023 at 05:44:46PM -0500, Rob Herring wrote:
+> Use preferred device_get_match_data() instead of of_match_device() to
+> get the driver match data. With this, adjust the includes to explicitly
+> include the correct headers.
+>=20
+> Signed-off-by: Rob Herring <robh@kernel.org>
 
--- 
-2.42.0
+Applied to for-next, thanks!
 
 
+--tp39jzaLqYpPOoAn
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmUlqPgACgkQFA3kzBSg
+KbYOuhAArYYwQ5CXnRdoJfFsVTfI32jFJtSkGywgLNffPFNnGQ1iqCc3BaYSI6+w
+3NqFCi6V9e1mk73kIAFCo0Dd3p0wQ3LYuDl71mh3dvmhXeWJaHOOh1Y5OhQaxyey
+dQUXxw5700pHN93jI7Z+z7Zmo4iTA8xzm6GVyvWwmutcBd8GofUtK5ra7vNCIuI2
+WnOTzv1k6aRNchrxkXTJFoHZAiymfCU537jgIj/xiqoYxlszzhh9gRd6UaWmPcnY
+sUM+AnlCt9QyN89lDmoKmrgl81CfOT6YEgU1uIDMdq4WA/ApUyM7KSBdtPFvhHr0
+QmN4XWUJDkDTeRHWI/cWBYEEvHqvkbCic3xh+qrfCIBHmdmwOazB1CnUeEml9TOi
+BuiEzZOjBemavM7O/28m7hOZS8nLGiKXSpcUQ76Uzyg2Ch46MUfL8wqlzJO5KmY7
+O676lje1KlanrvYwUJ/Eamk/aWzEuMYD6Mh1uRC+cMd4wMvTUVglV1th1YEf7Xnc
+KivfGaP9GSq4UulQcZxY4hUHct14H0lqAB4m9kAJ33Ho2eLQ/CC8dL7wuEjBAwpv
+iXmLjSH84LIFkXH39rGmBbElvYjjSI/YgFWTHsZTcb0Fosq/LSfngRdZKw3w/uGZ
+gTugvMLt3Wdz2Hh4c1s9u0J4tkPM7HvMT6H379us/5bDLHN5IjU=
+=gsIk
+-----END PGP SIGNATURE-----
+
+--tp39jzaLqYpPOoAn--
