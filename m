@@ -2,105 +2,82 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 79F597C7782
-	for <lists+linux-omap@lfdr.de>; Thu, 12 Oct 2023 21:59:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CBDD7C7813
+	for <lists+linux-omap@lfdr.de>; Thu, 12 Oct 2023 22:50:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1442407AbjJLT7r (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 12 Oct 2023 15:59:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57732 "EHLO
+        id S1347397AbjJLUuh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 12 Oct 2023 16:50:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344135AbjJLT7q (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 12 Oct 2023 15:59:46 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6D12B7;
-        Thu, 12 Oct 2023 12:59:44 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42606C43397;
-        Thu, 12 Oct 2023 19:59:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697140784;
-        bh=xtxzdksc5dl0r8+k5pleTaspKNJ+Zn9WfG06u94llFg=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=dg/IWe59hkWjSTXCX7pxouQ7rtqEu1pELE8X2UFbPeE5AU/mCMjFEuJcH23nUcTPq
-         ZKqFLBrWgAQkAxNSjtThu6s6HAP8z+qQ9YRUgp8+nqFujzMPo/+lbDlohGCuotgl2m
-         BTbysQuVG1uqdjjLh0w1qXKktOid333JKvkR3F9zHpMQK8ZNLivzoMaL+dZvekCCGD
-         jGHCvPp8NCXzd72b0s13kmM4os9zqXQnPkx6SGPEe4Aj63iJRFQC/XuIpAQuaSFwBL
-         6LfR//Y9cElvJrVPHdChprisBhxuLsDXYNi3tjo7ygxqHwqJKsqJpSrOnv24TOT5af
-         r3AFygNiZPWIg==
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2c5056059e0so1313851fa.3;
-        Thu, 12 Oct 2023 12:59:44 -0700 (PDT)
-X-Gm-Message-State: AOJu0YzQJ0D882gj0CTt7IviEo3AykUDbf/yLfA6UJ5U7Y5l77g/q/xb
-        ATcqOHy7UZ7dNGQycIviqQyiWTiTxrMOP25Odw==
-X-Google-Smtp-Source: AGHT+IG5Giia/8iFXS++Hrtrgo9gbNcDu1M68Jz8U/9hXSm+ZWLSfwFKE5D3t4OBA10dstNAPnw63Gfl6mY1QeId0T4=
-X-Received: by 2002:a2e:b893:0:b0:2c5:634:b45e with SMTP id
- r19-20020a2eb893000000b002c50634b45emr87993ljp.36.1697140782413; Thu, 12 Oct
- 2023 12:59:42 -0700 (PDT)
+        with ESMTP id S1344156AbjJLUug (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 12 Oct 2023 16:50:36 -0400
+Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EEAD9D
+        for <linux-omap@vger.kernel.org>; Thu, 12 Oct 2023 13:50:35 -0700 (PDT)
+Received: by mail-pg1-x52a.google.com with SMTP id 41be03b00d2f7-5a9bf4fbd3fso201650a12.1
+        for <linux-omap@vger.kernel.org>; Thu, 12 Oct 2023 13:50:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1697143835; x=1697748635; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=kfzBGmddQTix4+dejvXuWg87PRHeA9TXCn5o9UdaswA=;
+        b=beLTT+VHfDwTVHG6LIWgxApO0cI4dj7R2IeLKClnPweCITbT/rONxVgGAm261jw0Zo
+         eiMJXXXcaMlPgDCqr76fbdt7jR30GjG7AOMerjnCoGjqPUzSn1TqcgOvucX7dMSlqkvd
+         y3PW4jvaetInAiEcqaZAi5OyxGmRAjezTnkmDf7Fvmpth2vI9aKOkj0ojmwbfzaCrcYE
+         bnbZFZ0lpmVnAD9q69FQ6xRt07jhnUxy0GfkJ9hsdbtnpHKqYsbySQnLwzm+uj9ItG61
+         NGQSYBhQHrQl0jQDCPXpBRBBxX/bZ5S8ouO3lxFP97/SXBcNM0s8FPwkYwI95eDkt8Wx
+         YhNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697143835; x=1697748635;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=kfzBGmddQTix4+dejvXuWg87PRHeA9TXCn5o9UdaswA=;
+        b=U++wf2mq1VPhp+OGN4HNZVmM8R5SBiElt7NKiXFZorOlfs+VgvY7fAtGdKSF8Txawm
+         mgXpcyfrPJmuO5ldJPK6yDXfryGAH/iDYKblV2pNuaAIA3nf+9dFzO84iWvg9TqhXcp7
+         efWCc2gJ77z1AoD8A2GYlm86vwzPBbtdSeZbJ/+YXSHl9mZ+m9q0g8ijujIcPU5PM1Oe
+         5Ozy59lYcGV3taYQIn0v7JZVtO5KkaSSIUjA5/c+nca6D02YwW4IANQNJl6Jqh3Rf6zs
+         bYa98dJDoiUG3YRgkyVhV8A1HAcQM6bXqjRRWtXEwhB+q2Ki+5QPROZiplhir3PAeyxz
+         AB9Q==
+X-Gm-Message-State: AOJu0YwZl9CJagerW3AweplDRQa4NGNWaJwGS7YWY0deKHN0d5AS4UsA
+        0DJReNEbUlIE9yltdxai1IvJtaSsug3fdT0XevNJtfDK05w=
+X-Google-Smtp-Source: AGHT+IEgzsjfxjk20XZr0oO/XJU8RCSGMtyXXnKZ9HX0/jrKOaqU+huJ68XKOnjrcI/I9eWxnqFuUM4RFsLhvecbpXw=
+X-Received: by 2002:a05:6a20:8f0c:b0:13f:9cee:ff42 with SMTP id
+ b12-20020a056a208f0c00b0013f9ceeff42mr32406731pzk.41.1697143834632; Thu, 12
+ Oct 2023 13:50:34 -0700 (PDT)
 MIME-Version: 1.0
-References: <20231010-pxa1908-lkml-v6-0-b2fe09240cf8@skole.hr>
- <20231010-pxa1908-lkml-v6-2-b2fe09240cf8@skole.hr> <20231012195337.GA1579632-robh@kernel.org>
-In-Reply-To: <20231012195337.GA1579632-robh@kernel.org>
-From:   Rob Herring <robh@kernel.org>
-Date:   Thu, 12 Oct 2023 14:59:30 -0500
-X-Gmail-Original-Message-ID: <CAL_Jsq+cFeo4eoXfi66otrHnHvJ44Oj42=AxmZmqqdxQ53k1FA@mail.gmail.com>
-Message-ID: <CAL_Jsq+cFeo4eoXfi66otrHnHvJ44Oj42=AxmZmqqdxQ53k1FA@mail.gmail.com>
-Subject: Re: [PATCH v6 2/9] dt-bindings: pinctrl: pinctrl-single: add
- marvell,pxa1908-padconf compatible
-To:     =?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
-Cc:     Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Haojian Zhuang <haojian.zhuang@linaro.org>,
-        Lubomir Rintel <lkundrak@v3.sk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Tony Luck <tony.luck@intel.com>,
-        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-        linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-hardening@vger.kernel.org
+From:   Adam Ford <aford173@gmail.com>
+Date:   Thu, 12 Oct 2023 15:50:23 -0500
+Message-ID: <CAHCN7xJzt+d-azD4NrXj4RKpYL+v0pYQC9C8F-hgxcritJxWUA@mail.gmail.com>
+Subject: OMAP3 HSUSB EHCI External hub disconnect failure
+To:     Linux-OMAP <linux-omap@vger.kernel.org>, lee@kernel.org,
+        Tony Lindgren <tony@atomide.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, Oct 12, 2023 at 2:53=E2=80=AFPM Rob Herring <robh@kernel.org> wrote=
-:
->
-> On Tue, Oct 10, 2023 at 07:27:19PM +0200, Duje Mihanovi=C4=87 wrote:
-> > Add the "marvell,pxa1908-padconf" compatible to allow migrating to a
-> > separate pinctrl driver later.
-> >
-> > Signed-off-by: Duje Mihanovi=C4=87 <duje.mihanovic@skole.hr>
-> > ---
-> >  Documentation/devicetree/bindings/pinctrl/pinctrl-single.yaml | 4 ++++
-> >  1 file changed, 4 insertions(+)
-> >
-> > diff --git a/Documentation/devicetree/bindings/pinctrl/pinctrl-single.y=
-aml b/Documentation/devicetree/bindings/pinctrl/pinctrl-single.yaml
-> > index 45a307d3ce16..0f7e16a28990 100644
-> > --- a/Documentation/devicetree/bindings/pinctrl/pinctrl-single.yaml
-> > +++ b/Documentation/devicetree/bindings/pinctrl/pinctrl-single.yaml
-> > @@ -32,6 +32,10 @@ properties:
-> >                - ti,omap4-padconf
-> >                - ti,omap5-padconf
-> >            - const: pinctrl-single
-> > +      - items:
-> > +          - enum:
-> > +              - marvell,pxa1908-padconf
->
-> Just add this to the existing enum above.
+I have an AM3517 and it's using the ti,ehci-omap driver to control a
+HS USB port.
 
-NM, I see it's pinconf-single, not pinctrl-single.
+I can connect and disconnect multiple devices without issue, but if I
+connect and disconnect an external USB hub, the hub disconnection
+isn't detected, and the USB no longer works when I connect anything.
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+I was wondering if anyone else has seen this and/or has any
+suggestions on what I can try.  I should note, that I'm seeing this
+ont he 6.1 LTS branch, and I haven't had time to check the latest, but
+this driver is mature, and hasn't undergone any significant changes
+since 6.1.
+
+I also will try an OMAP35 and DM37 connected the same way to see if
+the problem persists on those platforms.
+
+thanks for any advice in advance.
+
+adam
