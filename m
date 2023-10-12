@@ -2,78 +2,84 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D99AA7C6A40
-	for <lists+linux-omap@lfdr.de>; Thu, 12 Oct 2023 12:00:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E558B7C7079
+	for <lists+linux-omap@lfdr.de>; Thu, 12 Oct 2023 16:40:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235630AbjJLKAT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 12 Oct 2023 06:00:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43892 "EHLO
+        id S233785AbjJLOkw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 12 Oct 2023 10:40:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235672AbjJLKAF (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 12 Oct 2023 06:00:05 -0400
-Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10688D40;
-        Thu, 12 Oct 2023 02:59:10 -0700 (PDT)
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 39C9whSI055983;
-        Thu, 12 Oct 2023 04:58:43 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1697104723;
-        bh=+pkqfBVOhXgvLDsWbv5ktMbvR4NSyNBC9Ey1Mkig3UY=;
-        h=Date:Subject:To:CC:References:From:In-Reply-To;
-        b=N3Z0kYcIZvI3cCLP7r54FYgi/mXNAN5wbeaPJHLeqMRCS+28MD1PUTzJ6SAQhAomo
-         tMUfcXEekvbR0bAVRwyuhX1zEkhRdWY9Z1l29//QdVktFGsN2g8UwhVhM7ryQYXhrZ
-         MEQ0VwOCd/+8coWgcPwOromhVA4YVQ7MuEj5qdX4=
-Received: from DLEE114.ent.ti.com (dlee114.ent.ti.com [157.170.170.25])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 39C9whGO010652
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 12 Oct 2023 04:58:43 -0500
-Received: from DLEE113.ent.ti.com (157.170.170.24) by DLEE114.ent.ti.com
- (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 12
- Oct 2023 04:58:42 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE113.ent.ti.com
- (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Thu, 12 Oct 2023 04:58:42 -0500
-Received: from [10.24.69.31] (ileaxei01-snat2.itg.ti.com [10.180.69.6])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 39C9wZ47064962;
-        Thu, 12 Oct 2023 04:58:36 -0500
-Message-ID: <f0c1e8fa-8558-3dc8-da63-8cd60a6e0a78@ti.com>
-Date:   Thu, 12 Oct 2023 15:28:35 +0530
+        with ESMTP id S230471AbjJLOku (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 12 Oct 2023 10:40:50 -0400
+Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1813EA9;
+        Thu, 12 Oct 2023 07:40:47 -0700 (PDT)
+Received: by mail-lj1-x22a.google.com with SMTP id 38308e7fff4ca-2c5028e5b88so1136301fa.3;
+        Thu, 12 Oct 2023 07:40:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1697121645; x=1697726445; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=3kw/R5D+s3aJanIgvu3nf4Gs9+0fYmqPraYbms7U3dY=;
+        b=DwVeY7kHZd8snQaNN6Y5NhbpQ0/BYx67rw6lzY4o5kNSGMJaFgSQ5V/IN/814EB6MV
+         VxzKLRWKbDYsAmnnc1WHj6Iesx8bYekuYLSGiUoBs+9EBVT6WaUj0DWkXWRhe1woeAcb
+         T+skGg+gArzc8hC4CSnWiCNtr0K1kF9VEvm681bZepPZHhlNHYRKh0e0naKxfldNaWAp
+         18UfTPvhAxExzwKoCPl2l0QmLm1FT6fx7ZSMN8La4YgQ/7toh+x3b9ZZdzFsVln5AzU+
+         9NeRjenVNaq3nHxPHI1m4L3Ly2uhqKA2svrFxly1FoWn0lZOcebl2CEq0zTnjKR+fZtj
+         RT9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697121645; x=1697726445;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=3kw/R5D+s3aJanIgvu3nf4Gs9+0fYmqPraYbms7U3dY=;
+        b=PZYRjA/6Wr+98tZXo9m9C2MqFgzfmEVlHHmHVI0EdPSLZiAgeqCwiBEi2y8v/bPS8P
+         49sh7QjkHlWxQEr84PwM7h4954vR8Eb2iRuHZ06PfGdOVL9KxOiHA77bKUmxSe5TQtYQ
+         gJn71r+n2gVIzSNSYygc7dMyHBZFy1W/ZkF5bj8ZcfUupvkkDVHebfo2Qij0GqMBQi+4
+         Pk42cfibH0ckMOVP8j2TecaYsmpvXls4HR51qi9d6rR5PTjP3b6KBbAIbLoB1qKnj3lu
+         cIhRFz9pTOzTlfuKqN/ceuTtdBKe20vp95bgeRGiOGi1ZTTe0apQh0ebbp77hJCkvVdu
+         u2cg==
+X-Gm-Message-State: AOJu0YwFTJfaElhW7LGrNUfV+3X+2/nsbveZbO6zCK2mm5nDagFJsMFI
+        bf3iAcYtoOLNaeqqPXo3hwVmMSDlnJyemrvY
+X-Google-Smtp-Source: AGHT+IGH41yXs+O99grdygoszPTYW1zPKpN4EmD/LKIiUtotZlFPT/goo7+MpuARd/B4135q9i6NQg==
+X-Received: by 2002:a05:6512:4002:b0:504:369d:f11c with SMTP id br2-20020a056512400200b00504369df11cmr24729653lfb.34.1697121644971;
+        Thu, 12 Oct 2023 07:40:44 -0700 (PDT)
+Received: from ?IPV6:2001:999:704:2143:20b5:8471:77bf:6204? ([2001:999:704:2143:20b5:8471:77bf:6204])
+        by smtp.gmail.com with ESMTPSA id b17-20020a056512025100b005042ae13de4sm2854806lfo.302.2023.10.12.07.40.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 12 Oct 2023 07:40:44 -0700 (PDT)
+Message-ID: <db511d14-f2fe-4b4e-bd13-223e7a33f933@gmail.com>
+Date:   Thu, 12 Oct 2023 17:41:34 +0300
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v4 0/4] Add AM65x ICSSG Ethernet support
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] ASoC: ti: omap-mcbsp: Ignore errors for getting
+ fck_src
+To:     Andreas Kemnade <andreas@kemnade.info>,
+        Tony Lindgren <tony@atomide.com>
+Cc:     bcousson@baylibre.com, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+        lgirdwood@gmail.com, broonie@kernel.org, perex@perex.cz,
+        tiwai@suse.com, jarkko.nikula@bitmer.com,
+        dmitry.torokhov@gmail.com, linux-omap@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        alsa-devel@alsa-project.org
+References: <20230705190324.355282-1-andreas@kemnade.info>
+ <20230705190324.355282-2-andreas@kemnade.info>
+ <7d58d52d-2087-45af-b29e-2515b63ead13@gmail.com>
+ <20230920063353.GQ5285@atomide.com>
+ <dac768d2-2c66-4d6b-b3d3-d1ef69103c76@gmail.com>
+ <20230921121626.GT5285@atomide.com> <20231006102348.GK34982@atomide.com>
+ <20231006213003.0fbac87a@aktux> <20231007062518.GM34982@atomide.com>
+ <20231007091156.588d7ba1@aktux>
 Content-Language: en-US
-To:     Vignesh Raghavendra <vigneshr@ti.com>, Nishanth Menon <nm@ti.com>
-CC:     Peng Fan <peng.fan@nxp.com>, Udit Kumar <u-kumar1@ti.com>,
-        =?UTF-8?B?TsOtY29sYXMgRi4gUi4gQS4gUHJhZG8=?= 
-        <nfraprado@collabora.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Bjorn Andersson <quic_bjorande@quicinc.com>,
-        Will Deacon <will@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
-        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        Tero Kristo <kristo@kernel.org>, <linux-omap@vger.kernel.org>,
-        <srk@ti.com>, <r-gunasekaran@ti.com>
-References: <20231003105539.1698436-1-danishanwar@ti.com>
- <625f462e-d0d9-4abd-87db-178674f02cb9@ti.com>
-From:   MD Danish Anwar <danishanwar@ti.com>
-In-Reply-To: <625f462e-d0d9-4abd-87db-178674f02cb9@ti.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS autolearn=ham
+From:   =?UTF-8?Q?P=C3=A9ter_Ujfalusi?= <peter.ujfalusi@gmail.com>
+In-Reply-To: <20231007091156.588d7ba1@aktux>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -81,93 +87,34 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Vignesh,
+On 07/10/2023 10:11, Andreas Kemnade wrote:
+>> OK good to hear it works, I'll send out fixes for omap4 and 5, seems
+>> the runtime PM warning is something different.
+>>
+>>> omap-mcbsp 40124000.mcbsp: Runtime PM usage count underflow!
+>>> # cat /sys/bus/platform/devices/40124000.mcbsp/power/runtime_status 
+>>> active
+>>>
+>>> even with no sound.  
+>>
+> Well, it is a regression caused by your fix. Without it (and not reverting
+> the already applied ignore patch), runtime is properly suspended. Don't know
+> why yet.
 
-On 12/10/23 14:48, Vignesh Raghavendra wrote:
-> 
-> 
-> On 03/10/23 16:25, MD Danish Anwar wrote:
->> Hi All,
->>
->> This series adds support for ICSSG ethernet on AM65x SR2.0. 
->> This series also enables TI_ICSSG_PRUETH as loadable kernel module.
->> This series is based on the latest next-20230925 linux-next.
->>
->> This is the v4 of the series [v1]. This addresses comments made on v3.
->>
->> Changes from v3 to v4:
->> *) Added RB tag of Andrew Davis.
->> *) Added LAKML to the --cc of this series as it was dropped in v3.
->>
->> Changes from v2 to v3:
->> *) Changed comment of icssg nodes in device trees from "Dual Ethernet
->>    application node" to "Ethernet node" as asked by Andrew L.
->> *) Applied k3-am654-idk.dtbo at build time to the k3-am654-base-board.dtb
->>    in order to not have orphan DTBO as asked by Andrew D.
->> *) Modified k3-am654-gp-evm.dtb to have k3-am654-icssg2.dtbo as well.
->>
->> Changes from v1 to v2:
->> *) Moved ICSSG2 nodes from k3-am654-base-board.dts to new overlay file
->>    k3-am654-icssg2.dtso as asked by Andrew.
->> *) Renamed k3-am654-base-board.dts to k3-am654-common-board.dts
->> *) Added "Enable TI_ICSSG_PRUETH" patch to this series.
->>
->> [v1] https://lore.kernel.org/all/20230911071245.2173520-1-danishanwar@ti.com/
->> [v2] https://lore.kernel.org/all/20230921060913.721336-1-danishanwar@ti.com/
->> [v3] https://lore.kernel.org/all/20230926045337.1248276-1-danishanwar@ti.com/
->>
-> 
-> Wit this series applied I see build failures like:
-> 
-> arch/arm64/boot/dts/ti/k3-am65-main.dtsi:897.25-916.4: Warning (unique_unit_address): /bus@100000/pcie@5600000: duplicate unit-address (also used in node /bus@100000/pcie-ep@5600000)
->   DTC     arch/arm64/boot/dts/ti/k3-am654-icssg2.dtbo
-> arch/arm64/boot/dts/ti/k3-am654-icssg2.dtso:14.6-85.3: Warning (node_name_chars_strict): /fragment@0/__overlay__: Character '_' not recommended in node name
-> arch/arm64/boot/dts/ti/k3-am654-icssg2.dtso:87.12-125.3: Warning (node_name_chars_strict): /fragment@1/__overlay__: Character '_' not recommended in node name
-> arch/arm64/boot/dts/ti/k3-am654-icssg2.dtso:127.14-145.3: Warning (node_name_chars_strict): /fragment@2/__overlay__: Character '_' not recommended in node name
->   DTOVL   arch/arm64/boot/dts/ti/k3-am654-base-board.dtb
-> 
-> Overlay 'arch/arm64/boot/dts/ti/k3-am654.dtsi' is incomplete (4096 / 1346656301 bytes read)
-> make[3]: *** [scripts/Makefile.lib:402: arch/arm64/boot/dts/ti/k3-am654-base-board.dtb] Error 1
-> make[2]: *** [scripts/Makefile.build:480: arch/arm64/boot/dts/ti] Error 2
-> make[1]: *** [/home/a0132425/workspace/k3-next/Makefile:1391: dtbs] Error 2
-> make: *** [Makefile:234: __sub-make] Error 2
-> 
-> There probably is some race here as I see this with make -j32 dtbs 
-> but not on my less powerful laptop
-> 
+I guess it is because of the pm_runtime_put_sync() in the
+omap2_mcbsp_set_clks_src() around the fclk re-parenting.
+That is a bit dubious thing for sure. We need to disable the device to
+be able to re-parent the fclk but if we disable the device it is going
+to be powered down, right? I think we have appropriate context handling,
+so it might work, but it is certainly not a rock solid code... If you
+have a stream running already, you don't really want to kill the McBSP.
 
-I am running -j20 and I don't see this build failure whien applying the
-patches and running 'make mroproper' before building.
+The problem is that this mux is outside of the McBSP IP, so we need a
+system level (iow, clk API) way to change it runtime.
 
-Please try with a clean build.
-
-I just did applied this patch on linux-next with a clean build and the
-patches got applied without any failure / warnings.
-
-> 
-> 
->> Thanks and Regards,
->> MD Danish Anwar
->>
->> MD Danish Anwar (4):
->>   arm64: dts: ti: k3-am65-main: Add ICSSG IEP nodes
->>   arm64: dts: ti: k3-am654-base-board: add ICSSG2 Ethernet support
->>   arm64: dts: ti: k3-am654-idk: Add ICSSG Ethernet ports
->>   arm64: defconfig: Enable TI_ICSSG_PRUETH
->>
->>  arch/arm64/boot/dts/ti/Makefile               |   4 +
->>  arch/arm64/boot/dts/ti/k3-am65-main.dtsi      |  36 +++
->>  ...se-board.dts => k3-am654-common-board.dts} |   0
->>  arch/arm64/boot/dts/ti/k3-am654-icssg2.dtso   | 145 +++++++++
->>  arch/arm64/boot/dts/ti/k3-am654-idk.dtso      | 296 ++++++++++++++++++
->>  arch/arm64/configs/defconfig                  |   1 +
->>  6 files changed, 482 insertions(+)
->>  rename arch/arm64/boot/dts/ti/{k3-am654-base-board.dts => k3-am654-common-board.dts} (100%)
->>  create mode 100644 arch/arm64/boot/dts/ti/k3-am654-icssg2.dtso
->>  create mode 100644 arch/arm64/boot/dts/ti/k3-am654-idk.dtso
->>
-> 
+What is the machine driver where this happens? If you set the sysclk in
+hw_params of the machine driver, it will be OK, but if you do that in
+probe time then it is likely going to fail as you experienced
 
 -- 
-Thanks and Regards,
-Danish
+Péter
