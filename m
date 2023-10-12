@@ -2,227 +2,157 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E71FF7C5A87
-	for <lists+linux-omap@lfdr.de>; Wed, 11 Oct 2023 19:50:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1540F7C694F
+	for <lists+linux-omap@lfdr.de>; Thu, 12 Oct 2023 11:19:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232302AbjJKRuv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 11 Oct 2023 13:50:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46698 "EHLO
+        id S234133AbjJLJTl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 12 Oct 2023 05:19:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230050AbjJKRuu (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 11 Oct 2023 13:50:50 -0400
-Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A780A98;
-        Wed, 11 Oct 2023 10:50:47 -0700 (PDT)
-Received: by mail-wm1-x333.google.com with SMTP id 5b1f17b1804b1-40566f8a093so1606925e9.3;
-        Wed, 11 Oct 2023 10:50:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697046644; x=1697651444; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=zP+zcpcY4L8UQr12IXOv8iX0tyZpjo9Hcziw+ngC5Ew=;
-        b=eClB0p8IfHWHrHOWn8Qy2fG6s5mBrLkirEMvafky0vDCOlRZauN1ya7cj2pZh+dAIX
-         WXLpZ2l/U+2z49CIlwdTVD48YeKnOCJIrrMcY8Mv8PH0JsfjkLHBuY6aegslllcL55qB
-         0gwz//9HUmO6hRHvRyhFBfpJ+DFJMvoJsCRnh5D8mzNvka22t/pvmEC/N5gW+paRNuVu
-         c7UpIRCk+maxFkvugY13UmLGLDlUwhlS0X/IZnrb8mCEXcRlVrKUGvfqdTFDcXFwBb//
-         AdYSWmjPgJlqBIChi3yy4xWq8rRNQ3HOoozT8S48tS1EYLWIOLQMISGvM9kS6IXFx3et
-         NVeA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697046644; x=1697651444;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zP+zcpcY4L8UQr12IXOv8iX0tyZpjo9Hcziw+ngC5Ew=;
-        b=oKtXztxlbEVv18jmnDvMP1+pkpvcK6KyM9VasjgHa2xPS4cJJGgGaGU4PIGdsKXVi4
-         luiVNbY+kQAhrw7ZQebBLjmdRyytYOLcbDfeKPgHgZtOUFvZyevV4r/Bi8PjWcaIX9sU
-         mGgfXaRo8sxkF4MQ7Tu+hDGKC5l/T6StvHQOzrJd3FGKVTVKeaAoOhhEkjn3i6f5ydj4
-         oN3iPDlsL8aZm/bb1t1GHgOdlZnu0nDOVJeDnZs7WOV7xMOiB5kd5kDYSudfKzUiujyS
-         0eYk3A8vCiNg47GXd5lPGCyg0mykzHeUxh+9Yuceh46p7dqH3rTnoYv4OhaNa2aLTRH3
-         bWCg==
-X-Gm-Message-State: AOJu0YzwwrZap3UIMKuEV3oPGG0Yb6IfNTGPS4OE8+kz1W7NHRC95lVK
-        nhAwRWFDnhFYX2UELOvz0En0bBigrparueP+FM8=
-X-Google-Smtp-Source: AGHT+IGnLacLwFRfiKUzu/I423WVEyqhmENuuVZ09ysfbGiuIbod3nrnsXuldgoCDGsvlZIzf6l/kQ==
-X-Received: by 2002:a05:600c:2146:b0:405:458d:d54 with SMTP id v6-20020a05600c214600b00405458d0d54mr19668199wml.33.1697046643995;
-        Wed, 11 Oct 2023 10:50:43 -0700 (PDT)
-Received: from dell.intranet (77-255-201-154.dynamic.inetia.pl. [77.255.201.154])
-        by smtp.gmail.com with ESMTPSA id fl16-20020a05600c0b9000b00406847c988asm19658788wmb.12.2023.10.11.10.50.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Oct 2023 10:50:43 -0700 (PDT)
-From:   Janusz Krzysztofik <jmkrzyszt@gmail.com>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Douglas Anderson <dianders@chromium.org>,
-        Mark Brown <broonie@kernel.org>, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        stable@vger.kernel.org
-Subject: [PATCH v2] ARM: OMAP1: ams-delta: Fix MODEM initialization failure
-Date:   Wed, 11 Oct 2023 19:49:55 +0200
-Message-ID: <20231011175038.1907629-1-jmkrzyszt@gmail.com>
-X-Mailer: git-send-email 2.42.0
+        with ESMTP id S229884AbjJLJTk (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 12 Oct 2023 05:19:40 -0400
+Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48F8891;
+        Thu, 12 Oct 2023 02:19:38 -0700 (PDT)
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 39C9J7Z8031420;
+        Thu, 12 Oct 2023 04:19:07 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1697102347;
+        bh=zwId/HcYkweim0UL2ERsyjzp1tilLsP4HSd8GawHTYQ=;
+        h=Date:Subject:To:CC:References:From:In-Reply-To;
+        b=d8SQZk/w7+MiZT2CnAEJ8s7HDQHi8WEIdCbpmXjZ8y68Nflpjdp3fCEAA5l4xlUrs
+         KRA0mhivfp3ZtrqLCI5bfadDkD8+uLq8WDaKZy6jCmW+Y0xQH1t4Tv84+q1sDy02Km
+         22OfdF+4HsKbVUizBbh89WnkmNyC/llWLbsW+xhA=
+Received: from DLEE110.ent.ti.com (dlee110.ent.ti.com [157.170.170.21])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 39C9J6U4080207
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 12 Oct 2023 04:19:06 -0500
+Received: from DLEE113.ent.ti.com (157.170.170.24) by DLEE110.ent.ti.com
+ (157.170.170.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 12
+ Oct 2023 04:19:06 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE113.ent.ti.com
+ (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Thu, 12 Oct 2023 04:19:06 -0500
+Received: from [172.24.227.94] (ileaxei01-snat2.itg.ti.com [10.180.69.6])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 39C9IwdN016481;
+        Thu, 12 Oct 2023 04:18:59 -0500
+Message-ID: <625f462e-d0d9-4abd-87db-178674f02cb9@ti.com>
+Date:   Thu, 12 Oct 2023 14:48:57 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,HK_RANDOM_ENVFROM,
-        HK_RANDOM_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 0/4] Add AM65x ICSSG Ethernet support
+Content-Language: en-US
+To:     MD Danish Anwar <danishanwar@ti.com>, Nishanth Menon <nm@ti.com>
+CC:     Peng Fan <peng.fan@nxp.com>, Udit Kumar <u-kumar1@ti.com>,
+        =?UTF-8?B?TsOtY29sYXMgRi4gUi4gQS4gUHJhZG8=?= 
+        <nfraprado@collabora.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Bjorn Andersson <quic_bjorande@quicinc.com>,
+        Will Deacon <will@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
+        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Tero Kristo <kristo@kernel.org>, <linux-omap@vger.kernel.org>,
+        <srk@ti.com>, <r-gunasekaran@ti.com>
+References: <20231003105539.1698436-1-danishanwar@ti.com>
+From:   Vignesh Raghavendra <vigneshr@ti.com>
+In-Reply-To: <20231003105539.1698436-1-danishanwar@ti.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Regulator drivers were modified to use asynchronous device probe.  Since
-then, the board .init_late hook fails to acquire a GPIO based fixed
-regulator needed by an on-board voice MODEM device, and unregisters the
-MODEM.  That in turn triggers a so far not discovered bug of device
-unregister function called for a device with no associated release() op.
 
-serial8250 serial8250.1: incomplete constraints, dummy supplies not allowed
-WARNING: CPU: 0 PID: 1 at drivers/base/core.c:2486 device_release+0x98/0xa8
-Device 'serial8250.1' does not have a release() function, it is broken and
- must be fixed. See Documentation/core-api/kobject.rst.
-...
-put_device from platform_device_put+0x1c/0x24
-platform_device_put from ams_delta_init_late+0x4c/0x68
-ams_delta_init_late from init_machine_late+0x1c/0x94
-init_machine_late from do_one_initcall+0x60/0x1d4
 
-As a consequence, ASoC CODEC driver is no longer able to control its
-device over the voice MODEM's tty interface.
+On 03/10/23 16:25, MD Danish Anwar wrote:
+> Hi All,
+> 
+> This series adds support for ICSSG ethernet on AM65x SR2.0. 
+> This series also enables TI_ICSSG_PRUETH as loadable kernel module.
+> This series is based on the latest next-20230925 linux-next.
+> 
+> This is the v4 of the series [v1]. This addresses comments made on v3.
+> 
+> Changes from v3 to v4:
+> *) Added RB tag of Andrew Davis.
+> *) Added LAKML to the --cc of this series as it was dropped in v3.
+> 
+> Changes from v2 to v3:
+> *) Changed comment of icssg nodes in device trees from "Dual Ethernet
+>    application node" to "Ethernet node" as asked by Andrew L.
+> *) Applied k3-am654-idk.dtbo at build time to the k3-am654-base-board.dtb
+>    in order to not have orphan DTBO as asked by Andrew D.
+> *) Modified k3-am654-gp-evm.dtb to have k3-am654-icssg2.dtbo as well.
+> 
+> Changes from v1 to v2:
+> *) Moved ICSSG2 nodes from k3-am654-base-board.dts to new overlay file
+>    k3-am654-icssg2.dtso as asked by Andrew.
+> *) Renamed k3-am654-base-board.dts to k3-am654-common-board.dts
+> *) Added "Enable TI_ICSSG_PRUETH" patch to this series.
+> 
+> [v1] https://lore.kernel.org/all/20230911071245.2173520-1-danishanwar@ti.com/
+> [v2] https://lore.kernel.org/all/20230921060913.721336-1-danishanwar@ti.com/
+> [v3] https://lore.kernel.org/all/20230926045337.1248276-1-danishanwar@ti.com/
+> 
 
-cx20442-codec: ASoC: error at soc_component_write_no_lock
- on cx20442-codec for register: [0x00000000] -5
-cx20442-codec: ASoC: error at snd_soc_component_update_bits_legacy
- on cx20442-codec for register: [0x00000000] -5
-cx20442-codec: ASoC: error at snd_soc_component_update_bits
- on cx20442-codec for register: [0x00000000] -5
+Wit this series applied I see build failures like:
 
-The regulator hangs of a GPIO pin controlled by basic-mmio-gpio driver.
-Unlike most GPIO drivers, that driver doesn't probe for devices before
-device_initcall, then GPIO pins under its control are not availabele to
-majority of devices probed at that phase, including regulators.  On the
-other hand, serial8250 driver used by the MODEM device neither accepts via
-platform data nor handles regulators, then the board file is not able to
-teach that driver to return -EPROBE_DEFER when the regulator is not ready
-so the failed probe is retried after late_initcall.
+arch/arm64/boot/dts/ti/k3-am65-main.dtsi:897.25-916.4: Warning (unique_unit_address): /bus@100000/pcie@5600000: duplicate unit-address (also used in node /bus@100000/pcie-ep@5600000)
+  DTC     arch/arm64/boot/dts/ti/k3-am654-icssg2.dtbo
+arch/arm64/boot/dts/ti/k3-am654-icssg2.dtso:14.6-85.3: Warning (node_name_chars_strict): /fragment@0/__overlay__: Character '_' not recommended in node name
+arch/arm64/boot/dts/ti/k3-am654-icssg2.dtso:87.12-125.3: Warning (node_name_chars_strict): /fragment@1/__overlay__: Character '_' not recommended in node name
+arch/arm64/boot/dts/ti/k3-am654-icssg2.dtso:127.14-145.3: Warning (node_name_chars_strict): /fragment@2/__overlay__: Character '_' not recommended in node name
+  DTOVL   arch/arm64/boot/dts/ti/k3-am654-base-board.dtb
 
-Resolve the issue by extending description of the MODEM device with a
-dedicated power management domain.  Acquire the regulator from the
-domain's .activate hook and return -EPROBE_DEFER if the regulator is not
-available.  Having that under control, add the regulator device
-description to the list of platform devices initialized from .init_machine
-and drop the no longer needed custom .init_late hook.
+Overlay 'arch/arm64/boot/dts/ti/k3-am654.dtsi' is incomplete (4096 / 1346656301 bytes read)
+make[3]: *** [scripts/Makefile.lib:402: arch/arm64/boot/dts/ti/k3-am654-base-board.dtb] Error 1
+make[2]: *** [scripts/Makefile.build:480: arch/arm64/boot/dts/ti] Error 2
+make[1]: *** [/home/a0132425/workspace/k3-next/Makefile:1391: dtbs] Error 2
+make: *** [Makefile:234: __sub-make] Error 2
 
-v2: Trim down the warning for prettier git log output (Tony).
+There probably is some race here as I see this with make -j32 dtbs 
+but not on my less powerful laptop
 
-Fixes: 259b93b21a9f ("regulator: Set PROBE_PREFER_ASYNCHRONOUS for drivers that existed in 4.14")
-Signed-off-by: Janusz Krzysztofik <jmkrzyszt@gmail.com>
-Cc: stable@vger.kernel.org # v6.4+
----
- arch/arm/mach-omap1/board-ams-delta.c | 60 +++++++--------------------
- 1 file changed, 16 insertions(+), 44 deletions(-)
 
-diff --git a/arch/arm/mach-omap1/board-ams-delta.c b/arch/arm/mach-omap1/board-ams-delta.c
-index 9808cd27e2cf..67de96c7717d 100644
---- a/arch/arm/mach-omap1/board-ams-delta.c
-+++ b/arch/arm/mach-omap1/board-ams-delta.c
-@@ -550,6 +550,7 @@ static struct platform_device *ams_delta_devices[] __initdata = {
- 	&ams_delta_nand_device,
- 	&ams_delta_lcd_device,
- 	&cx20442_codec_device,
-+	&modem_nreset_device,
- };
- 
- static struct gpiod_lookup_table *ams_delta_gpio_tables[] __initdata = {
-@@ -782,26 +783,28 @@ static struct plat_serial8250_port ams_delta_modem_ports[] = {
- 	{ },
- };
- 
-+static int ams_delta_modem_pm_activate(struct device *dev)
-+{
-+	modem_priv.regulator = regulator_get(dev, "RESET#");
-+	if (IS_ERR(modem_priv.regulator))
-+		return -EPROBE_DEFER;
-+
-+	return 0;
-+}
-+
-+static struct dev_pm_domain ams_delta_modem_pm_domain = {
-+	.activate	= ams_delta_modem_pm_activate,
-+};
-+
- static struct platform_device ams_delta_modem_device = {
- 	.name	= "serial8250",
- 	.id	= PLAT8250_DEV_PLATFORM1,
- 	.dev		= {
- 		.platform_data = ams_delta_modem_ports,
-+		.pm_domain = &ams_delta_modem_pm_domain,
- 	},
- };
- 
--static int __init modem_nreset_init(void)
--{
--	int err;
--
--	err = platform_device_register(&modem_nreset_device);
--	if (err)
--		pr_err("Couldn't register the modem regulator device\n");
--
--	return err;
--}
--
--
- /*
-  * This function expects MODEM IRQ number already assigned to the port.
-  * The MODEM device requires its RESET# pin kept high during probe.
-@@ -833,37 +836,6 @@ static int __init ams_delta_modem_init(void)
- }
- arch_initcall_sync(ams_delta_modem_init);
- 
--static int __init late_init(void)
--{
--	int err;
--
--	err = modem_nreset_init();
--	if (err)
--		return err;
--
--	/*
--	 * Once the modem device is registered, the modem_nreset
--	 * regulator can be requested on behalf of that device.
--	 */
--	modem_priv.regulator = regulator_get(&ams_delta_modem_device.dev,
--			"RESET#");
--	if (IS_ERR(modem_priv.regulator)) {
--		err = PTR_ERR(modem_priv.regulator);
--		goto unregister;
--	}
--	return 0;
--
--unregister:
--	platform_device_unregister(&ams_delta_modem_device);
--	return err;
--}
--
--static void __init ams_delta_init_late(void)
--{
--	omap1_init_late();
--	late_init();
--}
--
- static void __init ams_delta_map_io(void)
- {
- 	omap1_map_io();
-@@ -877,7 +849,7 @@ MACHINE_START(AMS_DELTA, "Amstrad E3 (Delta)")
- 	.init_early	= omap1_init_early,
- 	.init_irq	= omap1_init_irq,
- 	.init_machine	= ams_delta_init,
--	.init_late	= ams_delta_init_late,
-+	.init_late	= omap1_init_late,
- 	.init_time	= omap1_timer_init,
- 	.restart	= omap1_restart,
- MACHINE_END
+
+> Thanks and Regards,
+> MD Danish Anwar
+> 
+> MD Danish Anwar (4):
+>   arm64: dts: ti: k3-am65-main: Add ICSSG IEP nodes
+>   arm64: dts: ti: k3-am654-base-board: add ICSSG2 Ethernet support
+>   arm64: dts: ti: k3-am654-idk: Add ICSSG Ethernet ports
+>   arm64: defconfig: Enable TI_ICSSG_PRUETH
+> 
+>  arch/arm64/boot/dts/ti/Makefile               |   4 +
+>  arch/arm64/boot/dts/ti/k3-am65-main.dtsi      |  36 +++
+>  ...se-board.dts => k3-am654-common-board.dts} |   0
+>  arch/arm64/boot/dts/ti/k3-am654-icssg2.dtso   | 145 +++++++++
+>  arch/arm64/boot/dts/ti/k3-am654-idk.dtso      | 296 ++++++++++++++++++
+>  arch/arm64/configs/defconfig                  |   1 +
+>  6 files changed, 482 insertions(+)
+>  rename arch/arm64/boot/dts/ti/{k3-am654-base-board.dts => k3-am654-common-board.dts} (100%)
+>  create mode 100644 arch/arm64/boot/dts/ti/k3-am654-icssg2.dtso
+>  create mode 100644 arch/arm64/boot/dts/ti/k3-am654-idk.dtso
+> 
+
 -- 
-2.42.0
-
+Regards
+Vignesh
