@@ -2,56 +2,56 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 358BF7C81A0
-	for <lists+linux-omap@lfdr.de>; Fri, 13 Oct 2023 11:12:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE5F87C82E1
+	for <lists+linux-omap@lfdr.de>; Fri, 13 Oct 2023 12:17:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230438AbjJMJMt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 13 Oct 2023 05:12:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52708 "EHLO
+        id S229726AbjJMKRm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 13 Oct 2023 06:17:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230448AbjJMJMr (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 13 Oct 2023 05:12:47 -0400
+        with ESMTP id S229923AbjJMKRl (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 13 Oct 2023 06:17:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAD091FCB;
-        Fri, 13 Oct 2023 02:10:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id EEDC8C433CB;
-        Fri, 13 Oct 2023 09:10:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A23EBB7;
+        Fri, 13 Oct 2023 03:17:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E6D5C433C8;
+        Fri, 13 Oct 2023 10:17:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697188231;
-        bh=x7mc+kQYSsekJK4vlCye+6KPOUJkFZpCl0x3sxdgaaw=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=AQtTwPCmajOmNNQPHtTr/zoA/M7SdwCrA5V9FAtAtdm7Ym6xjJjw7WotI6tBpMCpM
-         MyVA/dkPX2f9eKdrX0iFiy9ikBV2W2VDPlNKUFZ8eMx9ZmhJxej7QyBa8B18SbMGv5
-         qSC6fuBbLr1aYasdO92fsMbZJ7T8gtFwgCtgBkHb337NFEyvLcivFYDSTAVpENqPfi
-         rKTXLxmnF43ghcQfVDVluH/VqcQ6iZ9Xu+3MCZpKld29GOou5Hxl0hyL6TCagn+Jah
-         NifCVuHcJH3km9jk78Jz6A6enfGvNufLaykR9nKnZWYPzTjSmmuYLJhppVGPHklyhR
-         PIGjkkXd6p94A==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id D3F2AE1F669;
-        Fri, 13 Oct 2023 09:10:30 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] net: ethernet: Use device_get_match_data()
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <169718823086.32613.16429893280352977849.git-patchwork-notify@kernel.org>
-Date:   Fri, 13 Oct 2023 09:10:30 +0000
-References: <20231009172923.2457844-3-robh@kernel.org>
-In-Reply-To: <20231009172923.2457844-3-robh@kernel.org>
+        s=k20201202; t=1697192260;
+        bh=PduGR+0ma56Dbfse5BIk5TN6YS6QXizfqz1tDhApY7g=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Bkg3xrihknM18esv2S5ictlU/E6O8sPBZkndKX1ui9Rle2CkAXmzAny1XTM1yU//L
+         pqJ9Ic1RrhpUsjiQG58pYWejXDqCswK5hCUVtxv1jx5c+JKIMgR3hCPXIEyMTxR46A
+         iIhamaJQyvtcWKHaJ4RjXJtFFGJoeDOFDDmu/23UGcAPtWOdZQa4XV/4HGp/0XsrhG
+         0Eo8eqCfM6jObqs7s+1+LuVf0h5og7oUYNnOmN+vBoNZtZD0AdMPFFnrZLG48Gc7qC
+         qI58C/oHrOJQHK0qugR5YPr0HyPSytgwoNpjriIDkSAUmOkhnX2jFUf6JLYxNaHItp
+         3iZbS/e317RMg==
+Date:   Fri, 13 Oct 2023 11:17:34 +0100
+From:   Lee Jones <lee@kernel.org>
 To:     Rob Herring <robh@kernel.org>
-Cc:     joyce.ooi@intel.com, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, Shyam-sundar.S-k@amd.com,
-        iyappan@os.amperecomputing.com, keyur@os.amperecomputing.com,
-        quan@os.amperecomputing.com, wei.fang@nxp.com,
-        shenwei.wang@nxp.com, xiaoning.wang@nxp.com, linux-imx@nxp.com,
-        pantelis.antoniou@gmail.com, yisen.zhuang@huawei.com,
-        salil.mehta@huawei.com, alexandre.torgue@foss.st.com,
-        joabreu@synopsys.com, mcoquelin.stm32@gmail.com,
-        grygorii.strashko@ti.com, linux@armlinux.org.uk,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org
+Cc:     Konstantin Ryabitsev <konstantin@linuxfoundation.org>,
+        Chen-Yu Tsai <wens@csie.org>, Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Tony Lindgren <tony@atomide.com>, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCH] mfd: Use device_get_match_data()
+Message-ID: <20231013101734.GJ8314@google.com>
+References: <20231009211356.3242037-3-robh@kernel.org>
+ <CAGb2v66ZHD8mMMNVwp+sTYT6DAFDUrP8ydeTo7KW+uUtBRM3bQ@mail.gmail.com>
+ <20231012092618.GF8314@google.com>
+ <CAL_JsqK22vWx1VPnrwEh+N-6vy5a7npFSW-=gp1uabTPSG2PpA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAL_JsqK22vWx1VPnrwEh+N-6vy5a7npFSW-=gp1uabTPSG2PpA@mail.gmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -62,40 +62,46 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hello:
+On Thu, 12 Oct 2023, Rob Herring wrote:
 
-This patch was applied to netdev/net-next.git (main)
-by David S. Miller <davem@davemloft.net>:
-
-On Mon,  9 Oct 2023 12:28:58 -0500 you wrote:
-> Use preferred device_get_match_data() instead of of_match_device() to
-> get the driver match data. With this, adjust the includes to explicitly
-> include the correct headers.
+> On Thu, Oct 12, 2023 at 4:26 AM Lee Jones <lee@kernel.org> wrote:
+> >
+> > On Tue, 10 Oct 2023, Chen-Yu Tsai wrote:
+> >
+> > > On Tue, Oct 10, 2023 at 5:14 AM Rob Herring <robh@kernel.org> wrote:
+> > > >
+> > > > Use preferred device_get_match_data() instead of of_match_device() to
+> > > > get the driver match data. With this, adjust the includes to explicitly
+> > > > include the correct headers.
+> > > >
+> > > > Signed-off-by: Rob Herring <robh@kernel.org>
+> > > > ---
+> > > >  drivers/mfd/axp20x.c           | 22 +++-------------------
+> > >
+> > > I'd keep the error message, but otherwise for axp20x,
+> > >
+> > > Reviewed-by: Chen-Yu Tsai <wens@csie.org>
+> > >
+> > > >  drivers/mfd/hi6421-pmic-core.c |  9 +++------
+> > > >  drivers/mfd/mxs-lradc.c        |  9 ++-------
+> > > >  drivers/mfd/qcom-spmi-pmic.c   |  6 ++++--
+> > > >  drivers/mfd/qcom_rpm.c         |  8 ++++----
+> > > >  drivers/mfd/tps65910.c         | 11 ++---------
+> > > >  drivers/mfd/twl4030-power.c    |  9 +++------
+> > > >  drivers/mfd/twl6030-irq.c      | 10 +++++-----
+> > > >  8 files changed, 26 insertions(+), 58 deletions(-)
+> >
+> > FYI, this patch is not in my inbox.
 > 
-> Signed-off-by: Rob Herring <robh@kernel.org>
-> ---
->  drivers/net/ethernet/altera/altera_tse.h      |  2 +-
->  drivers/net/ethernet/altera/altera_tse_main.c | 13 ++----
->  drivers/net/ethernet/amd/xgbe/xgbe-platform.c | 42 +------------------
->  .../net/ethernet/apm/xgene/xgene_enet_main.c  | 15 +------
->  .../net/ethernet/apm/xgene/xgene_enet_main.h  |  3 +-
->  drivers/net/ethernet/freescale/fec_main.c     | 12 +++---
->  .../ethernet/freescale/fs_enet/fs_enet-main.c | 18 ++++----
->  .../net/ethernet/freescale/fs_enet/mii-fec.c  | 10 ++---
->  drivers/net/ethernet/freescale/fsl_pq_mdio.c  | 12 ++----
->  drivers/net/ethernet/hisilicon/hix5hd2_gmac.c | 11 ++---
->  .../stmicro/stmmac/dwmac-intel-plat.c         |  9 ++--
->  drivers/net/ethernet/ti/davinci_emac.c        | 12 ++----
->  drivers/net/ethernet/ti/icssg/icssg_prueth.c  | 13 ++----
->  13 files changed, 40 insertions(+), 132 deletions(-)
+> There seems to be some issue with kernel.org delivering my mails. You
+> are not the only one. I thought it was just ones with large numbers of
+> recipients, but seems to be something else. Konstantin has been
+> looking into it. Do you see any pattern of mails you do receive from
+> me? Sent via google vs. kernel.org?
 
-Here is the summary with links:
-  - [net-next] net: ethernet: Use device_get_match_data()
-    https://git.kernel.org/netdev/net-next/c/b0377116decd
+How would I know which emails I haven't received from you? :)
 
-You are awesome, thank you!
+This is the only one that I'm aware of.
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Lee Jones [李琼斯]
