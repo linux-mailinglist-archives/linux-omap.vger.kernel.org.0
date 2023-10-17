@@ -2,159 +2,323 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 076F97CB511
-	for <lists+linux-omap@lfdr.de>; Mon, 16 Oct 2023 23:09:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44E837CCE24
+	for <lists+linux-omap@lfdr.de>; Tue, 17 Oct 2023 22:34:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233546AbjJPVJk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 16 Oct 2023 17:09:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52736 "EHLO
+        id S234987AbjJQUez (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 17 Oct 2023 16:34:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233463AbjJPVJk (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 16 Oct 2023 17:09:40 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78C29D9;
-        Mon, 16 Oct 2023 14:09:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
- t=1697490548; x=1698095348; i=deller@gmx.de;
- bh=0l5HRln2aLrQCHUgzKay/9XIY0Mr4awYAadqROs/OAs=;
- h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
- b=N5BdS+KWNPUf9/OfdjXUFTlr5rSCv5vppRovuPYZt+pf5CL9NNHFWru4ZeD6x1JuLw694COb1at
- JTLa3T5h84yqBSABtTXdSSToXnYC9UyHik1skJ1ShcQY8Ohr+xzGoqWkERNDJihHxdVFN6dLvyeJI
- khKZoa/VEIfQHBgnOWKob+cKWEeNEuyztdvtSzMU2YwYkMIPRiv88DARhMW+W/mwWHMnN378ngwI/
- /W+zY3rdxp5Y8iuTGaNaWhn/xgxFOk0NAn0vPziID1ercUVQ4CQUllrXmKDblV60pSq/9YoXil4+l
- UbfSVQznT1pNnP0ynF9jbUJpx+VExszunZqA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.153.197]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1N3siA-1raOH61yrY-00zpwm; Mon, 16
- Oct 2023 23:09:08 +0200
-Message-ID: <e1c6a19b-7587-4b99-b8d5-5572d946f185@gmx.de>
-Date:   Mon, 16 Oct 2023 23:09:05 +0200
+        with ESMTP id S232154AbjJQUez (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 17 Oct 2023 16:34:55 -0400
+Received: from mail-oi1-f175.google.com (mail-oi1-f175.google.com [209.85.167.175])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5319AF9;
+        Tue, 17 Oct 2023 13:34:52 -0700 (PDT)
+Received: by mail-oi1-f175.google.com with SMTP id 5614622812f47-3af5fcb5e37so4002054b6e.0;
+        Tue, 17 Oct 2023 13:34:52 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697574891; x=1698179691;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3R82hRHMj09jqEYX2MmtO4M63Ms0/gcZZch5hMW3VLM=;
+        b=uSRtB23WzKpYOlbIg8oe6Zn7WkXomUhXh4XSGOH+v/eD5lgXCF0dwkyqcPmLaB3m89
+         +TgcExOJr9xRnDM+7/Msli07u1RkIlWsFWUWsLGEmvPwOspuT2Be1GZUNizNMjuyobex
+         B5wgs5+SUvR8/wQ3UlL62pu8xt+DlhGLGhoGDD41206N9/ysw8kyHcJ/vSFLhuyFuaNc
+         0y/VLaXeC4Zp0+uuTIuIjjpZH9mIiNp9Kx0HRItodkSNo1H6PYjIivNg36s+vHVfmq8l
+         dmP6W3A/6XUXFbCIuTPYVuHVPa68KLkACp5yqKzcw/c1QtxHf0lils0j5Zb45oibe1ba
+         OACg==
+X-Gm-Message-State: AOJu0Yz53HPonSp7Z0bTNHuHpLUGD1Fwt7/XrARLZpuY/6/ht3nNmIqd
+        wsk2m53Ju1UmWdSZ5lnNsQ==
+X-Google-Smtp-Source: AGHT+IHvwM26Vh++rDXJj0pSEkNFDqoqQWGiOXc5R2+D/QTr5DSZzaBCEKVID382mnAGBicHyqbfZw==
+X-Received: by 2002:a05:6830:2647:b0:6bc:a68b:ca44 with SMTP id f7-20020a056830264700b006bca68bca44mr3466974otu.6.1697574891187;
+        Tue, 17 Oct 2023 13:34:51 -0700 (PDT)
+Received: from herring.priv (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id g20-20020a4adc94000000b0057b38a94f38sm373221oou.12.2023.10.17.13.34.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Oct 2023 13:34:50 -0700 (PDT)
+Received: (nullmailer pid 2699513 invoked by uid 1000);
+        Tue, 17 Oct 2023 20:34:49 -0000
+From:   Rob Herring <robh@kernel.org>
+To:     Charles Keepax <ckeepax@opensource.cirrus.com>,
+        Richard Fitzgerald <rf@opensource.cirrus.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>
+Cc:     patches@opensource.cirrus.com, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org
+Subject: [RESEND PATCH] regulator: Use device_get_match_data()
+Date:   Tue, 17 Oct 2023 15:34:41 -0500
+Message-ID: <20231017203442.2699322-1-robh@kernel.org>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] fbdev: omapfb: fix some error codes
-Content-Language: en-US
-To:     Dan Carpenter <dan.carpenter@linaro.org>
-Cc:     Thomas Zimmermann <tzimmermann@suse.de>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-        Yang Yang <yang.yang29@zte.com>,
-        Xu Panda <xu.panda@zte.com.cn>,
-        Lucy Mielke <mielkesteven@icloud.com>,
-        linux-fbdev@vger.kernel.org, linux-omap@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, kernel-janitors@vger.kernel.org
-References: <843b063c-ee4a-4e17-add6-75e2cc82c2f4@moroto.mountain>
-From:   Helge Deller <deller@gmx.de>
-Autocrypt: addr=deller@gmx.de; keydata=
- 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
-In-Reply-To: <843b063c-ee4a-4e17-add6-75e2cc82c2f4@moroto.mountain>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:FOyYUK4b2kQYxx/cAdXEvw+vAIrXHbwCICGIvD6Kz5Obv8fpWfo
- +yxSC1QHy9oSBBS+anxDLcgMYbDMpuj/kYNgRbd8u4EUTiQZExSABwuTZ6wpNJYTaAvH4w6
- GGzs305XXJBHWE3UgmezXl4gIZMEZ5HLU7AhntwUFtq5K6DpCiLi7tQr0NsAvpjdyEtnn2h
- ANIv4o7mbdykPwdII9uzw==
-UI-OutboundReport: notjunk:1;M01:P0:i3G6yuKsgbo=;HyJOwbkzpDfgVsMPYidrsW2Dbgm
- kXOBK3eWbsiNnbYRo1a9giCySikv94pxQPxGLaIEkO5kHowmkfxNzf2I8CTaY6KEm5tcrYsQ/
- Nsn/31TdVzmDfcENep2oouVDmdEwSy84IFV46FlD/V9p2Dy36l8o+XL2aCasQ8j+/J1eb9cPg
- a8SaCHvv6mn83gYgss9U5O99oWMButQKjkyiWsTPa+IoMuxkpaNQ6XYmGaKjsRnEAqghZpoK5
- zouLeu7r0iFkwrKu043Clb+4xpAbvrR/wzrp4klYxqr5cuBg5UxbpepzkE6jqRAlSn89dsOr+
- elGLbOe7eamMh7xq/AkFb0HGDX4x0GgP+LKORwh3sOErVbuqDW8U+jXTAX6FlvfqhfOVM+xfh
- ifl1xL9c2/DQg5WW3Dptf1VKijyP5yOqMMQwJibDOfr5lL63gOff+U7I7TDLZcgziKlFfDOpp
- 7JmnmWYe1NYF0pFFmLjSlZ1vkhzl3tyoEVNjlwN24Bv9SLlS5MuXYPCFGYf9GZRdmIAQDsMCo
- wsX08Pw97zI45yA5V/w2gGmyALj2aoXDa31R1KotmNeWqOSCnQQuqxwIES3amgYzR8krjlutr
- 64/CsF54D9iNMP6ZW/4n96u0O0Pu99CTl/EHrIW0CKE6o0JkqqIeSs8KfVSYKsiyzW2XqwEjq
- elpWv5O5oV0iQdSDW5+CdiB0ReQFP6GFcivKq+w7BeFaZ5mDsQ2cersNIVPtCe47J0h30AhKs
- XqWq8HbMACJTlJINQjKA5hYP9rXJw1zn8emqne9od2b9QTNJGxU0tL0fKR6J62cJl2M2oB5KF
- 8m9eSV87Gk8LQGC4yRqIyUwLnwGbNVMa/prsO1IwsRFYobRSGHPzGXLTaqAjWVUHuxIoOQvRR
- TsWoyfWa7D4V4syb7xiT9VDV5dV1eb/cvDh3Jx/aeshpNsHTKuQKKSw6zND4rDbjFGvx4Blya
- xr7TDCJo9w8AjoRMvTvObtMroI0=
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 10/16/23 13:19, Dan Carpenter wrote:
-> Return negative -ENXIO instead of positive ENXIO.
->
-> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Use preferred device_get_match_data() instead of of_match_device() to
+get the driver match data. With this, adjust the includes to explicitly
+include the correct headers.
 
-applied.
+Signed-off-by: Rob Herring <robh@kernel.org>
+---
+ drivers/regulator/lochnagar-regulator.c   |  8 ++------
+ drivers/regulator/palmas-regulator.c      |  8 ++------
+ drivers/regulator/qcom-labibb-regulator.c |  7 +++----
+ drivers/regulator/qcom_rpm-regulator.c    |  7 +++----
+ drivers/regulator/qcom_spmi-regulator.c   |  7 +++----
+ drivers/regulator/stm32-booster.c         |  5 ++---
+ drivers/regulator/ti-abb-regulator.c      | 22 +++++++---------------
+ 7 files changed, 22 insertions(+), 42 deletions(-)
 
-Thanks!
-Helge
-
-> ---
-> No fixes tag because the caller doesn't check for errors.
->
->   drivers/video/fbdev/omap/omapfb_main.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/video/fbdev/omap/omapfb_main.c b/drivers/video/fbde=
-v/omap/omapfb_main.c
-> index f28cb90947a3..42c96f1cfc93 100644
-> --- a/drivers/video/fbdev/omap/omapfb_main.c
-> +++ b/drivers/video/fbdev/omap/omapfb_main.c
-> @@ -1645,13 +1645,13 @@ static int omapfb_do_probe(struct platform_devic=
-e *pdev,
->   	}
->   	fbdev->int_irq =3D platform_get_irq(pdev, 0);
->   	if (fbdev->int_irq < 0) {
-> -		r =3D ENXIO;
-> +		r =3D -ENXIO;
->   		goto cleanup;
->   	}
->
->   	fbdev->ext_irq =3D platform_get_irq(pdev, 1);
->   	if (fbdev->ext_irq < 0) {
-> -		r =3D ENXIO;
-> +		r =3D -ENXIO;
->   		goto cleanup;
->   	}
->
+diff --git a/drivers/regulator/lochnagar-regulator.c b/drivers/regulator/lochnagar-regulator.c
+index 11b358efbc92..e53911c80719 100644
+--- a/drivers/regulator/lochnagar-regulator.c
++++ b/drivers/regulator/lochnagar-regulator.c
+@@ -13,7 +13,6 @@
+ #include <linux/module.h>
+ #include <linux/mutex.h>
+ #include <linux/of.h>
+-#include <linux/of_device.h>
+ #include <linux/platform_device.h>
+ #include <linux/regmap.h>
+ #include <linux/regulator/driver.h>
+@@ -243,7 +242,6 @@ static int lochnagar_regulator_probe(struct platform_device *pdev)
+ 	struct device *dev = &pdev->dev;
+ 	struct lochnagar *lochnagar = dev_get_drvdata(dev->parent);
+ 	struct regulator_config config = { };
+-	const struct of_device_id *of_id;
+ 	const struct regulator_desc *desc;
+ 	struct regulator_dev *rdev;
+ 	int ret;
+@@ -252,12 +250,10 @@ static int lochnagar_regulator_probe(struct platform_device *pdev)
+ 	config.regmap = lochnagar->regmap;
+ 	config.driver_data = lochnagar;
+ 
+-	of_id = of_match_device(lochnagar_of_match, dev);
+-	if (!of_id)
++	desc = device_get_match_data(dev);
++	if (!desc)
+ 		return -EINVAL;
+ 
+-	desc = of_id->data;
+-
+ 	rdev = devm_regulator_register(dev, desc, &config);
+ 	if (IS_ERR(rdev)) {
+ 		ret = PTR_ERR(rdev);
+diff --git a/drivers/regulator/palmas-regulator.c b/drivers/regulator/palmas-regulator.c
+index 076966366b60..e0dc033aae0f 100644
+--- a/drivers/regulator/palmas-regulator.c
++++ b/drivers/regulator/palmas-regulator.c
+@@ -19,7 +19,6 @@
+ #include <linux/regmap.h>
+ #include <linux/mfd/palmas.h>
+ #include <linux/of.h>
+-#include <linux/of_platform.h>
+ #include <linux/regulator/of_regulator.h>
+ 
+ static const struct linear_range smps_low_ranges[] = {
+@@ -1601,16 +1600,13 @@ static int palmas_regulators_probe(struct platform_device *pdev)
+ 	struct regulator_config config = { };
+ 	struct palmas_pmic *pmic;
+ 	const char *pdev_name;
+-	const struct of_device_id *match;
+ 	int ret = 0;
+ 	unsigned int reg;
+ 
+-	match = of_match_device(of_match_ptr(of_palmas_match_tbl), &pdev->dev);
+-
+-	if (!match)
++	driver_data = (struct palmas_pmic_driver_data *)device_get_match_data(&pdev->dev);
++	if (!driver_data)
+ 		return -ENODATA;
+ 
+-	driver_data = (struct palmas_pmic_driver_data *)match->data;
+ 	pdata = devm_kzalloc(&pdev->dev, sizeof(*pdata), GFP_KERNEL);
+ 	if (!pdata)
+ 		return -ENOMEM;
+diff --git a/drivers/regulator/qcom-labibb-regulator.c b/drivers/regulator/qcom-labibb-regulator.c
+index a8698ca61143..ba3f9391565f 100644
+--- a/drivers/regulator/qcom-labibb-regulator.c
++++ b/drivers/regulator/qcom-labibb-regulator.c
+@@ -764,7 +764,6 @@ static int qcom_labibb_regulator_probe(struct platform_device *pdev)
+ 	struct device *dev = &pdev->dev;
+ 	struct regulator_config cfg = {};
+ 	struct device_node *reg_node;
+-	const struct of_device_id *match;
+ 	const struct labibb_regulator_data *reg_data;
+ 	struct regmap *reg_regmap;
+ 	unsigned int type;
+@@ -776,11 +775,11 @@ static int qcom_labibb_regulator_probe(struct platform_device *pdev)
+ 		return -ENODEV;
+ 	}
+ 
+-	match = of_match_device(qcom_labibb_match, &pdev->dev);
+-	if (!match)
++	reg_data = device_get_match_data(&pdev->dev);
++	if (!reg_data)
+ 		return -ENODEV;
+ 
+-	for (reg_data = match->data; reg_data->name; reg_data++) {
++	for (; reg_data->name; reg_data++) {
+ 		char *sc_irq_name;
+ 		int irq = 0;
+ 
+diff --git a/drivers/regulator/qcom_rpm-regulator.c b/drivers/regulator/qcom_rpm-regulator.c
+index 9366488f0383..2d5fec1457d1 100644
+--- a/drivers/regulator/qcom_rpm-regulator.c
++++ b/drivers/regulator/qcom_rpm-regulator.c
+@@ -937,7 +937,6 @@ MODULE_DEVICE_TABLE(of, rpm_of_match);
+ static int rpm_reg_probe(struct platform_device *pdev)
+ {
+ 	const struct rpm_regulator_data *reg;
+-	const struct of_device_id *match;
+ 	struct regulator_config config = { };
+ 	struct regulator_dev *rdev;
+ 	struct qcom_rpm_reg *vreg;
+@@ -949,13 +948,13 @@ static int rpm_reg_probe(struct platform_device *pdev)
+ 		return -ENODEV;
+ 	}
+ 
+-	match = of_match_device(rpm_of_match, &pdev->dev);
+-	if (!match) {
++	reg = device_get_match_data(&pdev->dev);
++	if (!reg) {
+ 		dev_err(&pdev->dev, "failed to match device\n");
+ 		return -ENODEV;
+ 	}
+ 
+-	for (reg = match->data; reg->name; reg++) {
++	for (; reg->name; reg++) {
+ 		vreg = devm_kmemdup(&pdev->dev, reg->template, sizeof(*vreg), GFP_KERNEL);
+ 		if (!vreg)
+ 			return -ENOMEM;
+diff --git a/drivers/regulator/qcom_spmi-regulator.c b/drivers/regulator/qcom_spmi-regulator.c
+index fe32fd53f683..94f9092b29ef 100644
+--- a/drivers/regulator/qcom_spmi-regulator.c
++++ b/drivers/regulator/qcom_spmi-regulator.c
+@@ -2468,7 +2468,6 @@ static int qcom_spmi_regulator_probe(struct platform_device *pdev)
+ {
+ 	const struct spmi_regulator_data *reg;
+ 	const struct spmi_voltage_range *range;
+-	const struct of_device_id *match;
+ 	struct regulator_config config = { };
+ 	struct regulator_dev *rdev;
+ 	struct spmi_regulator *vreg;
+@@ -2491,8 +2490,8 @@ static int qcom_spmi_regulator_probe(struct platform_device *pdev)
+ 	if (!regmap)
+ 		return -ENODEV;
+ 
+-	match = of_match_device(qcom_spmi_regulator_match, &pdev->dev);
+-	if (!match)
++	reg = device_get_match_data(&pdev->dev);
++	if (!reg)
+ 		return -ENODEV;
+ 
+ 	if (of_find_property(node, "qcom,saw-reg", &lenp)) {
+@@ -2503,7 +2502,7 @@ static int qcom_spmi_regulator_probe(struct platform_device *pdev)
+ 			dev_err(dev, "ERROR reading SAW regmap\n");
+ 	}
+ 
+-	for (reg = match->data; reg->name; reg++) {
++	for (; reg->name; reg++) {
+ 
+ 		if (saw_regmap) {
+ 			reg_node = of_get_child_by_name(node, reg->name);
+diff --git a/drivers/regulator/stm32-booster.c b/drivers/regulator/stm32-booster.c
+index b64dc5a497fa..2cdc7f0474f8 100644
+--- a/drivers/regulator/stm32-booster.c
++++ b/drivers/regulator/stm32-booster.c
+@@ -4,7 +4,7 @@
+ 
+ #include <linux/mfd/syscon.h>
+ #include <linux/module.h>
+-#include <linux/of_device.h>
++#include <linux/of.h>
+ #include <linux/platform_device.h>
+ #include <linux/regmap.h>
+ #include <linux/regulator/driver.h>
+@@ -83,8 +83,7 @@ static int stm32_booster_probe(struct platform_device *pdev)
+ 	if (IS_ERR(regmap))
+ 		return PTR_ERR(regmap);
+ 
+-	desc = (const struct regulator_desc *)
+-		of_match_device(dev->driver->of_match_table, dev)->data;
++	desc = device_get_match_data(dev);
+ 
+ 	config.regmap = regmap;
+ 	config.dev = dev;
+diff --git a/drivers/regulator/ti-abb-regulator.c b/drivers/regulator/ti-abb-regulator.c
+index 86d2d80b4b41..f48214e2c3b4 100644
+--- a/drivers/regulator/ti-abb-regulator.c
++++ b/drivers/regulator/ti-abb-regulator.c
+@@ -14,7 +14,6 @@
+ #include <linux/err.h>
+ #include <linux/io.h>
+ #include <linux/module.h>
+-#include <linux/of_device.h>
+ #include <linux/of.h>
+ #include <linux/platform_device.h>
+ #include <linux/regulator/driver.h>
+@@ -688,7 +687,6 @@ MODULE_DEVICE_TABLE(of, ti_abb_of_match);
+ static int ti_abb_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
+-	const struct of_device_id *match;
+ 	struct resource *res;
+ 	struct ti_abb *abb;
+ 	struct regulator_init_data *initdata = NULL;
+@@ -699,21 +697,15 @@ static int ti_abb_probe(struct platform_device *pdev)
+ 	char *pname;
+ 	int ret = 0;
+ 
+-	match = of_match_device(ti_abb_of_match, dev);
+-	if (!match) {
+-		/* We do not expect this to happen */
+-		dev_err(dev, "%s: Unable to match device\n", __func__);
+-		return -ENODEV;
+-	}
+-	if (!match->data) {
+-		dev_err(dev, "%s: Bad data in match\n", __func__);
+-		return -EINVAL;
+-	}
+-
+ 	abb = devm_kzalloc(dev, sizeof(struct ti_abb), GFP_KERNEL);
+ 	if (!abb)
+ 		return -ENOMEM;
+-	abb->regs = match->data;
++
++	abb->regs = device_get_match_data(dev);
++	if (!abb->regs) {
++		dev_err(dev, "%s: Bad data in match\n", __func__);
++		return -EINVAL;
++	}
+ 
+ 	/* Map ABB resources */
+ 	if (abb->regs->setup_off || abb->regs->control_off) {
+@@ -866,7 +858,7 @@ static struct platform_driver ti_abb_driver = {
+ 	.driver = {
+ 		   .name = "ti_abb",
+ 		   .probe_type = PROBE_PREFER_ASYNCHRONOUS,
+-		   .of_match_table = of_match_ptr(ti_abb_of_match),
++		   .of_match_table = ti_abb_of_match,
+ 		   },
+ };
+ module_platform_driver(ti_abb_driver);
+-- 
+2.42.0
 
