@@ -2,68 +2,67 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 44E837CCE24
-	for <lists+linux-omap@lfdr.de>; Tue, 17 Oct 2023 22:34:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DF5F7CCE2B
+	for <lists+linux-omap@lfdr.de>; Tue, 17 Oct 2023 22:36:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234987AbjJQUez (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 17 Oct 2023 16:34:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57908 "EHLO
+        id S235016AbjJQUgX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 17 Oct 2023 16:36:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51558 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232154AbjJQUez (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 17 Oct 2023 16:34:55 -0400
-Received: from mail-oi1-f175.google.com (mail-oi1-f175.google.com [209.85.167.175])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5319AF9;
-        Tue, 17 Oct 2023 13:34:52 -0700 (PDT)
-Received: by mail-oi1-f175.google.com with SMTP id 5614622812f47-3af5fcb5e37so4002054b6e.0;
-        Tue, 17 Oct 2023 13:34:52 -0700 (PDT)
+        with ESMTP id S235053AbjJQUgW (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 17 Oct 2023 16:36:22 -0400
+Received: from mail-oa1-f51.google.com (mail-oa1-f51.google.com [209.85.160.51])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86988100;
+        Tue, 17 Oct 2023 13:36:19 -0700 (PDT)
+Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-1e9ac336589so3897542fac.1;
+        Tue, 17 Oct 2023 13:36:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697574891; x=1698179691;
+        d=1e100.net; s=20230601; t=1697574979; x=1698179779;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=3R82hRHMj09jqEYX2MmtO4M63Ms0/gcZZch5hMW3VLM=;
-        b=uSRtB23WzKpYOlbIg8oe6Zn7WkXomUhXh4XSGOH+v/eD5lgXCF0dwkyqcPmLaB3m89
-         +TgcExOJr9xRnDM+7/Msli07u1RkIlWsFWUWsLGEmvPwOspuT2Be1GZUNizNMjuyobex
-         B5wgs5+SUvR8/wQ3UlL62pu8xt+DlhGLGhoGDD41206N9/ysw8kyHcJ/vSFLhuyFuaNc
-         0y/VLaXeC4Zp0+uuTIuIjjpZH9mIiNp9Kx0HRItodkSNo1H6PYjIivNg36s+vHVfmq8l
-         dmP6W3A/6XUXFbCIuTPYVuHVPa68KLkACp5yqKzcw/c1QtxHf0lils0j5Zb45oibe1ba
-         OACg==
-X-Gm-Message-State: AOJu0Yz53HPonSp7Z0bTNHuHpLUGD1Fwt7/XrARLZpuY/6/ht3nNmIqd
-        wsk2m53Ju1UmWdSZ5lnNsQ==
-X-Google-Smtp-Source: AGHT+IHvwM26Vh++rDXJj0pSEkNFDqoqQWGiOXc5R2+D/QTr5DSZzaBCEKVID382mnAGBicHyqbfZw==
-X-Received: by 2002:a05:6830:2647:b0:6bc:a68b:ca44 with SMTP id f7-20020a056830264700b006bca68bca44mr3466974otu.6.1697574891187;
-        Tue, 17 Oct 2023 13:34:51 -0700 (PDT)
+        bh=sV5mP9OortRr8aaeK+Ogim1bmY9kMxVk6CPREYlZMTg=;
+        b=ks2oTTyBnx84aUSmB9ojm2tGl6Y3PLBNoljUoA4wYiM4/kBGF/hRzdPdmwhIaPOxPB
+         oCMf//NzsnOQMBTetc24sSqNxZXnNcAk+bRfOF0jJDE/InSgfPExU81tf3T+gzS9A+Pa
+         MeDdTPvZyR9kPBJa6NYon6wadADuHSVK3pjQeXSds/TzzO/jiGJamZZxhZ5iwJKxv7eU
+         OKxIOOm2grJ4LPq35WyI0CF+qqCHJ7nHNLUsZprL1p8kSKikyM7WIvTU9dv4gOFGJY1K
+         gPEdF3aIRqS8bY0ux8EFxxSYULguvyOkxxjllYFjoNVSywFs4jBoHKnXOuqdX1ocfm3R
+         p4bg==
+X-Gm-Message-State: AOJu0YzTct6C18QmpDjqbNhFT4inEkQbTtarUkK7xtH0pw28bRWh7qOp
+        Q240IF13HHoHnkVbVUklFQ==
+X-Google-Smtp-Source: AGHT+IEhPa8MJITamHj3XBNl3Vy22ik+ocHe73evJ5nqD8Bpdq2oaefPEUgY5IBadXZoDlpKV9zikg==
+X-Received: by 2002:a05:6870:212:b0:1e9:a770:61eb with SMTP id j18-20020a056870021200b001e9a77061ebmr4043145oad.29.1697574978699;
+        Tue, 17 Oct 2023 13:36:18 -0700 (PDT)
 Received: from herring.priv (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id g20-20020a4adc94000000b0057b38a94f38sm373221oou.12.2023.10.17.13.34.49
+        by smtp.gmail.com with ESMTPSA id i7-20020a056870344700b001e153c5802fsm404839oah.43.2023.10.17.13.36.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Oct 2023 13:34:50 -0700 (PDT)
-Received: (nullmailer pid 2699513 invoked by uid 1000);
-        Tue, 17 Oct 2023 20:34:49 -0000
+        Tue, 17 Oct 2023 13:36:18 -0700 (PDT)
+Received: (nullmailer pid 2701223 invoked by uid 1000);
+        Tue, 17 Oct 2023 20:36:17 -0000
 From:   Rob Herring <robh@kernel.org>
-To:     Charles Keepax <ckeepax@opensource.cirrus.com>,
-        Richard Fitzgerald <rf@opensource.cirrus.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Tony Lindgren <tony@atomide.com>,
+To:     Lee Jones <lee@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>
-Cc:     patches@opensource.cirrus.com, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org
-Subject: [RESEND PATCH] regulator: Use device_get_match_data()
-Date:   Tue, 17 Oct 2023 15:34:41 -0500
-Message-ID: <20231017203442.2699322-1-robh@kernel.org>
+        Tony Lindgren <tony@atomide.com>
+Cc:     linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: [RESEND PATCH] mfd: Use device_get_match_data()
+Date:   Tue, 17 Oct 2023 15:36:10 -0500
+Message-ID: <20231017203612.2701060-1-robh@kernel.org>
 X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,
         FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -74,251 +73,296 @@ Use preferred device_get_match_data() instead of of_match_device() to
 get the driver match data. With this, adjust the includes to explicitly
 include the correct headers.
 
+Reviewed-by: Chen-Yu Tsai <wens@csie.org>
 Signed-off-by: Rob Herring <robh@kernel.org>
 ---
- drivers/regulator/lochnagar-regulator.c   |  8 ++------
- drivers/regulator/palmas-regulator.c      |  8 ++------
- drivers/regulator/qcom-labibb-regulator.c |  7 +++----
- drivers/regulator/qcom_rpm-regulator.c    |  7 +++----
- drivers/regulator/qcom_spmi-regulator.c   |  7 +++----
- drivers/regulator/stm32-booster.c         |  5 ++---
- drivers/regulator/ti-abb-regulator.c      | 22 +++++++---------------
- 7 files changed, 22 insertions(+), 42 deletions(-)
+ drivers/mfd/axp20x.c           | 22 +++-------------------
+ drivers/mfd/hi6421-pmic-core.c |  9 +++------
+ drivers/mfd/mxs-lradc.c        |  9 ++-------
+ drivers/mfd/qcom-spmi-pmic.c   |  6 ++++--
+ drivers/mfd/qcom_rpm.c         |  8 ++++----
+ drivers/mfd/tps65910.c         | 11 ++---------
+ drivers/mfd/twl4030-power.c    |  9 +++------
+ drivers/mfd/twl6030-irq.c      | 10 +++++-----
+ 8 files changed, 26 insertions(+), 58 deletions(-)
 
-diff --git a/drivers/regulator/lochnagar-regulator.c b/drivers/regulator/lochnagar-regulator.c
-index 11b358efbc92..e53911c80719 100644
---- a/drivers/regulator/lochnagar-regulator.c
-+++ b/drivers/regulator/lochnagar-regulator.c
-@@ -13,7 +13,6 @@
+diff --git a/drivers/mfd/axp20x.c b/drivers/mfd/axp20x.c
+index d93189b0230d..deaa969bab4e 100644
+--- a/drivers/mfd/axp20x.c
++++ b/drivers/mfd/axp20x.c
+@@ -22,7 +22,8 @@
+ #include <linux/mfd/axp20x.h>
+ #include <linux/mfd/core.h>
  #include <linux/module.h>
- #include <linux/mutex.h>
- #include <linux/of.h>
 -#include <linux/of_device.h>
- #include <linux/platform_device.h>
++#include <linux/of.h>
++#include <linux/property.h>
+ #include <linux/reboot.h>
  #include <linux/regmap.h>
- #include <linux/regulator/driver.h>
-@@ -243,7 +242,6 @@ static int lochnagar_regulator_probe(struct platform_device *pdev)
- 	struct device *dev = &pdev->dev;
- 	struct lochnagar *lochnagar = dev_get_drvdata(dev->parent);
- 	struct regulator_config config = { };
+ #include <linux/regulator/consumer.h>
+@@ -1131,27 +1132,10 @@ static int axp20x_power_off(struct sys_off_data *data)
+ int axp20x_match_device(struct axp20x_dev *axp20x)
+ {
+ 	struct device *dev = axp20x->dev;
+-	const struct acpi_device_id *acpi_id;
 -	const struct of_device_id *of_id;
- 	const struct regulator_desc *desc;
- 	struct regulator_dev *rdev;
- 	int ret;
-@@ -252,12 +250,10 @@ static int lochnagar_regulator_probe(struct platform_device *pdev)
- 	config.regmap = lochnagar->regmap;
- 	config.driver_data = lochnagar;
+ 	const struct mfd_cell *cells_no_irq = NULL;
+ 	int nr_cells_no_irq = 0;
  
--	of_id = of_match_device(lochnagar_of_match, dev);
--	if (!of_id)
-+	desc = device_get_match_data(dev);
-+	if (!desc)
- 		return -EINVAL;
- 
--	desc = of_id->data;
+-	if (dev->of_node) {
+-		of_id = of_match_device(dev->driver->of_match_table, dev);
+-		if (!of_id) {
+-			dev_err(dev, "Unable to match OF ID\n");
+-			return -ENODEV;
+-		}
+-		axp20x->variant = (long)of_id->data;
+-	} else {
+-		acpi_id = acpi_match_device(dev->driver->acpi_match_table, dev);
+-		if (!acpi_id || !acpi_id->driver_data) {
+-			dev_err(dev, "Unable to match ACPI ID and data\n");
+-			return -ENODEV;
+-		}
+-		axp20x->variant = (long)acpi_id->driver_data;
+-	}
 -
- 	rdev = devm_regulator_register(dev, desc, &config);
- 	if (IS_ERR(rdev)) {
- 		ret = PTR_ERR(rdev);
-diff --git a/drivers/regulator/palmas-regulator.c b/drivers/regulator/palmas-regulator.c
-index 076966366b60..e0dc033aae0f 100644
---- a/drivers/regulator/palmas-regulator.c
-+++ b/drivers/regulator/palmas-regulator.c
-@@ -19,7 +19,6 @@
- #include <linux/regmap.h>
- #include <linux/mfd/palmas.h>
- #include <linux/of.h>
--#include <linux/of_platform.h>
- #include <linux/regulator/of_regulator.h>
- 
- static const struct linear_range smps_low_ranges[] = {
-@@ -1601,16 +1600,13 @@ static int palmas_regulators_probe(struct platform_device *pdev)
- 	struct regulator_config config = { };
- 	struct palmas_pmic *pmic;
- 	const char *pdev_name;
--	const struct of_device_id *match;
- 	int ret = 0;
- 	unsigned int reg;
- 
--	match = of_match_device(of_match_ptr(of_palmas_match_tbl), &pdev->dev);
--
--	if (!match)
-+	driver_data = (struct palmas_pmic_driver_data *)device_get_match_data(&pdev->dev);
-+	if (!driver_data)
- 		return -ENODATA;
- 
--	driver_data = (struct palmas_pmic_driver_data *)match->data;
- 	pdata = devm_kzalloc(&pdev->dev, sizeof(*pdata), GFP_KERNEL);
- 	if (!pdata)
- 		return -ENOMEM;
-diff --git a/drivers/regulator/qcom-labibb-regulator.c b/drivers/regulator/qcom-labibb-regulator.c
-index a8698ca61143..ba3f9391565f 100644
---- a/drivers/regulator/qcom-labibb-regulator.c
-+++ b/drivers/regulator/qcom-labibb-regulator.c
-@@ -764,7 +764,6 @@ static int qcom_labibb_regulator_probe(struct platform_device *pdev)
- 	struct device *dev = &pdev->dev;
- 	struct regulator_config cfg = {};
- 	struct device_node *reg_node;
--	const struct of_device_id *match;
- 	const struct labibb_regulator_data *reg_data;
- 	struct regmap *reg_regmap;
- 	unsigned int type;
-@@ -776,11 +775,11 @@ static int qcom_labibb_regulator_probe(struct platform_device *pdev)
- 		return -ENODEV;
- 	}
- 
--	match = of_match_device(qcom_labibb_match, &pdev->dev);
--	if (!match)
-+	reg_data = device_get_match_data(&pdev->dev);
-+	if (!reg_data)
- 		return -ENODEV;
- 
--	for (reg_data = match->data; reg_data->name; reg_data++) {
-+	for (; reg_data->name; reg_data++) {
- 		char *sc_irq_name;
- 		int irq = 0;
- 
-diff --git a/drivers/regulator/qcom_rpm-regulator.c b/drivers/regulator/qcom_rpm-regulator.c
-index 9366488f0383..2d5fec1457d1 100644
---- a/drivers/regulator/qcom_rpm-regulator.c
-+++ b/drivers/regulator/qcom_rpm-regulator.c
-@@ -937,7 +937,6 @@ MODULE_DEVICE_TABLE(of, rpm_of_match);
- static int rpm_reg_probe(struct platform_device *pdev)
- {
- 	const struct rpm_regulator_data *reg;
--	const struct of_device_id *match;
- 	struct regulator_config config = { };
- 	struct regulator_dev *rdev;
- 	struct qcom_rpm_reg *vreg;
-@@ -949,13 +948,13 @@ static int rpm_reg_probe(struct platform_device *pdev)
- 		return -ENODEV;
- 	}
- 
--	match = of_match_device(rpm_of_match, &pdev->dev);
--	if (!match) {
-+	reg = device_get_match_data(&pdev->dev);
-+	if (!reg) {
- 		dev_err(&pdev->dev, "failed to match device\n");
- 		return -ENODEV;
- 	}
- 
--	for (reg = match->data; reg->name; reg++) {
-+	for (; reg->name; reg++) {
- 		vreg = devm_kmemdup(&pdev->dev, reg->template, sizeof(*vreg), GFP_KERNEL);
- 		if (!vreg)
- 			return -ENOMEM;
-diff --git a/drivers/regulator/qcom_spmi-regulator.c b/drivers/regulator/qcom_spmi-regulator.c
-index fe32fd53f683..94f9092b29ef 100644
---- a/drivers/regulator/qcom_spmi-regulator.c
-+++ b/drivers/regulator/qcom_spmi-regulator.c
-@@ -2468,7 +2468,6 @@ static int qcom_spmi_regulator_probe(struct platform_device *pdev)
- {
- 	const struct spmi_regulator_data *reg;
- 	const struct spmi_voltage_range *range;
--	const struct of_device_id *match;
- 	struct regulator_config config = { };
- 	struct regulator_dev *rdev;
- 	struct spmi_regulator *vreg;
-@@ -2491,8 +2490,8 @@ static int qcom_spmi_regulator_probe(struct platform_device *pdev)
- 	if (!regmap)
- 		return -ENODEV;
- 
--	match = of_match_device(qcom_spmi_regulator_match, &pdev->dev);
--	if (!match)
-+	reg = device_get_match_data(&pdev->dev);
-+	if (!reg)
- 		return -ENODEV;
- 
- 	if (of_find_property(node, "qcom,saw-reg", &lenp)) {
-@@ -2503,7 +2502,7 @@ static int qcom_spmi_regulator_probe(struct platform_device *pdev)
- 			dev_err(dev, "ERROR reading SAW regmap\n");
- 	}
- 
--	for (reg = match->data; reg->name; reg++) {
-+	for (; reg->name; reg++) {
- 
- 		if (saw_regmap) {
- 			reg_node = of_get_child_by_name(node, reg->name);
-diff --git a/drivers/regulator/stm32-booster.c b/drivers/regulator/stm32-booster.c
-index b64dc5a497fa..2cdc7f0474f8 100644
---- a/drivers/regulator/stm32-booster.c
-+++ b/drivers/regulator/stm32-booster.c
-@@ -4,7 +4,7 @@
- 
- #include <linux/mfd/syscon.h>
++	axp20x->variant = (long)device_get_match_data(dev);
+ 	switch (axp20x->variant) {
+ 	case AXP152_ID:
+ 		axp20x->nr_cells = ARRAY_SIZE(axp152_cells);
+diff --git a/drivers/mfd/hi6421-pmic-core.c b/drivers/mfd/hi6421-pmic-core.c
+index a6a890537a1e..5af24a438329 100644
+--- a/drivers/mfd/hi6421-pmic-core.c
++++ b/drivers/mfd/hi6421-pmic-core.c
+@@ -15,8 +15,9 @@
+ #include <linux/mfd/core.h>
+ #include <linux/mfd/hi6421-pmic.h>
  #include <linux/module.h>
 -#include <linux/of_device.h>
 +#include <linux/of.h>
  #include <linux/platform_device.h>
++#include <linux/property.h>
  #include <linux/regmap.h>
- #include <linux/regulator/driver.h>
-@@ -83,8 +83,7 @@ static int stm32_booster_probe(struct platform_device *pdev)
- 	if (IS_ERR(regmap))
- 		return PTR_ERR(regmap);
  
--	desc = (const struct regulator_desc *)
--		of_match_device(dev->driver->of_match_table, dev)->data;
-+	desc = device_get_match_data(dev);
- 
- 	config.regmap = regmap;
- 	config.dev = dev;
-diff --git a/drivers/regulator/ti-abb-regulator.c b/drivers/regulator/ti-abb-regulator.c
-index 86d2d80b4b41..f48214e2c3b4 100644
---- a/drivers/regulator/ti-abb-regulator.c
-+++ b/drivers/regulator/ti-abb-regulator.c
-@@ -14,7 +14,6 @@
- #include <linux/err.h>
- #include <linux/io.h>
- #include <linux/module.h>
--#include <linux/of_device.h>
- #include <linux/of.h>
- #include <linux/platform_device.h>
- #include <linux/regulator/driver.h>
-@@ -688,7 +687,6 @@ MODULE_DEVICE_TABLE(of, ti_abb_of_match);
- static int ti_abb_probe(struct platform_device *pdev)
+ static const struct mfd_cell hi6421_devs[] = {
+@@ -50,16 +51,12 @@ MODULE_DEVICE_TABLE(of, of_hi6421_pmic_match);
+ static int hi6421_pmic_probe(struct platform_device *pdev)
  {
- 	struct device *dev = &pdev->dev;
--	const struct of_device_id *match;
- 	struct resource *res;
- 	struct ti_abb *abb;
- 	struct regulator_init_data *initdata = NULL;
-@@ -699,21 +697,15 @@ static int ti_abb_probe(struct platform_device *pdev)
- 	char *pname;
- 	int ret = 0;
+ 	struct hi6421_pmic *pmic;
+-	const struct of_device_id *id;
+ 	const struct mfd_cell *subdevs;
+ 	enum hi6421_type type;
+ 	void __iomem *base;
+ 	int n_subdevs, ret;
  
--	match = of_match_device(ti_abb_of_match, dev);
--	if (!match) {
--		/* We do not expect this to happen */
--		dev_err(dev, "%s: Unable to match device\n", __func__);
--		return -ENODEV;
--	}
--	if (!match->data) {
--		dev_err(dev, "%s: Bad data in match\n", __func__);
+-	id = of_match_device(of_hi6421_pmic_match, &pdev->dev);
+-	if (!id)
 -		return -EINVAL;
+-	type = (uintptr_t)id->data;
++	type = (uintptr_t)device_get_match_data(&pdev->dev);
+ 
+ 	pmic = devm_kzalloc(&pdev->dev, sizeof(*pmic), GFP_KERNEL);
+ 	if (!pmic)
+diff --git a/drivers/mfd/mxs-lradc.c b/drivers/mfd/mxs-lradc.c
+index 21f3033d6eb5..ec1b356562b9 100644
+--- a/drivers/mfd/mxs-lradc.c
++++ b/drivers/mfd/mxs-lradc.c
+@@ -16,8 +16,8 @@
+ #include <linux/mfd/mxs-lradc.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
+-#include <linux/of_device.h>
+ #include <linux/platform_device.h>
++#include <linux/property.h>
+ #include <linux/slab.h>
+ 
+ #define ADC_CELL		0
+@@ -125,7 +125,6 @@ MODULE_DEVICE_TABLE(of, mxs_lradc_dt_ids);
+ 
+ static int mxs_lradc_probe(struct platform_device *pdev)
+ {
+-	const struct of_device_id *of_id;
+ 	struct device *dev = &pdev->dev;
+ 	struct device_node *node = dev->of_node;
+ 	struct mxs_lradc *lradc;
+@@ -138,11 +137,7 @@ static int mxs_lradc_probe(struct platform_device *pdev)
+ 	if (!lradc)
+ 		return -ENOMEM;
+ 
+-	of_id = of_match_device(mxs_lradc_dt_ids, &pdev->dev);
+-	if (!of_id)
+-		return -EINVAL;
+-
+-	lradc->soc = (uintptr_t)of_id->data;
++	lradc->soc = (enum mxs_lradc_id)device_get_match_data(&pdev->dev);
+ 
+ 	lradc->clk = devm_clk_get(&pdev->dev, NULL);
+ 	if (IS_ERR(lradc->clk)) {
+diff --git a/drivers/mfd/qcom-spmi-pmic.c b/drivers/mfd/qcom-spmi-pmic.c
+index ee55f09da3ba..203b1e27a1ae 100644
+--- a/drivers/mfd/qcom-spmi-pmic.c
++++ b/drivers/mfd/qcom-spmi-pmic.c
+@@ -8,10 +8,12 @@
+ #include <linux/gfp.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
++#include <linux/of.h>
++#include <linux/of_device.h>
++#include <linux/of_platform.h>
+ #include <linux/spmi.h>
+ #include <linux/types.h>
+ #include <linux/regmap.h>
+-#include <linux/of_platform.h>
+ #include <soc/qcom/qcom-spmi-pmic.h>
+ 
+ #define PMIC_REV2		0x101
+@@ -264,7 +266,7 @@ static int pmic_spmi_probe(struct spmi_device *sdev)
+ 	if (!ctx)
+ 		return -ENOMEM;
+ 
+-	ctx->num_usids = (uintptr_t)of_device_get_match_data(&sdev->dev);
++	ctx->num_usids = (uintptr_t)device_get_match_data(&sdev->dev);
+ 
+ 	/* Only the first slave id for a PMIC contains this information */
+ 	if (sdev->usid % ctx->num_usids == 0) {
+diff --git a/drivers/mfd/qcom_rpm.c b/drivers/mfd/qcom_rpm.c
+index 086611322874..27446f43e3f3 100644
+--- a/drivers/mfd/qcom_rpm.c
++++ b/drivers/mfd/qcom_rpm.c
+@@ -7,6 +7,8 @@
+ 
+ #include <linux/module.h>
+ #include <linux/platform_device.h>
++#include <linux/property.h>
++#include <linux/of.h>
+ #include <linux/of_platform.h>
+ #include <linux/io.h>
+ #include <linux/interrupt.h>
+@@ -528,7 +530,6 @@ static irqreturn_t qcom_rpm_wakeup_interrupt(int irq, void *dev)
+ 
+ static int qcom_rpm_probe(struct platform_device *pdev)
+ {
+-	const struct of_device_id *match;
+ 	struct device_node *syscon_np;
+ 	struct qcom_rpm *rpm;
+ 	u32 fw_version[3];
+@@ -570,10 +571,9 @@ static int qcom_rpm_probe(struct platform_device *pdev)
+ 	if (irq_wakeup < 0)
+ 		return irq_wakeup;
+ 
+-	match = of_match_device(qcom_rpm_of_match, &pdev->dev);
+-	if (!match)
++	rpm->data = device_get_match_data(&pdev->dev);
++	if (!rpm->data)
+ 		return -ENODEV;
+-	rpm->data = match->data;
+ 
+ 	rpm->status_regs = devm_platform_get_and_ioremap_resource(pdev, 0, NULL);
+ 	if (IS_ERR(rpm->status_regs))
+diff --git a/drivers/mfd/tps65910.c b/drivers/mfd/tps65910.c
+index 307d30da274b..8fb0384d5a8e 100644
+--- a/drivers/mfd/tps65910.c
++++ b/drivers/mfd/tps65910.c
+@@ -19,7 +19,7 @@
+ #include <linux/regmap.h>
+ #include <linux/mfd/tps65910.h>
+ #include <linux/of.h>
+-#include <linux/of_device.h>
++#include <linux/property.h>
+ 
+ static const struct resource rtc_resources[] = {
+ 	{
+@@ -374,16 +374,9 @@ static struct tps65910_board *tps65910_parse_dt(struct i2c_client *client,
+ 	struct device_node *np = client->dev.of_node;
+ 	struct tps65910_board *board_info;
+ 	unsigned int prop;
+-	const struct of_device_id *match;
+ 	int ret;
+ 
+-	match = of_match_device(tps65910_of_match, &client->dev);
+-	if (!match) {
+-		dev_err(&client->dev, "Failed to find matching dt id\n");
+-		return NULL;
 -	}
 -
- 	abb = devm_kzalloc(dev, sizeof(struct ti_abb), GFP_KERNEL);
- 	if (!abb)
- 		return -ENOMEM;
--	abb->regs = match->data;
-+
-+	abb->regs = device_get_match_data(dev);
-+	if (!abb->regs) {
-+		dev_err(dev, "%s: Bad data in match\n", __func__);
-+		return -EINVAL;
-+	}
+-	*chip_id  = (unsigned long)match->data;
++	*chip_id  = (unsigned long)device_get_match_data(&client->dev);
  
- 	/* Map ABB resources */
- 	if (abb->regs->setup_off || abb->regs->control_off) {
-@@ -866,7 +858,7 @@ static struct platform_driver ti_abb_driver = {
- 	.driver = {
- 		   .name = "ti_abb",
- 		   .probe_type = PROBE_PREFER_ASYNCHRONOUS,
--		   .of_match_table = of_match_ptr(ti_abb_of_match),
-+		   .of_match_table = ti_abb_of_match,
- 		   },
- };
- module_platform_driver(ti_abb_driver);
+ 	board_info = devm_kzalloc(&client->dev, sizeof(*board_info),
+ 			GFP_KERNEL);
+diff --git a/drivers/mfd/twl4030-power.c b/drivers/mfd/twl4030-power.c
+index e35b0f788c50..1595e9c76132 100644
+--- a/drivers/mfd/twl4030-power.c
++++ b/drivers/mfd/twl4030-power.c
+@@ -27,8 +27,8 @@
+ #include <linux/pm.h>
+ #include <linux/mfd/twl.h>
+ #include <linux/platform_device.h>
++#include <linux/property.h>
+ #include <linux/of.h>
+-#include <linux/of_device.h>
+ 
+ #include <asm/mach-types.h>
+ 
+@@ -883,7 +883,6 @@ static int twl4030_power_probe(struct platform_device *pdev)
+ {
+ 	const struct twl4030_power_data *pdata = dev_get_platdata(&pdev->dev);
+ 	struct device_node *node = pdev->dev.of_node;
+-	const struct of_device_id *match;
+ 	int err = 0;
+ 	int err2 = 0;
+ 	u8 val;
+@@ -904,10 +903,8 @@ static int twl4030_power_probe(struct platform_device *pdev)
+ 		return err;
+ 	}
+ 
+-	match = of_match_device(of_match_ptr(twl4030_power_of_match),
+-				&pdev->dev);
+-	if (match && match->data)
+-		pdata = match->data;
++	if (node)
++		pdata = device_get_match_data(&pdev->dev);
+ 
+ 	if (pdata) {
+ 		err = twl4030_power_configure_scripts(pdata);
+diff --git a/drivers/mfd/twl6030-irq.c b/drivers/mfd/twl6030-irq.c
+index 3c03681c124c..f9fce8408c2c 100644
+--- a/drivers/mfd/twl6030-irq.c
++++ b/drivers/mfd/twl6030-irq.c
+@@ -24,10 +24,10 @@
+ #include <linux/kthread.h>
+ #include <linux/mfd/twl.h>
+ #include <linux/platform_device.h>
++#include <linux/property.h>
+ #include <linux/suspend.h>
+ #include <linux/of.h>
+ #include <linux/irqdomain.h>
+-#include <linux/of_device.h>
+ 
+ #include "twl-core.h"
+ 
+@@ -368,10 +368,10 @@ int twl6030_init_irq(struct device *dev, int irq_num)
+ 	int			nr_irqs;
+ 	int			status;
+ 	u8			mask[3];
+-	const struct of_device_id *of_id;
++	const int		*irq_tbl;
+ 
+-	of_id = of_match_device(twl6030_of_match, dev);
+-	if (!of_id || !of_id->data) {
++	irq_tbl = device_get_match_data(dev);
++	if (!irq_tbl) {
+ 		dev_err(dev, "Unknown TWL device model\n");
+ 		return -EINVAL;
+ 	}
+@@ -409,7 +409,7 @@ int twl6030_init_irq(struct device *dev, int irq_num)
+ 
+ 	twl6030_irq->pm_nb.notifier_call = twl6030_irq_pm_notifier;
+ 	atomic_set(&twl6030_irq->wakeirqs, 0);
+-	twl6030_irq->irq_mapping_tbl = of_id->data;
++	twl6030_irq->irq_mapping_tbl = irq_tbl;
+ 
+ 	twl6030_irq->irq_domain =
+ 		irq_domain_add_linear(node, nr_irqs,
 -- 
 2.42.0
 
