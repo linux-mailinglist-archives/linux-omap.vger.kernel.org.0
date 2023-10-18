@@ -2,86 +2,69 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 953F77CD46A
-	for <lists+linux-omap@lfdr.de>; Wed, 18 Oct 2023 08:24:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DBAF47CD593
+	for <lists+linux-omap@lfdr.de>; Wed, 18 Oct 2023 09:41:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235013AbjJRGYO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 18 Oct 2023 02:24:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34654 "EHLO
+        id S229853AbjJRHld (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 18 Oct 2023 03:41:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48430 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344634AbjJRGX6 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 18 Oct 2023 02:23:58 -0400
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a02:c205:3004:2154::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64B072718;
-        Tue, 17 Oct 2023 23:21:59 -0700 (PDT)
-Received: from p200300ccff145f001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff14:5f00:1a3d:a2ff:febf:d33a] helo=aktux)
-        by mail.andi.de1.cc with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <andreas@kemnade.info>)
-        id 1qszw7-00580I-U3; Wed, 18 Oct 2023 08:21:44 +0200
-Date:   Wed, 18 Oct 2023 08:21:42 +0200
-From:   Andreas Kemnade <andreas@kemnade.info>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     =?UTF-8?B?UMOpdGVy?= Ujfalusi <peter.ujfalusi@gmail.com>,
-        bcousson@baylibre.com, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        lgirdwood@gmail.com, broonie@kernel.org, perex@perex.cz,
-        tiwai@suse.com, jarkko.nikula@bitmer.com,
-        dmitry.torokhov@gmail.com, linux-omap@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        alsa-devel@alsa-project.org
-Subject: Re: [PATCH 1/3] ASoC: ti: omap-mcbsp: Ignore errors for getting
- fck_src
-Message-ID: <20231018082142.5b7d3ad5@aktux>
-In-Reply-To: <20231018052345.GK34982@atomide.com>
-References: <20230705190324.355282-1-andreas@kemnade.info>
-        <20230705190324.355282-2-andreas@kemnade.info>
-        <7d58d52d-2087-45af-b29e-2515b63ead13@gmail.com>
-        <20230920063353.GQ5285@atomide.com>
-        <dac768d2-2c66-4d6b-b3d3-d1ef69103c76@gmail.com>
-        <20230921121626.GT5285@atomide.com>
-        <20231006102348.GK34982@atomide.com>
-        <20231006213003.0fbac87a@aktux>
-        <20231007062518.GM34982@atomide.com>
-        <20231015234815.637f5c14@aktux>
-        <20231018052345.GK34982@atomide.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
+        with ESMTP id S229638AbjJRHlc (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 18 Oct 2023 03:41:32 -0400
+X-Greylist: delayed 329 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 18 Oct 2023 00:41:28 PDT
+Received: from mail.okerlenbiz.com (mail.okerlenbiz.com [54.36.101.41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D23C0EA
+        for <linux-omap@vger.kernel.org>; Wed, 18 Oct 2023 00:41:28 -0700 (PDT)
+Received: by mail.okerlenbiz.com (Postfix, from userid 1002)
+        id 3D52FA24C0; Wed, 18 Oct 2023 07:35:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=okerlenbiz.com;
+        s=mail; t=1697614557;
+        bh=sxkamsLepnJSy5ikFDKOiyq8RChcIfs44Djo0bti1MM=;
+        h=Date:From:To:Subject:From;
+        b=UOKCN76R2WfQhoW5Jh8AU2nCKEfzNjUi/Tz6LKZrXiMnKf7zu6AXyq2kxSDQ33nVa
+         NHbdR2OvzBaK+KL0ZmN4m3kRlSMPoHgarChJVYMtm2SisgoNV3rY1th4whGyvK9AdK
+         GTNGB+1p/qwmMyc25zYokRtPkuzoC/tmaWBQANWkmZ5MkdUm9a5keEpX7zB7tNvW4m
+         YGhYJVdw2ZxoeOM6MSVclgrmRGzOclZfCjzamfg9uLTznGNcBxfxxzbW/UCVFiwgE5
+         L5+zQnF1EoMYRkCusfHZcz5Xge9bFLBmv0QvSRvG+XYmDINnfxETIrTFAsu8Gr+8lI
+         5+Np1DfzCT5Aw==
+Received: by mail.okerlenbiz.com for <linux-omap@vger.kernel.org>; Wed, 18 Oct 2023 07:35:51 GMT
+Message-ID: <20231018064500-0.1.6c.8ibt.0.0jfuq5a5o6@okerlenbiz.com>
+Date:   Wed, 18 Oct 2023 07:35:51 GMT
+From:   "Philipp Raber" <philipp.raber@okerlenbiz.com>
+To:     <linux-omap@vger.kernel.org>
+Subject: Metalworking and welding
+X-Mailer: mail.okerlenbiz.com
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=0.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, 18 Oct 2023 08:23:45 +0300
-Tony Lindgren <tony@atomide.com> wrote:
+Good morning,
 
-> * Andreas Kemnade <andreas@kemnade.info> [231015 21:48]:
-> > On Sat, 7 Oct 2023 09:25:18 +0300
-> > Tony Lindgren <tony@atomide.com> wrote:  
-> > > If so then the following might be a fix, not familiar with runtime PM
-> > > done by ASoC though and not sure if some kind of locking would be
-> > > needed here.
-> > >   
-> > just checked: that one fixes the regression. runtime suspends again.  
-> 
-> OK good to hear. So is there some fixes tag for this one or where did this
-> start happening? I'm not quite following how the dropping of platform data
-> could have affected this, maybe it just hid the problem because of
-> returning early?
-> 
-yes I think so. From a perspective of OMAP[45] mith McBSP in master mode,
-applying  "clk: ti: Fix missing omap4 mcbsp functional clock and aliases"
-on top of "ASoC: ti: omap-mcbsp: Ignore errors for getting  fck_src"
-is a regression. For everyone else not. So 
-"clk: ti: Fix missing omap4 mcbsp functional clock and aliases"
-did uncover a hidden problem, but of course it is the right step
-forward.
+We specialize in serial production of metal elements.
 
-Regards
-Andreas
+You do not have to resort to the services of subcontractors - we offer yo=
+u comprehensive services
+Support from design to production to transportation, which guarantees sho=
+rt delivery times orders and lower costs.
+
+We have an extensive machine park and a large team of specialists, thanks=
+ to which we can offer services such as laser sheet metal cutting, pipe a=
+nd profile bending, welding and powder coating.
+
+The main area of our production is currently storage and transport trolle=
+ys. We produce transport pallets, scissor lifts, furniture elements, buil=
+ding formwork and much more.
+
+If you have any need regarding this, please send me a message.
+
+
+Greetings
+Philipp Raber
