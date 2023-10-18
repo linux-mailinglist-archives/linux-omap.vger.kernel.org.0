@@ -2,47 +2,34 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D51277CE5C6
-	for <lists+linux-omap@lfdr.de>; Wed, 18 Oct 2023 20:01:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 824767CE614
+	for <lists+linux-omap@lfdr.de>; Wed, 18 Oct 2023 20:16:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229744AbjJRSBN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 18 Oct 2023 14:01:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60888 "EHLO
+        id S230051AbjJRSQK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 18 Oct 2023 14:16:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60570 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232042AbjJRSA4 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 18 Oct 2023 14:00:56 -0400
-Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA63A1B9;
-        Wed, 18 Oct 2023 11:00:53 -0700 (PDT)
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 39II0aU5127006;
-        Wed, 18 Oct 2023 13:00:36 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1697652036;
-        bh=YH8IQA8Foqx4OXaUGpFSL2kL5Irsm59+S3kAk/xw1sU=;
-        h=Date:From:To:CC:Subject:References:In-Reply-To;
-        b=YLTf2AmIaWAUeT2W0+o/As3KJ08JO7HjSvwipEIAPr8f7oK/lyZctHMUrbhSOi9LY
-         er2REnO9I4aMfkXfU2eE6i38r/hWCWy3qkuR3AwoXdRqplhAuZqGnTlNG9c+jZwPBi
-         7ZdRlkfsifayyCYBA4g7PIdWv6YpE+baLO7dp1yA=
-Received: from DFLE115.ent.ti.com (dfle115.ent.ti.com [10.64.6.36])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 39II0aNt089180
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 18 Oct 2023 13:00:36 -0500
-Received: from DFLE103.ent.ti.com (10.64.6.24) by DFLE115.ent.ti.com
- (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Wed, 18
- Oct 2023 13:00:35 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE103.ent.ti.com
- (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Wed, 18 Oct 2023 13:00:35 -0500
-Received: from localhost (ileaxei01-snat2.itg.ti.com [10.180.69.6])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 39II0ZXL008590;
-        Wed, 18 Oct 2023 13:00:35 -0500
-Date:   Wed, 18 Oct 2023 13:00:35 -0500
-From:   Nishanth Menon <nm@ti.com>
-To:     Jakub Kicinski <kuba@kernel.org>
-CC:     Ravi Gunasekaran <r-gunasekaran@ti.com>,
+        with ESMTP id S229947AbjJRSQJ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 18 Oct 2023 14:16:09 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A40FB8;
+        Wed, 18 Oct 2023 11:16:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5926EC433C7;
+        Wed, 18 Oct 2023 18:16:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1697652968;
+        bh=Ct9gR9nllChCdIfEvz/HYXItxKyJ157uTxTGorys+KY=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=Nco4Zz3RCjMP2/4unO1zaVALBkrBBtB1bm2vkjdgz6OiCI5WdntbNLVDsSqfe3plb
+         uG1uKJPFqRSFpgT6hOC9UwwqGMHcueSf++oMDMp9WtdG+wB1rDdodLD/d3MCSdxwin
+         Up33Ui6lECUuOAntWYlX8uiTYeOJgycUZHJq2Lathd9OZiwFuELjedwOOQ5qaYf3pC
+         y4TytzyvBPFer72dXF7koBEl/zob4cRbYXOHPUrHg9B4oWhLctzWMrhTAqHF8/Viiy
+         fBXRquNpZsrGHLwOKuMHSAcdFh/HnUWlfcKkIAgIF+yu9tPgy9WbfPPJh1AMUR3s/R
+         XJwcB4Fs259uQ==
+Date:   Wed, 18 Oct 2023 11:16:06 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Nishanth Menon <nm@ti.com>
+Cc:     Ravi Gunasekaran <r-gunasekaran@ti.com>,
         Neha Malcom Francis <n-francis@ti.com>,
         <davem@davemloft.net>, <edumazet@google.com>, <pabeni@redhat.com>,
         <rogerq@ti.com>, <andrew@lunn.ch>, <f.fainelli@gmail.com>,
@@ -52,44 +39,32 @@ CC:     Ravi Gunasekaran <r-gunasekaran@ti.com>,
         <linux-arm-kernel@lists.infradead.org>, <u-kumar1@ti.com>
 Subject: Re: [PATCH net-next] net: ethernet: ti: davinci_mdio: Fix the
  revision string for J721E
-Message-ID: <20231018180035.saymfqwc2o3xpdf4@pretense>
+Message-ID: <20231018111606.4af0cdb3@kernel.org>
+In-Reply-To: <20231018180035.saymfqwc2o3xpdf4@pretense>
 References: <20231018140009.1725-1-r-gunasekaran@ti.com>
- <20231018154448.vlunpwbw67xeh4rj@unfasten>
- <20231018105236.347b2354@kernel.org>
+        <20231018154448.vlunpwbw67xeh4rj@unfasten>
+        <20231018105236.347b2354@kernel.org>
+        <20231018180035.saymfqwc2o3xpdf4@pretense>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20231018105236.347b2354@kernel.org>
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 10:52-20231018, Jakub Kicinski wrote:
-> On Wed, 18 Oct 2023 10:44:48 -0500 Nishanth Menon wrote:
-> > A) netdev maintainers could provide me an rc1 based immutable tag
+On Wed, 18 Oct 2023 13:00:35 -0500 Nishanth Menon wrote:
+> Thanks Jakub. SoC tree needs me to send based off rc1 for new features.
+> I'd rather not mess with that.
 > 
-> FWIW that shouldn't be a problem, assuming my script to do so didn't
-> bit rot :)
-> 
-> Does it really have to be rc1 or something more recent would work?
+> Sure if we are doing an fixes pull, we can figure something out to
+> sync. rc1 saves us the headache of conflict of me sending a PR merge
+> while netdev maintainers aren't expecting it to be merged to master
+> via soc tree.
 
-Thanks Jakub. SoC tree needs me to send based off rc1 for new features.
-I'd rather not mess with that.
-
-Sure if we are doing an fixes pull, we can figure something out to
-sync. rc1 saves us the headache of conflict of me sending a PR merge
-while netdev maintainers aren't expecting it to be merged to master
-via soc tree.
-
-
--- 
-Regards,
-Nishanth Menon
-Key (0xDDB5849D1736249D) / Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
+Sounds good, I'll wait for Ravi to respond to you and once we have 
+a green light we can plonk the patch on top of rc1.
