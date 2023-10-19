@@ -2,99 +2,64 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 383FE7D0070
-	for <lists+linux-omap@lfdr.de>; Thu, 19 Oct 2023 19:24:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C46497D0575
+	for <lists+linux-omap@lfdr.de>; Fri, 20 Oct 2023 01:43:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346242AbjJSRYX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 19 Oct 2023 13:24:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52128 "EHLO
+        id S1346677AbjJSXnX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 19 Oct 2023 19:43:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346209AbjJSRYW (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 19 Oct 2023 13:24:22 -0400
-Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5617C106;
-        Thu, 19 Oct 2023 10:24:20 -0700 (PDT)
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 39JHNosS111926;
-        Thu, 19 Oct 2023 12:23:50 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1697736230;
-        bh=cnCHnIviGvR5LlFZrHE55hEYXebBD3jVoaFYztQJ+iw=;
-        h=Date:From:To:CC:Subject:References:In-Reply-To;
-        b=dTyUqNUE5KKIWmH92x7b0jdlT00mo2uehOZ+gXlzvHx07A7JU5/LSJCQiUcKsRgUu
-         AY3V6V6gZ/rtCtwOWsG9G87CP71MckBjaXlw6PwAVuNTb+neZ6n51bzRdAxMzrBn/8
-         VLO/ma3DL59zSzQyyvXLeVX7apBJKqt4MIcUAM9c=
-Received: from DLEE107.ent.ti.com (dlee107.ent.ti.com [157.170.170.37])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 39JHNo2l118711
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 19 Oct 2023 12:23:50 -0500
-Received: from DLEE103.ent.ti.com (157.170.170.33) by DLEE107.ent.ti.com
- (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 19
- Oct 2023 12:23:49 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE103.ent.ti.com
- (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Thu, 19 Oct 2023 12:23:49 -0500
-Received: from localhost (ileaxei01-snat2.itg.ti.com [10.180.69.6])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 39JHNnhb043119;
-        Thu, 19 Oct 2023 12:23:49 -0500
-Date:   Thu, 19 Oct 2023 12:23:49 -0500
-From:   Nishanth Menon <nm@ti.com>
-To:     Ravi Gunasekaran <r-gunasekaran@ti.com>
-CC:     <kuba@kernel.org>, <davem@davemloft.net>, <edumazet@google.com>,
-        <pabeni@redhat.com>, <rogerq@ti.com>, <andrew@lunn.ch>,
-        <f.fainelli@gmail.com>, <horms@kernel.org>,
-        <linux-omap@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <srk@ti.com>,
-        Thejasvi Konduru <t-konduru@ti.com>,
-        <linux-arm-kernel@lists.infradead.org>, <u-kumar1@ti.com>,
-        Neha Malcom Francis <n-francis@ti.com>
-Subject: Re: [PATCH net-next] net: ethernet: ti: davinci_mdio: Fix the
- revision string for J721E
-Message-ID: <20231019172349.mwtxt5he222d6zrj@engraved>
-References: <20231018140009.1725-1-r-gunasekaran@ti.com>
- <20231018154448.vlunpwbw67xeh4rj@unfasten>
- <4131fd06-0e46-5454-fbdb-85ccabc0e8b0@ti.com>
+        with ESMTP id S233335AbjJSXnW (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 19 Oct 2023 19:43:22 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 328FC113;
+        Thu, 19 Oct 2023 16:43:21 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6121C433C7;
+        Thu, 19 Oct 2023 23:43:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1697759000;
+        bh=fggoXZ8ybZvMC7HbEMQdngXXOLUAC2C2LgXwXWkInjM=;
+        h=In-Reply-To:References:Subject:From:To:Date:From;
+        b=u/J+mknHI+BtbrJX38Z4d6fYnNfHjcNPstGgoOMEGc4wsOiYCPiGlZG4ZsA+Uy0uG
+         PotHuJy1eBlPUNoFXkNbsssnEzHblf80T7gRPH5OR6KOgGwR9750Mgn4Z6i0sfwhug
+         mJ40NRqtsF3OWuCyoBplZfjPV20MKYc+P2MfjvAIxdrSRdBs/hIf0ZkjyUcHuNA11N
+         X64DIszkTAWLEI0jRYerSyhaT0peo/2USECCiEBtHIbEnnZw7GdazR3g51zKTCPKNM
+         6Y568M1s8hkDORBxL5bt89BofpzLEHv2A8qnc7aom+bIpxfQMotulkQzRdhF3hX4TL
+         JyNYHCsji6ekg==
+Message-ID: <bae818c0f067fd7ef9a7c7fdb15a2022.sboyd@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <4131fd06-0e46-5454-fbdb-85ccabc0e8b0@ti.com>
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20230916100515.1650336-5-andreas@kemnade.info>
+References: <20230916100515.1650336-1-andreas@kemnade.info> <20230916100515.1650336-5-andreas@kemnade.info>
+Subject: Re: [PATCH v4 4/5] clk: twl: add clock driver for TWL6032
+From:   Stephen Boyd <sboyd@kernel.org>
+To:     andreas@kemnade.info, bcousson@baylibre.com, conor+dt@kernel.org,
+        devicetree@vger.kernel.org, dmitry.torokhov@gmail.com,
+        krzysztof.kozlowski+dt@linaro.org, lee@kernel.org,
+        linux-clk@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        mturquette@baylibre.com, robh+dt@kernel.org, tony@atomide.com
+Date:   Thu, 19 Oct 2023 16:43:18 -0700
+User-Agent: alot/0.10
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 11:11-20231019, Ravi Gunasekaran wrote:
-> Nishanth, Jakub,
-> 
-> On 10/18/23 9:14 PM, Nishanth Menon wrote:
-> > 
-> > We then have the following steps potentially
-> > 
-> > Drop the fixes and Maintain both SR2.0 and SR1.0 (add SR1.1) so that
-> > we can merge the socinfo fixes without breaking bisectability.
-> 
-> I will drop the fixes tag then and maintain SR1.0, SR1.1, SR2.0 for J721E
-> and mention in the commit msg that this is a preparatory patch to fix the
-> incorrect revision string generation. And in the next cycle, I will
-> send out a patch removing the invalid revision IDs.
-> 
-> Ideally I would prefer to do this for all the SoCs, but I would need some
-> time to compile the list. So for now, I will send a v2 targeting only J721E.
-> 
-> Please let me know your thoughts on this.
+Quoting Andreas Kemnade (2023-09-16 03:05:14)
+> The TWL6032 has some clock outputs which are controlled like
+> fixed-voltage regulators, in some drivers for these chips
+> found in the wild, just the regulator api is abused for controlling
+> them, so simply use something similar to the regulator functions.
+> Due to a lack of hardware available for testing, leave out the
+> TWL6030-specific part of those functions.
+>=20
+> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+> ---
 
-just do the full list in one shot. it is easier that way than having to
-repeat this sync over and over again.
-
--- 
-Regards,
-Nishanth Menon
-Key (0xDDB5849D1736249D) / Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
+Applied to clk-next
