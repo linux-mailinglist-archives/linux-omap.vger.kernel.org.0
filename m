@@ -2,52 +2,48 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 824767CE614
-	for <lists+linux-omap@lfdr.de>; Wed, 18 Oct 2023 20:16:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0B5D7CECFE
+	for <lists+linux-omap@lfdr.de>; Thu, 19 Oct 2023 02:54:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230051AbjJRSQK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 18 Oct 2023 14:16:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60570 "EHLO
+        id S229688AbjJSAy5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 18 Oct 2023 20:54:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45570 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229947AbjJRSQJ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 18 Oct 2023 14:16:09 -0400
+        with ESMTP id S229456AbjJSAy5 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 18 Oct 2023 20:54:57 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A40FB8;
-        Wed, 18 Oct 2023 11:16:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5926EC433C7;
-        Wed, 18 Oct 2023 18:16:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CB15118;
+        Wed, 18 Oct 2023 17:54:56 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9D3CC433C7;
+        Thu, 19 Oct 2023 00:54:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697652968;
-        bh=Ct9gR9nllChCdIfEvz/HYXItxKyJ157uTxTGorys+KY=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Nco4Zz3RCjMP2/4unO1zaVALBkrBBtB1bm2vkjdgz6OiCI5WdntbNLVDsSqfe3plb
-         uG1uKJPFqRSFpgT6hOC9UwwqGMHcueSf++oMDMp9WtdG+wB1rDdodLD/d3MCSdxwin
-         Up33Ui6lECUuOAntWYlX8uiTYeOJgycUZHJq2Lathd9OZiwFuELjedwOOQ5qaYf3pC
-         y4TytzyvBPFer72dXF7koBEl/zob4cRbYXOHPUrHg9B4oWhLctzWMrhTAqHF8/Viiy
-         fBXRquNpZsrGHLwOKuMHSAcdFh/HnUWlfcKkIAgIF+yu9tPgy9WbfPPJh1AMUR3s/R
-         XJwcB4Fs259uQ==
-Date:   Wed, 18 Oct 2023 11:16:06 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Nishanth Menon <nm@ti.com>
-Cc:     Ravi Gunasekaran <r-gunasekaran@ti.com>,
-        Neha Malcom Francis <n-francis@ti.com>,
-        <davem@davemloft.net>, <edumazet@google.com>, <pabeni@redhat.com>,
-        <rogerq@ti.com>, <andrew@lunn.ch>, <f.fainelli@gmail.com>,
-        <horms@kernel.org>, <linux-omap@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <srk@ti.com>, Thejasvi Konduru <t-konduru@ti.com>,
-        <linux-arm-kernel@lists.infradead.org>, <u-kumar1@ti.com>
-Subject: Re: [PATCH net-next] net: ethernet: ti: davinci_mdio: Fix the
- revision string for J721E
-Message-ID: <20231018111606.4af0cdb3@kernel.org>
-In-Reply-To: <20231018180035.saymfqwc2o3xpdf4@pretense>
-References: <20231018140009.1725-1-r-gunasekaran@ti.com>
-        <20231018154448.vlunpwbw67xeh4rj@unfasten>
-        <20231018105236.347b2354@kernel.org>
-        <20231018180035.saymfqwc2o3xpdf4@pretense>
+        s=k20201202; t=1697676895;
+        bh=WvneTTviaBo2Z3d0DD7/4WAsvtBefdFeDwv0Riy4VRk=;
+        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+        b=ZfdgqxmDbHJUuH4iqY5ip8DOAIL77PxxpKJ0Rajq4nRxPPXIDUM20yclrohEslXgg
+         +9goyj83nLEMAPsoQwJsNwXBRGRck/a1pqZwFN7/Ol2WVWD2rssU07xJHKV6qahaDL
+         dMoWbX/VryXm8tEhqO2ldr4x79ff/W8MVjD8ms0nYwO8pLl3Ic3nFQf4sSe0NpzII8
+         Dx9Gu548bIU9wnxJ1DFArfdl8JdCpDC20zAuQZv250WRPfYoWLe9SizAcFPUxT+6Ox
+         eY861H28xAzsU9LI4wbumuXwFhRmljzbQTlm6HErNQinomDz21eUDFMnSTU8ocC8gM
+         CWp8il8nY+w3g==
+Message-ID: <5c4492d39cf42aba4285da41a574e733.sboyd@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <6d36eeec-6c8a-4f11-a579-aa3cd7c38749@moroto.mountain>
+References: <6d36eeec-6c8a-4f11-a579-aa3cd7c38749@moroto.mountain>
+Subject: Re: [PATCH] clk: ti: fix double free in of_ti_divider_clk_setup()
+From:   Stephen Boyd <sboyd@kernel.org>
+Cc:     Tero Kristo <kristo@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+        linux-omap@vger.kernel.org, linux-clk@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+To:     Dan Carpenter <dan.carpenter@linaro.org>,
+        Tero Kristo <t-kristo@ti.com>
+Date:   Wed, 18 Oct 2023 17:54:52 -0700
+User-Agent: alot/0.10
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -57,14 +53,13 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, 18 Oct 2023 13:00:35 -0500 Nishanth Menon wrote:
-> Thanks Jakub. SoC tree needs me to send based off rc1 for new features.
-> I'd rather not mess with that.
-> 
-> Sure if we are doing an fixes pull, we can figure something out to
-> sync. rc1 saves us the headache of conflict of me sending a PR merge
-> while netdev maintainers aren't expecting it to be merged to master
-> via soc tree.
+Quoting Dan Carpenter (2023-10-02 00:04:36)
+> The "div" pointer is freed in _register_divider() and again in
+> of_ti_divider_clk_setup().  Delete the free in _register_divider()
+>=20
+> Fixes: fbbc18591585 ("clk: ti: divider: cleanup _register_divider and ti_=
+clk_get_div_table")
+> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+> ---
 
-Sounds good, I'll wait for Ravi to respond to you and once we have 
-a green light we can plonk the patch on top of rc1.
+Applied to clk-next
