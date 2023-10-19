@@ -2,47 +2,45 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E0B5D7CECFE
-	for <lists+linux-omap@lfdr.de>; Thu, 19 Oct 2023 02:54:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C533B7CED6F
+	for <lists+linux-omap@lfdr.de>; Thu, 19 Oct 2023 03:20:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229688AbjJSAy5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 18 Oct 2023 20:54:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45570 "EHLO
+        id S231592AbjJSBU1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 18 Oct 2023 21:20:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56862 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229456AbjJSAy5 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 18 Oct 2023 20:54:57 -0400
+        with ESMTP id S229894AbjJSBU0 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 18 Oct 2023 21:20:26 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CB15118;
-        Wed, 18 Oct 2023 17:54:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9D3CC433C7;
-        Thu, 19 Oct 2023 00:54:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26FB0112;
+        Wed, 18 Oct 2023 18:20:25 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEE20C433C8;
+        Thu, 19 Oct 2023 01:20:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697676895;
-        bh=WvneTTviaBo2Z3d0DD7/4WAsvtBefdFeDwv0Riy4VRk=;
-        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-        b=ZfdgqxmDbHJUuH4iqY5ip8DOAIL77PxxpKJ0Rajq4nRxPPXIDUM20yclrohEslXgg
-         +9goyj83nLEMAPsoQwJsNwXBRGRck/a1pqZwFN7/Ol2WVWD2rssU07xJHKV6qahaDL
-         dMoWbX/VryXm8tEhqO2ldr4x79ff/W8MVjD8ms0nYwO8pLl3Ic3nFQf4sSe0NpzII8
-         Dx9Gu548bIU9wnxJ1DFArfdl8JdCpDC20zAuQZv250WRPfYoWLe9SizAcFPUxT+6Ox
-         eY861H28xAzsU9LI4wbumuXwFhRmljzbQTlm6HErNQinomDz21eUDFMnSTU8ocC8gM
-         CWp8il8nY+w3g==
-Message-ID: <5c4492d39cf42aba4285da41a574e733.sboyd@kernel.org>
+        s=k20201202; t=1697678424;
+        bh=OEFMKzkQUdF2lkI84d/oCDnjWjpkF/2CWqt1c/w7l5I=;
+        h=In-Reply-To:References:Subject:From:To:Date:From;
+        b=agAqvCUC0fJ6MgF36t0nVVeo0JjmWk1vYdPA2ssuFUKM7Gt+UgXVYgSva4rh2RyOC
+         bnxXbiVJDZ8XLApdewHDkCqrtgUztHXar5GeJzG4Jv8CoAFBmH8qWf5/CtiRXJxCUV
+         bTYXEoMCLJUpPpL7xzWkO8579xz/b3qFxTO49nHhz4UNiMkTzal4d8yvAdZX/wB5nh
+         1zjTKZNLrXEPvqamhtckXKtOrlxKZw398nnAbkXEfqsNJFd6ChHfEMdshrvHMhDtfS
+         zozTJ4mt3u69iEGT5hj1dV4h/MxGy8X76t5IQlzNMI8rEpVVuRxfToKzhFDPKm/nUR
+         cDNMYRpmEA5Tg==
+Message-ID: <8c63372175266d42efbfca0104e19a14.sboyd@kernel.org>
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <6d36eeec-6c8a-4f11-a579-aa3cd7c38749@moroto.mountain>
-References: <6d36eeec-6c8a-4f11-a579-aa3cd7c38749@moroto.mountain>
-Subject: Re: [PATCH] clk: ti: fix double free in of_ti_divider_clk_setup()
+In-Reply-To: <20230916100515.1650336-5-andreas@kemnade.info>
+References: <20230916100515.1650336-1-andreas@kemnade.info> <20230916100515.1650336-5-andreas@kemnade.info>
+Subject: Re: [PATCH v4 4/5] clk: twl: add clock driver for TWL6032
 From:   Stephen Boyd <sboyd@kernel.org>
-Cc:     Tero Kristo <kristo@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-        linux-omap@vger.kernel.org, linux-clk@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-To:     Dan Carpenter <dan.carpenter@linaro.org>,
-        Tero Kristo <t-kristo@ti.com>
-Date:   Wed, 18 Oct 2023 17:54:52 -0700
+To:     andreas@kemnade.info, bcousson@baylibre.com, conor+dt@kernel.org,
+        devicetree@vger.kernel.org, dmitry.torokhov@gmail.com,
+        krzysztof.kozlowski+dt@linaro.org, lee@kernel.org,
+        linux-clk@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        mturquette@baylibre.com, robh+dt@kernel.org, tony@atomide.com
+Date:   Wed, 18 Oct 2023 18:20:22 -0700
 User-Agent: alot/0.10
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -53,13 +51,17 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Quoting Dan Carpenter (2023-10-02 00:04:36)
-> The "div" pointer is freed in _register_divider() and again in
-> of_ti_divider_clk_setup().  Delete the free in _register_divider()
+Quoting Andreas Kemnade (2023-09-16 03:05:14)
+> The TWL6032 has some clock outputs which are controlled like
+> fixed-voltage regulators, in some drivers for these chips
+> found in the wild, just the regulator api is abused for controlling
+> them, so simply use something similar to the regulator functions.
+> Due to a lack of hardware available for testing, leave out the
+> TWL6030-specific part of those functions.
 >=20
-> Fixes: fbbc18591585 ("clk: ti: divider: cleanup _register_divider and ti_=
-clk_get_div_table")
-> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
 > ---
 
-Applied to clk-next
+Did you want me to pick this up in clk tree?
+
+Acked-by: Stephen Boyd <sboyd@kernel.org>
