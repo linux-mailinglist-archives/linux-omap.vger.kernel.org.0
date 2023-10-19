@@ -2,69 +2,44 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 185087CEF31
-	for <lists+linux-omap@lfdr.de>; Thu, 19 Oct 2023 07:42:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72D427CF0EF
+	for <lists+linux-omap@lfdr.de>; Thu, 19 Oct 2023 09:18:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232852AbjJSFmq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 19 Oct 2023 01:42:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56748 "EHLO
+        id S1344745AbjJSHSn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 19 Oct 2023 03:18:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232777AbjJSFmI (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 19 Oct 2023 01:42:08 -0400
-Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 410931B5;
-        Wed, 18 Oct 2023 22:41:31 -0700 (PDT)
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 39J5fFtu048503;
-        Thu, 19 Oct 2023 00:41:15 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1697694075;
-        bh=Vk+cRnHo6muGejtbpUC0xCLLcp+NHau3bYlkm4WogkI=;
-        h=Date:Subject:To:CC:References:From:In-Reply-To;
-        b=KAbuq3aOYa6iy4bTY7mQUxuZHSz5sctfiTPXo2F0dmB7KbJBpObOyMtun+QrF4Dt2
-         DGLLoFkUgpv5LpNq1OLumrQe6giytJs6ApGxNwz7zUQjBEsYOPMywqNxjB/jbpaXUD
-         AZa8iSrncuOoZun8+6RlhWEneCmMJPGPgrHhuFI8=
-Received: from DLEE104.ent.ti.com (dlee104.ent.ti.com [157.170.170.34])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 39J5fFne118705
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 19 Oct 2023 00:41:15 -0500
-Received: from DLEE111.ent.ti.com (157.170.170.22) by DLEE104.ent.ti.com
- (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 19
- Oct 2023 00:41:14 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE111.ent.ti.com
- (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Thu, 19 Oct 2023 00:41:15 -0500
-Received: from [172.24.227.83] (ileaxei01-snat.itg.ti.com [10.180.69.5])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 39J5f6SO041333;
-        Thu, 19 Oct 2023 00:41:07 -0500
-Message-ID: <4131fd06-0e46-5454-fbdb-85ccabc0e8b0@ti.com>
-Date:   Thu, 19 Oct 2023 11:11:06 +0530
+        with ESMTP id S232788AbjJSHSn (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 19 Oct 2023 03:18:43 -0400
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a02:c205:3004:2154::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F7839F;
+        Thu, 19 Oct 2023 00:18:41 -0700 (PDT)
+Received: from p200300ccff1c8300db3b230b99381d47.dip0.t-ipconnect.de ([2003:cc:ff1c:8300:db3b:230b:9938:1d47] helo=akair)
+        by mail.andi.de1.cc with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <andreas@kemnade.info>)
+        id 1qtNIj-005BiP-OC; Thu, 19 Oct 2023 09:18:37 +0200
+Date:   Thu, 19 Oct 2023 09:18:35 +0200
+From:   Andreas Kemnade <andreas@kemnade.info>
+To:     Stephen Boyd <sboyd@kernel.org>
+Cc:     bcousson@baylibre.com, conor+dt@kernel.org,
+        devicetree@vger.kernel.org, dmitry.torokhov@gmail.com,
+        krzysztof.kozlowski+dt@linaro.org, lee@kernel.org,
+        linux-clk@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        mturquette@baylibre.com, robh+dt@kernel.org, tony@atomide.com
+Subject: Re: [PATCH v4 4/5] clk: twl: add clock driver for TWL6032
+Message-ID: <20231019091835.6d8df469@akair>
+In-Reply-To: <8c63372175266d42efbfca0104e19a14.sboyd@kernel.org>
+References: <20230916100515.1650336-1-andreas@kemnade.info>
+        <20230916100515.1650336-5-andreas@kemnade.info>
+        <8c63372175266d42efbfca0104e19a14.sboyd@kernel.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH net-next] net: ethernet: ti: davinci_mdio: Fix the
- revision string for J721E
-Content-Language: en-US
-To:     Nishanth Menon <nm@ti.com>, <kuba@kernel.org>
-CC:     <davem@davemloft.net>, <edumazet@google.com>, <pabeni@redhat.com>,
-        <rogerq@ti.com>, <andrew@lunn.ch>, <f.fainelli@gmail.com>,
-        <horms@kernel.org>, <linux-omap@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <srk@ti.com>, Thejasvi Konduru <t-konduru@ti.com>,
-        <linux-arm-kernel@lists.infradead.org>, <u-kumar1@ti.com>,
-        Neha Malcom Francis <n-francis@ti.com>
-References: <20231018140009.1725-1-r-gunasekaran@ti.com>
- <20231018154448.vlunpwbw67xeh4rj@unfasten>
-From:   Ravi Gunasekaran <r-gunasekaran@ti.com>
-In-Reply-To: <20231018154448.vlunpwbw67xeh4rj@unfasten>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=ham
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -72,31 +47,38 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Nishanth, Jakub,
+Am Wed, 18 Oct 2023 18:20:22 -0700
+schrieb Stephen Boyd <sboyd@kernel.org>:
 
-On 10/18/23 9:14 PM, Nishanth Menon wrote:
+> Quoting Andreas Kemnade (2023-09-16 03:05:14)
+> > The TWL6032 has some clock outputs which are controlled like
+> > fixed-voltage regulators, in some drivers for these chips
+> > found in the wild, just the regulator api is abused for controlling
+> > them, so simply use something similar to the regulator functions.
+> > Due to a lack of hardware available for testing, leave out the
+> > TWL6030-specific part of those functions.
+> > 
+> > Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+> > ---  
 > 
-> We then have the following steps potentially
+> Did you want me to pick this up in clk tree?
 > 
-> Drop the fixes and Maintain both SR2.0 and SR1.0 (add SR1.1) so that
-> we can merge the socinfo fixes without breaking bisectability.
-
-I will drop the fixes tag then and maintain SR1.0, SR1.1, SR2.0 for J721E
-and mention in the commit msg that this is a preparatory patch to fix the
-incorrect revision string generation. And in the next cycle, I will
-send out a patch removing the invalid revision IDs.
-
-Ideally I would prefer to do this for all the SoCs, but I would need some
-time to compile the list. So for now, I will send a v2 targeting only J721E.
-
-Please let me know your thoughts on this.
-
+> Acked-by: Stephen Boyd <sboyd@kernel.org>
 > 
-> Also in the future, please CC me as the reporter and for Soc-fixes
-> dependency issues (I am listed in the MAINTAINERS file).
-> 
-Sure.
+Well, Lee has picked up 1-3 of this series, so I think it is a good idea
+if you take it. I do not think it will make things any easier if it goes
+through Tony's tree because part 5 is a bit tricky.
+If picked up independently (of the whole set and not only part 4), there
+will be a range of commits were WLAN will not work at all instead of
+basically working randomly by the clock is enabled for some reason (can
+happen if warm-booted from the vendor kernel).
 
--- 
-Regards,
-Ravi
+So IMHO for part 5 we have to decide wether to decide if above is
+considered to break bisectability and take the patch for 6.8 or
+ignore that and take it for 6.7.
+
+But no matter how we decide, that should not affect the route for this
+part 4. So it is a good idea to have it through the clk tree.
+
+Regrads,
+Andreas
