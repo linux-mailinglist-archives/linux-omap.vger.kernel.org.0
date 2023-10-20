@@ -2,154 +2,175 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1220C7D158A
-	for <lists+linux-omap@lfdr.de>; Fri, 20 Oct 2023 20:12:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DFD97D16BC
+	for <lists+linux-omap@lfdr.de>; Fri, 20 Oct 2023 22:04:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377976AbjJTSM2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 20 Oct 2023 14:12:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39764 "EHLO
+        id S229603AbjJTUEQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 20 Oct 2023 16:04:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377957AbjJTSM1 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 20 Oct 2023 14:12:27 -0400
-Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A674D5E;
-        Fri, 20 Oct 2023 11:12:25 -0700 (PDT)
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 39KIC64N091271;
-        Fri, 20 Oct 2023 13:12:06 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1697825526;
-        bh=O5tj34Fk5wcP36nJvs/VWBsQMe3mczk8/9535aCy8Cs=;
-        h=Date:From:To:CC:Subject:References:In-Reply-To;
-        b=qH2lVI/DPwvFiAPkUgK0c3L8GzueZfyeV/J3s82kxt6ZcGOChVhj40p23ZHtGS5kY
-         HTS5HZMBw7F9u8cEN6jqzMwd0I4LL39Mva+RLS+0/F/X3GdYzrT2MJ+6f9mP0iwu8/
-         U0fAFQzL5x5YZ0/Ki1e6a+IupEx1BF8ZlIuZXNLY=
-Received: from DFLE105.ent.ti.com (dfle105.ent.ti.com [10.64.6.26])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 39KIC6E3095769
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 20 Oct 2023 13:12:06 -0500
-Received: from DFLE104.ent.ti.com (10.64.6.25) by DFLE105.ent.ti.com
- (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 20
- Oct 2023 13:12:06 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE104.ent.ti.com
- (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Fri, 20 Oct 2023 13:12:05 -0500
-Received: from localhost (ileaxei01-snat.itg.ti.com [10.180.69.5])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 39KIC5JD078186;
-        Fri, 20 Oct 2023 13:12:06 -0500
-Date:   Fri, 20 Oct 2023 13:12:05 -0500
-From:   Nishanth Menon <nm@ti.com>
-To:     Ravi Gunasekaran <r-gunasekaran@ti.com>
-CC:     <kuba@kernel.org>, <davem@davemloft.net>, <edumazet@google.com>,
-        <pabeni@redhat.com>, <rogerq@kernel.org>, <andrew@lunn.ch>,
-        <f.fainelli@gmail.com>, <horms@kernel.org>,
-        <linux-omap@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <srk@ti.com>,
-        <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH net-next v2] net: ethernet: ti: davinci_mdio: Update K3
- SoCs list for errata i2329
-Message-ID: <20231020181205.7zfsfq3aue6dazp2@theme>
-References: <20231020111738.14671-1-r-gunasekaran@ti.com>
- <20231020122359.vwia7sxrcjyeo3ov@pushover>
- <2046f9ad-b5c2-bc42-03de-6254d6ed92d3@ti.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <2046f9ad-b5c2-bc42-03de-6254d6ed92d3@ti.com>
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S229554AbjJTUEQ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 20 Oct 2023 16:04:16 -0400
+Received: from mo4-p00-ob.smtp.rzone.de (mo4-p00-ob.smtp.rzone.de [85.215.255.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7411ED53
+        for <linux-omap@vger.kernel.org>; Fri, 20 Oct 2023 13:04:13 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1697832243; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=gRbFKtdFSeKMAtv1IUbs8Q22makzCtIdluM1mGew6qXSmdEMGbN46qmML+igYr0Ugb
+    BQQPgTqfE9hX8qQY3nTYstWu2k32EK+0tdXsXLD4TiQzJPZJRnoxCS8lVZJvOh5XhqJb
+    gMScsGulci2fgmTDS8Lzff6h7RM+LDGByZwwflPPNF/iCPW09SaCT9+u5L02csgaZuWP
+    hnrdOVeoz9cWtPbKY3sMPgkV+0tU867MZ/9USS2VbxpXD8rS+k2Wc1Hc8ErQwh1U3Vmi
+    C7I254T3q9qhFN2+daWSHkPPPGUo7yY1GOLrdSCCjDCTWwD6eHm5w1MruHPAuOM8Dd4M
+    xRIg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1697832243;
+    s=strato-dkim-0002; d=strato.com;
+    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=jWuNz2CADT+2TjuJI+jElyd+pq94+me2mcG/Q05gJ7I=;
+    b=sTNFj+KFmsVD/bPqIPO36Gb1TSOUKr8AZ5HEYJ39dCo9icPAPG+QKm/SXojheSyWLP
+    upvV3yo/UPH3cfw+mOinUpcBQyVYhlSqm4M+VHxU+2JgVqjHS7AYv2fiynct7MeW3F0X
+    v2ddcanm7g2BZkSC3myvBLGZRRmBq78wf7QNgmAyYuxg+sQyJ5LucAHbi0bevvTmx4Gw
+    p9x+eBACdWNhHtE1FKPJgqK1wI1m2OiaZfjlNqTv0MC1qc2tv7j90VOkE7l41ff4RJ6k
+    abMjGuPO99htoUgMT6zS1LTGvQ8Lttl3Aa8fLHs+utFIMzrlUCJbDtFsoimjxcbZPtDX
+    aNYA==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo00
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1697832243;
+    s=strato-dkim-0002; d=goldelico.com;
+    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=jWuNz2CADT+2TjuJI+jElyd+pq94+me2mcG/Q05gJ7I=;
+    b=K3xLIwUsJGjIzzqAPvE8A1KlB1TXZykpFGnJyMA/dRRiKHg9Mr/ORWXS92Ab40xoiH
+    slXW+Ua9wvXvBs9JkjzWh9gbtOQAnVnam1AHZbWblg6ZHPQb875MQTgnIxlo8udz013L
+    eMNO3YQKhpLdotnqP1QzORXJ3rZFRB3SdWzD3/Iaw5OZSRqWhLQ7E1+y0wag95XwAoUL
+    CF+wmrw4Q6uoYr82I6dIT5zvMeMuQp9lyhDyjU+cDXXTOKMfjHkfpFBFoNUJCqcWe03z
+    z6QThs0pSu9u+xBM32EsAaJJBB6XZjc93XgescqfZzLIgX9EcxK3RgUeksiiRtBE47q0
+    m5WQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1697832243;
+    s=strato-dkim-0003; d=goldelico.com;
+    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=jWuNz2CADT+2TjuJI+jElyd+pq94+me2mcG/Q05gJ7I=;
+    b=z8Iw+BYgtls/pg5+VdKTveYCCquCVQZjVSWtKT5dAfkvGZ8x0IuGZOkIGrIfp+JiRo
+    x8RcS+hV17t7XG2+uRAw==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj5Apz9PSN6LgsXcGZijY="
+Received: from smtpclient.apple
+    by smtp.strato.de (RZmta 49.9.0 DYNA|AUTH)
+    with ESMTPSA id 62efcaz9KK43J3p
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
+        (Client did not present a certificate);
+    Fri, 20 Oct 2023 22:04:03 +0200 (CEST)
+Content-Type: text/plain;
+        charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.4\))
+Subject: Re: TI git rep for omap5-sgx-ddk-um-linux.git not available
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
+In-Reply-To: <20231020200503.1ed2cef6@aktux>
+Date:   Fri, 20 Oct 2023 22:04:02 +0200
+Cc:     openpvrsgx-devgroup@letux.org, linux-omap@vger.kernel.org,
+        letux-kernel@openphoenux.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <B48F3B71-810D-44C7-A7E7-0C501A5F3B41@goldelico.com>
+References: <2014DE2B-59DD-453F-9D89-682F6AA261D8@goldelico.com>
+ <20231020200503.1ed2cef6@aktux>
+To:     Andreas Kemnade <andreas@kemnade.info>
+X-Mailer: Apple Mail (2.3696.120.41.1.4)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 23:35-20231020, Ravi Gunasekaran wrote:
-> 
-> 
-> On 10/20/2023 5:53 PM, Nishanth Menon wrote:
-> > On 16:47-20231020, Ravi Gunasekaran wrote:
-> >> The errata i2329 affects certain K3 SoC versions. The k3-socinfo.c
-> >> driver generates the revision string for different variants of the
-> >> same SoC in an incremental fashion. This is not true for all SoCs.
-> >> An example case being J721E, for which the actual silicon revision
-> >> names are 1.0, 1.1 for its variants, while the k3-socinfo.c driver
-> >> interprets these variants as revisions 1.0, 2.0 respectively,
-> >> which is incorrect.
-> >>
-> >> While the work to fixup the silicon revision string is posted
-> >> to the soc tree, this patch serves as a fail-safe step by maintaining
-> >> a list of correct and incorrect revision strings, so that the fixup
-> >> work does not break the errata workaround for such corrected SoCs.
-> >>
-> >> The silicon revisions affected by the errata i2329 can be found under
-> >> the MDIO module in the "Advisories by Modules" section of each
-> >> SoC errata document listed below
-> >>
-> >> AM62x: https://www.ti.com/lit/er/sprz487c/sprz487c.pdf
-> >> AM64X: https://www.ti.com/lit/er/sprz457g/sprz457g.pdf
-> >> AM65X: https://www.ti.com/lit/er/sprz452i/sprz452i.pdf
-> >> J7200: https://www.ti.com/lit/er/sprz491d/sprz491d.pdf
-> >> J721E: https://www.ti.com/lit/er/sprz455d/sprz455d.pdf
-> >> J721S2: https://www.ti.com/lit/er/sprz530b/sprz530b.pdf
-> >>
-> >> Signed-off-by: Ravi Gunasekaran <r-gunasekaran@ti.com>
-> >> ---
-> >>
-> >> Changes since v1:
-> >> * For J721E, retained the incorrect SR ID and added the correct one
-> >> * Add AM65x SR2.1 to the workaround list
-> >>
-> >> v1: https://lore.kernel.org/all/20231018140009.1725-1-r-gunasekaran@ti.com/
-> >>
-> >>  drivers/net/ethernet/ti/davinci_mdio.c | 2 ++
-> >>  1 file changed, 2 insertions(+)
-> >>
-> >> diff --git a/drivers/net/ethernet/ti/davinci_mdio.c b/drivers/net/ethernet/ti/davinci_mdio.c
-> >> index 628c87dc1d28..25aaef502edc 100644
-> >> --- a/drivers/net/ethernet/ti/davinci_mdio.c
-> >> +++ b/drivers/net/ethernet/ti/davinci_mdio.c
-> >> @@ -516,9 +516,11 @@ static const struct soc_device_attribute k3_mdio_socinfo[] = {
-> >>  	{ .family = "AM64X", .revision = "SR2.0", .data = &am65_mdio_soc_data },
-> >>  	{ .family = "AM65X", .revision = "SR1.0", .data = &am65_mdio_soc_data },
-> >>  	{ .family = "AM65X", .revision = "SR2.0", .data = &am65_mdio_soc_data },
-> >> +	{ .family = "AM65X", .revision = "SR2.1", .data = &am65_mdio_soc_data },
-> >>  	{ .family = "J7200", .revision = "SR1.0", .data = &am65_mdio_soc_data },
-> >>  	{ .family = "J7200", .revision = "SR2.0", .data = &am65_mdio_soc_data },
-> >>  	{ .family = "J721E", .revision = "SR1.0", .data = &am65_mdio_soc_data },
-> >> +	{ .family = "J721E", .revision = "SR1.1", .data = &am65_mdio_soc_data },
-> >>  	{ .family = "J721E", .revision = "SR2.0", .data = &am65_mdio_soc_data },
-> >>  	{ .family = "J721S2", .revision = "SR1.0", .data = &am65_mdio_soc_data},
-> >>  	{ /* sentinel */ },
-> >>
-> > Looks like every device is impacted -> so, why not just flip the
-> > logic to indicate devices that are NOT impacted? is'nt that a smaller
-> > list?
-> >
-> 
-> At the moment, the list of unaffected devices is small. But as and when we
-> introduce more devices,
-> this list will need update. Also I feel that few years down the line, when
-> someone looks at the code,
-> a list of affected devices provides a better context as it is easier to trace it
-> back to the errata document.
+Hi Andreas,
 
-Just handle it with a different compatible if needed. There is no loss
-of readability as the check is still readable based on soc_data. but
-this removes this entire mess of interdependency of merges completely
-out. There are still ROM only spins that are happening and as far as I
-see this mess just keeps growing. Alternatively, reading some IP level
-version register helps detect the fixed versions, uses that (infact
-you should probably insist to the design team to update the revision
-for the fix for this very purpose) - that way, the ones that may have
-been missed could be limited by soc_data management.
+> Am 20.10.2023 um 20:05 schrieb Andreas Kemnade <andreas@kemnade.info>:
+>=20
+> Hi,
+>=20
+> On Fri, 20 Oct 2023 19:09:17 +0200
+> "H. Nikolaus Schaller" <hns@goldelico.com> wrote:
+>=20
+>> Hello,
+>>=20
+>> I am experiencing problems trying to git clone or remote update
+>>=20
+>> 	https://git.ti.com/git/graphics/omap5-sgx-ddk-um-linux.git
+>>=20
+>> 	Error: RPC failed; HTTP 403 curl 22 The requested URL returned =
+error: 403
+>>=20
+> andi@aktux:~/epson$ git clone =
+https://git.ti.com/git/graphics/omap5-sgx-ddk-um-linux.git
+> Cloning into 'omap5-sgx-ddk-um-linux'...
+> remote: Enumerating objects: 3010, done.
+> remote: Counting objects: 100% (489/489), done.
+> remote: Compressing objects: 100% (310/310), done.
+> remote: Total 3010 (delta 244), reused 305 (delta 132), pack-reused =
+2521
+> Receiving objects: 100% (3010/3010), 157.51 MiB | 5.13 MiB/s, done.
+> Resolving deltas: 100% (1926/1926), done.
+>=20
+> seems to work here.
 
--- 
-Regards,
-Nishanth Menon
-Key (0xDDB5849D1736249D) / Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
+Thanks for testing!
+
+Well, I was under the assumption that a fresh git clone would also not =
+work.
+
+It is strange. I can git clone. And then I can git remote update.
+But I can't git remote update the existing repositiory.
+
+Both have the same fetch/push paths:
+
+iMac:master hns$ (cd /tmp/omap5-sgx-ddk-um-linux/; git remote -v)
+origin	https://git.ti.com/git/graphics/omap5-sgx-ddk-um-linux.git =
+(fetch)
+origin	https://git.ti.com/git/graphics/omap5-sgx-ddk-um-linux.git =
+(push)
+iMac:master hns$ git remote -v | fgrep ti-sgx544-um
+iMac:master hns$=20
+ti-sgx544-um	=
+https://git.ti.com/git/graphics/omap5-sgx-ddk-um-linux.git (fetch)
+ti-sgx544-um	=
+https://git.ti.com/git/graphics/omap5-sgx-ddk-um-linux.git (push)
+iMac:master hns$
+iMac:master hns$ LANG=3DC git remote -v update ti-sgx544-um
+Fetching ti-sgx544-um
+POST git-upload-pack (155 bytes)
+POST git-upload-pack (gzip 2510 to 1184 bytes)
+POST git-upload-pack (gzip 3310 to 1590 bytes)
+POST git-upload-pack (gzip 4910 to 2399 bytes)
+POST git-upload-pack (gzip 8110 to 3987 bytes)
+POST git-upload-pack (gzip 14510 to 7223 bytes)
+POST git-upload-pack (gzip 27310 to 13649 bytes)
+POST git-upload-pack (gzip 52910 to 26557 bytes)
+POST git-upload-pack (gzip 104110 to 51889 bytes)
+POST git-upload-pack (gzip 206510 to 102496 bytes)
+POST git-upload-pack (gzip 411310 to 203766 bytes)
+POST git-upload-pack (gzip 820910 to 406391 bytes)
+POST git-upload-pack (gzip 902810 to 446829 bytes)
+POST git-upload-pack (chunked)
+error: RPC failed; HTTP 403 curl 22 The requested URL returned error: =
+403
+fatal: expected 'acknowledgments'
+error: could not fetch ti-sgx544-um
+iMac:master hns$=20
+
+So what is different with the repositories? One is empty while the other =
+one already contains the Linux tree and more.
+
+Therefore it seems to be that the local git index makes git (v2.42) send =
+a request the server can't answer?
+
+So I'll try to force git remote update fetch a fresh index (if that can =
+be done).
+Or look if I find how the local .git repo is broken.
+
+BR and thanks,
+Nikolaus=
