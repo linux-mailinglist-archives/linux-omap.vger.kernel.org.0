@@ -2,135 +2,118 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 98B607D237C
-	for <lists+linux-omap@lfdr.de>; Sun, 22 Oct 2023 17:19:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1F647D2623
+	for <lists+linux-omap@lfdr.de>; Sun, 22 Oct 2023 23:47:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231843AbjJVPTZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 22 Oct 2023 11:19:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53868 "EHLO
+        id S232655AbjJVVrU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 22 Oct 2023 17:47:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229500AbjJVPTY (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 22 Oct 2023 11:19:24 -0400
-Received: from mail-qk1-x736.google.com (mail-qk1-x736.google.com [IPv6:2607:f8b0:4864:20::736])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63B90F4;
-        Sun, 22 Oct 2023 08:19:22 -0700 (PDT)
-Received: by mail-qk1-x736.google.com with SMTP id af79cd13be357-7789aed0e46so176735285a.0;
-        Sun, 22 Oct 2023 08:19:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697987961; x=1698592761; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=FmSfe58FfVT1+C5BDfWt5zaNsraT3ia/sP6v6KkffFo=;
-        b=KBLZ88Aiv2ZHtpomUHwExfmgCScpEe5auOh5on9De+5JWbcUdJJNfuNvF95hnQTSbR
-         NClHioRXr6wPajPBRa+9Wq5nBmKZTtBKu0R5A5jqe5Dz9RZ37D8BHRDN7oVV3Xh7mgVF
-         jZE/K2Yk9YUUm4ZK/sLwDu4A9b6Ek8edipmGKmemXe6JVXaZQo/Yi7oH0Q3VreXxl6C3
-         kS47Ty+mqGwSXgYT5eUeDVObJbloQQ+mRxs3IaONj1H3XgJAUdsGO0TnPUiZRpYFJeJh
-         LBTYUppDV+28YaKIfeLyzRGjtBYWcydWuy5WZt0gphflSCFdvPhHQu8ojdiAZJd5n7LQ
-         jIlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697987961; x=1698592761;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=FmSfe58FfVT1+C5BDfWt5zaNsraT3ia/sP6v6KkffFo=;
-        b=JRcHccqP3ynaiIvggexbQDcmNUMeWhKHDxyTC26SmjNRW63DnyXtjd+fAawMt4S+bW
-         G3XNdoBPi1gUZkfueUUdNxjr6Vazl8mp7ZIrCD2rdtrpq1LwstyftTxDd2FHXiyekjHc
-         UcbaKCMxZ0ubNw60/v48R0o64ayP6plmxwcoRhg/BvnI8Ic0sEo7YIAIiHzugZZZuY0G
-         9OGy4Uy4rkn+rzht2aQAXu5+1VSo4NNemtluaXZB6sPXE1jskJzCFJcLfm7dMDvB0AFH
-         c5+ZcJfnlB85+UycNEJAdkeEO/3ckNdoOtNGGeVftyHRcZA6wh8P6ghDQV+mcGjR8P1q
-         dYVQ==
-X-Gm-Message-State: AOJu0YzjAsN+JZRl5NzfjAcmjHRAjfxIV60G+6wDAV4nrlSUwCwGFZ47
-        tB2sBLayq7tm14oTHCKB+isk9dB+9jI=
-X-Google-Smtp-Source: AGHT+IE/gA5UWq6LlbsX9oa0mqiocbWbKDzKWG4G9OkV3eAIis0M+5aj+qluWlzuCINq7/rYWjEW/A==
-X-Received: by 2002:a05:620a:444c:b0:777:27f9:7e54 with SMTP id w12-20020a05620a444c00b0077727f97e54mr9324065qkp.50.1697987960936;
-        Sun, 22 Oct 2023 08:19:20 -0700 (PDT)
-Received: from aford-System-Version.lan ([2601:447:d002:5be:a07c:e734:336b:c675])
-        by smtp.gmail.com with ESMTPSA id m26-20020ae9e01a000000b007726002d69esm2084375qkk.10.2023.10.22.08.19.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Oct 2023 08:19:20 -0700 (PDT)
-From:   Adam Ford <aford173@gmail.com>
-To:     netdev@vger.kernel.org
-Cc:     aford@beaconembedded.com, Adam Ford <aford173@gmail.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH V2] net: ethernet: davinci_emac: Use MAC Address from Device Tree
-Date:   Sun, 22 Oct 2023 10:19:11 -0500
-Message-Id: <20231022151911.4279-1-aford173@gmail.com>
-X-Mailer: git-send-email 2.40.1
+        with ESMTP id S229452AbjJVVrT (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 22 Oct 2023 17:47:19 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B825E5;
+        Sun, 22 Oct 2023 14:47:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1698011237; x=1729547237;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Dx6B+Uq17MjpqqV7Z+3SvjBqDXDUCQ6dU1sRUyxAXsY=;
+  b=PpsoXpZi4E7W4NxtoZAF+MY763xcXHfoQRcjVJN8EemRe5DSrAt8mNbm
+   RLp0660Xd8JbPHUqOeGfs/Gkx2p9+RvHrtLcxeOTpB9SDUQgYyg+32Lih
+   1vbghHgs06/nEousQH12YpmzHPMkH/0WJd0pGsyhKrGRquid+rj3BC31r
+   buF3DCjIz873nrtWuNx6PTs7PXrl5K5CfSyRatKBe+MYgbLvb5iI6s12E
+   Y7PRuSa5L7X4NJQwo76uEo5EXfGS4T8DR8lCz8DqXgc/uI+aon3pglW6J
+   hUUta8amCSSq5qU1Xiwe+0jVOCvu672nBMHuyepaPwtRB8i0FeipZ+L1Q
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10871"; a="390621599"
+X-IronPort-AV: E=Sophos;i="6.03,244,1694761200"; 
+   d="scan'208";a="390621599"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2023 14:47:16 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10871"; a="901624719"
+X-IronPort-AV: E=Sophos;i="6.03,244,1694761200"; 
+   d="scan'208";a="901624719"
+Received: from lkp-server01.sh.intel.com (HELO 8917679a5d3e) ([10.239.97.150])
+  by fmsmga001.fm.intel.com with ESMTP; 22 Oct 2023 14:44:55 -0700
+Received: from kbuild by 8917679a5d3e with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qugHs-0006Hg-2m;
+        Sun, 22 Oct 2023 21:47:08 +0000
+Date:   Mon, 23 Oct 2023 05:46:42 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Duje =?utf-8?Q?Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Haojian Zhuang <haojian.zhuang@linaro.org>,
+        Lubomir Rintel <lkundrak@v3.sk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Tony Luck <tony.luck@intel.com>,
+        "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+Cc:     oe-kbuild-all@lists.linux.dev, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-omap@vger.kernel.org, linux-hardening@vger.kernel.org,
+        Duje =?utf-8?Q?Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
+Subject: Re: [PATCH v6 7/9] arm64: Kconfig.platforms: Add config for Marvell
+ PXA1908 platform
+Message-ID: <202310230518.zs9Qpg3j-lkp@intel.com>
+References: <20231010-pxa1908-lkml-v6-7-b2fe09240cf8@skole.hr>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231010-pxa1908-lkml-v6-7-b2fe09240cf8@skole.hr>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Currently there is a device tree entry called "local-mac-address"
-which can be filled by the bootloader or manually set.This is
-useful when the user does not want to use the MAC address
-programmed into the SoC.
+Hi Duje,
 
-Currently, the davinci_emac reads the MAC from the DT, copies
-it from pdata->mac_addr to priv->mac_addr, then blindly overwrites
-it by reading from registers in the SoC, and falls back to a
-random MAC if it's still not valid.  This completely ignores any
-MAC address in the device tree.
+kernel test robot noticed the following build errors:
 
-In order to use the local-mac-address, check to see if the contents
-of priv->mac_addr are valid before falling back to reading from the
-SoC when the MAC address is not valid.
+[auto build test ERROR on 94f6f0550c625fab1f373bb86a6669b45e9748b3]
 
-Signed-off-by: Adam Ford <aford173@gmail.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
----
-V2:  Rebase, add R-B tag, and post stand-alone for netdev branch, since
-     the device tree patch has already been accepted via the omap tree.
+url:    https://github.com/intel-lab-lkp/linux/commits/Duje-Mihanovi/clk-mmp-Switch-to-use-struct-u32_fract-instead-of-custom-one/20231011-012919
+base:   94f6f0550c625fab1f373bb86a6669b45e9748b3
+patch link:    https://lore.kernel.org/r/20231010-pxa1908-lkml-v6-7-b2fe09240cf8%40skole.hr
+patch subject: [PATCH v6 7/9] arm64: Kconfig.platforms: Add config for Marvell PXA1908 platform
+config: arm64-allyesconfig (https://download.01.org/0day-ci/archive/20231023/202310230518.zs9Qpg3j-lkp@intel.com/config)
+compiler: aarch64-linux-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231023/202310230518.zs9Qpg3j-lkp@intel.com/reproduce)
 
-     
-diff --git a/drivers/net/ethernet/ti/davinci_emac.c b/drivers/net/ethernet/ti/davinci_emac.c
-index 23f8bc1cd20d..b0950a318c42 100644
---- a/drivers/net/ethernet/ti/davinci_emac.c
-+++ b/drivers/net/ethernet/ti/davinci_emac.c
-@@ -1928,18 +1928,20 @@ static int davinci_emac_probe(struct platform_device *pdev)
- 		goto err_free_rxchan;
- 	ndev->irq = rc;
- 
--	rc = davinci_emac_try_get_mac(pdev, res_ctrl ? 0 : 1, priv->mac_addr);
--	if (!rc)
--		eth_hw_addr_set(ndev, priv->mac_addr);
--
-+	/* If the MAC address is not present, read the registers from the SoC */
- 	if (!is_valid_ether_addr(priv->mac_addr)) {
--		/* Use random MAC if still none obtained. */
--		eth_hw_addr_random(ndev);
--		memcpy(priv->mac_addr, ndev->dev_addr, ndev->addr_len);
--		dev_warn(&pdev->dev, "using random MAC addr: %pM\n",
--			 priv->mac_addr);
-+		rc = davinci_emac_try_get_mac(pdev, res_ctrl ? 0 : 1, priv->mac_addr);
-+		if (!rc)
-+			eth_hw_addr_set(ndev, priv->mac_addr);
-+
-+		if (!is_valid_ether_addr(priv->mac_addr)) {
-+			/* Use random MAC if still none obtained. */
-+			eth_hw_addr_random(ndev);
-+			memcpy(priv->mac_addr, ndev->dev_addr, ndev->addr_len);
-+			dev_warn(&pdev->dev, "using random MAC addr: %pM\n",
-+				 priv->mac_addr);
-+		}
- 	}
--
- 	ndev->netdev_ops = &emac_netdev_ops;
- 	ndev->ethtool_ops = &ethtool_ops;
- 	netif_napi_add(ndev, &priv->napi, emac_poll);
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202310230518.zs9Qpg3j-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   /tmp/cc7DnLj6.s: Assembler messages:
+>> /tmp/cc7DnLj6.s:2851: Error: unknown mnemonic `ldmia' -- `ldmia x23,{r0,r1,r2,r3}'
+>> /tmp/cc7DnLj6.s:2852: Error: unknown mnemonic `stmia' -- `stmia x19!,{r0,r1,r2,r3}'
+>> /tmp/cc7DnLj6.s:3125: Error: unknown mnemonic `ldmia' -- `ldmia x19!,{r0,r1,r2,r3}'
+>> /tmp/cc7DnLj6.s:3126: Error: unknown mnemonic `stmia' -- `stmia x23,{r0,r1,r2,r3}'
+
+Kconfig warnings: (for reference only)
+   WARNING: unmet direct dependencies detected for SND_ARM
+   Depends on [n]: SOUND [=y] && SND [=y] && ARM
+   Selected by [y]:
+   - SND_MMP_SOC_SSPA [=y] && SOUND [=y] && SND [=y] && SND_SOC [=y] && ARCH_MMP [=y]
+
 -- 
-2.40.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
