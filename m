@@ -2,118 +2,105 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E1F647D2623
-	for <lists+linux-omap@lfdr.de>; Sun, 22 Oct 2023 23:47:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 013537D28DF
+	for <lists+linux-omap@lfdr.de>; Mon, 23 Oct 2023 05:09:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232655AbjJVVrU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 22 Oct 2023 17:47:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50800 "EHLO
+        id S229451AbjJWDJJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 22 Oct 2023 23:09:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57332 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229452AbjJVVrT (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 22 Oct 2023 17:47:19 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B825E5;
-        Sun, 22 Oct 2023 14:47:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1698011237; x=1729547237;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Dx6B+Uq17MjpqqV7Z+3SvjBqDXDUCQ6dU1sRUyxAXsY=;
-  b=PpsoXpZi4E7W4NxtoZAF+MY763xcXHfoQRcjVJN8EemRe5DSrAt8mNbm
-   RLp0660Xd8JbPHUqOeGfs/Gkx2p9+RvHrtLcxeOTpB9SDUQgYyg+32Lih
-   1vbghHgs06/nEousQH12YpmzHPMkH/0WJd0pGsyhKrGRquid+rj3BC31r
-   buF3DCjIz873nrtWuNx6PTs7PXrl5K5CfSyRatKBe+MYgbLvb5iI6s12E
-   Y7PRuSa5L7X4NJQwo76uEo5EXfGS4T8DR8lCz8DqXgc/uI+aon3pglW6J
-   hUUta8amCSSq5qU1Xiwe+0jVOCvu672nBMHuyepaPwtRB8i0FeipZ+L1Q
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10871"; a="390621599"
-X-IronPort-AV: E=Sophos;i="6.03,244,1694761200"; 
-   d="scan'208";a="390621599"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2023 14:47:16 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10871"; a="901624719"
-X-IronPort-AV: E=Sophos;i="6.03,244,1694761200"; 
-   d="scan'208";a="901624719"
-Received: from lkp-server01.sh.intel.com (HELO 8917679a5d3e) ([10.239.97.150])
-  by fmsmga001.fm.intel.com with ESMTP; 22 Oct 2023 14:44:55 -0700
-Received: from kbuild by 8917679a5d3e with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qugHs-0006Hg-2m;
-        Sun, 22 Oct 2023 21:47:08 +0000
-Date:   Mon, 23 Oct 2023 05:46:42 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Duje =?utf-8?Q?Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Haojian Zhuang <haojian.zhuang@linaro.org>,
-        Lubomir Rintel <lkundrak@v3.sk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Tony Luck <tony.luck@intel.com>,
-        "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-Cc:     oe-kbuild-all@lists.linux.dev, linux-clk@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-omap@vger.kernel.org, linux-hardening@vger.kernel.org,
-        Duje =?utf-8?Q?Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
-Subject: Re: [PATCH v6 7/9] arm64: Kconfig.platforms: Add config for Marvell
- PXA1908 platform
-Message-ID: <202310230518.zs9Qpg3j-lkp@intel.com>
-References: <20231010-pxa1908-lkml-v6-7-b2fe09240cf8@skole.hr>
+        with ESMTP id S233362AbjJWDIw (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 22 Oct 2023 23:08:52 -0400
+X-Greylist: delayed 91 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 22 Oct 2023 20:08:26 PDT
+Received: from omta35.uswest2.a.cloudfilter.net (omta35.uswest2.a.cloudfilter.net [35.89.44.34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDEBCD53
+        for <linux-omap@vger.kernel.org>; Sun, 22 Oct 2023 20:08:26 -0700 (PDT)
+Received: from eig-obgw-5009a.ext.cloudfilter.net ([10.0.29.176])
+        by cmsmtp with ESMTPS
+        id ujIZqZFXvhqFdulHLqeIO3; Mon, 23 Oct 2023 03:06:55 +0000
+Received: from 162-240-83-27.unifiedlayer.com ([137.59.148.200])
+        by cmsmtp with ESMTPS
+        id ulHKqnmF0I9guulHKq39xt; Mon, 23 Oct 2023 03:06:54 +0000
+X-Authority-Analysis: v=2.4 cv=Ds1FRUz+ c=1 sm=1 tr=0 ts=6535e34e
+ a=MgGYFET5X96nYrQ76toljg==:117 a=/5CYD1hNzocxg58dEBddTw==:17
+ a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
+ a=kj9zAlcOel0A:10 a=bhdUkHdE2iEA:10 a=lUDAUsI-kUQA:10
+ a=9m64_h_j2zU8ieQoq-sA:9 a=CjuIK1q_8ugA:10
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=35686686.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        Message-ID:Reply-To:Subject:To:From:Date:MIME-Version:Sender:Cc:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=Dm1nus89JLbD/65ItGQLhdR/UwQLhddPM+BxEJ7yOwM=; b=MN+yXIwHiRnBgKpXu8GtKgH+yZ
+        zpyuGTnBtvuEKayduiQo0EgNm3JCXVPaUNb0hpZOcsUkBapsrtfW84xC04OXbshCjPyXX57MO/85L
+        4PXC4jRcJzzaX7lGfY2Yf4s0yWcB2jiyYSB0/tTSVno1FgigW/lNbpZkxA4TGW7vHq/OyOs0K+Dp1
+        QFqQvtTJOQHPpldYV4y07bp66TynO9+bwAS77xCyCy0r3F4TEKgUbK3g2At1eoj1yIoAvrz3TRAtJ
+        wmyjbwdUtwi/nzWndZwB8cJAkXzv7W1iqFDcX8Nv5MzXEk5RA9zpXEQVHKK9La5U7AZKjyrwTlL64
+        DJWZBumA==;
+Received: from md-hk-12.webhostbox.net ([137.59.148.200]:50410)
+        by md-hk-12.webhostbox.net with esmtpa (Exim 4.96.2)
+        (envelope-from <jc@35686686.com>)
+        id 1qulHA-003XJ4-0B;
+        Mon, 23 Oct 2023 08:36:44 +0530
+Received: from [181.214.94.254]
+ by 35686686.com
+ with HTTP (HTTP/1.1 POST); Mon, 23 Oct 2023 08:36:36 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231010-pxa1908-lkml-v6-7-b2fe09240cf8@skole.hr>
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Date:   Mon, 23 Oct 2023 11:06:36 +0800
+From:   jc@35686686.com
+To:     undisclosed-recipients:;
+Subject: LOAN SCHEME
+Reply-To: info@kafurinvestment.com
+Mail-Reply-To: info@kafurinvestment.com
+User-Agent: Roundcube Webmail/1.6.0
+Message-ID: <0337743eb695ab1bd07d3ca2f79a4e90@35686686.com>
+X-Sender: jc@35686686.com
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - md-hk-12.webhostbox.net
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - 35686686.com
+X-BWhitelist: no
+X-Source-IP: 137.59.148.200
+X-Source-L: No
+X-Exim-ID: 1qulHA-003XJ4-0B
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: md-hk-12.webhostbox.net [137.59.148.200]:50410
+X-Source-Auth: jc@35686686.com
+X-Email-Count: 67
+X-Org:  HG=dishared_whb_net_legacy;ORG=directi;
+X-Source-Cap: ZmJkZXN4amc7Ymx1ZWhvc3Q7bWQtaGstMTIud2ViaG9zdGJveC5uZXQ=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfN08q2LXIbHcJzmKOPMCQyYIxWvtmvGA8yhVVaOFWqygPQKR7SbOHpp6yzTtEC30z0ajU5GrGxXtxPLFeez2cYlUnzhANNq9txDAFtaW4DVcqFaXMGil
+ YJOEZMl53A41SKZiW9rH+L/YopJ7HACUu0mtbWrUIchWyOEyDcQToRhvkLEDa2XVKrhkBw9wGlQVgB3f/7rUgLGWx0xOu4HVispIope8rp8nQIA0O07BMmFU
+X-Spam-Status: No, score=1.5 required=5.0 tests=BAYES_50,DKIM_INVALID,
+        DKIM_SIGNED,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
+        SPF_NONE,SUBJ_ALL_CAPS autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Duje,
+Greetings:
 
-kernel test robot noticed the following build errors:
+I am Mr. Faheem Badawi, working as a project facilitator for (Kafur 
+Project Management Services) also, with numerous investors worldwide. As 
+a means of widening our global portfolio we would like to know if you 
+have any project(s) requiring funding. We also offer business, personal 
+and home loans to finance new projects as well as expansion capital.
 
-[auto build test ERROR on 94f6f0550c625fab1f373bb86a6669b45e9748b3]
+For more updates on the mode of operation send a reply.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Duje-Mihanovi/clk-mmp-Switch-to-use-struct-u32_fract-instead-of-custom-one/20231011-012919
-base:   94f6f0550c625fab1f373bb86a6669b45e9748b3
-patch link:    https://lore.kernel.org/r/20231010-pxa1908-lkml-v6-7-b2fe09240cf8%40skole.hr
-patch subject: [PATCH v6 7/9] arm64: Kconfig.platforms: Add config for Marvell PXA1908 platform
-config: arm64-allyesconfig (https://download.01.org/0day-ci/archive/20231023/202310230518.zs9Qpg3j-lkp@intel.com/config)
-compiler: aarch64-linux-gcc (GCC) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231023/202310230518.zs9Qpg3j-lkp@intel.com/reproduce)
+Waiting for your prompt response.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202310230518.zs9Qpg3j-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   /tmp/cc7DnLj6.s: Assembler messages:
->> /tmp/cc7DnLj6.s:2851: Error: unknown mnemonic `ldmia' -- `ldmia x23,{r0,r1,r2,r3}'
->> /tmp/cc7DnLj6.s:2852: Error: unknown mnemonic `stmia' -- `stmia x19!,{r0,r1,r2,r3}'
->> /tmp/cc7DnLj6.s:3125: Error: unknown mnemonic `ldmia' -- `ldmia x19!,{r0,r1,r2,r3}'
->> /tmp/cc7DnLj6.s:3126: Error: unknown mnemonic `stmia' -- `stmia x23,{r0,r1,r2,r3}'
-
-Kconfig warnings: (for reference only)
-   WARNING: unmet direct dependencies detected for SND_ARM
-   Depends on [n]: SOUND [=y] && SND [=y] && ARM
-   Selected by [y]:
-   - SND_MMP_SOC_SSPA [=y] && SOUND [=y] && SND [=y] && SND_SOC [=y] && ARCH_MMP [=y]
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Kind regards,
+Faheem Badawi.
+(Financial Advisory - KPMS)
