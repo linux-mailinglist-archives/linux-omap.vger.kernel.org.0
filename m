@@ -2,61 +2,82 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C4747D69ED
-	for <lists+linux-omap@lfdr.de>; Wed, 25 Oct 2023 13:21:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B76B7D6F45
+	for <lists+linux-omap@lfdr.de>; Wed, 25 Oct 2023 16:43:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230217AbjJYLVt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 25 Oct 2023 07:21:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37654 "EHLO
+        id S1343552AbjJYOUP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 25 Oct 2023 10:20:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60758 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229456AbjJYLVt (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 25 Oct 2023 07:21:49 -0400
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93E84AC;
-        Wed, 25 Oct 2023 04:21:46 -0700 (PDT)
-Received: by mail-ed1-x52a.google.com with SMTP id 4fb4d7f45d1cf-53f6ccea1eeso8602373a12.3;
-        Wed, 25 Oct 2023 04:21:46 -0700 (PDT)
+        with ESMTP id S232846AbjJYOUO (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 25 Oct 2023 10:20:14 -0400
+Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97BB399;
+        Wed, 25 Oct 2023 07:20:12 -0700 (PDT)
+Received: by mail-lf1-x130.google.com with SMTP id 2adb3069b0e04-507cee17b00so8441948e87.2;
+        Wed, 25 Oct 2023 07:20:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698232905; x=1698837705; darn=vger.kernel.org;
-        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=E2rHfcsjlV4rlBGbf4CfwSEr1+dgsfk+VxIq/saYt7A=;
-        b=QH0zn8AfCu8yLe24O97F19CUDfYyn+D7LnEY0TkkmKEz5V/1ZTA2X+oFxl7IIUytjG
-         qeuTimXeMYhkcZxvvonlb26y2shQbxQSXEZvHWg26eB2xbgBLGJaSS30UVc3xcswD/Ru
-         +mMPx8ewrIo9Itjt1wwLwpOLrNq2MrFICSE/ufd/Y6n81bu6NIq5U1uzR8l1frnc9eFu
-         5t6HGUDogPpbaIC5ubC/U/Hqk6YGFJ0koPIiljYGgT3wpNcrxFlrKDy4pDfszp02vtfX
-         KouhZHXlCpAC50EgERnsVae3WU/MP3xUBygq/t/a2CBg0OJHfB8jQx8lgqmZ4pyMciCJ
-         cMPA==
+        d=gmail.com; s=20230601; t=1698243611; x=1698848411; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=KXdFX0UY5tniJLRDcl1ufSs5c/hl+EfLWW5bDdsq8SA=;
+        b=WemKRxkbCgLhSmp6vTOqZfbOnC1Ume8v/AP9mdV6ky5315lfssgVvsk9/O4UA3dtf5
+         zTIcCvlzFA8+wiB0OzCbzG3bvIkt7tVI0+jamk5iXO30Koup6w2ug0aBcV+66MFmiCpp
+         lny0FiAseXqcw79Na2A8X8QGqr+33mt15gBcajIn+0vcFU392TlGR/Zm7NJWXuaXQSS1
+         DWcCVyVka/K57VbziPgYxSuLX9zYNt14X3IXKFGp2pNlF7ScGh3ze1i+xySyX6Qk6PtK
+         2OSb+gH8AeFs53B99+2bdBTekfB05AEBWECnrKzVHQ1RXbR/Qz+mxSeF0Oq6udHzxZJu
+         mtAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698232905; x=1698837705;
-        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=E2rHfcsjlV4rlBGbf4CfwSEr1+dgsfk+VxIq/saYt7A=;
-        b=ogyiRrtICWbTri2PLWhU7dpLbXnGyz4kUuPvBpEbTeNW6Yd2y6TuiYJYH+6lI9yTrK
-         prtMCC8DGsHlkay2Km/rNinscgg6SU9HBiWw7AMmkHhwO5d/GY+DW3LaX/p8oFU83QED
-         oP3hAg0zD0O0htKMIvQcX0nonWtN9xLWolkZfE562LOQfnC8b1OJFWdsHRZHkVmqpGsj
-         1RlYWxX8pL1i6ldp1H5IYZcLAbf2H1UyeYgT+q13huPeYUtJB/qoSY9Q6TYjohzJKzz7
-         wINFf8rbI/ytnQDP4rGqfx0F5yajyjaGa7LsN4WOlJDfdfSiryGs0n0d3EB3aDwiCacL
-         KcYA==
-X-Gm-Message-State: AOJu0YzrL7lLR71sumFjbMAR+c8uz12FsLJQDk8b/05e0KgJaxoLdq+b
-        MMNQ8lO7neMZJPmXRexcGu4tX0D0VVg=
-X-Google-Smtp-Source: AGHT+IGPuYW/6V1UmkcJQL53Gndt5qS6mrifdkq1FD6CQye3uPK1nErdTXZVKKpQwX3DZ2hm9yT2yA==
-X-Received: by 2002:a17:906:6a0e:b0:9be:45b3:1c3d with SMTP id qw14-20020a1709066a0e00b009be45b31c3dmr9871645ejc.48.1698232904750;
-        Wed, 25 Oct 2023 04:21:44 -0700 (PDT)
-Received: from felia.fritz.box ([2a02:810d:7e40:14b0:2cbd:f9ec:f035:ebea])
-        by smtp.gmail.com with ESMTPSA id xa22-20020a170907b9d600b0099bd1ce18fesm9841288ejc.10.2023.10.25.04.21.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Oct 2023 04:21:44 -0700 (PDT)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Russell King <linux@armlinux.org.uk>,
-        Arnd Bergmann <arnd@arndb.de>, soc@kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] arm: debug: reuse the config DEBUG_OMAP2UART{1,2} for OMAP{3,4,5}
-Date:   Wed, 25 Oct 2023 13:21:36 +0200
-Message-Id: <20231025112136.3445-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        d=1e100.net; s=20230601; t=1698243611; x=1698848411;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=KXdFX0UY5tniJLRDcl1ufSs5c/hl+EfLWW5bDdsq8SA=;
+        b=R3ZlUxyD2zh+JpYOB7HMCrAqMHN75z5QCmTCnonkYz9z1Ca702MrExC77psAwRyu6a
+         F98hLgA6uTmvYKIAtmeKyvJ1WX2kWgppmzlHMoP3Emqv1neim51vN0FAMqDU9KYfRNV6
+         5dIUv4BMq+94pGoQxYfdl+hedgEGgGkAxOATOuDpyV6zrtlepiL3vKWL80DMc5l+FlrG
+         W1+Q0qVBThey78b6Vkt+Iu5LusemWg3/YyCagttIwWnCQV2nb2U0mbNAQURVrobp7vtD
+         poitG53P4qaJCp5MlKjZPDZj6FgYHJDPCE7ZyRa+QeoF/EoDk0BcHT4+Ka+EibCWOtds
+         Rg2w==
+X-Gm-Message-State: AOJu0Yy52ICEV5JT68A6Ug/MMGDEVLsQaDM5s8NKGr9mOp7z3OkX+oML
+        OE1CjydG7GqeUiHtNb/QyKc=
+X-Google-Smtp-Source: AGHT+IHCJiQ2e6pDH3+U3/wVqmKSJcAM0uK7m8zA5flWq6iZTKh/qG9TOso4O1h1Ce74ljz0EvAsIw==
+X-Received: by 2002:ac2:5550:0:b0:503:258f:fd1b with SMTP id l16-20020ac25550000000b00503258ffd1bmr11409838lfk.18.1698243610440;
+        Wed, 25 Oct 2023 07:20:10 -0700 (PDT)
+Received: from [192.168.76.157] (85-76-164-65-nat.elisa-mobile.fi. [85.76.164.65])
+        by smtp.gmail.com with ESMTPSA id x13-20020ac25dcd000000b005041ce44bbdsm2568600lfq.5.2023.10.25.07.20.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 25 Oct 2023 07:20:09 -0700 (PDT)
+Message-ID: <a0db9dbb-df0e-406a-9a88-2a6968ec1469@gmail.com>
+Date:   Wed, 25 Oct 2023 17:21:12 +0300
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] ASoC: ti: omap-mcbsp: Ignore errors for getting
+ fck_src
+To:     Andreas Kemnade <andreas@kemnade.info>
+Cc:     Tony Lindgren <tony@atomide.com>, bcousson@baylibre.com,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        conor+dt@kernel.org, lgirdwood@gmail.com, broonie@kernel.org,
+        perex@perex.cz, tiwai@suse.com, jarkko.nikula@bitmer.com,
+        dmitry.torokhov@gmail.com, linux-omap@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        alsa-devel@alsa-project.org
+References: <20230705190324.355282-1-andreas@kemnade.info>
+ <20230705190324.355282-2-andreas@kemnade.info>
+ <7d58d52d-2087-45af-b29e-2515b63ead13@gmail.com>
+ <20230920063353.GQ5285@atomide.com>
+ <dac768d2-2c66-4d6b-b3d3-d1ef69103c76@gmail.com>
+ <20230921121626.GT5285@atomide.com> <20231006102348.GK34982@atomide.com>
+ <20231006213003.0fbac87a@aktux> <20231007062518.GM34982@atomide.com>
+ <20231007091156.588d7ba1@aktux>
+ <db511d14-f2fe-4b4e-bd13-223e7a33f933@gmail.com>
+ <20231013132503.25d63933@aktux>
+Content-Language: en-US
+From:   =?UTF-8?Q?P=C3=A9ter_Ujfalusi?= <peter.ujfalusi@gmail.com>
+In-Reply-To: <20231013132503.25d63933@aktux>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -67,53 +88,47 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Commit d2b310b0234c ("ARM: debug: Use generic 8250 debug_ll for omap2 and
-omap3/4/5 common uarts") adds address definitions of DEBUG_UART_PHYS for
-OMAP2, OMAP3, OMAP4 and OMAP5 in ./arch/arm/Kconfig.debug.
 
-These definitions depend on DEBUG_OMAP{2,3,4,5}UART{1,2}; however, only
-DEBUG_OMAP2UART{1,2} are defined in ./arch/arm/Kconfig.debug, and
-DEBUG_OMAP{3,4,5}UART{1,2} are not defined. Hence, the script
-./scripts/checkkconfigsymbols.py warns here on non-existing symbols.
-Simply reuse the config DEBUG_OMAP2UART{1,2}; there is no need to define
-separate config symbols for OMAP{3,4,5}. So, just delete the dead
-references to DEBUG_OMAP{3,4,5}UART{1,2}.
+On 13/10/2023 14:25, Andreas Kemnade wrote:
+>> I guess it is because of the pm_runtime_put_sync() in the
+>> omap2_mcbsp_set_clks_src() around the fclk re-parenting.
+>> That is a bit dubious thing for sure. We need to disable the device to
+>> be able to re-parent the fclk but if we disable the device it is going
+>> to be powered down, right? I think we have appropriate context handling,
+>> so it might work, but it is certainly not a rock solid code... If you
+>> have a stream running already, you don't really want to kill the McBSP.
+>>
+> Ok, so if the device is powered of at omap2_mcbsp_set_clks_src() 
+> we get the usage count underflow, and the counter is incremented
+> immediately again in the runtime put function. So things get out of balance...
+> I'll check Tony's fix here.
+> 
+>> The problem is that this mux is outside of the McBSP IP, so we need a
+>> system level (iow, clk API) way to change it runtime.
+>>
+>> What is the machine driver where this happens? If you set the sysclk in
+>> hw_params of the machine driver, it will be OK, but if you do that in
+>> probe time then it is likely going to fail as you experienced
+>>
+> As you see in the other patches of this series,
+> it is a simple-audio-card with a tlv320aic3x codec
+> in combination with the mcbsp.
 
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
----
- arch/arm/Kconfig.debug | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+To be honest I would be happier if we can just remove the whole
+omap2_mcbsp_set_clks_src() and leave the CLKS source selection outside
+of the driver.
+But omap3pandora is selecting external clock as parent
+(OMAP_MCBSP_SYSCLK_CLKS_EXT - in hw_params, so it actually works) and I
+don't know what happens if this functionality is removed. Likely going
+to break Pandora.
+That is fixable, but what worries me is this comment and code:
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/sound/soc/ti/omap-mcbsp.c#n388
 
-diff --git a/arch/arm/Kconfig.debug b/arch/arm/Kconfig.debug
-index b407b7b9b715..fc2b41d41447 100644
---- a/arch/arm/Kconfig.debug
-+++ b/arch/arm/Kconfig.debug
-@@ -1593,10 +1593,8 @@ config DEBUG_UART_PHYS
- 	default 0x48020000 if DEBUG_OMAP4UART3 || DEBUG_TI81XXUART1
- 	default 0x48022000 if DEBUG_TI81XXUART2
- 	default 0x48024000 if DEBUG_TI81XXUART3
--	default 0x4806a000 if DEBUG_OMAP2UART1 || DEBUG_OMAP3UART1 || \
--				DEBUG_OMAP4UART1 || DEBUG_OMAP5UART1
--	default 0x4806c000 if DEBUG_OMAP2UART2 || DEBUG_OMAP3UART2 || \
--				DEBUG_OMAP4UART2 || DEBUG_OMAP5UART2
-+	default 0x4806a000 if DEBUG_OMAP2UART1
-+	default 0x4806c000 if DEBUG_OMAP2UART2
- 	default 0x4806e000 if DEBUG_OMAP2UART3 || DEBUG_OMAP4UART4
- 	default 0x49020000 if DEBUG_OMAP3UART3
- 	default 0x49042000 if DEBUG_OMAP3UART4
-@@ -1719,10 +1717,8 @@ config DEBUG_UART_VIRT
- 	default 0xfa020000 if DEBUG_OMAP4UART3 || DEBUG_TI81XXUART1
- 	default 0xfa022000 if DEBUG_TI81XXUART2
- 	default 0xfa024000 if DEBUG_TI81XXUART3
--	default 0xfa06a000 if DEBUG_OMAP2UART1 || DEBUG_OMAP3UART1 || \
--				DEBUG_OMAP4UART1 || DEBUG_OMAP5UART1
--	default 0xfa06c000 if DEBUG_OMAP2UART2 || DEBUG_OMAP3UART2 || \
--				DEBUG_OMAP4UART2 || DEBUG_OMAP5UART2
-+	default 0xfa06a000 if DEBUG_OMAP2UART1
-+	default 0xfa06c000 if DEBUG_OMAP2UART2
- 	default 0xfa06e000 if DEBUG_OMAP2UART3 || DEBUG_OMAP4UART4
- 	default 0xfa71e000 if DEBUG_QCOM_UARTDM
- 	default 0xfb009000 if DEBUG_REALVIEW_STD_PORT
+Which is added by me a long time ago:
+e386615c01d37 ("ASoC: omap-mcbsp: When closing the port select PRCM
+source for CLKS signal")
+
+I'm not sure if this is possible to do in any other way.
+
 -- 
-2.17.1
-
+Péter
