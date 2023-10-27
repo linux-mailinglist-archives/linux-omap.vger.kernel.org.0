@@ -2,100 +2,76 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F07B7D8D43
-	for <lists+linux-omap@lfdr.de>; Fri, 27 Oct 2023 04:51:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C8EB7D9EBB
+	for <lists+linux-omap@lfdr.de>; Fri, 27 Oct 2023 19:18:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230307AbjJ0CvR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 26 Oct 2023 22:51:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52614 "EHLO
+        id S235142AbjJ0RS1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 27 Oct 2023 13:18:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229437AbjJ0CvQ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 26 Oct 2023 22:51:16 -0400
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84349CA;
-        Thu, 26 Oct 2023 19:51:14 -0700 (PDT)
-Received: by mail-pl1-x643.google.com with SMTP id d9443c01a7336-1ca3c63d7f0so2861165ad.1;
-        Thu, 26 Oct 2023 19:51:14 -0700 (PDT)
+        with ESMTP id S235214AbjJ0RSQ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 27 Oct 2023 13:18:16 -0400
+Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1254819A7
+        for <linux-omap@vger.kernel.org>; Fri, 27 Oct 2023 10:17:01 -0700 (PDT)
+Received: by mail-ej1-x634.google.com with SMTP id a640c23a62f3a-9adca291f99so344725466b.2
+        for <linux-omap@vger.kernel.org>; Fri, 27 Oct 2023 10:17:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698375074; x=1698979874; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=UwGrPcEsgflO09HAy5rdI9eLTEVTJiCucDlbX44V91o=;
-        b=J/LFoEm9IdBFsHESIa86vrjGvP9DzQQIDomJWdOx9GHR+YXkk3DMsN9JuCWJVSa+Tp
-         B9S5OGtsKFLqxCnBsL56VL60fGkPQLC740AUhZZw8SIHH1+ED3d5zYDXYpVS3dBhUu1K
-         A9Xnuss0pNiOtNcVTeUcmDK80zoGbJtyrZSFPgG7g6c7iXzD9dBtCtMS/PdmD+Hce/ve
-         EgxI6SxtixaXXTRWv+WI3UPs8j1YSDOzqFnG8ELVSTiKyOSC3QqinWl87WsJoZJE3svZ
-         S6EsKoJx9DN3UydekiCH15tD2h6f6XZ5wziZ2hx5Ziln3X8YO+jzHOrcM6K2aebSdzAv
-         pLoA==
+        d=gmail.com; s=20230601; t=1698427019; x=1699031819; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=yJZz0zbp619PkAsg5skGFWbIh3I2k8WqI80WgA8WsWk=;
+        b=CU9DP7A0ozYkbaZnb6IiepDptXXFdP/Bdlan3UbBosgyDcbFRS+o11c1hlJ9YqN/Yj
+         ZxgywA+6MLLPUpxRzpKA2F2VGI3UU/YO9Aw1FOprKDL7N3QbtVmLJ0GCpF7oN0F4jOgf
+         ZRugCHCJ42Ykf2Deor58D1U4lWV6iq6kh/9vJf8kMmMxyo0ymhNOtNRetaTeutq3xlqt
+         fnVj9BLVaTkMsaUh5ORtZf5oWme7E2ef2n/SF3eoXt5ff42eCc9VFDDokJAI8ONX6IxK
+         gKnRC9MvwEmGJ6dhTls0HhdjNUEgCi/XOX2fucup3yx1jAjNrQoMGfarTmNuZRygZK5w
+         tJ0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698375074; x=1698979874;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=UwGrPcEsgflO09HAy5rdI9eLTEVTJiCucDlbX44V91o=;
-        b=qrewUS9Mcp7D0eNrMWwha46/lMZdU/+uhsyq6LidUbmI2WVO0REVuB1SkFIPOxbTxL
-         r7bneqX/XGMiuAxNnYbZkXGUHyhQJ6fenzfs8HdV6iBUbFUDxAmzUWrzUv8SwFG0q8vH
-         3MXKsm5K8rgRCwbaOCFyH921HnBSU4Z1FSgcjSe69euHZeQc7Vp7al3F/EbW1lUYZOHT
-         9KW6S+dBkZd844k/jGR/1foRZsDaWQ3GctXqocBJ+i5mW3NSPDhvfPB8VijslbeOzika
-         lr6PPMDFzGd6oAyFozaTzYH9QQR9U5+6V0ZBNXJTW69E3dYzkbe4LVEs/6gO+aoSqqgv
-         mVnA==
-X-Gm-Message-State: AOJu0YwnImr2MP5pIqcRdlHq0e4p5I4/k3oHabboI+6oTGvgWfQ+6Pt6
-        iHlsjVTgAJAZP35hbkRduZU=
-X-Google-Smtp-Source: AGHT+IG9Dmz0BzSlr6ni6jNSm45meUAq0sYl4SNSSDX74yGa+mJ5eeHfKMxB6gMgNJkdcEuxgVfkDA==
-X-Received: by 2002:a17:902:d485:b0:1ca:858d:5bef with SMTP id c5-20020a170902d48500b001ca858d5befmr1401151plg.4.1698375073920;
-        Thu, 26 Oct 2023 19:51:13 -0700 (PDT)
-Received: from hbh25y.mshome.net (059149129201.ctinets.com. [59.149.129.201])
-        by smtp.gmail.com with ESMTPSA id r9-20020a170902be0900b001c3be750900sm377882pls.163.2023.10.26.19.51.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Oct 2023 19:51:13 -0700 (PDT)
-From:   Hangyu Hua <hbh25y@gmail.com>
-To:     kristo@kernel.org, mturquette@baylibre.com, sboyd@kernel.org,
-        tony@atomide.com, dario.binacchi@amarulasolutions.com,
-        claudiu.beznea@microchip.com, robh@kernel.org,
-        andriy.shevchenko@linux.intel.com
-Cc:     linux-omap@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Hangyu Hua <hbh25y@gmail.com>
-Subject: [PATCH v2] ti: fix possible memory leak in _ti_omap4_clkctrl_setup()
-Date:   Fri, 27 Oct 2023 10:50:57 +0800
-Message-Id: <20231027025057.11510-1-hbh25y@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20230601; t=1698427019; x=1699031819;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=yJZz0zbp619PkAsg5skGFWbIh3I2k8WqI80WgA8WsWk=;
+        b=a5ETWbqBLARBre+cvoHnkKlnlZeqwgV6AYJ1NAqZLGppcK/IKVIGc4Hz67tNsDDuAW
+         PktBS3aMxdsOK72g1vMQ+p6PMYl9sGhSLP+eHFbmo0H1E+A0+eTLmFx5LLtOZ8UWzlqH
+         syHZsbSNv9vuN0BkfkhU6Xh3uND2r5hD8Tt17mP4vPTdWG8wvTU4H6scNhyTGPecXJay
+         InFoTdjn1fObktgG7KUwP2x0Kvs+54Us5jlk6zGtV8fq2Yu2CHoZJ/4f+04/ZBTn22iX
+         Taw++XSwdLsgYW6S8MMBhtStDyegNYPBt81uO+j1OfaxrCC9ZoCMQPnNaOoBqKknr24h
+         4vAg==
+X-Gm-Message-State: AOJu0YzrwsLrH3UbW5bnVC0AE0l0tw16YsWkCapqQ17+hpBEyEJdUNyu
+        zXQcCPUyrY8a0wnDDAWGWkywCS3erCD8VBRWFWI=
+X-Google-Smtp-Source: AGHT+IGiUee/bOH42fB4FekomSi4Ow+gx79fOez+k4ApcBi6kXOAoqvJEF1G8xV4GL93XaScvIwwmKDtwHYDbuAdS80=
+X-Received: by 2002:a17:906:c103:b0:9c1:4343:60ab with SMTP id
+ do3-20020a170906c10300b009c1434360abmr2811703ejc.10.1698427019241; Fri, 27
+ Oct 2023 10:16:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Received: by 2002:a17:907:9814:b0:9c2:3a5:9bd7 with HTTP; Fri, 27 Oct 2023
+ 10:16:58 -0700 (PDT)
+Reply-To: liima_azevedo@hotmail.com
+From:   "lima Azevedo ." <jmacdarmid1@gmail.com>
+Date:   Fri, 27 Oct 2023 18:16:58 +0100
+Message-ID: <CAFXhoP3uMC97QFOn2=Hd7Q1U0azO2TB7ZC7cc7o=pS95Vgk6wA@mail.gmail.com>
+Subject: Hello....!!
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
+        SPF_PASS,UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-kstrndup() and kstrdup_and_replace() in clkctrl_get_name() can perform
-dynamic memory allocation. So clkctrl_name() needs to be freed when
-provider->clkdm_name is NULL.
-
-Fixes: bd46cd0b802d ("clk: ti: clkctrl: check return value of kasprintf()")
-Signed-off-by: Hangyu Hua <hbh25y@gmail.com>
----
-
-	v2: fix commit info.
-
- drivers/clk/ti/clkctrl.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/clk/ti/clkctrl.c b/drivers/clk/ti/clkctrl.c
-index 607e34d8e289..cb4aa8a45bb2 100644
---- a/drivers/clk/ti/clkctrl.c
-+++ b/drivers/clk/ti/clkctrl.c
-@@ -591,6 +591,7 @@ static void __init _ti_omap4_clkctrl_setup(struct device_node *node)
- 		provider->clkdm_name = kasprintf(GFP_KERNEL,
- 						 "%s_clkdm", clkctrl_name);
- 		if (!provider->clkdm_name) {
-+			kfree(clkctrl_name);
- 			kfree(provider);
- 			return;
- 		}
 -- 
-2.34.1
+Hello ,
 
+I have a business proposal for you ! If interested , reply me back for
+more details .
+
+Thank you.
+
+lima Azevedo .
+liima_azevedo@hotmail.com
