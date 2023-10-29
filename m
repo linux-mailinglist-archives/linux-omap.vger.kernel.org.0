@@ -2,64 +2,51 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DC247DAC45
-	for <lists+linux-omap@lfdr.de>; Sun, 29 Oct 2023 12:48:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E2F27DAF3D
+	for <lists+linux-omap@lfdr.de>; Sun, 29 Oct 2023 23:58:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229482AbjJ2Lsp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 29 Oct 2023 07:48:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41314 "EHLO
+        id S231285AbjJ2W6J (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 29 Oct 2023 18:58:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229533AbjJ2Lsp (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 29 Oct 2023 07:48:45 -0400
-Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAF1FBF;
-        Sun, 29 Oct 2023 04:48:42 -0700 (PDT)
-Received: by mail-lf1-x12c.google.com with SMTP id 2adb3069b0e04-5079f9675c6so5411279e87.2;
-        Sun, 29 Oct 2023 04:48:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698580121; x=1699184921; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ffdazMpImFy1FetHdByJmVjSy4MkPy3NHoIgY+vA/6Y=;
-        b=dg39IE++4FuepBUfYEniHrmYgnTxrEV5K2PJJBh+pdU0jE4FcbYsV9TgwKH9oe7cDY
-         jbgmhk/j3qu67kT03gnptnkWwWtJnU1sLmEWUBeLl8EMaq4Sj8dbV6fjtFBfJU4xsptw
-         PLHB5tRnlwggLwyKMPWZpBBIEgZ7XLSKC/gwgMZzuJnQRzdO0SDBYu78s9Z22xnhJKOf
-         MOBp2JJy3wbb0Wy5KM7O86rBBUD6K5wg5HUPH4dTiZrjsx5E+8yHO8tlMJIXx3N6Iios
-         gp2J9BsteuM76mlhyT0dMdxwspjow8b21LwVnCF4mg8Y1f3qdbmmuUsAeyEglN17TD35
-         7wZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698580121; x=1699184921;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ffdazMpImFy1FetHdByJmVjSy4MkPy3NHoIgY+vA/6Y=;
-        b=wd/93cxkjwzlBYcusGUz+3Q4ItkVebh5hHkCaupt9hdFV5A4T7NbinAUJxDyGmD6HZ
-         HlgMjq6CtpDoeQ9ND04CXJy2jePlW+WDnlc28R3TyZfkIjEJCKFHO9RwCbm6ZMK23+FI
-         9USvEDRmzI4lO46iKtVnizuqlorvDck1K5R/F4xF1QxT9Ac9TR8V3vEyzxSDdTFLEsHi
-         5WieMCFTjKfeeTH5DSCf9IeAhH7Lxy2qyW7BRUe/ik/rvh5Dl0F61hezsTUqb0b4lLxq
-         mtnQn1Uqey2SONvU5zg+pSYXYcjXZkzVJyjTZZWs364pW84hJoffZZFsO25FV5CyZ30U
-         lviA==
-X-Gm-Message-State: AOJu0Yw8ApFVb2WBRaYHS6Ywozd7zjDeRhWMK/fMz/Ux8TNExOF+fznB
-        qr+/HofxIX3o3a9apulw38o=
-X-Google-Smtp-Source: AGHT+IGGEFN9dF9/qUdc8I54PBYmXWj2i/68f+/tnbsYXwGqFU/BfZzXtg+hd3Gsw9smrCdydi9yPA==
-X-Received: by 2002:a19:7004:0:b0:507:9b93:274b with SMTP id h4-20020a197004000000b005079b93274bmr5263657lfc.26.1698580120678;
-        Sun, 29 Oct 2023 04:48:40 -0700 (PDT)
-Received: from localhost.localdomain (host-213-145-197-219.kaisa-laajakaista.fi. [213.145.197.219])
-        by smtp.gmail.com with ESMTPSA id ep7-20020a056512484700b00503f39e6bcesm1012464lfb.95.2023.10.29.04.48.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 29 Oct 2023 04:48:40 -0700 (PDT)
-From:   Peter Ujfalusi <peter.ujfalusi@gmail.com>
-To:     tony@atomide.com, lee@kernel.org, robh@kernel.org
-Cc:     wens@csie.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] mfd: twl4030-power: Revert to use of_match_device()
-Date:   Sun, 29 Oct 2023 13:49:09 +0200
-Message-ID: <20231029114909.15652-1-peter.ujfalusi@gmail.com>
+        with ESMTP id S231484AbjJ2W5z (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 29 Oct 2023 18:57:55 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32FA32D46;
+        Sun, 29 Oct 2023 15:56:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB375C433CB;
+        Sun, 29 Oct 2023 22:55:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1698620154;
+        bh=92atpQovPf8dUEyPgtOqbb4csWrmpJaDoIHvo6WYpNo=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=e2l269XNEiRwoZ1blLTJ38RxlqH9ZnG4UnyybdO/8l3fV60TUoNvRc7zda65thKIU
+         +3TDqMuLbVIfwM5h7dqpX3Km7ySo6YWNoVutSHY4jFSkcMmiAeEkyDUJ1Bra9eiMqj
+         aeEuVe66RmfRj7UtoZDElDWWdAYxcpJbsb3BJ9rWpR+qmSnXETRxn8cDqkRLHS0raH
+         g3uFRqBuyCi2W9LmM90dzlslkUCT5/TjbyiMSe7hKND+vZF8Bi6Ca46XdnGh+yn/AD
+         wS1upwby3h7FgMnOMsFCDHXQgYToHEt+hwdGaCkJDPgfT2NOU+jWMMxeFYLYHl8VFm
+         K8AfssMMnwJkw==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Dan Carpenter <dan.carpenter@linaro.org>,
+        Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>,
+        sam@ravnborg.org, tzimmermann@suse.de, xu.panda@zte.com.cn,
+        mielkesteven@icloud.com, u.kleine-koenig@pengutronix.de,
+        linux-fbdev@vger.kernel.org, linux-omap@vger.kernel.org,
+        dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.5 32/52] fbdev: omapfb: fix some error codes
+Date:   Sun, 29 Oct 2023 18:53:19 -0400
+Message-ID: <20231029225441.789781-32-sashal@kernel.org>
 X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20231029225441.789781-1-sashal@kernel.org>
+References: <20231029225441.789781-1-sashal@kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.5.9
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -68,52 +55,39 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The core twl chip is probed via i2c and the dev->driver->of_match_table is
-NULL, causing the driver to fail to probe.
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-This partially reverts commit 1e0c866887f4.
+[ Upstream commit dc608db793731426938baa2f0e75a4a3cce5f5cf ]
 
-Fixes: 1e0c866887f4 ("mfd: Use device_get_match_data() in a bunch of drivers")
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
+Return negative -ENXIO instead of positive ENXIO.
+
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/twl4030-power.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/video/fbdev/omap/omapfb_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mfd/twl4030-power.c b/drivers/mfd/twl4030-power.c
-index 1595e9c76132..e35b0f788c50 100644
---- a/drivers/mfd/twl4030-power.c
-+++ b/drivers/mfd/twl4030-power.c
-@@ -27,8 +27,8 @@
- #include <linux/pm.h>
- #include <linux/mfd/twl.h>
- #include <linux/platform_device.h>
--#include <linux/property.h>
- #include <linux/of.h>
-+#include <linux/of_device.h>
- 
- #include <asm/mach-types.h>
- 
-@@ -883,6 +883,7 @@ static int twl4030_power_probe(struct platform_device *pdev)
- {
- 	const struct twl4030_power_data *pdata = dev_get_platdata(&pdev->dev);
- 	struct device_node *node = pdev->dev.of_node;
-+	const struct of_device_id *match;
- 	int err = 0;
- 	int err2 = 0;
- 	u8 val;
-@@ -903,8 +904,10 @@ static int twl4030_power_probe(struct platform_device *pdev)
- 		return err;
+diff --git a/drivers/video/fbdev/omap/omapfb_main.c b/drivers/video/fbdev/omap/omapfb_main.c
+index ad65554b33c35..0be95b4e14fdb 100644
+--- a/drivers/video/fbdev/omap/omapfb_main.c
++++ b/drivers/video/fbdev/omap/omapfb_main.c
+@@ -1648,13 +1648,13 @@ static int omapfb_do_probe(struct platform_device *pdev,
+ 	}
+ 	fbdev->int_irq = platform_get_irq(pdev, 0);
+ 	if (fbdev->int_irq < 0) {
+-		r = ENXIO;
++		r = -ENXIO;
+ 		goto cleanup;
  	}
  
--	if (node)
--		pdata = device_get_match_data(&pdev->dev);
-+	match = of_match_device(of_match_ptr(twl4030_power_of_match),
-+				&pdev->dev);
-+	if (match && match->data)
-+		pdata = match->data;
+ 	fbdev->ext_irq = platform_get_irq(pdev, 1);
+ 	if (fbdev->ext_irq < 0) {
+-		r = ENXIO;
++		r = -ENXIO;
+ 		goto cleanup;
+ 	}
  
- 	if (pdata) {
- 		err = twl4030_power_configure_scripts(pdata);
 -- 
 2.42.0
 
