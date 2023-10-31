@@ -2,52 +2,34 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD9CC7DC048
-	for <lists+linux-omap@lfdr.de>; Mon, 30 Oct 2023 20:20:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DF8E7DC6E6
+	for <lists+linux-omap@lfdr.de>; Tue, 31 Oct 2023 08:07:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229813AbjJ3TUa (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 30 Oct 2023 15:20:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37926 "EHLO
+        id S1343497AbjJaHHP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 31 Oct 2023 03:07:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34644 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229630AbjJ3TU3 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 30 Oct 2023 15:20:29 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D70A6B4;
-        Mon, 30 Oct 2023 12:20:25 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D07C3C433C8;
-        Mon, 30 Oct 2023 19:20:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698693625;
-        bh=2/AkVrexR/JZ05pQV2i1gYvGNuV3Dwqm9KVT5lmWsow=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=MECrVJeaJQC/0R+9DGzfSEbAPTwEj13FUBlJTrbfoq03rmpvluF9xyOpYxTFIQFmf
-         eZ5R7l+BSqM+t0G/yW+R0PJbCbQV2sNHt9/hcaBwol1aYQJVBNfvIE4Fu69TE1/Rtv
-         p0SgLcOqBmHTxfd1HHb6LS4p8kx/hwgFjZ4wUhxZXUzaWg/F/L2kV673C8CUEIgaZa
-         3mwkUHVGXmWMlymc0FimQKyXBm1hYPvM+9cn/So0hYbyttNGTwsKTgLfkORrxWbRB1
-         TJ5BwSLYVSgjF8M66mGnETfIi5iHzmv8zlr9EwuHKuwtFj4fl544bwH2CkfFWyElyN
-         4LB1xzx2Hr2vA==
-From:   Mark Brown <broonie@kernel.org>
-To:     Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-        Jarkko Nikula <jarkko.nikula@bitmer.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, Tony Lindgren <tony@atomide.com>
-Cc:     Andreas Kemnade <andreas@kemnade.info>,
-        alsa-devel@alsa-project.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20231030052340.13415-1-tony@atomide.com>
-References: <20231030052340.13415-1-tony@atomide.com>
-Subject: Re: [PATCH] ASoC: ti: omap-mcbsp: Fix runtime PM underflow
- warnings
-Message-Id: <169869362256.44249.15039737144512154634.b4-ty@kernel.org>
-Date:   Mon, 30 Oct 2023 19:20:22 +0000
+        with ESMTP id S1343495AbjJaHHO (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 31 Oct 2023 03:07:14 -0400
+Received: from muru.com (muru.com [72.249.23.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 2C2ADBB
+        for <linux-omap@vger.kernel.org>; Tue, 31 Oct 2023 00:07:11 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 32E42809C;
+        Tue, 31 Oct 2023 07:07:10 +0000 (UTC)
+Date:   Tue, 31 Oct 2023 09:07:08 +0200
+From:   Tony Lindgren <tony@atomide.com>
+To:     Andreas Kemnade <andreas@kemnade.info>
+Cc:     linux-omap@vger.kernel.org
+Subject: Re: ti-sysc: probe of 4a318000.target-module failed with error -16
+Message-ID: <20231031070708.GA44202@atomide.com>
+References: <20231029101249.2cc84607@akair>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13-dev-0438c
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231029101249.2cc84607@akair>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,37 +37,21 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, 30 Oct 2023 07:23:38 +0200, Tony Lindgren wrote:
-> We need to check for an active device as otherwise we get warnings
-> for some mcbsp instances for "Runtime PM usage count underflow!".
-> 
-> 
+* Andreas Kemnade <andreas@kemnade.info> [231029 09:13]:
+> I am seeing the error message from $subject on omap4 devices regularly,
+> on omap4430-panda and on the epson bt200 (omap4460).
+> While not having the timer seems not critical in itself. I am wondering
+> whether something nasty is behind it which might cause more severe
+> problems.
+> Is this really seen everywhere?
 
-Applied to
+That should be for gptimer1 that is used as a clocksource by the
+drivers/clocksource/timer-ti-dm-systimer.c driver, and ti-sysc will
+ignore it.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+Maybe we should not show the error for timers, or change it to
+dev_info if EBUSY and timer?
 
-Thanks!
+Regards,
 
-[1/1] ASoC: ti: omap-mcbsp: Fix runtime PM underflow warnings
-      commit: fbb74e56378d8306f214658e3d525a8b3f000c5a
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+Tony
