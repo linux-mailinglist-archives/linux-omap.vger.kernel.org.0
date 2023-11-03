@@ -2,52 +2,68 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2558B7E0782
-	for <lists+linux-omap@lfdr.de>; Fri,  3 Nov 2023 18:36:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BAEF17E07C3
+	for <lists+linux-omap@lfdr.de>; Fri,  3 Nov 2023 18:51:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230050AbjKCRgI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 3 Nov 2023 13:36:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48506 "EHLO
+        id S231907AbjKCRvv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 3 Nov 2023 13:51:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44256 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230109AbjKCRgG (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 3 Nov 2023 13:36:06 -0400
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93628136
-        for <linux-omap@vger.kernel.org>; Fri,  3 Nov 2023 10:36:03 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1qyy5R-0004Wt-Nj; Fri, 03 Nov 2023 18:36:01 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1qyy5R-006NKM-5q; Fri, 03 Nov 2023 18:36:01 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1qyy5Q-00CUUo-Se; Fri, 03 Nov 2023 18:36:00 +0100
-From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     Helge Deller <deller@gmx.de>
-Cc:     Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-        linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, kernel@pengutronix.de
-Subject: [PATCH] fbdev: omapfb: Drop unused remove function
-Date:   Fri,  3 Nov 2023 18:35:58 +0100
-Message-ID: <20231103173557.3639484-2-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.42.0
+        with ESMTP id S229605AbjKCRvu (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 3 Nov 2023 13:51:50 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1B1A1D42;
+        Fri,  3 Nov 2023 10:51:47 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 77F962F4;
+        Fri,  3 Nov 2023 10:52:29 -0700 (PDT)
+Received: from [10.57.81.32] (unknown [10.57.81.32])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7D4DC3F738;
+        Fri,  3 Nov 2023 10:51:41 -0700 (PDT)
+Message-ID: <1cbc6def-8255-4a13-99b0-145d3f8ffcac@arm.com>
+Date:   Fri, 3 Nov 2023 17:51:39 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1451; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=Pa/PZpA5LZpLFCrixqqTeyvjev8rwBS2ffBdngiT/bo=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBlRS9+pvyHnfIDX2L26lFQyBi7dT6romTz0XqMS 93UFNxEGGiJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZUUvfgAKCRCPgPtYfRL+ TlFsB/0e8vL7LYOd70imHwL3kg/uTtJ33J4rI+aK4VoBp82iIlkZONKRFta9zpssQWlm8mm0X0C JLzoGdN3WQXYV0bg3Nd3HV6jb/VKvUlZSxH3BQAVOwR89Xuy0uCrwYTpPktGGV8cQwBqQOi6wdE Pza+A/ErT2D+D/4OhiCl2BDP5cGwcuBMiWUKY2GkYvJpnfz8sq5fYHvRzLwKihL3hF7kcGcVA4x gupf/3xnK7wUAWdoXWLe6hOeM/l79BBfIPHXTylfJveMCKrk+q3UumOrhkuuqoaOyIf6V0Ii6pu +D+xlW6AxippRvAEfJm+vR4Xt1W8Nak7D+tGvEVyW3TqUUYn
-X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 08/10] arm64: Kconfig.platforms: Add config for Marvell
+ PXA1908 platform
+Content-Language: en-GB
+To:     =?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, Leo Yan <leoy@marvell.com>,
+        Zhangfei Gao <zhangfei.gao@marvell.com>,
+        Lubomir Rintel <lkundrak@v3.sk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Tony Luck <tony.luck@intel.com>,
+        "Guilherme G . Piccoli" <gpiccoli@igalia.com>
+Cc:     linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        alsa-devel@alsa-project.org, linux-hardening@vger.kernel.org,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Karel Balej <balejk@matfyz.cz>
+References: <20231102152033.5511-1-duje.mihanovic@skole.hr>
+ <20231102152033.5511-3-duje.mihanovic@skole.hr>
+ <ffb08cc2-705a-468e-b6d2-9ce591c08ab4@arm.com> <2919185.e9J7NaK4W3@radijator>
+From:   Robin Murphy <robin.murphy@arm.com>
+In-Reply-To: <2919185.e9J7NaK4W3@radijator>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-omap@vger.kernel.org
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,45 +71,35 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-OMAP2_VRFB is a bool, so the vrfb driver can never be compiled as a
-module. With that __exit_p(vrfb_remove) always evaluates to NULL and
-vrfb_remove() is unused.
+On 2023-11-03 5:02 pm, Duje Mihanović wrote:
+> On Friday, November 3, 2023 4:34:54 PM CET Robin Murphy wrote:
+>> On 2023-11-02 3:20 pm, Duje Mihanović wrote:
+>>> +config ARCH_MMP
+>>> +	bool "Marvell MMP SoC Family"
+>>> +	select ARM_GIC
+>>> +	select ARM_ARCH_TIMER
+>>> +	select ARM_SMMU
+>>
+>> NAK, not only is selecting user-visible symbols generally frowned upon,
+>> and ignoring their dependencies even worse, but for a multiplatform
+>> kernel the user may well want this to be a module.
+>>
+>> If having the SMMU driver built-in is somehow fundamentally required for
+>> this platform to boot, that would represent much bigger problems.
+> 
+> The SoC can boot without SMMU and PDMA, but not GIC, pinctrl or the arch
+> timer. I see that most other SoCs still select drivers and frameworks they
+> presumably need for booting, with the exceptions of ARCH_BITMAIN, ARCH_LG1K
+> and a couple others. Which of these two options should I go for?
 
-If the driver was compilable as a module, it would fail to build because
-the type of vrfb_remove() isn't compatible with struct
-platform_driver::remove(). (The former returns void, the latter int.)
+Well, you don't really need to select ARM_GIC or ARM_ARCH_TIMER here 
+either, since those are already selected by ARM64 itself. Keeping 
+PINCTRL_SINGLE is fair, although you should also select PINCTRL as its 
+dependency.
 
-Fixes: aa1e49a3752f ("OMAPDSS: VRFB: add omap_vrfb_supported()")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
----
- drivers/video/fbdev/omap2/omapfb/vrfb.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+As an additional nit, the file seems to be primarily ordered by symbol 
+name, so it might be nice to slip ARCH_MMC in between ARCH_MESON and 
+ARCH_MVEBU.
 
-diff --git a/drivers/video/fbdev/omap2/omapfb/vrfb.c b/drivers/video/fbdev/omap2/omapfb/vrfb.c
-index ee0dd4c6a646..568e6e1eca62 100644
---- a/drivers/video/fbdev/omap2/omapfb/vrfb.c
-+++ b/drivers/video/fbdev/omap2/omapfb/vrfb.c
-@@ -368,17 +368,10 @@ static int __init vrfb_probe(struct platform_device *pdev)
- 	return 0;
- }
- 
--static void __exit vrfb_remove(struct platform_device *pdev)
--{
--	vrfb_loaded = false;
--}
--
- static struct platform_driver vrfb_driver = {
- 	.driver.name	= "omapvrfb",
--	.remove		= __exit_p(vrfb_remove),
- };
--
--module_platform_driver_probe(vrfb_driver, vrfb_probe);
-+builtin_platform_driver_probe(vrfb_driver, vrfb_probe);
- 
- MODULE_AUTHOR("Tomi Valkeinen <tomi.valkeinen@ti.com>");
- MODULE_DESCRIPTION("OMAP VRFB");
-
-base-commit: e27090b1413ff236ca1aec26d6b022149115de2c
--- 
-2.42.0
-
+Cheers,
+Robin.
