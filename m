@@ -2,68 +2,38 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BAEF17E07C3
-	for <lists+linux-omap@lfdr.de>; Fri,  3 Nov 2023 18:51:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 297687E11D1
+	for <lists+linux-omap@lfdr.de>; Sun,  5 Nov 2023 00:53:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231907AbjKCRvv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 3 Nov 2023 13:51:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44256 "EHLO
+        id S229598AbjKDXxb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 4 Nov 2023 19:53:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229605AbjKCRvu (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 3 Nov 2023 13:51:50 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1B1A1D42;
-        Fri,  3 Nov 2023 10:51:47 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 77F962F4;
-        Fri,  3 Nov 2023 10:52:29 -0700 (PDT)
-Received: from [10.57.81.32] (unknown [10.57.81.32])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7D4DC3F738;
-        Fri,  3 Nov 2023 10:51:41 -0700 (PDT)
-Message-ID: <1cbc6def-8255-4a13-99b0-145d3f8ffcac@arm.com>
-Date:   Fri, 3 Nov 2023 17:51:39 +0000
+        with ESMTP id S229577AbjKDXxb (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 4 Nov 2023 19:53:31 -0400
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a02:c205:3004:2154::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1830D69
+        for <linux-omap@vger.kernel.org>; Sat,  4 Nov 2023 16:53:27 -0700 (PDT)
+Received: from p200300ccff1c1900cbc3f566d864085c.dip0.t-ipconnect.de ([2003:cc:ff1c:1900:cbc3:f566:d864:85c] helo=akair)
+        by mail.andi.de1.cc with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <andreas@kemnade.info>)
+        id 1qzQSC-005qeB-US; Sun, 05 Nov 2023 00:53:25 +0100
+Date:   Sun, 5 Nov 2023 00:53:23 +0100
+From:   Andreas Kemnade <andreas@kemnade.info>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     linux-omap@vger.kernel.org
+Subject: Re: ti-sysc: probe of 4a318000.target-module failed with error -16
+Message-ID: <20231105005323.0238c461@akair>
+In-Reply-To: <20231031070708.GA44202@atomide.com>
+References: <20231029101249.2cc84607@akair>
+        <20231031070708.GA44202@atomide.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 08/10] arm64: Kconfig.platforms: Add config for Marvell
- PXA1908 platform
-Content-Language: en-GB
-To:     =?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, Leo Yan <leoy@marvell.com>,
-        Zhangfei Gao <zhangfei.gao@marvell.com>,
-        Lubomir Rintel <lkundrak@v3.sk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Tony Luck <tony.luck@intel.com>,
-        "Guilherme G . Piccoli" <gpiccoli@igalia.com>
-Cc:     linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        alsa-devel@alsa-project.org, linux-hardening@vger.kernel.org,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Karel Balej <balejk@matfyz.cz>
-References: <20231102152033.5511-1-duje.mihanovic@skole.hr>
- <20231102152033.5511-3-duje.mihanovic@skole.hr>
- <ffb08cc2-705a-468e-b6d2-9ce591c08ab4@arm.com> <2919185.e9J7NaK4W3@radijator>
-From:   Robin Murphy <robin.murphy@arm.com>
-In-Reply-To: <2919185.e9J7NaK4W3@radijator>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,35 +41,37 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 2023-11-03 5:02 pm, Duje Mihanović wrote:
-> On Friday, November 3, 2023 4:34:54 PM CET Robin Murphy wrote:
->> On 2023-11-02 3:20 pm, Duje Mihanović wrote:
->>> +config ARCH_MMP
->>> +	bool "Marvell MMP SoC Family"
->>> +	select ARM_GIC
->>> +	select ARM_ARCH_TIMER
->>> +	select ARM_SMMU
->>
->> NAK, not only is selecting user-visible symbols generally frowned upon,
->> and ignoring their dependencies even worse, but for a multiplatform
->> kernel the user may well want this to be a module.
->>
->> If having the SMMU driver built-in is somehow fundamentally required for
->> this platform to boot, that would represent much bigger problems.
+Am Tue, 31 Oct 2023 09:07:08 +0200
+schrieb Tony Lindgren <tony@atomide.com>:
+
+> * Andreas Kemnade <andreas@kemnade.info> [231029 09:13]:
+> > I am seeing the error message from $subject on omap4 devices
+> > regularly, on omap4430-panda and on the epson bt200 (omap4460).
+> > While not having the timer seems not critical in itself. I am
+> > wondering whether something nasty is behind it which might cause
+> > more severe problems.
+> > Is this really seen everywhere?  
 > 
-> The SoC can boot without SMMU and PDMA, but not GIC, pinctrl or the arch
-> timer. I see that most other SoCs still select drivers and frameworks they
-> presumably need for booting, with the exceptions of ARCH_BITMAIN, ARCH_LG1K
-> and a couple others. Which of these two options should I go for?
+> That should be for gptimer1 that is used as a clocksource by the
+> drivers/clocksource/timer-ti-dm-systimer.c driver, and ti-sysc will
+> ignore it.
+> 
+hmm, it is about this I think:
 
-Well, you don't really need to select ARM_GIC or ARM_ARCH_TIMER here 
-either, since those are already selected by ARM64 itself. Keeping 
-PINCTRL_SINGLE is fair, although you should also select PINCTRL as its 
-dependency.
+       timer1_target: target-module@8000 {     /* 0x4a318000, ap 9 1c.0
+       */ compatible = "ti,sysc-omap2-timer", "ti,sysc";
 
-As an additional nit, the file seems to be primarily ordered by symbol 
-name, so it might be nice to slip ARCH_MMC in between ARCH_MESON and 
-ARCH_MVEBU.
+but I see no ti,no-reset-on-init or ti,no-idle as checked by
+sysc_check_active_timer(). It is a bit strange. Well, we have some
+alwon below. 
+It sysc-omap2-timer here right instead of sysc-omap4-timer?
 
-Cheers,
-Robin.
+> Maybe we should not show the error for timers, or change it to
+> dev_info if EBUSY and timer?
+> 
+Well, I am not sure yet whether I understand that 
+-ENXIO vs. -EBUSY business there fully.
+I want to really have a checkmark behind that issue in my head...
+
+Regards,
+Andreas
