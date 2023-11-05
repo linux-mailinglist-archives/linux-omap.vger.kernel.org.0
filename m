@@ -2,38 +2,114 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 297687E11D1
-	for <lists+linux-omap@lfdr.de>; Sun,  5 Nov 2023 00:53:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C7C767E15B9
+	for <lists+linux-omap@lfdr.de>; Sun,  5 Nov 2023 19:16:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229598AbjKDXxb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 4 Nov 2023 19:53:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56522 "EHLO
+        id S229475AbjKESQG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 5 Nov 2023 13:16:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46056 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229577AbjKDXxb (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 4 Nov 2023 19:53:31 -0400
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a02:c205:3004:2154::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1830D69
-        for <linux-omap@vger.kernel.org>; Sat,  4 Nov 2023 16:53:27 -0700 (PDT)
-Received: from p200300ccff1c1900cbc3f566d864085c.dip0.t-ipconnect.de ([2003:cc:ff1c:1900:cbc3:f566:d864:85c] helo=akair)
-        by mail.andi.de1.cc with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <andreas@kemnade.info>)
-        id 1qzQSC-005qeB-US; Sun, 05 Nov 2023 00:53:25 +0100
-Date:   Sun, 5 Nov 2023 00:53:23 +0100
-From:   Andreas Kemnade <andreas@kemnade.info>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     linux-omap@vger.kernel.org
-Subject: Re: ti-sysc: probe of 4a318000.target-module failed with error -16
-Message-ID: <20231105005323.0238c461@akair>
-In-Reply-To: <20231031070708.GA44202@atomide.com>
-References: <20231029101249.2cc84607@akair>
-        <20231031070708.GA44202@atomide.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
+        with ESMTP id S229496AbjKESQG (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 5 Nov 2023 13:16:06 -0500
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE0B5BB;
+        Sun,  5 Nov 2023 10:16:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+        t=1699208155; x=1699812955; i=deller@gmx.de;
+        bh=OpuGHWHjo+z7zkLdJMq7rmnWSH4uTCXi2DFnckteg+E=;
+        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
+         In-Reply-To;
+        b=ouCgQEWl4OU3qITKJagJYZnXWjAAeDbYso6hjsB0ZGA23yEuYuwr9IPLXXY6kiJM
+         snDebPDCHf/2/7PD7+rJUdjL8pu+ZFWM8WnJaWABKYOv0sq8JT1Mv8L9E5yYZNu5A
+         m8LNA2D6dZrb5Do/nDusvlpyQE9WoGNtE3lwTICn5TnFjj3gf8xkw2srGHm5LYB3w
+         vYtH8gGESptlb345FLMx4U7XtISwT9VDPAwtpME9eJc27kF8v2cnMNQQk/8kE0OuW
+         V3h5Q2AXsSksY9u1waIsIIZol2GfeSay8XkRBXe/c8mOsSHj1ObZ49zphJL2+Z+PZ
+         Oyj0trW4X15wYLM6DQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.60] ([94.134.149.195]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1N3KTo-1rPNQf2XMQ-010LFf; Sun, 05
+ Nov 2023 19:15:55 +0100
+Message-ID: <0c6dfd41-8ad9-4780-a327-c910d6214355@gmx.de>
+Date:   Sun, 5 Nov 2023 19:15:54 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] fbdev: omapfb: Drop unused remove function
+Content-Language: en-US
+To:     =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Cc:     Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+        linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, kernel@pengutronix.de
+References: <20231103173557.3639484-2-u.kleine-koenig@pengutronix.de>
+From:   Helge Deller <deller@gmx.de>
+Autocrypt: addr=deller@gmx.de; keydata=
+ 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
+In-Reply-To: <20231103173557.3639484-2-u.kleine-koenig@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:Tva4T/FttIwLqofolQVY7ZaEyS6uSg9AxEBPnxJrZKjJ2cUezVO
+ 0ckQPyp1yfMJY7v/abSN+gmWgOJNsipjdK8sKaIEq5Sl9Hwbxn4xDpCGbQD/Z164RoOOPDf
+ /34q+87OPf85ica9b6rLchmBG9vOhyB/ry+uAHlLD4R3jPk0YaaOSvSbWkLZEi0owGzeqpm
+ jhQgArtnWYe0f4Guzw33A==
+UI-OutboundReport: notjunk:1;M01:P0:IlOivZGtjTo=;7SvbprnV9Vc+9+iowCdh8UM3hO3
+ j3UhkwQa0UMK57JyNQ4SSwxKDZGoNk51gwvqWOw6nzan2URBOEFsmF7qagtJmHwGgIl4BM1A1
+ Vo27cW+rQSWN43bOjZo6YgnDY2B2bVSzc0CgChT6UJBzJnVAijP3gEGr8532KmDHtJHpNWpaU
+ Gz6CcvyEvsknfqA4KqHQxZPUi+hM/iCocoJL8mUzOJQMjz3vDSLM5+aFt0XadLzFrmjXxYB9y
+ IebCOz4F4xU/ZdKQ0ew1p3zj7qgQQY3kDlfKO4EpWfdVxLk95Rpn7mTNbh2moxb9KaqWFbJcA
+ s597kchLtfGpUosou5pp5MWSgdmzpy0409vh49CfbEi0t8MO08l6CDVQksWA1m4FsOAU4REW3
+ wVC1BhKfYdyctWhdQG1npD3MBI2wcxi88fXnITcE24ERF8BzYq05I6o2g1TYwltEYkj2gh9MR
+ w2H/12eD/5Cyov8rs3b5vkERkDcmUMa6GblgwfYQHyHhpFFLpRp5k6s7Vd64ShxRBNhQe7lPb
+ hy8ZXxeKS3MAeiEPFWwuv0xl2HMnANKbhgu51bk8lSL/cNYUIz9HRKnVzJcuyQxwJcm6SQo0f
+ HZNq5jw1pgFoIj2850wzHzX68mTlXj/QN/D9u6BCNMMvHLAIu9Y0KvxHsnx5rQxhJOJBkh4aW
+ 1rjKTGqBpMHib5p1DfSpf3/RB8jGZyu9WwVYo/vr4cNhwao8h074mm8XbjvfDC91mRajWOFVY
+ nCkTGQS5h+RzD0zDieJUAHfn6id3WJ4OMT4W/aKYbGWVSGseX+TIcUka1keC8eNaD9Xqa3h0G
+ oFHkY62Q/mSDEe/R86gVH48kr91OLYfSK3Mv9iM1zjHQllC9Gp3Q+zsUwzt3eQdMR+xrcAOFm
+ BjUK4JIFwgFMdqghJDewONrUFg5N7ydiPEbJFmHHxoiiV2of2pIx3EH8nZF8Z4scdb/rPZ4E3
+ qNiZxR05BxVMcXmiyr2mdE/KIN4=
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -41,37 +117,52 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Am Tue, 31 Oct 2023 09:07:08 +0200
-schrieb Tony Lindgren <tony@atomide.com>:
+On 11/3/23 18:35, Uwe Kleine-K=C3=B6nig wrote:
+> OMAP2_VRFB is a bool, so the vrfb driver can never be compiled as a
+> module. With that __exit_p(vrfb_remove) always evaluates to NULL and
+> vrfb_remove() is unused.
+>
+> If the driver was compilable as a module, it would fail to build because
+> the type of vrfb_remove() isn't compatible with struct
+> platform_driver::remove(). (The former returns void, the latter int.)
+>
+> Fixes: aa1e49a3752f ("OMAPDSS: VRFB: add omap_vrfb_supported()")
+> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
 
-> * Andreas Kemnade <andreas@kemnade.info> [231029 09:13]:
-> > I am seeing the error message from $subject on omap4 devices
-> > regularly, on omap4430-panda and on the epson bt200 (omap4460).
-> > While not having the timer seems not critical in itself. I am
-> > wondering whether something nasty is behind it which might cause
-> > more severe problems.
-> > Is this really seen everywhere?  
-> 
-> That should be for gptimer1 that is used as a clocksource by the
-> drivers/clocksource/timer-ti-dm-systimer.c driver, and ti-sysc will
-> ignore it.
-> 
-hmm, it is about this I think:
+applied.
+Thanks!
+Helge
 
-       timer1_target: target-module@8000 {     /* 0x4a318000, ap 9 1c.0
-       */ compatible = "ti,sysc-omap2-timer", "ti,sysc";
 
-but I see no ti,no-reset-on-init or ti,no-idle as checked by
-sysc_check_active_timer(). It is a bit strange. Well, we have some
-alwon below. 
-It sysc-omap2-timer here right instead of sysc-omap4-timer?
+> ---
+>   drivers/video/fbdev/omap2/omapfb/vrfb.c | 9 +--------
+>   1 file changed, 1 insertion(+), 8 deletions(-)
+>
+> diff --git a/drivers/video/fbdev/omap2/omapfb/vrfb.c b/drivers/video/fbd=
+ev/omap2/omapfb/vrfb.c
+> index ee0dd4c6a646..568e6e1eca62 100644
+> --- a/drivers/video/fbdev/omap2/omapfb/vrfb.c
+> +++ b/drivers/video/fbdev/omap2/omapfb/vrfb.c
+> @@ -368,17 +368,10 @@ static int __init vrfb_probe(struct platform_devic=
+e *pdev)
+>   	return 0;
+>   }
+>
+> -static void __exit vrfb_remove(struct platform_device *pdev)
+> -{
+> -	vrfb_loaded =3D false;
+> -}
+> -
+>   static struct platform_driver vrfb_driver =3D {
+>   	.driver.name	=3D "omapvrfb",
+> -	.remove		=3D __exit_p(vrfb_remove),
+>   };
+> -
+> -module_platform_driver_probe(vrfb_driver, vrfb_probe);
+> +builtin_platform_driver_probe(vrfb_driver, vrfb_probe);
+>
+>   MODULE_AUTHOR("Tomi Valkeinen <tomi.valkeinen@ti.com>");
+>   MODULE_DESCRIPTION("OMAP VRFB");
+>
+> base-commit: e27090b1413ff236ca1aec26d6b022149115de2c
 
-> Maybe we should not show the error for timers, or change it to
-> dev_info if EBUSY and timer?
-> 
-Well, I am not sure yet whether I understand that 
--ENXIO vs. -EBUSY business there fully.
-I want to really have a checkmark behind that issue in my head...
-
-Regards,
-Andreas
