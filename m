@@ -2,49 +2,69 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D7607E1FFC
-	for <lists+linux-omap@lfdr.de>; Mon,  6 Nov 2023 12:28:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DF4727E2AD4
+	for <lists+linux-omap@lfdr.de>; Mon,  6 Nov 2023 18:18:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230018AbjKFL2f (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 6 Nov 2023 06:28:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42764 "EHLO
+        id S231522AbjKFRSM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 6 Nov 2023 12:18:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229974AbjKFL2e (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 6 Nov 2023 06:28:34 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6F998F;
-        Mon,  6 Nov 2023 03:28:31 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9DC8C433CC;
-        Mon,  6 Nov 2023 11:28:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699270111;
-        bh=KHYMSuYzfCZFn7iKlZaFmc8xH2hKsNURN3exYOYIYF4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Uax+WBUGC+X1enzmvLmjGabeE12V0LXoYD77+J300r07tfDIRIziiqnd99eIcc2xe
-         4WBQZoJPBW/Tw3TswVDR6L5ZKf3bXfKbPHf+cpL8YlhGv0hKXLed8EYJxBi6OzKfPL
-         PKVUyjH1W4qz5PvcblJoPRSRhpNDG2rlwbmaLTo4=
-Date:   Mon, 6 Nov 2023 12:28:28 +0100
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-Cc:     Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
-        Faiz Abbas <faiz_abbas@ti.com>,
-        =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux@ew.tq-group.com
-Subject: Re: [PATCH 5.4] Revert "ARM: dts: Move am33xx and am43xx mmc nodes
- to sdhci-omap driver"
-Message-ID: <2023110613-fringe-ended-5390@gregkh>
-References: <20231106095048.8396-1-matthias.schiffer@ew.tq-group.com>
+        with ESMTP id S229715AbjKFRSL (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 6 Nov 2023 12:18:11 -0500
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05137125
+        for <linux-omap@vger.kernel.org>; Mon,  6 Nov 2023 09:18:09 -0800 (PST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1r03EV-0005QQ-75; Mon, 06 Nov 2023 18:17:51 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1r03ER-0075yD-9N; Mon, 06 Nov 2023 18:17:47 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1r03EQ-00DrIi-VZ; Mon, 06 Nov 2023 18:17:46 +0100
+From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Lee Jones <lee@kernel.org>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        linux-arm-kernel@lists.infradead.org, kernel@pengutronix.de,
+        Benson Leung <bleung@chromium.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        chrome-platform@lists.linux.dev,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        linux-samsung-soc@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        linux-arm-msm@vger.kernel.org,
+        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        linux-stm32@st-md-mailman.stormreply.com
+Subject: [PATCH 00/18] mfd: Convert to platform remove callback returning void
+Date:   Mon,  6 Nov 2023 18:17:09 +0100
+Message-ID: <20231106171708.3892347-1-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.42.0.586.gbc5204569f7d.dirty
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231106095048.8396-1-matthias.schiffer@ew.tq-group.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3116; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=0FF0Hir69E2HKsvJfQNY/ddJ62LkMYTY7VB8GGwosMM=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBlSR+UEVz6EdKPvoEWe/b9VJEfQp/9GrduLgHED EGfX/1hsAWJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZUkflAAKCRCPgPtYfRL+ TrkgCACt6jktG815FM78opuMSJzVh8L8EMrXJg2QcTB4PFmiFdLTrdybne7rIjMRxTpAjmsba0v VL8Ob6Kz8AmNLdjbx3qjHYArjUhG2hGyldjimtJxv5vEEpdcpJbJnl2Tj3vdtAWxfk4DE0K3xcl TTIh0MSMGJsPKQiE/fuKjG8fzS3mk8bORQEu+5KMYAVZLQdUsoZcmUULLWFdnOvaqFxrGackoTM 51EtiqsmxEKubEHJa0r+WpKi3bNHl/nRXTPU4MNCLO2JCXXY3cRSJ24qriAGi/+BvbLWiNrdVRN adO9ADuSwQuYtHKSkBXthB6PplIwkbPbXVaxwNvTbbhwprJY
+X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-omap@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -52,37 +72,71 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Nov 06, 2023 at 10:50:48AM +0100, Matthias Schiffer wrote:
-> This reverts commit d0c69c722ff16ce2481a5e0932c6d5b172109f21.
-> 
-> The reverted commit completely breaks MMC on the AM33xx/AM437x for
-> multiple reasons:
-> 
-> - The changed compatible strings ti,am335-sdhci and ti,am437-sdhci
->   aren't supported on Linux 5.4 at all, so no driver is found
-> - Even when additionally backporting the support for these compatible
->   strings in the sdhci-omap driver, I could not the the MMC interfaces
->   to work on our TQMa335x SoM - the interface would time out during card
->   initialization for both an eMMC and an SD card.
-> 
-> I did not investigate the cause of the timeouts further, and instead
-> just reverted the commit - switching to a different MMC driver in a stable
-> kernel seems like a rather risky change unless it's thoroughly tested,
-> which has obviously not happened in this case.
-> 
-> The reverted commit is also given as a Stable-dep-of commit 2eb502f496f7
-> ("ARM: dts: am33xx: Fix MMCHS0 dma properties"), however the conflict
-> resulting when only the one commit is reverted is trivial to resolve,
-> which leads to working MMC controllers again.
-> 
-> Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-> ---
-> 
-> I have not checked if other stable kernels exhibit the same breakage; it
-> might be a good idea to revert the change for all stable branches unless
-> it is proven that the sdhci-omap driver actually works.
+Hello,
 
-This was only backported to 5.4.y, thanks for catching this, now queued
-up.
+this series converts all platform drivers below drivers/mfd to use
+.remove_new(). Compared to the traditional .remove() callback
+.remove_new() returns no value. This is a good thing because the driver
+core doesn't (and cannot) cope for errors during remove. The only effect
+of a non-zero return value in .remove() is that the driver core emits a
+warning. The device is removed anyhow and an early return from .remove()
+usually yields resource leaks and/or use-after-free bugs.
 
-greg k-h
+See commit 5c5a7680e67b ("platform: Provide a remove callback that
+returns no value") for an extended explanation and the eventual goal.
+
+All drivers converted here already returned zero unconditionally in
+.remove(), so they are converted here trivially.
+
+Best regards
+Uwe
+
+Uwe Kleine-König (18):
+  mfd: ab8500-sysctrl: Convert to platform remove callback returning
+    void
+  mfd: cros_ec_dev: Convert to platform remove callback returning void
+  mfd: exynos-lpass: Convert to platform remove callback returning void
+  mfd: fsl-imx25-tsadc: Convert to platform remove callback returning
+    void
+  mfd: hi655x-pmic: Convert to platform remove callback returning void
+  mfd: intel-lpss-acpi: Convert to platform remove callback returning
+    void
+  mfd: kempld-core: Convert to platform remove callback returning void
+  mfd: mcp-sa11x0: Convert to platform remove callback returning void
+  mfd: mxs-lradc: Convert to platform remove callback returning void
+  mfd: omap-usb-host: Convert to platform remove callback returning void
+  mfd: omap-usb-tll: Convert to platform remove callback returning void
+  mfd: pcf50633-adc: Convert to platform remove callback returning void
+  mfd: qcom-pm8xxx: Convert to platform remove callback returning void
+  mfd: sm501: Convert to platform remove callback returning void
+  mfd: stm32-timers: Convert to platform remove callback returning void
+  mfd: ti_am335x_tscadc: Convert to platform remove callback returning
+    void
+  mfd: tps65911-comparator: Convert to platform remove callback
+    returning void
+  mfd: twl4030-audio: Convert to platform remove callback returning void
+
+ drivers/mfd/ab8500-sysctrl.c      | 6 ++----
+ drivers/mfd/cros_ec_dev.c         | 5 ++---
+ drivers/mfd/exynos-lpass.c        | 6 ++----
+ drivers/mfd/fsl-imx25-tsadc.c     | 6 ++----
+ drivers/mfd/hi655x-pmic.c         | 5 ++---
+ drivers/mfd/intel-lpss-acpi.c     | 6 ++----
+ drivers/mfd/kempld-core.c         | 6 ++----
+ drivers/mfd/mcp-sa11x0.c          | 6 ++----
+ drivers/mfd/mxs-lradc.c           | 6 ++----
+ drivers/mfd/omap-usb-host.c       | 5 ++---
+ drivers/mfd/omap-usb-tll.c        | 5 ++---
+ drivers/mfd/pcf50633-adc.c        | 6 ++----
+ drivers/mfd/qcom-pm8xxx.c         | 6 ++----
+ drivers/mfd/sm501.c               | 6 ++----
+ drivers/mfd/stm32-timers.c        | 6 ++----
+ drivers/mfd/ti_am335x_tscadc.c    | 6 ++----
+ drivers/mfd/tps65911-comparator.c | 6 ++----
+ drivers/mfd/twl4030-audio.c       | 6 ++----
+ 18 files changed, 36 insertions(+), 68 deletions(-)
+
+base-commit: 3ff7a5781ceee3befb9224d29cef6e6a4766c5fe
+-- 
+2.42.0
+
