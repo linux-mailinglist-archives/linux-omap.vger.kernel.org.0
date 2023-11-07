@@ -2,46 +2,46 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A7DA7E3780
-	for <lists+linux-omap@lfdr.de>; Tue,  7 Nov 2023 10:20:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E712D7E3785
+	for <lists+linux-omap@lfdr.de>; Tue,  7 Nov 2023 10:20:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233864AbjKGJUl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 7 Nov 2023 04:20:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37390 "EHLO
+        id S233948AbjKGJUn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 7 Nov 2023 04:20:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233830AbjKGJUc (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 7 Nov 2023 04:20:32 -0500
+        with ESMTP id S233898AbjKGJUd (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 7 Nov 2023 04:20:33 -0500
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5884DD7E
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C7CE10C6
         for <linux-omap@vger.kernel.org>; Tue,  7 Nov 2023 01:20:30 -0800 (PST)
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
         by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <ukl@pengutronix.de>)
-        id 1r0IG4-0000TI-Df; Tue, 07 Nov 2023 10:20:28 +0100
+        id 1r0IG4-0000To-Me; Tue, 07 Nov 2023 10:20:28 +0100
 Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
         by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.94.2)
         (envelope-from <ukl@pengutronix.de>)
-        id 1r0IG4-007Fmj-0s; Tue, 07 Nov 2023 10:20:28 +0100
+        id 1r0IG4-007Fmn-6v; Tue, 07 Nov 2023 10:20:28 +0100
 Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
         (envelope-from <ukl@pengutronix.de>)
-        id 1r0IG3-00ENXM-O8; Tue, 07 Nov 2023 10:20:27 +0100
+        id 1r0IG3-00ENXP-U1; Tue, 07 Nov 2023 10:20:27 +0100
 From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>
 To:     Helge Deller <deller@gmx.de>
 Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
         linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org,
         dri-devel@lists.freedesktop.org, kernel@pengutronix.de
-Subject: [PATCH 19/22] fb: omapfb/opa362: Convert to platform remove callback returning void
-Date:   Tue,  7 Nov 2023 10:18:00 +0100
-Message-ID: <20231107091740.3924258-20-u.kleine-koenig@pengutronix.de>
+Subject: [PATCH 20/22] fb: omapfb/sharp-ls037v7dw01: Convert to platform remove callback returning void
+Date:   Tue,  7 Nov 2023 10:18:01 +0100
+Message-ID: <20231107091740.3924258-21-u.kleine-koenig@pengutronix.de>
 X-Mailer: git-send-email 2.42.0.586.gbc5204569f7d.dirty
 In-Reply-To: <20231107091740.3924258-1-u.kleine-koenig@pengutronix.de>
 References: <20231107091740.3924258-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2042; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=y82hh1cU5X7eF1j5G9DB/De2QOkfIzaWhfPbOFdvfxQ=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBlSgDKn5eqiqHmhV2l+yU0aadfm9ovQplPUV12B +iiPPJfOFaJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZUoAygAKCRCPgPtYfRL+ TpB9CACPX/ZR47uYw0+a97b5xLZnqlggbhMZWkNkgDfZVRVk7XzA20Pf/vJJjdixzkHFPE0otOx LDuPe/PO7BNWgMZnL5cX/unTSU5CYSyjvDR4WXhxkfvUOy0qtbYz3x9dSHdYY3dBHM7Hziffwv6 9WAPRp2sYiZdpMyEQ7YNBQFCg2I4JAvkp7sKBech5FIg0+ca2koBfM1RrcUMrmffGdf/w/tg2vn DsjW0m3NIEa7hCGhgNhZvcb/qfvc2oP2QrAZk1F+6ylaUQ2rEIPLV1/A7XN0HpC8LXedkp8OqI/ +Lh6VRs9cvrPqQYjzKC8jIQMxa1/xiORundCPFfvY4ZGrhSi
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2096; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=oLlKWztgQ/yvbvZLWuFb+P5sTKuar0OzPBryNUb0awE=; b=owEBbAGT/pANAwAKAY+A+1h9Ev5OAcsmYgBlSgDLcfIWbCAOhYblQRLZcn8q4JWB5ADmWE7mH YxLBiREhOyJATIEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZUoAywAKCRCPgPtYfRL+ TreAB/iadu6EKi8XGrFpkJgNKSZvvnVYOTIgQqTFzJzyv6RYpx6bEpK1xboVWXKlwLvROwpBmgk NeVTW8ed0DxLJWo0qrD0EULtSWSnQ9T4/vLfyQ8qjxFS7YSjF07BbKMBKwJZwSWrSKlCcMm/HWI tvt57wQnp0u8Xf5MXgAzFhgswErytk0jSQxAzZTVhuPAwh0nxJ6yJFP9eZdO1ncwJwQeHmQplWC SNFpNjkbXkovXdhfIt8licHFWRJi6+x8DnieOpxOJs6IOrpCpLV2vcMBt0Yy9bH6U3fJOluvrB4 Ju7MaMvqwFy67lSVaCErd7OoaI6DfmCp9T33Fj3FqwANUd4=
 X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -72,40 +72,40 @@ callback to the void returning variant.
 
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 ---
- drivers/video/fbdev/omap2/omapfb/displays/encoder-opa362.c | 6 ++----
+ .../fbdev/omap2/omapfb/displays/panel-sharp-ls037v7dw01.c   | 6 ++----
  1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/video/fbdev/omap2/omapfb/displays/encoder-opa362.c b/drivers/video/fbdev/omap2/omapfb/displays/encoder-opa362.c
-index 866d71489358..f0d3eb581166 100644
---- a/drivers/video/fbdev/omap2/omapfb/displays/encoder-opa362.c
-+++ b/drivers/video/fbdev/omap2/omapfb/displays/encoder-opa362.c
-@@ -231,7 +231,7 @@ static int opa362_probe(struct platform_device *pdev)
+diff --git a/drivers/video/fbdev/omap2/omapfb/displays/panel-sharp-ls037v7dw01.c b/drivers/video/fbdev/omap2/omapfb/displays/panel-sharp-ls037v7dw01.c
+index d228d74f3bd5..e37268cf8dca 100644
+--- a/drivers/video/fbdev/omap2/omapfb/displays/panel-sharp-ls037v7dw01.c
++++ b/drivers/video/fbdev/omap2/omapfb/displays/panel-sharp-ls037v7dw01.c
+@@ -292,7 +292,7 @@ static int sharp_ls_probe(struct platform_device *pdev)
  	return r;
  }
  
--static int opa362_remove(struct platform_device *pdev)
-+static void opa362_remove(struct platform_device *pdev)
+-static int sharp_ls_remove(struct platform_device *pdev)
++static void sharp_ls_remove(struct platform_device *pdev)
  {
  	struct panel_drv_data *ddata = platform_get_drvdata(pdev);
  	struct omap_dss_device *dssdev = &ddata->dssdev;
-@@ -248,8 +248,6 @@ static int opa362_remove(struct platform_device *pdev)
- 		opa362_disconnect(dssdev, dssdev->dst);
+@@ -304,8 +304,6 @@ static int sharp_ls_remove(struct platform_device *pdev)
+ 	sharp_ls_disconnect(dssdev);
  
  	omap_dss_put_device(in);
 -
 -	return 0;
  }
  
- static const struct of_device_id opa362_of_match[] = {
-@@ -260,7 +258,7 @@ MODULE_DEVICE_TABLE(of, opa362_of_match);
+ static const struct of_device_id sharp_ls_of_match[] = {
+@@ -317,7 +315,7 @@ MODULE_DEVICE_TABLE(of, sharp_ls_of_match);
  
- static struct platform_driver opa362_driver = {
- 	.probe	= opa362_probe,
--	.remove	= opa362_remove,
-+	.remove_new = opa362_remove,
- 	.driver	= {
- 		.name	= "amplifier-opa362",
- 		.of_match_table = opa362_of_match,
+ static struct platform_driver sharp_ls_driver = {
+ 	.probe = sharp_ls_probe,
+-	.remove = sharp_ls_remove,
++	.remove_new = sharp_ls_remove,
+ 	.driver = {
+ 		.name = "panel-sharp-ls037v7dw01",
+ 		.of_match_table = sharp_ls_of_match,
 -- 
 2.42.0
 
