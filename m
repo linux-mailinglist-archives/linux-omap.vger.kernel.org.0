@@ -2,116 +2,94 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C5EA7E592C
-	for <lists+linux-omap@lfdr.de>; Wed,  8 Nov 2023 15:34:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FD7E7E5A88
+	for <lists+linux-omap@lfdr.de>; Wed,  8 Nov 2023 16:54:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234975AbjKHOea (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 8 Nov 2023 09:34:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43624 "EHLO
+        id S229558AbjKHPyI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 8 Nov 2023 10:54:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232680AbjKHOeX (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 8 Nov 2023 09:34:23 -0500
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA7101FF5
-        for <linux-omap@vger.kernel.org>; Wed,  8 Nov 2023 06:34:06 -0800 (PST)
-Received: by mail-lf1-x12e.google.com with SMTP id 2adb3069b0e04-50943ccbbaeso10018301e87.2
-        for <linux-omap@vger.kernel.org>; Wed, 08 Nov 2023 06:34:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1699454045; x=1700058845; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=78GU8j4+SoSSNRmxCZnZFjlRCHFt/xGux/FgF9FARuk=;
-        b=BA5E9/N+hjkCBkXNo2GSEYWwgGb4ioYhqdzF7T0DzpCReIDP/433BPXtvE85AJrAkz
-         GN3ACgC45g1C15b6V/fsatzmsaGVpEKBCeZcG5faFhyGLkzC2Wrk104ejAn4EopzQ5ZR
-         dHgyH+FM8KHQ/MjXLxt3mGYxpF0OVPMniExqnVf4+ggq44GGKiNTa74brIbsTRO70ZX+
-         jaGEjzu8gA5stmVsYCvAkPDka+SrXLJfGGLrl5PdRccl+Q+rFLWJLV+kz4XZm/wiECH1
-         yuL0WY6JFltpZj8rBkG0vv+romuVYkHpPbKQGfje959be4/CUncvxAQsrbL2+hevnkhh
-         OaNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699454045; x=1700058845;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=78GU8j4+SoSSNRmxCZnZFjlRCHFt/xGux/FgF9FARuk=;
-        b=bBF0EprEDeNGrnSPJ/ibxYQXEp7uOmcgN5we6qZqg4y52Q99KNZFxh9hQA1pYtd9Ar
-         9E5yrH3sGBosIL/hztOOlDjgaVPIhOoBelO2xJ8m1/z5eLXwix+TLuTVUBuaLFarhZT0
-         C26TGNhoKz17zEYEJ7F6iYaeOLMfgl+71udIC6RI0/wUrpxlPDQGJmT0IM1cwpwbw/VD
-         IZt0qJKhuzYPVNYYKVL5uyRhCRiCTr0TU0Rv+flkxmBr9aQ8pr9KU81iAv4Bpy79msCL
-         1cQbZHl86E5udAnSro4AWtYnk0jGJD6SppTsOpRTJ8stOP2mfN4+aIrTObNcWZnXvvHl
-         /0Pw==
-X-Gm-Message-State: AOJu0YzXyCV+2z5YgDWgeYewWCV2N0tc59ed9b4095LQV1OJ2L2OT9hf
-        5nfhBjcVn2II3UOFsEzo4hRShw==
-X-Google-Smtp-Source: AGHT+IH6IcpUsu8l3iZ6cm3VeKSRvHVjWLm4/aWcEw/O+09FccupiAh8GMMm2qcpdhgkIocbk45f1A==
-X-Received: by 2002:a19:9110:0:b0:507:b935:9f5f with SMTP id t16-20020a199110000000b00507b9359f5fmr1441210lfd.24.1699454044974;
-        Wed, 08 Nov 2023 06:34:04 -0800 (PST)
-Received: from [127.0.1.1] ([85.235.12.238])
-        by smtp.gmail.com with ESMTPSA id q10-20020ac24a6a000000b00507a3b8b007sm686773lfp.110.2023.11.08.06.34.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Nov 2023 06:34:04 -0800 (PST)
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Wed, 08 Nov 2023 15:33:54 +0100
-Subject: [PATCH 6/6] mtd: rawnand: gpio: Rename file
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20231108-fix-mips-nand-v1-6-5fc5586d04de@linaro.org>
-References: <20231108-fix-mips-nand-v1-0-5fc5586d04de@linaro.org>
-In-Reply-To: <20231108-fix-mips-nand-v1-0-5fc5586d04de@linaro.org>
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>,
+        with ESMTP id S229521AbjKHPyH (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 8 Nov 2023 10:54:07 -0500
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::223])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC2821BC3;
+        Wed,  8 Nov 2023 07:54:04 -0800 (PST)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id C80EA60008;
+        Wed,  8 Nov 2023 15:53:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1699458843;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=bYS94S7++WYKx+tHBKHHGfIvXY84QiR+o61nAhem3TE=;
+        b=JMmrAxt6CfsPfRIT849ExEJi2VTTQkFSMaqLfqgUH4rvB5ZfddAYUbwUnjgGxDIq8YaOxl
+        B5Zs58doliOu1V5XAgr5Tw38Z1+5CRVNvd7AZsFJ5YKyTc5v/EX8df+BFjxU/kDeqmhRWV
+        8mifPlDY5iQb3p6b6jxvAmqf0Y87HAK6Iz/dWJ2ogWB2MW6jdZshdyV/tjYtH+CDrseL6c
+        tW0wdNCF061azZnNKVx9kSNfGNTvWf/PXpbdSKGyKItVc1PwwFQztE7OqJlQDOQ8QYNGuv
+        K+J87XKp360j9MWnbE3DsJ5UTmGYXLso7wSAid5sirjABqj0oBrNjYf/fsuuPg==
+Date:   Wed, 8 Nov 2023 16:53:59 +0100
+From:   Miquel Raynal <miquel.raynal@bootlin.com>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
         Janusz Krzysztofik <jmkrzyszt@gmail.com>,
         Tony Lindgren <tony@atomide.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
         Richard Weinberger <richard@nod.at>,
         Vignesh Raghavendra <vigneshr@ti.com>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
         Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Ben Dooks <ben.dooks@codethink.co.uk>
-Cc:     linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Ben Dooks <ben.dooks@codethink.co.uk>,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-kernel@vger.kernel.org, linux-mtd@lists.infradead.org,
-        devicetree@vger.kernel.org, linux-mips@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>
-X-Mailer: b4 0.12.4
+        devicetree@vger.kernel.org, linux-mips@vger.kernel.org
+Subject: Re: [PATCH 4/6] mtd: rawnand: gpio: Use device properties
+Message-ID: <20231108165359.33dccef0@xps-13>
+In-Reply-To: <20231108-fix-mips-nand-v1-4-5fc5586d04de@linaro.org>
+References: <20231108-fix-mips-nand-v1-0-5fc5586d04de@linaro.org>
+        <20231108-fix-mips-nand-v1-4-5fc5586d04de@linaro.org>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-GND-Sasl: miquel.raynal@bootlin.com
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The implementation of the GPIO NAND controller is just "gpio"
-with the usecase for NAND implied from the folder nand/raw.
+Hi Linus,
 
-This is not so great when the module gets the name "gpio.ko".
-Rename the implementation to nand-gpio.c so the module is
-named nand-gpio.ko which is more reasonable.
+linus.walleij@linaro.org wrote on Wed, 08 Nov 2023 15:33:52 +0100:
 
-We put "nand" first instead of "gpio" because the order is
-usually <subsystem>-<driver>.c, cf ls drivers/gpio/
+> The platform data (struct gpio_nand_platdata) isn't really used
+> in any boardfile in the kernel: the only probe path is from
+> device tree.
+>=20
+> Convert the driver to not use the platform data header at all
+> and read out the device tree properties using device
+> properties so we don't need to have the driver be exclusively
+> device tree either: ACPI or software nodes work fine if
+> need be. Drop the ifdeffery around CONFIG_OF as a consequence.
+>=20
+> The code reads "bank-width" to plat->options flags and passes
+> it directly to the NAND chip struct, so just assign this
+> directly to the chip instead.
+>=20
+> The code reads one property "chip-delay" that it stores
+> in pdata->delay and never use, so drop this altogether.
+> If timings should be supported this can probably be done in
+> a more detailed way using the new elaborate timings structs
+> that exist for NAND.
+>=20
+> The platform data contains a callback to augment partitions,
+> but since there are no board files using this platform
+> data to define a gpio NAND device, this is never used so
+> the code handling it can be deleted.
 
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
----
- drivers/mtd/nand/raw/Makefile                | 2 +-
- drivers/mtd/nand/raw/{gpio.c => nand-gpio.c} | 0
- 2 files changed, 1 insertion(+), 1 deletion(-)
+Nice cleanup. I'm a bit more reluctant on the bindings side, I'll come
+back to it later, but the driver side looks neat.
 
-diff --git a/drivers/mtd/nand/raw/Makefile b/drivers/mtd/nand/raw/Makefile
-index 25120a4afada..f0e377332812 100644
---- a/drivers/mtd/nand/raw/Makefile
-+++ b/drivers/mtd/nand/raw/Makefile
-@@ -18,7 +18,7 @@ obj-$(CONFIG_MTD_NAND_NANDSIM)		+= nandsim.o
- obj-$(CONFIG_MTD_NAND_CS553X)		+= cs553x_nand.o
- obj-$(CONFIG_MTD_NAND_NDFC)		+= ndfc.o
- obj-$(CONFIG_MTD_NAND_ATMEL)		+= atmel/
--obj-$(CONFIG_MTD_NAND_GPIO)		+= gpio.o
-+obj-$(CONFIG_MTD_NAND_GPIO)		+= nand-gpio.o
- omap2_nand-objs := omap2.o
- obj-$(CONFIG_MTD_NAND_OMAP2) 		+= omap2_nand.o
- obj-$(CONFIG_MTD_NAND_OMAP_BCH_BUILD)	+= omap_elm.o
-diff --git a/drivers/mtd/nand/raw/gpio.c b/drivers/mtd/nand/raw/nand-gpio.c
-similarity index 100%
-rename from drivers/mtd/nand/raw/gpio.c
-rename to drivers/mtd/nand/raw/nand-gpio.c
-
--- 
-2.34.1
-
+Thanks,
+Miqu=C3=A8l
