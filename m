@@ -2,52 +2,66 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ABBDB7E8B71
-	for <lists+linux-omap@lfdr.de>; Sat, 11 Nov 2023 17:05:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B1C4A7E8C65
+	for <lists+linux-omap@lfdr.de>; Sat, 11 Nov 2023 20:53:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231279AbjKKQFc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 11 Nov 2023 11:05:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33004 "EHLO
+        id S229588AbjKKTxh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 11 Nov 2023 14:53:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229797AbjKKQFb (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 11 Nov 2023 11:05:31 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 649AF3A81;
-        Sat, 11 Nov 2023 08:05:28 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6D42C433C7;
-        Sat, 11 Nov 2023 16:05:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1699718727;
-        bh=kUjdXhm4XIHaSixq3RfNZfAa33jeURgyW2Gi0Awq3zk=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=mz7gkbabkfJXFO/abvyaZ1DQy3HE+JSCpyB4OStXLwfPUKlsQFlD0K+zpw0ss2ny4
-         HvwK+up8YPCyuQUuWGgu1OtCI6LQxm0HqPib1/NRwaCpt7PfhR88MwlcWaXh9Szeue
-         XHZDUKzaxcukMM93+v5ErGd8wA78BwO/EQY4zCUsYn7+sw9Pp4NB+Z9UBUhzTVo/hQ
-         pyda8l11HiCKVMOmJtQLbGAXZ553vMV3oIi0NdF+Gwk55HsURwJ4WOOc2MkOiV2Vpi
-         Zw1DpxKjo9Cd7qc1btBiF7k6g4n3zFHkH9u8U+PQaMnYaelcELnsLwv2sfu+RbVeyR
-         wWutiLA6+0LCw==
-Message-ID: <01c7c200-f5ec-415f-9342-7838fe0862ba@kernel.org>
-Date:   Sat, 11 Nov 2023 18:05:22 +0200
+        with ESMTP id S229436AbjKKTxg (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 11 Nov 2023 14:53:36 -0500
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3768385F;
+        Sat, 11 Nov 2023 11:53:33 -0800 (PST)
+Received: by mail-wm1-x32b.google.com with SMTP id 5b1f17b1804b1-40a4d04af5cso3846045e9.0;
+        Sat, 11 Nov 2023 11:53:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1699732412; x=1700337212; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/VCZuqrElRyiEpHz6VhAAB6ifUe/eycXTPkzvJwzq9U=;
+        b=K3/ASwSCFBDgGbIEVFcIgm7F6e52Tn0krxYjJSdyjeMxdSMZ4gX2cg6ftOG3aIYj+y
+         8mdb2zjB9o2gP4nwRiA8wxC+S1I5Kl4kRxwu1uwqx92Ftg7HHuD9vfPlCk8Sp2/RTQy7
+         m7/yPl/dDHB6nPJTAS3J8to84Wgccu4JhTpT/XzGcfA2+oUFX2tUhS8D60SqLn4hB8Pk
+         sinnfNj+fG8hIpJCeKNGEsOOl+a2NxH0t2erLo94NttBaGVgTNd/0EtB9l9rUEM4k34L
+         epuJYv69Upu4nhcuPu8GXnMCb+5P9cisAMHJWy7Ir2mxwP6wv8ytk5l9PzqQ8ObYH6Uq
+         /uMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699732412; x=1700337212;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/VCZuqrElRyiEpHz6VhAAB6ifUe/eycXTPkzvJwzq9U=;
+        b=K6+4uf/3JoqEfSivk429u/kUaZ72CXuYoRdGFDDPCYNu8VcTXefkPPyFhjrON5xVwd
+         YqdfjzUnnNTLRMUa9CCJW8at7iOWYGfk2EYi9uEKgTTf0j+I85H7qZQtpPmV4/tqmzpC
+         HTh+gg+qoHOz+IhahkKrxVhULnflqobG0nHQ9YDx4kebGDdkuij924M7JKxODJREZWBT
+         yCcg0hFfEPmd4o47UqExr9uFmywA2CQLkk0HrKfX9OwLSokAYM7F7ERzE/Tzk6DpIl27
+         VY4zmoQpS5Q0CyVZOmkY5Fv6I5qOT5fa/qeJA1IKRkDukgK+edT+mZ4FbbaVYhEOBRYI
+         TRCg==
+X-Gm-Message-State: AOJu0Yxu4ExNR+jSuWVkB2qG1JzfClgDp7kIGnVWrg9ARiecT9ErOSSt
+        Rdv5ECbCk2XL0axByq4AB8o=
+X-Google-Smtp-Source: AGHT+IGbKUlRfd3HWOHCEAQ/ZJ7CEL3cGM1FkjzQbqKP34p8L6l+aUA1RC5xSpHcoA8b4fohVzadhw==
+X-Received: by 2002:a05:600c:1c05:b0:40a:5080:724 with SMTP id j5-20020a05600c1c0500b0040a50800724mr20284wms.20.1699732411981;
+        Sat, 11 Nov 2023 11:53:31 -0800 (PST)
+Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
+        by smtp.gmail.com with ESMTPSA id fl23-20020a05600c0b9700b0040a45fffd27sm5364255wmb.10.2023.11.11.11.53.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 11 Nov 2023 11:53:31 -0800 (PST)
+From:   Colin Ian King <colin.i.king@gmail.com>
+To:     Tony Lindgren <tony@atomide.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>, linux-omap@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] regulator: palmas: remove redundant initialization of pointer pdata
+Date:   Sat, 11 Nov 2023 19:53:30 +0000
+Message-Id: <20231111195330.338324-1-colin.i.king@gmail.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] MAINTAINERS: net: Update reviewers for TI's Ethernet
- drivers
-To:     "Anwar, Md Danish" <a0501179@ti.com>,
-        Ravi Gunasekaran <r-gunasekaran@ti.com>, netdev@vger.kernel.org
-Cc:     linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-        s-vadapalli@ti.com, nm@ti.com, srk@ti.com,
-        Md Danish Anwar <danishanwar@ti.com>
-References: <20231110084227.2616-1-r-gunasekaran@ti.com>
- <78cf6806-0bdc-4b81-8d96-51a6f8fb168c@kernel.org>
- <44f68604-b37d-56d9-6fc1-4c4cc503abd3@ti.com>
- <e96bd133-7bc7-b2ae-4d70-69f2ad5c9aff@ti.com>
-Content-Language: en-US
-From:   Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <e96bd133-7bc7-b2ae-4d70-69f2ad5c9aff@ti.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,79 +70,31 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Pointer pdata is being initialized with a value that is never read. It is
+being re-assigned later on with the return from a devm_kzalloc call.
+Remove the redundant initialization, cleans up clang scan build warning:
 
+drivers/regulator/palmas-regulator.c:1597:36: warning: Value stored
+to 'pdata' during its initialization is never read [deadcode.DeadStores]
 
-On 10/11/2023 18:21, Anwar, Md Danish wrote:
-> On 11/10/2023 3:08 PM, Ravi Gunasekaran wrote:
->> Roger,
->>
->> On 11/10/23 2:21 PM, Roger Quadros wrote:
->>> Hi Ravi,
->>>
->>> On 10/11/2023 10:42, Ravi Gunasekaran wrote:
->>>> Grygorii is no longer associated with TI and messages addressed to
->>>> him bounce.
->>>>
->>>> Add Siddharth and myself as reviewers.
->>>>
->>>> Signed-off-by: Ravi Gunasekaran <r-gunasekaran@ti.com>
->>>> ---
->>>>  MAINTAINERS | 3 ++-
->>>>  1 file changed, 2 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/MAINTAINERS b/MAINTAINERS
->>>> index 7b151710e8c5..bd52c33bca02 100644
->>>> --- a/MAINTAINERS
->>>> +++ b/MAINTAINERS
->>>> @@ -21775,7 +21775,8 @@ F:	Documentation/devicetree/bindings/counter/ti-eqep.yaml
->>>>  F:	drivers/counter/ti-eqep.c
->>>>  
->>>>  TI ETHERNET SWITCH DRIVER (CPSW)
->>>> -R:	Grygorii Strashko <grygorii.strashko@ti.com>
->>>> +R:	Siddharth Vadapalli <s-vadapalli@ti.com>
->>>> +R:	Ravi Gunasekaran <r-gunasekaran@ti.com>
->>>
->>> Could you please add me as Reviewer as well. Thanks!
->>
->> Thanks for volunteering to be a reviewer.
->>
->> I posted a v2 adding you as a reviewer.
->> https://lore.kernel.org/all/20231110092749.3618-1-r-gunasekaran@ti.com/
->>
->>>
->>>>  L:	linux-omap@vger.kernel.org
->>>>  L:	netdev@vger.kernel.org
->>>>  S:	Maintained
->>>
->>>> F:      drivers/net/ethernet/ti/cpsw*
->>>> F:      drivers/net/ethernet/ti/davinci*
->>>
->>> What about am65-cpsw*?
->>>
->>> And drivers/net/ethernet/ti/icssg/*
->>
->> I would prefer a separate entry for ICSSG. Will let Danish comment on this.
->>
-> 
-> Sure, I will share a separate patch for this. Roger, do you want me to
-> add you as a reviewer in for ICSSG driver as well?
-> 
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+---
+ drivers/regulator/palmas-regulator.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Yes please. Thanks!
-
->>>
->>> I also see 
->>>
->>> OMAP GPIO DRIVER
->>> M:      Grygorii Strashko <grygorii.strashko@ti.com>
->>>
->>> Maybe a separate patch to remove the invalid email-id?
->>>
->> Yes, that's the plan. One of us from TI would be posting shortly.
->>
->>
-> 
-
+diff --git a/drivers/regulator/palmas-regulator.c b/drivers/regulator/palmas-regulator.c
+index e0dc033aae0f..60656a815b9e 100644
+--- a/drivers/regulator/palmas-regulator.c
++++ b/drivers/regulator/palmas-regulator.c
+@@ -1594,7 +1594,7 @@ static const struct of_device_id of_palmas_match_tbl[] = {
+ static int palmas_regulators_probe(struct platform_device *pdev)
+ {
+ 	struct palmas *palmas = dev_get_drvdata(pdev->dev.parent);
+-	struct palmas_pmic_platform_data *pdata = dev_get_platdata(&pdev->dev);
++	struct palmas_pmic_platform_data *pdata;
+ 	struct device_node *node = pdev->dev.of_node;
+ 	struct palmas_pmic_driver_data *driver_data;
+ 	struct regulator_config config = { };
 -- 
-cheers,
--roger
+2.39.2
+
