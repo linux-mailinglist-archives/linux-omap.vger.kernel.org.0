@@ -2,63 +2,48 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E6997EA2A6
-	for <lists+linux-omap@lfdr.de>; Mon, 13 Nov 2023 19:16:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B8BB7EA3F4
+	for <lists+linux-omap@lfdr.de>; Mon, 13 Nov 2023 20:42:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231351AbjKMSQi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 13 Nov 2023 13:16:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45292 "EHLO
+        id S229511AbjKMTmj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 13 Nov 2023 14:42:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230081AbjKMSQh (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 13 Nov 2023 13:16:37 -0500
-Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA9EA93;
-        Mon, 13 Nov 2023 10:16:32 -0800 (PST)
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 3ADIG6iZ083221;
-        Mon, 13 Nov 2023 12:16:06 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1699899366;
-        bh=sb0mSzAPEmd4snrsgRpPSWRwRZH+g7Nc4O4n8vLwRD4=;
-        h=From:To:CC:Subject:Date;
-        b=ogZHeP422FGYh3YdRgBUyIpwVB2Evl/AkPBiWg+Y+LWnlwRq2gYki543YPXumuekm
-         q/zObY/cStmWdhtc6kkMbnDQqYv0K74xASpQ6Eu+rSBspu8ddNGlVUBo3Q+Xico0XN
-         8aGwgGKldE/7QUSryeTDpeSYKb6FgJtkGft0lA2A=
-Received: from DLEE112.ent.ti.com (dlee112.ent.ti.com [157.170.170.23])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 3ADIG6Ps029619
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 13 Nov 2023 12:16:06 -0600
-Received: from DLEE103.ent.ti.com (157.170.170.33) by DLEE112.ent.ti.com
- (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 13
- Nov 2023 12:16:06 -0600
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE103.ent.ti.com
- (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Mon, 13 Nov 2023 12:16:06 -0600
-Received: from fllv0040.itg.ti.com (ileaxei01-snat.itg.ti.com [10.180.69.5])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 3ADIG5PH028171;
-        Mon, 13 Nov 2023 12:16:05 -0600
-From:   Andrew Davis <afd@ti.com>
-To:     Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>, Nishanth Menon <nm@ti.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>
-CC:     <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>, Andrew Davis <afd@ti.com>
-Subject: [PATCH] ARM: dts: dra7: Fix DRA7 L3 NoC node register size
-Date:   Mon, 13 Nov 2023 12:16:04 -0600
-Message-ID: <20231113181604.546444-1-afd@ti.com>
-X-Mailer: git-send-email 2.39.2
+        with ESMTP id S231969AbjKMTkm (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 13 Nov 2023 14:40:42 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E0A71988;
+        Mon, 13 Nov 2023 11:40:39 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89A35C433C7;
+        Mon, 13 Nov 2023 19:40:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1699904439;
+        bh=gzrsBuaaq7Ias+HTVjBwYIEOSVwB/9IrgcrQUdiriGg=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=WpBa+rX06OyELpVg6hWTYXfcQyMZi9S66lVJvk0TRBPg2CKFE+4Emb61IfX4W2h1K
+         Zreo0uyfm1CrZKXal7GlHztFwz7eAXQih4xji15328MKeKcKMM5lgp3qvPm3WYLlOs
+         BI9ZKnBprFk6RrPDqboCiUSpHIq5QQENBMJUe1nEFH2kIeObPQmCnn50F1rRBEIpep
+         C6GlmAv2tALYrOpucaSFKFhwC1gPnHHc2KnTUSzEcNX2d+daLiL9cBsaY4//PNUfXi
+         LONDxbF1/7LbGde+MHazELjFZSk4fL0oIeg4SL0V/x4mrD235bJcPP+f5LfWIg43e4
+         M7/QkbeSmn9NQ==
+From:   Mark Brown <broonie@kernel.org>
+To:     Tony Lindgren <tony@atomide.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        linux-omap@vger.kernel.org, Colin Ian King <colin.i.king@gmail.com>
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20231111195330.338324-1-colin.i.king@gmail.com>
+References: <20231111195330.338324-1-colin.i.king@gmail.com>
+Subject: Re: [PATCH][next] regulator: palmas: remove redundant
+ initialization of pointer pdata
+Message-Id: <169990443689.3294075.9581324276633996428.b4-ty@kernel.org>
+Date:   Mon, 13 Nov 2023 19:40:36 +0000
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13-dev-0438c
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -66,29 +51,41 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-This node can access any part of the L3 configuration registers space,
-including CLK1 and CLK2 which are 0x800000 offset. Restore this area
-size to include these areas.
+On Sat, 11 Nov 2023 19:53:30 +0000, Colin Ian King wrote:
+> Pointer pdata is being initialized with a value that is never read. It is
+> being re-assigned later on with the return from a devm_kzalloc call.
+> Remove the redundant initialization, cleans up clang scan build warning:
+> 
+> drivers/regulator/palmas-regulator.c:1597:36: warning: Value stored
+> to 'pdata' during its initialization is never read [deadcode.DeadStores]
+> 
+> [...]
 
-Fixes: 7f2659ce657e ("ARM: dts: Move dra7 l3 noc to a separate node")
-Signed-off-by: Andrew Davis <afd@ti.com>
----
- arch/arm/boot/dts/ti/omap/dra7.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Applied to
 
-diff --git a/arch/arm/boot/dts/ti/omap/dra7.dtsi b/arch/arm/boot/dts/ti/omap/dra7.dtsi
-index 3f3e52e3b3752..6509c742fb58c 100644
---- a/arch/arm/boot/dts/ti/omap/dra7.dtsi
-+++ b/arch/arm/boot/dts/ti/omap/dra7.dtsi
-@@ -147,7 +147,7 @@ ocp: ocp {
- 
- 		l3-noc@44000000 {
- 			compatible = "ti,dra7-l3-noc";
--			reg = <0x44000000 0x1000>,
-+			reg = <0x44000000 0x1000000>,
- 			      <0x45000000 0x1000>;
- 			interrupts-extended = <&crossbar_mpu GIC_SPI 4 IRQ_TYPE_LEVEL_HIGH>,
- 					      <&wakeupgen GIC_SPI 10 IRQ_TYPE_LEVEL_HIGH>;
--- 
-2.39.2
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-next
+
+Thanks!
+
+[1/1] regulator: palmas: remove redundant initialization of pointer pdata
+      commit: 1fc2e768ff28f096e9fb6438f0d01c3851c7cd68
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 
