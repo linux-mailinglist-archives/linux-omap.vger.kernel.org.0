@@ -2,30 +2,30 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CBFF57EBC02
-	for <lists+linux-omap@lfdr.de>; Wed, 15 Nov 2023 04:35:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E46C37EBC12
+	for <lists+linux-omap@lfdr.de>; Wed, 15 Nov 2023 04:36:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234404AbjKODfZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 14 Nov 2023 22:35:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47886 "EHLO
+        id S234394AbjKODg3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 14 Nov 2023 22:36:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234414AbjKODfT (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 14 Nov 2023 22:35:19 -0500
+        with ESMTP id S234404AbjKODg2 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 14 Nov 2023 22:36:28 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20C6BDB;
-        Tue, 14 Nov 2023 19:35:16 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6813BC433C7;
-        Wed, 15 Nov 2023 03:35:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEA5AF0;
+        Tue, 14 Nov 2023 19:36:24 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25DAAC433C7;
+        Wed, 15 Nov 2023 03:36:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1700019315;
-        bh=uz3VoRhQYG9uvIywcf7/L4nQE3Yr0jMTQYKIxzAPbQA=;
+        s=k20201202; t=1700019384;
+        bh=0+NfibdCD4VeZDLIRZHoC1Mv9PlzLQwXwbu//MhvxdQ=;
         h=From:To:Cc:Subject:Date:From;
-        b=mpMfZMWXk2/CRO8Y6Wfi/9PEXmhk144p5Wis+zT2daLm/Jo2BHpPHuuHZXuL7nY/Q
-         xnABS49P1LQA5I3tD/Ovn4XmKnBG0hc2+JgTpghfv7r2f1VYJab7b/OIsW538L5oKs
-         K6aZtnTkXjz7x5qcK85E4NinShOSyDCOc0RtgUHXUHo3igPwF1lc2lEzq/IuRrCA1s
-         BzSZQxuC5Tt3HbhOmg6UIgLZdZTAjZZdJsdy6dluU9visvhxcLtzna5WYb9hbo5Wt+
-         /emYVlW3cZ+5KvcDAe/YZCx5DyK0adBWyhopR8rTQbi3W9b2ARWtTbpQSEjHY/ik95
-         twEpzs3zgSlzA==
+        b=UctmX1ybctCzhs0y9pgMddcneMzf3H3WfdRTC1UytY96/nT2i9joK4+uTyzFis5CD
+         g+eNU1wAFleh+ToVwmsh85dbqka+cqLp19oDP4f88JBQUDxPq8G2tn8Ie5A1BMRE5m
+         xypLeZ4U4r3Ct21vXc2N9ZgszW48ht18d5h4qv3Jp22KVzNP3eJ4DF0BtF0a7gIh81
+         LXgrUie1OoT05fU6AEH45/WFi5Y0IGqDpjfRC8WsU2sBimoY2ww99d+jAWL0nTcuQI
+         gg9IGlTyoyVMeoS8Oi1Ab5abkm5kMl9QwcGHRMU3/JmCszk7eBRnT/PleFUJRUWsSY
+         iinBXupGnpkmw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Tony Lindgren <tony@atomide.com>,
@@ -35,14 +35,14 @@ Cc:     Tony Lindgren <tony@atomide.com>,
         jarkko.nikula@bitmer.com, lgirdwood@gmail.com, perex@perex.cz,
         tiwai@suse.com, alsa-devel@alsa-project.org,
         linux-omap@vger.kernel.org, linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.5 1/6] ASoC: ti: omap-mcbsp: Fix runtime PM underflow warnings
-Date:   Tue, 14 Nov 2023 22:34:45 -0500
-Message-ID: <20231115033459.1228900-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 1/6] ASoC: ti: omap-mcbsp: Fix runtime PM underflow warnings
+Date:   Tue, 14 Nov 2023 22:35:55 -0500
+Message-ID: <20231115033608.1229058-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.5.11
+X-stable-base: Linux 6.1.62
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -71,7 +71,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/sound/soc/ti/omap-mcbsp.c b/sound/soc/ti/omap-mcbsp.c
-index 21fa7b9787997..94c514e57eef9 100644
+index 7c539a41a6a34..4b8aac1a36fa2 100644
 --- a/sound/soc/ti/omap-mcbsp.c
 +++ b/sound/soc/ti/omap-mcbsp.c
 @@ -74,14 +74,16 @@ static int omap2_mcbsp_set_clks_src(struct omap_mcbsp *mcbsp, u8 fck_src_id)
