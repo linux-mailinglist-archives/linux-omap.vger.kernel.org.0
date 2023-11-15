@@ -2,105 +2,97 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 356297EB50D
-	for <lists+linux-omap@lfdr.de>; Tue, 14 Nov 2023 17:42:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B47A7EBBED
+	for <lists+linux-omap@lfdr.de>; Wed, 15 Nov 2023 04:34:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230461AbjKNQmj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 14 Nov 2023 11:42:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39402 "EHLO
+        id S234330AbjKODeU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 14 Nov 2023 22:34:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47140 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229822AbjKNQmj (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 14 Nov 2023 11:42:39 -0500
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D0B6116;
-        Tue, 14 Nov 2023 08:42:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-        Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-        Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-        bh=WCge2m1CuTOpBl3S/9gCrC4dvJqJV+FxfrGYoOBjQhI=; b=u/t/vJVf445xOegXlqC4jLpzMK
-        JNycE1HC/v8VuxfHQVTGJCOT7WQz2SxRvVwM9T9LVY9cplPA7n37R+PLO3cMmHw1cVZD2A97XbqwI
-        VvMY+CdABYJ5T7snAp02DkWOCYuSSklnQyyirDY1IdYy4cI5GZsAWigh/QesXnJoBjbUKThGXPfM2
-        584230XSxPu5ese8HIxId3wZOFvTbkfkIN37y5pUJA1LcRwut6iL6wNfoMfdOgyBKCYZqovxRVYmd
-        wfuQrDORDyVBPMAy/vm4RPjBQxdWDYuOJL1P5i8uzzQXFtRUxqSPV/4MeZc0CFds3tj5hbATN73XR
-        IES81Olw==;
-Received: from [50.53.46.231] (helo=[192.168.254.15])
-        by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-        id 1r2wUj-00GRt0-22;
-        Tue, 14 Nov 2023 16:42:34 +0000
-Message-ID: <380a8838-d37a-494d-8150-78f49b46392d@infradead.org>
-Date:   Tue, 14 Nov 2023 08:42:31 -0800
+        with ESMTP id S234323AbjKODeU (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 14 Nov 2023 22:34:20 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70EFFC5;
+        Tue, 14 Nov 2023 19:34:17 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA41AC433C7;
+        Wed, 15 Nov 2023 03:34:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1700019257;
+        bh=Aid9O+Bkm+8g5JHHpfOl4STD3ksch9koNvRL1NPegw0=;
+        h=From:To:Cc:Subject:Date:From;
+        b=LORo8Fz70Op9wkllJfW9BDGR5Vy24R8HRLdfULZas/7vqQMEX/wxCw5FMfA/kbuqf
+         jwvYrV37xx5kb6oS31KJxdtLTIE9p24OF4nvEf+wE2E3ovI+qx5LXrevV4/1q0FaUw
+         ej0XI259j7anp8BCpX6m9ZxH2aodr5oynUdcaPv0Mr0ZVvQ7izxynv22aiOaagrCrg
+         hDeQVPxO4fzcASg+8qUUJgsR4BITMrjUWoHRg1dSDcrKXpznGD4YMo+XV9K0KyvfR0
+         UJCZSUcAd11y3WE0Bl4PjkqptLK8ClAOZU6kGJ6ilcEporAItSbOSPtD8WLGKmFLOf
+         MPuyGAF4jjakQ==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Tony Lindgren <tony@atomide.com>,
+        Andreas Kemnade <andreas@kemnade.info>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, peter.ujfalusi@gmail.com,
+        jarkko.nikula@bitmer.com, lgirdwood@gmail.com, perex@perex.cz,
+        tiwai@suse.com, alsa-devel@alsa-project.org,
+        linux-omap@vger.kernel.org, linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 1/6] ASoC: ti: omap-mcbsp: Fix runtime PM underflow warnings
+Date:   Tue, 14 Nov 2023 22:33:35 -0500
+Message-ID: <20231115033350.1228588-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] clocksource: timer-ti-dm: Fix make W=n kerneldoc warnings
-Content-Language: en-US
-To:     Tony Lindgren <tony@atomide.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-Cc:     linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        kernel test robot <lkp@intel.com>
-References: <20231114072930.40615-1-tony@atomide.com>
-From:   Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20231114072930.40615-1-tony@atomide.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.6.1
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+From: Tony Lindgren <tony@atomide.com>
 
+[ Upstream commit fbb74e56378d8306f214658e3d525a8b3f000c5a ]
 
-On 11/13/23 23:29, Tony Lindgren wrote:
-> Kernel test robot reports of kerneldoc related warnings that happen with
-> make W=n for "parameter or member not described".
-> 
-> These were caused by changes to function parameter names with
-> earlier commits where the kerneldoc parts were not updated.
-> 
-> Fixes: 49cd16bb573e ("clocksource/drivers/timer-ti-dm: Simplify register writes with dmtimer_write()")
-> Fixes: a6e543f61531 ("clocksource/drivers/timer-ti-dm: Move struct omap_dm_timer fields to driver")
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202311040403.DzIiBuwU-lkp@intel.com/
-> Closes: https://lore.kernel.org/oe-kbuild-all/202311040606.XL5OcR9O-lkp@intel.com/
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
+We need to check for an active device as otherwise we get warnings
+for some mcbsp instances for "Runtime PM usage count underflow!".
 
-Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
-Tested-by: Randy Dunlap <rdunlap@infradead.org>
+Reported-by: Andreas Kemnade <andreas@kemnade.info>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Link: https://lore.kernel.org/r/20231030052340.13415-1-tony@atomide.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ sound/soc/ti/omap-mcbsp.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-Thanks.
-
-> ---
->  drivers/clocksource/timer-ti-dm.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/clocksource/timer-ti-dm.c b/drivers/clocksource/timer-ti-dm.c
-> --- a/drivers/clocksource/timer-ti-dm.c
-> +++ b/drivers/clocksource/timer-ti-dm.c
-> @@ -183,7 +183,7 @@ static inline u32 dmtimer_read(struct dmtimer *timer, u32 reg)
->   * dmtimer_write - write timer registers in posted and non-posted mode
->   * @timer:      timer pointer over which write operation is to perform
->   * @reg:        lowest byte holds the register offset
-> - * @value:      data to write into the register
-> + * @val:        data to write into the register
->   *
->   * The posted mode bit is encoded in reg. Note that in posted mode, the write
->   * pending bit must be checked. Otherwise a write on a register which has a
-> @@ -949,7 +949,7 @@ static int omap_dm_timer_set_int_enable(struct omap_dm_timer *cookie,
->  
->  /**
->   * omap_dm_timer_set_int_disable - disable timer interrupts
-> - * @timer:	pointer to timer handle
-> + * @cookie:	pointer to timer cookie
->   * @mask:	bit mask of interrupts to be disabled
->   *
->   * Disables the specified timer interrupts for a timer.
-
+diff --git a/sound/soc/ti/omap-mcbsp.c b/sound/soc/ti/omap-mcbsp.c
+index fdabed5133e83..b399d86f22777 100644
+--- a/sound/soc/ti/omap-mcbsp.c
++++ b/sound/soc/ti/omap-mcbsp.c
+@@ -74,14 +74,16 @@ static int omap2_mcbsp_set_clks_src(struct omap_mcbsp *mcbsp, u8 fck_src_id)
+ 		return 0;
+ 	}
+ 
+-	pm_runtime_put_sync(mcbsp->dev);
++	if (mcbsp->active)
++		pm_runtime_put_sync(mcbsp->dev);
+ 
+ 	r = clk_set_parent(mcbsp->fclk, fck_src);
+ 	if (r)
+ 		dev_err(mcbsp->dev, "CLKS: could not clk_set_parent() to %s\n",
+ 			src);
+ 
+-	pm_runtime_get_sync(mcbsp->dev);
++	if (mcbsp->active)
++		pm_runtime_get_sync(mcbsp->dev);
+ 
+ 	clk_put(fck_src);
+ 
 -- 
-~Randy
+2.42.0
+
