@@ -2,96 +2,188 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A93267EC0E4
-	for <lists+linux-omap@lfdr.de>; Wed, 15 Nov 2023 11:44:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B28137EE02C
+	for <lists+linux-omap@lfdr.de>; Thu, 16 Nov 2023 12:53:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234114AbjKOKom (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 15 Nov 2023 05:44:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51396 "EHLO
+        id S1345156AbjKPLx6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 16 Nov 2023 06:53:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36354 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234098AbjKOKom (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 15 Nov 2023 05:44:42 -0500
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF574109;
-        Wed, 15 Nov 2023 02:44:38 -0800 (PST)
-Received: by mail-ed1-x52e.google.com with SMTP id 4fb4d7f45d1cf-5441305cbd1so10148114a12.2;
-        Wed, 15 Nov 2023 02:44:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1700045077; x=1700649877; darn=vger.kernel.org;
-        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GbzuiJQ2vBegQA7voMECslTs5KDNKkKwd7ZxQs3+i5k=;
-        b=RpY7ScT5lHA50+KIeOZf2uZXViIB/K4IDLSTkLT5Fw/9jhUVnf8LgakdmgT8NoHOBV
-         YpSZEOfwyHXnDeCzU4VxThbNz9AQ1dM4NqMPYSrryTCyARq9h/Nvnet4LRb0bWpo8PSz
-         cI6YHPDMyl5pLuyz14tPSZXw5qA5CO5RIT0V761mUaHIQSO2ZS9KhjupBExpq8NPXqux
-         1T2YGIDgJIPqKFCh16xCBjR2D8m0klT6MaXL9mmTFKjOKUfGoOoc1zNDk5HBebSgcMzi
-         HKyYVH3C7iNyVFWo8g3RBM0VzBAEzQqKjZTYc9hqt/Wicd8A7VJ0GZ3PW2GM1JBx13SY
-         dv5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700045077; x=1700649877;
-        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GbzuiJQ2vBegQA7voMECslTs5KDNKkKwd7ZxQs3+i5k=;
-        b=K9DvB7urmw4nEnh1xiE2KAUFSbbaZcw6StwsUd9NiLDCOmGTBroHXJ9nrVR5U+jzEw
-         ppJiq1J+bykD3TLojeEydF3TMDhjGt8s7yT2FsqagaQ5mp4By1B/BD2k8r/lEFyaj/Hb
-         hkKWLQ/Bb8/TbK21ZteDL5PnBY9kaFJW3GpEC75BSeFRMkLVErHXTDuI12dHbWX4Ifkz
-         JViRnqs6RW0oA833RUZzDAf9KF8qFCyuF33fH6oscPM6IPPzA0UmfBva5hgzj6tT/PtM
-         kOf5c0QqpD1yGzdaQ02I3Lc6C9CLYF/zu5BLo4bgGHfH3YoIqIvI1kpIMUIPIX04Em1c
-         prRQ==
-X-Gm-Message-State: AOJu0Yz/9/TFM/kfT1n2HbwU3lX3+eDAvNQZh9seU7WwUZFw1J+VqIsw
-        sbg1UJ5m9R50EszfJhqteoo=
-X-Google-Smtp-Source: AGHT+IGoKYeYQ6VqydJ9DHVBCeRFwf/5TrkJAz59XZJNk/mqUrOM6/C5VjmJA5IM2b4Q5cpJvDiByA==
-X-Received: by 2002:a05:6402:1052:b0:543:535f:cc74 with SMTP id e18-20020a056402105200b00543535fcc74mr8252049edu.3.1700045077059;
-        Wed, 15 Nov 2023 02:44:37 -0800 (PST)
-Received: from felia.fritz.box ([2a02:810d:7e40:14b0:999:a30e:2872:ffae])
-        by smtp.gmail.com with ESMTPSA id l18-20020a50d6d2000000b00542db304680sm6470010edj.63.2023.11.15.02.44.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Nov 2023 02:44:36 -0800 (PST)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] MAINTAINERS: add omap bus drivers to OMAP2+ SUPPORT
-Date:   Wed, 15 Nov 2023 11:44:34 +0100
-Message-Id: <20231115104434.25796-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S1344985AbjKPLx5 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 16 Nov 2023 06:53:57 -0500
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99813CE
+        for <linux-omap@vger.kernel.org>; Thu, 16 Nov 2023 03:53:54 -0800 (PST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1r3avq-0003lL-PZ; Thu, 16 Nov 2023 12:53:14 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1r3avk-009RKv-1F; Thu, 16 Nov 2023 12:53:08 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1r3avj-002aey-NF; Thu, 16 Nov 2023 12:53:07 +0100
+Date:   Thu, 16 Nov 2023 12:53:07 +0100
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     Arnd Bergmann <arnd@arndb.de>, soc@kernel.org
+Cc:     Jay Fang <f.fangjian@huawei.com>, Rob Herring <robh@kernel.org>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+        Tony Lindgren <tony@atomide.com>,
+        "Sicelo A. Mhlongo" <absicsz@gmail.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Liu Ying <victor.liu@nxp.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Nick Alcock <nick.alcock@oracle.com>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Samuel Holland <samuel@sholland.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Yangtao Li <frank.li@vivo.com>, Yuan Can <yuancan@huawei.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jon Hunter <jonathanh@nvidia.com>,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        linux-tegra@vger.kernel.org,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        linux-sunxi@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: [PULL] bus: Convert to platform remove callback returning void
+Message-ID: <20231116115307.32rovgcej2s5pe4r@pengutronix.de>
+References: <20231109202830.4124591-1-u.kleine-koenig@pengutronix.de>
+ <1e5e1008-707b-449a-9dbf-48324eb2b248@app.fastmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="uz4ywpyf2v5xtmw3"
+Content-Disposition: inline
+In-Reply-To: <1e5e1008-707b-449a-9dbf-48324eb2b248@app.fastmail.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-omap@vger.kernel.org
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-While doing some code cleanup in drivers/bus/, I noticed that the files
-drivers/bus/omap*.[ch] have no maintainer.
 
-As far as I see from the git history, important changes to those files went
-through Tony Lindgren. Further, the inclusion of those drivers depend on
-the config ARCH_OMAP2PLUS being enabled. This suggests these drivers are
-part of the section OMAP2+ SUPPORT.
+--uz4ywpyf2v5xtmw3
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Add the omap bus drivers to OMAP2+ SUPPORT.
+Hello Arnd,
 
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
----
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+On Fri, Nov 10, 2023 at 07:32:01AM +0100, Arnd Bergmann wrote:
+> On Thu, Nov 9, 2023, at 21:28, Uwe Kleine-K=F6nig wrote:
+> > this series converts all drivers below drivers/bus to struct
+> > platform_driver::remove_new(). See commit 5c5a7680e67b ("platform:
+> > Provide a remove callback that returns no value") for an extended
+> > explanation and the eventual goal.
+> >
+> > drivers/bus/fsl-mc was already addressed earlier with a separate
+> > series[1].
+> >
+> > All conversations are trivial, because all .remove() callbacks returned
+> > zero unconditionally.
+> >
+> > Some of the drivers touched here don't have a maintainer and there is no
+> > maintainer for all of drivers/bus. It would be great if someone could p=
+ick up
+> > the whole series, maybe Arnd might do that?
+>=20
+> Sure, please send a pull request to soc@kernel.org if there
+> are no further comments.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 973568cae9e5..e829dbac1e99 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -15850,6 +15850,7 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap.git
- F:	Documentation/devicetree/bindings/arm/ti/omap.yaml
- F:	arch/arm/configs/omap2plus_defconfig
- F:	arch/arm/mach-omap2/
-+F:	drivers/bus/omap*.[ch]
- F:	drivers/bus/ti-sysc.c
- F:	drivers/gpio/gpio-tps65219.c
- F:	drivers/i2c/busses/i2c-omap.c
--- 
-2.17.1
+here it comes:
 
+The following changes since commit b85ea95d086471afb4ad062012a4d73cd328fa86:
+
+  Linux 6.7-rc1 (2023-11-12 16:19:07 -0800)
+
+are available in the Git repository at:
+
+  https://git.pengutronix.de/git/ukl/linux tags/bus-platform-remove-void
+
+for you to fetch changes up to 7d6da8800a35d2257ff8b4b7d7c4551978f0a71a:
+
+  bus: ts-nbus: Convert to platform remove callback returning void (2023-11=
+-16 12:43:57 +0100)
+
+----------------------------------------------------------------
+This series converts all drivers below drivers/bus to struct
+platform_driver::remove_new(). See commit 5c5a7680e67b ("platform:
+Provide a remove callback that returns no value") for an extended
+explanation and the eventual goal.
+
+After the initial simplification in commit 864acca58000 ("bus: fsl-mc:
+Drop if block with always false condition") all conversations are
+trivial because the remove callbacks all return zero unconditionally.
+
+----------------------------------------------------------------
+Uwe Kleine-K=F6nig (14):
+      bus: fsl-mc: Drop if block with always false condition
+      bus: fsl-mc: Convert to platform remove callback returning void
+      bus: hisi_lpc: Convert to platform remove callback returning void
+      bus: omap-ocp2scp: Convert to platform remove callback returning void
+      bus: omap_l3_smx: Convert to platform remove callback returning void
+      bus: qcom-ssc-block-bus: Convert to platform remove callback returnin=
+g void
+      bus: simple-pm-bus: Convert to platform remove callback returning void
+      bus: sun50i-de2: Convert to platform remove callback returning void
+      bus: sunxi-rsb: Convert to platform remove callback returning void
+      bus: tegra-aconnect: Convert to platform remove callback returning vo=
+id
+      bus: tegra-gmi: Convert to platform remove callback returning void
+      bus: ti-pwmss: Convert to platform remove callback returning void
+      bus: ti-sysc: Convert to platform remove callback returning void
+      bus: ts-nbus: Convert to platform remove callback returning void
+
+ drivers/bus/fsl-mc/fsl-mc-bus.c  | 16 +++-------------
+ drivers/bus/hisi_lpc.c           |  6 ++----
+ drivers/bus/omap-ocp2scp.c       |  6 ++----
+ drivers/bus/omap_l3_smx.c        |  6 ++----
+ drivers/bus/qcom-ssc-block-bus.c |  6 ++----
+ drivers/bus/simple-pm-bus.c      |  7 +++----
+ drivers/bus/sun50i-de2.c         |  5 ++---
+ drivers/bus/sunxi-rsb.c          |  6 ++----
+ drivers/bus/tegra-aconnect.c     |  6 ++----
+ drivers/bus/tegra-gmi.c          |  6 ++----
+ drivers/bus/ti-pwmss.c           |  5 ++---
+ drivers/bus/ti-sysc.c            |  6 ++----
+ drivers/bus/ts-nbus.c            |  6 ++----
+ 13 files changed, 28 insertions(+), 59 deletions(-)
+
+Thanks for considering these changes,
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--uz4ywpyf2v5xtmw3
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmVWAqIACgkQj4D7WH0S
+/k4d1gf/TpLJMgm0K7phGR6IWiPk7QZqX2jnAbl6qyTi+9xjRHbuz/D4C7zAO46l
+ZHY9vIM/qpv5F+ym/qOFKjh1byHDqtIdhJiICka50uHZfsH7LhgPtrf6O3sUWzeu
+iA2Rv+ntUK7EabnEka/zzepJYvXPUiulla0N7to+syQffGo24ialHAubU9e2BztQ
+q78IWAu/LKAgcMT6uxHCELNmTMuORFiN+DI2T4wVwbzLGh8IinScezVi1pmRREDI
+gZTzC0dqmgDbLT57PFwpRRDWUrzj+B2HIzBd6BcZiG3eR6JQID4Z2ahfCDQTMM0o
+9HDdblXjmhubXbN71G1MA0Mi7knPWQ==
+=u4Db
+-----END PGP SIGNATURE-----
+
+--uz4ywpyf2v5xtmw3--
