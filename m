@@ -2,53 +2,51 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC1B77EEE43
-	for <lists+linux-omap@lfdr.de>; Fri, 17 Nov 2023 10:17:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 630B07EEE47
+	for <lists+linux-omap@lfdr.de>; Fri, 17 Nov 2023 10:17:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231461AbjKQJRa (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 17 Nov 2023 04:17:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40644 "EHLO
+        id S235036AbjKQJRd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 17 Nov 2023 04:17:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37102 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229927AbjKQJR3 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 17 Nov 2023 04:17:29 -0500
+        with ESMTP id S229927AbjKQJRd (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 17 Nov 2023 04:17:33 -0500
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A958AD4D
-        for <linux-omap@vger.kernel.org>; Fri, 17 Nov 2023 01:17:26 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 676F0D52
+        for <linux-omap@vger.kernel.org>; Fri, 17 Nov 2023 01:17:29 -0800 (PST)
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
         by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <ukl@pengutronix.de>)
-        id 1r3uyQ-0007go-Cg; Fri, 17 Nov 2023 10:17:14 +0100
+        id 1r3uyQ-0007h4-QU; Fri, 17 Nov 2023 10:17:14 +0100
 Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
         by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.94.2)
         (envelope-from <ukl@pengutronix.de>)
-        id 1r3uyP-009e6K-VG; Fri, 17 Nov 2023 10:17:13 +0100
+        id 1r3uyQ-009e6N-5q; Fri, 17 Nov 2023 10:17:14 +0100
 Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
         (envelope-from <ukl@pengutronix.de>)
-        id 1r3uyP-002yJm-Lp; Fri, 17 Nov 2023 10:17:13 +0100
+        id 1r3uyP-002yJr-Sc; Fri, 17 Nov 2023 10:17:13 +0100
 From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>
 Cc:     Siddharth Vadapalli <s-vadapalli@ti.com>,
         Ravi Gunasekaran <r-gunasekaran@ti.com>,
         Roger Quadros <rogerq@kernel.org>,
-        Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-        Stanislav Fomichev <sdf@google.com>,
+        Alexander Duyck <alexanderduyck@fb.com>,
         Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Rob Herring <robh@kernel.org>,
-        Marek Majtyka <alardam@gmail.com>,
         Yunsheng Lin <linyunsheng@huawei.com>,
-        linux-omap@vger.kernel.org, netdev@vger.kernel.org,
-        kernel@pengutronix.de
-Subject: [PATCH 5/7] net: ethernet: ti: cpsw: Convert to platform remove callback returning void
-Date:   Fri, 17 Nov 2023 10:17:01 +0100
-Message-ID: <20231117091655.872426-6-u.kleine-koenig@pengutronix.de>
+        Marek Majtyka <alardam@gmail.com>,
+        Rob Herring <robh@kernel.org>, linux-omap@vger.kernel.org,
+        netdev@vger.kernel.org, kernel@pengutronix.de
+Subject: [PATCH 6/7] net: ethernet: ti: cpsw-new: Convert to platform remove callback returning void
+Date:   Fri, 17 Nov 2023 10:17:02 +0100
+Message-ID: <20231117091655.872426-7-u.kleine-koenig@pengutronix.de>
 X-Mailer: git-send-email 2.42.0.586.gbc5204569f7d.dirty
 In-Reply-To: <20231117091655.872426-1-u.kleine-koenig@pengutronix.de>
 References: <20231117091655.872426-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1796; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=AFKDccbj7KVdxjjm+VYAVvkLNk+QVUxW4yHwNz8tuIk=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBlVy+NZdmjkLIHdK9BlhoRLimmKKlCp9u4QgTvO U4IA9g8McKJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZVcvjQAKCRCPgPtYfRL+ TmzTCACjfDNtDbr7jWf/bK3FdYpzjXe3NGiGaYQkDmMiHeJklBWV5YfyXhySfGfDwfn6/kByk1L FsQTyBkgjhWqg3litFcmmp2v4bZ6zhuHKBPK1d91jIDRynghs1FLRjb0VZVO9niobQ4IRnJiIe8 797ndA1BXRrIXtUSXbnvXL0xDCqTh53aonpd+xEunoRcZrH2cDCTh3R3Kpj/yUGxq9rcWU9/n0O 1TieUdd3ytdNoXiGdx+VBfJb8ufNNnU8rCyRvq2LJaD9k8aG3jE2r4+bnowNfi5A5mz5xAvf6mE RHBAwkv+zKVE2+scpU+923PrB7RPKSgVg+nI8tQZ4/iv8xhb
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1849; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=okHKw25VgeWUFYd2avv49A8Ij4U9Ek22DOHwr9QInRk=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBlVy+O5ufeBrybGQ4s7etDKUNLrzfUTroyU7BIJ Q4jDiTBQjmJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZVcvjgAKCRCPgPtYfRL+ TioUB/9Eq9iqGQQqxO6fiyfaAtVw3VnJaTfd8xxeA1755kDQYDpapiyDmxLZ7tXAoaN+/bhG70V hSHv5bbmTMhLHi4zsn/tv+OCjEQ8ZkrIhvCTMqOh3i6gQIjztb96NDuIKNFzL76OXr2yR+Rhbj7 3eCKKP9//kXnNod+6Pno1ZFwS/e2bzHBkHnZcZDQvxajTCbgBWwu6ZWGrISxu+h4+pXk/DO8/qM 2fiBCoQNxQPBgAY5bWygbAOay5YzzyvKPoGB+r5aYQNkey8mcF6S6GpEaBdB6iSV/ctJ0LlKB9L bM8EeF0L3xTLJh6efd6Bpksx7rSp8LBIODlG7tk91GvqZuNf
 X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -80,14 +78,14 @@ callback to the void returning variant.
 
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 ---
- drivers/net/ethernet/ti/cpsw.c | 5 ++---
+ drivers/net/ethernet/ti/cpsw_new.c | 5 ++---
  1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/cpsw.c b/drivers/net/ethernet/ti/cpsw.c
-index db5a2ba8a6d4..ed29a76420f8 100644
---- a/drivers/net/ethernet/ti/cpsw.c
-+++ b/drivers/net/ethernet/ti/cpsw.c
-@@ -1722,7 +1722,7 @@ static int cpsw_probe(struct platform_device *pdev)
+diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
+index a6ce409f563c..dae8d0203021 100644
+--- a/drivers/net/ethernet/ti/cpsw_new.c
++++ b/drivers/net/ethernet/ti/cpsw_new.c
+@@ -2037,7 +2037,7 @@ static int cpsw_probe(struct platform_device *pdev)
  	return ret;
  }
  
@@ -95,16 +93,16 @@ index db5a2ba8a6d4..ed29a76420f8 100644
 +static void cpsw_remove(struct platform_device *pdev)
  {
  	struct cpsw_common *cpsw = platform_get_drvdata(pdev);
- 	int i, ret;
-@@ -1748,7 +1748,6 @@ static int cpsw_remove(struct platform_device *pdev)
- 	cpsw_remove_dt(pdev);
+ 	int ret;
+@@ -2063,7 +2063,6 @@ static int cpsw_remove(struct platform_device *pdev)
+ 	cpsw_remove_dt(cpsw);
  	pm_runtime_put_sync(&pdev->dev);
  	pm_runtime_disable(&pdev->dev);
 -	return 0;
  }
  
- #ifdef CONFIG_PM_SLEEP
-@@ -1803,7 +1802,7 @@ static struct platform_driver cpsw_driver = {
+ static int __maybe_unused cpsw_suspend(struct device *dev)
+@@ -2124,7 +2123,7 @@ static struct platform_driver cpsw_driver = {
  		.of_match_table = cpsw_of_mtable,
  	},
  	.probe = cpsw_probe,
