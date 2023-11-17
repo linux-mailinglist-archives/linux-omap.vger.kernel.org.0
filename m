@@ -2,121 +2,237 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB2997EEE6D
-	for <lists+linux-omap@lfdr.de>; Fri, 17 Nov 2023 10:27:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A76537EF251
+	for <lists+linux-omap@lfdr.de>; Fri, 17 Nov 2023 13:08:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230225AbjKQJ1x (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 17 Nov 2023 04:27:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57026 "EHLO
+        id S230383AbjKQMI4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 17 Nov 2023 07:08:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46672 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230318AbjKQJ1w (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 17 Nov 2023 04:27:52 -0500
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C334D4E
-        for <linux-omap@vger.kernel.org>; Fri, 17 Nov 2023 01:27:49 -0800 (PST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1r3v8A-0001R7-GJ; Fri, 17 Nov 2023 10:27:18 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1r3v85-009e7I-Fr; Fri, 17 Nov 2023 10:27:13 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1r3v85-002ydb-63; Fri, 17 Nov 2023 10:27:13 +0100
-Date:   Fri, 17 Nov 2023 10:27:13 +0100
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Cc:     Marek Majtyka <alardam@gmail.com>, Simon Horman <horms@kernel.org>,
-        Mugunthan V N <mugunthanvnm@ti.com>,
-        Rob Herring <robh@kernel.org>, netdev@vger.kernel.org,
-        Alexander Duyck <alexanderduyck@fb.com>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Ravi Gunasekaran <r-gunasekaran@ti.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Roger Quadros <rogerq@kernel.org>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Yunsheng Lin <linyunsheng@huawei.com>,
-        Stanislav Fomichev <sdf@google.com>, kernel@pengutronix.de,
-        Alex Elder <elder@linaro.org>,
-        Gerhard Engleder <gerhard@engleder-embedded.com>,
-        Siddharth Vadapalli <s-vadapalli@ti.com>,
-        linux-omap@vger.kernel.org,
-        Christian Marangi <ansuelsmth@gmail.com>,
-        Dan Carpenter <dan.carpenter@linaro.org>,
-        Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Subject: Re: [PATCH 0/7] net: ethernet: Convert to platform remove callback
-Message-ID: <20231117092713.sohg4bp5d5ppfrbs@pengutronix.de>
-References: <20231117091655.872426-1-u.kleine-koenig@pengutronix.de>
+        with ESMTP id S230379AbjKQMI4 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 17 Nov 2023 07:08:56 -0500
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BC00BC;
+        Fri, 17 Nov 2023 04:08:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1700222931; x=1731758931;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=npsjKK1E4mamKGL3cTGyWHJLzKqW6Cwvf80sD82f9kc=;
+  b=ZZac0NVqlt6WNqlxEDkI6i8mlNQSO4vBXhFBAX1kFTMkC3eMpbs/Ffn9
+   B7Omh+i5iaamx5p8MqTjb/SgufzBpo5mU2abJrLSS4hlkpoG0tp7HBW+P
+   92WcN+OObLFxVbZQPGqGJS8Lvh3jR/rfA64nTaMteMLB+tblJ2vrdntQg
+   IiXRM+RRn1W8WIJbF08bOcSE+X/TIR1wmKmGt3tbvrPIYo4iZsHpnarEL
+   8CrC79XoVR7A+qXiWNpBwe7iHs4CMsKqM2d7rtR0x3kON9DIQsgRqBl/H
+   tL5Pu2BbfhyH0o7nyswQW5pIfu02C7qTtC5Yg9Ae7m24NYQ8N1UwacOwq
+   w==;
+X-IronPort-AV: E=Sophos;i="6.04,206,1695679200"; 
+   d="scan'208";a="34042550"
+Received: from vtuxmail01.tq-net.de ([10.115.0.20])
+  by mx1.tq-group.com with ESMTP; 17 Nov 2023 13:08:49 +0100
+Received: from steina-w.localnet (steina-w.tq-net.de [10.123.53.18])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by vtuxmail01.tq-net.de (Postfix) with ESMTPSA id 2F5EC28007F;
+        Fri, 17 Nov 2023 13:08:49 +0100 (CET)
+From:   Alexander Stein <alexander.stein@ew.tq-group.com>
+To:     MyungJoo Ham <myungjoo.ham@samsung.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        =?ISO-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Heiko Stuebner <heiko@sntech.de>,
+        linux-mediatek@lists.infradead.org
+Cc:     Pengutronix Kernel Team <kernel@pengutronix.de>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-omap@vger.kernel.org, linux-mediatek@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-rockchip@lists.infradead.org,
+        Alexander Stein <alexander.stein@ew.tq-group.com>
+Subject: Re: [PATCH v4 2/6] ARM: dts: ti/omap: Replace deprecated extcon-usb-gpio id-gpio/vbus-gpio properties
+Date:   Fri, 17 Nov 2023 13:08:53 +0100
+Message-ID: <10373360.nUPlyArG6x@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20230724103914.1779027-3-alexander.stein@ew.tq-group.com>
+References: <20230724103914.1779027-1-alexander.stein@ew.tq-group.com> <20230724103914.1779027-3-alexander.stein@ew.tq-group.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="ikrofhj5vz4fdzqm"
-Content-Disposition: inline
-In-Reply-To: <20231117091655.872426-1-u.kleine-koenig@pengutronix.de>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-omap@vger.kernel.org
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Hi everybody,
 
---ikrofhj5vz4fdzqm
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+any feedback on this? Patch 3,4 and 6 have already been merged.
 
-Hello,
+Thanks
+Alexander
 
-On Fri, Nov 17, 2023 at 10:16:56AM +0100, Uwe Kleine-K=F6nig wrote:
-> after three fixes this series converts the remaining four platform
-> drivers below drivers/net/ethernet that don't use .remove_new yet to do
-> that.
+Am Montag, 24. Juli 2023, 12:39:09 CET schrieb Alexander Stein:
+> Use id-gpios and vbus-gpios instead.
 >=20
-> See commit 5c5a7680e67b ("platform: Provide a remove callback that
-> returns no value") for an extended explanation and the eventual goal.
-> The TL;DR; is to prevent bugs like the three fixed here.
+> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> ---
+>  arch/arm/boot/dts/ti/omap/am571x-idk.dts          | 4 ++--
+>  arch/arm/boot/dts/ti/omap/am5729-beagleboneai.dts | 2 +-
+>  arch/arm/boot/dts/ti/omap/am572x-idk-common.dtsi  | 4 ++--
+>  arch/arm/boot/dts/ti/omap/dra7-evm-common.dtsi    | 4 ++--
+>  arch/arm/boot/dts/ti/omap/dra71-evm.dts           | 4 ++--
+>  arch/arm/boot/dts/ti/omap/dra72-evm-common.dtsi   | 4 ++--
+>  arch/arm/boot/dts/ti/omap/dra76-evm.dts           | 4 ++--
+>  7 files changed, 13 insertions(+), 13 deletions(-)
+>=20
+> diff --git a/arch/arm/boot/dts/ti/omap/am571x-idk.dts
+> b/arch/arm/boot/dts/ti/omap/am571x-idk.dts index 48425020281a..322cf79d22=
+e9
+> 100644
+> --- a/arch/arm/boot/dts/ti/omap/am571x-idk.dts
+> +++ b/arch/arm/boot/dts/ti/omap/am571x-idk.dts
+> @@ -168,8 +168,8 @@ blue3-led {
+>  };
+>=20
+>  &extcon_usb2 {
+> -	id-gpio =3D <&gpio5 7 GPIO_ACTIVE_HIGH>;
+> -	vbus-gpio =3D <&gpio7 22 GPIO_ACTIVE_HIGH>;
+> +	id-gpios =3D <&gpio5 7 GPIO_ACTIVE_HIGH>;
+> +	vbus-gpios =3D <&gpio7 22 GPIO_ACTIVE_HIGH>;
+>  };
+>=20
+>  &sn65hvs882 {
+> diff --git a/arch/arm/boot/dts/ti/omap/am5729-beagleboneai.dts
+> b/arch/arm/boot/dts/ti/omap/am5729-beagleboneai.dts index
+> 149cfafb90bf..c5272302eb11 100644
+> --- a/arch/arm/boot/dts/ti/omap/am5729-beagleboneai.dts
+> +++ b/arch/arm/boot/dts/ti/omap/am5729-beagleboneai.dts
+> @@ -197,7 +197,7 @@ brcmf_pwrseq: brcmf_pwrseq {
+>  	extcon_usb1: extcon_usb1 {
+>  		compatible =3D "linux,extcon-usb-gpio";
+>  		ti,enable-id-detection;
+> -		id-gpio =3D <&gpio3 13 GPIO_ACTIVE_HIGH>;
+> +		id-gpios =3D <&gpio3 13 GPIO_ACTIVE_HIGH>;
+>  	};
+>  };
+>=20
+> diff --git a/arch/arm/boot/dts/ti/omap/am572x-idk-common.dtsi
+> b/arch/arm/boot/dts/ti/omap/am572x-idk-common.dtsi index
+> 1d66278c3a72..3fca84819dc0 100644
+> --- a/arch/arm/boot/dts/ti/omap/am572x-idk-common.dtsi
+> +++ b/arch/arm/boot/dts/ti/omap/am572x-idk-common.dtsi
+> @@ -169,8 +169,8 @@ blue3-led {
+>  };
+>=20
+>  &extcon_usb2 {
+> -	id-gpio =3D <&gpio3 16 GPIO_ACTIVE_HIGH>;
+> -	vbus-gpio =3D <&gpio3 26 GPIO_ACTIVE_HIGH>;
+> +	id-gpios =3D <&gpio3 16 GPIO_ACTIVE_HIGH>;
+> +	vbus-gpios =3D <&gpio3 26 GPIO_ACTIVE_HIGH>;
+>  };
+>=20
+>  &sn65hvs882 {
+> diff --git a/arch/arm/boot/dts/ti/omap/dra7-evm-common.dtsi
+> b/arch/arm/boot/dts/ti/omap/dra7-evm-common.dtsi index
+> 4cdffd6db740..ed5199d7acd8 100644
+> --- a/arch/arm/boot/dts/ti/omap/dra7-evm-common.dtsi
+> +++ b/arch/arm/boot/dts/ti/omap/dra7-evm-common.dtsi
+> @@ -15,12 +15,12 @@ chosen {
+>=20
+>  	extcon_usb1: extcon_usb1 {
+>  		compatible =3D "linux,extcon-usb-gpio";
+> -		id-gpio =3D <&pcf_gpio_21 1 GPIO_ACTIVE_HIGH>;
+> +		id-gpios =3D <&pcf_gpio_21 1 GPIO_ACTIVE_HIGH>;
+>  	};
+>=20
+>  	extcon_usb2: extcon_usb2 {
+>  		compatible =3D "linux,extcon-usb-gpio";
+> -		id-gpio =3D <&pcf_gpio_21 2 GPIO_ACTIVE_HIGH>;
+> +		id-gpios =3D <&pcf_gpio_21 2 GPIO_ACTIVE_HIGH>;
+>  	};
+>=20
+>  	sound0: sound0 {
+> diff --git a/arch/arm/boot/dts/ti/omap/dra71-evm.dts
+> b/arch/arm/boot/dts/ti/omap/dra71-evm.dts index a64364443031..f747ac56eb92
+> 100644
+> --- a/arch/arm/boot/dts/ti/omap/dra71-evm.dts
+> +++ b/arch/arm/boot/dts/ti/omap/dra71-evm.dts
+> @@ -293,11 +293,11 @@ &hdmi {
+>  };
+>=20
+>  &extcon_usb1 {
+> -	vbus-gpio =3D <&pcf_lcd 14 GPIO_ACTIVE_HIGH>;
+> +	vbus-gpios =3D <&pcf_lcd 14 GPIO_ACTIVE_HIGH>;
+>  };
+>=20
+>  &extcon_usb2 {
+> -	vbus-gpio =3D <&pcf_lcd 15 GPIO_ACTIVE_HIGH>;
+> +	vbus-gpios =3D <&pcf_lcd 15 GPIO_ACTIVE_HIGH>;
+>  };
+>=20
+>  &ipu2 {
+> diff --git a/arch/arm/boot/dts/ti/omap/dra72-evm-common.dtsi
+> b/arch/arm/boot/dts/ti/omap/dra72-evm-common.dtsi index
+> 31ab0c60ca75..f8151c61488e 100644
+> --- a/arch/arm/boot/dts/ti/omap/dra72-evm-common.dtsi
+> +++ b/arch/arm/boot/dts/ti/omap/dra72-evm-common.dtsi
+> @@ -96,12 +96,12 @@ evm_3v3_sd: fixedregulator-sd {
+>=20
+>  	extcon_usb1: extcon_usb1 {
+>  		compatible =3D "linux,extcon-usb-gpio";
+> -		id-gpio =3D <&pcf_gpio_21 1 GPIO_ACTIVE_HIGH>;
+> +		id-gpios =3D <&pcf_gpio_21 1 GPIO_ACTIVE_HIGH>;
+>  	};
+>=20
+>  	extcon_usb2: extcon_usb2 {
+>  		compatible =3D "linux,extcon-usb-gpio";
+> -		id-gpio =3D <&pcf_gpio_21 2 GPIO_ACTIVE_HIGH>;
+> +		id-gpios =3D <&pcf_gpio_21 2 GPIO_ACTIVE_HIGH>;
+>  	};
+>=20
+>  	hdmi0: connector {
+> diff --git a/arch/arm/boot/dts/ti/omap/dra76-evm.dts
+> b/arch/arm/boot/dts/ti/omap/dra76-evm.dts index 57868ac60d29..cf9c3d35b049
+> 100644
+> --- a/arch/arm/boot/dts/ti/omap/dra76-evm.dts
+> +++ b/arch/arm/boot/dts/ti/omap/dra76-evm.dts
+> @@ -533,11 +533,11 @@ &pcie1_ep {
+>  };
+>=20
+>  &extcon_usb1 {
+> -	vbus-gpio =3D <&pcf_lcd 14 GPIO_ACTIVE_HIGH>;
+> +	vbus-gpios =3D <&pcf_lcd 14 GPIO_ACTIVE_HIGH>;
+>  };
+>=20
+>  &extcon_usb2 {
+> -	vbus-gpio =3D <&pcf_lcd 15 GPIO_ACTIVE_HIGH>;
+> +	vbus-gpios =3D <&pcf_lcd 15 GPIO_ACTIVE_HIGH>;
+>  };
+>=20
+>  &m_can0 {
 
-I completely barfed this series, sorry for that.
 
-I forgot to mention "net-next" in the subject. The first three patches
-are fixes, but I don't think they are urgent enough to fasttrack them.
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
 
-And somehow To: got empty, there must be something fishy in my scripts.
-I will take care that this won't happen again.
 
-Mea culpa,
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---ikrofhj5vz4fdzqm
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmVXMfAACgkQj4D7WH0S
-/k5XAgf/Sx/TIM0jqFYiDbyHQ+/dBw1HREsGYcWq91GT6jcIUmcAIfmgkih90Y6V
-Xd3tt2Zf5QlviwOxO03hJ6amRu/RWZL0B40xMOMWL18US/1EglJWYfrd3+QE3364
-YWUwnOfBlmQeCCyQTtvJXDz97+v9TxNfCgVSYbGIbTivZwgRgXYHw0NNHdURsoCv
-ex53lSnsVnGQfLMRV9xTYNeMPZAGO5qUy3rwL3GD061hsIqr0iUZxw7xww61BV/J
-wQ3p5Se8S79z7gvDL12/1aKT8723BnpiWj61lV2urYngi5dW/1yYJkgy8EfrzzYj
-NlAYPeRXiKTxWctZ1grvd+4sO83wGw==
-=ZNwr
------END PGP SIGNATURE-----
-
---ikrofhj5vz4fdzqm--
