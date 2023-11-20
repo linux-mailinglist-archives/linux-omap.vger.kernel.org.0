@@ -2,60 +2,38 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B46C7F0500
-	for <lists+linux-omap@lfdr.de>; Sun, 19 Nov 2023 10:41:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CB58A7F1FCC
+	for <lists+linux-omap@lfdr.de>; Mon, 20 Nov 2023 22:56:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229659AbjKSJlG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 19 Nov 2023 04:41:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39870 "EHLO
+        id S229689AbjKTV46 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 20 Nov 2023 16:56:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53174 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229580AbjKSJlF (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 19 Nov 2023 04:41:05 -0500
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 159A8A8
-        for <linux-omap@vger.kernel.org>; Sun, 19 Nov 2023 01:41:02 -0800 (PST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1r4eIA-0005Rk-61; Sun, 19 Nov 2023 10:40:38 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        with ESMTP id S229524AbjKTV45 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 20 Nov 2023 16:56:57 -0500
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a02:c205:3004:2154::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BD5DBB;
+        Mon, 20 Nov 2023 13:56:52 -0800 (PST)
+Received: from p200300ccff2027001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff20:2700:1a3d:a2ff:febf:d33a] helo=aktux)
+        by mail.andi.de1.cc with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1r4eI6-00A5r4-UB; Sun, 19 Nov 2023 10:40:34 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1r4eI6-003a79-Kd; Sun, 19 Nov 2023 10:40:34 +0100
-Date:   Sun, 19 Nov 2023 10:40:34 +0100
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Roger Quadros <rogerq@kernel.org>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
-        kernel@pengutronix.de, netdev@vger.kernel.org,
-        Yunsheng Lin <linyunsheng@huawei.com>,
-        Ravi Gunasekaran <r-gunasekaran@ti.com>,
-        Marek Majtyka <alardam@gmail.com>,
-        Stanislav Fomichev <sdf@google.com>,
-        Simon Horman <horms@kernel.org>,
-        Siddharth Vadapalli <s-vadapalli@ti.com>,
-        linux-omap@vger.kernel.org
-Subject: Re: [PATCH 2/7] net: ethernet: ti: cpsw: Don't error out in .remove()
-Message-ID: <20231119094034.qxsq3n6nuxn3e4je@pengutronix.de>
-References: <20231117091655.872426-1-u.kleine-koenig@pengutronix.de>
- <20231117091655.872426-3-u.kleine-koenig@pengutronix.de>
- <4cabffc1-7ff9-4277-b508-5902f42b47cb@kernel.org>
+        (envelope-from <andreas@kemnade.info>)
+        id 1r5CFx-006RZ7-MZ; Mon, 20 Nov 2023 22:56:37 +0100
+Received: from andi by aktux with local (Exim 4.96)
+        (envelope-from <andreas@kemnade.info>)
+        id 1r5CFx-00HZKu-06;
+        Mon, 20 Nov 2023 22:56:37 +0100
+From:   Andreas Kemnade <andreas@kemnade.info>
+To:     tony@atomide.com, linux@armlinux.org.uk,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+Cc:     Andreas Kemnade <andreas@kemnade.info>
+Subject: [PATCH] ARM: omap2plus_defconfig: enable I2C devcies of bt200
+Date:   Mon, 20 Nov 2023 22:56:35 +0100
+Message-Id: <20231120215635.4187399-1-andreas@kemnade.info>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="4c7vy6dzxccj4rvj"
-Content-Disposition: inline
-In-Reply-To: <4cabffc1-7ff9-4277-b508-5902f42b47cb@kernel.org>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-omap@vger.kernel.org
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
@@ -65,110 +43,47 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Enable all available I2C drivers needed for the Epson Moverio BT200,
+that are:
+- LED
+- Subdevs of the TWL6032 PMIC
+- IMU sensors
 
---4c7vy6dzxccj4rvj
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+---
+ arch/arm/configs/omap2plus_defconfig | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-Hello Roger,
+diff --git a/arch/arm/configs/omap2plus_defconfig b/arch/arm/configs/omap2plus_defconfig
+index 7b1b41b4b1609..3a166c2f02bd8 100644
+--- a/arch/arm/configs/omap2plus_defconfig
++++ b/arch/arm/configs/omap2plus_defconfig
+@@ -607,6 +607,7 @@ CONFIG_LEDS_LP55XX_COMMON=m
+ CONFIG_LEDS_LP5523=m
+ CONFIG_LEDS_PCA963X=m
+ CONFIG_LEDS_PWM=m
++CONFIG_LEDS_BD2606MVV=m
+ CONFIG_LEDS_TRIGGERS=y
+ CONFIG_LEDS_TRIGGER_TIMER=m
+ CONFIG_LEDS_TRIGGER_ONESHOT=m
+@@ -624,6 +625,7 @@ CONFIG_RTC_DRV_PALMAS=m
+ CONFIG_RTC_DRV_OMAP=m
+ CONFIG_RTC_DRV_CPCAP=m
+ CONFIG_DMADEVICES=y
++CONFIG_CLK_TWL=m
+ CONFIG_CLK_TWL6040=m
+ CONFIG_COMMON_CLK_PALMAS=m
+ CONFIG_OMAP_IOMMU=y
+@@ -646,6 +648,9 @@ CONFIG_CPCAP_ADC=m
+ CONFIG_INA2XX_ADC=m
+ CONFIG_TI_AM335X_ADC=m
+ CONFIG_TWL4030_MADC=m
++CONFIG_TWL6030_GPADC=m
++CONFIG_MPU3050_I2C=m
++CONFIG_INV_MPU6050_I2C=m
+ CONFIG_SENSORS_ISL29028=m
+ CONFIG_AK8975=m
+ CONFIG_BMP280=m
+-- 
+2.39.2
 
-[dropping Mugunthan V N from Cc, their address bounces, and adding the
-net maintainers that I failed to do for the original submission]
-
-On Sat, Nov 18, 2023 at 12:00:08PM +0200, Roger Quadros wrote:
-> > -	cpts_release(cpsw->cpts);
-> > -	cpdma_ctlr_destroy(cpsw->dma);
-> > +	if (ret >=3D 0) {
-> > +		cpts_release(cpsw->cpts);
->=20
-> cpts_release() only does clk_unprepare().
-> Why not do that in the error path as well?
-
-I thought I saw the pm suspend do a clk_unprepare, but I don't find
-that. Indeed this step shouldn't be skipped.
-
-> > +		cpdma_ctlr_destroy(cpsw->dma);
->=20
-> cpdma_ctrl_destroy() not only stops the DMA controller
-> but also frees up the channel and calls dma_free_coherent?
->=20
-> We still want to free up the channel and dma_free_coherent in the
-> error path?
-
-Then we need to split the function and only do the software part. I
-don't have hardware to test this change and getting it right without
-testing seems to be hard.
-
-May I suggest that only do the conversion to remove_new (that doesn't
-modify the resource leak behaviour) and you care for fixing the leaks?
-
-My change would then just look as follows:
-
-diff --git a/drivers/net/ethernet/ti/cpsw.c b/drivers/net/ethernet/ti/cpsw.c
-index ca4d4548f85e..1251160b563b 100644
---- a/drivers/net/ethernet/ti/cpsw.c
-+++ b/drivers/net/ethernet/ti/cpsw.c
-@@ -1722,14 +1722,16 @@ static int cpsw_probe(struct platform_device *pdev)
- 	return ret;
- }
-=20
--static int cpsw_remove(struct platform_device *pdev)
-+static void cpsw_remove(struct platform_device *pdev)
- {
- 	struct cpsw_common *cpsw =3D platform_get_drvdata(pdev);
- 	int i, ret;
-=20
- 	ret =3D pm_runtime_resume_and_get(&pdev->dev);
--	if (ret < 0)
--		return ret;
-+	if (ret < 0) {
-+		dev_err(&pdev->dev, "Failed to resume device (%pe)\n",
-+			ERR_PTR(ret))
-+	}
-=20
- 	for (i =3D 0; i < cpsw->data.slaves; i++)
- 		if (cpsw->slaves[i].ndev)
-@@ -1740,7 +1742,6 @@ static int cpsw_remove(struct platform_device *pdev)
- 	cpsw_remove_dt(pdev);
- 	pm_runtime_put_sync(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
--	return 0;
- }
-=20
- #ifdef CONFIG_PM_SLEEP
-@@ -1795,7 +1796,7 @@ static struct platform_driver cpsw_driver =3D {
- 		.of_match_table =3D cpsw_of_mtable,
- 	},
- 	.probe =3D cpsw_probe,
--	.remove =3D cpsw_remove,
-+	.remove_new =3D cpsw_remove,
- };
-=20
- module_platform_driver(cpsw_driver);
-
-A similar question for the other two cpsw drivers.
-
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---4c7vy6dzxccj4rvj
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmVZ2BEACgkQj4D7WH0S
-/k6iIwf5AYEnbzvJQJ7CBkRhXx9nLE7Qkrw2vQuskmtqFFlx4Nc8Z14qOLR1/EQp
-0XEcbQG7h5lVvUcjyDMq6iaFZAbW22mwgx0a0aE8g41auVSZWC7sAXXQLfNRKlyG
-aMV0qNSYQufU0K9mynMk36C+/+nXuUE3zXx1hhwcI1YI15O3xb+GBGHF4qeKViMF
-e7B98UDIVSv5GUrgBTRgGwVKx22Luk7xCMcDLmF479Vd2bxFRtLRQ17Rk7T7NJBg
-06YLa6OG5mUVO/LnUVuZzzSlrU4OXTiY7XgGCZQZYyVxwh0P4I4K1T53sIfPuQBA
-19YqZ/ftDCPh/yDYm45w8Y3p4HveWg==
-=WPwL
------END PGP SIGNATURE-----
-
---4c7vy6dzxccj4rvj--
