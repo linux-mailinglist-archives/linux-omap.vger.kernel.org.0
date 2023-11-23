@@ -1,111 +1,105 @@
-Return-Path: <linux-omap+bounces-4-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C26D7F5CAA
-	for <lists+linux-omap@lfdr.de>; Thu, 23 Nov 2023 11:41:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E04F37F6133
+	for <lists+linux-omap@lfdr.de>; Thu, 23 Nov 2023 15:13:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E1271C20D1B
-	for <lists+linux-omap@lfdr.de>; Thu, 23 Nov 2023 10:41:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AEDD281ECB
+	for <lists+linux-omap@lfdr.de>; Thu, 23 Nov 2023 14:13:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4352A225AC;
-	Thu, 23 Nov 2023 10:41:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E296A22071;
+	Thu, 23 Nov 2023 14:13:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TorcYzd/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZyD0Tn94"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0C45224F2
-	for <linux-omap@vger.kernel.org>; Thu, 23 Nov 2023 10:41:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C56E4C433C7;
-	Thu, 23 Nov 2023 10:41:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67D8B25555;
+	Thu, 23 Nov 2023 14:13:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97D3AC433CA;
+	Thu, 23 Nov 2023 14:13:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1700736073;
-	bh=nFEAOqE6x/NDZvJnfnKH663qewXBVjbzzX523Xev7lY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TorcYzd/bGGxpk5uRxKa3pngvRjZgOTAS+5vgboRT9b06u3XQxH1fxKEQ1f6yrzjj
-	 kXxvZBZ/QfqwTxHafO4Aav3r13p86t9y6R3hYUAi0D64JLlKcU8wplC5TTRfn+I1M3
-	 NoJrkO3l3outGzPeD+oc1Fz4XaqXMBY3F0GB0SCvx5T7Hu3rETw+j6AvH7S2seO2Uf
-	 MjfmW0emprMbwKtAOgVcIjoulnowiQjruA6spYXhI/+q/EaP+peHPlFgBLgtv6syZ1
-	 XVxe+pgX373pWc93gOG9CnSC3C1KHusWXKQidH6xnBWnJcfJ1wGXFHWanvhWob7jPf
-	 mOTJAEMhZnDwA==
-Date: Thu, 23 Nov 2023 10:41:08 +0000
+	s=k20201202; t=1700748828;
+	bh=AGcHXRfH/rMMp6hJ33VbDXNVCM278y+An/5lGPmz0s0=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=ZyD0Tn94bo2vGeCq3N2ptlQvcAkslri04FYrRMwqbePwZ+mrHfj44rJe0x8L7Fwce
+	 nM70shIvtFAyssZZAbSm2yjkuolfpX77ONc+iFzORXqg6uf2+diIauo4Dp2dpWdFxM
+	 ZsFDThS7tkHIQHJaEDHKac4rgQkJbk8zm2KknhNQIMt0dk7iTD4FpPyFr4fcGnvYoq
+	 X10nmPcEwialBwZ3BDmP2Rt3cXsLBgf17igT9eEH9QEmw2wx4BRe5epvm4wuSoUyQu
+	 MxupRq4LoE4MP56WgzXG1SgKmztvRgpQgIi2+nTIqHFDsXcGurZph1gmaFL2siUG7X
+	 0R8Dzf1MUawjA==
 From: Lee Jones <lee@kernel.org>
-To: Peter Ujfalusi <peter.ujfalusi@gmail.com>
-Cc: tony@atomide.com, robh@kernel.org, wens@csie.org,
-	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mfd: twl6030-irq: Revert to use of_match_device()
-Message-ID: <20231123104108.GF1184245@google.com>
-References: <20231029114843.15553-1-peter.ujfalusi@gmail.com>
- <20231123103756.GD1184245@google.com>
+To: =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: Linus Walleij <linus.walleij@linaro.org>, 
+ linux-arm-kernel@lists.infradead.org, kernel@pengutronix.de, 
+ Benson Leung <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>, 
+ chrome-platform@lists.linux.dev, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
+ Alim Akhtar <alim.akhtar@samsung.com>, linux-samsung-soc@vger.kernel.org, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, NXP Linux Team <linux-imx@nxp.com>, 
+ Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org, 
+ Andy Gross <agross@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konrad.dybcio@linaro.org>, linux-arm-msm@vger.kernel.org, 
+ Fabrice Gasnier <fabrice.gasnier@foss.st.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ linux-stm32@st-md-mailman.stormreply.com
+In-Reply-To: <20231106171708.3892347-1-u.kleine-koenig@pengutronix.de>
+References: <20231106171708.3892347-1-u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH 00/18] mfd: Convert to platform remove callback
+ returning void
+Message-Id: <170074882434.1350828.3000645128153974049.b4-ty@kernel.org>
+Date: Thu, 23 Nov 2023 14:13:44 +0000
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231123103756.GD1184245@google.com>
+X-Mailer: b4 0.12.3
 
-On Thu, 23 Nov 2023, Lee Jones wrote:
-
-> On Sun, 29 Oct 2023, Peter Ujfalusi wrote:
+On Mon, 06 Nov 2023 18:17:09 +0100, Uwe Kleine-König wrote:
+> this series converts all platform drivers below drivers/mfd to use
+> .remove_new(). Compared to the traditional .remove() callback
+> .remove_new() returns no value. This is a good thing because the driver
+> core doesn't (and cannot) cope for errors during remove. The only effect
+> of a non-zero return value in .remove() is that the driver core emits a
+> warning. The device is removed anyhow and an early return from .remove()
+> usually yields resource leaks and/or use-after-free bugs.
 > 
-> > The core twl chip is probed via i2c and the dev->driver->of_match_table is
-> > NULL, causing the driver to fail to probe.
-> > 
-> > This partially reverts commit 1e0c866887f4.
-> > 
-> > Fixes: 1e0c866887f4 ("mfd: Use device_get_match_data() in a bunch of drivers")
-> > Signed-off-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
-> > ---
-> >  drivers/mfd/twl6030-irq.c | 10 +++++-----
-> >  1 file changed, 5 insertions(+), 5 deletions(-)
-> > 
-> > diff --git a/drivers/mfd/twl6030-irq.c b/drivers/mfd/twl6030-irq.c
-> > index f9fce8408c2c..3c03681c124c 100644
-> > --- a/drivers/mfd/twl6030-irq.c
-> > +++ b/drivers/mfd/twl6030-irq.c
-> > @@ -24,10 +24,10 @@
-> >  #include <linux/kthread.h>
-> >  #include <linux/mfd/twl.h>
-> >  #include <linux/platform_device.h>
-> > -#include <linux/property.h>
-> >  #include <linux/suspend.h>
-> >  #include <linux/of.h>
-> >  #include <linux/irqdomain.h>
-> > +#include <linux/of_device.h>
-> >  
-> >  #include "twl-core.h"
-> >  
-> > @@ -368,10 +368,10 @@ int twl6030_init_irq(struct device *dev, int irq_num)
-> >  	int			nr_irqs;
-> >  	int			status;
-> >  	u8			mask[3];
-> > -	const int		*irq_tbl;
-> > +	const struct of_device_id *of_id;
-> >  
-> > -	irq_tbl = device_get_match_data(dev);
-> > -	if (!irq_tbl) {
-> > +	of_id = of_match_device(twl6030_of_match, dev);
-> 
-> I think you just dropped support for ACPI.
+> [...]
 
-Ah, scrap that.  I was looking at the wrong part of 1e0c866887f4.
+Applied, thanks!
 
-So what about the other drivers changed in the aforementioned commit?
+[01/18] mfd: ab8500-sysctrl: Convert to platform remove callback returning void
+        commit: 35cf346f9fa92ceb19c5d2edc4409a7d384da8ee
+[02/18] mfd: cros_ec_dev: Convert to platform remove callback returning void
+        commit: 981c92a1d65a7ccce2d814c66ff2deecca304672
+[03/18] mfd: exynos-lpass: Convert to platform remove callback returning void
+        commit: 2d859aa8e081884c0c02d738925cba23a8cfb1b8
+[04/18] mfd: fsl-imx25-tsadc: Convert to platform remove callback returning void
+        commit: f215b75acc85254a29404b32c871b7ff2ea8da2a
+[09/18] mfd: mxs-lradc: Convert to platform remove callback returning void
+        commit: beb1f9e6382f59339e118594c94ee6b5ac96f3ec
+[10/18] mfd: omap-usb-host: Convert to platform remove callback returning void
+        commit: 231927898ae91049aa35d237c556cc216d80e8f7
+[11/18] mfd: omap-usb-tll: Convert to platform remove callback returning void
+        commit: 83d4e355240147db7597ea1ce64624fcdaaee6ae
+[13/18] mfd: qcom-pm8xxx: Convert to platform remove callback returning void
+        commit: ae3bcd5b09e35f363aa1744d38f90fda2b40e9ca
+[15/18] mfd: stm32-timers: Convert to platform remove callback returning void
+        commit: aeebc47f8d479c363e24fba0201ef8dca417fe6e
+[18/18] mfd: twl4030-audio: Convert to platform remove callback returning void
+        commit: 3716978b584a8baaba16d64c93eb0fed0edcbc3b
 
-Ideally we'd have a call that covers all of the various probing APIs.
-
-> Rob, care to follow-up?
-
-I'd still like Rob to comment.
-
--- 
+--
 Lee Jones [李琼斯]
+
 
