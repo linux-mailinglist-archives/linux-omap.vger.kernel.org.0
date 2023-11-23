@@ -1,100 +1,110 @@
-Return-Path: <linux-omap+bounces-7-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-8-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 675187F620F
-	for <lists+linux-omap@lfdr.de>; Thu, 23 Nov 2023 15:53:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C21797F632B
+	for <lists+linux-omap@lfdr.de>; Thu, 23 Nov 2023 16:39:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24459281D2C
-	for <lists+linux-omap@lfdr.de>; Thu, 23 Nov 2023 14:53:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D253281D9B
+	for <lists+linux-omap@lfdr.de>; Thu, 23 Nov 2023 15:39:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C5B03307A;
-	Thu, 23 Nov 2023 14:53:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D99636B1E;
+	Thu, 23 Nov 2023 15:39:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FLRWlJ4Y"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40BAAD47;
-	Thu, 23 Nov 2023 06:53:00 -0800 (PST)
-X-UUID: 1255a04c70214ee6bb249e348d20f2df-20231123
-X-CID-O-RULE: Release_Ham
-X-CID-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.32,REQID:ef8221b1-476d-4f41-9062-25c916e30c71,IP:5,U
-	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-	ON:release,TS:-15
-X-CID-INFO: VERSION:1.1.32,REQID:ef8221b1-476d-4f41-9062-25c916e30c71,IP:5,URL
-	:0,TC:0,Content:-5,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:-15
-X-CID-META: VersionHash:5f78ec9,CLOUDID:8e75bc95-10ce-4e4b-85c2-c9b5229ff92b,B
-	ulkID:23112322524517KDZH01,BulkQuantity:0,Recheck:0,SF:17|19|44|66|38|24|1
-	02,TC:nil,Content:0,EDM:-3,IP:-2,URL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,CO
-	L:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_FSI
-X-UUID: 1255a04c70214ee6bb249e348d20f2df-20231123
-X-User: chentao@kylinos.cn
-Received: from vt.. [(116.128.244.169)] by mailgw
-	(envelope-from <chentao@kylinos.cn>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 570105261; Thu, 23 Nov 2023 22:52:41 +0800
-From: Kunwu Chan <chentao@kylinos.cn>
-To: tony@atomide.com,
-	linux@armlinux.org.uk,
-	ruslan.bilovol@ti.com
-Cc: linux-omap@vger.kernel.org,
-	kunwu.chan@hotmail.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Kunwu Chan <chentao@kylinos.cn>
-Subject: [PATCH] ARM: OMAP2+: Fix null pointer dereference and memory leak in omap_soc_device_init
-Date: Thu, 23 Nov 2023 22:52:37 +0800
-Message-Id: <20231123145237.609442-1-chentao@kylinos.cn>
-X-Mailer: git-send-email 2.34.1
+Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38279C1;
+	Thu, 23 Nov 2023 07:39:01 -0800 (PST)
+Received: by mail-lj1-x236.google.com with SMTP id 38308e7fff4ca-2c8880f14eeso12646121fa.3;
+        Thu, 23 Nov 2023 07:39:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1700753939; x=1701358739; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=X5QTDN/COfbPh5hWo0S55LVkpF8OpC4D7Gn+kAsnVaM=;
+        b=FLRWlJ4YycqQmX/t9mb9H0MYg5bSdDOwFevPr43+Ddy92WWRxaUCVMLn21OSa5to6s
+         uBLOPOwdIKPetbruNM/l1t1TFuPZtTlpB8CL9YH5tod0otI9N8ZTHintYfl3NFTXeK2Q
+         q0IbyMXBr7fDDk3icH6wJkHnAJ3J9aUjhP86XHTxzo9sT38SBJf+vCl6tt04Et4TmkNO
+         oygF4SUHBlRUPki/8nrATwsVMonvBESn6m+1Zqz8ATNoNRJLMpya80V2O22Efa/LG6X3
+         F9PjU8ekLCKNcGJ4zVsK7f1RAR1XwJ1Ke8zUutY+DZ5+HRIANvC7gUo4sf820FyE4IAT
+         M0iQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700753939; x=1701358739;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=X5QTDN/COfbPh5hWo0S55LVkpF8OpC4D7Gn+kAsnVaM=;
+        b=irOXZ17kF5e/ro+lUE0zg+MJ/6bIhFDGKSil+LPXoth9kwAUwiwkzvICII/slQj/+E
+         O9u909htwAX6okJiKj3gLZgVO5ZmW+3aEYLSr6hLFmADvT1lQsmOMBf+rhbD+RYDwY6c
+         ztD2T/RMSISOYQ7K9KWr0vWrrYF7K8+ttILq3yLFcoPXHOMZ7l0IWE/HZIG9KTGOaYyj
+         p5gNvcgi8FffAEn93D8RH354jU9hI06vMCDCwTFZm5D4Y+G/QmessdyErR3ytzI1oNJx
+         r1mAwKhwsD5UbhurXzZuHZY8eRAUYg/SZT5ZlnyWr9LMYAggF1YPq0VgSFL6u/pVtnap
+         DIEA==
+X-Gm-Message-State: AOJu0YwzcU72EmCQVbBgjIspjlkL7I7RGho4Bwb8Brb2K2e7DvCVpkmR
+	PXr4OOfxCIg8HqkeKedQItI=
+X-Google-Smtp-Source: AGHT+IHomSdQ+41Hjzo6i7Clcyf/5GQNw82lEcTgP30RpuqoAvf3sXxd02xrsS0dBSM2Qe4A8z/Zjg==
+X-Received: by 2002:a2e:9e55:0:b0:2c5:70f:614a with SMTP id g21-20020a2e9e55000000b002c5070f614amr3380967ljk.17.1700753938803;
+        Thu, 23 Nov 2023 07:38:58 -0800 (PST)
+Received: from ?IPV6:2001:999:251:b686:cec4:d552:2937:637c? ([2001:999:251:b686:cec4:d552:2937:637c])
+        by smtp.gmail.com with ESMTPSA id y35-20020a2ebba3000000b002bcedacd726sm244401lje.25.2023.11.23.07.38.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 23 Nov 2023 07:38:58 -0800 (PST)
+Message-ID: <74b0b808-7b97-4e53-a1a4-6e2e1274ecff@gmail.com>
+Date: Thu, 23 Nov 2023 17:40:24 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mfd: twl6030-irq: Revert to use of_match_device()
+To: Lee Jones <lee@kernel.org>
+Cc: tony@atomide.com, robh@kernel.org, wens@csie.org,
+ linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20231029114843.15553-1-peter.ujfalusi@gmail.com>
+ <20231123103756.GD1184245@google.com> <20231123104108.GF1184245@google.com>
+Content-Language: en-US
+From: =?UTF-8?Q?P=C3=A9ter_Ujfalusi?= <peter.ujfalusi@gmail.com>
+In-Reply-To: <20231123104108.GF1184245@google.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-kasprintf() returns a pointer to dynamically allocated memory which can
-be NULL upon failure. When 'soc_dev_attr->family' is NULL,it'll trigger
-the null pointer dereference issue, such as in 'soc_info_show'.
 
-And when 'soc_device_register' fails, it's necessary to release
-'soc_dev_attr->family' to avoid memory leaks.
 
-Fixes: 6770b2114325 ("ARM: OMAP2+: Export SoC information to userspace")
-Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
----
- arch/arm/mach-omap2/id.c | 5 +++++
- 1 file changed, 5 insertions(+)
+On 23/11/2023 12:41, Lee Jones wrote:
+>>> @@ -368,10 +368,10 @@ int twl6030_init_irq(struct device *dev, int irq_num)
+>>>  	int			nr_irqs;
+>>>  	int			status;
+>>>  	u8			mask[3];
+>>> -	const int		*irq_tbl;
+>>> +	const struct of_device_id *of_id;
+>>>  
+>>> -	irq_tbl = device_get_match_data(dev);
+>>> -	if (!irq_tbl) {
+>>> +	of_id = of_match_device(twl6030_of_match, dev);
+>>
+>> I think you just dropped support for ACPI.
+> 
+> Ah, scrap that.  I was looking at the wrong part of 1e0c866887f4.
+> 
+> So what about the other drivers changed in the aforementioned commit?
 
-diff --git a/arch/arm/mach-omap2/id.c b/arch/arm/mach-omap2/id.c
-index 98999aa8cc0c..7f387706368a 100644
---- a/arch/arm/mach-omap2/id.c
-+++ b/arch/arm/mach-omap2/id.c
-@@ -793,11 +793,16 @@ void __init omap_soc_device_init(void)
- 
- 	soc_dev_attr->machine  = soc_name;
- 	soc_dev_attr->family   = omap_get_family();
-+	if (!soc_dev_attr->family) {
-+		kfree(soc_dev_attr);
-+		return;
-+	}
- 	soc_dev_attr->revision = soc_rev;
- 	soc_dev_attr->custom_attr_group = omap_soc_groups[0];
- 
- 	soc_dev = soc_device_register(soc_dev_attr);
- 	if (IS_ERR(soc_dev)) {
-+		kfree(soc_dev_attr->family);
- 		kfree(soc_dev_attr);
- 		return;
- 	}
+Looking back at it again, I think only this patch is needed.
+This is not a real driver, it is using the twl core's device.
+The twl6030 is for sure broken, let me reply to the twl4030-power in a sec.
+
+> Ideally we'd have a call that covers all of the various probing APIs.
+> 
+>> Rob, care to follow-up?
+> 
+> I'd still like Rob to comment.
+> 
+
 -- 
-2.34.1
-
+Péter
 
