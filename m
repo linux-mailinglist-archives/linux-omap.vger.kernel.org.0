@@ -1,87 +1,131 @@
-Return-Path: <linux-omap+bounces-28-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-29-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8194B7F8A4F
-	for <lists+linux-omap@lfdr.de>; Sat, 25 Nov 2023 12:46:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE4677F8BF7
+	for <lists+linux-omap@lfdr.de>; Sat, 25 Nov 2023 16:13:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B07421C20C77
-	for <lists+linux-omap@lfdr.de>; Sat, 25 Nov 2023 11:46:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98E8C281683
+	for <lists+linux-omap@lfdr.de>; Sat, 25 Nov 2023 15:13:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6DA0DF6B;
-	Sat, 25 Nov 2023 11:46:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA51F28E1B;
+	Sat, 25 Nov 2023 15:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iA2oAxev"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DaxOY5uJ"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 345D0D530;
-	Sat, 25 Nov 2023 11:46:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94713C433C9;
-	Sat, 25 Nov 2023 11:46:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1700912764;
-	bh=oR2hnb3Bl7ZQBHF7pVNVNr9cSvQhx/EmQ5RXPSn1AV0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iA2oAxevVVzBwx3RZB+eHCPV6AU3wc0KpHP+/3ea1rvlMCmh5nZJYmi/iwitnbUFp
-	 is/DUnoUG8ps3ZSmb6wIZAzh+JRKRIkNQ9HY5+C1r8llcK/zy14F/PrIwKqX8Cb3Pl
-	 MufYaPC7v77pkDRMQM/CckTjVMdzHJiC219nJHk5UITsHjGo2JO96rTXD25sgR5Iz9
-	 +IdE26URAC05uOcIr49cGi+M0oXBgbkmOrr2yiFU5Waqyx5vvV7cT0tkX3xHUxSE9L
-	 c4AZ2tMdDBOV6IyEJK8w5bTg5yNlfbYQwQPqFlPkfiXR+7gtFqlSv/v7DILCokC1vL
-	 6VnIzvTdWwh0g==
-Date: Sat, 25 Nov 2023 11:46:00 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Andreas Kemnade <andreas@kemnade.info>
-Cc: lee@kernel.org, robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B640EFE;
+	Sat, 25 Nov 2023 07:13:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1700925215; x=1732461215;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=7jgvutb4LkVm8tjdml+yARZgSq5LjVU+VQZulrmPA1k=;
+  b=DaxOY5uJsjb4He9j6wryvHgGMJkvxqNpDbAjlhF0FK9vIeGbKyfwpuE4
+   qR1e23gCGBqqVOa28zzkIIwOBUD56yFvO16jxnac2Mvr1UMYnrlbHLp3u
+   jqHnfqP//MUOYCd30DzgroHltQMgSUn1pHgtH868nmhb8mWrUJ9yV5I4Y
+   vWAd7X+UuAmDIRC8nvVT/keRJlLbdIgk1S6iaoC0SmqaYtcW/naoqK6YV
+   BR1W4EpHFGu272qnxUY7pJviYLbwadpxtJRJsmQ7bHUG/Sw7eTC5caNRQ
+   WEhcTR3A8TZRXCYRQjKV47l4HCQim7A0pZJdOFcyT2TDxWbX4bX1w/CCw
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10905"; a="395344786"
+X-IronPort-AV: E=Sophos;i="6.04,226,1695711600"; 
+   d="scan'208";a="395344786"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2023 07:13:35 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.04,226,1695711600"; 
+   d="scan'208";a="9211867"
+Received: from lkp-server01.sh.intel.com (HELO d584ee6ebdcc) ([10.239.97.150])
+  by orviesa002.jf.intel.com with ESMTP; 25 Nov 2023 07:13:32 -0800
+Received: from kbuild by d584ee6ebdcc with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1r6uLZ-00047C-2U;
+	Sat, 25 Nov 2023 15:13:29 +0000
+Date: Sat, 25 Nov 2023 23:13:04 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andreas Kemnade <andreas@kemnade.info>, lee@kernel.org,
+	robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
 	conor+dt@kernel.org, bcousson@baylibre.com, tony@atomide.com,
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-omap@vger.kernel.org
-Subject: Re: [PATCH 1/6] dt-bindings: mfd: ti,twl: Document
- system-power-controller
-Message-ID: <20231125-ramrod-turbine-084ac36a7916@spud>
-References: <20231125092938.16535-1-andreas@kemnade.info>
- <20231125092938.16535-2-andreas@kemnade.info>
+Cc: oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH 2/6] twl-core: add power off implementation for twl603x
+Message-ID: <202311252254.j0JQBIvl-lkp@intel.com>
+References: <20231125092938.16535-3-andreas@kemnade.info>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="BHb+UNfFvgB7JgAZ"
-Content-Disposition: inline
-In-Reply-To: <20231125092938.16535-2-andreas@kemnade.info>
-
-
---BHb+UNfFvgB7JgAZ
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20231125092938.16535-3-andreas@kemnade.info>
 
-On Sat, Nov 25, 2023 at 10:29:33AM +0100, Andreas Kemnade wrote:
-> Add system-power-controller property because these chips
-> can power off the device.
->=20
-> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+Hi Andreas,
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
+kernel test robot noticed the following build warnings:
 
-Cheers,
-Conor.
+[auto build test WARNING on robh/for-next]
+[also build test WARNING on lee-mfd/for-mfd-next linus/master v6.7-rc2 next-20231124]
+[cannot apply to tmlind-omap/for-next lee-mfd/for-mfd-fixes]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
---BHb+UNfFvgB7JgAZ
-Content-Type: application/pgp-signature; name="signature.asc"
+url:    https://github.com/intel-lab-lkp/linux/commits/Andreas-Kemnade/dt-bindings-mfd-ti-twl-Document-system-power-controller/20231125-173426
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git for-next
+patch link:    https://lore.kernel.org/r/20231125092938.16535-3-andreas%40kemnade.info
+patch subject: [PATCH 2/6] twl-core: add power off implementation for twl603x
+config: xtensa-randconfig-r081-20231125 (https://download.01.org/0day-ci/archive/20231125/202311252254.j0JQBIvl-lkp@intel.com/config)
+compiler: xtensa-linux-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231125/202311252254.j0JQBIvl-lkp@intel.com/reproduce)
 
------BEGIN PGP SIGNATURE-----
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202311252254.j0JQBIvl-lkp@intel.com/
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZWHeeAAKCRB4tDGHoIJi
-0u0cAQC7MOQrodkISngJv/6KoriZmS4apiDChQBzyageiRRAAAD8DrOxoF3Qllj8
-+Dd0oMKVoims9s51dkpBqxbXE/1UpQQ=
-=AWYU
------END PGP SIGNATURE-----
+All warnings (new ones prefixed by >>):
 
---BHb+UNfFvgB7JgAZ--
+>> drivers/mfd/twl-core.c:690:6: warning: no previous prototype for 'twl6030_power_off' [-Wmissing-prototypes]
+     690 | void twl6030_power_off(void)
+         |      ^~~~~~~~~~~~~~~~~
+
+
+vim +/twl6030_power_off +690 drivers/mfd/twl-core.c
+
+   689	
+ > 690	void twl6030_power_off(void)
+   691	{
+   692	#define APP_DEVOFF      (1<<0)
+   693	#define CON_DEVOFF      (1<<1)
+   694	#define MOD_DEVOFF      (1<<2)
+   695	
+   696		int err;
+   697		u8 val;
+   698	
+   699		err = twl_i2c_read_u8(TWL_MODULE_PM_MASTER, &val,
+   700				      TWL6030_PHOENIX_DEV_ON);
+   701		if (err) {
+   702			pr_err("I2C error %d reading PHOENIX_DEV_ON\n", err);
+   703			return;
+   704		}
+   705	
+   706		val |= APP_DEVOFF | CON_DEVOFF | MOD_DEVOFF;
+   707	
+   708		err = twl_i2c_write_u8(TWL_MODULE_PM_MASTER, val,
+   709				       TWL6030_PHOENIX_DEV_ON);
+   710		if (err)
+   711			pr_err("TWL6030 Unable to power off\n");
+   712	}
+   713	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
