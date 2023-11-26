@@ -1,61 +1,61 @@
-Return-Path: <linux-omap+bounces-30-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-31-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BC907F8E4D
-	for <lists+linux-omap@lfdr.de>; Sat, 25 Nov 2023 21:01:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B7177F968A
+	for <lists+linux-omap@lfdr.de>; Mon, 27 Nov 2023 00:32:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 366691C20CCE
-	for <lists+linux-omap@lfdr.de>; Sat, 25 Nov 2023 20:01:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4433B280E37
+	for <lists+linux-omap@lfdr.de>; Sun, 26 Nov 2023 23:32:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47B6C30653;
-	Sat, 25 Nov 2023 20:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 157AB1774C;
+	Sun, 26 Nov 2023 23:32:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AsrbbsiN"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZBEQUFjO"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10BEFDB;
-	Sat, 25 Nov 2023 12:00:50 -0800 (PST)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB71AE4;
+	Sun, 26 Nov 2023 15:32:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1700942450; x=1732478450;
+  t=1701041540; x=1732577540;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=pBwkxZKKmc1jzdpGVqMyMI3A8HSNgPT6E/hBVhjViao=;
-  b=AsrbbsiNs9056WXTIpH60Nnzotg8cdmcYkarLZQyz5zFnK2T4ULYGSo7
-   c8GIlWz9HB9ldyZnMko1Nqc1qjJ8JiuYvu9Guf1IDOWCgqi3Rm7IyRPZw
-   6HDEfT2jDGLK8b/BiJ49FTb0jXUpw8rs1G4G5S17Md47VzaUCPwORyc7v
-   9pmoc0CLcKwJT2PeyAOC8EosGGyccaN/kW7AM1L5YCqQvju9LTqNVx7Io
-   SLcVFiZFMqrVdQr+VWJVwglUP5ExJOzoIrhz7NE43Y/0AAfSN9dGcZ48X
-   b0qHuZIstaHFaaBDAFLsa40GrsKZMz+emZBpfr/TvCywb92cqPu5s7KGK
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10905"; a="391398650"
-X-IronPort-AV: E=Sophos;i="6.04,227,1695711600"; 
-   d="scan'208";a="391398650"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2023 12:00:49 -0800
+  bh=DL1UZC6QXeMznGYKv4T6wrrF7fnm2ErIt+iYauhRjkk=;
+  b=ZBEQUFjOfZgdej31Mtys8xUCWR0hd3qNvn00Xu8la2+Ps20Ncmn4xqRD
+   5o6ONr3bBFS5+XDWKVZx/kJvPxIJCYsteWvnqOagHmRmTBr5F0CL08vQH
+   TB4koUfuaJ50npN48jQApLfopOdYB16BrG17yBJZwlSMxIDjeOe6aYp4u
+   pd6PUubXajuF15VGWPwgbyRhXvfW+R0Rks1+H8tkcO0ktQMX+0UxUZUk7
+   b1F6ZnsKNBo8FpldoTVi0GLP1rnWkwjdLxrG5Yrv6YbHlCMZGGKssHV/5
+   zCqetYZwixELWv4SuJNA/eUt3KbTT/g8OQhsYRbM3y1zkqROtq5Y9MylM
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10906"; a="372768311"
+X-IronPort-AV: E=Sophos;i="6.04,229,1695711600"; 
+   d="scan'208";a="372768311"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Nov 2023 15:32:20 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10905"; a="891332351"
-X-IronPort-AV: E=Sophos;i="6.04,227,1695711600"; 
-   d="scan'208";a="891332351"
+X-IronPort-AV: E=McAfee;i="6600,9927,10906"; a="858862273"
+X-IronPort-AV: E=Sophos;i="6.04,229,1695711600"; 
+   d="scan'208";a="858862273"
 Received: from lkp-server01.sh.intel.com (HELO d584ee6ebdcc) ([10.239.97.150])
-  by orsmga004.jf.intel.com with ESMTP; 25 Nov 2023 12:00:46 -0800
+  by FMSMGA003.fm.intel.com with ESMTP; 26 Nov 2023 15:32:17 -0800
 Received: from kbuild by d584ee6ebdcc with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1r6ypX-0004MY-2K;
-	Sat, 25 Nov 2023 20:00:43 +0000
-Date: Sun, 26 Nov 2023 04:00:24 +0800
+	id 1r7Obn-0005dB-1V;
+	Sun, 26 Nov 2023 23:32:15 +0000
+Date: Mon, 27 Nov 2023 07:32:05 +0800
 From: kernel test robot <lkp@intel.com>
 To: Andreas Kemnade <andreas@kemnade.info>, lee@kernel.org,
 	robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
 	conor+dt@kernel.org, bcousson@baylibre.com, tony@atomide.com,
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-omap@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev
+Cc: oe-kbuild-all@lists.linux.dev
 Subject: Re: [PATCH 2/6] twl-core: add power off implementation for twl603x
-Message-ID: <202311260213.vq3gMAgF-lkp@intel.com>
+Message-ID: <202311270558.j38P20an-lkp@intel.com>
 References: <20231125092938.16535-3-andreas@kemnade.info>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
@@ -82,26 +82,17 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Andreas-Kemnade/dt-bindin
 base:   https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git for-next
 patch link:    https://lore.kernel.org/r/20231125092938.16535-3-andreas%40kemnade.info
 patch subject: [PATCH 2/6] twl-core: add power off implementation for twl603x
-config: x86_64-allyesconfig (https://download.01.org/0day-ci/archive/20231126/202311260213.vq3gMAgF-lkp@intel.com/config)
-compiler: clang version 16.0.4 (https://github.com/llvm/llvm-project.git ae42196bc493ffe877a7e3dff8be32035dea4d07)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231126/202311260213.vq3gMAgF-lkp@intel.com/reproduce)
+config: x86_64-randconfig-122-20231126 (https://download.01.org/0day-ci/archive/20231127/202311270558.j38P20an-lkp@intel.com/config)
+compiler: gcc-9 (Debian 9.3.0-22) 9.3.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231127/202311270558.j38P20an-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202311260213.vq3gMAgF-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202311270558.j38P20an-lkp@intel.com/
 
-All warnings (new ones prefixed by >>):
-
->> drivers/mfd/twl-core.c:690:6: warning: no previous prototype for function 'twl6030_power_off' [-Wmissing-prototypes]
-   void twl6030_power_off(void)
-        ^
-   drivers/mfd/twl-core.c:690:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
-   void twl6030_power_off(void)
-   ^
-   static 
-   1 warning generated.
-
+sparse warnings: (new ones prefixed by >>)
+>> drivers/mfd/twl-core.c:690:6: sparse: sparse: symbol 'twl6030_power_off' was not declared. Should it be static?
 
 vim +/twl6030_power_off +690 drivers/mfd/twl-core.c
 
