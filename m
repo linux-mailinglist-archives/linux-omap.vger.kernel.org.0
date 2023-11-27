@@ -1,228 +1,110 @@
-Return-Path: <linux-omap+bounces-34-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-35-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E65EE7FAB49
-	for <lists+linux-omap@lfdr.de>; Mon, 27 Nov 2023 21:24:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E62437FABBF
+	for <lists+linux-omap@lfdr.de>; Mon, 27 Nov 2023 21:41:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 508B9B212DF
-	for <lists+linux-omap@lfdr.de>; Mon, 27 Nov 2023 20:24:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 238421C20E8F
+	for <lists+linux-omap@lfdr.de>; Mon, 27 Nov 2023 20:41:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E93445C15;
-	Mon, 27 Nov 2023 20:24:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E79303DB81;
+	Mon, 27 Nov 2023 20:41:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZnNwijAv"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a02:c205:3004:2154::1])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9D581BD;
-	Mon, 27 Nov 2023 12:24:12 -0800 (PST)
-Received: from p200301077700a9001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:107:7700:a900:1a3d:a2ff:febf:d33a] helo=aktux)
-	by mail.andi.de1.cc with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <andreas@kemnade.info>)
-	id 1r7i9I-006mnO-M7; Mon, 27 Nov 2023 21:24:08 +0100
-Received: from andi by aktux with local (Exim 4.96)
-	(envelope-from <andreas@kemnade.info>)
-	id 1r7i9I-000bvU-1J;
-	Mon, 27 Nov 2023 21:24:08 +0100
-From: Andreas Kemnade <andreas@kemnade.info>
-To: mturquette@baylibre.com,
-	sboyd@kernel.org,
-	robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org,
-	conor+dt@kernel.org,
-	andreas@kemnade.info,
-	kristo@kernel.org,
-	linux-clk@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-omap@vger.kernel.org
-Subject: [PATCH] dt-bindings: clock: ti: Convert interface.txt to json-schema
-Date: Mon, 27 Nov 2023 21:23:59 +0100
-Message-Id: <20231127202359.145778-1-andreas@kemnade.info>
-X-Mailer: git-send-email 2.39.2
+Received: from mail-yw1-x112c.google.com (mail-yw1-x112c.google.com [IPv6:2607:f8b0:4864:20::112c])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60F8B191;
+	Mon, 27 Nov 2023 12:40:56 -0800 (PST)
+Received: by mail-yw1-x112c.google.com with SMTP id 00721157ae682-5cc642e4c69so47012867b3.0;
+        Mon, 27 Nov 2023 12:40:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1701117655; x=1701722455; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sRs6V1G4bJ91r4gRjp2FMkL9JXcsUtL6rgbmHrGxlFU=;
+        b=ZnNwijAvXgqkjbm+6xZlridLPH6rx4BWsN2uWpG2rhlxnYqcl/qN8XrVZG0wC8g+jP
+         a1AaDmfQJq/crz4CBZhDH47xYucViAlyDd8pIGwyv1fRSlfP5tZbgx6W5c9PxAm+IwZK
+         PcaPfahDjdaP/cojAQDuRE1RhVl0Fa8kveDYb5D5H1SWGQHdkr53zS14vgXTKni0lDNW
+         YmxxOxPBP7Hj31QJruA9XIWOCLPMKZZPgWBgqRrLQLDeY5FXO+Gs59oSgKgr3HFecQ1X
+         F53W0V8UsAyfniixL9gPaVr2w9TfAzM39zzWH0q/VbUavmU5+IQ/Dgv9y/acSRJg4aNp
+         ktVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701117655; x=1701722455;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=sRs6V1G4bJ91r4gRjp2FMkL9JXcsUtL6rgbmHrGxlFU=;
+        b=M5i5SYdidvOCQrK55QuEbY1xviP9NTXq4Z02BGfkXPklCX6zEUkXiW+Ch6TxrJ8KSi
+         wDhlTR+4MKq+Am5gLbYmHQvs5lhZn99hsQ+fyb+hJkHZdz0vRjzwzuIyWt+m0TTdkKv9
+         k8NFYvbzqGicK2fW8+iBFECwNDxkgYRDq+ug8J8s7UkrxRNwxF+NFWsFEDkRxEj2SnsG
+         bMI3lF3ElwuAroiGG0a+a+lfCX4AzrnW0kA+S2eTPPSUPabhu2q30E6o3gFB+QP0/r1b
+         dNEp3fRSGJJTi62De8087qO4vymA1hrMo+8ifosAi+S98ugA6GdURd2XifpaArHq5YEP
+         03uw==
+X-Gm-Message-State: AOJu0YwN+FzCF4b6Z5ooNcX85RrxaugpYCJ7Q41XBkwfhZoBFRPrnSv8
+	5dovNY26ubENsdvAkYRZQ7VruPg863phQoBK4ww=
+X-Google-Smtp-Source: AGHT+IGLjeq9rPxpKGNviEOOhVzIBQ0feYNgTbl0lSFiOgTO1kLXII5c0Mlnva6g6WSroWuY2ZejdJzlWtDHa0ooWmc=
+X-Received: by 2002:a25:a41:0:b0:da0:ce05:ca2c with SMTP id
+ 62-20020a250a41000000b00da0ce05ca2cmr10919080ybk.7.1701117655444; Mon, 27 Nov
+ 2023 12:40:55 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20231127200430.143231-1-andreas@kemnade.info>
+In-Reply-To: <20231127200430.143231-1-andreas@kemnade.info>
+From: Adam Ford <aford173@gmail.com>
+Date: Mon, 27 Nov 2023 14:40:43 -0600
+Message-ID: <CAHCN7xLpERbs1MPMXTAPCqoPgAN5ts+Ubr=MiO6urW-wuuxp=w@mail.gmail.com>
+Subject: Re: [PATCH] ARM: dts: omap: logicpd-torpedo: do not disguise GNSS device
+To: Andreas Kemnade <andreas@kemnade.info>
+Cc: bcousson@baylibre.com, tony@atomide.com, robh+dt@kernel.org, 
+	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, 
+	linux-omap@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Convert the OMAP interface clock device tree binding to json-schema
-and fix up reg property which is optional and taken from parent if
-not specified.
-Specify the creator of the original binding as a maintainer.
+On Mon, Nov 27, 2023 at 2:04=E2=80=AFPM Andreas Kemnade <andreas@kemnade.in=
+fo> wrote:
+>
+> https://support.logicpd.com/DesktopModules/Bring2mind/DMX/Download.aspx?p=
+ortalid=3D0&EntryId=3D649
+> clearly specifies the availability of GPS, so let's not disguise it
+> and name the node accordingly.
 
-Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
----
- .../bindings/clock/ti/interface.txt           | 57 ------------
- .../bindings/clock/ti/ti,interface-clock.yaml | 90 +++++++++++++++++++
- 2 files changed, 90 insertions(+), 57 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/clock/ti/interface.txt
- create mode 100644 Documentation/devicetree/bindings/clock/ti/ti,interface-clock.yaml
+Thanks for doing this.
+>
+> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+Acked-by: Adam Ford <aford173@gmail.com>
 
-diff --git a/Documentation/devicetree/bindings/clock/ti/interface.txt b/Documentation/devicetree/bindings/clock/ti/interface.txt
-deleted file mode 100644
-index d3eb5ca92a7fe..0000000000000
---- a/Documentation/devicetree/bindings/clock/ti/interface.txt
-+++ /dev/null
-@@ -1,57 +0,0 @@
--Binding for Texas Instruments interface clock.
--
--Binding status: Unstable - ABI compatibility may be broken in the future
--
--This binding uses the common clock binding[1]. This clock is
--quite much similar to the basic gate-clock [2], however,
--it supports a number of additional features, including
--companion clock finding (match corresponding functional gate
--clock) and hardware autoidle enable / disable.
--
--[1] Documentation/devicetree/bindings/clock/clock-bindings.txt
--[2] Documentation/devicetree/bindings/clock/gpio-gate-clock.yaml
--
--Required properties:
--- compatible : shall be one of:
--  "ti,omap3-interface-clock" - basic OMAP3 interface clock
--  "ti,omap3-no-wait-interface-clock" - interface clock which has no hardware
--				       capability for waiting clock to be ready
--  "ti,omap3-hsotgusb-interface-clock" - interface clock with USB specific HW
--					handling
--  "ti,omap3-dss-interface-clock" - interface clock with DSS specific HW handling
--  "ti,omap3-ssi-interface-clock" - interface clock with SSI specific HW handling
--  "ti,am35xx-interface-clock" - interface clock with AM35xx specific HW handling
--  "ti,omap2430-interface-clock" - interface clock with OMAP2430 specific HW
--				  handling
--- #clock-cells : from common clock binding; shall be set to 0
--- clocks : link to phandle of parent clock
--- reg : base address for the control register
--
--Optional properties:
--- clock-output-names : from common clock binding.
--- ti,bit-shift : bit shift for the bit enabling/disabling the clock (default 0)
--
--Examples:
--	aes1_ick: aes1_ick@48004a14 {
--		#clock-cells = <0>;
--		compatible = "ti,omap3-interface-clock";
--		clocks = <&security_l4_ick2>;
--		reg = <0x48004a14 0x4>;
--		ti,bit-shift = <3>;
--	};
--
--	cam_ick: cam_ick@48004f10 {
--		#clock-cells = <0>;
--		compatible = "ti,omap3-no-wait-interface-clock";
--		clocks = <&l4_ick>;
--		reg = <0x48004f10 0x4>;
--		ti,bit-shift = <0>;
--	};
--
--	ssi_ick_3430es2: ssi_ick_3430es2@48004a10 {
--		#clock-cells = <0>;
--		compatible = "ti,omap3-ssi-interface-clock";
--		clocks = <&ssi_l4_ick>;
--		reg = <0x48004a10 0x4>;
--		ti,bit-shift = <0>;
--	};
-diff --git a/Documentation/devicetree/bindings/clock/ti/ti,interface-clock.yaml b/Documentation/devicetree/bindings/clock/ti/ti,interface-clock.yaml
-new file mode 100644
-index 0000000000000..48a54caeb3857
---- /dev/null
-+++ b/Documentation/devicetree/bindings/clock/ti/ti,interface-clock.yaml
-@@ -0,0 +1,90 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/clock/ti/ti,interface-clock.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Texas Instruments interface clock.
-+
-+maintainers:
-+  - Tero Kristo <kristo@kernel.org>
-+
-+description: |
-+  This binding uses the common clock binding[1]. This clock is
-+  quite much similar to the basic gate-clock[2], however,
-+  it supports a number of additional features, including
-+  companion clock finding (match corresponding functional gate
-+  clock) and hardware autoidle enable / disable.
-+
-+  [1] Documentation/devicetree/bindings/clock/clock-bindings.txt
-+  [2] Documentation/devicetree/bindings/clock/gpio-gate-clock.yaml
-+
-+
-+properties:
-+  compatible:
-+    enum:
-+      - ti,omap3-interface-clock           # basic OMAP3 interface clock
-+      - ti,omap3-no-wait-interface-clock   # interface clock which has no hardware
-+                                           # capability for waiting clock to be ready
-+      - ti,omap3-hsotgusb-interface-clock  # interface clock with USB specific HW handling
-+      - ti,omap3-dss-interface-clock       # interface clock with DSS specific HW handling
-+      - ti,omap3-ssi-interface-clock       # interface clock with SSI specific HW handling
-+      - ti,am35xx-interface-clock          # interface clock with AM35xx specific HW handling
-+      - ti,omap2430-interface-clock        # interface clock with OMAP2430 specific HW handling
-+  "#clock-cells":
-+    const: 0
-+
-+  clocks:
-+    maxItems: 1
-+
-+  clock-output-names:
-+    maxItems: 1
-+
-+  reg:
-+    description:
-+      if not specified, value from parent is used
-+    maxItems: 1
-+
-+  ti,bit-shift:
-+    description:
-+      bit shift for the bit enabling/disabling the clock
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    default: 0
-+
-+required:
-+  - compatible
-+  - clocks
-+  - '#clock-cells'
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    bus {
-+      #address-cells = <1>;
-+      #size-cells = <1>;
-+
-+      aes1_ick: aes1-ick@48004a14 {
-+        #clock-cells = <0>;
-+        compatible = "ti,omap3-interface-clock";
-+        clocks = <&security_l4_ick2>;
-+        reg = <0x48004a14 0x4>;
-+        ti,bit-shift = <3>;
-+      };
-+
-+      cam_ick: cam-ick@48004f10 {
-+        #clock-cells = <0>;
-+        compatible = "ti,omap3-no-wait-interface-clock";
-+        clocks = <&l4_ick>;
-+        reg = <0x48004f10 0x4>;
-+        ti,bit-shift = <0>;
-+      };
-+
-+      ssi_ick_3430es2: ssi-ick-3430es2@48004a10 {
-+        #clock-cells = <0>;
-+        compatible = "ti,omap3-ssi-interface-clock";
-+        clocks = <&ssi_l4_ick>;
-+        reg = <0x48004a10 0x4>;
-+        ti,bit-shift = <0>;
-+      };
-+    };
--- 
-2.39.2
-
+adam
+> ---
+>  arch/arm/boot/dts/ti/omap/logicpd-torpedo-37xx-devkit.dts | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/arch/arm/boot/dts/ti/omap/logicpd-torpedo-37xx-devkit.dts b/=
+arch/arm/boot/dts/ti/omap/logicpd-torpedo-37xx-devkit.dts
+> index 533ce7ce387a5..fbff15a0a0fe9 100644
+> --- a/arch/arm/boot/dts/ti/omap/logicpd-torpedo-37xx-devkit.dts
+> +++ b/arch/arm/boot/dts/ti/omap/logicpd-torpedo-37xx-devkit.dts
+> @@ -52,7 +52,7 @@ wlcore: wlcore@2 {
+>
+>  &uart2 {
+>         /delete-property/dma-names;
+> -       bluetooth {
+> +       bluetooth-gnss {
+>                 compatible =3D "ti,wl1283-st";
+>                 enable-gpios =3D <&gpio6 2 GPIO_ACTIVE_HIGH>; /* gpio 162=
+ */
+>                 max-speed =3D <3000000>;
+> --
+> 2.39.2
+>
+>
 
