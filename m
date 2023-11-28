@@ -1,64 +1,45 @@
-Return-Path: <linux-omap+bounces-48-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-49-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D339E7FB66D
-	for <lists+linux-omap@lfdr.de>; Tue, 28 Nov 2023 10:58:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A67997FB6A1
+	for <lists+linux-omap@lfdr.de>; Tue, 28 Nov 2023 11:04:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 58005B217F5
-	for <lists+linux-omap@lfdr.de>; Tue, 28 Nov 2023 09:58:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DBB6EB21284
+	for <lists+linux-omap@lfdr.de>; Tue, 28 Nov 2023 10:04:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05DF04C3AA;
-	Tue, 28 Nov 2023 09:58:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C79264C3DC;
+	Tue, 28 Nov 2023 10:04:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b="AYmiUMy8"
+	dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b="NQWZqh1u"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from mail5.25mail.st (mail5.25mail.st [74.50.62.9])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69068DE;
-	Tue, 28 Nov 2023 01:58:18 -0800 (PST)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 431A5BF
+	for <linux-omap@vger.kernel.org>; Tue, 28 Nov 2023 02:04:16 -0800 (PST)
 Received: from localhost (91-158-86-216.elisa-laajakaista.fi [91.158.86.216])
-	by mail5.25mail.st (Postfix) with ESMTPSA id 5F8CB60871;
-	Tue, 28 Nov 2023 09:57:28 +0000 (UTC)
+	by mail5.25mail.st (Postfix) with ESMTPSA id 4D81560872;
+	Tue, 28 Nov 2023 10:04:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=atomide.com;
-	s=25mailst; t=1701165497;
-	bh=tQeGP10H+YEMxkuCC5ZqSkRKdCu2iitVcPgC9MNPInw=;
+	s=25mailst; t=1701165855;
+	bh=HeyH3p6BoYa6/6vT3QzXr4Vq4qotM/Io0Sa4zRMxT3E=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AYmiUMy8dYEV7WMSG8R47pS4cwSRZGb57lAqPqzGSy1KN/QAHCmrBq77dhO37/XIw
-	 92e7Y96w9hEDK3crftRvhDeItlLEFq+QLOaPxBOzdf/UFxE31G3OXrAEMcez6AYv/H
-	 DMM/MEcax9+vqpHEm+fuperg9bltVq44y7oQ8n34Fl7ToXsJ+mFxDRg+8pk6l1XWQd
-	 jhaBkRij7yW855egwUrCkrN150vnaUckxwGUCr6jHcfPkvBzjMTNENanSimwgl908r
-	 i31l3fYuxM8nzegFXrLWQ98WupHJWl+/Q9tw/Vx+52mUveW7aYfX1EG/scSbq5RPLf
-	 X9wK6/D6/shUw==
-Date: Tue, 28 Nov 2023 11:57:26 +0200
+	b=NQWZqh1ufIkaOgy/U+/ukIGNqUGXffQQiy3wqSadJHfvdDQzVJSvQPruh2e3xLn1O
+	 dyTaEqQFo11dnjgYxPq1iKcB9oz0szThZKKShrhuRSxBAes2JJbTKuvieCKCuNt0yY
+	 HGZVuaRMR0pfhMjmFs7sS6HGDtp/8CcCnGU0QHrSrQZRoY66B1caQ/NX6qnIpfj5gH
+	 U/j4ZhHmKzj9tLklMJOyu0elHIPw73pleZj7tZ/H+jbAu8VSWG+vKlgE+tKyT/04F/
+	 C9mK+XC/Y1+yXo3rUDjwMOKG4I04Pk6vRjgoLtwzqV6A86Tz7B2I0ERup2ZNSzhbmr
+	 ZiK9vAFT21oDg==
+Date: Tue, 28 Nov 2023 12:04:09 +0200
 From: Tony Lindgren <tony@atomide.com>
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: MyungJoo Ham <myungjoo.ham@samsung.com>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	=?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Andy Gross <agross@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Heiko Stuebner <heiko@sntech.de>,
-	linux-mediatek@lists.infradead.org,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	NXP Linux Team <linux-imx@nxp.com>, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-rockchip@lists.infradead.org
-Subject: Re: [PATCH v4 2/6] ARM: dts: ti/omap: Replace deprecated
- extcon-usb-gpio id-gpio/vbus-gpio properties
-Message-ID: <20231128095726.GQ5169@atomide.com>
-References: <20230724103914.1779027-1-alexander.stein@ew.tq-group.com>
- <20230724103914.1779027-3-alexander.stein@ew.tq-group.com>
- <10373360.nUPlyArG6x@steina-w>
+To: Andreas Kemnade <andreas@kemnade.info>
+Cc: linux-omap@vger.kernel.org
+Subject: Re: ti-sysc: probe of 4a318000.target-module failed with error -16
+Message-ID: <20231128100409.GR5169@atomide.com>
+References: <20231029101249.2cc84607@akair>
+ <20231031070708.GA44202@atomide.com>
+ <20231105005323.0238c461@akair>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -67,15 +48,49 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <10373360.nUPlyArG6x@steina-w>
+In-Reply-To: <20231105005323.0238c461@akair>
 
-* Alexander Stein <alexander.stein@ew.tq-group.com> [231117 12:08]:
-> Hi everybody,
+* Andreas Kemnade <andreas@kemnade.info> [231104 23:53]:
+> Am Tue, 31 Oct 2023 09:07:08 +0200
+> schrieb Tony Lindgren <tony@atomide.com>:
 > 
-> any feedback on this? Patch 3,4 and 6 have already been merged.
+> > * Andreas Kemnade <andreas@kemnade.info> [231029 09:13]:
+> > > I am seeing the error message from $subject on omap4 devices
+> > > regularly, on omap4430-panda and on the epson bt200 (omap4460).
+> > > While not having the timer seems not critical in itself. I am
+> > > wondering whether something nasty is behind it which might cause
+> > > more severe problems.
+> > > Is this really seen everywhere?  
+> > 
+> > That should be for gptimer1 that is used as a clocksource by the
+> > drivers/clocksource/timer-ti-dm-systimer.c driver, and ti-sysc will
+> > ignore it.
+> > 
+> hmm, it is about this I think:
+> 
+>        timer1_target: target-module@8000 {     /* 0x4a318000, ap 9 1c.0
+>        */ compatible = "ti,sysc-omap2-timer", "ti,sysc";
+> 
+> but I see no ti,no-reset-on-init or ti,no-idle as checked by
+> sysc_check_active_timer(). It is a bit strange. Well, we have some
+> alwon below. 
+> It sysc-omap2-timer here right instead of sysc-omap4-timer?
 
-Sorry I did not know I'm supposed to pick it from the series.
-Applying into omap-for-v6,8/dt thanks.
+For timers in the wkup domain yes they are "ti,sysc-omap2-timer",
+that's typically timer1 and possibly timer2. On some devies also
+possibly timer12.
+
+> > Maybe we should not show the error for timers, or change it to
+> > dev_info if EBUSY and timer?
+> > 
+> Well, I am not sure yet whether I understand that 
+> -ENXIO vs. -EBUSY business there fully.
+> I want to really have a checkmark behind that issue in my head...
+
+Seems we should change it to dev_info saying something like "timer
+already in use as a system timer".
+
+Regards,
 
 Tony
 
