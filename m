@@ -1,99 +1,91 @@
-Return-Path: <linux-omap+bounces-50-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-52-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D2E37FB847
-	for <lists+linux-omap@lfdr.de>; Tue, 28 Nov 2023 11:43:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43AC67FBE32
+	for <lists+linux-omap@lfdr.de>; Tue, 28 Nov 2023 16:36:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EBE7CB21C91
-	for <lists+linux-omap@lfdr.de>; Tue, 28 Nov 2023 10:43:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C7F86B21886
+	for <lists+linux-omap@lfdr.de>; Tue, 28 Nov 2023 15:36:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 738453FB32;
-	Tue, 28 Nov 2023 10:43:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BE6F5E0DD;
+	Tue, 28 Nov 2023 15:35:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b="SfHUHZD8"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="jW5PFFRF"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail5.25mail.st (mail5.25mail.st [74.50.62.9])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C7D41A5;
-	Tue, 28 Nov 2023 02:43:37 -0800 (PST)
-Received: from localhost (91-158-86-216.elisa-laajakaista.fi [91.158.86.216])
-	by mail5.25mail.st (Postfix) with ESMTPSA id A89946086E;
-	Tue, 28 Nov 2023 10:43:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=atomide.com;
-	s=25mailst; t=1701168216;
-	bh=o617uNhOvw3Vu+eRSs1W8/UqKPoU/B9IfoVIbQuRnCs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SfHUHZD8Ii8XGRTnm9DAGobgeC1l8WZoBabIgGA4wyWEeDVkCp6jaK4/3tqggtzbs
-	 ffDZ2ja1ef6OXetd1WjT3kMh1eZQN8Rc7u//EG4n5Zo3v12/zRGt1nXPzQaZgZ5rNA
-	 0erJaEOVziSGN/z4c0Yk4gtDioSzqY7AZU12PwuTRdny4zCD6mJFxhU0ff2ewqupxz
-	 uXSFVS5+zn8BTnWhr3Gyj9L7iK4LShq52qf4UBlMCynbEOROexYPW2pmbhZBqGFQuL
-	 xk4oTauzv+/3IdzgXFytannM0KGZKwH+0HUdJMJE7j7zv2OAHdrJbQaCxkJUzjUeY9
-	 ehRM5MW3LndoA==
-Date: Tue, 28 Nov 2023 12:43:10 +0200
-From: Tony Lindgren <tony@atomide.com>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Andreas Kemnade <andreas@kemnade.info>, mturquette@baylibre.com,
-	sboyd@kernel.org, robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-	kristo@kernel.org, linux-clk@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-omap@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: clock: ti: Convert interface.txt to
- json-schema
-Message-ID: <20231128104310.GS5169@atomide.com>
-References: <20231127202359.145778-1-andreas@kemnade.info>
- <7a62ed8a-b0e3-4881-90d7-b8f5d38e482e@linaro.org>
- <20231128093241.707a4fa0@aktux>
- <7361082a-f271-4ef4-9dad-06ee7445c749@linaro.org>
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::229])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C989A92;
+	Tue, 28 Nov 2023 07:35:48 -0800 (PST)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 28365FF803;
+	Tue, 28 Nov 2023 15:35:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1701185746;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=wheDqiE2a9OZr8JN6HhD16I1O5hsDNL5yX5S9DFZ7RQ=;
+	b=jW5PFFRFM3QHLzqGw2eP/vuhSY/2H2WnsX80le7uM3aFzdaPasOGKMZgaXRnRpg6HxF9KS
+	dPnktG+RUba8i95BML29r6+xhH9dY/rgmO7IINtPJsklbQgDHXKmN7VoQQEuA8j/fe+Qun
+	k18ByByEdOzlQSvn9h/HWKFQgYQdr3GZu/bAX/Ma/UHmffHAvdqOx3Ng5N00Lrgd1npuem
+	ZJoWIKv12Ep8Iqqb7Ob8Q8pUrvTKaoWWm0rm0344ox0KT3OnkjwNdY0kC4b7XVpbrgAH39
+	PUPjFOugk3XfkPz6GGUD7xSoe7vm4eUO+zKHdkbDnb7L41h/dv6TlJbu06YBbA==
+From: Thomas Richard <thomas.richard@bootlin.com>
+Subject: [PATCH 0/3] pinctrl: pinctrl-single: fix suspend/resume on j7200
+Date: Tue, 28 Nov 2023 16:34:58 +0100
+Message-Id: <20231128-j7200-pinctrl-s2r-v1-0-704e7dc24460@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7361082a-f271-4ef4-9dad-06ee7445c749@linaro.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKIIZmUC/x3N0QrCMAyF4VcZuTbQRobWVxEv2iy6iNSRiAhj7
+ 77Wy+/Az1nBxVQcLsMKJl91fdeGeBiA51wfgjo1AwU6xkhnfJ4oBFy08sde6GSYRi6J45hyEmh
+ dyS5YLFeee9nZ58Xkrr//1fW2bTsVmSuPegAAAA==
+To: Linus Walleij <linus.walleij@linaro.org>, 
+ Rob Herring <robh+dt@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Tony Lindgren <tony@atomide.com>, 
+ Haojian Zhuang <haojian.zhuang@linaro.org>, Nishanth Menon <nm@ti.com>, 
+ Vignesh Raghavendra <vigneshr@ti.com>, Tero Kristo <kristo@kernel.org>
+Cc: linux-gpio@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-omap@vger.kernel.org, thomas.petazzoni@bootlin.com, 
+ gregory.clement@bootlin.com, theo.lebrun@bootlin.com, u-kumar1@ti.com, 
+ Thomas Richard <thomas.richard@bootlin.com>
+X-Mailer: b4 0.12.0
+X-GND-Sasl: thomas.richard@bootlin.com
 
-* Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> [231128 08:41]:
-> On 28/11/2023 09:32, Andreas Kemnade wrote:
-> > On Tue, 28 Nov 2023 09:00:16 +0100
-> > Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
-> > 
-> >>> +required:
-> >>> +  - compatible
-> >>> +  - clocks
-> >>> +  - '#clock-cells'  
-> >>
-> >> reg is required. Device cannot take "reg" from parent, DTS does not work
-> >> like this.
-> > 
-> > Well, apparently they do... and I am just dealing with status quo and not
-> > how it should be.
-> > Look at commit 31fc1c63c2ae4a542e3c7ac572a10a59ece45c24
-> 
-> Who designed clock-controller binding with a device node per each clock?
-> This is ridiculous (although of course not your fault here)! Looking at
-> omap3xxx-clocks.dtsi - all its children should be just defined by the
-> driver, not by DTSI.
+On j7200, during suspend to ram the SoC is powered-off. So the pinctrl
+contexts are lost.
+The flag PCS_CONTEXT_LOSS_OFF shall be set to restore the pinctrl
+contexts.
 
-Earlier all the clocks were separate nodes, the ti,clksel binding made
-things a bit better by grouping the seprate clock nodes so we don't have
-multiple nodes with the same reg.. But yeah clksel instance clocks should
-be clock@6 with reg = <6> if the clock bits are at bit 6. That would be
-fairly easy to do if that helps, but in general I doubt anybody's going
-to spend much effort to fix the omap3 legacy clocks atthis point.
+A new compatible (ti,j7200-padconf) was created to enable this flag only
+for j7200.
 
-For omap4 and later, things are a bit better as they use the clkctrl clocks:
+Signed-off-by: Thomas Richard <thomas.richard@bootlin.com>
+---
+Thomas Richard (3):
+      dt-bindings: pinctrl: pinctrl-single: add ti,j7200-padconf compatible
+      pinctrl: pinctrl-single: add ti,j7200-padconf compatible
+      arm64: dts: ti: k3-j7200: use ti,j7200-padconf compatible
 
-Documentation/devicetree/bindings/clock/ti-clkctrl.txt
+ .../devicetree/bindings/pinctrl/pinctrl-single.yaml          |  1 +
+ arch/arm64/boot/dts/ti/k3-j7200-main.dtsi                    |  8 ++++----
+ arch/arm64/boot/dts/ti/k3-j7200-mcu-wakeup.dtsi              | 12 ++++++------
+ drivers/pinctrl/pinctrl-single.c                             |  5 +++++
+ 4 files changed, 16 insertions(+), 10 deletions(-)
+---
+base-commit: 2a20795e4274c0d94c14fcb8309f72699e404d99
+change-id: 20231128-j7200-pinctrl-s2r-95cb9c159a9e
 
-I don't think omap3 has any clkctrl clocks but if it does then that could
-be used.
+Best regards,
+-- 
+Thomas Richard <thomas.richard@bootlin.com>
 
-Regards,
-
-Tony
 
