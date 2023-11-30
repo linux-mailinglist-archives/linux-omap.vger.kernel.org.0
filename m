@@ -1,39 +1,39 @@
-Return-Path: <linux-omap+bounces-69-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-70-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FE7B7FEBF7
-	for <lists+linux-omap@lfdr.de>; Thu, 30 Nov 2023 10:37:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4665D7FEBFA
+	for <lists+linux-omap@lfdr.de>; Thu, 30 Nov 2023 10:37:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4D1D1C20D9B
-	for <lists+linux-omap@lfdr.de>; Thu, 30 Nov 2023 09:37:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7805B1C20E65
+	for <lists+linux-omap@lfdr.de>; Thu, 30 Nov 2023 09:37:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB44538FAB;
-	Thu, 30 Nov 2023 09:37:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 416D838FAE;
+	Thu, 30 Nov 2023 09:37:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Oy31iWsg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="abeityOh"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67EEF374FE;
-	Thu, 30 Nov 2023 09:37:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F25CC433C7;
-	Thu, 30 Nov 2023 09:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF07932181;
+	Thu, 30 Nov 2023 09:37:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C63CBC433C7;
+	Thu, 30 Nov 2023 09:37:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701337044;
+	s=k20201202; t=1701337057;
 	bh=TdOMiWgyf8Im0dkTqa/TXaHjrcnnjfKxi4zDQeu8+8k=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Oy31iWsg/BvtZqwVftGSxWpwmavoIQ1dGb2EtYU6cFNhPEEzHf8HGfP8J2G8PSNGa
-	 Z75spsTFGNbhDM80rOjKV4thULtSLGiPZ0tt7u01KHVxLiAmVadI3jz5RGesZVjo0c
-	 Q6qZsrbHG0DT39uub/HnPp+iQXhnuBSakYSiUaj50ZSJvoWPx9lbl/QvAK5CFoeKRA
-	 cqR/DF42R8mNgUGTt3iRN8rGukXPVPCF/Hql/JZyp0/2f425UPYhvtBQzF38cJ3f13
-	 lU9PgilP61kSikJBOjPNaYDSlwVETNuOHQsbz+pPR5STKvSvXrG0YnMw++x9F0uGv5
-	 +wv91b2lyGtPA==
-Message-ID: <1918d6ca-73e6-445c-8cdd-7b5a70b9e762@kernel.org>
-Date: Thu, 30 Nov 2023 11:37:20 +0200
+	b=abeityOhl+gSzJAJLMqv31vHG4k11S6Gd5Y0FdHzndpDldMiyri9NmN2TP+eYeqPI
+	 HvSqpZVBW4d2dagsfzwf/cpX3mbElNgaRJorHO2+IsXTi/MLFel8U/6h2+6wosawrN
+	 SPl3MGOyPyxk30WiBj4WIgRzmMXLALdSYRmm99rT11XjHEw68dGzlqVBn2Dy8rzayT
+	 /PFFc4j9QdM0XeieqgTNsGCRDkxIz7s/2EwHHUiuiVrqdw6kLrUuHKwFKPKmxCsLmA
+	 JI71R7Zoi6Z2wlr0dKL9pNLHP3uwyqKGVl1zv10llObqW5cq4YldVjfX+Uu4hpot7X
+	 NXzyeSps5ifCQ==
+Message-ID: <565b6b26-eb6e-4fd2-b815-65273234136d@kernel.org>
+Date: Thu, 30 Nov 2023 11:37:33 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2 2/4] net: ethernet: ti: cpsw: Convert to
+Subject: Re: [PATCH net-next v2 3/4] net: ethernet: ti: cpsw-new: Convert to
  platform remove callback returning void
 Content-Language: en-US
 To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
@@ -49,14 +49,15 @@ To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
 Cc: Siddharth Vadapalli <s-vadapalli@ti.com>,
  Ravi Gunasekaran <r-gunasekaran@ti.com>,
- Jesse Brandeburg <jesse.brandeburg@intel.com>, Rob Herring
- <robh@kernel.org>, Yunsheng Lin <linyunsheng@huawei.com>,
- Marek Majtyka <alardam@gmail.com>, linux-omap@vger.kernel.org,
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+ Stanislav Fomichev <sdf@google.com>, Marek Majtyka <alardam@gmail.com>,
+ Simon Horman <horms@kernel.org>, Rob Herring <robh@kernel.org>,
+ Yunsheng Lin <linyunsheng@huawei.com>, linux-omap@vger.kernel.org,
  netdev@vger.kernel.org, kernel@pengutronix.de
 References: <20231128173823.867512-1-u.kleine-koenig@pengutronix.de>
- <20231128173823.867512-3-u.kleine-koenig@pengutronix.de>
+ <20231128173823.867512-4-u.kleine-koenig@pengutronix.de>
 From: Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <20231128173823.867512-3-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20231128173823.867512-4-u.kleine-koenig@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
