@@ -1,73 +1,84 @@
-Return-Path: <linux-omap+bounces-68-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-69-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09E5B7FD467
-	for <lists+linux-omap@lfdr.de>; Wed, 29 Nov 2023 11:38:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FE7B7FEBF7
+	for <lists+linux-omap@lfdr.de>; Thu, 30 Nov 2023 10:37:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9BFE2834FD
-	for <lists+linux-omap@lfdr.de>; Wed, 29 Nov 2023 10:38:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4D1D1C20D9B
+	for <lists+linux-omap@lfdr.de>; Thu, 30 Nov 2023 09:37:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 407D61BDCD;
-	Wed, 29 Nov 2023 10:37:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB44538FAB;
+	Thu, 30 Nov 2023 09:37:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b="dd96a4lx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Oy31iWsg"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail5.25mail.st (mail5.25mail.st [74.50.62.9])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFF2D1BDD;
-	Wed, 29 Nov 2023 02:37:54 -0800 (PST)
-Received: from localhost (91-158-86-216.elisa-laajakaista.fi [91.158.86.216])
-	by mail5.25mail.st (Postfix) with ESMTPSA id 476FD60514;
-	Wed, 29 Nov 2023 10:37:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=atomide.com;
-	s=25mailst; t=1701254274;
-	bh=PZf6YQTupqFw4W6ycNWkH2Y3oi4tDcDahoqNRd4oPAg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dd96a4lxNRCNkK9yNewLCH1VsdJ9qkKvd2m28A0GABSYsFx85rWBW9zVA4jBs/90M
-	 T8KqspvjNIduPFNhMRAHv8FfA3XzhPAwquakjhNCy+bkZgLK23RHa2FSvXPHcboR85
-	 E2+EkDYSbwPfWs1zOe5lTjSwWWge8JCHWe0hmArWGdYcR5l29zz/s1HaA5wEK08XM8
-	 Myzm3ChW8DnJaCcod0ENMsj74fv9mPSHH3eQhf0vyRKw5uSToOrFGpMYSjBXAl6YXU
-	 RRQx+a9F5aW7QwBRRQ8CntGdIkIR8Q8BWgENf261cIC7HDJELWJxffp0Kwea3VL1g8
-	 Y5WyLMTdS0pow==
-Date: Wed, 29 Nov 2023 12:37:15 +0200
-From: Tony Lindgren <tony@atomide.com>
-To: Thomas Richard <thomas.richard@bootlin.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Haojian Zhuang <haojian.zhuang@linaro.org>,
-	Nishanth Menon <nm@ti.com>, Vignesh Raghavendra <vigneshr@ti.com>,
-	Tero Kristo <kristo@kernel.org>, linux-gpio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-	thomas.petazzoni@bootlin.com, gregory.clement@bootlin.com,
-	theo.lebrun@bootlin.com, u-kumar1@ti.com
-Subject: Re: [PATCH 3/3] arm64: dts: ti: k3-j7200: use ti,j7200-padconf
- compatible
-Message-ID: <20231129103715.GZ5169@atomide.com>
-References: <20231128-j7200-pinctrl-s2r-v1-0-704e7dc24460@bootlin.com>
- <20231128-j7200-pinctrl-s2r-v1-3-704e7dc24460@bootlin.com>
- <20231129101905.GY5169@atomide.com>
- <9806d838-3eb8-406c-8ef9-f75ebe664078@bootlin.com>
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67EEF374FE;
+	Thu, 30 Nov 2023 09:37:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F25CC433C7;
+	Thu, 30 Nov 2023 09:37:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1701337044;
+	bh=TdOMiWgyf8Im0dkTqa/TXaHjrcnnjfKxi4zDQeu8+8k=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Oy31iWsg/BvtZqwVftGSxWpwmavoIQ1dGb2EtYU6cFNhPEEzHf8HGfP8J2G8PSNGa
+	 Z75spsTFGNbhDM80rOjKV4thULtSLGiPZ0tt7u01KHVxLiAmVadI3jz5RGesZVjo0c
+	 Q6qZsrbHG0DT39uub/HnPp+iQXhnuBSakYSiUaj50ZSJvoWPx9lbl/QvAK5CFoeKRA
+	 cqR/DF42R8mNgUGTt3iRN8rGukXPVPCF/Hql/JZyp0/2f425UPYhvtBQzF38cJ3f13
+	 lU9PgilP61kSikJBOjPNaYDSlwVETNuOHQsbz+pPR5STKvSvXrG0YnMw++x9F0uGv5
+	 +wv91b2lyGtPA==
+Message-ID: <1918d6ca-73e6-445c-8cdd-7b5a70b9e762@kernel.org>
+Date: Thu, 30 Nov 2023 11:37:20 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9806d838-3eb8-406c-8ef9-f75ebe664078@bootlin.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 2/4] net: ethernet: ti: cpsw: Convert to
+ platform remove callback returning void
+Content-Language: en-US
+To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Siddharth Vadapalli <s-vadapalli@ti.com>,
+ Ravi Gunasekaran <r-gunasekaran@ti.com>,
+ Jesse Brandeburg <jesse.brandeburg@intel.com>, Rob Herring
+ <robh@kernel.org>, Yunsheng Lin <linyunsheng@huawei.com>,
+ Marek Majtyka <alardam@gmail.com>, linux-omap@vger.kernel.org,
+ netdev@vger.kernel.org, kernel@pengutronix.de
+References: <20231128173823.867512-1-u.kleine-koenig@pengutronix.de>
+ <20231128173823.867512-3-u.kleine-koenig@pengutronix.de>
+From: Roger Quadros <rogerq@kernel.org>
+In-Reply-To: <20231128173823.867512-3-u.kleine-koenig@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-* Thomas Richard <thomas.richard@bootlin.com> [231129 10:32]:
-> Thanks for the review.
-> Yes the mcu registers are lost too, as the SoC is fully powered-off.
-> And I did the test to confirm.
 
-OK thanks for confirming it.
 
-Tony
+On 28/11/2023 19:38, Uwe Kleine-König wrote:
+> The .remove() callback for a platform driver returns an int which makes
+> many driver authors wrongly assume it's possible to do error handling by
+> returning an error code. However the value returned is ignored (apart
+> from emitting a warning) and this typically results in resource leaks.
+> 
+> To improve here there is a quest to make the remove callback return
+> void. In the first step of this quest all drivers are converted to
+> .remove_new(), which already returns void. Eventually after all drivers
+> are converted, .remove_new() will be renamed to .remove().
+> 
+> Replace the error path returning a non-zero value by an error message
+> and a comment that there is more to do. With that this patch results in
+> no change of behaviour in this driver apart from improving the error
+> message.
+> 
+> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+
+Reviewed-by: Roger Quadros <rogerq@kernel.org>
 
