@@ -1,67 +1,67 @@
-Return-Path: <linux-omap+bounces-73-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-74-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72AFA7FEE81
-	for <lists+linux-omap@lfdr.de>; Thu, 30 Nov 2023 13:04:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 739557FEE90
+	for <lists+linux-omap@lfdr.de>; Thu, 30 Nov 2023 13:06:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 018BBB20DA9
-	for <lists+linux-omap@lfdr.de>; Thu, 30 Nov 2023 12:04:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D3CFAB20E34
+	for <lists+linux-omap@lfdr.de>; Thu, 30 Nov 2023 12:06:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38AB74503C;
-	Thu, 30 Nov 2023 12:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90BD945960;
+	Thu, 30 Nov 2023 12:05:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b="uWAXf+L0"
+	dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b="pjUVaZQw"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from mail5.25mail.st (mail5.25mail.st [74.50.62.9])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 181F8D40;
-	Thu, 30 Nov 2023 04:03:53 -0800 (PST)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A86D10FF;
+	Thu, 30 Nov 2023 04:05:55 -0800 (PST)
 Received: from localhost (91-158-86-216.elisa-laajakaista.fi [91.158.86.216])
-	by mail5.25mail.st (Postfix) with ESMTPSA id 9265660513;
-	Thu, 30 Nov 2023 12:03:23 +0000 (UTC)
+	by mail5.25mail.st (Postfix) with ESMTPSA id C0C3B60513;
+	Thu, 30 Nov 2023 12:05:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=atomide.com;
-	s=25mailst; t=1701345832;
-	bh=ZB+5YYefmO6mtWWWUgT4TJQgoKAu1WOumvl/X7BvrBE=;
+	s=25mailst; t=1701345954;
+	bh=64j2ievVtQY927UUjwWzElwnhla7pdOyy4BEKWcOMUk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uWAXf+L0fZHwcUkdeXJ6TRA8x43D22SAkOSHBWlh89dXu1bUme9JHQl9PzlKynOSP
-	 jgi0KRketGm1OXD8U2e5Q/bkjBgQ4lYicWaJ+6an3FPbY/uXBaHKepdfxqTgbi48w8
-	 Gr6I2xBkyRDOKOvt4BbKDh8sGMioP0ApjlJLNQKXblGD+UNZtlSWJ4jQb62Jvk92bD
-	 9OLjFQA5oZUtjtbOmAXyJ1Ziqo+INeoFm+ET0w8I770+O+0GJ9rKUG8RrWKcq5Jm74
-	 sE4KmR1NA3PMrInIOuLEvx851tSthWF6VjG9C9wgkehqeOXHkTGUpDb2PoJvwcoAHM
-	 6cT5uwfm1gl7w==
-Date: Thu, 30 Nov 2023 14:03:22 +0200
+	b=pjUVaZQwu5nwPYHMTyThDrx+JB04YB91pHg6wpWf/HpaIoOSUdRFjGmci4jYiWlTC
+	 eoIeXAMBN8HZvXqUNDqIORpTwmAUXqSXenV70SdCRRqCV1Lxpr6chRqctiH+nH7kY6
+	 fcdCZoSeELD/Rd9LfnZgzD+WcS0cjLBYpeDVUu+/uvCUvcx+qj75Fdr6ADE1xB/PVz
+	 bkWBGNXkoVS678+PUZG0rmeQjtYfsYaHRdn1olC0671fw5TfJar+imqWTOaZSyBw6E
+	 0zHN5zEDFxSPU30QzjyhK8g+Xires0UTQ2fPE/2aauStsdhwYdZDfM0+pgGaxfaKFD
+	 FYiZrtkoXSIEw==
+Date: Thu, 30 Nov 2023 14:05:33 +0200
 From: Tony Lindgren <tony@atomide.com>
-To: Andreas Kemnade <andreas@kemnade.info>
-Cc: dmitry.torokhov@gmail.com, robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-	lee@kernel.org, bcousson@baylibre.com, mturquette@baylibre.com,
-	sboyd@kernel.org, linux-input@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-omap@vger.kernel.org, linux-clk@vger.kernel.org
-Subject: Re: [PATCH v4 5/5] ARM: dts: omap4-embt2ws: enable 32K clock on WLAN
-Message-ID: <20231130120322.GC5169@atomide.com>
-References: <20230916100515.1650336-1-andreas@kemnade.info>
- <20230916100515.1650336-6-andreas@kemnade.info>
- <20231007065330.GP34982@atomide.com>
+To: Adam Ford <aford173@gmail.com>
+Cc: Andreas Kemnade <andreas@kemnade.info>, bcousson@baylibre.com,
+	robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+	conor+dt@kernel.org, linux-omap@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ARM: dts: omap: logicpd-torpedo: do not disguise GNSS
+ device
+Message-ID: <20231130120533.GD5169@atomide.com>
+References: <20231127200430.143231-1-andreas@kemnade.info>
+ <CAHCN7xLpERbs1MPMXTAPCqoPgAN5ts+Ubr=MiO6urW-wuuxp=w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231007065330.GP34982@atomide.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHCN7xLpERbs1MPMXTAPCqoPgAN5ts+Ubr=MiO6urW-wuuxp=w@mail.gmail.com>
 
-* Tony Lindgren <tony@atomide.com> [231007 06:53]:
-> * Andreas Kemnade <andreas@kemnade.info> [230916 13:05]:
-> > WLAN did only work if clock was left enabled by the original system,
-> > so make it fully enable the needed resources itself.
+* Adam Ford <aford173@gmail.com> [231127 20:40]:
+> On Mon, Nov 27, 2023 at 2:04 PM Andreas Kemnade <andreas@kemnade.info> wrote:
+> >
+> > https://support.logicpd.com/DesktopModules/Bring2mind/DMX/Download.aspx?portalid=0&EntryId=649
+> > clearly specifies the availability of GPS, so let's not disguise it
+> > and name the node accordingly.
 > 
-> Seems applying this dts change before the clock patch is applied
-> would break wlan so please let me know when this is safe to apply.
+> Thanks for doing this.
 
 Applying into omap-for-v6.8/dt thanks.
 
