@@ -1,126 +1,103 @@
-Return-Path: <linux-omap+bounces-87-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-88-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3750800BB1
-	for <lists+linux-omap@lfdr.de>; Fri,  1 Dec 2023 14:21:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 464A9800CED
+	for <lists+linux-omap@lfdr.de>; Fri,  1 Dec 2023 15:09:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7742F28163E
-	for <lists+linux-omap@lfdr.de>; Fri,  1 Dec 2023 13:21:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 789231C20FF6
+	for <lists+linux-omap@lfdr.de>; Fri,  1 Dec 2023 14:09:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5590430339;
-	Fri,  1 Dec 2023 13:21:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="vCD9f18G"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE30A3D968;
+	Fri,  1 Dec 2023 14:09:46 +0000 (UTC)
 X-Original-To: linux-omap@vger.kernel.org
-Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FEB110F8;
-	Fri,  1 Dec 2023 05:20:58 -0800 (PST)
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-	by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 3B1DKdZP025410;
-	Fri, 1 Dec 2023 07:20:39 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1701436839;
-	bh=/vJBQ4nzoUomUKRd845/P3Sdh3dCuG9qMZr5n9MVhw0=;
-	h=From:To:CC:Subject:Date;
-	b=vCD9f18GXx3+lcsPN/bcSLfr9TeDGyRcXMD6Hro1Yvaw0GrBqpMdPbA6U+SvVBMyL
-	 Oq4tZ+E43xHGcPgC3F+Y8k0Lvf1WpWINv2yV/s+MiOkgLNbXCP5hIknLO3TADnowaw
-	 eNQjzdNffB+zcEy+slTpJmIwZ25lGWLOUXRHipT4=
-Received: from DFLE106.ent.ti.com (dfle106.ent.ti.com [10.64.6.27])
-	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 3B1DKdC3063270
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Fri, 1 Dec 2023 07:20:39 -0600
-Received: from DFLE103.ent.ti.com (10.64.6.24) by DFLE106.ent.ti.com
- (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 1
- Dec 2023 07:20:38 -0600
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE103.ent.ti.com
- (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Fri, 1 Dec 2023 07:20:38 -0600
-Received: from uda0500640.dal.design.ti.com (ileaxei01-snat.itg.ti.com [10.180.69.5])
-	by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 3B1DKYdM065841;
-	Fri, 1 Dec 2023 07:20:34 -0600
-From: Ravi Gunasekaran <r-gunasekaran@ti.com>
-To: <s-vadapalli@ti.com>, <rogerq@kernel.org>, <nm@ti.com>
-CC: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-        <pabeni@redhat.com>, <andrew@lunn.ch>, <f.fainelli@gmail.com>,
-        <horms@kernel.org>, <linux-omap@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, <srk@ti.com>,
-        <r-gunasekaran@ti.com>
-Subject: [PATCH net-next v3] net: ethernet: ti: davinci_mdio: Update K3 SoCs list for errata i2329
-Date: Fri, 1 Dec 2023 18:50:33 +0530
-Message-ID: <20231201132033.29576-1-r-gunasekaran@ti.com>
-X-Mailer: git-send-email 2.17.1
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a02:c205:3004:2154::1])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 668781B2;
+	Fri,  1 Dec 2023 06:09:43 -0800 (PST)
+Received: from [185.238.219.102] (helo=akair)
+	by mail.andi.de1.cc with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <andreas@kemnade.info>)
+	id 1r94D6-006uXL-CN; Fri, 01 Dec 2023 15:09:40 +0100
+Date: Fri, 1 Dec 2023 15:09:37 +0100
+From: Andreas Kemnade <andreas@kemnade.info>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: mturquette@baylibre.com, sboyd@kernel.org, robh+dt@kernel.org,
+ krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, kristo@kernel.org,
+ linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: clock: ti: Convert interface.txt to
+ json-schema
+Message-ID: <20231201150937.3631ee99@akair>
+In-Reply-To: <221ba6a3-c4c2-40cd-b1d8-8170af78c784@linaro.org>
+References: <20231127202359.145778-1-andreas@kemnade.info>
+	<7a62ed8a-b0e3-4881-90d7-b8f5d38e482e@linaro.org>
+	<20231128093241.707a4fa0@aktux>
+	<7361082a-f271-4ef4-9dad-06ee7445c749@linaro.org>
+	<20231128214116.22dfff1e@akair>
+	<221ba6a3-c4c2-40cd-b1d8-8170af78c784@linaro.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Level: **
 
-The errata i2329 affects all the currently available silicon revisions of
-AM62x, AM64x, AM65x, J7200, J721E and J721S2. So remove the revision
-string from the SoC list.
+Am Wed, 29 Nov 2023 09:15:57 +0100
+schrieb Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>:
 
-The silicon revisions affected by the errata i2329 can be found under
-the MDIO module in the "Advisories by Modules" section of each
-SoC errata document listed below
+> On 28/11/2023 21:41, Andreas Kemnade wrote:
+> > Am Tue, 28 Nov 2023 09:41:23 +0100
+> > schrieb Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>:  
+> >>> If the interface clock is not below a ti,clksel then we have reg.
+> >>>    
+> >>
+> >> This should be expressed in the bindings. It's fine to make the reg
+> >> optional (skip the description, it's confusing), but the ti,clksel
+> >> should reference this schema and enforce it on the children.
+> >>  
+> > Well there are other compatibles below ti,clksel, too, so should we
+> > rather add them when the other .txt files are converted?  
+> 
+> This binding should already be referenced by ti,clksel. When the other
+> are ready, you will change additionalProperties from object to false.
+>
+I played around with it:
 
-AM62x: https://www.ti.com/lit/er/sprz487c/sprz487c.pdf
-AM64X: https://www.ti.com/lit/er/sprz457g/sprz457g.pdf
-AM65X: https://www.ti.com/lit/er/sprz452i/sprz452i.pdf
-J7200: https://www.ti.com/lit/er/sprz491d/sprz491d.pdf
-J721E: https://www.ti.com/lit/er/sprz455d/sprz455d.pdf
-J721S2: https://www.ti.com/lit/er/sprz530b/sprz530b.pdf
-
-Signed-off-by: Ravi Gunasekaran <r-gunasekaran@ti.com>
----
-Changes since v2:
-* Removed revision string for all the affected SoCs
-
-Changes since v1:
-* For J721E, retained the incorrect SR ID and added the correct one
-* Add AM65x SR2.1 to the workaround list
-
-v2: https://lore.kernel.org/all/20231020111738.14671-1-r-gunasekaran@ti.com/
-v1: https://lore.kernel.org/all/20231018140009.1725-1-r-gunasekaran@ti.com/
-
- drivers/net/ethernet/ti/davinci_mdio.c | 16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/net/ethernet/ti/davinci_mdio.c b/drivers/net/ethernet/ti/davinci_mdio.c
-index 628c87dc1d28..8e07d4a1b6ba 100644
---- a/drivers/net/ethernet/ti/davinci_mdio.c
-+++ b/drivers/net/ethernet/ti/davinci_mdio.c
-@@ -511,16 +511,12 @@ static const struct k3_mdio_soc_data am65_mdio_soc_data = {
- };
+--- a/Documentation/devicetree/bindings/clock/ti/ti,clksel.yaml
++++ b/Documentation/devicetree/bindings/clock/ti/ti,clksel.yaml
+@@ -33,6 +33,11 @@ properties:
+     const: 2
+     description: The CLKSEL register and bit offset
  
- static const struct soc_device_attribute k3_mdio_socinfo[] = {
--	{ .family = "AM62X", .revision = "SR1.0", .data = &am65_mdio_soc_data },
--	{ .family = "AM64X", .revision = "SR1.0", .data = &am65_mdio_soc_data },
--	{ .family = "AM64X", .revision = "SR2.0", .data = &am65_mdio_soc_data },
--	{ .family = "AM65X", .revision = "SR1.0", .data = &am65_mdio_soc_data },
--	{ .family = "AM65X", .revision = "SR2.0", .data = &am65_mdio_soc_data },
--	{ .family = "J7200", .revision = "SR1.0", .data = &am65_mdio_soc_data },
--	{ .family = "J7200", .revision = "SR2.0", .data = &am65_mdio_soc_data },
--	{ .family = "J721E", .revision = "SR1.0", .data = &am65_mdio_soc_data },
--	{ .family = "J721E", .revision = "SR2.0", .data = &am65_mdio_soc_data },
--	{ .family = "J721S2", .revision = "SR1.0", .data = &am65_mdio_soc_data},
-+	{ .family = "AM62X", .data = &am65_mdio_soc_data },
-+	{ .family = "AM64X", .data = &am65_mdio_soc_data },
-+	{ .family = "AM65X", .data = &am65_mdio_soc_data },
-+	{ .family = "J7200", .data = &am65_mdio_soc_data },
-+	{ .family = "J721E", .data = &am65_mdio_soc_data },
-+	{ .family = "J721S2", .data = &am65_mdio_soc_data },
- 	{ /* sentinel */ },
- };
- 
--- 
-2.17.1
++patternProperties:
++  "-ick$":
++    $ref: /schemas/clock/ti/ti,interface-clock.yaml#
++    type: object
++
+ required:
+   - compatible
+   - reg
 
+ 
+That generates warnings, which look more serious than just a
+non-converted compatible, so lowering the overall "signal-noise-ratio".
+
+e.g.
+from schema $id:
+http://devicetree.org/schemas/clock/ti/ti,clksel.yaml#
+/home/andi/linux-dtbs/arch/arm/boot/dts/ti/omap/omap3-overo-tobiduo.dtb:
+clock@c40: clock-rm-ick: 'ti,index-starts-at-one', 'ti,max-div' do not
+match any of the regexes: 'pinctrl-[0-9]+'
+
+I think we should rather postpone such referencing.
+
+Regards,
+Andreas
 
