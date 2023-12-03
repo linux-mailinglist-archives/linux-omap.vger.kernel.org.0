@@ -1,200 +1,138 @@
-Return-Path: <linux-omap+bounces-91-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-92-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4CF1800D9B
-	for <lists+linux-omap@lfdr.de>; Fri,  1 Dec 2023 15:45:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B29F802458
+	for <lists+linux-omap@lfdr.de>; Sun,  3 Dec 2023 14:48:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13BBE1C20F6D
-	for <lists+linux-omap@lfdr.de>; Fri,  1 Dec 2023 14:45:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 409C11F2119C
+	for <lists+linux-omap@lfdr.de>; Sun,  3 Dec 2023 13:48:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDBD13C6BC;
-	Fri,  1 Dec 2023 14:45:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2353613FF4;
+	Sun,  3 Dec 2023 13:47:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="oFtMD8CB"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="YpSHBzLF"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7DA81715
-	for <linux-omap@vger.kernel.org>; Fri,  1 Dec 2023 06:45:10 -0800 (PST)
-Received: by mail-lf1-x136.google.com with SMTP id 2adb3069b0e04-50bce42295eso2508234e87.2
-        for <linux-omap@vger.kernel.org>; Fri, 01 Dec 2023 06:45:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1701441909; x=1702046709; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=scP7Kc4UKaObh0xtEvS6wmL9HVThK4eE79a/A4jC0hM=;
-        b=oFtMD8CB+QmsOLVCmDENuAEM/Auz/tRCS6ww8FNecUBX3lO2I3Fd3y2uYWhYvrKaNa
-         uJsj4hyrHAuQriav2RLG3qUSFhXcPQQLpZjHQLNFpKHEa464JiQ/8aIfwVFRgiKoQzFf
-         H9coFG4q3BATygX8BvxDM6L22AT8HHXJGaBicfY4/efJ2iZA+HNy/80iwdqX4UMOoeRW
-         Sd0mB890v2Fzd9KDq2jnbUllYPMsr08zzrlsIpAPJHzNiPe2Occf9UclA+gE0MJsAMo4
-         5sgBYT2XlmkJxuewmS5Q9U8GjGTs3C+V2jMX5SWRxW/Fh33ZJz4yWfZFGbruPVHS/kMt
-         M+fg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701441909; x=1702046709;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=scP7Kc4UKaObh0xtEvS6wmL9HVThK4eE79a/A4jC0hM=;
-        b=Ikk3BjJmHFk2q7APjeK+NPJnofufLO5Uaheep74jCWoffDhpELofYy6LbIEqHtWtDF
-         tby6Wq0mBninX4JcqhlxlZXkMw/aO5h7DVmT0JsKPV0cDtnLoWhK1mWnDvUUmpx+JjDs
-         ntsRBmaPWhCO0LQ8vzl6hYL6AB00+e9knScCWWJzFcQvi5ezzjNmYi/Sm75HFmjohw3J
-         jMmw8SYwdwqpe3xz/1fESa8ILZBVhZOhR8mgisVbGB0Na4gPoDMVzE9kOn/uCjP6DlNf
-         bXpBHcFS5zfA1weSrpinpWpKt5iuNZRo3vHXNNZggE3uiHW1w71VmbfbTtKRKlQSt8xq
-         5AbQ==
-X-Gm-Message-State: AOJu0YxXMxNjwzkw/x2ddYkM7LgmWYWC9pAUPYNglzAT5HgXaRL/t9ml
-	maG98ho0N6Bv+VjmPcz7rkNbFA==
-X-Google-Smtp-Source: AGHT+IFDmURw/1+0f/gPfkxoCzyZRCnMV6E3uGmE46G6VlApf1ssgiIC5tj7lB+C26laAk8i+mLtMw==
-X-Received: by 2002:a05:6512:21ac:b0:50b:cbb1:3c08 with SMTP id c12-20020a05651221ac00b0050bcbb13c08mr756768lft.36.1701441908913;
-        Fri, 01 Dec 2023 06:45:08 -0800 (PST)
-Received: from [192.168.1.20] ([178.197.223.109])
-        by smtp.gmail.com with ESMTPSA id m9-20020a056000024900b0033334bc1338sm645717wrz.113.2023.12.01.06.45.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 01 Dec 2023 06:45:08 -0800 (PST)
-Message-ID: <48cf2111-46a0-4907-8d55-5ce80b585111@linaro.org>
-Date: Fri, 1 Dec 2023 15:45:06 +0100
+Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E35AF3;
+	Sun,  3 Dec 2023 05:47:51 -0800 (PST)
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 3B3DlXpk071454;
+	Sun, 3 Dec 2023 07:47:33 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1701611253;
+	bh=xsg/cZcC0C4RBj5/hP3Rl+RIv4uXX6jNJCBDcI6sbsM=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To;
+	b=YpSHBzLFqZlDmVXKm0BcTSuNFrjn4JFnzHvew5OdFiIruybcgRW34OstTfqliCG31
+	 vwAGtBkToresUbhr2WnLYcbFWo80D+hIMRmF3YNkvEA8RY++HuPsI/r72uEx2FKy9r
+	 whyPqiXowhlzMRuRefK2ZjY1LKxsYUDecJkq7Qfg=
+Received: from DFLE100.ent.ti.com (dfle100.ent.ti.com [10.64.6.21])
+	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 3B3DlXL5052513
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Sun, 3 Dec 2023 07:47:33 -0600
+Received: from DFLE102.ent.ti.com (10.64.6.23) by DFLE100.ent.ti.com
+ (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Sun, 3
+ Dec 2023 07:47:32 -0600
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE102.ent.ti.com
+ (10.64.6.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Sun, 3 Dec 2023 07:47:32 -0600
+Received: from localhost (ileaxei01-snat2.itg.ti.com [10.180.69.6])
+	by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 3B3DlWD1048955;
+	Sun, 3 Dec 2023 07:47:32 -0600
+Date: Sun, 3 Dec 2023 07:47:32 -0600
+From: Nishanth Menon <nm@ti.com>
+To: Ravi Gunasekaran <r-gunasekaran@ti.com>
+CC: <s-vadapalli@ti.com>, <rogerq@kernel.org>, <davem@davemloft.net>,
+        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+        <andrew@lunn.ch>, <f.fainelli@gmail.com>, <horms@kernel.org>,
+        <linux-omap@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <srk@ti.com>
+Subject: Re: [PATCH net-next v3] net: ethernet: ti: davinci_mdio: Update K3
+ SoCs list for errata i2329
+Message-ID: <20231203134732.qkvq7t4w7nthfxpx@kobold>
+References: <20231201132033.29576-1-r-gunasekaran@ti.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] dt-bindings: clock: ti: Convert interface.txt to
- json-schema
-Content-Language: en-US
-To: Andreas Kemnade <andreas@kemnade.info>
-Cc: mturquette@baylibre.com, sboyd@kernel.org, robh+dt@kernel.org,
- krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, kristo@kernel.org,
- linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
-References: <20231127202359.145778-1-andreas@kemnade.info>
- <7a62ed8a-b0e3-4881-90d7-b8f5d38e482e@linaro.org>
- <20231128093241.707a4fa0@aktux>
- <7361082a-f271-4ef4-9dad-06ee7445c749@linaro.org>
- <20231128214116.22dfff1e@akair>
- <221ba6a3-c4c2-40cd-b1d8-8170af78c784@linaro.org>
- <20231201150937.3631ee99@akair>
- <7aaea1e4-b7bd-47e4-a6e6-32b8195ea1bf@linaro.org>
- <20231201154112.2ecfdab2@aktux>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20231201154112.2ecfdab2@aktux>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20231201132033.29576-1-r-gunasekaran@ti.com>
+User-Agent: NeoMutt/20171215
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 
-On 01/12/2023 15:41, Andreas Kemnade wrote:
-> On Fri, 1 Dec 2023 15:17:46 +0100
-> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+On 18:50-20231201, Ravi Gunasekaran wrote:
+> The errata i2329 affects all the currently available silicon revisions of
+> AM62x, AM64x, AM65x, J7200, J721E and J721S2. So remove the revision
+> string from the SoC list.
 > 
->> On 01/12/2023 15:09, Andreas Kemnade wrote:
->>> Am Wed, 29 Nov 2023 09:15:57 +0100
->>> schrieb Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>:
->>>   
->>>> On 28/11/2023 21:41, Andreas Kemnade wrote:  
->>>>> Am Tue, 28 Nov 2023 09:41:23 +0100
->>>>> schrieb Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>:    
->>>>>>> If the interface clock is not below a ti,clksel then we have reg.
->>>>>>>      
->>>>>>
->>>>>> This should be expressed in the bindings. It's fine to make the reg
->>>>>> optional (skip the description, it's confusing), but the ti,clksel
->>>>>> should reference this schema and enforce it on the children.
->>>>>>    
->>>>> Well there are other compatibles below ti,clksel, too, so should we
->>>>> rather add them when the other .txt files are converted?    
->>>>
->>>> This binding should already be referenced by ti,clksel. When the other
->>>> are ready, you will change additionalProperties from object to false.
->>>>  
->>> I played around with it:
->>>
->>> --- a/Documentation/devicetree/bindings/clock/ti/ti,clksel.yaml
->>> +++ b/Documentation/devicetree/bindings/clock/ti/ti,clksel.yaml
->>> @@ -33,6 +33,11 @@ properties:
->>>      const: 2
->>>      description: The CLKSEL register and bit offset
->>>  
->>> +patternProperties:
->>> +  "-ick$":
->>> +    $ref: /schemas/clock/ti/ti,interface-clock.yaml#
->>> +    type: object
->>> +
->>>  required:
->>>    - compatible
->>>    - reg
->>>
->>>  
->>> That generates warnings, which look more serious than just a
->>> non-converted compatible, so lowering the overall "signal-noise-ratio".
->>>
->>> e.g.
->>> from schema $id:
->>> http://devicetree.org/schemas/clock/ti/ti,clksel.yaml#
->>> /home/andi/linux-dtbs/arch/arm/boot/dts/ti/omap/omap3-overo-tobiduo.dtb:
->>> clock@c40: clock-rm-ick: 'ti,index-starts-at-one', 'ti,max-div' do not
->>> match any of the regexes: 'pinctrl-[0-9]+'
->>>
->>> I think we should rather postpone such referencing.  
->>
->> Are you sure in such case that your binding is correct? The warnings
->> suggest that not, therefore please do not postpone.
->>
-> well, there is not only stuff from clock/ti/ti,interface.yaml but also from
-> clock/ti/divider.txt below ti,clksel. So I have one warning about the missing
-> compatible there and also about the properties belonging to that compatible.
+> The silicon revisions affected by the errata i2329 can be found under
+> the MDIO module in the "Advisories by Modules" section of each
+> SoC errata document listed below
+> 
+> AM62x: https://www.ti.com/lit/er/sprz487c/sprz487c.pdf
+> AM64X: https://www.ti.com/lit/er/sprz457g/sprz457g.pdf
+> AM65X: https://www.ti.com/lit/er/sprz452i/sprz452i.pdf
+> J7200: https://www.ti.com/lit/er/sprz491d/sprz491d.pdf
+> J721E: https://www.ti.com/lit/er/sprz455d/sprz455d.pdf
+> J721S2: https://www.ti.com/lit/er/sprz530b/sprz530b.pdf
+> 
+> Signed-off-by: Ravi Gunasekaran <r-gunasekaran@ti.com>
+> ---
+> Changes since v2:
+> * Removed revision string for all the affected SoCs
+> 
+> Changes since v1:
+> * For J721E, retained the incorrect SR ID and added the correct one
+> * Add AM65x SR2.1 to the workaround list
+> 
+> v2: https://lore.kernel.org/all/20231020111738.14671-1-r-gunasekaran@ti.com/
+> v1: https://lore.kernel.org/all/20231018140009.1725-1-r-gunasekaran@ti.com/
+> 
+>  drivers/net/ethernet/ti/davinci_mdio.c | 16 ++++++----------
+>  1 file changed, 6 insertions(+), 10 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/ti/davinci_mdio.c b/drivers/net/ethernet/ti/davinci_mdio.c
+> index 628c87dc1d28..8e07d4a1b6ba 100644
+> --- a/drivers/net/ethernet/ti/davinci_mdio.c
+> +++ b/drivers/net/ethernet/ti/davinci_mdio.c
+> @@ -511,16 +511,12 @@ static const struct k3_mdio_soc_data am65_mdio_soc_data = {
+>  };
+>  
+>  static const struct soc_device_attribute k3_mdio_socinfo[] = {
+> -	{ .family = "AM62X", .revision = "SR1.0", .data = &am65_mdio_soc_data },
+> -	{ .family = "AM64X", .revision = "SR1.0", .data = &am65_mdio_soc_data },
+> -	{ .family = "AM64X", .revision = "SR2.0", .data = &am65_mdio_soc_data },
+> -	{ .family = "AM65X", .revision = "SR1.0", .data = &am65_mdio_soc_data },
+> -	{ .family = "AM65X", .revision = "SR2.0", .data = &am65_mdio_soc_data },
+> -	{ .family = "J7200", .revision = "SR1.0", .data = &am65_mdio_soc_data },
+> -	{ .family = "J7200", .revision = "SR2.0", .data = &am65_mdio_soc_data },
+> -	{ .family = "J721E", .revision = "SR1.0", .data = &am65_mdio_soc_data },
+> -	{ .family = "J721E", .revision = "SR2.0", .data = &am65_mdio_soc_data },
+> -	{ .family = "J721S2", .revision = "SR1.0", .data = &am65_mdio_soc_data},
+> +	{ .family = "AM62X", .data = &am65_mdio_soc_data },
+> +	{ .family = "AM64X", .data = &am65_mdio_soc_data },
+> +	{ .family = "AM65X", .data = &am65_mdio_soc_data },
+> +	{ .family = "J7200", .data = &am65_mdio_soc_data },
+> +	{ .family = "J721E", .data = &am65_mdio_soc_data },
+> +	{ .family = "J721S2", .data = &am65_mdio_soc_data },
+>  	{ /* sentinel */ },
 
-Ah, you have other bindings for the "-ick" nodes? Then you cannot match
-by pattern now, indeed. Maybe skipping ref but adding "compatible" into
-node, like we do for Qualcomm mdss bindings, would work. But in general
-all these should be converted at the same time.
 
-Best regards,
-Krzysztof
+Much better. Thank you. and will avoid the conflicts we have with fixups
+pending..
 
+Reviewed-by: Nishanth Menon <nm@ti.com>
+
+-- 
+
+Regards,
+Nishanth Menon
+Key (0xDDB5849D1736249D) / Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
 
