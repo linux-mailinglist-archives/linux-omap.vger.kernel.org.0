@@ -1,176 +1,275 @@
-Return-Path: <linux-omap+bounces-134-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-135-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 239E880567D
-	for <lists+linux-omap@lfdr.de>; Tue,  5 Dec 2023 14:50:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88399805B2D
+	for <lists+linux-omap@lfdr.de>; Tue,  5 Dec 2023 18:34:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9BE9F1F21611
-	for <lists+linux-omap@lfdr.de>; Tue,  5 Dec 2023 13:50:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DA95281D52
+	for <lists+linux-omap@lfdr.de>; Tue,  5 Dec 2023 17:34:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C2245EE92;
-	Tue,  5 Dec 2023 13:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A760668B6E;
+	Tue,  5 Dec 2023 17:33:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b="gvUKaiKK";
-	dkim=permerror (0-bit key) header.d=goldelico.com header.i=@goldelico.com header.b="x37upRab"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="Ru+fkaZJ"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [81.169.146.171])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A47481B1;
-	Tue,  5 Dec 2023 05:50:39 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1701784221; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=thU7GfXRdmud16hhoF4YyX4UyRq9xu8+0ec7eMtYZq6PzQHu9bU7+t16hQJyrbIY5w
-    GL43j8cVmLYgqOpbix8oO2ePrp7uxovZc3vowcCgLSSJB14r3n6NH21BEfkuKtIwDUJs
-    6DyteLESA4VghIobt5FAHd9lmURbVH2klx5IriG98W+NYPpIz+yT1pM738CqvV7VXAfp
-    5gzfvd/xV330osDp3h/PnCep6vj1KugCgQp/ER7Mq05AaZSUwC/k/HUPD7L6hIJxxtmm
-    sAebDLoA4UG3BTwTZS+sV7N2ydT4lBv4g+Wz4kIN3ChQJY9ydJeL4jl+YrxWIB2NxdBO
-    rIaw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1701784221;
-    s=strato-dkim-0002; d=strato.com;
-    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=BevZB1eqZGl2+QcgqrpfzNR7Ri326ZukfU8Ti2ESIko=;
-    b=ZVpKj2lE6UPY6x3rSSrJ7NfyMfdvhGF9RIjIg0ZR9UUAlLlNvqo3Li8ta2mp9Y9VD6
-    XYvfWbbahV3E21QwqkRuQoVnz644/UhUfx5y/VZQeORB5E0a4fEZgPdrIXEUTwYlVzMb
-    yYyQWYCZH57WLtDsTbsyO1ujb9o432hTJrdb2NUpt7PlKGntO5X34mRuEelYXg7buC94
-    dio6zGF4RtTNQakUADFfxYYyAnqiWDbeaom9wvijddx+sr88vYCKdf8VYKIY/TaDoaSb
-    pErlX2aiGi+hoZTUbY5Wr3JRpILxWNMtL0hKujCg5NZqXMkeRJOx9p/CNURxOwKtw4pw
-    1oBQ==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo02
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1701784221;
-    s=strato-dkim-0002; d=goldelico.com;
-    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=BevZB1eqZGl2+QcgqrpfzNR7Ri326ZukfU8Ti2ESIko=;
-    b=gvUKaiKK2pMqJEih6X3qP5q2HE4diwktFDI0x2D7T7fTE+3LK06yJbr3OOZfOSt96k
-    m5a8zJuY6gCFs8CA77MgeV27eIUf05hISz6asZhErxc/2dD9SsipdOu4foe5N0TgSU6E
-    xoCttMcyStMKC4Hf8ZEij4D9M5JcAvsPmyfl4aPPhS1c62G77aG06mxzcDyvBnCd9Bll
-    iDIa55H0PNZy5EJb3vIbZ/JzzJASRlpBjicBFBWMQdZLPZHa46wHi7cJbrOi7/tYSAWZ
-    2CHggPsKZ3DF5C6+inhSN+EfKWRLeS6ORG/StvZfPif3VcQc4rYjy1huLMLkzmCb62b0
-    uJcw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1701784221;
-    s=strato-dkim-0003; d=goldelico.com;
-    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=BevZB1eqZGl2+QcgqrpfzNR7Ri326ZukfU8Ti2ESIko=;
-    b=x37upRaba5EaONfJgBtnk5313VU0c1csZgqbOTRvjE4ZsOoxVaOULDhgAPPuK6SxUl
-    0xGrW118EH0GxKq/L7DQ==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj5Apz9PSN6LgsXcGeonQ="
-Received: from smtpclient.apple
-    by smtp.strato.de (RZmta 49.10.0 DYNA|AUTH)
-    with ESMTPSA id wfeb35zB5DoJ252
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
-	(Client did not present a certificate);
-    Tue, 5 Dec 2023 14:50:19 +0100 (CET)
-Content-Type: text/plain;
-	charset=us-ascii
+Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9E16188;
+	Tue,  5 Dec 2023 09:33:51 -0800 (PST)
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+	by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 3B5HX9Xs016253;
+	Tue, 5 Dec 2023 11:33:09 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1701797589;
+	bh=7Gnv2zcHaYktlo+k0zMSRDQ5ojNMnlpQU0FowjEG8HI=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=Ru+fkaZJgeMO4EYg4Xc2ba9h1SKCO5JbBpsRnzS9jaR3hCs98fQgRGkzWqvtk/qe7
+	 X0A2LaHs58HFQ0O7se/V+UAwK4jXaLTxbqC82W//WT270VpzY+V6yV7KC7/CDJkIaG
+	 z+rx6wKtzBVXC7bH10btOaG9Yy1edOpOdVqT01HU=
+Received: from DFLE105.ent.ti.com (dfle105.ent.ti.com [10.64.6.26])
+	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 3B5HX9fj003764
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Tue, 5 Dec 2023 11:33:09 -0600
+Received: from DFLE102.ent.ti.com (10.64.6.23) by DFLE105.ent.ti.com
+ (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 5
+ Dec 2023 11:33:08 -0600
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE102.ent.ti.com
+ (10.64.6.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Tue, 5 Dec 2023 11:33:08 -0600
+Received: from [10.249.36.163] (ileaxei01-snat2.itg.ti.com [10.180.69.6])
+	by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 3B5HX78t022703;
+	Tue, 5 Dec 2023 11:33:07 -0600
+Message-ID: <cb590a13-e0ff-49d9-8583-be613ad50dc5@ti.com>
+Date: Tue, 5 Dec 2023 11:33:06 -0600
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.200.91.1.1\))
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH RFC 01/10] dt-bindings: gpu: Add PowerVR Series5 SGX GPUs
-From: "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <vawv2mwhonuyvgmp7uox4rfgdcjwg5fa7hmbcfgl3wiase6e4p@tyavpclppfvu>
-Date: Tue, 5 Dec 2023 14:50:08 +0100
-Cc: Andrew Davis <afd@ti.com>,
- Frank Binns <frank.binns@imgtec.com>,
- Donald Robson <donald.robson@imgtec.com>,
- Matt Coster <matt.coster@imgtec.com>,
- Adam Ford <aford173@gmail.com>,
- Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Thomas Zimmermann <tzimmermann@suse.de>,
- Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Chen-Yu Tsai <wens@csie.org>,
- Jernej Skrabec <jernej.skrabec@gmail.com>,
- Samuel Holland <samuel@sholland.org>,
- =?utf-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
- Tony Lindgren <tony@atomide.com>,
- Nishanth Menon <nm@ti.com>,
- Vignesh Raghavendra <vigneshr@ti.com>,
- Tero Kristo <kristo@kernel.org>,
- Paul Cercueil <paul@crapouillou.net>,
- dri-devel@lists.freedesktop.org,
- devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org,
- linux-sunxi@lists.linux.dev,
- linux-omap@vger.kernel.org,
- linux-mips@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <6BC60156-89E2-4734-BD00-B49A9A6C1D7A@goldelico.com>
+Content-Language: en-US
+To: "H. Nikolaus Schaller" <hns@goldelico.com>
+CC: Frank Binns <frank.binns@imgtec.com>,
+        Donald Robson
+	<donald.robson@imgtec.com>,
+        Matt Coster <matt.coster@imgtec.com>, Adam Ford
+	<aford173@gmail.com>,
+        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
+        Maarten
+ Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard
+	<mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Rob Herring
+	<robh+dt@kernel.org>,
+        Krzysztof Kozlowski
+	<krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Samuel Holland <samuel@sholland.org>,
+        =?UTF-8?Q?Beno=C3=AEt_Cousson?=
+	<bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>, Nishanth Menon
+	<nm@ti.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Tero Kristo
+	<kristo@kernel.org>, Paul Cercueil <paul@crapouillou.net>,
+        <dri-devel@lists.freedesktop.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+        <linux-sunxi@lists.linux.dev>, <linux-omap@vger.kernel.org>,
+        <linux-mips@vger.kernel.org>
 References: <20231204182245.33683-1-afd@ti.com>
  <20231204182245.33683-2-afd@ti.com>
- <23livt5mcc64bb6lkeec2uxp5cyn4wfekwaj6wzrjnrkndvwgj@6tveqglqpr4v>
- <B3A1B8A7-0363-4ECB-AFBF-576FECA569FA@goldelico.com>
- <vawv2mwhonuyvgmp7uox4rfgdcjwg5fa7hmbcfgl3wiase6e4p@tyavpclppfvu>
-To: Maxime Ripard <mripard@kernel.org>
-X-Mailer: Apple Mail (2.3774.200.91.1.1)
+ <CFF198DA-5C42-425E-86F4-759629489ECB@goldelico.com>
+From: Andrew Davis <afd@ti.com>
+In-Reply-To: <CFF198DA-5C42-425E-86F4-759629489ECB@goldelico.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 
-Hi,
+On 12/5/23 2:17 AM, H. Nikolaus Schaller wrote:
+> Hi Andrew,
+> 
+>> Am 04.12.2023 um 19:22 schrieb Andrew Davis <afd@ti.com>:
+>>
+>> The Imagination PowerVR Series5 "SGX" GPU is part of several SoCs from
+>> multiple vendors.
+> 
+> Great and thanks for the new attempt to get at least the Device Tree side
+> upstream. Really appreciated!
+> 
 
-> Am 05.12.2023 um 14:29 schrieb Maxime Ripard <mripard@kernel.org>:
->=20
-> Hi,
->=20
-> On Tue, Dec 05, 2023 at 09:18:58AM +0100, H. Nikolaus Schaller wrote:
->>> Am 05.12.2023 um 07:57 schrieb Maxime Ripard <mripard@kernel.org>:
->>>=20
->>> On Mon, Dec 04, 2023 at 12:22:36PM -0600, Andrew Davis wrote:
->>>> The Imagination PowerVR Series5 "SGX" GPU is part of several SoCs =
-from
->>>> multiple vendors. Describe how the SGX GPU is integrated in these =
-SoC,
->>>> including register space and interrupts. Clocks, reset, and power =
-domain
->>>> information is SoC specific.
->>>>=20
->>>> Signed-off-by: Andrew Davis <afd@ti.com>
->>>> ---
->>>> .../devicetree/bindings/gpu/img,powervr.yaml  | 69 =
-+++++++++++++++++--
->>>> 1 file changed, 63 insertions(+), 6 deletions(-)
->>>=20
->>> I think it would be best to have a separate file for this, =
-img,sgx.yaml
->>> maybe?
->>=20
->> Why?
->=20
-> Because it's more convenient?
+Thanks for helping us maintain these GPUs with the OpenPVRSGX project :)
 
-Is it?
+>> Describe how the SGX GPU is integrated in these SoC,
+>> including register space and interrupts.
+> 
+>> Clocks, reset, and power domain
+>> information is SoC specific.
+> 
+> Indeed. This makes it understandable why you did not directly
+> take our scheme from the openpvrsgx project.
+> 
+>>
+>> Signed-off-by: Andrew Davis <afd@ti.com>
+>> ---
+>> .../devicetree/bindings/gpu/img,powervr.yaml  | 69 +++++++++++++++++--
+>> 1 file changed, 63 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/Documentation/devicetree/bindings/gpu/img,powervr.yaml b/Documentation/devicetree/bindings/gpu/img,powervr.yaml
+>> index a13298f1a1827..9f036891dad0b 100644
+>> --- a/Documentation/devicetree/bindings/gpu/img,powervr.yaml
+>> +++ b/Documentation/devicetree/bindings/gpu/img,powervr.yaml
+>> @@ -11,11 +11,33 @@ maintainers:
+>>    - Frank Binns <frank.binns@imgtec.com>
+>>
+>> properties:
+>> +  $nodename:
+>> +    pattern: '^gpu@[a-f0-9]+$'
+>> +
+>>    compatible:
+>> -    items:
+>> -      - enum:
+>> -          - ti,am62-gpu
+>> -      - const: img,img-axe # IMG AXE GPU model/revision is fully discoverable
+>> +    oneOf:
+>> +      - items:
+>> +          - enum:
+>> +              - ti,am62-gpu
+>> +          - const: img,img-axe # IMG AXE GPU model/revision is fully discoverable
+>> +      - items:
+>> +          - enum:
+>> +              - ti,omap3430-gpu # Rev 121
+>> +              - ti,omap3630-gpu # Rev 125
+> 
+> Is the "Rev 121" and "Rev 125" a property of the SoC integration (clock/reset/power
+> hookup etc.) or of the integrated SGX core?
+> 
 
->> The whole family of IMG GPUs is PowerVR and SGX and Rogue are =
-generations 5 and 6++:
->>=20
->> https://en.wikipedia.org/wiki/PowerVR
->=20
-> That's not really relevant as far as bindings go.
+The Rev is a property of the SGX core, not the SoC integration. But it seems that
+compatible string is being used to define both (as we see being debated in the other
+thread on this series).
 
-But maybe for choosing binding file names. Well they are machine =
-readable
-but sometimes humans work with them.
+> In my understanding the Revs are different variants of the SGX core (errata
+> fixes, instruction set, pipeline size etc.). And therefore the current driver code
+> has to be configured by some macros to handle such cases.
+> 
+> So the Rev should IMHO be part of the next line:
+> 
+>> +          - const: img,powervr-sgx530
+> 
+> +          - enum:
+> +              - img,powervr-sgx530-121
+> +              - img,powervr-sgx530-125
+> 
+> We have a similar definition in the openpvrsgx code.
+> Example: compatible = "ti,omap3-sgx530-121", "img,sgx530-121", "img,sgx530";
+> 
+> (I don't mind about the powervr- prefix).
+> 
+> This would allow a generic and universal sgx driver (loaded through just matching
+> "img,sgx530") to handle the errata and revision specifics at runtime based on the
+> compatible entry ("img,sgx530-121") and know about SoC integration ("ti,omap3-sgx530-121").
+> 
+> And user-space can be made to load the right firmware variant based on "img,sgx530-121"
+> 
+> I don't know if there is some register which allows to discover the revision long
+> before the SGX subsystem is initialized and the firmware is up and running.
+> 
+> What I know is that it is possible to read out the revision after starting the firmware
+> but it may just echo the version number of the firmware binary provided from user-space.
+> 
 
-> We have multiple
-> binding files for devices of the same generation, or single bindings
-> covering multiple generations.
->=20
-> The important part is that every compatible is documented. It doesn't
-> really matter how or where.
+We should be able to read out the revision (register EUR_CR_CORE_REVISION), the problem is
+today the driver is built for a given revision at compile time. That is a software issue,
+not something that we need to encode in DT. While the core ID (SGX5xx) can be also detected
+(EUR_CR_CORE_ID), the location of that register changes, and so it does need encoded in
+DT compatible.
 
-Yes, and that is why I would find it more convenient to have a single
-"img,powervr.yaml" for all variations unless it becomes filled with
-unrelated stuff (which isn't as far as I see).
+The string "ti,omap3430-gpu" tells us the revision if we cannot detect it (as in the current
+driver), and the SoC integration is generic anyway (just a reg and interrupt).
 
-BR, Nikolaus=
+Andrew
+
+>> +      - items:
+>> +          - enum:
+>> +              - ingenic,jz4780-gpu # Rev 130
+>> +              - ti,omap4430-gpu # Rev 120
+>> +          - const: img,powervr-sgx540
+>> +      - items:
+>> +          - enum:
+>> +              - allwinner,sun6i-a31-gpu # MP2 Rev 115
+>> +              - ti,omap4470-gpu # MP1 Rev 112
+>> +              - ti,omap5432-gpu # MP2 Rev 105
+>> +              - ti,am5728-gpu # MP2 Rev 116
+>> +              - ti,am6548-gpu # MP1 Rev 117
+>> +          - const: img,powervr-sgx544
+>>
+>>    reg:
+>>      maxItems: 1
+>> @@ -40,8 +62,6 @@ properties:
+>> required:
+>>    - compatible
+>>    - reg
+>> -  - clocks
+>> -  - clock-names
+>>    - interrupts
+>>
+>> additionalProperties: false
+>> @@ -56,6 +76,43 @@ allOf:
+>>        properties:
+>>          clocks:
+>>            maxItems: 1
+>> +      required:
+>> +        - clocks
+>> +        - clock-names
+>> +  - if:
+>> +      properties:
+>> +        compatible:
+>> +          contains:
+>> +            const: ti,am654-sgx544
+>> +    then:
+>> +      properties:
+>> +        power-domains:
+>> +          minItems: 1
+>> +      required:
+>> +        - power-domains
+>> +  - if:
+>> +      properties:
+>> +        compatible:
+>> +          contains:
+>> +            const: allwinner,sun6i-a31-gpu
+>> +    then:
+>> +      properties:
+>> +        clocks:
+>> +          minItems: 2
+>> +        clock-names:
+>> +          minItems: 2
+>> +      required:
+>> +        - clocks
+>> +        - clock-names
+>> +  - if:
+>> +      properties:
+>> +        compatible:
+>> +          contains:
+>> +            const: ingenic,jz4780-gpu
+>> +    then:
+>> +      required:
+>> +        - clocks
+>> +        - clock-names
+>>
+>> examples:
+>>    - |
+>> -- 
+>> 2.39.2
+>>
+> 
+> BR and thanks,
+> Nikolaus
 
