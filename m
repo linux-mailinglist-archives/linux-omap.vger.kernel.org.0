@@ -1,114 +1,123 @@
-Return-Path: <linux-omap+bounces-132-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-133-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBCA1804E3F
-	for <lists+linux-omap@lfdr.de>; Tue,  5 Dec 2023 10:44:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64A8F8055EA
+	for <lists+linux-omap@lfdr.de>; Tue,  5 Dec 2023 14:29:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 723781F21353
-	for <lists+linux-omap@lfdr.de>; Tue,  5 Dec 2023 09:44:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 964E21C20F44
+	for <lists+linux-omap@lfdr.de>; Tue,  5 Dec 2023 13:29:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9B2E405E3;
-	Tue,  5 Dec 2023 09:44:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0325D5D8F1;
+	Tue,  5 Dec 2023 13:29:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WD9J9AJF"
 X-Original-To: linux-omap@vger.kernel.org
-X-Greylist: delayed 2452 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 05 Dec 2023 01:44:05 PST
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a02:c205:3004:2154::1])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D211AFA;
-	Tue,  5 Dec 2023 01:44:05 -0800 (PST)
-Received: from p200301077700c3001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:107:7700:c300:1a3d:a2ff:febf:d33a] helo=aktux)
-	by mail.andi.de1.cc with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <andreas@kemnade.info>)
-	id 1rARxy-0072Tw-GJ; Tue, 05 Dec 2023 10:43:46 +0100
-Date: Tue, 5 Dec 2023 10:43:43 +0100
-From: Andreas Kemnade <andreas@kemnade.info>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Tony Lindgren <tony@atomide.com>, Andrew Davis <afd@ti.com>, Frank Binns
- <frank.binns@imgtec.com>, Donald Robson <donald.robson@imgtec.com>, Matt
- Coster <matt.coster@imgtec.com>, "H . Nikolaus Schaller"
- <hns@goldelico.com>, Adam Ford <aford173@gmail.com>, Ivaylo Dimitrov
- <ivo.g.dimitrov.75@gmail.com>, Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
- <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec
- <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>,
- =?UTF-8?B?QmVub8OudA==?= Cousson <bcousson@baylibre.com>, Nishanth Menon
- <nm@ti.com>, Vignesh Raghavendra <vigneshr@ti.com>, Tero Kristo
- <kristo@kernel.org>, Paul Cercueil <paul@crapouillou.net>,
- dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-sunxi@lists.linux.dev, linux-omap@vger.kernel.org,
- linux-mips@vger.kernel.org
-Subject: Re: [PATCH RFC 01/10] dt-bindings: gpu: Add PowerVR Series5 SGX
- GPUs
-Message-ID: <20231205104343.2e3c4105@aktux>
-In-Reply-To: <78a81d54-f12c-401e-9a26-5125eb0b1c65@linaro.org>
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B93D41747;
+	Tue,  5 Dec 2023 13:29:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75542C433C7;
+	Tue,  5 Dec 2023 13:29:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1701782971;
+	bh=Zn4GYLZmwXmZqyevn2I97x9daNh38VTwlzu5aculNSM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WD9J9AJFAk2/0D4VYVAU+ifx6QQLbsfR/xrNu9brFiuRqBcsECW8yhOmirrZNo47f
+	 7m6ARj4MSrzFU7Gj1AlzP//n3uQrgdlEMydSex59apB9u9zWniz7tNZv8URpPrvxGi
+	 ZOvRjg0fz3fJG1gxtoML0uPSx7OSd5UUhPBaWnNSFIMtEooNk7BXmBjOHRy2Oy3Iod
+	 AMFofToE1m0upfK+FeWxWEkfCHcjagDADz9vyz7kecbsQmvSBp6uaWSbeEN5SQA6sa
+	 OBD+VIZUqPY7DieFrZ+th6xFijAxCK6e0AxoWlAF8asfe+f5WM0XITBejsB5bKe8AK
+	 rF4xwjpQ7MWaA==
+Date: Tue, 5 Dec 2023 14:29:27 +0100
+From: Maxime Ripard <mripard@kernel.org>
+To: "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc: Andrew Davis <afd@ti.com>, Frank Binns <frank.binns@imgtec.com>, 
+	Donald Robson <donald.robson@imgtec.com>, Matt Coster <matt.coster@imgtec.com>, 
+	Adam Ford <aford173@gmail.com>, Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
+	=?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>, Tony Lindgren <tony@atomide.com>, Nishanth Menon <nm@ti.com>, 
+	Vignesh Raghavendra <vigneshr@ti.com>, Tero Kristo <kristo@kernel.org>, 
+	Paul Cercueil <paul@crapouillou.net>, dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-sunxi@lists.linux.dev, linux-omap@vger.kernel.org, linux-mips@vger.kernel.org
+Subject: Re: [PATCH RFC 01/10] dt-bindings: gpu: Add PowerVR Series5 SGX GPUs
+Message-ID: <vawv2mwhonuyvgmp7uox4rfgdcjwg5fa7hmbcfgl3wiase6e4p@tyavpclppfvu>
 References: <20231204182245.33683-1-afd@ti.com>
-	<20231204182245.33683-2-afd@ti.com>
-	<b97f04f6-cda2-4e9b-b729-a5149e36f978@linaro.org>
-	<20231205075657.GN5169@atomide.com>
-	<df7dd7b0-f315-4033-985a-175f75568a8c@linaro.org>
-	<20231205081031.GO5169@atomide.com>
-	<efcd64f4-00d2-4671-af3a-e27764f70e8d@linaro.org>
-	<20231205083001.GP5169@atomide.com>
-	<27f2e3a3-0791-4278-adb2-55ed76820a3a@linaro.org>
-	<20231205100246.5db0d6a1@aktux>
-	<78a81d54-f12c-401e-9a26-5125eb0b1c65@linaro.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+ <20231204182245.33683-2-afd@ti.com>
+ <23livt5mcc64bb6lkeec2uxp5cyn4wfekwaj6wzrjnrkndvwgj@6tveqglqpr4v>
+ <B3A1B8A7-0363-4ECB-AFBF-576FECA569FA@goldelico.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="sk5rtloxlgm34n5t"
+Content-Disposition: inline
+In-Reply-To: <B3A1B8A7-0363-4ECB-AFBF-576FECA569FA@goldelico.com>
 
-On Tue, 5 Dec 2023 10:27:56 +0100
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
 
-> On 05/12/2023 10:02, Andreas Kemnade wrote:
-> > On Tue, 5 Dec 2023 09:45:44 +0100
-> > Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
-> >   
-> >>> Sure the clock nodes can be there for the child IP, but they won't do
-> >>> anything. And still need to be managed separately by the device driver if
-> >>> added.    
-> >>
-> >> So if OS does not have runtime PM, the bindings are wrong? Bindings
-> >> should not depend on some particular feature of some particular OS.  
-> > 
-> > Any user of the devicetree sees that there is a parent and the parent needs
-> > to be enabled by some mechanism.
-> > E.g. I2c devices do not specify the clocks of the parent (the i2c master)  
-> 
-> If you use this analogy, then compare it with an I2C device which has
-> these clock inputs. Such device must have clocks in the bindings.
-> 
-I would see target-module = i2c master.
+--sk5rtloxlgm34n5t
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Well, if there is a variant of the i2c device which does not require
-external clocks and a variant which requires it, then clock can be
-optional.
+Hi,
 
-> > 
-> > Maybe it is just more fine-grained on omap.
-> > 
-> > look e.g. at ti/omap/omap4-l4.dtsi
-> > there are target-module@xxxx
-> > with the devices as a child and a clock in the parent.  
-> 
-> Not related to runtime PM...
-> 
-Well, runtime PM is just the linux-specific mechanism to enable the
-resources needed by the parent, so yes, it is not related... As said,
-another OS can have another mechanism.
+On Tue, Dec 05, 2023 at 09:18:58AM +0100, H. Nikolaus Schaller wrote:
+> > Am 05.12.2023 um 07:57 schrieb Maxime Ripard <mripard@kernel.org>:
+> >=20
+> > On Mon, Dec 04, 2023 at 12:22:36PM -0600, Andrew Davis wrote:
+> >> The Imagination PowerVR Series5 "SGX" GPU is part of several SoCs from
+> >> multiple vendors. Describe how the SGX GPU is integrated in these SoC,
+> >> including register space and interrupts. Clocks, reset, and power doma=
+in
+> >> information is SoC specific.
+> >>=20
+> >> Signed-off-by: Andrew Davis <afd@ti.com>
+> >> ---
+> >> .../devicetree/bindings/gpu/img,powervr.yaml  | 69 +++++++++++++++++--
+> >> 1 file changed, 63 insertions(+), 6 deletions(-)
+> >=20
+> > I think it would be best to have a separate file for this, img,sgx.yaml
+> > maybe?
+>=20
+> Why?
 
-But anyways, the target module specifies resources which are required.
+Because it's more convenient?
 
-Regards,
-Andreas
+> The whole family of IMG GPUs is PowerVR and SGX and Rogue are generations=
+ 5 and 6++:
+>=20
+> https://en.wikipedia.org/wiki/PowerVR
+
+That's not really relevant as far as bindings go. We have multiple
+binding files for devices of the same generation, or single bindings
+covering multiple generations.
+
+The important part is that every compatible is documented. It doesn't
+really matter how or where.
+
+Maxime
+
+--sk5rtloxlgm34n5t
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCZW8ltgAKCRDj7w1vZxhR
+xUSvAP9PUbf4+YT0EyccyJajSXPeDQSwn4etNEbxV50lUUuE8AD9EaQjz+C035S5
+zToIGETivgzX+fLoler4pvNrddntIg4=
+=WGdx
+-----END PGP SIGNATURE-----
+
+--sk5rtloxlgm34n5t--
 
