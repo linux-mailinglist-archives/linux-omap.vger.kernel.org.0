@@ -1,234 +1,155 @@
-Return-Path: <linux-omap+bounces-145-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-146-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C6EA80859C
-	for <lists+linux-omap@lfdr.de>; Thu,  7 Dec 2023 11:34:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22789808E45
+	for <lists+linux-omap@lfdr.de>; Thu,  7 Dec 2023 18:12:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3DB5F1C21F76
-	for <lists+linux-omap@lfdr.de>; Thu,  7 Dec 2023 10:34:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1A6C2814A2
+	for <lists+linux-omap@lfdr.de>; Thu,  7 Dec 2023 17:12:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72A9535298;
-	Thu,  7 Dec 2023 10:34:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62A6F481DF;
+	Thu,  7 Dec 2023 17:12:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b="P4KnjRZc";
-	dkim=permerror (0-bit key) header.d=goldelico.com header.i=@goldelico.com header.b="8d0eEMoe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bXlGR5U8"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [81.169.146.168])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A86BAA;
-	Thu,  7 Dec 2023 02:34:28 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1701945246; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=mOL/PMP+NeJ2E1KYllEYqgE2h5AcWTErDO3aQ08TaQ8JZjehdXmAwJalEHuCVXkpyB
-    pkBUHZul7XE/T7ykcWminQrQMWVEZUZHPZcUE0NoZgveVR6WHAD0hQxa3N+ufw5g6Nen
-    8zWXy6kbmx9Y+i+btlZCxbrwtR51GfUwT0hwoxXAl5dhTjkv1RQO67o+36PuXvY1516R
-    NyHYwUZ++0RlL3EdJ/q6lOF5yPl7x5laUqpRt67G3WEY4hzvjiLDhPUv+Mx5heZbFUgv
-    jroJy31PqkkbQQUc6SchYn7ZNQVqfTuRdiaU7q+Cw4Yj5WHu5jLr2uB6QKcjV7VlIpZT
-    Kc5g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1701945246;
-    s=strato-dkim-0002; d=strato.com;
-    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=+Kqy8hxh9JRvG98xCRnk451nXywJ+xmBnT99GgubYp4=;
-    b=lVCuFhGEYJikPgPrANervfmrscNeYed2KGhx53qraGreguxpFqO+LyIpVUwVPl49GO
-    XFS1PjWme3pFwiqbNwUaeiqtXXNPcyk07lrvSCqf+0xH559yWb8/spVjF+xj8a8Tgu3/
-    A8y+8tPLXcQ8UIUPUSmHnYcXHDwGa7kDtFZqx53R/y8SZjPhAMhYM/nwwrg6SiRv/lqq
-    /QNV/2+2xo2zbiJ9U7M1qgE9RwPq36j0NsQVe6ILNBOBUWq9mTy4hrYMxZr2MyTpS4xN
-    FZ9AGUD80zYo7zO4V7xi0g9io3YM0hnP92nX9UokIdESV4FGkKiP2Yg8EiWCl43J/ckq
-    2G4w==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo02
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1701945246;
-    s=strato-dkim-0002; d=goldelico.com;
-    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=+Kqy8hxh9JRvG98xCRnk451nXywJ+xmBnT99GgubYp4=;
-    b=P4KnjRZcvO2pNha1Mo6dGvsIsh/cZ1u/T9KBCygDl5AA3NaBfrEerVEWz68GM31lHT
-    908aifCihZsHCnnn+a54wi9EF0B/m5MRdQQbLc3p80IIoSwUSSgODdBOKYf+Zr3Yahhl
-    w8ODwA/4kqQjOwHlX+UXjkw0lWt0xBvhUzfx2BAGnT0YPn90E3QvpvS9NQ3cssDMv927
-    CAVAE2YmJ2ghP5LPbzYARBhTHk3tym/kQkxc1nF9zUcGS8zmEO3G0FBikU/vOsRiRAhp
-    mBbEQWcporaSThp5QnXdx86L0RHk8K9Gi8iVxEXW/m+GvESmMk5RLZ1TAmncO4WsqEwP
-    TZng==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1701945246;
-    s=strato-dkim-0003; d=goldelico.com;
-    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=+Kqy8hxh9JRvG98xCRnk451nXywJ+xmBnT99GgubYp4=;
-    b=8d0eEMoeXltuoLS8rflw6BVU1WX0h+Aj9r6oZwRPtbRNw2Opa5kgGDVbEfK1NGPSoQ
-    xgx53NjHA6DPVO1RgSCA==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj5Apz9PSN6LgsXcGerXQ="
-Received: from smtpclient.apple
-    by smtp.strato.de (RZmta 49.10.0 DYNA|AUTH)
-    with ESMTPSA id wfeb35zB7AY4C2K
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
-	(Client did not present a certificate);
-    Thu, 7 Dec 2023 11:34:04 +0100 (CET)
-Content-Type: text/plain;
-	charset=us-ascii
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9B4A44C9E;
+	Thu,  7 Dec 2023 17:12:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78BA1C433C8;
+	Thu,  7 Dec 2023 17:11:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1701969120;
+	bh=IyPtYmm7UMjttoaV79y97U5M1AiSkAlE5kldVFOD7Qs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bXlGR5U81hQG84IDZlqVXL/s9801dWDL095ZFx6khDpmnlS5vYR0mLR2RERobBupI
+	 p9x5SnV/kz9Fw1lJKA0DyAUQ4IeqAuOADwtARkANfI2BYoJcYrMOAfBxh6XR27g5kM
+	 Fg+7+O28Z7VuCtlEpxBjUjrTMWP84oeOU1Ft82B8km0jwLcwcy9mrEKa5BDbWXnKKA
+	 tmF05vs6YzrD/YswILYhOCbjQcdoPYTM9orr8IpctqwFS8bpJ4tShbyHF1uNLdXU03
+	 irtTIXv/nz8xPwyPUfRkSTHWgS8sxDM/VOxzqq/TKJWZLNsOKN4v8iwN6aYNFurntD
+	 R/slSm6O/emCA==
+Date: Thu, 7 Dec 2023 17:11:55 +0000
+From: Lee Jones <lee@kernel.org>
+To: Andreas Kemnade <andreas@kemnade.info>
+Cc: robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+	conor+dt@kernel.org, bcousson@baylibre.com, tony@atomide.com,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-omap@vger.kernel.org
+Subject: Re: [PATCH v3 2/6] twl-core: add power off implementation for twl603x
+Message-ID: <20231207171155.GG111411@google.com>
+References: <20231203222903.343711-1-andreas@kemnade.info>
+ <20231203222903.343711-3-andreas@kemnade.info>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.200.91.1.1\))
-Subject: Re: [PATCH RFC 01/10] dt-bindings: gpu: Add PowerVR Series5 SGX GPUs
-From: "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <6gpehpoz54f5lxhmvirqbfwmq7dpgiroy27cljpvu66wtn7aqy@lgrh7wysyxnp>
-Date: Thu, 7 Dec 2023 11:33:53 +0100
-Cc: Andrew Davis <afd@ti.com>,
- Frank Binns <frank.binns@imgtec.com>,
- Donald Robson <donald.robson@imgtec.com>,
- Matt Coster <matt.coster@imgtec.com>,
- Adam Ford <aford173@gmail.com>,
- Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Thomas Zimmermann <tzimmermann@suse.de>,
- Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Chen-Yu Tsai <wens@csie.org>,
- Jernej Skrabec <jernej.skrabec@gmail.com>,
- Samuel Holland <samuel@sholland.org>,
- =?utf-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
- Tony Lindgren <tony@atomide.com>,
- Nishanth Menon <nm@ti.com>,
- Vignesh Raghavendra <vigneshr@ti.com>,
- Tero Kristo <kristo@kernel.org>,
- Paul Cercueil <paul@crapouillou.net>,
- dri-devel@lists.freedesktop.org,
- devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org,
- linux-sunxi@lists.linux.dev,
- linux-omap@vger.kernel.org,
- linux-mips@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <D8AB6CC4-DCA5-40DD-A311-94A16FF59254@goldelico.com>
-References: <20231204182245.33683-1-afd@ti.com>
- <20231204182245.33683-2-afd@ti.com>
- <23livt5mcc64bb6lkeec2uxp5cyn4wfekwaj6wzrjnrkndvwgj@6tveqglqpr4v>
- <B3A1B8A7-0363-4ECB-AFBF-576FECA569FA@goldelico.com>
- <vawv2mwhonuyvgmp7uox4rfgdcjwg5fa7hmbcfgl3wiase6e4p@tyavpclppfvu>
- <6BC60156-89E2-4734-BD00-B49A9A6C1D7A@goldelico.com>
- <6gpehpoz54f5lxhmvirqbfwmq7dpgiroy27cljpvu66wtn7aqy@lgrh7wysyxnp>
-To: Maxime Ripard <mripard@kernel.org>
-X-Mailer: Apple Mail (2.3774.200.91.1.1)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231203222903.343711-3-andreas@kemnade.info>
 
-Hi Maxime,
+On Sun, 03 Dec 2023, Andreas Kemnade wrote:
 
-> Am 07.12.2023 um 10:20 schrieb Maxime Ripard <mripard@kernel.org>:
->=20
-> On Tue, Dec 05, 2023 at 02:50:08PM +0100, H. Nikolaus Schaller wrote:
->> Hi,
->>=20
->>> Am 05.12.2023 um 14:29 schrieb Maxime Ripard <mripard@kernel.org>:
->>>=20
->>> Hi,
->>>=20
->>> On Tue, Dec 05, 2023 at 09:18:58AM +0100, H. Nikolaus Schaller =
-wrote:
->>>>> Am 05.12.2023 um 07:57 schrieb Maxime Ripard <mripard@kernel.org>:
->>>>>=20
->>>>> On Mon, Dec 04, 2023 at 12:22:36PM -0600, Andrew Davis wrote:
->>>>>> The Imagination PowerVR Series5 "SGX" GPU is part of several SoCs =
-from
->>>>>> multiple vendors. Describe how the SGX GPU is integrated in these =
-SoC,
->>>>>> including register space and interrupts. Clocks, reset, and power =
-domain
->>>>>> information is SoC specific.
->>>>>>=20
->>>>>> Signed-off-by: Andrew Davis <afd@ti.com>
->>>>>> ---
->>>>>> .../devicetree/bindings/gpu/img,powervr.yaml  | 69 =
-+++++++++++++++++--
->>>>>> 1 file changed, 63 insertions(+), 6 deletions(-)
->>>>>=20
->>>>> I think it would be best to have a separate file for this, =
-img,sgx.yaml
->>>>> maybe?
->>>>=20
->>>> Why?
->>>=20
->>> Because it's more convenient?
->>=20
->> Is it?
->=20
-> It's for a separate architecture, with a separate driver, maintained =
-out
-> of tree by a separate community, with a separate set of requirements =
-as
-> evidenced by the other thread. And that's all fine in itself, but
-> there's very little reason to put these two bindings in the same file.
->=20
-> We could also turn this around, why is it important that it's in the
-> same file?
+> If the system-power-controller property is there, enable power off.
+> Implementation is based on a Linux v3.0 vendor kernel.
+> 
+> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+> ---
+>  drivers/mfd/twl-core.c  | 28 ++++++++++++++++++++++++++++
+>  include/linux/mfd/twl.h |  1 +
+>  2 files changed, 29 insertions(+)
+> 
+> diff --git a/drivers/mfd/twl-core.c b/drivers/mfd/twl-core.c
+> index 6e384a79e3418..f3982d18008d1 100644
+> --- a/drivers/mfd/twl-core.c
+> +++ b/drivers/mfd/twl-core.c
+> @@ -124,6 +124,11 @@
+>  #define TWL6030_BASEADD_RSV		0x0000
+>  #define TWL6030_BASEADD_ZERO		0x0000
+>  
+> +/* some fields in TWL6030_PHOENIX_DEV_ON */
 
-Same vendor. And enough similarity in architectures, even a logical =
-sequence
-of development of versions (SGX =3D Version 5, Rogue =3D Version 6+) =
-behind.
-(SGX and Rogue seem to be just trade names for their architecture =
-development).
+My preference is for proper grammar in comments please.
 
-AFAIK bindings should describe hardware and not communities or drivers
-or who is currently maintaining it. The latter can change, the first =
-not.
+"Some"
 
->=20
->>>> The whole family of IMG GPUs is PowerVR and SGX and Rogue are =
-generations 5 and 6++:
->>>>=20
->>>> https://en.wikipedia.org/wiki/PowerVR
->>>=20
->>> That's not really relevant as far as bindings go.
->>=20
->> But maybe for choosing binding file names. Well they are machine =
-readable
->> but sometimes humans work with them.
->=20
-> Heh. It's something that can also be easily grepped,
+What is TWL6030_PHOENIX_DEV_ON?  A register?
 
-Yes, arbitrarily introduced confusion can always be resolved by search =
-engines
-and makes them necessary and more and more advanced :)
+> +#define TWL6030_APP_DEVOFF		BIT(0)
+> +#define TWL6030_CON_DEVOFF		BIT(1)
+> +#define TWL6030_MOD_DEVOFF		BIT(2)
+> +
+>  /* Few power values */
+>  #define R_CFG_BOOT			0x05
+>  
+> @@ -687,6 +692,20 @@ static void twl_remove(struct i2c_client *client)
+>  	twl_priv->ready = false;
+>  }
+>  
+> +static void twl6030_power_off(void)
+> +{
+> +	int err;
+> +	u8 val;
+> +
+> +	err = twl_i2c_read_u8(TWL_MODULE_PM_MASTER, &val, TWL6030_PHOENIX_DEV_ON);
+> +	if (err)
+> +		return;
+> +
+> +	val |= TWL6030_APP_DEVOFF | TWL6030_CON_DEVOFF | TWL6030_MOD_DEVOFF;
+> +	twl_i2c_write_u8(TWL_MODULE_PM_MASTER, val, TWL6030_PHOENIX_DEV_ON);
+> +}
+> +
+> +
+>  static struct of_dev_auxdata twl_auxdata_lookup[] = {
+>  	OF_DEV_AUXDATA("ti,twl4030-gpio", 0, "twl4030-gpio", NULL),
+>  	{ /* sentinel */ },
+> @@ -852,6 +871,15 @@ twl_probe(struct i2c_client *client)
+>  			goto free;
+>  	}
+>  
+> +	if (twl_class_is_6030()) {
 
-> and the name is
-> never going to reflect all the compatibles in a binding so it's what
-> you'll end up doing anyway. But feel free to suggest another name to
-> avoid the confusion.
+Is this check required?
 
-Well,
+> +		if (of_device_is_system_power_controller(node)) {
 
-1. rename img,powervr.yaml =3D> img,powervr-rogue.yaml
-2. new file img,powervr-sgx.yaml
+Shouldn't this cover it?
 
-to have at least a systematic approach here.
+> +			if (!pm_power_off)
+> +				pm_power_off = twl6030_power_off;
+> +			else
+> +				dev_warn(&client->dev, "Poweroff callback already assigned\n");
 
->>> We have multiple
->>> binding files for devices of the same generation, or single bindings
->>> covering multiple generations.
->>>=20
->>> The important part is that every compatible is documented. It =
-doesn't
->>> really matter how or where.
->>=20
->> Yes, and that is why I would find it more convenient to have a single
->> "img,powervr.yaml" for all variations unless it becomes filled with
->> unrelated stuff (which isn't as far as I see).
->=20
-> Again, hard disagree there.
+Can this happen?  Why would anyone care if it did?
 
-I am fine with that. I just advocate to follow the KISS principle.
+> +		}
+> +	}
+> +
+>  	status = of_platform_populate(node, NULL, twl_auxdata_lookup,
+>  				      &client->dev);
+>  
+> diff --git a/include/linux/mfd/twl.h b/include/linux/mfd/twl.h
+> index c062d91a67d92..85dc406173dba 100644
+> --- a/include/linux/mfd/twl.h
+> +++ b/include/linux/mfd/twl.h
+> @@ -461,6 +461,7 @@ static inline int twl6030_mmc_card_detect(struct device *dev, int slot)
+>  
+>  #define TWL4030_PM_MASTER_GLOBAL_TST		0xb6
+>  
+> +#define TWL6030_PHOENIX_DEV_ON                  0x06
+>  /*----------------------------------------------------------------------*/
+>  
+>  /* Power bus message definitions */
+> -- 
+> 2.39.2
+> 
 
-Same vendor, similar purpose, similar architecture =3D> single bindings =
-file
-as Andrew proposed.
-
-BR,
-Nikolaus=
+-- 
+Lee Jones [李琼斯]
 
