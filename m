@@ -1,127 +1,88 @@
-Return-Path: <linux-omap+bounces-142-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-143-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF1A38080E6
-	for <lists+linux-omap@lfdr.de>; Thu,  7 Dec 2023 07:39:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8111D8080FA
+	for <lists+linux-omap@lfdr.de>; Thu,  7 Dec 2023 07:44:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFD4A1C20B06
-	for <lists+linux-omap@lfdr.de>; Thu,  7 Dec 2023 06:39:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B11991C20A0E
+	for <lists+linux-omap@lfdr.de>; Thu,  7 Dec 2023 06:44:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C8D753AB;
-	Thu,  7 Dec 2023 06:39:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAA5512E42;
+	Thu,  7 Dec 2023 06:44:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b="NB5K6bbG"
+	dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b="IrRFqxFx"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from mail5.25mail.st (mail5.25mail.st [74.50.62.9])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91B5810CB;
-	Wed,  6 Dec 2023 22:39:06 -0800 (PST)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3467BD7F;
+	Wed,  6 Dec 2023 22:44:22 -0800 (PST)
 Received: from localhost (91-158-86-216.elisa-laajakaista.fi [91.158.86.216])
-	by mail5.25mail.st (Postfix) with ESMTPSA id 25AE36045F;
-	Thu,  7 Dec 2023 06:38:04 +0000 (UTC)
+	by mail5.25mail.st (Postfix) with ESMTPSA id D55AE6045F;
+	Thu,  7 Dec 2023 06:44:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=atomide.com;
-	s=25mailst; t=1701931146;
-	bh=WJ0wR74d+mkwm+IUhYNno9dDAtwE/eqL/spvRAJBdfs=;
+	s=25mailst; t=1701931461;
+	bh=nJmFuXQf9RfNTr9UuRgO4Hc4w3gZivv6FvKt1ZS32ng=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NB5K6bbGCpg41F4Y2JGI/TNwe3RGFW3Rb4TSnkoscLAJWyiJiI9oXkVCYi5gJHMUE
-	 rec/JKiVE0yT1vYJQYhdXWSOpHIN54QGzL6WqfqoxkLv91onW6Dz79NJ6Vdb3udRhT
-	 g4HB3bZFTntDqubO+X3JvKDCdaKA0DekPQ4uWpzaKpeKqvgHMCIg8HwkhVRqCravtn
-	 YeFizvmnz0qBvGZ2CbSPVnG4I+Gr9T0sxFMTO9tFLKvsPkuLc89p9Vr2tw7BtmLd1j
-	 PUVaUSKJDGuguxsfKpyxZIFKGKz5PBUnOl4Ij7KZmXv3Ryh00sxy2R/JOPY1RyCIZ1
-	 XKfEq9e8Lqa+Q==
-Date: Thu, 7 Dec 2023 08:38:02 +0200
+	b=IrRFqxFxt9IwRGnDy4eKNbzra9+kK+MNCN5HzI7FE+tDi0u3uCDUfI2InxQ2Gk+q3
+	 RMt6Ccx+vm9z0zZJkMeMuleUZRlAMKIfIFLRaGH0RyCuwfc7Eu9bpJi480d5bih1Zo
+	 My/LD9Zn5wiUe5R/2EQ/8G/z4O6PQo+llw5/AWU7CzREV0wZvYOl8F3qrKIzvWAoqY
+	 ZZLLQUDYR2EBmfWKukj9trCrpVv13ZkIsiCA6iZL4pyTNBpOqlHj397UCNzG+Td/ul
+	 AZQATRAHMVmZc9RQhn+zthYvQxf9+xY+b1MT3MS5AR+g9KtBOUadRY5k0+mHtVLt+F
+	 G09+T9e60N14g==
+Date: Thu, 7 Dec 2023 08:43:59 +0200
 From: Tony Lindgren <tony@atomide.com>
-To: Andreas Kemnade <andreas@kemnade.info>
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Andrew Davis <afd@ti.com>, Frank Binns <frank.binns@imgtec.com>,
-	Donald Robson <donald.robson@imgtec.com>,
-	Matt Coster <matt.coster@imgtec.com>,
-	"H . Nikolaus Schaller" <hns@goldelico.com>,
-	Adam Ford <aford173@gmail.com>,
-	Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	=?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-	Nishanth Menon <nm@ti.com>, Vignesh Raghavendra <vigneshr@ti.com>,
-	Tero Kristo <kristo@kernel.org>,
-	Paul Cercueil <paul@crapouillou.net>,
-	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-sunxi@lists.linux.dev, linux-omap@vger.kernel.org,
-	linux-mips@vger.kernel.org
-Subject: Re: [PATCH RFC 01/10] dt-bindings: gpu: Add PowerVR Series5 SGX GPUs
-Message-ID: <20231207063802.GR5169@atomide.com>
-References: <b97f04f6-cda2-4e9b-b729-a5149e36f978@linaro.org>
- <20231205075657.GN5169@atomide.com>
- <df7dd7b0-f315-4033-985a-175f75568a8c@linaro.org>
- <20231205081031.GO5169@atomide.com>
- <efcd64f4-00d2-4671-af3a-e27764f70e8d@linaro.org>
- <20231205083001.GP5169@atomide.com>
- <27f2e3a3-0791-4278-adb2-55ed76820a3a@linaro.org>
- <20231205100246.5db0d6a1@aktux>
- <78a81d54-f12c-401e-9a26-5125eb0b1c65@linaro.org>
- <20231205104343.2e3c4105@aktux>
+To: Adam Ford <aford173@gmail.com>
+Cc: Andreas Kemnade <andreas@kemnade.info>, lee@kernel.org,
+	robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+	conor+dt@kernel.org, bcousson@baylibre.com,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-omap@vger.kernel.org
+Subject: Re: [PATCH v3 6/6] ARM: dts: omap: gta04: standardize
+ system-power-controller
+Message-ID: <20231207064359.GS5169@atomide.com>
+References: <20231203222903.343711-1-andreas@kemnade.info>
+ <20231203222903.343711-7-andreas@kemnade.info>
+ <CAHCN7xKG6-vgnJ+mA8xt0aFK-jCBWOX-GkVmJGNERH43N0ikaw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231205104343.2e3c4105@aktux>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHCN7xKG6-vgnJ+mA8xt0aFK-jCBWOX-GkVmJGNERH43N0ikaw@mail.gmail.com>
 
-* Andreas Kemnade <andreas@kemnade.info> [231205 09:43]:
-> On Tue, 5 Dec 2023 10:27:56 +0100
-> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+* Adam Ford <aford173@gmail.com> [231203 22:46]:
+> On Sun, Dec 3, 2023 at 4:29 PM Andreas Kemnade <andreas@kemnade.info> wrote:
+> >
+> > Replace TI-specific property by generic one.
+> >
+> > Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+> > ---
+> > cannot be applied independently of the other ones, so maybe simply delay
+> > it.
+> >
+> >  arch/arm/boot/dts/ti/omap/omap3-gta04.dtsi | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/arch/arm/boot/dts/ti/omap/omap3-gta04.dtsi b/arch/arm/boot/dts/ti/omap/omap3-gta04.dtsi
+> > index 3661340009e7a..5001c4ea35658 100644
+> > --- a/arch/arm/boot/dts/ti/omap/omap3-gta04.dtsi
+> > +++ b/arch/arm/boot/dts/ti/omap/omap3-gta04.dtsi
+> > @@ -476,6 +476,7 @@ twl: twl@48 {
+> >                 reg = <0x48>;
+> >                 interrupts = <7>; /* SYS_NIRQ cascaded to intc */
+> >                 interrupt-parent = <&intc>;
+> > +               system-power-controller;
 > 
-> > On 05/12/2023 10:02, Andreas Kemnade wrote:
-> > > On Tue, 5 Dec 2023 09:45:44 +0100
-> > > Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
-> > >   
-> > >>> Sure the clock nodes can be there for the child IP, but they won't do
-> > >>> anything. And still need to be managed separately by the device driver if
-> > >>> added.    
-> > >>
-> > >> So if OS does not have runtime PM, the bindings are wrong? Bindings
-> > >> should not depend on some particular feature of some particular OS.  
-> > > 
-> > > Any user of the devicetree sees that there is a parent and the parent needs
-> > > to be enabled by some mechanism.
-> > > E.g. I2c devices do not specify the clocks of the parent (the i2c master)  
+> Could this go into the twl4030.dtsi file so we don't have every omap3
+> board with this part duplicating this line?
 
-Yeah the interconnect target module needs to be enabled before the child
-IP can be probed for any OS. That is unless the target module is left on
-from the bootloader.
-
-But like I said, I have no objection to also having the clocks for the
-child SGX device here. I think two out of the tree SGX clocks are merged,
-so one of the three clocks would repeat twice in the binding.
-
-We do provide some of the clock aliases, like fck and ick, for the child
-ip automatically by the ti-sysc interconnect target module. But likely we
-don't want to clock name specific handling in the driver so best to
-standardize on SGX specific clock names. That is if the clock properties
-are not set optional.
-
-> > If you use this analogy, then compare it with an I2C device which has
-> > these clock inputs. Such device must have clocks in the bindings.
-> > 
-> I would see target-module = i2c master.
-> 
-> Well, if there is a variant of the i2c device which does not require
-> external clocks and a variant which requires it, then clock can be
-> optional.
-
-Yes that sounds about right for an analogy :)
+Sounds good to me.
 
 Regards,
 
