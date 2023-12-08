@@ -1,45 +1,45 @@
-Return-Path: <linux-omap+bounces-150-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-151-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E68AA80A2F9
-	for <lists+linux-omap@lfdr.de>; Fri,  8 Dec 2023 13:17:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB81C80A306
+	for <lists+linux-omap@lfdr.de>; Fri,  8 Dec 2023 13:18:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 150E31C2093C
-	for <lists+linux-omap@lfdr.de>; Fri,  8 Dec 2023 12:17:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A524528181A
+	for <lists+linux-omap@lfdr.de>; Fri,  8 Dec 2023 12:18:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 474811C29F;
-	Fri,  8 Dec 2023 12:17:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 610891C290;
+	Fri,  8 Dec 2023 12:18:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b="KRpHL+Q0"
+	dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b="DrXiJ53V"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from mail5.25mail.st (mail5.25mail.st [74.50.62.9])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A7A41989
-	for <linux-omap@vger.kernel.org>; Fri,  8 Dec 2023 04:17:34 -0800 (PST)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5775F1727
+	for <linux-omap@vger.kernel.org>; Fri,  8 Dec 2023 04:18:37 -0800 (PST)
 Received: from localhost (91-158-86-216.elisa-laajakaista.fi [91.158.86.216])
-	by mail5.25mail.st (Postfix) with ESMTPSA id 11F38604F7;
-	Fri,  8 Dec 2023 12:17:19 +0000 (UTC)
+	by mail5.25mail.st (Postfix) with ESMTPSA id 4660C604F7;
+	Fri,  8 Dec 2023 12:18:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=atomide.com;
-	s=25mailst; t=1702037854;
-	bh=ip5apwLCtoYaykxE0u+f3XZdrrwqs81PIFoPcqzPK3I=;
+	s=25mailst; t=1702037916;
+	bh=h07OVGQlyvpAqQQ6mlTbyIVIFAeP4bhm65lgRvuUX2w=;
 	h=From:To:Cc:Subject:Date:From;
-	b=KRpHL+Q0s2rNTlPqFa759Vj114dHohYtAnU35w6R7wwz7Jne3MTk1wzEQKILjUoeS
-	 Lr5lZ6lb9auZmX3sbNLLf6Ttc1KBAN3zXq5lhZYiBOgmzzXw7kmrZ04v9QnN0YVfHX
-	 4cWjbYktbRJn29Y82sgvO4jGQ/gZgNAujeOSoqlgxuNQSxs8eOQuDrSR/t+zYogB7W
-	 rPFWc2YcHWU0jkWXB1/z3XfLdRTpewLoCDegZrgDJfIUQLgB4rjNzvhGf+CjK75hfg
-	 6drYrMab5r9WwYle3kCdj4HHGxBpfQkF3ld0K6JKVAW/wIgJ2oi5jn+OBQVfSIOtff
-	 +ZyX44OpjcX4A==
+	b=DrXiJ53VKbWthyMVBSjpJoyKkg5f6eBmcZA64RGxFFWAmIvmg3HOZLvfw6H4I2alg
+	 cW4npmVD6/c5v16zR5TRUKmc51Hw4buUSUXgbiHQisUAmFMLkb5yaom4Wlpj8RthYR
+	 m7P/ZYO2KM2ut9x1Jsa9Expdeee9F1PQI6dL8U5BBDFMlB/EwCksErXP1WthGbTWK1
+	 /U4gISYO6KxWpVFt8igYL6CePMKGStkkXIzOSDq1ZQoAHSyT9e4pQYaTfD70QSWE9v
+	 szO48M6DBU8b1PmKCuMAgrw3P26IvsLmMJSV84FK/cb2WFXUTw3u7Ea2rsF0WfPq1n
+	 j8bC36/9GuOwQ==
 From: Tony Lindgren <tony@atomide.com>
 To: soc@kernel.org
 Cc: arm@kernel.org,
 	linux-omap@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	"Tony Lindgren" <tony@atomide.com>
-Subject: [GIT PULL] Fixes for omaps
-Date: Fri,  8 Dec 2023 14:17:15 +0200
-Message-ID: <pull-1702037799-781982@atomide.com>
+Subject: [GIT PULL 1/3] Devicetree changes for omaps for v6.8
+Date: Fri,  8 Dec 2023 14:18:17 +0200
+Message-ID: <pull-1702037869-295608@atomide.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
@@ -58,34 +58,68 @@ The following changes since commit b85ea95d086471afb4ad062012a4d73cd328fa86:
 
 are available in the Git repository at:
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v6.7/fixes-signed
+  git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v6.8/dt-signed
 
-for you to fetch changes up to c72b9c33ef9695ad7ce7a6eb39a9df8a01b70796:
+for you to fetch changes up to 10dfde4bec529aa1d78e4b3acce7882a312880b7:
 
-  ARM: OMAP2+: Fix null pointer dereference and memory leak in omap_soc_device_init (2023-11-30 13:57:00 +0200)
-
-----------------------------------------------------------------
-Fixes for omaps
-
-A few fixes for omaps:
-
-- A regression fix for ti-sysc interconnect target module driver to not access
-  registers after reset if srst_udelay quirk is needed
-
-- DRA7 L3 NoC node register size fix
+  ARM: dts: omap4-embt2ws: Add Bluetooth (2023-12-01 08:24:55 +0200)
 
 ----------------------------------------------------------------
-Andrew Davis (1):
-      ARM: dts: dra7: Fix DRA7 L3 NoC node register size
+Devicetree changes for omaps
 
-Kunwu Chan (1):
-      ARM: OMAP2+: Fix null pointer dereference and memory leak in omap_soc_device_init
+- A series of patches to reorganize Motorola Mapphone related files to add
+  support for tablets as the peripherals are different compared to the
+  phones
 
-Tony Lindgren (1):
-      bus: ti-sysc: Flush posted write only after srst_udelay
+- Apply am57xx-idk overlays to base dtbs
 
- arch/arm/boot/dts/ti/omap/dra7.dtsi |  2 +-
- arch/arm/mach-omap2/id.c            |  5 +++++
- drivers/bus/ti-sysc.c               | 18 ++++++++++++++----
- 3 files changed, 20 insertions(+), 5 deletions(-)
+- Extcon update to use id-gpios and vbus-gpios
+
+- Update omap4-epson-embt2ws to enable wlan clock and bluetooth-gnss
+
+- Update for logicpd-torpedo to use bluetooth-gnss node name
+
+----------------------------------------------------------------
+Alexander Stein (1):
+      ARM: dts: ti/omap: Replace deprecated extcon-usb-gpio id-gpio/vbus-gpio properties
+
+Andreas Kemnade (3):
+      ARM: dts: omap4-embt2ws: enable 32K clock on WLAN
+      ARM: dts: omap: logicpd-torpedo: do not disguise GNSS device
+      ARM: dts: omap4-embt2ws: Add Bluetooth
+
+Rob Herring (1):
+      arm: dts: omap: Apply am57xx-idk overlays to base dtbs
+
+Tony Lindgren (4):
+      dt-bindings: omap: Add Motorola mapphone mz609 and mz617 tablets
+      ARM: dts: motorola-mapphone: Move LCD to common file for xt875 and xt894
+      ARM: dts: motorola-mapphone: Move handset devices to a common file
+      ARM: dts: motorola-mapphone: Add basic support for mz609 and mz617
+
+ Documentation/devicetree/bindings/arm/ti/omap.yaml |   2 +
+ arch/arm/boot/dts/ti/omap/Makefile                 |  14 +-
+ arch/arm/boot/dts/ti/omap/am571x-idk.dts           |   4 +-
+ arch/arm/boot/dts/ti/omap/am5729-beagleboneai.dts  |   2 +-
+ arch/arm/boot/dts/ti/omap/am572x-idk-common.dtsi   |   4 +-
+ arch/arm/boot/dts/ti/omap/dra7-evm-common.dtsi     |   4 +-
+ arch/arm/boot/dts/ti/omap/dra71-evm.dts            |   4 +-
+ arch/arm/boot/dts/ti/omap/dra72-evm-common.dtsi    |   4 +-
+ arch/arm/boot/dts/ti/omap/dra76-evm.dts            |   4 +-
+ .../dts/ti/omap/logicpd-torpedo-37xx-devkit.dts    |   2 +-
+ .../boot/dts/ti/omap/motorola-mapphone-common.dtsi | 298 ---------------------
+ .../dts/ti/omap/motorola-mapphone-handset.dtsi     | 234 ++++++++++++++++
+ .../dts/ti/omap/motorola-mapphone-mz607-mz617.dtsi |  21 ++
+ .../boot/dts/ti/omap/motorola-mapphone-xt8xx.dtsi  |  75 ++++++
+ .../boot/dts/ti/omap/omap4-droid-bionic-xt875.dts  |  11 +-
+ arch/arm/boot/dts/ti/omap/omap4-droid4-xt894.dts   |  19 +-
+ arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts  |  18 +-
+ arch/arm/boot/dts/ti/omap/omap4-xyboard-mz609.dts  |  46 ++++
+ arch/arm/boot/dts/ti/omap/omap4-xyboard-mz617.dts  |  17 ++
+ 19 files changed, 459 insertions(+), 324 deletions(-)
+ create mode 100644 arch/arm/boot/dts/ti/omap/motorola-mapphone-handset.dtsi
+ create mode 100644 arch/arm/boot/dts/ti/omap/motorola-mapphone-mz607-mz617.dtsi
+ create mode 100644 arch/arm/boot/dts/ti/omap/motorola-mapphone-xt8xx.dtsi
+ create mode 100644 arch/arm/boot/dts/ti/omap/omap4-xyboard-mz609.dts
+ create mode 100644 arch/arm/boot/dts/ti/omap/omap4-xyboard-mz617.dts
 
