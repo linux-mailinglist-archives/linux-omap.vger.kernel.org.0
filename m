@@ -1,85 +1,79 @@
-Return-Path: <linux-omap+bounces-155-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-156-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2242080EFFD
-	for <lists+linux-omap@lfdr.de>; Tue, 12 Dec 2023 16:21:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF88F810B9B
+	for <lists+linux-omap@lfdr.de>; Wed, 13 Dec 2023 08:37:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0C011F2158A
-	for <lists+linux-omap@lfdr.de>; Tue, 12 Dec 2023 15:21:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94A18282735
+	for <lists+linux-omap@lfdr.de>; Wed, 13 Dec 2023 07:37:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78B1E7540E;
-	Tue, 12 Dec 2023 15:21:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02AEE199B8;
+	Wed, 13 Dec 2023 07:37:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="IvrvKt2R"
+	dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b="hWZ47rdx"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a02:c205:3004:2154::1])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 531A183
-	for <linux-omap@vger.kernel.org>; Tue, 12 Dec 2023 07:21:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=Content-Transfer-Encoding:Content-Type:
-	MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=8/7UY3Bhx9kOpWH0pljI90JTWKEClugcDBTPjZhXP9I=; b=IvrvKt2Ro9FYXn4zgx6sY8r6zl
-	k7PKyiLzUyhm14tt0yTEl1QZnV/QE9IfhGJ21ZSL4vMaN1gkOPBcpke0/dX6mKmqZSUXZX2K1oKwp
-	wjaM4qdD/Fo80ja6Zqybnbfcp8qHHgBZ3d53i1KP9t5DNwnC4gP2/OAtTKMNktLZRtoqh2fmh5xb2
-	ulGCpojPcIsRQigz5i1JChmXhu+iP9XvN8TqHOYSKS0iDZ3Yy8zc+mjAbgI42L/ufiXBNXAngdQ5O
-	B1/0ttz5R4Dw4LvoqboRjD6Th0xTGNJExrLJ0XsNRuOWHB2yawl3axs5pYIBQL5RuEtJIdGUuiF6P
-	W8fPzubQ==;
-Received: from p200301077700c3001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:107:7700:c300:1a3d:a2ff:febf:d33a] helo=aktux)
-	by mail.andi.de1.cc with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <andreas@kemnade.info>)
-	id 1rD4Zn-007JTV-Hw; Tue, 12 Dec 2023 16:21:39 +0100
-Date: Tue, 12 Dec 2023 16:21:37 +0100
-From: Andreas Kemnade <andreas@kemnade.info>
-To: Adam Ford <aford173@gmail.com>
-Cc: Linux-OMAP <linux-omap@vger.kernel.org>, USB list
- <linux-usb@vger.kernel.org>, stern@rowland.harvard.edu, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>
-Subject: Re: ehci-omap unresponsive when used with external hub
-Message-ID: <20231212162137.047f9337@aktux>
-In-Reply-To: <CAHCN7xKGW4j6HsELJNbT10OyNX0zx2207nz=AQ97VxKJaEQkyg@mail.gmail.com>
-References: <CAHCN7xKGW4j6HsELJNbT10OyNX0zx2207nz=AQ97VxKJaEQkyg@mail.gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+Received: from mail5.25mail.st (mail5.25mail.st [74.50.62.9])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3627BB7;
+	Tue, 12 Dec 2023 23:37:01 -0800 (PST)
+Received: from localhost (91-158-86-216.elisa-laajakaista.fi [91.158.86.216])
+	by mail5.25mail.st (Postfix) with ESMTPSA id 2274E60402;
+	Wed, 13 Dec 2023 07:36:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=atomide.com;
+	s=25mailst; t=1702453019;
+	bh=ySuNDXt7/qREolS5muvDf1EPyM3JYE99pT4IeNacUio=;
+	h=From:To:Cc:Subject:Date:From;
+	b=hWZ47rdxUD7y+RK1w1/FOqgtD7RW2mGkRi2B8/hqbjteh2nWSLl7DFXPmpH3nu0fJ
+	 6NDz8gdpKQHv+ZLUzQbrlk/oGA/0Ibc05HqcY335PlLNIdWcj/vqRHvZSiIk+W6lr6
+	 nshFdCEmb0KVfxZzOn/Hrl++dwllv/x94ROujsQcBrPnzV3w0dc+vZvAEstUt6gyl8
+	 UdRr2GHDsX2+Z92NKoQaKQMKqk71zVu429hVfg8b+r0iyi2aL9yC7bXDxASICqcpt4
+	 dNlR4wDo831A2BnsQAUW4TxeqnldACftMwmNAtbkQY6D/x62dj2jVBMH4Y7NQW2aJf
+	 XaLjr4228SGxw==
+From: Tony Lindgren <tony@atomide.com>
+To: linux-omap@vger.kernel.org
+Cc: =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+	devicetree@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] ARM: dts: Fix occasional boot hang for am3 usb
+Date: Wed, 13 Dec 2023 09:36:37 +0200
+Message-ID: <20231213073637.58778-1-tony@atomide.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Tue, 12 Dec 2023 08:58:31 -0600
-Adam Ford <aford173@gmail.com> wrote:
+With subtle timings changes, we can now sometimes get an external abort on
+non-linefetch error booting am3 devices at sysc_reset(). This is because
+of a missing reset delay needed for the usb target module.
 
-> I have been troubleshooting an issue with USB which appears to happen
-> with  AM3517, OMAP3530,  and DM3730 in which the USB doesn't detect
-> removal or connection of USB devices and interrupts stop occurring.
-> 
-> In every case, I have the OMAP3 EHCI connected to a USB3220
-> transceiver which is treated as configured in the device tree as
-> usb-nop-xceiv with reset-gpios configured to enable it.
-> 
-Also issues on GTA04 (DM3730):
-The modem is behind it. There is an errata for that
-combination.
-Somehow reset/turning off does not work really. On GTA04
-we have issues with current consumption during suspend.
-including scenarios where there is a mismatch between state
-of phy and what the omap side the state is.
+Looks like we never enabled the delay earlier for am3, although a similar
+issue was seen earlier with a similar usb setup for dm814x as described in
+commit ebf244148092 ("ARM: OMAP2+: Use srst_udelay for USB on dm814x").
 
-What we do:
-enable off-mode and force-reset of both sides.
+Cc: stable@vger.kernel.org
+Fixes: 0782e8572ce4 ("ARM: dts: Probe am335x musb with ti-sysc")
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+---
+ arch/arm/boot/dts/ti/omap/am33xx.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-and have this hack to solve at least the suspend issues:
-https://lore.kernel.org/linux-omap/20180216171414.8097-1-andreas@kemnade.info/
-
-Regards,
-Andreas
+diff --git a/arch/arm/boot/dts/ti/omap/am33xx.dtsi b/arch/arm/boot/dts/ti/omap/am33xx.dtsi
+--- a/arch/arm/boot/dts/ti/omap/am33xx.dtsi
++++ b/arch/arm/boot/dts/ti/omap/am33xx.dtsi
+@@ -359,6 +359,7 @@ usb: target-module@47400000 {
+ 					<SYSC_IDLE_NO>,
+ 					<SYSC_IDLE_SMART>,
+ 					<SYSC_IDLE_SMART_WKUP>;
++			ti,sysc-delay-us = <2>;
+ 			clocks = <&l3s_clkctrl AM3_L3S_USB_OTG_HS_CLKCTRL 0>;
+ 			clock-names = "fck";
+ 			#address-cells = <1>;
+-- 
+2.43.0
 
