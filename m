@@ -1,283 +1,160 @@
-Return-Path: <linux-omap+bounces-167-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-168-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA4F4816BB7
-	for <lists+linux-omap@lfdr.de>; Mon, 18 Dec 2023 11:58:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1EA281707E
+	for <lists+linux-omap@lfdr.de>; Mon, 18 Dec 2023 14:29:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73854283058
-	for <lists+linux-omap@lfdr.de>; Mon, 18 Dec 2023 10:58:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D851C1C24C10
+	for <lists+linux-omap@lfdr.de>; Mon, 18 Dec 2023 13:29:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 875EA1865E;
-	Mon, 18 Dec 2023 10:58:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7517E1D122;
+	Mon, 18 Dec 2023 13:29:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b="tkTaI0Oh";
-	dkim=permerror (0-bit key) header.d=goldelico.com header.i=@goldelico.com header.b="fEGF1X4Q"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YlGNlsCc"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [85.215.255.82])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1E9F1944C;
-	Mon, 18 Dec 2023 10:58:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=goldelico.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=goldelico.com
-ARC-Seal: i=1; a=rsa-sha256; t=1702896901; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=C+GcctB2GqhE5bop8Aj9RGm+kcjJWxVV/3heaXkTv9vhTX7eyAZlOcaqHGA2PXXyyC
-    lncH83/+HUJhRoraNL5YjtAQ8VBop+EUAqtfc2t67jwP3g0W914C4oK3X7V+5WO09hta
-    LQ4GLgh5QUS2ZhiRMpIHKX2KLiT9ykHpUUMikDC5Meqe2ApH+Eg73YlJW/vPsLdjLfsf
-    Gop5pGEWaRtX/tTXiRTC1HlrUE5g3saGPjWEDOIxYTf53qWf5Q7gkLEgx6dUD9XwSVs7
-    J561q2I2vony5qF9aUCiRO4YKqTKK+ZuL/Gs3BzVFR2dCPGfggC8HNtqW5kPtrp1JMy6
-    c6lw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1702896901;
-    s=strato-dkim-0002; d=strato.com;
-    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=U0UapUlvZAiZ2vADG8RSbN1Y4V7bjNd3k9xavKTkZ5s=;
-    b=SqXimfrdqSbDrbIcTsW9GvZlZ4BKJ8VOGJXQ9zoEtMDpW2sYYZYxERuqMSj7GZyHtM
-    wq8lhT9DPu3BP3WeEdSBxnWfakbXMv4aSHL5mOvaHT4Fxdo+pAhx68u6HMT3p1BhCj1g
-    dq48iPBC1YQb2OlRfk+4yRqIbUJQQFlcf5bro+3jRWu04J2ADoWeGJqnkkkUa0Vk3SzV
-    3x23HKoW6FK4/p1k6VUfof+DiyBR9TQk/jZjNR5CKOZnNh/iHMMem+UglLcGwWoniP7m
-    /shsqGAdI4YsbUtAEWiB4Muo2s/5WC3ZZRh5udrpvJTLx4nTvSHcdYd5bDX/v+0MpQNW
-    d1Jw==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo02
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1702896901;
-    s=strato-dkim-0002; d=goldelico.com;
-    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=U0UapUlvZAiZ2vADG8RSbN1Y4V7bjNd3k9xavKTkZ5s=;
-    b=tkTaI0OhlJnGUpdWsmYDXz3rc4fbPUDshnl007mxxpaFyOcDPo4Jjm8icZ07wJ1duH
-    331yCr6XMhsFtR7JeCGIu8PNznLr3nUVBLprXLQpsJkq6IsSGeQ1LLGcX9OA3KqQMxTo
-    QPMhDPvsB8QctNdfPlELTimAW/GriyrBhT86vhk1VPk9HLM0IrnMpd1o63J5byOiK9iM
-    B3tI2jAMJFnwHmFp6eN9cGXuLDmAp3lO1B5bo3huqZLsizXqPxje8zyvhvxGgwdRjpDb
-    8pPbfMda7f34XKf6r3Kv4emZyi4Bv+Ac1i+TXvIUeLv4i+vYDndrd61Jl4i8DbsCaMCW
-    UQcQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1702896901;
-    s=strato-dkim-0003; d=goldelico.com;
-    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=U0UapUlvZAiZ2vADG8RSbN1Y4V7bjNd3k9xavKTkZ5s=;
-    b=fEGF1X4Qn4cXKR2AN33frlccmWNT6IjflrJ4mcAVngWY8hfloycKBf45tTF+K8JX8a
-    skRkNOcU6ku1DV0LdhCQ==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj5Apz9PSN6LgsXcGZiDY="
-Received: from smtpclient.apple
-    by smtp.strato.de (RZmta 49.10.0 DYNA|AUTH)
-    with ESMTPSA id wfeb35zBIAswzma
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
-	(Client did not present a certificate);
-    Mon, 18 Dec 2023 11:54:58 +0100 (CET)
-Content-Type: text/plain;
-	charset=us-ascii
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C90981D127;
+	Mon, 18 Dec 2023 13:29:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-28b7a0d1665so371327a91.1;
+        Mon, 18 Dec 2023 05:29:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1702906140; x=1703510940; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=MTa54+lQlw7SR8DT+g/1Fr3hHx6APCXhIN2lYddiDtk=;
+        b=YlGNlsCcwKLPjrlRSJkQPJqKJV63zhOeoyt3eAct9Fbbzjz8plGLYBNBjWQBJzlOMV
+         4BGM1ZQXF8FT8bMcD9JLUHSlzRj3kYvI2jg00P4Y34Z9W6tUFHKff3sn6uMMJprQSviV
+         BrEFZw9abZM2OF8hiUAIZBxu6cDi6jmdBgQD2SIqIpj0kIxSOiokMhhIPO10tLBgAsWp
+         dfAWE7yPvlpApSHNeAmECQRp3JsEXmZ3ZlFB+jXKjUxCnir2ta56JfLAehy2y08ETyVr
+         5xTMVv3URi2kQZQZ82lW4x9t1zP8swUyOo7gqT0l8HmKycorSD2hYfIV5DyFcSM6oo5L
+         J7NA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702906140; x=1703510940;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MTa54+lQlw7SR8DT+g/1Fr3hHx6APCXhIN2lYddiDtk=;
+        b=Geddf41ey4ZC6pMBabPqZOGg9Qvns+gbpYjvoirk4wPlNYKaD0v2851o+gZeBAm6Jp
+         ZZwsbi5LIFAFjckdrOgpDTa9uJA+na4e5S7B8gAUvF3JURe0EP/SrukYxv+ss5gd/zGx
+         7djRyvhib0axjid4oSTqfrAKxQP5XYLwiqeYBOkYFNOsKj7FMAuE+Lc+LgqxHJkz44CD
+         UeopkqvZxiQiQ3frjUyInYzrnGihANRQwY1CCy4/0WOLyEYXjWrr7P/r+bKYO4CeBUnW
+         b1Q26J0patDfeJt3wLQ3FSy/Xrb9CXEqMkq99ukJ8TAPdt2TgeKYrOEKoV/q4VRG6WI+
+         Lcng==
+X-Gm-Message-State: AOJu0YxmHJ60q4jUgMWq+zyh9Ld+jYHoOkTV3a7orpq+dHHy9JvO5rXA
+	5G0NzjWYRyeurv3S6tTcXL8=
+X-Google-Smtp-Source: AGHT+IEZB2TgUmy45ncpAne6KqvvnvtmZ+gMBs+oCv3PsYgnCD1AOUambh3fKhCzFxZCE8jZycHozw==
+X-Received: by 2002:a17:90a:f406:b0:28b:4f4b:e53e with SMTP id ch6-20020a17090af40600b0028b4f4be53emr650117pjb.29.1702906139998;
+        Mon, 18 Dec 2023 05:28:59 -0800 (PST)
+Received: from archie.me ([103.131.18.64])
+        by smtp.gmail.com with ESMTPSA id lt8-20020a17090b354800b0028b493c8c2esm4582747pjb.22.2023.12.18.05.28.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 Dec 2023 05:28:59 -0800 (PST)
+Received: by archie.me (Postfix, from userid 1000)
+	id B66DC10212A1A; Mon, 18 Dec 2023 20:28:50 +0700 (WIB)
+From: Bagas Sanjaya <bagasdotme@gmail.com>
+To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux RPC <linux-remoteproc@vger.kernel.org>,
+	Linux OMAP <linux-omap@vger.kernel.org>,
+	Linux Memory Management List <linux-mm@kvack.org>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ohad Ben-Cohen <ohad@wizery.com>,
+	Bagas Sanjaya <bagasdotme@gmail.com>
+Subject: [PATCH v2] MAINTAINERS: Remove Ohad Ben-Cohen from hwspinlock subsystem
+Date: Mon, 18 Dec 2023 20:28:31 +0700
+Message-ID: <20231218132830.5104-2-bagasdotme@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.300.61.1.2\))
-Subject: Re: [PATCH RFC 01/10] dt-bindings: gpu: Add PowerVR Series5 SGX GPUs
-From: "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <22cny5aumc5wafsrjd3j55zcjbjf2viip64kfbjiqis2grtd6t@wg5dxeuzil6l>
-Date: Mon, 18 Dec 2023 11:54:47 +0100
-Cc: Andrew Davis <afd@ti.com>,
- Frank Binns <frank.binns@imgtec.com>,
- Donald Robson <donald.robson@imgtec.com>,
- Matt Coster <matt.coster@imgtec.com>,
- Adam Ford <aford173@gmail.com>,
- Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Thomas Zimmermann <tzimmermann@suse.de>,
- Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Chen-Yu Tsai <wens@csie.org>,
- Jernej Skrabec <jernej.skrabec@gmail.com>,
- Samuel Holland <samuel@sholland.org>,
- =?utf-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
- Tony Lindgren <tony@atomide.com>,
- Nishanth Menon <nm@ti.com>,
- Vignesh Raghavendra <vigneshr@ti.com>,
- Tero Kristo <kristo@kernel.org>,
- Paul Cercueil <paul@crapouillou.net>,
- dri-devel@lists.freedesktop.org,
- devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org,
- linux-sunxi@lists.linux.dev,
- linux-omap@vger.kernel.org,
- linux-mips@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <3E03E913-48E1-49EC-A6C9-EAC1612E65E7@goldelico.com>
-References: <20231204182245.33683-1-afd@ti.com>
- <20231204182245.33683-2-afd@ti.com>
- <23livt5mcc64bb6lkeec2uxp5cyn4wfekwaj6wzrjnrkndvwgj@6tveqglqpr4v>
- <B3A1B8A7-0363-4ECB-AFBF-576FECA569FA@goldelico.com>
- <vawv2mwhonuyvgmp7uox4rfgdcjwg5fa7hmbcfgl3wiase6e4p@tyavpclppfvu>
- <6BC60156-89E2-4734-BD00-B49A9A6C1D7A@goldelico.com>
- <6gpehpoz54f5lxhmvirqbfwmq7dpgiroy27cljpvu66wtn7aqy@lgrh7wysyxnp>
- <D8AB6CC4-DCA5-40DD-A311-94A16FF59254@goldelico.com>
- <oobcl2kfsuph27er7rflfqvt3lu6athufomxv5chf3uctx4emh@x6rzjtlskhbf>
- <F58855EC-D87D-4747-A363-0E7AA5DB1AEC@goldelico.com>
- <22cny5aumc5wafsrjd3j55zcjbjf2viip64kfbjiqis2grtd6t@wg5dxeuzil6l>
-To: Maxime Ripard <mripard@kernel.org>
-X-Mailer: Apple Mail (2.3774.300.61.1.2)
+MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2551; i=bagasdotme@gmail.com; h=from:subject; bh=7GhFXdwAV5PhQz23rGs3xKB6DfUzp3AwgsRqoRUYw+M=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDKkNHtVr5gse7Ooz7rY8brF6P9vj+UsE5ghL5bByRUncy DEKNrnWUcrCIMbFICumyDIpka/p9C4jkQvtax1h5rAygQxh4OIUgIkY7WP4X8mx0ClcuFo9drnA sYge208ezEvvRd/cUujsU5JZ5hZ9meF/osz9Eu259/YyCa357KxeEGt81ePW1G0PP1z4GRUbEHS FFQA=
+X-Developer-Key: i=bagasdotme@gmail.com; a=openpgp; fpr=701B806FDCA5D3A58FFB8F7D7C276C64A5E44A1D
+Content-Transfer-Encoding: 8bit
 
+Commit 62c46d55688894 ("MAINTAINERS: Removing Ohad from remoteproc/rpmsg
+maintenance") removes his MAINTAINERS entry in regards to remoteproc
+subsystem due to his inactivity (the last commit with his Signed-off-by
+is 99c429cb4e628e ("remoteproc/wkup_m3: Use MODULE_DEVICE_TABLE to
+export alias") which is authored in 2015 and his last LKML message prior
+to 62c46d55688894 was [1]).
 
+Remove also his MAINTAINERS entry for hwspinlock subsystem as there is
+no point of Cc'ing maintainers who never respond in a long time.
 
-> Am 18.12.2023 um 11:14 schrieb Maxime Ripard <mripard@kernel.org>:
->=20
-> On Mon, Dec 18, 2023 at 10:28:09AM +0100, H. Nikolaus Schaller wrote:
->> Hi Maxime,
->>=20
->>> Am 15.12.2023 um 14:33 schrieb Maxime Ripard <mripard@kernel.org>:
->>>=20
->>>>>=20
->>>>> It's for a separate architecture, with a separate driver, =
-maintained out
->>>>> of tree by a separate community, with a separate set of =
-requirements as
->>>>> evidenced by the other thread. And that's all fine in itself, but
->>>>> there's very little reason to put these two bindings in the same =
-file.
->>>>>=20
->>>>> We could also turn this around, why is it important that it's in =
-the
->>>>> same file?
->>>>=20
->>>> Same vendor. And enough similarity in architectures, even a logical =
-sequence
->>>> of development of versions (SGX =3D Version 5, Rogue =3D Version =
-6+) behind.
->>>> (SGX and Rogue seem to be just trade names for their architecture =
-development).
->>>=20
->>> Again, none of that matters for *where* the binding is stored.
->>=20
->> So what then speaks against extending the existing bindings file as =
-proposed
->> here?
->=20
-> I mean, apart from everything you quoted, then sure, nothing speaks
-> against it.
->=20
->>>> AFAIK bindings should describe hardware and not communities or =
-drivers
->>>> or who is currently maintaining it. The latter can change, the =
-first not.
->>>=20
->>> Bindings are supposed to describe hardware indeed. Nothing was ever =
-said
->>> about where those bindings are supposed to be located.
->>>=20
->>> There's hundreds of other YAML bindings describing devices of the =
-same
->>> vendors and different devices from the same generation.
->>=20
->> Usually SoC seem to be split over multiple files by subsystem. Not by =
-versions
->> or generations. If the subsystems are similar enough they share the =
-same bindings
->> doc instead of having one for each generation duplicating a lot of =
-code.
->>=20
->> Here is a comparable example that combines multiple vendors and =
-generations:
->>=20
->> Documentation/devicetree/bindings/usb/generic-ehci.yaml
->=20
-> EHCI is a single interface for USB2.0 controllers. It's a standard =
-API,
-> and is made of a single driver that requires minor modifications to =
-deal
-> with multiple devices.
->=20
-> We're very far from the same situation here.
+[1]: https://lore.kernel.org/r/CAK=Wgbbcyi36ef1-PV8VS=M6nFoQnFGUDWy6V7OCnkt0dDrtfg@mail.gmail.com/
 
-How far are we really? And, it is the purpose of the driver to handle =
-different cases.
+Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
+---
+Changes since v1 [2]:
+  * Add also OMAP hwspinlock & driver entries in CREDITS (Ohad)
 
-That there are currently two drivers is just a matter of history and not =
-a necessity.
+I was prompted to do the removal when I was reviewing kernel-doc fix
+[3]. When I was digging MAINTAINERS history (`git log --no-merges --
+MAINTAINERS`), I noticed that Ohad is inactive.
 
->=20
->>> If anything it'll make it easier for you. I'm really not sure why it =
-is
->>> controversial and you're fighting this so hard.
->>=20
->> Well, you made it controversial by proposing to split what IMHO =
-belongs together.
->=20
-> No, reviews aren't controversial.
-> The controversy started when you chose
-> to oppose it while you could have just rolled with it.
+This patch is based on mm-nonmm-unstable as I intend to route it
+through mm tree.
 
-Well, you asked
+[2]: https://lore.kernel.org/r/ZX04Ymz_vDFEeUDX@archie.me/
 
-"I think it would be best to have a separate file for this, img,sgx.yaml
-maybe?"
+[3]: https://lore.kernel.org/linux-mm/20231216111017.17624-2-bagasdotme@gmail.com/
 
-and
+ CREDITS     | 3 +++
+ MAINTAINERS | 4 +---
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-"Because it's more convenient?"
+diff --git a/CREDITS b/CREDITS
+index 81845c39e3cf37..3c7c953c7cf69b 100644
+--- a/CREDITS
++++ b/CREDITS
+@@ -323,6 +323,9 @@ N: Ohad Ben Cohen
+ E: ohad@wizery.com
+ D: Remote Processor (remoteproc) subsystem
+ D: Remote Processor Messaging (rpmsg) subsystem
++D: Hardware spinlock (hwspinlock) subsystem
++D: OMAP hwspinlock driver
++D: OMAP remoteproc driver
+ 
+ N: Krzysztof Benedyczak
+ E: golbi@mat.uni.torun.pl
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 5c9d3d8546714a..4acc4a3d4fcd96 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -9257,7 +9257,6 @@ F:	drivers/char/hw_random/
+ F:	include/linux/hw_random.h
+ 
+ HARDWARE SPINLOCK CORE
+-M:	Ohad Ben-Cohen <ohad@wizery.com>
+ M:	Bjorn Andersson <andersson@kernel.org>
+ R:	Baolin Wang <baolin.wang7@gmail.com>
+ L:	linux-remoteproc@vger.kernel.org
+@@ -15692,9 +15691,8 @@ F:	Documentation/devicetree/bindings/gpio/ti,omap-gpio.yaml
+ F:	drivers/gpio/gpio-omap.c
+ 
+ OMAP HARDWARE SPINLOCK SUPPORT
+-M:	Ohad Ben-Cohen <ohad@wizery.com>
+ L:	linux-omap@vger.kernel.org
+-S:	Maintained
++S:	Orphan
+ F:	drivers/hwspinlock/omap_hwspinlock.c
+ 
+ OMAP HS MMC SUPPORT
 
-I understood that as an invitation for discussing the pros and cons and =
-working out the
-most convenient solution. And that involves playing the devil's advocate =
-which of course
-is controversial by principle.
-
-Now, IMHO all the pros and cons are on the table and the question is who =
-makes a decision
-how to go.
-
->=20
->> I feel that the original patch is good enough for its purpose and =
-follows
->> some design pattern that can be deduced from other binding docs.
->=20
-> [citation needed]
-
-Joke: Documentation/devicetree/bindings/* - I am not aware of a formal =
-analysis of course.
-
-But see my example for ehci. It follows the pattern I mean. If clocks, =
-regs, interrupts,
-resets, and more properties are (almost) the same, then group them and =
-just differentiate
-by different compatible strings. If necessary use some - if: clauses.
-
-It is the task of drivers to handle the details.
-
-As my other (maybe more important) comment to this patch did indicate we =
-IMHO can easily
-live with something like
-
-+      - items:
-+          - enum:
-+              - ti,am62-gpu # IMG AXE GPU model/revision is fully =
-discoverable
-+              - ti,omap3430-gpu # sgx530 Rev 121
-+              - ti,omap3630-gpu # sgx530 Rev 125
-+              - ingenic,jz4780-gpu # sgx540 Rev 130
-+              - ti,omap4430-gpu # sgx540 Rev 120
-+              - allwinner,sun6i-a31-gpu # sgx544 MP2 Rev 115
-+              - ti,omap4470-gpu # sgx544 MP1 Rev 112
-+              - ti,omap5432-gpu # sgx544 MP2 Rev 105
-+              - ti,am5728-gpu # sgx544 MP2 Rev 116
-+              - ti,am6548-gpu # sgx544 MP1 Rev 117
-
-And leave it to drivers using a table to deduce the generation and
-revision or read it out from the chip. And there can even be different
-drivers handling only a subset of the potential compatibles.
-
-Then the currently-out-of-tree driver for the sgx5 can be reworked in
-less than half an hour without loosing functionality.
-
-BR,
-Nikolaus
+base-commit: cbeb59a84b8f29151b882d03a4d23d19d92f4337
+-- 
+An old man doll... just what I always wanted! - Clara
 
 
