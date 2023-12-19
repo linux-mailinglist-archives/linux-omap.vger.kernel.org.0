@@ -1,97 +1,157 @@
-Return-Path: <linux-omap+bounces-169-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-170-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F8A8817095
-	for <lists+linux-omap@lfdr.de>; Mon, 18 Dec 2023 14:37:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A0BD8182FF
+	for <lists+linux-omap@lfdr.de>; Tue, 19 Dec 2023 09:06:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D32191F22866
-	for <lists+linux-omap@lfdr.de>; Mon, 18 Dec 2023 13:37:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 61FD71C23789
+	for <lists+linux-omap@lfdr.de>; Tue, 19 Dec 2023 08:06:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 025BF37874;
-	Mon, 18 Dec 2023 13:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC07011716;
+	Tue, 19 Dec 2023 08:06:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wizery-com.20230601.gappssmtp.com header.i=@wizery-com.20230601.gappssmtp.com header.b="N/3zo5n7"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="IvcTWN+4"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC0D33786C
-	for <linux-omap@vger.kernel.org>; Mon, 18 Dec 2023 13:36:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wizery.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=wizery.com
-Received: by mail-yb1-f176.google.com with SMTP id 3f1490d57ef6-dbcdde08dc1so2137217276.1
-        for <linux-omap@vger.kernel.org>; Mon, 18 Dec 2023 05:36:31 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9843F11702
+	for <linux-omap@vger.kernel.org>; Tue, 19 Dec 2023 08:06:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-55333eb0312so2162730a12.1
+        for <linux-omap@vger.kernel.org>; Tue, 19 Dec 2023 00:06:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=wizery-com.20230601.gappssmtp.com; s=20230601; t=1702906591; x=1703511391; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=linaro.org; s=google; t=1702973177; x=1703577977; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=S1Q+zkEvozAEMPH7+PlxGKj4jlAEOXxsDof6pWa1inM=;
-        b=N/3zo5n7cr8z0e8fS39iMYf/AfFgBvfWdQVZL7avdhI+dX5MxIwYPT4K3dpM3MD0gI
-         sGjObtF4Q9Wvz+ALssyKtWUx0OcyY3foy0iJebF0W6pUHmGsrhce7frWYLeGYd5SI82Q
-         V1GEM8wDvvsCGKKXyiLC/weWRQRDe0c/2rUmqVEzayYJY81YcjGuwzfShc0M+f5seCt0
-         VbBYKfhegyKhMjm9xW3kR/VCGM/2no03VL1ZmmoGm842wSVYlMkdACzYOKTnLoF/zQLp
-         VO507x9rOctwImSubebm1C2KqDZ+jJDjQ6ucwjm73QLnEZNeJbK1ILf6tqSjaH+gSpLF
-         cpPQ==
+        bh=zHZZ1qBFLYk5D7ybnvL0vNBwkKCdL+WfKJkMFR2G4jQ=;
+        b=IvcTWN+420WsmMQcZ+Ce8AZ7w11Au3LmG0wbK58RSbKxX63/cTJQkGx0xgCArXNcyP
+         yDDAuXZ7tXPRj5TNcOnoCSVzvJNu7mzM1tE8rV0WWWqEmC4i3N4EmWwKt95CVxtDKAEl
+         juyPD/IL8tHUIldkR03oaygtthIhQ9VFdpi/xPKnQStSiETd5YqGNzNc0co8NUWzLRQJ
+         dT8uMUhzkFUJlCUiMwAYNWpKLSh+u+dzQV2zQtIHmtmgbCCl1KIqgb/P2K5uPcM4AJhd
+         XHw4f6KIW5ub0VwNpe/SY2wciPVyu8k2zcX0DEJ9MnoE8olRVeGWfQhc0Hbgw5AnF/U5
+         cYPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702906591; x=1703511391;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1702973177; x=1703577977;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=S1Q+zkEvozAEMPH7+PlxGKj4jlAEOXxsDof6pWa1inM=;
-        b=nGkxsrjke93FHEs3yakzQl8CRhA2avki3JIJUJJx0uNRdr1+gdrC4eGJ2Z13d+9WAh
-         K/LmX58YkY8KXwL12Eh5TPdWRXtVgHG8QFs1jNV88H4S2qTuVZBdulCenhnvwx/ETXOs
-         btByRv9TZvu94HJm4S6gB1bd4YM27bzipB8pYlJLMCCGCTVfsYlDQMw7Hy/241qXHUrr
-         K1YejHKKkdxGRCxUAR517VKMr0vtJE4mg0RB2Lj3lgygEDmckOMabqx5lbQyHi0iIzJ7
-         ZBW78rEhEQDj6NCd3besHYpNODSLpVsdTu9fPYy5/U9tryTttBCefML4EnSRyZA8tYKM
-         2chA==
-X-Gm-Message-State: AOJu0Yz+/hCCOjOYYl5NJPLloZPhp+o5dbFeBMr0FOyr1gWzW7XqwsfN
-	JFBUoMp1Qbv+fOLLWMx07Px/8s9aha6+VHBB4rtY3g==
-X-Google-Smtp-Source: AGHT+IFRiFASHsEIuPxB9DH7eGlgjvjqSybAmPcflOdzRQaWzdHZYCjupXmJtUwKiCXDd6Js7et5QRcmpTWF8pT7Acs=
-X-Received: by 2002:a25:cb94:0:b0:dbd:4629:6fa8 with SMTP id
- b142-20020a25cb94000000b00dbd46296fa8mr274388ybg.56.1702906590733; Mon, 18
- Dec 2023 05:36:30 -0800 (PST)
+        bh=zHZZ1qBFLYk5D7ybnvL0vNBwkKCdL+WfKJkMFR2G4jQ=;
+        b=YRwTdyfSIITT+5UzSLPIMeGHMqHQNq7jWOw/dE3yFC9ZBZe38lzFOnzaJsp0PIO3ks
+         Bwtcc5F5PX+GVeVMonSE7zvfzx2+Bk7p5DyGJx856i9a8ocg/e4JvpeHNck/2PcrF1SH
+         2bBfKuBdutgymEJB4jG0dw74hLlzZDas6EsyhfJ9846bL2aZ0ZN+ohA2QI7pCBIrsGdj
+         9V5Yh0T46UrIBTIHyVzlRdEDmIg3n50CjybMVxjgj0s/B8PJc+tqRC4lfWoMaVdsPLl2
+         GmNEcrTZE1aubI9vV0+74QnjeiKfo83Wig3Bhl4v7Vw7Ub1qkFiX/6yVtKvhukSV41Bi
+         OHww==
+X-Gm-Message-State: AOJu0YxMFOvWxeNTV8H33T9v9P8sK8rmGCcjx7PfFjqt8ysnCNGA8Gad
+	67eqzvYjBLvmTcY+19GsLHZJRg==
+X-Google-Smtp-Source: AGHT+IFk7nCwJ3Cgygcv0PPxf8Nmoq++kFT+oSJXnVr98jtfa/yztBLisAU2VWlBWmsiTo2oa5jg+Q==
+X-Received: by 2002:a50:cbc7:0:b0:54c:5d34:980c with SMTP id l7-20020a50cbc7000000b0054c5d34980cmr8989833edi.82.1702973176885;
+        Tue, 19 Dec 2023 00:06:16 -0800 (PST)
+Received: from krzk-bin.. ([178.197.218.27])
+        by smtp.gmail.com with ESMTPSA id t16-20020aa7d710000000b00553533738f0sm1667914edq.57.2023.12.19.00.06.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 Dec 2023 00:06:16 -0800 (PST)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	kernel@pengutronix.de,
+	Markus Mayer <mmayer@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Santosh Shilimkar <ssantosh@kernel.org>,
+	Paul Cercueil <paul@crapouillou.net>,
+	linux-mips@vger.kernel.org,
+	Yong Wu <yong.wu@mediatek.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	linux-mediatek@lists.infradead.org,
+	Roger Quadros <rogerq@kernel.org>,
+	Tony Lindgren <tony@atomide.com>,
+	linux-omap@vger.kernel.org,
+	Lukasz Luba <lukasz.luba@arm.com>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	linux-pm@vger.kernel.org,
+	linux-samsung-soc@vger.kernel.org,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Sumit Gupta <sumitg@nvidia.com>,
+	Nick Alcock <nick.alcock@oracle.com>,
+	linux-tegra@vger.kernel.org,
+	Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH 00/15] memory: Convert to platform remove callback returning void
+Date: Tue, 19 Dec 2023 09:06:12 +0100
+Message-Id: <170297316309.10063.8435852209780151651.b4-ty@linaro.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <cover.1702822744.git.u.kleine-koenig@pengutronix.de>
+References: <cover.1702822744.git.u.kleine-koenig@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231218132830.5104-2-bagasdotme@gmail.com>
-In-Reply-To: <20231218132830.5104-2-bagasdotme@gmail.com>
-From: Ohad Ben Cohen <ohad@wizery.com>
-Date: Mon, 18 Dec 2023 15:36:19 +0200
-Message-ID: <CAK=WgbZ_HoaXgax4Cp97i6u8DAUzE1AA76tnUwLCVJ3dp7Y4ZA@mail.gmail.com>
-Subject: Re: [PATCH v2] MAINTAINERS: Remove Ohad Ben-Cohen from hwspinlock subsystem
-To: Bagas Sanjaya <bagasdotme@gmail.com>
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
-	Linux RPC <linux-remoteproc@vger.kernel.org>, Linux OMAP <linux-omap@vger.kernel.org>, 
-	Linux Memory Management List <linux-mm@kvack.org>, Bjorn Andersson <andersson@kernel.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Mathieu Poirier <mathieu.poirier@linaro.org>, Andrew Morton <akpm@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On Mon, Dec 18, 2023 at 3:29=E2=80=AFPM Bagas Sanjaya <bagasdotme@gmail.com=
-> wrote:
-> Commit 62c46d55688894 ("MAINTAINERS: Removing Ohad from remoteproc/rpmsg
-> maintenance") removes his MAINTAINERS entry in regards to remoteproc
-> subsystem due to his inactivity (the last commit with his Signed-off-by
-> is 99c429cb4e628e ("remoteproc/wkup_m3: Use MODULE_DEVICE_TABLE to
-> export alias") which is authored in 2015 and his last LKML message prior
-> to 62c46d55688894 was [1]).
->
-> Remove also his MAINTAINERS entry for hwspinlock subsystem as there is
-> no point of Cc'ing maintainers who never respond in a long time.
->
-> [1]: https://lore.kernel.org/r/CAK=3DWgbbcyi36ef1-PV8VS=3DM6nFoQnFGUDWy6V=
-7OCnkt0dDrtfg@mail.gmail.com/
->
-> Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
-> ---
 
-Acked-by: Ohad Ben Cohen <ohad@wizery.com>
+On Sun, 17 Dec 2023 15:29:26 +0100, Uwe Kleine-König wrote:
+> this series converts the platform drivers below drivers/memory to make
+> use of .remove_new. See commit 5c5a7680e67b ("platform: Provide a remove
+> callback that returns no value") for an extended explanation and the
+> eventual goal. The TL;DR; is to make it harder for driver authors to
+> leak resources without noticing.
+> 
+> This is merge window material. All patches are pairwise independent of
+> each other so they can be applied individually. Still it would be great
+> to let them go in all together.
+> 
+> [...]
+
+Applied, thanks!
+
+[01/15] memory: brcmstb_dpfe: Convert to platform remove callback returning void
+        https://git.kernel.org/krzk/linux-mem-ctrl/c/431187eadbc7b0f2650d4e55111b3fff4720f867
+[02/15] memory: brcmstb_memc: Convert to platform remove callback returning void
+        https://git.kernel.org/krzk/linux-mem-ctrl/c/f7754712ad6094de5be18674777b265ed4db2f45
+[03/15] memory: emif: Convert to platform remove callback returning void
+        https://git.kernel.org/krzk/linux-mem-ctrl/c/c8a53461990cb697ca494d6671fab9e196d20ce4
+[04/15] memory: fsl-corenet-cf: Convert to platform remove callback returning void
+        https://git.kernel.org/krzk/linux-mem-ctrl/c/021d044b0f9c9a09aa2f778e876e467a8810fb4a
+[05/15] memory: fsl_ifc: Convert to platform remove callback returning void
+        https://git.kernel.org/krzk/linux-mem-ctrl/c/f17130855d51f24563a24cd957add769ad59eee9
+[06/15] memory: jz4780-nemc: Convert to platform remove callback returning void
+        https://git.kernel.org/krzk/linux-mem-ctrl/c/9024fbbd77b4d73279bbbe2c748a4e4b414d50cc
+[07/15] memory: mtk-smi: Convert to platform remove callback returning void
+        https://git.kernel.org/krzk/linux-mem-ctrl/c/08c1aeaa45ce0fd18912e92c6705586c8aa5240f
+[08/15] memory: omap-gpmc: Convert to platform remove callback returning void
+        https://git.kernel.org/krzk/linux-mem-ctrl/c/6a4edb1a4f61e28cc127cd06c470ce3599ee0d9c
+[09/15] memory: renesas-rpc-if: Convert to platform remove callback returning void
+        https://git.kernel.org/krzk/linux-mem-ctrl/c/961abc9f7d6771e8f13db1f4d8b0ffff3f0f41a4
+[10/15] memory: exynos5422-dmc: Convert to platform remove callback returning void
+        https://git.kernel.org/krzk/linux-mem-ctrl/c/8013408e4912fb7e469bb8b14fd3a5c956257eec
+[11/15] memory: stm32-fmc2-ebi: Convert to platform remove callback returning void
+        https://git.kernel.org/krzk/linux-mem-ctrl/c/1455b6b0c83132960826d0e527a79a355e096a80
+[12/15] memory: tegra186-emc: Convert to platform remove callback returning void
+        https://git.kernel.org/krzk/linux-mem-ctrl/c/dcefa0368458e9e20642dbd2608adae6b22e6464
+[13/15] memory: tegra210-emc: Convert to platform remove callback returning void
+        https://git.kernel.org/krzk/linux-mem-ctrl/c/622fa819a2f0f3e6d8322a0b6d3177302ae937b6
+[14/15] memory: ti-aemif: Convert to platform remove callback returning void
+        https://git.kernel.org/krzk/linux-mem-ctrl/c/7852eb8c8ac7e0164b43cc5f8d8245cc3a037620
+[15/15] memory: ti-emif-pm: Convert to platform remove callback returning void
+        https://git.kernel.org/krzk/linux-mem-ctrl/c/365fcc03b6321f36eb7cbda8baa737238c387907
+
+Best regards,
+-- 
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
