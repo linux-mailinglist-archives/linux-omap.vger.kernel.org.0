@@ -1,114 +1,159 @@
-Return-Path: <linux-omap+bounces-178-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-179-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9809D819E1D
-	for <lists+linux-omap@lfdr.de>; Wed, 20 Dec 2023 12:32:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA93C819E36
+	for <lists+linux-omap@lfdr.de>; Wed, 20 Dec 2023 12:36:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DBD41F2141D
-	for <lists+linux-omap@lfdr.de>; Wed, 20 Dec 2023 11:32:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC0371C2291C
+	for <lists+linux-omap@lfdr.de>; Wed, 20 Dec 2023 11:36:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFD4921374;
-	Wed, 20 Dec 2023 11:32:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B511B219F3;
+	Wed, 20 Dec 2023 11:36:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ue8ojmu8"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ZDGHwBCP"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5245F2136C;
-	Wed, 20 Dec 2023 11:32:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-77f48aef0a5so278740885a.2;
-        Wed, 20 Dec 2023 03:32:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1703071942; x=1703676742; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=lxgS9u6mFX9Ztz+0R/k8TQqg/aAzdW+aDbsddeXhpos=;
-        b=Ue8ojmu80hBzCWFTKLGqRr6styg386bR8K+JsW/w3MXhsl0CULtuaW+Ed0lc8l2az5
-         tkqq59HzvG0RBhZ2XVTkJm/4HykGLz8qXPZ/pTc6P20UtO94Ak9S/q+9CCJb7T+qCBuK
-         QgPAmorxCrOdm8u1f0jqH8i+AFiYbMBMr+jD+awxtfrMkrQr5mBLCtRD4evKTkm5HyJW
-         Q9fo7tttUkJNwiyYM6VXOz65FNukcEHt650pVYDMra4SS6cRV2/plvahSjcd+owU7htm
-         i/+i+dE7m6qMOgabWIky/C6znQII7tLe7Mkf9UpWDOUr7wN0kx0XSANVrnDKkhmby9iY
-         R+nA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703071942; x=1703676742;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=lxgS9u6mFX9Ztz+0R/k8TQqg/aAzdW+aDbsddeXhpos=;
-        b=S4q1SCAbPUXq5GWzkfGV5pXDYxTPOK05eT3WixswcOBd+0D/vZ0oA5nWW6qOPJlF7S
-         iwg4WGuhcIpiw/zHUHpW3g1q+KwUfKJzSgxq3b0XQyp2thvmbX37gMiRVLcTJeyjiDDZ
-         3XXoNBHbtaa+ccHoncy9PbPcI2VVyxVB0Twtlj+QT8+ObTvwRj8g0cwmRG3aV0vzkNk2
-         XdkrhXAxgg+g+hmGyD2xoE/RzSX/v09W6WV0zezQFymslP+lNYtUxIMUtGQkmMNBplY2
-         G749GUejPC41VxhDXH2G2EFZRsXtKPOdsrNnCDVuMgMK1Hr3vrdFJjYIEae6jGGYWDFM
-         3N1g==
-X-Gm-Message-State: AOJu0Yxs+zc45oXQwnjT/m/fFXK7P9PMRwd12sGq+7FYrkzDMGS8Xu+z
-	ozl6BjH91qTxNXsYjYnKJMI=
-X-Google-Smtp-Source: AGHT+IE6EECnpVJXCAv9L9t6SHEec7vLbyEGxkPTXd4Vcz28TeLelCP82vA+JuGKvqz78NqqgjykRQ==
-X-Received: by 2002:a05:620a:15a4:b0:77d:85d9:c655 with SMTP id f4-20020a05620a15a400b0077d85d9c655mr14993188qkk.14.1703071942321;
-        Wed, 20 Dec 2023 03:32:22 -0800 (PST)
-Received: from morpheus.home.roving-it.com (2.1.9.e.d.3.3.1.6.1.e.d.5.3.a.e.1.8.6.2.1.1.b.f.0.b.8.0.1.0.0.2.ip6.arpa. [2001:8b0:fb11:2681:ea35:de16:133d:e912])
-        by smtp.googlemail.com with ESMTPSA id d3-20020a05620a240300b007788c1a81b6sm561717qkn.46.2023.12.20.03.32.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Dec 2023 03:32:21 -0800 (PST)
-From: Peter Robinson <pbrobinson@gmail.com>
-To: Tom Joseph <tjoseph@cadence.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-omap@vger.kernel.org
-Cc: Peter Robinson <pbrobinson@gmail.com>
-Subject: [PATCH] PCI: cadence: Fix TI J721E PCIe SoC dependencies
-Date: Wed, 20 Dec 2023 11:32:08 +0000
-Message-ID: <20231220113214.413632-1-pbrobinson@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2A6221379;
+	Wed, 20 Dec 2023 11:36:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 2E3941BF203;
+	Wed, 20 Dec 2023 11:36:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1703072162;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=x+sCRFL2UuJ2Inm7d7HF8h3P+fdYtvsGALrrMT6jGy0=;
+	b=ZDGHwBCP9C5RS5Mdj3Bjf4D/2IhVYaD4W3rg5u6oSwMrJ0GWyCOrJ2sRMX3unF2JsvYAKU
+	9CVKuqW96AzpS7KO+IVyiTTqfRax+kMnYFYarNh0O1Dehie7HRuEaG/qOLpkr21/isUFEF
+	u/Sna1FeAFcNGAEydaPDMtk/F1umQbPGCJGbYOD485cJ441usOuviK9um+PeBUoJJWQ7io
+	uFDBm7CXpxJrDoaszDFqpGfhER0JhIAVVkA7V2FCGqDelbxqWbWRUmT4doXYFHwvH/H+dp
+	g7apDyGkUJPmgKLcXnnml1jG7kPoIerqneXsdfb+riWvgS0IJ7xgbCass/bXhA==
+Message-ID: <7b743758-fbc1-4cad-bfbc-d3fd3e69ce17@bootlin.com>
+Date: Wed, 20 Dec 2023 12:36:01 +0100
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: omap-i2c: runtime pm issue during suspend to ram
+Content-Language: en-US
+To: Tony Lindgren <tony@atomide.com>
+Cc: linux-pm@vger.kernel.org, linux-i2c@vger.kernel.org,
+ linux-omap@vger.kernel.org, Vignesh Raghavendra <vigneshr@ti.com>,
+ Kevin Hilman <khilman@kernel.org>, =?UTF-8?Q?Th=C3=A9o_Lebrun?=
+ <theo.lebrun@bootlin.com>, Gregory CLEMENT <gregory.clement@bootlin.com>,
+ Kumar Udit <u-kumar1@ti.com>
+References: <f68c9a54-0fde-4709-9d2f-0d23a049341b@bootlin.com>
+ <4c31acd8-4edb-44f5-9a90-cb2f2dc530b6@bootlin.com>
+ <20231220111415.GZ5166@atomide.com>
+From: Thomas Richard <thomas.richard@bootlin.com>
+In-Reply-To: <20231220111415.GZ5166@atomide.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-GND-Sasl: thomas.richard@bootlin.com
 
-The J721E PCIe is hardware specific to the TI SoC parts
-so add a depenency on that so it's available for those
-SoC parts and for compile testing but not necessarily
-everyone who enables the Cadence PCIe controller.
+On 12/20/23 12:14, Tony Lindgren wrote:
+> * Thomas Richard <thomas.richard@bootlin.com> [231220 10:50]:
+>> On 12/19/23 18:15, Thomas Richard wrote:
+>>> Hello,
+>>
+>> I add some people in this thread.
+>>
+>>>
+>>> I have a gpio expander (pca953x driver) connected to an i2c controller
+>>> managed by the omap-i2c driver.
+>>> And I have some issues with pm_runtime_force_suspend/resume during
+>>> suspend to ram.
+>>> For some reasons, related to hardware design, I need to access to this
+>>> gpio expander during suspend_noirq and resume_noirq. So I had to move
+>>> the suspend/resume of the pca953x to suspend_noirq/resume_noirq.
+> 
+> Hmm at noirq level you need to do polling on the i2c controller?
 
-Signed-off-by: Peter Robinson <pbrobinson@gmail.com>
----
- drivers/pci/controller/cadence/Kconfig | 2 ++
- 1 file changed, 2 insertions(+)
+Hello Tony,
 
-diff --git a/drivers/pci/controller/cadence/Kconfig b/drivers/pci/controller/cadence/Kconfig
-index 291d12711363..1d5a70c9055e 100644
---- a/drivers/pci/controller/cadence/Kconfig
-+++ b/drivers/pci/controller/cadence/Kconfig
-@@ -47,6 +47,7 @@ config PCI_J721E
- 
- config PCI_J721E_HOST
- 	bool "TI J721E PCIe controller (host mode)"
-+	depends on ARCH_K3 || COMPILE_TEST
- 	depends on OF
- 	select PCIE_CADENCE_HOST
- 	select PCI_J721E
-@@ -57,6 +58,7 @@ config PCI_J721E_HOST
- 
- config PCI_J721E_EP
- 	bool "TI J721E PCIe controller (endpoint mode)"
-+	depends on ARCH_K3 || COMPILE_TEST
- 	depends on OF
- 	depends on PCI_ENDPOINT
- 	select PCIE_CADENCE_EP
+Thanks for your reply.
+
+No, irq is still active in suspend_noirq for this i2c controller due to
+the flag IRQF_NO_SUSPEND [1].
+If this flag is set, the interrupt is still enabled in suspend_noirq [2].
+
+[1]
+https://elixir.bootlin.com/linux/v6.7-rc6/source/drivers/i2c/busses/i2c-omap.c#L1473
+[2]
+https://www.kernel.org/doc/html/latest/power/suspend-and-interrupts.html#the-irqf-no-suspend-flag
+
+> 
+>>> diff --git a/drivers/i2c/busses/i2c-omap.c b/drivers/i2c/busses/i2c-omap.c
+>>> index 42165ef57946..fe79b27b46fd 100644
+>>> --- a/drivers/i2c/busses/i2c-omap.c
+>>> +++ b/drivers/i2c/busses/i2c-omap.c
+>>> @@ -1575,9 +1575,24 @@ static int __maybe_unused
+>>> omap_i2c_runtime_resume(struct device *dev)
+>>>         return 0;
+>>>  }
+>>>
+>>> +static int omap_i2c_suspend(struct device *dev)
+>>> +{
+>>> +       pm_runtime_get_sync(dev);
+>>> +       pm_runtime_disable(dev);
+>>> +       return 0;
+>>> +}
+> 
+> If you want the i2c controller enabled during suspend, you can leave it
+> enabled above, and as we already have SET_NOIRQ_SYSTEM_SLEEP_PM_OPS
+> doing force_suspend() and force_resume(), you can runtime PM put on
+> resume. So something like below might do the trick:
+
+Ok I'll test it. Thanks
+
+> 
+> static int omap_i2c_suspend(struct device *dev)
+> {
+> 	return pm_runtime_resume_and_get(dev);
+> }
+> 
+> static int omap_i2c_resume(struct device *dev)
+> {
+> 	pm_runtime_mark_last_busy(dev);
+> 	pm_runtime_put_autosuspend(dev);
+> 
+> 	return 0;
+> }
+> 
+>>>  static const struct dev_pm_ops omap_i2c_pm_ops = {
+>>>         SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
+>>>                                       pm_runtime_force_resume)
+>>> +       SET_SYSTEM_SLEEP_PM_OPS(omap_i2c_suspend, omap_i2c_resume)
+>>>         SET_RUNTIME_PM_OPS(omap_i2c_runtime_suspend,
+>>>                            omap_i2c_runtime_resume, NULL)
+>>>  };
+> 
+> And with the changes you did to omap_i2c_pm_ops naturally. This way
+> the controller should stay active until noirq ops.
+> 
+> Of course it's possible I did not quite understand what you're trying
+> to do, but if so please let me know :)
+
+The context is:
+One gpio of this expander is the reset pin of PCIe endpoints.
+And this reset pin shall be managed during the suspend_noirq and
+resume_noirq of the PCIe controller.
+That's why I need to do some i2c accesses during suspend_noirq/resume_noirq.
+
 -- 
-2.43.0
+Thomas Richard, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
