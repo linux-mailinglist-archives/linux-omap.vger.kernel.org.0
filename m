@@ -1,49 +1,74 @@
-Return-Path: <linux-omap+bounces-177-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-178-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9056F819E17
-	for <lists+linux-omap@lfdr.de>; Wed, 20 Dec 2023 12:31:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9809D819E1D
+	for <lists+linux-omap@lfdr.de>; Wed, 20 Dec 2023 12:32:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15572B262D6
-	for <lists+linux-omap@lfdr.de>; Wed, 20 Dec 2023 11:31:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DBD41F2141D
+	for <lists+linux-omap@lfdr.de>; Wed, 20 Dec 2023 11:32:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99E562136C;
-	Wed, 20 Dec 2023 11:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFD4921374;
+	Wed, 20 Dec 2023 11:32:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b="qw2bWeZ9"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ue8ojmu8"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail5.25mail.st (mail5.25mail.st [74.50.62.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3924249EC
-	for <linux-omap@vger.kernel.org>; Wed, 20 Dec 2023 11:30:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=atomide.com
-Received: from localhost (91-158-86-216.elisa-laajakaista.fi [91.158.86.216])
-	by mail5.25mail.st (Postfix) with ESMTPSA id 499FF6035A;
-	Wed, 20 Dec 2023 11:30:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=atomide.com;
-	s=25mailst; t=1703071830;
-	bh=truEa3QfuBAMEME0k+wwNOzHU4FpTuZaTpVLIKlT97w=;
-	h=From:To:Cc:Subject:Date:From;
-	b=qw2bWeZ9bSMbd2PJXfn7ovGqSysu0PaOpYwETxe0RTzuFZ2lyxeZDSRr2OG0VGpi8
-	 gw7CEo1QHlb84QrWmYmAzoVVBJCiji9vjC4uXBUU/LyInZ/bsIBAr/JUE2iDDgxJNW
-	 y/NMdeGQgQiFUes2dfMzLUhr0yVF9Oepubah/oAtmARAmkGzApFI6yqPqC2i7zpmbq
-	 Wn5jnTse+NBNYA9b11vMyVl2ej+bSdOQSL+fuNkYp9Ia1hOaKUnwCFkHuRiKOl+bxW
-	 b6GadN05+uE7/0ewOnijZTP86hX/19/hXqmudGq2E4q5706DRusAgYJNsooYDd/h14
-	 HCk5k6n6b8DZw==
-From: Tony Lindgren <tony@atomide.com>
-To: soc@kernel.org
-Cc: arm@kernel.org,
-	linux-omap@vger.kernel.org,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5245F2136C;
+	Wed, 20 Dec 2023 11:32:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-77f48aef0a5so278740885a.2;
+        Wed, 20 Dec 2023 03:32:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1703071942; x=1703676742; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=lxgS9u6mFX9Ztz+0R/k8TQqg/aAzdW+aDbsddeXhpos=;
+        b=Ue8ojmu80hBzCWFTKLGqRr6styg386bR8K+JsW/w3MXhsl0CULtuaW+Ed0lc8l2az5
+         tkqq59HzvG0RBhZ2XVTkJm/4HykGLz8qXPZ/pTc6P20UtO94Ak9S/q+9CCJb7T+qCBuK
+         QgPAmorxCrOdm8u1f0jqH8i+AFiYbMBMr+jD+awxtfrMkrQr5mBLCtRD4evKTkm5HyJW
+         Q9fo7tttUkJNwiyYM6VXOz65FNukcEHt650pVYDMra4SS6cRV2/plvahSjcd+owU7htm
+         i/+i+dE7m6qMOgabWIky/C6znQII7tLe7Mkf9UpWDOUr7wN0kx0XSANVrnDKkhmby9iY
+         R+nA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1703071942; x=1703676742;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lxgS9u6mFX9Ztz+0R/k8TQqg/aAzdW+aDbsddeXhpos=;
+        b=S4q1SCAbPUXq5GWzkfGV5pXDYxTPOK05eT3WixswcOBd+0D/vZ0oA5nWW6qOPJlF7S
+         iwg4WGuhcIpiw/zHUHpW3g1q+KwUfKJzSgxq3b0XQyp2thvmbX37gMiRVLcTJeyjiDDZ
+         3XXoNBHbtaa+ccHoncy9PbPcI2VVyxVB0Twtlj+QT8+ObTvwRj8g0cwmRG3aV0vzkNk2
+         XdkrhXAxgg+g+hmGyD2xoE/RzSX/v09W6WV0zezQFymslP+lNYtUxIMUtGQkmMNBplY2
+         G749GUejPC41VxhDXH2G2EFZRsXtKPOdsrNnCDVuMgMK1Hr3vrdFJjYIEae6jGGYWDFM
+         3N1g==
+X-Gm-Message-State: AOJu0Yxs+zc45oXQwnjT/m/fFXK7P9PMRwd12sGq+7FYrkzDMGS8Xu+z
+	ozl6BjH91qTxNXsYjYnKJMI=
+X-Google-Smtp-Source: AGHT+IE6EECnpVJXCAv9L9t6SHEec7vLbyEGxkPTXd4Vcz28TeLelCP82vA+JuGKvqz78NqqgjykRQ==
+X-Received: by 2002:a05:620a:15a4:b0:77d:85d9:c655 with SMTP id f4-20020a05620a15a400b0077d85d9c655mr14993188qkk.14.1703071942321;
+        Wed, 20 Dec 2023 03:32:22 -0800 (PST)
+Received: from morpheus.home.roving-it.com (2.1.9.e.d.3.3.1.6.1.e.d.5.3.a.e.1.8.6.2.1.1.b.f.0.b.8.0.1.0.0.2.ip6.arpa. [2001:8b0:fb11:2681:ea35:de16:133d:e912])
+        by smtp.googlemail.com with ESMTPSA id d3-20020a05620a240300b007788c1a81b6sm561717qkn.46.2023.12.20.03.32.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 Dec 2023 03:32:21 -0800 (PST)
+From: Peter Robinson <pbrobinson@gmail.com>
+To: Tom Joseph <tjoseph@cadence.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	linux-pci@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
-	"Tony Lindgren" <tony@atomide.com>
-Subject: [GIT PULL] Fix for am335x usb boot hang
-Date: Wed, 20 Dec 2023 13:30:14 +0200
-Message-ID: <pull-1703071616-395333@atomide.com>
+	linux-omap@vger.kernel.org
+Cc: Peter Robinson <pbrobinson@gmail.com>
+Subject: [PATCH] PCI: cadence: Fix TI J721E PCIe SoC dependencies
+Date: Wed, 20 Dec 2023 11:32:08 +0000
+Message-ID: <20231220113214.413632-1-pbrobinson@gmail.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
@@ -51,36 +76,39 @@ List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: "Tony Lindgren" <tony@atomide.com>
+The J721E PCIe is hardware specific to the TI SoC parts
+so add a depenency on that so it's available for those
+SoC parts and for compile testing but not necessarily
+everyone who enables the Cadence PCIe controller.
 
-The following changes since commit c72b9c33ef9695ad7ce7a6eb39a9df8a01b70796:
+Signed-off-by: Peter Robinson <pbrobinson@gmail.com>
+---
+ drivers/pci/controller/cadence/Kconfig | 2 ++
+ 1 file changed, 2 insertions(+)
 
-  ARM: OMAP2+: Fix null pointer dereference and memory leak in omap_soc_device_init (2023-11-30 13:57:00 +0200)
+diff --git a/drivers/pci/controller/cadence/Kconfig b/drivers/pci/controller/cadence/Kconfig
+index 291d12711363..1d5a70c9055e 100644
+--- a/drivers/pci/controller/cadence/Kconfig
++++ b/drivers/pci/controller/cadence/Kconfig
+@@ -47,6 +47,7 @@ config PCI_J721E
+ 
+ config PCI_J721E_HOST
+ 	bool "TI J721E PCIe controller (host mode)"
++	depends on ARCH_K3 || COMPILE_TEST
+ 	depends on OF
+ 	select PCIE_CADENCE_HOST
+ 	select PCI_J721E
+@@ -57,6 +58,7 @@ config PCI_J721E_HOST
+ 
+ config PCI_J721E_EP
+ 	bool "TI J721E PCIe controller (endpoint mode)"
++	depends on ARCH_K3 || COMPILE_TEST
+ 	depends on OF
+ 	depends on PCI_ENDPOINT
+ 	select PCIE_CADENCE_EP
+-- 
+2.43.0
 
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/am3-usb-hang-fix-signed
-
-for you to fetch changes up to 9b6a51aab5f5f9f71d2fa16e8b4d530e1643dfcb:
-
-  ARM: dts: Fix occasional boot hang for am3 usb (2023-12-13 08:56:10 +0200)
-
-----------------------------------------------------------------
-Fix for occasional boot hang for am335x USB
-
-A fix for occasional boot hang for am335x USB that I've only recently
-started noticing.
-
-This can be merged naturally whenever suitable. This issue has been seen
-with other similar SoCs earlier and has clearly existed for a long time.
-
-----------------------------------------------------------------
-Tony Lindgren (1):
-      ARM: dts: Fix occasional boot hang for am3 usb
-
- arch/arm/boot/dts/ti/omap/am33xx.dtsi | 1 +
- 1 file changed, 1 insertion(+)
 
