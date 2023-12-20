@@ -1,140 +1,117 @@
-Return-Path: <linux-omap+bounces-180-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-181-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16A2D81A022
-	for <lists+linux-omap@lfdr.de>; Wed, 20 Dec 2023 14:47:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B7C181A08C
+	for <lists+linux-omap@lfdr.de>; Wed, 20 Dec 2023 15:02:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C51F92821D3
-	for <lists+linux-omap@lfdr.de>; Wed, 20 Dec 2023 13:47:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 404811C2353F
+	for <lists+linux-omap@lfdr.de>; Wed, 20 Dec 2023 14:02:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 476EA36AF0;
-	Wed, 20 Dec 2023 13:46:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42472405CA;
+	Wed, 20 Dec 2023 13:59:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="esTol5AA"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MKHZDJnn"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B46B42574F;
-	Wed, 20 Dec 2023 13:46:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id BC90A20008;
-	Wed, 20 Dec 2023 13:46:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1703080001;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2UdwF1Rjcv1TKOg33yHMjjbxn0Z7BKkWICiZ67r61hM=;
-	b=esTol5AAWX5bDskH5pub/LxILQiWTedAKsAT9CGjYD0I7f54SKWg/H4R+0RW1Cg8FrbHzs
-	SQJNtI5USdXeAZPMm1rt40n8FKGwhD4CueKisXGdFYky8YVptjTfeoo0xq0yOZDrSvpvQc
-	YAtvmm2TBHhUx7y35rSddoTozFftOhr88ux+oKNn7LFjgOR8o5kcb3sYgHbZvmJ8RqDp1S
-	HnkMnGr07e4Qm95aoUV4LXzngihtsJWIKHSG82+uWiVFMfUqIU4A08gulkfHAAQSRIGE0q
-	iIG8Zd8v6+AkTQ2BkOVMCwZ9H06asPsLQyQrpmlRD1a3cbLvWfDTC9LvNa53Nw==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C16D3FE2B;
+	Wed, 20 Dec 2023 13:59:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-40c39ef63d9so61872465e9.3;
+        Wed, 20 Dec 2023 05:59:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1703080793; x=1703685593; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=E0iVmziROlq72RMXzu834ciMgyzu2aToyegIGJ3TFKw=;
+        b=MKHZDJnnIv4a9okH/DSijf+tTeafAxTba5nSnHr0Fxpt675o0uvTDFE4QAeK2qp9HG
+         aHPWCir+63NR28bwOmtuQUZyJr5rYJn7yoUU/J3nk9FuBEg0MzPmm+UJF5xUJYue2z30
+         gXZKNtEHL/VwsGoeAnZ0Dch1stIudgWWsqA4ANei+y+bz981Yg/Ox1iPREiv1nbcSf4j
+         G/wRlsF8WjNpooTiEYZaofINQnKT1QOTYea/UghzU7ZYCfzwzaW35/1z/yjxqgsYf7Kd
+         qIm8kwJLuf4EXPy3wXsxZNI1YATnEBV6FeclrWbqfe9U9sXJcMoq/SAmEqHmQNoVjXup
+         Kh+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1703080793; x=1703685593;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=E0iVmziROlq72RMXzu834ciMgyzu2aToyegIGJ3TFKw=;
+        b=mgH+/uizanv8Upkr43J0Uc+Egv7kV5swSdZJ8bkJU6YBIDCv6Fl5/13xliDCKLKVVy
+         Wgraw2HaT1vrl+hYww8ZCRV9kilKFxHAfAAivn/v8fxDwG5XPDDaqlbLTCKcqaR4X1A/
+         CD+qJQGkIHNyj0e5qAGuu/FiBXmp+XKcx/9KVpCh312CZuj0of9Jb2/y6iIQXTKg/2S9
+         Yk/zOR/pmzILp1sIUKHb6wZvANNlBmf4dd7/mnTA05Sdk/298gC/0xFihIMU6P1g/Yz2
+         dyZ4zuUcHqqBya9nFluV625qVdz9ryIri1OYK6h6r4RZ+O/NTsqlsYUq6QRFdorf/v8p
+         iETw==
+X-Gm-Message-State: AOJu0YwgAf5u9n8EfZEODMzzox981pHwygKm88EILLd5wIpziW28ti0E
+	DDTFWd4x/J89C8EaF2wpDXM=
+X-Google-Smtp-Source: AGHT+IF7nMAj8DT2uFwVeQAmhgwNYP1xh1ISAnPqTCZQung9/18pW22fFH48zFNaszExOhgsp4hrgQ==
+X-Received: by 2002:a7b:cbd4:0:b0:40c:317b:a3fb with SMTP id n20-20020a7bcbd4000000b0040c317ba3fbmr9729581wmi.117.1703080793362;
+        Wed, 20 Dec 2023 05:59:53 -0800 (PST)
+Received: from morpheus.home.roving-it.com (2.1.9.e.d.3.3.1.6.1.e.d.5.3.a.e.1.8.6.2.1.1.b.f.0.b.8.0.1.0.0.2.ip6.arpa. [2001:8b0:fb11:2681:ea35:de16:133d:e912])
+        by smtp.googlemail.com with ESMTPSA id t3-20020a05600c450300b0040c4acaa4bfsm7513588wmo.19.2023.12.20.05.59.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 Dec 2023 05:59:53 -0800 (PST)
+From: Peter Robinson <pbrobinson@gmail.com>
+To: Ulf Hansson <ulf.hansson@linaro.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Faiz Abbas <faiz_abbas@ti.com>,
+	Kishon Vijay Abraham I <kishon@ti.com>,
+	Tony Lindgren <tony@atomide.com>,
+	linux-mmc@vger.kernel.org,
+	linux-omap@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Cc: Peter Robinson <pbrobinson@gmail.com>
+Subject: [PATCH 1/2] mmc: sdhci_am654: Fix TI SoC dependencies
+Date: Wed, 20 Dec 2023 13:59:46 +0000
+Message-ID: <20231220135950.433588-1-pbrobinson@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 20 Dec 2023 14:46:39 +0100
-Message-Id: <CXT7H2RTWJLL.11PFC2VV861BW@bootlin.com>
-To: "Thomas Richard" <thomas.richard@bootlin.com>, "Tony Lindgren"
- <tony@atomide.com>
-From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Subject: Re: omap-i2c: runtime pm issue during suspend to ram
-Cc: <linux-pm@vger.kernel.org>, <linux-i2c@vger.kernel.org>,
- <linux-omap@vger.kernel.org>, "Vignesh Raghavendra" <vigneshr@ti.com>,
- "Kevin Hilman" <khilman@kernel.org>, "Gregory CLEMENT"
- <gregory.clement@bootlin.com>, "Kumar Udit" <u-kumar1@ti.com>
-X-Mailer: aerc 0.15.2
-References: <f68c9a54-0fde-4709-9d2f-0d23a049341b@bootlin.com>
- <4c31acd8-4edb-44f5-9a90-cb2f2dc530b6@bootlin.com>
- <20231220111415.GZ5166@atomide.com>
- <7b743758-fbc1-4cad-bfbc-d3fd3e69ce17@bootlin.com>
-In-Reply-To: <7b743758-fbc1-4cad-bfbc-d3fd3e69ce17@bootlin.com>
-X-GND-Sasl: theo.lebrun@bootlin.com
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Hello,
+The sdhci_am654 is specific to recent TI SoCs, update the
+dependencies for those SoCs and compile testing. While we're
+at it update the text to reflect the wider range of
+supported TI SoCS the driver now supports.
 
-On Wed Dec 20, 2023 at 12:36 PM CET, Thomas Richard wrote:
-> On 12/20/23 12:14, Tony Lindgren wrote:
-> > * Thomas Richard <thomas.richard@bootlin.com> [231220 10:50]:
-> >> On 12/19/23 18:15, Thomas Richard wrote:
-> >>> Hello,
-> >>
-> >> I add some people in this thread.
-> >>
-> >>>
-> >>> I have a gpio expander (pca953x driver) connected to an i2c controlle=
-r
-> >>> managed by the omap-i2c driver.
-> >>> And I have some issues with pm_runtime_force_suspend/resume during
-> >>> suspend to ram.
-> >>> For some reasons, related to hardware design, I need to access to thi=
-s
-> >>> gpio expander during suspend_noirq and resume_noirq. So I had to move
-> >>> the suspend/resume of the pca953x to suspend_noirq/resume_noirq.
-> >=20
-> > Hmm at noirq level you need to do polling on the i2c controller?
->
-> Hello Tony,
->
-> Thanks for your reply.
->
-> No, irq is still active in suspend_noirq for this i2c controller due to
-> the flag IRQF_NO_SUSPEND [1].
-> If this flag is set, the interrupt is still enabled in suspend_noirq [2].
->
-> [1]
-> https://elixir.bootlin.com/linux/v6.7-rc6/source/drivers/i2c/busses/i2c-o=
-map.c#L1473
-> [2]
-> https://www.kernel.org/doc/html/latest/power/suspend-and-interrupts.html#=
-the-irqf-no-suspend-flag
->
-> >=20
-> >>> diff --git a/drivers/i2c/busses/i2c-omap.c b/drivers/i2c/busses/i2c-o=
-map.c
-> >>> index 42165ef57946..fe79b27b46fd 100644
-> >>> --- a/drivers/i2c/busses/i2c-omap.c
-> >>> +++ b/drivers/i2c/busses/i2c-omap.c
-> >>> @@ -1575,9 +1575,24 @@ static int __maybe_unused
-> >>> omap_i2c_runtime_resume(struct device *dev)
-> >>>         return 0;
-> >>>  }
-> >>>
-> >>> +static int omap_i2c_suspend(struct device *dev)
-> >>> +{
-> >>> +       pm_runtime_get_sync(dev);
-> >>> +       pm_runtime_disable(dev);
-> >>> +       return 0;
-> >>> +}
-> >=20
-> > If you want the i2c controller enabled during suspend, you can leave it
-> > enabled above, and as we already have SET_NOIRQ_SYSTEM_SLEEP_PM_OPS
-> > doing force_suspend() and force_resume(), you can runtime PM put on
-> > resume. So something like below might do the trick:
->
-> Ok I'll test it. Thanks
+Fixes: 41fd4caeb00b ("mmc: sdhci_am654: Add Initial Support for AM654 SDHCI driver")
+Signed-off-by: Peter Robinson <pbrobinson@gmail.com>
+---
+ drivers/mmc/host/Kconfig | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-The issue with this approach is that it requires knowing at suspend-time
-if the controller will be used at resume_noirq-time. Ideally the
-controller's behavior would not be modified until a xfer is done at
-resume_noirq time. There are many platforms that use this driver that
-probably don't need the controller woken up.
+diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
+index 58bd5fe4cd25..24ce5576b61a 100644
+--- a/drivers/mmc/host/Kconfig
++++ b/drivers/mmc/host/Kconfig
+@@ -1041,14 +1041,15 @@ config MMC_SDHCI_OMAP
+ 
+ config MMC_SDHCI_AM654
+ 	tristate "Support for the SDHCI Controller in TI's AM654 SOCs"
++	depends on ARCH_K3 || COMPILE_TEST
+ 	depends on MMC_SDHCI_PLTFM && OF
+ 	select MMC_SDHCI_IO_ACCESSORS
+ 	select MMC_CQHCI
+ 	select REGMAP_MMIO
+ 	help
+ 	  This selects the Secure Digital Host Controller Interface (SDHCI)
+-	  support present in TI's AM654 SOCs. The controller supports
+-	  SD/MMC/SDIO devices.
++	  support present in TI's AM65x/AM64x/AM62x/J721E SOCs. The controller
++	  supports SD/MMC/SDIO devices.
+ 
+ 	  If you have a controller with this interface, say Y or M here.
+ 
+-- 
+2.43.0
 
-Thanks,
-
---
-Th=C3=A9o Lebrun, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
 
