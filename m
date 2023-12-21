@@ -1,123 +1,91 @@
-Return-Path: <linux-omap+bounces-188-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-189-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B2F181BE8C
-	for <lists+linux-omap@lfdr.de>; Thu, 21 Dec 2023 19:57:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4843C81BEC9
+	for <lists+linux-omap@lfdr.de>; Thu, 21 Dec 2023 20:06:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D4F21C23E0C
-	for <lists+linux-omap@lfdr.de>; Thu, 21 Dec 2023 18:57:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DB8ADB23662
+	for <lists+linux-omap@lfdr.de>; Thu, 21 Dec 2023 19:06:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE3D865193;
-	Thu, 21 Dec 2023 18:57:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4DD2651A2;
+	Thu, 21 Dec 2023 19:06:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="qvgKvBWV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gRn0ytAz"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 486C911733
-	for <linux-omap@vger.kernel.org>; Thu, 21 Dec 2023 18:57:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-40c60dfa5bfso12662005e9.0
-        for <linux-omap@vger.kernel.org>; Thu, 21 Dec 2023 10:57:16 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ED8C65198;
+	Thu, 21 Dec 2023 19:06:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-67f91d48863so1122176d6.0;
+        Thu, 21 Dec 2023 11:06:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1703185034; x=1703789834; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=1ez827Nwv0PCJp7yHRGpscI+PcE4XwM2uw7IbXMXl5M=;
-        b=qvgKvBWVreZP4ptG+yOSgyuE1TFvcA+YCN4BTK5biADBd6x6p56gUp92DKl3UlzfmW
-         J618miRJe6oxxdS9iUGgDJ6PnSjJ2wI5nDsqtD7Yuk4VyAAY5pG4pmPBhNbKdwGCx7Vg
-         j4smXPG8+YZffONKuiAlNUFBYfMAiRk+rtlD8R4kckrOv7t/g76kTmEJLw0uF14cqDFq
-         OA37br+y/NaeAqUwf69oTmB584yB0mY8hzLaYCOteQoAFKzV5/G7V+ESJQHvyBYK2W4p
-         TZ/Ht9hkZ5haEOn+AB2JabYtO/UJiqJwSohaeUKtlPPSr7+qcDD8DWqofjoNwP8LDRVL
-         E7UA==
+        d=gmail.com; s=20230601; t=1703185602; x=1703790402; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9o/7eQynnq+tKv92W5LUZCaPAo9Z9OkF3qOy+9qnNEY=;
+        b=gRn0ytAzsdt4+aLWw+SqqnM3oGBBgeEzmSi4Own9BfEd1OswkebMXuc+G5jRBCHjj5
+         sfmgzFg/msxRgx4Ck5+2XMFGxHSK/togwunWQAm1jRjSM81y0NbpLjHgGXvZhNNgWW1R
+         joQXyEwd5jhWbzWdZ2mz4zv41hoNgotu7mVN1GhRjMiJcxusJRNY7lDWsaBoZmXDM3Io
+         FjkXSJTdPRBT3ChmjdCWKq5jDF1+TEv2Jf9Bk4wXkWuoPwtakobnSiW2duH5dvhz0dHI
+         1mKpiRa9iqD4lLCklZocGpNAG5gMVBQoTRIV1r0OUQQrmzU4Iahr1hzzvQBYtSnS543d
+         jakw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703185034; x=1703789834;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1ez827Nwv0PCJp7yHRGpscI+PcE4XwM2uw7IbXMXl5M=;
-        b=KJf7RxrKjxPSwU5nwwCs0+A/WyGFQfnz1d7lbiU3sejuFuwDPPmQqzWi5aTIvHcmoL
-         LlYjPpmA4Qp2t5Am0LJnN+TIjkptOKOeh5rVGJW9uLZ4A0zRkw9w52fe3hcgiT1wwpzf
-         y9MMrqfFL2PH7Q27L+LFmJGIpJBxlbjl5Yw8WlqfTPhoJI+UrgzlOES/v71rze2bGDoT
-         YxL8NRiUsilUJ4CJrXkMgCwilv5PNtMdz3AqmkGIA5SsWXO60aQXLwYxs0JZL+ESsslJ
-         AUPNnH/4FtpvSlJBqImsoQeVeKlyO40bEUiLlanVHNNixg6vnkIgkKyHAvV8AvRPn2t9
-         O0Fw==
-X-Gm-Message-State: AOJu0YytmTRBycQmMsvUncYEPCYdltzhcFDAY2Cu8qa2+bxdshLmF+dH
-	u8Lo3uOiCGWBPQ0l6SWf2aBt9a/Z97TYAx7KXAXZ0gqXfUw=
-X-Google-Smtp-Source: AGHT+IETlTI6wAfVOp5F4c8392SkTN9zkl2x5ytVqBeSIDMi4vkgq2+YYf6CeXrpzwk1bjBp9KY+oA==
-X-Received: by 2002:a05:600c:a42:b0:40c:3905:51e4 with SMTP id c2-20020a05600c0a4200b0040c390551e4mr101519wmq.68.1703185034624;
-        Thu, 21 Dec 2023 10:57:14 -0800 (PST)
-Received: from brgl-uxlite.home ([2a01:cb1d:334:ac00:7701:a2c3:cba4:74db])
-        by smtp.gmail.com with ESMTPSA id u4-20020a05600c138400b0040c03c3289bsm4277125wmf.37.2023.12.21.10.57.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Dec 2023 10:57:14 -0800 (PST)
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-To: Tony Lindgren <tony@atomide.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Andy Shevchenko <andy@kernel.org>
-Cc: linux-omap@vger.kernel.org,
-	linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH] gpio: tps65219: don't use CONFIG_DEBUG_GPIO
-Date: Thu, 21 Dec 2023 19:57:02 +0100
-Message-Id: <20231221185702.24685-1-brgl@bgdev.pl>
-X-Mailer: git-send-email 2.40.1
+        d=1e100.net; s=20230601; t=1703185602; x=1703790402;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9o/7eQynnq+tKv92W5LUZCaPAo9Z9OkF3qOy+9qnNEY=;
+        b=XAHl9aCzYd+ZJZJdmbbe8YgE+k2egqpqgI3WQUJuayYZpOPnk7KLbg48qaF2XsjAS8
+         AHOzsjC/MhX/Je2b+rKsaqCNGBPktmkqU8wSL/nqWFuwpGYtH0UXn952wZqY4yQoBHVh
+         XnXHJBKSsIUjMV3zYadvLxLhftAReIBBHA6FXtFKpMWeA0Hqmv/KNATI/BebbQxUXk/n
+         DPDadCpTFTw13aLg4dzu6E8A27Wf4q8VQT1nOiFqMEJXqWah0V6YWCVfahpfvLi6suEu
+         u/NAPl39wlPw3lUjqvBbtE/okcE4TckFh0LrqCL1CEk6fPd722OLFFdMhNwmvrUCSx4t
+         wNiw==
+X-Gm-Message-State: AOJu0YykTKArAVkvFfR/0ZnrPv/YB5dpJFn5YAeZdPzMDCpNGaLpBvNC
+	okbY9xThoGY2zejgpP/m3SI2OV46mZNYFnHdqJo=
+X-Google-Smtp-Source: AGHT+IF9G06Al2ozO8xM8hcDNKx6bcR8us3O8/kosV6Kdc/RyPg/urwfqDc2w1ZCGKQmHMOWSOq8veu8tJj3V7ORjaw=
+X-Received: by 2002:a05:6214:4112:b0:67a:9fc4:ceb8 with SMTP id
+ kc18-20020a056214411200b0067a9fc4ceb8mr231942qvb.60.1703185601970; Thu, 21
+ Dec 2023 11:06:41 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20231221185702.24685-1-brgl@bgdev.pl>
+In-Reply-To: <20231221185702.24685-1-brgl@bgdev.pl>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Thu, 21 Dec 2023 21:06:05 +0200
+Message-ID: <CAHp75VcDSs7ZKGbNYupErVVNz_s9Y+xu+25Q2+aZVgORYq8Rpg@mail.gmail.com>
+Subject: Re: [PATCH] gpio: tps65219: don't use CONFIG_DEBUG_GPIO
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Tony Lindgren <tony@atomide.com>, Linus Walleij <linus.walleij@linaro.org>, 
+	Andy Shevchenko <andy@kernel.org>, linux-omap@vger.kernel.org, linux-gpio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+On Thu, Dec 21, 2023 at 8:57=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev.pl>=
+ wrote:
+>
+> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+>
+> CONFIG_DEBUG_GPIO should only be used to enable debug log messages and
+> for core GPIOLIB debugging. Don't use it to control the execution of
+> potentially buggy code. Just put it under an always-false #if.
 
-CONFIG_DEBUG_GPIO should only be used to enable debug log messages and
-for core GPIOLIB debugging. Don't use it to control the execution of
-potentially buggy code. Just put it under an always-false #if.
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
----
- drivers/gpio/gpio-tps65219.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/gpio/gpio-tps65219.c b/drivers/gpio/gpio-tps65219.c
-index 7b38aa360112..cd1f17041f8c 100644
---- a/drivers/gpio/gpio-tps65219.c
-+++ b/drivers/gpio/gpio-tps65219.c
-@@ -96,16 +96,16 @@ static int tps65219_gpio_change_direction(struct gpio_chip *gc, unsigned int off
- 	 * Below can be used for test purpose only.
- 	 */
- 
--	if (IS_ENABLED(CONFIG_DEBUG_GPIO)) {
--		int ret = regmap_update_bits(gpio->tps->regmap, TPS65219_REG_MFP_1_CONFIG,
--					     TPS65219_GPIO0_DIR_MASK, direction);
--		if (ret) {
--			dev_err(dev,
--				"GPIO DEBUG enabled: Fail to change direction to %u for GPIO%d.\n",
--				direction, offset);
--			return ret;
--		}
-+#if 0
-+	int ret = regmap_update_bits(gpio->tps->regmap, TPS65219_REG_MFP_1_CONFIG,
-+				     TPS65219_GPIO0_DIR_MASK, direction);
-+	if (ret) {
-+		dev_err(dev,
-+			"GPIO DEBUG enabled: Fail to change direction to %u for GPIO%d.\n",
-+			direction, offset);
-+		return ret;
- 	}
-+#endif
- 
- 	dev_err(dev,
- 		"GPIO%d direction set by NVM, change to %u failed, not allowed by specification\n",
--- 
-2.40.1
-
+--=20
+With Best Regards,
+Andy Shevchenko
 
