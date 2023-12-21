@@ -1,55 +1,119 @@
-Return-Path: <linux-omap+bounces-185-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-186-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE4B981B1B7
-	for <lists+linux-omap@lfdr.de>; Thu, 21 Dec 2023 10:10:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32D5981BAA9
+	for <lists+linux-omap@lfdr.de>; Thu, 21 Dec 2023 16:26:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 489011F22145
-	for <lists+linux-omap@lfdr.de>; Thu, 21 Dec 2023 09:10:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56BED1C242EA
+	for <lists+linux-omap@lfdr.de>; Thu, 21 Dec 2023 15:26:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24CE04BA94;
-	Thu, 21 Dec 2023 09:02:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D963539F4;
+	Thu, 21 Dec 2023 15:24:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e1Q8ENqa"
+	dkim=pass (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b="UA7Q0CO0";
+	dkim=permerror (0-bit key) header.d=goldelico.com header.i=@goldelico.com header.b="SZJRLTbw"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [81.169.146.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B00F64A995;
-	Thu, 21 Dec 2023 09:02:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E7F4C433C8;
-	Thu, 21 Dec 2023 09:02:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1703149377;
-	bh=p5dHoof6CpVRm8H51oSiaRXPqfim6y17RnxB7xY56tk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=e1Q8ENqaz4vYwDVkG3agH8Y4nWY+t+vf+dRK4CWAox6pMkmw0lE5CiewwHUcSFbp4
-	 RkWIsVyItgSe8hLDbVe7XR+8+z2jsXtz39K9l++LNfCrEsMCoGDX4J/MON0Esni2Wq
-	 iqrEvVOXEmgR6BzB7qFtyB6TBQUBqZsN45F0aj+iNwKZJOMYPXJ+ALJKqxfvUPDBQl
-	 rhlhXxneBAsPHxzhYuLmXAXUstbegLTSelvwcYG7NV5MOIsYEKj9nW+wOHWTOrkTWg
-	 ptmFIbWZj+VriBf6p9Woko7ugLT2AK5cwSkli+QHtfdeHxaYVqcZc5AQiBUtk0h6/e
-	 /8F23EhrD4POQ==
-Date: Thu, 21 Dec 2023 10:02:54 +0100
-From: Maxime Ripard <mripard@kernel.org>
-To: Andrew Davis <afd@ti.com>
-Cc: "H. Nikolaus Schaller" <hns@goldelico.com>, 
-	Frank Binns <frank.binns@imgtec.com>, Donald Robson <donald.robson@imgtec.com>, 
-	Matt Coster <matt.coster@imgtec.com>, Adam Ford <aford173@gmail.com>, 
-	Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
-	=?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>, Tony Lindgren <tony@atomide.com>, Nishanth Menon <nm@ti.com>, 
-	Vignesh Raghavendra <vigneshr@ti.com>, Tero Kristo <kristo@kernel.org>, 
-	Paul Cercueil <paul@crapouillou.net>, dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-sunxi@lists.linux.dev, linux-omap@vger.kernel.org, linux-mips@vger.kernel.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C78C14F1E9;
+	Thu, 21 Dec 2023 15:24:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=goldelico.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=goldelico.com
+ARC-Seal: i=1; a=rsa-sha256; t=1703172232; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=UwUq/YQX2zRCRkfeyBlXslp0UWcH60extncrAjK6TFBnwi3nkGDhK7z7n4fs/T+/S2
+    A9hP3ZMOlc3HyO43nWI4FkajiLPRoVqdu3Bgv+Tq/2v0oqNYh3D7xhVqJs2Gwt9jXTLS
+    uLYEJeL1Mxgnhf+KDAzWJaZB+hZq03wsgE0/ZB+qKnC44dZLziJANpDQIfHm8OXLr5cv
+    5sDVOFwmSO/tzMtzwJq1ATYGsYVocIV5FIPunxob5oKfBA6O/pRA956O070QgybZESL4
+    2xgJfnImKuLUm5n+liNHrbhrydrnlCIVKut35ON2oCGgm7i2CIibdxLLj4msQj9c02GB
+    R0lw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1703172232;
+    s=strato-dkim-0002; d=strato.com;
+    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=IlLQWtO5L6QKmPmiq2x6VX4CBIJlI6GOZ++GNJegOGk=;
+    b=pxpT2VbelrAIZDkXj9IZhQXR9SfF3KLzBbr6KVGO6OCrcKuByoIek76R7a9HocWSRY
+    4jU7M2owiVka7Db3TV1j8YGA55CIydyCi9g3ZbIiaivJmAcmG6uzXdy0ea6KAA124um+
+    aeJBNpe8KGJ0JilGgs332uGi6bFOQn2CYD6KI0k162NCKyICkskKKfvglcqduswjI+U+
+    7qRI36HuUoiUspzYHqdZKuPz2IcXNhQgT1vUWkCabCnE1uKkKAhbRDblwQsR9cdzabjh
+    PO5uZOLxdRWtK9qqRquggg8UKmwjCFJY+3iAH9dPSQ0lygp9gVfQrGTTBhj6Iv5qP5iM
+    7szg==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo02
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1703172232;
+    s=strato-dkim-0002; d=goldelico.com;
+    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=IlLQWtO5L6QKmPmiq2x6VX4CBIJlI6GOZ++GNJegOGk=;
+    b=UA7Q0CO0/L9rhAgeD5fPYyWE1i6CylAFokMLXBp/QAHRWSlzucUgdV0Js+Kj9kHU1j
+    KEHc7Vow77+V4YZQAqaNDN1oaMXGS4Bcu8WaSQK98VHeR/pNELscmY1tQG5jW0DOEXdU
+    9cbFsDGfhg/JHMr/5C7I6lBjLK8Lh/gdZXAWPbukVgsd9c56f7CXW4Z7DIKORqELfXkC
+    83x+KzwuBM+bC6Y9rMhrXSYqaVJDqLrro0PCf1gUlRy48qJvDH4YXy0lg+KPdyIJdDCU
+    aq2LH9NLj26sB6QJrYzXuN89rrGBsL9D2gWkDXqyjN5lJt2d61gK9eJ15LpdGZXNk6yn
+    toBA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1703172232;
+    s=strato-dkim-0003; d=goldelico.com;
+    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=IlLQWtO5L6QKmPmiq2x6VX4CBIJlI6GOZ++GNJegOGk=;
+    b=SZJRLTbwvTIaw2c1/vOtdG1/jR1e72SIo6ZjDY5ScOp5xW1MMGbn1zATNGB9p9WqS8
+    oNccSextnPwLlTzlxTAw==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBp5hRw/qviAxtjc3yiuvr5qbMskH1rzDt9Ntflha3riRgdpClD1qY="
+Received: from smtpclient.apple
+    by smtp.strato.de (RZmta 49.10.0 AUTH)
+    with ESMTPSA id wfeb35zBLFNoFFz
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
+	(Client did not present a certificate);
+    Thu, 21 Dec 2023 16:23:50 +0100 (CET)
+Content-Type: text/plain;
+	charset=us-ascii
+Precedence: bulk
+X-Mailing-List: linux-omap@vger.kernel.org
+List-Id: <linux-omap.vger.kernel.org>
+List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
+List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.300.61.1.2\))
 Subject: Re: [PATCH RFC 01/10] dt-bindings: gpu: Add PowerVR Series5 SGX GPUs
-Message-ID: <3dggaesvunebogkqvclz4imruhynrftkhsvmndm75vfccqwpa6@3zp3dgzpzta6>
-References: <B3A1B8A7-0363-4ECB-AFBF-576FECA569FA@goldelico.com>
+From: "H. Nikolaus Schaller" <hns@goldelico.com>
+In-Reply-To: <nzqeqwof44e3nxjz6lsxmxcfh235unbu343br45esxh6vinskp@xvjydpxhvsuk>
+Date: Thu, 21 Dec 2023 16:23:39 +0100
+Cc: Andrew Davis <afd@ti.com>,
+ Frank Binns <frank.binns@imgtec.com>,
+ Donald Robson <donald.robson@imgtec.com>,
+ Matt Coster <matt.coster@imgtec.com>,
+ Adam Ford <aford173@gmail.com>,
+ Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Thomas Zimmermann <tzimmermann@suse.de>,
+ Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Chen-Yu Tsai <wens@csie.org>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Samuel Holland <samuel@sholland.org>,
+ =?utf-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
+ Tony Lindgren <tony@atomide.com>,
+ Nishanth Menon <nm@ti.com>,
+ Vignesh Raghavendra <vigneshr@ti.com>,
+ Tero Kristo <kristo@kernel.org>,
+ Paul Cercueil <paul@crapouillou.net>,
+ dri-devel@lists.freedesktop.org,
+ devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org,
+ linux-sunxi@lists.linux.dev,
+ linux-omap@vger.kernel.org,
+ linux-mips@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <F2D7693E-7769-463A-97A8-BA952EB5320B@goldelico.com>
+References: <23livt5mcc64bb6lkeec2uxp5cyn4wfekwaj6wzrjnrkndvwgj@6tveqglqpr4v>
+ <B3A1B8A7-0363-4ECB-AFBF-576FECA569FA@goldelico.com>
  <vawv2mwhonuyvgmp7uox4rfgdcjwg5fa7hmbcfgl3wiase6e4p@tyavpclppfvu>
  <6BC60156-89E2-4734-BD00-B49A9A6C1D7A@goldelico.com>
  <6gpehpoz54f5lxhmvirqbfwmq7dpgiroy27cljpvu66wtn7aqy@lgrh7wysyxnp>
@@ -58,177 +122,95 @@ References: <B3A1B8A7-0363-4ECB-AFBF-576FECA569FA@goldelico.com>
  <F58855EC-D87D-4747-A363-0E7AA5DB1AEC@goldelico.com>
  <22cny5aumc5wafsrjd3j55zcjbjf2viip64kfbjiqis2grtd6t@wg5dxeuzil6l>
  <3E03E913-48E1-49EC-A6C9-EAC1612E65E7@goldelico.com>
- <a3feaf42-17fb-46e5-bbb0-3ffc4ad40bfd@ti.com>
-Precedence: bulk
-X-Mailing-List: linux-omap@vger.kernel.org
-List-Id: <linux-omap.vger.kernel.org>
-List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
-List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="xdjqplvcfzg6bqbd"
-Content-Disposition: inline
-In-Reply-To: <a3feaf42-17fb-46e5-bbb0-3ffc4ad40bfd@ti.com>
+ <nzqeqwof44e3nxjz6lsxmxcfh235unbu343br45esxh6vinskp@xvjydpxhvsuk>
+To: Maxime Ripard <mripard@kernel.org>
+X-Mailer: Apple Mail (2.3774.300.61.1.2)
 
 
---xdjqplvcfzg6bqbd
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Tue, Dec 19, 2023 at 11:19:49AM -0600, Andrew Davis wrote:
-> On 12/18/23 4:54 AM, H. Nikolaus Schaller wrote:
-> >=20
-> >=20
-> > > Am 18.12.2023 um 11:14 schrieb Maxime Ripard <mripard@kernel.org>:
-> > >=20
-> > > On Mon, Dec 18, 2023 at 10:28:09AM +0100, H. Nikolaus Schaller wrote:
-> > > > Hi Maxime,
-> > > >=20
-> > > > > Am 15.12.2023 um 14:33 schrieb Maxime Ripard <mripard@kernel.org>:
-> > > > >=20
-> > > > > > >=20
-> > > > > > > It's for a separate architecture, with a separate driver, mai=
-ntained out
-> > > > > > > of tree by a separate community, with a separate set of requi=
-rements as
-> > > > > > > evidenced by the other thread. And that's all fine in itself,=
- but
-> > > > > > > there's very little reason to put these two bindings in the s=
-ame file.
-> > > > > > >=20
-> > > > > > > We could also turn this around, why is it important that it's=
- in the
-> > > > > > > same file?
-> > > > > >=20
-> > > > > > Same vendor. And enough similarity in architectures, even a log=
-ical sequence
-> > > > > > of development of versions (SGX =3D Version 5, Rogue =3D Versio=
-n 6+) behind.
-> > > > > > (SGX and Rogue seem to be just trade names for their architectu=
-re development).
-> > > > >=20
-> > > > > Again, none of that matters for *where* the binding is stored.
-> > > >=20
-> > > > So what then speaks against extending the existing bindings file as=
- proposed
-> > > > here?
-> > >=20
-> > > I mean, apart from everything you quoted, then sure, nothing speaks
-> > > against it.
-> > >=20
-> > > > > > AFAIK bindings should describe hardware and not communities or =
-drivers
-> > > > > > or who is currently maintaining it. The latter can change, the =
-first not.
-> > > > >=20
-> > > > > Bindings are supposed to describe hardware indeed. Nothing was ev=
-er said
-> > > > > about where those bindings are supposed to be located.
-> > > > >=20
-> > > > > There's hundreds of other YAML bindings describing devices of the=
- same
-> > > > > vendors and different devices from the same generation.
-> > > >=20
-> > > > Usually SoC seem to be split over multiple files by subsystem. Not =
-by versions
-> > > > or generations. If the subsystems are similar enough they share the=
- same bindings
-> > > > doc instead of having one for each generation duplicating a lot of =
-code.
-> > > >=20
-> > > > Here is a comparable example that combines multiple vendors and gen=
-erations:
-> > > >=20
-> > > > Documentation/devicetree/bindings/usb/generic-ehci.yaml
-> > >=20
-> > > EHCI is a single interface for USB2.0 controllers. It's a standard AP=
-I,
-> > > and is made of a single driver that requires minor modifications to d=
-eal
-> > > with multiple devices.
-> > >=20
-> > > We're very far from the same situation here.
-> >=20
-> > How far are we really? And, it is the purpose of the driver to handle d=
-ifferent cases.
-> >=20
-> > That there are currently two drivers is just a matter of history and no=
-t a necessity.
-> >=20
-> > >=20
-> > > > > If anything it'll make it easier for you. I'm really not sure why=
- it is
-> > > > > controversial and you're fighting this so hard.
-> > > >=20
-> > > > Well, you made it controversial by proposing to split what IMHO bel=
-ongs together.
-> > >=20
-> > > No, reviews aren't controversial.
-> > > The controversy started when you chose
-> > > to oppose it while you could have just rolled with it.
-> >=20
-> > Well, you asked
-> >=20
-> > "I think it would be best to have a separate file for this, img,sgx.yaml
-> > maybe?"
-> >=20
-> > and
-> >=20
-> > "Because it's more convenient?"
-> >=20
-> > I understood that as an invitation for discussing the pros and cons and=
- working out the
-> > most convenient solution. And that involves playing the devil's advocat=
-e which of course
-> > is controversial by principle.
-> >=20
-> > Now, IMHO all the pros and cons are on the table and the question is wh=
-o makes a decision
-> > how to go.
-> >=20
+> Am 21.12.2023 um 09:58 schrieb Maxime Ripard <mripard@kernel.org>:
 >=20
-> As much as I would land on the side of same file for both, the answer to =
-this question
-> is simple: the maintainer makes the decision :) So I'll respin with separ=
-ate binding files.
->
-> The hidden unaddressed issue here is that by making these bindings separa=
-te it implies
-> they are not on equal footing (i.e. pre-series6 GPUs are not true "powerv=
-r" and so do not
-> belong in img,powervr.yaml).
+> Cool, so what you're saying is that your plan is to support those GPUs
+> upstream in the imagination driver?
 
-No, not really. As far as I'm concerned, the only unequal footing here
-is that one driver is in-tree and the other isn't, but this situation
-was handled nicely for Mali GPUs and lima that used to be in the same
-situation for example.
+Yes, I would like to see PowerVR Series 5 SGX supported upstream since =
+there
+are still so many devices in the wild which could use it. The most =
+advanced
+being the Pyra handheld gaming computer but there are omap4 based phones
+or other omap3/amm335x based devices.
 
-The situation is simple, really: bindings are supposed to be backward
-compatible, period. If we ever make a change to that binding that isn't,
-you will be well within your right to complain because your driver is
-now broken.
+And the only reason the OpenPVRSGX group was founded (BTW not by me, I =
+am just
+maintaining the code and running a mailing list because it was rejected =
+to host
+it on vger.kernel.org), was to make that happen.
 
-> So if no one objects I'd also like to do the rename of that
-> file as suggested before and have:
+=46rom the GitHub description:
+	This is about shaping existing GPL Linux kernel drivers for the =
+PVR/SGX5
+	architecture so that they can become accepted into =
+drivers/staging
+
+But nobody can currently tell if it can be integrated with the recently =
+upstreamed
+Rogue driver (I wouldn't call that *the* imagination driver) or if it =
+better stays
+a separate driver because the first would need touching closed =
+user-space code
+and GPU firmware.
+
+And nobody knows who is capable and willing to work on it. It depends on =
+access to
+(confidential) documentation and available time to make such a big task =
+a rewarding
+project. And discussions like this one are not at all encouraging to =
+even try.
+
+>> Now, IMHO all the pros and cons are on the table and the question is
+>> who makes a decision how to go.
 >=20
-> img,powervr-sgx.yaml
-> img,powervr-rogue.yaml
+> You haven't listed any pro so far, you're claiming that the one I =
+raise
+> are irrelevant.
 
-Sounds good to me.
+I have listed some "pros" for "single file" but you apparently don't see
+them as such. I can't change that. The main argument is that a single =
+file is
+simpler than two files duplicating parts, which are apparently the same
+(integration of PVR architectures into SoC doesn't differ very much: =
+shared
+register block, DMA memory, clocks, resets etc.).
+Yours is that two files duplicating such common things is "more =
+convenient".
+I just wonder for whom.
 
-Maxime
+But it seems as if the IMHO second best solution has already been =
+chosen.
+So let it be.
 
---xdjqplvcfzg6bqbd
-Content-Type: application/pgp-signature; name="signature.asc"
+>> Then the currently-out-of-tree driver for the sgx5 can be reworked in
+>> less than half an hour without loosing functionality.
+>=20
+> Again, you're making it harder than it needs to be for no particular
+> reason other than the potential file name clash that can be addressed.
 
------BEGIN PGP SIGNATURE-----
+What I want to avoid is a situation that upstream activities do not take =
+the
+existing and working out-of-tree SGX driver into account and make =
+porting
+(not even speaking of upstreaming) that driver more difficult than =
+necessary
+and force device tree files to contain redundant information nobody will =
+need
+and use. You can of course ignore experience and suggestions of people
+who have worked on an SGX driver for a while. But that is the reason why =
+I
+participate in this discussion and raise my voice.
 
-iHUEABYKAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCZYP/PgAKCRDj7w1vZxhR
-xecAAQCmVXhaAl7fZ7g76z9w82Bf0j4pTMmQspV3lIhk356FHgEA/xGS5jxCtd+G
-824sqakZ7+v2m4QT6HsRgxUigbfQcQ8=
-=eukR
------END PGP SIGNATURE-----
+Now, I am looking forward to a v2 of this patch.
 
---xdjqplvcfzg6bqbd--
+BR,
+Nikolaus
+
+
 
