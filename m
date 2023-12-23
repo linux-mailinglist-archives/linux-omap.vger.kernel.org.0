@@ -1,94 +1,113 @@
-Return-Path: <linux-omap+bounces-191-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-192-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC36781CE23
-	for <lists+linux-omap@lfdr.de>; Fri, 22 Dec 2023 18:52:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75AF781D6CE
+	for <lists+linux-omap@lfdr.de>; Sat, 23 Dec 2023 23:41:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6BB3FB245AE
-	for <lists+linux-omap@lfdr.de>; Fri, 22 Dec 2023 17:52:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 108861F21E68
+	for <lists+linux-omap@lfdr.de>; Sat, 23 Dec 2023 22:41:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2901C2C191;
-	Fri, 22 Dec 2023 17:51:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 341FA18E17;
+	Sat, 23 Dec 2023 22:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="D8x1n+VH"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="tiIfKyc7"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D84782E635
-	for <linux-omap@vger.kernel.org>; Fri, 22 Dec 2023 17:51:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yb1-f179.google.com with SMTP id 3f1490d57ef6-dbd71f33cd3so2010971276.3
-        for <linux-omap@vger.kernel.org>; Fri, 22 Dec 2023 09:51:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1703267502; x=1703872302; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UCjV6fjtLNH5x3H55hZxl+1y0FuIxxcKcoHuCuyhtB4=;
-        b=D8x1n+VHawXZg+1hryLya493jDOiMGK1YCkK70aKtRJLKAkoS2ICs76O7gjXnqSEpm
-         ETGnG5aUCSAoUc58vgqwjUDeGFlvVuA4CnWzlKBQ14vbL3tNoRSdMdEiVZnpVMLeVrF0
-         uZ9TqHamLsX72lv/z9OkC9Yt/LehhrgF3zkEArJ/NMWCRGt+jRMjS7qV2qyH+MNh2UiK
-         qYZ26hpvFlRXYfUdFdRFVab1flrx03kzJXVsguk5CX1RWkLwk/7ifK354pf4mjG4gGLM
-         mTedjxUT8Z1cENP5uvn/seH15pDRciQ1Qr91xYiNka1VaQC1cMl+mBPt3zBbL18H2Pkh
-         oCCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703267502; x=1703872302;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UCjV6fjtLNH5x3H55hZxl+1y0FuIxxcKcoHuCuyhtB4=;
-        b=q714mqTp6d3vhf+l7y8jAAkWQp4EJ+Od43icTljSHaUzz5s+DgT4KT/0YqgnetVF6F
-         lRqyd3X8dEMXSs7ZlL03ZuwbwHDrl/RkVHbt1r5AIplAAih+33lVvqpbTHWIeFs/dIqb
-         EucWf9mmyrVb3fJFbz3UsiLhAWO/sT4ESSBUHmRXiZ6UYW74o4HI4QccONxUk5d0A8MT
-         RrEIKOkmkV5iG0x4XEy2gP16Qv/O/QV7kjfIvbTvgGjNrAluPoSdoV6O/Fkn/5onvTHI
-         yMZlcLry6I/cGEbP/C4fv2M6EEOOJ4BCtFTF1GLhA08TGWxaFjUMfJJzQf2Fq5v2wpLU
-         E3Pw==
-X-Gm-Message-State: AOJu0YxvJU0tRZQgSZqKgxvVeQ4/GP56NHFKVAorfeKXO8DPEU4YXHx+
-	hNVhyGU6rMLa5AfczuVpnh5u9Yu5peLTrZ/EGMqXaecIx82j4Q==
-X-Google-Smtp-Source: AGHT+IFwM7I0XkX8vmzOkYUSUylo3B4O346tEUebZhgDmXGbnTgxuxAqc0HXd40WPEl8VBkD8J354qKBO3ydasHbBOk=
-X-Received: by 2002:a05:6902:18d0:b0:dbc:ea09:b545 with SMTP id
- ck16-20020a05690218d000b00dbcea09b545mr1509915ybb.111.1703267501916; Fri, 22
- Dec 2023 09:51:41 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5859518B1B
+	for <linux-omap@vger.kernel.org>; Sat, 23 Dec 2023 22:41:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=Content-Transfer-Encoding:Content-Type:
+	MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=/xh43mp0Y1l3Cz8eSLJlfJwIpGW3U2n5ZXxx/ngXsfc=; b=tiIfKyc7T/50PFnp9/0Q7z831a
+	CIuKZIeuSjxnRK40e189/y839RD+eIg0zO9ua73CvHHXxvc6B8gWIGXFpE6arYw+pwhev5hOW3H3c
+	QDDKpLg0nPkKFlkwh93cy1exsvCnm/zLzQO/FNDgBActDm+R+njVct25dPFy1jxEnFvdnfpFf2twU
+	b3LVJuRKGBLevRFMkYO2IV+7343KEJkr0MGCZh6XfO6f5yB/gkY/PwsfSAY3iDhFT6BNZ1fP0dfbG
+	RwZ1F4opuUarMNxzYiPYSRBHlqIDe58aFbDNm8sW09w+9yzM+jAwVjHVfM0Mfx4lDWyRpwsVTcqMJ
+	6l5+H28g==;
+Received: from p200301077700c3001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:107:7700:c300:1a3d:a2ff:febf:d33a] helo=aktux)
+	by mail.andi.de1.cc with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <andreas@kemnade.info>)
+	id 1rHAg4-007fBd-Ok; Sat, 23 Dec 2023 23:41:04 +0100
+Date: Sat, 23 Dec 2023 23:41:02 +0100
+From: Andreas Kemnade <andreas@kemnade.info>
+To: Romain Naour <romain.naour@smile.fr>
+Cc: tony@atomide.com, linux-omap@vger.kernel.org, Romain Naour
+ <romain.naour@skf.com>
+Subject: Re: [PATCH] bus: ti-sysc: Fix error handling for
+ sysc_check_active_timer() again
+Message-ID: <20231223234102.556eaa07@aktux>
+In-Reply-To: <20231222163710.215362-1-romain.naour@smile.fr>
+References: <20231222163710.215362-1-romain.naour@smile.fr>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231221185702.24685-1-brgl@bgdev.pl>
-In-Reply-To: <20231221185702.24685-1-brgl@bgdev.pl>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Fri, 22 Dec 2023 18:51:31 +0100
-Message-ID: <CACRpkdbuJ6bzXGwoa7nMKYb9U+EsaKeE8ZQz0XhQYX4Ukdz44A@mail.gmail.com>
-Subject: Re: [PATCH] gpio: tps65219: don't use CONFIG_DEBUG_GPIO
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Tony Lindgren <tony@atomide.com>, Andy Shevchenko <andy@kernel.org>, linux-omap@vger.kernel.org, 
-	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Thu, Dec 21, 2023 at 7:57=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev.pl>=
- wrote:
+Hi,
 
-> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->
-> CONFIG_DEBUG_GPIO should only be used to enable debug log messages and
-> for core GPIOLIB debugging. Don't use it to control the execution of
-> potentially buggy code. Just put it under an always-false #if.
->
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+On Fri, 22 Dec 2023 17:37:10 +0100
+Romain Naour <romain.naour@smile.fr> wrote:
 
-Maybe I would have simply deleted the code, but OK. I bet some static
-analyzers will promptly return complaints about "no #if 0 in the kernel" :/
-In this case it's an OK compromise.
-Acked-by: Linus Walleij <linus.walleij@linaro.org>
+> From: Romain Naour <romain.naour@skf.com>
+> 
+> sysc_check_active_timer() has been introduced by 6cfcd5563b4f
+> ("clocksource/drivers/timer-ti-dm: Fix suspend and resume for am3 and am4")
+> and initially returned -EBUSY to ignore timers tagged with no-reset
+> and no-idle.
+> 
+> But the return code has been updated from -EBUSY to -ENXIO by
+> 65fb73676112 ("bus: ti-sysc: suppress err msg for timers used as clockevent/source")
+> and introduced a regression fixed by 06a089ef6449
+> ("bus: ti-sysc: Fix error handling for sysc_check_active_timer()")
+> since sysc_probe() was still checking for -EBUSY.
+> 
+> Finally the sysc_check_active_timer() return code was reverted
+> back to -EBUSY by a12315d6d270
+> ("bus: ti-sysc: Make omap3 gpt12 quirk handling SoC specific") except
+> for SOC_3430.
+> 
+> Now sysc_check_active_timer() may return ENXIO for SOC_3430 and
+> EBUSY for all other SoC.
+> 
+> But sysc_probe() still check for -ENXIO leading to the following
+> errors in dmesg on AM57xx:
+> 
+> ti-sysc: probe of 4ae18000.target-module failed with error -16 (timer1_target)
+> ti-sysc: probe of 4882c000.target-module failed with error -16 (timer15_target)
+> ti-sysc: probe of 4882e000.target-module failed with error -16 (timer6_target)
+> 
+> Fix this by checking for both error code...
+> 
+Well, fix what? As long as -EBUSY comes form sysc_check_active_timer(), there
+is no problem besides the noise. So clearly state what you want to fix,
+so is it only the noise.
+Of course I would also like the noise to be gone. I also stumbled across this.
+Bringing this to discussion is of course good.
 
-Yours,
-Linus Walleij
+Changing it to -ENXIO has side effects as more lines are executed and the
+device is touched although it might be already in use by dmtimer_systimer.
+
+As far as I understand things: there are broken timers, timers used by clocksource
+and timers generally useable. And we return -ENXIO for the broken ones... The
+main issue here is that this needs more documentation/comments.
+I might of course be wrong...
+
+Regards,
+Andreas
 
