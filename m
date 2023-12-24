@@ -1,44 +1,44 @@
-Return-Path: <linux-omap+bounces-199-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-200-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC96481DB85
-	for <lists+linux-omap@lfdr.de>; Sun, 24 Dec 2023 17:45:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EA8181DB8D
+	for <lists+linux-omap@lfdr.de>; Sun, 24 Dec 2023 17:47:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7EA281F21689
-	for <lists+linux-omap@lfdr.de>; Sun, 24 Dec 2023 16:45:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 31241B20D1E
+	for <lists+linux-omap@lfdr.de>; Sun, 24 Dec 2023 16:47:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D5AE8824;
-	Sun, 24 Dec 2023 16:45:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B177C8D2;
+	Sun, 24 Dec 2023 16:47:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="ocnEnBLv"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="Be00ZAz0"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from mout.web.de (mout.web.de [212.227.15.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37C10CA64;
-	Sun, 24 Dec 2023 16:45:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13A6FC8C7;
+	Sun, 24 Dec 2023 16:47:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de; s=s29768273;
-	t=1703436334; x=1704041134; i=markus.elfring@web.de;
-	bh=rIlcz4hsgLr5IuoUvlYO4snd4l8Oh6JPILbZ0XdVhaI=;
+	t=1703436421; x=1704041221; i=markus.elfring@web.de;
+	bh=EoQGOCcDaM4+Ixsw81K6brIiYRjh/R6KiMGIqZjOQN8=;
 	h=X-UI-Sender-Class:Date:Subject:From:To:Cc:References:
 	 In-Reply-To;
-	b=ocnEnBLv1ZdoxCh/A5KpMu1pjzoNNj7GkXqDoj73ViELx8GpIH00JTPPdOxHRa27
-	 +95eSoF2bYAnIPbk1evHf9ZD+W8ZTBZdhQN8n6xp0ro4G9HAuTFz/7V6ie3d2mxyo
-	 ZJFg43yYkDsBqwnb0YYmQT8bQ45JGW3OATujhKfIC2u0kzrEKsl9qoTH5K7KlDIZa
-	 tmxjl6wOivtCyO2Btm0n3HX+TcfluDAj8+9bn5Km77MGVV23wBCKsiMA3oNLfx9+p
-	 zSul9G2JGsKOFCqBPDtUAVRiYd5g2YRQQ0LITeu6/sKFrw+6JIeDMyWpAsOYk81AI
-	 ToMaBdUk8CGlag0EUQ==
+	b=Be00ZAz0q80WOxH/zPlihloDIsoIBArOTi+T2sigd+FI/ks9dQTzpLWb0r4DfMQk
+	 HKVgew8rCCPHvDhdCPqB9gSBzVl1ygcAawL6Msux7QdNDjS5QMTW+x4/sChiUtF9z
+	 tnEk3kqAkwjXlNfgid5Lb3efYOCZse9VkgGwffuIftQgbCRMXqlD0ykKRzFFm496s
+	 1vLamSoTZYSfpBwYioTDHcQ3+tjd9nvx3KyG/d7X4ccOWB3F+VmX0795OZ1Wzi++6
+	 5AU6rjWg/ispq9qPECjZNt/m7J7y7COh3xxaa2afBjQnxOEIxIlhHKydRJO3crucq
+	 /ftkPfOYOp96Je2/vQ==
 X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
 Received: from [192.168.178.21] ([94.31.85.95]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MsrdM-1qxivW1sCG-00tHXK; Sun, 24
- Dec 2023 17:45:34 +0100
-Message-ID: <769d269c-126f-477e-a046-d00dcf918829@web.de>
-Date: Sun, 24 Dec 2023 17:45:33 +0100
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1M91LW-1rNWAl0ZMs-006YG8; Sun, 24
+ Dec 2023 17:47:01 +0100
+Message-ID: <b4bbcc24-b6ca-4fd3-b8cf-7a2088c67795@web.de>
+Date: Sun, 24 Dec 2023 17:47:00 +0100
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -46,8 +46,8 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: [PATCH 06/10] clk: ti: Return directly after a failed kzalloc() in
- of_mux_clk_setup()
+Subject: [PATCH 07/10] clk: ti: Less function calls in
+ _ti_omap4_clkctrl_setup() after error detection
 Content-Language: en-GB
 From: Markus Elfring <Markus.Elfring@web.de>
 To: linux-omap@vger.kernel.org, linux-clk@vger.kernel.org,
@@ -62,57 +62,75 @@ References: <20849a8e-e0f5-46df-ad8a-9eae6cbe337b@web.de>
 In-Reply-To: <20849a8e-e0f5-46df-ad8a-9eae6cbe337b@web.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:/6OmN1PZ8R/kwCXXkcrmaU8tPWjwWsHBwdPLlxjovbJAPktU2Lg
- YK8ClV7XYr/8oPrjOf8juijZcJWlPKrpZLrLgVGIUG8JmdMIv8OcWa1i0lUDrbHrgYHN2ye
- fmdARTQORywVsXaBLECgLCwL7rVaydK4b77WPoAxmQCvO90Rh6HBvaOmwtudqpsmgIr4ZnP
- tyG94hmLjq8B6otEpK0jg==
+X-Provags-ID: V03:K1:mT4mgdDbP7kJOD75VlWL+dv/P6+ReJspjNxOXgs+MnT/XZ5861g
+ ByvEFoUqQtzEYGsLC/Ehh50iodVxf8js+XDAzsuDLuyDMnTzUI7ONqdDUsCm2v2/EVbFr3b
+ GPxVApgwAeFIrdYETA9PRtiVQMT5eQOX2Sq+FcBSTbYz8v1N61AMVv7CcOeQuu13ZRvcjPr
+ AxrlzZeNRBfowBg3Awxgw==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:7AZ2as5BfFY=;q63bFAXQH93kRNCwv0AIiisgcPQ
- WeMEgia6QumAjtMsd0rQoCRh/NNdFC7hgcjQHzO2VO/yH3kHCLhcflgvIbK90OjTD77H30uvj
- v8J8JIdDk2qT3lmGdTBh3rdMBurtS2TiC3VCoFjzbqjE5KQRWIS94/SeLMzkQUFFulrjMWmuc
- 3zeZ/b7OyQTmaoQtpTF9zEAG1O24zJtLTxqA7zWw3vOYR9Gr6E68V7kAR/sefQywaqH34IwUP
- c9h9+TXgxKVepF3rSNX6OfYN71T/25YfMZPs4ApZ+8rqbRedzataiDRhDkI1rM3JKH4WfQTB/
- yPYQ9b+DgggVVZ51mhC7cUmuq7sXFiOJa9ASoKu6HhhP5GyA3tz4nqUkqKOk95GsZZOm2bcG4
- R76F9wxXeI/6VdUc687fhFhPH+MkSVJhZOmUcetSNfmKJSX1ByNCKMeoyux1lsC4AD1JcsjrY
- hA6gyYUQoUX63+vPqqgHIYbzZiEku0PDWdhH7wtOuzgohuHzOSUdqHtIlVdmiZ0uY2DxxmuuJ
- v2CXnvEDXwb++vrwchB1AJ+GIPbW3oV6UN0dleVviQq/kPm95LEtLB/6jkSDctrNJWwDVrmEZ
- d3c0Varl0cuSEzXG+sJESY/7rptoL+kFRavnHteBKqugc6qKHrVFCqQ8KtPeFPUmhgv5ehkzd
- jn+qvC89l0dVr61wXSR8POyIPzFt0v+PILMyLlOWtuItOn4a9CvKEmbO5e632y06CApGrY+gg
- pDKQTc2pfGoiLq1FqYAHXyeuO7jpOZs/uh+aZqV5U3pNxkGU1iYvZERV3WLf1PPwZCovmpO8c
- GhKT3qtTv20qEcLVBbhuXi19IVoHfHbDkhD0oSdhL1Eii6Sn6ofexmrASJ5kWemqQFj8NFusy
- r5cpMLaKOONESWby/VGzkVrw7G/DFVPXRYGgL3sSH+YBdH3g+6rCEb3m7v6elra7Tzcf5DoAa
- 8//mPA==
+UI-OutboundReport: notjunk:1;M01:P0:rJk7DYD2fyc=;i3/9r49VTokzDt6oWsAGi0UsBe7
+ ie8E5hQQMgVmqqdrnGnfFhpb+zaw/VnJiCM8Im8uJf1FBFvRffxnUKufpDjboz76cXTsyKcPv
+ bUcFf11uv5lbiulCFSneINgBwuUCFO/YW28uQZI3ANT/9eJUpSP9RviWFLsjiWpycWgRwakqM
+ 42XXgW+gCtKK0bOETVAiwCPa291I5i+svqQ17eQaZy8Age//4JKVRyOwe6AygCEB+biL6xSGq
+ 5EIASH1dSuvt9B6rVlghxAm9snl23j6XxlXDGFZI5sK8M9LQ/vOkB1kjfXuLbCVmzWWWf2tk+
+ aqC8rW2FGnQNyWFzZNBYTGCoF/cssqhrvRXnMN8QC/ZSvt2/hU1aaK/6+4onzNpnMZp9JXeHv
+ KkRcempGQjxPu+8oZZtd3+iz2C4iArW1bkPGzN4OuswWNXSIMX2TsWpeW8ixvKHeM9fzevqbE
+ 9QMeSpC1Yepvx2VwWYnHnVJqI0/rJGDThQe91Vv23saZwEWwqaBOOAUa9m/tcK40IUoC2qvSN
+ yX+HHl+7yvfBphl/LuBhseTHeXbm3JAIqcwnRcNAcqeniWQ41Nz6MIBGzhVydYc5/XafrTWxN
+ E1NpiEeB/we1aXBFgL31D1pDePENH3wtHFlzSlkSpVtx4pQjkvX5NVDdp+Q6QKhlRyduy4LoC
+ SE3182wree+QWi5w9IJC8iT0AORRbhViKAHkveyvZKMkfGsIe9SKtLzYLwiGW9Q3JnxGX5Azj
+ cj4kk4fWkVrny/8AHQl93iLUPlUqmf7XmO861k17WZQq56YF3fZO8xJ3Yu9c7mS4ASn3x7oEy
+ zZIRln9eMIPDZSPVxBTDniYByQat1lbbLZjTqjm7dXZMAP2/tKVRGRXBvrWvuPBHZM/yFSy/D
+ qmbmldUF3B1nnPFeDxie3mE4e15tb1A+OzqErT5HktLrWZ142sjgk/cLrAg77gDCVBi5IcuFg
+ BIN0Ag==
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Sun, 24 Dec 2023 14:20:18 +0100
+Date: Sun, 24 Dec 2023 15:46:04 +0100
 
-The kfree() function was called in one case by
-the of_mux_clk_setup() function during error handling
+The kfree() function was called in a few cases by
+the _ti_omap4_clkctrl_setup() function during error handling
 even if the passed variable contained a null pointer.
-This issue was detected by using the Coccinelle software.
-
-Thus return directly after a call of the function =E2=80=9Ckzalloc=E2=80=
-=9D failed
-at the beginning.
+Thus adjust jump targets.
 
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 =2D--
- drivers/clk/ti/mux.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/ti/clkctrl.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/clk/ti/mux.c b/drivers/clk/ti/mux.c
-index 1ebafa386be6..ab1205fa40d6 100644
-=2D-- a/drivers/clk/ti/mux.c
-+++ b/drivers/clk/ti/mux.c
-@@ -182,7 +182,7 @@ static void of_mux_clk_setup(struct device_node *node)
- 	}
- 	parent_names =3D kzalloc((sizeof(char *) * num_parents), GFP_KERNEL);
- 	if (!parent_names)
--		goto cleanup;
-+		return;
+diff --git a/drivers/clk/ti/clkctrl.c b/drivers/clk/ti/clkctrl.c
+index 607e34d8e289..82b48548818b 100644
+=2D-- a/drivers/clk/ti/clkctrl.c
++++ b/drivers/clk/ti/clkctrl.c
+@@ -681,11 +681,11 @@ static void __init _ti_omap4_clkctrl_setup(struct de=
+vice_node *node)
+ 						   reg_data->offset, 0,
+ 						   legacy_naming);
+ 		if (!init.name)
+-			goto cleanup;
++			goto free_clkctrl_name;
 
- 	of_clk_parent_fill(node, parent_names, num_parents);
+ 		clkctrl_clk =3D kzalloc(sizeof(*clkctrl_clk), GFP_KERNEL);
+ 		if (!clkctrl_clk)
+-			goto cleanup;
++			goto free_init_name;
 
+ 		init.ops =3D &omap4_clkctrl_clk_ops;
+ 		hw->hw.init =3D &init;
+@@ -711,10 +711,12 @@ static void __init _ti_omap4_clkctrl_setup(struct de=
+vice_node *node)
+ 	return;
+
+ cleanup:
+-	kfree(hw);
++	kfree(clkctrl_clk);
++free_init_name:
+ 	kfree(init.name);
++free_clkctrl_name:
+ 	kfree(clkctrl_name);
+-	kfree(clkctrl_clk);
++	kfree(hw);
+ }
+ CLK_OF_DECLARE(ti_omap4_clkctrl_clock, "ti,clkctrl",
+ 	       _ti_omap4_clkctrl_setup);
 =2D-
 2.43.0
 
