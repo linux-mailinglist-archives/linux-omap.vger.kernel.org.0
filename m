@@ -1,44 +1,43 @@
-Return-Path: <linux-omap+bounces-203-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-204-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EAFD81DB9D
-	for <lists+linux-omap@lfdr.de>; Sun, 24 Dec 2023 17:52:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6949C81E881
+	for <lists+linux-omap@lfdr.de>; Tue, 26 Dec 2023 17:47:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0480B21399
-	for <lists+linux-omap@lfdr.de>; Sun, 24 Dec 2023 16:52:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1B5C2831FD
+	for <lists+linux-omap@lfdr.de>; Tue, 26 Dec 2023 16:47:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C94F4C8FF;
-	Sun, 24 Dec 2023 16:52:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C02024F880;
+	Tue, 26 Dec 2023 16:47:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="R3f2pxMt"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="EG/5PsFl"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.4])
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA5D9C8C4;
-	Sun, 24 Dec 2023 16:52:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de; s=s29768273;
-	t=1703436732; x=1704041532; i=markus.elfring@web.de;
-	bh=JVdUzdLpgaC7hin98rECoi2XLdapoOWFd5N0xpU61Ps=;
-	h=X-UI-Sender-Class:Date:Subject:From:To:Cc:References:
-	 In-Reply-To;
-	b=R3f2pxMtgGsapI2wHzZEJ6wtTmgobGpUwnMfkpJ4NY+T+PUQxcjMUTQrQ6C5WH72
-	 Vc7AWqorzLtIxE8KsqCaPGzh7Bm0u3kxLd0jyQB5zTVRST4+g16ul3AxOTPHTg73J
-	 +UnnY4brCUC++ti/y2xpawndiOX5prxyHzAKpUSo9ppJN/bq6fTMOGajdxC84qvAC
-	 VkJ3jPVudtR/zTZNI2dKK+BZw6R2GMIaoRGhMvGuLw6Npochihs6XyxekF3zVHLhc
-	 7bgaboOhIqxBi1QR/R7sLs9VkL1MvH0mm9/uWL+BXRkhux2ZriNes31ydTYzI/x5A
-	 CccQ2nsGKhy/x6C3Eg==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.85.95]) by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MQgp0-1rf389465e-00O91k; Sun, 24
- Dec 2023 17:52:12 +0100
-Message-ID: <8f58f1c4-3fdb-49ed-b747-5e1a4852875a@web.de>
-Date: Sun, 24 Dec 2023 17:52:10 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 406FD4F209;
+	Tue, 26 Dec 2023 16:47:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 983671C0002;
+	Tue, 26 Dec 2023 16:47:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1703609230;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WpMtIUDRlEAdXOuUM7RrfvoQHPEx0gmuNKvS2j61YTo=;
+	b=EG/5PsFlfw3gmirnFS9nxoFJXk+OEa1U/0I0PQggEfYnrdQkdwOjTKxbY7YPNkVrt/kj8R
+	hO2vVQEGS3JKeo0WjZyb5q255Pgo+g1O24f3/IBk3cJGC+gF9+/DCbjEH7Ts5oISCPkru2
+	2uXIIIfBSnC715npAven87Ei2mvo/KBOwMKb/F1hNhxvrf3xbAq648KsjSSWuwawEF931+
+	8PYuXQ15zm8htdbGaY1PtbXZwhnqNdRhd/ZH3jJe/+erSZvc3UzsbJ8nGW4MFw56hiUZbb
+	VAWojmcYQaOW7X1WrazdRZpYArwHwW6/edn6ZOHv7HSHRvaMv3ltbNJkJA69Cw==
+Message-ID: <dc19f432-afa6-422a-a60e-622e17d646a9@bootlin.com>
+Date: Tue, 26 Dec 2023 17:47:07 +0100
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -46,70 +45,101 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: [PATCH 10/10] clk: ti: Delete an unnecessary initialisation in
- _ti_clkctrl_clk_register()
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-To: linux-omap@vger.kernel.org, linux-clk@vger.kernel.org,
- kernel-janitors@vger.kernel.org,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>,
- Michael Turquette <mturquette@baylibre.com>, Rob Herring <robh@kernel.org>,
- Stephen Boyd <sboyd@kernel.org>, Tero Kristo <kristo@kernel.org>,
+Subject: Re: omap-i2c: runtime pm issue during suspend to ram
+Content-Language: en-US
+To: =?UTF-8?Q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>,
  Tony Lindgren <tony@atomide.com>
-Cc: LKML <linux-kernel@vger.kernel.org>, cocci@inria.fr
-References: <20849a8e-e0f5-46df-ad8a-9eae6cbe337b@web.de>
-In-Reply-To: <20849a8e-e0f5-46df-ad8a-9eae6cbe337b@web.de>
+Cc: linux-pm@vger.kernel.org, linux-i2c@vger.kernel.org,
+ linux-omap@vger.kernel.org, Vignesh Raghavendra <vigneshr@ti.com>,
+ Kevin Hilman <khilman@kernel.org>,
+ Gregory CLEMENT <gregory.clement@bootlin.com>, Kumar Udit <u-kumar1@ti.com>
+References: <f68c9a54-0fde-4709-9d2f-0d23a049341b@bootlin.com>
+ <4c31acd8-4edb-44f5-9a90-cb2f2dc530b6@bootlin.com>
+ <20231220111415.GZ5166@atomide.com>
+ <7b743758-fbc1-4cad-bfbc-d3fd3e69ce17@bootlin.com>
+ <CXT7H2RTWJLL.11PFC2VV861BW@bootlin.com>
+From: Thomas Richard <thomas.richard@bootlin.com>
+In-Reply-To: <CXT7H2RTWJLL.11PFC2VV861BW@bootlin.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:fgN0ExXBwyzGUMbTgjTQTsyg844rAOWLjjsZLqPYyF+g0El0wjS
- fpdJ3gzSpTdZjq3ca1tmrQTdzYiAQSHKYsU90V6eMg2QY36o/KHmAB+nJo40lWPx/hyclBB
- dFFLiAJETpj76bkIKBCB7lqaRwF9GFsMBiKg9quyxL/ojHx2GhbW9iEvjMHGQy4cZ8EhTrr
- 26Phs5wT05dErm3m7QyvA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:m0YkNs4BJnc=;rLK0KQfeIZqGmWNAPNEF+Fnjc/+
- oIoU2FJwEEhd+GLZENUUL3z/llOdruLcq85PAZYcVTQYxKEkpP55ADk09wwocDbFDjHXyw8N8
- BK3CP5bZ5Q7s+0XOyEOy3Q197VJuugi7AE1xaE4WaxTu3x92HUdbnPhzBXpmHJukZrQ2acMQW
- Sr6dnLeliQMN1wCh24yKIiMwao4mAfofzfiaqCiQVNZSretEUX8psBH1lpvWIor+hDGayYo6T
- AJhZdDoNPctqvUlf9J02eGBrEzarYsrICUjd0CHEGetZpPJ74glzK82UouT//U9zldv0xQipQ
- t7Pzzww9z27xIaszolzIRn0OUA4Kn2nFfz8Um7tEm6q7yaDXQGtD53RmBPfaIcYjEcWsxKMbg
- HX4lpZnHVLy1v0DobKBKhhqkcancJZT0eByg2wPZGbgfyAXJJyTe7LRCLB14quu3WAiqSDaHf
- JdqX6ZJ2Slhh3srMA4GK2J0Co1XRnwB4hnTGXuQ1vdad/TL+aJCG/xnae7vGRcgK+9lsIsayu
- zTb6fjsnlM3Idk40ohL5HoexwHx6D6A02Z3xWi6vX3hP4niUQn7+v3KV3oUCKE+8aKl3x+vbE
- 8C+IkVjk2guVTSrahTh0rOmoyz3uBDcQ8t+HOYb3y0ykJXEBvnwkDZUDg1frwWUtle30Rlkdb
- NyP/9CYeBxEbtrRX67KQA1MIRz1t5f/X5TCpb18XYqlu7vUAmIfYaBOhwhx7YCG5BCpF+iyUY
- VH/1qWQIIvBdkt5heHnXdS5NLJ02BxM3YEWo8Gk5BomVWKDogPIuLdOgE3NrtcKqe9Czj1L7G
- m6Ga35Eic9iqfZDBM1sVQhSC6qObIOIryqDUpur7KI1ut0z863hr3A/52l6+N6TxFBv9IEX5b
- ml8tZTKg/VgpedtZijJBMLo8IK5+sdmhEsjYDrSlFcrT/1R0UTZRX3cO7pfiNAaZK9JmSyyMI
- ROIhxg==
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: thomas.richard@bootlin.com
 
-From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Sun, 24 Dec 2023 16:27:33 +0100
+On 12/20/23 14:46, Théo Lebrun wrote:
+> Hello,
+> 
+> On Wed Dec 20, 2023 at 12:36 PM CET, Thomas Richard wrote:
+>> On 12/20/23 12:14, Tony Lindgren wrote:
+>>> * Thomas Richard <thomas.richard@bootlin.com> [231220 10:50]:
+>>>> On 12/19/23 18:15, Thomas Richard wrote:
+>>>>> Hello,
+>>>>
+>>>> I add some people in this thread.
+>>>>
+>>>>>
+>>>>> I have a gpio expander (pca953x driver) connected to an i2c controller
+>>>>> managed by the omap-i2c driver.
+>>>>> And I have some issues with pm_runtime_force_suspend/resume during
+>>>>> suspend to ram.
+>>>>> For some reasons, related to hardware design, I need to access to this
+>>>>> gpio expander during suspend_noirq and resume_noirq. So I had to move
+>>>>> the suspend/resume of the pca953x to suspend_noirq/resume_noirq.
+>>>
+>>> Hmm at noirq level you need to do polling on the i2c controller?
+>>
+>> Hello Tony,
+>>
+>> Thanks for your reply.
+>>
+>> No, irq is still active in suspend_noirq for this i2c controller due to
+>> the flag IRQF_NO_SUSPEND [1].
+>> If this flag is set, the interrupt is still enabled in suspend_noirq [2].
+>>
+>> [1]
+>> https://elixir.bootlin.com/linux/v6.7-rc6/source/drivers/i2c/busses/i2c-omap.c#L1473
+>> [2]
+>> https://www.kernel.org/doc/html/latest/power/suspend-and-interrupts.html#the-irqf-no-suspend-flag
+>>
+>>>
+>>>>> diff --git a/drivers/i2c/busses/i2c-omap.c b/drivers/i2c/busses/i2c-omap.c
+>>>>> index 42165ef57946..fe79b27b46fd 100644
+>>>>> --- a/drivers/i2c/busses/i2c-omap.c
+>>>>> +++ b/drivers/i2c/busses/i2c-omap.c
+>>>>> @@ -1575,9 +1575,24 @@ static int __maybe_unused
+>>>>> omap_i2c_runtime_resume(struct device *dev)
+>>>>>         return 0;
+>>>>>  }
+>>>>>
+>>>>> +static int omap_i2c_suspend(struct device *dev)
+>>>>> +{
+>>>>> +       pm_runtime_get_sync(dev);
+>>>>> +       pm_runtime_disable(dev);
+>>>>> +       return 0;
+>>>>> +}
+>>>
+>>> If you want the i2c controller enabled during suspend, you can leave it
+>>> enabled above, and as we already have SET_NOIRQ_SYSTEM_SLEEP_PM_OPS
+>>> doing force_suspend() and force_resume(), you can runtime PM put on
+>>> resume. So something like below might do the trick:
+>>
+>> Ok I'll test it. Thanks
+> 
+> The issue with this approach is that it requires knowing at suspend-time
+> if the controller will be used at resume_noirq-time. Ideally the
+> controller's behavior would not be modified until a xfer is done at
+> resume_noirq time. There are many platforms that use this driver that
+> probably don't need the controller woken up.
+> 
 
-The variable =E2=80=9Cret=E2=80=9D will eventually be set to an appropriat=
-e value
-a bit later. Thus omit the explicit initialisation at the beginning.
+@Tony, I tested your patch and it works well. Thanks !!
+As Théo mentioned it, we wake up the controller even if noboy need it in
+suspend_noirq/resume_noirq.
+I don't know if the fact that we cannot wake up a runtime suspended
+device in suspend_noirq/resume_noirq (yes I know runtime pm is disabled
+in suspend_noirq/resume_noirq) is a bug or not.
 
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-=2D--
- drivers/clk/ti/clkctrl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/clk/ti/clkctrl.c b/drivers/clk/ti/clkctrl.c
-index cdc3cf1ddddf..b9df75c6cc50 100644
-=2D-- a/drivers/clk/ti/clkctrl.c
-+++ b/drivers/clk/ti/clkctrl.c
-@@ -291,7 +291,7 @@ _ti_clkctrl_clk_register(struct omap_clkctrl_provider =
-*provider,
- 	struct clk_init_data init =3D { NULL };
- 	struct clk *clk;
- 	struct omap_clkctrl_clk *clkctrl_clk;
--	int ret =3D 0;
-+	int ret;
-
- 	init.name =3D clkctrl_get_clock_name(node, clkctrl_name, offset, bit,
- 					   ti_clk_get_features()->flags &
-=2D-
-2.43.0
+-- 
+Thomas Richard, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
