@@ -1,119 +1,117 @@
-Return-Path: <linux-omap+bounces-215-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-216-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B363D821FCC
-	for <lists+linux-omap@lfdr.de>; Tue,  2 Jan 2024 17:58:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE39E824A6B
+	for <lists+linux-omap@lfdr.de>; Thu,  4 Jan 2024 22:39:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3EEFE1F22A96
-	for <lists+linux-omap@lfdr.de>; Tue,  2 Jan 2024 16:58:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CD972864E4
+	for <lists+linux-omap@lfdr.de>; Thu,  4 Jan 2024 21:39:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EE9715AE8;
-	Tue,  2 Jan 2024 16:57:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 345D62C846;
+	Thu,  4 Jan 2024 21:39:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="UPpJZkpx"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RKOeXtE5"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com [209.85.219.172])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED46515AD2
-	for <linux-omap@vger.kernel.org>; Tue,  2 Jan 2024 16:57:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yb1-f172.google.com with SMTP id 3f1490d57ef6-dafe04717baso5984580276.1
-        for <linux-omap@vger.kernel.org>; Tue, 02 Jan 2024 08:57:47 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E512C843;
+	Thu,  4 Jan 2024 21:39:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-40d89105365so8299285e9.0;
+        Thu, 04 Jan 2024 13:39:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1704214667; x=1704819467; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=6lkwZlHjclN19Rwf5IYw4AMq86HYSJFhCb8JMsFAIPU=;
-        b=UPpJZkpxzhiyWMNYG+dgurWjmqnNqb3j76xOVTi6F9r1hmFzn1V0JwNlr1HWnlKosK
-         UX9HwYp7hlvpk4Oi0ozpR34tpIr3GdQWdYaARwm+Y0I4/jPltJ4w3QAfBj3SrPdYdrXd
-         bq+Cm9OidyL9tuPnZ+qufgCnB9U2b1Ds8lMionvfQIeUbihCGDoivjzN0ew1fucVTuLv
-         I3ZfVC5JImdtRuo05CpCLfjICJx6br9Bjknn5RvuuMrVL0SEs2UfWAn/Q+rZRevRgGUf
-         f8D9Eq0HsTadXSsez/AbuOdzqpO/fWTUUXNpODpSBLhHEsgVXtUOxKP7PaiysKN++FjU
-         vAPg==
+        d=gmail.com; s=20230601; t=1704404354; x=1705009154; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=KJK+F6Qom6bOuWneTyWgoS7yf7BlaLPC5ulr8n237s8=;
+        b=RKOeXtE5JZsXYS0xVwvNiXJfiCCmb0Te4qqlY0+OJj2A0YrUEZCiLI52Xzp2ZNOEsW
+         wbSbmXl3UZ1dwDJy18kEZZmO6LkX28ecv+NrWOgyH73hoQt1nyS8+CQ5VaHPrM8yIEVx
+         SHcHvZFzp6Bl33jpCUYhaEZbMrVaQyMyOKyeyJ4gKtOK+I2ljmrAwxB2/XjBk4o8wbGc
+         lUMME/CrhlIko1flKezQuC5sqNdu4axFz2ewI7ZSBglrgXSW+wsoTR4utJODogOkUd6O
+         +WH14zmZhI3w4McEZ4fbfHBbL5Qzq7beWzQt/Iw5lQglawJvIIeuTuVIm9eBfzulSlQr
+         TeGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704214667; x=1704819467;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1704404354; x=1705009154;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=6lkwZlHjclN19Rwf5IYw4AMq86HYSJFhCb8JMsFAIPU=;
-        b=kE/xTEx8MkvtJEWNuBznodkBWsJ2pfsy3UieFG/yzW3TEh+kKlWhBQMzm21ZXflVtA
-         6FBJcQvbJ8rYimXStolcJGxAbUH4iAuSPEujI8HY+XUR92BaOm7ksnbB590TzJvHxVhA
-         OFhAeO5v6aFGQ8AwlkBnhDWue95XHq25uKVnDVcnvfieoWO/F9dEGhy9VDxupYnAqIiK
-         UHnpO0UcsAYVAzJOps2u1TU+VgeqK3WEbX/YIKhEfD1ewnVX37bagJI4af5W4jEhr2pa
-         +VblU74peKvAyiy5S32tr/Sgq/H10LFy3my/RwJQM10UdRxx5ptYB4ki28v8oU9OLSAr
-         U2+A==
-X-Gm-Message-State: AOJu0YxGZhQENvdoQ7NKbOzMtv8zJkPz4Fx1BdLLIdY3u1EDpR2dL78b
-	1xCBEJSVxPTo1g3LrYGkNLnFL53epXZbeFOQLYfxv4rpeHOrjA==
-X-Google-Smtp-Source: AGHT+IG07EVnmujPDoWoEL/03bVeRyqPVW15d4o+D+Wq3HHcSy5BZm2s8ed27/+BxM/LbavRY2acnfZcQyB7Pii1FFE=
-X-Received: by 2002:a25:7353:0:b0:db7:dacf:6fc0 with SMTP id
- o80-20020a257353000000b00db7dacf6fc0mr9136506ybc.72.1704214667022; Tue, 02
- Jan 2024 08:57:47 -0800 (PST)
+        bh=KJK+F6Qom6bOuWneTyWgoS7yf7BlaLPC5ulr8n237s8=;
+        b=QJ9WZVqYSCGZxwxDv6lCXnL0scPg8dq0STZqvaGuvILjKXmbJu3NwZN+hlIUCAW5cl
+         aOyVQiv4RjD5MNeKI8+oteQnOIQaAEAvzE5QQSppuT3tT8WJD9DRajSt31yPPTz1x8T1
+         D3LQHWTdYa/uPztNxSNVGBqLrCz3XTs2tAsC4CAwcXx1YK/11aUMolzXAv+f017rvsmX
+         2ZahMFmUhT0jJ0VFwmR+kRKwitf9Fw6QSlO2g9ptqRYZvn8PyB19IZkQcQlMPHaf1ZEY
+         TnQHs4jn470ZJ6pXPz1VJ/Lzpek/d35Mx3xEMI7ahCgHTybDKeO6NEG+SIXvhX/XgfAh
+         Rwpg==
+X-Gm-Message-State: AOJu0YxNJS0QJH5XHKSlxkieR47tvFZRPhS2E7jeTwnr/n+igPDq6uJv
+	4ur7bOe9mPSujpvfsfynlMo=
+X-Google-Smtp-Source: AGHT+IGUSpPKUOlFx8Hvt/+kL8lQQXcoyUmCDZZSmiYinw277t7s4AGRimP9gM6yliLNDF7WF3J0bw==
+X-Received: by 2002:a05:600c:3b96:b0:40d:8849:5737 with SMTP id n22-20020a05600c3b9600b0040d88495737mr651462wms.62.1704404354434;
+        Thu, 04 Jan 2024 13:39:14 -0800 (PST)
+Received: from morpheus.home.roving-it.com.com (2.1.9.e.d.3.3.1.6.1.e.d.5.3.a.e.1.8.6.2.1.1.b.f.0.b.8.0.1.0.0.2.ip6.arpa. [2001:8b0:fb11:2681:ea35:de16:133d:e912])
+        by smtp.googlemail.com with ESMTPSA id m1-20020a05600c4f4100b0040d5b849f38sm6967460wmq.0.2024.01.04.13.39.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Jan 2024 13:39:13 -0800 (PST)
+From: Peter Robinson <pbrobinson@gmail.com>
+To: Tom Joseph <tjoseph@cadence.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	linux-pci@vger.kernel.org,
+	linux-omap@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Cc: Peter Robinson <pbrobinson@gmail.com>
+Subject: [PATCH v2] PCI: cadence: Make TI J721E depend on ARCH_K3
+Date: Thu,  4 Jan 2024 21:39:06 +0000
+Message-ID: <20240104213910.1426843-1-pbrobinson@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231220135950.433588-1-pbrobinson@gmail.com>
-In-Reply-To: <20231220135950.433588-1-pbrobinson@gmail.com>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Tue, 2 Jan 2024 17:57:11 +0100
-Message-ID: <CAPDyKFonZ-gd8cjcWcGHxx2UjAy7F0UC+HgDKTixSUJ62vwBvg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] mmc: sdhci_am654: Fix TI SoC dependencies
-To: Peter Robinson <pbrobinson@gmail.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>, Faiz Abbas <faiz_abbas@ti.com>, 
-	Kishon Vijay Abraham I <kishon@ti.com>, Tony Lindgren <tony@atomide.com>, linux-mmc@vger.kernel.org, 
-	linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-On Wed, 20 Dec 2023 at 14:59, Peter Robinson <pbrobinson@gmail.com> wrote:
->
-> The sdhci_am654 is specific to recent TI SoCs, update the
-> dependencies for those SoCs and compile testing. While we're
-> at it update the text to reflect the wider range of
-> supported TI SoCS the driver now supports.
->
-> Fixes: 41fd4caeb00b ("mmc: sdhci_am654: Add Initial Support for AM654 SDHCI driver")
-> Signed-off-by: Peter Robinson <pbrobinson@gmail.com>
+The J721E PCIe is hardware specific to TI SoC parts so add a dependency
+on that so it's available for those SoC parts and for compile testing but
+not necessarily everyone who enables the Cadence PCIe controller.
 
-Applied for next (and patch2/2), thanks!
+Signed-off-by: Peter Robinson <pbrobinson@gmail.com>
+---
 
-Kind regards
-Uffe
+v2:
+Update subject, extend lines to 75 chars, fix spelling.
 
+ drivers/pci/controller/cadence/Kconfig | 2 ++
+ 1 file changed, 2 insertions(+)
 
-> ---
->  drivers/mmc/host/Kconfig | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
-> index 58bd5fe4cd25..24ce5576b61a 100644
-> --- a/drivers/mmc/host/Kconfig
-> +++ b/drivers/mmc/host/Kconfig
-> @@ -1041,14 +1041,15 @@ config MMC_SDHCI_OMAP
->
->  config MMC_SDHCI_AM654
->         tristate "Support for the SDHCI Controller in TI's AM654 SOCs"
-> +       depends on ARCH_K3 || COMPILE_TEST
->         depends on MMC_SDHCI_PLTFM && OF
->         select MMC_SDHCI_IO_ACCESSORS
->         select MMC_CQHCI
->         select REGMAP_MMIO
->         help
->           This selects the Secure Digital Host Controller Interface (SDHCI)
-> -         support present in TI's AM654 SOCs. The controller supports
-> -         SD/MMC/SDIO devices.
-> +         support present in TI's AM65x/AM64x/AM62x/J721E SOCs. The controller
-> +         supports SD/MMC/SDIO devices.
->
->           If you have a controller with this interface, say Y or M here.
->
-> --
-> 2.43.0
->
+diff --git a/drivers/pci/controller/cadence/Kconfig b/drivers/pci/controller/cadence/Kconfig
+index 291d12711363..1d5a70c9055e 100644
+--- a/drivers/pci/controller/cadence/Kconfig
++++ b/drivers/pci/controller/cadence/Kconfig
+@@ -47,6 +47,7 @@ config PCI_J721E
+ 
+ config PCI_J721E_HOST
+ 	bool "TI J721E PCIe controller (host mode)"
++	depends on ARCH_K3 || COMPILE_TEST
+ 	depends on OF
+ 	select PCIE_CADENCE_HOST
+ 	select PCI_J721E
+@@ -57,6 +58,7 @@ config PCI_J721E_HOST
+ 
+ config PCI_J721E_EP
+ 	bool "TI J721E PCIe controller (endpoint mode)"
++	depends on ARCH_K3 || COMPILE_TEST
+ 	depends on OF
+ 	depends on PCI_ENDPOINT
+ 	select PCIE_CADENCE_EP
+-- 
+2.43.0
+
 
