@@ -1,64 +1,64 @@
-Return-Path: <linux-omap+bounces-254-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-255-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 606A1828CEB
-	for <lists+linux-omap@lfdr.de>; Tue,  9 Jan 2024 19:55:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F410828CF4
+	for <lists+linux-omap@lfdr.de>; Tue,  9 Jan 2024 19:58:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DAEA7B2393A
-	for <lists+linux-omap@lfdr.de>; Tue,  9 Jan 2024 18:55:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D54E31F21EB2
+	for <lists+linux-omap@lfdr.de>; Tue,  9 Jan 2024 18:58:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 350B23D0A0;
-	Tue,  9 Jan 2024 18:55:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0CBB3C6BF;
+	Tue,  9 Jan 2024 18:58:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Drq6xSIT"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="AJXi84o/"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 507463C49E
-	for <linux-omap@vger.kernel.org>; Tue,  9 Jan 2024 18:55:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDC3E3C49E
+	for <linux-omap@vger.kernel.org>; Tue,  9 Jan 2024 18:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-33748c4f33dso3197710f8f.1
-        for <linux-omap@vger.kernel.org>; Tue, 09 Jan 2024 10:55:41 -0800 (PST)
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-50e9e5c97e1so3773182e87.0
+        for <linux-omap@vger.kernel.org>; Tue, 09 Jan 2024 10:58:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1704826539; x=1705431339; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1704826706; x=1705431506; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=NWh6hyAdEMpLC3XljE3TgcSD5MsEWlwu8VQ7rLtDsgA=;
-        b=Drq6xSITBMKwhXYXfHKGydhKoHxklZYM0psIo9xwWAQ+w3I/T/YbOH9oB8pzxA7L8R
-         tiFMQu9WbPS16N+ebotdl7M8Tmq+ZtY0JwQFc9znsGosLfWfrMOELju/+Me8XZV+KM2m
-         WpCD4WrOTyZ7imY1+J5G358hnzn0bDEaHOxcFIVUP+3AqXWV4zJ8dMm3Pckzl9C49I7F
-         AZVfZcqs2mB13WGIF80635WiVRUvvJXEY/haVBZnNCydbBjk1pCUqCwDbrg1NJsW9p+K
-         sld1Ky5lOQsFZtaK0BQjqINExsmdS3i8vYB0SKHjl1tQgzP7iPPBDfPytp1yipvPUx2p
-         lS1Q==
+        bh=rgmCh2ekmuUXnKy6j0CsM91c8YxZihReaCB8lSs25HA=;
+        b=AJXi84o/biERDxIjjbCqRBrB2okscsjCWomC8s4bL6cZWjwtl7rVpk8lr0Skre4zMd
+         K7rAJ85fzHmK6SS7UTpbMIQVYPE4DBtkmaiL1zVUR5yruVVsBfQSNPZ1Omw1knOxgyTC
+         hrUnuQ0CA223RgcIKB9zInze21RrhjPYqszf8l4fF5GBjCXcTmCLG07kXrYkh3Y1OXHn
+         Dv7lX3Rzhv3C0BKiTBrxc5wfcE8tAs3qS3jduQSK2QBPAgQFCwv227ENKds7VDn7stlC
+         PU5Gs8sAAH9X+7m+M5IftDZYFDKXOBx+ocJh1QKgNJ3lF1KwjIm6trpCYhkun0NHpexa
+         jZig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704826539; x=1705431339;
+        d=1e100.net; s=20230601; t=1704826706; x=1705431506;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NWh6hyAdEMpLC3XljE3TgcSD5MsEWlwu8VQ7rLtDsgA=;
-        b=HBI4BBxGqBaH+i0iauBAK9qh9CRHHGDeKL2rB+Isp4Cge0nceZVeiV0S4A4NcvJWqx
-         XrAhvPU8E2CmZ6Nxl4SUAagczsmbK3BOwXKZKbVJ1OA7xUZdKxR366B5puZL8jRjxMGe
-         5YGMB9FRIBSkIMnW4TB1pVDEUAXPRSy3sXlKHwFWOcy2sRWuIbAOsmW1ZFBr/4XXlzCY
-         Duh6BKQvjdgLTB3UZCTS8CAJklxXGsqe5ec2SRdahJMFryo1egUiW+hQe5z9rhG1PNjI
-         LEXF8mUNzjE2PWsjwzUgNesAQR3qJtPsxxty/waAwjItct8lO5eMzKWEEH7FoEFTBaQw
-         KydA==
-X-Gm-Message-State: AOJu0Yz3L3Xa5Gt8/s6ECpKOafNdXluKAwwekDytUfyu+ykEf2sYoWYp
-	BuW25aMQHDByPNHhP4+dtYGtyw25P8daUw==
-X-Google-Smtp-Source: AGHT+IHySsR0qtpechXO4HO8+MsX4gGwyVA6uh8K4hyu/jDrx6Y3Qmop4nCleEaNSJ03IeVJJ2yjNQ==
-X-Received: by 2002:adf:f2ca:0:b0:336:615e:7599 with SMTP id d10-20020adff2ca000000b00336615e7599mr796973wrp.32.1704826539571;
-        Tue, 09 Jan 2024 10:55:39 -0800 (PST)
+        bh=rgmCh2ekmuUXnKy6j0CsM91c8YxZihReaCB8lSs25HA=;
+        b=N8yBpGmUSAqGdU/K61YsYakuA77XesB/MmG/hKmipAx4ZSyuOmNKFRTyiVRZjIAFmF
+         fkzvI8J4WbS/YXI08aYjTNE1XfOGQY3egmbb+7Iebu9YJOS6BdOf/Qs0wWn6aQq4dyj9
+         jonZPZog4JPz5KVo41YlUuGawpCUYRRKyhy8ZDpeWqy/d1aYqXNI0OYjRNd6eEHfMqlE
+         hz9GBGCGOrHVZkELef79GTZfgU3rbkTKFr15SPPmzLmCIB70g/6h++Aeyue1HaGLoqQy
+         0THf0p+bk2wbwVchCxnZgqcijeulaZX8lZOyuyO7FGBNDrkHd98HimJr7sAkKtx9PgUw
+         C8tQ==
+X-Gm-Message-State: AOJu0YyBVOPwstLeme/0lXvZfAmUseTmQOKH7RbFbTFssjVMCXNdOqdr
+	HUzGwMqDApzo1pV+ynZhg41etfwc/KapRQ==
+X-Google-Smtp-Source: AGHT+IGlkHOAQE2+lOWLgxjKX7k8xSgdaVWFv4UBzhVDTaJKwfJdDqqIstqcDJYTgIYb0fSRcDnnrg==
+X-Received: by 2002:a19:5e5d:0:b0:50e:b46f:4383 with SMTP id z29-20020a195e5d000000b0050eb46f4383mr2149227lfi.133.1704826705600;
+        Tue, 09 Jan 2024 10:58:25 -0800 (PST)
 Received: from [192.168.1.20] ([178.197.223.112])
-        by smtp.gmail.com with ESMTPSA id c2-20020adfe742000000b003366a9cb0d1sm3066475wrn.92.2024.01.09.10.55.37
+        by smtp.gmail.com with ESMTPSA id z14-20020a19650e000000b0050e7d22a9b8sm435713lfb.89.2024.01.09.10.58.21
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 09 Jan 2024 10:55:38 -0800 (PST)
-Message-ID: <291ca046-c034-48a8-93d8-c4cb1cdfaf20@linaro.org>
-Date: Tue, 9 Jan 2024 19:55:36 +0100
+        Tue, 09 Jan 2024 10:58:24 -0800 (PST)
+Message-ID: <980a51fc-c410-46c3-bcb1-b82c33a88ef3@linaro.org>
+Date: Tue, 9 Jan 2024 19:58:20 +0100
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -66,11 +66,10 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v2 01/11] dt-bindings: gpu: Rename img,powervr to
- img,powervr-rogue
+Subject: Re: [PATCH RFC v2 02/11] dt-bindings: gpu: Add PowerVR Series5 SGX
+ GPUs
 Content-Language: en-US
 To: Andrew Davis <afd@ti.com>, Frank Binns <frank.binns@imgtec.com>,
- Donald Robson <donald.robson@imgtec.com>,
  Matt Coster <matt.coster@imgtec.com>,
  "H . Nikolaus Schaller" <hns@goldelico.com>, Adam Ford <aford173@gmail.com>,
  Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
@@ -89,9 +88,9 @@ Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
  linux-sunxi@lists.linux.dev, linux-omap@vger.kernel.org,
  linux-mips@vger.kernel.org
 References: <20240108183302.255055-1-afd@ti.com>
- <20240108183302.255055-2-afd@ti.com>
- <c99b898f-61d2-46a3-b639-b4de828dcab1@linaro.org>
- <4cdd5c4a-f940-4635-837b-872ab776f5c4@ti.com>
+ <20240108183302.255055-3-afd@ti.com>
+ <e68b3b0c-7a03-4771-b6e8-c1a263e31425@linaro.org>
+ <c3664f43-431a-421f-8d2a-a3d2cc6f8777@ti.com>
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -137,29 +136,97 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <4cdd5c4a-f940-4635-837b-872ab776f5c4@ti.com>
+In-Reply-To: <c3664f43-431a-421f-8d2a-a3d2cc6f8777@ti.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 09/01/2024 17:14, Andrew Davis wrote:
-> On 1/9/24 5:28 AM, Krzysztof Kozlowski wrote:
+On 09/01/2024 17:53, Andrew Davis wrote:
+> On 1/9/24 5:32 AM, Krzysztof Kozlowski wrote:
 >> On 08/01/2024 19:32, Andrew Davis wrote:
+>>> The Imagination PowerVR Series5 "SGX" GPU is part of several SoCs from
+>>> multiple vendors. Describe how the SGX GPU is integrated in these SoC,
+>>> including register space and interrupts. Clocks, reset, and power domain
+>>> information is SoC specific.
+>>>
 >>> Signed-off-by: Andrew Davis <afd@ti.com>
 >>> ---
->>>   .../bindings/gpu/{img,powervr.yaml => img,powervr-rogue.yaml} | 4 ++--
->>>   MAINTAINERS                                                   | 2 +-
->>>   2 files changed, 3 insertions(+), 3 deletions(-)
+>>>   .../bindings/gpu/img,powervr-sgx.yaml         | 124 ++++++++++++++++++
+>>>   MAINTAINERS                                   |   1 +
+>>>   2 files changed, 125 insertions(+)
+>>>   create mode 100644 Documentation/devicetree/bindings/gpu/img,powervr-sgx.yaml
+>>>
+>>> diff --git a/Documentation/devicetree/bindings/gpu/img,powervr-sgx.yaml b/Documentation/devicetree/bindings/gpu/img,powervr-sgx.yaml
+>>> new file mode 100644
+>>> index 0000000000000..bb821e1184de9
+>>> --- /dev/null
+>>> +++ b/Documentation/devicetree/bindings/gpu/img,powervr-sgx.yaml
+>>> @@ -0,0 +1,124 @@
+>>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+>>> +# Copyright (c) 2023 Imagination Technologies Ltd.
 >>
->> If you are renaming it, why not renaming to match compatible as we
->> usually expect?
+>> Your email has @TI domain, are you sure you attribute your copyrights to
+>> Imagination?
 >>
 > 
-> There are (or will be) multiple compatible strings described in this
-> file, naming the file after just one would not fully convey the content
-> of the file. This generic style naming seems common already for bindings
-> with multiple compatibles.
+> The file started as a copy/paste from a IMG copyrighted file, even
+> though it is now almost completely re-written I've left their (c)
+> for good measure. I'll add an additional TI (c).
+> 
+>> ...
+>>
+>>> +
+>>> +  reg:
+>>> +    maxItems: 1
+>>> +
+>>> +  interrupts:
+>>> +    maxItems: 1
+>>> +
+>>> +  clocks: true
+>>
+>> Missing min/maxItems
+>>
+> 
+> These are set in the allOf/if/then blocks below, seems
 
-I saw only one compatible used as fallback. Where are more?
+I know, but we expect them here.
+
+https://elixir.bootlin.com/linux/v5.19-rc6/source/Documentation/devicetree/bindings/clock/samsung,exynos7-clock.yaml#L57
+
+> if I don't set them to at least something here then I get
+> a warning:
+> 
+>     'clock-names', 'clocks' do not match any of the regexes: 'pinctrl-[0-9]+'
+> 
+> even if I define them in the allOf block below. I don't
+> know what the min/max should be until I check the compatible
+> in the allOf block.
+
+As always: the widest constraints.
+
+
+...
+
+> Logic in YAML always seems messy to me, here it is in pseudo C:
+> 
+> if (compatible == allwinner,sun6i-a31-gpu ||
+>      compatible == ingenic,jz4780-gpu) {
+> 	if (compatible == allwinner,sun6i-a31-gpu)
+> 		clocks: ...
+> 	if (compatible == ingenic,jz4780-gpu)
+> 		clocks: ...
+> 	required:
+> 		- clocks
+> 		- clock-names
+> } else { /* disallow for all others */
+> 	properties:
+> 		clocks: false
+> 		clock-names: false
+> }
+
+OK, I see, that's the limitation of YAML. The point is that this code is
+not readable, so just list all fallbacks or variants.
+
+
 
 Best regards,
 Krzysztof
