@@ -1,92 +1,192 @@
-Return-Path: <linux-omap+bounces-268-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-269-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF83082B325
-	for <lists+linux-omap@lfdr.de>; Thu, 11 Jan 2024 17:40:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F52F82C4D6
+	for <lists+linux-omap@lfdr.de>; Fri, 12 Jan 2024 18:40:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48152282259
-	for <lists+linux-omap@lfdr.de>; Thu, 11 Jan 2024 16:40:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFB491C221C5
+	for <lists+linux-omap@lfdr.de>; Fri, 12 Jan 2024 17:40:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0174A5025F;
-	Thu, 11 Jan 2024 16:40:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02A9D175B8;
+	Fri, 12 Jan 2024 17:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nisoBO3t"
+	dkim=pass (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b="jL32j5Fw";
+	dkim=permerror (0-bit key) header.d=goldelico.com header.i=@goldelico.com header.b="pHXvjyM6"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [85.215.255.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E20E50250;
-	Thu, 11 Jan 2024 16:40:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF60AC433F1;
-	Thu, 11 Jan 2024 16:39:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704991201;
-	bh=+q75K7vH+apl/4khPV5F4/P02Rn9eXRp5swe8VqdbCE=;
-	h=From:To:Cc:Subject:Date:From;
-	b=nisoBO3t1G8MJenBLBJYJ2eSEgRZVUq3hy1k9wblBpjYRq49J2U8Trc7cenwMFKoD
-	 3fxzoBofSwVs7ITy/TjLNPaea/32K4rN2BCcjh85+OVBm1xHpWSmOz/eQ9LQ6CUus4
-	 EBOU7aQPA6giO+jqE6Lb+/WQttoBbo6D7kwnqbFhINYaw/arh7ixFbzzIGoSHdv7WB
-	 hfAP4bG8eWc9fZNHm0AkX/T8DEZS/lykAIFzleSMKMfuppPwknv/MVdFV1rIawBJIE
-	 6WR1U3s4xbbCRn3a2PAgyk766sJ0TWo6zc2y+SAO0xguzUZfboIJkFIy84zApH1D6w
-	 JPIcRA+euir/Q==
-From: Lee Jones <lee@kernel.org>
-To: lee@kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Tony Lindgren <tony@atomide.com>,
-	Keshava Munegowda <keshava_mgowda@ti.com>,
-	Roger Quadros <rogerq@ti.com>,
-	linux-omap@vger.kernel.org
-Subject: [PATCH 1/1] mfd: omap-usb-host: Increase size of buffer to include all possible values
-Date: Thu, 11 Jan 2024 16:39:49 +0000
-Message-ID: <20240111163949.1976778-1-lee@kernel.org>
-X-Mailer: git-send-email 2.43.0.275.g3460e3d667-goog
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DB6822637;
+	Fri, 12 Jan 2024 17:40:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=goldelico.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goldelico.com
+ARC-Seal: i=1; a=rsa-sha256; t=1705080852; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=W3GWy0FmIaj8bnyQOLBzXX83ySwtjGcplbG/RlF6oXx9qygnBd9EMgXtiadN4VCuYL
+    Vzb9K/1Q4zEh0B7XcKv8F2Sx4FijwnMPXysHfKJDCuQG0VCoTY5bqyISD5X10Sklu//B
+    6VkzB1eAyWBDr/bYsxdCjCk7edGU3pgaP2hEzvpyZbAxOha7gyG3pLDtiV5WNhRfEYbL
+    TDD/pLVM6nJvYv+XcCrZwcaohlv+M2+F2XzRIFeiekgqkBmiLXVXMh3jQ6/CCRVmglED
+    VgmepBQlqLq+ZF6ebJlWo7K1uGUcBpy8sQQyJjroV+U5685/yWLccmDVI8r77ioDgMW0
+    JoMw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1705080852;
+    s=strato-dkim-0002; d=strato.com;
+    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=x1r68xA9wRZ4ANIBi9hA9+/f2i2/5reMcctFU/rKIWM=;
+    b=VDcJUmHB6n+dNWMqrBgIeSm07uZuiZ3Lo4YHM+4lHTEf/fShWCuTsnhOvGLLQPDnuX
+    DVAPLYAUhm05iR1fke6fvyGt2yjAOY9M0JpWsM0G7ZDb7NOVtKdS5okSvg27EKDAjxe4
+    EZA65KUjsuxqrlxq3A4GvhvmCzWHoRqtwrIEFgzCZ+5/k2+oHOIrVt8PoLSJaD5ZuoIt
+    SkIGnPo+f/Kh0VfwAACyGqpv0UWlsRVd0cuYtQVx3MTV8cVZA1NPKmpaCAhndTK188ip
+    jcc0l/OXnhCOTjIjugpKHKxL3l3jO3UA4Ps7c/ux8panbv6FBehkIg3hmwU9B0kTY7rX
+    EJQQ==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo02
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1705080852;
+    s=strato-dkim-0002; d=goldelico.com;
+    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=x1r68xA9wRZ4ANIBi9hA9+/f2i2/5reMcctFU/rKIWM=;
+    b=jL32j5FwaeApRttmOhW1Gu7gSfqOtYGFDHV/dfmiVwk6lv/rGq6WkiuBz82beG8UnO
+    swrsv0PhvQYaN21JZmxO2+xU2OKEIDHGCNxj9juFGzg+Ldkd0mhSBo97APtDJ6U+LRqu
+    7blY6TeqlvdGLoENvx22BbsH/dahwDdBTiZ9BLCKDH+ergN8Y0RIkiA25I65IuRw4QpB
+    qzlOiNthWw+WTgSS1LzxBVQAwVwPewl9NQf1D7CfvSzknu8aEGQJDyWjtSAjV3d/ogkE
+    eT3drVtVQwHCoz/BHuQVEe8SLaX+rax4SpDu49ZC3/DEwQeCoUx/w0zBh8zzKKg1e7bO
+    eWKg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1705080852;
+    s=strato-dkim-0003; d=goldelico.com;
+    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=x1r68xA9wRZ4ANIBi9hA9+/f2i2/5reMcctFU/rKIWM=;
+    b=pHXvjyM6SXoq2JN88aS5Df7FeZdKXhVFedn7SwZ4nyqUqIMi1EYmq65gduamPGp39D
+    E3e2r+2FnzciMSGM/LCQ==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj5Apz9PSN6LgsXcGZjDY="
+Received: from smtpclient.apple
+    by smtp.strato.de (RZmta 49.10.2 DYNA|AUTH)
+    with ESMTPSA id dbe64400CHY9PpN
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
+	(Client did not present a certificate);
+    Fri, 12 Jan 2024 18:34:09 +0100 (CET)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.300.61.1.2\))
+Subject: Re: [PATCH RFC v2 04/11] ARM: dts: omap4: Add device tree entry for
+ SGX GPU
+From: H. Nikolaus Schaller <hns@goldelico.com>
+In-Reply-To: <20240108183302.255055-5-afd@ti.com>
+Date: Fri, 12 Jan 2024 18:33:58 +0100
+Cc: Frank Binns <frank.binns@imgtec.com>,
+ Donald Robson <donald.robson@imgtec.com>,
+ Matt Coster <matt.coster@imgtec.com>,
+ Adam Ford <aford173@gmail.com>,
+ Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>,
+ Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Chen-Yu Tsai <wens@csie.org>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Samuel Holland <samuel@sholland.org>,
+ =?utf-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
+ Tony Lindgren <tony@atomide.com>,
+ Nishanth Menon <nm@ti.com>,
+ Vignesh Raghavendra <vigneshr@ti.com>,
+ Tero Kristo <kristo@kernel.org>,
+ Paul Cercueil <paul@crapouillou.net>,
+ dri-devel@lists.freedesktop.org,
+ devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org,
+ linux-sunxi@lists.linux.dev,
+ linux-omap@vger.kernel.org,
+ linux-mips@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <122DC5ED-2AA7-46A0-845F-083922458385@goldelico.com>
+References: <20240108183302.255055-1-afd@ti.com>
+ <20240108183302.255055-5-afd@ti.com>
+To: Andrew Davis <afd@ti.com>
+X-Mailer: Apple Mail (2.3774.300.61.1.2)
 
-Avoid these nasty W=1 errors:
+Hi,
+I just comment on this example, but it applies almost the same for all =
+other .dtsi changes.
 
-  drivers/mfd/omap-usb-host.c: In function ‘usbhs_omap_probe’:
-  drivers/mfd/omap-usb-host.c:706:54: error: ‘_clk’ directive output may be truncated writing 4 bytes into a region of size between 1 and 11 [-Werror=format-truncation=]
-  drivers/mfd/omap-usb-host.c:705:17: note: ‘snprintf’ output between 24 and 34 bytes into a destination of size 30
-  drivers/mfd/omap-usb-host.c:721:56: error: ‘%d’ directive output may be truncated writing between 1 and 11 bytes into a region of size 8 [-Werror=format-truncation=]
-  drivers/mfd/omap-usb-host.c:721:33: note: directive argument in the range [-2147483640, 2147483647]
-  drivers/mfd/omap-usb-host.c:720:17: note: ‘snprintf’ output between 28 and 38 bytes into a destination of size 30
-  drivers/mfd/omap-usb-host.c:731:55: error: ‘%d’ directive output may be truncated writing between 1 and 11 bytes into a region of size 9 [-Werror=format-truncation=]
-  drivers/mfd/omap-usb-host.c:731:33: note: directive argument in the range [-2147483640, 2147483647]
-  drivers/mfd/omap-usb-host.c:730:17: note: ‘snprintf’ output between 27 and 37 bytes into a destination of size 30
+> Am 08.01.2024 um 19:32 schrieb Andrew Davis <afd@ti.com>:
+>=20
+> Add SGX GPU device entry to base OMAP4 dtsi file.
+>=20
+> Signed-off-by: Andrew Davis <afd@ti.com>
+> ---
+> arch/arm/boot/dts/ti/omap/omap4.dtsi | 9 +++++----
+> 1 file changed, 5 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/arch/arm/boot/dts/ti/omap/omap4.dtsi =
+b/arch/arm/boot/dts/ti/omap/omap4.dtsi
+> index 2bbff9032be3e..559b2bfe4ca7c 100644
+> --- a/arch/arm/boot/dts/ti/omap/omap4.dtsi
+> +++ b/arch/arm/boot/dts/ti/omap/omap4.dtsi
+> @@ -501,10 +501,11 @@ sgx_module: target-module@56000000 {
+> #size-cells =3D <1>;
+> ranges =3D <0 0x56000000 0x2000000>;
+>=20
+> - /*
+> - * Closed source PowerVR driver, no child device
+> - * binding or driver in mainline
+> - */
+> + gpu@0 {
 
-Cc: Tony Lindgren <tony@atomide.com>
-Cc: Keshava Munegowda <keshava_mgowda@ti.com>
-Cc: Roger Quadros <rogerq@ti.com>
-Cc: linux-omap@vger.kernel.org
-Signed-off-by: Lee Jones <lee@kernel.org>
----
- drivers/mfd/omap-usb-host.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I wonder why we don't add a "gpu:" label here.
 
-diff --git a/drivers/mfd/omap-usb-host.c b/drivers/mfd/omap-usb-host.c
-index ebc62033db169..949feb03d4f8d 100644
---- a/drivers/mfd/omap-usb-host.c
-+++ b/drivers/mfd/omap-usb-host.c
-@@ -699,7 +699,7 @@ static int usbhs_omap_probe(struct platform_device *pdev)
- 	}
- 
- 	for (i = 0; i < omap->nports; i++) {
--		char clkname[30];
-+		char clkname[40];
- 
- 		/* clock names are indexed from 1*/
- 		snprintf(clkname, sizeof(clkname),
--- 
-2.43.0.275.g3460e3d667-goog
+Almost all other subsystem nodes have one (e.g. emif:, aes:, dss:, dsi:, =
+hdmi:, etc.),
+obviously for convenience when using a .dtsi file.
 
+It would allow a board-specific DTS to easily add status =3D "disabled" =
+to avoid driver
+probing or disabling the GPU (e.g. if there is no display).
+
+> + compatible =3D "ti,omap4430-gpu", "img,powervr-sgx540";
+
+It still appears to me that the "img,powervr-sgx540" (or similar) entry =
+is redundant
+information.
+
+I have experimentally updated our openpvrsgx driver and we do not have =
+any use for
+this information (at least in the kernel driver):
+
+=
+https://github.com/goldelico/letux-kernel/commit/f2f7cb3b858ef255f52f2b82a=
+8bb34c047337afe
+
+It shows how easy it is to derive the sgx version and revision number if =
+we ever
+need it inside the driver.
+
+So if you want to keep a reference to powervr, it would suffice to have
+
+> + compatible =3D "ti,omap4430-gpu", "img,powervr-sgx";
+
+Otherwise your device tree entries compile fine and seem to work (at =
+least in
+a cursory test on PandaBoard ES).
+
+> + reg =3D <0x0 0x2000000>; /* 32MB */
+> + interrupts =3D <GIC_SPI 21 IRQ_TYPE_LEVEL_HIGH>;
+> + };
+> };
+
+BR and thanks,
+Nikolaus=
 
