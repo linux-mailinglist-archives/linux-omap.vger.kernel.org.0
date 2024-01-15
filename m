@@ -1,155 +1,128 @@
-Return-Path: <linux-omap+bounces-275-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-277-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1E5182DB99
-	for <lists+linux-omap@lfdr.de>; Mon, 15 Jan 2024 15:45:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AFB182DD33
+	for <lists+linux-omap@lfdr.de>; Mon, 15 Jan 2024 17:16:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BC152837E8
-	for <lists+linux-omap@lfdr.de>; Mon, 15 Jan 2024 14:45:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6AD431C219EB
+	for <lists+linux-omap@lfdr.de>; Mon, 15 Jan 2024 16:16:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6BA6175B3;
-	Mon, 15 Jan 2024 14:45:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D975417BC3;
+	Mon, 15 Jan 2024 16:16:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EQR/pEoz"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="RJ1p+lSe"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FFBD175A1;
-	Mon, 15 Jan 2024 14:45:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56BE3C433C7;
-	Mon, 15 Jan 2024 14:45:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705329940;
-	bh=tRLQ0Z88RKbDDHqezEjN3omnxCVQLyn4MWvS8yuJ5G4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EQR/pEozoncS5C3Ol7jiA/QacLXasDr5SzqDhp7hsq0JpO3tPfLz3ZVokJj8586el
-	 CjNNdgORcvFgXTBZXeHRrTEEv8OGN+DaWt4iql928ZOSZScnA79uc0Dl+x8Emf6vGn
-	 TGoB/lSOBEhLgpOhOv8bZ53DIdeAoNzHi9+oPgYgPpmOqEOmF+faeFG0k/N8ribQXk
-	 u+mpY34z54kgqNf6cg87CqtOhN3eBJSt3tqm2/UfuLDWOpobBRhIORmGyK6bJRCfM4
-	 VO2BK8o28Uf6cfJjKB3GQymTLO0ISMdOEBNnXrcrXCH5A5DT+Qyv/uX/eTcsm87xdh
-	 etysZWABystcw==
-Date: Mon, 15 Jan 2024 15:45:37 +0100
-From: Maxime Ripard <mripard@kernel.org>
-To: "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc: Andrew Davis <afd@ti.com>, Frank Binns <frank.binns@imgtec.com>, 
-	Donald Robson <donald.robson@imgtec.com>, Matt Coster <matt.coster@imgtec.com>, 
-	Adam Ford <aford173@gmail.com>, Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
-	=?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>, Tony Lindgren <tony@atomide.com>, Nishanth Menon <nm@ti.com>, 
-	Vignesh Raghavendra <vigneshr@ti.com>, Tero Kristo <kristo@kernel.org>, 
-	Paul Cercueil <paul@crapouillou.net>, dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-sunxi@lists.linux.dev, linux-omap@vger.kernel.org, linux-mips@vger.kernel.org
-Subject: Re: Re: [PATCH RFC v2 04/11] ARM: dts: omap4: Add device tree entry
- for SGX GPU
-Message-ID: <xagwa5cie5gjzidg5wa6ou3yd2qwta7ridci4jzkrpcccm24mz@aphgjsdytirz>
-References: <20240108183302.255055-1-afd@ti.com>
- <20240108183302.255055-5-afd@ti.com>
- <122DC5ED-2AA7-46A0-845F-083922458385@goldelico.com>
- <vpcgccul53oibwoqb3barj3rjxoyskoldjyfvjdzmytic3tonm@wq4aqsenk7rp>
- <7BC64F03-A4DF-411F-9B6F-6BCA436D9B50@goldelico.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2139179B0;
+	Mon, 15 Jan 2024 16:16:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id C8333C000A;
+	Mon, 15 Jan 2024 16:16:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1705335375;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=FTQqCzxmqCmlYgHh3ktXPX0P1HCGFzF7LoD+ZqCYJUk=;
+	b=RJ1p+lSeuPctrMJTsfUuaITNbe+buWSru/jnSfFXQoT8He0ouAn9HpqNISomUAfaiuYaDb
+	sj6wgjZCcgcWoIQT/jPEDnQKPrJ/YEEMSRheHxrOvbq/NVyhWfRW2rJ8HZ5XwCY4m+6hx7
+	gWbH9Os6b24MmF47qQhtyHcjU8F7uaGeeIcwbmb5LPRRuzAxUcwAJ6qNct71edKD8qCI8y
+	FYnDk1JlLnJxaRym4sQEIcixdOi2mDDqSEs4t7GDk5AwYGZeSz8OvQoqIddG4V3frE/e1G
+	TKEUv/CbSR+Xmmu8swfG7A3CjqR/lRNY+WvPkgL4C8PMHHYyG114pVWaPADOvQ==
+From: Thomas Richard <thomas.richard@bootlin.com>
+Subject: [PATCH 00/14] Add suspend to ram support for PCIe on J7200
+Date: Mon, 15 Jan 2024 17:14:41 +0100
+Message-Id: <20240102-j7200-pcie-s2r-v1-0-84e55da52400@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="3xx7p3mwtk5a7dcv"
-Content-Disposition: inline
-In-Reply-To: <7BC64F03-A4DF-411F-9B6F-6BCA436D9B50@goldelico.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAPJZpWUC/x2NQQrCQAwAv1JyNpCNylK/Ih6ya7QRXEsiIpT+3
+ a3HYRhmgVA3DTgNC7h+LOzVOqTdAHWSdle0a2dg4gMlYnxkJsK5mmKwo9aSZMyj7o8ZelQkFIt
+ Lq9OWPSXe6puYXW/2/Z/Ol3X9AbewuWd5AAAA
+To: Linus Walleij <linus.walleij@linaro.org>, 
+ Bartosz Golaszewski <brgl@bgdev.pl>, Andy Shevchenko <andy@kernel.org>, 
+ Tony Lindgren <tony@atomide.com>, 
+ Haojian Zhuang <haojian.zhuang@linaro.org>, Vignesh R <vigneshr@ti.com>, 
+ Aaro Koskinen <aaro.koskinen@iki.fi>, 
+ Janusz Krzysztofik <jmkrzyszt@gmail.com>, 
+ Andi Shyti <andi.shyti@kernel.org>, Peter Rosin <peda@axentia.se>, 
+ Vinod Koul <vkoul@kernel.org>, Kishon Vijay Abraham I <kishon@kernel.org>, 
+ Philipp Zabel <p.zabel@pengutronix.de>, Tom Joseph <tjoseph@cadence.com>, 
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
+ Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>
+Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org, 
+ linux-i2c@vger.kernel.org, linux-phy@lists.infradead.org, 
+ linux-pci@vger.kernel.org, gregory.clement@bootlin.com, 
+ theo.lebrun@bootlin.com, thomas.petazzoni@bootlin.com, u-kumar1@ti.com, 
+ Thomas Richard <thomas.richard@bootlin.com>
+X-Mailer: b4 0.12.0
+X-GND-Sasl: thomas.richard@bootlin.com
 
+This add suspend to ram support for the PCIe (RC mode) on J7200
+platform.
 
---3xx7p3mwtk5a7dcv
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In RC mode, the reset pin for endpoints is managed by a gpio expander
+on a i2c bus. This pin shall be managed in suspend_noirq and
+resume_noirq.
+The suspend/resume has been moved to suspend_noirq/resume_noirq for
+pca953x (expander) and pinctrl-single.
 
-On Mon, Jan 15, 2024 at 09:55:00AM +0100, H. Nikolaus Schaller wrote:
-> Hi,
->=20
-> > Am 15.01.2024 um 09:25 schrieb Maxime Ripard <mripard@kernel.org>:
-> >=20
-> > Hi,
-> >=20
-> > On Fri, Jan 12, 2024 at 06:33:58PM +0100, H. Nikolaus Schaller wrote:
-> >>> Am 08.01.2024 um 19:32 schrieb Andrew Davis <afd@ti.com>:
-> >>>=20
-> >>> Add SGX GPU device entry to base OMAP4 dtsi file.
-> >>>=20
-> >>> Signed-off-by: Andrew Davis <afd@ti.com>
-> >>> ---
-> >>> arch/arm/boot/dts/ti/omap/omap4.dtsi | 9 +++++----
-> >>> 1 file changed, 5 insertions(+), 4 deletions(-)
-> >>>=20
-> >>> diff --git a/arch/arm/boot/dts/ti/omap/omap4.dtsi b/arch/arm/boot/dts=
-/ti/omap/omap4.dtsi
-> >>> index 2bbff9032be3e..559b2bfe4ca7c 100644
-> >>> --- a/arch/arm/boot/dts/ti/omap/omap4.dtsi
-> >>> +++ b/arch/arm/boot/dts/ti/omap/omap4.dtsi
-> >>> @@ -501,10 +501,11 @@ sgx_module: target-module@56000000 {
-> >>> #size-cells =3D <1>;
-> >>> ranges =3D <0 0x56000000 0x2000000>;
-> >>>=20
-> >>> - /*
-> >>> - * Closed source PowerVR driver, no child device
-> >>> - * binding or driver in mainline
-> >>> - */
-> >>> + gpu@0 {
-> >>=20
-> >> I wonder why we don't add a "gpu:" label here.
-> >>=20
-> >> Almost all other subsystem nodes have one (e.g. emif:, aes:, dss:, dsi=
-:, hdmi:, etc.),
-> >> obviously for convenience when using a .dtsi file.
-> >>=20
-> >> It would allow a board-specific DTS to easily add status =3D "disabled=
-" to avoid driver
-> >> probing or disabling the GPU (e.g. if there is no display).
-> >=20
-> > There's no reason to disable it in the DT: the hardware block would
-> > still be there and it's rendering to memory so it still could be useful.
->=20
-> Well, if you know that the board does not have a dm3730 but a dm3725 with=
-out
-> GPU it is better to disable the GPU completely instead of loading the dri=
-ver
-> and make it detect by some internal bits that it has no GPU on the SoC.
+To do i2c accesses during suspend_noirq/resume_noirq, we need to force
+the wakeup of the i2c controller (which is autosuspended) during
+suspend callback. 
+It's the only way to wakeup the controller if it's autosuspended, as
+runtime pm is disabled in suspend_noirq and resume_noirq.
 
-It shouldn't even be in the DTSI if it's not in the SoC.
+Signed-off-by: Thomas Richard <thomas.richard@bootlin.com>
+---
+Thomas Richard (10):
+      gpio: pca953x: move suspend/resume to suspend_noirq/resume_noirq
+      pinctrl: pinctrl-single: move suspend/resume to suspend_noirq/resume_noirq
+      i2c: omap: wakeup the controller during suspend callback
+      phy: ti: phy-j721e-wiz: make wiz_clock_init callable multiple times
+      phy: ti: phy-j721e-wiz: add resume support
+      phy: cadence-torrent: extract calls to clk_get from cdns_torrent_clk
+      phy: cadence-torrent: register resets even if the phy is already configured
+      phy: cadence-torrent: move already_configured to struct cdns_torrent_phy
+      phy: cadence-torrent: remove noop_ops phy operations
+      phy: cadence-torrent: add suspend and resume support
 
-> > If there's no display on the board and you really don't want the GPU
-> > driver, then you can disable the driver or block the module loading, but
-> > it should be a distro / package / user decision, not a DT / kernel one
-> > still.
->=20
-> The same holds for aes: dss: dsi: hdmi: etc. If they are not used by some
-> board file, they don't change a single bit of the DTB [1] which IMHO would
-> be of reasonable concern to question additional labels.
+Théo Lebrun (4):
+      mux: mmio: Add resume support
+      PCI: cadence: add resume support to cdns_pcie_host_setup()
+      PCI: j721e: move reset GPIO to device struct
+      PCI: j721e: add suspend and resume support
 
-Not really, no. If there's no HDMI connector, the HDMI controller is
-useless. A GPU without a display can still be useful, depending on the
-workload.
+ drivers/gpio/gpio-pca953x.c                        |   8 +-
+ drivers/i2c/busses/i2c-omap.c                      |  15 +++
+ drivers/mux/mmio.c                                 |  34 ++++++
+ drivers/pci/controller/cadence/pci-j721e.c         |  86 ++++++++++++--
+ drivers/pci/controller/cadence/pcie-cadence-host.c |  49 ++++----
+ drivers/pci/controller/cadence/pcie-cadence-plat.c |   2 +-
+ drivers/pci/controller/cadence/pcie-cadence.h      |   7 +-
+ drivers/phy/cadence/phy-cadence-torrent.c          | 125 +++++++++++++++------
+ drivers/phy/ti/phy-j721e-wiz.c                     |  99 ++++++++++++----
+ drivers/pinctrl/pinctrl-single.c                   |  19 ++--
+ 10 files changed, 342 insertions(+), 102 deletions(-)
+---
+base-commit: 00ff0f9ce40db8e64fe16c424a965fd7ab769c42
+change-id: 20240102-j7200-pcie-s2r-ecb1a979e357
 
-Maxime
+Best regards,
+-- 
+Thomas Richard <thomas.richard@bootlin.com>
 
---3xx7p3mwtk5a7dcv
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCZaVFEQAKCRDj7w1vZxhR
-xYLAAQD7hjmkBsOxfyoIsGNpz7ekssiiDTWUKJBEn79S9qdkjQD/ZF6T4o4JwKg2
-1Y0Gk2k+BhScqbkykr/ZplBD8LyDcgg=
-=po+r
------END PGP SIGNATURE-----
-
---3xx7p3mwtk5a7dcv--
 
