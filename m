@@ -1,96 +1,132 @@
-Return-Path: <linux-omap+bounces-270-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-271-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69DAD82D3EE
-	for <lists+linux-omap@lfdr.de>; Mon, 15 Jan 2024 06:47:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F33EF82D505
+	for <lists+linux-omap@lfdr.de>; Mon, 15 Jan 2024 09:25:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA5F6B20E48
-	for <lists+linux-omap@lfdr.de>; Mon, 15 Jan 2024 05:47:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22A2C1C2129A
+	for <lists+linux-omap@lfdr.de>; Mon, 15 Jan 2024 08:25:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2901923DE;
-	Mon, 15 Jan 2024 05:47:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CEA863C5;
+	Mon, 15 Jan 2024 08:25:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="z4L4vF5f"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CoV0R374"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6422A63AA;
-	Mon, 15 Jan 2024 05:47:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-	Content-ID:Content-Description:In-Reply-To:References;
-	bh=Ze3qmbqqPjB3WNnim3tvfyFlNIHBTH8rGbog0Y3irZk=; b=z4L4vF5f/dSF3eI16pY+tQPCyG
-	BaxMDqdaB3rDtYwCayss7g0jyxGV4CfBtzv16ZTYV7pT3z4P7JXexwLubs7GUgIONelEVU6HUZm4p
-	QDJZI1/qIREDpDnH0EqSCCFpAI/JAt9guq3WFtSXG89vHkEvViK10lej3lAJPJdp5SQP4SUSIR1pV
-	5MFP3jeaqrTZFUw3Rb+gwSx7Ahr99jaOMrQ/CaPtTIFGC17SgrZmbZTms3WMV1MoUpSpSpTuCyYno
-	oC46GCD/oeHf6vEP57Jv0JAPBs+DwPeC4ZwkMScG04Rx0ip4l++RQeOuYPgCQJ8/NQMSERTfvGD8G
-	gokJZ0jw==;
-Received: from [50.53.46.231] (helo=bombadil.infradead.org)
-	by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-	id 1rPFox-007ohW-39;
-	Mon, 15 Jan 2024 05:47:40 +0000
-From: Randy Dunlap <rdunlap@infradead.org>
-To: linux-kernel@vger.kernel.org
-Cc: Randy Dunlap <rdunlap@infradead.org>,
-	Tero Kristo <kristo@kernel.org>,
-	linux-omap@vger.kernel.org,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	linux-clk@vger.kernel.org
-Subject: [PATCH] clk: ti: dpll3xxx: use correct function names in kernel-doc
-Date: Sun, 14 Jan 2024 21:47:39 -0800
-Message-ID: <20240115054739.4988-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.43.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AD005689;
+	Mon, 15 Jan 2024 08:25:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BC49C433C7;
+	Mon, 15 Jan 2024 08:25:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705307133;
+	bh=bkFxuxf0iCghKC8GrzWqXKXAFsRRBXSZ7feexi45UVk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CoV0R374tK5kCtzfve7eyQAekaInOpN0kUMbDADJ0KXk63eiqZTQu9MWzErWMYAfj
+	 BDp82RgAyoC0OgaHWM5EFeBKTwr8e+VuBEiW9BLrJAQoXyQcvdypB5Jg9rqF3Eto5u
+	 u+EbR/pWzZwUzdc53sIOnvkoHlbqKwwykR0GFpAgmNhCKrLV97kkbrFH0THj6m9hNd
+	 rlhyTBEwVAXw3ZeYbwAxM/EyfKlfjSXTiTQg5oBwZxiTqrTSdiuaD5tS8mwlRYdcK1
+	 J5IYOw8SdFTdWr6BorUsL3PvlYJxuPS7BKs7hxmNaGe84+JruinkUhmnF8916wcMt5
+	 vzHB0zIfM8/Ew==
+Date: Mon, 15 Jan 2024 09:25:30 +0100
+From: Maxime Ripard <mripard@kernel.org>
+To: "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc: Andrew Davis <afd@ti.com>, Frank Binns <frank.binns@imgtec.com>, 
+	Donald Robson <donald.robson@imgtec.com>, Matt Coster <matt.coster@imgtec.com>, 
+	Adam Ford <aford173@gmail.com>, Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
+	=?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>, Tony Lindgren <tony@atomide.com>, Nishanth Menon <nm@ti.com>, 
+	Vignesh Raghavendra <vigneshr@ti.com>, Tero Kristo <kristo@kernel.org>, 
+	Paul Cercueil <paul@crapouillou.net>, dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-sunxi@lists.linux.dev, linux-omap@vger.kernel.org, linux-mips@vger.kernel.org
+Subject: Re: Re: [PATCH RFC v2 04/11] ARM: dts: omap4: Add device tree entry
+ for SGX GPU
+Message-ID: <vpcgccul53oibwoqb3barj3rjxoyskoldjyfvjdzmytic3tonm@wq4aqsenk7rp>
+References: <20240108183302.255055-1-afd@ti.com>
+ <20240108183302.255055-5-afd@ti.com>
+ <122DC5ED-2AA7-46A0-845F-083922458385@goldelico.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="5bv4mdxrrdvnbudo"
+Content-Disposition: inline
+In-Reply-To: <122DC5ED-2AA7-46A0-845F-083922458385@goldelico.com>
 
-Use function names that match the implementation in kernel-doc comments
-to avoid kernel-doc warnings:
 
-dpll3xxx.c:938: warning: expecting prototype for omap3_non_core_dpll_save_context(). Prototype was for omap3_noncore_dpll_save_context() instead
-dpll3xxx.c:967: warning: expecting prototype for omap3_core_dpll_restore_context(). Prototype was for omap3_noncore_dpll_restore_context() instead
+--5bv4mdxrrdvnbudo
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Tero Kristo <kristo@kernel.org>
-Cc: linux-omap@vger.kernel.org
-Cc: Michael Turquette <mturquette@baylibre.com>
-Cc: Stephen Boyd <sboyd@kernel.org>
-Cc: linux-clk@vger.kernel.org
----
- drivers/clk/ti/dpll3xxx.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Hi,
 
-diff -- a/drivers/clk/ti/dpll3xxx.c b/drivers/clk/ti/dpll3xxx.c
---- a/drivers/clk/ti/dpll3xxx.c
-+++ b/drivers/clk/ti/dpll3xxx.c
-@@ -928,7 +928,7 @@ void omap3_core_dpll_restore_context(str
- }
- 
- /**
-- * omap3_non_core_dpll_save_context - Save the m and n values of the divider
-+ * omap3_noncore_dpll_save_context - Save the m and n values of the divider
-  * @hw: pointer  struct clk_hw
-  *
-  * Before the dpll registers are lost save the last rounded rate m and n
-@@ -957,7 +957,7 @@ int omap3_noncore_dpll_save_context(stru
- }
- 
- /**
-- * omap3_core_dpll_restore_context - restore the m and n values of the divider
-+ * omap3_noncore_dpll_restore_context - restore the m and n values of the divider
-  * @hw: pointer  struct clk_hw
-  *
-  * Restore the last rounded rate m and n
+On Fri, Jan 12, 2024 at 06:33:58PM +0100, H. Nikolaus Schaller wrote:
+> > Am 08.01.2024 um 19:32 schrieb Andrew Davis <afd@ti.com>:
+> >=20
+> > Add SGX GPU device entry to base OMAP4 dtsi file.
+> >=20
+> > Signed-off-by: Andrew Davis <afd@ti.com>
+> > ---
+> > arch/arm/boot/dts/ti/omap/omap4.dtsi | 9 +++++----
+> > 1 file changed, 5 insertions(+), 4 deletions(-)
+> >=20
+> > diff --git a/arch/arm/boot/dts/ti/omap/omap4.dtsi b/arch/arm/boot/dts/t=
+i/omap/omap4.dtsi
+> > index 2bbff9032be3e..559b2bfe4ca7c 100644
+> > --- a/arch/arm/boot/dts/ti/omap/omap4.dtsi
+> > +++ b/arch/arm/boot/dts/ti/omap/omap4.dtsi
+> > @@ -501,10 +501,11 @@ sgx_module: target-module@56000000 {
+> > #size-cells =3D <1>;
+> > ranges =3D <0 0x56000000 0x2000000>;
+> >=20
+> > - /*
+> > - * Closed source PowerVR driver, no child device
+> > - * binding or driver in mainline
+> > - */
+> > + gpu@0 {
+>=20
+> I wonder why we don't add a "gpu:" label here.
+>=20
+> Almost all other subsystem nodes have one (e.g. emif:, aes:, dss:, dsi:, =
+hdmi:, etc.),
+> obviously for convenience when using a .dtsi file.
+>=20
+> It would allow a board-specific DTS to easily add status =3D "disabled" t=
+o avoid driver
+> probing or disabling the GPU (e.g. if there is no display).
+
+There's no reason to disable it in the DT: the hardware block would
+still be there and it's rendering to memory so it still could be useful.
+
+If there's no display on the board and you really don't want the GPU
+driver, then you can disable the driver or block the module loading, but
+it should be a distro / package / user decision, not a DT / kernel one
+still.
+
+Maxime
+
+--5bv4mdxrrdvnbudo
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCZaTr7AAKCRDj7w1vZxhR
+xSybAP96mNxOy9DrBryPZmmu4a4Y6AfuRKXr9+Uh2C3OhAPO3QEA1j3KoeAhpYrF
+0pDWtJkRFUHwyOTCz3HpiAeRG3RSqwM=
+=GRcK
+-----END PGP SIGNATURE-----
+
+--5bv4mdxrrdvnbudo--
 
