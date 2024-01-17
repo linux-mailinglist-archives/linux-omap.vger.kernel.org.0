@@ -1,96 +1,96 @@
-Return-Path: <linux-omap+bounces-300-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-302-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE0BE82F41F
-	for <lists+linux-omap@lfdr.de>; Tue, 16 Jan 2024 19:22:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B448782FE2D
+	for <lists+linux-omap@lfdr.de>; Wed, 17 Jan 2024 02:10:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C6001F243F6
-	for <lists+linux-omap@lfdr.de>; Tue, 16 Jan 2024 18:22:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62D0428778C
+	for <lists+linux-omap@lfdr.de>; Wed, 17 Jan 2024 01:10:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 970D11CF81;
-	Tue, 16 Jan 2024 18:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 929A7210A;
+	Wed, 17 Jan 2024 01:10:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CBatexrm"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="QRCPXq+3"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2784C10A1D;
-	Tue, 16 Jan 2024 18:22:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97A8E1385;
+	Wed, 17 Jan 2024 01:10:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705429367; cv=none; b=lBC2Ee+6lHMUhuTH3JB7C2oVCceBLZcuUVTtCwh1exh0vjcSLgP0j3WZBwqGrM1vax3M0Ebbrnk10Q5MRkULH5t4dMTyz1sZMqrecwWT/oDTVgkpN+2pvXQWtRCnFBjBkhQXH1X0Ru00XoT4CbtHC1QzQOdVlZ0LWB8sCxx7QUc=
+	t=1705453808; cv=none; b=tHXCaOW+1smJgRpwOQ7dQ65s3jqi1TJNYAbrcAHLaTQEtC2uTemi0/htcOZXQjPWP1lCUGLOxm4+T4/AIi0csVjdvKxTephLlL10WYTmYLSpwTXOyhxrfIT42OJ5j0zXcNKMigDNmhBBro2fmi67OgqTY7OISKn5bTmaYVy32eQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705429367; c=relaxed/simple;
-	bh=24yf9WQZM8mCzBoY4DhIxhCfHQZP8hu82jOqs15h0jg=;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To; b=RZco8vEJ7rZYjwc/s5veyZx0m7cpsjM5xWvDQx4fH8c64LLue1qy7ch8sMy/jglDMxewbUT766CTs8HySrsXxYQ8FgNPiYlNKwEqZGsC8wNtQZC9tyQ2mObE4jymNYBuO2sRkxEiP/TL/rEIOJb9eXH7VB8KRq1DIyDAzKljG6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CBatexrm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D20CC433F1;
-	Tue, 16 Jan 2024 18:22:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705429366;
-	bh=24yf9WQZM8mCzBoY4DhIxhCfHQZP8hu82jOqs15h0jg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=CBatexrm9aBNAYXsNpveWnrw+Di773YudoVO/VDqgpP9FKlSYHdGeCs9ySe0HGtWK
-	 so2FLx7CeRayeJj9Z8kDp8bZqEEJxqHCJNS8c7tRBEMn8ySC/D9sH5IShv/Qo2Gila
-	 wWFRNUHVyYshYfyYmIKD3cxzN/7U7Wl9fvvywrJvdzChhTimASQuKCYIKy5nyIsOoN
-	 f/v4avvA0QcnowjCCBcL0oOvQHhzavvXAnirlz3cJXInydu6jFKaIIj/QeIkONkFoS
-	 KSS5MkeXX+d1acaZzpQ/8hWvCjtvGU+aU4P2i/MhH3Czdl1GJCYXt9uBuT7TSbAFul
-	 v2V7zez4Z1JzA==
-Date: Tue, 16 Jan 2024 12:22:44 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Thomas Richard <thomas.richard@bootlin.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Andy Shevchenko <andy@kernel.org>, Tony Lindgren <tony@atomide.com>,
-	Haojian Zhuang <haojian.zhuang@linaro.org>,
-	Vignesh R <vigneshr@ti.com>, Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-	Andi Shyti <andi.shyti@kernel.org>, Peter Rosin <peda@axentia.se>,
-	Vinod Koul <vkoul@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Tom Joseph <tjoseph@cadence.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-	linux-i2c@vger.kernel.org, linux-phy@lists.infradead.org,
-	linux-pci@vger.kernel.org, gregory.clement@bootlin.com,
-	theo.lebrun@bootlin.com, thomas.petazzoni@bootlin.com,
-	u-kumar1@ti.com
-Subject: Re: [PATCH 11/14] phy: cadence-torrent: add suspend and resume
- support
-Message-ID: <20240116182244.GA101245@bhelgaas>
+	s=arc-20240116; t=1705453808; c=relaxed/simple;
+	bh=clZBqQ02r/6ZEfBAlGdIaFRLscyEwF/D28yNWD4RkBk=;
+	h=DKIM-Signature:Received:From:To:Cc:Subject:Date:Message-ID:
+	 X-Mailer:MIME-Version:Content-Type:Content-Transfer-Encoding; b=pDS7m/dTlaj+ctsRBbfHlJ6XAbAjX/ZAb7VdfdwxY0rrBfJI9872sMISELyQC0J8/iIAf5btygspt1bPDiUKgKHE+B5s5XDZcOxDH/nboRbwua82+vHDwb3325tgD28ZEeGCL6VXs9tHrWsvQGhEwWHnVnGkWDiEr2DsH+UNyE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=QRCPXq+3; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=clZBqQ02r/6ZEfBAlGdIaFRLscyEwF/D28yNWD4RkBk=; b=QRCPXq+30XTFBS/gSpMVTeuP5q
+	CFIjEAxMm5cxxyj5O0SEiH0nUtsFA4is6vFM0HhmQpNVPQ9FGtB1naC64TMSpVtqtiQiF4SHjdAfP
+	sfoBSXG+fwqDMXREceunvQOJoFxfU7WYCp5BlSV/ixqHQHCbPTxGyGkS4upohwYYqMWj9PK4pdx1k
+	VDXJtsesKqkNjILpC9xtH+Ts61yF6hLNlpvOPY93bFVYMqg9DRmtGjJ72yLCihfCkg7/WXzCB9pTf
+	f8g5aRRlcNydosy+y5SLM2pPk8DdJT8jkKjhZZWoKmrl9e4DTuUUKcvg/h5bJXjUJmAAlM6Isgq63
+	QEIxVEWQ==;
+Received: from [50.53.46.231] (helo=bombadil.infradead.org)
+	by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+	id 1rPuRR-00E6zu-1y;
+	Wed, 17 Jan 2024 01:10:05 +0000
+From: Randy Dunlap <rdunlap@infradead.org>
+To: linux-kernel@vger.kernel.org
+Cc: Randy Dunlap <rdunlap@infradead.org>,
+	Tony Lindgren <tony@atomide.com>,
+	linux-omap@vger.kernel.org,
+	Russell King <linux@armlinux.org.uk>,
+	linux-arm-kernel@lists.infradead.org,
+	patches@armlinux.org.uk,
+	Paul Walmsley <paul@pwsan.com>,
+	=?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+	Kevin Hilman <khilman@kernel.org>
+Subject: [PATCH 00/13] ARM: OMAP2+: fix a bunch of kernel-doc warnings
+Date: Tue, 16 Jan 2024 17:09:48 -0800
+Message-ID: <20240117011004.22669-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240102-j7200-pcie-s2r-v1-11-84e55da52400@bootlin.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jan 15, 2024 at 05:14:52PM +0100, Thomas Richard wrote:
-> Add suspend and resume support.
-> The alread_configured flag is cleared during suspend stage to force the
-> phy initialization during the resume stage.
+Fix many kernel-doc warnings in arch/arm/mach-omap2/:
 
-s/alread_configured/already_configured/
+ [PATCH 01/13] ARM: OMAP2+: am33xx-restart: fix function name in kernel-doc
+ [PATCH 02/13] ARM: OMAP2+: clockdomain: fix kernel-doc warnings
+ [PATCH 03/13] ARM: OMAP2+: clock: fix a function name in kernel-doc
+ [PATCH 04/13] ARM: OMAP2+: cm33xx: use matching function name in kernel-doc
+ [PATCH 05/13] ARM: OMAP2+: CMINST: use matching function name in kernel-doc
+ [PATCH 06/13] ARM: OMAP2+: hwmod: remove misuse of kernel-doc
+ [PATCH 07/13] ARM: OMAP2+: hwmod: fix kernel-doc warnings
+ [PATCH 08/13] ARM: OMAP2+: pmic-cpcap: fix kernel-doc warnings
+ [PATCH 09/13] ARM: OMAP2+: prm44xx: fix a kernel-doc warning
+ [PATCH 10/13] ARM: OMAP2+: PRM: fix kernel-doc warnings
+ [PATCH 11/13] ARM: OMAP2+: fix a kernel-doc warning
+ [PATCH 12/13] ARM: OMAP2+: fix kernel-doc warnings
+ [PATCH 13/13] ARM: OMAP2+: fix kernel-doc warnings
 
-Wrap to fill 75 columns.  Add a blank line if you intend two
-paragraphs.
-
-I don't know whether there's a strong convention in drivers/phy, but I
-see several commit logs that capitalize "PHY".  "Phy" is not a
-standard English word, so I think the capitalization makes it easier
-to read.
-
-Bjorn
+Cc: Tony Lindgren <tony@atomide.com>
+Cc: linux-omap@vger.kernel.org
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: patches@armlinux.org.uk
+Cc: Paul Walmsley <paul@pwsan.com>
+Cc: "Benoît Cousson" <bcousson@baylibre.com>
+Cc: Kevin Hilman <khilman@kernel.org>
 
