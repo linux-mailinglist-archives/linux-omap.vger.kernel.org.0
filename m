@@ -1,64 +1,61 @@
-Return-Path: <linux-omap+bounces-313-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-315-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2290482FE3F
-	for <lists+linux-omap@lfdr.de>; Wed, 17 Jan 2024 02:11:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A6728306B7
+	for <lists+linux-omap@lfdr.de>; Wed, 17 Jan 2024 14:13:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A9D11B2555D
-	for <lists+linux-omap@lfdr.de>; Wed, 17 Jan 2024 01:11:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97CFD1C2194C
+	for <lists+linux-omap@lfdr.de>; Wed, 17 Jan 2024 13:13:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA500C122;
-	Wed, 17 Jan 2024 01:10:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 306421EB41;
+	Wed, 17 Jan 2024 13:13:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="EEs2wemr"
+	dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b="nvvCh1oj"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from mail5.25mail.st (mail5.25mail.st [74.50.62.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1B778BED;
-	Wed, 17 Jan 2024 01:10:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43CD11D541;
+	Wed, 17 Jan 2024 13:13:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.50.62.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705453811; cv=none; b=kLWLlTXaNEql+zqmDvFHK0HbwQhyjG4ez0dvFXVXhgGYZ9fz0ShZavDOR5oiautbhmeaLK+DrcxSFgarktLesCUPdw5LNNfxaVlcWrQA0o6RIUi8f26ZRi44Ssys2Z9cHAEpec23B7NHL6+Wgh9+cmWJ4MEDkquaHRGKbgBV9mc=
+	t=1705497215; cv=none; b=Vd83xKkl7eqggzJIkmw/aQ9JTo75GNrX05TBe8N3V2Qs7J03fW/l28rIXRd10d8uVytidpB9hcxgwdX/Cypfm9AXUW7yRHO0xDva0/HKKyXKZovdIdC29OOud0WD3Ya0BKUnVEF5EuDSyaJeGFDb8owNfNBmLrBH2M2NH7PHhmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705453811; c=relaxed/simple;
-	bh=jgmXU1E3Z2SWEh6ABHcsCpSffF6ClS5QkoPdtgw0WSw=;
-	h=DKIM-Signature:Received:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding; b=OuK3J6X3w9vReX1OWqoUtiNdQnXBUIvpGj40mYH96pHt48yNNBdHnBDX06yq7spbFSICUEDASTA+vQL0qEC5lD1TmOC0eDa3AI4aODzBO1H7mIKS9XQo5ODgMHXYJhbzRrBkgK2Hgn3XPLv57yuJmsarcxN4nG4uWK5XYSOLelA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=EEs2wemr; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
-	:Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=Rfa69KGhRV06omS8OU11mtmpPZ9dpOihzp/ZOk6Xf+g=; b=EEs2wemrsa0B22guu+fu4YngIc
-	LrbzCTnPk7n4Ks7EXGQyadLquqMYsq6wknU2JiW5CMLC+NT0NC3+ThJYyYDveOh/AqTqaTCqUroGK
-	tbvBXTyRHLR+SArNNP53idwxfhqq8F5uUuxmKTDsHKq5GhlSzQsa4AJ4aPcUk38jjSq46lKKzMnZa
-	wxrlsBnv0eSjc4kulABp8UZ6ACPBtKT2AlLZxLnswU4WyUDjSWe+AOLdr8ARSCuljg/tXhG1cdOQZ
-	JRkqVvrCBVgiRPT0COO+QRrtBIATqBVJidWLcWDdARr+Dan0+UNIN6AbgxXll34Led+WtzkHY1Mue
-	sCksqeuQ==;
-Received: from [50.53.46.231] (helo=bombadil.infradead.org)
-	by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-	id 1rPuRV-00E6zu-1H;
-	Wed, 17 Jan 2024 01:10:09 +0000
-From: Randy Dunlap <rdunlap@infradead.org>
-To: linux-kernel@vger.kernel.org
-Cc: Randy Dunlap <rdunlap@infradead.org>,
-	Tony Lindgren <tony@atomide.com>,
-	linux-omap@vger.kernel.org,
+	s=arc-20240116; t=1705497215; c=relaxed/simple;
+	bh=kWJBAgPmQlo65pN4xHfEJK8XHR+TwaEYfRJHy1S756Q=;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To; b=RTd3YE8Iyy9ZT1jVtejxEHE3G++FzwnltWjN/3UWcC7DFXnPS8gOYsFdk+AO4p9o8cvj+Q/Da2YZH1DOPaS120w3d37iwx2Jc2pLQMhDzeuvC8z6GYMIZMzDUWMDKg0OrRnDnS6Md8neOeYd6sRtlMPZEXQ6Z7N5Frc5BWZ8Ing=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com; spf=fail smtp.mailfrom=atomide.com; dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b=nvvCh1oj; arc=none smtp.client-ip=74.50.62.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=atomide.com
+Received: from localhost (91-158-86-216.elisa-laajakaista.fi [91.158.86.216])
+	by mail5.25mail.st (Postfix) with ESMTPSA id 0F46D60871;
+	Wed, 17 Jan 2024 13:13:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=atomide.com;
+	s=25mailst; t=1705497206;
+	bh=kWJBAgPmQlo65pN4xHfEJK8XHR+TwaEYfRJHy1S756Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=nvvCh1ojRSByih4z4pujUTdTW5CSSakh2B+FqgLc5IfUHQhkK82IeDoAkkmRRrKOw
+	 hA4cZiAkWPaQMLsxx0NpG8ltGjw8VTPCz91Jz3EsybA+EpPVWIdkWXTxzccADG6Ee2
+	 xfZQbLbHnpmMOXifYtUQnHz4OZsKdVyNTp2dBVC/BJR5SCDIk+hPB6/IhSWEfpLbem
+	 a95S9nY6ceQENUistnfewEEH6XX7ChMR6Lm0J+iIKEHxpgA1M2rGQp+Wr1FRju4wQc
+	 /1bsLRqCpY4Ieb7u4NrwUGh1cbgG5EGnhRtxMb6l7tCMNbp2DStAzLZ7K49piiuiic
+	 pDFVo3bZ2JAtA==
+Date: Wed, 17 Jan 2024 15:13:05 +0200
+From: Tony Lindgren <tony@atomide.com>
+To: Randy Dunlap <rdunlap@infradead.org>
+Cc: linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
 	Russell King <linux@armlinux.org.uk>,
-	linux-arm-kernel@lists.infradead.org,
-	patches@armlinux.org.uk
-Subject: [PATCH 13/13] ARM: OMAP2+: fix kernel-doc warnings
-Date: Tue, 16 Jan 2024 17:10:01 -0800
-Message-ID: <20240117011004.22669-14-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240117011004.22669-1-rdunlap@infradead.org>
+	linux-arm-kernel@lists.infradead.org, patches@armlinux.org.uk,
+	Paul Walmsley <paul@pwsan.com>,
+	=?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+	Kevin Hilman <khilman@kernel.org>
+Subject: Re: [PATCH 00/13] ARM: OMAP2+: fix a bunch of kernel-doc warnings
+Message-ID: <20240117131305.GP5185@atomide.com>
 References: <20240117011004.22669-1-rdunlap@infradead.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
@@ -66,47 +63,21 @@ List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240117011004.22669-1-rdunlap@infradead.org>
 
-Use the correct function name in a comment.
-Add the return value documentation for one function.
+* Randy Dunlap <rdunlap@infradead.org> [240117 01:10]:
+> Fix many kernel-doc warnings in arch/arm/mach-omap2/:
 
-These changes prevent these warnings:
+Thanks for fixing these. These are unlikely to conflict with anything so
+please queue them along with other clean-up:
 
-wd_timer.c:76: warning: expecting prototype for omap2_wdtimer_reset(). Prototype was for omap2_wd_timer_reset() instead
-wd_timer.c:76: warning: No description found for return value of 'omap2_wd_timer_reset'
+Acked-by: Tony Lindgren <tony@atomide.com>
 
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Tony Lindgren <tony@atomide.com>
-Cc: linux-omap@vger.kernel.org
-Cc: Russell King <linux@armlinux.org.uk>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: patches@armlinux.org.uk
----
-KernelVersion: 0dd3ee31125508cd67f7e717
+Or alternatively let me know if you want me to apply them.
 
- arch/arm/mach-omap2/wd_timer.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Regards,
 
-diff -- a/arch/arm/mach-omap2/wd_timer.c b/arch/arm/mach-omap2/wd_timer.c
---- a/arch/arm/mach-omap2/wd_timer.c
-+++ b/arch/arm/mach-omap2/wd_timer.c
-@@ -57,7 +57,7 @@ int omap2_wd_timer_disable(struct omap_h
- }
- 
- /**
-- * omap2_wdtimer_reset - reset and disable the WDTIMER IP block
-+ * omap2_wd_timer_reset - reset and disable the WDTIMER IP block
-  * @oh: struct omap_hwmod *
-  *
-  * After the WDTIMER IP blocks are reset on OMAP2/3, we must also take
-@@ -71,6 +71,8 @@ int omap2_wd_timer_disable(struct omap_h
-  * during a normal merge window.  omap_hwmod_softreset() should be
-  * renamed to omap_hwmod_set_ocp_softreset(), and omap_hwmod_softreset()
-  * should call the hwmod _ocp_softreset() code.
-+ *
-+ * Returns: %0 on success or -errno value on error.
-  */
- int omap2_wd_timer_reset(struct omap_hwmod *oh)
- {
+Tony
 
