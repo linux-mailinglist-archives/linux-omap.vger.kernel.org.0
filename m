@@ -1,92 +1,122 @@
-Return-Path: <linux-omap+bounces-318-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-319-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CFD8830B7D
-	for <lists+linux-omap@lfdr.de>; Wed, 17 Jan 2024 17:52:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6B20831537
+	for <lists+linux-omap@lfdr.de>; Thu, 18 Jan 2024 09:57:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0A3E286AB3
-	for <lists+linux-omap@lfdr.de>; Wed, 17 Jan 2024 16:52:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 260A21C22045
+	for <lists+linux-omap@lfdr.de>; Thu, 18 Jan 2024 08:57:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EA8422616;
-	Wed, 17 Jan 2024 16:52:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09BA61CFA4;
+	Thu, 18 Jan 2024 08:56:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="XGSUNHnx"
+	dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b="Gw04zt0W"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from mail5.25mail.st (mail5.25mail.st [74.50.62.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A271222619;
-	Wed, 17 Jan 2024 16:52:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 369F012B6B;
+	Thu, 18 Jan 2024 08:56:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.50.62.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705510341; cv=none; b=lXMZIQ++7Yo6iZTyebrivSKJpl4/mO9BrRwWGzDjkTkqWsOoNAdYsMjsrmvF2GI+KLoYCEtsnylvd+lhDUiPl0JM+EJOckkvRChBGj6AwRwn8d/9/mtveRnP/5vbAU8p/Q7rntrcPsylOnQgO/tJ7/2+lXVq6PQ60jf/PrLS36A=
+	t=1705568211; cv=none; b=om9c3oYFJEPNGniRjTPcq1swSSOe4TE97EOEY/OcFfbGFs3+zT73Pf36SdLfqf5hZN0kwRYU0wab+4rnwGbuTs+xzGYgQSdSCnaWaH6g8/YijBMJMR+xZFBqVdqasFKOVpzXsKlEzBH/vWFwSvdroYPGqO7WJxEkzWPzdrGAVag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705510341; c=relaxed/simple;
-	bh=d2jotS6S85nxTTQBqPtcjTv2jv17Jyc0FlHJG/EQUQk=;
-	h=DKIM-Signature:Received:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:Content-Language:To:Cc:References:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding; b=Bpikw9Me1pSH12OPx57cOQQJH2qBp/RSSFHWEoMfowdovTfDCWDEQdoI03oBCh0HmH8UfnmLVEOOXXXuTWMk3nvBRluCVubROzriR3zK1uT4ph4zgT7dbruzkTrJOlAPde/wgqRYzMlP5ItN2vK/OelRXw8vijTrudkTVdWhm6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=XGSUNHnx; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=5/FGBZFcnL+QZxohlDWVSAVnnE2wpZTP2L5jfNcW670=; b=XGSUNHnxvzjblbQiZd44146i5H
-	kYB1pYXmjWY4HnMMp9wLs8ZhS9c0AFROHRW094BP3jkpEdCG4cSUAielj2s4epNj3L4R/H25GmhlP
-	kz9Rr21gueGIWkngiPyqHx3W1V3tjfujIedBz17sIctEssXnPECuI4fCmwcaUZHGZmpKEQBgYbUyR
-	XIG02o96Lml+lsFamaqWW2JNtc6AjWbAneSBt2jNAwjS72v3KwGITBQL6YVTjc6aD2H7Jxrau5jl7
-	lSuv9ZmhNxhtWoyI2czR8veJl2oGbuqtgh6MCUjhrYbkjR8hJ0ufeuh3mhEwGOzafCqbColFueVgh
-	ex45lRWg==;
-Received: from [50.53.46.231] (helo=[192.168.254.15])
-	by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-	id 1rQ99G-0008pP-34;
-	Wed, 17 Jan 2024 16:52:18 +0000
-Message-ID: <e6692a04-142c-4df4-83dc-534ab27a55f6@infradead.org>
-Date: Wed, 17 Jan 2024 08:52:16 -0800
+	s=arc-20240116; t=1705568211; c=relaxed/simple;
+	bh=vULAl46BBydQR4ps2jMZiFaBG2168vzYuRJQjRETXmM=;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To; b=nhNn7IN6Skrow6ERuKY+PA5TEFhceeGkqX4dVPv2jRUkiVW3lcZaDf9l5RyUvKv6mRC9bUwstwb659M56L+f6hqpw/9kTAYKJpdxEdR4yVvnFJ13arHjj7r5rviX6FcUnm2qg5NM2pd6+6G/Q1BLHgjUcWhFlU9T1tID16qhWho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com; spf=fail smtp.mailfrom=atomide.com; dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b=Gw04zt0W; arc=none smtp.client-ip=74.50.62.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=atomide.com
+Received: from localhost (91-158-86-216.elisa-laajakaista.fi [91.158.86.216])
+	by mail5.25mail.st (Postfix) with ESMTPSA id 8CA6960547;
+	Thu, 18 Jan 2024 08:55:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=atomide.com;
+	s=25mailst; t=1705568209;
+	bh=vULAl46BBydQR4ps2jMZiFaBG2168vzYuRJQjRETXmM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Gw04zt0Wpjy9eWoxk2lS2uRHPyetKndWTDy1xt3tVGx6vKHlNkOkWIOKrTzvdlw/9
+	 66hcjRDA6awFbthpcjUwMl9Ag054ol8J7CDoqS8Ylxom3qRjvEEiO42kKCJd7piKXG
+	 /pBdyyWMFJWk62EFvYAkz/ET12d+9KZ1ZrUe4VIu/KG0WZBdK7YpSKhh2xshMli9/S
+	 gVVlFTKdKDM0zIga8bgoPdDQsFxhXBtVWbkeetqLrliFyg9Pu7b1qV6J7RCc90wGT2
+	 zl6zEaNx93DQC83AFSlIeGXIbiPEfkOHUAzePS1mHU6/9kjkvMvgRKFiAOeMPcANkR
+	 mknuZHXKNV/qg==
+Date: Thu, 18 Jan 2024 10:55:51 +0200
+From: Tony Lindgren <tony@atomide.com>
+To: Andrew Davis <afd@ti.com>
+Cc: Frank Binns <frank.binns@imgtec.com>,
+	Matt Coster <matt.coster@imgtec.com>,
+	"H . Nikolaus Schaller" <hns@goldelico.com>,
+	Adam Ford <aford173@gmail.com>,
+	Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	=?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+	Nishanth Menon <nm@ti.com>, Vignesh Raghavendra <vigneshr@ti.com>,
+	Tero Kristo <kristo@kernel.org>,
+	Paul Cercueil <paul@crapouillou.net>,
+	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-sunxi@lists.linux.dev, linux-omap@vger.kernel.org,
+	linux-mips@vger.kernel.org
+Subject: Re: [PATCH 08/11] ARM: dts: DRA7xx: Add device tree entry for SGX GPU
+Message-ID: <20240118085551.GQ5185@atomide.com>
+References: <20240109171950.31010-1-afd@ti.com>
+ <20240109171950.31010-9-afd@ti.com>
+ <20240110082924.GA5185@atomide.com>
+ <55efd488-c6a0-4dca-baea-1fa93d13dd17@ti.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/13] ARM: OMAP2+: fix a bunch of kernel-doc warnings
-Content-Language: en-US
-To: Tony Lindgren <tony@atomide.com>
-Cc: linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
- Russell King <linux@armlinux.org.uk>, linux-arm-kernel@lists.infradead.org,
- patches@armlinux.org.uk, Paul Walmsley <paul@pwsan.com>,
- =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
- Kevin Hilman <khilman@kernel.org>
-References: <20240117011004.22669-1-rdunlap@infradead.org>
- <20240117131305.GP5185@atomide.com>
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20240117131305.GP5185@atomide.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <55efd488-c6a0-4dca-baea-1fa93d13dd17@ti.com>
 
-
-
-On 1/17/24 05:13, Tony Lindgren wrote:
-> * Randy Dunlap <rdunlap@infradead.org> [240117 01:10]:
->> Fix many kernel-doc warnings in arch/arm/mach-omap2/:
+* Andrew Davis <afd@ti.com> [240117 15:52]:
+> On 1/10/24 2:29 AM, Tony Lindgren wrote:
+> > * Andrew Davis <afd@ti.com> [240109 17:20]:
+> > > --- a/arch/arm/boot/dts/ti/omap/dra7.dtsi
+> > > +++ b/arch/arm/boot/dts/ti/omap/dra7.dtsi
+> > > @@ -850,12 +850,19 @@ target-module@56000000 {
+> > >   					<SYSC_IDLE_SMART>;
+> > >   			ti,sysc-sidle = <SYSC_IDLE_FORCE>,
+> > >   					<SYSC_IDLE_NO>,
+> > > -					<SYSC_IDLE_SMART>;
+> > > +					<SYSC_IDLE_SMART>,
+> > > +					<SYSC_IDLE_SMART_WKUP>;
+> > 
+> > You probably checked this already.. But just in case, can you please
+> > confirm this is intentional. The documentation lists the smart wakeup
+> > capability bit as reserved for dra7, maybe the documentation is wrong.
+> > 
 > 
-> Thanks for fixing these. These are unlikely to conflict with anything so
-> please queue them along with other clean-up:
+> It was an intentional change, although I'm not sure it is correct :)
 > 
-> Acked-by: Tony Lindgren <tony@atomide.com>
+> This is how we had it in our "evil vendor tree" for years (back when it
+> was hwmod based), so when converting these nodes to use "ti,sysc" I noticed
+> this bit was set, but as you point out the documentation disagrees.
 > 
-> Or alternatively let me know if you want me to apply them.
+> I'd rather go with what has worked before, but it doesn't seem to
+> break anything either way, so we could also break this change out into
+> its own patch if you would prefer.
 
-Yes, please go ahead and apply them.
+I agree it's best to stick what is known to work. How about let's add
+the related information to the patch description?
 
-Thanks.
+Regards,
 
--- 
-#Randy
+Tony
 
