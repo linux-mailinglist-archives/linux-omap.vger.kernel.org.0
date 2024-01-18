@@ -1,80 +1,64 @@
-Return-Path: <linux-omap+bounces-319-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-320-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6B20831537
-	for <lists+linux-omap@lfdr.de>; Thu, 18 Jan 2024 09:57:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6EB283153A
+	for <lists+linux-omap@lfdr.de>; Thu, 18 Jan 2024 09:57:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 260A21C22045
-	for <lists+linux-omap@lfdr.de>; Thu, 18 Jan 2024 08:57:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9DDA1C2237A
+	for <lists+linux-omap@lfdr.de>; Thu, 18 Jan 2024 08:57:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09BA61CFA4;
-	Thu, 18 Jan 2024 08:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9946E125D1;
+	Thu, 18 Jan 2024 08:57:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b="Gw04zt0W"
+	dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b="T2e7lANz"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from mail5.25mail.st (mail5.25mail.st [74.50.62.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 369F012B6B;
-	Thu, 18 Jan 2024 08:56:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E643125B0;
+	Thu, 18 Jan 2024 08:57:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.50.62.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705568211; cv=none; b=om9c3oYFJEPNGniRjTPcq1swSSOe4TE97EOEY/OcFfbGFs3+zT73Pf36SdLfqf5hZN0kwRYU0wab+4rnwGbuTs+xzGYgQSdSCnaWaH6g8/YijBMJMR+xZFBqVdqasFKOVpzXsKlEzBH/vWFwSvdroYPGqO7WJxEkzWPzdrGAVag=
+	t=1705568260; cv=none; b=jSGBWRdquIUuWIteEXkb8kak/sCn0TKVnpR2/XuCvTyZ4tFhmtD4g7hc2COIX+Js7dZyLcRFSjWG2N3MuUJi2rLO2R6zRa5PyK5B39JC/ylQcT1c1Y77rGyxH+3DCrTxnHAzqgY+qXbJMvZl3r8UZYD96Ecze4lBi/mgUUhXpkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705568211; c=relaxed/simple;
-	bh=vULAl46BBydQR4ps2jMZiFaBG2168vzYuRJQjRETXmM=;
+	s=arc-20240116; t=1705568260; c=relaxed/simple;
+	bh=9WhcegD00ZXPQqj/9MrAzfk2OaAluGZbP3bQPxipOU4=;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To; b=nhNn7IN6Skrow6ERuKY+PA5TEFhceeGkqX4dVPv2jRUkiVW3lcZaDf9l5RyUvKv6mRC9bUwstwb659M56L+f6hqpw/9kTAYKJpdxEdR4yVvnFJ13arHjj7r5rviX6FcUnm2qg5NM2pd6+6G/Q1BLHgjUcWhFlU9T1tID16qhWho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com; spf=fail smtp.mailfrom=atomide.com; dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b=Gw04zt0W; arc=none smtp.client-ip=74.50.62.9
+	 In-Reply-To; b=lp9HIXgeY49vEJHlZ/iN4S8c+1yioOnu8/wqGKaL0twXWoCBP1vU9VHo5gb6Amqt/rxSNhJ6bMn1cQn5uRSBzWViFDG5ZfMjvcffMLg3KFESJX+ccS1LozWOhAVamOuEFyMUy/2mgSK++KB+N44Ic8IKXustDqHWQ6jIP7v4oMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com; spf=fail smtp.mailfrom=atomide.com; dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b=T2e7lANz; arc=none smtp.client-ip=74.50.62.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=atomide.com
 Received: from localhost (91-158-86-216.elisa-laajakaista.fi [91.158.86.216])
-	by mail5.25mail.st (Postfix) with ESMTPSA id 8CA6960547;
-	Thu, 18 Jan 2024 08:55:53 +0000 (UTC)
+	by mail5.25mail.st (Postfix) with ESMTPSA id D04B260547;
+	Thu, 18 Jan 2024 08:57:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=atomide.com;
-	s=25mailst; t=1705568209;
-	bh=vULAl46BBydQR4ps2jMZiFaBG2168vzYuRJQjRETXmM=;
+	s=25mailst; t=1705568258;
+	bh=9WhcegD00ZXPQqj/9MrAzfk2OaAluGZbP3bQPxipOU4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Gw04zt0Wpjy9eWoxk2lS2uRHPyetKndWTDy1xt3tVGx6vKHlNkOkWIOKrTzvdlw/9
-	 66hcjRDA6awFbthpcjUwMl9Ag054ol8J7CDoqS8Ylxom3qRjvEEiO42kKCJd7piKXG
-	 /pBdyyWMFJWk62EFvYAkz/ET12d+9KZ1ZrUe4VIu/KG0WZBdK7YpSKhh2xshMli9/S
-	 gVVlFTKdKDM0zIga8bgoPdDQsFxhXBtVWbkeetqLrliFyg9Pu7b1qV6J7RCc90wGT2
-	 zl6zEaNx93DQC83AFSlIeGXIbiPEfkOHUAzePS1mHU6/9kjkvMvgRKFiAOeMPcANkR
-	 mknuZHXKNV/qg==
-Date: Thu, 18 Jan 2024 10:55:51 +0200
+	b=T2e7lANzQT/C2YB/bY2N+y2QRDU/8QozfaZ5Fg0obTezvV7qAMsJivTQZ/pn3HzFV
+	 maYl0rgldmWmtWchSPa3KUpV3H+22PpnAi9UG4y9K1vTnbRQIzC0lTeAAyWa4hCYzy
+	 75Uww92wDZnthnayia+3wVXB8jk5WdwY/rpq56qnkCoCFm0IdDG99uUen+gVKbm4hP
+	 1bzaOfBZIo1FLeMrpp69F1+Xr3OxlGkKLEIsFgO1PaLPGpbeKN9sTVQkPxbFZrezyD
+	 WaiLme/dPGeknQkSsIF7KXGmi/XhMoxRUxA7Xins8tOj0vi8XqtZTFRgmC/kfCvNy8
+	 cE1d215OiHmeg==
+Date: Thu, 18 Jan 2024 10:57:17 +0200
 From: Tony Lindgren <tony@atomide.com>
-To: Andrew Davis <afd@ti.com>
-Cc: Frank Binns <frank.binns@imgtec.com>,
-	Matt Coster <matt.coster@imgtec.com>,
-	"H . Nikolaus Schaller" <hns@goldelico.com>,
-	Adam Ford <aford173@gmail.com>,
-	Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
+To: Randy Dunlap <rdunlap@infradead.org>
+Cc: linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+	Russell King <linux@armlinux.org.uk>,
+	linux-arm-kernel@lists.infradead.org, patches@armlinux.org.uk,
+	Paul Walmsley <paul@pwsan.com>,
 	=?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-	Nishanth Menon <nm@ti.com>, Vignesh Raghavendra <vigneshr@ti.com>,
-	Tero Kristo <kristo@kernel.org>,
-	Paul Cercueil <paul@crapouillou.net>,
-	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-sunxi@lists.linux.dev, linux-omap@vger.kernel.org,
-	linux-mips@vger.kernel.org
-Subject: Re: [PATCH 08/11] ARM: dts: DRA7xx: Add device tree entry for SGX GPU
-Message-ID: <20240118085551.GQ5185@atomide.com>
-References: <20240109171950.31010-1-afd@ti.com>
- <20240109171950.31010-9-afd@ti.com>
- <20240110082924.GA5185@atomide.com>
- <55efd488-c6a0-4dca-baea-1fa93d13dd17@ti.com>
+	Kevin Hilman <khilman@kernel.org>
+Subject: Re: [PATCH 00/13] ARM: OMAP2+: fix a bunch of kernel-doc warnings
+Message-ID: <20240118085717.GR5185@atomide.com>
+References: <20240117011004.22669-1-rdunlap@infradead.org>
+ <20240117131305.GP5185@atomide.com>
+ <e6692a04-142c-4df4-83dc-534ab27a55f6@infradead.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -83,40 +67,27 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <55efd488-c6a0-4dca-baea-1fa93d13dd17@ti.com>
+In-Reply-To: <e6692a04-142c-4df4-83dc-534ab27a55f6@infradead.org>
 
-* Andrew Davis <afd@ti.com> [240117 15:52]:
-> On 1/10/24 2:29 AM, Tony Lindgren wrote:
-> > * Andrew Davis <afd@ti.com> [240109 17:20]:
-> > > --- a/arch/arm/boot/dts/ti/omap/dra7.dtsi
-> > > +++ b/arch/arm/boot/dts/ti/omap/dra7.dtsi
-> > > @@ -850,12 +850,19 @@ target-module@56000000 {
-> > >   					<SYSC_IDLE_SMART>;
-> > >   			ti,sysc-sidle = <SYSC_IDLE_FORCE>,
-> > >   					<SYSC_IDLE_NO>,
-> > > -					<SYSC_IDLE_SMART>;
-> > > +					<SYSC_IDLE_SMART>,
-> > > +					<SYSC_IDLE_SMART_WKUP>;
+* Randy Dunlap <rdunlap@infradead.org> [240117 16:52]:
+> 
+> 
+> On 1/17/24 05:13, Tony Lindgren wrote:
+> > * Randy Dunlap <rdunlap@infradead.org> [240117 01:10]:
+> >> Fix many kernel-doc warnings in arch/arm/mach-omap2/:
 > > 
-> > You probably checked this already.. But just in case, can you please
-> > confirm this is intentional. The documentation lists the smart wakeup
-> > capability bit as reserved for dra7, maybe the documentation is wrong.
+> > Thanks for fixing these. These are unlikely to conflict with anything so
+> > please queue them along with other clean-up:
 > > 
+> > Acked-by: Tony Lindgren <tony@atomide.com>
+> > 
+> > Or alternatively let me know if you want me to apply them.
 > 
-> It was an intentional change, although I'm not sure it is correct :)
-> 
-> This is how we had it in our "evil vendor tree" for years (back when it
-> was hwmod based), so when converting these nodes to use "ti,sysc" I noticed
-> this bit was set, but as you point out the documentation disagrees.
-> 
-> I'd rather go with what has worked before, but it doesn't seem to
-> break anything either way, so we could also break this change out into
-> its own patch if you would prefer.
+> Yes, please go ahead and apply them.
 
-I agree it's best to stick what is known to work. How about let's add
-the related information to the patch description?
+OK will do after -rc1.
 
-Regards,
+Thanks,
 
 Tony
 
