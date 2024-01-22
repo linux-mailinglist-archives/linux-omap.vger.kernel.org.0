@@ -1,108 +1,128 @@
-Return-Path: <linux-omap+bounces-340-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-341-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD6BC836E2A
-	for <lists+linux-omap@lfdr.de>; Mon, 22 Jan 2024 18:47:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96A11836F02
+	for <lists+linux-omap@lfdr.de>; Mon, 22 Jan 2024 19:07:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F7611F23F12
-	for <lists+linux-omap@lfdr.de>; Mon, 22 Jan 2024 17:47:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C589F1C27D31
+	for <lists+linux-omap@lfdr.de>; Mon, 22 Jan 2024 18:07:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5B6D4A991;
-	Mon, 22 Jan 2024 17:11:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EB4A41743;
+	Mon, 22 Jan 2024 17:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YZkpTLFA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uzn55LXj"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88ED63D574;
-	Mon, 22 Jan 2024 17:11:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F5761E896;
+	Mon, 22 Jan 2024 17:30:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705943507; cv=none; b=LIPLh67CZ/OruEm+lAoWI2ZGDgzR6TPRfDh0vDubo8qR4pn7mN5Nu2foLtOX17qxkrdAzFA1Xbu3Z7MZqnevG7O3pkEOovQoPUUCPEoO/uulZcuP7mbJud9XfFvkzb/Wg4LFG8ddILcIwCif/p84SK937C9/zrjHUqt60Nxvkvo=
+	t=1705944642; cv=none; b=o+/PR+APbzWV2dzzxsABPxNohmDTRVN46lP/E4fMwGFEiv7evfNbxERWHta9W4OyApa0NLFsHVv4J53WG6ahYA3kVrODSlJzHUgvDkzhKOkjrwhhib8ukgmtv/jA6fx5VOKiv47KLWW5/0PtTGO90Hd2qp6Hp0KQWbPLmVyvWbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705943507; c=relaxed/simple;
-	bh=k2CNr7LmlyvVXOsB5EVe+VkohS7bN+gdLn1ISX7JPAc=;
+	s=arc-20240116; t=1705944642; c=relaxed/simple;
+	bh=mchknaq5YkDrWaP+ZwY4WqGhaeuC6EUhgRpZtphYFXM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B70n11btw2D4DfJbgD0Sr2orjcEpwxoBL7tEXgTEDXqG9zwaf9RycV6Qc4OCXhqS8s62aOYcZlIivG91YIBq0etf9ogEN6Bc4rAENex8d8XYfTAv1bhiaXbo6wx6gQyNqUU6ILeEdCZJ2km0sVps2HDFgf7qaQ5vR1gNQC+DtW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YZkpTLFA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21528C433F1;
-	Mon, 22 Jan 2024 17:11:44 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=Oybxy9akOgqW76/A1GCeK/Jc1xLTHxNdIDtW1Cs7GF9xObO6IaNqJoTazVxGcxbRvL543gVaha1ezcgeJN8xRypZW8qJ/FeWK50tWcDQ8UZGyer4QeaTOn6lCtKZ3q1ZXaWF5BWEsRtIrBHCPX0tZ5dN+hGJ9E1PKGkVrMOn2Cg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uzn55LXj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 390B7C43390;
+	Mon, 22 Jan 2024 17:30:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705943507;
-	bh=k2CNr7LmlyvVXOsB5EVe+VkohS7bN+gdLn1ISX7JPAc=;
+	s=k20201202; t=1705944641;
+	bh=mchknaq5YkDrWaP+ZwY4WqGhaeuC6EUhgRpZtphYFXM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YZkpTLFA+pv+dgKqXR9AKm6w3m8oGZBo9CYsV2MjFkuFTlRkpxq0CZi9hv61X2ksV
-	 Rddh+8mZ/qNkvmkcbExmoCdkcyfo73hPBxwfH4MCrwLxxQPbDgKKycN1F+fVg86miX
-	 JPADKsGiGAosrC5OtVM8cQ71vY9bLj7Y7Uq4tFQZ3KrX6zEA979ufjpr4AxJdJrRMU
-	 oR6BR3tmtJgD+2YKl8p6dtFknwSOhVP8Jfykp1KuFVnmxryR90/ri12NpMSFGgEu9o
-	 vimmRptoqTTTSkGryEpDIHD4/KJzA9u6zVJJf2f+CmvmmwI62JHKWRcstXnEmV3WIs
-	 LD1E0rUhO98Mg==
-Date: Mon, 22 Jan 2024 17:11:42 +0000
-From: Conor Dooley <conor@kernel.org>
+	b=uzn55LXjVnN7YbqfMAImR8qdEjtkFO5wZa1Y8nCqo0/cpWXpry3Le9uF0LI5keClk
+	 r+cRD+yFQEXSQ0txJiKm40ADu/w2A8S7fYNEyHrHZ2OdGv9livWQkPwMzGSaqg5CYn
+	 UHBmSKQOsfU8a2O/RIGT8PlNl7qAOYgtsalk2q2Etfdhr+zvXmkEtnBoUgnZj9RrUX
+	 4TTPZq71OSuLBZDGxXC+3A8M5GZPA2ytp+I1+7/WCOs76KoA5UsSuB9cPyl/ScPIjm
+	 GtS+XACdsuh9Gf5NvLiQyvAt1UUKNMJdJVngQi3mPmoaPUua8YfTdQwmbL2H92p64o
+	 n/S2KXpLhIaGA==
+Date: Mon, 22 Jan 2024 17:30:37 +0000
+From: Mark Brown <broonie@kernel.org>
 To: Romain Naour <romain.naour@smile.fr>
-Cc: linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-	=?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
-	Tony Lindgren <tony@atomide.com>, Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
+Cc: linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+	tony@atomide.com, lgirdwood@gmail.com,
 	Romain Naour <romain.naour@skf.com>
-Subject: Re: [PATCH 1/3] arch/arm/boot/dts/dra7-l4.dtsi: add missing unit
- addresse
-Message-ID: <20240122-extending-identical-9609420a1baa@spud>
-References: <20240122111948.416444-1-romain.naour@smile.fr>
+Subject: Re: [PATCH] regulator: ti-abb: don't use
+ devm_platform_ioremap_resource_byname for shared interrupt register
+Message-ID: <1b2b5afc-308f-48bb-924a-2c29371abfc9@sirena.org.uk>
+References: <20240122170442.729374-1-romain.naour@smile.fr>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="RXiEXhniTINmF+T+"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="fLVcmu4sGIFI8Iwp"
 Content-Disposition: inline
-In-Reply-To: <20240122111948.416444-1-romain.naour@smile.fr>
+In-Reply-To: <20240122170442.729374-1-romain.naour@smile.fr>
+X-Cookie: Nice guys don't finish nice.
 
 
---RXiEXhniTINmF+T+
+--fLVcmu4sGIFI8Iwp
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jan 22, 2024 at 12:19:46PM +0100, Romain Naour wrote:
-> From: Romain Naour <romain.naour@skf.com>
->=20
-> phy_gmii_sel node have 'reg' so it must have unit address.
+On Mon, Jan 22, 2024 at 06:04:42PM +0100, Romain Naour wrote:
+
+> We can't use devm_platform_ioremap_resource_byname() to remap the
+> interrupt register that can be shared between
+> regulator-abb-{ivahd,dspeve,gpu} drivers instance.
+
+=2E..
+
+> The commit b36c6b1887ff (regulator: ti-abb: Make use of the helper
+> function devm_ioremap related) overlooked the following comment
+> explaining why devm_ioremap() is used in this case:
+
+> /*
+>  * We may have shared interrupt register offsets which are
+>  * write-1-to-clear between domains ensuring exclusivity.
+>  */
+
+I have to say that I wouldn't infer from that comment that there is any
+reason why _byname() won't work - one would generally expect that a
+get_resource_by_name() followed by an ioremap() of that resource would
+be equivalent to the combined helper.  Based on the commit log here I
+frankly have no idea what the issue is.  You should also add something
+to the code which makes it clear what the issue is so the same
+conversion isn't performed again, assuming that the fix isn't in the
+helper.
+
 >=20
 > Fixes:
-> Warning (unit_address_vs_reg): /ocp/interconnect@4a000000/segment@0/targe=
-t-module@2000/scm@0/scm_conf@0/phy-gmii-sel: node has a reg or ranges prope=
-rty, but no unit name
 
-Does checkpatch not complain about this "Fixes" tag?
+You're missing the commit here.
 
-Also, for all patches in your series, the subject is odd. Running
-`git log` on the files you're changing is a good idea to get off to a
-good start with a subject line.
+> This partially reverts commit b36c6b1887ffc6b58b556120bfbd511880515247.
 
-Thanks,
-Conor.
+Please include human readable descriptions of things like commits and
+issues being discussed in e-mail in your mails, this makes them much
+easier for humans to read especially when they have no internet access.
+I do frequently catch up on my mail on flights or while otherwise
+travelling so this is even more pressing for me than just being about
+making things a bit easier to read.
 
->=20
-> Signed-off-by: Romain Naour <romain.naour@skf.com>
-
---RXiEXhniTINmF+T+
+--fLVcmu4sGIFI8Iwp
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZa6hzgAKCRB4tDGHoIJi
-0mBYAP9F0/plPjdvLISSoKlEHcy1+P5CxGl1+LcAx0sbH0/A5wEA4brQffVEo11j
-RGG89Yn1GXt4+7Bjw5+TjlCij9k5mQI=
-=7sJx
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmWupjwACgkQJNaLcl1U
+h9AYCQf9GqCmATajujQku7+2xQjUQrrWF5EEd4pwN21iJ9zY7BTfqDU6T5u05IUn
+PO6VW3mCs1fMkUKsmLYz8TfoDBNWNxa3CivN1oCopBmxPZT204vOrA7QUPx35NFr
+Yn1N9U8XWu98yayfB2gTx9zuSW/IlPWRUnPXpzKGJMV3X7Cx/ZvGrelxeWG3DPWA
+PFh4ftak5pgD5iUMFXc9cyuoRpY9gLhrbRq6kYPTVoiD8KjZ1NK3CNhk6O7ql98Z
+9heSxGBFNtJgZycp72zPI8fqB/3KA6xgnVw7VL/M4SzOIVHa5LxTDB7Af3F7gOOu
+uf2Ik+3X7iP/TxZ9NFuWynB9BtUG3Q==
+=L5mv
 -----END PGP SIGNATURE-----
 
---RXiEXhniTINmF+T+--
+--fLVcmu4sGIFI8Iwp--
 
