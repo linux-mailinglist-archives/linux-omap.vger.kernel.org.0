@@ -1,107 +1,157 @@
-Return-Path: <linux-omap+bounces-342-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-343-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14F3D8371F9
-	for <lists+linux-omap@lfdr.de>; Mon, 22 Jan 2024 20:10:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BBCC83757E
+	for <lists+linux-omap@lfdr.de>; Mon, 22 Jan 2024 22:37:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD3001F2CDF1
-	for <lists+linux-omap@lfdr.de>; Mon, 22 Jan 2024 19:10:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4FDC81F29796
+	for <lists+linux-omap@lfdr.de>; Mon, 22 Jan 2024 21:37:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BC4D604C9;
-	Mon, 22 Jan 2024 18:47:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A6A6481CC;
+	Mon, 22 Jan 2024 21:36:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J2Oho5DO"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4274C3FB3D;
-	Mon, 22 Jan 2024 18:47:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 739123A8F9;
+	Mon, 22 Jan 2024 21:36:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705949236; cv=none; b=qO229blyBcA8toQo8bgHsRtpPEeo3S6YHzqSanACdj1SBNbEJfYM4t2KAkCvU7hoGPhp4Uw31J9sY60061XKRUCsuP6c+SXOmghPR7L/ytaAESjCkmLnatNU1zGH0CEcu5Xbb2hVjs2yzLpexHJZF8TuktPemaeLMaKBNSLAYjY=
+	t=1705959409; cv=none; b=F1x9Z+tJQ2unWZMfGVoZmX/DCZXHKgnsADvgbpKLbSXO17fJ+0Bg/0QmF1m6fQu+1lmjNchlD3nF0YPabgGsFds2vAci0vXxKPbvWE9S26hnXBi+3d2+5yULUFq9Y/A570bp9R9tLVZkgeR56b+vYMkGLfcsfsSsTkVaJJObW40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705949236; c=relaxed/simple;
-	bh=uEWezJ7+I9VN7UklI0BBr4CzYeqHpEpxvxNv/N6nB7o=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=hSEM+AuogrvOVkYG0Qyjg/8Q00c9kyF1vK17hKKabUHHPuo+ezp5zmyAZKfI1s9W1bOzQnZ9j7MTgk+dINmy4qQDV5zFc2WUKbiJYN30BQ7UgzG84kq5hiA3UqDH28dUWSlJglsjhzUIRtBr8lYvbIrfCyxKjw4xIylYX9TPCTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+	s=arc-20240116; t=1705959409; c=relaxed/simple;
+	bh=xPn3dhVqdpRwTwdijypjx1UWRDaqJN9bDytv0STNJls=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=htZzLX6Q06qC3n6AEjAgArqJm0FI8PQqKpx2CP6TsSGcSdr/5p+qi4mMAhzrYv1OPk5A1fe15JqEOmzViIVMjFQjad6c+qcIR1o1PllM0eWJHcCJ4I4rp+WeypsCwnJUb1B67VdjCF71XyGQz2PofP+4y37wzxTSFBJFqCgv1ek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J2Oho5DO; arc=none smtp.client-ip=209.85.218.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-50ff9bde634so1299649e87.2;
-        Mon, 22 Jan 2024 10:47:15 -0800 (PST)
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-a26f73732c5so399073466b.3;
+        Mon, 22 Jan 2024 13:36:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1705959405; x=1706564205; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Kh1sidT+OYt5uYsBoa3HOhiQe7ArH4ir2l1s+REcQPU=;
+        b=J2Oho5DOTLh5BckM2KFoA6tjfEQph6ZfH9tDiolOfR4tkBobDsJDZKF20xzZWgu7gC
+         qCIBTSwYGemHYCUHo1IQJ0IndW9eZYHMaEmJtgZWPylJMzMSayHP4kpdaUNSv6hsi3oS
+         Z8sn1QaNNyHjDXnuFE1XaYYA7BgWi1ypftt54r0cpa7KTryI1iZhsBEyAjNuOxDPuqcx
+         PQTH1C/bWbiPmtpWASd1Xk5Gi4h5wrPSB6O804yUtbg7ypi/EEObf64QOM9t0BBiw+iN
+         GKrqh9PoMxdCzDD+3G+Vvfsrzj52gJza/vQpy4jkHxDkgw5mXNEqJuhf73dxN5GD04dJ
+         VHJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705949233; x=1706554033;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1705959405; x=1706564205;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=y1hTTwkFp3JNpz3iSovxHTDDs4dMLc/6WOVM3FZbhyU=;
-        b=sXTDJvondIPwBCybjSCyP8iauQBhN3g1VHh7jcRlCdnkjYsS92kDhcHZOmbqSjP/iP
-         O87TL12hkC1k+j6CSzB3bgpO0NZS+luC/7NJ4GJ6HxGSa8MWxOnn8B8jXjk1AvNWK83X
-         IU/Ql6d+S+GKHL7P3hJleRVhX0PTGzahu6lW5N8zOtbjUHNpU5NncB4yLPnHsT6+yHlp
-         r7FsxvIPaoqGzMMkry/xe87naCD1kYn4BRmxal/Wd5Ll0fvQiUh8ahC91Z4QezD5GtT4
-         rkPErEYhMwvIAAjQdpowPQwouWlgkanDpyTMSX0vuvaS7sCnIq7zYKeR1qCTLiRkFacM
-         0VLA==
-X-Gm-Message-State: AOJu0YyVZBEaaz2F6O2x0RPQh2OeIoiBk+fKmw9g6+Q0IIWJkmEnOtLn
-	nZguem0QemqDkRFPdlKAa0B5UT6Z7AXp6xMWhtbjr7XKBJ3Z3oNI
-X-Google-Smtp-Source: AGHT+IFL7hu7CUGvQC2EnxSJ7wwyl3FpRxZ6RdcGKTb72L6dHM0QCYvS8pBUVfbDZD0S47ho0lGH/A==
-X-Received: by 2002:a05:6512:ea6:b0:50f:f9c4:4974 with SMTP id bi38-20020a0565120ea600b0050ff9c44974mr1438767lfb.26.1705949233285;
-        Mon, 22 Jan 2024 10:47:13 -0800 (PST)
-Received: from localhost (fwdproxy-lla-001.fbsv.net. [2a03:2880:30ff:1::face:b00c])
-        by smtp.gmail.com with ESMTPSA id q24-20020a170906541800b00a26f0f49dd2sm13826517ejo.11.2024.01.22.10.47.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Jan 2024 10:47:13 -0800 (PST)
-From: Breno Leitao <leitao@debian.org>
-To: kuba@kernel.org,
-	davem@davemloft.net,
-	abeni@redhat.com,
-	edumazet@google.com,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Ravi Gunasekaran <r-gunasekaran@ti.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: dsahern@kernel.org,
-	weiwan@google.com,
-	Rob Herring <robh@kernel.org>,
-	Alex Elder <elder@linaro.org>,
-	Simon Horman <horms@kernel.org>,
-	linux-omap@vger.kernel.org (open list:TI ETHERNET SWITCH DRIVER (CPSW)),
-	netdev@vger.kernel.org (open list:TI ETHERNET SWITCH DRIVER (CPSW)),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH net-next 21/22] net: fill in MODULE_DESCRIPTION()s for cpsw-common
-Date: Mon, 22 Jan 2024 10:45:42 -0800
-Message-Id: <20240122184543.2501493-22-leitao@debian.org>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20240122184543.2501493-1-leitao@debian.org>
-References: <20240122184543.2501493-1-leitao@debian.org>
+        bh=Kh1sidT+OYt5uYsBoa3HOhiQe7ArH4ir2l1s+REcQPU=;
+        b=GaXpboMeVjowql7O6AZmDVfQkFIyX8EX2K6h2mloANX5TcgOiJxvgOZD9xG3LCrlyY
+         F5iWkrVMkWRrEJRW16/BErdBdRGen+2wjPMTZyeALNLwIWD451HEloO3biXNAB5+k+gM
+         m/Nw1O+gUxwmydgzHHDwlo1apBjdHqHlYQ5PPwaUXNTiFWWj4GxmZslSSSfLV0a9MDDQ
+         KTttbS3XukRi/v+NcVqqEtA/VfjL4RoUZV1P+Z3EOlotrLbuSU75ijrTUQ9o4FIeJ0f9
+         0cVU2JA/qRUusGe7v+XXghi3cpruocSuoAT8Hf8+TbFJIwZkbxsWtLepZQUdR6ujZ6QM
+         /Cgw==
+X-Gm-Message-State: AOJu0YxregrC5PLjnq15Rjhzp9Eku74iKKTdym1gLM5neYYA3AmSupKq
+	YrYo9QbNsVpzJOlSdN8zBXkNEevE5OqpMzq9ScKs2ICYarxjZTfk9OucoRNLhCprxgJPWLoaMYi
+	SLFW2LqTjB/gNUSTHzjzLEDeoqmI=
+X-Google-Smtp-Source: AGHT+IF/SL58a8hmAkmkCe5q5zm+9sw1I9Kywvqs5C4nI1iPfdBzh55WJjaIzUvjLszirg3nQ/bBqI6uZdDo77QpfCc=
+X-Received: by 2002:a17:906:b2c6:b0:a30:9e78:662f with SMTP id
+ cf6-20020a170906b2c600b00a309e78662fmr317678ejb.70.1705959405451; Mon, 22 Jan
+ 2024 13:36:45 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240102-j7200-pcie-s2r-v1-0-84e55da52400@bootlin.com>
+ <20240102-j7200-pcie-s2r-v1-14-84e55da52400@bootlin.com> <CAHp75VfPQz4PWdzFUU_n+R=XohBjyXM0zsjD-bUD2jmb42ds8Q@mail.gmail.com>
+ <9cb47f37-bd98-4136-b844-33cf2be593df@bootlin.com>
+In-Reply-To: <9cb47f37-bd98-4136-b844-33cf2be593df@bootlin.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Mon, 22 Jan 2024 23:36:08 +0200
+Message-ID: <CAHp75Ve30T3t0_vHR7TUVVC_WN23dL_rp1k951Da6Re2DJQezw@mail.gmail.com>
+Subject: Re: [PATCH 14/14] PCI: j721e: add suspend and resume support
+To: Thomas Richard <thomas.richard@bootlin.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
+	Andy Shevchenko <andy@kernel.org>, Tony Lindgren <tony@atomide.com>, 
+	Haojian Zhuang <haojian.zhuang@linaro.org>, Vignesh R <vigneshr@ti.com>, 
+	Aaro Koskinen <aaro.koskinen@iki.fi>, Janusz Krzysztofik <jmkrzyszt@gmail.com>, 
+	Andi Shyti <andi.shyti@kernel.org>, Peter Rosin <peda@axentia.se>, Vinod Koul <vkoul@kernel.org>, 
+	Kishon Vijay Abraham I <kishon@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>, 
+	Tom Joseph <tjoseph@cadence.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, linux-gpio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-omap@vger.kernel.org, linux-i2c@vger.kernel.org, 
+	linux-phy@lists.infradead.org, linux-pci@vger.kernel.org, 
+	gregory.clement@bootlin.com, theo.lebrun@bootlin.com, 
+	thomas.petazzoni@bootlin.com, u-kumar1@ti.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-W=1 builds now warn if module is built without a MODULE_DESCRIPTION().
-Add descriptions to the TI CPSW switch module.
+On Mon, Jan 22, 2024 at 5:30=E2=80=AFPM Thomas Richard
+<thomas.richard@bootlin.com> wrote:
+> On 1/15/24 21:13, Andy Shevchenko wrote:
+> > On Mon, Jan 15, 2024 at 6:16=E2=80=AFPM Thomas Richard
+> > <thomas.richard@bootlin.com> wrote:
 
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
- drivers/net/ethernet/ti/cpsw-common.c | 1 +
- 1 file changed, 1 insertion(+)
+...
 
-diff --git a/drivers/net/ethernet/ti/cpsw-common.c b/drivers/net/ethernet/ti/cpsw-common.c
-index 26dc906eae90..57fe936bb177 100644
---- a/drivers/net/ethernet/ti/cpsw-common.c
-+++ b/drivers/net/ethernet/ti/cpsw-common.c
-@@ -90,4 +90,5 @@ int ti_cm_get_macid(struct device *dev, int slave, u8 *mac_addr)
- }
- EXPORT_SYMBOL_GPL(ti_cm_get_macid);
- 
-+MODULE_DESCRIPTION("TI CPSW Switch common module");
- MODULE_LICENSE("GPL");
--- 
-2.39.3
+> >> +               if (pcie->reset_gpio)
+> >
+> > Dup, why?
+>
+> This pcie->reset_gpio corresponds to PERST# of PCIe endpoints.
+> I assert it during suspend, because I have to deassert it (with a delay)
+> during resume stage [1].
 
+Ah, sorry for being unclear, I meant that gpiod_set_value*() already
+has that check, you don't need it here.
+
+> >> +                       gpiod_set_value_cansleep(pcie->reset_gpio, 0);
+
+...
+
+> >> +               if (pcie->reset_gpio) {
+> >> +                       usleep_range(100, 200);
+> >
+> > fsleep() ?
+> > Btw, why is it needed here, perhaps a comment?
+>
+> The comment should be the same than in the probe [1].
+> Should I copy it? Or should I just add a reference to the probe?
+>
+> [1]
+> https://elixir.bootlin.com/linux/v6.8-rc1/source/drivers/pci/controller/c=
+adence/pci-j721e.c#L535
+
+Either way works for me.
+
+> >> +                       gpiod_set_value_cansleep(pcie->reset_gpio, 1);
+> >> +               }
+
+...
+
+> >> +#define cdns_pcie_to_rc(p) container_of(p, struct cdns_pcie_rc, pcie)
+> >
+> > Is container_of.h included in this file?
+>
+> linux/container_of.h is included in linux/kernel.h.
+> And linux/kernel.h is included in pcie-cadence.h
+> (https://elixir.bootlin.com/linux/v6.8-rc1/source/drivers/pci/controller/=
+cadence/pcie-cadence.h#L9).
+
+Okay, so, try to clean up pcie-cadence.h so it won't use "proxy" headers.
+There is an IWYU (include what you use) principle, please follow it.
+
+--=20
+With Best Regards,
+Andy Shevchenko
 
