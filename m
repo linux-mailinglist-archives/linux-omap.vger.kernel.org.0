@@ -1,128 +1,107 @@
-Return-Path: <linux-omap+bounces-341-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-342-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96A11836F02
-	for <lists+linux-omap@lfdr.de>; Mon, 22 Jan 2024 19:07:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14F3D8371F9
+	for <lists+linux-omap@lfdr.de>; Mon, 22 Jan 2024 20:10:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C589F1C27D31
-	for <lists+linux-omap@lfdr.de>; Mon, 22 Jan 2024 18:07:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD3001F2CDF1
+	for <lists+linux-omap@lfdr.de>; Mon, 22 Jan 2024 19:10:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EB4A41743;
-	Mon, 22 Jan 2024 17:30:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uzn55LXj"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BC4D604C9;
+	Mon, 22 Jan 2024 18:47:17 +0000 (UTC)
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F5761E896;
-	Mon, 22 Jan 2024 17:30:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4274C3FB3D;
+	Mon, 22 Jan 2024 18:47:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705944642; cv=none; b=o+/PR+APbzWV2dzzxsABPxNohmDTRVN46lP/E4fMwGFEiv7evfNbxERWHta9W4OyApa0NLFsHVv4J53WG6ahYA3kVrODSlJzHUgvDkzhKOkjrwhhib8ukgmtv/jA6fx5VOKiv47KLWW5/0PtTGO90Hd2qp6Hp0KQWbPLmVyvWbg=
+	t=1705949236; cv=none; b=qO229blyBcA8toQo8bgHsRtpPEeo3S6YHzqSanACdj1SBNbEJfYM4t2KAkCvU7hoGPhp4Uw31J9sY60061XKRUCsuP6c+SXOmghPR7L/ytaAESjCkmLnatNU1zGH0CEcu5Xbb2hVjs2yzLpexHJZF8TuktPemaeLMaKBNSLAYjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705944642; c=relaxed/simple;
-	bh=mchknaq5YkDrWaP+ZwY4WqGhaeuC6EUhgRpZtphYFXM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Oybxy9akOgqW76/A1GCeK/Jc1xLTHxNdIDtW1Cs7GF9xObO6IaNqJoTazVxGcxbRvL543gVaha1ezcgeJN8xRypZW8qJ/FeWK50tWcDQ8UZGyer4QeaTOn6lCtKZ3q1ZXaWF5BWEsRtIrBHCPX0tZ5dN+hGJ9E1PKGkVrMOn2Cg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uzn55LXj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 390B7C43390;
-	Mon, 22 Jan 2024 17:30:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705944641;
-	bh=mchknaq5YkDrWaP+ZwY4WqGhaeuC6EUhgRpZtphYFXM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uzn55LXjVnN7YbqfMAImR8qdEjtkFO5wZa1Y8nCqo0/cpWXpry3Le9uF0LI5keClk
-	 r+cRD+yFQEXSQ0txJiKm40ADu/w2A8S7fYNEyHrHZ2OdGv9livWQkPwMzGSaqg5CYn
-	 UHBmSKQOsfU8a2O/RIGT8PlNl7qAOYgtsalk2q2Etfdhr+zvXmkEtnBoUgnZj9RrUX
-	 4TTPZq71OSuLBZDGxXC+3A8M5GZPA2ytp+I1+7/WCOs76KoA5UsSuB9cPyl/ScPIjm
-	 GtS+XACdsuh9Gf5NvLiQyvAt1UUKNMJdJVngQi3mPmoaPUua8YfTdQwmbL2H92p64o
-	 n/S2KXpLhIaGA==
-Date: Mon, 22 Jan 2024 17:30:37 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Romain Naour <romain.naour@smile.fr>
-Cc: linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-	tony@atomide.com, lgirdwood@gmail.com,
-	Romain Naour <romain.naour@skf.com>
-Subject: Re: [PATCH] regulator: ti-abb: don't use
- devm_platform_ioremap_resource_byname for shared interrupt register
-Message-ID: <1b2b5afc-308f-48bb-924a-2c29371abfc9@sirena.org.uk>
-References: <20240122170442.729374-1-romain.naour@smile.fr>
+	s=arc-20240116; t=1705949236; c=relaxed/simple;
+	bh=uEWezJ7+I9VN7UklI0BBr4CzYeqHpEpxvxNv/N6nB7o=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=hSEM+AuogrvOVkYG0Qyjg/8Q00c9kyF1vK17hKKabUHHPuo+ezp5zmyAZKfI1s9W1bOzQnZ9j7MTgk+dINmy4qQDV5zFc2WUKbiJYN30BQ7UgzG84kq5hiA3UqDH28dUWSlJglsjhzUIRtBr8lYvbIrfCyxKjw4xIylYX9TPCTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-50ff9bde634so1299649e87.2;
+        Mon, 22 Jan 2024 10:47:15 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705949233; x=1706554033;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=y1hTTwkFp3JNpz3iSovxHTDDs4dMLc/6WOVM3FZbhyU=;
+        b=sXTDJvondIPwBCybjSCyP8iauQBhN3g1VHh7jcRlCdnkjYsS92kDhcHZOmbqSjP/iP
+         O87TL12hkC1k+j6CSzB3bgpO0NZS+luC/7NJ4GJ6HxGSa8MWxOnn8B8jXjk1AvNWK83X
+         IU/Ql6d+S+GKHL7P3hJleRVhX0PTGzahu6lW5N8zOtbjUHNpU5NncB4yLPnHsT6+yHlp
+         r7FsxvIPaoqGzMMkry/xe87naCD1kYn4BRmxal/Wd5Ll0fvQiUh8ahC91Z4QezD5GtT4
+         rkPErEYhMwvIAAjQdpowPQwouWlgkanDpyTMSX0vuvaS7sCnIq7zYKeR1qCTLiRkFacM
+         0VLA==
+X-Gm-Message-State: AOJu0YyVZBEaaz2F6O2x0RPQh2OeIoiBk+fKmw9g6+Q0IIWJkmEnOtLn
+	nZguem0QemqDkRFPdlKAa0B5UT6Z7AXp6xMWhtbjr7XKBJ3Z3oNI
+X-Google-Smtp-Source: AGHT+IFL7hu7CUGvQC2EnxSJ7wwyl3FpRxZ6RdcGKTb72L6dHM0QCYvS8pBUVfbDZD0S47ho0lGH/A==
+X-Received: by 2002:a05:6512:ea6:b0:50f:f9c4:4974 with SMTP id bi38-20020a0565120ea600b0050ff9c44974mr1438767lfb.26.1705949233285;
+        Mon, 22 Jan 2024 10:47:13 -0800 (PST)
+Received: from localhost (fwdproxy-lla-001.fbsv.net. [2a03:2880:30ff:1::face:b00c])
+        by smtp.gmail.com with ESMTPSA id q24-20020a170906541800b00a26f0f49dd2sm13826517ejo.11.2024.01.22.10.47.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Jan 2024 10:47:13 -0800 (PST)
+From: Breno Leitao <leitao@debian.org>
+To: kuba@kernel.org,
+	davem@davemloft.net,
+	abeni@redhat.com,
+	edumazet@google.com,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Ravi Gunasekaran <r-gunasekaran@ti.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: dsahern@kernel.org,
+	weiwan@google.com,
+	Rob Herring <robh@kernel.org>,
+	Alex Elder <elder@linaro.org>,
+	Simon Horman <horms@kernel.org>,
+	linux-omap@vger.kernel.org (open list:TI ETHERNET SWITCH DRIVER (CPSW)),
+	netdev@vger.kernel.org (open list:TI ETHERNET SWITCH DRIVER (CPSW)),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH net-next 21/22] net: fill in MODULE_DESCRIPTION()s for cpsw-common
+Date: Mon, 22 Jan 2024 10:45:42 -0800
+Message-Id: <20240122184543.2501493-22-leitao@debian.org>
+X-Mailer: git-send-email 2.39.3
+In-Reply-To: <20240122184543.2501493-1-leitao@debian.org>
+References: <20240122184543.2501493-1-leitao@debian.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="fLVcmu4sGIFI8Iwp"
-Content-Disposition: inline
-In-Reply-To: <20240122170442.729374-1-romain.naour@smile.fr>
-X-Cookie: Nice guys don't finish nice.
+Content-Transfer-Encoding: 8bit
 
+W=1 builds now warn if module is built without a MODULE_DESCRIPTION().
+Add descriptions to the TI CPSW switch module.
 
---fLVcmu4sGIFI8Iwp
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+ drivers/net/ethernet/ti/cpsw-common.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-On Mon, Jan 22, 2024 at 06:04:42PM +0100, Romain Naour wrote:
+diff --git a/drivers/net/ethernet/ti/cpsw-common.c b/drivers/net/ethernet/ti/cpsw-common.c
+index 26dc906eae90..57fe936bb177 100644
+--- a/drivers/net/ethernet/ti/cpsw-common.c
++++ b/drivers/net/ethernet/ti/cpsw-common.c
+@@ -90,4 +90,5 @@ int ti_cm_get_macid(struct device *dev, int slave, u8 *mac_addr)
+ }
+ EXPORT_SYMBOL_GPL(ti_cm_get_macid);
+ 
++MODULE_DESCRIPTION("TI CPSW Switch common module");
+ MODULE_LICENSE("GPL");
+-- 
+2.39.3
 
-> We can't use devm_platform_ioremap_resource_byname() to remap the
-> interrupt register that can be shared between
-> regulator-abb-{ivahd,dspeve,gpu} drivers instance.
-
-=2E..
-
-> The commit b36c6b1887ff (regulator: ti-abb: Make use of the helper
-> function devm_ioremap related) overlooked the following comment
-> explaining why devm_ioremap() is used in this case:
-
-> /*
->  * We may have shared interrupt register offsets which are
->  * write-1-to-clear between domains ensuring exclusivity.
->  */
-
-I have to say that I wouldn't infer from that comment that there is any
-reason why _byname() won't work - one would generally expect that a
-get_resource_by_name() followed by an ioremap() of that resource would
-be equivalent to the combined helper.  Based on the commit log here I
-frankly have no idea what the issue is.  You should also add something
-to the code which makes it clear what the issue is so the same
-conversion isn't performed again, assuming that the fix isn't in the
-helper.
-
->=20
-> Fixes:
-
-You're missing the commit here.
-
-> This partially reverts commit b36c6b1887ffc6b58b556120bfbd511880515247.
-
-Please include human readable descriptions of things like commits and
-issues being discussed in e-mail in your mails, this makes them much
-easier for humans to read especially when they have no internet access.
-I do frequently catch up on my mail on flights or while otherwise
-travelling so this is even more pressing for me than just being about
-making things a bit easier to read.
-
---fLVcmu4sGIFI8Iwp
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmWupjwACgkQJNaLcl1U
-h9AYCQf9GqCmATajujQku7+2xQjUQrrWF5EEd4pwN21iJ9zY7BTfqDU6T5u05IUn
-PO6VW3mCs1fMkUKsmLYz8TfoDBNWNxa3CivN1oCopBmxPZT204vOrA7QUPx35NFr
-Yn1N9U8XWu98yayfB2gTx9zuSW/IlPWRUnPXpzKGJMV3X7Cx/ZvGrelxeWG3DPWA
-PFh4ftak5pgD5iUMFXc9cyuoRpY9gLhrbRq6kYPTVoiD8KjZ1NK3CNhk6O7ql98Z
-9heSxGBFNtJgZycp72zPI8fqB/3KA6xgnVw7VL/M4SzOIVHa5LxTDB7Af3F7gOOu
-uf2Ik+3X7iP/TxZ9NFuWynB9BtUG3Q==
-=L5mv
------END PGP SIGNATURE-----
-
---fLVcmu4sGIFI8Iwp--
 
