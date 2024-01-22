@@ -1,151 +1,138 @@
-Return-Path: <linux-omap+bounces-332-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-334-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD1E28361BD
-	for <lists+linux-omap@lfdr.de>; Mon, 22 Jan 2024 12:32:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2962D836449
+	for <lists+linux-omap@lfdr.de>; Mon, 22 Jan 2024 14:18:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BC6E2920FA
-	for <lists+linux-omap@lfdr.de>; Mon, 22 Jan 2024 11:32:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C0971C22748
+	for <lists+linux-omap@lfdr.de>; Mon, 22 Jan 2024 13:18:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CEA03A8DB;
-	Mon, 22 Jan 2024 11:21:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D32CC3CF70;
+	Mon, 22 Jan 2024 13:18:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=smile-fr.20230601.gappssmtp.com header.i=@smile-fr.20230601.gappssmtp.com header.b="is7zf3ei"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BiXeXdC2"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 244023A8D8
-	for <linux-omap@vger.kernel.org>; Mon, 22 Jan 2024 11:20:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7593C3CF42;
+	Mon, 22 Jan 2024 13:18:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705922459; cv=none; b=aPilblFJSUcGT9gMVZFlY6YWg84uv8guZpaTWeDa+Vn5KzsGl6FFnt6PCpzvWVd8Q2nxRlODjJX8ZPvvDKVFDxpcW2aZajLAbrLX+U+vaYgYRcKt4l9rQjWWsYQ5NJmJYETBQLTMKh8LQLPfOvPRmDq30pv9uv58cZyhZeOvSUY=
+	t=1705929498; cv=none; b=QzDPOS+bO/aOWZYFH550k5isEX2Nw8jUFb4N+mAxI9gDvn7pkesZ8JBkSixNSjVKKXBJT4nR6VbhV055Pe3W8ZT21kJeCCuYwpzoapyQCOAbS7q44Gt2VyzQbCfGe4Klz/xJCb1Eu2kJcUfSE86XtmC2yBmX52WDkbp5P788hyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705922459; c=relaxed/simple;
-	bh=ka/YWnYO71wVj2LTeee75OH2fQvxjGgTlJ9lY9vTP4M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hjOCsZo/7rOncPuE5HpVQhyYI6hbX15kEw4n7xp00RZWN/GLi9i6Nk2DJmscLUeDVQO7bdTHhpTRa1HWdt6HLm7tiWYnki3bwGAv9UPC/+ZgpC4aEJMhOcxGStjK6VbvPQLidofjqcS0UvfSnAH1gU3b3CZ6OVFrPv7byoNYpHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=smile.fr; spf=pass smtp.mailfrom=smile.fr; dkim=pass (2048-bit key) header.d=smile-fr.20230601.gappssmtp.com header.i=@smile-fr.20230601.gappssmtp.com header.b=is7zf3ei; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=smile.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smile.fr
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-40e72a567eeso37270445e9.0
-        for <linux-omap@vger.kernel.org>; Mon, 22 Jan 2024 03:20:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smile-fr.20230601.gappssmtp.com; s=20230601; t=1705922456; x=1706527256; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OqplCx4aFnfmLBjauycIiJ63cmJG88QgQd5RUSern+E=;
-        b=is7zf3eiqs6Js7reW1IyBF+/B/JutepU8rzhSfjQn445jacmTJ8Emsw+srs21juq7V
-         m3Fh0vkM7dVh21UBseF3MrmqprYJfcfZ1AR9eamFLsmN1vYA18Yn1Pjm5aHXQNEw7czQ
-         vENVmBq+ymMubxUky1Q31Ce4EtOcEv80VseCXfuOhRKYvw06xGZCD+CX9KfqJaIUJ4IU
-         OyM0aMwkpyR6EBQkzert4OurWTfsUgZyuVY9nDXGYL35bQp3339BUAh81R1nosojNJZP
-         Kqp0YTBFHMImLAWPy/V2xQnweOHthygIkTgT3zDgmM9CoR4dlrBmo0qdOa5i/yr+M8W+
-         g/+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705922456; x=1706527256;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=OqplCx4aFnfmLBjauycIiJ63cmJG88QgQd5RUSern+E=;
-        b=k3RXp0grT8gvcJ44PTMk/X1UMIQRUYptbym+mXNrXRF/hx4GtBDpn4ZltAtPFG6F3+
-         Fj91aOWRwflAgHp2rrKAAq+fEX9ZTcwExkNDPW/dVwXDbmHWkX8B8yi+fqVTZH7fIHGI
-         1I8W4wfT3eBd0Zg7JyGL+sNdk8po2iOtZv5OhiYRje6nBY4sc++so9X0nrrc+/P4uVVB
-         A1barhINfGHiFHnEcjpBn2muE+VsETXYREbroLjfuSbUID2yLdQT305okYsWm24q43sh
-         mdzhq1nZ2tzsNeM8y2ckOXy2432A/qWuFieO9bkZMoQoG5h8fe3PB1vqkVRcyBKYurLG
-         SEQA==
-X-Gm-Message-State: AOJu0YwUR4zyEzsttb+ifR7o6kaONz1wxAUrQdrwbk40Mh45H+eruDKD
-	49Hdmwc8d5CBKFNfUTIqSLXe+B7zG1ERmnLwQEUJVu9N8+SwwLHr4Ba4tngv7IQoLB1rVgIQ1AG
-	Y
-X-Google-Smtp-Source: AGHT+IHKOIuqQwrtvviYLgdS9NyIi9OfVwZxGTCGxfpg4rM2YX4gt7DOFWPJ+fKO23tfiXwY9hQJQw==
-X-Received: by 2002:a05:600c:4897:b0:40d:8fcd:31aa with SMTP id j23-20020a05600c489700b0040d8fcd31aamr1153660wmp.327.1705922456510;
-        Mon, 22 Jan 2024 03:20:56 -0800 (PST)
-Received: from P-NTS-Evian.home (2a01cb05945b7e009bdc688723a24f31.ipv6.abo.wanadoo.fr. [2a01:cb05:945b:7e00:9bdc:6887:23a2:4f31])
-        by smtp.gmail.com with ESMTPSA id w18-20020a05600c475200b0040d2d33312csm39204614wmo.2.2024.01.22.03.20.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Jan 2024 03:20:56 -0800 (PST)
-From: Romain Naour <romain.naour@smile.fr>
-To: linux-omap@vger.kernel.org,
-	devicetree@vger.kernel.org
-Cc: =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-	Tony Lindgren <tony@atomide.com>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Romain Naour <romain.naour@skf.com>
-Subject: [PATCH 3/3] arch/arm/boot/dts/dra7.dtsi: add missing unit addresses
-Date: Mon, 22 Jan 2024 12:19:48 +0100
-Message-ID: <20240122111948.416444-3-romain.naour@smile.fr>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122111948.416444-1-romain.naour@smile.fr>
-References: <20240122111948.416444-1-romain.naour@smile.fr>
+	s=arc-20240116; t=1705929498; c=relaxed/simple;
+	bh=8nLLKjq7oCgzDw9ZUQYrf7nyBzR8EtSEWOgsdOU6lQc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XmNskOwsT2OLvfPAXNShnJZKFRC/vvteqLQoUhndsbqUW+FqJdScC30wpYeYN6Hp8fjv9jtMZTlJ/LYJA+QzLK/2bh2e+jjTdOZQT29sHl/uhKvNC1i21j+7BdnMYNSab7SkkkCsqov+k1KaQr+Co47aHtLK02iCIIeDRwfhkg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BiXeXdC2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39F57C433C7;
+	Mon, 22 Jan 2024 13:18:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705929498;
+	bh=8nLLKjq7oCgzDw9ZUQYrf7nyBzR8EtSEWOgsdOU6lQc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=BiXeXdC2+ZiP2FRLKDQwzYdq0y5ubv9vBTA0B0ikOHQas0ZfvD3KOcNNxTl19GbpK
+	 fPKUc5VSlnYIcQfjFZzYbjGYQ8n0JHPASQPSw8WutcXa7in05wIxdZZLBP3ZskEzEz
+	 41Vk2gpgNX+xaT6lHj60V1ffkx7NEeEh0O+zN799EoRwDygLV58J4BWdkHQ1MGfSvB
+	 fZXc4u8IwlCVXXrucG0Fmk8kbzJgNlJFItu6+EPHoDV7dRqP4ImMordg2WrQmFOoSH
+	 wBDpT2Izrb6HOtTSMoiDmawcf/QUOm7yeGiT12xIyxtMBJ48RAuc8ynfaFELMHhip0
+	 VB0kfR4U6A25Q==
+Message-ID: <e97a55a9-34ae-46a3-9646-9bf70f6976ff@kernel.org>
+Date: Mon, 22 Jan 2024 15:18:13 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V2] net: ethernet: ti: cpsw_new: enable mac_managed_pm to
+ fix mdio
+Content-Language: en-US
+To: Sinthu Raja <sinthu.raja@mistralsolutions.com>,
+ Denis Kirjanov <dkirjanov@suse.de>, Siddharth Vadapalli
+ <s-vadapalli@ti.com>, Ravi Gunasekaran <r-gunasekaran@ti.com>
+Cc: linux-omap@vger.kernel.org, netdev@vger.kernel.org,
+ Sinthu Raja <sinthu.raja@ti.com>
+References: <20240122093326.7618-1-sinthu.raja@ti.com>
+From: Roger Quadros <rogerq@kernel.org>
+In-Reply-To: <20240122093326.7618-1-sinthu.raja@ti.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Romain Naour <romain.naour@skf.com>
+Hi,
 
-abb_{mpu,ivahd,dspeve,gpu} have 'reg' so they must have unit address.
+On 22/01/2024 11:33, Sinthu Raja wrote:
+> From: Sinthu Raja <sinthu.raja@ti.com>
+> 
+> The below commit  introduced a WARN when phy state is not in the states:
+> PHY_HALTED, PHY_READY and PHY_UP.
+> commit 744d23c71af3 ("net: phy: Warn about incorrect mdio_bus_phy_resume() state")
+> 
+> When cpsw_new resumes, there have port in PHY_NOLINK state, so the below
+> warning comes out. Set mac_managed_pm be true to tell mdio that the phy
+> resume/suspend is managed by the mac, to fix the following warning:
+> 
+> WARNING: CPU: 0 PID: 965 at drivers/net/phy/phy_device.c:326 mdio_bus_phy_resume+0x140/0x144
+> CPU: 0 PID: 965 Comm: sh Tainted: G           O       6.1.46-g247b2535b2 #1
+> Hardware name: Generic AM33XX (Flattened Device Tree)
+>  unwind_backtrace from show_stack+0x18/0x1c
+>  show_stack from dump_stack_lvl+0x24/0x2c
+>  dump_stack_lvl from __warn+0x84/0x15c
+>  __warn from warn_slowpath_fmt+0x1a8/0x1c8
+>  warn_slowpath_fmt from mdio_bus_phy_resume+0x140/0x144
+>  mdio_bus_phy_resume from dpm_run_callback+0x3c/0x140
+>  dpm_run_callback from device_resume+0xb8/0x2b8
+>  device_resume from dpm_resume+0x144/0x314
+>  dpm_resume from dpm_resume_end+0x14/0x20
+>  dpm_resume_end from suspend_devices_and_enter+0xd0/0x924
+>  suspend_devices_and_enter from pm_suspend+0x2e0/0x33c
+>  pm_suspend from state_store+0x74/0xd0
+>  state_store from kernfs_fop_write_iter+0x104/0x1ec
+>  kernfs_fop_write_iter from vfs_write+0x1b8/0x358
+>  vfs_write from ksys_write+0x78/0xf8
+>  ksys_write from ret_fast_syscall+0x0/0x54
+> Exception stack(0xe094dfa8 to 0xe094dff0)
+> dfa0:                   00000004 005c3fb8 00000001 005c3fb8 00000004 00000001
+> dfc0: 00000004 005c3fb8 b6f6bba0 00000004 00000004 0059edb8 00000000 00000000
+> dfe0: 00000004 bed918f0 b6f09bd3 b6e89a66
+> 
+> Fixes: 744d23c71af3 ("net: phy: Warn about incorrect mdio_bus_phy_resume() state")
+> Signed-off-by: Sinthu Raja <sinthu.raja@ti.com>
+> ---
+> 
+> Changes in V2:
+> Address review comment
+> 	Add Fixes tag.
+> 
+> V1: https://patchwork.kernel.org/project/netdevbpf/patch/20240122083414.6246-1-sinthu.raja@ti.com/
+> 
+>  drivers/net/ethernet/ti/cpsw_new.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
+> index 498c50c6d1a7..087dcb67505a 100644
+> --- a/drivers/net/ethernet/ti/cpsw_new.c
+> +++ b/drivers/net/ethernet/ti/cpsw_new.c
+> @@ -773,6 +773,9 @@ static void cpsw_slave_open(struct cpsw_slave *slave, struct cpsw_priv *priv)
+>  			slave->slave_num);
+>  		return;
+>  	}
+> +
+> +	phy->mac_managed_pm = true;
+> +
+>  	slave->phy = phy;
+>  
+>  	phy_attached_info(slave->phy);
 
-Fixes:
-Warning (unit_address_vs_reg): /ocp/regulator-abb-mpu: node has a reg or ranges property, but no unit name
-Warning (unit_address_vs_reg): /ocp/regulator-abb-ivahd: node has a reg or ranges property, but no unit name
-Warning (unit_address_vs_reg): /ocp/regulator-abb-dspeve: node has a reg or ranges property, but no unit name
-Warning (unit_address_vs_reg): /ocp/regulator-abb-gpu: node has a reg or ranges property, but no unit name
+I believe this cpsw.c will also be affected by the same issue. Right?
+Also you will need to Cc: stable@vger.kernel.org # v6.0+
 
-Signed-off-by: Romain Naour <romain.naour@skf.com>
----
- arch/arm/boot/dts/ti/omap/dra7.dtsi | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/arch/arm/boot/dts/ti/omap/dra7.dtsi b/arch/arm/boot/dts/ti/omap/dra7.dtsi
-index 6509c742fb58..565ac7691a2a 100644
---- a/arch/arm/boot/dts/ti/omap/dra7.dtsi
-+++ b/arch/arm/boot/dts/ti/omap/dra7.dtsi
-@@ -638,7 +638,7 @@ mmu_ipu2: mmu@0 {
- 			};
- 		};
- 
--		abb_mpu: regulator-abb-mpu {
-+		abb_mpu: regulator-abb-mpu@4ae07ddc {
- 			compatible = "ti,abb-v3";
- 			regulator-name = "abb_mpu";
- 			#address-cells = <0>;
-@@ -671,7 +671,7 @@ abb_mpu: regulator-abb-mpu {
- 			>;
- 		};
- 
--		abb_ivahd: regulator-abb-ivahd {
-+		abb_ivahd: regulator-abb-ivahd@4ae07e34 {
- 			compatible = "ti,abb-v3";
- 			regulator-name = "abb_ivahd";
- 			#address-cells = <0>;
-@@ -704,7 +704,7 @@ abb_ivahd: regulator-abb-ivahd {
- 			>;
- 		};
- 
--		abb_dspeve: regulator-abb-dspeve {
-+		abb_dspeve: regulator-abb-dspeve@4ae07e30 {
- 			compatible = "ti,abb-v3";
- 			regulator-name = "abb_dspeve";
- 			#address-cells = <0>;
-@@ -737,7 +737,7 @@ abb_dspeve: regulator-abb-dspeve {
- 			>;
- 		};
- 
--		abb_gpu: regulator-abb-gpu {
-+		abb_gpu: regulator-abb-gpu@4ae07de4 {
- 			compatible = "ti,abb-v3";
- 			regulator-name = "abb_gpu";
- 			#address-cells = <0>;
 -- 
-2.43.0
-
+cheers,
+-roger
 
