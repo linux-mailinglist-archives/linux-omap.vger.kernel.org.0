@@ -1,73 +1,73 @@
-Return-Path: <linux-omap+bounces-349-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-350-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2AAB8389C5
-	for <lists+linux-omap@lfdr.de>; Tue, 23 Jan 2024 09:56:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 771EA838AE2
+	for <lists+linux-omap@lfdr.de>; Tue, 23 Jan 2024 10:51:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 845A8B22202
-	for <lists+linux-omap@lfdr.de>; Tue, 23 Jan 2024 08:56:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9F961F274A9
+	for <lists+linux-omap@lfdr.de>; Tue, 23 Jan 2024 09:51:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADC5458126;
-	Tue, 23 Jan 2024 08:56:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 210065A107;
+	Tue, 23 Jan 2024 09:48:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=smile-fr.20230601.gappssmtp.com header.i=@smile-fr.20230601.gappssmtp.com header.b="V0eUMJDx"
+	dkim=pass (2048-bit key) header.d=smile-fr.20230601.gappssmtp.com header.i=@smile-fr.20230601.gappssmtp.com header.b="08ihOTqm"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B017A5732A
-	for <linux-omap@vger.kernel.org>; Tue, 23 Jan 2024 08:56:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77C115A102
+	for <linux-omap@vger.kernel.org>; Tue, 23 Jan 2024 09:48:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706000180; cv=none; b=tflibDPSe49mQzkDeBIpZYBceOEcTaX8ZJhpj9AyAQHvQKbFhSlbZjeQzgZKo7uUnSEHV48+qM+8ZKhs+2LYWdUEiRiuMd9baTNYE2ykvRiko7CU4lpnBTeoq9MED8zU4CwvDcXJH64URh6HVN+unfSKSK+v1QyLUAXcLRBl964=
+	t=1706003335; cv=none; b=Nt1kyPbkY/43h24MLXFIzUNL6IVItcxyG6BQujDe7WpmkCEGHzEFDHgGhJrzWpRXJTnojoTM55zIMsvaekpkAKPz8qTtAjGz1cW1j5d7Fk2NaF6QKinOuSZkMC4QMQx5bqQv+7qCaWArWUUa6uJz1uq2QpOFd3g78kepjKPXUMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706000180; c=relaxed/simple;
-	bh=x3A4OVx3SkR/4ZCuMaeW2pQbtc7sB+MQ7LWUhvtKftI=;
+	s=arc-20240116; t=1706003335; c=relaxed/simple;
+	bh=+8dKFSYTTrQHy5TIeIlpTGOGgvwuQhUn3j2tZwKtHkI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uWrBTYtAmfIqlotXKdOafSECIJs9Ln8HBdmBjDDA5Mgld1iVPFLw9a0030GhxYgsAK1uOxOuhsDKTUJmwi4nkWDZtcwWKG1GSd15QF3poxPgmY6nIcOfxfURBRQ0KfafQ/+1T26LXj9XJapu09M3JC5N14W20o7La6YkWQjeUzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=smile.fr; spf=pass smtp.mailfrom=smile.fr; dkim=pass (2048-bit key) header.d=smile-fr.20230601.gappssmtp.com header.i=@smile-fr.20230601.gappssmtp.com header.b=V0eUMJDx; arc=none smtp.client-ip=209.85.128.53
+	 In-Reply-To:Content-Type; b=NIgvh7CJySv05cbPhnVf5U9KcDU/5Pk0fBaYfh/xnCkVgPvCkbv4SKP5fiLphPWdqS188A5mOq7zp1m0Se/D1WPIUKgT22bwRnM3cMCAa69x7Wig2kXMIiSVUaz4XmL7lYode8jg0An4B0Ttn9z57ah7LiRHAEqJ9HqeKLH2IFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=smile.fr; spf=pass smtp.mailfrom=smile.fr; dkim=pass (2048-bit key) header.d=smile-fr.20230601.gappssmtp.com header.i=@smile-fr.20230601.gappssmtp.com header.b=08ihOTqm; arc=none smtp.client-ip=209.85.221.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=smile.fr
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smile.fr
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-40ea5653f6bso35836865e9.3
-        for <linux-omap@vger.kernel.org>; Tue, 23 Jan 2024 00:56:18 -0800 (PST)
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-339261a6ec2so2572177f8f.0
+        for <linux-omap@vger.kernel.org>; Tue, 23 Jan 2024 01:48:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smile-fr.20230601.gappssmtp.com; s=20230601; t=1706000177; x=1706604977; darn=vger.kernel.org;
+        d=smile-fr.20230601.gappssmtp.com; s=20230601; t=1706003332; x=1706608132; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=NinV5qfAzGPsuHmYj+B/tpi9AsdCe89ZduPrSGUPCZY=;
-        b=V0eUMJDxHtMdXL67DqDbe2IBAg78aa0ytW+K46RBSOuzsF9NkzQxj200Gm8D64svRl
-         1vh4kYtjFvBbLkUIp1x/K0CaM0Ltuda03/8TiIZ5gWcMwEt1fmDrtiqr6y0lsJ4tyOQz
-         c0mTBQRgmBtHw4BO5ww5Pl46Qhsi8/nU+Y+uBGxIkQowYJwl6V/cAAvpLZ/MGA3VVD59
-         otr8f4S1RcXamWNS86MFARMmTw0a9tFJ4Ebd24gHdaKUC9lG45d6KmmdPDOMRGXN8XPj
-         pls8Zz6I8/if1qNQsUJr8WEWk1kiI9Rst+E0AUuLuVSSnUDd1DxLsCD4eTOaAZm065Rp
-         7xkg==
+        bh=PWpS1ytBrOjGWEMxlvh7MGTF7ngPjwR9i+Q5Nc+3fnk=;
+        b=08ihOTqmM4KgdQDBvXBAfZwMWTP2zetq1fWyI+15LL7l9la7qS9JN3+EjXU23pQmFz
+         XuC3tRQSif0JTdgXDR2TJKGNNUD3r2PG8CipYqZ+AtOpp1LAEG4MYagJGNhf1oeSbWjr
+         AerFKeBOS/fEkWt2fV6HeXLe+Scqnne3CNLeysgYKWK+smdHXlCvvzU1/jEn12JClxvk
+         748srIisj5jreP6Q7R8P8m56+KTfi8wMeY+usODAU3V1+dhAaQjRfuLOBCvhokbti6nh
+         9F70cvz+8gxwQErCB1fL/yGyalcYKKwdhf8aLr+URPxdsfDKW6eFQJis/0feWrVJpKE8
+         WKTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706000177; x=1706604977;
+        d=1e100.net; s=20230601; t=1706003332; x=1706608132;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NinV5qfAzGPsuHmYj+B/tpi9AsdCe89ZduPrSGUPCZY=;
-        b=Url3L4qnQm0Bn7NOcpfQvfoSM6dkOKT7iecAV1miaDJHuq/aCC6/bi68gXHZR6qX7D
-         ZUiRhlRtJvB26RNZFPyTqM++f1S2rujDR4LvNFRVKPFhIEVjCnkbq8EiLjnbFiU0YkvE
-         /5Z7e3UtgfJIwc4I4iRkyOYXX5PLLBknW6Wnz1eRGSODxYNZCg4wFNKn+OLJ5dnalH0v
-         A/oI4yvRhljLzBuHkaS6cGBTggnBgAeL4AZ2q/owsOkIzE8kdN/PXP46OYVtRMnnXoJ5
-         Xl8qhfFALMSrsC0FNCBQnV/+bFmtV8RoqvQSDmVcAQHKKvCnkhTzYMgR9FPy1IbgqTU5
-         FI6w==
-X-Gm-Message-State: AOJu0YzXwYFH1UgnZh2koDpbnhZuSnHFeAeivWxybFaN6ZwuhENXBc6x
-	0NBir2QFDycPQOxvc/9RIeHsBtSsm2hIOoxMVbIDCEfj8CcWsJdtUDEtIIcSv0M=
-X-Google-Smtp-Source: AGHT+IFaMrjIoMQ+BliCMpa5bb9j1Q1aguZMQWXdMycJyah0r6e5IgMnz563Oop4sax3DvzJjtC39w==
-X-Received: by 2002:a05:600c:2251:b0:40e:5984:f8e with SMTP id a17-20020a05600c225100b0040e59840f8emr314356wmm.194.1706000177058;
-        Tue, 23 Jan 2024 00:56:17 -0800 (PST)
+        bh=PWpS1ytBrOjGWEMxlvh7MGTF7ngPjwR9i+Q5Nc+3fnk=;
+        b=oRosrSl8pMHN74+XcBRNsDZRoaZEdYQ3b49S3OaE9GZ3AvnvVLx7sXHSfwsRNOkxgL
+         YrBGU2OISNHg4qgV+0lBYid2tgi7JsTtqDSUSepjUV0cTAaKc++HRayMhbX8eRSh0QsA
+         aaq3ZDjMtSuVxC4IvyAmoRJ76zS76ysTQDbTQuxAMaEGbn3C2fVH/lBcFBl47nc96Vn6
+         1n9itqc9hgU9IOjvy3mwLlPYhHjFzlMIdN6iEUB9shRfRMB+yNDJkYbj3WdwP5qil7g4
+         FIXl4KLd1GucQGI1UrhMG3bs2YISgFl/mjp169goPOt9KkATlfhT5/1HTqrJqEN+lNHj
+         vesA==
+X-Gm-Message-State: AOJu0YyiiC2xUkOvE19apKghiqkb6gr/G9pUvK5uPTsaafGxKN5Atucd
+	uqkmED4lG7H08ULdWO1gSp4NEkpNC1G6WWyJ/9i0jYl/PsA30qeEncIFwh8yDmM=
+X-Google-Smtp-Source: AGHT+IHvCLtOAK0Is7t239vQ6RuH0gatFeoMENF8cPRrd/F9biXxtyj5lMGzC/7gQG4TQkAI7tOO2g==
+X-Received: by 2002:a7b:cb55:0:b0:40e:4275:5aad with SMTP id v21-20020a7bcb55000000b0040e42755aadmr385765wmj.166.1706003331642;
+        Tue, 23 Jan 2024 01:48:51 -0800 (PST)
 Received: from ?IPV6:2a01:cb05:945b:7e00:9bdc:6887:23a2:4f31? (2a01cb05945b7e009bdc688723a24f31.ipv6.abo.wanadoo.fr. [2a01:cb05:945b:7e00:9bdc:6887:23a2:4f31])
-        by smtp.gmail.com with ESMTPSA id n15-20020a5d4c4f000000b00337d6f0013esm11999515wrt.107.2024.01.23.00.56.16
+        by smtp.gmail.com with ESMTPSA id q20-20020a05600c46d400b0040e395cd20bsm45686455wmo.7.2024.01.23.01.48.51
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 23 Jan 2024 00:56:16 -0800 (PST)
-Message-ID: <4bc121c7-ebae-4953-b2bd-c4c343fa8731@smile.fr>
-Date: Tue, 23 Jan 2024 09:56:16 +0100
+        Tue, 23 Jan 2024 01:48:51 -0800 (PST)
+Message-ID: <b5decdec-f33a-4997-a607-e31290fcd83c@smile.fr>
+Date: Tue, 23 Jan 2024 10:48:50 +0100
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -75,53 +75,88 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] arch/arm/boot/dts/dra7-l4.dtsi: add missing unit
- addresse
-Content-Language: fr, en-US
-To: Conor Dooley <conor@kernel.org>
-Cc: linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
- =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
- Tony Lindgren <tony@atomide.com>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Romain Naour <romain.naour@skf.com>
-References: <20240122111948.416444-1-romain.naour@smile.fr>
- <20240122-extending-identical-9609420a1baa@spud>
+Subject: Re: [PATCH] regulator: ti-abb: don't use
+ devm_platform_ioremap_resource_byname for shared interrupt register
+Content-Language: en-US
+To: Mark Brown <broonie@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+ tony@atomide.com, lgirdwood@gmail.com, Romain Naour <romain.naour@skf.com>
+References: <20240122170442.729374-1-romain.naour@smile.fr>
+ <1b2b5afc-308f-48bb-924a-2c29371abfc9@sirena.org.uk>
 From: Romain Naour <romain.naour@smile.fr>
-In-Reply-To: <20240122-extending-identical-9609420a1baa@spud>
+In-Reply-To: <1b2b5afc-308f-48bb-924a-2c29371abfc9@sirena.org.uk>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 Hello,
 
-Le 22/01/2024 à 18:11, Conor Dooley a écrit :
-> On Mon, Jan 22, 2024 at 12:19:46PM +0100, Romain Naour wrote:
->> From: Romain Naour <romain.naour@skf.com>
->>
->> phy_gmii_sel node have 'reg' so it must have unit address.
+Le 22/01/2024 à 18:30, Mark Brown a écrit :
+> On Mon, Jan 22, 2024 at 06:04:42PM +0100, Romain Naour wrote:
+> 
+>> We can't use devm_platform_ioremap_resource_byname() to remap the
+>> interrupt register that can be shared between
+>> regulator-abb-{ivahd,dspeve,gpu} drivers instance.
+> 
+> ...
+> 
+>> The commit b36c6b1887ff (regulator: ti-abb: Make use of the helper
+>> function devm_ioremap related) overlooked the following comment
+>> explaining why devm_ioremap() is used in this case:
+> 
+>> /*
+>>  * We may have shared interrupt register offsets which are
+>>  * write-1-to-clear between domains ensuring exclusivity.
+>>  */
+> 
+> I have to say that I wouldn't infer from that comment that there is any
+> reason why _byname() won't work - one would generally expect that a
+> get_resource_by_name() followed by an ioremap() of that resource would
+> be equivalent to the combined helper.  Based on the commit log here I
+> frankly have no idea what the issue is.  You should also add something
+> to the code which makes it clear what the issue is so the same
+> conversion isn't performed again, assuming that the fix isn't in the
+> helper.
+
+I'm agree with you about the existing comment that is not really crystal clear.
+
+The combined helper introduce a call to devm_request_mem_region() that create a
+new busy resource region on PRM_IRQSTATUS_MPU register (0x4ae06010). The first
+devm_request_mem_region() call succeed for regulator-abb-ivahd but fail for the
+two other regulator-abb-dspeve and regulator-abb-gpu.
+
+Here is the iomem content without this patch:
+# cat /proc/iomem | grep -i 4ae06
+4ae06010-4ae06013 : 4ae07e34.regulator-abb-ivahd int-address
+4ae06014-4ae06017 : 4ae07ddc.regulator-abb-mpu int-address
+
+regulator-abb-dspeve and regulator-abb-gpu are missing due to
+devm_request_mem_region() failure (EBUSY)
+
+I don't know how to fix this issue keeping
+devm_platform_ioremap_resource_byname() when the same address is used several
+time... suggestion welcome.
+
+> 
 >>
 >> Fixes:
->> Warning (unit_address_vs_reg): /ocp/interconnect@4a000000/segment@0/target-module@2000/scm@0/scm_conf@0/phy-gmii-sel: node has a reg or ranges property, but no unit name
 > 
-> Does checkpatch not complain about this "Fixes" tag?
-
-No, but there is a warning due to the too long line.
-I removed the Fixes tag.
-
+> You're missing the commit here.
 > 
-> Also, for all patches in your series, the subject is odd. Running
-> `git log` on the files you're changing is a good idea to get off to a
-> good start with a subject line.
+>> This partially reverts commit b36c6b1887ffc6b58b556120bfbd511880515247.
+> 
+> Please include human readable descriptions of things like commits and
+> issues being discussed in e-mail in your mails, this makes them much
+> easier for humans to read especially when they have no internet access.
+> I do frequently catch up on my mail on flights or while otherwise
+> travelling so this is even more pressing for me than just being about
+> making things a bit easier to read.
 
-You're right.
+I added such human description above in the commit log but forgot to update this
+one, sorry.
+
+Thank you for the review.
 
 Best regards,
 Romain
-
-> 
-> Thanks,
-> Conor.
-> 
->>
->> Signed-off-by: Romain Naour <romain.naour@skf.com>
 
 
