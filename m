@@ -1,73 +1,48 @@
-Return-Path: <linux-omap+bounces-350-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-351-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 771EA838AE2
-	for <lists+linux-omap@lfdr.de>; Tue, 23 Jan 2024 10:51:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBBE3838AEE
+	for <lists+linux-omap@lfdr.de>; Tue, 23 Jan 2024 10:52:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9F961F274A9
-	for <lists+linux-omap@lfdr.de>; Tue, 23 Jan 2024 09:51:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A29351F21DF1
+	for <lists+linux-omap@lfdr.de>; Tue, 23 Jan 2024 09:52:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 210065A107;
-	Tue, 23 Jan 2024 09:48:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AA0F5C8EE;
+	Tue, 23 Jan 2024 09:50:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=smile-fr.20230601.gappssmtp.com header.i=@smile-fr.20230601.gappssmtp.com header.b="08ihOTqm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t/nYxYtO"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77C115A102
-	for <linux-omap@vger.kernel.org>; Tue, 23 Jan 2024 09:48:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B7875D72F;
+	Tue, 23 Jan 2024 09:50:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706003335; cv=none; b=Nt1kyPbkY/43h24MLXFIzUNL6IVItcxyG6BQujDe7WpmkCEGHzEFDHgGhJrzWpRXJTnojoTM55zIMsvaekpkAKPz8qTtAjGz1cW1j5d7Fk2NaF6QKinOuSZkMC4QMQx5bqQv+7qCaWArWUUa6uJz1uq2QpOFd3g78kepjKPXUMw=
+	t=1706003421; cv=none; b=MEivkq3r6yXjD80Byr6fUsA87Bbl5rMm8VidiYVzdOODZloO7fkwsLiMP0GxfPP5YCalQrYCArSaPOnAdqmkFgLkHsk1RHA6euDPmsB23ZXZTIc3pm8RunErXfLrsI71QeVRFcMWNtcJYu2/rNymtECL3Z33wPK9x8dea7Pkr9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706003335; c=relaxed/simple;
-	bh=+8dKFSYTTrQHy5TIeIlpTGOGgvwuQhUn3j2tZwKtHkI=;
+	s=arc-20240116; t=1706003421; c=relaxed/simple;
+	bh=9BExhrmqoHD9gvDqNZduVxiWMelKYXXILPkBvgv+4JE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NIgvh7CJySv05cbPhnVf5U9KcDU/5Pk0fBaYfh/xnCkVgPvCkbv4SKP5fiLphPWdqS188A5mOq7zp1m0Se/D1WPIUKgT22bwRnM3cMCAa69x7Wig2kXMIiSVUaz4XmL7lYode8jg0An4B0Ttn9z57ah7LiRHAEqJ9HqeKLH2IFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=smile.fr; spf=pass smtp.mailfrom=smile.fr; dkim=pass (2048-bit key) header.d=smile-fr.20230601.gappssmtp.com header.i=@smile-fr.20230601.gappssmtp.com header.b=08ihOTqm; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=smile.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smile.fr
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-339261a6ec2so2572177f8f.0
-        for <linux-omap@vger.kernel.org>; Tue, 23 Jan 2024 01:48:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smile-fr.20230601.gappssmtp.com; s=20230601; t=1706003332; x=1706608132; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=PWpS1ytBrOjGWEMxlvh7MGTF7ngPjwR9i+Q5Nc+3fnk=;
-        b=08ihOTqmM4KgdQDBvXBAfZwMWTP2zetq1fWyI+15LL7l9la7qS9JN3+EjXU23pQmFz
-         XuC3tRQSif0JTdgXDR2TJKGNNUD3r2PG8CipYqZ+AtOpp1LAEG4MYagJGNhf1oeSbWjr
-         AerFKeBOS/fEkWt2fV6HeXLe+Scqnne3CNLeysgYKWK+smdHXlCvvzU1/jEn12JClxvk
-         748srIisj5jreP6Q7R8P8m56+KTfi8wMeY+usODAU3V1+dhAaQjRfuLOBCvhokbti6nh
-         9F70cvz+8gxwQErCB1fL/yGyalcYKKwdhf8aLr+URPxdsfDKW6eFQJis/0feWrVJpKE8
-         WKTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706003332; x=1706608132;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=PWpS1ytBrOjGWEMxlvh7MGTF7ngPjwR9i+Q5Nc+3fnk=;
-        b=oRosrSl8pMHN74+XcBRNsDZRoaZEdYQ3b49S3OaE9GZ3AvnvVLx7sXHSfwsRNOkxgL
-         YrBGU2OISNHg4qgV+0lBYid2tgi7JsTtqDSUSepjUV0cTAaKc++HRayMhbX8eRSh0QsA
-         aaq3ZDjMtSuVxC4IvyAmoRJ76zS76ysTQDbTQuxAMaEGbn3C2fVH/lBcFBl47nc96Vn6
-         1n9itqc9hgU9IOjvy3mwLlPYhHjFzlMIdN6iEUB9shRfRMB+yNDJkYbj3WdwP5qil7g4
-         FIXl4KLd1GucQGI1UrhMG3bs2YISgFl/mjp169goPOt9KkATlfhT5/1HTqrJqEN+lNHj
-         vesA==
-X-Gm-Message-State: AOJu0YyiiC2xUkOvE19apKghiqkb6gr/G9pUvK5uPTsaafGxKN5Atucd
-	uqkmED4lG7H08ULdWO1gSp4NEkpNC1G6WWyJ/9i0jYl/PsA30qeEncIFwh8yDmM=
-X-Google-Smtp-Source: AGHT+IHvCLtOAK0Is7t239vQ6RuH0gatFeoMENF8cPRrd/F9biXxtyj5lMGzC/7gQG4TQkAI7tOO2g==
-X-Received: by 2002:a7b:cb55:0:b0:40e:4275:5aad with SMTP id v21-20020a7bcb55000000b0040e42755aadmr385765wmj.166.1706003331642;
-        Tue, 23 Jan 2024 01:48:51 -0800 (PST)
-Received: from ?IPV6:2a01:cb05:945b:7e00:9bdc:6887:23a2:4f31? (2a01cb05945b7e009bdc688723a24f31.ipv6.abo.wanadoo.fr. [2a01:cb05:945b:7e00:9bdc:6887:23a2:4f31])
-        by smtp.gmail.com with ESMTPSA id q20-20020a05600c46d400b0040e395cd20bsm45686455wmo.7.2024.01.23.01.48.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 23 Jan 2024 01:48:51 -0800 (PST)
-Message-ID: <b5decdec-f33a-4997-a607-e31290fcd83c@smile.fr>
-Date: Tue, 23 Jan 2024 10:48:50 +0100
+	 In-Reply-To:Content-Type; b=GAv58Wx2K/JiPB5YNN+RZimaHbbUX9/WypDCkiFwo6jxF1UGWms3fSoo/Hen2YkDM0j9els1L4D+jsFQKj7KT3Yuus2plCSEffbrgbWmtqOuOSYT7v6U9X9d2gslCvt3IBCGX+rJHEoTAsxQYEwCLdUb0uMdQWLGEISnVbBkShg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t/nYxYtO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2C92C433C7;
+	Tue, 23 Jan 2024 09:50:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706003420;
+	bh=9BExhrmqoHD9gvDqNZduVxiWMelKYXXILPkBvgv+4JE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=t/nYxYtOn03LMZvMPFvgjtLjRAk8LljMm/aUiPO4yjbJSX/SSUSnxeo8a4EhpLb68
+	 o4Lcb20yoXIH7HuPQvaOaGb0fr0j7AoSbn3j/88n9XBEfCOHCX54S8qcSDVSpq/FX7
+	 /vvsQ7WErwGtTr77NYIDnDm/4PfoLS2yd3DQo5fRfTrDoNKXDsphsD2jXemIcTAYef
+	 QS7IVD2ECu6mdoBT30gagPXxeRuPbdyu99v9XaEH+tZvGAjZRow0zPTZdXGDxJrqzl
+	 8WoJR4+9cICf+op2mwuOdy2ADwSoAHFaW5BfDpbUMXDDzz3+iWVXmzbQggdYN1rz0X
+	 utoOzgsIaqDQA==
+Message-ID: <50f79727-d82a-4122-9b3e-66dd09027ab5@kernel.org>
+Date: Tue, 23 Jan 2024 11:50:13 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -75,88 +50,50 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] regulator: ti-abb: don't use
- devm_platform_ioremap_resource_byname for shared interrupt register
+Subject: Re: [PATCH net-next 21/22] net: fill in MODULE_DESCRIPTION()s for
+ cpsw-common
 Content-Language: en-US
-To: Mark Brown <broonie@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
- tony@atomide.com, lgirdwood@gmail.com, Romain Naour <romain.naour@skf.com>
-References: <20240122170442.729374-1-romain.naour@smile.fr>
- <1b2b5afc-308f-48bb-924a-2c29371abfc9@sirena.org.uk>
-From: Romain Naour <romain.naour@smile.fr>
-In-Reply-To: <1b2b5afc-308f-48bb-924a-2c29371abfc9@sirena.org.uk>
+To: Breno Leitao <leitao@debian.org>, kuba@kernel.org, davem@davemloft.net,
+ abeni@redhat.com, edumazet@google.com,
+ Siddharth Vadapalli <s-vadapalli@ti.com>,
+ Ravi Gunasekaran <r-gunasekaran@ti.com>, Paolo Abeni <pabeni@redhat.com>
+Cc: dsahern@kernel.org, weiwan@google.com, Rob Herring <robh@kernel.org>,
+ Alex Elder <elder@linaro.org>, Simon Horman <horms@kernel.org>,
+ "open list:TI ETHERNET SWITCH DRIVER (CPSW)" <linux-omap@vger.kernel.org>,
+ "open list:TI ETHERNET SWITCH DRIVER (CPSW)" <netdev@vger.kernel.org>,
+ open list <linux-kernel@vger.kernel.org>
+References: <20240122184543.2501493-1-leitao@debian.org>
+ <20240122184543.2501493-22-leitao@debian.org>
+From: Roger Quadros <rogerq@kernel.org>
+In-Reply-To: <20240122184543.2501493-22-leitao@debian.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-Hello,
 
-Le 22/01/2024 à 18:30, Mark Brown a écrit :
-> On Mon, Jan 22, 2024 at 06:04:42PM +0100, Romain Naour wrote:
+
+On 22/01/2024 20:45, Breno Leitao wrote:
+> W=1 builds now warn if module is built without a MODULE_DESCRIPTION().
+> Add descriptions to the TI CPSW switch module.
 > 
->> We can't use devm_platform_ioremap_resource_byname() to remap the
->> interrupt register that can be shared between
->> regulator-abb-{ivahd,dspeve,gpu} drivers instance.
+> Signed-off-by: Breno Leitao <leitao@debian.org>
+> ---
+>  drivers/net/ethernet/ti/cpsw-common.c | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> ...
-> 
->> The commit b36c6b1887ff (regulator: ti-abb: Make use of the helper
->> function devm_ioremap related) overlooked the following comment
->> explaining why devm_ioremap() is used in this case:
-> 
->> /*
->>  * We may have shared interrupt register offsets which are
->>  * write-1-to-clear between domains ensuring exclusivity.
->>  */
-> 
-> I have to say that I wouldn't infer from that comment that there is any
-> reason why _byname() won't work - one would generally expect that a
-> get_resource_by_name() followed by an ioremap() of that resource would
-> be equivalent to the combined helper.  Based on the commit log here I
-> frankly have no idea what the issue is.  You should also add something
-> to the code which makes it clear what the issue is so the same
-> conversion isn't performed again, assuming that the fix isn't in the
-> helper.
+> diff --git a/drivers/net/ethernet/ti/cpsw-common.c b/drivers/net/ethernet/ti/cpsw-common.c
+> index 26dc906eae90..57fe936bb177 100644
+> --- a/drivers/net/ethernet/ti/cpsw-common.c
+> +++ b/drivers/net/ethernet/ti/cpsw-common.c
+> @@ -90,4 +90,5 @@ int ti_cm_get_macid(struct device *dev, int slave, u8 *mac_addr)
+>  }
+>  EXPORT_SYMBOL_GPL(ti_cm_get_macid);
+>  
+> +MODULE_DESCRIPTION("TI CPSW Switch common module");
+>  MODULE_LICENSE("GPL");
 
-I'm agree with you about the existing comment that is not really crystal clear.
+Reviewed-by: Roger Quadros <rogerq@kernel.org>
 
-The combined helper introduce a call to devm_request_mem_region() that create a
-new busy resource region on PRM_IRQSTATUS_MPU register (0x4ae06010). The first
-devm_request_mem_region() call succeed for regulator-abb-ivahd but fail for the
-two other regulator-abb-dspeve and regulator-abb-gpu.
-
-Here is the iomem content without this patch:
-# cat /proc/iomem | grep -i 4ae06
-4ae06010-4ae06013 : 4ae07e34.regulator-abb-ivahd int-address
-4ae06014-4ae06017 : 4ae07ddc.regulator-abb-mpu int-address
-
-regulator-abb-dspeve and regulator-abb-gpu are missing due to
-devm_request_mem_region() failure (EBUSY)
-
-I don't know how to fix this issue keeping
-devm_platform_ioremap_resource_byname() when the same address is used several
-time... suggestion welcome.
-
-> 
->>
->> Fixes:
-> 
-> You're missing the commit here.
-> 
->> This partially reverts commit b36c6b1887ffc6b58b556120bfbd511880515247.
-> 
-> Please include human readable descriptions of things like commits and
-> issues being discussed in e-mail in your mails, this makes them much
-> easier for humans to read especially when they have no internet access.
-> I do frequently catch up on my mail on flights or while otherwise
-> travelling so this is even more pressing for me than just being about
-> making things a bit easier to read.
-
-I added such human description above in the commit log but forgot to update this
-one, sorry.
-
-Thank you for the review.
-
-Best regards,
-Romain
-
+-- 
+cheers,
+-roger
 
