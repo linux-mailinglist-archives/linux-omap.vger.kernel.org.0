@@ -1,98 +1,111 @@
-Return-Path: <linux-omap+bounces-356-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-360-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18CEC8390C3
-	for <lists+linux-omap@lfdr.de>; Tue, 23 Jan 2024 15:03:09 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85F42839426
+	for <lists+linux-omap@lfdr.de>; Tue, 23 Jan 2024 17:05:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD8D01F22BA8
-	for <lists+linux-omap@lfdr.de>; Tue, 23 Jan 2024 14:03:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B561FB245FD
+	for <lists+linux-omap@lfdr.de>; Tue, 23 Jan 2024 16:05:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4D5F5F856;
-	Tue, 23 Jan 2024 14:02:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB55962810;
+	Tue, 23 Jan 2024 16:04:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l6lL8PmE"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="OI+YrjUv"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34D2B5F841;
-	Tue, 23 Jan 2024 14:02:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A4506169F;
+	Tue, 23 Jan 2024 16:04:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.248
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706018579; cv=none; b=fgxxe5kJLWshHn0eIXSMCWAtIhY51Ol6x0gCWj+Nd+bR5IExgkj2gy6/OeDorMXXaNYCre3NjJrYNWcW8MPAXaealgWGrEIf4RxMSWFh8+bfHngCtd90tauj6XvMHnMN8z8jbQ+0wKovpFlmN55DS4nqwATdo+hinka7YAyGWjQ=
+	t=1706025865; cv=none; b=VKolAi7crAr6VNkDR7UZ0FzS2fQTTqnavlTMRiVn0Qxm7UJosXhsn7Hy73/qIxU4686VlXCyGQW90/rf9yPrz1IJ9SO8yJNBbYmWwHs0erpFjuBENnAKgEJqM2Y+XKoDYL8s0V6MLz0U0cuQtj0286PbT2U/mcF53N68y82z++k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706018579; c=relaxed/simple;
-	bh=07J5vk8WrZtMUgfX9yUoEbt1L1ydDJvsXfEiWtN8rKU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=laCBR53BRXXYShYAPeWhfrA344Pis92cB2wFGohpwn8pqT/E/wv7z/y3PjGbxUz9KKdgnSxMrI3UD9cNS6ygs2z5pdpXK/ZMTeMbG949nT7STKX0zuoM4EGMm6ycQomaxrdSg6WHHQ7Z1bXYy/xokjkR9O2mNz7SZ2cNnXEYJmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l6lL8PmE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E53B4C43390;
-	Tue, 23 Jan 2024 14:02:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706018578;
-	bh=07J5vk8WrZtMUgfX9yUoEbt1L1ydDJvsXfEiWtN8rKU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=l6lL8PmEhiPnkg3AaFYGvj4tEwYmxSUxj/M9olDGO5c+2bydQkvUmIdqo825Gr4Ge
-	 r9Dji7LWBvIzsKzsw8ivu/rtRyeT6upVnAmsdFdw5F7fAdO1UOH3M4yFvGEwqsbY2w
-	 edkV42ClQlkuaeU6BiHNs9RMb0RNl+a99g0Usyfr6WX7X+J428aYct34DXH56asG7R
-	 2Qk0okBICHwgmhLN1EM3igCXkPbTkW7u/BXbaZXgAoLxjVuVDDfXUwc7NmgOBhgMXq
-	 310/wBYOzv7hSleYDkp46A3WVSHgZoTKYM8+GCyq1u1wJb8H+1vUC9Z5II9ueFg/JC
-	 D9NZ5HjbldLLw==
-Date: Tue, 23 Jan 2024 19:32:54 +0530
-From: Vinod Koul <vkoul@kernel.org>
-To: Thomas Richard <thomas.richard@bootlin.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Andy Shevchenko <andy@kernel.org>, Tony Lindgren <tony@atomide.com>,
-	Haojian Zhuang <haojian.zhuang@linaro.org>,
-	Vignesh R <vigneshr@ti.com>, Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-	Andi Shyti <andi.shyti@kernel.org>, Peter Rosin <peda@axentia.se>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Tom Joseph <tjoseph@cadence.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-	linux-i2c@vger.kernel.org, linux-phy@lists.infradead.org,
-	linux-pci@vger.kernel.org, gregory.clement@bootlin.com,
-	theo.lebrun@bootlin.com, thomas.petazzoni@bootlin.com,
-	u-kumar1@ti.com
-Subject: Re: [PATCH 05/14] phy: ti: phy-j721e-wiz: make wiz_clock_init
- callable multiple times
-Message-ID: <Za_HDoBeUC9sbh35@matsya>
-References: <20240102-j7200-pcie-s2r-v1-0-84e55da52400@bootlin.com>
- <20240102-j7200-pcie-s2r-v1-5-84e55da52400@bootlin.com>
- <Za9oR8BpoufCRNIw@matsya>
- <d005e3c5-08b3-4a4f-b1ed-e02bde82c2f9@bootlin.com>
+	s=arc-20240116; t=1706025865; c=relaxed/simple;
+	bh=SzcvmT0u+d+mOegkatFJAAaI6odzW0ax7/YjwwvrAw4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Pbs0T5+6bs6vt7D581aPCbfC8H0wy3uoHjVUWj08mat5GlPY6WKf050yx09aDT77+Zi2NEoGp9NMrkHmT0zwr42vixwxHuvYfuFWsSQecetM+WQ/JhdJLHTH/iHpFt0OPvAbsPu6wKCCtOgw1poAgeOjbQWnU6QOG8TjU6iBQCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=OI+YrjUv; arc=none smtp.client-ip=198.47.23.248
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+	by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 40NG46U4043257;
+	Tue, 23 Jan 2024 10:04:06 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1706025846;
+	bh=7eJWi6eNYuFYPK/LARry4zNJsatwYYOpsn8tijlRXkA=;
+	h=From:To:CC:Subject:Date;
+	b=OI+YrjUv5WYUCDslzs6sXfbg6aDesNYlN7W5gsuI558QH9TjZ36o1AxDLEmDiwwY/
+	 JNp/A9iYpTxGv/KqH0ptAImVsLpZzo+1TN5WwRyX2fE2zDhNNsORzK02iQXaCZphlZ
+	 Wr2vpEb/XNvn6sXm+CfHcyLOuFhBaYXu2c4DPjJM=
+Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
+	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 40NG46j6087256
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Tue, 23 Jan 2024 10:04:06 -0600
+Received: from DLEE104.ent.ti.com (157.170.170.34) by DLEE115.ent.ti.com
+ (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 23
+ Jan 2024 10:04:06 -0600
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE104.ent.ti.com
+ (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Tue, 23 Jan 2024 10:04:06 -0600
+Received: from lelvsmtp6.itg.ti.com ([10.249.42.149])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 40NG45hc078075;
+	Tue, 23 Jan 2024 10:04:05 -0600
+From: Andrew Davis <afd@ti.com>
+To: Bjorn Andersson <andersson@kernel.org>,
+        Baolin Wang
+	<baolin.wang@linux.alibaba.com>
+CC: <linux-omap@vger.kernel.org>, <linux-remoteproc@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, Andrew Davis <afd@ti.com>
+Subject: [PATCH 1/4] hwspinlock: omap: Remove unneeded check for OF node
+Date: Tue, 23 Jan 2024 10:04:02 -0600
+Message-ID: <20240123160405.360437-1-afd@ti.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d005e3c5-08b3-4a4f-b1ed-e02bde82c2f9@bootlin.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 
-On 23-01-24, 09:20, Thomas Richard wrote:
-> >>  
-> >> -	ret = wiz_clock_init(wiz, node);
-> >> +	ret = wiz_clock_init(wiz, node, true);
-> > 
-> > You are calling it one once? So what am I missing
-> 
-> In patch 6/14, wiz_clock_init is called in resume_noirq callback:
-> 
-> ret = wiz_clock_init(wiz, node, false);
+We do not use the OF node anymore, nor does it matter how
+we got to probe, so remove the check for of_node.
 
-noticed later, I think this would be useful to mention in changelog
+Signed-off-by: Andrew Davis <afd@ti.com>
+---
+ drivers/hwspinlock/omap_hwspinlock.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
+diff --git a/drivers/hwspinlock/omap_hwspinlock.c b/drivers/hwspinlock/omap_hwspinlock.c
+index a9fd9ca45f2a8..cca55143d24d4 100644
+--- a/drivers/hwspinlock/omap_hwspinlock.c
++++ b/drivers/hwspinlock/omap_hwspinlock.c
+@@ -74,7 +74,6 @@ static const struct hwspinlock_ops omap_hwspinlock_ops = {
+ 
+ static int omap_hwspinlock_probe(struct platform_device *pdev)
+ {
+-	struct device_node *node = pdev->dev.of_node;
+ 	struct hwspinlock_device *bank;
+ 	struct hwspinlock *hwlock;
+ 	void __iomem *io_base;
+@@ -82,9 +81,6 @@ static int omap_hwspinlock_probe(struct platform_device *pdev)
+ 	/* Only a single hwspinlock block device is supported */
+ 	int base_id = 0;
+ 
+-	if (!node)
+-		return -ENODEV;
+-
+ 	io_base = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(io_base))
+ 		return PTR_ERR(io_base);
 -- 
-~Vinod
+2.39.2
+
 
