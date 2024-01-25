@@ -1,165 +1,156 @@
-Return-Path: <linux-omap+bounces-374-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-375-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DE9483C4E9
-	for <lists+linux-omap@lfdr.de>; Thu, 25 Jan 2024 15:37:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38DBD83C835
+	for <lists+linux-omap@lfdr.de>; Thu, 25 Jan 2024 17:37:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 404851C22494
-	for <lists+linux-omap@lfdr.de>; Thu, 25 Jan 2024 14:37:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E3E91C24C7E
+	for <lists+linux-omap@lfdr.de>; Thu, 25 Jan 2024 16:37:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 606F16EB65;
-	Thu, 25 Jan 2024 14:37:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4255B12FF8C;
+	Thu, 25 Jan 2024 16:37:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="SGD+fkCN"
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="n4shag+V";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="aqPlbphJ"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from wout3-smtp.messagingengine.com (wout3-smtp.messagingengine.com [64.147.123.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56ABC6E2DA
-	for <linux-omap@vger.kernel.org>; Thu, 25 Jan 2024 14:37:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 665327CF13;
+	Thu, 25 Jan 2024 16:37:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706193437; cv=none; b=RJdm6Jdw0xry2EjUhJINGK7+6Utqp4PXegCSHTtg1zIyvS+sBd90jeQl4i+UyiZ3+44aBWf6cGM0cocq3isDlozGbcBhLIaMHGhBW8kbbGw6QFDsQMbdkQoOjY9OjNnAji699J9oG5IMMJU1YgS28JTB3kmdt62fh+EeRiyV35s=
+	t=1706200667; cv=none; b=LOQe9c5+gZEeAlj0IC4TK9/4kJpv79TA8PyT/dJyo5T0JaUlz/RoOxLnwwrzM9hXgZ0ABWtU3B2q9U3F9A7zryo5OriUDc1NPy6XFuQacb5nWzVbMpm7VSAiASVwTzDft7wTRUTN4dKPD+F7xB6Sjyqu7gSV7o3OlbvG2pMYqA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706193437; c=relaxed/simple;
-	bh=dUmbPvU0C8VRoo9iWbxEG6uM01EkIK75bcOiAdjB25w=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=nwBo+FlAOEab3aa/nY+gUb+mii2o+J4qOlQdBl+9jd0haQ4P3F9R1C3BRKrpx8lMNsz95rNiq7T+qCts+5RhPMzuYNA4kbGxLNOem2CHRJ+BNC3zXInM6/Fe8+JVcNnN37z1ds5/snmULvf0lbl+EwBSHHgKz222LK+YEDX5Ew4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=SGD+fkCN; arc=none smtp.client-ip=209.85.208.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2cf0390eddbso51958411fa.3
-        for <linux-omap@vger.kernel.org>; Thu, 25 Jan 2024 06:37:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1706193433; x=1706798233; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=0p/ZF4Qoyc/L5BPHTulDTqASzKK4BbFP5+9sQzchQas=;
-        b=SGD+fkCNkm4T6il7tamKcdiyYox6b0VQ97GEy+Vea2PwX2YV8H+2S5MD92XUqO4FTS
-         L0YVT59MZ8Tcl5jvSthxmT5ZAQg9ZPB2WalQxkUMxUspNNh7vPnj4ZTEmnjthCNPQEba
-         iZNWa8rP7G66oEcejUqJk5TKV6hRQgdnZGwTFC+SvNrPZENEHKCNzuTA7cUqJCiVUNBM
-         TOc+OWM1A8E/RsLwQivMRZPgNks3xylmsnrfL+9l5SgImVm3p0lMGG705MZHPg0dSMuF
-         o+qAMw/ax098kNIJpRsWaLITgOPx8LU5n7vmuVkQ0+gPUZJvLyQ8Lo00/XY/CbV9YIf3
-         7uKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706193433; x=1706798233;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0p/ZF4Qoyc/L5BPHTulDTqASzKK4BbFP5+9sQzchQas=;
-        b=d4DsNYVHKwIzpzfRzKoVjx1nSBZyFRai5giIBrdf0Y1KG4vIjELsYqrXeGVFOsFZX6
-         2SkGr4eBbKUieTKbMYBpO2GxI1f7B0XxJE9qVubM8kIj/OTwc2Ey7EUz8Cs025WYVkAn
-         1e8bZu3UQ3oL92U8dACUiDElO1lO2yscDzttmoueknbWhowNE0AlutolJPfXY/ZAXpzo
-         HzubcHgf5yzry3ExkssdRZLonvaBg2kOoSfz2SD4lwnKJTDK1DF0/iGbGSZGbjl2vmXL
-         ErZVr5irU1kmTsSPJGFv4OcdAAvdYGX+MTpeDntpJHmiawa5TINFqQxK9hCIxvWJLwFU
-         QNBQ==
-X-Gm-Message-State: AOJu0YybqKB67/97Dvk5ucTWpUMhS1Y+zNKp5hVjBcFjoFO8KXrUc3Mq
-	r07jdYkfEqAkl01Ld9Wo5fv3YGIxVsFGMbMQHPf8t9486RGaoCZTf87CBa3G3YA=
-X-Google-Smtp-Source: AGHT+IE2j/hx+TjW/VFSr9+UBY3Hbz0FN2hxOgkz7PQpgoay1lOTJOQqMnIpUCN7BuM5xSBcSZQTKg==
-X-Received: by 2002:a2e:995a:0:b0:2cf:1c41:39bb with SMTP id r26-20020a2e995a000000b002cf1c4139bbmr731800ljj.69.1706193433640;
-        Thu, 25 Jan 2024 06:37:13 -0800 (PST)
-Received: from [127.0.1.1] ([85.235.12.238])
-        by smtp.gmail.com with ESMTPSA id y24-20020a2e3218000000b002ce098d3f0asm292644ljy.115.2024.01.25.06.37.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Jan 2024 06:37:13 -0800 (PST)
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Thu, 25 Jan 2024 15:37:11 +0100
-Subject: [PATCH 7/7] mmc: sh_mmcif: Map the virtual page for PIO
+	s=arc-20240116; t=1706200667; c=relaxed/simple;
+	bh=8fOPIjHVb90c7CRguRNiFQ8VqTpSNg82Bt7oXHc10n0=;
+	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
+	 Subject:Content-Type; b=ebE2BTSTA8I5rAJJnYKyMqsvugKh4gwMCsZ9lAEoiF6pjTzjXhRQt5Qq7bQF44EQbjCRZ49Psz8Ch+t08h1nb7RE5SUIb2WtmIChYW626y2LGcVN1ZABSnjWAxpqtmTlFwSMBoExEgtsK8/FspSfKySB8sxUUuWcODkMUo9pN+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=n4shag+V; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=aqPlbphJ; arc=none smtp.client-ip=64.147.123.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailout.west.internal (Postfix) with ESMTP id 825643200B08;
+	Thu, 25 Jan 2024 11:37:43 -0500 (EST)
+Received: from imap51 ([10.202.2.101])
+  by compute5.internal (MEProxy); Thu, 25 Jan 2024 11:37:44 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm2; t=1706200663; x=1706287063; bh=J5VRdZ5Wrh
+	/dRaVmPUXcvh82GOraLIduVTWkeuUJFbU=; b=n4shag+VqaeUJhDNLSjR9TUSyX
+	mAn9cxpCCuEPUB8eH+KvngqOdKK3ZLxDAcWhjJVM/BIqvYV1yz6Zf6bR+sCqMSVy
+	syctT8VoIQoN+zN+1AOruKbw+qT/4Fw2odpQMK9Vlr4ZuMveDvch0ECoc+4bdv79
+	U8UA/hCoGvhOyup7Wr48hfOayk3PLor9oA6jUoohmNCAJYPS2cUVhWyqr1KOCXqx
+	Emhc70Xd9hHtn4SDQKV+F4bLj8VUbbxCzoz6jJs7JOfr6dCUG0AjeSbjjp5oKeeM
+	pj0fvjX3u/oyuF7vjfC9ebLxY6tP5IiSb45wiPmYyuFo6Gey0wm+BBGM5zdA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm3; t=1706200663; x=1706287063; bh=J5VRdZ5Wrh/dRaVmPUXcvh82GOra
+	LIduVTWkeuUJFbU=; b=aqPlbphJhWHMQjdedoU7ZRJmdXfsrAwXBis/SyhkSp65
+	ZQ2BUcPfalbo9gr9jesOg0lj9fXNdtpKHFoP3ZiIqLEmLSql++srx0dhAijNlCss
+	zVYG0KxKd2NMdWJi8b3w3D8YG/xYTdk+hqFPFUTQtKTvMHEQQF0w2gMRhs4fZOfj
+	DGECoiF6RWVF/IhI7NNuJwRVEUC18IMUo5DQs7Z02+9V6a9vsbI9KySWuRBE4b9z
+	X/Gfbyym5xkv7MhEmXS2tEJHU2EVwaaYknznio2l9hT0Z9fzi70UecbRJ9JUwK3n
+	R6SMMe7owtNVXca/cV0et7cPpwnAfp7Hr8KiDlVE0A==
+X-ME-Sender: <xms:Vo6yZbnam_W0ANRv1TjXGUm4qyL3EhHW59_aaqosk3LCt5j60FEiDQ>
+    <xme:Vo6yZe1yYPLx_yuIF8pi3OOY3d_9tSvVK9PJsucgHVKXcUlHhshmnFd-YVunYN8Ns
+    CI6MMC0mWFxKmHebpM>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvdelgedgieefucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
+    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
+    htvghrnhepvefhffeltdegheeffffhtdegvdehjedtgfekueevgfduffettedtkeekueef
+    hedunecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpe
+    dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggv
+X-ME-Proxy: <xmx:Vo6yZRo1LkrxEhYyI-DFbbbZdx8tb0IaMbP6sfg8DMN9W4LNTpXC3g>
+    <xmx:Vo6yZTlkPd64S2eP45kt2cGe04z14oOCpLgHxGGLj9YqKweTkAAxFA>
+    <xmx:Vo6yZZ2m_taDGKWkwSphpb2QbSVP29-mrypkTHprhs8aDzgfsPRP1Q>
+    <xmx:V46yZTwFSM8_9HKXzg4FILbZoph0a1S964FLaUBsnEuTLsg53IIIfQ>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 65321B6008D; Thu, 25 Jan 2024 11:37:42 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.11.0-alpha0-119-ga8b98d1bd8-fm-20240108.001-ga8b98d1b
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240125-mmc-proper-kmap-v1-7-ba953c1ac3f9@linaro.org>
+Message-Id: <7ca13324-ac47-4648-9b3c-c616de515625@app.fastmail.com>
+In-Reply-To: <20240125-mmc-proper-kmap-v1-1-ba953c1ac3f9@linaro.org>
 References: <20240125-mmc-proper-kmap-v1-0-ba953c1ac3f9@linaro.org>
-In-Reply-To: <20240125-mmc-proper-kmap-v1-0-ba953c1ac3f9@linaro.org>
-To: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>, 
- Ming Lei <ming.lei@redhat.com>, Arnd Bergmann <arnd@arndb.de>, 
- Ulf Hansson <ulf.hansson@linaro.org>, Nicolas Pitre <nico@fluxnic.net>, 
- Aaro Koskinen <aaro.koskinen@iki.fi>, 
- Adrian Hunter <adrian.hunter@intel.com>, 
- Angelo Dureghello <angelo.dureghello@timesys.com>
-Cc: linux-mmc@vger.kernel.org, linux-block@vger.kernel.org, 
- linux-omap@vger.kernel.org, Linus Walleij <linus.walleij@linaro.org>
-X-Mailer: b4 0.12.4
+ <20240125-mmc-proper-kmap-v1-1-ba953c1ac3f9@linaro.org>
+Date: Thu, 25 Jan 2024 17:37:21 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Linus Walleij" <linus.walleij@linaro.org>,
+ "Christoph Hellwig" <hch@lst.de>, "Jens Axboe" <axboe@kernel.dk>,
+ "Ming Lei" <ming.lei@redhat.com>, "Ulf Hansson" <ulf.hansson@linaro.org>,
+ "Nicolas Pitre" <nico@fluxnic.net>, "Aaro Koskinen" <aaro.koskinen@iki.fi>,
+ "Adrian Hunter" <adrian.hunter@intel.com>,
+ "Angelo Dureghello" <angelo.dureghello@timesys.com>
+Cc: "linux-mmc @ vger . kernel . org" <linux-mmc@vger.kernel.org>,
+ linux-block@vger.kernel.org, Linux-OMAP <linux-omap@vger.kernel.org>
+Subject: Re: [PATCH 1/7] mmc: davinci_mmc: Map the virtual page for PIO
+Content-Type: text/plain
 
-Use kmap_local_page() instead of sg_virt() to obtain a page
-from the scatterlist: sg_virt() will not perform bounce
-buffering if the page happens to be located in high memory,
-which the driver may or may not be using.
+On Thu, Jan 25, 2024, at 15:37, Linus Walleij wrote:
+> Use kmap_local_page() instead of sg_virt() to obtain a page
+> from the scatterlist: sg_virt() will not perform bounce
+> buffering if the page happens to be located in high memory,
+> which the driver may or may not be using.
+>
+> Suggested-by: Christoph Hellwig <hch@lst.de>
+> Link: https://lore.kernel.org/linux-mmc/20240122073423.GA25859@lst.de/
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+> ---
+>  drivers/mmc/host/davinci_mmc.c | 10 ++++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/mmc/host/davinci_mmc.c 
+> b/drivers/mmc/host/davinci_mmc.c
+> index ee3b1a4e0848..4e9f96b1caf3 100644
+> --- a/drivers/mmc/host/davinci_mmc.c
+> +++ b/drivers/mmc/host/davinci_mmc.c
+> @@ -216,7 +216,7 @@ static irqreturn_t mmc_davinci_irq(int irq, void 
+> *dev_id);
+>  static void mmc_davinci_sg_to_buf(struct mmc_davinci_host *host)
+>  {
+>  	host->buffer_bytes_left = sg_dma_len(host->sg);
+> -	host->buffer = sg_virt(host->sg);
+> +	host->buffer = kmap_local_page(sg_page(host->sg));
+>  	if (host->buffer_bytes_left > host->bytes_left)
+>  		host->buffer_bytes_left = host->bytes_left;
+>  }
 
-This code is a bit asynchronous due to being called
-repeatedly from an interrupt handler, so it would be great
-if someone can test this.
+I see multiple problems here:
 
-Suggested-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/linux-mmc/20240122073423.GA25859@lst.de/
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
----
- drivers/mmc/host/sh_mmcif.c | 22 ++++++++++++++++++----
- 1 file changed, 18 insertions(+), 4 deletions(-)
+ - you are missing the offset within the page, which you
+   get by adding sg->offset
 
-diff --git a/drivers/mmc/host/sh_mmcif.c b/drivers/mmc/host/sh_mmcif.c
-index 077d711e964e..f9f56d653ff4 100644
---- a/drivers/mmc/host/sh_mmcif.c
-+++ b/drivers/mmc/host/sh_mmcif.c
-@@ -611,13 +611,27 @@ static bool sh_mmcif_next_block(struct sh_mmcif_host *host, u32 *p)
- 
- 	if (host->sg_blkidx == data->sg->length) {
- 		host->sg_blkidx = 0;
-+		/* Unmap previous sg and map the next one */
-+		if (host->pio_ptr) {
-+			kunmap_local(host->pio_ptr);
-+			host->pio_ptr = NULL;
-+		}
- 		if (++host->sg_idx < data->sg_len)
--			host->pio_ptr = sg_virt(++data->sg);
-+			host->pio_ptr = kmap_local_page(sg_page(++data->sg));
- 	} else {
- 		host->pio_ptr = p;
- 	}
- 
--	return host->sg_idx != data->sg_len;
-+	/*
-+	 * We return true of there are more blocks, and false if there is no
-+	 * next block.
-+	 */
-+	if (host->sg_idx != data->sg_len)
-+		return true;
-+	/* Unmap the last buffer if any */
-+	if (host->pio_ptr)
-+		kunmap_local(host->pio_ptr);
-+	return false;
- }
- 
- static void sh_mmcif_single_read(struct sh_mmcif_host *host,
-@@ -669,7 +683,7 @@ static void sh_mmcif_multi_read(struct sh_mmcif_host *host,
- 	host->wait_for = MMCIF_WAIT_FOR_MREAD;
- 	host->sg_idx = 0;
- 	host->sg_blkidx = 0;
--	host->pio_ptr = sg_virt(data->sg);
-+	host->pio_ptr = kmap_local_page(sg_page(data->sg));
- 
- 	sh_mmcif_bitset(host, MMCIF_CE_INT_MASK, MASK_MBUFREN);
- }
-@@ -749,7 +763,7 @@ static void sh_mmcif_multi_write(struct sh_mmcif_host *host,
- 	host->wait_for = MMCIF_WAIT_FOR_MWRITE;
- 	host->sg_idx = 0;
- 	host->sg_blkidx = 0;
--	host->pio_ptr = sg_virt(data->sg);
-+	host->pio_ptr = kmap_local_page(sg_page(data->sg));
- 
- 	sh_mmcif_bitset(host, MMCIF_CE_INT_MASK, MASK_MBUFWEN);
- }
+ - kmap_local_page() only maps one page at a time, so
+   this will fail if the scatterlist entry spans one or
+   more pages.
 
--- 
-2.34.1
+ - the first call to mmc_davinci_sg_to_buf() may happen
+   in mmc_davinci_prepare_data(), while the rest is done
+   in the interrupt handler, and you can't hold the
+   kmap reference across multiple contexts
 
+ - It looks like you are missing the unmap inside of
+   loop when moving to the next sg element.
+
+I think to do this properly, the driver would have to
+use struct sg_mapping_iter like the cb710 driver does,
+but the conversion is not as simple as your patch here.
+
+       Arnd
 
