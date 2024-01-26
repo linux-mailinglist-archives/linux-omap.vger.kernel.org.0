@@ -1,107 +1,125 @@
-Return-Path: <linux-omap+bounces-377-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-378-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F119983D081
-	for <lists+linux-omap@lfdr.de>; Fri, 26 Jan 2024 00:19:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39E1D83D565
+	for <lists+linux-omap@lfdr.de>; Fri, 26 Jan 2024 10:06:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2DF8290ADD
-	for <lists+linux-omap@lfdr.de>; Thu, 25 Jan 2024 23:19:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D10D1C20CA9
+	for <lists+linux-omap@lfdr.de>; Fri, 26 Jan 2024 09:06:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A587A1759E;
-	Thu, 25 Jan 2024 23:18:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C887661676;
+	Fri, 26 Jan 2024 07:55:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ZsSCs86a"
+	dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b="JtJ7/piH"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail5.25mail.st (mail5.25mail.st [74.50.62.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3659171C9
-	for <linux-omap@vger.kernel.org>; Thu, 25 Jan 2024 23:18:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BB06612FA;
+	Fri, 26 Jan 2024 07:55:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.50.62.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706224737; cv=none; b=dKH+ZsBJi6p7hW56ZzEneRLzDM/wZfP1ceoimMmyGnv5YSfxCiotiqJMbdmEFQlNKwVhxzZLn/xDi+WOnl0KtsZOI/KAhQrYik4rpTWPRmXHQTrJnaXWez56Sbw7nSjB7O5p3wGHzFQBXJCewBTYDdonRNHgbev/81FOFDk9EHg=
+	t=1706255706; cv=none; b=pFP4LKTllEEl9xf3uKOphEy7O9nnD5Z132Xs4vyXPqeRKez9DApPnHpKDwTvhaYoaL9tK6zTIzdeLymywzPGwvMTc1wwROg2qbsbGV3YRFMWHD7ONbNtU5MHKSme+xmY3MdJ3Hw2t4wcaMM0wF3JSqICgG3V4yv00q5FVlrqQFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706224737; c=relaxed/simple;
-	bh=7uvqzJiFOH7CqK9D/XE9qIcs6f8P8aqvGseDf75yXXM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NmwMjZXCuXUUTNzWrfYEOcidBhVA20m1wGv4X6ePRLx//agyXhdAQ1EqUpK3nYViHfLgr3ekzEOcc/IXGweim/cY5AsBBhPcvHCCTE2dzDd9j0aAXWx6uI3zbPvjANzMeMLKFJbFPkwKdew1f1AmqNiLryJ5MV0n/7/lrt05SRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ZsSCs86a; arc=none smtp.client-ip=209.85.128.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-5ff828b93f0so67420817b3.3
-        for <linux-omap@vger.kernel.org>; Thu, 25 Jan 2024 15:18:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1706224734; x=1706829534; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7uvqzJiFOH7CqK9D/XE9qIcs6f8P8aqvGseDf75yXXM=;
-        b=ZsSCs86a/S2lz8chareQY9wVV7h/sZwKG7z3FaRYk2qI7Plqd1cVedCVgy07OdHtrU
-         X823lr3pENXGI3wijqr7ejCytYOwlL1+WZkhRm4sIDQKWJYlOP9rCm4Jc5eWvzfTW/ox
-         Rxvh5eh1BJv+5PqtvNdEZ5Xk0zQxmLUnTQZ9efZGubshZFTVIGAFJkOMKCW5vbVxzH4y
-         ZmkL2gazF3rb9ejhMOw5D1B4TW1zRu28+bsv+fwyq8uyrhHEDrWJmF+J1ETDArQYkkKW
-         BtpnPhBRf7GnX2ju0BQPIm+r8F3HZ1KNuddnuiwRSbB9/U08aNnLjQZW3RbRT6mFVSgp
-         ty4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706224734; x=1706829534;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7uvqzJiFOH7CqK9D/XE9qIcs6f8P8aqvGseDf75yXXM=;
-        b=iewR7PUMQWVOtoeoCNvBI6sEBBYtCLr3rp+ap0jamx2KhCPmXAz8hfxhI/Qr/cjmV+
-         6+y8otiMy4edJqn+BiTis8yN3VuOm0Lw86Q+0unRZONqPsn0+VBJnAZBHfRByESFcRO6
-         CjCtMltAhmJN0u3TfF5rpuOIg6cq5WtL7Hr1DDH9GuVvUXOnd0DiJ3IClzMnYlrr2GPN
-         nH2wuwKqX1bFRI9EkUoGSvwZawEHryp4aMsS3lW8zFCxJfbTFeWtToRcfJPo7qV64K8/
-         +Q5LtOzuLxjUdlo4TBD01h6ThGb9yqtSsXzNOvJ+30gtkJtqr5DpLmbyXh9YpTq2Tmik
-         6GtQ==
-X-Gm-Message-State: AOJu0YxZbLcjdnvjyDx2aGYojCFR5nE1g0ClDZtmlkKx2mYmhX4cVyCO
-	1KV7T6lnjWFiY/Y6csLTL5C8I3F6hZ/KvYfmcG/Clo2wptSrNiHe/5bc9LlaxM5FIKzhUtwOR+S
-	ok8leZjwoicYa30nW7DHtcE24bI9rjcSMSu05Gg==
-X-Google-Smtp-Source: AGHT+IGYkPRYDSlscKRk4G+SfhQLgKGn3yOaS30O2gXXD5Tt9NYFdgvgNJQJQsN4IwIhaD5odaQS198rhu6R/5DbH+Y=
-X-Received: by 2002:a81:aa4c:0:b0:5ff:35f1:714b with SMTP id
- z12-20020a81aa4c000000b005ff35f1714bmr601737ywk.12.1706224734637; Thu, 25 Jan
- 2024 15:18:54 -0800 (PST)
+	s=arc-20240116; t=1706255706; c=relaxed/simple;
+	bh=8um7kgRcb4+h5B+usK409ZVcM+9iTowtfffiEtyuFbU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=D4uKWVkIAbm/9wNBCjs0EDDq2Fx3ooEUdSF89dMJpBHCm6WtvUVhv7apWkfqE1KKlxpphZIEhtEMwpFqL/PhO8ZoRRcEsjnUNwJhfxYzQo67JUcBAoOnvYUGf+2myVu2HJ2mFlf9/BHpZOJF+y9I6+k6ScecDxtZK3ocFMQP7hI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com; spf=fail smtp.mailfrom=atomide.com; dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b=JtJ7/piH; arc=none smtp.client-ip=74.50.62.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=atomide.com
+Received: from localhost (91-158-86-216.elisa-laajakaista.fi [91.158.86.216])
+	by mail5.25mail.st (Postfix) with ESMTPSA id B0F1D603CF;
+	Fri, 26 Jan 2024 07:45:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=atomide.com;
+	s=25mailst; t=1706255202;
+	bh=8um7kgRcb4+h5B+usK409ZVcM+9iTowtfffiEtyuFbU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JtJ7/piHUW7w/OVJCn29e2d2rEtLeVaOlov0zjBd4GqjORjulnAzkfm81/oQzmZk1
+	 j6xBHePTSisRqweNOX99GF13HoBrDKZt3M3FEm+pqWIYwc79de+//TyrHnJ9U9EOqe
+	 tg4spfaNgHPO2SrEKND9EDfqrJeRITH4r90Dsd0YaLFoWXNsu44vFqxtM6bmDCF8xZ
+	 q8AbETzoLNZBW4g0gaa1xpveZk8WqCVR32N7uAqUyzV/DHuDLLdflpLjkse2IS/IKh
+	 kf7sQAEwt18oj3FLSAOArYc8w/JeDK204z24tczY7J+Y3Xxk3bJIUv198MVWlnb8bt
+	 c0jmXOYqHSWqw==
+Date: Fri, 26 Jan 2024 09:45:43 +0200
+From: Tony Lindgren <tony@atomide.com>
+To: Andrew Davis <afd@ti.com>
+Cc: Frank Binns <frank.binns@imgtec.com>,
+	Matt Coster <matt.coster@imgtec.com>,
+	"H . Nikolaus Schaller" <hns@goldelico.com>,
+	Adam Ford <aford173@gmail.com>,
+	Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	=?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+	Nishanth Menon <nm@ti.com>, Vignesh Raghavendra <vigneshr@ti.com>,
+	Tero Kristo <kristo@kernel.org>,
+	Paul Cercueil <paul@crapouillou.net>,
+	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-sunxi@lists.linux.dev, linux-omap@vger.kernel.org,
+	linux-mips@vger.kernel.org
+Subject: Re: [PATCH 08/11] ARM: dts: DRA7xx: Add device tree entry for SGX GPU
+Message-ID: <20240126074543.GS5185@atomide.com>
+References: <20240109171950.31010-1-afd@ti.com>
+ <20240109171950.31010-9-afd@ti.com>
+ <20240110082924.GA5185@atomide.com>
+ <55efd488-c6a0-4dca-baea-1fa93d13dd17@ti.com>
+ <20240118085551.GQ5185@atomide.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240125-mmc-proper-kmap-v1-0-ba953c1ac3f9@linaro.org>
- <20240125-mmc-proper-kmap-v1-1-ba953c1ac3f9@linaro.org> <7ca13324-ac47-4648-9b3c-c616de515625@app.fastmail.com>
-In-Reply-To: <7ca13324-ac47-4648-9b3c-c616de515625@app.fastmail.com>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Fri, 26 Jan 2024 00:18:43 +0100
-Message-ID: <CACRpkdZWrRCoG_HL4WxpcauP_ipvfekg3j67fUHewUuMxGzBeA@mail.gmail.com>
-Subject: Re: [PATCH 1/7] mmc: davinci_mmc: Map the virtual page for PIO
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>, Ming Lei <ming.lei@redhat.com>, 
-	Ulf Hansson <ulf.hansson@linaro.org>, Nicolas Pitre <nico@fluxnic.net>, 
-	Aaro Koskinen <aaro.koskinen@iki.fi>, Adrian Hunter <adrian.hunter@intel.com>, 
-	Angelo Dureghello <angelo.dureghello@timesys.com>, 
-	"linux-mmc @ vger . kernel . org" <linux-mmc@vger.kernel.org>, linux-block@vger.kernel.org, 
-	Linux-OMAP <linux-omap@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240118085551.GQ5185@atomide.com>
 
-On Thu, Jan 25, 2024 at 5:37=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> wrote=
-:
+* Tony Lindgren <tony@atomide.com> [240118 08:57]:
+> * Andrew Davis <afd@ti.com> [240117 15:52]:
+> > On 1/10/24 2:29 AM, Tony Lindgren wrote:
+> > > * Andrew Davis <afd@ti.com> [240109 17:20]:
+> > > > --- a/arch/arm/boot/dts/ti/omap/dra7.dtsi
+> > > > +++ b/arch/arm/boot/dts/ti/omap/dra7.dtsi
+> > > > @@ -850,12 +850,19 @@ target-module@56000000 {
+> > > >   					<SYSC_IDLE_SMART>;
+> > > >   			ti,sysc-sidle = <SYSC_IDLE_FORCE>,
+> > > >   					<SYSC_IDLE_NO>,
+> > > > -					<SYSC_IDLE_SMART>;
+> > > > +					<SYSC_IDLE_SMART>,
+> > > > +					<SYSC_IDLE_SMART_WKUP>;
+> > > 
+> > > You probably checked this already.. But just in case, can you please
+> > > confirm this is intentional. The documentation lists the smart wakeup
+> > > capability bit as reserved for dra7, maybe the documentation is wrong.
+> > > 
+> > 
+> > It was an intentional change, although I'm not sure it is correct :)
+> > 
+> > This is how we had it in our "evil vendor tree" for years (back when it
+> > was hwmod based), so when converting these nodes to use "ti,sysc" I noticed
+> > this bit was set, but as you point out the documentation disagrees.
+> > 
+> > I'd rather go with what has worked before, but it doesn't seem to
+> > break anything either way, so we could also break this change out into
+> > its own patch if you would prefer.
+> 
+> I agree it's best to stick what is known to work. How about let's add
+> the related information to the patch description?
 
-> I think to do this properly, the driver would have to
-> use struct sg_mapping_iter like the cb710 driver does,
-> but the conversion is not as simple as your patch here.
+I'll update the commit message for it and apply these, no need to repost.
 
-Ack, how typical, so that is what I write in the cover letter
-that I wanted to avoid but it seems there is no avoiding it then.
+Regards,
 
-It's a bit trickier but I guess I can pull it off, it better get some
-testing.
-
-Thanks Arnd!
-
-Yours,
-Linus Walleij
+Tony
 
