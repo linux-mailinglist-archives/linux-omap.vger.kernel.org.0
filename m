@@ -1,174 +1,133 @@
-Return-Path: <linux-omap+bounces-397-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-398-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55F3B83E37E
-	for <lists+linux-omap@lfdr.de>; Fri, 26 Jan 2024 21:53:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FE2783E3E9
+	for <lists+linux-omap@lfdr.de>; Fri, 26 Jan 2024 22:29:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFFD31F2525A
-	for <lists+linux-omap@lfdr.de>; Fri, 26 Jan 2024 20:53:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CFCD9B20AB0
+	for <lists+linux-omap@lfdr.de>; Fri, 26 Jan 2024 21:29:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D193423769;
-	Fri, 26 Jan 2024 20:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73D9124A0A;
+	Fri, 26 Jan 2024 21:29:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=smile-fr.20230601.gappssmtp.com header.i=@smile-fr.20230601.gappssmtp.com header.b="MTSe6b50"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TLcEEvxA"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84CCC1CA9C
-	for <linux-omap@vger.kernel.org>; Fri, 26 Jan 2024 20:53:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8022E24B20;
+	Fri, 26 Jan 2024 21:29:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706302412; cv=none; b=D2iJqursjomi2ase3vh/1ADon8v9wfygx2cYkV5UeP1SK7s/lUGtrwzB3zv8RGtkN+ifmZgCJKmDttEmxKahdG9LYD8glGtwh4/lp/EeWJlvsAsWQhoEgmLUJsd6Z03vpsyyWJhYcagPhkH/JWGCilOHiuJLYn8ipxdK8wLbgSk=
+	t=1706304556; cv=none; b=W1upz8l2/zfkf5DXpwrBQ1oGSYfkFruzeXaibf85UCt/9NRozSoDmM+20dURwsPmPSMgt7Lz4eqy3dT2wJU/SVC08i8zsjZ5PllIl7PXRHOkeJnwOJHA7cT0jm7DYo6z+C2Obbul1Rd76hRxCnn8MphOSx10vhoSPHatw5sfses=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706302412; c=relaxed/simple;
-	bh=VLoOOXLmRcAViCqdEumyZ0WM+FOtsjsH3wWNyhIyX2c=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=MSOaDGy3HRZNUaVatBLP7b91u3WcF1B2YAzkhHjQy7Ga/PtQXjXakLaL7TZQ0wZLuMMzpbpljfmS9xORfwZ1zsYVPTO1d/12S9Ss4bR6DfxoawUgCgP7o8LRHgQ8VK93Kk7Dsshmu0btVvJVBgDBD4pFzgLMcRrHPRI5H/VpvI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smile.fr; spf=pass smtp.mailfrom=smile.fr; dkim=pass (2048-bit key) header.d=smile-fr.20230601.gappssmtp.com header.i=@smile-fr.20230601.gappssmtp.com header.b=MTSe6b50; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smile.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smile.fr
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-40eac352733so15133475e9.0
-        for <linux-omap@vger.kernel.org>; Fri, 26 Jan 2024 12:53:28 -0800 (PST)
+	s=arc-20240116; t=1706304556; c=relaxed/simple;
+	bh=45f7pdvd5/Owsm6Q92oWoQ9hQwOd+JfrrIryHMgKxfo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=h5RV3XJwn+PyYXmdiJpPmDqGRoFJdd3s5Ud18SFm+c7xFuLRbIqgUjoI75iMv0spMX2Hwzel1xc4sNy1gG7q9o5JH8i6r14UkDfc1bYaCSgvNb+Pp1eMwRoTDoPiljqn2Q0w0KCS8LSM9TblbEqyAmke2t9AAhT/M9nngRDslmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TLcEEvxA; arc=none smtp.client-ip=209.85.167.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-50eac018059so1056496e87.0;
+        Fri, 26 Jan 2024 13:29:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smile-fr.20230601.gappssmtp.com; s=20230601; t=1706302406; x=1706907206; darn=vger.kernel.org;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1706304552; x=1706909352; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=iTN5Ayd0inS6Mi17eWodjs4fIbqkRVTBLRu7biaSWLY=;
-        b=MTSe6b50I4KNG/vWYUxGS8SSL2gDku64f3GUCtQQ+CiDXl7C5uhJYLU5gHxFfB1YSp
-         0hXKBk8Qjo0K0UWd8CnenOWnERJs1cxQkJ9d8fuzfiPnGoGY4wFLeZToDCP4i4lVqUrT
-         nTzQ1ZGX79n7AUo7koUhRdWtfdFhxuWG9iSqYIyyoQ08u6uHk5qG0+iGxV95eMGSRCyx
-         v+ZQS54m+ltWMLAUQl7/jFo8eAROxD8zOru3cnCs5m1pdbCpKW6zeSJJoHKYQ4vytmAN
-         T0Fg6bYVPLG1gYBHnNe22sEGBVANISz09PXoTMjQVJV5FiVjlrPOY2MhFSzb5zUfUy4b
-         hb8w==
+        bh=5dGaRcZGZXBVKac7GIu7GBfbJOVUBsye+tLRWwIY3dY=;
+        b=TLcEEvxAzX+vAHmul62iTukL7WOPI+xG79GNDOtwm60uaKrLVeiTxAWeZ8qRwEHASj
+         VzcL8ntJnt+e/mZf/wqJHJJEJf5qJERjzzEtxayk/WzxEdzVxjkMb/acDPLPxzwOf54U
+         L//9OPxA+oN40RIWKGoTIHLLZLR7q77/e3R1RogsUoGLW5rR4f5d2k5tjBsCSwXMBxy6
+         uuHHwSJfrpOlPEIBWLV3FVZclx21qOzdFC9/NMSRsAJu7YxcAe7LrscrXg406QnOvuXO
+         XH0VTBQA1CNJC05YO5IpgEX+UkBQIC3IkSJMZlYjFIruoLX9tWl71Mux5adlzu1blNCh
+         bGhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706302406; x=1706907206;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=iTN5Ayd0inS6Mi17eWodjs4fIbqkRVTBLRu7biaSWLY=;
-        b=WYX9gda2pWEM8qHEuS7ZlnO0tu8XQpkVylMNyEx/FYnGBgi8p8K4me53xY2k9TmoSY
-         cxDkSGTfZT93X4+a0neDT9hqSy92FslTYKE2T5uou1IUGR6sNCcYzY87aJU6xuZsyMJC
-         XRwv7rfh1Be1n5Px1Qs+LTuIwav0o1l1Xzd9bILr15Iwti/77LhMVdbWkt/Cj3HBbZ3/
-         A/pY+CBLPjs6HKROdNi6QPjn8K8+9IxmudLDW59kJTG5pzsJcQetNrwB1Ks0COruUf+W
-         hDjxyeEdYR/3rn2ebjGh2es6s9kQ9HqSBdidneDp/b1tSyDZLjW7jiv718dmWpcYrlqz
-         mwlA==
-X-Gm-Message-State: AOJu0YyPzqGbovXw3iis+b2yF0lWzRPK2xPIRtTL265P3dBp9ajmr85d
-	gwWM0nhESx06TYhW9NFIyS8bGzmnynseYmS8MMEIZ9NBBlHrsHp5RP1bNEMOkTKdHGaWiR801XL
-	I
-X-Google-Smtp-Source: AGHT+IEqxlgGZAu08yWGbvkSlARfNVPcAtVqQsOOv9FvxvPNb2GeW6iRwp1/k8TSg0bazFFKtxRnUw==
-X-Received: by 2002:a05:600c:2189:b0:40d:9238:df50 with SMTP id e9-20020a05600c218900b0040d9238df50mr283819wme.81.1706302406567;
-        Fri, 26 Jan 2024 12:53:26 -0800 (PST)
-Received: from ?IPV6:2a01:cb05:945b:7e00:9bdc:6887:23a2:4f31? (2a01cb05945b7e009bdc688723a24f31.ipv6.abo.wanadoo.fr. [2a01:cb05:945b:7e00:9bdc:6887:23a2:4f31])
-        by smtp.gmail.com with ESMTPSA id w18-20020a05600c475200b0040e9f7308f4sm2833071wmo.10.2024.01.26.12.53.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 26 Jan 2024 12:53:26 -0800 (PST)
-Message-ID: <2e5f1997-564c-44e4-b357-6343e0dae7ab@smile.fr>
-Date: Fri, 26 Jan 2024 21:53:24 +0100
+        d=1e100.net; s=20230601; t=1706304552; x=1706909352;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5dGaRcZGZXBVKac7GIu7GBfbJOVUBsye+tLRWwIY3dY=;
+        b=dsRgnKqbJkMijWbFcLBOqWCPpSUM4vaNX/LTKri+PO8xZ4ghy+2XOtFzIuPTLH40Jv
+         etVU502i9c+UiaDr5MwiUxDE8dS6dOQ8IPoGXi8KcADXinPt3gMcj1JZKI6P5ACHCftg
+         cM817j1qmyrmDtDiNpaOJI5buNCAquVSxgFGxNNMW+XGagyV3inF7J9mT+Q1TZui2QuA
+         88FVQKvHgDNo6lLxORad60RbRAV2Lfk+OrYKJydtPEOdF6WtDtdzHi6XnVc5jiuR27dq
+         X52MxiKZLwoCuaDWGOPOnUmHroogNpQ/8OaeN1OSbbNVNWMGS41QorBeQjLddyTWV4w0
+         51dw==
+X-Gm-Message-State: AOJu0YwZvhGp6xcqclKZM4nBOIZJ+Ug5IcL1m51DtOckilyTREnF3Fpn
+	1kd/vM0GDVPyE85x9sKvB2E+3ksnRsRATaF5eivU132cTn1MKUHGcDOuhGGvuyFpxY60vNXOCcG
+	u6QmHmYr5E3b4pqnlUZ2hXaML+Rg=
+X-Google-Smtp-Source: AGHT+IGeM+pQ+Cnao4mzrrHgxL3aMLIh3IIoj3QybKfVNw6pv8H/R/tftIwIc8VbdO+9lsAp4rKqVnSWF8w3kXZnZrc=
+X-Received: by 2002:a19:ad4a:0:b0:510:106b:3369 with SMTP id
+ s10-20020a19ad4a000000b00510106b3369mr218788lfd.26.1706304552212; Fri, 26 Jan
+ 2024 13:29:12 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: fr, en-US
-To: Linux-OMAP <linux-omap@vger.kernel.org>
-Cc: Tony Lindgren <tony@atomide.com>, Nishanth Menon <nm@ti.com>
-From: Romain Naour <romain.naour@smile.fr>
-Subject: sdhci-omap: issues with PM features since 5.16
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20240102-j7200-pcie-s2r-v2-0-8e4f7d228ec2@bootlin.com> <20240102-j7200-pcie-s2r-v2-4-8e4f7d228ec2@bootlin.com>
+In-Reply-To: <20240102-j7200-pcie-s2r-v2-4-8e4f7d228ec2@bootlin.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Fri, 26 Jan 2024 23:28:35 +0200
+Message-ID: <CAHp75Ve2K=v=OrNPH0q+K6vp2283HSMBYYSh0hYbw56snGd+xg@mail.gmail.com>
+Subject: Re: [PATCH v2 04/15] mux: add mux_chip_resume() function
+To: Thomas Richard <thomas.richard@bootlin.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
+	Andy Shevchenko <andy@kernel.org>, Tony Lindgren <tony@atomide.com>, 
+	Haojian Zhuang <haojian.zhuang@linaro.org>, Vignesh R <vigneshr@ti.com>, 
+	Aaro Koskinen <aaro.koskinen@iki.fi>, Janusz Krzysztofik <jmkrzyszt@gmail.com>, 
+	Andi Shyti <andi.shyti@kernel.org>, Peter Rosin <peda@axentia.se>, Vinod Koul <vkoul@kernel.org>, 
+	Kishon Vijay Abraham I <kishon@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>, 
+	Tom Joseph <tjoseph@cadence.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, linux-gpio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-omap@vger.kernel.org, linux-i2c@vger.kernel.org, 
+	linux-phy@lists.infradead.org, linux-pci@vger.kernel.org, 
+	gregory.clement@bootlin.com, theo.lebrun@bootlin.com, 
+	thomas.petazzoni@bootlin.com, u-kumar1@ti.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello,
+On Fri, Jan 26, 2024 at 4:37=E2=80=AFPM Thomas Richard
+<thomas.richard@bootlin.com> wrote:
+>
+> The mux_chip_resume() function restores a mux_chip using the cached state
+> of each mux.
 
-I'm upgrading the kernel from 5.10.168 to 6.1.69 (both from TI tree) on a custom
-board based on a AM574x SoC and I noticed a regression on the sdhci-omap driver.
+...
 
-The emmc was working on the 5.10 kernel using mmc-hs200 powered at 1,8v (mmc2).
+> +int mux_chip_resume(struct mux_chip *mux_chip)
+> +{
+> +       int ret, i;
+> +
+> +       for (i =3D 0; i < mux_chip->controllers; ++i) {
+> +               struct mux_control *mux =3D &mux_chip->mux[i];
 
-The first sign of the issue is a cache flush error during the first boot:
+> +               if (mux->cached_state !=3D MUX_CACHE_UNKNOWN) {
 
-mmc1: cache flush error -110 (ETIMEDOUT)
-mmc1: error -110 doing aggressive suspend
+  if (_state =3D=3D ...)
+    continue;
 
-followed by I/O errors produced by fdisk -l /dev/mmcblk1boot1:
+?
 
-I/O error, dev mmcblk1boot0, sector 64384 op 0x0:(READ) flags 0x80700 phys_seg 1
-prio class 2
-I/O error, dev mmcblk1boot1, sector 64384 op 0x0:(READ) flags 0x80700 phys_seg 1
-prio class 2
-I/O error, dev mmcblk1boot1, sector 64384 op 0x0:(READ) flags 0x0 phys_seg 1
-prio class 2
-Buffer I/O error on dev mmcblk1boot1, logical block 8048, async page read
-I/O error, dev mmcblk1boot0, sector 64384 op 0x0:(READ) flags 0x0 phys_seg 1
-prio class 2
-Buffer I/O error on dev mmcblk1boot0, logical block 8048, async page read
+> +                       ret =3D mux_control_set(mux, mux->cached_state);
+> +                       if (ret < 0) {
+> +                               dev_err(&mux_chip->dev, "unable to restor=
+e state\n");
+> +                               return ret;
+> +                       }
+> +               }
+> +       }
+> +       return 0;
+> +}
 
-Here is what I had as mmc infos on 5.10 kernel:
-
-# cat /sys/kernel/debug/mmc0/ios
-clock:		50000000 Hz
-vdd:		21 (3.3 ~ 3.4 V)
-bus mode:	2 (push-pull)
-chip select:	0 (don't care)
-power mode:	2 (on)
-bus width:	2 (4 bits)
-timing spec:	2 (sd high-speed)
-signal voltage:	0 (3.30 V)
-driver type:	0 (driver type B)
-
-# cat /sys/kernel/debug/mmc1/ios
-clock:		192000000 Hz
-vdd:		7 (1.65 - 1.95 V)
-bus mode:	2 (push-pull)
-chip select:	0 (don't care)
-power mode:	2 (on)
-bus width:	3 (8 bits)
-timing spec:	9 (mmc HS200)
-signal voltage:	1 (1.80 V)
-driver type:	0 (driver type B)
-
-Now with 6.1:
-
-# cat /sys/kernel/debug/mmc0/ios
-clock:		0 Hz
-vdd:		0 (invalid)
-bus mode:	2 (push-pull)
-chip select:	0 (don't care)
-power mode:	0 (off)
-bus width:	0 (1 bits)
-timing spec:	0 (legacy)
-signal voltage:	0 (3.30 V)
-driver type:	0 (driver type B)
-
-
-# cat /sys/kernel/debug/mmc1/ios
-clock:		0 Hz
-vdd:		0 (invalid)
-bus mode:	2 (push-pull)
-chip select:	0 (don't care)
-power mode:	0 (off)
-bus width:	0 (1 bits)
-timing spec:	0 (legacy)
-signal voltage:	1 (1.80 V)
-driver type:	0 (driver type B)
-
-I'm able to reproduce on the IDK574x evaluation board (where the emmc is powered
-at 3v3) with vanilla kernels.
-
-I had to revert all commits related to "PM runtime functions" [1] and "card
-power off and enable aggressive PM" [2] from kernel 5.16 to use the emmc again
-on both boards.
-
-[1]
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?id=f433e8aac6b94218394c6e7b80bb89e4e79c9549
-[2]
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?id=3edf588e7fe00e90d1dc7fb9e599861b2c2cf442
-
-Best regards,
-Romain
+--=20
+With Best Regards,
+Andy Shevchenko
 
