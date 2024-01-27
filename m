@@ -1,346 +1,98 @@
-Return-Path: <linux-omap+bounces-420-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-421-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14A9B83E865
-	for <lists+linux-omap@lfdr.de>; Sat, 27 Jan 2024 01:23:14 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4992083EB13
+	for <lists+linux-omap@lfdr.de>; Sat, 27 Jan 2024 05:49:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 810531F227AF
-	for <lists+linux-omap@lfdr.de>; Sat, 27 Jan 2024 00:23:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D1E2FB21685
+	for <lists+linux-omap@lfdr.de>; Sat, 27 Jan 2024 04:49:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18EB41DA2C;
-	Sat, 27 Jan 2024 00:20:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3381D125B0;
+	Sat, 27 Jan 2024 04:49:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RYLiIB4A"
+	dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b="S971WVwo"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail5.25mail.st (mail5.25mail.st [74.50.62.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D960C33F6
-	for <linux-omap@vger.kernel.org>; Sat, 27 Jan 2024 00:20:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC544B665
+	for <linux-omap@vger.kernel.org>; Sat, 27 Jan 2024 04:49:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.50.62.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706314825; cv=none; b=m3SwVlpmMWW/HxtoYT2gwpi0nxcw2GCfcAuJuDfmTgOVMWYzI07HqITAJ8n0wE/pknsPrMP+BQFRwURfTQzEDs5bhCtRj8igre8GRh/Jkcr2Bs714S2i4dVV+lXIxJgCahbUzMy3A4R6TJWbFNMMuOGpMTAI3YaQ6XPv4h70jwA=
+	t=1706330943; cv=none; b=gHqF8xwpVugbQMpzbNvclSMunZB/IK5WNsA2N/raYYN+qG1m5pgVsnN1E3+LKEXYM4+TGwlf6LczgbphcB3lHY6S34ELY5vag8znsrqNAm9+h9VXNeRjPiR9RTTYs7gsGkP0kPAzBbyMfsfL9LlkgmrUNyNTXFER/KZMjTSkYL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706314825; c=relaxed/simple;
-	bh=m64DINGtjwCb4sGpGFmOo+EROZNKY2mbmaeuUuBBRqU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=GGxbd6YUexxYkgKrZqo1YgEPW/6nGHH7WNpHXXouIHpT0NkwVn1t9/3wppgbGXXvndtec0yC0hbS7ZSS+BWdxwxeZukEvSXNgIEOfDIzrMiUcat94Bu54y2U2G/qpTezbx99EnBmhw7tQ5Vw+N6XhVZqdGsAQXpVX4veBbg0JsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RYLiIB4A; arc=none smtp.client-ip=209.85.167.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-51025cafb51so1363746e87.2
-        for <linux-omap@vger.kernel.org>; Fri, 26 Jan 2024 16:20:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1706314822; x=1706919622; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=H6xRTgWpwVbdQrYrVCpj0/5DkwYyjb0pfDixXSPxg08=;
-        b=RYLiIB4ADJHqpt3w+GfoD4jp2simx33+zgqY8KZJz2yIZURm2B9EXPDTS0/r0GfBTp
-         xKSC/l2vAZYkoflIvphhspZYegwjiakFVmaIMr6Lh/XupXMo+GtyOPkF6hSEK/Fuww1g
-         ynPuvL5xEfcWNh2MfR42Y49ks6xzvJi62OnfD6LtAa+IxTBM++2kba+JFO0Bfrlh3KdW
-         FhxK2Nd3DHIjXA8DaPVqlxznpSwwLZ75aLpAV/UN5quT5qev3QXAYIPcFshCb9GsUqUH
-         Qf4thQ0tg81raETEun2Em2qFHwQIO8vj3dvX814xTnGWb0q4ZQE/7v9hf12sUueYqV8H
-         yWlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706314822; x=1706919622;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=H6xRTgWpwVbdQrYrVCpj0/5DkwYyjb0pfDixXSPxg08=;
-        b=vb695fUwQcTtOSV+5TKiDAg2pxMuOOj4AAIDnAP2zVabottcSEIs8pgKRjHszNCnrg
-         cb2ArJhWLRSMGsYicvXa/naAfn3O0gEpELfN4I5IGd2a/RZ6IqYQX1zCFqhxWHZo9mP1
-         XJoWBJyo0rUQvONbR+301HYJxnxA4tylgclxVFz8mmLXd4RX1o0k/V+mNnpWJO9NwF0f
-         aK+81WDrWUwh4tLCeJF0ViyLS6ajZmThISwxZMZI00PVZTAO5/6u5hpIU1uWY8Mi4Gic
-         bo9nNgZmePy3D6saWiBEAuxTg/P0bD3fUuZSeiD+9w59q9oIQquOjbdZ3oYeQ7sEKKlT
-         uO3w==
-X-Gm-Message-State: AOJu0YxWXhZIM1O5xqC7daDHzCn1Qe3mb6DeSfXb1F2l+dcp6Urd3YAZ
-	djxJs5/pS96s9KLDXpH0eKlQ5r2ilaDNjDVCCxlzJPln4S/KW10WF1r6MKPL4bU=
-X-Google-Smtp-Source: AGHT+IFODti9q2E+Agfa3fBrMz3o9POZ0N1iM9LXhM4BVi8Jox9fI3RwAY18ghi+6oR5uiYdJhU9kQ==
-X-Received: by 2002:ac2:4907:0:b0:510:c62:d97b with SMTP id n7-20020ac24907000000b005100c62d97bmr305904lfi.45.1706314822099;
-        Fri, 26 Jan 2024 16:20:22 -0800 (PST)
-Received: from [127.0.1.1] ([85.235.12.238])
-        by smtp.gmail.com with ESMTPSA id x25-20020a19f619000000b0050e7f5cffa6sm325226lfe.273.2024.01.26.16.20.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Jan 2024 16:20:21 -0800 (PST)
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Sat, 27 Jan 2024 01:19:56 +0100
-Subject: [PATCH v2 9/9] mmc: sh_mmcif: Use sg_miter for PIO
+	s=arc-20240116; t=1706330943; c=relaxed/simple;
+	bh=LrMuAxFtu4goiKX7hbf4/0cEU07l1aFmIHBOewsynFA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Poe/3YLChNGZgzkyFN9IZnFojh8jy61aSnsgiX/ZCdob0OTN8S0mwxGaaXOf2k4dAJygPcnEd7/5ZLDbiCldHX/YElZWYuieWVKQ0nkY6LKCk/A1V8wq3setPODHAGLgR4lZhkCePX0E0qizTYegLGOl+KVRtJMzXj2RVYcr6C0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com; spf=fail smtp.mailfrom=atomide.com; dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b=S971WVwo; arc=none smtp.client-ip=74.50.62.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=atomide.com
+Received: from localhost (91-158-86-216.elisa-laajakaista.fi [91.158.86.216])
+	by mail5.25mail.st (Postfix) with ESMTPSA id EE6F1603C4;
+	Sat, 27 Jan 2024 04:48:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=atomide.com;
+	s=25mailst; t=1706330940;
+	bh=LrMuAxFtu4goiKX7hbf4/0cEU07l1aFmIHBOewsynFA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=S971WVworVV85zfgS+RTaYFmJCNZQxrtNs7ZEcBB8AAYr0wDcx+ikXFFJxCRbDwUc
+	 sohmlYHn2aMWbG4dswvBWiriX/nBZtTbK8GoUVcy0oxXBciNHcwMYH105yOuyjdV+n
+	 oKFRkGl5iAst4+lD4acWoxwMBX5I9oRAy7HTSl/OZP4ue/+/qHrxqF+bjltT6VCunn
+	 dy9EXOHd24rscPYTmMJgyg65vFz6lj1EF7W83EtGuoJgPSsfu7cdwDgH9Ioq4xorJF
+	 VFoLD/vAr32lcgOrFv7+4/JiWQ1D2F4u5tI51WrMb01ZrAhwOkLrDlQgc5/hNPJJDU
+	 KPf0LkYVPywrw==
+Date: Sat, 27 Jan 2024 06:48:51 +0200
+From: Tony Lindgren <tony@atomide.com>
+To: Romain Naour <romain.naour@smile.fr>
+Cc: Linux-OMAP <linux-omap@vger.kernel.org>, Nishanth Menon <nm@ti.com>
+Subject: Re: sdhci-omap: issues with PM features since 5.16
+Message-ID: <20240127044851.GW5185@atomide.com>
+References: <2e5f1997-564c-44e4-b357-6343e0dae7ab@smile.fr>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240127-mmc-proper-kmap-v2-9-d8e732aa97d1@linaro.org>
-References: <20240127-mmc-proper-kmap-v2-0-d8e732aa97d1@linaro.org>
-In-Reply-To: <20240127-mmc-proper-kmap-v2-0-d8e732aa97d1@linaro.org>
-To: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>, 
- Ming Lei <ming.lei@redhat.com>, Arnd Bergmann <arnd@arndb.de>, 
- Ulf Hansson <ulf.hansson@linaro.org>, Nicolas Pitre <nico@fluxnic.net>, 
- Aaro Koskinen <aaro.koskinen@iki.fi>, 
- Adrian Hunter <adrian.hunter@intel.com>, 
- Angelo Dureghello <angelo.dureghello@timesys.com>
-Cc: linux-mmc@vger.kernel.org, linux-block@vger.kernel.org, 
- linux-omap@vger.kernel.org, Linus Walleij <linus.walleij@linaro.org>
-X-Mailer: b4 0.12.4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2e5f1997-564c-44e4-b357-6343e0dae7ab@smile.fr>
 
-Use sg_miter iterator instead of sg_virt() and custom code
-to loop over the scatterlist. The memory iterator will do
-bounce buffering if the page happens to be located in high memory,
-which the driver may or may not be using.
+Hi,
 
-Suggested-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/linux-mmc/20240122073423.GA25859@lst.de/
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
----
- drivers/mmc/host/sh_mmcif.c | 102 +++++++++++++++++++++++++++-----------------
- 1 file changed, 63 insertions(+), 39 deletions(-)
+* Romain Naour <romain.naour@smile.fr> [240126 20:53]:
+> Hello,
+> 
+> I'm upgrading the kernel from 5.10.168 to 6.1.69 (both from TI tree) on a custom
+> board based on a AM574x SoC and I noticed a regression on the sdhci-omap driver.
+> 
+> The emmc was working on the 5.10 kernel using mmc-hs200 powered at 1,8v (mmc2).
 
-diff --git a/drivers/mmc/host/sh_mmcif.c b/drivers/mmc/host/sh_mmcif.c
-index 077d711e964e..1ef6e153e5a3 100644
---- a/drivers/mmc/host/sh_mmcif.c
-+++ b/drivers/mmc/host/sh_mmcif.c
-@@ -227,14 +227,12 @@ struct sh_mmcif_host {
- 	bool dying;
- 	long timeout;
- 	void __iomem *addr;
--	u32 *pio_ptr;
- 	spinlock_t lock;		/* protect sh_mmcif_host::state */
- 	enum sh_mmcif_state state;
- 	enum sh_mmcif_wait_for wait_for;
- 	struct delayed_work timeout_work;
- 	size_t blocksize;
--	int sg_idx;
--	int sg_blkidx;
-+	struct sg_mapping_iter sg_miter;
- 	bool power;
- 	bool ccs_enable;		/* Command Completion Signal support */
- 	bool clk_ctrl2_enable;
-@@ -600,32 +598,17 @@ static int sh_mmcif_error_manage(struct sh_mmcif_host *host)
- 	return ret;
- }
- 
--static bool sh_mmcif_next_block(struct sh_mmcif_host *host, u32 *p)
--{
--	struct mmc_data *data = host->mrq->data;
--
--	host->sg_blkidx += host->blocksize;
--
--	/* data->sg->length must be a multiple of host->blocksize? */
--	BUG_ON(host->sg_blkidx > data->sg->length);
--
--	if (host->sg_blkidx == data->sg->length) {
--		host->sg_blkidx = 0;
--		if (++host->sg_idx < data->sg_len)
--			host->pio_ptr = sg_virt(++data->sg);
--	} else {
--		host->pio_ptr = p;
--	}
--
--	return host->sg_idx != data->sg_len;
--}
--
- static void sh_mmcif_single_read(struct sh_mmcif_host *host,
- 				 struct mmc_request *mrq)
- {
-+	struct mmc_data *data = mrq->data;
-+
- 	host->blocksize = (sh_mmcif_readl(host->addr, MMCIF_CE_BLOCK_SET) &
- 			   BLOCK_SIZE_MASK) + 3;
- 
-+	sg_miter_start(&host->sg_miter, data->sg, data->sg_len,
-+		       SG_MITER_ATOMIC | SG_MITER_TO_SG);
-+
- 	host->wait_for = MMCIF_WAIT_FOR_READ;
- 
- 	/* buf read enable */
-@@ -634,20 +617,32 @@ static void sh_mmcif_single_read(struct sh_mmcif_host *host,
- 
- static bool sh_mmcif_read_block(struct sh_mmcif_host *host)
- {
-+	struct sg_mapping_iter *sgm = &host->sg_miter;
- 	struct device *dev = sh_mmcif_host_to_dev(host);
- 	struct mmc_data *data = host->mrq->data;
--	u32 *p = sg_virt(data->sg);
-+	u32 *p;
- 	int i;
- 
- 	if (host->sd_error) {
-+		sg_miter_stop(sgm);
- 		data->error = sh_mmcif_error_manage(host);
- 		dev_dbg(dev, "%s(): %d\n", __func__, data->error);
- 		return false;
- 	}
- 
-+	if (!sg_miter_next(sgm)) {
-+		/* This should not happen on single blocks */
-+		sg_miter_stop(sgm);
-+		return false;
-+	}
-+
-+	p = sgm->addr;
-+
- 	for (i = 0; i < host->blocksize / 4; i++)
- 		*p++ = sh_mmcif_readl(host->addr, MMCIF_CE_DATA);
- 
-+	sg_miter_stop(&host->sg_miter);
-+
- 	/* buffer read end */
- 	sh_mmcif_bitset(host, MMCIF_CE_INT_MASK, MASK_MBUFRE);
- 	host->wait_for = MMCIF_WAIT_FOR_READ_END;
-@@ -666,34 +661,40 @@ static void sh_mmcif_multi_read(struct sh_mmcif_host *host,
- 	host->blocksize = sh_mmcif_readl(host->addr, MMCIF_CE_BLOCK_SET) &
- 		BLOCK_SIZE_MASK;
- 
-+	sg_miter_start(&host->sg_miter, data->sg, data->sg_len,
-+		       SG_MITER_ATOMIC | SG_MITER_TO_SG);
-+
- 	host->wait_for = MMCIF_WAIT_FOR_MREAD;
--	host->sg_idx = 0;
--	host->sg_blkidx = 0;
--	host->pio_ptr = sg_virt(data->sg);
- 
- 	sh_mmcif_bitset(host, MMCIF_CE_INT_MASK, MASK_MBUFREN);
- }
- 
- static bool sh_mmcif_mread_block(struct sh_mmcif_host *host)
- {
-+	struct sg_mapping_iter *sgm = &host->sg_miter;
- 	struct device *dev = sh_mmcif_host_to_dev(host);
- 	struct mmc_data *data = host->mrq->data;
--	u32 *p = host->pio_ptr;
-+	u32 *p;
- 	int i;
- 
- 	if (host->sd_error) {
-+		sg_miter_stop(sgm);
- 		data->error = sh_mmcif_error_manage(host);
- 		dev_dbg(dev, "%s(): %d\n", __func__, data->error);
- 		return false;
- 	}
- 
--	BUG_ON(!data->sg->length);
-+	if (!sg_miter_next(sgm)) {
-+		sg_miter_stop(sgm);
-+		return false;
-+	}
-+
-+	p = sgm->addr;
- 
- 	for (i = 0; i < host->blocksize / 4; i++)
- 		*p++ = sh_mmcif_readl(host->addr, MMCIF_CE_DATA);
- 
--	if (!sh_mmcif_next_block(host, p))
--		return false;
-+	sgm->consumed = host->blocksize;
- 
- 	sh_mmcif_bitset(host, MMCIF_CE_INT_MASK, MASK_MBUFREN);
- 
-@@ -703,9 +704,14 @@ static bool sh_mmcif_mread_block(struct sh_mmcif_host *host)
- static void sh_mmcif_single_write(struct sh_mmcif_host *host,
- 					struct mmc_request *mrq)
- {
-+	struct mmc_data *data = mrq->data;
-+
- 	host->blocksize = (sh_mmcif_readl(host->addr, MMCIF_CE_BLOCK_SET) &
- 			   BLOCK_SIZE_MASK) + 3;
- 
-+	sg_miter_start(&host->sg_miter, data->sg, data->sg_len,
-+		       SG_MITER_ATOMIC | SG_MITER_FROM_SG);
-+
- 	host->wait_for = MMCIF_WAIT_FOR_WRITE;
- 
- 	/* buf write enable */
-@@ -714,20 +720,32 @@ static void sh_mmcif_single_write(struct sh_mmcif_host *host,
- 
- static bool sh_mmcif_write_block(struct sh_mmcif_host *host)
- {
-+	struct sg_mapping_iter *sgm = &host->sg_miter;
- 	struct device *dev = sh_mmcif_host_to_dev(host);
- 	struct mmc_data *data = host->mrq->data;
--	u32 *p = sg_virt(data->sg);
-+	u32 *p;
- 	int i;
- 
- 	if (host->sd_error) {
-+		sg_miter_stop(sgm);
- 		data->error = sh_mmcif_error_manage(host);
- 		dev_dbg(dev, "%s(): %d\n", __func__, data->error);
- 		return false;
- 	}
- 
-+	if (!sg_miter_next(sgm)) {
-+		/* This should not happen on single blocks */
-+		sg_miter_stop(sgm);
-+		return false;
-+	}
-+
-+	p = sgm->addr;
-+
- 	for (i = 0; i < host->blocksize / 4; i++)
- 		sh_mmcif_writel(host->addr, MMCIF_CE_DATA, *p++);
- 
-+	sg_miter_stop(&host->sg_miter);
-+
- 	/* buffer write end */
- 	sh_mmcif_bitset(host, MMCIF_CE_INT_MASK, MASK_MDTRANE);
- 	host->wait_for = MMCIF_WAIT_FOR_WRITE_END;
-@@ -746,34 +764,40 @@ static void sh_mmcif_multi_write(struct sh_mmcif_host *host,
- 	host->blocksize = sh_mmcif_readl(host->addr, MMCIF_CE_BLOCK_SET) &
- 		BLOCK_SIZE_MASK;
- 
-+	sg_miter_start(&host->sg_miter, data->sg, data->sg_len,
-+		       SG_MITER_ATOMIC | SG_MITER_FROM_SG);
-+
- 	host->wait_for = MMCIF_WAIT_FOR_MWRITE;
--	host->sg_idx = 0;
--	host->sg_blkidx = 0;
--	host->pio_ptr = sg_virt(data->sg);
- 
- 	sh_mmcif_bitset(host, MMCIF_CE_INT_MASK, MASK_MBUFWEN);
- }
- 
- static bool sh_mmcif_mwrite_block(struct sh_mmcif_host *host)
- {
-+	struct sg_mapping_iter *sgm = &host->sg_miter;
- 	struct device *dev = sh_mmcif_host_to_dev(host);
- 	struct mmc_data *data = host->mrq->data;
--	u32 *p = host->pio_ptr;
-+	u32 *p;
- 	int i;
- 
- 	if (host->sd_error) {
-+		sg_miter_stop(sgm);
- 		data->error = sh_mmcif_error_manage(host);
- 		dev_dbg(dev, "%s(): %d\n", __func__, data->error);
- 		return false;
- 	}
- 
--	BUG_ON(!data->sg->length);
-+	if (!sg_miter_next(sgm)) {
-+		sg_miter_stop(sgm);
-+		return false;
-+	}
-+
-+	p = sgm->addr;
- 
- 	for (i = 0; i < host->blocksize / 4; i++)
- 		sh_mmcif_writel(host->addr, MMCIF_CE_DATA, *p++);
- 
--	if (!sh_mmcif_next_block(host, p))
--		return false;
-+	sgm->consumed = host->blocksize;
- 
- 	sh_mmcif_bitset(host, MMCIF_CE_INT_MASK, MASK_MBUFWEN);
- 
+Is this limited to emmc or does it also happen with the micro-sd or wlan possibly?
 
--- 
-2.34.1
+If the issue is emmc related, do you have mmc-pwrseq-emmc configured in the dts?
+
+> I'm able to reproduce on the IDK574x evaluation board (where the emmc is powered
+> at 3v3) with vanilla kernels.
+
+OK, looks like only am5729-beagleboneai.dts has configured mmc-pwrseq-emmc.
+
+> I had to revert all commits related to "PM runtime functions" [1] and "card
+> power off and enable aggressive PM" [2] from kernel 5.16 to use the emmc again
+> on both boards.
+
+OK, this sounds like power sequence related when the emmc gets idled.
+
+Regards,
+
+Tony
+
+> [1]
+> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?id=f433e8aac6b94218394c6e7b80bb89e4e79c9549
+> [2]
+> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?id=3edf588e7fe00e90d1dc7fb9e599861b2c2cf442
 
 
