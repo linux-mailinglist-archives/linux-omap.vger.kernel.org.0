@@ -1,74 +1,74 @@
-Return-Path: <linux-omap+bounces-417-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-418-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C446B83E85E
-	for <lists+linux-omap@lfdr.de>; Sat, 27 Jan 2024 01:23:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85ECC83E85F
+	for <lists+linux-omap@lfdr.de>; Sat, 27 Jan 2024 01:23:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B19728D514
-	for <lists+linux-omap@lfdr.de>; Sat, 27 Jan 2024 00:23:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FC5D1C217C7
+	for <lists+linux-omap@lfdr.de>; Sat, 27 Jan 2024 00:23:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 472F5257B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DD442CA9;
 	Sat, 27 Jan 2024 00:20:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="pN9WT0GY"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="r5Pi+8xs"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FC4C1D69F
-	for <linux-omap@vger.kernel.org>; Sat, 27 Jan 2024 00:20:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AB2D1DA34
+	for <linux-omap@vger.kernel.org>; Sat, 27 Jan 2024 00:20:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706314822; cv=none; b=YXQu3upz9YZ4eKP/SWIax8iBHIXk1j/I5PbOMWjoaPicBfieUf9KViqZJD5HGtZLSn6xdLcLl3TdwFmYUAofynTn2tJ2JmuwjF/g2GUQ7NBkkjPyCK/+kDSra57mRBOhHhPHZzb7Blz1hOTJ2frSAu15qPaFqVkvUoNeDHaSdEw=
+	t=1706314823; cv=none; b=bCiYk1JhKNP6Hy4DYEeFY7HuStZW2Hj/DWK/4Us+LPJwv03bt33KKDxs4ENlKplJsvLcF/Ys5hapPBIu+G3e89zQ78iSr7XgrOU5MkK4KAypi9rtAjiO7J0axVNPhpqLev7TNroVL+Ojm/QC4es3SyMYdk6tfOb1hPL4vCX2tJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706314822; c=relaxed/simple;
-	bh=HYmGgaLgWEX6oEn5bgILT9HdCgPRXmSHSVRfD6iUtog=;
+	s=arc-20240116; t=1706314823; c=relaxed/simple;
+	bh=c+9yx9s+5x1GQ5Cg5aBMoAPtZLahUWjRY70l/Q75qhw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=k4gbEHKTjKqPUBsH9kWl+XxIXd+ogM9j84jj/+nC/vpmV+ipSa+SOVH0O0UiyxOrx6F6/s8n9OP30mfItWm+kwVWwOs0EoIN1FkgzbGp5rU5Lk5S6TUhc7C8tbZQVkI+bh6/+z5YJeWQmUWxh60Y7o744balAeLf3n8so70tu9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=pN9WT0GY; arc=none smtp.client-ip=209.85.167.48
+	 In-Reply-To:To:Cc; b=g8dArW43XoGtuT6sI2gwnNGKZkfS5wZ6UU0ewsYYww+FI+hMhBPN9GUTSBTQIOdymx7RDg1V7SDvDCpdMp93mmoR6dfmGbS6j/XPIN0s3O/qoIo5TQo+cbgQmOn/EJMon25g7xviaYKwzKg2ZwKmHfMpmOUcFgaPhrRU6AcPFy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=r5Pi+8xs; arc=none smtp.client-ip=209.85.167.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-50ea9daac4cso965147e87.3
-        for <linux-omap@vger.kernel.org>; Fri, 26 Jan 2024 16:20:20 -0800 (PST)
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-510133ed214so1588436e87.1
+        for <linux-omap@vger.kernel.org>; Fri, 26 Jan 2024 16:20:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1706314818; x=1706919618; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1706314819; x=1706919619; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=nXmkhj6L70OQxNCX7S7WA9V64VMJ9cP8ih0oj9vAqT4=;
-        b=pN9WT0GYU2aFARDqTA8f1jSGEHuuxnY1cye9moMOqpsqVUoIFW4eLFLkb3ISKDFjkf
-         yaKNdbO/HMpagsC/USLrIYGcZNwB6qmHI0h4axQw98kfKdk2vPVsqKYn8X3af3HQ8hrR
-         nzrrYh1r4Edzybn3T3ftJsTBgfL2px6fxo1kCOeH8KMAvOJeIAglyo84DhvZin5pCVZC
-         WvAPrdUxiLP8WEq1OZGEfqBpFarn3tDh6I5Ejqlk6/7q33FlJ9c05gdiXgAESFhKgYcN
-         DU5KxIGuwPI16wHnWm7nKvz0rmkzCOgqsPmpbdb49AVdktiNmHJ4Uuy1ZVNDviNXHq03
-         6JFw==
+        bh=XwHnRqoneohFsF+zXq7jGhhclsZMo81FOvC/Q025Hhg=;
+        b=r5Pi+8xs6BHEq56HV9GpKbVuCOT9jTBkRtlkNyHtt4d8cfV+1C54N1VuripL3AOKMo
+         2X5JJaiHdWJvRuMXHbxlE4+pwcaS98vlzmtfTjBaYD4fpeEZqI9kqnLKqO+Wx2cD0fcz
+         TvSdVbvccgPLgyNjLHCVz7CzulYC1Mqu9mqgdNnpVpiKlIkb5SvQePJAuufBrEjMvbMP
+         BWcdEzxj9oeEDev7DX/5Y7Dg3/Bd+VApYDLXCwmcyZqTKb5Ko+gfewRDCuAH8Kc1xfQy
+         OKOKHuleqTknQAraSXtEzjhFpaHEqqQRxccaXOw8TGmNpk7f64BN1pZ4UAqf6CvQbHXS
+         lZ8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706314818; x=1706919618;
+        d=1e100.net; s=20230601; t=1706314819; x=1706919619;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=nXmkhj6L70OQxNCX7S7WA9V64VMJ9cP8ih0oj9vAqT4=;
-        b=XEejmXRbh7EPiUwq22GSzd53Yc/oFJuDh7p5VZH7SX8mYByhEX8U21G31b2NiZSKmm
-         wuNgEalxrp/sQxj1/Or/0Cd7uAbjO2sz0tzItOYqz4WfS07Xm7KsjmIrFxhWeZr360ar
-         KfhnIozYE8dn5xYedQmcuRWFwzF31p8j4DgCX6L/dorKZdkQLRwyj82p4OERFJdrPLRM
-         X1cC9EsQ6rbqnVGcALJWxdnnsOukbmlFme5l/K6rKDeF2JMQT7oy9dlS23oIvAPq4hKt
-         lPq5hWjRuIULMQI78eyiOlaGekoYX+cmtroOVUlxD8ZlColEpef8szvq5tdyoiv4p13T
-         Fpsg==
-X-Gm-Message-State: AOJu0Ywp+BEmJkho0faIh4fZAarbI9+VMut5Rx35cNAZEVpWnDMmZpdu
-	+xRilMgm3Y+CgFem3t7RE3tCOrkkR2IOg1HdXTdDFiolx/LY06bstWpOF+Zq6cQ=
-X-Google-Smtp-Source: AGHT+IFLVN7BK0qbc3Zc65OltD6GZpGHMU9ydl9RCyNJ4EpmANWYgk2ANjlW0TtzuDB0dHkxtZ0FOw==
-X-Received: by 2002:a05:6512:3046:b0:510:67d:22c7 with SMTP id b6-20020a056512304600b00510067d22c7mr351403lfb.69.1706314818624;
-        Fri, 26 Jan 2024 16:20:18 -0800 (PST)
+        bh=XwHnRqoneohFsF+zXq7jGhhclsZMo81FOvC/Q025Hhg=;
+        b=l/1CSqzQnwUwf4FOnKF2iEOSQnesdOaXreXyUI9W+83MPLsEdO/VXbROUVaAXU7cbF
+         MQbJW2IQzH49XSmQ4u61LSc4CPVneDDefMC7mxQmqolqQtuznGJk93JVeeNxwJOYr249
+         Vs86LWIX3B/1XACedaoQKQEwRGoDaivnpq7qWnPN2cLnMmYIxwakjOrqXs7kU3jnklBV
+         cAEyG/1SWYAcU3z3dNa5La064+Rp4TS1PqSs3+PU+u9bW9o0xxK0YDE9IwZme67jUBwd
+         duztDkBKXcSWuOiy4x4vSWN/iowXlf69gYR96sVBrFUzwZgP1kLo4tiRstMttM+HemBD
+         eS0Q==
+X-Gm-Message-State: AOJu0YyshP0x53tTjpFjaJbksCjFrhfrhveuI8jZPnpY/0PFAugPERTP
+	Luaj8OdFovvFWCU1bfKIENEhzr9LRxJsBW1ZpJrpbmVV4FCpHTUVHfF1rTbQZWA=
+X-Google-Smtp-Source: AGHT+IEdPhZaIgW5YEjxOMV90bFpo9Gsr/GbkwQFTPsWSZMJuPq5Re+iu8QRAdA6o8YVrSRAHloNwQ==
+X-Received: by 2002:a19:6448:0:b0:510:c62:bcd4 with SMTP id b8-20020a196448000000b005100c62bcd4mr307969lfj.55.1706314819522;
+        Fri, 26 Jan 2024 16:20:19 -0800 (PST)
 Received: from [127.0.1.1] ([85.235.12.238])
-        by smtp.gmail.com with ESMTPSA id x25-20020a19f619000000b0050e7f5cffa6sm325226lfe.273.2024.01.26.16.20.17
+        by smtp.gmail.com with ESMTPSA id x25-20020a19f619000000b0050e7f5cffa6sm325226lfe.273.2024.01.26.16.20.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Jan 2024 16:20:18 -0800 (PST)
+        Fri, 26 Jan 2024 16:20:19 -0800 (PST)
 From: Linus Walleij <linus.walleij@linaro.org>
-Date: Sat, 27 Jan 2024 01:19:53 +0100
-Subject: [PATCH v2 6/9] mmc: mxcmmc: Use sg_miter for PIO
+Date: Sat, 27 Jan 2024 01:19:54 +0100
+Subject: [PATCH v2 7/9] mmc: omap: Use sg_miter for PIO
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -77,7 +77,7 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240127-mmc-proper-kmap-v2-6-d8e732aa97d1@linaro.org>
+Message-Id: <20240127-mmc-proper-kmap-v2-7-d8e732aa97d1@linaro.org>
 References: <20240127-mmc-proper-kmap-v2-0-d8e732aa97d1@linaro.org>
 In-Reply-To: <20240127-mmc-proper-kmap-v2-0-d8e732aa97d1@linaro.org>
 To: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>, 
@@ -94,119 +94,136 @@ Use the scatterlist memory iterator instead of just
 dereferencing virtual memory using sg_virt().
 This make highmem references work properly.
 
-Since this driver is using a worker, no atomic trickery
-is needed.
-
 Suggested-by: Christoph Hellwig <hch@lst.de>
 Link: https://lore.kernel.org/linux-mmc/20240122073423.GA25859@lst.de/
 Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 ---
- drivers/mmc/host/mxcmmc.c | 53 +++++++++++++++++++++++++++++------------------
- 1 file changed, 33 insertions(+), 20 deletions(-)
+ drivers/mmc/host/omap.c | 53 ++++++++++++++++++++++---------------------------
+ 1 file changed, 24 insertions(+), 29 deletions(-)
 
-diff --git a/drivers/mmc/host/mxcmmc.c b/drivers/mmc/host/mxcmmc.c
-index 5b3ab0e20505..1edf65291354 100644
---- a/drivers/mmc/host/mxcmmc.c
-+++ b/drivers/mmc/host/mxcmmc.c
-@@ -266,11 +266,18 @@ static inline void buffer_swap32(u32 *buf, int len)
+diff --git a/drivers/mmc/host/omap.c b/drivers/mmc/host/omap.c
+index 9fb8995b43a1..088f8ed4fdc4 100644
+--- a/drivers/mmc/host/omap.c
++++ b/drivers/mmc/host/omap.c
+@@ -148,10 +148,8 @@ struct mmc_omap_host {
+ 	struct work_struct      send_stop_work;
+ 	struct mmc_data		*stop_data;
  
- static void mxcmci_swap_buffers(struct mmc_data *data)
++	struct sg_mapping_iter	sg_miter;
+ 	unsigned int		sg_len;
+-	int			sg_idx;
+-	u16 *			buffer;
+-	u32			buffer_bytes_left;
+ 	u32			total_bytes_left;
+ 
+ 	unsigned		features;
+@@ -456,6 +454,8 @@ mmc_omap_xfer_done(struct mmc_omap_host *host, struct mmc_data *data)
  {
+ 	if (host->dma_in_use)
+ 		mmc_omap_release_dma(host, data, data->error);
++	else
++		sg_miter_stop(&host->sg_miter);
+ 
+ 	host->data = NULL;
+ 	host->sg_len = 0;
+@@ -651,19 +651,6 @@ mmc_omap_cmd_timer(struct timer_list *t)
+ 	spin_unlock_irqrestore(&host->slot_lock, flags);
+ }
+ 
+-/* PIO only */
+-static void
+-mmc_omap_sg_to_buf(struct mmc_omap_host *host)
+-{
 -	struct scatterlist *sg;
--	int i;
-+	struct sg_mapping_iter sgm;
-+	u32 *buf;
-+
-+	sg_miter_start(&sgm, data->sg, data->sg_len,
-+		       SG_MITER_TO_SG | SG_MITER_FROM_SG);
-+
-+	while (sg_miter_next(&sgm)) {
-+		buf = sgm.addr;
-+		buffer_swap32(buf, sgm.length);
-+	}
- 
--	for_each_sg(data->sg, sg, data->sg_len, i)
--		buffer_swap32(sg_virt(sg), sg->length);
-+	sg_miter_stop(&sgm);
- }
- #else
- static inline void mxcmci_swap_buffers(struct mmc_data *data) {}
-@@ -526,10 +533,9 @@ static int mxcmci_poll_status(struct mxcmci_host *host, u32 mask)
- 	} while (1);
- }
- 
--static int mxcmci_pull(struct mxcmci_host *host, void *_buf, int bytes)
-+static int mxcmci_pull(struct mxcmci_host *host, u32 *buf, int bytes)
+-
+-	sg = host->data->sg + host->sg_idx;
+-	host->buffer_bytes_left = sg->length;
+-	host->buffer = sg_virt(sg);
+-	if (host->buffer_bytes_left > host->total_bytes_left)
+-		host->buffer_bytes_left = host->total_bytes_left;
+-}
+-
+ static void
+ mmc_omap_clk_timer(struct timer_list *t)
  {
- 	unsigned int stat;
--	u32 *buf = _buf;
- 
- 	while (bytes > 3) {
- 		stat = mxcmci_poll_status(host,
-@@ -555,10 +561,9 @@ static int mxcmci_pull(struct mxcmci_host *host, void *_buf, int bytes)
- 	return 0;
- }
- 
--static int mxcmci_push(struct mxcmci_host *host, void *_buf, int bytes)
-+static int mxcmci_push(struct mxcmci_host *host, u32 *buf, int bytes)
+@@ -676,33 +663,37 @@ mmc_omap_clk_timer(struct timer_list *t)
+ static void
+ mmc_omap_xfer_data(struct mmc_omap_host *host, int write)
  {
- 	unsigned int stat;
--	u32 *buf = _buf;
++	struct sg_mapping_iter *sgm = &host->sg_miter;
+ 	int n, nwords;
++	u16 *buffer;
  
- 	while (bytes > 3) {
- 		stat = mxcmci_poll_status(host, STATUS_BUF_WRITE_RDY);
-@@ -586,31 +591,39 @@ static int mxcmci_push(struct mxcmci_host *host, void *_buf, int bytes)
- static int mxcmci_transfer_data(struct mxcmci_host *host)
- {
- 	struct mmc_data *data = host->req->data;
--	struct scatterlist *sg;
--	int stat, i;
-+	struct sg_mapping_iter sgm;
-+	int stat;
-+	u32 *buf;
- 
- 	host->data = data;
- 	host->datasize = 0;
-+	sg_miter_start(&sgm, data->sg, data->sg_len,
-+		       (data->flags & MMC_DATA_READ) ? SG_MITER_TO_SG : SG_MITER_FROM_SG);
- 
- 	if (data->flags & MMC_DATA_READ) {
--		for_each_sg(data->sg, sg, data->sg_len, i) {
--			stat = mxcmci_pull(host, sg_virt(sg), sg->length);
-+		while (sg_miter_next(&sgm)) {
-+			buf = sgm.addr;
-+			stat = mxcmci_pull(host, buf, sgm.length);
- 			if (stat)
--				return stat;
--			host->datasize += sg->length;
-+				goto transfer_error;
-+			host->datasize += sgm.length;
- 		}
- 	} else {
--		for_each_sg(data->sg, sg, data->sg_len, i) {
--			stat = mxcmci_push(host, sg_virt(sg), sg->length);
-+		while (sg_miter_next(&sgm)) {
-+			buf = sgm.addr;
-+			stat = mxcmci_push(host, buf, sgm.length);
- 			if (stat)
--				return stat;
--			host->datasize += sg->length;
-+				goto transfer_error;
-+			host->datasize += sgm.length;
- 		}
- 		stat = mxcmci_poll_status(host, STATUS_WRITE_OP_DONE);
- 		if (stat)
--			return stat;
-+			goto transfer_error;
+-	if (host->buffer_bytes_left == 0) {
+-		host->sg_idx++;
+-		BUG_ON(host->sg_idx == host->sg_len);
+-		mmc_omap_sg_to_buf(host);
++	if (!sg_miter_next(sgm)) {
++		/* This should not happen */
++		dev_err(mmc_dev(host->mmc), "ran out of scatterlist prematurely\n");
++		return;
  	}
--	return 0;
++	buffer = sgm->addr;
 +
-+transfer_error:
-+	sg_miter_stop(&sgm);
-+	return stat;
+ 	n = 64;
+-	if (n > host->buffer_bytes_left)
+-		n = host->buffer_bytes_left;
++	if (n > sgm->length)
++		n = sgm->length;
++	if (n > host->total_bytes_left)
++		n = host->total_bytes_left;
+ 
+ 	/* Round up to handle odd number of bytes to transfer */
+ 	nwords = DIV_ROUND_UP(n, 2);
+ 
+-	host->buffer_bytes_left -= n;
++	sgm->consumed = n;
+ 	host->total_bytes_left -= n;
+ 	host->data->bytes_xfered += n;
+ 
+ 	if (write) {
+ 		__raw_writesw(host->virt_base + OMAP_MMC_REG(host, DATA),
+-			      host->buffer, nwords);
++			      buffer, nwords);
+ 	} else {
+ 		__raw_readsw(host->virt_base + OMAP_MMC_REG(host, DATA),
+-			     host->buffer, nwords);
++			     buffer, nwords);
+ 	}
+-
+-	host->buffer += nwords;
  }
  
- static void mxcmci_datawork(struct work_struct *work)
+ #ifdef CONFIG_MMC_DEBUG
+@@ -956,6 +947,7 @@ static inline void set_data_timeout(struct mmc_omap_host *host, struct mmc_reque
+ static void
+ mmc_omap_prepare_data(struct mmc_omap_host *host, struct mmc_request *req)
+ {
++	unsigned int miter_flags = SG_MITER_ATOMIC; /* Used from IRQ */
+ 	struct mmc_data *data = req->data;
+ 	int i, use_dma = 1, block_size;
+ 	struct scatterlist *sg;
+@@ -990,7 +982,6 @@ mmc_omap_prepare_data(struct mmc_omap_host *host, struct mmc_request *req)
+ 		}
+ 	}
+ 
+-	host->sg_idx = 0;
+ 	if (use_dma) {
+ 		enum dma_data_direction dma_data_dir;
+ 		struct dma_async_tx_descriptor *tx;
+@@ -1071,7 +1062,11 @@ mmc_omap_prepare_data(struct mmc_omap_host *host, struct mmc_request *req)
+ 	OMAP_MMC_WRITE(host, BUF, 0x1f1f);
+ 	host->total_bytes_left = data->blocks * block_size;
+ 	host->sg_len = sg_len;
+-	mmc_omap_sg_to_buf(host);
++	if (data->flags & MMC_DATA_READ)
++		miter_flags |= SG_MITER_TO_SG;
++	else
++		miter_flags |= SG_MITER_FROM_SG;
++	sg_miter_start(&host->sg_miter, data->sg, data->sg_len, miter_flags);
+ 	host->dma_in_use = 0;
+ }
+ 
 
 -- 
 2.34.1
