@@ -1,218 +1,126 @@
-Return-Path: <linux-omap+bounces-429-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-430-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84CA484110B
-	for <lists+linux-omap@lfdr.de>; Mon, 29 Jan 2024 18:44:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4421841575
+	for <lists+linux-omap@lfdr.de>; Mon, 29 Jan 2024 23:16:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 646DBB22532
-	for <lists+linux-omap@lfdr.de>; Mon, 29 Jan 2024 17:44:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FE012892D4
+	for <lists+linux-omap@lfdr.de>; Mon, 29 Jan 2024 22:16:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77E243F9DE;
-	Mon, 29 Jan 2024 17:42:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC4C515958A;
+	Mon, 29 Jan 2024 22:16:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=smile-fr.20230601.gappssmtp.com header.i=@smile-fr.20230601.gappssmtp.com header.b="zZQI1QOn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MQZAohOc"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88C523F9DC
-	for <linux-omap@vger.kernel.org>; Mon, 29 Jan 2024 17:42:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BCEC15956E;
+	Mon, 29 Jan 2024 22:16:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706550158; cv=none; b=o0S/zQV3+ufxQ+Ry/EMgYnxecsN5E62FTdA7JRuCBSaY0bD03tjElgqF0l9zlk0ZViKiTap0wlkdDo2Z3iNHt4+tI2mBt1VB2aIzfhNxUHLOpYdZ/XiXDsfU3PJ3qt2X796Udi5WQ/8TlYbTc3vAcOVYfvJf5Kc7qqbpewTz5vY=
+	t=1706566609; cv=none; b=Dp/o3WP4xVKLrVHQPyl1Q7xdnmfp7B3898QDaJ0Aaikb5mKHHi7MAWQ7VsnGLlZHIeA1TUlhLkhvQtYcBtKb/SFm/G3v10XsN/uMVoTMMGzRFuUTC4+IcE7MpZ0l1SIN7i/5Pg2BH5jwpiA8oKb5RZjT8vK87vrS6Ahs88AZrW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706550158; c=relaxed/simple;
-	bh=Rvgk7uoE1FiPSub6otlmissNJbxOnbi2gmZRBDq3Y1M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NP2bjV6oOQ4gALPL3zDTqHEKhr1JK+V1BQ7VLAt799pF/yiFctu94reVUN+l432p0BTq4jp4p1N+SAKTCfmdG0+X65M1MNGzbgiJ1bWADv5XFoacxfYsl22jfmthmo6iDqjPAfpOiqG3UuNVXl/JDxDGl3USsJeU/fQmHmXrSjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smile.fr; spf=pass smtp.mailfrom=smile.fr; dkim=pass (2048-bit key) header.d=smile-fr.20230601.gappssmtp.com header.i=@smile-fr.20230601.gappssmtp.com header.b=zZQI1QOn; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smile.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smile.fr
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-40e7065b7bdso40034295e9.3
-        for <linux-omap@vger.kernel.org>; Mon, 29 Jan 2024 09:42:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smile-fr.20230601.gappssmtp.com; s=20230601; t=1706550152; x=1707154952; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=H8cSgDOxzOU0swAHCHbS+AbMl4v4lxJ/4luwVE8nPf4=;
-        b=zZQI1QOnAB5uF3LiYfRFlEZ3jN+a8ICqatr8k5z0S/SAJ/gwhZB0/k9jKvxyxViGnV
-         FmVxQaB5HX+kAxHWyPVL0+EdAUbzP5oTRiCxQt54d4FBMExwbog3PFcvgD0u9HJQUvpY
-         iMwqbJjFUAz9uPAbgMV//yfOPAVB3qDhZqw2Bs5U1GmnlsyClLnM1pHVntgRW5eFhBPM
-         vUvxZqI9mRozNU8zR3sTVnYzq64OL2NyjRkwJFStadOROLyI0WkkkpQMEqn+byKMdW0R
-         KmNGNHR9kkOxStM01LIUjSQI3Vlpp/tZ/FIjT/wQQwTBEUdT1FOZeMGWiUCF4S6CtfIm
-         hu7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706550152; x=1707154952;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=H8cSgDOxzOU0swAHCHbS+AbMl4v4lxJ/4luwVE8nPf4=;
-        b=UTrZfmVHh1c43/xF9ROs169NtAfIeF+lomWLax356HPKz/1FW8ERnP9t7sEvJnCjVN
-         PzCfEZKanjEXi6ORXK0CK6jtYBwJb3+p14ek6/qCxmJFDUlDNdf/iLETueOlTkbeBIPZ
-         AGeHIEqn+1F1k/JtIFd5BqHCdG7aH26aWsfrxQgNFKujsLi7lA8MnayBdtkrOhOjpKFE
-         h7EkR2wOpDjmQafcnShhm570p0U/hUCGk6ST9/0p5ozLxN8JBBnr3ynY6MKbYtmFOcNx
-         1UXuWpVWH0e5E+kM3X4CcVq+1a1F7fjL9agLJ3m/gdQLAEKgjxNiW9/C/cr0x2/IG7wC
-         S8Lg==
-X-Gm-Message-State: AOJu0YxwQuv2YLbnYsKB1AKUkNQbVOPYnHRhY3r5Jh6NCbhqXqUAFdeZ
-	8tGQK/IxgMZ/QnQrEeUrVmcdZdylmehov1NcNBdnRJr5G+Nc0pe2JiQZrdeL8vQ=
-X-Google-Smtp-Source: AGHT+IFzTjpm2q8nqTRhYC1J5XH+6P23MBQgfQuQJVdRW+MkuHvYyaY8zReDovPhUdG2fLuphEoZLA==
-X-Received: by 2002:a5d:6692:0:b0:33a:e773:5f33 with SMTP id l18-20020a5d6692000000b0033ae7735f33mr3147540wru.17.1706550152535;
-        Mon, 29 Jan 2024 09:42:32 -0800 (PST)
-Received: from ?IPV6:2a01:cb05:945b:7e00:9bdc:6887:23a2:4f31? (2a01cb05945b7e009bdc688723a24f31.ipv6.abo.wanadoo.fr. [2a01:cb05:945b:7e00:9bdc:6887:23a2:4f31])
-        by smtp.gmail.com with ESMTPSA id d2-20020adf9c82000000b0033929310ae4sm8621009wre.73.2024.01.29.09.42.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 29 Jan 2024 09:42:32 -0800 (PST)
-Message-ID: <f80b5390-8bfa-43d8-80ce-70b069aef947@smile.fr>
-Date: Mon, 29 Jan 2024 18:42:31 +0100
+	s=arc-20240116; t=1706566609; c=relaxed/simple;
+	bh=fWlUMRgvqVY95h4dXufWc8ddniO0qcwX7UwmN7CzrKY=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=qTrGaDsxABPRYBO77pCXAtCPHM9LiRnp8/RMBRZjGQcXkjyK0I6K6+gMyBPHyb3A/BKmpH7C4iNrIkZ6XTwIuU7LKmJrmkRs2brY+mU+RK8XerSUYzNfGDXdikbWlUNC0tEFUwDm/9VG6vfMgg0Bs5lTBJpLu6M1MAnThlOBjgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MQZAohOc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A644C433F1;
+	Mon, 29 Jan 2024 22:16:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706566608;
+	bh=fWlUMRgvqVY95h4dXufWc8ddniO0qcwX7UwmN7CzrKY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=MQZAohOc8Dgk2cjX6jvaB2a8InqsFsEgUpwwpZU2S7fbZRA0vBXW6WQSwHknPL5pw
+	 Db8Yfblz+iPuvPB/SJoPzIfMgTJVjPMp80BU6HK9ZWiykjcov7UibFqd9OAb/hbzTo
+	 02w2rI+/oZM/9FvV4tFg8DgNOGIo438LRESCHy+xdUfXgegDc4FK6gwqbOM1S1KUfk
+	 93rCTIQMZz7MV4r01diHmg33R/SlkevQOAMb86W1RWwkaeO63dCQN5tCYK1C+q17z/
+	 GuvYkKdEKIKG/PsskcufS7cJyHu5gt6cbRS3bxgctjjxpKbilNfvy8YnhfdMXizSJf
+	 Dz3Pdr5WXM7sA==
+Date: Mon, 29 Jan 2024 16:16:47 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Thomas Richard <thomas.richard@bootlin.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Andy Shevchenko <andy@kernel.org>, Tony Lindgren <tony@atomide.com>,
+	Haojian Zhuang <haojian.zhuang@linaro.org>,
+	Vignesh R <vigneshr@ti.com>, Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+	Andi Shyti <andi.shyti@kernel.org>, Peter Rosin <peda@axentia.se>,
+	Vinod Koul <vkoul@kernel.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Tom Joseph <tjoseph@cadence.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+	linux-i2c@vger.kernel.org, linux-phy@lists.infradead.org,
+	linux-pci@vger.kernel.org, gregory.clement@bootlin.com,
+	theo.lebrun@bootlin.com, thomas.petazzoni@bootlin.com,
+	u-kumar1@ti.com
+Subject: Re: [PATCH v2 13/15] PCI: cadence: add resume support to
+ cdns_pcie_host_setup()
+Message-ID: <20240129221647.GA477676@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: sdhci-omap: issues with PM features since 5.16
-Content-Language: fr, en-US
-To: Tony Lindgren <tony@atomide.com>
-Cc: Linux-OMAP <linux-omap@vger.kernel.org>, Nishanth Menon <nm@ti.com>
-References: <2e5f1997-564c-44e4-b357-6343e0dae7ab@smile.fr>
- <20240127044851.GW5185@atomide.com>
- <d09925b3-83e6-4c52-878f-4c1db7670543@smile.fr>
- <20240129111733.GX5185@atomide.com>
-From: Romain Naour <romain.naour@smile.fr>
-In-Reply-To: <20240129111733.GX5185@atomide.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240126214336.GA453589@bhelgaas>
 
-Hello,
-
-Le 29/01/2024 à 12:17, Tony Lindgren a écrit :
-> * Romain Naour <romain.naour@smile.fr> [240129 10:11]:
->> Hello,
->>
->> Le 27/01/2024 à 05:48, Tony Lindgren a écrit :
->>> Hi,
->>>
->>> * Romain Naour <romain.naour@smile.fr> [240126 20:53]:
->>>> Hello,
->>>>
->>>> I'm upgrading the kernel from 5.10.168 to 6.1.69 (both from TI tree) on a custom
->>>> board based on a AM574x SoC and I noticed a regression on the sdhci-omap driver.
->>>>
->>>> The emmc was working on the 5.10 kernel using mmc-hs200 powered at 1,8v (mmc2).
->>>
->>> Is this limited to emmc or does it also happen with the micro-sd or wlan possibly?
->>
->> I can't test with a wlan device but I noticed the same issue on micro-sd (the
->> mmc0 interface in my first post is a micro-sd)
+On Fri, Jan 26, 2024 at 03:43:39PM -0600, Bjorn Helgaas wrote:
+> In subject, capitalize "Add ..." to follow historical convention.
+> Also the other driver/pci/ patches.
 > 
-> OK
-> 
->>> If the issue is emmc related, do you have mmc-pwrseq-emmc configured in the dts?
->>>
->>>> I'm able to reproduce on the IDK574x evaluation board (where the emmc is powered
->>>> at 3v3) with vanilla kernels.
->>>
->>> OK, looks like only am5729-beagleboneai.dts has configured mmc-pwrseq-emmc.
->>>
->>>> I had to revert all commits related to "PM runtime functions" [1] and "card
->>>> power off and enable aggressive PM" [2] from kernel 5.16 to use the emmc again
->>>> on both boards.
->>>
->>> OK, this sounds like power sequence related when the emmc gets idled.
->>
->> It seems mmc0 ios infos are lost at some point, just after the kernel boot they
->> are correct:
->>
->> cat /sys/kernel/debug/mmc0/ios
->> clock:		50000000 Hz
->> vdd:		21 (3.3 ~ 3.4 V)
->> bus mode:	2 (push-pull)
->> chip select:	0 (don't care)
->> power mode:	2 (on)
->> bus width:	2 (4 bits)
->> timing spec:	2 (sd high-speed)
->> signal voltage:	0 (3.30 V)
->> driver type:	0 (driver type B)
->>
->> And without notice, ios became wrong:
->>
->> cat /sys/kernel/debug/mmc0/ios
->> clock:		0 Hz
->> vdd:		0 (invalid)
->> bus mode:	2 (push-pull)
->> chip select:	0 (don't care)
->> power mode:	0 (off)
->> bus width:	0 (1 bits)
->> timing spec:	0 (legacy)
->> signal voltage:	0 (3.30 V)
->> driver type:	0 (driver type B)
->>
->> # cat /sys/bus/mmc/devices/mmc0:1234/type
->> SD
-> 
-> With a beagle x15, the ios values are correct after I do
-> something like fdisk -l /dev/mmcblk0:
-> 
-> # cat /sys/kernel/debug/mmc0/ios
-> clock:          0 Hz
-> vdd:            0 (invalid)
-> bus mode:       2 (push-pull)
-> chip select:    0 (don't care)
-> power mode:     0 (off)
-> bus width:      0 (1 bits)
-> timing spec:    0 (legacy)
-> signal voltage: 0 (3.30 V)
-> driver type:    0 (driver type B)
-> 
-> # fdisk -l /dev/mmcblk0
+> On Fri, Jan 26, 2024 at 03:36:55PM +0100, Thomas Richard wrote:
+> > From: Théo Lebrun <theo.lebrun@bootlin.com>
+> > 
+> > That function mixes probe structure init and hardware config.
+> > The whole hardware config part must be done at resume after a suspend to
+> > ram.
+> > We therefore pass it a boolean flag determining if we are at probe or at
+> > resume.
 > ...
+
+> This is pretty similar but slightly different from the DWC pattern:
 > 
-> # cat /sys/kernel/debug/mmc0/ios
-> clock:          50000000 Hz
-> vdd:            21 (3.3 ~ 3.4 V)
-> bus mode:       2 (push-pull)
-> chip select:    0 (don't care)
-> power mode:     2 (on)
-> bus width:      2 (4 bits)
-> timing spec:    2 (sd high-speed)
-> signal voltage: 0 (3.30 V)
-> driver type:    0 (driver type B)
-
-OK, I reproduced the same behavior on the AM574x evaluation board. I didn't know
-that ios can report clock 0 Hz and vdd invalid when the device is idle. I
-thought that was a symptom of my initial issue "mmc1: cache flush error -110".
-
-So, there is no issue on AM574x evaluation board.
-
+>   imx6_pcie_probe
+>     ... do structure init ...
+>     if (RC)
+>       dw_pcie_host_init
+> 	pp->ops->init
+> 	  imx6_pcie_host_init
 > 
-> So I'm still guessing your issue is with emmc not getting reinitialized
-> properly as there's no mmc-pwrseq-emmc configured. Can you give it a
-> try? See am5729-beagleboneai.dts for an example.
-
-I don't understand how the emmc_pwrseq node can work on am5729-beagleboneai
-using gpio5_7 as reset-gpio since this pin it's not connected (F13 ball)
-
-	emmc_pwrseq: emmc_pwrseq {
-		compatible = "mmc-pwrseq-emmc";
-		reset-gpios = <&gpio5 7 GPIO_ACTIVE_LOW>;
-	};
-
-https://openbeagle.org/beagleboard/beaglebone-ai/-/blob/master/BeagleBone-AI_RevA2_sch.pdf
-
-Note that mmc2 node is using ti,needs-special-reset property that is not used in
-shdci-omap driver but only in omap_hsmmc.
-
-Best regards,
-Romain
-
+>   imx6_pcie_resume_noirq
+>     imx6_pcie_host_init
 > 
-> Regards,
+>   j721e_pcie_probe
+>     j721e_pcie_ctrl_init
+>     if (RC)
+>       cdns_pcie_host_setup(true)
 > 
-> Tony
+>   j721e_pcie_resume_noirq
+>     j721e_pcie_ctrl_init
+>     if (RC)
+>       cdns_pcie_host_setup(false)
+> 
+> It'd be super nice to have them the same.  Passing in a "probe" flag
+> works but seems a little harder to read in cdns_pcie_host_setup() and
+> you have to keep track of what it means in the callers.
 
+Maybe a better way to say this is that this patch uses the "probe"
+flag to select the behavior of cdns_pcie_host_setup(), and I think it
+would be nicer to split those two behaviors into separate functions.
+
+Bjorn
 
