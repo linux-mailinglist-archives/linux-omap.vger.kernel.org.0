@@ -1,117 +1,359 @@
-Return-Path: <linux-omap+bounces-442-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-443-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBE3584298D
-	for <lists+linux-omap@lfdr.de>; Tue, 30 Jan 2024 17:38:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B156E8434F7
+	for <lists+linux-omap@lfdr.de>; Wed, 31 Jan 2024 06:04:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 728E41F2BD2B
-	for <lists+linux-omap@lfdr.de>; Tue, 30 Jan 2024 16:38:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4025A1F26500
+	for <lists+linux-omap@lfdr.de>; Wed, 31 Jan 2024 05:04:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5803E1272B9;
-	Tue, 30 Jan 2024 16:38:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB02C3D0D8;
+	Wed, 31 Jan 2024 05:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="WJnGlYvs"
+	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="LLBQGMhA"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+Received: from JPN01-OS0-obe.outbound.protection.outlook.com (mail-os0jpn01on2137.outbound.protection.outlook.com [40.107.113.137])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C46B128388;
-	Tue, 30 Jan 2024 16:38:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706632702; cv=none; b=cPkMig5llDg0pMilykzhr+u6+3eTk7nvT3QG99KubRg8DkQB0IRUkivD5scUBYxeKB+vZe0cLqi3VD6Qh60wpkLbGFG9T5aLBj8P5ymd189cMySlqkdIT8JOM3zzk7wPiNzEzdlByyDb2yJDTS9bNsQ901eZOY9ainrZeFGD7fQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706632702; c=relaxed/simple;
-	bh=M2wO7sSvCPR2982vZ06PIUvIfGKMG54QQ49RvdvfJ4o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=u5bGL3U1v8nIb9taC0nv1lBGU9QxIxr0cMEbh7HFu7+ItShq5PtfKKtgceNWE+fiGBzICyCdbfVz1XYqUN7xgofgqNrb0hkgs/+HISMIhbI/4wt3KEfhlVE4EMEHH2M9Ftckjw9fNe6DT701Xd19ITyTF4WHySRgXYPDPze1P/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=WJnGlYvs; arc=none smtp.client-ip=217.70.183.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 7C932FF802;
-	Tue, 30 Jan 2024 16:38:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1706632690;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TplrVwlT1KQQSHzhl19fkElU89ykPDWXpM5Ja8kRAJg=;
-	b=WJnGlYvsLktLg5YVEN9Gc1gRr1+qFsRheBxrdMHtKhX0EhYL6k098CAcruxMCEhyHXGutn
-	vFpG6qz/d4LOwRUl4ySVuhnkRWEaRDVB/weY8qLcaLhH4lVfe59poYOcxtBCfQLdIsQgsT
-	cr+TW103IMpfivL5fTtM6wDz2VB0cl1yixDpo0WKESic98lfwYdjvkOMTFxJCEyKvUEabW
-	mteGb4Ee6jVAsVdMafL7bmIXSQRjTkhrB4gIDXJQJNMh68dL2595yEmPLQCqqJYohbIpan
-	ibg0KXyFQrPgV/3vESu7rY8nQo9lUZ651P006nibWUVpZ+tGeyoBDKzZMv5Lvg==
-Message-ID: <3fa57200-4218-4ac8-86b9-3f86723d5cd8@bootlin.com>
-Date: Tue, 30 Jan 2024 17:38:08 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7970D3D0AD;
+	Wed, 31 Jan 2024 05:04:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.113.137
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1706677483; cv=fail; b=XwQ4k3m5LX9iQTti+gfHzqnteSLzth0n3mCJmGbDJ0cH+tngd7ZWNA6HOHoN73h8DA9agqLWNjSMJ89tTX60MzF+j8p8JGuNSs3IVdIKh/3Z6MpXJWuAf4M/9ecaXf6hItinU/61ENBP1utlYXRwRCKBM2X1fXGQ7PldB7TPp+k=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1706677483; c=relaxed/simple;
+	bh=QSBdtWMBTyScqhAqPcEwlQB0j2BYZfG1g9QPJoxojkU=;
+	h=Message-ID:From:To:Cc:Subject:Content-Type:Date:MIME-Version; b=q1BaXyeDqGm7YM3l+SYw/lPbZ/2hDLJOifqOjwLw/Wu3ZIdJNK0SM/d/cHoB98X9YMxX0lddhSKwTOXNSPl5IROYD95BalcKddIlZ9icmCUK6ag9xRzlxizvWwjI0SRQ5BDucCbX1WQ20e9g6yRFBiQzSiA1AMi9peDr8k9dYOM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=LLBQGMhA; arc=fail smtp.client-ip=40.107.113.137
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=OHZbDMErSOk2YcQrwXPTDThTAzntBG/cCogKqeniJzsaDKOpbExZNDraR1+K/JCacpNlTBiiHbonaCRHYYC9IjoN2O6Ay2x539oKY+ObTYKTnPT/m4zw5rxgKnh74+gEivuPWkrcJEuTlq2SVKz83kfqx7spcLG4czsqwxDhMYNYGopVmh38VJV9C8H/hHrrMb0SJNCbCs4zSbcvr+/PS326uE/fwvxDFzClPU0mHH1tAJ7N6TP0JA+CDcDFrO747bLvmnRJnasQKyCFK1JwfUilFU8n9eY0MVKmQhzQp+4Naq2KieM7Nn8vQzE4iAHUtq0uDRb5k2zD6vsxCPWOyg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5+5CiXTJgPad8zMhSD0w6xKwpy7MFhyDCsVDKxJ+C3o=;
+ b=chO2264CTIm6hhSaZOy7DTMgPXmcGHprW9P/KAOS+Sd78SqJlwYUqa+PSHKx4YMYbAn27gCEnjrOulZ8IimrPJMjdH2Zp7+QgYaq+37mrVsAehhKMY9uTgAQ4+jvAbe5dbcwmQVwvFRMnzie/aN8EeRCNPsQXZhGQLj6B3Qb0hNQXDv1zfdHflTmVzewIFlrx8lqrfqoekWBBNOvXTJlpWdZOnlzyRei4keG2MumNGGhNORVND67Nz1f69g/jOxEmglWDTBTVLCHfk1kaX8B/1gpiJYI3ZnDMNL6A3gm2aETf6dtsTzJMPuBy9Km5+zx9ioV7DpP/M/huSpbd0bvJg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
+ dkim=pass header.d=renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5+5CiXTJgPad8zMhSD0w6xKwpy7MFhyDCsVDKxJ+C3o=;
+ b=LLBQGMhAV8IvPgm4Lc/NcRBtrQqZzBOsNB9M7RWWS9vNnXXfmQOq9NZnwGsZWlcoD2AbCcc+hmLWKQIktL6rHh37rPf4waakw+5EnlD2fUQ/j2ng+GDyFlHiGmYKW7dOyDVDvDHYrikAb02G5u/rCtDGbqyhUHBUImDT+/FmAwg=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=renesas.com;
+Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
+ (2603:1096:400:3a9::11) by TYCPR01MB8341.jpnprd01.prod.outlook.com
+ (2603:1096:400:15c::12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7249.23; Wed, 31 Jan
+ 2024 05:04:34 +0000
+Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
+ ([fe80::ce8:8f5e:99a0:aba4]) by TYCPR01MB10914.jpnprd01.prod.outlook.com
+ ([fe80::ce8:8f5e:99a0:aba4%2]) with mapi id 15.20.7249.023; Wed, 31 Jan 2024
+ 05:04:34 +0000
+Message-ID: <87o7d26qla.wl-kuninori.morimoto.gx@renesas.com>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+To: "Bryan O'Donoghue" <bryan.odonoghue@linaro.org>, "Lad,  Prabhakar"
+ <prabhakar.csengg@gmail.com>, =?ISO-8859-1?Q?=22Niklas_S=C3=B6derlund=22?=
+ <niklas.soderlund+renesas@ragnatech.se>, =?ISO-8859-1?Q?=22Uwe_Kleine-K?=
+ =?ISO-8859-1?Q?=C3=B6nig=22?= <u.kleine-koenig@pengutronix.de>, Abhinav
+ Kumar <quic_abhinavk@quicinc.com>, Alexander Shishkin
+ <alexander.shishkin@linux.intel.com>, Alexander Stein
+ <alexander.stein@ew.tq-group.com>, Alexandre Belloni
+ <alexandre.belloni@bootlin.com>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, Alexey Brodkin <abrodkin@synopsys.com>,
+ Andrzej Hajda <andrzej.hajda@intel.com>, Andy Gross <agross@kernel.org>,
+ Biju Das <biju.das.jz@bp.renesas.com>, Bjorn Andersson
+ <andersson@kernel.org>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, Daniel
+ Vetter <daniel@ffwll.ch>, Dave Stevenson <dave.stevenson@raspberrypi.com>,
+ David Airlie <airlied@gmail.com>, Dmitry Baryshkov
+ <dmitry.baryshkov@linaro.org>, Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+ Emma Anholt <emma@anholt.net>, Eugen Hristev
+ <eugen.hristev@collabora.com>, Florian Fainelli
+ <florian.fainelli@broadcom.com>, Frank Rowand <frowand.list@gmail.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Hans Verkuil
+ <hverkuil-cisco@xs4all.nl>, Helge Deller <deller@gmx.de>, Hugues Fruchet
+ <hugues.fruchet@foss.st.com>, Jacopo Mondi <jacopo+renesas@jmondi.org>,
+ Jacopo Mondi <jacopo@jmondi.org>, James Clark <james.clark@arm.com>,
+ Jaroslav Kysela <perex@perex.cz>, Jonathan Hunter <jonathanh@nvidia.com>,
+ Kevin Hilman <khilman@baylibre.com>, Kieran Bingham
+ <kieran.bingham+renesas@ideasonboard.com>, Kieran Bingham
+ <kieran.bingham@ideasonboard.com>, Konrad Dybcio
+ <konrad.dybcio@linaro.org>, Krzysztof Kozlowski
+ <krzysztof.kozlowski@linaro.org>, Laurent Pinchart
+ <laurent.pinchart+renesas@ideasonboard.com>, Laurent Pinchart
+ <laurent.pinchart@ideasonboard.com>, Liam Girdwood <lgirdwood@gmail.com>,
+ Liu Ying <victor.liu@nxp.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Marek Vasut
+ <marex@denx.de>, Mark Brown <broonie@kernel.org>, Mauro Carvalho Chehab
+ <mchehab@kernel.org>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Maxime
+ Ripard <mripard@kernel.org>, Michael Tretter <m.tretter@pengutronix.de>,
+ Michal Simek <michal.simek@amd.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Nathan Chancellor <nathan@kernel.org>, Neil Armstrong
+ <neil.armstrong@linaro.org>, Nick Desaulniers <ndesaulniers@google.com>,
+ Nicolas Ferre <nicolas.ferre@microchip.com>, Philipp Zabel
+ <p.zabel@pengutronix.de>, Philippe Cornu <philippe.cornu@foss.st.com>,
+ Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>, Rob Clark
+ <robdclark@gmail.com>, Rob Herring <robh+dt@kernel.org>, Robert Foss
+ <rfoss@kernel.org>, Russell King <linux@armlinux.org.uk>, Sakari Ailus
+ <sakari.ailus@linux.intel.com>, Saravana Kannan <saravanak@google.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ Sowjanya Komatineni <skomatineni@nvidia.com>, Stefan Agner
+ <stefan@agner.ch>, Suzuki K Poulose <suzuki.poulose@arm.com>, Sylwester
+ Nawrocki <s.nawrocki@samsung.com>, Takashi Iwai <tiwai@suse.com>, Thierry
+ Reding <thierry.reding@gmail.com>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Tim Harvey <tharvey@gateworks.com>, Todor Tomov <todor.too@gmail.com>,
+ Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Yannick Fertre
+ <yannick.fertre@foss.st.com>
+Cc: Alim Akhtar <alim.akhtar@samsung.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Leo Yan <leo.yan@linaro.org>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Mike Leach <mike.leach@linaro.org>, Sam Ravnborg <sam@ravnborg.org>,
+	Sean Paul <sean@poorly.run>, Tom Rix <trix@redhat.com>,
+	coresight@lists.linaro.org, devicetree@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+	linux-amlogic@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+	linux-fbdev@vger.kernel.org, linux-media@vger.kernel.org,
+	linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+	linu@web.codeaurora.org, x-rpi-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org, linux-sound@vger.kernel.org,
+	linux-staging@lists.linux.dev,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-tegra@vger.kernel.org, llvm@lists.linux.dev
+Subject: [PATCH v3 00/24] of: property: add port base loop
+User-Agent: Wanderlust/2.15.9 Emacs/27.1 Mule/6.0
+Content-Type: text/plain; charset=US-ASCII
+Date: Wed, 31 Jan 2024 05:04:33 +0000
+X-ClientProxiedBy: TYBP286CA0038.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:404:10a::26) To TYCPR01MB10914.jpnprd01.prod.outlook.com
+ (2603:1096:400:3a9::11)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 04/15] mux: add mux_chip_resume() function
-Content-Language: en-US
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>,
- Bartosz Golaszewski <brgl@bgdev.pl>, Andy Shevchenko <andy@kernel.org>,
- Tony Lindgren <tony@atomide.com>, Haojian Zhuang
- <haojian.zhuang@linaro.org>, Vignesh R <vigneshr@ti.com>,
- Aaro Koskinen <aaro.koskinen@iki.fi>,
- Janusz Krzysztofik <jmkrzyszt@gmail.com>, Andi Shyti
- <andi.shyti@kernel.org>, Peter Rosin <peda@axentia.se>,
- Vinod Koul <vkoul@kernel.org>, Kishon Vijay Abraham I <kishon@kernel.org>,
- Philipp Zabel <p.zabel@pengutronix.de>, Tom Joseph <tjoseph@cadence.com>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>,
- =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
- Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
- linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
- linux-i2c@vger.kernel.org, linux-phy@lists.infradead.org,
- linux-pci@vger.kernel.org, gregory.clement@bootlin.com,
- theo.lebrun@bootlin.com, thomas.petazzoni@bootlin.com, u-kumar1@ti.com
-References: <20240102-j7200-pcie-s2r-v2-0-8e4f7d228ec2@bootlin.com>
- <20240102-j7200-pcie-s2r-v2-4-8e4f7d228ec2@bootlin.com>
- <CAHp75Ve2K=v=OrNPH0q+K6vp2283HSMBYYSh0hYbw56snGd+xg@mail.gmail.com>
-From: Thomas Richard <thomas.richard@bootlin.com>
-In-Reply-To: <CAHp75Ve2K=v=OrNPH0q+K6vp2283HSMBYYSh0hYbw56snGd+xg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: thomas.richard@bootlin.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TYCPR01MB10914:EE_|TYCPR01MB8341:EE_
+X-MS-Office365-Filtering-Correlation-Id: d7353850-aaa9-4a00-db7b-08dc221a1dc8
+X-LD-Processed: 53d82571-da19-47e4-9cb4-625a166a4a2a,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	+o5SCnnzAqa/itkzF7hHRtQ8K4K0VupH/sDUcKJoz9H3hW7s6b6WOBZcletczhdoa8QYwy6dWvNjHxXsCpTktYwKAMhCDx8kdNDgeiyunpaTTqwx++WrRh0uul/v8/evCxgbLXd+EPPFmEEmyvxYcQ7h6aMc7/7lahvKXBoISTOaUpi1QM79u8j9K5SUaEpvvmxM3LmPTu4sUipSbDkC9DOWYEU4tKBCh45t9xAM1FZOr6GN2bQ4ldt4N2LXmJHyDQnWWrxazYMUz5pdA3hWDHUgpVJrLQ0Odel8jiWusCNy9rrSVSXRcob4ZfdkLVAc9SED+uuRGU3ONXxlWkMt+YqWLSlUjzYAhC+BwG99PdjaKxTvW1x9svE5Vd/qSBGi4/bceGPiZRqA8kClCXlVc4WXs74wRzhdeS0A5UJGs3MDD+aXPDF3a4YT5EFb17YvjdvZoNgElRoFKqlMlRjZDo+LYTbxsnWtpo+TPSyfwZjhoTJ8frbL0F3CMiJ1HCLPU1ZiyrjJVXKzO6vW+ikeOcLGY5jLVfkYH05h0Rjp5oODLG4Znhfu//xrcSkf6hq6Fag+s3ULtPR9MAsjSTAkyN6MbPOrJahOpK4s0zziITODB2C1drk5eC4IldY42FTfr8b/giGVMFZgQrEc5WaHlcaICeFmiKsjNtP86N/sUuA=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYCPR01MB10914.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(346002)(136003)(366004)(376002)(39860400002)(230922051799003)(186009)(451199024)(64100799003)(1800799012)(1191002)(66476007)(8936002)(4326008)(8676002)(7366002)(5660300002)(2906002)(7416002)(7276002)(86362001)(7406005)(110136005)(66946007)(7336002)(316002)(38350700005)(36756003)(54906003)(966005)(38100700002)(66556008)(478600001)(52116002)(6506007)(6512007)(6486002)(83380400001)(26005)(41300700001)(921011)(2616005);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?UkI0QvLhTrO3+QAFKz9ZqWXBw7JDRz/B9b0EyooERuIiBBsldfm0cuSSnAuJ?=
+ =?us-ascii?Q?CQBDvyrI8woF4RKs7KUHsPodoYyr0S3pVspLUzcUvDv/PcCglkDv33Fb4tmc?=
+ =?us-ascii?Q?FsXXJE6U1Vm7XUVfpgW045JJldJ/tNJGzoTGpMV9M6M+uNqSsjAHalYG8R9+?=
+ =?us-ascii?Q?779cmdNDuJ9TQkZWpfkJ5TrdQcGf08OolocuFY6MybCR6Hi/CudoM78wiNw1?=
+ =?us-ascii?Q?HnaO+2lBCn/VcDfF9z7S+Fx/C0qXeTAOwE+L2zg9GzoMZ6hU898M/qOCJWrU?=
+ =?us-ascii?Q?ZJdudNlGqdnPZYfwuP/byXyiOY0eS68MUtU8fxJkoHyMdKshYpH8vyFY8Iuk?=
+ =?us-ascii?Q?l857c+QJjnQJaxGUCBPM9kLWHk4CWSDS7tw9zZ/fiDwN1FOJIqKNqKxK0FGH?=
+ =?us-ascii?Q?gEVUAND67DP6fi6FoMAJxb7t4XLlBooSCY0R9VHrC34whFmddztjVMgpnZNB?=
+ =?us-ascii?Q?0cky42vrBq2aQXdG72+U8tLDeVddLfyRlAJH0IGQDBrai3RVQZEM/deWk4+l?=
+ =?us-ascii?Q?kfUPbQ5p7i6MhLSMKjSe0wTqhjuoZ00d49WGqYrZmGBrFgqULs1l8bI6DnZZ?=
+ =?us-ascii?Q?PjtvnzeVRw9nbaBuzzWc0Tdh2t73R6RvV9MUlsPoWmtk9sndJM8jm3iGeNSv?=
+ =?us-ascii?Q?JwYIRcfYe2QGNSiVfDpBJV+X7o2iTUJ28WCePWCPw1XnrCNBa+3zmlWRRy3o?=
+ =?us-ascii?Q?DjU2K66qJspu/U+mbfaokPCekPzsU1Q98oZjmH66/GKOL2bPd6Clyc0eNLlL?=
+ =?us-ascii?Q?WLZQWWK/5Dm3TC4pfnXrjVGPzYEZ/zPsnkEZqR3irAFfGAQnGX019y8mXtWx?=
+ =?us-ascii?Q?WDLFfcWjQNlhx/YsLgUmJtrGPmJTLUHB8s5bIm0fXycXprpOJrVU7EHF6zct?=
+ =?us-ascii?Q?o/RC4G2qjjGT7a8En9NMjwc5tGQz9hjaEUB3xIMOhx4AW0BvMODsGG6opNvK?=
+ =?us-ascii?Q?vGSY9OqW4pi810DdFda8gHT1abfHua21ioEeUCDJahedPSKfpvewXkBd7xDk?=
+ =?us-ascii?Q?CuKVnzwLbaiCOyCKsX97d+JkkIA9djRHmGw+xptmSrv9J7vVGbP6bhgdV8/u?=
+ =?us-ascii?Q?lJr13lGGUnvL4z6NISKi4Yhh6/ncE/qIxMwQreGe4ZqE5opatG4e+nXBicms?=
+ =?us-ascii?Q?/PWXfxJce1lF//vlUjX5EBr4uGucCUyxvCSI168BbynNxoA9ESQ9O+m7RUMl?=
+ =?us-ascii?Q?y3vPs5mBT7+DwThoj/vs9d4Q9GJzsTeKu4elVVpaGCwfMxMYxJzx69RFnyaM?=
+ =?us-ascii?Q?lI8VZ4c/HsuFhfvMieOgY9zIL7fPPEmiAgIp5koLl6gI1fwRK5ORuR9u5zx7?=
+ =?us-ascii?Q?u2s4FmZ0tTfnQ7W0bKTI+v/Ecu7y6yxkQjOGRooLRIuiBQjOlxMMvOzNm+Y9?=
+ =?us-ascii?Q?Ro+eFxfkkO79exWczk7htwUTWqmxEBdaV/4i8Ohxqnwa2lPahRT3vhDWsUnC?=
+ =?us-ascii?Q?7qEjqvm6lMlL9qAUIgBCRuoB5Yj1q63RtHfBBE1VM6d+gA+oSoTfxYE8KNJD?=
+ =?us-ascii?Q?uzqMUqr8nKG1U0/AGFD51QpU7fE8xfJaxSZVXAzGfMuI75zvvoPZMHrCQfBb?=
+ =?us-ascii?Q?wMD5BPZJivLnj06Al1Kx7yp2KlXFq1fVEDhg3P7IzeGwrNlkfIqvO8YnLL2p?=
+ =?us-ascii?Q?WlxdKTW7prWX8jf07BjuquU=3D?=
+X-OriginatorOrg: renesas.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d7353850-aaa9-4a00-db7b-08dc221a1dc8
+X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB10914.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Jan 2024 05:04:34.5309
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: VrRAyWfOuFjf1U6EUwqr8R6qXebuvscdI2jMBjzl/7rMZeAfAPh/2jAdN0HijPwH68PBWDebnZtIKEEZNRf6lwLsjQporjR/kw4xGbU/1Y8xbVJMNoSWHVCTUZlxY/ml
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYCPR01MB8341
 
-On 1/26/24 22:28, Andy Shevchenko wrote:
-> On Fri, Jan 26, 2024 at 4:37 PM Thomas Richard
-> <thomas.richard@bootlin.com> wrote:
->>
->> The mux_chip_resume() function restores a mux_chip using the cached state
->> of each mux.
-> 
-> ...
-> 
->> +int mux_chip_resume(struct mux_chip *mux_chip)
->> +{
->> +       int ret, i;
->> +
->> +       for (i = 0; i < mux_chip->controllers; ++i) {
->> +               struct mux_control *mux = &mux_chip->mux[i];
-> 
->> +               if (mux->cached_state != MUX_CACHE_UNKNOWN) {
-> 
->   if (_state == ...)
->     continue;
-> 
-> ?
 
-Yes it makes the code easier to read.
-Fixed in next iteration.
+Hi Rob
+
+This is v3 of port base loop patch-set
+
+We have "endpoint" base functions
+	- of_graph_get_next_endpoint()
+	- of_graph_get_endpoint_count()
+	- for_each_endpoint_of_node()
+
+But to handling "port" base things, it is not useful. We want to have
+"port" base functions, too. This patch-set adds it.
+
+Because current existing drivers couldn't use "port" base functions,
+it were implemented in a different way. This patch-set doesn't try
+to full-replace to avoid unknown bug, try easy / quick replace only
+for now, but easy to know how "port" base functions are needed.
+
+Because I can't test the driver which I can't use, non-ASoC drivers
+needs Tested-by, Acked-by.
+
+This patch-set renames existing "endpoint" to *_device_*
+because it is rather than focusing to device's endpoint instead of
+port's endpoint.
+
+	- of_graph_get_next_endpoint()
+	+ of_graph_get_next_device_endpoint()
+
+	- of_graph_get_endpoint_count()
+	+ of_graph_get_device_endpoint_count()
+
+	- for_each_endpoint_of_node()
+	+ for_each_device_endpoint_of_node()
+
+
+[PATCH 01/24] - [PATCH 02/24] : tidyup existing endpoint function kerneldoc
+[PATCH 03/24] - [PATCH 11/24] : replace existing function to *_device_*
+[PATCH 12/24] - [PATCH 24/24] : add new function and use it
+
+v2 -> v3
+	- tidyup existing endpoint function kerneldoc
+	- replace exising function to *_device_*
+
+v1 -> v2
+	- tidyup function explain
+	- add missing header on each files
+
+https://lore.kernel.org/r/87jzo0uda2.wl-kuninori.morimoto.gx@renesas.com
+https://lore.kernel.org/r/87fryhklhb.wl-kuninori.morimoto.gx@renesas.com
+
+
+Kuninori Morimoto (24):
+   1) of: property: add missing kerneldoc for of_graph_get_endpoint_count()
+   2) of: property: use unsigned int return on of_graph_get_endpoint_count()
+   3) of: property: rename of_graph_get_next_endpoint() to of_graph_get_next_device_endpoint()
+   4) video: fbdev: switch to use of_graph_get_next_device_endpoint()
+   5) media: i2c: switch to use of_graph_get_next_device_endpoint()
+   6) media: platform: switch to use of_graph_get_next_device_endpoint()
+   7) gpu: drm: switch to use of_graph_get_next_device_endpoint()
+   8) hwtracing: switch to use of_graph_get_next_device_endpoint()
+   9) staging: switch to use of_graph_get_next_device_endpoint()
+  10) ASoC: switch to use of_graph_get_next_device_endpoint()
+  11) of: remove of_graph_get_next_endpoint() define
+  12) of: property: add port base loop
+  13) of: property: use of_graph_get_next_port() on of_graph_get_next_endpoint()
+  14) of: property: add of_graph_get_next_endpoint()
+  15) drm: omapdrm: use of_graph_get_next_endpoint()
+  16) media: xilinx-tpg: use of_graph_get_next_endpoint()
+  17) ASoC: audio-graph-card: use of_graph_get_next_endpoint()
+  18) ASoC: audio-graph-card2: use of_graph_get_next_port()
+  19) ASoC: audio-graph-card2: use of_graph_get_next_endpoint()
+  20) ASoC: test-component: use for_each_port_of_node()
+  21) fbdev: omapfb: use of_graph_get_remote_port()
+  22) fbdev: omapfb: use of_graph_get_next_port()
+  23) fbdev: omapfb: use of_graph_get_next_endpoint()
+  24) fbdev: omapfb: use of_graph_get_next_device_endpoint()
+
+ .clang-format                                 |   2 +-
+ drivers/gpu/drm/armada/armada_drv.c           |   2 +-
+ drivers/gpu/drm/bridge/tc358767.c             |   2 +-
+ drivers/gpu/drm/drm_of.c                      |   6 +-
+ drivers/gpu/drm/meson/meson_drv.c             |   4 +-
+ drivers/gpu/drm/msm/msm_drv.c                 |   2 +-
+ drivers/gpu/drm/mxsfb/lcdif_drv.c             |   2 +-
+ drivers/gpu/drm/omapdrm/dss/base.c            |   2 +-
+ drivers/gpu/drm/omapdrm/dss/dpi.c             |   2 +-
+ drivers/gpu/drm/omapdrm/dss/sdi.c             |   2 +-
+ .../drm/panel/panel-raspberrypi-touchscreen.c |   2 +-
+ drivers/gpu/drm/pl111/pl111_drv.c             |   2 +-
+ drivers/gpu/drm/renesas/rcar-du/rcar_du_kms.c |   2 +-
+ drivers/gpu/drm/stm/ltdc.c                    |   4 +-
+ drivers/gpu/drm/tiny/arcpgu.c                 |   2 +-
+ .../hwtracing/coresight/coresight-platform.c  |   4 +-
+ drivers/media/i2c/adv7343.c                   |   2 +-
+ drivers/media/i2c/adv748x/adv748x-core.c      |   2 +-
+ drivers/media/i2c/adv7604.c                   |   2 +-
+ drivers/media/i2c/isl7998x.c                  |   2 +-
+ drivers/media/i2c/max9286.c                   |   2 +-
+ drivers/media/i2c/mt9p031.c                   |   2 +-
+ drivers/media/i2c/mt9v032.c                   |   2 +-
+ drivers/media/i2c/ov2659.c                    |   2 +-
+ drivers/media/i2c/ov5645.c                    |   2 +-
+ drivers/media/i2c/ov5647.c                    |   2 +-
+ drivers/media/i2c/s5c73m3/s5c73m3-core.c      |   2 +-
+ drivers/media/i2c/s5k5baf.c                   |   2 +-
+ drivers/media/i2c/tc358743.c                  |   2 +-
+ drivers/media/i2c/tda1997x.c                  |   2 +-
+ drivers/media/i2c/tvp514x.c                   |   2 +-
+ drivers/media/i2c/tvp5150.c                   |   4 +-
+ drivers/media/i2c/tvp7002.c                   |   2 +-
+ drivers/media/platform/atmel/atmel-isi.c      |   4 +-
+ drivers/media/platform/intel/pxa_camera.c     |   2 +-
+ .../microchip/microchip-sama5d2-isc.c         |   2 +-
+ .../microchip/microchip-sama7g5-isc.c         |   2 +-
+ drivers/media/platform/qcom/camss/camss.c     |   2 +-
+ drivers/media/platform/renesas/renesas-ceu.c  |   2 +-
+ .../platform/samsung/exynos4-is/fimc-is.c     |   2 +-
+ .../platform/samsung/exynos4-is/mipi-csis.c   |   2 +-
+ drivers/media/platform/st/stm32/stm32-dcmi.c  |   4 +-
+ .../media/platform/ti/am437x/am437x-vpfe.c    |   2 +-
+ drivers/media/platform/ti/davinci/vpif.c      |   3 +-
+ .../media/platform/ti/davinci/vpif_capture.c  |   3 +-
+ drivers/media/platform/video-mux.c            |   2 +-
+ drivers/media/platform/xilinx/xilinx-tpg.c    |   3 +-
+ drivers/media/platform/xilinx/xilinx-vipp.c   |   2 +-
+ drivers/of/property.c                         | 126 ++++++++++++++----
+ .../deprecated/atmel/atmel-sama5d2-isc.c      |   2 +-
+ .../deprecated/atmel/atmel-sama7g5-isc.c      |   2 +-
+ drivers/staging/media/tegra-video/csi.c       |   2 +-
+ drivers/staging/media/tegra-video/vi.c        |   2 +-
+ drivers/staging/media/tegra-video/vip.c       |   2 +-
+ drivers/video/fbdev/amba-clcd.c               |   2 +-
+ drivers/video/fbdev/omap2/omapfb/dss/dpi.c    |   3 +-
+ drivers/video/fbdev/omap2/omapfb/dss/dsi.c    |   3 +-
+ drivers/video/fbdev/omap2/omapfb/dss/dss-of.c | 101 +-------------
+ drivers/video/fbdev/omap2/omapfb/dss/dss.c    |   9 +-
+ drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c  |   3 +-
+ drivers/video/fbdev/omap2/omapfb/dss/hdmi5.c  |   3 +-
+ .../omap2/omapfb/dss/omapdss-boot-init.c      |   2 +-
+ drivers/video/fbdev/omap2/omapfb/dss/sdi.c    |   3 +-
+ drivers/video/fbdev/omap2/omapfb/dss/venc.c   |   3 +-
+ drivers/video/fbdev/pxafb.c                   |   2 +-
+ include/linux/of_graph.h                      |  51 +++++--
+ include/video/omapfb_dss.h                    |  11 --
+ sound/soc/codecs/ak4613.c                     |   2 +-
+ sound/soc/generic/audio-graph-card.c          |   2 +-
+ sound/soc/generic/audio-graph-card2.c         |  33 ++---
+ sound/soc/generic/simple-card-utils.c         |   6 +-
+ sound/soc/generic/test-component.c            |   4 +-
+ sound/soc/sh/rcar/core.c                      |   4 +-
+ 73 files changed, 247 insertions(+), 251 deletions(-)
 
 -- 
-Thomas Richard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.25.1
 
 
