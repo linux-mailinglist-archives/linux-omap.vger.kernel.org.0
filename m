@@ -1,169 +1,116 @@
-Return-Path: <linux-omap+bounces-469-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-470-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 051258436E0
-	for <lists+linux-omap@lfdr.de>; Wed, 31 Jan 2024 07:33:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F142384387C
+	for <lists+linux-omap@lfdr.de>; Wed, 31 Jan 2024 09:06:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70D681F29F90
-	for <lists+linux-omap@lfdr.de>; Wed, 31 Jan 2024 06:33:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 930ACB21C1F
+	for <lists+linux-omap@lfdr.de>; Wed, 31 Jan 2024 08:06:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 543EEEAD4;
-	Wed, 31 Jan 2024 06:33:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD10E56774;
+	Wed, 31 Jan 2024 08:06:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xcFEOH+2"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="pJAh5F52"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com [209.85.219.174])
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2BC8125CA
-	for <linux-omap@vger.kernel.org>; Wed, 31 Jan 2024 06:33:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED84E56B6C
+	for <linux-omap@vger.kernel.org>; Wed, 31 Jan 2024 08:06:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706682790; cv=none; b=Wyymn1iXn72AeCU7+s2skT/cuBLOZ4RyaW6sLBh1TXCegoWMlocvsxgVNW9fublhRGRzPcVR4zg3yrgHdSBP3ZybEIMaH87mUw9kweUNSzD0spZcYi/Uwe60x7K/Om+GlIsihUfpTDPp/cDlj7M/O/RKrJtsMDno9ofe8lpSKmw=
+	t=1706688372; cv=none; b=OJS0YELECv2sBCHRdzFr/c8SAnjq5oG/E69b6oSLOPESg9BupP8rc10YzSk0M2YqgVtctAkCJh9ow8h+L4eVAFBqHO1wZGCae1kDU2PfVlReQtufioSj+BYW/iFAerEcoijt+6dzWxB6Afks1tGlWxbs7Df8zhv9LJCzqfrlEno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706682790; c=relaxed/simple;
-	bh=jbKkH1WtEeXYWeMRfLbDO0YH0JxpQQDvSBpAn5Ed0P4=;
+	s=arc-20240116; t=1706688372; c=relaxed/simple;
+	bh=O3NcPrb8t7YnX3CjYpseCkmCegR+NfSEh06RZsASR0w=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=I0cSzNS70k9NNnzNgFu3TX8zJBhM4OwDezzPBLOR1criVxjqMH7UdKb92PYRDqNIP/wgJr5CjETBJBK8rPpnpr/URHslqerR2qXePG8w9hR8kFSBr1vpKYu2Q+pFv7Qkr8AtsSy1P9POQ3qTeVM+HdRUDdmJ7whM+I6AuURutrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xcFEOH+2; arc=none smtp.client-ip=209.85.219.174
+	 To:Cc:Content-Type; b=X3blo3CXRrRhWE1tf0iMPbiRH+fI//uKeqjqgNooN+GjLxPYkloGZDVRtU8KGYV2z0MHvO87gN4ZTaS5cZ56Vjrx8d/SLu4Me9e/R3JMcQbFj5ru3BQOIIl4YBNMNvjbZ8an/Brwqd5t7mQ1buAe5xZTsaQKnKUTytRRtd6XlSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=pJAh5F52; arc=none smtp.client-ip=209.85.128.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yb1-f174.google.com with SMTP id 3f1490d57ef6-dc6432ee799so4739339276.0
-        for <linux-omap@vger.kernel.org>; Tue, 30 Jan 2024 22:33:07 -0800 (PST)
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-602ab446cd8so47466897b3.1
+        for <linux-omap@vger.kernel.org>; Wed, 31 Jan 2024 00:06:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1706682787; x=1707287587; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=W+0UrfFLZxByUhAQTRyALxC5TYXU+3QlMDreZkniP6Y=;
-        b=xcFEOH+27EuWTw9lgviT3E1FTdl74iz2Qz58ZlYcyVSqbY4WuaQJvwMyMsqxQ1vGHa
-         2/4klMwat3B/CJdS+uOoRyXddolZo352OvTv33W1o2r25nH+nIbXlzPuQvbuTL3+O8aR
-         WMkvKbCVVO+Ceg0iwtgbIxlNmvjpb/3EyMXCHGyCOp7grIza4a3uh1w0MgVfTS0qqtR8
-         5e1LXyAEwVskINPZT4rN4xFOp/Tzdyx1/tv6/cnblHqd/lg9gCGL5GFwl4qg1birVfLK
-         waKNKhAHwE8OvgR0apc0+uP9tGM1jxrNmjjFsA/eBaTpVg7QaorlQGSY+YahEgC5A6Hm
-         QMvA==
+        d=linaro.org; s=google; t=1706688369; x=1707293169; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=O3NcPrb8t7YnX3CjYpseCkmCegR+NfSEh06RZsASR0w=;
+        b=pJAh5F52+w8BuaEvqOPJj/qvAWUYhC1yUzub8gQICWfh0e8clZWrbiP/Pysh/iCOVN
+         h9V3tbJnYGsbNKE9uJPYDm3svWk/rZI/mijG90rNipVbOFzydx7pVBSb0SOWM64CD1AV
+         iowj5JCj8s4wRMHRlpSj5eR5sHswYPC3IelqVCx79qCAusOH5ffkAZIcLOWsKdpk8RaI
+         bXUwOwnz45A7tMxYZ6qa7ympCzhNHn7Bz4OcPJliMxwRfB72vOjnFoBReZ5O/mzq3A5d
+         PQWAqSMNrsCOzYmbDL2I2rLkBEnI8JdhUrkO3cbd430Ur1S6RQ1lzdoeA8H7w0EHY5q2
+         s/Uw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706682787; x=1707287587;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=W+0UrfFLZxByUhAQTRyALxC5TYXU+3QlMDreZkniP6Y=;
-        b=kF9bo2BAKyHDU54IUFJ6TxP4B6F2CuLD5Yp48wszXqLtb2KJs9VDoQoSUfCQZJlIIZ
-         UWYgrj1hmv8RbIhyzn/9U7av/mOJykPhgcPFr66SBviTZL0ssrqL3TCL0FHZvSPwnoO4
-         oTgbYntZsY9SCIzqJu4art8gTJwBIOYJY9yuS2cuua7dPp+JIVrjPr1+RUIGB0YC1F58
-         GpMmb2CQMvq5oYdyusMHqNTZymX/G/pwwPU8E90W6DHYN4OXN8D0KblNzotXaBAP27gj
-         /q5KGU9DL3C5zhkO8MHMGxAIEVuba7HPov8w9Cc5KUEXEM6yncFqgmDNhcZ0jLy2DJr5
-         4x2Q==
-X-Gm-Message-State: AOJu0Yy/2nO8QW/eVLuysxZihKHbRIqB+a7u9XGDb6toYjcmy+zofCsz
-	RDcNashgeJA0UffderBp0e98HLAxc9dGRV+nnpSi1eOS5UJZe5KBS1icKRink1jycQJFKvgdRuJ
-	LWsqh26jQKrOvJiZlCpTHNlj2ecd5Bn0sHIaJZQ==
-X-Google-Smtp-Source: AGHT+IFxRXwNP5PRj+1YvzHjYbCYITU/P5nsMmG4/Z+5FnhpEGiUV21GZeIbWwZE5W49t+z2Do1jj0wx+tXggTPULI4=
-X-Received: by 2002:a5b:582:0:b0:dc2:1c77:ca7 with SMTP id l2-20020a5b0582000000b00dc21c770ca7mr757962ybp.36.1706682786826;
- Tue, 30 Jan 2024 22:33:06 -0800 (PST)
+        d=1e100.net; s=20230601; t=1706688369; x=1707293169;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=O3NcPrb8t7YnX3CjYpseCkmCegR+NfSEh06RZsASR0w=;
+        b=DUjOxMhVQA62CE9KGL3G5NQ8KK4lvQsRLJ9CbSBXNmoKXUhcXn9HHTvIUHO7z9h65E
+         itidKqAMdwhUAk+pOjigek4NMmzkzRu9t84G6V7L3veymfAJA/Txqg7RCE1rU1qQp6SP
+         Jyh+g3evfbeiMKF447fRjxgVknRyPnYlvPlrN29GCCzYLZjRXf88hsggoy8bt4FSCQzU
+         njK6tC3tnhRFh5wVMLSNAlVMp2UJBw4JLzzspTeYWevmmeVWXogprbSrzbG4rYr9YsWu
+         rBbvpfGgPiSjEh92rylwO+dazCw58Rb/y4j5wVoNzx2j1oX7C1hBNe9z3KogXxHg1lng
+         EHaw==
+X-Gm-Message-State: AOJu0YyJlQJa4gyODFC6Y4NiQkY+Nw4Ox6gqYVAYRfHNDy7Y7BDa4W+r
+	E57jmpQ7zZUVLculnDAnhLI6FW7hrKX1TdVKkSnvwprlaDWaQqh1Ckc4SqEIbvK2HTWgSltZ8s/
+	xCqM6movnFIPonnHN7Oega5PljwmSqxW51mmvTdVanL98UYgM
+X-Google-Smtp-Source: AGHT+IHwBZYKjdPkSD3Jf+XYtxk1vkFmihVDnoguJobWmbAAdRRE+yQJUmDl9KcK+DvSlc7YoXrqNhzXKL6xw0pFg2I=
+X-Received: by 2002:a05:690c:954:b0:602:ce22:7079 with SMTP id
+ cc20-20020a05690c095400b00602ce227079mr618106ywb.41.1706688368926; Wed, 31
+ Jan 2024 00:06:08 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <87o7d26qla.wl-kuninori.morimoto.gx@renesas.com> <87eddy6qjf.wl-kuninori.morimoto.gx@renesas.com>
-In-Reply-To: <87eddy6qjf.wl-kuninori.morimoto.gx@renesas.com>
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date: Wed, 31 Jan 2024 08:32:56 +0200
-Message-ID: <CAA8EJpq79tOCH3vK+Hh_XD4mtj1GVgVvwehQF4BfxTjwPi_fHQ@mail.gmail.com>
-Subject: Re: [PATCH v3 07/24] gpu: drm: switch to use of_graph_get_next_device_endpoint()
-To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Cc: "Bryan O'Donoghue" <bryan.odonoghue@linaro.org>, 
-	"Lad, Prabhakar" <prabhakar.csengg@gmail.com>, 
-	=?UTF-8?Q?Niklas_S=C3=83=C2=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>, 
-	=?UTF-8?B?VXdlIEtsZWluZS1Lw4PCtm5pZw==?= <u.kleine-koenig@pengutronix.de>, 
-	Abhinav Kumar <quic_abhinavk@quicinc.com>, 
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
-	Alexander Stein <alexander.stein@ew.tq-group.com>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, Alexey Brodkin <abrodkin@synopsys.com>, 
-	Andrzej Hajda <andrzej.hajda@intel.com>, Andy Gross <agross@kernel.org>, 
-	Biju Das <biju.das.jz@bp.renesas.com>, Bjorn Andersson <andersson@kernel.org>, 
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>, Daniel Vetter <daniel@ffwll.ch>, 
-	Dave Stevenson <dave.stevenson@raspberrypi.com>, David Airlie <airlied@gmail.com>, 
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>, Emma Anholt <emma@anholt.net>, 
-	Eugen Hristev <eugen.hristev@collabora.com>, 
-	Florian Fainelli <florian.fainelli@broadcom.com>, Frank Rowand <frowand.list@gmail.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Hans Verkuil <hverkuil-cisco@xs4all.nl>, 
-	Helge Deller <deller@gmx.de>, Hugues Fruchet <hugues.fruchet@foss.st.com>, 
-	Jacopo Mondi <jacopo+renesas@jmondi.org>, Jacopo Mondi <jacopo@jmondi.org>, 
-	James Clark <james.clark@arm.com>, Jaroslav Kysela <perex@perex.cz>, 
-	Jonathan Hunter <jonathanh@nvidia.com>, Kevin Hilman <khilman@baylibre.com>, 
-	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>, 
-	Kieran Bingham <kieran.bingham@ideasonboard.com>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, 
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Liam Girdwood <lgirdwood@gmail.com>, 
-	Liu Ying <victor.liu@nxp.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Marek Vasut <marex@denx.de>, 
-	Mark Brown <broonie@kernel.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Maxime Ripard <mripard@kernel.org>, 
-	Michael Tretter <m.tretter@pengutronix.de>, Michal Simek <michal.simek@amd.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Nick Desaulniers <ndesaulniers@google.com>, 
-	Nicolas Ferre <nicolas.ferre@microchip.com>, Philipp Zabel <p.zabel@pengutronix.de>, 
-	Philippe Cornu <philippe.cornu@foss.st.com>, 
-	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>, Rob Clark <robdclark@gmail.com>, 
-	Rob Herring <robh+dt@kernel.org>, Robert Foss <rfoss@kernel.org>, 
-	Russell King <linux@armlinux.org.uk>, Sakari Ailus <sakari.ailus@linux.intel.com>, 
-	Saravana Kannan <saravanak@google.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Shawn Guo <shawnguo@kernel.org>, Sowjanya Komatineni <skomatineni@nvidia.com>, 
-	Stefan Agner <stefan@agner.ch>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Sylwester Nawrocki <s.nawrocki@samsung.com>, Takashi Iwai <tiwai@suse.com>, 
-	Thierry Reding <thierry.reding@gmail.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	Tim Harvey <tharvey@gateworks.com>, Todor Tomov <todor.too@gmail.com>, 
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
-	Yannick Fertre <yannick.fertre@foss.st.com>, Alim Akhtar <alim.akhtar@samsung.com>, 
-	Fabio Estevam <festevam@gmail.com>, Jacopo Mondi <jacopo.mondi@ideasonboard.com>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Jerome Brunet <jbrunet@baylibre.com>, 
-	Jessica Zhang <quic_jesszhan@quicinc.com>, Jonas Karlman <jonas@kwiboo.se>, 
-	Leo Yan <leo.yan@linaro.org>, Marijn Suijten <marijn.suijten@somainline.org>, 
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, Mike Leach <mike.leach@linaro.org>, 
-	Sam Ravnborg <sam@ravnborg.org>, Sean Paul <sean@poorly.run>, Tom Rix <trix@redhat.com>, 
-	coresight@lists.linaro.org, devicetree@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org, 
-	linux-amlogic@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	linux-arm-msm@vger.kernel.org, linux-fbdev@vger.kernel.org, 
-	linux-media@vger.kernel.org, linux-omap@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org, linux-rpi-kernel@lists.infradead.org, 
-	linux-samsung-soc@vger.kernel.org, linux-sound@vger.kernel.org, 
-	linux-staging@lists.linux.dev, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-tegra@vger.kernel.org, llvm@lists.linux.dev
+References: <20240102-j7200-pcie-s2r-v1-0-84e55da52400@bootlin.com> <20240102-j7200-pcie-s2r-v1-2-84e55da52400@bootlin.com>
+In-Reply-To: <20240102-j7200-pcie-s2r-v1-2-84e55da52400@bootlin.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Wed, 31 Jan 2024 09:05:57 +0100
+Message-ID: <CACRpkdZ8Yx_8MoV3eedm14GfyJCm2WVdY=nQ9sEQVeoeec+2ZQ@mail.gmail.com>
+Subject: Re: [PATCH 02/14] pinctrl: pinctrl-single: move suspend/resume to suspend_noirq/resume_noirq
+To: Thomas Richard <thomas.richard@bootlin.com>
+Cc: Bartosz Golaszewski <brgl@bgdev.pl>, Andy Shevchenko <andy@kernel.org>, Tony Lindgren <tony@atomide.com>, 
+	Haojian Zhuang <haojian.zhuang@linaro.org>, Vignesh R <vigneshr@ti.com>, 
+	Aaro Koskinen <aaro.koskinen@iki.fi>, Janusz Krzysztofik <jmkrzyszt@gmail.com>, 
+	Andi Shyti <andi.shyti@kernel.org>, Peter Rosin <peda@axentia.se>, Vinod Koul <vkoul@kernel.org>, 
+	Kishon Vijay Abraham I <kishon@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>, 
+	Tom Joseph <tjoseph@cadence.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, linux-gpio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-omap@vger.kernel.org, linux-i2c@vger.kernel.org, 
+	linux-phy@lists.infradead.org, linux-pci@vger.kernel.org, 
+	gregory.clement@bootlin.com, theo.lebrun@bootlin.com, 
+	thomas.petazzoni@bootlin.com, u-kumar1@ti.com
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 31 Jan 2024 at 07:05, Kuninori Morimoto
-<kuninori.morimoto.gx@renesas.com> wrote:
->
-> of_graph_get_next_endpoint() is now renamed to
-> of_graph_get_next_device_endpoint(). Switch to it.
->
-> Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-> ---
->  drivers/gpu/drm/armada/armada_drv.c                   | 2 +-
->  drivers/gpu/drm/bridge/tc358767.c                     | 2 +-
->  drivers/gpu/drm/drm_of.c                              | 6 +++---
->  drivers/gpu/drm/meson/meson_drv.c                     | 4 ++--
->  drivers/gpu/drm/msm/msm_drv.c                         | 2 +-
->  drivers/gpu/drm/mxsfb/lcdif_drv.c                     | 2 +-
->  drivers/gpu/drm/omapdrm/dss/base.c                    | 2 +-
->  drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c | 2 +-
->  drivers/gpu/drm/pl111/pl111_drv.c                     | 2 +-
->  drivers/gpu/drm/renesas/rcar-du/rcar_du_kms.c         | 2 +-
->  drivers/gpu/drm/stm/ltdc.c                            | 4 ++--
->  drivers/gpu/drm/tiny/arcpgu.c                         | 2 +-
->  12 files changed, 16 insertions(+), 16 deletions(-)
->
+On Mon, Jan 15, 2024 at 5:16=E2=80=AFPM Thomas Richard
+<thomas.richard@bootlin.com> wrote:
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> The goal is to extend the active period of pinctrl.
+> Some devices may need active pinctrl after suspend and/or before resume.
+> So move suspend/resume to suspend_noirq/resume_noirq to have active
+> pinctrl until suspend_noirq (included), and from resume_noirq
+> (included).
+>
+> The deprecated API has been removed to use the new one (dev_pm_ops struct=
+).
+>
+> Signed-off-by: Thomas Richard <thomas.richard@bootlin.com>
 
--- 
-With best wishes
-Dmitry
+This needs testing on OMAP and ACK from Tony before I can merge it.
+Preferably Haojian should test it too, this is a pretty serious semantic
+change.
+
+Yours,
+Linus Walleij
 
