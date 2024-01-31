@@ -1,80 +1,79 @@
-Return-Path: <linux-omap+bounces-468-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-469-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4246A8436C7
-	for <lists+linux-omap@lfdr.de>; Wed, 31 Jan 2024 07:30:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 051258436E0
+	for <lists+linux-omap@lfdr.de>; Wed, 31 Jan 2024 07:33:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDBF02824FD
-	for <lists+linux-omap@lfdr.de>; Wed, 31 Jan 2024 06:30:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70D681F29F90
+	for <lists+linux-omap@lfdr.de>; Wed, 31 Jan 2024 06:33:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9504F4501C;
-	Wed, 31 Jan 2024 06:30:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 543EEEAD4;
+	Wed, 31 Jan 2024 06:33:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="vZsFBO1t"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xcFEOH+2"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com [209.85.219.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A03AF41776
-	for <linux-omap@vger.kernel.org>; Wed, 31 Jan 2024 06:30:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2BC8125CA
+	for <linux-omap@vger.kernel.org>; Wed, 31 Jan 2024 06:33:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706682625; cv=none; b=RTt09MlTNZZgfs0xJfwenYNdisxvu7iOalcfv3zUa0+TeFEGOw6sJzvGOMttE/yRomTt5LQTattpgts/0QGMosrzKaKHF0Thn9REDmpgb8zrmF3i3BfZPIc+NTL7C0TVYICYHZI4d38ApIYx87kNBzyMkr9JxZvj4PG8gnj5gJQ=
+	t=1706682790; cv=none; b=Wyymn1iXn72AeCU7+s2skT/cuBLOZ4RyaW6sLBh1TXCegoWMlocvsxgVNW9fublhRGRzPcVR4zg3yrgHdSBP3ZybEIMaH87mUw9kweUNSzD0spZcYi/Uwe60x7K/Om+GlIsihUfpTDPp/cDlj7M/O/RKrJtsMDno9ofe8lpSKmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706682625; c=relaxed/simple;
-	bh=nxlnhpTP2ZY02f0uY5iRFtCEWLbVgQJy/f7OhUQYcng=;
+	s=arc-20240116; t=1706682790; c=relaxed/simple;
+	bh=jbKkH1WtEeXYWeMRfLbDO0YH0JxpQQDvSBpAn5Ed0P4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VSZFyeGrNvLJ48K32uOZzC62xlvhiPzQsiFc+Eg2cOnlZuPtHjAtGP3nCaZBlNxc4bmKY2kOHZrC0EmX5rLj6CSmGSRaDTAqkVzpOocujW+t3IJOfvbOzWPAuh4YXGGjdc6yTlfNXwZo/Gyc2WJdcXlhOqcx5PKuQ8ZQE6mIWYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=vZsFBO1t; arc=none smtp.client-ip=209.85.128.177
+	 To:Cc:Content-Type; b=I0cSzNS70k9NNnzNgFu3TX8zJBhM4OwDezzPBLOR1criVxjqMH7UdKb92PYRDqNIP/wgJr5CjETBJBK8rPpnpr/URHslqerR2qXePG8w9hR8kFSBr1vpKYu2Q+pFv7Qkr8AtsSy1P9POQ3qTeVM+HdRUDdmJ7whM+I6AuURutrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xcFEOH+2; arc=none smtp.client-ip=209.85.219.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-602c714bdbeso4794477b3.1
-        for <linux-omap@vger.kernel.org>; Tue, 30 Jan 2024 22:30:22 -0800 (PST)
+Received: by mail-yb1-f174.google.com with SMTP id 3f1490d57ef6-dc6432ee799so4739339276.0
+        for <linux-omap@vger.kernel.org>; Tue, 30 Jan 2024 22:33:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1706682621; x=1707287421; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1706682787; x=1707287587; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=XuBpfFrt6LIRFxGJEZUBYvlJzyC2OSdPPTTcyZFlpqs=;
-        b=vZsFBO1tbcX0p4bsdYubfMJfW2LmU0Q4FUJRAJXNIm9NjKsUowy2lKBJZttjRf2E7s
-         n7y4pdDx/G+wKZRElpjGreamrPgUmd4L7CAZ+sC+1Sh7ZADQsVL+nV8yW1kPrpcpU4p2
-         Kqp+NYw0HPqTkjluQSYWeHok+pWSp5CT1aEelzSJkpzdgcl2+a2UNtnfYV2MCAMWsBmn
-         6ZvVU6JYHoc1DyOQFQPDv00OYggDNIXWN8dO78rhTOjrz3ftgC0zkRz3BpaOk0s0eoT7
-         NsKjd8gufHe1y0DZk7acaYmEl104/B1PsjYP4r77Plhs4hGW8eQHzfHNynyy2zMMKAJ6
-         73Ng==
+        bh=W+0UrfFLZxByUhAQTRyALxC5TYXU+3QlMDreZkniP6Y=;
+        b=xcFEOH+27EuWTw9lgviT3E1FTdl74iz2Qz58ZlYcyVSqbY4WuaQJvwMyMsqxQ1vGHa
+         2/4klMwat3B/CJdS+uOoRyXddolZo352OvTv33W1o2r25nH+nIbXlzPuQvbuTL3+O8aR
+         WMkvKbCVVO+Ceg0iwtgbIxlNmvjpb/3EyMXCHGyCOp7grIza4a3uh1w0MgVfTS0qqtR8
+         5e1LXyAEwVskINPZT4rN4xFOp/Tzdyx1/tv6/cnblHqd/lg9gCGL5GFwl4qg1birVfLK
+         waKNKhAHwE8OvgR0apc0+uP9tGM1jxrNmjjFsA/eBaTpVg7QaorlQGSY+YahEgC5A6Hm
+         QMvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706682621; x=1707287421;
+        d=1e100.net; s=20230601; t=1706682787; x=1707287587;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=XuBpfFrt6LIRFxGJEZUBYvlJzyC2OSdPPTTcyZFlpqs=;
-        b=BZhAKv9t5pR4iNrfKkpCDKYOayk2oDbUspmg6sH3JEk5ZewYpjslbnLE/BmtzWva3M
-         2VwBg+XF4yBDx0IPuCvBeSSopv+X+30jAMht94/S0yBBpfm9qCdVXp8yzxuRDceXu+S3
-         AfnrWbe2iPz0c7x/CZ8PaVoUX+ZPPTqYFjGr5X65++Z91xdZUDJT1c6Q5PPTAnv2KE70
-         QX8etKn5GQUKNvtUSYkxODqUyS97oZcPv2A2j0ViOxCbQTmOtAgy/rhBUFAWI7SxUjW6
-         +ChcnPbd5S7rMclhpt+Txqh/Rn7mVqeB0PNJDA4BIZ2pHkk8s7h27AIo191enm04p4iA
-         xwbg==
-X-Gm-Message-State: AOJu0YzJazfaI5R+aYGtxQBmCQEEVjFL7oatx+HZCLkE6aqK8egSjLTU
-	ydj13e8JKMVCG3u8dwb8189ILrIcX7MTfcvLDMUa4CUZiVXhUHrZaBHpZnXpohSANgVO0MoNKCo
-	qY00rc0wttNMKncmiOS6T+hhi/Jxf3L9SHW8cPg==
-X-Google-Smtp-Source: AGHT+IFCSuHGBgOcgNRm+Jyx9Rk92WC70s7Qe1r45Ekea56q3x+YWZYnfOl+X2xsR2ea9MpX12ltkU9QLuvg4lUUs5g=
-X-Received: by 2002:a81:6d16:0:b0:5ff:8152:64b with SMTP id
- i22-20020a816d16000000b005ff8152064bmr311187ywc.15.1706682621572; Tue, 30 Jan
- 2024 22:30:21 -0800 (PST)
+        bh=W+0UrfFLZxByUhAQTRyALxC5TYXU+3QlMDreZkniP6Y=;
+        b=kF9bo2BAKyHDU54IUFJ6TxP4B6F2CuLD5Yp48wszXqLtb2KJs9VDoQoSUfCQZJlIIZ
+         UWYgrj1hmv8RbIhyzn/9U7av/mOJykPhgcPFr66SBviTZL0ssrqL3TCL0FHZvSPwnoO4
+         oTgbYntZsY9SCIzqJu4art8gTJwBIOYJY9yuS2cuua7dPp+JIVrjPr1+RUIGB0YC1F58
+         GpMmb2CQMvq5oYdyusMHqNTZymX/G/pwwPU8E90W6DHYN4OXN8D0KblNzotXaBAP27gj
+         /q5KGU9DL3C5zhkO8MHMGxAIEVuba7HPov8w9Cc5KUEXEM6yncFqgmDNhcZ0jLy2DJr5
+         4x2Q==
+X-Gm-Message-State: AOJu0Yy/2nO8QW/eVLuysxZihKHbRIqB+a7u9XGDb6toYjcmy+zofCsz
+	RDcNashgeJA0UffderBp0e98HLAxc9dGRV+nnpSi1eOS5UJZe5KBS1icKRink1jycQJFKvgdRuJ
+	LWsqh26jQKrOvJiZlCpTHNlj2ecd5Bn0sHIaJZQ==
+X-Google-Smtp-Source: AGHT+IFxRXwNP5PRj+1YvzHjYbCYITU/P5nsMmG4/Z+5FnhpEGiUV21GZeIbWwZE5W49t+z2Do1jj0wx+tXggTPULI4=
+X-Received: by 2002:a5b:582:0:b0:dc2:1c77:ca7 with SMTP id l2-20020a5b0582000000b00dc21c770ca7mr757962ybp.36.1706682786826;
+ Tue, 30 Jan 2024 22:33:06 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <87o7d26qla.wl-kuninori.morimoto.gx@renesas.com> <87le866qke.wl-kuninori.morimoto.gx@renesas.com>
-In-Reply-To: <87le866qke.wl-kuninori.morimoto.gx@renesas.com>
+References: <87o7d26qla.wl-kuninori.morimoto.gx@renesas.com> <87eddy6qjf.wl-kuninori.morimoto.gx@renesas.com>
+In-Reply-To: <87eddy6qjf.wl-kuninori.morimoto.gx@renesas.com>
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date: Wed, 31 Jan 2024 08:30:10 +0200
-Message-ID: <CAA8EJpoRhS_yvJJUuC3YkWRAKT7e03k+-K=6QKfL_6TkB1XoxA@mail.gmail.com>
-Subject: Re: [PATCH v3 02/24] of: property: use unsigned int return on of_graph_get_endpoint_count()
+Date: Wed, 31 Jan 2024 08:32:56 +0200
+Message-ID: <CAA8EJpq79tOCH3vK+Hh_XD4mtj1GVgVvwehQF4BfxTjwPi_fHQ@mail.gmail.com>
+Subject: Re: [PATCH v3 07/24] gpu: drm: switch to use of_graph_get_next_device_endpoint()
 To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 Cc: "Bryan O'Donoghue" <bryan.odonoghue@linaro.org>, 
 	"Lad, Prabhakar" <prabhakar.csengg@gmail.com>, 
@@ -142,62 +141,29 @@ Content-Type: text/plain; charset="UTF-8"
 On Wed, 31 Jan 2024 at 07:05, Kuninori Morimoto
 <kuninori.morimoto.gx@renesas.com> wrote:
 >
-> The return type and the variable of of_graph_get_endpoint_count()
-> should be unsigned. Tidyup it.
-
-'the variable'?
-
-I'd have added a few words telling that return type can be unsigned
-because there is no error reporting for this function.
-
+> of_graph_get_next_endpoint() is now renamed to
+> of_graph_get_next_device_endpoint(). Switch to it.
 >
 > Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 > ---
->  drivers/of/property.c    | 2 +-
->  include/linux/of_graph.h | 4 ++--
->  2 files changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/of/property.c b/drivers/of/property.c
-> index 4e879faa1710..25d73409aeee 100644
-> --- a/drivers/of/property.c
-> +++ b/drivers/of/property.c
-> @@ -817,7 +817,7 @@ EXPORT_SYMBOL(of_graph_get_remote_port);
->   *
->   * Return: count of endpoint of this device node
->   */
-> -int of_graph_get_endpoint_count(const struct device_node *np)
-> +unsigned int of_graph_get_endpoint_count(const struct device_node *np)
->  {
->         struct device_node *endpoint;
->         int num = 0;
-> diff --git a/include/linux/of_graph.h b/include/linux/of_graph.h
-> index 4d7756087b6b..a4bea62bfa29 100644
-> --- a/include/linux/of_graph.h
-> +++ b/include/linux/of_graph.h
-> @@ -41,7 +41,7 @@ struct of_endpoint {
->  bool of_graph_is_present(const struct device_node *node);
->  int of_graph_parse_endpoint(const struct device_node *node,
->                                 struct of_endpoint *endpoint);
-> -int of_graph_get_endpoint_count(const struct device_node *np);
-> +unsigned int of_graph_get_endpoint_count(const struct device_node *np);
->  struct device_node *of_graph_get_port_by_id(struct device_node *node, u32 id);
->  struct device_node *of_graph_get_next_endpoint(const struct device_node *parent,
->                                         struct device_node *previous);
-> @@ -68,7 +68,7 @@ static inline int of_graph_parse_endpoint(const struct device_node *node,
->         return -ENOSYS;
->  }
->
-> -static inline int of_graph_get_endpoint_count(const struct device_node *np)
-> +static inline unsigned int of_graph_get_endpoint_count(const struct device_node *np)
->  {
->         return 0;
->  }
-> --
-> 2.25.1
+>  drivers/gpu/drm/armada/armada_drv.c                   | 2 +-
+>  drivers/gpu/drm/bridge/tc358767.c                     | 2 +-
+>  drivers/gpu/drm/drm_of.c                              | 6 +++---
+>  drivers/gpu/drm/meson/meson_drv.c                     | 4 ++--
+>  drivers/gpu/drm/msm/msm_drv.c                         | 2 +-
+>  drivers/gpu/drm/mxsfb/lcdif_drv.c                     | 2 +-
+>  drivers/gpu/drm/omapdrm/dss/base.c                    | 2 +-
+>  drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c | 2 +-
+>  drivers/gpu/drm/pl111/pl111_drv.c                     | 2 +-
+>  drivers/gpu/drm/renesas/rcar-du/rcar_du_kms.c         | 2 +-
+>  drivers/gpu/drm/stm/ltdc.c                            | 4 ++--
+>  drivers/gpu/drm/tiny/arcpgu.c                         | 2 +-
+>  12 files changed, 16 insertions(+), 16 deletions(-)
 >
 
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
---
+-- 
 With best wishes
 Dmitry
 
