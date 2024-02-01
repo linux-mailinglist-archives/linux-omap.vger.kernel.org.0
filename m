@@ -1,104 +1,105 @@
-Return-Path: <linux-omap+bounces-476-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-477-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0638C84541A
-	for <lists+linux-omap@lfdr.de>; Thu,  1 Feb 2024 10:36:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF9DD845D38
+	for <lists+linux-omap@lfdr.de>; Thu,  1 Feb 2024 17:28:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF4811F26C84
-	for <lists+linux-omap@lfdr.de>; Thu,  1 Feb 2024 09:36:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C227297A41
+	for <lists+linux-omap@lfdr.de>; Thu,  1 Feb 2024 16:28:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF7E615CD64;
-	Thu,  1 Feb 2024 09:32:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF10E5A4E6;
+	Thu,  1 Feb 2024 16:27:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="kBuCE4Uf"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="34Msl+Kz"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E537B4DA17;
-	Thu,  1 Feb 2024 09:32:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DE757E0F0;
+	Thu,  1 Feb 2024 16:27:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706779971; cv=none; b=LZfmaT1g5dA4uMnwO7uN87QL9i+WXhhcU2oEhSHEw81h46OdxnR6FRHtXBkxSWE1zU0r/PL8GTzpp7XjwNdRXq32VQ7FdfF2KE5hiaEJ5I9PALDjhEudXTErreIAw43x3FeNGTz47+4JrAVMJFEDQxozex5JogMsQ2VYpLDsusI=
+	t=1706804850; cv=none; b=pd4Ew+f4MYr4XlVKxW/IBJ0QdjP9Sk+VvDQET0brMp8tmRHDcCSIxyh5hIYIneLj1LQc7tFSGwmJWE7n470NoGBlMMO83KaulErZ16ZT0R2cMnKNvlXuJEO+nPtaNkxjuTwqb0CSplfMPWHXKlvW4hk23eLmGYTtC2Ljhvsdtvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706779971; c=relaxed/simple;
-	bh=thTHMvayYaLq2yO8XMZ4jUxByNXI43HWzHIRtPqbbUQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WV7K/4EO/hnFS3eU4S+6uZrn/H+iZZHG5Zoz9WTONvWvu1XjelXESJLjOReHo9q18EovSTOACNzsliPaO8/H0NfCJTtOLlY6vML9rzAFsQFKk0yrV9Lf9Phocd7D1Vo/aWfxUq4f4sm/SV+5RbuYTmbbI/teMIowYKivFSnt5qA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=kBuCE4Uf; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1706804850; c=relaxed/simple;
+	bh=iZg1XvNNrQTqQv9Xbt4+0uhfMfb2hZQVzICMpctE37w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=X9H0Q5NiLNi1ThVudYiAeD3YGRN9fS6wCf0yBGtsVkuyajQrTQX7XDod0Vla4eM9+oUldDmt012d1d4Xne80tTsXVGx/HAUxYlgx17OyUKNGu8HqVhEJuMCDxsXYKzzrHmycjlp3qOWZWhKWoIb26of63IYUJZhNTW0QJkLhHjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=34Msl+Kz; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=GuAZN/0TLHop95zPSJq/liRwkKba22ntuB+Io7930rw=; b=kBuCE4Ufm6S/ImUw17iI8hZnXf
-	rlJF+fpgS8tAJjS3LRyQrB5Z5OwAa96l6uI7CNX2Ha2Xzs9m4CQazj4EgVAbQy453207RB53/oSnC
-	heyPck68MKup3/8FJ41Po0+9xp10A/CYe4eu5wYhQpkjM62gNkPHQzNDjKYXvWA5exhxqrAVee+27
-	R7KKhsFMf/PYjBo+IhLHRYPnSUBX2xRK2Dn67rTirGUOlLF73FN2mVa06lL6MbJYtcClayhPWusnb
-	h72jJC4ftuqQAoBdde0ucPjri7kYbrpukKBV7nd19Isn83Lt2rFLPph31x8HXoOuHZ+YeVPYc35Aj
-	cogDNiOQ==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:47286)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1rVTR6-0004Lm-2o;
-	Thu, 01 Feb 2024 09:32:44 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1rVTR3-0007HN-QF; Thu, 01 Feb 2024 09:32:41 +0000
-Date: Thu, 1 Feb 2024 09:32:41 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Randy Dunlap <rdunlap@infradead.org>
-Cc: Tony Lindgren <tony@atomide.com>, linux-kernel@vger.kernel.org,
-	linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	patches@armlinux.org.uk, Paul Walmsley <paul@pwsan.com>,
-	=?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
-	Kevin Hilman <khilman@kernel.org>
-Subject: Re: [PATCH 00/13] ARM: OMAP2+: fix a bunch of kernel-doc warnings
-Message-ID: <ZbtlOWcGglCeYj6X@shell.armlinux.org.uk>
-References: <20240117011004.22669-1-rdunlap@infradead.org>
- <20240117131305.GP5185@atomide.com>
- <e6692a04-142c-4df4-83dc-534ab27a55f6@infradead.org>
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=iniiD51Qgwz4Ao5KkCfkCegFHmr+NHhd1gASxkl1EPQ=; b=34Msl+Kzci4le/Fltq2WjQe4dY
+	Lkds1Yh6T5voCbgUvpxUYWOaENRUru1C38IxGT1Mx9hFGzz42uVHPLz8qWcdpmpERZ7LRs/S0lueF
+	lO3jTUer7HIPfFrRK92hpdJbu8YUOeKy7mACF7Vi/1+2ouP1ShwgNXgK1XbYKOrJBm0jKheci6F32
+	gK3ciPgWdu3mt+MjdVmCx/jk1XboMIPay+kvHvN4dVceOByETtUP00CrFfQPe0BkIwGThG4o/UTDb
+	GnjdA6qICYnQTUjdr42ogpZEqOzS7X7Eiis82odl0GUJuAKzTMbStKcNMODFlPDp0fVbJxW5BfJlb
+	ZgrFT00g==;
+Received: from [50.53.50.0] (helo=[192.168.254.15])
+	by bombadil.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rVZuQ-00000008dpB-3Znr;
+	Thu, 01 Feb 2024 16:27:26 +0000
+Message-ID: <1f53a83d-cae4-4223-ad47-6d1d9c80dc2b@infradead.org>
+Date: Thu, 1 Feb 2024 08:27:25 -0800
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e6692a04-142c-4df4-83dc-534ab27a55f6@infradead.org>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/13] ARM: OMAP2+: fix a bunch of kernel-doc warnings
+Content-Language: en-US
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Tony Lindgren <tony@atomide.com>, linux-kernel@vger.kernel.org,
+ linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ patches@armlinux.org.uk, Paul Walmsley <paul@pwsan.com>,
+ =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
+ Kevin Hilman <khilman@kernel.org>
+References: <20240117011004.22669-1-rdunlap@infradead.org>
+ <20240117131305.GP5185@atomide.com>
+ <e6692a04-142c-4df4-83dc-534ab27a55f6@infradead.org>
+ <ZbtlOWcGglCeYj6X@shell.armlinux.org.uk>
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <ZbtlOWcGglCeYj6X@shell.armlinux.org.uk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jan 17, 2024 at 08:52:16AM -0800, Randy Dunlap wrote:
-> 
-> 
-> On 1/17/24 05:13, Tony Lindgren wrote:
-> > * Randy Dunlap <rdunlap@infradead.org> [240117 01:10]:
-> >> Fix many kernel-doc warnings in arch/arm/mach-omap2/:
-> > 
-> > Thanks for fixing these. These are unlikely to conflict with anything so
-> > please queue them along with other clean-up:
-> > 
-> > Acked-by: Tony Lindgren <tony@atomide.com>
-> > 
-> > Or alternatively let me know if you want me to apply them.
-> 
-> Yes, please go ahead and apply them.
 
-If you intend people other than me to apply patches, then please do not
-copy the patches to the patch system. I now have to go through all 16
-patches and search the mailing list to find out what happened... and so
-far for the few I've checked, other people have applied them. So I'm
-coming to the conclusion I should just discard the entire lot.
+
+On 2/1/24 01:32, Russell King (Oracle) wrote:
+> On Wed, Jan 17, 2024 at 08:52:16AM -0800, Randy Dunlap wrote:
+>>
+>>
+>> On 1/17/24 05:13, Tony Lindgren wrote:
+>>> * Randy Dunlap <rdunlap@infradead.org> [240117 01:10]:
+>>>> Fix many kernel-doc warnings in arch/arm/mach-omap2/:
+>>>
+>>> Thanks for fixing these. These are unlikely to conflict with anything so
+>>> please queue them along with other clean-up:
+>>>
+>>> Acked-by: Tony Lindgren <tony@atomide.com>
+>>>
+>>> Or alternatively let me know if you want me to apply them.
+>>
+>> Yes, please go ahead and apply them.
+> 
+> If you intend people other than me to apply patches, then please do not
+> copy the patches to the patch system. I now have to go through all 16
+> patches and search the mailing list to find out what happened... and so
+> far for the few I've checked, other people have applied them. So I'm
+> coming to the conclusion I should just discard the entire lot.
+> 
+
+Got it. and sorry about that.  :(
+
 
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+#Randy
 
