@@ -1,133 +1,220 @@
-Return-Path: <linux-omap+bounces-478-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-479-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33A7B846704
-	for <lists+linux-omap@lfdr.de>; Fri,  2 Feb 2024 05:36:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA6A98476A0
+	for <lists+linux-omap@lfdr.de>; Fri,  2 Feb 2024 18:50:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC5831F247E4
-	for <lists+linux-omap@lfdr.de>; Fri,  2 Feb 2024 04:36:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF8911C25BFD
+	for <lists+linux-omap@lfdr.de>; Fri,  2 Feb 2024 17:50:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 529E4F4EA;
-	Fri,  2 Feb 2024 04:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2238914D422;
+	Fri,  2 Feb 2024 17:49:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b="ArgEnzRR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WPJJYvAz"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail5.25mail.st (mail5.25mail.st [74.50.62.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15048DDD6;
-	Fri,  2 Feb 2024 04:36:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.50.62.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DCEE148FFF;
+	Fri,  2 Feb 2024 17:49:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706848585; cv=none; b=hwDve+wqV7/4mNrEdMR0gVU18WUHu6M/tif9nN6PkjEcegBmzP8Xj9uIBbSwEWg53D7qmyYOzvIHufT5BeiqjCp/J/vqphMIVyZwpVK7B03NmOb25lAtOeJL9sy40SYHR5uuNYL0nbXHLmEwfYiTjQmGstdbNCIxJorbvbm/zIs=
+	t=1706896184; cv=none; b=YDIyMj6GsiKTX8FwYtRTnwXM96mOn5kMPIJJW93iXTK2aZs/z0r3zkxwNMulY6nQuK360wH/JfBAC6PSIZ/NGT5Pimm7fCm246K2+IqhpVgoDWHjJybKQrWzN05KyMCRmsnJ6YdJzsTux8mk7XY18prVk9ps/eGcCZgzpu07pt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706848585; c=relaxed/simple;
-	bh=nkmDbUQlq4zNwl6Jd/Vb+PA0uyv1xGA2FmONzdP1Sn4=;
+	s=arc-20240116; t=1706896184; c=relaxed/simple;
+	bh=dOC6l/UpwJt+sDh73ImH2SYn2JbGC0ZF3A9tIFxdqtk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JLn6Ke1mQttxPHzYuyP1JTRza4nDWQF+cjB4q1PO2TqLMcXD69T1+JaUtY/4xFLce+I/cfZbqDr8xvycbtydgJrvGQpeCKlCXFKwfkl84oKToHBIjx2rUfuVuTmA+XobFJD2PZtK6qCsB9oFEsaCc/4zbHYw8yd/k78YXDtaPmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com; spf=fail smtp.mailfrom=atomide.com; dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b=ArgEnzRR; arc=none smtp.client-ip=74.50.62.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=atomide.com
-Received: from localhost (91-158-86-216.elisa-laajakaista.fi [91.158.86.216])
-	by mail5.25mail.st (Postfix) with ESMTPSA id 7793C60363;
-	Fri,  2 Feb 2024 04:36:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=atomide.com;
-	s=25mailst; t=1706848576;
-	bh=nkmDbUQlq4zNwl6Jd/Vb+PA0uyv1xGA2FmONzdP1Sn4=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=q8FrLABDuJ2YzIBnCSTfQ0mx/QESP0eyj51NH5pTzUeiN1YQkwsEPIiwpG61oOjj1cpp2nV8hKqSxujoS0EoKhE3I7xeQQYwKDmJYKoY5d77619Du09xr8dgpdx2ekTtJVpmZVmaGY/i2ZW6d2KzcouZuQBeR4ZtW/ScZkcJzSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WPJJYvAz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA7E5C433C7;
+	Fri,  2 Feb 2024 17:49:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706896184;
+	bh=dOC6l/UpwJt+sDh73ImH2SYn2JbGC0ZF3A9tIFxdqtk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ArgEnzRRe9ms4Josxbe+YGGWeYwx4jhbE5Mwx/eGYWy/niGPn8okDCDWzgZS/U/3G
-	 Fqlwy8VWlnBNsPwSN3+4/aMleaqsmouCRojQpae36sGl317/afEgvPIU8eKuoBXwzQ
-	 4Owiiu79KlW+3N815WAd1ZA77dV1UxlctB9wISJcDWPbigCUgOyiCOlwLD1hEnaioT
-	 RXAcjf96VNbL6GOq3ifQnjneXN1Q+Jg99tsu32dfvjDRZXvwp884S+HmhR/CVi2hu/
-	 xSw11Zr5FhB7MH03KmqC1/65wSpcekJyhyI5okhChFspfk3wE/79hL400zxDSmiREP
-	 72d1ZNaRvd+VA==
-Date: Fri, 2 Feb 2024 06:36:01 +0200
-From: Tony Lindgren <tony@atomide.com>
-To: Romain Naour <romain.naour@smile.fr>
-Cc: Linux-OMAP <linux-omap@vger.kernel.org>, Nishanth Menon <nm@ti.com>,
-	linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>,
-	Adrian Hunter <adrian.hunter@intel.com>
-Subject: Re: sdhci-omap: issues with PM features since 5.16
-Message-ID: <20240202043601.GA5185@atomide.com>
-References: <2e5f1997-564c-44e4-b357-6343e0dae7ab@smile.fr>
- <20240127044851.GW5185@atomide.com>
- <d09925b3-83e6-4c52-878f-4c1db7670543@smile.fr>
- <20240129111733.GX5185@atomide.com>
- <f80b5390-8bfa-43d8-80ce-70b069aef947@smile.fr>
- <7d72f3ee-bcfe-4197-b492-857dc49b2788@smile.fr>
- <20240131103050.GZ5185@atomide.com>
- <519f7e2e-4df2-4b3c-90e2-2383b6b34562@smile.fr>
+	b=WPJJYvAz83PqbWfJevH/VqATyZyF8CMELM/qsF5iGbGg+7c08RkvpLVnt1A5GE/cF
+	 tcu63FYZn4b7uhLLPzbN+EdUSZoRoygx/1agCdTpP9s/n883bAkiQP8gjBz/mp+kDW
+	 qAUTtz5OnUdUz5st4dAWc5OGoV8IM7DK0KDm2fKGNgkvkbFxVCqblojdOgeVCjK2WT
+	 8TgIKe63Wz1bq6Pwy73SdDw6XnGCRuLJmukJO4LPOLdK/c9MQGRTbs1oxi0ZYlm/v9
+	 h+6C4sTZAkHgIq2mWUe1PiL9Ix6Qz58Sj0f91Fwj4LzNhLlO4dG31aRGnZ1zxuS/WT
+	 KdHH/uaxwI7ag==
+Date: Fri, 2 Feb 2024 11:49:41 -0600
+From: Rob Herring <robh@kernel.org>
+To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Cc: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+	"Lad,  Prabhakar" <prabhakar.csengg@gmail.com>,
+	=?iso-8859-1?Q?=22Niklas_S=C3=B6derlund=22?= <niklas.soderlund+renesas@ragnatech.se>,
+	=?iso-8859-1?Q?=22Uwe_Kleine-K=C3=B6nig=22?= <u.kleine-koenig@pengutronix.de>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Alexey Brodkin <abrodkin@synopsys.com>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Andy Gross <agross@kernel.org>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	David Airlie <airlied@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Emma Anholt <emma@anholt.net>,
+	Eugen Hristev <eugen.hristev@collabora.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Frank Rowand <frowand.list@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Helge Deller <deller@gmx.de>,
+	Hugues Fruchet <hugues.fruchet@foss.st.com>,
+	Jacopo Mondi <jacopo+renesas@jmondi.org>,
+	Jacopo Mondi <jacopo@jmondi.org>, James Clark <james.clark@arm.com>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+	Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Liam Girdwood <lgirdwood@gmail.com>, Liu Ying <victor.liu@nxp.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Marek Vasut <marex@denx.de>, Mark Brown <broonie@kernel.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Michael Tretter <m.tretter@pengutronix.de>,
+	Michal Simek <michal.simek@amd.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Philippe Cornu <philippe.cornu@foss.st.com>,
+	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>,
+	Rob Clark <robdclark@gmail.com>, Robert Foss <rfoss@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Saravana Kannan <saravanak@google.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sowjanya Komatineni <skomatineni@nvidia.com>,
+	Stefan Agner <stefan@agner.ch>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Sylwester Nawrocki <s.nawrocki@samsung.com>,
+	Takashi Iwai <tiwai@suse.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Tim Harvey <tharvey@gateworks.com>,
+	Todor Tomov <todor.too@gmail.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Yannick Fertre <yannick.fertre@foss.st.com>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Jonas Karlman <jonas@kwiboo.se>, Leo Yan <leo.yan@linaro.org>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Mike Leach <mike.leach@linaro.org>, Sam Ravnborg <sam@ravnborg.org>,
+	Sean Paul <sean@poorly.run>, Tom Rix <trix@redhat.com>,
+	coresight@lists.linaro.org, devicetree@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+	linux-amlogic@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+	linux-fbdev@vger.kernel.org, linux-media@vger.kernel.org,
+	linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+	linux-rpi-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org, linux-sound@vger.kernel.org,
+	linux-staging@lists.linux.dev,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-tegra@vger.kernel.org, llvm@lists.linux.dev
+Subject: Re: [PATCH v3 05/24] media: i2c: switch to use
+ of_graph_get_next_device_endpoint()
+Message-ID: <20240202174941.GA310089-robh@kernel.org>
+References: <87o7d26qla.wl-kuninori.morimoto.gx@renesas.com>
+ <87h6iu6qjs.wl-kuninori.morimoto.gx@renesas.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <519f7e2e-4df2-4b3c-90e2-2383b6b34562@smile.fr>
+In-Reply-To: <87h6iu6qjs.wl-kuninori.morimoto.gx@renesas.com>
 
-* Romain Naour <romain.naour@smile.fr> [240201 09:04]:
-> Le 31/01/2024 à 11:30, Tony Lindgren a écrit :
-> > * Romain Naour <romain.naour@smile.fr> [240130 11:20]:
-> >> Le 29/01/2024 à 18:42, Romain Naour a écrit :
-> >>> Le 29/01/2024 à 12:17, Tony Lindgren a écrit :
-> >>>> So I'm still guessing your issue is with emmc not getting reinitialized
-> >>>> properly as there's no mmc-pwrseq-emmc configured. Can you give it a
-> >>>> try? See am5729-beagleboneai.dts for an example.
-> >>
-> >> I can't add such mmc-pwrseq-emmc on the custom board, there is no gpio available
-> >> to reset the emmc device.
-> >>
-> >> To resume:
-> >> - the emmc doesn't work with mmc-hs200-1_8v mode with PM runtime enabled
-> >> - the emmc works with mmc-hs200-1_8v mode without PM runtime (patch series reverted)
-> >> - the emmc works with mmc-ddr-1_8v mode with PM runtime enabled
-> >>
-> >> AFAIU the hs200 mode requires some pin iodelay tuning (SDHCI_OMAP_REQUIRE_IODELAY)
-> >> is sdhci_omap_runtime_{suspend,resume} needs to take care of that?
-
-On PM runtime resume, sdhci_omap_runtime_resume() gets called and calls
-sdhci_runtime_resume_host(), and calls mmc->ops->set_ios().
-
-Then sdhci_omap_set_ios() calls sdhci_omap_set_timing() to set the iodelay.
-Maybe add some printk to sdhci_omap_set_timing() to verify the right modes
-get set on PM runtime resume?
-
-> >> The mmc2 clock seems idle when mmc-hs200-1_8v and PM runtime are used.
-> >>
-> >> omapconf dump prcm l3init
-> >>
-> >> (mmc2 clock idle)
-> >> | CM_L3INIT_MMC2_CLKCTRL           | 0x4A009330   | 0x01070000 |
-> >>
-> >> (mmc2 clock running)
-> >> | CM_L3INIT_MMC2_CLKCTRL           | 0x4A009330   | 0x01040002 |
-> >>
-> >> Thoughts?
-
-For the clocks above, that is as expected. The clocks get idled when the
-MMC controller is idle.
-
-> > OK so if the emmc reset gpio is not available, seems we should do something
-> > like the following patch to not set MMC_CAP_POWER_OFF_CARD unless the
-> > cap-power-off-card devicetree property is set.
-> > 
-> > Care to give it a try and see if it helps?
+On Wed, Jan 31, 2024 at 05:05:27AM +0000, Kuninori Morimoto wrote:
+> of_graph_get_next_endpoint() is now renamed to
+> of_graph_get_next_device_endpoint(). Switch to it.
 > 
-> Same problem without MMC_CAP_POWER_OFF_CARD flag (even by removing
-> MMC_CAP_AGGRESSIVE_PM too).
+> Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+> ---
+>  drivers/media/i2c/adv7343.c              | 2 +-
+>  drivers/media/i2c/adv748x/adv748x-core.c | 2 +-
+>  drivers/media/i2c/adv7604.c              | 2 +-
+>  drivers/media/i2c/isl7998x.c             | 2 +-
+>  drivers/media/i2c/max9286.c              | 2 +-
+>  drivers/media/i2c/mt9p031.c              | 2 +-
+>  drivers/media/i2c/mt9v032.c              | 2 +-
+>  drivers/media/i2c/ov2659.c               | 2 +-
+>  drivers/media/i2c/ov5645.c               | 2 +-
+>  drivers/media/i2c/ov5647.c               | 2 +-
+>  drivers/media/i2c/s5c73m3/s5c73m3-core.c | 2 +-
+>  drivers/media/i2c/s5k5baf.c              | 2 +-
+>  drivers/media/i2c/tc358743.c             | 2 +-
+>  drivers/media/i2c/tda1997x.c             | 2 +-
+>  drivers/media/i2c/tvp514x.c              | 2 +-
+>  drivers/media/i2c/tvp5150.c              | 4 ++--
+>  drivers/media/i2c/tvp7002.c              | 2 +-
+>  17 files changed, 18 insertions(+), 18 deletions(-)
 > 
-> I did some test with mmc capabilities mask but no progress so far.
+> diff --git a/drivers/media/i2c/adv7343.c b/drivers/media/i2c/adv7343.c
+> index ff21cd4744d3..7e4eb2f8bf0d 100644
+> --- a/drivers/media/i2c/adv7343.c
+> +++ b/drivers/media/i2c/adv7343.c
+> @@ -403,7 +403,7 @@ adv7343_get_pdata(struct i2c_client *client)
+>  	if (!IS_ENABLED(CONFIG_OF) || !client->dev.of_node)
+>  		return client->dev.platform_data;
+>  
+> -	np = of_graph_get_next_endpoint(client->dev.of_node, NULL);
+> +	np = of_graph_get_next_device_endpoint(client->dev.of_node, NULL);
 
-OK. So this issue seems to be related to the PM runtime resume not
-restoring something properly as you suggested earlier.
+This is assuming there's just 1 port and 1 endpoint, but let's be 
+specific as the bindings are (first endpoint on port 0):
 
-Regards,
+of_graph_get_endpoint_by_regs(client->dev.of_node, 0, -1);
 
-Tony
+Note we could ask for endpoint 0 here, but the bindings generally allow 
+for more than 1.
+
+I imagine most of the other cases here are the same.
+
+>  	if (!np)
+>  		return NULL;
+>  
+> diff --git a/drivers/media/i2c/adv748x/adv748x-core.c b/drivers/media/i2c/adv748x/adv748x-core.c
+> index 3eb6d5e8f082..4e9e4cef8954 100644
+> --- a/drivers/media/i2c/adv748x/adv748x-core.c
+> +++ b/drivers/media/i2c/adv748x/adv748x-core.c
+> @@ -657,7 +657,7 @@ static int adv748x_parse_dt(struct adv748x_state *state)
+>  	bool in_found = false;
+>  	int ret;
+>  
+> -	for_each_endpoint_of_node(state->dev->of_node, ep_np) {
+> +	for_each_device_endpoint_of_node(state->dev->of_node, ep_np) {
+
+I would skip the rename.
+
+Rob
 
