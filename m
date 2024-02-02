@@ -1,46 +1,46 @@
-Return-Path: <linux-omap+bounces-482-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-483-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6858884780F
-	for <lists+linux-omap@lfdr.de>; Fri,  2 Feb 2024 19:44:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 709E7847856
+	for <lists+linux-omap@lfdr.de>; Fri,  2 Feb 2024 19:50:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F72C28CBAB
-	for <lists+linux-omap@lfdr.de>; Fri,  2 Feb 2024 18:44:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F04FF1F2F8A1
+	for <lists+linux-omap@lfdr.de>; Fri,  2 Feb 2024 18:50:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41EDB126F26;
-	Fri,  2 Feb 2024 18:40:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26DAA1369B5;
+	Fri,  2 Feb 2024 18:40:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cJ+KZ62z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s+C+aGCr"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52684126F01;
-	Fri,  2 Feb 2024 18:40:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B43951369A2;
+	Fri,  2 Feb 2024 18:40:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706899201; cv=none; b=EoAfyyra/pmcMaeLOXnl7wXwjCnnJ4vmXrUOsgjwjQQF7D1rkhTB/WXU191YY0AXTHEc2InZJAyX69jPsB2j9D3ljmHK+urfxehvy0S+Ad+7bBApPlTsf4QOmET7uiYwmKFbi3iNzH7TaZZTuY6qMJ01j2E4pBtX6GgM6/PcirI=
+	t=1706899248; cv=none; b=TTiXVZrSZ9gpg8b0MBNpwpG3ncMJXAL6BO9/cS0W0OTzr1KofphER1+mdjgHPFX59QzzplkfkXmh8ZIw0hit/tW/sW3WA6rUzLTtX7T3pxath4Nj6W33Wi1706ahqpip8Negh58uqQfU/sHKhwPz6LEBKxd4u4q67wMAeLysJuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706899201; c=relaxed/simple;
-	bh=VisnG48v7H1BKRcG6W8u+lL8vcrOmwwqiTIoVM7Yz70=;
+	s=arc-20240116; t=1706899248; c=relaxed/simple;
+	bh=XDGChs3C5gdoEueI7oNpmXwNAkZhxRdlIIfIwPywzJI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LZNHSzIleJOo85S5VRXtPTxLJs2c2LDpXYMiogpOUsdQ4tAoW2ELzLV6Ch8f5tAJ6xjMdG3LCdtGOYy+/yYnrDbz9klHq73Iy2WVqZd0yt7ZepDjl2EQQPz/iUb/XvWlmIdQPx84Yo9gCDo6Ip3dRN5peBqAxNUS7Iv85IfjIFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cJ+KZ62z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB8C5C43390;
-	Fri,  2 Feb 2024 18:39:58 +0000 (UTC)
+	 MIME-Version; b=LipE7YbRyH6sxItnYQk4d7qDzoWLxjOqEp4d/tS/PT5PJRdvPXcAzlhCn1Tly//2IXphxQqxih3iHtqk6Ui4F7CGolyK8+iA8FR1OqCBtCte0+s7xSu3WLaH3WT/VN/flCf3lA/G/xeq76gqdSicK92m2c0aXCcOczsJQ/8rltQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s+C+aGCr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58F07C433B1;
+	Fri,  2 Feb 2024 18:40:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706899200;
-	bh=VisnG48v7H1BKRcG6W8u+lL8vcrOmwwqiTIoVM7Yz70=;
+	s=k20201202; t=1706899248;
+	bh=XDGChs3C5gdoEueI7oNpmXwNAkZhxRdlIIfIwPywzJI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cJ+KZ62zGeiSTxNsm1rY8V86LysMUeO4Whx5bBHlCII8q6kuzvvZNQoU5hEx+i1ik
-	 Aumo8kuU4/TyzQkS51k7FeiGMi3lQMyT9cUb9TLMCvXu1R7jAweUWSEgASgXF88N+1
-	 ABVBaUPB5oPjB2P+pLbIxYT6M57KLOsJSGPiBv01Q9y+6Bz8JRG4CFBmROm8BVPtwX
-	 FfO7GDGYGJRWj3LmBcUtBy1QO1064hInPkisJ6vV5bYJyyMLyJYE7TDeD+LCrEU6Ww
-	 UMO4koAJq6MWvNa1VE2XcLQHvOHYCO+PoirK5ZmIkDFBSBkxKInKW0hH+jNXEqphKK
-	 KCQu2dbgG893g==
+	b=s+C+aGCrVGjp0yP+0eBsWgPUoa9PrpWUo1fF69o2Dicr8OoJ+s/7DqR77fZ2DXpzH
+	 5K5Hkl3lAU5hP1FpZxy3YpVuIznssWVl8k3TTAhHYdvl/UxN/n5EU3hYXsqA96T8il
+	 MtCuNWLruyq0Q8vpQYxagUmtO0h3mOgtZv1B6CpXnTOcU4299vYSpT9CJpq+RsBkDk
+	 vN6Co7Loac9Re1+VVUqpxDNQ/5kjMh3FVbbat6zLbGfGxneC7FXwMnIzAOI7Mu46Uk
+	 6IiB9ZCESH1y5okeK2sn4JyD1fYWsWJzxtNZ+CDWyGPU/uEzcYxbKguE9QrpoyUXWs
+	 Pq5D/0ijqTh8A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -60,12 +60,12 @@ Cc: Lukas Wunner <lukas@wunner.de>,
 	linux-arm-kernel@lists.infradead.org,
 	linux-aspeed@lists.ozlabs.org,
 	linux-omap@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.7 20/23] ARM: dts: Fix TPM schema violations
-Date: Fri,  2 Feb 2024 13:39:16 -0500
-Message-ID: <20240202183926.540467-20-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 19/21] ARM: dts: Fix TPM schema violations
+Date: Fri,  2 Feb 2024 13:40:06 -0500
+Message-ID: <20240202184015.540966-19-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240202183926.540467-1-sashal@kernel.org>
-References: <20240202183926.540467-1-sashal@kernel.org>
+In-Reply-To: <20240202184015.540966-1-sashal@kernel.org>
+References: <20240202184015.540966-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -74,7 +74,7 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.7.3
+X-stable-base: Linux 6.6.15
 Content-Transfer-Encoding: 8bit
 
 From: Lukas Wunner <lukas@wunner.de>
@@ -188,10 +188,10 @@ index 31590d3186a2..00e5887c926f 100644
  			reg = <0>;
  		};
 diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-phytec-tauri.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ull-phytec-tauri.dtsi
-index 44cc4ff1d0df..d12fb44aeb14 100644
+index ea627638e40c..7dd1fe5a2fb7 100644
 --- a/arch/arm/boot/dts/nxp/imx/imx6ull-phytec-tauri.dtsi
 +++ b/arch/arm/boot/dts/nxp/imx/imx6ull-phytec-tauri.dtsi
-@@ -116,7 +116,7 @@ &ecspi1 {
+@@ -121,7 +121,7 @@ &ecspi1 {
  	tpm_tis: tpm@1 {
  		pinctrl-names = "default";
  		pinctrl-0 = <&pinctrl_tpm>;
