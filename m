@@ -1,392 +1,171 @@
-Return-Path: <linux-omap+bounces-480-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-481-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94A4B8476C5
-	for <lists+linux-omap@lfdr.de>; Fri,  2 Feb 2024 18:57:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDC8C8476E9
+	for <lists+linux-omap@lfdr.de>; Fri,  2 Feb 2024 19:01:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 236732886C1
-	for <lists+linux-omap@lfdr.de>; Fri,  2 Feb 2024 17:57:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94742285EE8
+	for <lists+linux-omap@lfdr.de>; Fri,  2 Feb 2024 18:01:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5D7314C59D;
-	Fri,  2 Feb 2024 17:56:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g2CV4Vs8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55B6A14C5B5;
+	Fri,  2 Feb 2024 18:01:30 +0000 (UTC)
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D8F3145B19;
-	Fri,  2 Feb 2024 17:56:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3F3314AD34;
+	Fri,  2 Feb 2024 18:01:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706896579; cv=none; b=FrUf2DOgUto/0MUViygAG9Yg8EhCK1DXl7YodeNxRjLyRrPpQ7U+xuawDbQgh5RmcvkLYcr5MYrnoxE0XGMLRUD3KDbZz6oQYifiX4Ts7njGzlYlZnih2ikbNi4LL7Af9l06NEU4nTPyNL4IIzF8EAf95YB8u2N6QYR01NMZbEQ=
+	t=1706896890; cv=none; b=logxrat8pwAF1SZli5sHKNK9C7Lm4mBRVUjkxgg3MuI26ISwueUBJngfaaXIkYtw1X3QIHI3DZSxddkmRq6SwAwmEZec0n0rbE7kFynbHFtlcg43b/tKQ8IPxfd4Ju2/iFRf5y04UYKr8u+4RnEQydc+z/gwCVFbvup3RzRqnNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706896579; c=relaxed/simple;
-	bh=xQdrcH5A8lS5nkpqdWRHj3iy+HYu6WHXpSprNhL18UA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CoEZCK/hWrWmkhIMctD32QDb6hpDv/s1NfVsVGPa6rA2yzSJnuT7UzE0HBtweBnUQ3x2acCqZnH95ip/4c0CjRuNTBmwx+McgBwAtuphE/ps50h0fBcI+HC9h/NRGvE9vBE8hm8+UPhTxIBWXBKAdW9IsC5bvPuTuK9cyGrWZQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g2CV4Vs8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E93CCC433F1;
-	Fri,  2 Feb 2024 17:56:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706896578;
-	bh=xQdrcH5A8lS5nkpqdWRHj3iy+HYu6WHXpSprNhL18UA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=g2CV4Vs8NwjSqfiNsg00uiOUdnJJuA7G6PBrsuSCuxbv159o1b4ZRSuF7OyTOhtXg
-	 woENTE2tEZiFG6VnssVe1AxW7cvrV8xCAzqix43Te7abvn9q8+RF6SOXtZyIcnOd3y
-	 EMYamJE3kVbXgwiLkfmAorueG9GOYjnbUGjmWYicmeuDQb7yE/HCvCrsZEp9qL20tc
-	 M3BgLxNOK490xXJIWbzOX+llq2joPitSar6Z8ot+4L7yd75BSNC4fGtERsbpSjDrtn
-	 NnsQy+ONyY/VxQ31aLDNyN4L0XbrqNwwIQMDBndcSSeplbKpdbTRz0G4RiT6I92gnA
-	 3v9r2pn+G8JZQ==
-Date: Fri, 2 Feb 2024 11:56:16 -0600
-From: Rob Herring <robh@kernel.org>
-To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Cc: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-	"Lad,  Prabhakar" <prabhakar.csengg@gmail.com>,
-	=?iso-8859-1?Q?=22Niklas_S=C3=B6derlund=22?= <niklas.soderlund+renesas@ragnatech.se>,
-	=?iso-8859-1?Q?=22Uwe_Kleine-K=C3=B6nig=22?= <u.kleine-koenig@pengutronix.de>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Alexey Brodkin <abrodkin@synopsys.com>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Andy Gross <agross@kernel.org>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	David Airlie <airlied@gmail.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Emma Anholt <emma@anholt.net>,
-	Eugen Hristev <eugen.hristev@collabora.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Frank Rowand <frowand.list@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Helge Deller <deller@gmx.de>,
-	Hugues Fruchet <hugues.fruchet@foss.st.com>,
-	Jacopo Mondi <jacopo+renesas@jmondi.org>,
-	Jacopo Mondi <jacopo@jmondi.org>, James Clark <james.clark@arm.com>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
-	Kieran Bingham <kieran.bingham@ideasonboard.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Liam Girdwood <lgirdwood@gmail.com>, Liu Ying <victor.liu@nxp.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Marek Vasut <marex@denx.de>, Mark Brown <broonie@kernel.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Michael Tretter <m.tretter@pengutronix.de>,
-	Michal Simek <michal.simek@amd.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Philippe Cornu <philippe.cornu@foss.st.com>,
-	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>,
-	Rob Clark <robdclark@gmail.com>, Robert Foss <rfoss@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Saravana Kannan <saravanak@google.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sowjanya Komatineni <skomatineni@nvidia.com>,
-	Stefan Agner <stefan@agner.ch>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Sylwester Nawrocki <s.nawrocki@samsung.com>,
-	Takashi Iwai <tiwai@suse.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Tim Harvey <tharvey@gateworks.com>,
-	Todor Tomov <todor.too@gmail.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Yannick Fertre <yannick.fertre@foss.st.com>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Jessica Zhang <quic_jesszhan@quicinc.com>,
-	Jonas Karlman <jonas@kwiboo.se>, Leo Yan <leo.yan@linaro.org>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Mike Leach <mike.leach@linaro.org>, Sam Ravnborg <sam@ravnborg.org>,
-	Sean Paul <sean@poorly.run>, Tom Rix <trix@redhat.com>,
-	coresight@lists.linaro.org, devicetree@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
-	linux-amlogic@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-	linux-fbdev@vger.kernel.org, linux-media@vger.kernel.org,
-	linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-	linux-rpi-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org, linux-sound@vger.kernel.org,
-	linux-staging@lists.linux.dev,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-tegra@vger.kernel.org, llvm@lists.linux.dev
-Subject: Re: [PATCH v3 06/24] media: platform: switch to use
- of_graph_get_next_device_endpoint()
-Message-ID: <20240202175616.GB310089-robh@kernel.org>
-References: <87o7d26qla.wl-kuninori.morimoto.gx@renesas.com>
- <87frye6qjl.wl-kuninori.morimoto.gx@renesas.com>
+	s=arc-20240116; t=1706896890; c=relaxed/simple;
+	bh=nG1c1Dr5WvvpIPOp3w+4a7YAysmZsyzWk5n7RoQZn3w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=X1hA/hS3+2RzRZLpQY6fShoYf0qF5fCLvisNaPlKT/1En+fsNBGJtFgj4TGWUMEOf5uq1RQGzZcvakkb71gW1IrwnNjw2zljPGaIX1ZpPGgewGyVF9ydaZ8mXPrPwQGO5kPsbPdpKrdwfLk5c412eHGlufrU6EajFE2g++r986g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BDE2D19F0;
+	Fri,  2 Feb 2024 10:02:08 -0800 (PST)
+Received: from [10.57.9.194] (unknown [10.57.9.194])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8CBEC3F762;
+	Fri,  2 Feb 2024 10:01:11 -0800 (PST)
+Message-ID: <128e2760-6346-4c56-982b-42357a391ee4@arm.com>
+Date: Fri, 2 Feb 2024 18:01:02 +0000
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87frye6qjl.wl-kuninori.morimoto.gx@renesas.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 08/24] hwtracing: switch to use
+ of_graph_get_next_device_endpoint()
+Content-Language: en-GB
+To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+ "Lad, Prabhakar" <prabhakar.csengg@gmail.com>,
+ =?UTF-8?Q?Niklas_S=C3=83=C2=B6derlund?=
+ <niklas.soderlund+renesas@ragnatech.se>,
+ =?UTF-8?Q?Uwe_Kleine-K=C3=83=C2=B6nig?= <u.kleine-koenig@pengutronix.de>,
+ Abhinav Kumar <quic_abhinavk@quicinc.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Alexander Stein <alexander.stein@ew.tq-group.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Alexey Brodkin <abrodkin@synopsys.com>,
+ Andrzej Hajda <andrzej.hajda@intel.com>, Andy Gross <agross@kernel.org>,
+ Biju Das <biju.das.jz@bp.renesas.com>, Bjorn Andersson
+ <andersson@kernel.org>, Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+ Daniel Vetter <daniel@ffwll.ch>,
+ Dave Stevenson <dave.stevenson@raspberrypi.com>,
+ David Airlie <airlied@gmail.com>,
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>, Emma Anholt <emma@anholt.net>,
+ Eugen Hristev <eugen.hristev@collabora.com>,
+ Florian Fainelli <florian.fainelli@broadcom.com>,
+ Frank Rowand <frowand.list@gmail.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Hans Verkuil <hverkuil-cisco@xs4all.nl>, Helge Deller <deller@gmx.de>,
+ Hugues Fruchet <hugues.fruchet@foss.st.com>,
+ Jacopo Mondi <jacopo+renesas@jmondi.org>, Jacopo Mondi <jacopo@jmondi.org>,
+ James Clark <james.clark@arm.com>, Jaroslav Kysela <perex@perex.cz>,
+ Jonathan Hunter <jonathanh@nvidia.com>, Kevin Hilman <khilman@baylibre.com>,
+ Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+ Kieran Bingham <kieran.bingham@ideasonboard.com>,
+ Konrad Dybcio <konrad.dybcio@linaro.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+ Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ Liam Girdwood <lgirdwood@gmail.com>, Liu Ying <victor.liu@nxp.com>,
+ Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Marek Vasut <marex@denx.de>, Mark Brown <broonie@kernel.org>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Michael Tretter <m.tretter@pengutronix.de>,
+ Michal Simek <michal.simek@amd.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Nathan Chancellor <nathan@kernel.org>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Nick Desaulniers <ndesaulniers@google.com>,
+ Nicolas Ferre <nicolas.ferre@microchip.com>,
+ Philipp Zabel <p.zabel@pengutronix.de>,
+ Philippe Cornu <philippe.cornu@foss.st.com>,
+ Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>,
+ Rob Clark <robdclark@gmail.com>, Rob Herring <robh+dt@kernel.org>,
+ Robert Foss <rfoss@kernel.org>, Russell King <linux@armlinux.org.uk>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>,
+ Saravana Kannan <saravanak@google.com>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ Sowjanya Komatineni <skomatineni@nvidia.com>, Stefan Agner
+ <stefan@agner.ch>, Sylwester Nawrocki <s.nawrocki@samsung.com>,
+ Takashi Iwai <tiwai@suse.com>, Thierry Reding <thierry.reding@gmail.com>,
+ Thomas Zimmermann <tzimmermann@suse.de>, Tim Harvey <tharvey@gateworks.com>,
+ Todor Tomov <todor.too@gmail.com>,
+ Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+ Yannick Fertre <yannick.fertre@foss.st.com>
+Cc: Alim Akhtar <alim.akhtar@samsung.com>, Fabio Estevam
+ <festevam@gmail.com>, Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Jerome Brunet <jbrunet@baylibre.com>,
+ Jessica Zhang <quic_jesszhan@quicinc.com>, Jonas Karlman <jonas@kwiboo.se>,
+ Leo Yan <leo.yan@linaro.org>, Marijn Suijten
+ <marijn.suijten@somainline.org>,
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+ Mike Leach <mike.leach@linaro.org>, Sam Ravnborg <sam@ravnborg.org>,
+ Sean Paul <sean@poorly.run>, Tom Rix <trix@redhat.com>,
+ coresight@lists.linaro.org, devicetree@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+ linux-amlogic@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ linux-arm-msm@vger.kernel.org, linux-fbdev@vger.kernel.org,
+ linux-media@vger.kernel.org, linux-omap@vger.kernel.org,
+ linux-renesas-soc@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
+ linux-samsung-soc@vger.kernel.org, linux-sound@vger.kernel.org,
+ linux-staging@lists.linux.dev, linux-stm32@st-md-mailman.stormreply.com,
+ linux-tegra@vger.kernel.org, llvm@lists.linux.dev
+References: <87o7d26qla.wl-kuninori.morimoto.gx@renesas.com>
+ <87cyti6qj8.wl-kuninori.morimoto.gx@renesas.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <87cyti6qj8.wl-kuninori.morimoto.gx@renesas.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jan 31, 2024 at 05:05:34AM +0000, Kuninori Morimoto wrote:
+On 31/01/2024 05:05, Kuninori Morimoto wrote:
 > of_graph_get_next_endpoint() is now renamed to
 > of_graph_get_next_device_endpoint(). Switch to it.
 > 
 > Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 > ---
->  drivers/media/platform/atmel/atmel-isi.c                 | 4 ++--
->  drivers/media/platform/intel/pxa_camera.c                | 2 +-
->  drivers/media/platform/microchip/microchip-sama5d2-isc.c | 2 +-
->  drivers/media/platform/microchip/microchip-sama7g5-isc.c | 2 +-
->  drivers/media/platform/qcom/camss/camss.c                | 2 +-
->  drivers/media/platform/renesas/renesas-ceu.c             | 2 +-
->  drivers/media/platform/samsung/exynos4-is/fimc-is.c      | 2 +-
->  drivers/media/platform/samsung/exynos4-is/mipi-csis.c    | 2 +-
->  drivers/media/platform/st/stm32/stm32-dcmi.c             | 4 ++--
->  drivers/media/platform/ti/am437x/am437x-vpfe.c           | 2 +-
->  drivers/media/platform/ti/davinci/vpif.c                 | 3 +--
->  drivers/media/platform/ti/davinci/vpif_capture.c         | 3 +--
->  drivers/media/platform/video-mux.c                       | 2 +-
->  drivers/media/platform/xilinx/xilinx-vipp.c              | 2 +-
->  14 files changed, 16 insertions(+), 18 deletions(-)
+>   drivers/hwtracing/coresight/coresight-platform.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/media/platform/atmel/atmel-isi.c b/drivers/media/platform/atmel/atmel-isi.c
-> index 4046212d48b4..4317750d05ad 100644
-> --- a/drivers/media/platform/atmel/atmel-isi.c
-> +++ b/drivers/media/platform/atmel/atmel-isi.c
-> @@ -831,7 +831,7 @@ static int atmel_isi_parse_dt(struct atmel_isi *isi,
->  	isi->pdata.full_mode = 1;
->  	isi->pdata.frate = ISI_CFG1_FRATE_CAPTURE_ALL;
->  
-> -	np = of_graph_get_next_endpoint(np, NULL);
-> +	np = of_graph_get_next_device_endpoint(np, NULL);
+> diff --git a/drivers/hwtracing/coresight/coresight-platform.c b/drivers/hwtracing/coresight/coresight-platform.c
+> index 9d550f5697fa..944b2e66c04e 100644
+> --- a/drivers/hwtracing/coresight/coresight-platform.c
+> +++ b/drivers/hwtracing/coresight/coresight-platform.c
+> @@ -275,7 +275,7 @@ static int of_get_coresight_platform_data(struct device *dev,
+>   	 */
+>   	if (!parent) {
+>   		/*
+> -		 * Avoid warnings in of_graph_get_next_endpoint()
+> +		 * Avoid warnings in of_graph_get_next_device_endpoint()
+>   		 * if the device doesn't have any graph connections
+>   		 */
+>   		if (!of_graph_is_present(node))
+> @@ -286,7 +286,7 @@ static int of_get_coresight_platform_data(struct device *dev,
+>   	}
+>   
+>   	/* Iterate through each output port to discover topology */
+> -	while ((ep = of_graph_get_next_endpoint(parent, ep))) {
+> +	while ((ep = of_graph_get_next_device_endpoint(parent, ep))) {
+>   		/*
+>   		 * Legacy binding mixes input/output ports under the
+>   		 * same parent. So, skip the input ports if we are dealing
 
-Same comment on using of_graph_get_endpoint_by_regs().
-
-
->  	if (!np) {
->  		dev_err(&pdev->dev, "Could not find the endpoint\n");
->  		return -EINVAL;
-> @@ -1155,7 +1155,7 @@ static int isi_graph_init(struct atmel_isi *isi)
->  	struct device_node *ep;
->  	int ret;
->  
-> -	ep = of_graph_get_next_endpoint(isi->dev->of_node, NULL);
-> +	ep = of_graph_get_next_device_endpoint(isi->dev->of_node, NULL);
->  	if (!ep)
->  		return -EINVAL;
->  
-> diff --git a/drivers/media/platform/intel/pxa_camera.c b/drivers/media/platform/intel/pxa_camera.c
-> index 59b89e421dc2..f2175c03502b 100644
-> --- a/drivers/media/platform/intel/pxa_camera.c
-> +++ b/drivers/media/platform/intel/pxa_camera.c
-> @@ -2207,7 +2207,7 @@ static int pxa_camera_pdata_from_dt(struct device *dev,
->  		pcdev->mclk = mclk_rate;
->  	}
->  
-> -	np = of_graph_get_next_endpoint(np, NULL);
-> +	np = of_graph_get_next_device_endpoint(np, NULL);
->  	if (!np) {
->  		dev_err(dev, "could not find endpoint\n");
->  		return -EINVAL;
-> diff --git a/drivers/media/platform/microchip/microchip-sama5d2-isc.c b/drivers/media/platform/microchip/microchip-sama5d2-isc.c
-> index 5ac149cf3647..201049c047b0 100644
-> --- a/drivers/media/platform/microchip/microchip-sama5d2-isc.c
-> +++ b/drivers/media/platform/microchip/microchip-sama5d2-isc.c
-> @@ -363,7 +363,7 @@ static int isc_parse_dt(struct device *dev, struct isc_device *isc)
->  	while (1) {
->  		struct v4l2_fwnode_endpoint v4l2_epn = { .bus_type = 0 };
->  
-> -		epn = of_graph_get_next_endpoint(np, epn);
-> +		epn = of_graph_get_next_device_endpoint(np, epn);
-
-Looks like this should use the iterator?
+Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 
 
->  		if (!epn)
->  			return 0;
->  
-> diff --git a/drivers/media/platform/microchip/microchip-sama7g5-isc.c b/drivers/media/platform/microchip/microchip-sama7g5-isc.c
-> index 73445f33d26b..b617a9bcd398 100644
-> --- a/drivers/media/platform/microchip/microchip-sama7g5-isc.c
-> +++ b/drivers/media/platform/microchip/microchip-sama7g5-isc.c
-> @@ -349,7 +349,7 @@ static int xisc_parse_dt(struct device *dev, struct isc_device *isc)
->  	while (1) {
->  		struct v4l2_fwnode_endpoint v4l2_epn = { .bus_type = 0 };
->  
-> -		epn = of_graph_get_next_endpoint(np, epn);
-> +		epn = of_graph_get_next_device_endpoint(np, epn);
->  		if (!epn)
->  			return 0;
->  
-> diff --git a/drivers/media/platform/qcom/camss/camss.c b/drivers/media/platform/qcom/camss/camss.c
-> index 8e78dd8d5961..cbb6f88cfe4a 100644
-> --- a/drivers/media/platform/qcom/camss/camss.c
-> +++ b/drivers/media/platform/qcom/camss/camss.c
-> @@ -1136,7 +1136,7 @@ static int camss_of_parse_ports(struct camss *camss)
->  	struct device_node *remote = NULL;
->  	int ret, num_subdevs = 0;
->  
-> -	for_each_endpoint_of_node(dev->of_node, node) {
-> +	for_each_device_endpoint_of_node(dev->of_node, node) {
->  		struct camss_async_subdev *csd;
->  
->  		if (!of_device_is_available(node))
-> diff --git a/drivers/media/platform/renesas/renesas-ceu.c b/drivers/media/platform/renesas/renesas-ceu.c
-> index 2562b30acfb9..929d17de4ac9 100644
-> --- a/drivers/media/platform/renesas/renesas-ceu.c
-> +++ b/drivers/media/platform/renesas/renesas-ceu.c
-> @@ -1526,7 +1526,7 @@ static int ceu_parse_dt(struct ceu_device *ceudev)
->  	int num_ep;
->  	int ret;
->  
-> -	num_ep = of_graph_get_endpoint_count(of);
-> +	num_ep = of_graph_get_device_endpoint_count(of);
->  	if (!num_ep)
->  		return -ENODEV;
->  
-> diff --git a/drivers/media/platform/samsung/exynos4-is/fimc-is.c b/drivers/media/platform/samsung/exynos4-is/fimc-is.c
-> index a08c87ef6e2d..5ab0399b7718 100644
-> --- a/drivers/media/platform/samsung/exynos4-is/fimc-is.c
-> +++ b/drivers/media/platform/samsung/exynos4-is/fimc-is.c
-> @@ -175,7 +175,7 @@ static int fimc_is_parse_sensor_config(struct fimc_is *is, unsigned int index,
->  		return -EINVAL;
->  	}
->  
-> -	ep = of_graph_get_next_endpoint(node, NULL);
-> +	ep = of_graph_get_next_device_endpoint(node, NULL);
->  	if (!ep)
->  		return -ENXIO;
->  
-> diff --git a/drivers/media/platform/samsung/exynos4-is/mipi-csis.c b/drivers/media/platform/samsung/exynos4-is/mipi-csis.c
-> index 686ca8753ba2..a332b4bd76f2 100644
-> --- a/drivers/media/platform/samsung/exynos4-is/mipi-csis.c
-> +++ b/drivers/media/platform/samsung/exynos4-is/mipi-csis.c
-> @@ -728,7 +728,7 @@ static int s5pcsis_parse_dt(struct platform_device *pdev,
->  				 &state->max_num_lanes))
->  		return -EINVAL;
->  
-> -	node = of_graph_get_next_endpoint(node, NULL);
-> +	node = of_graph_get_next_device_endpoint(node, NULL);
->  	if (!node) {
->  		dev_err(&pdev->dev, "No port node at %pOF\n",
->  				pdev->dev.of_node);
-> diff --git a/drivers/media/platform/st/stm32/stm32-dcmi.c b/drivers/media/platform/st/stm32/stm32-dcmi.c
-> index 8cb4fdcae137..320101f4ad40 100644
-> --- a/drivers/media/platform/st/stm32/stm32-dcmi.c
-> +++ b/drivers/media/platform/st/stm32/stm32-dcmi.c
-> @@ -1856,7 +1856,7 @@ static int dcmi_graph_init(struct stm32_dcmi *dcmi)
->  	struct device_node *ep;
->  	int ret;
->  
-> -	ep = of_graph_get_next_endpoint(dcmi->dev->of_node, NULL);
-> +	ep = of_graph_get_next_device_endpoint(dcmi->dev->of_node, NULL);
->  	if (!ep) {
->  		dev_err(dcmi->dev, "Failed to get next endpoint\n");
->  		return -EINVAL;
-> @@ -1915,7 +1915,7 @@ static int dcmi_probe(struct platform_device *pdev)
->  				     "Could not get reset control\n");
->  
->  	/* Get bus characteristics from devicetree */
-> -	np = of_graph_get_next_endpoint(np, NULL);
-> +	np = of_graph_get_next_device_endpoint(np, NULL);
->  	if (!np) {
->  		dev_err(&pdev->dev, "Could not find the endpoint\n");
->  		return -ENODEV;
-> diff --git a/drivers/media/platform/ti/am437x/am437x-vpfe.c b/drivers/media/platform/ti/am437x/am437x-vpfe.c
-> index 5fa2ea9025d9..46876865ec6a 100644
-> --- a/drivers/media/platform/ti/am437x/am437x-vpfe.c
-> +++ b/drivers/media/platform/ti/am437x/am437x-vpfe.c
-> @@ -2309,7 +2309,7 @@ vpfe_get_pdata(struct vpfe_device *vpfe)
->  		struct v4l2_fwnode_endpoint bus_cfg = { .bus_type = 0 };
->  		struct device_node *rem;
->  
-> -		endpoint = of_graph_get_next_endpoint(dev->of_node, endpoint);
-> +		endpoint = of_graph_get_next_device_endpoint(dev->of_node, endpoint);
->  		if (!endpoint)
->  			break;
->  
-> diff --git a/drivers/media/platform/ti/davinci/vpif.c b/drivers/media/platform/ti/davinci/vpif.c
-> index 63cdfed37bc9..021ca79e832b 100644
-> --- a/drivers/media/platform/ti/davinci/vpif.c
-> +++ b/drivers/media/platform/ti/davinci/vpif.c
-> @@ -465,8 +465,7 @@ static int vpif_probe(struct platform_device *pdev)
->  	 * so their devices need to be registered manually here
->  	 * for their legacy platform_drivers to work.
->  	 */
-> -	endpoint = of_graph_get_next_endpoint(pdev->dev.of_node,
-> -					      endpoint);
-> +	endpoint = of_graph_get_next_device_endpoint(pdev->dev.of_node, endpoint);
->  	if (!endpoint)
->  		return 0;
->  	of_node_put(endpoint);
-> diff --git a/drivers/media/platform/ti/davinci/vpif_capture.c b/drivers/media/platform/ti/davinci/vpif_capture.c
-> index 99fae8830c41..805c313b41dc 100644
-> --- a/drivers/media/platform/ti/davinci/vpif_capture.c
-> +++ b/drivers/media/platform/ti/davinci/vpif_capture.c
-> @@ -1521,8 +1521,7 @@ vpif_capture_get_pdata(struct platform_device *pdev,
->  		unsigned int flags;
->  		int err;
->  
-> -		endpoint = of_graph_get_next_endpoint(pdev->dev.of_node,
-> -						      endpoint);
-> +		endpoint = of_graph_get_next_device_endpoint(pdev->dev.of_node, endpoint);
->  		if (!endpoint)
->  			break;
->  
-> diff --git a/drivers/media/platform/video-mux.c b/drivers/media/platform/video-mux.c
-> index 5de6b6694f53..61d84ade7155 100644
-> --- a/drivers/media/platform/video-mux.c
-> +++ b/drivers/media/platform/video-mux.c
-> @@ -408,7 +408,7 @@ static int video_mux_probe(struct platform_device *pdev)
->  	 * The largest numbered port is the output port. It determines
->  	 * total number of pads.
->  	 */
-> -	for_each_endpoint_of_node(np, ep) {
-> +	for_each_device_endpoint_of_node(np, ep) {
->  		struct of_endpoint endpoint;
->  
->  		of_graph_parse_endpoint(ep, &endpoint);
-> diff --git a/drivers/media/platform/xilinx/xilinx-vipp.c b/drivers/media/platform/xilinx/xilinx-vipp.c
-> index 996684a73038..9230931d6d7a 100644
-> --- a/drivers/media/platform/xilinx/xilinx-vipp.c
-> +++ b/drivers/media/platform/xilinx/xilinx-vipp.c
-> @@ -207,7 +207,7 @@ static int xvip_graph_build_dma(struct xvip_composite_device *xdev)
->  
->  	while (1) {
->  		/* Get the next endpoint and parse its link. */
-> -		ep = of_graph_get_next_endpoint(node, ep);
-> +		ep = of_graph_get_next_device_endpoint(node, ep);
-
-The rest of this file uses fwnode versions including the very next 
-function. This should be fwnode_graph_get_next_endpoint(). But then it's 
-a loop, so should be a loop iterator instead.
-
-Rob
 
