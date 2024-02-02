@@ -1,105 +1,133 @@
-Return-Path: <linux-omap+bounces-477-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-478-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF9DD845D38
-	for <lists+linux-omap@lfdr.de>; Thu,  1 Feb 2024 17:28:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33A7B846704
+	for <lists+linux-omap@lfdr.de>; Fri,  2 Feb 2024 05:36:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C227297A41
-	for <lists+linux-omap@lfdr.de>; Thu,  1 Feb 2024 16:28:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC5831F247E4
+	for <lists+linux-omap@lfdr.de>; Fri,  2 Feb 2024 04:36:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF10E5A4E6;
-	Thu,  1 Feb 2024 16:27:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 529E4F4EA;
+	Fri,  2 Feb 2024 04:36:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="34Msl+Kz"
+	dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b="ArgEnzRR"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from mail5.25mail.st (mail5.25mail.st [74.50.62.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DE757E0F0;
-	Thu,  1 Feb 2024 16:27:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15048DDD6;
+	Fri,  2 Feb 2024 04:36:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.50.62.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706804850; cv=none; b=pd4Ew+f4MYr4XlVKxW/IBJ0QdjP9Sk+VvDQET0brMp8tmRHDcCSIxyh5hIYIneLj1LQc7tFSGwmJWE7n470NoGBlMMO83KaulErZ16ZT0R2cMnKNvlXuJEO+nPtaNkxjuTwqb0CSplfMPWHXKlvW4hk23eLmGYTtC2Ljhvsdtvc=
+	t=1706848585; cv=none; b=hwDve+wqV7/4mNrEdMR0gVU18WUHu6M/tif9nN6PkjEcegBmzP8Xj9uIBbSwEWg53D7qmyYOzvIHufT5BeiqjCp/J/vqphMIVyZwpVK7B03NmOb25lAtOeJL9sy40SYHR5uuNYL0nbXHLmEwfYiTjQmGstdbNCIxJorbvbm/zIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706804850; c=relaxed/simple;
-	bh=iZg1XvNNrQTqQv9Xbt4+0uhfMfb2hZQVzICMpctE37w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=X9H0Q5NiLNi1ThVudYiAeD3YGRN9fS6wCf0yBGtsVkuyajQrTQX7XDod0Vla4eM9+oUldDmt012d1d4Xne80tTsXVGx/HAUxYlgx17OyUKNGu8HqVhEJuMCDxsXYKzzrHmycjlp3qOWZWhKWoIb26of63IYUJZhNTW0QJkLhHjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=34Msl+Kz; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=iniiD51Qgwz4Ao5KkCfkCegFHmr+NHhd1gASxkl1EPQ=; b=34Msl+Kzci4le/Fltq2WjQe4dY
-	Lkds1Yh6T5voCbgUvpxUYWOaENRUru1C38IxGT1Mx9hFGzz42uVHPLz8qWcdpmpERZ7LRs/S0lueF
-	lO3jTUer7HIPfFrRK92hpdJbu8YUOeKy7mACF7Vi/1+2ouP1ShwgNXgK1XbYKOrJBm0jKheci6F32
-	gK3ciPgWdu3mt+MjdVmCx/jk1XboMIPay+kvHvN4dVceOByETtUP00CrFfQPe0BkIwGThG4o/UTDb
-	GnjdA6qICYnQTUjdr42ogpZEqOzS7X7Eiis82odl0GUJuAKzTMbStKcNMODFlPDp0fVbJxW5BfJlb
-	ZgrFT00g==;
-Received: from [50.53.50.0] (helo=[192.168.254.15])
-	by bombadil.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rVZuQ-00000008dpB-3Znr;
-	Thu, 01 Feb 2024 16:27:26 +0000
-Message-ID: <1f53a83d-cae4-4223-ad47-6d1d9c80dc2b@infradead.org>
-Date: Thu, 1 Feb 2024 08:27:25 -0800
+	s=arc-20240116; t=1706848585; c=relaxed/simple;
+	bh=nkmDbUQlq4zNwl6Jd/Vb+PA0uyv1xGA2FmONzdP1Sn4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JLn6Ke1mQttxPHzYuyP1JTRza4nDWQF+cjB4q1PO2TqLMcXD69T1+JaUtY/4xFLce+I/cfZbqDr8xvycbtydgJrvGQpeCKlCXFKwfkl84oKToHBIjx2rUfuVuTmA+XobFJD2PZtK6qCsB9oFEsaCc/4zbHYw8yd/k78YXDtaPmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com; spf=fail smtp.mailfrom=atomide.com; dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b=ArgEnzRR; arc=none smtp.client-ip=74.50.62.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=atomide.com
+Received: from localhost (91-158-86-216.elisa-laajakaista.fi [91.158.86.216])
+	by mail5.25mail.st (Postfix) with ESMTPSA id 7793C60363;
+	Fri,  2 Feb 2024 04:36:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=atomide.com;
+	s=25mailst; t=1706848576;
+	bh=nkmDbUQlq4zNwl6Jd/Vb+PA0uyv1xGA2FmONzdP1Sn4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ArgEnzRRe9ms4Josxbe+YGGWeYwx4jhbE5Mwx/eGYWy/niGPn8okDCDWzgZS/U/3G
+	 Fqlwy8VWlnBNsPwSN3+4/aMleaqsmouCRojQpae36sGl317/afEgvPIU8eKuoBXwzQ
+	 4Owiiu79KlW+3N815WAd1ZA77dV1UxlctB9wISJcDWPbigCUgOyiCOlwLD1hEnaioT
+	 RXAcjf96VNbL6GOq3ifQnjneXN1Q+Jg99tsu32dfvjDRZXvwp884S+HmhR/CVi2hu/
+	 xSw11Zr5FhB7MH03KmqC1/65wSpcekJyhyI5okhChFspfk3wE/79hL400zxDSmiREP
+	 72d1ZNaRvd+VA==
+Date: Fri, 2 Feb 2024 06:36:01 +0200
+From: Tony Lindgren <tony@atomide.com>
+To: Romain Naour <romain.naour@smile.fr>
+Cc: Linux-OMAP <linux-omap@vger.kernel.org>, Nishanth Menon <nm@ti.com>,
+	linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>,
+	Adrian Hunter <adrian.hunter@intel.com>
+Subject: Re: sdhci-omap: issues with PM features since 5.16
+Message-ID: <20240202043601.GA5185@atomide.com>
+References: <2e5f1997-564c-44e4-b357-6343e0dae7ab@smile.fr>
+ <20240127044851.GW5185@atomide.com>
+ <d09925b3-83e6-4c52-878f-4c1db7670543@smile.fr>
+ <20240129111733.GX5185@atomide.com>
+ <f80b5390-8bfa-43d8-80ce-70b069aef947@smile.fr>
+ <7d72f3ee-bcfe-4197-b492-857dc49b2788@smile.fr>
+ <20240131103050.GZ5185@atomide.com>
+ <519f7e2e-4df2-4b3c-90e2-2383b6b34562@smile.fr>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/13] ARM: OMAP2+: fix a bunch of kernel-doc warnings
-Content-Language: en-US
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Tony Lindgren <tony@atomide.com>, linux-kernel@vger.kernel.org,
- linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- patches@armlinux.org.uk, Paul Walmsley <paul@pwsan.com>,
- =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
- Kevin Hilman <khilman@kernel.org>
-References: <20240117011004.22669-1-rdunlap@infradead.org>
- <20240117131305.GP5185@atomide.com>
- <e6692a04-142c-4df4-83dc-534ab27a55f6@infradead.org>
- <ZbtlOWcGglCeYj6X@shell.armlinux.org.uk>
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <ZbtlOWcGglCeYj6X@shell.armlinux.org.uk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <519f7e2e-4df2-4b3c-90e2-2383b6b34562@smile.fr>
 
+* Romain Naour <romain.naour@smile.fr> [240201 09:04]:
+> Le 31/01/2024 à 11:30, Tony Lindgren a écrit :
+> > * Romain Naour <romain.naour@smile.fr> [240130 11:20]:
+> >> Le 29/01/2024 à 18:42, Romain Naour a écrit :
+> >>> Le 29/01/2024 à 12:17, Tony Lindgren a écrit :
+> >>>> So I'm still guessing your issue is with emmc not getting reinitialized
+> >>>> properly as there's no mmc-pwrseq-emmc configured. Can you give it a
+> >>>> try? See am5729-beagleboneai.dts for an example.
+> >>
+> >> I can't add such mmc-pwrseq-emmc on the custom board, there is no gpio available
+> >> to reset the emmc device.
+> >>
+> >> To resume:
+> >> - the emmc doesn't work with mmc-hs200-1_8v mode with PM runtime enabled
+> >> - the emmc works with mmc-hs200-1_8v mode without PM runtime (patch series reverted)
+> >> - the emmc works with mmc-ddr-1_8v mode with PM runtime enabled
+> >>
+> >> AFAIU the hs200 mode requires some pin iodelay tuning (SDHCI_OMAP_REQUIRE_IODELAY)
+> >> is sdhci_omap_runtime_{suspend,resume} needs to take care of that?
 
+On PM runtime resume, sdhci_omap_runtime_resume() gets called and calls
+sdhci_runtime_resume_host(), and calls mmc->ops->set_ios().
 
-On 2/1/24 01:32, Russell King (Oracle) wrote:
-> On Wed, Jan 17, 2024 at 08:52:16AM -0800, Randy Dunlap wrote:
->>
->>
->> On 1/17/24 05:13, Tony Lindgren wrote:
->>> * Randy Dunlap <rdunlap@infradead.org> [240117 01:10]:
->>>> Fix many kernel-doc warnings in arch/arm/mach-omap2/:
->>>
->>> Thanks for fixing these. These are unlikely to conflict with anything so
->>> please queue them along with other clean-up:
->>>
->>> Acked-by: Tony Lindgren <tony@atomide.com>
->>>
->>> Or alternatively let me know if you want me to apply them.
->>
->> Yes, please go ahead and apply them.
+Then sdhci_omap_set_ios() calls sdhci_omap_set_timing() to set the iodelay.
+Maybe add some printk to sdhci_omap_set_timing() to verify the right modes
+get set on PM runtime resume?
+
+> >> The mmc2 clock seems idle when mmc-hs200-1_8v and PM runtime are used.
+> >>
+> >> omapconf dump prcm l3init
+> >>
+> >> (mmc2 clock idle)
+> >> | CM_L3INIT_MMC2_CLKCTRL           | 0x4A009330   | 0x01070000 |
+> >>
+> >> (mmc2 clock running)
+> >> | CM_L3INIT_MMC2_CLKCTRL           | 0x4A009330   | 0x01040002 |
+> >>
+> >> Thoughts?
+
+For the clocks above, that is as expected. The clocks get idled when the
+MMC controller is idle.
+
+> > OK so if the emmc reset gpio is not available, seems we should do something
+> > like the following patch to not set MMC_CAP_POWER_OFF_CARD unless the
+> > cap-power-off-card devicetree property is set.
+> > 
+> > Care to give it a try and see if it helps?
 > 
-> If you intend people other than me to apply patches, then please do not
-> copy the patches to the patch system. I now have to go through all 16
-> patches and search the mailing list to find out what happened... and so
-> far for the few I've checked, other people have applied them. So I'm
-> coming to the conclusion I should just discard the entire lot.
+> Same problem without MMC_CAP_POWER_OFF_CARD flag (even by removing
+> MMC_CAP_AGGRESSIVE_PM too).
 > 
+> I did some test with mmc capabilities mask but no progress so far.
 
-Got it. and sorry about that.  :(
+OK. So this issue seems to be related to the PM runtime resume not
+restoring something properly as you suggested earlier.
 
+Regards,
 
--- 
-#Randy
+Tony
 
