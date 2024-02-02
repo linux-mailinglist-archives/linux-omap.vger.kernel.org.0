@@ -1,171 +1,232 @@
-Return-Path: <linux-omap+bounces-481-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-482-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDC8C8476E9
-	for <lists+linux-omap@lfdr.de>; Fri,  2 Feb 2024 19:01:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6858884780F
+	for <lists+linux-omap@lfdr.de>; Fri,  2 Feb 2024 19:44:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94742285EE8
-	for <lists+linux-omap@lfdr.de>; Fri,  2 Feb 2024 18:01:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F72C28CBAB
+	for <lists+linux-omap@lfdr.de>; Fri,  2 Feb 2024 18:44:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55B6A14C5B5;
-	Fri,  2 Feb 2024 18:01:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41EDB126F26;
+	Fri,  2 Feb 2024 18:40:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cJ+KZ62z"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3F3314AD34;
-	Fri,  2 Feb 2024 18:01:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52684126F01;
+	Fri,  2 Feb 2024 18:40:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706896890; cv=none; b=logxrat8pwAF1SZli5sHKNK9C7Lm4mBRVUjkxgg3MuI26ISwueUBJngfaaXIkYtw1X3QIHI3DZSxddkmRq6SwAwmEZec0n0rbE7kFynbHFtlcg43b/tKQ8IPxfd4Ju2/iFRf5y04UYKr8u+4RnEQydc+z/gwCVFbvup3RzRqnNo=
+	t=1706899201; cv=none; b=EoAfyyra/pmcMaeLOXnl7wXwjCnnJ4vmXrUOsgjwjQQF7D1rkhTB/WXU191YY0AXTHEc2InZJAyX69jPsB2j9D3ljmHK+urfxehvy0S+Ad+7bBApPlTsf4QOmET7uiYwmKFbi3iNzH7TaZZTuY6qMJ01j2E4pBtX6GgM6/PcirI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706896890; c=relaxed/simple;
-	bh=nG1c1Dr5WvvpIPOp3w+4a7YAysmZsyzWk5n7RoQZn3w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=X1hA/hS3+2RzRZLpQY6fShoYf0qF5fCLvisNaPlKT/1En+fsNBGJtFgj4TGWUMEOf5uq1RQGzZcvakkb71gW1IrwnNjw2zljPGaIX1ZpPGgewGyVF9ydaZ8mXPrPwQGO5kPsbPdpKrdwfLk5c412eHGlufrU6EajFE2g++r986g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BDE2D19F0;
-	Fri,  2 Feb 2024 10:02:08 -0800 (PST)
-Received: from [10.57.9.194] (unknown [10.57.9.194])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8CBEC3F762;
-	Fri,  2 Feb 2024 10:01:11 -0800 (PST)
-Message-ID: <128e2760-6346-4c56-982b-42357a391ee4@arm.com>
-Date: Fri, 2 Feb 2024 18:01:02 +0000
+	s=arc-20240116; t=1706899201; c=relaxed/simple;
+	bh=VisnG48v7H1BKRcG6W8u+lL8vcrOmwwqiTIoVM7Yz70=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=LZNHSzIleJOo85S5VRXtPTxLJs2c2LDpXYMiogpOUsdQ4tAoW2ELzLV6Ch8f5tAJ6xjMdG3LCdtGOYy+/yYnrDbz9klHq73Iy2WVqZd0yt7ZepDjl2EQQPz/iUb/XvWlmIdQPx84Yo9gCDo6Ip3dRN5peBqAxNUS7Iv85IfjIFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cJ+KZ62z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB8C5C43390;
+	Fri,  2 Feb 2024 18:39:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706899200;
+	bh=VisnG48v7H1BKRcG6W8u+lL8vcrOmwwqiTIoVM7Yz70=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=cJ+KZ62zGeiSTxNsm1rY8V86LysMUeO4Whx5bBHlCII8q6kuzvvZNQoU5hEx+i1ik
+	 Aumo8kuU4/TyzQkS51k7FeiGMi3lQMyT9cUb9TLMCvXu1R7jAweUWSEgASgXF88N+1
+	 ABVBaUPB5oPjB2P+pLbIxYT6M57KLOsJSGPiBv01Q9y+6Bz8JRG4CFBmROm8BVPtwX
+	 FfO7GDGYGJRWj3LmBcUtBy1QO1064hInPkisJ6vV5bYJyyMLyJYE7TDeD+LCrEU6Ww
+	 UMO4koAJq6MWvNa1VE2XcLQHvOHYCO+PoirK5ZmIkDFBSBkxKInKW0hH+jNXEqphKK
+	 KCQu2dbgG893g==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Lukas Wunner <lukas@wunner.de>,
+	Patrick Williams <patrick@stwcx.xyz>,
+	Tao Ren <rentao.bupt@gmail.com>,
+	Bruno Thomsen <bruno.thomsen@gmail.com>,
+	Sasha Levin <sashal@kernel.org>,
+	robh+dt@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org,
+	conor+dt@kernel.org,
+	joel@jms.id.au,
+	shawnguo@kernel.org,
+	bcousson@baylibre.com,
+	tony@atomide.com,
+	devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-aspeed@lists.ozlabs.org,
+	linux-omap@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.7 20/23] ARM: dts: Fix TPM schema violations
+Date: Fri,  2 Feb 2024 13:39:16 -0500
+Message-ID: <20240202183926.540467-20-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240202183926.540467-1-sashal@kernel.org>
+References: <20240202183926.540467-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 08/24] hwtracing: switch to use
- of_graph_get_next_device_endpoint()
-Content-Language: en-GB
-To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
- "Lad, Prabhakar" <prabhakar.csengg@gmail.com>,
- =?UTF-8?Q?Niklas_S=C3=83=C2=B6derlund?=
- <niklas.soderlund+renesas@ragnatech.se>,
- =?UTF-8?Q?Uwe_Kleine-K=C3=83=C2=B6nig?= <u.kleine-koenig@pengutronix.de>,
- Abhinav Kumar <quic_abhinavk@quicinc.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Alexander Stein <alexander.stein@ew.tq-group.com>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Alexey Brodkin <abrodkin@synopsys.com>,
- Andrzej Hajda <andrzej.hajda@intel.com>, Andy Gross <agross@kernel.org>,
- Biju Das <biju.das.jz@bp.renesas.com>, Bjorn Andersson
- <andersson@kernel.org>, Claudiu Beznea <claudiu.beznea@tuxon.dev>,
- Daniel Vetter <daniel@ffwll.ch>,
- Dave Stevenson <dave.stevenson@raspberrypi.com>,
- David Airlie <airlied@gmail.com>,
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
- Dmitry Torokhov <dmitry.torokhov@gmail.com>, Emma Anholt <emma@anholt.net>,
- Eugen Hristev <eugen.hristev@collabora.com>,
- Florian Fainelli <florian.fainelli@broadcom.com>,
- Frank Rowand <frowand.list@gmail.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Hans Verkuil <hverkuil-cisco@xs4all.nl>, Helge Deller <deller@gmx.de>,
- Hugues Fruchet <hugues.fruchet@foss.st.com>,
- Jacopo Mondi <jacopo+renesas@jmondi.org>, Jacopo Mondi <jacopo@jmondi.org>,
- James Clark <james.clark@arm.com>, Jaroslav Kysela <perex@perex.cz>,
- Jonathan Hunter <jonathanh@nvidia.com>, Kevin Hilman <khilman@baylibre.com>,
- Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
- Kieran Bingham <kieran.bingham@ideasonboard.com>,
- Konrad Dybcio <konrad.dybcio@linaro.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
- Liam Girdwood <lgirdwood@gmail.com>, Liu Ying <victor.liu@nxp.com>,
- Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Marek Vasut <marex@denx.de>, Mark Brown <broonie@kernel.org>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Maxime Ripard <mripard@kernel.org>,
- Michael Tretter <m.tretter@pengutronix.de>,
- Michal Simek <michal.simek@amd.com>, Miguel Ojeda <ojeda@kernel.org>,
- Nathan Chancellor <nathan@kernel.org>,
- Neil Armstrong <neil.armstrong@linaro.org>,
- Nick Desaulniers <ndesaulniers@google.com>,
- Nicolas Ferre <nicolas.ferre@microchip.com>,
- Philipp Zabel <p.zabel@pengutronix.de>,
- Philippe Cornu <philippe.cornu@foss.st.com>,
- Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>,
- Rob Clark <robdclark@gmail.com>, Rob Herring <robh+dt@kernel.org>,
- Robert Foss <rfoss@kernel.org>, Russell King <linux@armlinux.org.uk>,
- Sakari Ailus <sakari.ailus@linux.intel.com>,
- Saravana Kannan <saravanak@google.com>, Sascha Hauer
- <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
- Sowjanya Komatineni <skomatineni@nvidia.com>, Stefan Agner
- <stefan@agner.ch>, Sylwester Nawrocki <s.nawrocki@samsung.com>,
- Takashi Iwai <tiwai@suse.com>, Thierry Reding <thierry.reding@gmail.com>,
- Thomas Zimmermann <tzimmermann@suse.de>, Tim Harvey <tharvey@gateworks.com>,
- Todor Tomov <todor.too@gmail.com>,
- Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
- Yannick Fertre <yannick.fertre@foss.st.com>
-Cc: Alim Akhtar <alim.akhtar@samsung.com>, Fabio Estevam
- <festevam@gmail.com>, Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
- Jernej Skrabec <jernej.skrabec@gmail.com>,
- Jerome Brunet <jbrunet@baylibre.com>,
- Jessica Zhang <quic_jesszhan@quicinc.com>, Jonas Karlman <jonas@kwiboo.se>,
- Leo Yan <leo.yan@linaro.org>, Marijn Suijten
- <marijn.suijten@somainline.org>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- Mike Leach <mike.leach@linaro.org>, Sam Ravnborg <sam@ravnborg.org>,
- Sean Paul <sean@poorly.run>, Tom Rix <trix@redhat.com>,
- coresight@lists.linaro.org, devicetree@vger.kernel.org,
- dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
- linux-amlogic@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
- linux-arm-msm@vger.kernel.org, linux-fbdev@vger.kernel.org,
- linux-media@vger.kernel.org, linux-omap@vger.kernel.org,
- linux-renesas-soc@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
- linux-samsung-soc@vger.kernel.org, linux-sound@vger.kernel.org,
- linux-staging@lists.linux.dev, linux-stm32@st-md-mailman.stormreply.com,
- linux-tegra@vger.kernel.org, llvm@lists.linux.dev
-References: <87o7d26qla.wl-kuninori.morimoto.gx@renesas.com>
- <87cyti6qj8.wl-kuninori.morimoto.gx@renesas.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <87cyti6qj8.wl-kuninori.morimoto.gx@renesas.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.7.3
+Content-Transfer-Encoding: 8bit
 
-On 31/01/2024 05:05, Kuninori Morimoto wrote:
-> of_graph_get_next_endpoint() is now renamed to
-> of_graph_get_next_device_endpoint(). Switch to it.
-> 
-> Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-> ---
->   drivers/hwtracing/coresight/coresight-platform.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/hwtracing/coresight/coresight-platform.c b/drivers/hwtracing/coresight/coresight-platform.c
-> index 9d550f5697fa..944b2e66c04e 100644
-> --- a/drivers/hwtracing/coresight/coresight-platform.c
-> +++ b/drivers/hwtracing/coresight/coresight-platform.c
-> @@ -275,7 +275,7 @@ static int of_get_coresight_platform_data(struct device *dev,
->   	 */
->   	if (!parent) {
->   		/*
-> -		 * Avoid warnings in of_graph_get_next_endpoint()
-> +		 * Avoid warnings in of_graph_get_next_device_endpoint()
->   		 * if the device doesn't have any graph connections
->   		 */
->   		if (!of_graph_is_present(node))
-> @@ -286,7 +286,7 @@ static int of_get_coresight_platform_data(struct device *dev,
->   	}
->   
->   	/* Iterate through each output port to discover topology */
-> -	while ((ep = of_graph_get_next_endpoint(parent, ep))) {
-> +	while ((ep = of_graph_get_next_device_endpoint(parent, ep))) {
->   		/*
->   		 * Legacy binding mixes input/output ports under the
->   		 * same parent. So, skip the input ports if we are dealing
+From: Lukas Wunner <lukas@wunner.de>
 
-Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+[ Upstream commit 8412c47d68436b9f9a260039a4a773daa6824925 ]
 
+Since commit 26c9d152ebf3 ("dt-bindings: tpm: Consolidate TCG TIS
+bindings"), several issues are reported by "make dtbs_check" for ARM
+devicetrees:
+
+The nodename needs to be "tpm@0" rather than "tpmdev@0" and the
+compatible property needs to contain the chip's name in addition to the
+generic "tcg,tpm_tis-spi" or "tcg,tpm-tis-i2c":
+
+  tpmdev@0: $nodename:0: 'tpmdev@0' does not match '^tpm(@[0-9a-f]+)?$'
+        from schema $id: http://devicetree.org/schemas/tpm/tcg,tpm_tis-spi.yaml#
+
+  tpm@2e: compatible: 'oneOf' conditional failed, one must be fixed:
+        ['tcg,tpm-tis-i2c'] is too short
+        from schema $id: http://devicetree.org/schemas/tpm/tcg,tpm-tis-i2c.yaml#
+
+Fix these schema violations.
+
+Aspeed Facebook BMCs use an Infineon SLB9670:
+https://lore.kernel.org/all/ZZSmMJ%2F%2Fl972Qbxu@fedora/
+https://lore.kernel.org/all/ZZT4%2Fw2eVzMhtsPx@fedora/
+https://lore.kernel.org/all/ZZTS0p1hdAchIbKp@heinlein.vulture-banana.ts.net/
+
+Aspeed Tacoma uses a Nuvoton NPCT75X per commit 39d8a73c53a2 ("ARM: dts:
+aspeed: tacoma: Add TPM").
+
+phyGATE-Tauri uses an Infineon SLB9670:
+https://lore.kernel.org/all/ab45c82485fa272f74adf560cbb58ee60cc42689.camel@phytec.de/
+
+A single schema violation remains in am335x-moxa-uc-2100-common.dtsi
+because it is unknown which chip is used on the board.  The devicetree's
+author has been asked for clarification but has not responded so far:
+https://lore.kernel.org/all/20231220090910.GA32182@wunner.de/
+
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Reviewed-by: Patrick Williams <patrick@stwcx.xyz>
+Reviewed-by: Tao Ren <rentao.bupt@gmail.com>
+Reviewed-by: Bruno Thomsen <bruno.thomsen@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-bletchley.dts   | 4 ++--
+ arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-wedge400.dts    | 4 ++--
+ arch/arm/boot/dts/aspeed/aspeed-bmc-opp-tacoma.dts           | 2 +-
+ arch/arm/boot/dts/aspeed/ast2600-facebook-netbmc-common.dtsi | 4 ++--
+ arch/arm/boot/dts/nxp/imx/imx6ull-phytec-tauri.dtsi          | 2 +-
+ arch/arm/boot/dts/nxp/imx/imx7d-flex-concentrator.dts        | 2 +-
+ arch/arm/boot/dts/ti/omap/am335x-moxa-uc-2100-common.dtsi    | 2 +-
+ 7 files changed, 10 insertions(+), 10 deletions(-)
+
+diff --git a/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-bletchley.dts b/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-bletchley.dts
+index e899de681f47..5be0e8fd2633 100644
+--- a/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-bletchley.dts
++++ b/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-bletchley.dts
+@@ -45,8 +45,8 @@ spi1_gpio: spi1-gpio {
+ 		num-chipselects = <1>;
+ 		cs-gpios = <&gpio0 ASPEED_GPIO(Z, 0) GPIO_ACTIVE_LOW>;
+ 
+-		tpmdev@0 {
+-			compatible = "tcg,tpm_tis-spi";
++		tpm@0 {
++			compatible = "infineon,slb9670", "tcg,tpm_tis-spi";
+ 			spi-max-frequency = <33000000>;
+ 			reg = <0>;
+ 		};
+diff --git a/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-wedge400.dts b/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-wedge400.dts
+index a677c827e758..5a8169bbda87 100644
+--- a/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-wedge400.dts
++++ b/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-wedge400.dts
+@@ -80,8 +80,8 @@ spi_gpio: spi {
+ 		gpio-miso = <&gpio ASPEED_GPIO(R, 5) GPIO_ACTIVE_HIGH>;
+ 		num-chipselects = <1>;
+ 
+-		tpmdev@0 {
+-			compatible = "tcg,tpm_tis-spi";
++		tpm@0 {
++			compatible = "infineon,slb9670", "tcg,tpm_tis-spi";
+ 			spi-max-frequency = <33000000>;
+ 			reg = <0>;
+ 		};
+diff --git a/arch/arm/boot/dts/aspeed/aspeed-bmc-opp-tacoma.dts b/arch/arm/boot/dts/aspeed/aspeed-bmc-opp-tacoma.dts
+index 3f6010ef2b86..213023bc5aec 100644
+--- a/arch/arm/boot/dts/aspeed/aspeed-bmc-opp-tacoma.dts
++++ b/arch/arm/boot/dts/aspeed/aspeed-bmc-opp-tacoma.dts
+@@ -456,7 +456,7 @@ &i2c1 {
+ 	status = "okay";
+ 
+ 	tpm: tpm@2e {
+-		compatible = "tcg,tpm-tis-i2c";
++		compatible = "nuvoton,npct75x", "tcg,tpm-tis-i2c";
+ 		reg = <0x2e>;
+ 	};
+ };
+diff --git a/arch/arm/boot/dts/aspeed/ast2600-facebook-netbmc-common.dtsi b/arch/arm/boot/dts/aspeed/ast2600-facebook-netbmc-common.dtsi
+index 31590d3186a2..00e5887c926f 100644
+--- a/arch/arm/boot/dts/aspeed/ast2600-facebook-netbmc-common.dtsi
++++ b/arch/arm/boot/dts/aspeed/ast2600-facebook-netbmc-common.dtsi
+@@ -35,8 +35,8 @@ spi_gpio: spi {
+ 		gpio-mosi = <&gpio0 ASPEED_GPIO(X, 4) GPIO_ACTIVE_HIGH>;
+ 		gpio-miso = <&gpio0 ASPEED_GPIO(X, 5) GPIO_ACTIVE_HIGH>;
+ 
+-		tpmdev@0 {
+-			compatible = "tcg,tpm_tis-spi";
++		tpm@0 {
++			compatible = "infineon,slb9670", "tcg,tpm_tis-spi";
+ 			spi-max-frequency = <33000000>;
+ 			reg = <0>;
+ 		};
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-phytec-tauri.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ull-phytec-tauri.dtsi
+index 44cc4ff1d0df..d12fb44aeb14 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6ull-phytec-tauri.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6ull-phytec-tauri.dtsi
+@@ -116,7 +116,7 @@ &ecspi1 {
+ 	tpm_tis: tpm@1 {
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&pinctrl_tpm>;
+-		compatible = "tcg,tpm_tis-spi";
++		compatible = "infineon,slb9670", "tcg,tpm_tis-spi";
+ 		reg = <1>;
+ 		spi-max-frequency = <20000000>;
+ 		interrupt-parent = <&gpio5>;
+diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-flex-concentrator.dts b/arch/arm/boot/dts/nxp/imx/imx7d-flex-concentrator.dts
+index 3a723843d562..9984b343cdf0 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx7d-flex-concentrator.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx7d-flex-concentrator.dts
+@@ -130,7 +130,7 @@ &ecspi4 {
+ 	 * TCG specification - Section 6.4.1 Clocking:
+ 	 * TPM shall support a SPI clock frequency range of 10-24 MHz.
+ 	 */
+-	st33htph: tpm-tis@0 {
++	st33htph: tpm@0 {
+ 		compatible = "st,st33htpm-spi", "tcg,tpm_tis-spi";
+ 		reg = <0>;
+ 		spi-max-frequency = <24000000>;
+diff --git a/arch/arm/boot/dts/ti/omap/am335x-moxa-uc-2100-common.dtsi b/arch/arm/boot/dts/ti/omap/am335x-moxa-uc-2100-common.dtsi
+index b8730aa52ce6..a59331aa58e5 100644
+--- a/arch/arm/boot/dts/ti/omap/am335x-moxa-uc-2100-common.dtsi
++++ b/arch/arm/boot/dts/ti/omap/am335x-moxa-uc-2100-common.dtsi
+@@ -217,7 +217,7 @@ &spi1 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&spi1_pins>;
+ 
+-	tpm_spi_tis@0 {
++	tpm@0 {
+ 		compatible = "tcg,tpm_tis-spi";
+ 		reg = <0>;
+ 		spi-max-frequency = <500000>;
+-- 
+2.43.0
 
 
