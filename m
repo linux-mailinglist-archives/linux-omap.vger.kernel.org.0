@@ -1,47 +1,47 @@
-Return-Path: <linux-omap+bounces-479-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-480-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA6A98476A0
-	for <lists+linux-omap@lfdr.de>; Fri,  2 Feb 2024 18:50:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94A4B8476C5
+	for <lists+linux-omap@lfdr.de>; Fri,  2 Feb 2024 18:57:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF8911C25BFD
-	for <lists+linux-omap@lfdr.de>; Fri,  2 Feb 2024 17:50:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 236732886C1
+	for <lists+linux-omap@lfdr.de>; Fri,  2 Feb 2024 17:57:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2238914D422;
-	Fri,  2 Feb 2024 17:49:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5D7314C59D;
+	Fri,  2 Feb 2024 17:56:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WPJJYvAz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g2CV4Vs8"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DCEE148FFF;
-	Fri,  2 Feb 2024 17:49:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D8F3145B19;
+	Fri,  2 Feb 2024 17:56:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706896184; cv=none; b=YDIyMj6GsiKTX8FwYtRTnwXM96mOn5kMPIJJW93iXTK2aZs/z0r3zkxwNMulY6nQuK360wH/JfBAC6PSIZ/NGT5Pimm7fCm246K2+IqhpVgoDWHjJybKQrWzN05KyMCRmsnJ6YdJzsTux8mk7XY18prVk9ps/eGcCZgzpu07pt8=
+	t=1706896579; cv=none; b=FrUf2DOgUto/0MUViygAG9Yg8EhCK1DXl7YodeNxRjLyRrPpQ7U+xuawDbQgh5RmcvkLYcr5MYrnoxE0XGMLRUD3KDbZz6oQYifiX4Ts7njGzlYlZnih2ikbNi4LL7Af9l06NEU4nTPyNL4IIzF8EAf95YB8u2N6QYR01NMZbEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706896184; c=relaxed/simple;
-	bh=dOC6l/UpwJt+sDh73ImH2SYn2JbGC0ZF3A9tIFxdqtk=;
+	s=arc-20240116; t=1706896579; c=relaxed/simple;
+	bh=xQdrcH5A8lS5nkpqdWRHj3iy+HYu6WHXpSprNhL18UA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q8FrLABDuJ2YzIBnCSTfQ0mx/QESP0eyj51NH5pTzUeiN1YQkwsEPIiwpG61oOjj1cpp2nV8hKqSxujoS0EoKhE3I7xeQQYwKDmJYKoY5d77619Du09xr8dgpdx2ekTtJVpmZVmaGY/i2ZW6d2KzcouZuQBeR4ZtW/ScZkcJzSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WPJJYvAz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA7E5C433C7;
-	Fri,  2 Feb 2024 17:49:43 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=CoEZCK/hWrWmkhIMctD32QDb6hpDv/s1NfVsVGPa6rA2yzSJnuT7UzE0HBtweBnUQ3x2acCqZnH95ip/4c0CjRuNTBmwx+McgBwAtuphE/ps50h0fBcI+HC9h/NRGvE9vBE8hm8+UPhTxIBWXBKAdW9IsC5bvPuTuK9cyGrWZQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g2CV4Vs8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E93CCC433F1;
+	Fri,  2 Feb 2024 17:56:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706896184;
-	bh=dOC6l/UpwJt+sDh73ImH2SYn2JbGC0ZF3A9tIFxdqtk=;
+	s=k20201202; t=1706896578;
+	bh=xQdrcH5A8lS5nkpqdWRHj3iy+HYu6WHXpSprNhL18UA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WPJJYvAz83PqbWfJevH/VqATyZyF8CMELM/qsF5iGbGg+7c08RkvpLVnt1A5GE/cF
-	 tcu63FYZn4b7uhLLPzbN+EdUSZoRoygx/1agCdTpP9s/n883bAkiQP8gjBz/mp+kDW
-	 qAUTtz5OnUdUz5st4dAWc5OGoV8IM7DK0KDm2fKGNgkvkbFxVCqblojdOgeVCjK2WT
-	 8TgIKe63Wz1bq6Pwy73SdDw6XnGCRuLJmukJO4LPOLdK/c9MQGRTbs1oxi0ZYlm/v9
-	 h+6C4sTZAkHgIq2mWUe1PiL9Ix6Qz58Sj0f91Fwj4LzNhLlO4dG31aRGnZ1zxuS/WT
-	 KdHH/uaxwI7ag==
-Date: Fri, 2 Feb 2024 11:49:41 -0600
+	b=g2CV4Vs8NwjSqfiNsg00uiOUdnJJuA7G6PBrsuSCuxbv159o1b4ZRSuF7OyTOhtXg
+	 woENTE2tEZiFG6VnssVe1AxW7cvrV8xCAzqix43Te7abvn9q8+RF6SOXtZyIcnOd3y
+	 EMYamJE3kVbXgwiLkfmAorueG9GOYjnbUGjmWYicmeuDQb7yE/HCvCrsZEp9qL20tc
+	 M3BgLxNOK490xXJIWbzOX+llq2joPitSar6Z8ot+4L7yd75BSNC4fGtERsbpSjDrtn
+	 NnsQy+ONyY/VxQ31aLDNyN4L0XbrqNwwIQMDBndcSSeplbKpdbTRz0G4RiT6I92gnA
+	 3v9r2pn+G8JZQ==
+Date: Fri, 2 Feb 2024 11:56:16 -0600
 From: Rob Herring <robh@kernel.org>
 To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 Cc: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
@@ -139,11 +139,11 @@ Cc: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
 	linux-staging@lists.linux.dev,
 	linux-stm32@st-md-mailman.stormreply.com,
 	linux-tegra@vger.kernel.org, llvm@lists.linux.dev
-Subject: Re: [PATCH v3 05/24] media: i2c: switch to use
+Subject: Re: [PATCH v3 06/24] media: platform: switch to use
  of_graph_get_next_device_endpoint()
-Message-ID: <20240202174941.GA310089-robh@kernel.org>
+Message-ID: <20240202175616.GB310089-robh@kernel.org>
 References: <87o7d26qla.wl-kuninori.morimoto.gx@renesas.com>
- <87h6iu6qjs.wl-kuninori.morimoto.gx@renesas.com>
+ <87frye6qjl.wl-kuninori.morimoto.gx@renesas.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -152,69 +152,241 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <87h6iu6qjs.wl-kuninori.morimoto.gx@renesas.com>
+In-Reply-To: <87frye6qjl.wl-kuninori.morimoto.gx@renesas.com>
 
-On Wed, Jan 31, 2024 at 05:05:27AM +0000, Kuninori Morimoto wrote:
+On Wed, Jan 31, 2024 at 05:05:34AM +0000, Kuninori Morimoto wrote:
 > of_graph_get_next_endpoint() is now renamed to
 > of_graph_get_next_device_endpoint(). Switch to it.
 > 
 > Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 > ---
->  drivers/media/i2c/adv7343.c              | 2 +-
->  drivers/media/i2c/adv748x/adv748x-core.c | 2 +-
->  drivers/media/i2c/adv7604.c              | 2 +-
->  drivers/media/i2c/isl7998x.c             | 2 +-
->  drivers/media/i2c/max9286.c              | 2 +-
->  drivers/media/i2c/mt9p031.c              | 2 +-
->  drivers/media/i2c/mt9v032.c              | 2 +-
->  drivers/media/i2c/ov2659.c               | 2 +-
->  drivers/media/i2c/ov5645.c               | 2 +-
->  drivers/media/i2c/ov5647.c               | 2 +-
->  drivers/media/i2c/s5c73m3/s5c73m3-core.c | 2 +-
->  drivers/media/i2c/s5k5baf.c              | 2 +-
->  drivers/media/i2c/tc358743.c             | 2 +-
->  drivers/media/i2c/tda1997x.c             | 2 +-
->  drivers/media/i2c/tvp514x.c              | 2 +-
->  drivers/media/i2c/tvp5150.c              | 4 ++--
->  drivers/media/i2c/tvp7002.c              | 2 +-
->  17 files changed, 18 insertions(+), 18 deletions(-)
+>  drivers/media/platform/atmel/atmel-isi.c                 | 4 ++--
+>  drivers/media/platform/intel/pxa_camera.c                | 2 +-
+>  drivers/media/platform/microchip/microchip-sama5d2-isc.c | 2 +-
+>  drivers/media/platform/microchip/microchip-sama7g5-isc.c | 2 +-
+>  drivers/media/platform/qcom/camss/camss.c                | 2 +-
+>  drivers/media/platform/renesas/renesas-ceu.c             | 2 +-
+>  drivers/media/platform/samsung/exynos4-is/fimc-is.c      | 2 +-
+>  drivers/media/platform/samsung/exynos4-is/mipi-csis.c    | 2 +-
+>  drivers/media/platform/st/stm32/stm32-dcmi.c             | 4 ++--
+>  drivers/media/platform/ti/am437x/am437x-vpfe.c           | 2 +-
+>  drivers/media/platform/ti/davinci/vpif.c                 | 3 +--
+>  drivers/media/platform/ti/davinci/vpif_capture.c         | 3 +--
+>  drivers/media/platform/video-mux.c                       | 2 +-
+>  drivers/media/platform/xilinx/xilinx-vipp.c              | 2 +-
+>  14 files changed, 16 insertions(+), 18 deletions(-)
 > 
-> diff --git a/drivers/media/i2c/adv7343.c b/drivers/media/i2c/adv7343.c
-> index ff21cd4744d3..7e4eb2f8bf0d 100644
-> --- a/drivers/media/i2c/adv7343.c
-> +++ b/drivers/media/i2c/adv7343.c
-> @@ -403,7 +403,7 @@ adv7343_get_pdata(struct i2c_client *client)
->  	if (!IS_ENABLED(CONFIG_OF) || !client->dev.of_node)
->  		return client->dev.platform_data;
+> diff --git a/drivers/media/platform/atmel/atmel-isi.c b/drivers/media/platform/atmel/atmel-isi.c
+> index 4046212d48b4..4317750d05ad 100644
+> --- a/drivers/media/platform/atmel/atmel-isi.c
+> +++ b/drivers/media/platform/atmel/atmel-isi.c
+> @@ -831,7 +831,7 @@ static int atmel_isi_parse_dt(struct atmel_isi *isi,
+>  	isi->pdata.full_mode = 1;
+>  	isi->pdata.frate = ISI_CFG1_FRATE_CAPTURE_ALL;
 >  
-> -	np = of_graph_get_next_endpoint(client->dev.of_node, NULL);
-> +	np = of_graph_get_next_device_endpoint(client->dev.of_node, NULL);
+> -	np = of_graph_get_next_endpoint(np, NULL);
+> +	np = of_graph_get_next_device_endpoint(np, NULL);
 
-This is assuming there's just 1 port and 1 endpoint, but let's be 
-specific as the bindings are (first endpoint on port 0):
+Same comment on using of_graph_get_endpoint_by_regs().
 
-of_graph_get_endpoint_by_regs(client->dev.of_node, 0, -1);
 
-Note we could ask for endpoint 0 here, but the bindings generally allow 
-for more than 1.
-
-I imagine most of the other cases here are the same.
-
->  	if (!np)
->  		return NULL;
->  
-> diff --git a/drivers/media/i2c/adv748x/adv748x-core.c b/drivers/media/i2c/adv748x/adv748x-core.c
-> index 3eb6d5e8f082..4e9e4cef8954 100644
-> --- a/drivers/media/i2c/adv748x/adv748x-core.c
-> +++ b/drivers/media/i2c/adv748x/adv748x-core.c
-> @@ -657,7 +657,7 @@ static int adv748x_parse_dt(struct adv748x_state *state)
->  	bool in_found = false;
+>  	if (!np) {
+>  		dev_err(&pdev->dev, "Could not find the endpoint\n");
+>  		return -EINVAL;
+> @@ -1155,7 +1155,7 @@ static int isi_graph_init(struct atmel_isi *isi)
+>  	struct device_node *ep;
 >  	int ret;
 >  
-> -	for_each_endpoint_of_node(state->dev->of_node, ep_np) {
-> +	for_each_device_endpoint_of_node(state->dev->of_node, ep_np) {
+> -	ep = of_graph_get_next_endpoint(isi->dev->of_node, NULL);
+> +	ep = of_graph_get_next_device_endpoint(isi->dev->of_node, NULL);
+>  	if (!ep)
+>  		return -EINVAL;
+>  
+> diff --git a/drivers/media/platform/intel/pxa_camera.c b/drivers/media/platform/intel/pxa_camera.c
+> index 59b89e421dc2..f2175c03502b 100644
+> --- a/drivers/media/platform/intel/pxa_camera.c
+> +++ b/drivers/media/platform/intel/pxa_camera.c
+> @@ -2207,7 +2207,7 @@ static int pxa_camera_pdata_from_dt(struct device *dev,
+>  		pcdev->mclk = mclk_rate;
+>  	}
+>  
+> -	np = of_graph_get_next_endpoint(np, NULL);
+> +	np = of_graph_get_next_device_endpoint(np, NULL);
+>  	if (!np) {
+>  		dev_err(dev, "could not find endpoint\n");
+>  		return -EINVAL;
+> diff --git a/drivers/media/platform/microchip/microchip-sama5d2-isc.c b/drivers/media/platform/microchip/microchip-sama5d2-isc.c
+> index 5ac149cf3647..201049c047b0 100644
+> --- a/drivers/media/platform/microchip/microchip-sama5d2-isc.c
+> +++ b/drivers/media/platform/microchip/microchip-sama5d2-isc.c
+> @@ -363,7 +363,7 @@ static int isc_parse_dt(struct device *dev, struct isc_device *isc)
+>  	while (1) {
+>  		struct v4l2_fwnode_endpoint v4l2_epn = { .bus_type = 0 };
+>  
+> -		epn = of_graph_get_next_endpoint(np, epn);
+> +		epn = of_graph_get_next_device_endpoint(np, epn);
 
-I would skip the rename.
+Looks like this should use the iterator?
+
+
+>  		if (!epn)
+>  			return 0;
+>  
+> diff --git a/drivers/media/platform/microchip/microchip-sama7g5-isc.c b/drivers/media/platform/microchip/microchip-sama7g5-isc.c
+> index 73445f33d26b..b617a9bcd398 100644
+> --- a/drivers/media/platform/microchip/microchip-sama7g5-isc.c
+> +++ b/drivers/media/platform/microchip/microchip-sama7g5-isc.c
+> @@ -349,7 +349,7 @@ static int xisc_parse_dt(struct device *dev, struct isc_device *isc)
+>  	while (1) {
+>  		struct v4l2_fwnode_endpoint v4l2_epn = { .bus_type = 0 };
+>  
+> -		epn = of_graph_get_next_endpoint(np, epn);
+> +		epn = of_graph_get_next_device_endpoint(np, epn);
+>  		if (!epn)
+>  			return 0;
+>  
+> diff --git a/drivers/media/platform/qcom/camss/camss.c b/drivers/media/platform/qcom/camss/camss.c
+> index 8e78dd8d5961..cbb6f88cfe4a 100644
+> --- a/drivers/media/platform/qcom/camss/camss.c
+> +++ b/drivers/media/platform/qcom/camss/camss.c
+> @@ -1136,7 +1136,7 @@ static int camss_of_parse_ports(struct camss *camss)
+>  	struct device_node *remote = NULL;
+>  	int ret, num_subdevs = 0;
+>  
+> -	for_each_endpoint_of_node(dev->of_node, node) {
+> +	for_each_device_endpoint_of_node(dev->of_node, node) {
+>  		struct camss_async_subdev *csd;
+>  
+>  		if (!of_device_is_available(node))
+> diff --git a/drivers/media/platform/renesas/renesas-ceu.c b/drivers/media/platform/renesas/renesas-ceu.c
+> index 2562b30acfb9..929d17de4ac9 100644
+> --- a/drivers/media/platform/renesas/renesas-ceu.c
+> +++ b/drivers/media/platform/renesas/renesas-ceu.c
+> @@ -1526,7 +1526,7 @@ static int ceu_parse_dt(struct ceu_device *ceudev)
+>  	int num_ep;
+>  	int ret;
+>  
+> -	num_ep = of_graph_get_endpoint_count(of);
+> +	num_ep = of_graph_get_device_endpoint_count(of);
+>  	if (!num_ep)
+>  		return -ENODEV;
+>  
+> diff --git a/drivers/media/platform/samsung/exynos4-is/fimc-is.c b/drivers/media/platform/samsung/exynos4-is/fimc-is.c
+> index a08c87ef6e2d..5ab0399b7718 100644
+> --- a/drivers/media/platform/samsung/exynos4-is/fimc-is.c
+> +++ b/drivers/media/platform/samsung/exynos4-is/fimc-is.c
+> @@ -175,7 +175,7 @@ static int fimc_is_parse_sensor_config(struct fimc_is *is, unsigned int index,
+>  		return -EINVAL;
+>  	}
+>  
+> -	ep = of_graph_get_next_endpoint(node, NULL);
+> +	ep = of_graph_get_next_device_endpoint(node, NULL);
+>  	if (!ep)
+>  		return -ENXIO;
+>  
+> diff --git a/drivers/media/platform/samsung/exynos4-is/mipi-csis.c b/drivers/media/platform/samsung/exynos4-is/mipi-csis.c
+> index 686ca8753ba2..a332b4bd76f2 100644
+> --- a/drivers/media/platform/samsung/exynos4-is/mipi-csis.c
+> +++ b/drivers/media/platform/samsung/exynos4-is/mipi-csis.c
+> @@ -728,7 +728,7 @@ static int s5pcsis_parse_dt(struct platform_device *pdev,
+>  				 &state->max_num_lanes))
+>  		return -EINVAL;
+>  
+> -	node = of_graph_get_next_endpoint(node, NULL);
+> +	node = of_graph_get_next_device_endpoint(node, NULL);
+>  	if (!node) {
+>  		dev_err(&pdev->dev, "No port node at %pOF\n",
+>  				pdev->dev.of_node);
+> diff --git a/drivers/media/platform/st/stm32/stm32-dcmi.c b/drivers/media/platform/st/stm32/stm32-dcmi.c
+> index 8cb4fdcae137..320101f4ad40 100644
+> --- a/drivers/media/platform/st/stm32/stm32-dcmi.c
+> +++ b/drivers/media/platform/st/stm32/stm32-dcmi.c
+> @@ -1856,7 +1856,7 @@ static int dcmi_graph_init(struct stm32_dcmi *dcmi)
+>  	struct device_node *ep;
+>  	int ret;
+>  
+> -	ep = of_graph_get_next_endpoint(dcmi->dev->of_node, NULL);
+> +	ep = of_graph_get_next_device_endpoint(dcmi->dev->of_node, NULL);
+>  	if (!ep) {
+>  		dev_err(dcmi->dev, "Failed to get next endpoint\n");
+>  		return -EINVAL;
+> @@ -1915,7 +1915,7 @@ static int dcmi_probe(struct platform_device *pdev)
+>  				     "Could not get reset control\n");
+>  
+>  	/* Get bus characteristics from devicetree */
+> -	np = of_graph_get_next_endpoint(np, NULL);
+> +	np = of_graph_get_next_device_endpoint(np, NULL);
+>  	if (!np) {
+>  		dev_err(&pdev->dev, "Could not find the endpoint\n");
+>  		return -ENODEV;
+> diff --git a/drivers/media/platform/ti/am437x/am437x-vpfe.c b/drivers/media/platform/ti/am437x/am437x-vpfe.c
+> index 5fa2ea9025d9..46876865ec6a 100644
+> --- a/drivers/media/platform/ti/am437x/am437x-vpfe.c
+> +++ b/drivers/media/platform/ti/am437x/am437x-vpfe.c
+> @@ -2309,7 +2309,7 @@ vpfe_get_pdata(struct vpfe_device *vpfe)
+>  		struct v4l2_fwnode_endpoint bus_cfg = { .bus_type = 0 };
+>  		struct device_node *rem;
+>  
+> -		endpoint = of_graph_get_next_endpoint(dev->of_node, endpoint);
+> +		endpoint = of_graph_get_next_device_endpoint(dev->of_node, endpoint);
+>  		if (!endpoint)
+>  			break;
+>  
+> diff --git a/drivers/media/platform/ti/davinci/vpif.c b/drivers/media/platform/ti/davinci/vpif.c
+> index 63cdfed37bc9..021ca79e832b 100644
+> --- a/drivers/media/platform/ti/davinci/vpif.c
+> +++ b/drivers/media/platform/ti/davinci/vpif.c
+> @@ -465,8 +465,7 @@ static int vpif_probe(struct platform_device *pdev)
+>  	 * so their devices need to be registered manually here
+>  	 * for their legacy platform_drivers to work.
+>  	 */
+> -	endpoint = of_graph_get_next_endpoint(pdev->dev.of_node,
+> -					      endpoint);
+> +	endpoint = of_graph_get_next_device_endpoint(pdev->dev.of_node, endpoint);
+>  	if (!endpoint)
+>  		return 0;
+>  	of_node_put(endpoint);
+> diff --git a/drivers/media/platform/ti/davinci/vpif_capture.c b/drivers/media/platform/ti/davinci/vpif_capture.c
+> index 99fae8830c41..805c313b41dc 100644
+> --- a/drivers/media/platform/ti/davinci/vpif_capture.c
+> +++ b/drivers/media/platform/ti/davinci/vpif_capture.c
+> @@ -1521,8 +1521,7 @@ vpif_capture_get_pdata(struct platform_device *pdev,
+>  		unsigned int flags;
+>  		int err;
+>  
+> -		endpoint = of_graph_get_next_endpoint(pdev->dev.of_node,
+> -						      endpoint);
+> +		endpoint = of_graph_get_next_device_endpoint(pdev->dev.of_node, endpoint);
+>  		if (!endpoint)
+>  			break;
+>  
+> diff --git a/drivers/media/platform/video-mux.c b/drivers/media/platform/video-mux.c
+> index 5de6b6694f53..61d84ade7155 100644
+> --- a/drivers/media/platform/video-mux.c
+> +++ b/drivers/media/platform/video-mux.c
+> @@ -408,7 +408,7 @@ static int video_mux_probe(struct platform_device *pdev)
+>  	 * The largest numbered port is the output port. It determines
+>  	 * total number of pads.
+>  	 */
+> -	for_each_endpoint_of_node(np, ep) {
+> +	for_each_device_endpoint_of_node(np, ep) {
+>  		struct of_endpoint endpoint;
+>  
+>  		of_graph_parse_endpoint(ep, &endpoint);
+> diff --git a/drivers/media/platform/xilinx/xilinx-vipp.c b/drivers/media/platform/xilinx/xilinx-vipp.c
+> index 996684a73038..9230931d6d7a 100644
+> --- a/drivers/media/platform/xilinx/xilinx-vipp.c
+> +++ b/drivers/media/platform/xilinx/xilinx-vipp.c
+> @@ -207,7 +207,7 @@ static int xvip_graph_build_dma(struct xvip_composite_device *xdev)
+>  
+>  	while (1) {
+>  		/* Get the next endpoint and parse its link. */
+> -		ep = of_graph_get_next_endpoint(node, ep);
+> +		ep = of_graph_get_next_device_endpoint(node, ep);
+
+The rest of this file uses fwnode versions including the very next 
+function. This should be fwnode_graph_get_next_endpoint(). But then it's 
+a loop, so should be a loop iterator instead.
 
 Rob
 
