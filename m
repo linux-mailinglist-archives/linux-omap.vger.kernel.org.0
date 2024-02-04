@@ -1,99 +1,89 @@
-Return-Path: <linux-omap+bounces-484-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-485-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDA698479AB
-	for <lists+linux-omap@lfdr.de>; Fri,  2 Feb 2024 20:29:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A0A2848DDF
+	for <lists+linux-omap@lfdr.de>; Sun,  4 Feb 2024 13:57:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C3C01C23542
-	for <lists+linux-omap@lfdr.de>; Fri,  2 Feb 2024 19:29:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1DA68B223B3
+	for <lists+linux-omap@lfdr.de>; Sun,  4 Feb 2024 12:57:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60DAC3D3BC;
-	Fri,  2 Feb 2024 19:29:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E14412231F;
+	Sun,  4 Feb 2024 12:57:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mzp8kCor"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [83.223.95.100])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E639515E5C5;
-	Fri,  2 Feb 2024 19:29:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.95.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83AC51E51A;
+	Sun,  4 Feb 2024 12:57:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706902171; cv=none; b=TaB/J9gm5EZXfTIgo1FnHeUqeOzX2T8ekBcvPxkYQYvhUgosIiCcPDHJ09v5CJj7aR7QVvJV/+3ma3KHoEfePqLRpGYcc8O80RMWJXc7GLyMdk3TMPL8u84XiN2XLiLjg8iStGMGfkgm33aXr9/AwtDIN8vUfOJ6HZu7RAzqiMA=
+	t=1707051447; cv=none; b=bhD2+5zrzQ5MjbxSiUouGNYtwo0nPHF4aHu+AecZNxuzGvtndGFzhofpgubHu7QVD71f/MkfCyuxdI6BT/uX8fr141+LzaX4U3U6hAsjwzyiFcYEanbMqL8iDF8PxONtYlWJGvNYpsUW++37Ah81wk/0CyK1BaMdPLl+dTv+Z5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706902171; c=relaxed/simple;
-	bh=OSLx8ZGHgNRq/oilqETzpjFY24Zt3C6hbKYIPHxjhUw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TQTVRzu3LLr+qh1xqaV2se69GNbevlmMYHkO7CTIqW9OSDoZYLHm9+X7ys1ZWjuyT9BPf9/F5bEuXo17tPfK/2TQpQV/xoshNvFgTziKlwFcpMuhIUCasFFeBI6iReOX1k4dBCa4EchlcnD3lMZhRb6Jsnld75JLfMLyyyY6g3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.95.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout1.hostsharing.net (Postfix) with ESMTPS id 5D9DD3000C980;
-	Fri,  2 Feb 2024 20:20:48 +0100 (CET)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 4DDF8406333; Fri,  2 Feb 2024 20:20:48 +0100 (CET)
-Date: Fri, 2 Feb 2024 20:20:48 +0100
-From: Lukas Wunner <lukas@wunner.de>
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Patrick Williams <patrick@stwcx.xyz>,
-	Tao Ren <rentao.bupt@gmail.com>,
-	Bruno Thomsen <bruno.thomsen@gmail.com>, robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-	joel@jms.id.au, shawnguo@kernel.org, bcousson@baylibre.com,
-	tony@atomide.com, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-aspeed@lists.ozlabs.org,
+	s=arc-20240116; t=1707051447; c=relaxed/simple;
+	bh=11ALOU6VsnZCMQ97q7QMgNjhbRhAQUuFE5x9Bwr0dTM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JOJjp8llLgQPqLxSkFGt7ERBss3nJuziWoZKFipnjyDr+PDl8A2ckhbjl9Rec9W4muaXvOmJTkUfXAPbQGt4rFqIsbEOu4Qh0Udbuwe51a9oU/7RJwYhV2kzoGLeDrF2uBXwcrHPz/734sM6NF8mF6mrtgrK+3EahR8R8UEbu4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mzp8kCor; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71DE8C43142;
+	Sun,  4 Feb 2024 12:57:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707051447;
+	bh=11ALOU6VsnZCMQ97q7QMgNjhbRhAQUuFE5x9Bwr0dTM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=mzp8kCorouXZNIh5YdE3P/9BIzS8g0hVdJWYDPZ03Ux+V0TvVbltKZyt/1VvuRoMB
+	 O46zrP/E03XVxp+e5ztdOV+Q53avZoO9m25AqfRWpWvD48OE5u9AnA+onDvW8uOaCj
+	 TMA27NWgcJUkdl3D4gGQJ3NsQOQ4YiXn7awrd42pxPREhu9gmdhyYNoGHBm+gRw7Of
+	 6SYY0AME+hrsr1J8vMiqIm5DU766wXQpcQK7+i9dNaYyohq6zoASo9YR3ZDdq7JcF4
+	 Am01y4r6d+tcrzT1K7gmBS101DI3zDMFtiBHXY4cvTD/wMr1B6o0Bx7GYql7J+78K+
+	 5MVyGX+SCPwIg==
+From: Masahiro Yamada <masahiroy@kernel.org>
+To: Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+	Tony Lindgren <tony@atomide.com>,
 	linux-omap@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.7 20/23] ARM: dts: Fix TPM schema violations
-Message-ID: <20240202192048.GA22666@wunner.de>
-References: <20240202183926.540467-1-sashal@kernel.org>
- <20240202183926.540467-20-sashal@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] arm: omap1: remove duplicated 'select ARCH_OMAP'
+Date: Sun,  4 Feb 2024 21:57:16 +0900
+Message-Id: <20240204125716.56756-1-masahiroy@kernel.org>
+X-Mailer: git-send-email 2.40.1
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240202183926.540467-20-sashal@kernel.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 
-Hi Sasha,
+Commit 980a637d11fe ("ARM: omap1: fix !ARCH_OMAP1_ANY link failures")
+added one more 'select ARCH_OMAP'.
 
-On Fri, Feb 02, 2024 at 01:39:16PM -0500, Sasha Levin wrote:
-> [ Upstream commit 8412c47d68436b9f9a260039a4a773daa6824925 ]
-> 
-> Since commit 26c9d152ebf3 ("dt-bindings: tpm: Consolidate TCG TIS
-> bindings"), several issues are reported by "make dtbs_check" for ARM
-> devicetrees:
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+---
 
-You've auto-selected this commit for backporting to v6.6 and v6.7
-stable kernels, but it's only really needed for v6.8 to avoid
-issues reported by "make dtbs_check".
+ arch/arm/mach-omap1/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
-So IMO this commit can be dropped from the v6.6 and v6.7 patch queues.
+diff --git a/arch/arm/mach-omap1/Kconfig b/arch/arm/mach-omap1/Kconfig
+index cbf703f0d850..a643b71e30a3 100644
+--- a/arch/arm/mach-omap1/Kconfig
++++ b/arch/arm/mach-omap1/Kconfig
+@@ -4,7 +4,6 @@ menuconfig ARCH_OMAP1
+ 	depends on ARCH_MULTI_V4T || ARCH_MULTI_V5
+ 	depends on CPU_LITTLE_ENDIAN
+ 	depends on ATAGS
+-	select ARCH_OMAP
+ 	select ARCH_HAS_HOLES_MEMORYMODEL
+ 	select ARCH_OMAP
+ 	select CLKSRC_MMIO
+-- 
+2.40.1
 
-Thanks,
-
-Lukas
-
-> The nodename needs to be "tpm@0" rather than "tpmdev@0" and the
-> compatible property needs to contain the chip's name in addition to the
-> generic "tcg,tpm_tis-spi" or "tcg,tpm-tis-i2c":
-> 
->   tpmdev@0: $nodename:0: 'tpmdev@0' does not match '^tpm(@[0-9a-f]+)?$'
->         from schema $id: http://devicetree.org/schemas/tpm/tcg,tpm_tis-spi.yaml#
-> 
->   tpm@2e: compatible: 'oneOf' conditional failed, one must be fixed:
->         ['tcg,tpm-tis-i2c'] is too short
->         from schema $id: http://devicetree.org/schemas/tpm/tcg,tpm-tis-i2c.yaml#
-> 
-> Fix these schema violations.
 
