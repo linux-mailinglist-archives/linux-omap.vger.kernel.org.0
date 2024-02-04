@@ -1,89 +1,113 @@
-Return-Path: <linux-omap+bounces-485-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-486-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A0A2848DDF
-	for <lists+linux-omap@lfdr.de>; Sun,  4 Feb 2024 13:57:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0F45848E09
+	for <lists+linux-omap@lfdr.de>; Sun,  4 Feb 2024 14:19:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1DA68B223B3
-	for <lists+linux-omap@lfdr.de>; Sun,  4 Feb 2024 12:57:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 622F61F236F5
+	for <lists+linux-omap@lfdr.de>; Sun,  4 Feb 2024 13:19:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E14412231F;
-	Sun,  4 Feb 2024 12:57:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84BB5224DB;
+	Sun,  4 Feb 2024 13:19:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mzp8kCor"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OLzpuEbK"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83AC51E51A;
-	Sun,  4 Feb 2024 12:57:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26CCF219FF;
+	Sun,  4 Feb 2024 13:19:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707051447; cv=none; b=bhD2+5zrzQ5MjbxSiUouGNYtwo0nPHF4aHu+AecZNxuzGvtndGFzhofpgubHu7QVD71f/MkfCyuxdI6BT/uX8fr141+LzaX4U3U6hAsjwzyiFcYEanbMqL8iDF8PxONtYlWJGvNYpsUW++37Ah81wk/0CyK1BaMdPLl+dTv+Z5s=
+	t=1707052772; cv=none; b=dCZVFcClKFekivaEefOb/23kJ/X0a3n3fQsnG71sFqRTA+raH7eqYxv2NUepuoR5rukVRCBAPtckJTteg1muVRtVRUCWji9pt7GFNyj/H8sMGRXne7f74gEdwoJ43FqZoDsv7DNHkkbh4vj07oC5K1kHXyVDWvLgkk/XFhUpGk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707051447; c=relaxed/simple;
-	bh=11ALOU6VsnZCMQ97q7QMgNjhbRhAQUuFE5x9Bwr0dTM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JOJjp8llLgQPqLxSkFGt7ERBss3nJuziWoZKFipnjyDr+PDl8A2ckhbjl9Rec9W4muaXvOmJTkUfXAPbQGt4rFqIsbEOu4Qh0Udbuwe51a9oU/7RJwYhV2kzoGLeDrF2uBXwcrHPz/734sM6NF8mF6mrtgrK+3EahR8R8UEbu4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mzp8kCor; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71DE8C43142;
-	Sun,  4 Feb 2024 12:57:25 +0000 (UTC)
+	s=arc-20240116; t=1707052772; c=relaxed/simple;
+	bh=UNqEHH3dCJoLVS2Ndq4kDYwtV6GN8z2wB4AIX3Mux+Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Bv9K04sv8EKKenc0MmyOLHuadTYx5HbRH7fTEUUWm/OPwGTxAGX15WyLKv7/TqaZO9S5hBx7Qwi6Trnfyq7ngMxJ7aYO5Og0vytQ4jmAbyKlFmNgGYbkF55bASg1Y4EJqNKsSGDbRbM/xwM5/NUvWhBWVgJV8HHOVPpQDB3qsU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OLzpuEbK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8B4FC433B1;
+	Sun,  4 Feb 2024 13:19:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707051447;
-	bh=11ALOU6VsnZCMQ97q7QMgNjhbRhAQUuFE5x9Bwr0dTM=;
-	h=From:To:Cc:Subject:Date:From;
-	b=mzp8kCorouXZNIh5YdE3P/9BIzS8g0hVdJWYDPZ03Ux+V0TvVbltKZyt/1VvuRoMB
-	 O46zrP/E03XVxp+e5ztdOV+Q53avZoO9m25AqfRWpWvD48OE5u9AnA+onDvW8uOaCj
-	 TMA27NWgcJUkdl3D4gGQJ3NsQOQ4YiXn7awrd42pxPREhu9gmdhyYNoGHBm+gRw7Of
-	 6SYY0AME+hrsr1J8vMiqIm5DU766wXQpcQK7+i9dNaYyohq6zoASo9YR3ZDdq7JcF4
-	 Am01y4r6d+tcrzT1K7gmBS101DI3zDMFtiBHXY4cvTD/wMr1B6o0Bx7GYql7J+78K+
-	 5MVyGX+SCPwIg==
-From: Masahiro Yamada <masahiroy@kernel.org>
-To: Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-	Tony Lindgren <tony@atomide.com>,
-	linux-omap@vger.kernel.org
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] arm: omap1: remove duplicated 'select ARCH_OMAP'
-Date: Sun,  4 Feb 2024 21:57:16 +0900
-Message-Id: <20240204125716.56756-1-masahiroy@kernel.org>
-X-Mailer: git-send-email 2.40.1
+	s=k20201202; t=1707052771;
+	bh=UNqEHH3dCJoLVS2Ndq4kDYwtV6GN8z2wB4AIX3Mux+Q=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=OLzpuEbK+zOm1sn8eG/MRgXm6X12YvdQq99gIzC8tLqrDquHHGDhtSg+FnchHyDTO
+	 SRCC8oFpTtpv0wAvrWWjbyYmGWcNCAi485LLsLHJ5xt2T7+YBfNEaC+IsbPKDUeyxE
+	 M+rWDBXPJGXLS1K5qdslX0jsCPK0rVQa38hjgz09nhocsS53GUwM+2RY4RZ1fSJAj8
+	 vHQq5dkXVjWUb16ELeGRTWELWMiaDjWEYmLVnACVHDLok9/7P3ShR3tJcPLXbCaXtI
+	 XjO47uytTHwNSg5pJ55YvKkpidi39Gs9dVMxxZ7oAmWo8EZFi/tzU3/s8l4E+/zg4h
+	 bASQwUDUQle+w==
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-5113a97a565so2468569e87.3;
+        Sun, 04 Feb 2024 05:19:31 -0800 (PST)
+X-Gm-Message-State: AOJu0Yw4aGsw3iWKvP1r9+t2kyBkm4+2aU6wohuKf7uoLIls5EVZAEkY
+	MCBSKNXOEo8Q3cMM1qkAABO/Gr7jZTLkU25QIjYwMqbTRRvxM5eHnYxNcFPSttUi53YXSmMN+dB
+	Hx+GQRCj9M4yXj7zHUd9D6fKmdIQ=
+X-Google-Smtp-Source: AGHT+IGBi6H/m6KT3UCnhwQYIqummxJ8ILXcmZYyl95mLdpmjzdSiNAQsolwbAsHnB1qPW2jsJ62D012lQ+eQcWL2Q0=
+X-Received: by 2002:ac2:555a:0:b0:511:38df:2ee7 with SMTP id
+ l26-20020ac2555a000000b0051138df2ee7mr3480968lfk.48.1707052770370; Sun, 04
+ Feb 2024 05:19:30 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240204125716.56756-1-masahiroy@kernel.org>
+In-Reply-To: <20240204125716.56756-1-masahiroy@kernel.org>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Sun, 4 Feb 2024 22:18:53 +0900
+X-Gmail-Original-Message-ID: <CAK7LNASC4xh5WrEaHkqFg49xzJsQMQnjLV8sCea8uceNp5EUdQ@mail.gmail.com>
+Message-ID: <CAK7LNASC4xh5WrEaHkqFg49xzJsQMQnjLV8sCea8uceNp5EUdQ@mail.gmail.com>
+Subject: Re: [PATCH] arm: omap1: remove duplicated 'select ARCH_OMAP'
+To: Aaro Koskinen <aaro.koskinen@iki.fi>, Janusz Krzysztofik <jmkrzyszt@gmail.com>, 
+	Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org
+Cc: Arnd Bergmann <arnd@arndb.de>, Russell King <linux@armlinux.org.uk>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Commit 980a637d11fe ("ARM: omap1: fix !ARCH_OMAP1_ANY link failures")
-added one more 'select ARCH_OMAP'.
+Just a nit.
 
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
----
+The commit subject "arm:" should be capitalized to "ARM:"
+because it is a convention for changes under arch/arm/.
 
- arch/arm/mach-omap1/Kconfig | 1 -
- 1 file changed, 1 deletion(-)
+Maybe, the maintainer can cater to it?
 
-diff --git a/arch/arm/mach-omap1/Kconfig b/arch/arm/mach-omap1/Kconfig
-index cbf703f0d850..a643b71e30a3 100644
---- a/arch/arm/mach-omap1/Kconfig
-+++ b/arch/arm/mach-omap1/Kconfig
-@@ -4,7 +4,6 @@ menuconfig ARCH_OMAP1
- 	depends on ARCH_MULTI_V4T || ARCH_MULTI_V5
- 	depends on CPU_LITTLE_ENDIAN
- 	depends on ATAGS
--	select ARCH_OMAP
- 	select ARCH_HAS_HOLES_MEMORYMODEL
- 	select ARCH_OMAP
- 	select CLKSRC_MMIO
--- 
-2.40.1
 
+On Sun, Feb 4, 2024 at 9:57=E2=80=AFPM Masahiro Yamada <masahiroy@kernel.or=
+g> wrote:
+>
+> Commit 980a637d11fe ("ARM: omap1: fix !ARCH_OMAP1_ANY link failures")
+> added one more 'select ARCH_OMAP'.
+>
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> ---
+>
+>  arch/arm/mach-omap1/Kconfig | 1 -
+>  1 file changed, 1 deletion(-)
+>
+> diff --git a/arch/arm/mach-omap1/Kconfig b/arch/arm/mach-omap1/Kconfig
+> index cbf703f0d850..a643b71e30a3 100644
+> --- a/arch/arm/mach-omap1/Kconfig
+> +++ b/arch/arm/mach-omap1/Kconfig
+> @@ -4,7 +4,6 @@ menuconfig ARCH_OMAP1
+>         depends on ARCH_MULTI_V4T || ARCH_MULTI_V5
+>         depends on CPU_LITTLE_ENDIAN
+>         depends on ATAGS
+> -       select ARCH_OMAP
+>         select ARCH_HAS_HOLES_MEMORYMODEL
+>         select ARCH_OMAP
+>         select CLKSRC_MMIO
+> --
+> 2.40.1
+>
+
+
+--=20
+Best Regards
+Masahiro Yamada
 
