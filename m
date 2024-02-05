@@ -1,118 +1,138 @@
-Return-Path: <linux-omap+bounces-491-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-492-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E045849474
-	for <lists+linux-omap@lfdr.de>; Mon,  5 Feb 2024 08:24:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B9B6849C7C
+	for <lists+linux-omap@lfdr.de>; Mon,  5 Feb 2024 15:01:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1E381F25E39
-	for <lists+linux-omap@lfdr.de>; Mon,  5 Feb 2024 07:24:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DCA01C248D2
+	for <lists+linux-omap@lfdr.de>; Mon,  5 Feb 2024 14:01:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4167A101C5;
-	Mon,  5 Feb 2024 07:22:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4FD82C1A5;
+	Mon,  5 Feb 2024 14:00:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b="pWBcYNFV"
+	dkim=pass (1024-bit key) header.d=mistralsolutions.com header.i=@mistralsolutions.com header.b="W8dS7/1v"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail5.25mail.st (mail5.25mail.st [74.50.62.9])
+Received: from egress-ip12a.ess.de.barracuda.com (egress-ip12a.ess.de.barracuda.com [18.184.203.235])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E359611705;
-	Mon,  5 Feb 2024 07:22:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.50.62.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEAD61CD1C
+	for <linux-omap@vger.kernel.org>; Mon,  5 Feb 2024 14:00:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.184.203.235
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707117736; cv=none; b=Uo3zq6rkfm5QkaSKy6wK/MdcYGW8lDkYJ72apFdGyKUyZgUmI5IpQlPBxwQtLRTB+CfCiPZ/kla/n7k7ZOo4PFMFLDyzk1WAsV+ZQ+HtyubGPrnUZv6s/u+8UEFTWj7BtK3cK4bV72DPcYkW539a659MYSuWVEN5NyunFn9+PHQ=
+	t=1707141616; cv=none; b=YOEV0H2ZRtEKWnJTgNEBMV4VmATfyDwhj19OgiVSWIm4RpF+FEyCuoKXXVppu2Yi236NML5QGLA90l/nEHHyQF6j8cjWQF8OFVyLkG7w31yZGXI0aqKb+kuGQshUrgNyqijUx413V8K7p5M/PjjJYz1xSbFUuC35gTx1uzPR56I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707117736; c=relaxed/simple;
-	bh=qu+yTx1OVLPWhDo9bCVpMACyMIuspoXRYqNKXMacw9E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MA3ouY/ra1ANIgdJNjQpElQXYj6mCY3+CFWriYQigc94DtWRFsnoTY5vZh9+wsNpkdvcrbz/YHxy2PcAuRAli/N0OjnHxteizU6DlGrMkU7f8yoMG72cNI2TwLRRC/ZPd5+OH4ruAy+dRCDOyVLhM3Cz4HS6GmjDcOxOLREsFSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com; spf=fail smtp.mailfrom=atomide.com; dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b=pWBcYNFV; arc=none smtp.client-ip=74.50.62.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=atomide.com
-Received: from localhost (91-158-86-216.elisa-laajakaista.fi [91.158.86.216])
-	by mail5.25mail.st (Postfix) with ESMTPSA id 2686F60333;
-	Mon,  5 Feb 2024 07:21:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=atomide.com;
-	s=25mailst; t=1707117734;
-	bh=qu+yTx1OVLPWhDo9bCVpMACyMIuspoXRYqNKXMacw9E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pWBcYNFVtYgQoLozoCxXXdqjuXmY8SrOQpWPvvfQVI4NKfVju1lTbtitfA9kD6+pG
-	 p2hqjQwgp1ebAl1mEiS5QverZrCmHNxdJP3U948Dn5dyLEWHGFNU+BpEmW6j+ybYoG
-	 yxRRF/fb+DUeMVlUCL37H0DYmNk3a4g7ovSmt1g8DBoCdyyScJ0O/+whc0nTQSJU7Y
-	 d90a9dLdOmsRoQqNlT3oRMX3I4m2hRx61KqX3PfKX6J4saK53FXn8OEyMMU4Q6N8vz
-	 IB9x4MLQWCg3APB3ApqJg7e8593AoRphMOynPw6zlauK0pMR6Fdj50hlxPOPMyLbxk
-	 l1hFnmvFjAN8A==
-Date: Mon, 5 Feb 2024 09:21:11 +0200
-From: Tony Lindgren <tony@atomide.com>
-To: Andi Shyti <andi.shyti@kernel.org>
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	Thomas Richard <thomas.richard@bootlin.com>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Andy Shevchenko <andy@kernel.org>,
-	Haojian Zhuang <haojian.zhuang@linaro.org>,
-	Vignesh R <vigneshr@ti.com>, Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-	Peter Rosin <peda@axentia.se>, Vinod Koul <vkoul@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Tom Joseph <tjoseph@cadence.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-	linux-i2c@vger.kernel.org, linux-phy@lists.infradead.org,
-	linux-pci@vger.kernel.org, gregory.clement@bootlin.com,
-	theo.lebrun@bootlin.com, thomas.petazzoni@bootlin.com,
-	u-kumar1@ti.com
-Subject: Re: [PATCH v2 02/15] pinctrl: pinctrl-single: move
- suspend()/resume() callbacks to noirq
-Message-ID: <20240205072111.GD5185@atomide.com>
-References: <20240102-j7200-pcie-s2r-v2-0-8e4f7d228ec2@bootlin.com>
- <20240102-j7200-pcie-s2r-v2-2-8e4f7d228ec2@bootlin.com>
- <CACRpkdYBnQ6xh2yNsnvquTOq5r7NeDhot6To9myfuNbonKcgzQ@mail.gmail.com>
- <6hyubhrho6xbki6yxtmqedylc2gpeyj4yu5gtrjrq4nsthcr7g@elfukmqeve2a>
+	s=arc-20240116; t=1707141616; c=relaxed/simple;
+	bh=/6zDVpTQxTpO8Rt7fqCeo96mpq7mjUP0IlGNFtYHc1g=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=c1p8qJu9yV1KOM3C70yZswQkqrKJURmKJ2AD5AbINeVR9J/lgGK6BnJAEyWp7wy+HNg8BNC/loDmfTU+1FDQZNXFcKFilX8TK5qF2jSf08D97DPPLR+GpMPG9Szxzk88qIIGgamjlfrzyFSjgsvnW0zH0LaataC/KMSHAxfXyf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mistralsolutions.com; spf=pass smtp.mailfrom=mistralsolutions.com; dkim=pass (1024-bit key) header.d=mistralsolutions.com header.i=@mistralsolutions.com header.b=W8dS7/1v; arc=none smtp.client-ip=18.184.203.235
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mistralsolutions.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mistralsolutions.com
+Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com [209.85.161.71]) by mx-outbound45-34.eu-central-1c.ess.aws.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO); Mon, 05 Feb 2024 14:00:06 +0000
+Received: by mail-oo1-f71.google.com with SMTP id 006d021491bc7-59a25e89211so4806852eaf.3
+        for <linux-omap@vger.kernel.org>; Mon, 05 Feb 2024 06:00:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mistralsolutions.com; s=google; t=1707141605; x=1707746405; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=UMXVXJW0OFWoix7qY497nt0fmYOWqwLi2f9LeVZ82B0=;
+        b=W8dS7/1vueMeFrQxesV34QbMHrYp8H4HQKQohMC28EFmqjvMg33d0rLRcsQEGDOVeR
+         lKOfwE099AgYZlNWQ6blDCX5QFNI2EZyi1dBPOhRFWPVLCWTwOnHrAn7Vs8U3Q5+fev4
+         Tf/QgRvAH2sIfq6T5MelD0QergVUTqLHQfYV8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707141605; x=1707746405;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=UMXVXJW0OFWoix7qY497nt0fmYOWqwLi2f9LeVZ82B0=;
+        b=bQ8fP6sRMj6ItVWvDgVWGad8RG05v0od93X19UAnjZlRRjCRduXEfc3ml9Onx5WpsP
+         dek6oYNAznkhUHCv40pLNRCIUzcHUbB8Wtxzz/9JUwvvh+g9tQyjoXczuqpYW7XuP3tS
+         ZuiFEpBX2HHP8n3KIF2Ij/S9AL+3T5tSFzFgxslNm6LjposFoTh9EgRWwgQ5OUDS/SlD
+         9oW/+nfdqrJa4BkyLzyhE21rLiMJdbX5JiYQNnOOShtHaR+4QFy8+WwJfx9rGy8ga+3z
+         9PrrfAqlpvS5WKlVxdajZh/V0E/bV8pE5oRPDloMNZVjIaMNrWytar1boeHFSVIjfViB
+         o7vA==
+X-Gm-Message-State: AOJu0Yy1IW7Ykf+XAvzCwK2p6b3Z3fKI4MqiEnisI+eRowCAHsW3Bc0Z
+	/wtCHFWuOuUnPDQgLkJUsWKxRjLQu/ftCIRloIOVUAoO5WuFqTvH7x3JblEIfByNZ79+N7hAQ/Y
+	sf8fXrcUZpz9I2fiFEXHNNzLw2/X5J1inXlml9t3BuknB3r2vgb4N4xY5CB6sQEfQoFAqSiPHF1
+	YrfiE2ooR3KsYRYcULig==
+X-Received: by 2002:a05:6a00:2e91:b0:6db:e14f:3956 with SMTP id fd17-20020a056a002e9100b006dbe14f3956mr17014279pfb.20.1707138497341;
+        Mon, 05 Feb 2024 05:08:17 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHNXHqSPziIiSbO4sZ+G6kXuaiJtK9gYDJuk+t3nQyBe7Vx85wEELo7/664uQfeffyM3mUsPw==
+X-Received: by 2002:a05:6a00:2e91:b0:6db:e14f:3956 with SMTP id fd17-20020a056a002e9100b006dbe14f3956mr17014252pfb.20.1707138496948;
+        Mon, 05 Feb 2024 05:08:16 -0800 (PST)
+X-Forwarded-Encrypted: i=0; AJvYcCVjN/4GYid4eXCABddW2uHoUktZQouQAFMefEu2Drp+ejGf8LUMxvo9I1/RCHN6P9ohqbwR7rPSdMCWl8KSKEJ/l5uKywZz9ExM7pIqzWjMErXA4ib6B7q6VYvUjg0ldfetrXMOkFj9Lonby3mTyj8rw3QlzbWUJMoF64n2v/XeEwJdwFSEe6lUuuAg7z2J8N2icB8Al9LL
+Received: from LAP568U.mistral.in ([106.51.69.35])
+        by smtp.gmail.com with ESMTPSA id j7-20020a62e907000000b006ddc5d8ecd7sm6604756pfh.32.2024.02.05.05.08.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Feb 2024 05:08:16 -0800 (PST)
+From: Sinthu Raja <sinthu.raja@mistralsolutions.com>
+X-Google-Original-From: Sinthu Raja <sinthu.raja@ti.com>
+To: Denis Kirjanov <dkirjanov@suse.de>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Ravi Gunasekaran <r-gunasekaran@ti.com>,
+	Roger Quadros <rogerq@kernel.org>
+Cc: linux-omap@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Sinthu Raja <sinthu.raja@ti.com>
+Subject: [PATCH V3 0/2] CPSW: enable mac_managed_pm to fix mdio
+Date: Mon,  5 Feb 2024 18:38:08 +0530
+Message-Id: <20240205130810.14571-1-sinthu.raja@ti.com>
+X-Mailer: git-send-email 2.36.1
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <6hyubhrho6xbki6yxtmqedylc2gpeyj4yu5gtrjrq4nsthcr7g@elfukmqeve2a>
+X-BESS-ID: 1707141605-311554-12416-11393-1
+X-BESS-VER: 2019.1_20240201.2150
+X-BESS-Apparent-Source-IP: 209.85.161.71
+X-BESS-Parts: H4sIAAAAAAACA4uuVkqtKFGyUirNy1bSUcovVrKysDQDMjKAYsapiSkplkbmyR
+	bmpslmyUapholmZkYmFsYmqcmmaSZGSrWxADALva1AAAAA
+X-BESS-Outbound-Spam-Score: 0.40
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.254005 [from 
+	cloudscan20-102.eu-central-1b.ess.aws.cudaops.com]
+	Rule breakdown below
+	 pts rule name              description
+	---- ---------------------- --------------------------------
+	0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+	0.40 BSF_SC0_SA085b         META: Custom Rule SA085b 
+	0.00 BSF_SC0_MISMATCH_TO    META: Envelope rcpt doesn't match header 
+X-BESS-Outbound-Spam-Status: SCORE=0.40 using account:ESS91090 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND, BSF_SC0_SA085b, BSF_SC0_MISMATCH_TO
+X-BESS-BRTS-Status:1
 
-* Andi Shyti <andi.shyti@kernel.org> [240129 22:49]:
-> On Sat, Jan 27, 2024 at 11:31:11PM +0100, Linus Walleij wrote:
-> > On Fri, Jan 26, 2024 at 3:37 PM Thomas Richard
-> > <thomas.richard@bootlin.com> wrote:
-> > 
-> > > The goal is to extend the active period of pinctrl.
-> > > Some devices may need active pinctrl after suspend() and/or before
-> > > resume().
-> > > So move suspend()/resume() to suspend_noirq()/resume_noirq() in order to
-> > > have active pinctrl until suspend_noirq() (included), and from
-> > > resume_noirq() (included).
-> > >
-> > > The deprecated API has been removed to use the new one (dev_pm_ops struct).
-> > >
-> > > Signed-off-by: Thomas Richard <thomas.richard@bootlin.com>
-> > 
-> > Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-> > 
-> > Do you want to merge this as a series or is this something I
-> > should just apply?
-> 
-> there is still a comment from me pending.
+From: Sinthu Raja <sinthu.raja@ti.com>
 
-FYI I gave this a brief test and things seem to work fine for me. Sounds
-like there will be another revision though so I'll test again then.
+Hi All,
+This patch fix the resume/suspend issue on CPSW interface.
 
-Regards,
+Reference from the foloowing patchwork: 
+https://lore.kernel.org/netdev/20221014144729.1159257-2-shenwei.wang@nxp.com/T/
 
-Tony
+V1: https://patchwork.kernel.org/project/netdevbpf/patch/20240122083414.6246-1-sinthu.raja@ti.com/
+V2: https://patchwork.kernel.org/project/netdevbpf/patch/20240122093326.7618-1-sinthu.raja@ti.com/
+
+Changes in V3:
+Address review comments:
+	- Add the same fix to the drivers/net/ethernet/ti/cpsw.c file as a
+      seperate patch.
+
+Changes in V2:
+Address review comment:
+	- Add Fixes tag.
+
+Sinthu Raja (2):
+  net: ethernet: ti: cpsw_new: enable mac_managed_pm to fix mdio
+  net: ethernet: ti: cpsw: enable mac_managed_pm to fix mdio
+
+ drivers/net/ethernet/ti/cpsw.c     | 2 ++
+ drivers/net/ethernet/ti/cpsw_new.c | 3 +++
+ 2 files changed, 5 insertions(+)
+
+-- 
+2.36.1
 
 
