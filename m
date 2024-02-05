@@ -1,138 +1,191 @@
-Return-Path: <linux-omap+bounces-492-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-493-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B9B6849C7C
-	for <lists+linux-omap@lfdr.de>; Mon,  5 Feb 2024 15:01:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4585584A006
+	for <lists+linux-omap@lfdr.de>; Mon,  5 Feb 2024 17:55:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DCA01C248D2
-	for <lists+linux-omap@lfdr.de>; Mon,  5 Feb 2024 14:01:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A8DF1C21EAD
+	for <lists+linux-omap@lfdr.de>; Mon,  5 Feb 2024 16:55:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4FD82C1A5;
-	Mon,  5 Feb 2024 14:00:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 698A941773;
+	Mon,  5 Feb 2024 16:55:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mistralsolutions.com header.i=@mistralsolutions.com header.b="W8dS7/1v"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V4NzN+xx"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from egress-ip12a.ess.de.barracuda.com (egress-ip12a.ess.de.barracuda.com [18.184.203.235])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEAD61CD1C
-	for <linux-omap@vger.kernel.org>; Mon,  5 Feb 2024 14:00:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.184.203.235
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C865D3FE54;
+	Mon,  5 Feb 2024 16:55:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707141616; cv=none; b=YOEV0H2ZRtEKWnJTgNEBMV4VmATfyDwhj19OgiVSWIm4RpF+FEyCuoKXXVppu2Yi236NML5QGLA90l/nEHHyQF6j8cjWQF8OFVyLkG7w31yZGXI0aqKb+kuGQshUrgNyqijUx413V8K7p5M/PjjJYz1xSbFUuC35gTx1uzPR56I=
+	t=1707152122; cv=none; b=nIMEgsST0yfmnalMi2G0NQCrAdkqN1UyigsmawSr9F331/XItNXtgIvzNIfeK6CxPW4seSVRnb9EWKL0bvDw/+SxiT5vQrEMbN+B2oAl/V1kbXLlNPQ1K3hoLpaGxaD2WTf8tyYVRdCiLnaoPF3v/5Yv0WS+D3yjAf+NB00CaCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707141616; c=relaxed/simple;
-	bh=/6zDVpTQxTpO8Rt7fqCeo96mpq7mjUP0IlGNFtYHc1g=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=c1p8qJu9yV1KOM3C70yZswQkqrKJURmKJ2AD5AbINeVR9J/lgGK6BnJAEyWp7wy+HNg8BNC/loDmfTU+1FDQZNXFcKFilX8TK5qF2jSf08D97DPPLR+GpMPG9Szxzk88qIIGgamjlfrzyFSjgsvnW0zH0LaataC/KMSHAxfXyf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mistralsolutions.com; spf=pass smtp.mailfrom=mistralsolutions.com; dkim=pass (1024-bit key) header.d=mistralsolutions.com header.i=@mistralsolutions.com header.b=W8dS7/1v; arc=none smtp.client-ip=18.184.203.235
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mistralsolutions.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mistralsolutions.com
-Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com [209.85.161.71]) by mx-outbound45-34.eu-central-1c.ess.aws.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO); Mon, 05 Feb 2024 14:00:06 +0000
-Received: by mail-oo1-f71.google.com with SMTP id 006d021491bc7-59a25e89211so4806852eaf.3
-        for <linux-omap@vger.kernel.org>; Mon, 05 Feb 2024 06:00:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mistralsolutions.com; s=google; t=1707141605; x=1707746405; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=UMXVXJW0OFWoix7qY497nt0fmYOWqwLi2f9LeVZ82B0=;
-        b=W8dS7/1vueMeFrQxesV34QbMHrYp8H4HQKQohMC28EFmqjvMg33d0rLRcsQEGDOVeR
-         lKOfwE099AgYZlNWQ6blDCX5QFNI2EZyi1dBPOhRFWPVLCWTwOnHrAn7Vs8U3Q5+fev4
-         Tf/QgRvAH2sIfq6T5MelD0QergVUTqLHQfYV8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707141605; x=1707746405;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=UMXVXJW0OFWoix7qY497nt0fmYOWqwLi2f9LeVZ82B0=;
-        b=bQ8fP6sRMj6ItVWvDgVWGad8RG05v0od93X19UAnjZlRRjCRduXEfc3ml9Onx5WpsP
-         dek6oYNAznkhUHCv40pLNRCIUzcHUbB8Wtxzz/9JUwvvh+g9tQyjoXczuqpYW7XuP3tS
-         ZuiFEpBX2HHP8n3KIF2Ij/S9AL+3T5tSFzFgxslNm6LjposFoTh9EgRWwgQ5OUDS/SlD
-         9oW/+nfdqrJa4BkyLzyhE21rLiMJdbX5JiYQNnOOShtHaR+4QFy8+WwJfx9rGy8ga+3z
-         9PrrfAqlpvS5WKlVxdajZh/V0E/bV8pE5oRPDloMNZVjIaMNrWytar1boeHFSVIjfViB
-         o7vA==
-X-Gm-Message-State: AOJu0Yy1IW7Ykf+XAvzCwK2p6b3Z3fKI4MqiEnisI+eRowCAHsW3Bc0Z
-	/wtCHFWuOuUnPDQgLkJUsWKxRjLQu/ftCIRloIOVUAoO5WuFqTvH7x3JblEIfByNZ79+N7hAQ/Y
-	sf8fXrcUZpz9I2fiFEXHNNzLw2/X5J1inXlml9t3BuknB3r2vgb4N4xY5CB6sQEfQoFAqSiPHF1
-	YrfiE2ooR3KsYRYcULig==
-X-Received: by 2002:a05:6a00:2e91:b0:6db:e14f:3956 with SMTP id fd17-20020a056a002e9100b006dbe14f3956mr17014279pfb.20.1707138497341;
-        Mon, 05 Feb 2024 05:08:17 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHNXHqSPziIiSbO4sZ+G6kXuaiJtK9gYDJuk+t3nQyBe7Vx85wEELo7/664uQfeffyM3mUsPw==
-X-Received: by 2002:a05:6a00:2e91:b0:6db:e14f:3956 with SMTP id fd17-20020a056a002e9100b006dbe14f3956mr17014252pfb.20.1707138496948;
-        Mon, 05 Feb 2024 05:08:16 -0800 (PST)
-X-Forwarded-Encrypted: i=0; AJvYcCVjN/4GYid4eXCABddW2uHoUktZQouQAFMefEu2Drp+ejGf8LUMxvo9I1/RCHN6P9ohqbwR7rPSdMCWl8KSKEJ/l5uKywZz9ExM7pIqzWjMErXA4ib6B7q6VYvUjg0ldfetrXMOkFj9Lonby3mTyj8rw3QlzbWUJMoF64n2v/XeEwJdwFSEe6lUuuAg7z2J8N2icB8Al9LL
-Received: from LAP568U.mistral.in ([106.51.69.35])
-        by smtp.gmail.com with ESMTPSA id j7-20020a62e907000000b006ddc5d8ecd7sm6604756pfh.32.2024.02.05.05.08.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Feb 2024 05:08:16 -0800 (PST)
-From: Sinthu Raja <sinthu.raja@mistralsolutions.com>
-X-Google-Original-From: Sinthu Raja <sinthu.raja@ti.com>
-To: Denis Kirjanov <dkirjanov@suse.de>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Ravi Gunasekaran <r-gunasekaran@ti.com>,
-	Roger Quadros <rogerq@kernel.org>
-Cc: linux-omap@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Sinthu Raja <sinthu.raja@ti.com>
-Subject: [PATCH V3 0/2] CPSW: enable mac_managed_pm to fix mdio
-Date: Mon,  5 Feb 2024 18:38:08 +0530
-Message-Id: <20240205130810.14571-1-sinthu.raja@ti.com>
-X-Mailer: git-send-email 2.36.1
+	s=arc-20240116; t=1707152122; c=relaxed/simple;
+	bh=sVWDGae8We/GTqGu3KZXsI4ao8GOXiioemxExEsLxqU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AhhDLcpWtO+goVeU9SsbuIwSaKsrpYvvA8BswlZSaf5Nqb/gGJh7O4ky9lutcZYsaeJsLhY7NtaiyDVnrY4jKFBs4YSNnTk+mN1h1z3G+StxvG43zgHmFb8ViC3yxSE9XhyxA0LMIX6u/p3Mrj6n2PpMi7sLsUCTjp170VDg9i0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V4NzN+xx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FFCAC433B1;
+	Mon,  5 Feb 2024 16:55:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707152121;
+	bh=sVWDGae8We/GTqGu3KZXsI4ao8GOXiioemxExEsLxqU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=V4NzN+xxV2kwpgpmvzwCZPjJxe0p8svapOJGajeWjpEEriWr006tLpAtpBBcG14NI
+	 l7fHkZZTCCS2aZun+9xT18fkoZ/FMtKy9LlDCrv1uFwhHjeK2n19B4nBN7o649VSjD
+	 kYGKpO0o3BwY+Ahh0TeOWYCXz8+otRo3yXnErLJRN29uNdXJLWcsE4UEYU9xBrYL0Y
+	 5EBIyjafRZpDVbbOWCUrKL9UVViaDMskAXZEUX2zUclSY3mEzo3VIqcDhKNa3FKHrK
+	 rehOGq4a9IDtDYOiom3YhLrNbFEjmM7KUgyXugv+FwASEWfoMD6zmOeVRIwz7AMYR2
+	 3iJTbqU63Gc+A==
+Date: Mon, 5 Feb 2024 16:55:17 +0000
+From: Rob Herring <robh@kernel.org>
+To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Cc: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+	"Lad,  Prabhakar" <prabhakar.csengg@gmail.com>,
+	=?iso-8859-1?Q?=22Niklas_S=C3=B6derlund=22?= <niklas.soderlund+renesas@ragnatech.se>,
+	=?iso-8859-1?Q?=22Uwe_Kleine-K=C3=B6nig=22?= <u.kleine-koenig@pengutronix.de>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Alexey Brodkin <abrodkin@synopsys.com>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Andy Gross <agross@kernel.org>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	David Airlie <airlied@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Emma Anholt <emma@anholt.net>,
+	Eugen Hristev <eugen.hristev@collabora.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Frank Rowand <frowand.list@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Helge Deller <deller@gmx.de>,
+	Hugues Fruchet <hugues.fruchet@foss.st.com>,
+	Jacopo Mondi <jacopo+renesas@jmondi.org>,
+	Jacopo Mondi <jacopo@jmondi.org>, James Clark <james.clark@arm.com>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+	Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Liam Girdwood <lgirdwood@gmail.com>, Liu Ying <victor.liu@nxp.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Marek Vasut <marex@denx.de>, Mark Brown <broonie@kernel.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Michael Tretter <m.tretter@pengutronix.de>,
+	Michal Simek <michal.simek@amd.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Philippe Cornu <philippe.cornu@foss.st.com>,
+	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>,
+	Rob Clark <robdclark@gmail.com>, Robert Foss <rfoss@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Saravana Kannan <saravanak@google.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sowjanya Komatineni <skomatineni@nvidia.com>,
+	Stefan Agner <stefan@agner.ch>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Sylwester Nawrocki <s.nawrocki@samsung.com>,
+	Takashi Iwai <tiwai@suse.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Tim Harvey <tharvey@gateworks.com>,
+	Todor Tomov <todor.too@gmail.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Yannick Fertre <yannick.fertre@foss.st.com>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Jonas Karlman <jonas@kwiboo.se>, Leo Yan <leo.yan@linaro.org>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Mike Leach <mike.leach@linaro.org>, Sam Ravnborg <sam@ravnborg.org>,
+	Sean Paul <sean@poorly.run>, Tom Rix <trix@redhat.com>,
+	coresight@lists.linaro.org, devicetree@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+	linux-amlogic@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+	linux-fbdev@vger.kernel.org, linux-media@vger.kernel.org,
+	linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+	linux-rpi-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org, linux-sound@vger.kernel.org,
+	linux-staging@lists.linux.dev,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-tegra@vger.kernel.org, llvm@lists.linux.dev
+Subject: Re: [PATCH v3 05/24] media: i2c: switch to use
+ of_graph_get_next_device_endpoint()
+Message-ID: <20240205165517.GA3486840-robh@kernel.org>
+References: <87o7d26qla.wl-kuninori.morimoto.gx@renesas.com>
+ <87h6iu6qjs.wl-kuninori.morimoto.gx@renesas.com>
+ <20240202174941.GA310089-robh@kernel.org>
+ <875xz3n6ag.wl-kuninori.morimoto.gx@renesas.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-BESS-ID: 1707141605-311554-12416-11393-1
-X-BESS-VER: 2019.1_20240201.2150
-X-BESS-Apparent-Source-IP: 209.85.161.71
-X-BESS-Parts: H4sIAAAAAAACA4uuVkqtKFGyUirNy1bSUcovVrKysDQDMjKAYsapiSkplkbmyR
-	bmpslmyUapholmZkYmFsYmqcmmaSZGSrWxADALva1AAAAA
-X-BESS-Outbound-Spam-Score: 0.40
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.254005 [from 
-	cloudscan20-102.eu-central-1b.ess.aws.cudaops.com]
-	Rule breakdown below
-	 pts rule name              description
-	---- ---------------------- --------------------------------
-	0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-	0.40 BSF_SC0_SA085b         META: Custom Rule SA085b 
-	0.00 BSF_SC0_MISMATCH_TO    META: Envelope rcpt doesn't match header 
-X-BESS-Outbound-Spam-Status: SCORE=0.40 using account:ESS91090 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND, BSF_SC0_SA085b, BSF_SC0_MISMATCH_TO
-X-BESS-BRTS-Status:1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <875xz3n6ag.wl-kuninori.morimoto.gx@renesas.com>
 
-From: Sinthu Raja <sinthu.raja@ti.com>
+On Sun, Feb 04, 2024 at 11:44:39PM +0000, Kuninori Morimoto wrote:
+> 
+> Hi Rob
+> 
+> > This is assuming there's just 1 port and 1 endpoint, but let's be 
+> > specific as the bindings are (first endpoint on port 0):
+> > 
+> > of_graph_get_endpoint_by_regs(client->dev.of_node, 0, -1);
+> > 
+> > Note we could ask for endpoint 0 here, but the bindings generally allow 
+> > for more than 1.
+> > 
+> > I imagine most of the other cases here are the same.
+> 
+> I will do it on new patch-set
+> 
+> > > -	for_each_endpoint_of_node(state->dev->of_node, ep_np) {
+> > > +	for_each_device_endpoint_of_node(state->dev->of_node, ep_np) {
+> > 
+> > I would skip the rename.
+> 
+> It is needed to avoid confuse, because new function will add
+> another endpoint loop.
+> 
+> see
+> https://lore.kernel.org/r/20240131100701.754a95ee@booty
 
-Hi All,
-This patch fix the resume/suspend issue on CPSW interface.
+I've read the threads already and think you should skip the rename. Just 
+put 'port' in the name of the new one. That and taking a port number 
+param should be enough distinction.
 
-Reference from the foloowing patchwork: 
-https://lore.kernel.org/netdev/20221014144729.1159257-2-shenwei.wang@nxp.com/T/
-
-V1: https://patchwork.kernel.org/project/netdevbpf/patch/20240122083414.6246-1-sinthu.raja@ti.com/
-V2: https://patchwork.kernel.org/project/netdevbpf/patch/20240122093326.7618-1-sinthu.raja@ti.com/
-
-Changes in V3:
-Address review comments:
-	- Add the same fix to the drivers/net/ethernet/ti/cpsw.c file as a
-      seperate patch.
-
-Changes in V2:
-Address review comment:
-	- Add Fixes tag.
-
-Sinthu Raja (2):
-  net: ethernet: ti: cpsw_new: enable mac_managed_pm to fix mdio
-  net: ethernet: ti: cpsw: enable mac_managed_pm to fix mdio
-
- drivers/net/ethernet/ti/cpsw.c     | 2 ++
- drivers/net/ethernet/ti/cpsw_new.c | 3 +++
- 2 files changed, 5 insertions(+)
-
--- 
-2.36.1
-
+Rob
 
