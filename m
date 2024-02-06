@@ -1,49 +1,51 @@
-Return-Path: <linux-omap+bounces-507-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-508-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AD2384B66D
-	for <lists+linux-omap@lfdr.de>; Tue,  6 Feb 2024 14:31:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B77E84B6C3
+	for <lists+linux-omap@lfdr.de>; Tue,  6 Feb 2024 14:44:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2FAB5B25345
-	for <lists+linux-omap@lfdr.de>; Tue,  6 Feb 2024 13:31:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B45228113A
+	for <lists+linux-omap@lfdr.de>; Tue,  6 Feb 2024 13:44:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36E54130E5F;
-	Tue,  6 Feb 2024 13:31:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAC5A133435;
+	Tue,  6 Feb 2024 13:42:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="jJt87ajW"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="FGuKLCoR"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E253073195;
-	Tue,  6 Feb 2024 13:31:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5372C132477;
+	Tue,  6 Feb 2024 13:41:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707226285; cv=none; b=bNaAUAn0LChORmO5kNRUcIHvUOKkf6NgC/ta5poAK8EsbggD2X3+1b/Dz5nrpcl4Nv+n2hzDVyU8Qbl8/JApPOGB8eVu1rebCKd0tnwX2bWHh5zSdQE1FJl1WM9b2Pt/0L+E6vII0B84ZFDKb4JGUfDPoTSpt2Dva1OjkQ9hGTU=
+	t=1707226920; cv=none; b=RUGjvvSS/Z+jYyYuUOpCV0vurARcQ/2zBpVLChSjYmZdWKoeEOA/Q22PC7egfpOH3NN5I/1Ou45uqtatC+0pNzYITJNSFzvEJIkSU1gobMjNbOaIaqGJSvQnwNVEZiYbMjezBO8SRDaKjerTb2U1Ca1/Iz4z9u57BhYKmPiuYis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707226285; c=relaxed/simple;
-	bh=KMA/bJybbnWogXygT+8vj+CljyBc90aEvqxIQixKXiE=;
+	s=arc-20240116; t=1707226920; c=relaxed/simple;
+	bh=D+TBqmysgnL/HqC+ck7im51xVuE0eKf2Vx5tfRp1Hkc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l8zYCryeHi9a4SonNvEMEmm6C+BDvHPQXHWG4GH/VfoBkJdy0JkAIoVWIa4igrch0hm+ZXwUxtzW2U5wCXlWnGLUQlPfxfW7V+gcnon/+DFmxj6WzQpsFmByZNrOUZ0bZt6ejopG01iqrvk2PEkG2F+NvyGSI7/SjjeWYALMAis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=jJt87ajW; arc=none smtp.client-ip=213.167.242.64
+	 Content-Type:Content-Disposition:In-Reply-To; b=Lxs763zyvYTk+RoeOlHd8UmhVbuiNGt2VfzUyDlRwFZ7g2gyIrJhKlFWmJyiUWrdT9tkQ0jlEi7Cqj+xptC5HvU74TaKIj+HZw58taKMliQpTTy8ZRTwv41VglKNL6UfJuFKDhzCrur5k4rhK9FY8N46uLOYDjz3jWZLdiNjiC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=FGuKLCoR; arc=none smtp.client-ip=213.167.242.64
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Received: from pendragon.ideasonboard.com (85-76-34-85-nat.elisa-mobile.fi [85.76.34.85])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id CAB3874A;
-	Tue,  6 Feb 2024 14:29:57 +0100 (CET)
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 6C521240;
+	Tue,  6 Feb 2024 14:40:31 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1707226198;
-	bh=KMA/bJybbnWogXygT+8vj+CljyBc90aEvqxIQixKXiE=;
+	s=mail; t=1707226832;
+	bh=D+TBqmysgnL/HqC+ck7im51xVuE0eKf2Vx5tfRp1Hkc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jJt87ajWVdK89Rfyb+jiky4gvmowtfZOCJZtCWAdBzrxqQjYl8RkDAWw1GjNPt3rj
-	 Jenek9xQ8efrqfbQWdR/MAB0bf8AjF6cNDJomTaxkqGCx5MqRkTc5onD0kUQ+f/BDi
-	 E1GhB9QNoRnXcHEKttDqnEeZ9R8xAGJsVuVXKMVI=
-Date: Tue, 6 Feb 2024 15:31:22 +0200
+	b=FGuKLCoR+tVg+6jR2YorraeR/At256PUFSppI95wrfNlx7aNBd5r4yEwq9f25NR3a
+	 EIL4EjimIbaYLv31HcXfK52O2BzGqUtcyDxLuSEHyg9q+PVZ2BI8KXioxCy9gTSj/4
+	 jlffOsqbpaVGIRnG62lv5Xi896kxrLt84Lv+nzbA=
+Date: Tue, 6 Feb 2024 15:41:55 +0200
 From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Krzysztof =?utf-8?Q?Ha=C5=82asa?= <khalasa@piap.pl>
 Cc: "Lad,  Prabhakar" <prabhakar.csengg@gmail.com>,
 	=?utf-8?Q?=22Uwe_Kleine-K=C3=B6nig=22?= <u.kleine-koenig@pengutronix.de>,
 	Alexandre Belloni <alexandre.belloni@bootlin.com>,
@@ -59,7 +61,6 @@ Cc: "Lad,  Prabhakar" <prabhakar.csengg@gmail.com>,
 	David Airlie <airlied@gmail.com>,
 	Eugen Hristev <eugen.hristev@collabora.com>,
 	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Helge Deller <deller@gmx.de>,
 	Hugues Fruchet <hugues.fruchet@foss.st.com>,
 	Jacopo Mondi <jacopo@jmondi.org>,
@@ -82,10 +83,10 @@ Cc: "Lad,  Prabhakar" <prabhakar.csengg@gmail.com>,
 	linux-rpi-kernel@lists.infradead.org,
 	linux-samsung-soc@vger.kernel.org,
 	linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH 1/4] gpu: drm: replace of_graph_get_next_endpoint()
-Message-ID: <20240206133122.GA2827@pendragon.ideasonboard.com>
+Subject: Re: [PATCH 2/4] media: i2c: replace of_graph_get_next_endpoint()
+Message-ID: <20240206134155.GB2827@pendragon.ideasonboard.com>
 References: <87ttmmnvzh.wl-kuninori.morimoto.gx@renesas.com>
- <87sf26nvy2.wl-kuninori.morimoto.gx@renesas.com>
+ <87r0hqnvxc.wl-kuninori.morimoto.gx@renesas.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -94,13 +95,16 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <87sf26nvy2.wl-kuninori.morimoto.gx@renesas.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87r0hqnvxc.wl-kuninori.morimoto.gx@renesas.com>
 
-Hello Morimoto-san,
+Hi Morimoto-san,
+
+(Adding Krzysztof Hałasa)
 
 Thank you for the patch.
 
-On Tue, Feb 06, 2024 at 02:55:01AM +0000, Kuninori Morimoto wrote:
+On Tue, Feb 06, 2024 at 02:55:27AM +0000, Kuninori Morimoto wrote:
 > From DT point of view, in general, drivers should be asking for a
 > specific port number because their function is fixed in the binding.
 > 
@@ -114,73 +118,197 @@ On Tue, Feb 06, 2024 at 02:55:01AM +0000, Kuninori Morimoto wrote:
 > Link: https://lore.kernel.org/r/20240202174941.GA310089-robh@kernel.org
 > Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 > ---
->  drivers/gpu/drm/drm_of.c                              | 2 +-
->  drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c | 2 +-
->  drivers/gpu/drm/tiny/arcpgu.c                         | 2 +-
->  3 files changed, 3 insertions(+), 3 deletions(-)
+>  drivers/media/i2c/adv7343.c              | 2 +-
+>  drivers/media/i2c/adv7604.c              | 2 +-
+>  drivers/media/i2c/mt9p031.c              | 2 +-
+>  drivers/media/i2c/mt9v032.c              | 2 +-
+>  drivers/media/i2c/ov2659.c               | 2 +-
+>  drivers/media/i2c/ov5645.c               | 2 +-
+>  drivers/media/i2c/ov5647.c               | 2 +-
+>  drivers/media/i2c/s5c73m3/s5c73m3-core.c | 2 +-
+>  drivers/media/i2c/s5k5baf.c              | 2 +-
+>  drivers/media/i2c/tc358743.c             | 2 +-
+>  drivers/media/i2c/tda1997x.c             | 2 +-
+>  drivers/media/i2c/tvp514x.c              | 2 +-
+>  drivers/media/i2c/tvp7002.c              | 2 +-
+>  13 files changed, 13 insertions(+), 13 deletions(-)
 > 
-> diff --git a/drivers/gpu/drm/drm_of.c b/drivers/gpu/drm/drm_of.c
-> index 177b600895d3..c2eae9296012 100644
-> --- a/drivers/gpu/drm/drm_of.c
-> +++ b/drivers/gpu/drm/drm_of.c
-> @@ -516,7 +516,7 @@ struct mipi_dsi_host *drm_of_get_dsi_bus(struct device *dev)
->  	/*
->  	 * Get first endpoint child from device.
->  	 */
-> -	endpoint = of_graph_get_next_endpoint(dev->of_node, NULL);
-> +	endpoint = of_graph_get_endpoint_by_regs(dev->of_node, 0, -1);
+> diff --git a/drivers/media/i2c/adv7343.c b/drivers/media/i2c/adv7343.c
+> index ff21cd4744d3..4fbe4e18570e 100644
+> --- a/drivers/media/i2c/adv7343.c
+> +++ b/drivers/media/i2c/adv7343.c
+> @@ -403,7 +403,7 @@ adv7343_get_pdata(struct i2c_client *client)
+>  	if (!IS_ENABLED(CONFIG_OF) || !client->dev.of_node)
+>  		return client->dev.platform_data;
+>  
+> -	np = of_graph_get_next_endpoint(client->dev.of_node, NULL);
+> +	np = of_graph_get_endpoint_by_regs(client->dev.of_node, 0, -1);
+>  	if (!np)
+>  		return NULL;
+>  
+> diff --git a/drivers/media/i2c/adv7604.c b/drivers/media/i2c/adv7604.c
+> index b202a85fbeaa..dcfdbb975473 100644
+> --- a/drivers/media/i2c/adv7604.c
+> +++ b/drivers/media/i2c/adv7604.c
+> @@ -3205,7 +3205,7 @@ static int adv76xx_parse_dt(struct adv76xx_state *state)
+>  	np = state->i2c_clients[ADV76XX_PAGE_IO]->dev.of_node;
+>  
+>  	/* Parse the endpoint. */
+> -	endpoint = of_graph_get_next_endpoint(np, NULL);
+> +	endpoint = of_graph_get_endpoint_by_regs(np, 0, -1);
 
-This assumes that the DSI device's port@0 will also be the input. That's
-fine for current users of this function, but we should at least document
-it.
+I think this should be port 1 for the adv7611 and port2 for the adv7612.
+The adv7610 may need to use port 1 too, but the bindings likely need to
+be updated.
 
-diff --git a/drivers/gpu/drm/drm_of.c b/drivers/gpu/drm/drm_of.c
-index 177b600895d3..012c4d04cf51 100644
---- a/drivers/gpu/drm/drm_of.c
-+++ b/drivers/gpu/drm/drm_of.c
-@@ -504,6 +504,8 @@ EXPORT_SYMBOL_GPL(drm_of_get_data_lanes_count_ep);
-  * Gets parent DSI bus for a DSI device controlled through a bus other
-  * than MIPI-DCS (SPI, I2C, etc.) using the Device Tree.
-  *
-+ * This function assumes that the device's port@0 is the DSI input.
-+ *
-  * Returns pointer to mipi_dsi_host if successful, -EINVAL if the
-  * request is unsupported, -EPROBE_DEFER if the DSI host is found but
-  * not available, or -ENODEV otherwise.
-
-With this,
-
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Hans, Krzysztof, any opinion ?
 
 >  	if (!endpoint)
->  		return ERR_PTR(-ENODEV);
+>  		return -EINVAL;
 >  
-> diff --git a/drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c b/drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c
-> index 4618c892cdd6..e10e469aa7a6 100644
-> --- a/drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c
-> +++ b/drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c
-> @@ -400,7 +400,7 @@ static int rpi_touchscreen_probe(struct i2c_client *i2c)
->  	rpi_touchscreen_i2c_write(ts, REG_POWERON, 0);
+> diff --git a/drivers/media/i2c/mt9p031.c b/drivers/media/i2c/mt9p031.c
+> index 348f1e1098fb..c57a0d436421 100644
+> --- a/drivers/media/i2c/mt9p031.c
+> +++ b/drivers/media/i2c/mt9p031.c
+> @@ -1080,7 +1080,7 @@ mt9p031_get_pdata(struct i2c_client *client)
+>  	if (!IS_ENABLED(CONFIG_OF) || !client->dev.of_node)
+>  		return client->dev.platform_data;
 >  
->  	/* Look up the DSI host.  It needs to probe before we do. */
+> -	np = of_graph_get_next_endpoint(client->dev.of_node, NULL);
+> +	np = of_graph_get_endpoint_by_regs(client->dev.of_node, 0, -1);
+>  	if (!np)
+>  		return NULL;
+>  
+> diff --git a/drivers/media/i2c/mt9v032.c b/drivers/media/i2c/mt9v032.c
+> index 1c6f6cea1204..14d277680fa2 100644
+> --- a/drivers/media/i2c/mt9v032.c
+> +++ b/drivers/media/i2c/mt9v032.c
+> @@ -1008,7 +1008,7 @@ mt9v032_get_pdata(struct i2c_client *client)
+>  	if (!IS_ENABLED(CONFIG_OF) || !client->dev.of_node)
+>  		return client->dev.platform_data;
+>  
+> -	np = of_graph_get_next_endpoint(client->dev.of_node, NULL);
+> +	np = of_graph_get_endpoint_by_regs(client->dev.of_node, 0, -1);
+>  	if (!np)
+>  		return NULL;
+>  
+> diff --git a/drivers/media/i2c/ov2659.c b/drivers/media/i2c/ov2659.c
+> index 2c3dbe164eb6..edea62a02320 100644
+> --- a/drivers/media/i2c/ov2659.c
+> +++ b/drivers/media/i2c/ov2659.c
+> @@ -1388,7 +1388,7 @@ ov2659_get_pdata(struct i2c_client *client)
+>  	if (!IS_ENABLED(CONFIG_OF) || !client->dev.of_node)
+>  		return client->dev.platform_data;
+>  
+> -	endpoint = of_graph_get_next_endpoint(client->dev.of_node, NULL);
+> +	endpoint = of_graph_get_endpoint_by_regs(client->dev.of_node, 0, -1);
+>  	if (!endpoint)
+>  		return NULL;
+>  
+> diff --git a/drivers/media/i2c/ov5645.c b/drivers/media/i2c/ov5645.c
+> index a70db7e601a4..31d214bd4a83 100644
+> --- a/drivers/media/i2c/ov5645.c
+> +++ b/drivers/media/i2c/ov5645.c
+> @@ -1053,7 +1053,7 @@ static int ov5645_probe(struct i2c_client *client)
+>  	ov5645->i2c_client = client;
+>  	ov5645->dev = dev;
+>  
 > -	endpoint = of_graph_get_next_endpoint(dev->of_node, NULL);
 > +	endpoint = of_graph_get_endpoint_by_regs(dev->of_node, 0, -1);
->  	if (!endpoint)
->  		return -ENODEV;
+>  	if (!endpoint) {
+>  		dev_err(dev, "endpoint node not found\n");
+>  		return -EINVAL;
+> diff --git a/drivers/media/i2c/ov5647.c b/drivers/media/i2c/ov5647.c
+> index dcfe3129c63a..beab2813c672 100644
+> --- a/drivers/media/i2c/ov5647.c
+> +++ b/drivers/media/i2c/ov5647.c
+> @@ -1363,7 +1363,7 @@ static int ov5647_parse_dt(struct ov5647 *sensor, struct device_node *np)
+>  	struct device_node *ep;
+>  	int ret;
 >  
-> diff --git a/drivers/gpu/drm/tiny/arcpgu.c b/drivers/gpu/drm/tiny/arcpgu.c
-> index e5b10e41554a..04d0053b9315 100644
-> --- a/drivers/gpu/drm/tiny/arcpgu.c
-> +++ b/drivers/gpu/drm/tiny/arcpgu.c
-> @@ -288,7 +288,7 @@ static int arcpgu_load(struct arcpgu_drm_private *arcpgu)
->  	 * There is only one output port inside each device. It is linked with
->  	 * encoder endpoint.
->  	 */
-> -	endpoint_node = of_graph_get_next_endpoint(pdev->dev.of_node, NULL);
-> +	endpoint_node = of_graph_get_endpoint_by_regs(pdev->dev.of_node, 0, -1);
->  	if (endpoint_node) {
->  		encoder_node = of_graph_get_remote_port_parent(endpoint_node);
->  		of_node_put(endpoint_node);
+> -	ep = of_graph_get_next_endpoint(np, NULL);
+> +	ep = of_graph_get_endpoint_by_regs(np, 0, -1);
+>  	if (!ep)
+>  		return -EINVAL;
+>  
+> diff --git a/drivers/media/i2c/s5c73m3/s5c73m3-core.c b/drivers/media/i2c/s5c73m3/s5c73m3-core.c
+> index ed5b10731a14..aaec5f64f31a 100644
+> --- a/drivers/media/i2c/s5c73m3/s5c73m3-core.c
+> +++ b/drivers/media/i2c/s5c73m3/s5c73m3-core.c
+> @@ -1555,7 +1555,7 @@ static int s5c73m3_get_dt_data(struct s5c73m3 *state)
+>  				     "failed to request gpio S5C73M3_RST\n");
+>  	gpiod_set_consumer_name(state->reset, "S5C73M3_RST");
+>  
+> -	node_ep = of_graph_get_next_endpoint(node, NULL);
+> +	node_ep = of_graph_get_endpoint_by_regs(node, 0, -1);
+>  	if (!node_ep) {
+>  		dev_warn(dev, "no endpoint defined for node: %pOF\n", node);
+>  		return 0;
+> diff --git a/drivers/media/i2c/s5k5baf.c b/drivers/media/i2c/s5k5baf.c
+> index 67da2045f543..af7e49e6cc5b 100644
+> --- a/drivers/media/i2c/s5k5baf.c
+> +++ b/drivers/media/i2c/s5k5baf.c
+> @@ -1836,7 +1836,7 @@ static int s5k5baf_parse_device_node(struct s5k5baf *state, struct device *dev)
+>  			 state->mclk_frequency);
+>  	}
+>  
+> -	node_ep = of_graph_get_next_endpoint(node, NULL);
+> +	node_ep = of_graph_get_endpoint_by_regs(node, 0, -1);
+>  	if (!node_ep) {
+>  		dev_err(dev, "no endpoint defined at node %pOF\n", node);
+>  		return -EINVAL;
+> diff --git a/drivers/media/i2c/tc358743.c b/drivers/media/i2c/tc358743.c
+> index 2785935da497..872e802cdfbe 100644
+> --- a/drivers/media/i2c/tc358743.c
+> +++ b/drivers/media/i2c/tc358743.c
+> @@ -1895,7 +1895,7 @@ static int tc358743_probe_of(struct tc358743_state *state)
+>  		return dev_err_probe(dev, PTR_ERR(refclk),
+>  				     "failed to get refclk\n");
+>  
+> -	ep = of_graph_get_next_endpoint(dev->of_node, NULL);
+> +	ep = of_graph_get_endpoint_by_regs(dev->of_node, 0, -1);
+>  	if (!ep) {
+>  		dev_err(dev, "missing endpoint node\n");
+>  		return -EINVAL;
+> diff --git a/drivers/media/i2c/tda1997x.c b/drivers/media/i2c/tda1997x.c
+> index 325e99125941..662efd5e69b9 100644
+> --- a/drivers/media/i2c/tda1997x.c
+> +++ b/drivers/media/i2c/tda1997x.c
+> @@ -2307,7 +2307,7 @@ static int tda1997x_parse_dt(struct tda1997x_state *state)
+>  	pdata->vidout_sel_de = DE_FREF_SEL_DE_VHREF;
+>  
+>  	np = state->client->dev.of_node;
+> -	ep = of_graph_get_next_endpoint(np, NULL);
+> +	ep = of_graph_get_endpoint_by_regs(np, 0, -1);
+>  	if (!ep)
+>  		return -EINVAL;
+>  
+> diff --git a/drivers/media/i2c/tvp514x.c b/drivers/media/i2c/tvp514x.c
+> index c37f605cb75f..b1630a6c396b 100644
+> --- a/drivers/media/i2c/tvp514x.c
+> +++ b/drivers/media/i2c/tvp514x.c
+> @@ -988,7 +988,7 @@ tvp514x_get_pdata(struct i2c_client *client)
+>  	if (!IS_ENABLED(CONFIG_OF) || !client->dev.of_node)
+>  		return client->dev.platform_data;
+>  
+> -	endpoint = of_graph_get_next_endpoint(client->dev.of_node, NULL);
+> +	endpoint = of_graph_get_endpoint_by_regs(client->dev.of_node, 0, -1);
+>  	if (!endpoint)
+>  		return NULL;
+>  
+> diff --git a/drivers/media/i2c/tvp7002.c b/drivers/media/i2c/tvp7002.c
+> index a2d7bc799849..8e58ce400df2 100644
+> --- a/drivers/media/i2c/tvp7002.c
+> +++ b/drivers/media/i2c/tvp7002.c
+> @@ -893,7 +893,7 @@ tvp7002_get_pdata(struct i2c_client *client)
+>  	if (!IS_ENABLED(CONFIG_OF) || !client->dev.of_node)
+>  		return client->dev.platform_data;
+>  
+> -	endpoint = of_graph_get_next_endpoint(client->dev.of_node, NULL);
+> +	endpoint = of_graph_get_endpoint_by_regs(client->dev.of_node, 0, -1);
+>  	if (!endpoint)
+>  		return NULL;
+>  
 
 -- 
 Regards,
