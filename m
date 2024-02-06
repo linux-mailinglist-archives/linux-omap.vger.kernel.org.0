@@ -1,231 +1,189 @@
-Return-Path: <linux-omap+bounces-506-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-507-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C580684AEEB
-	for <lists+linux-omap@lfdr.de>; Tue,  6 Feb 2024 08:20:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AD2384B66D
+	for <lists+linux-omap@lfdr.de>; Tue,  6 Feb 2024 14:31:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 353D11F24705
-	for <lists+linux-omap@lfdr.de>; Tue,  6 Feb 2024 07:20:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2FAB5B25345
+	for <lists+linux-omap@lfdr.de>; Tue,  6 Feb 2024 13:31:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0960B128818;
-	Tue,  6 Feb 2024 07:20:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36E54130E5F;
+	Tue,  6 Feb 2024 13:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mistralsolutions.com header.i=@mistralsolutions.com header.b="fNvBliSs"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="jJt87ajW"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from egress-ip12b.ess.de.barracuda.com (egress-ip12b.ess.de.barracuda.com [18.185.115.216])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C5C41E890
-	for <linux-omap@vger.kernel.org>; Tue,  6 Feb 2024 07:20:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.185.115.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E253073195;
+	Tue,  6 Feb 2024 13:31:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707204011; cv=none; b=AeZysfOPeIpxTss3VnzDO52SjYoGTKL9jmK4U3glZD2QMl4MAZUEhYftufJ6ijtIui6vFQ95ixYWYa/A/7bHvIQf61pqzKpofNaO0nmttxCrpsy3cRWWMsUTny2jIBiUxXXcpZJP1fktzDFRRAErpxsdM3NHuAbelBGChxnA8S0=
+	t=1707226285; cv=none; b=bNaAUAn0LChORmO5kNRUcIHvUOKkf6NgC/ta5poAK8EsbggD2X3+1b/Dz5nrpcl4Nv+n2hzDVyU8Qbl8/JApPOGB8eVu1rebCKd0tnwX2bWHh5zSdQE1FJl1WM9b2Pt/0L+E6vII0B84ZFDKb4JGUfDPoTSpt2Dva1OjkQ9hGTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707204011; c=relaxed/simple;
-	bh=RgPxP5/l8V4ZifiHFdU9QhIHaI5FNg+v9p7lwU6/BHY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pDQyIg6Q8PhQUYGZorH//Lhw/VAoLHZH9th/BgpXxqRNjSIKfbKnrvm8VLofm+8vGLPfpTcaaC4omqdg48I6QimOLPYmwUxgncO+j9APf8njALzmabuKIEzaV31VxD72dPhG4hCUokT8WqKaVByi8jnNW5eYZTgtxltCOa+NRnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mistralsolutions.com; spf=pass smtp.mailfrom=mistralsolutions.com; dkim=pass (1024-bit key) header.d=mistralsolutions.com header.i=@mistralsolutions.com header.b=fNvBliSs; arc=none smtp.client-ip=18.185.115.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mistralsolutions.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mistralsolutions.com
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com [209.85.208.199]) by mx-outbound40-107.eu-central-1c.ess.aws.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO); Tue, 06 Feb 2024 07:20:06 +0000
-Received: by mail-lj1-f199.google.com with SMTP id 38308e7fff4ca-2d0908edbd0so4006341fa.2
-        for <linux-omap@vger.kernel.org>; Mon, 05 Feb 2024 23:20:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mistralsolutions.com; s=google; t=1707204005; x=1707808805; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1EfW+Jop+6OtJZdK61lMyoMmAch2Wo7mDs0McyNWYJM=;
-        b=fNvBliSsoWwsv9J5+phZ9E3WrQYsRTOnldhSFxrQlb2w3WSWeVaEoORDaB74sLQyDx
-         mQ4RpnD0qcPZdLG4cfIyuXFpsmKQoiLvsrnjsqIOZrm3M14GKRT9iljh0VmLFeADQNV5
-         oH9gNmm4KjzaanoBwyt7qWhzMq1LkV466rxeI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707204005; x=1707808805;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1EfW+Jop+6OtJZdK61lMyoMmAch2Wo7mDs0McyNWYJM=;
-        b=Z/ZCZ7kPJLfsdwuNt0I23dTyzEZB4Zja0V5R15o0N8ppFDiu+1r3dZBRlPQR4V5t3V
-         4wmZuiBFhAs77Hbac5wAqJFlIn91UU6AwfgE343iRjxSwcyevD6inrsRCGNxyggqohJg
-         jZrVk+O/26MSHE4WCl5P8RXbu63/Lu3pA2+1Vx05Lj5LOTmVAdjZxl7XUQLQ2zoLqLLS
-         L2t+iHv951kdvDzwUeyIStqkhKJj/LL308pW9fNQAVTLfWbEJsEkyc9f+/4D1L3WnX2J
-         uxvAaKXOLkLeYXwSsm27U/LSikfyI86kj9iQHALAvPTamyrop11V+lmn0hjDpMYEK239
-         XdSg==
-X-Gm-Message-State: AOJu0Yzziypeq1oMtpU4WZBPp84CIDsOiuXESS4tiZoWEuUQd+J0enTY
-	Ma59Bxn5A3wp2SKKKC22mXrAbXGdvrv8NCiuddZlT/KHEp7VibXzRAPBaUfAAtALAzDdb+0LcXi
-	X21iyBfdF3nMBOcXzjAQxPGGVXCFVmx/lAFaeWMZYHbp49LSTww2S+J9LvJ9KDUXoj5QabJewOs
-	CaFkQvCCxo0l/tlPTuVhlg3Jr617pmV3w39Jzlr86icA3Wez8OMIhBFoOvIzta/45JHeM7
-X-Received: by 2002:a05:6512:6c9:b0:511:5362:e5a1 with SMTP id u9-20020a05651206c900b005115362e5a1mr1743589lff.4.1707204005503;
-        Mon, 05 Feb 2024 23:20:05 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHEH5gmjFY6vp7J9Mw07UIJ3Z5V5xL4NnCZiImByeoPo/ELcgyj2fqrLnQOiVbHK7t5/o6m7nA+tqQFTj2U9FM=
-X-Received: by 2002:a05:6512:6c9:b0:511:5362:e5a1 with SMTP id
- u9-20020a05651206c900b005115362e5a1mr1743570lff.4.1707204005124; Mon, 05 Feb
- 2024 23:20:05 -0800 (PST)
+	s=arc-20240116; t=1707226285; c=relaxed/simple;
+	bh=KMA/bJybbnWogXygT+8vj+CljyBc90aEvqxIQixKXiE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=l8zYCryeHi9a4SonNvEMEmm6C+BDvHPQXHWG4GH/VfoBkJdy0JkAIoVWIa4igrch0hm+ZXwUxtzW2U5wCXlWnGLUQlPfxfW7V+gcnon/+DFmxj6WzQpsFmByZNrOUZ0bZt6ejopG01iqrvk2PEkG2F+NvyGSI7/SjjeWYALMAis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=jJt87ajW; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from pendragon.ideasonboard.com (85-76-34-85-nat.elisa-mobile.fi [85.76.34.85])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id CAB3874A;
+	Tue,  6 Feb 2024 14:29:57 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1707226198;
+	bh=KMA/bJybbnWogXygT+8vj+CljyBc90aEvqxIQixKXiE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jJt87ajWVdK89Rfyb+jiky4gvmowtfZOCJZtCWAdBzrxqQjYl8RkDAWw1GjNPt3rj
+	 Jenek9xQ8efrqfbQWdR/MAB0bf8AjF6cNDJomTaxkqGCx5MqRkTc5onD0kUQ+f/BDi
+	 E1GhB9QNoRnXcHEKttDqnEeZ9R8xAGJsVuVXKMVI=
+Date: Tue, 6 Feb 2024 15:31:22 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Cc: "Lad,  Prabhakar" <prabhakar.csengg@gmail.com>,
+	=?utf-8?Q?=22Uwe_Kleine-K=C3=B6nig=22?= <u.kleine-koenig@pengutronix.de>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Alexey Brodkin <abrodkin@synopsys.com>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	David Airlie <airlied@gmail.com>,
+	Eugen Hristev <eugen.hristev@collabora.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Helge Deller <deller@gmx.de>,
+	Hugues Fruchet <hugues.fruchet@foss.st.com>,
+	Jacopo Mondi <jacopo@jmondi.org>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Sylwester Nawrocki <s.nawrocki@samsung.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Tim Harvey <tharvey@gateworks.com>, dri-devel@lists.freedesktop.org,
+	linux-arm-kernel@lists.infradead.org, linux-fbdev@vger.kernel.org,
+	linux-media@vger.kernel.org, linux-omap@vger.kernel.org,
+	linux-rpi-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [PATCH 1/4] gpu: drm: replace of_graph_get_next_endpoint()
+Message-ID: <20240206133122.GA2827@pendragon.ideasonboard.com>
+References: <87ttmmnvzh.wl-kuninori.morimoto.gx@renesas.com>
+ <87sf26nvy2.wl-kuninori.morimoto.gx@renesas.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240206005928.15703-1-sinthu.raja@ti.com> <20240206005928.15703-2-sinthu.raja@ti.com>
- <2ffdca7f-f865-b719-b701-9ed4716da71a@ti.com>
-In-Reply-To: <2ffdca7f-f865-b719-b701-9ed4716da71a@ti.com>
-From: Sinthu Raja M <sinthu.raja@mistralsolutions.com>
-Date: Tue, 6 Feb 2024 12:49:53 +0530
-Message-ID: <CAEd-yTSXJdm0GQfA1HxHp7ACaHt7SdhYNepbwLtmc7PJETTzpg@mail.gmail.com>
-Subject: Re: [PATCH V3 1/2] net: ethernet: ti: cpsw_new: enable mac_managed_pm
- to fix mdio
-To: Ravi Gunasekaran <r-gunasekaran@ti.com>
-Cc: Denis Kirjanov <dkirjanov@suse.de>, Siddharth Vadapalli <s-vadapalli@ti.com>, 
-	Roger Quadros <rogerq@kernel.org>, linux-omap@vger.kernel.org, netdev@vger.kernel.org, 
-	Sinthu Raja <sinthu.raja@ti.com>, stable@vger.kernel.org, 
-	Paolo Abeni <pabeni@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-BESS-ID: 1707204005-310347-12437-464-1
-X-BESS-VER: 2019.1_20240206.0113
-X-BESS-Apparent-Source-IP: 209.85.208.199
-X-BESS-Parts: H4sIAAAAAAACA4uuVkqtKFGyUioBkjpK+cVKViYGZqZAVgZQ0NLIPDExxcAyzc
-	zMONHc2MAwycgw1SjZ0DwlzTLJwDJRqTYWAC+z3dhBAAAA
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.254017 [from 
-	cloudscan20-104.eu-central-1b.ess.aws.cudaops.com]
-	Rule breakdown below
-	 pts rule name              description
-	---- ---------------------- --------------------------------
-	0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-	0.00 BSF_SC0_MISMATCH_TO    META: Envelope rcpt doesn't match header 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS91090 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND, BSF_SC0_MISMATCH_TO
-X-BESS-BRTS-Status:1
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <87sf26nvy2.wl-kuninori.morimoto.gx@renesas.com>
 
-On Tue, Feb 6, 2024 at 11:31=E2=80=AFAM Ravi Gunasekaran <r-gunasekaran@ti.=
-com> wrote:
->
->
->
-> On 2/6/24 6:29 AM, Sinthu Raja wrote:
-> > From: Sinthu Raja <sinthu.raja@ti.com>
-> >
-> > The below commit  introduced a WARN when phy state is not in the states=
-:
-> > PHY_HALTED, PHY_READY and PHY_UP.
-> > commit 744d23c71af3 ("net: phy: Warn about incorrect mdio_bus_phy_resum=
-e() state")
-> >
-> > When cpsw_new resumes, there have port in PHY_NOLINK state, so the belo=
-w
-> > warning comes out. Set mac_managed_pm be true to tell mdio that the phy
-> > resume/suspend is managed by the mac, to fix the following warning:
-> >
-> > WARNING: CPU: 0 PID: 965 at drivers/net/phy/phy_device.c:326 mdio_bus_p=
-hy_resume+0x140/0x144
-> > CPU: 0 PID: 965 Comm: sh Tainted: G           O       6.1.46-g247b2535b=
-2 #1
-> > Hardware name: Generic AM33XX (Flattened Device Tree)
-> >  unwind_backtrace from show_stack+0x18/0x1c
-> >  show_stack from dump_stack_lvl+0x24/0x2c
-> >  dump_stack_lvl from __warn+0x84/0x15c
-> >  __warn from warn_slowpath_fmt+0x1a8/0x1c8
-> >  warn_slowpath_fmt from mdio_bus_phy_resume+0x140/0x144
-> >  mdio_bus_phy_resume from dpm_run_callback+0x3c/0x140
-> >  dpm_run_callback from device_resume+0xb8/0x2b8
-> >  device_resume from dpm_resume+0x144/0x314
-> >  dpm_resume from dpm_resume_end+0x14/0x20
-> >  dpm_resume_end from suspend_devices_and_enter+0xd0/0x924
-> >  suspend_devices_and_enter from pm_suspend+0x2e0/0x33c
-> >  pm_suspend from state_store+0x74/0xd0
-> >  state_store from kernfs_fop_write_iter+0x104/0x1ec
-> >  kernfs_fop_write_iter from vfs_write+0x1b8/0x358
-> >  vfs_write from ksys_write+0x78/0xf8
-> >  ksys_write from ret_fast_syscall+0x0/0x54
-> > Exception stack(0xe094dfa8 to 0xe094dff0)
-> > dfa0:                   00000004 005c3fb8 00000001 005c3fb8 00000004 00=
-000001
-> > dfc0: 00000004 005c3fb8 b6f6bba0 00000004 00000004 0059edb8 00000000 00=
-000000
-> > dfe0: 00000004 bed918f0 b6f09bd3 b6e89a66
-> >
-> > Cc: <stable@vger.kernel.org> # v6.0+
-> > Fixes: 744d23c71af3 ("net: phy: Warn about incorrect mdio_bus_phy_resum=
-e() state")
->
-> In v1, you received a comment to add the fixes tag. The reference stmmac =
-patch also points
-> to this commit as Fixes tag. But as Paolo pointed out in v2, this is not =
-the right
-> fixes tag for your patch series.
->
-> I did a git blame on few drivers where PHY is managed by MAC. These have
-> Fixes: fba863b81604 ("net: phy: make PHY PM ops a no-op if MAC driver man=
-ages PHY PM")
+Hello Morimoto-san,
 
-Thanks, Ravi for pointing this out.
-But the warning message was caused only after the below commit had been add=
-ed.
-744d23c71af3 ("net: phy: Warn about incorrect mdio_bus_phy_resume() state")
+Thank you for the patch.
 
-With the below commit the warning didn't pop up.
-fba863b81604 ("net: phy: make PHY PM ops a no-op if MAC driver manages PHY =
-PM")
-That is the reason I have not changed the Fixes tag.
+On Tue, Feb 06, 2024 at 02:55:01AM +0000, Kuninori Morimoto wrote:
+> From DT point of view, in general, drivers should be asking for a
+> specific port number because their function is fixed in the binding.
+> 
+> of_graph_get_next_endpoint() doesn't match to this concept.
+> 
+> Simply replace
+> 
+> 	- of_graph_get_next_endpoint(xxx, NULL);
+> 	+ of_graph_get_endpoint_by_regs(xxx, 0, -1);
+> 
+> Link: https://lore.kernel.org/r/20240202174941.GA310089-robh@kernel.org
+> Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+> ---
+>  drivers/gpu/drm/drm_of.c                              | 2 +-
+>  drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c | 2 +-
+>  drivers/gpu/drm/tiny/arcpgu.c                         | 2 +-
+>  3 files changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/drm_of.c b/drivers/gpu/drm/drm_of.c
+> index 177b600895d3..c2eae9296012 100644
+> --- a/drivers/gpu/drm/drm_of.c
+> +++ b/drivers/gpu/drm/drm_of.c
+> @@ -516,7 +516,7 @@ struct mipi_dsi_host *drm_of_get_dsi_bus(struct device *dev)
+>  	/*
+>  	 * Get first endpoint child from device.
+>  	 */
+> -	endpoint = of_graph_get_next_endpoint(dev->of_node, NULL);
+> +	endpoint = of_graph_get_endpoint_by_regs(dev->of_node, 0, -1);
 
-Let's wait for Paolo's comment on this Fixes: fba863b81604 ("net: phy:
-make PHY PM ops a no-op if MAC driver manages PHY PM")
+This assumes that the DSI device's port@0 will also be the input. That's
+fine for current users of this function, but we should at least document
+it.
 
-> which seems to be more appropriate, as this is the commit that introduced=
- the
-> 'mac_managed_pm' flag.
->
-> I have Cc'ed Paolo in this reply. But in future, please take care of addi=
-ng the people
-> who provided review comments in To/Cc when sending reworked patch/series.
+diff --git a/drivers/gpu/drm/drm_of.c b/drivers/gpu/drm/drm_of.c
+index 177b600895d3..012c4d04cf51 100644
+--- a/drivers/gpu/drm/drm_of.c
++++ b/drivers/gpu/drm/drm_of.c
+@@ -504,6 +504,8 @@ EXPORT_SYMBOL_GPL(drm_of_get_data_lanes_count_ep);
+  * Gets parent DSI bus for a DSI device controlled through a bus other
+  * than MIPI-DCS (SPI, I2C, etc.) using the Device Tree.
+  *
++ * This function assumes that the device's port@0 is the DSI input.
++ *
+  * Returns pointer to mipi_dsi_host if successful, -EINVAL if the
+  * request is unsupported, -EPROBE_DEFER if the DSI host is found but
+  * not available, or -ENODEV otherwise.
 
-Noted.
+With this,
 
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+
+>  	if (!endpoint)
+>  		return ERR_PTR(-ENODEV);
+>  
+> diff --git a/drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c b/drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c
+> index 4618c892cdd6..e10e469aa7a6 100644
+> --- a/drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c
+> +++ b/drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c
+> @@ -400,7 +400,7 @@ static int rpi_touchscreen_probe(struct i2c_client *i2c)
+>  	rpi_touchscreen_i2c_write(ts, REG_POWERON, 0);
+>  
+>  	/* Look up the DSI host.  It needs to probe before we do. */
+> -	endpoint = of_graph_get_next_endpoint(dev->of_node, NULL);
+> +	endpoint = of_graph_get_endpoint_by_regs(dev->of_node, 0, -1);
+>  	if (!endpoint)
+>  		return -ENODEV;
+>  
+> diff --git a/drivers/gpu/drm/tiny/arcpgu.c b/drivers/gpu/drm/tiny/arcpgu.c
+> index e5b10e41554a..04d0053b9315 100644
+> --- a/drivers/gpu/drm/tiny/arcpgu.c
+> +++ b/drivers/gpu/drm/tiny/arcpgu.c
+> @@ -288,7 +288,7 @@ static int arcpgu_load(struct arcpgu_drm_private *arcpgu)
+>  	 * There is only one output port inside each device. It is linked with
+>  	 * encoder endpoint.
+>  	 */
+> -	endpoint_node = of_graph_get_next_endpoint(pdev->dev.of_node, NULL);
+> +	endpoint_node = of_graph_get_endpoint_by_regs(pdev->dev.of_node, 0, -1);
+>  	if (endpoint_node) {
+>  		encoder_node = of_graph_get_remote_port_parent(endpoint_node);
+>  		of_node_put(endpoint_node);
+
+-- 
 Regards,
-Sinthu Raja
 
->
-> > Signed-off-by: Sinthu Raja <sinthu.raja@ti.com>
-> > ---
-> >
-> > Changes in V3:
-> >       - No Change
-> >
-> > Changes in V2:
-> >       - Add fixes tag.
-> >
-> >  drivers/net/ethernet/ti/cpsw_new.c | 3 +++
-> >  1 file changed, 3 insertions(+)
-> >
-> > diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/=
-ti/cpsw_new.c
-> > index 498c50c6d1a7..087dcb67505a 100644
-> > --- a/drivers/net/ethernet/ti/cpsw_new.c
-> > +++ b/drivers/net/ethernet/ti/cpsw_new.c
-> > @@ -773,6 +773,9 @@ static void cpsw_slave_open(struct cpsw_slave *slav=
-e, struct cpsw_priv *priv)
-> >                       slave->slave_num);
-> >               return;
-> >       }
-> > +
-> > +     phy->mac_managed_pm =3D true;
-> > +
-> >       slave->phy =3D phy;
-> >
-> >       phy_attached_info(slave->phy);
->
-> --
-> Regards,
-> Ravi
-
-
-
---
-With Regards
-Sinthu Raja
+Laurent Pinchart
 
