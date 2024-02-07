@@ -1,43 +1,43 @@
-Return-Path: <linux-omap+bounces-525-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-524-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7953684CB5E
-	for <lists+linux-omap@lfdr.de>; Wed,  7 Feb 2024 14:20:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71D7384CB46
+	for <lists+linux-omap@lfdr.de>; Wed,  7 Feb 2024 14:14:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 165E81F2777A
-	for <lists+linux-omap@lfdr.de>; Wed,  7 Feb 2024 13:20:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2FB6D29083E
+	for <lists+linux-omap@lfdr.de>; Wed,  7 Feb 2024 13:14:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38FF477F0A;
-	Wed,  7 Feb 2024 13:20:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 735D576C6E;
+	Wed,  7 Feb 2024 13:14:38 +0000 (UTC)
 X-Original-To: linux-omap@vger.kernel.org
 Received: from ni.piap.pl (ni.piap.pl [195.187.100.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3AE176C7C;
-	Wed,  7 Feb 2024 13:20:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37F735A0F1;
+	Wed,  7 Feb 2024 13:14:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.187.100.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707312021; cv=none; b=Cx5wyv/cSy8tZIVBMfnHxx6dWrCQ+j7PaUuS6VoUjuSkbdRW2qs3OridxlR9tMjD/LaMm/GgpNcCcFNOWCd5ko53qZs4oN1Eyis9eNEbxr1udZrW8MWUfwF67YJskNkdSJPRZMzAjUUdnJyKI8DtHG5JQSr1Yd24RRZMCwn0MJw=
+	t=1707311678; cv=none; b=UaUCHlnC6V+Hnn8GD+0EC5k1K8afCptELrXyBdbhNjmbjgx8B9i2vTpyYUJXUTjO8L+pdNtQ64FnVWBCrE58gGD61mSkxkW9tN+GpjBYYPoEAVGrcKeXUPeEXObuq+ZmohtaZ3cIkcBEmr3Lw5MihIJloUcc0mysbGTNA39egSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707312021; c=relaxed/simple;
-	bh=9XbXN2HqJLMraSRllZfM8SB0u4PwD0X20StBBC/8AV8=;
+	s=arc-20240116; t=1707311678; c=relaxed/simple;
+	bh=49JTY3sNMNqzNRYaGD0Us16tlkRQVcvuPjaeHDJ9xuc=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Miiy1ge9jVKObNwYE+OOCSZJDUYSlHmQsCmlUdktPkL5EBoTpQwlFRWQL3GqmVeEJ6kHx1WkZxeDCdGF69Waq+PSHJFQdk0qhbq/WsSYeaBSRs42dfvCTPAWzfgoCdIA3iC0orFe4/DZWhVVPKawWQoeexM5KF+4f7WPDFZj3HI=
+	 MIME-Version:Content-Type; b=FEG5Y9u5Te5MVJPnJ9QTzwBsF7yTauhw42mubV8J0fApSqwr0dITyOavU0285/m3XKk5q3HjcOMgsE3j4mOJUcJMgjmg4nevDWkft7wbhF2wCeGa4giZbeH30R/Rgv5jfunh0kgYohLvzN6WwseCA1qz3P0jPkY/2CiZoIJR9yM=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=piap.pl; spf=pass smtp.mailfrom=piap.pl; arc=none smtp.client-ip=195.187.100.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=piap.pl
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=piap.pl
 Received: from t19.piap.pl (OSB1819.piap.pl [10.0.9.19])
-	by ni.piap.pl (Postfix) with ESMTPS id 2CA3FC3F2A57;
-	Wed,  7 Feb 2024 14:13:05 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 ni.piap.pl 2CA3FC3F2A57
+	by ni.piap.pl (Postfix) with ESMTPS id 9C86DC3F2A7D;
+	Wed,  7 Feb 2024 14:14:33 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 ni.piap.pl 9C86DC3F2A7D
 From: =?utf-8?Q?Krzysztof_Ha=C5=82asa?= <khalasa@piap.pl>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,  Hans Verkuil
- <hverkuil-cisco@xs4all.nl>,  "Lad, Prabhakar"
- <prabhakar.csengg@gmail.com>,  =?utf-8?Q?Uwe_Kleine-K=C3=B6nig?=
+To: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,  Kuninori Morimoto
+ <kuninori.morimoto.gx@renesas.com>,  "Lad, Prabhakar"
+ <prabhakar.csengg@gmail.com>,  Uwe =?utf-8?Q?Kleine-K=C3=B6nig?=
  <u.kleine-koenig@pengutronix.de>,  Alexandre Belloni
  <alexandre.belloni@bootlin.com>,  Alexandre Torgue
  <alexandre.torgue@foss.st.com>,  Alexey Brodkin <abrodkin@synopsys.com>,
@@ -66,14 +66,15 @@ Cc: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,  Hans Verkuil
   linux-samsung-soc@vger.kernel.org,
   linux-stm32@st-md-mailman.stormreply.com
 Subject: Re: [PATCH 2/4] media: i2c: replace of_graph_get_next_endpoint()
-In-Reply-To: <20240206134155.GB2827@pendragon.ideasonboard.com> (Laurent
-	Pinchart's message of "Tue, 6 Feb 2024 15:41:55 +0200")
+In-Reply-To: <9d1e99b0-892d-4a72-a9b3-886b8ed094b0@xs4all.nl> (Hans Verkuil's
+	message of "Tue, 6 Feb 2024 15:44:45 +0100")
 References: <87ttmmnvzh.wl-kuninori.morimoto.gx@renesas.com>
 	<87r0hqnvxc.wl-kuninori.morimoto.gx@renesas.com>
 	<20240206134155.GB2827@pendragon.ideasonboard.com>
+	<9d1e99b0-892d-4a72-a9b3-886b8ed094b0@xs4all.nl>
 Sender: khalasa@piap.pl
-Date: Wed, 07 Feb 2024 14:13:05 +0100
-Message-ID: <m3il30zace.fsf@t19.piap.pl>
+Date: Wed, 07 Feb 2024 14:14:33 +0100
+Message-ID: <m3eddoza9y.fsf@t19.piap.pl>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -88,42 +89,16 @@ X-KLMS-AntiSpam-Status: not scanned, whitelist
 X-KLMS-AntiPhishing: not scanned, whitelist
 X-KLMS-AntiVirus: Kaspersky Security for Linux Mail Server, version 8.0.3.30, not scanned, whitelist
 
-Laurent,
+Hans,
 
-Laurent Pinchart <laurent.pinchart@ideasonboard.com> writes:
+Hans Verkuil <hverkuil-cisco@xs4all.nl> writes:
 
->> +++ b/drivers/media/i2c/adv7604.c
->> @@ -3205,7 +3205,7 @@ static int adv76xx_parse_dt(struct adv76xx_state *=
-state)
->>       np =3D state->i2c_clients[ADV76XX_PAGE_IO]->dev.of_node;
->>
->>       /* Parse the endpoint. */
->> -     endpoint =3D of_graph_get_next_endpoint(np, NULL);
->> +     endpoint =3D of_graph_get_endpoint_by_regs(np, 0, -1);
->
-> I think this should be port 1 for the adv7611 and port2 for the adv7612.
-> The adv7610 may need to use port 1 too, but the bindings likely need to
-> be updated.
+> Ideally someone would have to actually test this, perhaps with one of tho=
+se
+> Renesas boards. While I do have one, it got bricked after I attempted a
+> u-boot update :-(
 
-To be honest I have no idea about ADV7611 and 7612.
-The 7610 I have on Tinyrex "mobo" seems to be single port.
-
-ADV7611 seems to be mostly a 7610 in a different package (LQFP 64
-instead of some BGA 76). The driver simply treats ADV7610 as a 7611.
-
-ADV7612 is apparently dual port (only one port can be used at a time)
-though:
-
-[ADV7612] =3D {
-        .type =3D ADV7612,
-        .has_afe =3D false,
-        .max_port =3D ADV76XX_PAD_HDMI_PORT_A,    /* B not supported */
-        .num_dv_ports =3D 1,                      /* normally 2 */
-
-
-All related in-tree DTS entries (as of v6.8.0-rc1) seem to be ADV7612.
-
-To me it seems all known devices use the first port only.
+May be reversible, though.
 --=20
 Krzysztof "Chris" Ha=C5=82asa
 
