@@ -1,116 +1,149 @@
-Return-Path: <linux-omap+bounces-542-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-545-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C6F684E56E
-	for <lists+linux-omap@lfdr.de>; Thu,  8 Feb 2024 17:51:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D72FF84E586
+	for <lists+linux-omap@lfdr.de>; Thu,  8 Feb 2024 17:54:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 312271F22E2D
-	for <lists+linux-omap@lfdr.de>; Thu,  8 Feb 2024 16:51:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13AC71C255FC
+	for <lists+linux-omap@lfdr.de>; Thu,  8 Feb 2024 16:54:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9E5E7F7FE;
-	Thu,  8 Feb 2024 16:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB09B7FBB5;
+	Thu,  8 Feb 2024 16:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="D0Jgklj4"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="ybhq7Kd4"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f177.google.com (mail-vk1-f177.google.com [209.85.221.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAE917EF16;
-	Thu,  8 Feb 2024 16:51:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.248
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BE177EF11
+	for <linux-omap@vger.kernel.org>; Thu,  8 Feb 2024 16:54:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707411084; cv=none; b=oe1y3spIXWknpdtkHwWifoI0fAdufHJdGdAk/Det7o4IBvDdb4AHTkBY/LoNMWvo4065phOE/sbDCf5cazKDZ48/RJ0Uo6MD/ghl8XCFsZKW67IGeP6cUwaGQsELXSMYoTLOCmjouOjGW0KeKJtQAmRDRYm3IxrvcjbIDC5r9Ik=
+	t=1707411244; cv=none; b=MsExfJBpw9zqMKQWnwvP3MpvI6VjTjleZ9wCeRfLkO4VhgVEicXsHitBdfrfG84HseK0ik62v8N1zb4ksWLFuCv3tPOpia8sruoJFlQWMvpO0W9hFB9zktFpRuqO8jiaBa1IR+enym1LGsjd/A633BadNUHqH7clcArLk744WXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707411084; c=relaxed/simple;
-	bh=gjSKd6uTc8kBAKclYk3S89l34EyVOwSZa1YaZh1NZPA=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HzbeScrRSExUH4EOt4hwqXKN+ozlqSSAjsYIg2PO9xnYHO8j77/KVClXFGMBksDEPUeW7nkynUwwN1mVoBGAT8Pe9M4ts3tk+sNqZ76RpQnPYXIz0k8Ae/M3QeE9CGqyf4oEPlqzWYBgVgfwcx1ZuXka9lDAQET9juXGmA+IJJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=D0Jgklj4; arc=none smtp.client-ip=198.47.23.248
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-	by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 418GpHrd012029;
-	Thu, 8 Feb 2024 10:51:17 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1707411077;
-	bh=xCGFMX89R1mGJW8/Y6A+fGzHuBoxs28i4x77PmX5znQ=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References;
-	b=D0Jgklj4yGloL1h3M4KVZTz9AMrS/ihpMI4+HTJcBfZt7CB76YcKrqZ7tQw3Dp5gY
-	 WxdGg47uWuZ0f2yI65vcmgTqYIMKqmcKoEalqvp5fi6aDllMvP/cj+LbvOZ9rIXAac
-	 u3RcOTtbnMCRvipPJVzEJam/0OIifgxU2+a7nNBs=
-Received: from DLEE108.ent.ti.com (dlee108.ent.ti.com [157.170.170.38])
-	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 418GpHjQ041144
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 8 Feb 2024 10:51:17 -0600
-Received: from DLEE110.ent.ti.com (157.170.170.21) by DLEE108.ent.ti.com
- (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 8
- Feb 2024 10:51:17 -0600
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE110.ent.ti.com
- (157.170.170.21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Thu, 8 Feb 2024 10:51:17 -0600
-Received: from lelvsmtp5.itg.ti.com ([10.249.42.149])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 418GpFwF063394;
-	Thu, 8 Feb 2024 10:51:16 -0600
-From: Andrew Davis <afd@ti.com>
-To: Bjorn Andersson <andersson@kernel.org>,
-        Baolin Wang
-	<baolin.wang@linux.alibaba.com>
-CC: <linux-omap@vger.kernel.org>, <linux-remoteproc@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, Andrew Davis <afd@ti.com>
-Subject: [PATCH v2 4/4] hwspinlock: omap: Use index to get hwspinlock pointer
-Date: Thu, 8 Feb 2024 10:51:14 -0600
-Message-ID: <20240208165114.63148-4-afd@ti.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240208165114.63148-1-afd@ti.com>
-References: <20240208165114.63148-1-afd@ti.com>
+	s=arc-20240116; t=1707411244; c=relaxed/simple;
+	bh=+WnqOpqwrKMN/Ii8lvXs8Tih6LFYmoJMhLY7pjgCWgA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oQMzAwaFl8A8rfyJMzCe9IG6RG2BK5yK9xmDghTD1cCrepD/94OIhkpJQ4CCQVf9OCcii+85mBhKMLyOCBskOh96pAD2TdYo0Tk7GthwcY/xeOiYi7TeUvsxt0Nt2SrRFCFY4U88a84kNj+PZNnIXSroH5bCq3qqVNtvd9DbY0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=ybhq7Kd4; arc=none smtp.client-ip=209.85.221.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-vk1-f177.google.com with SMTP id 71dfb90a1353d-4c0232861afso735635e0c.1
+        for <linux-omap@vger.kernel.org>; Thu, 08 Feb 2024 08:54:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1707411242; x=1708016042; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+WnqOpqwrKMN/Ii8lvXs8Tih6LFYmoJMhLY7pjgCWgA=;
+        b=ybhq7Kd4EMNxKxmH4ppuNsp011IeTINhTWm2q7GuUWAv5EqZBIkATzyQ9VKsHy1R/A
+         KoNAq5/5s9fWZdWz2IE4LwathQ79bUe8E4PRhfXAFm+Jwy01C5eoS5LXtfgsgqRDXfJP
+         J+UmGtPyvWe9VPaqJeqUgqyWY8R0LtYHN/c2gnoXv4bs2qWlZNTAY6Irczsgi2MitD2c
+         ZttpnCpa6Qs+GdkJYreRIgbblmOckIg/yEViEx29BV5Pip2kkZnpYFLGtCg8K989IzdA
+         sXJuRd7Pqb1z0d1iTKQzilqo+71GswvYS3E4Pvk8FqkeocxGFcCSZVmWFxx96kgmdOYl
+         cG7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707411242; x=1708016042;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+WnqOpqwrKMN/Ii8lvXs8Tih6LFYmoJMhLY7pjgCWgA=;
+        b=Q4S60zyzPCov82Ac9io7mRrXIQXPSpXRUChObG5tuJjlIH1jqtwG81FxKlI3qzamSz
+         MCGbtBdzE8xmewGHITwfZXOF6O4gdDPCVDFeZK+pmgZj45eNjc+pj/BkW2iRdrfsT9DL
+         op7Gi5iGt1jVp++0SkMxEtVJYE0KFx2pZ665M8JYa9bTccG6zvva+FngSzvLrb862YRw
+         9ZiDhf7nmu2yuehMHhsIYrEpRYBdzVExkD89Dz4jbMzVTMvBSv8Rd+pf90P0i+BqbhSn
+         cJmZmj7i0g232eGJCmzjhpt7aLW26S20Z0ygDz1LYS+uctsGAZOWNz8UEjNU+4zDseb8
+         sgLg==
+X-Gm-Message-State: AOJu0Yxl7W4563Aa3dwaLM2YmvA+StbHE8DRA8HAckzUdN7kePR8kcib
+	FrLcDfsAOBH9JuEA/l0yms2x108paSZLbQXexE/dg7I1Wk0y7bwp21OCezYbw1xehFNVYzJAulW
+	ZUmZV4qxr4O+DrfDOdF70yXdjGaL1w+jMhYBrQQ==
+X-Google-Smtp-Source: AGHT+IHz0CjsWbNfwLVsvbsu2GnwvD6mVTutx2G227R7kTzOxqJNrEtSn6iMso2qq7PPj4o9RHpX9LDEy5dwka8VO8g=
+X-Received: by 2002:a1f:e681:0:b0:4c0:2416:6fc2 with SMTP id
+ d123-20020a1fe681000000b004c024166fc2mr161766vkh.5.1707411241926; Thu, 08 Feb
+ 2024 08:54:01 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+References: <20240102-j7200-pcie-s2r-v1-0-84e55da52400@bootlin.com>
+ <20240102-j7200-pcie-s2r-v1-1-84e55da52400@bootlin.com> <20240116074333.GO5185@atomide.com>
+ <31c42f08-7d5e-4b91-87e9-bfc7e2cfdefe@bootlin.com> <CACRpkdYUVbFoDq91uLbUy8twtG_AiD+CY2+nqzCyHV7ZyBC3sA@mail.gmail.com>
+ <95032042-787e-494a-bad9-81b62653de52@bootlin.com>
+In-Reply-To: <95032042-787e-494a-bad9-81b62653de52@bootlin.com>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Thu, 8 Feb 2024 17:53:50 +0100
+Message-ID: <CAMRc=MfSkuYocKMGyVjqQ5qk=MSkR_W4F5PNs+M6HwBkmjcK0Q@mail.gmail.com>
+Subject: Re: [PATCH 01/14] gpio: pca953x: move suspend/resume to suspend_noirq/resume_noirq
+To: Thomas Richard <thomas.richard@bootlin.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>, Tony Lindgren <tony@atomide.com>, 
+	Andy Shevchenko <andy@kernel.org>, Haojian Zhuang <haojian.zhuang@linaro.org>, Vignesh R <vigneshr@ti.com>, 
+	Aaro Koskinen <aaro.koskinen@iki.fi>, Janusz Krzysztofik <jmkrzyszt@gmail.com>, 
+	Andi Shyti <andi.shyti@kernel.org>, Peter Rosin <peda@axentia.se>, Vinod Koul <vkoul@kernel.org>, 
+	Kishon Vijay Abraham I <kishon@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>, 
+	Tom Joseph <tjoseph@cadence.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, linux-gpio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-omap@vger.kernel.org, linux-i2c@vger.kernel.org, 
+	linux-phy@lists.infradead.org, linux-pci@vger.kernel.org, 
+	gregory.clement@bootlin.com, theo.lebrun@bootlin.com, 
+	thomas.petazzoni@bootlin.com, u-kumar1@ti.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-For loops with multiple initializers and increments are hard to read
-and reason about, simplify this by using the looping index to index
-into the hwspinlock array.
+On Thu, Feb 8, 2024 at 5:19=E2=80=AFPM Thomas Richard
+<thomas.richard@bootlin.com> wrote:
+>
+> On 1/28/24 01:12, Linus Walleij wrote:
+> > On Fri, Jan 19, 2024 at 6:01=E2=80=AFPM Thomas Richard
+> > <thomas.richard@bootlin.com> wrote:
+> >> On 1/16/24 08:43, Tony Lindgren wrote:
+> >>> * Thomas Richard <thomas.richard@bootlin.com> [240115 16:16]:
+> >>>> Some IOs can be needed during suspend_noirq/resume_noirq.
+> >>>> So move suspend/resume callbacks to noirq.
+> >>>
+> >>> So have you checked that the pca953x_save_context() and restore works
+> >>> this way? There's i2c traffic and regulators may sleep.. I wonder if
+> >>> you instead just need to leave gpio-pca953x enabled in some cases
+> >>> instead?
+> >>>
+> >>
+> >> Yes I tested it, and it works (with my setup).
+> >> But this patch may have an impact for other people.
+> >> How could I leave it enabled in some cases ?
+> >
+> > I guess you could define both pca953x_suspend() and
+> > pca953x_suspend_noirq() and selectively bail out on one
+> > path on some systems?
+>
+> Yes.
+>
+> What do you think if I use a property like for example "ti,pm-noirq" to
+> select the right path ?
+> Is a property relevant for this use case ?
+>
 
-Signed-off-by: Andrew Davis <afd@ti.com>
----
- drivers/hwspinlock/omap_hwspinlock.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+I prefer a new property than calling of_machine_is_compatible().
+Please do run it by the DT maintainers, I think it should be fine.
+Maybe even don't limit it to TI but make it a generic property.
 
-diff --git a/drivers/hwspinlock/omap_hwspinlock.c b/drivers/hwspinlock/omap_hwspinlock.c
-index fe73da80018b1..27b47b8623c09 100644
---- a/drivers/hwspinlock/omap_hwspinlock.c
-+++ b/drivers/hwspinlock/omap_hwspinlock.c
-@@ -75,7 +75,6 @@ static const struct hwspinlock_ops omap_hwspinlock_ops = {
- static int omap_hwspinlock_probe(struct platform_device *pdev)
- {
- 	struct hwspinlock_device *bank;
--	struct hwspinlock *hwlock;
- 	void __iomem *io_base;
- 	int num_locks, i, ret;
- 	/* Only a single hwspinlock block device is supported */
-@@ -117,8 +116,8 @@ static int omap_hwspinlock_probe(struct platform_device *pdev)
- 	if (!bank)
- 		return -ENOMEM;
- 
--	for (i = 0, hwlock = &bank->lock[0]; i < num_locks; i++, hwlock++)
--		hwlock->priv = io_base + LOCK_BASE_OFFSET + sizeof(u32) * i;
-+	for (i = 0; i < num_locks; i++)
-+		bank->lock[i].priv = io_base + LOCK_BASE_OFFSET + sizeof(u32) * i;
- 
- 	return devm_hwspin_lock_register(&pdev->dev, bank, &omap_hwspinlock_ops,
- 						base_id, num_locks);
--- 
-2.39.2
+Bart
 
+> Regards,
+>
+> >
+> > Worst case using if (of_machine_is_compatible("my,machine"))...
+> >
+> > Yours,
+> > Linus Walleij
+> --
+> Thomas Richard, Bootlin
+> Embedded Linux and Kernel engineering
+> https://bootlin.com
+>
 
