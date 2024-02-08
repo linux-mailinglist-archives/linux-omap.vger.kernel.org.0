@@ -1,69 +1,70 @@
-Return-Path: <linux-omap+bounces-545-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-546-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D72FF84E586
-	for <lists+linux-omap@lfdr.de>; Thu,  8 Feb 2024 17:54:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C8F084EA7F
+	for <lists+linux-omap@lfdr.de>; Thu,  8 Feb 2024 22:29:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13AC71C255FC
-	for <lists+linux-omap@lfdr.de>; Thu,  8 Feb 2024 16:54:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51A6F1F2209D
+	for <lists+linux-omap@lfdr.de>; Thu,  8 Feb 2024 21:29:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB09B7FBB5;
-	Thu,  8 Feb 2024 16:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 973AC4F1FE;
+	Thu,  8 Feb 2024 21:29:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="ybhq7Kd4"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="m3PsG9zX"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-vk1-f177.google.com (mail-vk1-f177.google.com [209.85.221.177])
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BE177EF11
-	for <linux-omap@vger.kernel.org>; Thu,  8 Feb 2024 16:54:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C444F5EA
+	for <linux-omap@vger.kernel.org>; Thu,  8 Feb 2024 21:29:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707411244; cv=none; b=MsExfJBpw9zqMKQWnwvP3MpvI6VjTjleZ9wCeRfLkO4VhgVEicXsHitBdfrfG84HseK0ik62v8N1zb4ksWLFuCv3tPOpia8sruoJFlQWMvpO0W9hFB9zktFpRuqO8jiaBa1IR+enym1LGsjd/A633BadNUHqH7clcArLk744WXg=
+	t=1707427766; cv=none; b=BfD9KYRW7M7YI6H9jq+IJcdvoC2PNu1zsskXmJ+x7QaaYIZLMP9c44fgWa/+Q9KU170oO9IAE8Xkz2WeDDBqfXxodqQVlz5dsjD6EqofycXLJ8CFDlaMUgu+EZPKTSAh6cXrngEpazamYdulIqLXpcLgI+y+VxIqzZty1v/n0tc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707411244; c=relaxed/simple;
-	bh=+WnqOpqwrKMN/Ii8lvXs8Tih6LFYmoJMhLY7pjgCWgA=;
+	s=arc-20240116; t=1707427766; c=relaxed/simple;
+	bh=k4Qjd4VTrme/q3N5w4mBZNedSc5IAlaFUDmOanXt4fs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oQMzAwaFl8A8rfyJMzCe9IG6RG2BK5yK9xmDghTD1cCrepD/94OIhkpJQ4CCQVf9OCcii+85mBhKMLyOCBskOh96pAD2TdYo0Tk7GthwcY/xeOiYi7TeUvsxt0Nt2SrRFCFY4U88a84kNj+PZNnIXSroH5bCq3qqVNtvd9DbY0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=ybhq7Kd4; arc=none smtp.client-ip=209.85.221.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-vk1-f177.google.com with SMTP id 71dfb90a1353d-4c0232861afso735635e0c.1
-        for <linux-omap@vger.kernel.org>; Thu, 08 Feb 2024 08:54:02 -0800 (PST)
+	 To:Cc:Content-Type; b=qs6e5+rcO1I88IVOS5CmmUXOVoNWC5+afWOra91VuS/PMXsFlv9/Kt782ZKK9H7YCKGjd6Nxt6l9sXIQeKAP3EidHYQo7a7Un9d0prSKD/EWndIO2nmmOQOcbhgdKcBRG+Eoh6YmNe6s69yQni18+fHIBL5QnLu4BCEkHbmuoYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=m3PsG9zX; arc=none smtp.client-ip=209.85.128.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-604b768d5d3so1456907b3.0
+        for <linux-omap@vger.kernel.org>; Thu, 08 Feb 2024 13:29:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1707411242; x=1708016042; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1707427763; x=1708032563; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=+WnqOpqwrKMN/Ii8lvXs8Tih6LFYmoJMhLY7pjgCWgA=;
-        b=ybhq7Kd4EMNxKxmH4ppuNsp011IeTINhTWm2q7GuUWAv5EqZBIkATzyQ9VKsHy1R/A
-         KoNAq5/5s9fWZdWz2IE4LwathQ79bUe8E4PRhfXAFm+Jwy01C5eoS5LXtfgsgqRDXfJP
-         J+UmGtPyvWe9VPaqJeqUgqyWY8R0LtYHN/c2gnoXv4bs2qWlZNTAY6Irczsgi2MitD2c
-         ZttpnCpa6Qs+GdkJYreRIgbblmOckIg/yEViEx29BV5Pip2kkZnpYFLGtCg8K989IzdA
-         sXJuRd7Pqb1z0d1iTKQzilqo+71GswvYS3E4Pvk8FqkeocxGFcCSZVmWFxx96kgmdOYl
-         cG7Q==
+        bh=k4Qjd4VTrme/q3N5w4mBZNedSc5IAlaFUDmOanXt4fs=;
+        b=m3PsG9zX90QhRA6wVavFjgQpHgf7iI3KQ6VuROiaopox+k5Pj6EcRSmU/Sv9c8hvgA
+         FwoCrKe0hXpGuDbek2vGGDsxGfHZ44X++SrE20i5vHQqbmrmZI6HsNyAwt6Tsyj9FQUt
+         sy4TBacBHZR678Ts8LGGvyk3zxYoPX10uc3371nZgOnT63T84CO6os8DffBjTEaMulid
+         JAslF8WFdyVc98uxqx7m7G2uAeH//QO2ObB8yq01EhY2C54ey4xQ7hFIhQBwC2Lj1BiA
+         AGswBe+oloAWOav1F5JlnB23YuGxFI+4Jt6D16Dq92fiM5cJhyG7umCVi5EVa+wUaS+P
+         R79Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707411242; x=1708016042;
+        d=1e100.net; s=20230601; t=1707427763; x=1708032563;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=+WnqOpqwrKMN/Ii8lvXs8Tih6LFYmoJMhLY7pjgCWgA=;
-        b=Q4S60zyzPCov82Ac9io7mRrXIQXPSpXRUChObG5tuJjlIH1jqtwG81FxKlI3qzamSz
-         MCGbtBdzE8xmewGHITwfZXOF6O4gdDPCVDFeZK+pmgZj45eNjc+pj/BkW2iRdrfsT9DL
-         op7Gi5iGt1jVp++0SkMxEtVJYE0KFx2pZ665M8JYa9bTccG6zvva+FngSzvLrb862YRw
-         9ZiDhf7nmu2yuehMHhsIYrEpRYBdzVExkD89Dz4jbMzVTMvBSv8Rd+pf90P0i+BqbhSn
-         cJmZmj7i0g232eGJCmzjhpt7aLW26S20Z0ygDz1LYS+uctsGAZOWNz8UEjNU+4zDseb8
-         sgLg==
-X-Gm-Message-State: AOJu0Yxl7W4563Aa3dwaLM2YmvA+StbHE8DRA8HAckzUdN7kePR8kcib
-	FrLcDfsAOBH9JuEA/l0yms2x108paSZLbQXexE/dg7I1Wk0y7bwp21OCezYbw1xehFNVYzJAulW
-	ZUmZV4qxr4O+DrfDOdF70yXdjGaL1w+jMhYBrQQ==
-X-Google-Smtp-Source: AGHT+IHz0CjsWbNfwLVsvbsu2GnwvD6mVTutx2G227R7kTzOxqJNrEtSn6iMso2qq7PPj4o9RHpX9LDEy5dwka8VO8g=
-X-Received: by 2002:a1f:e681:0:b0:4c0:2416:6fc2 with SMTP id
- d123-20020a1fe681000000b004c024166fc2mr161766vkh.5.1707411241926; Thu, 08 Feb
- 2024 08:54:01 -0800 (PST)
+        bh=k4Qjd4VTrme/q3N5w4mBZNedSc5IAlaFUDmOanXt4fs=;
+        b=o5q1FVGZTxusI+sqRRDEVDSiYDXgiHXDz2/83dOD5JjX6kty9Bnya/uLuNqNCtlNWE
+         orFCjH5+fWv9OiWVJVU5kNms5NsXyjAcBPoLXG8YHLQb2WRgddAE/8DM8tA5Gn+Sc0nZ
+         j7+PE/xZphuT3A6MY9jOvXAQnDnyn+bwe5Uds1T2g2G7UDGNHOKp5/OTeOc3Yn6BFVUj
+         3avc7wnwRIHiLAiMTg2TqgmmQ0hcVUkcSpqJF21Tal37L5VzJLb07pAyDXwlcXqg1BP2
+         F+7S+HZ+kGG2g/h2EgIj5UZc3MXJyyZPQsNyAnNTocdgh+rpGYeWmKYAkVshz9rPlvKU
+         dbGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVe3n+u1LDnkEbwFlPFNmFCEa1gOAj+ORHybBbQrjsRBwJ36TO8ebSHG3kMB+UiVjqlTu9ZDxXIHs23FY32qYvTk2D2y4wFuPEkww==
+X-Gm-Message-State: AOJu0YyJMBs8vula2k9/mzcMVMEa8guFJOAX6iSF/ZZIiX5NYidw99kH
+	aKHPUpvD0r9yPoFEujJptu4BBYFluflIZjVnRO1/ObLMOwRFMHYtyN3MfwMC0kwot5lBQlkg6Wd
+	x+cVQShFXKdG3uniqkhu1rZgML7lQaSQOoIwpRg==
+X-Google-Smtp-Source: AGHT+IFXP22UNl6HGodNdyxCVyIl57xwSa1qrcuFLa7AiuRdaK1CrwevQo6eVvRY3I8f1f+LXDY+AXrRH8sbZkURbwY=
+X-Received: by 2002:a0d:cc47:0:b0:604:4586:4039 with SMTP id
+ o68-20020a0dcc47000000b0060445864039mr2737694ywd.13.1707427763661; Thu, 08
+ Feb 2024 13:29:23 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -75,13 +76,13 @@ References: <20240102-j7200-pcie-s2r-v1-0-84e55da52400@bootlin.com>
  <31c42f08-7d5e-4b91-87e9-bfc7e2cfdefe@bootlin.com> <CACRpkdYUVbFoDq91uLbUy8twtG_AiD+CY2+nqzCyHV7ZyBC3sA@mail.gmail.com>
  <95032042-787e-494a-bad9-81b62653de52@bootlin.com>
 In-Reply-To: <95032042-787e-494a-bad9-81b62653de52@bootlin.com>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Thu, 8 Feb 2024 17:53:50 +0100
-Message-ID: <CAMRc=MfSkuYocKMGyVjqQ5qk=MSkR_W4F5PNs+M6HwBkmjcK0Q@mail.gmail.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Thu, 8 Feb 2024 22:29:11 +0100
+Message-ID: <CACRpkdY2wiw1zH8FsEv7S1FW044PBSXpLPqanF5yyH1R4oteEA@mail.gmail.com>
 Subject: Re: [PATCH 01/14] gpio: pca953x: move suspend/resume to suspend_noirq/resume_noirq
 To: Thomas Richard <thomas.richard@bootlin.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>, Tony Lindgren <tony@atomide.com>, 
-	Andy Shevchenko <andy@kernel.org>, Haojian Zhuang <haojian.zhuang@linaro.org>, Vignesh R <vigneshr@ti.com>, 
+Cc: Tony Lindgren <tony@atomide.com>, Bartosz Golaszewski <brgl@bgdev.pl>, Andy Shevchenko <andy@kernel.org>, 
+	Haojian Zhuang <haojian.zhuang@linaro.org>, Vignesh R <vigneshr@ti.com>, 
 	Aaro Koskinen <aaro.koskinen@iki.fi>, Janusz Krzysztofik <jmkrzyszt@gmail.com>, 
 	Andi Shyti <andi.shyti@kernel.org>, Peter Rosin <peda@axentia.se>, Vinod Koul <vkoul@kernel.org>, 
 	Kishon Vijay Abraham I <kishon@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>, 
@@ -98,25 +99,8 @@ Content-Transfer-Encoding: quoted-printable
 
 On Thu, Feb 8, 2024 at 5:19=E2=80=AFPM Thomas Richard
 <thomas.richard@bootlin.com> wrote:
->
 > On 1/28/24 01:12, Linus Walleij wrote:
-> > On Fri, Jan 19, 2024 at 6:01=E2=80=AFPM Thomas Richard
-> > <thomas.richard@bootlin.com> wrote:
-> >> On 1/16/24 08:43, Tony Lindgren wrote:
-> >>> * Thomas Richard <thomas.richard@bootlin.com> [240115 16:16]:
-> >>>> Some IOs can be needed during suspend_noirq/resume_noirq.
-> >>>> So move suspend/resume callbacks to noirq.
-> >>>
-> >>> So have you checked that the pca953x_save_context() and restore works
-> >>> this way? There's i2c traffic and regulators may sleep.. I wonder if
-> >>> you instead just need to leave gpio-pca953x enabled in some cases
-> >>> instead?
-> >>>
-> >>
-> >> Yes I tested it, and it works (with my setup).
-> >> But this patch may have an impact for other people.
-> >> How could I leave it enabled in some cases ?
-> >
+
 > > I guess you could define both pca953x_suspend() and
 > > pca953x_suspend_noirq() and selectively bail out on one
 > > path on some systems?
@@ -126,24 +110,16 @@ On Thu, Feb 8, 2024 at 5:19=E2=80=AFPM Thomas Richard
 > What do you think if I use a property like for example "ti,pm-noirq" to
 > select the right path ?
 > Is a property relevant for this use case ?
->
 
-I prefer a new property than calling of_machine_is_compatible().
-Please do run it by the DT maintainers, I think it should be fine.
-Maybe even don't limit it to TI but make it a generic property.
+That's a Linux-specific property and that's useless for other operating
+systems and not normally allowed. PM noirq is just some Linux thing.
 
-Bart
+*FIRST* we should check if putting the callbacks to noirq is fine with
+other systems too, and I don't see why not. Perhaps we need to even
+merge it if we don't get any test results.
 
-> Regards,
->
-> >
-> > Worst case using if (of_machine_is_compatible("my,machine"))...
-> >
-> > Yours,
-> > Linus Walleij
-> --
-> Thomas Richard, Bootlin
-> Embedded Linux and Kernel engineering
-> https://bootlin.com
->
+If it doesn't work we can think of other options.
+
+Yours,
+Linus Walleij
 
