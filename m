@@ -1,183 +1,149 @@
-Return-Path: <linux-omap+bounces-566-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-567-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 539C78534D6
-	for <lists+linux-omap@lfdr.de>; Tue, 13 Feb 2024 16:38:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F71B85366E
+	for <lists+linux-omap@lfdr.de>; Tue, 13 Feb 2024 17:46:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6B511F2A4F0
-	for <lists+linux-omap@lfdr.de>; Tue, 13 Feb 2024 15:38:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81CA51C216CB
+	for <lists+linux-omap@lfdr.de>; Tue, 13 Feb 2024 16:46:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CB145F46A;
-	Tue, 13 Feb 2024 15:36:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 588445FDBA;
+	Tue, 13 Feb 2024 16:46:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JW6BxYZi"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RIBg7TJh"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A14975F462
-	for <linux-omap@vger.kernel.org>; Tue, 13 Feb 2024 15:36:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F6D45FBB1
+	for <linux-omap@vger.kernel.org>; Tue, 13 Feb 2024 16:46:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707838619; cv=none; b=oLZXQk3PCpK1WGTxOYTBGoftSW1W9p767wSXlgCwJUXGPwFqiqIIehQp3lOa8AAcL+DWweJx436KN0zGYpo8cxBvMnCKJQZzOPnsHZKQeGvCJSBAOgG/deIJoFTW4gfvPY43m7JOMwH6lkBPrJ6qaiKaS4ji/oUsxqgt/r4u9HM=
+	t=1707842776; cv=none; b=BVCBZTJK0Da6s57V89awomkwMw2vKwl5QkBK2pvzSKti0auYxw6IF29aIJBiN5f7EZVzIOkZMJ4vbCweFRmp+88kpvDI1oH6zoSe8K4OVpoF9dLG2VrRLt4s2tS5Mgw8+ZdAj0qoy7u80OGOraU8XizJahpZ7H6ySSUbV/0ZsjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707838619; c=relaxed/simple;
-	bh=aX40FuEDocdvd+3rCTHkuFqSf5KjruPP4Rv0BaTjy/o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L1sFg5+MJqwJjGHaXac6bnGFoFakgogxWcp6NzcrrcfGaAs4JzKUR2/YxyIgvbgcMSsSDOflVg+TuiNwFZOgGx/I02FJFvS9iSCimiuQXGcHszWqMmU14YkPgJC/pYTQ29sk0O77l39kk3vJap69yGwauN+OFHVTMUlULJxxr1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JW6BxYZi; arc=none smtp.client-ip=209.85.160.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-2046b2cd2d3so3546886fac.0
-        for <linux-omap@vger.kernel.org>; Tue, 13 Feb 2024 07:36:57 -0800 (PST)
+	s=arc-20240116; t=1707842776; c=relaxed/simple;
+	bh=iky2a6jPh/6u+aNJeAECgbPoRRGW2BdoL+yVwEyQyDM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QMCkyAzt7c7J1xgagLxqu6ZjDXnPxO5RG6dlTLuEVyf88BzQSnIuaYegYIKFDmKTAk/Ik/jTkgOWpr6M/uKZPEyJ/OE5GDXhNeTP4iZYWYdTg2aYqJsNvRZGidIeMe14P0m0BiRb7Kp2c3nkjkGUvLeEaa8t+LlO28jyPtg05tQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RIBg7TJh; arc=none smtp.client-ip=209.85.128.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-6077789e054so15327717b3.1
+        for <linux-omap@vger.kernel.org>; Tue, 13 Feb 2024 08:46:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707838616; x=1708443416; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=RIY5JGQ893Swhqnl00DbijJIsjOgVQf2gvslS8q3HrA=;
-        b=JW6BxYZi1d67MAU+ppklwIUFKkJRDBLlmeZN+exe6OFQnQZqTd8TZtnjATjhqbTUda
-         tg2CuXnDeqt8oj4wOmYsTyd3/2eW++mxGakLFRscGSgDlBtAOn8fn21ddHmDWgb5NS4x
-         2rS+Tne+Ev3X6OmqSH95fbSwdJgK3hwvCDlizaZbShIoXdu8EzMw2UXERlYUl0g9AMgy
-         get9QbZTfVV4a1HH3X0P3Pn4lLZWu5HpRh37FfwMcD3MVgzj3Rq+UiGBOXy4t50KX9eB
-         ch9T+koTRaiOuVSAwbN7jEhjmPWvKd5BO8bQ2Hn+KELrMYxRe9TD8RZ2+FyWtL/7NdXB
-         WcEw==
+        d=linaro.org; s=google; t=1707842773; x=1708447573; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=YOE/aPZQLDSvvefVZc+MnaNJZep0jtE2YOT3eUgZmMI=;
+        b=RIBg7TJhgEITnum4l1q+69Zzkimpu8sWaWza7pXUeN1onibBuCF1ucGe4WWniaKzh5
+         CGMwd0VYpUAk8b5YrvNY1LMVGQAvZJ0uqw0nKnG4A+3ua/SUlXmjfr1ZJSyUioaZcb7p
+         E7//oj7PRroCUssyDtgEzzUAloLfeUeKI86jcd6FDG+kcZi6Eayel/MIwqKKq7WHu0ra
+         D4oYZLMd/p8RRhd2bpIQIfRZcicAQVN5qQXiAznLHdmjoM1390tTQHYjMhd7mxM2nKzF
+         bs+f2+IazW/WDmaB0MeSaJwhC6SmdgaMrKY28CVnq24CNw1Rtx86YStSZZTSL4qFBFHA
+         6sKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707838616; x=1708443416;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RIY5JGQ893Swhqnl00DbijJIsjOgVQf2gvslS8q3HrA=;
-        b=Cf75trvCWfrJKg9po1WwKsqpUpRuMIsGdkB+8j2UugFMyXQ1XP2yOknbKPSduz7LnQ
-         au0T1dnJszTdFJcu7cKTp9h0KZF8WtykTM2e6RYOFSWCU8Km+KVKfab1319/xAqsltsZ
-         HaHKcXZULUbRcyydZDS2hGXGKNhxTNdkKY5m7ADvRBfBRmb5fyjv5AAd0Yz9Idx58Bq5
-         4JEyWTwmn2qS1oWgT7SZ3mP8r4AsJ6f2AW5Wt9dby2ovl6T1Jl9ikuvVx2Cls++fbjuk
-         /AdGCbujXZHTyCGO0htYaO6UP7605uQ6au7sfYOiZXVt8jKhtGPk83YK/DltCg1nQ/Zx
-         acnw==
-X-Forwarded-Encrypted: i=1; AJvYcCVE1vEfYNeaTDz9MHVx9Y1XLXcDFwbL3KnJIxN52cg/xEn29NjhkIS4dGjJ2sWN2QVx9ZyuH83i8s9YAN46N1+9ouhqlU3zw+DXKg==
-X-Gm-Message-State: AOJu0YzuLvxk5QNK+Ch951bdEcG8M6OpkqqGmSGZgWsoXOnqdTic9hw3
-	VXgnumaXLcEoXjffyEKoOJRcNi9q7eORPEhNZr/OvFveBXDb3lSI
-X-Google-Smtp-Source: AGHT+IFa+472yvNq5+GsuFasZU+/8Xjw3xwsIsqaMKno0kfqU0uXpdB27vhvMQ8GxhAhSB0VSh8WFA==
-X-Received: by 2002:a05:6870:b69f:b0:218:d3dc:67de with SMTP id cy31-20020a056870b69f00b00218d3dc67demr13812437oab.22.1707838616535;
-        Tue, 13 Feb 2024 07:36:56 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCU9ryLT/C6nC6ffPkb6CJ6bWj8Rbc+ORhMU16wQBSF+23rZMNwXjnzmgdqkTdESikJ5AjwYG439ngcITIMu6aWxH8D8eRCiKfOeeEVFoYWQ0mtqaRu56mW6zJQdBcgH61gDyLeHq4bYqBL03BEpzd19jmlTjOJmnpSYLsT3WoLyDf3CSnK1q+bbCM5KpilpAZ6JHPoVvdBZ4kfknyi8IhPFk7rO3aDA6blEn75vxGY5IubWcZ8G//jyShPg4Qfgb9K4ALMH3sR6ww/SYN5gLH1K3j0mT2YnsvjrjTAFeZt9a6RjkRJ2jnsSYSNPnvsXc/JIae7k3FCHGRgFyILb6JKz3zlxZRSzlu2DpWF6dWG3
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id n5-20020a632705000000b005dc36279d6dsm2560973pgn.73.2024.02.13.07.36.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Feb 2024 07:36:56 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Tue, 13 Feb 2024 07:36:54 -0800
-From: Guenter Roeck <linux@roeck-us.net>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: QEMU Developers <qemu-devel@nongnu.org>, qemu-arm <qemu-arm@nongnu.org>,
-	Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-	Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org,
-	Arnd Bergmann <arnd@arndb.de>, Daniel Mack <daniel@zonque.org>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Haojian Zhuang <haojian.zhuang@gmail.com>
-Subject: Re: possible deprecation and removal of some old QEMU Arm machine
- types (pxa2xx, omap, sa1110)
-Message-ID: <7bd858a2-9983-4ddf-8749-09c9b2e261f9@roeck-us.net>
-References: <CAFEAcA88UGhjh8-iBvhxx6GdWg74dinYouiguTcz=qEe51L7Ag@mail.gmail.com>
- <fe5476c7-82e0-4353-a943-7f39b14e1b5b@roeck-us.net>
- <CAFEAcA-bqOM4Ptws-tsEwo2HDZ6YSX1Y+xGkR0WueRD_dUd0+Q@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1707842773; x=1708447573;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YOE/aPZQLDSvvefVZc+MnaNJZep0jtE2YOT3eUgZmMI=;
+        b=CDyJQBMMkdVyVjuPuNFC4ttfqzUV80TX9qatlo6EPz33d1CgM1DlbLSRfAxRrPcg8S
+         usaj0WVJGdaXjceyV1kXMi3ksJMyE2W6HckryJP7wV5yXNCeG4poZHzLvtZvPEZr2MSD
+         sWMDUHp42RA3EvrUF3ifLlXqU+ERDecCqzeCY3n1ACzdrRF7EeDFBJ4OrOY2mPo/a03w
+         4eYHaL1I2AjfA+yMpc5Wf+7SrTGjFyFL8Mftx3WQZYQDn/feGeZ1s6WZNuSvhUdXJ7j5
+         ijlLEeCJIa3lDuF58vhwznhxwaz1dQz7VkdM4rjto6D3z38noIzxCgjffkWOqE0xjjNM
+         w/Yw==
+X-Forwarded-Encrypted: i=1; AJvYcCX3xWJIhm9XkO8W3IpGI0wrkGd3c70rv9vGNLhxKmlFrCKMTrR9wmfIp+1CgeolhRIdsbvKRET8XAPG8d9T/x+vf0fgNoq6nwU4wA==
+X-Gm-Message-State: AOJu0YxGyQW2S83BCmG1fLvyuF5uQ0kWODtfQl8JFeFJH7SWCvmwJn3I
+	rx4j/zWM5407E0Kle24R1hZY6JgApxdDbzRvujddbLJLsjreUgx97yMZUowiAGhbuN41IUo9Y8f
+	7+PTea3ianf911zYlO51G71YkRKyddHRMeIMQbw==
+X-Google-Smtp-Source: AGHT+IFFO+Dy+3XrsHCjBcpnmLnwTYcYT3K4J6OU/Y8a+rRHuP4bfMcqyWgEDaLriXjzuKgL68ZIlP/tW0ilV5ThV/8=
+X-Received: by 2002:a81:9209:0:b0:607:8edd:b5f7 with SMTP id
+ j9-20020a819209000000b006078eddb5f7mr1515430ywg.49.1707842773094; Tue, 13 Feb
+ 2024 08:46:13 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAFEAcA-bqOM4Ptws-tsEwo2HDZ6YSX1Y+xGkR0WueRD_dUd0+Q@mail.gmail.com>
+References: <20240125-mmc-proper-kmap-v1-0-ba953c1ac3f9@linaro.org>
+In-Reply-To: <20240125-mmc-proper-kmap-v1-0-ba953c1ac3f9@linaro.org>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Tue, 13 Feb 2024 17:45:37 +0100
+Message-ID: <CAPDyKFohCgDfZZni0V1ux7hX7W5k=zWGtrysK6jNSdia1QiYTQ@mail.gmail.com>
+Subject: Re: [PATCH 0/7] mmc: Try to do proper kmap_local() for scatterlists
+To: Linus Walleij <linus.walleij@linaro.org>
+Cc: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>, Ming Lei <ming.lei@redhat.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Nicolas Pitre <nico@fluxnic.net>, Aaro Koskinen <aaro.koskinen@iki.fi>, 
+	Adrian Hunter <adrian.hunter@intel.com>, Angelo Dureghello <angelo.dureghello@timesys.com>, 
+	linux-mmc@vger.kernel.org, linux-block@vger.kernel.org, 
+	linux-omap@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Feb 13, 2024 at 03:14:21PM +0000, Peter Maydell wrote:
-> On Mon, 12 Feb 2024 at 14:36, Guenter Roeck <linux@roeck-us.net> wrote:
-> > On 2/12/24 04:32, Peter Maydell wrote:
-> > > The machines I have in mind are:
-> > >
-> > > PXA2xx machines:
-> > >
-> > > akita                Sharp SL-C1000 (Akita) PDA (PXA270)
-> > > borzoi               Sharp SL-C3100 (Borzoi) PDA (PXA270)
-> > > connex               Gumstix Connex (PXA255)
-> > > mainstone            Mainstone II (PXA27x)
-> > > spitz                Sharp SL-C3000 (Spitz) PDA (PXA270)
-> > > terrier              Sharp SL-C3200 (Terrier) PDA (PXA270)
-> > > tosa                 Sharp SL-6000 (Tosa) PDA (PXA255)
-> > > verdex               Gumstix Verdex Pro XL6P COMs (PXA270)
-> > > z2                   Zipit Z2 (PXA27x)
-> > >
-> > I test akita, borzoi, spitz, and terrier. Upstream Linux removed support
-> > for mainstone, tosa, and z2 from the Linux kernel as of version 6.0, so
-> > I am no longer testing those.
-> >
-> > I never managed to boot connex or verdex.
-> >
-> > > OMAP1 machines:
-> > >
-> > > cheetah              Palm Tungsten|E aka. Cheetah PDA (OMAP310)
-> > > sx1                  Siemens SX1 (OMAP310) V2
-> > > sx1-v1               Siemens SX1 (OMAP310) V1
-> > >
-> > I test sx1. I don't think I ever tried cheetah, and I could not get sx1-v1
-> > to work.
-> >
-> > > OMAP2 machines:
-> > >
-> > > n800                 Nokia N800 tablet aka. RX-34 (OMAP2420)
-> > > n810                 Nokia N810 tablet aka. RX-44 (OMAP2420)
-> > >
-> > I never managed to get those to boot the Linux kernel.
-> >
-> > > The one SA1110 machine:
-> > >
-> > > collie               Sharp SL-5500 (Collie) PDA (SA-1110)
-> > >
-> > I do test collie.
-> >
-> > All the ones I use still boot the latest Linux kernel.
-> >
-> > > Obviously if we can remove all the machines that used a given
-> > > SoC, that's much more effective than if we just delete one or two.
-> > >
-> > > I don't have any test images for the SA1110 or OMAP1 machines,
-> > > so those are the ones I am most keen to be able to drop.
-> > > I do have test images for a few of the pxa2xx and the OMAP2 machines.
-> > >
-> > I don't mind dropping them, just listing what I use for testing the
-> > Linux kernel. I suspect I may be the only "user" of those boards,
-> > though, both in Linux and qemu.
-> 
-> Mmm; there's not much point in both QEMU and the kernel
-> maintaining code that nobody's using. Are you considering
-> dropping support for any of these SoC families from the kernel?
-> 
-Not me personally. Arnd is the one mostly involved in dropping
-support of obsolete hardware from the kernel.
+On Thu, 25 Jan 2024 at 15:37, Linus Walleij <linus.walleij@linaro.org> wrote:
+>
+> It was brought to our attention that some MMC host drivers
+> are referencing sg_virt(sg) directly on scatterlist entries,
+> which will not perform buffer bouncing for CONFIG_HIGHMEM
+> pages that reside in highmem.
+>
+> See the following mail from Christoph and the discussion:
+> https://lore.kernel.org/linux-mmc/20240122073423.GA25859@lst.de/
+>
+> This means that bugs with highmem pages can go unnoticed
+> until an actual highmem page is finally used and not bounced,
+> resulting in things like unpredictable file corruption.
+>
+> Attempt to fix this by amending all host controllers
+> calling sg_virt() for PIO to instead do proper mapping
+> and unmapping of the scatterlist entry, possibly bouncing
+> it from highmem if need be.
+>
+> More complicated patches are possible, the most obvious
+> to rewrite the PIO loops to use sg_miter_[start|next|stop]()
+> see for example mmci.c, but I leave this refactoring as
+> a suggestion to each device driver maintainer because I
+> can't really test the patches.
+>
+> All patches are compile-tested except the m68k one,
+> sdhci-esdhc-mcf.
+>
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 
-> It sounds like between the two of us we do have at least one
-> test image per SoC type if we do keep any of these, but
-> if it isn't going to inconvenience kernel testing I'm
-> inclined to go ahead with deprecate-and-drop for the whole lot.
-> (With QEMU's deprecate-and-drop policy, that would be "announce
-> deprecation now for 9.0, keep in 9.1, remove before 9.2 release
-> at the end of the year".) At a minimum I would like to drop
-> the OMAP1 and OMAP2 boards, as that's the biggest code burden.
-> 
+Thanks for helping out with this! Applied for next!
 
-I am copying Arnd, the OMAP1 Linux kernel maintainers, PXA2 maintainers,
-and the Linux omap mailing list for input. Sorry for the noise for those
-who don't care, but I think it is useful to have your voices heard.
+Kind regards
+Uffe
 
-Personally I think it very unlikely that anyone is using the latest Linux
-kernel on any of the affected machines, but I may be wrong.
 
-Thanks,
-Guenter
+> ---
+> Linus Walleij (7):
+>       mmc: davinci_mmc: Map the virtual page for PIO
+>       mmc: moxart-mmc: Map the virtual page for PIO
+>       mmc: mvsdio: Map the virtual page for PIO
+>       mmc: mxcmmc: Map the virtual page for PIO
+>       mmc: omap: Map the virtual page for PIO
+>       mmc: sdhci-esdhc-mcf: Map the virtual page for swapping
+>       mmc: sh_mmcif: Map the virtual page for PIO
+>
+>  drivers/mmc/host/davinci_mmc.c     | 10 ++++++++--
+>  drivers/mmc/host/moxart-mmc.c      |  3 ++-
+>  drivers/mmc/host/mvsdio.c          |  3 ++-
+>  drivers/mmc/host/mxcmmc.c          | 23 +++++++++++++++--------
+>  drivers/mmc/host/omap.c            |  7 ++++++-
+>  drivers/mmc/host/sdhci-esdhc-mcf.c |  3 ++-
+>  drivers/mmc/host/sh_mmcif.c        | 22 ++++++++++++++++++----
+>  7 files changed, 53 insertions(+), 18 deletions(-)
+> ---
+> base-commit: 6613476e225e090cc9aad49be7fa504e290dd33d
+> change-id: 20240125-mmc-proper-kmap-f2d4cf5d1756
+>
+> Best regards,
+> --
+> Linus Walleij <linus.walleij@linaro.org>
+>
 
