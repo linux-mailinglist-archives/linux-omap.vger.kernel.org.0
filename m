@@ -1,132 +1,156 @@
-Return-Path: <linux-omap+bounces-558-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-559-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B66B8530AF
-	for <lists+linux-omap@lfdr.de>; Tue, 13 Feb 2024 13:42:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 256D98530CF
+	for <lists+linux-omap@lfdr.de>; Tue, 13 Feb 2024 13:45:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27341281BC8
-	for <lists+linux-omap@lfdr.de>; Tue, 13 Feb 2024 12:42:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5CD92B242AF
+	for <lists+linux-omap@lfdr.de>; Tue, 13 Feb 2024 12:45:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 881A33FE47;
-	Tue, 13 Feb 2024 12:41:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03BD342076;
+	Tue, 13 Feb 2024 12:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TKxIq7oi"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="daUUPPrn"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com [209.85.160.42])
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9FD12EB12;
-	Tue, 13 Feb 2024 12:41:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA4B540BFE;
+	Tue, 13 Feb 2024 12:43:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707828118; cv=none; b=d1AzzF+tqrgrjLUkA1QWacQChTAlWlOG4FDWqo28v/W8hoNk2eLn2URbpCpVXlFuaIpUvsKGBG0dkU2pdlsVOmaYlGG5vyegcmR8s5znq3JEk3G7b/xSmNa4vG5Cd7ZMidbE5/owjoWFOtnOWvUjSge8eeKUNGbWF2A6CkPmtD8=
+	t=1707828216; cv=none; b=W2vyglrrDDA2xzbqX8caguOVEMhn4/59GgtEslNYTgxdcrVk/JUQZH6QAo2YPV9NPyvkkGr2lzcjFayTrEOMQc21keogNqe4znnYOe7BKLgCp1DZpUhY+HiHSJ8tyhWLhmh2rmKC7zgaQMOY1oJftz89oJKpNVDCHHaE0seUIEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707828118; c=relaxed/simple;
-	bh=7HTb1FTG0w4am0moU2ZfJ+vXyBYLytKgdVhTQ/rfeJk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Nv9YI+fX98zZ9M+URataMp77lxv0CvKXXDes21hZQo/6HpmFRXlyLglGHhnGCVR4Uvf+6bCJ7j5l3RhudEtCyv6krbIfhBYiac+loSsScUK4I2Whl7IIWH0YGMwasGWOMib1XnpplBRW6PpVTVa8HA/+vK8rpHWyCgEoW0uERHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TKxIq7oi; arc=none smtp.client-ip=209.85.160.42
+	s=arc-20240116; t=1707828216; c=relaxed/simple;
+	bh=0wlm9P6o2rcc8cvXXNEmo3T+AzJDgfB1248ymcMTdJA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VUDOfVVSzoe8Rb0skmJoGDfZSMzJPkOY1jGeTN14w/YKibHZzkYyTL+kJH1vimTypGg5nAGjVyHsPBuIcCoFNFoUm7nnhBNjoyXjzOOhGGMpF17WPubLxlfK3PK2NUgHTfPz1euprnYfkzw0MCz3wuAGNbkLMPl44N92m92BoAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=daUUPPrn; arc=none smtp.client-ip=209.85.216.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-21d56bb3714so35037fac.2;
-        Tue, 13 Feb 2024 04:41:56 -0800 (PST)
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-296dcd75be7so2505533a91.2;
+        Tue, 13 Feb 2024 04:43:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707828115; x=1708432915; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=3H9KUGhzPdQrreUofYKz+zO35fKsLzTBb4VkOZjhuu4=;
-        b=TKxIq7oiHw3B9Ag4537jmuSh8z0Fqkz38b0EqyzLJ/2x4qHL5pPr1VuFnUcNob0Zrk
-         iNwcxLo4o+TrEKYTpNoyXZqmeIASps7d+uER8GRCE5KKE6a+V++REvzPVUi9o6we7SBL
-         RswLJIaBEQkjEduzFYw3L1St7qjUpplt30NB1z86nd7zmlHUfGmlCS/+Hktl0dY/ItH0
-         79GunPRYh3EmYhU/ytF1ROjKc7loWhXKihWo/9yu9ReH/Y5FmiTt1VwQJbrC+5FT6g3F
-         gypWDxIZQ6weikFzLERgN7Kejjm2D1M80H7ZOkVUVsSdfSQZV9Qmp7T95tBakK5PpcHk
-         mmjg==
+        d=gmail.com; s=20230601; t=1707828214; x=1708433014; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JGu4HZdxVpF5D7HwjpFTQqfuRoTuDC9uByiyLARYoUk=;
+        b=daUUPPrn6EFKZL3baC9+lvuq73ZzPyDuiVJHORrwp7rRlGun/QLWRPJRrdYqF8jpYS
+         /Dpb1asGezIQVZHj/h0Sz0MdK4bcQXUnpo26V8d4W6f1FMGn6AAehSGFr2iOVFX/sDl5
+         dutBSJsw3B1dwiBLGK5TD+K0M6GOB4MwJHTiY7V6Vb4sHmBFwcOPAW9853xmt8MM8ikA
+         q0ZQ6CEO+YKN+eL5it5QdQdjiu36c5kSXhhBQx+mQTwchqtD709Hnw1BWX9ZMI1dl37g
+         xnYRBnrKC9ia6T4VVIx8qKjbL2o4hJHhLlMOITop5AV46znVLnL27bX1nkyhxgZtMyVs
+         rAgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707828115; x=1708432915;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3H9KUGhzPdQrreUofYKz+zO35fKsLzTBb4VkOZjhuu4=;
-        b=fptBnWXBpZ/grCLn+e9ET8+5r0H65P99xaNbuqVKDO8930QNi14YajKlCnJsbAz0JV
-         z5y08lu9OqDBmZzCLZVymhWpP0YERQ/hiznEDLxxXsbkEZethtLLPUmUjuUh095Hn2z7
-         W99mpwplfsdkLc68BfqX2x5gpab8dDHZ0IUTTRVrd9C5qqVPThbrBjAj+l2XnJOVs3SG
-         vEvFlmPWrq+/qpUfTi3Q/+ZoKMxL8IdZp6ZrP+G2xOJ80RFpZEYquuN1Zb0QUkPkx8Bf
-         xJOt5tojpgO39r5PCGQNlYVxit0uD8NAkPbhlRfeznhjevFPbeT+goX2DNHl5B0yXiSC
-         Xgdg==
-X-Forwarded-Encrypted: i=1; AJvYcCVdtDQ7kMAoUm2xq/BJ7nDc3mUd7hpLyNqeW9Mzz7E8/OLKuoyJVU/QnLpnbAxN72ae1gPsfgcdld9Lldl2EF4R0JYs+/4F+r6bGeuLWO78F79G3TwhWNbD502wzjlf+netKAX4xk+yFg==
-X-Gm-Message-State: AOJu0Yyl7WQ6W1aENkraz59K0KaG5VOy+JlS+yXcDCel0xDmjMENuHv0
-	PkBA1RVLR8Fnpcdr0pYC/oy33NW9MVj2WGjnrnVZSHTZh7O6I10KyqyvvqeT
-X-Google-Smtp-Source: AGHT+IFzUXvMoAAyLBJl8/bQkVkxeHRfO+AbIFfEm0xabkjcD0mmuJu/kJbcF2bRTjBvvAJepwBW8A==
-X-Received: by 2002:a05:6870:46a6:b0:218:73ae:3f24 with SMTP id a38-20020a05687046a600b0021873ae3f24mr12286829oap.13.1707828115011;
-        Tue, 13 Feb 2024 04:41:55 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCU+IqbakiLosG4JttF1fz0dUcS7rrSYtd0FyPbqq8P6vPJ8A3E0n6ePVRfF24Fave9tXBcAbIabuIFJVvaFz50Fc8YvW8uEq4mtFH8V6fteGCBTuLr3UCOw/hB6rfZCBFroGigRoWYkCtUEFOZOk4xUwWINJblyoJ26/p3pxyqSnxDJr6cCmGquW12JXC7qwMNf29s/cfY3uO/MyCTuatNpQaTnAwmq4uJ3iueFD1ZMIJCDxgU5n5UnCS3sEojyf5g9lCS9/P5i3jI9hZ8r4wDroD6B1UGEDa44WrOpH4ODk4DnqSsi8ZKQDAptMrTz
-Received: from aford-System-Version.lan ([2601:447:d002:5be:cae3:528f:52c:80d8])
-        by smtp.gmail.com with ESMTPSA id c3-20020ac86603000000b0042dae4c1594sm483385qtp.47.2024.02.13.04.41.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Feb 2024 04:41:54 -0800 (PST)
-From: Adam Ford <aford173@gmail.com>
-To: linux-omap@vger.kernel.org
-Cc: aford@beaconembedded.com,
-	Adam Ford <aford173@gmail.com>,
-	=?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-	Tony Lindgren <tony@atomide.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] arm: dts: omap3:  Migrate hsmmc driver to sdhci driver
-Date: Tue, 13 Feb 2024 06:41:45 -0600
-Message-ID: <20240213124146.202391-1-aford173@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20230601; t=1707828214; x=1708433014;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=JGu4HZdxVpF5D7HwjpFTQqfuRoTuDC9uByiyLARYoUk=;
+        b=D0Hf4T/fCa0RcQ8qJpekEpal6Rj9ntSLBVrPLVPPTAywANBiCIaxeQgFs3NNBj2B6S
+         3dcTYVyqEtHJXGmT7LH5XOWTGKmDuNJN5TRzd9iQgVv0IafS93vW0Z685UlcZzj++LIL
+         fNNnZRPpOERoqHu1j61PnrA1j/M8M7ZpxhOR3s4S2avvI+phhP9fFaQw4Sdfnkvph70n
+         /bbIuqcHbkNgH4RGbk3JLuqIjDflyzHU6S3IcpgUuyl/y5v4/NkwD1bvSj+YVQ6RY3ek
+         3c3xN6hvOhcruKhUdccdXTkBU6g5uIGLYbaMtjnvi7B5AYrquwlIWMnDf1Hemt8bizrw
+         gXxw==
+X-Forwarded-Encrypted: i=1; AJvYcCW5VvE0jI0ykpX7WoQhDZBgKZtnDDN5AkBAwCH3ssYRkPlJkJMV55/Fw83Tz8aPJK9QAkcRI2y7C09E4VRywBDNCwjXeJ/ecK0ShDlbB5CGe0JGFItgC2qAUHOw5CBH3HbbAHAaZw==
+X-Gm-Message-State: AOJu0Yzcm5Pbf0SRI1qfeNfBsjVy9RyclMdqvxdwC01SmD8UKIQ/N+A4
+	p7QICBOUu77CNekHb2r1mIZ05MOv6kJMQCreqWAoyxS/fJjSXHaI/uIPs+WNwb8oklq5EhScLJd
+	D5OlcJ01q15II/2Y+22p8/SRx4gY=
+X-Google-Smtp-Source: AGHT+IEvwLuTvI7eqv7o0o8h1JeDHkpff30o3UN9EqA2G2k0i/Qt1291dW3Jv6fDor546AYO6APmSwRTLZweFkK86B0=
+X-Received: by 2002:a17:90a:a010:b0:296:2057:28c with SMTP id
+ q16-20020a17090aa01000b002962057028cmr5839952pjp.31.1707828213714; Tue, 13
+ Feb 2024 04:43:33 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240129111733.GX5185@atomide.com> <f80b5390-8bfa-43d8-80ce-70b069aef947@smile.fr>
+ <7d72f3ee-bcfe-4197-b492-857dc49b2788@smile.fr> <20240131103050.GZ5185@atomide.com>
+ <519f7e2e-4df2-4b3c-90e2-2383b6b34562@smile.fr> <20240202043601.GA5185@atomide.com>
+ <6eced20a-6454-4824-a149-ee331ebb7eec@smile.fr> <CAHCN7xLUH7Qj_djEuMDAx2nNVqtS5WyoM_DN4zarCbmKh=te4Q@mail.gmail.com>
+ <20240212072740.GC52537@atomide.com> <CAHCN7xJZXVXxiwBXgGKhGmBQhCAFfa4Tn=tJcGLX3N==tgvFzQ@mail.gmail.com>
+ <20240213060302.GD52537@atomide.com>
+In-Reply-To: <20240213060302.GD52537@atomide.com>
+From: Adam Ford <aford173@gmail.com>
+Date: Tue, 13 Feb 2024 06:43:22 -0600
+Message-ID: <CAHCN7x+Uswxzj3eTf1_9oqso0fpdVR5QHNQkd59zHSqx5CyeCw@mail.gmail.com>
+Subject: Re: sdhci-omap: issues with PM features since 5.16
+To: Tony Lindgren <tony@atomide.com>
+Cc: Romain Naour <romain.naour@smile.fr>, Linux-OMAP <linux-omap@vger.kernel.org>, 
+	Nishanth Menon <nm@ti.com>, linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>, 
+	Adrian Hunter <adrian.hunter@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The sdhci driver has been around for several years, and it supports
-the OMAP3 family.  Instead of using the older driver, let's finally
-migrate to the newer one.
+On Tue, Feb 13, 2024 at 12:03=E2=80=AFAM Tony Lindgren <tony@atomide.com> w=
+rote:
+>
+> * Adam Ford <aford173@gmail.com> [240212 13:24]:
+> > On Mon, Feb 12, 2024 at 1:28=E2=80=AFAM Tony Lindgren <tony@atomide.com=
+> wrote:
+> > >
+> > > * Adam Ford <aford173@gmail.com> [240208 12:57]:
+> > > > I was testing the newer MMC driver on an AM3517 a few months ago, a=
+nd
+> > > > I noticed that SD cards were returning weird or empty data after so=
+me
+> > > > indeterminate amount of time.  If I read the IOS file immediately
+> > > > after boot, it worked.  If I forced some sort of file IO, it might
+> > > > work, but after it went idle, it appeared to have strange data.  I
+> > > > don't think this bug is limited to one platform.
+> > >
+> > > OK interesting. So the zero values for ios are expected when the card
+> > > is idle. What do you mean by weird values when idle?
+> >
+> > I meant zero-values when I said weird.  It's weird to me, because
+> > other platforms don't return zero.
+> > If tha's normal, I'll likely submit an update to omap3.dtsi to migrate
+> > the MMC driver to the newer one.
+> > I'd been meaning to do that for a while, but this threw me off, then i
+> > forgot about it until I saw this thread.
+>
+> Yes I'd like to enable sdhci-omap and deprecate omap_hsmmc too.
+>
+> Assuming no issues and if the hs200 issue is a separate issue, maybe
+> post the patches and then let's get some Tested-by for them before we
+> put them into Linux next.
 
-Signed-off-by: Adam Ford <aford173@gmail.com>
+I just sent a patch against omap3.dtsi.
+I am not sure how to handle the backwards compatible device tree breakage.
 
-diff --git a/arch/arm/boot/dts/ti/omap/omap3.dtsi b/arch/arm/boot/dts/ti/omap/omap3.dtsi
-index 92cd4c99dae7..218d7212c749 100644
---- a/arch/arm/boot/dts/ti/omap/omap3.dtsi
-+++ b/arch/arm/boot/dts/ti/omap/omap3.dtsi
-@@ -507,7 +507,7 @@ hdqw1w: 1w@480b2000 {
- 		};
- 
- 		mmc1: mmc@4809c000 {
--			compatible = "ti,omap3-hsmmc";
-+			compatible = "ti,omap3-sdhci";
- 			reg = <0x4809c000 0x200>;
- 			interrupts = <83>;
- 			ti,hwmods = "mmc1";
-@@ -518,7 +518,7 @@ mmc1: mmc@4809c000 {
- 		};
- 
- 		mmc2: mmc@480b4000 {
--			compatible = "ti,omap3-hsmmc";
-+			compatible = "ti,omap3-sdhci";
- 			reg = <0x480b4000 0x200>;
- 			interrupts = <86>;
- 			ti,hwmods = "mmc2";
-@@ -527,7 +527,7 @@ mmc2: mmc@480b4000 {
- 		};
- 
- 		mmc3: mmc@480ad000 {
--			compatible = "ti,omap3-hsmmc";
-+			compatible = "ti,omap3-sdhci";
- 			reg = <0x480ad000 0x200>;
- 			interrupts = <94>;
- 			ti,hwmods = "mmc3";
--- 
-2.43.0
+Maybe since it's been around long enough, it might be ok.
 
+adam
+>
+> > > Can you please try catch the weird values or a failure maybe with
+> > > something like:
+> > >
+> > > while true; do
+> > >       cat /sys/kernel/debug/mmc0/ios
+> > >       fdisk -l /dev/mmcblk0
+> > >       cat /sys/kernel/debug/mmc0/ios
+> > >       sleep 20
+> > > done
+> >
+> > It appears the first time, that runs after fdisk, the values seems
+> > reasonable, but subsequent iterations, the values are zero again:
+>
+> Seems expected to me. Before fdisk -l the mmc controller may have
+> autoidled showing mostly zero values, and after any access to the mmc
+> card the card is enabled and the values are the normal enabled values.
+>
+> If, however, fdisk -l does not work, or the values right after fdisk -l
+> are mostly zero, then that would indicate a problem. I guess leaving
+> out the reading of ios before fdisk -l would make it easier to see.
+>
+> Regards,
+>
+> Tony
 
