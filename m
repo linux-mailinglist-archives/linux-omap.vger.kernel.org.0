@@ -1,142 +1,139 @@
-Return-Path: <linux-omap+bounces-577-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-578-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67FEB853C8D
-	for <lists+linux-omap@lfdr.de>; Tue, 13 Feb 2024 21:57:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63D8F853D1C
+	for <lists+linux-omap@lfdr.de>; Tue, 13 Feb 2024 22:26:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21F9728BCBA
-	for <lists+linux-omap@lfdr.de>; Tue, 13 Feb 2024 20:56:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EA6528E3A3
+	for <lists+linux-omap@lfdr.de>; Tue, 13 Feb 2024 21:26:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD5EF6166E;
-	Tue, 13 Feb 2024 20:56:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CADB164AB0;
+	Tue, 13 Feb 2024 21:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h8z167fI"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kS5eAX/6"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4487B60872;
-	Tue, 13 Feb 2024 20:56:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE8A664AA5
+	for <linux-omap@vger.kernel.org>; Tue, 13 Feb 2024 21:22:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707857799; cv=none; b=fo1cv/fGj81U9bevWoFhYckXFrF6N9lHwTNLWUXiPexX9gmPAruhVWmtWWmRmY5THhwtSlocjnKkH8F1ovOMARBDY4NJsm2qM4fyuCLmb+g8onAsA01GCtwc0tar7+7fyfEvj6g8npr6lC8o5us1Mh0My9d7N0JTAtJhJzosKr0=
+	t=1707859324; cv=none; b=cwe2+FvPUME7UxBn0RqaI+pWMBYfrC0A4hAu6ptqHSyKIW3NFjylYUIq9tYG9lgTchJp3pasy2wQjod9kBlqU6vHUBx8j6ZMOHhbflsR32yiFcVWLdBR+fuV5gJiPnPAMvyr+cYF98juzC8138kP/kAUSWVyM8hN/usyNeH67Vc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707857799; c=relaxed/simple;
-	bh=D4LSaj+s1Zug+tnZej27exr9mIRN2BETmj/yUE3GRW0=;
+	s=arc-20240116; t=1707859324; c=relaxed/simple;
+	bh=wnV/gdaaHn/A9Q4c5o2KJzgadVs46MzIcms/Q6KJ8oo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gxZNvpX7MZqxVJmddaKS/aQuyAWfcVTDSK26tOaflWI7lFVEJZATT7oTbGpCPbiJryUIdHR0wRK4jSHpCgdLcgTE/d7yWsGcNNKZoUjoKRwXMy/k2uToCjTeqFsb8iLYZjXcH8pDx+WY8SQxn4cN6OERIcR0K6Wwx3nT1gNzZvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h8z167fI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15F96C43394;
-	Tue, 13 Feb 2024 20:56:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707857799;
-	bh=D4LSaj+s1Zug+tnZej27exr9mIRN2BETmj/yUE3GRW0=;
-	h=References:In-Reply-To:From:Date:Subject:To:List-Id:Cc:From;
-	b=h8z167fI+5EvVkodKTckqmfSIQBf8bdxud3DuPAkVZ5nSxa6AgTf5i7nXqeViSnpi
-	 NzO6i/FEKZSrNSaZhsZiu2isfEu9pYLf9ncp9DW53jt4N2LykEt8h44nUoOhqQ6wzq
-	 Ggcsv4u6mzWx2wdqmvlX28t9zk2NlXqOWy5t5t4fQeo+oWFyEFkOS0xLVSr/qesP2L
-	 fwdUdRaFtwEmZNvFvliwu+RdNbxIx3QOILsH4x+QzGQ1ZxuRAimv1Lf9dytp6XdUoL
-	 Ta4KKLP5W5oz3ppD6qfiudZEwLy9x5gy5g8BMoIVZOsaUuW10i9gm2Sv5wKnvMmJkQ
-	 aanImS7s/f5Fg==
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-511831801f3so3675805e87.2;
-        Tue, 13 Feb 2024 12:56:39 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXA8wu8fK8fTvxPEq9xriH32femcjagzaIPCBUwIfKksWPkLCvTl584fUnYLejXqQHi4WITcKk/wnWXd6cEQPN8npK9cPlIDYytrFAYvXy2ZTexJ47GN6kslCwG+IOz74yxdAaHyIA87iM/mEb5IWjXJd7UifhphWCSmrMMsQ3w1h1tNR+wHcle661K3TBeSIn5o+Y8NyKYHfHBZw5CtJLwIfyaiTba96PhZiQF3xBblKiWC53n7UcwWGCzmP9Xczhx1SDoQl8/mVyMbSVotddIaJhulLJyXnRpcb8cRMX7iQpYH+qa+AZzeXIHn+anprL9j+TTnHN0/6nF7K1fjx3I3w==
-X-Gm-Message-State: AOJu0YwXH0G2Okbc2oV2YVFjnP4M/CAkWe517YSbeLiG6WZ8lMG+AGb3
-	SUbxv3Lf38Rcnrcfa2C77dfM7zFCLcrp+XyC69Kgc8suVAcylnqZ9NKi74P6x4xLBOtmsbBtmve
-	Jw4nXqb2rVHQ+JlxYg3oiWRoXlQ==
-X-Google-Smtp-Source: AGHT+IHaVnixOZOBNn0WypWTPscuLN4ELDvcVIU+BZ+gCn9OLEVbEJc+WSHECitxZrPyjoAQls55JHpdFFIbqmURVBc=
-X-Received: by 2002:a2e:9bc7:0:b0:2d1:107b:3bbd with SMTP id
- w7-20020a2e9bc7000000b002d1107b3bbdmr506655ljj.9.1707857776326; Tue, 13 Feb
- 2024 12:56:16 -0800 (PST)
+	 To:Cc:Content-Type; b=GzLZZ7GT1UsvnyXAIVfN4sLvX2/uNpRfr9EqyKpdQRSMs32ZPecgwrqrsjEydF1rbWaY2kl0nJl+WOTRkokVyDDcOxqeVbtuPCrKp7lDvGmLs33cI71BTFlwemS6PAN824/pJafqEdp/zgJTct8uGKnI3v2FvjX/T66aDu7bhUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=kS5eAX/6; arc=none smtp.client-ip=209.85.219.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-dc236729a2bso1267268276.0
+        for <linux-omap@vger.kernel.org>; Tue, 13 Feb 2024 13:22:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1707859321; x=1708464121; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DlHB/C070gQJYtZKeDqoDoUjH6sfS2fU7WC1adPgbS0=;
+        b=kS5eAX/6ykZdAsiHFKKVIpBXo6LOpx02abddAvi06IXRobel16qX9UShvWNgfT9zFk
+         es5x461LKjYmMVeRIXRdFxiLWYA0YjMCBdHDwhQHsZu9xRJSDUZeIUHjhcUCbMyk/S2Z
+         vwE65KTHd7m2PqoYcbeeEWhs4pty+gr13svoSwhVHixYQAZTdbOQ14IpRIICRFl8pAMt
+         2QRhRFEokoHWKK3sy0rPA+PtHyWV/KAiCDSLRFneM49vq1A+tCcfXkqJmG+ygxFq+BSA
+         /EAw/rWTNqQ+PvtI+6yfz3osXll0O7cm07fDTJyH+bz/SaYDH/JjDG9G85XpuVTrvpQ9
+         roqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707859321; x=1708464121;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DlHB/C070gQJYtZKeDqoDoUjH6sfS2fU7WC1adPgbS0=;
+        b=hQBp2He4xyUVQoRxqM57oEFYuI+yWXRgUIyCfcoC9xwZxz2WR5Ay4nIOQCL0QVWXy9
+         sS4bU62JYwci4B9g8Y3hXt1vQN9HZWEXwRUAPtckW4gmzT0xTNiwEvwdxRS2orsUGXK/
+         dORit1YPMqfPmwNxJDvtFg/NuPWZHmD+fnOdCFlJEuohM70BdwSA8CYnzNqOSruZVSRl
+         BOhT8NkgrQI97oa2o2PoG0S4QOzDt469a5JboxiutE4uXw0ZUrD9R8dGrCxh+VMsZnhv
+         EHQ3V+0c1qbmo1VVU7F0IeooxC7mZAzjIDP49i2k6tJ099bJV571ymBqcBtWehrjJUgL
+         j0HA==
+X-Forwarded-Encrypted: i=1; AJvYcCWxjCZ9u1dMObDDqWzHXL4hxbgBNRfuxYbR49PxMP6fW07PoGoDok2in9LRJk/Yr1FmQyf09sBVNROSLdiuOyYaM0NXkccsRtEpog==
+X-Gm-Message-State: AOJu0YxQmFXWavmBnmNVcVxh79p4MzwHKEB0IkE66zlruuQzjD2qBcnU
+	dBkni+fublGHfFTjoWnKxiWukwynUYVS+up/PtB+OOgUlYXXB48hlmUSi+YvZVmsN8UovkDU6Ds
+	pfqaxZ4SsTa8hx3W0TlcnyvJnoQ6v7H+tB34e0Q==
+X-Google-Smtp-Source: AGHT+IH8ZG9tqZjTbdsy3Wqrys0PBwBznAy2Pz0Y2bk6bYZ1+os+eqaytoO7CwQNH6qFjH86PnfRQiXqoe3DvRCfVb0=
+X-Received: by 2002:a5b:54a:0:b0:dc6:cd76:5ddf with SMTP id
+ r10-20020a5b054a000000b00dc6cd765ddfmr468191ybp.39.1707859321685; Tue, 13 Feb
+ 2024 13:22:01 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240213-arm-dt-cleanups-v1-0-f2dee1292525@kernel.org> <20240213-wafer-garnish-88287bc5d4a5@spud>
-In-Reply-To: <20240213-wafer-garnish-88287bc5d4a5@spud>
-From: Rob Herring <robh@kernel.org>
-Date: Tue, 13 Feb 2024 20:56:03 +0000
-X-Gmail-Original-Message-ID: <CAL_Jsq+9BwYyV9Vu1gfCnK_QjdRHvw2anM==Z6fsJvjyqLYFLw@mail.gmail.com>
-Message-ID: <CAL_Jsq+9BwYyV9Vu1gfCnK_QjdRHvw2anM==Z6fsJvjyqLYFLw@mail.gmail.com>
-Subject: Re: [PATCH 0/6] dts: Fix dtc interrupt warnings
-To: Conor Dooley <conor@kernel.org>
-Cc: soc@kernel.org, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, NXP Linux Team <linux-imx@nxp.com>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Tsahee Zidenberg <tsahee@annapurnalabs.com>, Antoine Tenart <atenart@kernel.org>, 
-	Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@codeconstruct.com.au>, 
-	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Andrew Lunn <andrew@lunn.ch>, 
-	Gregory Clement <gregory.clement@bootlin.com>, 
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, 
-	=?UTF-8?Q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>, 
-	Thierry Reding <thierry.reding@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
-	Stefan Agner <stefan@agner.ch>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>, 
-	Tony Lindgren <tony@atomide.com>, Chanho Min <chanho.min@lge.com>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
-	Linus Walleij <linusw@kernel.org>, Imre Kaloz <kaloz@openwrt.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
-	Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nicolas@fjasle.eu>, linux-arm-kernel@lists.infradead.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-aspeed@lists.ozlabs.org, openbmc@lists.ozlabs.org, 
-	linux-tegra@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-omap@vger.kernel.org, linux-mediatek@lists.infradead.org, 
-	linux-renesas-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org
+References: <CAFEAcA88UGhjh8-iBvhxx6GdWg74dinYouiguTcz=qEe51L7Ag@mail.gmail.com>
+ <fe5476c7-82e0-4353-a943-7f39b14e1b5b@roeck-us.net> <CAFEAcA-bqOM4Ptws-tsEwo2HDZ6YSX1Y+xGkR0WueRD_dUd0+Q@mail.gmail.com>
+ <7bd858a2-9983-4ddf-8749-09c9b2e261f9@roeck-us.net> <fbab8e59-6d2d-4193-a5ca-9fea3c524229@app.fastmail.com>
+In-Reply-To: <fbab8e59-6d2d-4193-a5ca-9fea3c524229@app.fastmail.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Tue, 13 Feb 2024 22:21:50 +0100
+Message-ID: <CACRpkdbmJe8ZE7N0p_utWucyw+3mp1Qrb0bQEKcJPmwNFtVA_g@mail.gmail.com>
+Subject: Re: possible deprecation and removal of some old QEMU Arm machine
+ types (pxa2xx, omap, sa1110)
+To: Arnd Bergmann <arnd@arndb.de>, paul.eggleton@linux.intel.com, 
+	Andrea Adami <andrea.adami@gmail.com>, Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>
+Cc: Guenter Roeck <linux@roeck-us.net>, Peter Maydell <peter.maydell@linaro.org>, 
+	QEMU Developers <qemu-devel@nongnu.org>, "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>, 
+	Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, Aaro Koskinen <aaro.koskinen@iki.fi>, 
+	Janusz Krzysztofik <jmkrzyszt@gmail.com>, Tony Lindgren <tony@atomide.com>, 
+	Linux-OMAP <linux-omap@vger.kernel.org>, Daniel Mack <daniel@zonque.org>, 
+	Robert Jarzmik <robert.jarzmik@free.fr>, Haojian Zhuang <haojian.zhuang@gmail.com>, 
+	Stefan Lehner <stefan-lehner@aon.at>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 13, 2024 at 2:27=E2=80=AFPM Conor Dooley <conor@kernel.org> wro=
-te:
+On Tue, Feb 13, 2024 at 9:12=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> wrote=
+:
+> On Tue, Feb 13, 2024, at 16:36, Guenter Roeck wrote:
+> > On Tue, Feb 13, 2024 at 03:14:21PM +0000, Peter Maydell wrote:
+> >> On Mon, 12 Feb 2024 at 14:36, Guenter Roeck <linux@roeck-us.net> wrote=
+:
+> >> > On 2/12/24 04:32, Peter Maydell wrote:
+
+> >> > > The one SA1110 machine:
+> >> > >
+> >> > > collie               Sharp SL-5500 (Collie) PDA (SA-1110)
+> >> > >
+> >> > I do test collie.
 >
-> On Tue, Feb 13, 2024 at 01:34:24PM -0600, Rob Herring wrote:
-> > I had a branch with most of these changes sitting in my tree for some
-> > time. Geert's asking about some errors not getting found prompted me to
-> > clean it up and send it out. This series fixes all* interrupt related
-> > warnings and enables the check by default.
-> >
-> > SoC maintainers, Can you please take this series directly.
-> >
-> > Rob
-> >
-> > *There's a few Renesas warnings still Geert said he would fix.
-> >
-> > Signed-off-by: Rob Herring <robh@kernel.org>
-> > ---
-> > Rob Herring (6):
-> >       arm64: dts: freescale: Disable interrupt_map check
-> >       arm: dts: Fix dtc interrupt_provider warnings
-> >       arm64: dts: Fix dtc interrupt_provider warnings
-> >       arm: dts: Fix dtc interrupt_map warnings
-> >       arm64: dts: qcom: Fix interrupt-map cell sizes
-> >       dtc: Enable dtc interrupt_provider check
->
-> Only fixing it for arm, Sadge.
+> Adding Linus Walleij and Stefan Lehner to Cc, as they were
+> interested in modernizing sa1100 back in 2022. If they
+> are still interested in that, they might want to keep collie
+> support.
 
-I was assuming you had things in order. ;)
+I'm not personally interested in the Collie, I have a SA1100 hardware
+but not that one.
 
-> Co-incidentally I noticed there was one for riscv while looking at
-> Krzysztof's underscore in node name patch earlier, so I'd already
-> written a patch to fix it :)
+> Surprisingly, at the time I removed unused old board files,
+> there was a lot more interest in sa1100 than in the newer
+> pxa platform, which I guess wasn't as appealing for
+> retrocomputing yet.
 
-See, I was right.
+Andrea Adami and Dmitry Eremin-Solenikov did the work in 2017 to
+modernize it a bit, and Russell helped out. I was under the impression
+that they only used real hardware though!
 
-Actually, I did remember to check right after I sent this and noticed the s=
-ame.
+The Collie is popular because it is/was easy to get hold of and
+easy to hack. PXA was in candybar phones (right?) which
+are just veritable fortresses and really hard to hack so that is why
+there is no interest (except for the occasional hyperfocused Harald
+Welte), so those are a bit like the iPhones: you *can* boot something
+custom on them, but it won't be easy or quick, and not as fun and
+rewarding.
 
-For powerpc, no one else can be bothered to care, so neither do I. I
-think powerpc has been spewing dtc warnings by default for some time
-now.
+The thriving world of PostmarketOS only exist because Google was
+clever to realize devices should have a developer mode.
 
-Rob
+Yours,
+Linus Walleij
 
