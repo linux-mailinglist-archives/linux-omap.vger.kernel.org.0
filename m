@@ -1,37 +1,55 @@
-Return-Path: <linux-omap+bounces-585-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-586-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D518E8544D7
-	for <lists+linux-omap@lfdr.de>; Wed, 14 Feb 2024 10:17:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FEBF854653
+	for <lists+linux-omap@lfdr.de>; Wed, 14 Feb 2024 10:43:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 736A41F2995B
-	for <lists+linux-omap@lfdr.de>; Wed, 14 Feb 2024 09:17:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 453B91F223FA
+	for <lists+linux-omap@lfdr.de>; Wed, 14 Feb 2024 09:43:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA95412B74;
-	Wed, 14 Feb 2024 09:16:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F8B91643A;
+	Wed, 14 Feb 2024 09:43:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="yfTWt3rT"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail.bugwerft.de (mail.bugwerft.de [46.23.86.59])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E40B12B68
-	for <linux-omap@vger.kernel.org>; Wed, 14 Feb 2024 09:16:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.23.86.59
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DE9A13AD8;
+	Wed, 14 Feb 2024 09:43:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707902215; cv=none; b=mdQcwTymiXggUQ21phZMV0X8iJDS+LuGVF8F2kGy4XDo5ruqyZyfvuIEwizhCIxE9vfMkO4p0up01aTtJTSBtXwlJeTyZtI5bHeId698xo91GsaTPWXjBWf/ngYWtu1sy0Zm+Z7albCyIyJCwqdPZyA2zeTpKv29dZvOCLeNCXU=
+	t=1707903792; cv=none; b=aCf/+rjO8d+iIzR2qAIFZ5PSBIInjBGBP1LZtAb5QTiM4WUpKCYrO2384UAV70JGMIQeO17vpYVMR6jq3tXfOrcCX6qrGnDw3mRZMl9LPpBEwa39wtHM4Fd1WBC2ITRQTXiP3rXglyJ1PX2NpLKiUGZ33dkB5y9IX6kXaw9U4UA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707902215; c=relaxed/simple;
-	bh=gCmgKQmI8ym+9eUDpOFyY980mX8dhdDWIV7pnw1+yfc=;
+	s=arc-20240116; t=1707903792; c=relaxed/simple;
+	bh=/5hVSHktuXKBdFSneU+sqS55ktsDEcZtWY02THLUTWE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sCscModyXv7AXbCdJennEepzEzj0M0l9vZao4VEcpURUH84gZhTRy4Iq7KCeE+9eKUEt3QBjE7m2izsxBwB9BLX8F1vfL1UBik2yvaDTrvkeZehPz/biTFmPAHu65grTvJPaz/PKPT9elMUgQBioJpgLB/G4gcAJ9235z5JZFEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zonque.org; spf=pass smtp.mailfrom=zonque.org; arc=none smtp.client-ip=46.23.86.59
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zonque.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zonque.org
-Received: from [192.168.178.97] (pd95ef237.dip0.t-ipconnect.de [217.94.242.55])
-	by mail.bugwerft.de (Postfix) with ESMTPSA id A3818281529;
-	Wed, 14 Feb 2024 09:08:06 +0000 (UTC)
-Message-ID: <6e97c51e-44bb-4edb-9dbb-1bbc0524b812@zonque.org>
-Date: Wed, 14 Feb 2024 10:08:05 +0100
+	 In-Reply-To:Content-Type; b=p9ZodUoNGWc5S0Ef9fmPvCqDDMDZfVYNNAF1VWfH+65vi35K2tbIu2v9FAVU0WPfipxmgbGVbycE8/E0fU9fORbIPvjAX2cvzE+Q6lycqUSjtHvnp45webS09atIDfsHjhR98k71md91CMkc2HyXHvoqCfSDhDzoCbSoJUmHh4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=yfTWt3rT; arc=none smtp.client-ip=46.235.227.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1707903788;
+	bh=/5hVSHktuXKBdFSneU+sqS55ktsDEcZtWY02THLUTWE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=yfTWt3rThwEwUs2ZhQXKOg/ftYHcebsEIvFiVe9kcFlJsq3PvOoV5aTO1Ut0cTEb+
+	 4LpagApuIW8w6OMGDwh/OFgCdSgzZ+Pl6Rvh9l+9Svfv5yZBcmUThzaqS12BLBP986
+	 5Kn3zsAPkhY/4Asr5Azpq/DFjitOUdoLq88z5P00ESykYqhZXXvvCD1D/dCizNpyqr
+	 CGwG6rXsUKk4C4NvWCi5V7GXqB19sVHXfFTK8P+hlqeIWYS2YU6u7a4G/04Kro5fbX
+	 ta9AZTeZatefM84NA0SvCaSfIhCejpWRssvwGIGJRcslQ2YRVm2jbD3uUSjeCVhrf4
+	 tXmJ9S86cqstA==
+Received: from [100.113.186.2] (cola.collaboradmins.com [195.201.22.229])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: kholk11)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 81E293781FEF;
+	Wed, 14 Feb 2024 09:43:05 +0000 (UTC)
+Message-ID: <50342623-9955-4471-869c-1343abe4a2c0@collabora.com>
+Date: Wed, 14 Feb 2024 10:43:03 +0100
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -39,79 +57,57 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: possible deprecation and removal of some old QEMU Arm machine
- types (pxa2xx, omap, sa1110)
+Subject: Re: [PATCH 3/6] arm64: dts: Fix dtc interrupt_provider warnings
 Content-Language: en-US
-To: Arnd Bergmann <arnd@arndb.de>, Guenter Roeck <linux@roeck-us.net>,
- Peter Maydell <peter.maydell@linaro.org>
-Cc: QEMU Developers <qemu-devel@nongnu.org>,
- "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- Aaro Koskinen <aaro.koskinen@iki.fi>,
- Janusz Krzysztofik <jmkrzyszt@gmail.com>, Tony Lindgren <tony@atomide.com>,
- Linux-OMAP <linux-omap@vger.kernel.org>,
- Robert Jarzmik <robert.jarzmik@free.fr>,
- Haojian Zhuang <haojian.zhuang@gmail.com>,
- Linus Walleij <linus.walleij@linaro.org>,
- Stefan Lehner <stefan-lehner@aon.at>
-References: <CAFEAcA88UGhjh8-iBvhxx6GdWg74dinYouiguTcz=qEe51L7Ag@mail.gmail.com>
- <fe5476c7-82e0-4353-a943-7f39b14e1b5b@roeck-us.net>
- <CAFEAcA-bqOM4Ptws-tsEwo2HDZ6YSX1Y+xGkR0WueRD_dUd0+Q@mail.gmail.com>
- <7bd858a2-9983-4ddf-8749-09c9b2e261f9@roeck-us.net>
- <fbab8e59-6d2d-4193-a5ca-9fea3c524229@app.fastmail.com>
-From: Daniel Mack <daniel@zonque.org>
-In-Reply-To: <fbab8e59-6d2d-4193-a5ca-9fea3c524229@app.fastmail.com>
-Content-Type: text/plain; charset=UTF-8
+To: Rob Herring <robh@kernel.org>, soc@kernel.org,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, NXP Linux Team <linux-imx@nxp.com>,
+ Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Tsahee Zidenberg <tsahee@annapurnalabs.com>,
+ Antoine Tenart <atenart@kernel.org>, Joel Stanley <joel@jms.id.au>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>, Ray Jui <rjui@broadcom.com>,
+ Scott Branden <sbranden@broadcom.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, Andrew Lunn <andrew@lunn.ch>,
+ Gregory Clement <gregory.clement@bootlin.com>,
+ Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+ =?UTF-8?Q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
+ Thierry Reding <thierry.reding@gmail.com>,
+ Jonathan Hunter <jonathanh@nvidia.com>, Stefan Agner <stefan@agner.ch>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
+ Tony Lindgren <tony@atomide.com>, Chanho Min <chanho.min@lge.com>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Magnus Damm <magnus.damm@gmail.com>, Linus Walleij <linusw@kernel.org>,
+ Imre Kaloz <kaloz@openwrt.org>, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konrad.dybcio@linaro.org>,
+ Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor
+ <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>
+Cc: linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-aspeed@lists.ozlabs.org,
+ openbmc@lists.ozlabs.org, linux-tegra@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com, linux-omap@vger.kernel.org,
+ linux-mediatek@lists.infradead.org, linux-renesas-soc@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-kbuild@vger.kernel.org
+References: <20240213-arm-dt-cleanups-v1-0-f2dee1292525@kernel.org>
+ <20240213-arm-dt-cleanups-v1-3-f2dee1292525@kernel.org>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+In-Reply-To: <20240213-arm-dt-cleanups-v1-3-f2dee1292525@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 2/13/24 21:11, Arnd Bergmann wrote:
-> On Tue, Feb 13, 2024, at 16:36, Guenter Roeck wrote:
->> On Tue, Feb 13, 2024 at 03:14:21PM +0000, Peter Maydell wrote:
->>> On Mon, 12 Feb 2024 at 14:36, Guenter Roeck <linux@roeck-us.net> wrote:
->>>> On 2/12/24 04:32, Peter Maydell wrote:
->>>>> The machines I have in mind are:
->>>>>
->>>>> PXA2xx machines:
->>>>>
->>>>> akita                Sharp SL-C1000 (Akita) PDA (PXA270)
->>>>> borzoi               Sharp SL-C3100 (Borzoi) PDA (PXA270)
->>>>> connex               Gumstix Connex (PXA255)
->>>>> mainstone            Mainstone II (PXA27x)
->>>>> spitz                Sharp SL-C3000 (Spitz) PDA (PXA270)
->>>>> terrier              Sharp SL-C3200 (Terrier) PDA (PXA270)
->>>>> tosa                 Sharp SL-6000 (Tosa) PDA (PXA255)
->>>>> verdex               Gumstix Verdex Pro XL6P COMs (PXA270)
->>>>> z2                   Zipit Z2 (PXA27x)
->>>>>
->>>> I test akita, borzoi, spitz, and terrier. Upstream Linux removed support
->>>> for mainstone, tosa, and z2 from the Linux kernel as of version 6.0, so
+Il 13/02/24 20:34, Rob Herring ha scritto:
+> The dtc interrupt_provider warning is off by default. Fix all the warnings
+> so it can be enabled.
 > 
-> It was 6.3 (about one year ago).
-> 
->>>> I am no longer testing those.
->>>>
->>>> I never managed to boot connex or verdex.
-> 
-> I kept specifically the pxa boards that would be sensible to port
-> to devicetree because they had qemu support. gumstix verdex is the
-> one with the most RAM out of those; spitz, sharpsl and their
-> variants are the ones that some of us still have around.
-> 
-> Robert had working devicetree support for some machines out of tree
-> that he has not submitted, and presumably not worked on since.
-> 
-> Unless someone starts working on converting the remaining
-> pxa board files to DT, we can probably remove them after the
-> next LTS kernel a year from now.
+> Signed-off-by: Rob Herring <robh@kernel.org>
 
-I agree. Once the machines are removed, people who were actively using
-them would be incentivized to work on a DT port. That's not very
-complicated to do when you have the hardware to test, but almost
-impossible if you don't.
-
-
-Best regards,
-Daniel
-
+Reviewed-By: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com> # 
+MediaTek
 
 
