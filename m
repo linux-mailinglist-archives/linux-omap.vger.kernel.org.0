@@ -1,173 +1,143 @@
-Return-Path: <linux-omap+bounces-593-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-594-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8441F854BF8
-	for <lists+linux-omap@lfdr.de>; Wed, 14 Feb 2024 15:58:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BBF9854C14
+	for <lists+linux-omap@lfdr.de>; Wed, 14 Feb 2024 16:01:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8C5B1C216AC
-	for <lists+linux-omap@lfdr.de>; Wed, 14 Feb 2024 14:58:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 958C6B251E3
+	for <lists+linux-omap@lfdr.de>; Wed, 14 Feb 2024 15:01:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99C835C8F1;
-	Wed, 14 Feb 2024 14:58:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="rjNYeC12";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="pGI2V3GL"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE91E5C61F;
+	Wed, 14 Feb 2024 15:01:25 +0000 (UTC)
 X-Original-To: linux-omap@vger.kernel.org
-Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com [64.147.123.25])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E51C5C8FC
-	for <linux-omap@vger.kernel.org>; Wed, 14 Feb 2024 14:58:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF7B15B21C;
+	Wed, 14 Feb 2024 15:01:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707922695; cv=none; b=tIS9sJTRUVObo3K++V2HGU9gw+TGcqSGUfkbys7Cx5A2SMV+xoJ9RwCYghgh0cXHh8O86+ulQUeCIJZ2wKheix5GD9hwZf1hrNYqataNsPyT2nfXS1nZwXAnX0muk8UGeyf2O0SvBWyUy9ROt4LlkLXgl+aIO2TFVF6mgRBbXBY=
+	t=1707922885; cv=none; b=lCAFSoH0DlpPuQ+ZevTKFWx7hm6t2xjFXExIWw01dxGjbCE28ktMrGfbWXg94/Tt84aHSwo9EsLpISRDssR0GQdDYUjS3m2S1c306/IWfvc8t35XsCEOFe+Im33cZkanrsBcoDmJ1VIuw++ihXbb9x0CfonlSC0HfXXmD9aezdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707922695; c=relaxed/simple;
-	bh=0I00Zd1krWMH/Fnp1v0LnwHGI3Eq7M0JP2iP0ZtnYpo=;
-	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
-	 Subject:Content-Type; b=uuv+md0GE+/21sfNpAqUK3AjEDLlgiFrqhCjC57uBLCNS+92n6W7+P4/uwsZZspvLr++iiO6ViiQGiCeNjMRYtmUJThiLU7iNOCugtC8kgF9mRaFB/LR9rQhlAjfr69dz9qKUr/m/B8Bd/XcNRbadXvT2PjO87smLqPlYEtj5zM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=rjNYeC12; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=pGI2V3GL; arc=none smtp.client-ip=64.147.123.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailout.west.internal (Postfix) with ESMTP id 909EF3200392;
-	Wed, 14 Feb 2024 09:58:10 -0500 (EST)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Wed, 14 Feb 2024 09:58:11 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1707922690; x=1708009090; bh=uDmfOsg9gU
-	tVPfRB+2sWNwn5yu3xkUXEF+MG27C5Dtc=; b=rjNYeC12XR01H737Y39uCh/un7
-	h+k+7rvPsh/l250F8FM1N97OFbD59aBSu18Bupi7vNc8qYOr4iZo+BGCmTvFgQ4C
-	2Y5anjFNO4Aj2XOiZXRaKtoAkr2tEsX+Ci5t37PoChOb0HKQhJS+ksD0XpCK4emj
-	j26WnowC0Bqnerz8PANjdwk+jr4WGRU9tBXhHbts73nVyG0icaBA9A7nGES7IMGs
-	WM3l0gVRNm4utZOM6habjtRFzU8PRbWt3BNZJlx4cP5UWmudV7EVv2d5f8do7ezJ
-	5IYMRuo9aICx32wb8DXw4ayHCC16DRDU2F0y1d4PPc1TmPQw+CcKj0eGbftw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm3; t=1707922690; x=1708009090; bh=uDmfOsg9gUtVPfRB+2sWNwn5yu3x
-	kUXEF+MG27C5Dtc=; b=pGI2V3GLyNYFup6/YmJUkWU83lP5R3rTwThzRyTCmEjt
-	yBzm3kBcOk6kYYaBD3/dbPOdgUMjnSZUiNUYp00f5JECLcBg0XO/zgbUGAD6roIe
-	JD+JE0omtgMkmGoFiGG1kdhXlbfYssLeQWw3+8yl4/qWiQSXeCxsvUCPEdtCO1iN
-	yh4f3Ra0lRdrRWeu1ez2AuatYX13rI6DITBHPWs6WJMJQ5KLCi138zUHpS/C54T5
-	H/k8hUJDX0tcerKjEdOMCYSF//xfnZAsaG9kMO4+DRVLQopPRGwTJ7vllGkAR8N8
-	Y5Gdgq1i50S9JSnZDy9tb8zrh1YbzasQZEzkqNXRfw==
-X-ME-Sender: <xms:AdXMZTYxcc4dpVQ4ctlSARACqDNe9AgVQYiyBh_cL3wzrsO7p6tPzg>
-    <xme:AdXMZSaUJhJp6ie9-mLwUmrFduJNHYFYMpNE5CjlFa3o3zrRe4hSgLdTl0hzyobyZ
-    ApA1lyFjApBeYfTfNE>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudejgdejudcutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdetrhhn
-    ugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtth
-    gvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedtkeet
-    ffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrh
-    hnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:AdXMZV-Q7-HjMFByKcFClo-jqyEZyiJe9f25HSLLQFJwrsmsGYRUYA>
-    <xmx:AdXMZZo-LS2PeA2lLmSAAYz_0V7ZwjGrdVfzyMKMzwBDf7J4mzL0YQ>
-    <xmx:AdXMZerHvWACUsNWccPL8vjOEHU5nh2t2YewQHGg2m6Si4nVrLNRag>
-    <xmx:AtXMZUieTMLYWDSgJVKe_O1rwJnlT25wtsGI5ejnXYulQxs0TPVfBQ>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 6CC73B6008D; Wed, 14 Feb 2024 09:58:09 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.11.0-alpha0-144-ge5821d614e-fm-20240125.002-ge5821d61
+	s=arc-20240116; t=1707922885; c=relaxed/simple;
+	bh=wRhBbftaNujCFlZk6BVtFbm/sKIU58sYu+5kiELSP7E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=W7IhcU5tDQBv+K1g2l2p9EHqY0lNgIbKRGhjD8vp5a5tlWc/RkBSwp2klwjxn7Oxb9Q8mpJtZtPp4NPtpuDs44uem1+sQzK6d+58hma2ltKKgCHrbYdASDhjJhpvgAPLSTjrtGMIEDdRHHztqbz2QgP0yPoKCqyXHt4KvFx80yA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.222.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-7853a9eb5daso188543485a.2;
+        Wed, 14 Feb 2024 07:01:23 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707922881; x=1708527681;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=h6upARWbXs1k8V4Vnc/YI44n6rxziwjW/OPtXVVY76s=;
+        b=juBjOjG6RNr9evWHSZ/09nizJEVK9dodFGbt3nbqZ+snJ773VLz59DEOWPkZlXnwbw
+         yuHzl7P8+TRd8AgxoyVf6ojP2QaO3xQCfkYUUorymqXYF7QjCF3VJ7LSkvCbHALufMjk
+         NiSHIl7608gCwXlIsnqkjlu/7hqxN/iqaZemKtaTgbEnJj6ukeKJzjRl0NaqoSbgQM/D
+         z456IvvGr5tCDQkXQqouVkcKE7jaYO32plUQyAWYVupe8eldzkIkJQjKYbG6AeJz0un0
+         VjS8D21vOdzlkf2G1qnRFc25k1R3DPcR/OiqXhlIAp0cbtv1LD1knY+KMS8e9WAg8djl
+         eORg==
+X-Forwarded-Encrypted: i=1; AJvYcCXD/D9CkimvEmtbtC85uzY4/T7w1dx+VzNbz9VwXZWMTjdQkD/cY1oVZZ6ygsj8EM04OuMAaX1MDfzbmRwMg52z4tZGWl72sGL1KbzNDLQxckD1A/OaTslRWF5AjqPsAMK4pgikvEPjLMzV5YdplJIp3+9B9IUAKA97xjoLL6YzYTYNHvNqup5ZQPnfmFt0vLWiuN1kPDE09012/lPqHNL2gzG7MuS8hfTQFYimJMMwC3WWbJc/XL8TPwza2kmakj5PHkdmPbTsPdakD9oD7eW11V25okqv/E/L01G4bqsn3kiBICVXf1sKoulY9uVV1VscV/UbkK1I1TfF+LVW7Qxfig==
+X-Gm-Message-State: AOJu0Yz3FfBHSphQEdAQfflo8c1EqfzX3Zk8R1G00qmBsXFU0jjWDNcG
+	1oUXcV+RpDreqVczgHu2wmod/j38huHWeur5DsfDlLREYcb47IMb4kZHO8J794c=
+X-Google-Smtp-Source: AGHT+IHFn6eY5rp1w7jUMyO4UeaIh9i34RYopBCHwdFZAa5Auq13KfwzuOv5oquw8sHm7FbvjKfJzQ==
+X-Received: by 2002:a05:620a:438b:b0:785:d6a9:734f with SMTP id a11-20020a05620a438b00b00785d6a9734fmr3530707qkp.46.1707922878529;
+        Wed, 14 Feb 2024 07:01:18 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUOpVWYB2+ehgyPQ2AelOzgxuW1SKU3bWkZZghJaolLB+H/bhnUH8p99cnRxJ/HuF1q37yQpv9bmDmijuI4cEf9NvjJtRTHMPowe6JfC45pAka1LI/BfpOz0dgohCFqjKCUSNns+oicXrIQTePS+bjFTHskwKh3BB4STphbREOBFbNcJzijpOIcCyrQJ32bFUrQAA0QnmeAXosAD9lhK6yq/FNMNnkvIckGQ/OAE1zbehJfAkeinVpBV7Y2FABfpfR3m4XnhzPwFFOLDNW3aoJT/THy5huzTXsSnMfa/I7TKJa7lkqgHsyD/VC2YM+WohFITnWaQ6S3XuwpGc9YiESIiw==
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com. [209.85.160.178])
+        by smtp.gmail.com with ESMTPSA id r11-20020a05620a03cb00b00785d7f634bcsm2481639qkm.8.2024.02.14.07.01.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 14 Feb 2024 07:01:18 -0800 (PST)
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-42a8a3973c5so28297761cf.2;
+        Wed, 14 Feb 2024 07:01:17 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVkiCmkrcPoyS+NdSQfqmW3UfmIjV75JLSBFBZbycI6ZQxzWlm2P8tQCYMLXleNE71aKauBXoVvSo+LozJwSRo8/hmgMCEn22dqLyl1Z8OqftAI5j51MnTPNJt+PmpoBVBBFQkdT4b8tLFAWfsb/aymtYHx1BZxOsUvzQ0ntqFSgSG0E2Z1D7iFFlYs/rCvi6uyg/qw8hZQPbiFqwD2r01i2I0JrQXRovTG3hn87qvlcftLpQbbNX6o5xajhBxy/aic1FqGWwZn8+eBm7au5zqRm8q05rtoh/5Q6YMuIyb6HdqkJcLep/RZLGhJ1LN4I1hyHzzy7Lqzteel5zldnWXkBw==
+X-Received: by 2002:a25:84c9:0:b0:dc2:3fbd:82fe with SMTP id
+ x9-20020a2584c9000000b00dc23fbd82femr2322270ybm.46.1707922857034; Wed, 14 Feb
+ 2024 07:00:57 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <5214dd7c-0472-4ce8-bc41-ad565ddcc7a9@app.fastmail.com>
-In-Reply-To: <20240214012749.GA203324@darkstar.musicnaut.iki.fi>
-References: 
- <CAFEAcA88UGhjh8-iBvhxx6GdWg74dinYouiguTcz=qEe51L7Ag@mail.gmail.com>
- <fe5476c7-82e0-4353-a943-7f39b14e1b5b@roeck-us.net>
- <CAFEAcA-bqOM4Ptws-tsEwo2HDZ6YSX1Y+xGkR0WueRD_dUd0+Q@mail.gmail.com>
- <7bd858a2-9983-4ddf-8749-09c9b2e261f9@roeck-us.net>
- <fbab8e59-6d2d-4193-a5ca-9fea3c524229@app.fastmail.com>
- <20240214012749.GA203324@darkstar.musicnaut.iki.fi>
-Date: Wed, 14 Feb 2024 15:57:49 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Aaro Koskinen" <aaro.koskinen@iki.fi>
-Cc: "Guenter Roeck" <linux@roeck-us.net>,
- "Peter Maydell" <peter.maydell@linaro.org>,
- "QEMU Developers" <qemu-devel@nongnu.org>,
- "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>,
- "Marcin Juszkiewicz" <marcin.juszkiewicz@linaro.org>,
- "Janusz Krzysztofik" <jmkrzyszt@gmail.com>,
- "Tony Lindgren" <tony@atomide.com>, Linux-OMAP <linux-omap@vger.kernel.org>,
- "Daniel Mack" <daniel@zonque.org>, "Robert Jarzmik" <robert.jarzmik@free.fr>,
- "Haojian Zhuang" <haojian.zhuang@gmail.com>,
- "Linus Walleij" <linus.walleij@linaro.org>,
- "Stefan Lehner" <stefan-lehner@aon.at>
-Subject: Re: possible deprecation and removal of some old QEMU Arm machine types
- (pxa2xx, omap, sa1110)
-Content-Type: text/plain
+References: <20240213-arm-dt-cleanups-v1-0-f2dee1292525@kernel.org>
+In-Reply-To: <20240213-arm-dt-cleanups-v1-0-f2dee1292525@kernel.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Wed, 14 Feb 2024 16:00:45 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdWgvD9szXksK+jzyvwLQ8ufWWf1TPQ7s-5z4JWgrvXmkg@mail.gmail.com>
+Message-ID: <CAMuHMdWgvD9szXksK+jzyvwLQ8ufWWf1TPQ7s-5z4JWgrvXmkg@mail.gmail.com>
+Subject: Re: [PATCH 0/6] dts: Fix dtc interrupt warnings
+To: Rob Herring <robh@kernel.org>
+Cc: soc@kernel.org, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, NXP Linux Team <linux-imx@nxp.com>, Rob Herring <robh+dt@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Tsahee Zidenberg <tsahee@annapurnalabs.com>, Antoine Tenart <atenart@kernel.org>, 
+	Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@codeconstruct.com.au>, 
+	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Andrew Lunn <andrew@lunn.ch>, 
+	Gregory Clement <gregory.clement@bootlin.com>, 
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, 
+	=?UTF-8?Q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>, 
+	Thierry Reding <thierry.reding@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
+	Stefan Agner <stefan@agner.ch>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>, 
+	Tony Lindgren <tony@atomide.com>, Chanho Min <chanho.min@lge.com>, 
+	Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	Magnus Damm <magnus.damm@gmail.com>, Linus Walleij <linusw@kernel.org>, 
+	Imre Kaloz <kaloz@openwrt.org>, Bjorn Andersson <andersson@kernel.org>, 
+	Konrad Dybcio <konrad.dybcio@linaro.org>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, 
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-aspeed@lists.ozlabs.org, 
+	openbmc@lists.ozlabs.org, linux-tegra@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-omap@vger.kernel.org, 
+	linux-mediatek@lists.infradead.org, linux-renesas-soc@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-kbuild@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 14, 2024, at 02:27, Aaro Koskinen wrote:
-> On Tue, Feb 13, 2024 at 09:11:38PM +0100, Arnd Bergmann wrote:
->
-> I'm one of the OMAP1 Linux kernel maintainers, and I have Palm TE which
-> I have been using for testing and development (and reporting bugs,
-> regressions) along with those other boards you mentioned.
->
-> Since I have the real Palm HW, I haven't used QEMU for that particular
-> board. But however I use QEMU SX1 support frequently as it's quickest way
-> to check if OMAP1 is bootable, and if the basic peripherals are working.
-> SX1 is close to Palm/AMS-Delta, and also it's ARMv4T which is rare these
-> days. I think it's useful to keep it in QEMU as long there are hardware
-> that people use.
->
-> So my wish is to keep at least SX1 support in QEMU as long as ARMv4T
-> supported in the Linux kernel.
+Hi Rob,
 
-Makes sense. We have a couple of other ARMv4T systems in the kernel
-that are still being tested (ep93xx, at91rm9200, clps71xx, imx1,
-nspire, integrator/ap), but none of the others have any qemu
-support apparently unless you count "-Mintegratorpb -cpu arm925".
-All of these are are using DT or getting there (ep93xx), so we'll
-probably keep them around for a while.
+On Tue, Feb 13, 2024 at 8:35=E2=80=AFPM Rob Herring <robh@kernel.org> wrote=
+:
+> I had a branch with most of these changes sitting in my tree for some
+> time. Geert's asking about some errors not getting found prompted me to
+> clean it up and send it out. This series fixes all* interrupt related
+> warnings and enables the check by default.
 
-Similarly, we support a couple of ARMv4 (non-T) targets in the
-kernel (footbridge, sa1100, rpc, moxart, gemini), but the only
-one with qemu support here is sa1100/collie.
+> *There's a few Renesas warnings still Geert said he would fix.
 
->> >> > > OMAP2 machines:
->> >> > >
->> >> > > n800                 Nokia N800 tablet aka. RX-34 (OMAP2420)
->> >> > > n810                 Nokia N810 tablet aka. RX-44 (OMAP2420)
->> >> > >
->> >> > I never managed to get those to boot the Linux kernel.
->> 
->> I think Tony still tests these on both hardware and qemu.
->> The platform side here is much more modern than any of the
->> others above since it does use DT and it has enough RAM
->> to be somewhat usable.
->
-> I have also these boards (real hardware) and test them frequently with
-> mainline Linux. However, QEMU support I haven't used/needed. I recall it
-> was a bit buggy, and some changes in mainline made the kernel unbootable.
-> Unless Tony needs the support, I guess they are good to go.
+Thanks, fix sent
+https://lore.kernel.org/r/a351e503ea97fb1af68395843f513925ff1bdf26.17079224=
+60.git.geert+renesas@glider.be
 
-Thanks for confirming.
+>       dtc: Enable dtc interrupt_provider check
 
-> (Arnd: RAM isn't everything. Some of the OMAP1 boards today are still
-> more useful than N800/N810, even with modern bloaty Linux.)
+>  scripts/Makefile.lib                                  |  3 +--
 
-Obviously RAM isn't everything, but the machines with just 32MB
-or less do seem very small for real workloads, so I admit I
-dismiss them easily. I am curious what you run on those, are
-there any embedded distros that maintain good support for 32MB
-systems on modern kernel/musl/Xorg/..., or are you using
-omething older or highly customized?
+Just wondering, can the remaining disabler be removed, too?
 
-     Arnd
+Documentation/devicetree/bindings/Makefile:     -Wno-interrupt_provider \
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--=20
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
+
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
 
