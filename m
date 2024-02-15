@@ -1,140 +1,131 @@
-Return-Path: <linux-omap+bounces-605-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-606-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83652855EBE
-	for <lists+linux-omap@lfdr.de>; Thu, 15 Feb 2024 11:06:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A04E8855F25
+	for <lists+linux-omap@lfdr.de>; Thu, 15 Feb 2024 11:28:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5C981C2130F
-	for <lists+linux-omap@lfdr.de>; Thu, 15 Feb 2024 10:06:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B77D283A13
+	for <lists+linux-omap@lfdr.de>; Thu, 15 Feb 2024 10:28:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B63E69965;
-	Thu, 15 Feb 2024 10:06:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D557469300;
+	Thu, 15 Feb 2024 10:28:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="YbytBnjY"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="gRW8qAj3";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="cqTT/FKX";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="gRW8qAj3";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="cqTT/FKX"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E5A66B55
-	for <linux-omap@vger.kernel.org>; Thu, 15 Feb 2024 10:06:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F411867E97
+	for <linux-omap@vger.kernel.org>; Thu, 15 Feb 2024 10:28:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707991593; cv=none; b=IpTQ+bc84r4NHSv49GHMnSK/oWXzxtRDxlKfEVq4jXAjHaeUCC7zaquoLz2Dgg303NdSdHD5gF8vlYLzyZWeVUxDkmYo+NWwimGbno9Y6HHzOZuakg/naAqsqiZC/DTKgFDpMU3ov7T5PzERB0fwEYzigrnNenouP9LgM4dSZCo=
+	t=1707992910; cv=none; b=taenvzs6UUFAu4LSkn4PeQ+UeI2DB/c0RsNi40nPVGNBjK1+bYWU2WgOVXvo6nyZPIdVL/QpZztjL/fpZn2gqwa/U21FUis7dLRUt0BIPwqG9EyEXPLm+oUiBY70MOwPWAsZ5Xm9mfN/msWPY1RPXvhZJgmb/hB7Bs5YFGuF2H4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707991593; c=relaxed/simple;
-	bh=6cBLzuR1wjc96i7DmZpnBa9+0HV67FkLgQM9wCAQXuo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ukGYxOUSVciBpcPy9XzdFW0+Rk9AoBBwlZl2wzJdd17UHV1VTu4WShbu/BJTDshjKNFKfATDhpVz/GLWByhzsnecnWgL6ONZRMsfNaCKJNRx9LgYoXZe0bN6iKF9RZ8AwDbUqulZe/trhhTi6lBNu8kK3iA2IqHoiSpz3wCqA94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=YbytBnjY; arc=none smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a3c1a6c10bbso72655466b.3
-        for <linux-omap@vger.kernel.org>; Thu, 15 Feb 2024 02:06:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1707991590; x=1708596390; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:organization:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=h7j7BDbf/2XTLgGFB+o6WPYFGjyq3xmN0zRxSIya6Co=;
-        b=YbytBnjYvRS+4iYKzmjX/WHcCFTjKmpnZMQO8MTZMoZxGetQuK4H3fpygGQZ7u4lh+
-         Kv2z4cEtFhIkaNhmrmLHCBK0sYeiencPHe3yW41NpisZLLh5zqh5/wips1UYRbyAyROP
-         qdZE8wp5m4T4O5l/2FnJzvZ9L7mw3fkt/1lnNgpZeVNzbT37H+rxxe+Apb9TjI4MLrfu
-         qUW6p0DjBb+KcGyi+Z+RED/czWzk1C/jQW9YBXWLYSW8aMV29sC05gmBsJTQgTMwaswA
-         Q9yZIIUgIgRbcaqVyEENPzgSgMK9Ruu3dlMonx2q11lqfv+KEKDowsI+3HJbXHVryPha
-         Wxfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707991590; x=1708596390;
-        h=content-transfer-encoding:in-reply-to:organization:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=h7j7BDbf/2XTLgGFB+o6WPYFGjyq3xmN0zRxSIya6Co=;
-        b=Icr9NgGx+rlwWsayREh3NaUdnJf/pO0HyzsQiMawbWqZE9iu3UyUp8MY6W1Y3rE0KY
-         AM7MfvKbHRd+TZwCrCe7XDhyWnJKiNIp3t8Yf97FAxKsaq4K1lfsy8K90hZ/nIBFbFFU
-         tluV0nRU9hGSHNWxzeJF9xRz0Wbb3YAlSLKlZtQj8SuJEj7PE7X+oGNz6U14mIITQaRX
-         VkhDkUcRwnEGkiiygSnhk/Y1dohShwtCWLwMBlXqWMA2BNFSOmdq7JzzCZAY8DrT1YBK
-         bSgoMz0CSL2Rg9fF1JfF2B3WThldhdMyXp8JThiuXiUYIhjkFHWCLQ3avaaI3fXZz3ip
-         /Osg==
-X-Forwarded-Encrypted: i=1; AJvYcCWTkQSTRb9IfySpU0Ot0PfsVyhxn+XGoOmfrYNPAgGERC0VZqnBEWvOnDaQtXHk4iKxiVjIxNNmKFtQklKlVELO/xK+tLcAV/uoHg==
-X-Gm-Message-State: AOJu0Yyctb8xx37oMd0KcGRazaOsva8+bJKvauTK1OgPgEWpuL4wOxGd
-	puOl1HBtkNlcRjlAlV0N2/heHepyjgw7SzDBiHWPs8m+z+S55M4m+ThXZ1tWhKk=
-X-Google-Smtp-Source: AGHT+IEEM0cWgYXokqInqYrcPLv8UI1GS1w0YRnrANXKcGmmDrdUCqlP6GLPJ0jaV0GEu8jCAinSGQ==
-X-Received: by 2002:a17:906:e089:b0:a3c:f531:4514 with SMTP id gh9-20020a170906e08900b00a3cf5314514mr971601ejb.62.1707991589675;
-        Thu, 15 Feb 2024 02:06:29 -0800 (PST)
-Received: from [192.168.200.206] (83.11.22.32.ipv4.supernova.orange.pl. [83.11.22.32])
-        by smtp.gmail.com with ESMTPSA id fj15-20020a1709069c8f00b00a3d26805852sm393944ejc.17.2024.02.15.02.06.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 15 Feb 2024 02:06:29 -0800 (PST)
-Message-ID: <6c27e4ba-34dc-4ba6-95fb-39989d0c2cc3@linaro.org>
-Date: Thu, 15 Feb 2024 11:06:27 +0100
+	s=arc-20240116; t=1707992910; c=relaxed/simple;
+	bh=IWGtQN3o+8yGE/lqzOEpET9KMgvOxbcdTvs0UGPNWlY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=H6F52Pbv8gx9XH1Yd6AK1DK6t0PC2e8fnOjwiSYpg6RvtUtXuIJCZX+V32vG87JlvfL12AhHyNlKcK001plm7tAoHkh97i3flhohw5hDcfosCtAfFUtQ47be4NbOQJn6ktCMWeisQB8wmSSIW0YaHr9/Ocy/SNpaFy2RsV80mg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=gRW8qAj3; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=cqTT/FKX; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=gRW8qAj3; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=cqTT/FKX; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from hawking.nue2.suse.org (unknown [10.168.4.11])
+	by smtp-out1.suse.de (Postfix) with ESMTP id 70FB821D9A;
+	Thu, 15 Feb 2024 10:28:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1707992907; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MKKW7UFhlhPdogcyNp83HsYSJa5cH3/SIQawY+8tphY=;
+	b=gRW8qAj3AudbZgyFTDv4dLSzQkJ7EdDvwnCcctyBZ79D9v+kMYRKCJ9sPOsFHReeyjxye4
+	SlCkNl6qWF37qWCEzbqpZ67M0ovxyoKLvDfhC5/sVzW3SEdGrexrfz4Sv6zqF+xbpGiInN
+	s7C264wHYdEXw8qByRarjwv/vv8NN8E=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1707992907;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MKKW7UFhlhPdogcyNp83HsYSJa5cH3/SIQawY+8tphY=;
+	b=cqTT/FKXp5RXj/Qmgn/Z/KaK/ySsbZlSWuNoD/J7PlMt0WFsedZjINLHQLbq0/lcvkLkoZ
+	FQV/oW3BX0qMiKCA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1707992907; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MKKW7UFhlhPdogcyNp83HsYSJa5cH3/SIQawY+8tphY=;
+	b=gRW8qAj3AudbZgyFTDv4dLSzQkJ7EdDvwnCcctyBZ79D9v+kMYRKCJ9sPOsFHReeyjxye4
+	SlCkNl6qWF37qWCEzbqpZ67M0ovxyoKLvDfhC5/sVzW3SEdGrexrfz4Sv6zqF+xbpGiInN
+	s7C264wHYdEXw8qByRarjwv/vv8NN8E=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1707992907;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MKKW7UFhlhPdogcyNp83HsYSJa5cH3/SIQawY+8tphY=;
+	b=cqTT/FKXp5RXj/Qmgn/Z/KaK/ySsbZlSWuNoD/J7PlMt0WFsedZjINLHQLbq0/lcvkLkoZ
+	FQV/oW3BX0qMiKCA==
+Received: by hawking.nue2.suse.org (Postfix, from userid 17005)
+	id 5FA7F4A04EC; Thu, 15 Feb 2024 11:28:27 +0100 (CET)
+From: Andreas Schwab <schwab@suse.de>
+To: Tony Lindgren <tony@atomide.com>
+Cc: Linux regressions mailing list <regressions@lists.linux.dev>,
+  linux-arm-kernel@lists.infradead.org,  Aaro Koskinen
+ <aaro.koskinen@iki.fi>,  Linux-OMAP <linux-omap@vger.kernel.org>
+Subject: Re: 6.7 regression: platform 4809c000.mmc: deferred probe pending
+In-Reply-To: <20240215094640.GS52537@atomide.com> (Tony Lindgren's message of
+	"Thu, 15 Feb 2024 11:46:40 +0200")
+References: <mvmcyt13idm.fsf@suse.de>
+	<c92385d2-1909-43a8-aea8-cd9a8687a898@leemhuis.info>
+	<20240215094640.GS52537@atomide.com>
+X-Yow: My haircut is totally traditional!
+Date: Thu, 15 Feb 2024 11:28:27 +0100
+Message-ID: <mvmeddeyqb8.fsf@suse.de>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: possible deprecation and removal of some old QEMU Arm machine
- types (pxa2xx, omap, sa1110)
-Content-Language: pl-PL, en-GB, en-HK
-To: Dmitry Baryshkov <dbaryshkov@gmail.com>, Arnd Bergmann <arnd@arndb.de>
-Cc: Andreas Kemnade <andreas@kemnade.info>,
- Linus Walleij <linus.walleij@linaro.org>, paul.eggleton@linux.intel.com,
- Andrea Adami <andrea.adami@gmail.com>, Guenter Roeck <linux@roeck-us.net>,
- Peter Maydell <peter.maydell@linaro.org>,
- QEMU Developers <qemu-devel@nongnu.org>,
- "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>,
- Aaro Koskinen <aaro.koskinen@iki.fi>,
- Janusz Krzysztofik <jmkrzyszt@gmail.com>, Tony Lindgren <tony@atomide.com>,
- Linux-OMAP <linux-omap@vger.kernel.org>, Daniel Mack <daniel@zonque.org>,
- Robert Jarzmik <robert.jarzmik@free.fr>,
- Haojian Zhuang <haojian.zhuang@gmail.com>,
- Stefan Lehner <stefan-lehner@aon.at>
-References: <CAFEAcA88UGhjh8-iBvhxx6GdWg74dinYouiguTcz=qEe51L7Ag@mail.gmail.com>
- <fe5476c7-82e0-4353-a943-7f39b14e1b5b@roeck-us.net>
- <CAFEAcA-bqOM4Ptws-tsEwo2HDZ6YSX1Y+xGkR0WueRD_dUd0+Q@mail.gmail.com>
- <7bd858a2-9983-4ddf-8749-09c9b2e261f9@roeck-us.net>
- <fbab8e59-6d2d-4193-a5ca-9fea3c524229@app.fastmail.com>
- <CACRpkdbmJe8ZE7N0p_utWucyw+3mp1Qrb0bQEKcJPmwNFtVA_g@mail.gmail.com>
- <CALT56yOT_U9jVkhTP=zZu-32B4pta5zaJocn9695N7ari4cFyQ@mail.gmail.com>
- <be4038e1-a578-4439-a9bf-e936484c64cc@app.fastmail.com>
- <20240215093113.5c58cabe@aktux>
- <7c8a5c5b-a94a-4b87-a043-f1e398b55872@app.fastmail.com>
- <CALT56yPLobsL699K9+DDMBWwi7-iLzaYwuDwV7NmecaTY7Z6Tw@mail.gmail.com>
-From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Organization: Linaro
-In-Reply-To: <CALT56yPLobsL699K9+DDMBWwi7-iLzaYwuDwV7NmecaTY7Z6Tw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+Authentication-Results: smtp-out1.suse.de;
+	none
+X-Spamd-Result: default: False [-1.37 / 50.00];
+	 ARC_NA(0.00)[];
+	 FROM_HAS_DN(0.00)[];
+	 TO_DN_SOME(0.00)[];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 MIME_GOOD(-0.10)[text/plain];
+	 RCPT_COUNT_FIVE(0.00)[5];
+	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 RCVD_COUNT_ZERO(0.00)[0];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 MID_RHS_MATCH_FROM(0.00)[];
+	 BAYES_HAM(-1.27)[89.77%]
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Spam-Score: -1.37
 
-W dniu 15.02.2024 o 9:52 AM, Dmitry Baryshkov pisze:
->>>> If we want to actually go there, I think the best option for PCMCIA
->>>> support is likely to replace the entire "soc_common" pcmcia driver
->>>> with a simple drivers/pata/ storage driver and no support for
->>>> other cards.
+On Feb 15 2024, Tony Lindgren wrote:
 
->>> hmm, main usage for PCMCIA/CF in those devices was often something else,
->>> not storage,
+> There was a regression recently with the PMIC which would cause NFSroot
+> on devices to keep working but may have affected MMC. Please check that
+> commit 7a29fa05aeca ("mfd: twl6030-irq: Revert to use of_match_device()")
+> is applied.
 
->> Do we still support any non-storage CF devices that someone might
->> actually use? Do you have a specific example in mind? These are
->> the currently supported devices that I see:
+That commit hasn't hit stable yet.  Maybe it's because it references a
+non-existant commit id (1e0c866887f4 instead of 830fafce06e6).
 
-> The Bluetooth over the PCMCIA UART worked last time I checked it and
-> according to your grep it is still a valid user.
-
-If we want to keep those pda devices in Linux kernel then dropping 
-whatever PCMCIA which is not a storage sounds like sane way.
-
-No one is going to use such old PDA as daily tool nowadays. And if they 
-want then 6.6 LTS kernel would work better due to WiFi drivers being 
-still present.
-
-Bluetooth CF cards are old, v1.x tech. WiFi is 802.11b unless you manage 
-to get one of those libertas_cs cards but they were rare even when new 
-(I was involved in starting 2.6 driver for it). Camera cards had own 
-out-of-tree drivers at that time.
+-- 
+Andreas Schwab, SUSE Labs, schwab@suse.de
+GPG Key fingerprint = 0196 BAD8 1CE9 1970 F4BE  1748 E4D4 88E3 0EEA B9D7
+"And now for something completely different."
 
