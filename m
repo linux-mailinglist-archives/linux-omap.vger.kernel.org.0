@@ -1,143 +1,126 @@
-Return-Path: <linux-omap+bounces-653-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-654-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D6C1857B86
-	for <lists+linux-omap@lfdr.de>; Fri, 16 Feb 2024 12:23:51 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74942857C07
+	for <lists+linux-omap@lfdr.de>; Fri, 16 Feb 2024 12:47:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D0BAB1C23C01
-	for <lists+linux-omap@lfdr.de>; Fri, 16 Feb 2024 11:23:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A8E34B224F4
+	for <lists+linux-omap@lfdr.de>; Fri, 16 Feb 2024 11:47:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C1687763F;
-	Fri, 16 Feb 2024 11:23:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F+TkqYOU"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE86377F3F;
+	Fri, 16 Feb 2024 11:47:08 +0000 (UTC)
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5140C1BF50;
-	Fri, 16 Feb 2024 11:23:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 873F9768FE;
+	Fri, 16 Feb 2024 11:47:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708082622; cv=none; b=I45czSrF9fovdNW+NuQHcALHGIkJe67bx1veY4ucRjlpRrlea+W+8Llknyn6ep+dq4xFY7zWKu8mFBD74VBs3MUTnsNr2+3GN+kBE9iAPxbOt/SMkOtozcrNFgQDeD/0pMEyaJae42/oTjgf0kgRCf7psc0PcQsGh8S8+odz3ZQ=
+	t=1708084028; cv=none; b=Q7mvDmWHiPIdiNkQOQVS2/iZGuC2+phZwmRQY8ku0D9iFcsXng4HXyjkLAmsf5eqcTgx5gXOjILEJzS2Rry2dr70omvZmX66J66cCh+V3axb9ZG8j5pjZGOkE6EG+AiFOVzfIJ2wcw4/dnpFhJLMsfit0i3XXPw+82aFdpCD3vc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708082622; c=relaxed/simple;
-	bh=JJcfIBGCp3ZKPHLIPV/hxkDPf5TaHhr8o0zt0AcWnRY=;
-	h=Content-Type:Mime-Version:Date:Message-Id:Subject:From:To:
-	 References:In-Reply-To; b=VeNuZsLJBfZaNt4ZlchG+fK6/m3Wk+yeVHVZ1fLqOksInBCK5gkqZYpoYlpeA0Fij7yY+zXZAl28xVrALcK9Gb6l7336ispDXtEzr4NrUCG5ABvUcKdow/cNlJso1cqdbkCnwJKsDBGaVwsgEVRc5UAXSyNfQiTU5G8TFxXPR0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F+TkqYOU; arc=none smtp.client-ip=209.85.167.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	s=arc-20240116; t=1708084028; c=relaxed/simple;
+	bh=brDqgu+veoHirwdkbKDf0308k8BngHj6rCKvWtbcL88=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cxQAmC7f554DimfYKOs39as31NRbkTtH/zdd4CkoGkng1pyBpj5sq171Vw5QnFEZF/aj9jFZvQvZj8M+ZT1/VM2ZQVpU7Z4kj9syYaLaKrLT4xmQXLgHs9559/lsDyKoEQSkd/IkpC3BPfA+rAjEbqxIf0AVqfC41u6HU0yC8xQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-511acd26c2bso2750065e87.2;
-        Fri, 16 Feb 2024 03:23:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708082618; x=1708687418; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:message-id:date:mime-version
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=qCkIBF2HUHDgPA/fkE23qtD6c+3DYAPMy1MuIjYZckA=;
-        b=F+TkqYOU1LIIbCw/kiIShDUIoUVlvbGoyMy5/G8pVcq6M6Ta/1cYcz5KdWju4hGJt/
-         WM3N2BShCm2pmcvre4zpjrSWyJcBwLU8WOuqI+eU7f6URnUzbOYlIZxWnGNtjNTIVn5I
-         nEJUP3btos9Epr5iVcb5e1eqHPgXZZS0+N635f6xAc3IWLjA71h+tCR5Hfj+DzmSBW6l
-         Hskfj3CbhjY9t9VpxB+5RZZsbMIM4NXzD7SaTBbpsz63hTKE6ehmtq5D0a+WLqcC0DBQ
-         lKD5RfaWhT+oqP0QNISyFb6BPUdHAb9ik20rO7Zelfp9aUpsttP4p+YHzHNymX4U+8HY
-         0HVA==
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-60782336a3aso4026707b3.2;
+        Fri, 16 Feb 2024 03:47:06 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708082618; x=1708687418;
-        h=in-reply-to:references:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qCkIBF2HUHDgPA/fkE23qtD6c+3DYAPMy1MuIjYZckA=;
-        b=JgBONV4aQhJR1VElPZq6ykdPkVhUtx/xdJ9jeAq6LQacN0FCxhB9Jt24mcXt5BzQZX
-         9yfHdF8gQW2IX1c44TLuFX389YPmt+YrwQPeBddJ8H8X16ZA7Eq5g5JGxRwqKeFL2Pzk
-         wz3ff8CTdqgn0rLpfoI0BXZX4gxjWOXqlmbOCp5v3x1Nk38n+S0QYoC6qy7g1bMY4GAA
-         6HXVr5Q3v+IRSbInP1ZBtv+LHicyuUFnAXona22oeSGt7hILK6mW4xctFrQQ/Z3LQq6g
-         eSgB/fy+1MmtfmYHLcMVMM4dkLyIgK5T84E/T/EuoPiAyyfRuwfG+zXGKcC4O238Fd3g
-         ASPg==
-X-Forwarded-Encrypted: i=1; AJvYcCU6xPvsAzMNcbW4wl21CCLyXej6jLImAWb9o6/qLuPlqBOS+g1DVxsTBilnk/5Bk3lQD2cF7nK/es+aLa5aS4ZmUjxqhORPV6q1dA6Yydp/m0DSSwD9NFpsY9+OCb6rBFuwP7/SGBIY7c+DGXfyofw8dwvClJG99SZ8d4ymjMGeWAeZva1DxTkLQ8FJMyoLEe6f41Wk9ucYUxvIfBVRlriInAnr6PShpYwrIPiKSANm7/VUqfidu+Kms7+GO2BGXjMDfYPytWXZdZH9ZcjdQJvDvDy86DlVUxRUVmQ3aGbs2Rt6F80cVzd6rMRu259tstLGRk5Sf10JfVAHHMhldj5WGOxIGH4/fRahoQUrAE1pVGQqnJddDSGX9G13WQ==
-X-Gm-Message-State: AOJu0YyKyOU+02rDKxEufmO4WKCB9TLkRKlz9WG/bXV622DUcM38thN9
-	YviF23Wh7agyKrc4/ddkBiBn4kThkpFqV3chJcEeWvOYx3TO4isx
-X-Google-Smtp-Source: AGHT+IFk4ZkCa0R/m44omA2Xi3MhoAzI8tKPY8V0cTU/2axm4inHWuZNW2UcVx0PzaNks2ZutoR+ew==
-X-Received: by 2002:a05:6512:716:b0:511:8b40:ab6b with SMTP id b22-20020a056512071600b005118b40ab6bmr2834631lfs.50.1708082618024;
-        Fri, 16 Feb 2024 03:23:38 -0800 (PST)
-Received: from localhost (p200300e41f147f00f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f14:7f00:f22f:74ff:fe1f:3a53])
-        by smtp.gmail.com with ESMTPSA id f23-20020a170906561700b00a3d828c54f1sm1459386ejq.135.2024.02.16.03.23.36
+        d=1e100.net; s=20230601; t=1708084023; x=1708688823;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lQ7tnAKFUkQOj4UEtgJN4h/6u4fraBJnTp0nHjLT6cQ=;
+        b=NuY6vEBgIG9KmAvbppjbFS0iSNqaQQuVcW03ilk952q3G+5H6TS4CO8yqNT+u2VI3E
+         h5kFZnwj4sGOtsD9dNyv6WnwGuIZ07vhSEItHlkLX/CJ5I7nNM5nr7aqOE7AIrPuAqOC
+         1XKFJGCT9qFDXTARisTu6nFk66N8wRk4wkySY+ND1QJ+zysyGX3J38J/IVVYv6j8tDfi
+         20wx1KqsCZMH8efFLpHr0WMGjRPEmFHaPIP49HMqDmw0yfzSwYltd8oc2VmrF/wI1e2F
+         oGUAg/tdv0NPahRl0wLeEigZJKPOf03+kjnEqL8vFXOmQHKuG40xd8+bpGSJZFNvTZGM
+         LlYQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUFzZ3g4WANKqtZZ9VlC7Jw/knLzFtY2VvPmEZNYbXXKPIK29Y8K2BD7BUsP+QXhKjLrNpKOR3XekjYlWQTBtSTMDqAEHdImF5IBY7jb0EIwuk276tqtUSsiYUK4dENO0BYX7/Z5tkyge9b9DM9jVgKGtN/6DMzcTjH6akhagdPVeRougKNRrc8ZhDepS2FEzk5dbEwTBKOqvh6petdRxzoDOnsASXDFRbb3wgTKDD3Acb5XhavvM4+B2NtdscptyH7AGGnweHO5QhSJ5zKhrKdEgMhqRLokglysst9E5w+RpAtXTBBCpXvz1I+rRprqc8bGJJBv+NbvFNzC6gQgVZm8tqBAbztCMNas0zOz0UkwdDDzdkdSrssNvIodA==
+X-Gm-Message-State: AOJu0Yy1PyopLybDwhsRhRNyhHoX7zLqkA7Fxhoch1PliJvUdKRss3Jo
+	5/dGVbJYGclu5g8Cgj+j7RgnUcW/JtnAUin0pzp9oJDY8PoNag4WzIlf3cFysgk=
+X-Google-Smtp-Source: AGHT+IGOZo23mSGj2qVG09ybbc13KqERNgE2Z8Lel0v6H8fWWUPfJQWUuJf9NEMeSLF+la3qPj88JQ==
+X-Received: by 2002:a81:4c8c:0:b0:607:8196:9d69 with SMTP id z134-20020a814c8c000000b0060781969d69mr4522995ywa.30.1708084023056;
+        Fri, 16 Feb 2024 03:47:03 -0800 (PST)
+Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com. [209.85.219.178])
+        by smtp.gmail.com with ESMTPSA id a125-20020a818a83000000b006040f198d3esm301001ywg.142.2024.02.16.03.47.01
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 16 Feb 2024 03:23:37 -0800 (PST)
-Content-Type: multipart/signed;
- boundary=87caa6e717479adfa0f5d015ffee82cc14ceb938e5f7a71c46d45b7997b5;
- micalg=pgp-sha256; protocol="application/pgp-signature"
+        Fri, 16 Feb 2024 03:47:01 -0800 (PST)
+Received: by mail-yb1-f178.google.com with SMTP id 3f1490d57ef6-dcc71031680so609771276.2;
+        Fri, 16 Feb 2024 03:47:01 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCX/33bHJ5WVDjuKg1h+K20HSFSmfoX0dje+Pdcke0G/yQOK9V0feprsSCKA1DfHeklL/Md53BZThhNi7KlefgL6OgBrBR3FWnNtPQ7QIZqprCc8UUjHH8if981HtunXUuEJu9HW12LvxQAxlh9H1gsyW8N6P906LUOaOkbuYSoI15GHqAhh/ny2zVu5VbToppT3ptxf5vmGpiPPnOXps/H9FUkUjH/pO7nThOnAMurKIZ+rTdWWgOxyXjr3swevrnkFK1Tne6+bGd4fNJCye27zGkM12CRl9rBM6E+cLly2ijj83hChsBpJ7DvDvy762C5JyHgc9UOieLPUd5+eKl7GtgZGvnAxKRaMCBCV6ksn7c38M2sdlkpOOvDXVA==
+X-Received: by 2002:a5b:708:0:b0:dc6:cc35:35e9 with SMTP id
+ g8-20020a5b0708000000b00dc6cc3535e9mr4412013ybq.35.1708084021189; Fri, 16 Feb
+ 2024 03:47:01 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Date: Fri, 16 Feb 2024 12:23:36 +0100
-Message-Id: <CZ6GR5BWC80N.36XRBM33WF8MW@gmail.com>
-Subject: Re: [PATCH] clk: constify the of_phandle_args argument of
- of_clk_provider
-From: "Thierry Reding" <thierry.reding@gmail.com>
-To: "Krzysztof Kozlowski" <krzysztof.kozlowski@linaro.org>, "Michael
- Turquette" <mturquette@baylibre.com>, "Stephen Boyd" <sboyd@kernel.org>,
- "Sudeep Holla" <sudeep.holla@arm.com>, "Peng Fan" <peng.fan@nxp.com>,
- "Shawn Guo" <shawnguo@kernel.org>, "Nishanth Menon" <nm@ti.com>, "Bjorn
- Andersson" <andersson@kernel.org>, "Konrad Dybcio"
- <konrad.dybcio@linaro.org>, "Geert Uytterhoeven" <geert+renesas@glider.be>,
- "Jonathan Hunter" <jonathanh@nvidia.com>, "Linus Walleij"
- <linus.walleij@linaro.org>, "Laurent Pinchart"
- <laurent.pinchart@ideasonboard.com>, "Mauro Carvalho Chehab"
- <mchehab@kernel.org>, "Vinod Koul" <vkoul@kernel.org>, "Russell King"
- <linux@armlinux.org.uk>, "Srinivas Kandagatla"
- <srinivas.kandagatla@linaro.org>, "Mark Brown" <broonie@kernel.org>,
- "Jaroslav Kysela" <perex@perex.cz>, "Takashi Iwai" <tiwai@suse.com>,
- <linux-clk@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
- <linux-kernel@vger.kernel.org>, <patches@opensource.cirrus.com>,
- <linux-stm32@st-md-mailman.stormreply.com>, "NXP Linux Team"
- <linux-imx@nxp.com>, <linux-amlogic@lists.infradead.org>,
- <linux-arm-msm@vger.kernel.org>, <linux-renesas-soc@vger.kernel.org>,
- <linux-tegra@vger.kernel.org>, <linux-omap@vger.kernel.org>,
- <linux-media@vger.kernel.org>, <linux-phy@lists.infradead.org>,
- <alsa-devel@alsa-project.org>, <linux-sound@vger.kernel.org>
-X-Mailer: aerc 0.16.0-1-0-g560d6168f0ed-dirty
+MIME-Version: 1.0
 References: <20240208163710.512733-1-krzysztof.kozlowski@linaro.org>
 In-Reply-To: <20240208163710.512733-1-krzysztof.kozlowski@linaro.org>
-
---87caa6e717479adfa0f5d015ffee82cc14ceb938e5f7a71c46d45b7997b5
-Mime-Version: 1.0
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Fri, 16 Feb 2024 12:46:48 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdXzObEqExtJZpUpXLfCWB5fW9ZhekbbotcxcMrN+uj0Ag@mail.gmail.com>
+Message-ID: <CAMuHMdXzObEqExtJZpUpXLfCWB5fW9ZhekbbotcxcMrN+uj0Ag@mail.gmail.com>
+Subject: Re: [PATCH] clk: constify the of_phandle_args argument of of_clk_provider
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Sudeep Holla <sudeep.holla@arm.com>, Peng Fan <peng.fan@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
+	Nishanth Menon <nm@ti.com>, Bjorn Andersson <andersson@kernel.org>, 
+	Konrad Dybcio <konrad.dybcio@linaro.org>, Thierry Reding <thierry.reding@gmail.com>, 
+	Jonathan Hunter <jonathanh@nvidia.com>, Linus Walleij <linus.walleij@linaro.org>, 
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, Vinod Koul <vkoul@kernel.org>, 
+	Russell King <linux@armlinux.org.uk>, 
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, Mark Brown <broonie@kernel.org>, 
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, linux-clk@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	patches@opensource.cirrus.com, linux-stm32@st-md-mailman.stormreply.com, 
+	NXP Linux Team <linux-imx@nxp.com>, linux-amlogic@lists.infradead.org, 
+	linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+	linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org, 
+	linux-media@vger.kernel.org, linux-phy@lists.infradead.org, 
+	alsa-devel@alsa-project.org, linux-sound@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
 
-On Thu Feb 8, 2024 at 5:37 PM CET, Krzysztof Kozlowski wrote:
-[...]
->  drivers/clk/tegra/clk-bpmp.c                  |  2 +-
->  drivers/clk/tegra/clk-tegra124.c              |  2 +-
->  drivers/clk/tegra/clk-tegra20.c               |  2 +-
->  drivers/clk/tegra/clk-tegra30.c               |  2 +-
-[...]
+On Thu, Feb 8, 2024 at 5:37=E2=80=AFPM Krzysztof Kozlowski
+<krzysztof.kozlowski@linaro.org> wrote:
+> None of the implementations of the get() and get_hw() callbacks of
+> "struct of_clk_provider" modify the contents of received of_phandle_args
+> pointer.  They treat it as read-only variable used to find the clock to
+> return.  Make obvious that implementations are not supposed to modify
+> the of_phandle_args, by making it a pointer to const.
+>
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-Acked-by: Thierry Reding <treding@nvidia.com>
+>  drivers/clk/renesas/r9a06g032-clocks.c        |  2 +-
+>  drivers/clk/renesas/renesas-cpg-mssr.c        |  2 +-
+>  drivers/clk/renesas/rzg2l-cpg.c               |  2 +-
 
---87caa6e717479adfa0f5d015ffee82cc14ceb938e5f7a71c46d45b7997b5
-Content-Type: application/pgp-signature; name="signature.asc"
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Acked-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
------BEGIN PGP SIGNATURE-----
+Gr{oetje,eeting}s,
 
-iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmXPRbkACgkQ3SOs138+
-s6FzcQ/9F5fJyakwkqSmFCFsFTUwQ0Vv6AmJP7kf0C2oOGiJISmgaFwRE7ikl73f
-tfJ/jetoF3grVZE950B1ZtY1sAK6WLfAlRnkD52YE25Y+NcehSPfcE2403gBL/JZ
-6Rtlw4U/jJhHC7k1NNSCV6W3YM9tFJZzPdOwWL1efc33DWZQkTgvIPKSfqGIHd0i
-iclZTsusANQThdL9ASOlvq81RrglhXgo2PIt/oeGjEBtf+IoDVhHSWqJ65e/lmYV
-cBw1uhHa5zHLiWoT4xTqJY8dPkSLfBSRM3uflLUkA5BRNllvVsHAPvIgR6aBpqi5
-KeLdZEDFeIuIi8nqtYxhhnGa8nKz9t03MNj9GbFf9HYocIVDIV4SvKuKongDjcYZ
-zr5jC3lMZnmuQIM5XOIFu8hQWG0zQ6H+Kuf6ifolHj13E5gplCo4BoZWNnE84OZ8
-fMjNHraK6RNUUqJXW43OBEjejW+FvvZIpMvyyt8TcE/I7hieXCjib0Spu2n5SwvK
-mQgKxPJpsOpCxIOID89cK2VwOX3uOZslT3M5sU9ZkoUcwRpQ/Ntfr7ZWW8Jy/L4Y
-DWnk7IvOvI4fFlmRQONIeWpr8euHFmCL8L8dJ29AI9oB2lvs7ZovvWw9QTE8E6iU
-EjVBwtdG6KqWJxP803h8DAvvD0Vsu0KzQFr+Pwre3NP2FHYDCR0=
-=E0uq
------END PGP SIGNATURE-----
+                        Geert
 
---87caa6e717479adfa0f5d015ffee82cc14ceb938e5f7a71c46d45b7997b5--
+--=20
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
+
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
 
