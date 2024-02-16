@@ -1,132 +1,143 @@
-Return-Path: <linux-omap+bounces-652-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-653-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F678857B5D
-	for <lists+linux-omap@lfdr.de>; Fri, 16 Feb 2024 12:17:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D6C1857B86
+	for <lists+linux-omap@lfdr.de>; Fri, 16 Feb 2024 12:23:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BBDF2850AB
-	for <lists+linux-omap@lfdr.de>; Fri, 16 Feb 2024 11:17:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D0BAB1C23C01
+	for <lists+linux-omap@lfdr.de>; Fri, 16 Feb 2024 11:23:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F270359B60;
-	Fri, 16 Feb 2024 11:17:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C1687763F;
+	Fri, 16 Feb 2024 11:23:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="xnjqB70R"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F+TkqYOU"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E07B459B42;
-	Fri, 16 Feb 2024 11:17:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.248
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5140C1BF50;
+	Fri, 16 Feb 2024 11:23:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708082230; cv=none; b=pr/N3PyBtvZnZBungHjeMgIsuQNT/lWMvrGhxeekkVGfGa1Uq0N3bdh3Wn1AIgjA4q2aM9OgAo4JNq+A/9bPGtlpJQS+xmzRVdvHrOLu5uDbE3D7ucXxYuKBmCYOZphMW4YKeMaF3dZkdQPqhYjtO5ns++Kwdvlr4W1ZGhFnEyk=
+	t=1708082622; cv=none; b=I45czSrF9fovdNW+NuQHcALHGIkJe67bx1veY4ucRjlpRrlea+W+8Llknyn6ep+dq4xFY7zWKu8mFBD74VBs3MUTnsNr2+3GN+kBE9iAPxbOt/SMkOtozcrNFgQDeD/0pMEyaJae42/oTjgf0kgRCf7psc0PcQsGh8S8+odz3ZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708082230; c=relaxed/simple;
-	bh=/WroAcfP5qG7Ht8rBeZ30Rehc+ZEdMafXSdz1qut0Qk=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K45RLyH1aOHxLhEI3GguC9frUSpT2AauTdgysZCp/kJsV48ZTLr+U5tmJnNeVLiJkYglOjHCsUe08xfRHgA7J6ZGpmEn7MY21l5bMs/1KmCkHqiGvu8r7F0LeWHNSG6tazkZMku5TC+Yg4I6ayylO6Z122fksb6igt8zC2zhXTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=xnjqB70R; arc=none smtp.client-ip=198.47.23.248
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-	by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 41GBGYwO083346;
-	Fri, 16 Feb 2024 05:16:34 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1708082194;
-	bh=nDk2WfWJt2aWSEBbueJOkQd7RmDzKK1+hpo9/zydDDU=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To;
-	b=xnjqB70RZei0K4O+rcT6eO2ST3qLKTEhl14fwgXrQ/PjR0cJd047YBlktyZiFMTxN
-	 kaE6WnDRU2uoAy6LBBf/cW5JbWMlYDuJH/sXEI9mWo/1w5XolypGO7ih9/EjTw5e3d
-	 lmijIfCRv+JCRF+uEubu2vehX1u8irFGHmRiYRwA=
-Received: from DFLE104.ent.ti.com (dfle104.ent.ti.com [10.64.6.25])
-	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 41GBGYBh004264
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Fri, 16 Feb 2024 05:16:34 -0600
-Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE104.ent.ti.com
- (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 16
- Feb 2024 05:16:34 -0600
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE111.ent.ti.com
- (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Fri, 16 Feb 2024 05:16:34 -0600
-Received: from localhost (uda0492258.dhcp.ti.com [172.24.227.9])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 41GBGXf7110209;
-	Fri, 16 Feb 2024 05:16:33 -0600
-Date: Fri, 16 Feb 2024 16:46:32 +0530
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
-To: =?utf-8?B?VGjDqW8=?= Lebrun <theo.lebrun@bootlin.com>
-CC: Siddharth Vadapalli <s-vadapalli@ti.com>,
-        Thomas Richard
-	<thomas.richard@bootlin.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>, Andy Shevchenko <andy@kernel.org>,
-        Tony
- Lindgren <tony@atomide.com>,
-        Haojian Zhuang <haojian.zhuang@linaro.org>,
-        Vignesh R <vigneshr@ti.com>, Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Janusz
- Krzysztofik <jmkrzyszt@gmail.com>,
-        Andi Shyti <andi.shyti@kernel.org>, Peter
- Rosin <peda@axentia.se>,
-        Vinod Koul <vkoul@kernel.org>,
-        Kishon Vijay Abraham
- I <kishon@kernel.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Lorenzo
- Pieralisi <lpieralisi@kernel.org>,
-        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?=
-	<kw@linux.com>,
-        Rob Herring <robh@kernel.org>, Bjorn Helgaas
-	<bhelgaas@google.com>,
-        <linux-gpio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <linux-omap@vger.kernel.org>,
-        <linux-i2c@vger.kernel.org>, <linux-phy@lists.infradead.org>,
-        <linux-pci@vger.kernel.org>, <gregory.clement@bootlin.com>,
-        <thomas.petazzoni@bootlin.com>, <u-kumar1@ti.com>
-Subject: Re: [PATCH v3 18/18] PCI: j721e: add suspend and resume support
-Message-ID: <8d47e1d0-69a3-475e-8dd8-64514872e026@ti.com>
-References: <20240102-j7200-pcie-s2r-v3-0-5c2e4a3fac1f@bootlin.com>
- <20240102-j7200-pcie-s2r-v3-18-5c2e4a3fac1f@bootlin.com>
- <aa791703-81d8-420c-ba35-c8fd08bc3f07@ti.com>
- <CZ6GG6OQUJTX.2OM5TC9YLOAXV@bootlin.com>
+	s=arc-20240116; t=1708082622; c=relaxed/simple;
+	bh=JJcfIBGCp3ZKPHLIPV/hxkDPf5TaHhr8o0zt0AcWnRY=;
+	h=Content-Type:Mime-Version:Date:Message-Id:Subject:From:To:
+	 References:In-Reply-To; b=VeNuZsLJBfZaNt4ZlchG+fK6/m3Wk+yeVHVZ1fLqOksInBCK5gkqZYpoYlpeA0Fij7yY+zXZAl28xVrALcK9Gb6l7336ispDXtEzr4NrUCG5ABvUcKdow/cNlJso1cqdbkCnwJKsDBGaVwsgEVRc5UAXSyNfQiTU5G8TFxXPR0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F+TkqYOU; arc=none smtp.client-ip=209.85.167.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-511acd26c2bso2750065e87.2;
+        Fri, 16 Feb 2024 03:23:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1708082618; x=1708687418; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:message-id:date:mime-version
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=qCkIBF2HUHDgPA/fkE23qtD6c+3DYAPMy1MuIjYZckA=;
+        b=F+TkqYOU1LIIbCw/kiIShDUIoUVlvbGoyMy5/G8pVcq6M6Ta/1cYcz5KdWju4hGJt/
+         WM3N2BShCm2pmcvre4zpjrSWyJcBwLU8WOuqI+eU7f6URnUzbOYlIZxWnGNtjNTIVn5I
+         nEJUP3btos9Epr5iVcb5e1eqHPgXZZS0+N635f6xAc3IWLjA71h+tCR5Hfj+DzmSBW6l
+         Hskfj3CbhjY9t9VpxB+5RZZsbMIM4NXzD7SaTBbpsz63hTKE6ehmtq5D0a+WLqcC0DBQ
+         lKD5RfaWhT+oqP0QNISyFb6BPUdHAb9ik20rO7Zelfp9aUpsttP4p+YHzHNymX4U+8HY
+         0HVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708082618; x=1708687418;
+        h=in-reply-to:references:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qCkIBF2HUHDgPA/fkE23qtD6c+3DYAPMy1MuIjYZckA=;
+        b=JgBONV4aQhJR1VElPZq6ykdPkVhUtx/xdJ9jeAq6LQacN0FCxhB9Jt24mcXt5BzQZX
+         9yfHdF8gQW2IX1c44TLuFX389YPmt+YrwQPeBddJ8H8X16ZA7Eq5g5JGxRwqKeFL2Pzk
+         wz3ff8CTdqgn0rLpfoI0BXZX4gxjWOXqlmbOCp5v3x1Nk38n+S0QYoC6qy7g1bMY4GAA
+         6HXVr5Q3v+IRSbInP1ZBtv+LHicyuUFnAXona22oeSGt7hILK6mW4xctFrQQ/Z3LQq6g
+         eSgB/fy+1MmtfmYHLcMVMM4dkLyIgK5T84E/T/EuoPiAyyfRuwfG+zXGKcC4O238Fd3g
+         ASPg==
+X-Forwarded-Encrypted: i=1; AJvYcCU6xPvsAzMNcbW4wl21CCLyXej6jLImAWb9o6/qLuPlqBOS+g1DVxsTBilnk/5Bk3lQD2cF7nK/es+aLa5aS4ZmUjxqhORPV6q1dA6Yydp/m0DSSwD9NFpsY9+OCb6rBFuwP7/SGBIY7c+DGXfyofw8dwvClJG99SZ8d4ymjMGeWAeZva1DxTkLQ8FJMyoLEe6f41Wk9ucYUxvIfBVRlriInAnr6PShpYwrIPiKSANm7/VUqfidu+Kms7+GO2BGXjMDfYPytWXZdZH9ZcjdQJvDvDy86DlVUxRUVmQ3aGbs2Rt6F80cVzd6rMRu259tstLGRk5Sf10JfVAHHMhldj5WGOxIGH4/fRahoQUrAE1pVGQqnJddDSGX9G13WQ==
+X-Gm-Message-State: AOJu0YyKyOU+02rDKxEufmO4WKCB9TLkRKlz9WG/bXV622DUcM38thN9
+	YviF23Wh7agyKrc4/ddkBiBn4kThkpFqV3chJcEeWvOYx3TO4isx
+X-Google-Smtp-Source: AGHT+IFk4ZkCa0R/m44omA2Xi3MhoAzI8tKPY8V0cTU/2axm4inHWuZNW2UcVx0PzaNks2ZutoR+ew==
+X-Received: by 2002:a05:6512:716:b0:511:8b40:ab6b with SMTP id b22-20020a056512071600b005118b40ab6bmr2834631lfs.50.1708082618024;
+        Fri, 16 Feb 2024 03:23:38 -0800 (PST)
+Received: from localhost (p200300e41f147f00f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f14:7f00:f22f:74ff:fe1f:3a53])
+        by smtp.gmail.com with ESMTPSA id f23-20020a170906561700b00a3d828c54f1sm1459386ejq.135.2024.02.16.03.23.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 16 Feb 2024 03:23:37 -0800 (PST)
+Content-Type: multipart/signed;
+ boundary=87caa6e717479adfa0f5d015ffee82cc14ceb938e5f7a71c46d45b7997b5;
+ micalg=pgp-sha256; protocol="application/pgp-signature"
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CZ6GG6OQUJTX.2OM5TC9YLOAXV@bootlin.com>
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Mime-Version: 1.0
+Date: Fri, 16 Feb 2024 12:23:36 +0100
+Message-Id: <CZ6GR5BWC80N.36XRBM33WF8MW@gmail.com>
+Subject: Re: [PATCH] clk: constify the of_phandle_args argument of
+ of_clk_provider
+From: "Thierry Reding" <thierry.reding@gmail.com>
+To: "Krzysztof Kozlowski" <krzysztof.kozlowski@linaro.org>, "Michael
+ Turquette" <mturquette@baylibre.com>, "Stephen Boyd" <sboyd@kernel.org>,
+ "Sudeep Holla" <sudeep.holla@arm.com>, "Peng Fan" <peng.fan@nxp.com>,
+ "Shawn Guo" <shawnguo@kernel.org>, "Nishanth Menon" <nm@ti.com>, "Bjorn
+ Andersson" <andersson@kernel.org>, "Konrad Dybcio"
+ <konrad.dybcio@linaro.org>, "Geert Uytterhoeven" <geert+renesas@glider.be>,
+ "Jonathan Hunter" <jonathanh@nvidia.com>, "Linus Walleij"
+ <linus.walleij@linaro.org>, "Laurent Pinchart"
+ <laurent.pinchart@ideasonboard.com>, "Mauro Carvalho Chehab"
+ <mchehab@kernel.org>, "Vinod Koul" <vkoul@kernel.org>, "Russell King"
+ <linux@armlinux.org.uk>, "Srinivas Kandagatla"
+ <srinivas.kandagatla@linaro.org>, "Mark Brown" <broonie@kernel.org>,
+ "Jaroslav Kysela" <perex@perex.cz>, "Takashi Iwai" <tiwai@suse.com>,
+ <linux-clk@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+ <linux-kernel@vger.kernel.org>, <patches@opensource.cirrus.com>,
+ <linux-stm32@st-md-mailman.stormreply.com>, "NXP Linux Team"
+ <linux-imx@nxp.com>, <linux-amlogic@lists.infradead.org>,
+ <linux-arm-msm@vger.kernel.org>, <linux-renesas-soc@vger.kernel.org>,
+ <linux-tegra@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+ <linux-media@vger.kernel.org>, <linux-phy@lists.infradead.org>,
+ <alsa-devel@alsa-project.org>, <linux-sound@vger.kernel.org>
+X-Mailer: aerc 0.16.0-1-0-g560d6168f0ed-dirty
+References: <20240208163710.512733-1-krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20240208163710.512733-1-krzysztof.kozlowski@linaro.org>
 
-On 24/02/16 12:09PM, Théo Lebrun wrote:
-> Hello,
-> 
-> On Fri Feb 16, 2024 at 11:48 AM CET, Siddharth Vadapalli wrote:
-> > On 24/02/15 04:18PM, Thomas Richard wrote:
-> > > From: Théo Lebrun <theo.lebrun@bootlin.com>
-> > > 
-> > > Add suspend and resume support. Only the rc mode is supported.
-> > > 
-> > > During the suspend stage PERST# is asserted, then deasserted during the
-> > > resume stage.
-> >
-> > Wouldn't this imply that the Endpoint device will be reset and therefore
-> > lose context? Or is it expected that the driver corresponding to the
-> > Endpoint Function in Linux will restore the state on resume, post reset?
-> 
-> This does imply exactly that. Endpoint driver must be able to restore
-> context anyway, as system-wide suspend could mean lost power to PCI RC
-> controller (eg suspend-to-RAM) or PCI rails (dependent on hardware).
+--87caa6e717479adfa0f5d015ffee82cc14ceb938e5f7a71c46d45b7997b5
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
 
-Thank you for confirming.
+On Thu Feb 8, 2024 at 5:37 PM CET, Krzysztof Kozlowski wrote:
+[...]
+>  drivers/clk/tegra/clk-bpmp.c                  |  2 +-
+>  drivers/clk/tegra/clk-tegra124.c              |  2 +-
+>  drivers/clk/tegra/clk-tegra20.c               |  2 +-
+>  drivers/clk/tegra/clk-tegra30.c               |  2 +-
+[...]
 
-Regards,
-Siddharth.
+Acked-by: Thierry Reding <treding@nvidia.com>
+
+--87caa6e717479adfa0f5d015ffee82cc14ceb938e5f7a71c46d45b7997b5
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmXPRbkACgkQ3SOs138+
+s6FzcQ/9F5fJyakwkqSmFCFsFTUwQ0Vv6AmJP7kf0C2oOGiJISmgaFwRE7ikl73f
+tfJ/jetoF3grVZE950B1ZtY1sAK6WLfAlRnkD52YE25Y+NcehSPfcE2403gBL/JZ
+6Rtlw4U/jJhHC7k1NNSCV6W3YM9tFJZzPdOwWL1efc33DWZQkTgvIPKSfqGIHd0i
+iclZTsusANQThdL9ASOlvq81RrglhXgo2PIt/oeGjEBtf+IoDVhHSWqJ65e/lmYV
+cBw1uhHa5zHLiWoT4xTqJY8dPkSLfBSRM3uflLUkA5BRNllvVsHAPvIgR6aBpqi5
+KeLdZEDFeIuIi8nqtYxhhnGa8nKz9t03MNj9GbFf9HYocIVDIV4SvKuKongDjcYZ
+zr5jC3lMZnmuQIM5XOIFu8hQWG0zQ6H+Kuf6ifolHj13E5gplCo4BoZWNnE84OZ8
+fMjNHraK6RNUUqJXW43OBEjejW+FvvZIpMvyyt8TcE/I7hieXCjib0Spu2n5SwvK
+mQgKxPJpsOpCxIOID89cK2VwOX3uOZslT3M5sU9ZkoUcwRpQ/Ntfr7ZWW8Jy/L4Y
+DWnk7IvOvI4fFlmRQONIeWpr8euHFmCL8L8dJ29AI9oB2lvs7ZovvWw9QTE8E6iU
+EjVBwtdG6KqWJxP803h8DAvvD0Vsu0KzQFr+Pwre3NP2FHYDCR0=
+=E0uq
+-----END PGP SIGNATURE-----
+
+--87caa6e717479adfa0f5d015ffee82cc14ceb938e5f7a71c46d45b7997b5--
 
