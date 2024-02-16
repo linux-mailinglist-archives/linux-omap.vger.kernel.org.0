@@ -1,120 +1,154 @@
-Return-Path: <linux-omap+bounces-649-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-650-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62CBB857AA5
-	for <lists+linux-omap@lfdr.de>; Fri, 16 Feb 2024 11:49:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C2B7857AD7
+	for <lists+linux-omap@lfdr.de>; Fri, 16 Feb 2024 12:00:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 033D1B229CA
-	for <lists+linux-omap@lfdr.de>; Fri, 16 Feb 2024 10:49:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF71D1F2515C
+	for <lists+linux-omap@lfdr.de>; Fri, 16 Feb 2024 11:00:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95F1A53805;
-	Fri, 16 Feb 2024 10:48:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ECBF5674D;
+	Fri, 16 Feb 2024 11:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="H7s8TSq/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="arv94Nrl"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E110535BB;
-	Fri, 16 Feb 2024 10:48:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.249
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FFF615491;
+	Fri, 16 Feb 2024 11:00:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708080538; cv=none; b=ACttQBqHmJ6C2pobJUj1JeHe7ug+yXTYFr2qS1jBUEDouXzYzK8/ZWqDgEa8H00qZpnn4JqpB6VZM2wpko9LBo6boMlnZqTL0ct+mH6cUwC4hbftgci/Z584MxTC5TOuRPDHNEYdGIWUDx3fYP4s6uTGB0q3qAWmOm0TRHTiGT0=
+	t=1708081223; cv=none; b=LyffUVQ5L3TFms3hj11sZobXDyrpXG6oRw1in6bfM2NOCkJ9+bhTz9fGkNsWPIhmhbrJY8Lr25/AUjVBzeYxQ8cqSOAC6XbNtd1/PP3HxPhFob1gG6DxgaL/zcquMg5TFc491UDG/F//HKfdPl4x3SQqfHp2dCmO8RpNDYaCVtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708080538; c=relaxed/simple;
-	bh=bSQjI5oIAeosqTym3AFvRxCY5213clKyJoH9whfcyjk=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FfOqjfmwcfHQlZbm52OZvR3GtDyb2nXGBtvhcXOtJ3EnN0cG7bn6Cv8iUrCfpLCx5DqUjxBBb0yHFVa5cafUldfRfkeEjIbz/fVn5NVFqmZebgz2IihN8laxKpu2hG5xjKM3ZYP9mBMres7BsZaHbnpZZFuYiVmKnwSYKywQsP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=H7s8TSq/; arc=none smtp.client-ip=198.47.23.249
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 41GAmR9B056970;
-	Fri, 16 Feb 2024 04:48:27 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1708080507;
-	bh=wBeXLUFC5b4/8RGzmyvF89yYPd110y8htQLDdX2WYTc=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To;
-	b=H7s8TSq/72OiEAd3rL2BUZa9KNNyAB7Wr+7vrd0Mo1gM6SSozbZDMkhsVVnB649xU
-	 AQ1kVHY38XBAREf1YPaI6jqt0jNuzg1bIqCtGX7rJo3Mr9eLWMGUPDmgecIYB6MLES
-	 Sz0EVyu19IuvkIeSFdvq3ht/39IJUFW8kOKph+kU=
-Received: from DFLE107.ent.ti.com (dfle107.ent.ti.com [10.64.6.28])
-	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 41GAmR5L129001
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Fri, 16 Feb 2024 04:48:27 -0600
-Received: from DFLE114.ent.ti.com (10.64.6.35) by DFLE107.ent.ti.com
- (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 16
- Feb 2024 04:48:27 -0600
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE114.ent.ti.com
- (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Fri, 16 Feb 2024 04:48:27 -0600
-Received: from localhost (uda0492258.dhcp.ti.com [172.24.227.9])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 41GAmQcT020589;
-	Fri, 16 Feb 2024 04:48:27 -0600
-Date: Fri, 16 Feb 2024 16:18:26 +0530
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
-To: Thomas Richard <thomas.richard@bootlin.com>
-CC: Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski
-	<brgl@bgdev.pl>,
-        Andy Shevchenko <andy@kernel.org>, Tony Lindgren
-	<tony@atomide.com>,
-        Haojian Zhuang <haojian.zhuang@linaro.org>,
-        Vignesh R
-	<vigneshr@ti.com>, Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Janusz Krzysztofik
-	<jmkrzyszt@gmail.com>,
-        Andi Shyti <andi.shyti@kernel.org>, Peter Rosin
-	<peda@axentia.se>,
-        Vinod Koul <vkoul@kernel.org>,
-        Kishon Vijay Abraham I
-	<kishon@kernel.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Lorenzo
- Pieralisi <lpieralisi@kernel.org>,
-        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?=
-	<kw@linux.com>,
-        Rob Herring <robh@kernel.org>, Bjorn Helgaas
-	<bhelgaas@google.com>,
-        <linux-gpio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <linux-omap@vger.kernel.org>,
-        <linux-i2c@vger.kernel.org>, <linux-phy@lists.infradead.org>,
-        <linux-pci@vger.kernel.org>, <gregory.clement@bootlin.com>,
-        <theo.lebrun@bootlin.com>, <thomas.petazzoni@bootlin.com>,
-        <u-kumar1@ti.com>, <s-vadapalli@ti.com>
-Subject: Re: [PATCH v3 18/18] PCI: j721e: add suspend and resume support
-Message-ID: <aa791703-81d8-420c-ba35-c8fd08bc3f07@ti.com>
-References: <20240102-j7200-pcie-s2r-v3-0-5c2e4a3fac1f@bootlin.com>
- <20240102-j7200-pcie-s2r-v3-18-5c2e4a3fac1f@bootlin.com>
+	s=arc-20240116; t=1708081223; c=relaxed/simple;
+	bh=CHIv7iKSTpiAvZmuBmb9/qlK73+FpJXa8Lg4JrGZpxg=;
+	h=Content-Type:Mime-Version:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=rF5UdxRv72oJX8xzbaiuV5fRIo9XfpqRXNwoz+tqNuHF8RdPZaN0TiNrYV3Q9zYCeEGf845falSwEfUSKkro+HiI8WxeaFrNPhW9Zwziyxil0ajXFoA368QqrRipmpRqP0gOVsGwOqvzp6XfkeM3Y8zl8Te4a0gooAHdTU+NaPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=arv94Nrl; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-562178003a1so723437a12.1;
+        Fri, 16 Feb 2024 03:00:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1708081220; x=1708686020; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=PLhCxXeXfTy0oKV1PZq76pGTpwbsrb7RXVp5Ag35IfA=;
+        b=arv94NrlS/AWzQgV93s9+FKi68/sen4hBq65EDqOqyYkPrGwoP/obI4GmqVhP3fLHu
+         KJJzOjvQmSwDwfiGDx0cn6dH7JU/vfVMOknIT+nitBHsf/H/O/PeX1LNvs3PkUTz7nGB
+         t+7gWkqtQeztblDvFyJ/Y+0Bzb7giwZLaSPjHq6U1qC56QKy1jY60utyZEJqIqv/M9cQ
+         cCTCywlLsTkr2ondSeZ31Wf9cHjuFzSA9oNGFir0j/QRFKAEVISGqlHrg4lM9NhSArXN
+         jpwX3kQUxADZoNOB4W/lRZeJABaq96JA7oZ1GJ+ThN6T2rQs9IbaAmMnuQvQT2L9fgZT
+         E2bQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708081220; x=1708686020;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PLhCxXeXfTy0oKV1PZq76pGTpwbsrb7RXVp5Ag35IfA=;
+        b=GHR/sdTCbRD0k1yp/aRICgEOcJjnDfZgG07F6okhBypUTjhos2AW1/waYORvk5Ng4+
+         JXjLki+1rJeDlZZwn18TJfK5J5EV741GLPx5XVj9U7kqo7EJ0r7aLIdE2SA7VMNbgHag
+         RY66w8KUwnij7cBuZ+yw0fop7h8GH0WgMGbU198Dbq7LlX9N0UKTxsonhk5OJf5+Qz4E
+         eF3k53uxwJeLAUHZmlUBjnixIX3CgILQD7KPfyte7cEkpzqIhElbMuAEcozOfkEA9Wt8
+         kBEneCrRC14aMt7FOQHHKOIs1iPhSkBXvH/D2h7ivsJFb/KG5fpi4Ash3xR9rBhotkce
+         DO7Q==
+X-Forwarded-Encrypted: i=1; AJvYcCV8IzmXBTJOpsTSxqEI48feCvGJUFzb4pc+g0HjBg1PH0CI4ooZfb18gyMDzMwTFxS2pj6oiY1BIDCfEGY2X6SO7rpitlt5n3U/7875rI8q/S+IgukIW93s2jsclqLI3kqY9bNuDkskjVfsBf8wjtz7bizc+ArDIv8UNNRtG1+etOb1nWVs3eLx1sXqg1oC2g0lnJ922l0yWO+th1JyddbVR5oCteXGjrpnf1diCxXHnG2rwCquxK4QR3mwgHMjZIE+c7aNKPL5o/Oil1wLfZX4JFxok/fZUM25POIYyYudznnOa0//nWAIbppY4mMbsvu15h/XGpSAUcf+5VS7eOvNWA==
+X-Gm-Message-State: AOJu0YzahorHPBWQ0Nd+HBilNx4JKtcbU1AJs89cjgIniWu7wuKfWdC2
+	0g4xMMm92BEqNI35QI0TsEFuhhuEJRFbi4kvDHvcHyzex7xCFDdI
+X-Google-Smtp-Source: AGHT+IGJg1U3l1s0cZ7SNrJJLULfB++IrJsj8RGS0gGWbyw09mvwxmMXattq7dTy3fEu4mQVbz3vaQ==
+X-Received: by 2002:a17:906:46da:b0:a3c:f6dc:ea46 with SMTP id k26-20020a17090646da00b00a3cf6dcea46mr3038631ejs.49.1708081220098;
+        Fri, 16 Feb 2024 03:00:20 -0800 (PST)
+Received: from localhost (p200300e41f147f00f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f14:7f00:f22f:74ff:fe1f:3a53])
+        by smtp.gmail.com with ESMTPSA id ts4-20020a170907c5c400b00a3df003b6a9sm219235ejc.119.2024.02.16.03.00.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 16 Feb 2024 03:00:19 -0800 (PST)
+Content-Type: multipart/signed;
+ boundary=3f4d0b1f359aea3b19397b20b790a1177690846d9dafd4c758ed6e868b5b;
+ micalg=pgp-sha256; protocol="application/pgp-signature"
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240102-j7200-pcie-s2r-v3-18-5c2e4a3fac1f@bootlin.com>
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Mime-Version: 1.0
+Date: Fri, 16 Feb 2024 12:00:18 +0100
+Message-Id: <CZ6G9AYXMMHZ.3ABQKCJUHPSLU@gmail.com>
+Cc: <linux-arm-kernel@lists.infradead.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-aspeed@lists.ozlabs.org>,
+ <openbmc@lists.ozlabs.org>, <linux-tegra@vger.kernel.org>,
+ <linux-stm32@st-md-mailman.stormreply.com>, <linux-omap@vger.kernel.org>,
+ <linux-mediatek@lists.infradead.org>, <linux-renesas-soc@vger.kernel.org>,
+ <linux-arm-msm@vger.kernel.org>, <linux-kbuild@vger.kernel.org>
+Subject: Re: [PATCH 2/6] arm: dts: Fix dtc interrupt_provider warnings
+From: "Thierry Reding" <thierry.reding@gmail.com>
+To: "Rob Herring" <robh@kernel.org>, <soc@kernel.org>, "Shawn Guo"
+ <shawnguo@kernel.org>, "Sascha Hauer" <s.hauer@pengutronix.de>,
+ "Pengutronix Kernel Team" <kernel@pengutronix.de>, "Fabio Estevam"
+ <festevam@gmail.com>, "NXP Linux Team" <linux-imx@nxp.com>, "Rob Herring"
+ <robh+dt@kernel.org>, "Krzysztof Kozlowski"
+ <krzysztof.kozlowski+dt@linaro.org>, "Conor Dooley" <conor+dt@kernel.org>,
+ "Tsahee Zidenberg" <tsahee@annapurnalabs.com>, "Antoine Tenart"
+ <atenart@kernel.org>, "Joel Stanley" <joel@jms.id.au>, "Andrew Jeffery"
+ <andrew@codeconstruct.com.au>, "Ray Jui" <rjui@broadcom.com>, "Scott
+ Branden" <sbranden@broadcom.com>, "Broadcom internal kernel review list"
+ <bcm-kernel-feedback-list@broadcom.com>, "Andrew Lunn" <andrew@lunn.ch>,
+ "Gregory Clement" <gregory.clement@bootlin.com>, "Sebastian Hesselbarth"
+ <sebastian.hesselbarth@gmail.com>, =?utf-8?q?Jonathan_Neusch=C3=A4fer?=
+ <j.neuschaefer@gmx.net>, "Jonathan Hunter" <jonathanh@nvidia.com>, "Stefan
+ Agner" <stefan@agner.ch>, "Maxime Coquelin" <mcoquelin.stm32@gmail.com>,
+ "Alexandre Torgue" <alexandre.torgue@foss.st.com>,
+ =?utf-8?q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>, "Tony Lindgren"
+ <tony@atomide.com>, "Chanho Min" <chanho.min@lge.com>, "Matthias Brugger"
+ <matthias.bgg@gmail.com>, "AngeloGioacchino Del Regno"
+ <angelogioacchino.delregno@collabora.com>, "Geert Uytterhoeven"
+ <geert+renesas@glider.be>, "Magnus Damm" <magnus.damm@gmail.com>, "Linus
+ Walleij" <linusw@kernel.org>, "Imre Kaloz" <kaloz@openwrt.org>, "Bjorn
+ Andersson" <andersson@kernel.org>, "Konrad Dybcio"
+ <konrad.dybcio@linaro.org>, "Masahiro Yamada" <masahiroy@kernel.org>,
+ "Nathan Chancellor" <nathan@kernel.org>, "Nicolas Schier"
+ <nicolas@fjasle.eu>
+X-Mailer: aerc 0.16.0-1-0-g560d6168f0ed-dirty
+References: <20240213-arm-dt-cleanups-v1-0-f2dee1292525@kernel.org>
+ <20240213-arm-dt-cleanups-v1-2-f2dee1292525@kernel.org>
+In-Reply-To: <20240213-arm-dt-cleanups-v1-2-f2dee1292525@kernel.org>
 
-On 24/02/15 04:18PM, Thomas Richard wrote:
-> From: Théo Lebrun <theo.lebrun@bootlin.com>
-> 
-> Add suspend and resume support. Only the rc mode is supported.
-> 
-> During the suspend stage PERST# is asserted, then deasserted during the
-> resume stage.
+--3f4d0b1f359aea3b19397b20b790a1177690846d9dafd4c758ed6e868b5b
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
 
-Wouldn't this imply that the Endpoint device will be reset and therefore
-lose context? Or is it expected that the driver corresponding to the
-Endpoint Function in Linux will restore the state on resume, post reset?
+On Tue Feb 13, 2024 at 8:34 PM CET, Rob Herring wrote:
+[...]
+>  arch/arm/boot/dts/nvidia/tegra30-apalis-v1.1.dtsi      |  1 -
+>  arch/arm/boot/dts/nvidia/tegra30-apalis.dtsi           |  1 -
+>  arch/arm/boot/dts/nvidia/tegra30-colibri.dtsi          |  1 -
+[...]
 
-Regards,
-Siddharth.
+Acked-by: Thierry Reding <treding@nvidia.com>
+
+--3f4d0b1f359aea3b19397b20b790a1177690846d9dafd4c758ed6e868b5b
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmXPQEMACgkQ3SOs138+
+s6F44g/+KPT4RF0vNadKSFIV9/iihK84gvvjHc/8S/+Ks+sJw7//4Zws8JtsGdab
+UvvmQ8R5uIrvLpONlnmdl8cjWpnA3OV1VMJRgXeYIR/kKZxuoiZF03R8COiGQvfJ
+Cf4mq2od1sc4OOIFxTV0KJfp6XbmI09stW6zm5wk1F5CjbnMD0TTgxQhEAsOLfum
+aDJefFKp6T8QOlCQhCeYYnXwUIBdoYs7z+SRXBuJWJvgwdPMnyc4M7/5PtW57UXZ
+Vn2Hri2+u9imbcIzSUkrPLev1Kg5sWTF7CSICzmA+jTvHQUAZFQQMyjrGFkFTeI/
+g/J4ljpwRqBlhXRx5ioNbGqYmptZvuljjH6bT8hDzTRNPdfvZfKJSX2+wWb5+kM7
+/CdKfwORAUgMMqqABa4mSxHys/mmyeLJ2idQj/buql4pC7EpgD7SZRadqnaAkD/S
+3zxA6VBVq4Jt+6X3kjgGySa0tUyBMSWydLjH/TTkcZtwu8iEEggp7MxiYA2wJhne
+Pf5VjnhX5nLnPJuJn/Av5GHF1jvsrt9lENJTmpLFZIzxhxWrPntynrvfbpAV50e3
+eWqEDRu7eWFatZNZTrnRhmOHcGO197HIErp20X4PVISOY0uolzuiHFpjQBCUGQdV
+1xaTRZPbjaTB4pcqWNxi+mI4M6jIyDJc6COrC2G9t5GYMcbE6W4=
+=HY7z
+-----END PGP SIGNATURE-----
+
+--3f4d0b1f359aea3b19397b20b790a1177690846d9dafd4c758ed6e868b5b--
 
