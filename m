@@ -1,111 +1,101 @@
-Return-Path: <linux-omap+bounces-640-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-641-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED3DF8575CB
-	for <lists+linux-omap@lfdr.de>; Fri, 16 Feb 2024 07:02:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D459857659
+	for <lists+linux-omap@lfdr.de>; Fri, 16 Feb 2024 07:59:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 181D31C2262C
-	for <lists+linux-omap@lfdr.de>; Fri, 16 Feb 2024 06:02:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 604AC1C2298E
+	for <lists+linux-omap@lfdr.de>; Fri, 16 Feb 2024 06:59:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FF3B13AEE;
-	Fri, 16 Feb 2024 06:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51E1F14A8B;
+	Fri, 16 Feb 2024 06:59:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="THXyeRci"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="vy7uMHxn"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9076063CF;
-	Fri, 16 Feb 2024 06:02:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B6C2FC01;
+	Fri, 16 Feb 2024 06:59:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.142
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708063356; cv=none; b=uHIfdb6S3cpIIF2EUwzV/0AbLqdEep5MJKvsS+kGAvRU4k8l2P1QRVyvhx8IyOgcDyJlGmtJYA9gluWOYRh0ll167DxNWTvCCJyqNmpXiokUbYheHsIRK5RJ86SGgrGOwzJdNnSxa8Z1cB95VM8lJTclxL3EwMi4QV+yC0qv3LM=
+	t=1708066781; cv=none; b=UHMOPmp3+rxx20C+aRxK9DI8wfwIKLD/ynhHhmdMEO9pPZPl2LPWTm+tkQF1Kq1T19UDyhgVs11MBOUAHAcwW3Aq2i9oQ6U6CyhHQM6wGQAllyqw86tAtXn+e7YlIxj8nD1pkbPrUzEmpTnwoSoU0bIwRJ0eoEquzTojGWnCNVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708063356; c=relaxed/simple;
-	bh=xLbg9CJsDugebWTcD0p7oHppt3/BIZOhQtv1Tcg/emU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L6wnicCmN85jxHLESXiPFVzwH6c4L6/UHtE8f3T2Ne4aURJ+mxQVwMtM3ZmOl0be5I8xk2Iv5jtv69uyFqrkps8pVWH0plh8BfCt93tADp3aZuTckqRpCntDgj7fBM0rr1mhA3C4tFG8tAM/Pf5YSyoPiOZY6pj6gebFoBygLwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=THXyeRci; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D6DFC433C7;
-	Fri, 16 Feb 2024 06:02:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708063356;
-	bh=xLbg9CJsDugebWTcD0p7oHppt3/BIZOhQtv1Tcg/emU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=THXyeRcij7KtomuLH6sUqnXn8UU7L7Hte6T9jzC5fFgVNlU3zQKtDaRdHKmQbcgAN
-	 CRhnLUVsiOag7GJykwVBqAHhbNekbvdJn2iTZr3hWMoippmFXyEWEJXGt6XEtrcA5T
-	 gWtVwASk5StZBaoXwTP1sDuRPOBBYT2w1d1Ubgd4rwjDtL064eHSRhxJ3A3LYwgpRF
-	 AXuNnzln5/R5Frx7J9tRu5PklVyvd7GMXIXtfXEstV29hrLzwnpYCSIvBEq0KuSaSD
-	 6RJEcQBJ4KPZfh8oe5/P6hxicMI/Rw5+2L17q/fcIcbmzsIbNukbmK1OaO6KrkpQsH
-	 xdirAFy6zk3hw==
-Date: Fri, 16 Feb 2024 11:32:31 +0530
-From: Vinod Koul <vkoul@kernel.org>
-To: Andy Shevchenko <andy@kernel.org>
-Cc: Thomas Richard <thomas.richard@bootlin.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Tony Lindgren <tony@atomide.com>,
-	Haojian Zhuang <haojian.zhuang@linaro.org>,
-	Vignesh R <vigneshr@ti.com>, Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-	Andi Shyti <andi.shyti@kernel.org>, Peter Rosin <peda@axentia.se>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-	linux-i2c@vger.kernel.org, linux-phy@lists.infradead.org,
-	linux-pci@vger.kernel.org, gregory.clement@bootlin.com,
-	theo.lebrun@bootlin.com, thomas.petazzoni@bootlin.com,
-	u-kumar1@ti.com
-Subject: Re: [PATCH v3 08/18] phy: ti: phy-j721e-wiz: split wiz_clock_init()
- function
-Message-ID: <Zc76d4B4hjTC3xum@matsya>
-References: <20240102-j7200-pcie-s2r-v3-0-5c2e4a3fac1f@bootlin.com>
- <20240102-j7200-pcie-s2r-v3-8-5c2e4a3fac1f@bootlin.com>
- <Zc4xJtLl3zo_YrBC@smile.fi.intel.com>
+	s=arc-20240116; t=1708066781; c=relaxed/simple;
+	bh=9Bdp+1r/OqcKTlUqSz41twCITHzsqK6lYijcbC3Zeig=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=QE5qJnddVBi3Y8teQgtpPRTcS8Td2j9JS3i1ZCgGNLfbr1aGcWuQ9oktA/Wy2VCWL1/Z8apcyhtgq5fRqit44DkG5K+hxCQYDcev4ohFSqiPP0W7lUVGR0ARiaS8OUzI8eWOgGOmTy6Bz0Bt6CjCUWrxunKpOJCY9jlwE0hTLkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=vy7uMHxn; arc=none smtp.client-ip=198.47.19.142
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+	by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 41G6xVFr009824;
+	Fri, 16 Feb 2024 00:59:31 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1708066771;
+	bh=9488Fqw/4A/CrgJLyaVNYxs+5hfqdJMVXU+J6xLUSfY=;
+	h=From:To:CC:Subject:Date;
+	b=vy7uMHxnyE3PRcLr3P3yrvzrrg8myTVq+/L0JxNBcxUrcqLDY3pS4qPCBhZ6W4Iq6
+	 +N1IxCepbTUfPGdj0jJEDvQ+at24PILdZv3YT0oswc9QUmHX9qWJp4UmzBr2IdunJV
+	 XTAclO1DcsuyriLbYEB9vWstocGCJ8JcevR3nOBg=
+Received: from DFLE109.ent.ti.com (dfle109.ent.ti.com [10.64.6.30])
+	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 41G6xVaf113613
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Fri, 16 Feb 2024 00:59:31 -0600
+Received: from DFLE100.ent.ti.com (10.64.6.21) by DFLE109.ent.ti.com
+ (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 16
+ Feb 2024 00:59:30 -0600
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE100.ent.ti.com
+ (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Fri, 16 Feb 2024 00:59:30 -0600
+Received: from uda0492258.dhcp.ti.com (uda0492258.dhcp.ti.com [172.24.227.9])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 41G6xR4f016551;
+	Fri, 16 Feb 2024 00:59:27 -0600
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
+To: <lpieralisi@kernel.org>, <kw@linux.com>, <robh@kernel.org>,
+        <bhelgaas@google.com>, <kishon@kernel.org>, <vigneshr@ti.com>
+CC: <linux-omap@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+        <srk@ti.com>, <s-vadapalli@ti.com>
+Subject: [PATCH] MAINTAINERS: PCI: TI DRA7XX/J721E: Add Siddharth Vadapalli as a reviewer
+Date: Fri, 16 Feb 2024 12:29:26 +0530
+Message-ID: <20240216065926.473805-1-s-vadapalli@ti.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zc4xJtLl3zo_YrBC@smile.fi.intel.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 
-On 15-02-24, 17:43, Andy Shevchenko wrote:
-> On Thu, Feb 15, 2024 at 04:17:53PM +0100, Thomas Richard wrote:
-> > The wiz_clock_init() function mixes probe and hardware configuration.
-> > Rename the wiz_clock_init() to wiz_clock_probe() and move the hardware
-> > configuration part in a new function named wiz_clock_init().
-> > 
-> > This hardware configuration sequence must be called during the resume
-> > stage of the driver.
-> 
-> ...
-> 
-> (Side note, as this can be done later)
-> 
-> >  	if (rate >= 100000000)
-> 
-> > +		if (rate >= 100000000)
-> 
-> > +	if (rate >= 100000000)
-> 
-> I would make local definition and use it, we may get the global one as there
-> are users.
-> 
-> #define HZ_PER_GHZ	1000000000UL
+Since I have been contributing to the driver for a while and wish to help
+with the review process, add myself as a reviewer.
 
-Better to define as:
-#define HZ_PER_GHZ 1 * GIGA
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+---
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index cd7980e5b1ad..7d6a60002fc1 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -16976,6 +16976,7 @@ F:	drivers/pci/controller/dwc/*designware*
+ 
+ PCI DRIVER FOR TI DRA7XX/J721E
+ M:	Vignesh Raghavendra <vigneshr@ti.com>
++R:	Siddharth Vadapalli <s-vadapalli@ti.com>
+ L:	linux-omap@vger.kernel.org
+ L:	linux-pci@vger.kernel.org
+ L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
 -- 
-~Vinod
+2.34.1
+
 
