@@ -1,78 +1,57 @@
-Return-Path: <linux-omap+bounces-659-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-660-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80183858036
-	for <lists+linux-omap@lfdr.de>; Fri, 16 Feb 2024 16:09:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F807858916
+	for <lists+linux-omap@lfdr.de>; Fri, 16 Feb 2024 23:45:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0E5A1C213B8
-	for <lists+linux-omap@lfdr.de>; Fri, 16 Feb 2024 15:08:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFF502826B8
+	for <lists+linux-omap@lfdr.de>; Fri, 16 Feb 2024 22:45:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FC0612F585;
-	Fri, 16 Feb 2024 15:08:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9835A1468F4;
+	Fri, 16 Feb 2024 22:44:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U94v4N+1"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE7FF1292F4;
-	Fri, 16 Feb 2024 15:08:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30D462CCBA;
+	Fri, 16 Feb 2024 22:44:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708096129; cv=none; b=eXGl7BwbvVv5/xzB8RUxf2YrEyMLXLu5tvwg8BBJgD7T8ug7nemyR8AunT3StClECHtUBav1gJMEayX6WRwuOhfG1Nk6CYTfp/R75XcWvs/bpq2NPX87Z2IQtJpkPlgNU+eYqmhvvAsm1DMPfUzzauqKe2GKs+fIO96W4aI3n24=
+	t=1708123494; cv=none; b=jDyUYtfkJ28VT3+BCNjNYpvQPHZ4VrCQetACOQ4QatFpRORsDOBetUBObMDB8Uj2IPZES1YUhVYpZZDYTHWIbPqVbFf+LSKrTM2wPDsRoLCpL6TzEgmoI+i4+I9IYsoKnV77wNbw7fy4WriBy2T3oVDsppeY8oua1mJv8sAyezg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708096129; c=relaxed/simple;
-	bh=AOCAORj/NLMv+eKT0QBmdsr53HgKAYcc7MKJyrnstS4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eG6DcpN9WmjNgRfhaCLTzq3OKykmXQ27KdZQ754lTGCIq6EQWAWD0z7EMS81dYcvFII2P+7Vav6mhTZa7aUSaEXOM/QPFia5bnUEaBz8lfXhlCmXBDkAmrJdiESMNT8AJqbbz7UJbbmlInbjdCVKf5o0bH7z6lei95YkkS7NItk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=kernel.org
-X-IronPort-AV: E=McAfee;i="6600,9927,10985"; a="2338378"
-X-IronPort-AV: E=Sophos;i="6.06,164,1705392000"; 
-   d="scan'208";a="2338378"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2024 07:08:47 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10985"; a="912374432"
-X-IronPort-AV: E=Sophos;i="6.06,164,1705392000"; 
-   d="scan'208";a="912374432"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2024 07:08:40 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andy@kernel.org>)
-	id 1razpN-000000054tL-1WLs;
-	Fri, 16 Feb 2024 17:08:37 +0200
-Date: Fri, 16 Feb 2024 17:08:37 +0200
-From: Andy Shevchenko <andy@kernel.org>
-To: Thomas Richard <thomas.richard@bootlin.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Tony Lindgren <tony@atomide.com>,
-	Haojian Zhuang <haojian.zhuang@linaro.org>,
-	Vignesh R <vigneshr@ti.com>, Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-	Andi Shyti <andi.shyti@kernel.org>, Peter Rosin <peda@axentia.se>,
-	Vinod Koul <vkoul@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-	linux-i2c@vger.kernel.org, linux-phy@lists.infradead.org,
-	linux-pci@vger.kernel.org, gregory.clement@bootlin.com,
-	theo.lebrun@bootlin.com, thomas.petazzoni@bootlin.com,
-	u-kumar1@ti.com
-Subject: Re: [PATCH v3 02/18] pinctrl: pinctrl-single: remove dead code in
- suspend() and resume() callbacks
-Message-ID: <Zc96dSff5Y-dufrJ@smile.fi.intel.com>
-References: <20240102-j7200-pcie-s2r-v3-0-5c2e4a3fac1f@bootlin.com>
- <20240102-j7200-pcie-s2r-v3-2-5c2e4a3fac1f@bootlin.com>
- <Zc4tedAhqYX3bQcw@smile.fi.intel.com>
- <78add459-a96a-46c6-83ff-e2657d4d3db4@bootlin.com>
+	s=arc-20240116; t=1708123494; c=relaxed/simple;
+	bh=ebzWyA9KCvd4/2ym7L0ucxMuGnPyVAPrRAgYGleDQKI=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=Ak4RNPdEriWiSLY1FXSUOIJBlQ1AnotPbO2BU31vhHy6GYIDMViPJ+cp8/Wnj606AB50dLhluN1nqvcp9dUX6jUCNaCxgbrhT5M4ddBZiAFVtf0YF+oRae+KxbS2AArYJLBF6GtIh2AsqCWSvJ/KCyaDp7gE7rIqBuzSC4AF+6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U94v4N+1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FA71C433C7;
+	Fri, 16 Feb 2024 22:44:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708123493;
+	bh=ebzWyA9KCvd4/2ym7L0ucxMuGnPyVAPrRAgYGleDQKI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=U94v4N+13b+GRBqJO/Y6Q6BP2YWIAq+qa0hQ7B8gkMpOo3gMBdT8le4xdfvz10Qro
+	 JLEm2nFvQYlNVtnuXx4uJmVjSl0T2hhokyUMi9dGMfhgN2Hpgps5eT3wOF+RM6x1NR
+	 PtRQmshKnIWOqKQO8KsF0aa/uFj9CuRgXkiUAPlRq5tLI6cSrm7Ph+bBo6xGLtry/f
+	 dCMcGMkG/1J2bo+l9Xr+Tr7vy6eEeIyJg5tInl89a96z3JAN7/1p6E5m8Sk6vhfirk
+	 fpRRpmBW6lbZhc8OlM3HppaaRH/lSlTzQOgYCK29CP702grmIenwJhC8twqOFYytnt
+	 8RDttmcghSrKQ==
+Date: Fri, 16 Feb 2024 16:44:52 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Siddharth Vadapalli <s-vadapalli@ti.com>
+Cc: lpieralisi@kernel.org, kw@linux.com, robh@kernel.org,
+	bhelgaas@google.com, kishon@kernel.org, vigneshr@ti.com,
+	linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	srk@ti.com
+Subject: Re: [PATCH] MAINTAINERS: PCI: TI DRA7XX/J721E: Add Siddharth
+ Vadapalli as a reviewer
+Message-ID: <20240216224452.GA1360477@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -81,32 +60,33 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <78add459-a96a-46c6-83ff-e2657d4d3db4@bootlin.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <20240216065926.473805-1-s-vadapalli@ti.com>
 
-On Fri, Feb 16, 2024 at 08:59:47AM +0100, Thomas Richard wrote:
-> On 2/15/24 16:27, Andy Shevchenko wrote:
-> > On Thu, Feb 15, 2024 at 04:17:47PM +0100, Thomas Richard wrote:
-> >> No need to check the pointer returned by platform_get_drvdata(), as
-> >> platform_set_drvdata() is called during the probe.
-> > 
-> > This patch should go _after_ the next one, otherwise the commit message doesn't
-> > tell full story and the code change bring a potential regression.
+On Fri, Feb 16, 2024 at 12:29:26PM +0530, Siddharth Vadapalli wrote:
+> Since I have been contributing to the driver for a while and wish to help
+> with the review process, add myself as a reviewer.
 > 
-> Hello Andy,
+> Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+
+Applied to for-linus, for v6.8, thanks, Siddharth!
+
+> ---
+>  MAINTAINERS | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> I'm ok to move this patch after the next one.
-> But for my understanding, could you explain me why changing the order is
-> important in this case ?
-
-Old PM calls obviously can be called in different circumstances and these
-checks are important.
-
-Just squash these two patches to avoid additional churn and we are done.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index cd7980e5b1ad..7d6a60002fc1 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -16976,6 +16976,7 @@ F:	drivers/pci/controller/dwc/*designware*
+>  
+>  PCI DRIVER FOR TI DRA7XX/J721E
+>  M:	Vignesh Raghavendra <vigneshr@ti.com>
+> +R:	Siddharth Vadapalli <s-vadapalli@ti.com>
+>  L:	linux-omap@vger.kernel.org
+>  L:	linux-pci@vger.kernel.org
+>  L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
+> -- 
+> 2.34.1
+> 
 
