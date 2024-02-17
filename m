@@ -1,92 +1,116 @@
-Return-Path: <linux-omap+bounces-660-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-664-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F807858916
-	for <lists+linux-omap@lfdr.de>; Fri, 16 Feb 2024 23:45:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EEE8858E03
+	for <lists+linux-omap@lfdr.de>; Sat, 17 Feb 2024 09:21:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFF502826B8
-	for <lists+linux-omap@lfdr.de>; Fri, 16 Feb 2024 22:45:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AB931C2127F
+	for <lists+linux-omap@lfdr.de>; Sat, 17 Feb 2024 08:21:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9835A1468F4;
-	Fri, 16 Feb 2024 22:44:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CD071DDF5;
+	Sat, 17 Feb 2024 08:20:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U94v4N+1"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="hKR3/Yhk"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30D462CCBA;
-	Fri, 16 Feb 2024 22:44:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61E631D526;
+	Sat, 17 Feb 2024 08:20:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708123494; cv=none; b=jDyUYtfkJ28VT3+BCNjNYpvQPHZ4VrCQetACOQ4QatFpRORsDOBetUBObMDB8Uj2IPZES1YUhVYpZZDYTHWIbPqVbFf+LSKrTM2wPDsRoLCpL6TzEgmoI+i4+I9IYsoKnV77wNbw7fy4WriBy2T3oVDsppeY8oua1mJv8sAyezg=
+	t=1708158049; cv=none; b=VAqPtnYtCZOL5XR9wonNXp6u0Eq5mDPh+Y4NYnCcKOVcl/uehFdqucLs16myrIDvmpF5kZUYdSh+6/zEyoWBvnBigGO1QAicN2jIGb0fTUDe6fnZ0chorEKH5crYYA7IuZMBPWK7UjVwYRr7kY1XTYwYtlnWf1FFp8f/1GURrCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708123494; c=relaxed/simple;
-	bh=ebzWyA9KCvd4/2ym7L0ucxMuGnPyVAPrRAgYGleDQKI=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=Ak4RNPdEriWiSLY1FXSUOIJBlQ1AnotPbO2BU31vhHy6GYIDMViPJ+cp8/Wnj606AB50dLhluN1nqvcp9dUX6jUCNaCxgbrhT5M4ddBZiAFVtf0YF+oRae+KxbS2AArYJLBF6GtIh2AsqCWSvJ/KCyaDp7gE7rIqBuzSC4AF+6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U94v4N+1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FA71C433C7;
-	Fri, 16 Feb 2024 22:44:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708123493;
-	bh=ebzWyA9KCvd4/2ym7L0ucxMuGnPyVAPrRAgYGleDQKI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=U94v4N+13b+GRBqJO/Y6Q6BP2YWIAq+qa0hQ7B8gkMpOo3gMBdT8le4xdfvz10Qro
-	 JLEm2nFvQYlNVtnuXx4uJmVjSl0T2hhokyUMi9dGMfhgN2Hpgps5eT3wOF+RM6x1NR
-	 PtRQmshKnIWOqKQO8KsF0aa/uFj9CuRgXkiUAPlRq5tLI6cSrm7Ph+bBo6xGLtry/f
-	 dCMcGMkG/1J2bo+l9Xr+Tr7vy6eEeIyJg5tInl89a96z3JAN7/1p6E5m8Sk6vhfirk
-	 fpRRpmBW6lbZhc8OlM3HppaaRH/lSlTzQOgYCK29CP702grmIenwJhC8twqOFYytnt
-	 8RDttmcghSrKQ==
-Date: Fri, 16 Feb 2024 16:44:52 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Siddharth Vadapalli <s-vadapalli@ti.com>
-Cc: lpieralisi@kernel.org, kw@linux.com, robh@kernel.org,
-	bhelgaas@google.com, kishon@kernel.org, vigneshr@ti.com,
-	linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	srk@ti.com
-Subject: Re: [PATCH] MAINTAINERS: PCI: TI DRA7XX/J721E: Add Siddharth
- Vadapalli as a reviewer
-Message-ID: <20240216224452.GA1360477@bhelgaas>
+	s=arc-20240116; t=1708158049; c=relaxed/simple;
+	bh=78DJpSgRADSQ8xQ51c9xtgYjH6BRPB5WjDqxTZCNphY=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version; b=JoZlMenoTgWYwz6pb5WKyNLkGGtmPy0R4VDgK67nNI+zBq/CxMRH4l7HLQEvOVGb51wDOcEuG4fvbo4JQtkBPszNa8k1G4Z+fOBC5bh52T8cT+LIKvvOXyUyQsPbRl851njJwcv+lTrPqBNj6oWDw1Z2RyKhhYrQ4X+VrAutzeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=hKR3/Yhk; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=Content-Transfer-Encoding:MIME-Version:
+	Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=0H8yS7B9ijf/Bav3Ome14xQsniFW8pPuUVlXJhECckA=; b=hKR3/YhkMhJeF4jgVsEzADhqba
+	/ODX3nXaqmPdPftLmbKNy6ic/PS6oDqjxV0B3p0m9ixDBHbfDtseK77Xk3rovxVqo6kaiS6Lm8MU5
+	DH8BQ2BqRF3hX3ilbM3pk+3bJBk+gWXMh2sNt5gde9c65zkRueqHk4Uc//fvio7MBy/L3ys1Lt+Zo
+	KC8SmV3yUB8l7+3pYRK0dpftLXjs0gTi7NIxQqWf8N64igdju18WyV8AkpoB2ofo7wp4ph8jt66EM
+	YOl4IXyqLRdsSaIPxeaSPOx6QNio7FpAQKZBoOYjlBJ19QU7k8F7xcckL1uq9TUbSo+iheHgvG3kJ
+	4ejKNJ3Q==;
+Received: from p2003010777002c001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:107:7700:2c00:1a3d:a2ff:febf:d33a] helo=aktux)
+	by mail.andi.de1.cc with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <andreas@kemnade.info>)
+	id 1rbFvz-009WA0-GB; Sat, 17 Feb 2024 09:20:31 +0100
+Received: from andi by aktux with local (Exim 4.96)
+	(envelope-from <andreas@kemnade.info>)
+	id 1rbFvy-00DabZ-0p;
+	Sat, 17 Feb 2024 09:20:30 +0100
+From: Andreas Kemnade <andreas@kemnade.info>
+To: lee@kernel.org,
+	robh+dt@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org,
+	conor+dt@kernel.org,
+	bcousson@baylibre.com,
+	tony@atomide.com,
+	andreas@kemnade.info,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-omap@vger.kernel.org
+Subject: [PATCH v4 0/5] mfd: twl: system-power-controller
+Date: Sat, 17 Feb 2024 09:20:02 +0100
+Message-Id: <20240217082007.3238948-1-andreas@kemnade.info>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240216065926.473805-1-s-vadapalli@ti.com>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Feb 16, 2024 at 12:29:26PM +0530, Siddharth Vadapalli wrote:
-> Since I have been contributing to the driver for a while and wish to help
-> with the review process, add myself as a reviewer.
-> 
-> Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Add system-power-controller property in the bindings and
+the corresponding implementation and use it where
+appropriate.
+Not all cases are hit yet, there has probably to be a
+separate series after going through with a brush.
 
-Applied to for-linus, for v6.8, thanks, Siddharth!
+Changes in v4:
+- fix spelling/grammar
+- drop twl4030 dts cleanup, it would need an IB
+  or be postponed till next release 
 
-> ---
->  MAINTAINERS | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index cd7980e5b1ad..7d6a60002fc1 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -16976,6 +16976,7 @@ F:	drivers/pci/controller/dwc/*designware*
->  
->  PCI DRIVER FOR TI DRA7XX/J721E
->  M:	Vignesh Raghavendra <vigneshr@ti.com>
-> +R:	Siddharth Vadapalli <s-vadapalli@ti.com>
->  L:	linux-omap@vger.kernel.org
->  L:	linux-pci@vger.kernel.org
->  L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
-> -- 
-> 2.34.1
-> 
+Changes in v3:
+- twl-core: 
+   - remove repetitive verbose error messages
+   - placed constants at top part of function
+   - minor cleanups
+
+Changes in v2:
+- add A-By
+- fix compiler warning
+
+Andreas Kemnade (5):
+  dt-bindings: mfd: ti,twl: Document system-power-controller
+  twl-core: add power off implementation for twl603x
+  ARM: dts: omap-embt2ws: system-power-controller for bt200
+  ARM: dts: omap4-panda-common: Enable powering off the device
+  mfd: twl4030-power: accept standard property for power controller
+
+ .../devicetree/bindings/mfd/ti,twl.yaml       |  2 ++
+ .../boot/dts/ti/omap/omap4-epson-embt2ws.dts  |  1 +
+ .../boot/dts/ti/omap/omap4-panda-common.dtsi  |  1 +
+ drivers/mfd/twl-core.c                        | 28 +++++++++++++++++++
+ drivers/mfd/twl4030-power.c                   |  3 ++
+ include/linux/mfd/twl.h                       |  1 +
+ 6 files changed, 36 insertions(+)
+
+-- 
+2.39.2
+
 
