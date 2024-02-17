@@ -1,108 +1,116 @@
-Return-Path: <linux-omap+bounces-666-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-667-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10E42858E08
-	for <lists+linux-omap@lfdr.de>; Sat, 17 Feb 2024 09:21:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6443A859205
+	for <lists+linux-omap@lfdr.de>; Sat, 17 Feb 2024 20:21:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB4731F21162
-	for <lists+linux-omap@lfdr.de>; Sat, 17 Feb 2024 08:21:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F70C1C22958
+	for <lists+linux-omap@lfdr.de>; Sat, 17 Feb 2024 19:21:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 142521F94D;
-	Sat, 17 Feb 2024 08:20:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5671E7E573;
+	Sat, 17 Feb 2024 19:20:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="mxbfM98H"
+	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="kfD29qcX"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
+Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 310711D54F;
-	Sat, 17 Feb 2024 08:20:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708158050; cv=none; b=kj7hL0PStxgH+lxEyHEh5q++tedYyakYvyeQfSuEVtM827VGBx1Ry4jqjXvbRPK6obL7IeoiBVj0fpwQtH7i2vg5X3sXz+3qfUqbSVFJAFcfaTw2LGArfc/WDqrhLIugyYXEI6kXG1E2ML1nWKcw1OpK91PZQ+ZYb5oaPc6uEUY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708158050; c=relaxed/simple;
-	bh=6sRPoZ3Ar/8gydeQdoTDVVaduVMOVcG5NbSDDkFAjtc=;
-	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bPU1uslhEIsHa1H9lOi0lR+fI1yUGMTaQ1nge1aDesO67rU4NoRKPqdjz6p76snMTsxlyYYwq9P+SE7AmIJVU22KxZv/9oeCCbbYMcF+7ruAGxSgvi/6XowTnSbMDXl6ZpDQ+uIjvcKwR8I+Zq/qmB0pG+HurAIJ7xJ2whdrQWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=mxbfM98H; arc=none smtp.client-ip=178.238.236.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kemnade.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:
-	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=oiyq9kLog9Cp/R7ZfxBUXhF6KOaPMsO94BpECX+dYb0=; b=mxbfM98HHkXyp4E+iRyalJMa5g
-	QYVSWJA1O5+4A2b23uy1Cf8S7+FqY9kCsLUwmbqrfNcxDHigsaMTdbYOjlNfHRy27XtOO7b04EBYw
-	qWEYIEi1TSgffJSyCsao83o/jfTOUr2AKXBI1Ka46+jWPBNT8YuSSivyxlD2aydVwWzfE7QZ1aYjI
-	MSJideydVD3tD6ITiELRouwFdM42IxNCapqep1Xrk3oWLqs7uloB1ZBKElhse9XZUCcVqEzUm4MQ5
-	WbMb/e9Af7tcFY3tVi4q7mn+sdV5sm/d4uo+XAut+lbwbIi7h4qjoaV2+u4ksGxHBrYh6WXN2Z4ho
-	cGwOGvLQ==;
-Received: from p2003010777002c001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:107:7700:2c00:1a3d:a2ff:febf:d33a] helo=aktux)
-	by mail.andi.de1.cc with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <andreas@kemnade.info>)
-	id 1rbFw2-009WAg-IO; Sat, 17 Feb 2024 09:20:34 +0100
-Received: from andi by aktux with local (Exim 4.96)
-	(envelope-from <andreas@kemnade.info>)
-	id 1rbFw2-00Dabx-0D;
-	Sat, 17 Feb 2024 09:20:34 +0100
-From: Andreas Kemnade <andreas@kemnade.info>
-To: lee@kernel.org,
-	robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org,
-	conor+dt@kernel.org,
-	bcousson@baylibre.com,
-	tony@atomide.com,
-	andreas@kemnade.info,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB0F1E501;
+	Sat, 17 Feb 2024 19:20:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.185.170.37
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1708197658; cv=pass; b=O4dd63XKyAael0lRQ+EQ4d5791gtiCLGAd9Mr3xaWgP41mv1CrSb1NEiu8Yph9Bv/XnhRiqk2h19e8DOcP1hksT/13LHujvtIQmlHOyGlqGRf4F0PEeNxW/fhF3qUIv3pP2wGer2Noh/ZWYaDo3V8LRaS5n6NXERGne3rZe/adc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1708197658; c=relaxed/simple;
+	bh=gSZiMw/JdccfEF888jNXjmGWzVZVbOk4rZZD6o7WT1U=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=ljdp1kWckOvjrZeIsnv6F55/Mu1SmSdcunrG5xyxSj2X6hZ+MX12orJXRfwtx0FUbBFGVYhpXXb8n5DG4a3azP9mIo5sN/lwUel0AI5+lGJ/SXyj5CzHyTk5YlEqJDXW7M8cQ3cOBqa5faNNcuU/vHpBpaV7WX1PwnIm6o89Ou4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=kfD29qcX; arc=pass smtp.client-ip=185.185.170.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
+Received: from darkstar.musicnaut.iki.fi (85-76-160-177-nat.elisa-mobile.fi [85.76.160.177])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: aaro.koskinen)
+	by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4Tcdth3zD3z49PwQ;
+	Sat, 17 Feb 2024 21:20:44 +0200 (EET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
+	t=1708197645;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=q3yGZu/JG+xsk0nTtCSjCIfmV3w7H/r4e5NbPCar4jM=;
+	b=kfD29qcXha2RiOhKDfUTmfzwRR5aHSvESALcwnDWZojdzSpCeETceAmVmzVDjBhE9rI4Ok
+	Nip2rnOiOn7tw5UuhciLhtKIZCl1rUvaM9vclyf4rJjs98dKfMLHZESgcKIazwSOFH0AkD
+	JMH8bFP/pKIhpKDDkgcXE9J15Ygg8fTb5moCGoAWZESIpSb4gMFLfwXcTMvj3fbe6KyQXW
+	B+p75GELGxjXCer0U6zT2+rCcJveCt/0XM8T1fwZamSzO3Zb7nflpCt/cl1FNidfj4xf51
+	oWgJ8NMnyT7F6KnjtWFz70idEzdyWc7hE4tLUdJwgWV9QPTUQqG5PbYjQ9cP+A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
+	s=lahtoruutu; t=1708197645;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=q3yGZu/JG+xsk0nTtCSjCIfmV3w7H/r4e5NbPCar4jM=;
+	b=rvAXoYaC1Ka9SUo4TQ8VkprPmVER0X/+/7CFdQXOWv19JwALpUU8nQwmFPgvlu8FUtB5dX
+	nv/9aLVM5nMMmLLWKGVHUmYLFg2fyg8mwf46W3FQvyJvaPWSgkrb5dCnHaCJgLWAKRsL3s
+	Tso+o4BVBFTp/y+iOt94EMeis9+KfbzAo4HRY1zu67bh3pPoehEbvHxOeXIRrp7o7kZY3R
+	3WRSL2zNuhXyKWsHEptQadkarN2jkioUFf+LzPGUjO3kfWQSj3eBeU9LoF2k/bkdkjspAZ
+	HO7pg5x4+1XQLohoWBbWc+SmvBoMKCJl4ojOSzdliqz8k2zlb1G1BFjsYNFOXw==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=aaro.koskinen smtp.mailfrom=aaro.koskinen@iki.fi
+ARC-Seal: i=1; s=lahtoruutu; d=iki.fi; t=1708197645; a=rsa-sha256;
+	cv=none;
+	b=bgB639vCp3ZFRvhLSvai8wvnLGmHLtPeinE/Fr4oOoYgMwkjKajgSQLSffLO0ArSl2pnSs
+	62an//MkPL4G7y/VXNm5w1M2gBr6H9W6V6hcsG5Ws6IKq2L5pfgypz+Jj2VsuyeTGAAFdR
+	PSOBjf5xUyWkx6QNGs0x8ml5lQP7NSDgaW16AfKKQeGO+QZqleCf+t6OvcIQcYmzn80HzC
+	sKzpMXs4JHImLwdh+SPlubud7WDRcBr5v7Kr9GgYsEgIwyDUHQvU86CYW7M/6SO0T8fcSZ
+	Gb3U8e7zAZ5jIBMNvaOQfLeFsLLpre3oxk0H3u83nT89gvqXP2asEQIXZuAtiA==
+Date: Sat, 17 Feb 2024 21:20:42 +0200
+From: Aaro Koskinen <aaro.koskinen@iki.fi>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Arnd Bergmann <arnd@arndb.de>, linux-usb@vger.kernel.org
+Cc: Aaro Koskinen <aaro.koskinen@iki.fi>, linux-kernel@vger.kernel.org,
 	linux-omap@vger.kernel.org
-Subject: [PATCH v4 5/5] mfd: twl4030-power: accept standard property for power controller
-Date: Sat, 17 Feb 2024 09:20:07 +0100
-Message-Id: <20240217082007.3238948-6-andreas@kemnade.info>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240217082007.3238948-1-andreas@kemnade.info>
-References: <20240217082007.3238948-1-andreas@kemnade.info>
+Subject: [PATCH] usb: gadget: omap_udc: fix USB gadget regression on Palm TE
+Message-ID: <20240217192042.GA372205@darkstar.musicnaut.iki.fi>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Instead of only accepting the ti specific properties accept also
-the standard property. For uniformity, search in the parent node
-for the tag. The code for powering off is also isolated from the
-rest in this file. So it is a pure Linux design decision to put it
-here.
+When upgrading from 6.1 LTS to 6.6 LTS, I noticed the ethernet gadget
+stopped working on Palm TE.
 
-Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+Commit 8825acd7cc8a ("ARM: omap1: remove dead code") deleted Palm TE from
+machine_without_vbus_sense(), although the board is still used. Fix that.
+
+Fixes: 8825acd7cc8a ("ARM: omap1: remove dead code")
+Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
 ---
- drivers/mfd/twl4030-power.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/usb/gadget/udc/omap_udc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mfd/twl4030-power.c b/drivers/mfd/twl4030-power.c
-index 1595e9c76132d..0bca948ab6bae 100644
---- a/drivers/mfd/twl4030-power.c
-+++ b/drivers/mfd/twl4030-power.c
-@@ -686,6 +686,9 @@ static bool twl4030_power_use_poweroff(const struct twl4030_power_data *pdata,
- 	if (of_property_read_bool(node, "ti,use_poweroff"))
- 		return true;
+diff --git a/drivers/usb/gadget/udc/omap_udc.c b/drivers/usb/gadget/udc/omap_udc.c
+index 10c5d7f726a1..f90eeecf27de 100644
+--- a/drivers/usb/gadget/udc/omap_udc.c
++++ b/drivers/usb/gadget/udc/omap_udc.c
+@@ -2036,7 +2036,8 @@ static irqreturn_t omap_udc_iso_irq(int irq, void *_dev)
  
-+	if (of_device_is_system_power_controller(node->parent))
-+		return true;
-+
- 	return false;
+ static inline int machine_without_vbus_sense(void)
+ {
+-	return  machine_is_omap_osk() || machine_is_sx1();
++	return  machine_is_omap_osk() || machine_is_omap_palmte() ||
++		machine_is_sx1();
  }
  
+ static int omap_udc_start(struct usb_gadget *g,
 -- 
 2.39.2
-
 
