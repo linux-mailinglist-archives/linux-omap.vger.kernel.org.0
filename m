@@ -1,135 +1,135 @@
-Return-Path: <linux-omap+bounces-686-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-687-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E540E85CB99
-	for <lists+linux-omap@lfdr.de>; Wed, 21 Feb 2024 00:01:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E65F85D07E
+	for <lists+linux-omap@lfdr.de>; Wed, 21 Feb 2024 07:31:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 14B231C219D4
-	for <lists+linux-omap@lfdr.de>; Tue, 20 Feb 2024 23:01:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54C951F2433D
+	for <lists+linux-omap@lfdr.de>; Wed, 21 Feb 2024 06:31:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE723154438;
-	Tue, 20 Feb 2024 23:01:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BD031F16B;
+	Wed, 21 Feb 2024 06:31:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="B4IdbgTC"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CGDM3oSx"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AC35154427
-	for <linux-omap@vger.kernel.org>; Tue, 20 Feb 2024 23:01:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11E4D4A1D;
+	Wed, 21 Feb 2024 06:30:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708470065; cv=none; b=UoS5zJYE54EniR1RsESbGg+yKythiWQ4FWMMdbi+liK+pBRn7lX9/yD7ErDO1MBrMtcKrx3nX6zajyvHrhCva99MV/yoMIKTTuLytiiaMFQqAB728vqhNQnKc6DDVoUk2ULJLpqj7kx4DQeyC5/R+uMdmC2yyBgQvukJdd6j9Ec=
+	t=1708497060; cv=none; b=pHTwp+VcKlEh3T15mhs7MB/k2S92NvU2t3FVKESD7upn9fV+PmBGFh5Y9Wt5/3f3+fNNkegt727cU1lIGkPa/Udwxu68qO370zSnm3WixV2TBkp3d1Rd8vYqtrKt044hq6oJsXSkgqujCrThr1OChYki1Q7MYPuUey0/XylCXDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708470065; c=relaxed/simple;
-	bh=0nJssCnVqUtLLrgbcTA5mzUlsmakm/CsmHiqgH3hL9Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iyFID0iICXyGSjhN0oJZdrmipYT1Mz0BQepyrixsgbMkfzOnKCM0KNnARFsWlGia23kug5tBAUwy6vHf8FhZF/u2H3uMQYRqF2KCH7JDvDzjTmrHZsUsRlCPrjJT9WxgS7KSr2wp1vwfAASAbF6ceW4+MibgqWzEyW/bkZ8Pocw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=B4IdbgTC; arc=none smtp.client-ip=209.85.128.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-6083befe2a7so26575697b3.0
-        for <linux-omap@vger.kernel.org>; Tue, 20 Feb 2024 15:01:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1708470062; x=1709074862; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1A3zr3xkjkMF8lRpEIOZJ9IYJxQ1uIKjo+R7IGHgj8k=;
-        b=B4IdbgTCN+7QDRLHWUZdbmwjRop3NkEX7LLiph1qSD2K4iefoo8u/gylMJ9Nnc1zbH
-         M+y31kHZ2ETlNrs0Sx2ddu+9TARagzi5KaJbZLHby43xOKhxy/M6MLp6roapSSeUX5U+
-         +CGe/OfClOcqAz1Xps0rIFxnK0S2xHGR0xL2JKrQioOMRVHHlq5i5LmMY2VgknQ9eQIR
-         O9SNinXAVLIpYesm0kUzdJlPQZU1IPi2HqBYneK6vsgH4+sZS8GMLij7mrs0buvUarTR
-         ydwrm+JkL7hEVxv4kTpzUSTa9NS7LSSgvvJYIsHSAVoh4OX6bZhZZqXTeK4ktSFlTsmi
-         boug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708470062; x=1709074862;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1A3zr3xkjkMF8lRpEIOZJ9IYJxQ1uIKjo+R7IGHgj8k=;
-        b=JGY/YqenFAeV/U0grGyIInsTj6maS80Yr5O9QmjjRL3cVcY/cVzGn70bvfN187PtlH
-         kQgyru1abcY5BW70vqSR6d2sKd24qa9m63T5ahOwWkqXNH/mG88/9uTCxR30Cmv9E5Xs
-         tok95q6M5gUATk55RxtGDFkPH2gbx/B0rY/tLC56HkEPZ6EiYxv2VOK4Rt6ACF+ESHaM
-         PHHMqzP5TEFiS2NKdaFCdmE6ygVgpmZke8/dYzift/YiLz3WxDhsf1C0WDGC/Ad6ifXZ
-         rKvMAqFH0VZPEBL/plKKvYQ+5E/oauVYjkJ0uUS+z2koorM/h4Ocn/Zp0UfLfoZtKZec
-         rJrQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXaB04Lz75UKIbxzuY6PLOcqYxpj2RslnImuf6RLb3kRO0Ce+wram9fsGgZoeUkhdDQiJrFEitSU5fWD1TWRxNws1pUiOzoR6ceBA==
-X-Gm-Message-State: AOJu0YxAPs70edTeB+KO8CyU33Tkmn9f3ITJ4WXL976eGezpWi4QMe9Q
-	gWmtghRv37WleW0/cnfREeVjFqJw+cY1S4gXivOReaI9K0VMgPkaLhKzaSR4KZ4Zi3dUGipakFf
-	PUv5pV5MQaxetb9XMlgemSvQNDDaVAp9F+xhZG0mnUXDn9DFx148=
-X-Google-Smtp-Source: AGHT+IGS1rjbIbqwa2FUKNvXF4Dn5+e0RlJyXxF6trqxXbZrLHNf6jVVcW1tvydeSHAyFS/jHob425YDo6DrXyKhUs8=
-X-Received: by 2002:a25:838c:0:b0:dcd:3f82:e803 with SMTP id
- t12-20020a25838c000000b00dcd3f82e803mr12702286ybk.39.1708470061794; Tue, 20
- Feb 2024 15:01:01 -0800 (PST)
+	s=arc-20240116; t=1708497060; c=relaxed/simple;
+	bh=fvHRvjJCBdn79HNK8KXKViqM3aKhNHqSGtji0zA0cAo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=h+Whdjmal8LQncggU4F34KWuZ7yQ29+JiXKKbysckED/ie7zicsjVBvGDz6IQm4RgsQTOR35F2s5huHb65F+pejzCZ6VcvlCZNNV+eIb+d9b4M1h1DRdIDuPLteNiIKXqufQSUmpxAhMgGWRnk89WVIOkNnXsScgSw7UHaM+J9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CGDM3oSx; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1708497059; x=1740033059;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=fvHRvjJCBdn79HNK8KXKViqM3aKhNHqSGtji0zA0cAo=;
+  b=CGDM3oSxFV67ObEE/mn4vfQunticVCPIT0EBaA4aMNivr39tmIMv5OHJ
+   L2ogA/cF31udJc97XxFns2s0rBFOk9ro4zwD4xuqDkMzvSCtm+fOOPV7N
+   Cu4aCQDak5c6NpFF+Ka1ZVg0b7rJQgPVidcutJEVaD88qc9itrf3q3XvB
+   0UIn7tTWaafocyu8tEjK5iYYW536xg8xZIvlM9N5uZq5oPNaILpUfOSzF
+   cxe7oySVTQK0vmkFeQG59v2kTejeNc47CVmuXzWf90SQiPlADrNsBP2rl
+   z2SKJP4zLrGhJA6wHvvxrmo428VExRMOH5A5+ao9ByOzHjzsDrpUtIHNV
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10990"; a="5595945"
+X-IronPort-AV: E=Sophos;i="6.06,174,1705392000"; 
+   d="scan'208";a="5595945"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2024 22:30:58 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,174,1705392000"; 
+   d="scan'208";a="36066273"
+Received: from ahunter6-mobl1.ger.corp.intel.com (HELO [10.0.2.15]) ([10.251.221.1])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2024 22:30:55 -0800
+Message-ID: <3aa092fd-177f-453e-abce-a53cd28c11e6@intel.com>
+Date: Wed, 21 Feb 2024 08:30:50 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 8/9] mmc: sdhci-esdhc-mcf: Use sg_miter for swapping
+To: Linus Walleij <linus.walleij@linaro.org>, Christoph Hellwig <hch@lst.de>,
+ Jens Axboe <axboe@kernel.dk>, Ming Lei <ming.lei@redhat.com>,
+ Arnd Bergmann <arnd@arndb.de>, Ulf Hansson <ulf.hansson@linaro.org>,
+ Nicolas Pitre <nico@fluxnic.net>, Aaro Koskinen <aaro.koskinen@iki.fi>,
+ Angelo Dureghello <angelo.dureghello@timesys.com>
+Cc: linux-mmc@vger.kernel.org, linux-block@vger.kernel.org,
+ linux-omap@vger.kernel.org
 References: <20240127-mmc-proper-kmap-v2-0-d8e732aa97d1@linaro.org>
- <20240127-mmc-proper-kmap-v2-9-d8e732aa97d1@linaro.org> <7f40cb40-1a1-532-75fc-d3376ed27a@linux-m68k.org>
-In-Reply-To: <7f40cb40-1a1-532-75fc-d3376ed27a@linux-m68k.org>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Wed, 21 Feb 2024 00:00:49 +0100
-Message-ID: <CACRpkdZpyefnTyKEJXru_HZG8xcJF66Eb2pZhbk+HVvfzdh4yw@mail.gmail.com>
-Subject: Re: [PATCH v2 9/9] mmc: sh_mmcif: Use sg_miter for PIO
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>, Ming Lei <ming.lei@redhat.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Ulf Hansson <ulf.hansson@linaro.org>, Nicolas Pitre <nico@fluxnic.net>, 
-	Aaro Koskinen <aaro.koskinen@iki.fi>, Adrian Hunter <adrian.hunter@intel.com>, 
-	Angelo Dureghello <angelo.dureghello@timesys.com>, linux-mmc@vger.kernel.org, 
-	linux-block@vger.kernel.org, linux-omap@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+ <20240127-mmc-proper-kmap-v2-8-d8e732aa97d1@linaro.org>
+Content-Language: en-US
+From: Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+In-Reply-To: <20240127-mmc-proper-kmap-v2-8-d8e732aa97d1@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Geert,
+On 27/01/24 02:19, Linus Walleij wrote:
+> Use sg_miter iterator instead of sg_virt() and custom code
+> to loop over the scatterlist. The memory iterator will do
+> bounce buffering if the page happens to be located in high memory,
+> which the driver may or may not be using.
+> 
+> Suggested-by: Christoph Hellwig <hch@lst.de>
+> Link: https://lore.kernel.org/linux-mmc/20240122073423.GA25859@lst.de/
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+> ---
+>  drivers/mmc/host/sdhci-esdhc-mcf.c | 12 +++++++-----
+>  1 file changed, 7 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/mmc/host/sdhci-esdhc-mcf.c b/drivers/mmc/host/sdhci-esdhc-mcf.c
+> index a07f8333cd6b..1909a11fd065 100644
+> --- a/drivers/mmc/host/sdhci-esdhc-mcf.c
+> +++ b/drivers/mmc/host/sdhci-esdhc-mcf.c
+> @@ -299,9 +299,8 @@ static void esdhc_mcf_pltfm_set_bus_width(struct sdhci_host *host, int width)
+>  static void esdhc_mcf_request_done(struct sdhci_host *host,
+>  				   struct mmc_request *mrq)
+>  {
+> -	struct scatterlist *sg;
+> +	struct sg_mapping_iter sgm;
+>  	u32 *buffer;
+> -	int i;
+>  
+>  	if (!mrq->data || !mrq->data->bytes_xfered)
+>  		goto exit_done;
+> @@ -313,10 +312,13 @@ static void esdhc_mcf_request_done(struct sdhci_host *host,
+>  	 * On mcf5441x there is no hw sdma option/flag to select the dma
+>  	 * transfer endiannes. A swap after the transfer is needed.
+>  	 */
+> -	for_each_sg(mrq->data->sg, sg, mrq->data->sg_len, i) {
+> -		buffer = (u32 *)sg_virt(sg);
+> -		esdhc_mcf_buffer_swap32(buffer, sg->length);
+> +	sg_miter_start(&sgm, mrq->data->sg, mrq->data->sg_len,
+> +		       SG_MITER_TO_SG | SG_MITER_FROM_SG);
 
-sorry for the mess!
+Could be called from atomic context, so probably needs
+SG_MITER_ATOMIC
 
-On Tue, Feb 20, 2024 at 10:03=E2=80=AFPM Geert Uytterhoeven
-<geert@linux-m68k.org> wrote:
+> +	while (sg_miter_next(&sgm)) {
+> +		buffer = sgm.addr;
+> +		esdhc_mcf_buffer_swap32(buffer, sgm.length);
+>  	}
+> +	sg_miter_stop(&sgm);
+>  
+>  exit_done:
+>  	mmc_request_done(host->mmc, mrq);
+> 
 
->      sh_mobile_sdhi ee120000.mmc: mmc1 base at 0xee120000, max clock rate=
- 12 MHz
->      mmc2: new high speed MMC card at address 0001
->      sh_mobile_sdhi ee100000.mmc: mmc0 base at 0xee100000, max clock rate=
- 88 MHz
->      mmcblk2: mmc2:0001 MMC08G 7.33 GiB
-
-Hey it reads some blocks...
-
->      BUG: sleeping function called from invalid context at kernel/workque=
-ue.c:3347
->      in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 35, name: irq=
-/151-ee20000
-(...)
->       __might_resched from __flush_work+0x20c/0x2e4
->       __flush_work from __cancel_work_timer+0x118/0x198
->       __cancel_work_timer from sh_mmcif_irqt+0x38/0x8f8
->       sh_mmcif_irqt from irq_thread_fn+0x1c/0x58
-
-Actually that is the thread so the message is a bit confusing, the irq thre=
-ad
-isn't atomic.
-
-I wonder if it is caused by this:
-
-> > +     sg_miter_start(&host->sg_miter, data->sg, data->sg_len,
-> > +                    SG_MITER_ATOMIC | SG_MITER_TO_SG);
-
-...because I don't need to ask for atomic miter here, since the poll
-functions are actually called in process context.
-
-I've sent a patch, can you test?
-https://lore.kernel.org/linux-mmc/20240220-fix-sh-mmcif-v1-1-b9d08a787c1f@l=
-inaro.org/T/#u
-
-Yours,
-Linus Walleij
 
