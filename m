@@ -1,130 +1,91 @@
-Return-Path: <linux-omap+bounces-695-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-696-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4C2485DE9B
-	for <lists+linux-omap@lfdr.de>; Wed, 21 Feb 2024 15:20:09 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 677B985E1BF
+	for <lists+linux-omap@lfdr.de>; Wed, 21 Feb 2024 16:46:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D66351C23C45
-	for <lists+linux-omap@lfdr.de>; Wed, 21 Feb 2024 14:20:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 09441B263A8
+	for <lists+linux-omap@lfdr.de>; Wed, 21 Feb 2024 15:46:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56CE27CF33;
-	Wed, 21 Feb 2024 14:19:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E3B080BE0;
+	Wed, 21 Feb 2024 15:46:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="BH3RU58z"
+	dkim=pass (1024-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b="gjxJhHjJ"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+Received: from mta-65-228.siemens.flowmailer.net (mta-65-228.siemens.flowmailer.net [185.136.65.228])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75A4A69D38;
-	Wed, 21 Feb 2024 14:19:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 592AE80BFE
+	for <linux-omap@vger.kernel.org>; Wed, 21 Feb 2024 15:46:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.65.228
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525173; cv=none; b=s7ySvEIystER1Exlmf7nlxhO7zqogkvTYkVF0bXduOEv8q4nYgDjljihpuZanuvIAwqVUCfQlmHxhIRarxBnOYSHJdOKeXtO+kJIpvWBVpuNemFezceCgjN7g+Fa3HZdg4W1OHZf3rxW3ilWasLWFIUbTg0lWvZdxRhIQpnWA9c=
+	t=1708530385; cv=none; b=CDBOApkCMr4RqVpKjjJml8UyZMp/f/eDuJMlH3bkXaY1NhhsrVz57MVfBM3DAlaPveq4nwM5o95qBF3YY8gJYYJHfeP9lxTwCOkOxcPBef9fZqHltmfGQl1+wc24pcB7g32VCuZt/Say7CQ7nfhFkWYa/tvyXKv6V3Lm8F/zV4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525173; c=relaxed/simple;
-	bh=7wFKTVlWizL57RttcaVLGrwRB1DayJIhODEBnM4Uul8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Qu53vKhUD7q0rP+F1rk6XZ9xzUEhDWZe0P+BPAIjW8RDbUKJHHg8B5vOHfBxrgOZX9V4sxqLct62hRmO3ew40ndCdtnGz9UjD0IcMFapzU7PZmYgLpwQ9PAyZJKZ3jdDIpByagp2ZSPxoGcptHAi8gdMprfh32D0dJrZf2TSBXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=BH3RU58z; arc=none smtp.client-ip=217.70.183.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 334A660005;
-	Wed, 21 Feb 2024 14:19:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1708525167;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=djgIwKG8h1E1vBHOq7Yx/ZY0Ehwdq+Fa2OAPhHy5Bg0=;
-	b=BH3RU58z7cr7I5bVawgKgfnYC5GysBok+JTGHq7LVbJ85EirfpHA2o2XLzRR+7UrXVwEfR
-	/wZa6tcSK+DMxgMWmUsnNDaOR0N1r8YgkoRdYceug+1Yk4JmUTFRDvRCA3/cymZ9XpUHr/
-	vd1WaoQ4pQTMeRzCHOJKwuvBlu9/+rOifdvv6q5fqfzwFEr1d5o71iFGgd3kc3AOzFnAO1
-	A1snWfe4kw4sZl4URubjBTzCzQTc4uqweCPYbYIuoPmUagYG9LKMcqiXTtnvElDi8wKgo0
-	I0H6nXBonAHEME2N7LD4uGH31cYGjo3LmMOeUpuFAYUSps2nLsFC7ihsE8gNUA==
-Message-ID: <b0220b02-5058-42ec-ba06-251caa4813dc@bootlin.com>
-Date: Wed, 21 Feb 2024 15:19:14 +0100
+	s=arc-20240116; t=1708530385; c=relaxed/simple;
+	bh=GpTxwtKajMQaSRqOreuWAm7Re7X2B93OkFr5c2ru2Mw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ec5G4gTdDHiwd9yfwybL51T6qRUy/q17ony/67clUU7GkM5piPpOchOMZXnaNrp/6mguxdduo0tA76JVKlL6NXb+fPCZQ1qZOMTzc7B221Q5PCJh+mX8kKNaWCeKIref0sEgcRBZLjV8QmjwJRrhrOtbsbt00p7M5ySjqFABf38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (1024-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b=gjxJhHjJ; arc=none smtp.client-ip=185.136.65.228
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
+Received: by mta-65-228.siemens.flowmailer.net with ESMTPSA id 20240221154618d1129dc9cd6a68f42c
+        for <linux-omap@vger.kernel.org>;
+        Wed, 21 Feb 2024 16:46:18 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
+ d=siemens.com; i=alexander.sverdlin@siemens.com;
+ h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
+ bh=J5Se4IlAntLxF9W2J1JJEFb+S1gXQPsA5HMQVz5Mt4s=;
+ b=gjxJhHjJLaWuTG1jOsXVpqc7PIT1sGY1NGhviNe9TwLJcpduQOqBPOhiHohOKTyQP8+j4r
+ Zx7O8J0pmoIHHFTnmxRiLGRL+AIyh4QVO7zIPmej9bvWvwexJd7HaD6H41211IBeabCH7Bqk
+ 1NHUw6K8vVwFMNS9220DZLN9kgBoM=;
+From: "A. Sverdlin" <alexander.sverdlin@siemens.com>
+To: linux-omap@vger.kernel.org
+Cc: Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Paul Walmsley <paul@pwsan.com>,
+	Tony Lindgren <tony@atomide.com>,
+	Russell King <linux@armlinux.org.uk>,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH 1/2] ARM: AM33xx: PRM: Remove redundand defines
+Date: Wed, 21 Feb 2024 16:45:50 +0100
+Message-ID: <20240221154614.3549951-1-alexander.sverdlin@siemens.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 02/18] pinctrl: pinctrl-single: remove dead code in
- suspend() and resume() callbacks
-Content-Language: en-US
-To: Andy Shevchenko <andy@kernel.org>
-Cc: Linus Walleij <linus.walleij@linaro.org>,
- Bartosz Golaszewski <brgl@bgdev.pl>, Tony Lindgren <tony@atomide.com>,
- Haojian Zhuang <haojian.zhuang@linaro.org>, Vignesh R <vigneshr@ti.com>,
- Aaro Koskinen <aaro.koskinen@iki.fi>,
- Janusz Krzysztofik <jmkrzyszt@gmail.com>, Andi Shyti
- <andi.shyti@kernel.org>, Peter Rosin <peda@axentia.se>,
- Vinod Koul <vkoul@kernel.org>, Kishon Vijay Abraham I <kishon@kernel.org>,
- Philipp Zabel <p.zabel@pengutronix.de>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>,
- =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
- Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
- linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
- linux-i2c@vger.kernel.org, linux-phy@lists.infradead.org,
- linux-pci@vger.kernel.org, gregory.clement@bootlin.com,
- theo.lebrun@bootlin.com, thomas.petazzoni@bootlin.com, u-kumar1@ti.com
-References: <20240102-j7200-pcie-s2r-v3-0-5c2e4a3fac1f@bootlin.com>
- <20240102-j7200-pcie-s2r-v3-2-5c2e4a3fac1f@bootlin.com>
- <Zc4tedAhqYX3bQcw@smile.fi.intel.com>
- <78add459-a96a-46c6-83ff-e2657d4d3db4@bootlin.com>
- <Zc96dSff5Y-dufrJ@smile.fi.intel.com>
- <a2c3c5b9-79a3-4793-892c-b1ab79b71c7d@bootlin.com>
- <ZdX28EJ9LtDWfVmH@smile.fi.intel.com>
-From: Thomas Richard <thomas.richard@bootlin.com>
-In-Reply-To: <ZdX28EJ9LtDWfVmH@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-GND-Sasl: thomas.richard@bootlin.com
+Content-Transfer-Encoding: 8bit
+X-Flowmailer-Platform: Siemens
+Feedback-ID: 519:519-456497:519-21489:flowmailer
 
-On 2/21/24 14:13, Andy Shevchenko wrote:
-> On Wed, Feb 21, 2024 at 12:01:43PM +0100, Thomas Richard wrote:
->> On 2/16/24 16:08, Andy Shevchenko wrote:
->>> On Fri, Feb 16, 2024 at 08:59:47AM +0100, Thomas Richard wrote:
->>>> On 2/15/24 16:27, Andy Shevchenko wrote:
->>>>> On Thu, Feb 15, 2024 at 04:17:47PM +0100, Thomas Richard wrote:
->>>>>> No need to check the pointer returned by platform_get_drvdata(), as
->>>>>> platform_set_drvdata() is called during the probe.
->>>>>
->>>>> This patch should go _after_ the next one, otherwise the commit message doesn't
->>>>> tell full story and the code change bring a potential regression.
->>>>
->>>> Hello Andy,
->>>>
->>>> I'm ok to move this patch after the next one.
->>>> But for my understanding, could you explain me why changing the order is
->>>> important in this case ?
->>>
->>> Old PM calls obviously can be called in different circumstances and these
->>> checks are important.
->>>
->>> Just squash these two patches to avoid additional churn and we are done.
->>
->> You mean invert the order instead of squash.
-> 
-> Either would work, but see how much churn in terms of changing just changed
-> lines it adds.
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-OK thanks.
+AM33XX_PRM_RSTCTRL_OFFSET is already defined in prm33xx.h and
+AM33XX_RST_GLOBAL_WARM_SW_MASK in prm-regbits-33xx.h.
 
-I'll squash the two patches. And I'll add a comment which explains that
-I dropped some dead code.
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+---
+ arch/arm/mach-omap2/prm33xx.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-Regards,
-
+diff --git a/arch/arm/mach-omap2/prm33xx.c b/arch/arm/mach-omap2/prm33xx.c
+index 4b65a0f9cf7d9..4a462310a4b09 100644
+--- a/arch/arm/mach-omap2/prm33xx.c
++++ b/arch/arm/mach-omap2/prm33xx.c
+@@ -15,10 +15,6 @@
+ #include "prm33xx.h"
+ #include "prm-regbits-33xx.h"
+ 
+-#define AM33XX_PRM_RSTCTRL_OFFSET		0x0000
+-
+-#define AM33XX_RST_GLOBAL_WARM_SW_MASK		(1 << 0)
+-
+ /* Read a register in a PRM instance */
+ static u32 am33xx_prm_read_reg(s16 inst, u16 idx)
+ {
 -- 
-Thomas Richard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.43.0
 
 
