@@ -1,116 +1,164 @@
-Return-Path: <linux-omap+bounces-690-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-691-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 901A385D65C
-	for <lists+linux-omap@lfdr.de>; Wed, 21 Feb 2024 12:02:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 749B885D8CE
+	for <lists+linux-omap@lfdr.de>; Wed, 21 Feb 2024 14:10:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3286A1F24399
-	for <lists+linux-omap@lfdr.de>; Wed, 21 Feb 2024 11:02:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 298271F24141
+	for <lists+linux-omap@lfdr.de>; Wed, 21 Feb 2024 13:10:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6B773F8F1;
-	Wed, 21 Feb 2024 11:01:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="XN2ZfXNc"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 368196A03E;
+	Wed, 21 Feb 2024 13:10:12 +0000 (UTC)
 X-Original-To: linux-omap@vger.kernel.org
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C17A33A1A2;
-	Wed, 21 Feb 2024 11:01:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E2CF69DF9
+	for <linux-omap@vger.kernel.org>; Wed, 21 Feb 2024 13:10:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708513315; cv=none; b=I31353WXohwBCUo+xZdNscnt+/BGhPM8DE+Jn90YGOi1aKYhUhd2/b6zGt0m7xrKi5O3XYhydmBM2Z5UFjIj//7RWVrLePNcTWoQ/64fEaNrmx4MkduTahu3ohaqECyiCrr3Ob1GoVBuyDXDm4lw5YvujdBrwrK+9dLXQ/1jJF8=
+	t=1708521012; cv=none; b=K5EyUdckDa9SiRaGGKq+RTqHmpDVriSGXBrt5hpZmsAHVAfLw78GK7j7BpDMllDfJXw4GXensAy7trYiocCI4hbv2jTNQJJL+XhNOfwTm07Iu7cqNzcTVndImqO2ZuOzRO0C5D/UuJWLhWteoBj7PdmgD25tkWnMIZZcfcBalQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708513315; c=relaxed/simple;
-	bh=dRk415UzsgzDNWkIDPhHwFDgyKW9PXo6eI6QQRKIUbg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=M804e3JIL34nYtaYaY7GeNbOVM59BeGtZLykSNIQ/lyVxZuodRd6xpuqFWkjYiA50/Xom8Lex6c0PLUL9OdhzjXe8Su/CvpmoiIzODFhcfTWFuymZSwQSrHDqjEKa7JvHOvWTrjFNvcm+80ttFL7aVZgUXeWG1Sfp/ijjC8p+ro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=XN2ZfXNc; arc=none smtp.client-ip=217.70.183.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 441241BF209;
-	Wed, 21 Feb 2024 11:01:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1708513307;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vInAPH5p+e8119+v06ulfZ5lvJvXTu8ss9P3JzvQTHY=;
-	b=XN2ZfXNc0o0/ZL9aDDvYuX0tX/X+cAUOjEyPjjYOeuCHaYl1rlDr1Zo2s5XyriovJpzcap
-	5ZjBJwOO30nd09Epax4Smr0EKKs2MnvZ6Q3CHnOyYM6NwMgAUWRW4U6CmpYsOp6wOCBm6e
-	Y4luy+dNbIH4qMXu7QFPc4ol2jaCvPTZ9WhoCrLsokTohJ569FN6n4JNHtW33M7bro/a6F
-	PKuVY4qRveAwriMN481ITaN546VAyU3LywwhyzfSs6aURNBCIxVNE/C/trMpsclq4Q7hAZ
-	Jc3HcZu+GwQDdXz9UFfQrUzBF5NmVJHPQyOh6pylNe/TMxTyGPghV8PG2xYDpA==
-Message-ID: <a2c3c5b9-79a3-4793-892c-b1ab79b71c7d@bootlin.com>
-Date: Wed, 21 Feb 2024 12:01:43 +0100
+	s=arc-20240116; t=1708521012; c=relaxed/simple;
+	bh=5czaxbYDvAGFXbLHNaxY2xPuNAJRQ9JTACWJjrB2Axc=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=aHE4ncGHYFAF30eand2IPxZzQ5ya+flPfXSW+rncBavY76auJ0mSUf38XZl84SxYzla0buunJpa+pfYNsGQATRxpdXVOH1uTnbkwLaQKHo9258QBisRaXffpePTW/1JfUj9DYQq3uFkZoPIrvwtSJixb6Z/srrJx+FfrvSlTwPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1rcmM7-0000Ni-FO; Wed, 21 Feb 2024 14:09:47 +0100
+Received: from [2a0a:edc0:0:900:1d::4e] (helo=lupine)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1rcmM5-00235h-KR; Wed, 21 Feb 2024 14:09:45 +0100
+Received: from pza by lupine with local (Exim 4.96)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1rcmM5-0008RC-1k;
+	Wed, 21 Feb 2024 14:09:45 +0100
+Message-ID: <c105bfa8567f9e76731f2b018f4ca3176357204d.camel@pengutronix.de>
+Subject: Re: [PATCH v3 14/18] phy: cadence-torrent: add suspend and resume
+ support
+From: Philipp Zabel <p.zabel@pengutronix.de>
+To: Thomas Richard <thomas.richard@bootlin.com>, Linus Walleij
+ <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, Andy
+ Shevchenko <andy@kernel.org>, Tony Lindgren <tony@atomide.com>, Haojian
+ Zhuang <haojian.zhuang@linaro.org>,  Vignesh R <vigneshr@ti.com>, Aaro
+ Koskinen <aaro.koskinen@iki.fi>, Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+ Andi Shyti <andi.shyti@kernel.org>, Peter Rosin <peda@axentia.se>, Vinod
+ Koul <vkoul@kernel.org>, Kishon Vijay Abraham I <kishon@kernel.org>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, Krzysztof
+ =?UTF-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Rob Herring <robh@kernel.org>,
+ Bjorn Helgaas <bhelgaas@google.com>
+Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org, 
+ linux-i2c@vger.kernel.org, linux-phy@lists.infradead.org, 
+ linux-pci@vger.kernel.org, gregory.clement@bootlin.com,
+ theo.lebrun@bootlin.com,  thomas.petazzoni@bootlin.com, u-kumar1@ti.com
+Date: Wed, 21 Feb 2024 14:09:45 +0100
+In-Reply-To: <20240102-j7200-pcie-s2r-v3-14-5c2e4a3fac1f@bootlin.com>
+References: <20240102-j7200-pcie-s2r-v3-0-5c2e4a3fac1f@bootlin.com>
+	 <20240102-j7200-pcie-s2r-v3-14-5c2e4a3fac1f@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4-2 
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 02/18] pinctrl: pinctrl-single: remove dead code in
- suspend() and resume() callbacks
-Content-Language: en-US
-To: Andy Shevchenko <andy@kernel.org>
-Cc: Linus Walleij <linus.walleij@linaro.org>,
- Bartosz Golaszewski <brgl@bgdev.pl>, Tony Lindgren <tony@atomide.com>,
- Haojian Zhuang <haojian.zhuang@linaro.org>, Vignesh R <vigneshr@ti.com>,
- Aaro Koskinen <aaro.koskinen@iki.fi>,
- Janusz Krzysztofik <jmkrzyszt@gmail.com>, Andi Shyti
- <andi.shyti@kernel.org>, Peter Rosin <peda@axentia.se>,
- Vinod Koul <vkoul@kernel.org>, Kishon Vijay Abraham I <kishon@kernel.org>,
- Philipp Zabel <p.zabel@pengutronix.de>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>,
- =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
- Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
- linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
- linux-i2c@vger.kernel.org, linux-phy@lists.infradead.org,
- linux-pci@vger.kernel.org, gregory.clement@bootlin.com,
- theo.lebrun@bootlin.com, thomas.petazzoni@bootlin.com, u-kumar1@ti.com
-References: <20240102-j7200-pcie-s2r-v3-0-5c2e4a3fac1f@bootlin.com>
- <20240102-j7200-pcie-s2r-v3-2-5c2e4a3fac1f@bootlin.com>
- <Zc4tedAhqYX3bQcw@smile.fi.intel.com>
- <78add459-a96a-46c6-83ff-e2657d4d3db4@bootlin.com>
- <Zc96dSff5Y-dufrJ@smile.fi.intel.com>
-From: Thomas Richard <thomas.richard@bootlin.com>
-In-Reply-To: <Zc96dSff5Y-dufrJ@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-GND-Sasl: thomas.richard@bootlin.com
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: p.zabel@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-omap@vger.kernel.org
 
-On 2/16/24 16:08, Andy Shevchenko wrote:
-> On Fri, Feb 16, 2024 at 08:59:47AM +0100, Thomas Richard wrote:
->> On 2/15/24 16:27, Andy Shevchenko wrote:
->>> On Thu, Feb 15, 2024 at 04:17:47PM +0100, Thomas Richard wrote:
->>>> No need to check the pointer returned by platform_get_drvdata(), as
->>>> platform_set_drvdata() is called during the probe.
->>>
->>> This patch should go _after_ the next one, otherwise the commit message doesn't
->>> tell full story and the code change bring a potential regression.
->>
->> Hello Andy,
->>
->> I'm ok to move this patch after the next one.
->> But for my understanding, could you explain me why changing the order is
->> important in this case ?
-> 
-> Old PM calls obviously can be called in different circumstances and these
-> checks are important.
-> 
-> Just squash these two patches to avoid additional churn and we are done.
+On Do, 2024-02-15 at 16:17 +0100, Thomas Richard wrote:
+> Add suspend and resume support.
+>=20
+> The already_configured flag is cleared during the suspend stage to force
+> the PHY initialization during the resume stage.
+>=20
+> Based on the work of Th=C3=A9o Lebrun <theo.lebrun@bootlin.com>
+>=20
+> Signed-off-by: Thomas Richard <thomas.richard@bootlin.com>
+> ---
+>  drivers/phy/cadence/phy-cadence-torrent.c | 54 +++++++++++++++++++++++++=
+++++++
+>  1 file changed, 54 insertions(+)
+>=20
+> diff --git a/drivers/phy/cadence/phy-cadence-torrent.c b/drivers/phy/cade=
+nce/phy-cadence-torrent.c
+> index 52cadca4c07b..f8945a11e7ca 100644
+> --- a/drivers/phy/cadence/phy-cadence-torrent.c
+> +++ b/drivers/phy/cadence/phy-cadence-torrent.c
+> @@ -3005,6 +3005,59 @@ static void cdns_torrent_phy_remove(struct platfor=
+m_device *pdev)
+>  	cdns_torrent_clk_cleanup(cdns_phy);
+>  }
+> =20
+> +static int cdns_torrent_phy_suspend_noirq(struct device *dev)
+> +{
+> +	struct cdns_torrent_phy *cdns_phy =3D dev_get_drvdata(dev);
+> +	int i;
+> +
+> +	reset_control_assert(cdns_phy->phy_rst);
+> +	reset_control_assert(cdns_phy->apb_rst);
+> +	for (i =3D 0; i < cdns_phy->nsubnodes; i++)
+> +		reset_control_assert(cdns_phy->phys[i].lnk_rst);
+> +
+> +	if (cdns_phy->already_configured)
+> +		cdns_phy->already_configured =3D 0;
+> +	else
+> +		clk_disable_unprepare(cdns_phy->clk);
+> +
+> +	return 0;
+> +}
+> +
+> +static int cdns_torrent_phy_resume_noirq(struct device *dev)
+> +{
+> +	struct cdns_torrent_phy *cdns_phy =3D dev_get_drvdata(dev);
+> +	int node =3D cdns_phy->nsubnodes;
+> +	int ret, i;
+> +
+> +	ret =3D cdns_torrent_clk(cdns_phy);
+> +	if (ret)
+> +		goto clk_cleanup;
+> +
+> +	/* Enable APB */
+> +	reset_control_deassert(cdns_phy->apb_rst);
+> +
+> +	if (cdns_phy->nsubnodes > 1) {
+> +		ret =3D cdns_torrent_phy_configure_multilink(cdns_phy);
+> +		if (ret)
+> +			goto put_lnk_rst;
+> +	}
+> +
+> +	return 0;
+> +
+> +put_lnk_rst:
+> +	for (i =3D 0; i < node; i++)
+> +		reset_control_assert(cdns_phy->phys[i].lnk_rst);
 
-You mean invert the order instead of squash.
+The same cleanup is found in probe. Would it be cleaner to move this
+into cdns_torrent_phy_configure_multilink() instead of duplicating it
+here?
 
--- 
-Thomas Richard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+> +	reset_control_assert(cdns_phy->apb_rst);
+> +	clk_disable_unprepare(cdns_phy->clk);
+> +clk_cleanup:
+> +	cdns_torrent_clk_cleanup(cdns_phy);
+
+This calls of_clk_del_provider(), seems misplaced here.
+
+regards
+Philipp
 
 
