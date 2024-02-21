@@ -1,117 +1,112 @@
-Return-Path: <linux-omap+bounces-698-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-699-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E6A285EAF8
-	for <lists+linux-omap@lfdr.de>; Wed, 21 Feb 2024 22:36:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D918085EB6C
+	for <lists+linux-omap@lfdr.de>; Wed, 21 Feb 2024 22:55:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14EFB1F26228
-	for <lists+linux-omap@lfdr.de>; Wed, 21 Feb 2024 21:36:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5E65FB22707
+	for <lists+linux-omap@lfdr.de>; Wed, 21 Feb 2024 21:55:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 849FD1272A9;
-	Wed, 21 Feb 2024 21:25:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D54C3127B6F;
+	Wed, 21 Feb 2024 21:55:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KYtTh/tM"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="drqEE/Ra"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9AF81272B3
-	for <linux-omap@vger.kernel.org>; Wed, 21 Feb 2024 21:25:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1FAB1272DF
+	for <linux-omap@vger.kernel.org>; Wed, 21 Feb 2024 21:55:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708550725; cv=none; b=Phkp08sWzGAVUwSKnTkvj47ZEwTVq3BNfk2TOPaYWj5n1Hl2MRLnoVkGHkMvswW9FhBPXccB+Zd4RobGBkoRSKJph2yzTkLJt0KquNRUUrEUBLGnR9YLcRAd3afJHLrE3YjXndi3JueAmDjxKbgaTDO1vR4/xDffFZcIsytt4YY=
+	t=1708552512; cv=none; b=X6barVW77uCUed059C/U3OHxpXcWLamtUFE9qoNOBfVOIpXaYmoDe4iO06jgbntqaPvN9XR8s4WMVHa/VxotC9Od1dQkwwmTUZZ6CWnuG6qHhu5oxbsmxSS0YWxRwjfgHdMvDyuLWYiVy7LNt+aoHFwEzwfGpj48DgD2svbsRR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708550725; c=relaxed/simple;
-	bh=vwcCEdPIttWiNnK38OUvrS0LIv8EPoiVoGqCGSZN+Ig=;
+	s=arc-20240116; t=1708552512; c=relaxed/simple;
+	bh=vWHrhgI4Kt8kGUNcvtf3QHT4fPb4OVK0J5B/aX4bSNk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Q3/t/xHQE0KD3tAMXGPEaU91yl8zRFpVsT4k6kN3smh52mcUmE2MqdTp3mSaEBDQNfIdvYGhJENHoHUWVqgnEwgDig6F1kS3wAr9EdwzBa3PCzlGNb73yYzcSlgaKogJXanSBzgIAvNaWMjL5selnU25Y7IMgWYb3b2rkqHhBbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=KYtTh/tM; arc=none smtp.client-ip=209.85.219.179
+	 To:Cc:Content-Type; b=daqc0qLl5OJLGnvaRAQ+MLa3R9HqyiBhPvI9IUp1vx8lSESIzOqRqf5k2N1oMDKhRI0cPcaLApaWx9GRo1cJQ5YbhizZiNs6kVbwWj4O/JRuDj4zDBpjcqP8AN7zgO9W7dDKUZvT1bFr8R31ro32lyEzuDzHBemxsdwEsPmVpK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=drqEE/Ra; arc=none smtp.client-ip=209.85.128.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yb1-f179.google.com with SMTP id 3f1490d57ef6-dcc4de7d901so6396192276.0
-        for <linux-omap@vger.kernel.org>; Wed, 21 Feb 2024 13:25:23 -0800 (PST)
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-60822b444c9so30055917b3.2
+        for <linux-omap@vger.kernel.org>; Wed, 21 Feb 2024 13:55:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1708550722; x=1709155522; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1708552510; x=1709157310; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=eQcwsvUVgzwUHzVYq2OUwFRsg7S9zwWdnAGogtH5/+c=;
-        b=KYtTh/tMfJTsTc1y6dP8tFA/q548E6QS1sFLhJInyi8VYfynZHFK8Nmr5B/8YTrVRp
-         gRMX3VJjb8bT5xnFExOW7JYcyqaCPkg6llkwW5eLB4dMbmgpj01Vdc+TEi51KkBiuoDi
-         fElxgHErKjwrUtdeM8OYUJD1u/c4s6PU2E4YYIc123pgMXVggCLhFxxkT3884vqEd2hW
-         CUclIIQDBKJHc+rfYbfmZdyfGCgFBsZ/SFqy3RFrej0rGhlH1KZ8Otj+u32NIcev7G/i
-         VjRu0jrbHJa6UdHvxahSeqXtYWlO6Vlj1ydMLsL1XLGPt5Ci1sK5BWBveSUgvR0vcRf3
-         DOVA==
+        bh=vWHrhgI4Kt8kGUNcvtf3QHT4fPb4OVK0J5B/aX4bSNk=;
+        b=drqEE/Ra7/oHoShJ7/NZDmAVwtS0BWeyxBhhJ8pG0Q+hfOT7/RkP1v4BPHiKR0l+TW
+         2pEHKFm5WmwIi9za/fv4FYJimgSrIxuuEs/7MGdBTLj4f3X7E48RBGOjLOwBhjpAFduM
+         42tjxlzb8MDXXHi9bR0NOa27f6f6ILYvFdV2v/Sa2UzsetY5ZWkpMYqftkKJqXbgtauK
+         WORIW/FkuPGeVWFU//sFhGjZs6bd231h00u9XX95CqEJaGaWxRgtJCStxG/IDH8qVDmH
+         Hh9nB/0AwHVFxofSGBzQyKaoahb+eCHVljS8/7bqDQu4+VFfhZo4a8EYIDrzh0t/bdJQ
+         lA+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708550722; x=1709155522;
+        d=1e100.net; s=20230601; t=1708552510; x=1709157310;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=eQcwsvUVgzwUHzVYq2OUwFRsg7S9zwWdnAGogtH5/+c=;
-        b=e9KumlF3VDTzCCE7MBRYxqfTvaRiTFWOgi8xzReOPpMWiqScmS9Ajw1rlIOEUH2y+Y
-         uB/w8qHExUjVfbhZc2bT0bxFp/dKF5icgugq3mRhAlnCXIXOMpXSqXdwMwN81ZH8um2r
-         SDE18fuBDQr7N1SxhHQ930Aku1nL3AnuEvCmadATOfeBIFzxkG53jKgEBw+Q77YR4NQz
-         Pf3sELCJMhaMVrfHh8jfASbrxOLjQV3Cd55arrp0S5A0LO47SgoQwdHYPcZPEMT5a8yO
-         Qy6v81q3qPBNOhQwAqw9i8MUSrXRCgNX9Ty2RLdrHKVlkZ0wvcXmcUJqJL+PtPEnewZb
-         Cqrw==
-X-Forwarded-Encrypted: i=1; AJvYcCVcHf8ubD9sI2Mx4hXcfesU250LdJBdb4jPVn6QIG0/Sl6eEWOR7XmlZ6Ljn0vjA251Du9U3eJnLP3X9YzS0YqBk1mfn5V/+60xzA==
-X-Gm-Message-State: AOJu0YwgJivT/FS5HSt0/wH/epamv+PaP3sdy4/rSGOpcm3EpNqZ5XYd
-	Ll03s3o3/ELGQQP8P9UvN2ciTeF+I6+7Y7W3oHvz5gHh24Zv6EnRyQ3V0ZdxJxGhwDEQPYnJt+Y
-	ZO6peeG3tR63cyTuqz9xe4bt03n5dk/s3MNWkzA==
-X-Google-Smtp-Source: AGHT+IH4UPI5wpOTg15rGTFngizg01v5P2orm8RiQzbgP6QMedeTpOkK8y3JHAR2cnL/aWUbEuMgAt7gdxYB8HxLYEo=
-X-Received: by 2002:a81:b614:0:b0:607:f4b9:11aa with SMTP id
- u20-20020a81b614000000b00607f4b911aamr17260454ywh.21.1708550722698; Wed, 21
- Feb 2024 13:25:22 -0800 (PST)
+        bh=vWHrhgI4Kt8kGUNcvtf3QHT4fPb4OVK0J5B/aX4bSNk=;
+        b=ocp21fVkSzI/07WSpPaHs5qc/iwCjQhwy1iQB0otm+yvGzCva5EA67S5slaFx5ZelJ
+         b+ETxoQER+C35J6f0MM6ASC8uPlKshSmQmTbzbxYbBkvXSLyBhVDTbRLLFslGDD5YTsj
+         VyQSQuOlJzKFXklHLze3sJmfmkGRKZQW6GVcjf/zL5noVDhdt53Md3FSfw31ITZCe3Dx
+         nkMzefg/ZpWQGPaNAAcy8B2jnAbMVxj/oCZupj6QCq4vDYl8pyDmGkmnxRHB4HN20fhB
+         hh5BUwBOHjiyhAXEigtCjq3dbEB2HdxOV686eSaRqfKaH+hzDASf5zZHPbu+oKfg3O5X
+         egcw==
+X-Forwarded-Encrypted: i=1; AJvYcCXc//7dZSZqVmr/cu/gKn6M9xdEM+/gIFEpyHbWeIyX3Ol57j7MMLY67mlZlRAdkTxDf3QbjGiqPydUsUP+YqRi0kTn+O58lGvgWA==
+X-Gm-Message-State: AOJu0Yw7gmN+I3/QfWlfoOR/WtZM/cY4UMTCO0ZA/OS27ZynwKn/zUUn
+	9STED70wG187o/KI20S8ZR+ZpTl3pCvtjgMGGsg5x3lceMUNbi0+4nwpmP+Thkh9E/JINtyGzny
+	wRXjNZcLLQEG8zeGxCzBzGl1lAtIMwiawKreS8Q==
+X-Google-Smtp-Source: AGHT+IFG7OkXBXjbNPYxfp6BSZzFgHptfq8O7pHlOruVpRLafhQo6wGBbhxmoAykBBf2wzpi0CwmDlGUgveqYfQh/CQ=
+X-Received: by 2002:a81:8341:0:b0:5ff:796e:481f with SMTP id
+ t62-20020a818341000000b005ff796e481fmr18807228ywf.11.1708552509905; Wed, 21
+ Feb 2024 13:55:09 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240127-mmc-proper-kmap-v2-0-d8e732aa97d1@linaro.org>
- <20240127-mmc-proper-kmap-v2-9-d8e732aa97d1@linaro.org> <7f40cb40-1a1-532-75fc-d3376ed27a@linux-m68k.org>
- <CACRpkdZpyefnTyKEJXru_HZG8xcJF66Eb2pZhbk+HVvfzdh4yw@mail.gmail.com> <CAMuHMdWwuH-mPm1TJTfvf3FXSd_zj+yP7OL6uB=-TrqNOT+W_Q@mail.gmail.com>
-In-Reply-To: <CAMuHMdWwuH-mPm1TJTfvf3FXSd_zj+yP7OL6uB=-TrqNOT+W_Q@mail.gmail.com>
+References: <20240102-j7200-pcie-s2r-v3-0-5c2e4a3fac1f@bootlin.com> <20240102-j7200-pcie-s2r-v3-1-5c2e4a3fac1f@bootlin.com>
+In-Reply-To: <20240102-j7200-pcie-s2r-v3-1-5c2e4a3fac1f@bootlin.com>
 From: Linus Walleij <linus.walleij@linaro.org>
-Date: Wed, 21 Feb 2024 22:25:11 +0100
-Message-ID: <CACRpkdaks_7PWpXF=wssP2x+tZce5SFsGTCddgxjJQ9erHp-6Q@mail.gmail.com>
-Subject: Re: [PATCH v2 9/9] mmc: sh_mmcif: Use sg_miter for PIO
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>, Ming Lei <ming.lei@redhat.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Ulf Hansson <ulf.hansson@linaro.org>, Nicolas Pitre <nico@fluxnic.net>, 
-	Aaro Koskinen <aaro.koskinen@iki.fi>, Adrian Hunter <adrian.hunter@intel.com>, 
-	Angelo Dureghello <angelo.dureghello@timesys.com>, linux-mmc@vger.kernel.org, 
-	linux-block@vger.kernel.org, linux-omap@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org
+Date: Wed, 21 Feb 2024 22:54:59 +0100
+Message-ID: <CACRpkdYSw5_70H4k5ZX-stCU=CH=v_0Ggm+R+FSBhdbk6mnhOA@mail.gmail.com>
+Subject: Re: [PATCH v3 01/18] gpio: pca953x: move suspend()/resume() to suspend_noirq()/resume_noirq()
+To: Thomas Richard <thomas.richard@bootlin.com>
+Cc: Bartosz Golaszewski <brgl@bgdev.pl>, Andy Shevchenko <andy@kernel.org>, Tony Lindgren <tony@atomide.com>, 
+	Haojian Zhuang <haojian.zhuang@linaro.org>, Vignesh R <vigneshr@ti.com>, 
+	Aaro Koskinen <aaro.koskinen@iki.fi>, Janusz Krzysztofik <jmkrzyszt@gmail.com>, 
+	Andi Shyti <andi.shyti@kernel.org>, Peter Rosin <peda@axentia.se>, Vinod Koul <vkoul@kernel.org>, 
+	Kishon Vijay Abraham I <kishon@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, linux-gpio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-omap@vger.kernel.org, linux-i2c@vger.kernel.org, 
+	linux-phy@lists.infradead.org, linux-pci@vger.kernel.org, 
+	gregory.clement@bootlin.com, theo.lebrun@bootlin.com, 
+	thomas.petazzoni@bootlin.com, u-kumar1@ti.com, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
+	Andy Shevchenko <andy.shevchenko@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 21, 2024 at 10:50=E2=80=AFAM Geert Uytterhoeven
-<geert@linux-m68k.org> wrote:
+On Thu, Feb 15, 2024 at 4:18=E2=80=AFPM Thomas Richard
+<thomas.richard@bootlin.com> wrote:
 
-> > I've sent a patch, can you test?
-> > https://lore.kernel.org/linux-mmc/20240220-fix-sh-mmcif-v1-1-b9d08a787c=
-1f@linaro.org/T/#u
+> Some IOs can be needed during suspend_noirq()/resume_noirq().
+> So move suspend()/resume() to noirq.
 >
-> While that patch fixes the BUG, it does not make the eMMC work fully.
-> It spews:
->
->     sh_mmcif ee200000.mmc: Timeout waiting for 2 on CMD18
->
-> and no or limited data is read ("hd /dev/mmcblk..." blocks after no
-> or two lines of output).
->
-> I still need to revert 27b57277d9ba to restore proper operation.
+> Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+> Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> Signed-off-by: Thomas Richard <thomas.richard@bootlin.com>
 
-Halfway there. I looked at the code again and now I think I found the
-problem causing CMD18 to time out.
-
-I've send a new 2-patch series:
-https://lore.kernel.org/linux-mmc/20240221-fix-sh-mmcif-v2-0-5e521eb25ae4@l=
-inaro.org/
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
 Yours,
 Linus Walleij
