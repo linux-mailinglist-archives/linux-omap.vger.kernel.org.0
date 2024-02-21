@@ -1,204 +1,118 @@
-Return-Path: <linux-omap+bounces-697-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-698-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F098C85E1C0
-	for <lists+linux-omap@lfdr.de>; Wed, 21 Feb 2024 16:46:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E6A285EAF8
+	for <lists+linux-omap@lfdr.de>; Wed, 21 Feb 2024 22:36:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 80A2DB21031
-	for <lists+linux-omap@lfdr.de>; Wed, 21 Feb 2024 15:46:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14EFB1F26228
+	for <lists+linux-omap@lfdr.de>; Wed, 21 Feb 2024 21:36:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E50380BED;
-	Wed, 21 Feb 2024 15:46:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 849FD1272A9;
+	Wed, 21 Feb 2024 21:25:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b="ioXZiOfN"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KYtTh/tM"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mta-65-226.siemens.flowmailer.net (mta-65-226.siemens.flowmailer.net [185.136.65.226])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 545E480BE4
-	for <linux-omap@vger.kernel.org>; Wed, 21 Feb 2024 15:46:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.65.226
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9AF81272B3
+	for <linux-omap@vger.kernel.org>; Wed, 21 Feb 2024 21:25:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708530385; cv=none; b=XgXcNylmdDY7BR0FOo3dIpBrG1oi+/9bueipTatVcRou93uvlANbTxEKOMFYQG3OyGsodkav5iPTwBlaYUSywns7li+6J4AyCXg3tOCMAYdAsYG+8pmOV6V1joEhZQj4Cet3LDe9FkZnLpywnEournN5onXhH2+Duet0KfSJYjY=
+	t=1708550725; cv=none; b=Phkp08sWzGAVUwSKnTkvj47ZEwTVq3BNfk2TOPaYWj5n1Hl2MRLnoVkGHkMvswW9FhBPXccB+Zd4RobGBkoRSKJph2yzTkLJt0KquNRUUrEUBLGnR9YLcRAd3afJHLrE3YjXndi3JueAmDjxKbgaTDO1vR4/xDffFZcIsytt4YY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708530385; c=relaxed/simple;
-	bh=TOe8zjPnYulZTH03Hkj1594nbNAkHvFV3+PLeXSice4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N3kcXHN3uS0m0kjbx8fh/K+5IFDdtVisyffXdjQOg3WqOjWAcBQMRR2OYij3pPKixRs1hgeQLDrdV5Co1kMkWnUbjl1hmx1070nH+f5cAC6UfNrkUGV78sFic2upsizQC7Q86OJiix5hx1ndPmufY8jgRwSPpFcSWDuopGwgZfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (1024-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b=ioXZiOfN; arc=none smtp.client-ip=185.136.65.226
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
-Received: by mta-65-226.siemens.flowmailer.net with ESMTPSA id 20240221154619459e4c72bc0f2bc6cb
-        for <linux-omap@vger.kernel.org>;
-        Wed, 21 Feb 2024 16:46:19 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
- d=siemens.com; i=alexander.sverdlin@siemens.com;
- h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc:References:In-Reply-To;
- bh=66R2TQTJzmhGRQe2/ph0wKSL4VXGP/nSxWvviYDEaGk=;
- b=ioXZiOfN1cdfJhj+7xo6z/x4hEwVeW9uBWlVU6fs9zH4J6kRreYRgtR1PxIL/gaAD3RGyE
- JU45GGP0bndeS7fnmaKA/AMn9Tby3unat/I9pzIJ2OHbjlXuuaUmJvS6Z6P77Uvocf2q7hET
- Fwq7F4+GAPh+Gk5c0WuH1rvJd7JUA=;
-From: "A. Sverdlin" <alexander.sverdlin@siemens.com>
-To: linux-omap@vger.kernel.org
-Cc: Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Paul Walmsley <paul@pwsan.com>,
-	Tony Lindgren <tony@atomide.com>,
-	Russell King <linux@armlinux.org.uk>,
-	linux-arm-kernel@lists.infradead.org,
-	Matthias Michel <matthias.michel@siemens.com>
-Subject: [PATCH 2/2] ARM: AM33xx: PRM: Implement REBOOT_COLD
-Date: Wed, 21 Feb 2024 16:45:51 +0100
-Message-ID: <20240221154614.3549951-2-alexander.sverdlin@siemens.com>
-In-Reply-To: <20240221154614.3549951-1-alexander.sverdlin@siemens.com>
-References: <20240221154614.3549951-1-alexander.sverdlin@siemens.com>
+	s=arc-20240116; t=1708550725; c=relaxed/simple;
+	bh=vwcCEdPIttWiNnK38OUvrS0LIv8EPoiVoGqCGSZN+Ig=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Q3/t/xHQE0KD3tAMXGPEaU91yl8zRFpVsT4k6kN3smh52mcUmE2MqdTp3mSaEBDQNfIdvYGhJENHoHUWVqgnEwgDig6F1kS3wAr9EdwzBa3PCzlGNb73yYzcSlgaKogJXanSBzgIAvNaWMjL5selnU25Y7IMgWYb3b2rkqHhBbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=KYtTh/tM; arc=none smtp.client-ip=209.85.219.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yb1-f179.google.com with SMTP id 3f1490d57ef6-dcc4de7d901so6396192276.0
+        for <linux-omap@vger.kernel.org>; Wed, 21 Feb 2024 13:25:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1708550722; x=1709155522; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eQcwsvUVgzwUHzVYq2OUwFRsg7S9zwWdnAGogtH5/+c=;
+        b=KYtTh/tMfJTsTc1y6dP8tFA/q548E6QS1sFLhJInyi8VYfynZHFK8Nmr5B/8YTrVRp
+         gRMX3VJjb8bT5xnFExOW7JYcyqaCPkg6llkwW5eLB4dMbmgpj01Vdc+TEi51KkBiuoDi
+         fElxgHErKjwrUtdeM8OYUJD1u/c4s6PU2E4YYIc123pgMXVggCLhFxxkT3884vqEd2hW
+         CUclIIQDBKJHc+rfYbfmZdyfGCgFBsZ/SFqy3RFrej0rGhlH1KZ8Otj+u32NIcev7G/i
+         VjRu0jrbHJa6UdHvxahSeqXtYWlO6Vlj1ydMLsL1XLGPt5Ci1sK5BWBveSUgvR0vcRf3
+         DOVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708550722; x=1709155522;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eQcwsvUVgzwUHzVYq2OUwFRsg7S9zwWdnAGogtH5/+c=;
+        b=e9KumlF3VDTzCCE7MBRYxqfTvaRiTFWOgi8xzReOPpMWiqScmS9Ajw1rlIOEUH2y+Y
+         uB/w8qHExUjVfbhZc2bT0bxFp/dKF5icgugq3mRhAlnCXIXOMpXSqXdwMwN81ZH8um2r
+         SDE18fuBDQr7N1SxhHQ930Aku1nL3AnuEvCmadATOfeBIFzxkG53jKgEBw+Q77YR4NQz
+         Pf3sELCJMhaMVrfHh8jfASbrxOLjQV3Cd55arrp0S5A0LO47SgoQwdHYPcZPEMT5a8yO
+         Qy6v81q3qPBNOhQwAqw9i8MUSrXRCgNX9Ty2RLdrHKVlkZ0wvcXmcUJqJL+PtPEnewZb
+         Cqrw==
+X-Forwarded-Encrypted: i=1; AJvYcCVcHf8ubD9sI2Mx4hXcfesU250LdJBdb4jPVn6QIG0/Sl6eEWOR7XmlZ6Ljn0vjA251Du9U3eJnLP3X9YzS0YqBk1mfn5V/+60xzA==
+X-Gm-Message-State: AOJu0YwgJivT/FS5HSt0/wH/epamv+PaP3sdy4/rSGOpcm3EpNqZ5XYd
+	Ll03s3o3/ELGQQP8P9UvN2ciTeF+I6+7Y7W3oHvz5gHh24Zv6EnRyQ3V0ZdxJxGhwDEQPYnJt+Y
+	ZO6peeG3tR63cyTuqz9xe4bt03n5dk/s3MNWkzA==
+X-Google-Smtp-Source: AGHT+IH4UPI5wpOTg15rGTFngizg01v5P2orm8RiQzbgP6QMedeTpOkK8y3JHAR2cnL/aWUbEuMgAt7gdxYB8HxLYEo=
+X-Received: by 2002:a81:b614:0:b0:607:f4b9:11aa with SMTP id
+ u20-20020a81b614000000b00607f4b911aamr17260454ywh.21.1708550722698; Wed, 21
+ Feb 2024 13:25:22 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Flowmailer-Platform: Siemens
-Feedback-ID: 519:519-456497:519-21489:flowmailer
+References: <20240127-mmc-proper-kmap-v2-0-d8e732aa97d1@linaro.org>
+ <20240127-mmc-proper-kmap-v2-9-d8e732aa97d1@linaro.org> <7f40cb40-1a1-532-75fc-d3376ed27a@linux-m68k.org>
+ <CACRpkdZpyefnTyKEJXru_HZG8xcJF66Eb2pZhbk+HVvfzdh4yw@mail.gmail.com> <CAMuHMdWwuH-mPm1TJTfvf3FXSd_zj+yP7OL6uB=-TrqNOT+W_Q@mail.gmail.com>
+In-Reply-To: <CAMuHMdWwuH-mPm1TJTfvf3FXSd_zj+yP7OL6uB=-TrqNOT+W_Q@mail.gmail.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Wed, 21 Feb 2024 22:25:11 +0100
+Message-ID: <CACRpkdaks_7PWpXF=wssP2x+tZce5SFsGTCddgxjJQ9erHp-6Q@mail.gmail.com>
+Subject: Re: [PATCH v2 9/9] mmc: sh_mmcif: Use sg_miter for PIO
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>, Ming Lei <ming.lei@redhat.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Ulf Hansson <ulf.hansson@linaro.org>, Nicolas Pitre <nico@fluxnic.net>, 
+	Aaro Koskinen <aaro.koskinen@iki.fi>, Adrian Hunter <adrian.hunter@intel.com>, 
+	Angelo Dureghello <angelo.dureghello@timesys.com>, linux-mmc@vger.kernel.org, 
+	linux-block@vger.kernel.org, linux-omap@vger.kernel.org, 
+	linux-renesas-soc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+On Wed, Feb 21, 2024 at 10:50=E2=80=AFAM Geert Uytterhoeven
+<geert@linux-m68k.org> wrote:
 
-Historically AM33xx performed warm software reset even though requested
-(and default) was REBOOT_COLD. Reflect the de-facto default mode in
-/sys/kernel/reboot/mode correctly and implement the real REBOOT_COLD
-(if configured explicitly).
+> > I've sent a patch, can you test?
+> > https://lore.kernel.org/linux-mmc/20240220-fix-sh-mmcif-v1-1-b9d08a787c=
+1f@linaro.org/T/#u
+>
+> While that patch fixes the BUG, it does not make the eMMC work fully.
+> It spews:
+>
+>     sh_mmcif ee200000.mmc: Timeout waiting for 2 on CMD18
+>
+> and no or limited data is read ("hd /dev/mmcblk..." blocks after no
+> or two lines of output).
+>
+> I still need to revert 27b57277d9ba to restore proper operation.
 
-Tested-by: Matthias Michel <matthias.michel@siemens.com>
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
----
- arch/arm/mach-omap2/am33xx-restart.c   |  3 ++-
- arch/arm/mach-omap2/board-generic.c    |  6 ++++++
- arch/arm/mach-omap2/prm-regbits-33xx.h |  1 +
- arch/arm/mach-omap2/prm.h              |  1 +
- arch/arm/mach-omap2/prm33xx.c          | 18 ++++++++++++++----
- arch/arm/mach-omap2/prm_common.c       |  6 ++++++
- 6 files changed, 30 insertions(+), 5 deletions(-)
+Halfway there. I looked at the code again and now I think I found the
+problem causing CMD18 to time out.
 
-diff --git a/arch/arm/mach-omap2/am33xx-restart.c b/arch/arm/mach-omap2/am33xx-restart.c
-index ef2f18a56b658..199845f4b12e4 100644
---- a/arch/arm/mach-omap2/am33xx-restart.c
-+++ b/arch/arm/mach-omap2/am33xx-restart.c
-@@ -18,7 +18,8 @@
-  */
- void am33xx_restart(enum reboot_mode mode, const char *cmd)
- {
--	/* TODO: Handle mode and cmd if necessary */
-+	/* TODO: Handle cmd if necessary */
-+	prm_reboot_mode = mode;
- 
- 	omap_prm_reset_system();
- }
-diff --git a/arch/arm/mach-omap2/board-generic.c b/arch/arm/mach-omap2/board-generic.c
-index fde6ccb3df6eb..68e0baad2bbf6 100644
---- a/arch/arm/mach-omap2/board-generic.c
-+++ b/arch/arm/mach-omap2/board-generic.c
-@@ -246,6 +246,12 @@ DT_MACHINE_START(AM33XX_DT, "Generic AM33XX (Flattened Device Tree)")
- 	.init_time	= omap_init_time_of,
- 	.dt_compat	= am33xx_boards_compat,
- 	.restart	= am33xx_restart,
-+	/*
-+	 * Historically am33xx supported only REBOOT_WARM even though default
-+	 * reboot_mode was REBOOT_COLD. Reflect legacy de-facto behaviour in
-+	 * SYSFS.
-+	 */
-+	.reboot_mode	= REBOOT_WARM,
- MACHINE_END
- #endif
- 
-diff --git a/arch/arm/mach-omap2/prm-regbits-33xx.h b/arch/arm/mach-omap2/prm-regbits-33xx.h
-index 3748c5266ae12..9b97f8c76cd17 100644
---- a/arch/arm/mach-omap2/prm-regbits-33xx.h
-+++ b/arch/arm/mach-omap2/prm-regbits-33xx.h
-@@ -15,6 +15,7 @@
- #define AM33XX_GFX_MEM_STATEST_MASK			(0x3 << 4)
- #define AM33XX_GLOBAL_WARM_SW_RST_MASK			(1 << 1)
- #define AM33XX_RST_GLOBAL_WARM_SW_MASK			(1 << 0)
-+#define AM33XX_RST_GLOBAL_COLD_SW_MASK			(1 << 1)
- #define AM33XX_PRUSS_MEM_ONSTATE_MASK			(0x3 << 5)
- #define AM33XX_PRUSS_MEM_RETSTATE_MASK			(1 << 7)
- #define AM33XX_PRUSS_MEM_STATEST_MASK			(0x3 << 23)
-diff --git a/arch/arm/mach-omap2/prm.h b/arch/arm/mach-omap2/prm.h
-index fc45a7ed09bb3..fc53a27eed013 100644
---- a/arch/arm/mach-omap2/prm.h
-+++ b/arch/arm/mach-omap2/prm.h
-@@ -15,6 +15,7 @@
- # ifndef __ASSEMBLER__
- extern struct omap_domain_base prm_base;
- extern u16 prm_features;
-+extern enum reboot_mode prm_reboot_mode;
- int omap_prcm_init(void);
- int omap2_prcm_base_init(void);
- # endif
-diff --git a/arch/arm/mach-omap2/prm33xx.c b/arch/arm/mach-omap2/prm33xx.c
-index 4a462310a4b09..505d685d6792e 100644
---- a/arch/arm/mach-omap2/prm33xx.c
-+++ b/arch/arm/mach-omap2/prm33xx.c
-@@ -10,6 +10,7 @@
- #include <linux/errno.h>
- #include <linux/err.h>
- #include <linux/io.h>
-+#include <linux/reboot.h>
- 
- #include "powerdomain.h"
- #include "prm33xx.h"
-@@ -318,10 +319,19 @@ static int am33xx_check_vcvp(void)
-  *
-  * Immediately reboots the device through warm reset.
-  */
--static void am33xx_prm_global_warm_sw_reset(void)
-+static void am33xx_prm_global_sw_reset(void)
- {
--	am33xx_prm_rmw_reg_bits(AM33XX_RST_GLOBAL_WARM_SW_MASK,
--				AM33XX_RST_GLOBAL_WARM_SW_MASK,
-+	/*
-+	 * Historically AM33xx performed warm reset for all requested reboot_mode.
-+	 * Keep this behaviour unchanged for all except newly added REBOOT_COLD.
-+	 */
-+	u32 mask = AM33XX_RST_GLOBAL_WARM_SW_MASK;
-+
-+	if (prm_reboot_mode == REBOOT_COLD)
-+		mask = AM33XX_RST_GLOBAL_COLD_SW_MASK;
-+
-+	am33xx_prm_rmw_reg_bits(mask,
-+				mask,
- 				AM33XX_PRM_DEVICE_MOD,
- 				AM33XX_PRM_RSTCTRL_OFFSET);
- 
-@@ -382,7 +392,7 @@ static struct prm_ll_data am33xx_prm_ll_data = {
- 	.assert_hardreset		= am33xx_prm_assert_hardreset,
- 	.deassert_hardreset		= am33xx_prm_deassert_hardreset,
- 	.is_hardreset_asserted		= am33xx_prm_is_hardreset_asserted,
--	.reset_system			= am33xx_prm_global_warm_sw_reset,
-+	.reset_system			= am33xx_prm_global_sw_reset,
- };
- 
- int __init am33xx_prm_init(const struct omap_prcm_init_data *data)
-diff --git a/arch/arm/mach-omap2/prm_common.c b/arch/arm/mach-omap2/prm_common.c
-index fd896f2295a11..f8771bdb5f068 100644
---- a/arch/arm/mach-omap2/prm_common.c
-+++ b/arch/arm/mach-omap2/prm_common.c
-@@ -66,6 +66,12 @@ struct omap_domain_base prm_base;
- 
- u16 prm_features;
- 
-+/*
-+ * Platforms that implement different reboot modes can store the requested
-+ * mode here.
-+ */
-+enum reboot_mode prm_reboot_mode;
-+
- /*
-  * prm_ll_data: function pointers to SoC-specific implementations of
-  * common PRM functions
--- 
-2.43.0
+I've send a new 2-patch series:
+https://lore.kernel.org/linux-mmc/20240221-fix-sh-mmcif-v2-0-5e521eb25ae4@l=
+inaro.org/
 
+Yours,
+Linus Walleij
 
