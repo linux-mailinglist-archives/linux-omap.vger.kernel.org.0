@@ -1,90 +1,106 @@
-Return-Path: <linux-omap+bounces-703-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-704-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62B62861731
-	for <lists+linux-omap@lfdr.de>; Fri, 23 Feb 2024 17:12:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 237D9861B48
+	for <lists+linux-omap@lfdr.de>; Fri, 23 Feb 2024 19:15:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 038D5B2031F
-	for <lists+linux-omap@lfdr.de>; Fri, 23 Feb 2024 16:12:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C64831F27B99
+	for <lists+linux-omap@lfdr.de>; Fri, 23 Feb 2024 18:15:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8028283CDB;
-	Fri, 23 Feb 2024 16:12:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F40A41420B8;
+	Fri, 23 Feb 2024 18:15:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TgiNb3HX"
+	dkim=pass (1024-bit key) header.d=iki.fi header.i=@iki.fi header.b="vnm2bnvp"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from meesny.iki.fi (meesny.iki.fi [195.140.195.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FBA3405C7;
-	Fri, 23 Feb 2024 16:12:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708704737; cv=none; b=L+oscrW1ajSMg12R3i5OfAe/MZXGDl1jHD+LbkBmNkAI4vXIaoaPSg8sdmgmskqHEyEW+sMwH1kI8xuCj3X5AoE5/oqmfVIK8tHFCquEex1bEgL4JZ0QgIfQSI3ssvOlPNzeO6hZkZEzpwWwkZKi8IDVXnv1dphA7+ORAOxG0Gk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708704737; c=relaxed/simple;
-	bh=6Vdkn9yDLgHPAT50DJZjRibJ9yb91Gq41Nl29O4tsYQ=;
-	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=TAmQKKfpsq8zl7ar+RcSWLV5uhMpdfT56ufFG8GLWyFV/H3BFXDWmYvmddSAujBFyhnT+YZz0inB8HZ1zM0JvHIuZpO9YTNW3wtMOzXR1xU1anxHkl43HmseDdrxCYME72SYp8+WmFz+dqBa1O98FFG4FrOrtNpVqhr3CifF0xk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TgiNb3HX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5631C433C7;
-	Fri, 23 Feb 2024 16:12:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708704736;
-	bh=6Vdkn9yDLgHPAT50DJZjRibJ9yb91Gq41Nl29O4tsYQ=;
-	h=From:To:In-Reply-To:References:Subject:Date:From;
-	b=TgiNb3HXtT5b1DGXjeswMUh4cOyr+uOIP2q2xbcHkQOtOBQIkEYWx86Uc737WvMDV
-	 hsvsAO+P3TCTOW59TMa3a6rHFlVcDNLK5OEDoyFB0skqvC6Y9AS8QtR8LXaXLDhZGG
-	 ACQJyzleCKGp3Pqf19/q4ORqxufsm0i4Pp8b6/jcDZinOLXYv7XBHKfkUVXVMFql2I
-	 i3hT2GwpJVyBvw74+kuwK23LR6/wIMnFGVpLQha4pEeKuv392ew3ZLsbpsqCCEi+8P
-	 ADVKn37HHzSI0W3UGKcOo99KrdP506ClR/MgJI95DoSbPMrktaGpIhoN3G+uPn9pW1
-	 aXSY3cGzA/i5w==
-From: Lee Jones <lee@kernel.org>
-To: lee@kernel.org, robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, 
- conor+dt@kernel.org, bcousson@baylibre.com, tony@atomide.com, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-omap@vger.kernel.org, Andreas Kemnade <andreas@kemnade.info>
-In-Reply-To: <20240217082007.3238948-1-andreas@kemnade.info>
-References: <20240217082007.3238948-1-andreas@kemnade.info>
-Subject: Re: (subset) [PATCH v4 0/5] mfd: twl: system-power-controller
-Message-Id: <170870473441.1731639.3240676194817206962.b4-ty@kernel.org>
-Date: Fri, 23 Feb 2024 16:12:14 +0000
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FF5F85921;
+	Fri, 23 Feb 2024 18:15:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=195.140.195.201
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1708712113; cv=pass; b=bh+p0ILDGXOF6BY7w9mCuccekZKGUEDNkYEC1ldbb6c0qQYYZ1Dtqe1YrAzrqFjQ3jkVMlyYoosFmimCNcews3NXE/8yUcwdVqSokPjIEIWE4eRAAC3iv4jOzHCUsMNpyyosIi2hz4H9nhGGWEg2ReAf4hWvcWRM7Of/JSXLmjY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1708712113; c=relaxed/simple;
+	bh=DXoAv6nWtSnax5gpgzYWV2FQ2CM2/oxmQvrmypdakgs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=VkPSq174VVUvRXTvgl5IJsfn+AlW3wQlLPRV/npqQMxvoH4bzcohCs9LZp2/xnNk424xNYJOL3RVlTcc8X3B7OPS9wY+XidJvaj+YeYDJm1aZ4596rVJbJCQ1xLWcV1ObNXlaOPomeViLCgiXi/GTHoPjWjEYosAFaD1BK79tfk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (1024-bit key) header.d=iki.fi header.i=@iki.fi header.b=vnm2bnvp; arc=pass smtp.client-ip=195.140.195.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
+Received: from darkstar.musicnaut.iki.fi (85-76-119-15-nat.elisa-mobile.fi [85.76.119.15])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: aaro.koskinen)
+	by meesny.iki.fi (Postfix) with ESMTPSA id 4ThJ852LxVzySZ;
+	Fri, 23 Feb 2024 20:15:00 +0200 (EET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=meesny;
+	t=1708712102;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=BuDIC2TYItyBBAHAljRCUREA1IAevspnj7ORVX0Cjko=;
+	b=vnm2bnvpqIbRbxL+DtF5effj4SqLkriy+ALOdsOrbgsaAuwSoreJYLb81C/5GgsO/LSJxx
+	doTZDXLHWY7eK2040EMB0wvf8xiiAnkRRTMecGoyLvzH9pLvNsyEho+bfh+BosCOq69yLa
+	gK1pt1WKExuRapAfo+oki/On7FfiFqc=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
+	s=meesny; t=1708712102;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=BuDIC2TYItyBBAHAljRCUREA1IAevspnj7ORVX0Cjko=;
+	b=tzOJgM0wFN1EETOfi7Yy1xgP1WepLWe6m5GM5mTtPa3b1mt2/FRh/L5JpUCGlOwkqBwljO
+	JSmp/4CXTE9QQgeo64gqeFrSZ5BPgFJJNepwnE2lLKwTDnP//u+ZdmU56BvyYwu4pnNKWz
+	CPhWG7ph+fhoWaXheJCpKyjW06RrcwM=
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=aaro.koskinen smtp.mailfrom=aaro.koskinen@iki.fi
+ARC-Seal: i=1; s=meesny; d=iki.fi; t=1708712102; a=rsa-sha256; cv=none;
+	b=eSaJDhlOT3nv110wlI6EBvUbbuX6qBH22AilK7u/op/qLZDaz46dc9CdjFm3n2xzWUaxjC
+	ahniTQOGbqZk6HWFEXtiVo79wsJtW2wdoV7ZfUtggk1bDERepA0gtdito78d82tQM/H4eP
+	Wq2oLmZTCI+KigjEReCVnsWErf29JLQ=
+From: Aaro Koskinen <aaro.koskinen@iki.fi>
+To: Tony Lindgren <tony@atomide.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	linux-omap@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Aaro Koskinen <aaro.koskinen@iki.fi>
+Subject: [PATCH 0/5] Fix MMC/GPIO regression on Nokia N8x0
+Date: Fri, 23 Feb 2024 20:14:34 +0200
+Message-Id: <20240223181439.1099750-1-aaro.koskinen@iki.fi>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.12.4
 
-On Sat, 17 Feb 2024 09:20:02 +0100, Andreas Kemnade wrote:
-> Add system-power-controller property in the bindings and
-> the corresponding implementation and use it where
-> appropriate.
-> Not all cases are hit yet, there has probably to be a
-> separate series after going through with a brush.
-> 
-> Changes in v4:
-> - fix spelling/grammar
-> - drop twl4030 dts cleanup, it would need an IB
->   or be postponed till next release
-> 
-> [...]
+Hi,
 
-Applied, thanks!
+Nokia N8x0 MMC has been pretty much broken starting from v6.3. These
+patches restore the functionality. Tested on N810 with eMMC and external
+miniSD card, and on N800 with SD card in the inner slot.
 
-[1/5] dt-bindings: mfd: ti,twl: Document system-power-controller
-      commit: 0c7cc7497f6f62a65037e94cf0d885ab0af3c0d3
-[2/5] twl-core: add power off implementation for twl603x
-      commit: ca9414a1d08756c8392f9219caee607e1b7bade1
-[5/5] mfd: twl4030-power: accept standard property for power controller
-      commit: 8ba560ec14267af1169e1f5407fbce514fd4f6f6
+A.
 
---
-Lee Jones [李琼斯]
+Aaro Koskinen (5):
+  ARM: OMAP: fix bogus MMC GPIO labels on Nokia N8x0
+  ARM: OMAP: fix N810 MMC gpiod table
+  MMC: OMAP: fix broken slot switch lookup
+  MMC: OMAP: fix deferred probe
+  MMC: OMAP: restore original power up/down steps
+
+ arch/arm/mach-omap2/board-n8x0.c | 17 ++++++-----
+ drivers/mmc/host/omap.c          | 48 +++++++++++++++++++++-----------
+ 2 files changed, 39 insertions(+), 26 deletions(-)
+
+-- 
+2.39.2
 
 
