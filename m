@@ -1,73 +1,73 @@
-Return-Path: <linux-omap+bounces-751-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-752-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43DA9869F43
-	for <lists+linux-omap@lfdr.de>; Tue, 27 Feb 2024 19:42:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAFD9869F58
+	for <lists+linux-omap@lfdr.de>; Tue, 27 Feb 2024 19:48:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 094FEB223CD
-	for <lists+linux-omap@lfdr.de>; Tue, 27 Feb 2024 18:42:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50F1F1F2147B
+	for <lists+linux-omap@lfdr.de>; Tue, 27 Feb 2024 18:48:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BE2F4D5A2;
-	Tue, 27 Feb 2024 18:42:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33C534F8AB;
+	Tue, 27 Feb 2024 18:48:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OD4KwaAW"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="R77E8hBV"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E35D4D107
-	for <linux-omap@vger.kernel.org>; Tue, 27 Feb 2024 18:42:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FA4D4F8A9
+	for <linux-omap@vger.kernel.org>; Tue, 27 Feb 2024 18:48:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709059354; cv=none; b=tyt6Gfe65qCMUy4iQv2mqGeFM7XQVTtfc5AqP76vudmyNi6NEUk8ZIxNl+rL1yTzK1niDYLabONshXhKl2anncua9AC2WBNAWYa666/9cVtGdNpCPsbDlonkfx/5tIC4U2d+Pk1L/tleAB/tLCJe9en6N1cvhC8GlLHboiZ1toA=
+	t=1709059685; cv=none; b=TAcgAPYTG5UM8ghVvs5Gra5TdhFyjUsqfoNHhzFBhJtYB0EPVqAJW1a/y/1w5vQnxNw3QwjARNY9C5ijvScNa9hin4VY7SmqGYrWq/zHhtNhgsMAgWqgiTyes2Qy8OkojL8sf4+fbsOrnaPl9CKrQDyvevpfcB1ET0EXfReznzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709059354; c=relaxed/simple;
-	bh=TeDNuU90ly9acziamBX1PT4TgShziEBCnefgqu8SzNE=;
+	s=arc-20240116; t=1709059685; c=relaxed/simple;
+	bh=eopTjD6dnBhQmGbU1b50iW81wisqf1duKytlAiZoS+I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dpfTs1CHO5QbohCo9iBfmWQKV8Fr5QTptL5WAroO2+Q7e4j7hwESKD1lvHgvZO9KOcu4kOHzvW1xw8fispacg3YUy+s6slPwGSBkcc/beTMu5tKCyoio54wKnzngm1WfhFE3ASLJCaMe05MxAYPaeJipd0iqwCATCtqfXwKUb8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=OD4KwaAW; arc=none smtp.client-ip=209.85.215.178
+	 Content-Type:Content-Disposition:In-Reply-To; b=KTFT2vqv5EGzaxg390sBUBw/n9I/Nof5uGmmXH98zisiaKfnq9QE49jVGHrgh1pA+FxisJJOhgFQotZ37RAGjFjCI3mdA6H0BhKKDT7zAgMH4hkZcQuFUb04dIMu7EcI/dN8f5UJEPEcvfjCGUGMhk9YpbYkH7reSP/4dKL5zRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=R77E8hBV; arc=none smtp.client-ip=209.85.210.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-5cedfc32250so4288577a12.0
-        for <linux-omap@vger.kernel.org>; Tue, 27 Feb 2024 10:42:32 -0800 (PST)
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-6e55bb75c9eso55243b3a.3
+        for <linux-omap@vger.kernel.org>; Tue, 27 Feb 2024 10:48:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1709059352; x=1709664152; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1709059682; x=1709664482; darn=vger.kernel.org;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=+6rCPg+j8C1jvS9yOkEQeWpFYDNNuRJYfgnyrNY8KDs=;
-        b=OD4KwaAW5YRbf3nRwotlMQFuGPEEQqHOJ7Grl8+wj/23FYaYlioTcxFCEPN63qpWKD
-         hcYHUCyBIGz+FtHeflthN/eGvK1w69FWDyuHH/KTYHjvrUdSKiUwNz0ZotyZ5POM2g4v
-         yDZM1uFw1HbGFn088iaXuQyCN5hxuOaglTMjSrJ2IZwxiEDaZ1w7eAfSr8otQ4UJ0UIm
-         Ef1sK7HMi64X4tr86rsDgPzHi49PF4Z1ZGCsAeYOKvF2qjg+Jl5qQRjoKTKbNNLYHj9C
-         41mq4i8R/qHdas64GsuSAmwzz/M/qED9491WlJtJW26KtBhCRSbuTKIiaDnE7IQkbIXV
-         c8iw==
+        bh=Q8ShmjsBfirtuVXn7YN7NE2+9S2ssUe4qcNu7gqy8zk=;
+        b=R77E8hBVMGqBGagFYRfwRcGo/Qk+s0Bpxn/QeEk4KyPQeYsl4IpIRxtCmy29ksnqPU
+         3kRR25neRJUdEb2imXR1R0g4q9JBJkejJRjpurELLRsyK691fkcTL5wmkz06KN8fz0u2
+         oOZAwczL8HsPOzQS4asKKlqZmKlLbz1Sd8IV8niWe2V0uK4Q2eaYcFSYfg9rwc4IeCdf
+         SUipNY8f1Atcesj+CjQ/oekZSzSb1/ssEjVSQZIbArUXYPOn0lFBqzYEKyno90GZcsvJ
+         K8/d1Sugq/CvIj5Y7yBAA/EMgnoXgdF8bL795rBUXLEDvr9drmK65/yWRXjOdObt2HJQ
+         fYXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709059352; x=1709664152;
+        d=1e100.net; s=20230601; t=1709059682; x=1709664482;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+6rCPg+j8C1jvS9yOkEQeWpFYDNNuRJYfgnyrNY8KDs=;
-        b=V4absPsMuFlT+7pGfqYlB46tuUhNMeVA4L0ZOg5MRA8PQMuReFhVpcJY/J2IpW1u3t
-         x8/2oQ6MhL31yBoQ/tlp3RXzXyDQ96NVRTBedr6oJKCOtKL0dpRoF2vf1kkKsgJb5IF5
-         JhGuJYJKFIgDJE6eLRXjv9ABHvDH4BRlHFg7/wticUJX+BWequtUK+QeP64ElmOW9QVi
-         CXj+7J2XZnxy3ue+1inLEAMdZQbZ4RGxTwUxUUfetHnGIAEeknZO8kWnRoCcuflrW7N2
-         LAMd4WuO8hgJ1v9/rER+8Xb5wiaAYp88vZrW5Zt7bRgy/30xrHb2Y/oamWbHDZG7iB4X
-         i6Qg==
-X-Forwarded-Encrypted: i=1; AJvYcCWdrnYXMsi8BrWXaq493z6900MY0IjjHBzRq7DDIlyPdFITVwP5nM8+bKVMyJkNjOT9nECOtAHd6ZPzU/X1QNLifttZA1FzK49itg==
-X-Gm-Message-State: AOJu0YzFSDXutkXBoYFftV3UtzaRsgXckjqij2U8Z6yIU9chMlRNxN2e
-	j1OVOeiK4YhnjBRglJLW8B3isR3hBWXeVedSKEhnYj2xufjiFm+oGoauRmEE8Q==
-X-Google-Smtp-Source: AGHT+IHGnijMDtvZJeDBn9BB121pNvr/sMLOiP6/y+CYwXPpfHEAryi1aO3yqqkJry/L7BDxwUlTZw==
-X-Received: by 2002:a17:90a:4285:b0:299:6a7f:cc09 with SMTP id p5-20020a17090a428500b002996a7fcc09mr7865801pjg.33.1709059351862;
-        Tue, 27 Feb 2024 10:42:31 -0800 (PST)
+        bh=Q8ShmjsBfirtuVXn7YN7NE2+9S2ssUe4qcNu7gqy8zk=;
+        b=u/4X66RtYe5vYTnmsyz2WeDIDNc8AraTaHzT2SepAMnxoG2syTKWQuKNLeei7+mA7K
+         EWlxfuGi2HdsDtyncZ3E5wDHye4A+HKwkp/pbqOsxV5iOzHvXD3lVZoyD+3P3e7eFV4s
+         ysRwSrVwyMgL5Tg2Xg9f9dONez4tu7QY9qU7JlVvjFytmU0MiMu8u22+/q92IWwNR1WV
+         joWhhWzlIoxMsrgqOo8EsSd9dZY4ItpIbHwFDjmtxPOnUKy+fEOiCknCm42fp234Z1j7
+         UpAiQJgZo3aZ2syEFWT4kLudqXzVFcHxTgwVLwsNSwc6kxJXkY723KZWlqOYbGCTLssH
+         dH+A==
+X-Forwarded-Encrypted: i=1; AJvYcCWG/iMqlQUDpM11Ke2HQ5bg/4DxIK0W24STJLH5Yb88nhmRzrsxh11kxFSGI2RpUBMz5KToxZV1tUTEu4NiKtHrREZaUpSQJB5xsg==
+X-Gm-Message-State: AOJu0YzEfmaTj+CN95UlYdbArKxspCTtjCxcDwDHAabRC/OzLqw6YjP9
+	sfnvQDRjuZPW+FrVGbp/5IKZOTHL1d6iMzNrjz41fHYVQgqxR95B2khdGitdVw==
+X-Google-Smtp-Source: AGHT+IGkys0fKbeS9Jt1kuxo+kV1ICMy26+vP7tNYAsfOhXbaH/LE978wltzQSZ6voKtVRqGdPcHyg==
+X-Received: by 2002:a05:6a21:920b:b0:1a0:adbc:7a96 with SMTP id tl11-20020a056a21920b00b001a0adbc7a96mr3099279pzb.36.1709059682411;
+        Tue, 27 Feb 2024 10:48:02 -0800 (PST)
 Received: from thinkpad ([117.213.97.177])
-        by smtp.gmail.com with ESMTPSA id nr14-20020a17090b240e00b00299332505d7sm3758838pjb.26.2024.02.27.10.42.21
+        by smtp.gmail.com with ESMTPSA id km8-20020a17090327c800b001d8f81ecebesm1845645plb.192.2024.02.27.10.47.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Feb 2024 10:42:31 -0800 (PST)
-Date: Wed, 28 Feb 2024 00:12:18 +0530
+        Tue, 27 Feb 2024 10:48:02 -0800 (PST)
+Date: Wed, 28 Feb 2024 00:17:46 +0530
 From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 To: Frank Li <Frank.li@nxp.com>
 Cc: Jingoo Han <jingoohan1@gmail.com>,
@@ -99,14 +99,14 @@ Cc: Jingoo Han <jingoohan1@gmail.com>,
 	linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
 	Niklas Cassel <cassel@kernel.org>
-Subject: Re: [PATCH v8 06/10] PCI: dwc: ep: Call dw_pcie_ep_init_registers()
- API directly from all glue drivers
-Message-ID: <20240227184218.GT2587@thinkpad>
+Subject: Re: [PATCH v8 09/10] PCI: qcom-ep: Use the generic
+ dw_pcie_ep_linkdown() API to handle LINK_DOWN event
+Message-ID: <20240227184746.GU2587@thinkpad>
 References: <20240224-pci-dbi-rework-v8-0-64c7fd0cfe64@linaro.org>
- <20240224-pci-dbi-rework-v8-6-64c7fd0cfe64@linaro.org>
- <ZdzEoXwU42rFCF/W@lizhi-Precision-Tower-5810>
- <20240227122141.GN2587@thinkpad>
- <Zd4bybN0malf5uBe@lizhi-Precision-Tower-5810>
+ <20240224-pci-dbi-rework-v8-9-64c7fd0cfe64@linaro.org>
+ <ZdzIada1H95ike0t@lizhi-Precision-Tower-5810>
+ <20240227123230.GP2587@thinkpad>
+ <Zd4dFyM78Nc1f7fk@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -116,80 +116,59 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <Zd4bybN0malf5uBe@lizhi-Precision-Tower-5810>
+In-Reply-To: <Zd4dFyM78Nc1f7fk@lizhi-Precision-Tower-5810>
 
-On Tue, Feb 27, 2024 at 12:28:41PM -0500, Frank Li wrote:
-> On Tue, Feb 27, 2024 at 05:51:41PM +0530, Manivannan Sadhasivam wrote:
-> > On Mon, Feb 26, 2024 at 12:04:33PM -0500, Frank Li wrote:
-> > > On Sat, Feb 24, 2024 at 12:24:12PM +0530, Manivannan Sadhasivam wrote:
-> > > > Currently, dw_pcie_ep_init_registers() API is directly called by the glue
-> > > > drivers requiring active refclk from host. But for the other drivers, it is
-> > > > getting called implicitly by dw_pcie_ep_init(). This is due to the fact
-> > > > that this API initializes DWC EP specific registers and that requires an
-> > > > active refclk (either from host or generated locally by endpoint itsef).
-> > > > 
-> > > > But, this causes a discrepancy among the glue drivers. So to avoid this
-> > > > confusion, let's call this API directly from all glue drivers irrespective
-> > > > of refclk dependency. Only difference here is that the drivers requiring
-> > > > refclk from host will call this API only after the refclk is received and
-> > > > other drivers without refclk dependency will call this API right after
-> > > > dw_pcie_ep_init().
-> > > > 
-> > > > This change will also allow us to remove the "core_init_notifier" flag in
-> > > > the later commits.
+On Tue, Feb 27, 2024 at 12:34:15PM -0500, Frank Li wrote:
+> On Tue, Feb 27, 2024 at 06:02:30PM +0530, Manivannan Sadhasivam wrote:
+> > On Mon, Feb 26, 2024 at 12:20:41PM -0500, Frank Li wrote:
+> > > On Sat, Feb 24, 2024 at 12:24:15PM +0530, Manivannan Sadhasivam wrote:
+> > > > Now that the API is available, let's make use of it. It also handles the
+> > > > reinitialization of DWC non-sticky registers in addition to sending the
+> > > > notification to EPF drivers.
 > > > > 
 > > > > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 > > > > ---
-> > > >  drivers/pci/controller/dwc/pci-dra7xx.c           |  7 +++++++
-> > > >  drivers/pci/controller/dwc/pci-imx6.c             |  8 ++++++++
-> > > >  drivers/pci/controller/dwc/pci-keystone.c         |  9 +++++++++
-> > > >  drivers/pci/controller/dwc/pci-layerscape-ep.c    |  7 +++++++
-> > > >  drivers/pci/controller/dwc/pcie-designware-ep.c   | 22 ----------------------
-> > > >  drivers/pci/controller/dwc/pcie-designware-plat.c |  9 +++++++++
-> > > >  drivers/pci/controller/dwc/pcie-rcar-gen4.c       | 12 +++++++++++-
-> > > >  drivers/pci/controller/dwc/pcie-uniphier-ep.c     | 13 ++++++++++++-
-> > > >  8 files changed, 63 insertions(+), 24 deletions(-)
-> > 
-> > [...]
-> > 
-> > > > diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
-> > > > index ed1f2afd830a..278bdc9b2269 100644
-> > > > --- a/drivers/pci/controller/dwc/pcie-designware-ep.c
-> > > > +++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-> > > > @@ -729,7 +729,6 @@ int dw_pcie_ep_init(struct dw_pcie_ep *ep)
-> > > >  	struct device *dev = pci->dev;
-> > > >  	struct platform_device *pdev = to_platform_device(dev);
-> > > >  	struct device_node *np = dev->of_node;
-> > > > -	const struct pci_epc_features *epc_features;
-> > > >  
-> > > >  	INIT_LIST_HEAD(&ep->func_list);
-> > > >  
-> > > > @@ -775,29 +774,8 @@ int dw_pcie_ep_init(struct dw_pcie_ep *ep)
-> > > >  		goto err_exit_epc_mem;
-> > > >  	}
-> > > >  
-> > > > -	if (ep->ops->get_features) {
-> > > > -		epc_features = ep->ops->get_features(ep);
-> > > > -		if (epc_features->core_init_notifier)
-> > > > -			return 0;
-> > > > -	}
+> > > >  drivers/pci/controller/dwc/pcie-qcom-ep.c | 2 +-
+> > > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > > > 
+> > > > diff --git a/drivers/pci/controller/dwc/pcie-qcom-ep.c b/drivers/pci/controller/dwc/pcie-qcom-ep.c
+> > > > index 2fb8c15e7a91..4e45bc4bca45 100644
+> > > > --- a/drivers/pci/controller/dwc/pcie-qcom-ep.c
+> > > > +++ b/drivers/pci/controller/dwc/pcie-qcom-ep.c
+> > > > @@ -640,7 +640,7 @@ static irqreturn_t qcom_pcie_ep_global_irq_thread(int irq, void *data)
+> > > >  	if (FIELD_GET(PARF_INT_ALL_LINK_DOWN, status)) {
+> > > >  		dev_dbg(dev, "Received Linkdown event\n");
+> > > >  		pcie_ep->link_status = QCOM_PCIE_EP_LINK_DOWN;
+> > > > -		pci_epc_linkdown(pci->ep.epc);
+> > > > +		dw_pcie_ep_linkdown(&pci->ep);
 > > > 
-> > > why remove this check?
+> > > Suppose pci_epc_linkdown() will call dw_pcie_ep_linkdown() ?
+> > > why need direct call dw_pcie_ep_linkdown() here?
 > > > 
 > > 
-> > There is no point in keeping this check since we are removing the call to
-> > dw_pcie_ep_init_registers() below. But I should've described this change in the
-> > commit message.
+> > I've already justified this in the commit message. Here is the excerpt:
+> > 
+> > "It also handles the reinitialization of DWC non-sticky registers in addition
+> > to sending the notification to EPF drivers."
 > 
-> Sperated patch will be helpful. This clean up does not related with other
-> change.
+> API function name is too similar. It is hard to know difference from API
+> naming. It'd better to know what function do from function name.
 > 
 
-Well this is not a generic cleanup that could be moved to a separate patch. Due
-to the changes in this patch, the use of the flag becomes redundant. So it has
-to removed here itself.
+In reality we cannot name a function based on everything it does. The naming is
+mostly based on what is the primary motive of the API and here it is handling
+Link down event. Maybe dw_pcie_ep_handle_linkdown() would be an apt one, but
+that's out of scope of this series (since changing that would also require
+changes to other similar APIs).
 
 - Mani
+
+> Frank
+> > 
+> > - Mani
+> > 
+> > -- 
+> > மணிவண்ணன் சதாசிவம்
 
 -- 
 மணிவண்ணன் சதாசிவம்
