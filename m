@@ -1,209 +1,184 @@
-Return-Path: <linux-omap+bounces-744-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-745-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BC78868482
-	for <lists+linux-omap@lfdr.de>; Tue, 27 Feb 2024 00:11:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0D8786905C
+	for <lists+linux-omap@lfdr.de>; Tue, 27 Feb 2024 13:24:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BDCB7B22C2A
-	for <lists+linux-omap@lfdr.de>; Mon, 26 Feb 2024 23:11:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5662A1F2353F
+	for <lists+linux-omap@lfdr.de>; Tue, 27 Feb 2024 12:24:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04026135A4F;
-	Mon, 26 Feb 2024 23:11:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C7BB1420C8;
+	Tue, 27 Feb 2024 12:21:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="mr4ZSjxH"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="GewXukva"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from JPN01-TYC-obe.outbound.protection.outlook.com (mail-tycjpn01on2076.outbound.protection.outlook.com [40.107.114.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D83F2C183;
-	Mon, 26 Feb 2024 23:11:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.114.76
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708989073; cv=fail; b=aNnCAQHIWS+TA815nhq4FfTzBFIeqZgEWRWKzAUIQCejU8fWvFqvBObys3g0Y4JV9pkpFDj8AqPuST5beg8bqdtZZqbMyFsugSD+1+++CXAyG0MO1KW3Xj2CPGY8H1y8+G2Xl9OLN8nhHw0r/1vL1m4+eUPsyMY0eoDbw9kF5qI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708989073; c=relaxed/simple;
-	bh=6vfoWzdykJM9MA67kgUqel0Ng/zx17KhALK5jJYRKV0=;
-	h=Message-ID:From:To:Subject:In-Reply-To:References:Content-Type:
-	 Date:MIME-Version; b=GaDixauP5jhexaLWrxb+5VDa9A3RrwQIShf8kvaYHTRYXAMxtZS+KSJch2EuXriU5X1n9m2u4p50jwqHOa8sFGnAGx10ARq+ZgHB23i7G5oXioSucFw17h7ilGQ+yVn1n3VCckHgNYEEc/YDiweQapO7vQEXrqqcLr1Kh55mTPo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=mr4ZSjxH; arc=fail smtp.client-ip=40.107.114.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=EUuj+bu5a27KjFJNx3h5OBRRntkyrX7K6m90fMONgBg+qgwZ0JM7cvxUfefzBk16ZwRjOi5hPdD4mdDy0CBCEo8V8ElQXFNeQbMZT94J6L1QOw/dzFpg3h5cT+WtK+0tH5JzZONrEwvKm3212gyaRSvQKAlKg02Oc3ZMS6W5TknIjDPdk34tf+TQXRrs34RxcUuZw7q3U9M/9UXuiozU5IAyVBGSNGi4ffuQQSJpYeWjrVLef/6KE6fKWEON5pDty4HXhhJb1UPl/np5oBd47bysHe4e79PWtdeQyH5DKkDnL1/JwCLgd7emXRrC+wpgg7dSx2vx2WA3ffCPaJXT1A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dXXugxo2ZUfHCg6UgagQdjvhdJ+zKAazECya6dQvmgM=;
- b=EFUwjXoG46bav8zl3O3V+lHE9lpVQCiC2y9VPaFM10GZGTZpNKb4SUNQrmiUeTkJRMDcSj6z3SdfgD/Bzb0iqFf+V/cTHptcYr3OAgeCm5U4EHGhfEQCUyXzt+GyRQBdFuYFiwtlvSWwxHilKhUTYogl40COP0vCySQrr0KkEUc0Yc3+X+5SXHjQjJNYPFbxi5lnIyYwN3drFEPOWZT2TYBBd7NM+nGxOaj+ep9Lm+KYCBXEsZN7Ez1d3EsukTCN48nxo07k0EflNUggcMiacxQbQdQK4KvEGruTZ/3goGgGKmSD42nnJLSXB/wX/2VlXISKeOSnmljkbjCZASMIqQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
- dkim=pass header.d=renesas.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dXXugxo2ZUfHCg6UgagQdjvhdJ+zKAazECya6dQvmgM=;
- b=mr4ZSjxH4ZYez3Kfgiby7MSbmA937RMnX+JGvhjBQYtcnaIniJZDEH86d3EXQ7Ov2RSDh3FFdl9o1ZzTKEfC4KBClHFCEJdfjQFHHmAVzsNaCv8/8yBmxG8DC550dG7WLJdpY/fKAtibEvpRJa2iREIGlZX1QVuJ+83FEzI9l2I=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=renesas.com;
-Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
- (2603:1096:400:3a9::11) by TYCPR01MB7966.jpnprd01.prod.outlook.com
- (2603:1096:400:187::10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.23; Mon, 26 Feb
- 2024 23:11:07 +0000
-Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
- ([fe80::1934:4a38:d599:33a2]) by TYCPR01MB10914.jpnprd01.prod.outlook.com
- ([fe80::1934:4a38:d599:33a2%5]) with mapi id 15.20.7316.035; Mon, 26 Feb 2024
- 23:11:07 +0000
-Message-ID: <87le763jp1.wl-kuninori.morimoto.gx@renesas.com>
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-To: "Lad,  Prabhakar" <prabhakar.csengg@gmail.com>,	=?ISO-8859-1?Q?=22Uwe_?=
- =?ISO-8859-1?Q?Kleine-K=F6nig=22?= <u.kleine-koenig@pengutronix.de>,	Alain
- Volmat <alain.volmat@foss.st.com>,	Alexandre Belloni
- <alexandre.belloni@bootlin.com>,	Alexandre Torgue
- <alexandre.torgue@foss.st.com>,	Alexey Brodkin <abrodkin@synopsys.com>,
-	Alim Akhtar <alim.akhtar@samsung.com>,	Andrzej Hajda
- <andrzej.hajda@intel.com>,	Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>,	Claudiu Beznea
- <claudiu.beznea@tuxon.dev>,	Daniel Vetter <daniel@ffwll.ch>,	Dave Stevenson
- <dave.stevenson@raspberrypi.com>,	David Airlie <airlied@gmail.com>,	Eugen
- Hristev <eugen.hristev@collabora.com>,	Florian Fainelli
- <florian.fainelli@broadcom.com>,	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Helge Deller <deller@gmx.de>,	Hugues Fruchet <hugues.fruchet@foss.st.com>,
-	Jacopo Mondi <jacopo@jmondi.org>,	Jessica Zhang
- <quic_jesszhan@quicinc.com>,	Krzysztof Kozlowski
- <krzysztof.kozlowski@linaro.org>,	Laurent Pinchart
- <laurent.pinchart@ideasonboard.com>,	Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>,	Mauro Carvalho Chehab
- <mchehab@kernel.org>,	Maxime Coquelin <mcoquelin.stm32@gmail.com>,	Maxime
- Ripard <mripard@kernel.org>,	Neil Armstrong <neil.armstrong@linaro.org>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,	Sakari Ailus
- <sakari.ailus@linux.intel.com>,	Sam Ravnborg <sam@ravnborg.org>,	Sylwester
- Nawrocki <s.nawrocki@samsung.com>,	Thomas Zimmermann <tzimmermann@suse.de>,
-	Tim Harvey <tharvey@gateworks.com>,	dri-devel@lists.freedesktop.org,
-	linux-arm-kernel@lists.infradead.org,	linux-fbdev@vger.kernel.org,
-	linux-media@vger.kernel.org,	linux-omap@vger.kernel.org,
-	linux-rpi-kernel@lists.infradead.org,	linux-samsung-soc@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH v2 resend 0/4] of: replace of_graph_get_next_endpoint()
-In-Reply-To: <874je4kkdn.wl-kuninori.morimoto.gx@renesas.com>
-References: <874je4kkdn.wl-kuninori.morimoto.gx@renesas.com>
-User-Agent: Wanderlust/2.15.9 Emacs/27.1 Mule/6.0
-Content-Type: text/plain; charset=US-ASCII
-Date: Mon, 26 Feb 2024 23:11:06 +0000
-X-ClientProxiedBy: TYCP286CA0058.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:2b5::9) To TYCPR01MB10914.jpnprd01.prod.outlook.com
- (2603:1096:400:3a9::11)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C13D1419AD
+	for <linux-omap@vger.kernel.org>; Tue, 27 Feb 2024 12:21:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709036518; cv=none; b=uPqyLFVPwARYJ6UZPLwrnNQIAMJejB6kt2OjkbDn76VNL2U6CRxjS3raKlsOgmM2c/b8MLpC2D5rGpITHREFH6s22yydds1hDieVqxjfwL/7v5TyroYYgKBPh2azssNBD8HMizoX3uGtSNfTKW0T7ymohk4sw2/yp1RdRFUMBkA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709036518; c=relaxed/simple;
+	bh=OS7E+/QQezCuwcjLO9iExKTfqPQ2LbBPhoHoghWs9UE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cD6PXEzcux1d65sWEB5yv2tki6wUr4RPtcZ4N8oP9ZHNvByLe5gKEg2lZiLauSNNB8sb+LFTzQFfx7sWklr9iM/SQ7XxrtznsRu5R9CxdJxQ+l4BF3z5Gyh50y8ncHveMHo3V6RLovKcC5zTjp6UIOJgYEmE+RilQCUSktipUZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=GewXukva; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-1dca3951ad9so18560925ad.3
+        for <linux-omap@vger.kernel.org>; Tue, 27 Feb 2024 04:21:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1709036515; x=1709641315; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Fox2FOTrnn7H7ARtUpilsDQjBFro1sbb1UtQfPOSFHk=;
+        b=GewXukvadPyjq8mmPdVrgdexPxxyZVm5taQLw4UE8uzO1qUZywn25e1hJOamHZRCwn
+         yY+fYRQ8cx2oj0K3Cn0m0LlooL1bgs+2XFfZJwLd2QmFcpgqANpbYHXxKYXJRTtr/IY5
+         54ykV2o0Lwwn2FjqEAhg5xUQj9vmNHZ24yruwhr6w7w6Nw/fz8WwRIg/HvWqz6JmzNTK
+         NGvIyAFIELJm2LZ539C/VM+BNa1k9PKPHXKVhOxVPtyXRJBTFys9lI3XaxtMM3MXeo/N
+         as6NuVHKMzRAOzFJ9NXZBZFLeLvQptX86wJ0CeHmULxbgBk9ACo8WuXLMj05/Bnsad29
+         hBMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709036515; x=1709641315;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Fox2FOTrnn7H7ARtUpilsDQjBFro1sbb1UtQfPOSFHk=;
+        b=jDU6gDEaaRJHGLPTrGCznO5Ocw5aGoganHMNmIictUiV6lx0fpxlkihMut62yqlPnB
+         QusAwqaGg5ilqn0B2HTqjFfRSCHy6PU1+xj9MK/SN9lDzyeYq6znF03rT7Sci2woQhb2
+         o7X5TWuS0awPlDRMpDIxMTGIj3eCXF+5+3t48vqMYaNueDF8OYSa0FRc2V6udujF7y2B
+         9kBNN5AAM6Q+OGYHn/fzaHgMepl4KTa3AwaG9Rgcdnlai7n4j8oSFDFSEz7cSpx0hGrt
+         r66UMlkYJ8yHMPqctxm1t0W4e5wF4MGPZ+5ASm+p14T2X+aE0H24aWjgHruyqjLUvsWV
+         nuCw==
+X-Forwarded-Encrypted: i=1; AJvYcCUNqnGFCRgCcvNvMup32yVDz8LqbajQSAMxCpifKjMuANZ3Gq6Q1ePLWPb9aXJQw5QFeN1F/zQzCMDVSDiHt2M0dcpSBxMnU/ldEQ==
+X-Gm-Message-State: AOJu0YyOTHJcvMfRwElnPR28cTwYeThoFdxUTD17QoUAsiqGW3MB5g+j
+	NcEcWrKDpZIrVOqEt5P8M+q/mRcVAz/sFVlShg5i+wbOCqzkFaGjt5A+Ke8zCg==
+X-Google-Smtp-Source: AGHT+IHOZyIvtu9udPjddxeRBkjckef05G60ZrgUBTNS/Hn/UgLmDOmQzD5ShaYiOTnnINlgtxpJEw==
+X-Received: by 2002:a17:903:181:b0:1dc:b173:f27b with SMTP id z1-20020a170903018100b001dcb173f27bmr4528891plg.32.1709036515334;
+        Tue, 27 Feb 2024 04:21:55 -0800 (PST)
+Received: from thinkpad ([117.213.97.177])
+        by smtp.gmail.com with ESMTPSA id h8-20020a170902b94800b001dba356b96esm1406270pls.306.2024.02.27.04.21.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Feb 2024 04:21:54 -0800 (PST)
+Date: Tue, 27 Feb 2024 17:51:41 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Jingoo Han <jingoohan1@gmail.com>,
+	Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Marek Vasut <marek.vasut+renesas@gmail.com>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Kishon Vijay Abraham I <kishon@ti.com>,
+	Vidya Sagar <vidyas@nvidia.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	NXP Linux Team <linux-imx@nxp.com>,
+	Minghuan Lian <minghuan.Lian@nxp.com>,
+	Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+	Niklas Cassel <cassel@kernel.org>
+Subject: Re: [PATCH v8 06/10] PCI: dwc: ep: Call dw_pcie_ep_init_registers()
+ API directly from all glue drivers
+Message-ID: <20240227122141.GN2587@thinkpad>
+References: <20240224-pci-dbi-rework-v8-0-64c7fd0cfe64@linaro.org>
+ <20240224-pci-dbi-rework-v8-6-64c7fd0cfe64@linaro.org>
+ <ZdzEoXwU42rFCF/W@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TYCPR01MB10914:EE_|TYCPR01MB7966:EE_
-X-MS-Office365-Filtering-Correlation-Id: 53eebd88-bb3d-4ee9-6917-08dc37203675
-X-LD-Processed: 53d82571-da19-47e4-9cb4-625a166a4a2a,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	j4TLuMdZe2UrGbLSwOMX3qAUx3etUFt8/ebWO0RWLuaX6tHc9HoYv0RHfF9/pRmW6t0Oi3AUQpdWuj7OM1uzw6NJpNVc4whpsG2qPkQbsDj4FQ4kerQ9kKPe8Uhf12FiPSKqF/LtadEEnCTPYC9prC4EvUSGSYF3xS5hNnJ+SjqGfRLhskerg2oM+Wv6Wm9bhH628u167hZ/YeL7da0stNcb3XGezQAU3jLahupcYzmEwqIIouaMq3oCPxLR9Bt9TyVDR7DEiSVUmCbXnXDKjHpwVd4HVag/Qaz8awf9A9HcgFyPN13/sCf0alZDQzW8a5BhFWIzCBMCfczTJQLWTKBUiyI3Ujt5fky/xVztVMWZ+FpxkUhVImTwozRRgoAn/lBZGGZM7A1cXX7bL+Txocb4sPtFKdOfpErHWBYNHGWnth/G4DE/ujyxbc7vZgCjneicskTehX20ybdDGcyzHKpBvvYBUbxRgGyzjdzticbNEe2PIdmIz8KHD/PusfInuFV+FowSePTYqz8vFCTQdNywEV7OobKZdfb2m9E2Gy6ltHDSf0vahLFXgwTpjhQ6M5XXehzBf/2KnMRU1HVqkuHYnA4UlC8oi5AgKxP0hKVEjaUZXvZ5Nf9SwrrzzJ2RPuTJPugISOYENDFznzhaIGnt5sr5I/tVb06R/AcG/qFivAQ1T4YNhqouSfraJPvtGIUdnYh5+mSx1kW/OEuZNue0HSimr880kgVD8IbJpB4=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYCPR01MB10914.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(921011)(38350700005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?jEwKy6rg60KUjAcH9YvnN1Za0NwkPQuBmO5STcUdhOhmBeKccUbuYcna9rYt?=
- =?us-ascii?Q?PgReV3arQFEY3hAWsQqRVRGqxvSFyEVuSuS7UH6/Uv12BEYxqjhSmsKKWSR2?=
- =?us-ascii?Q?7YvYT/5AioaJeEMEbQAi0HpKlkgzvempl1DOXg0I9mAv0MMajUdUhhy489Eo?=
- =?us-ascii?Q?+etYryFNexKWtqdVLgT2LsQyecMGZCB6AVelT05XRqY8UvbPg9Dmh5GRhX0u?=
- =?us-ascii?Q?X/P8jxUBuiP4+aos4n2NiItF1KEC+00VtztOroLREEOnNSkTb08ZOJc0SORE?=
- =?us-ascii?Q?Hi6jQGSygllbKF2NXtwHizHB1zkCX/Kllg/cjMlkh4Y1+yiabCeWKUA6bHdW?=
- =?us-ascii?Q?mIi9PgYTJFDVNZQU6x4xsSVt2074ln671ex4Vnm9vreqUXpwpzz6tpIalfdK?=
- =?us-ascii?Q?F5CXwhgPnrjLYS3mrCocTWtCkctRI+89XoMzjD/3xANd3PaDnhKgU0zjz8AC?=
- =?us-ascii?Q?/SYhN/E8JWuAreu0iACM4BdlDXGVneEJQFsbqA5UdYuCVRGK3Ayn6va5jKa+?=
- =?us-ascii?Q?0d8PF+2qoHMfg4MR9vh8xiuhwIqPyMiWrVeyjxLS+rEO1wuqlkl10Cfu0ee6?=
- =?us-ascii?Q?U8dikBFAigIwn5Eu6YjmzLRJpCScegnoV+eGVq68AmqY9brb8G7qFsRPOHbc?=
- =?us-ascii?Q?aiSFTAIijTQmd06E3WbGmt/0e31Kd7Y2cTkTxLRNJOHGAJGcwsXitKZk64Aa?=
- =?us-ascii?Q?aAQL4SnO/kEekmO7xMqYXpmjGFtFSoqaEdIhE/G2tnQ54ci/4J/Zjn8n3auj?=
- =?us-ascii?Q?bJz3qm27GPVNNYsODHTp+XmUfAbV7wmFYeUnI//5U9i+EZReeKVGXYh5/5f1?=
- =?us-ascii?Q?zAAujd6ni9RX7y72oGcj/r/5VmvuW+kkj1L7ZpnlMb7HwmHoOSlXQZnRv+4+?=
- =?us-ascii?Q?yot4pRfhR6L32akqdDeFbT+rc6m08Jtc/Bqc/aOm4mpyZbPbywo6XXLZJk+c?=
- =?us-ascii?Q?eJoWrWTyyba3Mhg5rus/1Qh6OdHmZsuARRoZVBqtQ+Ec39dUVKq8udfJmf62?=
- =?us-ascii?Q?15WO+vBpPAWZSOpa3P2LVTDliM8oIDTLVG4O48HQMoeIt6OWUpIY7/t9ZPo1?=
- =?us-ascii?Q?rdixf3neqzZuKaDtUNv/+Z64JVoBEnNMtHODRTsV7OftJpwmssHPQbBZKvld?=
- =?us-ascii?Q?z9/p4F3Yt1CahJzMMJFDXbI7thDhiPTyGET8AZhu+GVdeEcP6fSi6oKa368J?=
- =?us-ascii?Q?tvuc79ZGcKDYky9YSIJjXuBRIXrrzs85yUTSNnCIGxOWRII5rRBUMknNboGv?=
- =?us-ascii?Q?gCDPJefQ5c5ePpbIwf6kYaTJGVIMkJNs/IKsW03tw6a6vdx4pDISR1aHKlHt?=
- =?us-ascii?Q?/FtEdi2o0tRzeUrsbSVPEre61jKu7kyjHeAeFFLj3HqcSJe46pjvx/a4fwW5?=
- =?us-ascii?Q?jxhqb7Yu3YQHAG7oHxlsbK2/RHUhTkGfwxEcFBrMcgtRgwZwVM9OMEczsnjn?=
- =?us-ascii?Q?3VB1BqOyO5B6pGQzcfuedsO4mPBH/lx0M823/xeURRpwwjcwfjVxpTdfkT06?=
- =?us-ascii?Q?QcVw+lYhHQwaKY6IMfsbMZipVUhIe8LU+tx/hKT/fCRgK7TWZVy6zo6R5yuJ?=
- =?us-ascii?Q?7Tw8kcyGBO2EJ6pZ9addj4MYGdQIztnFdU2PHYidWQnz64NTGq0M2tZg3LB+?=
- =?us-ascii?Q?p9jDzkJ6qb5TRU4MRBLuxl8=3D?=
-X-OriginatorOrg: renesas.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 53eebd88-bb3d-4ee9-6917-08dc37203675
-X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB10914.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2024 23:11:07.2907
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: TOC9MiyOud+lfwzoUJHTxct0UaPpJ/Ghhl0bTvyDE7jqIrq2Ko3osbhFIr8cgx98DPwqxHXhvfdAxUp1jZWO+ix+Nvn+OhY5vJnTeZlOD82DQ5NULR/wpaTpn7jrimv5
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYCPR01MB7966
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZdzEoXwU42rFCF/W@lizhi-Precision-Tower-5810>
 
+On Mon, Feb 26, 2024 at 12:04:33PM -0500, Frank Li wrote:
+> On Sat, Feb 24, 2024 at 12:24:12PM +0530, Manivannan Sadhasivam wrote:
+> > Currently, dw_pcie_ep_init_registers() API is directly called by the glue
+> > drivers requiring active refclk from host. But for the other drivers, it is
+> > getting called implicitly by dw_pcie_ep_init(). This is due to the fact
+> > that this API initializes DWC EP specific registers and that requires an
+> > active refclk (either from host or generated locally by endpoint itsef).
+> > 
+> > But, this causes a discrepancy among the glue drivers. So to avoid this
+> > confusion, let's call this API directly from all glue drivers irrespective
+> > of refclk dependency. Only difference here is that the drivers requiring
+> > refclk from host will call this API only after the refclk is received and
+> > other drivers without refclk dependency will call this API right after
+> > dw_pcie_ep_init().
+> > 
+> > This change will also allow us to remove the "core_init_notifier" flag in
+> > the later commits.
+> > 
+> > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> > ---
+> >  drivers/pci/controller/dwc/pci-dra7xx.c           |  7 +++++++
+> >  drivers/pci/controller/dwc/pci-imx6.c             |  8 ++++++++
+> >  drivers/pci/controller/dwc/pci-keystone.c         |  9 +++++++++
+> >  drivers/pci/controller/dwc/pci-layerscape-ep.c    |  7 +++++++
+> >  drivers/pci/controller/dwc/pcie-designware-ep.c   | 22 ----------------------
+> >  drivers/pci/controller/dwc/pcie-designware-plat.c |  9 +++++++++
+> >  drivers/pci/controller/dwc/pcie-rcar-gen4.c       | 12 +++++++++++-
+> >  drivers/pci/controller/dwc/pcie-uniphier-ep.c     | 13 ++++++++++++-
+> >  8 files changed, 63 insertions(+), 24 deletions(-)
 
-Hi Rob
+[...]
 
-> This is resend v2 of replace of_graph_get_next_endpoint()
+> > diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
+> > index ed1f2afd830a..278bdc9b2269 100644
+> > --- a/drivers/pci/controller/dwc/pcie-designware-ep.c
+> > +++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
+> > @@ -729,7 +729,6 @@ int dw_pcie_ep_init(struct dw_pcie_ep *ep)
+> >  	struct device *dev = pci->dev;
+> >  	struct platform_device *pdev = to_platform_device(dev);
+> >  	struct device_node *np = dev->of_node;
+> > -	const struct pci_epc_features *epc_features;
+> >  
+> >  	INIT_LIST_HEAD(&ep->func_list);
+> >  
+> > @@ -775,29 +774,8 @@ int dw_pcie_ep_init(struct dw_pcie_ep *ep)
+> >  		goto err_exit_epc_mem;
+> >  	}
+> >  
+> > -	if (ep->ops->get_features) {
+> > -		epc_features = ep->ops->get_features(ep);
+> > -		if (epc_features->core_init_notifier)
+> > -			return 0;
+> > -	}
 > 
-> We should get rid of or minimize of_graph_get_next_endpoint() in
-> its current form. In general, drivers should be asking for a specific 
-> port number because their function is fixed in the binding.
+> why remove this check?
 > 
-> 	https://lore.kernel.org/r/20240131184347.GA1906672-robh@kernel.org
-> 
-> This patch-set replace of_graph_get_next_endpoint() by
-> of_graph_get_endpoint_by_regs(). There are still next_endpoint()
-> after this patch-set, but it will be replaced by
-> for_each_endpoint_of_node() in next patch-set (A)
-> 
-> [*] this patch-set
-> [o] done
-> 
-> 	[o] tidyup of_graph_get_endpoint_count()
-> 	[*] replace endpoint func - use endpoint_by_regs()
-> (A)	[ ] replace endpoint func - use for_each()
-> 	[ ] rename endpoint func to device_endpoint
-> 	[ ] add new port function
-> 	[ ] add new endpont function
-> 	[ ] remove of_graph_get_next_device_endpoint()
-> 
-> v1 -> v2
-> 	- add Reviewed-by from Launrent
-> 	- use by_regs(xx, -1, -1) for some devices
-> 	- add extra explain for drm_of_get_dsi_bus()
-> 	- add FIXME and Link on adv7604.c
-> 	- based on latest of branch
-> 
-> Kuninori Morimoto (4):
->   gpu: drm: replace of_graph_get_next_endpoint()
->   media: i2c: replace of_graph_get_next_endpoint()
->   media: platform: replace of_graph_get_next_endpoint()
->   video: fbdev: replace of_graph_get_next_endpoint()
 
-I wonder who should handle this patch-set ??
-I'm posting these as part of "of patch-set" (= to Rob)
-but does these should be handled by each driver maintainer ?
-(I believe all maintainers are listed on To)
+There is no point in keeping this check since we are removing the call to
+dw_pcie_ep_init_registers() below. But I should've described this change in the
+commit message.
 
-Thank you for your help !!
+- Mani
 
-Best regards
----
-Renesas Electronics
-Ph.D. Kuninori Morimoto
+-- 
+மணிவண்ணன் சதாசிவம்
 
