@@ -1,123 +1,80 @@
-Return-Path: <linux-omap+bounces-759-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-760-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5724D86AA34
-	for <lists+linux-omap@lfdr.de>; Wed, 28 Feb 2024 09:40:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2AFB86BC10
+	for <lists+linux-omap@lfdr.de>; Thu, 29 Feb 2024 00:19:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D34EC28387B
-	for <lists+linux-omap@lfdr.de>; Wed, 28 Feb 2024 08:40:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4A571C226E8
+	for <lists+linux-omap@lfdr.de>; Wed, 28 Feb 2024 23:19:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F63A2C868;
-	Wed, 28 Feb 2024 08:40:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D2E713D306;
+	Wed, 28 Feb 2024 23:19:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f0DeH1PA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DS8Tad3r"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FC8D2D05F;
-	Wed, 28 Feb 2024 08:40:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 270AF22EF4;
+	Wed, 28 Feb 2024 23:19:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709109605; cv=none; b=I3uW8BlyYrz9mbGDGsYqS3cLL7KDHm2jBudxcAT4H2iUUR8XaaQeUc69k2zTepB1HZEvTNz7LcJxX1XtuHxc+5DJNKAfxRRZvXlgdbmwj9AotolK2ocA45iE+RQiTwzF1xswygrE/J0zzocFF2IHDNkOZm84Fuh5UKkIT8bQ6Z8=
+	t=1709162355; cv=none; b=WW0GYMrqsTypa7rjwBIt0hWiSq3MjBNxE/oqXzwYVRbuLYmsJCt8z6CAQRONny6Sa4exxRVReT0n7R+Mkc8qFaP9YwTbQ7HSKQaRWENm9l3NRYEpkaK4yLaTwWtL9Tc197GxNJ50utPDNdhJN2dAePhQzijUAJIAoSA+A1FfIaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709109605; c=relaxed/simple;
-	bh=vW7VeVlY7tptgeonPLOL03jzUONpq69mL/EUyCyeWjs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Hqfz83zqteeut36flSb+LLrVWrA7C0WridAygbrp8VXA58g7eLY1vVX0YwnMNNrjbfMc761wTFDdxghALtyq/q4tbiCQlluiwhXvae2YalkvllIduUeguN/1gddZwcdVz6Y65jw7y4pvU2KX3/9x3TSq/9s7j6cvaSrGtfdUvcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f0DeH1PA; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-412ae15b06fso10425115e9.1;
-        Wed, 28 Feb 2024 00:40:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709109602; x=1709714402; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=OKDsuau3knRC0gjwTo0VByuQYlnp6dLUHuurWCoEmlY=;
-        b=f0DeH1PAlU7xATaVrt8W8RATErgcM4jBP8vdiixpRHdjU1mDNsyY7Liwd6w/pvACGX
-         s3bS223e0hE02DneUkSoX2dtmAguEo6v/ACnfPRLB8vNU23REyGhrIui/lVCC+j4ETam
-         JPDgtKEQKUybjZH1TOHWM5BLexK2MXB+Z49k9eevSp92PJtonTPGoby/S8dH9UXBS61O
-         4pT7Y0YVouiyu9RKIZUI4tCQbOPTCFjKWb0ns5Wu/dubLB8U6Zsfgys5ET/1Y19uTk1x
-         borcTEc+fdphGhe/d6e3dwqlnvU7Bhb58/5DrMzHXYjH4XAbd90wfMXvqyjBbkCaXmHm
-         4kfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709109602; x=1709714402;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=OKDsuau3knRC0gjwTo0VByuQYlnp6dLUHuurWCoEmlY=;
-        b=rNMJn2CaJ2IwaLiFEfWIYPBgAXsOXpdf2yEeN7WnxQBju//6o3MAJhsDYoG5D5okUi
-         ClX0oU9X+z6wOpUWpvH5MoybWjSTwl0/TSRM9JtZiTXOkhfyzujT5YadxxU/Drje9he9
-         c5gtGDz4GaOff7N/q3WlwzlD/fHaJiLPRzcK3lxvreBxM5Oyklhi+zvGC1SnWfYW5CwV
-         inYvgavH9VWv7jBgBNO5Qp3lHuoXm0wj20rbu5iFgFeeMLGeM7bDdjc7WVsofjLWViRi
-         fNoKPLeIQFNHuRZmP+4HurSk59E8GHm056H0k9yPJhsF/viKhQhqxQMHeFqqQmDBuwiL
-         B+1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVvL7ih6TE9qKQikCt8/PPN7M6Le2woHwKNNe15rh00Z2fIT/DIp7Ue9eYP2l9POq61Pqf9rHOaC9ftOYq7BHpA4IXC2DOgRL7t+A==
-X-Gm-Message-State: AOJu0YyXh1DXUnnYf1BiLRQRGF1wLbSMhYYSQ4zpG3qtrDwJOgdpO5/5
-	FrAoRh5CsGJIToQDn3HZKsiH3sFB3CY38wgGL+wYOK6oVwUzoxYWuRcCFhx97nDmgw==
-X-Google-Smtp-Source: AGHT+IG+sAxIQd/6LsK9ihij1zDol+ZfekXomdQ+Ko+4myAW8E/3ulkmihi48ngFmg5V+wYxitZACA==
-X-Received: by 2002:a05:600c:310d:b0:412:b633:af51 with SMTP id g13-20020a05600c310d00b00412b633af51mr370257wmo.37.1709109601757;
-        Wed, 28 Feb 2024 00:40:01 -0800 (PST)
-Received: from tpt440p.steeds.sam ([69.63.64.50])
-        by smtp.gmail.com with ESMTPSA id x4-20020a05600c21c400b00412afd8425esm1343653wmj.24.2024.02.28.00.39.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Feb 2024 00:40:01 -0800 (PST)
-From: "Sicelo A. Mhlongo" <absicsz@gmail.com>
-To: devicetree@vger.kernel.org,
-	=?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-	Tony Lindgren <tony@atomide.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: linux-pm@vger.kernel.org,
-	pali@kernel.org,
-	sre@kernel.org,
-	spinal.by@gmail.com,
-	maemo-leste@lists.dyne.org,
-	linux-omap@vger.kernel.org,
-	"Sicelo A . Mhlongo" <absicsz@gmail.com>
-Subject: [PATCH] ARM: dts: n900: set charge current limit to 950mA
-Date: Wed, 28 Feb 2024 10:38:47 +0200
-Message-ID: <20240228083846.2401108-2-absicsz@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1709162355; c=relaxed/simple;
+	bh=7z1aSxlpZRea/mqk7Ubs0g2+jXbwBM6SEk0zk2oB+m0=;
+	h=Message-ID:Content-Type:MIME-Version:In-Reply-To:References:
+	 Subject:From:Cc:To:Date; b=EXNoIVhapXqsAs9yqT/578gV3i3EMi1BYsB+dE0/xJIbcjjZLdXYCDaod8CyA8RhoSCjS/nH4uKJg8wAeMSTMhn90VvbWLUx3uecaJtag5oOItdJmt7Al/y/U39rrmOabJFUXXnD0MF+/wS3t0SoAFhB/ptbvTsNjJbYrAkAo8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DS8Tad3r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86126C433F1;
+	Wed, 28 Feb 2024 23:19:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709162354;
+	bh=7z1aSxlpZRea/mqk7Ubs0g2+jXbwBM6SEk0zk2oB+m0=;
+	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+	b=DS8Tad3r2Pvak3Yl6xPw0Tw5GfdCXTW/iB++hxmpL4UJf4f3lwcwh4TTf/p2RlFat
+	 /vlHG+Hd+8NE1v/+uHvU9vzvU3arXNbymb/q3rvHpO8/avqCHseaO1PxBRDGxIyEnt
+	 mzv8h1Samq9INrB4TaNQrEnOILBwSKRqyLC7RZp/q/9xplNgc7nc1xlkCIKIscK3t0
+	 biL+JSBI/zh1L4lZF/2eB9MjhW2iYVlgCTvsNB6Vl6PywbSF9JU20GK8O8hMXKGR5F
+	 Otj/XhJwMnodZBtqr8X9C+TKdKia0f2WDcv+TczK+lmEQAO5CivjnHHxImCXn4D/Fg
+	 M/DYSxJKkVSMg==
+Message-ID: <526d995da0aa9595ada040e8c6950e34.sboyd@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20240115054739.4988-1-rdunlap@infradead.org>
+References: <20240115054739.4988-1-rdunlap@infradead.org>
+Subject: Re: [PATCH] clk: ti: dpll3xxx: use correct function names in kernel-doc
+From: Stephen Boyd <sboyd@kernel.org>
+Cc: Randy Dunlap <rdunlap@infradead.org>, Tero Kristo <kristo@kernel.org>, linux-omap@vger.kernel.org, Michael Turquette <mturquette@baylibre.com>, linux-clk@vger.kernel.org
+To: Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org
+Date: Wed, 28 Feb 2024 15:19:12 -0800
+User-Agent: alot/0.10
 
-From: Arthur Demchenkov <spinal.by@gmail.com>
+Quoting Randy Dunlap (2024-01-14 21:47:39)
+> Use function names that match the implementation in kernel-doc comments
+> to avoid kernel-doc warnings:
+>=20
+> dpll3xxx.c:938: warning: expecting prototype for omap3_non_core_dpll_save=
+_context(). Prototype was for omap3_noncore_dpll_save_context() instead
+> dpll3xxx.c:967: warning: expecting prototype for omap3_core_dpll_restore_=
+context(). Prototype was for omap3_noncore_dpll_restore_context() instead
+>=20
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> Cc: Tero Kristo <kristo@kernel.org>
+> Cc: linux-omap@vger.kernel.org
+> Cc: Michael Turquette <mturquette@baylibre.com>
+> Cc: Stephen Boyd <sboyd@kernel.org>
+> Cc: linux-clk@vger.kernel.org
+> ---
 
-The vendor kernel used 950mA as the default. The same value works fine on
-the mainline Linux kernel, and has been tested extensively under Maemo
-Leste [1] and postmarketOS, who have been using it for a number of years.
-
-[1] https://github.com/maemo-leste/n9xx-linux/commit/fbc4ce7a84e59215914a8981afe918002b191493
-
-Signed-off-by: Arthur Demchenkov <spinal.by@gmail.com>
-Signed-off-by: Sicelo A. Mhlongo <absicsz@gmail.com>
----
- arch/arm/boot/dts/ti/omap/omap3-n900.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/arm/boot/dts/ti/omap/omap3-n900.dts b/arch/arm/boot/dts/ti/omap/omap3-n900.dts
-index d33485341251..07c5b963af78 100644
---- a/arch/arm/boot/dts/ti/omap/omap3-n900.dts
-+++ b/arch/arm/boot/dts/ti/omap/omap3-n900.dts
-@@ -754,7 +754,7 @@ bq24150a: bq24150a@6b {
- 		ti,current-limit = <100>;
- 		ti,weak-battery-voltage = <3400>;
- 		ti,battery-regulation-voltage = <4200>;
--		ti,charge-current = <650>;
-+		ti,charge-current = <950>;
- 		ti,termination-current = <100>;
- 		ti,resistor-sense = <68>;
- 
--- 
-2.43.0
-
+Applied to clk-next
 
