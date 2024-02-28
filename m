@@ -1,61 +1,57 @@
-Return-Path: <linux-omap+bounces-756-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-757-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48EC786A8F6
-	for <lists+linux-omap@lfdr.de>; Wed, 28 Feb 2024 08:28:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8011886A8FB
+	for <lists+linux-omap@lfdr.de>; Wed, 28 Feb 2024 08:31:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 790811C23968
-	for <lists+linux-omap@lfdr.de>; Wed, 28 Feb 2024 07:28:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 201BC1F27059
+	for <lists+linux-omap@lfdr.de>; Wed, 28 Feb 2024 07:31:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D39B24A19;
-	Wed, 28 Feb 2024 07:28:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4152E25611;
+	Wed, 28 Feb 2024 07:31:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b="inPkxNnf"
+	dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b="D62rkL/Z"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from mail5.25mail.st (mail5.25mail.st [74.50.62.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DC0423776;
-	Wed, 28 Feb 2024 07:28:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A08425603;
+	Wed, 28 Feb 2024 07:31:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.50.62.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709105315; cv=none; b=nyJ1DqBley2lpJb5H5gfjnkCCllGwtUovaQ6x7rvQD/LoyZZWzX8Dw9ggMEaXq5qe4FsAhKxkWl9Y7D91+vkdSCHLVrLztr79Byx03R+icrLCuYWyzud/3iWyj6mWYTXO4TehkZu4lSa/utdSeKlWc3dccEB9yvHC0HKM2sOOUw=
+	t=1709105474; cv=none; b=kh4zj6XWQWL9sZOfLZWtp5D8482G1963jKf7aaAn7CVuckCqf1Ftx+IEV2fBC8rWX71URCqiiRXbTABoUFNi9cc3N0DDAs2v/8E2AAFS5J8g1T3TAeWdI2jMJw0jqsv/oKj4KBPqkSkQjgFDlcsfgNhie14QLmPws1MSsL5Jz70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709105315; c=relaxed/simple;
-	bh=ANc8dvk1HuRXLTAqn99EVddZRnoclltcavg81hMnWrs=;
+	s=arc-20240116; t=1709105474; c=relaxed/simple;
+	bh=bAhqk/05b8Deh/CrIzHszwgDXByXMAhoAe9aJbpdWe8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Gla+ml2rNhKwRK0Uiwhnp5v3R+zISjNT3L92273//Bg+aZ+B5bTADQYcMWF7MPB6wwAfaTTwnwmpM4VJnJFwyAAjfnksKJnbcKCLKCUX0XGThgTffRSK6g3R1bUVCK4vf4vvYUZGm8/xnK3rXiyD+dLFG/sTXazLKjw5BFiOx8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com; spf=fail smtp.mailfrom=atomide.com; dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b=inPkxNnf; arc=none smtp.client-ip=74.50.62.9
+	 Content-Type:Content-Disposition:In-Reply-To; b=BrZkI+gxQyzNob9O6D+A83KCa5s5HK+1lSoYTYCqLNmR8saBlHOBrT/MwFLatkM0L5fu69DnztJfqgiZhjfWZYx+bpZczf5LRUdxm1FEe6iCTutUnQ1SemvfvFlFEHgB1Wh/gSPWzXa9Ihtp1OosRUWKaKXPtOx2FLUufVC9+ko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com; spf=fail smtp.mailfrom=atomide.com; dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b=D62rkL/Z; arc=none smtp.client-ip=74.50.62.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=atomide.com
 Received: from localhost (91-158-86-216.elisa-laajakaista.fi [91.158.86.216])
-	by mail5.25mail.st (Postfix) with ESMTPSA id ADF6D60429;
-	Wed, 28 Feb 2024 07:28:14 +0000 (UTC)
+	by mail5.25mail.st (Postfix) with ESMTPSA id D5C0C60429;
+	Wed, 28 Feb 2024 07:31:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=atomide.com;
-	s=25mailst; t=1709105311;
-	bh=ANc8dvk1HuRXLTAqn99EVddZRnoclltcavg81hMnWrs=;
+	s=25mailst; t=1709105472;
+	bh=bAhqk/05b8Deh/CrIzHszwgDXByXMAhoAe9aJbpdWe8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=inPkxNnf+HpIvFe918cZSHkW5rJUb6YyW2/eBrn3fZrWfw+wCilZm2X5z7DYPbilg
-	 Bqo7Vw7OegTxemrXfgAEM5kIY9he8H+wUl5jaa++cCqywGdjm9Mp3Z/jtsdS8jzAhh
-	 aT+Gebmu7InEIQUnjngcJRiaDRaVau54dqmoL6+EsNXUCwRL8h9r4XygZHZPCubnuq
-	 c6JGo8V/WYsUTUbC/yOtxNJR+tmM90UEeR3ZfJe1w4+nx75CPLHpjVjTM+SZ9+Tqta
-	 Ji0pbWM4ON1dNKo4MvtHYZ5g/vP0OfdIJUDSQSF8JyijZVC3JXrgVIK3MI86LRxQwS
-	 xzUhNG3NXqX8w==
-Date: Wed, 28 Feb 2024 09:28:12 +0200
+	b=D62rkL/Z5dRMQsFd4AD+bN9vvTKIVlxz5nkOJxPXKVcZdINh8PJNWUdreAgIH3zhm
+	 7GuNx+PSZ/kQwEwHxjFqDtb6znK7vb38tl84TYuGh/8CZFDF7iWyEmSZI3/73coF/7
+	 3F0NkpoxPIOyx6uF+/5iTMdgpYYLENmyV2vOGhY1Ywn0TIoBpn6/eDip8h0IPYultX
+	 b2IxUxucALeyikRs+iL8JDJMPVfy2gn1Klr4rtQjugBmUiXLJYYKsJUNFXWXFoy5Rn
+	 80pu3A8fr3YdfpmUzCtYEhWS2JmT6zGqZrBJ3yqqhpZCQIEKn61D7pCaZw3Nh/afZl
+	 r6gN4PpTVeytw==
+Date: Wed, 28 Feb 2024 09:31:02 +0200
 From: Tony Lindgren <tony@atomide.com>
-To: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-	linux-omap@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-	Russell King <linux@armlinux.org.uk>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] arm: omap1: remove duplicated 'select ARCH_OMAP'
-Message-ID: <20240228072812.GD52537@atomide.com>
-References: <20240204125716.56756-1-masahiroy@kernel.org>
- <CAK7LNASC4xh5WrEaHkqFg49xzJsQMQnjLV8sCea8uceNp5EUdQ@mail.gmail.com>
+To: "Ricardo B. Marliere" <ricardo@marliere.net>
+Cc: linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH] bus: ti-sysc: constify the struct device_type usage
+Message-ID: <20240228073102.GE52537@atomide.com>
+References: <20240219-device_cleanup-ti-sysc-v1-1-13b53177d0a5@marliere.net>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -64,20 +60,15 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAK7LNASC4xh5WrEaHkqFg49xzJsQMQnjLV8sCea8uceNp5EUdQ@mail.gmail.com>
+In-Reply-To: <20240219-device_cleanup-ti-sysc-v1-1-13b53177d0a5@marliere.net>
 
-* Masahiro Yamada <masahiroy@kernel.org> [240204 13:19]:
-> Just a nit.
-> 
-> The commit subject "arm:" should be capitalized to "ARM:"
-> because it is a convention for changes under arch/arm/.
-> 
-> Maybe, the maintainer can cater to it?
+* Ricardo B. Marliere <ricardo@marliere.net> [240219 14:09]:
+> Since commit aed65af1cc2f ("drivers: make device_type const"), the driver
+> core can properly handle constant struct device_type. Move the
+> sysc_device_type variable to be a constant structure as well, placing it
+> into read-only memory which can not be modified at runtime.
 
-Thanks yes applying into omap-for-v6.9/omap1 with the prefix
-changed.
-
-Regards,
+Thanks applying into omap-for-v6.9/ti-sysc.
 
 Tony
 
