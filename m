@@ -1,46 +1,46 @@
-Return-Path: <linux-omap+bounces-772-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-773-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBBB786D495
-	for <lists+linux-omap@lfdr.de>; Thu, 29 Feb 2024 21:43:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C13886D4E4
+	for <lists+linux-omap@lfdr.de>; Thu, 29 Feb 2024 21:50:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A7421F229F5
-	for <lists+linux-omap@lfdr.de>; Thu, 29 Feb 2024 20:43:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 894931C20B15
+	for <lists+linux-omap@lfdr.de>; Thu, 29 Feb 2024 20:50:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69A5A14A4DA;
-	Thu, 29 Feb 2024 20:38:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB17B6D504;
+	Thu, 29 Feb 2024 20:40:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IkpYIpzO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yky3sXu1"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 001A11428F1;
-	Thu, 29 Feb 2024 20:38:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F6F96D505;
+	Thu, 29 Feb 2024 20:40:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709239098; cv=none; b=YoMa23ZEpnZ7CIBaYulfuFG/xId+Rhuf6Xk5l780X12wqAmdJYP22SeLCAPs5VzQrRd4RdcW8SZd4s6Vzg/UjW+5wuQJz5Xpim3+JBgFcTOIikn0tZ2WbuZu7wINSvjQvAappi3jPzaseTK2rtFbSYPgzN8Fyzs28/Oivzw5Sp0=
+	t=1709239221; cv=none; b=lp4+oB82bLC0IMa6xpY2ObU8vdEVyApXkeqO1rxMs8iUxfcEZgxzBuX3zNk764sI87NsVvA2o4eIDvOWDMW0KZ/QOalIbpl0U3ZR2PgNGlUATm7geqkuDsf7eXyiWOv9riqEqKCUuAaqUp0HZbd5wBXO6ph4AqWnTWqE54yCU6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709239098; c=relaxed/simple;
+	s=arc-20240116; t=1709239221; c=relaxed/simple;
 	bh=NKk9DfgAyxGXNWdgqcpfsG6GEb2KHxtt6O3UhenhoNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DhCmWrRRGIceNFZ+9g+ndOlQpiD91n+SeMzB44G5M5Ra7FYZYTaJLFmw9XY045nAr2OFNCbymcJCxMORUzeVRLcGsRhIFK8oBbaZBygXFbXKZjpBnPrieWHPvC50kVIl2OAlwDn262sGRLVMkIgnSTnh8tpBebCj9/dGPrwilvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IkpYIpzO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B43AEC433C7;
-	Thu, 29 Feb 2024 20:38:12 +0000 (UTC)
+	 MIME-Version; b=VFy9z48GJ1S/VsX+AZTQfN0jgseJ+uJFPyypp3a7Vxkfuyi5A2c8eaHoFlRSllNdtk/7OydIzbicfIX5oip1mjtQDBghPgiS1RQ72xku6xVpzM8NKSRP7JGW1VUUnHoiQif29zQLOn1H0EPDSX4ct3fRAGqpXUUWOpjCsFHapWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yky3sXu1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08F51C433C7;
+	Thu, 29 Feb 2024 20:40:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709239097;
+	s=k20201202; t=1709239221;
 	bh=NKk9DfgAyxGXNWdgqcpfsG6GEb2KHxtt6O3UhenhoNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IkpYIpzOwpS0ID4c5SPhFPtSKp/SUyTn7YgGvmeUUd+H7h7oA6AC5woXSf/gGfBLi
-	 vJJK0pku7ALSzkKGUbyUFKZH3OxxiBQo+B+0W5NevoZbX3fL9OooAxO00XrVXZ6QNu
-	 n92u6IJTHymmElDQScHeAAzI8gHEu2gNRwu+m1EkMFqg9Oi9K6vO+M/LX+HXugq+Sz
-	 Y0S6w7K14b5SiltgPzQ+CehpoEnLYUgaQb3sIxqZ+1WPTDK6/qLertWdV9Rc/hhhIm
-	 nNjqi9X3x7oozlBF5RgJK1NkdDU/pHqFM8E+5gUUwKubixsG6lQCE1Xmwi+rjYC1Cr
-	 /Y4Gnzi8cu7iA==
+	b=Yky3sXu1EZTXwXggl70GMctUhj1CEVlVFjd7q7i6BicH3/YcZ+pjKqyI3GlsKPpMO
+	 /wdEHUJ8mZJp7m5Dy3X+EWR1sTo9xfp4YsSNp9EZqR0tR4XHD3gtIwGnTxImcQJLhw
+	 enFY38VvBfJ0QC8Idnz1W3tIJcFduWfXQvkgCa9eZ60A3UNl7M1yzfSQ08/8S1F40N
+	 U39StBu6SL/uR8o9X+/V4ThdAAslguxDN/MLFV+vdPc+13FzgGqT2643eeWASF9EFU
+	 gK9Rm3TGoFPMo5puoj8MsbKmaxNyz+ro1DQ93PqVD5NXdV3+n4jqtoqMUhhmjhvWJH
+	 6tW/e4z6QLCWg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -70,7 +70,7 @@ Cc: Rob Herring <robh@kernel.org>,
 	bcousson@baylibre.com,
 	tony@atomide.com,
 	andre.przywara@arm.com,
-	sudeep.holla@arm.com,
+	hayashi.kunihiko@socionext.com,
 	linux-arm-kernel@lists.infradead.org,
 	devicetree@vger.kernel.org,
 	linux-aspeed@lists.ozlabs.org,
@@ -78,12 +78,12 @@ Cc: Rob Herring <robh@kernel.org>,
 	linux-tegra@vger.kernel.org,
 	linux-stm32@st-md-mailman.stormreply.com,
 	linux-omap@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.7 19/24] arm: dts: Fix dtc interrupt_provider warnings
-Date: Thu, 29 Feb 2024 15:36:59 -0500
-Message-ID: <20240229203729.2860356-19-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 18/22] arm: dts: Fix dtc interrupt_provider warnings
+Date: Thu, 29 Feb 2024 15:39:11 -0500
+Message-ID: <20240229203933.2861006-18-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240229203729.2860356-1-sashal@kernel.org>
-References: <20240229203729.2860356-1-sashal@kernel.org>
+In-Reply-To: <20240229203933.2861006-1-sashal@kernel.org>
+References: <20240229203933.2861006-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -92,7 +92,7 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.7.6
+X-stable-base: Linux 6.6.18
 Content-Transfer-Encoding: 8bit
 
 From: Rob Herring <robh@kernel.org>
