@@ -1,131 +1,114 @@
-Return-Path: <linux-omap+bounces-770-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-771-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC25F86C98F
-	for <lists+linux-omap@lfdr.de>; Thu, 29 Feb 2024 13:56:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3D1186CC58
+	for <lists+linux-omap@lfdr.de>; Thu, 29 Feb 2024 16:06:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6752A2884AD
-	for <lists+linux-omap@lfdr.de>; Thu, 29 Feb 2024 12:56:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F7F5283C08
+	for <lists+linux-omap@lfdr.de>; Thu, 29 Feb 2024 15:06:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F4767E0F8;
-	Thu, 29 Feb 2024 12:56:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A63DC13A24A;
+	Thu, 29 Feb 2024 15:06:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C+K5ELdx"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KsB3fYdG"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A149D62808;
-	Thu, 29 Feb 2024 12:56:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C60913776F
+	for <linux-omap@vger.kernel.org>; Thu, 29 Feb 2024 15:06:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709211394; cv=none; b=aPys5y0JIwsr6uyN2EJtcXjDnIYAy4PDBw1Vst1q16WTzlUrhiaABHux6EIIHnPP8//dpK8EQ/KxIomjLjYfgiEQau+5+yEtac5LF2L39z1LA00oQjntVjrACgQY8Dxte0xDLQJBUMWdgVG31ZAw1ThY0vq+62TDHduyVeR0Pz8=
+	t=1709219205; cv=none; b=PZk6w8FKDZZS/Fndn4WOnTiw6KHwVGFWACUSXH7taO/uCGfDYlFZPi1go2XqnMKF7KoQUvkphoJS5WHTDiqS1LXYRIes+99PanU4f6xITnY7ZKQ/1A8L2Y+v5nS55yLi8TaQ5ngAMymL19NX+OJ74hpDEw4xc0C/uo1SXlnFsds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709211394; c=relaxed/simple;
-	bh=FH+JdudMBgehU68hfBDKn6/fbrAreS/wl1YC0HPz/Tg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lHG9k/8XBiemfEHwn7EUgFgZxLw9pc1+9bX8jKDCObuWlu0vpEPAAA3ZjMqBMkSigOZM8VKT222kizpjh/88V23wZtUHPLs1KwfhojR/HHnj19Xup87EdmcUHFaGycz6VF/SgnFpV9yeUKnkamQIuDgoON2p7Cq3wz8UZrqAxEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C+K5ELdx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4621EC433F1;
-	Thu, 29 Feb 2024 12:56:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709211393;
-	bh=FH+JdudMBgehU68hfBDKn6/fbrAreS/wl1YC0HPz/Tg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=C+K5ELdxqti6l+X3XyprWkioDJDWESK1Q8aUt7ODmuCvs+B1SkleCGS2eEqKuvXhc
-	 QexaZ6oN8rwRdtzMCWk5hwhKaAp7YhoymoN8DvRIanJgaj90GMn1Ca3MbwYy2CygBW
-	 odHLaxPs6AoXzDLZTk8XNgsv5e9HzgUV6/jt7F0kU0NSKDa7TcHHUS2XzwcsPssFbY
-	 yyTfzN2vjbzjAV/RY4utg2ANfWB2XcDg7jBIBgwr3ZVoXrfOvihwUylOGhb0xI4tIh
-	 joL7P9t4siWvMU3aFWlo9KSxQEMDCpcIs+vCy7QH9HFbq0VPuv2Gx4sqzIN8C8ym1q
-	 +gtgrcmRWnWFw==
-Date: Thu, 29 Feb 2024 13:56:23 +0100
-From: Niklas Cassel <cassel@kernel.org>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: Jingoo Han <jingoohan1@gmail.com>,
-	Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Marek Vasut <marek.vasut+renesas@gmail.com>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Kishon Vijay Abraham I <kishon@ti.com>,
-	Vidya Sagar <vidyas@nvidia.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	NXP Linux Team <linux-imx@nxp.com>,
-	Minghuan Lian <minghuan.Lian@nxp.com>,
-	Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v8 10/10] PCI: dwc: ep: Add Kernel-doc comments for APIs
-Message-ID: <ZeB-93jiX31cLJyP@fedora>
-References: <20240224-pci-dbi-rework-v8-0-64c7fd0cfe64@linaro.org>
- <20240224-pci-dbi-rework-v8-10-64c7fd0cfe64@linaro.org>
+	s=arc-20240116; t=1709219205; c=relaxed/simple;
+	bh=PQ/k0j/+e1mnfwmxiUbzUWJRrlV0ylYhakUhgNYyuQ0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=b7oRfHgGH6za3ZPk7Qr+VWyYL762kua43K0Xv5mYKFcvY0OqeEUehKWSCz6HpHzXjXZctFSLIHAmJg/J+1IDsBxacu67ocCK93VC+zDbC36FNfocCAPsZgCu4el1MThss6HXdfIFILhcVnzFjiKikaP39Utvjr5ZA3nCynD8jxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=KsB3fYdG; arc=none smtp.client-ip=209.85.219.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-dc742543119so1124882276.0
+        for <linux-omap@vger.kernel.org>; Thu, 29 Feb 2024 07:06:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1709219201; x=1709824001; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=26MU8kHY9/G5Vo/Dcv5Tts/6jAZMZIquioYpJYzi0xE=;
+        b=KsB3fYdGhLGct4kjtdL0Q713IKX2Aa3fWKkRV1Cugx3CStkNQnyhtXWvrxEu2zM1PB
+         CmyHRZjvPIwkbbWqODjHxitkWyI2i5teoFgr+5Cw0hEnik93Zp7oFuKFgiyzca7mMp9i
+         4gyrWSQRqQd7vkFP2+1eV/6fsyE+Qbr4euV6ZhcwI8w578yQGpC+xgRMTL0c/fU5fEYH
+         ydnSBuWlEqz+XLZjv/tWYWjopwXn9PLU1/bs7EZrF7TBbjKMzRZ6ucgjImr5r+ltgMao
+         ypFc+AW/e2HLgfQkMN0FyyymgkyTnlEXAesawPoerSHazj0Y4WOcW6+T7+t/RlBYJXu9
+         U3hQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709219201; x=1709824001;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=26MU8kHY9/G5Vo/Dcv5Tts/6jAZMZIquioYpJYzi0xE=;
+        b=vPTwx+tLqewbACJRpOEifRojsA2SHft99FpMFgqxLvpakqVKJ8AOoaXaBQLgtdO5Hz
+         OBUw2G44MzpWOOsrZ1SB4UHR39jwu9XsICEtd2ymeoaA+ZxcftgCuFyRZs2ya6ZuY7hK
+         64wtxSnoanpskhMSjc0/FVoOe7HFBeg53e87RXMBPFxCf+bK4vdpPNCHzk0HtfA2jM1h
+         M/3ks+s10rmr4n/8AEZGYc4wW0Uk2C+GGWyjtuF9YMMK8+gPfjr5RYefG6nDv049J7Ec
+         IkKo/y2q5xHd9f5PQ6MHpd6D+9cs7nQrSJQ24zsSSkEFJY3QcnzVWnHsGa3hCYj8FFEY
+         pOWw==
+X-Forwarded-Encrypted: i=1; AJvYcCWJeKa1l5P6j7Q4VpcHFNqxDXt5KefSDdHdDZnaBVWwrtsimG16y+gTdnvu08b9jKBGapfwZ9Am7lTbJ8UPrd9M+rXpbYDk6LPJhA==
+X-Gm-Message-State: AOJu0YwIXBMMhlP7IAUbCWTmcYES97hbkzvv70VOPMMXHJVjgtCzwnHe
+	DH2/x7eUTObdzw8UL9xkbV5/ATKln+e7Z2wjMmCztYyDNQrmeWwfln4zX1lxwag02Kk0BXOMrRa
+	cxtmyRRse4J+bSwT+E3s80n1V/uJhDKnbCLbCAA==
+X-Google-Smtp-Source: AGHT+IGyVzxlO9P2N2/Nle4urv89zandwAhtRJZVVvNItIuQ0pBbBhYt18T7OWc2iTv2p8Tw14IEUrXNp6FevFF8nO0=
+X-Received: by 2002:a25:e812:0:b0:dcd:a28e:e5e0 with SMTP id
+ k18-20020a25e812000000b00dcda28ee5e0mr2521252ybd.25.1709219201044; Thu, 29
+ Feb 2024 07:06:41 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240224-pci-dbi-rework-v8-10-64c7fd0cfe64@linaro.org>
+References: <20240223181439.1099750-1-aaro.koskinen@iki.fi>
+In-Reply-To: <20240223181439.1099750-1-aaro.koskinen@iki.fi>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Thu, 29 Feb 2024 16:06:04 +0100
+Message-ID: <CAPDyKFq-KuoMNE56zjc329OTfF-O8Qm5pDxtkNotZWi2aTBd2Q@mail.gmail.com>
+Subject: Re: [PATCH 0/5] Fix MMC/GPIO regression on Nokia N8x0
+To: Aaro Koskinen <aaro.koskinen@iki.fi>
+Cc: Tony Lindgren <tony@atomide.com>, Linus Walleij <linus.walleij@linaro.org>, 
+	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Hello Mani,
+On Fri, 23 Feb 2024 at 19:15, Aaro Koskinen <aaro.koskinen@iki.fi> wrote:
+>
+> Hi,
+>
+> Nokia N8x0 MMC has been pretty much broken starting from v6.3. These
+> patches restore the functionality. Tested on N810 with eMMC and external
+> miniSD card, and on N800 with SD card in the inner slot.
+>
+> A.
+>
+> Aaro Koskinen (5):
+>   ARM: OMAP: fix bogus MMC GPIO labels on Nokia N8x0
+>   ARM: OMAP: fix N810 MMC gpiod table
+>   MMC: OMAP: fix broken slot switch lookup
+>   MMC: OMAP: fix deferred probe
+>   MMC: OMAP: restore original power up/down steps
+>
+>  arch/arm/mach-omap2/board-n8x0.c | 17 ++++++-----
+>  drivers/mmc/host/omap.c          | 48 +++++++++++++++++++++-----------
+>  2 files changed, 39 insertions(+), 26 deletions(-)
+>
 
-On Sat, Feb 24, 2024 at 12:24:16PM +0530, Manivannan Sadhasivam wrote:
-> All of the APIs are missing the Kernel-doc comments. Hence, add them.
-> 
-> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> ---
->  drivers/pci/controller/dwc/pcie-designware-ep.c | 92 +++++++++++++++++++++++++
->  1 file changed, 92 insertions(+)
-> 
-> diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
-> index fed4c2936c78..cdcb33a279db 100644
-> --- a/drivers/pci/controller/dwc/pcie-designware-ep.c
-> +++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
+Acked-by: Ulf Hansson <ulf.hansson@linaro.org>
 
-(snip)
+Nitpick: Tony, while applying I think it would be nice to change the
+prefixes of the commit message headers for the mmc patches to "mmc:
+omap:".
 
-> @@ -556,6 +606,12 @@ int dw_pcie_ep_raise_msix_irq(struct dw_pcie_ep *ep, u8 func_no,
->  	return 0;
->  }
->  
-> +/**
-> + * dw_pcie_ep_cleanup - Cleanup DWC EP resources
-> + * @ep: DWC EP device
-> + *
-> + * Cleans up the DWC EP specific resources like eDMA etc...
-
-I think that you should mention that this is only for glue drivers that
-use PERST# handling, so that other glue drivers do no start using it :)
-
-
-> + */
->  void dw_pcie_ep_cleanup(struct dw_pcie_ep *ep)
->  {
->  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
-> @@ -564,6 +620,13 @@ void dw_pcie_ep_cleanup(struct dw_pcie_ep *ep)
->  }
->  EXPORT_SYMBOL_GPL(dw_pcie_ep_cleanup);
-
-
-Kind regards,
-Niklas
+Kind regards
+Uffe
 
