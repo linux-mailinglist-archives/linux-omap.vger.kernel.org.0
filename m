@@ -1,47 +1,47 @@
-Return-Path: <linux-omap+bounces-768-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-769-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9400E86C800
-	for <lists+linux-omap@lfdr.de>; Thu, 29 Feb 2024 12:23:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0CD086C95C
+	for <lists+linux-omap@lfdr.de>; Thu, 29 Feb 2024 13:40:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B5651F25205
-	for <lists+linux-omap@lfdr.de>; Thu, 29 Feb 2024 11:23:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E51231C2109E
+	for <lists+linux-omap@lfdr.de>; Thu, 29 Feb 2024 12:40:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 448AC7BAF0;
-	Thu, 29 Feb 2024 11:23:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 679C97D097;
+	Thu, 29 Feb 2024 12:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AEE4knre"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="igRhD60z"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7087651BC;
-	Thu, 29 Feb 2024 11:23:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA6807D06E;
+	Thu, 29 Feb 2024 12:40:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709205807; cv=none; b=VsGWQe5nVle6g8jMqyxlzVawpZO5b0WSWK55tGt+QpfySLU0IoVsML7OydOnpBRdMy2gi/+KG0qjRYdHioAx5ARo3FnVRxdv1pPU6+jfjeWR2suTYKwABqp71rAOi4QFwZn810ZjRMjdxJQDDl8L/WR+9KPzXBUr5VAKX9lClK0=
+	t=1709210441; cv=none; b=IHz/uqXJqNZFu9ac2ZJmh4QZTjBxBjbTPBiOqaXXZVDqiFPdPtp4W9TaklVvf4RAyA/a8HCj2CfDKh4hVI36yc1ruIZmbdzM2dV0CEG7VtVy35zs4AR6YbCeHE3FdorCmp/HUvVy+bLqr+7wAUQETuMiKtHexRCaDVzGw9TgQ78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709205807; c=relaxed/simple;
-	bh=WqUPAXlssCmtqdLpcCv+8iCzvErdAxK/S/ZBo23Kh1M=;
+	s=arc-20240116; t=1709210441; c=relaxed/simple;
+	bh=C74fudEZIJp8y6o4pvj1vAj1a7GmlDzym5p5G0Bm6Hg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TtqJFMaiB086lHnEy0m2ineCuzQAG7uTSwS1lb+yVCO1shjOF+5nhUrbzGBPqRe63I+8abov72tc9XtV3w9ktNRJPtDfOwpfKl/5lGnBGpcws0pKu6XBxG9Ac7wSIt2v2RfjqQOH/wrEgmhnGiCXS39YfT34zDi1b4k3k55nw3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AEE4knre; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD8DEC43390;
-	Thu, 29 Feb 2024 11:23:19 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=HVmhGjMymoQJC2MWFbnM/tA18dFjAaon/JVSB75Wir+cmVCWyNYRg4X08MIRboPhcc9OQkbCU7zvZo5zdXbJ1Dju8A8Cfjg/G0hiOLP2fATpis+1eHyOGDe8HWEW+vDayORoJGuDobfOpbr8qZRbXRySR6rHIhsoxW3Sp45kyP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=igRhD60z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8281AC433F1;
+	Thu, 29 Feb 2024 12:40:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709205807;
-	bh=WqUPAXlssCmtqdLpcCv+8iCzvErdAxK/S/ZBo23Kh1M=;
+	s=k20201202; t=1709210440;
+	bh=C74fudEZIJp8y6o4pvj1vAj1a7GmlDzym5p5G0Bm6Hg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AEE4knre18WNc+Z4ry/juSz4W7aDGP/Ez0hsT9XjtMow88AXfe7DMzTDAEdv4e9ax
-	 m/VW/hBb8BKj8zGUvRBLGk4ycN0JQcBurj6JMEkdIoWbtZvxyDrGy0WCIEXqfpOgOC
-	 mpH8LrNg4+WGaFQcu+AvriL8JoEiud/KdVdY2oruqydWUJyoZn9zzThq7jwdhNlLbM
-	 hixtNQfLpwIhQu6r1cpguRalL6F/i1qeuTclO+Wz2ItlZeq9pVR9cXvCQ1PxrVmuzB
-	 TCMC200o6tcmHtL8/ts6p8bYyjsdSegQ6Rvb4RGIPIkFR3g4IUX4/55AQa2eSVdadO
-	 TtawRjDGmx5NQ==
-Date: Thu, 29 Feb 2024 12:23:16 +0100
+	b=igRhD60zQhE2flMc7jhx2MrzTM3u1/VMNwCv20yuLsBTePswSGs0X1xa0IEwh6qxp
+	 nGmGx20s2y/z2Y/7/x5KxqT2Pad88xVz6DFGlL2yA4QXSg/ZMY7abQgztMXgoYV+l6
+	 NUeKaPE8KreSQ/V4CePVSvOLMtPDBTGxjtGmtRtg70dR30dtLNk9SlFHIpCOi96TLy
+	 oqxYya9Bx84enGhB/y1vWh0l5jqH8u4QcGjHP+nlkbvDdQ/xdhjUqF6ABw7RDRbbtn
+	 MSrAAgCkrsqv6kkUQSN4WgHTdjz4fPUOQaf27+8z1dJpR+VSCd/y8Caw0vQ+G025fI
+	 zmTsCRQmtCINg==
+Date: Thu, 29 Feb 2024 13:40:29 +0100
 From: Niklas Cassel <cassel@kernel.org>
 To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 Cc: Jingoo Han <jingoohan1@gmail.com>,
@@ -72,10 +72,11 @@ Cc: Jingoo Han <jingoohan1@gmail.com>,
 	linux-renesas-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org,
 	linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v8 07/10] PCI: dwc: ep: Remove "core_init_notifier" flag
-Message-ID: <ZeBpJL1K_vAdmr2M@fedora>
+Subject: Re: [PATCH v8 03/10] PCI: dwc: ep: Introduce dw_pcie_ep_cleanup()
+ API for drivers supporting PERST#
+Message-ID: <ZeB7PQtkDSoCzE1Z@fedora>
 References: <20240224-pci-dbi-rework-v8-0-64c7fd0cfe64@linaro.org>
- <20240224-pci-dbi-rework-v8-7-64c7fd0cfe64@linaro.org>
+ <20240224-pci-dbi-rework-v8-3-64c7fd0cfe64@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -84,53 +85,128 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240224-pci-dbi-rework-v8-7-64c7fd0cfe64@linaro.org>
+In-Reply-To: <20240224-pci-dbi-rework-v8-3-64c7fd0cfe64@linaro.org>
+
+On Sat, Feb 24, 2024 at 12:24:09PM +0530, Manivannan Sadhasivam wrote:
+> For DWC glue drivers supporting PERST# (currently Qcom and Tegra194), some
+> of the DWC resources like eDMA should be cleaned up during the PERST#
+> assert time.
+> 
+> So let's introduce a dw_pcie_ep_cleanup() API that could be called by these
+> drivers to cleanup the DWC specific resources. Currently, it just removes
+> eDMA.
+> 
+> Reported-by: Niklas Cassel <cassel@kernel.org>
+> Closes: https://lore.kernel.org/linux-pci/ZWYmX8Y%2F7Q9WMxES@x1-carbon
+> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> ---
+>  drivers/pci/controller/dwc/pcie-designware-ep.c | 11 +++++++++--
+>  drivers/pci/controller/dwc/pcie-designware.h    |  5 +++++
+>  drivers/pci/controller/dwc/pcie-qcom-ep.c       |  1 +
+>  drivers/pci/controller/dwc/pcie-tegra194.c      |  2 ++
+>  4 files changed, 17 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
+> index 2b11290aab4c..1205bfba8310 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware-ep.c
+> +++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
+> @@ -564,12 +564,19 @@ int dw_pcie_ep_raise_msix_irq(struct dw_pcie_ep *ep, u8 func_no,
+>  	return 0;
+>  }
+>  
+> -void dw_pcie_ep_deinit(struct dw_pcie_ep *ep)
+> +void dw_pcie_ep_cleanup(struct dw_pcie_ep *ep)
+>  {
+>  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+> -	struct pci_epc *epc = ep->epc;
+>  
+>  	dw_pcie_edma_remove(pci);
 
 Hello Mani,
 
-On Sat, Feb 24, 2024 at 12:24:13PM +0530, Manivannan Sadhasivam wrote:
-> "core_init_notifier" flag is set by the glue drivers requiring refclk from
-> the host to complete the DWC core initialization. Also, those drivers will
-> send a notification to the EPF drivers once the initialization is fully
-> completed using the pci_epc_init_notify() API. Only then, the EPF drivers
-> will start functioning.
-> 
-> For the rest of the drivers generating refclk locally, EPF drivers will
-> start functioning post binding with them. EPF drivers rely on the
-> 'core_init_notifier' flag to differentiate between the drivers.
-> Unfortunately, this creates two different flows for the EPF drivers.
-> 
-> So to avoid that, let's get rid of the "core_init_notifier" flag and follow
-> a single initialization flow for the EPF drivers. This is done by calling
-> the dw_pcie_ep_init_notify() from all glue drivers after the completion of
-> dw_pcie_ep_init_registers() API. This will allow all the glue drivers to
-> send the notification to the EPF drivers once the initialization is fully
-> completed.
-> 
-> Only difference here is that, the drivers requiring refclk from host will
-> send the notification once refclk is received, while others will send it
-> during probe time itself.
-> 
-> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> ---
->  drivers/pci/controller/dwc/pci-dra7xx.c           |  2 ++
->  drivers/pci/controller/dwc/pci-imx6.c             |  2 ++
->  drivers/pci/controller/dwc/pci-keystone.c         |  2 ++
->  drivers/pci/controller/dwc/pci-layerscape-ep.c    |  2 ++
->  drivers/pci/controller/dwc/pcie-designware-plat.c |  2 ++
->  drivers/pci/controller/dwc/pcie-qcom-ep.c         |  1 -
->  drivers/pci/controller/dwc/pcie-rcar-gen4.c       |  2 ++
->  drivers/pci/controller/dwc/pcie-tegra194.c        |  1 -
->  drivers/pci/controller/dwc/pcie-uniphier-ep.c     |  2 ++
->  drivers/pci/endpoint/functions/pci-epf-test.c     | 18 +++++-------------
->  include/linux/pci-epc.h                           |  3 ---
+In this message:
+https://lore.kernel.org/linux-pci/20240130062938.GB32821@thinkpad/
 
-pcie-artpec6.c:static const struct dw_pcie_ep_ops pcie_ep_ops = {
-pcie-keembay.c:static const struct dw_pcie_ep_ops keembay_pcie_ep_ops = {
+You mentioned that you were going to clean up the BARs.
+(Like I wrote in that thread, I really think that we should merge a fix for
+the broken "do we have a saved value from find_first_zero_bit() in the array",
+by using a "if (!saved_value[bar])", when find_first_zero_bit() returns zero.)
 
-Where is the love for these drivers? ;)
+However, regardless of that, I do not see that this series (neither
+dw_pcie_ep_cleanup(), nor dw_pcie_ep_linkdown()), calls any function which
+will clean up the BARs.
+
+Since e.g. qcom-ep.c does a reset_control_assert() during perst
+assert/deassert, which should clear sticky registers, I think that
+you should let dw_pcie_ep_cleanup() clean up the BARs using
+dw_pcie_ep_clear_bar().
 
 
 Kind regards,
 Niklas
+
+
+> +}
+> +EXPORT_SYMBOL_GPL(dw_pcie_ep_cleanup);
+> +
+> +void dw_pcie_ep_deinit(struct dw_pcie_ep *ep)
+> +{
+> +	struct pci_epc *epc = ep->epc;
+> +
+> +	dw_pcie_ep_cleanup(ep);
+>  
+>  	pci_epc_mem_free_addr(epc, ep->msi_mem_phys, ep->msi_mem,
+>  			      epc->mem->window.page_size);
+> diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
+> index 61465203bb60..351d2fe3ea4d 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware.h
+> +++ b/drivers/pci/controller/dwc/pcie-designware.h
+> @@ -672,6 +672,7 @@ int dw_pcie_ep_init(struct dw_pcie_ep *ep);
+>  int dw_pcie_ep_init_complete(struct dw_pcie_ep *ep);
+>  void dw_pcie_ep_init_notify(struct dw_pcie_ep *ep);
+>  void dw_pcie_ep_deinit(struct dw_pcie_ep *ep);
+> +void dw_pcie_ep_cleanup(struct dw_pcie_ep *ep);
+>  int dw_pcie_ep_raise_intx_irq(struct dw_pcie_ep *ep, u8 func_no);
+>  int dw_pcie_ep_raise_msi_irq(struct dw_pcie_ep *ep, u8 func_no,
+>  			     u8 interrupt_num);
+> @@ -705,6 +706,10 @@ static inline void dw_pcie_ep_deinit(struct dw_pcie_ep *ep)
+>  {
+>  }
+>  
+> +static inline void dw_pcie_ep_cleanup(struct dw_pcie_ep *ep)
+> +{
+> +}
+> +
+>  static inline int dw_pcie_ep_raise_intx_irq(struct dw_pcie_ep *ep, u8 func_no)
+>  {
+>  	return 0;
+> diff --git a/drivers/pci/controller/dwc/pcie-qcom-ep.c b/drivers/pci/controller/dwc/pcie-qcom-ep.c
+> index 36e5e80cd22f..59b1c0110288 100644
+> --- a/drivers/pci/controller/dwc/pcie-qcom-ep.c
+> +++ b/drivers/pci/controller/dwc/pcie-qcom-ep.c
+> @@ -507,6 +507,7 @@ static void qcom_pcie_perst_assert(struct dw_pcie *pci)
+>  		return;
+>  	}
+>  
+> +	dw_pcie_ep_cleanup(&pci->ep);
+>  	qcom_pcie_disable_resources(pcie_ep);
+>  	pcie_ep->link_status = QCOM_PCIE_EP_LINK_DISABLED;
+>  }
+> diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
+> index 7afa9e9aabe2..68bfeed3429b 100644
+> --- a/drivers/pci/controller/dwc/pcie-tegra194.c
+> +++ b/drivers/pci/controller/dwc/pcie-tegra194.c
+> @@ -1715,6 +1715,8 @@ static void pex_ep_event_pex_rst_assert(struct tegra_pcie_dw *pcie)
+>  	if (ret)
+>  		dev_err(pcie->dev, "Failed to go Detect state: %d\n", ret);
+>  
+> +	dw_pcie_ep_cleanup(&pcie->pci.ep);
+> +
+>  	reset_control_assert(pcie->core_rst);
+>  
+>  	tegra_pcie_disable_phy(pcie);
+> 
+> -- 
+> 2.25.1
+> 
 
