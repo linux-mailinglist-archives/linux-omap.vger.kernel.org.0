@@ -1,84 +1,81 @@
-Return-Path: <linux-omap+bounces-767-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-768-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C26C86C3C7
-	for <lists+linux-omap@lfdr.de>; Thu, 29 Feb 2024 09:39:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9400E86C800
+	for <lists+linux-omap@lfdr.de>; Thu, 29 Feb 2024 12:23:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B938C1F229D5
-	for <lists+linux-omap@lfdr.de>; Thu, 29 Feb 2024 08:39:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B5651F25205
+	for <lists+linux-omap@lfdr.de>; Thu, 29 Feb 2024 11:23:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52116524BF;
-	Thu, 29 Feb 2024 08:35:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 448AC7BAF0;
+	Thu, 29 Feb 2024 11:23:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iS6rrUpI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AEE4knre"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D9B650279;
-	Thu, 29 Feb 2024 08:35:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7087651BC;
+	Thu, 29 Feb 2024 11:23:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709195742; cv=none; b=a6W8t008i0UKucOPKjT+RxW5+rSfkydpZfVZSsmyYC8zcRU3brw3M8hEwtdoVReyNAf2k5vN5kFKOAwrDDb8j5BwfB23oMvvbTXub5WpxEuXI8pt/pInubDRYjx9BBdrOF9VPG9ovaxmLdOaTLa7+ghaTQOiQbZwKqHf070de+g=
+	t=1709205807; cv=none; b=VsGWQe5nVle6g8jMqyxlzVawpZO5b0WSWK55tGt+QpfySLU0IoVsML7OydOnpBRdMy2gi/+KG0qjRYdHioAx5ARo3FnVRxdv1pPU6+jfjeWR2suTYKwABqp71rAOi4QFwZn810ZjRMjdxJQDDl8L/WR+9KPzXBUr5VAKX9lClK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709195742; c=relaxed/simple;
-	bh=Ry3XJ0zgov5hfjRZoYIZfwvnFJc9lMbRqp+Ji3xGrY4=;
+	s=arc-20240116; t=1709205807; c=relaxed/simple;
+	bh=WqUPAXlssCmtqdLpcCv+8iCzvErdAxK/S/ZBo23Kh1M=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fhLE7Nl3BXiHnQcUwu7+kFvDRTFF/7fvhTGuLi96b9NThW4+9Go4Jd7fi04DIUgtTEfeTRYmKmxdjxyXi5TWCrJ14aY50DmQQ2bDtd7sAjFc9Ft09lkB2vUlBrCssra8jfI7nLhKns6895q6GgTyuIAF6axCJLl+l5hQmMvlbcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iS6rrUpI; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-412bcb76703so2656475e9.2;
-        Thu, 29 Feb 2024 00:35:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709195739; x=1709800539; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=bnfylAbrkY2RzpmVXOqukYKnA1Zk4JFIZcR8wtA1qUI=;
-        b=iS6rrUpIqyzCFKz7Sx19eEAkLv7/TfIl4Uav0ahEBprxkR6FLIl7B4nbJYHYL1Fx9T
-         qXVXtPZuqr/LGGxcWMHJFdBVIjU/nsIfW52Fd0Y8NwNSdR2fjmhyyHAKb/rWfSe4tUjR
-         xXs1O8H8hjGGipKYkupysvoPiOvke7IVVPZb6y2g9/MJqif6dBkeWj9mGpmJlS9xXCv5
-         jSTsSKbgTWf1KWjNnQaa7GwV4AJyMtcq+SZmmRnDrWCV8/rRuA/Oj7vPearxV3kONNJH
-         VnVzc/b/olrYgsiezvgAJEfCPHEcTZQOEat19oSSSAK/7vMSoPnbV3kt0LwsmpOIYHwp
-         8x+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709195739; x=1709800539;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bnfylAbrkY2RzpmVXOqukYKnA1Zk4JFIZcR8wtA1qUI=;
-        b=IF42HW1v4L6hyE1GjdjDviYiUDPL64/faTD+7B/KOEO7nWsMVVYmodTNRwtf89h0Zv
-         KEvgHtfQcILdVvm2IjeL1kHYTPs2YcUDA+2fA6nOewjE0WJx+9+n67tFHEF7IT408fN8
-         kywjm9hT8kmrdnuVHBZJWM/lx7ioyn+eIwCduPPDx0Xdk9bOcB4YD3X9dD/NN+0ZI6+K
-         p4IJQPjgaFUdq4FVuBkpuYwW4XXrGoZld63umKpCPEMIlEKyvapBwAn/n33TM00TDItM
-         wE43eePp88glPDzaM6K0Yl8LYWf3AAfTQ1Sd7LIATDxP0JoyG5N0XMpA9ebSWtIon/O7
-         +NXg==
-X-Forwarded-Encrypted: i=1; AJvYcCWWPVdz5iifSoJln5w0+Co24wLU3qti3BkFEY7rjhZ0ijxqq6OGvN9Ir8jU3YS9lbCEoiER/KN+MxfgLukefSf9fvjtfhtArhlPSIettT4JI24AFivLncN0E82N8U0MqRaah8y1
-X-Gm-Message-State: AOJu0YxPN4w/7+mfeSOgWxa6V9AlcQp1jGjS/rjn2AgRJ3tuz7nCbR7m
-	UcBiDbaY8ZFRFYX5O2ETG5yDQX/6han3wJaIlc+dIiggQhiSZZ6v
-X-Google-Smtp-Source: AGHT+IF2CrHWsYVn8AqXy5R/UGnjqtqiyzRD/8+A4WAbwbjD0fdH0mbKVlN1DoiGoc9Sx/JThfcRxA==
-X-Received: by 2002:a05:600c:4fd2:b0:412:c1d3:1a85 with SMTP id o18-20020a05600c4fd200b00412c1d31a85mr57972wmq.33.1709195738498;
-        Thu, 29 Feb 2024 00:35:38 -0800 (PST)
-Received: from tp440p.steeds.sam ([69.63.64.50])
-        by smtp.gmail.com with ESMTPSA id q16-20020a5d6590000000b0033d56aa4f45sm1088916wru.112.2024.02.29.00.35.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Feb 2024 00:35:38 -0800 (PST)
-Date: Thu, 29 Feb 2024 10:35:32 +0200
-From: Sicelo <absicsz@gmail.com>
-To: Tony Lindgren <tony@atomide.com>
-Cc: devicetree@vger.kernel.org,
-	=?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-pm@vger.kernel.org,
-	pali@kernel.org, sre@kernel.org, spinal.by@gmail.com,
-	maemo-leste@lists.dyne.org, linux-omap@vger.kernel.org
-Subject: Re: [PATCH] ARM: dts: n900: set charge current limit to 950mA
-Message-ID: <ZeBB1GYb31UAW886@tp440p.steeds.sam>
-References: <20240228083846.2401108-2-absicsz@gmail.com>
- <20240229081923.GI52537@atomide.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=TtqJFMaiB086lHnEy0m2ineCuzQAG7uTSwS1lb+yVCO1shjOF+5nhUrbzGBPqRe63I+8abov72tc9XtV3w9ktNRJPtDfOwpfKl/5lGnBGpcws0pKu6XBxG9Ac7wSIt2v2RfjqQOH/wrEgmhnGiCXS39YfT34zDi1b4k3k55nw3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AEE4knre; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD8DEC43390;
+	Thu, 29 Feb 2024 11:23:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709205807;
+	bh=WqUPAXlssCmtqdLpcCv+8iCzvErdAxK/S/ZBo23Kh1M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AEE4knre18WNc+Z4ry/juSz4W7aDGP/Ez0hsT9XjtMow88AXfe7DMzTDAEdv4e9ax
+	 m/VW/hBb8BKj8zGUvRBLGk4ycN0JQcBurj6JMEkdIoWbtZvxyDrGy0WCIEXqfpOgOC
+	 mpH8LrNg4+WGaFQcu+AvriL8JoEiud/KdVdY2oruqydWUJyoZn9zzThq7jwdhNlLbM
+	 hixtNQfLpwIhQu6r1cpguRalL6F/i1qeuTclO+Wz2ItlZeq9pVR9cXvCQ1PxrVmuzB
+	 TCMC200o6tcmHtL8/ts6p8bYyjsdSegQ6Rvb4RGIPIkFR3g4IUX4/55AQa2eSVdadO
+	 TtawRjDGmx5NQ==
+Date: Thu, 29 Feb 2024 12:23:16 +0100
+From: Niklas Cassel <cassel@kernel.org>
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: Jingoo Han <jingoohan1@gmail.com>,
+	Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Marek Vasut <marek.vasut+renesas@gmail.com>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Kishon Vijay Abraham I <kishon@ti.com>,
+	Vidya Sagar <vidyas@nvidia.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	NXP Linux Team <linux-imx@nxp.com>,
+	Minghuan Lian <minghuan.Lian@nxp.com>,
+	Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v8 07/10] PCI: dwc: ep: Remove "core_init_notifier" flag
+Message-ID: <ZeBpJL1K_vAdmr2M@fedora>
+References: <20240224-pci-dbi-rework-v8-0-64c7fd0cfe64@linaro.org>
+ <20240224-pci-dbi-rework-v8-7-64c7fd0cfe64@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -87,24 +84,53 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240229081923.GI52537@atomide.com>
+In-Reply-To: <20240224-pci-dbi-rework-v8-7-64c7fd0cfe64@linaro.org>
 
-Hi Tony
-On Thu, Feb 29, 2024 at 10:19:23AM +0200, Tony Lindgren wrote:
-> * Sicelo A. Mhlongo <absicsz@gmail.com> [240228 10:40]:
-> > From: Arthur Demchenkov <spinal.by@gmail.com>
-> > 
-> > The vendor kernel used 950mA as the default. The same value works fine on
-> > the mainline Linux kernel, and has been tested extensively under Maemo
-> > Leste [1] and postmarketOS, who have been using it for a number of years.
+Hello Mani,
+
+On Sat, Feb 24, 2024 at 12:24:13PM +0530, Manivannan Sadhasivam wrote:
+> "core_init_notifier" flag is set by the glue drivers requiring refclk from
+> the host to complete the DWC core initialization. Also, those drivers will
+> send a notification to the EPF drivers once the initialization is fully
+> completed using the pci_epc_init_notify() API. Only then, the EPF drivers
+> will start functioning.
 > 
-> Makes sense to me. At -rc6 I'll likely wait until v6.9-rc1 before applying
-> new patches. If this is needed as a fix before that, then please let me
-> know.
+> For the rest of the drivers generating refclk locally, EPF drivers will
+> start functioning post binding with them. EPF drivers rely on the
+> 'core_init_notifier' flag to differentiate between the drivers.
+> Unfortunately, this creates two different flows for the EPF drivers.
+> 
+> So to avoid that, let's get rid of the "core_init_notifier" flag and follow
+> a single initialization flow for the EPF drivers. This is done by calling
+> the dw_pcie_ep_init_notify() from all glue drivers after the completion of
+> dw_pcie_ep_init_registers() API. This will allow all the glue drivers to
+> send the notification to the EPF drivers once the initialization is fully
+> completed.
+> 
+> Only difference here is that, the drivers requiring refclk from host will
+> send the notification once refclk is received, while others will send it
+> during probe time itself.
+> 
+> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> ---
+>  drivers/pci/controller/dwc/pci-dra7xx.c           |  2 ++
+>  drivers/pci/controller/dwc/pci-imx6.c             |  2 ++
+>  drivers/pci/controller/dwc/pci-keystone.c         |  2 ++
+>  drivers/pci/controller/dwc/pci-layerscape-ep.c    |  2 ++
+>  drivers/pci/controller/dwc/pcie-designware-plat.c |  2 ++
+>  drivers/pci/controller/dwc/pcie-qcom-ep.c         |  1 -
+>  drivers/pci/controller/dwc/pcie-rcar-gen4.c       |  2 ++
+>  drivers/pci/controller/dwc/pcie-tegra194.c        |  1 -
+>  drivers/pci/controller/dwc/pcie-uniphier-ep.c     |  2 ++
+>  drivers/pci/endpoint/functions/pci-epf-test.c     | 18 +++++-------------
+>  include/linux/pci-epc.h                           |  3 ---
 
-Thank you. It can wait for v6.9-rc1, since using 650mA does not cause a
-major usability issue.
+pcie-artpec6.c:static const struct dw_pcie_ep_ops pcie_ep_ops = {
+pcie-keembay.c:static const struct dw_pcie_ep_ops keembay_pcie_ep_ops = {
 
-Regards
-Sicelo A. Mhlongo
+Where is the love for these drivers? ;)
+
+
+Kind regards,
+Niklas
 
