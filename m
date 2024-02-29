@@ -1,80 +1,109 @@
-Return-Path: <linux-omap+bounces-760-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-761-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2AFB86BC10
-	for <lists+linux-omap@lfdr.de>; Thu, 29 Feb 2024 00:19:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 954F886C19D
+	for <lists+linux-omap@lfdr.de>; Thu, 29 Feb 2024 08:07:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4A571C226E8
-	for <lists+linux-omap@lfdr.de>; Wed, 28 Feb 2024 23:19:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C51B11C216B2
+	for <lists+linux-omap@lfdr.de>; Thu, 29 Feb 2024 07:07:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D2E713D306;
-	Wed, 28 Feb 2024 23:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5B05446B6;
+	Thu, 29 Feb 2024 07:07:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DS8Tad3r"
+	dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b="ZMoJRLIo"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail5.25mail.st (mail5.25mail.st [74.50.62.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 270AF22EF4;
-	Wed, 28 Feb 2024 23:19:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A05FC42A9F;
+	Thu, 29 Feb 2024 07:06:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.50.62.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709162355; cv=none; b=WW0GYMrqsTypa7rjwBIt0hWiSq3MjBNxE/oqXzwYVRbuLYmsJCt8z6CAQRONny6Sa4exxRVReT0n7R+Mkc8qFaP9YwTbQ7HSKQaRWENm9l3NRYEpkaK4yLaTwWtL9Tc197GxNJ50utPDNdhJN2dAePhQzijUAJIAoSA+A1FfIaA=
+	t=1709190420; cv=none; b=DbY8U56m7F6emjLPxvAkfVgXvwdBeKTUMZVXJ+1yqGR/DVT2lAfwdVjGSe29vUp6dWpGL5UpN0C6eUmQHHvaEnocQAXgi7H6Bogvxr85c/s//j0PNl264OuIF6D6IqFCvAzTMV3khesuCJmCdQiaPkoqNqMTkHrO0Nz/JxCx56Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709162355; c=relaxed/simple;
-	bh=7z1aSxlpZRea/mqk7Ubs0g2+jXbwBM6SEk0zk2oB+m0=;
-	h=Message-ID:Content-Type:MIME-Version:In-Reply-To:References:
-	 Subject:From:Cc:To:Date; b=EXNoIVhapXqsAs9yqT/578gV3i3EMi1BYsB+dE0/xJIbcjjZLdXYCDaod8CyA8RhoSCjS/nH4uKJg8wAeMSTMhn90VvbWLUx3uecaJtag5oOItdJmt7Al/y/U39rrmOabJFUXXnD0MF+/wS3t0SoAFhB/ptbvTsNjJbYrAkAo8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DS8Tad3r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86126C433F1;
-	Wed, 28 Feb 2024 23:19:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709162354;
-	bh=7z1aSxlpZRea/mqk7Ubs0g2+jXbwBM6SEk0zk2oB+m0=;
-	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-	b=DS8Tad3r2Pvak3Yl6xPw0Tw5GfdCXTW/iB++hxmpL4UJf4f3lwcwh4TTf/p2RlFat
-	 /vlHG+Hd+8NE1v/+uHvU9vzvU3arXNbymb/q3rvHpO8/avqCHseaO1PxBRDGxIyEnt
-	 mzv8h1Samq9INrB4TaNQrEnOILBwSKRqyLC7RZp/q/9xplNgc7nc1xlkCIKIscK3t0
-	 biL+JSBI/zh1L4lZF/2eB9MjhW2iYVlgCTvsNB6Vl6PywbSF9JU20GK8O8hMXKGR5F
-	 Otj/XhJwMnodZBtqr8X9C+TKdKia0f2WDcv+TczK+lmEQAO5CivjnHHxImCXn4D/Fg
-	 M/DYSxJKkVSMg==
-Message-ID: <526d995da0aa9595ada040e8c6950e34.sboyd@kernel.org>
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1709190420; c=relaxed/simple;
+	bh=qyRnLPnhTL8rUNU/3pfTivd17CPsvJprQn8qnx/kGDw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mrp1tqNLk89YOUtmIE1TXDy/p2JLzMAtCT9nLuWfkkfbqkYnfxtY9JSCtyDyoLddQggZ1HbymTZE76U04yAIqynsuqiu7KBp2Nl6ARXEGc+uiIGMskt4kDe6AWBoHZjOM/NizPuemw1CABSxJOzX78j35ou7ZrGDzrsXJzs3u3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com; spf=fail smtp.mailfrom=atomide.com; dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b=ZMoJRLIo; arc=none smtp.client-ip=74.50.62.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=atomide.com
+Received: from localhost (91-158-86-216.elisa-laajakaista.fi [91.158.86.216])
+	by mail5.25mail.st (Postfix) with ESMTPSA id 88427604CD;
+	Thu, 29 Feb 2024 07:06:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=atomide.com;
+	s=25mailst; t=1709190412;
+	bh=qyRnLPnhTL8rUNU/3pfTivd17CPsvJprQn8qnx/kGDw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZMoJRLIovy6WQbCr4hua3LFutykRxTJ8iJqHbxNzY4VQ3K4Dv7jwCId2lRZETHozG
+	 W3nmgG4HniKR7KY9urcv8R1KAjU0bStM/bLPMUKwrhvVjHcyz8jPipRhKNVNtLDakr
+	 S95yDZZatFBoy2GWT+RubQUbzmp7TEeGIImx3akbHfVxEUBiSV/nVC4IoHqzHXc2kA
+	 zkkNATjXLjIiyIrCHlt+p2PVjdDWaGmfH8WFYhupfFXjL9VqsKPS5R8ECi5Ig0c0qx
+	 i6YYc3nCCEABsArBzfsniHKbC2u3U0VANg9FM3ANiPFIJIfL7fw1ruuY2ntqMGuFjh
+	 Onb5Rr6/10Ong==
+Date: Thu, 29 Feb 2024 09:06:26 +0200
+From: Tony Lindgren <tony@atomide.com>
+To: Andreas Kemnade <andreas@kemnade.info>
+Cc: =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, Tero Kristo <kristo@kernel.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, linux-omap@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-clk@vger.kernel.org
+Subject: Re: [PATCH 0/4] Use reg instead of ti,bit-shift for clksel
+Message-ID: <20240229070626.GH52537@atomide.com>
+References: <20240213105730.5287-1-tony@atomide.com>
+ <20240214001140.2abe0d80@aktux>
+ <20240214054044.GK52537@atomide.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20240115054739.4988-1-rdunlap@infradead.org>
-References: <20240115054739.4988-1-rdunlap@infradead.org>
-Subject: Re: [PATCH] clk: ti: dpll3xxx: use correct function names in kernel-doc
-From: Stephen Boyd <sboyd@kernel.org>
-Cc: Randy Dunlap <rdunlap@infradead.org>, Tero Kristo <kristo@kernel.org>, linux-omap@vger.kernel.org, Michael Turquette <mturquette@baylibre.com>, linux-clk@vger.kernel.org
-To: Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org
-Date: Wed, 28 Feb 2024 15:19:12 -0800
-User-Agent: alot/0.10
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240214054044.GK52537@atomide.com>
 
-Quoting Randy Dunlap (2024-01-14 21:47:39)
-> Use function names that match the implementation in kernel-doc comments
-> to avoid kernel-doc warnings:
->=20
-> dpll3xxx.c:938: warning: expecting prototype for omap3_non_core_dpll_save=
-_context(). Prototype was for omap3_noncore_dpll_save_context() instead
-> dpll3xxx.c:967: warning: expecting prototype for omap3_core_dpll_restore_=
-context(). Prototype was for omap3_noncore_dpll_restore_context() instead
->=20
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-> Cc: Tero Kristo <kristo@kernel.org>
-> Cc: linux-omap@vger.kernel.org
-> Cc: Michael Turquette <mturquette@baylibre.com>
-> Cc: Stephen Boyd <sboyd@kernel.org>
-> Cc: linux-clk@vger.kernel.org
-> ---
+* Tony Lindgren <tony@atomide.com> [240214 05:41]:
+> * Andreas Kemnade <andreas@kemnade.info> [240213 23:11]:
+> > On Tue, 13 Feb 2024 12:56:40 +0200
+> > Tony Lindgren <tony@atomide.com> wrote:
+> > 
+> > > Hi all,
+> > > 
+> > > This series updates the clksel clocks to use the standard reg property
+> > > instead of ti,bit-shift.
+> > > 
+> > > I'd like to apply these before we make further use of the clksel clocks
+> > > to reduce the dtb check warnings.
+> > > 
+> > 
+> > hmm, we still have ti,bit-shift if these clocks are not used below a ti,clksel.
+> > Just wondering, can we completely deorbit ti,bit-shift if we used #address-cells = <2>;
+> > in those cases? I wait a bit with further txt->yaml conversions until
+> > this is settled.
+> 
+> No need to wait on the yaml conversion I think :) How about just tag the
+> ti,bit-shift property as deprecated? And add a comment saying it is only
+> needed for the remaining unconnected clocks.
+> 
+> Eventually we can move all the component clocks under clksel clocks, or the
+> related clock such as the dpll clock for the clkdcoldo clocks.
 
-Applied to clk-next
+Oh and yes, using #clock-cells = <2> would be nice eventually :) I think
+the clkcel binding already supports that. But that still leaves the issue
+of unconnected composite clocks.. I'm pretty sure they all have some real
+parent like clksel for dpll though.
+
+If you had some good idea in mind for the #address-cells = <2> for the
+remaining unconnected composite clocks maybe clarify it a bit.
+
+Regards,
+
+Tony
 
