@@ -1,116 +1,116 @@
-Return-Path: <linux-omap+bounces-774-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-775-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4978886D80F
-	for <lists+linux-omap@lfdr.de>; Fri,  1 Mar 2024 00:56:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C88386E019
+	for <lists+linux-omap@lfdr.de>; Fri,  1 Mar 2024 12:23:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D927FB21E0A
-	for <lists+linux-omap@lfdr.de>; Thu, 29 Feb 2024 23:56:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D4F42861B0
+	for <lists+linux-omap@lfdr.de>; Fri,  1 Mar 2024 11:23:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB09013E7C1;
-	Thu, 29 Feb 2024 23:56:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91EC86BFDD;
+	Fri,  1 Mar 2024 11:22:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bK25Cl2s"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from regular1-06.263.net (regular1-06.263.net [211.150.70.200])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0A4842A8C;
-	Thu, 29 Feb 2024 23:56:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.150.70.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31E1A6BFC9;
+	Fri,  1 Mar 2024 11:22:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709250967; cv=none; b=OOaR+kDUXyqOSVApXxUqPUL0dM8k6r7i49kOtF5G23AvSUgISoUxy2W1/h1J45Eh6sdrqFM48OQxiXZJeY7LD/dYN2ifhHgaEcDJhLVyROdwoZR2/0+ZtkQP+5V4+RobyQZuhea65twVGnYRWssduuzCNmUwQnCgOf2jO75Kdag=
+	t=1709292137; cv=none; b=AkJ2Scn2c++GNzmmXITSgbLTiRNqky0Dqcn7ngBuH4uxafBNKJGLJrDFVI0BNCJWw119xi/h2cS7riwwzPCLKWlW/CjFNzKscIJC7GOYLPeqKFm1E0z6ZtuAP18NfuZIEaKghmkE608LGIfyyujk1zf9WCwKTQ64h0ex3iWQIdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709250967; c=relaxed/simple;
-	bh=XSZhwMr9M5XqRVovzbNIdrRe0Vzc/jVfQbtwR0xjlOo=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=BbkuxHE6QHUDNTR24sY/E1JBaO+Xgkgijz5cvKI2NkPrT/pHNhJg7AybbBelNRSBZqswM044pQ4tYyVUfDGr5mBGmGToLdDxTqNZYv6X9rHQYok8lHI7FDjeJQapkj5NfImfwRukzF4kufpe3eHC0QDqT2xa2PcPGiTBEmOB2fU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=techyauld.com; spf=pass smtp.mailfrom=techyauld.com; arc=none smtp.client-ip=211.150.70.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=techyauld.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=techyauld.com
-Received: from localhost (unknown [192.168.167.69])
-	by regular1-06.263.net (Postfix) with ESMTP id F0FA31DAB;
-	Fri,  1 Mar 2024 07:52:30 +0800 (CST)
-X-MAIL-GRAY:0
-X-MAIL-DELIVERY:1
-X-ADDR-CHECKED4:1
-X-SKE-CHECKED:1
-X-ABS-CHECKED:1
-X-ANTISPAM-LEVEL:2
-Received: from localhost (unknown [118.193.106.122])
-	by smtp.263.net (postfix) whith ESMTP id P20140T140685814527744S1709250750224016_;
-	Fri, 01 Mar 2024 07:52:30 +0800 (CST)
-X-IP-DOMAINF:1
-X-RL-SENDER:yzheng@techyauld.com
-X-SENDER:yzheng@techyauld.com
-X-LOGIN-NAME:yzheng@techyauld.com
-X-FST-TO:rogerq@kernel.org
-X-RCPT-COUNT:6
-X-LOCAL-RCPT-COUNT:1
-X-MUTI-DOMAIN-COUNT:0
-X-SENDER-IP:118.193.106.122
-X-ATTACHMENT-NUM:0
-X-UNIQUE-TAG:<49e5b54e442e7c9fdccf77e484b484ff>
-X-System-Flag:0
-Date: Fri, 1 Mar 2024 07:52:30 +0800
-From: "Brock.Zheng" <yzheng@techyauld.com>
-To: Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] memory: omap-gpmc: fixup wrongly hierarchy of the sub-devices
-Message-ID: <6fftq2zlkpaf7xptyff6ky63cinr76ziyvdbm5jhj2apubr5vf@l4gvbdax3l2e>
+	s=arc-20240116; t=1709292137; c=relaxed/simple;
+	bh=NXVBa7Fp4Tdl6hTdg8sQl4YDyiDbHC+b/d8yO36MsaQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=h/jHhIjTjHPW52ggMQzWaAj3XGnxuVObS4KMtJ7mebqqKBaszmSyhsPpV0bA9ZixD7pMF4Hu3UC0ijDA2KPdF6c58gOnyC5ipPTANHWSz1Lt3deqxeQ4ZfGpjbRQy9qJHLKTUDAgBlCM5eib/y/OQOD/E7MZ3lKT8HZP+I9y/9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bK25Cl2s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88A1BC433F1;
+	Fri,  1 Mar 2024 11:22:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709292136;
+	bh=NXVBa7Fp4Tdl6hTdg8sQl4YDyiDbHC+b/d8yO36MsaQ=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=bK25Cl2sUuRoVzWih8tUNCpVVQNGmbHG0PVum15/L8x0pQjECYc4tEjp9AN5tjHYD
+	 sZ2H+yuZnGPgdGKUgNz0rnsibn28qZXh9pBuH8c6k/PepbBtZ/ViYXKuNdqLizARRo
+	 2mvvUmjLzYc4RXnL2isBSjWVCG9gJ0Uudvb7SRhIGz2DG9BHaPlKBXxNnumDHC9RMj
+	 7gvOWJfeec2S705pFqmA6Grhp/CBVVfFe8rUkr3/YiDR78wB7icDGePJst7xryReJx
+	 6K2AiHVeSiRS3xqdIlurxTl159xIl+lBi8NSNtYQYrSIoWAct6Ko/TTnyu/aVmZwQC
+	 1We7ZI3NQTGmQ==
+Message-ID: <f45b3195-38a9-4c49-b873-01e5a0b275a3@kernel.org>
+Date: Fri, 1 Mar 2024 13:22:12 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=gb2312
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] memory: omap-gpmc: fixup wrongly hierarchy of the
+ sub-devices
+To: "Brock.Zheng" <yzheng@techyauld.com>, Tony Lindgren <tony@atomide.com>,
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+ linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <6fftq2zlkpaf7xptyff6ky63cinr76ziyvdbm5jhj2apubr5vf@l4gvbdax3l2e>
+Content-Language: en-US
+From: Roger Quadros <rogerq@kernel.org>
+In-Reply-To: <6fftq2zlkpaf7xptyff6ky63cinr76ziyvdbm5jhj2apubr5vf@l4gvbdax3l2e>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On TI-AM335x£¬my FPGA under GPMC local-bus can not work on 6.x kernel.
+Hi,
 
-GPMC <--> FPGA  <--> sub-devices....
+Thanks for the patch but can you please re-send the patch in plain text format?
+Please refer to this article for more details.
 
-I found that the platform sub-devices is in wrongly organized
-hierarchy.  The grandchildren are now under the GPMC device
-directly, not under it's father(FPGA).
+https://subspace.kernel.org/etiquette.html
 
-Signed-off-by: Brock.Zheng <yzheng@techyauld.com>
----
- drivers/memory/omap-gpmc.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+On 01/03/2024 01:52, Brock.Zheng wrote:
+> On TI-AM335xï¼Œmy FPGA under GPMC local-bus can not work on 6.x kernel.
+> 
+> GPMC <--> FPGA  <--> sub-devices....
+> 
+> I found that the platform sub-devices is in wrongly organized
+> hierarchy.  The grandchildren are now under the GPMC device
+> directly, not under it's father(FPGA).> 
+> Signed-off-by: Brock.Zheng <yzheng@techyauld.com>
+> ---
+>  drivers/memory/omap-gpmc.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/memory/omap-gpmc.c b/drivers/memory/omap-gpmc.c
+> index 80d038884207..1f2568e43086 100644
+> --- a/drivers/memory/omap-gpmc.c
+> +++ b/drivers/memory/omap-gpmc.c
+> @@ -2175,6 +2175,7 @@ static int gpmc_probe_generic_child(struct platform_device *pdev,
+> 	int ret, cs;
+> 	u32 val;
+> 	struct gpmc_device *gpmc = platform_get_drvdata(pdev);
+> +	struct platform_device *child_pdev = NULL;
+>  
+> 	if (of_property_read_u32(child, "reg", &cs) < 0) {
+> 		dev_err(&pdev->dev, "%pOF has no 'reg' property\n",
+> @@ -2330,11 +2331,12 @@ static int gpmc_probe_generic_child(struct platform_device *pdev,
+>  no_timings:
+>  
+> 	/* create platform device, NULL on error or when disabled */
+> -	if (!of_platform_device_create(child, NULL, &pdev->dev))
+> +	child_pdev = of_platform_device_create(child, NULL, &pdev->dev);
+> +	if (!child_pdev)
+> 		goto err_child_fail;
+>  
+> 	/* create children and other common bus children */
+> -	if (of_platform_default_populate(child, NULL, &pdev->dev))
+> +	if (of_platform_default_populate(child, NULL, &child_pdev->dev))
+> 		goto err_child_fail;
+>  
+> 	return 0;
 
-diff --git a/drivers/memory/omap-gpmc.c b/drivers/memory/omap-gpmc.c
-index 80d038884207..1f2568e43086 100644
---- a/drivers/memory/omap-gpmc.c
-+++ b/drivers/memory/omap-gpmc.c
-@@ -2175,6 +2175,7 @@ static int gpmc_probe_generic_child(struct platform_device *pdev,
-	int ret, cs;
-	u32 val;
-	struct gpmc_device *gpmc = platform_get_drvdata(pdev);
-+	struct platform_device *child_pdev = NULL;
- 
-	if (of_property_read_u32(child, "reg", &cs) < 0) {
-		dev_err(&pdev->dev, "%pOF has no 'reg' property\n",
-@@ -2330,11 +2331,12 @@ static int gpmc_probe_generic_child(struct platform_device *pdev,
- no_timings:
- 
-	/* create platform device, NULL on error or when disabled */
--	if (!of_platform_device_create(child, NULL, &pdev->dev))
-+	child_pdev = of_platform_device_create(child, NULL, &pdev->dev);
-+	if (!child_pdev)
-		goto err_child_fail;
- 
-	/* create children and other common bus children */
--	if (of_platform_default_populate(child, NULL, &pdev->dev))
-+	if (of_platform_default_populate(child, NULL, &child_pdev->dev))
-		goto err_child_fail;
- 
-	return 0;
 -- 
-2.44.0
-
-
+cheers,
+-roger
 
