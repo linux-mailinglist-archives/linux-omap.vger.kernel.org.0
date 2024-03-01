@@ -1,94 +1,97 @@
-Return-Path: <linux-omap+bounces-777-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-778-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F4DC86E126
-	for <lists+linux-omap@lfdr.de>; Fri,  1 Mar 2024 13:38:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9B0486E26C
+	for <lists+linux-omap@lfdr.de>; Fri,  1 Mar 2024 14:41:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB8932879F8
-	for <lists+linux-omap@lfdr.de>; Fri,  1 Mar 2024 12:38:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15E651C20A88
+	for <lists+linux-omap@lfdr.de>; Fri,  1 Mar 2024 13:41:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D85A51EB2A;
-	Fri,  1 Mar 2024 12:38:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4193F6D1C1;
+	Fri,  1 Mar 2024 13:41:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="VM8yigu6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uPxXy0UP"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C90631115;
-	Fri,  1 Mar 2024 12:38:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D01287E1;
+	Fri,  1 Mar 2024 13:41:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709296713; cv=none; b=dpawXOwzZ11esxZpZmN47ogh9eh3Jtd1Gy6O/gxUZAPKfnUKer6OFanwG3F8PvYxqAMVKO/28RZ+RG1Q+BpgHQa9pAf+68ONb+w1XPza04yRifWCE3dsOPtn0TtMThIXtlENdzmqQX2H665/HxQO234+l2V53XoEbWbnCuNRmKk=
+	t=1709300482; cv=none; b=sgx56xxmfgYC3SspzVo8QLTE6eyo0/qhQKCMz2b/8SBQ4k2odrsTLKuwv/kdiRNzgmAB7eueSOvWF6rWLbm6WdDiwlPFozIu+TJspX3uRNOIM8uAehA2oSsG2KDFvLdXSnY17eu1zUTgN1nnXSV1TdpymYSzeRxGvw5X5uhtHhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709296713; c=relaxed/simple;
-	bh=k7ZiguaZn6PywZYcKou0alZk50KA2KL+x67ceZzn0CQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DKZz9d4iHmD5NYAS3//RRKTmB4ubry11qXayxUsVLYdNVBgNhzV5Tu5hnWxyMIKTyQ+dAvf98+eUd51+Vvc7VrTzRgLHN0dJvzyfRqT4HHJ3n5lsJQAWsXblC3FrROX6NYOhtzKzM4PqxZMpsB2gg7ro7pkCf9IaHoSU5eit0T0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=VM8yigu6; arc=none smtp.client-ip=178.238.236.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kemnade.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=Content-Transfer-Encoding:Content-Type:
-	MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=2VM4RvJF86wopAaCWqrnTL3rOiakzAcmW35hjIBnFAI=; b=VM8yigu6wthcDhYiDojLhYTXiP
-	7Vlrl8+Edl7+S198TnYbF1AYc6zj+qCSpQQTdhkCLUIHMoBH2PYVNpCc8fkZq7WTQBbERR5HJiX51
-	h7STmkAeIYay4HRfpKd0iYwdO9OpJIl5HLTKewJkkCJdqKeW6m8hgGnQFOxIYQgjI00NBI1wmHP/r
-	drhIbrcX7h6keovhc+dJTiUUrhPH2LU5Ey5MlUbMZpl3j0Uo/uH7gIZPZFnINIjUp/jTuVQ+ns+7g
-	DhaxzkS8R7VNvA5BKk595ISjEijcy1LEpi2h25kl9T7zn5QFgAzNidXTsC3sXTAMfykQqQatkZA+Z
-	p7mGvg+Q==;
-Received: from p200301077700b1001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:107:7700:b100:1a3d:a2ff:febf:d33a] helo=aktux)
-	by mail.andi.de1.cc with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <andreas@kemnade.info>)
-	id 1rg29U-009vV7-3t; Fri, 01 Mar 2024 13:38:12 +0100
-Date: Fri, 1 Mar 2024 13:38:09 +0100
-From: Andreas Kemnade <andreas@kemnade.info>
-To: Roger Quadros <rogerq@kernel.org>
-Cc: "Brock.Zheng" <yzheng@techyauld.com>, Tony Lindgren <tony@atomide.com>,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] memory: omap-gpmc: fixup wrongly hierarchy of the
- sub-devices
-Message-ID: <20240301133809.0d26865e@aktux>
-In-Reply-To: <f45b3195-38a9-4c49-b873-01e5a0b275a3@kernel.org>
-References: <6fftq2zlkpaf7xptyff6ky63cinr76ziyvdbm5jhj2apubr5vf@l4gvbdax3l2e>
-	<f45b3195-38a9-4c49-b873-01e5a0b275a3@kernel.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1709300482; c=relaxed/simple;
+	bh=pExN1sblACqxlgvshQeznQXOXNWaXVj5ElQb1gjEI2s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TTh1nHpnxpq2hTcjdHL6vA4/PLc0dcUPSFvjnUPWEpPZL0dQyEuykIrXl+OrS8N0VgIluuq757ednDMJm0FXQCsTB5jeUdTmgrF2qdkwM8KndNQI0HUODVd5csXQ09AyIeaNexrz0FBh0RNY00mfPQRbtGRuwV3XBiUwW2QllqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uPxXy0UP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29DE5C433C7;
+	Fri,  1 Mar 2024 13:41:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709300482;
+	bh=pExN1sblACqxlgvshQeznQXOXNWaXVj5ElQb1gjEI2s=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=uPxXy0UPWdA8rdQuxfxWPvYURRAoP4/KCsggEa40TsfEhl+ev3vDyNTQzgW7r3sMz
+	 UdTWjOCsM/e4sRGjP7+SHPxCS+Fk4HO99cc2N8UH8fTbB6TqsPp45hR+PgOjKmRHS2
+	 fykuBAGWAH0si59BIMEtvVncVruf4k/Fv/aC5l2qIo5oAQ7fGDX97kpa26wGWQdnIq
+	 fjVrwuGNbxGgNGyFDt+XGpwqO33JJDI5wGWgpiJ16X+CpoZ17DBx92ktWRZOmBBmnA
+	 LaEHqApsKT1F7t2tDl2Z4C8B71rd9M2eFXXV011N+YnHiFZO5lrxDKCXi7AgUuwYm9
+	 7ib8RYMKWycSg==
+Message-ID: <f59c9450-2784-46fa-afc9-4f194055cb24@kernel.org>
+Date: Fri, 1 Mar 2024 15:41:18 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] memory: omap-gpmc: fixup wrongly hierarchy of the
+ sub-devices
+Content-Language: en-US
+To: Andreas Kemnade <andreas@kemnade.info>
+Cc: "Brock.Zheng" <yzheng@techyauld.com>, Tony Lindgren <tony@atomide.com>,
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+ linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <6fftq2zlkpaf7xptyff6ky63cinr76ziyvdbm5jhj2apubr5vf@l4gvbdax3l2e>
+ <f45b3195-38a9-4c49-b873-01e5a0b275a3@kernel.org>
+ <20240301133809.0d26865e@aktux>
+From: Roger Quadros <rogerq@kernel.org>
+In-Reply-To: <20240301133809.0d26865e@aktux>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Hi,
 
-On Fri, 1 Mar 2024 13:22:12 +0200
-Roger Quadros <rogerq@kernel.org> wrote:
 
+On 01/03/2024 14:38, Andreas Kemnade wrote:
 > Hi,
 > 
-> Thanks for the patch but can you please re-send the patch in plain text format?
-> Please refer to this article for more details.
+> On Fri, 1 Mar 2024 13:22:12 +0200
+> Roger Quadros <rogerq@kernel.org> wrote:
 > 
-> https://subspace.kernel.org/etiquette.html
+>> Hi,
+>>
+>> Thanks for the patch but can you please re-send the patch in plain text format?
+>> Please refer to this article for more details.
+>>
+>> https://subspace.kernel.org/etiquette.html
+>>
+> for my own education, can you specify against what the patch excactly offends?
+> I see no html there and
 > 
-for my own education, can you specify against what the patch excactly offends?
-I see no html there and
+> Content-Type: text/plain; charset=gb2312
+> 
+> So what do you consider not "plain" in that email?
+> 
 
-Content-Type: text/plain; charset=gb2312
+I think I observed the same issue as Krzysztof. My mail client shows it like HTML
+even though it is not.
 
-So what do you consider not "plain" in that email?
-
-Regards,
-Andreas
+-- 
+cheers,
+-roger
 
