@@ -1,121 +1,126 @@
-Return-Path: <linux-omap+bounces-782-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-783-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8BE786F213
-	for <lists+linux-omap@lfdr.de>; Sat,  2 Mar 2024 20:18:34 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A00586F3FC
+	for <lists+linux-omap@lfdr.de>; Sun,  3 Mar 2024 09:22:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 890B81F21DDB
-	for <lists+linux-omap@lfdr.de>; Sat,  2 Mar 2024 19:18:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9903B2224C
+	for <lists+linux-omap@lfdr.de>; Sun,  3 Mar 2024 08:22:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9918E3FE47;
-	Sat,  2 Mar 2024 19:18:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="PejlC6B9"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E11DDA93C;
+	Sun,  3 Mar 2024 08:22:09 +0000 (UTC)
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
+Received: from regular1-03.263.net (regular1-03.263.net [211.150.70.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DA953FE2A;
-	Sat,  2 Mar 2024 19:18:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C205D945A;
+	Sun,  3 Mar 2024 08:22:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.150.70.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709407107; cv=none; b=jNWc5o6UUReH5cgPwXD0TeUvyD+4y68OS3Hz3z+BDnGDi+etpk6//9S3cZi6qcnlUkZsLkv2bG6hHX2LdxP5Rcd+ehWQJqsp/ghV9A1y875atpziw2hMofQB/EIICaXqCTBv/C16VxjQeC2CELMOwj5iodgW5erBOISPY7CbRpY=
+	t=1709454129; cv=none; b=Iq8M0GBDBDQaTSkfI5FAxWef4kWJ+128K/1+55J4Z+YD2CHi/BR/wvYjn0T70cazTOvANaJ81QJtTCIsKIyyjM8rdLaCuswxYWtyNmVPCw7davVnDVSf37PA84U2RM9vZf5X2MSbKP2o6wqjJMISVe/b9CUWJgREMvHJYklBmck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709407107; c=relaxed/simple;
-	bh=Wk6ntCjlPsAts86m9vzbnmY7O2BjJa1dq1qUTFVePM0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Oqp0/gM6+r3gGgApGTxR6SU793/sUJ4BYU/fRHMkZq3uK65n70uNAZON5SZeA779QT4crWhNxnDs8TLMudZCHdkd8EW3aZms7Q5w2kCwcpLFLDeFtqPwt7Wno/7PIIQJhOYSbG7qWXcp8k7Nv2L536sl8YFNQ8zebCcWEdrb35Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=PejlC6B9; arc=none smtp.client-ip=178.238.236.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kemnade.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=Content-Transfer-Encoding:Content-Type:
-	MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=KM1TopTRXtLKN5oONX1Ztk1pd6ed32mzkDGzZN+rujY=; b=PejlC6B9YRD/fiQG8n+nRdIjna
-	kpTyimgzTR7Lv9KaKWFXoRdy8epOrVj8s+jvEvBKYn4kyFZtlNhxOeWizSfVk8uIKfJhGzdtD6VmE
-	szEbJROb/2NQV8fB9Ns80NhHorsNsZlG5K97pZ1FBqBPrCAR3rY8Z+pHxdr79sggXqQUAvrV1vUJh
-	SpHKJNPWKMoKtmQe53IJIZ/Q8ChF/m35OAc8H1w6AwOhyTpM/jfGhA47QFI6a11IF1XTGahAlgMb4
-	CXiZ6jXJrJnv1NSspmPV1r/n/V61e7Pe/0BJP9jmDwAxPFbq0opeILqtKz5gRUnVz5+EopZ9fENyq
-	U0ht6rLg==;
-Received: from p200301077700b1001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:107:7700:b100:1a3d:a2ff:febf:d33a] helo=aktux)
-	by mail.andi.de1.cc with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <andreas@kemnade.info>)
-	id 1rgUsB-009xx8-Qc; Sat, 02 Mar 2024 20:18:15 +0100
-Date: Sat, 2 Mar 2024 20:18:13 +0100
-From: Andreas Kemnade <andreas@kemnade.info>
-To: Tony Lindgren <tony@atomide.com>
-Cc: =?UTF-8?B?QmVub8OudA==?= Cousson <bcousson@baylibre.com>, Rob Herring
- <robh+dt@kernel.org>, Krzysztof Kozlowski
- <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
- Tero Kristo <kristo@kernel.org>, Michael Turquette
- <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>,
- linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
- linux-clk@vger.kernel.org
-Subject: Re: [PATCH 0/4] Use reg instead of ti,bit-shift for clksel
-Message-ID: <20240302201813.06fc09d7@aktux>
-In-Reply-To: <20240229070626.GH52537@atomide.com>
-References: <20240213105730.5287-1-tony@atomide.com>
-	<20240214001140.2abe0d80@aktux>
-	<20240214054044.GK52537@atomide.com>
-	<20240229070626.GH52537@atomide.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1709454129; c=relaxed/simple;
+	bh=qO9SV8llceR6KpdDQN8ljn/YpWs1GR0zI28k4g9IsJE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NxolZPSjPndlYLumwhs6cBMWiw37mhkqwpJo9CBFhAZ+mqg37WH0pzy3ansfE+QZaWIrcgQU6FgTIFB+PG7Q924ybYxhRNe3a39DwJsb1OdEE0zw1IvW6SHTZqEseRjgzlz/L9PYVMXwPjSo4qXAj5G1O6KHpnzcA5cpl7sR1To=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=techyauld.com; spf=pass smtp.mailfrom=techyauld.com; arc=none smtp.client-ip=211.150.70.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=techyauld.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=techyauld.com
+Received: from localhost (unknown [192.168.167.32])
+	by regular1-03.263.net (Postfix) with ESMTP id BA0F01BCA;
+	Sun,  3 Mar 2024 16:18:17 +0800 (CST)
+X-MAIL-GRAY:0
+X-MAIL-DELIVERY:1
+X-ADDR-CHECKED4:1
+X-SKE-CHECKED:1
+X-ABS-CHECKED:1
+X-ANTISPAM-LEVEL:2
+Received: from localhost (unknown [118.193.106.122])
+	by smtp.263.net (postfix) whith ESMTP id P6063T140435683841792S1709453896918313_;
+	Sun, 03 Mar 2024 16:18:17 +0800 (CST)
+X-IP-DOMAINF:1
+X-RL-SENDER:yzheng@techyauld.com
+X-SENDER:yzheng@techyauld.com
+X-LOGIN-NAME:yzheng@techyauld.com
+X-FST-TO:rogerq@kernel.org
+X-RCPT-COUNT:7
+X-LOCAL-RCPT-COUNT:1
+X-MUTI-DOMAIN-COUNT:0
+X-SENDER-IP:118.193.106.122
+X-ATTACHMENT-NUM:0
+X-UNIQUE-TAG:<fb985bd55e43264275113590ea1f06ac>
+X-System-Flag:0
+Date: Sun, 3 Mar 2024 16:18:17 +0800
+From: Brock Zheng <yzheng@techyauld.com>
+To: Roger Quadros <rogerq@kernel.org>
+Cc: Andreas Kemnade <andreas@kemnade.info>, 
+	Tony Lindgren <tony@atomide.com>, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
+	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] memory: omap-gpmc: fixup wrongly hierarchy of the sub-devices
+Message-ID: <yxefg4ie4vxblxvr272jvzncxvj2t6xjfuisvmkt2jk663xgsu@o2ogbyepmg3z>
+References: <6fftq2zlkpaf7xptyff6ky63cinr76ziyvdbm5jhj2apubr5vf@l4gvbdax3l2e>
+ <f45b3195-38a9-4c49-b873-01e5a0b275a3@kernel.org>
+ <20240301133809.0d26865e@aktux>
+ <f59c9450-2784-46fa-afc9-4f194055cb24@kernel.org>
+ <laqqencookmgwesfaetd5xw5wfmjdffmjvyjitapfehmu7zy5y@k7gsdexf3jcv>
+ <beacb55c-951b-4177-83ab-94fda44cd2b7@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <beacb55c-951b-4177-83ab-94fda44cd2b7@kernel.org>
 
-Hi Tony,
+On TI-AM335x，FPGA under GPMC local-bus can not work on 6.x kernel.
 
-On Thu, 29 Feb 2024 09:06:26 +0200
-Tony Lindgren <tony@atomide.com> wrote:
+GPMC <--> FPGA  <--> sub-devices....
 
-> * Tony Lindgren <tony@atomide.com> [240214 05:41]:
-> > * Andreas Kemnade <andreas@kemnade.info> [240213 23:11]:  
-> > > On Tue, 13 Feb 2024 12:56:40 +0200
-> > > Tony Lindgren <tony@atomide.com> wrote:
-> > >   
-> > > > Hi all,
-> > > > 
-> > > > This series updates the clksel clocks to use the standard reg property
-> > > > instead of ti,bit-shift.
-> > > > 
-> > > > I'd like to apply these before we make further use of the clksel clocks
-> > > > to reduce the dtb check warnings.
-> > > >   
-> > > 
-> > > hmm, we still have ti,bit-shift if these clocks are not used below a ti,clksel.
-> > > Just wondering, can we completely deorbit ti,bit-shift if we used #address-cells = <2>;
-> > > in those cases? I wait a bit with further txt->yaml conversions until
-> > > this is settled.  
-> > 
-> > No need to wait on the yaml conversion I think :) How about just tag the
-> > ti,bit-shift property as deprecated? And add a comment saying it is only
-> > needed for the remaining unconnected clocks.
-> > 
-> > Eventually we can move all the component clocks under clksel clocks, or the
-> > related clock such as the dpll clock for the clkdcoldo clocks.  
-> 
-> Oh and yes, using #clock-cells = <2> would be nice eventually :) I think
-> the clkcel binding already supports that. But that still leaves the issue
-> of unconnected composite clocks.. I'm pretty sure they all have some real
-> parent like clksel for dpll though.
-> 
-> If you had some good idea in mind for the #address-cells = <2> for the
-> remaining unconnected composite clocks maybe clarify it a bit.
-> 
-I was just wondering whether we could do reg = <register bit> then.
+I found that the platform sub-devices are in wrongly organized
+hierarchy.  The grandchildren are now under the GPMC device directly,
+not under it's father(FPGA).
 
-Regards,
-Andreas
+Signed-off-by: Brock.Zheng <yzheng@techyauld.com>
+---
+ drivers/memory/omap-gpmc.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/memory/omap-gpmc.c b/drivers/memory/omap-gpmc.c
+index 80d038884207..1f2568e43086 100644
+--- a/drivers/memory/omap-gpmc.c
++++ b/drivers/memory/omap-gpmc.c
+@@ -2175,6 +2175,7 @@ static int gpmc_probe_generic_child(struct platform_device *pdev,
+ 	int ret, cs;
+ 	u32 val;
+ 	struct gpmc_device *gpmc = platform_get_drvdata(pdev);
++	struct platform_device *child_pdev = NULL;
+ 
+ 	if (of_property_read_u32(child, "reg", &cs) < 0) {
+ 		dev_err(&pdev->dev, "%pOF has no 'reg' property\n",
+@@ -2330,11 +2331,12 @@ static int gpmc_probe_generic_child(struct platform_device *pdev,
+ no_timings:
+ 
+ 	/* create platform device, NULL on error or when disabled */
+-	if (!of_platform_device_create(child, NULL, &pdev->dev))
++	child_pdev = of_platform_device_create(child, NULL, &pdev->dev);
++	if (!child_pdev)
+ 		goto err_child_fail;
+ 
+ 	/* create children and other common bus children */
+-	if (of_platform_default_populate(child, NULL, &pdev->dev))
++	if (of_platform_default_populate(child, NULL, &child_pdev->dev))
+ 		goto err_child_fail;
+ 
+ 	return 0;
+-- 
+2.44.0
+
+
+
 
