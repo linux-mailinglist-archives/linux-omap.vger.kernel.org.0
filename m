@@ -1,328 +1,172 @@
-Return-Path: <linux-omap+bounces-802-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-803-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5035286FD88
-	for <lists+linux-omap@lfdr.de>; Mon,  4 Mar 2024 10:28:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A8EF86FF78
+	for <lists+linux-omap@lfdr.de>; Mon,  4 Mar 2024 11:51:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4DA11F2483D
-	for <lists+linux-omap@lfdr.de>; Mon,  4 Mar 2024 09:28:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 391ED1F25D0E
+	for <lists+linux-omap@lfdr.de>; Mon,  4 Mar 2024 10:51:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52DA63C461;
-	Mon,  4 Mar 2024 09:24:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E250376FB;
+	Mon,  4 Mar 2024 10:51:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jlnpOGKu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IUdmHlqm"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AE713C070
-	for <linux-omap@vger.kernel.org>; Mon,  4 Mar 2024 09:24:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DAF737179;
+	Mon,  4 Mar 2024 10:51:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709544274; cv=none; b=ZR9sQydxvIC6igtf2GBqdd5/GKlx0c2kygu9+5MrpR/pexhQdpiB4Oxa2jsjpUZEL9yawUpXzM15E9kQhNrOCk0tTDPtvU4eHNyUDRSUR6dr7ORPCAhueN116hYipAQwtFfGrk0Ro/Tbul9x6ArZ7JCUIhjrj6TgxKkHwQb/Nu4=
+	t=1709549475; cv=none; b=SJeo26ych6EY9cio9pW+GJcXDJCs9FMMCAgdIeQXsC1/FLnKCyrlz7b+M89jVJ1H7uWLP35l0D3kLGRCd1itT3Okw60Brl2ux6qKTv4AoGM1HTPZhBn/R/Z0LqZ9k6tOi5hKDSjQmLXSEo2e4kSAmO553+haNqqSmQFdiPj8FRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709544274; c=relaxed/simple;
-	bh=WjZ4+mNCQcDtI3R3bog3jBOb0ktWOFeqYYk+qv8ZsXo=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ePcDEtaokKMIYc9NdqalXmzTWitL8iupfXKg0tp8hCpWuTl2M1zyySPdardO4C2jNVYHAyk5S3xaKnhGbl7TfT282sPAeIyBHyMOq/UH5ykriG9QofwItVNtnjQNtCBodW71FXirtNFwYajU+Ke/m2z8ib2ld2fMXTi/iU1tuC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jlnpOGKu; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-1dc9222b337so42261665ad.2
-        for <linux-omap@vger.kernel.org>; Mon, 04 Mar 2024 01:24:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1709544272; x=1710149072; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=LKApz9irlhQK7YOF+8+xnE4LjbCpqvxzEctgkEdtmlY=;
-        b=jlnpOGKuZgTQI8iR6CopRV/d6nhuW0mVIPElyA6yIAnjVH9Tth+mGEamDgXHc8hnHH
-         BTo0T+4+eD9Kn0Sfd2TlziaTw/G96Zinyjr4jPdeiqOx5v34u3Z2XBBddt/QnAkjaOwd
-         Hu97rEakLRJqLWl2Nv04BlXX9R+8eSvcoBe7wGko5aGjH7XNTm+SHheBuakGEUiW23kj
-         dYRc81D2aeAqbiRi9nS/tPp9vQzUqyyZcQhEcuWwvr+1BU5jCkGJ1yVP24iAD19WvuKx
-         5oo9JH8y/P1kp8pjHWMvLveZj5MNl/F3xhQzgip+/kq3ao4UpxPOG8PtVu6o382wsHfX
-         aO7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709544272; x=1710149072;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LKApz9irlhQK7YOF+8+xnE4LjbCpqvxzEctgkEdtmlY=;
-        b=etE0MU9fICwNnXTZnRjpwLjMf/3t1YQDEPxfwKPTBKr/0X65jDMjQ4otNctGDuhjNu
-         HsNY6OaZDRlfNXogx6CrTkIzzh6xaWs2IGDi5MbETuavPwzM/G97WKYx+LPEDB2UNgbm
-         rwMXSOOQlAT/0JA/xIMLxwMPf7ujaon879zQhmoVtO6xHVv1kyPIcmmKcfHuiZC5xtxD
-         Tjm7TJe0bZYIxtpGoLRO7K1qEuWyCBJIcD5UQT3y8EJaED8CiyNIK07bW6bXoJio5/6X
-         LduEWZ/zo5Crrr9dQPLj6Vnp7MFahpu+Wo59f2oMbJWC+dB89P+0xRGxNHBB57ezSewq
-         Jchw==
-X-Forwarded-Encrypted: i=1; AJvYcCU+1uvCLiySVpNGB9FmJOlQEGqDMMSwnw6rkKU/4Y1cHhcj8MTD8nXBJAglQrCkHjcj/TGMcE1+OHZseYj5aX/afexG5qF2Tm+3GQ==
-X-Gm-Message-State: AOJu0YxptWxbIuEOd1Z+pRuJrJGUp3xSh0NmQonlSuQVg7qvgJJr2eyK
-	5WGLW/RzS8sXf4z+ZTxDSgdsXTTdKkOe18ecCBSTJSiy+PZulLvn4bStvyj4EA==
-X-Google-Smtp-Source: AGHT+IF4YTs2Kpu6fiTzAPwNlCcr4XDNQmr1k3fHuS6nfsdDSGwckiq/zFRGje4c6qjRF2yf2DBhGg==
-X-Received: by 2002:a17:902:eac4:b0:1dc:90c0:1e9a with SMTP id p4-20020a170902eac400b001dc90c01e9amr8888988pld.64.1709544271681;
-        Mon, 04 Mar 2024 01:24:31 -0800 (PST)
-Received: from [127.0.1.1] ([117.202.187.165])
-        by smtp.gmail.com with ESMTPSA id c5-20020a170902c1c500b001dbb06b6138sm7996648plc.252.2024.03.04.01.24.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Mar 2024 01:24:31 -0800 (PST)
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Date: Mon, 04 Mar 2024 14:52:22 +0530
-Subject: [PATCH v9 10/10] PCI: dwc: ep: Add Kernel-doc comments for APIs
+	s=arc-20240116; t=1709549475; c=relaxed/simple;
+	bh=1zd3GVu3Rm2C+KWSEoGXpIwLN5A0GfhS1q9Aw+9W7rM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qsUQsjq6UZEDVIxOkSKPP0PsimzuKjbz6a8F3nMUWLxxmQIGQCN0qjuQR2a5re6T27Ur6ZcwixLICy8VFFlDHjKiBgvXquP0mkQPH4LB/uB/MG0nvEajr5CVWPE90xZ3DLGySFc0/VE6B+y+8bG93xnw18SsTuyR1m9RaFRDmn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IUdmHlqm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABB22C433F1;
+	Mon,  4 Mar 2024 10:51:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709549475;
+	bh=1zd3GVu3Rm2C+KWSEoGXpIwLN5A0GfhS1q9Aw+9W7rM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=IUdmHlqmjdF9sVcEjisGPLRse7lw64LkirsFmw8ShEDmhnEjzp+/xEafNTJlZcV0Y
+	 dZe7GxwvZCcDsFMuNpeI/TBwtkXIQfhyEmx2XSYukzbvJ2wo7p+6JOKdVe9r9toohS
+	 NlTeaFLYq74S/3aEiVdhGrcxHA+8HRd3jOHW7ID/kFX181CUuQt3Af87RQlcW0AV8Y
+	 8kdxJIksuaKE5Ts22TYEpnkd0vBxLtG3xh0tytDO0EoHd+LsQIFDr+ctBOLe3l4hdx
+	 K6a+Q6vuqbd6IvLegVq8GqYu9Apf58BPfO3BJ5lX9OF7SPNebpBmSvqGTFOLTQKZJX
+	 LXYTijmD2A6Xw==
+Date: Mon, 4 Mar 2024 11:51:04 +0100
+From: Niklas Cassel <cassel@kernel.org>
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: Jingoo Han <jingoohan1@gmail.com>,
+	Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Marek Vasut <marek.vasut+renesas@gmail.com>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Kishon Vijay Abraham I <kishon@ti.com>,
+	Vidya Sagar <vidyas@nvidia.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	NXP Linux Team <linux-imx@nxp.com>,
+	Minghuan Lian <minghuan.Lian@nxp.com>,
+	Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v8 03/10] PCI: dwc: ep: Introduce dw_pcie_ep_cleanup()
+ API for drivers supporting PERST#
+Message-ID: <ZeWnmLjS0O8CYQYg@fedora>
+References: <20240224-pci-dbi-rework-v8-0-64c7fd0cfe64@linaro.org>
+ <20240224-pci-dbi-rework-v8-3-64c7fd0cfe64@linaro.org>
+ <ZeB7PQtkDSoCzE1Z@fedora>
+ <20240304081713.GH2647@thinkpad>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240304-pci-dbi-rework-v9-10-29d433d99cda@linaro.org>
-References: <20240304-pci-dbi-rework-v9-0-29d433d99cda@linaro.org>
-In-Reply-To: <20240304-pci-dbi-rework-v9-0-29d433d99cda@linaro.org>
-To: Jingoo Han <jingoohan1@gmail.com>, 
- Gustavo Pimentel <gustavo.pimentel@synopsys.com>, 
- Lorenzo Pieralisi <lpieralisi@kernel.org>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
- Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
- Marek Vasut <marek.vasut+renesas@gmail.com>, 
- Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, 
- Thierry Reding <thierry.reding@gmail.com>, 
- Jonathan Hunter <jonathanh@nvidia.com>, 
- Kishon Vijay Abraham I <kishon@ti.com>, Vidya Sagar <vidyas@nvidia.com>, 
- Vignesh Raghavendra <vigneshr@ti.com>, Richard Zhu <hongxing.zhu@nxp.com>, 
- Lucas Stach <l.stach@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, NXP Linux Team <linux-imx@nxp.com>, 
- Minghuan Lian <minghuan.Lian@nxp.com>, Mingkai Hu <mingkai.hu@nxp.com>, 
- Roy Zang <roy.zang@nxp.com>, 
- Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, 
- Masami Hiramatsu <mhiramat@kernel.org>, 
- Kishon Vijay Abraham I <kishon@kernel.org>, 
- Jesper Nilsson <jesper.nilsson@axis.com>, 
- Srikanth Thokala <srikanth.thokala@intel.com>
-Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-renesas-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
- Niklas Cassel <cassel@kernel.org>, linux-arm-kernel@axis.com, 
- Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
- Frank Li <Frank.Li@nxp.com>
-X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6415;
- i=manivannan.sadhasivam@linaro.org; h=from:subject:message-id;
- bh=WjZ4+mNCQcDtI3R3bog3jBOb0ktWOFeqYYk+qv8ZsXo=;
- b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBl5ZLZg8bOTT0oLqT2NyAJQTr9HfKYG39kFmtg5
- A8RDcaHmcWJATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCZeWS2QAKCRBVnxHm/pHO
- 9TY+B/0Xiw9hnMzcEVTeRvv8fKNAVavUTvd5zFLasDuEhWvi0JO11ciyRYx/3nt9Ja8JvlO0BvF
- h0r6OeL7IYvOCK4+Kwge1yDe6dgYffR3GliEE2SM4sQeWooBXVIG6+ZMbQIzKQibR6JIyQdHTXV
- G8VAyGwZrDSeRml2FSKFinvZtWDMJTDT2at/hXCDymbTPlt6GuNHQgS2JcYsZntzQ329z3O2js9
- Oiak6ntiveYiUp/0yD+uEUOD6+Xs+N1dlkMCyTtdn0XNdEnJsuElNOu5XmqT15+2CKbNdnX/c7u
- e8TKDLhkdT+mckGJbCwwrX3aJWMus/GGWoKLqsrN0DJJVSA2
-X-Developer-Key: i=manivannan.sadhasivam@linaro.org; a=openpgp;
- fpr=C668AEC3C3188E4C611465E7488550E901166008
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240304081713.GH2647@thinkpad>
 
-All of the APIs are missing the Kernel-doc comments. Hence, add them.
+On Mon, Mar 04, 2024 at 01:47:13PM +0530, Manivannan Sadhasivam wrote:
+> On Thu, Feb 29, 2024 at 01:40:29PM +0100, Niklas Cassel wrote:
+> > On Sat, Feb 24, 2024 at 12:24:09PM +0530, Manivannan Sadhasivam wrote:
+> > 
+> > Since e.g. qcom-ep.c does a reset_control_assert() during perst
+> > assert/deassert, which should clear sticky registers, I think that
+> > you should let dw_pcie_ep_cleanup() clean up the BARs using
+> > dw_pcie_ep_clear_bar().
+> > 
+> 
+> As I mentioned earlier, it is the job of the EPF drivers to clear the BARs since
+> they allocate them. I'm trying to reduce the implicit resetting wherever we
+> could.
+> 
+> The proper fix is to add the LINK_DOWN callback to EPF drivers and do cleanup.
+> I'm planning to submit a series for that after this one.
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
----
- drivers/pci/controller/dwc/pcie-designware-ep.c | 94 +++++++++++++++++++++++++
- 1 file changed, 94 insertions(+)
+Currently, pci-epf-test allocates memory for the BARs in .bind().
+Likewise it frees the memory for the BARs in .unbind().
 
-diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
-index fed4c2936c78..1f33f2929c2b 100644
---- a/drivers/pci/controller/dwc/pcie-designware-ep.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-@@ -14,6 +14,11 @@
- #include <linux/pci-epc.h>
- #include <linux/pci-epf.h>
- 
-+/**
-+ * dw_pcie_ep_init_notify - Notify EPF drivers about EPC initialization
-+ *			    complete
-+ * @ep: DWC EP device
-+ */
- void dw_pcie_ep_init_notify(struct dw_pcie_ep *ep)
- {
- 	struct pci_epc *epc = ep->epc;
-@@ -22,6 +27,14 @@ void dw_pcie_ep_init_notify(struct dw_pcie_ep *ep)
- }
- EXPORT_SYMBOL_GPL(dw_pcie_ep_init_notify);
- 
-+/**
-+ * dw_pcie_ep_get_func_from_ep - Get the struct dw_pcie_ep_func corresponding to
-+ *				 the endpoint function
-+ * @ep: DWC EP device
-+ * @func_no: Function number of the endpoint device
-+ *
-+ * Return: struct dw_pcie_ep_func if success, NULL otherwise.
-+ */
- struct dw_pcie_ep_func *
- dw_pcie_ep_get_func_from_ep(struct dw_pcie_ep *ep, u8 func_no)
- {
-@@ -52,6 +65,11 @@ static void __dw_pcie_ep_reset_bar(struct dw_pcie *pci, u8 func_no,
- 	dw_pcie_dbi_ro_wr_dis(pci);
- }
- 
-+/**
-+ * dw_pcie_ep_reset_bar - Reset endpoint BAR
-+ * @pci: DWC PCI device
-+ * @bar: BAR number of the endpoint
-+ */
- void dw_pcie_ep_reset_bar(struct dw_pcie *pci, enum pci_barno bar)
- {
- 	u8 func_no, funcs;
-@@ -431,6 +449,13 @@ static const struct pci_epc_ops epc_ops = {
- 	.get_features		= dw_pcie_ep_get_features,
- };
- 
-+/**
-+ * dw_pcie_ep_raise_intx_irq - Raise INTx IRQ to the host
-+ * @ep: DWC EP device
-+ * @func_no: Function number of the endpoint
-+ *
-+ * Return: 0 if success, errono otherwise.
-+ */
- int dw_pcie_ep_raise_intx_irq(struct dw_pcie_ep *ep, u8 func_no)
- {
- 	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
-@@ -442,6 +467,14 @@ int dw_pcie_ep_raise_intx_irq(struct dw_pcie_ep *ep, u8 func_no)
- }
- EXPORT_SYMBOL_GPL(dw_pcie_ep_raise_intx_irq);
- 
-+/**
-+ * dw_pcie_ep_raise_msi_irq - Raise MSI IRQ to the host
-+ * @ep: DWC EP device
-+ * @func_no: Function number of the endpoint
-+ * @interrupt_num: Interrupt number to be raised
-+ *
-+ * Return: 0 if success, errono otherwise.
-+ */
- int dw_pcie_ep_raise_msi_irq(struct dw_pcie_ep *ep, u8 func_no,
- 			     u8 interrupt_num)
- {
-@@ -490,6 +523,15 @@ int dw_pcie_ep_raise_msi_irq(struct dw_pcie_ep *ep, u8 func_no,
- }
- EXPORT_SYMBOL_GPL(dw_pcie_ep_raise_msi_irq);
- 
-+/**
-+ * dw_pcie_ep_raise_msix_irq_doorbell - Raise MSIX to the host using Doorbell
-+ *					method
-+ * @ep: DWC EP device
-+ * @func_no: Function number of the endpoint device
-+ * @interrupt_num: Interrupt number to be raised
-+ *
-+ * Return: 0 if success, errno otherwise.
-+ */
- int dw_pcie_ep_raise_msix_irq_doorbell(struct dw_pcie_ep *ep, u8 func_no,
- 				       u16 interrupt_num)
- {
-@@ -509,6 +551,14 @@ int dw_pcie_ep_raise_msix_irq_doorbell(struct dw_pcie_ep *ep, u8 func_no,
- 	return 0;
- }
- 
-+/**
-+ * dw_pcie_ep_raise_msix_irq - Raise MSIX to the host
-+ * @ep: DWC EP device
-+ * @func_no: Function number of the endpoint device
-+ * @interrupt_num: Interrupt number to be raised
-+ *
-+ * Return: 0 if success, errno otherwise.
-+ */
- int dw_pcie_ep_raise_msix_irq(struct dw_pcie_ep *ep, u8 func_no,
- 			      u16 interrupt_num)
- {
-@@ -556,6 +606,14 @@ int dw_pcie_ep_raise_msix_irq(struct dw_pcie_ep *ep, u8 func_no,
- 	return 0;
- }
- 
-+/**
-+ * dw_pcie_ep_cleanup - Cleanup DWC EP resources after fundamental reset
-+ * @ep: DWC EP device
-+ *
-+ * Cleans up the DWC EP specific resources like eDMA etc... after fundamental
-+ * reset like PERST#. Note that this API is only applicable for drivers
-+ * supporting PERST# or any other methods of fundamental reset.
-+ */
- void dw_pcie_ep_cleanup(struct dw_pcie_ep *ep)
- {
- 	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
-@@ -564,6 +622,13 @@ void dw_pcie_ep_cleanup(struct dw_pcie_ep *ep)
- }
- EXPORT_SYMBOL_GPL(dw_pcie_ep_cleanup);
- 
-+/**
-+ * dw_pcie_ep_deinit - Deinitialize the endpoint device
-+ * @ep: DWC EP device
-+ *
-+ * Deinitialize the endpoint device. EPC device is not destroyed since that will
-+ * taken care by Devres.
-+ */
- void dw_pcie_ep_deinit(struct dw_pcie_ep *ep)
- {
- 	struct pci_epc *epc = ep->epc;
-@@ -635,6 +700,14 @@ static void dw_pcie_ep_init_non_sticky_registers(struct dw_pcie *pci)
- 	dw_pcie_dbi_ro_wr_dis(pci);
- }
- 
-+/**
-+ * dw_pcie_ep_init_registers - Initialize DWC EP specific registers
-+ * @ep: DWC EP device
-+ *
-+ * Initialize the registers (CSRs) specific to DWC EP. This API should be called
-+ * only when the endpoint receives an active refclk (either from host or
-+ * generated locally).
-+ */
- int dw_pcie_ep_init_registers(struct dw_pcie_ep *ep)
- {
- 	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
-@@ -718,6 +791,10 @@ int dw_pcie_ep_init_registers(struct dw_pcie_ep *ep)
- }
- EXPORT_SYMBOL_GPL(dw_pcie_ep_init_registers);
- 
-+/**
-+ * dw_pcie_ep_linkup - Notify EPF drivers about link up event
-+ * @ep: DWC EP device
-+ */
- void dw_pcie_ep_linkup(struct dw_pcie_ep *ep)
- {
- 	struct pci_epc *epc = ep->epc;
-@@ -726,6 +803,14 @@ void dw_pcie_ep_linkup(struct dw_pcie_ep *ep)
- }
- EXPORT_SYMBOL_GPL(dw_pcie_ep_linkup);
- 
-+/**
-+ * dw_pcie_ep_linkdown - Notify EPF drivers about link down event
-+ * @ep: DWC EP device
-+ *
-+ * Non-sticky registers are also initialized before sending the notification to
-+ * the EPF drivers. This is needed since the registers need to be initialized
-+ * before the link comes back again.
-+ */
- void dw_pcie_ep_linkdown(struct dw_pcie_ep *ep)
- {
- 	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
-@@ -743,6 +828,15 @@ void dw_pcie_ep_linkdown(struct dw_pcie_ep *ep)
- }
- EXPORT_SYMBOL_GPL(dw_pcie_ep_linkdown);
- 
-+/**
-+ * dw_pcie_ep_init - Initialize the endpoint device
-+ * @ep: DWC EP device
-+ *
-+ * Initialize the endpoint device. Allocate resources and create the EPC
-+ * device with the endpoint framework.
-+ *
-+ * Return: 0 if success, errno otherwise.
-+ */
- int dw_pcie_ep_init(struct dw_pcie_ep *ep)
- {
- 	int ret;
+AFAICT, most iATU registers, and most BAR registers are sticky registers,
+so they will not get reset on link down.
+(The currently selected BAR size, in case of Resizable BAR is an exception.)
 
--- 
-2.25.1
+That means that even on link down, we do not need to free the memory,
+or change the iATU settings. (This applies to all drivers.)
 
+
+
+However, on PERST (for the drivers call dw_pcie_ep_cleanup()), they call
+reset_control_assert(), so they will clear sticky registers, which means
+that they need to at least re-write the iATU and BAR registers.
+(I guess they could free + allocate the memory for the BARs again,
+but I don't think that is strictly necessary.)
+That is why I suggested that you call dw_pcie_ep_clear_bar() from
+dw_pcie_ep_cleanup().
+
+
+
+If you free the memory for the BARs in link_down() (this callback exists
+for many drivers, even drivers without a PERST handler), where are you
+supposted to alloc the memory for the BARs again?
+
+Allocating them at link_up() is too late (because as soon as the link is
+up, the host is allowed to enumerate the EP BARs.) The proper place is to
+allocate them when receiving PERST, but not all drivers have a PERST handler.
+
+(My understanding is that 1) PERST assert 2) PERST deassert 3) link is up.)
+
+
+
+unbind() undos what was done in bind(), so shouldn't link_down() undo what was
+done in link_up()? With that logic, if you move the alloc to .core_init(),
+should we perhaps have a .core_deinit() callback for EPF drivers?
+(I guess only drivers which perform a reset during PERST would call this.)
+
+But considering that free+alloc is not strictly needed, why not just keep
+the allocation + free in .bind()/.unbind() ?
+(To avoid the need to create a .core_deinit()), and let dw_pcie_ep_cleanup()
+call dw_pcie_ep_clear_bar() ?
+
+I guess my point is that it seems a bit pointless for drivers that do not
+clear sticky registers to free+alloc memory on link down, for no good
+reason. (Memory might get fragmented over time, so it might not be possible
+to perform a big allocation after the device has been running for a really
+long time.)
+
+
+
+So I'm thinking that we either
+1) Keep the alloc/free in bind/unbind, and let dw_pcie_ep_cleanup() call
+dw_pcie_ep_clear_bar(),
+or
+2) Introduce a .deinit_core() callback which will free the BARs.
+(Because I don't see how you will (re-)allocate memory for all drivers
+if you free the memory in link_down().)
+
+
+Kind regards,
+Niklas
 
