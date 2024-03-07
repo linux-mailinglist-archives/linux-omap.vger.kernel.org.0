@@ -1,167 +1,110 @@
-Return-Path: <linux-omap+bounces-827-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-828-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4102B874F03
-	for <lists+linux-omap@lfdr.de>; Thu,  7 Mar 2024 13:29:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EC9B87579B
+	for <lists+linux-omap@lfdr.de>; Thu,  7 Mar 2024 20:53:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64E2D1C21D8D
-	for <lists+linux-omap@lfdr.de>; Thu,  7 Mar 2024 12:29:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0022BB23E6F
+	for <lists+linux-omap@lfdr.de>; Thu,  7 Mar 2024 19:53:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5496312B140;
-	Thu,  7 Mar 2024 12:28:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8C031386D1;
+	Thu,  7 Mar 2024 19:52:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jtEhBXVL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kZm2YSwS"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54EED128812;
-	Thu,  7 Mar 2024 12:28:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BCF6137C42;
+	Thu,  7 Mar 2024 19:52:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709814530; cv=none; b=AaH1m5QHZs/Q9nJcsqS1KlortdWLGm0/je8TAukxawRbcxWIln6ZioPIyThvGh36artQWA/M2sBnGj/deCet5+o5x1t6w01PFHCdLh3BZXuyXJyhxOZuJH93ktSF8busTnKTfNMVuCAmnhsvYgn+dHburPsbONLS8KpucRKW4PE=
+	t=1709841162; cv=none; b=hb8hODoA+whsFIAgnMGa4gGnyMWtTeqNoJIEu9g7XvM9OXqoyx5l9mdXcz+JyW7A830HjC8/gwKsU9b5i1rZ2xp1+/q6si+embIMj+seHKzyBNF0ruQBuBajkrX1Dk5DLnoE85Ir0OvwV6/7F3Tq8aZTCz+9nqEtPEKNRWI+fxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709814530; c=relaxed/simple;
-	bh=ncGrkL1Poc17x6w99wp3LaEIvCJcHSAVTqunJKRqhHg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jON8X1kLJgRQ22AvLBiPnaHwd6uxrW95ytwt1gUfSbfk8qkB2+kns7WQRPUYGfCMKvPUaZX/17qJMTayxrRhTvhouHsVLpRcA/OuipphiNuKaCZ8ejySztXiyKdS+7M+auRnZ7gwA1nUTHaK/l2dAKI5vt1vFadQl5e0zQghAJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jtEhBXVL; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709814529; x=1741350529;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=ncGrkL1Poc17x6w99wp3LaEIvCJcHSAVTqunJKRqhHg=;
-  b=jtEhBXVL10E4MG014ur94bFAWzH+85Fmaytn7DHdA/q+mKmpavO5sbUk
-   hgYNwYqOwYbtOT+FRAdYWHloFS30lTz73uGTznwuMt5ONzCOINqX6NhyE
-   7yf6VVDvOfd8JuIc4ujhjg/0eq7Q4pzC38vCpj1csy6mFVtsk+hf4CLBo
-   4BcP/HtNcEH1ls2Lt108r6W2KJPyC6eIxBPBycEYYkJUM+MixmA88PxY5
-   47RfZbjWKc7b6SO1gdecjwDGBN1N3gAMZaMk2Vt8Xbu1okoFwtzOo2Jz2
-   nb8dqp28xG7qw52ovw+9CCb2Nms1ZKGf3AHECJ2ocjoFsPDO1TYIMo3jw
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11005"; a="4343554"
-X-IronPort-AV: E=Sophos;i="6.07,211,1708416000"; 
-   d="scan'208";a="4343554"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2024 04:28:48 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11005"; a="937046005"
-X-IronPort-AV: E=Sophos;i="6.07,211,1708416000"; 
-   d="scan'208";a="937046005"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 07 Mar 2024 04:28:42 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id 5C932193; Thu,  7 Mar 2024 14:28:41 +0200 (EET)
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	s=arc-20240116; t=1709841162; c=relaxed/simple;
+	bh=abVM7Az8c+fwhJYNf8SjY0MPBlfozwtnuPRGUqiuFH0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ejbGhXuIsYrpA+6VzfyjocJNZUAKMGufA+5bdAEnnSm7W0aWbCFrVZBAkzTIqQGaVtl0aHJUOB0gAKl4KhYU4yugbUXtw2k/7AKIx8Kybsd5Tgei3VtlQylmEAxiTCujg9/gEn76mSIN9ZYu0QL4wivX6J1aqRXfyczFG8shlQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kZm2YSwS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE4C0C433F1;
+	Thu,  7 Mar 2024 19:52:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709841161;
+	bh=abVM7Az8c+fwhJYNf8SjY0MPBlfozwtnuPRGUqiuFH0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kZm2YSwSeAjDl/IxeY39+GMpbM8g/8yLdpNPzBh9Kp9OI7lIHdGVkI0W/SiXGXlVY
+	 8Ye4MdEO3tCq/Rskx6KQb/6n0TYuz5hgFRUTqcPq5lMDRZ4e68xdlI+OtljF8BrAhW
+	 uU3G/XKfd2W+GAEpIvJOH8/VjiPRvy3xkmXqZ6ZJN16Jj5szHjOqM4WehX4qqAwgUo
+	 lK6yFgKRk4vAkGPgD4jvralrfWKvR87DyZ2a62ltCqD/q4ZXANAZfTOlh9cdeyaotn
+	 gMKzIMKEyAbzGgl9wgZHgDfKWgZnsBm8mLkobnvwBY2pLtH90c8M7zCL36b5O9cGzO
+	 9MQH5Xf1EoKww==
+Date: Thu, 7 Mar 2024 20:52:30 +0100
+From: Niklas Cassel <cassel@kernel.org>
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: Jingoo Han <jingoohan1@gmail.com>,
+	Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
 	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	linux-omap@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-amlogic@lists.infradead.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-tegra@vger.kernel.org
-Cc: Vignesh Raghavendra <vigneshr@ti.com>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Yue Wang <yue.wang@Amlogic.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Marek Vasut <marek.vasut+renesas@gmail.com>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
 	Thierry Reding <thierry.reding@gmail.com>,
 	Jonathan Hunter <jonathanh@nvidia.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v1 1/1] PCI: dwc: Remove unused of_gpio.h
-Date: Thu,  7 Mar 2024 14:28:40 +0200
-Message-ID: <20240307122840.3682287-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.43.0.rc1.1.gbec44491f096
+	Kishon Vijay Abraham I <kishon@ti.com>,
+	Vidya Sagar <vidyas@nvidia.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	NXP Linux Team <linux-imx@nxp.com>,
+	Minghuan Lian <minghuan.Lian@nxp.com>,
+	Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Jesper Nilsson <jesper.nilsson@axis.com>,
+	Srikanth Thokala <srikanth.thokala@intel.com>,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@axis.com, Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v9 01/10] PCI: dwc: ep: Remove deinit() callback from
+ struct dw_pcie_ep_ops
+Message-ID: <ZeoaOn2dekvBD8ae@ryzen>
+References: <20240304-pci-dbi-rework-v9-0-29d433d99cda@linaro.org>
+ <20240304-pci-dbi-rework-v9-1-29d433d99cda@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240304-pci-dbi-rework-v9-1-29d433d99cda@linaro.org>
 
-of_gpio.h is deprecated and subject to remove.
-The driver doesn't use it, simply remove the unused header.
+On Mon, Mar 04, 2024 at 02:52:13PM +0530, Manivannan Sadhasivam wrote:
+> deinit() callback was solely introduced for the pcie-rcar-gen4 driver where
+> it is used to do platform specific resource deallocation. And this callback
+> is called right at the end of the dw_pcie_ep_exit() API. So it doesn't
+> matter whether it is called within or outside of dw_pcie_ep_exit() API.
+> 
+> So let's remove this callback and directly call rcar_gen4_pcie_ep_deinit()
+> in pcie-rcar-gen4 driver to do resource deallocation after the completion
+> of dw_pcie_ep_exit() API in rcar_gen4_remove_dw_pcie_ep().
+> 
+> This simplifies the DWC layer.
+> 
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> ---
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/pci/controller/dwc/pci-dra7xx.c    | 1 -
- drivers/pci/controller/dwc/pci-meson.c     | 1 -
- drivers/pci/controller/dwc/pcie-qcom.c     | 1 -
- drivers/pci/controller/dwc/pcie-tegra194.c | 2 --
- 4 files changed, 5 deletions(-)
-
-diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
-index 0e406677060d..f6d2ba42958b 100644
---- a/drivers/pci/controller/dwc/pci-dra7xx.c
-+++ b/drivers/pci/controller/dwc/pci-dra7xx.c
-@@ -17,7 +17,6 @@
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/of.h>
--#include <linux/of_gpio.h>
- #include <linux/of_pci.h>
- #include <linux/pci.h>
- #include <linux/phy/phy.h>
-diff --git a/drivers/pci/controller/dwc/pci-meson.c b/drivers/pci/controller/dwc/pci-meson.c
-index 6477c83262c2..db9482a113e9 100644
---- a/drivers/pci/controller/dwc/pci-meson.c
-+++ b/drivers/pci/controller/dwc/pci-meson.c
-@@ -9,7 +9,6 @@
- #include <linux/clk.h>
- #include <linux/delay.h>
- #include <linux/gpio/consumer.h>
--#include <linux/of_gpio.h>
- #include <linux/pci.h>
- #include <linux/platform_device.h>
- #include <linux/reset.h>
-diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
-index 2ce2a3bd932b..0084a3390040 100644
---- a/drivers/pci/controller/dwc/pcie-qcom.c
-+++ b/drivers/pci/controller/dwc/pcie-qcom.c
-@@ -20,7 +20,6 @@
- #include <linux/kernel.h>
- #include <linux/init.h>
- #include <linux/of.h>
--#include <linux/of_gpio.h>
- #include <linux/pci.h>
- #include <linux/pm_runtime.h>
- #include <linux/platform_device.h>
-diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
-index 1f7b662cb8e1..633d8dc50339 100644
---- a/drivers/pci/controller/dwc/pcie-tegra194.c
-+++ b/drivers/pci/controller/dwc/pcie-tegra194.c
-@@ -13,7 +13,6 @@
- #include <linux/clk.h>
- #include <linux/debugfs.h>
- #include <linux/delay.h>
--#include <linux/gpio.h>
- #include <linux/gpio/consumer.h>
- #include <linux/interconnect.h>
- #include <linux/interrupt.h>
-@@ -21,7 +20,6 @@
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/of.h>
--#include <linux/of_gpio.h>
- #include <linux/of_pci.h>
- #include <linux/pci.h>
- #include <linux/phy/phy.h>
--- 
-2.43.0.rc1.1.gbec44491f096
-
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
 
