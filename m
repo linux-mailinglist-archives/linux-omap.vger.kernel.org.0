@@ -1,47 +1,47 @@
-Return-Path: <linux-omap+bounces-838-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-839-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E58C87599C
-	for <lists+linux-omap@lfdr.de>; Thu,  7 Mar 2024 22:44:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 653FF8759D3
+	for <lists+linux-omap@lfdr.de>; Thu,  7 Mar 2024 22:58:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EBE4FB265FF
-	for <lists+linux-omap@lfdr.de>; Thu,  7 Mar 2024 21:44:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 969D81C21DBD
+	for <lists+linux-omap@lfdr.de>; Thu,  7 Mar 2024 21:58:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D414513B7BC;
-	Thu,  7 Mar 2024 21:44:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D46C113DB87;
+	Thu,  7 Mar 2024 21:58:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BD3HWBca"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mxaaxpXH"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FA0113E7CD;
-	Thu,  7 Mar 2024 21:44:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A64B131E3C;
+	Thu,  7 Mar 2024 21:58:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709847843; cv=none; b=GkrMJh0W4BgctaOzz7AVqKZ29kjUPTce4mwdj23qi7Gtgi0Wf8zTaEkGpDsPclWnQxHEDKQO2SEYrwYUBvOLKb14JRjqaEDmUwfm1KIbqHNRzwfb5N3ALhjVcWcjLkiKLvxjVZCII1QKPv6UXc2iIVjqSRNN/Gg6TKlfltZN8AE=
+	t=1709848703; cv=none; b=jvmNF+X99akSIi2LUPQ6wOo+NOzpWofo51jmjevuszYyI4SyiJEmzzqUZg/i8jve4Tj7ro+MZLX0OMddtR83y3BnvH140eDpmfE9z8+l1774J1uGnHJhhZXpHHg4w4WfWot5SnOs2KNjAVmddmr7Un01XtloFNa/9WwTVCarL8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709847843; c=relaxed/simple;
-	bh=43Y8tPPUjOytn3k+9R6t1bkFGhFiAgq279o9cNEFG28=;
+	s=arc-20240116; t=1709848703; c=relaxed/simple;
+	bh=IpMGeN0v86/rzAMDiUJQ+cVemf+jJKKFwIKCFoUkZTE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LVlhtJpIQYvzYEFEiLZwi+4wLAalgEGRRBB1TWwRuSeodjEwapWnTk1aXre8izpCyCdd9LLQ5gjMpTHpO1dXXRUMw6DyH63Pak5kR7/PY6zzZP4JJSwWl9bhmVD/wOtdsWUZSW060wz7DxbUpmLlVIXhpg4OKZYo8NarJwws/UI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BD3HWBca; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59403C433C7;
-	Thu,  7 Mar 2024 21:43:55 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=NI1XDzAvL6IpgTgkRAchJVbTM9o5YEYgsHJnR5jp3eq4L/6yAjflTvwdorsWnwrrUaIS60cAbNjwwkqGk7aEgKnBaBElYqc02YIuY87To8Xgb+wXe8nJR9AYT3Ru7CPzWWrJm6IUbf65FMqWapQdW87HBuJ31U4AS7iQ9nqSpqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mxaaxpXH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0467CC433C7;
+	Thu,  7 Mar 2024 21:58:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709847842;
-	bh=43Y8tPPUjOytn3k+9R6t1bkFGhFiAgq279o9cNEFG28=;
+	s=k20201202; t=1709848702;
+	bh=IpMGeN0v86/rzAMDiUJQ+cVemf+jJKKFwIKCFoUkZTE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BD3HWBcaTEhFWmVQ9fcb4yZ5ZIcFpR9w6UwCqmKDGphQF7DB39yvDdZW9+gjF0ZTS
-	 DsWH87iS+8jHO65xN0z5zYohWG/mRxzpXe9VbFeimpkrU3bWSUCvWs70grrMlNEwLt
-	 TiJ4ebjjdAKjUVIIDkMAmBLRqlKaInuT9lf3cLYV5F5Yej/s3z0jy8l82WbWxo0F+u
-	 kTF29o9wK1pactXccrsfJOpfpW2c8/1s68hLjFvoICxKvPSf4JWeAYQXu8w1/yxijq
-	 0mGAyNG2y48vVqRmPPE2wGjqjEVSxU5ubl2fEvD725m7YXDjcGo73gKcTwXXXTWbK0
-	 khMLpaPck1T+w==
-Date: Thu, 7 Mar 2024 22:43:52 +0100
+	b=mxaaxpXHbcwdgPBCqzL3ip4FfS+wwgyZXqW8N8LcK6fP7E3VpoZqDHneR1dd1Xrej
+	 WlhBbqSPrM8jK9BJ2CNbm0PQxpC2owo7XLjSqOdrLbuwv5hYXvRYOCPbR1lseTm+lm
+	 VqRwXX89Ybnc+o3+MwNbgMhEL3RoQsE5RCRDUDwhBk88OxG95EAluIIMxeXPJNzTfJ
+	 xn5x8uaGoDrlqvoXzTQH3DobEay96Lt8ukZK4sO6AxfMPbTZXLi096HQUATFULKEAk
+	 NN3FHdZNMxE7mUyR2y+Hg6twSl77vAinM6S2WxrzEAkUA9Ziwka71eJzu4vJy7VSud
+	 o4JGQD6O5Yeew==
+Date: Thu, 7 Mar 2024 22:58:12 +0100
 From: Niklas Cassel <cassel@kernel.org>
 To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 Cc: Jingoo Han <jingoohan1@gmail.com>,
@@ -74,12 +74,11 @@ Cc: Jingoo Han <jingoohan1@gmail.com>,
 	linux-renesas-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org,
 	linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@axis.com
-Subject: Re: [PATCH v9 09/10] PCI: qcom-ep: Use the generic
- dw_pcie_ep_linkdown() API to handle LINK_DOWN event
-Message-ID: <Zeo1GDVTQpTVFabn@ryzen>
+	linux-arm-kernel@axis.com, Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v9 10/10] PCI: dwc: ep: Add Kernel-doc comments for APIs
+Message-ID: <Zeo4dJGZYLnLfzjm@ryzen>
 References: <20240304-pci-dbi-rework-v9-0-29d433d99cda@linaro.org>
- <20240304-pci-dbi-rework-v9-9-29d433d99cda@linaro.org>
+ <20240304-pci-dbi-rework-v9-10-29d433d99cda@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -88,35 +87,38 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240304-pci-dbi-rework-v9-9-29d433d99cda@linaro.org>
+In-Reply-To: <20240304-pci-dbi-rework-v9-10-29d433d99cda@linaro.org>
 
-On Mon, Mar 04, 2024 at 02:52:21PM +0530, Manivannan Sadhasivam wrote:
-> Now that the API is available, let's make use of it. It also handles the
-> reinitialization of DWC non-sticky registers in addition to sending the
-> notification to EPF drivers.
+On Mon, Mar 04, 2024 at 02:52:22PM +0530, Manivannan Sadhasivam wrote:
+> All of the APIs are missing the Kernel-doc comments. Hence, add them.
 > 
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
 > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 > ---
->  drivers/pci/controller/dwc/pcie-qcom-ep.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/pci/controller/dwc/pcie-qcom-ep.c b/drivers/pci/controller/dwc/pcie-qcom-ep.c
-> index 2fb8c15e7a91..4e45bc4bca45 100644
-> --- a/drivers/pci/controller/dwc/pcie-qcom-ep.c
-> +++ b/drivers/pci/controller/dwc/pcie-qcom-ep.c
-> @@ -640,7 +640,7 @@ static irqreturn_t qcom_pcie_ep_global_irq_thread(int irq, void *data)
->  	if (FIELD_GET(PARF_INT_ALL_LINK_DOWN, status)) {
->  		dev_dbg(dev, "Received Linkdown event\n");
->  		pcie_ep->link_status = QCOM_PCIE_EP_LINK_DOWN;
-> -		pci_epc_linkdown(pci->ep.epc);
-> +		dw_pcie_ep_linkdown(&pci->ep);
->  	} else if (FIELD_GET(PARF_INT_ALL_BME, status)) {
->  		dev_dbg(dev, "Received BME event. Link is enabled!\n");
->  		pcie_ep->link_status = QCOM_PCIE_EP_LINK_ENABLED;
-> 
-> -- 
-> 2.25.1
-> 
 
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
+For the functions that you added in this series, e.g.
+dw_pcie_ep_cleanup(), dw_pcie_ep_init_non_sticky_registers(),
+and dw_pcie_ep_linkdown(), I think that it would have been
+better if you actually added the kdoc in the same commit that
+added the respective function.
+
+
+For the existing functions that did not have a kdoc, I think
+it would have been better if you fixed this as patch 1/10 in
+this series. (Or 2/10, in case you keep the Fixes tag for the
+"PCI: dwc: ep: Fix DBI access failure for drivers requiring
+refclk from host" patch.)
+
+Yes, I know that you rename some of these functions that
+lacked kdoc later in the series, but the whole kdoc description
+would be the same, the kdoc parameters would be the same, and the
+kdoc return value would be the same.
+
+If you later rename a function, you would only need to change
+the kdoc function name (in addition to the function declaration
+itself).
+
+
+Kind regards,
+Niklas
 
