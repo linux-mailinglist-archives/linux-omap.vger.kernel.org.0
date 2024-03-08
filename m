@@ -1,73 +1,73 @@
-Return-Path: <linux-omap+bounces-853-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-854-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B5EE876125
-	for <lists+linux-omap@lfdr.de>; Fri,  8 Mar 2024 10:44:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9165876133
+	for <lists+linux-omap@lfdr.de>; Fri,  8 Mar 2024 10:46:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 587FB1C21FF0
-	for <lists+linux-omap@lfdr.de>; Fri,  8 Mar 2024 09:44:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65AC61F230DD
+	for <lists+linux-omap@lfdr.de>; Fri,  8 Mar 2024 09:46:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01121537E2;
-	Fri,  8 Mar 2024 09:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08756535A8;
+	Fri,  8 Mar 2024 09:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="scNnxe+e"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="K1+FQYG1"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01DD6535C1
-	for <linux-omap@vger.kernel.org>; Fri,  8 Mar 2024 09:44:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03C0F535A7
+	for <linux-omap@vger.kernel.org>; Fri,  8 Mar 2024 09:46:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709891062; cv=none; b=r8D5JiMWds9I3Zkrx7FZ+xyFxdI9qPqd498V6L6mlkDkXMIkUV81N7QdEXf44hL8cAZCPtc7HTsgYaHwydwHFujXejYNo4SQOECaNIEmwTucOeaCGG0fyA5aXNa9tXaPE2bx9TtSLKcq0Z0U8FZGPPSKLFifTQ6rNMKafeskhLI=
+	t=1709891182; cv=none; b=kRrID7ZJyKWSisAAdmhYtb4CsRhttXQLAxBdB0OuzF5/IC5A6E6qSfclxGK4czn/f5s4pka0yrSWg34fsnHWocXtrRmSeD0R71DiwBDzaX9bGLd65EYEGfEvhw+43KKA5x0ksJj4N5FG3aIUCFiDQV2BHnHkYnz+CYyE4zUysTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709891062; c=relaxed/simple;
-	bh=0HEUZNyW463A0kgIICyd/mFsEgweSIiAp5zW9wvwQAQ=;
+	s=arc-20240116; t=1709891182; c=relaxed/simple;
+	bh=Clqd8haJQgsPibeWAC6UKITH48izdvnBqHGXQt+95+w=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i/oQDpFHWEHO7zFtFkbV5aPolJMdooMb3p3FRsSVsgnXobJWgLdAFlWcmCNf49c4PntntED2Lw/kYcQrjYu3Bp1udWf+lDJ2frrkEWL6jiPdePBOphEZAxgTRd3Kefqws4hwRlbw+/oo3DXXfIUGJx58OZK9Jf4sX0tkQZEKo6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=scNnxe+e; arc=none smtp.client-ip=209.85.210.177
+	 Content-Type:Content-Disposition:In-Reply-To; b=L+O6PgfYvrHGrHsigNamBGHZ9gk9Jx+QEEIWutmfQ+j3rc8HHt+3rhVF68D31by6Xi7ram7BdGCp96h4QVPmm2bVr2vpORpIyc/gmU4+tcAQveDCyp6aW3dAR9nd3LjirvNFlUFJd75PaJlMWTMjF1gS9BqA+HdDk4PTsiJAivU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=K1+FQYG1; arc=none smtp.client-ip=209.85.210.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-6e4d48a5823so499639b3a.1
-        for <linux-omap@vger.kernel.org>; Fri, 08 Mar 2024 01:44:20 -0800 (PST)
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-6e57a3bf411so451139b3a.0
+        for <linux-omap@vger.kernel.org>; Fri, 08 Mar 2024 01:46:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1709891060; x=1710495860; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1709891180; x=1710495980; darn=vger.kernel.org;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=cdMdoK0AVaUo9V+wul4fyguoktaqDabkYBWscL2ezsE=;
-        b=scNnxe+eH0gJxpLD0BEvB7iGN2bbDV3x3kfx59zaTZPi8My/LQzAyQCdqZI3PhYc1J
-         6lQEh9CPLTemfcQpPYXAqYpSOnV42pha+24/QSs8Rv5XyvF1Jl7Xy58mXLEN0lspq8mw
-         nzB9N5d7NoGM92r2JY6lMAMKdXznKYIRMjkZZ9l5cWzw5ZiqRbp1awaJ+9FdScEP/MvU
-         1x28YZpIxM8HZvGeyF42lUoRbJ2ZQUJrWQgYE8FvywAEZ3cSUuhhBo7oqziYapoD1FW3
-         FSb0ut2COKfFVrLeAzgf2kuJAj0PWN0jL8IPwMagx/fET4usxx4CBS+LbPkoTFM9sJYJ
-         FHsg==
+        bh=kb10RNHzo2wWSlL+Eq4xCbaoA0z2rfpZzBo11/jnm6s=;
+        b=K1+FQYG104NukSoFzZrIyWD9zmVz6yHjKl9boXxFMXquC1P8UJc1PpCuXVmeBAhJ1j
+         jD4X8of89aJwqHpwM1+M4XrCMKfG3y95AvAr0ffctQQJpJPHtepfWLq7/55jZghMZdoX
+         KeFmyCT4SThmdKGuZLhkNqqbzp7MCCwkcx4dg6R47D69yHBnmsZqnqnUtXWPl65/S0cK
+         Y3wGOcH4k7mAIwCw7FozKJKwNIr9eznITx4McSR78HQtqsUey9kLfZoUnUt9MJzPIOs2
+         vrwEBf8s6L9K9uCCgD7YwfB+JiYJNJoP17EGIKgwOIzM/w1dboc2bq1hChjlOgqIijHq
+         EB3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709891060; x=1710495860;
+        d=1e100.net; s=20230601; t=1709891180; x=1710495980;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cdMdoK0AVaUo9V+wul4fyguoktaqDabkYBWscL2ezsE=;
-        b=jM5aeCqxzkaFZEm3psCimTOM3kHjxlZyWbfbS9/oz03xgRWZwHQdBUqXhf7YrmdVIp
-         dmXdkqazJ/b8DR64wUJhrovl5d1JFtHRL3wj6EIvn6WHBZrZNCh3u6YTSvvb2mCWo1Jp
-         AeOlGcc2CsG5CC6HtRxZ7ZxfQ3bJFTlU4247dcNwvmWN/kHpb6S+7YnCcGZK4wifNGok
-         QBoPRqrT/zBMPsBH9rGoYzengGnikzsta/tGDa8gPoC4+QixqFBiKQfuZO2BT/FH9uMt
-         F1P9H2zABzoZHhGWsbyQQkBVH/Jw75Ycxbavvi2IJlU9p6hvcLP8immn+Y5KjPWCu1Ut
-         36fQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXNOmxEQSS3U5+rS7RX4al8DW4RCXpKCIB2jLmgp8UNF2zcwguRni4r7F6DEWDX0j8FwG3AvzAwDnNWqgnj3+7I0BKoqVph2A/A5w==
-X-Gm-Message-State: AOJu0YxQ2dGSgnENsyf/RAbOYMvikUE8yqN4XVn/UC3Ew+pnIuXU0kwC
-	ZPlHoAgUg7k8YSCeh85/4TOR8ABN51Ya2KUngjpQNfbnsbOnsF8XSSH3iS2ZnQ==
-X-Google-Smtp-Source: AGHT+IFPbL54AXHQXB9MkS0qJtzg8o8q9yBGg3I5qPe5e95N0vMgv1+cPBqKR5EsKnzhBrhB5Hgmww==
-X-Received: by 2002:a05:6a20:4284:b0:1a1:6b04:9f2e with SMTP id o4-20020a056a20428400b001a16b049f2emr7419660pzj.9.1709891060050;
-        Fri, 08 Mar 2024 01:44:20 -0800 (PST)
+        bh=kb10RNHzo2wWSlL+Eq4xCbaoA0z2rfpZzBo11/jnm6s=;
+        b=tldMDpEOAPnFYuv0pEqpOo5RmQGqygKDfwGUN4jC9lVCFOdDDjroT987uTB3tL+Lzf
+         WewRFZ3uT2N1pCqkrC3bCLd5TEEclnZkbL5QDTmlkUDVdu3EdeIO4vyIcOFRpD3+Oh/F
+         QoE0+UO8hRoHPazqPq1EbUYijxP3zczkITSJttcVJ+Yx1MThXxrCTZbWZOGijGtVMfSx
+         wPDHlBy6nqFyvqf/yKb5FIKoLV4DNWr+Jofs8qI5iMujVwTeEdYK4hO0SmmhGqB9rWFk
+         wuf2eq3b1n9nQyTcVSUBJtu5DbDi3kiIUgnjxu1Fjt4CAQJIPwaoaBqay3ADV8NDp70G
+         Urig==
+X-Forwarded-Encrypted: i=1; AJvYcCV7ubn/STfStJ3bbSP+gmgUpXnzMJeLZcC3XkE7ZSvodmvf+NMiY74qn6JYz+mCcCkpPhoNRbIzQibZpKktyxBinG3aI5TNzMwjXQ==
+X-Gm-Message-State: AOJu0YyMH3nbjP4aYkIEMWh6EhZzt1ufmt4m2Oc9xy2YU4xpWihVzPzR
+	pYsOsn1y8E3zYkX3X1YPij606WdUTPs3pOPghT/DhQiCcTIcOi5XjKRIbVqvLA==
+X-Google-Smtp-Source: AGHT+IGXPjNBSO3LeLRdTU/J0WCodruRNnBcnx9KyvKHRlBNLyysXxdMvyc+ZcZRv6FpAgOfc5/pVw==
+X-Received: by 2002:a05:6a00:1301:b0:6e6:2dfd:602d with SMTP id j1-20020a056a00130100b006e62dfd602dmr15455121pfu.25.1709891180143;
+        Fri, 08 Mar 2024 01:46:20 -0800 (PST)
 Received: from thinkpad ([117.217.183.232])
-        by smtp.gmail.com with ESMTPSA id b1-20020aa78101000000b006e6350986a8sm6625169pfi.215.2024.03.08.01.44.08
+        by smtp.gmail.com with ESMTPSA id x7-20020a056a00188700b006e64fdc6e69sm717499pfh.147.2024.03.08.01.46.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 Mar 2024 01:44:19 -0800 (PST)
-Date: Fri, 8 Mar 2024 15:14:04 +0530
+        Fri, 08 Mar 2024 01:46:19 -0800 (PST)
+Date: Fri, 8 Mar 2024 15:16:06 +0530
 From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 To: Niklas Cassel <cassel@kernel.org>
 Cc: Jingoo Han <jingoohan1@gmail.com>,
@@ -100,14 +100,15 @@ Cc: Jingoo Han <jingoohan1@gmail.com>,
 	linux-renesas-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org,
 	linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@axis.com, Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH v9 07/10] PCI: dwc: ep: Remove "core_init_notifier" flag
-Message-ID: <20240308094404.GF3789@thinkpad>
+	linux-arm-kernel@axis.com
+Subject: Re: [PATCH v9 08/10] PCI: dwc: ep: Add a generic
+ dw_pcie_ep_linkdown() API to handle LINK_DOWN event
+Message-ID: <20240308094606.GG3789@thinkpad>
 References: <20240304-pci-dbi-rework-v9-0-29d433d99cda@linaro.org>
- <20240304-pci-dbi-rework-v9-7-29d433d99cda@linaro.org>
- <Zeos8kVxgchH9veF@ryzen>
- <20240308053829.GC3789@thinkpad>
- <ZerQxxfUvFm2MjqV@ryzen>
+ <20240304-pci-dbi-rework-v9-8-29d433d99cda@linaro.org>
+ <Zeo0996FscpDSnjL@ryzen>
+ <20240308054152.GD3789@thinkpad>
+ <ZerSwdxAnN2mUxf0@ryzen>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -117,68 +118,110 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZerQxxfUvFm2MjqV@ryzen>
+In-Reply-To: <ZerSwdxAnN2mUxf0@ryzen>
 
-On Fri, Mar 08, 2024 at 09:48:07AM +0100, Niklas Cassel wrote:
-> On Fri, Mar 08, 2024 at 11:08:29AM +0530, Manivannan Sadhasivam wrote:
-> > On Thu, Mar 07, 2024 at 10:09:06PM +0100, Niklas Cassel wrote:
-> > > On Mon, Mar 04, 2024 at 02:52:19PM +0530, Manivannan Sadhasivam wrote:
-> > > > "core_init_notifier" flag is set by the glue drivers requiring refclk from
-> > > > the host to complete the DWC core initialization. Also, those drivers will
-> > > > send a notification to the EPF drivers once the initialization is fully
-> > > > completed using the pci_epc_init_notify() API. Only then, the EPF drivers
-> > > > will start functioning.
+On Fri, Mar 08, 2024 at 09:56:33AM +0100, Niklas Cassel wrote:
+> On Fri, Mar 08, 2024 at 11:11:52AM +0530, Manivannan Sadhasivam wrote:
+> > On Thu, Mar 07, 2024 at 10:43:19PM +0100, Niklas Cassel wrote:
+> > > On Mon, Mar 04, 2024 at 02:52:20PM +0530, Manivannan Sadhasivam wrote:
+> > > > The PCIe link can go to LINK_DOWN state in one of the following scenarios:
 > > > > 
-> > > > For the rest of the drivers generating refclk locally, EPF drivers will
-> > > > start functioning post binding with them. EPF drivers rely on the
-> > > > 'core_init_notifier' flag to differentiate between the drivers.
-> > > > Unfortunately, this creates two different flows for the EPF drivers.
+> > > > 1. Fundamental (PERST#)/hot/warm reset
+> > > > 2. Link transition from L2/L3 to L0
 > > > > 
-> > > > So to avoid that, let's get rid of the "core_init_notifier" flag and follow
-> > > > a single initialization flow for the EPF drivers. This is done by calling
-> > > > the dw_pcie_ep_init_notify() from all glue drivers after the completion of
-> > > > dw_pcie_ep_init_registers() API. This will allow all the glue drivers to
-> > > > send the notification to the EPF drivers once the initialization is fully
-> > > > completed.
+> > > > In those cases, LINK_DOWN causes some non-sticky DWC registers to loose the
+> > > > state (like REBAR, PTM_CAP etc...). So the drivers need to reinitialize
+> > > > them to function properly once the link comes back again.
 > > > > 
-> > > > Only difference here is that, the drivers requiring refclk from host will
-> > > > send the notification once refclk is received, while others will send it
-> > > > during probe time itself.
+> > > > This is not a problem for drivers supporting PERST# IRQ, since they can
+> > > > reinitialize the registers in the PERST# IRQ callback. But for the drivers
+> > > > not supporting PERST#, there is no way they can reinitialize the registers
+> > > > other than relying on LINK_DOWN IRQ received when the link goes down. So
+> > > > let's add a DWC generic API dw_pcie_ep_linkdown() that reinitializes the
+> > > > non-sticky registers and also notifies the EPF drivers about link going
+> > > > down.
 > > > > 
-> > > > Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> > > > This API can also be used by the drivers supporting PERST# to handle the
+> > > > scenario (2) mentioned above.
+> > > > 
 > > > > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 > > > > ---
+> > > >  drivers/pci/controller/dwc/pcie-designware-ep.c | 111 ++++++++++++++----------
+> > > >  drivers/pci/controller/dwc/pcie-designware.h    |   5 ++
+> > > >  2 files changed, 72 insertions(+), 44 deletions(-)
+> > > > 
+> > > > diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
+> > > > index 278bdc9b2269..fed4c2936c78 100644
+> > > > --- a/drivers/pci/controller/dwc/pcie-designware-ep.c
+> > > > +++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
+> > > > @@ -14,14 +14,6 @@
+> > > >  #include <linux/pci-epc.h>
+> > > >  #include <linux/pci-epf.h>
+> > > >  
+> > > > -void dw_pcie_ep_linkup(struct dw_pcie_ep *ep)
+> > > > -{
+> > > > -	struct pci_epc *epc = ep->epc;
+> > > > -
+> > > > -	pci_epc_linkup(epc);
+> > > > -}
+> > > > -EXPORT_SYMBOL_GPL(dw_pcie_ep_linkup);
+> > > > -
+> > > >  void dw_pcie_ep_init_notify(struct dw_pcie_ep *ep)
+> > > >  {
+> > > >  	struct pci_epc *epc = ep->epc;
+> > > > @@ -603,19 +595,56 @@ static unsigned int dw_pcie_ep_find_ext_capability(struct dw_pcie *pci, int cap)
+> > > >  	return 0;
+> > > >  }
+> > > >  
+> > > > +static void dw_pcie_ep_init_non_sticky_registers(struct dw_pcie *pci)
+> > > > +{
+> > > > +	unsigned int offset, ptm_cap_base;
+> > > > +	unsigned int nbars;
+> > > > +	u32 reg, i;
+> > > > +
+> > > > +	offset = dw_pcie_ep_find_ext_capability(pci, PCI_EXT_CAP_ID_REBAR);
+> > > > +	ptm_cap_base = dw_pcie_ep_find_ext_capability(pci, PCI_EXT_CAP_ID_PTM);
+> > > > +
+> > > > +	dw_pcie_dbi_ro_wr_en(pci);
+> > > > +
+> > > > +	if (offset) {
+> > > > +		reg = dw_pcie_readl_dbi(pci, offset + PCI_REBAR_CTRL);
+> > > > +		nbars = (reg & PCI_REBAR_CTRL_NBAR_MASK) >>
+> > > > +			PCI_REBAR_CTRL_NBAR_SHIFT;
+> > > > +
+> > > > +		for (i = 0; i < nbars; i++, offset += PCI_REBAR_CTRL)
+> > > > +			dw_pcie_writel_dbi(pci, offset + PCI_REBAR_CAP, 0x0);
 > > > 
-> > > You have removed the .core_init_notifier from EPC drivers,
-> > > but the callback in EPF drivers is still called .core_init.
+> > > If you look at PCI_REBAR_CAP, you will see that it is sticky,
+> > > but you have to actually read the databook to see that:
 > > > 
-> > > Yes, this was a confusing name even before this patch, but
-> > > after this patch, it is probably even worse :)
+> > > "The RESBAR_CTRL_REG_BAR_SIZE field is automatically updated
+> > > when you write to RESBAR_CAP_REG_0_REG through the DBI."
 > > > 
-> > > The callback should be named from the perspective of EPF drivers IMO.
-> > > .core_init sounds like a EPF driver should initialize the core.
-> > > (But that is of course done by the EPC driver.)
+> > > So the reason why we need to write this register, even though
+> > > it is sticky, is to update the RESBAR_CTRL_REG_BAR_SIZE register,
+> > > which is not sticky :)
 > > > 
-> > > The .link_up() callback name is better, the EPF driver is informed
-> > > that the link is up.
-> > > 
-> > > Perhaps we could rename .core_init to .core_up ?
-> > > 
-> > > It tells the EPF drivers that the core is now up.
-> > > (And the EPF driver can configure the BARs.)
+> > > (Perhaps we should add that as a comment?)
 > > > 
 > > 
-> > I don't disagree :) I thought about it but then decided to not extend the scope
-> > of this series further. So saved that for next series.
-> > 
-> > But yeah, it is good to clean it up here itself.
+> > Yeah, makes sense.
 > 
-> If you intend to create a .core_deinit or .core_down (or whatever name
-> you decide on), perhaps it is better to leave this cleanup to be part
-> of that same series?
+> Note that I add a (unrelated) comment related to REBAR_CAP in this patch:
+> https://lore.kernel.org/linux-pci/20240307111520.3303774-1-cassel@kernel.org/T/#u
+> 
+> But once we move/add code to dw_pcie_ep_init_non_sticky_registers(), I think
+> that it might be a good "rule" to have a small comment for each write in
+> dw_pcie_ep_init_non_sticky_registers() which explains why the code should be
+> in dw_pcie_ep_init_non_sticky_registers() instead of dw_pcie_ep_init_registers(),
+> even if it just a small:
+> 
+> /* Field PCI_XXX_YYY.ZZZ is non-sticky */
+> writel_dbi(pci, offset + PCI_XXX_YYY, 0);
 > 
 
-I already added a patch. So let's do it here itself :)
+Why? The function name itself suggests that we are reinitializing non-sticky
+registers. So a comment for each write is overkill.
 
 - Mani
 
