@@ -1,179 +1,161 @@
-Return-Path: <linux-omap+bounces-865-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-866-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E2268767B5
-	for <lists+linux-omap@lfdr.de>; Fri,  8 Mar 2024 16:50:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99B9E8768C8
+	for <lists+linux-omap@lfdr.de>; Fri,  8 Mar 2024 17:48:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E91181F217E1
-	for <lists+linux-omap@lfdr.de>; Fri,  8 Mar 2024 15:50:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 500DB286673
+	for <lists+linux-omap@lfdr.de>; Fri,  8 Mar 2024 16:48:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D80B25761;
-	Fri,  8 Mar 2024 15:50:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FB5BCA7D;
+	Fri,  8 Mar 2024 16:48:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UB5zhnXE"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="MZbD6e0X"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10E1B25753
-	for <linux-omap@vger.kernel.org>; Fri,  8 Mar 2024 15:50:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 643811CD1F
+	for <linux-omap@vger.kernel.org>; Fri,  8 Mar 2024 16:48:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709913028; cv=none; b=krVtwuCH/f40QvtIhdKsPD+dO23SPkj9pBGGQIqFN8IruvS8p9gak6UamapRC4EYqZU/mx1N15sfGOMqJyKZKUWE3IwoCQmmAIjOGz2A+JXJys0Rj1bew6EVxDfYTOYQlCDYBd5xwTd1PakAKlT7IHAoNiMJe7BYsaSW3+Gzko0=
+	t=1709916488; cv=none; b=k85vxmKnElJGPXZa6Vfqc7diG7Bma9ua1u5ZDERNfSIIS/U+0wi1mPermlAM6WCCpr3vA7nUO3LBt+XMBfdqCmox+4vBgm1b+LPdQsKCeeNY1OpApcMR+ZGCraEUCoVNwAacdluE7dPwy4k2Qy3Kw46GAvAF4jYsQiOcEyf1TVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709913028; c=relaxed/simple;
-	bh=t2NeElMB2knOQL5W1WEhswEKVnzrLqFueHwpFIq4xcc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Lai5jB4X71M0Dl7Lr7kpRTMPshT6nhgOsa9Wyxj3jRCnnvV2WSxRDHAb/+RL+Roc1djhzCOYr3xm8o4RAo4phhBCtBPASK17iyxCB1K1ygSX5NOsiY3GovLJxpmjRY4K5cGNAYFZjhDdcAM/sT7gu7tE87d+D/HYMlTB7o8LOTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UB5zhnXE; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-1dd4bc7a87aso4704805ad.2
-        for <linux-omap@vger.kernel.org>; Fri, 08 Mar 2024 07:50:26 -0800 (PST)
+	s=arc-20240116; t=1709916488; c=relaxed/simple;
+	bh=Y3+J+DGthX9LLnIZodenrbd6SIsoFqZdJRXiEVqxb64=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=M3ULbpqh3Si6jMDmXqo/Sya2iwBRh/KaDVq28kg5XV7djzaU84H24yXMEaNVoBwAYm8Er3hBRZhwmeRs3dtoGoDYX4iJKH5yl9y1uUYByEUm3dmd4bDycD8rDSGT+/pi260PjT4WdPZ+xx511zfGZQlwk5I4uXWrJ4YBjuLCFso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=MZbD6e0X; arc=none smtp.client-ip=209.85.208.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2d4141c4438so26915341fa.3
+        for <linux-omap@vger.kernel.org>; Fri, 08 Mar 2024 08:48:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709913026; x=1710517826; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=23oOzcuTB1Gfk7Qn6xARYHnZuwpEyvIMScPizHFsYdE=;
-        b=UB5zhnXEKh/Z4vHOr6BW8j5UAHPDrxnM5vtrYUiJB4DbJhSd/+H9f0R2CZ8D+7B8RI
-         sj7Nme8H7Tz7mel7pfQkLcNLqK0xjwi6VkDlsu5ZQi70FhjWb/wUxFOGUfxQLKWDWvJL
-         3+mARkysI3gS6NuW+InFbB6fXegN1wke0iDwcAe6RYEvBR/5rd76vZz+IGAP85qsPr1+
-         RQem/WQCCovDDExYc3BRDSH3yV/HB+qMf3QOjCXQgf3S6kzvDP1a5Y3aTurFvCP+GpIf
-         0qSlpS/WkJGPBWcQ/AP5jzIJVNOv8tPhYi9Rih0S395dys41b+m1B+pAZZKzT3VSLoSY
-         hQUQ==
+        d=linaro.org; s=google; t=1709916484; x=1710521284; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=av2fWGGqod21kKXmBF9bISMvMli5hmBzFo0FJK4YLYM=;
+        b=MZbD6e0X4kNlG0tHobiwM2fXqdq/Y/fESmtA0NpLnnz/UtHsaAfy0G2iUMUAhDluAk
+         RecP4Sfz3NpGETMALz2z0rifyPKc0bdx9KL6fqQmxEepaC8wAgFccSBIaHc02IUUjyxn
+         JTIBzOP04crvyCVcnclIGFiCMKxJcTRVY0/ko59nKh1b3GL6xfqJNK1gntYbSAfgKA6n
+         U1n7+NlWxOEgI59GSiHt7pHP0zukT5nHqwIxWBFNxoxqx/Nhu0e6a0rexlhcuDaiJDX8
+         mQNUdGs/WclQkcI0p9fpaF66aR+A3sNiJ+dqvCo/zH9ej63VJclnUfhpCL/cQjAW9nNE
+         XNMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709913026; x=1710517826;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=23oOzcuTB1Gfk7Qn6xARYHnZuwpEyvIMScPizHFsYdE=;
-        b=XQWs9UhAsNd+RjLGyBJzsgWN4i2pKvio2ULdsGOYjyC2UYSKAwSU3H5apIdEzZioga
-         SBYSfZF+zMiu4YUVYH9GjH1hxhRbuWnFxcyJWcuGyoJZz6Lj0uDdC5gZB5wbWpJYUdAK
-         1GdXX3zb16mTF91paIEFWN4B97c0FmTlK0lh7TOazjpTHV3KP+mkogQ0Q8klXr6FHQ63
-         k0PUQQfmeACH+Sx8qlWwfxrLmVgWOige4zU3Lp05xs0Njgv8DR4zX6j4nCnw5IdNs3f3
-         1rpDJqMS3XUktqQW5V11Lc6Uqd2f7GhHdhgbevbhlelhCK1lvvyAxHg9rEqsFh/Uc8Yy
-         x5lA==
-X-Forwarded-Encrypted: i=1; AJvYcCV3mxQiteZWHi4o9c/K7LC8y7OgI6GUN7LLTNThNDQeADjcDKrvSj15LhiFktyTlC29VxO6kcDkpl8MZgvCLVtKmQE3FzE0RRSRRg==
-X-Gm-Message-State: AOJu0YxDah9DIt8+Q6KHILrZA5f5z7c/69zq3vUJERujNyZ8as54UdRv
-	eCKw/0FENi/k4Fsxnii+I4/BoLcWBfcfpxqNb7ctnjcDrJ2AvcpC
-X-Google-Smtp-Source: AGHT+IHalrECY7UAyk7uokIYRcz2OQHqxIaVOP9fz0RsWjLNZUEH8o1YKMfXdxMizt4wEV472nWRdg==
-X-Received: by 2002:a17:902:d503:b0:1dd:1c6f:af57 with SMTP id b3-20020a170902d50300b001dd1c6faf57mr12971152plg.42.1709913026233;
-        Fri, 08 Mar 2024 07:50:26 -0800 (PST)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id n7-20020a170903110700b001dc9893b03bsm16356588plh.272.2024.03.08.07.50.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 Mar 2024 07:50:25 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Fri, 8 Mar 2024 07:50:23 -0800
-From: Guenter Roeck <linux@roeck-us.net>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: QEMU Developers <qemu-devel@nongnu.org>, qemu-arm <qemu-arm@nongnu.org>,
-	Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-	Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org,
-	Arnd Bergmann <arnd@arndb.de>, Daniel Mack <daniel@zonque.org>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Haojian Zhuang <haojian.zhuang@gmail.com>,
-	Thomas Huth <thuth@redhat.com>
-Subject: Re: possible deprecation and removal of some old QEMU Arm machine
- types (pxa2xx, omap, sa1110)
-Message-ID: <d5dd9334-e25a-44f5-afc4-c01ea59c02be@roeck-us.net>
-References: <CAFEAcA88UGhjh8-iBvhxx6GdWg74dinYouiguTcz=qEe51L7Ag@mail.gmail.com>
- <fe5476c7-82e0-4353-a943-7f39b14e1b5b@roeck-us.net>
- <CAFEAcA-bqOM4Ptws-tsEwo2HDZ6YSX1Y+xGkR0WueRD_dUd0+Q@mail.gmail.com>
- <7bd858a2-9983-4ddf-8749-09c9b2e261f9@roeck-us.net>
- <CAFEAcA_-eTfF8tVaLk4yLgWMSA1+KjPBYyS3EjMQNC+59hT0Aw@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1709916484; x=1710521284;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=av2fWGGqod21kKXmBF9bISMvMli5hmBzFo0FJK4YLYM=;
+        b=ppRL24VgET/VCuvdPDZ8hSin65sy1XiIWAsVzU37QXemJ1Jlli9SYS/sjcLjcZ9oaA
+         HBrB6LXI7QHsFaxqyTWVx2nmRLbS8xuqhe1HhWXlrRa+L3Gwq4JEW9Upjv1rAltOvbRV
+         /tCDszpYUtKnjL8QjsJla7gnxEcT9lvSOABHzIdhaZg/ZAruok6uzhnRaobQFN90mxNX
+         G0tYbyBWJlwUkqnObRvuoBGeqx6FxpK4M0qssHI8IloaKDuvjPGQCAeCshRqHKYd8Lr0
+         Y2gzutP20ZC4b4KneLhN9aTEKtGIA1yLE+nBmqIBLZt1YzYFkzm+nykF3qV2Yhbz1oQm
+         YSSQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUurMhVQF2Vve3sQ5ftkA2mXFsku9ggW03YKHkJ7gejP63W0+tNTi/f5YMNsv33OARC35Wevif2kidPHcmu97x99JsBulm2gBvrcg==
+X-Gm-Message-State: AOJu0YwZ30PpJurLUY8W0GWbgggoazINqLZMJzauQ3qV8DMGMd6zgGnn
+	181KvZjQqyw7ioGIdgo3Xs6ahPoSIF5qDAbKaEC2zozN3tvgNqp1xMDI0eUQxVZeHane4ESIM8o
+	O
+X-Google-Smtp-Source: AGHT+IFe8Srdtyu3rPnldUQz0JOkKdxVj/KoBjSLaX2+JKOghRs5toQOXAnTUD4RkmIe7t1r66pGjA==
+X-Received: by 2002:a05:651c:1049:b0:2d3:24cb:f273 with SMTP id x9-20020a05651c104900b002d324cbf273mr3898204ljm.36.1709916484586;
+        Fri, 08 Mar 2024 08:48:04 -0800 (PST)
+Received: from [192.168.1.20] ([178.197.222.97])
+        by smtp.gmail.com with ESMTPSA id wr8-20020a170907700800b00a4553c6d52csm5611824ejb.35.2024.03.08.08.48.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 08 Mar 2024 08:48:03 -0800 (PST)
+Message-ID: <bbc16b3c-7e76-4f0a-8ada-42d2da3426fd@linaro.org>
+Date: Fri, 8 Mar 2024 17:48:02 +0100
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAFEAcA_-eTfF8tVaLk4yLgWMSA1+KjPBYyS3EjMQNC+59hT0Aw@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] memory: omap-gpmc: fixup wrongly hierarchy of the
+ sub-devices
+Content-Language: en-US
+To: Brock Zheng <yzheng@techyauld.com>, Roger Quadros <rogerq@kernel.org>
+Cc: Andreas Kemnade <andreas@kemnade.info>, Tony Lindgren <tony@atomide.com>,
+ linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <6fftq2zlkpaf7xptyff6ky63cinr76ziyvdbm5jhj2apubr5vf@l4gvbdax3l2e>
+ <f45b3195-38a9-4c49-b873-01e5a0b275a3@kernel.org>
+ <20240301133809.0d26865e@aktux>
+ <f59c9450-2784-46fa-afc9-4f194055cb24@kernel.org>
+ <laqqencookmgwesfaetd5xw5wfmjdffmjvyjitapfehmu7zy5y@k7gsdexf3jcv>
+ <beacb55c-951b-4177-83ab-94fda44cd2b7@kernel.org>
+ <yxefg4ie4vxblxvr272jvzncxvj2t6xjfuisvmkt2jk663xgsu@o2ogbyepmg3z>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <yxefg4ie4vxblxvr272jvzncxvj2t6xjfuisvmkt2jk663xgsu@o2ogbyepmg3z>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, Mar 08, 2024 at 03:41:48PM +0000, Peter Maydell wrote:
-> On Tue, 13 Feb 2024 at 15:36, Guenter Roeck <linux@roeck-us.net> wrote:
-> >
-> > On Tue, Feb 13, 2024 at 03:14:21PM +0000, Peter Maydell wrote:
-> > > On Mon, 12 Feb 2024 at 14:36, Guenter Roeck <linux@roeck-us.net> wrote:
-> > > > On 2/12/24 04:32, Peter Maydell wrote:
-> > > > > The machines I have in mind are:
-> > > > >
-> > > > > PXA2xx machines:
-> > > > >
-> > > > > akita                Sharp SL-C1000 (Akita) PDA (PXA270)
-> > > > > borzoi               Sharp SL-C3100 (Borzoi) PDA (PXA270)
-> > > > > connex               Gumstix Connex (PXA255)
-> > > > > mainstone            Mainstone II (PXA27x)
-> > > > > spitz                Sharp SL-C3000 (Spitz) PDA (PXA270)
-> > > > > terrier              Sharp SL-C3200 (Terrier) PDA (PXA270)
-> > > > > tosa                 Sharp SL-6000 (Tosa) PDA (PXA255)
-> > > > > verdex               Gumstix Verdex Pro XL6P COMs (PXA270)
-> > > > > z2                   Zipit Z2 (PXA27x)
+On 03/03/2024 09:18, Brock Zheng wrote:
+> On TI-AM335x，FPGA under GPMC local-bus can not work on 6.x kernel.
 > 
-> > > > > OMAP1 machines:
-> > > > >
-> > > > > cheetah              Palm Tungsten|E aka. Cheetah PDA (OMAP310)
-> > > > > sx1                  Siemens SX1 (OMAP310) V2
-> > > > > sx1-v1               Siemens SX1 (OMAP310) V1
+> GPMC <--> FPGA  <--> sub-devices....
 > 
-> > > > > OMAP2 machines:
-> > > > >
-> > > > > n800                 Nokia N800 tablet aka. RX-34 (OMAP2420)
-> > > > > n810                 Nokia N810 tablet aka. RX-44 (OMAP2420)
+> I found that the platform sub-devices are in wrongly organized
+> hierarchy.  The grandchildren are now under the GPMC device directly,
+> not under it's father(FPGA).
 > 
-> > > > > The one SA1110 machine:
-> > > > >
-> > > > > collie               Sharp SL-5500 (Collie) PDA (SA-1110)
-> 
-> > I am copying Arnd, the OMAP1 Linux kernel maintainers, PXA2 maintainers,
-> > and the Linux omap mailing list for input. Sorry for the noise for those
-> > who don't care, but I think it is useful to have your voices heard.
-> 
-> Thanks to everybody for your input on this thread. My
-> proposal is to drop from QEMU:
->  * all the PXA2xx machines
->  * all the OMAP2 machines
->  * the cheetah OMAP1 machine
-> 
-> leaving (at least for now) sx1, sx1-v1, collie.
-> 
-> Rationale:
->  * for QEMU dropping individual machines is much less beneficial
->    than if we can drop support for an entire SoC
->  * the OMAP2 QEMU code in particular is large, old and unmaintained,
->    and none of the OMAP2 kernel maintainers said they were using
->    QEMU in any of their testing/development
->  * although Guenter is currently booting test kernels on some
->    of the PXA2xx machines, nobody seemed to be using them as part
->    of their active kernel development and my impression from the
->    thread is that PXA is the closest of all these SoC families to
->    being dropped from the kernel soon
->  * nobody said they were using cheetah, so it's entirely
->    untested and quite probably broken
->  * on the other hand the OMAP1 sx1 model does seem to be being
->    used as part of kernel development, and there was interest
->    in keeping collie around
-> 
-> I'm going to mark these as deprecated for the QEMU 9.0 release,
-> which by our deprecate-and-drop policy means they will be
-> still present in 9.0 (due out in April) and 9.1 (August-ish),
-> and removed in 9.2 (December).
-> 
-> I'm potentially open to persuasion if anybody thinks I'm
-> being too drastic here; persuasion that came attached to
-> a desire to help modernise the QEMU code for the relevant
-> machines would be the most effective :-)
-> 
+> Signed-off-by: Brock.Zheng <yzheng@techyauld.com>
 
-sgtm
+Your SoB still has '.' between names. I can remove it while applying.
+It is too late in the cycle for me to pick it up. I will take it after
+the merge window.
 
-Guenter
+
+Best regards,
+Krzysztof
+
 
