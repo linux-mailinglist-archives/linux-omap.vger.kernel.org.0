@@ -1,157 +1,148 @@
-Return-Path: <linux-omap+bounces-844-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-845-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7182B875DCE
-	for <lists+linux-omap@lfdr.de>; Fri,  8 Mar 2024 06:44:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41036875E9A
+	for <lists+linux-omap@lfdr.de>; Fri,  8 Mar 2024 08:35:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00C1C1F21BC1
-	for <lists+linux-omap@lfdr.de>; Fri,  8 Mar 2024 05:44:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 732EE1C21054
+	for <lists+linux-omap@lfdr.de>; Fri,  8 Mar 2024 07:35:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF2F836125;
-	Fri,  8 Mar 2024 05:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E92914F1F6;
+	Fri,  8 Mar 2024 07:35:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="zd+u7b/x"
+	dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b="twiXQSWe"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail5.25mail.st (mail5.25mail.st [74.50.62.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AF4F2C848
-	for <linux-omap@vger.kernel.org>; Fri,  8 Mar 2024 05:44:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60EA2E555
+	for <linux-omap@vger.kernel.org>; Fri,  8 Mar 2024 07:35:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.50.62.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709876644; cv=none; b=f74/b4HCA+90qkKPPmuWBIsjd52Dxtat/kLIHUMkilu0PYtnXyy9kMCpIwwh0JsnZbX2FBzfrURlDtRVLbHL+PwSBRz088VefrVBfkKbVda1Se46WccoTXlfq2++G4hpSoFfwQmeoH3cJA8ul+rETY3cQiAKgWHKCvIw0sDc/I0=
+	t=1709883326; cv=none; b=l42K58EkUictEFc+MYcZorivAqPGGhYeHtx9xa0OJf0fA3qbVMZzhOhIGFiPhVCrJ1aZvDo8vw0GWOiNmpzrOUUXJfDft55vMe0Ihq6oIQku4oWBDtOi7ZoPUZEkbln7zTSygk/LNEopTHIdOSqO6wYa6cSa6eLwrC32t+TJRow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709876644; c=relaxed/simple;
-	bh=l8mRvqhe3rCJcL5EfXN0mb564Hh0Pb6/VhQn5bYxOzY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=umJThOwQ7ran1MXemI00bgKG45K+nqaTSf5IQBUuyRcTLRNl0muxew08S3n7ct4Pk0+4R4LE4lWWbv3FdYjRonb3Js3HhibCh8q/6bnSkpbTj1wSAe7CnufkscPPzc2v1wv+runu/b13qU2IFlmhGmVktYx6eKIwNoZBKxgAS60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=zd+u7b/x; arc=none smtp.client-ip=209.85.210.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-6e5d7f1f25fso381636b3a.0
-        for <linux-omap@vger.kernel.org>; Thu, 07 Mar 2024 21:44:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1709876642; x=1710481442; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=pP3WC4SyW/Vzti9hv7dYhKLJSQ5hGnrzQR/QY37QH6U=;
-        b=zd+u7b/xgUU80tS+jXojilCTJsZNAWM0d/l1V2BF7G3oMIX/oHjrnKgWd2Y5dPETnX
-         CmipROa7r+nU+Fdg1Uap2Jk6f44e/qPEA0R63CrgAKhltZMrOk0TR+adtl/8hl9t98K5
-         35BOmSiUcEN61VdQAxeczgEZjLHCOhxH6Ccu6EPqDfm3VGfhnFetaA3kZxaquwgh3RG5
-         oRVJLoynmllmSaMbUmqjusGc2fsoja+oa4/hwz7soyBV61zju8MaIGwePXOnI2G3AS/W
-         G2qF3pYugdabM8Os35OITh5uSuGb9mC5zvO4BqdxiVUbi4VWE3RdA4hbQV1wa/yr6sHW
-         Yicg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709876642; x=1710481442;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pP3WC4SyW/Vzti9hv7dYhKLJSQ5hGnrzQR/QY37QH6U=;
-        b=RfLzzD8eMdqYe09X4UfH3ca7n8keZnvTVPqMC9ScvT+N9ZMOy0jVLL6J25et/YkBBy
-         eXHaWl2Hm55dcWFvLGVYD9r75BVRhSj6aEQ6pAkiDnCLKim+/ygf5RNfMGDSWivl3yM5
-         LLts5/shJdDAim2PjASPUnAkhRp3G42YVWRI7gFS/iSVCGx/5JkNovKVOwzaT6E+fSPV
-         M1ss1xZeW9bCl+zNWW4DpsIBqd4jUBxqGEl+a7ORydK30ODvQZmA3L2/oCdQDnxLbYeX
-         PR+aTW5mlL/XmeSA5VOtt/EZLybw2Q691QoOXzftZg2ZebNsD3YethaLnfCh1SzFqFDa
-         aK8A==
-X-Forwarded-Encrypted: i=1; AJvYcCV9Zy4A2l10NTisE8PgSkcdc/hKYrThWU0tbN299ijyJjmUlklYA5AGyhQUfBXvULFzW0eoiuxfVSpjYvaT3CFfKgalJTUjskofmA==
-X-Gm-Message-State: AOJu0Yx57dSQfjKWTdSZFsuSuw+OJ2ZWtr0cRxvBRVSmvD+1qy/IiDC8
-	i4YfAVIyY8A1YDKvBk8UFMEf/49BEx163tnV68+lW/UqAEh57hLbh+TqO1ymeA==
-X-Google-Smtp-Source: AGHT+IF4OBcYmj84dqXR/j7tUWistQOyDNgAnoteok0JgpLNMa/4XKXGz0eVlhJR+Ieyw9pe6cuoUw==
-X-Received: by 2002:a05:6a00:815:b0:6e5:9a92:f99b with SMTP id m21-20020a056a00081500b006e59a92f99bmr19446806pfk.16.1709876641435;
-        Thu, 07 Mar 2024 21:44:01 -0800 (PST)
-Received: from thinkpad ([117.217.178.39])
-        by smtp.gmail.com with ESMTPSA id e3-20020aa79803000000b006e5667793d4sm13354830pfl.66.2024.03.07.21.43.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Mar 2024 21:44:01 -0800 (PST)
-Date: Fri, 8 Mar 2024 11:13:47 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Niklas Cassel <cassel@kernel.org>
-Cc: Jingoo Han <jingoohan1@gmail.com>,
-	Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Marek Vasut <marek.vasut+renesas@gmail.com>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Kishon Vijay Abraham I <kishon@ti.com>,
-	Vidya Sagar <vidyas@nvidia.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	NXP Linux Team <linux-imx@nxp.com>,
-	Minghuan Lian <minghuan.Lian@nxp.com>,
-	Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Jesper Nilsson <jesper.nilsson@axis.com>,
-	Srikanth Thokala <srikanth.thokala@intel.com>,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@axis.com, Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH v9 10/10] PCI: dwc: ep: Add Kernel-doc comments for APIs
-Message-ID: <20240308054347.GE3789@thinkpad>
-References: <20240304-pci-dbi-rework-v9-0-29d433d99cda@linaro.org>
- <20240304-pci-dbi-rework-v9-10-29d433d99cda@linaro.org>
- <Zeo4dJGZYLnLfzjm@ryzen>
+	s=arc-20240116; t=1709883326; c=relaxed/simple;
+	bh=gnPbyhN/avmBLR1//LMZdeqyYtsYkkl4WXb8r3MEd/M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PUkT8Kr5aQjEoAVrThAf98RdTC38i7chQoTLztECQNMsxypo5pzJ7eisE++tM7IaC/e/DeuzKUK6EFy8WiXdpC/lsUHsgW49q9yHvzgs4I450HbhmiaGqjzGRQGG2bdw1hhuRBotsDlE9kBEdPh3F/2McHNJhswA9vizXptQjLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com; spf=fail smtp.mailfrom=atomide.com; dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b=twiXQSWe; arc=none smtp.client-ip=74.50.62.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=atomide.com
+Received: from localhost (91-158-86-216.elisa-laajakaista.fi [91.158.86.216])
+	by mail5.25mail.st (Postfix) with ESMTPSA id 86CFF60540;
+	Fri,  8 Mar 2024 07:35:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=atomide.com;
+	s=25mailst; t=1709883317;
+	bh=gnPbyhN/avmBLR1//LMZdeqyYtsYkkl4WXb8r3MEd/M=;
+	h=From:To:Cc:Subject:Date:From;
+	b=twiXQSWeNc9M2pG/a8Bo8tHZ8RXvWcsJPSO6my7Eg/75zpcsXEuy2hj2FR3wu+J+0
+	 HJNqPEdF3DBrnb5xvGmzpbj1+guj4MlWAzldDNbhgcEbGaSMmqfY7JoV4tpnX+fgz7
+	 cyycdkMoG8iXkTTAakRGnIE/LRamtHLVGPR0dXO+4p/F1sPYrNn5i0r376Z5+wwHCp
+	 NbN8hLcF4FXDyd5qtV7PF8IEvMGIwmiZOiE28nyr8ef79AHanuQ2nV/XDnDdimdn98
+	 Cd7nzHqmMTf/GUBQkiUvBuefFYrPJkcvasSNAm4Qe+bik4YqzBRZr2uAcu6EPW5rkQ
+	 JSRz036+7O4dw==
+From: Tony Lindgren <tony@atomide.com>
+To: linux-omap@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org,
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Matthias Michel <matthias.michel@siemens.com>,
+	Randy Dunlap <rdunlap@infradead.org>
+Subject: [PATCH] ARM: OMAP2+: prm33xx.c: Fix kerneldoc warnings
+Date: Fri,  8 Mar 2024 09:35:00 +0200
+Message-ID: <20240308073501.3699-1-tony@atomide.com>
+X-Mailer: git-send-email 2.43.1
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <Zeo4dJGZYLnLfzjm@ryzen>
 
-On Thu, Mar 07, 2024 at 10:58:12PM +0100, Niklas Cassel wrote:
-> On Mon, Mar 04, 2024 at 02:52:22PM +0530, Manivannan Sadhasivam wrote:
-> > All of the APIs are missing the Kernel-doc comments. Hence, add them.
-> > 
-> > Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> > ---
-> 
-> For the functions that you added in this series, e.g.
-> dw_pcie_ep_cleanup(), dw_pcie_ep_init_non_sticky_registers(),
-> and dw_pcie_ep_linkdown(), I think that it would have been
-> better if you actually added the kdoc in the same commit that
-> added the respective function.
-> 
-> 
-> For the existing functions that did not have a kdoc, I think
-> it would have been better if you fixed this as patch 1/10 in
-> this series. (Or 2/10, in case you keep the Fixes tag for the
-> "PCI: dwc: ep: Fix DBI access failure for drivers requiring
-> refclk from host" patch.)
-> 
-> Yes, I know that you rename some of these functions that
-> lacked kdoc later in the series, but the whole kdoc description
-> would be the same, the kdoc parameters would be the same, and the
-> kdoc return value would be the same.
-> 
-> If you later rename a function, you would only need to change
-> the kdoc function name (in addition to the function declaration
-> itself).
-> 
+Commit 6521f6a195c7 ("ARM: AM33xx: PRM: Implement REBOOT_COLD")
+added a new kerneldoc warning as the function name changed:
 
-Makes sense! Will change it.
+warning: expecting prototype for am33xx_prm_global_warm_sw_reset().
+Prototype was for am33xx_prm_global_sw_reset() instead
 
-- Mani
+Turns out prm33xx.c produces a few other kerneldoc warnings so let's
+fix them all.
 
+Fixes: 6521f6a195c7 ("ARM: AM33xx: PRM: Implement REBOOT_COLD")
+Cc: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Cc: Matthias Michel <matthias.michel@siemens.com>
+Cc: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+---
+ arch/arm/mach-omap2/prm33xx.c | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
+
+diff --git a/arch/arm/mach-omap2/prm33xx.c b/arch/arm/mach-omap2/prm33xx.c
+--- a/arch/arm/mach-omap2/prm33xx.c
++++ b/arch/arm/mach-omap2/prm33xx.c
+@@ -48,8 +48,7 @@ static u32 am33xx_prm_rmw_reg_bits(u32 mask, u32 bits, s16 inst, s16 idx)
+  * @part: PRM partition, ignored for AM33xx
+  * @inst: CM instance register offset (*_INST macro)
+  * @rstctrl_offs: RM_RSTCTRL register address offset for this module
+- *
+- * Returns 1 if the (sub)module hardreset line is currently asserted,
++ * @return: 1 if the (sub)module hardreset line is currently asserted,
+  * 0 if the (sub)module hardreset line is not currently asserted, or
+  * -EINVAL upon parameter error.
+  */
+@@ -70,14 +69,14 @@ static int am33xx_prm_is_hardreset_asserted(u8 shift, u8 part, s16 inst,
+  * @shift: register bit shift corresponding to the reset line to assert
+  * @part: CM partition, ignored for AM33xx
+  * @inst: CM instance register offset (*_INST macro)
+- * @rstctrl_reg: RM_RSTCTRL register address for this module
++ * @rstctrl_offs: RM_RSTCTRL register address offset for this module
++ * @return: Returns 0 upon success or -EINVAL upon an argument error
+  *
+  * Some IPs like dsp, ipu or iva contain processors that require an HW
+  * reset line to be asserted / deasserted in order to fully enable the
+  * IP.  These modules may have multiple hard-reset lines that reset
+  * different 'submodules' inside the IP block.  This function will
+- * place the submodule into reset.  Returns 0 upon success or -EINVAL
+- * upon an argument error.
++ * place the submodule into reset.
+  */
+ static int am33xx_prm_assert_hardreset(u8 shift, u8 part, s16 inst,
+ 				       u16 rstctrl_offs)
+@@ -96,17 +95,18 @@ static int am33xx_prm_assert_hardreset(u8 shift, u8 part, s16 inst,
+  * @st_shift: reset status register bit shift corresponding to the reset line
+  * @part: PRM partition, not used for AM33xx
+  * @inst: CM instance register offset (*_INST macro)
+- * @rstctrl_reg: RM_RSTCTRL register address for this module
+- * @rstst_reg: RM_RSTST register address for this module
++ * @rstctrl_offs: RM_RSTCTRL register address offset for this module
++ * @rstst_offs: RM_RSTST register address offset for this module
++ * @return: Returns 0 upon success or -EINVAL upon an argument error,
++ * -EEXIST if the submodule was already out of reset, or -EBUSY if the
++ * submodule did not exit reset promptly
+  *
+  * Some IPs like dsp, ipu or iva contain processors that require an HW
+  * reset line to be asserted / deasserted in order to fully enable the
+  * IP.  These modules may have multiple hard-reset lines that reset
+  * different 'submodules' inside the IP block.  This function will
+  * take the submodule out of reset and wait until the PRCM indicates
+- * that the reset has completed before returning.  Returns 0 upon success or
+- * -EINVAL upon an argument error, -EEXIST if the submodule was already out
+- * of reset, or -EBUSY if the submodule did not exit reset promptly.
++ * that the reset has completed before returning.
+  */
+ static int am33xx_prm_deassert_hardreset(u8 shift, u8 st_shift, u8 part,
+ 					 s16 inst, u16 rstctrl_offs,
+@@ -315,7 +315,7 @@ static int am33xx_check_vcvp(void)
+ }
+ 
+ /**
+- * am33xx_prm_global_warm_sw_reset - reboot the device via warm reset
++ * am33xx_prm_global_sw_reset - reboot the device via warm reset
+  *
+  * Immediately reboots the device through warm reset.
+  */
 -- 
-மணிவண்ணன் சதாசிவம்
+2.43.1
 
