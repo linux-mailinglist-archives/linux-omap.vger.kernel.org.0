@@ -1,168 +1,166 @@
-Return-Path: <linux-omap+bounces-863-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-864-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 199A5876537
-	for <lists+linux-omap@lfdr.de>; Fri,  8 Mar 2024 14:25:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 429B687677E
+	for <lists+linux-omap@lfdr.de>; Fri,  8 Mar 2024 16:42:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B16B3B23A2D
-	for <lists+linux-omap@lfdr.de>; Fri,  8 Mar 2024 13:25:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE2E51F22B62
+	for <lists+linux-omap@lfdr.de>; Fri,  8 Mar 2024 15:42:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30E9E54BDA;
-	Fri,  8 Mar 2024 13:24:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A74A21EEFC;
+	Fri,  8 Mar 2024 15:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kCQZriwB"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="u2pkQGtk"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E5B3BBF9;
-	Fri,  8 Mar 2024 13:24:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B1471EB36
+	for <linux-omap@vger.kernel.org>; Fri,  8 Mar 2024 15:42:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709904288; cv=none; b=X/Lu017eGdC9XYBpKsGMI9YzpMvhjmawd0erC4SMDuiqhr6G5jXK/fPd7X+0qRKipDEgGMA55qhYeYQejlQYtwN5PO7v0nURQ0ivaOT3sUp85KGRRZ8MY/BS126wtzGnDSk0t5f4ApVcT8mxrVE3eKnpAR6hPH8rC800kw3hTps=
+	t=1709912523; cv=none; b=JehEAmuLq84ALM4zv0Jwr/iaTLxSUoOVh6s9ENzm3toB8lDN4NU2S4awP8vJNYITJhRkj4UbgdCzR0a8tCDKFBYlFFZtgnkli6VpisKDCNw4FdEGhYXNONUSGodgwwkMwZF+NKreFOd3dpa/CKupzO4z4GSqH8iiSqu2mJZzrZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709904288; c=relaxed/simple;
-	bh=LAdBrFiiqpPIYb+1fEVGEmGjUltxM7IwFgH3jq/rJDo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sWs1gBpQrDmPZFRvQmcKlXTRtphwNVhkUZmWn1VEmANWLVfMIEGYCkDCyShiJ9BibxBhDQuTGsHmzFP2VaJrhprP0zZ8TO61cf4OhzllvWSdefDb7GseAO1nfLFpWSiu5X0GeeAylulGMUl8tQnQMyfGIidhIe4Cf+PibHFFf64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kCQZriwB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7CB0C433F1;
-	Fri,  8 Mar 2024 13:24:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709904288;
-	bh=LAdBrFiiqpPIYb+1fEVGEmGjUltxM7IwFgH3jq/rJDo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kCQZriwBir8HdF7tMJnCbXC/StQ5ZubtkrurJ/hNH5ABeLm3oUkbkLT4RFyY2E8eO
-	 WhEOBptb0FP//rwCm3NEOkHagnEj5gf5qMnmPMe/qNH0seeYsh4AqBQsrYd+RbrnH6
-	 pDRLKSmQdbkECwUTmu2Qx8EiSpSPwjGi1C/wfhV39qWSt9mOUDcyucPUwdWxl7RKKL
-	 r8to3P6b356iIL9jCR8K8bfo8pwwI6jmqw7KiebRFq4G0i2mjya0l5XV7KTfiYE85w
-	 umqtSbSKWbmwfLY0nu5JqX3tCAiDkKwWTsmoxH+sE6t5e8phFPQm6vRX5Q9girR6xc
-	 MZOTZB3+scaNQ==
-Date: Fri, 8 Mar 2024 14:24:35 +0100
-From: Niklas Cassel <cassel@kernel.org>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: Jingoo Han <jingoohan1@gmail.com>,
-	Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Marek Vasut <marek.vasut+renesas@gmail.com>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Kishon Vijay Abraham I <kishon@ti.com>,
-	Vidya Sagar <vidyas@nvidia.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	NXP Linux Team <linux-imx@nxp.com>,
-	Minghuan Lian <minghuan.Lian@nxp.com>,
-	Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Jesper Nilsson <jesper.nilsson@axis.com>,
-	Srikanth Thokala <srikanth.thokala@intel.com>,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@axis.com, Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH v9 07/10] PCI: dwc: ep: Remove "core_init_notifier" flag
-Message-ID: <ZesRk5Dg4KEASD3U@ryzen>
-References: <20240304-pci-dbi-rework-v9-0-29d433d99cda@linaro.org>
- <20240304-pci-dbi-rework-v9-7-29d433d99cda@linaro.org>
+	s=arc-20240116; t=1709912523; c=relaxed/simple;
+	bh=pXVvuNILKZReAbM3I8kEMP26IkXYf/iPQwN4/EuEhXs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YViMeCzjp6/OOlKmE9AtGMcMqcIe4VvumQPA1aiddej2LZntsXrRS6eY1zmPPFe+Aq0pAb6XfORlSlKqKOKbhXZ+/xtv8xZdPri7BVCt8Psvpky7KjrlxIJbI3DEzHaE/Xip9BargPegrV8mvlWvtIybK7XtnUt0ocBdDfKjB5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=u2pkQGtk; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5682f48532eso1102912a12.1
+        for <linux-omap@vger.kernel.org>; Fri, 08 Mar 2024 07:42:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1709912520; x=1710517320; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=MuJCFhvqT3ZKlqVaY9a/O3yhRkZaw9B/8BBmGsdaLfI=;
+        b=u2pkQGtkKPi9ZtRXm4TIprKrpE3Dgc/IIenPk6X7Cc8VvDzVXZfwo8SvzGt1Hdpa6/
+         OK2W2+nAX546CF8ueh0exT0XlkleO2VXzJA9FtfcNzIiXgf3yAaOJhanjGRmJGNvUxSz
+         HHtcCIJcFRLLXV90PBPMojTEPF/5ysYZmuJ19gGQo/QufLwmSQye4728i66OeomopK+L
+         8bZn+BA9rctlyrGxZRtuZ7SoA1u3naQCNvgsgIid/FoKcQJvvTrr+cY7DnFLQKAk6W/8
+         wwCcPc9NykUTuR3NEwlAiqgEHPSBeo/qf75XwRgPVdlhvTqzWlAscEbz58i0GeacwKJu
+         Tmnw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709912520; x=1710517320;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MuJCFhvqT3ZKlqVaY9a/O3yhRkZaw9B/8BBmGsdaLfI=;
+        b=N4DqG6YvxUmT3eGfk5KQF0/i7tlqmX8vyX8SLuHcoFZ0C4yJJX91BVG3qFbVU4qzJC
+         is4bP9SYzpTugA3PHTvf5MvBMrPAY7Ssa0wmXf6+efN8iAqh7cAFmyGOgsTpfBHTNtMV
+         +DqDYv/m15OYOgtaSbzXaVEjG+Uvdn06afMfgQlAYEP+GExivAAEhI3AgATgPvmPfDw2
+         nlzJMQmyCJbrfqJPPdvkKgJ/KpXijnrmmpU2rPQ4lcLepvh5+FODlY/O1xg5yCXy4iuc
+         9R1XH/AUCFQwVaBo/L0pmQBEapxClKHkbWxR1J7bhhbm81IDmKd6A46JFF+F7sjawn5t
+         9clw==
+X-Forwarded-Encrypted: i=1; AJvYcCXowFnsZMe/sqqBr60DWeTkXZxrEeJjrdq5A6Qhn339LkRKX3ca2TNJQ0nSzpazYySP5bcmxfqrdHacAHBv/S1xPcnvvKivmm1THA==
+X-Gm-Message-State: AOJu0Yy1a/WUBJ5ztRxnZ3oBaK4Nz6ytX7hs9cr55N2PjRKseFz5lOLR
+	JaeL+HJ70EgK3KjcyLjyt9qHrM2/ZDq7NuZ9wU8dlmHX77wiPrXCudGdsBEzrD3P+kAkhesM8li
+	XyCSoeDYCFTtyUGrh4DhDi8BwRY5fvJKVhvwfEQ==
+X-Google-Smtp-Source: AGHT+IG2TebH+X8C70I+HEzlziFQiuRt9TuV9e/9a5ltxwwODUeTQlbvCO2831bYkGno2KtggkHpVeDVEgX+AX5HQ+s=
+X-Received: by 2002:a50:9550:0:b0:565:9f59:b3b6 with SMTP id
+ v16-20020a509550000000b005659f59b3b6mr674446eda.3.1709912519417; Fri, 08 Mar
+ 2024 07:41:59 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240304-pci-dbi-rework-v9-7-29d433d99cda@linaro.org>
+References: <CAFEAcA88UGhjh8-iBvhxx6GdWg74dinYouiguTcz=qEe51L7Ag@mail.gmail.com>
+ <fe5476c7-82e0-4353-a943-7f39b14e1b5b@roeck-us.net> <CAFEAcA-bqOM4Ptws-tsEwo2HDZ6YSX1Y+xGkR0WueRD_dUd0+Q@mail.gmail.com>
+ <7bd858a2-9983-4ddf-8749-09c9b2e261f9@roeck-us.net>
+In-Reply-To: <7bd858a2-9983-4ddf-8749-09c9b2e261f9@roeck-us.net>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 8 Mar 2024 15:41:48 +0000
+Message-ID: <CAFEAcA_-eTfF8tVaLk4yLgWMSA1+KjPBYyS3EjMQNC+59hT0Aw@mail.gmail.com>
+Subject: Re: possible deprecation and removal of some old QEMU Arm machine
+ types (pxa2xx, omap, sa1110)
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: QEMU Developers <qemu-devel@nongnu.org>, qemu-arm <qemu-arm@nongnu.org>, 
+	Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, Aaro Koskinen <aaro.koskinen@iki.fi>, 
+	Janusz Krzysztofik <jmkrzyszt@gmail.com>, Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org, 
+	Arnd Bergmann <arnd@arndb.de>, Daniel Mack <daniel@zonque.org>, 
+	Robert Jarzmik <robert.jarzmik@free.fr>, Haojian Zhuang <haojian.zhuang@gmail.com>, 
+	Thomas Huth <thuth@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Mar 04, 2024 at 02:52:19PM +0530, Manivannan Sadhasivam wrote:
-> "core_init_notifier" flag is set by the glue drivers requiring refclk from
-> the host to complete the DWC core initialization. Also, those drivers will
-> send a notification to the EPF drivers once the initialization is fully
-> completed using the pci_epc_init_notify() API. Only then, the EPF drivers
-> will start functioning.
-> 
-> For the rest of the drivers generating refclk locally, EPF drivers will
-> start functioning post binding with them. EPF drivers rely on the
-> 'core_init_notifier' flag to differentiate between the drivers.
-> Unfortunately, this creates two different flows for the EPF drivers.
-> 
-> So to avoid that, let's get rid of the "core_init_notifier" flag and follow
-> a single initialization flow for the EPF drivers. This is done by calling
-> the dw_pcie_ep_init_notify() from all glue drivers after the completion of
-> dw_pcie_ep_init_registers() API. This will allow all the glue drivers to
-> send the notification to the EPF drivers once the initialization is fully
-> completed.
-> 
-> Only difference here is that, the drivers requiring refclk from host will
-> send the notification once refclk is received, while others will send it
-> during probe time itself.
-> 
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> ---
-> diff --git a/drivers/pci/endpoint/functions/pci-epf-test.c b/drivers/pci/endpoint/functions/pci-epf-test.c
-> index 18c80002d3bd..fc0282b0d626 100644
-> --- a/drivers/pci/endpoint/functions/pci-epf-test.c
-> +++ b/drivers/pci/endpoint/functions/pci-epf-test.c
-> @@ -927,21 +928,12 @@ static int pci_epf_test_bind(struct pci_epf *epf)
->  	if (ret)
->  		return ret;
+On Tue, 13 Feb 2024 at 15:36, Guenter Roeck <linux@roeck-us.net> wrote:
 >
+> On Tue, Feb 13, 2024 at 03:14:21PM +0000, Peter Maydell wrote:
+> > On Mon, 12 Feb 2024 at 14:36, Guenter Roeck <linux@roeck-us.net> wrote:
+> > > On 2/12/24 04:32, Peter Maydell wrote:
+> > > > The machines I have in mind are:
+> > > >
+> > > > PXA2xx machines:
+> > > >
+> > > > akita                Sharp SL-C1000 (Akita) PDA (PXA270)
+> > > > borzoi               Sharp SL-C3100 (Borzoi) PDA (PXA270)
+> > > > connex               Gumstix Connex (PXA255)
+> > > > mainstone            Mainstone II (PXA27x)
+> > > > spitz                Sharp SL-C3000 (Spitz) PDA (PXA270)
+> > > > terrier              Sharp SL-C3200 (Terrier) PDA (PXA270)
+> > > > tosa                 Sharp SL-6000 (Tosa) PDA (PXA255)
+> > > > verdex               Gumstix Verdex Pro XL6P COMs (PXA270)
+> > > > z2                   Zipit Z2 (PXA27x)
 
-Hello Mani,
+> > > > OMAP1 machines:
+> > > >
+> > > > cheetah              Palm Tungsten|E aka. Cheetah PDA (OMAP310)
+> > > > sx1                  Siemens SX1 (OMAP310) V2
+> > > > sx1-v1               Siemens SX1 (OMAP310) V1
 
-Since you asked for testing, I gave your series a spin
-(with a driver without .core_init_notifier).
+> > > > OMAP2 machines:
+> > > >
+> > > > n800                 Nokia N800 tablet aka. RX-34 (OMAP2420)
+> > > > n810                 Nokia N810 tablet aka. RX-44 (OMAP2420)
 
+> > > > The one SA1110 machine:
+> > > >
+> > > > collie               Sharp SL-5500 (Collie) PDA (SA-1110)
 
-There seems to be a problem that pci_epc_write_header() is never called.
+> I am copying Arnd, the OMAP1 Linux kernel maintainers, PXA2 maintainers,
+> and the Linux omap mailing list for input. Sorry for the noise for those
+> who don't care, but I think it is useful to have your voices heard.
 
-Debugging this, it seems that .core_init in pci-epf-test is never called.
+Thanks to everybody for your input on this thread. My
+proposal is to drop from QEMU:
+ * all the PXA2xx machines
+ * all the OMAP2 machines
+ * the cheetah OMAP1 machine
 
-If I add debug prints in pci_epc_init_notify(), I see that it does not
-notify a single EPF driver.
+leaving (at least for now) sx1, sx1-v1, collie.
 
-It appears that the patch in $subject will call pci_epc_init_notify()
-at EPC driver .probe() time, and at that point in time, there are no
-EPF drivers registered.
+Rationale:
+ * for QEMU dropping individual machines is much less beneficial
+   than if we can drop support for an entire SoC
+ * the OMAP2 QEMU code in particular is large, old and unmaintained,
+   and none of the OMAP2 kernel maintainers said they were using
+   QEMU in any of their testing/development
+ * although Guenter is currently booting test kernels on some
+   of the PXA2xx machines, nobody seemed to be using them as part
+   of their active kernel development and my impression from the
+   thread is that PXA is the closest of all these SoC families to
+   being dropped from the kernel soon
+ * nobody said they were using cheetah, so it's entirely
+   untested and quite probably broken
+ * on the other hand the OMAP1 sx1 model does seem to be being
+   used as part of kernel development, and there was interest
+   in keeping collie around
 
-They get registered later, when doing the configfs write.
+I'm going to mark these as deprecated for the QEMU 9.0 release,
+which by our deprecate-and-drop policy means they will be
+still present in 9.0 (due out in April) and 9.1 (August-ish),
+and removed in 9.2 (December).
 
+I'm potentially open to persuasion if anybody thinks I'm
+being too drastic here; persuasion that came attached to
+a desire to help modernise the QEMU code for the relevant
+machines would be the most effective :-)
 
-I would say that it is the following change that breaks things:
-
-> -	if (!core_init_notifier) {
-> -		ret = pci_epf_test_core_init(epf);
-> -		if (ret)
-> -			return ret;
-> -	}
-> -
-
-Since without this code, pci_epf_test_core_init() will no longer be called,
-as there is currently no one that calls epf->core_init() for a EPF driver
-after it has been bound. (For drivers that call dw_pcie_ep_init_notify() in
-.probe())
-
-I guess one way to solve this would be for the EPC core to keep track of
-the current EPC "core state" (up/down). If the core is "up" at EPF .bind()
-time, notify the EPF driver directly after .bind()?
-
-
-Kind regards,
-Niklas
+thanks
+-- PMM
 
