@@ -1,156 +1,157 @@
-Return-Path: <linux-omap+bounces-874-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-875-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1E1E878A43
-	for <lists+linux-omap@lfdr.de>; Mon, 11 Mar 2024 22:55:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14FC0878F61
+	for <lists+linux-omap@lfdr.de>; Tue, 12 Mar 2024 09:03:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E5422819A8
-	for <lists+linux-omap@lfdr.de>; Mon, 11 Mar 2024 21:54:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 470DD1C212BB
+	for <lists+linux-omap@lfdr.de>; Tue, 12 Mar 2024 08:03:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 640F257867;
-	Mon, 11 Mar 2024 21:54:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C95D69D07;
+	Tue, 12 Mar 2024 08:03:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Eome4s09"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GXWn4pMe"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D041057315;
-	Mon, 11 Mar 2024 21:54:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C20269D04;
+	Tue, 12 Mar 2024 08:03:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710194080; cv=none; b=G8p1Ocv66i7eHkkYs5+7N4MJ2kZAW9g7j82s0dhVlbhmxKyWQVVWvJcV4xoLmqmhUslJrqjssp+YFlbYQg4zgkV0Qp+EzbqJPZ7r3xBbHY2J/FOJ6fpK2owClAypTXMG/ghsoofL1Y943qChWU23u1y3iJRbsDrwGzK0fg57gQU=
+	t=1710230612; cv=none; b=LgK0CVK2cDNstXQZSxL2m/wti8IdIo8xxWt57//rNLlbG36g3TXKX3NKyWNgRwzyzidAJs7T74XeMo0gStDk1BlnakgLU6E99C2KJ/wnUjkjwcrA3qqzAWK2gS15TrZYpFy2KGUHBxqhhvaDp0RfH7xKf91y/nUdeFwKmp3bv1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710194080; c=relaxed/simple;
-	bh=RWD53XQN8UsgouYUBF/rTClQBGz527mrHnHW07+LEvk=;
+	s=arc-20240116; t=1710230612; c=relaxed/simple;
+	bh=7CSXkSa3VNcY7x9b6by6FO8IPWIdgHGiqUx6k0fKoo8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rT/Ols7KRl1QUjpP3IxUjd+K8KwB8BEvoNQJoLttUKWFGVf880ZVfjSqfM6iB1cHF1CdjvDgDthQ8KfRZaAornNLZnHwT9ZLQDQawEhjUHEaqbn+q2aHKlHM+a6Ne/JntKSj4rwTcAk9p1g4ICxvNM8ZWlsBLEdJUh62GbzBFHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Eome4s09; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC4BBC433C7;
-	Mon, 11 Mar 2024 21:54:31 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=UA6tbP/e1nk17ts2exKxJ6vXFSbnTjPLgku9Yqg8/7uenstArnz6Nt40UnsymqKXFLsBf4rB657WukOBmYfqYEqBqbGqEXrZmnesqNEyBSh6NUzhtB1dSaxvOmMaSiMPJAaMFM1P6UPYaEXVztc6sZAZVOcZgcWx5d146aysPq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GXWn4pMe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14D4DC433C7;
+	Tue, 12 Mar 2024 08:03:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710194079;
-	bh=RWD53XQN8UsgouYUBF/rTClQBGz527mrHnHW07+LEvk=;
+	s=k20201202; t=1710230610;
+	bh=7CSXkSa3VNcY7x9b6by6FO8IPWIdgHGiqUx6k0fKoo8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Eome4s09U0yv2YUiX7PkctOicSMRH/yZOh6gnNHwqz8AI3Od+MdGJEeamS0f7e/Rg
-	 EKv3GFwpTGiOOLiVWTZpMtwJHx1nzexz6euFNxlYZWJ+mz5wMTgZY+s7k5ZCuLXjlU
-	 Q+epQAXw6XXRuSGu4tO+RzCdoobL9znOdQ45I3dz+B6EpKd4zxdEjk7P6Oh4eNWsAc
-	 Lp4NPa4szCmQyVI2rLifPe+RyPkuYYJ5VxV5Y+UMqeicTFacCyxISQMAHTlc0bDHNG
-	 GFLAPM9kqVH055Ixhp4hp6Z+B+3XyEurelGgsFQYR8csLnIKr6fF0qQTyfN2WKjaGL
-	 QI56/3wgaZNXA==
-Date: Mon, 11 Mar 2024 22:54:28 +0100
-From: Niklas Cassel <cassel@kernel.org>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: Jingoo Han <jingoohan1@gmail.com>,
-	Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
+	b=GXWn4pMeQg4hJsAkIuEH/dvhu5T8dLwWVRrGftqgwMwBYiZl0C3puzKCtdzWFrN7p
+	 gwR5tOBCsKepUM0L1+VQCxoLpLtMb6B+KZQl7ArGelO/pmj6hr4nfuvkGprlzZ3qmM
+	 UeEfu90878dwAoUylCYtFeiih9QICuFvQ6UIISX3SRELBGMBKdCfjOTSXgP9M0jnpk
+	 HmK5M6fp5QQhIVTKBncymtqYSzLtQlJEzp42lA1X9IulXYVq3/ffSL7iuQ3mSJ84hm
+	 Ez7uopf+12pzCQL/d/3d60MrnRv9ZLk4k1/IvmKVVnBhuL1vt5xtdjT2l4AB7Bw4zU
+	 udv4ffal4JQhg==
+Date: Tue, 12 Mar 2024 09:03:27 +0100
+From: Wolfram Sang <wsa@kernel.org>
+To: Tony Lindgren <tony@atomide.com>
+Cc: Thomas Richard <thomas.richard@bootlin.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Andy Shevchenko <andy@kernel.org>,
+	Haojian Zhuang <haojian.zhuang@linaro.org>,
+	Vignesh R <vigneshr@ti.com>, Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+	Andi Shyti <andi.shyti@kernel.org>, Peter Rosin <peda@axentia.se>,
+	Vinod Koul <vkoul@kernel.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
 	Lorenzo Pieralisi <lpieralisi@kernel.org>,
 	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
 	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Marek Vasut <marek.vasut+renesas@gmail.com>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Kishon Vijay Abraham I <kishon@ti.com>,
-	Vidya Sagar <vidyas@nvidia.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	NXP Linux Team <linux-imx@nxp.com>,
-	Minghuan Lian <minghuan.Lian@nxp.com>,
-	Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
+	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+	linux-i2c@vger.kernel.org, linux-phy@lists.infradead.org,
+	linux-pci@vger.kernel.org, gregory.clement@bootlin.com,
+	theo.lebrun@bootlin.com, thomas.petazzoni@bootlin.com,
+	u-kumar1@ti.com
+Subject: Re: [PATCH v4 03/18] i2c: omap: wakeup the controller during
+ suspend() callback
+Message-ID: <ZfAMT8CDW1VKW0qR@shikoro>
+Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
+	Tony Lindgren <tony@atomide.com>,
+	Thomas Richard <thomas.richard@bootlin.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Andy Shevchenko <andy@kernel.org>,
+	Haojian Zhuang <haojian.zhuang@linaro.org>,
+	Vignesh R <vigneshr@ti.com>, Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+	Andi Shyti <andi.shyti@kernel.org>, Peter Rosin <peda@axentia.se>,
+	Vinod Koul <vkoul@kernel.org>,
 	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Jesper Nilsson <jesper.nilsson@axis.com>,
-	Srikanth Thokala <srikanth.thokala@intel.com>,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@axis.com, Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH v9 07/10] PCI: dwc: ep: Remove "core_init_notifier" flag
-Message-ID: <Ze99lLhe2GqIqMgl@ryzen>
-References: <20240304-pci-dbi-rework-v9-0-29d433d99cda@linaro.org>
- <20240304-pci-dbi-rework-v9-7-29d433d99cda@linaro.org>
- <ZesRk5Dg4KEASD3U@ryzen>
- <20240311144559.GA2504@thinkpad>
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+	linux-i2c@vger.kernel.org, linux-phy@lists.infradead.org,
+	linux-pci@vger.kernel.org, gregory.clement@bootlin.com,
+	theo.lebrun@bootlin.com, thomas.petazzoni@bootlin.com,
+	u-kumar1@ti.com
+References: <20240102-j7200-pcie-s2r-v4-0-6f1f53390c85@bootlin.com>
+ <20240102-j7200-pcie-s2r-v4-3-6f1f53390c85@bootlin.com>
+ <20240308084240.GK52537@atomide.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="Qxnn2a5IXmQEXJ6+"
+Content-Disposition: inline
+In-Reply-To: <20240308084240.GK52537@atomide.com>
+
+
+--Qxnn2a5IXmQEXJ6+
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240311144559.GA2504@thinkpad>
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 11, 2024 at 08:15:59PM +0530, Manivannan Sadhasivam wrote:
-> > 
-> > I would say that it is the following change that breaks things:
-> > 
-> > > -	if (!core_init_notifier) {
-> > > -		ret = pci_epf_test_core_init(epf);
-> > > -		if (ret)
-> > > -			return ret;
-> > > -	}
-> > > -
-> > 
-> > Since without this code, pci_epf_test_core_init() will no longer be called,
-> > as there is currently no one that calls epf->core_init() for a EPF driver
-> > after it has been bound. (For drivers that call dw_pcie_ep_init_notify() in
-> > .probe())
-> > 
-> 
-> Thanks a lot for testing, Niklas!
-> 
-> > I guess one way to solve this would be for the EPC core to keep track of
-> > the current EPC "core state" (up/down). If the core is "up" at EPF .bind()
-> > time, notify the EPF driver directly after .bind()?
-> > 
-> 
-> Yeah, that's a good solution. But I think it would be better if the EPC caches
-> all events if the EPF drivers are not available and dispatch them once the bind
-> happens for each EPF driver. Even though INIT_COMPLETE is the only event that is
-> getting generated before bind() now, IMO it is better to add provision to catch
-> other events also.
-> 
-> Wdyt?
+On Fri, Mar 08, 2024 at 10:42:40AM +0200, Tony Lindgren wrote:
+> * Thomas Richard <thomas.richard@bootlin.com> [240304 15:36]:
+> > A device may need the controller up during suspend_noirq() or
+> > resume_noirq().
+> > But if the controller is autosuspended, there is no way to wakeup it du=
+ring
+> > suspend_noirq() or resume_noirq() because runtime pm is disabled at this
+> > time.
+> >=20
+> > The suspend() callback wakes up the controller, so it is available until
+> > its suspend_noirq() callback (pm_runtime_force_suspend()).
+> > During the resume, it's restored by resume_noirq() callback
+> > (pm_runtime_force_resume()). Then resume() callback enables autosuspend.
+>=20
+> Reviewed-by: Tony Lindgren <tony@atomide.com>
 
-I'm not sure.
-What if the EPF goes up/down/up, it seems a bit silly to send all those
-events to the EPF driver that will alloc+free+alloc.
+I fully trust Tony and I assume that this series should go in via some
+other tree than I2C. So:
 
-Do we know for sure that we will want to store + replay events other than
-INIT_COMPLETE?
+Acked-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-And how many events should we store?
+Andi, do you agree?
 
 
-Until we can think of a good reason which events other than UP/DOWN we
-can to store, I think that just storing the state as an integer in
-struct pci_epc seems simpler.
+--Qxnn2a5IXmQEXJ6+
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
 
-Or I guess we could continue with a flag in struct pci_epc_features,
-like has_perst_notifier, which would then require the EPC driver to
-call both epc_notify_core_up() and epc_notify_core_down() when receiving
-the PERST deassert/assert.
-For a driver without the flag set, the EPC core would call
-.epc_notify_core_up() after bind. (And .epc_notify_core_down() would never
-be called, or it could call it before unbind().)
-That way an EPF driver itself would not need any different handling
-(all callbacks would always come, either triggered by an EPC driver that
-has PERST GPIO irq, or triggered by the EPC core for a driver that lacks
-a PERST GPIO).
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmXwDE8ACgkQFA3kzBSg
+KbZneQ/+KWOJptPe830nsn7JfSUf3AOnK9q6xIxIiubJncJXVEeQU9CREDaUg9qm
+bI/l+empAXTCyZjGwuEjah2mFlBcT1y1+hNXAPG0px0omBk/p774NjskL0zONP4u
+rWQ6gc3Wl5cEyNBoZzUml+jdXYg8Ie2HL2Ymhxcpl4Y8bHiQT8WXyHdBDlD10hzK
+Q7oKeMO4aaoBHrnb8GTIPJkm6XaYNJHV7fVwf/b8pzzajEYoRJasGIdhs0U4b2aM
+gfC3C3/eTf035xZmqXvesTt0j3Kqbn5HxkcCG531iGpXUc6FthYKHHd77a46DwCe
+pCzGtTo8o7ezUnYOdySYJic5ZJEChC795pdl4rsrHMRM5B/NseT9ieAIvisVS4Ll
+mYQyCzW7jrhqT9A56/o+0rudG8LXs+b+MedNFDFcvCDv3LwWSt9imYDhvClKWMIJ
+4I+rDBS0ONXz/PqMD77QIOtuILV85GvDrbrmFUSiIzP/LtbIpUaFoRBQFw6QSpKI
+S3doeQqZayubO7DkMYhU4wrhSs5n6fKRHP4fr11VSclA8czlRuLKvm8vJrzmM5kh
+WU8UXU/JXpUHdQz3GSbIcHEs5e3AJa0JdCN+4x+qgSI4FYH5rr+SFnqnX6qXXipW
++cNJyxzVT59Y4MQYLNhwXxa5FGwlKdOJuory0HQRv+qRip/+f8Y=
+=P3pn
+-----END PGP SIGNATURE-----
 
-
-Kind regards,
-Niklas
+--Qxnn2a5IXmQEXJ6+--
 
