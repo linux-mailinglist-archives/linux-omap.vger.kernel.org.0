@@ -1,73 +1,73 @@
-Return-Path: <linux-omap+bounces-882-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-883-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9E2487B07D
-	for <lists+linux-omap@lfdr.de>; Wed, 13 Mar 2024 19:55:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2838C87B88B
+	for <lists+linux-omap@lfdr.de>; Thu, 14 Mar 2024 08:23:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74057283693
-	for <lists+linux-omap@lfdr.de>; Wed, 13 Mar 2024 18:55:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C1281F212FC
+	for <lists+linux-omap@lfdr.de>; Thu, 14 Mar 2024 07:23:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 090CE13F015;
-	Wed, 13 Mar 2024 17:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 862655D484;
+	Thu, 14 Mar 2024 07:22:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="D8zvQJOD"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="MaCuFtT1"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A3F813E7F9
-	for <linux-omap@vger.kernel.org>; Wed, 13 Mar 2024 17:53:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 837065C8E1
+	for <linux-omap@vger.kernel.org>; Thu, 14 Mar 2024 07:22:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710352431; cv=none; b=j31pElUS2+yAjcsHfW6sRgIvQRopTxu3PtQJ6dCb0MIbe6N9in98MKv2Y1S0DHCdP9zl+3vbXDaMEjStxU6Jp59msK8DAiFf+eGsjX+58sKpj5CmzA+aQpdRwJU7+dsBrgTs2QqbD7vH9LftvODzSOcTTLTraD+6k2IXYQqKBik=
+	t=1710400942; cv=none; b=poJFf1gw07dnTEdMhADzl9m5j5ZRU0RaedNH3TJopdXT0+9regesIDnyfanCGcFDN4KtliSkFzs9GBSd7z6kn9dp2jgAfdRwyaMm77FFvgy8q4SAITLO+iIcgJnqZ/VWbFHmSdqmZ3FSAyrz8up06LEaP0JtXPJv1keECztDoTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710352431; c=relaxed/simple;
-	bh=ikP1SQZvK81WwtXopq3dHhyUueLGCn0F9tCceqEbyeU=;
+	s=arc-20240116; t=1710400942; c=relaxed/simple;
+	bh=n+DhiitdzCy6PlCjUMm0H6SMuSpk93mlHftoxOwzpbs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ryF9tGxDcwfh5wdIe6n/dPmuRwMBEEGQKsH2Y6C0qs35938UPHICLdlXZDWitGGK2q+FtegIbUAl60GWv46CucFis5A6yx3ZE2MA8WMezMpfXCnFy1GCTfK1W81yQ0Uxrgodu2jfaHKO8UCMJnpcKn6ZFqAvYcTeAybWsy3SOEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=D8zvQJOD; arc=none smtp.client-ip=209.85.210.182
+	 Content-Type:Content-Disposition:In-Reply-To; b=ESMdi//9wNAKW3AEufyayAEuBrbvnXoOfinZ3F00ldvPhr1snFoS0QLhxu8ocqrAVRr7c6fXZRyjd5cg1ybA49Wnr/PeCdMNLAbqNJtdREQACuI6QJgf/4Qtv6yVgwTAlUnkLdxWKEyKa47+SqzbFcSWY7ey13OLhkfKZ1TZvm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=MaCuFtT1; arc=none smtp.client-ip=209.85.214.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-6e6ac58fceaso197943b3a.1
-        for <linux-omap@vger.kernel.org>; Wed, 13 Mar 2024 10:53:49 -0700 (PDT)
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-1dc13fb0133so4766045ad.3
+        for <linux-omap@vger.kernel.org>; Thu, 14 Mar 2024 00:22:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1710352429; x=1710957229; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1710400940; x=1711005740; darn=vger.kernel.org;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=P42L0V1byhnm9xVh8nwf+gtaXnbnBXKB7y3o50DEnDg=;
-        b=D8zvQJODpgv7AIuJtS6cE34ZEwNLkubA98YOSqTLCzC69KQKzO2f3zGeK+Z5DUDzxi
-         o+MhH1fXsTzC5+MTFYVzZwM9TKWdDIfSl1AGH4LSzvVuBGbMD9jG+UhqXrHUxeFvsP3d
-         9TbKrEZk62XKsAq5v22pZCQ97JzVgSroarKzmG+MUpGNK6RQn37mVHRtnV5W2hzV27QY
-         PmCrm+BjGNdDurv7SBFLacgCV6vRcD2ofQILGoRLKueVEbpbDvkB323zb0PN2kMXj9gt
-         xqGrrJBdBocY31UygcoLPWUorr0DO9CcXcsP4/rt5f53tS9eMDhWoE2TfEfjPvuLDUo/
-         vIjQ==
+        bh=2Hg0QBhHNwXtR+/hf03RzKTokT9XhPWy1qXzqNjgPKw=;
+        b=MaCuFtT1txVGTv/VHGoD12w6G1l1lilNPoJLxc9Mk27j4Jp4utucTNyi1EL6HOWA6j
+         MSkMPEw4ssLdo7mU9dzwbWTuxa8hmpPh1hxPQCs4tgCv/X00ByHGlkrQKfwQ7j8x/WWg
+         tLFGtQl9FnGQ7yJapj4cA5ye1BTBUBUex34N/xMBspTE29YTDLZxveNwisQ7DUdBtjI7
+         jbS5QvJQollqjBeM3P0l8GF1A6BJlbyoML1JQKzZm/FG8PgrcVIB5Y3n07ZbDMWmO+vw
+         /EBarJNjanR9EVg0u3psNGmouCfyv3Gaq0T4y70IiXbR4XH8jjZGl3oeGNVf5LfEFw/P
+         mdlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710352429; x=1710957229;
+        d=1e100.net; s=20230601; t=1710400940; x=1711005740;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=P42L0V1byhnm9xVh8nwf+gtaXnbnBXKB7y3o50DEnDg=;
-        b=Ex8HGHubai58E8DJ99YGz5QZEsS4J0x7DaDh8U78SYnqTZspO9ln02edvRZYzUo9VQ
-         /JkrXxxwjg0fmz0JsYP7Vbj+TaGnOQOGjpQ9EhADEQUHvdkjKzeAyySMClSYRSnAMOcx
-         YYvjRw64jb8tK+bGSlZn2ZzRsLbMA+QC9sfCIKdqLDuPhN8OcMBiQOgZ9LBSLdgkUB2B
-         J9xSegW4hMTX1Rr9Di1XeRkbfyFe9VD+2ZPqKs/pIlQj2PwJhz8fRCq1RFh0YnrR4dGM
-         aw98RNT6oInLCHjrCs3m1qgPY7TaegjsVzLbiZBA9nm2/NsYWZVXj1gTEDw6iiHuFJ2z
-         dK6g==
-X-Forwarded-Encrypted: i=1; AJvYcCX8SW2qQnfutUscnIVVbVNymCt/aHhjymt+E8effxbK8G2OSNUngp898en7lv+FvHNcOVlzqDO3WG/T1PH2pDZdl3f4QnDih3GLeg==
-X-Gm-Message-State: AOJu0YzF370s3hXS+vbezEXr0ncxu816wxqpuiTKqUewHtZ73eSCww8C
-	4wu9qomKyFn29x4Y3XfC7TsH6fOAs5OuBMKtbd0RkC1URdzj6pCp07lH8ZtFSw==
-X-Google-Smtp-Source: AGHT+IFcf5q7ruVnxD8hAPCs04EkAgFwMtLJq7WsD337HPZnA1JczKQ1xXu4AYtawACMGMb2l439Qw==
-X-Received: by 2002:a05:6a20:12c9:b0:1a3:113a:bbd5 with SMTP id v9-20020a056a2012c900b001a3113abbd5mr5892663pzg.40.1710352428857;
-        Wed, 13 Mar 2024 10:53:48 -0700 (PDT)
-Received: from thinkpad ([117.213.99.94])
-        by smtp.gmail.com with ESMTPSA id r6-20020a63e506000000b005dbd0facb4dsm7803062pgh.61.2024.03.13.10.53.38
+        bh=2Hg0QBhHNwXtR+/hf03RzKTokT9XhPWy1qXzqNjgPKw=;
+        b=qzQkjhJ39p92wC+xp6GOExwT47p0sBU3DC8vyvlOA71kAFuURFhI8cpzenHAKrWgsJ
+         Y4N3c6IVUMEBqjjTOM0DQG7etgfSCGJX91Poh3j9CjYN490o3O5s997WNPeN2xBnu40v
+         bbGDCWPnhNNjBuPsxmWJMHv2bTA926gbDJkoSSSzxScyCbH7XoAcEjvsRyuHaAFXQUl9
+         KXmn8m2CSgeFD6jePZiqijmpWBGwdsggEFSeb7ApxYLBCCW8oQWcqOTHWnJnhNWU7iWY
+         1W6Z2LEe2Id1Pvy03RsDombzb9yCgZ2QuUBoE9dptBiEJcdEPfI7qfsWAGZBToEgkmgm
+         IrWQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUYqxtEJfubYW0ycjCqVTmVvDEykQsxOW+SDTzr7ivG/xBxz7lAKaLrSR7xIWWG8PN5tmcNMv1UWrOBdwXYIp7HHctLypG3CEjWeg==
+X-Gm-Message-State: AOJu0YyjiCvWdj704SIwZkfC7VfrZlOlXP99rYk4PxiK4SY/2LZWvDwY
+	ZbtOgfmxRIYhVt8O/6oY8Q3HSlYrC5mQxDFAHJa3MZUAeAqz0bfEDKkDf0t+gQ==
+X-Google-Smtp-Source: AGHT+IF/X3aYAW3IYlU6wCv/eec5+n3yuANXgesmj7Xvw84faSW1oJcJKTyrIR8e5yfg2eATFcw1LQ==
+X-Received: by 2002:a17:902:7594:b0:1dc:cc77:5668 with SMTP id j20-20020a170902759400b001dccc775668mr937645pll.51.1710400939560;
+        Thu, 14 Mar 2024 00:22:19 -0700 (PDT)
+Received: from thinkpad ([117.207.30.211])
+        by smtp.gmail.com with ESMTPSA id c7-20020a170902d48700b001dddeb10d83sm881090plg.223.2024.03.14.00.22.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Mar 2024 10:53:48 -0700 (PDT)
-Date: Wed, 13 Mar 2024 23:23:33 +0530
+        Thu, 14 Mar 2024 00:22:19 -0700 (PDT)
+Date: Thu, 14 Mar 2024 12:52:07 +0530
 From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 To: Niklas Cassel <cassel@kernel.org>
 Cc: Jingoo Han <jingoohan1@gmail.com>,
@@ -100,14 +100,17 @@ Cc: Jingoo Han <jingoohan1@gmail.com>,
 	linux-renesas-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org,
 	linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@axis.com, Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH v9 07/10] PCI: dwc: ep: Remove "core_init_notifier" flag
-Message-ID: <20240313175333.GA126027@thinkpad>
+	linux-arm-kernel@axis.com
+Subject: Re: [PATCH v9 06/10] PCI: dwc: ep: Call dw_pcie_ep_init_registers()
+ API directly from all glue drivers
+Message-ID: <20240314072207.GC4831@thinkpad>
 References: <20240304-pci-dbi-rework-v9-0-29d433d99cda@linaro.org>
- <20240304-pci-dbi-rework-v9-7-29d433d99cda@linaro.org>
- <ZesRk5Dg4KEASD3U@ryzen>
- <20240311144559.GA2504@thinkpad>
- <Ze99lLhe2GqIqMgl@ryzen>
+ <20240304-pci-dbi-rework-v9-6-29d433d99cda@linaro.org>
+ <ZeolaEIRYmKZjnvT@ryzen>
+ <20240308053624.GB3789@thinkpad>
+ <ZerUx9Vw_W997LZk@ryzen>
+ <20240308094947.GH3789@thinkpad>
+ <Zerm_LukciAYCZxD@ryzen>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -117,78 +120,89 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <Ze99lLhe2GqIqMgl@ryzen>
+In-Reply-To: <Zerm_LukciAYCZxD@ryzen>
 
-On Mon, Mar 11, 2024 at 10:54:28PM +0100, Niklas Cassel wrote:
-> On Mon, Mar 11, 2024 at 08:15:59PM +0530, Manivannan Sadhasivam wrote:
+On Fri, Mar 08, 2024 at 11:22:52AM +0100, Niklas Cassel wrote:
+> On Fri, Mar 08, 2024 at 03:19:47PM +0530, Manivannan Sadhasivam wrote:
+> > > > > > @@ -467,6 +467,13 @@ static int dra7xx_add_pcie_ep(struct dra7xx_pcie *dra7xx,
+> > > > > >  		return ret;
+> > > > > >  	}
+> > > > > >  
+> > > > > > +	ret = dw_pcie_ep_init_registers(ep);
+> > > > > > +	if (ret) {
+> > > > > 
+> > > > > Here you are using if (ret) to error check the return from
+> > > > > dw_pcie_ep_init_registers().
+> > > > > 
+> > > > > 
+> > > > > > index c0c62533a3f1..8392894ed286 100644
+> > > > > > --- a/drivers/pci/controller/dwc/pci-keystone.c
+> > > > > > +++ b/drivers/pci/controller/dwc/pci-keystone.c
+> > > > > > @@ -1286,6 +1286,13 @@ static int ks_pcie_probe(struct platform_device *pdev)
+> > > > > >  		ret = dw_pcie_ep_init(&pci->ep);
+> > > > > >  		if (ret < 0)
+> > > > > >  			goto err_get_sync;
+> > > > > > +
+> > > > > > +		ret = dw_pcie_ep_init_registers(&pci->ep);
+> > > > > > +		if (ret < 0) {
+> > > > > 
+> > > > > Here you are using if (ret < 0) to error check the return from
+> > > > > dw_pcie_ep_init_registers(). Please be consistent.
+> > > > > 
+> > > > 
+> > > > I maintained the consistency w.r.t individual drivers. Please check them
+> > > > individually.
+> > > > 
+> > > > If I maintain consistency w.r.t this patch, then the style will change within
+> > > > the drivers.
 > > > 
-> > > I would say that it is the following change that breaks things:
+> > > Personally, I disagree with that.
 > > > 
-> > > > -	if (!core_init_notifier) {
-> > > > -		ret = pci_epf_test_core_init(epf);
-> > > > -		if (ret)
-> > > > -			return ret;
-> > > > -	}
-> > > > -
+> > > All glue drivers should use the same way of checking dw_pcie_ep_init(),
+> > > depending on the kdoc of dw_pcie_ep_init().
 > > > 
-> > > Since without this code, pci_epf_test_core_init() will no longer be called,
-> > > as there is currently no one that calls epf->core_init() for a EPF driver
-> > > after it has been bound. (For drivers that call dw_pcie_ep_init_notify() in
-> > > .probe())
+> > > If the kdoc for dw_pcie_ep_init() says returns 0 on success,
+> > > then I think that it is strictly more correct to do:
+> > > 
+> > > ret = dw_pcie_ep_init()
+> > > if (ret) {
+> > > 	<error handling>
+> > > }
+> > > 
+> > > And if a glue driver doesn't look like that, then I think we should change
+> > > them. (Same reasoning for dw_pcie_ep_init_registers().)
+> > > 
+> > > 
+> > > If you read code that looks like:
+> > > ret = dw_pcie_ep_init()
+> > > if (ret < 0) {
+> > > 	<error handling>
+> > > }
+> > > 
+> > > then you assume that is is a function with a kdoc that says it can return 0
+> > > or a positive value on success, e.g. a function that returns an index in an
+> > > array.
 > > > 
 > > 
-> > Thanks a lot for testing, Niklas!
+> > But if you read the same function from the individual drivers, it could present
+> > a different opinion because the samantics is different than others.
+> 
+> Is there any glue driver where a positive result from dw_pcie_ep_init() is
+> considered valid?
+> 
+> 
 > > 
-> > > I guess one way to solve this would be for the EPC core to keep track of
-> > > the current EPC "core state" (up/down). If the core is "up" at EPF .bind()
-> > > time, notify the EPF driver directly after .bind()?
-> > > 
-> > 
-> > Yeah, that's a good solution. But I think it would be better if the EPC caches
-> > all events if the EPF drivers are not available and dispatch them once the bind
-> > happens for each EPF driver. Even though INIT_COMPLETE is the only event that is
-> > getting generated before bind() now, IMO it is better to add provision to catch
-> > other events also.
-> > 
-> > Wdyt?
+> > I'm not opposed to keeping the API semantics consistent, but we have to take
+> > account of the drivers style as well.
 > 
-> I'm not sure.
-> What if the EPF goes up/down/up, it seems a bit silly to send all those
-> events to the EPF driver that will alloc+free+alloc.
-> 
-> Do we know for sure that we will want to store + replay events other than
-> INIT_COMPLETE?
-> 
-> And how many events should we store?
-> 
-> 
-> Until we can think of a good reason which events other than UP/DOWN we
-> can to store, I think that just storing the state as an integer in
-> struct pci_epc seems simpler.
+> kdoc > "driver style"
+> IMO, but you are the maintainer, I just offered my 50 cents :)
 > 
 
-Hmm, makes sense.
+Those valuable 50 cents :) Looking at it again, I think you are right. We
+should honor the API over driver's own style.
 
-> 
-> Or I guess we could continue with a flag in struct pci_epc_features,
-> like has_perst_notifier, which would then require the EPC driver to
-> call both epc_notify_core_up() and epc_notify_core_down() when receiving
-> the PERST deassert/assert.
-> For a driver without the flag set, the EPC core would call
-> .epc_notify_core_up() after bind. (And .epc_notify_core_down() would never
-> be called, or it could call it before unbind().)
-> That way an EPF driver itself would not need any different handling
-> (all callbacks would always come, either triggered by an EPC driver that
-> has PERST GPIO irq, or triggered by the EPC core for a driver that lacks
-> a PERST GPIO).
-> 
-
-For simplicity, I've just used a flag in 'struct pci_epc' to track the core_init
-and call the callback during bind().
-
-But the series has grown big, so I decided to split it into two. One to address
-the DBI access issue and also remove the 'core_init_notifier' flag and another
-one to make EPF drivers more robust to handle the host reboot scenario.
+I've changed the semantics in next version, thanks!
 
 - Mani
 
