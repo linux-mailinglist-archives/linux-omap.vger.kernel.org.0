@@ -1,497 +1,429 @@
-Return-Path: <linux-omap+bounces-892-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-893-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8F2F87B8EB
-	for <lists+linux-omap@lfdr.de>; Thu, 14 Mar 2024 08:52:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E29E387C476
+	for <lists+linux-omap@lfdr.de>; Thu, 14 Mar 2024 21:51:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED43B1C228A2
-	for <lists+linux-omap@lfdr.de>; Thu, 14 Mar 2024 07:52:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96D1528214A
+	for <lists+linux-omap@lfdr.de>; Thu, 14 Mar 2024 20:51:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0006F6024E;
-	Thu, 14 Mar 2024 07:49:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD37776402;
+	Thu, 14 Mar 2024 20:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="vr2vtfls"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gpnO65CN"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5071604C5
-	for <linux-omap@vger.kernel.org>; Thu, 14 Mar 2024 07:49:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D65A97581E;
+	Thu, 14 Mar 2024 20:50:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710402595; cv=none; b=qWfp0FfFOagtsS345oTaqo82Jz351BNZaEJlkaNwo+JrUgDb5RnerMw7WEliOxLP0SW9zkdYAEpLyJwUfjYj8YdK56ZsLKqFsEmvyJE9EROpz1g9jYaGA+RtkCRu9/llCmh+2/eGKSxKQJ8sTa5X4B6L9Nv2GY13BmfMDjGP6Kg=
+	t=1710449450; cv=none; b=BO32y97qw893sYGn3aKaiNlthc+inlrN+48fwuOPFREBD9ilPdNAGSyxHiKanCfuhS7gLoYaNBKLbtRlKc+4jI2uQzbvDMlgr5GD261bYs2qk7iDWTFc5XRsckdpvfRhlmCAK8yiRzUNuH6JXapJ98U5/RjlTs+jB7EFcmQGZHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710402595; c=relaxed/simple;
-	bh=S2uv0dCCbhiU2qhbMjneII/AXKnesPZEwsDKdaLNH1s=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=k7qM7YVqpB6FWRWufSGRNihkCOyIQTD0IjaAdkvInXdYRclCCRzAp0AFYcVMFN/pXhyR9g7ABNVZB6fu4G1/2pm+iByxo3L1QQVf9gHPir7lyp/nnB92V7CXQ6zTpm9IlsgGDPVUm8SKSmNhvC/POyJS/rYfHCvICtz1zG/Cyg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=vr2vtfls; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-1dedb92e540so1904165ad.0
-        for <linux-omap@vger.kernel.org>; Thu, 14 Mar 2024 00:49:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1710402592; x=1711007392; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=l1IH4JXPyGY5G2M+FE3S5VV95kQawRh2XQdzV9wj3zI=;
-        b=vr2vtflsM3FYi13sFSUQNr/U0DPyyJR1RLRmGsZOaOZ4lKSV/aAO5mQJQEXtnjWJWe
-         5gGazVJuM5h255fX1qOPiPwUZBI8JSegnBSLhNSqiMbHHvEU7GKzPJIUSrRgJtmuJPK1
-         XqaQW+oh48iRMuAZzYKC0+6GLwCPi4qTzLgNF6IjsBnZU0gxBqdQd1vO3muPR+TrJu41
-         QUYnfJRzQQ3Vd6Oi5hzvyUDZBkYloMwa610I5CVb8lR4evmMxLdovyCl9b9NBIFjPz/q
-         IcrkN5POV14AN4PW49Yzt4+U8UrI7VYXtCFkeWvnVikdW8OqXPjCDhFqtmF9jDLYb5qJ
-         jPFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710402592; x=1711007392;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=l1IH4JXPyGY5G2M+FE3S5VV95kQawRh2XQdzV9wj3zI=;
-        b=dEYOfr7iZ030O526dT9wkleMWHl2S79U5QP4vCUU1HqhAtPr/q8v04q0xipcz5wAK8
-         NoTe2FLXsXYqmhnGA0R1HViGFiy0ln4jrlzK/q13DEFca+mr42IkYs/E93mxbAz+GFXM
-         qE9wivoLyqmsEGkOinf69Oq7teXHKXRVah7dyPTe8kGFfw7x8XvlutOePS62LEi+lIjh
-         cQD00JRwVkCAafrDZtuwJBfhOToU0pBVmiLZkHSZyEwEWeewFZ5IVDfp07PllLiHPJVb
-         VMLzZkqzDY0aZYvT1a7ISVgZS9JlVQACWqQXx1jPQeA0/dlqNj6VRNi1QtYdJ4xcTYgo
-         LE0w==
-X-Forwarded-Encrypted: i=1; AJvYcCVGgdW8SCeSqbymyPhJZaB0Cvz9w8ZZm49/88/bLcflyY09EU2qnjWTXW8WbLsiY7sgt6zwsCxOZDVkVKWM/wJIpSc3MlIVfRwNvA==
-X-Gm-Message-State: AOJu0YxXHqmyYJHS/ice5DL1CgdVbgY1lXOuSnZVp7JTBUuwWT0GfDmr
-	CsLzejgvCpqHaSXkfUzgSS38Zsjok90xkVLUbRaTZlFXIAyn4KBlVAJRwTZMHA==
-X-Google-Smtp-Source: AGHT+IFRoWC/HPBrw71SlL9Xc8OJuqzWc/bBWuQ3n9WklxGo0g0LLQYqYMly7CUmrUvwsMMbUvTFSg==
-X-Received: by 2002:a17:902:da88:b0:1dd:d869:a237 with SMTP id j8-20020a170902da8800b001ddd869a237mr3907038plx.34.1710402591972;
-        Thu, 14 Mar 2024 00:49:51 -0700 (PDT)
-Received: from [127.0.1.1] ([117.207.30.211])
-        by smtp.gmail.com with ESMTPSA id l9-20020a170903120900b001dd4fabf695sm946321plh.38.2024.03.14.00.49.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Mar 2024 00:49:51 -0700 (PDT)
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Date: Thu, 14 Mar 2024 13:18:06 +0530
-Subject: [PATCH v10 8/8] PCI: dwc: ep: Remove "core_init_notifier" flag
+	s=arc-20240116; t=1710449450; c=relaxed/simple;
+	bh=O/5wXlk+R9IrgRvcqejLc3dZkizW3I2FI+/+1ti0eo0=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=j0pW75phEYR5NL1lKII8hetqTuOU9cKDxRqS0Te3//3yGlZdhM8vK5hBl4hztI72+eGgkON7YR7bjr1UHU07YQOHalJvKVvgjhA1EDLhrmNZEkHnIq2Mosl9NQ4YSnQGA66Qtqw/pELRO8UK8pIxCP1cK8tswEqS1OjShwep+HY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gpnO65CN; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1710449447; x=1741985447;
+  h=date:from:to:cc:subject:message-id;
+  bh=O/5wXlk+R9IrgRvcqejLc3dZkizW3I2FI+/+1ti0eo0=;
+  b=gpnO65CNxPCz+l70Hs94qbh3ftSRgSxKKgnHVRpZegWOBl/b1jh8MND6
+   FgUjtV7nXoWlAl7W3NJBU9imZnp3vVSBjLzHjsOl/caGkCaqUMi340lHW
+   NczRASapZgoZzYR0zO2Yylbb4RDuRSYBxDd+X9xC0pGSloQnU29DjfL9Q
+   U3eln2SkfknYV08PzOEq9P7cu4YmPAqVfZsZ4oT5KUX5dPZJ31t7mx3Kf
+   590xYQSRt0rNnV0Uflo9whtLIxmDSbGAh8+9947tcKLI2Dmb3mpu139jf
+   HLWNa3WHTKXQqIuHXiDYBEARs4qMccd8vxwyKULfehhuYVzU3lLuSrVgK
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11013"; a="15846854"
+X-IronPort-AV: E=Sophos;i="6.07,126,1708416000"; 
+   d="scan'208";a="15846854"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2024 13:50:47 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,126,1708416000"; 
+   d="scan'208";a="12327200"
+Received: from lkp-server01.sh.intel.com (HELO b21307750695) ([10.239.97.150])
+  by orviesa010.jf.intel.com with ESMTP; 14 Mar 2024 13:50:44 -0700
+Received: from kbuild by b21307750695 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rks2D-000Dmr-2s;
+	Thu, 14 Mar 2024 20:50:41 +0000
+Date: Fri, 15 Mar 2024 04:49:44 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linux Memory Management List <linux-mm@kvack.org>,
+ ath11k@lists.infradead.org, bpf@vger.kernel.org,
+ io-uring@vger.kernel.org, linux-mtd@lists.infradead.org,
+ linux-omap@vger.kernel.org, linux-sound@vger.kernel.org,
+ netdev@vger.kernel.org
+Subject: [linux-next:master] BUILD REGRESSION
+ 9bb9b28d0568991b1d63e66fe75afa5f97ad1156
+Message-ID: <202403150437.Fk9UZzdG-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240314-pci-dbi-rework-v10-8-14a45c5a938e@linaro.org>
-References: <20240314-pci-dbi-rework-v10-0-14a45c5a938e@linaro.org>
-In-Reply-To: <20240314-pci-dbi-rework-v10-0-14a45c5a938e@linaro.org>
-To: Jingoo Han <jingoohan1@gmail.com>, 
- Gustavo Pimentel <gustavo.pimentel@synopsys.com>, 
- Lorenzo Pieralisi <lpieralisi@kernel.org>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
- Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
- Marek Vasut <marek.vasut+renesas@gmail.com>, 
- Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, 
- Thierry Reding <thierry.reding@gmail.com>, 
- Jonathan Hunter <jonathanh@nvidia.com>, 
- Kishon Vijay Abraham I <kishon@ti.com>, Vidya Sagar <vidyas@nvidia.com>, 
- Vignesh Raghavendra <vigneshr@ti.com>, Richard Zhu <hongxing.zhu@nxp.com>, 
- Lucas Stach <l.stach@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, NXP Linux Team <linux-imx@nxp.com>, 
- Minghuan Lian <minghuan.Lian@nxp.com>, Mingkai Hu <mingkai.hu@nxp.com>, 
- Roy Zang <roy.zang@nxp.com>, 
- Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, 
- Masami Hiramatsu <mhiramat@kernel.org>, 
- Kishon Vijay Abraham I <kishon@kernel.org>, 
- Jesper Nilsson <jesper.nilsson@axis.com>, 
- Srikanth Thokala <srikanth.thokala@intel.com>
-Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-renesas-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
- Niklas Cassel <cassel@kernel.org>, linux-arm-kernel@axis.com, 
- Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=openpgp-sha256; l=14106;
- i=manivannan.sadhasivam@linaro.org; h=from:subject:message-id;
- bh=S2uv0dCCbhiU2qhbMjneII/AXKnesPZEwsDKdaLNH1s=;
- b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBl8qvEnjDMt0fC3AEek+ZebxmAkGUV98ktdKT4w
- pi6cD4dXsCJATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCZfKrxAAKCRBVnxHm/pHO
- 9fFvB/9dsE406HBVkYP7CnZHAv77sMSzBAPSzJevA0+uFWPuaqLWI2/rgpttPDfm7VTCgMtlqO9
- SDsdL4oscB15r3Ei90fbPVvqC3TXfo1VksRWwqy9v9qA7FxckWmohHpQMRtlpYjtuKYpA6WvQP1
- IyC8guMXbFB7QzE0gYC2A2Gjj5WvgMeaTa3l/mv9NxcZLaSjvKIJjEfzIs8OtTSnmA1FpYHTnhw
- XUYk8Qgcob93j6ipCqK/4WFiVx53a3XJFwaP99oXxXEeE99NrY+EvG5ZzKMqIGRXGy2ZNFmEYbJ
- PRVWoZjTVky5Iy+iRA5J5jPXu8uYuGyDDvN55z3bSLcmrKBx
-X-Developer-Key: i=manivannan.sadhasivam@linaro.org; a=openpgp;
- fpr=C668AEC3C3188E4C611465E7488550E901166008
 
-"core_init_notifier" flag is set by the glue drivers requiring refclk from
-the host to complete the DWC core initialization. Also, those drivers will
-send a notification to the EPF drivers once the initialization is fully
-completed using the pci_epc_init_notify() API. Only then, the EPF drivers
-will start functioning.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: 9bb9b28d0568991b1d63e66fe75afa5f97ad1156  Add linux-next specific files for 20240314
 
-For the rest of the drivers generating refclk locally, EPF drivers will
-start functioning post binding with them. EPF drivers rely on the
-'core_init_notifier' flag to differentiate between the drivers.
-Unfortunately, this creates two different flows for the EPF drivers.
+Error/Warning reports:
 
-So to avoid that, let's get rid of the "core_init_notifier" flag and follow
-a single initialization flow for the EPF drivers. This is done by calling
-the dw_pcie_ep_init_notify() from all glue drivers after the completion of
-dw_pcie_ep_init_registers() API. This will allow all the glue drivers to
-send the notification to the EPF drivers once the initialization is fully
-completed.
+https://lore.kernel.org/oe-kbuild-all/202403142014.H8ciGzs8-lkp@intel.com
 
-Only difference here is that, the drivers requiring refclk from host will
-send the notification once refclk is received, while others will send it
-during probe time itself.
+Unverified Error/Warning (likely false positive, please contact us if interested):
 
-But this also requires the EPC core driver to deliver the notification
-after EPF driver bind. Because, the glue driver can send the notification
-before the EPF drivers bind() and in those cases the EPF drivers will miss
-the event. To accommodate this, EPC core is now caching the state of the
-EPC initialization in 'init_complete' flag and pci-ep-cfs driver sends the
-notification to EPF drivers based on that after each EPF driver bind.
+(.head.text+0x5040): relocation truncated to fit: R_SPARC_WDISP22 against `.init.text'
+(.init.text+0xa4): relocation truncated to fit: R_SPARC_WDISP22 against symbol `leon_smp_cpu_startup' defined in .text section in arch/sparc/kernel/trampoline_32.o
+WARNING: modpost: "__ashrdi3" [lib/math/mean_and_variance.ko] has no CRC!
 
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
----
- drivers/pci/controller/dwc/pci-dra7xx.c           |  2 ++
- drivers/pci/controller/dwc/pci-imx6.c             |  2 ++
- drivers/pci/controller/dwc/pci-keystone.c         |  2 ++
- drivers/pci/controller/dwc/pci-layerscape-ep.c    |  2 ++
- drivers/pci/controller/dwc/pcie-artpec6.c         |  2 ++
- drivers/pci/controller/dwc/pcie-designware-plat.c |  2 ++
- drivers/pci/controller/dwc/pcie-keembay.c         |  2 ++
- drivers/pci/controller/dwc/pcie-qcom-ep.c         |  1 -
- drivers/pci/controller/dwc/pcie-rcar-gen4.c       |  2 ++
- drivers/pci/controller/dwc/pcie-tegra194.c        |  1 -
- drivers/pci/controller/dwc/pcie-uniphier-ep.c     |  2 ++
- drivers/pci/endpoint/functions/pci-epf-test.c     | 18 +++++-------------
- drivers/pci/endpoint/pci-ep-cfs.c                 |  9 +++++++++
- drivers/pci/endpoint/pci-epc-core.c               | 22 ++++++++++++++++++++++
- include/linux/pci-epc.h                           |  7 ++++---
- 15 files changed, 58 insertions(+), 18 deletions(-)
+Error/Warning ids grouped by kconfigs:
 
-diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
-index 395042b29ffc..d2d17d37d3e0 100644
---- a/drivers/pci/controller/dwc/pci-dra7xx.c
-+++ b/drivers/pci/controller/dwc/pci-dra7xx.c
-@@ -474,6 +474,8 @@ static int dra7xx_add_pcie_ep(struct dra7xx_pcie *dra7xx,
- 		return ret;
- 	}
- 
-+	dw_pcie_ep_init_notify(ep);
-+
- 	return 0;
- }
- 
-diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-index bfcafa440ddb..894b5de76e3a 100644
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -1144,6 +1144,8 @@ static int imx6_add_pcie_ep(struct imx6_pcie *imx6_pcie,
- 		return ret;
- 	}
- 
-+	dw_pcie_ep_init_notify(ep);
-+
- 	/* Start LTSSM. */
- 	imx6_pcie_ltssm_enable(dev);
- 
-diff --git a/drivers/pci/controller/dwc/pci-keystone.c b/drivers/pci/controller/dwc/pci-keystone.c
-index 093dbb725e41..b7b30470b394 100644
---- a/drivers/pci/controller/dwc/pci-keystone.c
-+++ b/drivers/pci/controller/dwc/pci-keystone.c
-@@ -1293,6 +1293,8 @@ static int ks_pcie_probe(struct platform_device *pdev)
- 			goto err_ep_init;
- 		}
- 
-+		dw_pcie_ep_init_notify(&pci->ep);
-+
- 		break;
- 	default:
- 		dev_err(dev, "INVALID device type %d\n", mode);
-diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-index b712fdd06549..c513598a46d7 100644
---- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
-+++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-@@ -283,6 +283,8 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
- 		return ret;
- 	}
- 
-+	dw_pcie_ep_init_notify(&pci->ep);
-+
- 	return ls_pcie_ep_interrupt_init(pcie, pdev);
- }
- 
-diff --git a/drivers/pci/controller/dwc/pcie-artpec6.c b/drivers/pci/controller/dwc/pcie-artpec6.c
-index a6095561db4a..a4630b92489b 100644
---- a/drivers/pci/controller/dwc/pcie-artpec6.c
-+++ b/drivers/pci/controller/dwc/pcie-artpec6.c
-@@ -452,6 +452,8 @@ static int artpec6_pcie_probe(struct platform_device *pdev)
- 			return ret;
- 		}
- 
-+		dw_pcie_ep_init_notify(&pci->ep);
-+
- 		break;
- 	default:
- 		dev_err(dev, "INVALID device type %d\n", artpec6_pcie->mode);
-diff --git a/drivers/pci/controller/dwc/pcie-designware-plat.c b/drivers/pci/controller/dwc/pcie-designware-plat.c
-index ca9b22e654cd..8490c5d6ff9f 100644
---- a/drivers/pci/controller/dwc/pcie-designware-plat.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-plat.c
-@@ -154,6 +154,8 @@ static int dw_plat_pcie_probe(struct platform_device *pdev)
- 			dw_pcie_ep_deinit(&pci->ep);
- 		}
- 
-+		dw_pcie_ep_init_notify(&pci->ep);
-+
- 		break;
- 	default:
- 		dev_err(dev, "INVALID device type %d\n", dw_plat_pcie->mode);
-diff --git a/drivers/pci/controller/dwc/pcie-keembay.c b/drivers/pci/controller/dwc/pcie-keembay.c
-index 250d6acf16dc..9fa9354a5f48 100644
---- a/drivers/pci/controller/dwc/pcie-keembay.c
-+++ b/drivers/pci/controller/dwc/pcie-keembay.c
-@@ -438,6 +438,8 @@ static int keembay_pcie_probe(struct platform_device *pdev)
- 			return ret;
- 		}
- 
-+		dw_pcie_ep_init_notify(&pci->ep);
-+
- 		break;
- 	default:
- 		dev_err(dev, "Invalid device type %d\n", pcie->mode);
-diff --git a/drivers/pci/controller/dwc/pcie-qcom-ep.c b/drivers/pci/controller/dwc/pcie-qcom-ep.c
-index 3697b4a944cc..2fb8c15e7a91 100644
---- a/drivers/pci/controller/dwc/pcie-qcom-ep.c
-+++ b/drivers/pci/controller/dwc/pcie-qcom-ep.c
-@@ -775,7 +775,6 @@ static void qcom_pcie_ep_init_debugfs(struct qcom_pcie_ep *pcie_ep)
- 
- static const struct pci_epc_features qcom_pcie_epc_features = {
- 	.linkup_notifier = true,
--	.core_init_notifier = true,
- 	.msi_capable = true,
- 	.msix_capable = false,
- 	.align = SZ_4K,
-diff --git a/drivers/pci/controller/dwc/pcie-rcar-gen4.c b/drivers/pci/controller/dwc/pcie-rcar-gen4.c
-index fb7c03639a53..0448928017f3 100644
---- a/drivers/pci/controller/dwc/pcie-rcar-gen4.c
-+++ b/drivers/pci/controller/dwc/pcie-rcar-gen4.c
-@@ -435,6 +435,8 @@ static int rcar_gen4_add_dw_pcie_ep(struct rcar_gen4_pcie *rcar)
- 		rcar_gen4_pcie_ep_deinit(rcar);
- 	}
- 
-+	dw_pcie_ep_init_notify(ep);
-+
- 	return ret;
- }
- 
-diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
-index 264ee76bf008..e02deb31a72d 100644
---- a/drivers/pci/controller/dwc/pcie-tegra194.c
-+++ b/drivers/pci/controller/dwc/pcie-tegra194.c
-@@ -2006,7 +2006,6 @@ static int tegra_pcie_ep_raise_irq(struct dw_pcie_ep *ep, u8 func_no,
- 
- static const struct pci_epc_features tegra_pcie_epc_features = {
- 	.linkup_notifier = true,
--	.core_init_notifier = true,
- 	.msi_capable = false,
- 	.msix_capable = false,
- 	.reserved_bar = 1 << BAR_2 | 1 << BAR_3 | 1 << BAR_4 | 1 << BAR_5,
-diff --git a/drivers/pci/controller/dwc/pcie-uniphier-ep.c b/drivers/pci/controller/dwc/pcie-uniphier-ep.c
-index 82ccaea089be..eb1d79fdb1f1 100644
---- a/drivers/pci/controller/dwc/pcie-uniphier-ep.c
-+++ b/drivers/pci/controller/dwc/pcie-uniphier-ep.c
-@@ -410,6 +410,8 @@ static int uniphier_pcie_ep_probe(struct platform_device *pdev)
- 		return ret;
- 	}
- 
-+	dw_pcie_ep_init_notify(&priv->pci.ep);
-+
- 	return 0;
- }
- 
-diff --git a/drivers/pci/endpoint/functions/pci-epf-test.c b/drivers/pci/endpoint/functions/pci-epf-test.c
-index 18c80002d3bd..fc0282b0d626 100644
---- a/drivers/pci/endpoint/functions/pci-epf-test.c
-+++ b/drivers/pci/endpoint/functions/pci-epf-test.c
-@@ -753,6 +753,7 @@ static int pci_epf_test_core_init(struct pci_epf *epf)
- 	const struct pci_epc_features *epc_features;
- 	struct pci_epc *epc = epf->epc;
- 	struct device *dev = &epf->dev;
-+	bool linkup_notifier = false;
- 	bool msix_capable = false;
- 	bool msi_capable = true;
- 	int ret;
-@@ -795,6 +796,10 @@ static int pci_epf_test_core_init(struct pci_epf *epf)
- 		}
- 	}
- 
-+	linkup_notifier = epc_features->linkup_notifier;
-+	if (!linkup_notifier)
-+		queue_work(kpcitest_workqueue, &epf_test->cmd_handler.work);
-+
- 	return 0;
- }
- 
-@@ -901,8 +906,6 @@ static int pci_epf_test_bind(struct pci_epf *epf)
- 	const struct pci_epc_features *epc_features;
- 	enum pci_barno test_reg_bar = BAR_0;
- 	struct pci_epc *epc = epf->epc;
--	bool linkup_notifier = false;
--	bool core_init_notifier = false;
- 
- 	if (WARN_ON_ONCE(!epc))
- 		return -EINVAL;
-@@ -913,8 +916,6 @@ static int pci_epf_test_bind(struct pci_epf *epf)
- 		return -EOPNOTSUPP;
- 	}
- 
--	linkup_notifier = epc_features->linkup_notifier;
--	core_init_notifier = epc_features->core_init_notifier;
- 	test_reg_bar = pci_epc_get_first_free_bar(epc_features);
- 	if (test_reg_bar < 0)
- 		return -EINVAL;
-@@ -927,21 +928,12 @@ static int pci_epf_test_bind(struct pci_epf *epf)
- 	if (ret)
- 		return ret;
- 
--	if (!core_init_notifier) {
--		ret = pci_epf_test_core_init(epf);
--		if (ret)
--			return ret;
--	}
--
- 	epf_test->dma_supported = true;
- 
- 	ret = pci_epf_test_init_dma_chan(epf_test);
- 	if (ret)
- 		epf_test->dma_supported = false;
- 
--	if (!linkup_notifier && !core_init_notifier)
--		queue_work(kpcitest_workqueue, &epf_test->cmd_handler.work);
--
- 	return 0;
- }
- 
-diff --git a/drivers/pci/endpoint/pci-ep-cfs.c b/drivers/pci/endpoint/pci-ep-cfs.c
-index 0ea64e24ed61..3b21e28f9b59 100644
---- a/drivers/pci/endpoint/pci-ep-cfs.c
-+++ b/drivers/pci/endpoint/pci-ep-cfs.c
-@@ -64,6 +64,9 @@ static int pci_secondary_epc_epf_link(struct config_item *epf_item,
- 		return ret;
- 	}
- 
-+	/* Send any pending EPC initialization complete to the EPF driver */
-+	pci_epc_notify_pending_init(epc, epf);
-+
- 	return 0;
- }
- 
-@@ -125,6 +128,9 @@ static int pci_primary_epc_epf_link(struct config_item *epf_item,
- 		return ret;
- 	}
- 
-+	/* Send any pending EPC initialization complete to the EPF driver */
-+	pci_epc_notify_pending_init(epc, epf);
-+
- 	return 0;
- }
- 
-@@ -230,6 +236,9 @@ static int pci_epc_epf_link(struct config_item *epc_item,
- 		return ret;
- 	}
- 
-+	/* Send any pending EPC initialization complete to the EPF driver */
-+	pci_epc_notify_pending_init(epc, epf);
-+
- 	return 0;
- }
- 
-diff --git a/drivers/pci/endpoint/pci-epc-core.c b/drivers/pci/endpoint/pci-epc-core.c
-index dcd4e66430c1..ba2ff037dfa6 100644
---- a/drivers/pci/endpoint/pci-epc-core.c
-+++ b/drivers/pci/endpoint/pci-epc-core.c
-@@ -753,10 +753,32 @@ void pci_epc_init_notify(struct pci_epc *epc)
- 			epf->event_ops->core_init(epf);
- 		mutex_unlock(&epf->lock);
- 	}
-+	epc->init_complete = true;
- 	mutex_unlock(&epc->list_lock);
- }
- EXPORT_SYMBOL_GPL(pci_epc_init_notify);
- 
-+/**
-+ * pci_epc_notify_pending_init() - Notify the pending EPC device initialization
-+ *                                 complete to the EPF device
-+ * @epc: the EPC device whose core initialization is pending to be notified
-+ * @epf: the EPF device to be notified
-+ *
-+ * Invoke to notify the pending EPC device initialization complete to the EPF
-+ * device. This is used to deliver the notification if the EPC initialization
-+ * got completed before the EPF driver bind.
-+ */
-+void pci_epc_notify_pending_init(struct pci_epc *epc, struct pci_epf *epf)
-+{
-+	if (epc->init_complete) {
-+		mutex_lock(&epf->lock);
-+		if (epf->event_ops && epf->event_ops->core_init)
-+			epf->event_ops->core_init(epf);
-+		mutex_unlock(&epf->lock);
-+	}
-+}
-+EXPORT_SYMBOL_GPL(pci_epc_notify_pending_init);
-+
- /**
-  * pci_epc_bme_notify() - Notify the EPF device that the EPC device has received
-  *			  the BME event from the Root complex
-diff --git a/include/linux/pci-epc.h b/include/linux/pci-epc.h
-index 40ea18f5aa02..adee6dbe4e45 100644
---- a/include/linux/pci-epc.h
-+++ b/include/linux/pci-epc.h
-@@ -128,6 +128,8 @@ struct pci_epc_mem {
-  * @group: configfs group representing the PCI EPC device
-  * @lock: mutex to protect pci_epc ops
-  * @function_num_map: bitmap to manage physical function number
-+ * @init_complete: flag to indicate whether the EPC initialization is complete
-+ *                 or not
-  */
- struct pci_epc {
- 	struct device			dev;
-@@ -143,13 +145,12 @@ struct pci_epc {
- 	/* mutex to protect against concurrent access of EP controller */
- 	struct mutex			lock;
- 	unsigned long			function_num_map;
-+	bool				init_complete;
- };
- 
- /**
-  * struct pci_epc_features - features supported by a EPC device per function
-  * @linkup_notifier: indicate if the EPC device can notify EPF driver on link up
-- * @core_init_notifier: indicate cores that can notify about their availability
-- *			for initialization
-  * @msi_capable: indicate if the endpoint function has MSI capability
-  * @msix_capable: indicate if the endpoint function has MSI-X capability
-  * @reserved_bar: bitmap to indicate reserved BAR unavailable to function driver
-@@ -159,7 +160,6 @@ struct pci_epc {
-  */
- struct pci_epc_features {
- 	unsigned int	linkup_notifier : 1;
--	unsigned int	core_init_notifier : 1;
- 	unsigned int	msi_capable : 1;
- 	unsigned int	msix_capable : 1;
- 	u8	reserved_bar;
-@@ -198,6 +198,7 @@ int pci_epc_add_epf(struct pci_epc *epc, struct pci_epf *epf,
- void pci_epc_linkup(struct pci_epc *epc);
- void pci_epc_linkdown(struct pci_epc *epc);
- void pci_epc_init_notify(struct pci_epc *epc);
-+void pci_epc_notify_pending_init(struct pci_epc *epc, struct pci_epf *epf);
- void pci_epc_bme_notify(struct pci_epc *epc);
- void pci_epc_remove_epf(struct pci_epc *epc, struct pci_epf *epf,
- 			enum pci_epc_interface_type type);
+gcc_recent_errors
+|-- alpha-allyesconfig
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|-- arc-allmodconfig
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|-- arc-allyesconfig
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|-- arm-allmodconfig
+|   |-- arch-arm-mach-omap2-prm33xx.c:warning:expecting-prototype-for-am33xx_prm_global_warm_sw_reset().-Prototype-was-for-am33xx_prm_global_sw_reset()-instead
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|-- arm-allyesconfig
+|   |-- arch-arm-mach-omap2-prm33xx.c:warning:expecting-prototype-for-am33xx_prm_global_warm_sw_reset().-Prototype-was-for-am33xx_prm_global_sw_reset()-instead
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|-- arm-randconfig-001-20240314
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|-- arm64-defconfig
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|-- arm64-randconfig-001-20240314
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|-- csky-allmodconfig
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|-- csky-allyesconfig
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|-- i386-allmodconfig
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|-- i386-allyesconfig
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|-- i386-randconfig-141-20240314
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|-- loongarch-allmodconfig
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|-- loongarch-defconfig
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|-- loongarch-randconfig-001-20240314
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|-- m68k-allmodconfig
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|-- m68k-allyesconfig
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|-- microblaze-allmodconfig
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|-- microblaze-allyesconfig
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|-- mips-allyesconfig
+|   |-- (.ref.text):relocation-truncated-to-fit:R_MIPS_26-against-start_secondary
+|   |-- (.text):relocation-truncated-to-fit:R_MIPS_26-against-kernel_entry
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|-- nios2-allmodconfig
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|-- nios2-allyesconfig
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|-- nios2-randconfig-002-20240314
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|-- openrisc-allyesconfig
+|   |-- (.head.text):relocation-truncated-to-fit:R_OR1K_INSN_REL_26-against-no-symbol
+|   |-- (.text):relocation-truncated-to-fit:R_OR1K_INSN_REL_26-against-no-symbol
+|   |-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|   `-- main.c:(.text):relocation-truncated-to-fit:R_OR1K_INSN_REL_26-against-symbol-__muldi3-defined-in-.text-section-in-..-lib-gcc-or1k-linux-..-libgcc.a(_muldi3.o)
+|-- parisc-allmodconfig
+|   |-- ERROR:__udivdi3-drivers-gpu-drm-sun4i-sun4i-drm-hdmi.ko-undefined
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|-- parisc-allyesconfig
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|-- powerpc-allmodconfig
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|-- s390-allyesconfig
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|-- sh-allmodconfig
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|-- sh-allyesconfig
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|-- sh-randconfig-002-20240314
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|-- sparc-allmodconfig
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|-- sparc-randconfig-001-20240314
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|-- sparc-randconfig-r014-20220604
+|   |-- (.head.text):relocation-truncated-to-fit:R_SPARC_WDISP22-against-init.text
+|   |-- (.init.text):relocation-truncated-to-fit:R_SPARC_WDISP22-against-symbol-leon_smp_cpu_startup-defined-in-.text-section-in-arch-sparc-kernel-trampoline_32.o
+|   `-- WARNING:modpost:__ashrdi3-lib-math-mean_and_variance.ko-has-no-CRC
+|-- sparc64-allmodconfig
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|-- sparc64-allyesconfig
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|-- um-allyesconfig
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|-- x86_64-randconfig-103-20240314
+|   `-- sound-core-pcm_native.c:inconsistent-IS_ERR-and-PTR_ERR-on-line-.
+|-- x86_64-randconfig-121-20240315
+|   `-- io_uring-io_uring.c:sparse:sparse:cast-to-restricted-io_req_flags_t
+|-- x86_64-randconfig-123-20240315
+|   |-- drivers-net-wireless-ath-ath11k-mac.c:sparse:sparse:incorrect-type-in-assignment-(different-address-spaces)-expected-struct-ifacaddr6-ifaca6-got-struct-ifacaddr6-noderef-__rcu-ac_list
+|   |-- drivers-net-wireless-ath-ath11k-mac.c:sparse:sparse:incorrect-type-in-assignment-(different-address-spaces)-expected-struct-ifacaddr6-ifaca6-got-struct-ifacaddr6-noderef-__rcu-aca_next
+|   `-- io_uring-io_uring.c:sparse:sparse:cast-to-restricted-io_req_flags_t
+|-- x86_64-randconfig-161-20240314
+|   |-- drivers-mtd-devices-mchp48l640.c-mchp48l640_read_page()-warn:Please-consider-using-kzalloc-instead-of-kmalloc
+|   |-- drivers-mtd-devices-mchp48l640.c-mchp48l640_write_page()-warn:Please-consider-using-kzalloc-instead-of-kmalloc
+|   |-- mm-userfaultfd.c-mfill_atomic()-warn:inconsistent-returns-ctx-map_changing_lock-.
+|   `-- mm-userfaultfd.c-uffd_move_lock()-error:we-previously-assumed-src_vmap-could-be-null-(see-line-)
+`-- x86_64-randconfig-r132-20240315
+    `-- io_uring-io_uring.c:sparse:sparse:cast-to-restricted-io_req_flags_t
+clang_recent_errors
+|-- arm-defconfig
+|   |-- ERROR:__aeabi_uldivmod-drivers-gpu-drm-sun4i-sun4i-drm-hdmi.ko-undefined
+|   |-- arch-arm-mach-omap2-prm33xx.c:warning:expecting-prototype-for-am33xx_prm_global_warm_sw_reset().-Prototype-was-for-am33xx_prm_global_sw_reset()-instead
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|-- arm64-allmodconfig
+|   |-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|   `-- kernel-bpf-bpf_struct_ops.c:warning:bitwise-operation-between-different-enumeration-types-(-enum-bpf_type_flag-and-enum-bpf_reg_type-)
+|-- hexagon-allmodconfig
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|-- hexagon-allyesconfig
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|-- i386-randconfig-004-20240314
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|-- i386-randconfig-016-20240314
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|-- powerpc-allyesconfig
+|   |-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|   `-- kernel-bpf-bpf_struct_ops.c:warning:bitwise-operation-between-different-enumeration-types-(-enum-bpf_type_flag-and-enum-bpf_reg_type-)
+|-- powerpc-randconfig-003-20240314
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|-- riscv-allmodconfig
+|   |-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|   `-- kernel-bpf-bpf_struct_ops.c:warning:bitwise-operation-between-different-enumeration-types-(-enum-bpf_type_flag-and-enum-bpf_reg_type-)
+|-- riscv-allyesconfig
+|   |-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|   `-- kernel-bpf-bpf_struct_ops.c:warning:bitwise-operation-between-different-enumeration-types-(-enum-bpf_type_flag-and-enum-bpf_reg_type-)
+|-- riscv-randconfig-001-20240314
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|-- s390-allmodconfig
+|   |-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|   `-- kernel-bpf-bpf_struct_ops.c:warning:bitwise-operation-between-different-enumeration-types-(-enum-bpf_type_flag-and-enum-bpf_reg_type-)
+|-- s390-defconfig
+|   `-- kernel-bpf-bpf_struct_ops.c:warning:bitwise-operation-between-different-enumeration-types-(-enum-bpf_type_flag-and-enum-bpf_reg_type-)
+|-- x86_64-allmodconfig
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|-- x86_64-allyesconfig
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|-- x86_64-buildonly-randconfig-001-20240314
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|-- x86_64-randconfig-015-20240314
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+|-- x86_64-randconfig-072-20240314
+|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+`-- x86_64-randconfig-r113-20240315
+    `-- io_uring-io_uring.c:sparse:sparse:cast-to-restricted-io_req_flags_t
+
+elapsed time: 969m
+
+configs tested: 178
+configs skipped: 3
+
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                     haps_hs_smp_defconfig   gcc  
+arc                   randconfig-001-20240314   gcc  
+arc                   randconfig-002-20240314   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   clang
+arm                              allyesconfig   gcc  
+arm                                 defconfig   clang
+arm                       netwinder_defconfig   gcc  
+arm                   randconfig-001-20240314   gcc  
+arm                   randconfig-002-20240314   gcc  
+arm                   randconfig-003-20240314   clang
+arm                   randconfig-004-20240314   gcc  
+arm                        shmobile_defconfig   gcc  
+arm                         socfpga_defconfig   gcc  
+arm64                            allmodconfig   clang
+arm64                             allnoconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                 randconfig-001-20240314   gcc  
+arm64                 randconfig-002-20240314   gcc  
+arm64                 randconfig-003-20240314   clang
+arm64                 randconfig-004-20240314   clang
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+csky                  randconfig-001-20240314   gcc  
+csky                  randconfig-002-20240314   gcc  
+hexagon                          allmodconfig   clang
+hexagon                           allnoconfig   clang
+hexagon                          allyesconfig   clang
+hexagon                             defconfig   clang
+hexagon               randconfig-001-20240314   clang
+hexagon               randconfig-002-20240314   clang
+i386                             allmodconfig   gcc  
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-001-20240314   clang
+i386         buildonly-randconfig-002-20240314   clang
+i386         buildonly-randconfig-003-20240314   gcc  
+i386         buildonly-randconfig-004-20240314   gcc  
+i386         buildonly-randconfig-005-20240314   gcc  
+i386         buildonly-randconfig-006-20240314   clang
+i386                                defconfig   clang
+i386                  randconfig-001-20240314   gcc  
+i386                  randconfig-002-20240314   clang
+i386                  randconfig-003-20240314   gcc  
+i386                  randconfig-004-20240314   clang
+i386                  randconfig-005-20240314   gcc  
+i386                  randconfig-006-20240314   gcc  
+i386                  randconfig-011-20240314   clang
+i386                  randconfig-012-20240314   gcc  
+i386                  randconfig-013-20240314   clang
+i386                  randconfig-014-20240314   gcc  
+i386                  randconfig-015-20240314   clang
+i386                  randconfig-016-20240314   clang
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20240314   gcc  
+loongarch             randconfig-002-20240314   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                              allnoconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                         rt305x_defconfig   clang
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+nios2                 randconfig-001-20240314   gcc  
+nios2                 randconfig-002-20240314   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc                randconfig-001-20240314   gcc  
+parisc                randconfig-002-20240314   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   clang
+powerpc                      bamboo_defconfig   clang
+powerpc                     kilauea_defconfig   clang
+powerpc                     ksi8560_defconfig   gcc  
+powerpc                      ppc6xx_defconfig   gcc  
+powerpc               randconfig-001-20240314   gcc  
+powerpc               randconfig-002-20240314   gcc  
+powerpc               randconfig-003-20240314   clang
+powerpc64             randconfig-001-20240314   gcc  
+powerpc64             randconfig-002-20240314   clang
+powerpc64             randconfig-003-20240314   gcc  
+riscv                            allmodconfig   clang
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   clang
+riscv                               defconfig   clang
+riscv                 randconfig-001-20240314   clang
+riscv                 randconfig-002-20240314   clang
+s390                             allmodconfig   clang
+s390                              allnoconfig   clang
+s390                             allyesconfig   gcc  
+s390                                defconfig   clang
+s390                  randconfig-001-20240314   clang
+s390                  randconfig-002-20240314   gcc  
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sh                        dreamcast_defconfig   gcc  
+sh                        edosk7760_defconfig   gcc  
+sh                    randconfig-001-20240314   gcc  
+sh                    randconfig-002-20240314   gcc  
+sh                           se7206_defconfig   gcc  
+sh                   secureedge5410_defconfig   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                               defconfig   gcc  
+sparc                       sparc32_defconfig   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+sparc64               randconfig-001-20240314   gcc  
+sparc64               randconfig-002-20240314   gcc  
+um                               alldefconfig   clang
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   gcc  
+um                                  defconfig   clang
+um                             i386_defconfig   gcc  
+um                    randconfig-001-20240314   clang
+um                    randconfig-002-20240314   gcc  
+um                           x86_64_defconfig   clang
+x86_64                            allnoconfig   clang
+x86_64                           allyesconfig   clang
+x86_64       buildonly-randconfig-001-20240314   clang
+x86_64       buildonly-randconfig-002-20240314   clang
+x86_64       buildonly-randconfig-003-20240314   clang
+x86_64       buildonly-randconfig-004-20240314   gcc  
+x86_64       buildonly-randconfig-005-20240314   clang
+x86_64       buildonly-randconfig-006-20240314   clang
+x86_64                              defconfig   gcc  
+x86_64                randconfig-001-20240314   gcc  
+x86_64                randconfig-002-20240314   gcc  
+x86_64                randconfig-003-20240314   clang
+x86_64                randconfig-004-20240314   clang
+x86_64                randconfig-005-20240314   clang
+x86_64                randconfig-006-20240314   clang
+x86_64                randconfig-011-20240314   clang
+x86_64                randconfig-012-20240314   gcc  
+x86_64                randconfig-013-20240314   gcc  
+x86_64                randconfig-014-20240314   gcc  
+x86_64                randconfig-015-20240314   clang
+x86_64                randconfig-016-20240314   gcc  
+x86_64                randconfig-071-20240314   gcc  
+x86_64                randconfig-072-20240314   clang
+x86_64                randconfig-073-20240314   clang
+x86_64                randconfig-074-20240314   gcc  
+x86_64                randconfig-075-20240314   gcc  
+x86_64                randconfig-076-20240314   gcc  
+x86_64                          rhel-8.3-rust   clang
+xtensa                            allnoconfig   gcc  
+xtensa                randconfig-001-20240314   gcc  
+xtensa                randconfig-002-20240314   gcc  
 
 -- 
-2.25.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
