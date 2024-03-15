@@ -1,440 +1,283 @@
-Return-Path: <linux-omap+bounces-894-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-895-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0342C87D0D5
-	for <lists+linux-omap@lfdr.de>; Fri, 15 Mar 2024 17:00:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A442887D720
+	for <lists+linux-omap@lfdr.de>; Sat, 16 Mar 2024 00:04:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 491AC1F24474
-	for <lists+linux-omap@lfdr.de>; Fri, 15 Mar 2024 16:00:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 130B21F227DB
+	for <lists+linux-omap@lfdr.de>; Fri, 15 Mar 2024 23:04:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFA6F41238;
-	Fri, 15 Mar 2024 16:00:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0791E54901;
+	Fri, 15 Mar 2024 23:04:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="e0RZsvJH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J8aAxqrS"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93C0C3CF63;
-	Fri, 15 Mar 2024 16:00:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5726101E6
+	for <linux-omap@vger.kernel.org>; Fri, 15 Mar 2024 23:04:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710518421; cv=none; b=ovdwI7U4vDsHhjP8wTIkwgsXWw9vrGjpeizWrCu0culq0WtePcYLGEasIAkLJp8JVhFv3Zo76d/Z8nIpZFqlpPJPh0WsUAXCvAkeV86YeGlpKauBo8Wn5bwjdfVGjqldb5yOp7gcpg97fOzMF/oBClZ4rcK2CxkQbo3F+n0Reok=
+	t=1710543877; cv=none; b=kCQOrDBygvvTKiO4LH8UEtCPjBzd1rMancgmvFtHOznntmWyK+DJQCR+thmWadMTN42pPWpL78INCc7LsR3sMDAldEk5nfwth1phiHfH3pYg1qCLXLWF0b5YQ/vP548PHL2/5Njr/q9Tl8mIPNMHy0SVra3WXKBXYFih04q1D8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710518421; c=relaxed/simple;
-	bh=GCeXWpJT4RiRl2a56E/F0T4MC+DY8dBCIQJQ8YWvflI=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=jUrsryGDyDuSIbJ7YSbQnsOJnSbdbtmPEr6S0wUqn+XhNTPs8zBCWyk+1l8e7u+maHPJCQ+ked1b9gotxpngYyAUjyC8mq5O/qWGD+73VFrcNdrz1Tt4v1ROMZ9NnVj4li8KRDZWIbd7vfX1PfVCIU6eXOUFD6IR0BFwRbAItoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=e0RZsvJH; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1710518418; x=1742054418;
-  h=date:from:to:cc:subject:message-id;
-  bh=GCeXWpJT4RiRl2a56E/F0T4MC+DY8dBCIQJQ8YWvflI=;
-  b=e0RZsvJH6pxjfkili11MiIB3nI34dFMsvvcY2ljesGfVfEejxEmfzlc7
-   I2K74QgBhdq/zVd8hNSY7+nuYmdmLAM01sl3npr7K2JOMxOY1ncZDzxtZ
-   Fza/0wJL9s088fH2tplNg+VFb1HNSiAAhjNVjBuamSUyhCx74jbR2cqvH
-   Py4tZyZmGvRwdQXBlwD06EsfeFHPM9die1Y2mRVm032zVkQNuwef6uLqT
-   7vLAQZkJZaLXDauI6BFn8f9Vt2GHz5inNTBaypY24cDfXffKGxXwmiZL4
-   aBXrnmT4gcqKJ0Xm0nVtVBBcDwagbODZdCeiEWZ4rZ5+ntPlT8m0scr6q
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11014"; a="5331248"
-X-IronPort-AV: E=Sophos;i="6.07,128,1708416000"; 
-   d="scan'208";a="5331248"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Mar 2024 09:00:17 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,128,1708416000"; 
-   d="scan'208";a="12630087"
-Received: from lkp-server01.sh.intel.com (HELO b21307750695) ([10.239.97.150])
-  by orviesa010.jf.intel.com with ESMTP; 15 Mar 2024 09:00:15 -0700
-Received: from kbuild by b21307750695 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rl9ye-000EZN-1S;
-	Fri, 15 Mar 2024 16:00:12 +0000
-Date: Fri, 15 Mar 2024 23:59:52 +0800
-From: kernel test robot <lkp@intel.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linux Memory Management List <linux-mm@kvack.org>,
- amd-gfx@lists.freedesktop.org, bpf@vger.kernel.org,
- linux-mtd@lists.infradead.org, linux-omap@vger.kernel.org,
- linux-usb@vger.kernel.org, netdev@vger.kernel.org,
- speakup@linux-speakup.org
-Subject: [linux-next:master] BUILD REGRESSION
- a1e7655b77e3391b58ac28256789ea45b1685abb
-Message-ID: <202403152346.LRpeLdwG-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1710543877; c=relaxed/simple;
+	bh=hLeJP97ULyJvWGhtpLLZ9Rf8paA6bhU/UR1X8AzZMGc=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=uHoWfBourysyMrpljw9xnQiKxdC1VRQK8Y8ip5LD4VoEdpDrufd9X8MUtBByfQpFYri1kfL5O+4FDosH6LlQzQHnuPPwtgXjfxarC64Fl5MAWMB39pNGEh3mRlNbcHXWfgjOYn+x+cZYTNqHQf2amk7AoT4kvSItQqizkwILs2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J8aAxqrS; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-413ffe7ee4eso9897795e9.2
+        for <linux-omap@vger.kernel.org>; Fri, 15 Mar 2024 16:04:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1710543874; x=1711148674; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=MNMSXndo1fCxwzBEQ2N9j4v97hubsKJyL8zdqmaJSf8=;
+        b=J8aAxqrSj9wJJUaJy7KIuJvx2stcymT4g9dHlRFn7wQZp1iQU20gVd1djQIHg4OyVU
+         K38obat2s+dga2mo7JN6S9wjKcZ3CwYojESJ33+MEer1om2qgAut1iDeDs/CLI8YzwBm
+         UcJL7GJcQpdOmZjN4dhMFWnEjue3tr1i4gTHHkg+3t3qsk886lQ1BA1zuDnndSVcr7w6
+         KB36HdxfoOQhHCFAX4+alRZ69w5X7+VLYwZRpVH/rkAPDvYJ24PAaUcs0AajGSuMSQI8
+         0t0Yrv8tZRFARcLbMwKUI/v67JMUHW17mSnvIhBYM84b/238LmvtQxU4Nsv/JROeEgUn
+         6V/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710543874; x=1711148674;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=MNMSXndo1fCxwzBEQ2N9j4v97hubsKJyL8zdqmaJSf8=;
+        b=qiuf9E4yDGQOmDlsH5dqUw6+kjvEbhSeRyqQZt3HRADnKf6yWwdik/XcGHcThaU6DG
+         UhUpFjZyrGRR2wYbhWEEEpZlYWY/gaP+WWAgdV2Mddl8Ed8/5QVOSYGWQXvTkgYMr9Ew
+         lNfeDPKITJ3aVLRo5+3hFfBN6DGtWVXqjZyRmlDObW1HAYZc+mpV8FDzbUC+O06kN1XR
+         fH9CaQq5e1bEu7VhDjbufps4bd1UOJdXN+pMnwgwmuPuaKMcJkIctfHjkb3n2RMfjS4k
+         lHuAz/PN+BIw7mNXI2vrEroRER6ZaXc2CLKyC6OR7Ca3UNg1r1XW7pHStCk8wq+5I7l+
+         EAZw==
+X-Gm-Message-State: AOJu0YyZ4SssL9LeRJW2Nw7jki76ikdMikrzsGr6vJ8P2ccXLUaHQ51Z
+	CprgCVec2s4qwkBTGNTKjhbTApEmIrUSgfFy2+N6N+xbE10pZRtGklii6JE0Dj7SLH16nzctIw5
+	U0XEOZMq5TKZdo7QNGmAGZWYPUcn/beA7AYI=
+X-Google-Smtp-Source: AGHT+IHVZx5RfFhALnj0yht2c4Q3dNTH7VJjbPaXLUGY0UQITktVVd8zSwgtKsdYNjDENubgP4S2kk0HAtv+5LonnXg=
+X-Received: by 2002:a05:600c:1d81:b0:413:fff2:a868 with SMTP id
+ p1-20020a05600c1d8100b00413fff2a868mr2616688wms.29.1710543873391; Fri, 15 Mar
+ 2024 16:04:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+From: Jeremy Mattfeld <jmmattfeld@gmail.com>
+Date: Fri, 15 Mar 2024 16:04:22 -0700
+Message-ID: <CABbzQ=fqmBeq_9YLjWq_8Lf=1E1L0igMxHUKcHr6hohyYnvvkQ@mail.gmail.com>
+Subject: sdhci-omap signal contention
+To: linux-omap@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-branch HEAD: a1e7655b77e3391b58ac28256789ea45b1685abb  Add linux-next specific files for 20240315
+I am developing a custom am335x platform using eMMC for the rootfds
+that also reads several ADI adc's via the IIO subsystem.
+Unfortunately, in order to get the device to boot from the eMMC, I had
+to short the signal for DAT0 to the eMMC to a pin I also use with the
+gpio-mux driver to select the spi slave adc that I want to talk to.
 
-Error/Warning ids grouped by kconfigs:
+I have no specific requirements to read/write on the eMMC while
+performing I/O on the spi but I still get sdhci errors errors while
+using the mux drivers when I want to talk to the adc's.  I am hoping
+there is some kind of software workaround for this problem.
 
-gcc_recent_errors
-|-- alpha-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_vcn.c:warning:.bin-directive-output-may-be-truncated-writing-bytes-into-a-region-of-size-between-and
-|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|-- arc-allmodconfig
-|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|-- arc-allyesconfig
-|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|-- arm-allmodconfig
-|   |-- arch-arm-mach-omap2-prm33xx.c:warning:expecting-prototype-for-am33xx_prm_global_warm_sw_reset().-Prototype-was-for-am33xx_prm_global_sw_reset()-instead
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_vcn.c:warning:.bin-directive-output-may-be-truncated-writing-bytes-into-a-region-of-size-between-and
-|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|-- arm-allyesconfig
-|   |-- arch-arm-mach-omap2-prm33xx.c:warning:expecting-prototype-for-am33xx_prm_global_warm_sw_reset().-Prototype-was-for-am33xx_prm_global_sw_reset()-instead
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_vcn.c:warning:.bin-directive-output-may-be-truncated-writing-bytes-into-a-region-of-size-between-and
-|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|-- arm-vexpress_defconfig
-|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|-- arm64-defconfig
-|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|-- arm64-randconfig-004-20240315
-|   `-- drivers-gpu-drm-amd-amdgpu-amdgpu_vcn.c:warning:.bin-directive-output-may-be-truncated-writing-bytes-into-a-region-of-size-between-and
-|-- csky-allmodconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_vcn.c:warning:.bin-directive-output-may-be-truncated-writing-bytes-into-a-region-of-size-between-and
-|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|-- csky-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_vcn.c:warning:.bin-directive-output-may-be-truncated-writing-bytes-into-a-region-of-size-between-and
-|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|-- csky-randconfig-001-20240315
-|   `-- drivers-gpu-drm-amd-amdgpu-amdgpu_vcn.c:warning:.bin-directive-output-may-be-truncated-writing-bytes-into-a-region-of-size-between-and
-|-- csky-randconfig-002-20240315
-|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|-- i386-allmodconfig
-|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|-- i386-allyesconfig
-|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|-- i386-buildonly-randconfig-003-20240315
-|   `-- drivers-accessibility-speakup-devsynth.c:error:label-at-end-of-compound-statement
-|-- loongarch-allmodconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_vcn.c:warning:.bin-directive-output-may-be-truncated-writing-bytes-into-a-region-of-size-between-and
-|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|-- loongarch-defconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_vcn.c:warning:.bin-directive-output-may-be-truncated-writing-bytes-into-a-region-of-size-between-and
-|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|-- loongarch-randconfig-001-20240315
-|   `-- drivers-gpu-drm-amd-amdgpu-amdgpu_vcn.c:warning:.bin-directive-output-may-be-truncated-writing-bytes-into-a-region-of-size-between-and
-|-- m68k-allmodconfig
-|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|-- m68k-allyesconfig
-|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|-- microblaze-allmodconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_vcn.c:warning:.bin-directive-output-may-be-truncated-writing-bytes-into-a-region-of-size-between-and
-|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|-- microblaze-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_vcn.c:warning:.bin-directive-output-may-be-truncated-writing-bytes-into-a-region-of-size-between-and
-|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|-- mips-allyesconfig
-|   |-- (.ref.text):relocation-truncated-to-fit:R_MIPS_26-against-start_secondary
-|   |-- (.text):relocation-truncated-to-fit:R_MIPS_26-against-kernel_entry
-|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|-- nios2-allmodconfig
-|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|-- nios2-allyesconfig
-|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|-- openrisc-allyesconfig
-|   |-- (.head.text):relocation-truncated-to-fit:R_OR1K_INSN_REL_26-against-no-symbol
-|   |-- (.text):relocation-truncated-to-fit:R_OR1K_INSN_REL_26-against-no-symbol
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_vcn.c:warning:.bin-directive-output-may-be-truncated-writing-bytes-into-a-region-of-size-between-and
-|   |-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|   `-- main.c:(.text):relocation-truncated-to-fit:R_OR1K_INSN_REL_26-against-symbol-__muldi3-defined-in-.text-section-in-..-lib-gcc-or1k-linux-..-libgcc.a(_muldi3.o)
-|-- parisc-allmodconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_vcn.c:warning:.bin-directive-output-may-be-truncated-writing-bytes-into-a-region-of-size-between-and
-|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|-- parisc-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_vcn.c:warning:.bin-directive-output-may-be-truncated-writing-bytes-into-a-region-of-size-between-and
-|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|-- parisc-randconfig-001-20240315
-|   `-- drivers-gpu-drm-amd-amdgpu-amdgpu_vcn.c:warning:.bin-directive-output-may-be-truncated-writing-bytes-into-a-region-of-size-between-and
-|-- powerpc-allmodconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_vcn.c:warning:.bin-directive-output-may-be-truncated-writing-bytes-into-a-region-of-size-between-and
-|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|-- powerpc-randconfig-002-20240315
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_vcn.c:warning:.bin-directive-output-may-be-truncated-writing-bytes-into-a-region-of-size-between-and
-|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|-- powerpc64-randconfig-002-20240315
-|   `-- drivers-gpu-drm-amd-amdgpu-amdgpu_vcn.c:warning:.bin-directive-output-may-be-truncated-writing-bytes-into-a-region-of-size-between-and
-|-- powerpc64-randconfig-003-20240315
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_vcn.c:warning:.bin-directive-output-may-be-truncated-writing-bytes-into-a-region-of-size-between-and
-|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|-- s390-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_vcn.c:warning:.bin-directive-output-may-be-truncated-writing-bytes-into-a-region-of-size-between-and
-|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|-- sh-allmodconfig
-|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|-- sh-allyesconfig
-|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|-- sh-randconfig-002-20240315
-|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|-- sparc-allmodconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_vcn.c:warning:.bin-directive-output-may-be-truncated-writing-bytes-into-a-region-of-size-between-and
-|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|-- sparc-randconfig-001-20240315
-|   |-- (.head.text):relocation-truncated-to-fit:R_SPARC_WDISP22-against-init.text
-|   `-- (.init.text):relocation-truncated-to-fit:R_SPARC_WDISP22-against-symbol-leon_smp_cpu_startup-defined-in-.text-section-in-arch-sparc-kernel-trampoline_32.o
-|-- sparc-randconfig-002-20240315
-|   `-- (.head.text):relocation-truncated-to-fit:R_SPARC_WDISP22-against-init.text
-|-- sparc64-allmodconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_vcn.c:warning:.bin-directive-output-may-be-truncated-writing-bytes-into-a-region-of-size-between-and
-|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|-- sparc64-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_vcn.c:warning:.bin-directive-output-may-be-truncated-writing-bytes-into-a-region-of-size-between-and
-|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|-- sparc64-randconfig-001-20240315
-|   `-- drivers-gpu-drm-amd-amdgpu-amdgpu_vcn.c:warning:.bin-directive-output-may-be-truncated-writing-bytes-into-a-region-of-size-between-and
-|-- um-allyesconfig
-|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|-- x86_64-buildonly-randconfig-003-20240315
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_vcn.c:warning:.bin-directive-output-may-be-truncated-writing-bytes-into-a-region-of-size-between-and
-|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|-- x86_64-buildonly-randconfig-004-20240315
-|   `-- drivers-gpu-drm-amd-amdgpu-amdgpu_vcn.c:warning:.bin-directive-output-may-be-truncated-writing-bytes-into-a-region-of-size-between-and
-`-- x86_64-randconfig-006-20240315
-    `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-clang_recent_errors
-|-- arm-defconfig
-|   |-- arch-arm-mach-omap2-prm33xx.c:warning:expecting-prototype-for-am33xx_prm_global_warm_sw_reset().-Prototype-was-for-am33xx_prm_global_sw_reset()-instead
-|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|-- arm-imx_v6_v7_defconfig
-|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|-- arm64-allmodconfig
-|   |-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|   `-- kernel-bpf-bpf_struct_ops.c:warning:bitwise-operation-between-different-enumeration-types-(-enum-bpf_type_flag-and-enum-bpf_reg_type-)
-|-- hexagon-allmodconfig
-|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|-- hexagon-allyesconfig
-|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|-- i386-buildonly-randconfig-002-20240315
-|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|-- i386-buildonly-randconfig-004-20240315
-|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|-- i386-randconfig-002-20240315
-|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|-- i386-randconfig-141-20240315
-|   |-- drivers-usb-dwc2-hcd.c-dwc2_alloc_split_dma_aligned_buf()-warn:Please-consider-using-kmem_cache_zalloc-instead-of-kmem_cache_alloc
-|   |-- drivers-usb-typec-tcpm-tcpm.c-tcpm_pd_svdm()-error:uninitialized-symbol-modep_prime-.
-|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|-- powerpc-allyesconfig
-|   |-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|   `-- kernel-bpf-bpf_struct_ops.c:warning:bitwise-operation-between-different-enumeration-types-(-enum-bpf_type_flag-and-enum-bpf_reg_type-)
-|-- powerpc-ppc44x_defconfig
-|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|-- powerpc64-randconfig-001-20240315
-|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|-- riscv-allmodconfig
-|   |-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|   `-- kernel-bpf-bpf_struct_ops.c:warning:bitwise-operation-between-different-enumeration-types-(-enum-bpf_type_flag-and-enum-bpf_reg_type-)
-|-- riscv-allyesconfig
-|   |-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|   `-- kernel-bpf-bpf_struct_ops.c:warning:bitwise-operation-between-different-enumeration-types-(-enum-bpf_type_flag-and-enum-bpf_reg_type-)
-|-- s390-allmodconfig
-|   |-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|   `-- kernel-bpf-bpf_struct_ops.c:warning:bitwise-operation-between-different-enumeration-types-(-enum-bpf_type_flag-and-enum-bpf_reg_type-)
-|-- s390-defconfig
-|   `-- kernel-bpf-bpf_struct_ops.c:warning:bitwise-operation-between-different-enumeration-types-(-enum-bpf_type_flag-and-enum-bpf_reg_type-)
-|-- x86_64-allmodconfig
-|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-|-- x86_64-allyesconfig
-|   `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
-`-- x86_64-randconfig-071-20240315
-    `-- fs-ubifs-journal.c:warning:expecting-prototype-for-wake_up_reservation().-Prototype-was-for-add_or_start_queue()-instead
+I am using an EXT4 filesystem for my rootfs on the eMMC.  I have also
+tried using a read-only rootfs.  I also created a patch for the
+gpio-mux driver that sets the pins to input when the mux is not
+selected hoping to simulate a tri-state configuration.  None of these
+efforts have solved my problem. Below is the output from the sdhci
+driver when the error occurs.  Any suggestions would be appreciated.
 
-elapsed time: 732m
+root@dsa5000-021:~# [ 1035.360798] mmc1: Timeout waiting for hardware interrupt.
+[ 1035.360825] mmc1: sdhci: ============ SDHCI REGISTER DUMP ===========
+[ 1035.360830] mmc1: sdhci: Sys addr:  0x00000000 | Version:  0x00003101
+[ 1035.360844] mmc1: sdhci: Blk size:  0x00000200 | Blk cnt:  0x00000001
+[ 1035.360850] mmc1: sdhci: Argument:  0x00000000 | Trn mode: 0x00000013
+[ 1035.360856] mmc1: sdhci: Present:   0x01f70a06 | Host ctl: 0x00000000
+[ 1035.360862] mmc1: sdhci: Power:     0x0000000f | Blk gap:  0x00000000
+[ 1035.360868] mmc1: sdhci: Wake-up:   0x00000000 | Clock:    0x00000087
+[ 1035.360873] mmc1: sdhci: Timeout:   0x0000000c | Int stat: 0x00000000
+[ 1035.360879] mmc1: sdhci: Int enab:  0x027f000b | Sig enab: 0x027f000b
+[ 1035.360885] mmc1: sdhci: ACmd stat: 0x00000000 | Slot int: 0x00000000
+[ 1035.360890] mmc1: sdhci: Caps:      0x07e10080 | Caps_1:   0x00000000
+[ 1035.360896] mmc1: sdhci: Cmd:       0x0000083a | Max curr: 0x00000000
+[ 1035.360901] mmc1: sdhci: Resp[0]:   0x00000900 | Resp[1]:  0x3403032a
+[ 1035.360907] mmc1: sdhci: Resp[2]:   0x36353730 | Resp[3]:  0x7001004d
+[ 1035.360913] mmc1: sdhci: Host ctl2: 0x00000000
+[ 1035.360918] mmc1: sdhci: ============================================
+[ 1035.421369] mmc1: switch to bus width 8 failed
+root@dsa5000-021:~# [ 1299.680032] mmc1: Timeout waiting for hardware interrupt.
+[ 1299.680059] mmc1: sdhci: ============ SDHCI REGISTER DUMP ===========
+[ 1299.680065] mmc1: sdhci: Sys addr:  0x00000000 | Version:  0x00003101
+[ 1299.680077] mmc1: sdhci: Blk size:  0x00000200 | Blk cnt:  0x00000008
+[ 1299.680084] mmc1: sdhci: Argument:  0x00041fe8 | Trn mode: 0x00000023
+[ 1299.680089] mmc1: sdhci: Present:   0x01f70506 | Host ctl: 0x00000000
+[ 1299.680096] mmc1: sdhci: Power:     0x0000000f | Blk gap:  0x00000000
+[ 1299.680101] mmc1: sdhci: Wake-up:   0x00000000 | Clock:    0x00000087
+[ 1299.680107] mmc1: sdhci: Timeout:   0x0000000e | Int stat: 0x00000000
+[ 1299.680112] mmc1: sdhci: Int enab:  0x027f000b | Sig enab: 0x027f000b
+[ 1299.680118] mmc1: sdhci: ACmd stat: 0x00000000 | Slot int: 0x00000000
+[ 1299.680124] mmc1: sdhci: Caps:      0x07e10080 | Caps_1:   0x00000000
+[ 1299.680130] mmc1: sdhci: Cmd:       0x0000193a | Max curr: 0x00000000
+[ 1299.680135] mmc1: sdhci: Resp[0]:   0x00000900 | Resp[1]:  0x00000000
+[ 1299.680141] mmc1: sdhci: Resp[2]:   0x00000000 | Resp[3]:  0x00000000
+[ 1299.680146] mmc1: sdhci: Host ctl2: 0x00000000
+[ 1299.680151] mmc1: sdhci: ============================================
+[ 1309.919983] mmc1: Timeout waiting for hardware interrupt.
+[ 1309.920010] mmc1: sdhci: ============ SDHCI REGISTER DUMP ===========
+[ 1309.920042] mmc1: sdhci: Sys addr:  0x00000000 | Version:  0x00003101
+[ 1309.920056] mmc1: sdhci: Blk size:  0x00000200 | Blk cnt:  0x00000008
+[ 1309.920062] mmc1: sdhci: Argument:  0x00041fe8 | Trn mode: 0x00000023
+[ 1309.920068] mmc1: sdhci: Present:   0x01f70506 | Host ctl: 0x00000000
+[ 1309.920074] mmc1: sdhci: Power:     0x0000000f | Blk gap:  0x00000000
+[ 1309.920080] mmc1: sdhci: Wake-up:   0x00000000 | Clock:    0x00000087
+[ 1309.920085] mmc1: sdhci: Timeout:   0x0000000e | Int stat: 0x00000000
+[ 1309.920090] mmc1: sdhci: Int enab:  0x027f000b | Sig enab: 0x027f000b
+[ 1309.920096] mmc1: sdhci: ACmd stat: 0x00000000 | Slot int: 0x00000000
+[ 1309.920102] mmc1: sdhci: Caps:      0x07e10080 | Caps_1:   0x00000000
+[ 1309.920108] mmc1: sdhci: Cmd:       0x0000193a | Max curr: 0x00000000
+[ 1309.920114] mmc1: sdhci: Resp[0]:   0x00000900 | Resp[1]:  0x3403032a
+[ 1309.920120] mmc1: sdhci: Resp[2]:   0x36353730 | Resp[3]:  0x7001004d
+[ 1309.920126] mmc1: sdhci: Host ctl2: 0x00000000
+[ 1309.920130] mmc1: sdhci: ============================================
+[ 1310.023058] I/O error, dev mmcblk1, sector 265184 op 0x1:(WRITE)
+flags 0x103000 phys_seg 1 prio class 2
+[ 1310.023136] Buffer I/O error on dev mmcblk1p2, logical block 124,
+lost async page write
+[ 1319.145773] EXT4-fs error (device mmcblk1p2):
+ext4_check_bdev_write_error:217: comm systemd-timesyn: Error while
+async write back metadata
+[ 1320.159965] mmc1: Timeout waiting for hardware interrupt.
+[ 1320.159992] mmc1: sdhci: ============ SDHCI REGISTER DUMP ===========
+[ 1320.159998] mmc1: sdhci: Sys addr:  0x00000000 | Version:  0x00003101
+[ 1320.160011] mmc1: sdhci: Blk size:  0x00000200 | Blk cnt:  0x00000008
+[ 1320.160017] mmc1: sdhci: Argument:  0x00041fe8 | Trn mode: 0x00000023
+[ 1320.160023] mmc1: sdhci: Present:   0x01f70506 | Host ctl: 0x00000000
+[ 1320.160029] mmc1: sdhci: Power:     0x0000000f | Blk gap:  0x00000000
+[ 1320.160034] mmc1: sdhci: Wake-up:   0x00000000 | Clock:    0x00000087
+[ 1320.160068] mmc1: sdhci: Timeout:   0x0000000e | Int stat: 0x00000000
+[ 1320.160075] mmc1: sdhci: Int enab:  0x027f000b | Sig enab: 0x027f000b
+[ 1320.160080] mmc1: sdhci: ACmd stat: 0x00000000 | Slot int: 0x00000000
+[ 1320.160086] mmc1: sdhci: Caps:      0x07e10080 | Caps_1:   0x00000000
+[ 1320.160092] mmc1: sdhci: Cmd:       0x0000193a | Max curr: 0x00000000
+[ 1320.160098] mmc1: sdhci: Resp[0]:   0x00000900 | Resp[1]:  0x00000000
+[ 1320.160103] mmc1: sdhci: Resp[2]:   0x00000000 | Resp[3]:  0x00000000
+[ 1320.160108] mmc1: sdhci: Host ctl2: 0x00000000
+[ 1320.160113] mmc1: sdhci: ============================================
+[ 1320.212742] I/O error, dev mmcblk1, sector 270312 op 0x1:(WRITE)
+flags 0x103000 phys_seg 1 prio class 2
+[ 1320.212775] Buffer I/O error on dev mmcblk1p2, logical block 765,
+lost async page write
+[ 1325.421342] mmc1: switch to bus width 8 failed
+[ 1335.519934] mmc1: Timeout waiting for hardware interrupt.
+[ 1335.519959] mmc1: sdhci: ============ SDHCI REGISTER DUMP ===========
+[ 1335.519965] mmc1: sdhci: Sys addr:  0x00000000 | Version:  0x00003101
+[ 1335.519978] mmc1: sdhci: Blk size:  0x00000200 | Blk cnt:  0x00000018
+[ 1335.519984] mmc1: sdhci: Argument:  0x000c0ea8 | Trn mode: 0x00000023
+[ 1335.519990] mmc1: sdhci: Present:   0x01f70506 | Host ctl: 0x00000002
+[ 1335.519996] mmc1: sdhci: Power:     0x0000000f | Blk gap:  0x00000000
+[ 1335.520002] mmc1: sdhci: Wake-up:   0x00000000 | Clock:    0x00000087
+[ 1335.520008] mmc1: sdhci: Timeout:   0x0000000e | Int stat: 0x00000000
+[ 1335.520014] mmc1: sdhci: Int enab:  0x027f000b | Sig enab: 0x027f000b
+[ 1335.520019] mmc1: sdhci: ACmd stat: 0x00000000 | Slot int: 0x00000000
+[ 1335.520024] mmc1: sdhci: Caps:      0x07e10080 | Caps_1:   0x00000000
+[ 1335.520030] mmc1: sdhci: Cmd:       0x0000193a | Max curr: 0x00000000
+[ 1335.520037] mmc1: sdhci: Resp[0]:   0x00000900 | Resp[1]:  0x00000000
+[ 1335.520042] mmc1: sdhci: Resp[2]:   0x00000000 | Resp[3]:  0x00000000
+[ 1335.520047] mmc1: sdhci: Host ctl2: 0x00000000
+[ 1335.520052] mmc1: sdhci: ============================================
+[ 1345.759923] mmc1: Timeout waiting for hardware interrupt.
+[ 1345.759950] mmc1: sdhci: ============ SDHCI REGISTER DUMP ===========
+[ 1345.759955] mmc1: sdhci: Sys addr:  0x00000000 | Version:  0x00003101
+[ 1345.759968] mmc1: sdhci: Blk size:  0x00000200 | Blk cnt:  0x00000018
+[ 1345.759975] mmc1: sdhci: Argument:  0x000c0ea8 | Trn mode: 0x00000023
+[ 1345.759981] mmc1: sdhci: Present:   0x01f70506 | Host ctl: 0x00000002
+[ 1345.759987] mmc1: sdhci: Power:     0x0000000f | Blk gap:  0x00000000
+[ 1345.759992] mmc1: sdhci: Wake-up:   0x00000000 | Clock:    0x00000087
+[ 1345.759998] mmc1: sdhci: Timeout:   0x0000000e | Int stat: 0x00000000
+[ 1345.760004] mmc1: sdhci: Int enab:  0x027f000b | Sig enab: 0x027f000b
+[ 1345.760009] mmc1: sdhci: ACmd stat: 0x00000000 | Slot int: 0x00000000
+[ 1345.760015] mmc1: sdhci: Caps:      0x07e10080 | Caps_1:   0x00000000
+[ 1345.760021] mmc1: sdhci: Cmd:       0x0000193a | Max curr: 0x00000000
+[ 1345.760026] mmc1: sdhci: Resp[0]:   0x00000900 | Resp[1]:  0x00000000
+[ 1345.760032] mmc1: sdhci: Resp[2]:   0x00000000 | Resp[3]:  0x00000000
+[ 1345.760037] mmc1: sdhci: Host ctl2: 0x00000000
+[ 1345.760042] mmc1: sdhci: ============================================
+[ 1345.812811] I/O error, dev mmcblk1, sector 790184 op 0x1:(WRITE)
+flags 0x800 phys_seg 3 prio class 2
+[ 1345.812919] Aborting journal on device mmcblk1p2-8.
+root@dsa5000-021:~#
+[ 1389.145664] EXT4-fs error (device mmcblk1p2):
+ext4_journal_check_start:83: comm systemd-timesyn: Detected aborted
+journal
+[ 1389.278756] EXT4-fs (mmcblk1p2): Remounting filesystem read-only
 
-configs tested: 177
-configs skipped: 3
 
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                     haps_hs_smp_defconfig   gcc  
-arc                   randconfig-001-20240315   gcc  
-arc                   randconfig-002-20240315   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   clang
-arm                              allyesconfig   gcc  
-arm                                 defconfig   clang
-arm                            dove_defconfig   gcc  
-arm                       imx_v6_v7_defconfig   clang
-arm                   randconfig-001-20240315   clang
-arm                   randconfig-002-20240315   gcc  
-arm                   randconfig-003-20240315   gcc  
-arm                   randconfig-004-20240315   gcc  
-arm                        vexpress_defconfig   gcc  
-arm64                            allmodconfig   clang
-arm64                             allnoconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                 randconfig-001-20240315   gcc  
-arm64                 randconfig-002-20240315   gcc  
-arm64                 randconfig-003-20240315   gcc  
-arm64                 randconfig-004-20240315   gcc  
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-csky                  randconfig-001-20240315   gcc  
-csky                  randconfig-002-20240315   gcc  
-hexagon                          allmodconfig   clang
-hexagon                           allnoconfig   clang
-hexagon                          allyesconfig   clang
-hexagon                             defconfig   clang
-hexagon               randconfig-001-20240315   clang
-hexagon               randconfig-002-20240315   clang
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-001-20240315   clang
-i386         buildonly-randconfig-002-20240315   clang
-i386         buildonly-randconfig-003-20240315   gcc  
-i386         buildonly-randconfig-004-20240315   clang
-i386         buildonly-randconfig-005-20240315   gcc  
-i386         buildonly-randconfig-006-20240315   gcc  
-i386                                defconfig   clang
-i386                  randconfig-001-20240315   gcc  
-i386                  randconfig-002-20240315   clang
-i386                  randconfig-003-20240315   clang
-i386                  randconfig-004-20240315   clang
-i386                  randconfig-005-20240315   gcc  
-i386                  randconfig-006-20240315   clang
-i386                  randconfig-011-20240315   clang
-i386                  randconfig-012-20240315   gcc  
-i386                  randconfig-013-20240315   gcc  
-i386                  randconfig-014-20240315   clang
-i386                  randconfig-015-20240315   gcc  
-i386                  randconfig-016-20240315   clang
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch             randconfig-001-20240315   gcc  
-loongarch             randconfig-002-20240315   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                     loongson2k_defconfig   gcc  
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-nios2                 randconfig-001-20240315   gcc  
-nios2                 randconfig-002-20240315   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc                randconfig-001-20240315   gcc  
-parisc                randconfig-002-20240315   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   clang
-powerpc                    ge_imp3a_defconfig   gcc  
-powerpc                      katmai_defconfig   clang
-powerpc                     mpc83xx_defconfig   clang
-powerpc                      ppc44x_defconfig   clang
-powerpc               randconfig-001-20240315   clang
-powerpc               randconfig-002-20240315   gcc  
-powerpc               randconfig-003-20240315   clang
-powerpc                 xes_mpc85xx_defconfig   gcc  
-powerpc64             randconfig-001-20240315   clang
-powerpc64             randconfig-002-20240315   gcc  
-powerpc64             randconfig-003-20240315   gcc  
-riscv                            allmodconfig   clang
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   clang
-riscv                               defconfig   clang
-riscv                 randconfig-001-20240315   clang
-riscv                 randconfig-002-20240315   clang
-s390                             alldefconfig   gcc  
-s390                             allmodconfig   clang
-s390                              allnoconfig   clang
-s390                             allyesconfig   gcc  
-s390                                defconfig   clang
-s390                  randconfig-001-20240315   gcc  
-s390                  randconfig-002-20240315   clang
-s390                       zfcpdump_defconfig   clang
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sh                    randconfig-001-20240315   gcc  
-sh                    randconfig-002-20240315   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                               defconfig   gcc  
-sparc                       sparc32_defconfig   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-sparc64               randconfig-001-20240315   gcc  
-sparc64               randconfig-002-20240315   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   gcc  
-um                                  defconfig   clang
-um                             i386_defconfig   gcc  
-um                    randconfig-001-20240315   gcc  
-um                    randconfig-002-20240315   clang
-um                           x86_64_defconfig   clang
-x86_64                            allnoconfig   clang
-x86_64                           allyesconfig   clang
-x86_64       buildonly-randconfig-001-20240315   gcc  
-x86_64       buildonly-randconfig-002-20240315   gcc  
-x86_64       buildonly-randconfig-003-20240315   gcc  
-x86_64       buildonly-randconfig-004-20240315   gcc  
-x86_64       buildonly-randconfig-005-20240315   clang
-x86_64       buildonly-randconfig-006-20240315   clang
-x86_64                              defconfig   gcc  
-x86_64                randconfig-001-20240315   gcc  
-x86_64                randconfig-002-20240315   clang
-x86_64                randconfig-003-20240315   gcc  
-x86_64                randconfig-004-20240315   clang
-x86_64                randconfig-005-20240315   gcc  
-x86_64                randconfig-006-20240315   gcc  
-x86_64                randconfig-011-20240315   clang
-x86_64                randconfig-012-20240315   gcc  
-x86_64                randconfig-013-20240315   gcc  
-x86_64                randconfig-014-20240315   gcc  
-x86_64                randconfig-015-20240315   clang
-x86_64                randconfig-016-20240315   clang
-x86_64                randconfig-071-20240315   clang
-x86_64                randconfig-072-20240315   clang
-x86_64                randconfig-073-20240315   gcc  
-x86_64                randconfig-074-20240315   gcc  
-x86_64                randconfig-075-20240315   clang
-x86_64                randconfig-076-20240315   clang
-x86_64                          rhel-8.3-rust   clang
-xtensa                            allnoconfig   gcc  
-xtensa                  cadence_csp_defconfig   gcc  
-xtensa                randconfig-001-20240315   gcc  
-xtensa                randconfig-002-20240315   gcc  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+After the filesystem was remounted, there were no more errors.
+Although it took longer on a different module it eventually failed in
+the same fashion:
+root@dsa5000-020:~# [ 2132.303563] mmc1: switch to bus width 8 failed
+[ 2167.663775] mmc1: switch to bus width 8 failed
+[ 2352.482705] mmc1: Timeout waiting for hardware interrupt.
+[ 2352.482732] mmc1: sdhci: ============ SDHCI REGISTER DUMP ===========
+[ 2352.482737] mmc1: sdhci: Sys addr:  0x00000000 | Version:  0x00003101
+[ 2352.482751] mmc1: sdhci: Blk size:  0x00000200 | Blk cnt:  0x00000008
+[ 2352.482757] mmc1: sdhci: Argument:  0x00041fe8 | Trn mode: 0x00000023
+[ 2352.482762] mmc1: sdhci: Present:   0x01f70506 | Host ctl: 0x00000000
+[ 2352.482768] mmc1: sdhci: Power:     0x0000000f | Blk gap:  0x00000000
+[ 2352.482774] mmc1: sdhci: Wake-up:   0x00000000 | Clock:    0x00000087
+[ 2352.482780] mmc1: sdhci: Timeout:   0x0000000e | Int stat: 0x00000000
+[ 2352.482786] mmc1: sdhci: Int enab:  0x027f000b | Sig enab: 0x027f000b
+[ 2352.482791] mmc1: sdhci: ACmd stat: 0x00000000 | Slot int: 0x00000000
+[ 2352.482796] mmc1: sdhci: Caps:      0x07e10080 | Caps_1:   0x00000000
+[ 2352.482802] mmc1: sdhci: Cmd:       0x0000193a | Max curr: 0x00000000
+[ 2352.482808] mmc1: sdhci: Resp[0]:   0x00000900 | Resp[1]:  0x00000000
+[ 2352.482814] mmc1: sdhci: Resp[2]:   0x00000000 | Resp[3]:  0x00000000
+[ 2352.482819] mmc1: sdhci: Host ctl2: 0x00000000
+[ 2352.482824] mmc1: sdhci: ============================================
+[ 2387.682736] mmc1: Timeout waiting for hardware interrupt.
+[ 2387.682763] mmc1: sdhci: ============ SDHCI REGISTER DUMP ===========
+[ 2387.682768] mmc1: sdhci: Sys addr:  0x00000000 | Version:  0x00003101
+[ 2387.682781] mmc1: sdhci: Blk size:  0x00000200 | Blk cnt:  0x00000010
+[ 2387.682787] mmc1: sdhci: Argument:  0x000c0f20 | Trn mode: 0x00000023
+[ 2387.682793] mmc1: sdhci: Present:   0x01f70506 | Host ctl: 0x00000000
+[ 2387.682799] mmc1: sdhci: Power:     0x0000000f | Blk gap:  0x00000000
+[ 2387.682805] mmc1: sdhci: Wake-up:   0x00000000 | Clock:    0x00000087
+[ 2387.682810] mmc1: sdhci: Timeout:   0x0000000e | Int stat: 0x00000000
+[ 2387.682816] mmc1: sdhci: Int enab:  0x027f000b | Sig enab: 0x027f000b
+[ 2387.682822] mmc1: sdhci: ACmd stat: 0x00000000 | Slot int: 0x00000000
+[ 2387.682827] mmc1: sdhci: Caps:      0x07e10080 | Caps_1:   0x00000000
+[ 2387.682833] mmc1: sdhci: Cmd:       0x0000193a | Max curr: 0x00000000
+[ 2387.682839] mmc1: sdhci: Resp[0]:   0x00000900 | Resp[1]:  0x340302ab
+[ 2387.682846] mmc1: sdhci: Resp[2]:   0x36353730 | Resp[3]:  0x7001004d
+[ 2387.682851] mmc1: sdhci: Host ctl2: 0x00000000
+[ 2387.682855] mmc1: sdhci: ============================================
+[ 2387.893192] I/O error, dev mmcblk1, sector 790304 op 0x1:(WRITE)
+flags 0x800 phys_seg 2 prio class 2
+[ 2387.893301] Aborting journal on device mmcblk1p2-8.
+[ 2441.830811] EXT4-fs error (device mmcblk1p2):
+ext4_journal_check_start:83: comm systemd-timesyn: Detected aborted
+journal
+[ 2452.322819] mmc1: Timeout waiting for hardware interrupt.
+[ 2452.322847] mmc1: sdhci: ============ SDHCI REGISTER DUMP ===========
+[ 2452.322852] mmc1: sdhci: Sys addr:  0x00000000 | Version:  0x00003101
+[ 2452.322866] mmc1: sdhci: Blk size:  0x00000200 | Blk cnt:  0x00000008
+[ 2452.322872] mmc1: sdhci: Argument:  0x00040800 | Trn mode: 0x00000023
+[ 2452.322878] mmc1: sdhci: Present:   0x01f70506 | Host ctl: 0x00000000
+[ 2452.322884] mmc1: sdhci: Power:     0x0000000f | Blk gap:  0x00000000
+[ 2452.322889] mmc1: sdhci: Wake-up:   0x00000000 | Clock:    0x00000087
+[ 2452.322925] mmc1: sdhci: Timeout:   0x0000000e | Int stat: 0x00000000
+[ 2452.322931] mmc1: sdhci: Int enab:  0x027f000b | Sig enab: 0x027f000b
+[ 2452.322937] mmc1: sdhci: ACmd stat: 0x00000000 | Slot int: 0x00000000
+[ 2452.322943] mmc1: sdhci: Caps:      0x07e10080 | Caps_1:   0x00000000
+[ 2452.322949] mmc1: sdhci: Cmd:       0x0000193a | Max curr: 0x00000000
+[ 2452.322955] mmc1: sdhci: Resp[0]:   0x00000900 | Resp[1]:  0x340302ab
+[ 2452.322961] mmc1: sdhci: Resp[2]:   0x36353730 | Resp[3]:  0x7001004d
+[ 2452.322966] mmc1: sdhci: Host ctl2: 0x00000000
+[ 2452.322971] mmc1: sdhci: ============================================
+[ 2452.430066] EXT4-fs (mmcblk1p2): Remounting filesystem read-only
 
