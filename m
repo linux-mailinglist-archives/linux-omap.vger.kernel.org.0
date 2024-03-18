@@ -1,94 +1,224 @@
-Return-Path: <linux-omap+bounces-900-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-901-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAC3187EB35
-	for <lists+linux-omap@lfdr.de>; Mon, 18 Mar 2024 15:42:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41CDC87EBAB
+	for <lists+linux-omap@lfdr.de>; Mon, 18 Mar 2024 16:08:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8006B1F2267E
-	for <lists+linux-omap@lfdr.de>; Mon, 18 Mar 2024 14:42:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62BC41C21370
+	for <lists+linux-omap@lfdr.de>; Mon, 18 Mar 2024 15:08:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F4B54E1BA;
-	Mon, 18 Mar 2024 14:42:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F50B4F605;
+	Mon, 18 Mar 2024 15:07:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HD3U3oYj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KTvddIHQ"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E565F4D9E0;
-	Mon, 18 Mar 2024 14:42:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDD334F5F9;
+	Mon, 18 Mar 2024 15:07:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710772939; cv=none; b=qmyt28Jep68y/P1Q/5SHDUfTKZw0GroBc0VtZplmNbMy/ucoe7g76GoQQ4M1kgnsOsbR8J3SzbfkCuLk/jKhJGCu5yaboL1J/LgNVYTLJiMu+L68Q664hKvc/SmE8HmbfxEQvyVPMNYSNetXWEcm151mbP+L6p2f4xQ4F0skJeg=
+	t=1710774473; cv=none; b=Pz9tn2KSYxfSPUAW/gFvOn9so4mxsOZJ2n3uqRf7ee2PlT9fYyIGLUNwmdNOAdLFWECNbCoQLPf2U9DVER+pozkOE4ipkbgsheQ1rDmTq2L14jqtWR5YMG0uAvT/uOQ+PRuTwLzbUdysajyTUwmvdVSojGcr9/Ajh1jK055BmMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710772939; c=relaxed/simple;
-	bh=l1HHg0QoUhKgRqyw04ZpzpJIxIF15krE30lI0986Cak=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ppThLWykhAO0R7Oo0nz5ahmm41yj/gpo3SY7JY6DaBbkUZ8u54KsrLa/Zxwybk2SsAxzJ/NoHcnZm09EbnQ+o1M1MfjqpENPqM9M1cHwiyqKJ23PTVDyCIjgn6E+Vk/pTyjj38bJ1wGsIiGtFQqinv8xBn4HWrEi4oPGq04czlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HD3U3oYj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18F75C43390;
-	Mon, 18 Mar 2024 14:42:16 +0000 (UTC)
+	s=arc-20240116; t=1710774473; c=relaxed/simple;
+	bh=b6jIKK6IF/UBDD/2p5Ab01jRH32PNiTjuD4LIO3HBnE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gWaC0uhj8QpAZbQlV3z0zBHLuplni4kNbb1+7EhkCgYfRJtMGICHNhV7wyyX30rbI5JiTcaj4BR6NQdLjKAM+0mlbx1sDOUt7G8x7FFBK3hAdo8X4g1IBOmYviPOXHgp1a+9GHhIpSG8CEsRBy4Pe2V7GKOZRDMkZQ1lZFZMM/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KTvddIHQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17EA8C433C7;
+	Mon, 18 Mar 2024 15:07:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710772938;
-	bh=l1HHg0QoUhKgRqyw04ZpzpJIxIF15krE30lI0986Cak=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HD3U3oYjB7yanIn4H7iX5zsWod1r7zueK2oZXAeXtmmtyiRcnG82/aqDe9RBRsIWA
-	 4oQXfjBDZl97ve6edWsV1kBaSUN433i125SMuQ9icnyrhIIniYrdKMgI3djP5L3GTe
-	 lyIN5a9fB9XIHq3fi7/xZsldmW+CSoHa0GIocYGRbvhuEDWNbBEWLYXvwJSTdTFNjX
-	 NO01Ikomc7fykfhe8pLFlS8k9Y7wYY4uX6ZIgM/kHXwuFP/CxstXHKrOOyeyijZuSu
-	 MnBXX3KWoXbBT1NKv9+SNWGC9dqVcqdXtHrw16iHPKCh+Dvca+g9O6+p5AYK7mysmE
-	 M+ea+mShkK7pQ==
-From: wbg@kernel.org
-To: William Breathitt Gray <william.gray@linaro.org>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: William Breathitt Gray <wbg@kernel.org>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Julien Panis <jpanis@baylibre.com>,
-	linux-iio@vger.kernel.org,
-	linux-omap@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	kernel@pengutronix.de,
-	David Lechner <david@lechnology.com>
-Subject: Re: [PATCH 0/2] counter: Convert to platform remove callback returning void
-Date: Mon, 18 Mar 2024 10:42:12 -0400
-Message-ID: <171077223004.1256602.14037397578842213363.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <cover.1710057753.git.u.kleine-koenig@pengutronix.de>
-References: <cover.1710057753.git.u.kleine-koenig@pengutronix.de>
+	s=k20201202; t=1710774472;
+	bh=b6jIKK6IF/UBDD/2p5Ab01jRH32PNiTjuD4LIO3HBnE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KTvddIHQty8QyZBWziR57LP012BCa/gAgEr/+x88Fh2GQF82FhOy/XekROmZJHr3W
+	 PJGeujPI6eYqlFV1ofbTXVxidIrpdsWn+7t+lokdweWXiA1OpEhh7H6CuCoWJTy1C+
+	 dqNTZD1kpTHWkYwy9kyQ5+4FhVywqsLINg+1NZZJaR1uNLl8UkmZ9Wpl2I6UTvF/DX
+	 K9/+6WUfA+wrsfihMeAg2tig/6lCvHoG8KU4VzT1niKvBwjWKB23dQRJwK9gtrvvEz
+	 4rOIN2O/R6yWIY+vdA19W+2zlReCbRo89Jb+0z099wNYTqrYzBQ4r1T0f70BoXi6vw
+	 GsUshDY4pTRhw==
+Date: Mon, 18 Mar 2024 10:07:50 -0500
+From: Rob Herring <robh@kernel.org>
+To: Andreas Kemnade <andreas@kemnade.info>
+Cc: dmitry.torokhov@gmail.com, krzysztof.kozlowski+dt@linaro.org,
+	conor+dt@kernel.org, lee@kernel.org, alexandre.belloni@bootlin.com,
+	wim@linux-watchdog.org, linux@roeck-us.net,
+	linux-input@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-rtc@vger.kernel.org,
+	linux-watchdog@vger.kernel.org, linux-omap@vger.kernel.org,
+	sre@kernel.org
+Subject: Re: [PATCH] dt-bindings: mfd: twl: Convert trivial subdevices to
+ json-schema
+Message-ID: <20240318150750.GA4000895-robh@kernel.org>
+References: <20240318124051.4166253-1-andreas@kemnade.info>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240318124051.4166253-1-andreas@kemnade.info>
 
-From: William Breathitt Gray <wbg@kernel.org>
-
-
-On Sun, 10 Mar 2024 09:06:05 +0100, Uwe Kleine-König wrote:
-> this series converts all platform drivers below drivers/counter to stop
-> using struct platform_driver::remove(). See commit 5c5a7680e67b
-> ("platform: Provide a remove callback that returns no value") for an
-> extended explanation and the eventual goal.
+On Mon, Mar 18, 2024 at 01:40:50PM +0100, Andreas Kemnade wrote:
+> Convert subdevices with just an interrupt and compatbile to
+> json-schema and wire up already converted subdevices.
+> RTC is available in all variants, so allow it unconditionally
+> GPADC binding for TWL603X uses two different compatibles, so
+> specify just the compatible and not include it.
 > 
-> Both conversations are trivial, because the driver's .remove() callbacks
-> returned zero unconditionally.
+> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+> ---
+> Well, my name is in that yaml file, so I should take care of my sheep,
+> in case a step-by-step approach is acceptable this is at least a
+> checkpoint for me that I understand multi file binding mechanics
+> properly.
 > 
-> [...]
+>  .../bindings/input/twl4030-pwrbutton.txt      | 21 ------
+>  .../devicetree/bindings/mfd/ti,twl.yaml       | 68 +++++++++++++++++++
+>  .../devicetree/bindings/rtc/twl-rtc.txt       | 11 ---
+>  .../bindings/watchdog/twl4030-wdt.txt         | 10 ---
+>  4 files changed, 68 insertions(+), 42 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/input/twl4030-pwrbutton.txt
+>  delete mode 100644 Documentation/devicetree/bindings/rtc/twl-rtc.txt
+>  delete mode 100644 Documentation/devicetree/bindings/watchdog/twl4030-wdt.txt
+> 
+> diff --git a/Documentation/devicetree/bindings/input/twl4030-pwrbutton.txt b/Documentation/devicetree/bindings/input/twl4030-pwrbutton.txt
+> deleted file mode 100644
+> index 6c201a2ba8acf..0000000000000
+> --- a/Documentation/devicetree/bindings/input/twl4030-pwrbutton.txt
+> +++ /dev/null
+> @@ -1,21 +0,0 @@
+> -Texas Instruments TWL family (twl4030) pwrbutton module
+> -
+> -This module is part of the TWL4030. For more details about the whole
+> -chip see Documentation/devicetree/bindings/mfd/ti,twl.yaml.
+> -
+> -This module provides a simple power button event via an Interrupt.
+> -
+> -Required properties:
+> -- compatible: should be one of the following
+> -   - "ti,twl4030-pwrbutton": For controllers compatible with twl4030
+> -- interrupts: should be one of the following
+> -   - <8>: For controllers compatible with twl4030
+> -
+> -Example:
+> -
+> -&twl {
+> -	twl_pwrbutton: pwrbutton {
+> -		compatible = "ti,twl4030-pwrbutton";
+> -		interrupts = <8>;
+> -	};
+> -};
+> diff --git a/Documentation/devicetree/bindings/mfd/ti,twl.yaml b/Documentation/devicetree/bindings/mfd/ti,twl.yaml
+> index 52ed228fb1e7e..03d725d5294db 100644
+> --- a/Documentation/devicetree/bindings/mfd/ti,twl.yaml
+> +++ b/Documentation/devicetree/bindings/mfd/ti,twl.yaml
+> @@ -15,6 +15,65 @@ description: |
+>    USB transceiver or Audio amplifier.
+>    These chips are connected to an i2c bus.
+>  
+> +allOf:
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            const: ti,twl4030
+> +    then:
+> +      properties:
+> +        madc:
+> +          type: object
+> +          $ref: ../iio/adc/ti,twl4030-madc.yaml
 
-Applied, thanks!
+Use 'absolute' paths: /schemas/iio/...
 
-[1/2] counter: ti-ecap-capture: Convert to platform remove callback returning void
-      commit: bcc8ced4e1713bc7fa19a422321756788a58512f
-[2/2] counter: ti-eqep: Convert to platform remove callback returning void
-      commit: eca588187f9129300c6e44d64b819545cede463d
+> +
 
-Best regards,
--- 
-William Breathitt Gray <wbg@kernel.org>
+Drop blank line
+
+> +          unevaluatedProperties: false
+
+blank line between DT properties
+
+> +        bci:
+> +          type: object
+> +          $ref: ../power/supply/twl4030-charger.yaml
+> +
+> +          unevaluatedProperties: false
+> +        pwrbutton:
+> +          type: object
+> +          properties:
+> +            compatible:
+> +              const: ti,twl4030-pwrbutton
+> +            interrupts:
+> +              const: 8
+
+As 'interrupts' is a matrix, this needs to be:
+
+interrupts:
+  items:
+    - items:
+        - const: 8
+
+> +
+> +          additionalProperties: false
+
+In the indented cases, it is preferred to put this before 'properties'.
+
+> +        watchdog:
+> +          type: object
+> +          properties:
+> +            compatible:
+> +              const: ti,twl4030-wdt
+> +
+> +          additionalProperties: false
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            const: ti,twl6030
+> +    then:
+> +      properties:
+> +        gpadc:
+> +          type: object
+> +          properties:
+> +            compatible:
+> +              const: ti,twl6030-gpadc
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            const: ti,twl6032
+> +    then:
+> +      properties:
+> +        gpadc:
+> +          type: object
+> +          properties:
+> +            compatible:
+> +              const: ti,twl6032-gpadc
+> +
+>  properties:
+>    compatible:
+>      description:
+> @@ -42,6 +101,15 @@ properties:
+>    "#clock-cells":
+>      const: 1
+>  
+> +  rtc:
+> +    type: object
+> +    properties:
+> +      compatible:
+> +        const: ti,twl4030-rtc
+> +      interrupts:
+> +        maxItems: 1
+> +    additionalProperties: false
+> +
+>  additionalProperties: false
+>  
+>  required:
 
