@@ -1,76 +1,71 @@
-Return-Path: <linux-omap+bounces-908-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-909-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 792BE87FAA4
-	for <lists+linux-omap@lfdr.de>; Tue, 19 Mar 2024 10:24:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71C5887FC87
+	for <lists+linux-omap@lfdr.de>; Tue, 19 Mar 2024 12:07:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AAB701C21965
-	for <lists+linux-omap@lfdr.de>; Tue, 19 Mar 2024 09:23:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C42C1C22301
+	for <lists+linux-omap@lfdr.de>; Tue, 19 Mar 2024 11:07:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BEEC7CF17;
-	Tue, 19 Mar 2024 09:23:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C8BC7E571;
+	Tue, 19 Mar 2024 11:07:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="RjPsCsTS"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=mail.tikatika.nl header.i=@mail.tikatika.nl header.b="ZqxUXM9e"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from esa12.hc1455-7.c3s2.iphmx.com (esa12.hc1455-7.c3s2.iphmx.com [139.138.37.100])
+Received: from tika.stderr.nl (tika.stderr.nl [94.142.244.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1461F7C092;
-	Tue, 19 Mar 2024 09:23:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.138.37.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5FEE7B3F6
+	for <linux-omap@vger.kernel.org>; Tue, 19 Mar 2024 11:07:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.142.244.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710840232; cv=none; b=uBIfYte4AqojKrcKd0foXTWEsjswluoR2AbcwU0Dv3kzTts1AS4cyrg2MoeLjLOqWKx/y/RT1Y3SCsefctzmuALaup7hiTM12+skrQRQgypG8eK1KmX1ztMu7+tKpED6ebotzryCJ7na+iWCne8JhyhsVaNo+62cctceQI2rhI0=
+	t=1710846468; cv=none; b=ozT6QOeiu6wPSekV4IG+5XV1b7a4VnsotQuPfZzKbAfdRBKez2io25A9ONfqwEphwd+FqfZvbeWt5ZxkrI0EZJ6mITGRHdAOyq7kq0bqYS8RFilFfxSVs1EuvvC8Ff8elHnvyaQpC7X6ZnqE4FwDNeKL9G9BukRma7EX51Dtmgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710840232; c=relaxed/simple;
-	bh=uliAvHNLwCXnZkojCT8TwBWAkEuheEAUGuxMOUqlJQs=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=bELMp0BwaZu9xjdNBhm7mYY9LzFOw+FvUWvGS97nhaqtyMsK0Gz2Fam6CneUxNpaclTFv8E+g5AACA5rwXjKr2wuNA+8+vrO3kQInO+tWkWMcf5LvbVKfmQJCB1LjQT0l+PxFQrZdg8rrOxLwszJy+aeu3WCGkdefi+NmLMxEBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=RjPsCsTS; arc=none smtp.client-ip=139.138.37.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fujitsu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
-  t=1710840230; x=1742376230;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=uliAvHNLwCXnZkojCT8TwBWAkEuheEAUGuxMOUqlJQs=;
-  b=RjPsCsTSwTS9MKAmk7uJP0yadmUjijnaeNZdd6nlDwMxy4eio8aCFfKZ
-   QRFVDZO+LFNEds/7QJcrJ2CScYSFAqSb14Pj7bRZDfZGGteHqBWYso66c
-   3aQMKTR2+k6V1VYFDvIcW7Wq5a28ETk75H1pIrpPWa8DeddWIJAJU0VPz
-   iCGzGiquv4WaUGy53HxkBLdaVhYbkasEzRkBnUPiMusRIhWXveZcDhktk
-   mXiJjC1lQisxM88Pxh4lrVrOoZmjUFXRtDTT+YIBjjy3mv1ET0FvndEPD
-   jlLx2wCZF5/Iaas86t2joHIpULZ/vX4nKDoXOcoJ/HfaKybZIwlfrZHdv
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11017"; a="132025580"
-X-IronPort-AV: E=Sophos;i="6.07,136,1708354800"; 
-   d="scan'208";a="132025580"
-Received: from unknown (HELO oym-r2.gw.nic.fujitsu.com) ([210.162.30.90])
-  by esa12.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2024 18:23:46 +0900
-Received: from oym-m2.gw.nic.fujitsu.com (oym-nat-oym-m2.gw.nic.fujitsu.com [192.168.87.59])
-	by oym-r2.gw.nic.fujitsu.com (Postfix) with ESMTP id 8150CEB469;
-	Tue, 19 Mar 2024 18:23:44 +0900 (JST)
-Received: from kws-ab3.gw.nic.fujitsu.com (kws-ab3.gw.nic.fujitsu.com [192.51.206.21])
-	by oym-m2.gw.nic.fujitsu.com (Postfix) with ESMTP id 7E7C8BF4BA;
-	Tue, 19 Mar 2024 18:23:43 +0900 (JST)
-Received: from edo.cn.fujitsu.com (edo.cn.fujitsu.com [10.167.33.5])
-	by kws-ab3.gw.nic.fujitsu.com (Postfix) with ESMTP id 143F72009327B;
-	Tue, 19 Mar 2024 18:23:43 +0900 (JST)
-Received: from localhost.localdomain (unknown [10.167.226.45])
-	by edo.cn.fujitsu.com (Postfix) with ESMTP id 82B531A006B;
-	Tue, 19 Mar 2024 17:23:42 +0800 (CST)
-From: Li Zhijian <lizhijian@fujitsu.com>
-To: linux-kernel@vger.kernel.org
-Cc: Li Zhijian <lizhijian@fujitsu.com>,
-	Helge Deller <deller@gmx.de>,
+	s=arc-20240116; t=1710846468; c=relaxed/simple;
+	bh=inKup3D/8dipB+Qu0lMvoshz+kgaaw/op0vTkz2/AG8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=sMYc3skX7nSD7boCeIQreZcWam4ac7b+0L1H78Zy4clYRkOlrD/Lvctep/aBKpXQnaN2CdzYKPTnGXDbATO7rPq6fQcqTx//bQB7s/Ejxc+iw495HZRuGvreWur6PK0Phuh305WeTg7dE7y+Pfh7COI5j5oRoj4p4WndFEJn/Xo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=stdin.nl; spf=none smtp.mailfrom=stdin.nl; dkim=pass (1024-bit key) header.d=mail.tikatika.nl header.i=@mail.tikatika.nl header.b=ZqxUXM9e; arc=none smtp.client-ip=94.142.244.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=stdin.nl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=stdin.nl
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=mail.tikatika.nl; s=201709.tika; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=/V3VUchtkJBjrXmDOTYW7qyOyeFhpgq7uaPdWRkylas=; b=ZqxUXM9eXpusNSP/1jmA9i9xk3
+	5sjk6dNajeOWc54iUUcUnN0HQtBo1poe5oA9Fu/5d0W9kUqovh6BxBpZejhLv7Pi1A3v5PumtgfDn
+	ZFjkV3nWtlHR8Ha+CtL2i1hqjiErFSDMFtoZWBVrf2TLrfYCS3lvDqorkwwyuWk52jkc=;
+X-Preliminary-Spam-Score: -2.0 (--)
+Received: from 86-88-12-114.fixed.kpn.net ([86.88.12.114] helo=dottie)
+	by tika.stderr.nl with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <matthijs@stdin.nl>)
+	id 1rmXJm-000ntp-2o
+	for linux-omap@vger.kernel.org;
+	Tue, 19 Mar 2024 12:07:43 +0100
+Received: from matthijs (uid 1000)
+	(envelope-from matthijs@stdin.nl)
+	id 40d99
+	by dottie (DragonFly Mail Agent v0.13);
+	Tue, 19 Mar 2024 12:07:42 +0100
+From: Matthijs Kooijman <matthijs@stdin.nl>
+To: Haojian Zhuang <haojian.zhuang@linaro.org>,
+	Tony Lindgren <tony@atomide.com>
+Cc: linux-gpio@vger.kernel.org,
+	Linus Walleij <linus.walleij@linaro.org>,
 	linux-omap@vger.kernel.org,
-	linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH v3] video: fbdev: panel-tpo-td043mtea1: Convert sprintf() family to sysfs_emit() family
-Date: Tue, 19 Mar 2024 17:23:33 +0800
-Message-Id: <20240319092333.1590322-1-lizhijian@fujitsu.com>
-X-Mailer: git-send-email 2.31.1
+	Matthijs Kooijman <matthijs@stdin.nl>
+Subject: [PATCH] pinctrl: single: Fix PIN_CONFIG_BIAS_DISABLE handling
+Date: Tue, 19 Mar 2024 12:06:34 +0100
+Message-Id: <20240319110633.230329-1-matthijs@stdin.nl>
+X-Mailer: git-send-email 2.40.1
+In-Reply-To: <Zflxi8SCzzouP9zW@login.tika.stderr.nl>
+References: <Zflxi8SCzzouP9zW@login.tika.stderr.nl>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -78,75 +73,85 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-TM-AS-Product-Ver: IMSS-9.1.0.1417-9.0.0.1002-28260.006
-X-TM-AS-User-Approved-Sender: Yes
-X-TMASE-Version: IMSS-9.1.0.1417-9.0.1002-28260.006
-X-TMASE-Result: 10--5.404400-10.000000
-X-TMASE-MatchedRID: 6n1zk+md1nUbO59FK9BdmJiHtCNYjckMjkDrBOJwwnQ8JmmJxjOaQXVX
-	Q3/qdw5yDiqGKKMcNgRhoUIS5GGeEs1HQN/TlJ3ZOIQ9GP2P2u/0swHSFcVJ6L42hLbi424DjcR
-	qQigdY124xAnoO+Mv0IWyDkw3lKgbePWEUnWb98FBDn6Fjq77jgYAPqHoVmYR31GU/N5W5BC/BR
-	68O365bjSAa8O4E9d0Ei2pD9yuITrs7aQkqkpFynaNJ/iTxXCafS0Ip2eEHnz3IzXlXlpamPoLR
-	4+zsDTtD12T7q2dIUvMX2qxXxibj0gxzbnU/ZVszazffbEGxPolyY0b9FK6Ag==
-X-TMASE-SNAP-Result: 1.821001.0001-0-1-22:0,33:0,34:0-0
 
-Per filesystems/sysfs.rst, show() should only use sysfs_emit()
-or sysfs_emit_at() when formatting the value to be returned to user space.
+The pinctrl-single driver handles pin_config_set by looking up the
+requested setting in a DT-defined lookup table, which defines what bits
+correspond to each setting. There is no way to add
+PIN_CONFIG_BIAS_DISABLE entries to the table, since there is instead
+code to disable the bias by applying the disable values of both the
+pullup and pulldown entries in the table.
 
-coccinelle complains that there are still a couple of functions that use
-snprintf(). Convert them to sysfs_emit().
+However, this code is inside the table-lookup loop, so it would only
+execute if there is an entry for PIN_CONFIG_BIAS_DISABLE in the table,
+which can never exist, so this code never runs.
 
-sprintf() and scnprintf() will be converted as well if they have.
+This commit lifts the offending code out of the loop, so it just
+executes directly whenever PIN_CONFIG_BIAS_DISABLE is requested,
+skippipng the table lookup loop.
 
-Generally, this patch is generated by
-make coccicheck M=<path/to/file> MODE=patch \
-COCCI=scripts/coccinelle/api/device_attr_show.cocci
+This also introduces a new `param` variable to make the code slightly
+more readable.
 
-No functional change intended
+This bug seems to have existed when this code was first merged in commit
+9dddb4df90d13 ("pinctrl: single: support generic pinconf"). Earlier
+versions of this patch did have an entry for PIN_CONFIG_BIAS_DISABLE in
+the lookup table, but that was removed, which is probably how this bug
+was introduced.
 
-CC: Helge Deller <deller@gmx.de>
-CC: linux-omap@vger.kernel.org
-CC: linux-fbdev@vger.kernel.org
-CC: dri-devel@lists.freedesktop.org
-Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
+Signed-off-by: Matthijs Kooijman <matthijs@stdin.nl>
 ---
-V3:
-   split it from a mess of drm,fbdev, becuase they are not the same subsystem.
+ drivers/pinctrl/pinctrl-single.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-V2:
-   Fix missing '+' before '=' in drivers/video/fbdev/omap2/omapfb/displays/panel-tpo-td043mtea1.c
-
-This is a part of the work "Fix coccicheck device_attr_show warnings"[1]
-Split them per subsystem so that the maintainer can review it easily
-[1] https://lore.kernel.org/lkml/20240116041129.3937800-1-lizhijian@fujitsu.com/
----
- .../omap2/omapfb/displays/panel-tpo-td043mtea1.c     | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/video/fbdev/omap2/omapfb/displays/panel-tpo-td043mtea1.c b/drivers/video/fbdev/omap2/omapfb/displays/panel-tpo-td043mtea1.c
-index 477789cff8e0..3624452e1dd0 100644
---- a/drivers/video/fbdev/omap2/omapfb/displays/panel-tpo-td043mtea1.c
-+++ b/drivers/video/fbdev/omap2/omapfb/displays/panel-tpo-td043mtea1.c
-@@ -228,14 +228,10 @@ static ssize_t tpo_td043_gamma_show(struct device *dev,
- 	int ret;
- 	int i;
+diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
+index 19cc0db771a5a..c7a03b63fa812 100644
+--- a/drivers/pinctrl/pinctrl-single.c
++++ b/drivers/pinctrl/pinctrl-single.c
+@@ -554,21 +554,30 @@ static int pcs_pinconf_set(struct pinctrl_dev *pctldev,
+ 	unsigned offset = 0, shift = 0, i, data, ret;
+ 	u32 arg;
+ 	int j;
++	enum pin_config_param param;
  
--	for (i = 0; i < ARRAY_SIZE(ddata->gamma); i++) {
--		ret = snprintf(buf + len, PAGE_SIZE - len, "%u ",
--				ddata->gamma[i]);
--		if (ret < 0)
--			return ret;
--		len += ret;
--	}
--	buf[len - 1] = '\n';
-+	for (i = 0; i < ARRAY_SIZE(ddata->gamma); i++)
-+		len += sysfs_emit_at(buf, len, "%u ", ddata->gamma[i]);
-+	if (len)
-+		buf[len - 1] = '\n';
+ 	ret = pcs_get_function(pctldev, pin, &func);
+ 	if (ret)
+ 		return ret;
  
- 	return len;
- }
+ 	for (j = 0; j < num_configs; j++) {
++		param = pinconf_to_config_param(configs[j]);
++
++		/* BIAS_DISABLE has no entry in the func->conf table */
++		if (param == PIN_CONFIG_BIAS_DISABLE) {
++			/* This just disables all bias entries */
++			pcs_pinconf_clear_bias(pctldev, pin);
++			continue;
++		}
++
+ 		for (i = 0; i < func->nconfs; i++) {
+-			if (pinconf_to_config_param(configs[j])
+-				!= func->conf[i].param)
++			if (param != func->conf[i].param)
+ 				continue;
+ 
+ 			offset = pin * (pcs->width / BITS_PER_BYTE);
+ 			data = pcs->read(pcs->base + offset);
+ 			arg = pinconf_to_config_argument(configs[j]);
+-			switch (func->conf[i].param) {
++			switch (param) {
+ 			/* 2 parameters */
+ 			case PIN_CONFIG_INPUT_SCHMITT:
+ 			case PIN_CONFIG_DRIVE_STRENGTH:
+@@ -580,9 +589,6 @@ static int pcs_pinconf_set(struct pinctrl_dev *pctldev,
+ 				data |= (arg << shift) & func->conf[i].mask;
+ 				break;
+ 			/* 4 parameters */
+-			case PIN_CONFIG_BIAS_DISABLE:
+-				pcs_pinconf_clear_bias(pctldev, pin);
+-				break;
+ 			case PIN_CONFIG_BIAS_PULL_DOWN:
+ 			case PIN_CONFIG_BIAS_PULL_UP:
+ 				if (arg)
 -- 
-2.29.2
+2.40.1
 
 
