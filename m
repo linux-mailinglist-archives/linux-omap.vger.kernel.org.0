@@ -1,65 +1,65 @@
-Return-Path: <linux-omap+bounces-903-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-904-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A4B387F622
-	for <lists+linux-omap@lfdr.de>; Tue, 19 Mar 2024 04:43:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2EBF87F635
+	for <lists+linux-omap@lfdr.de>; Tue, 19 Mar 2024 04:56:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 18DD21C21C5F
-	for <lists+linux-omap@lfdr.de>; Tue, 19 Mar 2024 03:43:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FA691F228EB
+	for <lists+linux-omap@lfdr.de>; Tue, 19 Mar 2024 03:56:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 159867BB12;
-	Tue, 19 Mar 2024 03:43:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8CBA7BB19;
+	Tue, 19 Mar 2024 03:56:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="eepE6FvZ"
+	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="atfdZVuW"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from esa10.hc1455-7.c3s2.iphmx.com (esa10.hc1455-7.c3s2.iphmx.com [139.138.36.225])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 016207BAF0;
-	Tue, 19 Mar 2024 03:43:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E98AE7BAF7;
+	Tue, 19 Mar 2024 03:56:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.138.36.225
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710819813; cv=none; b=tE9To8zQ09REN3dik5L3c1mduj9jHO8ei3knfrIyGphtHtGUHp05idZY2NKVWZMeib7b5xh1+gCgkMnlFrcqZxIaQLIaPgT9857wXbnFAqlcRc4taI0UCeXqMhvPLkz7FNlisoNECVuBtRV+d5uIzrAyzuXtFy8SNldzxRQewQ0=
+	t=1710820574; cv=none; b=hd0D9FTa+/MIMB5Ba3psdD6mhWMfYWYdGGHdSewfV4XLfNlDUWBcsQzO5ayxrKxllose6qeobCzwsBBQh35Ok1/O5K421PCSoiUn7swW06nU8/koddh9AVpF32ij8pfSk27QEvzbqF52E/pAXWArWcS5dTdUimIpFc8JrD8SxRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710819813; c=relaxed/simple;
-	bh=kpIQQ4UHhSRaPRBqYrLlxC1aJHMqE9Os3Z55I7joDmI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=DMWQBs6oA9AjtGcsUns+19RV1X9mPVYjvH7E+q6RUETAy0q5OoP+EE4Qc89SJvLK2qoqFoBrzElwR3jd5CFNlgssvt+aHX4l39hwCcil88+3sVF6FcNEZ0s3lz04LzKxAEeSqu4QdvED8U1jb/J/3cK2r9LmJM61hl/0vrDXb6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=eepE6FvZ; arc=none smtp.client-ip=139.138.36.225
+	s=arc-20240116; t=1710820574; c=relaxed/simple;
+	bh=iyb8H4Jp8rxsdGteD+xvj4n9KobPYhd4mb8G65zKrMM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=tin0Eoe7iS1WD75AoRJ/vSG2JiE9o1VntnnxnI0+8X55NU8Zp7wqOSe9CxYWP45JE3kmuBGzGCl7l87SrWqD9llC/cQwJq2lsg/cvJz3+lf7Lkn17KgMsFILhCaQX70ka95WSgAr4UAWzbkmykH0ukswCBp8r55ZI6Iw8f/96BM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=atfdZVuW; arc=none smtp.client-ip=139.138.36.225
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fujitsu.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
-  t=1710819810; x=1742355810;
+  t=1710820572; x=1742356572;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
-  bh=kpIQQ4UHhSRaPRBqYrLlxC1aJHMqE9Os3Z55I7joDmI=;
-  b=eepE6FvZN/CHPrX9S9SP94HYskLsurYEDaOmfcPvfRi1ytwv5oYblRo2
-   8R7EF3tVM1+AAAPSz5GcjdFj3nPJPzorLRA6Rhqw1sucKGx1O+5lQk2P7
-   WKgZF9lD4vkpNsyer2LgZMYqc/xLUHHMplXc/6c4S7Ks2dzbIGiQAHjhw
-   mHkoCE1iMDJKRyyChBwHt4sNoJTDmyhC1LNfZz5UCqk034Gku0pldsmXP
-   SW6Ng8DPjG6NqSXSfvAAVA1+7JAq8rROU1FYtc/D/MNon5sMnlffgnMNo
-   UUOi69CCpzcO9VhVP9sQeKoKGJk6mG4+HOKzumpHmlI+mLHMKQrmS1Wa2
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11017"; a="140288667"
+  bh=iyb8H4Jp8rxsdGteD+xvj4n9KobPYhd4mb8G65zKrMM=;
+  b=atfdZVuWcnpFN+oH/EgdY2hw7ywyrqDE47lDJjVXcjpvzonibtD+mQbQ
+   /Bxx1cMhFbCPgLl5jCGUNkQ+/ShTLIt6/YyVg8OEHMZVBOtKPbuKivHLM
+   OnEQXvBLzKlGGk914V3hbqy7rV0RJJMCrtCm5iSSoKPAhT5Vb6T2Ji8OY
+   6mYimc6n90JPeyL1DJ/uLwPIWMP0jpg1jUqtJAVJd1qfGlDQTfIvDXmBR
+   vpWMpNoclZLQT2h5W5pu46av3GKLBPjAAxQdMbLhjbBa0k7wKZkPlvhmN
+   0ki3mUWVT9r8/zNPxzUgDl6IqTc0Md4Icxezi5mQiE3EaBhdm1CqXqjt7
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11017"; a="140289575"
 X-IronPort-AV: E=Sophos;i="6.07,135,1708354800"; 
-   d="scan'208";a="140288667"
-Received: from unknown (HELO oym-r1.gw.nic.fujitsu.com) ([210.162.30.89])
-  by esa10.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2024 12:43:20 +0900
-Received: from oym-m3.gw.nic.fujitsu.com (oym-nat-oym-m3.gw.nic.fujitsu.com [192.168.87.60])
-	by oym-r1.gw.nic.fujitsu.com (Postfix) with ESMTP id 06072D4800;
-	Tue, 19 Mar 2024 12:43:18 +0900 (JST)
-Received: from kws-ab3.gw.nic.fujitsu.com (kws-ab3.gw.nic.fujitsu.com [192.51.206.21])
-	by oym-m3.gw.nic.fujitsu.com (Postfix) with ESMTP id 27E56D561B;
-	Tue, 19 Mar 2024 12:43:17 +0900 (JST)
+   d="scan'208";a="140289575"
+Received: from unknown (HELO yto-r4.gw.nic.fujitsu.com) ([218.44.52.220])
+  by esa10.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2024 12:56:08 +0900
+Received: from yto-m2.gw.nic.fujitsu.com (yto-nat-yto-m2.gw.nic.fujitsu.com [192.168.83.65])
+	by yto-r4.gw.nic.fujitsu.com (Postfix) with ESMTP id 13624D9F00;
+	Tue, 19 Mar 2024 12:56:06 +0900 (JST)
+Received: from kws-ab4.gw.nic.fujitsu.com (kws-ab4.gw.nic.fujitsu.com [192.51.206.22])
+	by yto-m2.gw.nic.fujitsu.com (Postfix) with ESMTP id 3D303D5A02;
+	Tue, 19 Mar 2024 12:56:05 +0900 (JST)
 Received: from edo.cn.fujitsu.com (edo.cn.fujitsu.com [10.167.33.5])
-	by kws-ab3.gw.nic.fujitsu.com (Postfix) with ESMTP id A4CF120099077;
-	Tue, 19 Mar 2024 12:43:16 +0900 (JST)
+	by kws-ab4.gw.nic.fujitsu.com (Postfix) with ESMTP id C9CF61EAC12;
+	Tue, 19 Mar 2024 12:56:04 +0900 (JST)
 Received: from localhost.localdomain (unknown [10.167.226.45])
-	by edo.cn.fujitsu.com (Postfix) with ESMTP id 1BBD41A006B;
-	Tue, 19 Mar 2024 11:43:15 +0800 (CST)
+	by edo.cn.fujitsu.com (Postfix) with ESMTP id 074881A006B;
+	Tue, 19 Mar 2024 11:55:58 +0800 (CST)
 From: Li Zhijian <lizhijian@fujitsu.com>
 To: linux-kernel@vger.kernel.org
 Cc: Li Zhijian <lizhijian@fujitsu.com>,
@@ -75,9 +75,9 @@ Cc: Li Zhijian <lizhijian@fujitsu.com>,
 	linux-omap@vger.kernel.org,
 	linux-fbdev@vger.kernel.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH] drm,fbdev: td043mtea1: Convert sprintf() family to sysfs_emit() family
-Date: Tue, 19 Mar 2024 11:43:10 +0800
-Message-Id: <20240319034310.1574349-1-lizhijian@fujitsu.com>
+Subject: [PATCH v2] drm,fbdev: td043mtea1: Convert sprintf() family to sysfs_emit() family
+Date: Tue, 19 Mar 2024 11:55:55 +0800
+Message-Id: <20240319035555.1577734-1-lizhijian@fujitsu.com>
 X-Mailer: git-send-email 2.31.1
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
@@ -93,10 +93,10 @@ X-TMASE-Version: IMSS-9.1.0.1417-9.0.1002-28260.004
 X-TMASE-Result: 10--6.993400-10.000000
 X-TMASE-MatchedRID: vWLMKRYJCzcbO59FK9BdmJiHtCNYjckMjkDrBOJwwnQ8JmmJxjOaQXVX
 	Q3/qdw5yDiqGKKMcNgRhoUIS5GGeEs1HQN/TlJ3ZOIQ9GP2P2u9hCyUKzFE4pMOmbgJn0O1cd5G
-	gTXcmX3z/gi5MRR1gmuKPZyvBQlTFs+DazrJbzs47I8qKHhHKyIY+g3uPA6ifU5+divxV/olaTW
-	107FjPHDnpYPqS6jzx8tvnLY6Q4L+1UOlz1sLXchF4zyLyne+AUrr7Qc5WhKhzvn1t6wuaa+zst
-	h4cn4jroa8IWqgpLBOAMuqetGVetksDkkP3zIjq3QfwsVk0UbtuRXh7bFKB7sO0UlcJEGWrCrSW
-	yB8sgMMkRgrwE4e1Kc/TqvYMYi+tH8FerAT0dJY=
+	gTXcmX3z/gi5MRR1gmq+lAgAwPD5q0OVyXblM7jP+xRIVoKNMvNiPDVCot+tGBET8F2y8zKEYdS
+	DeLvQ19lun5ICGwWKCEriUbUlPOKO1UOlz1sLXchF4zyLyne+AUrr7Qc5WhKhzvn1t6wuaa+zst
+	h4cn4jroa8IWqgpLBOAMuqetGVetksDkkP3zIjq3QfwsVk0UbtuRXh7bFKB7qOOXt5BU5y6WbW/
+	lbxeI8DFks+BRjeYgccgXIv3OTHQPpCuffGH9zI=
 X-TMASE-SNAP-Result: 1.821001.0001-0-1-22:0,33:0,34:0-0
 
 Per filesystems/sysfs.rst, show() should only use sysfs_emit()
@@ -127,6 +127,9 @@ CC: linux-fbdev@vger.kernel.org
 CC: dri-devel@lists.freedesktop.org
 Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
 ---
+V2:
+   Fix missing '+' before '=' in drivers/video/fbdev/omap2/omapfb/displays/panel-tpo-td043mtea1.c
+
 This is a part of the work "Fix coccicheck device_attr_show warnings"[1]
 Split them per subsystem so that the maintainer can review it easily
 [1] https://lore.kernel.org/lkml/20240116041129.3937800-1-lizhijian@fujitsu.com/
@@ -161,7 +164,7 @@ index cf4609bb9b1d..0983fe47eb5a 100644
  	return len;
  }
 diff --git a/drivers/video/fbdev/omap2/omapfb/displays/panel-tpo-td043mtea1.c b/drivers/video/fbdev/omap2/omapfb/displays/panel-tpo-td043mtea1.c
-index 477789cff8e0..040a17a05baa 100644
+index 477789cff8e0..3624452e1dd0 100644
 --- a/drivers/video/fbdev/omap2/omapfb/displays/panel-tpo-td043mtea1.c
 +++ b/drivers/video/fbdev/omap2/omapfb/displays/panel-tpo-td043mtea1.c
 @@ -228,14 +228,10 @@ static ssize_t tpo_td043_gamma_show(struct device *dev,
@@ -177,7 +180,7 @@ index 477789cff8e0..040a17a05baa 100644
 -	}
 -	buf[len - 1] = '\n';
 +	for (i = 0; i < ARRAY_SIZE(ddata->gamma); i++)
-+		len = sysfs_emit_at(buf, len, "%u ", ddata->gamma[i]);
++		len += sysfs_emit_at(buf, len, "%u ", ddata->gamma[i]);
 +	if (len)
 +		buf[len - 1] = '\n';
  
