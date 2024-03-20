@@ -1,136 +1,200 @@
-Return-Path: <linux-omap+bounces-911-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-912-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7FC4880C4A
-	for <lists+linux-omap@lfdr.de>; Wed, 20 Mar 2024 08:45:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E9E0880CCE
+	for <lists+linux-omap@lfdr.de>; Wed, 20 Mar 2024 09:12:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 24D761C21670
-	for <lists+linux-omap@lfdr.de>; Wed, 20 Mar 2024 07:45:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A3061F22F1F
+	for <lists+linux-omap@lfdr.de>; Wed, 20 Mar 2024 08:12:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0F5124A19;
-	Wed, 20 Mar 2024 07:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61DFC32C88;
+	Wed, 20 Mar 2024 08:12:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="zR4dYbbI"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="YJXieyJr"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 934F9224C6;
-	Wed, 20 Mar 2024 07:45:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A69F2C85A;
+	Wed, 20 Mar 2024 08:12:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710920720; cv=none; b=EtHMpNuqFvYUo3BVo+9uN55jiPSQae7zl9PcHk0YBHYVPfWCdkrZSyPQEI6XmOSAkrv5mW6jzYzJREmo+3GllQcnK/r2MMXMWepBqBP/06KjHWt52UPAPz+Bjg8PtxmCQ78bITE1rlul3KWMCfiDGgliqnd05BU/fmLJCVIbadk=
+	t=1710922368; cv=none; b=ZeH826Y55+rJLC1zIqhAD2jDWqEnfOnZQYyJfQcG3cBT8lWvwRCOdd72BQp8uy9h3Z2c9tD3lal1wrxhr++U62/ogPlg7J3VlZODIyCbhhX7Jd5auCJUiC1YgEy5iR7NWZ6JBPCAditJPooPTsgrJz2KvNc5/rOWfLBluvOwXHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710920720; c=relaxed/simple;
-	bh=7qSpsLonZkPp6n1sVROjtTe4FhN1SzwKxxvPmVPaxvo=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LdE6ZBBTLoKowvVRu+3NA5VyfNjnGbzesAbAtB6ydURvxyQYWKGExaEFvBCSRSuQxCT4yHb9q5/IO1P75yXRfaBTyyKb+JXVjByTYbA3Zgnr74ypiVvOofJKkJbUrBjHVQ3fLwzSJKgjydnznJMg+2xRCOtXOju8Jwqf+2nJP1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=zR4dYbbI; arc=none smtp.client-ip=198.47.19.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-	by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 42K7iXW8064345;
-	Wed, 20 Mar 2024 02:44:33 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1710920673;
-	bh=G30qDNGsYpoAs9e2Fev9q4x3U8X+mKvech/LuR0V5SM=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To;
-	b=zR4dYbbIOU0T9kSt2VAkyYXxgXqFflmKQJcJc+YRexUebfWrIRTYWDW/9HdGCRAH2
-	 2KUlZh22RTmTpHqsFOz+C2TVKTzBC+DoK9AZodPH7VJPCFH79hW1rqqmURZtTPHqsv
-	 OyhxsW9BCi0nXXAUXKmJx4XlNhwYmsvj5qI2UeJE=
-Received: from DFLE101.ent.ti.com (dfle101.ent.ti.com [10.64.6.22])
-	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 42K7iX2x116495
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Wed, 20 Mar 2024 02:44:33 -0500
-Received: from DFLE101.ent.ti.com (10.64.6.22) by DFLE101.ent.ti.com
- (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Wed, 20
- Mar 2024 02:44:32 -0500
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE101.ent.ti.com
- (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Wed, 20 Mar 2024 02:44:32 -0500
-Received: from localhost (dhruva.dhcp.ti.com [172.24.227.68])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 42K7iVIb016176;
-	Wed, 20 Mar 2024 02:44:32 -0500
-Date: Wed, 20 Mar 2024 13:14:31 +0530
-From: Dhruva Gole <d-gole@ti.com>
-To: Thomas Richard <thomas.richard@bootlin.com>
-CC: Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski
-	<brgl@bgdev.pl>,
-        Andy Shevchenko <andy@kernel.org>, Tony Lindgren
-	<tony@atomide.com>,
-        Haojian Zhuang <haojian.zhuang@linaro.org>,
-        Vignesh R
-	<vigneshr@ti.com>, Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Janusz Krzysztofik
-	<jmkrzyszt@gmail.com>,
-        Andi Shyti <andi.shyti@kernel.org>, Peter Rosin
-	<peda@axentia.se>,
-        Vinod Koul <vkoul@kernel.org>,
-        Kishon Vijay Abraham I
-	<kishon@kernel.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Lorenzo
- Pieralisi <lpieralisi@kernel.org>,
-        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?=
-	<kw@linux.com>,
-        Rob Herring <robh@kernel.org>, Bjorn Helgaas
-	<bhelgaas@google.com>,
-        <linux-gpio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <linux-omap@vger.kernel.org>,
-        <linux-i2c@vger.kernel.org>, <linux-phy@lists.infradead.org>,
-        <linux-pci@vger.kernel.org>, <gregory.clement@bootlin.com>,
-        <theo.lebrun@bootlin.com>, <thomas.petazzoni@bootlin.com>,
-        <u-kumar1@ti.com>, Andy Shevchenko
-	<andy.shevchenko@gmail.com>
-Subject: Re: [PATCH v4 02/18] pinctrl: pinctrl-single: move
- suspend()/resume() callbacks to noirq
-Message-ID: <20240320074431.6yzao3jlyaxuii7c@dhruva>
-References: <20240102-j7200-pcie-s2r-v4-0-6f1f53390c85@bootlin.com>
- <20240102-j7200-pcie-s2r-v4-2-6f1f53390c85@bootlin.com>
+	s=arc-20240116; t=1710922368; c=relaxed/simple;
+	bh=JcNzj/0EtMHAtn14gq4mUAgKfkqyj8QlY/dSVFHL1z8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pdYAGtNimUWdWIH/XaiwSuOhF4djFy4rr8c01rVfgzsWtSF/RzDEHneVtfYkHbGx1V2vN3BGELGsDU8qDtiMhLMpE+9fo5FMME+V5z/q7HaIKHLl2ukDbTmkTte/m4VVls8jHiHLDqrIIZqJDlg92z6escu/5PGmeVzR/h7Oa5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=YJXieyJr; arc=none smtp.client-ip=212.227.15.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1710922360; x=1711527160; i=deller@gmx.de;
+	bh=qi698Fr0cK/LGYkHXD/4rGactapeAbDOhymD1DLW/A0=;
+	h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
+	 In-Reply-To;
+	b=YJXieyJruFzfF6yXeMG/LMaNhuXrfojPYvhJ9bKeGu5ARuhbCaP1/zwlfSsDEkSc
+	 /oCK0Zyc6/9LYZGL5eXbw24g6YHA703ja33yJCpLkYywtbNKGS/hy9x3wljaJK6ni
+	 9ZX7/NUpW/WybXzj2I64xKdU0/+apGafuSb9QrA2Jd+HrQmctwccqSOsW5IKDFMSf
+	 gHTctUbOGcgbPDmRtZXFBHdMLvNFDOWXHZzToEJASUCNRuXLr0S2LHS3RpBu3omaR
+	 dNsMczh3gOmULuayqFPaFI04JAMhLz4u0Rehp6A1jMuIvu8X6QEBNCdu1BgwIJ4Jl
+	 ot4jKB7RLhmCLHybeA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.55] ([94.134.145.175]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MDysg-1rfC5E1Ieq-00A0yq; Wed, 20
+ Mar 2024 09:12:40 +0100
+Message-ID: <6cef8e77-dca8-4c8f-9af5-62586578609a@gmx.de>
+Date: Wed, 20 Mar 2024 09:12:39 +0100
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20240102-j7200-pcie-s2r-v4-2-6f1f53390c85@bootlin.com>
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] video: fbdev: panel-tpo-td043mtea1: Convert sprintf()
+ family to sysfs_emit() family
+Content-Language: en-US
+To: Li Zhijian <lizhijian@fujitsu.com>, linux-kernel@vger.kernel.org
+Cc: linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org,
+ dri-devel@lists.freedesktop.org
+References: <20240319092333.1590322-1-lizhijian@fujitsu.com>
+From: Helge Deller <deller@gmx.de>
+Autocrypt: addr=deller@gmx.de; keydata=
+ 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
+In-Reply-To: <20240319092333.1590322-1-lizhijian@fujitsu.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:DLWcJwmNZ97AysVmjGiBxzRfzOzprNYeT4qnhhw4Xji4rUuvAzV
+ 7J7beNhn9NVGOhZUH/mR+dccYsWTIkZTb0ChZK2h8c+J/vXnxoCBYjOt1FNx74rF6YhRL0U
+ ylUbB4rmSlRnPe8qdx8Kwh25np6b+DgHnEdjRDENKL1qkJtsOXxtS8SlExalHQAa5aVLdTp
+ cxCVi4xrFD20tlZ2ct14g==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:rXL+fvDm1co=;ZBP+SfNavm5a+fpFx63zYFa3BC+
+ OrqwBCMFT1cuu8t2mA81YX38gjPRPNIfYqXileQLaQEhKUoSWbiJqkTx3AKJjX78e+W+LhkPR
+ zVXYX0qJKWBLTK8qiwSh1HvXXbw0A537dARGLdugz74ZoIvyWnOv5wX3gzZ9jJucbZLgHdPnb
+ yh5+oU+6/etSy2fVZQFnAEE9S9xZv563K9Kht+zw+nD2RXC0E3hyBEMv4CljigWPU7yKmrXb4
+ Oc9ABkOZorhfHwksDvbLvLpUcUNJtIJPWGPn+zhLFIdCzax32WXfu/z/MT0wmlgnqxSCpwNTe
+ kKAITUVVmNACKxtOhh/3X0B1dqggCq85LeXJGUpz4Jgrw0dD1zbCFt3lDLBraLsmn6NcCzRk/
+ nqI8YsAHqX+ldUS06ltdd31xCia+ra0XrZmicz/v3t4qxv6vW/LDr9hwMZ4VVxrwtcBApN35F
+ tLDJy428LSW8UiboN5IVTniKhOOxrvmswHsY0idJso5tZsQleSHDTe87ybc3ibTOp0i7Otfso
+ BxnF21XYPVNYgfoQZVPETxR97re/t2N1+SaPeBpy3WaUFL9Qx1vdo7RbHQ776Rm/QOlpAdFmd
+ /GJDlZTZllGokzRFeGXljPlxsSAEFKhowTiZzhA0Mr/mxJL3RTfQD+2PcX53bPlo0W9NsWkKC
+ /qw/GM2CiB+vbguBLbmc0ksUz4ULmVmty3Ru87gYt6dPcJ3FLShy6BEQJomYyGyvKMvbODyH3
+ gLvkouADIqtog5zUTJbPs8CYQv955JNOLaJlp8dCfHXkxxpmM1893QTFAHA0o/jVBAbdUfCX8
+ POIU6mv4I12EkgyWCBHycFIEVaUFs2Ri3vJvZf1SFPPLk=
 
-Hi,
+On 3/19/24 10:23, Li Zhijian wrote:
+> Per filesystems/sysfs.rst, show() should only use sysfs_emit()
+> or sysfs_emit_at() when formatting the value to be returned to user spac=
+e.
+>
+> coccinelle complains that there are still a couple of functions that use
+> snprintf(). Convert them to sysfs_emit().
+>
+> sprintf() and scnprintf() will be converted as well if they have.
+>
+> Generally, this patch is generated by
+> make coccicheck M=3D<path/to/file> MODE=3Dpatch \
+> COCCI=3Dscripts/coccinelle/api/device_attr_show.cocci
+>
+> No functional change intended
+>
+> CC: Helge Deller <deller@gmx.de>
+> CC: linux-omap@vger.kernel.org
+> CC: linux-fbdev@vger.kernel.org
+> CC: dri-devel@lists.freedesktop.org
+> Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
 
-On Mar 04, 2024 at 16:35:45 +0100, Thomas Richard wrote:
-> The goal is to extend the active period of pinctrl.
-> Some devices may need active pinctrl after suspend() and/or before
-> resume().
-> So move suspend()/resume() to suspend_noirq()/resume_noirq() in order to
-> have active pinctrl until suspend_noirq() (included), and from
-> resume_noirq() (included).
-> 
-> The deprecated API has been removed to use the new one (dev_pm_ops struct).
-> 
-> No need to check the pointer returned by dev_get_drvdata(), as
-> platform_set_drvdata() is called during the probe.
-> 
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> Signed-off-by: Thomas Richard <thomas.richard@bootlin.com>
+applied to fbdev git tree.
+Thanks!
+Helge
+
 > ---
+> V3:
+>     split it from a mess of drm,fbdev, becuase they are not the same sub=
+system.
+>
+> V2:
+>     Fix missing '+' before '=3D' in drivers/video/fbdev/omap2/omapfb/dis=
+plays/panel-tpo-td043mtea1.c
+>
+> This is a part of the work "Fix coccicheck device_attr_show warnings"[1]
+> Split them per subsystem so that the maintainer can review it easily
+> [1] https://lore.kernel.org/lkml/20240116041129.3937800-1-lizhijian@fuji=
+tsu.com/
+> ---
+>   .../omap2/omapfb/displays/panel-tpo-td043mtea1.c     | 12 ++++--------
+>   1 file changed, 4 insertions(+), 8 deletions(-)
+>
+> diff --git a/drivers/video/fbdev/omap2/omapfb/displays/panel-tpo-td043mt=
+ea1.c b/drivers/video/fbdev/omap2/omapfb/displays/panel-tpo-td043mtea1.c
+> index 477789cff8e0..3624452e1dd0 100644
+> --- a/drivers/video/fbdev/omap2/omapfb/displays/panel-tpo-td043mtea1.c
+> +++ b/drivers/video/fbdev/omap2/omapfb/displays/panel-tpo-td043mtea1.c
+> @@ -228,14 +228,10 @@ static ssize_t tpo_td043_gamma_show(struct device =
+*dev,
+>   	int ret;
+>   	int i;
+>
+> -	for (i =3D 0; i < ARRAY_SIZE(ddata->gamma); i++) {
+> -		ret =3D snprintf(buf + len, PAGE_SIZE - len, "%u ",
+> -				ddata->gamma[i]);
+> -		if (ret < 0)
+> -			return ret;
+> -		len +=3D ret;
+> -	}
+> -	buf[len - 1] =3D '\n';
+> +	for (i =3D 0; i < ARRAY_SIZE(ddata->gamma); i++)
+> +		len +=3D sysfs_emit_at(buf, len, "%u ", ddata->gamma[i]);
+> +	if (len)
+> +		buf[len - 1] =3D '\n';
+>
+>   	return len;
+>   }
 
-I was planning to do this but didn't see particular benefit to it. Do
-you see the benefit on your specific device? Can you help me understand
-how? Not against the patch, just curious.
-
-Reviewed-by: Dhruva Gole <d-gole@ti.com>
-
--- 
-Best regards,
-Dhruva
 
