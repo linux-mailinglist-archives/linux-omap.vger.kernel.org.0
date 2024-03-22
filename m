@@ -1,387 +1,304 @@
-Return-Path: <linux-omap+bounces-922-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-923-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28E90886BA0
-	for <lists+linux-omap@lfdr.de>; Fri, 22 Mar 2024 12:54:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB0D1886CD9
+	for <lists+linux-omap@lfdr.de>; Fri, 22 Mar 2024 14:26:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D15BC284AB8
-	for <lists+linux-omap@lfdr.de>; Fri, 22 Mar 2024 11:54:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8234528166A
+	for <lists+linux-omap@lfdr.de>; Fri, 22 Mar 2024 13:26:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C80143FB28;
-	Fri, 22 Mar 2024 11:54:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D4343B2AD;
+	Fri, 22 Mar 2024 13:26:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bRb6+7dx"
+	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="a6wbfcte"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.zeus03.de (www.zeus03.de [194.117.254.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5133C3FB04;
-	Fri, 22 Mar 2024 11:54:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37F9E45BFC
+	for <linux-omap@vger.kernel.org>; Fri, 22 Mar 2024 13:26:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711108441; cv=none; b=Us89jVFpnnGFsNDDNbZf5sOXh+/TzNOHUd5PAfSTfZqbXNTCIBIGwpvOc6aBtaWbDTAleMdKlWFX4gCNcYhvV5Vna/iYJdo8vQjnU/Wzi2QOkNhbbtfw0nsG3Nrrs+fBbwveQmN6Eh98ATodFdTqLr8IJDywbWLPPT4aw3tzqWE=
+	t=1711113993; cv=none; b=C62aHbIizOGwzuFAzDdNVoLvXPDEJUs9I4HYBaI46HEeDmNFfdnFWxRWVKHOxuqQZuQgiiOlMTTAlGhkj1bcGiaOglUCkBLqwuWPRpIBkEXVnc/kv+AprhvqfE6yWfBU+1R2JzHd18AV+SC9rwZS+nbV9TdaDCQ2TUn+xTybJis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711108441; c=relaxed/simple;
-	bh=b9Cp4C1sz2JvQcloJbd1gxGs1djTlwbzJPl/7QImHrk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T06KrPYnLO9kvm+1TApe0Au8HDAgy2PJCbYtm4OKK/d5yDDxV332V1rxJ2+nmjKs1jm1ZgMQWMrcEu5mqEk9GeDhFqscqdtRk9D5Zrw5GdIQ5y22LT/tBIx7t0UahW4iDUuQwmOGmltE0aeloNUjCajMww2tiiX3VUF75Bj2ZPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bRb6+7dx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5125FC433C7;
-	Fri, 22 Mar 2024 11:53:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711108440;
-	bh=b9Cp4C1sz2JvQcloJbd1gxGs1djTlwbzJPl/7QImHrk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bRb6+7dx+JBAmmwEy/1CbdN2q2OvEsiR/RQXuB4t8hLIaNirKmj/2Trwph9TnuZnq
-	 9FLsy/VthCWbXcnq09IdY81DsJdJbeXxGL5SfvszT2ZFMTMbDc4ZphVkmAkucYmB3q
-	 uwRuBYE0daZ2r/KSrsMurn/OJcqc8lAmbvavkQdJ1Wal8yBkdX6WuduVDqxSSoJcep
-	 46LvtW9lm7lfch2R4MktG5kQjJaFBZggm+vD7/AUSJMFAuzjpnr4w6jV02k/G30/I2
-	 jYWN2TwvUDMCfeDD/vRCo2XVllTNp7SFh3RKj8+25msTV0WfF8wI4iCNU+drxf3qJI
-	 lvyqUtd9CUZoA==
-Date: Fri, 22 Mar 2024 12:53:50 +0100
-From: Niklas Cassel <cassel@kernel.org>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: Jingoo Han <jingoohan1@gmail.com>,
-	Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Marek Vasut <marek.vasut+renesas@gmail.com>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Kishon Vijay Abraham I <kishon@ti.com>,
-	Vidya Sagar <vidyas@nvidia.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	NXP Linux Team <linux-imx@nxp.com>,
-	Minghuan Lian <minghuan.Lian@nxp.com>,
-	Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Jesper Nilsson <jesper.nilsson@axis.com>,
-	Srikanth Thokala <srikanth.thokala@intel.com>,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@axis.com
-Subject: Re: [PATCH v10 8/8] PCI: dwc: ep: Remove "core_init_notifier" flag
-Message-ID: <Zf1xTkuK8yBZXmQ0@ryzen>
-References: <20240314-pci-dbi-rework-v10-0-14a45c5a938e@linaro.org>
- <20240314-pci-dbi-rework-v10-8-14a45c5a938e@linaro.org>
+	s=arc-20240116; t=1711113993; c=relaxed/simple;
+	bh=dkHEK5fRN4ISlL8OBFqYbKAYt0DED3N3Yfj6qrUQoVQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dkRTduvZpsx5JDyEjds+6K/jXgHHl4A/m2QiN4OGjFrR4e5XZojITBg61UEPLgP+0COKhfx04SVxxWmAzFf28ylHBZ1SpC9zG//SUueBzTfgCTaog4Zdm5uzTOAckVKnNjG7e0pOoquOtWb5dmb4LRJwMANXKLszR1zTtYO3cCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=a6wbfcte; arc=none smtp.client-ip=194.117.254.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=from:to:cc:subject:date:message-id
+	:mime-version:content-transfer-encoding; s=k1; bh=bOf4HkOrzle/Fy
+	JG8mZHPOABnHhQv51u3vi0fpeyQ5Q=; b=a6wbfcte3+iXXCHibc+JrZzTin6dRv
+	R/KSB8hp01+LD2eYy9sHlg2rk631UWOsn12Y+n+kLseFY+llqMyTkAsXsa6SiRwh
+	MWm4LoN2zRJucl7AcBuXiztmbKc/EIBM7mZDtMCuyBPr9HgJZmeZ/QrbcrtglWHS
+	XN+P7gn2zQD/Lze6LmCDGEGHL9G2ujuVTWCU21W3oIUiV/btIhr/tqNO2UzK6c7u
+	GiqtIoKlD88U2nMoYFxi6SLiCaIBiXxhRRTMJxL3pZ9O0lWnbgR868o+Ty13YBXb
+	C70pYVUa6DcFGd/ysTyvqG2U7fdTnfOcmCXLvQLbrSiCtbkj8qjVIAVA==
+Received: (qmail 3869988 invoked from network); 22 Mar 2024 14:26:20 +0100
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 22 Mar 2024 14:26:20 +0100
+X-UD-Smtp-Session: l3s3148p1@LoLvxD8UMpNehhtF
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: linux-i2c@vger.kernel.org
+Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	asahi@lists.linux.dev,
+	chrome-platform@lists.linux.dev,
+	imx@lists.linux.dev,
+	linux-actions@lists.infradead.org,
+	linux-amlogic@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-aspeed@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	linux-mediatek@lists.infradead.org,
+	linux-mips@vger.kernel.org,
+	linux-omap@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	linux-rockchip@lists.infradead.org,
+	linux-rpi-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-sunxi@lists.linux.dev,
+	linux-tegra@vger.kernel.org,
+	openbmc@lists.ozlabs.org,
+	virtualization@lists.linux.dev
+Subject: [PATCH 00/64] i2c: reword i2c_algorithm according to newest specification
+Date: Fri, 22 Mar 2024 14:24:53 +0100
+Message-ID: <20240322132619.6389-1-wsa+renesas@sang-engineering.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240314-pci-dbi-rework-v10-8-14a45c5a938e@linaro.org>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Mar 14, 2024 at 01:18:06PM +0530, Manivannan Sadhasivam wrote:
-> "core_init_notifier" flag is set by the glue drivers requiring refclk from
-> the host to complete the DWC core initialization. Also, those drivers will
-> send a notification to the EPF drivers once the initialization is fully
-> completed using the pci_epc_init_notify() API. Only then, the EPF drivers
-> will start functioning.
-> 
-> For the rest of the drivers generating refclk locally, EPF drivers will
-> start functioning post binding with them. EPF drivers rely on the
-> 'core_init_notifier' flag to differentiate between the drivers.
-> Unfortunately, this creates two different flows for the EPF drivers.
-> 
-> So to avoid that, let's get rid of the "core_init_notifier" flag and follow
-> a single initialization flow for the EPF drivers. This is done by calling
-> the dw_pcie_ep_init_notify() from all glue drivers after the completion of
-> dw_pcie_ep_init_registers() API. This will allow all the glue drivers to
-> send the notification to the EPF drivers once the initialization is fully
-> completed.
-> 
-> Only difference here is that, the drivers requiring refclk from host will
-> send the notification once refclk is received, while others will send it
-> during probe time itself.
-> 
-> But this also requires the EPC core driver to deliver the notification
-> after EPF driver bind. Because, the glue driver can send the notification
-> before the EPF drivers bind() and in those cases the EPF drivers will miss
-> the event. To accommodate this, EPC core is now caching the state of the
-> EPC initialization in 'init_complete' flag and pci-ep-cfs driver sends the
-> notification to EPF drivers based on that after each EPF driver bind.
-> 
-> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> ---
->  drivers/pci/controller/dwc/pci-dra7xx.c           |  2 ++
->  drivers/pci/controller/dwc/pci-imx6.c             |  2 ++
->  drivers/pci/controller/dwc/pci-keystone.c         |  2 ++
->  drivers/pci/controller/dwc/pci-layerscape-ep.c    |  2 ++
->  drivers/pci/controller/dwc/pcie-artpec6.c         |  2 ++
->  drivers/pci/controller/dwc/pcie-designware-plat.c |  2 ++
->  drivers/pci/controller/dwc/pcie-keembay.c         |  2 ++
->  drivers/pci/controller/dwc/pcie-qcom-ep.c         |  1 -
->  drivers/pci/controller/dwc/pcie-rcar-gen4.c       |  2 ++
->  drivers/pci/controller/dwc/pcie-tegra194.c        |  1 -
->  drivers/pci/controller/dwc/pcie-uniphier-ep.c     |  2 ++
->  drivers/pci/endpoint/functions/pci-epf-test.c     | 18 +++++-------------
->  drivers/pci/endpoint/pci-ep-cfs.c                 |  9 +++++++++
->  drivers/pci/endpoint/pci-epc-core.c               | 22 ++++++++++++++++++++++
->  include/linux/pci-epc.h                           |  7 ++++---
->  15 files changed, 58 insertions(+), 18 deletions(-)
+Okay, we need to begin somewhere...
 
-FWIW:
-Tested-by: Niklas Cassel <cassel@kernel.org>
+Start changing the wording of the I2C main header wrt. the newest I2C
+v7, SMBus 3.2, I3C specifications and replace "master/slave" with more
+appropriate terms. This first step renames the members of struct
+i2c_algorithm. Once all in-tree users are converted, the anonymous union
+will go away again. All this work will also pave the way for finally
+seperating the monolithic header into more fine-grained headers like
+"i2c/clients.h" etc. So, this is not a simple renaming-excercise but
+also a chance to update the I2C core to recent Linux standards.
+
+My motivation is to improve the I2C core API, in general. My motivation
+is not to clean each and every driver. I think this is impossible
+because register names based on official documentation will need to stay
+as they are. But the Linux-internal names should be updated IMO.
+
+That being said, I worked on 62 drivers in this series beyond plain
+renames inside 'struct i2c_algorithm' because the fruits were so
+low-hanging. Before this series, 112 files in the 'busses/' directory
+contained 'master' and/or 'slave'. After the series, only 57. Why not?
+
+Next step is updating the drivers outside the 'i2c'-folder regarding
+'struct i2c_algorithm' so we can remove the anonymous union ASAP. To be
+able to work on this with minimal dependencies, I'd like to apply this
+series between -rc1 and -rc2.
+
+I hope this will work for you guys. The changes are really minimal. If
+you are not comfortable with changes to your driver or need more time to
+review, please NACK the patch and I will drop the patch and/or address
+the issues separeately.
+
+@Andi: are you okay with this approach? It means you'd need to merge
+-rc2 into your for-next branch. Or rebase if all fails.
+
+Speaking of Andi, thanks a lot to him taking care of the controller
+drivers these days. His work really gives me the freedom to work on I2C
+core issues again. Also, Renesas deserves a honorable mention here for
+increased support of my I2C activities. Thank you!
+
+If you have comments, hints, etc, please let me know.
+
+Happy hacking,
+
+   Wolfram
 
 
+Wolfram Sang (64):
+  i2c: reword i2c_algorithm according to newest specification
+  i2c: ali15x3: reword according to newest specification
+  i2c: altera: reword according to newest specification
+  i2c: amd-mp2-pci: reword according to newest specification
+  i2c: aspeed: reword according to newest specification
+  i2c: au1550: reword according to newest specification
+  i2c: bcm-iproc: reword according to newest specification
+  i2c: bcm-kona: reword according to newest specification
+  i2c: bcm2835: reword according to newest specification
+  i2c: brcmstb: reword according to newest specification
+  i2c: cadence: reword according to newest specification
+  i2c: cht-wc: reword according to newest specification
+  i2c: cp2615: reword according to newest specification
+  i2c: cpm: reword according to newest specification
+  i2c: davinci: reword according to newest specification
+  i2c: digicolor: reword according to newest specification
+  i2c: dln2: reword according to newest specification
+  i2c: eg20t: reword according to newest specification
+  i2c: emev2: reword according to newest specification
+  i2c: fsi: reword according to newest specification
+  i2c: gpio: reword according to newest specification
+  i2c: highlander: reword according to newest specification
+  i2c: hix5hd2: reword according to newest specification
+  i2c: i801: reword according to newest specification
+  i2c: ibm_iic: reword according to newest specification
+  i2c: imx-lpi2c: reword according to newest specification
+  i2c: iop3xx: reword according to newest specification
+  i2c: isch: reword according to newest specification
+  i2c: ismt: reword according to newest specification
+  i2c: ljca: reword according to newest specification
+  i2c: lpc2k: reword according to newest specification
+  i2c: ls2x: reword according to newest specification
+  i2c: mchp-pci1xxxx: reword according to newest specification
+  i2c: microchip-corei2c: reword according to newest specification
+  i2c: mlxcpld: reword according to newest specification
+  i2c: mpc: reword according to newest specification
+  i2c: mt7621: reword according to newest specification
+  i2c: mv64xxx: reword according to newest specification
+  i2c: octeon-core: reword according to newest specification
+  i2c: owl: reword according to newest specification
+  i2c: piix4: reword according to newest specification
+  i2c: powermac: reword according to newest specification
+  i2c: pxa-pci: reword according to newest specification
+  i2c: qup: reword according to newest specification
+  i2c: rcar: reword according to newest specification
+  i2c: riic: reword according to newest specification
+  i2c: rk3x: reword according to newest specification
+  i2c: sh7760: reword according to newest specification
+  i2c: sh_mobile: reword according to newest specification
+  i2c: sis5595: reword according to newest specification
+  i2c: sis630: reword according to newest specification
+  i2c: sprd: reword according to newest specification
+  i2c: st: reword according to newest specification
+  i2c: stm32f4: reword according to newest specification
+  i2c: sun6i-p2wi: reword according to newest specification
+  i2c: synquacer: reword according to newest specification
+  i2c: taos-evm: reword according to newest specification
+  i2c: tiny-usb: reword according to newest specification
+  i2c: uniphier-f: reword according to newest specification
+  i2c: uniphier: reword according to newest specification
+  i2c: viperboard: reword according to newest specification
+  i2c: xlp9xx: reword according to newest specification
+  i2c: scx200_acb: reword according to newest specification
+  i2c: reword i2c_algorithm in drivers according to newest specification
 
-However, when looking at this, I was surprised that you never call something
-that will set:
-init_complete = false;
-from e.g. dw_pcie_ep_deinit() or dw_pcie_ep_cleanup().
+ drivers/i2c/busses/i2c-ali15x3.c           |  2 +-
+ drivers/i2c/busses/i2c-altera.c            |  4 +-
+ drivers/i2c/busses/i2c-amd-mp2-pci.c       |  8 ++--
+ drivers/i2c/busses/i2c-amd-mp2-plat.c      |  2 +-
+ drivers/i2c/busses/i2c-aspeed.c            | 26 +++++-----
+ drivers/i2c/busses/i2c-at91-master.c       |  2 +-
+ drivers/i2c/busses/i2c-at91-slave.c        |  8 ++--
+ drivers/i2c/busses/i2c-au1550.c            | 14 +++---
+ drivers/i2c/busses/i2c-axxia.c             | 10 ++--
+ drivers/i2c/busses/i2c-bcm-iproc.c         | 20 ++++----
+ drivers/i2c/busses/i2c-bcm-kona.c          | 14 +++---
+ drivers/i2c/busses/i2c-bcm2835.c           |  8 ++--
+ drivers/i2c/busses/i2c-brcmstb.c           | 12 ++---
+ drivers/i2c/busses/i2c-cadence.c           | 14 +++---
+ drivers/i2c/busses/i2c-cht-wc.c            |  8 ++--
+ drivers/i2c/busses/i2c-cp2615.c            |  6 +--
+ drivers/i2c/busses/i2c-cpm.c               |  4 +-
+ drivers/i2c/busses/i2c-cros-ec-tunnel.c    |  2 +-
+ drivers/i2c/busses/i2c-davinci.c           | 13 +++--
+ drivers/i2c/busses/i2c-designware-master.c |  2 +-
+ drivers/i2c/busses/i2c-designware-slave.c  |  8 ++--
+ drivers/i2c/busses/i2c-digicolor.c         |  4 +-
+ drivers/i2c/busses/i2c-diolan-u2c.c        |  2 +-
+ drivers/i2c/busses/i2c-dln2.c              |  4 +-
+ drivers/i2c/busses/i2c-eg20t.c             | 10 ++--
+ drivers/i2c/busses/i2c-emev2.c             | 10 ++--
+ drivers/i2c/busses/i2c-exynos5.c           |  4 +-
+ drivers/i2c/busses/i2c-fsi.c               | 56 +++++++++++-----------
+ drivers/i2c/busses/i2c-gpio.c              |  8 ++--
+ drivers/i2c/busses/i2c-gxp.c               | 12 ++---
+ drivers/i2c/busses/i2c-highlander.c        |  2 +-
+ drivers/i2c/busses/i2c-hisi.c              |  4 +-
+ drivers/i2c/busses/i2c-hix5hd2.c           |  4 +-
+ drivers/i2c/busses/i2c-i801.c              | 12 ++---
+ drivers/i2c/busses/i2c-ibm_iic.c           | 26 +++++-----
+ drivers/i2c/busses/i2c-img-scb.c           |  2 +-
+ drivers/i2c/busses/i2c-imx-lpi2c.c         | 10 ++--
+ drivers/i2c/busses/i2c-imx.c               | 12 ++---
+ drivers/i2c/busses/i2c-iop3xx.c            | 10 ++--
+ drivers/i2c/busses/i2c-isch.c              |  2 +-
+ drivers/i2c/busses/i2c-ismt.c              |  2 +-
+ drivers/i2c/busses/i2c-jz4780.c            |  2 +-
+ drivers/i2c/busses/i2c-kempld.c            |  2 +-
+ drivers/i2c/busses/i2c-ljca.c              | 20 ++++----
+ drivers/i2c/busses/i2c-lpc2k.c             |  8 ++--
+ drivers/i2c/busses/i2c-ls2x.c              |  8 ++--
+ drivers/i2c/busses/i2c-mchp-pci1xxxx.c     | 40 ++++++++--------
+ drivers/i2c/busses/i2c-meson.c             |  4 +-
+ drivers/i2c/busses/i2c-microchip-corei2c.c |  4 +-
+ drivers/i2c/busses/i2c-mlxbf.c             |  8 ++--
+ drivers/i2c/busses/i2c-mlxcpld.c           | 12 ++---
+ drivers/i2c/busses/i2c-mpc.c               |  4 +-
+ drivers/i2c/busses/i2c-mt65xx.c            |  2 +-
+ drivers/i2c/busses/i2c-mt7621.c            | 22 ++++-----
+ drivers/i2c/busses/i2c-mv64xxx.c           | 12 ++---
+ drivers/i2c/busses/i2c-mxs.c               |  2 +-
+ drivers/i2c/busses/i2c-nomadik.c           |  2 +-
+ drivers/i2c/busses/i2c-npcm7xx.c           | 12 ++---
+ drivers/i2c/busses/i2c-nvidia-gpu.c        |  4 +-
+ drivers/i2c/busses/i2c-ocores.c            |  8 ++--
+ drivers/i2c/busses/i2c-octeon-core.c       |  6 +--
+ drivers/i2c/busses/i2c-octeon-platdrv.c    |  2 +-
+ drivers/i2c/busses/i2c-omap.c              |  4 +-
+ drivers/i2c/busses/i2c-opal.c              |  4 +-
+ drivers/i2c/busses/i2c-owl.c               | 10 ++--
+ drivers/i2c/busses/i2c-pasemi-core.c       |  2 +-
+ drivers/i2c/busses/i2c-piix4.c             |  2 +-
+ drivers/i2c/busses/i2c-pnx.c               |  2 +-
+ drivers/i2c/busses/i2c-powermac.c          |  8 ++--
+ drivers/i2c/busses/i2c-pxa-pci.c           |  2 +-
+ drivers/i2c/busses/i2c-pxa.c               | 12 ++---
+ drivers/i2c/busses/i2c-qcom-cci.c          |  2 +-
+ drivers/i2c/busses/i2c-qcom-geni.c         |  2 +-
+ drivers/i2c/busses/i2c-qup.c               |  6 +--
+ drivers/i2c/busses/i2c-rcar.c              | 16 +++----
+ drivers/i2c/busses/i2c-riic.c              |  6 +--
+ drivers/i2c/busses/i2c-rk3x.c              | 18 +++----
+ drivers/i2c/busses/i2c-robotfuzz-osif.c    |  2 +-
+ drivers/i2c/busses/i2c-rzv2m.c             |  8 ++--
+ drivers/i2c/busses/i2c-s3c2410.c           |  4 +-
+ drivers/i2c/busses/i2c-sh7760.c            | 18 +++----
+ drivers/i2c/busses/i2c-sh_mobile.c         | 12 ++---
+ drivers/i2c/busses/i2c-sis5595.c           |  2 +-
+ drivers/i2c/busses/i2c-sis630.c            | 16 +++----
+ drivers/i2c/busses/i2c-sprd.c              | 14 +++---
+ drivers/i2c/busses/i2c-st.c                | 17 +++----
+ drivers/i2c/busses/i2c-stm32f4.c           |  8 ++--
+ drivers/i2c/busses/i2c-stm32f7.c           | 14 +++---
+ drivers/i2c/busses/i2c-sun6i-p2wi.c        | 20 ++++----
+ drivers/i2c/busses/i2c-synquacer.c         | 30 ++++++------
+ drivers/i2c/busses/i2c-taos-evm.c          |  2 +-
+ drivers/i2c/busses/i2c-tegra-bpmp.c        |  4 +-
+ drivers/i2c/busses/i2c-tegra.c             |  4 +-
+ drivers/i2c/busses/i2c-thunderx-pcidrv.c   |  2 +-
+ drivers/i2c/busses/i2c-tiny-usb.c          |  4 +-
+ drivers/i2c/busses/i2c-uniphier-f.c        | 22 ++++-----
+ drivers/i2c/busses/i2c-uniphier.c          | 12 ++---
+ drivers/i2c/busses/i2c-viperboard.c        |  8 ++--
+ drivers/i2c/busses/i2c-virtio.c            |  2 +-
+ drivers/i2c/busses/i2c-wmt.c               |  2 +-
+ drivers/i2c/busses/i2c-xiic.c              |  2 +-
+ drivers/i2c/busses/i2c-xlp9xx.c            |  4 +-
+ drivers/i2c/busses/scx200_acb.c            |  4 +-
+ include/linux/i2c.h                        | 24 ++++++++--
+ 104 files changed, 460 insertions(+), 464 deletions(-)
 
-I saw that you do seem to set
-init_complete = false;
-in your other follow up series that is based on this one.
+-- 
+2.43.0
 
-What will happen if you run with only this series merged (without your
-follow up series), on a platform that used to have .core_init_notifier?
-
-If you do remove and recreate the symlink on a platform with external
-refclk, since you never set init_complete to false, you could trigger
-EPF core_init callback, e.g. pci_epf_test_core_init() to be called,
-which will do DBI writes even when there is no refclk.
-
-E.g. (on a platform with external refclk):
-1) Create symlink to pci-epf-test in configfs.
-2) Start RC, your EPC driver will call ep_init_notifiy() when perst
-deasserts.
-3) Run pci-epf-test.
-4) Remove the pci-epf-test symlink
-5) Shutdown RC
-6) Create symlink to pci-epf-test in configfs.
-   This will see that init_complete is true, and will do DBI writes
-   which will crash your system, since you don't have a refclk.
-
-Perhaps you should move the patch that calls a function that sets
-init_complete = false;
-to this series, so that this crash is not possible?
-
-
-> 
-> diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
-> index 395042b29ffc..d2d17d37d3e0 100644
-> --- a/drivers/pci/controller/dwc/pci-dra7xx.c
-> +++ b/drivers/pci/controller/dwc/pci-dra7xx.c
-> @@ -474,6 +474,8 @@ static int dra7xx_add_pcie_ep(struct dra7xx_pcie *dra7xx,
->  		return ret;
->  	}
->  
-> +	dw_pcie_ep_init_notify(ep);
-> +
->  	return 0;
->  }
->  
-> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-> index bfcafa440ddb..894b5de76e3a 100644
-> --- a/drivers/pci/controller/dwc/pci-imx6.c
-> +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> @@ -1144,6 +1144,8 @@ static int imx6_add_pcie_ep(struct imx6_pcie *imx6_pcie,
->  		return ret;
->  	}
->  
-> +	dw_pcie_ep_init_notify(ep);
-> +
->  	/* Start LTSSM. */
->  	imx6_pcie_ltssm_enable(dev);
->  
-> diff --git a/drivers/pci/controller/dwc/pci-keystone.c b/drivers/pci/controller/dwc/pci-keystone.c
-> index 093dbb725e41..b7b30470b394 100644
-> --- a/drivers/pci/controller/dwc/pci-keystone.c
-> +++ b/drivers/pci/controller/dwc/pci-keystone.c
-> @@ -1293,6 +1293,8 @@ static int ks_pcie_probe(struct platform_device *pdev)
->  			goto err_ep_init;
->  		}
->  
-> +		dw_pcie_ep_init_notify(&pci->ep);
-> +
->  		break;
->  	default:
->  		dev_err(dev, "INVALID device type %d\n", mode);
-> diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> index b712fdd06549..c513598a46d7 100644
-> --- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> +++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> @@ -283,6 +283,8 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
->  		return ret;
->  	}
->  
-> +	dw_pcie_ep_init_notify(&pci->ep);
-> +
->  	return ls_pcie_ep_interrupt_init(pcie, pdev);
->  }
->  
-> diff --git a/drivers/pci/controller/dwc/pcie-artpec6.c b/drivers/pci/controller/dwc/pcie-artpec6.c
-> index a6095561db4a..a4630b92489b 100644
-> --- a/drivers/pci/controller/dwc/pcie-artpec6.c
-> +++ b/drivers/pci/controller/dwc/pcie-artpec6.c
-> @@ -452,6 +452,8 @@ static int artpec6_pcie_probe(struct platform_device *pdev)
->  			return ret;
->  		}
->  
-> +		dw_pcie_ep_init_notify(&pci->ep);
-> +
->  		break;
->  	default:
->  		dev_err(dev, "INVALID device type %d\n", artpec6_pcie->mode);
-> diff --git a/drivers/pci/controller/dwc/pcie-designware-plat.c b/drivers/pci/controller/dwc/pcie-designware-plat.c
-> index ca9b22e654cd..8490c5d6ff9f 100644
-> --- a/drivers/pci/controller/dwc/pcie-designware-plat.c
-> +++ b/drivers/pci/controller/dwc/pcie-designware-plat.c
-> @@ -154,6 +154,8 @@ static int dw_plat_pcie_probe(struct platform_device *pdev)
->  			dw_pcie_ep_deinit(&pci->ep);
->  		}
->  
-> +		dw_pcie_ep_init_notify(&pci->ep);
-> +
->  		break;
->  	default:
->  		dev_err(dev, "INVALID device type %d\n", dw_plat_pcie->mode);
-> diff --git a/drivers/pci/controller/dwc/pcie-keembay.c b/drivers/pci/controller/dwc/pcie-keembay.c
-> index 250d6acf16dc..9fa9354a5f48 100644
-> --- a/drivers/pci/controller/dwc/pcie-keembay.c
-> +++ b/drivers/pci/controller/dwc/pcie-keembay.c
-> @@ -438,6 +438,8 @@ static int keembay_pcie_probe(struct platform_device *pdev)
->  			return ret;
->  		}
->  
-> +		dw_pcie_ep_init_notify(&pci->ep);
-> +
->  		break;
->  	default:
->  		dev_err(dev, "Invalid device type %d\n", pcie->mode);
-> diff --git a/drivers/pci/controller/dwc/pcie-qcom-ep.c b/drivers/pci/controller/dwc/pcie-qcom-ep.c
-> index 3697b4a944cc..2fb8c15e7a91 100644
-> --- a/drivers/pci/controller/dwc/pcie-qcom-ep.c
-> +++ b/drivers/pci/controller/dwc/pcie-qcom-ep.c
-> @@ -775,7 +775,6 @@ static void qcom_pcie_ep_init_debugfs(struct qcom_pcie_ep *pcie_ep)
->  
->  static const struct pci_epc_features qcom_pcie_epc_features = {
->  	.linkup_notifier = true,
-> -	.core_init_notifier = true,
->  	.msi_capable = true,
->  	.msix_capable = false,
->  	.align = SZ_4K,
-> diff --git a/drivers/pci/controller/dwc/pcie-rcar-gen4.c b/drivers/pci/controller/dwc/pcie-rcar-gen4.c
-> index fb7c03639a53..0448928017f3 100644
-> --- a/drivers/pci/controller/dwc/pcie-rcar-gen4.c
-> +++ b/drivers/pci/controller/dwc/pcie-rcar-gen4.c
-> @@ -435,6 +435,8 @@ static int rcar_gen4_add_dw_pcie_ep(struct rcar_gen4_pcie *rcar)
->  		rcar_gen4_pcie_ep_deinit(rcar);
->  	}
->  
-> +	dw_pcie_ep_init_notify(ep);
-> +
->  	return ret;
->  }
->  
-> diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
-> index 264ee76bf008..e02deb31a72d 100644
-> --- a/drivers/pci/controller/dwc/pcie-tegra194.c
-> +++ b/drivers/pci/controller/dwc/pcie-tegra194.c
-> @@ -2006,7 +2006,6 @@ static int tegra_pcie_ep_raise_irq(struct dw_pcie_ep *ep, u8 func_no,
->  
->  static const struct pci_epc_features tegra_pcie_epc_features = {
->  	.linkup_notifier = true,
-> -	.core_init_notifier = true,
->  	.msi_capable = false,
->  	.msix_capable = false,
->  	.reserved_bar = 1 << BAR_2 | 1 << BAR_3 | 1 << BAR_4 | 1 << BAR_5,
-> diff --git a/drivers/pci/controller/dwc/pcie-uniphier-ep.c b/drivers/pci/controller/dwc/pcie-uniphier-ep.c
-> index 82ccaea089be..eb1d79fdb1f1 100644
-> --- a/drivers/pci/controller/dwc/pcie-uniphier-ep.c
-> +++ b/drivers/pci/controller/dwc/pcie-uniphier-ep.c
-> @@ -410,6 +410,8 @@ static int uniphier_pcie_ep_probe(struct platform_device *pdev)
->  		return ret;
->  	}
->  
-> +	dw_pcie_ep_init_notify(&priv->pci.ep);
-> +
->  	return 0;
->  }
->  
-> diff --git a/drivers/pci/endpoint/functions/pci-epf-test.c b/drivers/pci/endpoint/functions/pci-epf-test.c
-> index 18c80002d3bd..fc0282b0d626 100644
-> --- a/drivers/pci/endpoint/functions/pci-epf-test.c
-> +++ b/drivers/pci/endpoint/functions/pci-epf-test.c
-> @@ -753,6 +753,7 @@ static int pci_epf_test_core_init(struct pci_epf *epf)
->  	const struct pci_epc_features *epc_features;
->  	struct pci_epc *epc = epf->epc;
->  	struct device *dev = &epf->dev;
-> +	bool linkup_notifier = false;
->  	bool msix_capable = false;
->  	bool msi_capable = true;
->  	int ret;
-> @@ -795,6 +796,10 @@ static int pci_epf_test_core_init(struct pci_epf *epf)
->  		}
->  	}
->  
-> +	linkup_notifier = epc_features->linkup_notifier;
-> +	if (!linkup_notifier)
-> +		queue_work(kpcitest_workqueue, &epf_test->cmd_handler.work);
-> +
->  	return 0;
->  }
->  
-> @@ -901,8 +906,6 @@ static int pci_epf_test_bind(struct pci_epf *epf)
->  	const struct pci_epc_features *epc_features;
->  	enum pci_barno test_reg_bar = BAR_0;
->  	struct pci_epc *epc = epf->epc;
-> -	bool linkup_notifier = false;
-> -	bool core_init_notifier = false;
->  
->  	if (WARN_ON_ONCE(!epc))
->  		return -EINVAL;
-> @@ -913,8 +916,6 @@ static int pci_epf_test_bind(struct pci_epf *epf)
->  		return -EOPNOTSUPP;
->  	}
->  
-> -	linkup_notifier = epc_features->linkup_notifier;
-> -	core_init_notifier = epc_features->core_init_notifier;
->  	test_reg_bar = pci_epc_get_first_free_bar(epc_features);
->  	if (test_reg_bar < 0)
->  		return -EINVAL;
-> @@ -927,21 +928,12 @@ static int pci_epf_test_bind(struct pci_epf *epf)
->  	if (ret)
->  		return ret;
->  
-> -	if (!core_init_notifier) {
-> -		ret = pci_epf_test_core_init(epf);
-> -		if (ret)
-> -			return ret;
-> -	}
-> -
-
-While you did fix up all DWC based drivers, the non-DWC EPC drivers that
-did not have epc_features->core_init_notifier before this patch:
-
-drivers/pci/controller/cadence/pcie-cadence-ep.c:#include <linux/pci-epc.h>
-drivers/pci/controller/pcie-rcar-ep.c:#include <linux/pci-epc.h>
-drivers/pci/controller/pcie-rockchip-ep.c:#include <linux/pci-epc.h>
-
-I don't think that they will work with pci-epf-test anymore, since AFAICT,
-you did not add a call to: pci_epc_init_notify() or similar in these EPC drivers.
-(Like this patch does to all the DWC-based drivers without a core_init_notifier.)
-
-
-Kind regards,
-Niklas
 
