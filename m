@@ -1,239 +1,151 @@
-Return-Path: <linux-omap+bounces-948-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-949-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7081A88A269
-	for <lists+linux-omap@lfdr.de>; Mon, 25 Mar 2024 14:37:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AC6988B200
+	for <lists+linux-omap@lfdr.de>; Mon, 25 Mar 2024 21:50:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 259932A709A
-	for <lists+linux-omap@lfdr.de>; Mon, 25 Mar 2024 13:37:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 94286B2CF45
+	for <lists+linux-omap@lfdr.de>; Mon, 25 Mar 2024 15:19:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 725201B48B3;
-	Mon, 25 Mar 2024 10:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7913415748C;
+	Mon, 25 Mar 2024 12:35:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fkXBLBgH"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="waT/yd4c"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5F0C13B7A2;
-	Mon, 25 Mar 2024 07:54:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80716157482
+	for <linux-omap@vger.kernel.org>; Mon, 25 Mar 2024 12:35:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711353249; cv=none; b=CI/ySSwZp1NGEe0B6KGrUPi/1qd2DpukSFy4GJQVooCBNhg0QVM8AbW+8j32LSyvwFQpBf7PkTDRs3sMYcZpIJK0T4SYyaLVju5ACpbOcu6JZ3pXruG4PsLLf8xSpUR44LKXz3Ay+TVg0fETc2bTlQymZjVPxMHiK6CTYQxNesg=
+	t=1711370109; cv=none; b=efzCy+9g5Ukj9k7QQa6I38G17x4Hlp/yoAmNzZht7QFdQt2eixwM90FaF9BYYDB7WpgGgvL+Z8A0bDSOiUxs9ZllzEyCKCjcEswORG6QtigJw5bBq6zHnpX0Tfq2GTHNmvg2ZBV4xDOzcah7KN2xZcbYvzwz9Oh4rSL5ru4gPmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711353249; c=relaxed/simple;
-	bh=G9pVMPBkGeSCKm7GL4349gPmBncBHLw8Di6BWoQcag0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Z00wCssCiL3CXGVeYUn/rDXjqAI8cTU490+KtIKY8v+TElyrI4M2j0jYx2flfVJ2MVA6W3TbDzL6XokV6YoaqcjS5TZNLWXo0stoGvvUKv+cyA0ZmIuwrDUaTzYGeOr8+izCEY8h2TTqfwrHS3jb9uYgyOycVreAvep5n0jr7f8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fkXBLBgH; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711353246; x=1742889246;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=G9pVMPBkGeSCKm7GL4349gPmBncBHLw8Di6BWoQcag0=;
-  b=fkXBLBgH37ph5Q0oYqWWbQJliLEsV/7J0cRb9rnT+QtQitFB1LufvUhR
-   6RbAy21oMDg0XwBl2NbcQeU1Th3VwscKlE20dvZ5f7JIhKFElboWiyf9v
-   AoMfPWHhEa189te3dE2STHMcSX1XKpuZC/9kgI4CzPJ9m6PRNtlvqDuaL
-   nN6V2ei/lTfqgAXmfQoLN8yhfvu93Vj4NIIYgfA1T9W0hCDNpKb9uxXQX
-   Dhv3JxCOHVocNU6iEtQTMeJHdCB5MGLVPKCuloulscTuDe93TllMdzTgy
-   OXt8/kHxgpiBw8R+45tukcx9r+bXhkr1PvtE/TQn9JXL8uBNH5WKpQr2p
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11023"; a="6199169"
-X-IronPort-AV: E=Sophos;i="6.07,152,1708416000"; 
-   d="scan'208";a="6199169"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2024 00:54:04 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,152,1708416000"; 
-   d="scan'208";a="16197266"
-Received: from marquiz-s-2.fi.intel.com (HELO [10.237.72.58]) ([10.237.72.58])
-  by orviesa008.jf.intel.com with ESMTP; 25 Mar 2024 00:53:46 -0700
-Message-ID: <1f1e59a4-359e-4679-8ea9-3d915a930e91@linux.intel.com>
-Date: Mon, 25 Mar 2024 09:53:42 +0200
+	s=arc-20240116; t=1711370109; c=relaxed/simple;
+	bh=Ihco2VVQ8EM7Jh1F8wrCqICE2zkzbKD5Hk3coKQgtXA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XsneGqcRNzt/UTn2sFIT3W0syhzFugh/KxIaCDu6VzMPw3zpG7r8s3GIaHZi78YibxevETXH2iV4Gb1oG0Ja/YGTuWBkmTSTEWnSNc4Qd4RBdv1xqUoI7N+bisRGUEWgUtW2pck/1U6IwKDtwvyIsHcy3WDmvNbz6lnh7Ih0p4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=waT/yd4c; arc=none smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-568c714a9c7so4961268a12.2
+        for <linux-omap@vger.kernel.org>; Mon, 25 Mar 2024 05:35:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1711370106; x=1711974906; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=bWqmr4tJSgMTZuBlY7silaTC/ghGytqv25bJf51WJeA=;
+        b=waT/yd4cU4mNnUmHP5+44H/LdpDe6k1mDmwTsWZ260b/hmLwFpeAVOjMylwsfz6P09
+         UEc/ee8vp56Nq4CX7NnHHj7Ja/pbAuDXpYhGUcLdUNKUW60eMdHFN1Z4rEBcu5LKFCzY
+         PyLMefIL6VA9jdltO+mA4ji1FlzDOePVnpAuKNydEh8aQpnEUeDSs/hINvWZcKxrdQQH
+         4ZstZ9JysY2G6n3BIv7+s1b6LG3q9zt0GstasxDHdM/Z6juk925rKcTgGtC6HgedjZSv
+         oRK1BZMP/9QdvB5lVFybRVodoDWcFPT47YaAIYfmGSirnra5vAu6/LSCSEPfOBbcTbXl
+         Y2EQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711370106; x=1711974906;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bWqmr4tJSgMTZuBlY7silaTC/ghGytqv25bJf51WJeA=;
+        b=YKqeWn7KVz9RhU7sv2dLqhv4VijSXSZrFJWjSy16fs0Ltdisu8se4x0LjbkhFnLcbB
+         tmO1RW1+FzmmUQSFoFBocViJkyM2N7sjhhZz8SLOTv+gNUwbtNWDPGXYMVHAITFboPlr
+         8AgIE7+12ZzytswqOSaV3+VJIPoxiIONT/Tm06BWAMBAg/a1l/PK+Ip0mOh2w9psgv2I
+         2lMPh8vwf0VlMfPkRi3G1IG1JwdqrZX3u55f4XWhQgpgqPp9Bw6cDAwX9OX9NaOZKLmr
+         jVWkTSCI2muMFzSBOwo4UHjBBKjRKY2hBq70sI6DB17w67AHOyBwMKo9Gdq9rG6XknCy
+         Vlpg==
+X-Forwarded-Encrypted: i=1; AJvYcCUXZlFPDIYnXW3nSNQlo5Ux56aD7Gem58Pmua7J2lvweWqT8c6FaHkkaEm/wvttdDMrORvBS3WQ3plhnedXQ8ZKHD+OhXoE97aB4Q==
+X-Gm-Message-State: AOJu0YxqDogzxfm47VhS3DYgxs6KLWxYbHOtX1zDNArfmrG+E+XAmEkW
+	c13GSkGmugEmTUuBselLB0lzVzPoZB+GIlcDGb1B8Xb3o0s92q8pMRaLMcIpoxc=
+X-Google-Smtp-Source: AGHT+IH8Cn89ggEfIANbpUmr3OPCf2JNAzSSROYWGxG3Th6G6cN11daoFg65mxm7kIJzyF7KMVoTFg==
+X-Received: by 2002:a50:d786:0:b0:567:ff26:4bcb with SMTP id w6-20020a50d786000000b00567ff264bcbmr4510771edi.30.1711370105691;
+        Mon, 25 Mar 2024 05:35:05 -0700 (PDT)
+Received: from localhost ([102.222.70.76])
+        by smtp.gmail.com with ESMTPSA id s21-20020a056402037500b0056bdc4a5cd6sm2947522edw.62.2024.03.25.05.35.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 Mar 2024 05:35:05 -0700 (PDT)
+Date: Mon, 25 Mar 2024 15:35:02 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Cc: "Lad,  Prabhakar" <prabhakar.csengg@gmail.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>,
+	Eugen Hristev <eugen.hristev@collabora.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Helge Deller <deller@gmx.de>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Maxime Ripard <mripard@kernel.org>,
+	Michal Simek <michal.simek@amd.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	coresight@lists.linaro.org, dri-devel@lists.freedesktop.org,
+	linux-arm-kernel@lists.infradead.org, linux-fbdev@vger.kernel.org,
+	linux-media@vger.kernel.org, linux-omap@vger.kernel.org,
+	linux-staging@lists.linux.dev
+Subject: Re: [PATCH 4/8] media: platform: ti: use for_each_endpoint_of_node()
+Message-ID: <02d6efba-6d1c-465f-a06d-cf7c02656e21@moroto.mountain>
+References: <8734sf6mgn.wl-kuninori.morimoto.gx@renesas.com>
+ <87wmpr57uw.wl-kuninori.morimoto.gx@renesas.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 64/64] i2c: reword i2c_algorithm in drivers according to
- newest specification
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>, linux-i2c@vger.kernel.org
-Cc: Elie Morisse <syniurge@gmail.com>,
- Shyam Sundar S K <shyam-sundar.s-k@amd.com>,
- Andi Shyti <andi.shyti@kernel.org>,
- Codrin Ciubotariu <codrin.ciubotariu@microchip.com>,
- Nicolas Ferre <nicolas.ferre@microchip.com>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>,
- Krzysztof Adamski <krzysztof.adamski@nokia.com>,
- Benson Leung <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Mika Westerberg <mika.westerberg@linux.intel.com>,
- Jan Dabros <jsd@semihalf.com>,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- Alim Akhtar <alim.akhtar@samsung.com>, Jean-Marie Verdun <verdun@hpe.com>,
- Nick Hawkins <nick.hawkins@hpe.com>, Yicong Yang <yangyicong@hisilicon.com>,
- Oleksij Rempel <o.rempel@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Paul Cercueil <paul@crapouillou.net>,
- Neil Armstrong <neil.armstrong@linaro.org>,
- Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- Khalil Blaiech <kblaiech@nvidia.com>, Asmaa Mnebhi <asmaa@nvidia.com>,
- Qii Wang <qii.wang@mediatek.com>, Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Linus Walleij <linus.walleij@linaro.org>,
- Avi Fishman <avifishman70@gmail.com>, Tomer Maimon <tmaimon77@gmail.com>,
- Tali Perry <tali.perry1@gmail.com>, Patrick Venture <venture@google.com>,
- Nancy Yuen <yuenn@google.com>, Benjamin Fair <benjaminfair@google.com>,
- Ajay Gupta <ajayg@nvidia.com>, Peter Korsgaard <peter@korsgaard.com>,
- Andrew Lunn <andrew@lunn.ch>, Robert Richter <rric@kernel.org>,
- Aaro Koskinen <aaro.koskinen@iki.fi>,
- Janusz Krzysztofik <jmkrzyszt@gmail.com>, Tony Lindgren <tony@atomide.com>,
- Vignesh R <vigneshr@ti.com>, Michael Ellerman <mpe@ellerman.id.au>,
- Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
- Hector Martin <marcan@marcan.st>, Sven Peter <sven@svenpeter.dev>,
- Alyssa Rosenzweig <alyssa@rosenzweig.io>, Vladimir Zapolskiy <vz@mleia.com>,
- Loic Poulain <loic.poulain@linaro.org>, Robert Foss <rfoss@kernel.org>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konrad.dybcio@linaro.org>,
- Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
- Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>,
- Alain Volmat <alain.volmat@foss.st.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Thierry Reding <thierry.reding@gmail.com>,
- Jonathan Hunter <jonathanh@nvidia.com>,
- Laxman Dewangan <ldewangan@nvidia.com>, Dmitry Osipenko <digetx@gmail.com>,
- Conghui Chen <conghui.chen@intel.com>, Viresh Kumar
- <viresh.kumar@linaro.org>, Michal Simek <michal.simek@amd.com>,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- chrome-platform@lists.linux.dev, linux-samsung-soc@vger.kernel.org,
- imx@lists.linux.dev, linux-mips@vger.kernel.org,
- linux-amlogic@lists.infradead.org, linux-mediatek@lists.infradead.org,
- openbmc@lists.ozlabs.org, linux-omap@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, asahi@lists.linux.dev,
- linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com, linux-tegra@vger.kernel.org,
- virtualization@lists.linux.dev
-References: <20240322132619.6389-1-wsa+renesas@sang-engineering.com>
- <20240322132619.6389-65-wsa+renesas@sang-engineering.com>
-Content-Language: en-US
-From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-In-Reply-To: <20240322132619.6389-65-wsa+renesas@sang-engineering.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87wmpr57uw.wl-kuninori.morimoto.gx@renesas.com>
 
-On 3/22/24 3:25 PM, Wolfram Sang wrote:
-> Match the wording in i2c_algorithm in I2C drivers wrt. the newest I2C
-> v7, SMBus 3.2, I3C specifications and replace "master/slave" with more
-> appropriate terms. For some drivers, this means no more conversions are
-> needed. For the others more work needs to be done but this will be
-> performed incrementally along with API changes/improvements. All these
-> changes here are simple search/replace results.
+On Mon, Mar 25, 2024 at 03:05:27AM +0000, Kuninori Morimoto wrote:
+> We already have for_each_endpoint_of_node(), don't use
+> of_graph_get_next_endpoint() directly. Replace it.
 > 
-> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+> Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 > ---
->   drivers/i2c/busses/i2c-amd-mp2-plat.c      |  2 +-
->   drivers/i2c/busses/i2c-at91-master.c       |  2 +-
->   drivers/i2c/busses/i2c-at91-slave.c        |  8 ++++----
->   drivers/i2c/busses/i2c-axxia.c             | 10 +++++-----
->   drivers/i2c/busses/i2c-cros-ec-tunnel.c    |  2 +-
->   drivers/i2c/busses/i2c-designware-master.c |  2 +-
->   drivers/i2c/busses/i2c-designware-slave.c  |  8 ++++----
->   drivers/i2c/busses/i2c-diolan-u2c.c        |  2 +-
->   drivers/i2c/busses/i2c-exynos5.c           |  4 ++--
->   drivers/i2c/busses/i2c-gxp.c               | 12 ++++++------
->   drivers/i2c/busses/i2c-hisi.c              |  4 ++--
->   drivers/i2c/busses/i2c-img-scb.c           |  2 +-
->   drivers/i2c/busses/i2c-imx.c               | 12 ++++++------
->   drivers/i2c/busses/i2c-jz4780.c            |  2 +-
->   drivers/i2c/busses/i2c-kempld.c            |  2 +-
->   drivers/i2c/busses/i2c-meson.c             |  4 ++--
->   drivers/i2c/busses/i2c-mlxbf.c             |  8 ++++----
->   drivers/i2c/busses/i2c-mt65xx.c            |  2 +-
->   drivers/i2c/busses/i2c-mxs.c               |  2 +-
->   drivers/i2c/busses/i2c-nomadik.c           |  2 +-
->   drivers/i2c/busses/i2c-npcm7xx.c           | 12 ++++++------
->   drivers/i2c/busses/i2c-nvidia-gpu.c        |  4 ++--
->   drivers/i2c/busses/i2c-ocores.c            |  8 ++++----
->   drivers/i2c/busses/i2c-octeon-platdrv.c    |  2 +-
->   drivers/i2c/busses/i2c-omap.c              |  4 ++--
->   drivers/i2c/busses/i2c-opal.c              |  4 ++--
->   drivers/i2c/busses/i2c-pasemi-core.c       |  2 +-
->   drivers/i2c/busses/i2c-pnx.c               |  2 +-
->   drivers/i2c/busses/i2c-pxa.c               | 12 ++++++------
->   drivers/i2c/busses/i2c-qcom-cci.c          |  2 +-
->   drivers/i2c/busses/i2c-qcom-geni.c         |  2 +-
->   drivers/i2c/busses/i2c-robotfuzz-osif.c    |  2 +-
->   drivers/i2c/busses/i2c-rzv2m.c             |  8 ++++----
->   drivers/i2c/busses/i2c-s3c2410.c           |  4 ++--
->   drivers/i2c/busses/i2c-stm32f7.c           | 14 +++++++-------
->   drivers/i2c/busses/i2c-tegra-bpmp.c        |  4 ++--
->   drivers/i2c/busses/i2c-tegra.c             |  4 ++--
->   drivers/i2c/busses/i2c-thunderx-pcidrv.c   |  2 +-
->   drivers/i2c/busses/i2c-virtio.c            |  2 +-
->   drivers/i2c/busses/i2c-wmt.c               |  2 +-
->   drivers/i2c/busses/i2c-xiic.c              |  2 +-
->   41 files changed, 95 insertions(+), 95 deletions(-)
+>  drivers/media/platform/ti/am437x/am437x-vpfe.c   |  8 +++-----
+>  drivers/media/platform/ti/davinci/vpif_capture.c | 11 +++++------
+>  2 files changed, 8 insertions(+), 11 deletions(-)
 > 
+> diff --git a/drivers/media/platform/ti/am437x/am437x-vpfe.c b/drivers/media/platform/ti/am437x/am437x-vpfe.c
+> index 77e12457d149..4f185a0d42b3 100644
+> --- a/drivers/media/platform/ti/am437x/am437x-vpfe.c
+> +++ b/drivers/media/platform/ti/am437x/am437x-vpfe.c
+> @@ -2306,14 +2306,10 @@ vpfe_get_pdata(struct vpfe_device *vpfe)
+>  	if (!pdata)
+>  		return NULL;
+>  
+> -	for (i = 0; ; i++) {
+> +	for_each_endpoint_of_node(dev->of_node, endpoint) {
+>  		struct v4l2_fwnode_endpoint bus_cfg = { .bus_type = 0 };
+>  		struct device_node *rem;
+>  
+> -		endpoint = of_graph_get_next_endpoint(dev->of_node, endpoint);
+> -		if (!endpoint)
+> -			break;
+> -
+>  		sdinfo = &pdata->sub_devs[i];
+                                          ^
+"i" is uninitialized now.
 
-> diff --git a/drivers/i2c/busses/i2c-designware-master.c b/drivers/i2c/busses/i2c-designware-master.c
-> index c7e56002809a..14c61b31f877 100644
-> --- a/drivers/i2c/busses/i2c-designware-master.c
-> +++ b/drivers/i2c/busses/i2c-designware-master.c
-> @@ -832,7 +832,7 @@ i2c_dw_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[], int num)
->   }
->   
->   static const struct i2c_algorithm i2c_dw_algo = {
-> -	.master_xfer = i2c_dw_xfer,
-> +	.xfer = i2c_dw_xfer,
->   	.functionality = i2c_dw_func,
->   };
->   
-> diff --git a/drivers/i2c/busses/i2c-designware-slave.c b/drivers/i2c/busses/i2c-designware-slave.c
-> index 2e079cf20bb5..b47ad6b16814 100644
-> --- a/drivers/i2c/busses/i2c-designware-slave.c
-> +++ b/drivers/i2c/busses/i2c-designware-slave.c
-> @@ -58,7 +58,7 @@ static int i2c_dw_init_slave(struct dw_i2c_dev *dev)
->   	return 0;
->   }
->   
-> -static int i2c_dw_reg_slave(struct i2c_client *slave)
-> +static int i2c_dw_reg_target(struct i2c_client *slave)
->   {
->   	struct dw_i2c_dev *dev = i2c_get_adapdata(slave->adapter);
->   
-> @@ -83,7 +83,7 @@ static int i2c_dw_reg_slave(struct i2c_client *slave)
->   	return 0;
->   }
->   
-> -static int i2c_dw_unreg_slave(struct i2c_client *slave)
-> +static int i2c_dw_unreg_target(struct i2c_client *slave)
->   {
->   	struct dw_i2c_dev *dev = i2c_get_adapdata(slave->adapter);
->   
-> @@ -214,8 +214,8 @@ static irqreturn_t i2c_dw_isr_slave(int this_irq, void *dev_id)
->   
->   static const struct i2c_algorithm i2c_dw_algo = {
->   	.functionality = i2c_dw_func,
-> -	.reg_slave = i2c_dw_reg_slave,
-> -	.unreg_slave = i2c_dw_unreg_slave,
-> +	.reg_target = i2c_dw_reg_target,
-> +	.unreg_target = i2c_dw_unreg_target,
->   };
+Also in the initializer it has "struct device_node *endpoint = NULL;"
+which is unnecessary now.  And at the end it has:
 
-Acked-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+	of_node_put(endpoint);
+	return pdata;
+
+Since endpoint is NULL this was always a pointless no-op but now it's
+more obvious, so lets delete that.
+
+regards,
+dan carpenter
+
 
