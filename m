@@ -1,82 +1,97 @@
-Return-Path: <linux-omap+bounces-943-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-936-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 945FD889E7E
-	for <lists+linux-omap@lfdr.de>; Mon, 25 Mar 2024 13:11:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5DD3889D4F
+	for <lists+linux-omap@lfdr.de>; Mon, 25 Mar 2024 12:42:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48E3B29E5E9
-	for <lists+linux-omap@lfdr.de>; Mon, 25 Mar 2024 12:11:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5714E2A2769
+	for <lists+linux-omap@lfdr.de>; Mon, 25 Mar 2024 11:42:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 072AA12F588;
-	Mon, 25 Mar 2024 07:31:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C78CD17E3C8;
+	Mon, 25 Mar 2024 07:08:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="GawgjypN"
+	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="RWkaZOwX"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from OS0P286CU011.outbound.protection.outlook.com (mail-japanwestazon11011008.outbound.protection.outlook.com [52.101.228.8])
+Received: from JPN01-OS0-obe.outbound.protection.outlook.com (mail-os0jpn01on2059.outbound.protection.outlook.com [40.107.113.59])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C9620DB86;
-	Mon, 25 Mar 2024 02:57:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.228.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9567A396E40;
+	Mon, 25 Mar 2024 03:05:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.113.59
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711335454; cv=fail; b=EtdJtY8vKv5UZfmA1SZcWtA6gL7ycmoRIq4lOq7uJI09AHlSGVIqx03F4ujsBef855nvgGFDEVKbEMm1zu10vo34vLmqRV/IVhkz7EoZxUG1UcnlvSdlPJdU+E8faIoWhOKDzPAaUoWZpI7qNZLP2KJ6cmmGDwzj0V4iEmrtTCE=
+	t=1711335911; cv=fail; b=XJjUfC73WpBujYSHfO2u3ApE3s++InrQ/O6qN9uciYIla9LblCJ7/hwQ8zmNpijEsyFp8Qdim2wkIkfvnNY/WcRAaQEOTqsw0uICEY0XhjpE0dro2hrWsSHjBzkwe1AaH9rI/tzLBZHR/zWDIR0H3mPYAZpg23BZD8bjqm3RkXU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711335454; c=relaxed/simple;
-	bh=9D0tmht+UC/To/BNPPRfPIWvJEuU7lMpnpfq5DQo1rc=;
+	s=arc-20240116; t=1711335911; c=relaxed/simple;
+	bh=+OzyFz8qEq+fvSCCLYMKxODLTLiOofNVDgQtB++Astc=;
 	h=Message-ID:To:In-Reply-To:References:From:Subject:Content-Type:
-	 Date:MIME-Version; b=atynRtyQb+04bnXQjord7TmjzinYxie9NOG2s1y5E37TOxip/7gFSe9bpbm/7DzzMBR12G39FPzlKWF/ItnxNfn4lPq50jc81GQFOJl2rCDO0dMLA50+7GTVdrwX0DUZlJhbA2LszrbgrtMi2bfL0t9W8Zy4Lqw6RpB9hcmkndQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=GawgjypN; arc=fail smtp.client-ip=52.101.228.8
+	 Date:MIME-Version; b=PtQe9MywZLmwJ6AWzsKMetUL5q7Qjdv3r3Im1czt695JW4AVRLrejK0d6MUgR/YKfV1XAb0wQD6xRa9FGzG2r87IFdl1Qxv/diQckdjYKPUlxEcOlzPWJPFLBVwRflXt1F1/rz6YnT1mPrWnsXfSf9Hh0yNCXKb8c/X+ZJRpg/o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=RWkaZOwX; arc=fail smtp.client-ip=40.107.113.59
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=H9ifmTAGubjJt2gdrQqc0nmzjHUxpKH9EmX9Y+suhYB5z9rlpmHFbPH1QEnbxglkmhLDvnkPymeT/PKFb/4wUlLH0MOCX8P13ogqb6zO9WcluqnBoAW8FBdfht68paeYcfjE2HkAZwJ9L3gi6gUw32eiH7PgUJg0gj/Y1BI5L6/8PK5hJ9NJDfqQnqpU009ox6ptEDd+Hv1ag0dsCT0eMWJmVvPjt7dhJPok5Q2SbVmnTjngrH16gZyEqkiUOy4F+qF3Eg3feuIFpJC54AD4+vNgPdXftNODmGhxdb5X67NW2vKsOELHq6kovnk+KkRSdghpIyZhDsp/+Mq7uO3wHQ==
+ b=XKFnnUT3MaovWUDm94QMxlyfogSy7LSyOtOpW8UKZD8B9wOvSP3NThG4CuWriqW0SX7b7FUoNtU3SIfh1QPDio45StapiczyPGvt7mHcDhQL2ihM6YWuZScLcjSM9EnPc8PV2VCQNKxPKo5bjSBihUGPUTKDfA8SOIYbXbVlFHvk9464Js5lR7bbDCwEoJtFLv8LkMPaW5x1CzEExMT3G8NLdD+PApKQ7JInkBss84Ot6wyRGMJQ1Fv1yt+f7bv2XIyXrzjhpdgywoaTvqWFi4XBxZBYdmOGN/PvfzffN3CDtghpy5C77rKyOGM5xpWRgL/g5cAaqP9iCj02n7/biw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iPWy+PYtnAvN+6i0I6jsdtewufqRlqn7Qxjn1KjTnik=;
- b=YCBS7HrIQwwgyjRx0VFm9JKooJmcU3m4uujY1HpGRQ+JlKGbAjFO3lySJIMY/v8nIstnu7ie84fn7FpEzPzrOdP10uLbra8UHGMMWlh/edxoY+qGxmmednZd3t04JDcvj7DKO4Dfo+fWtj0XWLNcETb3uwVc/ce2cr4q7gPh1xge5LPViUKVx2Nj6LIJNQixn0FLAcTEWF7mQHw/9bA1P77HuZpat5IGS2z4J2uHYnRkbbLdlt5GtZ3H6+Mv/htFj8IJz/WXIrlNCp9wy8bKa4I2glt2DHecVksIkOEtHBxEEsAUW4C7q4OOTpG1lceqfd8A+7Ve+OcsruDUiROmqg==
+ bh=NU/WFUEU9+Vgl1x0Z0UzrTl7yEXRkmD9+IO2Fh9GS2Q=;
+ b=P8WMuxE9IGsuHJBqThCqlnHvMPyOxnFyM2eKaH2Worza/VdCqXcb/AYm7VUlm9JNoQM66uRdNmlRjGC8K+gsCIJol/J+Syca6DBuYdZTQPNZMSTtyYlLZNqJcwfP2DTprMW8lNHiOf2FpHuSL55a/1th6Kd8YLlRbOcjuAnqLcqzOMPWT3n1CtnR2yaHQpbglRxW6lXlf7h0yL8FBtz8xdqWRagEttOI2RxNn28rLv6hnKAgsr3qjzasxrrhBLMghMPcjZNMJbkGDop0MyZUmLAYMcQ53T0QCXRrtKgIbIh+21THOD/9ukspNnaFarwGnmRTcMFrqi9Pxs+LhJV7wA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
  dkim=pass header.d=renesas.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=iPWy+PYtnAvN+6i0I6jsdtewufqRlqn7Qxjn1KjTnik=;
- b=GawgjypNh/y93otajLRDRbBzl5ZyIct+KRQUJ0f53qGPn1r9zjK/BjLH4HneRM2mkpf3DhBGI5bPXjlVGRTGZeikOALUErvgcPc/MDlsnZgtmYTJtl0v1vrKB+fOvR7j47nVjsIwP75fvmCVLf3TMi0B0v9vWJShaY2QdoFk+Bw=
+ bh=NU/WFUEU9+Vgl1x0Z0UzrTl7yEXRkmD9+IO2Fh9GS2Q=;
+ b=RWkaZOwXq/O9v+RI8NjJJrBq/zRc2lgyYQ+wOc18RkOG3KMmf4aqBt3shNCrZphjond3Z7kmVEZdlPjVyIRpHAVHzuD+yEBa3lP4NxfgfcSPcBxRStJCrNFDQGHuVG45+CMW9D98KwAw9WTe4y2fwvqLZdRQhJNmthABV+8E5iE=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=renesas.com;
 Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
- (2603:1096:400:3a9::11) by OSZPR01MB6831.jpnprd01.prod.outlook.com
- (2603:1096:604:13d::9) with Microsoft SMTP Server (version=TLS1_2,
+ (2603:1096:400:3a9::11) by OS3PR01MB6966.jpnprd01.prod.outlook.com
+ (2603:1096:604:12d::9) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.31; Mon, 25 Mar
- 2024 02:57:29 +0000
+ 2024 03:05:06 +0000
 Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
  ([fe80::131e:55c0:a4a0:713b]) by TYCPR01MB10914.jpnprd01.prod.outlook.com
  ([fe80::131e:55c0:a4a0:713b%7]) with mapi id 15.20.7386.025; Mon, 25 Mar 2024
- 02:57:29 +0000
-Message-ID: <874jcv6msn.wl-kuninori.morimoto.gx@renesas.com>
-To: =?ISO-8859-1?Q?=22Uwe_Kleine-K=F6nig=22?=
- <u.kleine-koenig@pengutronix.de>,	Alexey Brodkin <abrodkin@synopsys.com>,
-	Daniel Vetter <daniel@ffwll.ch>,	David Airlie <airlied@gmail.com>,	Florian
- Fainelli <florian.fainelli@broadcom.com>,	Helge Deller <deller@gmx.de>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,	Maxime Ripard
- <mripard@kernel.org>,	Neil Armstrong <neil.armstrong@linaro.org>,	Rob
- Herring <robh+dt@kernel.org>,	Thomas Zimmermann <tzimmermann@suse.de>,
-	dri-devel@lists.freedesktop.org,	linux-arm-kernel@lists.infradead.org,
-	linux-fbdev@vger.kernel.org,	linux-omap@vger.kernel.org,
-	linux-rpi-kernel@lists.infradead.org
-In-Reply-To: <877chr6mu5.wl-kuninori.morimoto.gx@renesas.com>
-References: <877chr6mu5.wl-kuninori.morimoto.gx@renesas.com>
+ 03:05:06 +0000
+Message-ID: <871q7z6mfy.wl-kuninori.morimoto.gx@renesas.com>
+To: "Lad,  Prabhakar" <prabhakar.csengg@gmail.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	David Airlie <airlied@gmail.com>,
+	Eugen Hristev <eugen.hristev@collabora.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Helge Deller <deller@gmx.de>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Maxime Ripard <mripard@kernel.org>,
+	Michal Simek <michal.simek@amd.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	coresight@lists.linaro.org,
+	dri-devel@lists.freedesktop.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-fbdev@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	linux-omap@vger.kernel.org,
+	linux-staging@lists.linux.dev
+In-Reply-To: <8734sf6mgn.wl-kuninori.morimoto.gx@renesas.com>
+References: <8734sf6mgn.wl-kuninori.morimoto.gx@renesas.com>
 From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Subject: [PATCH 2/2] video: fbdev: replace of_graph_get_next_endpoint()
+Subject: [PATCH 1/8] gpu: drm: use for_each_endpoint_of_node()
 Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 25 Mar 2024 02:57:29 +0000
-X-ClientProxiedBy: TYAPR01CA0234.jpnprd01.prod.outlook.com
- (2603:1096:404:11e::30) To TYCPR01MB10914.jpnprd01.prod.outlook.com
+Date: Mon, 25 Mar 2024 03:05:05 +0000
+X-ClientProxiedBy: TYWP286CA0003.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:178::22) To TYCPR01MB10914.jpnprd01.prod.outlook.com
  (2603:1096:400:3a9::11)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
@@ -85,237 +100,81 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TYCPR01MB10914:EE_|OSZPR01MB6831:EE_
-X-MS-Office365-Filtering-Correlation-Id: d02b6376-0a4c-408f-04d6-08dc4c774f6d
+X-MS-TrafficTypeDiagnostic: TYCPR01MB10914:EE_|OS3PR01MB6966:EE_
+X-MS-Office365-Filtering-Correlation-Id: ae788b89-fb2d-48cd-59f8-08dc4c785f7b
+X-LD-Processed: 53d82571-da19-47e4-9cb4-625a166a4a2a,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	3mAxNal8cSc7+E+xx7VB9kOa+G7NafQa+zwt1rwfbq0JdtNn1mEFagYAkj4YMld8Sm8SsthdP/9kNb7WxjGOj8PnBSnd+oCwJrpGbBM017ArG3EN+Ksm5T0bhaVyiHZ4deO7icoXRIyrFPW09+6VB/rxxSPduvo4qbziV3vpF6ZGfb1ZZ4ee6vdHyVbqpf9Mm6U9OSSrNyEyPkIHD5t+MwFpvP5jFZR8TJsbmZjPWADA4/ifsdx1nI+z/nXP7pEPn9BdwuWjB4bk+BHAQ2V4F/0XIoWINCAe/lGb3ab3jCO8JA5DQYiaegxt8LP3mxDKOiauSomIJxzfL6Bg8C1TWlwK+tnSfo2uiOtg5hdb78I5/fwHmyfiXDsfNvbGPKvDp+RwzbfCslepaWuEqths/G69QUX7/jfvQ/e5INNOSpx7lgtGHJ4uNZKA9fdr7CXPtyRDmL5FZQ8pf+hvYBtxj+oG0c0KdTrxkigyNHcmTzmP1x7GqvBH8ECYYx4HVwbf8k8WGEd1Xv8w+7NA3cBRRequZdhbH3AkYh8IxishNZlJyb+3WQdCAdIHviEgidJP28dBtuUgZ75oUqG58d81h99vgmDC0sI+SjE52WesK8gD9YqoNYeCQ/X/P3mz5A4dl0nFa17KqTdZ43p6imt1L4PlFL/BSzUlQOQHaOlvH7I2k7+RluGrgSwNe9HwxEv2
+	ADwJtuhz9+sy8cScHpp2kav/3zwZLI5Fe4kCgmRYF9wEipIfeqay7JeT+WCmYa4I/Dssc+lFHzZibY5ieceqNJcryvD3e9z1gtpUoDF7elz3jYLhnzs3hCDRkVV3cTlEVwGZwgJj4j0ff6o5xzgTrvKPjDWh6YCLK+8zy1cXQXsSMkS0sJZkD0kZsYKAfqeyGoSmGf/g8F7wYVjJFpvfYQO7tumo4Rwsv3UX5darz+6k4IZVQmiYrW64iQThtvgkAByRFy8Ltl1TT9OFALZZqbZeKoT/opMCSEZ47UtkNgxhTm1UrXOzDkLourSaXq7MpS+56PXgxIR/FYKJ56SgddTx/NBFFyHQSayCuXYwxWgaKPEqq8NXXHgOxdBcwV919ns9i8uxrYb/Em/vVncA7fUJr5EdccXAbyQgcePliFYMloW7gCgu2rEQsC4g68WYkTRx3LXvUUugnB1uhxWA8A0tYD8jF09Z23PMS2e5XliA6bb/0Ff4wR0tdlLAtYTxJxqILrIpkOvBXzREF5GKBcf87ccDN3iRinZCfokMe5O26cp4c3Nqhk33dI8cBX6Sz3EpAeVIxzO5Y6qTHKsssGY4lQr/eWCwpxC17fKCfMjQcGmXb0dK9L419Bx5Qn/vqUgLJ7donOR1KZqPFQBDZQ0M4QeKORQxc8MXi084Yj2rJbWNgOMK8O1439A4wCdQMlDJ4ZG9QqVYCLrj974rDC2dMFHSjiE3S9eoLEYu5jM=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYCPR01MB10914.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(7416005)(52116005)(376005)(366007)(38350700005)(921011);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYCPR01MB10914.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(52116005)(7416005)(366007)(376005)(38350700005)(921011);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?96LSZ6JGTAZndhkCoekZVMOctVBYOwD+Ic2u6++Tzo9Bkt1CgFGkC8JBS9m/?=
- =?us-ascii?Q?DAeaeIe+eSDCKB8BKk9sLvWvc3kYT89oKsvT0nBm/nbaV6+OT+rljQIy+qwv?=
- =?us-ascii?Q?Ws2VP4EHZ7oxMVA8WqswoOHpqZCP1ivK5ebRgEZB4aNIWccHK30tfYK2oT8b?=
- =?us-ascii?Q?dbznK+2OLm+y6HwFdhL0vU4iOXAmKiR6k8aGivG/gpYsn++swxJRqHRgYRLG?=
- =?us-ascii?Q?hAU+L/agQKYeobDrpCYm6+572TPVF7O11oXfYnHTg+inzMl6f57/riG2l5eb?=
- =?us-ascii?Q?sT1J+xVzBac97LkOxD1WfUJOdmMJpyMlVfN81s6Ga/9JkZjEv+plg/nPjNdT?=
- =?us-ascii?Q?t72KVkIYwNep58Gc/msdtcNlyFKqoCev2dvmBFTybgpTZoEIy1V/mwb0ZLqv?=
- =?us-ascii?Q?CQ4Clk2eXdZtqPmvhUzxHoIrW8QWH9vYoNFJ0vvGuWaISPy2thLYIHC+aI3C?=
- =?us-ascii?Q?Bgp+IJ3uWHo4JA/dKo+eA78wEy4vXu1+WwhdwbK7wPCxd+Xa60gRGhW+ZMw6?=
- =?us-ascii?Q?KnRX0m/m46nYPB8/sVLPBvFaxdMnkoEzxZpjxQBHmXeVRZk0ZPjC6z7MPPqN?=
- =?us-ascii?Q?lvYkxTEBKVmIQqH1+3EEHvxVg1uj+jGyKJ6hNx6CcR25V0M7Cz09gg40nCJR?=
- =?us-ascii?Q?GfM1SREkdChoCZiFTc7zGZ615VVBce97tQu10a3NYzcq40DabZ6g2jU5STLD?=
- =?us-ascii?Q?ofGr+LVdibgXy8Cf6bXQbktYn97JnlwmmQcYVEW+pRLrze3UYYpEbTVYyASp?=
- =?us-ascii?Q?Ye1Y8iZc/4cX0LOJGmhh9r/9gWQ41CG1+EGH9kvDNKRLWrDY5+Jjh0bTpNUD?=
- =?us-ascii?Q?K4vp0Vwy1ZVYlpuiCgEGoAxQ6Ep07bc170uUszh1g8/yfXFE9dqdTvoSdXHq?=
- =?us-ascii?Q?2iBsq3gMeR5eNEaERVD3b6CLyhZi1DJ4dIM88w+lJ7EPU719uWjsJF0YHYb9?=
- =?us-ascii?Q?15VwtW2Z/dPo5xEsXsDJFcM59zKBXn8wIuDUypfdExl4i7Ew3wwAp3h9peJz?=
- =?us-ascii?Q?EfGh61zsL0v5Uo9kya0eiI1kTkzsTYzsznLRFhP7LR1ROImVBJU2sDWHRVZE?=
- =?us-ascii?Q?kR2V+htz9JGV+0JEPosS7uficM/IVfQ8X4ZvpWr63oJKI370i50jtPyOPXDg?=
- =?us-ascii?Q?mUYztwgaoSJdIlNpMbIxR/0MKRnY4kIBm3wDe64BOZdJ9g3SKIlfQ2QyXQOQ?=
- =?us-ascii?Q?boOdr07xSc8FFBJ7TGkw2G+vZhWwY9oVrQcifo69pgUsA8mcuw5jB753Zil9?=
- =?us-ascii?Q?ycpErZ3UhRCcps/MqLMffNRF9QCTqSM4n3pZXERMHSfhdmBHOPD9fMGos89m?=
- =?us-ascii?Q?8lffFqVtzrjc6OT6empJbCypkvodAU4S5e48w5sT+jfHc9fgzacUWPCygnbG?=
- =?us-ascii?Q?XhgMVqk41yLF2YInrOM15kXxnXOgRp1FFrHOsvB/ZWM8p2JFE/VyTzFsKuRt?=
- =?us-ascii?Q?QZrRZK5pMAwZiYD6lz07dMey2SYBsKi9uXmi9iJcdsD8NRgLIYuQMQaZ/AxH?=
- =?us-ascii?Q?UClkGpKyK+vkQQ3fYPJQ5z26z+4ORCKhOqbqW4Qj1Xjp5EUREks6CX6EI/T0?=
- =?us-ascii?Q?eafs6ZdAq6r1WZg14+MpSI/5iyPa+zZjE6WoBgIAlnoYBxZoV1y9YPcMPBSg?=
- =?us-ascii?Q?n1S3i1WcXYdzA/cALAROaC4=3D?=
+	=?us-ascii?Q?svF52yGCXdNPjhAu0SHbtsHuUQY/CNucEnMt2pFfgB9/DRcJP3ST2EbeuD47?=
+ =?us-ascii?Q?57OCChIVEW7937DUrIXDuuJZQ8LncBENZgEvji8Ha0gb5Z6tqD07VJEuVqfd?=
+ =?us-ascii?Q?4F6t+f7pXjF3BVaMTV9d/SrRGLLkbB09P+1pDbakvOkg+iXNZHsj11dnsWU0?=
+ =?us-ascii?Q?bqQtbNzMaZZmrSCeSM3tAPvmh3er3tv7c1AShMDPVITuu7jEqPG4KoDxwKry?=
+ =?us-ascii?Q?W8nFoQHilOQG+HMJBE4KNjgLcIlzjp6uCRQPpar4fEhM/QAJuXHW2+cgPByJ?=
+ =?us-ascii?Q?3iRXGwQVpsALjdwPFd3u8vRHEv6+uswEJZac2CpfcAUQKxbRgo+WBGzPMo1p?=
+ =?us-ascii?Q?R9sQYG/J7rsQkOr/wHiYiNzqX0OBlq7FcepmqqB9pCt7yW9YqpmMQTGrB/IT?=
+ =?us-ascii?Q?ZStR1jwW+4cDgfDjRKtUkreh7MDnttBhm04PdtuTFQh+fWJg+JXrO5QScMfq?=
+ =?us-ascii?Q?nJ3roJhuFyHG3yUXGiG1WiaS5IsviABDGL0jOmiMzt+Hgk4uAhgWWYLUUdHy?=
+ =?us-ascii?Q?4zDQmNH7mccz1vhUcf2i4Sb/Jlr28HJDtzw1xjx2a+woFPuFlOgNyOXMH03C?=
+ =?us-ascii?Q?WVNQobuEq0EMdzqPFNAYvSnT2hCft0bGIYtaXnI6j7n5TRPkZ2hlI/SBdCWb?=
+ =?us-ascii?Q?wHIp5LdEtqllijdN66qTeB5uvulQCR+99QPQaI/5Bfj8zO07fk93Sdwtc9ow?=
+ =?us-ascii?Q?dEYBQtpySNyD1t85IDKYiUx/HbKWE7X8hPWlpQsIY+vvXTnzCFqYtXDil1ht?=
+ =?us-ascii?Q?4O26lSdJO5ls21cX60fSxIkxEuFxjmg6vnV+cmdNWYOX7GXuZ7zUA1nrEf8C?=
+ =?us-ascii?Q?K0CbxmFIfaS+0wAqXzvDMJcxsXJqrC01g45mu9tMrEP55FJPvhGzMjXdJyqe?=
+ =?us-ascii?Q?8P563F7tMkZf1FxlYguzmHEuUZ8tEOvagN6rxO/dOreUzpQXpptSRreRj1je?=
+ =?us-ascii?Q?yvhE/uJZbllnIjCslwnJ/HDHsGL4WTEjEr6BQfyG3Vq2ZB4tl/QLNSeXaYNx?=
+ =?us-ascii?Q?n0HzOMKnGmYHXG0qHhVY3D8yrjKElg5MEaMxuz/u0qogOWBZn0RANglJ7zwi?=
+ =?us-ascii?Q?nDc4bkPBnjwc8/CV0Faetksurlxk1uuldgrdRBWnOdgF0+37nYF/n1HTQoMD?=
+ =?us-ascii?Q?fuK9iGoL3jP4BVqaJNo7R/OQXftwI4fkSYOuMAZYYGp374f0eTtIXnoEwA5z?=
+ =?us-ascii?Q?XjuSCZ7WiX3JQ8myh9JHBxvSlvVa5AmMAfDGSNiep5vGaZLkiNiA+3OQKYoM?=
+ =?us-ascii?Q?ZAuRyij9Oas/f2FDc9plqitbAaeci8atGoU+ZNB3ABVARpCSp9tNbH5lmWti?=
+ =?us-ascii?Q?n/sNkMNZaY5zJzJndxR519yciVnNtPlZYR0Q9ghPY5dBxxOQ0F7jZkCb4vIH?=
+ =?us-ascii?Q?yOQGaH0Dg8gfW5xe9LotEDkF3LnhJMS8fDmWTjF9iNhwgZd0Cf4OBQSw5lbD?=
+ =?us-ascii?Q?9U9Qf1baFLFTk8lXGIs0aoTb7ULxgA+wQkNoie9K4I4e3ZhFEbbZnHVyFcW5?=
+ =?us-ascii?Q?C2CTW5Khaky6CZqh1X37hGZtolo5uMQ2+ilqe+9FYVSvbOmAGdJFBzJaOsqu?=
+ =?us-ascii?Q?AJO1/HKv+MrdRtx0lWLWPNsWhdIzWGD5z+I6Mt/iJ/xqy4zKuPmjmu9E6Lgs?=
+ =?us-ascii?Q?jEO+BQLzTg+WgTRnpMP2kO0=3D?=
 X-OriginatorOrg: renesas.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d02b6376-0a4c-408f-04d6-08dc4c774f6d
+X-MS-Exchange-CrossTenant-Network-Message-Id: ae788b89-fb2d-48cd-59f8-08dc4c785f7b
 X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB10914.jpnprd01.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Mar 2024 02:57:29.7813
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Mar 2024 03:05:06.2499
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qY78S5f4+JLcLSQlhqJs+qoEzXz3kPb0JZHmiFtqGJ6q7dwlGfIDr9bRmyaVmbookWs02lj9LvTVobXy3vyyXjf0q0sMmmzaGpwoVc/1NJeE/Ad8iwFsiP+OdXuuCXyq
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: OSZPR01MB6831
+X-MS-Exchange-CrossTenant-UserPrincipalName: CLe53rOHpJB/IXEW+TMjkIc1WOU44Y4b3LkSddY5TdrJiAUwHNhWuW+UJw33MmsfMi0rk+p95zq8XGgMzO6wWE0TuviohDyWwQc6VoO9zcjNQ00oXiMPSJOxTQc14PeX
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS3PR01MB6966
 
-From DT point of view, in general, drivers should be asking for a
-specific port number because their function is fixed in the binding.
+We already have for_each_endpoint_of_node(), don't use
+of_graph_get_next_endpoint() directly. Replace it.
 
-of_graph_get_next_endpoint() doesn't match to this concept.
-
-Simply replace
-
-	- of_graph_get_next_endpoint(xxx, NULL);
-	+ of_graph_get_endpoint_by_regs(xxx, 0, -1);
-
-Link: https://lore.kernel.org/r/20240202174941.GA310089-robh@kernel.org
 Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 ---
- drivers/video/fbdev/omap2/omapfb/dss/dsi.c    |  3 ++-
- drivers/video/fbdev/omap2/omapfb/dss/dss-of.c | 20 +------------------
- drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c  |  3 ++-
- drivers/video/fbdev/omap2/omapfb/dss/hdmi5.c  |  3 ++-
- drivers/video/fbdev/omap2/omapfb/dss/venc.c   |  3 ++-
- drivers/video/fbdev/pxafb.c                   |  2 +-
- include/video/omapfb_dss.h                    |  3 ---
- 7 files changed, 10 insertions(+), 27 deletions(-)
+ drivers/gpu/drm/omapdrm/dss/base.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dsi.c b/drivers/video/fbd=
-ev/omap2/omapfb/dss/dsi.c
-index b7eb17a16ec4..1f13bcf73da5 100644
---- a/drivers/video/fbdev/omap2/omapfb/dss/dsi.c
-+++ b/drivers/video/fbdev/omap2/omapfb/dss/dsi.c
-@@ -28,6 +28,7 @@
- #include <linux/debugfs.h>
- #include <linux/pm_runtime.h>
- #include <linux/of.h>
-+#include <linux/of_graph.h>
- #include <linux/of_platform.h>
- #include <linux/component.h>
-=20
-@@ -5079,7 +5080,7 @@ static int dsi_probe_of(struct platform_device *pdev)
- 	struct device_node *ep;
- 	struct omap_dsi_pin_config pin_cfg;
-=20
--	ep =3D omapdss_of_get_first_endpoint(node);
-+	ep =3D of_graph_get_endpoint_by_regs(node, 0, -1);
- 	if (!ep)
- 		return 0;
-=20
-diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dss-of.c b/drivers/video/=
-fbdev/omap2/omapfb/dss/dss-of.c
-index 0282d4eef139..14965a3fd05b 100644
---- a/drivers/video/fbdev/omap2/omapfb/dss/dss-of.c
-+++ b/drivers/video/fbdev/omap2/omapfb/dss/dss-of.c
-@@ -130,24 +130,6 @@ static struct device_node *omapdss_of_get_remote_port(=
-const struct device_node *
- 	return np;
- }
-=20
--struct device_node *
--omapdss_of_get_first_endpoint(const struct device_node *parent)
--{
--	struct device_node *port, *ep;
--
--	port =3D omapdss_of_get_next_port(parent, NULL);
--
--	if (!port)
--		return NULL;
--
--	ep =3D omapdss_of_get_next_endpoint(port, NULL);
--
--	of_node_put(port);
--
--	return ep;
--}
--EXPORT_SYMBOL_GPL(omapdss_of_get_first_endpoint);
--
- struct omap_dss_device *
- omapdss_of_find_source_for_first_ep(struct device_node *node)
- {
-@@ -155,7 +137,7 @@ omapdss_of_find_source_for_first_ep(struct device_node =
-*node)
- 	struct device_node *src_port;
- 	struct omap_dss_device *src;
-=20
--	ep =3D omapdss_of_get_first_endpoint(node);
-+	ep =3D of_graph_get_endpoint_by_regs(node, 0, -1);
- 	if (!ep)
- 		return ERR_PTR(-EINVAL);
-=20
-diff --git a/drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c b/drivers/video/f=
-bdev/omap2/omapfb/dss/hdmi4.c
-index f05b4e35a842..8f407ec134dc 100644
---- a/drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c
-+++ b/drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c
-@@ -20,6 +20,7 @@
- #include <linux/pm_runtime.h>
- #include <linux/clk.h>
- #include <linux/of.h>
-+#include <linux/of_graph.h>
- #include <linux/regulator/consumer.h>
- #include <linux/component.h>
- #include <video/omapfb_dss.h>
-@@ -529,7 +530,7 @@ static int hdmi_probe_of(struct platform_device *pdev)
- 	struct device_node *ep;
- 	int r;
-=20
--	ep =3D omapdss_of_get_first_endpoint(node);
-+	ep =3D of_graph_get_endpoint_by_regs(node, 0, -1);
- 	if (!ep)
- 		return 0;
-=20
-diff --git a/drivers/video/fbdev/omap2/omapfb/dss/hdmi5.c b/drivers/video/f=
-bdev/omap2/omapfb/dss/hdmi5.c
-index 03292945b1d4..4ad219f522b9 100644
---- a/drivers/video/fbdev/omap2/omapfb/dss/hdmi5.c
-+++ b/drivers/video/fbdev/omap2/omapfb/dss/hdmi5.c
-@@ -25,6 +25,7 @@
- #include <linux/pm_runtime.h>
- #include <linux/clk.h>
- #include <linux/of.h>
-+#include <linux/of_graph.h>
- #include <linux/regulator/consumer.h>
- #include <linux/component.h>
- #include <video/omapfb_dss.h>
-@@ -561,7 +562,7 @@ static int hdmi_probe_of(struct platform_device *pdev)
- 	struct device_node *ep;
- 	int r;
-=20
--	ep =3D omapdss_of_get_first_endpoint(node);
-+	ep =3D of_graph_get_endpoint_by_regs(node, 0, -1);
- 	if (!ep)
- 		return 0;
-=20
-diff --git a/drivers/video/fbdev/omap2/omapfb/dss/venc.c b/drivers/video/fb=
-dev/omap2/omapfb/dss/venc.c
-index c9d40e28a06f..0bd80d3b8f1b 100644
---- a/drivers/video/fbdev/omap2/omapfb/dss/venc.c
-+++ b/drivers/video/fbdev/omap2/omapfb/dss/venc.c
-@@ -24,6 +24,7 @@
- #include <linux/regulator/consumer.h>
- #include <linux/pm_runtime.h>
- #include <linux/of.h>
-+#include <linux/of_graph.h>
- #include <linux/component.h>
-=20
- #include <video/omapfb_dss.h>
-@@ -764,7 +765,7 @@ static int venc_probe_of(struct platform_device *pdev)
- 	u32 channels;
- 	int r;
-=20
--	ep =3D omapdss_of_get_first_endpoint(node);
-+	ep =3D of_graph_get_endpoint_by_regs(node, 0, -1);
- 	if (!ep)
- 		return 0;
-=20
-diff --git a/drivers/video/fbdev/pxafb.c b/drivers/video/fbdev/pxafb.c
-index fa943612c4e2..2ef56fa28aff 100644
---- a/drivers/video/fbdev/pxafb.c
-+++ b/drivers/video/fbdev/pxafb.c
-@@ -2171,7 +2171,7 @@ static int of_get_pxafb_mode_info(struct device *dev,
- 	u32 bus_width;
- 	int ret, i;
-=20
--	np =3D of_graph_get_next_endpoint(dev->of_node, NULL);
-+	np =3D of_graph_get_endpoint_by_regs(dev->of_node, 0, -1);
- 	if (!np) {
- 		dev_err(dev, "could not find endpoint\n");
- 		return -EINVAL;
-diff --git a/include/video/omapfb_dss.h b/include/video/omapfb_dss.h
-index e8eaac2cb7b8..a8c0c3eeeb5b 100644
---- a/include/video/omapfb_dss.h
-+++ b/include/video/omapfb_dss.h
-@@ -819,9 +819,6 @@ struct device_node *
- omapdss_of_get_next_endpoint(const struct device_node *parent,
- 			     struct device_node *prev);
-=20
--struct device_node *
--omapdss_of_get_first_endpoint(const struct device_node *parent);
--
- struct omap_dss_device *
- omapdss_of_find_source_for_first_ep(struct device_node *node);
- #else
---=20
+diff --git a/drivers/gpu/drm/omapdrm/dss/base.c b/drivers/gpu/drm/omapdrm/dss/base.c
+index 050ca7eafac5..5f8002f6bb7a 100644
+--- a/drivers/gpu/drm/omapdrm/dss/base.c
++++ b/drivers/gpu/drm/omapdrm/dss/base.c
+@@ -242,8 +242,7 @@ static void omapdss_walk_device(struct device *dev, struct device_node *node,
+ 
+ 	of_node_put(n);
+ 
+-	n = NULL;
+-	while ((n = of_graph_get_next_endpoint(node, n)) != NULL) {
++	for_each_endpoint_of_node(node, n) {
+ 		struct device_node *pn = of_graph_get_remote_port_parent(n);
+ 
+ 		if (!pn)
+-- 
 2.25.1
 
 
