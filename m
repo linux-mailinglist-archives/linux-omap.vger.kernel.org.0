@@ -1,147 +1,140 @@
-Return-Path: <linux-omap+bounces-974-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-975-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C99C88C8BB
-	for <lists+linux-omap@lfdr.de>; Tue, 26 Mar 2024 17:13:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05A2B88C8F5
+	for <lists+linux-omap@lfdr.de>; Tue, 26 Mar 2024 17:23:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 26F73B22047
-	for <lists+linux-omap@lfdr.de>; Tue, 26 Mar 2024 16:13:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3E398B2783E
+	for <lists+linux-omap@lfdr.de>; Tue, 26 Mar 2024 16:20:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCD0513C9AA;
-	Tue, 26 Mar 2024 16:13:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F84013C9D3;
+	Tue, 26 Mar 2024 16:20:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="tA8AzJEU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aytQV14L"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D17C13C913
-	for <linux-omap@vger.kernel.org>; Tue, 26 Mar 2024 16:13:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C98DB13C8E8;
+	Tue, 26 Mar 2024 16:20:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711469620; cv=none; b=E+c/JSx4JI/mIKdhTzxV5hqzIRL8SZqOoDErNQ9qYGNcl/TA7guafpCWYL9/JThiSc/gqvIujwqYfQia6U/rsgBMbP+NLdYmrGW8sKjmo/nbbaNW2m0NTY7ZzgwKXhL9WGPIwu5R6SK6GwHeaYguK8t4AFUBd8eqeExgfvbIdV8=
+	t=1711470023; cv=none; b=XkWwM8HwW4xpmdSKCWzxx7o609KDvhtHde6csSJjbyFotLVVFbn40mxDww4QWdFwyw+ZG+E6o1IhfcSVh3n118QgdB4K6R9gfS3i16HVZh8u4Kj8TiI+mVPjNrT/JvimJqR2xCu0tkTJ2RKdbyY0Job6hcPd0moDjVmTQfHTpaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711469620; c=relaxed/simple;
-	bh=eK+R0ABmPGj+plzVUUZwmM346UOQh8NwmmAsoudMd8w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UczHT6OVu/K/TZmNnP+eQzO/58r89t1wGr0pV64xi4saQt5sFRfhM4ZExM3OgRnJPtIMvq3bkPeUjkRTbfDKEVlD6S1Ao7m4Fzu9kjtYPI1kLf7z+v9tmLAGov1NtzgdAf7A0A2SAncLrNRdbNmnk8CY6J4HVph8vDO67l9nhgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=tA8AzJEU; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4149258d97aso811635e9.0
-        for <linux-omap@vger.kernel.org>; Tue, 26 Mar 2024 09:13:38 -0700 (PDT)
+	s=arc-20240116; t=1711470023; c=relaxed/simple;
+	bh=D95Kc3TjFggL8YT1WZrh/h3Li8LRC6IjIGC7ruEV3OY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=n554DMjz+++GtCGYUAP2fLUzVoLCtDG7PVnNcoYQy5FjVsHExo0O/rtcXXdpauYULzeVEzDf6NQIMINV7kARybtxMF/FGE1g4JS8PjQC8cAmrsI0VbBybGgR9DGNDn52kTX2x1X8elac8+p18/eHTj6tWPquR6YDlUazWycArAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aytQV14L; arc=none smtp.client-ip=209.85.160.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-4316101ed5eso7256521cf.2;
+        Tue, 26 Mar 2024 09:20:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1711469617; x=1712074417; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=F4LiCt10IxAVvpC47LPV/rkaTjlk1NiUuFvMFGxx+OU=;
-        b=tA8AzJEUBfZfbOxmEXQLa4fU1EZiyEAyhhe96be+6LVgsWj6PKS4xwmD+xF6ZQJbz0
-         DoyEOhEtLyspx/FBLtCJ+w1N7gyKVSuaGsBhb5alk9/ZGPRL1EO4oENG2R9nmCjrZs3Y
-         PyCf5t0lYgmImYgaNtduZbRTCiE6xGMORuqirC+Kyz1E1Jv5GGZlq/hex/4MY463ksDj
-         Gsdli7inrFc9n7jlFTdS6ui5Z/WoR959XQG+nE+cXpNc09/lzh4O2ka+kbjzWkf+Duyc
-         Qg9sKG3WOo2oWCZRDiwoXWbVa9ADXCFCcni72ykzdxllEQnAjINvV0SU5WcuznLIgQ/F
-         LbLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711469617; x=1712074417;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1711470021; x=1712074821; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=F4LiCt10IxAVvpC47LPV/rkaTjlk1NiUuFvMFGxx+OU=;
-        b=UZ/purmDs1B27/sQ+0fD20HzPbJybMpm058qMX7SXQgFd1uPRbY+q14+c61cMHcH/7
-         fIyAoW0RPks384jSrw1Oh8HweoQUiaQVunnY8oaLU+WtTO3HFKoTsNydIL5fRM2JHysn
-         8/C8hndhp/MXtCkqeE8G/4SL4GKvwo9nD5RYZDX2EheOTv0tO6jaRQzbxVz2C3F3e+5C
-         sGYgZnvSWp5Ue7gnsxgtSgrZ9crySgMSXMBx9JiJN7SItt/Udjx+qCrqncm0eUMO1H0A
-         N7/W7R8Wgo4QnzGhov32f/Dm8OPDJyL6a/C5oNXn4wQiB0uj8MJxSRCARJZNJ5hh/HBe
-         2XJQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWdAnkuTu11Ez8egHBpcBeTgtpZluc632IoyVIwFsvphUxriyxGJjshliMaUu50C8tLZASr+vz9aPxs1b/4i5be9fm9ql/XNy53Iw==
-X-Gm-Message-State: AOJu0Yw+4VCWSVWiKEWRLpPnrk370ngGg1cN7ZGlfoReaqgfjx6gtgmL
-	PT1h7ERdsSSePy2CIE6BdYGIrLPnxaezmKHjInq+l7ZURfCmpMOQ18m8Vj5VHuNpndHgrrloBOw
-	MCcI=
-X-Google-Smtp-Source: AGHT+IFae3IpvTMwhmsZ1ahvm5eyBHH+iWrgwf59wOFSRYY+Mv6/7CtoeKIPxy/CsrVObCbGtWXjLQ==
-X-Received: by 2002:a05:600c:3553:b0:414:8fa5:b9a1 with SMTP id i19-20020a05600c355300b004148fa5b9a1mr1703262wmq.5.1711469616510;
-        Tue, 26 Mar 2024 09:13:36 -0700 (PDT)
-Received: from blmsp ([2001:4091:a246:821e:6f3b:6b50:4762:8343])
-        by smtp.gmail.com with ESMTPSA id q13-20020adfcd8d000000b0033eab3520a9sm12484571wrj.43.2024.03.26.09.13.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Mar 2024 09:13:35 -0700 (PDT)
-Date: Tue, 26 Mar 2024 17:13:33 +0100
-From: Markus Schneider-Pargmann <msp@baylibre.com>
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Grygorii Strashko <grygorii.strashko@ti.com>, 
-	Santosh Shilimkar <ssantosh@kernel.org>, Kevin Hilman <khilman@kernel.org>, 
-	Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, linux-omap@vger.kernel.org, 
-	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Markus Mirevik <markus.mirevik@dpsolutions.se>
-Subject: Re: [PATCH] gpio: omap: Fix double trigger for level interrupts
-Message-ID: <niruat6lxth4j7cmb7flo6pyipmnfym5evt6amszogkhtt5kkc@njhz7h7uciz2>
-References: <20240326145439.1293412-1-msp@baylibre.com>
- <6ecd284a-e3f5-4b69-b6d7-129da6b385c1@moroto.mountain>
+        bh=5IKaEl4faDXOubqbj8s61EhSq4y0/fdmoF1112F2KMY=;
+        b=aytQV14Lb0JXxOR/0GKE5r9n6/HJAIh1VUm602RPHu0BNI9aHvfH8VTo700YAIgovD
+         646hgjjNsrbRjjotLw7xj/ljoPTcMCudGQBL4dB9JT2PDcfkCUfy98Cyf8L1eT0vyPI2
+         LL8SScNK1alV1IFrTl8hHHT5fXdGYPYRtLfuqxDpW9+MjgHdyOw3h4UrtpGgiOMkaOnK
+         jjRMJUomDot8AiwDNV8Dhk/KU2tjouH99SfEoOTmXvOCib8mC+LK6fdT9CNSaSich44U
+         2HxTRZPPGjH+a8rT/DxSFRuWnLLfhbQTjb1r+VHb8Ffb5sd0IwXg6c5QRIszwtBV1b1z
+         N6yg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711470021; x=1712074821;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5IKaEl4faDXOubqbj8s61EhSq4y0/fdmoF1112F2KMY=;
+        b=BIAk2jtx74ruxmxXQOu+N03p1CI/iWeuO8kis3v6jvxA1cWFeL0ssefoRu7fqvB0l+
+         QBjwBQpMFSq5d+T4FL/es7XkrsZq6vc4SrWNlBepzjsGwirq7QPQer0BrPdI4IlRmTv1
+         IETKsBwZGq5LqQ+vmUAXpwqH9xd5aJsg+K0BvUUJNG8JhIKmozSws7jc3zLNemYfs1jz
+         HdcWIKK/pyPMu16CERcuW2tdrnizpiiN/XlL4rYjpJ1ElrDMxcJl8S4xjc3y0VQYWQNs
+         2iGvHHYjXXVZFG5gRWuRmCxhCgBalcv0SID10+GiDQbx9t293g/ZJkzJJ/u+w0CIBTrZ
+         m6ZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUCvvJGk59+iyI7izuKYPO3nURAw1+TNtd1X44mvAiePsOiDDI9B8fVUuELkK3OFsBXjDxLIT/Vk/KM4V5GUIntWcJxxOnI2tMUK/hnjW2sgDT11c96yUJXiJhi6KJe0ouDAwGAvYAa+w==
+X-Gm-Message-State: AOJu0YyBxaaKqgfyvAM0xCMDJBjhqwcIPpQ3/PtrF6OQxPyXp4QZgxVn
+	dfbUJ0l7qUqMd9FAVkrVvuJG9m/xiTsMqLulywmUiEl2q82jP/OUwiHn3vJk3ctymHIcNeMxNbL
+	aWzjWjkP5Txgh4qrwkY4DpF/wjPQ=
+X-Google-Smtp-Source: AGHT+IEgWiPWgP4UoqnhIOVp4j2Q6nGMB+4QzZqu9/AG9F+lszMXGkP5HHgXQTkrdrHALrwK/Ui+sOPR4x6Vn1lt4qs=
+X-Received: by 2002:a05:6214:2a46:b0:696:71fb:c66f with SMTP id
+ jf6-20020a0562142a4600b0069671fbc66fmr80542qvb.58.1711470020667; Tue, 26 Mar
+ 2024 09:20:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <6ecd284a-e3f5-4b69-b6d7-129da6b385c1@moroto.mountain>
+References: <20240325210045.153827-1-afd@ti.com> <2024032631-excursion-opposing-be36@gregkh>
+In-Reply-To: <2024032631-excursion-opposing-be36@gregkh>
+From: Robert Nelson <robertcnelson@gmail.com>
+Date: Tue, 26 Mar 2024 11:19:54 -0500
+Message-ID: <CAOCHtYjauA+BAxZJBMTaxxaMGcvipP9=ZPeWe4FiNFs_jpq6dg@mail.gmail.com>
+Subject: Re: [PATCH] uio: pruss: Deprecate use of this driver
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jason Kridner <jkridner@beagleboard.org>, 
+	Matthijs van Duin <matthijsvanduin@gmail.com>, Drew Fustini <drew@beagleboard.org>
+Cc: Andrew Davis <afd@ti.com>, Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Dan,
+On Tue, Mar 26, 2024 at 12:41=E2=80=AFAM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Mon, Mar 25, 2024 at 04:00:45PM -0500, Andrew Davis wrote:
+> > This UIO driver was used to control the PRU processors found on various
+> > TI SoCs. It was created before the Remoteproc framework, but now with
+> > that we have a standard way to program and manage the PRU processors.
+> > The proper PRU Remoteproc driver should be used instead of this driver.
+> > Mark this driver deprecated.
+> >
+> > The userspace tools to use this are no longer available, so also remove
+> > those dead links from the Kconfig description.
+> >
+> > Signed-off-by: Andrew Davis <afd@ti.com>
+> > ---
+> >  drivers/uio/Kconfig | 10 ++--------
+> >  1 file changed, 2 insertions(+), 8 deletions(-)
+> >
+> > diff --git a/drivers/uio/Kconfig b/drivers/uio/Kconfig
+> > index 2e16c5338e5b1..358dc2d19b885 100644
+> > --- a/drivers/uio/Kconfig
+> > +++ b/drivers/uio/Kconfig
+> > @@ -126,19 +126,13 @@ config UIO_FSL_ELBC_GPCM_NETX5152
+> >         http://www.hilscher.com/netx
+> >
+> >  config UIO_PRUSS
+> > -     tristate "Texas Instruments PRUSS driver"
+> > +     tristate "Texas Instruments PRUSS driver (DEPRECATED)"
+>
+> This isn't going to do much, why not just delete the driver entirely if
+> no one uses it?
 
-On Tue, Mar 26, 2024 at 06:29:45PM +0300, Dan Carpenter wrote:
-> In the bug report email thread Markus Mirevik said "The interrupt
-> associated with the GPIO module still fires twice" so while this patch
-> is an improvement, it might not be a complete solution?
+CC'ing Matthijs one of our BeagleBoard community members who utilizes
+and supports UIO on a number of community projects.
 
-Yes, that is possible. I actually only had the level interrupt
-double trigger bug which is fixed by this change.
+We know TI and Mainline in general do not like this UIO driver as it's
+very open-ended.
 
-> 
-> > This patch was originally proposed by Grygorii Strashko.
-> 
-> The way to give authorship credit is you make the first line of your
-> patch:
-> 
-> From: Grygorii Strashko <grygorii.strashko@ti.com>
-> 
-> When the patch is applied then git will assign authorship credit but
-> remove that line from the git log.
+While the remoteproc_pruss driver is now mainline (it has taken a long
+time, since 3.14.x i I think TI first started this..)
 
-Thanks, yes I am aware, though I didn't want to add that author tag
-without someone agreeing with that. As it wasn't a formal patch, there
-was no From: already present or a SoB by Grygorii. Also there was no
-reaction on a ping from me on the original thread. That's why I opted
-for the comment in the commit, the explanation and as I said in the
-letter part I don't care about author, just that it gets upstream.
+There is a large user base of UIO examples that have been running
+since 3.8.x and as a community we have made sure ( mostly Matthijs )
+that these continue to operate on this driver in
+v5.x/v6.x/lts/mainline branches.
 
-> 
-> On Tue, Mar 26, 2024 at 03:50:14PM +0100, Markus Schneider-Pargmann wrote:
-> > Set gpio trigger before clearing the irq status.
-> > 
-> 
-> This commit message needs some work.  When you're reviewing on email,
-> it's kind of common to read the commit message without reading the
-> subject.  See how the patch looks like on lore:
-> 
-> https://lore.kernel.org/linux-gpio/20240326145439.1293412-1-msp@baylibre.com/T/#u
-> 
-> The subject is up on the first line, but it's mixed in with the headers
-> so it's easy to skip.  Go ahead a restate the subject but in different
-> words.
-> 
-> But also copy and paste more of the problem from the bug report.  To me
-> if I were a user the important bit is that the bug ends up hogging the
-> CPU.
-> 
-> "The problem is that the interrupt handler was is run twice for each
-> frame.  It hogs a lot of CPU time.  Fix this by setting the GPIO trigger
-> before clearing the IRQ status."
+We can always revert/etc..  But I'm hoping Matthijs will chime-in..
 
-Yes, thanks, I will work on that commit message.
+Regards,
 
-Best
-Markus
+--=20
+Robert Nelson
+https://rcn-ee.com/
 
