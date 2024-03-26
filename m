@@ -1,64 +1,51 @@
-Return-Path: <linux-omap+bounces-960-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-961-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D25C88B675
-	for <lists+linux-omap@lfdr.de>; Tue, 26 Mar 2024 02:01:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FB0488B9DE
+	for <lists+linux-omap@lfdr.de>; Tue, 26 Mar 2024 06:42:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0A432B2792F
-	for <lists+linux-omap@lfdr.de>; Tue, 26 Mar 2024 00:36:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCBCC1F2F7F8
+	for <lists+linux-omap@lfdr.de>; Tue, 26 Mar 2024 05:42:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 854C81BC39;
-	Tue, 26 Mar 2024 00:36:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 216BE12AAC7;
+	Tue, 26 Mar 2024 05:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RFOy9Sck"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tc3m4wmD"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E256B1804F;
-	Tue, 26 Mar 2024 00:36:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD58E129A7A;
+	Tue, 26 Mar 2024 05:41:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711413406; cv=none; b=s/wPuTkwcAZC/mztNgv2M9V/PhIGPAcx6w6BAsDWtQQGkl73MEWj569zN8pFjg74lXLCyU6P9lBTOatNDmpg9fgJ1E8UY8o4YBK8xE2/fqWCI5/w29HDPvH4V3FdgZIU2c95Rf7jXvPdtyhwRXvVjl4h5HVvJaR+/WeXjidT1bI=
+	t=1711431715; cv=none; b=qkKTtYsqbOS44UtOrUpLv/Mez0jV9AXJUzhsvbBPPcoJ/HznWUJw7sbkAZl7t8MUVSRAGscH3p+bgEzLdfJjobq1hozPVgwso7g5nJAVe32p+vr/D007iFC/pmpKVv7d5CNcG1VIU62x0N07ckY4CCxd9T6BsgLZJPcY2qDUI6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711413406; c=relaxed/simple;
-	bh=r6ja1S3WkmxWys+sE3KabUy5bKAQKHZGyKXel35g+zY=;
+	s=arc-20240116; t=1711431715; c=relaxed/simple;
+	bh=iiMo2n+uaaAGl5wm2iwHCxN6PJ6Jdv4z76DpPeNrixk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Dpc+FvOx18fHm1OGndsMDgpoQyDIMSjFGHKmGbshxy45Ao/sgRnwfvIaTWlts0nhnzwQS945Vc2ZXiv3G3xafTrYj66NuWfvwY14zz2rJ0arutkxDAPH3AAKEy1W4IQjXsK0GJeQkcJbU2848eYoUajcE0okRAQwhJFB19z6Pok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RFOy9Sck; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84803C433C7;
-	Tue, 26 Mar 2024 00:36:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711413405;
-	bh=r6ja1S3WkmxWys+sE3KabUy5bKAQKHZGyKXel35g+zY=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=k7lV+B+iMaQbwogcCxKrbvtbZGOsEcRLxUXM/MBnrdGic1IC1sf3GgCmG1YqE3hDZ02K8dlhkaliUnB1hasv9KeulIMepf4X/04TcyBpemTpGRwgDsRsrSZd5gP1jPPCaTforpJAAmcnmF8iSIKYoV3FMElkeCHYDPURpmpaLAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tc3m4wmD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0A2DC433C7;
+	Tue, 26 Mar 2024 05:41:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1711431715;
+	bh=iiMo2n+uaaAGl5wm2iwHCxN6PJ6Jdv4z76DpPeNrixk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RFOy9SckrUmOjcVY80p+Bpxbe+5dpDJq+JeaQvIywXepTed1YRXnEepoqUkHhDLDv
-	 KZQ8orGHJmcfhxU4yqXzvKwkkh03GuDsm5VknrzWZxwAeC8moegodFxeAFmHcguP3V
-	 MvMXRlBgmBX55pjBPgOUTWQbK7zrjPHUR7Ivk7miBmPv+gpyP5Ja8S02vD6UZnj61n
-	 CqfQ4NXy/CKPT7KniveufUJdSfosIbl7mM5+gISfC65C9eTYs21OyRMfhMeYTy9MAj
-	 ov2d24lOwn4Oj/ZJVUPrXNuEHsLe2pES4uVY1T8XSrKZegQunB7Zn3qmkn816MOaQo
-	 yZPbuVAYSRHAg==
-Date: Tue, 26 Mar 2024 01:36:41 +0100
-From: Andi Shyti <andi.shyti@kernel.org>
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: linux-i2c@vger.kernel.org, asahi@lists.linux.dev, 
-	chrome-platform@lists.linux.dev, imx@lists.linux.dev, linux-actions@lists.infradead.org, 
-	linux-amlogic@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	linux-arm-msm@vger.kernel.org, linux-aspeed@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
-	linux-mediatek@lists.infradead.org, linux-mips@vger.kernel.org, linux-omap@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-renesas-soc@vger.kernel.org, 
-	linux-riscv@lists.infradead.org, linux-rockchip@lists.infradead.org, 
-	linux-rpi-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
-	linux-stm32@st-md-mailman.stormreply.com, linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org, 
-	openbmc@lists.ozlabs.org, virtualization@lists.linux.dev
-Subject: Re: [PATCH 00/64] i2c: reword i2c_algorithm according to newest
- specification
-Message-ID: <j2l7tu24itjelylrgwe6gdsy3mfrw3dnve4rdofmri3z7xdroc@se56t5ylmdak>
-References: <20240322132619.6389-1-wsa+renesas@sang-engineering.com>
- <ug266trshvhhbsln3eoh53fmsuj3l63ziz6gavcl7rv2jhjr5t@3av5givh5n7m>
+	b=tc3m4wmDGc8hc/rm2flEsw7sCWhhHCOEvgfOr5Mz2mDL3J7GRihVukiza3b5oj7ek
+	 +joGSipLS/W4Ym7okQzThkvDnoV06HNNNUzpGwaftpBLZjY4ydz+aTk4fSwOfBl0Ci
+	 w03QBZWawFtbC47sQqFD+dUG+UAtnEUnJ0Tf/EOA=
+Date: Tue, 26 Mar 2024 06:41:51 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Andrew Davis <afd@ti.com>
+Cc: Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] uio: pruss: Deprecate use of this driver
+Message-ID: <2024032631-excursion-opposing-be36@gregkh>
+References: <20240325210045.153827-1-afd@ti.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -67,20 +54,38 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ug266trshvhhbsln3eoh53fmsuj3l63ziz6gavcl7rv2jhjr5t@3av5givh5n7m>
+In-Reply-To: <20240325210045.153827-1-afd@ti.com>
 
-Hi Wolfram,
-
-> > @Andi: are you okay with this approach? It means you'd need to merge
-> > -rc2 into your for-next branch. Or rebase if all fails.
+On Mon, Mar 25, 2024 at 04:00:45PM -0500, Andrew Davis wrote:
+> This UIO driver was used to control the PRU processors found on various
+> TI SoCs. It was created before the Remoteproc framework, but now with
+> that we have a standard way to program and manage the PRU processors.
+> The proper PRU Remoteproc driver should be used instead of this driver.
+> Mark this driver deprecated.
 > 
-> I think it's a good plan, I'll try to support you with it.
+> The userspace tools to use this are no longer available, so also remove
+> those dead links from the Kconfig description.
+> 
+> Signed-off-by: Andrew Davis <afd@ti.com>
+> ---
+>  drivers/uio/Kconfig | 10 ++--------
+>  1 file changed, 2 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/uio/Kconfig b/drivers/uio/Kconfig
+> index 2e16c5338e5b1..358dc2d19b885 100644
+> --- a/drivers/uio/Kconfig
+> +++ b/drivers/uio/Kconfig
+> @@ -126,19 +126,13 @@ config UIO_FSL_ELBC_GPCM_NETX5152
+>  	  http://www.hilscher.com/netx
+>  
+>  config UIO_PRUSS
+> -	tristate "Texas Instruments PRUSS driver"
+> +	tristate "Texas Instruments PRUSS driver (DEPRECATED)"
 
-Do you feel more comfortable if I take the patches as soon as
-they are reviewd?
+This isn't going to do much, why not just delete the driver entirely if
+no one uses it?
 
-So far I have tagged patch 1-4 and I can already merge 2,3,4 as
-long as you merge patch 1.
+thanks,
 
-Andi
+greg k-h
 
