@@ -1,75 +1,75 @@
-Return-Path: <linux-omap+bounces-964-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-965-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B903188BB2D
-	for <lists+linux-omap@lfdr.de>; Tue, 26 Mar 2024 08:27:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC8F288BD52
+	for <lists+linux-omap@lfdr.de>; Tue, 26 Mar 2024 10:10:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6ED0B2E2FF2
-	for <lists+linux-omap@lfdr.de>; Tue, 26 Mar 2024 07:27:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD8441F3E4D1
+	for <lists+linux-omap@lfdr.de>; Tue, 26 Mar 2024 09:10:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3469A130AC3;
-	Tue, 26 Mar 2024 07:27:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E61F754BCF;
+	Tue, 26 Mar 2024 09:09:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ffUg/+24"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Jl1tjTte"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 101D4130A62
-	for <linux-omap@vger.kernel.org>; Tue, 26 Mar 2024 07:26:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C31E9548F1
+	for <linux-omap@vger.kernel.org>; Tue, 26 Mar 2024 09:09:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711438019; cv=none; b=bolI2JRh1g5FdxW7M+yCSEGL5vpQiAivs6K9eEMp6GLEJCMku5+/H7a1yDfpX/MCARTgAoXxW2HXQO72/4xKS9AvgoS1qrpYNG88dE5GL2/Re5Hb3AWZjCpNJRCzgmaaAlaQSq26r0I50yyhz8xN0zfHY0boc3wUC2up9Yak7jg=
+	t=1711444196; cv=none; b=ixgdeU5foPiWfbpwFUy1vsT2ASQvnJo5keTz2nKIPSKYIbn11mQi/29txwler4xBJeUDQ9/g0QZsrfYLcCp6esUmYcrlMT44qUHiK2pd7xpJAUD6uLD4MJ/1IUvzZKxndVWCkM+wgQnMJtiyzvQv7UjKG6gcZnfw6Dhf0yng2sM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711438019; c=relaxed/simple;
-	bh=fqZqBjupNkcz7ksn1wgwWbB5zT1rnnmFiojaxsMKakI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EV8SBvsqD4fGGowmB2WY0Pmu3Ehm3RM+TTMYUx2JftU32BGwBP4hzMtaMj79nm170FXjOVSestbbkUi3dg0nO2BFNUCQQL3OkSOWZt1HfIS2vvnrdIsAcVv4Nn3RrXFzyBHSH15CvdB/SaK5EonQeBYjhw3I7xDrUiKJYfwR0hg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ffUg/+24; arc=none smtp.client-ip=209.85.218.44
+	s=arc-20240116; t=1711444196; c=relaxed/simple;
+	bh=5Mfg3cAEqQHcDfQSPGTXTY+BSG6g04522lPi9IZ6HSY=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=mMsbd87g8bOZLIrCwwa2Au6w1Pd/ii7JNFqnOCfdWERoftya+XB7KCyshLSroZZWoH7O2yUKyhfJ6FvZAymSnLjx31eBEoy+NbqCMCY0yb4+T0HgIO1Wie6ztJZW9t0heeI4qUo6wBwpt3riqg5+CNgWFgfaZ8hQwHnnmjKZ57U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Jl1tjTte; arc=none smtp.client-ip=209.85.218.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-a468004667aso697663366b.2
-        for <linux-omap@vger.kernel.org>; Tue, 26 Mar 2024 00:26:57 -0700 (PDT)
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a4749eecff7so287508066b.2
+        for <linux-omap@vger.kernel.org>; Tue, 26 Mar 2024 02:09:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1711438016; x=1712042816; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=l8X0sS0ioRZhZHSyCp+sZdAvsMYJwJjOGU3wxVcqyyg=;
-        b=ffUg/+24fnm53ckJ9Tr8DUwxtl6Xzhjo8iez1h3hLJa5PzQUOICxpJgl2x27uMitIt
-         magiCWiDzJjppTycOR+pDMI2Xf8lgXWBEyrRree3b+xl9QDwEDavO4fmeogg33MmOVs/
-         PkJ6K8225OU73+tqygbP9BzDIV/PzwhlVqMmNVfWhNLaDbHUfjk4Z/rbnslquIuTc8QH
-         LMSvkHQvZlnmhP55XzAAXhuo1FDxXYJDnWiHLhO9bNyjTiOfh9NKYDXNiOvIpAsCf56a
-         +F8+oQmZ2SH8OyI9hbmRjSLWsceYY7mR/fPon/m3dWI38T6kpJi7svOiItV6kB32D3N9
-         ezVw==
+        d=linaro.org; s=google; t=1711444193; x=1712048993; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :references:cc:to:from:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=C/0aOAO1H78sXE4ecqOfYnPqbfj2kgK7iNx5nq8FjyQ=;
+        b=Jl1tjTtea9VlTftYK2ZZJ0mZ35oUgNJt+f0uhnja22+/RtWvQ6tJIHPluSA8c6gGbp
+         a8x1uNRTEog+1haTASEtW9LhMZ0MzXQXc0pSsNBmuhZFVn0/v6PcLDQi0USNIvNLlhWG
+         Eyz2RjyZ5apRffdgRbTNJwIHun4uNEtSXY/kWlgDFrv7uf0hDu3yoRlxHQqfCMB+SV38
+         mcm6c6wxZwWbyGc/uW+OsHaxuA32Ngtq4Tzhh0w2RVSHm1Q5aIxHiNgEuS7KxGVnj/6L
+         X6nWylvqP72WhlMbJoM5nnjWs0F09ZhdHp6FuZy6ua28JPCv58FvccO55+mRvD1mE4qr
+         BPwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711438016; x=1712042816;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=l8X0sS0ioRZhZHSyCp+sZdAvsMYJwJjOGU3wxVcqyyg=;
-        b=lCnmUWUCBtTPoXwWWedN1cZuBjZjpGF3Srqmvr0aqJj+V5LYhO7mcCPnvUH8FwRB+m
-         ZLj2mKvRkQfFbMt+cpy3Oky0oIPjHCV73LV/CrDSy9SXm2O16Iu/W9DH1vnvrValnArF
-         F1KAozCOw6gQx/v4MV6ECF93nSjCYjz9LaQtRWKRZj8eFxTGlC8NhpU/tuvtix1khXru
-         J0HcwfclfJh09FqxKIVe/XesEZqCFBsiJ9fn+zgT7Y5Gyn8Pp1hcAnJ7rDv68ANOKr7b
-         oqfRBkMXamtjcTMvvRCWS8EylZ485O09s8rIjf3w+3G9WvWRxOd8cEJEcFlQxUt+TcHD
-         Ahpw==
-X-Forwarded-Encrypted: i=1; AJvYcCVXz+aLfvEpQ6Oa40BF8VPWyCAVU6mBN+P4UyNX0cBdnPIq2da5NX1wVsBKnBS1HLa5XdpFAwvKSq7T8vRFUkw1RhKSEkCFQxN2hQ==
-X-Gm-Message-State: AOJu0YxT2g4NEH3Z+Tl5D5y357HuP9J94WY/EN+i1ShgJ6OALe2NDbS3
-	W5bZwN+tYIPeR44V1WH/igHH8HsXvKqSvUUkNAw3aC1lksYfXM29YG9bXeFV7Mg=
-X-Google-Smtp-Source: AGHT+IFJA1GydDkGZE8FU8PnHdXbkqJxy0HtKbTrJpe9g/gXDmcqulXKFzm72AHidqlt3XfGy2GOVg==
-X-Received: by 2002:a17:906:40c9:b0:a4d:f27c:bc3 with SMTP id a9-20020a17090640c900b00a4df27c0bc3mr267095ejk.8.1711438016411;
-        Tue, 26 Mar 2024 00:26:56 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1711444193; x=1712048993;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :references:cc:to:from:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=C/0aOAO1H78sXE4ecqOfYnPqbfj2kgK7iNx5nq8FjyQ=;
+        b=sNiHXYbDvnEXd34M4cphYBHgQ7t9TymARf3KOBl0Qak6T7Hak/HqRjqa94S4kHQfhx
+         4lOWvJ3EA1rDhUy6hUovA/9OIpg32Yw/J4qJrHHk6ksASMeFPGcsh9UA9lNb0frJJs2k
+         ukTShzXqayjDNm2nvTCFcTcuwXYDPHdBUfHYY/sXAe+1kzj6cIhWTyGpfbt6R6IAAHl9
+         JIfoC4WnQCSEY3UbpId3iCiiMBaf8baudCzy7BwvUlXE3FIEMkMJnTr24vWBhw/oUoHO
+         vPBG7+J/2i0jp143LfMvYMwZ9AQEZJq/34mPfwOHLp8WCJydEZpKgjADOBtpEaSENiM+
+         Arig==
+X-Forwarded-Encrypted: i=1; AJvYcCU1w2lhNjIPvCURHkd3ZU6FFbTorGa+GN1WUlMeJxkkPfGF6kJVhlMm4nYIl3RxIdinP8LxXAa1OwDAnC6Gh+p5V/Zm6qbg2kxdLQ==
+X-Gm-Message-State: AOJu0Yy7/WlDC0VwpJyzZ3bNdb3Dza9QRwH8vm29F7WwZhb4Csyva8/N
+	29+kqbp0hy7Q3o4fvmROVxDRL3q7/nC7445i/bkhlyW/DRGTA3037mCaV3b9T+U=
+X-Google-Smtp-Source: AGHT+IGufNO6EHXt8Q7khkkznmdlFXoI+wI5M2phhK0jxKfd99dTLesRNPDIlYf2751/NqEFkwD8lA==
+X-Received: by 2002:a17:906:474e:b0:a47:4e09:e685 with SMTP id j14-20020a170906474e00b00a474e09e685mr1400093ejs.32.1711444192953;
+        Tue, 26 Mar 2024 02:09:52 -0700 (PDT)
 Received: from [192.168.1.20] ([178.197.222.44])
-        by smtp.gmail.com with ESMTPSA id hg1-20020a1709072cc100b00a46caa13e63sm3888459ejc.199.2024.03.26.00.26.55
+        by smtp.gmail.com with ESMTPSA id u1-20020a1709063b8100b00a46fbff47a6sm3982096ejf.168.2024.03.26.02.09.51
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 26 Mar 2024 00:26:55 -0700 (PDT)
-Message-ID: <8cd3158b-ed51-4a1f-a626-fa58c85d4aeb@linaro.org>
-Date: Tue, 26 Mar 2024 08:26:54 +0100
+        Tue, 26 Mar 2024 02:09:52 -0700 (PDT)
+Message-ID: <adb00149-6b90-43ee-9db0-4fcad1eeb4ca@linaro.org>
+Date: Tue, 26 Mar 2024 10:09:51 +0100
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -77,17 +77,21 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] dt-bindings: hsi: omap-ssi: convert to YAML
-To: Sebastian Reichel <sebastian.reichel@collabora.com>,
- Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Sebastian Reichel <sre@kernel.org>
-Cc: Tony Lindgren <tony@atomide.com>, devicetree@vger.kernel.org,
- linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20240325-hsi-dt-binding-v1-0-88e8e97c3aae@collabora.com>
- <20240325-hsi-dt-binding-v1-3-88e8e97c3aae@collabora.com>
-Content-Language: en-US
+Subject: Re: [PATCH] memory: omap-gpmc: fixup wrongly hierarchy of the
+ sub-devices
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Brock Zheng <yzheng@techyauld.com>, Roger Quadros <rogerq@kernel.org>
+Cc: Andreas Kemnade <andreas@kemnade.info>, Tony Lindgren <tony@atomide.com>,
+ linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <6fftq2zlkpaf7xptyff6ky63cinr76ziyvdbm5jhj2apubr5vf@l4gvbdax3l2e>
+ <f45b3195-38a9-4c49-b873-01e5a0b275a3@kernel.org>
+ <20240301133809.0d26865e@aktux>
+ <f59c9450-2784-46fa-afc9-4f194055cb24@kernel.org>
+ <laqqencookmgwesfaetd5xw5wfmjdffmjvyjitapfehmu7zy5y@k7gsdexf3jcv>
+ <beacb55c-951b-4177-83ab-94fda44cd2b7@kernel.org>
+ <yxefg4ie4vxblxvr272jvzncxvj2t6xjfuisvmkt2jk663xgsu@o2ogbyepmg3z>
+ <bbc16b3c-7e76-4f0a-8ada-42d2da3426fd@linaro.org>
+Content-Language: en-US
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
  cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
@@ -132,232 +136,33 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240325-hsi-dt-binding-v1-3-88e8e97c3aae@collabora.com>
+In-Reply-To: <bbc16b3c-7e76-4f0a-8ada-42d2da3426fd@linaro.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 25/03/2024 22:45, Sebastian Reichel wrote:
-> Convert the legacy txt binding to modern YAML.
-> No semantic change.
-
-You deprecated a property: ti,hwmods. Also will be one more change:
-ti,ssi-cawake-gpio->gpios
-
+On 08/03/2024 17:48, Krzysztof Kozlowski wrote:
+> On 03/03/2024 09:18, Brock Zheng wrote:
+>> On TI-AM335x，FPGA under GPMC local-bus can not work on 6.x kernel.
+>>
+>> GPMC <--> FPGA  <--> sub-devices....
+>>
+>> I found that the platform sub-devices are in wrongly organized
+>> hierarchy.  The grandchildren are now under the GPMC device directly,
+>> not under it's father(FPGA).
+>>
+>> Signed-off-by: Brock.Zheng <yzheng@techyauld.com>
 > 
-> Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-> ---
->  Documentation/devicetree/bindings/hsi/omap-ssi.txt | 102 -----------
->  .../devicetree/bindings/hsi/ti,omap-ssi.yaml       | 196 +++++++++++++++++++++
->  2 files changed, 196 insertions(+), 102 deletions(-)
-> 
+> Your SoB still has '.' between names. I can remove it while applying.
+> It is too late in the cycle for me to pick it up. I will take it after
+> the merge window.
 
-...
+Although I wrote I could apply it, but:
+1. There is still no fixes tag, even though I asked.
+2. This is not marked as v2 and is attached to some other thread. Please
+version your patches, so next one will be v3. Add changelog after ---.
+Then send as a new patchset.
 
-> diff --git a/Documentation/devicetree/bindings/hsi/ti,omap-ssi.yaml b/Documentation/devicetree/bindings/hsi/ti,omap-ssi.yaml
-> new file mode 100644
-> index 000000000000..eb82f85c25b6
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/hsi/ti,omap-ssi.yaml
-> @@ -0,0 +1,196 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/hsi/ti,omap-ssi.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: SSI Controller on OMAP SoCs
-> +
-> +description:
-> +  OMAP3's Synchronous Serial Interface (SSI) controller implements a
-> +  legacy variant of MIPI's High Speed Synchronous Serial Interface (HSI),
-> +  while the controller found inside OMAP4 is supposed to be fully compliant
-> +  with the HSI standard.
-> +
-> +maintainers:
-> +  - Sebastian Reichel <sre@kernel.org>
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - ti,omap3-ssi
-> +      - ti,omap4-hsi
-> +
-> +  reg:
-> +    items:
-> +      - description: registers for sys
-> +      - description: registers for gdd
-> +
-> +  reg-names:
-> +    items:
-> +      - const: sys
-> +      - const: gdd
-> +
-> +  ranges: true
-> +
-> +  "#address-cells":
-> +    const: 1
-> +
-> +  "#size-cells":
-> +    const: 1
-> +
-> +  clocks:
-> +    minItems: 1
-> +    maxItems: 3
-> +
-> +  clock-names:
-> +    minItems: 1
-> +    maxItems: 3
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  interrupt-names:
-> +    const: gdd_mpu
-> +
-> +  ti,hwmods:
-> +    const: ssi
-> +    deprecated: true
-> +
-> +patternProperties:
-> +  "[hs]si-port@[0-9a-f]+":
-
-Does anything actually depends on the name? Can these be "port@[0-9a-f]+"?
-
-> +    type: object
-> +
-
-Drop blank line.
-
-> +    additionalProperties: false
-> +
-> +    properties:
-> +      compatible:
-> +        enum:
-> +          - ti,omap3-ssi-port
-> +          - ti,omap4-hsi-port
-> +
-> +      reg:
-> +        items:
-> +          - description: TX registers
-> +          - description: RX registers
-> +
-> +      reg-names:
-> +        items:
-> +          - const: tx
-> +          - const: rx
-> +
-> +      interrupts:
-> +        items:
-> +          - description: MPU interrupt 0
-> +          - description: MPU interrupt 1
-> +        minItems: 1
-> +
-> +      ti,ssi-cawake-gpio:
-
-ti,ssi-cawake-gpios
-
-> +        description: GPIO signifying CAWAKE events
-> +        maxItems: 1
-> +
-> +      hsi-client:
-> +        type: object
-
-On this level, should be explicit: additionalProperties: true
-
-> +        $ref: /schemas/hsi/hsi-client.yaml#
-> +
-> +    required:
-> +      - compatible
-> +      - reg
-> +      - reg-names
-> +      - interrupts
-> +
-> +    allOf:
-> +      - if:
-> +          properties:
-> +            compatible:
-> +              contains:
-> +                const: ti,omap3-ssi-port
-> +        then:
-> +          properties:
-> +            $nodename:
-> +              pattern: "^ssi-port@(.*)?$"
-> +            interrupts:
-> +              minItems: 2
-> +        else:
-> +          properties:
-> +            $nodename:
-> +              pattern: "^hsi-port@(.*)?$"
-> +            interrupts:
-> +              maxItems: 1
-> +
-> +additionalProperties: false
-
-This goes after allOf: block
-
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - reg-names
-> +  - ranges
-> +  - "#address-cells"
-> +  - "#size-cells"
-> +  - clocks
-> +  - clock-names
-> +  - interrupts
-> +  - interrupt-names
-> +
-> +allOf:
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            const: ti,omap3-ssi
-> +    then:
-> +      properties:
-> +        clocks:
-> +          minItems: 3
-> +        clock-names:
-> +          items:
-> +            - const: ssi_ssr_fck
-> +            - const: ssi_sst_fck
-> +            - const: ssi_ick
-> +    else:
-> +      properties:
-> +        clocks:
-> +          maxItems: 1
-> +        clock-names:
-> +          items:
-> +            - const: hsi_fck
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/gpio/gpio.h>
-> +    ssi-controller@48058000 {
-> +        compatible = "ti,omap3-ssi";
-> +        reg = <0x48058000 0x1000>,
-> +              <0x48059000 0x1000>;
-> +        reg-names = "sys", "gdd";
-> +        ranges;
-> +        #address-cells = <1>;
-> +        #size-cells = <1>;
-> +        clocks = <&ssi_ssr_fck>,
-> +                 <&ssi_sst_fck>,
-> +                 <&ssi_ick>;
-> +        clock-names = "ssi_ssr_fck",
-> +                      "ssi_sst_fck",
-> +                      "ssi_ick";
-> +        interrupts = <55>;
-> +        interrupt-names = "gdd_mpu";
-> +
-> +        ssi-port@4805a000 {
-> +                compatible = "ti,omap3-ssi-port";
-
-Use 4 spaces for example indentation.
-
-> +                reg = <0x4805a000 0x800>,
-
+Please send v3 with above corrected.
 
 Best regards,
 Krzysztof
