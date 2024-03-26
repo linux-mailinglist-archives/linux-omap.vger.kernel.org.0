@@ -1,146 +1,144 @@
-Return-Path: <linux-omap+bounces-969-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-970-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C2AC88C38B
-	for <lists+linux-omap@lfdr.de>; Tue, 26 Mar 2024 14:34:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B90F288C608
+	for <lists+linux-omap@lfdr.de>; Tue, 26 Mar 2024 15:57:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 97F20B23C2B
-	for <lists+linux-omap@lfdr.de>; Tue, 26 Mar 2024 13:34:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7338430527D
+	for <lists+linux-omap@lfdr.de>; Tue, 26 Mar 2024 14:57:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7043276042;
-	Tue, 26 Mar 2024 13:34:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6C7D13C697;
+	Tue, 26 Mar 2024 14:56:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="BJy7hmsC"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="f15vaomC"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79B7774420;
-	Tue, 26 Mar 2024 13:34:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E177D12D75D
+	for <linux-omap@vger.kernel.org>; Tue, 26 Mar 2024 14:56:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711460076; cv=none; b=b8ZcNvCB6mBdNfL1m+/MV5im06u99u4AmoAb0tgUpEDkdF9AFo0Jd/iUADK7BK0aX4PGNQKqShe20RAAVs3LHqyDyY4BzYfEBy3YapH3wEnisDXiWHlJ2UaYxZrT79VW3xXb/0cc/JhLDeZgWFmqV8yBVf46clbqqQFF0ocDyOc=
+	t=1711465018; cv=none; b=Z5VUVdpEkFt39N2VeojELCzwDYHMGTHw91i8SCTBPOOMQPIrXEjSfnVgiCHEZPbIyBJ+iXzfGLxEhas9sxaadZuf2zncOVxdUlLI6h8MgTJF14pgRxLqxINrXOFLjVl55R5VEelQnAmdSCOJqaaa6PHwYJkEGhe06HCkMcDGrLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711460076; c=relaxed/simple;
-	bh=saMpjGv+bQgBnCl480rcaDTB14OCyzHI+ihNLlTUD1Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g7DUNHLHEe0MHfKM01/yKHKZVxw7dOP7te8to2MuaroEdN1oNCN0+XTTGwzSUowpcEaDPVyhJ8VHqcrXEsT13LlrQ0CfGGcl0zX0h+tTHfggDlUI1963dZMvPcOjISsbkrKW9IKSkQ1OkkEQerUS8yCjoSi6HiY7ntTCXEKAz/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=BJy7hmsC; arc=none smtp.client-ip=46.235.227.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1711460072;
-	bh=saMpjGv+bQgBnCl480rcaDTB14OCyzHI+ihNLlTUD1Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BJy7hmsC8MJyBaldIPgB7UZTyxmjYuG4IPIFWTYnAv5l6Moo7qW4JrO7MOKxpa7dl
-	 onGwEGzqN+iIxhhuq3sxQFrhU6F/Uoz7heDYjAmaS8YtPW8ruygCWELc1Ivb1wPnxR
-	 FZ3QIIxFL9531ejCSHR1t8lHqQ/k9VyBjJVhjiO/k6LLZcd1pTBgtI0PleB5CoMo/T
-	 U8ibggsWKF+2dkWUp6gcTuD2UrQTCOgzvYle5ffapu99MzKpQDl3XlroWcq7QgDMfw
-	 PsrmBv/3HdG8JoIwgpeWI9Jrje7tVEy6/Ofm1ji9SCs2Krvn1ITMF2I0vxyFkrZqgc
-	 CtJRV06cpZOYA==
-Received: from mercury (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: sre)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id B09533782087;
-	Tue, 26 Mar 2024 13:34:32 +0000 (UTC)
-Received: by mercury (Postfix, from userid 1000)
-	id 4ADB71060700; Tue, 26 Mar 2024 14:34:32 +0100 (CET)
-Date: Tue, 26 Mar 2024 14:34:32 +0100
-From: Sebastian Reichel <sebastian.reichel@collabora.com>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Tony Lindgren <tony@atomide.com>, devicetree@vger.kernel.org, linux-omap@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/3] dt-bindings: hsi: omap-ssi: convert to YAML
-Message-ID: <64js2unmngyzluullyos6ylkvgvdgn26zgnkku2guozynervpy@tkniifdrklyi>
-References: <20240325-hsi-dt-binding-v1-0-88e8e97c3aae@collabora.com>
- <20240325-hsi-dt-binding-v1-3-88e8e97c3aae@collabora.com>
- <8cd3158b-ed51-4a1f-a626-fa58c85d4aeb@linaro.org>
+	s=arc-20240116; t=1711465018; c=relaxed/simple;
+	bh=2y9ctp56HMkbvyZgKo5fx6Q9dshxX5+8r2XntdNWGeE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iJB+JoCMzkqvefVtp9lnQdzdIB6/jZvvaTrIUsOa0Q/geh2Ww8yXUOXEqSl+Ja5QkRkC39siADIQ2X7BzqdotuJ5FXMq/FhakvyrObzPtb3sEgXleFf1sV4c3hw2LWdRr3bg5R2Vzg6HTEe1FMlRPUO4jnnMSQ38WM/IibTa67E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=f15vaomC; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-414881d8956so14826615e9.3
+        for <linux-omap@vger.kernel.org>; Tue, 26 Mar 2024 07:56:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1711465013; x=1712069813; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Z/G1vU/i34n4Yf6dbVXXOkUIfKhQJFotsjQ1E/HHO2A=;
+        b=f15vaomC0cvHnHoFzNXXTfWCoXvbuMy8w/RoqQBw0ku9hs/3EX5LWswwSWV4D/Q5Zv
+         qo+fZhzXcSNhBdt+kpbU40MdUxUVydKwL6nujj5g1XUs+ZbpOC7CsQRsWR/1D6460Ekb
+         pqSMHwZWnCQxOKtxA66IFEoXoR/rSHYvj4Kk6BLykWHE2cIgiEVldCLa5NFt6jiJKtcc
+         FTN0NjKdOXQfCXkmxGaSvasSKuDmQFcKmnEGeEAc5XESzB9lMusV7bVAwv8A/86OS6V2
+         YY6IrAWWhvOk8MrnszbSjeHsPg95zgbnXkZWaIlhxOnD9gnzJuF5DjZd4QJjPQ5ytO10
+         Iu8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711465013; x=1712069813;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Z/G1vU/i34n4Yf6dbVXXOkUIfKhQJFotsjQ1E/HHO2A=;
+        b=ff8VaTC+eAz1ppi9mXSyFv4euGKcP/KmV2YXkdIOfQ361aRnAOaCpItvU9iBjARimA
+         5f9SriUKEz9d/5MkgBofAUDezLnaxdTB1/+fvCJaok4IrL+MuQGyMMYXjANwKSvLzQiP
+         +M4NSJ11DTg8NLeQJe9bg+ECVj5sbJUuGVs1fzPHrxD5VauRshKgI7T2y0J/BY8/bRON
+         KLZTSv73x5dgW64APb/OwN/2fXnPoTxXPFG7TtDMZ1WZlLIEHWlvNO63d4XF8uwK7Yhv
+         gvS7nhn3hP1TXKmdxgh1LJBc51hCvmAu3KYNJ1p4AFRccKpHV0p4JVwfcS/7aTSj8hQT
+         h+aQ==
+X-Gm-Message-State: AOJu0Yz+pdWRyGR6FJnkI3bFtm1WqEqUmyPb2ES49jq/raSYNQPRXT1E
+	3xAnrPAEwLBicNYVsBWTu15lFgLIizhxoDv0ZnJal2xNJbvKjgAUUQotdp5qDvY=
+X-Google-Smtp-Source: AGHT+IHgX0UjDpUS3pvvXSWQ89lGsdbFRcjbil8q0TiSG1zwcrctb+NcH3iuLaIhpS4dSbwwuyx9yA==
+X-Received: by 2002:a05:600c:4510:b0:414:1351:8662 with SMTP id t16-20020a05600c451000b0041413518662mr1176708wmo.12.1711465013025;
+        Tue, 26 Mar 2024 07:56:53 -0700 (PDT)
+Received: from blmsp.fritz.box ([2001:4091:a246:821e:6f3b:6b50:4762:8343])
+        by smtp.gmail.com with ESMTPSA id f12-20020a05600c4e8c00b00414850d567fsm9838120wmq.1.2024.03.26.07.55.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 Mar 2024 07:56:00 -0700 (PDT)
+From: Markus Schneider-Pargmann <msp@baylibre.com>
+To: Grygorii Strashko <grygorii.strashko@ti.com>,
+	Santosh Shilimkar <ssantosh@kernel.org>,
+	Kevin Hilman <khilman@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: linux-omap@vger.kernel.org,
+	linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Markus Schneider-Pargmann <msp@baylibre.com>,
+	Markus Mirevik <markus.mirevik@dpsolutions.se>
+Subject: [PATCH] gpio: omap: Fix double trigger for level interrupts
+Date: Tue, 26 Mar 2024 15:50:14 +0100
+Message-ID: <20240326145439.1293412-1-msp@baylibre.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="njs5f5dqoav63mx4"
-Content-Disposition: inline
-In-Reply-To: <8cd3158b-ed51-4a1f-a626-fa58c85d4aeb@linaro.org>
+Content-Transfer-Encoding: 8bit
 
+Set gpio trigger before clearing the irq status.
 
---njs5f5dqoav63mx4
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This patch was originally proposed by Grygorii Strashko.
 
-Hi,
+Cc: Grygorii Strashko <grygorii.strashko@ti.com>
+Reported-by: Markus Mirevik <markus.mirevik@dpsolutions.se>
+Closes: https://lore.kernel.org/all/20220122235959.GA10737@sol/T/
+Signed-off-by: Markus Schneider-Pargmann <msp@baylibre.com>
+---
+Hi everyone,
 
-On Tue, Mar 26, 2024 at 08:26:54AM +0100, Krzysztof Kozlowski wrote:
-> On 25/03/2024 22:45, Sebastian Reichel wrote:
-> > Convert the legacy txt binding to modern YAML.
-> > No semantic change.
->=20
-> You deprecated a property: ti,hwmods. Also will be one more change:
-> ti,ssi-cawake-gpio->gpios
+this patch helped me on the beagleboneblack to remove the mentioned
+double trigger of level interrupts. This diff was proposed by Grygorii
+in the thread linked in the commit message. I am not sure why this never
+made it into the kernel, that's why I sending this patch. I did not
+create the diff just made a patch out of it, I don't care about being
+the author but I would be happy if this would get merged or some other
+solution to the problem.
 
-and I will introduce a simple bus binding for referencing the
-peripheral. I added a list to the commit message for v2.
+Thanks!
 
-> >  Documentation/devicetree/bindings/hsi/omap-ssi.txt | 102 -----------
-> >  .../devicetree/bindings/hsi/ti,omap-ssi.yaml       | 196 +++++++++++++=
-++++++++
-> >  2 files changed, 196 insertions(+), 102 deletions(-)
+Best
+Markus
 
-[...]
+ drivers/gpio/gpio-omap.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-> > +patternProperties:
-> > +  "[hs]si-port@[0-9a-f]+":
->=20
-> Does anything actually depends on the name? Can these be "port@[0-9a-f]+"?
+diff --git a/drivers/gpio/gpio-omap.c b/drivers/gpio/gpio-omap.c
+index 76d5d87e9681..74b8fe2995e1 100644
+--- a/drivers/gpio/gpio-omap.c
++++ b/drivers/gpio/gpio-omap.c
+@@ -696,6 +696,9 @@ static void omap_gpio_unmask_irq(struct irq_data *d)
+ 	raw_spin_lock_irqsave(&bank->lock, flags);
+ 	omap_set_gpio_irqenable(bank, offset, 1);
+ 
++	if (trigger)
++		omap_set_gpio_triggering(bank, offset, trigger);
++
+ 	/*
+ 	 * For level-triggered GPIOs, clearing must be done after the source
+ 	 * is cleared, thus after the handler has run. OMAP4 needs this done
+@@ -705,9 +708,6 @@ static void omap_gpio_unmask_irq(struct irq_data *d)
+ 	    trigger & (IRQ_TYPE_LEVEL_HIGH | IRQ_TYPE_LEVEL_LOW))
+ 		omap_clear_gpio_irqstatus(bank, offset);
+ 
+-	if (trigger)
+-		omap_set_gpio_triggering(bank, offset, trigger);
+-
+ 	raw_spin_unlock_irqrestore(&bank->lock, flags);
+ }
+ 
+-- 
+2.43.0
 
-That should work. The Linux driver is looping over all child nodes
-and checking the compatible.
-
-[...]
-
-> > +      ti,ssi-cawake-gpio:
->=20
-> ti,ssi-cawake-gpios
-
-mh, the kernel supports the extra s since 2016. I guess that should
-be good enough. I will fix it in v2.
-
-All other comments will be fixed in v2.
-
-Thanks for the review,
-
--- Sebastian
-
---njs5f5dqoav63mx4
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmYCzuMACgkQ2O7X88g7
-+pqxjA//TjV4yyHewGmF+3gOtEjdCKdzJEQuAWEQDolYEEUDF/bk9rGKfJ8YQ0vC
-vcHGnK/7UC99dnuBoHDSaQONXuuBdl+Hnyv8OxkGCb+glkdoXAkBcwkGZQf0EBXw
-oPnmdXZhEdC9wt/HoGaF8gB9ojbrAV1Tw18ypKL5WkKK/mczFBMZUHhZXY0AzIJ8
-KMQ4+sc0S/cRhq1ilRXsqY6omLDuHVX5zyBRZS+QqiNGtI6xZc5SIhNXlmLua6/Q
-DXaaag+TbMoFfjtqvp5xfCPtc3hlCuImnBKoS/nJHTcoIHAEvA6/VuxNYbKJ26gX
-7U/vfz8hOaZqQvdVmwGXkYBUpqO/++ksWXgYPvzJJ/8UJ1YlkwI1/eS1USbM7Qdz
-P+D5hWRjQRa0D6Vw6D8R78cz3/joX1SjYWfEA8Cwe0KYt55mH2hOQ2l0828u9Fve
-RIDy/193hRUeKFHMvB4yLAFtRJsYkuXPiIFp2VSeeGGgq9GXBcTZEBXBOQ6prHzy
-zslwKiBHZQ/RUfuc8WjHPmM1RcwL+iuqCfRsOQp2oQZ93di6yCsJg4CQv9RkmmZo
-KlhLt/Mk4tsKljYdskxDjQSb2Aic0ByhpmLEd7+zUAftDfWgBz6mTNTlX6jKGwuF
-2UUGzH2PKf6pTpISgBHJNYUKrMQOb0LlHxUi1hPTgtnU1dyC4NU=
-=Rttd
------END PGP SIGNATURE-----
-
---njs5f5dqoav63mx4--
 
