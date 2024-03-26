@@ -1,170 +1,249 @@
-Return-Path: <linux-omap+bounces-965-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-966-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC8F288BD52
-	for <lists+linux-omap@lfdr.de>; Tue, 26 Mar 2024 10:10:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 491B088C27E
+	for <lists+linux-omap@lfdr.de>; Tue, 26 Mar 2024 13:46:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD8441F3E4D1
-	for <lists+linux-omap@lfdr.de>; Tue, 26 Mar 2024 09:10:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C79E1C6048E
+	for <lists+linux-omap@lfdr.de>; Tue, 26 Mar 2024 12:46:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E61F754BCF;
-	Tue, 26 Mar 2024 09:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 162896AFB6;
+	Tue, 26 Mar 2024 12:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Jl1tjTte"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="x2NCnf0T"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C31E9548F1
-	for <linux-omap@vger.kernel.org>; Tue, 26 Mar 2024 09:09:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BB4914A8E;
+	Tue, 26 Mar 2024 12:45:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711444196; cv=none; b=ixgdeU5foPiWfbpwFUy1vsT2ASQvnJo5keTz2nKIPSKYIbn11mQi/29txwler4xBJeUDQ9/g0QZsrfYLcCp6esUmYcrlMT44qUHiK2pd7xpJAUD6uLD4MJ/1IUvzZKxndVWCkM+wgQnMJtiyzvQv7UjKG6gcZnfw6Dhf0yng2sM=
+	t=1711457156; cv=none; b=Zgz84EnC3aljxKmngRqWfVBBanzo6lhvgBlNe5BDyAc6rBCHg3vIM8Psl8xQTMFFnTSmbVbmR6j7oC2d3acsy1dGK9Gw8Ak8OYss+4l9pCuSmqqtFGZ3/dY54HR9aL7ABqMHcaZO5WZdVSZdHtXLCUKrjcMymv4VRxvPrNMeSDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711444196; c=relaxed/simple;
-	bh=5Mfg3cAEqQHcDfQSPGTXTY+BSG6g04522lPi9IZ6HSY=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=mMsbd87g8bOZLIrCwwa2Au6w1Pd/ii7JNFqnOCfdWERoftya+XB7KCyshLSroZZWoH7O2yUKyhfJ6FvZAymSnLjx31eBEoy+NbqCMCY0yb4+T0HgIO1Wie6ztJZW9t0heeI4qUo6wBwpt3riqg5+CNgWFgfaZ8hQwHnnmjKZ57U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Jl1tjTte; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a4749eecff7so287508066b.2
-        for <linux-omap@vger.kernel.org>; Tue, 26 Mar 2024 02:09:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1711444193; x=1712048993; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :references:cc:to:from:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=C/0aOAO1H78sXE4ecqOfYnPqbfj2kgK7iNx5nq8FjyQ=;
-        b=Jl1tjTtea9VlTftYK2ZZJ0mZ35oUgNJt+f0uhnja22+/RtWvQ6tJIHPluSA8c6gGbp
-         a8x1uNRTEog+1haTASEtW9LhMZ0MzXQXc0pSsNBmuhZFVn0/v6PcLDQi0USNIvNLlhWG
-         Eyz2RjyZ5apRffdgRbTNJwIHun4uNEtSXY/kWlgDFrv7uf0hDu3yoRlxHQqfCMB+SV38
-         mcm6c6wxZwWbyGc/uW+OsHaxuA32Ngtq4Tzhh0w2RVSHm1Q5aIxHiNgEuS7KxGVnj/6L
-         X6nWylvqP72WhlMbJoM5nnjWs0F09ZhdHp6FuZy6ua28JPCv58FvccO55+mRvD1mE4qr
-         BPwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711444193; x=1712048993;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :references:cc:to:from:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=C/0aOAO1H78sXE4ecqOfYnPqbfj2kgK7iNx5nq8FjyQ=;
-        b=sNiHXYbDvnEXd34M4cphYBHgQ7t9TymARf3KOBl0Qak6T7Hak/HqRjqa94S4kHQfhx
-         4lOWvJ3EA1rDhUy6hUovA/9OIpg32Yw/J4qJrHHk6ksASMeFPGcsh9UA9lNb0frJJs2k
-         ukTShzXqayjDNm2nvTCFcTcuwXYDPHdBUfHYY/sXAe+1kzj6cIhWTyGpfbt6R6IAAHl9
-         JIfoC4WnQCSEY3UbpId3iCiiMBaf8baudCzy7BwvUlXE3FIEMkMJnTr24vWBhw/oUoHO
-         vPBG7+J/2i0jp143LfMvYMwZ9AQEZJq/34mPfwOHLp8WCJydEZpKgjADOBtpEaSENiM+
-         Arig==
-X-Forwarded-Encrypted: i=1; AJvYcCU1w2lhNjIPvCURHkd3ZU6FFbTorGa+GN1WUlMeJxkkPfGF6kJVhlMm4nYIl3RxIdinP8LxXAa1OwDAnC6Gh+p5V/Zm6qbg2kxdLQ==
-X-Gm-Message-State: AOJu0Yy7/WlDC0VwpJyzZ3bNdb3Dza9QRwH8vm29F7WwZhb4Csyva8/N
-	29+kqbp0hy7Q3o4fvmROVxDRL3q7/nC7445i/bkhlyW/DRGTA3037mCaV3b9T+U=
-X-Google-Smtp-Source: AGHT+IGufNO6EHXt8Q7khkkznmdlFXoI+wI5M2phhK0jxKfd99dTLesRNPDIlYf2751/NqEFkwD8lA==
-X-Received: by 2002:a17:906:474e:b0:a47:4e09:e685 with SMTP id j14-20020a170906474e00b00a474e09e685mr1400093ejs.32.1711444192953;
-        Tue, 26 Mar 2024 02:09:52 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.222.44])
-        by smtp.gmail.com with ESMTPSA id u1-20020a1709063b8100b00a46fbff47a6sm3982096ejf.168.2024.03.26.02.09.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 26 Mar 2024 02:09:52 -0700 (PDT)
-Message-ID: <adb00149-6b90-43ee-9db0-4fcad1eeb4ca@linaro.org>
-Date: Tue, 26 Mar 2024 10:09:51 +0100
+	s=arc-20240116; t=1711457156; c=relaxed/simple;
+	bh=kAjbfsWCA0P/0WTi+Ef+KQC9azoUS+EIibi6oFpBxqo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dceU/MRwm/JQvUT8KNiOyhu6nKml9ah7kYNOe5B2nqxIY74kCzlyCZo7YdgyyD18bR/ZGh9o6Sf26ZMLh+OIBw/U1qbFvzsptdjYFr5lA/M2VMySEwbkPTW0+xRmtlhm6e/qPnzhTst3C1rpmAJ1DFGvrOGO57L83SCHSRGkGDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=x2NCnf0T; arc=none smtp.client-ip=46.235.227.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1711457152;
+	bh=kAjbfsWCA0P/0WTi+Ef+KQC9azoUS+EIibi6oFpBxqo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=x2NCnf0TZ+FrTHmf0E7bqYIfH72qz8S3RCLeAVJlk6sbNGsYTba+wb04bwTx9TxoM
+	 El0oxmG+wAK04cWtqxLzsWWQpYftCoQ7I2ReWeeLCYFEWGWb153H6waD7/Cdz9FL26
+	 4SeNZK4n491Zxgx1YWv+7rAFU26EtyZpE6RjZ/9ZOVj4dbzI4Hs7CaDAt8edZyJ6f7
+	 3MHlCirXc3QsAFurX/GOicluCrUcRljYdl/9bLDTis7PrtcsmteMQ1CEX0ReZJwFMN
+	 C3vby2xIroUQv4N0zu/ZdNBKTyxracEJT6ywr2wEoI5rNhLuaEt8eV1bpnc7GfjGD7
+	 hcrkR6hN7gV4g==
+Received: from mercury (cola.collaboradmins.com [195.201.22.229])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: sre)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 82AAF378209A;
+	Tue, 26 Mar 2024 12:45:52 +0000 (UTC)
+Received: by mercury (Postfix, from userid 1000)
+	id 198051060700; Tue, 26 Mar 2024 13:45:52 +0100 (CET)
+Date: Tue, 26 Mar 2024 13:45:52 +0100
+From: Sebastian Reichel <sebastian.reichel@collabora.com>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Tony Lindgren <tony@atomide.com>, devicetree@vger.kernel.org, linux-omap@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/3] dt-bindings: hsi: hsi-client: convert to YAML
+Message-ID: <hz4fbdix5yaz2wtdkjkf23pc3m4kbeavynvjagundqvv3bisor@lc7dev4667i5>
+References: <20240325-hsi-dt-binding-v1-0-88e8e97c3aae@collabora.com>
+ <20240325-hsi-dt-binding-v1-1-88e8e97c3aae@collabora.com>
+ <2905247d-03b0-45c1-add5-d3c2a986d87c@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] memory: omap-gpmc: fixup wrongly hierarchy of the
- sub-devices
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To: Brock Zheng <yzheng@techyauld.com>, Roger Quadros <rogerq@kernel.org>
-Cc: Andreas Kemnade <andreas@kemnade.info>, Tony Lindgren <tony@atomide.com>,
- linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <6fftq2zlkpaf7xptyff6ky63cinr76ziyvdbm5jhj2apubr5vf@l4gvbdax3l2e>
- <f45b3195-38a9-4c49-b873-01e5a0b275a3@kernel.org>
- <20240301133809.0d26865e@aktux>
- <f59c9450-2784-46fa-afc9-4f194055cb24@kernel.org>
- <laqqencookmgwesfaetd5xw5wfmjdffmjvyjitapfehmu7zy5y@k7gsdexf3jcv>
- <beacb55c-951b-4177-83ab-94fda44cd2b7@kernel.org>
- <yxefg4ie4vxblxvr272jvzncxvj2t6xjfuisvmkt2jk663xgsu@o2ogbyepmg3z>
- <bbc16b3c-7e76-4f0a-8ada-42d2da3426fd@linaro.org>
-Content-Language: en-US
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <bbc16b3c-7e76-4f0a-8ada-42d2da3426fd@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="5mpopjza7py23aeu"
+Content-Disposition: inline
+In-Reply-To: <2905247d-03b0-45c1-add5-d3c2a986d87c@linaro.org>
 
-On 08/03/2024 17:48, Krzysztof Kozlowski wrote:
-> On 03/03/2024 09:18, Brock Zheng wrote:
->> On TI-AM335x，FPGA under GPMC local-bus can not work on 6.x kernel.
->>
->> GPMC <--> FPGA  <--> sub-devices....
->>
->> I found that the platform sub-devices are in wrongly organized
->> hierarchy.  The grandchildren are now under the GPMC device directly,
->> not under it's father(FPGA).
->>
->> Signed-off-by: Brock.Zheng <yzheng@techyauld.com>
-> 
-> Your SoB still has '.' between names. I can remove it while applying.
-> It is too late in the cycle for me to pick it up. I will take it after
-> the merge window.
 
-Although I wrote I could apply it, but:
-1. There is still no fixes tag, even though I asked.
-2. This is not marked as v2 and is attached to some other thread. Please
-version your patches, so next one will be v3. Add changelog after ---.
-Then send as a new patchset.
+--5mpopjza7py23aeu
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Please send v3 with above corrected.
+Hi,
 
-Best regards,
-Krzysztof
+On Tue, Mar 26, 2024 at 08:18:39AM +0100, Krzysztof Kozlowski wrote:
+> On 25/03/2024 22:45, Sebastian Reichel wrote:
+> > Convert the legacy txt binding to modern YAML and rename from
+> > client-devices to hsi-client. No semantic change.
+>=20
+> There is semantic change: missing example (which is reasonable for
+> shared schema)
 
+Right, I should have mentioned that.
+
+> but more importantly: some properties are now excluding each
+> other.
+
+I think that requirement was already there.
+
+> > Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+> > ---
+>=20
+> ...
+>=20
+> > diff --git a/Documentation/devicetree/bindings/hsi/hsi-client.yaml b/Do=
+cumentation/devicetree/bindings/hsi/hsi-client.yaml
+> > new file mode 100644
+> > index 000000000000..df6e1fdd2702
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/hsi/hsi-client.yaml
+> > @@ -0,0 +1,84 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/hsi/hsi-client.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: HSI bus peripheral
+> > +
+> > +description:
+> > +  Each HSI port is supposed to have one child node, which
+> > +  symbols the remote device connected to the HSI port.
+> > +
+> > +maintainers:
+> > +  - Sebastian Reichel <sre@kernel.org>
+> > +
+> > +properties:
+> > +  $nodename:
+> > +    const: hsi-client
+>=20
+> Why? Does anything depend on this? It breaks generic-node-name rule. It
+> seems you need it only to match the schema, but this just point to main
+> problem - missing bus schema.
+
+Ah, that's a good point. It makes a lot more sense to get the
+nodename from the actual client. I will work this over.
+
+> > +
+> > +  hsi-channel-ids:
+> > +    $ref: /schemas/types.yaml#/definitions/uint32-array
+> > +    minItems: 1
+> > +    maxItems: 8
+> > +
+> > +  hsi-channel-names:
+> > +    minItems: 1
+> > +    maxItems: 8
+> > +
+> > +  hsi-rx-mode:
+> > +    enum: [stream, frame]
+> > +    description: Receiver Bit transmission mode
+> > +
+> > +  hsi-tx-mode:
+> > +    enum: [stream, frame]
+> > +    description: Transmitter Bit transmission mode
+> > +
+> > +  hsi-mode:
+> > +    enum: [stream, frame]
+> > +    description:
+> > +      May be used instead hsi-rx-mode and hsi-tx-mode if the
+> > +      transmission mode is the same for receiver and transmitter.
+> > +
+> > +  hsi-speed-kbps:
+> > +    description: Max bit transmission speed in kbit/s
+> > +    $ref: /schemas/types.yaml#/definitions/uint32
+> > +
+> > +  hsi-flow:
+> > +    enum: [synchronized, pipeline]
+> > +    description: RX flow type
+> > +
+> > +  hsi-arb-mode:
+> > +    enum: [round-robin, priority]
+> > +    description: Arbitration mode for TX frame
+> > +
+> > +additionalProperties: true
+> > +
+> > +required:
+> > +  - compatible
+> > +  - hsi-channel-ids
+> > +  - hsi-speed-kbps
+> > +  - hsi-flow
+> > +  - hsi-arb-mode
+> > +
+> > +anyOf:
+> > +  - required:
+> > +      - hsi-mode
+> > +  - required:
+> > +      - hsi-rx-mode
+> > +      - hsi-tx-mode
+> > +
+> > +allOf:
+> > +  - if:
+> > +      required:
+> > +        - hsi-mode
+> > +    then:
+> > +      properties:
+> > +        hsi-rx-mode: false
+> > +        hsi-tx-mode: false
+>=20
+> I don't understand what you are trying to achieve here and with anyOf.
+> It looks like just oneOf. OTOH, old binding did not exclude these
+> properties.
+
+So the anyOf ensures, that either hsi-mode or hsi-rx-mode +
+hsi-tx-mode are specified. Those properties were previously
+listed as required and they are indeed mandatory by the Linux
+kernel implementation.
+
+The old binding also has this:
+
+hsi-mode:		May be used ***instead*** hsi-rx-mode and hsi-tx-mode
+
+So it's either hsi-rx-mode + hsi-tx-mode OR hsi-mode, but not
+all properties at the same time. That's what the allOf ensures:
+if hsi-mode is specified, then hsi-rx-mode and hsi-tx-mode may
+not be specified.
+
+> > +  - if:
+> > +      required:
+> > +        - hsi-rx-mode
+> > +    then:
+> > +      properties:
+> > +        hsi-mode: false
+> >=20
+
+Thanks for the review,
+
+-- Sebastian
+
+--5mpopjza7py23aeu
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmYCw3QACgkQ2O7X88g7
++pr+7hAAm3CgYA0d2i7m5mUghwJdQR87bj9cVe1Dz9KXAp3l8Y3QeDjOSVQokyYF
+p24x7hbHrUUxoaImYiWCR21YmfrToZuAzL6e1M+uLOh0hYamWwTMSbpqzI8xROkx
+eNBLqE5kuqg7zH65RA6GxHZau8JWH3+S7qliQ+DIInXjauS60KBYiKeX96CywxFA
+NpRDb0BUzuLF6vbU4HKnm2etTNLmGuXuZgoDMb9hh6Aw+J1dgYgQ47QZeKgovdWQ
+i9/Enkg8bDkoZx7wrTBl6dNzPXW/EvJw46Pq7e7JPrglVa7BYRwobKh0jnhZ5U2N
+2H/cFiU4vh3e3rXPQPcpWrSiH/qSpzoZEf+lYpJpgyvpQAYkyZLmcL9k0vrl4HOa
+a4QTQEHUgJUGmtLaQ4HWIyrRdop13i+1KO6tEARWO4gKecvMwFYCGvhWm4aLsfOe
+3YJA5fu461yrWDuDvkk2xoqKzW+jIpMkdLKbRd1LGk4lyI3UeEVV6aqFBTFrOsnR
+4UZOgl22tuumLm42hEWwmCUnSzhkfHvCzdTaZJVV4hoGEdYUNnQb0Y1J+V0ulDaQ
+k42by0nXOaAG1RH0gfjV1jNHophd+jMXI/Ku6ZnnS1JW/XaL8YmC0fIhkW0d9L4z
+LxhFboD8M6XTlecvYVbHQ+YnqKsKw5WxBLHhgN3e2nHs656zXIw=
+=9Gsy
+-----END PGP SIGNATURE-----
+
+--5mpopjza7py23aeu--
 
