@@ -1,107 +1,125 @@
-Return-Path: <linux-omap+bounces-978-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-979-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D82A488CAAC
-	for <lists+linux-omap@lfdr.de>; Tue, 26 Mar 2024 18:24:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7987988CAF8
+	for <lists+linux-omap@lfdr.de>; Tue, 26 Mar 2024 18:32:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E5ED1F83782
-	for <lists+linux-omap@lfdr.de>; Tue, 26 Mar 2024 17:24:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1AF481F2800C
+	for <lists+linux-omap@lfdr.de>; Tue, 26 Mar 2024 17:32:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B23BE1CD16;
-	Tue, 26 Mar 2024 17:24:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2CD11CFA0;
+	Tue, 26 Mar 2024 17:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Fs8hLRmu"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NO6RgJQb"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC6BC1C6A0;
-	Tue, 26 Mar 2024 17:24:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 057F31CD3F;
+	Tue, 26 Mar 2024 17:32:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711473880; cv=none; b=fplFy0Jejr2JldnUeuNF0vaP/pfsI4Du+UDrlzdINyzsBhfI+piiKPmXvCY7obArL8IvaMx9KKydLiL7tQuFkXySBeVSIF46XXW3ZqcMrVMhS4C+bvQESBdJROBRA2cHBrgkejQU5AYevJljx4qvQJgsb6K2KCI0a3WbRCmmLuY=
+	t=1711474370; cv=none; b=AT8DU/HfG5aHo9zKeADaatglbzCmnGxyMEsdXoLr/Sof66ntyZKfrIbQtHtISZg45cm30QYex484GR93BRydZkeQ4QZndL+Cu/903/o1RqxRCuGBegQqhJhQv3LWFnhr4gsKtXjAxio8tsf5yP7RmXsTN/7jAzyIKDsCdbLtipk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711473880; c=relaxed/simple;
-	bh=8MxJLVegabRBz98Kr4jfe2uumdXdL9WWQG6U0d84h20=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=juQCDd00xGOlBF5wB1plP4ycQ+gHXgpzqmxA1TDbqNhgi8JU+QkFhCMCyAMVGUM5AbcxuEH5s+Ad6mONqIp+5AtCO9qirLuA9EVARa24P2Yz7O06TQlAe6iMhWo7UhtNrmLKwy3eQ3rbuRAQHESFkc/3zSaZlUmXv8GjFot+PTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Fs8hLRmu; arc=none smtp.client-ip=209.85.218.44
+	s=arc-20240116; t=1711474370; c=relaxed/simple;
+	bh=2WxwL5HzmgKunPlikOV/EN/ipnW5U6Nmd6bDqTnpTOQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=u0YmlDy9hKFViNOI6TG+EEl+BZfC3W/Uj43ZqFX6RoHw9EZGTeS1jl0PD6hzv0mzqmkBBxg1vr0Efpt38ZzHdhIjQVGhIY2rmijn8GQ/PrYOIB3m+r9BF9UbGNR0NBSzxen/EazOTmn+hOKbJhOOfo/oRPtLlSkFcpbQ6+rTHzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NO6RgJQb; arc=none smtp.client-ip=209.85.210.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-a44ad785a44so664366666b.3;
-        Tue, 26 Mar 2024 10:24:38 -0700 (PDT)
+Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-6e6a1d24770so3333727a34.0;
+        Tue, 26 Mar 2024 10:32:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711473877; x=1712078677; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HWssbRS4LXejM/4y1x22PFUSQF3V8Eb/sTfSEE3bEaM=;
-        b=Fs8hLRmuIUnaqsXFKFv/WSa1dhc4bKA+1GdDnF9AZaffwUlQk/Rkc12AEL86+PXuH0
-         MSkjh6Mi4xqB3nQSjujEuggVgWzgShBnuLFTvgvN4JhXnWJMSp+b3og2Q0slZVfp0Qib
-         FDwLxeXGyIp2PlLOHv1xcivAtPcvKY5+axIv65wwNzo7G9b3kRMFYt3rYaxl08oYxads
-         m7PeYhhAFmvYUKP/4Nlt938GBYG5XnsJeADS0kF7c22Rw84vrru8950H8/WC+t43DzPh
-         3I0wafBhuoUEcdaucQeBsL+k+VrckBqPtsKKlt5kFY5qyEINwUWGCmtKUbex4drEPiH/
-         C5Yg==
+        d=gmail.com; s=20230601; t=1711474368; x=1712079168; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=VVDA+32rMLdFw4O/cOMy466iqo+UkQCw9ATNyEyDe30=;
+        b=NO6RgJQb7PtasLO3L3KNK3bM0PkVpfubMIZ6TPZdYOzuw7nlkaV9qUQ7D5wjaDD1sn
+         8zCPeShkGLmQp9hnAYEd6iPVjqGrPcYPT4yPjiKENMOMVA+fWam4tSvbu3+wWILZTNCK
+         GO7tbhqTlq6FkVBqSyvZBkmUpjObpihxtw4en/l9zNpt2XxxokiuUh8muNkauooPbFcx
+         5BOyRoPCBLBDqBXFYIJ9f3yEhD/h+AeUtGIx4H+z1mUpaB8MdVaGA8lt42PdDI9Hnr3i
+         I9trC4fgLMPEk1lwBgVlL3dtL1qijZyMcKSp398vQZTguXw8HIq8S/w53NFEZYs62bIh
+         oKFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711473877; x=1712078677;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HWssbRS4LXejM/4y1x22PFUSQF3V8Eb/sTfSEE3bEaM=;
-        b=PpwfilFLiy2db1JLmDj8Pswu1UGMHTOrgyHrFZtoT78YqHJ0NLZHZw0/BYbuK7jbWW
-         /TBX+m8Sgno8hLTnJEWsLkx/Jxs4mzRRMAQQvec707Zzr8v2XADJYu5yzjsZajZ/CbMm
-         2BBY9104zNhbDS6lXVB1B0xG9RiePnOM+T/6xov9r+RPQMpLZa3CDbS3nWZZbDuS2HY9
-         qPIlWaa3yD38c0FFOk9ckOq31mGQR8vZPWbdY0ufwuao8e6B4JC1r84ZSb505T9UN27s
-         dpCI2o8FAO7ZrVeyiz/a5wiPD3bLz1u/scsW1gmFzJqUcHiu1LzzQc6dEX+Z5P/U0mo8
-         PELQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXMgxCfu8hyAJlEhYaqIyRl7sO3y2mK3zHj4JseyENz7qUJOU0gYTOWrsQShsTvVpMBY2sGW/AbZgdDhlLK5EQxfuN5SY+dzdMyLM0mob1BRdgMa81tNk92euxqVT+FQ3lPgk+dncKEsQ==
-X-Gm-Message-State: AOJu0YxkhvgUEaCZ+Y7ZEVwZ+Fk1ypMWwk9Vj3XyKF8AmHZZZV0ky4ZG
-	SH0bNLae1DcOUu/76W7p114sryMpfGDg0ncdiiOjRym3kAz9/gAb
-X-Google-Smtp-Source: AGHT+IHmJMH1ofGnAheKhTqTGvl14MXcrHx5BC6Ai/Drqkfgs1jFGFFCrX3fSqGrAeWzK2LgWEyJdA==
-X-Received: by 2002:a17:906:2414:b0:a4d:fe65:631b with SMTP id z20-20020a170906241400b00a4dfe65631bmr196855eja.18.1711473876829;
-        Tue, 26 Mar 2024 10:24:36 -0700 (PDT)
-Received: from chinchilla (92-109-110-130.cable.dynamic.v4.ziggo.nl. [92.109.110.130])
-        by smtp.gmail.com with ESMTPSA id m12-20020a1709061ecc00b00a46d04b6117sm4438352ejj.64.2024.03.26.10.24.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Mar 2024 10:24:36 -0700 (PDT)
-Date: Tue, 26 Mar 2024 18:24:34 +0100
-From: Matthijs van Duin <matthijsvanduin@gmail.com>
-To: Robert Nelson <robertcnelson@gmail.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jason Kridner <jkridner@beagleboard.org>,
-	Drew Fustini <drew@beagleboard.org>, Andrew Davis <afd@ti.com>,
-	Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] uio: pruss: Deprecate use of this driver
-Message-ID: <ZgME0qSL3KXCD07I@chinchilla>
-Mail-Followup-To: Robert Nelson <robertcnelson@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jason Kridner <jkridner@beagleboard.org>,
-	Drew Fustini <drew@beagleboard.org>, Andrew Davis <afd@ti.com>,
-	Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-References: <20240325210045.153827-1-afd@ti.com>
- <2024032631-excursion-opposing-be36@gregkh>
- <CAOCHtYjauA+BAxZJBMTaxxaMGcvipP9=ZPeWe4FiNFs_jpq6dg@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1711474368; x=1712079168;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=VVDA+32rMLdFw4O/cOMy466iqo+UkQCw9ATNyEyDe30=;
+        b=MzXCdxPuA/4ikEGvP8yr57ffwPbhn32uAp37XUr6vaIEyZ/GQSBJ9pBu5Uv6NkPlkO
+         8pu4EnFy5bpEoLdsqSP0ZbKB99rdNK6w3TdhN94SvvYMh8zSm0GY3aLMYW7ZUBvMw92U
+         KIUIrxe9D4/xoMu0fBnl0OMWJCAbFykFNeYgpRgMGNEbbEn/c2oSlp0Q+38x55AHH3Ax
+         EAvS9PxmiaoaMCa16rb8uf7tkDirWnyqkZ/V10dK/yIabQ49IvJ/o+mekzH4rDZGsnnj
+         6TtzAExX4mRLhb+NJdA4JatEEDBzI+VDnAwbA1uBQ821Vqa645FjgfIHiNNjybXdN4fi
+         jQkQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWaPHARGI7ynHVWJDjO9q3Hru6ivotyGwWrSEO4eQSF0BTGoRkmUGR8sls3hrpAHU0VtctdWen3r8xPgwQ/Tl0fl/a6KltYDGmMzRfclLd7kNR/E0h7pKZEQuAjZ6T//+xGqhaQquwlgQ==
+X-Gm-Message-State: AOJu0Yz0f7OiMY3B7abXZKCXgkm8r6Zo9XPLhIVM3HDcMvyNfmG26iNb
+	mRepNkvzMJHeSLW1PZT9L0H4jeIHc1kpkgeQImHCjY5pF+D3ezNg3nN1jiZ2bX9TtmPCjzSNtWG
+	rKB0a2gGIhYhjHhgayJtDcMwzrNU=
+X-Google-Smtp-Source: AGHT+IFUtNEJraYpHw9pOZBsWMNCGOXN0v96AA64kioTRERW+zbel2owsSSseGb0t3juLykLovzBvNrckVxaDe4RvzE=
+X-Received: by 2002:a05:6830:3d0a:b0:6e6:8b5a:814d with SMTP id
+ eu10-20020a0568303d0a00b006e68b5a814dmr283931otb.13.1711474368056; Tue, 26
+ Mar 2024 10:32:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAOCHtYjauA+BAxZJBMTaxxaMGcvipP9=ZPeWe4FiNFs_jpq6dg@mail.gmail.com>
+References: <20240325210045.153827-1-afd@ti.com> <2024032631-excursion-opposing-be36@gregkh>
+ <CAOCHtYjauA+BAxZJBMTaxxaMGcvipP9=ZPeWe4FiNFs_jpq6dg@mail.gmail.com>
+ <c2125144-659e-42f2-af1f-ffef7ec3d157@ti.com> <2024032658-chosen-salaried-4702@gregkh>
+In-Reply-To: <2024032658-chosen-salaried-4702@gregkh>
+From: Robert Nelson <robertcnelson@gmail.com>
+Date: Tue, 26 Mar 2024 12:32:21 -0500
+Message-ID: <CAOCHtYjj0RfFyOfzjyU8XeivNmmLO0YnNf+376Uqg9gnVvJ3PA@mail.gmail.com>
+Subject: Re: [PATCH] uio: pruss: Deprecate use of this driver
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Andrew Davis <afd@ti.com>, Jason Kridner <jkridner@beagleboard.org>, 
+	Matthijs van Duin <matthijsvanduin@gmail.com>, Drew Fustini <drew@beagleboard.org>, 
+	Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-I'll write a more in-depth reply when I have a moment, but right now I'd
-like to point out that the uio-pruss driver in mainline linux is for the
-pru subsystem on the freon/primus family of ARM9-based SoCs (OMAP-L1xx /
-AM17xx / AM18xx / TMS320C674x / DA8xx), which is not currently supported
-by remoteproc-pru.
+> > These users rely on out-of-tree patches to make this driver usable[0].
+> > In its current state upstream, this driver is not used/usable. Since you
+> > have to make update patches anyway, why not simply carry the whole driver
+> > as an out-of-tree patch?
+> >
+> > That is why I was thinking of just marking it deprecated for a cycle
+> > or two, just to give one last hint that it will be going away soon
+> > (or you cancarry the driver out-of-tree for however long you want).
+>
+> No one notices "deprecated" stuff, they only notice if the code is
+> removed.  So removing it is the only way to pay attention.
+>
+> But why are out-of-tree changes needed?  If they are needed, why are
+> they not submitted for us to take so that it is usable by everyone?  Or
+> is the out-of-tree patches also not supposed to be used?
 
--- 
-Matthijs van Duin
+I saw Matthijs, did chime in, I'll wait for his full reply, we've been
+utilizing his knowledge on the pru subsystem to keep the uio driver
+alive with our out of tree patches. (and extending it to even newer
+TI am57xx devices, which TI didn't want us to do..)
+
+Looking at lore, Matt Porter originally had am335x support in the
+initial drop of uio when adding it to the DA850 family.
+
+https://lore.kernel.org/lkml/20121003150058.GB11180@beef/
+
+I'll dig for his v3 to find the real reason on why it was later dropped.
+
+But at some point the remoteproc framework became the preferred
+method, so uio patches were not allowed.. (one IP block, two drivers..
+Community vs TI/Mainline)
+
+
+Regards,
+
+--
+Robert Nelson
+https://rcn-ee.com/
 
