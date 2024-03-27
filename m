@@ -1,56 +1,56 @@
-Return-Path: <linux-omap+bounces-996-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-997-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52C4288D764
-	for <lists+linux-omap@lfdr.de>; Wed, 27 Mar 2024 08:39:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F9C288D769
+	for <lists+linux-omap@lfdr.de>; Wed, 27 Mar 2024 08:39:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83A021C237AE
-	for <lists+linux-omap@lfdr.de>; Wed, 27 Mar 2024 07:39:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06EA31F2920B
+	for <lists+linux-omap@lfdr.de>; Wed, 27 Mar 2024 07:39:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C07332C1A4;
-	Wed, 27 Mar 2024 07:39:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 944752C1AD;
+	Wed, 27 Mar 2024 07:39:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b="sWwKpWDa"
+	dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b="XVKUgSWM"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from mail5.25mail.st (mail5.25mail.st [74.50.62.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE3201849;
-	Wed, 27 Mar 2024 07:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B5225779;
+	Wed, 27 Mar 2024 07:39:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.50.62.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711525170; cv=none; b=BVTS1dXwmBLvVIh9nm5ZgcqU+zmkpFhNY9N/mujMc1MZmpht/GIXVyez4qZtkUePjTfyrX+weFmVHIy0IoejT0KNTHUDpigf+sOUi6mw73p7kkOafzxzDlrmpWdyto0+FgKQMtMgTnHMB5Swsg5T4/BG3gUapDgXaIqw+4pQMn4=
+	t=1711525179; cv=none; b=lrsEvo9cD0x+64d7YGVdlZ5UHESOnhE0th2uSBQ1oq/FVyChqd+Mg72hWveWTF4Unklgx4ohK0+bHUXvdoznH/mXGthNES3I8uDTaZDbXvjtThtt2YGChbnVG8lPCr4efnk/qTxEuYTBH+9avDZEa5oUmaCuCif3jxmCG0UGgoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711525170; c=relaxed/simple;
-	bh=RVddhQizgv/WLmJYSDiWKcWjwoT+k78bBjIiz7hqBfQ=;
+	s=arc-20240116; t=1711525179; c=relaxed/simple;
+	bh=ImWBqJ7fNxsYzNWMC4Sbo9WClKzU09Z6d4NV3S9LuQM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qBpIJedDo58n4DGON+jseTJ66IaLTKpH9qezBDSWW8u8DnM4ZiSe6S3+d7e7BEqmp9hVS8WRlvKqlCkpwuKlmB9+izkMYqjawKWrB2/651F2u2bjL/7v3pGHwGbFA+kS8jdVLvjafdT6HXVBnK79jaCFdE1Lb6fJPvNtZ+525zk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com; spf=fail smtp.mailfrom=atomide.com; dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b=sWwKpWDa; arc=none smtp.client-ip=74.50.62.9
+	 MIME-Version; b=Ua5hIus1p1pF3YeK49gMzZIA2W5v9JAX3I6keBTjIjOz/m84E9pBfxX6CsorVb/QmFJSdgRF73Onwq9Xa18QVxHcuPZjAFNpg6mBOYK2oeRF4uIqC29CMCiZY49L/pJfjxLqkmqfzc4T00Nf0Q+7HXhOe0ysO33qL1FE1/YuLLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com; spf=fail smtp.mailfrom=atomide.com; dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b=XVKUgSWM; arc=none smtp.client-ip=74.50.62.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=atomide.com
 Received: from localhost (91-158-86-216.elisa-laajakaista.fi [91.158.86.216])
-	by mail5.25mail.st (Postfix) with ESMTPSA id 67BE560434;
-	Wed, 27 Mar 2024 07:39:21 +0000 (UTC)
+	by mail5.25mail.st (Postfix) with ESMTPSA id DD9E360434;
+	Wed, 27 Mar 2024 07:39:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=atomide.com;
-	s=25mailst; t=1711525168;
-	bh=RVddhQizgv/WLmJYSDiWKcWjwoT+k78bBjIiz7hqBfQ=;
+	s=25mailst; t=1711525176;
+	bh=ImWBqJ7fNxsYzNWMC4Sbo9WClKzU09Z6d4NV3S9LuQM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sWwKpWDaTtLKtCceVRYGvZSFcIczZ8JimNIrQJN4cwrmluqg/V68HriI6vX/MQdg1
-	 1lbK+42/4v2a7K7ffW64+Hqf6I11dNghwiJSMKGbL7FJ2TrvJgphI8FWlyyT71IiPq
-	 Pnf1ATEdms56GUyIAYNb3YV/5Aa1B4mxo4dbETf3gpuD8gdeK1ZOaw16rsbey6u9y9
-	 IzNjWFS03tqWnrezJeQWueAByL+bW/fTfi192j6phXq/EOi9Qb5/s6mNNbNWN89zOE
-	 RvV02JkbV+AzFlf7MUhFyi1/QcbsM4Q6b+li1gayb82IHIKPvApBbDrhkJQP1ksjKK
-	 1rsmDcL/BlDJA==
+	b=XVKUgSWMgermilocoEnT8I5luc6cLQVYNKDUUiUSAOx3u+bgRDNm0DhzLb/IncDA8
+	 wcAg5kWJPWHlxDj4gU95o1QN4yZtrfpuyHRNDQe4bDJEGOJC2eBYofD7cSr4+mNf1a
+	 cnptdmpcViKBTZsANGTvfFniPYeXk1+K9RlIieMhZ8+/dH+7xN5nZauFGGP/BEf92b
+	 MYRt3xnCKFo/pmeSSzUULbo8TdLg63IXkJLhp+e4OVvhe/Z86sTwPs3i8k24noB0BK
+	 6OngF2LCk2LljKS8GjlaYTQDxbjz/mguAGCUlsCkgjYCkTIYedWFYMwnRabIVjFHPF
+	 iAh4j5J609p9w==
 From: Tony Lindgren <tony@atomide.com>
 To: linux-omap@vger.kernel.org
 Cc: =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
 	devicetree@vger.kernel.org
-Subject: [PATCH 02/12] ARM: dts: dra7: Use clksel binding for CM_CLKSEL_DPLL_DSP
-Date: Wed, 27 Mar 2024 09:38:46 +0200
-Message-ID: <20240327073856.21517-3-tony@atomide.com>
+Subject: [PATCH 03/12] ARM: dts: dra7: Use clksel binding for CM_CLKSEL_DPLL_IVA
+Date: Wed, 27 Mar 2024 09:38:47 +0200
+Message-ID: <20240327073856.21517-4-tony@atomide.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240327073856.21517-1-tony@atomide.com>
 References: <20240327073856.21517-1-tony@atomide.com>
@@ -77,35 +77,35 @@ Signed-off-by: Tony Lindgren <tony@atomide.com>
 diff --git a/arch/arm/boot/dts/ti/omap/dra7xx-clocks.dtsi b/arch/arm/boot/dts/ti/omap/dra7xx-clocks.dtsi
 --- a/arch/arm/boot/dts/ti/omap/dra7xx-clocks.dtsi
 +++ b/arch/arm/boot/dts/ti/omap/dra7xx-clocks.dtsi
-@@ -376,13 +376,21 @@ dsp_dpll_hs_clk_div: clock-dsp-dpll-hs-clk-div {
+@@ -426,13 +426,21 @@ iva_dpll_hs_clk_div: clock-iva-dpll-hs-clk-div {
  		clock-div = <1>;
  	};
  
--	dpll_dsp_byp_mux: clock-dpll-dsp-byp-mux-23@240 {
+-	dpll_iva_byp_mux: clock-dpll-iva-byp-mux-23@1ac {
 -		#clock-cells = <0>;
 -		compatible = "ti,mux-clock";
--		clock-output-names = "dpll_dsp_byp_mux";
--		clocks = <&sys_clkin1>, <&dsp_dpll_hs_clk_div>;
+-		clock-output-names = "dpll_iva_byp_mux";
+-		clocks = <&sys_clkin1>, <&iva_dpll_hs_clk_div>;
 -		ti,bit-shift = <23>;
--		reg = <0x0240>;
-+	/* CM_CLKSEL_DPLL_DSP */
-+	clock@240 {
+-		reg = <0x01ac>;
++	/* CM_CLKSEL_DPLL_IVA */
++	clock@1ac {
 +		compatible = "ti,clksel";
-+		reg = <0x240>;
++		reg = <0x1ac>;
 +		#clock-cells = <2>;
 +		#address-cells = <1>;
 +		#size-cells = <0>;
 +
-+		dpll_dsp_byp_mux: clock@23 {
++		dpll_iva_byp_mux: clock@23 {
 +			reg = <23>;
 +			compatible = "ti,mux-clock";
-+			clock-output-names = "dpll_dsp_byp_mux";
-+			clocks = <&sys_clkin1>, <&dsp_dpll_hs_clk_div>;
++			clock-output-names = "dpll_iva_byp_mux";
++			clocks = <&sys_clkin1>, <&iva_dpll_hs_clk_div>;
 +			#clock-cells = <0>;
 +		};
  	};
  
- 	dpll_dsp_ck: clock@234 {
+ 	dpll_iva_ck: clock@1a0 {
 -- 
 2.44.0
 
