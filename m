@@ -1,109 +1,265 @@
-Return-Path: <linux-omap+bounces-984-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-985-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB7A988CBDC
-	for <lists+linux-omap@lfdr.de>; Tue, 26 Mar 2024 19:18:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0732488D674
+	for <lists+linux-omap@lfdr.de>; Wed, 27 Mar 2024 07:36:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 782E41F83BB3
-	for <lists+linux-omap@lfdr.de>; Tue, 26 Mar 2024 18:18:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D0131F2A7F6
+	for <lists+linux-omap@lfdr.de>; Wed, 27 Mar 2024 06:36:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F0A185634;
-	Tue, 26 Mar 2024 18:18:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53BEC2376A;
+	Wed, 27 Mar 2024 06:36:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l50yWZPZ"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NZ3nP8BX"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C07C21CD30;
-	Tue, 26 Mar 2024 18:18:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 162E618E01
+	for <linux-omap@vger.kernel.org>; Wed, 27 Mar 2024 06:36:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711477096; cv=none; b=Z1Pm/3tNY/7WvJEZoPDISwmYgjsDOkedm1DSaEAjnGrgXWo3L8GGz8+vWaEbMrWLH35puCCNH1FFFrPNCEMiZFcewug2pQ3tBWZZmYg4snq+iGhK3XYJs3BV7fkMUH0yN9n/MQVqJo/Sfn3Vsczv8XxjGaA80f0xkHtppwPzU+c=
+	t=1711521391; cv=none; b=XUO7nrjusx/g4t0eCxQlSzRP8jS4nJLbpgw2RlaMySvlEupEYqv44MIaTn5v2c0oKR2w3P/pEdtTJx8u5UB1hLu8SKwV9B+FS2ODBKFpTcrvUf2UZW31OfLHvd/dMIZGpSArJlEefmFbOuBAyZ0j2cwUvDOcl1Ra1YjjHNjJYxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711477096; c=relaxed/simple;
-	bh=bru9qGl3c7myCGBTRFHIKEMfOfekl3TRWSLbdw8e6I0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lJA0IreV9gZZRWB7rDPs3aW6fq504S5JqqJ2MgWvrDpYS6X8vnaygSkcsXdsYglJERVW/mWJCQsPTbMu6PKDi3Nn39XMEH0M/4zFtPVSzCoZ5DENOm9R847wE6Nkx5QywdeU4MKQ4Go1H9cEn2iXwOBI2lqkb/SJn8W2STlt3V0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l50yWZPZ; arc=none smtp.client-ip=209.85.210.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-6e6e37d33c5so787976a34.2;
-        Tue, 26 Mar 2024 11:18:14 -0700 (PDT)
+	s=arc-20240116; t=1711521391; c=relaxed/simple;
+	bh=yMM+3zwLZxZ/ZMbIohXyczKS5iSP3NxVqCs+OJ3J4VE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=mWKGfaGJXDdJCdNTiSoDk/WqKpmGyXMGuymsCItCSBsZ5Y8acbCPZeERR7G11eUhm1Bs6yU/lv0OTt4pQoVg5nm7mQRRblQ5qDS0sqbdrv2ZlWd7lLpKc6eGjLD9zbthE9A/sJObvQBcQY6I4ANyzeH+yx/0z+DT+83ra7BmxbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NZ3nP8BX; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-1dee5daa236so48196365ad.0
+        for <linux-omap@vger.kernel.org>; Tue, 26 Mar 2024 23:36:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711477093; x=1712081893; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=bru9qGl3c7myCGBTRFHIKEMfOfekl3TRWSLbdw8e6I0=;
-        b=l50yWZPZVXTd8hh5Z095MAKEuoapdn+wHtjwmMAF3ZBadTbDzb07T71742Ic01CGNU
-         uQeKX5j3eYulXF209xkHwoBZXw0jXWlARHK4CIfJekFl81DJ411HEarJGBz/vO0FljUr
-         Y7C9I7rFSIrG9u1fD0f7XxxWP02UxNQYK86wRkE1oWGdUF0M9jwgt32IRyhUsT0kOH9s
-         g7gutJbwxD89iTGpnYXQNa6pEIg+HRy2rlcsoBSQ3+hbCxMCuuEY1O2P4BC98lmWAJPH
-         azufhXkOteMgnfe3c+LaGdAbjrwueRW5aW5+vvG1Hgc1c9YwAcj6ufyHPAdOSR3WqMqZ
-         2DjQ==
+        d=linaro.org; s=google; t=1711521387; x=1712126187; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=sCWUmDmCH+GQ0xn+LUsgyEMH7SBuxLLCLIMaC6UU5kI=;
+        b=NZ3nP8BXpHEC06/n7tDCbzCgJVe+BWSaIahayiwzSZG1lIA+ar+8sKNQnhQDLMR6px
+         wwLSlrdt4BBNTH4YhPTvKP3bK1+i37+oEUrJmZIK/vJir0cdyj7Lt+ds/fF8YMaBmjsF
+         w/Oj3/cxFGvqvChnP1Lk8T7olfp9lpUBdN+gbF1RcyNLN0aoWFxr/4Wzrt9QS+4IsDdv
+         IZSC+Coon5fOMddRceX9tW4dZThj7UagAoQjHVB6g5QeeneZ+Vd1Cd8PZla754Cj5Of5
+         Uzx4Gv6tkKh9WgiPaSwVMnqLPtCvTf0OAz89gIyx8gsCsIznJbAba9qFdfohwC/nMNP2
+         CXjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711477093; x=1712081893;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1711521387; x=1712126187;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=bru9qGl3c7myCGBTRFHIKEMfOfekl3TRWSLbdw8e6I0=;
-        b=a7tnXNigUEtQMaDjNmm2Liyub9WWbSIABPtnChLgeVFq4CfIsqUbNvBvn+2XMLhEOm
-         JR25oVpHvlmQsgzxeW/LUKE7sF/dKRDFzNNxfI359sW2Yf3iOqNsE+WdqCR79dhXee2z
-         NU1IAh7Hvv9XeskdacWmb58pKPz0rWgyYHRbgtreaDfKxPWbGS3j6dT23KaGiunIKGRB
-         OPJtKYwSarLXW2I641MiFnC2bj84APaFDRIGSGqhJLWyaf/xlUONtQJj5aarfhUvD1PK
-         UFqM3J8bl2PM1014tatBfLkoyToiVKeT3gctDTyQW9/+6K8lZFGsjk6OOHa/LdmdQfnN
-         fv3w==
-X-Forwarded-Encrypted: i=1; AJvYcCWPPAxqGrUXxDvwPy17BGUJ6IUMXIT3+qWEHxXjH06YO2zU5e2XZNTFt63fWY1Q3LFFFOmc85bJcvr/3mGH3EATad+Wx9HmZ04rCeXuwuixJis1g+bVxem14NKzmOBJ8onTfNMx29aY1A==
-X-Gm-Message-State: AOJu0YzO7sN2U9FORYELQN1Eug+6hBxEPh+l4J5GIsg0D0amzl301LEN
-	C8u0GzqJLTeIRmLT3r0ZZKKYoQUKunMpyJAD05fdCjSNjJjlS5DykL72JNyhen/XgnNGoht25em
-	pMTSAFbuctrloPQGp/yCiHpYsiuA=
-X-Google-Smtp-Source: AGHT+IH2ly91IPSIa+yP65mHp82XQ5L+Y3yDpftt/YTMohO1eWhVxahmWQ95TpJbtTuxwLPLQNjjcrB6LsZBT9ybZ4w=
-X-Received: by 2002:a05:6830:1c3:b0:6e4:e360:c387 with SMTP id
- r3-20020a05683001c300b006e4e360c387mr370351ota.26.1711477093626; Tue, 26 Mar
- 2024 11:18:13 -0700 (PDT)
+        bh=sCWUmDmCH+GQ0xn+LUsgyEMH7SBuxLLCLIMaC6UU5kI=;
+        b=gEisQSO3vn/M/r6V4FpXoebEM5Sgy3wmTK8C3ESYBjnTC2srSRgkY4sAAU2la0xdGV
+         JEzYG1nM05rbjEucvhF3R07jmxlXzytZx5+vJQ4hhQad4a7zPcHn/K0zhDAxTF1yrpLM
+         CrNu1XJ36Ar37tL6Qv3TinETNCtiZ1VpzaquvaOil/SSC74NN2EI0ifXpO5W2cS6PDWO
+         97PLxUeb5oxOadbcGAklnj4lG39i0f/Kb3q+kIOKcLrw7XXXtlH38G0KWL6J5RKwEH4h
+         mxrCvncMOMAyjaNdlcWYu/cycjIdqa92u2kEFXnF12nAxqgV2yzEbuDb/jA0OS9jPAfl
+         Cjhg==
+X-Forwarded-Encrypted: i=1; AJvYcCWAcjiWRHezRZR5oesBJYmwXLkNFqlQ/T6+C/XhA7Khszxll88GtQI2F27ae4+/JcFSyiDjBWoHwPrJGkNdzO0EDY643a3kiYhTTQ==
+X-Gm-Message-State: AOJu0YwAty7oifAIK6BFb4qKXQteq3YhLj/RaqdKiPdc0JtYYklN0aov
+	D6cLcUAHRKu29RCELA887QYS66c7XDesd/ZWU9yupDhEQjHkgLWfLhi57s008Q==
+X-Google-Smtp-Source: AGHT+IFU2aVu/o/a7HuGj5L45J8l/QbHm52NB4CMAbQfe5WPM/LgOp4Wt9TIFyG4jSoSkw7HvI19cQ==
+X-Received: by 2002:a17:902:dacd:b0:1e0:a615:c2f with SMTP id q13-20020a170902dacd00b001e0a6150c2fmr2295467plx.27.1711521387186;
+        Tue, 26 Mar 2024 23:36:27 -0700 (PDT)
+Received: from [127.0.1.1] ([117.207.28.168])
+        by smtp.gmail.com with ESMTPSA id r9-20020a170902be0900b001e14807c7dfsm602553pls.86.2024.03.26.23.36.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 Mar 2024 23:36:26 -0700 (PDT)
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Subject: [PATCH v11 0/8] PCI: dwc: ep: Fix DBI access failure for drivers
+ requiring refclk from host
+Date: Wed, 27 Mar 2024 12:05:46 +0530
+Message-Id: <20240327-pci-dbi-rework-v11-0-6f5259f90673@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240325210045.153827-1-afd@ti.com> <2024032631-excursion-opposing-be36@gregkh>
- <CAOCHtYjauA+BAxZJBMTaxxaMGcvipP9=ZPeWe4FiNFs_jpq6dg@mail.gmail.com>
- <ZgME0qSL3KXCD07I@chinchilla> <ceb391d3-c7f4-4d46-9f97-b651e1f5451c@ti.com>
-In-Reply-To: <ceb391d3-c7f4-4d46-9f97-b651e1f5451c@ti.com>
-From: Matthijs van Duin <matthijsvanduin@gmail.com>
-Date: Tue, 26 Mar 2024 19:18:02 +0100
-Message-ID: <CAALWOA8beMzNVma0KCyCCGW1jH0jf-57-fQX4QnZO5Ss7dbJVw@mail.gmail.com>
-Subject: Re: [PATCH] uio: pruss: Deprecate use of this driver
-To: Andrew Davis <afd@ti.com>
-Cc: Robert Nelson <robertcnelson@gmail.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jason Kridner <jkridner@beagleboard.org>, 
-	Drew Fustini <drew@beagleboard.org>, Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAEK+A2YC/3XNTQ6CMBCG4auQrq3pH8i48h7GRWkHmGgoKQY1h
+ Ltb2KghLr9J3mcmNmAkHNgxm1jEkQYKXRpS7jLmWts1yMmnA1NCGaGU4b0j7iviER8hXnmlEMA
+ WCrRwLEV9xJqeq3i+pN3ScA/xtT4Yy+X6lxpLLnhh3KH2wtVYmNONOhvDPsSGLdYIn16LbQ+pV
+ +CN1h7AebvppfgC5BaQIgnSWJO73IIu8UeY5/kNGub/wzABAAA=
+To: Jingoo Han <jingoohan1@gmail.com>, 
+ Gustavo Pimentel <gustavo.pimentel@synopsys.com>, 
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
+ Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+ Marek Vasut <marek.vasut+renesas@gmail.com>, 
+ Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, 
+ Thierry Reding <thierry.reding@gmail.com>, 
+ Jonathan Hunter <jonathanh@nvidia.com>, 
+ Kishon Vijay Abraham I <kishon@ti.com>, Vidya Sagar <vidyas@nvidia.com>, 
+ Vignesh Raghavendra <vigneshr@ti.com>, Richard Zhu <hongxing.zhu@nxp.com>, 
+ Lucas Stach <l.stach@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, NXP Linux Team <linux-imx@nxp.com>, 
+ Minghuan Lian <minghuan.Lian@nxp.com>, Mingkai Hu <mingkai.hu@nxp.com>, 
+ Roy Zang <roy.zang@nxp.com>, 
+ Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, 
+ Masami Hiramatsu <mhiramat@kernel.org>, 
+ Kishon Vijay Abraham I <kishon@kernel.org>, 
+ Jesper Nilsson <jesper.nilsson@axis.com>, 
+ Srikanth Thokala <srikanth.thokala@intel.com>, 
+ Shawn Lin <shawn.lin@rock-chips.com>, Heiko Stuebner <heiko@sntech.de>
+Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-renesas-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
+ Niklas Cassel <cassel@kernel.org>, linux-arm-kernel@axis.com, 
+ linux-rockchip@lists.infradead.org, 
+ Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
+ Frank Li <Frank.Li@nxp.com>
+X-Mailer: b4 0.12.4
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6062;
+ i=manivannan.sadhasivam@linaro.org; h=from:subject:message-id;
+ bh=yMM+3zwLZxZ/ZMbIohXyczKS5iSP3NxVqCs+OJ3J4VE=;
+ b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBmA75PRAvut4GbfcNsOr4y/V32q37nFAF+YZu53
+ +o8TlaUvPKJATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCZgO+TwAKCRBVnxHm/pHO
+ 9SJxB/9V/tinXUTW2Xk1kfas89qjE+hGIr9jXEdxVzlKGfYRBaAm1j8tDXPX3CuzreCu1mB3ZFc
+ DtR64Qp+7iM/z1nCyBKukHTcSBx7eYzJZTVyfsn06A+5W9xU0pLgAydgXls8c3jn/q3yXZd8QKW
+ yOfvvjsyrPCMzEcBJ6rbN2fOIEEM/XvqCh/2fd5JxL+GelMpxbGI6tzcwJ3+vPvc90MaCon6mbm
+ tKCV4EA7kj35oQwUUpVG1l7Q2Arm50d0IplQYGgiYeu+NKoKkKiR8P6RKqZ01gHTsJmEB7RwteU
+ +s5uhU6QAkrc80JovyU/H6eoSKldzEA+nJmHnIxIPPAE5JzK
+X-Developer-Key: i=manivannan.sadhasivam@linaro.org; a=openpgp;
+ fpr=C668AEC3C3188E4C611465E7488550E901166008
 
-On Tue, 26 Mar 2024 at 19:02, Andrew Davis <afd@ti.com> wrote:
->
-> On 3/26/24 12:24 PM, Matthijs van Duin wrote:
-> > I'll write a more in-depth reply when I have a moment, but right now I'd
-> > like to point out that the uio-pruss driver in mainline linux is for the
-> > pru subsystem on the freon/primus family of ARM9-based SoCs (OMAP-L1xx /
-> > AM17xx / AM18xx / TMS320C674x / DA8xx), which is not currently supported
-> > by remoteproc-pru.
-> >
->
-> I'll wait for your full reply, but a quick note, for those devices listed
-> this driver isn't usable either after they all moved to DT. As this driver
-> never got a DT port and relies on platform data (which is gone for those
-> couple devices).
+Hello,
 
-Ah I wasn't aware of that. But then the reasoning for removal is "we
-broke this driver a long time and nobody seems to care enough to fix
-it" rather than saying they should use remoteproc, which does not
-support these devices.
+This series is the continuation of previous work by Vidya Sagar [1] to fix the
+issues related to accessing DBI register space before completing the core
+initialization in some EP platforms like Tegra194/234 and Qcom EP.
 
-Matthijs
+Since Vidya is busy, I took over the series based on his consent (off-list
+discussion).
+
+NOTE
+====
+
+Based on the comments received in v7 [2], I've heavily modified the series
+to fix several other issues reported by Bjorn and Niklas. One noticeable
+change is getting rid of the 'core_init_notifer' flag added to differentiate
+between glue drivers requiring refclk from host and drivers getting refclk
+locally.
+
+By getting rid of this flag, now both the DWC EP driver and the EPF drivers
+can use a single flow and need not distinguish between the glue drivers.
+
+We can also get rid of the 'link_up_notifier' flag in the future by following
+the same convention.
+
+Testing
+=======
+
+I've tested the series on Qcom SM8450 based dev board that depends on refclk
+from host with EPF_MHI driver. It'd be good to test this series on platforms
+that generate refclk locally and also with EPF_TEST driver.
+
+- Mani
+
+[1] https://lore.kernel.org/linux-pci/20221013175712.7539-1-vidyas@nvidia.com/
+[2] https://lore.kernel.org/linux-pci/20231120084014.108274-1-manivannan.sadhasivam@linaro.org/
+
+Changes in v11:
+- Minor cleanups reported by Niklas
+- 'epc->init_complete = false' is set in dw_pcie_ep_cleanup() to avoid
+  triggering init complete notification before refclk. This will be moved to EPC
+  core in the following series adding deinit notifier.
+- Collected review tags.
+- Link to v10: https://lore.kernel.org/r/20240314-pci-dbi-rework-v10-0-14a45c5a938e@linaro.org
+
+Changes in v10:
+- Reordered the commits by moving the independent fixes/cleanups first (Niklas)
+- Addressed several comments from Niklas
+- Moved PTM register setting out of dw_pcie_ep_init_non_sticky_registers() (Niklas)
+- Addressed the issue that EPF drivers were missing init notification after the
+  removal of core_init_notifier (Niklas)
+- Dropped a few cleanup patches to be clubbed with the follow up series
+- Collected review tags
+- Dropped the review tags for patch 8/8 as it got changed 
+- Link to v9: https://lore.kernel.org/r/20240304-pci-dbi-rework-v9-0-29d433d99cda@linaro.org
+
+Changes in v9:
+- Incorporated changes for missing drivers (Niklas)
+- Reworded the dw_pcie_ep_cleanup() API kdoc (Niklas)
+- Reworded the description of patch 6/10 (Frank)
+- Collected reviews
+- Link to v8: https://lore.kernel.org/r/20240224-pci-dbi-rework-v8-0-64c7fd0cfe64@linaro.org
+
+Changes in v8:
+
+- Rebased on top of v6.8-rc1
+- Removed the deinit callback from struct dw_pcie_ep_ops
+- Renamed dw_pcie_ep_exit() to dw_pcie_ep_deinit()
+- Introduced dw_pcie_ep_cleanup() API for drivers supporting PERST#
+- Renamed dw_pcie_ep_init_complete() to dw_pcie_ep_init_registers()
+- Called dw_pcie_ep_init_registers() API directly from all glue drivers
+- Removed "core_init_notifier" flag
+- Added a generic dw_pcie_ep_linkdown() API to handle LINK_DOWN event and used
+  it in qcom driver
+- Added Kernel-doc comments for DWC EP APIs
+
+Changes in v7:
+
+- Rebased on top of v6.7-rc1
+- Kept the current dw_pcie_ep_init_complete() API instead of renaming it to
+  dw_pcie_ep_init_late(), since changing the name causes a slight ambiguity.
+- Splitted the change that moves pci_epc_init_notify() inside
+  dw_pcie_ep_init_notify() to help bisecting and also to avoid build issue.
+- Added a new patch that moves pci_epc_init_notify() inside
+  dw_pcie_ep_init_notify().
+- Took over the authorship and dropped the previous Ack as the patches are
+  heavily modified.
+
+Changes in v6:
+
+- Rebased on top of pci/next (6e2fca71e187)
+- removed ep_init_late() callback as it is no longer necessary
+
+For previous changelog, please refer [1].
+
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+---
+Manivannan Sadhasivam (8):
+      PCI: dwc: ep: Fix DBI access failure for drivers requiring refclk from host
+      PCI: dwc: ep: Add Kernel-doc comments for APIs
+      PCI: dwc: ep: Remove deinit() callback from struct dw_pcie_ep_ops
+      PCI: dwc: ep: Rename dw_pcie_ep_exit() to dw_pcie_ep_deinit()
+      PCI: dwc: ep: Introduce dw_pcie_ep_cleanup() API for drivers supporting PERST#
+      PCI: dwc: ep: Rename dw_pcie_ep_init_complete() to dw_pcie_ep_init_registers()
+      PCI: dwc: ep: Call dw_pcie_ep_init_registers() API directly from all glue drivers
+      PCI: endpoint: Remove "core_init_notifier" flag
+
+ drivers/pci/controller/cadence/pcie-cadence-ep.c  |   2 +
+ drivers/pci/controller/dwc/pci-dra7xx.c           |   9 +
+ drivers/pci/controller/dwc/pci-imx6.c             |  10 +
+ drivers/pci/controller/dwc/pci-keystone.c         |  11 +
+ drivers/pci/controller/dwc/pci-layerscape-ep.c    |   9 +
+ drivers/pci/controller/dwc/pcie-artpec6.c         |  15 +-
+ drivers/pci/controller/dwc/pcie-designware-ep.c   | 238 +++++++++++++++-------
+ drivers/pci/controller/dwc/pcie-designware-plat.c |  11 +
+ drivers/pci/controller/dwc/pcie-designware.h      |  14 +-
+ drivers/pci/controller/dwc/pcie-keembay.c         |  18 +-
+ drivers/pci/controller/dwc/pcie-qcom-ep.c         |   4 +-
+ drivers/pci/controller/dwc/pcie-rcar-gen4.c       |  28 ++-
+ drivers/pci/controller/dwc/pcie-tegra194.c        |   5 +-
+ drivers/pci/controller/dwc/pcie-uniphier-ep.c     |  15 +-
+ drivers/pci/controller/pcie-rcar-ep.c             |   2 +
+ drivers/pci/controller/pcie-rockchip-ep.c         |   2 +
+ drivers/pci/endpoint/functions/pci-epf-test.c     |  18 +-
+ drivers/pci/endpoint/pci-ep-cfs.c                 |   9 +
+ drivers/pci/endpoint/pci-epc-core.c               |  22 ++
+ include/linux/pci-epc.h                           |   7 +-
+ 20 files changed, 338 insertions(+), 111 deletions(-)
+---
+base-commit: 6613476e225e090cc9aad49be7fa504e290dd33d
+change-id: 20240224-pci-dbi-rework-b2e99a62930c
+
+Best regards,
+-- 
+Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+
 
