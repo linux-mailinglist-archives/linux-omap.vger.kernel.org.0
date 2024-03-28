@@ -1,75 +1,75 @@
-Return-Path: <linux-omap+bounces-1051-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1052-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D374888FB6E
-	for <lists+linux-omap@lfdr.de>; Thu, 28 Mar 2024 10:28:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 245CE88FB71
+	for <lists+linux-omap@lfdr.de>; Thu, 28 Mar 2024 10:29:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02C6F1C29350
-	for <lists+linux-omap@lfdr.de>; Thu, 28 Mar 2024 09:28:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE18729E1B5
+	for <lists+linux-omap@lfdr.de>; Thu, 28 Mar 2024 09:29:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBE58651AE;
-	Thu, 28 Mar 2024 09:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D32E07B3C1;
+	Thu, 28 Mar 2024 09:28:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="SCaruzJJ"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="XlWMSWI9"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E28A464CE9
-	for <linux-omap@vger.kernel.org>; Thu, 28 Mar 2024 09:27:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E212D657CB
+	for <linux-omap@vger.kernel.org>; Thu, 28 Mar 2024 09:28:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711618053; cv=none; b=sGC3Ki9/p9YoA2IbxFbaF5+oW8QdL9AILHRfdpanZz9g91hXmObG3PR80UiMNMH71v2WjvzKR/WogN0AsKExRdTLxcZGyUqtcHwJpIoFSda576W63ynyrrKcVyTKYhj7iKS+ZBN85dcjt0EgNu3O3dbJNF5rIFQ5S2htFO4LT5o=
+	t=1711618109; cv=none; b=qeOfsDJJQhAKnex+7Qxld9AF0W1+ktKAItjhRHCv02aGuuAZt9nSbEB3kz0Yq0QZK7nOFL/XsjMHzKFZS0B/Vb1AqVClG0WcjRREmRNbEsC3KKXlwyv1KEWZwKpUC7XK6za17lcNlAvC04W8noI/LUulgzVXUUd1H4o8BXPmu3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711618053; c=relaxed/simple;
-	bh=MHbH5zm+12fNT184APGqNsU6vcHt53p4t8DhY6V+kRs=;
+	s=arc-20240116; t=1711618109; c=relaxed/simple;
+	bh=CkWHMVm8S2ewK7fVN1+IrsGA0aUUiJt/IOSayrLEL6c=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EIUKmFxYgOMuqBF3avWDF44i4d9rpdU/mro90Y1QHJAXdQYx/EWrV+OtyTp9fl8Iq75VXec/gw9XaCrYZ5OzNyNwq+ac5vnitKgrg5SptwiAQ0MzYLgMwJja3n7keVV/n2OIPZrQ4LbvkjlSrYloP03V8Z+HqF7NCrLeKlckyqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=SCaruzJJ; arc=none smtp.client-ip=209.85.128.43
+	 In-Reply-To:Content-Type; b=V5j928nj+5ViKZyhJoyC7b4RivFFnHTp24ivFCgPLWM2TUo3X8gMmX1+VV+RRNYk2fpkOh01cry+6Hq76Bwlaj3J/18CwJ50OhhKiWzlaJpOsuYA+zMpEIZfxAJjFpFeOQHd3KdjTdatCtE2DxpfLkzG7Z1WhqYyg3Y+b9c3wb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=XlWMSWI9; arc=none smtp.client-ip=209.85.128.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-415445d169fso3446605e9.2
-        for <linux-omap@vger.kernel.org>; Thu, 28 Mar 2024 02:27:31 -0700 (PDT)
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4141156f245so5201225e9.2
+        for <linux-omap@vger.kernel.org>; Thu, 28 Mar 2024 02:28:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1711618050; x=1712222850; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1711618106; x=1712222906; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZCwjcER/lMJ/fJPO7Gp+tSLutjiwq6IKrQ3AJQk8T88=;
-        b=SCaruzJJSh6g/A/kmujL70AOzuqogHuwyF3penpms0zVLbkXOaf+ym2+1LN3UgdAWF
-         WHaabLPjhOucSe7UsUam9vD3WnJH0vyoIxx3DfQ5NWYqg+EI9/GAxjSDR1Yzn4yFSOcH
-         4np4oqmR0a0oPOTRSN+zcz6yjCnKu7ytU1Jloa75eXq6tSNnOUR7Dx0Zaeco57nTGEI/
-         xxjz7yBKXuGGecCrOd48361ho1YzSz3Q4IzTedqMoVD4WBu+o2qHhn5kXZq7RfFl+3Nh
-         RVuplQwTT4QQgieplLVqfg9u89AVCRByHgV+3rW2EILQe9jDz2cReo0r9T/eqdFWdDvQ
-         DfsA==
+        bh=8vxcG9ckfTnaNAOnZALxn8W9X1qrkWn6D0TntHUEKr4=;
+        b=XlWMSWI9ANYaFxCHO3izSnV19CUEhPZEgWo1tEprOGoG5dFEzaNenzIHfPZAw/LMl4
+         sZsc0+W35WiGWfdrYAvGPiorpoHfLsDe8uMZBHcZndylmHnNJw5sd4ngBvAGaNHN06YD
+         5lTVp6GUtPEC6KPoq7ORoyPUVrYpTy+4M//yBaVCmpZtam40+SlruWUnZytzoB7Pg/1N
+         WuW/NCQap8CNrYAVcDE7yQrTBuo2uphRlwbhu1Y/hXZzKBVtjp+D7czfHNzyknD9sUqG
+         MZluMp9Qk3UNP4lHnVw9nxkv3RrVGp1u6h4u+mlooejaYyAmSZaBlnVlN3bt8vNXOBWL
+         0UVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711618050; x=1712222850;
+        d=1e100.net; s=20230601; t=1711618106; x=1712222906;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ZCwjcER/lMJ/fJPO7Gp+tSLutjiwq6IKrQ3AJQk8T88=;
-        b=ldo8Rek9p5vh0TXmwvEln3MFwVFhJhIe2/KKG9ZPOBQXKf2l9kbUEBKG94zZDFe8sO
-         wyiEgcB333T+dNVeS9gOhtr3Gbd7rHql6kiKLtKP8x3QRRXlmH1d5uTVk67c0+7oX49v
-         EESschvtrc2Hxpi8WsQsSQFErMMCixhzbT/BUVsHJfK6s0iM0ABs6QJbpFszOx53B+Oc
-         U6QF9f5fLFF4NfAe7Q/agm+25Y2bDMonNKScGsjs8C43cvBtiASzbfuaXzxLcSRnlfw8
-         46PhpMa0JxjKJ/4zgd83nPHYQlRSwtGV9krtObP9vot7lAbDRsIVYxTSNYSXkuLXmTU9
-         gONA==
-X-Forwarded-Encrypted: i=1; AJvYcCWtQel2wZqb0dAIcQ/ek7gIgTxQ8WOL8jBMwqEjB9Hb/6YnoPfhSLPy+8mKflzd7IsiOmxNYOOkCyhhuIDQb2VGMjIGjNkTHO+sXQ==
-X-Gm-Message-State: AOJu0YxaH692dAG5UPVGSU8jtGARSmzYDs6d+QYpKrZ3TZoQ2o3j2J/n
-	jDzGXcqzn6qyUumxlH9YWgrQ/mOtzSnlnLrWIgTR2TZeEVETI4FfNDoJ5ezy9A8=
-X-Google-Smtp-Source: AGHT+IHeKH8wdzSZ0gji+t41MwP2jcRa+dmZzD3lCw7OXtzEirBVepFnHGyavETjRCLea3YJ1/jpIw==
-X-Received: by 2002:a05:600c:3b9d:b0:415:475c:28da with SMTP id n29-20020a05600c3b9d00b00415475c28damr535950wms.0.1711618050326;
-        Thu, 28 Mar 2024 02:27:30 -0700 (PDT)
+        bh=8vxcG9ckfTnaNAOnZALxn8W9X1qrkWn6D0TntHUEKr4=;
+        b=HFLAbvXZtIN75s+R8zkGPVIQhGq1Ve+HRRNR623JewhuMr5GDzZCtYWngNpc0fDPZl
+         DHVrfxjRuvN83zwracqSh30K2J6nhizzsWVgHGba9lsE0AlrMQZbElhLb+c19O7atSgD
+         0NPMaJn46Zdlt4AixLUJBh229NkzFtKdlcBXt/rrTXzLIya+K8mBoqgcBLsDY5eRsOwD
+         30wc2w1JoeXMs5szlyv8jGTL/QKE4Ok3s6e/froImvBIWl3GtNo0kvfQkypIW9YwcR1H
+         tdejSANPMWcA4bGz7dmoGmxJVag6h3Qm3WfQKyEDWn3pt0siGlb0azMXlqBdJAKCJD5S
+         lVBQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU/VGCC63/QGhjAvLIBH6Im6EWNdLURBgMoee0RB6/WawlYEfGNwfxXkooH2M7EG5TaWr6Lb0rJJohqPBbwWVMPu3f3dcl++ONJ1g==
+X-Gm-Message-State: AOJu0YzDcCnbaFc8Xg8zvF/J7Hi4FusWiFX5XogpnzOKzclRz8pTBOn9
+	5d6E4goUM24cAfWaYS3gh9N9KOcQ5Us9T/ONGueC6JDDtpAUTpieZr8V4wEjZ3k=
+X-Google-Smtp-Source: AGHT+IGKaShHHGG/JP9892DOBLrEH1kxyEmICzP8y/gYKnhkUTWEqFyUfPhKtl26ETxb5HtN2i8Qcw==
+X-Received: by 2002:a05:600c:1c27:b0:415:45ba:bf5d with SMTP id j39-20020a05600c1c2700b0041545babf5dmr704289wms.7.1711618106456;
+        Thu, 28 Mar 2024 02:28:26 -0700 (PDT)
 Received: from [192.168.1.20] ([178.197.219.148])
-        by smtp.gmail.com with ESMTPSA id j29-20020a05600c1c1d00b0041493a93cc5sm1717044wms.2.2024.03.28.02.27.29
+        by smtp.gmail.com with ESMTPSA id ay19-20020a05600c1e1300b004148619f5d0sm1705874wmb.35.2024.03.28.02.28.25
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 28 Mar 2024 02:27:29 -0700 (PDT)
-Message-ID: <f96e14dd-a570-47e9-ad92-b71cfc2c494e@linaro.org>
-Date: Thu, 28 Mar 2024 10:27:28 +0100
+        Thu, 28 Mar 2024 02:28:25 -0700 (PDT)
+Message-ID: <121ba1d3-07f5-4ddc-8b0c-0b63476bb86e@linaro.org>
+Date: Thu, 28 Mar 2024 10:28:24 +0100
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -77,7 +77,7 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/7] dt-bindings: hsi: hsi-client: convert to YAML
+Subject: Re: [PATCH v2 2/7] dt-bindings: hsi: nokia-modem: convert to YAML
 To: Sebastian Reichel <sebastian.reichel@collabora.com>,
  Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
@@ -85,7 +85,7 @@ To: Sebastian Reichel <sebastian.reichel@collabora.com>,
 Cc: Tony Lindgren <tony@atomide.com>, devicetree@vger.kernel.org,
  linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20240327-hsi-dt-binding-v2-0-110fab4c32ae@collabora.com>
- <20240327-hsi-dt-binding-v2-1-110fab4c32ae@collabora.com>
+ <20240327-hsi-dt-binding-v2-2-110fab4c32ae@collabora.com>
 Content-Language: en-US
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
@@ -132,40 +132,22 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240327-hsi-dt-binding-v2-1-110fab4c32ae@collabora.com>
+In-Reply-To: <20240327-hsi-dt-binding-v2-2-110fab4c32ae@collabora.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 27/03/2024 20:11, Sebastian Reichel wrote:
-> Convert the legacy txt binding to modern YAML and rename from
-> client-devices to hsi-client. Also the example got dropped,
-> since this is a shared schema. No semantic change in the binding
-> itself.
+> Convert the legacy txt binding to modern YAML.
+> No semantic change.
+> 
+> Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+> ---
+>  .../devicetree/bindings/hsi/nokia,modem.yaml       | 106 +++++++++++++++++++++
+>  .../devicetree/bindings/hsi/nokia-modem.txt        |  59 ------------
+>  2 files changed, 106 insertions(+), 59 deletions(-)
 > 
 
-...
-
-> +allOf:
-> +  - if:
-> +      required:
-> +        - hsi-mode
-> +    then:
-> +      properties:
-> +        hsi-rx-mode: false
-> +        hsi-tx-mode: false
-> +  - if:
-> +      required:
-> +        - hsi-rx-mode
-> +    then:
-> +      properties:
-> +        hsi-mode: false
-
-Why do you still have this allOf? The point I was trying to make last
-time, was that all your efforts to mutually exclude these properties can
-be achieved with that one simple oneOf. That's why I linked you other
-schemas as an example how to achieve this.
-
-Could be that I miss here something, so why do you exactly need this allOf?
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 Best regards,
 Krzysztof
