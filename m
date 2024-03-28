@@ -1,431 +1,158 @@
-Return-Path: <linux-omap+bounces-1075-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1076-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD77A890803
-	for <lists+linux-omap@lfdr.de>; Thu, 28 Mar 2024 19:09:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BF5589085C
+	for <lists+linux-omap@lfdr.de>; Thu, 28 Mar 2024 19:32:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 17636B21E31
-	for <lists+linux-omap@lfdr.de>; Thu, 28 Mar 2024 18:09:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46D2128E40F
+	for <lists+linux-omap@lfdr.de>; Thu, 28 Mar 2024 18:32:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF8401327EF;
-	Thu, 28 Mar 2024 18:09:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 461D7137755;
+	Thu, 28 Mar 2024 18:31:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EgWYH9HJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QQ+Ol01e"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 277B012F38B;
-	Thu, 28 Mar 2024 18:09:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98A3C1327F8;
+	Thu, 28 Mar 2024 18:31:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711649370; cv=none; b=jkPVXoHsvJPFjBCqzapNBdsQbiuviOHw8YB32fBnwu2pPqChGk9hY/YmzycrPyBBc5/rXw239jbNXbzKbGsntJHIIRmJI91I3sZAUyk9F9efNwMnOOVAcHQB4skjFpkfVWgH4KRNjV57MNYYoqxT8Z+JawyjN0nEdP0hOxF1pFY=
+	t=1711650709; cv=none; b=SMfPpC/Ltxe6Y8bC5SBajqJZrUZLWeDjd2q2tPn0YmZY9VqROns4nCSEjN28OGtBPUoFVC6vNDa/1JN0QcGmhBt6aACp2g2UpXJYEOUrvYNlyQdao53zf+y/wfrcMLfoc7GQcKGxMhctD+J7/mfxBTufds1UkseUkYlu5fDxnxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711649370; c=relaxed/simple;
-	bh=8Oz5LlefiSyj0IqSXmONWSOYVH7o3oZ8gdsoXmI5o/E=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=NRYzkiH0vKbwaRcaUmWpnck6zBm4n3sXqVTjCYtEN9V7NE2+TTC/94dwff17LNgtQlOT26ry/jGPillN+mX3SJqe5CqiCRGr4bcFPtiz1ujDF1WjncSbeKBSTS8zOWqQybWyCQhVzKrVoDDXaJYFF+y+sDm1w21jypcXXy9MaCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EgWYH9HJ; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711649368; x=1743185368;
-  h=date:from:to:cc:subject:message-id;
-  bh=8Oz5LlefiSyj0IqSXmONWSOYVH7o3oZ8gdsoXmI5o/E=;
-  b=EgWYH9HJCJ3Y+ivP2wUMew2+3JvlRYAqjFwfo9GLwJ20srevHvOJRtvY
-   zcRp4uUnRQl7FZNWpizZu2Z41+RqNtL5N6OhU0Ag75OK1TQwoVVUXAI/j
-   9lZLE73JeMcdpe3MteY/HgPkA6O58cSkNDfUpSRubiNJ6gISCOYtYcVxR
-   w6BV6mUnvUeitKZoTRfv281X8OvmfVkqMgAbCOh52GC2tD3qIC+U+TKRj
-   vl/Sgy5E/GHsmPpq2NPZrIqQHSlmf5gTRamxCRPD2VVuR8/sSN0uxTtWr
-   IEeUaQNTjmytuP6AsgrBesD5bjWXoepw0NjQEsuBMer+FcCYjvC67E5Uc
-   g==;
-X-CSE-ConnectionGUID: cds04U+lQUeU0Q8zyizlxg==
-X-CSE-MsgGUID: U2+f1xFESWK5tqJaroLG5A==
-X-IronPort-AV: E=McAfee;i="6600,9927,11027"; a="24270744"
-X-IronPort-AV: E=Sophos;i="6.07,162,1708416000"; 
-   d="scan'208";a="24270744"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Mar 2024 11:09:24 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,162,1708416000"; 
-   d="scan'208";a="21380588"
-Received: from lkp-server01.sh.intel.com (HELO be39aa325d23) ([10.239.97.150])
-  by orviesa003.jf.intel.com with ESMTP; 28 Mar 2024 11:09:18 -0700
-Received: from kbuild by be39aa325d23 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rpuBf-0002PQ-38;
-	Thu, 28 Mar 2024 18:09:15 +0000
-Date: Fri, 29 Mar 2024 02:09:02 +0800
-From: kernel test robot <lkp@intel.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linux Memory Management List <linux-mm@kvack.org>,
- amd-gfx@lists.freedesktop.org, bpf@vger.kernel.org,
- dri-devel@lists.freedesktop.org, lima@lists.freedesktop.org,
- linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
- linux-sound@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-usb@vger.kernel.org, netdev@vger.kernel.org,
- nouveau@lists.freedesktop.org, spice-devel@lists.freedesktop.org,
- virtualization@lists.linux.dev
-Subject: [linux-next:master] BUILD REGRESSION
- a6bd6c9333397f5a0e2667d4d82fef8c970108f2
-Message-ID: <202403290256.clPzQnUm-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1711650709; c=relaxed/simple;
+	bh=09Kq07Ctu1YK6YAopY47/y5AlbJwjHjNBMXfeYxKY3s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mc+bmHU7JCh9T2qz/jKyKISblvHUMRyjYOEKwefhMp+SpBo+KEZunCDaUOfyxVqaH2nRtbEFzsaXfY7St2PHPArtNQ18jv3kbP8sMNYjt2B8WRyDhc54G3/LIVhXybYiD9uu0NBwwzc92ifzdPX4yIYM9RzRZUURIOKxpkoXwjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QQ+Ol01e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9561C433C7;
+	Thu, 28 Mar 2024 18:31:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711650709;
+	bh=09Kq07Ctu1YK6YAopY47/y5AlbJwjHjNBMXfeYxKY3s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QQ+Ol01eGrtbmmXmm5UOF8z3YVrAFzrLyUinoyXQOw2oD/3BtgXxtRpcyL6qEGHMi
+	 Fuf1dGmu1+mXVCx0A2v+QG1OZmZa5GwKeTprSp0vXiGl5WvN4w7glf0wb/Ho4jGsI6
+	 A7WhuNfxRZ+SYEDd2EHDavctgY396ec7mZY6h+UmOVbwQhncgmm56Grgtq512eTU0I
+	 juRVEJtAyO8mA2/2SAJmqgsMiWvU8lqDqaMAEVDmDUSGgn+tYLJ7mum23hafaIgM0S
+	 0/cB+mlWradcKD4+nkGPqD1rFiy3Q7s73Qm1b4qRq5IHy2lK358t2WVn9s4EqNJkuF
+	 qXaWYWlrz6OoQ==
+Date: Fri, 29 Mar 2024 00:01:43 +0530
+From: Vinod Koul <vkoul@kernel.org>
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: Allen Pais <apais@linux.microsoft.com>, linux-kernel@vger.kernel.org,
+	Tejun Heo <tj@kernel.org>, Kees Cook <keescook@chromium.org>,
+	Hector Martin <marcan@marcan.st>, Sven Peter <sven@svenpeter.dev>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
+	Paul Cercueil <paul@crapouillou.net>, Eugeniy.Paltsev@synopsys.com,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Viresh Kumar <vireshk@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Leo Li <leoyang.li@nxp.com>, zw@zh-kernel.org,
+	Zhou Wang <wangzhou1@hisilicon.com>, haijie1@huawei.com,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Sean Wang <sean.wang@mediatek.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Andreas =?iso-8859-1?Q?F=E4rber?= <afaerber@suse.de>,
+	logang@deltatee.com, Daniel Mack <daniel@zonque.org>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Orson Zhai <orsonzhai@gmail.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Chunyan Zhang <zhang.lyra@gmail.com>,
+	Patrice Chotard <patrice.chotard@foss.st.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>, peter.ujfalusi@gmail.com,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	maintainers@bluecherrydvr.com, aubin.constans@microchip.com,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Manuel Lauss <manuel.lauss@gmail.com>,
+	=?utf-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
+	"jh80.chung" <jh80.chung@samsung.com>, oakad@yahoo.com,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>, brucechang@via.com.tw,
+	HaraldWelte@viatech.com, pierre@ossman.eu, duncan.sands@free.fr,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Oliver Neukum <oneukum@suse.com>,
+	openipmi-developer@lists.sourceforge.net, dmaengine@vger.kernel.org,
+	asahi@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-rpi-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+	imx@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+	linux-mediatek@lists.infradead.org,
+	linux-actions@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+	linux-riscv@lists.infradead.org, linux-sunxi@lists.linux.dev,
+	linux-tegra@vger.kernel.org, linux-hyperv@vger.kernel.org,
+	linux-rdma@vger.kernel.org, linux-media@vger.kernel.org,
+	"linux-mmc @ vger . kernel . org" <linux-mmc@vger.kernel.org>,
+	Linux-OMAP <linux-omap@vger.kernel.org>,
+	Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+	linux-s390@vger.kernel.org, Netdev <netdev@vger.kernel.org>,
+	linux-usb@vger.kernel.org
+Subject: Re: [PATCH 2/9] dma: Convert from tasklet to BH workqueue
+Message-ID: <ZgW3j1qkLA-QU4iM@matsya>
+References: <20240327160314.9982-1-apais@linux.microsoft.com>
+ <20240327160314.9982-3-apais@linux.microsoft.com>
+ <ZgUGXTKPVhrA1tam@matsya>
+ <2e9257af-c123-406b-a189-eaebeecc1d71@app.fastmail.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2e9257af-c123-406b-a189-eaebeecc1d71@app.fastmail.com>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-branch HEAD: a6bd6c9333397f5a0e2667d4d82fef8c970108f2  Add linux-next specific files for 20240328
+On 28-03-24, 11:08, Arnd Bergmann wrote:
+> On Thu, Mar 28, 2024, at 06:55, Vinod Koul wrote:
+> > On 27-03-24, 16:03, Allen Pais wrote:
+> >> The only generic interface to execute asynchronously in the BH context is
+> >> tasklet; however, it's marked deprecated and has some design flaws. To
+> >> replace tasklets, BH workqueue support was recently added. A BH workqueue
+> >> behaves similarly to regular workqueues except that the queued work items
+> >> are executed in the BH context.
+> >
+> > Thanks for conversion, am happy with BH alternative as it helps in
+> > dmaengine where we need shortest possible time between tasklet and
+> > interrupt handling to maximize dma performance
+> 
+> I still feel that we want something different for dmaengine,
+> at least in the long run. As we have discussed in the past,
+> the tasklet context in these drivers is what the callbacks
+> from the dma client device is run in, and a lot of these probably
+> want something other than tasklet context, e.g. just call
+> complete() on a client-provided completion structure.
+> 
+> Instead of open-coding the use of the system_bh_wq in each
+> dmaengine, how about we start with a custom WQ_BH
+> specifically for the dmaengine subsystem and wrap them
+> inside of another interface.
+> 
+> Since almost every driver associates the tasklet with the
+> dma_chan, we could go one step further and add the
+> work_queue structure directly into struct dma_chan,
+> with the wrapper operating on the dma_chan rather than
+> the work_queue.
 
-Error/Warning: (recently discovered and may have been fixed)
+I think that is very great idea. having this wrapped in dma_chan would
+be very good way as well
 
-ERROR: modpost: "memcpy" [crypto/chacha20poly1305.ko] undefined!
-ERROR: modpost: "memcpy" [fs/efs/efs.ko] undefined!
-ERROR: modpost: "memcpy" [mm/z3fold.ko] undefined!
-drivers/gpu/drm/lima/lima_drv.c:387:13: error: cast to smaller integer type 'enum lima_gpu_id' from 'const void *' [-Werror,-Wvoid-pointer-to-enum-cast]
-drivers/gpu/drm/panthor/panthor_sched.c:2048:6: error: variable 'csg_mod_mask' set but not used [-Werror,-Wunused-but-set-variable]
-drivers/gpu/drm/pl111/pl111_versatile.c:488:24: error: cast to smaller integer type 'enum versatile_clcd' from 'const void *' [-Werror,-Wvoid-pointer-to-enum-cast]
-drivers/gpu/drm/qxl/qxl_cmd.c:424:6: error: variable 'count' set but not used [-Werror,-Wunused-but-set-variable]
-drivers/gpu/drm/qxl/qxl_ioctl.c:148:14: error: variable 'num_relocs' set but not used [-Werror,-Wunused-but-set-variable]
-include/asm-generic/io.h:547:31: error: performing pointer arithmetic on a null pointer has undefined behavior [-Werror,-Wnull-pointer-arithmetic]
-mm/mempolicy.c:2223: warning: expecting prototype for alloc_pages_mpol_noprof(). Prototype was for alloc_pages_mpol() instead
-mm/mempolicy.c:2298: warning: expecting prototype for vma_alloc_folio_noprof(). Prototype was for vma_alloc_folio() instead
-mm/mempolicy.c:2326: warning: expecting prototype for alloc_pages_noprof(). Prototype was for alloc_pages() instead
-mm/page_alloc.c:4857: warning: expecting prototype for alloc_pages_exact_noprof(). Prototype was for alloc_pages_exact() instead
-mm/page_alloc.c:4882: warning: expecting prototype for alloc_pages_exact_nid_noprof(). Prototype was for alloc_pages_exact_nid() instead
-mm/page_alloc.c:6348: warning: expecting prototype for alloc_contig_range_noprof(). Prototype was for alloc_contig_range() instead
-mm/page_alloc.c:6535: warning: expecting prototype for alloc_contig_pages_noprof(). Prototype was for alloc_contig_pages() instead
-
-Unverified Error/Warning (likely false positive, please contact us if interested):
-
-{standard input}:2055: Error: unknown pseudo-op: `.cfi_restore_st'
-
-Error/Warning ids grouped by kconfigs:
-
-gcc_recent_errors
-|-- alpha-randconfig-r015-20220508
-|   `-- ERROR:memcpy-mm-z3fold.ko-undefined
-|-- alpha-randconfig-r034-20220715
-|   `-- ERROR:memcpy-fs-efs-efs.ko-undefined
-|-- alpha-randconfig-r062-20240328
-|   `-- ERROR:memcpy-crypto-chacha20poly1305.ko-undefined
-|-- parisc-allmodconfig
-|   `-- drivers-gpu-drm-nouveau-nvif-object.c:error:memcpy-accessing-or-more-bytes-at-offsets-and-overlaps-bytes-at-offset
-|-- parisc-allyesconfig
-|   `-- drivers-gpu-drm-nouveau-nvif-object.c:error:memcpy-accessing-or-more-bytes-at-offsets-and-overlaps-bytes-at-offset
-|-- sh-allmodconfig
-|   `-- drivers-pwm-pwm-stm32.c:error:implicit-declaration-of-function-devm_clk_rate_exclusive_get
-|-- sh-allyesconfig
-|   `-- drivers-pwm-pwm-stm32.c:error:implicit-declaration-of-function-devm_clk_rate_exclusive_get
-|-- sh-buildonly-randconfig-r003-20221218
-|   `-- standard-input:Error:unknown-pseudo-op:cfi_restore_st
-|-- sparc-allmodconfig
-|   |-- mm-mempolicy.c:warning:expecting-prototype-for-alloc_pages_mpol_noprof().-Prototype-was-for-alloc_pages_mpol()-instead
-|   |-- mm-mempolicy.c:warning:expecting-prototype-for-alloc_pages_noprof().-Prototype-was-for-alloc_pages()-instead
-|   `-- mm-mempolicy.c:warning:expecting-prototype-for-vma_alloc_folio_noprof().-Prototype-was-for-vma_alloc_folio()-instead
-|-- sparc-randconfig-001-20240328
-|   |-- (.head.text):relocation-truncated-to-fit:R_SPARC_WDISP22-against-init.text
-|   `-- (.init.text):relocation-truncated-to-fit:R_SPARC_WDISP22-against-symbol-leon_smp_cpu_startup-defined-in-.text-section-in-arch-sparc-kernel-trampoline_32.o
-|-- um-randconfig-002-20240328
-|   `-- sound-soc-codecs-rk3308_codec.c:warning:rk3308_codec_of_match-defined-but-not-used
-|-- x86_64-randconfig-073-20240328
-|   |-- mm-mempolicy.c:warning:expecting-prototype-for-alloc_pages_mpol_noprof().-Prototype-was-for-alloc_pages_mpol()-instead
-|   |-- mm-mempolicy.c:warning:expecting-prototype-for-alloc_pages_noprof().-Prototype-was-for-alloc_pages()-instead
-|   `-- mm-mempolicy.c:warning:expecting-prototype-for-vma_alloc_folio_noprof().-Prototype-was-for-vma_alloc_folio()-instead
-|-- x86_64-randconfig-121-20240328
-|   |-- mm-mempolicy.c:warning:expecting-prototype-for-alloc_pages_mpol_noprof().-Prototype-was-for-alloc_pages_mpol()-instead
-|   |-- mm-mempolicy.c:warning:expecting-prototype-for-alloc_pages_noprof().-Prototype-was-for-alloc_pages()-instead
-|   `-- mm-mempolicy.c:warning:expecting-prototype-for-vma_alloc_folio_noprof().-Prototype-was-for-vma_alloc_folio()-instead
-|-- x86_64-randconfig-123-20240328
-|   |-- mm-mempolicy.c:warning:expecting-prototype-for-alloc_pages_mpol_noprof().-Prototype-was-for-alloc_pages_mpol()-instead
-|   |-- mm-mempolicy.c:warning:expecting-prototype-for-alloc_pages_noprof().-Prototype-was-for-alloc_pages()-instead
-|   `-- mm-mempolicy.c:warning:expecting-prototype-for-vma_alloc_folio_noprof().-Prototype-was-for-vma_alloc_folio()-instead
-`-- x86_64-randconfig-r071-20240327
-    |-- mm-page_alloc.c:warning:expecting-prototype-for-alloc_contig_pages_noprof().-Prototype-was-for-alloc_contig_pages()-instead
-    |-- mm-page_alloc.c:warning:expecting-prototype-for-alloc_contig_range_noprof().-Prototype-was-for-alloc_contig_range()-instead
-    |-- mm-page_alloc.c:warning:expecting-prototype-for-alloc_pages_exact_nid_noprof().-Prototype-was-for-alloc_pages_exact_nid()-instead
-    `-- mm-page_alloc.c:warning:expecting-prototype-for-alloc_pages_exact_noprof().-Prototype-was-for-alloc_pages_exact()-instead
-clang_recent_errors
-|-- arm-defconfig
-|   `-- arch-arm-mach-omap2-prm33xx.c:warning:expecting-prototype-for-am33xx_prm_global_warm_sw_reset().-Prototype-was-for-am33xx_prm_global_sw_reset()-instead
-|-- arm-randconfig-r051-20240328
-|   `-- drivers-firmware-arm_scmi-raw_mode.c:WARNING:scmi_dbg_raw_mode_reset_fops:write()-has-stream-semantic-safe-to-change-nonseekable_open-stream_open.
-|-- arm64-allmodconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_drv.c:error:bitwise-operation-between-different-enumeration-types-(-enum-amd_asic_type-and-enum-amd_chip_flags-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_ras.c:error:arithmetic-between-different-enumeration-types-(-enum-amdgpu_ras_block-and-enum-amdgpu_ras_mca_block-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-lima-lima_drv.c:error:cast-to-smaller-integer-type-enum-lima_gpu_id-from-const-void-Werror-Wvoid-pointer-to-enum-cast
-|   |-- drivers-gpu-drm-panthor-panthor_sched.c:error:variable-csg_mod_mask-set-but-not-used-Werror-Wunused-but-set-variable
-|   |-- drivers-gpu-drm-pl111-pl111_versatile.c:error:cast-to-smaller-integer-type-enum-versatile_clcd-from-const-void-Werror-Wvoid-pointer-to-enum-cast
-|   |-- drivers-gpu-drm-qxl-qxl_cmd.c:error:variable-count-set-but-not-used-Werror-Wunused-but-set-variable
-|   |-- drivers-gpu-drm-qxl-qxl_ioctl.c:error:variable-num_relocs-set-but-not-used-Werror-Wunused-but-set-variable
-|   |-- drivers-gpu-drm-radeon-radeon_drv.c:error:bitwise-operation-between-different-enumeration-types-(-enum-radeon_family-and-enum-radeon_chip_flags-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-renesas-rcar-du-rcar_cmm.c:error:unused-function-rcar_cmm_read-Werror-Wunused-function
-|   |-- kernel-bpf-bpf_struct_ops.c:warning:bitwise-operation-between-different-enumeration-types-(-enum-bpf_type_flag-and-enum-bpf_reg_type-)
-|   |-- mm-mempolicy.c:warning:expecting-prototype-for-alloc_pages_mpol_noprof().-Prototype-was-for-alloc_pages_mpol()-instead
-|   |-- mm-mempolicy.c:warning:expecting-prototype-for-alloc_pages_noprof().-Prototype-was-for-alloc_pages()-instead
-|   `-- mm-mempolicy.c:warning:expecting-prototype-for-vma_alloc_folio_noprof().-Prototype-was-for-vma_alloc_folio()-instead
-|-- hexagon-allmodconfig
-|   `-- include-asm-generic-io.h:error:performing-pointer-arithmetic-on-a-null-pointer-has-undefined-behavior-Werror-Wnull-pointer-arithmetic
-|-- hexagon-allyesconfig
-|   `-- include-asm-generic-io.h:error:performing-pointer-arithmetic-on-a-null-pointer-has-undefined-behavior-Werror-Wnull-pointer-arithmetic
-|-- i386-randconfig-141-20240328
-|   `-- drivers-usb-dwc2-hcd_ddma.c-dwc2_cmpl_host_isoc_dma_desc()-warn:variable-dereferenced-before-check-qtd-urb-(see-line-)
-|-- powerpc-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_drv.c:error:bitwise-operation-between-different-enumeration-types-(-enum-amd_asic_type-and-enum-amd_chip_flags-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_ras.c:error:arithmetic-between-different-enumeration-types-(-enum-amdgpu_ras_block-and-enum-amdgpu_ras_mca_block-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-lima-lima_drv.c:error:cast-to-smaller-integer-type-enum-lima_gpu_id-from-const-void-Werror-Wvoid-pointer-to-enum-cast
-|   |-- drivers-gpu-drm-nouveau-nvkm-subdev-bios-shadowof.c:error:cast-from-void-(-)(const-void-)-to-void-(-)(void-)-converts-to-incompatible-function-type-Werror-Wcast-function-type-strict
-|   |-- drivers-gpu-drm-panthor-panthor_sched.c:error:variable-csg_mod_mask-set-but-not-used-Werror-Wunused-but-set-variable
-|   |-- drivers-gpu-drm-pl111-pl111_versatile.c:error:cast-to-smaller-integer-type-enum-versatile_clcd-from-const-void-Werror-Wvoid-pointer-to-enum-cast
-|   |-- drivers-gpu-drm-qxl-qxl_cmd.c:error:variable-count-set-but-not-used-Werror-Wunused-but-set-variable
-|   |-- drivers-gpu-drm-qxl-qxl_ioctl.c:error:variable-num_relocs-set-but-not-used-Werror-Wunused-but-set-variable
-|   |-- drivers-gpu-drm-radeon-radeon_drv.c:error:bitwise-operation-between-different-enumeration-types-(-enum-radeon_family-and-enum-radeon_chip_flags-)-Werror-Wenum-enum-conversion
-|   `-- kernel-bpf-bpf_struct_ops.c:warning:bitwise-operation-between-different-enumeration-types-(-enum-bpf_type_flag-and-enum-bpf_reg_type-)
-|-- powerpc-randconfig-r113-20240328
-|   `-- drivers-gpu-drm-nouveau-nvkm-subdev-bios-shadowof.c:error:cast-from-void-(-)(const-void-)-to-void-(-)(void-)-converts-to-incompatible-function-type-Werror-Wcast-function-type-strict
-|-- riscv-allmodconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_drv.c:error:bitwise-operation-between-different-enumeration-types-(-enum-amd_asic_type-and-enum-amd_chip_flags-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_ras.c:error:arithmetic-between-different-enumeration-types-(-enum-amdgpu_ras_block-and-enum-amdgpu_ras_mca_block-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-lima-lima_drv.c:error:cast-to-smaller-integer-type-enum-lima_gpu_id-from-const-void-Werror-Wvoid-pointer-to-enum-cast
-|   |-- drivers-gpu-drm-panthor-panthor_sched.c:error:variable-csg_mod_mask-set-but-not-used-Werror-Wunused-but-set-variable
-|   |-- drivers-gpu-drm-pl111-pl111_versatile.c:error:cast-to-smaller-integer-type-enum-versatile_clcd-from-const-void-Werror-Wvoid-pointer-to-enum-cast
-|   |-- drivers-gpu-drm-qxl-qxl_cmd.c:error:variable-count-set-but-not-used-Werror-Wunused-but-set-variable
-|   |-- drivers-gpu-drm-qxl-qxl_ioctl.c:error:variable-num_relocs-set-but-not-used-Werror-Wunused-but-set-variable
-|   |-- drivers-gpu-drm-radeon-radeon_drv.c:error:bitwise-operation-between-different-enumeration-types-(-enum-radeon_family-and-enum-radeon_chip_flags-)-Werror-Wenum-enum-conversion
-|   `-- kernel-bpf-bpf_struct_ops.c:warning:bitwise-operation-between-different-enumeration-types-(-enum-bpf_type_flag-and-enum-bpf_reg_type-)
-|-- riscv-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_drv.c:error:bitwise-operation-between-different-enumeration-types-(-enum-amd_asic_type-and-enum-amd_chip_flags-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_ras.c:error:arithmetic-between-different-enumeration-types-(-enum-amdgpu_ras_block-and-enum-amdgpu_ras_mca_block-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-lima-lima_drv.c:error:cast-to-smaller-integer-type-enum-lima_gpu_id-from-const-void-Werror-Wvoid-pointer-to-enum-cast
-|   |-- drivers-gpu-drm-panthor-panthor_sched.c:error:variable-csg_mod_mask-set-but-not-used-Werror-Wunused-but-set-variable
-|   |-- drivers-gpu-drm-pl111-pl111_versatile.c:error:cast-to-smaller-integer-type-enum-versatile_clcd-from-const-void-Werror-Wvoid-pointer-to-enum-cast
-|   |-- drivers-gpu-drm-qxl-qxl_cmd.c:error:variable-count-set-but-not-used-Werror-Wunused-but-set-variable
-|   |-- drivers-gpu-drm-qxl-qxl_ioctl.c:error:variable-num_relocs-set-but-not-used-Werror-Wunused-but-set-variable
-|   |-- drivers-gpu-drm-radeon-radeon_drv.c:error:bitwise-operation-between-different-enumeration-types-(-enum-radeon_family-and-enum-radeon_chip_flags-)-Werror-Wenum-enum-conversion
-|   `-- kernel-bpf-bpf_struct_ops.c:warning:bitwise-operation-between-different-enumeration-types-(-enum-bpf_type_flag-and-enum-bpf_reg_type-)
-|-- s390-allmodconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_drv.c:error:bitwise-operation-between-different-enumeration-types-(-enum-amd_asic_type-and-enum-amd_chip_flags-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_ras.c:error:arithmetic-between-different-enumeration-types-(-enum-amdgpu_ras_block-and-enum-amdgpu_ras_mca_block-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-lima-lima_drv.c:error:cast-to-smaller-integer-type-enum-lima_gpu_id-from-const-void-Werror-Wvoid-pointer-to-enum-cast
-|   |-- drivers-gpu-drm-panthor-panthor_sched.c:error:variable-csg_mod_mask-set-but-not-used-Werror-Wunused-but-set-variable
-|   |-- drivers-gpu-drm-pl111-pl111_versatile.c:error:cast-to-smaller-integer-type-enum-versatile_clcd-from-const-void-Werror-Wvoid-pointer-to-enum-cast
-|   |-- drivers-gpu-drm-qxl-qxl_cmd.c:error:variable-count-set-but-not-used-Werror-Wunused-but-set-variable
-|   |-- drivers-gpu-drm-qxl-qxl_ioctl.c:error:variable-num_relocs-set-but-not-used-Werror-Wunused-but-set-variable
-|   |-- drivers-gpu-drm-radeon-radeon_drv.c:error:bitwise-operation-between-different-enumeration-types-(-enum-radeon_family-and-enum-radeon_chip_flags-)-Werror-Wenum-enum-conversion
-|   |-- include-asm-generic-io.h:error:performing-pointer-arithmetic-on-a-null-pointer-has-undefined-behavior-Werror-Wnull-pointer-arithmetic
-|   `-- kernel-bpf-bpf_struct_ops.c:warning:bitwise-operation-between-different-enumeration-types-(-enum-bpf_type_flag-and-enum-bpf_reg_type-)
-|-- s390-defconfig
-|   `-- kernel-bpf-bpf_struct_ops.c:warning:bitwise-operation-between-different-enumeration-types-(-enum-bpf_type_flag-and-enum-bpf_reg_type-)
-|-- x86_64-allmodconfig
-|   |-- drivers-gpu-drm-lima-lima_drv.c:error:cast-to-smaller-integer-type-enum-lima_gpu_id-from-const-void-Werror-Wvoid-pointer-to-enum-cast
-|   |-- drivers-gpu-drm-panthor-panthor_sched.c:error:variable-csg_mod_mask-set-but-not-used-Werror-Wunused-but-set-variable
-|   |-- drivers-gpu-drm-pl111-pl111_versatile.c:error:cast-to-smaller-integer-type-enum-versatile_clcd-from-const-void-Werror-Wvoid-pointer-to-enum-cast
-|   |-- drivers-gpu-drm-qxl-qxl_cmd.c:error:variable-count-set-but-not-used-Werror-Wunused-but-set-variable
-|   `-- drivers-gpu-drm-qxl-qxl_ioctl.c:error:variable-num_relocs-set-but-not-used-Werror-Wunused-but-set-variable
-|-- x86_64-allyesconfig
-|   |-- drivers-gpu-drm-lima-lima_drv.c:error:cast-to-smaller-integer-type-enum-lima_gpu_id-from-const-void-Werror-Wvoid-pointer-to-enum-cast
-|   |-- drivers-gpu-drm-panthor-panthor_sched.c:error:variable-csg_mod_mask-set-but-not-used-Werror-Wunused-but-set-variable
-|   |-- drivers-gpu-drm-pl111-pl111_versatile.c:error:cast-to-smaller-integer-type-enum-versatile_clcd-from-const-void-Werror-Wvoid-pointer-to-enum-cast
-|   |-- drivers-gpu-drm-qxl-qxl_cmd.c:error:variable-count-set-but-not-used-Werror-Wunused-but-set-variable
-|   `-- drivers-gpu-drm-qxl-qxl_ioctl.c:error:variable-num_relocs-set-but-not-used-Werror-Wunused-but-set-variable
-`-- x86_64-randconfig-072-20240328
-    |-- mm-mempolicy.c:warning:expecting-prototype-for-alloc_pages_mpol_noprof().-Prototype-was-for-alloc_pages_mpol()-instead
-    |-- mm-mempolicy.c:warning:expecting-prototype-for-alloc_pages_noprof().-Prototype-was-for-alloc_pages()-instead
-    `-- mm-mempolicy.c:warning:expecting-prototype-for-vma_alloc_folio_noprof().-Prototype-was-for-vma_alloc_folio()-instead
-
-elapsed time: 724m
-
-configs tested: 179
-configs skipped: 3
-
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                     haps_hs_smp_defconfig   gcc  
-arc                   randconfig-001-20240328   gcc  
-arc                   randconfig-002-20240328   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   clang
-arm                              allyesconfig   gcc  
-arm                                 defconfig   clang
-arm                          ixp4xx_defconfig   gcc  
-arm                          moxart_defconfig   gcc  
-arm                       multi_v4t_defconfig   clang
-arm                   randconfig-001-20240328   gcc  
-arm                   randconfig-002-20240328   gcc  
-arm                   randconfig-003-20240328   gcc  
-arm                   randconfig-004-20240328   gcc  
-arm                         s5pv210_defconfig   gcc  
-arm                           sama5_defconfig   gcc  
-arm64                            allmodconfig   clang
-arm64                             allnoconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                 randconfig-001-20240328   gcc  
-arm64                 randconfig-002-20240328   gcc  
-arm64                 randconfig-003-20240328   gcc  
-arm64                 randconfig-004-20240328   gcc  
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-csky                  randconfig-001-20240328   gcc  
-csky                  randconfig-002-20240328   gcc  
-hexagon                          allmodconfig   clang
-hexagon                           allnoconfig   clang
-hexagon                          allyesconfig   clang
-hexagon                             defconfig   clang
-hexagon               randconfig-001-20240328   clang
-hexagon               randconfig-002-20240328   clang
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-001-20240328   gcc  
-i386         buildonly-randconfig-002-20240328   gcc  
-i386         buildonly-randconfig-003-20240328   clang
-i386         buildonly-randconfig-004-20240328   gcc  
-i386         buildonly-randconfig-005-20240328   gcc  
-i386         buildonly-randconfig-006-20240328   gcc  
-i386                                defconfig   clang
-i386                  randconfig-001-20240328   clang
-i386                  randconfig-002-20240328   clang
-i386                  randconfig-003-20240328   clang
-i386                  randconfig-004-20240328   clang
-i386                  randconfig-005-20240328   gcc  
-i386                  randconfig-006-20240328   gcc  
-i386                  randconfig-011-20240328   clang
-i386                  randconfig-012-20240328   clang
-i386                  randconfig-013-20240328   clang
-i386                  randconfig-014-20240328   clang
-i386                  randconfig-015-20240328   clang
-i386                  randconfig-016-20240328   clang
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch             randconfig-001-20240328   gcc  
-loongarch             randconfig-002-20240328   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                         amcore_defconfig   gcc  
-m68k                                defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                          ath25_defconfig   clang
-mips                           gcw0_defconfig   clang
-mips                           ip22_defconfig   gcc  
-mips                           ip32_defconfig   clang
-mips                     loongson1c_defconfig   gcc  
-mips                           rs90_defconfig   gcc  
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-nios2                 randconfig-001-20240328   gcc  
-nios2                 randconfig-002-20240328   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc                randconfig-001-20240328   gcc  
-parisc                randconfig-002-20240328   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   clang
-powerpc               randconfig-001-20240328   clang
-powerpc               randconfig-002-20240328   clang
-powerpc               randconfig-003-20240328   clang
-powerpc                  storcenter_defconfig   gcc  
-powerpc64             randconfig-001-20240328   clang
-powerpc64             randconfig-002-20240328   gcc  
-powerpc64             randconfig-003-20240328   gcc  
-riscv                            allmodconfig   clang
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   clang
-riscv                               defconfig   clang
-riscv                 randconfig-001-20240328   gcc  
-riscv                 randconfig-002-20240328   gcc  
-s390                             allmodconfig   clang
-s390                              allnoconfig   clang
-s390                             allyesconfig   gcc  
-s390                                defconfig   clang
-s390                  randconfig-001-20240328   clang
-s390                  randconfig-002-20240328   clang
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sh                        dreamcast_defconfig   gcc  
-sh                    randconfig-001-20240328   gcc  
-sh                    randconfig-002-20240328   gcc  
-sh                          urquell_defconfig   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                               defconfig   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-sparc64               randconfig-001-20240328   gcc  
-sparc64               randconfig-002-20240328   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   gcc  
-um                                  defconfig   clang
-um                             i386_defconfig   gcc  
-um                    randconfig-001-20240328   gcc  
-um                    randconfig-002-20240328   gcc  
-um                           x86_64_defconfig   clang
-x86_64                            allnoconfig   clang
-x86_64                           allyesconfig   clang
-x86_64       buildonly-randconfig-001-20240328   gcc  
-x86_64       buildonly-randconfig-002-20240328   clang
-x86_64       buildonly-randconfig-003-20240328   gcc  
-x86_64       buildonly-randconfig-004-20240328   gcc  
-x86_64       buildonly-randconfig-005-20240328   gcc  
-x86_64       buildonly-randconfig-006-20240328   gcc  
-x86_64                              defconfig   gcc  
-x86_64                randconfig-001-20240328   clang
-x86_64                randconfig-002-20240328   gcc  
-x86_64                randconfig-003-20240328   clang
-x86_64                randconfig-004-20240328   gcc  
-x86_64                randconfig-005-20240328   clang
-x86_64                randconfig-006-20240328   clang
-x86_64                randconfig-011-20240328   clang
-x86_64                randconfig-012-20240328   clang
-x86_64                randconfig-013-20240328   gcc  
-x86_64                randconfig-014-20240328   gcc  
-x86_64                randconfig-015-20240328   clang
-x86_64                randconfig-016-20240328   clang
-x86_64                randconfig-071-20240328   gcc  
-x86_64                randconfig-072-20240328   clang
-x86_64                randconfig-073-20240328   gcc  
-x86_64                randconfig-074-20240328   gcc  
-x86_64                randconfig-075-20240328   gcc  
-x86_64                randconfig-076-20240328   clang
-x86_64                          rhel-8.3-rust   clang
-xtensa                            allnoconfig   gcc  
-xtensa                randconfig-001-20240328   gcc  
-xtensa                randconfig-002-20240328   gcc  
+Am not sure if Allen is up for it :-)
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+~Vinod
 
