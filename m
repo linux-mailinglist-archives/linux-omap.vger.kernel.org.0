@@ -1,105 +1,181 @@
-Return-Path: <linux-omap+bounces-1062-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1063-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC55B88FE11
-	for <lists+linux-omap@lfdr.de>; Thu, 28 Mar 2024 12:29:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F42588FE16
+	for <lists+linux-omap@lfdr.de>; Thu, 28 Mar 2024 12:31:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D258293DF9
-	for <lists+linux-omap@lfdr.de>; Thu, 28 Mar 2024 11:29:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 390321C25AE3
+	for <lists+linux-omap@lfdr.de>; Thu, 28 Mar 2024 11:31:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 334ED7E117;
-	Thu, 28 Mar 2024 11:28:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA05A7E117;
+	Thu, 28 Mar 2024 11:31:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="yfKPljNU"
+	dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b="TfA3MHa3"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
+Received: from mail5.25mail.st (mail5.25mail.st [74.50.62.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44F8F5FB88;
-	Thu, 28 Mar 2024 11:28:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.249
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A51E7E108;
+	Thu, 28 Mar 2024 11:31:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.50.62.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711625336; cv=none; b=MUC32Ge8pAIoi/gRAeNfV3eZc2gBJxlvNUuhkAOBl1CvnG/46zogeg87aobiGYwNbJSv4rIPAIxYaLJHxoeTKLAT0PPG4U0uwmZIDPBhZLZyPSIRGdKito5L3rj6AlDDyzLlmp4Sc1ZmmRNcDMqGBXbv1QF7sVYsXXdxBrreO4E=
+	t=1711625511; cv=none; b=FO9wfaoqb2cCFol6MsJE6bbElpxbZ1V2oqB/ISm6lvyHgXJkcc0qdTjQuKk1oxUjr1HcaP5YS/ttRcQzLjtNBsEF38azgXHm3TgpeWqStO1fi/XyhI+y2gwgEtYfMKGoVLwCUkewCRmywLFTQABqnkEuRQWaFMCaRfZtVmfk/BE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711625336; c=relaxed/simple;
-	bh=w71PyqTWUYXQPlDqF75uE2tFWxAgMclVgkaI7BGxqo0=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mbdFB+muS2JFEvv99tWaNr/cOw2JhSMXysMyMslImN222HUaoDgkBvQLV4BVJilXf+KtoDqFaT/FG7986Wff8R7FJJxASfhWo6i0SR9sPh07gipc1hK+a5tIps+jCy9AQld5zasqffYxiW6nmN1PGWk7DRrKQYPRnNrlw5Y/pWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=yfKPljNU; arc=none smtp.client-ip=198.47.23.249
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 42SBSptS127909;
-	Thu, 28 Mar 2024 06:28:51 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1711625331;
-	bh=yC5GkTzUWJ4BfrXXRzX982bBR94IDaZhvBUH9M9+e+I=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To;
-	b=yfKPljNU2eJfqrxkk4PdxGtL3P0uQYxKY1PEAYNhEzdpDt1MeVUB9viodbAUnkKSg
-	 xg8KYO05+Jymki8Om+YTO8TEDDNTXNoVRcA1KhpYM3CFGHR5ediZfx4t7xdnTM/er+
-	 kXJJMvtbqLhchS/1ZBxIgOyJf7x5AxabcPyI/GOY=
-Received: from DLEE107.ent.ti.com (dlee107.ent.ti.com [157.170.170.37])
-	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 42SBSppA105420
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 28 Mar 2024 06:28:51 -0500
-Received: from lewvowa02.ent.ti.com (10.180.75.80) by DLEE107.ent.ti.com
- (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 28
- Mar 2024 06:28:50 -0500
-Received: from DLEE107.ent.ti.com (157.170.170.37) by lewvowa02.ent.ti.com
- (10.180.75.80) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2507.34; Thu, 28 Mar
- 2024 06:28:50 -0500
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE107.ent.ti.com
- (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Thu, 28 Mar 2024 06:28:50 -0500
-Received: from localhost (dhruva.dhcp.ti.com [172.24.227.68])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 42SBSnGN095156;
-	Thu, 28 Mar 2024 06:28:50 -0500
-Date: Thu, 28 Mar 2024 16:58:49 +0530
-From: Dhruva Gole <d-gole@ti.com>
-To: Tony Lindgren <tony@atomide.com>
-CC: <linux-omap@vger.kernel.org>,
-        Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 5/5] bus: ti-sysc: Drop legacy idle quirk handling
-Message-ID: <20240328112849.uku4hy4rjd3qgd65@dhruva>
-References: <20240327081508.36747-1-tony@atomide.com>
- <20240327081508.36747-6-tony@atomide.com>
+	s=arc-20240116; t=1711625511; c=relaxed/simple;
+	bh=JL9EIgLkHE+REejUbSd8Zbt9nI5lJr4jPR8QemXjNjA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pK7iKQsgo3bj2jNxvZVgJF7K8IV5lpMB3CRJf1m+URblx3EEoF7so1M2ljxnF22FaJCHZLPiUM3Gn8pc+3DIjBzrj17oHoISKPWrkWg/hW9aZ+kanfr1cd39CvHdyJMYDEmqz+91urdOM5O/WqkMktV2KsbNmWF+g5GycEJIvSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com; spf=fail smtp.mailfrom=atomide.com; dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b=TfA3MHa3; arc=none smtp.client-ip=74.50.62.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=atomide.com
+Received: from localhost (91-158-86-216.elisa-laajakaista.fi [91.158.86.216])
+	by mail5.25mail.st (Postfix) with ESMTPSA id E49F06054A;
+	Thu, 28 Mar 2024 11:31:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=atomide.com;
+	s=25mailst; t=1711625502;
+	bh=JL9EIgLkHE+REejUbSd8Zbt9nI5lJr4jPR8QemXjNjA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TfA3MHa3iC5CQ3ybvtxZMOuy1bgODYl1JZuErkI5s1b75rgTRV5tquNCTah8xYtEQ
+	 lxfZO/0dJ+xyD3HSg3/NEo8af4xYBijiWWBBmik9766wCjtuCD5hTXbhYN+V9VV5Ow
+	 cSVDyl/I1Yy8h+erBU+LZjZaQckrU2YMfSQ6/JxLHqlY1JecFpz0hHvk+ZZNX+7V0+
+	 RFqj/jMaaec3WwBvtVYA1Nw0ZWTrFUcDocrp6DTqhpUdl+gPJ6HnCksJLvU9Xk7vBD
+	 UTWgWVLoQJfIT99yXCT5Vta+cc8iApfXtSHaI1wJVHgH4h7Pk6mHGvqBf7PzU+zjSy
+	 FDLIyvq54cNRQ==
+Date: Thu, 28 Mar 2024 13:31:33 +0200
+From: Tony Lindgren <tony@atomide.com>
+To: linux-omap@vger.kernel.org
+Cc: =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH 00/12] Use clksel for more clocks for dra7
+Message-ID: <20240328113133.GG5132@atomide.com>
+References: <20240327073856.21517-1-tony@atomide.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240327081508.36747-6-tony@atomide.com>
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+In-Reply-To: <20240327073856.21517-1-tony@atomide.com>
 
-Hi,
+* Tony Lindgren <tony@atomide.com> [240327 09:39]:
+> The DPLL output clocks are problematic at this point as the
+> clock driver makes assumptions based on no reg property in
+> _register_dpll_x2() for the ti,omap4-dpll-x2-clock. After
+> the driver issues are solved, the DPLL output related clocks
+> can also use the clksel binding.
 
-On Mar 27, 2024 at 10:15:08 +0200, Tony Lindgren wrote:
-> There are no more users that need the legacy idle quirk so let's drop
-> the legacy idle quirk handling. This simplifies the PM code to just
-> sysc_pm_ops with unified handling for all the interconnect targets.
-> 
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
-> ---
->  drivers/bus/ti-sysc.c                 | 109 +-------------------------
->  include/linux/platform_data/ti-sysc.h |   1 -
->  2 files changed, 2 insertions(+), 108 deletions(-)
-> 
+Actually the driver needs changes only for clocks where there's no
+reg entry. For the clocks with a reg entry like dpll_per m2 outputs,
+the following seems to work based on light testing.
 
-looks much cleaner :)
-Reviewed-by: Dhruva Gole <d-gole@ti.com>
+Regards,
 
+Tony
+
+8< -----------------
+diff --git a/arch/arm/boot/dts/ti/omap/dra7xx-clocks.dtsi b/arch/arm/boot/dts/ti/omap/dra7xx-clocks.dtsi
+--- a/arch/arm/boot/dts/ti/omap/dra7xx-clocks.dtsi
++++ b/arch/arm/boot/dts/ti/omap/dra7xx-clocks.dtsi
+@@ -1425,6 +1425,7 @@ dpll_per_byp_mux: clock@23 {
+ 		};
+ 	};
+ 
++	/* CM_CLKSEL_DPLL_PER */
+ 	dpll_per_ck: clock@140 {
+ 		#clock-cells = <0>;
+ 		compatible = "ti,omap4-dpll-clock";
+@@ -1433,16 +1434,43 @@ dpll_per_ck: clock@140 {
+ 		reg = <0x0140>, <0x0144>, <0x014c>, <0x0148>;
+ 	};
+ 
+-	dpll_per_m2_ck: clock-dpll-per-m2-8@150 {
+-		#clock-cells = <0>;
+-		compatible = "ti,divider-clock";
+-		clock-output-names = "dpll_per_m2_ck";
+-		clocks = <&dpll_per_ck>;
+-		ti,max-div = <31>;
+-		ti,autoidle-shift = <8>;
+-		reg = <0x0150>;
+-		ti,index-starts-at-one;
+-		ti,invert-autoidle-bit;
++	/* CM_DIV_M2_DPLL_PER */
++	clock@150 {
++		compatible = "ti,clksel";
++		reg = <0x150>;
++		#clock-cells = <2>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		dpll_per_m2x2_ck: clock@0 {
++			reg = <0>;
++			#clock-cells = <0>;
++			compatible = "ti,divider-clock";
++			clock-output-names = "dpll_per_m2x2_ck";
++			clocks = <&dpll_per_x2_ck>;
++			ti,max-div = <31>;
++			ti,autoidle-shift = <8>;
++			ti,index-starts-at-one;
++			ti,invert-autoidle-bit;
++		};
++
++		dpll_per_m2_ck: clock@8 {
++			compatible = "fixed-factor-clock";
++			reg = <8>;
++			#clock-cells = <0>;
++			clocks = <&dpll_per_m2x2_ck>;
++			clock-mult = <1>;
++			clock-div = <2>;
++			clock-output-names = "dpll_per_m2_ck";
++		};
++
++		dpll_per_x2_ck: clock@10 {
++			reg = <10>;
++			#clock-cells = <0>;
++			compatible = "ti,omap4-dpll-x2-clock";
++			clock-output-names = "dpll_per_x2_ck";
++			clocks = <&dpll_per_ck>;
++		};
+ 	};
+ 
+ 	func_96m_aon_dclk_div: clock-func-96m-aon-dclk-div {
+@@ -1503,13 +1531,6 @@ dpll_pcie_ref_m2_ck: clock-dpll-pcie-ref-m2-8@210 {
+ 		ti,invert-autoidle-bit;
+ 	};
+ 
+-	dpll_per_x2_ck: clock-dpll-per-x2 {
+-		#clock-cells = <0>;
+-		compatible = "ti,omap4-dpll-x2-clock";
+-		clock-output-names = "dpll_per_x2_ck";
+-		clocks = <&dpll_per_ck>;
+-	};
+-
+ 	dpll_per_h11x2_ck: clock-dpll-per-h11x2-8@158 {
+ 		#clock-cells = <0>;
+ 		compatible = "ti,divider-clock";
+@@ -1558,18 +1579,6 @@ dpll_per_h14x2_ck: clock-dpll-per-h14x2-8@164 {
+ 		ti,invert-autoidle-bit;
+ 	};
+ 
+-	dpll_per_m2x2_ck: clock-dpll-per-m2x2-8@150 {
+-		#clock-cells = <0>;
+-		compatible = "ti,divider-clock";
+-		clock-output-names = "dpll_per_m2x2_ck";
+-		clocks = <&dpll_per_x2_ck>;
+-		ti,max-div = <31>;
+-		ti,autoidle-shift = <8>;
+-		reg = <0x0150>;
+-		ti,index-starts-at-one;
+-		ti,invert-autoidle-bit;
+-	};
+-
+ 	dpll_usb_clkdcoldo: clock-dpll-usb-clkdcoldo {
+ 		#clock-cells = <0>;
+ 		compatible = "fixed-factor-clock";
 -- 
-Best regards,
-Dhruva
+2.44.0
 
