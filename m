@@ -1,81 +1,112 @@
-Return-Path: <linux-omap+bounces-1092-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1093-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71AAE893132
-	for <lists+linux-omap@lfdr.de>; Sun, 31 Mar 2024 12:26:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A878894644
+	for <lists+linux-omap@lfdr.de>; Mon,  1 Apr 2024 22:50:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC9071C211FE
-	for <lists+linux-omap@lfdr.de>; Sun, 31 Mar 2024 10:26:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B7701F21A01
+	for <lists+linux-omap@lfdr.de>; Mon,  1 Apr 2024 20:50:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C99F776410;
-	Sun, 31 Mar 2024 10:26:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62AFE54BF7;
+	Mon,  1 Apr 2024 20:50:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="byCKusv8"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from msa.smtpout.orange.fr (msa-209.smtpout.orange.fr [193.252.23.209])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B52EEC0;
-	Sun, 31 Mar 2024 10:26:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 150E04E1D5;
+	Mon,  1 Apr 2024 20:50:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.252.23.209
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711880773; cv=none; b=HyrqipNXG4RmEjPFEIrZ0IJ9TnqnRVlJgvcC0sh+Ql54fsGKAsr0w2lyVLIKgRM7/rqd74g/FPvuaTYUzBM/HyQv5i5iqCptyGTG8L5NsuXWPpTRHeMuNIl0Tj+nMcjeErobfWnVbj3bCs6X4xchOSAnhWcRLirhy+enreku9jE=
+	t=1712004616; cv=none; b=oQIcSQFbIFEyz/y7l6E+9vQYU/hZlqw9CVbjtc7fSE6yCg5KgEyeLhmWlg4oEnTXXl3OUM3NMazV8uh4YT64qCNE4KMZAwY0v6RN7o7/iuzvzNOhEWFfm6jBa9+v7/zJLRNXAdA3noFqUgtqAjI9t/RGNP3Z5xKpaq1aNyGGn/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711880773; c=relaxed/simple;
-	bh=6AKqxBQuhOwbqisg4ObQCrFphRBbPTiioJp5iOpryvc=;
-	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Rvk6U9n7bsyVc/FmBM8HzpZWxTIlL+Pzh+GxaRKzecH7LIsuqjz8k3s9qT7eET/kTdKei3gx7fRXlDicxbeHVy405j0kjf2N5sA7rGR1Q2HZWfCXUWMjC7Vwx5M3Cr5P8Yz5xFnU08rBBRibyFr10M1AUQXIWqKFLaF/d/iUJ/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17277C433F1;
-	Sun, 31 Mar 2024 10:26:08 +0000 (UTC)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To: =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-	Tony Lindgren <tony@atomide.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Nishanth Menon <nm@ti.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Tero Kristo <kristo@kernel.org>,
-	linux-omap@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	s=arc-20240116; t=1712004616; c=relaxed/simple;
+	bh=VKgxvyuMDn6pPuzrSQH/fyXU71CRcxvmHV5mShrhvU4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=srOgBqivxnNESPDECyDSDCvFNvTQ95lxotCoMfaD6X+scOUE9hgVl4XNHeKCJSYYXpI0QC/5CCtAS5K4bXKXh9OLTiBUTrj1A2hJIAgQ+xts9jhUu7v/x1l3vVDiwEU3qZYKO6HhFE2XXOQKPpLuj8YHp4pUwjtQ9cdzyaSdYNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=byCKusv8; arc=none smtp.client-ip=193.252.23.209
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from fedora.home ([86.243.17.157])
+	by smtp.orange.fr with ESMTPA
+	id rOaSrTguCRo54rOaTrI000; Mon, 01 Apr 2024 22:49:03 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1712004543;
+	bh=VPi98jZXacwHLVzFnIc7JUWg7LJMcQPKff2POQefCl8=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=byCKusv8wkGLaFBaQFNvZ5G2kLW3RWNvThLQQygSe4RTcCOdA6jG9JascXZynUFlZ
+	 MHXcF1oKKwslBSp5r+R0wD5D2YuhMvCr7lGoKdOnifttuEoe/S0i0zlBhJWsVJP/rC
+	 Ae/+eVgT2pCScoEUlXmec83fcVkBjYQDm+kEQrI3vsilo5u5jybTmI4yZ1bdsf8PjL
+	 /CyUHTq4djDRlTVdRkS6Gy5GNOSOR5bLFdumIV2wO+FxQ8+xoAoc3YrvK2I3s3PoJ3
+	 xUMyciEpw0oZ9v3rYfcDWSu/n7ijHBVJXXzNJUwcuvFbNAUseeMS5g422Tns91Eq/f
+	 YTR7sA2fxIR9A==
+X-ME-Helo: fedora.home
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Mon, 01 Apr 2024 22:49:03 +0200
+X-ME-IP: 86.243.17.157
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To: Tony Lindgren <tony@atomide.com>,
+	Haojian Zhuang <haojian.zhuang@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>
+Cc: linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
 	linux-arm-kernel@lists.infradead.org,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH 1/2] arm64: dts: ti: k3-am62p5-sk: minor whitespace cleanup
-Date: Sun, 31 Mar 2024 12:26:03 +0200
-Message-Id: <171188072142.23696.6709925029705971875.b4-ty@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240208105146.128645-1-krzysztof.kozlowski@linaro.org>
-References: <20240208105146.128645-1-krzysztof.kozlowski@linaro.org>
+	linux-omap@vger.kernel.org,
+	linux-gpio@vger.kernel.org
+Subject: [PATCH] pinctrl: pinctrl-single: Remove some unused fields in struct pcs_function
+Date: Mon,  1 Apr 2024 22:48:55 +0200
+Message-ID: <a6b653642298d35b1e3656e9bfc6d1b322fbbe68.1712004518.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
+In "struct pcs_function", the 'pgnames' and 'npgnames' fields are unused.
+This is a left-over from commit 571aec4df5b7 ("pinctrl: single: Use generic
+pinmux helpers for managing functions");
 
-On Thu, 08 Feb 2024 11:51:45 +0100, Krzysztof Kozlowski wrote:
-> The DTS code coding style expects exactly one space before '{'
-> character.
-> 
-> 
+Remove them.
 
-This is waiting on the lists for almost two months, so I just picked it up. Let
-me know if anyone prefers to take it instead.
+Found with cppcheck, unusedStructMember.
 
-Applied, thanks!
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+Compile tested only.
+---
+ drivers/pinctrl/pinctrl-single.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-[1/2] arm64: dts: ti: k3-am62p5-sk: minor whitespace cleanup
-      https://git.kernel.org/krzk/linux-dt/c/9d0ee097b3e5873e4e98770b94f11481f485e7c9
-[2/2] ARM: dts: ti: omap: minor whitespace cleanup
-      https://git.kernel.org/krzk/linux-dt/c/021bc7094e8c8ac1380527d3f53561c9a234a190
-
-Best regards,
+diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
+index 19cc0db771a5..2261d4663d19 100644
+--- a/drivers/pinctrl/pinctrl-single.c
++++ b/drivers/pinctrl/pinctrl-single.c
+@@ -81,8 +81,6 @@ struct pcs_conf_type {
+  * @name:	pinctrl function name
+  * @vals:	register and vals array
+  * @nvals:	number of entries in vals array
+- * @pgnames:	array of pingroup names the function uses
+- * @npgnames:	number of pingroup names the function uses
+  * @conf:	array of pin configurations
+  * @nconfs:	number of pin configurations available
+  * @node:	list node
+@@ -91,8 +89,6 @@ struct pcs_function {
+ 	const char *name;
+ 	struct pcs_func_vals *vals;
+ 	unsigned nvals;
+-	const char **pgnames;
+-	int npgnames;
+ 	struct pcs_conf_vals *conf;
+ 	int nconfs;
+ 	struct list_head node;
 -- 
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+2.44.0
+
 
