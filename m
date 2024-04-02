@@ -1,139 +1,83 @@
-Return-Path: <linux-omap+bounces-1098-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1099-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB88B8954E7
-	for <lists+linux-omap@lfdr.de>; Tue,  2 Apr 2024 15:14:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65CCA895B17
+	for <lists+linux-omap@lfdr.de>; Tue,  2 Apr 2024 19:50:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A78E1C23A8C
-	for <lists+linux-omap@lfdr.de>; Tue,  2 Apr 2024 13:14:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0ECB31F22333
+	for <lists+linux-omap@lfdr.de>; Tue,  2 Apr 2024 17:50:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0079C126F1B;
-	Tue,  2 Apr 2024 13:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8056A15AABD;
+	Tue,  2 Apr 2024 17:50:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pLBmLWbF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BX1vEauQ"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34D7B84A52;
-	Tue,  2 Apr 2024 13:11:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1942A175A1;
+	Tue,  2 Apr 2024 17:50:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712063487; cv=none; b=Ab+4DOG88HjoOiv4xBM47NxBmgiUFTY3Hy9u7A04HCzOSu5NaXU36utXhJrr9XqYteA58Vepp88PWfxm6gwz+AkPWWY6MSEYgos95d9h2owMCb5CDLtcG02ywQd3NJT2J8z8KmBjuZNtjiGNR8lguydLm74MZtOuQ/1o9cukWos=
+	t=1712080234; cv=none; b=Vknu90rX6q03FqLi4Or19946FgOZQOVmZfhCt0tqPc9+vc+KualZ6ilhBIPO07V3L54Wy5j90nwezmyHYfskdztbrras92iDetyEUa/klj5WCBcv+7vc9ley7SM3thQbNVrp31CVGxB+I5QN7MvfiLG1jq9TH7ry6A88FFyCdDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712063487; c=relaxed/simple;
-	bh=9zAsnZKUtdaB+0oUBoSFWoiBkfOWRDSb/L5GPa9FOno=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YxBMH/vw9BRleuY+Tgiarjh9bwd72GPxFeu0mmPcJREbnWAJBZN/yKpfG4Kaaw+TbuiZXI9i0CP5GUV3A+mByQFFdOpijlcJdW5RjXrn4OVvBEWp4ZFd+dDZ7/Uk5W0BYB24fbqwaTmKHhiEhGZq2SnC/vrbfUdgjDel2Xq/w7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pLBmLWbF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECE50C433F1;
-	Tue,  2 Apr 2024 13:11:25 +0000 (UTC)
+	s=arc-20240116; t=1712080234; c=relaxed/simple;
+	bh=sZv0jlhFBFOdyS+sZClYNmbL18QFPsyfUOpriRYVglU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=tGB8ekAk7d+PvBg+DOxBxqENkUuRNTerT7ZuDPD4XAfHcFO27cuGref9TfGWE6VcHPuf1OiSmr6+eeciqh2eBTHEd1aBGlpckXZRYVwCdy2GS6NzGRuv54rq3ib9zxDB89bLKDeg7V2gFN8vLl8wytCqXX8ak4BYWIA+bKXrhyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BX1vEauQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82340C433C7;
+	Tue,  2 Apr 2024 17:50:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712063486;
-	bh=9zAsnZKUtdaB+0oUBoSFWoiBkfOWRDSb/L5GPa9FOno=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pLBmLWbFq8b7R4iZ1CSvRnROpQc318dtdynLw3zTplx/2SSnxsPhnBaGB0KWLxJLw
-	 gtTVGsvy4tfXtBGJpBXwq9+p3MCPwkvK/hDkMvCwjFUh5usnZu6XFTibfhvcKn+2H6
-	 bNq+gdNLc+F4UpxqMWgGKmEwi+KPVyCSJwAIqsT2U4GGmN/LnMTaAplp/AjMnXlBu3
-	 Ft/ordeAQQOyjQYy8NAB2+7Nq/5pKWCsboYnCGnNR1VKTyBFWEf/lcch7254rsWnWE
-	 MLVvNT3x0cyP38rdvhtkwlombEcbUi6JLHcn3CjFq0MSnQTG+8Cf+UPPNEYFD7jwHP
-	 CjyG1mwKRgoUQ==
-Date: Tue, 2 Apr 2024 18:41:22 +0530
-From: Vinod Koul <vkoul@kernel.org>
-To: Linus Walleij <linus.walleij@linaro.org>
-Cc: Allen Pais <apais@linux.microsoft.com>, linux-kernel@vger.kernel.org,
-	tj@kernel.org, keescook@chromium.org, marcan@marcan.st,
-	sven@svenpeter.dev, florian.fainelli@broadcom.com,
-	rjui@broadcom.com, sbranden@broadcom.com, paul@crapouillou.net,
-	Eugeniy.Paltsev@synopsys.com, manivannan.sadhasivam@linaro.org,
-	vireshk@kernel.org, Frank.Li@nxp.com, leoyang.li@nxp.com,
-	zw@zh-kernel.org, wangzhou1@hisilicon.com, haijie1@huawei.com,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, sean.wang@mediatek.com,
-	matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
-	afaerber@suse.de, logang@deltatee.com, daniel@zonque.org,
-	haojian.zhuang@gmail.com, robert.jarzmik@free.fr,
-	andersson@kernel.org, konrad.dybcio@linaro.org, orsonzhai@gmail.com,
-	baolin.wang@linux.alibaba.com, zhang.lyra@gmail.com,
-	patrice.chotard@foss.st.com, wens@csie.org,
-	jernej.skrabec@gmail.com, peter.ujfalusi@gmail.com,
-	kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
-	decui@microsoft.com, jassisinghbrar@gmail.com, mchehab@kernel.org,
-	maintainers@bluecherrydvr.com, aubin.constans@microchip.com,
-	ulf.hansson@linaro.org, manuel.lauss@gmail.com,
-	mirq-linux@rere.qmqm.pl, jh80.chung@samsung.com, oakad@yahoo.com,
-	hayashi.kunihiko@socionext.com, mhiramat@kernel.org,
-	brucechang@via.com.tw, HaraldWelte@viatech.com, pierre@ossman.eu,
-	duncan.sands@free.fr, stern@rowland.harvard.edu, oneukum@suse.com,
-	openipmi-developer@lists.sourceforge.net, dmaengine@vger.kernel.org,
-	asahi@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-rpi-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-	imx@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
-	linux-mediatek@lists.infradead.org,
-	linux-actions@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-	linux-riscv@lists.infradead.org, linux-sunxi@lists.linux.dev,
-	linux-tegra@vger.kernel.org, linux-hyperv@vger.kernel.org,
-	linux-rdma@vger.kernel.org, linux-media@vger.kernel.org,
-	linux-mmc@vger.kernel.org, linux-omap@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org, linux-s390@vger.kernel.org,
-	netdev@vger.kernel.org, linux-usb@vger.kernel.org
-Subject: Re: [PATCH 2/9] dma: Convert from tasklet to BH workqueue
-Message-ID: <ZgwD-iScEb9zzB8H@matsya>
-References: <20240327160314.9982-1-apais@linux.microsoft.com>
- <20240327160314.9982-3-apais@linux.microsoft.com>
- <CACRpkdaSBGe0EFm1gK-7qPK4e6T2H1dxFXjhJqO2hWCm1-bNdA@mail.gmail.com>
+	s=k20201202; t=1712080234;
+	bh=sZv0jlhFBFOdyS+sZClYNmbL18QFPsyfUOpriRYVglU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=BX1vEauQ4uo7+aH7/pSumiAjSQrcTvjP/XGtDLpOftSYvszVM0pyanntIHt+itXFA
+	 8dCnCoEvsyX3phNkuJQWRiJYFmJckAlWK2gJDJ2rtgi+iTORFTeuvt18YX0hiumKiz
+	 xUD0q1Z2cE554fckfLFQ7HXMMOkRJRS42/A/8xXEM5da+uXTiac5g0eWzc/aFbsZvS
+	 2R1qOSkQJUwW27RTqN2D7brRFHhYZYJqFFXOOAwjd8zkmSDvO4QNX9vEU/PH1TbjsR
+	 pMoO46qIT5PApQ52eSV30HdANxGvJJLJGM87dqiOYoOehotH8BVXUuYtixsgpKydP8
+	 PUbx2mULM8qjg==
+From: William Breathitt Gray <wbg@kernel.org>
+To: Vignesh Raghavendra <vigneshr@ti.com>,
+	Julien Panis <jpanis@baylibre.com>,
+	William Breathitt Gray <wbg@kernel.org>
+Cc: linux-iio@vger.kernel.org,
+	linux-omap@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+	syednwaris@gmail.com
+Subject: Re: [PATCH] counter: ti-ecap-capture: Utilize COUNTER_COMP_FREQUENCY macro
+Date: Tue,  2 Apr 2024 13:50:18 -0400
+Message-ID: <171208011376.11528.13757651083685639137.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <ZfxhEKdSi1amfcJC@ishi>
+References: <ZfxhEKdSi1amfcJC@ishi>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACRpkdaSBGe0EFm1gK-7qPK4e6T2H1dxFXjhJqO2hWCm1-bNdA@mail.gmail.com>
 
-On 02-04-24, 14:25, Linus Walleij wrote:
-> Hi Allen,
-> 
-> thanks for your patch!
-> 
-> On Wed, Mar 27, 2024 at 5:03 PM Allen Pais <apais@linux.microsoft.com> wrote:
-> 
-> > The only generic interface to execute asynchronously in the BH context is
-> > tasklet; however, it's marked deprecated and has some design flaws. To
-> > replace tasklets, BH workqueue support was recently added. A BH workqueue
-> > behaves similarly to regular workqueues except that the queued work items
-> > are executed in the BH context.
-> >
-> > This patch converts drivers/dma/* from tasklet to BH workqueue.
-> >
-> > Based on the work done by Tejun Heo <tj@kernel.org>
-> > Branch: git://git.kernel.org/pub/scm/linux/kernel/git/tj/wq.git for-6.10
-> >
-> > Signed-off-by: Allen Pais <allen.lkml@gmail.com>
-> (...)
-> > diff --git a/drivers/dma/ste_dma40.c b/drivers/dma/ste_dma40.c
-> (...)
-> >         if (d40c->pending_tx)
-> > -               tasklet_schedule(&d40c->tasklet);
-> > +               queue_work(system_bh_wq, &d40c->work);
-> 
-> Why is "my" driver not allowed to use system_bh_highpri_wq?
-> 
-> I can't see the reasoning between some drivers using system_bh_wq
-> and others being highpri?
-> 
-> Given the DMA usecase I would expect them all to be high prio.
 
-It didnt use tasklet_hi_schedule(), I guess Allen has done the
-conversion of tasklet_schedule -> system_bh_wq and tasklet_hi_schedule
--> system_bh_highpri_wq
+On Thu, 21 Mar 2024 12:32:16 -0400, William Breathitt Gray wrote:
+> Reduce boilerplate by leveraging the COUNTER_COMP_FREQUENCY() macro to
+> define the "frequency" extension.
+> 
+> 
 
-Anyway, we are going to use a dma queue so should be better performance
+Applied, thanks!
 
+[1/1] counter: ti-ecap-capture: Utilize COUNTER_COMP_FREQUENCY macro
+      commit: 916baadd293a4d11e08a7ca1e2968314451ade6c
+
+Best regards,
 -- 
-~Vinod
+William Breathitt Gray <wbg@kernel.org>
 
