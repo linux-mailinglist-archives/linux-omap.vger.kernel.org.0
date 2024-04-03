@@ -1,60 +1,61 @@
-Return-Path: <linux-omap+bounces-1106-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1107-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77C5D8969DC
-	for <lists+linux-omap@lfdr.de>; Wed,  3 Apr 2024 11:01:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D41578969E9
+	for <lists+linux-omap@lfdr.de>; Wed,  3 Apr 2024 11:04:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA02E1C248DE
-	for <lists+linux-omap@lfdr.de>; Wed,  3 Apr 2024 09:01:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75FF11F2666E
+	for <lists+linux-omap@lfdr.de>; Wed,  3 Apr 2024 09:04:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F05C6F085;
-	Wed,  3 Apr 2024 09:01:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C97B71B51;
+	Wed,  3 Apr 2024 09:04:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b="mIsoNQEB"
+	dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b="Y7bIfD5n"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from mail5.25mail.st (mail5.25mail.st [74.50.62.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 529525C61A;
-	Wed,  3 Apr 2024 09:01:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B19A70CC5;
+	Wed,  3 Apr 2024 09:04:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.50.62.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712134879; cv=none; b=pd3b1VWqbynQ0cLilC9JdbwsuwSuCuHk1sD9SplyJHi9iwjIaqVbNlXi29ba7EIGgtQWF+I0IV9Wl7OrbtvOGkUD151qoAARd2WGndqa4HlA+zlaZIx2YF1sg+EymjtWI8AePLL4jiepKXEA2ayEur0cuCYGYVdi8DhSbHOm27c=
+	t=1712135060; cv=none; b=uQ62dp327JPD/cFZYkSO1PzOjIcRXcXS6vAIj6e6i4d9HYuV4fr3MlIAZGRFgsr0pSwUG4eLeIOqmDjxwsXaTk7FEtP1uapCXdkCKsQ37ewuB8s4/bUAWqtKcjfLIwDtfhxJe/tyg5fQeABffkdnjHEYaJo8XkKRThQ623GE0JY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712134879; c=relaxed/simple;
-	bh=RwX4+h2W/jkk5/PNkcJ79ypl7zLQ5SQh1pIdrH5iB+8=;
+	s=arc-20240116; t=1712135060; c=relaxed/simple;
+	bh=B9pqVkXkQIM5UBsUcxu5e8T/vTfwDeUMaKzh4EysHfM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E4J6N28eE86km7RF/gngGRBtIlGki/Ctl5WquDnEKQ4AJLwSX6/BIe+5OkWWwS3U7t+cNPNNSbkPBRAYd6eUqPX9hZ5NXamP09yvuQf3bGrKVJ3Wo4KvpWaomdo7bRe7MNkCIVPAvVk0fKZ1emwMkmvmxdXfyrWGFpMv51j2TIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com; spf=fail smtp.mailfrom=atomide.com; dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b=mIsoNQEB; arc=none smtp.client-ip=74.50.62.9
+	 Content-Type:Content-Disposition:In-Reply-To; b=KEPUbwRtd+0dyEVuhFfmuFvi///MRsCprXBj+SaBPptNNb6EZJTKaDtExD4pVaeQaPtzIcz0b6IVAQ1jgQ959r3p6YpZZJDtEKUT1vNcKrG/xPoEeV9LiDwHSwdOx/Hqrcurz+G65SmatKse5jk9oeNOjelPWXz23O/w0KO3rwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com; spf=fail smtp.mailfrom=atomide.com; dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b=Y7bIfD5n; arc=none smtp.client-ip=74.50.62.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=atomide.com
 Received: from localhost (91-158-86-216.elisa-laajakaista.fi [91.158.86.216])
-	by mail5.25mail.st (Postfix) with ESMTPSA id 4475A60857;
-	Wed,  3 Apr 2024 09:01:00 +0000 (UTC)
+	by mail5.25mail.st (Postfix) with ESMTPSA id CA5C560859;
+	Wed,  3 Apr 2024 09:03:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=atomide.com;
-	s=25mailst; t=1712134877;
-	bh=RwX4+h2W/jkk5/PNkcJ79ypl7zLQ5SQh1pIdrH5iB+8=;
+	s=25mailst; t=1712135058;
+	bh=B9pqVkXkQIM5UBsUcxu5e8T/vTfwDeUMaKzh4EysHfM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mIsoNQEBk0aiA7X2MuNEp1LJktOrPDulD/e/0dPoe+cKItMgYoSHGXLz9rSY2Pe2Y
-	 GR9JF/amWclvdSjJt73wY0hN/7FDJiMiJ6fMRiQlQp+ndNvQNKjnCeu6tt1bBDK0yR
-	 ZAGmjFaRK/L/bE6ARsdziVkLiR2Cp7I7wo26zr07wUAzSxY2KiWsw+FkFSdS7vzgSN
-	 ltFU6FMPmH30HBRCQl+PhMy48xf6DAIBsNZWzqKLK0ebnHrRChdTOtkRtAZDiiPFef
-	 vEIV08VMsadL33T1E9D9UpH4A+oSaNShw2AxFiWtEbuyvtdMy2BEeIEj9W3pFRT6SH
-	 0HDiBEAEfBZzA==
-Date: Wed, 3 Apr 2024 12:00:58 +0300
+	b=Y7bIfD5n0KYF9WJur2xGwO04aJHsdFHQw2qWA0Hl9yAhTo4a64oIZKu4NqH/zIGih
+	 J+5MhbxlFBtE3MjRj01QkYLhqR/h+alDlZKa8bCTIGF2UO7uoeAjJueba8FaXvNCU1
+	 4vuDbsFUwz9GNqx8d4XRY3+Dq/NsOvU1UxepwkNH1y9B4+osuyRGtGw0L1J1WPWXzh
+	 +BIsBrI2Ed+RRtoBgxvrRXGNVPAXmHKNFoadtANhmlubQHDPnE2UVHbuO/443F/OGR
+	 YBgCfl047CrG0lEt5V5XCzj82vN3GhO5NrkNvAA4GrMmaizUsZQXFUAYjO005/gwMt
+	 GmEwLtpJd8+TQ==
+Date: Wed, 3 Apr 2024 12:03:54 +0300
 From: Tony Lindgren <tony@atomide.com>
-To: Arnd Bergmann <arnd@kernel.org>
-Cc: linux-kernel@vger.kernel.org, Tero Kristo <kristo@kernel.org>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	linux-omap@vger.kernel.org, linux-clk@vger.kernel.org
-Subject: Re: [PATCH 11/34] clk: ti: dpll: fix incorrect #ifdef checks
-Message-ID: <20240403090058.GM5132@atomide.com>
-References: <20240403080702.3509288-1-arnd@kernel.org>
- <20240403080702.3509288-12-arnd@kernel.org>
+To: "Sicelo A. Mhlongo" <absicsz@gmail.com>
+Cc: devicetree@vger.kernel.org,
+	=?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-pm@vger.kernel.org,
+	pali@kernel.org, sre@kernel.org, spinal.by@gmail.com,
+	maemo-leste@lists.dyne.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCH] ARM: dts: n900: set charge current limit to 950mA
+Message-ID: <20240403090354.GN5132@atomide.com>
+References: <20240228083846.2401108-2-absicsz@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -63,14 +64,18 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240403080702.3509288-12-arnd@kernel.org>
+In-Reply-To: <20240228083846.2401108-2-absicsz@gmail.com>
 
-* Arnd Bergmann <arnd@kernel.org> [240403 08:18]:
-> The problem is that the #ifdef checks for some of the structures in this
-> file have gone out of sync with the code referencing them. Update these
-> to match the current usage.
+* Sicelo A. Mhlongo <absicsz@gmail.com> [240228 10:40]:
+> From: Arthur Demchenkov <spinal.by@gmail.com>
+> 
+> The vendor kernel used 950mA as the default. The same value works fine on
+> the mainline Linux kernel, and has been tested extensively under Maemo
+> Leste [1] and postmarketOS, who have been using it for a number of years.
 
-Looks good to me:
+Thanks applying into omap-for-v6.10/dt.
 
-Reviewed-by: Tony Lindgren <tony@atomide.com>
+Tony
+
+> [1] https://github.com/maemo-leste/n9xx-linux/commit/fbc4ce7a84e59215914a8981afe918002b191493
 
