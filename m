@@ -1,188 +1,103 @@
-Return-Path: <linux-omap+bounces-1104-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1105-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FE80896954
-	for <lists+linux-omap@lfdr.de>; Wed,  3 Apr 2024 10:46:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E3B48969BE
+	for <lists+linux-omap@lfdr.de>; Wed,  3 Apr 2024 11:00:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE20B284F66
-	for <lists+linux-omap@lfdr.de>; Wed,  3 Apr 2024 08:46:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9061D1C24D1D
+	for <lists+linux-omap@lfdr.de>; Wed,  3 Apr 2024 09:00:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A8BA84FCD;
-	Wed,  3 Apr 2024 08:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 932216EB69;
+	Wed,  3 Apr 2024 09:00:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b="LZgQZ15Q"
+	dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b="Szw3lfbS"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from mail5.25mail.st (mail5.25mail.st [74.50.62.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 337D06D1AF;
-	Wed,  3 Apr 2024 08:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CFEB6FE2D;
+	Wed,  3 Apr 2024 09:00:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.50.62.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712133810; cv=none; b=FeB5zUfcH94rcJc28y8AmilW0I4INT+Z1vCTMUg+XKiYDQQPd3wlpoRP0hchHdZUaWnyURFEJtkqJnsoZY5EsuyuVzsjtPdVAcXUphCL+ASTtE9bi6EyitAZiAPusMYRRawQu653RBQMSaUPxTpxiFT6PhY81/R3SP+OUl2FKRw=
+	t=1712134803; cv=none; b=PlLb9FClXLEX8pqQQ1QYcN54UZIogFvSpGtP9A9wriJ2L/H4zklkFUbRtToHgxmxuD/asiWKZLZ8vQDK4KGErAATkRJ0KeKmJERogDXzj8ghOEz1jaATKENY1eEQzM4/w/nVcWEzGz+FtAy4gxo56NcPfmMd8b/uYvOjgPGzdIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712133810; c=relaxed/simple;
-	bh=mHSoyErBlwfvYg/gMJJkI++JTVkBL4ufvPQJSVNK/kM=;
+	s=arc-20240116; t=1712134803; c=relaxed/simple;
+	bh=b7WHWZU5OZoYiC/XRJOtyWMbZU6czCQ7KcDpAbsJodo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ayrVvIPzWjy1MPOeNKAyrz0lkQ8I+/riD2HQw6PTj4BYwrhQmH5wy/fTOK/Vg/W5clqpl/iFB5GR5f3Oml3YtoS49I8Ef7Za1Lr44xRPlNwtcSSPGixzZ4tna1dJgGT/9KKBJxtID9DC1kURmpMWiXqCzdRi/frPi0WYX9l5SOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com; spf=fail smtp.mailfrom=atomide.com; dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b=LZgQZ15Q; arc=none smtp.client-ip=74.50.62.9
+	 Content-Type:Content-Disposition:In-Reply-To; b=Fvp4Y/h5Y6Z2GMwYyPLknqm+hNO9yaIahGLiemphVz135BTMyk8KBmyI7YNneyKaJ4bg0GzbktRDLA3FqFJS1fiK4Zelu8JEpU6Es+9CHoisymnoahjYOnQWltJxq02v16cVv9+TTcrEiNoTdpMC8PMron6qX2mLK9GnTylldjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com; spf=fail smtp.mailfrom=atomide.com; dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b=Szw3lfbS; arc=none smtp.client-ip=74.50.62.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=atomide.com
 Received: from localhost (91-158-86-216.elisa-laajakaista.fi [91.158.86.216])
-	by mail5.25mail.st (Postfix) with ESMTPSA id A6160604F3;
-	Wed,  3 Apr 2024 08:43:20 +0000 (UTC)
+	by mail5.25mail.st (Postfix) with ESMTPSA id 6520060857;
+	Wed,  3 Apr 2024 08:59:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=atomide.com;
-	s=25mailst; t=1712133807;
-	bh=mHSoyErBlwfvYg/gMJJkI++JTVkBL4ufvPQJSVNK/kM=;
+	s=25mailst; t=1712134800;
+	bh=b7WHWZU5OZoYiC/XRJOtyWMbZU6czCQ7KcDpAbsJodo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LZgQZ15QEnUqjUcnkb72dYvtWDUEoTLTE3qyB8z8+B1xUmOwOLqU927M0TKhv8kLT
-	 1UvjPBF7OLFR0GHaGfRH/Tj7uVZCIhJLl9+t1imEmj7sEYeNkGme164nE+JUEz/Icr
-	 WgO0huSe7n8pbOmnjtshSQQaIlyZXQVgZH17SwB8lZQDWwiRpQlY5rZg7AwMAO+ufE
-	 EQNL6TBKHu0Z9lQqL+0UAS4NKFp68wGvNjbqhFvi2tnubHjCSeRigBNjclESrgn35U
-	 xTx1tqor6aPiq+PVfQQZYeD6IcnKprjSuDUPp8vgiBfWu6eyeaklp7J16iFkwmFuJc
-	 GGXqn1AWuvivA==
-Date: Wed, 3 Apr 2024 11:43:19 +0300
+	b=Szw3lfbSyO6omGRGsybYFAki1EmPMME3PEw8owPoQYF8RPKBd8GKyLLa0TMpfoajR
+	 ZikRpIsXsdBZBLnmSGy04wy8BoSjZ4FEx4p8Ct4pX7WjMBlJv7bUoKx+6AFTv4M9nz
+	 wAt+Ij+IwmndNelJ46ORXuc8sggyBWe2bFbMzvvybUvUEaqIGbGOQdoDvUKWZurZv7
+	 QXN50176SSdtR5P3bALRX8YZ9/gvo03GJB0AZzSdLIwjDdKIRJ2ZmV5DZSWl6m1cee
+	 64O5V7A7OStKwybW9z4HQWAcxy4CwrFli5va9Om9haIQZ4KiVEmQohyeqJrho01h25
+	 YF2FM/xACXH6A==
+Date: Wed, 3 Apr 2024 11:59:47 +0300
 From: Tony Lindgren <tony@atomide.com>
-To: linux-omap@vger.kernel.org
-Cc: =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH 00/12] Use clksel for more clocks for dra7
-Message-ID: <20240403084319.GK5132@atomide.com>
-References: <20240327073856.21517-1-tony@atomide.com>
- <20240328113133.GG5132@atomide.com>
+To: Linus Walleij <linus.walleij@linaro.org>
+Cc: Matthijs Kooijman <matthijs@stdin.nl>,
+	Haojian Zhuang <haojian.zhuang@linaro.org>,
+	linux-gpio@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCH] pinctrl: single: Fix PIN_CONFIG_BIAS_DISABLE handling
+Message-ID: <20240403085947.GL5132@atomide.com>
+References: <Zflxi8SCzzouP9zW@login.tika.stderr.nl>
+ <20240319110633.230329-1-matthijs@stdin.nl>
+ <CACRpkdaRM-uqp_Y=gT=FMC48=835dQnB0YomYkxR9ag-SW5cOg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240328113133.GG5132@atomide.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CACRpkdaRM-uqp_Y=gT=FMC48=835dQnB0YomYkxR9ag-SW5cOg@mail.gmail.com>
 
-* Tony Lindgren <tony@atomide.com> [240328 11:31]:
-> * Tony Lindgren <tony@atomide.com> [240327 09:39]:
-> > The DPLL output clocks are problematic at this point as the
-> > clock driver makes assumptions based on no reg property in
-> > _register_dpll_x2() for the ti,omap4-dpll-x2-clock. After
-> > the driver issues are solved, the DPLL output related clocks
-> > can also use the clksel binding.
+* Linus Walleij <linus.walleij@linaro.org> [240328 21:02]:
+> On Tue, Mar 19, 2024 at 12:07 PM Matthijs Kooijman <matthijs@stdin.nl> wrote:
 > 
-> Actually the driver needs changes only for clocks where there's no
-> reg entry. For the clocks with a reg entry like dpll_per m2 outputs,
-> the following seems to work based on light testing.
-
-Oh but below dpll_per_x2_ck has no reg yet we now add the reg property.
-Likely the additional patch below can't be used without driver changes
-for _register_dpll_x2().
-
-Regards,
-
-Tony
-
-> 8< -----------------
-> diff --git a/arch/arm/boot/dts/ti/omap/dra7xx-clocks.dtsi b/arch/arm/boot/dts/ti/omap/dra7xx-clocks.dtsi
-> --- a/arch/arm/boot/dts/ti/omap/dra7xx-clocks.dtsi
-> +++ b/arch/arm/boot/dts/ti/omap/dra7xx-clocks.dtsi
-> @@ -1425,6 +1425,7 @@ dpll_per_byp_mux: clock@23 {
->  		};
->  	};
->  
-> +	/* CM_CLKSEL_DPLL_PER */
->  	dpll_per_ck: clock@140 {
->  		#clock-cells = <0>;
->  		compatible = "ti,omap4-dpll-clock";
-> @@ -1433,16 +1434,43 @@ dpll_per_ck: clock@140 {
->  		reg = <0x0140>, <0x0144>, <0x014c>, <0x0148>;
->  	};
->  
-> -	dpll_per_m2_ck: clock-dpll-per-m2-8@150 {
-> -		#clock-cells = <0>;
-> -		compatible = "ti,divider-clock";
-> -		clock-output-names = "dpll_per_m2_ck";
-> -		clocks = <&dpll_per_ck>;
-> -		ti,max-div = <31>;
-> -		ti,autoidle-shift = <8>;
-> -		reg = <0x0150>;
-> -		ti,index-starts-at-one;
-> -		ti,invert-autoidle-bit;
-> +	/* CM_DIV_M2_DPLL_PER */
-> +	clock@150 {
-> +		compatible = "ti,clksel";
-> +		reg = <0x150>;
-> +		#clock-cells = <2>;
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
-> +
-> +		dpll_per_m2x2_ck: clock@0 {
-> +			reg = <0>;
-> +			#clock-cells = <0>;
-> +			compatible = "ti,divider-clock";
-> +			clock-output-names = "dpll_per_m2x2_ck";
-> +			clocks = <&dpll_per_x2_ck>;
-> +			ti,max-div = <31>;
-> +			ti,autoidle-shift = <8>;
-> +			ti,index-starts-at-one;
-> +			ti,invert-autoidle-bit;
-> +		};
-> +
-> +		dpll_per_m2_ck: clock@8 {
-> +			compatible = "fixed-factor-clock";
-> +			reg = <8>;
-> +			#clock-cells = <0>;
-> +			clocks = <&dpll_per_m2x2_ck>;
-> +			clock-mult = <1>;
-> +			clock-div = <2>;
-> +			clock-output-names = "dpll_per_m2_ck";
-> +		};
-> +
-> +		dpll_per_x2_ck: clock@10 {
-> +			reg = <10>;
-> +			#clock-cells = <0>;
-> +			compatible = "ti,omap4-dpll-x2-clock";
-> +			clock-output-names = "dpll_per_x2_ck";
-> +			clocks = <&dpll_per_ck>;
-> +		};
->  	};
->  
->  	func_96m_aon_dclk_div: clock-func-96m-aon-dclk-div {
-> @@ -1503,13 +1531,6 @@ dpll_pcie_ref_m2_ck: clock-dpll-pcie-ref-m2-8@210 {
->  		ti,invert-autoidle-bit;
->  	};
->  
-> -	dpll_per_x2_ck: clock-dpll-per-x2 {
-> -		#clock-cells = <0>;
-> -		compatible = "ti,omap4-dpll-x2-clock";
-> -		clock-output-names = "dpll_per_x2_ck";
-> -		clocks = <&dpll_per_ck>;
-> -	};
-> -
->  	dpll_per_h11x2_ck: clock-dpll-per-h11x2-8@158 {
->  		#clock-cells = <0>;
->  		compatible = "ti,divider-clock";
-> @@ -1558,18 +1579,6 @@ dpll_per_h14x2_ck: clock-dpll-per-h14x2-8@164 {
->  		ti,invert-autoidle-bit;
->  	};
->  
-> -	dpll_per_m2x2_ck: clock-dpll-per-m2x2-8@150 {
-> -		#clock-cells = <0>;
-> -		compatible = "ti,divider-clock";
-> -		clock-output-names = "dpll_per_m2x2_ck";
-> -		clocks = <&dpll_per_x2_ck>;
-> -		ti,max-div = <31>;
-> -		ti,autoidle-shift = <8>;
-> -		reg = <0x0150>;
-> -		ti,index-starts-at-one;
-> -		ti,invert-autoidle-bit;
-> -	};
-> -
->  	dpll_usb_clkdcoldo: clock-dpll-usb-clkdcoldo {
->  		#clock-cells = <0>;
->  		compatible = "fixed-factor-clock";
-> -- 
-> 2.44.0
+> > The pinctrl-single driver handles pin_config_set by looking up the
+> > requested setting in a DT-defined lookup table, which defines what bits
+> > correspond to each setting. There is no way to add
+> > PIN_CONFIG_BIAS_DISABLE entries to the table, since there is instead
+> > code to disable the bias by applying the disable values of both the
+> > pullup and pulldown entries in the table.
+> >
+> > However, this code is inside the table-lookup loop, so it would only
+> > execute if there is an entry for PIN_CONFIG_BIAS_DISABLE in the table,
+> > which can never exist, so this code never runs.
+> >
+> > This commit lifts the offending code out of the loop, so it just
+> > executes directly whenever PIN_CONFIG_BIAS_DISABLE is requested,
+> > skippipng the table lookup loop.
+> >
+> > This also introduces a new `param` variable to make the code slightly
+> > more readable.
+> >
+> > This bug seems to have existed when this code was first merged in commit
+> > 9dddb4df90d13 ("pinctrl: single: support generic pinconf"). Earlier
+> > versions of this patch did have an entry for PIN_CONFIG_BIAS_DISABLE in
+> > the lookup table, but that was removed, which is probably how this bug
+> > was introduced.
+> >
+> > Signed-off-by: Matthijs Kooijman <matthijs@stdin.nl>
 > 
+> This looks reasonable to me, but I need Tony to review it before applying.
+
+Looks good to me:
+
+Reviewed-by: Tony Lindgren <tony@atomide.com>
 
