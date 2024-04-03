@@ -1,451 +1,188 @@
-Return-Path: <linux-omap+bounces-1103-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1104-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B96A5896877
-	for <lists+linux-omap@lfdr.de>; Wed,  3 Apr 2024 10:25:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FE80896954
+	for <lists+linux-omap@lfdr.de>; Wed,  3 Apr 2024 10:46:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 458621F2194A
-	for <lists+linux-omap@lfdr.de>; Wed,  3 Apr 2024 08:25:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE20B284F66
+	for <lists+linux-omap@lfdr.de>; Wed,  3 Apr 2024 08:46:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10476763F8;
-	Wed,  3 Apr 2024 08:15:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A8BA84FCD;
+	Wed,  3 Apr 2024 08:43:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ItNhRIO2"
+	dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b="LZgQZ15Q"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail5.25mail.st (mail5.25mail.st [74.50.62.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72BBF6EB69;
-	Wed,  3 Apr 2024 08:15:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 337D06D1AF;
+	Wed,  3 Apr 2024 08:43:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.50.62.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712132110; cv=none; b=cKM0lAb/YbKmpM02PmdE8w/7dalS1Znbs3B2jhsyDmFmBWOmJayTAdhJS/AR/0L767DKnXAA88++HVry0H1XlL22zwBeZlqTKL1qTgNUXltAbTgMumMT/bU013W3oDYXR2KSmlkXRZdEPAD4cLqHckabDu4hWbYdkGpoYzcbjaI=
+	t=1712133810; cv=none; b=FeB5zUfcH94rcJc28y8AmilW0I4INT+Z1vCTMUg+XKiYDQQPd3wlpoRP0hchHdZUaWnyURFEJtkqJnsoZY5EsuyuVzsjtPdVAcXUphCL+ASTtE9bi6EyitAZiAPusMYRRawQu653RBQMSaUPxTpxiFT6PhY81/R3SP+OUl2FKRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712132110; c=relaxed/simple;
-	bh=RuQRkHrQ9e3cp/Msr4bhBQotSNWJFjViuqNekUfGnHE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=A1XIq0QqLjiYe+2Pqd8hkejyTFFblv8pu8eNshjYZmWIxvh0BTO7yqwXkWBeEGPHOp8KBgBlm9sKd4HrNOYBc5mJdnB2A0vdODUkfnFO9mLsl+d9oFlTB6U0SJvDmkk4N7YqNln2XJ6hitN9as/OvDBmRgPPS1fnuDx1f3pZmAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ItNhRIO2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E04A9C43390;
-	Wed,  3 Apr 2024 08:14:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712132110;
-	bh=RuQRkHrQ9e3cp/Msr4bhBQotSNWJFjViuqNekUfGnHE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ItNhRIO25oVeA7GZkONi09iRrqNBHIydMSlFqXa22rbvpiOpF/t/5Zf0w1AP3mFo6
-	 O9Kzb/WTl2tJ4EjZFPzTm2IN46cCsU5xufjehvrzvGRB9VCVUMJdCeHMMTkG8eBTV9
-	 dpUfvhvhuL3MZ/Uvri9wE8FnVBM2zaSwt65z3teAtgNRm3atfXoTM1/I9dwIfXnw2m
-	 alDJkBocPoMKNGLVXN/wV7I9YT+4kmwrbOi0i+R+rIyddSYM2A45JFA2o2y4jA6NBq
-	 bdE1Ox/06zB7V1Qdugd0BsqMEj2MWn2Gg5AGnI/kD7I2blxByZ82zuDr76AyDfCX7s
-	 FY1DVZoMH/odg==
-From: Arnd Bergmann <arnd@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	Corey Minyard <minyard@acm.org>,
-	Peter Huewe <peterhuewe@gmx.de>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	Moritz Fischer <mdf@kernel.org>,
-	Wu Hao <hao.wu@intel.com>,
-	Xu Yilun <yilun.xu@intel.com>,
-	Jiri Kosina <jikos@kernel.org>,
-	Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-	Michael Hennerich <michael.hennerich@analog.com>,
-	Peter Rosin <peda@axentia.se>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Iyappan Subramanian <iyappan@os.amperecomputing.com>,
-	Keyur Chudgar <keyur@os.amperecomputing.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Yisen Zhuang <yisen.zhuang@huawei.com>,
-	Salil Mehta <salil.mehta@huawei.com>,
-	Tony Lindgren <tony@atomide.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Xiang Chen <chenxiang66@hisilicon.com>,
-	"James E.J. Bottomley" <jejb@linux.ibm.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Jacky Huang <ychuang3@nuvoton.com>,
-	Shan-Chun Hung <schung@nuvoton.com>
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Tom Rix <trix@redhat.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Rob Herring <robh@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	openipmi-developer@lists.sourceforge.net,
-	linux-integrity@vger.kernel.org,
-	dmaengine@vger.kernel.org,
-	linux-fpga@vger.kernel.org,
-	linux-input@vger.kernel.org,
-	linux-i2c@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-omap@vger.kernel.org,
-	linux-rtc@vger.kernel.org,
-	linux-scsi@vger.kernel.org,
-	linux-staging@lists.linux.dev,
-	linux-serial@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH 33/34] drivers: remove incorrect of_match_ptr/ACPI_PTR annotations
-Date: Wed,  3 Apr 2024 10:06:51 +0200
-Message-Id: <20240403080702.3509288-34-arnd@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240403080702.3509288-1-arnd@kernel.org>
-References: <20240403080702.3509288-1-arnd@kernel.org>
+	s=arc-20240116; t=1712133810; c=relaxed/simple;
+	bh=mHSoyErBlwfvYg/gMJJkI++JTVkBL4ufvPQJSVNK/kM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ayrVvIPzWjy1MPOeNKAyrz0lkQ8I+/riD2HQw6PTj4BYwrhQmH5wy/fTOK/Vg/W5clqpl/iFB5GR5f3Oml3YtoS49I8Ef7Za1Lr44xRPlNwtcSSPGixzZ4tna1dJgGT/9KKBJxtID9DC1kURmpMWiXqCzdRi/frPi0WYX9l5SOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com; spf=fail smtp.mailfrom=atomide.com; dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b=LZgQZ15Q; arc=none smtp.client-ip=74.50.62.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=atomide.com
+Received: from localhost (91-158-86-216.elisa-laajakaista.fi [91.158.86.216])
+	by mail5.25mail.st (Postfix) with ESMTPSA id A6160604F3;
+	Wed,  3 Apr 2024 08:43:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=atomide.com;
+	s=25mailst; t=1712133807;
+	bh=mHSoyErBlwfvYg/gMJJkI++JTVkBL4ufvPQJSVNK/kM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LZgQZ15QEnUqjUcnkb72dYvtWDUEoTLTE3qyB8z8+B1xUmOwOLqU927M0TKhv8kLT
+	 1UvjPBF7OLFR0GHaGfRH/Tj7uVZCIhJLl9+t1imEmj7sEYeNkGme164nE+JUEz/Icr
+	 WgO0huSe7n8pbOmnjtshSQQaIlyZXQVgZH17SwB8lZQDWwiRpQlY5rZg7AwMAO+ufE
+	 EQNL6TBKHu0Z9lQqL+0UAS4NKFp68wGvNjbqhFvi2tnubHjCSeRigBNjclESrgn35U
+	 xTx1tqor6aPiq+PVfQQZYeD6IcnKprjSuDUPp8vgiBfWu6eyeaklp7J16iFkwmFuJc
+	 GGXqn1AWuvivA==
+Date: Wed, 3 Apr 2024 11:43:19 +0300
+From: Tony Lindgren <tony@atomide.com>
+To: linux-omap@vger.kernel.org
+Cc: =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH 00/12] Use clksel for more clocks for dra7
+Message-ID: <20240403084319.GK5132@atomide.com>
+References: <20240327073856.21517-1-tony@atomide.com>
+ <20240328113133.GG5132@atomide.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240328113133.GG5132@atomide.com>
 
-From: Arnd Bergmann <arnd@arndb.de>
+* Tony Lindgren <tony@atomide.com> [240328 11:31]:
+> * Tony Lindgren <tony@atomide.com> [240327 09:39]:
+> > The DPLL output clocks are problematic at this point as the
+> > clock driver makes assumptions based on no reg property in
+> > _register_dpll_x2() for the ti,omap4-dpll-x2-clock. After
+> > the driver issues are solved, the DPLL output related clocks
+> > can also use the clksel binding.
+> 
+> Actually the driver needs changes only for clocks where there's no
+> reg entry. For the clocks with a reg entry like dpll_per m2 outputs,
+> the following seems to work based on light testing.
 
-When building with CONFIG_OF and/or CONFIG_ACPI disabled but W=1 extra
-warnings enabled, a lot of driver cause a warning about an unused
-ID table:
+Oh but below dpll_per_x2_ck has no reg yet we now add the reg property.
+Likely the additional patch below can't be used without driver changes
+for _register_dpll_x2().
 
-drivers/char/tpm/tpm_ftpm_tee.c:356:34: error: unused variable 'of_ftpm_tee_ids' [-Werror,-Wunused-const-variable]
-drivers/dma/img-mdc-dma.c:863:34: error: unused variable 'mdc_dma_of_match' [-Werror,-Wunused-const-variable]
-drivers/fpga/versal-fpga.c:62:34: error: unused variable 'versal_fpga_of_match' [-Werror,-Wunused-const-variable]
-drivers/i2c/muxes/i2c-mux-ltc4306.c:200:34: error: unused variable 'ltc4306_of_match' [-Werror,-Wunused-const-variable]
-drivers/i2c/muxes/i2c-mux-reg.c:242:34: error: unused variable 'i2c_mux_reg_of_match' [-Werror,-Wunused-const-variable]
-drivers/memory/pl353-smc.c:62:34: error: unused variable 'pl353_smc_supported_children' [-Werror,-Wunused-const-variable]
-drivers/regulator/pbias-regulator.c:136:34: error: unused variable 'pbias_of_match' [-Werror,-Wunused-const-variable]
-drivers/regulator/twl-regulator.c:552:34: error: unused variable 'twl_of_match' [-Werror,-Wunused-const-variable]
-drivers/regulator/twl6030-regulator.c:645:34: error: unused variable 'twl_of_match' [-Werror,-Wunused-const-variable]
-drivers/scsi/hisi_sas/hisi_sas_v2_hw.c:3635:36: error: unused variable 'sas_v2_acpi_match' [-Werror,-Wunused-const-variable]
-drivers/staging/pi433/pi433_if.c:1359:34: error: unused variable 'pi433_dt_ids' [-Werror,-Wunused-const-variable]
-drivers/tty/serial/amba-pl011.c:2945:34: error: unused variable 'sbsa_uart_of_match' [-Werror,-Wunused-const-variable]
+Regards,
 
-The fix is always to just remove the of_match_ptr() and ACPI_PTR() wrappers
-that remove the reference, rather than adding another #ifdef just for build
-testing for a configuration that doesn't matter in practice.
+Tony
 
-I considered splitting up the large patch into per subsystem patches, but since
-it's really just the same thing everywhere it feels better to do it all at once.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- drivers/char/ipmi/ipmb_dev_int.c          | 2 +-
- drivers/char/tpm/tpm_ftpm_tee.c           | 2 +-
- drivers/dma/img-mdc-dma.c                 | 2 +-
- drivers/fpga/versal-fpga.c                | 2 +-
- drivers/hid/hid-google-hammer.c           | 6 ++----
- drivers/i2c/muxes/i2c-mux-ltc4306.c       | 2 +-
- drivers/i2c/muxes/i2c-mux-reg.c           | 2 +-
- drivers/input/touchscreen/wdt87xx_i2c.c   | 2 +-
- drivers/mux/adg792a.c                     | 2 +-
- drivers/net/ethernet/apm/xgene-v2/main.c  | 2 +-
- drivers/net/ethernet/hisilicon/hns_mdio.c | 2 +-
- drivers/regulator/pbias-regulator.c       | 2 +-
- drivers/regulator/twl-regulator.c         | 2 +-
- drivers/regulator/twl6030-regulator.c     | 2 +-
- drivers/rtc/rtc-fsl-ftm-alarm.c           | 2 +-
- drivers/scsi/hisi_sas/hisi_sas_v1_hw.c    | 2 +-
- drivers/scsi/hisi_sas/hisi_sas_v2_hw.c    | 2 +-
- drivers/staging/pi433/pi433_if.c          | 2 +-
- drivers/tty/serial/amba-pl011.c           | 6 +++---
- drivers/tty/serial/ma35d1_serial.c        | 2 +-
- 20 files changed, 23 insertions(+), 25 deletions(-)
-
-diff --git a/drivers/char/ipmi/ipmb_dev_int.c b/drivers/char/ipmi/ipmb_dev_int.c
-index 49100845fcb7..5e7bfc7c26e2 100644
---- a/drivers/char/ipmi/ipmb_dev_int.c
-+++ b/drivers/char/ipmi/ipmb_dev_int.c
-@@ -364,7 +364,7 @@ MODULE_DEVICE_TABLE(acpi, acpi_ipmb_id);
- static struct i2c_driver ipmb_driver = {
- 	.driver = {
- 		.name = "ipmb-dev",
--		.acpi_match_table = ACPI_PTR(acpi_ipmb_id),
-+		.acpi_match_table = acpi_ipmb_id,
- 	},
- 	.probe = ipmb_probe,
- 	.remove = ipmb_remove,
-diff --git a/drivers/char/tpm/tpm_ftpm_tee.c b/drivers/char/tpm/tpm_ftpm_tee.c
-index 2ea4882251cf..0c453f3f928d 100644
---- a/drivers/char/tpm/tpm_ftpm_tee.c
-+++ b/drivers/char/tpm/tpm_ftpm_tee.c
-@@ -362,7 +362,7 @@ MODULE_DEVICE_TABLE(of, of_ftpm_tee_ids);
- static struct platform_driver ftpm_tee_plat_driver = {
- 	.driver = {
- 		.name = "ftpm-tee",
--		.of_match_table = of_match_ptr(of_ftpm_tee_ids),
-+		.of_match_table = of_ftpm_tee_ids,
- 	},
- 	.shutdown = ftpm_plat_tee_shutdown,
- 	.probe = ftpm_plat_tee_probe,
-diff --git a/drivers/dma/img-mdc-dma.c b/drivers/dma/img-mdc-dma.c
-index 0532dd2640dc..6931c8a65415 100644
---- a/drivers/dma/img-mdc-dma.c
-+++ b/drivers/dma/img-mdc-dma.c
-@@ -1073,7 +1073,7 @@ static struct platform_driver mdc_dma_driver = {
- 	.driver = {
- 		.name = "img-mdc-dma",
- 		.pm = &img_mdc_pm_ops,
--		.of_match_table = of_match_ptr(mdc_dma_of_match),
-+		.of_match_table = mdc_dma_of_match,
- 	},
- 	.probe = mdc_dma_probe,
- 	.remove_new = mdc_dma_remove,
-diff --git a/drivers/fpga/versal-fpga.c b/drivers/fpga/versal-fpga.c
-index 3710e8f01be2..e6189106c468 100644
---- a/drivers/fpga/versal-fpga.c
-+++ b/drivers/fpga/versal-fpga.c
-@@ -69,7 +69,7 @@ static struct platform_driver versal_fpga_driver = {
- 	.probe = versal_fpga_probe,
- 	.driver = {
- 		.name = "versal_fpga_manager",
--		.of_match_table = of_match_ptr(versal_fpga_of_match),
-+		.of_match_table = versal_fpga_of_match,
- 	},
- };
- module_platform_driver(versal_fpga_driver);
-diff --git a/drivers/hid/hid-google-hammer.c b/drivers/hid/hid-google-hammer.c
-index c6bdb9c4ef3e..886cc5748b7d 100644
---- a/drivers/hid/hid-google-hammer.c
-+++ b/drivers/hid/hid-google-hammer.c
-@@ -275,21 +275,19 @@ static const struct acpi_device_id cbas_ec_acpi_ids[] = {
- };
- MODULE_DEVICE_TABLE(acpi, cbas_ec_acpi_ids);
- 
--#ifdef CONFIG_OF
- static const struct of_device_id cbas_ec_of_match[] = {
- 	{ .compatible = "google,cros-cbas" },
- 	{ },
- };
- MODULE_DEVICE_TABLE(of, cbas_ec_of_match);
--#endif
- 
- static struct platform_driver cbas_ec_driver = {
- 	.probe = cbas_ec_probe,
- 	.remove = cbas_ec_remove,
- 	.driver = {
- 		.name = "cbas_ec",
--		.acpi_match_table = ACPI_PTR(cbas_ec_acpi_ids),
--		.of_match_table = of_match_ptr(cbas_ec_of_match),
-+		.acpi_match_table = cbas_ec_acpi_ids,
-+		.of_match_table = cbas_ec_of_match,
- 		.pm = &cbas_ec_pm_ops,
- 	},
- };
-diff --git a/drivers/i2c/muxes/i2c-mux-ltc4306.c b/drivers/i2c/muxes/i2c-mux-ltc4306.c
-index 23766d853e76..c6d70788161a 100644
---- a/drivers/i2c/muxes/i2c-mux-ltc4306.c
-+++ b/drivers/i2c/muxes/i2c-mux-ltc4306.c
-@@ -303,7 +303,7 @@ static void ltc4306_remove(struct i2c_client *client)
- static struct i2c_driver ltc4306_driver = {
- 	.driver		= {
- 		.name	= "ltc4306",
--		.of_match_table = of_match_ptr(ltc4306_of_match),
-+		.of_match_table = ltc4306_of_match,
- 	},
- 	.probe		= ltc4306_probe,
- 	.remove		= ltc4306_remove,
-diff --git a/drivers/i2c/muxes/i2c-mux-reg.c b/drivers/i2c/muxes/i2c-mux-reg.c
-index 8489971babd3..0f1b39964743 100644
---- a/drivers/i2c/muxes/i2c-mux-reg.c
-+++ b/drivers/i2c/muxes/i2c-mux-reg.c
-@@ -250,7 +250,7 @@ static struct platform_driver i2c_mux_reg_driver = {
- 	.remove_new = i2c_mux_reg_remove,
- 	.driver	= {
- 		.name	= "i2c-mux-reg",
--		.of_match_table = of_match_ptr(i2c_mux_reg_of_match),
-+		.of_match_table = i2c_mux_reg_of_match,
- 	},
- };
- 
-diff --git a/drivers/input/touchscreen/wdt87xx_i2c.c b/drivers/input/touchscreen/wdt87xx_i2c.c
-index 32c7be54434c..9f3a4092e47c 100644
---- a/drivers/input/touchscreen/wdt87xx_i2c.c
-+++ b/drivers/input/touchscreen/wdt87xx_i2c.c
-@@ -1166,7 +1166,7 @@ static struct i2c_driver wdt87xx_driver = {
- 		.name = WDT87XX_NAME,
- 		.dev_groups = wdt87xx_groups,
- 		.pm = pm_sleep_ptr(&wdt87xx_pm_ops),
--		.acpi_match_table = ACPI_PTR(wdt87xx_acpi_id),
-+		.acpi_match_table = wdt87xx_acpi_id,
- 	},
- };
- module_i2c_driver(wdt87xx_driver);
-diff --git a/drivers/mux/adg792a.c b/drivers/mux/adg792a.c
-index 4da5aecb9fc6..a5afe29e3cf1 100644
---- a/drivers/mux/adg792a.c
-+++ b/drivers/mux/adg792a.c
-@@ -141,7 +141,7 @@ MODULE_DEVICE_TABLE(of, adg792a_of_match);
- static struct i2c_driver adg792a_driver = {
- 	.driver		= {
- 		.name		= "adg792a",
--		.of_match_table = of_match_ptr(adg792a_of_match),
-+		.of_match_table = adg792a_of_match,
- 	},
- 	.probe		= adg792a_probe,
- 	.id_table	= adg792a_id,
-diff --git a/drivers/net/ethernet/apm/xgene-v2/main.c b/drivers/net/ethernet/apm/xgene-v2/main.c
-index 9e90c2381491..64370057ba3d 100644
---- a/drivers/net/ethernet/apm/xgene-v2/main.c
-+++ b/drivers/net/ethernet/apm/xgene-v2/main.c
-@@ -731,7 +731,7 @@ MODULE_DEVICE_TABLE(acpi, xge_acpi_match);
- static struct platform_driver xge_driver = {
- 	.driver = {
- 		   .name = "xgene-enet-v2",
--		   .acpi_match_table = ACPI_PTR(xge_acpi_match),
-+		   .acpi_match_table = xge_acpi_match,
- 	},
- 	.probe = xge_probe,
- 	.remove_new = xge_remove,
-diff --git a/drivers/net/ethernet/hisilicon/hns_mdio.c b/drivers/net/ethernet/hisilicon/hns_mdio.c
-index ed73707176c1..f8caf59bd759 100644
---- a/drivers/net/ethernet/hisilicon/hns_mdio.c
-+++ b/drivers/net/ethernet/hisilicon/hns_mdio.c
-@@ -639,7 +639,7 @@ static struct platform_driver hns_mdio_driver = {
- 	.driver = {
- 		   .name = MDIO_DRV_NAME,
- 		   .of_match_table = hns_mdio_match,
--		   .acpi_match_table = ACPI_PTR(hns_mdio_acpi_match),
-+		   .acpi_match_table = hns_mdio_acpi_match,
- 		   },
- };
- 
-diff --git a/drivers/regulator/pbias-regulator.c b/drivers/regulator/pbias-regulator.c
-index cd5a0d7e4455..2eeb99e7b850 100644
---- a/drivers/regulator/pbias-regulator.c
-+++ b/drivers/regulator/pbias-regulator.c
-@@ -231,7 +231,7 @@ static struct platform_driver pbias_regulator_driver = {
- 	.driver		= {
- 		.name		= "pbias-regulator",
- 		.probe_type	= PROBE_PREFER_ASYNCHRONOUS,
--		.of_match_table = of_match_ptr(pbias_of_match),
-+		.of_match_table = pbias_of_match,
- 	},
- };
- 
-diff --git a/drivers/regulator/twl-regulator.c b/drivers/regulator/twl-regulator.c
-index 5bacfcebf59a..4ed91e88e1eb 100644
---- a/drivers/regulator/twl-regulator.c
-+++ b/drivers/regulator/twl-regulator.c
-@@ -656,7 +656,7 @@ static struct platform_driver twlreg_driver = {
- 	.driver  = {
- 		.name  = "twl4030_reg",
- 		.probe_type = PROBE_PREFER_ASYNCHRONOUS,
--		.of_match_table = of_match_ptr(twl_of_match),
-+		.of_match_table = twl_of_match,
- 	},
- };
- 
-diff --git a/drivers/regulator/twl6030-regulator.c b/drivers/regulator/twl6030-regulator.c
-index 6eed0f6e0adb..8a84048a66d7 100644
---- a/drivers/regulator/twl6030-regulator.c
-+++ b/drivers/regulator/twl6030-regulator.c
-@@ -765,7 +765,7 @@ static struct platform_driver twlreg_driver = {
- 	.driver  = {
- 		.name  = "twl6030_reg",
- 		.probe_type = PROBE_PREFER_ASYNCHRONOUS,
--		.of_match_table = of_match_ptr(twl_of_match),
-+		.of_match_table = twl_of_match,
- 	},
- };
- 
-diff --git a/drivers/rtc/rtc-fsl-ftm-alarm.c b/drivers/rtc/rtc-fsl-ftm-alarm.c
-index a72c4ad0cec6..12da7d36e520 100644
---- a/drivers/rtc/rtc-fsl-ftm-alarm.c
-+++ b/drivers/rtc/rtc-fsl-ftm-alarm.c
-@@ -320,7 +320,7 @@ static struct platform_driver ftm_rtc_driver = {
- 	.driver		= {
- 		.name	= "ftm-alarm",
- 		.of_match_table = ftm_rtc_match,
--		.acpi_match_table = ACPI_PTR(ftm_imx_acpi_ids),
-+		.acpi_match_table = ftm_imx_acpi_ids,
- 	},
- };
- 
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_v1_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v1_hw.c
-index 161feae3acab..c6f313c9605b 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_v1_hw.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_v1_hw.c
-@@ -1788,7 +1788,7 @@ static struct platform_driver hisi_sas_v1_driver = {
- 	.driver = {
- 		.name = DRV_NAME,
- 		.of_match_table = sas_v1_of_match,
--		.acpi_match_table = ACPI_PTR(sas_v1_acpi_match),
-+		.acpi_match_table = sas_v1_acpi_match,
- 	},
- };
- 
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c
-index d89e97e8f5c2..ce3b5e1680f5 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c
-@@ -3635,7 +3635,7 @@ static struct platform_driver hisi_sas_v2_driver = {
- 	.driver = {
- 		.name = DRV_NAME,
- 		.of_match_table = sas_v2_of_match,
--		.acpi_match_table = ACPI_PTR(sas_v2_acpi_match),
-+		.acpi_match_table = sas_v2_acpi_match,
- 	},
- };
- 
-diff --git a/drivers/staging/pi433/pi433_if.c b/drivers/staging/pi433/pi433_if.c
-index 81de98c0245a..30fd6da3e8d8 100644
---- a/drivers/staging/pi433/pi433_if.c
-+++ b/drivers/staging/pi433/pi433_if.c
-@@ -1367,7 +1367,7 @@ static struct spi_driver pi433_spi_driver = {
- 	.driver = {
- 		.name =		"pi433",
- 		.owner =	THIS_MODULE,
--		.of_match_table = of_match_ptr(pi433_dt_ids),
-+		.of_match_table = pi433_dt_ids,
- 	},
- 	.probe =	pi433_probe,
- 	.remove =	pi433_remove,
-diff --git a/drivers/tty/serial/amba-pl011.c b/drivers/tty/serial/amba-pl011.c
-index 2fa3fb30dc6c..dd1d1a2cc5f5 100644
---- a/drivers/tty/serial/amba-pl011.c
-+++ b/drivers/tty/serial/amba-pl011.c
-@@ -2948,7 +2948,7 @@ static const struct of_device_id sbsa_uart_of_match[] = {
- };
- MODULE_DEVICE_TABLE(of, sbsa_uart_of_match);
- 
--static const struct acpi_device_id __maybe_unused sbsa_uart_acpi_match[] = {
-+static const struct acpi_device_id sbsa_uart_acpi_match[] = {
- 	{ "ARMH0011", 0 },
- 	{ "ARMHB000", 0 },
- 	{},
-@@ -2961,8 +2961,8 @@ static struct platform_driver arm_sbsa_uart_platform_driver = {
- 	.driver	= {
- 		.name	= "sbsa-uart",
- 		.pm	= &pl011_dev_pm_ops,
--		.of_match_table = of_match_ptr(sbsa_uart_of_match),
--		.acpi_match_table = ACPI_PTR(sbsa_uart_acpi_match),
-+		.of_match_table = sbsa_uart_of_match,
-+		.acpi_match_table = sbsa_uart_acpi_match,
- 		.suppress_bind_attrs = IS_BUILTIN(CONFIG_SERIAL_AMBA_PL011),
- 	},
- };
-diff --git a/drivers/tty/serial/ma35d1_serial.c b/drivers/tty/serial/ma35d1_serial.c
-index 19f0a305cc43..e326d0fb06b2 100644
---- a/drivers/tty/serial/ma35d1_serial.c
-+++ b/drivers/tty/serial/ma35d1_serial.c
-@@ -798,7 +798,7 @@ static struct platform_driver ma35d1serial_driver = {
- 	.resume     = ma35d1serial_resume,
- 	.driver     = {
- 		.name   = "ma35d1-uart",
--		.of_match_table = of_match_ptr(ma35d1_serial_of_match),
-+		.of_match_table = ma35d1_serial_of_match,
- 	},
- };
- 
--- 
-2.39.2
-
+> 8< -----------------
+> diff --git a/arch/arm/boot/dts/ti/omap/dra7xx-clocks.dtsi b/arch/arm/boot/dts/ti/omap/dra7xx-clocks.dtsi
+> --- a/arch/arm/boot/dts/ti/omap/dra7xx-clocks.dtsi
+> +++ b/arch/arm/boot/dts/ti/omap/dra7xx-clocks.dtsi
+> @@ -1425,6 +1425,7 @@ dpll_per_byp_mux: clock@23 {
+>  		};
+>  	};
+>  
+> +	/* CM_CLKSEL_DPLL_PER */
+>  	dpll_per_ck: clock@140 {
+>  		#clock-cells = <0>;
+>  		compatible = "ti,omap4-dpll-clock";
+> @@ -1433,16 +1434,43 @@ dpll_per_ck: clock@140 {
+>  		reg = <0x0140>, <0x0144>, <0x014c>, <0x0148>;
+>  	};
+>  
+> -	dpll_per_m2_ck: clock-dpll-per-m2-8@150 {
+> -		#clock-cells = <0>;
+> -		compatible = "ti,divider-clock";
+> -		clock-output-names = "dpll_per_m2_ck";
+> -		clocks = <&dpll_per_ck>;
+> -		ti,max-div = <31>;
+> -		ti,autoidle-shift = <8>;
+> -		reg = <0x0150>;
+> -		ti,index-starts-at-one;
+> -		ti,invert-autoidle-bit;
+> +	/* CM_DIV_M2_DPLL_PER */
+> +	clock@150 {
+> +		compatible = "ti,clksel";
+> +		reg = <0x150>;
+> +		#clock-cells = <2>;
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +
+> +		dpll_per_m2x2_ck: clock@0 {
+> +			reg = <0>;
+> +			#clock-cells = <0>;
+> +			compatible = "ti,divider-clock";
+> +			clock-output-names = "dpll_per_m2x2_ck";
+> +			clocks = <&dpll_per_x2_ck>;
+> +			ti,max-div = <31>;
+> +			ti,autoidle-shift = <8>;
+> +			ti,index-starts-at-one;
+> +			ti,invert-autoidle-bit;
+> +		};
+> +
+> +		dpll_per_m2_ck: clock@8 {
+> +			compatible = "fixed-factor-clock";
+> +			reg = <8>;
+> +			#clock-cells = <0>;
+> +			clocks = <&dpll_per_m2x2_ck>;
+> +			clock-mult = <1>;
+> +			clock-div = <2>;
+> +			clock-output-names = "dpll_per_m2_ck";
+> +		};
+> +
+> +		dpll_per_x2_ck: clock@10 {
+> +			reg = <10>;
+> +			#clock-cells = <0>;
+> +			compatible = "ti,omap4-dpll-x2-clock";
+> +			clock-output-names = "dpll_per_x2_ck";
+> +			clocks = <&dpll_per_ck>;
+> +		};
+>  	};
+>  
+>  	func_96m_aon_dclk_div: clock-func-96m-aon-dclk-div {
+> @@ -1503,13 +1531,6 @@ dpll_pcie_ref_m2_ck: clock-dpll-pcie-ref-m2-8@210 {
+>  		ti,invert-autoidle-bit;
+>  	};
+>  
+> -	dpll_per_x2_ck: clock-dpll-per-x2 {
+> -		#clock-cells = <0>;
+> -		compatible = "ti,omap4-dpll-x2-clock";
+> -		clock-output-names = "dpll_per_x2_ck";
+> -		clocks = <&dpll_per_ck>;
+> -	};
+> -
+>  	dpll_per_h11x2_ck: clock-dpll-per-h11x2-8@158 {
+>  		#clock-cells = <0>;
+>  		compatible = "ti,divider-clock";
+> @@ -1558,18 +1579,6 @@ dpll_per_h14x2_ck: clock-dpll-per-h14x2-8@164 {
+>  		ti,invert-autoidle-bit;
+>  	};
+>  
+> -	dpll_per_m2x2_ck: clock-dpll-per-m2x2-8@150 {
+> -		#clock-cells = <0>;
+> -		compatible = "ti,divider-clock";
+> -		clock-output-names = "dpll_per_m2x2_ck";
+> -		clocks = <&dpll_per_x2_ck>;
+> -		ti,max-div = <31>;
+> -		ti,autoidle-shift = <8>;
+> -		reg = <0x0150>;
+> -		ti,index-starts-at-one;
+> -		ti,invert-autoidle-bit;
+> -	};
+> -
+>  	dpll_usb_clkdcoldo: clock-dpll-usb-clkdcoldo {
+>  		#clock-cells = <0>;
+>  		compatible = "fixed-factor-clock";
+> -- 
+> 2.44.0
+> 
 
