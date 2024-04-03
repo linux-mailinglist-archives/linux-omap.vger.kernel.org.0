@@ -1,101 +1,74 @@
-Return-Path: <linux-omap+bounces-1105-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1106-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E3B48969BE
-	for <lists+linux-omap@lfdr.de>; Wed,  3 Apr 2024 11:00:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77C5D8969DC
+	for <lists+linux-omap@lfdr.de>; Wed,  3 Apr 2024 11:01:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9061D1C24D1D
-	for <lists+linux-omap@lfdr.de>; Wed,  3 Apr 2024 09:00:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA02E1C248DE
+	for <lists+linux-omap@lfdr.de>; Wed,  3 Apr 2024 09:01:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 932216EB69;
-	Wed,  3 Apr 2024 09:00:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F05C6F085;
+	Wed,  3 Apr 2024 09:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b="Szw3lfbS"
+	dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b="mIsoNQEB"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from mail5.25mail.st (mail5.25mail.st [74.50.62.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CFEB6FE2D;
-	Wed,  3 Apr 2024 09:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 529525C61A;
+	Wed,  3 Apr 2024 09:01:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.50.62.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712134803; cv=none; b=PlLb9FClXLEX8pqQQ1QYcN54UZIogFvSpGtP9A9wriJ2L/H4zklkFUbRtToHgxmxuD/asiWKZLZ8vQDK4KGErAATkRJ0KeKmJERogDXzj8ghOEz1jaATKENY1eEQzM4/w/nVcWEzGz+FtAy4gxo56NcPfmMd8b/uYvOjgPGzdIc=
+	t=1712134879; cv=none; b=pd3b1VWqbynQ0cLilC9JdbwsuwSuCuHk1sD9SplyJHi9iwjIaqVbNlXi29ba7EIGgtQWF+I0IV9Wl7OrbtvOGkUD151qoAARd2WGndqa4HlA+zlaZIx2YF1sg+EymjtWI8AePLL4jiepKXEA2ayEur0cuCYGYVdi8DhSbHOm27c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712134803; c=relaxed/simple;
-	bh=b7WHWZU5OZoYiC/XRJOtyWMbZU6czCQ7KcDpAbsJodo=;
+	s=arc-20240116; t=1712134879; c=relaxed/simple;
+	bh=RwX4+h2W/jkk5/PNkcJ79ypl7zLQ5SQh1pIdrH5iB+8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Fvp4Y/h5Y6Z2GMwYyPLknqm+hNO9yaIahGLiemphVz135BTMyk8KBmyI7YNneyKaJ4bg0GzbktRDLA3FqFJS1fiK4Zelu8JEpU6Es+9CHoisymnoahjYOnQWltJxq02v16cVv9+TTcrEiNoTdpMC8PMron6qX2mLK9GnTylldjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com; spf=fail smtp.mailfrom=atomide.com; dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b=Szw3lfbS; arc=none smtp.client-ip=74.50.62.9
+	 Content-Type:Content-Disposition:In-Reply-To; b=E4J6N28eE86km7RF/gngGRBtIlGki/Ctl5WquDnEKQ4AJLwSX6/BIe+5OkWWwS3U7t+cNPNNSbkPBRAYd6eUqPX9hZ5NXamP09yvuQf3bGrKVJ3Wo4KvpWaomdo7bRe7MNkCIVPAvVk0fKZ1emwMkmvmxdXfyrWGFpMv51j2TIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com; spf=fail smtp.mailfrom=atomide.com; dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b=mIsoNQEB; arc=none smtp.client-ip=74.50.62.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=atomide.com
 Received: from localhost (91-158-86-216.elisa-laajakaista.fi [91.158.86.216])
-	by mail5.25mail.st (Postfix) with ESMTPSA id 6520060857;
-	Wed,  3 Apr 2024 08:59:49 +0000 (UTC)
+	by mail5.25mail.st (Postfix) with ESMTPSA id 4475A60857;
+	Wed,  3 Apr 2024 09:01:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=atomide.com;
-	s=25mailst; t=1712134800;
-	bh=b7WHWZU5OZoYiC/XRJOtyWMbZU6czCQ7KcDpAbsJodo=;
+	s=25mailst; t=1712134877;
+	bh=RwX4+h2W/jkk5/PNkcJ79ypl7zLQ5SQh1pIdrH5iB+8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Szw3lfbSyO6omGRGsybYFAki1EmPMME3PEw8owPoQYF8RPKBd8GKyLLa0TMpfoajR
-	 ZikRpIsXsdBZBLnmSGy04wy8BoSjZ4FEx4p8Ct4pX7WjMBlJv7bUoKx+6AFTv4M9nz
-	 wAt+Ij+IwmndNelJ46ORXuc8sggyBWe2bFbMzvvybUvUEaqIGbGOQdoDvUKWZurZv7
-	 QXN50176SSdtR5P3bALRX8YZ9/gvo03GJB0AZzSdLIwjDdKIRJ2ZmV5DZSWl6m1cee
-	 64O5V7A7OStKwybW9z4HQWAcxy4CwrFli5va9Om9haIQZ4KiVEmQohyeqJrho01h25
-	 YF2FM/xACXH6A==
-Date: Wed, 3 Apr 2024 11:59:47 +0300
+	b=mIsoNQEBk0aiA7X2MuNEp1LJktOrPDulD/e/0dPoe+cKItMgYoSHGXLz9rSY2Pe2Y
+	 GR9JF/amWclvdSjJt73wY0hN/7FDJiMiJ6fMRiQlQp+ndNvQNKjnCeu6tt1bBDK0yR
+	 ZAGmjFaRK/L/bE6ARsdziVkLiR2Cp7I7wo26zr07wUAzSxY2KiWsw+FkFSdS7vzgSN
+	 ltFU6FMPmH30HBRCQl+PhMy48xf6DAIBsNZWzqKLK0ebnHrRChdTOtkRtAZDiiPFef
+	 vEIV08VMsadL33T1E9D9UpH4A+oSaNShw2AxFiWtEbuyvtdMy2BEeIEj9W3pFRT6SH
+	 0HDiBEAEfBZzA==
+Date: Wed, 3 Apr 2024 12:00:58 +0300
 From: Tony Lindgren <tony@atomide.com>
-To: Linus Walleij <linus.walleij@linaro.org>
-Cc: Matthijs Kooijman <matthijs@stdin.nl>,
-	Haojian Zhuang <haojian.zhuang@linaro.org>,
-	linux-gpio@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: Re: [PATCH] pinctrl: single: Fix PIN_CONFIG_BIAS_DISABLE handling
-Message-ID: <20240403085947.GL5132@atomide.com>
-References: <Zflxi8SCzzouP9zW@login.tika.stderr.nl>
- <20240319110633.230329-1-matthijs@stdin.nl>
- <CACRpkdaRM-uqp_Y=gT=FMC48=835dQnB0YomYkxR9ag-SW5cOg@mail.gmail.com>
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: linux-kernel@vger.kernel.org, Tero Kristo <kristo@kernel.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	linux-omap@vger.kernel.org, linux-clk@vger.kernel.org
+Subject: Re: [PATCH 11/34] clk: ti: dpll: fix incorrect #ifdef checks
+Message-ID: <20240403090058.GM5132@atomide.com>
+References: <20240403080702.3509288-1-arnd@kernel.org>
+ <20240403080702.3509288-12-arnd@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACRpkdaRM-uqp_Y=gT=FMC48=835dQnB0YomYkxR9ag-SW5cOg@mail.gmail.com>
+In-Reply-To: <20240403080702.3509288-12-arnd@kernel.org>
 
-* Linus Walleij <linus.walleij@linaro.org> [240328 21:02]:
-> On Tue, Mar 19, 2024 at 12:07 PM Matthijs Kooijman <matthijs@stdin.nl> wrote:
-> 
-> > The pinctrl-single driver handles pin_config_set by looking up the
-> > requested setting in a DT-defined lookup table, which defines what bits
-> > correspond to each setting. There is no way to add
-> > PIN_CONFIG_BIAS_DISABLE entries to the table, since there is instead
-> > code to disable the bias by applying the disable values of both the
-> > pullup and pulldown entries in the table.
-> >
-> > However, this code is inside the table-lookup loop, so it would only
-> > execute if there is an entry for PIN_CONFIG_BIAS_DISABLE in the table,
-> > which can never exist, so this code never runs.
-> >
-> > This commit lifts the offending code out of the loop, so it just
-> > executes directly whenever PIN_CONFIG_BIAS_DISABLE is requested,
-> > skippipng the table lookup loop.
-> >
-> > This also introduces a new `param` variable to make the code slightly
-> > more readable.
-> >
-> > This bug seems to have existed when this code was first merged in commit
-> > 9dddb4df90d13 ("pinctrl: single: support generic pinconf"). Earlier
-> > versions of this patch did have an entry for PIN_CONFIG_BIAS_DISABLE in
-> > the lookup table, but that was removed, which is probably how this bug
-> > was introduced.
-> >
-> > Signed-off-by: Matthijs Kooijman <matthijs@stdin.nl>
-> 
-> This looks reasonable to me, but I need Tony to review it before applying.
+* Arnd Bergmann <arnd@kernel.org> [240403 08:18]:
+> The problem is that the #ifdef checks for some of the structures in this
+> file have gone out of sync with the code referencing them. Update these
+> to match the current usage.
 
 Looks good to me:
 
