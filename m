@@ -1,106 +1,118 @@
-Return-Path: <linux-omap+bounces-1117-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1118-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84D27898657
-	for <lists+linux-omap@lfdr.de>; Thu,  4 Apr 2024 13:47:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C25E78986B0
+	for <lists+linux-omap@lfdr.de>; Thu,  4 Apr 2024 14:01:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3FEF4289433
-	for <lists+linux-omap@lfdr.de>; Thu,  4 Apr 2024 11:47:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED6AD1C25C47
+	for <lists+linux-omap@lfdr.de>; Thu,  4 Apr 2024 12:01:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50D17745C3;
-	Thu,  4 Apr 2024 11:47:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4623686630;
+	Thu,  4 Apr 2024 12:00:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jp37XKjr"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="eWdQNQqt"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
+Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com [209.85.219.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7632F8286B
-	for <linux-omap@vger.kernel.org>; Thu,  4 Apr 2024 11:47:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6188984FC8
+	for <linux-omap@vger.kernel.org>; Thu,  4 Apr 2024 12:00:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712231223; cv=none; b=gqCrU+zXSUVp5IHeUtTe3McKagXo62Jx111BuxlJxHa/5//RDCzc2JugH9HcQWidVc0e7A3eLLmcdtmCgdw+DuqI8APSJrLq5XrdM2YVcIR2JFzszRmDr7LtM8bimLZVLY57dkSq5I2d91W2URPcbclWz+PNUePxh2C9rR0QhR4=
+	t=1712232034; cv=none; b=X/WBwLfryJLEICbVbUelcmc6lP4VNHXXpZ+GtneMPdWSoSq1IVAc0WiMbXEIdouIajFx7O4oFZwo9lAEKPEXCvG/qaGqHO+pi57oqpUXDkifWY5xTkYWUlcaBnixyqZr5MYWf5m5NHlVa46HmUDvTkTSJSHE/FwZ5Y10djxprmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712231223; c=relaxed/simple;
-	bh=/cfTb2VAwub8pYQSCzhjTlLFbA/bhq6Di6P54hY2C8Q=;
+	s=arc-20240116; t=1712232034; c=relaxed/simple;
+	bh=8iw7mOeyVDZ0niVvfjQyNmrucbFUKpaFK5zyc7QXi4E=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZDP5FuRAMsyeDa9bR8IfdLm7zrB3OwuTBu4kNfqqf3pDGu50BHBQLYAq065ZPiSpF6SpPfp1eXtT9BNqHtie12rIn+w4KmI4D5O3S34qfOXVCgFzlHfEht/Sev3JRzvckCducNN9/k65g4NoMsaV4H76t8PdDGbuGA6yqLWAs2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jp37XKjr; arc=none smtp.client-ip=209.85.128.179
+	 To:Cc:Content-Type; b=tnzyO0kfu/nWq5sH6cWCdA+RYbXoh08cUJCRtqlOXUATt6Jla+pjd1r1wJFppQBsyZg6oCK89EQCiGQStyC5YH7MoFUqAJboSHsExTbYxJyH9K5CxDIB8Ry/V59m0KwhANpYV01WEpPz+TEVNLz2L/qYqfCCcMROUy5dXq+Qut8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=eWdQNQqt; arc=none smtp.client-ip=209.85.219.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-6150670d372so9318977b3.1
-        for <linux-omap@vger.kernel.org>; Thu, 04 Apr 2024 04:47:01 -0700 (PDT)
+Received: by mail-yb1-f182.google.com with SMTP id 3f1490d57ef6-dcc80d6004bso1035671276.0
+        for <linux-omap@vger.kernel.org>; Thu, 04 Apr 2024 05:00:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1712231220; x=1712836020; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1712232032; x=1712836832; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/cfTb2VAwub8pYQSCzhjTlLFbA/bhq6Di6P54hY2C8Q=;
-        b=jp37XKjrENlOH/kqi52bW69kmslU66UXAJit+oZZ4BUQXWW52NRhLAaWVT0Bx9Av6t
-         ANsTmRLh481lUoibpCNoCPp5MmtISgUrAr22B2WldcElTf9Nlp3S0AWD5Rz1VwtsaKFs
-         ecSBRTjHguwd3HG/FNBJxRAL9peWH4w+aio+mCv1hW6D6sBJV33Sjn0TgoP4nw0XC5xo
-         Ey8e8sCJXtIrfQeWXXxZyefMXIMgLQi+5IOK7WqCcNN0V5Kf9C6xJYP+D/QSAqeM0/gH
-         7SRsbXkSqkMAM6d+sNF5ZsQl4xocPAlMKEBBpWlKJLbFywYsQAncqcDV0HaFD0FQ078q
-         J4Sw==
+        bh=8iw7mOeyVDZ0niVvfjQyNmrucbFUKpaFK5zyc7QXi4E=;
+        b=eWdQNQqtJNKTIzZb8i1fghgfJPeHP5f+XzjXiGOa7DL7y97o5ik0tS3BBfoktgc+BP
+         FdSfQ+c+1UmD6OCRQT/mxQ633wAS1jHY1pNdvqaAdgReXhYpFLEZ0yjNOX9Dag7ikkdy
+         C/ZqMf3mIMouZnVp8TC9hT4xWHgcgWH/uR1ESxR5Sj/xvRYtaF+mVB3doeF0wVscLZz/
+         Vvm+L0sxSGukbY8ON0JAL3YLPWejJrbhVMdUORSlFrbHvJmAmF2anhBDHsPiwjMmQSyO
+         6/ScnNVcPZRl3pBfHT6yvODLSS9zy43z5T2Il2xRitwcqpYnO2veS8maN8tCz5JRDpoe
+         /apQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712231220; x=1712836020;
+        d=1e100.net; s=20230601; t=1712232032; x=1712836832;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=/cfTb2VAwub8pYQSCzhjTlLFbA/bhq6Di6P54hY2C8Q=;
-        b=tk/gKBQJcjiQQ5S/m6ztBdJNuA3lefiB7B+gzjy9uPODRAEZ5gGnt0IT1AjylZ8h91
-         izAQrpz5avr7Xf4hfxRdNzMYaShQBfwtt1EJvrYNCczhQocVp1ArCNum4dtn+XSEJYHR
-         dS+ZCewz6Bt6Low69o6KnTYdoz+X4YECGqvBK6VwrRNy3LNyHFWyJxVH6RfFHgSlxksj
-         pnUbZ+8q8QbL4GrZIqFJzK7dCCsBJ3CLlWvUnwEdYudH3syFO/XWat7MQkgxQabO2ifP
-         as/j5bqwIuoo2+clqQP7Q4CvWPNzCnt1Zp/5UnLf7dWP56Av/r1VxX2hGJsj28f8PA2Z
-         pyHw==
-X-Forwarded-Encrypted: i=1; AJvYcCUqfieEZqjKQKTjQqyD9d8MCkqNs00Dg2k4c2bz22Ff7okfEAUqGyEMhyLFS2Yf1KJneZUVOZHFpBTluHDQSSNybNGdgdPeQGINyg==
-X-Gm-Message-State: AOJu0YxUtMBL9WG6fIG2sU6HXfJ3gKzdNM0qqJqVca1B11pkmc3vRwaz
-	dcK5cfyVC4PdP9LMsG1jHYJD23ED15Kmfj/rTIRaodLv84FsuM2MgcvqLOGvzEEBi0+LZcf2CAA
-	aq3RmpOaH7dugXub3YbxKyqS7akGItMUzC2rZpw==
-X-Google-Smtp-Source: AGHT+IFFVdVOk+E7MDuKQ2cnteoYCIQKxsAsT5THCCEHiF9/XfDRwbjfBVeXdHYdUt6nUzx6qtMXhLYbOK1EtTJvdqE=
-X-Received: by 2002:a81:a18b:0:b0:615:17f3:55e9 with SMTP id
- y133-20020a81a18b000000b0061517f355e9mr2067506ywg.15.1712231220589; Thu, 04
- Apr 2024 04:47:00 -0700 (PDT)
+        bh=8iw7mOeyVDZ0niVvfjQyNmrucbFUKpaFK5zyc7QXi4E=;
+        b=Pf8SdSn1jqNnVZJcRE160l7Kn05onZqMoyZJWohLd4F0QrLZ5np9M+77KN0kYnu9rh
+         NLzdClikz/IM76s486HW1egOMtiuSkzT7vnKDdhjc3DFaf1rrOb+OdwIDqXb9h+xRblt
+         Zf2Xq++hUCOosJSJJQWdKsWAht2+r/MPKcaWG4EpBUZsluSInFCH8uo1/Btr4u2pRImv
+         ZAbusMbIASIrz4QmyiM43n+TtfmnV3IMW0Ifa8IGLE/k249dbF+PuZ6OVjry2F9h1c7k
+         TmSkodWmEiKKMWudZzRHBXecMh66H0wJMgiI97Ne5bEyq+RI76y1N8XkIVZ57l08qGDO
+         +WuA==
+X-Forwarded-Encrypted: i=1; AJvYcCUUJcJMg51D7vmFv9/8NrkA/EeORo03yrBVyRYh4U+eWzQG10bx82mGlK18eXdoOdYJ2cZ2DlMwHYmrP/9mDmLyuLJ5s1y1uSqRDQ==
+X-Gm-Message-State: AOJu0YwMMwC/qw/k+uqju4Rsti2XBnRrycEt1t2URGhmGsJvCkmdWupf
+	zkImdRSZdsXefYWeYDPrfuolZ2RyBJ/htTjTn+mKHx2bqcPQBYuu/EhkESsBNcrpfWCEYEmOnvb
+	i/Axzsd13GjLnEKvHuRP/EAoQBkHGjnUNujNDWaLbbbpP8X7b
+X-Google-Smtp-Source: AGHT+IFDnGWYkUjulcl3b72iVoeMkRwAikOQXFL7/ONb9PVXD/x1iz8l+R04Quu2n+bUEuz2YG/VA0DhNbH70FEGXro=
+X-Received: by 2002:a25:a3c5:0:b0:dcc:8c7d:970d with SMTP id
+ e63-20020a25a3c5000000b00dcc8c7d970dmr2174589ybi.47.1712232032207; Thu, 04
+ Apr 2024 05:00:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <a6b653642298d35b1e3656e9bfc6d1b322fbbe68.1712004518.git.christophe.jaillet@wanadoo.fr>
-In-Reply-To: <a6b653642298d35b1e3656e9bfc6d1b322fbbe68.1712004518.git.christophe.jaillet@wanadoo.fr>
+References: <Zflxi8SCzzouP9zW@login.tika.stderr.nl> <20240319110633.230329-1-matthijs@stdin.nl>
+In-Reply-To: <20240319110633.230329-1-matthijs@stdin.nl>
 From: Linus Walleij <linus.walleij@linaro.org>
-Date: Thu, 4 Apr 2024 13:46:49 +0200
-Message-ID: <CACRpkdZeXwGoMVCtCC_6oSSACkcu-v5yt7yDi-vSSPrL43A05Q@mail.gmail.com>
-Subject: Re: [PATCH] pinctrl: pinctrl-single: Remove some unused fields in
- struct pcs_function
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: Tony Lindgren <tony@atomide.com>, Haojian Zhuang <haojian.zhuang@linaro.org>, 
-	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org, 
-	linux-gpio@vger.kernel.org
+Date: Thu, 4 Apr 2024 14:00:21 +0200
+Message-ID: <CACRpkdaBXtR9m-ksn=rAwD3+dPDN_74zRVM183pam0zk=bf9Nw@mail.gmail.com>
+Subject: Re: [PATCH] pinctrl: single: Fix PIN_CONFIG_BIAS_DISABLE handling
+To: Matthijs Kooijman <matthijs@stdin.nl>
+Cc: Haojian Zhuang <haojian.zhuang@linaro.org>, Tony Lindgren <tony@atomide.com>, 
+	linux-gpio@vger.kernel.org, linux-omap@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 1, 2024 at 10:49=E2=80=AFPM Christophe JAILLET
-<christophe.jaillet@wanadoo.fr> wrote:
+On Tue, Mar 19, 2024 at 12:07=E2=80=AFPM Matthijs Kooijman <matthijs@stdin.=
+nl> wrote:
 
-> In "struct pcs_function", the 'pgnames' and 'npgnames' fields are unused.
-> This is a left-over from commit 571aec4df5b7 ("pinctrl: single: Use gener=
-ic
-> pinmux helpers for managing functions");
+> The pinctrl-single driver handles pin_config_set by looking up the
+> requested setting in a DT-defined lookup table, which defines what bits
+> correspond to each setting. There is no way to add
+> PIN_CONFIG_BIAS_DISABLE entries to the table, since there is instead
+> code to disable the bias by applying the disable values of both the
+> pullup and pulldown entries in the table.
 >
-> Remove them.
+> However, this code is inside the table-lookup loop, so it would only
+> execute if there is an entry for PIN_CONFIG_BIAS_DISABLE in the table,
+> which can never exist, so this code never runs.
 >
-> Found with cppcheck, unusedStructMember.
+> This commit lifts the offending code out of the loop, so it just
+> executes directly whenever PIN_CONFIG_BIAS_DISABLE is requested,
+> skippipng the table lookup loop.
 >
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> This also introduces a new `param` variable to make the code slightly
+> more readable.
+>
+> This bug seems to have existed when this code was first merged in commit
+> 9dddb4df90d13 ("pinctrl: single: support generic pinconf"). Earlier
+> versions of this patch did have an entry for PIN_CONFIG_BIAS_DISABLE in
+> the lookup table, but that was removed, which is probably how this bug
+> was introduced.
+>
+> Signed-off-by: Matthijs Kooijman <matthijs@stdin.nl>
 
-Patch applied.
+Patch applied!
 
 Yours,
 Linus Walleij
