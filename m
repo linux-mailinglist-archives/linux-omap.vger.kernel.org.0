@@ -1,121 +1,141 @@
-Return-Path: <linux-omap+bounces-1120-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1121-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCE458999AC
-	for <lists+linux-omap@lfdr.de>; Fri,  5 Apr 2024 11:38:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 345DB89A180
+	for <lists+linux-omap@lfdr.de>; Fri,  5 Apr 2024 17:40:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23C01284075
-	for <lists+linux-omap@lfdr.de>; Fri,  5 Apr 2024 09:38:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65F021C2369F
+	for <lists+linux-omap@lfdr.de>; Fri,  5 Apr 2024 15:40:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F20EE16131D;
-	Fri,  5 Apr 2024 09:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC03816FF22;
+	Fri,  5 Apr 2024 15:40:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rere.qmqm.pl header.i=@rere.qmqm.pl header.b="ZcrcoLqs"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D8m4Jnch"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from rere.qmqm.pl (rere.qmqm.pl [91.227.64.183])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4CAC15FA9C;
-	Fri,  5 Apr 2024 09:38:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.227.64.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32DBF1DFE4;
+	Fri,  5 Apr 2024 15:40:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712309901; cv=none; b=AkwXRnRMetJ0L9IbHlnUlbm/I0PKkqbVheFMD6/h7gGzzCCEy3N0M6MCj5zef/kgVgDLuYdVbDKvVZa2ntxLYmVOH9+UNCMoJUCM5lDHULesMw/QG1A4N4mKQkWQ1JBmToVuVKemW8967bjjTRSDQiUl8coDx2ZJP5dEQov/leg=
+	t=1712331618; cv=none; b=di4i/MvBc3mFgzeWo4h1+2PSv7X9FOzJHPFHdy5CncGQmYkJqlF9DUQ872pYTVHFh1p45clamp/s/zMf8I/B4SlG2cd8OADCva9hmWrjSDA7fpyGOIkdNDCRCIWfUa9vItfVgr0zBxQpJsYflq8XKcF7XbYyzxAe+bbhOA5u1y0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712309901; c=relaxed/simple;
-	bh=gui0f6MViE5zSAEEOcDKHdPoDszSctiaYWprNP7GSNc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TYx9XDMOKHsxsxgpErRPS/ygvPDzCeAlZTHPD8jU6Un/vl7oitKkIppyqtOYrexLuq9vY46aMb/YVGm7xn8ldd+hst08TGbqT5Eu4ZsNBxcPdZveBtSAApHlqy+wE0mswPrfmKn1k9Vlu1n6YEW+MMhGa8Dopk6yoUAbjF5ae08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rere.qmqm.pl; spf=pass smtp.mailfrom=rere.qmqm.pl; dkim=pass (2048-bit key) header.d=rere.qmqm.pl header.i=@rere.qmqm.pl header.b=ZcrcoLqs; arc=none smtp.client-ip=91.227.64.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rere.qmqm.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rere.qmqm.pl
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rere.qmqm.pl; s=1;
-	t=1712309337; bh=gui0f6MViE5zSAEEOcDKHdPoDszSctiaYWprNP7GSNc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZcrcoLqsz/zzlMruWf44PYk75DueBejOUyr1Eh31EyaZcoY7ODel3t0vFK51sQutC
-	 YY7dBqw6x5FiEghmAZFtz/zTJMGq5GtkEocuVfbQcN9BDPuRIei5HZ4DdjLpHxZ7+6
-	 E7lgHaOaQ5/+P2XOh5i4UPTyYivuDu5pF+wIovDfOhmC0jyS7Po0jdQpgN6Tw+kWcU
-	 BR21bYeWeQT2EX7dHW/mtmIf4RbdkqX5exTxh2367mA4o2zBmZSc7BFV4XrNkiEptZ
-	 Q5SBD2Ru9xBFkYUfXpcQGRwkKRKwaEBGta6Gar0WuqKpV+3lBKaNoDOSXQIouXFRPP
-	 Bq/roRR1X1cQQ==
-Received: from remote.user (localhost [127.0.0.1])
-	by rere.qmqm.pl (Postfix) with ESMTPSA id 4V9tTX48kvz8B;
-	Fri,  5 Apr 2024 11:28:48 +0200 (CEST)
-X-Virus-Status: Clean
-X-Virus-Scanned: clamav-milter 1.0.3 at mail
-Date: Fri, 5 Apr 2024 11:28:47 +0200
-From: =?iso-8859-2?Q?Micha=B3_Miros=B3aw?= <mirq-linux@rere.qmqm.pl>
-To: Allen Pais <apais@linux.microsoft.com>
-Cc: linux-kernel@vger.kernel.org, tj@kernel.org, keescook@chromium.org,
-	vkoul@kernel.org, marcan@marcan.st, sven@svenpeter.dev,
-	florian.fainelli@broadcom.com, rjui@broadcom.com,
-	sbranden@broadcom.com, paul@crapouillou.net,
-	Eugeniy.Paltsev@synopsys.com, manivannan.sadhasivam@linaro.org,
-	vireshk@kernel.org, Frank.Li@nxp.com, leoyang.li@nxp.com,
-	zw@zh-kernel.org, wangzhou1@hisilicon.com, haijie1@huawei.com,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, sean.wang@mediatek.com,
-	matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
-	afaerber@suse.de, logang@deltatee.com, daniel@zonque.org,
-	haojian.zhuang@gmail.com, robert.jarzmik@free.fr,
-	andersson@kernel.org, konrad.dybcio@linaro.org, orsonzhai@gmail.com,
-	baolin.wang@linux.alibaba.com, zhang.lyra@gmail.com,
-	patrice.chotard@foss.st.com, linus.walleij@linaro.org,
-	wens@csie.org, jernej.skrabec@gmail.com, peter.ujfalusi@gmail.com,
-	kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
-	decui@microsoft.com, jassisinghbrar@gmail.com, mchehab@kernel.org,
-	maintainers@bluecherrydvr.com, aubin.constans@microchip.com,
-	ulf.hansson@linaro.org, manuel.lauss@gmail.com,
-	jh80.chung@samsung.com, oakad@yahoo.com,
-	hayashi.kunihiko@socionext.com, mhiramat@kernel.org,
-	brucechang@via.com.tw, HaraldWelte@viatech.com, pierre@ossman.eu,
-	duncan.sands@free.fr, stern@rowland.harvard.edu, oneukum@suse.com,
-	openipmi-developer@lists.sourceforge.net, dmaengine@vger.kernel.org,
-	asahi@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-rpi-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-	imx@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
-	linux-mediatek@lists.infradead.org,
-	linux-actions@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-	linux-riscv@lists.infradead.org, linux-sunxi@lists.linux.dev,
-	linux-tegra@vger.kernel.org, linux-hyperv@vger.kernel.org,
-	linux-rdma@vger.kernel.org, linux-media@vger.kernel.org,
-	linux-mmc@vger.kernel.org, linux-omap@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org, linux-s390@vger.kernel.org,
-	netdev@vger.kernel.org, linux-usb@vger.kernel.org
-Subject: Re: [PATCH 9/9] mmc: Convert from tasklet to BH workqueue
-Message-ID: <Zg_ET2XmZM_Id_Ad@qmqm.qmqm.pl>
-References: <20240327160314.9982-1-apais@linux.microsoft.com>
- <20240327160314.9982-10-apais@linux.microsoft.com>
+	s=arc-20240116; t=1712331618; c=relaxed/simple;
+	bh=3LkYbeUb1w/NqnyBxbOoR6oK2HB39Z/ResRRJH1BY+E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HpvubVHvZYEqx+6lRP7b0tC5WeVsIbwtZPd4gCIslXTYPQalGrubdh/v9CLDYI/2ThWT4jqYje3OY45K8vqYmP1NrOlWSk8WEXQ4Ixq67HO5O2RrvGCZ2NDso3vhGtq3FUawuo/TKqZ9JWK/pr2chMQlPKnnjArNaE+lSYaB57U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D8m4Jnch; arc=none smtp.client-ip=209.85.128.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-6098a20ab22so21565117b3.2;
+        Fri, 05 Apr 2024 08:40:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712331616; x=1712936416; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ogv59Vf9u5J8t0ixBshAYpHXdn+pLcWIJ4jwyLOs3hk=;
+        b=D8m4JnchPWDZw4NX2d548lNQKFFh1DmPSAoyAJrRnTdhQLe9hKjxUXCKn6bJtHIhw4
+         xrbGGChfgycjmNoXvNmp/T9N3xdLcHvJvOUWMHS/bwdmDGTmJnHjYG7lbN69IuqQhTg5
+         +pNQjSWcP49CIP8GAAbnkQ2q1OctCqfUv1eQR20qxRu5EjY08vYenC+MiMRnax5MxikX
+         GDEAPqrBmII0MBjrdNb+2LmQspm2IA/ZbEtMAzyb6At9FscH+3f8irVHdGSby2y+F1Cx
+         oaZDCj4diZvMo8ceoAOTnyODDvq3DnxV8Kp2l/CCPbe0CasDsLEn4uWUBWSYKDrdDBGd
+         Kz9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712331616; x=1712936416;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Ogv59Vf9u5J8t0ixBshAYpHXdn+pLcWIJ4jwyLOs3hk=;
+        b=BPrGkwrNtd12gAdGaPRb5QEkbbNyCCZav6Lpe8ssg1rjla9suT8iI2KMownYd8mf21
+         /htNK+LGPdN+6qZ9wVbh9912YJecyxQiU4rRRZpEfo/qOFTp0+Z6Ag4RtfnbW+WJmr2C
+         Aakcn7zTfkZ0+pZUO42Z6YZhE8juQDcuomNnf7QlZxWizZxytWn1r9KkxPB2CgYQa/sE
+         PGHIEUtX9d9c7h+bQ/tbWl7X2dR9P59sqNYWuVE6aM8AS6GuDefnfDg8wBWV4TUqQmQm
+         kPsUXyqfjoYpqOVmBb7tX7tc/cohUXHK6WAnUHaYvxWFGn8VwioK8w52pwKaoXNYGMmC
+         qvGw==
+X-Forwarded-Encrypted: i=1; AJvYcCV1ZbqHWEdADZVvroBi9SoObzBeDunZWInAdafqUyDNRjs0qf5aLzv2O+fa8cib8pq9UU27Z2BMX78DuxVkJhcT6DcHnV845qJ4qrGxeDqOP9MQ1K69qlPsi4gBpVVkv23Z60GRxT9fow==
+X-Gm-Message-State: AOJu0Yxrnr8uWsZ01RxiB9pPIO2cQ2DDHsVkeTwDFIA7tlGMwb28xqzM
+	DiIuqZ0ruQGf0AJwdTRAiyakqOzR3MxjjTjZJDX75dpAGy/7UvlDtYFQcM0Z5UGG8JP80kTGySZ
+	3aM/vImEj3ev7MbxVM5YilBjthKs=
+X-Google-Smtp-Source: AGHT+IGMLYfLt/nzZblhciR4azfPG3X++K/H/tSTaEsWOtc/7p2fTRz7WVsDs3bk0MLnksajj7+32achn/AzNMNvamI=
+X-Received: by 2002:a81:bf50:0:b0:615:11c0:e9c1 with SMTP id
+ s16-20020a81bf50000000b0061511c0e9c1mr1738689ywk.36.1712331616228; Fri, 05
+ Apr 2024 08:40:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-2
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240327160314.9982-10-apais@linux.microsoft.com>
+References: <20240325210045.153827-1-afd@ti.com> <2024032631-excursion-opposing-be36@gregkh>
+ <CAOCHtYjauA+BAxZJBMTaxxaMGcvipP9=ZPeWe4FiNFs_jpq6dg@mail.gmail.com>
+ <ZgME0qSL3KXCD07I@chinchilla> <ceb391d3-c7f4-4d46-9f97-b651e1f5451c@ti.com>
+In-Reply-To: <ceb391d3-c7f4-4d46-9f97-b651e1f5451c@ti.com>
+From: Robert Nelson <robertcnelson@gmail.com>
+Date: Fri, 5 Apr 2024 10:39:49 -0500
+Message-ID: <CAOCHtYhODiMHWA17EQD7YsZ08Uocy5A=kbjH5vjUUaXAopnxeA@mail.gmail.com>
+Subject: Re: [PATCH] uio: pruss: Deprecate use of this driver
+To: Andrew Davis <afd@ti.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jason Kridner <jkridner@beagleboard.org>, 
+	Drew Fustini <drew@beagleboard.org>, Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 27, 2024 at 04:03:14PM +0000, Allen Pais wrote:
-> The only generic interface to execute asynchronously in the BH context is
-> tasklet; however, it's marked deprecated and has some design flaws. To
-> replace tasklets, BH workqueue support was recently added. A BH workqueue
-> behaves similarly to regular workqueues except that the queued work items
-> are executed in the BH context.
-> 
-> This patch converts drivers/infiniband/* from tasklet to BH workqueue.
-> 
-> Based on the work done by Tejun Heo <tj@kernel.org>
-> Branch: https://git.kernel.org/pub/scm/linux/kernel/git/tj/wq.git for-6.10
-> 
-> Signed-off-by: Allen Pais <allen.lkml@gmail.com>
-> ---
-[...]
->  drivers/mmc/host/cb710-mmc.c                  | 15 ++--
->  drivers/mmc/host/cb710-mmc.h                  |  3 +-
-[...]
+On Tue, Mar 26, 2024 at 12:36=E2=80=AFPM Andrew Davis <afd@ti.com> wrote:
+>
+> On 3/26/24 12:24 PM, Matthijs van Duin wrote:
+> > I'll write a more in-depth reply when I have a moment, but right now I'=
+d
+> > like to point out that the uio-pruss driver in mainline linux is for th=
+e
+> > pru subsystem on the freon/primus family of ARM9-based SoCs (OMAP-L1xx =
+/
+> > AM17xx / AM18xx / TMS320C674x / DA8xx), which is not currently supporte=
+d
+> > by remoteproc-pru.
+> >
+>
+> I'll wait for your full reply, but a quick note, for those devices listed
+> this driver isn't usable either after they all moved to DT. As this drive=
+r
+> never got a DT port and relies on platform data (which is gone for those
+> couple devices).
+>
+> Andrew
 
-Acked-by: Micha³ Miros³aw <mirq-linux@rere.qmqm.pl>
+Andrew, I think we are okay with nuking the whole uio driver in
+mainline, I'll ack it..
+
+ I figured we'd have more community response..  We gave them a chance..
+
+The only issue I personally have with supporting remoteproc-pruss
+
+We have a few users on 4.19.x-ti, 5.10.x-ti (remoteproc_pruss) can we
+please make sure this project:
+
+https://git.ti.com/gitweb?p=3Dpru-software-support-package/pru-software-sup=
+port-package.git;a=3Dsummary
+
+actually works on mainline remoteproc_pruss ?
+
+Watching the shortlog, it must break on every single TI LTS release:
+
+https://git.ti.com/gitweb?p=3Dpru-software-support-package/pru-software-sup=
+port-package.git;a=3Dshortlog
+
+Whereas uio... well same firmware from 3.8.x ;)
+
+(i will keep our uio fork alive, but we just use an overlay to switch
+to between remoteproc_pruss and uio)
+
+Regards,
+
+--=20
+Robert Nelson
+https://rcn-ee.com/
 
