@@ -1,119 +1,129 @@
-Return-Path: <linux-omap+bounces-1118-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1119-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C25E78986B0
-	for <lists+linux-omap@lfdr.de>; Thu,  4 Apr 2024 14:01:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ED8789986B
+	for <lists+linux-omap@lfdr.de>; Fri,  5 Apr 2024 10:48:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED6AD1C25C47
-	for <lists+linux-omap@lfdr.de>; Thu,  4 Apr 2024 12:01:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C326281F26
+	for <lists+linux-omap@lfdr.de>; Fri,  5 Apr 2024 08:48:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4623686630;
-	Thu,  4 Apr 2024 12:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2A5315FA96;
+	Fri,  5 Apr 2024 08:48:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="eWdQNQqt"
+	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="R8T/4zsl"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com [209.85.219.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.zeus03.de (www.zeus03.de [194.117.254.33])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6188984FC8
-	for <linux-omap@vger.kernel.org>; Thu,  4 Apr 2024 12:00:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BA4A15FA6B
+	for <linux-omap@vger.kernel.org>; Fri,  5 Apr 2024 08:48:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712232034; cv=none; b=X/WBwLfryJLEICbVbUelcmc6lP4VNHXXpZ+GtneMPdWSoSq1IVAc0WiMbXEIdouIajFx7O4oFZwo9lAEKPEXCvG/qaGqHO+pi57oqpUXDkifWY5xTkYWUlcaBnixyqZr5MYWf5m5NHlVa46HmUDvTkTSJSHE/FwZ5Y10djxprmw=
+	t=1712306921; cv=none; b=Ah9jCDRMoGLYzdYc7Zxn6JUN1NAlyerWomN4cw52vE8h+z2GUHQL/TFTHoooNwi9NH07Txh2i2FNkgblYt7XHY9Tv3WqxeEu1UQKlBNNAsY1ZUb4KWKmD08lnvE4sIbo+AQ4jXtN6tWDZ6szomtaf6604sh9r8RQJTda2bsPnZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712232034; c=relaxed/simple;
-	bh=8iw7mOeyVDZ0niVvfjQyNmrucbFUKpaFK5zyc7QXi4E=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tnzyO0kfu/nWq5sH6cWCdA+RYbXoh08cUJCRtqlOXUATt6Jla+pjd1r1wJFppQBsyZg6oCK89EQCiGQStyC5YH7MoFUqAJboSHsExTbYxJyH9K5CxDIB8Ry/V59m0KwhANpYV01WEpPz+TEVNLz2L/qYqfCCcMROUy5dXq+Qut8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=eWdQNQqt; arc=none smtp.client-ip=209.85.219.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yb1-f182.google.com with SMTP id 3f1490d57ef6-dcc80d6004bso1035671276.0
-        for <linux-omap@vger.kernel.org>; Thu, 04 Apr 2024 05:00:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1712232032; x=1712836832; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8iw7mOeyVDZ0niVvfjQyNmrucbFUKpaFK5zyc7QXi4E=;
-        b=eWdQNQqtJNKTIzZb8i1fghgfJPeHP5f+XzjXiGOa7DL7y97o5ik0tS3BBfoktgc+BP
-         FdSfQ+c+1UmD6OCRQT/mxQ633wAS1jHY1pNdvqaAdgReXhYpFLEZ0yjNOX9Dag7ikkdy
-         C/ZqMf3mIMouZnVp8TC9hT4xWHgcgWH/uR1ESxR5Sj/xvRYtaF+mVB3doeF0wVscLZz/
-         Vvm+L0sxSGukbY8ON0JAL3YLPWejJrbhVMdUORSlFrbHvJmAmF2anhBDHsPiwjMmQSyO
-         6/ScnNVcPZRl3pBfHT6yvODLSS9zy43z5T2Il2xRitwcqpYnO2veS8maN8tCz5JRDpoe
-         /apQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712232032; x=1712836832;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8iw7mOeyVDZ0niVvfjQyNmrucbFUKpaFK5zyc7QXi4E=;
-        b=Pf8SdSn1jqNnVZJcRE160l7Kn05onZqMoyZJWohLd4F0QrLZ5np9M+77KN0kYnu9rh
-         NLzdClikz/IM76s486HW1egOMtiuSkzT7vnKDdhjc3DFaf1rrOb+OdwIDqXb9h+xRblt
-         Zf2Xq++hUCOosJSJJQWdKsWAht2+r/MPKcaWG4EpBUZsluSInFCH8uo1/Btr4u2pRImv
-         ZAbusMbIASIrz4QmyiM43n+TtfmnV3IMW0Ifa8IGLE/k249dbF+PuZ6OVjry2F9h1c7k
-         TmSkodWmEiKKMWudZzRHBXecMh66H0wJMgiI97Ne5bEyq+RI76y1N8XkIVZ57l08qGDO
-         +WuA==
-X-Forwarded-Encrypted: i=1; AJvYcCUUJcJMg51D7vmFv9/8NrkA/EeORo03yrBVyRYh4U+eWzQG10bx82mGlK18eXdoOdYJ2cZ2DlMwHYmrP/9mDmLyuLJ5s1y1uSqRDQ==
-X-Gm-Message-State: AOJu0YwMMwC/qw/k+uqju4Rsti2XBnRrycEt1t2URGhmGsJvCkmdWupf
-	zkImdRSZdsXefYWeYDPrfuolZ2RyBJ/htTjTn+mKHx2bqcPQBYuu/EhkESsBNcrpfWCEYEmOnvb
-	i/Axzsd13GjLnEKvHuRP/EAoQBkHGjnUNujNDWaLbbbpP8X7b
-X-Google-Smtp-Source: AGHT+IFDnGWYkUjulcl3b72iVoeMkRwAikOQXFL7/ONb9PVXD/x1iz8l+R04Quu2n+bUEuz2YG/VA0DhNbH70FEGXro=
-X-Received: by 2002:a25:a3c5:0:b0:dcc:8c7d:970d with SMTP id
- e63-20020a25a3c5000000b00dcc8c7d970dmr2174589ybi.47.1712232032207; Thu, 04
- Apr 2024 05:00:32 -0700 (PDT)
+	s=arc-20240116; t=1712306921; c=relaxed/simple;
+	bh=rs0vw5LW9UM/y60I9xGZqbakggiNBHyoOs4B+0ZsN6s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=if/iITmOZWfT2Q0uhPswmoVue9XQ3g/SeRwqSvsuI2HQemoX2EreOj5Ub9DfPb5losXtbhfviESItdBDr9SPtkFCIBmP4e4a7mByDV4vKI4u7vK/WkKVV53R4hM5WhEpqn/FEdIxSRX4QaKg5JZFSPeTwnVCrWtmC+2KuK10gKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=R8T/4zsl; arc=none smtp.client-ip=194.117.254.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=date:from:to:cc:subject:message-id
+	:references:mime-version:content-type:in-reply-to; s=k1; bh=D3bA
+	ysj0N+3ktsukYn/zGLisNXUDp098hBJ07HyHzKc=; b=R8T/4zsl0Zd0dNbaommC
+	kCLTauMRf6yuGZlEbnNrPo+sDuLbN4s8BfD2QtEyqFV73GtOSagiQmnkLEuHWGCQ
+	vRejlIPlKU/mYMv+6t8UkEAMEtwYdgwHTAQorcdRr9Ope6KAX7AmqTkxF537SxfY
+	hbp2DrU8wtJm0oExDm1ozx0tnjR+RM/n3EJ7Hxedj1A/sxIF9bIEt0Q6uqjDDZO6
+	DhN5dSoCZRnlewvb/Wq/ACyPQ8GtSN3yttgw0BjHvy2Oz86yt92QQcC0xPBJXssA
+	1OMpCVAZHpK9gwh4XkivjtbsyOTJWxSQAZ6QWGsn2F7XdFdDJmCqNTrRYM5kOmvv
+	nA==
+Received: (qmail 4044863 invoked from network); 5 Apr 2024 10:48:34 +0200
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 5 Apr 2024 10:48:34 +0200
+X-UD-Smtp-Session: l3s3148p1@j8VihVUV/oogAwDPXwEGAANOsN0UmmrN
+Date: Fri, 5 Apr 2024 10:48:34 +0200
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: Andi Shyti <andi.shyti@kernel.org>
+Cc: linux-i2c@vger.kernel.org, asahi@lists.linux.dev, 
+	chrome-platform@lists.linux.dev, imx@lists.linux.dev, linux-actions@lists.infradead.org, 
+	linux-amlogic@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	linux-arm-msm@vger.kernel.org, linux-aspeed@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
+	linux-mediatek@lists.infradead.org, linux-mips@vger.kernel.org, linux-omap@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-renesas-soc@vger.kernel.org, 
+	linux-riscv@lists.infradead.org, linux-rockchip@lists.infradead.org, 
+	linux-rpi-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org, 
+	openbmc@lists.ozlabs.org, virtualization@lists.linux.dev
+Subject: Re: [PATCH 00/64] i2c: reword i2c_algorithm according to newest
+ specification
+Message-ID: <kd2gnsosi5xar3mwc3zz7wqtqkfgicq3wical5ch34sbmlgegk@mb2c2hxzzoi4>
+Mail-Followup-To: Wolfram Sang <wsa+renesas@sang-engineering.com>, 
+	Andi Shyti <andi.shyti@kernel.org>, linux-i2c@vger.kernel.org, asahi@lists.linux.dev, 
+	chrome-platform@lists.linux.dev, imx@lists.linux.dev, linux-actions@lists.infradead.org, 
+	linux-amlogic@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	linux-arm-msm@vger.kernel.org, linux-aspeed@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
+	linux-mediatek@lists.infradead.org, linux-mips@vger.kernel.org, linux-omap@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-renesas-soc@vger.kernel.org, 
+	linux-riscv@lists.infradead.org, linux-rockchip@lists.infradead.org, 
+	linux-rpi-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org, 
+	openbmc@lists.ozlabs.org, virtualization@lists.linux.dev
+References: <20240322132619.6389-1-wsa+renesas@sang-engineering.com>
+ <ug266trshvhhbsln3eoh53fmsuj3l63ziz6gavcl7rv2jhjr5t@3av5givh5n7m>
+ <j2l7tu24itjelylrgwe6gdsy3mfrw3dnve4rdofmri3z7xdroc@se56t5ylmdak>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <Zflxi8SCzzouP9zW@login.tika.stderr.nl> <20240319110633.230329-1-matthijs@stdin.nl>
-In-Reply-To: <20240319110633.230329-1-matthijs@stdin.nl>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Thu, 4 Apr 2024 14:00:21 +0200
-Message-ID: <CACRpkdaBXtR9m-ksn=rAwD3+dPDN_74zRVM183pam0zk=bf9Nw@mail.gmail.com>
-Subject: Re: [PATCH] pinctrl: single: Fix PIN_CONFIG_BIAS_DISABLE handling
-To: Matthijs Kooijman <matthijs@stdin.nl>
-Cc: Haojian Zhuang <haojian.zhuang@linaro.org>, Tony Lindgren <tony@atomide.com>, 
-	linux-gpio@vger.kernel.org, linux-omap@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="c5kq2kdwqrnl4eet"
+Content-Disposition: inline
+In-Reply-To: <j2l7tu24itjelylrgwe6gdsy3mfrw3dnve4rdofmri3z7xdroc@se56t5ylmdak>
 
-On Tue, Mar 19, 2024 at 12:07=E2=80=AFPM Matthijs Kooijman <matthijs@stdin.=
-nl> wrote:
 
-> The pinctrl-single driver handles pin_config_set by looking up the
-> requested setting in a DT-defined lookup table, which defines what bits
-> correspond to each setting. There is no way to add
-> PIN_CONFIG_BIAS_DISABLE entries to the table, since there is instead
-> code to disable the bias by applying the disable values of both the
-> pullup and pulldown entries in the table.
->
-> However, this code is inside the table-lookup loop, so it would only
-> execute if there is an entry for PIN_CONFIG_BIAS_DISABLE in the table,
-> which can never exist, so this code never runs.
->
-> This commit lifts the offending code out of the loop, so it just
-> executes directly whenever PIN_CONFIG_BIAS_DISABLE is requested,
-> skippipng the table lookup loop.
->
-> This also introduces a new `param` variable to make the code slightly
-> more readable.
->
-> This bug seems to have existed when this code was first merged in commit
-> 9dddb4df90d13 ("pinctrl: single: support generic pinconf"). Earlier
-> versions of this patch did have an entry for PIN_CONFIG_BIAS_DISABLE in
-> the lookup table, but that was removed, which is probably how this bug
-> was introduced.
->
-> Signed-off-by: Matthijs Kooijman <matthijs@stdin.nl>
+--c5kq2kdwqrnl4eet
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Patch applied!
+Hi Andi, hi everyone,
 
-Yours,
-Linus Walleij
+thank you for reviewing and waiting. I had a small personal hiatus over
+Easter but now I am back. This series needs another cycle, so no need to
+hurry. I will address some of the review comments but not all. The
+conversion (and API improvements) are some bigger tasks, so
+inconsistencies inbetween can't be avoided AFAICS.
+
+I'll keep you updated.
+
+Happy hacking,
+
+   Wolfram
+
+
+--c5kq2kdwqrnl4eet
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmYPut4ACgkQFA3kzBSg
+KbbwnxAAtFWKOWnU/VyFFeZnqQCgQ76FzO93xERcjysHlgnZv3BnA6UpxFnrHrs4
+Cn7RTWa0i9Ct1ns2AkkjOQ5rUIqczF7M2dVS0tqODwyazGPaDHYtsa3urfkCsLT7
+Gz0y5V+oHHUNj1hypkKtQ37/7iFSYbo5oryt9MFK6eFfs878jel/4BCGJk3SEa48
+ewNnEuM8aYfzlrn7/VbkWqHkCS5J6x8/VFk3PjlxgEW45UtEI3r30K6/jT9HOdx4
+6lCofEZKn4Bl0VbfJJ7MXd1Be2/Dk6ZaY09e97iAKt2+fM1OLrBwig2V8PAdV7ei
+LlHolA153CWJAAkzXE2bJsr252IuCLpVpZobTSQRfr+u5vVV354dfo2ek11R8iff
+DSr94kqdKVvOvegpxt4vyHUxQrfy70R9vlkgVhkdvdGbi3JfLeiCK+C+IcBZlbXr
+uTaPlNvOt6p+VJNAlucnKQF3mK0FvVMK7bTwqjbKR8ZzB8J20qj5pqxqtBZDjfOl
+fpTR9f9+kHWdmBuCLBq35aes6Lxq4JtNRH+czt8F8wIAfx/xcgTf2uPThVoFPO9s
+jyO4fy773Wsfo8PGo9SqSKr7K6gQW3dIDoFTk489lp3e9Y/DYJ+ZV2ixvCQKATjO
+3K0umrWHYd25+mhripLMPzaz3h1GPtmAiQq/dq2GUviAFUPoZas=
+=RWT2
+-----END PGP SIGNATURE-----
+
+--c5kq2kdwqrnl4eet--
 
