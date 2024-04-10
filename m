@@ -1,442 +1,285 @@
-Return-Path: <linux-omap+bounces-1151-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1152-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52BC189FA9B
-	for <lists+linux-omap@lfdr.de>; Wed, 10 Apr 2024 16:54:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FBE989FE3B
+	for <lists+linux-omap@lfdr.de>; Wed, 10 Apr 2024 19:21:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1E121F30CF8
-	for <lists+linux-omap@lfdr.de>; Wed, 10 Apr 2024 14:54:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 733D71C22331
+	for <lists+linux-omap@lfdr.de>; Wed, 10 Apr 2024 17:21:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96DA11791ED;
-	Wed, 10 Apr 2024 14:48:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16BAD181323;
+	Wed, 10 Apr 2024 17:20:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="y+x/0sS8"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="ZT74fGdK"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f181.google.com (mail-vk1-f181.google.com [209.85.221.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DD831791E3;
-	Wed, 10 Apr 2024 14:48:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D75CF180A96
+	for <linux-omap@vger.kernel.org>; Wed, 10 Apr 2024 17:20:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712760494; cv=none; b=o3v0PX2w+hGfQ6gnjzTgDok+5utWlmnTE3Am2RqBd2txptC6G/Z9HdJ/jAu/yWcsPpOghX4vcbh52N417xa4OhcM5tyzSRVa+ybIq/Fw1axBcPjjQBpJ1SoaoXm9/bEuj0HSYLcvwbR65goolrAP6n97yzYNsRhcPtJd0kO65TU=
+	t=1712769607; cv=none; b=qOd3in10gyxxF9RrbCrsITVMYjt/YIg5B48XCEIqV43C46LFqdKajVMJWEH3PsnLYvs5m5J0ELzxdY06F4ERo2Ts+T5NkFHHHgceYaPbTSiQlWa9tfi01Y2HAzfjsazn7p3jpf3o/iqzI7gRZ2wm8IxIXFhFT7a8llr1Rmza2Kw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712760494; c=relaxed/simple;
-	bh=Mx5APfYhQ6qs5XDiUnGjy2sblyz/TZEUPgdHnLlwSDg=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LlYNYxAeKYh0tcHkUU4MSVfLlnnqw7GfKJiji92+LpSWLxDQo6JwIvz3Lj7USe55XW8z8rvWa5BQJM5tlDUCH4PzqveDBVptl0McJktCVMStlY27CDjeJvDd5PRqr8D+1QUDImEhmUWxmm8dFK3mwPc7dK50GKQ+MEZuhpgEiLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=y+x/0sS8; arc=none smtp.client-ip=198.47.19.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-	by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 43AEm5Tb035928;
-	Wed, 10 Apr 2024 09:48:05 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1712760485;
-	bh=Q/30NjVleNgQNZ3XCNKdXg6b3jHd8lHtPEirYkxXq9c=;
-	h=From:To:CC:Subject:Date;
-	b=y+x/0sS8v0OtrDosvluY/MUt0eClge5CFjJYOQMdtoItO0HcwXy2Cwnel0sXpEnX8
-	 4xDDaVxExU2oboIYcEPP4/y92vx9Xg49axIksCzz4c/qph5ql0YdRHT4HO8nKylsA+
-	 U3nmeL2WQNY2cE9NHEUw3Qu956dijM9sUTYQvazo=
-Received: from DLEE109.ent.ti.com (dlee109.ent.ti.com [157.170.170.41])
-	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 43AEm5qX073598
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Wed, 10 Apr 2024 09:48:05 -0500
-Received: from DLEE108.ent.ti.com (157.170.170.38) by DLEE109.ent.ti.com
- (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Wed, 10
- Apr 2024 09:48:04 -0500
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE108.ent.ti.com
- (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Wed, 10 Apr 2024 09:48:04 -0500
-Received: from lelvsmtp6.itg.ti.com ([10.249.42.149])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 43AEm4UE048097;
-	Wed, 10 Apr 2024 09:48:04 -0500
-From: Andrew Davis <afd@ti.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Tony Lindgren
-	<tony@atomide.com>,
-        Matthijs van Duin <matthijsvanduin@gmail.com>,
-        Robert
- Nelson <robertcnelson@gmail.com>,
-        Jason Kridner <jkridner@beagleboard.org>,
-        Drew Fustini <drew@beagleboard.org>
-CC: <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Andrew Davis
-	<afd@ti.com>
-Subject: [PATCH v2] uio: pruss: Remove this driver
-Date: Wed, 10 Apr 2024 09:48:03 -0500
-Message-ID: <20240410144803.126831-1-afd@ti.com>
-X-Mailer: git-send-email 2.39.2
+	s=arc-20240116; t=1712769607; c=relaxed/simple;
+	bh=ydsuN0mq49+CFPAOAyYg6IOXNi+dxLMc/XTfxeofo/I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WIujKM0uny9jiTQq0usVdNCBDN/xojVELqOP2qFj/IGa2Xw5DOx3OD2oxzU57QoQQYzq/PdEIfOhyZ0fRGjqMaBojNKePi9QjOwbxqmHRhyszb09QpA4TIexOnxNFpiusRWjkdff4F3MU+OPcD6NC5ydzikG13pQsSzQA+5qJ0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=ZT74fGdK; arc=none smtp.client-ip=209.85.221.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-vk1-f181.google.com with SMTP id 71dfb90a1353d-4dac112e142so1785778e0c.1
+        for <linux-omap@vger.kernel.org>; Wed, 10 Apr 2024 10:20:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1712769605; x=1713374405; darn=vger.kernel.org;
+        h=in-reply-to:autocrypt:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=iKNLxPg8JRDlvo7xw88cUUfT/jPZU1S32+HVdUYbeQQ=;
+        b=ZT74fGdKAyBjRgHFA0jJwJ8L7gtTXalmj9Cob6MkAvsy21GI21cK4kWBQO7427IcEO
+         mVcdLvKpWSrTJZsaVt3RwwNOlL8HJJHFRJLli05AKhprj8e7VlNspc0fNmlcXuRhYGbp
+         BhajoRb8b/wfA+L+rPxkQu3+w0FOxdg3szbCU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712769605; x=1713374405;
+        h=in-reply-to:autocrypt:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=iKNLxPg8JRDlvo7xw88cUUfT/jPZU1S32+HVdUYbeQQ=;
+        b=C/EVUskqqk0bph2R+/Rod1YLoVurxH5dDkYTRgvGS9/xO78jslqJr8xhz/oS3QFZyH
+         RsSUOnxyLspakJsbPJ3iyZ9B5LNWQ3ERo05oXukpTU5wLtZiY7scmlDfQD6cmeY3PVSd
+         4h7AYrzUg7sYLdA6gc8UmILRXMJb200JDJ1CbVpb+jpDcJHnpNe4cyNAU7zsA5BK4SmQ
+         aTSG11j02dZ23DXmaF8XTAQhy4M09SqpauiBfqv1Npgt5Dq/Ia32pEAmHToYUBlp7OkH
+         LoeQ8rRXR/WOwbvpBePmCSNHQKCjKMzJ27m+tw2def3S/edSPKrnY+uCswpMLhMGRlSb
+         Xb0g==
+X-Forwarded-Encrypted: i=1; AJvYcCU1Q7CkO6Lm0gzf2AaZ0lK2vyWq7I6ZIfcffSSCrq1YXtzlJC6K5kEJKWQ5VC2/MGrYhCd5V2gL5RzMbxR9Bt1KLdeZl5V4U84dfA==
+X-Gm-Message-State: AOJu0YyWbNrsfHs8C1d1zVX+xU+Wqr7veiboqfuBhd4KwccxfL3n4mbV
+	yhNcQc00DWTqPIzgU+KcFPGyZa+j0mc/H5jSoyF5hlAhI0WJCGTqtGpcXknhyg==
+X-Google-Smtp-Source: AGHT+IEY3UOxmYPFIY3KwG/1cb3j/BDBZlcfFiLayUC49HpEVFgQJsp8CdG87BjXCvX2nZe0J+qBqQ==
+X-Received: by 2002:a05:6122:41e:b0:4c8:8d45:5325 with SMTP id e30-20020a056122041e00b004c88d455325mr2979563vkd.7.1712769604575;
+        Wed, 10 Apr 2024 10:20:04 -0700 (PDT)
+Received: from [192.168.1.3] (ip68-4-215-93.oc.oc.cox.net. [68.4.215.93])
+        by smtp.gmail.com with ESMTPSA id ez17-20020ad45911000000b0069940ecfd39sm4999243qvb.141.2024.04.10.10.19.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 10 Apr 2024 10:20:03 -0700 (PDT)
+Message-ID: <3296d311-5517-423d-b911-2f6d7f2ee626@broadcom.com>
+Date: Wed, 10 Apr 2024 10:19:52 -0700
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] cpufreq: Covert to exit callback returning void
+To: lizhe <sensor1010@163.com>, Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: "rafael@kernel.org" <rafael@kernel.org>,
+ "viresh.kumar@linaro.org" <viresh.kumar@linaro.org>,
+ "ray.huang@amd.com" <ray.huang@amd.com>, "marcan@marcan.st"
+ <marcan@marcan.st>, "sven@svenpeter.dev" <sven@svenpeter.dev>,
+ "alyssa@rosenzweig.io" <alyssa@rosenzweig.io>,
+ "mmayer@broadcom.com" <mmayer@broadcom.com>,
+ "bcm-kernel-feedback-list@broadcom.com"
+ <bcm-kernel-feedback-list@broadcom.com>,
+ "srinivas.pandruvada@linux.intel.com" <srinivas.pandruvada@linux.intel.com>,
+ "lenb@kernel.org" <lenb@kernel.org>, "khilman@kernel.org"
+ <khilman@kernel.org>, "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
+ "npiggin@gmail.com" <npiggin@gmail.com>,
+ "aneesh.kumar@kernel.org" <aneesh.kumar@kernel.org>,
+ "naveen.n.rao@linux.ibm.com" <naveen.n.rao@linux.ibm.com>,
+ "andersson@kernel.org" <andersson@kernel.org>,
+ "konrad.dybcio@linaro.org" <konrad.dybcio@linaro.org>,
+ "sudeep.holla@arm.com" <sudeep.holla@arm.com>,
+ "cristian.marussi@arm.com" <cristian.marussi@arm.com>,
+ "thierry.reding@gmail.com" <thierry.reding@gmail.com>,
+ "jonathanh@nvidia.com" <jonathanh@nvidia.com>,
+ "matthias.bgg@gmail.com" <matthias.bgg@gmail.com>,
+ "angelogioacchino.delregno@collabora.com"
+ <angelogioacchino.delregno@collabora.com>,
+ "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "asahi@lists.linux.dev" <asahi@lists.linux.dev>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-arm-msm@vger.kernel.org" <linux-arm-msm@vger.kernel.org>,
+ "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
+ "linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>
+References: <20240410132247.3587-1-sensor1010@163.com>
+ <279401246.446176.1712756559290.JavaMail.root@mail-tracker-145-3ep34-c9h23-5f64cf7787-82gdh>
+ <398726f4-3ec3-406d-b154-1f0caad63f02@csgroup.eu>
+ <1388632395.447003.1712759604593.JavaMail.root@mail-tracker-145-3ep34-c9h23-5f64cf7787-82gdh>
+From: Florian Fainelli <florian.fainelli@broadcom.com>
+Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
+ xsBNBFPAG8ABCAC3EO02urEwipgbUNJ1r6oI2Vr/+uE389lSEShN2PmL3MVnzhViSAtrYxeT
+ M0Txqn1tOWoIc4QUl6Ggqf5KP6FoRkCrgMMTnUAINsINYXK+3OLe7HjP10h2jDRX4Ajs4Ghs
+ JrZOBru6rH0YrgAhr6O5gG7NE1jhly+EsOa2MpwOiXO4DE/YKZGuVe6Bh87WqmILs9KvnNrQ
+ PcycQnYKTVpqE95d4M824M5cuRB6D1GrYovCsjA9uxo22kPdOoQRAu5gBBn3AdtALFyQj9DQ
+ KQuc39/i/Kt6XLZ/RsBc6qLs+p+JnEuPJngTSfWvzGjpx0nkwCMi4yBb+xk7Hki4kEslABEB
+ AAHNMEZsb3JpYW4gRmFpbmVsbGkgPGZsb3JpYW4uZmFpbmVsbGlAYnJvYWRjb20uY29tPsLB
+ IQQQAQgAywUCZWl41AUJI+Jo+hcKAAG/SMv+fS3xUQWa0NryPuoRGjsA3SAUAAAAAAAWAAFr
+ ZXktdXNhZ2UtbWFza0BwZ3AuY29tjDAUgAAAAAAgAAdwcmVmZXJyZWQtZW1haWwtZW5jb2Rp
+ bmdAcGdwLmNvbXBncG1pbWUICwkIBwMCAQoFF4AAAAAZGGxkYXA6Ly9rZXlzLmJyb2FkY29t
+ Lm5ldAUbAwAAAAMWAgEFHgEAAAAEFQgJChYhBNXZKpfnkVze1+R8aIExtcQpvGagAAoJEIEx
+ tcQpvGagWPEH/2l0DNr9QkTwJUxOoP9wgHfmVhqc0ZlDsBFv91I3BbhGKI5UATbipKNqG13Z
+ TsBrJHcrnCqnTRS+8n9/myOF0ng2A4YT0EJnayzHugXm+hrkO5O9UEPJ8a+0553VqyoFhHqA
+ zjxj8fUu1px5cbb4R9G4UAySqyeLLeqnYLCKb4+GklGSBGsLMYvLmIDNYlkhMdnnzsSUAS61
+ WJYW6jjnzMwuKJ0ZHv7xZvSHyhIsFRiYiEs44kiYjbUUMcXor/uLEuTIazGrE3MahuGdjpT2
+ IOjoMiTsbMc0yfhHp6G/2E769oDXMVxCCbMVpA+LUtVIQEA+8Zr6mX0Yk4nDS7OiBlvOwE0E
+ U8AbwQEIAKxr71oqe+0+MYCc7WafWEcpQHFUwvYLcdBoOnmJPxDwDRpvU5LhqSPvk/yJdh9k
+ 4xUDQu3rm1qIW2I9Puk5n/Jz/lZsqGw8T13DKyu8eMcvaA/irm9lX9El27DPHy/0qsxmxVmU
+ pu9y9S+BmaMb2CM9IuyxMWEl9ruWFS2jAWh/R8CrdnL6+zLk60R7XGzmSJqF09vYNlJ6Bdbs
+ MWDXkYWWP5Ub1ZJGNJQ4qT7g8IN0qXxzLQsmz6tbgLMEHYBGx80bBF8AkdThd6SLhreCN7Uh
+ IR/5NXGqotAZao2xlDpJLuOMQtoH9WVNuuxQQZHVd8if+yp6yRJ5DAmIUt5CCPcAEQEAAcLB
+ gQQYAQIBKwUCU8AbwgUbDAAAAMBdIAQZAQgABgUCU8AbwQAKCRCTYAaomC8PVQ0VCACWk3n+
+ obFABEp5Rg6Qvspi9kWXcwCcfZV41OIYWhXMoc57ssjCand5noZi8bKg0bxw4qsg+9cNgZ3P
+ N/DFWcNKcAT3Z2/4fTnJqdJS//YcEhlr8uGs+ZWFcqAPbteFCM4dGDRruo69IrHfyyQGx16s
+ CcFlrN8vD066RKevFepb/ml7eYEdN5SRALyEdQMKeCSf3mectdoECEqdF/MWpfWIYQ1hEfdm
+ C2Kztm+h3Nkt9ZQLqc3wsPJZmbD9T0c9Rphfypgw/SfTf2/CHoYVkKqwUIzI59itl5Lze+R5
+ wDByhWHx2Ud2R7SudmT9XK1e0x7W7a5z11Q6vrzuED5nQvkhAAoJEIExtcQpvGagugcIAJd5
+ EYe6KM6Y6RvI6TvHp+QgbU5dxvjqSiSvam0Ms3QrLidCtantcGT2Wz/2PlbZqkoJxMQc40rb
+ fXa4xQSvJYj0GWpadrDJUvUu3LEsunDCxdWrmbmwGRKqZraV2oG7YEddmDqOe0Xm/NxeSobc
+ MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
+ 7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
+ 95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
+In-Reply-To: <1388632395.447003.1712759604593.JavaMail.root@mail-tracker-145-3ep34-c9h23-5f64cf7787-82gdh>
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="000000000000e538230615c13fab"
+
+--000000000000e538230615c13fab
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 
-This UIO driver was used to control the PRU processors found on various
-TI SoCs. It was created before the Remoteproc framework, but now with
-that we have a standard way to program and manage the PRU processors.
-The proper PRU Remoteproc driver should be used instead of this driver.
 
-This driver only supported the original class of PRUSS (OMAP-L1xx /
-AM17xx / AM18xx / TMS320C674x / DA8xx) but when these platforms were
-switched to use Device Tree the support for DT was not added to this
-driver and so it is now unused/unusable. Support for these platforms
-can be added to the proper PRU Remoteproc driver if ever needed.
 
-Remove this driver.
+On 4/10/2024 7:33 AM, lizhe wrote:
+> Hi，
+>       i have already change the definition of exit
+>       in struct cpu_freq_driver in include/linux/cpufreq.h
 
-Signed-off-by: Andrew Davis <afd@ti.com>
+Again, no top-posting and please use HTML. The patch you sent does not 
+indicate that include/linux/cpufreq.h has been updated, so maybe you 
+forgot to "git add include/linux/cpufreq.h" before preparing the patch.
+
+You can verify the list of files changed in your patch by looking at the 
+lines after the "---":
+
 ---
-
-Changes for v2:
- - Simply remove the whole driver as discussed here[0]
-
-[0] https://lore.kernel.org/lkml/20240325210045.153827-1-afd@ti.com/T/
-
- drivers/uio/Kconfig                     |  18 --
- drivers/uio/Makefile                    |   1 -
- drivers/uio/uio_pruss.c                 | 255 ------------------------
- include/linux/platform_data/uio_pruss.h |  18 --
- 4 files changed, 292 deletions(-)
- delete mode 100644 drivers/uio/uio_pruss.c
- delete mode 100644 include/linux/platform_data/uio_pruss.h
-
-diff --git a/drivers/uio/Kconfig b/drivers/uio/Kconfig
-index 2e16c5338e5b1..b060dcd7c6350 100644
---- a/drivers/uio/Kconfig
-+++ b/drivers/uio/Kconfig
-@@ -125,24 +125,6 @@ config UIO_FSL_ELBC_GPCM_NETX5152
- 	  Information about this hardware can be found at:
- 	  http://www.hilscher.com/netx
- 
--config UIO_PRUSS
--	tristate "Texas Instruments PRUSS driver"
--	select GENERIC_ALLOCATOR
--	depends on HAS_IOMEM && HAS_DMA
--	help
--	  PRUSS driver for OMAPL138/DA850/AM18XX devices
--	  PRUSS driver requires user space components, examples and user space
--	  driver is available from below SVN repo - you may use anonymous login
--
--	  https://gforge.ti.com/gf/project/pru_sw/
--
--	  More info on API is available at below wiki
--
--	  http://processors.wiki.ti.com/index.php/PRU_Linux_Application_Loader
--
--	  To compile this driver as a module, choose M here: the module
--	  will be called uio_pruss.
--
- config UIO_MF624
- 	tristate "Humusoft MF624 DAQ PCI card driver"
- 	depends on PCI
-diff --git a/drivers/uio/Makefile b/drivers/uio/Makefile
-index f2f416a142286..1c5f3b5a95cf5 100644
---- a/drivers/uio/Makefile
-+++ b/drivers/uio/Makefile
-@@ -7,7 +7,6 @@ obj-$(CONFIG_UIO_AEC)	+= uio_aec.o
- obj-$(CONFIG_UIO_SERCOS3)	+= uio_sercos3.o
- obj-$(CONFIG_UIO_PCI_GENERIC)	+= uio_pci_generic.o
- obj-$(CONFIG_UIO_NETX)	+= uio_netx.o
--obj-$(CONFIG_UIO_PRUSS)         += uio_pruss.o
- obj-$(CONFIG_UIO_MF624)         += uio_mf624.o
- obj-$(CONFIG_UIO_FSL_ELBC_GPCM)	+= uio_fsl_elbc_gpcm.o
- obj-$(CONFIG_UIO_HV_GENERIC)	+= uio_hv_generic.o
-diff --git a/drivers/uio/uio_pruss.c b/drivers/uio/uio_pruss.c
-deleted file mode 100644
-index f67881cba645b..0000000000000
---- a/drivers/uio/uio_pruss.c
-+++ /dev/null
-@@ -1,255 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-only
--/*
-- * Programmable Real-Time Unit Sub System (PRUSS) UIO driver (uio_pruss)
-- *
-- * This driver exports PRUSS host event out interrupts and PRUSS, L3 RAM,
-- * and DDR RAM to user space for applications interacting with PRUSS firmware
-- *
-- * Copyright (C) 2010-11 Texas Instruments Incorporated - http://www.ti.com/
-- */
--#include <linux/device.h>
--#include <linux/module.h>
--#include <linux/moduleparam.h>
--#include <linux/platform_device.h>
--#include <linux/uio_driver.h>
--#include <linux/platform_data/uio_pruss.h>
--#include <linux/io.h>
--#include <linux/clk.h>
--#include <linux/dma-mapping.h>
--#include <linux/sizes.h>
--#include <linux/slab.h>
--#include <linux/genalloc.h>
--
--#define DRV_NAME "pruss_uio"
--#define DRV_VERSION "1.0"
--
--static int sram_pool_sz = SZ_16K;
--module_param(sram_pool_sz, int, 0);
--MODULE_PARM_DESC(sram_pool_sz, "sram pool size to allocate ");
--
--static int extram_pool_sz = SZ_256K;
--module_param(extram_pool_sz, int, 0);
--MODULE_PARM_DESC(extram_pool_sz, "external ram pool size to allocate");
--
--/*
-- * Host event IRQ numbers from PRUSS - PRUSS can generate up to 8 interrupt
-- * events to AINTC of ARM host processor - which can be used for IPC b/w PRUSS
-- * firmware and user space application, async notification from PRU firmware
-- * to user space application
-- * 3	PRU_EVTOUT0
-- * 4	PRU_EVTOUT1
-- * 5	PRU_EVTOUT2
-- * 6	PRU_EVTOUT3
-- * 7	PRU_EVTOUT4
-- * 8	PRU_EVTOUT5
-- * 9	PRU_EVTOUT6
-- * 10	PRU_EVTOUT7
--*/
--#define MAX_PRUSS_EVT	8
--
--#define PINTC_HIDISR	0x0038
--#define PINTC_HIPIR	0x0900
--#define HIPIR_NOPEND	0x80000000
--#define PINTC_HIER	0x1500
--
--struct uio_pruss_dev {
--	struct uio_info *info;
--	struct clk *pruss_clk;
--	dma_addr_t sram_paddr;
--	dma_addr_t ddr_paddr;
--	void __iomem *prussio_vaddr;
--	unsigned long sram_vaddr;
--	void *ddr_vaddr;
--	unsigned int hostirq_start;
--	unsigned int pintc_base;
--	struct gen_pool *sram_pool;
--};
--
--static irqreturn_t pruss_handler(int irq, struct uio_info *info)
--{
--	struct uio_pruss_dev *gdev = info->priv;
--	int intr_bit = (irq - gdev->hostirq_start + 2);
--	int val, intr_mask = (1 << intr_bit);
--	void __iomem *base = gdev->prussio_vaddr + gdev->pintc_base;
--	void __iomem *intren_reg = base + PINTC_HIER;
--	void __iomem *intrdis_reg = base + PINTC_HIDISR;
--	void __iomem *intrstat_reg = base + PINTC_HIPIR + (intr_bit << 2);
--
--	val = ioread32(intren_reg);
--	/* Is interrupt enabled and active ? */
--	if (!(val & intr_mask) && (ioread32(intrstat_reg) & HIPIR_NOPEND))
--		return IRQ_NONE;
--	/* Disable interrupt */
--	iowrite32(intr_bit, intrdis_reg);
--	return IRQ_HANDLED;
--}
--
--static void pruss_cleanup(struct device *dev, struct uio_pruss_dev *gdev)
--{
--	int cnt;
--	struct uio_info *p = gdev->info;
--
--	for (cnt = 0; cnt < MAX_PRUSS_EVT; cnt++, p++) {
--		uio_unregister_device(p);
--	}
--	iounmap(gdev->prussio_vaddr);
--	if (gdev->ddr_vaddr) {
--		dma_free_coherent(dev, extram_pool_sz, gdev->ddr_vaddr,
--			gdev->ddr_paddr);
--	}
--	if (gdev->sram_vaddr)
--		gen_pool_free(gdev->sram_pool,
--			      gdev->sram_vaddr,
--			      sram_pool_sz);
--	clk_disable(gdev->pruss_clk);
--}
--
--static int pruss_probe(struct platform_device *pdev)
--{
--	struct uio_info *p;
--	struct uio_pruss_dev *gdev;
--	struct resource *regs_prussio;
--	struct device *dev = &pdev->dev;
--	int ret, cnt, i, len;
--	struct uio_pruss_pdata *pdata = dev_get_platdata(dev);
--
--	gdev = devm_kzalloc(dev, sizeof(struct uio_pruss_dev), GFP_KERNEL);
--	if (!gdev)
--		return -ENOMEM;
--
--	gdev->info = devm_kcalloc(dev, MAX_PRUSS_EVT, sizeof(*p), GFP_KERNEL);
--	if (!gdev->info)
--		return -ENOMEM;
--
--	/* Power on PRU in case its not done as part of boot-loader */
--	gdev->pruss_clk = devm_clk_get(dev, "pruss");
--	if (IS_ERR(gdev->pruss_clk)) {
--		dev_err(dev, "Failed to get clock\n");
--		return PTR_ERR(gdev->pruss_clk);
--	}
--
--	ret = clk_enable(gdev->pruss_clk);
--	if (ret) {
--		dev_err(dev, "Failed to enable clock\n");
--		return ret;
--	}
--
--	regs_prussio = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	if (!regs_prussio) {
--		dev_err(dev, "No PRUSS I/O resource specified\n");
--		ret = -EIO;
--		goto err_clk_disable;
--	}
--
--	if (!regs_prussio->start) {
--		dev_err(dev, "Invalid memory resource\n");
--		ret = -EIO;
--		goto err_clk_disable;
--	}
--
--	if (pdata->sram_pool) {
--		gdev->sram_pool = pdata->sram_pool;
--		gdev->sram_vaddr =
--			(unsigned long)gen_pool_dma_alloc(gdev->sram_pool,
--					sram_pool_sz, &gdev->sram_paddr);
--		if (!gdev->sram_vaddr) {
--			dev_err(dev, "Could not allocate SRAM pool\n");
--			ret = -ENOMEM;
--			goto err_clk_disable;
--		}
--	}
--
--	gdev->ddr_vaddr = dma_alloc_coherent(dev, extram_pool_sz,
--				&(gdev->ddr_paddr), GFP_KERNEL | GFP_DMA);
--	if (!gdev->ddr_vaddr) {
--		dev_err(dev, "Could not allocate external memory\n");
--		ret = -ENOMEM;
--		goto err_free_sram;
--	}
--
--	len = resource_size(regs_prussio);
--	gdev->prussio_vaddr = ioremap(regs_prussio->start, len);
--	if (!gdev->prussio_vaddr) {
--		dev_err(dev, "Can't remap PRUSS I/O  address range\n");
--		ret = -ENOMEM;
--		goto err_free_ddr_vaddr;
--	}
--
--	ret = platform_get_irq(pdev, 0);
--	if (ret < 0)
--		goto err_unmap;
--
--	gdev->hostirq_start = ret;
--	gdev->pintc_base = pdata->pintc_base;
--
--	for (cnt = 0, p = gdev->info; cnt < MAX_PRUSS_EVT; cnt++, p++) {
--		p->mem[0].addr = regs_prussio->start;
--		p->mem[0].size = resource_size(regs_prussio);
--		p->mem[0].memtype = UIO_MEM_PHYS;
--
--		p->mem[1].addr = gdev->sram_paddr;
--		p->mem[1].size = sram_pool_sz;
--		p->mem[1].memtype = UIO_MEM_PHYS;
--
--		p->mem[2].addr = (uintptr_t) gdev->ddr_vaddr;
--		p->mem[2].dma_addr = gdev->ddr_paddr;
--		p->mem[2].size = extram_pool_sz;
--		p->mem[2].memtype = UIO_MEM_DMA_COHERENT;
--		p->mem[2].dma_device = dev;
--
--		p->name = devm_kasprintf(dev, GFP_KERNEL, "pruss_evt%d", cnt);
--		p->version = DRV_VERSION;
--
--		/* Register PRUSS IRQ lines */
--		p->irq = gdev->hostirq_start + cnt;
--		p->handler = pruss_handler;
--		p->priv = gdev;
--
--		ret = uio_register_device(dev, p);
--		if (ret < 0)
--			goto err_unloop;
--	}
--
--	platform_set_drvdata(pdev, gdev);
--	return 0;
--
--err_unloop:
--	for (i = 0, p = gdev->info; i < cnt; i++, p++) {
--		uio_unregister_device(p);
--	}
--err_unmap:
--	iounmap(gdev->prussio_vaddr);
--err_free_ddr_vaddr:
--	dma_free_coherent(dev, extram_pool_sz, gdev->ddr_vaddr,
--			  gdev->ddr_paddr);
--err_free_sram:
--	if (pdata->sram_pool)
--		gen_pool_free(gdev->sram_pool, gdev->sram_vaddr, sram_pool_sz);
--err_clk_disable:
--	clk_disable(gdev->pruss_clk);
--
--	return ret;
--}
--
--static int pruss_remove(struct platform_device *dev)
--{
--	struct uio_pruss_dev *gdev = platform_get_drvdata(dev);
--
--	pruss_cleanup(&dev->dev, gdev);
--	return 0;
--}
--
--static struct platform_driver pruss_driver = {
--	.probe = pruss_probe,
--	.remove = pruss_remove,
--	.driver = {
--		   .name = DRV_NAME,
--		   },
--};
--
--module_platform_driver(pruss_driver);
--
--MODULE_LICENSE("GPL v2");
--MODULE_VERSION(DRV_VERSION);
--MODULE_AUTHOR("Amit Chatterjee <amit.chatterjee@ti.com>");
--MODULE_AUTHOR("Pratheesh Gangadhar <pratheesh@ti.com>");
-diff --git a/include/linux/platform_data/uio_pruss.h b/include/linux/platform_data/uio_pruss.h
-deleted file mode 100644
-index f76fa393b8023..0000000000000
---- a/include/linux/platform_data/uio_pruss.h
-+++ /dev/null
-@@ -1,18 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0-only */
--/*
-- * include/linux/platform_data/uio_pruss.h
-- *
-- * Platform data for uio_pruss driver
-- *
-- * Copyright (C) 2010-11 Texas Instruments Incorporated - https://www.ti.com/
-- */
--
--#ifndef _UIO_PRUSS_H_
--#define _UIO_PRUSS_H_
--
--/* To configure the PRUSS INTC base offset for UIO driver */
--struct uio_pruss_pdata {
--	u32		pintc_base;
--	struct gen_pool *sram_pool;
--};
--#endif /* _UIO_PRUSS_H_ */
+  drivers/cpufreq/acpi-cpufreq.c         | 4 +---
+  drivers/cpufreq/amd-pstate.c           | 7 ++-----
+  drivers/cpufreq/apple-soc-cpufreq.c    | 4 +---
+  drivers/cpufreq/bmips-cpufreq.c        | 4 +---
+  drivers/cpufreq/cppc_cpufreq.c         | 3 +--
+  drivers/cpufreq/cpufreq-dt.c           | 3 +--
+  drivers/cpufreq/e_powersaver.c         | 3 +--
+  drivers/cpufreq/intel_pstate.c         | 4 +---
+  drivers/cpufreq/mediatek-cpufreq-hw.c  | 4 +---
+  drivers/cpufreq/mediatek-cpufreq.c     | 4 +---
+  drivers/cpufreq/omap-cpufreq.c         | 3 +--
+  drivers/cpufreq/pasemi-cpufreq.c       | 6 ++----
+  drivers/cpufreq/powernow-k6.c          | 3 +--
+  drivers/cpufreq/powernow-k7.c          | 3 +--
+  drivers/cpufreq/powernow-k8.c          | 4 +---
+  drivers/cpufreq/powernv-cpufreq.c      | 4 +---
+  drivers/cpufreq/ppc_cbe_cpufreq.c      | 3 +--
+  drivers/cpufreq/qcom-cpufreq-hw.c      | 4 +---
+  drivers/cpufreq/qoriq-cpufreq.c        | 4 +---
+  drivers/cpufreq/scmi-cpufreq.c         | 4 +---
+  drivers/cpufreq/scpi-cpufreq.c         | 4 +---
+  drivers/cpufreq/sh-cpufreq.c           | 4 +---
+  drivers/cpufreq/sparc-us2e-cpufreq.c   | 3 +--
+  drivers/cpufreq/sparc-us3-cpufreq.c    | 3 +--
+  drivers/cpufreq/speedstep-centrino.c   | 4 +---
+  drivers/cpufreq/tegra194-cpufreq.c     | 4 +---
+  drivers/cpufreq/vexpress-spc-cpufreq.c | 3 +--
+  27 files changed, 29 insertions(+), 74 deletions(-)
 -- 
-2.39.2
+Florian
 
+--000000000000e538230615c13fab
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+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
+riBJ/K1AFUjRAjFhGV64l++td7dkmnq/X8ET75ti+w1s4FRpFqkD2m7pg5NxdsZphYIXAgMBAAGj
+QjBAMA4GA1UdDwEB/wQEAwIBBjAPBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBSP8Et/qC5FJK5N
+UPpjmove4t0bvDANBgkqhkiG9w0BAQsFAAOCAQEAS0DbwFCq/sgM7/eWVEVJu5YACUGssxOGhigH
+M8pr5nS5ugAtrqQK0/Xx8Q+Kv3NnSoPHRHt44K9ubG8DKY4zOUXDjuS5V2yq/BKW7FPGLeQkbLmU
+Y/vcU2hnVj6DuM81IcPJaP7O2sJTqsyQiunwXUaMld16WCgaLx3ezQA3QY/tRG3XUyiXfvNnBB4V
+14qWtNPeTCekTBtzc3b0F5nCH3oO4y0IrQocLP88q1UOD5F+NuvDV0m+4S4tfGCLw0FREyOdzvcy
+a5QBqJnnLDMfOjsl0oZAzjsshnjJYS8Uuu7bVW/fhO4FCU29KNhyztNiUGUe65KXgzHZs7XKR1g/
+XzCCBVgwggRAoAMCAQICDBP8P9hKRVySg3Qv5DANBgkqhkiG9w0BAQsFADBbMQswCQYDVQQGEwJC
+RTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1zYTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMg
+UGVyc29uYWxTaWduIDIgQ0EgMjAyMDAeFw0yMjA5MTAxMjE4MTFaFw0yNTA5MTAxMjE4MTFaMIGW
+MQswCQYDVQQGEwJJTjESMBAGA1UECBMJS2FybmF0YWthMRIwEAYDVQQHEwlCYW5nYWxvcmUxFjAU
+BgNVBAoTDUJyb2FkY29tIEluYy4xGTAXBgNVBAMTEEZsb3JpYW4gRmFpbmVsbGkxLDAqBgkqhkiG
+9w0BCQEWHWZsb3JpYW4uZmFpbmVsbGlAYnJvYWRjb20uY29tMIIBIjANBgkqhkiG9w0BAQEFAAOC
+AQ8AMIIBCgKCAQEA+oi3jMmHltY4LMUy8Up5+1zjd1iSgUBXhwCJLj1GJQF+GwP8InemBbk5rjlC
+UwbQDeIlOfb8xGqHoQFGSW8p9V1XUw+cthISLkycex0AJ09ufePshLZygRLREU0H4ecNPMejxCte
+KdtB4COST4uhBkUCo9BSy1gkl8DJ8j/BQ1KNUx6oYe0CntRag+EnHv9TM9BeXBBLfmMRnWNhvOSk
+nSmRX0J3d9/G2A3FIC6WY2XnLW7eAZCQPa1Tz3n2B5BGOxwqhwKLGLNu2SRCPHwOdD6e0drURF7/
+Vax85/EqkVnFNlfxtZhS0ugx5gn2pta7bTdBm1IG4TX+A3B1G57rVwIDAQABo4IB3jCCAdowDgYD
+VR0PAQH/BAQDAgWgMIGjBggrBgEFBQcBAQSBljCBkzBOBggrBgEFBQcwAoZCaHR0cDovL3NlY3Vy
+ZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3J0MEEG
+CCsGAQUFBzABhjVodHRwOi8vb2NzcC5nbG9iYWxzaWduLmNvbS9nc2djY3IzcGVyc29uYWxzaWdu
+MmNhMjAyMDBNBgNVHSAERjBEMEIGCisGAQQBoDIBKAowNDAyBggrBgEFBQcCARYmaHR0cHM6Ly93
+d3cuZ2xvYmFsc2lnbi5jb20vcmVwb3NpdG9yeS8wCQYDVR0TBAIwADBJBgNVHR8EQjBAMD6gPKA6
+hjhodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24yY2EyMDIwLmNy
+bDAoBgNVHREEITAfgR1mbG9yaWFuLmZhaW5lbGxpQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggr
+BgEFBQcDBDAfBgNVHSMEGDAWgBSWM9HmWBdbNHWKgVZk1b5I3qGPzzAdBgNVHQ4EFgQUUwwfJ6/F
+KL0fRdVROal/Lp4lAF0wDQYJKoZIhvcNAQELBQADggEBAKBgfteDc1mChZjKBY4xAplC6uXGyBrZ
+kNGap1mHJ+JngGzZCz+dDiHRQKGpXLxkHX0BvEDZLW6LGOJ83ImrW38YMOo3ZYnCYNHA9qDOakiw
+2s1RH00JOkO5SkYdwCHj4DB9B7KEnLatJtD8MBorvt+QxTuSh4ze96Jz3kEIoHMvwGFkgObWblsc
+3/YcLBmCgaWpZ3Ksev1vJPr5n8riG3/N4on8gO5qinmmr9Y7vGeuf5dmZrYMbnb+yCBalkUmZQwY
+NxADYvcRBA0ySL6sZpj8BIIhWiXiuusuBmt2Mak2eEv0xDbovE6Z6hYyl/ZnRadbgK/ClgbY3w+O
+AfUXEZ0xggJtMIICaQIBATBrMFsxCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52
+LXNhMTEwLwYDVQQDEyhHbG9iYWxTaWduIEdDQyBSMyBQZXJzb25hbFNpZ24gMiBDQSAyMDIwAgwT
+/D/YSkVckoN0L+QwDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIEIDzZqX0yW+IbOk7e
+lQ3LvvHFszWYbuVhz4zB0CwyHRmuMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcN
+AQkFMQ8XDTI0MDQxMDE3MjAwNVowaQYJKoZIhvcNAQkPMVwwWjALBglghkgBZQMEASowCwYJYIZI
+AWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQowCwYJKoZIhvcNAQEH
+MAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQDcEyjAUzFfwN71bV8aap9pgpj0gufcGm/K
+GSvDQQRy6TJ9bvnl/6utrAB/c2LgH5imYdVmvcwrVsqKy/655lXzTameOM9XdOR6WHhP5ZuGThxe
+lXpMEnSNuXWKZZ+YUApMnQktC86g2LyGlOeF7z7y3LoypJEFgZh4cJ4vuymuiM5HBQXHIwGrWLEY
+obWjLGI7CQfEEmjEIDWXJUFzhK4Oe5Ixje+1fiq+sGkV83NLPIrjIbNiEZkM0066MsujYNaA4y/5
+j+pcS5pCF1BEl2cC2gkYCrGahsY7Gh2NOW/0r+qU0vQuzgTng6GBnUypg6mQd/zGbiOfxEgZyMUr
+HB2V
+--000000000000e538230615c13fab--
 
