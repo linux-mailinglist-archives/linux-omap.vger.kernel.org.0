@@ -1,114 +1,80 @@
-Return-Path: <linux-omap+bounces-1133-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1134-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB90889E6F7
-	for <lists+linux-omap@lfdr.de>; Wed, 10 Apr 2024 02:40:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8D4189EA7A
+	for <lists+linux-omap@lfdr.de>; Wed, 10 Apr 2024 08:13:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B65C1F223EA
-	for <lists+linux-omap@lfdr.de>; Wed, 10 Apr 2024 00:40:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06AC31C20D0B
+	for <lists+linux-omap@lfdr.de>; Wed, 10 Apr 2024 06:13:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F4E6623;
-	Wed, 10 Apr 2024 00:40:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12A9F219E2;
+	Wed, 10 Apr 2024 06:13:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="UfxFwwmB"
+	dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b="Hsky4j/A"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
+Received: from mail5.25mail.st (mail5.25mail.st [74.50.62.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0407387;
-	Wed, 10 Apr 2024 00:40:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.249
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4E7E1CA80;
+	Wed, 10 Apr 2024 06:13:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.50.62.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712709606; cv=none; b=AzqwtIn+gEZwkQTSLSjoQZaLusMNs3Trt7MM5aqbS/bukDDiLM+0IETxRm/vBGyvGwDk2Z8ZJ5d9zEQZe4DN6Rg+ebt0DOXigLBEqgxVdeTzo2e22YTgzvhvYArjsBGQYbOsqpzXRlguAb42eknxDvW/igxHW7EgqQTruI3VglQ=
+	t=1712729604; cv=none; b=a3u3uTHmy5+McyXgR/p6MDdZMlvI6QTu1A45jOpU0em2i0HT/ACqdlQNLQ0WKbc6QGdqMAFru6MS6g8TjSLfu8+sphISMn1K5hWYNqHsgXsEHBDMs/vzLdEWqN61n6BEDqfwrakyoslgTNTj6gSmPSTmYn67AFcjqFuUPynRYxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712709606; c=relaxed/simple;
-	bh=DFJlsyWtNR4AILqPAwwwDiwJLsYOsOgSTRpDX2EDGcU=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UnX4UXOUB25wZ8GpUS+5m/BBc3rKsUcUeJHq0MMJbhYFpgFtHJckswMWTsX9qmXzo8u7J9RxocbMQW7TxK61BFYZuLzgby+3lVFSFMvuaaeVqOLyd3yycVS9kvSjQmXRXbLGh/wg92L+OHv9VKkVoVywWdDCFJqxop1O8x8P9n4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=UfxFwwmB; arc=none smtp.client-ip=198.47.23.249
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 43A0dq7K041056;
-	Tue, 9 Apr 2024 19:39:52 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1712709592;
-	bh=cmZSSvfxWpFvGOfbBlYMoBX5v+AChVyAxZqkm1pY0HU=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To;
-	b=UfxFwwmB/sQfjtdjat+TPCwB//zI8o0CaKPlUMNH3g0S6HxOhW+HTbpOlYhQq/vN+
-	 7L2oiZIiqY0p35cRLQLFgW1jdhXGOCHkOWqgMLzh98Ah7N5/e4DCrEvWavvhhu7Gjs
-	 hG+ORkD6AKUKqckEyuMRTyMtcS3gxZgV8vEnCzhU=
-Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
-	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 43A0dqLa130837
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 9 Apr 2024 19:39:52 -0500
-Received: from DFLE100.ent.ti.com (10.64.6.21) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 9
- Apr 2024 19:39:52 -0500
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE100.ent.ti.com
- (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Tue, 9 Apr 2024 19:39:52 -0500
-Received: from localhost (uda0133052.dhcp.ti.com [128.247.81.232])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 43A0dqud128754;
-	Tue, 9 Apr 2024 19:39:52 -0500
-Date: Tue, 9 Apr 2024 19:39:52 -0500
-From: Nishanth Menon <nm@ti.com>
+	s=arc-20240116; t=1712729604; c=relaxed/simple;
+	bh=6IeBjyCL++/tTknsNWPUYuxRZKWspJPfQ3nROpczfqY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kSZOkJ21+F8uGpYAG+P4u56W0skREx9Nq1ee+HupXJccyyy/4kbyeTSTPgcYftpo8ir61LSvZJfLbHYBpABibgMQCbMr47/GNJXb5sRWNk46nycIvgmecQi0R9cy10IgGA+45DiGcwro1Pz5QFEDGaBfZgVB4Pu8GSlnPGq1sZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com; spf=fail smtp.mailfrom=atomide.com; dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b=Hsky4j/A; arc=none smtp.client-ip=74.50.62.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=atomide.com
+Received: from localhost (91-158-86-216.elisa-laajakaista.fi [91.158.86.216])
+	by mail5.25mail.st (Postfix) with ESMTPSA id 4F4F660406;
+	Wed, 10 Apr 2024 06:12:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=atomide.com;
+	s=25mailst; t=1712729596;
+	bh=6IeBjyCL++/tTknsNWPUYuxRZKWspJPfQ3nROpczfqY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Hsky4j/AEJPLnjVBZoWhFLwRr44NG2R1Ly19zthKqNBXxGm36SbqSsqAcza9//1qM
+	 nwUIGI0Y90Jiwfr54QIwS82RkGmXjD9nYDCLgSBmjaR3ZF6db6xG3cps8if1p+2cw7
+	 qQ2GWlPM7zK8KoBXDlM8t3k3jJojdcHSGjPRQdHcT3NSMQ25vTpAEbVpKt3JERoMl5
+	 0+t9s3tz2AOkpExBdqTUr5iI4GW14DKTOLqTT6syJqEMOxHqf+wQPCJrnKkrUa3DEg
+	 zMEymjG1+BQFU5oGJ/1/kn4agkZA5pZwt3+E+JcLWg255I1xpt24jW40EUa3BKcwB+
+	 1/aivQMba8rqA==
+Date: Wed, 10 Apr 2024 09:12:49 +0300
+From: Tony Lindgren <tony@atomide.com>
 To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-CC: =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        Tony Lindgren
-	<tony@atomide.com>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski
-	<krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Vignesh Raghavendra <vigneshr@ti.com>, Tero Kristo <kristo@kernel.org>,
-        <linux-omap@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>
-Subject: Re: (subset) [PATCH 1/2] arm64: dts: ti: k3-am62p5-sk: minor
- whitespace cleanup
-Message-ID: <20240410003952.wnxayyiyqxkgj7we@supplier>
+Cc: =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, Nishanth Menon <nm@ti.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Tero Kristo <kristo@kernel.org>, linux-omap@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 2/2] ARM: dts: ti: omap: minor whitespace cleanup
+Message-ID: <20240410061249.GA5156@atomide.com>
 References: <20240208105146.128645-1-krzysztof.kozlowski@linaro.org>
- <171269138685.642844.11136653326464585397.b4-ty@ti.com>
- <63fc911e-8906-43d0-a4bf-80ceac83d178@linaro.org>
+ <20240208105146.128645-2-krzysztof.kozlowski@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <63fc911e-8906-43d0-a4bf-80ceac83d178@linaro.org>
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+In-Reply-To: <20240208105146.128645-2-krzysztof.kozlowski@linaro.org>
 
-On 22:04-20240409, Krzysztof Kozlowski wrote:
-> On 09/04/2024 21:36, Nishanth Menon wrote:
-> > Hi Krzysztof Kozlowski,
-> > 
-> > On Thu, 08 Feb 2024 11:51:45 +0100, Krzysztof Kozlowski wrote:
-> >> The DTS code coding style expects exactly one space before '{'
-> >> character.
-> >>
-> >>
-> > As discussed offline, I am picking this patch up.
-> > 
-> > I have applied the following to branch ti-k3-dts-next on [1].
-> > Thank you!
-> > 
-> > [1/2] arm64: dts: ti: k3-am62p5-sk: minor whitespace cleanup
-> >       commit: 45ab8daed512258c07fd14536a3633440dabfe84
-> 
-> What about the omap one (second in the series)? Shall I take it?
+* Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> [240208 10:51]:
+> The DTS code coding style expects exactly one space before '{'
+> character.
 
-I had poked Tony about it (he is the maintainer for OMAP). Tony: could
-you comment?
+Krzysztof, sorry for the confusion on getting this merged, please go ahead
+and take it:
 
--- 
-Regards,
-Nishanth Menon
-Key (0xDDB5849D1736249D) / Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
+Acked-by: Tony Lindgren <tony@atomide.com>
 
