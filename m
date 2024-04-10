@@ -1,696 +1,575 @@
-Return-Path: <linux-omap+bounces-1148-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1149-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B358989F8B4
-	for <lists+linux-omap@lfdr.de>; Wed, 10 Apr 2024 15:49:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BA1989F90F
+	for <lists+linux-omap@lfdr.de>; Wed, 10 Apr 2024 15:59:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C934AB2B214
-	for <lists+linux-omap@lfdr.de>; Wed, 10 Apr 2024 13:28:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AAA7C1F2E205
+	for <lists+linux-omap@lfdr.de>; Wed, 10 Apr 2024 13:59:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 088BC15EFD0;
-	Wed, 10 Apr 2024 13:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1126715F3E1;
+	Wed, 10 Apr 2024 13:56:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="ZAtfnjHH"
+	dkim=pass (2048-bit key) header.d=csgroup.eu header.i=@csgroup.eu header.b="JduisqkG"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAA0D158D76;
-	Wed, 10 Apr 2024 13:26:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712755616; cv=none; b=DevxFbiK+LXRm7ckh3sZY8ekjZYRLmaa+zZQgHMFm3hluLgkubKNWuu3Vl+227AbIJhdhq9l0YFYBVV8rP1gMD8eC8BFpiYY1w2JgAele+3Tv+gjY4TMfWds3LzVdt+Fo17qa+BEqG/TrdRE89QCDlp0yoJ8pM8skvaLJwScn+4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712755616; c=relaxed/simple;
-	bh=Km74g6LMKfH+zqrYFsIQW6Z1f2bpHSbSyit5M/p4XXo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=FL01xZ+Wy9iMnVRtPsBHzujBwriRoeKH8KSd0IWRMlAG68Wvud0LR5UUd5Q0eiLtPm/ngYfJBv9UIbrmHC3/azFXtLcFQmhdxiE1K4WzXSlFTRnRzN45EVKZdslDyo9+vh8zX+CcZZILdrgw0u1H57IZuA9VNneVplucjGqiHhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=ZAtfnjHH; arc=none smtp.client-ip=220.197.31.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=0k9vD
-	y3IhLXKl1/oPUacgobANip3sPaFSxC+sZynpEs=; b=ZAtfnjHHXPSjAYMgeE5As
-	oEorvp1cnCmONXS9I7yt+O8y+vUhsPUV+i4sBETUDOwf6yd96abr/tmkE7sgwBfA
-	kaokf5MITki6RIoVELqJDQsJHSmzZkKGuPM5qM6DkHGV35t/IvK0orGarfIO5chD
-	PmFKDwkSbkrVa0JPcfCoi0=
-Received: from localhost.localdomain (unknown [101.86.11.106])
-	by gzga-smtp-mta-g2-1 (Coremail) with SMTP id _____wDnN9+3khZm9NnPAg--.11748S4;
-	Wed, 10 Apr 2024 21:23:27 +0800 (CST)
-From: Lizhe <sensor1010@163.com>
-To: rafael@kernel.org,
-	viresh.kumar@linaro.org,
-	ray.huang@amd.com,
-	marcan@marcan.st,
-	sven@svenpeter.dev,
-	alyssa@rosenzweig.io,
-	mmayer@broadcom.com,
-	bcm-kernel-feedback-list@broadcom.com,
-	srinivas.pandruvada@linux.intel.com,
-	lenb@kernel.org,
-	khilman@kernel.org,
-	mpe@ellerman.id.au,
-	npiggin@gmail.com,
-	christophe.leroy@csgroup.eu,
-	aneesh.kumar@kernel.org,
-	naveen.n.rao@linux.ibm.com,
-	andersson@kernel.org,
-	konrad.dybcio@linaro.org,
-	sudeep.holla@arm.com,
-	cristian.marussi@arm.com,
-	thierry.reding@gmail.com,
-	jonathanh@nvidia.com,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com
-Cc: linux-pm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	asahi@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-omap@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-tegra@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	Lizhe <sensor1010@163.com>
-Subject: [PATCH] cpufreq: Covert to exit callback returning void
-Date: Wed, 10 Apr 2024 06:22:47 -0700
-Message-Id: <20240410132247.3587-1-sensor1010@163.com>
-X-Mailer: git-send-email 2.25.1
+Received: from PA5P264CU001.outbound.protection.outlook.com (mail-francecentralazon11020003.outbound.protection.outlook.com [52.101.167.3])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19E3D15CD74;
+	Wed, 10 Apr 2024 13:55:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.167.3
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712757362; cv=fail; b=Rbwecf0TPhAvkhBW0EOrU+K+p5Rl2dRV3ptPRVGEk9tDgLj82eg+yQvZKG5cZKzl8/VkxKkX4PR70YFnp/pw+LAWHCCjujF+cqmlGaxGiUntVwsBew/+l+qIvgrJtMat6tksiWUk2T1yMVVl3bhWHms4Z5wZByf5CdEePUCG//I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712757362; c=relaxed/simple;
+	bh=LvZ3qFacaUPq6lEdVuQgFbSHyzXjtp5KHBd+NI51iC0=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=cBocWEO27cAdf82qUzuSEaduhgIywkeF0LHqSk/qvqviulFVOPH8cSBRCFPa25J/ToZQnmPnlqkCfKkkfZUztqeeDUBePhSfMxfr+M2fbh5rEd0OBOBRXl9fNU5EyUyGCxytOWaG7DN3e8UD3dmueqnv982DyYEGeTTycshQ15Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; dkim=pass (2048-bit key) header.d=csgroup.eu header.i=@csgroup.eu header.b=JduisqkG; arc=fail smtp.client-ip=52.101.167.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=I4UUx+Ny0XZnYSyZDNdJ4XGtpF5lA3axj7gtXU90QJt6SjrX+/1MaXg3VdPB6kxJ6CZ+MIewdLDk7sXttBphfVYtwiJugifDUVuS/MtJUfLoTNht8lERgkR4U6QtoH7Dvlca3kFJXJ7/tzMvxJe346Bahcri1Owg57kbEp9/HI1KCAp+J8nqZEm49NbnuMOtJuoHy8tlmJXFJdKAfnn+NCwTwjzbjZhMBGh0dTem9kbvoexZJviVPeZ9HOvU//QFPISosHRFnOUu+38/I9VO4boUrO87ODYfkxbxKAIXGOypRjoZ32nYmv9zqe2Hv3p70gm3x+ido3UEfxetn9SdFQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=LvZ3qFacaUPq6lEdVuQgFbSHyzXjtp5KHBd+NI51iC0=;
+ b=IzTPf9xBxelSqdaoScILyLA4x+ng3YYVNNlUy+cVcXALGMLpa4SMvi6nsgYNTf5TGimhoiRmvpz4FC5h63BtPG7e10+C5oDwIIk6WBTNvPGeirwkV5q9QmLjReWlUlzRxZ79/dkrutocZGmzG5Hpw99V/un3jo72QOud/9CxkkK7JCRltSg1xr5BnacGJWT0P0jauAZT0IYxY0ucXe2Oj+RMCP7MhnZulBiWP9h0jSMSanWSIAeie+klxf8Lh16HdWpzoYI+RM2ayIjvXaWNHx4qAsQAkzAwrPLNLYdSE+O6XNWQem1L3rYZpZx+nAGNkJSTf7E4YM2P6rbVsJ4Nzg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
+ dkim=pass header.d=csgroup.eu; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=LvZ3qFacaUPq6lEdVuQgFbSHyzXjtp5KHBd+NI51iC0=;
+ b=JduisqkGDyzGrzhw6lAijo0xHXeCB47p7gXYMnjjD8K6uzRvSxZV4YBoNPn5mvd5B1ia/xzNoR1ghWT4eM1Otpkv3nZ8JcExJi4eMxll2NSVVvjtTgdORhVEVlTj5WH42ivtgPtDS4/XwuHolY9/Z6gHR48HWkIncX/tmGIXRmx8VwuR+vJ/q5GjSwtgi9rKUAjYyCgDwtEexcT8NnCGFr/VYtpXuovEWaKyB8EwdCr655urBVdOLw2j9jhxlub5xVG7dLhJ5eRiTikCwUM1aa/FrALSHnxmNiI6A+9wIUG1O9a6cRIN+fr2SvbJHvXnUhPsfrq+KbakOmTLx9rgqA==
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
+ by MR0P264MB4863.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:64::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.47; Wed, 10 Apr
+ 2024 13:55:56 +0000
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::1f75:cb9f:416:4dbb]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::1f75:cb9f:416:4dbb%7]) with mapi id 15.20.7409.053; Wed, 10 Apr 2024
+ 13:55:56 +0000
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: lizhe <sensor1010@163.com>, "rafael@kernel.org" <rafael@kernel.org>,
+	"viresh.kumar@linaro.org" <viresh.kumar@linaro.org>, "ray.huang@amd.com"
+	<ray.huang@amd.com>, "marcan@marcan.st" <marcan@marcan.st>,
+	"sven@svenpeter.dev" <sven@svenpeter.dev>, "alyssa@rosenzweig.io"
+	<alyssa@rosenzweig.io>, "mmayer@broadcom.com" <mmayer@broadcom.com>,
+	"bcm-kernel-feedback-list@broadcom.com"
+	<bcm-kernel-feedback-list@broadcom.com>,
+	"srinivas.pandruvada@linux.intel.com" <srinivas.pandruvada@linux.intel.com>,
+	"lenb@kernel.org" <lenb@kernel.org>, "khilman@kernel.org"
+	<khilman@kernel.org>, "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
+	"npiggin@gmail.com" <npiggin@gmail.com>, "aneesh.kumar@kernel.org"
+	<aneesh.kumar@kernel.org>, "naveen.n.rao@linux.ibm.com"
+	<naveen.n.rao@linux.ibm.com>, "andersson@kernel.org" <andersson@kernel.org>,
+	"konrad.dybcio@linaro.org" <konrad.dybcio@linaro.org>, "sudeep.holla@arm.com"
+	<sudeep.holla@arm.com>, "cristian.marussi@arm.com"
+	<cristian.marussi@arm.com>, "thierry.reding@gmail.com"
+	<thierry.reding@gmail.com>, "jonathanh@nvidia.com" <jonathanh@nvidia.com>,
+	"matthias.bgg@gmail.com" <matthias.bgg@gmail.com>,
+	"angelogioacchino.delregno@collabora.com"
+	<angelogioacchino.delregno@collabora.com>
+CC: "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"asahi@lists.linux.dev" <asahi@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-omap@vger.kernel.org"
+	<linux-omap@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org"
+	<linuxppc-dev@lists.ozlabs.org>, "linux-arm-msm@vger.kernel.org"
+	<linux-arm-msm@vger.kernel.org>, "linux-tegra@vger.kernel.org"
+	<linux-tegra@vger.kernel.org>, "linux-mediatek@lists.infradead.org"
+	<linux-mediatek@lists.infradead.org>
+Subject: Re: [PATCH] cpufreq: Covert to exit callback returning void
+Thread-Topic: [PATCH] cpufreq: Covert to exit callback returning void
+Thread-Index: AQHai07PzhDTqBPEpE+sTyXAuwh1hg==
+Date: Wed, 10 Apr 2024 13:55:56 +0000
+Message-ID: <398726f4-3ec3-406d-b154-1f0caad63f02@csgroup.eu>
+References: <20240410132247.3587-1-sensor1010@163.com>
+ <279401246.446176.1712756559290.JavaMail.root@mail-tracker-145-3ep34-c9h23-5f64cf7787-82gdh>
+In-Reply-To:
+ <279401246.446176.1712756559290.JavaMail.root@mail-tracker-145-3ep34-c9h23-5f64cf7787-82gdh>
+Accept-Language: fr-FR, en-US
+Content-Language: fr-FR
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Mozilla Thunderbird
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MRZP264MB2988:EE_|MR0P264MB4863:EE_
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:
+ KVnhV69WrrXtuibZCt/Robf3eGbl2f4jnrdEbT7hNfkTaJTLKvtTEzeFsGQ8QNJmLdYmODFWqCjeMfSnmNe0UD62Kjsyv57C61qiYVOP+GLHEmpAjHDfAWfFv/xIrWel3s6xBb830ZnJ36rEYvXJ7jisIqphpbX35AfJREuo4i0GpcyH79sv55zcCn9pksFtCk3AejYJ0nqp7kx5dGC9J7hPL7DjKjyV66312UlfQYhBS2WLBPagl2R8g+eCFkizgNxjfGgk0/Io3X3iwhtabn1Gw2bNuHYIKsktCv974gt50hdWWCYbEhTKb6JoaAX0f8lWIOxDvMcvg4gsOzxY7cjG3eIBCO/IU0IFqjCwqZ956dU3Ku+/b3+vyGkDb4KEk5xbJpiMNjjVYw3xhaiBRSvjFEPR0IyTKuc71KObpiPceZDHt3lY0G0dNIuMmZ69xVZTumqM62uxg5sBRrws97utEV5JyEbrT46vq80b2ET/Dcae7DPY4WpjB8rQXJx8EgtedHuvzgbbm6MyF7Ipxxwn7WBG/z42xB2YOgmRw4muWSoLlumlEqQGlnWV20+15ZjN4gKFs5+etdfTtmqRCacmCxB+KSrf5ZNnndFHHnuAnjUfZvXXzfH74AXnQte3s0bNghDfYsZv8o7DQaFP8A==
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(376005)(366007)(7416005)(1800799015)(921011);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?NU15L2JMOFNKeC8yMnFsblovbytrOEpYNTFUOFg4T1ZpaHZIQVhGdUF6V0V1?=
+ =?utf-8?B?SHZXRHoxWFREMGRkelRNNHF2aS9ja0tUQ252Tis2Tk56NHpiMkRQb2FYL05M?=
+ =?utf-8?B?V3JKS3ZSb096NWxFNkhLZkFGMEJxdVFCTjRsQTZlWlB2QjZVSi9sSUxkWkR6?=
+ =?utf-8?B?eDAyUXlibUF4OXBjU20ycDZSSGdJMFA3a1lzNDRITTVwZUhHVEt5ZUF5QnNt?=
+ =?utf-8?B?bXdnR2JRZjlyOGlpTHdCOUVVb2NvbkgzbXJFY2FtOENKa1lRa1FkL3Q5ZEt2?=
+ =?utf-8?B?WStadWNaWXhoa0NBNlFqd1NqVDNic1BzM3BGY3RUbmNMaWREU2ZRVlJYc1l3?=
+ =?utf-8?B?N3VEZlBqUFRDeDIrNWkxVSs5TWhscnJQMnNTVGZrbjFpRmRVcUhqUGFWaCto?=
+ =?utf-8?B?aEh4eWptdCs1dFE5d2t1U2VwMnhvZFdTQm9tb29VbTN2VWlnMTIrTFZkWURZ?=
+ =?utf-8?B?MFJXR1RiT1lLVzZIRGt2R2NsL3lab083NkNRMnhwdXJqc1lERXdRTWlGNHpX?=
+ =?utf-8?B?Y1FGOGUvcjYyVTJqZWhmYWxtQVpiUFBOQWFlU1BQckJUMkVFL003ZXE2S01j?=
+ =?utf-8?B?SDFoZTgzVDdTTW9PclpQV0I0RFhaaE9wdzl1dHZSNmo4UWNQbXF0RlhwQ0NU?=
+ =?utf-8?B?S2RHaTNMd0tuYlpKVVZLYmw5Zk1TMUZucVVsdUxLSVlWNi9zSlBWMnRndm5j?=
+ =?utf-8?B?TktmZmEwdXJsVmZhUjBwcGtqSTdQNnZvTkZqM1BpZWpHT1V2MCtESUlWZ3Mz?=
+ =?utf-8?B?Q2YxN3daSUNMcHpUYXFQbTJPbmRmUjdYa3AwcXBPVkRKYk52WHlvcDJjRU8z?=
+ =?utf-8?B?QTdSVmtWZFA2UEFCVlNxK25MbHdFcXFBNEJLS1gzQ0xvcFJtZ2VNeFRKNm1q?=
+ =?utf-8?B?TzFKSUtBaHl6N2d5WEIwZytqWW5nWTczeGVPQVpmNk1lbU9IekN5aWcrN1ZS?=
+ =?utf-8?B?QzJxZTFTNUhrNHVnOWFUeDJKcTRjR0JtZzVQNjM2NTFaTFpiVmY4T2FmdTFh?=
+ =?utf-8?B?bEZhdHNxdzh5L0t0akZnWHFTMUtpazQyNk9Mc0NFQTFCd25EOXNEazQxOGs2?=
+ =?utf-8?B?VXNpdDQ0cENOUFpucTVMMWJlbHJ1cWlYNVNadERGSjFrU1pIRGp1NmJWdnVE?=
+ =?utf-8?B?N3dFYU5kNWN2YmZrZ3ZvUlUrQzdkY1Z1M0NmMVhIN3Jsck9UdUtabkVCdkc5?=
+ =?utf-8?B?V2EyQTk2ZXhPcm9XbytKWm9TZmlpaUxtd2dhWWw2MjJmTW9PRTRIdWR0Sk1W?=
+ =?utf-8?B?dVRWT2NBWS8vTDBVZG40b3hxTGhUdkxHT0hYMUF6R09XdUU5M2RTRTdHdzMr?=
+ =?utf-8?B?SE1JY3NnUVdVNnY4UnVWWFkxRGE4TENjNnBZOVE4NmM2Qk1oU1NlaExJOW85?=
+ =?utf-8?B?ME9MbkxTTWdFYkhIVFdsWjJXbTQrRjEzd29hWThCQjRUM2RGWXVnT3Q5K2kx?=
+ =?utf-8?B?SUNQY1VhZUU3YVhUTFBiMEhSVnZZclEwdzcxWkZKcEI1WE1NUlJJclRPRzFi?=
+ =?utf-8?B?NkxyNUQ4QitIbEZqSGZNd1MwNFJlaHhsbGN2SGlRMngrMlRHVy81SXB5cFVr?=
+ =?utf-8?B?VTFYcnZabVZnbnVKWDRqVDhLcnEyemlpT3Z3QU00QklKREZFWUp1SjFHYnVS?=
+ =?utf-8?B?MUpDbGdrWm0vR0JwY3Q4c05QWXNpY2xORXNiZTFDeGtVVFhLaWZJZys3Y0Nl?=
+ =?utf-8?B?Q3hTT0ZRcU5lTGozdjRGbUE2ZTgwb3JnNVloVDBmcEpLQ0VlRkZIdUozaEty?=
+ =?utf-8?B?cGFkV1VPV2laY2ozSDVXcnh6ZDZsVHhrbUFVNlhjOUNCdGlIM25UWlVMNWw5?=
+ =?utf-8?B?VWJ3dmhQZ1lXV3U3L1dJbjFEYjBTcEFkay82dmtzVjFOZ1IyQjBnb2EzeGhv?=
+ =?utf-8?B?MjJ2U2pRYlIyb0NNeWZSaFlWVDFCRWJpSlR2TGtpUXRZT1NVL3RPZGx0VkJJ?=
+ =?utf-8?B?M2NMaGV5RVVlL1VVNEh6YXlGVng3QlRKSU05Yjg1Rm1LUWZvcnYyYkxWOWU5?=
+ =?utf-8?B?dEprTFZwRmt2VWZqVUZkSk14YkJiSzFqSXQzTVg5RzU4a09GamMrRWdyN2dP?=
+ =?utf-8?B?THlYWGhXWVZlWkRNd2tZamM3TXFGSGJ2dFc2WldURDd4RC9NS1UvcTJmbHZ0?=
+ =?utf-8?B?T3lGbkF2SVozSUs4dG82T0cxTmRQbFZrSGMxa3U0ZzFzc1dZYjVDc2g5bVh2?=
+ =?utf-8?B?bG1yR2NaVW5EanpPUHBoQmw5UGZYMTBEWTcyWWlGMS9yaVRJKzZQYzNteGZH?=
+ =?utf-8?B?NldEYzBJdE1JVWIwYlJCWSs0Q2FnPT0=?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <56484A6717A1F048899CD423CCB9C6FF@FRAP264.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDnN9+3khZm9NnPAg--.11748S4
-X-Coremail-Antispam: 1Uf129KBjvAXoWfXw47Cw45Gr1fZr45GFWfKrg_yoW8uw18Xo
-	WfXFyrG3W8Gryxtw1DAa1xtFZrZanFk3Z5Jws8XFs0gasFyF17XrZrtr45JF1fWay5KrWx
-	Z3Wjgwn3Ar4xGr1Un29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73VFW2AGmfu7bjvjm3
-	AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjTRCHqcDUUUU
-X-CM-SenderInfo: 5vhq20jurqiii6rwjhhfrp/1tbiKA+8q2XAk1Y-GgAAs1
+X-OriginatorOrg: csgroup.eu
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3258efbd-3264-43e9-5783-08dc5965f1b5
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Apr 2024 13:55:56.1170
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: nYKlkKvVrMH2JoISbkLkn5sy9z1Azhzf/shBh0z0tZAdqxADRres2u0Jz/yBw74EJvIRf1k7uB02dFVUC+dlgIJg2JsAJEb4mSH3Z5bTfd8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MR0P264MB4863
 
-For the exit() callback function returning an int type value.
-this leads many driver authors mistakenly believing that error
-handling can be performed by returning an error code. However.
-the returned value is ignore, and to improve this situation.
-it is proposed to modify the return type of the exit() callback
-function to void
-
-Signed-off-by: Lizhe <sensor1010@163.com>
----
- drivers/cpufreq/acpi-cpufreq.c         | 4 +---
- drivers/cpufreq/amd-pstate.c           | 7 ++-----
- drivers/cpufreq/apple-soc-cpufreq.c    | 4 +---
- drivers/cpufreq/bmips-cpufreq.c        | 4 +---
- drivers/cpufreq/cppc_cpufreq.c         | 3 +--
- drivers/cpufreq/cpufreq-dt.c           | 3 +--
- drivers/cpufreq/e_powersaver.c         | 3 +--
- drivers/cpufreq/intel_pstate.c         | 4 +---
- drivers/cpufreq/mediatek-cpufreq-hw.c  | 4 +---
- drivers/cpufreq/mediatek-cpufreq.c     | 4 +---
- drivers/cpufreq/omap-cpufreq.c         | 3 +--
- drivers/cpufreq/pasemi-cpufreq.c       | 6 ++----
- drivers/cpufreq/powernow-k6.c          | 3 +--
- drivers/cpufreq/powernow-k7.c          | 3 +--
- drivers/cpufreq/powernow-k8.c          | 4 +---
- drivers/cpufreq/powernv-cpufreq.c      | 4 +---
- drivers/cpufreq/ppc_cbe_cpufreq.c      | 3 +--
- drivers/cpufreq/qcom-cpufreq-hw.c      | 4 +---
- drivers/cpufreq/qoriq-cpufreq.c        | 4 +---
- drivers/cpufreq/scmi-cpufreq.c         | 4 +---
- drivers/cpufreq/scpi-cpufreq.c         | 4 +---
- drivers/cpufreq/sh-cpufreq.c           | 4 +---
- drivers/cpufreq/sparc-us2e-cpufreq.c   | 3 +--
- drivers/cpufreq/sparc-us3-cpufreq.c    | 3 +--
- drivers/cpufreq/speedstep-centrino.c   | 4 +---
- drivers/cpufreq/tegra194-cpufreq.c     | 4 +---
- drivers/cpufreq/vexpress-spc-cpufreq.c | 3 +--
- 27 files changed, 29 insertions(+), 74 deletions(-)
-
-diff --git a/drivers/cpufreq/acpi-cpufreq.c b/drivers/cpufreq/acpi-cpufreq.c
-index 37f1cdf46d29..33f18140e9a4 100644
---- a/drivers/cpufreq/acpi-cpufreq.c
-+++ b/drivers/cpufreq/acpi-cpufreq.c
-@@ -906,7 +906,7 @@ static int acpi_cpufreq_cpu_init(struct cpufreq_policy *policy)
- 	return result;
- }
- 
--static int acpi_cpufreq_cpu_exit(struct cpufreq_policy *policy)
-+static void acpi_cpufreq_cpu_exit(struct cpufreq_policy *policy)
- {
- 	struct acpi_cpufreq_data *data = policy->driver_data;
- 
-@@ -919,8 +919,6 @@ static int acpi_cpufreq_cpu_exit(struct cpufreq_policy *policy)
- 	free_cpumask_var(data->freqdomain_cpus);
- 	kfree(policy->freq_table);
- 	kfree(data);
--
--	return 0;
- }
- 
- static int acpi_cpufreq_resume(struct cpufreq_policy *policy)
-diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
-index 2015c9fcc3c9..60b3d20d5939 100644
---- a/drivers/cpufreq/amd-pstate.c
-+++ b/drivers/cpufreq/amd-pstate.c
-@@ -919,7 +919,7 @@ static int amd_pstate_cpu_init(struct cpufreq_policy *policy)
- 	return ret;
- }
- 
--static int amd_pstate_cpu_exit(struct cpufreq_policy *policy)
-+static void amd_pstate_cpu_exit(struct cpufreq_policy *policy)
- {
- 	struct amd_cpudata *cpudata = policy->driver_data;
- 
-@@ -927,8 +927,6 @@ static int amd_pstate_cpu_exit(struct cpufreq_policy *policy)
- 	freq_qos_remove_request(&cpudata->req[0]);
- 	policy->fast_switch_possible = false;
- 	kfree(cpudata);
--
--	return 0;
- }
- 
- static int amd_pstate_cpu_resume(struct cpufreq_policy *policy)
-@@ -1376,10 +1374,9 @@ static int amd_pstate_epp_cpu_init(struct cpufreq_policy *policy)
- 	return ret;
- }
- 
--static int amd_pstate_epp_cpu_exit(struct cpufreq_policy *policy)
-+static void amd_pstate_epp_cpu_exit(struct cpufreq_policy *policy)
- {
- 	pr_debug("CPU %d exiting\n", policy->cpu);
--	return 0;
- }
- 
- static void amd_pstate_epp_update_limit(struct cpufreq_policy *policy)
-diff --git a/drivers/cpufreq/apple-soc-cpufreq.c b/drivers/cpufreq/apple-soc-cpufreq.c
-index 021f423705e1..af34c22fa273 100644
---- a/drivers/cpufreq/apple-soc-cpufreq.c
-+++ b/drivers/cpufreq/apple-soc-cpufreq.c
-@@ -305,7 +305,7 @@ static int apple_soc_cpufreq_init(struct cpufreq_policy *policy)
- 	return ret;
- }
- 
--static int apple_soc_cpufreq_exit(struct cpufreq_policy *policy)
-+static void apple_soc_cpufreq_exit(struct cpufreq_policy *policy)
- {
- 	struct apple_cpu_priv *priv = policy->driver_data;
- 
-@@ -313,8 +313,6 @@ static int apple_soc_cpufreq_exit(struct cpufreq_policy *policy)
- 	dev_pm_opp_remove_all_dynamic(priv->cpu_dev);
- 	iounmap(priv->reg_base);
- 	kfree(priv);
--
--	return 0;
- }
- 
- static struct cpufreq_driver apple_soc_cpufreq_driver = {
-diff --git a/drivers/cpufreq/bmips-cpufreq.c b/drivers/cpufreq/bmips-cpufreq.c
-index 39221a9a187a..17a4c174553d 100644
---- a/drivers/cpufreq/bmips-cpufreq.c
-+++ b/drivers/cpufreq/bmips-cpufreq.c
-@@ -121,11 +121,9 @@ static int bmips_cpufreq_target_index(struct cpufreq_policy *policy,
- 	return 0;
- }
- 
--static int bmips_cpufreq_exit(struct cpufreq_policy *policy)
-+static void bmips_cpufreq_exit(struct cpufreq_policy *policy)
- {
- 	kfree(policy->freq_table);
--
--	return 0;
- }
- 
- static int bmips_cpufreq_init(struct cpufreq_policy *policy)
-diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
-index 64420d9cfd1e..dccb9c1f087d 100644
---- a/drivers/cpufreq/cppc_cpufreq.c
-+++ b/drivers/cpufreq/cppc_cpufreq.c
-@@ -688,7 +688,7 @@ static int cppc_cpufreq_cpu_init(struct cpufreq_policy *policy)
- 	return ret;
- }
- 
--static int cppc_cpufreq_cpu_exit(struct cpufreq_policy *policy)
-+static void cppc_cpufreq_cpu_exit(struct cpufreq_policy *policy)
- {
- 	struct cppc_cpudata *cpu_data = policy->driver_data;
- 	struct cppc_perf_caps *caps = &cpu_data->perf_caps;
-@@ -705,7 +705,6 @@ static int cppc_cpufreq_cpu_exit(struct cpufreq_policy *policy)
- 			 caps->lowest_perf, cpu, ret);
- 
- 	cppc_cpufreq_put_cpu_data(policy);
--	return 0;
- }
- 
- static inline u64 get_delta(u64 t1, u64 t0)
-diff --git a/drivers/cpufreq/cpufreq-dt.c b/drivers/cpufreq/cpufreq-dt.c
-index 2d83bbc65dd0..eaf02579ea74 100644
---- a/drivers/cpufreq/cpufreq-dt.c
-+++ b/drivers/cpufreq/cpufreq-dt.c
-@@ -166,10 +166,9 @@ static int cpufreq_offline(struct cpufreq_policy *policy)
- 	return 0;
- }
- 
--static int cpufreq_exit(struct cpufreq_policy *policy)
-+static void cpufreq_exit(struct cpufreq_policy *policy)
- {
- 	clk_put(policy->clk);
--	return 0;
- }
- 
- static struct cpufreq_driver dt_cpufreq_driver = {
-diff --git a/drivers/cpufreq/e_powersaver.c b/drivers/cpufreq/e_powersaver.c
-index ab93bce8ae77..6e958b09e1b5 100644
---- a/drivers/cpufreq/e_powersaver.c
-+++ b/drivers/cpufreq/e_powersaver.c
-@@ -360,14 +360,13 @@ static int eps_cpu_init(struct cpufreq_policy *policy)
- 	return 0;
- }
- 
--static int eps_cpu_exit(struct cpufreq_policy *policy)
-+static void eps_cpu_exit(struct cpufreq_policy *policy)
- {
- 	unsigned int cpu = policy->cpu;
- 
- 	/* Bye */
- 	kfree(eps_cpu[cpu]);
- 	eps_cpu[cpu] = NULL;
--	return 0;
- }
- 
- static struct cpufreq_driver eps_driver = {
-diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
-index dbbf299f4219..aa435d24c20e 100644
---- a/drivers/cpufreq/intel_pstate.c
-+++ b/drivers/cpufreq/intel_pstate.c
-@@ -2731,13 +2731,11 @@ static int intel_pstate_cpu_offline(struct cpufreq_policy *policy)
- 	return intel_cpufreq_cpu_offline(policy);
- }
- 
--static int intel_pstate_cpu_exit(struct cpufreq_policy *policy)
-+static void intel_pstate_cpu_exit(struct cpufreq_policy *policy)
- {
- 	pr_debug("CPU %d exiting\n", policy->cpu);
- 
- 	policy->fast_switch_possible = false;
--
--	return 0;
- }
- 
- static int __intel_pstate_cpu_init(struct cpufreq_policy *policy)
-diff --git a/drivers/cpufreq/mediatek-cpufreq-hw.c b/drivers/cpufreq/mediatek-cpufreq-hw.c
-index 8d097dcddda4..8925e096d5b9 100644
---- a/drivers/cpufreq/mediatek-cpufreq-hw.c
-+++ b/drivers/cpufreq/mediatek-cpufreq-hw.c
-@@ -260,7 +260,7 @@ static int mtk_cpufreq_hw_cpu_init(struct cpufreq_policy *policy)
- 	return 0;
- }
- 
--static int mtk_cpufreq_hw_cpu_exit(struct cpufreq_policy *policy)
-+static void mtk_cpufreq_hw_cpu_exit(struct cpufreq_policy *policy)
- {
- 	struct mtk_cpufreq_data *data = policy->driver_data;
- 	struct resource *res = data->res;
-@@ -270,8 +270,6 @@ static int mtk_cpufreq_hw_cpu_exit(struct cpufreq_policy *policy)
- 	writel_relaxed(0x0, data->reg_bases[REG_FREQ_ENABLE]);
- 	iounmap(base);
- 	release_mem_region(res->start, resource_size(res));
--
--	return 0;
- }
- 
- static void mtk_cpufreq_register_em(struct cpufreq_policy *policy)
-diff --git a/drivers/cpufreq/mediatek-cpufreq.c b/drivers/cpufreq/mediatek-cpufreq.c
-index a0a61919bc4c..aba34fb7948e 100644
---- a/drivers/cpufreq/mediatek-cpufreq.c
-+++ b/drivers/cpufreq/mediatek-cpufreq.c
-@@ -599,13 +599,11 @@ static int mtk_cpufreq_init(struct cpufreq_policy *policy)
- 	return 0;
- }
- 
--static int mtk_cpufreq_exit(struct cpufreq_policy *policy)
-+static void mtk_cpufreq_exit(struct cpufreq_policy *policy)
- {
- 	struct mtk_cpu_dvfs_info *info = policy->driver_data;
- 
- 	dev_pm_opp_free_cpufreq_table(info->cpu_dev, &policy->freq_table);
--
--	return 0;
- }
- 
- static struct cpufreq_driver mtk_cpufreq_driver = {
-diff --git a/drivers/cpufreq/omap-cpufreq.c b/drivers/cpufreq/omap-cpufreq.c
-index 895690856665..3458d5cc9b7f 100644
---- a/drivers/cpufreq/omap-cpufreq.c
-+++ b/drivers/cpufreq/omap-cpufreq.c
-@@ -135,11 +135,10 @@ static int omap_cpu_init(struct cpufreq_policy *policy)
- 	return 0;
- }
- 
--static int omap_cpu_exit(struct cpufreq_policy *policy)
-+static void omap_cpu_exit(struct cpufreq_policy *policy)
- {
- 	freq_table_free();
- 	clk_put(policy->clk);
--	return 0;
- }
- 
- static struct cpufreq_driver omap_driver = {
-diff --git a/drivers/cpufreq/pasemi-cpufreq.c b/drivers/cpufreq/pasemi-cpufreq.c
-index 039a66bbe1be..ee925b53b6b9 100644
---- a/drivers/cpufreq/pasemi-cpufreq.c
-+++ b/drivers/cpufreq/pasemi-cpufreq.c
-@@ -204,21 +204,19 @@ static int pas_cpufreq_cpu_init(struct cpufreq_policy *policy)
- 	return err;
- }
- 
--static int pas_cpufreq_cpu_exit(struct cpufreq_policy *policy)
-+static void pas_cpufreq_cpu_exit(struct cpufreq_policy *policy)
- {
- 	/*
- 	 * We don't support CPU hotplug. Don't unmap after the system
- 	 * has already made it to a running state.
- 	 */
- 	if (system_state >= SYSTEM_RUNNING)
--		return 0;
-+		return;
- 
- 	if (sdcasr_mapbase)
- 		iounmap(sdcasr_mapbase);
- 	if (sdcpwr_mapbase)
- 		iounmap(sdcpwr_mapbase);
--
--	return 0;
- }
- 
- static int pas_cpufreq_target(struct cpufreq_policy *policy,
-diff --git a/drivers/cpufreq/powernow-k6.c b/drivers/cpufreq/powernow-k6.c
-index 41eefef95d87..156bec6c5420 100644
---- a/drivers/cpufreq/powernow-k6.c
-+++ b/drivers/cpufreq/powernow-k6.c
-@@ -219,7 +219,7 @@ static int powernow_k6_cpu_init(struct cpufreq_policy *policy)
- }
- 
- 
--static int powernow_k6_cpu_exit(struct cpufreq_policy *policy)
-+static void powernow_k6_cpu_exit(struct cpufreq_policy *policy)
- {
- 	unsigned int i;
- 
-@@ -237,7 +237,6 @@ static int powernow_k6_cpu_exit(struct cpufreq_policy *policy)
- 			break;
- 		}
- 	}
--	return 0;
- }
- 
- static unsigned int powernow_k6_get(unsigned int cpu)
-diff --git a/drivers/cpufreq/powernow-k7.c b/drivers/cpufreq/powernow-k7.c
-index 5d515fc34836..4271446c8725 100644
---- a/drivers/cpufreq/powernow-k7.c
-+++ b/drivers/cpufreq/powernow-k7.c
-@@ -644,7 +644,7 @@ static int powernow_cpu_init(struct cpufreq_policy *policy)
- 	return 0;
- }
- 
--static int powernow_cpu_exit(struct cpufreq_policy *policy)
-+static void powernow_cpu_exit(struct cpufreq_policy *policy)
- {
- #ifdef CONFIG_X86_POWERNOW_K7_ACPI
- 	if (acpi_processor_perf) {
-@@ -655,7 +655,6 @@ static int powernow_cpu_exit(struct cpufreq_policy *policy)
- #endif
- 
- 	kfree(powernow_table);
--	return 0;
- }
- 
- static struct cpufreq_driver powernow_driver = {
-diff --git a/drivers/cpufreq/powernow-k8.c b/drivers/cpufreq/powernow-k8.c
-index b10f7a1b77f1..5e663c3a6736 100644
---- a/drivers/cpufreq/powernow-k8.c
-+++ b/drivers/cpufreq/powernow-k8.c
-@@ -1089,7 +1089,7 @@ static int powernowk8_cpu_init(struct cpufreq_policy *pol)
- 	return -ENODEV;
- }
- 
--static int powernowk8_cpu_exit(struct cpufreq_policy *pol)
-+static void powernowk8_cpu_exit(struct cpufreq_policy *pol)
- {
- 	struct powernow_k8_data *data = per_cpu(powernow_data, pol->cpu);
- 	int cpu;
-@@ -1104,8 +1104,6 @@ static int powernowk8_cpu_exit(struct cpufreq_policy *pol)
- 	/* pol->cpus will be empty here, use related_cpus instead. */
- 	for_each_cpu(cpu, pol->related_cpus)
- 		per_cpu(powernow_data, cpu) = NULL;
--
--	return 0;
- }
- 
- static void query_values_on_cpu(void *_err)
-diff --git a/drivers/cpufreq/powernv-cpufreq.c b/drivers/cpufreq/powernv-cpufreq.c
-index fddbd1ea1635..50c62929f7ca 100644
---- a/drivers/cpufreq/powernv-cpufreq.c
-+++ b/drivers/cpufreq/powernv-cpufreq.c
-@@ -874,7 +874,7 @@ static int powernv_cpufreq_cpu_init(struct cpufreq_policy *policy)
- 	return 0;
- }
- 
--static int powernv_cpufreq_cpu_exit(struct cpufreq_policy *policy)
-+static void powernv_cpufreq_cpu_exit(struct cpufreq_policy *policy)
- {
- 	struct powernv_smp_call_data freq_data;
- 	struct global_pstate_info *gpstates = policy->driver_data;
-@@ -886,8 +886,6 @@ static int powernv_cpufreq_cpu_exit(struct cpufreq_policy *policy)
- 		del_timer_sync(&gpstates->timer);
- 
- 	kfree(policy->driver_data);
--
--	return 0;
- }
- 
- static int powernv_cpufreq_reboot_notifier(struct notifier_block *nb,
-diff --git a/drivers/cpufreq/ppc_cbe_cpufreq.c b/drivers/cpufreq/ppc_cbe_cpufreq.c
-index 88afc49941b7..5ee4c7bfdcc5 100644
---- a/drivers/cpufreq/ppc_cbe_cpufreq.c
-+++ b/drivers/cpufreq/ppc_cbe_cpufreq.c
-@@ -113,10 +113,9 @@ static int cbe_cpufreq_cpu_init(struct cpufreq_policy *policy)
- 	return 0;
- }
- 
--static int cbe_cpufreq_cpu_exit(struct cpufreq_policy *policy)
-+static void cbe_cpufreq_cpu_exit(struct cpufreq_policy *policy)
- {
- 	cbe_cpufreq_pmi_policy_exit(policy);
--	return 0;
- }
- 
- static int cbe_cpufreq_target(struct cpufreq_policy *policy,
-diff --git a/drivers/cpufreq/qcom-cpufreq-hw.c b/drivers/cpufreq/qcom-cpufreq-hw.c
-index 70b0f21968a0..bb818111162d 100644
---- a/drivers/cpufreq/qcom-cpufreq-hw.c
-+++ b/drivers/cpufreq/qcom-cpufreq-hw.c
-@@ -573,7 +573,7 @@ static int qcom_cpufreq_hw_cpu_init(struct cpufreq_policy *policy)
- 	return qcom_cpufreq_hw_lmh_init(policy, index);
- }
- 
--static int qcom_cpufreq_hw_cpu_exit(struct cpufreq_policy *policy)
-+static void qcom_cpufreq_hw_cpu_exit(struct cpufreq_policy *policy)
- {
- 	struct device *cpu_dev = get_cpu_device(policy->cpu);
- 	struct qcom_cpufreq_data *data = policy->driver_data;
-@@ -583,8 +583,6 @@ static int qcom_cpufreq_hw_cpu_exit(struct cpufreq_policy *policy)
- 	qcom_cpufreq_hw_lmh_exit(data);
- 	kfree(policy->freq_table);
- 	kfree(data);
--
--	return 0;
- }
- 
- static void qcom_cpufreq_ready(struct cpufreq_policy *policy)
-diff --git a/drivers/cpufreq/qoriq-cpufreq.c b/drivers/cpufreq/qoriq-cpufreq.c
-index 0aecaecbb0e6..3519bf34d397 100644
---- a/drivers/cpufreq/qoriq-cpufreq.c
-+++ b/drivers/cpufreq/qoriq-cpufreq.c
-@@ -225,7 +225,7 @@ static int qoriq_cpufreq_cpu_init(struct cpufreq_policy *policy)
- 	return -ENODEV;
- }
- 
--static int qoriq_cpufreq_cpu_exit(struct cpufreq_policy *policy)
-+static void qoriq_cpufreq_cpu_exit(struct cpufreq_policy *policy)
- {
- 	struct cpu_data *data = policy->driver_data;
- 
-@@ -233,8 +233,6 @@ static int qoriq_cpufreq_cpu_exit(struct cpufreq_policy *policy)
- 	kfree(data->table);
- 	kfree(data);
- 	policy->driver_data = NULL;
--
--	return 0;
- }
- 
- static int qoriq_cpufreq_target(struct cpufreq_policy *policy,
-diff --git a/drivers/cpufreq/scmi-cpufreq.c b/drivers/cpufreq/scmi-cpufreq.c
-index 3b4f6bfb2f4c..bf5f17f0dfb1 100644
---- a/drivers/cpufreq/scmi-cpufreq.c
-+++ b/drivers/cpufreq/scmi-cpufreq.c
-@@ -308,7 +308,7 @@ static int scmi_cpufreq_init(struct cpufreq_policy *policy)
- 	return ret;
- }
- 
--static int scmi_cpufreq_exit(struct cpufreq_policy *policy)
-+static void scmi_cpufreq_exit(struct cpufreq_policy *policy)
- {
- 	struct scmi_data *priv = policy->driver_data;
- 
-@@ -316,8 +316,6 @@ static int scmi_cpufreq_exit(struct cpufreq_policy *policy)
- 	dev_pm_opp_remove_all_dynamic(priv->cpu_dev);
- 	free_cpumask_var(priv->opp_shared_cpus);
- 	kfree(priv);
--
--	return 0;
- }
- 
- static void scmi_cpufreq_register_em(struct cpufreq_policy *policy)
-diff --git a/drivers/cpufreq/scpi-cpufreq.c b/drivers/cpufreq/scpi-cpufreq.c
-index d33be56983ed..8d73e6e8be2a 100644
---- a/drivers/cpufreq/scpi-cpufreq.c
-+++ b/drivers/cpufreq/scpi-cpufreq.c
-@@ -167,7 +167,7 @@ static int scpi_cpufreq_init(struct cpufreq_policy *policy)
- 	return ret;
- }
- 
--static int scpi_cpufreq_exit(struct cpufreq_policy *policy)
-+static void scpi_cpufreq_exit(struct cpufreq_policy *policy)
- {
- 	struct scpi_data *priv = policy->driver_data;
- 
-@@ -175,8 +175,6 @@ static int scpi_cpufreq_exit(struct cpufreq_policy *policy)
- 	dev_pm_opp_free_cpufreq_table(priv->cpu_dev, &policy->freq_table);
- 	dev_pm_opp_remove_all_dynamic(priv->cpu_dev);
- 	kfree(priv);
--
--	return 0;
- }
- 
- static struct cpufreq_driver scpi_cpufreq_driver = {
-diff --git a/drivers/cpufreq/sh-cpufreq.c b/drivers/cpufreq/sh-cpufreq.c
-index b8704232c27b..aa74036d0420 100644
---- a/drivers/cpufreq/sh-cpufreq.c
-+++ b/drivers/cpufreq/sh-cpufreq.c
-@@ -135,14 +135,12 @@ static int sh_cpufreq_cpu_init(struct cpufreq_policy *policy)
- 	return 0;
- }
- 
--static int sh_cpufreq_cpu_exit(struct cpufreq_policy *policy)
-+static void sh_cpufreq_cpu_exit(struct cpufreq_policy *policy)
- {
- 	unsigned int cpu = policy->cpu;
- 	struct clk *cpuclk = &per_cpu(sh_cpuclk, cpu);
- 
- 	clk_put(cpuclk);
--
--	return 0;
- }
- 
- static struct cpufreq_driver sh_cpufreq_driver = {
-diff --git a/drivers/cpufreq/sparc-us2e-cpufreq.c b/drivers/cpufreq/sparc-us2e-cpufreq.c
-index 2783d3d55fce..8a0cd5312a59 100644
---- a/drivers/cpufreq/sparc-us2e-cpufreq.c
-+++ b/drivers/cpufreq/sparc-us2e-cpufreq.c
-@@ -296,10 +296,9 @@ static int us2e_freq_cpu_init(struct cpufreq_policy *policy)
- 	return 0;
- }
- 
--static int us2e_freq_cpu_exit(struct cpufreq_policy *policy)
-+static void us2e_freq_cpu_exit(struct cpufreq_policy *policy)
- {
- 	us2e_freq_target(policy, 0);
--	return 0;
- }
- 
- static struct cpufreq_driver cpufreq_us2e_driver = {
-diff --git a/drivers/cpufreq/sparc-us3-cpufreq.c b/drivers/cpufreq/sparc-us3-cpufreq.c
-index 6c3657679a88..b50f9d13e6d2 100644
---- a/drivers/cpufreq/sparc-us3-cpufreq.c
-+++ b/drivers/cpufreq/sparc-us3-cpufreq.c
-@@ -140,10 +140,9 @@ static int us3_freq_cpu_init(struct cpufreq_policy *policy)
- 	return 0;
- }
- 
--static int us3_freq_cpu_exit(struct cpufreq_policy *policy)
-+static void us3_freq_cpu_exit(struct cpufreq_policy *policy)
- {
- 	us3_freq_target(policy, 0);
--	return 0;
- }
- 
- static struct cpufreq_driver cpufreq_us3_driver = {
-diff --git a/drivers/cpufreq/speedstep-centrino.c b/drivers/cpufreq/speedstep-centrino.c
-index 75b10ecdb60f..28e65bcf7242 100644
---- a/drivers/cpufreq/speedstep-centrino.c
-+++ b/drivers/cpufreq/speedstep-centrino.c
-@@ -400,7 +400,7 @@ static int centrino_cpu_init(struct cpufreq_policy *policy)
- 	return 0;
- }
- 
--static int centrino_cpu_exit(struct cpufreq_policy *policy)
-+static void centrino_cpu_exit(struct cpufreq_policy *policy)
- {
- 	unsigned int cpu = policy->cpu;
- 
-@@ -408,8 +408,6 @@ static int centrino_cpu_exit(struct cpufreq_policy *policy)
- 		return -ENODEV;
- 
- 	per_cpu(centrino_model, cpu) = NULL;
--
--	return 0;
- }
- 
- /**
-diff --git a/drivers/cpufreq/tegra194-cpufreq.c b/drivers/cpufreq/tegra194-cpufreq.c
-index 59865ea455a8..07ea7ed61b68 100644
---- a/drivers/cpufreq/tegra194-cpufreq.c
-+++ b/drivers/cpufreq/tegra194-cpufreq.c
-@@ -551,14 +551,12 @@ static int tegra194_cpufreq_offline(struct cpufreq_policy *policy)
- 	return 0;
- }
- 
--static int tegra194_cpufreq_exit(struct cpufreq_policy *policy)
-+static void tegra194_cpufreq_exit(struct cpufreq_policy *policy)
- {
- 	struct device *cpu_dev = get_cpu_device(policy->cpu);
- 
- 	dev_pm_opp_remove_all_dynamic(cpu_dev);
- 	dev_pm_opp_of_cpumask_remove_table(policy->related_cpus);
--
--	return 0;
- }
- 
- static int tegra194_cpufreq_set_target(struct cpufreq_policy *policy,
-diff --git a/drivers/cpufreq/vexpress-spc-cpufreq.c b/drivers/cpufreq/vexpress-spc-cpufreq.c
-index 9ac4ea50b874..b2a42cdb9582 100644
---- a/drivers/cpufreq/vexpress-spc-cpufreq.c
-+++ b/drivers/cpufreq/vexpress-spc-cpufreq.c
-@@ -447,7 +447,7 @@ static int ve_spc_cpufreq_init(struct cpufreq_policy *policy)
- 	return 0;
- }
- 
--static int ve_spc_cpufreq_exit(struct cpufreq_policy *policy)
-+static void ve_spc_cpufreq_exit(struct cpufreq_policy *policy)
- {
- 	struct device *cpu_dev;
- 
-@@ -459,7 +459,6 @@ static int ve_spc_cpufreq_exit(struct cpufreq_policy *policy)
- 	}
- 
- 	put_cluster_clk_and_freq_table(cpu_dev, policy->related_cpus);
--	return 0;
- }
- 
- static struct cpufreq_driver ve_spc_cpufreq_driver = {
--- 
-2.25.1
-
+DQoNCkxlIDEwLzA0LzIwMjQgw6AgMTU6NDIsIGxpemhlIGEgw6ljcml0wqA6DQo+IA0KPiBIae+8
+jA0KPiAgwqAgwqAgwqBJIGhhdmUgYWxyZWFkeSB0ZXN0ZWQgaXQsIGl0IGlzIGZ1bmN0aW9uaW5n
+IHByb3Blcmx5LCBQbGVhc2UgcmV2aWV3Lg0KPiANCj4gKkxpemhlKg0KPiAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgDQo+ICDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoFRoYW5rcw0KPiANCg0KUGxl
+YXNlIGRvbid0IHRvcC1wb3N0LCBzZWUgDQpodHRwczovL2RvY3Mua2VybmVsLm9yZy9wcm9jZXNz
+L3N1Ym1pdHRpbmctcGF0Y2hlcy5odG1sP2hpZ2hsaWdodD1tYWlsaW5nK2xpc3QrZXRpcXVldHRl
+I3VzZS10cmltbWVkLWludGVybGVhdmVkLXJlcGxpZXMtaW4tZW1haWwtZGlzY3Vzc2lvbnMNCg0K
+UGxlYXNlIGFsd2F5cyBwb3N0IGluIHBsYWluIHRleHQgKEFTQ0lJLW9ubHkpLCBuZXZlciBhcyBh
+biBIVE1MIG1lc3NhZ2UuDQoNCkFuZCBzdGlsbCwgeW91ciBjaGFuZ2VzIGNhbm5vdCBidWlsZCB3
+aXRob3V0IGEgY2hhbmdlIGluIHRoZSBkZWZpbml0aW9uIA0Kb2YgZXhpdCBpbiBzdHJ1Y3QgY3B1
+X2ZyZXEgZHJpdmVyIGluIGluY2x1ZGUvbGludXgvY3B1ZnJlcS5oDQpOZXZlciBzdWJtaXQgYSBw
+YXRjaCB0aGF0IGRvZXNuJ3QgYnVpbGQuDQoNCkNocmlzdG9waGUNCg0KPiBBdCAyMDI0LTA0LTEw
+IDIxOjIyOjQ3LCAiTGl6aGUiIDxzZW5zb3IxMDEwQDE2My5jb20+IHdyb3RlOg0KPj5Gb3IgdGhl
+IGV4aXQoKSBjYWxsYmFjayBmdW5jdGlvbiByZXR1cm5pbmcgYW4gaW50IHR5cGUgdmFsdWUuDQo+
+PnRoaXMgbGVhZHMgbWFueSBkcml2ZXIgYXV0aG9ycyBtaXN0YWtlbmx5IGJlbGlldmluZyB0aGF0
+IGVycm9yDQo+PmhhbmRsaW5nIGNhbiBiZSBwZXJmb3JtZWQgYnkgcmV0dXJuaW5nIGFuIGVycm9y
+IGNvZGUuIEhvd2V2ZXIuDQo+PnRoZSByZXR1cm5lZCB2YWx1ZSBpcyBpZ25vcmUsIGFuZCB0byBp
+bXByb3ZlIHRoaXMgc2l0dWF0aW9uLg0KPj5pdCBpcyBwcm9wb3NlZCB0byBtb2RpZnkgdGhlIHJl
+dHVybiB0eXBlIG9mIHRoZSBleGl0KCkgY2FsbGJhY2sNCj4+ZnVuY3Rpb24gdG8gdm9pZA0KPj4N
+Cj4+U2lnbmVkLW9mZi1ieTogTGl6aGUgPHNlbnNvcjEwMTBAMTYzLmNvbT4NCj4+LS0tDQo+PiBk
+cml2ZXJzL2NwdWZyZXEvYWNwaS1jcHVmcmVxLmMgICAgICAgICB8IDQgKy0tLQ0KPj4gZHJpdmVy
+cy9jcHVmcmVxL2FtZC1wc3RhdGUuYyAgICAgICAgICAgfCA3ICsrLS0tLS0NCj4+IGRyaXZlcnMv
+Y3B1ZnJlcS9hcHBsZS1zb2MtY3B1ZnJlcS5jICAgIHwgNCArLS0tDQo+PiBkcml2ZXJzL2NwdWZy
+ZXEvYm1pcHMtY3B1ZnJlcS5jICAgICAgICB8IDQgKy0tLQ0KPj4gZHJpdmVycy9jcHVmcmVxL2Nw
+cGNfY3B1ZnJlcS5jICAgICAgICAgfCAzICstLQ0KPj4gZHJpdmVycy9jcHVmcmVxL2NwdWZyZXEt
+ZHQuYyAgICAgICAgICAgfCAzICstLQ0KPj4gZHJpdmVycy9jcHVmcmVxL2VfcG93ZXJzYXZlci5j
+ICAgICAgICAgfCAzICstLQ0KPj4gZHJpdmVycy9jcHVmcmVxL2ludGVsX3BzdGF0ZS5jICAgICAg
+ICAgfCA0ICstLS0NCj4+IGRyaXZlcnMvY3B1ZnJlcS9tZWRpYXRlay1jcHVmcmVxLWh3LmMgIHwg
+NCArLS0tDQo+PiBkcml2ZXJzL2NwdWZyZXEvbWVkaWF0ZWstY3B1ZnJlcS5jICAgICB8IDQgKy0t
+LQ0KPj4gZHJpdmVycy9jcHVmcmVxL29tYXAtY3B1ZnJlcS5jICAgICAgICAgfCAzICstLQ0KPj4g
+ZHJpdmVycy9jcHVmcmVxL3Bhc2VtaS1jcHVmcmVxLmMgICAgICAgfCA2ICsrLS0tLQ0KPj4gZHJp
+dmVycy9jcHVmcmVxL3Bvd2Vybm93LWs2LmMgICAgICAgICAgfCAzICstLQ0KPj4gZHJpdmVycy9j
+cHVmcmVxL3Bvd2Vybm93LWs3LmMgICAgICAgICAgfCAzICstLQ0KPj4gZHJpdmVycy9jcHVmcmVx
+L3Bvd2Vybm93LWs4LmMgICAgICAgICAgfCA0ICstLS0NCj4+IGRyaXZlcnMvY3B1ZnJlcS9wb3dl
+cm52LWNwdWZyZXEuYyAgICAgIHwgNCArLS0tDQo+PiBkcml2ZXJzL2NwdWZyZXEvcHBjX2NiZV9j
+cHVmcmVxLmMgICAgICB8IDMgKy0tDQo+PiBkcml2ZXJzL2NwdWZyZXEvcWNvbS1jcHVmcmVxLWh3
+LmMgICAgICB8IDQgKy0tLQ0KPj4gZHJpdmVycy9jcHVmcmVxL3FvcmlxLWNwdWZyZXEuYyAgICAg
+ICAgfCA0ICstLS0NCj4+IGRyaXZlcnMvY3B1ZnJlcS9zY21pLWNwdWZyZXEuYyAgICAgICAgIHwg
+NCArLS0tDQo+PiBkcml2ZXJzL2NwdWZyZXEvc2NwaS1jcHVmcmVxLmMgICAgICAgICB8IDQgKy0t
+LQ0KPj4gZHJpdmVycy9jcHVmcmVxL3NoLWNwdWZyZXEuYyAgICAgICAgICAgfCA0ICstLS0NCj4+
+IGRyaXZlcnMvY3B1ZnJlcS9zcGFyYy11czJlLWNwdWZyZXEuYyAgIHwgMyArLS0NCj4+IGRyaXZl
+cnMvY3B1ZnJlcS9zcGFyYy11czMtY3B1ZnJlcS5jICAgIHwgMyArLS0NCj4+IGRyaXZlcnMvY3B1
+ZnJlcS9zcGVlZHN0ZXAtY2VudHJpbm8uYyAgIHwgNCArLS0tDQo+PiBkcml2ZXJzL2NwdWZyZXEv
+dGVncmExOTQtY3B1ZnJlcS5jICAgICB8IDQgKy0tLQ0KPj4gZHJpdmVycy9jcHVmcmVxL3ZleHBy
+ZXNzLXNwYy1jcHVmcmVxLmMgfCAzICstLQ0KPj4gMjcgZmlsZXMgY2hhbmdlZCwgMjkgaW5zZXJ0
+aW9ucygrKSwgNzQgZGVsZXRpb25zKC0pDQo+Pg0KPj5kaWZmIC0tZ2l0IGEvZHJpdmVycy9jcHVm
+cmVxL2FjcGktY3B1ZnJlcS5jIGIvZHJpdmVycy9jcHVmcmVxL2FjcGktY3B1ZnJlcS5jDQo+Pmlu
+ZGV4IDM3ZjFjZGY0NmQyOS4uMzNmMTgxNDBlOWE0IDEwMDY0NA0KPj4tLS0gYS9kcml2ZXJzL2Nw
+dWZyZXEvYWNwaS1jcHVmcmVxLmMNCj4+KysrIGIvZHJpdmVycy9jcHVmcmVxL2FjcGktY3B1ZnJl
+cS5jDQo+PkBAIC05MDYsNyArOTA2LDcgQEAgc3RhdGljIGludCBhY3BpX2NwdWZyZXFfY3B1X2lu
+aXQoc3RydWN0IGNwdWZyZXFfcG9saWN5ICpwb2xpY3kpDQo+PiAJcmV0dXJuIHJlc3VsdDsNCj4+
+IH0NCj4+IA0KPj4tc3RhdGljIGludCBhY3BpX2NwdWZyZXFfY3B1X2V4aXQoc3RydWN0IGNwdWZy
+ZXFfcG9saWN5ICpwb2xpY3kpDQo+PitzdGF0aWMgdm9pZCBhY3BpX2NwdWZyZXFfY3B1X2V4aXQo
+c3RydWN0IGNwdWZyZXFfcG9saWN5ICpwb2xpY3kpDQo+PiB7DQo+PiAJc3RydWN0IGFjcGlfY3B1
+ZnJlcV9kYXRhICpkYXRhID0gcG9saWN5LT5kcml2ZXJfZGF0YTsNCj4+IA0KPj5AQCAtOTE5LDgg
+KzkxOSw2IEBAIHN0YXRpYyBpbnQgYWNwaV9jcHVmcmVxX2NwdV9leGl0KHN0cnVjdCBjcHVmcmVx
+X3BvbGljeSAqcG9saWN5KQ0KPj4gCWZyZWVfY3B1bWFza192YXIoZGF0YS0+ZnJlcWRvbWFpbl9j
+cHVzKTsNCj4+IAlrZnJlZShwb2xpY3ktPmZyZXFfdGFibGUpOw0KPj4gCWtmcmVlKGRhdGEpOw0K
+Pj4tDQo+Pi0JcmV0dXJuIDA7DQo+PiB9DQo+PiANCj4+IHN0YXRpYyBpbnQgYWNwaV9jcHVmcmVx
+X3Jlc3VtZShzdHJ1Y3QgY3B1ZnJlcV9wb2xpY3kgKnBvbGljeSkNCj4+ZGlmZiAtLWdpdCBhL2Ry
+aXZlcnMvY3B1ZnJlcS9hbWQtcHN0YXRlLmMgYi9kcml2ZXJzL2NwdWZyZXEvYW1kLXBzdGF0ZS5j
+DQo+PmluZGV4IDIwMTVjOWZjYzNjOS4uNjBiM2QyMGQ1OTM5IDEwMDY0NA0KPj4tLS0gYS9kcml2
+ZXJzL2NwdWZyZXEvYW1kLXBzdGF0ZS5jDQo+PisrKyBiL2RyaXZlcnMvY3B1ZnJlcS9hbWQtcHN0
+YXRlLmMNCj4+QEAgLTkxOSw3ICs5MTksNyBAQCBzdGF0aWMgaW50IGFtZF9wc3RhdGVfY3B1X2lu
+aXQoc3RydWN0IGNwdWZyZXFfcG9saWN5ICpwb2xpY3kpDQo+PiAJcmV0dXJuIHJldDsNCj4+IH0N
+Cj4+IA0KPj4tc3RhdGljIGludCBhbWRfcHN0YXRlX2NwdV9leGl0KHN0cnVjdCBjcHVmcmVxX3Bv
+bGljeSAqcG9saWN5KQ0KPj4rc3RhdGljIHZvaWQgYW1kX3BzdGF0ZV9jcHVfZXhpdChzdHJ1Y3Qg
+Y3B1ZnJlcV9wb2xpY3kgKnBvbGljeSkNCj4+IHsNCj4+IAlzdHJ1Y3QgYW1kX2NwdWRhdGEgKmNw
+dWRhdGEgPSBwb2xpY3ktPmRyaXZlcl9kYXRhOw0KPj4gDQo+PkBAIC05MjcsOCArOTI3LDYgQEAg
+c3RhdGljIGludCBhbWRfcHN0YXRlX2NwdV9leGl0KHN0cnVjdCBjcHVmcmVxX3BvbGljeSAqcG9s
+aWN5KQ0KPj4gCWZyZXFfcW9zX3JlbW92ZV9yZXF1ZXN0KCZjcHVkYXRhLT5yZXFbMF0pOw0KPj4g
+CXBvbGljeS0+ZmFzdF9zd2l0Y2hfcG9zc2libGUgPSBmYWxzZTsNCj4+IAlrZnJlZShjcHVkYXRh
+KTsNCj4+LQ0KPj4tCXJldHVybiAwOw0KPj4gfQ0KPj4gDQo+PiBzdGF0aWMgaW50IGFtZF9wc3Rh
+dGVfY3B1X3Jlc3VtZShzdHJ1Y3QgY3B1ZnJlcV9wb2xpY3kgKnBvbGljeSkNCj4+QEAgLTEzNzYs
+MTAgKzEzNzQsOSBAQCBzdGF0aWMgaW50IGFtZF9wc3RhdGVfZXBwX2NwdV9pbml0KHN0cnVjdCBj
+cHVmcmVxX3BvbGljeSAqcG9saWN5KQ0KPj4gCXJldHVybiByZXQ7DQo+PiB9DQo+PiANCj4+LXN0
+YXRpYyBpbnQgYW1kX3BzdGF0ZV9lcHBfY3B1X2V4aXQoc3RydWN0IGNwdWZyZXFfcG9saWN5ICpw
+b2xpY3kpDQo+PitzdGF0aWMgdm9pZCBhbWRfcHN0YXRlX2VwcF9jcHVfZXhpdChzdHJ1Y3QgY3B1
+ZnJlcV9wb2xpY3kgKnBvbGljeSkNCj4+IHsNCj4+IAlwcl9kZWJ1ZygiQ1BVICVkIGV4aXRpbmdc
+biIsIHBvbGljeS0+Y3B1KTsNCj4+LQlyZXR1cm4gMDsNCj4+IH0NCj4+IA0KPj4gc3RhdGljIHZv
+aWQgYW1kX3BzdGF0ZV9lcHBfdXBkYXRlX2xpbWl0KHN0cnVjdCBjcHVmcmVxX3BvbGljeSAqcG9s
+aWN5KQ0KPj5kaWZmIC0tZ2l0IGEvZHJpdmVycy9jcHVmcmVxL2FwcGxlLXNvYy1jcHVmcmVxLmMg
+Yi9kcml2ZXJzL2NwdWZyZXEvYXBwbGUtc29jLWNwdWZyZXEuYw0KPj5pbmRleCAwMjFmNDIzNzA1
+ZTEuLmFmMzRjMjJmYTI3MyAxMDA2NDQNCj4+LS0tIGEvZHJpdmVycy9jcHVmcmVxL2FwcGxlLXNv
+Yy1jcHVmcmVxLmMNCj4+KysrIGIvZHJpdmVycy9jcHVmcmVxL2FwcGxlLXNvYy1jcHVmcmVxLmMN
+Cj4+QEAgLTMwNSw3ICszMDUsNyBAQCBzdGF0aWMgaW50IGFwcGxlX3NvY19jcHVmcmVxX2luaXQo
+c3RydWN0IGNwdWZyZXFfcG9saWN5ICpwb2xpY3kpDQo+PiAJcmV0dXJuIHJldDsNCj4+IH0NCj4+
+IA0KPj4tc3RhdGljIGludCBhcHBsZV9zb2NfY3B1ZnJlcV9leGl0KHN0cnVjdCBjcHVmcmVxX3Bv
+bGljeSAqcG9saWN5KQ0KPj4rc3RhdGljIHZvaWQgYXBwbGVfc29jX2NwdWZyZXFfZXhpdChzdHJ1
+Y3QgY3B1ZnJlcV9wb2xpY3kgKnBvbGljeSkNCj4+IHsNCj4+IAlzdHJ1Y3QgYXBwbGVfY3B1X3By
+aXYgKnByaXYgPSBwb2xpY3ktPmRyaXZlcl9kYXRhOw0KPj4gDQo+PkBAIC0zMTMsOCArMzEzLDYg
+QEAgc3RhdGljIGludCBhcHBsZV9zb2NfY3B1ZnJlcV9leGl0KHN0cnVjdCBjcHVmcmVxX3BvbGlj
+eSAqcG9saWN5KQ0KPj4gCWRldl9wbV9vcHBfcmVtb3ZlX2FsbF9keW5hbWljKHByaXYtPmNwdV9k
+ZXYpOw0KPj4gCWlvdW5tYXAocHJpdi0+cmVnX2Jhc2UpOw0KPj4gCWtmcmVlKHByaXYpOw0KPj4t
+DQo+Pi0JcmV0dXJuIDA7DQo+PiB9DQo+PiANCj4+IHN0YXRpYyBzdHJ1Y3QgY3B1ZnJlcV9kcml2
+ZXIgYXBwbGVfc29jX2NwdWZyZXFfZHJpdmVyID0gew0KPj5kaWZmIC0tZ2l0IGEvZHJpdmVycy9j
+cHVmcmVxL2JtaXBzLWNwdWZyZXEuYyBiL2RyaXZlcnMvY3B1ZnJlcS9ibWlwcy1jcHVmcmVxLmMN
+Cj4+aW5kZXggMzkyMjFhOWExODdhLi4xN2E0YzE3NDU1M2QgMTAwNjQ0DQo+Pi0tLSBhL2RyaXZl
+cnMvY3B1ZnJlcS9ibWlwcy1jcHVmcmVxLmMNCj4+KysrIGIvZHJpdmVycy9jcHVmcmVxL2JtaXBz
+LWNwdWZyZXEuYw0KPj5AQCAtMTIxLDExICsxMjEsOSBAQCBzdGF0aWMgaW50IGJtaXBzX2NwdWZy
+ZXFfdGFyZ2V0X2luZGV4KHN0cnVjdCBjcHVmcmVxX3BvbGljeSAqcG9saWN5LA0KPj4gCXJldHVy
+biAwOw0KPj4gfQ0KPj4gDQo+Pi1zdGF0aWMgaW50IGJtaXBzX2NwdWZyZXFfZXhpdChzdHJ1Y3Qg
+Y3B1ZnJlcV9wb2xpY3kgKnBvbGljeSkNCj4+K3N0YXRpYyB2b2lkIGJtaXBzX2NwdWZyZXFfZXhp
+dChzdHJ1Y3QgY3B1ZnJlcV9wb2xpY3kgKnBvbGljeSkNCj4+IHsNCj4+IAlrZnJlZShwb2xpY3kt
+PmZyZXFfdGFibGUpOw0KPj4tDQo+Pi0JcmV0dXJuIDA7DQo+PiB9DQo+PiANCj4+IHN0YXRpYyBp
+bnQgYm1pcHNfY3B1ZnJlcV9pbml0KHN0cnVjdCBjcHVmcmVxX3BvbGljeSAqcG9saWN5KQ0KPj5k
+aWZmIC0tZ2l0IGEvZHJpdmVycy9jcHVmcmVxL2NwcGNfY3B1ZnJlcS5jIGIvZHJpdmVycy9jcHVm
+cmVxL2NwcGNfY3B1ZnJlcS5jDQo+PmluZGV4IDY0NDIwZDljZmQxZS4uZGNjYjljMWYwODdkIDEw
+MDY0NA0KPj4tLS0gYS9kcml2ZXJzL2NwdWZyZXEvY3BwY19jcHVmcmVxLmMNCj4+KysrIGIvZHJp
+dmVycy9jcHVmcmVxL2NwcGNfY3B1ZnJlcS5jDQo+PkBAIC02ODgsNyArNjg4LDcgQEAgc3RhdGlj
+IGludCBjcHBjX2NwdWZyZXFfY3B1X2luaXQoc3RydWN0IGNwdWZyZXFfcG9saWN5ICpwb2xpY3kp
+DQo+PiAJcmV0dXJuIHJldDsNCj4+IH0NCj4+IA0KPj4tc3RhdGljIGludCBjcHBjX2NwdWZyZXFf
+Y3B1X2V4aXQoc3RydWN0IGNwdWZyZXFfcG9saWN5ICpwb2xpY3kpDQo+PitzdGF0aWMgdm9pZCBj
+cHBjX2NwdWZyZXFfY3B1X2V4aXQoc3RydWN0IGNwdWZyZXFfcG9saWN5ICpwb2xpY3kpDQo+PiB7
+DQo+PiAJc3RydWN0IGNwcGNfY3B1ZGF0YSAqY3B1X2RhdGEgPSBwb2xpY3ktPmRyaXZlcl9kYXRh
+Ow0KPj4gCXN0cnVjdCBjcHBjX3BlcmZfY2FwcyAqY2FwcyA9ICZjcHVfZGF0YS0+cGVyZl9jYXBz
+Ow0KPj5AQCAtNzA1LDcgKzcwNSw2IEBAIHN0YXRpYyBpbnQgY3BwY19jcHVmcmVxX2NwdV9leGl0
+KHN0cnVjdCBjcHVmcmVxX3BvbGljeSAqcG9saWN5KQ0KPj4gCQkJIGNhcHMtPmxvd2VzdF9wZXJm
+LCBjcHUsIHJldCk7DQo+PiANCj4+IAljcHBjX2NwdWZyZXFfcHV0X2NwdV9kYXRhKHBvbGljeSk7
+DQo+Pi0JcmV0dXJuIDA7DQo+PiB9DQo+PiANCj4+IHN0YXRpYyBpbmxpbmUgdTY0IGdldF9kZWx0
+YSh1NjQgdDEsIHU2NCB0MCkNCj4+ZGlmZiAtLWdpdCBhL2RyaXZlcnMvY3B1ZnJlcS9jcHVmcmVx
+LWR0LmMgYi9kcml2ZXJzL2NwdWZyZXEvY3B1ZnJlcS1kdC5jDQo+PmluZGV4IDJkODNiYmM2NWRk
+MC4uZWFmMDI1NzllYTc0IDEwMDY0NA0KPj4tLS0gYS9kcml2ZXJzL2NwdWZyZXEvY3B1ZnJlcS1k
+dC5jDQo+PisrKyBiL2RyaXZlcnMvY3B1ZnJlcS9jcHVmcmVxLWR0LmMNCj4+QEAgLTE2NiwxMCAr
+MTY2LDkgQEAgc3RhdGljIGludCBjcHVmcmVxX29mZmxpbmUoc3RydWN0IGNwdWZyZXFfcG9saWN5
+ICpwb2xpY3kpDQo+PiAJcmV0dXJuIDA7DQo+PiB9DQo+PiANCj4+LXN0YXRpYyBpbnQgY3B1ZnJl
+cV9leGl0KHN0cnVjdCBjcHVmcmVxX3BvbGljeSAqcG9saWN5KQ0KPj4rc3RhdGljIHZvaWQgY3B1
+ZnJlcV9leGl0KHN0cnVjdCBjcHVmcmVxX3BvbGljeSAqcG9saWN5KQ0KPj4gew0KPj4gCWNsa19w
+dXQocG9saWN5LT5jbGspOw0KPj4tCXJldHVybiAwOw0KPj4gfQ0KPj4gDQo+PiBzdGF0aWMgc3Ry
+dWN0IGNwdWZyZXFfZHJpdmVyIGR0X2NwdWZyZXFfZHJpdmVyID0gew0KPj5kaWZmIC0tZ2l0IGEv
+ZHJpdmVycy9jcHVmcmVxL2VfcG93ZXJzYXZlci5jIGIvZHJpdmVycy9jcHVmcmVxL2VfcG93ZXJz
+YXZlci5jDQo+PmluZGV4IGFiOTNiY2U4YWU3Ny4uNmU5NThiMDllMWI1IDEwMDY0NA0KPj4tLS0g
+YS9kcml2ZXJzL2NwdWZyZXEvZV9wb3dlcnNhdmVyLmMNCj4+KysrIGIvZHJpdmVycy9jcHVmcmVx
+L2VfcG93ZXJzYXZlci5jDQo+PkBAIC0zNjAsMTQgKzM2MCwxMyBAQCBzdGF0aWMgaW50IGVwc19j
+cHVfaW5pdChzdHJ1Y3QgY3B1ZnJlcV9wb2xpY3kgKnBvbGljeSkNCj4+IAlyZXR1cm4gMDsNCj4+
+IH0NCj4+IA0KPj4tc3RhdGljIGludCBlcHNfY3B1X2V4aXQoc3RydWN0IGNwdWZyZXFfcG9saWN5
+ICpwb2xpY3kpDQo+PitzdGF0aWMgdm9pZCBlcHNfY3B1X2V4aXQoc3RydWN0IGNwdWZyZXFfcG9s
+aWN5ICpwb2xpY3kpDQo+PiB7DQo+PiAJdW5zaWduZWQgaW50IGNwdSA9IHBvbGljeS0+Y3B1Ow0K
+Pj4gDQo+PiAJLyogQnllICovDQo+PiAJa2ZyZWUoZXBzX2NwdVtjcHVdKTsNCj4+IAllcHNfY3B1
+W2NwdV0gPSBOVUxMOw0KPj4tCXJldHVybiAwOw0KPj4gfQ0KPj4gDQo+PiBzdGF0aWMgc3RydWN0
+IGNwdWZyZXFfZHJpdmVyIGVwc19kcml2ZXIgPSB7DQo+PmRpZmYgLS1naXQgYS9kcml2ZXJzL2Nw
+dWZyZXEvaW50ZWxfcHN0YXRlLmMgYi9kcml2ZXJzL2NwdWZyZXEvaW50ZWxfcHN0YXRlLmMNCj4+
+aW5kZXggZGJiZjI5OWY0MjE5Li5hYTQzNWQyNGMyMGUgMTAwNjQ0DQo+Pi0tLSBhL2RyaXZlcnMv
+Y3B1ZnJlcS9pbnRlbF9wc3RhdGUuYw0KPj4rKysgYi9kcml2ZXJzL2NwdWZyZXEvaW50ZWxfcHN0
+YXRlLmMNCj4+QEAgLTI3MzEsMTMgKzI3MzEsMTEgQEAgc3RhdGljIGludCBpbnRlbF9wc3RhdGVf
+Y3B1X29mZmxpbmUoc3RydWN0IGNwdWZyZXFfcG9saWN5ICpwb2xpY3kpDQo+PiAJcmV0dXJuIGlu
+dGVsX2NwdWZyZXFfY3B1X29mZmxpbmUocG9saWN5KTsNCj4+IH0NCj4+IA0KPj4tc3RhdGljIGlu
+dCBpbnRlbF9wc3RhdGVfY3B1X2V4aXQoc3RydWN0IGNwdWZyZXFfcG9saWN5ICpwb2xpY3kpDQo+
+PitzdGF0aWMgdm9pZCBpbnRlbF9wc3RhdGVfY3B1X2V4aXQoc3RydWN0IGNwdWZyZXFfcG9saWN5
+ICpwb2xpY3kpDQo+PiB7DQo+PiAJcHJfZGVidWcoIkNQVSAlZCBleGl0aW5nXG4iLCBwb2xpY3kt
+PmNwdSk7DQo+PiANCj4+IAlwb2xpY3ktPmZhc3Rfc3dpdGNoX3Bvc3NpYmxlID0gZmFsc2U7DQo+
+Pi0NCj4+LQlyZXR1cm4gMDsNCj4+IH0NCj4+IA0KPj4gc3RhdGljIGludCBfX2ludGVsX3BzdGF0
+ZV9jcHVfaW5pdChzdHJ1Y3QgY3B1ZnJlcV9wb2xpY3kgKnBvbGljeSkNCj4+ZGlmZiAtLWdpdCBh
+L2RyaXZlcnMvY3B1ZnJlcS9tZWRpYXRlay1jcHVmcmVxLWh3LmMgYi9kcml2ZXJzL2NwdWZyZXEv
+bWVkaWF0ZWstY3B1ZnJlcS1ody5jDQo+PmluZGV4IDhkMDk3ZGNkZGRhNC4uODkyNWUwOTZkNWI5
+IDEwMDY0NA0KPj4tLS0gYS9kcml2ZXJzL2NwdWZyZXEvbWVkaWF0ZWstY3B1ZnJlcS1ody5jDQo+
+PisrKyBiL2RyaXZlcnMvY3B1ZnJlcS9tZWRpYXRlay1jcHVmcmVxLWh3LmMNCj4+QEAgLTI2MCw3
+ICsyNjAsNyBAQCBzdGF0aWMgaW50IG10a19jcHVmcmVxX2h3X2NwdV9pbml0KHN0cnVjdCBjcHVm
+cmVxX3BvbGljeSAqcG9saWN5KQ0KPj4gCXJldHVybiAwOw0KPj4gfQ0KPj4gDQo+Pi1zdGF0aWMg
+aW50IG10a19jcHVmcmVxX2h3X2NwdV9leGl0KHN0cnVjdCBjcHVmcmVxX3BvbGljeSAqcG9saWN5
+KQ0KPj4rc3RhdGljIHZvaWQgbXRrX2NwdWZyZXFfaHdfY3B1X2V4aXQoc3RydWN0IGNwdWZyZXFf
+cG9saWN5ICpwb2xpY3kpDQo+PiB7DQo+PiAJc3RydWN0IG10a19jcHVmcmVxX2RhdGEgKmRhdGEg
+PSBwb2xpY3ktPmRyaXZlcl9kYXRhOw0KPj4gCXN0cnVjdCByZXNvdXJjZSAqcmVzID0gZGF0YS0+
+cmVzOw0KPj5AQCAtMjcwLDggKzI3MCw2IEBAIHN0YXRpYyBpbnQgbXRrX2NwdWZyZXFfaHdfY3B1
+X2V4aXQoc3RydWN0IGNwdWZyZXFfcG9saWN5ICpwb2xpY3kpDQo+PiAJd3JpdGVsX3JlbGF4ZWQo
+MHgwLCBkYXRhLT5yZWdfYmFzZXNbUkVHX0ZSRVFfRU5BQkxFXSk7DQo+PiAJaW91bm1hcChiYXNl
+KTsNCj4+IAlyZWxlYXNlX21lbV9yZWdpb24ocmVzLT5zdGFydCwgcmVzb3VyY2Vfc2l6ZShyZXMp
+KTsNCj4+LQ0KPj4tCXJldHVybiAwOw0KPj4gfQ0KPj4gDQo+PiBzdGF0aWMgdm9pZCBtdGtfY3B1
+ZnJlcV9yZWdpc3Rlcl9lbShzdHJ1Y3QgY3B1ZnJlcV9wb2xpY3kgKnBvbGljeSkNCj4+ZGlmZiAt
+LWdpdCBhL2RyaXZlcnMvY3B1ZnJlcS9tZWRpYXRlay1jcHVmcmVxLmMgYi9kcml2ZXJzL2NwdWZy
+ZXEvbWVkaWF0ZWstY3B1ZnJlcS5jDQo+PmluZGV4IGEwYTYxOTE5YmM0Yy4uYWJhMzRmYjc5NDhl
+IDEwMDY0NA0KPj4tLS0gYS9kcml2ZXJzL2NwdWZyZXEvbWVkaWF0ZWstY3B1ZnJlcS5jDQo+Pisr
+KyBiL2RyaXZlcnMvY3B1ZnJlcS9tZWRpYXRlay1jcHVmcmVxLmMNCj4+QEAgLTU5OSwxMyArNTk5
+LDExIEBAIHN0YXRpYyBpbnQgbXRrX2NwdWZyZXFfaW5pdChzdHJ1Y3QgY3B1ZnJlcV9wb2xpY3kg
+KnBvbGljeSkNCj4+IAlyZXR1cm4gMDsNCj4+IH0NCj4+IA0KPj4tc3RhdGljIGludCBtdGtfY3B1
+ZnJlcV9leGl0KHN0cnVjdCBjcHVmcmVxX3BvbGljeSAqcG9saWN5KQ0KPj4rc3RhdGljIHZvaWQg
+bXRrX2NwdWZyZXFfZXhpdChzdHJ1Y3QgY3B1ZnJlcV9wb2xpY3kgKnBvbGljeSkNCj4+IHsNCj4+
+IAlzdHJ1Y3QgbXRrX2NwdV9kdmZzX2luZm8gKmluZm8gPSBwb2xpY3ktPmRyaXZlcl9kYXRhOw0K
+Pj4gDQo+PiAJZGV2X3BtX29wcF9mcmVlX2NwdWZyZXFfdGFibGUoaW5mby0+Y3B1X2RldiwgJnBv
+bGljeS0+ZnJlcV90YWJsZSk7DQo+Pi0NCj4+LQlyZXR1cm4gMDsNCj4+IH0NCj4+IA0KPj4gc3Rh
+dGljIHN0cnVjdCBjcHVmcmVxX2RyaXZlciBtdGtfY3B1ZnJlcV9kcml2ZXIgPSB7DQo+PmRpZmYg
+LS1naXQgYS9kcml2ZXJzL2NwdWZyZXEvb21hcC1jcHVmcmVxLmMgYi9kcml2ZXJzL2NwdWZyZXEv
+b21hcC1jcHVmcmVxLmMNCj4+aW5kZXggODk1NjkwODU2NjY1Li4zNDU4ZDVjYzliN2YgMTAwNjQ0
+DQo+Pi0tLSBhL2RyaXZlcnMvY3B1ZnJlcS9vbWFwLWNwdWZyZXEuYw0KPj4rKysgYi9kcml2ZXJz
+L2NwdWZyZXEvb21hcC1jcHVmcmVxLmMNCj4+QEAgLTEzNSwxMSArMTM1LDEwIEBAIHN0YXRpYyBp
+bnQgb21hcF9jcHVfaW5pdChzdHJ1Y3QgY3B1ZnJlcV9wb2xpY3kgKnBvbGljeSkNCj4+IAlyZXR1
+cm4gMDsNCj4+IH0NCj4+IA0KPj4tc3RhdGljIGludCBvbWFwX2NwdV9leGl0KHN0cnVjdCBjcHVm
+cmVxX3BvbGljeSAqcG9saWN5KQ0KPj4rc3RhdGljIHZvaWQgb21hcF9jcHVfZXhpdChzdHJ1Y3Qg
+Y3B1ZnJlcV9wb2xpY3kgKnBvbGljeSkNCj4+IHsNCj4+IAlmcmVxX3RhYmxlX2ZyZWUoKTsNCj4+
+IAljbGtfcHV0KHBvbGljeS0+Y2xrKTsNCj4+LQlyZXR1cm4gMDsNCj4+IH0NCj4+IA0KPj4gc3Rh
+dGljIHN0cnVjdCBjcHVmcmVxX2RyaXZlciBvbWFwX2RyaXZlciA9IHsNCj4+ZGlmZiAtLWdpdCBh
+L2RyaXZlcnMvY3B1ZnJlcS9wYXNlbWktY3B1ZnJlcS5jIGIvZHJpdmVycy9jcHVmcmVxL3Bhc2Vt
+aS1jcHVmcmVxLmMNCj4+aW5kZXggMDM5YTY2YmJlMWJlLi5lZTkyNWI1M2I2YjkgMTAwNjQ0DQo+
+Pi0tLSBhL2RyaXZlcnMvY3B1ZnJlcS9wYXNlbWktY3B1ZnJlcS5jDQo+PisrKyBiL2RyaXZlcnMv
+Y3B1ZnJlcS9wYXNlbWktY3B1ZnJlcS5jDQo+PkBAIC0yMDQsMjEgKzIwNCwxOSBAQCBzdGF0aWMg
+aW50IHBhc19jcHVmcmVxX2NwdV9pbml0KHN0cnVjdCBjcHVmcmVxX3BvbGljeSAqcG9saWN5KQ0K
+Pj4gCXJldHVybiBlcnI7DQo+PiB9DQo+PiANCj4+LXN0YXRpYyBpbnQgcGFzX2NwdWZyZXFfY3B1
+X2V4aXQoc3RydWN0IGNwdWZyZXFfcG9saWN5ICpwb2xpY3kpDQo+PitzdGF0aWMgdm9pZCBwYXNf
+Y3B1ZnJlcV9jcHVfZXhpdChzdHJ1Y3QgY3B1ZnJlcV9wb2xpY3kgKnBvbGljeSkNCj4+IHsNCj4+
+IAkvKg0KPj4gCSAqIFdlIGRvbid0IHN1cHBvcnQgQ1BVIGhvdHBsdWcuIERvbid0IHVubWFwIGFm
+dGVyIHRoZSBzeXN0ZW0NCj4+IAkgKiBoYXMgYWxyZWFkeSBtYWRlIGl0IHRvIGEgcnVubmluZyBz
+dGF0ZS4NCj4+IAkgKi8NCj4+IAlpZiAoc3lzdGVtX3N0YXRlID49IFNZU1RFTV9SVU5OSU5HKQ0K
+Pj4tCQlyZXR1cm4gMDsNCj4+KwkJcmV0dXJuOw0KPj4gDQo+PiAJaWYgKHNkY2Fzcl9tYXBiYXNl
+KQ0KPj4gCQlpb3VubWFwKHNkY2Fzcl9tYXBiYXNlKTsNCj4+IAlpZiAoc2RjcHdyX21hcGJhc2Up
+DQo+PiAJCWlvdW5tYXAoc2RjcHdyX21hcGJhc2UpOw0KPj4tDQo+Pi0JcmV0dXJuIDA7DQo+PiB9
+DQo+PiANCj4+IHN0YXRpYyBpbnQgcGFzX2NwdWZyZXFfdGFyZ2V0KHN0cnVjdCBjcHVmcmVxX3Bv
+bGljeSAqcG9saWN5LA0KPj5kaWZmIC0tZ2l0IGEvZHJpdmVycy9jcHVmcmVxL3Bvd2Vybm93LWs2
+LmMgYi9kcml2ZXJzL2NwdWZyZXEvcG93ZXJub3ctazYuYw0KPj5pbmRleCA0MWVlZmVmOTVkODcu
+LjE1NmJlYzZjNTQyMCAxMDA2NDQNCj4+LS0tIGEvZHJpdmVycy9jcHVmcmVxL3Bvd2Vybm93LWs2
+LmMNCj4+KysrIGIvZHJpdmVycy9jcHVmcmVxL3Bvd2Vybm93LWs2LmMNCj4+QEAgLTIxOSw3ICsy
+MTksNyBAQCBzdGF0aWMgaW50IHBvd2Vybm93X2s2X2NwdV9pbml0KHN0cnVjdCBjcHVmcmVxX3Bv
+bGljeSAqcG9saWN5KQ0KPj4gfQ0KPj4gDQo+PiANCj4+LXN0YXRpYyBpbnQgcG93ZXJub3dfazZf
+Y3B1X2V4aXQoc3RydWN0IGNwdWZyZXFfcG9saWN5ICpwb2xpY3kpDQo+PitzdGF0aWMgdm9pZCBw
+b3dlcm5vd19rNl9jcHVfZXhpdChzdHJ1Y3QgY3B1ZnJlcV9wb2xpY3kgKnBvbGljeSkNCj4+IHsN
+Cj4+IAl1bnNpZ25lZCBpbnQgaTsNCj4+IA0KPj5AQCAtMjM3LDcgKzIzNyw2IEBAIHN0YXRpYyBp
+bnQgcG93ZXJub3dfazZfY3B1X2V4aXQoc3RydWN0IGNwdWZyZXFfcG9saWN5ICpwb2xpY3kpDQo+
+PiAJCQlicmVhazsNCj4+IAkJfQ0KPj4gCX0NCj4+LQlyZXR1cm4gMDsNCj4+IH0NCj4+IA0KPj4g
+c3RhdGljIHVuc2lnbmVkIGludCBwb3dlcm5vd19rNl9nZXQodW5zaWduZWQgaW50IGNwdSkNCj4+
+ZGlmZiAtLWdpdCBhL2RyaXZlcnMvY3B1ZnJlcS9wb3dlcm5vdy1rNy5jIGIvZHJpdmVycy9jcHVm
+cmVxL3Bvd2Vybm93LWs3LmMNCj4+aW5kZXggNWQ1MTVmYzM0ODM2Li40MjcxNDQ2Yzg3MjUgMTAw
+NjQ0DQo+Pi0tLSBhL2RyaXZlcnMvY3B1ZnJlcS9wb3dlcm5vdy1rNy5jDQo+PisrKyBiL2RyaXZl
+cnMvY3B1ZnJlcS9wb3dlcm5vdy1rNy5jDQo+PkBAIC02NDQsNyArNjQ0LDcgQEAgc3RhdGljIGlu
+dCBwb3dlcm5vd19jcHVfaW5pdChzdHJ1Y3QgY3B1ZnJlcV9wb2xpY3kgKnBvbGljeSkNCj4+IAly
+ZXR1cm4gMDsNCj4+IH0NCj4+IA0KPj4tc3RhdGljIGludCBwb3dlcm5vd19jcHVfZXhpdChzdHJ1
+Y3QgY3B1ZnJlcV9wb2xpY3kgKnBvbGljeSkNCj4+K3N0YXRpYyB2b2lkIHBvd2Vybm93X2NwdV9l
+eGl0KHN0cnVjdCBjcHVmcmVxX3BvbGljeSAqcG9saWN5KQ0KPj4gew0KPj4gI2lmZGVmIENPTkZJ
+R19YODZfUE9XRVJOT1dfSzdfQUNQSQ0KPj4gCWlmIChhY3BpX3Byb2Nlc3Nvcl9wZXJmKSB7DQo+
+PkBAIC02NTUsNyArNjU1LDYgQEAgc3RhdGljIGludCBwb3dlcm5vd19jcHVfZXhpdChzdHJ1Y3Qg
+Y3B1ZnJlcV9wb2xpY3kgKnBvbGljeSkNCj4+ICNlbmRpZg0KPj4gDQo+PiAJa2ZyZWUocG93ZXJu
+b3dfdGFibGUpOw0KPj4tCXJldHVybiAwOw0KPj4gfQ0KPj4gDQo+PiBzdGF0aWMgc3RydWN0IGNw
+dWZyZXFfZHJpdmVyIHBvd2Vybm93X2RyaXZlciA9IHsNCj4+ZGlmZiAtLWdpdCBhL2RyaXZlcnMv
+Y3B1ZnJlcS9wb3dlcm5vdy1rOC5jIGIvZHJpdmVycy9jcHVmcmVxL3Bvd2Vybm93LWs4LmMNCj4+
+aW5kZXggYjEwZjdhMWI3N2YxLi41ZTY2M2MzYTY3MzYgMTAwNjQ0DQo+Pi0tLSBhL2RyaXZlcnMv
+Y3B1ZnJlcS9wb3dlcm5vdy1rOC5jDQo+PisrKyBiL2RyaXZlcnMvY3B1ZnJlcS9wb3dlcm5vdy1r
+OC5jDQo+PkBAIC0xMDg5LDcgKzEwODksNyBAQCBzdGF0aWMgaW50IHBvd2Vybm93azhfY3B1X2lu
+aXQoc3RydWN0IGNwdWZyZXFfcG9saWN5ICpwb2wpDQo+PiAJcmV0dXJuIC1FTk9ERVY7DQo+PiB9
+DQo+PiANCj4+LXN0YXRpYyBpbnQgcG93ZXJub3drOF9jcHVfZXhpdChzdHJ1Y3QgY3B1ZnJlcV9w
+b2xpY3kgKnBvbCkNCj4+K3N0YXRpYyB2b2lkIHBvd2Vybm93azhfY3B1X2V4aXQoc3RydWN0IGNw
+dWZyZXFfcG9saWN5ICpwb2wpDQo+PiB7DQo+PiAJc3RydWN0IHBvd2Vybm93X2s4X2RhdGEgKmRh
+dGEgPSBwZXJfY3B1KHBvd2Vybm93X2RhdGEsIHBvbC0+Y3B1KTsNCj4+IAlpbnQgY3B1Ow0KPj5A
+QCAtMTEwNCw4ICsxMTA0LDYgQEAgc3RhdGljIGludCBwb3dlcm5vd2s4X2NwdV9leGl0KHN0cnVj
+dCBjcHVmcmVxX3BvbGljeSAqcG9sKQ0KPj4gCS8qIHBvbC0+Y3B1cyB3aWxsIGJlIGVtcHR5IGhl
+cmUsIHVzZSByZWxhdGVkX2NwdXMgaW5zdGVhZC4gKi8NCj4+IAlmb3JfZWFjaF9jcHUoY3B1LCBw
+b2wtPnJlbGF0ZWRfY3B1cykNCj4+IAkJcGVyX2NwdShwb3dlcm5vd19kYXRhLCBjcHUpID0gTlVM
+TDsNCj4+LQ0KPj4tCXJldHVybiAwOw0KPj4gfQ0KPj4gDQo+PiBzdGF0aWMgdm9pZCBxdWVyeV92
+YWx1ZXNfb25fY3B1KHZvaWQgKl9lcnIpDQo+PmRpZmYgLS1naXQgYS9kcml2ZXJzL2NwdWZyZXEv
+cG93ZXJudi1jcHVmcmVxLmMgYi9kcml2ZXJzL2NwdWZyZXEvcG93ZXJudi1jcHVmcmVxLmMNCj4+
+aW5kZXggZmRkYmQxZWExNjM1Li41MGM2MjkyOWY3Y2EgMTAwNjQ0DQo+Pi0tLSBhL2RyaXZlcnMv
+Y3B1ZnJlcS9wb3dlcm52LWNwdWZyZXEuYw0KPj4rKysgYi9kcml2ZXJzL2NwdWZyZXEvcG93ZXJu
+di1jcHVmcmVxLmMNCj4+QEAgLTg3NCw3ICs4NzQsNyBAQCBzdGF0aWMgaW50IHBvd2VybnZfY3B1
+ZnJlcV9jcHVfaW5pdChzdHJ1Y3QgY3B1ZnJlcV9wb2xpY3kgKnBvbGljeSkNCj4+IAlyZXR1cm4g
+MDsNCj4+IH0NCj4+IA0KPj4tc3RhdGljIGludCBwb3dlcm52X2NwdWZyZXFfY3B1X2V4aXQoc3Ry
+dWN0IGNwdWZyZXFfcG9saWN5ICpwb2xpY3kpDQo+PitzdGF0aWMgdm9pZCBwb3dlcm52X2NwdWZy
+ZXFfY3B1X2V4aXQoc3RydWN0IGNwdWZyZXFfcG9saWN5ICpwb2xpY3kpDQo+PiB7DQo+PiAJc3Ry
+dWN0IHBvd2VybnZfc21wX2NhbGxfZGF0YSBmcmVxX2RhdGE7DQo+PiAJc3RydWN0IGdsb2JhbF9w
+c3RhdGVfaW5mbyAqZ3BzdGF0ZXMgPSBwb2xpY3ktPmRyaXZlcl9kYXRhOw0KPj5AQCAtODg2LDgg
+Kzg4Niw2IEBAIHN0YXRpYyBpbnQgcG93ZXJudl9jcHVmcmVxX2NwdV9leGl0KHN0cnVjdCBjcHVm
+cmVxX3BvbGljeSAqcG9saWN5KQ0KPj4gCQlkZWxfdGltZXJfc3luYygmZ3BzdGF0ZXMtPnRpbWVy
+KTsNCj4+IA0KPj4gCWtmcmVlKHBvbGljeS0+ZHJpdmVyX2RhdGEpOw0KPj4tDQo+Pi0JcmV0dXJu
+IDA7DQo+PiB9DQo+PiANCj4+IHN0YXRpYyBpbnQgcG93ZXJudl9jcHVmcmVxX3JlYm9vdF9ub3Rp
+ZmllcihzdHJ1Y3Qgbm90aWZpZXJfYmxvY2sgKm5iLA0KPj5kaWZmIC0tZ2l0IGEvZHJpdmVycy9j
+cHVmcmVxL3BwY19jYmVfY3B1ZnJlcS5jIGIvZHJpdmVycy9jcHVmcmVxL3BwY19jYmVfY3B1ZnJl
+cS5jDQo+PmluZGV4IDg4YWZjNDk5NDFiNy4uNWVlNGM3YmZkY2M1IDEwMDY0NA0KPj4tLS0gYS9k
+cml2ZXJzL2NwdWZyZXEvcHBjX2NiZV9jcHVmcmVxLmMNCj4+KysrIGIvZHJpdmVycy9jcHVmcmVx
+L3BwY19jYmVfY3B1ZnJlcS5jDQo+PkBAIC0xMTMsMTAgKzExMyw5IEBAIHN0YXRpYyBpbnQgY2Jl
+X2NwdWZyZXFfY3B1X2luaXQoc3RydWN0IGNwdWZyZXFfcG9saWN5ICpwb2xpY3kpDQo+PiAJcmV0
+dXJuIDA7DQo+PiB9DQo+PiANCj4+LXN0YXRpYyBpbnQgY2JlX2NwdWZyZXFfY3B1X2V4aXQoc3Ry
+dWN0IGNwdWZyZXFfcG9saWN5ICpwb2xpY3kpDQo+PitzdGF0aWMgdm9pZCBjYmVfY3B1ZnJlcV9j
+cHVfZXhpdChzdHJ1Y3QgY3B1ZnJlcV9wb2xpY3kgKnBvbGljeSkNCj4+IHsNCj4+IAljYmVfY3B1
+ZnJlcV9wbWlfcG9saWN5X2V4aXQocG9saWN5KTsNCj4+LQlyZXR1cm4gMDsNCj4+IH0NCj4+IA0K
+Pj4gc3RhdGljIGludCBjYmVfY3B1ZnJlcV90YXJnZXQoc3RydWN0IGNwdWZyZXFfcG9saWN5ICpw
+b2xpY3ksDQo+PmRpZmYgLS1naXQgYS9kcml2ZXJzL2NwdWZyZXEvcWNvbS1jcHVmcmVxLWh3LmMg
+Yi9kcml2ZXJzL2NwdWZyZXEvcWNvbS1jcHVmcmVxLWh3LmMNCj4+aW5kZXggNzBiMGYyMTk2OGEw
+Li5iYjgxODExMTE2MmQgMTAwNjQ0DQo+Pi0tLSBhL2RyaXZlcnMvY3B1ZnJlcS9xY29tLWNwdWZy
+ZXEtaHcuYw0KPj4rKysgYi9kcml2ZXJzL2NwdWZyZXEvcWNvbS1jcHVmcmVxLWh3LmMNCj4+QEAg
+LTU3Myw3ICs1NzMsNyBAQCBzdGF0aWMgaW50IHFjb21fY3B1ZnJlcV9od19jcHVfaW5pdChzdHJ1
+Y3QgY3B1ZnJlcV9wb2xpY3kgKnBvbGljeSkNCj4+IAlyZXR1cm4gcWNvbV9jcHVmcmVxX2h3X2xt
+aF9pbml0KHBvbGljeSwgaW5kZXgpOw0KPj4gfQ0KPj4gDQo+Pi1zdGF0aWMgaW50IHFjb21fY3B1
+ZnJlcV9od19jcHVfZXhpdChzdHJ1Y3QgY3B1ZnJlcV9wb2xpY3kgKnBvbGljeSkNCj4+K3N0YXRp
+YyB2b2lkIHFjb21fY3B1ZnJlcV9od19jcHVfZXhpdChzdHJ1Y3QgY3B1ZnJlcV9wb2xpY3kgKnBv
+bGljeSkNCj4+IHsNCj4+IAlzdHJ1Y3QgZGV2aWNlICpjcHVfZGV2ID0gZ2V0X2NwdV9kZXZpY2Uo
+cG9saWN5LT5jcHUpOw0KPj4gCXN0cnVjdCBxY29tX2NwdWZyZXFfZGF0YSAqZGF0YSA9IHBvbGlj
+eS0+ZHJpdmVyX2RhdGE7DQo+PkBAIC01ODMsOCArNTgzLDYgQEAgc3RhdGljIGludCBxY29tX2Nw
+dWZyZXFfaHdfY3B1X2V4aXQoc3RydWN0IGNwdWZyZXFfcG9saWN5ICpwb2xpY3kpDQo+PiAJcWNv
+bV9jcHVmcmVxX2h3X2xtaF9leGl0KGRhdGEpOw0KPj4gCWtmcmVlKHBvbGljeS0+ZnJlcV90YWJs
+ZSk7DQo+PiAJa2ZyZWUoZGF0YSk7DQo+Pi0NCj4+LQlyZXR1cm4gMDsNCj4+IH0NCj4+IA0KPj4g
+c3RhdGljIHZvaWQgcWNvbV9jcHVmcmVxX3JlYWR5KHN0cnVjdCBjcHVmcmVxX3BvbGljeSAqcG9s
+aWN5KQ0KPj5kaWZmIC0tZ2l0IGEvZHJpdmVycy9jcHVmcmVxL3FvcmlxLWNwdWZyZXEuYyBiL2Ry
+aXZlcnMvY3B1ZnJlcS9xb3JpcS1jcHVmcmVxLmMNCj4+aW5kZXggMGFlY2FlY2JiMGU2Li4zNTE5
+YmYzNGQzOTcgMTAwNjQ0DQo+Pi0tLSBhL2RyaXZlcnMvY3B1ZnJlcS9xb3JpcS1jcHVmcmVxLmMN
+Cj4+KysrIGIvZHJpdmVycy9jcHVmcmVxL3FvcmlxLWNwdWZyZXEuYw0KPj5AQCAtMjI1LDcgKzIy
+NSw3IEBAIHN0YXRpYyBpbnQgcW9yaXFfY3B1ZnJlcV9jcHVfaW5pdChzdHJ1Y3QgY3B1ZnJlcV9w
+b2xpY3kgKnBvbGljeSkNCj4+IAlyZXR1cm4gLUVOT0RFVjsNCj4+IH0NCj4+IA0KPj4tc3RhdGlj
+IGludCBxb3JpcV9jcHVmcmVxX2NwdV9leGl0KHN0cnVjdCBjcHVmcmVxX3BvbGljeSAqcG9saWN5
+KQ0KPj4rc3RhdGljIHZvaWQgcW9yaXFfY3B1ZnJlcV9jcHVfZXhpdChzdHJ1Y3QgY3B1ZnJlcV9w
+b2xpY3kgKnBvbGljeSkNCj4+IHsNCj4+IAlzdHJ1Y3QgY3B1X2RhdGEgKmRhdGEgPSBwb2xpY3kt
+PmRyaXZlcl9kYXRhOw0KPj4gDQo+PkBAIC0yMzMsOCArMjMzLDYgQEAgc3RhdGljIGludCBxb3Jp
+cV9jcHVmcmVxX2NwdV9leGl0KHN0cnVjdCBjcHVmcmVxX3BvbGljeSAqcG9saWN5KQ0KPj4gCWtm
+cmVlKGRhdGEtPnRhYmxlKTsNCj4+IAlrZnJlZShkYXRhKTsNCj4+IAlwb2xpY3ktPmRyaXZlcl9k
+YXRhID0gTlVMTDsNCj4+LQ0KPj4tCXJldHVybiAwOw0KPj4gfQ0KPj4gDQo+PiBzdGF0aWMgaW50
+IHFvcmlxX2NwdWZyZXFfdGFyZ2V0KHN0cnVjdCBjcHVmcmVxX3BvbGljeSAqcG9saWN5LA0KPj5k
+aWZmIC0tZ2l0IGEvZHJpdmVycy9jcHVmcmVxL3NjbWktY3B1ZnJlcS5jIGIvZHJpdmVycy9jcHVm
+cmVxL3NjbWktY3B1ZnJlcS5jDQo+PmluZGV4IDNiNGY2YmZiMmY0Yy4uYmY1ZjE3ZjBkZmIxIDEw
+MDY0NA0KPj4tLS0gYS9kcml2ZXJzL2NwdWZyZXEvc2NtaS1jcHVmcmVxLmMNCj4+KysrIGIvZHJp
+dmVycy9jcHVmcmVxL3NjbWktY3B1ZnJlcS5jDQo+PkBAIC0zMDgsNyArMzA4LDcgQEAgc3RhdGlj
+IGludCBzY21pX2NwdWZyZXFfaW5pdChzdHJ1Y3QgY3B1ZnJlcV9wb2xpY3kgKnBvbGljeSkNCj4+
+IAlyZXR1cm4gcmV0Ow0KPj4gfQ0KPj4gDQo+Pi1zdGF0aWMgaW50IHNjbWlfY3B1ZnJlcV9leGl0
+KHN0cnVjdCBjcHVmcmVxX3BvbGljeSAqcG9saWN5KQ0KPj4rc3RhdGljIHZvaWQgc2NtaV9jcHVm
+cmVxX2V4aXQoc3RydWN0IGNwdWZyZXFfcG9saWN5ICpwb2xpY3kpDQo+PiB7DQo+PiAJc3RydWN0
+IHNjbWlfZGF0YSAqcHJpdiA9IHBvbGljeS0+ZHJpdmVyX2RhdGE7DQo+PiANCj4+QEAgLTMxNiw4
+ICszMTYsNiBAQCBzdGF0aWMgaW50IHNjbWlfY3B1ZnJlcV9leGl0KHN0cnVjdCBjcHVmcmVxX3Bv
+bGljeSAqcG9saWN5KQ0KPj4gCWRldl9wbV9vcHBfcmVtb3ZlX2FsbF9keW5hbWljKHByaXYtPmNw
+dV9kZXYpOw0KPj4gCWZyZWVfY3B1bWFza192YXIocHJpdi0+b3BwX3NoYXJlZF9jcHVzKTsNCj4+
+IAlrZnJlZShwcml2KTsNCj4+LQ0KPj4tCXJldHVybiAwOw0KPj4gfQ0KPj4gDQo+PiBzdGF0aWMg
+dm9pZCBzY21pX2NwdWZyZXFfcmVnaXN0ZXJfZW0oc3RydWN0IGNwdWZyZXFfcG9saWN5ICpwb2xp
+Y3kpDQo+PmRpZmYgLS1naXQgYS9kcml2ZXJzL2NwdWZyZXEvc2NwaS1jcHVmcmVxLmMgYi9kcml2
+ZXJzL2NwdWZyZXEvc2NwaS1jcHVmcmVxLmMNCj4+aW5kZXggZDMzYmU1Njk4M2VkLi44ZDczZTZl
+OGJlMmEgMTAwNjQ0DQo+Pi0tLSBhL2RyaXZlcnMvY3B1ZnJlcS9zY3BpLWNwdWZyZXEuYw0KPj4r
+KysgYi9kcml2ZXJzL2NwdWZyZXEvc2NwaS1jcHVmcmVxLmMNCj4+QEAgLTE2Nyw3ICsxNjcsNyBA
+QCBzdGF0aWMgaW50IHNjcGlfY3B1ZnJlcV9pbml0KHN0cnVjdCBjcHVmcmVxX3BvbGljeSAqcG9s
+aWN5KQ0KPj4gCXJldHVybiByZXQ7DQo+PiB9DQo+PiANCj4+LXN0YXRpYyBpbnQgc2NwaV9jcHVm
+cmVxX2V4aXQoc3RydWN0IGNwdWZyZXFfcG9saWN5ICpwb2xpY3kpDQo+PitzdGF0aWMgdm9pZCBz
+Y3BpX2NwdWZyZXFfZXhpdChzdHJ1Y3QgY3B1ZnJlcV9wb2xpY3kgKnBvbGljeSkNCj4+IHsNCj4+
+IAlzdHJ1Y3Qgc2NwaV9kYXRhICpwcml2ID0gcG9saWN5LT5kcml2ZXJfZGF0YTsNCj4+IA0KPj5A
+QCAtMTc1LDggKzE3NSw2IEBAIHN0YXRpYyBpbnQgc2NwaV9jcHVmcmVxX2V4aXQoc3RydWN0IGNw
+dWZyZXFfcG9saWN5ICpwb2xpY3kpDQo+PiAJZGV2X3BtX29wcF9mcmVlX2NwdWZyZXFfdGFibGUo
+cHJpdi0+Y3B1X2RldiwgJnBvbGljeS0+ZnJlcV90YWJsZSk7DQo+PiAJZGV2X3BtX29wcF9yZW1v
+dmVfYWxsX2R5bmFtaWMocHJpdi0+Y3B1X2Rldik7DQo+PiAJa2ZyZWUocHJpdik7DQo+Pi0NCj4+
+LQlyZXR1cm4gMDsNCj4+IH0NCj4+IA0KPj4gc3RhdGljIHN0cnVjdCBjcHVmcmVxX2RyaXZlciBz
+Y3BpX2NwdWZyZXFfZHJpdmVyID0gew0KPj5kaWZmIC0tZ2l0IGEvZHJpdmVycy9jcHVmcmVxL3No
+LWNwdWZyZXEuYyBiL2RyaXZlcnMvY3B1ZnJlcS9zaC1jcHVmcmVxLmMNCj4+aW5kZXggYjg3MDQy
+MzJjMjdiLi5hYTc0MDM2ZDA0MjAgMTAwNjQ0DQo+Pi0tLSBhL2RyaXZlcnMvY3B1ZnJlcS9zaC1j
+cHVmcmVxLmMNCj4+KysrIGIvZHJpdmVycy9jcHVmcmVxL3NoLWNwdWZyZXEuYw0KPj5AQCAtMTM1
+LDE0ICsxMzUsMTIgQEAgc3RhdGljIGludCBzaF9jcHVmcmVxX2NwdV9pbml0KHN0cnVjdCBjcHVm
+cmVxX3BvbGljeSAqcG9saWN5KQ0KPj4gCXJldHVybiAwOw0KPj4gfQ0KPj4gDQo+Pi1zdGF0aWMg
+aW50IHNoX2NwdWZyZXFfY3B1X2V4aXQoc3RydWN0IGNwdWZyZXFfcG9saWN5ICpwb2xpY3kpDQo+
+PitzdGF0aWMgdm9pZCBzaF9jcHVmcmVxX2NwdV9leGl0KHN0cnVjdCBjcHVmcmVxX3BvbGljeSAq
+cG9saWN5KQ0KPj4gew0KPj4gCXVuc2lnbmVkIGludCBjcHUgPSBwb2xpY3ktPmNwdTsNCj4+IAlz
+dHJ1Y3QgY2xrICpjcHVjbGsgPSAmcGVyX2NwdShzaF9jcHVjbGssIGNwdSk7DQo+PiANCj4+IAlj
+bGtfcHV0KGNwdWNsayk7DQo+Pi0NCj4+LQlyZXR1cm4gMDsNCj4+IH0NCj4+IA0KPj4gc3RhdGlj
+IHN0cnVjdCBjcHVmcmVxX2RyaXZlciBzaF9jcHVmcmVxX2RyaXZlciA9IHsNCj4+ZGlmZiAtLWdp
+dCBhL2RyaXZlcnMvY3B1ZnJlcS9zcGFyYy11czJlLWNwdWZyZXEuYyBiL2RyaXZlcnMvY3B1ZnJl
+cS9zcGFyYy11czJlLWNwdWZyZXEuYw0KPj5pbmRleCAyNzgzZDNkNTVmY2UuLjhhMGNkNTMxMmE1
+OSAxMDA2NDQNCj4+LS0tIGEvZHJpdmVycy9jcHVmcmVxL3NwYXJjLXVzMmUtY3B1ZnJlcS5jDQo+
+PisrKyBiL2RyaXZlcnMvY3B1ZnJlcS9zcGFyYy11czJlLWNwdWZyZXEuYw0KPj5AQCAtMjk2LDEw
+ICsyOTYsOSBAQCBzdGF0aWMgaW50IHVzMmVfZnJlcV9jcHVfaW5pdChzdHJ1Y3QgY3B1ZnJlcV9w
+b2xpY3kgKnBvbGljeSkNCj4+IAlyZXR1cm4gMDsNCj4+IH0NCj4+IA0KPj4tc3RhdGljIGludCB1
+czJlX2ZyZXFfY3B1X2V4aXQoc3RydWN0IGNwdWZyZXFfcG9saWN5ICpwb2xpY3kpDQo+PitzdGF0
+aWMgdm9pZCB1czJlX2ZyZXFfY3B1X2V4aXQoc3RydWN0IGNwdWZyZXFfcG9saWN5ICpwb2xpY3kp
+DQo+PiB7DQo+PiAJdXMyZV9mcmVxX3RhcmdldChwb2xpY3ksIDApOw0KPj4tCXJldHVybiAwOw0K
+Pj4gfQ0KPj4gDQo+PiBzdGF0aWMgc3RydWN0IGNwdWZyZXFfZHJpdmVyIGNwdWZyZXFfdXMyZV9k
+cml2ZXIgPSB7DQo+PmRpZmYgLS1naXQgYS9kcml2ZXJzL2NwdWZyZXEvc3BhcmMtdXMzLWNwdWZy
+ZXEuYyBiL2RyaXZlcnMvY3B1ZnJlcS9zcGFyYy11czMtY3B1ZnJlcS5jDQo+PmluZGV4IDZjMzY1
+NzY3OWE4OC4uYjUwZjlkMTNlNmQyIDEwMDY0NA0KPj4tLS0gYS9kcml2ZXJzL2NwdWZyZXEvc3Bh
+cmMtdXMzLWNwdWZyZXEuYw0KPj4rKysgYi9kcml2ZXJzL2NwdWZyZXEvc3BhcmMtdXMzLWNwdWZy
+ZXEuYw0KPj5AQCAtMTQwLDEwICsxNDAsOSBAQCBzdGF0aWMgaW50IHVzM19mcmVxX2NwdV9pbml0
+KHN0cnVjdCBjcHVmcmVxX3BvbGljeSAqcG9saWN5KQ0KPj4gCXJldHVybiAwOw0KPj4gfQ0KPj4g
+DQo+Pi1zdGF0aWMgaW50IHVzM19mcmVxX2NwdV9leGl0KHN0cnVjdCBjcHVmcmVxX3BvbGljeSAq
+cG9saWN5KQ0KPj4rc3RhdGljIHZvaWQgdXMzX2ZyZXFfY3B1X2V4aXQoc3RydWN0IGNwdWZyZXFf
+cG9saWN5ICpwb2xpY3kpDQo+PiB7DQo+PiAJdXMzX2ZyZXFfdGFyZ2V0KHBvbGljeSwgMCk7DQo+
+Pi0JcmV0dXJuIDA7DQo+PiB9DQo+PiANCj4+IHN0YXRpYyBzdHJ1Y3QgY3B1ZnJlcV9kcml2ZXIg
+Y3B1ZnJlcV91czNfZHJpdmVyID0gew0KPj5kaWZmIC0tZ2l0IGEvZHJpdmVycy9jcHVmcmVxL3Nw
+ZWVkc3RlcC1jZW50cmluby5jIGIvZHJpdmVycy9jcHVmcmVxL3NwZWVkc3RlcC1jZW50cmluby5j
+DQo+PmluZGV4IDc1YjEwZWNkYjYwZi4uMjhlNjViY2Y3MjQyIDEwMDY0NA0KPj4tLS0gYS9kcml2
+ZXJzL2NwdWZyZXEvc3BlZWRzdGVwLWNlbnRyaW5vLmMNCj4+KysrIGIvZHJpdmVycy9jcHVmcmVx
+L3NwZWVkc3RlcC1jZW50cmluby5jDQo+PkBAIC00MDAsNyArNDAwLDcgQEAgc3RhdGljIGludCBj
+ZW50cmlub19jcHVfaW5pdChzdHJ1Y3QgY3B1ZnJlcV9wb2xpY3kgKnBvbGljeSkNCj4+IAlyZXR1
+cm4gMDsNCj4+IH0NCj4+IA0KPj4tc3RhdGljIGludCBjZW50cmlub19jcHVfZXhpdChzdHJ1Y3Qg
+Y3B1ZnJlcV9wb2xpY3kgKnBvbGljeSkNCj4+K3N0YXRpYyB2b2lkIGNlbnRyaW5vX2NwdV9leGl0
+KHN0cnVjdCBjcHVmcmVxX3BvbGljeSAqcG9saWN5KQ0KPj4gew0KPj4gCXVuc2lnbmVkIGludCBj
+cHUgPSBwb2xpY3ktPmNwdTsNCj4+IA0KPj5AQCAtNDA4LDggKzQwOCw2IEBAIHN0YXRpYyBpbnQg
+Y2VudHJpbm9fY3B1X2V4aXQoc3RydWN0IGNwdWZyZXFfcG9saWN5ICpwb2xpY3kpDQo+PiAJCXJl
+dHVybiAtRU5PREVWOw0KPj4gDQo+PiAJcGVyX2NwdShjZW50cmlub19tb2RlbCwgY3B1KSA9IE5V
+TEw7DQo+Pi0NCj4+LQlyZXR1cm4gMDsNCj4+IH0NCj4+IA0KPj4gLyoqDQo+PmRpZmYgLS1naXQg
+YS9kcml2ZXJzL2NwdWZyZXEvdGVncmExOTQtY3B1ZnJlcS5jIGIvZHJpdmVycy9jcHVmcmVxL3Rl
+Z3JhMTk0LWNwdWZyZXEuYw0KPj5pbmRleCA1OTg2NWVhNDU1YTguLjA3ZWE3ZWQ2MWI2OCAxMDA2
+NDQNCj4+LS0tIGEvZHJpdmVycy9jcHVmcmVxL3RlZ3JhMTk0LWNwdWZyZXEuYw0KPj4rKysgYi9k
+cml2ZXJzL2NwdWZyZXEvdGVncmExOTQtY3B1ZnJlcS5jDQo+PkBAIC01NTEsMTQgKzU1MSwxMiBA
+QCBzdGF0aWMgaW50IHRlZ3JhMTk0X2NwdWZyZXFfb2ZmbGluZShzdHJ1Y3QgY3B1ZnJlcV9wb2xp
+Y3kgKnBvbGljeSkNCj4+IAlyZXR1cm4gMDsNCj4+IH0NCj4+IA0KPj4tc3RhdGljIGludCB0ZWdy
+YTE5NF9jcHVmcmVxX2V4aXQoc3RydWN0IGNwdWZyZXFfcG9saWN5ICpwb2xpY3kpDQo+PitzdGF0
+aWMgdm9pZCB0ZWdyYTE5NF9jcHVmcmVxX2V4aXQoc3RydWN0IGNwdWZyZXFfcG9saWN5ICpwb2xp
+Y3kpDQo+PiB7DQo+PiAJc3RydWN0IGRldmljZSAqY3B1X2RldiA9IGdldF9jcHVfZGV2aWNlKHBv
+bGljeS0+Y3B1KTsNCj4+IA0KPj4gCWRldl9wbV9vcHBfcmVtb3ZlX2FsbF9keW5hbWljKGNwdV9k
+ZXYpOw0KPj4gCWRldl9wbV9vcHBfb2ZfY3B1bWFza19yZW1vdmVfdGFibGUocG9saWN5LT5yZWxh
+dGVkX2NwdXMpOw0KPj4tDQo+Pi0JcmV0dXJuIDA7DQo+PiB9DQo+PiANCj4+IHN0YXRpYyBpbnQg
+dGVncmExOTRfY3B1ZnJlcV9zZXRfdGFyZ2V0KHN0cnVjdCBjcHVmcmVxX3BvbGljeSAqcG9saWN5
+LA0KPj5kaWZmIC0tZ2l0IGEvZHJpdmVycy9jcHVmcmVxL3ZleHByZXNzLXNwYy1jcHVmcmVxLmMg
+Yi9kcml2ZXJzL2NwdWZyZXEvdmV4cHJlc3Mtc3BjLWNwdWZyZXEuYw0KPj5pbmRleCA5YWM0ZWE1
+MGI4NzQuLmIyYTQyY2RiOTU4MiAxMDA2NDQNCj4+LS0tIGEvZHJpdmVycy9jcHVmcmVxL3ZleHBy
+ZXNzLXNwYy1jcHVmcmVxLmMNCj4+KysrIGIvZHJpdmVycy9jcHVmcmVxL3ZleHByZXNzLXNwYy1j
+cHVmcmVxLmMNCj4+QEAgLTQ0Nyw3ICs0NDcsNyBAQCBzdGF0aWMgaW50IHZlX3NwY19jcHVmcmVx
+X2luaXQoc3RydWN0IGNwdWZyZXFfcG9saWN5ICpwb2xpY3kpDQo+PiAJcmV0dXJuIDA7DQo+PiB9
+DQo+PiANCj4+LXN0YXRpYyBpbnQgdmVfc3BjX2NwdWZyZXFfZXhpdChzdHJ1Y3QgY3B1ZnJlcV9w
+b2xpY3kgKnBvbGljeSkNCj4+K3N0YXRpYyB2b2lkIHZlX3NwY19jcHVmcmVxX2V4aXQoc3RydWN0
+IGNwdWZyZXFfcG9saWN5ICpwb2xpY3kpDQo+PiB7DQo+PiAJc3RydWN0IGRldmljZSAqY3B1X2Rl
+djsNCj4+IA0KPj5AQCAtNDU5LDcgKzQ1OSw2IEBAIHN0YXRpYyBpbnQgdmVfc3BjX2NwdWZyZXFf
+ZXhpdChzdHJ1Y3QgY3B1ZnJlcV9wb2xpY3kgKnBvbGljeSkNCj4+IAl9DQo+PiANCj4+IAlwdXRf
+Y2x1c3Rlcl9jbGtfYW5kX2ZyZXFfdGFibGUoY3B1X2RldiwgcG9saWN5LT5yZWxhdGVkX2NwdXMp
+Ow0KPj4tCXJldHVybiAwOw0KPj4gfQ0KPj4gDQo+PiBzdGF0aWMgc3RydWN0IGNwdWZyZXFfZHJp
+dmVyIHZlX3NwY19jcHVmcmVxX2RyaXZlciA9IHsNCj4+LS0gDQo+PjIuMjUuMQ0KPiANCg==
 
