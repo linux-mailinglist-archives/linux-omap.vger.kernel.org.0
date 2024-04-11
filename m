@@ -1,96 +1,100 @@
-Return-Path: <linux-omap+bounces-1154-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1155-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CCB689FF74
-	for <lists+linux-omap@lfdr.de>; Wed, 10 Apr 2024 20:11:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BF088A0722
+	for <lists+linux-omap@lfdr.de>; Thu, 11 Apr 2024 06:30:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF3A12837A8
-	for <lists+linux-omap@lfdr.de>; Wed, 10 Apr 2024 18:11:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C99A3288503
+	for <lists+linux-omap@lfdr.de>; Thu, 11 Apr 2024 04:30:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 130EB17F39C;
-	Wed, 10 Apr 2024 18:11:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED91E18EAF;
+	Thu, 11 Apr 2024 04:30:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="KwJ1KK9/"
+	dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b="a6VipMQr"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
+Received: from mail5.25mail.st (mail5.25mail.st [74.50.62.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9CE617F36E;
-	Wed, 10 Apr 2024 18:11:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF596634EA;
+	Thu, 11 Apr 2024 04:30:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.50.62.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712772680; cv=none; b=pqtdY08QqPMUJk005Zw9RXqzoJYr1VVlaY7DLBk3csKQ8BVm3hLLejyWjsXzhDx9XsTUbjAYOdJ2T7V2uSbrBCZUO2dNj07u/Dlpf8bbklpxx6tDnyoLUt93OoO1Lnbqfv8UkuVRyLo5r6oaqzUh56KQ72OiZcE5UAWhGk1AA50=
+	t=1712809818; cv=none; b=OUdSS6qa5O045N3NcmhoZ6N8duOqtUMdx1UILag8bHajO2vZ6LqTh7fABYZ2o/Nk2eOvv8fQrdY7Jyoz2Ubh9QbUzqnUK0SIhvZSdr1/vs4eiCuH8zJNsmaavi1crMApzE1KrEMeEBSKgKmkIiZnCLwbuXiKVgoxUZCYNFyPHp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712772680; c=relaxed/simple;
-	bh=dMLXJDpVj5P7B6BLkAnsonc4NeXSB+v6Af+GijKItIw=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g79Fd5fXY6tCM21/CY4YdprgK3QbA9KfKKjRaVIJTfirkUxDJRXEx9y59WKhijZDeOkqG64EPFm6eWjFNh8gWozsDOgYdpvIXMPMPRJFEX21oaEta+lMrsJsRiH+FIY0lwzl11nrlvk1AF0Tlp5dpCfqM/+LzIknygHQemMEi/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=KwJ1KK9/; arc=none smtp.client-ip=198.47.19.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-	by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 43AIBEZa106752;
-	Wed, 10 Apr 2024 13:11:14 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1712772674;
-	bh=qifAJ66iv4CCCsPaQ2eLsTQrNfQLePSXrjwNwfvyqQ8=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To;
-	b=KwJ1KK9/+d3CxTZoPNnp8sG7PJNXGR0SFHMgSitP2/iA64vxGWO1I9iidXWb1tYDM
-	 znn8mvSuiBCstyssZQ3SPy/aoeznYaVeSHLAp6GzjtL/AcctbOavJPjj0nmB8Am6yO
-	 tGW/VZGmufShKtCIwlz5FHezBJ0b9wxhawh2ZmFc=
-Received: from DLEE104.ent.ti.com (dlee104.ent.ti.com [157.170.170.34])
-	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 43AIBEnw100645
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Wed, 10 Apr 2024 13:11:14 -0500
-Received: from DLEE100.ent.ti.com (157.170.170.30) by DLEE104.ent.ti.com
- (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Wed, 10
- Apr 2024 13:11:14 -0500
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE100.ent.ti.com
- (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Wed, 10 Apr 2024 13:11:14 -0500
-Received: from localhost (dhruva.dhcp.ti.com [172.24.227.68])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 43AIBD7H034530;
-	Wed, 10 Apr 2024 13:11:13 -0500
-Date: Wed, 10 Apr 2024 23:41:12 +0530
-From: Dhruva Gole <d-gole@ti.com>
-To: Tony Lindgren <tony@atomide.com>
-CC: <linux-omap@vger.kernel.org>,
-        Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 3/5] bus: ti-sysc: Drop legacy quirk handling for uarts
-Message-ID: <20240410181112.6id36j7iysw7memz@dhruva>
+	s=arc-20240116; t=1712809818; c=relaxed/simple;
+	bh=RkAGIvTWS+1fvKuGMoJyj1I6+dviqXOdFPWeeg2UCgs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=i9yV1IfGJBlHQzZBSpH70fwaOjRxxfpfbVXWau5GqlTnYIfUrbZ8W3xVjpmNUaKWYzDtmwmdV5C2bex3bHoIq8c+gNaUPgj9gj4Gps7Gmic+KR3gvEfeyhP1+DogXVUVcalm/M5x9zqkpMBoqo/p26SPp1B9KJBM7VNpt6lMMCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com; spf=fail smtp.mailfrom=atomide.com; dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b=a6VipMQr; arc=none smtp.client-ip=74.50.62.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=atomide.com
+Received: from localhost (91-158-86-216.elisa-laajakaista.fi [91.158.86.216])
+	by mail5.25mail.st (Postfix) with ESMTPSA id DC9926084E;
+	Thu, 11 Apr 2024 04:30:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=atomide.com;
+	s=25mailst; t=1712809815;
+	bh=RkAGIvTWS+1fvKuGMoJyj1I6+dviqXOdFPWeeg2UCgs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=a6VipMQr+BtNyD5EknoHybxpvlEiutDcseeKlQhSVrrB8MXtWvVyQC+qrgpPe7rWA
+	 fZwb51Rj8Lm0l43IykstajzrznGvyj9PRTwpM92Nb1tvZqIErzscE9UObfzIrLZcr1
+	 zhUEAWaoIq7NMl9symAmVQ0S1OO17vMIlYmSIxFVlEa2polahBPJm+pth/Re6Hn7/d
+	 xh0qJ6ZYCNiKud6efk58HYAvUp7mwE4ZmzE7V1FVv8w3hiFUIXQR5kyq5Lo88AsLIc
+	 4QCBwTevqapI88/UPvDVVYeixP5u8rvYKIl6QkUC3WShU7lkKoe0SomfnIQjyHQA0+
+	 AdAcA2yReKPlw==
+Date: Thu, 11 Apr 2024 07:30:04 +0300
+From: Tony Lindgren <tony@atomide.com>
+To: Dhruva Gole <d-gole@ti.com>
+Cc: linux-omap@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/5] bus: ti-sysc: Move check for no-reset-on-init
+Message-ID: <20240411043004.GC5156@atomide.com>
 References: <20240410064010.57142-1-tony@atomide.com>
- <20240410064010.57142-4-tony@atomide.com>
+ <20240410064010.57142-2-tony@atomide.com>
+ <20240410180318.ddpbdlnlss7bqweg@dhruva>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240410064010.57142-4-tony@atomide.com>
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+In-Reply-To: <20240410180318.ddpbdlnlss7bqweg@dhruva>
 
-On Apr 10, 2024 at 09:40:07 +0300, Tony Lindgren wrote:
-> With the 8250_omap and omap-serial drivers no longer relying on the use
-> of pm_runtime_irq_safe(), we can finally drop the related legacy quirk
-> handling for uarts.
+* Dhruva Gole <d-gole@ti.com> [240410 18:03]:
+> On Apr 10, 2024 at 09:40:05 +0300, Tony Lindgren wrote:
+> > We are wrongly checking SYSC_QUIRK_NO_RESET_ON_INIT flag in sysc_reset(),
+> > it can be called also after init from sysc_reinit_module(). Let's fix the
+> > issue by moving the check to the init code.
 > 
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
-> ---
+> I am not able to understand exactly the potential bug here, what was the
+> issue exactly?
 
-LGTM!
-Reviewed-by: Dhruva Gole <d-gole@ti.com>
+With this flag, reset should be skipped on init, for example for an SDRAM
+controller during booting or to preserve a boot logo etc. However, if a
+reset is requested later on after init, we must ignore this flag.
 
+> What I am able to infer is this is more of an improvement than fixing a
+> bug? Maybe I am missing some context, can you help me understand the
+> potential bug here?
 
--- 
-Best regards,
-Dhruva
+We are now also calling sysc_reset() during runtime, so in theory some
+device would not reset during usage as requested. I don't think we have
+such cases in reality though. So yeah this is more cleanup rather than a
+fix AFAIK.
+
+> > Fixes: 6a52bc2b81fa ("bus: ti-sysc: Add quirk handling for reset on re-init")
+> 
+> Fixes tag, you might want to CC stable@vger.kernel.org?
+
+Let's just leave out the fixes tag as there are no known bugs caused
+by this.
+
+Regards,
+
+Tony
 
