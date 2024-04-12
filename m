@@ -1,47 +1,47 @@
-Return-Path: <linux-omap+bounces-1165-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1166-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18FFD8A36A4
-	for <lists+linux-omap@lfdr.de>; Fri, 12 Apr 2024 21:58:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A0428A3702
+	for <lists+linux-omap@lfdr.de>; Fri, 12 Apr 2024 22:22:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A5821C23DD4
-	for <lists+linux-omap@lfdr.de>; Fri, 12 Apr 2024 19:58:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B692128652F
+	for <lists+linux-omap@lfdr.de>; Fri, 12 Apr 2024 20:22:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15A751509BA;
-	Fri, 12 Apr 2024 19:58:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E73381514DC;
+	Fri, 12 Apr 2024 20:22:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SGLpNFOb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mBBFqL53"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9585714EC4E;
-	Fri, 12 Apr 2024 19:58:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7295614F9C6;
+	Fri, 12 Apr 2024 20:22:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712951918; cv=none; b=tUNWqS8kDPD2iSRPXX7ITzIOurlnUJO34qa7H8vSyQcbT4N/FvjH5Ou62Ss4tKQ+GTNoK0dmKZ79E2x2X/De1XROV1vYtQV7u5toFuKbOUPkST2T/i99+IxG8tuWDEO+s3QN3YFx4H2KvzSNGGRkgJgTzpag1USrikgS8yxMewM=
+	t=1712953338; cv=none; b=rD+7R/cTcxggeN7Awxc9EjklxDZVOtT0hKxrXgtD8ZXwlp4HYkyv4rNUjoGYq0LmcH/bRF4/D4Bnl0rGcarv509W4ie82iVObDbAOW9B0XgnkYR1t3wWMCMjHskqx3XdlVa5GFRZXKvf+5ud21ooNu1pXMoQavpa4qqI5dCxC54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712951918; c=relaxed/simple;
-	bh=9HYoa2q9zbdAwhkuDRDtehEu+C2d3K7WfVfQ1MwY5ts=;
+	s=arc-20240116; t=1712953338; c=relaxed/simple;
+	bh=sn2OmynqMr6J7esZV94bEU0Yo+Dr7urRItKlgNXXkk8=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=UsMt+tALfGQvR5WojI3kGQuCYNcAgf0jkY0t4zMgTu1sd92HQk1Mh1jQKPWWkdVXFIR7rYzpyds/KIVkKjm+4MwbDW9Fq5P7LKc6xqJTyooB8CefGvDLsDybDzoVCR4oi8twyh38lFfNcgAeboUPaKhVk4ZggKEcYlIxuMLxpG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SGLpNFOb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECFEAC113CC;
-	Fri, 12 Apr 2024 19:58:37 +0000 (UTC)
+	 Content-Disposition:In-Reply-To; b=qhh+DVzwfvS1HMMy8VucMrmyNMPMbNMtnFnDrb2d2Auc/7qKpJ3fL2Oj8fkgMv2GmcoIn+KbmYz7B9d/r3WaFNzNwkGA8FHov+iv55PmjED/boSTRTexFMl3QSAo6BDO9qDBCUIsmTY+nQPIeT2dDcsIVjXNwASA39EblkdidJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mBBFqL53; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3A70C113CC;
+	Fri, 12 Apr 2024 20:22:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712951918;
-	bh=9HYoa2q9zbdAwhkuDRDtehEu+C2d3K7WfVfQ1MwY5ts=;
+	s=k20201202; t=1712953338;
+	bh=sn2OmynqMr6J7esZV94bEU0Yo+Dr7urRItKlgNXXkk8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=SGLpNFOblQMeIbaJAa2RR1y9xP1A4VwRPfNvrMemMrQdH7DFIEqXfWjED1/QhvtxO
-	 hJwupFe0Zppd9Hx7FQ6sAD9A8zlkGNqxCKL93Lgv+HM/Tlv2ihysEEhBSMme0WU/xZ
-	 RmyWk2LZ0EfMI6v7/A50srEd/rQl8GV6TNI7lhloC7ZsNkN79QdcezoDxDudu48TlU
-	 6yeJb0nSJDsOMZYNoTJ//yRoBGLYAUywwOLqZRW1kYosaZ/FAmRG8UQ0qWOU9fuvNj
-	 MUvOqI6C3if4nm0zgjmb2nXTx/fQpWCIEwE1QW09jgPv9Q7AQOn6hkEUrmUqhOGaI4
-	 DTF2TST3dsEgA==
-Date: Fri, 12 Apr 2024 14:58:36 -0500
+	b=mBBFqL53k8d8ZRiCErYU+z9y7mNs9HHDllT10pZ3ClqXZjEuN0B8ebU0XrYAbSEpa
+	 QIQCzjz9kSUPV2Gm101R8qF0Fzm/d2ECYeTqOYdngkP0oFGR/IEq1gIF5QqZJLwFLh
+	 FwyDBuniceg4diUmqI1tezD9L6IV7P6ymG4dV/PcGZyQNp9isKFZpILhe3DRxFroRZ
+	 kl6wGt76+5I0oZFe7K9D9ea7a2c8J3M7XvW75EVELJ4xyJA6ycIRtQUiukrwLyTuh2
+	 Hbb4UXqrYyQamtx23jHin0qc0HsDUuz6DG1NpfKAu+Ky81T3wDDvRZtoadLACzqpGp
+	 0K71g/atBsARQ==
+Date: Fri, 12 Apr 2024 15:22:16 -0500
 From: Bjorn Helgaas <helgaas@kernel.org>
 To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 Cc: Jingoo Han <jingoohan1@gmail.com>,
@@ -74,10 +74,9 @@ Cc: Jingoo Han <jingoohan1@gmail.com>,
 	linux-arm-msm@vger.kernel.org, linux-tegra@vger.kernel.org,
 	linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
 	linuxppc-dev@lists.ozlabs.org, Niklas Cassel <cassel@kernel.org>,
-	linux-arm-kernel@axis.com, linux-rockchip@lists.infradead.org,
-	Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH v12 2/8] PCI: dwc: ep: Add Kernel-doc comments for APIs
-Message-ID: <20240412195836.GA13344@bhelgaas>
+	linux-arm-kernel@axis.com, linux-rockchip@lists.infradead.org
+Subject: Re: [PATCH v12 8/8] PCI: endpoint: Remove "core_init_notifier" flag
+Message-ID: <20240412202216.GA14590@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -86,23 +85,59 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240327-pci-dbi-rework-v12-2-082625472414@linaro.org>
+In-Reply-To: <20240327-pci-dbi-rework-v12-8-082625472414@linaro.org>
 
-On Wed, Mar 27, 2024 at 02:43:31PM +0530, Manivannan Sadhasivam wrote:
-> All of the APIs are missing the Kernel-doc comments. Hence, add them.
+On Wed, Mar 27, 2024 at 02:43:37PM +0530, Manivannan Sadhasivam wrote:
+> "core_init_notifier" flag is set by the glue drivers requiring refclk from
+> the host to complete the DWC core initialization. Also, those drivers will
+> send a notification to the EPF drivers once the initialization is fully
+> completed using the pci_epc_init_notify() API. Only then, the EPF drivers
+> will start functioning.
+> 
+> For the rest of the drivers generating refclk locally, EPF drivers will
+> start functioning post binding with them. EPF drivers rely on the
+> 'core_init_notifier' flag to differentiate between the drivers.
+> Unfortunately, this creates two different flows for the EPF drivers.
+> 
+> So to avoid that, let's get rid of the "core_init_notifier" flag and follow
+> a single initialization flow for the EPF drivers. This is done by calling
+> the dw_pcie_ep_init_notify() from all glue drivers after the completion of
+> dw_pcie_ep_init_registers() API. This will allow all the glue drivers to
+> send the notification to the EPF drivers once the initialization is fully
+> completed.
 
-> + * dw_pcie_ep_reset_bar - Reset endpoint BAR
+Thanks for doing this!  I think this is a significantly nicer
+solution than core_init_notifier was.
 
-Apparently this resets @bar for every function of the device, so it's
-not just a single BAR?
+One question: both qcom and tegra194 call dw_pcie_ep_init_registers()
+from an interrupt handler, but they register that handler in a
+different order with respect to dw_pcie_ep_init().
 
-> + * dw_pcie_ep_raise_intx_irq - Raise INTx IRQ to the host
-> + * @ep: DWC EP device
-> + * @func_no: Function number of the endpoint
-> + *
-> + * Return: 0 if success, errono otherwise.
+I don't know what actually starts the process that leads to the
+interrupt, but if it's dw_pcie_ep_init(), then one of these (qcom, I
+think) must be racy:
 
-s/errono/errno/ (another instance below)
+  qcom_pcie_ep_probe
+    dw_pcie_ep_init                                             <- A
+    qcom_pcie_ep_enable_irq_resources
+      devm_request_threaded_irq(qcom_pcie_ep_perst_irq_thread)  <- B
+
+  qcom_pcie_ep_perst_irq_thread
+    qcom_pcie_perst_deassert
+      dw_pcie_ep_init_registers
+
+  tegra_pcie_dw_probe
+    tegra_pcie_config_ep
+      devm_request_threaded_irq(tegra_pcie_ep_pex_rst_irq)      <- B
+      dw_pcie_ep_init                                           <- A
+
+  tegra_pcie_ep_pex_rst_irq
+    pex_ep_event_pex_rst_deassert
+      dw_pcie_ep_init_registers
+
+Whatever the right answer is, I think qcom and tegra194 should both
+order dw_pcie_ep_init() and the devm_request_threaded_irq() the same
+way.
 
 Bjorn
 
