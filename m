@@ -1,167 +1,124 @@
-Return-Path: <linux-omap+bounces-1204-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1205-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A82538A50D1
-	for <lists+linux-omap@lfdr.de>; Mon, 15 Apr 2024 15:17:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92E4F8A5286
+	for <lists+linux-omap@lfdr.de>; Mon, 15 Apr 2024 16:00:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 224A41F2108E
-	for <lists+linux-omap@lfdr.de>; Mon, 15 Apr 2024 13:17:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F3452B21B54
+	for <lists+linux-omap@lfdr.de>; Mon, 15 Apr 2024 14:00:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A359745D5;
-	Mon, 15 Apr 2024 12:58:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B692374429;
+	Mon, 15 Apr 2024 14:00:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="AiokVn3p"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FSbVVUT/"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52F987174D
-	for <linux-omap@vger.kernel.org>; Mon, 15 Apr 2024 12:58:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E4C773196;
+	Mon, 15 Apr 2024 14:00:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713185886; cv=none; b=WUdHZVzyuFOgoVV7ZFt+w9dqagAPGKGlDieA1QI0n03Zw1gjCJDnFXdDIpjObLkfatKjgHZrbECg8ewu0c/4jWzuaq0vb5gRKX2tV3qJUByxLG312HYWh06pN7fNgf9FP9i0iVKtVuUtIdb7o51+TZryDo5pZjdgcCoWF/+fq9A=
+	t=1713189630; cv=none; b=msfZHb0yKz0vEh4CmS6C4jg50Kesn1CucVEWeaMAihpUWm7Slw6l2TshPuyfc+h+Wrb3AHqYoRn86FbD0Ni11nLeeubc76SOrbaq4LmSGTEQT3AOGBZjkgIlX3GMsVHcwG7BxojOd80UgbAH31BzYsnzQnN08kE5u3zHWoytw/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713185886; c=relaxed/simple;
-	bh=JuY8Z9SFKAjd485RmpEzDICfCQ5m1DLNGhij0gfh/6A=;
+	s=arc-20240116; t=1713189630; c=relaxed/simple;
+	bh=vUMXX+OgsKDFjriUPXzBwg0hyHz5um7sSrP3ByWxMtA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LGmb406IyZdON5a11rUL3keO8BGlPWOv/HMwPm97tcdAM45nYuYs+l+JDJdZx935RrK+tdb8H58ykXgzyGnYfsXubdNMxtWa3F8iOsCMZ0RRVOx3KbT1bCTbgaahUxvInbtFlEmJtrxwf4JpPXZom8NtlWgnUiIEIK1n5HscH8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=AiokVn3p; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-346b96f1483so1620841f8f.1
-        for <linux-omap@vger.kernel.org>; Mon, 15 Apr 2024 05:58:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1713185883; x=1713790683; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=tLf6fjTVo3wUpV33VREESp7KlEYlqmXsy5vGMydSZn8=;
-        b=AiokVn3p5J7rw6aHxKGQ4DO0ZtXqAG1EQ/RcKvpwk3/FaLLKAb5HVvqqxaAqie6oy7
-         AZlO1P6MdMUCEfya+KJEdzzVjP72OP17GzKVbNyVbgvea5G685QIT7f0NgKfn2QHYDH/
-         rZgaYT1LE0wcvSIJp7fgzD3d9RcCxocKDGaa8eFTwP9DJdRGiTyU7OAcs3kNIRKR99JZ
-         nXzqPcAFHxpRF94VNnGUnwKb9JgnzeFrs7TIKO/Sg4mt3vupA4sXxrjHVIF6ICMni3t7
-         95u5xfDfFY+jZdiv4njyD9hd3sTxdfQiKNSWNNJXm3BvGJl0Ru3Q0tq2ntg2822UzMrV
-         h1PA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713185883; x=1713790683;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tLf6fjTVo3wUpV33VREESp7KlEYlqmXsy5vGMydSZn8=;
-        b=l+hRas97UDs6gCAOzC/52PLUlmYbDvuTirQBuynBKcKduoOadkX+2tFmJU64KTRgjv
-         zggeAWejLby0HEsAPmsde4FEPpZ4QNnYcLvMl09g4atPae48s53MI7xw/vn+dSUhoQNE
-         IPelmRQdXM9BGllyJz3uD8LC/wu+ptlDgudAayfar3A2+AOgfXWw2HFW+brW+w5wIxG1
-         apTnmIZkMrhl0MTt4eI64aFyD5XAaIywyiQpdjstdAu0+WU22EF9Cf4w2POOsXdcWHNW
-         v7u/TOw38lHCAPAP+23O4t7sHs6fNxbfdUclQwfzqn7KH3HCegP4kIfXElnzHKVZmuLr
-         ZeMQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUC2SQSGxvkVvQhxNV+FxYScqhQhZsqSwd6rsRTJK0aeVsIHqPl4u5rVOLXTLUtXbD9lvi3ZR2kazUlX1C8ninH4IJiVlu5TfYsDw==
-X-Gm-Message-State: AOJu0Ywn49hs53I2/Rr9HbsZjEhplyoQP6YdAkRhnVi7vYYHp9eC1lSc
-	G3f3UgDhZH2zHHmg+gk9y7tTRFcCpO1g5rv0i48FElJRZjojt1kjrBTOCuUctork5yvdYq3xobj
-	4xYg=
-X-Google-Smtp-Source: AGHT+IEAm03/mAgN/wD9H5pLJe3fIVolEbWIhU988XB39qknEhlAzrxruGN5U/LF93zzxG0bYawaFQ==
-X-Received: by 2002:a5d:595b:0:b0:345:e750:6d6c with SMTP id e27-20020a5d595b000000b00345e7506d6cmr7277507wri.30.1713185882741;
-        Mon, 15 Apr 2024 05:58:02 -0700 (PDT)
-Received: from aspen.lan (aztw-34-b2-v4wan-166919-cust780.vm26.cable.virginm.net. [82.37.195.13])
-        by smtp.gmail.com with ESMTPSA id f18-20020adfe912000000b00343d6c7240fsm12032238wrm.35.2024.04.15.05.58.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Apr 2024 05:58:02 -0700 (PDT)
-Date: Mon, 15 Apr 2024 13:58:00 +0100
-From: Daniel Thompson <daniel.thompson@linaro.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Lee Jones <lee@kernel.org>, Jingoo Han <jingoohan1@gmail.com>,
-	Helge Deller <deller@gmx.de>,
-	Bruno =?iso-8859-1?Q?Pr=E9mont?= <bonbons@linux-vserver.org>,
-	Jiri Kosina <jikos@kernel.org>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Alexander Shiyan <shc_work@mail.ru>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=TT+QTQ2M9v2g1FkQx0K5rUA/G6zVY87+axuWQv9DFWrRxgc5xF8UtohvOZDiUXGiDCXHHQ8sQU+2Z5AFejTd33AJmDc4PHV2VvHDvN0ey9rRMKPPQnpSh46t1Z8zfuCsNGNIcCclM7VppkOh+6mp8lvAmb+FXaYgBdpBXICzSYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FSbVVUT/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EE32C113CC;
+	Mon, 15 Apr 2024 14:00:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713189629;
+	bh=vUMXX+OgsKDFjriUPXzBwg0hyHz5um7sSrP3ByWxMtA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FSbVVUT/4O8CWWGyMHoZTZGbTja7KlLC+eTrlDIe7uQpHmiMUwxOMo9nNqqNtBHCM
+	 f0Yik9mTfrz/vmnMcHyrxCQ8WhYFMxN3fxIkqRNqPWxu0ZeIfqNcNEdZkkeMeGTOLX
+	 jIOWZp/+dDcXG/znc304kX2D2TjXDBJqVy9pI4MMQVSnG+1UX8FTfk96Gq7795b6Kx
+	 3EX6QiFGVPh0YCWMK+1VL8vr2s8cVUePkED2SMZYXUSRR/8Dlh3GDq1uk1fWqrdoCl
+	 fTSUvxJf/lxnj1lCskcjF47NmnYnbl9ztuqRhAZxknTZhTHnFDz4Qh56YhqQiNh48J
+	 7GQtk7v8ri9Ew==
+Date: Mon, 15 Apr 2024 19:30:15 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Jingoo Han <jingoohan1@gmail.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Marek Vasut <marek.vasut+renesas@gmail.com>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Vidya Sagar <vidyas@nvidia.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>, Fabio Estevam <festevam@gmail.com>,
-	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	linux-omap@vger.kernel.org
-Subject: Re: [PATCH 00/18] backlight: Constify lcd_ops
-Message-ID: <20240415125800.GO222427@aspen.lan>
-References: <20240414-video-backlight-lcd-ops-v1-0-9b37fcbf546a@kernel.org>
+	Fabio Estevam <festevam@gmail.com>,
+	NXP Linux Team <linux-imx@nxp.com>,
+	Minghuan Lian <minghuan.Lian@nxp.com>,
+	Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Jesper Nilsson <jesper.nilsson@axis.com>,
+	Srikanth Thokala <srikanth.thokala@intel.com>,
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	Heiko Stuebner <heiko@sntech.de>, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, linux-tegra@vger.kernel.org,
+	linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org, Niklas Cassel <cassel@kernel.org>,
+	linux-arm-kernel@axis.com, linux-rockchip@lists.infradead.org,
+	Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v12 2/8] PCI: dwc: ep: Add Kernel-doc comments for APIs
+Message-ID: <20240415140015.GJ7537@thinkpad>
+References: <20240327-pci-dbi-rework-v12-2-082625472414@linaro.org>
+ <20240412195836.GA13344@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240414-video-backlight-lcd-ops-v1-0-9b37fcbf546a@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240412195836.GA13344@bhelgaas>
 
-On Sun, Apr 14, 2024 at 06:35:58PM +0200, Krzysztof Kozlowski wrote:
-> Hi,
->
-> Dependencies
-> ============
-> All further patches depend on the first patch.  Therefore everything
-> could go via backlight tree (please ack) or via cross-tree pulls. Or
-> whatever maintainer choose, just coordinate this with backlight.
+On Fri, Apr 12, 2024 at 02:58:36PM -0500, Bjorn Helgaas wrote:
+> On Wed, Mar 27, 2024 at 02:43:31PM +0530, Manivannan Sadhasivam wrote:
+> > All of the APIs are missing the Kernel-doc comments. Hence, add them.
+> 
+> > + * dw_pcie_ep_reset_bar - Reset endpoint BAR
+> 
+> Apparently this resets @bar for every function of the device, so it's
+> not just a single BAR?
+> 
 
-Thanks for the tidy up.
+Right. It should've been 'Reset endpoint BARs'. And the API name is also
+misleading, but that is not the scope of this series.
 
-I've added my Reviewed-by: to all the backlight patches (for Lee) and
-I'm happy with the other patches too... but I didn't want my R-b on the
-HID and fbdev patches to be confused for an ack.
+> > + * dw_pcie_ep_raise_intx_irq - Raise INTx IRQ to the host
+> > + * @ep: DWC EP device
+> > + * @func_no: Function number of the endpoint
+> > + *
+> > + * Return: 0 if success, errono otherwise.
+> 
+> s/errono/errno/ (another instance below)
+> 
 
+ah, thanks for spotting. Since this series is already merged, I hope Krzysztof
+can ammend this.
 
-Daniel.
+- Mani
 
-
-> ---
-> Krzysztof Kozlowski (18):
->       backlight: Constify lcd_ops
->       backlight: ams369fg06: Constify lcd_ops
->       backlight: corgi_lcd: Constify lcd_ops
->       backlight: hx8357: Constify lcd_ops
->       backlight: ili922x: Constify lcd_ops
->       backlight: ili9320: Constify lcd_ops
->       backlight: jornada720_lcd: Constify lcd_ops
->       backlight: l4f00242t03: Constify lcd_ops
->       backlight: lms283gf05: Constify lcd_ops
->       backlight: lms501kf03: Constify lcd_ops
->       backlight: ltv350qv: Constify lcd_ops
->       backlight: otm3225a: Constify lcd_ops
->       backlight: platform_lcd: Constify lcd_ops
->       backlight: tdo24m: Constify lcd_ops
->       HID: picoLCD: Constify lcd_ops
->       fbdev: clps711x: Constify lcd_ops
->       fbdev: imx: Constify lcd_ops
->       fbdev: omap: lcd_ams_delta: Constify lcd_ops
->
->  drivers/hid/hid-picolcd_lcd.c            | 2 +-
->  drivers/video/backlight/ams369fg06.c     | 2 +-
->  drivers/video/backlight/corgi_lcd.c      | 2 +-
->  drivers/video/backlight/hx8357.c         | 2 +-
->  drivers/video/backlight/ili922x.c        | 2 +-
->  drivers/video/backlight/ili9320.c        | 2 +-
->  drivers/video/backlight/jornada720_lcd.c | 2 +-
->  drivers/video/backlight/l4f00242t03.c    | 2 +-
->  drivers/video/backlight/lcd.c            | 4 ++--
->  drivers/video/backlight/lms283gf05.c     | 2 +-
->  drivers/video/backlight/lms501kf03.c     | 2 +-
->  drivers/video/backlight/ltv350qv.c       | 2 +-
->  drivers/video/backlight/otm3225a.c       | 2 +-
->  drivers/video/backlight/platform_lcd.c   | 2 +-
->  drivers/video/backlight/tdo24m.c         | 2 +-
->  drivers/video/fbdev/clps711x-fb.c        | 2 +-
->  drivers/video/fbdev/imxfb.c              | 2 +-
->  drivers/video/fbdev/omap/lcd_ams_delta.c | 2 +-
->  include/linux/lcd.h                      | 6 +++---
->  19 files changed, 22 insertions(+), 22 deletions(-)
-> ---
-> base-commit: 9ed46da14b9b9b2ad4edb3b0c545b6dbe5c00d39
-> change-id: 20240414-video-backlight-lcd-ops-276d8439ffb8
->
-> Best regards,
-> --
-> Krzysztof Kozlowski <krzk@kernel.org>
->
+-- 
+மணிவண்ணன் சதாசிவம்
 
