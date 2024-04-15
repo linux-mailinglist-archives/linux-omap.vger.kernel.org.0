@@ -1,48 +1,54 @@
-Return-Path: <linux-omap+bounces-1188-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1189-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CB108A4959
-	for <lists+linux-omap@lfdr.de>; Mon, 15 Apr 2024 09:48:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE7368A4B2A
+	for <lists+linux-omap@lfdr.de>; Mon, 15 Apr 2024 11:12:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39E571F22791
-	for <lists+linux-omap@lfdr.de>; Mon, 15 Apr 2024 07:48:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 61CEFB20CBA
+	for <lists+linux-omap@lfdr.de>; Mon, 15 Apr 2024 09:12:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 183AB2C1B9;
-	Mon, 15 Apr 2024 07:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E62E03BBD7;
+	Mon, 15 Apr 2024 09:12:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a1erVGXR"
+	dkim=pass (2048-bit key) header.d=web.de header.i=radisson97@web.de header.b="LyRAQjiY"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.web.de (mout.web.de [212.227.17.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AC942575F;
-	Mon, 15 Apr 2024 07:48:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09AE72C848
+	for <linux-omap@vger.kernel.org>; Mon, 15 Apr 2024 09:12:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713167316; cv=none; b=EOv7i4a0j9nRJZv9yia7J6b/TckgSA54gSg9dLrqdVQ87NmPCXyja+V4JYV+UPivAllMlEtNNLaGX/DsdHm6M7a7TgvbgOiEPWW+CHYBO3+bP7pFbgniwJChsVg7ZPuTHianbsALoQV+IVlcIYgzNXlTfqjbGhweSq2oAvJaKT8=
+	t=1713172360; cv=none; b=phc4/TjEo1g7NFvLrxshbk1eqGT+ERRtSkbBqFkJO5i5xYE9JNCp7kDj8dDJO23T66K+/jaGVUBklnKe7BWvxrsKj43ZTQDgch4o6tTIoeZSzLCMi7OFrhB3EwOJJcDkXnM53Ysa/vuWPwOFuwXJjasoGpYq1UH3CW2QgcxbPLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713167316; c=relaxed/simple;
-	bh=onEXTxSYuArQHWftVgFemiZ9DY1urA0z8XQUgYJFHyM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=W61mP+5nuHvxFkRlHzuA6r0oBtQfI6CorR3zBPNK/mWGmkaZ5Jh9A0NY+HrD5ZIeWn73zP2EdLAyqKfMAhyKC+LAiJQr0Hn3x8Zsvgu/qJBDwd/AL8fQoIeWdcci2VvX82tWDU9iyRA4Jc/azfjZqF4dnfXDIxk/Z+HFIHmBnQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a1erVGXR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53CE8C113CC;
-	Mon, 15 Apr 2024 07:48:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713167316;
-	bh=onEXTxSYuArQHWftVgFemiZ9DY1urA0z8XQUgYJFHyM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=a1erVGXRlHMInDoqBvfAm2BJFmhafrWC6TmWvRk9XTOasQRmRhmiavCfnjpc5/PJE
-	 ycddf+PtEohs6r/iyzvd951qWLWjx5Exle5T0w//bVB0XdFq9Snmzcmm47xhKaUkUv
-	 X6/pw0hnA1VMTdkYw9BMmOZWybtXF2euwuUT+S6XTV3ywaNTqlo7xdiN9nxWxhWvU9
-	 oTogJdtdBFIYt2S1gc39SfqTvsskFm0qFGWI7XJOWKTS0t4nqXsyWXr0cxnE4nZ2Jy
-	 38OpRY0mWHYZM7OBieKm0/WtQrGh5tcLhWzH0QR8MvGYoxwwPIA4guvLG60e8OoTkd
-	 y9nsnn+bVvlmw==
-Message-ID: <65adee30-fd12-4cc7-a227-9a586bb9e6d5@kernel.org>
-Date: Mon, 15 Apr 2024 09:48:28 +0200
+	s=arc-20240116; t=1713172360; c=relaxed/simple;
+	bh=ge2LHwO+6uTCC9CBLsD7m1hS4k7SRWzf5RKqkeUoaFc=;
+	h=Message-ID:Date:MIME-Version:From:To:Subject:Content-Type; b=b1FIFJI7tOaKwlYMFkeT13lNLiEVnWhB+Ig569PBdqRIRwcJszW4AYF0k6vmdj1itNmSzr3FE0amX0yarzR3O1KO1n9RTO5V8gBMidtu7wM9uHkKcB2yIlF8Vp+1NJiSzJiI1EZGjgwqiHU7RNdPAW96vzmay0js/fhdWy7Dj7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=radisson97@web.de header.b=LyRAQjiY; arc=none smtp.client-ip=212.227.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1713172354; x=1713777154; i=radisson97@web.de;
+	bh=NuiR6mJqPkaOeZmpg6PjukuIope9CUvPm1r5gc0Gn8c=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:From:To:Subject:
+	 Content-Type:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=LyRAQjiYm3R2klGs1Pk4tXGyEdCKC+hK955w1J1n5+N4ERReingLIshE/OPPFxSf
+	 MhevfVZBRMu0MdSKnWeFLUrrNughqwjOoEPIpbwi04uWxspgH/4rt95sRK7lYfxQH
+	 DhKni7oOnl3nFa6VVzXQRAKYqphN2stLRv0GAuuxC0zVSizs9d8kxwcMBvSAP4MXn
+	 B2whrbIv3VTvwrcm0tP3uLErduat/peV8gTLJ5BLA9lBU3u7xPBbPBRZifyvrg9m6
+	 Z1d9T7pJMjj4gaLxrvuYIigGfhvLHeQF1MExYydXIrwrM8YbANn08PnuDgJy8fp1X
+	 zQKo13Q0IHP+5mf1uw==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [10.186.1.237] ([193.174.231.69]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1M9ISr-1rrdA524L1-006Pxi for
+ <linux-omap@vger.kernel.org>; Mon, 15 Apr 2024 11:12:34 +0200
+Message-ID: <862dd312-68a3-41a7-8305-dd1b3b8c07ce@web.de>
+Date: Mon, 15 Apr 2024 11:12:34 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -50,81 +56,52 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/18] backlight: Constify lcd_ops
-To: Thomas Zimmermann <tzimmermann@suse.de>, Lee Jones <lee@kernel.org>,
- Daniel Thompson <daniel.thompson@linaro.org>,
- Jingoo Han <jingoohan1@gmail.com>, Helge Deller <deller@gmx.de>,
- =?UTF-8?Q?Bruno_Pr=C3=A9mont?= <bonbons@linux-vserver.org>,
- Jiri Kosina <jikos@kernel.org>, Benjamin Tissoires <bentiss@kernel.org>,
- Alexander Shiyan <shc_work@mail.ru>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Shawn Guo <shawnguo@kernel.org>, Fabio Estevam <festevam@gmail.com>
-Cc: dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
- linux-omap@vger.kernel.org
-References: <20240414-video-backlight-lcd-ops-v1-0-9b37fcbf546a@kernel.org>
- <b4cafdd1-c1b0-4abd-a849-8132c19d1525@suse.de>
 Content-Language: en-US
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <b4cafdd1-c1b0-4abd-a849-8132c19d1525@suse.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Peter Radisson <radisson97@web.de>
+To: linux-omap@vger.kernel.org
+Subject: omap and rs485
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:mZpYPsGC+IIApw/SOBZAGN1l+C/8DoLTX931hgLyil5QF7gbKio
+ qPMVWyYVc2Ufh4IRsjKTqqagw4lHDQbQbomLeFRzkWValy7OXUBrgFNyMIoXAWORUihEGyM
+ Ir3b4Ea5WnB4943RAq4T/5xX6i5qL7ZQLzAKM+V4F7HiXO1qD/G7T3dYbVAhOGRoGpkW3H/
+ vpMvfGR31eOFK8ivQComw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:LDyxzzkVV8c=;hQij8UkSaA4hED7m24s4cizjLNC
+ HUwyYSj7OklsoK0ufRLJehWnQptkkJ8sBqeXxVYoQN2fWxuiqaLa/jwCDz/LSvJLX1Qx8IPiz
+ +K1/XccbGSbNJai7cqVqug7oULYTjwDcRIbwnbvcSWIJnc1dLrPxPpL5jT+1ITdyGnbuXHCT2
+ xiYTW0pRp75APUQ8C7GU76gfTSBxb9yexpwwavjnUIuOvKlAWGQLzwjA+pywRSKrmJHv4gQ6b
+ Hs9u/Ibt4/27ZWxG4fW1UqKDOKhG4nPuFV9CNIiB+UDD64mIeDvf3InPI0VROekOL3ucd9w4s
+ L+O8ZXe9lUUY9biRwLOnLAl1T5u4hKmUyTbSwyw1ETWU29LaRx6SvCjbNudpzRvw5e7P/prWH
+ ztl/rZG5P/pboFmyKd9OpqX+ztnk9PlMo2401nKHQ/WIJqwX4avgv94gUPrSMC58MsB66qmQw
+ 6jL6iUFBgyfnt0O//LqL2wsuCSTcCC69YrOswHzp3DBpDpZaFzgmfj+nUEdPIx2iSRqJBfW0/
+ NJS+75efA8BWd8a/ZJhb+Qcfg0ES7zkGMhxyT3Ahwhe0skVkmWI45gYVRYSxzI6xvfkoqhnq1
+ sO0tFlXiDIxoa7lcBt4CkIbSoFCpjZ0wUhfcnjaApCTTRqiviTxh7qUU5sfHnT8awFBOQN8fF
+ l/mWLXqU5dC5Y5ZzZuFN5ZNEK6qVWoM2TrHULme8ETiWChLcCLRBCaijxWa+YwQ770Y5kLjRI
+ 7kRQ9NI1tkH7EEzMwO/RkMV48o14JTwqIr3Yn0z6lLKDOJC4Uz2yQfP3zHMIzjEcoss6noZhd
+ 1zT2e9y44vrexh7hOEIZPkQLlGPLQMmm8M3WIuN1TmzQY=
 
-On 15/04/2024 08:56, Thomas Zimmermann wrote:
-> Hi
-> 
-> for patches 16, 17 and 18:
-> 
-> Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Hello List,
+i have a custom-made board and trouble getting rs485 working.
 
-This does not work like this. Toolset will apply your review tag for
-EVERYTHING. You must provide tag under each individual patch.
+1. with Kernel 3.5 it works
 
-Best regards,
-Krzysztof
+2. with Kernel 5.10 we got a reaction if the omap and the 8250 driver
+    are both activated but the connection is bad, it seems that both
+drivers are catching some bits.
+
+I am not sure how to continue.
+Is that behaviour a known problem ?
+
+I have seem there are some patches that went into the kernel after 5.10.
+Does anyone know that they may address that behavier ?
+
+note: i am not member of this ml please reply direcly.
+
+CU
+
+
+
+
 
 
