@@ -1,105 +1,123 @@
-Return-Path: <linux-omap+bounces-1233-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1234-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D30C8AD0AA
-	for <lists+linux-omap@lfdr.de>; Mon, 22 Apr 2024 17:29:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92A638AD50D
+	for <lists+linux-omap@lfdr.de>; Mon, 22 Apr 2024 21:44:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33C9428702F
-	for <lists+linux-omap@lfdr.de>; Mon, 22 Apr 2024 15:29:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 348A81F226DC
+	for <lists+linux-omap@lfdr.de>; Mon, 22 Apr 2024 19:44:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23F0F153505;
-	Mon, 22 Apr 2024 15:28:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C4D2155382;
+	Mon, 22 Apr 2024 19:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="EmWtq4BC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GMBO7gB5"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C73C153BD4;
-	Mon, 22 Apr 2024 15:28:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D33C315534B;
+	Mon, 22 Apr 2024 19:44:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713799691; cv=none; b=S+jgDTsW86SlLfNezdXoCgqokOAImp+LMpBCeFFHMbhpvnuMRkmm9PG6RVH3Zr3Xro70GjIaapafti/y7J78ajQ4L5fR6oSu83gcPWMfIP3Sbnx78siu9TeL6NyKQJU8bk6E8sdD2R/PM1rww8ChQfvKOitj5TVErQILsCw6+ng=
+	t=1713815066; cv=none; b=BLJDJmjz1aQPOqu9QNa1jl/doFa8CHOhbkn5j6tTOV9bB2IGv4TKtzglej6QTqVhDl6Qg3UIX7vMjqm53HmLErfUGGEwM3K+v8g99zeOe9MuezuLIFARkmfvbueG6NOOEeN9FXxyAVmePaPKQnPbgG+U+O4CUtjwW8QzC68KMtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713799691; c=relaxed/simple;
-	bh=hQh9FuW56vkudkOGmDgSrmvY96HwoJBQhUhM8CETBGY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=G3n+0EoNorbRB3VUG3OPqwNd6q03SlkNPNC2uToufd1bk2UYlpg6xd/vE4mufGHEtcZRjkqj5DGwA25X/Th4foHjhwlVLxPY02gSzOSqNVyY8J+wgDDradrjlcPmx9+7H3yyQFa96q7E6fO2s+fkUWVcshxBii2KZiduuFI5LQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=EmWtq4BC; arc=none smtp.client-ip=193.104.135.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
-Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
-	by mail1.fiberby.net (Postfix) with ESMTPSA id BF78C600C8;
-	Mon, 22 Apr 2024 15:27:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
-	s=202008; t=1713799688;
-	bh=hQh9FuW56vkudkOGmDgSrmvY96HwoJBQhUhM8CETBGY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=EmWtq4BCL95M1z5XhDVo5QGLbrHWa8XJWZPrPmHIY7ioV0JekFUnCn5fAoZWb0Z2J
-	 FtTjlIipqnY7hA4qlK6QbmGH1Jf9YUqIBzPjtlQqrgBUTHBwCy65yhclxdgyuQUIon
-	 JmqXql7VZEhasPzeJ/s0LZBe8nKLPN7Sy1Imb/lfifgCXRGMLLvTbjNtCoYdZCq7Ur
-	 5BRiqFgJQjchggtTVHQ2Bwi/14jwi35HKZyh/qHFdaA1gXVg4tHGAKBj0eYSZm0vD5
-	 soh0oHlKeC7/KkXAP6tYhWOo9N0IjGcRiwzlk8ly/eh1UrI6Jsf9Jk4DcXKqhICVyw
-	 AzKmqK4i0Slqg==
-Received: by x201s (Postfix, from userid 1000)
-	id CA433207A4D; Mon, 22 Apr 2024 15:26:56 +0000 (UTC)
-From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
-To: netdev@vger.kernel.org
-Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
-	linux-kernel@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	s=arc-20240116; t=1713815066; c=relaxed/simple;
+	bh=K8WN8aubdBUdpq2B/uKYg69yANymGJsXmW3941zGW1s=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=FpqNPGh4lS60cKG1o0KxOtSbPzII9X57pTfHsri2bQSjENadhInjyIjD+aBRSWt/XkxQ56M2NaigrhbKaWmx5Vv4U+eHh/fRc04FODHLyy4/9PKk5FNCWXsVeXceAHsAVejfs4bW7ICCxk6XHmgBtxDWxkgCI2UJrbKTFFlpYOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GMBO7gB5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CFF1C116B1;
+	Mon, 22 Apr 2024 19:44:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713815065;
+	bh=K8WN8aubdBUdpq2B/uKYg69yANymGJsXmW3941zGW1s=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=GMBO7gB5pjdjM0klxQpfKSPZbshoJO0PuGP/01h9ETcM6twO2atsJALTuh+zPMT38
+	 OtIGcuxHm2VtBWIzQNCoiOMNyr6zdoObSloYFSjblqoLnbRBLQXjyFlp/OFQ+DdYNz
+	 r6xb2t/OSk2DG5KCgZYH8sfUy7ppbw0o/lBI58Smy+QewkeKumlPSw6Ki3qLI/0N5b
+	 26Z1hij8g8+RVqSYAYIBmo0mSuJzKVsGpo/T+n8iYgIMTk11Gw3d635aisJOwmLND7
+	 xpQXKqIB1Q9fvJRrIL+yQyZKoPijFAg9rBtf8C8dCm213am27yKB2DXaIo5mkWT88r
+	 8yKoVYGpWI2Ig==
+Date: Mon, 22 Apr 2024 14:44:23 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Thomas Richard <thomas.richard@bootlin.com>
+Cc: Andi Shyti <andi.shyti@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Tony Lindgren <tony@atomide.com>,
+	Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+	Vignesh R <vigneshr@ti.com>, Peter Rosin <peda@axentia.se>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
 	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Ravi Gunasekaran <r-gunasekaran@ti.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	linux-omap@vger.kernel.org
-Subject: [PATCH net-next] net: ethernet: ti: cpsw: flower: validate control flags
-Date: Mon, 22 Apr 2024 15:26:55 +0000
-Message-ID: <20240422152656.175627-1-ast@fiberby.net>
-X-Mailer: git-send-email 2.43.0
+	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-omap@vger.kernel.org, linux-i2c@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	gregory.clement@bootlin.com, theo.lebrun@bootlin.com,
+	thomas.petazzoni@bootlin.com, u-kumar1@ti.com,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>
+Subject: Re: [PATCH v5 02/11] i2c: omap: wakeup the controller during
+ suspend() callback
+Message-ID: <20240422194423.GA414623@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cd5d0aa5-ca0c-47a5-8e40-4742bc939cfa@bootlin.com>
 
-This driver currently doesn't support any control flags.
+On Mon, Apr 22, 2024 at 11:40:02AM +0200, Thomas Richard wrote:
+> On 4/19/24 10:47, Andi Shyti wrote:
+> > Hi Thomas,
+> > 
+> >> +static int omap_i2c_suspend(struct device *dev)
+> >> +{
+> >> +	/*
+> >> +	 * If the controller is autosuspended, there is no way to wakeup it once
+> >> +	 * runtime pm is disabled (in suspend_late()).
+> >> +	 * But a device may need the controller up during suspend_noirq() or
+> >> +	 * resume_noirq().
+> >> +	 * Wakeup the controller while runtime pm is enabled, so it is available
+> >> +	 * until its suspend_noirq(), and from resume_noirq().
+> >> +	 */
+> >> +	return pm_runtime_resume_and_get(dev);
+> >> +}
+> >> +
+> >> +static int omap_i2c_resume(struct device *dev)
+> >> +{
+> >> +	pm_runtime_mark_last_busy(dev);
+> >> +	pm_runtime_put_autosuspend(dev);
+> >> +
+> >> +	return 0;
+> >> +}
+> >> +
+> >>  static const struct dev_pm_ops omap_i2c_pm_ops = {
+> >>  	SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
+> >>  				      pm_runtime_force_resume)
+> >> +	SET_SYSTEM_SLEEP_PM_OPS(omap_i2c_suspend, omap_i2c_resume)
+> > 
+> > If you don't have CONFIG_PM_SLEEP, though, this doesn't compile.
+> 
+> Hello Andi,
+> 
+> Yes indeed, the __maybe_unused attribute is missing for
+> omap_i2c_suspend() and omap_i2c_resume().
 
-Use flow_rule_match_has_control_flags() to check for control flags,
-such as can be set through `tc flower ... ip_flags frag`.
+Isn't there a way to avoid having to use the __maybe_unused attribute?
 
-In case any control flags are masked, flow_rule_match_has_control_flags()
-sets a NL extended error message, and we return -EOPNOTSUPP.
+E.g., use DEFINE_SIMPLE_DEV_PM_OPS() as is done by these:
 
-Only compile-tested.
+  82f9cefadac4 ("serial: 8250_exar: switch to DEFINE_SIMPLE_DEV_PM_OPS()")
+  f243df0a0be0 ("media: platform: rzg2l-cru: rzg2l-csi2: Switch to RUNTIME_PM_OPS()")
+  6ccc22a5afcb ("net: ravb: Switch to SYSTEM_SLEEP_PM_OPS()/RUNTIME_PM_OPS() and pm_ptr()")
 
-Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
----
- drivers/net/ethernet/ti/cpsw_priv.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/net/ethernet/ti/cpsw_priv.c b/drivers/net/ethernet/ti/cpsw_priv.c
-index 764ed298b570..6fe4edabba44 100644
---- a/drivers/net/ethernet/ti/cpsw_priv.c
-+++ b/drivers/net/ethernet/ti/cpsw_priv.c
-@@ -1404,6 +1404,9 @@ static int cpsw_qos_clsflower_add_policer(struct cpsw_priv *priv,
- 		return -EOPNOTSUPP;
- 	}
- 
-+	if (flow_rule_match_has_control_flags(rule, extack))
-+		return -EOPNOTSUPP;
-+
- 	if (!flow_rule_match_key(rule, FLOW_DISSECTOR_KEY_ETH_ADDRS)) {
- 		NL_SET_ERR_MSG_MOD(extack, "Not matching on eth address");
- 		return -EOPNOTSUPP;
--- 
-2.43.0
-
+Bjorn
 
