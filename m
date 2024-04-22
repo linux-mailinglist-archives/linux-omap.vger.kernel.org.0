@@ -1,152 +1,145 @@
-Return-Path: <linux-omap+bounces-1230-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1231-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 351818AAB7F
-	for <lists+linux-omap@lfdr.de>; Fri, 19 Apr 2024 11:31:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33B8A8AC6BA
+	for <lists+linux-omap@lfdr.de>; Mon, 22 Apr 2024 10:20:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF5D51F22141
-	for <lists+linux-omap@lfdr.de>; Fri, 19 Apr 2024 09:31:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D02D4282362
+	for <lists+linux-omap@lfdr.de>; Mon, 22 Apr 2024 08:20:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C626377F2D;
-	Fri, 19 Apr 2024 09:31:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MXV1KM6e"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9903754666;
+	Mon, 22 Apr 2024 08:18:50 +0000 (UTC)
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 372AF77F10
-	for <linux-omap@vger.kernel.org>; Fri, 19 Apr 2024 09:31:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D7E8502B6;
+	Mon, 22 Apr 2024 08:18:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713519068; cv=none; b=q1J2ku9phIwU8PqXzn5tZuI8ACVlZYjVPLJCDPS/Ws1ScRIdtWQAj5WjrYAezYWSlfANUJiDqITdNn6baulTZzDGfIloI4F7MPYFte47u09Gr12KqCD/J68N0O+ZwbQ834HS9PEADGvUPRbBuAd44w1CSVMMsUWkfZzloFR0F4w=
+	t=1713773930; cv=none; b=KTm7pF/s+L1x4s93exkltT3gtWTwvsrb5ODXQhDqV1rnnAEQ3cC/R1o07e8mV5kWKUt9/m0P52Y/SpCWQmj49+zfMhBkfvGYS8rXuoFDEqNLwia2T6OS19rsiHEZugkH98ZHKaimpuWC36p45qdtEJ9VWGvZGdRVj/5IXH1HAes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713519068; c=relaxed/simple;
-	bh=YtXF38UCrfs4V96WaSRUghiYqTmal+47CS3VCe40U+w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tZPMcK/3u+/Hk+Le8scgyhR4Hdr+Jy4gRbesXahX7jAI/DFnbFjx6HrZBeOIQimPQHo/ykUYp3isREZulmyeAItA7/CPj4GQogaGDwJWVMv1WOF8UNLfEfHZScTDOsIYkmS+UwsXf2kDeGtTK891VJPAUMEMACW+kmILxqyh21k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MXV1KM6e; arc=none smtp.client-ip=209.85.215.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-5f7fc45fe1bso522045a12.0
-        for <linux-omap@vger.kernel.org>; Fri, 19 Apr 2024 02:31:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713519066; x=1714123866; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YtXF38UCrfs4V96WaSRUghiYqTmal+47CS3VCe40U+w=;
-        b=MXV1KM6eMTyibcfsaqJYRmEzuUlaqYT3Cl4o8f/R0tkc4gCxFnUM4GiqunKxmi4wKG
-         74dGDjCIXUQ70kdEHUApuSUOrjBxShF2xRYx8SjViagjXxrdWU9/kiKfIIVx+mjaIA/d
-         71Faz4UeI+jTArLMOirHndwxKefBz5cleW3Z+2LWmozcdAU9ImN7RNi+weprTP9YDytz
-         FvwY/phBjNOWdc60z+/QyuEcU2aRGuFskuryvpGCHWKY5VYzohs70q307cBpcRcMrUgQ
-         h+wDz+3HIbysK2nW5q8/E1kl3TVF696vUOsmxEIwOVHBf4PFc9vKXplZGEcCHxCrN6mA
-         ru/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713519066; x=1714123866;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YtXF38UCrfs4V96WaSRUghiYqTmal+47CS3VCe40U+w=;
-        b=LCp9bSAAhcAz9H8OOFW9KdfmjBbwrXEYWbMjPVNLvjohdCRe9/PdMz+DuOc/TaVz7b
-         Duj5PyGZtxgArbVcDhdUcgHrwnXuOiZfIYqWChLcgDSwKDCrpKm9tY0Nx0x6FJY0Ro3s
-         Uq9BgSScaPc1j79BdXhXVDKVuRCvv+qz5mMkseLIxppTtADt7lRqAIKrLW3zrduYodRy
-         xY34phL8lFilxJkZFV9bzmynhql5GvYKZUQf9VY6cEIrX5KdGEDERDA00XL0eA2spMSI
-         srvS/TMs+QOVoDqetiq/91bNSf5hIouVP3ykvK6itU/JxCPxc39TwqZmxhUzM7f7AScU
-         l4fw==
-X-Gm-Message-State: AOJu0YwxYN5HMfBEg+uWMo/FmJxaOPTV6VV3cYQTXxXNrJt8DVtrk9jC
-	LkqpydaxX4LsUraKS5mNwmXxSZQ/StV4EZaEsfqE73BPqD45QWoZFQpCmsBqKaN7LBxdJGcl0wu
-	vhpWAk32WEDb07Uvr697CVQI26jQ=
-X-Google-Smtp-Source: AGHT+IGWsAaCW9M+WirQG2ACbfWWCj3uz7ONQNOQMOKIfTy/WefXtscfLLktDFvzoIljyeIAm+vA70FKNQ1ScYX/mw4=
-X-Received: by 2002:a17:90a:ae08:b0:2a2:94c0:38d4 with SMTP id
- t8-20020a17090aae0800b002a294c038d4mr1611540pjq.31.1713519066225; Fri, 19 Apr
- 2024 02:31:06 -0700 (PDT)
+	s=arc-20240116; t=1713773930; c=relaxed/simple;
+	bh=1R0QdiqBkh2lDI1KZWlD4yhHxXvFKtuxtuwBOw/ITOE=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=a+EoWro1vSYv/ZNn5sKp0LrXGEJL9PtjzaARAm/t9y97X+8es7AW8AXSONV2Xlw2Idw0f5RRs3eFRU0usNcj/3jgG7LtGO7qZ0wpNGQ6XH/onCZ8zFLmgWDArikSSFqCwco1GtxsJ9hEpRRlWDQsvNe7S4QvMQlAie6SNuX1T30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; spf=pass smtp.mailfrom=ellerman.id.au; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ellerman.id.au
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VNJ6g0Nzdz4x1R;
+	Mon, 22 Apr 2024 18:18:35 +1000 (AEST)
+From: Michael Ellerman <patch-notifications@ellerman.id.au>
+To: linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Damien Le Moal <dlemoal@kernel.org>, Jiri Kosina <jikos@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Corey Minyard <minyard@acm.org>, Peter Huewe <peterhuewe@gmx.de>,
+	Jarkko Sakkinen <jarkko@kernel.org>, Tero Kristo <kristo@kernel.org>,
+	Stephen Boyd <sboyd@kernel.org>, Ian Abbott <abbotti@mev.co.uk>,
+	H Hartley Sweeten <hsweeten@visionengravers.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Len Brown <lenb@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+	John Allen <john.allen@amd.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Vinod Koul <vkoul@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Moritz Fischer <mdf@kernel.org>, Liviu Dudau <liviu.dudau@arm.com>,
+	Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Michael Hennerich <michael.hennerich@analog.com>,
+	Peter Rosin <peda@axentia.se>, Lars-Peter Clausen <lars@metafoo.de>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Markuss Broks <markuss.broks@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Lee Jones <lee@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+	Iyappan Subramanian <iyappan@os.amperecomputing.com>,
+	Yisen Zhuang <yisen.zhuang@huawei.com>,
+	Stanislaw Gruszka <stf_xl@wp.pl>, Kalle Valo <kvalo@kernel.org>,
+	Sebastian Reichel <sre@kernel.org>, Tony Lindgren <tony@atomide.com>,
+	Mark Brown <broonie@kernel.org>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Xiang Chen <chenxiang66@hisilicon.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Vaibhav Hiremath <hvaibhav.linux@gmail.com>,
+	Alex Elder <elder@kernel.org>, Jiri Slaby <jirislaby@kernel.org>,
+	Jacky Huang <ychuang3@nuvoton.com>, Helge Deller <deller@gmx.de>,
+	Christoph Hellwig <hch@lst.de>, Robin Murphy <robin.murphy@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Kees Cook <keescook@chromium.org>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Anna Schumaker <anna@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>, Takashi Iwai <tiwai@suse.com>,
+	linuxppc-dev@lists.ozlabs.org, linux-ide@vger.kernel.org,
+	openipmi-developer@lists.sourceforge.net,
+	linux-integrity@vger.kernel.org, linux-omap@vger.kernel.org,
+	linux-clk@vger.kernel.org, linux-pm@vger.kernel.org,
+	linux-crypto@vger.kernel.org, dmaengine@vger.kernel.org,
+	linux-efi@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	linux-fpga@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linux-input@vger.kernel.org, linux-i2c@vger.kernel.org,
+	linux-iio@vger.kernel.org, linux-stm32@st-md-mailman.stormr,
+	eply.com@web.codeaurora.org, linux-arm-kernel@lists.infradead.org,
+	netdev@vger.kernel.org, linux-leds@vger.kernel.org,
+	linux-wireless@vger.kernel.org, linux-rtc@vger.kernel.org,
+	linux-scsi@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-amlogic@lists.infradead.org,
+	linux-rockchip@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org, greybus-dev@lists.linaro.org,
+	linux-staging@lists.linux.dev, linux-serial@vger.kernel.org,
+	linux-usb@vger.kernel.org, linux-fbdev@vger.kernel.org,
+	iommu@lists.linux.dev, linux-trace-kernel@vger.kernel.org,
+	kasan-dev@googlegroups.com, linux-hardening@vger.kernel.org,
+	linux-nfs@vger.kernel.org, linux-kbuild@vger.kernel.org,
+	alsa-devel@alsa-project.org, linux-sound@vger.kernel.org
+In-Reply-To: <20240403080702.3509288-1-arnd@kernel.org>
+References: <20240403080702.3509288-1-arnd@kernel.org>
+Subject: Re: (subset) [PATCH 00/34] address all -Wunused-const warnings
+Message-Id: <171377378377.1025456.1313405994816400451.b4-ty@ellerman.id.au>
+Date: Mon, 22 Apr 2024 18:16:23 +1000
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240419055249.GE5156@atomide.com>
-In-Reply-To: <20240419055249.GE5156@atomide.com>
-From: Adam Ford <aford173@gmail.com>
-Date: Fri, 19 Apr 2024 04:30:54 -0500
-Message-ID: <CAHCN7xK2O-b0QY-Z2rKWPr9W8XGokXL0ZBdF+dDB9+yk5J7ONA@mail.gmail.com>
-Subject: Re: Adding more mach-omap2 maintainers
-To: Tony Lindgren <tony@atomide.com>
-Cc: linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	Aaro Koskinen <aaro.koskinen@iki.fi>, Andreas Kemnade <andreas@kemnade.info>, Andrew Davis <afd@ti.com>, 
-	Arnd Bergmann <arnd@arndb.de>, =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>, 
-	Carl Philipp Klemm <philipp@uvos.xyz>, Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>, 
-	Jarkko Nikula <jarkko.nikula@bitmer.com>, Janusz Krzysztofik <jmkrzyszt@gmail.com>, 
-	Keerthy <j-keerthy@ti.com>, Kevin Hilman <khilman@baylibre.com>, 
-	Linus Walleij <linus.walleij@linaro.org>, Merlijn Wajer <merlijn@wizzup.org>, 
-	Nishanth Menon <nm@ti.com>, Olof Johansson <olof@lixom.net>, Paul Walmsley <paul@pwsan.com>, 
-	Peter Ujfalusi <peter.ujfalusi@gmail.com>, Praneeth Bajjuri <praneeth@ti.com>, 
-	Roger Quadros <rogerq@kernel.org>, Russell King <linux@armlinux.org.uk>, 
-	Santosh Shilimkar <ssantosh@kernel.org>, "Sicelo A. Mhlongo" <absicsz@gmail.com>, Tero Kristo <kristo@kernel.org>, 
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Vignesh R <vigneshr@ti.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Fri, Apr 19, 2024 at 12:53=E2=80=AFAM Tony Lindgren <tony@atomide.com> w=
-rote:
->
-> Hi all,
->
-> I want to add some more maintainers for omaps to ensure continued support=
-.
-> There are many generations of omaps, and having multiple maintainers allo=
-ws
-> us to split the work. The earlier split by category to things like PM,
-> clocks, and SoC core interconnect hwmod/ti-sysc no longer exactly current
-> as the work has been completed, and people have moved on.
->
-> TI is naturally mainly interested in their active parts am3, am4 and dra7=
-.
-> Additionally, the community folks are interested in maintaining also some
-> of the older devices, mostly based on omap3 and omap4.
->
-> So I'd like to add two maintainers from TI, and two community maintainers=
-.
-> This allows both the TI and community maintainers take turns with the
-> merge windows and chasing down regressions.
->
-> I've started working full time at Intel and will be stepping back. I'll
-> be still around here and there too as a hobbyist maintainer tinkering
-> with some mobile devices I use :)
+On Wed, 03 Apr 2024 10:06:18 +0200, Arnd Bergmann wrote:
+> Compilers traditionally warn for unused 'static' variables, but not
+> if they are constant. The reason here is a custom for C++ programmers
+> to define named constants as 'static const' variables in header files
+> instead of using macros or enums.
+> 
+> In W=1 builds, we get warnings only static const variables in C
+> files, but not in headers, which is a good compromise, but this still
+> produces warning output in at least 30 files. These warnings are
+> almost all harmless, but also trivial to fix, and there is no
+> good reason to warn only about the non-const variables being unused.
+> 
+> [...]
 
-Thanks for all the support you've provided over the years.
+Applied to powerpc/next.
 
->
-> Over the past week, I've privately asked some folks who I trust to help.
-> I started with people who have been active recently related to omap
-> touching SoC devices.
->
-> From folks working on TI SoCs, I'd like to have Andrew Davis and
-> Roger Quardos to join. They both have a long history on working on omap
-> based devices, and are actively working on the SoC devices that are used
-> both for omaps and the new K3 SoCs. Kevin Hilman might be also able to
-> help a bit on some related Linux generic issues.
->
-> From the community side, I'd like to have Aaro Koskinen and Andreas Kemna=
-de
-> to join. Both Aaro and Andreas have been working on multiple mainline
-> supported omap devices such as n900 and gta04.
->
-> I'd assume we get the final list sorted out over next week or so and then
-> I'll send a patch for the MAINTAINERS file. I've tried to Cc a bunch of
-> folks who have been involved, but probably missed lots of folks who have
-> been involved, so please add to Cc as needed.
+[01/34] powerpc/fsl-soc: hide unused const variable
+        https://git.kernel.org/powerpc/c/01acaf3aa75e1641442cc23d8fe0a7bb4226efb1
 
-Thanks for keeping me in the loop.
-
-adam
->
-> Regards,
->
-> Tony
+cheers
 
