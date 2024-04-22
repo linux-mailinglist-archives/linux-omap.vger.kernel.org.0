@@ -1,69 +1,56 @@
-Return-Path: <linux-omap+bounces-1234-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1235-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92A638AD50D
-	for <lists+linux-omap@lfdr.de>; Mon, 22 Apr 2024 21:44:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C47D78AD862
+	for <lists+linux-omap@lfdr.de>; Tue, 23 Apr 2024 01:02:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 348A81F226DC
-	for <lists+linux-omap@lfdr.de>; Mon, 22 Apr 2024 19:44:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 64B961F210DA
+	for <lists+linux-omap@lfdr.de>; Mon, 22 Apr 2024 23:02:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C4D2155382;
-	Mon, 22 Apr 2024 19:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63E2C16D9BD;
+	Mon, 22 Apr 2024 22:50:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GMBO7gB5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vCF+NLMw"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D33C315534B;
-	Mon, 22 Apr 2024 19:44:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E361F43AB6;
+	Mon, 22 Apr 2024 22:50:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713815066; cv=none; b=BLJDJmjz1aQPOqu9QNa1jl/doFa8CHOhbkn5j6tTOV9bB2IGv4TKtzglej6QTqVhDl6Qg3UIX7vMjqm53HmLErfUGGEwM3K+v8g99zeOe9MuezuLIFARkmfvbueG6NOOEeN9FXxyAVmePaPKQnPbgG+U+O4CUtjwW8QzC68KMtE=
+	t=1713826258; cv=none; b=dB6hpxCgOVaqrVtqDJGzPgeQlJ9SyxiK5ccfyNKCDPWUMN+vOd4VF0Ni8XBmuOzJL6Ek7EQWMeeSw2Twq8I73L4QEvoWw+262A1um66uTCSTb+ie6KUKwUh8Y1rvnk8PvX6K/iHUniW8ZMxxcdZkForLhwzbEECbE4MXqfUuLB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713815066; c=relaxed/simple;
-	bh=K8WN8aubdBUdpq2B/uKYg69yANymGJsXmW3941zGW1s=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=FpqNPGh4lS60cKG1o0KxOtSbPzII9X57pTfHsri2bQSjENadhInjyIjD+aBRSWt/XkxQ56M2NaigrhbKaWmx5Vv4U+eHh/fRc04FODHLyy4/9PKk5FNCWXsVeXceAHsAVejfs4bW7ICCxk6XHmgBtxDWxkgCI2UJrbKTFFlpYOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GMBO7gB5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CFF1C116B1;
-	Mon, 22 Apr 2024 19:44:25 +0000 (UTC)
+	s=arc-20240116; t=1713826258; c=relaxed/simple;
+	bh=jKtuLpcmCSteOW9hC0hYxP5slIdPuPj5+s2We5UpC3I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=k8KSsdazWM/SEgeWImV+8s6pM5Jd+LqDpj0pf8O6n47q9qo8sO9xQ2gDHkiXgDRNUTD5e5kilkzsZLiLSQm6XpdlyfFRcyqw8lHvVDN5fikEZgLR1ZPcWdDgZyG7dzBAYaiEV003Uqonn4wEcjbqxPEAXzYbhxewiVIawoHQmJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vCF+NLMw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB710C113CC;
+	Mon, 22 Apr 2024 22:50:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713815065;
-	bh=K8WN8aubdBUdpq2B/uKYg69yANymGJsXmW3941zGW1s=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=GMBO7gB5pjdjM0klxQpfKSPZbshoJO0PuGP/01h9ETcM6twO2atsJALTuh+zPMT38
-	 OtIGcuxHm2VtBWIzQNCoiOMNyr6zdoObSloYFSjblqoLnbRBLQXjyFlp/OFQ+DdYNz
-	 r6xb2t/OSk2DG5KCgZYH8sfUy7ppbw0o/lBI58Smy+QewkeKumlPSw6Ki3qLI/0N5b
-	 26Z1hij8g8+RVqSYAYIBmo0mSuJzKVsGpo/T+n8iYgIMTk11Gw3d635aisJOwmLND7
-	 xpQXKqIB1Q9fvJRrIL+yQyZKoPijFAg9rBtf8C8dCm213am27yKB2DXaIo5mkWT88r
-	 8yKoVYGpWI2Ig==
-Date: Mon, 22 Apr 2024 14:44:23 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Thomas Richard <thomas.richard@bootlin.com>
-Cc: Andi Shyti <andi.shyti@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Tony Lindgren <tony@atomide.com>,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-	Vignesh R <vigneshr@ti.com>, Peter Rosin <peda@axentia.se>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-omap@vger.kernel.org, linux-i2c@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	gregory.clement@bootlin.com, theo.lebrun@bootlin.com,
-	thomas.petazzoni@bootlin.com, u-kumar1@ti.com,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>
-Subject: Re: [PATCH v5 02/11] i2c: omap: wakeup the controller during
- suspend() callback
-Message-ID: <20240422194423.GA414623@bhelgaas>
+	s=k20201202; t=1713826257;
+	bh=jKtuLpcmCSteOW9hC0hYxP5slIdPuPj5+s2We5UpC3I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=vCF+NLMwZE0DEUXq5CB6o75k/6Y41ZWq9YGcVm/jZ/leIl5/YxWDQJ6ARz6hpMeuO
+	 JHRXYrw04QC6/JVId2G6QpkMS2LDZAuX3hhfCqMdnKf6PQcfAoTTtXCXCjMp8rkYwH
+	 maVxoErtDVjKNEteAfM60Txj3mOBVybQzoirR5wqOPPnUJJauENH120UUPj1OmH6FB
+	 TN7XKHb8CecQYCJ7T+raxCxakM53ZKjbt3thyz9WanoFK1Qvc5fZrv8/ga5nXPC90m
+	 PVFEGS2u04tVkrZrbCVo2ndjHEJYO6uKpqz53ECZLwzf1unEhYWGwikLmkcHEUK1es
+	 htT3PxdNwz7fw==
+Date: Tue, 23 Apr 2024 00:50:53 +0200
+From: Andi Shyti <andi.shyti@kernel.org>
+To: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc: linux-i2c@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org, 
+	linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, 
+	linux-rpi-kernel@lists.infradead.org, linux-tegra@vger.kernel.org
+Subject: Re: [PATCH 00/18] i2c: remove printout on handled timeouts
+Message-ID: <3ptifixggno4as73pqwldh6cjkqwbygfz6hnr2zhfehi6e4fjo@g3x2nghl5esa>
+References: <20240410112418.6400-20-wsa+renesas@sang-engineering.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -72,52 +59,62 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cd5d0aa5-ca0c-47a5-8e40-4742bc939cfa@bootlin.com>
+In-Reply-To: <20240410112418.6400-20-wsa+renesas@sang-engineering.com>
 
-On Mon, Apr 22, 2024 at 11:40:02AM +0200, Thomas Richard wrote:
-> On 4/19/24 10:47, Andi Shyti wrote:
-> > Hi Thomas,
-> > 
-> >> +static int omap_i2c_suspend(struct device *dev)
-> >> +{
-> >> +	/*
-> >> +	 * If the controller is autosuspended, there is no way to wakeup it once
-> >> +	 * runtime pm is disabled (in suspend_late()).
-> >> +	 * But a device may need the controller up during suspend_noirq() or
-> >> +	 * resume_noirq().
-> >> +	 * Wakeup the controller while runtime pm is enabled, so it is available
-> >> +	 * until its suspend_noirq(), and from resume_noirq().
-> >> +	 */
-> >> +	return pm_runtime_resume_and_get(dev);
-> >> +}
-> >> +
-> >> +static int omap_i2c_resume(struct device *dev)
-> >> +{
-> >> +	pm_runtime_mark_last_busy(dev);
-> >> +	pm_runtime_put_autosuspend(dev);
-> >> +
-> >> +	return 0;
-> >> +}
-> >> +
-> >>  static const struct dev_pm_ops omap_i2c_pm_ops = {
-> >>  	SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
-> >>  				      pm_runtime_force_resume)
-> >> +	SET_SYSTEM_SLEEP_PM_OPS(omap_i2c_suspend, omap_i2c_resume)
-> > 
-> > If you don't have CONFIG_PM_SLEEP, though, this doesn't compile.
+Hi Wolfram,
+
+On Wed, Apr 10, 2024 at 01:24:14PM +0200, Wolfram Sang wrote:
+> While working on another cleanup series, I stumbled over the fact that
+> some drivers print an error on I2C or SMBus related timeouts. This is
+> wrong because it may be an expected state. The client driver on top
+> knows this, so let's keep error handling on this level and remove the
+> prinouts from controller drivers.
 > 
-> Hello Andi,
+> Looking forward to comments,
 > 
-> Yes indeed, the __maybe_unused attribute is missing for
-> omap_i2c_suspend() and omap_i2c_resume().
+>    Wolfram
 
-Isn't there a way to avoid having to use the __maybe_unused attribute?
+Applyed everything but patch 6 in i2c/i2c-host on
 
-E.g., use DEFINE_SIMPLE_DEV_PM_OPS() as is done by these:
+git://git.kernel.org/pub/scm/linux/kernel/git/andi.shyti/linux.git
 
-  82f9cefadac4 ("serial: 8250_exar: switch to DEFINE_SIMPLE_DEV_PM_OPS()")
-  f243df0a0be0 ("media: platform: rzg2l-cru: rzg2l-csi2: Switch to RUNTIME_PM_OPS()")
-  6ccc22a5afcb ("net: ravb: Switch to SYSTEM_SLEEP_PM_OPS()/RUNTIME_PM_OPS() and pm_ptr()")
+Thank you,
+Andi
 
-Bjorn
+Patches applied
+===============
+[01/18] i2c: at91-master: remove printout on handled timeouts
+        commit: 74cce8ed33aeac91f397d642901c94520e574f8b
+[02/18] i2c: bcm-iproc: remove printout on handled timeouts
+        commit: 9f98914320f3e332487042aa73bbbfacc1dc9896
+[03/18] i2c: bcm2835: remove printout on handled timeouts
+        commit: ab17612ffb60bf07e4268448e022576d42833bf7
+[04/18] i2c: cadence: remove printout on handled timeouts
+        commit: 7aaff22d3e939c5187512188d7e27eb5e93ae41e
+[05/18] i2c: davinci: remove printout on handled timeouts
+        commit: dc72daa5cdf1c6ffebaef0c6df1f4cdeb15cadd6
+[07/18] i2c: img-scb: remove printout on handled timeouts
+        commit: 3e720ba5e30d6dd1b22e0f8a23f1697d438092b8
+[08/18] i2c: ismt: remove printout on handled timeouts
+        commit: 800a297370161bda70a34cb00eb0fa2f0345b75f
+[09/18] i2c: nomadik: remove printout on handled timeouts
+        commit: 26fbd3025cbce49cb3dd71f3a10239f69546b3c2
+[10/18] i2c: omap: remove printout on handled timeouts
+        commit: d3f24197d8125b2bf75162ec5cc270fd68f894f4
+[11/18] i2c: qcom-geni: remove printout on handled timeouts
+        commit: 4677d9f5c98f1c2825de142de5df08621ea340b3
+[12/18] i2c: qup: remove printout on handled timeouts
+        commit: e28ec7512496848e8a340889c512a0167949dc8f
+[13/18] i2c: rk3x: remove printout on handled timeouts
+        commit: 1cf7a7b3c944f727f34453a132b8899685e32f81
+[14/18] i2c: sh_mobile: remove printout on handled timeouts
+        commit: 31fb960bf8a424c47a5bf4568685e058c9d6f24d
+[15/18] i2c: st: remove printout on handled timeouts
+        commit: bff862e67260f779b2188e4b39c1a9f9989532ee
+[16/18] i2c: tegra: remove printout on handled timeouts
+        commit: 5ea641d9ea5ee1b3536f8b75e658e3bf2c2a548e
+[17/18] i2c: uniphier-f: remove printout on handled timeouts
+        commit: c31bc8e162890cda38d045e73ff0004119ab28e7
+[18/18] i2c: uniphier: remove printout on handled timeouts
+        commit: 507a2da9539cdb839a1a2e57bfcca644bcfe0f03
 
