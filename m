@@ -1,56 +1,110 @@
-Return-Path: <linux-omap+bounces-1235-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1236-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C47D78AD862
-	for <lists+linux-omap@lfdr.de>; Tue, 23 Apr 2024 01:02:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7612B8ADE64
+	for <lists+linux-omap@lfdr.de>; Tue, 23 Apr 2024 09:39:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 64B961F210DA
-	for <lists+linux-omap@lfdr.de>; Mon, 22 Apr 2024 23:02:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 300CB28141C
+	for <lists+linux-omap@lfdr.de>; Tue, 23 Apr 2024 07:39:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63E2C16D9BD;
-	Mon, 22 Apr 2024 22:50:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAB27482EE;
+	Tue, 23 Apr 2024 07:38:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vCF+NLMw"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="g2nCNumm"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E361F43AB6;
-	Mon, 22 Apr 2024 22:50:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88F5F46441;
+	Tue, 23 Apr 2024 07:38:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713826258; cv=none; b=dB6hpxCgOVaqrVtqDJGzPgeQlJ9SyxiK5ccfyNKCDPWUMN+vOd4VF0Ni8XBmuOzJL6Ek7EQWMeeSw2Twq8I73L4QEvoWw+262A1um66uTCSTb+ie6KUKwUh8Y1rvnk8PvX6K/iHUniW8ZMxxcdZkForLhwzbEECbE4MXqfUuLB0=
+	t=1713857931; cv=none; b=auiBXftCscdy1v3JteyE6UXnPdDO023fsUB1RZrT0eJj5lV2XXQ6QbP+zXeaEOZ44AVWBEL0iCz7uz7rGedi0/ZODbdZJshyic8cKxewU4/L8JUzFqmk8ATaksWz1PQj5vNIH3QvGU7gWCamQaXqaBq0JwIx8wPT6V+MQ2AEBNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713826258; c=relaxed/simple;
-	bh=jKtuLpcmCSteOW9hC0hYxP5slIdPuPj5+s2We5UpC3I=;
+	s=arc-20240116; t=1713857931; c=relaxed/simple;
+	bh=mjRkFfdBtZbVYBPrvsjPmWl58HkXWr16xgIBP3dQroM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=k8KSsdazWM/SEgeWImV+8s6pM5Jd+LqDpj0pf8O6n47q9qo8sO9xQ2gDHkiXgDRNUTD5e5kilkzsZLiLSQm6XpdlyfFRcyqw8lHvVDN5fikEZgLR1ZPcWdDgZyG7dzBAYaiEV003Uqonn4wEcjbqxPEAXzYbhxewiVIawoHQmJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vCF+NLMw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB710C113CC;
-	Mon, 22 Apr 2024 22:50:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713826257;
-	bh=jKtuLpcmCSteOW9hC0hYxP5slIdPuPj5+s2We5UpC3I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=vCF+NLMwZE0DEUXq5CB6o75k/6Y41ZWq9YGcVm/jZ/leIl5/YxWDQJ6ARz6hpMeuO
-	 JHRXYrw04QC6/JVId2G6QpkMS2LDZAuX3hhfCqMdnKf6PQcfAoTTtXCXCjMp8rkYwH
-	 maVxoErtDVjKNEteAfM60Txj3mOBVybQzoirR5wqOPPnUJJauENH120UUPj1OmH6FB
-	 TN7XKHb8CecQYCJ7T+raxCxakM53ZKjbt3thyz9WanoFK1Qvc5fZrv8/ga5nXPC90m
-	 PVFEGS2u04tVkrZrbCVo2ndjHEJYO6uKpqz53ECZLwzf1unEhYWGwikLmkcHEUK1es
-	 htT3PxdNwz7fw==
-Date: Tue, 23 Apr 2024 00:50:53 +0200
-From: Andi Shyti <andi.shyti@kernel.org>
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: linux-i2c@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, 
-	linux-rpi-kernel@lists.infradead.org, linux-tegra@vger.kernel.org
-Subject: Re: [PATCH 00/18] i2c: remove printout on handled timeouts
-Message-ID: <3ptifixggno4as73pqwldh6cjkqwbygfz6hnr2zhfehi6e4fjo@g3x2nghl5esa>
-References: <20240410112418.6400-20-wsa+renesas@sang-engineering.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=COuefhTOhK8DI4ss2fOuEjv8uAb0+mEcyP6subvAxUnwnFt4Xv/wA0S6q1dYcudFqWQs7E9pwGod0fmudnC0pU8PEWo9bLHx8OoSA/4XIUvV472TggvfkSVDmve/iE2brcMDUfSLkJuKQLMmq4XpcX09NUmVeRKEwaNGqwajEbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=g2nCNumm; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1713857929; x=1745393929;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=mjRkFfdBtZbVYBPrvsjPmWl58HkXWr16xgIBP3dQroM=;
+  b=g2nCNummvlRj+JVkPdJL1qOV+3rWgeywty2ipzANBbnJsXrpqJJhNC7x
+   dGhRdKrMZSNTTUv7zqboihF8yRIa41pCGR5wGmoqMRkgLsiM8PALfGbR1
+   QdhdVn+mJmY7z6GSblg/InVuNT9Rjr5AtxSwnZ3T6ufoZTK95L2gBnmWx
+   axZ/DlclZSuohycmHPNp5Se6llS/di/BlqDwFb3xVT7eUAq0rvYY2Du5K
+   lXp5pwMepesZQcGKV6qnCKNpwAwNpF8ae4EQ3zNICZrq10y2XAS9Y9ttD
+   omYiHR2SC0iie8sQ17O7EN5NbilH9cgNWuen1tOzmGrUrFS0yOTUm+Cb1
+   A==;
+X-CSE-ConnectionGUID: GvO6N5AUR2yId7/OmN5Dmw==
+X-CSE-MsgGUID: SWnKJNYuTzqKvj7J1LwpQg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11052"; a="31918033"
+X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; 
+   d="scan'208";a="31918033"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2024 00:38:48 -0700
+X-CSE-ConnectionGUID: s/KDoHdVTiSM0XnX3bJmkw==
+X-CSE-MsgGUID: mzxAigJiRoSRJZwbwrOibA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; 
+   d="scan'208";a="24332315"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmviesa006.fm.intel.com with ESMTP; 23 Apr 2024 00:38:37 -0700
+Date: Tue, 23 Apr 2024 15:33:16 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: linux-kernel@vger.kernel.org, Corey Minyard <minyard@acm.org>,
+	Peter Huewe <peterhuewe@gmx.de>,
+	Jarkko Sakkinen <jarkko@kernel.org>, Vinod Koul <vkoul@kernel.org>,
+	Moritz Fischer <mdf@kernel.org>, Wu Hao <hao.wu@intel.com>,
+	Xu Yilun <yilun.xu@intel.com>, Jiri Kosina <jikos@kernel.org>,
+	Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+	Michael Hennerich <michael.hennerich@analog.com>,
+	Peter Rosin <peda@axentia.se>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Iyappan Subramanian <iyappan@os.amperecomputing.com>,
+	Keyur Chudgar <keyur@os.amperecomputing.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Yisen Zhuang <yisen.zhuang@huawei.com>,
+	Salil Mehta <salil.mehta@huawei.com>,
+	Tony Lindgren <tony@atomide.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Xiang Chen <chenxiang66@hisilicon.com>,
+	"James E.J. Bottomley" <jejb@linux.ibm.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Jacky Huang <ychuang3@nuvoton.com>,
+	Shan-Chun Hung <schung@nuvoton.com>, Arnd Bergmann <arnd@arndb.de>,
+	Jason Gunthorpe <jgg@ziepe.ca>, Tom Rix <trix@redhat.com>,
+	Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Randy Dunlap <rdunlap@infradead.org>, Rob Herring <robh@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	openipmi-developer@lists.sourceforge.net,
+	linux-integrity@vger.kernel.org, dmaengine@vger.kernel.org,
+	linux-fpga@vger.kernel.org, linux-input@vger.kernel.org,
+	linux-i2c@vger.kernel.org, netdev@vger.kernel.org,
+	linux-omap@vger.kernel.org, linux-rtc@vger.kernel.org,
+	linux-scsi@vger.kernel.org, linux-staging@lists.linux.dev,
+	linux-serial@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 33/34] drivers: remove incorrect of_match_ptr/ACPI_PTR
+ annotations
+Message-ID: <ZidkPHp27jz0t6t3@yilunxu-OptiPlex-7050>
+References: <20240403080702.3509288-1-arnd@kernel.org>
+ <20240403080702.3509288-34-arnd@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -59,62 +113,20 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240410112418.6400-20-wsa+renesas@sang-engineering.com>
+In-Reply-To: <20240403080702.3509288-34-arnd@kernel.org>
 
-Hi Wolfram,
+> diff --git a/drivers/fpga/versal-fpga.c b/drivers/fpga/versal-fpga.c
+> index 3710e8f01be2..e6189106c468 100644
+> --- a/drivers/fpga/versal-fpga.c
+> +++ b/drivers/fpga/versal-fpga.c
+> @@ -69,7 +69,7 @@ static struct platform_driver versal_fpga_driver = {
+>  	.probe = versal_fpga_probe,
+>  	.driver = {
+>  		.name = "versal_fpga_manager",
+> -		.of_match_table = of_match_ptr(versal_fpga_of_match),
+> +		.of_match_table = versal_fpga_of_match,
 
-On Wed, Apr 10, 2024 at 01:24:14PM +0200, Wolfram Sang wrote:
-> While working on another cleanup series, I stumbled over the fact that
-> some drivers print an error on I2C or SMBus related timeouts. This is
-> wrong because it may be an expected state. The client driver on top
-> knows this, so let's keep error handling on this level and remove the
-> prinouts from controller drivers.
-> 
-> Looking forward to comments,
-> 
->    Wolfram
+For this part
 
-Applyed everything but patch 6 in i2c/i2c-host on
-
-git://git.kernel.org/pub/scm/linux/kernel/git/andi.shyti/linux.git
-
-Thank you,
-Andi
-
-Patches applied
-===============
-[01/18] i2c: at91-master: remove printout on handled timeouts
-        commit: 74cce8ed33aeac91f397d642901c94520e574f8b
-[02/18] i2c: bcm-iproc: remove printout on handled timeouts
-        commit: 9f98914320f3e332487042aa73bbbfacc1dc9896
-[03/18] i2c: bcm2835: remove printout on handled timeouts
-        commit: ab17612ffb60bf07e4268448e022576d42833bf7
-[04/18] i2c: cadence: remove printout on handled timeouts
-        commit: 7aaff22d3e939c5187512188d7e27eb5e93ae41e
-[05/18] i2c: davinci: remove printout on handled timeouts
-        commit: dc72daa5cdf1c6ffebaef0c6df1f4cdeb15cadd6
-[07/18] i2c: img-scb: remove printout on handled timeouts
-        commit: 3e720ba5e30d6dd1b22e0f8a23f1697d438092b8
-[08/18] i2c: ismt: remove printout on handled timeouts
-        commit: 800a297370161bda70a34cb00eb0fa2f0345b75f
-[09/18] i2c: nomadik: remove printout on handled timeouts
-        commit: 26fbd3025cbce49cb3dd71f3a10239f69546b3c2
-[10/18] i2c: omap: remove printout on handled timeouts
-        commit: d3f24197d8125b2bf75162ec5cc270fd68f894f4
-[11/18] i2c: qcom-geni: remove printout on handled timeouts
-        commit: 4677d9f5c98f1c2825de142de5df08621ea340b3
-[12/18] i2c: qup: remove printout on handled timeouts
-        commit: e28ec7512496848e8a340889c512a0167949dc8f
-[13/18] i2c: rk3x: remove printout on handled timeouts
-        commit: 1cf7a7b3c944f727f34453a132b8899685e32f81
-[14/18] i2c: sh_mobile: remove printout on handled timeouts
-        commit: 31fb960bf8a424c47a5bf4568685e058c9d6f24d
-[15/18] i2c: st: remove printout on handled timeouts
-        commit: bff862e67260f779b2188e4b39c1a9f9989532ee
-[16/18] i2c: tegra: remove printout on handled timeouts
-        commit: 5ea641d9ea5ee1b3536f8b75e658e3bf2c2a548e
-[17/18] i2c: uniphier-f: remove printout on handled timeouts
-        commit: c31bc8e162890cda38d045e73ff0004119ab28e7
-[18/18] i2c: uniphier: remove printout on handled timeouts
-        commit: 507a2da9539cdb839a1a2e57bfcca644bcfe0f03
+Acked-by: Xu Yilun <yilun.xu@intel.com>
 
