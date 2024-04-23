@@ -1,163 +1,138 @@
-Return-Path: <linux-omap+bounces-1244-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1249-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE93F8AF467
-	for <lists+linux-omap@lfdr.de>; Tue, 23 Apr 2024 18:40:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B20778AF567
+	for <lists+linux-omap@lfdr.de>; Tue, 23 Apr 2024 19:23:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E29B1F25675
-	for <lists+linux-omap@lfdr.de>; Tue, 23 Apr 2024 16:40:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E390284D13
+	for <lists+linux-omap@lfdr.de>; Tue, 23 Apr 2024 17:23:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C5D713D506;
-	Tue, 23 Apr 2024 16:40:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F6491411CE;
+	Tue, 23 Apr 2024 17:22:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IuaknStN"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Hycmtpeh"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B147C13CF90;
-	Tue, 23 Apr 2024 16:39:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56D2013E40C;
+	Tue, 23 Apr 2024 17:22:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713890401; cv=none; b=nijC9K0LSEfMMo96+S7aVFXXx+Nbb7Bojab7ty7LdKtUOVbzg+MPdUTYBTk1hvoC2QDf6SJAAnKc65EuW0LE7dvGU0/4eVeYyZXcg6+aFGIx90IQzZtG3CD3fo5FLoGbeH/XJRaBKxXYdFNg/vTnaZFNYEGxdFQLsQLTKfnGp+Y=
+	t=1713892944; cv=none; b=j1Zx1Omh+4F8Itb2oQZaPZDb/ljsW3QShiTICkZGvp0MUknhPpaQE/zndTweWVa5DzDUo2TAk7YdprpQ0+j24hG1Zaj+6CpiixYb5Inq4kARcwHw9IzLCUvWN4l+7zTGqD37PfJRFbYGQ2YzDyvCC4Hw+coGskI1L3W07PNyaRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713890401; c=relaxed/simple;
-	bh=UZSu4Bcaj41tuZdLznVgg+wmyuxc9D7LdkUtpGpC5uk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Dmu2cbloSvaGTOhQq+Aq4/MfFx5b8DTi48jyOE6KYRKKtRCgGvFgNsmqJYpdg7Bde8aMwLrVCgI3JlaWsgB6ui3RFX4Mi0LlXgjaKNp5zinFxVyrqrTJsGY+ik3HO9/PVWL98mdJshNGWAo4ifUUA/ebc/yNPWf9qevhNsEMDIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IuaknStN; arc=none smtp.client-ip=192.198.163.9
+	s=arc-20240116; t=1713892944; c=relaxed/simple;
+	bh=wS6mLiwTSrStK6wq/zzMd+gLFuAwWxuYlHIG5FjkkyY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=N2+UDGQ1RwVBo0WhLbrIQiOd/jBCult6Kx7Yjtb7/mb8Gu0rlvUPx3LwMpGD11kYZPqUQtdZ4/e1i0Lt8CnG9sdjumn7YYaRetVYiwcrVM8RUKs7gMiG1HJbsy3nWh62kpQk3vGvRceGROciE8+ejgefShtmIvL14WBBVDwfgq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Hycmtpeh; arc=none smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1713890399; x=1745426399;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=UZSu4Bcaj41tuZdLznVgg+wmyuxc9D7LdkUtpGpC5uk=;
-  b=IuaknStN+PJTN+p6rf2cVouE9vKxsi6c1aUCtoLb+933wuJFSK16alM5
-   b3xv1QkWx08xBhf36Kmm3UulUcW84YppNHDp1zYEhN7qjURaQstxQK9QX
-   fkEUabmpvHnQR0yRNsK1ocuC6Ze00RDsV2Kk0UWXeiOR4u6mcvIlL5pLQ
-   qHt3QANurPij5D2SJk4GCsSpQMlVhLpwKcWj+N/+iLCqC8T/lqHvOcY+1
-   37m9ANzlZwO2BYQgwcVLWVby6mRh7f5JShM+YyohkqaHOZt5Td06yaBVM
-   NXryFy8kNu7a1UBqiJbkffXltTvU/1zVzJ2S/NvoMCrOxM+MZvVEZXvzO
-   Q==;
-X-CSE-ConnectionGUID: MCmU9BFESaW5pZR8GKn2bA==
-X-CSE-MsgGUID: ZrHrDf4uS7WsIuNovrr8HA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11053"; a="20182269"
+  t=1713892943; x=1745428943;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=wS6mLiwTSrStK6wq/zzMd+gLFuAwWxuYlHIG5FjkkyY=;
+  b=HycmtpehrL2ixjfPJ3repiM/CRe6mPEdeC1LLwDzKCU5hzxh1VJ8nvzU
+   LlFVaF3e7x6tN7zUAAB5VXvKuWg6/vnKjn4wGZpmLCYNumNkTBeVKvFh+
+   Y1L9W/DotGgp+vZvU/YbzspHqlANcIRSLGJR5eTXvbdksZql4tw5IT8sp
+   bPG7mpgrmUwJUNpJVLAh+gJWKU8HKtBAyF/uoChGZabAHc37td3cn37Cx
+   t/RrRa9VuYG6igXiCC6wFzMznQ4skbQH+a3SDLkQLp2qsr9VGbgvV1emt
+   CPf6sNUs2NkTuZiz9YiVt7iWW1cO+j0keBr4+uMxlFU06hTWvyIZnA68V
+   g==;
+X-CSE-ConnectionGUID: gJZDvhprQCGDh7lJC35VaQ==
+X-CSE-MsgGUID: iDFvOyR8STqQHSmY46f39g==
+X-IronPort-AV: E=McAfee;i="6600,9927,11053"; a="20898283"
 X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; 
-   d="scan'208";a="20182269"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2024 09:39:58 -0700
-X-CSE-ConnectionGUID: i4kDePn9TVuD6B1wLCiCiA==
-X-CSE-MsgGUID: ce04Eyj5Q5WWfqulzqJizA==
+   d="scan'208";a="20898283"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2024 10:22:20 -0700
+X-CSE-ConnectionGUID: Dr85zdv8Ry67lMcR78sHfg==
+X-CSE-MsgGUID: T1Zw1WYoQVO/2Au0vKgZZA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; 
-   d="scan'208";a="55624711"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2024 09:39:53 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rzJBN-00000000Ojk-2cFZ;
-	Tue, 23 Apr 2024 19:39:49 +0300
-Date: Tue, 23 Apr 2024 19:39:49 +0300
+   d="scan'208";a="55410233"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa002.jf.intel.com with ESMTP; 23 Apr 2024 10:22:11 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id 6E4F8192; Tue, 23 Apr 2024 20:22:10 +0300 (EEST)
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-amlogic@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-	linux-tegra@vger.kernel.org, Vignesh Raghavendra <vigneshr@ti.com>,
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	linux-omap@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-amlogic@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-tegra@vger.kernel.org
+Cc: Vignesh Raghavendra <vigneshr@ti.com>,
 	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Yue Wang <yue.wang@amlogic.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Yue Wang <yue.wang@Amlogic.com>,
 	Neil Armstrong <neil.armstrong@linaro.org>,
 	Kevin Hilman <khilman@baylibre.com>,
 	Jerome Brunet <jbrunet@baylibre.com>,
 	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Xiaowei Song <songxiaowei@hisilicon.com>,
+	Binghui Wang <wangbinghui@hisilicon.com>,
 	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>
-Subject: Re: [PATCH v1 1/1] PCI: dwc: Remove unused of_gpio.h
-Message-ID: <ZifkVRL5Uvoso2O4@smile.fi.intel.com>
-References: <20240307122840.3682287-1-andriy.shevchenko@linux.intel.com>
- <20240308095547.GI3789@thinkpad>
- <Zer_9VTVJqCNoOFG@smile.fi.intel.com>
- <20240308171029.GB53064@thinkpad>
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>
+Subject: [PATCH v2 0/4] PCI: controller: Move to agnostic GPIO API
+Date: Tue, 23 Apr 2024 20:19:03 +0300
+Message-ID: <20240423172208.2723892-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240308171029.GB53064@thinkpad>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
 
-On Fri, Mar 08, 2024 at 10:40:29PM +0530, Manivannan Sadhasivam wrote:
-> On Fri, Mar 08, 2024 at 02:09:25PM +0200, Andy Shevchenko wrote:
-> > On Fri, Mar 08, 2024 at 03:25:47PM +0530, Manivannan Sadhasivam wrote:
-> > > On Thu, Mar 07, 2024 at 02:28:40PM +0200, Andy Shevchenko wrote:
-> > > > of_gpio.h is deprecated and subject to remove.
-> > > > The driver doesn't use it, simply remove the unused header.
-> > 
-> > > What about the rest?
-> > > 
-> > > drivers/pci/controller/dwc/pcie-kirin.c
-> > > drivers/pci/controller/dwc/pci-imx6.c
-> > 
-> > Have you chance to look at them?
-> 
-> Ok. I failed to spot the usage of of_get_named_gpio() in both drivers. But you
-> already submitted a patch to convert kirin last year [1], and that didn't get
-> any love from the maintainers. Could you please respin?
+Convert the PCI controller drivers to use GPIO agnostic API.
+While at it, remove of_gpio.h leftover from some of the drivers.
 
-Sure.
+In v2:
+- combined previously sent patches into a series (Manivannan)
+- added tags (Rob, Manivannan)
+- converted iMX.6 driver (Manivannan)
+- dropped leftover in aadvark drivers (Manivannan)
 
-> Perhaps convert imx6 also?
+Andy Shevchenko (4):
+  PCI: aardvark: Remove unused of_gpio.h
+  PCI: dwc: Remove unused of_gpio.h
+  PCI: imx6: Convert to agnostic GPIO API
+  PCI: kirin: Convert to agnostic GPIO API
 
-I'll look at it, if it's easy enough, why not, otherwise let it rotten for a while.
-
-> [1] https://lore.kernel.org/all/20230213180735.42117-1-andriy.shevchenko@linux.intel.com/
-> 
-> > > There is also one non-dwc driver:
-> > > 
-> > > drivers/pci/controller/pci-aardvark.c
-> > 
-> > Keyword: non-dwc.
-> > This patch is for DesignWare controllers that confirmed not using the header.
-> > 
-> > > It is better to remove it from all PCI drivers in a single patch.
-> > 
-> > I disagree on this. These are different drivers and even inside DesignWare not
-> > all of them can be converted with a simple change like this one.
-> > 
-> 
-> Since this is just a header removal I thought you can just send a single patch
-> for these drivers since there is nothing special that warrants a separate patch
-> for aardvark (both are inside the drivers/pci/ hierarchy).
-
-I'll look at aadvark as well, I dunno if it's simple removal enough there.
-
-> But anyway, I wouldn't press for it.
-> 
-> > That said, please consider applying this one as is.
-> 
-> I can give my R-o-b tag, but Lorenzo or Krzysztof will apply this.
-> 
-> Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-
-Thank you!
+ drivers/pci/controller/dwc/pci-dra7xx.c    |   1 -
+ drivers/pci/controller/dwc/pci-imx6.c      |  37 +++-----
+ drivers/pci/controller/dwc/pci-meson.c     |   1 -
+ drivers/pci/controller/dwc/pcie-kirin.c    | 105 +++++++--------------
+ drivers/pci/controller/dwc/pcie-qcom.c     |   1 -
+ drivers/pci/controller/dwc/pcie-tegra194.c |   2 -
+ drivers/pci/controller/pci-aardvark.c      |   1 -
+ 7 files changed, 49 insertions(+), 99 deletions(-)
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.43.0.rc1.1336.g36b5255a03ac
 
 
