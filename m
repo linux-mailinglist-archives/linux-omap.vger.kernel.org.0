@@ -1,68 +1,68 @@
-Return-Path: <linux-omap+bounces-1256-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1257-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 982678AFC3B
-	for <lists+linux-omap@lfdr.de>; Wed, 24 Apr 2024 00:52:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 208BD8AFCCA
+	for <lists+linux-omap@lfdr.de>; Wed, 24 Apr 2024 01:43:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB4BD1C22A8E
-	for <lists+linux-omap@lfdr.de>; Tue, 23 Apr 2024 22:52:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9D83285053
+	for <lists+linux-omap@lfdr.de>; Tue, 23 Apr 2024 23:43:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 477B931758;
-	Tue, 23 Apr 2024 22:51:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A56D744C86;
+	Tue, 23 Apr 2024 23:42:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Kx4VgeKk"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AOFDqcsl"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E81DB1DFF5;
-	Tue, 23 Apr 2024 22:51:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4421F367;
+	Tue, 23 Apr 2024 23:42:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713912716; cv=none; b=WodrYjJDlGwunCzi+H6CovYVqSbnyBZQeFO+UZ6KJgB2VSyiz7Xw3/OyTN8VeKOpiRtDfthhtORjZ9Gg2mGQ8a2SB1ot3mHubXapXemwPbx9WWSX8wbCO26T4cEfymqbWhOruGdDO5RUBHjnz5yQvsoksHRk/PgrpfbOFlbbEZw=
+	t=1713915778; cv=none; b=h6huRmLlyhCHdzD3zHaEouCDjmPLZ5WSwgdm5ySkY+84AFRI2aISyT2uQinD8D06HRgitiE9N4IG6v0cvLFRVBkJtT+yoktbiTxunF315IteBYKVxii7lD4DlggNd2Gs1+E52/CD2VhiC4DVsXR0Ldr7E3+3+QA0Hwuyx8LvpcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713912716; c=relaxed/simple;
-	bh=mznsmpZGIdBKgMqGdAUj/EZ/hJtwZ06FnB1V1izwzhk=;
+	s=arc-20240116; t=1713915778; c=relaxed/simple;
+	bh=m9tt459TrRCOHJGrn4P1GgZPBMmO2y3IZ40ZZj/ilNQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eBciHailmIM0kGV4e4uuKp30gSF1G59LV8rCYgGyAROUDwBpxVzzG1FnKOsiXI03SUNW5VmSgN0qCIEBWsiyW5r86391b08hONq1x4oKPjqkj8iJgY0zTz1PSYaJ/r+5JZa2iniZkkZogdJkbJb3KMkjIm/9jsAlsziizBnNvVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Kx4VgeKk; arc=none smtp.client-ip=192.198.163.9
+	 Content-Type:Content-Disposition:In-Reply-To; b=C5TzPGr/re1eZU40hfJFUFx9TL7TESg6CmaVtGQ2hmGI2X1srhJ1e9WPzKOlpoQh8oXyrcYLC10i5gJWnHfNiake+q6cH0w1vJtxHeUap8RiMqqofilxod2WXehvDKT+1cXrgcdGigNTBhzqgkjZRYINPCyUJacThPmei7ST8/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AOFDqcsl; arc=none smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1713912715; x=1745448715;
+  t=1713915776; x=1745451776;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=mznsmpZGIdBKgMqGdAUj/EZ/hJtwZ06FnB1V1izwzhk=;
-  b=Kx4VgeKkNxUDhwSSr1P5TK7L9c7iPhqght2SeA9sQy/5ZQ6zZ+kh7Azu
-   1yWtY0sL8eTQjaOnquRCscduSsiSFTjsoXtBWFoOVDZk2UynHSBIPCZrG
-   lWJMqlkxFvR1TMlvETCBoXrkgxMNYwFfAqAgtKqkxnQQIxEZyjREIsZh7
-   bOk9kXSj06UoLLaZLvYX9SCVXPzCyVXBSLCuE6HuZ8XJnpLaiP1+T7EkM
-   zVvFdjU14k4ZZ6zoqDn+9KeYvWmW9zHeuZu1I+YWYq7FsdUY0GCnkBbsQ
-   BBTOdeiuj+QMPl8gGsTQzv+Ql8S8+TQsX3RiHQbu8sXNGvjIDRysYGJol
-   g==;
-X-CSE-ConnectionGUID: 0PEJLf4PQtOtPHCdbj5QSw==
-X-CSE-MsgGUID: he7Yf4VqQKymEDjCFAqxpQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11053"; a="20218389"
+  bh=m9tt459TrRCOHJGrn4P1GgZPBMmO2y3IZ40ZZj/ilNQ=;
+  b=AOFDqcslefeg6/QRDaUbUul6nVwSaDcnD4navh4q8NlPWUv2q+4CiUq/
+   Fkpy62YiqN2SwXgysMRbXVIPOCfz+rYVoEMWkWhIsIDYFy3o24lflQ5ME
+   Ib2cVpbMCrenUDOvpkzp1enol79FL1JJF3xYSoMjK1kM1Q1A08sFh9YYw
+   urbb8iZ7aivW4u7j8KWoTyEif/vPtb38vovESbwbMbswvKMsapoUgJ3zU
+   r8RPjS8GCR2Qj04mDE8ah7FRI7jHkUep5rhgWVKB0ieCQs0/gxxAU9MO8
+   lDCHnUnIe7jnuObY5UnrdVp39NoQ9vF3Z/o7sGkO6Kkwec4EEloIwBt6P
+   w==;
+X-CSE-ConnectionGUID: Qg+xG3HFQX2pjBBen4zE9Q==
+X-CSE-MsgGUID: 37cstBi6SoClnrjJqkBYeg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11053"; a="20930139"
 X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; 
-   d="scan'208";a="20218389"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2024 15:51:54 -0700
-X-CSE-ConnectionGUID: 4vpTSJ/BT0WzosPs6zKsoA==
-X-CSE-MsgGUID: lwCZffPLR/SpYCqnMxTVow==
+   d="scan'208";a="20930139"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2024 16:42:55 -0700
+X-CSE-ConnectionGUID: qeOxCRxLTsyH6lG5wft9+A==
+X-CSE-MsgGUID: 42c/oC0jQS2HyiXajej3Lg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; 
-   d="scan'208";a="24557021"
+   d="scan'208";a="24526372"
 Received: from lkp-server01.sh.intel.com (HELO e434dd42e5a1) ([10.239.97.150])
-  by fmviesa007.fm.intel.com with ESMTP; 23 Apr 2024 15:51:47 -0700
+  by fmviesa009.fm.intel.com with ESMTP; 23 Apr 2024 16:42:48 -0700
 Received: from kbuild by e434dd42e5a1 with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1rzOzI-0000bA-2C;
-	Tue, 23 Apr 2024 22:51:44 +0000
-Date: Wed, 24 Apr 2024 06:51:05 +0800
+	id 1rzPmf-0000da-2S;
+	Tue, 23 Apr 2024 23:42:45 +0000
+Date: Wed, 24 Apr 2024 07:42:07 +0800
 From: kernel test robot <lkp@intel.com>
 To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
@@ -90,7 +90,7 @@ Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
 	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
 	Xiaowei Song <songxiaowei@hisilicon.com>
 Subject: Re: [PATCH v2 2/4] PCI: dwc: Remove unused of_gpio.h
-Message-ID: <202404240649.QgY8lto8-lkp@intel.com>
+Message-ID: <202404240725.Jlvuk7P3-lkp@intel.com>
 References: <20240423172208.2723892-3-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
@@ -116,28 +116,116 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Andy-Shevchenko/PCI-aardv
 base:   https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git next
 patch link:    https://lore.kernel.org/r/20240423172208.2723892-3-andriy.shevchenko%40linux.intel.com
 patch subject: [PATCH v2 2/4] PCI: dwc: Remove unused of_gpio.h
-config: arm-defconfig (https://download.01.org/0day-ci/archive/20240424/202404240649.QgY8lto8-lkp@intel.com/config)
-compiler: clang version 14.0.6 (https://github.com/llvm/llvm-project.git f28c006a5895fc0e329fe15fead81e37457cb1d1)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240424/202404240649.QgY8lto8-lkp@intel.com/reproduce)
+config: s390-allmodconfig (https://download.01.org/0day-ci/archive/20240424/202404240725.Jlvuk7P3-lkp@intel.com/config)
+compiler: clang version 19.0.0git (https://github.com/llvm/llvm-project 5ef5eb66fb428aaf61fb51b709f065c069c11242)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240424/202404240725.Jlvuk7P3-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202404240649.QgY8lto8-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202404240725.Jlvuk7P3-lkp@intel.com/
 
 All errors (new ones prefixed by >>):
 
->> drivers/pci/controller/dwc/pci-dra7xx.c:262:2: error: implicit declaration of function 'chained_irq_enter' is invalid in C99 [-Werror,-Wimplicit-function-declaration]
-           chained_irq_enter(chip, desc);
-           ^
->> drivers/pci/controller/dwc/pci-dra7xx.c:284:2: error: implicit declaration of function 'chained_irq_exit' is invalid in C99 [-Werror,-Wimplicit-function-declaration]
-           chained_irq_exit(chip, desc);
-           ^
-   drivers/pci/controller/dwc/pci-dra7xx.c:284:2: note: did you mean 'chained_irq_enter'?
-   drivers/pci/controller/dwc/pci-dra7xx.c:262:2: note: 'chained_irq_enter' declared here
-           chained_irq_enter(chip, desc);
-           ^
-   2 errors generated.
+   In file included from drivers/pci/controller/dwc/pci-dra7xx.c:12:
+   In file included from include/linux/device.h:32:
+   In file included from include/linux/device/driver.h:21:
+   In file included from include/linux/module.h:19:
+   In file included from include/linux/elf.h:6:
+   In file included from arch/s390/include/asm/elf.h:173:
+   In file included from arch/s390/include/asm/mmu_context.h:11:
+   In file included from arch/s390/include/asm/pgalloc.h:18:
+   In file included from include/linux/mm.h:2208:
+   include/linux/vmstat.h:508:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+     508 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+     509 |                            item];
+         |                            ~~~~
+   include/linux/vmstat.h:515:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+     515 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+     516 |                            NR_VM_NUMA_EVENT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/vmstat.h:522:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
+     522 |         return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
+         |                               ~~~~~~~~~~~ ^ ~~~
+   include/linux/vmstat.h:527:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+     527 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+     528 |                            NR_VM_NUMA_EVENT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/vmstat.h:536:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+     536 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+     537 |                            NR_VM_NUMA_EVENT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~~
+   In file included from drivers/pci/controller/dwc/pci-dra7xx.c:15:
+   In file included from include/linux/irq.h:20:
+   In file included from include/linux/io.h:13:
+   In file included from arch/s390/include/asm/io.h:78:
+   include/asm-generic/io.h:547:31: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     547 |         val = __raw_readb(PCI_IOBASE + addr);
+         |                           ~~~~~~~~~~ ^
+   include/asm-generic/io.h:560:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     560 |         val = __le16_to_cpu((__le16 __force)__raw_readw(PCI_IOBASE + addr));
+         |                                                         ~~~~~~~~~~ ^
+   include/uapi/linux/byteorder/big_endian.h:37:59: note: expanded from macro '__le16_to_cpu'
+      37 | #define __le16_to_cpu(x) __swab16((__force __u16)(__le16)(x))
+         |                                                           ^
+   include/uapi/linux/swab.h:102:54: note: expanded from macro '__swab16'
+     102 | #define __swab16(x) (__u16)__builtin_bswap16((__u16)(x))
+         |                                                      ^
+   In file included from drivers/pci/controller/dwc/pci-dra7xx.c:15:
+   In file included from include/linux/irq.h:20:
+   In file included from include/linux/io.h:13:
+   In file included from arch/s390/include/asm/io.h:78:
+   include/asm-generic/io.h:573:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     573 |         val = __le32_to_cpu((__le32 __force)__raw_readl(PCI_IOBASE + addr));
+         |                                                         ~~~~~~~~~~ ^
+   include/uapi/linux/byteorder/big_endian.h:35:59: note: expanded from macro '__le32_to_cpu'
+      35 | #define __le32_to_cpu(x) __swab32((__force __u32)(__le32)(x))
+         |                                                           ^
+   include/uapi/linux/swab.h:115:54: note: expanded from macro '__swab32'
+     115 | #define __swab32(x) (__u32)__builtin_bswap32((__u32)(x))
+         |                                                      ^
+   In file included from drivers/pci/controller/dwc/pci-dra7xx.c:15:
+   In file included from include/linux/irq.h:20:
+   In file included from include/linux/io.h:13:
+   In file included from arch/s390/include/asm/io.h:78:
+   include/asm-generic/io.h:584:33: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     584 |         __raw_writeb(value, PCI_IOBASE + addr);
+         |                             ~~~~~~~~~~ ^
+   include/asm-generic/io.h:594:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     594 |         __raw_writew((u16 __force)cpu_to_le16(value), PCI_IOBASE + addr);
+         |                                                       ~~~~~~~~~~ ^
+   include/asm-generic/io.h:604:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     604 |         __raw_writel((u32 __force)cpu_to_le32(value), PCI_IOBASE + addr);
+         |                                                       ~~~~~~~~~~ ^
+   include/asm-generic/io.h:692:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     692 |         readsb(PCI_IOBASE + addr, buffer, count);
+         |                ~~~~~~~~~~ ^
+   include/asm-generic/io.h:700:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     700 |         readsw(PCI_IOBASE + addr, buffer, count);
+         |                ~~~~~~~~~~ ^
+   include/asm-generic/io.h:708:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     708 |         readsl(PCI_IOBASE + addr, buffer, count);
+         |                ~~~~~~~~~~ ^
+   include/asm-generic/io.h:717:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     717 |         writesb(PCI_IOBASE + addr, buffer, count);
+         |                 ~~~~~~~~~~ ^
+   include/asm-generic/io.h:726:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     726 |         writesw(PCI_IOBASE + addr, buffer, count);
+         |                 ~~~~~~~~~~ ^
+   include/asm-generic/io.h:735:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     735 |         writesl(PCI_IOBASE + addr, buffer, count);
+         |                 ~~~~~~~~~~ ^
+>> drivers/pci/controller/dwc/pci-dra7xx.c:262:2: error: call to undeclared function 'chained_irq_enter'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     262 |         chained_irq_enter(chip, desc);
+         |         ^
+>> drivers/pci/controller/dwc/pci-dra7xx.c:284:2: error: call to undeclared function 'chained_irq_exit'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     284 |         chained_irq_exit(chip, desc);
+         |         ^
+   17 warnings and 2 errors generated.
 
 
 vim +/chained_irq_enter +262 drivers/pci/controller/dwc/pci-dra7xx.c
