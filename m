@@ -1,187 +1,113 @@
-Return-Path: <linux-omap+bounces-1240-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1241-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB9808AE31E
-	for <lists+linux-omap@lfdr.de>; Tue, 23 Apr 2024 12:55:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 798378AE724
+	for <lists+linux-omap@lfdr.de>; Tue, 23 Apr 2024 14:58:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF0851C219B5
-	for <lists+linux-omap@lfdr.de>; Tue, 23 Apr 2024 10:55:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BABBDB22247
+	for <lists+linux-omap@lfdr.de>; Tue, 23 Apr 2024 12:58:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C137086134;
-	Tue, 23 Apr 2024 10:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7213512D777;
+	Tue, 23 Apr 2024 12:57:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="KwIJrc7A"
+	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="vdqtVQuZ"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92B6A824A4;
-	Tue, 23 Apr 2024 10:53:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A27EC86AE6
+	for <linux-omap@vger.kernel.org>; Tue, 23 Apr 2024 12:57:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713869629; cv=none; b=iTM2wGl4UDGy7Eqt2A0PKr7s4EByaD6VNCKkxMgxFXaqELsN/1tTjx9MkMWTPMQNdu2bKzsVYz134D9fw7mO/tbfNH2smhZk/YReYSElUDsZc9V6ATLTD4BI+IglIt2k3WueEtTQvWbcwEPDmUrbsPO3QOEDF2taKCN5ceypCPo=
+	t=1713877077; cv=none; b=oj/aFBeIcyu47+mB+b6dcFB5xRSLuwp1OUC6KaNOdPsnKXi/F7iXJTofNM3ollcJXgeOFyksDFAlFqaH7UjT4kYe66BZ6sNexgvm52msjD2gQ285+tiyTrRs/X2HVio5uh5nwhZmDkUQAcjKUc0syY1hs+mANTO9SVEiIEVxTak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713869629; c=relaxed/simple;
-	bh=LrmdXQwT4U4g4BrzSOIGcl4UVDjaVzUdJEoh8Po20rc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cjc5OzdU7YeMYkC5hoGuhxKH7jx4LCAipEfPK4GQ/2/sisnaW50gTUCu6bCfJWIs7NUtlwoYOAas9awQJYmSh8szlDLnlET9gCmCp3ie5q0WXSrjCH7ColwFvmirDwFhvAngRnRiF/uj+a6/zY+QJK2esW4SOACiJV8nGr01YeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=KwIJrc7A; arc=none smtp.client-ip=217.70.183.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id F3442E000A;
-	Tue, 23 Apr 2024 10:53:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1713869624;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LO0/KBAgvShTcAJdKgnWdGKkN3QsevtB0Y7cE2P2ynU=;
-	b=KwIJrc7A3BRzlbEC4BAMGMC3UhWnjAUAKktH+AeN9xTRxinYxN4uHtqrXp3BAMpGSCtKuW
-	EHdUq5EIvACj1peiZv3/QYxbj+pk5rhhVMPokdO6cRPcJ05lF455YRvnu70XV+wQUHSNzN
-	MOLdzjs6cmPSEIYHt+hbeRMIWH51OYlGYNVFuQAa09/GVl+uaG6Uw2gTxKwFVASzLbFf+L
-	i2Sh+JmqFAz6E9pux/W/+n8AbPEfEPufhexCHt8Nih224Js90u0RciZ5cjH84Bbb4HScMD
-	9E7THt+SiW1Qo9zHY9y86QjvrCr3hUycq7V9K66jwGFcWIDxmM2k/aRt1NhqDw==
-Message-ID: <c5ed5bed-9c93-47eb-8277-d78e12e96b42@bootlin.com>
-Date: Tue, 23 Apr 2024 12:53:42 +0200
+	s=arc-20240116; t=1713877077; c=relaxed/simple;
+	bh=gbFgDHYOBjwAfydbjKzLfsqSEneKrhMKkq47E7/9+Js=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=p2O9Pp974tRQ56hvy8HDCBWzE9XY2lr+Iab6FUoAarXBv5HerZ0oE8Aq5kbnjQBoGa6KAbMQ082fMcShPlV8t9/HhtZg16deMV0sOph3J0r5NRF2wmh++/4MznHQhIlCtzUOUTwDjGmgVuB0gU4AsJj8c/Z+fG3bgNCBMp5Mdo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=vdqtVQuZ; arc=none smtp.client-ip=209.85.208.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-56e6a1edecfso8458903a12.1
+        for <linux-omap@vger.kernel.org>; Tue, 23 Apr 2024 05:57:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1713877074; x=1714481874; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=gbFgDHYOBjwAfydbjKzLfsqSEneKrhMKkq47E7/9+Js=;
+        b=vdqtVQuZD9tFB9h0Nfz7aHsrwc9rvtODwHmbPDKo4vg+R3yiOf+2zue38azPuFLEkb
+         JNfy1aUwgnBUBQMre3s+pZMcPTpxEhGFXxwIFoYRrEihme5xH38fKRPHziZxVOiPEcFc
+         FKpjcIfwql8ht+MgwhpYe9IAtIPZfwyBbcw3+R5PBTcODc+ZXBr290piPQIJG9fu9clf
+         8dClUZeGWzsclaVvKmzqYbID4Hxq0xP8yjjbjkfWz/CaB3TRO4MhtsJSm8PrOevFe5jR
+         CBeN6lAuC4NneN5kU6l02BXv8XtuTsxY+wdWKIy9OVpAHpUi9TiNwaW4xgV/L1lbupZz
+         fyZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713877074; x=1714481874;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=gbFgDHYOBjwAfydbjKzLfsqSEneKrhMKkq47E7/9+Js=;
+        b=m30NSu3281M7nbRP/63o2RQwmVV9yUYQ+h0LNQKkh8bj6+hDnmyT+1ukpsX02WqqM7
+         eRPGdFePZSBYExMkmaJaGscT/oUB/ULFP6Golk4cuN5d1Bz31IWvypY36i7p5MkCewC2
+         LDxxF043ZIO1/XXfp7jxEURynDENnp5V9LVtqSAY4rJqRDuGirR/LKS2heS4kOZ/87mS
+         aiofdVet8zA26Ch65n4BFdIW1aWI15zBmGNfBAgszCblD8LcZnYnEfUrtje1NvedQRa/
+         F9I7l/0FN1ILliITckLOlryQQ+L8Pkcz+54QdS5ekNPrcm/zs9nz+6otRgA6OtW8RyOU
+         RPLQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXdYr7nb0KN26wCn9K35erIouOuCVXtcI3pC6830CI319tp3MH6NQDciQIr+ipVPtkFeSy959nVYAYgM4mXx+e03x2A1xewFzdkhQ==
+X-Gm-Message-State: AOJu0YyKAm+uTRS2pS9alorYx+T+PiOGLyAZvm6u2JFT1n0QAaJSSUiQ
+	EpmCn5woPRqI9OSWAMmxwUkfAm6zTE5YX6YXjFWpfYlbn1K4zvvX0fIXO14J45E=
+X-Google-Smtp-Source: AGHT+IFySFld+JzBlc/qIbMllcHbAhPwGnkEfsEEOeb+myQHVp2LmwKN0wccqMzwrKNJyY3qCzWuBw==
+X-Received: by 2002:a17:906:b752:b0:a58:771c:1a93 with SMTP id fx18-20020a170906b75200b00a58771c1a93mr1707687ejb.45.1713877073741;
+        Tue, 23 Apr 2024 05:57:53 -0700 (PDT)
+Received: from localhost (78-80-105-131.customers.tmcz.cz. [78.80.105.131])
+        by smtp.gmail.com with ESMTPSA id q26-20020a1709066b1a00b00a53c746b499sm6996080ejr.137.2024.04.23.05.57.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 Apr 2024 05:57:53 -0700 (PDT)
+Date: Tue, 23 Apr 2024 14:57:51 +0200
+From: Jiri Pirko <jiri@resnulli.us>
+To: =?iso-8859-1?Q?Asbj=F8rn_Sloth_T=F8nnesen?= <ast@fiberby.net>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Ravi Gunasekaran <r-gunasekaran@ti.com>,
+	Roger Quadros <rogerq@kernel.org>, linux-omap@vger.kernel.org
+Subject: Re: [PATCH net-next] net: ethernet: ti: cpsw: flower: validate
+ control flags
+Message-ID: <ZiewT6N2fjhFwrpW@nanopsycho>
+References: <20240422152656.175627-1-ast@fiberby.net>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 01/11] gpio: pca953x: move suspend()/resume() to
- suspend_noirq()/resume_noirq()
-To: Andy Shevchenko <andy.shevchenko@gmail.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Linus Walleij <linus.walleij@linaro.org>,
- Bartosz Golaszewski <brgl@bgdev.pl>, Tony Lindgren <tony@atomide.com>,
- Aaro Koskinen <aaro.koskinen@iki.fi>,
- Janusz Krzysztofik <jmkrzyszt@gmail.com>, Vignesh R <vigneshr@ti.com>,
- Andi Shyti <andi.shyti@kernel.org>, Peter Rosin <peda@axentia.se>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>,
- =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
- Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
- Siddharth Vadapalli <s-vadapalli@ti.com>, linux-gpio@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
- linux-i2c@vger.kernel.org, linux-pci@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, gregory.clement@bootlin.com,
- theo.lebrun@bootlin.com, thomas.petazzoni@bootlin.com, u-kumar1@ti.com,
- Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
- Wolfram Sang <wsa+renesas@sang-engineering.com>,
- Linux-Renesas <linux-renesas-soc@vger.kernel.org>
-References: <20240102-j7200-pcie-s2r-v5-0-4b8c46711ded@bootlin.com>
- <20240102-j7200-pcie-s2r-v5-1-4b8c46711ded@bootlin.com>
- <CAMuHMdVnKX23yi7ir1LVxfXAMeeWMFzM+cdgSSTNjpn1OnC2xw@mail.gmail.com>
- <CAHp75Vf+F3ArczHQ+nSmP4uFvRdMAQWufmR6xR0xtbHfVvFm-g@mail.gmail.com>
-Content-Language: en-US
-From: Thomas Richard <thomas.richard@bootlin.com>
-In-Reply-To: <CAHp75Vf+F3ArczHQ+nSmP4uFvRdMAQWufmR6xR0xtbHfVvFm-g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-GND-Sasl: thomas.richard@bootlin.com
+In-Reply-To: <20240422152656.175627-1-ast@fiberby.net>
 
-On 4/23/24 12:34, Andy Shevchenko wrote:
-> On Tue, Apr 23, 2024 at 12:42 PM Geert Uytterhoeven
-> <geert@linux-m68k.org> wrote:
->> On Tue, Apr 16, 2024 at 3:31 PM Thomas Richard
->> <thomas.richard@bootlin.com> wrote:
-> 
-> ...
-> 
->>         +i2c-rcar e66d8000.i2c: error -16 : 10000005
-> 
-> It probably means that I²C host controller is already in power off
-> mode and can't serve anymore.
+Mon, Apr 22, 2024 at 05:26:55PM CEST, ast@fiberby.net wrote:
+>This driver currently doesn't support any control flags.
+>
+>Use flow_rule_match_has_control_flags() to check for control flags,
+>such as can be set through `tc flower ... ip_flags frag`.
+>
+>In case any control flags are masked, flow_rule_match_has_control_flags()
+>sets a NL extended error message, and we return -EOPNOTSUPP.
+>
+>Only compile-tested.
+>
+>Signed-off-by: Asbj�rn Sloth T�nnesen <ast@fiberby.net>
 
-Hello,
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
 
-Yes the i2c controller is already off.
-In fact it's the same issue I had with the i2c-omap driver.
-In suspend-noirq, the runtime pm is disabled, so you can't wakeup a
-device. More details available in this thread [1].
-So the trick is to wakeup the device during suspend (like I did for the
-i2c-omap driver [2].
-
-[1]
-https://lore.kernel.org/all/f68c9a54-0fde-4709-9d2f-0d23a049341b@bootlin.com/
-[2]
-https://lore.kernel.org/all/20240102-j7200-pcie-s2r-v5-2-4b8c46711ded@bootlin.com/
-
-I think the patch below should fix the issue.
-
---- a/drivers/i2c/busses/i2c-rcar.c
-+++ b/drivers/i2c/busses/i2c-rcar.c
-@@ -1232,7 +1232,7 @@ static void rcar_i2c_remove(struct platform_device
-*pdev)
-        pm_runtime_disable(dev);
- }
-
--static int rcar_i2c_suspend(struct device *dev)
-+static int rcar_i2c_suspend_noirq(struct device *dev)
- {
-        struct rcar_i2c_priv *priv = dev_get_drvdata(dev);
-
-@@ -1240,7 +1240,7 @@ static int rcar_i2c_suspend(struct device *dev)
-        return 0;
- }
-
--static int rcar_i2c_resume(struct device *dev)
-+static int rcar_i2c_resume_noirq(struct device *dev)
- {
-        struct rcar_i2c_priv *priv = dev_get_drvdata(dev);
-
-@@ -1248,8 +1248,23 @@ static int rcar_i2c_resume(struct device *dev)
-        return 0;
- }
-
-+static int rcar_i2c_suspend(struct device *dev)
-+{
-+       pm_runtime_get_sync(dev);
-+
-+       return 0;
-+}
-+
-+static int rcar_i2c_resume(struct device *dev)
-+{
-+       pm_runtime_put(dev);
-+
-+       return 0;
-+}
-+
- static const struct dev_pm_ops rcar_i2c_pm_ops = {
--       NOIRQ_SYSTEM_SLEEP_PM_OPS(rcar_i2c_suspend, rcar_i2c_resume)
-+       NOIRQ_SYSTEM_SLEEP_PM_OPS(rcar_i2c_suspend_noirq,
-rcar_i2c_resume_noirq)
-+       SYSTEM_SLEEP_PM_OPS(rcar_i2c_suspend, rcar_i2c_resume)
- };
-
- static struct platform_driver rcar_i2c_driver = {
-
-> 
->>         +pca953x 4-0020: Failed to sync GPIO dir registers: -16
->>         +pca953x 4-0020: Failed to restore register map: -16
->>         +pca953x 4-0020: PM: dpm_run_callback(): pca953x_resume_noirq
->> returns -16
->>         +pca953x 4-0020: PM: failed to resume async noirq: error -16
-> 
-> Yeah, with this it's kinda forcing _every_ I²C host controller PM to
-> be moved also to noirq() or alike.
-
-Yes indeed.
-But this controller is already in noirq().
-So the issue was already there.
-We never saw it because we never did i2c accesses in noirq().
-
-Best Regards,
-
--- 
-Thomas Richard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+Next time, could you please bundle similar/related patches into
+a patchset?
+Thanks!
 
