@@ -1,112 +1,144 @@
-Return-Path: <linux-omap+bounces-1282-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1283-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 210068B06F5
-	for <lists+linux-omap@lfdr.de>; Wed, 24 Apr 2024 12:08:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C1BC8B0745
+	for <lists+linux-omap@lfdr.de>; Wed, 24 Apr 2024 12:26:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 53949B26CC7
-	for <lists+linux-omap@lfdr.de>; Wed, 24 Apr 2024 10:08:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DC4F1C20A0A
+	for <lists+linux-omap@lfdr.de>; Wed, 24 Apr 2024 10:26:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A37E15920D;
-	Wed, 24 Apr 2024 10:08:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0090715958F;
+	Wed, 24 Apr 2024 10:26:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jqfmimjy"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="dyD6o43s"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mslow1.mail.gandi.net (mslow1.mail.gandi.net [217.70.178.240])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF211591EE
-	for <linux-omap@vger.kernel.org>; Wed, 24 Apr 2024 10:08:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60E3915956F;
+	Wed, 24 Apr 2024 10:26:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.240
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713953301; cv=none; b=lKqDPTFOiZ5kY0wwpsyEifluY7BFfi7WJwvVE9VoWBg6XSGb/koxenwEoIfNBer63kiHQR7diMDPWVsL9YgXJ8N5+gykVVNN6HJ9IjimN2CjEtxojo9zTJTUbSaJA4x9miUO4CtnbaJewZca/Ir6ebNbRe3rSRyZsXMZAfooct4=
+	t=1713954366; cv=none; b=bdix13e7ml+9PLLUc4zAbiyYieSP71TESMr4GgmvrMiOSPpvTEmdHfQPx9hM9H1vQgVaTTiRfuHnvPvwJ6zcQbj/FTct3FAHfjufgENr+30b2fQmThvVcGGVCdAr1CIU7Vbrqqb2ro+JUcydPmjIux+QD7F3JRuYvQu5t3UXyNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713953301; c=relaxed/simple;
-	bh=hWKDax4TuNvBE1FyIl8irPm+6EhpYQ3vGRHf4jX8q2k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=m5B6bGunhYyePBzkqYl1xIpkwuhoOflkPUx2cKP+y2PkiuEwWIcNKNPF+RZkLUCpv/UbM+qO+er3o9BSpsnX8h6ZhGZm5yJIdouuhA3X0vb9vinLRSeu1w/NA0YiEs3WpIgTj43MyHWOrZ0qoPjfiJF0ppJ3wNc+Lso9pQ1mOoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jqfmimjy; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-41adf155cffso9049355e9.2
-        for <linux-omap@vger.kernel.org>; Wed, 24 Apr 2024 03:08:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1713953298; x=1714558098; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=hWKDax4TuNvBE1FyIl8irPm+6EhpYQ3vGRHf4jX8q2k=;
-        b=jqfmimjyh6Ph85Ik1D42j92UKFDe+J8sCm3BwsLMho4z4kb4JO878CtrnSZANbAzaZ
-         WNeZvgcnsJPFaC+BowwBDcbEIAXkawGnMA7D41FPCwfTiRgy+W6ZZQt6VQye4dEIYMX2
-         dzuP3zveiqLBJ8ebmzeW/0f+WxmJdxyeOGHalVUUsP/jotgUwCzrKZ5kJT0+LI1OQ3cc
-         sVVFkYxI1OgHO2nMaddsCH93J7pUPLc4NtDUJxDx8bfCVMmhhIuH0jVUsVhK5wQMPBPP
-         oeZ+YoLZNnNElMEXwWM0onrXm0775179DKNWsNdF2WEnWxKjVc07MXmf5lpX5ocTvaqI
-         M1rA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713953298; x=1714558098;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hWKDax4TuNvBE1FyIl8irPm+6EhpYQ3vGRHf4jX8q2k=;
-        b=G7jWDSmeDnGGPHL/KtfO/M1YyCphPsLj2vGeEc+kV1foSOYIWIe93/g+VOuAlOe9hC
-         PiqBdcV9RUkKeHdePlnRxApzqm1KjlHPN1dmZS0n+wR6mmI1ENQlnK6dISl/GVMG+KFR
-         ggfKIptHPu2A3yOz5l/W05X8RUcp+gcK00K/V75UcSKP2MdWx7yaffzJyMUosuG+gttp
-         nA9797/BnSBkeE7/Q48/EjPH8xoR/3mItiqXlCyDGy+LcSOAvDf+6WoAFKAl0ifOshM6
-         Wcqp0d6fZMuT4htyB40wQDgX8kte3brxGt2IzlFXmnU//BsojItidYDBSONhN2QLvAwL
-         oFnA==
-X-Forwarded-Encrypted: i=1; AJvYcCUgWPIfTw3kHRLRWarCEzsPUjk6+PxGtFyjlDzzvVU/tEIz3cP5XXnz9leGMxLRya/NAVGRXLE+icDQT5a2H+NldfznVEFm6jpQpQ==
-X-Gm-Message-State: AOJu0YzJODkVzNg6awL9zWhBxBOXFR7PVFvG6MOBfylLwl26oAmkS5RC
-	I+GU9uRmTJtpqmosgjUEWTGa4fSbG1HBtZHUUMF++VMylhTq8eqAXzQxtd7Xhoo=
-X-Google-Smtp-Source: AGHT+IF77S0eO7Dutrp6EQMSf6hVu3p2iJBEOx/XxaPtob8SJQvhDdTvZkjJjS4pcN8hkeXUmu2lXw==
-X-Received: by 2002:a05:600c:45c6:b0:41a:a521:9699 with SMTP id s6-20020a05600c45c600b0041aa5219699mr1556544wmo.4.1713953297960;
-        Wed, 24 Apr 2024 03:08:17 -0700 (PDT)
-Received: from aspen.lan (aztw-34-b2-v4wan-166919-cust780.vm26.cable.virginm.net. [82.37.195.13])
-        by smtp.gmail.com with ESMTPSA id jg3-20020a05600ca00300b0041affdeeb99sm1634085wmb.39.2024.04.24.03.08.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Apr 2024 03:08:17 -0700 (PDT)
-Date: Wed, 24 Apr 2024 11:08:15 +0100
-From: Daniel Thompson <daniel.thompson@linaro.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Lee Jones <lee@kernel.org>, Jingoo Han <jingoohan1@gmail.com>,
-	Helge Deller <deller@gmx.de>,
-	Bruno =?iso-8859-1?Q?Pr=E9mont?= <bonbons@linux-vserver.org>,
-	Jiri Kosina <jikos@kernel.org>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Alexander Shiyan <shc_work@mail.ru>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>, Fabio Estevam <festevam@gmail.com>,
-	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	linux-omap@vger.kernel.org,
-	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>
-Subject: Re: [PATCH v2 19/19] const_structs.checkpatch: add lcd_ops
-Message-ID: <20240424100815.GE1567803@aspen.lan>
-References: <20240424-video-backlight-lcd-ops-v2-0-1aaa82b07bc6@kernel.org>
- <20240424-video-backlight-lcd-ops-v2-19-1aaa82b07bc6@kernel.org>
+	s=arc-20240116; t=1713954366; c=relaxed/simple;
+	bh=AZWGz/WvtgoCzFOkz9gz6ilvmzSpiEaQFbmh8lEyIyM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RwF8VdG8fJVGdLH7O99SRBf81PWdilx6m+OQLjYCMdoMWt4aADHXFjcGv1EEe7iGWpmIqqRpHngITO91UzkUerlS/kRN/MadlMVMuLBq3gPkrZhBV74Kvo1Vma5ElXDKoRj2JSzO71d+2d8P+DrR4TmtoyQSYq9sM68iRPyan00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=dyD6o43s; arc=none smtp.client-ip=217.70.178.240
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from relay3-d.mail.gandi.net (unknown [217.70.183.195])
+	by mslow1.mail.gandi.net (Postfix) with ESMTP id 3784DC670A;
+	Wed, 24 Apr 2024 10:24:35 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 8A89D6000A;
+	Wed, 24 Apr 2024 10:24:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1713954267;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OVEm7ob18VpKCaMTFhx5G9Kb6z4kp/qqC4mfGOtfzt0=;
+	b=dyD6o43s+X70tu36CaPntCI9S7G6Mpdm4x7hO6BsSEu9+z36dVwBteNQBwwE6iaBeSsi3c
+	QQheFRj/aPn5G/WMf+yvs9Pvyqlw7gnKvjlSXYYNjxagiLXQp4uGshTYl4sLZHiPtL+MgE
+	s2qOhPMm2usFpwEyyFnNGPXX+zYMyEEpxGsYdUiMcsnGAPgIlfSO7rrotuYJf7jDr2Z2LT
+	1g/pbBPsm0EBBk46JMYX/O0CmzfZ9cFAdHFXn0O/JWxV0P9p7bE8I/DuzdVuwIkfxdKMdc
+	Mi/GkwbyXIaSvZu9lxr4kZ1I7Da7PbFs5pHVPy69iriR07mtv50BcwN9qZbF3w==
+Message-ID: <8d49f316-bb17-4956-a62b-e64d460825d4@bootlin.com>
+Date: Wed, 24 Apr 2024 12:24:24 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240424-video-backlight-lcd-ops-v2-19-1aaa82b07bc6@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 02/11] i2c: omap: wakeup the controller during
+ suspend() callback
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Andi Shyti <andi.shyti@kernel.org>,
+ Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski
+ <brgl@bgdev.pl>, Tony Lindgren <tony@atomide.com>,
+ Aaro Koskinen <aaro.koskinen@iki.fi>,
+ Janusz Krzysztofik <jmkrzyszt@gmail.com>, Vignesh R <vigneshr@ti.com>,
+ Peter Rosin <peda@axentia.se>, Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
+ Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+ Siddharth Vadapalli <s-vadapalli@ti.com>, linux-gpio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+ linux-i2c@vger.kernel.org, linux-pci@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, gregory.clement@bootlin.com,
+ theo.lebrun@bootlin.com, thomas.petazzoni@bootlin.com, u-kumar1@ti.com,
+ Wolfram Sang <wsa+renesas@sang-engineering.com>
+References: <20240422194423.GA414623@bhelgaas>
+Content-Language: en-US
+From: Thomas Richard <thomas.richard@bootlin.com>
+In-Reply-To: <20240422194423.GA414623@bhelgaas>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-GND-Sasl: thomas.richard@bootlin.com
 
-On Wed, Apr 24, 2024 at 08:33:45AM +0200, Krzysztof Kozlowski wrote:
-> 'struct lcd_ops' is not modified by core code.
->
-> Suggested-by: Thomas Weiﬂschuh <linux@weissschuh.net>
-> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+On 4/22/24 21:44, Bjorn Helgaas wrote:
+> On Mon, Apr 22, 2024 at 11:40:02AM +0200, Thomas Richard wrote:
+>> On 4/19/24 10:47, Andi Shyti wrote:
+>>> Hi Thomas,
+>>>
+>>>> +static int omap_i2c_suspend(struct device *dev)
+>>>> +{
+>>>> +	/*
+>>>> +	 * If the controller is autosuspended, there is no way to wakeup it once
+>>>> +	 * runtime pm is disabled (in suspend_late()).
+>>>> +	 * But a device may need the controller up during suspend_noirq() or
+>>>> +	 * resume_noirq().
+>>>> +	 * Wakeup the controller while runtime pm is enabled, so it is available
+>>>> +	 * until its suspend_noirq(), and from resume_noirq().
+>>>> +	 */
+>>>> +	return pm_runtime_resume_and_get(dev);
+>>>> +}
+>>>> +
+>>>> +static int omap_i2c_resume(struct device *dev)
+>>>> +{
+>>>> +	pm_runtime_mark_last_busy(dev);
+>>>> +	pm_runtime_put_autosuspend(dev);
+>>>> +
+>>>> +	return 0;
+>>>> +}
+>>>> +
+>>>>  static const struct dev_pm_ops omap_i2c_pm_ops = {
+>>>>  	SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
+>>>>  				      pm_runtime_force_resume)
+>>>> +	SET_SYSTEM_SLEEP_PM_OPS(omap_i2c_suspend, omap_i2c_resume)
+>>>
+>>> If you don't have CONFIG_PM_SLEEP, though, this doesn't compile.
+>>
+>> Hello Andi,
+>>
+>> Yes indeed, the __maybe_unused attribute is missing for
+>> omap_i2c_suspend() and omap_i2c_resume().
+> 
+> Isn't there a way to avoid having to use the __maybe_unused attribute?
+> 
+> E.g., use DEFINE_SIMPLE_DEV_PM_OPS() as is done by these:
+> 
+>   82f9cefadac4 ("serial: 8250_exar: switch to DEFINE_SIMPLE_DEV_PM_OPS()")
+>   f243df0a0be0 ("media: platform: rzg2l-cru: rzg2l-csi2: Switch to RUNTIME_PM_OPS()")
+>   6ccc22a5afcb ("net: ravb: Switch to SYSTEM_SLEEP_PM_OPS()/RUNTIME_PM_OPS() and pm_ptr()")
 
-Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+Yes you're right, I don't need the __maybe_unused attribute if I use
+NOIRQ_SYSTEM_SLEEP_PM_OPS().
 
+By the way I can add a patch in the series to remove all the
+__maybe_unused attributes of this driver.
 
-Daniel.
+Regards,
+
+-- 
+Thomas Richard, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
 
