@@ -1,156 +1,140 @@
-Return-Path: <linux-omap+bounces-1285-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1286-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C87CD8B09F0
-	for <lists+linux-omap@lfdr.de>; Wed, 24 Apr 2024 14:45:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B3108B0C32
+	for <lists+linux-omap@lfdr.de>; Wed, 24 Apr 2024 16:15:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B1D2BB25A5E
-	for <lists+linux-omap@lfdr.de>; Wed, 24 Apr 2024 12:45:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A6A41C21374
+	for <lists+linux-omap@lfdr.de>; Wed, 24 Apr 2024 14:15:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF24515A4AA;
-	Wed, 24 Apr 2024 12:44:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35A9215E7E2;
+	Wed, 24 Apr 2024 14:14:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OxDiKL9I"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Lhtt4Am7"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E39EC1422AF;
-	Wed, 24 Apr 2024 12:44:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 808FB158DDD;
+	Wed, 24 Apr 2024 14:14:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713962698; cv=none; b=ChP0WhOVaaTirECZjUes2qn1IYw+N3U4siPtHt/XAqd+MHeJk8jO7X+gn2C1g2QObrHONO/X8Kbm/lTPrVA7rFOL3YKX7qB5AHobr7l1kqozmMfmj0X7ASr4xMPAeeSRsNjkPD9KSLoLqk4/gJo5Hx3j1AVWIAQhphTZLixG/uU=
+	t=1713968095; cv=none; b=eXLMLQjkA9jI1yYPXI1drTwXpddLnwFl5e83GKToHwE6bWdIjTpFk28B+bydBt26R3nP1MVWZM64pIxO2hHdxvqjmMQfOYUOdANm3xE0egq6k+D9nbG8JGOCftEjctjopBL3zRcIzj3t2L+WFaqil+4wBo69OlEnGjEVBdbhJJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713962698; c=relaxed/simple;
-	bh=0SfFOuwHAopSGaEcR/1RmEkZxcktC0rnqxKmQDvBO9U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Content-Type; b=n9NCnX/hGe7wvoM9eVfdgAIrYTIcGMka8kAlsFqPDPjxiBSqWhyVkBM3H6+ddZdI5b5g8Dwi5tw35ipIKFcfiwYh8Y8DF9O+w5Fo9bLMnhydBDILL0piNlXXlTb1220MDFXcOq/nWNiwej8IHdbQJaDjr0XE3Kd17F2tnWXfiU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OxDiKL9I; arc=none smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-56e1baf0380so8045171a12.3;
-        Wed, 24 Apr 2024 05:44:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713962695; x=1714567495; darn=vger.kernel.org;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NBtTsZ2nj+w+rOBShYNHrv35fSs6tv0ZSqBr205SbEI=;
-        b=OxDiKL9IH42tjQ5WE6uaTiMzsRIOLpx2BExscNlnvfqIB6uLdTzBUlaq6Y9wZS39Wy
-         QG9QjhMyLnrPXx9qNA/OC7h+vzDLBOPFi0QHLzJyZ68uNfL11oUuJLPnbnlyU/N8QRfL
-         6ABcVhYUFh+BgesJ4kVElKqd3KM4/Qf5iYmD1FrNTmA7iCgUxWZu24dO4xBMXDK96FCA
-         fnqVStbNQsi974JYhyLp3NqE/gn5CgkNjuvpy+7XiY+X2hXKMMlc0lTQL82+BmdFmXKM
-         j9rQoJaubNq3M7/Sf0CV1apGvZVqo4sGDbmBZUmW4mC3iBFjuH8bJBsfgWRW7/ezkP3Y
-         xeoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713962695; x=1714567495;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NBtTsZ2nj+w+rOBShYNHrv35fSs6tv0ZSqBr205SbEI=;
-        b=J+Bk2Ybrt6ee+ElhuPRDVrJwYJcRUFP4d7G5NLVOjIddmjWAWepge1hZO8ANH3AbyU
-         cPKB1PFmIRqnRNB+0yshdb6itef+mxPevGmMo+X/ParulW4WOiFBbQ+QcHLBYKXh4k8+
-         n75DcYAbkppxkDv+o4lo4FI/Lz7ODtExMjuivd4EwqLdBwqKWfYrbfjC+3RVNxGeL6RR
-         77q0j9GxkcICkWTbUoH4mxDTh/VfUp/N09WzwqolP+a+oVfJtHB0odOpaRWbqoLWYL5J
-         mjYbNQjLOvs7cc/rgzAH24dHlJyMFefMi5kxPsd+O2tXTxTaYqcUGKqIriRvRwSHy1S1
-         Lahg==
-X-Forwarded-Encrypted: i=1; AJvYcCXJRSKKv3pgk9RkzZpi3MMKMhcwVj4s+y6yQLIrnXNCEWu1U2oILy8/FLCa/cLqWvLZqG2ymPlWdnpmrtmM3U/7Pp5LGFQJtoj+JV++kK6r38Zjmisj7d+QDwcXfn3uJAwvf4MYsPzqQKgEHM+JXvvPrLZNMSGkk6VKVvw+OESnfHFyyCdALm3JV8mRvq+/83E0g4Sh5g0DkwXr8bp99FvrVL4m/LXDSfe8blpUIRmXF3xrEqd6VoDbaaSRwpka/UJNwJRUfCjwJ3rRMPl8Ib6SytNQBvHOz8fPKaVweRX8OGt8
-X-Gm-Message-State: AOJu0YywXjwsBQS+YfT+FDavkzM+DLKH2MynHVluBh0WojgBGgTwNrPT
-	aMU+tcCc2eBPsSPdg5z1WR408yT2L4dRF7KDthJVhcrvAS6ckIuB2pP5ZWnUdXdSpi3VJcEyfca
-	ehO2dFJ2cIO0JPXo0GpXGYVOtB13dOAyn
-X-Google-Smtp-Source: AGHT+IHd5n4O533BDSAcLLsV1GUmPQzG7lIU7zyOhhof8PSEyoKk7yoD0RI0ZjEBxo/6Qi19WfkxFFSIHjno1HQIUho=
-X-Received: by 2002:a17:906:474a:b0:a58:8fc0:fbca with SMTP id
- j10-20020a170906474a00b00a588fc0fbcamr1389900ejs.45.1713962694994; Wed, 24
- Apr 2024 05:44:54 -0700 (PDT)
+	s=arc-20240116; t=1713968095; c=relaxed/simple;
+	bh=ll03pwob+gLokLHhKJ9wKqSKaJJ7BhxC+kqwsk3GZ64=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FrHxRdS8TdRfwbrxwi4ZS+Zpn0s3x9uCs+4l2exn7GNtF5hRG1Yo3WqqQUuponOSzx3etLW/r+g00rUU9xXtPjPNZhNm7QqLF3anGSHSO+IAleHKs4JurA2VAnVqlML6CK4fo378AefJhGWZAx2upGIxUcKLqLiFjV/9U59aUGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Lhtt4Am7; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1713968095; x=1745504095;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ll03pwob+gLokLHhKJ9wKqSKaJJ7BhxC+kqwsk3GZ64=;
+  b=Lhtt4Am77xmVtd0WOFi+gkqwfaLXJsU+oY7n2tjLYsEWNaWmuHjyLNJt
+   Vkw/RC0x+k2EGUTd6tizyO0i6nd9SKFzearGRTbvDSqJEtwEkxEQQbmQR
+   MCoJhv3C8EBgBVSHz1F2wIKMKON5/TWchVfUDcQvdwHiToicfD/Md0qWL
+   abBoPLY29gALZBMwvB7Tqzo/WeGJeHGeOVMDxyw0eTG3gG8KS9SEdbCMx
+   GX8jmHmEcSE2UEswjE8vrqAfIdijhfzDtMzcJf7svrAU3dD9xgh6VGrFD
+   dvUczGwHgooRAgVPs+4H+EvwBWxwl7yDiNZs7Qi7YuKSsubeCUMPf4qht
+   g==;
+X-CSE-ConnectionGUID: pJyG7e2nSOickmoWv3fHsQ==
+X-CSE-MsgGUID: PcTFPJ6eSfSVY5BbO6EFsw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11054"; a="27055532"
+X-IronPort-AV: E=Sophos;i="6.07,226,1708416000"; 
+   d="scan'208";a="27055532"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2024 07:14:54 -0700
+X-CSE-ConnectionGUID: jF/bLxj+TMOWgskL6OyzxQ==
+X-CSE-MsgGUID: /E2UezzlQCWzmgGctGONLw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,226,1708416000"; 
+   d="scan'208";a="29364232"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2024 07:14:47 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rzdOV-00000000ff8-0bTg;
+	Wed, 24 Apr 2024 17:14:43 +0300
+Date: Wed, 24 Apr 2024 17:14:42 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: kernel test robot <lkp@intel.com>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
+	linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-amlogic@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org, linux-tegra@vger.kernel.org,
+	llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <helgaas@kernel.org>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Yue Wang <yue.wang@amlogic.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Xiaowei Song <songxiaowei@hisilicon.com>
+Subject: Re: [PATCH v2 2/4] PCI: dwc: Remove unused of_gpio.h
+Message-ID: <ZikT0lWPOQD3uuH0@smile.fi.intel.com>
+References: <20240423172208.2723892-3-andriy.shevchenko@linux.intel.com>
+ <202404240649.QgY8lto8-lkp@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240410112418.6400-20-wsa+renesas@sang-engineering.com>
- <ZihNbtiVDkxgUDGk@surfacebook.localdomain> <sbkymvjmrufouqqscpmrui5kcd466gj6yn2bqwf3lhfk55mjos@n4ydx6wzyq4k>
- <CAHp75VfEvifLjPRQ+xsKipjwXA-APR7m_au6OJjafeXp6Wiyxg@mail.gmail.com>
-In-Reply-To: <CAHp75VfEvifLjPRQ+xsKipjwXA-APR7m_au6OJjafeXp6Wiyxg@mail.gmail.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Wed, 24 Apr 2024 15:44:19 +0300
-Message-ID: <CAHp75VdqcYn9RDVf63N7HL=nQLvFRt8cSO3EfbzAxLKNkwF-Kg@mail.gmail.com>
-Subject: Re: [PATCH 00/18] i2c: remove printout on handled timeouts
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>, 
-	Andy Shevchenko <andy.shevchenko@gmail.com>, linux-i2c@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, 
-	linux-rpi-kernel@lists.infradead.org, linux-tegra@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <202404240649.QgY8lto8-lkp@intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Wed, Apr 24, 2024 at 3:41=E2=80=AFPM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
-> On Wed, Apr 24, 2024 at 12:00=E2=80=AFPM Wolfram Sang
-> <wsa+renesas@sang-engineering.com> wrote:
-> > On Wed, Apr 24, 2024 at 03:08:14AM +0300, Andy Shevchenko wrote:
-> > > Wed, Apr 10, 2024 at 01:24:14PM +0200, Wolfram Sang kirjoitti:
-> > > > While working on another cleanup series, I stumbled over the fact t=
-hat
-> > > > some drivers print an error on I2C or SMBus related timeouts. This =
-is
-> > > > wrong because it may be an expected state. The client driver on top
-> > > > knows this, so let's keep error handling on this level and remove t=
-he
-> > > > prinouts from controller drivers.
-> > > >
-> > > > Looking forward to comments,
-> > >
-> > > I do not see an equivalent change in I=C2=B2C core.
-> >
-> > There shouldn't be. The core neither knows if it is okay or not. The
-> > client driver knows.
-> >
-> > > IIRC in our case (DW or i801 or iSMT) we often have this message as t=
-he only
-> >
-> > Often? How often?
->
-> Once in a couple of months I assume. Last time it was a few weeks ago
-> that there was a report and they pointed to this very message which
-> was helpful.
->
-> > > one that points to the issues (on non-debug level), it will be much h=
-arder to
-> > > debug for our customers with this going away.
-> >
-> > The proper fix is to print the error in the client driver. Maybe this
-> > needs a helper for client drivers which they can use like:
-> >
-> >         i2c_report_error(client, retval, flags);
-> >
-> > The other thing which is also more helpful IMO is that we have
-> > trace_events for __i2c_transfer. There, you can see what was happening
-> > on the bus before the timeout. It can easily be that, if device X
-> > times out, it was because of the transfer before to device Y which lock=
-s
-> > up the bus. A simple "Bus timed out" message will not help you a lot
-> > there.
->
-> The trace events are good to have, not sure if production kernels have
-> them enabled, though.
+On Wed, Apr 24, 2024 at 06:51:05AM +0800, kernel test robot wrote:
+> Hi Andy,
+> 
+> kernel test robot noticed the following build errors:
+> 
+> [auto build test ERROR on pci/next]
+> [also build test ERROR on pci/for-linus mani-mhi/mhi-next linus/master v6.9-rc5 next-20240423]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> 
+> url:    https://github.com/intel-lab-lkp/linux/commits/Andy-Shevchenko/PCI-aardvark-Remove-unused-of_gpio-h/20240424-012448
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git next
+> patch link:    https://lore.kernel.org/r/20240423172208.2723892-3-andriy.shevchenko%40linux.intel.com
+> patch subject: [PATCH v2 2/4] PCI: dwc: Remove unused of_gpio.h
+> config: arm-defconfig (https://download.01.org/0day-ci/archive/20240424/202404240649.QgY8lto8-lkp@intel.com/config)
+> compiler: clang version 14.0.6 (https://github.com/llvm/llvm-project.git f28c006a5895fc0e329fe15fead81e37457cb1d1)
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240424/202404240649.QgY8lto8-lkp@intel.com/reproduce)
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202404240649.QgY8lto8-lkp@intel.com/
+> 
+> All errors (new ones prefixed by >>):
 
-Ah, and to accent on the usefulness of the message that happens before
-one thinks about enabling trace events. How usual is that we _expect_
-something to fail? Deeper debugging usually happens after we have
-noticed the issue. I'm not sure if there is an equivalent to signal
-about a problem without expecting it to happen. Is that -ETIMEDOUT
-being converted to some message somewhere?
+Right, I need to add a chained_irq.h which I have in a separate patch for now.
 
-> > And, keep in mind the false positives I mentioned in the coverletter.
-
-
-
---=20
+-- 
 With Best Regards,
 Andy Shevchenko
+
+
 
