@@ -1,88 +1,91 @@
-Return-Path: <linux-omap+bounces-1302-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1305-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B572F8B536F
-	for <lists+linux-omap@lfdr.de>; Mon, 29 Apr 2024 10:48:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0306E8B5534
+	for <lists+linux-omap@lfdr.de>; Mon, 29 Apr 2024 12:26:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D84961C20D1C
-	for <lists+linux-omap@lfdr.de>; Mon, 29 Apr 2024 08:48:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B1A9B21F9D
+	for <lists+linux-omap@lfdr.de>; Mon, 29 Apr 2024 10:26:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FF9A1F946;
-	Mon, 29 Apr 2024 08:48:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1A883D0B3;
+	Mon, 29 Apr 2024 10:25:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FOSmcDJu"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aqzI1y+a"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E29C1AAA5;
-	Mon, 29 Apr 2024 08:48:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42A0039FE0;
+	Mon, 29 Apr 2024 10:25:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714380490; cv=none; b=svX9UbSGokzMiRTeop5nHOYgq0/rHSjaGsTanuiQX2T2aHKYZJ5N5nGXdePzfJ8Kk93Ai+xd2yb+ospht45LUS3xrL8XbbOyguEQ46Vyq1yDuLncVsAtGtBX9SyOqyf2KdMbQ8oWC3k9v1hByx42FczSc62nlwmjVJVLKf/HSVQ=
+	t=1714386325; cv=none; b=jdWq/MH6be/idckBjXbfpz0Zmets7JOPtEt5rqSKarskH5oU0opRKUAAbZtiauqXkWOnfqJRqbhL0W9a3szdIsWePxQ9XhESQQoApBkdCEQ2JwNBX47d0cNZ25RKiblZVIUFhjnbFt2OvjwHPYX3EgGQZ2pbM055UNtN6mlyGI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714380490; c=relaxed/simple;
-	bh=Z8WLMcuvoc4LDhYSNGhPtCPz11xVNOa8e2sBdMQx030=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LU8pmNDFjdxqcEJspwrs7GZOhYsLMMwDxu9yyURl7jk9mki+FfuPRmrHltlQld6IGd3UJdTsxQsObexiFtSjxMcCJjfeDbd6RGsjdnN4fVq3IUStN59VWX92gvAb7NRAznKeWjROdWhEuqjLjVsISaLtLRapM1F1qvtkJmgLJL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FOSmcDJu; arc=none smtp.client-ip=198.175.65.17
+	s=arc-20240116; t=1714386325; c=relaxed/simple;
+	bh=BSxkbBdK70uPefLrVg5yOQ3KIh93f8UTGSR+QBBryx8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WtmxQZ3T/tQXTSU6KfpQrHDu2v/OA+xaRifeLpmtQt/Ps+FW5lYqKD4WO09G6RXPJwcBwpUnMS+oV2PHtpLgOBfujt7URJjPKAgng9XNNJwyy36De1TESyEiy3XknSJSu4FIJ0+xwOU3AdO7D8tuboYRrWpKorFG0eUC4oyAAQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aqzI1y+a; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1714380490; x=1745916490;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Z8WLMcuvoc4LDhYSNGhPtCPz11xVNOa8e2sBdMQx030=;
-  b=FOSmcDJu44C083S4JlMZxHp+qKWrKPRNOGVrCzZzoS0fE7CUgb/GOj5V
-   jseUQScfmI+Gkq7KsNfy0ERtujsFIlqc9dD2G58HAwWWqWZndC6e2RwYZ
-   MyaS8EmnClerF8aqri0jgxomZHKbFg/Sikln1stzeYFd00ngjqo7+iWdW
-   hdQ5oOrckfHTchrCuvRtH5wLDS1KQWtm9/MWCvdStd7UweDC8t6dSSQPL
-   qw6ouV6rCZDSvyw1Tx+gn0QIywBzUXDogFmoyhjII0tGojTnMwEaZrrAs
-   bpVd8kKBXj6wPFeXsEgllTbOXT9OBbt0JlclMm/N3FIvSY2XtenRnGVif
-   w==;
-X-CSE-ConnectionGUID: tNHTSfA8TG67aYLUZN/j+Q==
-X-CSE-MsgGUID: gElrVSdDRh253NE7vcJSAA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11057"; a="10143321"
+  t=1714386324; x=1745922324;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=BSxkbBdK70uPefLrVg5yOQ3KIh93f8UTGSR+QBBryx8=;
+  b=aqzI1y+am4cWxn35amY488YPHxcRTap9ln9e8KynCSnw+LjO82izM2ZK
+   dhikF9pgx0zZXAFdl+13EcETboxch9Sz0xMwA9SWLYcBSXxjb7b5zg87U
+   Z75tji9vCYEt/5yAsZKBOmUPaVuC3m3vaZj+nP+lJQ1JQwnY3hi/gbPyx
+   aVFinCaNraC+sNV5LQGPl427sPW5ld3OfAjmY/67j5WKy4tzzb/JNPIg6
+   Nj0r5BO2g/VKEpj//1ZH+CJ74J4F2K8NeFPLPFV+aAZaRj8s4FaQJLbXE
+   ivZNc+GH7WaihiZ21b6NVmo2k3xvhGBpZlsuByWwQ6C4BGrQyYfGzkGEK
+   Q==;
+X-CSE-ConnectionGUID: clveFvorRWmyUxyB3Igtkw==
+X-CSE-MsgGUID: VHK1JHxTSySIhAVRYRcfCg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11057"; a="13827905"
 X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; 
-   d="scan'208";a="10143321"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2024 01:48:09 -0700
-X-CSE-ConnectionGUID: 6In1FgQkScO0LRKeS9iqeA==
-X-CSE-MsgGUID: HTM8jSzOS9CfPGqWX67RQQ==
+   d="scan'208";a="13827905"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2024 03:25:21 -0700
+X-CSE-ConnectionGUID: eTitjhPcTPOhtWqwOYqo5Q==
+X-CSE-MsgGUID: kiuwJZZ9SPKgOBlYns0TzA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; 
-   d="scan'208";a="57235629"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2024 01:48:01 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1s1Mg1-00000002GCn-2sLU;
-	Mon, 29 Apr 2024 11:47:57 +0300
-Date: Mon, 29 Apr 2024 11:47:57 +0300
+   d="scan'208";a="26475172"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa006.jf.intel.com with ESMTP; 29 Apr 2024 03:25:13 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id 827C115B; Mon, 29 Apr 2024 13:25:11 +0300 (EEST)
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: Frank Li <Frank.Li@nxp.com>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
-	linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linux-amlogic@lists.infradead.org,
-	linux-arm-msm@vger.kernel.org, linux-tegra@vger.kernel.org,
-	Vignesh Raghavendra <vigneshr@ti.com>,
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	linux-omap@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-amlogic@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-tegra@vger.kernel.org
+Cc: Vignesh Raghavendra <vigneshr@ti.com>,
 	Siddharth Vadapalli <s-vadapalli@ti.com>,
 	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Richard Zhu <hongxing.zhu@nxp.com>,
 	Lucas Stach <l.stach@pengutronix.de>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Yue Wang <yue.wang@amlogic.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Yue Wang <yue.wang@Amlogic.com>,
 	Neil Armstrong <neil.armstrong@linaro.org>,
 	Kevin Hilman <khilman@baylibre.com>,
 	Jerome Brunet <jbrunet@baylibre.com>,
@@ -92,46 +95,49 @@ Cc: Frank Li <Frank.Li@nxp.com>,
 	Thierry Reding <thierry.reding@gmail.com>,
 	Jonathan Hunter <jonathanh@nvidia.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>
-Subject: Re: [PATCH v2 4/4] PCI: kirin: Convert to agnostic GPIO API
-Message-ID: <Zi9eve2brQvKwAKm@smile.fi.intel.com>
-References: <20240423172208.2723892-1-andriy.shevchenko@linux.intel.com>
- <20240423172208.2723892-5-andriy.shevchenko@linux.intel.com>
- <20240427072335.GC1981@thinkpad>
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>
+Subject: [PATCH v3 0/5] PCI: controller: Move to agnostic GPIO API
+Date: Mon, 29 Apr 2024 13:23:17 +0300
+Message-ID: <20240429102510.2665280-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240427072335.GC1981@thinkpad>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
 
-On Sat, Apr 27, 2024 at 12:53:35PM +0530, Manivannan Sadhasivam wrote:
-> On Tue, Apr 23, 2024 at 08:19:07PM +0300, Andy Shevchenko wrote:
-> > The of_gpio.h is going to be removed. In preparation of that convert
-> > the driver to the agnostic API.
+While at it, remove of_gpio.h leftover from some of the drivers.
 
-...
+In v3:
+- added precursor patch 1 to avoid build errors (LKP)
+- used GPIOD_OUT_LOW instead of GPIOD_ASIS (Mani)
+- added tags (Mani, Frank)
 
-> > +		pcie->id_clkreq_gpio[i] = devm_gpiod_get_index(dev,
-> > +							"hisilicon,clken", i,
-> > +							GPIOD_ASIS);
-> 
-> Please don't use GPIOD_ASIS even if the old code was using it.
-> 
-> For all 3 GPIOs in this driver, GPIOD_OUT_LOW flag should be used as the default
-> state is assert (considering the fact that the DT uses GPIO_ACTIVE_HIGH).
+In v2:
+- combined previously sent patches into a series (Manivannan)
+- added tags (Rob, Manivannan)
+- converted iMX.6 driver (Manivannan)
+- dropped leftover in aadvark drivers (Manivannan)
 
-And if not? I believe we may not assume that all of DTBs around the globe put
-the flags correctly. But I think you know much more about them than me, hence
-I am okay to update this.
+Andy Shevchenko (5):
+  PCI: dra7xx: Add missing header inclusion
+  PCI: aardvark: Remove unused of_gpio.h
+  PCI: dwc: Remove unused of_gpio.h
+  PCI: imx6: Convert to agnostic GPIO API
+  PCI: kirin: Convert to agnostic GPIO API
+
+ drivers/pci/controller/dwc/pci-dra7xx.c    |   2 +-
+ drivers/pci/controller/dwc/pci-imx6.c      |  37 +++-----
+ drivers/pci/controller/dwc/pci-meson.c     |   1 -
+ drivers/pci/controller/dwc/pcie-kirin.c    | 105 +++++++--------------
+ drivers/pci/controller/dwc/pcie-qcom.c     |   1 -
+ drivers/pci/controller/dwc/pcie-tegra194.c |   2 -
+ drivers/pci/controller/pci-aardvark.c      |   1 -
+ 7 files changed, 50 insertions(+), 99 deletions(-)
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.43.0.rc1.1336.g36b5255a03ac
 
 
