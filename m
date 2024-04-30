@@ -1,60 +1,56 @@
-Return-Path: <linux-omap+bounces-1309-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1310-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20B5E8B58B5
-	for <lists+linux-omap@lfdr.de>; Mon, 29 Apr 2024 14:37:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E15D08B66BD
+	for <lists+linux-omap@lfdr.de>; Tue, 30 Apr 2024 02:07:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CBCF11F2494A
-	for <lists+linux-omap@lfdr.de>; Mon, 29 Apr 2024 12:37:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F37F1C2248E
+	for <lists+linux-omap@lfdr.de>; Tue, 30 Apr 2024 00:07:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5877FC2C6;
-	Mon, 29 Apr 2024 12:37:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA5F01843;
+	Tue, 30 Apr 2024 00:07:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="pUdKOUAy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YCQ7Y/lG"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E9AA8487;
-	Mon, 29 Apr 2024 12:36:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61507170;
+	Tue, 30 Apr 2024 00:07:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714394220; cv=none; b=kdUYQHRKYSdy/k4Iu0pVQV3d1LukxCHVlmUCPD+zl2x2iEUOkrUEmIFsh6NcjEKiPgP/Fc1K335gaFCht1v9VHoiav7csP++hkGx8G/fwEOuf9p82/11yHyNpU/CkUxhCXmrudOA/tFksaoD+0SOVTWgdL+qx1s51w8tgsC1sEk=
+	t=1714435669; cv=none; b=DP9y8cVFo3340WSCu8pxSCdkpyqY3f/Q0SLOqyvyOJOfkPmmIYoLT2yGZS/DbJbSFzeAUnyDbPggkZT0Tm5b0mNGVNDP7D7I/Xe6oZFlASG9WjJ2qwWJRrvqOev0LYwRu1kKFFypwrJxu+LGOEGLkkIjFUvC7IURI+H+4zE3wP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714394220; c=relaxed/simple;
-	bh=/ZVMW7S4ba1fzlJuh0IoZdyiFmNQgBjBERO39t+nbC0=;
+	s=arc-20240116; t=1714435669; c=relaxed/simple;
+	bh=vhMJowDwRuHTlntrjfGcVCQMNqbpSZQLuzucFeDjBg8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NiPb/va/wfYtz69yEwwf1IMrxYaLjCnFF+iC8ymoEN57Hb/B7AjFHQRE2v23w1grDhwya/9P4S04Nb8sxuByVVUjzjKxGyuA3jsY+49NB1tiNaNdQo+nH7Rr8xR++PRZz0ra6kdJACWH5zNEsNl1NPQSDlZGoFTzjnKAGyTuzAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=pUdKOUAy; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=4rm+iSVUoeBsbsT8u7w4kcYSi0ko1/DqWhg4yghsUEk=; b=pUdKOUAygViyCfTwhA5WC5gnqS
-	2OwojHiZnRmBzi4PKEJFfc+QZjzChqXM1k7aDHaKDMNEoz6DUjgzK305jZAdJe8x0+QNHfwEZfX6O
-	poowUIuKnIbOXTmJfp2kv0rI4IwXlABp62jTDmwcbr20pTNovwyZgfjcFRtiUYqG6dwk=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1s1QFZ-00EFXi-LR; Mon, 29 Apr 2024 14:36:53 +0200
-Date: Mon, 29 Apr 2024 14:36:53 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Colin Foster <colin.foster@in-advantage.com>
-Cc: Andrew Halaney <ahalaney@redhat.com>, netdev@vger.kernel.org,
-	linux-omap@vger.kernel.org
-Subject: Re: Beaglebone Ethernet Probe Failure In 6.8+
-Message-ID: <44eaf045-3766-410f-bb2e-fb008b1513bf@lunn.ch>
-References: <Zh/tyozk1n0cFv+l@euler>
- <53a70554-61e5-414a-96a0-e6edd3b6c077@lunn.ch>
- <Zicyc0pj3g7/MemK@euler>
- <c11817a2-d743-4c27-a129-dd644c23110f@lunn.ch>
- <3kpvqcg3twpifzkxkrvhqew3cjuq2imgo4d4b775oypguik55g@npe75wf7rpdr>
- <Zi7+xqp1GG6Jl/kU@colin-ia-desktop>
+	 Content-Type:Content-Disposition:In-Reply-To; b=EiRdzf4VOzPiJor1k+axXrzinfSLZwXBaYwEjd165VFv5V8nOeDiLLvL7X/kAIMIBewx4OXodYIPAZ8f7DoAm5D1oQONiy1ZU9oRvvy5lTw9CKdzREii2wghyW4d1T1K40Q6yVHsd0SenCIZyHb2zils0JZeZ9WfcWd2Bxhx1KA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YCQ7Y/lG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79B9BC113CD;
+	Tue, 30 Apr 2024 00:07:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714435668;
+	bh=vhMJowDwRuHTlntrjfGcVCQMNqbpSZQLuzucFeDjBg8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YCQ7Y/lGUacL2IZijCKBlGObESxVjjzsNASBP6BpxH7vYi0yR/wJ2unwlXZKOgThD
+	 Bq45bgnTPaVF7espT+Nhd5rEHV2F1W1XQ9W3pUqNK7HsrhdCigz5URD9um1NcrO07A
+	 9Rru4vTA2LWW2s0BlH+12gPtJCa4vWrNjg//+P5CooPJo1vEZWZRaw561F6OuM5n9B
+	 HptYENweRlTg8pMcX2pRffTkhIH4rQCk7KUu4bLw5KlYtCMK4LKva2NYtjvccX2h9y
+	 bCa2bYiIjdF3covsdemMsir4FU94t25zzA82/eE7zzn5O+wmQGg1yi3ETGyQAfGXFt
+	 MPE8NlBvInCdA==
+Date: Tue, 30 Apr 2024 02:07:45 +0200
+From: Andi Shyti <andi.shyti@kernel.org>
+To: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc: linux-i2c@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mips@vger.kernel.org, linux-omap@vger.kernel.org, linux-rockchip@lists.infradead.org, 
+	linux-samsung-soc@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [PATCH 00/15] i2c: use 'time_left' with wait_for_*
+Message-ID: <cscisecgo547dngzcpmcvertywekxtctyxv6hwhnmi5dq4azh2@4lpq6a4qga3s>
+References: <20240427203611.3750-1-wsa+renesas@sang-engineering.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -63,28 +59,35 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Zi7+xqp1GG6Jl/kU@colin-ia-desktop>
+In-Reply-To: <20240427203611.3750-1-wsa+renesas@sang-engineering.com>
 
-> I went all in and did a 100ms delay before returning from the resets of
-> 3 and 4 you mention. Sure enough, everything worked! It certainly should
-> be understood and optimized. I added the linux-omap list to this thread
-> (please let me know if there were others I should've CC'd on any of
-> these emails).
+Hi Wolfram,
 
-It probably has little to do with the OMAP, it is the Microchip PHY
-you need more information about.
+On Sat, Apr 27, 2024 at 10:35:52PM +0200, Wolfram Sang wrote:
+> There is a confusing pattern in the kernel to use a variable named 'timeout' to
+> store the result of wait_for_*() causing patterns like:
+> 
+>         timeout = wait_for_completion_timeout(...)
+>         if (!timeout) return -ETIMEDOUT;
+> 
+> with all kinds of permutations. Use 'time_left' as a variable to make the code
+> self explaining.
+> 
+> This is the I2C part of a tree-wide series. The rest of the patches can
+> be found here (slightly WIP):
+> 
+> git://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux.git i2c/time_left
+> 
+> Because these patches are generated, they need manual audit. So, I will
+> send them step by step. This is part 1 and also a call for opinions if
+> this is a desirable change. But at least in the I2C realm, I really want
+> to have it proper.
+> 
+> Build bot is happy with these patches and I also compile tested them
+> (except two). No functional changes intended.
 
-100ms is a very long time. The data sheet says:
+It all looks good, I will give people a few days more for reviews
+and comments and then I'll take it in.
 
-  Note: For the first 16us after coming out of reset, the RMII
-  interface will run at 2.5 MHz. After this time, it will switch to 25
-  MHz if auto-negotiation is enabled.
-
-I did not find anything else. I would try a deassert time the same as
-the asset time as a starting point. It could also be that you ask
-Linux for 100us sleep, and Linux actually gives your 1ms because of
-the resolution of the timers. But i doubt many application will care
-about a 1ms delay.
-
-    Andrew
+Andi
 
