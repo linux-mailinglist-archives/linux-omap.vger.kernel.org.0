@@ -1,135 +1,115 @@
-Return-Path: <linux-omap+bounces-1329-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1330-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AA5C8B901E
-	for <lists+linux-omap@lfdr.de>; Wed,  1 May 2024 21:42:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 534798B952C
+	for <lists+linux-omap@lfdr.de>; Thu,  2 May 2024 09:21:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 303B11F22D82
-	for <lists+linux-omap@lfdr.de>; Wed,  1 May 2024 19:42:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5FC31F21E6F
+	for <lists+linux-omap@lfdr.de>; Thu,  2 May 2024 07:21:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83A8D161912;
-	Wed,  1 May 2024 19:42:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7753225A2;
+	Thu,  2 May 2024 07:21:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="eeKMprLL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MGcbvCrQ"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEBE81474B9;
-	Wed,  1 May 2024 19:42:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.248
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C2301CD31;
+	Thu,  2 May 2024 07:21:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714592532; cv=none; b=k+cT6GHwSnKbMUPerU8cjwYJRkdACMpVsrdXT6PRaBZ1184hMSCIvdC9ajwC50xEacapc0Eyi/kQ/znSG8NRwKz6RvZM41PoFld+U5eAVUJfZTrhLUNjMc1Rmfd1gUK4ljLPouHXNCL4VADttXInQhnCtdYoFYG6KDvYbHBQQKs=
+	t=1714634494; cv=none; b=Jkbi99AVOVotwta+DSMxHeKPV9Q3nU4sFMO7ccXZBaSXgg+JaiqEn659kGLBrHgroPtBKmuqxHl7xS2wkmtp4GO0XgCtFfGMzCXRfm/Z3OVdwHRJ+QDaY7Q4NjRBI7JoXp9gYhvU7wnP9uMd9UIhrSUtnIV09+bB/gqv0Ij7YpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714592532; c=relaxed/simple;
-	bh=hWE+HRqsYOkbNGE7QZUoRuH7leej+iqZ6A+V++OTDvg=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Uh+CgRB7ZdkZSjLTYL6xIZ1giceD/bSx/nm+77otk2pRIBNsHySZ+wFIZ7cfxKSZkY4XPxSUgm5RsVuHLBvK7vmUwGCb0BUOzjSYlOTVLn/oacbKbSFNwzt0aJ9eWB8j+6w6vK5oa9wJHhQsTQtSCKfQtBZMTQXW09na7OZRboI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=eeKMprLL; arc=none smtp.client-ip=198.47.23.248
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-	by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 441JfvUr047309;
-	Wed, 1 May 2024 14:41:57 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1714592517;
-	bh=jWXU0JkDOU9HuQkamimPRjSRXflu3jQKPWewfH4wu58=;
-	h=From:To:CC:Subject:Date;
-	b=eeKMprLLjcW3/nwt5jTRlzEKvZVRPf64DeNS2uUx0fH4L1deIcOufM6oKpVrY1KAO
-	 rq5Ch+YoUKGMJy80vnRxFRnWat3fZ8paGSVjIuqKJYuAGT5rqZuPUwHy9Nj7sKY3pY
-	 SbvP305HRvj5XVGDHP9UIXqVC+1gjwm3pq7zlVk8=
-Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
-	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 441Jfv8Y016738
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Wed, 1 May 2024 14:41:57 -0500
-Received: from DLEE109.ent.ti.com (157.170.170.41) by DLEE115.ent.ti.com
- (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Wed, 1
- May 2024 14:41:57 -0500
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE109.ent.ti.com
- (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Wed, 1 May 2024 14:41:57 -0500
-Received: from judy-hp.dhcp.ti.com (judy-hp.dhcp.ti.com [128.247.81.105])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 441JfvvC107762;
-	Wed, 1 May 2024 14:41:57 -0500
-From: Judith Mendez <jm@ti.com>
-To: =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren
-	<tony@atomide.com>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski
-	<krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>
-CC: <linux-omap@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH] ARM: dts: am335x: Add PRU system events for virtio
-Date: Wed, 1 May 2024 14:41:57 -0500
-Message-ID: <20240501194157.2727136-1-jm@ti.com>
-X-Mailer: git-send-email 2.43.2
+	s=arc-20240116; t=1714634494; c=relaxed/simple;
+	bh=tX69CvEtAwgo4XZ4l/Uep5L3565GREJ/19F+uS2/KpI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fOiWKRUsUS499Qo14p7RFZv+xHyHf+ooO+c8ruo6jmPbznLzLWLol6/DXsiDW12qDedOfYoaKV1aQUtO9TqjJVMQZ8GwokKcnuI/uREfj1IxIEMtsje3eFitKfvo3gmlPrCUO+r1EDBHUCEeMeJevrXKV7SBYSRtlHpXbu5wysQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MGcbvCrQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFD48C113CC;
+	Thu,  2 May 2024 07:21:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714634493;
+	bh=tX69CvEtAwgo4XZ4l/Uep5L3565GREJ/19F+uS2/KpI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MGcbvCrQDirSeDnPM0TpNimb91ucNM+8g3bD+PgHyc9ntVB+g2zov+7PyIdYgkvsU
+	 jtz4hactVTRvJISbUNUhpKLI+BBX6iqpPrUpbDLCcpvjR7DDeFB0R05Ou0BZh5TP83
+	 zhNKgRAdqM3mz/ke21ppHndeEXLoUBxjXf3wJ0WzpkBfzGYq25aX6HVu2Dx5RVmTyI
+	 20/F1/pZ70UB763380hHv6L+yrovyv0fDZcNO0MbOeSBT8MK4gpXlYosj28jQEEjsd
+	 i8xKnp6Z1NSnVOYsRSYFSbcVk4KpQIdp2hl3cYk4nUdwg5CfvMIUB1wnDtVletoO01
+	 /tNAKvXRfu0xQ==
+Date: Thu, 2 May 2024 08:21:26 +0100
+From: Lee Jones <lee@kernel.org>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Daniel Thompson <daniel.thompson@linaro.org>,
+	Jingoo Han <jingoohan1@gmail.com>, Helge Deller <deller@gmx.de>,
+	Bruno =?iso-8859-1?Q?Pr=E9mont?= <bonbons@linux-vserver.org>,
+	Jiri Kosina <jikos@kernel.org>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Alexander Shiyan <shc_work@mail.ru>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>, Fabio Estevam <festevam@gmail.com>,
+	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	linux-omap@vger.kernel.org,
+	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>
+Subject: Re: [PATCH v2 19/19] const_structs.checkpatch: add lcd_ops
+Message-ID: <20240502072126.GC5338@google.com>
+References: <20240424-video-backlight-lcd-ops-v2-0-1aaa82b07bc6@kernel.org>
+ <20240424-video-backlight-lcd-ops-v2-19-1aaa82b07bc6@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+In-Reply-To: <20240424-video-backlight-lcd-ops-v2-19-1aaa82b07bc6@kernel.org>
 
-From: Nick Saulnier <nsaulnier@ti.com>
+On Wed, 24 Apr 2024, Krzysztof Kozlowski wrote:
 
-A PRU system event "vring" has been added to each of the PRU nodes in
-the PRU-ICSS remote processor subsystem to enable the virtio/rpmsg
-communication between MPU and that PRU core. The additions are done
-in the base am33xx-l4.dtsi, and so are inherited by all the AM335x
-boards. Do note that PRUSS is available only on all AM3356+ SoCs.
+> 'struct lcd_ops' is not modified by core code.
+> 
+> Suggested-by: Thomas Weißschuh <linux@weissschuh.net>
+> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+> 
+> ---
+> 
+> Patch making lcd_ops const in progress:
+> https://lore.kernel.org/r/20240414-video-backlight-lcd-ops-v1-0-9b37fcbf546a@kernel.org
+> 
+> Cc: Lee Jones <lee@kernel.org>
+> Cc: Daniel Thompson <daniel.thompson@linaro.org>
+> Cc: Jingoo Han <jingoohan1@gmail.com>
+> Cc: linux-fbdev@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> ---
+>  scripts/const_structs.checkpatch | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/scripts/const_structs.checkpatch b/scripts/const_structs.checkpatch
+> index fa96cfd16e99..52e5bfb61fd0 100644
+> --- a/scripts/const_structs.checkpatch
+> +++ b/scripts/const_structs.checkpatch
+> @@ -39,6 +39,7 @@ kgdb_arch
+>  kgdb_io
+>  kobj_type
+>  kset_uevent_ops
+> +lcd_ops
 
-The PRU system events is the preferred approach over using OMAP
-mailboxes, as it eliminates an external peripheral access from
-the PRU-side, and keeps the interrupt generation internal to the
-PRUSS. The difference from MPU would be minimal in using one
-versus the other.
+Acked-by: Lee Jones <lee@kernel.org>
 
-Mailboxes can still be used if desired, but currently there is no
-support on firmware-side for the SoC to use mailboxes. Either approach
-would require that an appropriate firmware image is loaded/booted on
-the PRU.
+>  lock_manager_operations
+>  machine_desc
+>  microcode_ops
 
-Signed-off-by: Nick Saulnier <nsaulnier@ti.com>
-Signed-off-by: Suman Anna <s-anna@ti.com>
----
- arch/arm/boot/dts/ti/omap/am33xx-l4.dtsi | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/arch/arm/boot/dts/ti/omap/am33xx-l4.dtsi b/arch/arm/boot/dts/ti/omap/am33xx-l4.dtsi
-index d6a143abae5f6..d763ed4a15b58 100644
---- a/arch/arm/boot/dts/ti/omap/am33xx-l4.dtsi
-+++ b/arch/arm/boot/dts/ti/omap/am33xx-l4.dtsi
-@@ -915,6 +915,9 @@ pru0: pru@34000 {
- 					      <0x22400 0x100>;
- 					reg-names = "iram", "control", "debug";
- 					firmware-name = "am335x-pru0-fw";
-+					interrupt-parent = <&pruss_intc>;
-+					interrupts = <16 2 2>;
-+					interrupt-names = "vring";
- 				};
- 
- 				pru1: pru@38000 {
-@@ -924,6 +927,9 @@ pru1: pru@38000 {
- 					      <0x24400 0x100>;
- 					reg-names = "iram", "control", "debug";
- 					firmware-name = "am335x-pru1-fw";
-+					interrupt-parent = <&pruss_intc>;
-+					interrupts = <18 3 3>;
-+					interrupt-names = "vring";
- 				};
- 
- 				pruss_mdio: mdio@32400 {
-
-base-commit: 4cece764965020c22cff7665b18a012006359095
 -- 
-2.43.2
-
+Lee Jones [李琼斯]
 
