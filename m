@@ -1,101 +1,127 @@
-Return-Path: <linux-omap+bounces-1334-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1333-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EDF68B9A15
-	for <lists+linux-omap@lfdr.de>; Thu,  2 May 2024 13:31:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F8558B9A0D
+	for <lists+linux-omap@lfdr.de>; Thu,  2 May 2024 13:29:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BF911F22118
-	for <lists+linux-omap@lfdr.de>; Thu,  2 May 2024 11:31:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35ED0284BE7
+	for <lists+linux-omap@lfdr.de>; Thu,  2 May 2024 11:29:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F65A64CE1;
-	Thu,  2 May 2024 11:31:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14F2364CD0;
+	Thu,  2 May 2024 11:29:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=wizzup.org header.i=@wizzup.org header.b="m1Cu799q"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ESlSRyPf"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail.wizzup.org (mail.wizzup.org [45.80.170.138])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6892C224DD;
-	Thu,  2 May 2024 11:31:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.80.170.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8695040BF5;
+	Thu,  2 May 2024 11:29:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714649501; cv=none; b=KIw0l0JGpVlzJYG1deVWXP9lVgy0eB3RXB28B9XDjZFGKqZkIMdmklGblafuThpWd/OlTGuDlsCwpBtHEgOG1nGtYsQcSbivQDwRn95NjdGCxzWFJYAOSgKV9alnltq9IbjCJ1kZ243ZAv4932X2yapDdbTi2cIHrJhnOwZgV6s=
+	t=1714649382; cv=none; b=BUQ2P+3TG7qJqpvHCYfZe04PGMGEKXgPXqLf2+0im6WbGkpATIY3EctSRdhnKwEZ5KdgJ4UCD9z5SKZ6AQ6SEd/I0CSALptSfnt72CFyJL0jGKTN69JzUXWNJvT1+skald+UY86dmbWetx3X4seAT90aKz9B/invZj8axBqvSQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714649501; c=relaxed/simple;
-	bh=hdlRoJM+2+2KyXCFmBsNc5FwpvzfatObu0siqf41d4k=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=RFhag1lveQgunCOxAgUXWQNmnNOklEAYBcqpU8F4NJK/T2rQSVcPK7RVsz2KiuXw6HaxdzzrCVzz9MrnEg7s/WMVoFuRNrPpeKn9zhz4gqNUA+KSV63VBVUhcJU/ADQF7o3ycI262AIDapYHQZTtZlsznywifzgMZhSSv5Nr5vo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wizzup.org; spf=pass smtp.mailfrom=wizzup.org; dkim=pass (2048-bit key) header.d=wizzup.org header.i=@wizzup.org header.b=m1Cu799q; arc=none smtp.client-ip=45.80.170.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wizzup.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wizzup.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=wizzup.org;
-	s=mail; h=Content-Transfer-Encoding:Content-Type:Subject:From:Cc:To:
-	MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=12nSVpVTm24HoKxg2WwBgVDSsEiN6QR/ZYeATsN2aPc=; b=m1Cu799qtbCNqb3mG5e6opplOR
-	1UkXwfTZTohaT03VE5Brs/WULZnTUkjWDTb5h3HO96dzEiunu4tzoo6E6ZxnQWGFkP/bBR0JvZ5Gx
-	VeYngiiTsXqRBASwZaNW8i3t8e3C9GmUeRK9n/Zyc57KN07WuFeaq+dVxAxIuizJobkarxTe+iTU1
-	gTZfOvbTAZ4erb+w887nS8wpcbnkuCaKTUYqAhe9Do8VLgHVXtoGiqvAWtzRWHJiX1bChQwI6GvZL
-	TJOFV8b0vQsRAxbFpmGoVL9pT36ufOzrmdii+BdgbQrLRP+QkuWGq0bBwCVhHRyzdShH5CyeZLu6Y
-	/Wuq7eRw==;
-Received: from [192.168.178.24] (helo=[0.0.0.0])
-	by mail.wizzup.org with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <merlijn@wizzup.org>)
-	id 1s2UlU-0000Bm-0D;
-	Thu, 02 May 2024 11:38:16 +0000
-Message-ID: <657f402f-3c22-48bb-8102-ab35a74444c1@wizzup.org>
-Date: Thu, 2 May 2024 13:04:56 +0200
+	s=arc-20240116; t=1714649382; c=relaxed/simple;
+	bh=sFaNlOmGEeVD3nYHw0uf/YVM65vnE+n2alDOQR8Xux8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=taEJxZau7LUk6HvMkVI6mwDSUcZg6y3kj1BRc+ERTT1NZVF+3vXu31vuTA4GjrMJYiSJSKY9x0YMp/HjLkdpTN0tjiViVhPQjTAKElBsVOa/RB8f2Ric7OAIzGMZwt5gvFMzld0YGzZHgBoVws7JT72j2JdFd6NBdzXj8vxhntw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ESlSRyPf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8390CC113CC;
+	Thu,  2 May 2024 11:29:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714649382;
+	bh=sFaNlOmGEeVD3nYHw0uf/YVM65vnE+n2alDOQR8Xux8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ESlSRyPfuggpHlVgObOH64jFR9a8f9GIZCEhVT8gPmkobRlLYwAUiNRPfLbKhZwzW
+	 v7ynMJzCeC3YDHZQGy1Q/mS6f3TG5Qn8hnFAIHQSm32cuRdykxx6YOM7yco+HfAKf4
+	 SHaKiTPRAfmytRm0NPO+SKEUr04uz4iJG4jgPSVoxiiZTOrGtBPL9YTrVMvZjbNoNA
+	 hpfZSUbfu5x4dgJf3pv98nxFDT5uDOnpz3xK1za+KYGS+AiHdyoHiFFSauA8N8KIVL
+	 WWTfVYzc0t6o6VrvByrKuloKxF38CiRBT0qqJVhTi3bXJyhPvG5z1dB5AGwXshKh5j
+	 kw6XFUPZ5oEXg==
+Date: Thu, 2 May 2024 13:29:38 +0200
+From: Andi Shyti <andi.shyti@kernel.org>
+To: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc: linux-i2c@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mips@vger.kernel.org, linux-omap@vger.kernel.org, linux-rockchip@lists.infradead.org, 
+	linux-samsung-soc@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [PATCH 00/15] i2c: use 'time_left' with wait_for_*
+Message-ID: <6zrly2hk2vqljiuo3niehym74pqdgfv77fzjb63shgg4iiwhnt@zcnrqrke663b>
+References: <20240427203611.3750-1-wsa+renesas@sang-engineering.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: nl, en-US
-To: linux-omap <linux-omap@vger.kernel.org>
-Cc: rafael@kernel.org, viresh.kumar@linaro.org, zhipeng.wang_1@nxp.com,
- Tony Lindgren <tony@atomide.com>,
- Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
- Carl Philipp Klemm <philipp@uvos.xyz>, "Sicelo A . Mhlongo"
- <absicsz@gmail.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- linux-pm@vger.kernel.org
-From: Merlijn Wajer <merlijn@wizzup.org>
-Subject: No cpufreq entries with omap2plus_defconfig since "cpufreq:
- dt-platdev: Support building as module" (commit 3b062a08)
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240427203611.3750-1-wsa+renesas@sang-engineering.com>
 
-Hi,
+Hi Wolfram,
 
-I was looking at switching my Motorola Droid 4 phone from Linux 6.1 to 
-Linux 6.6, and it no longer gets any cpufreq entries on boot, and I 
-found cpufreq_dt was no longer loaded. I tried to force the issue by 
-modprobe it, but to no avail. The same issue occurs on the latest 6.9.
+On Sat, Apr 27, 2024 at 10:35:52PM +0200, Wolfram Sang wrote:
+> There is a confusing pattern in the kernel to use a variable named 'timeout' to
 
-After a bit of digging it looks like the problem is that 
-cpufreq-dt-platdev can be built as a module and when this the case 
-(apparently the default), cpufreq_dt doesn't work. With the 
-omap2plus_defconfig, CONFIG_CPUFREQ_DT_PLATDEV is indeed set to module.
+there was a little checkpatch warning here for the line being
+over 75 characters, but I went ahead anyway and pushed the whole
+series to i2c/i2c-host.
 
-When I manually probe cpufreq-dt-platdev and cpufreq_dt, I get the 
-cpufreq_entries back.
+Thanks,
+Andi
 
-Searching around I found this debian bug report [1] which just flips the 
-CONFIG_CPUFREQ_DT_PLATDEV back to '=y', but I think there might be a 
-deeper issue here.
-
-Is there a way to define this relationship/dependency for cpufreq-dt, so 
-that it will automatically load this module?
-
-Regards,
-Merlijn
-
-[1] https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1050587
+> store the result of wait_for_*() causing patterns like:
+> 
+>         timeout = wait_for_completion_timeout(...)
+>         if (!timeout) return -ETIMEDOUT;
+> 
+> with all kinds of permutations. Use 'time_left' as a variable to make the code
+> self explaining.
+> 
+> This is the I2C part of a tree-wide series. The rest of the patches can
+> be found here (slightly WIP):
+> 
+> git://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux.git i2c/time_left
+> 
+> Because these patches are generated, they need manual audit. So, I will
+> send them step by step. This is part 1 and also a call for opinions if
+> this is a desirable change. But at least in the I2C realm, I really want
+> to have it proper.
+> 
+> Build bot is happy with these patches and I also compile tested them
+> (except two). No functional changes intended.
+> 
+> Wolfram Sang (15):
+>   i2c: amd-mp2-plat: use 'time_left' variable with
+>     wait_for_completion_timeout()
+>   i2c: digicolor: use 'time_left' variable with
+>     wait_for_completion_timeout()
+>   i2c: exynos5: use 'time_left' variable with
+>     wait_for_completion_timeout()
+>   i2c: hix5hd2: use 'time_left' variable with
+>     wait_for_completion_timeout()
+>   i2c: imx-lpi2c: use 'time_left' variable with
+>     wait_for_completion_timeout()
+>   i2c: omap: use 'time_left' variable with wait_for_completion_timeout()
+>   i2c: st: use 'time_left' variable with wait_for_completion_timeout()
+>   i2c: stm32f4: use 'time_left' variable with
+>     wait_for_completion_timeout()
+>   i2c: stm32f7: use 'time_left' variable with
+>     wait_for_completion_timeout()
+>   i2c: synquacer: use 'time_left' variable with
+>     wait_for_completion_timeout()
+>   i2c: jz4780: use 'time_left' variable with
+>     wait_for_completion_timeout()
+>   i2c: qcom-geni: use 'time_left' variable with
+>     wait_for_completion_timeout()
+>   i2c: rk3x: use 'time_left' variable with wait_event_timeout()
+>   i2c: s3c2410: use 'time_left' variable with wait_event_timeout()
+>   i2c: pxa: use 'time_left' variable with wait_event_timeout()
+> 
+> -- 
+> 2.43.0
+> 
 
