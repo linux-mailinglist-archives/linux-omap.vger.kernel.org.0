@@ -1,106 +1,121 @@
-Return-Path: <linux-omap+bounces-1338-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1339-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 485258BC3A9
-	for <lists+linux-omap@lfdr.de>; Sun,  5 May 2024 22:22:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 816BE8BCC55
+	for <lists+linux-omap@lfdr.de>; Mon,  6 May 2024 12:48:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74C861C21623
-	for <lists+linux-omap@lfdr.de>; Sun,  5 May 2024 20:22:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B7C7283FD9
+	for <lists+linux-omap@lfdr.de>; Mon,  6 May 2024 10:48:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 210E47317C;
-	Sun,  5 May 2024 20:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFCA1142E62;
+	Mon,  6 May 2024 10:48:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="BOR8eryV"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XAbUtn6Q"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A8EF6EB51;
-	Sun,  5 May 2024 20:22:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25FAB2BAE3;
+	Mon,  6 May 2024 10:48:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714940546; cv=none; b=gVnx4Z7pticw22i3UXSW0+BqBfytopBUc9Z56D+30x5Bzsks7VoEvK5Hhu1CkqZzSOvHUvu/beMwvhPMFhjfAdPx8i5dD1OTjyDroojFuVdWWaKD5b1bTp3ExotUdGidjeGsgbWLq6YXLu77okLfgbYybx8Nn1VfVAWox7BTzBA=
+	t=1714992511; cv=none; b=bV04L1C747NZvP9LdF26Afuwyql++P5BPuF14PnrdOUwlVE5X1Dc0BMjAg5ZbWQK5KtElESU/jV6heyNjOmAQbm6CLQKKfU/6Fc5qNXo8KvzjBtXtEJ9eI0WipPJ7/sNpHj0Sf23CxmQe3eDDMpnjgrn2XxbN0q+R71MV4Lr4zs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714940546; c=relaxed/simple;
-	bh=6zZ9I+/S/0oQSwQS1c/S5AJHePAHDd8FWt0x5Yj2khg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Xh1W7d75F4PkyDf175iB7Dhjr/Z9H508CUQ1XAnGzjWAQeuY+5K0BXe45MBGe+ujBz6sGvE7U/2MrTXMMrBthhWv8VwcDPs+HMcdITSSIdNP8tfTGPLNwA/S0Oo+S1ApMLaCJP2Le9BRMF+VtUekngOStqjpBB81GwYkJiDh838=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=BOR8eryV; arc=none smtp.client-ip=46.235.229.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
-	; s=bytemarkmx; h=MIME-Version:Message-ID:Date:Subject:From:Content-Type:From
-	:Subject; bh=0+NrnlGanpbDKBTcFpa/hRcO7lljTU+Kq8oaCV7xyAE=; b=BOR8eryVU1GPNyyM
-	GtH9Pb6owDZyBjngs3juuRmWnjOgkB7HgNLrmj85StCsiy3PoV+rIjjYblhUGpz+zFRkjUSGCE5PW
-	Pe2Hq26K3gDUMd/s2upf/1iRPBbBej7lbMwh4eFaSV9MJSdZJQDfFMBGLo6Iu5dFA5SLlo0soSn+S
-	Jc3/NRnGIP3bPk6TQsbQLTAPWrLBwEzPhhhc9Kthfy6gxmdS0/HtATuHbmeMgtZsAUa5OZHptE8UQ
-	QxrO7R0/zoHEWI3r8Lgtrcs9Qcxo4c+l/cK9bponnF5/6OflwhpJU1uRGAcvXSW8wx6dkbao6cnj5
-	Y8zwnaupKskvwVEGsg==;
-Received: from localhost ([127.0.0.1] helo=dalek.home.treblig.org)
-	by mx.treblig.org with esmtp (Exim 4.96)
-	(envelope-from <linux@treblig.org>)
-	id 1s3iNI-004oPt-0X;
-	Sun, 05 May 2024 20:22:20 +0000
-From: linux@treblig.org
-To: aaro.koskinen@iki.fi
-Cc: tony@atomide.com,
-	linux-omap@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	"Dr. David Alan Gilbert" <linux@treblig.org>
-Subject: [PATCH] ARM: omap1: Remove unused struct 'dma_link_info'
-Date: Sun,  5 May 2024 21:22:14 +0100
-Message-ID: <20240505202214.623612-1-linux@treblig.org>
-X-Mailer: git-send-email 2.45.0
+	s=arc-20240116; t=1714992511; c=relaxed/simple;
+	bh=Hkr65neol7moVbYcz4JhrxGkKmAFlo3QCts5BAX/JeA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=F3uwMgPw76GbI+awd0IJZE1uJkVPrMy5U89m9lkDYjk1fBTBi9cBvA3WHYj+djgrwxC5r1VqaABDGaJrDiNVlbQ8F7kP4y7ql4R97FoQG1Bmx61qlUWDJde+TTJXL9kL73vw9+A6P9fOIntdu3qmQOUAT1CMbm9qvd6osoQ8Hx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XAbUtn6Q; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1714992510; x=1746528510;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Hkr65neol7moVbYcz4JhrxGkKmAFlo3QCts5BAX/JeA=;
+  b=XAbUtn6Qv80eXDr4uDw1eV3REbc29NWJY0x76H0grR8b4Iyf5a76NYfD
+   YEPa3nMSjfBhDTU6YDDCDHgxnYdfj6/w3Q0PYMCreHnqoBpVaYD7s55GY
+   baOVta8yR6WFdSUvhCDWgDkzjOYagYRm+iGWn0ZM5jNCkJ/JgsM2LeXuS
+   U7ZDFaw3Zp4J6bAnWQTr4BIleqDszm6uCxZnvOJBW/pRnwtkILLWqQu3L
+   uxQd/02vYHNQsCv1b6FCRktWJ5y1mKt4POcsPFPn5YiZx8EnCPk+wwXPq
+   Gwq1+d4MTfKXgpAl0UYQTP9P6G+6FA4ucEWjEtlH2KF5Fajh3NcxPXnvi
+   w==;
+X-CSE-ConnectionGUID: ztQmtLcdR3ir5hG91cx9qQ==
+X-CSE-MsgGUID: 0ZIbtVTxRxux2V6h1JFd2A==
+X-IronPort-AV: E=McAfee;i="6600,9927,11064"; a="22141455"
+X-IronPort-AV: E=Sophos;i="6.07,258,1708416000"; 
+   d="scan'208";a="22141455"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2024 03:48:29 -0700
+X-CSE-ConnectionGUID: gfqCPeZeTiqvdoy3cHNrAg==
+X-CSE-MsgGUID: TecDTmn/SAqaUoRMU8GFQg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,258,1708416000"; 
+   d="scan'208";a="65568146"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2024 03:48:22 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1s3vtJ-00000004ehl-02rk;
+	Mon, 06 May 2024 13:48:17 +0300
+Date: Mon, 6 May 2024 13:48:16 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
+	linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-amlogic@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org, linux-tegra@vger.kernel.org
+Cc: Vignesh Raghavendra <vigneshr@ti.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Yue Wang <yue.wang@amlogic.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Xiaowei Song <songxiaowei@hisilicon.com>,
+	Binghui Wang <wangbinghui@hisilicon.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>
+Subject: Re: [PATCH v3 0/5] PCI: controller: Move to agnostic GPIO API
+Message-ID: <Zji1cEqUMZOdk6QN@smile.fi.intel.com>
+References: <20240429102510.2665280-1-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240429102510.2665280-1-andriy.shevchenko@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-From: "Dr. David Alan Gilbert" <linux@treblig.org>
+On Mon, Apr 29, 2024 at 01:23:17PM +0300, Andy Shevchenko wrote:
+> While at it, remove of_gpio.h leftover from some of the drivers.
 
-I think the last use of this was removed somewhere
-around the two:
-Commit 755cbfd8cf89 ("ARM: OMAP2+: Drop sdma interrupt handling for
-mach-omap2")
-and
-Commit 16630718ee46 ("ARM: omap1: move plat/dma.c to mach/omap-dma.c")
+Can this be moved forward?
+Or should I do something additionally with it?
 
-Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
----
- arch/arm/mach-omap1/omap-dma.c | 13 -------------
- 1 file changed, 13 deletions(-)
-
-diff --git a/arch/arm/mach-omap1/omap-dma.c b/arch/arm/mach-omap1/omap-dma.c
-index 9ee472f8ead12..f091f78631d09 100644
---- a/arch/arm/mach-omap1/omap-dma.c
-+++ b/arch/arm/mach-omap1/omap-dma.c
-@@ -59,19 +59,6 @@ static struct omap_dma_dev_attr *d;
- static int enable_1510_mode;
- static u32 errata;
- 
--struct dma_link_info {
--	int *linked_dmach_q;
--	int no_of_lchs_linked;
--
--	int q_count;
--	int q_tail;
--	int q_head;
--
--	int chain_state;
--	int chain_mode;
--
--};
--
- static int dma_lch_count;
- static int dma_chan_count;
- static int omap_dma_reserve_channels;
 -- 
-2.45.0
+With Best Regards,
+Andy Shevchenko
+
 
 
