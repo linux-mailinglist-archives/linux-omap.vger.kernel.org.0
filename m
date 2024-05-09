@@ -1,153 +1,163 @@
-Return-Path: <linux-omap+bounces-1361-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1362-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20E328C0A75
-	for <lists+linux-omap@lfdr.de>; Thu,  9 May 2024 06:25:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 389D18C0E70
+	for <lists+linux-omap@lfdr.de>; Thu,  9 May 2024 12:48:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52CD01C210C3
-	for <lists+linux-omap@lfdr.de>; Thu,  9 May 2024 04:25:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 667DF1C215DB
+	for <lists+linux-omap@lfdr.de>; Thu,  9 May 2024 10:48:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 745721487CD;
-	Thu,  9 May 2024 04:25:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E61DC131192;
+	Thu,  9 May 2024 10:48:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="nT0TXTna"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from fgw22-7.mail.saunalahti.fi (fgw22-7.mail.saunalahti.fi [62.142.5.83])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B20421487C4
-	for <linux-omap@vger.kernel.org>; Thu,  9 May 2024 04:24:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.142.5.83
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0324F13048C
+	for <linux-omap@vger.kernel.org>; Thu,  9 May 2024 10:48:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715228700; cv=none; b=mKx2S7dGwP+NpZ5HSKszqdduwwgMImsGx5Y1QuxeenGslnxpNMdhtb1YQ8p7/aWXR91Tcqa3/Z8Cnt8IaTunNaNQPc8X2yzxue6Qnw09ZebENj8oH3d18FtFe5QBeq6GX0gFsmyrE4G5Qf5d5WODGXz10rXwdYu7wYAfbUc79f0=
+	t=1715251700; cv=none; b=mi6Q5QENFSFE0rhuEvMpthP/v1vKkjArcCbvtMW7tkNIsQRnU5EwK2+2WAp4aJHhbtFgBsUkjEibvi7AZeBS+rMu0CMgrokEdzuA6dM05jrjQgZf8tuJpZd3TbSistczi1HgHqJ6jMRThb1r0mgRna130Jh1AM2ZSecX3o56XTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715228700; c=relaxed/simple;
-	bh=wbluDtpkgkqI4b6uOnSnk0JaOqE8O/8A4tFQH+1zXWw=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YODkIHMGmSa3N2fvj7/6KSk9tBUy083K4edVOBtd1kTsE3LPWxTsxKWf2GziU2yNI0HDAcygofTblfAPz56pCqniP6qWQrc1U/rTtyAKLp9vRJIjva9KAGaVQXYzZlevC8emW5iIy302IfeXr1xNUTwW64RRGyFbYIc5GYyP6yA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=62.142.5.83
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=gmail.com
-Received: from localhost (88-113-25-208.elisa-laajakaista.fi [88.113.25.208])
-	by fgw23.mail.saunalahti.fi (Halon) with ESMTP
-	id 14224eb4-0dbc-11ef-b972-005056bdfda7;
-	Thu, 09 May 2024 07:24:52 +0300 (EEST)
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Thu, 9 May 2024 07:24:51 +0300
-To: Hongxing Zhu <hongxing.zhu@nxp.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Frank Li <frank.li@nxp.com>,
-	Krzysztof =?utf-8?B?V2lsY3p577+977+9c2tp?= <kwilczynski@kernel.org>,
-	"linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-amlogic@lists.infradead.org" <linux-amlogic@lists.infradead.org>,
-	"linux-arm-msm@vger.kernel.org" <linux-arm-msm@vger.kernel.org>,
-	"linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?B?V2lsY3p577+977+9c2tp?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Yue Wang <yue.wang@amlogic.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Xiaowei Song <songxiaowei@hisilicon.com>,
-	Binghui Wang <wangbinghui@hisilicon.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: Re: [PATCH v4 4/5] PCI: imx6: Convert to agnostic GPIO API
-Message-ID: <ZjxQE8h0-BABxybu@surfacebook.localdomain>
-References: <20240506142142.4042810-1-andriy.shevchenko@linux.intel.com>
- <20240506142142.4042810-5-andriy.shevchenko@linux.intel.com>
- <AS8PR04MB867668870DD2DC029C8B98048CE62@AS8PR04MB8676.eurprd04.prod.outlook.com>
+	s=arc-20240116; t=1715251700; c=relaxed/simple;
+	bh=AhGKHotUOundbhN4X2YTDc462SsKg+3ZxBuT3oDaWHw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cd+9jEpDB+XenX47lbhzRObZia5YwMRG/JZ5eWjYFDnWscRDwxUj7yDVusSOrOhlgo2ptnri2oIUk9I4z4iET3o39w7C1ZXxwOl+PXmkUmDqHb2at2B0UvKt6PONmfe9ZM03fYXsTudLJ8ibJSiFjXoXQCiL/PKSYBBbaxCkBhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=nT0TXTna; arc=none smtp.client-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a59a9d66a51so154526266b.2
+        for <linux-omap@vger.kernel.org>; Thu, 09 May 2024 03:48:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1715251697; x=1715856497; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Nhk3/XajbYjebewXinPE0P/6g6ueIG9AsQRxMr6tmNE=;
+        b=nT0TXTnaL7FfAtbP7LrDzrvRKwzajzdgiNqJQqFfwCS86vqGJczlvppfzFE3o8cUdC
+         vWpSWvYDMGnoKd5oUFJMbYs64XWNBUqhhGS8lBqolhHPTUTL13wbiz/r4L6RS7hz3sSK
+         A6h5OGPcV2i/KTkWuy3IDnhrXzrUfSsD96CfS/TOFQtrYLqtT8jFnwIkksCIJUoahRt6
+         tjgLL+lNWJcc/blGeK2ksvzVzVHKaGqjEbTVM+X4o9xsioiimqEF2PwVEtDlBQFBplFv
+         2pqCAStUW1VV91/Yt5Mttyz+h61/OSA5TdRl3875TvYGSJuKibpJXgt9jrvKCysCDYY5
+         yX0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715251697; x=1715856497;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Nhk3/XajbYjebewXinPE0P/6g6ueIG9AsQRxMr6tmNE=;
+        b=ixlr8118TyEEseRL25mDlxSRjAnygSQxNVQhf/ZF/OSqFeSZWQDwM72P6Z3yYr6oPl
+         evXY3AikoM82vGTXX/5zdmogQeZaUbkamwFB9epERXxGXCmJVyD0Ziu2atwv9ieOOhPb
+         JbZna5vEVxg1EQmdrVL5J9/1EpsGITfB0rEkJvgAz4Jy+QXoHV0ocZq/huu6x702vs8v
+         gSR8fRZQOuTQoRcmxU6UdLwx3ToaK8ww72J2Yelrzf/kr40nJrqTPT4Z6cpvY3O7I3YD
+         5S1Qqn3nsyA2u6Rf+IlaepoSdT9+d5kR3Ota7l2s2OAcdJFHuy4zFEVNjwUVMY7byBDt
+         H5YA==
+X-Forwarded-Encrypted: i=1; AJvYcCUSChLrrnGcLv44c926R/hhOepp6Iok9+PL4Q+7hCEyz7X4zgawug71FTQ60S7Pp4gln5JtG7fLB+1R4WLnzvTI4NKjBn+yypV30Q==
+X-Gm-Message-State: AOJu0Yx0EjVNwyHfeA0m+qBYpnGdDu7/5eWZc52Gcr5GBKTrrwukQ4zC
+	O6qE56rEs2D1umKdeppDa7z+z9U5jZkNqo98iP3W8QBqUFu+7XGFhq0+tdTwA+Y=
+X-Google-Smtp-Source: AGHT+IHQyuhaOFCWDh8Y20z92N/LrJzqyIZFbrRKifXgh0S2UhxNL1L6D0CsxhO9kqq9QHRTuJH7rw==
+X-Received: by 2002:a17:906:db03:b0:a59:b590:5d71 with SMTP id a640c23a62f3a-a59fb6ed704mr459961166b.0.1715251697256;
+        Thu, 09 May 2024 03:48:17 -0700 (PDT)
+Received: from krzk-bin.. ([178.197.206.169])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a5a17b014f6sm60466866b.145.2024.05.09.03.48.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 May 2024 03:48:16 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Bartosz Golaszewski <brgl@bgdev.pl>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	=?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+	Tony Lindgren <tony@atomide.com>,
+	linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-omap@vger.kernel.org
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH] ARM: dts: ti: align panel timings node name with dtschema
+Date: Thu,  9 May 2024 12:48:13 +0200
+Message-ID: <20240509104813.216655-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <AS8PR04MB867668870DD2DC029C8B98048CE62@AS8PR04MB8676.eurprd04.prod.outlook.com>
 
-Thu, May 09, 2024 at 01:24:45AM +0000, Hongxing Zhu kirjoitti:
-> > -----Original Message-----
-> > From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > Sent: 2024年5月6日 22:21
+DT schema expects panel timings node to follow certain pattern,
+dtbs_check warnings:
 
-...
+  am335x-pdu001.dtb: display-timings: '240x320p16' does not match any of the regexes: '^timing', 'pinctrl-[0-9]+'
 
-> > -	imx6_pcie->gpio_active_high = of_property_read_bool(node,
-> > -						"reset-gpio-active-high");
-> > -	if (gpio_is_valid(imx6_pcie->reset_gpio)) {
-> > -		ret = devm_gpio_request_one(dev, imx6_pcie->reset_gpio,
-> > -				imx6_pcie->gpio_active_high ?
-> > -					GPIOF_OUT_INIT_HIGH :
-> > -					GPIOF_OUT_INIT_LOW,
-> > -				"PCIe reset");
-> > -		if (ret) {
-> > -			dev_err(dev, "unable to get reset gpio\n");
-> > -			return ret;
-> > -		}
-> > -	} else if (imx6_pcie->reset_gpio == -EPROBE_DEFER) {
-> > -		return imx6_pcie->reset_gpio;
-> > -	}
+Linux drivers do not care about node name, so this should not have
+effect on Linux.
 
-> Please correct me if my understand is wrong.
-> The "reset-gpio-active-high" property is added for some buggy board designs.
-> On these buggy boards, the reset gpio is active high.
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+ arch/arm/boot/dts/ti/davinci/da850-evm.dts    | 2 +-
+ arch/arm/boot/dts/ti/omap/am335x-guardian.dts | 2 +-
+ arch/arm/boot/dts/ti/omap/am335x-pdu001.dts   | 2 +-
+ arch/arm/boot/dts/ti/omap/am335x-pepper.dts   | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
 
-This is my understanding too.
-
-> In the other words, the PERST# is active and remote endpoint device would
-> be in reset stat when this gpio is high on these buggy boards.
-
-Yes.
-
-> I'm afraid that the PCIe would be broken on these boards, If these codes
->  are removed totally,
-
-No. Linus W. explained in the previous version review round how it's supposed
-to work.
-
-> and toggle the reset GPIO pin like below.
-> ...
-> gpio_set_value_cansleep(imx6_pcie->reset_gpio, 0);
-> msleep(100);
-> gpio_set_value_cansleep(imx6_pcie->reset_gpio, 1);
-> ...
-
-It's not the code that this patch adds. I'm not sure if I understand starting
-from here what you mean.
-
-> By the way, this reset GPIO pin should be high at end in
-> imx6_pcie_deassert_core_reset() if the imx6_pcie->gpio_active_high is zero. 
-
-This seems a terminology mixup. You probably meant "inactive".
-And this is exactly the case with this patch.
-
-If you start thinking in terms of "active"/"inactive" you will see that there
-is no contradiction and no behaviour change. The quirk itself is located in
-gpiolib-of.c..
-
+diff --git a/arch/arm/boot/dts/ti/davinci/da850-evm.dts b/arch/arm/boot/dts/ti/davinci/da850-evm.dts
+index 6c5936278e75..1f5cd35f8b74 100644
+--- a/arch/arm/boot/dts/ti/davinci/da850-evm.dts
++++ b/arch/arm/boot/dts/ti/davinci/da850-evm.dts
+@@ -65,7 +65,7 @@ panel-info {
+ 
+ 		display-timings {
+ 			native-mode = <&timing0>;
+-			timing0: 480x272 {
++			timing0: timing-480x272 {
+ 				clock-frequency = <9000000>;
+ 				hactive = <480>;
+ 				vactive = <272>;
+diff --git a/arch/arm/boot/dts/ti/omap/am335x-guardian.dts b/arch/arm/boot/dts/ti/omap/am335x-guardian.dts
+index 56e5d954a490..4b070e634b28 100644
+--- a/arch/arm/boot/dts/ti/omap/am335x-guardian.dts
++++ b/arch/arm/boot/dts/ti/omap/am335x-guardian.dts
+@@ -74,7 +74,7 @@ panel {
+ 		pinctrl-1 = <&lcd_pins_sleep>;
+ 
+ 		display-timings {
+-			320x240 {
++			timing-320x240 {
+ 				hactive         = <320>;
+ 				vactive         = <240>;
+ 				hback-porch     = <68>;
+diff --git a/arch/arm/boot/dts/ti/omap/am335x-pdu001.dts b/arch/arm/boot/dts/ti/omap/am335x-pdu001.dts
+index f38f5bff2b96..17574d0d0525 100644
+--- a/arch/arm/boot/dts/ti/omap/am335x-pdu001.dts
++++ b/arch/arm/boot/dts/ti/omap/am335x-pdu001.dts
+@@ -67,7 +67,7 @@ panel-info {
+ 		};
+ 
+ 		display-timings {
+-			240x320p16 {
++			timing-240x320p16 {
+ 				clock-frequency = <6500000>;
+ 				hactive = <240>;
+ 				vactive = <320>;
+diff --git a/arch/arm/boot/dts/ti/omap/am335x-pepper.dts b/arch/arm/boot/dts/ti/omap/am335x-pepper.dts
+index d5a4a21889d1..e7d561a527fd 100644
+--- a/arch/arm/boot/dts/ti/omap/am335x-pepper.dts
++++ b/arch/arm/boot/dts/ti/omap/am335x-pepper.dts
+@@ -202,7 +202,7 @@ panel-info {
+ 	};
+ 	display-timings {
+ 		native-mode = <&timing0>;
+-		timing0: 480x272 {
++		timing0: timing-480x272 {
+ 			clock-frequency = <18400000>;
+ 			hactive = <480>;
+ 			vactive = <272>;
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.43.0
 
 
