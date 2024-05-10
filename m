@@ -1,126 +1,99 @@
-Return-Path: <linux-omap+bounces-1363-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1364-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B99D68C1024
-	for <lists+linux-omap@lfdr.de>; Thu,  9 May 2024 15:10:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCB9D8C2024
+	for <lists+linux-omap@lfdr.de>; Fri, 10 May 2024 11:01:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75940284CD7
-	for <lists+linux-omap@lfdr.de>; Thu,  9 May 2024 13:10:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 738E3281A2A
+	for <lists+linux-omap@lfdr.de>; Fri, 10 May 2024 09:01:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4205515217A;
-	Thu,  9 May 2024 13:09:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="VjTlr5tm"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A49FF1509B9;
+	Fri, 10 May 2024 09:01:31 +0000 (UTC)
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F335149C40
-	for <linux-omap@vger.kernel.org>; Thu,  9 May 2024 13:09:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E92D077119;
+	Fri, 10 May 2024 09:01:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715260195; cv=none; b=E3C55LXiIMeyczLyyu25KlbB35flkFr6E00mEjjhJi3VwQhCSJqeHaW3w3yQA+/GXT5IpSmLAo23aOsNcsX3MTcnmNTZM/Id+v09Fc91un2KRCIsptFiflN3j9BN4sfuKCZRpDI/HcfQarvP9onxog//a6GKtb2KC5aB5ZD3LMo=
+	t=1715331691; cv=none; b=HQbeFJ8hnaqFTigVzv2kyBqoQDl6TQ/tMSPay4oEs4JwbTfFQ58DfbzAG4FX0gJXnQWjN4dgD/A7fkuRpsnqpFg+d4CWPWHHpYRxm6dn8+RExw5+0+YJRpG777ONQ8byeSeg/k+9zFTYML1TqLxtDPFiR48KSJ57zNGQRpSThBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715260195; c=relaxed/simple;
-	bh=/2fF/U3Z7PezOWTE5bhHrvAmlH2qvb4NRDFXCcVuKn8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RD8F+kkq4myoN8hnQRpIHMza2eSMkIIZcFCXMd2XAeEJdEHQQH2vJkg7TIDga5rR11jbMCvFRXHeA87pcMabUepqQr+E2HqczO4qRxwmVVU7/5p9lpnM7+8Jm6HkGIQp6rX8M1nDLaAUhIhXWv1bbgGnlxKjQD7lnakowiookaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=VjTlr5tm; arc=none smtp.client-ip=209.85.208.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2e27277d2c1so11022221fa.2
-        for <linux-omap@vger.kernel.org>; Thu, 09 May 2024 06:09:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1715260192; x=1715864992; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Rjcbv/XOMrp8i6C8+I4UYZ+VlFPUeDdAPCf2dJU4itU=;
-        b=VjTlr5tmkSJsfKfOjM14wYUy9lOqJxun3hhMfhfZATajFsYHHXPI337+a0PD8Iq1Ku
-         3MybsepJeJxsoExRA4NLFP+UIRrYWX7CBvjPPTNq6lLKthgO3N7poafMySUS2oExF+b9
-         Nqtn/bbufDLL2NxB2BrRSSU54G5jY8kP8MW/7vqkQGBbd1nlBx4p/8ouIrH3mEm8JC2S
-         5fxIusC+V0Adt94jLWgrC2SjEZ3stRs5mWElyWWKmglp2KxiQzJ+5IQlz+QSY7vbAYLI
-         T28Qh9LLGMRQg0zUhvcaFLCqJdk0CHyRKmJAuC+WRdStKGYNjK0cC5shjfsxAqJdo5hM
-         JUQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715260192; x=1715864992;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Rjcbv/XOMrp8i6C8+I4UYZ+VlFPUeDdAPCf2dJU4itU=;
-        b=NGHaHRLaWWoWo0IGjeZrxevN1Uyno7Rtnx8vF6TOLM5xqv3b0BVMikKKSRCI/lKP/+
-         Eeela7HpVcRP+2ywQ1FmoHBXDv3RB4+O60gW0J5ee6JhoyX8VX7t/EF+7veRS85xz9ng
-         iGC91gdZ8rbPTHHJ9vsJ36mrsUi16Pa2pCGeNFGgkDKxeWdiwqm61lmE//cMAIB7Md8e
-         F/cR0aFV54KUPFZut3bijEM6sHtL/efDFvS60CAgZUjHpKdlfj0KK9bkPaH/fw5CPNLy
-         CANjmvLcBLu3hN4+SAVjuofBd7+IVr1rQkMaDa/yL6pSnR7itf00s69Y1+IsAAib6ia0
-         tltA==
-X-Forwarded-Encrypted: i=1; AJvYcCWKV7oQuHTIabUZROkpIlepuHyI6yNLmkGmgCjL73FVillJ/VmEiNAzk6DAMd3vKu4qEbw49zZLQibV49bGwtRUK0aXz4IgKGgadA==
-X-Gm-Message-State: AOJu0YwsJ6b4DmPUSH5pIljjIEIEKAerjEHhBPZcwi5hrCVLYg5j4Sgi
-	uAYHYgapDNDMNK74GOMaH6AbCSL+ttQR6QWbqde1PhA4H2n5v3i8EXDHbKyMw4XTh0j0tTBb+4w
-	2ZDCt294zLjGNyo2fBjK/u9CSXMUXkPjvXCUURQ==
-X-Google-Smtp-Source: AGHT+IEpJlR5h7UDquPspWdgEA69rWukyGIDC5h1omtSQdQBKa/5ADlI4KFKOrwM0BJ/+Cr5u1yDz91SAFWv1jlBCEM=
-X-Received: by 2002:a19:f00b:0:b0:51e:18c5:c3e3 with SMTP id
- 2adb3069b0e04-5217c5665ddmr3092600e87.26.1715260192645; Thu, 09 May 2024
- 06:09:52 -0700 (PDT)
+	s=arc-20240116; t=1715331691; c=relaxed/simple;
+	bh=MGQgGQ0Iu5HQ3Uu82ZP8L0jLXlDORQB5TOSq/IIUP34=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JlpXj0F0Pbo+J3DQ8pItQvRPK4NuyoHpcWNrDIV285ISc3ODIR+pkgWHn8QIow8yP2ELBtPL1Hq2FwBcyZq9jqGygS8hiVJgofUq01FHMgKAX3z9QZKYf2kcn5kRiTFlp98ARi7Jy9ePcfmdxDrTi7VMZG0wmHs+5ZovVHKvgIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost (unknown [124.16.138.129])
+	by APP-05 (Coremail) with SMTP id zQCowABXX+dg4j1mzzgOCg--.44565S2;
+	Fri, 10 May 2024 17:01:20 +0800 (CST)
+From: Chen Ni <nichen@iscas.ac.cn>
+To: vigneshr@ti.com,
+	jpanis@baylibre.com,
+	wbg@kernel.org
+Cc: linux-iio@vger.kernel.org,
+	linux-omap@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Chen Ni <nichen@iscas.ac.cn>
+Subject: [PATCH] counter: ti-ecap-capture: Handle error for clk_enable
+Date: Fri, 10 May 2024 17:00:59 +0800
+Message-Id: <20240510090059.2126666-1-nichen@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240509104813.216655-1-krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20240509104813.216655-1-krzysztof.kozlowski@linaro.org>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Thu, 9 May 2024 15:09:41 +0200
-Message-ID: <CAMRc=MezrXs5MYDnRvbWWskWJv0eCtQ8VsUu2mD=Bq=VxLHqHQ@mail.gmail.com>
-Subject: Re: [PATCH] ARM: dts: ti: align panel timings node name with dtschema
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>, 
-	Tony Lindgren <tony@atomide.com>, linux-arm-kernel@lists.infradead.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-omap@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowABXX+dg4j1mzzgOCg--.44565S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7Xr47tF1xGF13Xr1Utw1UZFb_yoWfXwbE9F
+	Wq9w4xZF45X3Wvkr12qwn8Zr98Wrn2qryxtw4vqws7JayUt3sxXr4Ivw1DC3yrZ3y7CFn0
+	yrnYyryxZr13CjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUb2AFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+	Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r106r15McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr
+	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkIecxEwVAFwVW8uwCF
+	04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r
+	18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vI
+	r41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr
+	1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvE
+	x4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUSsjbUUUUU=
+X-CM-SenderInfo: xqlfxv3q6l2u1dvotugofq/
 
-On Thu, May 9, 2024 at 12:48=E2=80=AFPM Krzysztof Kozlowski
-<krzysztof.kozlowski@linaro.org> wrote:
->
-> DT schema expects panel timings node to follow certain pattern,
-> dtbs_check warnings:
->
->   am335x-pdu001.dtb: display-timings: '240x320p16' does not match any of =
-the regexes: '^timing', 'pinctrl-[0-9]+'
->
-> Linux drivers do not care about node name, so this should not have
-> effect on Linux.
->
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> ---
->  arch/arm/boot/dts/ti/davinci/da850-evm.dts    | 2 +-
->  arch/arm/boot/dts/ti/omap/am335x-guardian.dts | 2 +-
->  arch/arm/boot/dts/ti/omap/am335x-pdu001.dts   | 2 +-
->  arch/arm/boot/dts/ti/omap/am335x-pepper.dts   | 2 +-
->  4 files changed, 4 insertions(+), 4 deletions(-)
->
-> diff --git a/arch/arm/boot/dts/ti/davinci/da850-evm.dts b/arch/arm/boot/d=
-ts/ti/davinci/da850-evm.dts
-> index 6c5936278e75..1f5cd35f8b74 100644
-> --- a/arch/arm/boot/dts/ti/davinci/da850-evm.dts
-> +++ b/arch/arm/boot/dts/ti/davinci/da850-evm.dts
-> @@ -65,7 +65,7 @@ panel-info {
->
->                 display-timings {
->                         native-mode =3D <&timing0>;
-> -                       timing0: 480x272 {
-> +                       timing0: timing-480x272 {
->                                 clock-frequency =3D <9000000>;
->                                 hactive =3D <480>;
->                                 vactive =3D <272>;
+As the potential failure of the clk_enable(), it should be better to
+check it and return error if fails.
 
-Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org> # For DaVinc=
-i
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+---
+ drivers/counter/ti-ecap-capture.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/counter/ti-ecap-capture.c b/drivers/counter/ti-ecap-capture.c
+index 675447315caf..30a269fa5da0 100644
+--- a/drivers/counter/ti-ecap-capture.c
++++ b/drivers/counter/ti-ecap-capture.c
+@@ -574,8 +574,11 @@ static int ecap_cnt_resume(struct device *dev)
+ {
+ 	struct counter_device *counter_dev = dev_get_drvdata(dev);
+ 	struct ecap_cnt_dev *ecap_dev = counter_priv(counter_dev);
++	int ret;
+ 
+-	clk_enable(ecap_dev->clk);
++	ret = clk_enable(ecap_dev->clk);
++	if (ret)
++		return ret;
+ 
+ 	ecap_cnt_capture_set_evmode(counter_dev, ecap_dev->pm_ctx.ev_mode);
+ 
+-- 
+2.25.1
+
 
