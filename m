@@ -1,96 +1,91 @@
-Return-Path: <linux-omap+bounces-1389-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1390-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA2198C8A9B
-	for <lists+linux-omap@lfdr.de>; Fri, 17 May 2024 19:11:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B78D8C8D57
+	for <lists+linux-omap@lfdr.de>; Fri, 17 May 2024 22:38:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 73C211F2506D
-	for <lists+linux-omap@lfdr.de>; Fri, 17 May 2024 17:11:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 363C3286891
+	for <lists+linux-omap@lfdr.de>; Fri, 17 May 2024 20:38:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB73F13DB8A;
-	Fri, 17 May 2024 17:11:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 767151411CE;
+	Fri, 17 May 2024 20:38:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bEnd9VM3"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 525A613D8BA;
-	Fri, 17 May 2024 17:11:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A8FEF4EE;
+	Fri, 17 May 2024 20:38:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715965879; cv=none; b=sBUomsiLGgV4E1iv64hNTR4Tp/ojyLd82x/o51+S5ZoqbuWUdbQj37pfz50jsgVfSto4y4u+smeOqbQTmLjkaH+5EwwABvsCMUbtYJa18e8C8EyXrUEYSaezBC0Lh5p81QJscExeSJESNMrGj5NgxPgjxjmbj64kUf3KyxMDBEc=
+	t=1715978310; cv=none; b=QNoOLEUw5IzRTF0hbWToEyWHxuMHmuWZklSFRShv0y5Fm15z1bHnWN8XG8frOUP0ky+2ZdOY4eqt+h8smxZRNwP6Ptlggfad9hUqCapQ6HVr31M0upJw71jQ4l4fTwIEKZCDTHjxfAsF+vFQ361qmlcT3fJAThVUM+XC313LZI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715965879; c=relaxed/simple;
-	bh=1CqyftBDEXOVDyFcVDmBaxAf8kOdv29ex2A8LD6/HxE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZQK2WBN4+60UUZnrj767U069kuXU6eloK7/m5c9yoPDq+Zx8qsnIzm66Wzj3YgQPINnlh7TQjFRqZ2GvtJ5SY9Wb12Z3WHTzObfmrMxiWRzH9Bcnlo8pXDn0EVWWgiCDLoTT7v4vTD2yVNs0GnCnOl9xZV1BpVRZRRQu9FUQUxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.215.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-5cdbc4334edso39886a12.3;
-        Fri, 17 May 2024 10:11:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715965877; x=1716570677;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lAZTH/iu4eZz205ntNPvFyQUPrKNBzAPt6a2aDm0hxg=;
-        b=PHki8uFAcN25fzeEw1mcFE3Tn0qUcrW3M94A5rCRkWqgCy8RqM19IuXnuJ1A9N+vJk
-         u1hfdnC1gP9sTrKLZRzt5pXfHbww43sVWmKeHZ0yECwV+tq28XdFOGoaIeCy+TEcJUWl
-         d0DslSxbGrG9s+mp56YS5EQONFzp+PZRhhxJ3cVSQqQYLzT5xdomq+ovUk9Vocy/Tunh
-         WvOJWNgUYr2tn3tQ6UZLkqbWIUvxMKTawGIeCyoCn29e4YAXLQkNxU9gu4hbJmYtta1U
-         xUgwbADjwRN4mMrgTZJMpT8lCNALgiMvx34Adzxm+bhUk0rmPnj69GNCXSNRmXnsTnW9
-         I61A==
-X-Forwarded-Encrypted: i=1; AJvYcCWxyPeaTffarM3cLhXpy2HYJixtd27Vj7Blc6q8kuhLWX/XEWbzWJbtbSfHtBW8u05Me10NEXyiW0gRAVXUypt3IlebktNQhVPK+SxbxIRTJaK8Bu3D7fryfP74McfC3FDCsEY7tA==
-X-Gm-Message-State: AOJu0Yx3G3ULFZuDWYL3ZpXcGvXtyVFXwkBAS7bIu48R/qHK80H9ghdH
-	O9vB3rkidblp6QnmEMtwMjVfutmQXpPxHF2nWSAB17gIJXcrigDtdsgNGw18
-X-Google-Smtp-Source: AGHT+IFcSAAYldjjbYYJRzeFZa6mo5x4UR+GU2KewOECy4lRpBfuRxn7bVxXMN/UwIeUKdZYdBrweA==
-X-Received: by 2002:a05:6a00:21c6:b0:6f4:9fc7:daf2 with SMTP id d2e1a72fcca58-6f4e02a5f45mr26547851b3a.7.1715965877535;
-        Fri, 17 May 2024 10:11:17 -0700 (PDT)
-Received: from localhost (fpd11144dd.ap.nuro.jp. [209.17.68.221])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-6f4fcb6e14asm10121620b3a.185.2024.05.17.10.11.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 May 2024 10:11:16 -0700 (PDT)
-Date: Sat, 18 May 2024 02:11:14 +0900
-From: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
-To: Niklas Cassel <cassel@kernel.org>
-Cc: Vignesh Raghavendra <vigneshr@ti.com>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 1/2] PCI: dra7xx: Fix cpu_addr_fixup parameter name
-Message-ID: <20240517171114.GD1947919@rocinante>
-References: <20240430071054.248008-3-cassel@kernel.org>
+	s=arc-20240116; t=1715978310; c=relaxed/simple;
+	bh=qZxGEu1hAOMmpvEJRGTMEizv4knrf8goXPzI+KOUMZ4=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=QC5jTYi4VLowJ6hH2fkXlP6oYt/Bbg/98jKimmOwCl9D5sDrNB4KpKKXbdF+jyTrS+78urnV6c+RPRi2pPXZ2gmoco6UX0pk2+pbGGwtjaz4eu7Uxb38dbvdK8nmCEmx33HBHDQRKFIOrlyrf0kXih9lTa2uR12bfwaAQ7UFPWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bEnd9VM3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 9EC14C32786;
+	Fri, 17 May 2024 20:38:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715978309;
+	bh=qZxGEu1hAOMmpvEJRGTMEizv4knrf8goXPzI+KOUMZ4=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=bEnd9VM3U/qZtWjrIsDwmUE0L42Qh55OPmYP4nL1IvXRjySNl+FqTith8kqdcZR3g
+	 oBPjZe9ASSV0CvMUAYJ1gs0q2ERuNDG+/UPQDSvafulJ8ln5u4VtY9D1namgHUA0gk
+	 J74WDJ1AG6zoOTjZ4L2gTLPx6MUskfOcIcbppRH9+1tQJtA4FS7Uy8/i4hyIwsa9rH
+	 pvs+V8oEgIXwpDYD6b73OQsKhIcyclreBz1iOi9hhh97olqfMvdVAGWtodQINhEIiC
+	 SdRBjS3GTPpOWHjnIid1Yw2m+7VEYx3DoPMKQJtKA3cBY4CBFNOUve3Zyrp0DGnVyI
+	 cHCwH81nnLZew==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 8C09FC43336;
+	Fri, 17 May 2024 20:38:29 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240430071054.248008-3-cassel@kernel.org>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] MAINTAINERS: net: Update reviewers for TI's Ethernet drivers
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <171597830956.5541.6328372782096647166.git-patchwork-notify@kernel.org>
+Date: Fri, 17 May 2024 20:38:29 +0000
+References: <20240516082545.6412-1-r-gunasekaran@ti.com>
+In-Reply-To: <20240516082545.6412-1-r-gunasekaran@ti.com>
+To: Ravi Gunasekaran <r-gunasekaran@ti.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-omap@vger.kernel.org, s-vadapalli@ti.com, rogerq@kernel.org
 
-Hello,
+Hello:
 
-> The function pointer declaration for the cpu_addr_fixup() callback uses
-> "cpu_addr" as parameter name.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Thu, 16 May 2024 13:55:45 +0530 you wrote:
+> Remove myself as reviewer for TI's ethernet drivers
 > 
-> Likewise, the argument that is supplied to the function pointer when the
-> function is actually called is "cpu_addr".
+> Signed-off-by: Ravi Gunasekaran <r-gunasekaran@ti.com>
+> ---
+>  MAINTAINERS | 1 -
+>  1 file changed, 1 deletion(-)
 > 
-> Rename the cpu_addr_fixup parameter name to match reality.
+> [...]
 
-Applied to controller/dwc, thank you!
+Here is the summary with links:
+  - MAINTAINERS: net: Update reviewers for TI's Ethernet drivers
+    https://git.kernel.org/netdev/net/c/31279b0cb45f
 
-[01/02] PCI: dra7xx: Fix dra7xx_pcie_cpu_addr_fixup() parameter name
-        https://git.kernel.org/pci/pci/c/6f4c62fd8a32
-[02/02] PCI: artpec6: Fix artpec6_pcie_cpu_addr_fixup() parameter name
-        https://git.kernel.org/pci/pci/c/49993453e079
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-	Krzysztof
+
 
