@@ -1,77 +1,104 @@
-Return-Path: <linux-omap+bounces-1383-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1384-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68D278C8251
-	for <lists+linux-omap@lfdr.de>; Fri, 17 May 2024 10:06:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B75398C84AF
+	for <lists+linux-omap@lfdr.de>; Fri, 17 May 2024 12:22:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C7BA280D33
-	for <lists+linux-omap@lfdr.de>; Fri, 17 May 2024 08:06:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4EDE1C21A7D
+	for <lists+linux-omap@lfdr.de>; Fri, 17 May 2024 10:22:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 250911A28D;
-	Fri, 17 May 2024 08:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4336D36B1D;
+	Fri, 17 May 2024 10:22:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iOtMg36h"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JS25gVTo"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B626F17C69;
-	Fri, 17 May 2024 08:05:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4DA72C848;
+	Fri, 17 May 2024 10:22:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715933153; cv=none; b=PYFYNyql2H59IKNMFS8r8MDGA+dc3nsEOVz/S7bfRVLp8QMdHDkQUIqd0wTticVf6OBgvLLW4G6PTWCVxJ4lSLD2d4P8tzJZ/rOT/p7NcPfEV7KEJZU0SDwdGbuu4gCSH7aDRtebGGUta3oi1S4AZ07s2FYPX/NGUBNhVtWXsRw=
+	t=1715941356; cv=none; b=iPT6cr8ITTsmOZsr4rNV7OS+jg3nzBHg7x4QbtO0oQY+F3ktSDR2J1w5QDdDyOgd6OrYUeRjuQNCDmSIrjS6+7DdrhbvhCT5IYaJHFUnB4Feg4o/+R4MoJVUfpDDO2HWPfGy/HX+JPcPA/FcANmtRoWqDe5FT8/3mqy65eyihzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715933153; c=relaxed/simple;
-	bh=wyUDUgKQT7GU3hDhxjsn94yEfi6h+TRBgdQAWb1F/YA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nwYazK4o1hoL+QSjnFTw8NPZn9MO9cuypIFk3k0byR6RywJxRn26s6tvRZkNPpULzHsAac0D297ccikUfv+ED8BAzAYzgciYXpyAFKsdLVZyjPW4jeYkwXf3dREYvJK/aSaKrgOAzgVJBCDYgxk4Pz7uvSYnTJ6hRw+eei3c9D8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iOtMg36h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18E72C2BD10;
-	Fri, 17 May 2024 08:05:51 +0000 (UTC)
+	s=arc-20240116; t=1715941356; c=relaxed/simple;
+	bh=Siin2KDdrw9IZXPxUcVfzq/13heNRE814alBNBZNmm0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=a4Z9L4jgda0x5wigbTN+Fdfi4KvFQ/8ZVTKRz0DhOK0MZWfpDi3NpK/sdplXP3oS53+gBoc/Ho0q7+9Mr4sIVrJBtG2OpxzbGJZ58pvflWgLA46RGiIoRwxhZ81fN/wUieXnD/GQOMwE2tpxDU3cjJ1BysELcdKtgqy4ZzDuTSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JS25gVTo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B174C2BD10;
+	Fri, 17 May 2024 10:22:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715933153;
-	bh=wyUDUgKQT7GU3hDhxjsn94yEfi6h+TRBgdQAWb1F/YA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=iOtMg36hKj8pTz8RXaEAMeEIuKZJRqX1xQvRPqQ+1FyDJ5M9oT1OBFe5KL4BmIZpJ
-	 H3rU0zhWZzlFmdyPlNkyI68z9MJp1Bphwd8VRftIclBxsqYtnwh+JiU3fKUChiZgqI
-	 WYYe3ZnAXeRjIBQD2OM7H6UdTJV1SDnVv+tqTDeuyoGOdnj7iOX3LOq84Ji+SPiCPQ
-	 vKFlzy87y1T2uflqe8aPubvKM+IofKAMbocrUOG0a2O6I7gg3dMD7nTohFw0AG9qFQ
-	 puLOEecmkswuExshB4xZ5+RwWO6BA/6KFu1YJa1KLAIqB6yF/wyz0KkGt0OWfO+/KE
-	 CUxrSeHK7wWOQ==
-Message-ID: <abf53395-f3eb-4082-8b57-5cc672c75060@kernel.org>
-Date: Fri, 17 May 2024 11:05:49 +0300
+	s=k20201202; t=1715941356;
+	bh=Siin2KDdrw9IZXPxUcVfzq/13heNRE814alBNBZNmm0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JS25gVToNhvMMNg7hxuTZL0tG/HBKNKC/y60z1180iBSmkkiAF93gz8IahYLICpPR
+	 dD1+BEZrCmEKnkC5poMsAVMb7azHUcJlbh6I/eYx0PbexCe7SzuCwDZcIo8GM0NuOK
+	 2zEaUbHpY/T5Xr5iUZl/JnXGgHjK9EnqS3ofKZchWLgEiup7M4RCempgYeRsm+CF9T
+	 YScRQXb5iBIlzjUx+Z91JS8yRRDzn8SM2kvgnEuQKFoMun9ZO6vcKuU3CsT9csKK9C
+	 TGUgJSrW+N27RSEIGXFCe6+/LNwj9cNO9fHoLPEtsBw0tPIrDu1Nu83x25aXj2QGIW
+	 FkUWzfs0Qm5lg==
+Date: Fri, 17 May 2024 19:22:34 +0900
+From: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Frank Li <Frank.Li@nxp.com>, linux-omap@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-amlogic@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+	linux-tegra@vger.kernel.org, Vignesh Raghavendra <vigneshr@ti.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Yue Wang <yue.wang@amlogic.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Xiaowei Song <songxiaowei@hisilicon.com>,
+	Binghui Wang <wangbinghui@hisilicon.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH v4 0/5] PCI: controller: Move to agnostic GPIO API
+Message-ID: <20240517102234.GA333779@rocinante>
+References: <20240506142142.4042810-1-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] MAINTAINERS: net: Update reviewers for TI's Ethernet
- drivers
-To: Ravi Gunasekaran <r-gunasekaran@ti.com>, netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
- s-vadapalli@ti.com
-References: <20240516082545.6412-1-r-gunasekaran@ti.com>
-Content-Language: en-US
-From: Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <20240516082545.6412-1-r-gunasekaran@ti.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240506142142.4042810-1-andriy.shevchenko@linux.intel.com>
 
+Hello,
 
+> While at it, remove of_gpio.h leftover from some of the drivers.
 
-On 16/05/2024 11:25, Ravi Gunasekaran wrote:
-> Remove myself as reviewer for TI's ethernet drivers
-> 
-> Signed-off-by: Ravi Gunasekaran <r-gunasekaran@ti.com>
+Applied to gpio, thank you!
 
-Reviewed-by: Roger Quadros <rogerq@kernel.org>
+[01/05] PCI: dra7xx: Add missing chained IRQ header inclusion
+        https://git.kernel.org/pci/pci/c/1d1efd131cc1
+[02/05] PCI: aardvark: Remove unused of_gpio.h inclusion
+        https://git.kernel.org/pci/pci/c/83bf80dc8e2f
+[03/05] PCI: dwc: Remove unused of_gpio.h inclusion
+        https://git.kernel.org/pci/pci/c/8f69a807234b
+[04/05] PCI: imx6: Convert to use agnostic GPIO API
+        https://git.kernel.org/pci/pci/c/7dfa559abc93
+[05/05] PCI: kirin: Convert to use agnostic GPIO API
+        https://git.kernel.org/pci/pci/c/7ca698ff686c
 
--- 
-cheers,
--roger
+	Krzysztof
 
