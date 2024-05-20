@@ -1,130 +1,151 @@
-Return-Path: <linux-omap+bounces-1391-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1392-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53A0E8C9935
-	for <lists+linux-omap@lfdr.de>; Mon, 20 May 2024 09:19:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A7258C9970
+	for <lists+linux-omap@lfdr.de>; Mon, 20 May 2024 09:41:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC84EB215E8
-	for <lists+linux-omap@lfdr.de>; Mon, 20 May 2024 07:19:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CED1A1C211C0
+	for <lists+linux-omap@lfdr.de>; Mon, 20 May 2024 07:41:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BF6F1B978;
-	Mon, 20 May 2024 07:19:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA8951B960;
+	Mon, 20 May 2024 07:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ET+R8R74"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="PopMMAVy"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99ECF17C6C
-	for <linux-omap@vger.kernel.org>; Mon, 20 May 2024 07:19:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 068FB1B813
+	for <linux-omap@vger.kernel.org>; Mon, 20 May 2024 07:41:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716189561; cv=none; b=A97oi85DZZCFGImX5IEPsaD9l6IM7MfmTqdOBTpedP57OgHi/89yip53loRjTsgPUu5dEHMEKcJ3ngVgF6UhW+p+OeYi3ypDyXl4cA5xIrJK9nm383Cfr4Lw+ByPkr8Ak2S56XQKANX54J/Yzr3yqvGne7gogyQQCDkLSRdXibI=
+	t=1716190886; cv=none; b=pcRc02PmmrlGXecrrnwW5m6zPVFpIV7wp0gy/jvnM2Oi9XmvRsJ2wbd0ApoN7ic/ap/RRUHaHk8gZniqq25HEjwfBXfTDvBW3HPy/Bs9G3zYThu8xKegHH3yKvD2k6YuYlNXmlLG07y83Z1YUJY+xLlXalH6T+TWDV3wA9ia62k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716189561; c=relaxed/simple;
-	bh=TtXBp/y1GJ993Y2IImPK83yaJTrKtBSiVf0gbVNi4Fw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=c7eZhi/2gE0l6nc4H1oMWxG7g7YcAR4OGqgjkDIPKpntktvbvMKOea+vRnw22qLO/V7wkYS3N5U5bPydFvVVq8GISLGCSkoEhVQF4ym1kQVeqFH8+amDyBBDD9IXeuBOj+6kE1ataJyUQqNvSz4mNKUlEUqkU0oz2z5FRLtjeHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ET+R8R74; arc=none smtp.client-ip=209.85.214.173
+	s=arc-20240116; t=1716190886; c=relaxed/simple;
+	bh=plzvp7rNugX3K6ANyXjr92sRX1YWIuJEC3UHm68SOb0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=CVKy7oeH0YWcVD34lSutGyL1J+EjxgdvC8yzp9Yf+3uSeACQp5DZxi9dlwUeXwqELFzurBD2a/sqKT7tdn9D6TkGuW7xP/ifj7PGTCVaNXETdvnzaJ63b3oJRfCCI0YcFVgHZVariEUy7ARkFslLKXgkd/KIofJw+M0wuN7Z67Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=PopMMAVy; arc=none smtp.client-ip=209.85.218.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-1ee42b97b32so66280975ad.2
-        for <linux-omap@vger.kernel.org>; Mon, 20 May 2024 00:19:18 -0700 (PDT)
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-a599a298990so743899466b.2
+        for <linux-omap@vger.kernel.org>; Mon, 20 May 2024 00:41:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1716189558; x=1716794358; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8y4kuhNsW46WW9yuHhh+VXBJRBrezkcZVwyuntDPHmY=;
-        b=ET+R8R74FHqdMda7gwL2lzdL5rjR1XdF5H+ewKW9umw4Wl3P6Xp+gHwA7b/EmkE1Cd
-         fDFKZcVuInB09b9qm2lo9k5TRoKnVkWuKGibSvX3c1+UN4KzoBjF6N9+7gxfOj+wO1W2
-         66eaRrr6O7nP7n4RwHAWJDTUWtYxp43eQ51nm+EZikab6y6fCLWwrcEIuI1eU/3m94BQ
-         siNXzXrUAdzN5J0gpQ5JfhwYWo8kqq3I3nWgc/Aoah9rYjdq62HZS86P+aOl+RPfGaLH
-         b2qpZTjsfPdYSsx8ccwnvjSD99VQ+poop4OjYAXJHHvtzbcaGUPSnKXGnKQgCDhJdK86
-         LmAw==
+        d=linaro.org; s=google; t=1716190883; x=1716795683; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9y2+R5Z+lMlXgJtdu7Zc9o7DnmU5CSj/l6XtGSHRsxY=;
+        b=PopMMAVyZIXgyz5xm/mDb3uJeyXYybjA4txKywJB7MaIZDlwvt7R53tzFR5qZhuvQX
+         NdiJpoD7UM7DFTu3sZNoEd7g3/hJUOoBD/HCx0wHV0T/O0egtl24CAk9byQPvzE+L3+6
+         cxtmsXoBqQDGLveolFYZvOiLDVFCrmD2Ez+QgeqjMIn5KOUEcwXX4oxoU2wj7wdvCOwE
+         03GkKcafd5pk9pfKTXZr01s12MqW7gUzznAlv2M1npuZ4XtDaa0fHpsETS3CNEiDlGtj
+         PZoJFRCbLhPqwV5bxfXULmt7bz9yLs/eiFbxKg6RWn+djnKBSLGfGf80eGBcJ+/p5RLZ
+         nS/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716189558; x=1716794358;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8y4kuhNsW46WW9yuHhh+VXBJRBrezkcZVwyuntDPHmY=;
-        b=CeHmnp6CV3vVg5NI1E2u1MEzz9O5QROgFr/hqLMtLP1p1xqUrI4nXUamvzjpyODQuB
-         A+PL2g/9AHf/PNTLvsYxFUrFGCFlMs3TX1/aX/J2xr+MrKNNYDTJkjcz0Ljaac3sLB73
-         d4+CGPqrB8FqzUsBoNxn1kWac/6sqU4fD00T/WslxV7fbDIQlPeRZ9HsWokuH101r1zS
-         cj+5Fa/moGHz0llPjmi4mzXnvO9RE4gSI059Tdzd78v/jfH/qD3NO3hX3cdv3fYHKJWz
-         wQQzkdqxKS8Dh98ycfmcPU2bRkubTe9RTpGV/A5MdvzCH0zi/WvxJzf35nv2C8hOJqN+
-         xawQ==
-X-Gm-Message-State: AOJu0YworIimiQGDghrc81YC3dSsATsqB4kfL/PBTPnHaL6l2eOFEW4G
-	tJ5BziAEUWpuM1hroYMKBlXlAjHd6Y4ZtI60OpvBBgOaVJHK1d/L6ktex3SWXME=
-X-Google-Smtp-Source: AGHT+IEEFl66WKoPGpgvD+Rqu7WM6o+8q8tAnwmX9Dq9HIkUrcJTIhG1B4gLnlTZWm0iYncA4fOuZA==
-X-Received: by 2002:a17:90a:e7ce:b0:2bd:820b:7863 with SMTP id 98e67ed59e1d1-2bd820b7aa8mr1147725a91.18.1716189557840;
-        Mon, 20 May 2024 00:19:17 -0700 (PDT)
-Received: from localhost ([122.172.82.13])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2b62884b837sm21341342a91.20.2024.05.20.00.19.16
+        d=1e100.net; s=20230601; t=1716190883; x=1716795683;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9y2+R5Z+lMlXgJtdu7Zc9o7DnmU5CSj/l6XtGSHRsxY=;
+        b=fsj/iZ8rfxwF9lHAE+CI/kMQGgbOr2n+NR3C0HQErJgsBx845hymV1gWIdfnCnI4/+
+         ZqPvVcg0EkmjIucTmKG2wWtoMgaIEZkJyETrmwScvpOvQ4pqrnyfZ8EdFdJtCw94XCnk
+         tLFXOjyaYubHMaIvf2YpzFug/+rsh2OEIicPHjaOMsprRzdHax5kvadJiiQqKNHmczcT
+         ggtjoo6ICwGTd4Tsn5w1ZgObUmR8wfGergnChL07TxfB9QHLYv3bC5QbFO1S5cehnzJe
+         sdqCvpixYehRfIGNpyvd35cCxxex/kjGnk89e7m7o1Xbi9eGCTXXhK1k7GvXc5Ehr67G
+         trtw==
+X-Forwarded-Encrypted: i=1; AJvYcCXWnSlm5LQ32XK/t+LGBQ/4uTozj3UeaKVItMWfKPRMSX9sb2Ski4zGv7fr3Vl4+kLJVzWeAyOGhbhoVz9WG731ta6BGqotb/NEJQ==
+X-Gm-Message-State: AOJu0YzCSb2qjm6vYWcJBtTdelILF4tNDZj2EqcXmdFvqUQIzaOZNsxy
+	CZKdemRr1A3qX4p9ndpIav9xicGMCevOVDW0d34pIl88cnZ9bEtaU2V3QYInf5A=
+X-Google-Smtp-Source: AGHT+IH9haA9iR4YwoKX0PzjzpCIy5yTTINDqwVFObjzHq50kZ9iLXtPJQM9TPGv9QNsFnHhLLi5EQ==
+X-Received: by 2002:a17:906:6a02:b0:a5a:7c7e:a0d3 with SMTP id a640c23a62f3a-a5a7c7ea16fmr1445195766b.44.1716190883404;
+        Mon, 20 May 2024 00:41:23 -0700 (PDT)
+Received: from krzk-bin.. ([178.197.206.169])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a5a893a91b9sm754853166b.7.2024.05.20.00.41.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 May 2024 00:19:17 -0700 (PDT)
-Date: Mon, 20 May 2024 12:49:15 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Merlijn Wajer <merlijn@wizzup.org>
-Cc: linux-omap <linux-omap@vger.kernel.org>, rafael@kernel.org,
-	zhipeng.wang_1@nxp.com, Tony Lindgren <tony@atomide.com>,
-	Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
-	Carl Philipp Klemm <philipp@uvos.xyz>,
-	"Sicelo A . Mhlongo" <absicsz@gmail.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	linux-pm@vger.kernel.org
-Subject: Re: No cpufreq entries with omap2plus_defconfig since "cpufreq:
- dt-platdev: Support building as module" (commit 3b062a08)
-Message-ID: <20240520071915.knnmxkjtajbnw7sp@vireshk-i7>
-References: <657f402f-3c22-48bb-8102-ab35a74444c1@wizzup.org>
+        Mon, 20 May 2024 00:41:22 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Arnd Bergmann <arnd@arndb.de>,
+	Olof Johansson <olof@lixom.net>,
+	arm@kernel.org,
+	soc@kernel.org,
+	Antoine Tenart <atenart@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Tony Lindgren <tony@atomide.com>,
+	linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-omap@vger.kernel.org
+Cc: Bartosz Golaszewski <brgl@bgdev.pl>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 1/2] =?UTF-8?q?ti:=20omap:=20MAINTAINERS:=20move=20Beno?= =?UTF-8?q?=C3=AEt=20Cousson=20to=20CREDITS?=
+Date: Mon, 20 May 2024 09:40:12 +0200
+Message-ID: <20240520074013.9672-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <657f402f-3c22-48bb-8102-ab35a74444c1@wizzup.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 02-05-24, 13:04, Merlijn Wajer wrote:
-> Hi,
-> 
-> I was looking at switching my Motorola Droid 4 phone from Linux 6.1 to Linux
-> 6.6, and it no longer gets any cpufreq entries on boot, and I found
-> cpufreq_dt was no longer loaded. I tried to force the issue by modprobe it,
-> but to no avail. The same issue occurs on the latest 6.9.
-> 
-> After a bit of digging it looks like the problem is that cpufreq-dt-platdev
-> can be built as a module and when this the case (apparently the default),
-> cpufreq_dt doesn't work. With the omap2plus_defconfig,
-> CONFIG_CPUFREQ_DT_PLATDEV is indeed set to module.
-> 
-> When I manually probe cpufreq-dt-platdev and cpufreq_dt, I get the
-> cpufreq_entries back.
-> 
-> Searching around I found this debian bug report [1] which just flips the
-> CONFIG_CPUFREQ_DT_PLATDEV back to '=y', but I think there might be a deeper
-> issue here.
-> 
-> Is there a way to define this relationship/dependency for cpufreq-dt, so
-> that it will automatically load this module?
+Last email from Benoît Cousson was in 2014 [1], so remove him from
+maintainers of the TI OMAP platform.  Stale maintainer entries hide
+information whether subsystem needs help, has a bus-factor or is even
+orphaned.
 
-Does this fix it for you ?
+Benoît Cousson, thank you for TI OMAP contributions and maintenance.
 
-diff --git a/drivers/cpufreq/cpufreq-dt-platdev.c b/drivers/cpufreq/cpufreq-dt-platdev.c
-index 100760259f70..bb48b674be5e 100644
---- a/drivers/cpufreq/cpufreq-dt-platdev.c
-+++ b/drivers/cpufreq/cpufreq-dt-platdev.c
-@@ -233,4 +233,5 @@ static int __init cpufreq_dt_platdev_init(void)
-                               sizeof(struct cpufreq_dt_platform_data)));
- }
- core_initcall(cpufreq_dt_platdev_init);
-+MODULE_ALIAS("platform:cpufreq-dt");
- MODULE_LICENSE("GPL");
+[1] https://lore.kernel.org/all/?q=f%3Abcousson%40baylibre.com
 
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+ CREDITS     | 5 +++++
+ MAINTAINERS | 2 --
+ 2 files changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/CREDITS b/CREDITS
+index 0107047f807b..ea84fb373310 100644
+--- a/CREDITS
++++ b/CREDITS
+@@ -796,6 +796,11 @@ E: luisfcorreia@gmail.com
+ D: Ralink rt2x00 WLAN driver
+ S: Belas, Portugal
+ 
++N: Benoît Cousson
++E: bcousson@baylibre.com
++D: TI OMAP Devicetree platforms
++D: TI OMAP HWMOD boards
++
+ N: Alan Cox
+ W: http://www.linux.org.uk/diary/
+ D: Linux Networking (0.99.10->2.0.29)
+diff --git a/MAINTAINERS b/MAINTAINERS
+index a482f2a499e4..8193bd95c84c 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -16147,7 +16147,6 @@ S:	Maintained
+ F:	arch/arm/*omap*/*clock*
+ 
+ OMAP DEVICE TREE SUPPORT
+-M:	Benoît Cousson <bcousson@baylibre.com>
+ M:	Tony Lindgren <tony@atomide.com>
+ L:	linux-omap@vger.kernel.org
+ L:	devicetree@vger.kernel.org
+@@ -16202,7 +16201,6 @@ S:	Maintained
+ F:	arch/arm/mach-omap2/omap_hwmod*data*
+ 
+ OMAP HWMOD SUPPORT
+-M:	Benoît Cousson <bcousson@baylibre.com>
+ M:	Paul Walmsley <paul@pwsan.com>
+ L:	linux-omap@vger.kernel.org
+ S:	Maintained
 -- 
-viresh
+2.43.0
+
 
