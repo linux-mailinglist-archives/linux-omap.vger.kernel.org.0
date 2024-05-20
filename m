@@ -1,153 +1,196 @@
-Return-Path: <linux-omap+bounces-1393-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1394-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF6728C9973
-	for <lists+linux-omap@lfdr.de>; Mon, 20 May 2024 09:41:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1459C8C9C0A
+	for <lists+linux-omap@lfdr.de>; Mon, 20 May 2024 13:17:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0A451C212C9
-	for <lists+linux-omap@lfdr.de>; Mon, 20 May 2024 07:41:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7BB4282F8F
+	for <lists+linux-omap@lfdr.de>; Mon, 20 May 2024 11:17:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59F291BF54;
-	Mon, 20 May 2024 07:41:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAB72535B8;
+	Mon, 20 May 2024 11:17:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="SIVHYJeh"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="g3O5Mq+L"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E3A912B8B
-	for <linux-omap@vger.kernel.org>; Mon, 20 May 2024 07:41:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A980820EB;
+	Mon, 20 May 2024 11:17:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.249
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716190888; cv=none; b=OFCbTc2ViBV74QpiUF80/LG9EexrS+vtiT8bcE84bydpjC0dUX/wBtZA5dP9os6kkNcdxjEy1vvPPvpLUdVkMZ9VQp14XPt4xLA0aLjXcRRMYDYGRKppuExz6/qkFNJs81jMr40S56El11IHEBB/ldhoUCzuLZiYiJ71xJ7Rrfg=
+	t=1716203866; cv=none; b=ALkH851idkie/29alWcD0/Lgh5EkEd5Nz/DYiOMLFDdqPjV0wF/MKf0jYHKngT1y6Rdg9zplHNhpPMRtgfvyG/c85wTAri3MtKttIXtqDQ34WUtdhNOaStDuLDMv9Hbk5XKJ6+VBpX3p4RMYKl5ojRBy+RuM1mLjrKGXY05p6T0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716190888; c=relaxed/simple;
-	bh=G5RDRHDp8bHkhePtdbNcRht+dyNZhXMGcqFPvB99Cuw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cWh2h25v+WbdNyGoPGM0GYjl52uR8/+ZzJ6VpO3NKNMU90A3NEPocyG1Xm7s2GIHi6kLFoBEbkt20rRhvsMb5LRfJ3IMfjlkfzulvs4nD84VjYd9W/cfUSGxJKi+/Q7vT/QkBqUbGETGD95Pe4M4rkZhas1Sbl1gXl1H7I6TuCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=SIVHYJeh; arc=none smtp.client-ip=209.85.208.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-56e48d0a632so9363397a12.2
-        for <linux-omap@vger.kernel.org>; Mon, 20 May 2024 00:41:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1716190885; x=1716795685; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6A/avYP5YPpm971N8IK0uubu89NMozFIaDiylX6PsHQ=;
-        b=SIVHYJehigN7Z+uGkDHc1JXmT3UA1QwdO0L4SKt5cjkYYu08ajuJUYcbokh6wQymlf
-         tPn/YOSql7kMgbv9Zkn7+vXUGGGPOzgEuNZjI6j/j7Xl3F+VChveElSxgTUxnzMZKMy/
-         qyMvMB5Jsw8xYWgnRzMl4et+c44SCilHajNjEPTtRxm1RjzRDkTyHv3cZel+7WsRxslU
-         rFkcnpgrSN329zStFn9cK6YN+dUTB/aa/zC3p0Q1ethr6BW4KS5H6eYaXMFRs3KXOwjN
-         76kAJGLny2od8PsfeV6Gdzq6dcdFRNUj1s9tC2iAmzLwyr82qu07fXYHhHJSBYnLbVG7
-         wJPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716190885; x=1716795685;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6A/avYP5YPpm971N8IK0uubu89NMozFIaDiylX6PsHQ=;
-        b=YZhsbQ/1VDsc2H+lynHTzmOkP7EWF/u2YgyoFSZWUpT8CmiJ0fU9eP1gcJ0qlsCzag
-         cfbnPsMDJWqogeP3YjqgLE6CFqclo0jrUXcCTWAu0iw+3OuivCkxUTlXDHuOREt362tc
-         hB6jOM+UAMpWvJJ4+5rd0BpajfmY7Nt3ozbsUis8ouArJX2L6/Aj5U31nZxpz6KQOuaT
-         fjyMSAQIph17QCKo0/5QaeGq+Lqhl5tw3v0lq2bGonnkWOHdWZrIKK/zZaQA0SL1/Ya0
-         HfrPd0mMJTyAJNVcxmJNXUmAvu9sp4+vLj8OXOa8I1GkRKj7VWVxSaPIEOBC61hlqBxl
-         awFg==
-X-Forwarded-Encrypted: i=1; AJvYcCUioKxNIYOLxVk6tgBslmoiUTFJDyGu1lWcHqArcYI1wBwWgXi3QfIkmfLPF+Uv5XH9x81ARWquP39JIB/s39UqRhF1TpGdEjLJ4w==
-X-Gm-Message-State: AOJu0YzIuVakU92aSyhxBy67LyqPRYnCVGaPcf2h37JxhtDK2KFRzQ7C
-	7ztmupKpjBMq5x2jEwsuMDMrPzCLESdea9Pu1ZUSx6Ie4Ph7lHSAuMe1Euawnmc=
-X-Google-Smtp-Source: AGHT+IGaGv6w5Ejo+3PCQdIkO7sIlmQZTkHvXrWEWEQy4bzPDzHGkbybTDIi2J4UNNkyIEUhf7BVeg==
-X-Received: by 2002:a17:906:4f83:b0:a59:ea34:fe0d with SMTP id a640c23a62f3a-a5a2d65ed4bmr2937020466b.47.1716190884722;
-        Mon, 20 May 2024 00:41:24 -0700 (PDT)
-Received: from krzk-bin.. ([178.197.206.169])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a5a893a91b9sm754853166b.7.2024.05.20.00.41.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 May 2024 00:41:24 -0700 (PDT)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To: Arnd Bergmann <arnd@arndb.de>,
-	Olof Johansson <olof@lixom.net>,
-	arm@kernel.org,
-	soc@kernel.org,
-	Antoine Tenart <atenart@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Tony Lindgren <tony@atomide.com>,
-	linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-omap@vger.kernel.org
-Cc: Bartosz Golaszewski <brgl@bgdev.pl>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 2/2] amazon: MAINTAINERS: change to odd fixes and Tsahee Zidenberg to CREDITS
-Date: Mon, 20 May 2024 09:40:13 +0200
-Message-ID: <20240520074013.9672-2-krzysztof.kozlowski@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240520074013.9672-1-krzysztof.kozlowski@linaro.org>
-References: <20240520074013.9672-1-krzysztof.kozlowski@linaro.org>
+	s=arc-20240116; t=1716203866; c=relaxed/simple;
+	bh=Tr8/wwJz4pOtQRmig0+vpz4m6s/lwh1H78YLrzvodNA=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rQ4oiY5HeEZwbge6aFAUJV548Qmn3DkohjUV1y+ILCRN1zIC4by7lNwyfDLHhaztLeM8hguwxmtopc7JMtdG+7eQ0faZnEkmn1m+20+NWJwgp1xh1LrlCUvritu65OWrIUdS1iPf6d5v7e+kvkyai6RMAi42kmj0avOctatAhPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=g3O5Mq+L; arc=none smtp.client-ip=198.47.23.249
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 44KBGaTh127346;
+	Mon, 20 May 2024 06:16:36 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1716203796;
+	bh=DtbotRrxlfh+3BepWZTeI8VdjCOrKh6fu9usGat9L9E=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To;
+	b=g3O5Mq+LDVkAiOTfu89f+qA4Hc5CXAw8hwO6CDpVZOWCWTiaPXueaSCSB4aV5yfpo
+	 7kuGcJqh/HJywyzhyxgs+Jn/UDIqkdj825k8R7YYhVLHbxsqxQUNfeptJZiZDPQQU8
+	 /Iwl/AjrCGfhiuyQLi1IETRhlb3zpxdwUt3cYlao=
+Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
+	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 44KBGahd004860
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Mon, 20 May 2024 06:16:36 -0500
+Received: from flwvowa02.ent.ti.com (10.64.41.53) by DFLE112.ent.ti.com
+ (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 20
+ May 2024 06:16:36 -0500
+Received: from DFLE112.ent.ti.com (10.64.6.33) by flwvowa02.ent.ti.com
+ (10.64.41.53) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2507.34; Mon, 20 May
+ 2024 06:16:35 -0500
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE112.ent.ti.com
+ (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Mon, 20 May 2024 06:16:35 -0500
+Received: from localhost (uda0492258.dhcp.ti.com [172.24.227.9])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 44KBGZ84034645;
+	Mon, 20 May 2024 06:16:35 -0500
+Date: Mon, 20 May 2024 16:46:34 +0530
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
+To: Onkarnath <onkarnath.1@samsung.com>
+CC: Siddharth Vadapalli <s-vadapalli@ti.com>,
+        "bhelgaas@google.com"
+	<bhelgaas@google.com>,
+        "vigneshr@ti.com" <vigneshr@ti.com>,
+        "lpieralisi@kernel.org" <lpieralisi@kernel.org>,
+        "kw@linux.com"
+	<kw@linux.com>, "robh@kernel.org" <robh@kernel.org>,
+        "yue.wang@Amlogic.com"
+	<yue.wang@Amlogic.com>,
+        "neil.armstrong@linaro.org"
+	<neil.armstrong@linaro.org>,
+        "khilman@baylibre.com" <khilman@baylibre.com>,
+        "jbrunet@baylibre.com" <jbrunet@baylibre.com>,
+        "martin.blumenstingl@googlemail.com" <martin.blumenstingl@googlemail.com>,
+        "thomas.petazzoni@bootlin.com" <thomas.petazzoni@bootlin.com>,
+        "shawn.guo@linaro.org" <shawn.guo@linaro.org>,
+        "lchuanhua@maxlinear.com"
+	<lchuanhua@maxlinear.com>,
+        "srikanth.thokala@intel.com"
+	<srikanth.thokala@intel.com>,
+        "songxiaowei@hisilicon.com"
+	<songxiaowei@hisilicon.com>,
+        "wangbinghui@hisilicon.com"
+	<wangbinghui@hisilicon.com>,
+        "manivannan.sadhasivam@linaro.org"
+	<manivannan.sadhasivam@linaro.org>,
+        "thierry.reding@gmail.com"
+	<thierry.reding@gmail.com>,
+        "jonathanh@nvidia.com" <jonathanh@nvidia.com>,
+        "hayashi.kunihiko@socionext.com" <hayashi.kunihiko@socionext.com>,
+        "mhiramat@kernel.org" <mhiramat@kernel.org>,
+        "pali@kernel.org"
+	<pali@kernel.org>,
+        "toan@os.amperecomputing.com"
+	<toan@os.amperecomputing.com>,
+        "daire.mcnamara@microchip.com"
+	<daire.mcnamara@microchip.com>,
+        "conor.dooley@microchip.com"
+	<conor.dooley@microchip.com>,
+        "marek.vasut+renesas@gmail.com"
+	<marek.vasut+renesas@gmail.com>,
+        "shawn.lin@rock-chips.com"
+	<shawn.lin@rock-chips.com>,
+        "heiko@sntech.de" <heiko@sntech.de>,
+        "nirmal.patel@linux.intel.com" <nirmal.patel@linux.intel.com>,
+        "jonathan.derrick@linux.dev" <jonathan.derrick@linux.dev>,
+        "kishon@kernel.org" <kishon@kernel.org>,
+        "jdmason@kudzu.us"
+	<jdmason@kudzu.us>,
+        "dave.jiang@intel.com" <dave.jiang@intel.com>,
+        "rafael@kernel.org" <rafael@kernel.org>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "mahesh@linux.ibm.com" <mahesh@linux.ibm.com>,
+        "oohall@gmail.com"
+	<oohall@gmail.com>,
+        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+        "linux-amlogic@lists.infradead.org"
+	<linux-amlogic@lists.infradead.org>,
+        "linux-arm-msm@vger.kernel.org"
+	<linux-arm-msm@vger.kernel.org>,
+        "linux-tegra@vger.kernel.org"
+	<linux-tegra@vger.kernel.org>,
+        Rohit Thapliyal <r.thapliyal@samsung.com>,
+        Maninder Singh <maninder1.s@samsung.com>
+Subject: Re: [PATCH 1/1] PCI : Refactoring error log prints for better
+ readability
+Message-ID: <e0e28988-9699-4e6c-abb0-30fa2727c2c3@ti.com>
+References: <4ec3b167-9324-41d3-a086-74ca001b9042@ti.com>
+ <20240517105923.2406246-1-onkarnath.1@samsung.com>
+ <CGME20240517105941epcas5p3e8dbb97f19c9553bf9942ad146124806@epcms5p5>
+ <20240520104358epcms5p50e00970ef70f66e87ceaaa893fc0ba67@epcms5p5>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20240520104358epcms5p50e00970ef70f66e87ceaaa893fc0ba67@epcms5p5>
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 
-Last email from Tsahee Zidenberg was in 2016 [1], so move Tsahee from
-Amazon platform maintainers to credits (thank you for your contributions
-and maintenance!).  Stale maintainer entries hide information whether
-subsystem needs help, has a bus-factor or is even orphaned.
+On Mon, May 20, 2024 at 04:13:58PM +0530, Onkarnath wrote:
+> Hi,
+> 
+> 
 
-The Amazon platform still has active maintainer - Antoine Tenart -
-however there was no maintenance activities coming from Antoine.  All
-my patches from last 4 years related to Amazon remained unanswered - no
-acks, no picks - so document the actual not active status of the
-platform by changing it to Odd Fixes.
+[...]
 
-[1] https://lore.kernel.org/all/?q=f%3Atsahee%40annapurnalabs.com
+> 
+> >>Similar question as above regarding converting "failed, ret" to
+> 
+> >>"failed:". Is this a new convention that is expected to be followed,
+> 
+> >where all errors are supposed to have "failed: %pe", rather than custom
+> 
+> >statements? Please let me know if this has already been discussed
+> 
+> >elsewhere.
+> 
+> 
+> Bjorn suggested to make all errors consistent.
+> 
+> and I thought printing error like below:
+> 
+> 
+> "gpio request failed: -ENOMEM".
+> 
+> 
+> Seems more suitable than
+> 
+> 
+> "gpio request failed, ret (-ENOMEM)".
+> 
+> 
+> If it needs to be changed in other format, please let me know, i will make all
+> errors in that format.
+> 
+> and will share v2.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
----
- CREDITS     | 4 ++++
- MAINTAINERS | 3 +--
- 2 files changed, 5 insertions(+), 2 deletions(-)
+Thank you for clarifying. It appeared to me that the suggestion was
+limited to the %d to %pe conversion. The existing implementation looks
+good in that case.
 
-diff --git a/CREDITS b/CREDITS
-index ea84fb373310..bdf592e0bd25 100644
---- a/CREDITS
-+++ b/CREDITS
-@@ -4367,6 +4367,10 @@ N: Haojian Zhuang
- E: haojian.zhuang@gmail.com
- D: MMP support
- 
-+N: Tsahee Zidenberg
-+E: tsahee@annapurnalabs.com
-+D: Annapurna Labs Alpine Architecture
-+
- N: Richard Zidlicky
- E: rz@linux-m68k.org, rdzidlic@geocities.com
- W: http://www.geocities.com/rdzidlic
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 8193bd95c84c..3e1ce64801ef 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1958,10 +1958,9 @@ F:	drivers/soc/amlogic/
- N:	meson
- 
- ARM/Annapurna Labs ALPINE ARCHITECTURE
--M:	Tsahee Zidenberg <tsahee@annapurnalabs.com>
- M:	Antoine Tenart <atenart@kernel.org>
- L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
--S:	Maintained
-+S:	Odd Fixes
- F:	arch/arm/boot/dts/amazon/
- F:	arch/arm/mach-alpine/
- F:	arch/arm64/boot/dts/amazon/
--- 
-2.43.0
-
+Regards,
+Siddharth.
 
