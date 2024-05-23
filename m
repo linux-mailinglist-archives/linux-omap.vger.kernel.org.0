@@ -1,172 +1,228 @@
-Return-Path: <linux-omap+bounces-1396-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1397-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C6468CA818
-	for <lists+linux-omap@lfdr.de>; Tue, 21 May 2024 08:44:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D7CD8CCB5E
+	for <lists+linux-omap@lfdr.de>; Thu, 23 May 2024 06:28:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 804461C21054
-	for <lists+linux-omap@lfdr.de>; Tue, 21 May 2024 06:44:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85C861F21B57
+	for <lists+linux-omap@lfdr.de>; Thu, 23 May 2024 04:28:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0995547A74;
-	Tue, 21 May 2024 06:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B807D54750;
+	Thu, 23 May 2024 04:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="NAJbt7a5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U18rOPfz"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E718941C63;
-	Tue, 21 May 2024 06:44:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.249
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF58121362;
+	Thu, 23 May 2024 04:27:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716273843; cv=none; b=hByU3+wNTgnJJxYBykBjO7OJM/OcsiThj1fd7HKyiWDDQjvvrh6Z/l1W5dfAPfOy7jTpuh61pXQe9yQgxVe4vbND4L3fllKVGeBpkzgk47rbEGnfU8/V/eWYp2mJ3VW9s2Pg5aLc8JxsewXktdFElm6qRI3l5d7kNgDgfIvkm+A=
+	t=1716438481; cv=none; b=rAVxuzhLdjgWGMawePP6JgrM6hsTXH5niluX8Ip5LUiOvpIK8oL7VvECcWB9JXU7ePgS1OHpUtHBYjP7DQpH673ONEOTUx0IUDmjRpjLa1ITP2iEfej1nnDG5uIHL4cF+nfE1+DaHH9Llp1KZ14McnXNmZTQUG7fTRlT4VJFnBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716273843; c=relaxed/simple;
-	bh=eck8LkiBmFIk3D6cjAJWmIkNyfD/MCEdYcx9mI2Wz8U=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cKDve+HkMDHCR1OoFAkwilNEbNfxuKZsxzmqXl4T+BTpQ04CfxFVcTyT1j4O1lfPtI2gyobv61pp3hTDYjLdwJWtyiSlF7kuiG0+D1yz5KOIaHJfuZV9yuSIeJHiGJU2UU2yWd8IIURliE6y422Ngly8gd0fKVogzKttW/79Kdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=NAJbt7a5; arc=none smtp.client-ip=198.47.23.249
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 44L6gmm0011241;
-	Tue, 21 May 2024 01:42:48 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1716273768;
-	bh=+ZfOONRU6juW9FS/6TxFdABLBWxqz7rqnKx7hWQStMk=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To;
-	b=NAJbt7a5DoTR+zca5xHgtqfKuYpVEVUoncFcDAa9rnhd0cNDBfAjwlhHiy9tha2Vb
-	 g+Gb2EgkITFo0mgOhhaULzAGqx7RAEEAtxvOqpq8731MIkkNr26sB2h4ivC48fprL6
-	 wDMkTrcTcJlygDX4vsPSR2HaVHGcYvfXEn8aKLKI=
-Received: from DLEE106.ent.ti.com (dlee106.ent.ti.com [157.170.170.36])
-	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 44L6gmJG015907
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 21 May 2024 01:42:48 -0500
-Received: from DLEE111.ent.ti.com (157.170.170.22) by DLEE106.ent.ti.com
- (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 21
- May 2024 01:42:48 -0500
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE111.ent.ti.com
- (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Tue, 21 May 2024 01:42:48 -0500
-Received: from localhost (uda0492258.dhcp.ti.com [172.24.227.9])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 44L6gldU029813;
-	Tue, 21 May 2024 01:42:48 -0500
-Date: Tue, 21 May 2024 12:12:46 +0530
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
-To: Onkarnarth <onkarnath.1@samsung.com>
-CC: <bhelgaas@google.com>, <helgaas@kernel.org>, <vigneshr@ti.com>,
-        <s-vadapalli@ti.com>, <lpieralisi@kernel.org>, <kw@linux.com>,
-        <robh@kernel.org>, <yue.wang@Amlogic.com>, <neil.armstrong@linaro.org>,
-        <khilman@baylibre.com>, <jbrunet@baylibre.com>,
-        <martin.blumenstingl@googlemail.com>, <thomas.petazzoni@bootlin.com>,
-        <shawn.guo@linaro.org>, <lchuanhua@maxlinear.com>,
-        <srikanth.thokala@intel.com>, <songxiaowei@hisilicon.com>,
-        <wangbinghui@hisilicon.com>, <manivannan.sadhasivam@linaro.org>,
-        <thierry.reding@gmail.com>, <jonathanh@nvidia.com>,
-        <hayashi.kunihiko@socionext.com>, <mhiramat@kernel.org>,
-        <pali@kernel.org>, <toan@os.amperecomputing.com>,
-        <daire.mcnamara@microchip.com>, <conor.dooley@microchip.com>,
-        <marek.vasut+renesas@gmail.com>, <shawn.lin@rock-chips.com>,
-        <heiko@sntech.de>, <nirmal.patel@linux.intel.com>,
-        <jonathan.derrick@linux.dev>, <kishon@kernel.org>, <jdmason@kudzu.us>,
-        <dave.jiang@intel.com>, <rafael@kernel.org>, <lenb@kernel.org>,
-        <mahesh@linux.ibm.com>, <oohall@gmail.com>,
-        <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-        <linux-amlogic@lists.infradead.org>, <linux-arm-msm@vger.kernel.org>,
-        <linux-tegra@vger.kernel.org>, <r.thapliyal@samsung.com>,
-        Maninder Singh <maninder1.s@samsung.com>
-Subject: Re: [PATCH v2 1/1] PCI : Refactoring error log prints for better
- readability
-Message-ID: <2227b0ed-a57f-4bca-8f3e-721bc2e2055a@ti.com>
-References: <CGME20240521061553epcas5p1c7db70b37a70f599face675bc4dedda9@epcas5p1.samsung.com>
- <20240521061528.3559751-1-onkarnath.1@samsung.com>
+	s=arc-20240116; t=1716438481; c=relaxed/simple;
+	bh=kg0vDCZE3Sr0m++mwJzUr9KmPYN+QyJtuSg5/+VM0Vo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=U0kV9axPauM2Q7A8rmez3N2crVY/c+TN1ND2TGMxdo2Vo8vi1E3MFKMoPuwgB6w6+8FvE92FUBY1XQKyZj16ZfD5lDnuHLCUNwIR4F//VYGyilS9uPaBszlQzpm5p7ukm9BuYDOUGgwF66F76Vj9Z0IwJv3YeRYKrq7FQx+98Bk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U18rOPfz; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-571be483ccaso10696851a12.2;
+        Wed, 22 May 2024 21:27:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1716438478; x=1717043278; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=aLv+CQXekteymTi7LH8Cffmlg26XMDlTY03oC8KCX8Q=;
+        b=U18rOPfzBVOwZTxoIAeBXK6YWc8hpNSTORRYUznOcBrVSevpksflyKPXHbfKGyPVC/
+         Og7Tgcj1CmdZ7wFTj7UfJn/zmxsz4gFMGGdmkVSjs1pbseEJN12t0a8BRXNpKEQMp32N
+         +fwiwsAILQxr/MJUyaeskV2M0H9xJ4jmGoe9pyyPByEtZX3QWOm6KgxWAEY3ZXi6AP1h
+         rkuKwOd24mgDexbyvUZTXH5hWPBceofNJIrhHsnp/gfg9g7rLFEZg55erHnkx9aqmvgO
+         ReC4YrfxWdEGyf3nk7eMbITnlcu2VvaffSW9Al9/yFQCEPlS34vluqb/NTqkz3lJMggu
+         AokQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716438478; x=1717043278;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=aLv+CQXekteymTi7LH8Cffmlg26XMDlTY03oC8KCX8Q=;
+        b=IzoEtUTCxRdpd5bGbkuDj+dkNnUuppv2//Yf+hco2ue1o+8dNzUxmWpT6lhyWFYvWr
+         4/+kRD2Srg1D7sw7dVh3iVDd9q5zisT6lQ7ZvczW6Qb9e1+8S9MXbk2MZQaVk7yVC33+
+         /6UoRW4HGsF3vfXcqAGlQIBWxK5f+thkQUD8LRHdnnoFaA3QEr2vzz4o5TdFCXheE0vY
+         UxcisZepuNqe+HHaJb8wx+61nuU9P2A2xVJ6wY8OCcKVaLFTJM34fYfPLX6404eQua/P
+         t6/OW55va2q2uybZ/QlsjBIoIlwBzVzmW7B2txuHWfCH5yaarSGQh1aXkLamXz0DuQuD
+         Vzbg==
+X-Forwarded-Encrypted: i=1; AJvYcCX5e788rGkUoctWMt/dG3dDnzzLdDlC4kO5XE367Dm+ZSP1Lk8fRTRFM27yvcnGAgc6bNvzqy53jMArTksab1f5Pj49aP20e9xO5Q==
+X-Gm-Message-State: AOJu0YznSJ5LNXRxoNMuzVYpRDKXoXKo7t+UU/WjWkoI9cbQMSDknth4
+	Q/TbiP2p9OtaxvARj06aicnQDPzRElGBYnOm+8O2SQ8zYdt3C6F2
+X-Google-Smtp-Source: AGHT+IEABJIJRi2xyujrDhXEgGBEtUJZ9mCywroIgEk/FF2rhQyneDrQGqeW+Teu5gAyJfsQRgV4Ow==
+X-Received: by 2002:a17:906:ca11:b0:a62:187b:e7f5 with SMTP id a640c23a62f3a-a622819ad50mr209860866b.57.1716438478086;
+        Wed, 22 May 2024 21:27:58 -0700 (PDT)
+Received: from localhost.lan (031011218106.poznan.vectranet.pl. [31.11.218.106])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a5a17b01652sm1872112566b.167.2024.05.22.21.27.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 May 2024 21:27:57 -0700 (PDT)
+From: =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
+To: =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+	Tony Lindgren <tony@atomide.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: linux-omap@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>
+Subject: [PATCH] ARM: dts: omap: convert NVMEM content to layout syntax
+Date: Thu, 23 May 2024 06:27:50 +0200
+Message-Id: <20240523042750.26238-1-zajec5@gmail.com>
+X-Mailer: git-send-email 2.35.3
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20240521061528.3559751-1-onkarnath.1@samsung.com>
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, May 21, 2024 at 11:45:28AM +0530, Onkarnarth wrote:
-> From: Onkarnath <onkarnath.1@samsung.com>
+From: Rafał Miłecki <rafal@milecki.pl>
 
-nitpick: In $subject:
-s/Refactoring/Refactor
-to follow the convention of using imperative mood.
+Use cleaner (and non-deprecated) bindings syntax. See commit
+bd912c991d2e ("dt-bindings: nvmem: layouts: add fixed-layout") for
+details.
 
-> 
-> As %pe is already introduced, it's better to use it in place of (%ld) or
-> (%d) for printing error in logs. It will enhance readability of logs.
-> 
-> Error print style is more consistent now.
-> 
-> Suggested-by: Bjorn Helgaas <bhelgaas@google.com>
-> Co-developed-by: Maninder Singh <maninder1.s@samsung.com>
-> Signed-off-by: Maninder Singh <maninder1.s@samsung.com>
-> Signed-off-by: Onkarnath <onkarnath.1@samsung.com>
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+---
+ .../boot/dts/ti/omap/am335x-bone-common.dtsi  | 64 +++++++++++++------
+ arch/arm/boot/dts/ti/omap/am335x-boneblue.dts | 12 ++--
+ 2 files changed, 52 insertions(+), 24 deletions(-)
 
-Thank you for the patch. LGTM.
+diff --git a/arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi b/arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi
+index 2d0216840ff5..898f862acf3e 100644
+--- a/arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi
++++ b/arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi
+@@ -221,10 +221,14 @@ baseboard_eeprom: baseboard_eeprom@50 {
+ 		reg = <0x50>;
+ 		vcc-supply = <&ldo4_reg>;
+ 
+-		#address-cells = <1>;
+-		#size-cells = <1>;
+-		baseboard_data: baseboard_data@0 {
+-			reg = <0 0x100>;
++		nvmem-layout {
++			compatible = "fixed-layout";
++			#address-cells = <1>;
++			#size-cells = <1>;
++
++			baseboard_data: baseboard_data@0 {
++				reg = <0 0x100>;
++			};
+ 		};
+ 	};
+ };
+@@ -239,40 +243,60 @@ &i2c2 {
+ 	cape_eeprom0: cape_eeprom0@54 {
+ 		compatible = "atmel,24c256";
+ 		reg = <0x54>;
+-		#address-cells = <1>;
+-		#size-cells = <1>;
+-		cape0_data: cape_data@0 {
+-			reg = <0 0x100>;
++
++		nvmem-layout {
++			compatible = "fixed-layout";
++			#address-cells = <1>;
++			#size-cells = <1>;
++
++			cape0_data: cape_data@0 {
++				reg = <0 0x100>;
++			};
+ 		};
+ 	};
+ 
+ 	cape_eeprom1: cape_eeprom1@55 {
+ 		compatible = "atmel,24c256";
+ 		reg = <0x55>;
+-		#address-cells = <1>;
+-		#size-cells = <1>;
+-		cape1_data: cape_data@0 {
+-			reg = <0 0x100>;
++
++		nvmem-layout {
++			compatible = "fixed-layout";
++			#address-cells = <1>;
++			#size-cells = <1>;
++
++			cape1_data: cape_data@0 {
++				reg = <0 0x100>;
++			};
+ 		};
+ 	};
+ 
+ 	cape_eeprom2: cape_eeprom2@56 {
+ 		compatible = "atmel,24c256";
+ 		reg = <0x56>;
+-		#address-cells = <1>;
+-		#size-cells = <1>;
+-		cape2_data: cape_data@0 {
+-			reg = <0 0x100>;
++
++		nvmem-layout {
++			compatible = "fixed-layout";
++			#address-cells = <1>;
++			#size-cells = <1>;
++
++			cape2_data: cape_data@0 {
++				reg = <0 0x100>;
++			};
+ 		};
+ 	};
+ 
+ 	cape_eeprom3: cape_eeprom3@57 {
+ 		compatible = "atmel,24c256";
+ 		reg = <0x57>;
+-		#address-cells = <1>;
+-		#size-cells = <1>;
+-		cape3_data: cape_data@0 {
+-			reg = <0 0x100>;
++
++		nvmem-layout {
++			compatible = "fixed-layout";
++			#address-cells = <1>;
++			#size-cells = <1>;
++
++			cape3_data: cape_data@0 {
++				reg = <0 0x100>;
++			};
+ 		};
+ 	};
+ };
+diff --git a/arch/arm/boot/dts/ti/omap/am335x-boneblue.dts b/arch/arm/boot/dts/ti/omap/am335x-boneblue.dts
+index 801399702547..8878da773d67 100644
+--- a/arch/arm/boot/dts/ti/omap/am335x-boneblue.dts
++++ b/arch/arm/boot/dts/ti/omap/am335x-boneblue.dts
+@@ -317,10 +317,14 @@ baseboard_eeprom: baseboard_eeprom@50 {
+ 		compatible = "atmel,24c256";
+ 		reg = <0x50>;
+ 
+-		#address-cells = <1>;
+-		#size-cells = <1>;
+-		baseboard_data: baseboard_data@0 {
+-			reg = <0 0x100>;
++		nvmem-layout {
++			compatible = "fixed-layout";
++			#address-cells = <1>;
++			#size-cells = <1>;
++
++			baseboard_data: baseboard_data@0 {
++				reg = <0 0x100>;
++			};
+ 		};
+ 	};
+ };
+-- 
+2.35.3
 
-Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-
-> ---
-> Suggested by Bjorn Helgaas in below discussion
-> https://patchwork.kernel.org/comment/25712288/
-> 
-> v1 -> v2: Added suggested by tag
-> 
->  drivers/pci/bus.c                             |   2 +-
->  drivers/pci/controller/dwc/pci-dra7xx.c       |   2 +-
->  drivers/pci/controller/dwc/pci-meson.c        |  16 +--
->  drivers/pci/controller/dwc/pcie-armada8k.c    |   4 +-
->  drivers/pci/controller/dwc/pcie-histb.c       |   6 +-
->  drivers/pci/controller/dwc/pcie-intel-gw.c    |  10 +-
->  drivers/pci/controller/dwc/pcie-keembay.c     |   2 +-
->  drivers/pci/controller/dwc/pcie-kirin.c       |   6 +-
->  drivers/pci/controller/dwc/pcie-qcom-ep.c     |  18 +--
->  drivers/pci/controller/dwc/pcie-qcom.c        |  18 +--
->  drivers/pci/controller/dwc/pcie-tegra194.c    | 132 +++++++++---------
->  drivers/pci/controller/dwc/pcie-uniphier-ep.c |   2 +-
->  drivers/pci/controller/pci-aardvark.c         |   6 +-
->  drivers/pci/controller/pci-ftpci100.c         |   2 +-
->  drivers/pci/controller/pci-tegra.c            |  86 ++++++------
->  drivers/pci/controller/pci-xgene.c            |   4 +-
->  drivers/pci/controller/pcie-microchip-host.c  |   2 +-
->  drivers/pci/controller/pcie-rcar-host.c       |  14 +-
->  drivers/pci/controller/pcie-rockchip.c        |  34 ++---
->  drivers/pci/controller/vmd.c                  |   2 +-
->  drivers/pci/doe.c                             |   4 +-
->  drivers/pci/endpoint/functions/pci-epf-mhi.c  |   8 +-
->  drivers/pci/endpoint/functions/pci-epf-ntb.c  |   2 +-
->  drivers/pci/endpoint/functions/pci-epf-test.c |   4 +-
->  drivers/pci/endpoint/functions/pci-epf-vntb.c |   2 +-
->  drivers/pci/endpoint/pci-ep-cfs.c             |  12 +-
->  drivers/pci/endpoint/pci-epf-core.c           |  16 +--
->  drivers/pci/hotplug/acpiphp_core.c            |   2 +-
->  drivers/pci/hotplug/pciehp_core.c             |   8 +-
->  drivers/pci/hotplug/shpchp_core.c             |   4 +-
->  drivers/pci/of.c                              |   6 +-
->  drivers/pci/pci-driver.c                      |   4 +-
->  drivers/pci/pcie/dpc.c                        |   4 +-
->  drivers/pci/quirks.c                          |   2 +-
->  drivers/pci/setup-bus.c                       |   2 +-
->  drivers/pci/slot.c                            |   4 +-
->  drivers/pci/vgaarb.c                          |   2 +-
->  37 files changed, 227 insertions(+), 227 deletions(-)
-> 
-
-[...]
-
-Regards,
-Siddharth.
 
