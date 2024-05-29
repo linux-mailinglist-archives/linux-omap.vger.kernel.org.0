@@ -1,219 +1,292 @@
-Return-Path: <linux-omap+bounces-1411-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1412-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 210708D220E
-	for <lists+linux-omap@lfdr.de>; Tue, 28 May 2024 18:56:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAAFF8D2EC7
+	for <lists+linux-omap@lfdr.de>; Wed, 29 May 2024 09:46:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8A054B256E8
-	for <lists+linux-omap@lfdr.de>; Tue, 28 May 2024 16:56:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CCDA1F2886A
+	for <lists+linux-omap@lfdr.de>; Wed, 29 May 2024 07:46:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A634E173342;
-	Tue, 28 May 2024 16:55:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F421167DB5;
+	Wed, 29 May 2024 07:46:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="hlfmK2CQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nqwUe9r3"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail2.andi.de1.cc (vmd64148.contaboserver.net [161.97.139.27])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D7FE171E44;
-	Tue, 28 May 2024 16:55:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.97.139.27
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EF5638F96;
+	Wed, 29 May 2024 07:46:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716915323; cv=none; b=fQKH9wOHmSmr+huZUjHQtN0hDj+Ok3mBG5HoFYwVaIQVhEZBV09/cJBC4nrXxT7G6pF8XlgPqr8M6xnvOf34UDlCBcuahHzDv20tiDqJqpxo6BMAr0ZTIppqvV3nQ0nteA2nAE7c4rECrMzVo6+Advp6o5hq0HOEmp/QbgZ1fo8=
+	t=1716968763; cv=none; b=IDEyT2uvHvfZbaM+LrypEjRToOHFW7LI63W+JZxvuoFJ3XSJkM5pvzLNoyOODgHcXnfsUVIefIc2INp66Z26c+xWcHsdomvyCobCZZxAAVaQfcAVlOjfuS0ZsyWlYsKz8NZeIOP2kC7yXvgC4dQQy2oHR39Y+SF529AHjrWmdOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716915323; c=relaxed/simple;
-	bh=QTxQ+KHPr0EDOFlIej0x5u8bmSGipIXPXz/48kBneg8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XEnj9t/ZjYWD4KOUqv16aBlTfpUd6SEYSOWREqvYAOL+fAihwEHwEgIBqd7M45qApAZllsyAAj1bijx6ryykaO1V1HQBBHYDkRcP9rwprTmB1/O6DMDYO/eherHGQzOKb/yk9E7IuW62FxUp6a7Mg8nwD/cKNShLepknxJ/j2Es=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=hlfmK2CQ; arc=none smtp.client-ip=161.97.139.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kemnade.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
-Received: from mail.andi.de1.cc ([2a02:c205:3004:2154::1])
-	by mail2.andi.de1.cc with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <andreas@kemnade.info>)
-	id 1sC06X-0089ZJ-0Y;
-	Tue, 28 May 2024 18:55:18 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=Content-Transfer-Encoding:Content-Type:
-	MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=L/syQcTorpUvNP3M9H72T3wos4LokP55wd4BKC6Cqm8=; b=hlfmK2CQ5oPniJlLLKKS5UwnQN
-	QadYmdcakwyT8UPskASp3qwypZTZHLomFDkJMAR1/fEYcTmvho+yGACR5Knrh4vitxoN0O1D4dYKG
-	wesgZCWo7WaAr6Xn8rGdDXga61xbu+O24Fssse0xMmcB/4lR4bveaPZ1qwTa2VcrwvVx8PbqSnU/6
-	laAExU16tvVbv5L2aHSeCeFTwmmIb/8wdeAQ0jtUHm9M7UMGVtqPl7v83CsoFKzmbUjYH69MW/3sS
-	FWvz2X+bmU+wwsoDdjjlp93Et1ve++vH3+IYPx8Ya9C8y5UyGQVIqIedfeXOaDuMsjvGAFJ+4pZDO
-	MuwIUtPQ==;
-Received: from p200300c20737c2001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:c2:737:c200:1a3d:a2ff:febf:d33a] helo=aktux)
-	by mail.andi.de1.cc with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <andreas@kemnade.info>)
-	id 1sC06U-001uJT-38;
-	Tue, 28 May 2024 18:55:16 +0200
-Date: Tue, 28 May 2024 18:55:13 +0200
-From: Andreas Kemnade <andreas@kemnade.info>
-To: Conor Dooley <conor@kernel.org>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, lee@kernel.org, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, lgirdwood@gmail.com,
- broonie@kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: Re: [RFC PATCH] dt-bindings: regulator: twl-regulator: convert to
- yaml
-Message-ID: <20240528185513.04c87e49@aktux>
-In-Reply-To: <20240528-mandarin-chevron-130406a65434@spud>
-References: <20240528065756.1962482-1-andreas@kemnade.info>
-	<e497498c-f3da-4ab9-b6d4-f9723c10471c@kernel.org>
-	<20240528131622.4b4f8d03@aktux>
-	<f288a1c9-762c-4c66-8611-9a08d6c09bac@kernel.org>
-	<20240528150647.40385d08@aktux>
-	<3a29c775-4131-4047-9777-4146e6c8eed0@kernel.org>
-	<20240528-unimpeded-dealing-0128abb54272@spud>
-	<20240528174849.6945343a@aktux>
-	<20240528-mandarin-chevron-130406a65434@spud>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1716968763; c=relaxed/simple;
+	bh=gqmOl68+sswa4qdCKkOtou67k+TvC04WsWu3LEA+ats=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=XeQYk8EkdwTOQ72tmKsQCAN3nZSaQr7JUBQTYhc8oK1Ae9iSk1Okl0fhRKKXnuEInBqusdgbbl1EGUd7Bz//zbkjhMt0pC+T2lNcYbhOUFIIL0CJHQRlzyWsCF/y1YFW38TsVMvieDfHxyIJHXrECJp4IrQ9d7TVMaKoTGWIGsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nqwUe9r3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EFACC32786;
+	Wed, 29 May 2024 07:46:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716968763;
+	bh=gqmOl68+sswa4qdCKkOtou67k+TvC04WsWu3LEA+ats=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=nqwUe9r3rZLoGV7BPEmRkaa/y7QY2HPubdQOqDKeRjwuycXy6DdOz2gWhsitl48I8
+	 Rb58crkIZRh5/gM3LvD3RL8k17ZQkp2nukzNXQrplAzW/LnwZKnGpA5L4j7Bkc1e9j
+	 AzBe45lq0E5+WOlUsai0P0Tnlo0o7To8tA2n4p4Pira8FHhh+U0nOdAATxRQP0ekhn
+	 Qm6wq/Z/rk6ib7WiGnWWX+bqFSYo9pRCIODRHHyIZ3b0RMgnANO6D3wC2W/S6J8h1p
+	 v3wxthN44H8Uth5NEMRzoXxGeqHTprt95eAfwB1vfKug5P/5BqrxZnHdHDNGEKKVzg
+	 H6Dn9rw2ABsHg==
+Message-ID: <6b0abdaa-376c-47f1-ba9e-eaa9dd36ac27@kernel.org>
+Date: Wed, 29 May 2024 09:45:59 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] dt-bindings: regulator: twl-regulator: convert to yaml
+To: Andreas Kemnade <andreas@kemnade.info>, lee@kernel.org, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, lgirdwood@gmail.com,
+ broonie@kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
+References: <20240528164227.1988357-1-andreas@kemnade.info>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240528164227.1988357-1-andreas@kemnade.info>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On Tue, 28 May 2024 16:53:46 +0100
-Conor Dooley <conor@kernel.org> wrote:
-
-> On Tue, May 28, 2024 at 05:48:49PM +0200, Andreas Kemnade wrote:
-> > On Tue, 28 May 2024 15:36:40 +0100
-> > Conor Dooley <conor@kernel.org> wrote:
-> >   
-> > > On Tue, May 28, 2024 at 03:54:05PM +0200, Krzysztof Kozlowski wrote:  
-> > > > On 28/05/2024 15:06, Andreas Kemnade wrote:    
-> > > > > On Tue, 28 May 2024 13:25:29 +0200
-> > > > > Krzysztof Kozlowski <krzk@kernel.org> wrote:
-> > > > >     
-> > > > >> On 28/05/2024 13:16, Andreas Kemnade wrote:    
-> > > > >>> On Tue, 28 May 2024 12:04:22 +0200
-> > > > >>> Krzysztof Kozlowski <krzk@kernel.org> wrote:
-> > > > >>>       
-> > > > >>>> On 28/05/2024 08:57, Andreas Kemnade wrote:      
-> > > > >>>>> Convert the regulator bindings to yaml files. To allow only the regulator
-> > > > >>>>> compatible corresponding to the toplevel mfd compatible, split the file
-> > > > >>>>> into one per device.
-> > > > >>>>>
-> > > > >>>>> To not need to allow any subnode name, specify clearly node names
-> > > > >>>>> for all the regulators.
-> > > > >>>>>
-> > > > >>>>> Drop one twl5030 compatible due to no documentation on mfd side and no
-> > > > >>>>> users of the twl5030.
-> > > > >>>>>
-> > > > >>>>> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-> > > > >>>>> ---
-> > > > >>>>> Reason for being RFC:
-> > > > >>>>> the integration into ti,twl.yaml seems not to work as expected
-> > > > >>>>> make dt_binding_check crashes without any clear error message
-> > > > >>>>> if used on the ti,twl.yaml
-> > > > >>>>>
-> > > > >>>>>  .../devicetree/bindings/mfd/ti,twl.yaml       |   4 +-
-> > > > >>>>>  .../regulator/ti,twl4030-regulator.yaml       | 402 ++++++++++++++++++
-> > > > >>>>>  .../regulator/ti,twl6030-regulator.yaml       | 292 +++++++++++++
-> > > > >>>>>  .../regulator/ti,twl6032-regulator.yaml       | 238 +++++++++++
-> > > > >>>>>  .../bindings/regulator/twl-regulator.txt      |  80 ----
-> > > > >>>>>  5 files changed, 935 insertions(+), 81 deletions(-)
-> > > > >>>>>  create mode 100644 Documentation/devicetree/bindings/regulator/ti,twl4030-regulator.yaml
-> > > > >>>>>  create mode 100644 Documentation/devicetree/bindings/regulator/ti,twl6030-regulator.yaml
-> > > > >>>>>  create mode 100644 Documentation/devicetree/bindings/regulator/ti,twl6032-regulator.yaml
-> > > > >>>>>  delete mode 100644 Documentation/devicetree/bindings/regulator/twl-regulator.txt
-> > > > >>>>>
-> > > > >>>>> diff --git a/Documentation/devicetree/bindings/mfd/ti,twl.yaml b/Documentation/devicetree/bindings/mfd/ti,twl.yaml
-> > > > >>>>> index c2357fecb56cc..4ced6e471d338 100644
-> > > > >>>>> --- a/Documentation/devicetree/bindings/mfd/ti,twl.yaml
-> > > > >>>>> +++ b/Documentation/devicetree/bindings/mfd/ti,twl.yaml
-> > > > >>>>> @@ -50,7 +50,7 @@ allOf:
-> > > > >>>>>            properties:
-> > > > >>>>>              compatible:
-> > > > >>>>>                const: ti,twl4030-wdt
-> > > > >>>>> -
-> > > > >>>>> +        $ref: /schemas/regulator/ti,twl4030-regulator.yaml        
-> > > > >>>>
-> > > > >>>> That's not needed, just like othehr refs below.
-> > > > >>>>      
-> > > > >>> but how to prevent error messages like this:
-> > > > >>>
-> > > > >>> arch/arm/boot/dts/ti/omap/omap2430-sdp.dtb: twl@48: Unevaluated properties are not allowed ('gpio', 'keypad', 'pwm', 'pwmled', 'regulator-vaux1', 'regulator-vaux2', 'regulator-vaux3', 'regulator-vaux4', 'regulator-vdac', 'regulator-vdd1', 'regulator-vintana1', 'regulator-vintana2', 'regulator-vintdig', 'regulator-vio', 'regulator-vmmc1', 'regulator-vmmc2', 'regulator-vpll1', 'regulator-vpll2', 'regulator-vsim', 'regulator-vusb1v5', 'regulator-vusb1v8', 'regulator-vusb3v1
-> > > > >>>
-> > > > >>> esp. the regulator parts without adding stuff to ti,twl.yaml?      
-> > > > >>
-> > > > >> Eh? That's a watchdog, not regulator. Why do you add ref to regulator?
-> > > > >>    
-> > > > > hmm, wrongly indented? At what level doet it belong? But as the regualor.yaml stuff can
-> > > > > be shortened, maybe just add it directly to ti,twl.yaml to avoid that trouble.    
-> > > > 
-> > > > I don't follow. The diff here and in other two places suggest you add
-> > > > twl-regulator reference to wdt/gpio/whatnot nodes, not to regulators.    
-> > > 
-> > > The diff may look like that, but I think they're just trying to add it
-> > > as a subnode of the pmic. There are other nodes, like the madc that do
-> > > this in the same file:
-> > >         madc:
-> > >           type: object
-> > >           $ref: /schemas/iio/adc/ti,twl4030-madc.yaml
-> > >           unevaluatedProperties: false
-> > > 
-> > > I guess this is what was being attempted, albeit incorrectly.  
-> > 
-> > correct. No regulators node, just everything directly as a subnode of
-> > the pmic. Well, I have now something using patternProperties directly itn ti,twl.yaml
-> > including a more detailed example which does not upset dt_binding_check.
-> > I am running dtbs_check to check if anything is odd. the 4030 variant seems
-> > to be ok, waiting for some dtbs containing 603X now.
-> > 
-> > But somehow I would feel better if I would understand what was syntactically
-> > wrong with my original proposal. I have totally no idea yet.  
+On 28/05/2024 18:42, Andreas Kemnade wrote:
+> Convert the regulator bindings to yaml files. To allow only the regulator
+> compatible corresponding to the toplevel mfd compatible, split the file
+> into one per device.
 > 
-> If you want to create a child node, you can't just reference another
-> schema willy nilly. You need to create a property of type object, as was
-> done elsewhere in the file.
+> To not need to allow any subnode name, specify clearly node names
+> for all the regulators.
 > 
-hmm, by $ref regulator.yaml I can successfully create the child node
-regulator-state-mem, so what is the difference to creating e.g. a child
-node named regulator-vaux1 by $ref ti,twl4030-regulator.yaml
-
-still a bit confused.
-
-> > The error message of dt_binding_check is also meaningless:
-> >  CHKDT   Documentation/devicetree/bindings
-> > Traceback (most recent call last):
-> >   File "/home/andi/.local/bin/dt-doc-validate", line 64, in <module>
-> >     ret |= check_doc(f)
-> >            ^^^^^^^^^^^^
-> >   File "/home/andi/.local/bin/dt-doc-validate", line 32, in check_doc
-> >     for error in sorted(dtsch.iter_errors(), key=lambda e: e.linecol):
-> >                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> >   File "/home/andi/.local/pipx/venvs/dtschema/lib/python3.11/site-packages/dtschema/schema.py", line 125, in iter_errors
-> >     self.annotate_error(scherr, meta_schema, scherr.schema_path)
-> >   File "/home/andi/.local/pipx/venvs/dtschema/lib/python3.11/site-packages/dtschema/schema.py", line 104, in annotate_error
-> >     schema = schema[p]
-> >              ~~~~~~^^^
-> > KeyError: 'type'
-> >   LINT    Documentation/devicetree/bindings
-> > 
-> > IMHO this should be improved.  
+> Drop one twl5030 compatible due to no documentation on mfd side and no
+> users of the twl5030.
 > 
-> What I see with your patch applied is:
-> /stuff/linux-dt/Documentation/devicetree/bindings/mfd/ti,twl.yaml: ignoring, error in schema: allOf: 0: then: properties: $ref
+> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+> ---
+> Changes in v2:
+> - add regulators directly to ti,twl.yaml
+> - less restrictions on regulator node name
 > 
-> Not a great error either, but not a crash like you see. What version of
-> dt-schema are you using?
+>  .../devicetree/bindings/mfd/ti,twl.yaml       | 110 +++++++++++++++++-
+>  .../bindings/regulator/twl-regulator.txt      |  80 -------------
+>  2 files changed, 109 insertions(+), 81 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/regulator/twl-regulator.txt
+> 
+> diff --git a/Documentation/devicetree/bindings/mfd/ti,twl.yaml b/Documentation/devicetree/bindings/mfd/ti,twl.yaml
+> index c2357fecb56c..9dc1874a79dc 100644
+> --- a/Documentation/devicetree/bindings/mfd/ti,twl.yaml
+> +++ b/Documentation/devicetree/bindings/mfd/ti,twl.yaml
+> @@ -22,6 +22,42 @@ allOf:
+>            contains:
+>              const: ti,twl4030
+>      then:
+> +      patternProperties:
+> +        "^regulator-":
 
-2023.9
-ok, but there is 2024.4... Upgraded and got your error
+Please define all nodes and properties in top-level. You can customize
+them in if:then. If this gets too complicated, then maybe schema should
+be split.
 
-Regards,
-Andreas
+> +          type: object
+> +          $ref: /schemas/regulator/regulator.yaml
+> +          unevaluatedProperties: false
+> +          properties:
+> +            compatible:
+> +              enum:
+> +                - ti,twl4030-vaux1
+> +                - ti,twl4030-vaux2
+> +                - ti,twl4030-vaux3
+> +                - ti,twl4030-vaux4
+> +                - ti,twl4030-vmmc1
+> +                - ti,twl4030-vmmc2
+> +                - ti,twl4030-vpll1
+> +                - ti,twl4030-vpll2
+> +                - ti,twl4030-vsim
+> +                - ti,twl4030-vdac
+> +                - ti,twl4030-vintana2
+> +                - ti,twl4030-vio
+> +                - ti,twl4030-vdd1
+> +                - ti,twl4030-vdd2
+> +                - ti,twl4030-vintana1
+> +                - ti,twl4030-vintdig
+> +                - ti,twl4030-vusb1v5
+> +                - ti,twl4030-vusb1v8
+> +                - ti,twl4030-vusb3v1
+> +            regulator-initial-mode:
+> +              items:
+> +                - items:
+
+I am confused why you made it a matrix. This is an uint, so one number.
+
+enum:
+ - 0x8
+ - 0xe
+
+> +                    enum:
+> +                      - 0x08 # Sleep mode, the nominal output voltage is maintained
+> +                             # with low power consumption with low load current capability
+> +                      - 0x0e # Active mode, the regulator can deliver its nominal output
+> +                             # voltage with full-load current capability
+> +
+>        properties:
+>          madc:
+>            type: object
+> @@ -50,13 +86,43 @@ allOf:
+>            properties:
+>              compatible:
+>                const: ti,twl4030-wdt
+> -
+>    - if:
+>        properties:
+>          compatible:
+>            contains:
+>              const: ti,twl6030
+>      then:
+> +      patternProperties:
+> +        "^regulator-":
+> +          type: object
+> +          $ref: /schemas/regulator/regulator.yaml
+> +          unevaluatedProperties: false
+> +          properties:
+> +            compatible:
+> +              enum:
+> +                - ti,twl6030-vaux1
+> +                - ti,twl6030-vaux2
+> +                - ti,twl6030-vaux3
+> +                - ti,twl6030-vmmc
+> +                - ti,twl6030-vpp
+> +                - ti,twl6030-vusim
+> +                - ti,twl6030-vana
+> +                - ti,twl6030-vcxio
+> +                - ti,twl6030-vdac
+> +                - ti,twl6030-vusb
+> +                - ti,twl6030-v1v8
+> +                - ti,twl6030-v2v1
+> +                - ti,twl6030-vdd1
+> +                - ti,twl6030-vdd2
+> +                - ti,twl6030-vdd3
+> +            ti,retain-on-reset:
+> +              description:
+> +                Does not turn off the supplies during warm
+> +                reset. Could be needed for VMMC, as TWL6030
+> +                reset sequence for this signal does not comply
+> +                with the SD specification.
+> +              type: boolean
+> +
+>        properties:
+>          gpadc:
+>            type: object
+> @@ -69,6 +135,34 @@ allOf:
+>            contains:
+>              const: ti,twl6032
+>      then:
+> +      patternProperties:
+> +        "^regulator-":
+> +          type: object
+> +          $ref: /schemas/regulator/regulator.yaml
+> +          unevaluatedProperties: false
+> +          properties:
+> +            compatible:
+> +              enum:
+> +                - ti,twl6032-ldo1
+> +                - ti,twl6032-ldo2
+> +                - ti,twl6032-ldo3
+> +                - ti,twl6032-ldo4
+> +                - ti,twl6032-ldo5
+> +                - ti,twl6032-ldo6
+> +                - ti,twl6032-ldo7
+> +                - ti,twl6032-ldoln
+> +                - ti,twl6032-ldousb
+> +                - ti,twl6032-smps3
+> +                - ti,twl6032-smps4
+> +                - ti,twl6032-vio
+> +            ti,retain-on-reset:
+> +              description:
+> +                Does not turn off the supplies during warm
+> +                reset. Could be needed for VMMC, as TWL6030
+> +                reset sequence for this signal does not comply
+> +                with the SD specification.
+> +              type: boolean
+> +
+>        properties:
+>          gpadc:
+>            type: object
+> @@ -134,6 +228,20 @@ examples:
+>          interrupt-controller;
+>          #interrupt-cells = <1>;
+>          interrupt-parent = <&gic>;
+> +
+> +        gpadc {
+> +          compatible = "ti,twl6030-gpadc";
+> +          interrupts = <6>;
+> +        };
+> +
+> +        rtc {
+> +          compatible = "ti,twl4030-rtc";
+> +          interrupts = <8>;
+> +        };
+> +
+> +        regulator-vaux1 {
+> +          compatible = "ti,twl6030-vaux1";
+
+Add the initial mode and retain-on-reset properties to validate them.
+
+Best regards,
+Krzysztof
+
 
