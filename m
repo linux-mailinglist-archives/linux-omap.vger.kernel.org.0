@@ -1,292 +1,254 @@
-Return-Path: <linux-omap+bounces-1412-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1413-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAAFF8D2EC7
-	for <lists+linux-omap@lfdr.de>; Wed, 29 May 2024 09:46:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD4368D435C
+	for <lists+linux-omap@lfdr.de>; Thu, 30 May 2024 04:06:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CCDA1F2886A
-	for <lists+linux-omap@lfdr.de>; Wed, 29 May 2024 07:46:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C14CE1C20F46
+	for <lists+linux-omap@lfdr.de>; Thu, 30 May 2024 02:06:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F421167DB5;
-	Wed, 29 May 2024 07:46:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF75518054;
+	Thu, 30 May 2024 02:05:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nqwUe9r3"
+	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="NjzeO+tA"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from JPN01-OS0-obe.outbound.protection.outlook.com (mail-os0jpn01on2065.outbound.protection.outlook.com [40.107.113.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EF5638F96;
-	Wed, 29 May 2024 07:46:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716968763; cv=none; b=IDEyT2uvHvfZbaM+LrypEjRToOHFW7LI63W+JZxvuoFJ3XSJkM5pvzLNoyOODgHcXnfsUVIefIc2INp66Z26c+xWcHsdomvyCobCZZxAAVaQfcAVlOjfuS0ZsyWlYsKz8NZeIOP2kC7yXvgC4dQQy2oHR39Y+SF529AHjrWmdOI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716968763; c=relaxed/simple;
-	bh=gqmOl68+sswa4qdCKkOtou67k+TvC04WsWu3LEA+ats=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=XeQYk8EkdwTOQ72tmKsQCAN3nZSaQr7JUBQTYhc8oK1Ae9iSk1Okl0fhRKKXnuEInBqusdgbbl1EGUd7Bz//zbkjhMt0pC+T2lNcYbhOUFIIL0CJHQRlzyWsCF/y1YFW38TsVMvieDfHxyIJHXrECJp4IrQ9d7TVMaKoTGWIGsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nqwUe9r3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EFACC32786;
-	Wed, 29 May 2024 07:46:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716968763;
-	bh=gqmOl68+sswa4qdCKkOtou67k+TvC04WsWu3LEA+ats=;
-	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=nqwUe9r3rZLoGV7BPEmRkaa/y7QY2HPubdQOqDKeRjwuycXy6DdOz2gWhsitl48I8
-	 Rb58crkIZRh5/gM3LvD3RL8k17ZQkp2nukzNXQrplAzW/LnwZKnGpA5L4j7Bkc1e9j
-	 AzBe45lq0E5+WOlUsai0P0Tnlo0o7To8tA2n4p4Pira8FHhh+U0nOdAATxRQP0ekhn
-	 Qm6wq/Z/rk6ib7WiGnWWX+bqFSYo9pRCIODRHHyIZ3b0RMgnANO6D3wC2W/S6J8h1p
-	 v3wxthN44H8Uth5NEMRzoXxGeqHTprt95eAfwB1vfKug5P/5BqrxZnHdHDNGEKKVzg
-	 H6Dn9rw2ABsHg==
-Message-ID: <6b0abdaa-376c-47f1-ba9e-eaa9dd36ac27@kernel.org>
-Date: Wed, 29 May 2024 09:45:59 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF07B1CD11;
+	Thu, 30 May 2024 02:05:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.113.65
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1717034740; cv=fail; b=Ehsq0JbuVZ6WPNEdJ9V5dZXYCsyZ5/+Sv8mj4vscR6qbsWWAHd28eBLt3iITNx2AMhoGyTX0ShDQQHYfMuIRIleVI9+2eP7RWN3gc7YAfUn2kQ7wY7hfsSNeDLrpORR/uJOdBzQJyKs7Ie0xWbQFKyvqMolCNst9NOtlBYo1Rgc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1717034740; c=relaxed/simple;
+	bh=S6dJ7xhH+U9pk6RTyvZWqXTNA+HQQ9OemzxUzBuzvD8=;
+	h=Message-ID:From:Subject:To:In-Reply-To:References:Content-Type:
+	 Date:MIME-Version; b=rJpIZY8lCUPWV0cdz9ie9yGrB4ttbptRjQC6DruHx9m/NlEamJcK9VXHq0Y/nxGFVTkz3XokrRPfhOSKNDuhrLPsnP+a2B6wTHyEv9bfSH30VMQCpJMOmlXnhUmGiG7+Inuzg45tcIrtbUB0RC0UlNdYYVwC8leyuB3EaKlD724=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=NjzeO+tA; arc=fail smtp.client-ip=40.107.113.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ZJBO49e7IlkBWL9n4UX7VYDqaKUSXFnZ0ErHdSKR9dad6HRqkUdV505r4NaZcbAbvci5YvNLaTBL83XYc1rCvY3UUWDRqJ9PD8I2xnUW4eTymJTH5H1VOnAaL14YVxTeuk6GForeV7yblT2GTs5+XpRQ9upK3sa8BSI2CIJyqwOIuoV8NpFbLL66VxwJEtBmiLlxKKV2+gGmbRp4wH9nOQ9xnQn3vi0Yo9PkM5wKTdkzkxTd5F8JTwT47+lqI6UUGruydkpoYFh/OeQYI4z/DCxFNOlEtGwTnR8C6ov0IrRwgTH9lFxW4wBvSeCOoshvLwCfylROajuSW5SJsy0SVA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Cbb0dRK+5iDbyv2Y/MVH4j/HgoQMnUdnZRnxe2rrKFw=;
+ b=afdA4gJO/3Vw4z2aPBR6NBUBB9WkgNTYd/T3EbjF+ctF0U6objA+agfi3ujlCClxWfd7Yvrj+PANa4ZSNrkeSp4ED1Y5rM5W9oLhK6xZNlK04Ak1vjOfrkdF7GGFkmjM2q8lthud56N+n7RZSFPowUSFhMLYe80hs6/M0DE+joTzR648FrIKEPsLDL6DSds6qgMFRIF9l1/HM7nnXS6zo3CPyt5vx/OZwJlTdPaIBzI6uH6DVLcXJe/7FivTSnhyEVKuPz1fVqHxGgYUDwsI5KgT9vT8FKa5vojo2jw1rSkwpnJzhaheh9gCn1cIGCCjth4mxBQGsWaS89DqC3inog==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
+ dkim=pass header.d=renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Cbb0dRK+5iDbyv2Y/MVH4j/HgoQMnUdnZRnxe2rrKFw=;
+ b=NjzeO+tAY/ObVZZ4vP6VjJ9l+uI+XSrYI5MPKaL5Hxw9J6ynsHNkv9xnnQW0ERdhfcyJBNXg8dskO5ION0x1C/xz2b3Ui53CjI++qX1bugxX3G79TnUCyRhvFBNH+vsISdr+TmhqW+RQQS0mpt7LrjfWbLBrhXMdO9nblLZt2cE=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=renesas.com;
+Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
+ (2603:1096:400:3a9::11) by TY3PR01MB9900.jpnprd01.prod.outlook.com
+ (2603:1096:400:223::8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.21; Thu, 30 May
+ 2024 02:05:33 +0000
+Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
+ ([fe80::c568:1028:2fd1:6e11]) by TYCPR01MB10914.jpnprd01.prod.outlook.com
+ ([fe80::c568:1028:2fd1:6e11%4]) with mapi id 15.20.7633.018; Thu, 30 May 2024
+ 02:05:33 +0000
+Message-ID: <87jzjcoxzn.wl-kuninori.morimoto.gx@renesas.com>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Subject: [PATCH v3 1/9] gpu: drm: replace of_graph_get_next_endpoint()
+User-Agent: Wanderlust/2.15.9 Emacs/29.3 Mule/6.0
+To: "Lad Prabhakar" <prabhakar.csengg@gmail.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	David Airlie <airlied@gmail.com>,
+	Eugen Hristev <eugen.hristev@collabora.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Helge Deller <deller@gmx.de>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Maxime Ripard <mripard@kernel.org>,
+	Michal Simek <michal.simek@amd.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	coresight@lists.linaro.org,
+	dri-devel@lists.freedesktop.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-fbdev@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	linux-omap@vger.kernel.org,
+	linux-staging@lists.linux.dev
+In-Reply-To: <87le3soy08.wl-kuninori.morimoto.gx@renesas.com>
+References: <87le3soy08.wl-kuninori.morimoto.gx@renesas.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 30 May 2024 02:05:33 +0000
+X-ClientProxiedBy: TYCPR01CA0016.jpnprd01.prod.outlook.com (2603:1096:405::28)
+ To TYCPR01MB10914.jpnprd01.prod.outlook.com (2603:1096:400:3a9::11)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] dt-bindings: regulator: twl-regulator: convert to yaml
-To: Andreas Kemnade <andreas@kemnade.info>, lee@kernel.org, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, lgirdwood@gmail.com,
- broonie@kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
-References: <20240528164227.1988357-1-andreas@kemnade.info>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20240528164227.1988357-1-andreas@kemnade.info>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TYCPR01MB10914:EE_|TY3PR01MB9900:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2c268af2-f4a3-4dc4-21bb-08dc804cfd46
+X-LD-Processed: 53d82571-da19-47e4-9cb4-625a166a4a2a,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230031|7416005|52116005|1800799015|376005|366007|921011|38350700005;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?/jwFiSwBXFKM6YrAscq4bRMKd0j+KLgZvyrAKn1su1Q4Nzc2amVmtZlx3DC+?=
+ =?us-ascii?Q?LFXlBTrXZgDyHzv2jUlDB9rzYzlJtvwAXsZ/itqKaoriGzthFQymLCKedcd8?=
+ =?us-ascii?Q?QSc2AzRzd59lGBhDX0J3NBYDTf6a841wuLYM+AIIFrhfvVNgaApvEjZxOM54?=
+ =?us-ascii?Q?GOYEYRhUgeMU+KRuywutiNJzZazK6ZMv7UCPwU2TaeRmzn/XK4NXYxPlRQ+c?=
+ =?us-ascii?Q?G7Caipaa4jkAs0FcxFO6vwlkux4LWNBNtemIwXrR4Ty/w+ILmLO0xj0AU7ve?=
+ =?us-ascii?Q?GQJpPO/MfCP8fu/mHX4QLmlC95tlK91lEDFGy81xdKuTSQEdlsxvBGFhT2oH?=
+ =?us-ascii?Q?xZdO1bAx3y3IS4B3o34KQjkzfRKWmLH80iv8aimmnwxSWWaPTuiRVhNtYn8T?=
+ =?us-ascii?Q?/LjvX5K5xkqliCQ+W8dA6G3DheODDFxvHLWYrZANc4T8Y+MCqRroY96+Z6c8?=
+ =?us-ascii?Q?HodMT4bOiRNIkedmm3TiyTTd5EBqNw9guWEAPM+uaBrps+aU6QQPspzX5Lgj?=
+ =?us-ascii?Q?29HewB/CKUs45mp8jaG/X0yLwPRDI3onGR52UvpQyvsgXZRcpEKbsiXYn2ht?=
+ =?us-ascii?Q?s5dfWQhlKB+jjevBPCDHTcnnf6gS3WUI/5axcmmCXaQUrRs+jR2YmDn8CA2Z?=
+ =?us-ascii?Q?SPP/XNtXOtGT9v7eNjIz3eW0DQXdaF5gmv6ip0QDAaqx5y5TA7Ss6h5fvs0T?=
+ =?us-ascii?Q?UJFUjgYL+5JvA3s8Bar6m6GRWhw1TRvmrRgUiOj5lWZunHmIq0vEiawL3If5?=
+ =?us-ascii?Q?DuCXx2RhVyk/yINtqtATLZwUXCaBnL6jdHRf1oQGdFODPQx4ZUr52q97q9Hs?=
+ =?us-ascii?Q?GTA5mKj5Cf9ZdEbShullYZZj4CZMBbHT10Ndc2gVlvWwTzHcNuwVGrNA4B4v?=
+ =?us-ascii?Q?tsQoeHE85YYxWQOgiqfQVOHbTB6HeXVeOL7c8G5W0oGSiu4VSSoKB7fR/tuM?=
+ =?us-ascii?Q?pMzbtcHBJThih2nJB40bD9+QHjtSYWlq95TFgY+VsDm+g1fQEYt6SkrZbE/K?=
+ =?us-ascii?Q?pyCWucq8qHbl5k9ZwvBJKySxzwpLwWK1CSq1Gmy82+MSgweqjgZd/bJedBpA?=
+ =?us-ascii?Q?zGfWo7UBgBmRIFKACMk7p+mPvDomeXzKiky2UQL/dOLNXVgrs6PfTZWagTsq?=
+ =?us-ascii?Q?hENdR+WZx97XqyyHZpQgSLZvTFAV7G7OeaKqlLuphquB1wnhsblug6F0RNnk?=
+ =?us-ascii?Q?0Cmsf6k4LdrnWsvniERoWMirTArSpeGwCpA08HjDNDGLZ4es31fwT3nkUhHT?=
+ =?us-ascii?Q?MdWzA32KJGiFEvpk82sNc/BX6XG3oxLBXElzLn/hSJgvSKBzcVvS6gsR2srz?=
+ =?us-ascii?Q?HkY=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYCPR01MB10914.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7416005)(52116005)(1800799015)(376005)(366007)(921011)(38350700005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?2MdVKXqJ4/9DVGGuwCKdDYUDhxoJVaEEBy50o0Z2bRNbgUDrHLCpAfeFuss3?=
+ =?us-ascii?Q?D/Z/nniFyAWym0d7+CfktN9l5zrmkzAVaCAKKNMxJbYe5pVPxx4dXY+AlHz/?=
+ =?us-ascii?Q?cUKfr5lXj59aTekpJIvSee7b0vgevaNnxSXnU5KqlHMG4v1PQRtvTfPuJqH+?=
+ =?us-ascii?Q?99z/yUG7GMMWGMOpgIzzr4cwDAPjKL2m+22u06zJq9kPXffnUnjXQtDhNrn1?=
+ =?us-ascii?Q?c7hbO3F7DJkJWImXxgHY9nJyPe1xZkEYVjG1QvSXHi5vqXMJDE9zL7Y9cE1l?=
+ =?us-ascii?Q?0NOYt+fl+/opIod0RhXA8dxHYJo+KdNW6vMEE9GVhtSyXS+0v9po8b8RaHY4?=
+ =?us-ascii?Q?ca9CIfEr6p7lJ7OSNLEubVSo4CecD8Zsxf7DhVyCsGsiiE6cWmlQtZZVPPHl?=
+ =?us-ascii?Q?BCMaayzUy4Zrc5myXXrDihASSEPM43MatpnDqpxfRQawdUFv+m3TAzQh8KhT?=
+ =?us-ascii?Q?Nw3JHrRTpdXagzmZRMJSFKvD5VP/NxHGx3H75UY173/UfCoeGCfJ8YJYCRVX?=
+ =?us-ascii?Q?0P3XWZ6+jA9+aw2tqOWKvv5boNSH4ga6FnRCr8ElMCQ1hxbgPZDM0VGwrqpD?=
+ =?us-ascii?Q?wehhuKMD2qgdnRyeyVUSMHTYfMhbwWzaG6gZxKsKoWQAAgkr6vwEJi+xDUH6?=
+ =?us-ascii?Q?euNJvva0Cl5VXgmzf2Lh0eh5jEmXKACGybg4rXtVaq9Aar4e6Mi0+oboWAyZ?=
+ =?us-ascii?Q?TGRbvURKQqdmhIMlaDe15CwgYKmxkHkEyLcTomvGd7Al+Gj2NWLajcMC2hwz?=
+ =?us-ascii?Q?eptmsHCG6F92Du8G+Zyxkypfg20d2mFup81UxEPlw67BCeomqbny2BMewxGr?=
+ =?us-ascii?Q?lFXSvdLgkrKg/q1l88vTUBhzNgcUivLndVeby9iR2V9D7AjEMBE5vh9THcmw?=
+ =?us-ascii?Q?gvXr16+mQyGN3PYXVEUw76PXRFIgkUBQx1Fqq54vNT7wmve6WZ/fdZE/yf9g?=
+ =?us-ascii?Q?xZBAg7FZz7K+coR4INdAPj92Mv2jx8/nm1ly7hgGtK2tVjVNyWATQ0QcQ6LO?=
+ =?us-ascii?Q?QEj3SQR1IsEIalDbGhtrIeI/E/fu925qTTQiUd7DegQX0pR7vmhUiURiuR6a?=
+ =?us-ascii?Q?ojckrqdZl+i1oV36TCKT7JtW0RcwMohqqxsoy6re06ULZhQeIyjI36bomXDb?=
+ =?us-ascii?Q?i+yGjE11yv5yDFvbRa/cPSJGIUDgCt1fFqQ84a6d74dOzWiGd9e5A61p5qyG?=
+ =?us-ascii?Q?GPaWBKzzJ9RlmTcrXGWElcB+ZXRzqA3jlD5l2xCu9L8AFbp/7a0HThF/sicS?=
+ =?us-ascii?Q?p1abVpkm2tmyG6anlTxffd+d+rk2WVdq23IUk5Xo+LQZXS941raK/z6RVqGR?=
+ =?us-ascii?Q?l99g8Ww1ICzXD4gu6EyMk2RP7LHXj9keKe57jWavMxn6gS50IiV9e390GGqu?=
+ =?us-ascii?Q?azDh7MyngGRZAlc/pdmtYqj1+7+cd8WthXHcjBK7209c+ny2o1YJvB1TGpsb?=
+ =?us-ascii?Q?Hlzz0C9umOUVyQmkad9F1DrBs4wrOIUDjByzyShmJeXhNsAvTJozo/XLi/Ke?=
+ =?us-ascii?Q?O8ga+LyVElg2Qg3k53vXwHlNxXkYESS21v8hX4KwBQ7XV5EJCKZBfN8SREUM?=
+ =?us-ascii?Q?/8/AA1zFMCZYKjRNlH/aFTm22mfPWaN8Wx3LHFVutQHvXGZleMTeGDAhW7fT?=
+ =?us-ascii?Q?UfckDnnuF/Y+Deb6iKH0zpg=3D?=
+X-OriginatorOrg: renesas.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2c268af2-f4a3-4dc4-21bb-08dc804cfd46
+X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB10914.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 May 2024 02:05:33.6044
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: RyrpirYUjuCAIwySfnRCdgbi6N1ptRGNHABvldiUvulFl2ebYLoypSxZBTf4ZwoQe2453Brg0WEXkcspWSbc4YXBumBtivWlJGN5ieCLDxAhbgGGtonFezSjFFF7Haxn
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY3PR01MB9900
 
-On 28/05/2024 18:42, Andreas Kemnade wrote:
-> Convert the regulator bindings to yaml files. To allow only the regulator
-> compatible corresponding to the toplevel mfd compatible, split the file
-> into one per device.
-> 
-> To not need to allow any subnode name, specify clearly node names
-> for all the regulators.
-> 
-> Drop one twl5030 compatible due to no documentation on mfd side and no
-> users of the twl5030.
-> 
-> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-> ---
-> Changes in v2:
-> - add regulators directly to ti,twl.yaml
-> - less restrictions on regulator node name
-> 
->  .../devicetree/bindings/mfd/ti,twl.yaml       | 110 +++++++++++++++++-
->  .../bindings/regulator/twl-regulator.txt      |  80 -------------
->  2 files changed, 109 insertions(+), 81 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/regulator/twl-regulator.txt
-> 
-> diff --git a/Documentation/devicetree/bindings/mfd/ti,twl.yaml b/Documentation/devicetree/bindings/mfd/ti,twl.yaml
-> index c2357fecb56c..9dc1874a79dc 100644
-> --- a/Documentation/devicetree/bindings/mfd/ti,twl.yaml
-> +++ b/Documentation/devicetree/bindings/mfd/ti,twl.yaml
-> @@ -22,6 +22,42 @@ allOf:
->            contains:
->              const: ti,twl4030
->      then:
-> +      patternProperties:
-> +        "^regulator-":
+From DT point of view, in general, drivers should be asking for a
+specific port number because their function is fixed in the binding.
 
-Please define all nodes and properties in top-level. You can customize
-them in if:then. If this gets too complicated, then maybe schema should
-be split.
+of_graph_get_next_endpoint() doesn't match to this concept.
 
-> +          type: object
-> +          $ref: /schemas/regulator/regulator.yaml
-> +          unevaluatedProperties: false
-> +          properties:
-> +            compatible:
-> +              enum:
-> +                - ti,twl4030-vaux1
-> +                - ti,twl4030-vaux2
-> +                - ti,twl4030-vaux3
-> +                - ti,twl4030-vaux4
-> +                - ti,twl4030-vmmc1
-> +                - ti,twl4030-vmmc2
-> +                - ti,twl4030-vpll1
-> +                - ti,twl4030-vpll2
-> +                - ti,twl4030-vsim
-> +                - ti,twl4030-vdac
-> +                - ti,twl4030-vintana2
-> +                - ti,twl4030-vio
-> +                - ti,twl4030-vdd1
-> +                - ti,twl4030-vdd2
-> +                - ti,twl4030-vintana1
-> +                - ti,twl4030-vintdig
-> +                - ti,twl4030-vusb1v5
-> +                - ti,twl4030-vusb1v8
-> +                - ti,twl4030-vusb3v1
-> +            regulator-initial-mode:
-> +              items:
-> +                - items:
+Simply replace
 
-I am confused why you made it a matrix. This is an uint, so one number.
+	- of_graph_get_next_endpoint(xxx, NULL);
+	+ of_graph_get_endpoint_by_regs(xxx, 0, -1);
 
-enum:
- - 0x8
- - 0xe
+Link: https://lore.kernel.org/r/20240202174941.GA310089-robh@kernel.org
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+---
+ drivers/gpu/drm/drm_of.c                              | 4 +++-
+ drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c | 2 +-
+ drivers/gpu/drm/tiny/arcpgu.c                         | 2 +-
+ 3 files changed, 5 insertions(+), 3 deletions(-)
 
-> +                    enum:
-> +                      - 0x08 # Sleep mode, the nominal output voltage is maintained
-> +                             # with low power consumption with low load current capability
-> +                      - 0x0e # Active mode, the regulator can deliver its nominal output
-> +                             # voltage with full-load current capability
-> +
->        properties:
->          madc:
->            type: object
-> @@ -50,13 +86,43 @@ allOf:
->            properties:
->              compatible:
->                const: ti,twl4030-wdt
-> -
->    - if:
->        properties:
->          compatible:
->            contains:
->              const: ti,twl6030
->      then:
-> +      patternProperties:
-> +        "^regulator-":
-> +          type: object
-> +          $ref: /schemas/regulator/regulator.yaml
-> +          unevaluatedProperties: false
-> +          properties:
-> +            compatible:
-> +              enum:
-> +                - ti,twl6030-vaux1
-> +                - ti,twl6030-vaux2
-> +                - ti,twl6030-vaux3
-> +                - ti,twl6030-vmmc
-> +                - ti,twl6030-vpp
-> +                - ti,twl6030-vusim
-> +                - ti,twl6030-vana
-> +                - ti,twl6030-vcxio
-> +                - ti,twl6030-vdac
-> +                - ti,twl6030-vusb
-> +                - ti,twl6030-v1v8
-> +                - ti,twl6030-v2v1
-> +                - ti,twl6030-vdd1
-> +                - ti,twl6030-vdd2
-> +                - ti,twl6030-vdd3
-> +            ti,retain-on-reset:
-> +              description:
-> +                Does not turn off the supplies during warm
-> +                reset. Could be needed for VMMC, as TWL6030
-> +                reset sequence for this signal does not comply
-> +                with the SD specification.
-> +              type: boolean
-> +
->        properties:
->          gpadc:
->            type: object
-> @@ -69,6 +135,34 @@ allOf:
->            contains:
->              const: ti,twl6032
->      then:
-> +      patternProperties:
-> +        "^regulator-":
-> +          type: object
-> +          $ref: /schemas/regulator/regulator.yaml
-> +          unevaluatedProperties: false
-> +          properties:
-> +            compatible:
-> +              enum:
-> +                - ti,twl6032-ldo1
-> +                - ti,twl6032-ldo2
-> +                - ti,twl6032-ldo3
-> +                - ti,twl6032-ldo4
-> +                - ti,twl6032-ldo5
-> +                - ti,twl6032-ldo6
-> +                - ti,twl6032-ldo7
-> +                - ti,twl6032-ldoln
-> +                - ti,twl6032-ldousb
-> +                - ti,twl6032-smps3
-> +                - ti,twl6032-smps4
-> +                - ti,twl6032-vio
-> +            ti,retain-on-reset:
-> +              description:
-> +                Does not turn off the supplies during warm
-> +                reset. Could be needed for VMMC, as TWL6030
-> +                reset sequence for this signal does not comply
-> +                with the SD specification.
-> +              type: boolean
-> +
->        properties:
->          gpadc:
->            type: object
-> @@ -134,6 +228,20 @@ examples:
->          interrupt-controller;
->          #interrupt-cells = <1>;
->          interrupt-parent = <&gic>;
-> +
-> +        gpadc {
-> +          compatible = "ti,twl6030-gpadc";
-> +          interrupts = <6>;
-> +        };
-> +
-> +        rtc {
-> +          compatible = "ti,twl4030-rtc";
-> +          interrupts = <8>;
-> +        };
-> +
-> +        regulator-vaux1 {
-> +          compatible = "ti,twl6030-vaux1";
-
-Add the initial mode and retain-on-reset properties to validate them.
-
-Best regards,
-Krzysztof
+diff --git a/drivers/gpu/drm/drm_of.c b/drivers/gpu/drm/drm_of.c
+index 177b600895d3c..b6b2cade69aeb 100644
+--- a/drivers/gpu/drm/drm_of.c
++++ b/drivers/gpu/drm/drm_of.c
+@@ -504,6 +504,8 @@ EXPORT_SYMBOL_GPL(drm_of_get_data_lanes_count_ep);
+  * Gets parent DSI bus for a DSI device controlled through a bus other
+  * than MIPI-DCS (SPI, I2C, etc.) using the Device Tree.
+  *
++ * This function assumes that the device's port@0 is the DSI input.
++ *
+  * Returns pointer to mipi_dsi_host if successful, -EINVAL if the
+  * request is unsupported, -EPROBE_DEFER if the DSI host is found but
+  * not available, or -ENODEV otherwise.
+@@ -516,7 +518,7 @@ struct mipi_dsi_host *drm_of_get_dsi_bus(struct device =
+*dev)
+ 	/*
+ 	 * Get first endpoint child from device.
+ 	 */
+-	endpoint =3D of_graph_get_next_endpoint(dev->of_node, NULL);
++	endpoint =3D of_graph_get_endpoint_by_regs(dev->of_node, 0, -1);
+ 	if (!endpoint)
+ 		return ERR_PTR(-ENODEV);
+=20
+diff --git a/drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c b/driver=
+s/gpu/drm/panel/panel-raspberrypi-touchscreen.c
+index 4618c892cdd65..e10e469aa7a6c 100644
+--- a/drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c
++++ b/drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c
+@@ -400,7 +400,7 @@ static int rpi_touchscreen_probe(struct i2c_client *i2c=
+)
+ 	rpi_touchscreen_i2c_write(ts, REG_POWERON, 0);
+=20
+ 	/* Look up the DSI host.  It needs to probe before we do. */
+-	endpoint =3D of_graph_get_next_endpoint(dev->of_node, NULL);
++	endpoint =3D of_graph_get_endpoint_by_regs(dev->of_node, 0, -1);
+ 	if (!endpoint)
+ 		return -ENODEV;
+=20
+diff --git a/drivers/gpu/drm/tiny/arcpgu.c b/drivers/gpu/drm/tiny/arcpgu.c
+index 4f8f3172379e3..8c29b719ea626 100644
+--- a/drivers/gpu/drm/tiny/arcpgu.c
++++ b/drivers/gpu/drm/tiny/arcpgu.c
+@@ -288,7 +288,7 @@ static int arcpgu_load(struct arcpgu_drm_private *arcpg=
+u)
+ 	 * There is only one output port inside each device. It is linked with
+ 	 * encoder endpoint.
+ 	 */
+-	endpoint_node =3D of_graph_get_next_endpoint(pdev->dev.of_node, NULL);
++	endpoint_node =3D of_graph_get_endpoint_by_regs(pdev->dev.of_node, 0, -1)=
+;
+ 	if (endpoint_node) {
+ 		encoder_node =3D of_graph_get_remote_port_parent(endpoint_node);
+ 		of_node_put(endpoint_node);
+--=20
+2.43.0
 
 
