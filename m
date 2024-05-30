@@ -1,150 +1,211 @@
-Return-Path: <linux-omap+bounces-1431-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1432-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0E688D4ADE
-	for <lists+linux-omap@lfdr.de>; Thu, 30 May 2024 13:28:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAB1C8D5662
+	for <lists+linux-omap@lfdr.de>; Fri, 31 May 2024 01:42:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2255DB21FBD
-	for <lists+linux-omap@lfdr.de>; Thu, 30 May 2024 11:28:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE3CA1C2192E
+	for <lists+linux-omap@lfdr.de>; Thu, 30 May 2024 23:42:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DC611779BB;
-	Thu, 30 May 2024 11:27:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D02E17D346;
+	Thu, 30 May 2024 23:42:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b="FpZS537T"
+	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="kiOzTsXu"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from xry111.site (xry111.site [89.208.246.23])
+Received: from JPN01-TYC-obe.outbound.protection.outlook.com (mail-tycjpn01on2054.outbound.protection.outlook.com [40.107.114.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61D97174EC3;
-	Thu, 30 May 2024 11:27:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.208.246.23
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717068478; cv=none; b=SBJZZkblDM0t/6FV93OLDAY98SR1WSNRp16ClpITDXg9XaCooN6T9IjoGdi9dhNrTl0CYGsUUo7bxAjjY9ITPaUhMvgqzjqe093TspzUnaiNst2TSV55rD+JrJwogbNhlCEfkGMbWKseLyZT7syC34znoNjFh6kxmA5gub0bpDE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717068478; c=relaxed/simple;
-	bh=QKCYv/9pkeewZS0wdLDjidR9iHNKpRPbnM/6kemvOTo=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=WxXhFvMtMjgVSzLpEp6TKhWoHVAJaB06pdJAhbGEJ9zqqfLQNc2QwR9nX3j4IXcpoKixFqCttojsYf0cuLYJ5q0pjYELEFSiIuRWNcpk8vpMWVlrtLF1h0L2vk7igPSIdiTnqmxZxx2fLTzJtXhfIIhQcLUB0wtBuPdqBk22Csk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site; spf=pass smtp.mailfrom=xry111.site; dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b=FpZS537T; arc=none smtp.client-ip=89.208.246.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xry111.site
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xry111.site;
-	s=default; t=1717068464;
-	bh=QKCYv/9pkeewZS0wdLDjidR9iHNKpRPbnM/6kemvOTo=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=FpZS537T3yPjs0iXwLB6GlRYL0cdPMhC1/wShIU0j7i47Zz9Tq4aKnr7A8nrfwGme
-	 9lzOUhjVJGLOLZqyiXFOMnX8rKmDEv+3qt3eMOkee7hOiQVhkl2PN7zQ51r+NWqHBV
-	 R1iDpMCyTvvksWQ0oQYf3mlL90Er9AtaOI0Fdkps=
-Received: from [127.0.0.1] (unknown [IPv6:2001:470:683e::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-384) server-digest SHA384)
-	(Client did not present a certificate)
-	(Authenticated sender: xry111@xry111.site)
-	by xry111.site (Postfix) with ESMTPSA id 998376770C;
-	Thu, 30 May 2024 07:27:34 -0400 (EDT)
-Message-ID: <19dd3ba543ee3796afd4ee75daea199f56f32bcb.camel@xry111.site>
-Subject: Re: [PATCH 2/6] loongarch: defconfig: drop RT_GROUP_SCHED=y
-From: Xi Ruoyao <xry111@xry111.site>
-To: Celeste Liu <coelacanthushex@gmail.com>, Heinrich Schuchardt
- <heinrich.schuchardt@canonical.com>, Anup Patel <anup@brainfault.org>, Guo
- Ren <guoren@kernel.org>, Palmer Dabbelt <palmer@rivosinc.com>, Paul
- Walmsley <paul.walmsley@sifive.com>, Huacai Chen <chenhuacai@kernel.org>,
- WANG Xuerui <kernel@xen0n.name>, Thomas Bogendoerfer
- <tsbogend@alpha.franken.de>,  Vladimir Kondratiev
- <vladimir.kondratiev@mobileye.com>, Gregory CLEMENT
- <gregory.clement@bootlin.com>,  =?ISO-8859-1?Q?Th=E9o?= Lebrun
- <theo.lebrun@bootlin.com>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas
- Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>,
- "Naveen N . Rao" <naveen.n.rao@linux.ibm.com>, Sven Joachim
- <svenjoac@gmx.de>, Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker
- <dalias@libc.org>, John Paul Adrian Glaubitz
- <glaubitz@physik.fu-berlin.de>, Russell King <linux@armlinux.org.uk>,
- Florian Fainelli <florian.fainelli@broadcom.com>, Ray Jui
- <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>, Broadcom
- internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Tony
- Lindgren <tony@atomide.com>,  Thierry Reding <thierry.reding@gmail.com>,
- Jonathan Hunter <jonathanh@nvidia.com>, Arnd Bergmann <arnd@arndb.de>, 
- Mykola Lysenko <mykolal@fb.com>, linux-riscv@lists.infradead.org, 
- linux-arm-kernel@lists.infradead.org, linux-rpi-kernel@lists.infradead.org,
-  linux-omap@vger.kernel.org, linux-tegra@vger.kernel.org, 
- loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
- linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org
-Cc: linux-kselftest@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Lennart Poettering <lennart@poettering.net>, 
- Icenowy Zheng
-	 <uwu@icenowy.me>
-Date: Thu, 30 May 2024 19:27:32 +0800
-In-Reply-To: <20240530111947.549474-10-CoelacanthusHex@gmail.com>
-References: <20240530111947.549474-8-CoelacanthusHex@gmail.com>
-	 <20240530111947.549474-10-CoelacanthusHex@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.2 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA1B817C7B7;
+	Thu, 30 May 2024 23:41:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.114.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1717112522; cv=fail; b=KcBtTq4ivnICfrj/MH2l3bClXIO3TSLKQFoOzdXRabL46TMiSblRSJ52jfaNkLDcJXcdYmbAp3713o6KRr1Aj8mg1Q4pvfRoJTQPsObfQ1+RLhuc5E9O03cNv2ca+mNgwyd/88NFieejO4TTotdjsHPiVi2IWMTtgJfOBlJ8A2o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1717112522; c=relaxed/simple;
+	bh=BvUvaENwAbXVo0G9EIG6wd9UIb7zfLkf/4YzWHgUN4U=;
+	h=Message-ID:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
+	 Date:MIME-Version; b=RFWrUm3iJpT96dhqsuAvEw1cMJElDIZxExekXPEFtMkJxBSkydymJYgMgxFYerwbwB8t8H9J/kac+MnNNcG2D+sKLnckskY2RsmMJmbUNsPFXYGI6h4UPGvK7KV5tHzdJsBKm2OMpjs+l+q2mIRhvmqaMVmqmYectE3t9dlPHHQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=kiOzTsXu; arc=fail smtp.client-ip=40.107.114.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=jp0IXTKi5oFpM12JCrUUmHjsC1WsQzDuXdul6iTo24sC7RPeW7uLthaGonZ/LmvQbYtvXTqRflNLRGOVF+SmiX/US27Xq0gEQ32CSAZ+oxUH3L6JoXs5xqEj6M0hal2MO8Bgdczh+jVNOJzMhtak5DD7NPSFDEqYeaxB2FI956QZbHYij5XxyLUISSClcFlEnGk+9GCeoqYXxPTjiw1naOxx9c9aC6SP76IsQ/xs8JDIXDKLbUbv3xzQ1Vsg8K/NU7vLA7gam/o3XLgqrPGS1vvR+Xhn5D/NA9etLUGaiIIlHpmdb6TpmKy2/9ntGe3CPcujwHKB5oUmVcmXYtHzJg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=XOIX+hcKVLYyys99qEEk/1GB6W32WGeCT8a/pXU8O+o=;
+ b=VTBhuX/GNsqFIv5jxVJeIWT4aMqT5RD6sDzxFGUl4vrlHlYydGBq/S1Ipx58pKxw3AlTVUCWyWMIGiytQTXh2EIoA/h0607Q3n0m+D2iTXOdVdRPu4njsGoZTkckgjEvyW1ndVdQg59vXc1+THc6IkqAfP8N02I7FdeNCeq3311mIyN2mhRbNhG2r3hHRBeQNetendr24826huFQ7Uinxvq2qviPAAH1vSlrQ5LK3IeeZ2R4qicqKFZTI0zOqXLfAQwYM+ObhEHkv3f1ojyCaZaO8YuidvY9+7brtOGYw+/7EH/LLMxAcHTcXkA6oT+e7N80mpa/KjhJTmHq3yg74A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
+ dkim=pass header.d=renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=XOIX+hcKVLYyys99qEEk/1GB6W32WGeCT8a/pXU8O+o=;
+ b=kiOzTsXuoK+r7IzVfJbbUIvcvmUP4Jy7nuiJVxre6favUEQfeTQ0SzdwdqX61/VFEyy7fdBK2EFsRpqRZfd5ybBF8RZ5kiDxk2wUMHLF640Xf3jm8xAMFvD7CMIGs7GDLiq8PMHFC+4i5DOxWsoFA31JLVcimAzgQQfmBjsZlCI=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=renesas.com;
+Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
+ (2603:1096:400:3a9::11) by OS0PR01MB5523.jpnprd01.prod.outlook.com
+ (2603:1096:604:af::10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7611.30; Thu, 30 May
+ 2024 23:41:56 +0000
+Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
+ ([fe80::c568:1028:2fd1:6e11]) by TYCPR01MB10914.jpnprd01.prod.outlook.com
+ ([fe80::c568:1028:2fd1:6e11%4]) with mapi id 15.20.7633.021; Thu, 30 May 2024
+ 23:41:55 +0000
+Message-ID: <87ttie98ak.wl-kuninori.morimoto.gx@renesas.com>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+To: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Lad Prabhakar <prabhakar.csengg@gmail.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	David Airlie <airlied@gmail.com>,
+	Eugen Hristev <eugen.hristev@collabora.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Helge Deller <deller@gmx.de>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Maxime Ripard <mripard@kernel.org>,
+	Michal Simek <michal.simek@amd.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	coresight@lists.linaro.org,
+	dri-devel@lists.freedesktop.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-fbdev@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	linux-omap@vger.kernel.org,
+	linux-staging@lists.linux.dev
+Subject: Re: [PATCH v3 7/9] staging: media: atmel: use for_each_endpoint_of_node()
+In-Reply-To: <f0f1b989-2166-44ad-ba70-caf56a4d93c4@moroto.mountain>
+References: <87le3soy08.wl-kuninori.morimoto.gx@renesas.com>
+	<87bk4ooxya.wl-kuninori.morimoto.gx@renesas.com>
+	<f0f1b989-2166-44ad-ba70-caf56a4d93c4@moroto.mountain>
+User-Agent: Wanderlust/2.15.9 Emacs/29.3 Mule/6.0
+Content-Type: text/plain; charset=US-ASCII
+Date: Thu, 30 May 2024 23:41:55 +0000
+X-ClientProxiedBy: TY2PR04CA0019.apcprd04.prod.outlook.com
+ (2603:1096:404:f6::31) To TYCPR01MB10914.jpnprd01.prod.outlook.com
+ (2603:1096:400:3a9::11)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TYCPR01MB10914:EE_|OS0PR01MB5523:EE_
+X-MS-Office365-Filtering-Correlation-Id: 44d28d13-74bd-4bbd-0886-08dc8102170e
+X-LD-Processed: 53d82571-da19-47e4-9cb4-625a166a4a2a,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230031|7416005|366007|376005|1800799015|52116005|38350700005;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?m9iDoq+M0QrcAq4c58L5+DZQbFPoEnK/MKcOvUaPFVxVYRIxSp+n1p0yxmUV?=
+ =?us-ascii?Q?R0jwr79XU4Rr+XP1SP5WWDSdZHyMF03WImdIlPj/3lC/2+4yMOzisVIsuEp4?=
+ =?us-ascii?Q?qacWnQmagYM3T+RMRHR3rA7KyM3jsgLKdgfb7HfWaBGG27rOUzTlrFstaGKD?=
+ =?us-ascii?Q?54IWtUxI9y9VBc8v9SLpUOphweZnOOVia+pKUxrmhe8QTBNlZCc2uIRjtu1i?=
+ =?us-ascii?Q?+ldWGK235XDQqsXHkMXDs0DJ4YxyO9MsOHhSwlG0uaJUAMAE4NeklAZn5XfB?=
+ =?us-ascii?Q?LQQ8cjMQYe0RQyU5LzAOf+6thoXRkhrwwP1e2mR/xOUAjkEocFgQMbUHUk57?=
+ =?us-ascii?Q?Wi5GFXEmhA2Ei2YNhEYT+4TI2r04uMdE78JGTzT1/J5zIMT4KVX2gogQnYNS?=
+ =?us-ascii?Q?i2UC6mT51n2qR6sqr3vId8rtCM2wPfXvp8uumHWc2D3hh4RuhQORNoNzzQHq?=
+ =?us-ascii?Q?MiZJ08S7mb2Dgir06dAUto8QjCQmn3VRjB0BSr/tZT6EuQ11lxnPEswQAX1T?=
+ =?us-ascii?Q?v4RnkTJrhMsRw9HFINGxshH7fdjsOO4oJDxUqRXOc3eMfsHkntc6mDC/lfWn?=
+ =?us-ascii?Q?of2m4hIqUBlEvt327/FYwKy9sScGsDzDFARur0I7fbyj42DLKJq+1Jzf11D6?=
+ =?us-ascii?Q?APyCCuKRfTHYjHze1oyBmqqwAFCxvysR1GkG6hHgQLrJURtNx/U+2iSgkWY7?=
+ =?us-ascii?Q?IsNnq6ACm63y+0edLUQM4WV+TE5UdjDqx8VVsyxgahnhALMIImfb29GiA0JU?=
+ =?us-ascii?Q?P3P3g71sDGQ5yTkBEZtU2OBH43ei7mJkmrsuRcULlqxHgIeiug/VvqADz4m+?=
+ =?us-ascii?Q?oEWxM0vU5gfpIgw/4VvAfIhISRXlrpgkTcpWDPuI0DMHGMioHvunPWUEdvda?=
+ =?us-ascii?Q?3qkjQSeF4XymvWq1NUaspErErQu9zzs2hk6YAyrLYfnBbtIFyk6HxrQlO/ib?=
+ =?us-ascii?Q?v7BXkcWcnuly9r6HIqxD1PkPP2al8m3iRPIfW5uoXQBb27FmSrrAnaSBLP95?=
+ =?us-ascii?Q?zoAG3alrTRpj6cLp+i+yb6I1gfLR9AYFCtdJ95jzKYz4BKcjuCi33mM/n8Pc?=
+ =?us-ascii?Q?PZrJ0mXuo3MhYqt6rS0kfjtV8Xs4n2BX/HkNdQkdEB4MYVZAexnJd5Un8Ok8?=
+ =?us-ascii?Q?vRBZwajccDxT422zI2DPCQ82b1Hd4kCoWv+H4NhzU4riic4c6rENN017gYau?=
+ =?us-ascii?Q?IVJPcrrTVNzonhjwVJQb8ZKtaXzKq7kKm4p27u5XwoaAwYAJSLlUExGLialA?=
+ =?us-ascii?Q?no90G+2L+ExwJDhEcQ8Og/6BJpJSVgrG6Hp+orSnkOuZVPuvZ+/dQVQDH9dE?=
+ =?us-ascii?Q?id7GtCEbQ4HbgJOQ6xpD4P4sfCmaIG22FAbQc8mKNa7NOw=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYCPR01MB10914.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7416005)(366007)(376005)(1800799015)(52116005)(38350700005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?JriZrLv3x33QA2g8yvlMV7TeJpWuM8JT239g4lfqaapnroNDx+GEo2AK4wtX?=
+ =?us-ascii?Q?asaPrgAz8Z6dL/c9PlKwAHoDrnH3ZGMZu133FjhnXhLrzCclKyYwXBZGgi6z?=
+ =?us-ascii?Q?GTrdwuKmS6eLgzahZgVWUxUNU+HZWsjKn78qczeS/Lefv9AvYfM1Xi8INjIU?=
+ =?us-ascii?Q?hnBaEH9Q3kAeqC5aK7Uy/B5AIkMa/DqNoWaKviVeKzxUHKT3Yd+5wsDELAVx?=
+ =?us-ascii?Q?G9jBwgdkJTh60xr0D8vjZsZvhp5jBkVd+sk/U3iZsYsC5lWCuLMV1yj0xYo+?=
+ =?us-ascii?Q?81m4P81+XrGUKE1b3ZGPFnaKY8iXbapH+cPWRJIDs/gZ7ibkTxCoDpnsUAVb?=
+ =?us-ascii?Q?/6gDHDXP2PtuIeIxKB+UX3b7Ik0qiuKHCEDGt7B9umJmPaMLpSJrT22AyHiB?=
+ =?us-ascii?Q?9jOWKeNJfXPopc8WYYpbRAm9418AeRGfwzx5SBb62TJzKVx/mVQRWZJCeHHX?=
+ =?us-ascii?Q?m0S3626Vr17W4/KjEJOgsc9sElR14lOQrbd84Osy6dZw4ptpLJ0tsudb+dwd?=
+ =?us-ascii?Q?hPjSejFgb4kfIESUTJg29Lh8Im6JXtjy6/JJLJAKgdp7RzCJTSw5TMEhvaMv?=
+ =?us-ascii?Q?avP1egNTz9bDu3JLArdl/Ui1Hmq/5Ul1yG5hO/jmcRx/EWC2mDgVmAfpt96T?=
+ =?us-ascii?Q?zhHB1CWXMGTO477ztr5wSHLkfes0Fb+mTf/faKERpTmdLRm7CabitD19+WEq?=
+ =?us-ascii?Q?wfEJROy5nz9kUp/Oo5gcCuWNa6wzB4UNe5hKDv2ZxKsinZwb/jWIZmDDDX6y?=
+ =?us-ascii?Q?c5v4ef6df/5PnKjn7EffEjEY/R8XS+RQkYA7E6tqTrYz7JYBX+sD/xiqaBUh?=
+ =?us-ascii?Q?+Jy710A2fAwfzidj1bbkLF5GUAd0dUxcYVpTBVBmEp8XrTqVFU2mQvUkhcPI?=
+ =?us-ascii?Q?qFqVMMKGPzL0R6Akx0u60nQtkX2Ue664pIY5KcgCjFWVxYfYNK1X/m59YAQd?=
+ =?us-ascii?Q?P6rmBzgiGUGsys+lF2kNOn50q/Wsi9IGbgf+1tAmmDCtcxAUL0HXSJy3G5jS?=
+ =?us-ascii?Q?fW0KoVO6RZYdtbAW/gCREEW3/iqMynkd2BoHFCJ9bNgGO/7DNYRE3SyGdOmp?=
+ =?us-ascii?Q?RXAnpCOXWE4pTeqHN1iuft+/1E2p3VVahFW1PGU4kWrGPjbVYUZsfhqs6hjX?=
+ =?us-ascii?Q?k86PwYts9vrRuQ1jdb0CyEuT0IlHZQ6uf7yj5H4HVao5Z6seni8Qo2V8BeqA?=
+ =?us-ascii?Q?ccf0/DJDnDO7Pc0Kbhmbv35PSfMFBuTvN0wVNpQrOtNaZ/85qj7lbAV3JI13?=
+ =?us-ascii?Q?ClV/vufVGdfrDEVhMF/Jcg2DOK4PeNuyF4kdHFusW4w+oBMudEA2cDVAbosZ?=
+ =?us-ascii?Q?nCiUpIHXyK1T1uNDbU2PkSkgKKOg5hyGeswFwX0mK3C3FsGNnMDYy7S78txa?=
+ =?us-ascii?Q?QxRQR4Pt7qBigQkvoFyDLQ0DBd9CiSSfJ/VuKjVYwvECxFq3xhUkGbevmm03?=
+ =?us-ascii?Q?A1vCbrE4o49YX4Ih6db5HxXc6Tj5Bxds9SRuBXYb2UHAnCzforFriV6M6Kap?=
+ =?us-ascii?Q?/trSWIEVGGJ/k0xc+uSluQZ+YR+iPK2wzBCb8ku/uk+mBzXt21Uuqi14r5id?=
+ =?us-ascii?Q?Y5NbyywRdv6NxI+lDVDtX+j23IVLg7EXwyB5AGe2tnV42thPutIbXbKFmY/x?=
+ =?us-ascii?Q?g2AB4AjDcShJlggtgFNrwOg=3D?=
+X-OriginatorOrg: renesas.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 44d28d13-74bd-4bbd-0886-08dc8102170e
+X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB10914.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 May 2024 23:41:55.7717
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: I68x4oaud+uLn42ew8h5Nb0V5mFztHXOtgkojSCaFdx2pFejUYRKrdyC8dyUIK5ZoqCDvvVS9px5C1Vy+SpaRyQ9ON5OpX542jdgV1H7utvUTMU65I82ZvKbFe0IUR3N
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS0PR01MB5523
 
-On Thu, 2024-05-30 at 19:19 +0800, Celeste Liu wrote:
-> For cgroup v1, if turned on, and there's any cgroup in the "cpu" hierarch=
-y it
-> needs an RT budget assigned, otherwise the processes in it will not be ab=
-le to
-> get RT at all. The problem with RT group scheduling is that it requires t=
-he
-> budget assigned but there's no way we could assign a default budget, sinc=
-e the
-> values to assign are both upper and lower time limits, are absolute, and =
-need to
-> be sum up to < 1 for each individal cgroup. That means we cannot really c=
-ome up
-> with values that would work by default in the general case.[1]
->=20
-> For cgroup v2, it's almost unusable as well. If it turned on, the cpu con=
-troller
-> can only be enabled when all RT processes are in the root cgroup. But it =
-will
-> lose the benefits of cgroup v2 if all RT process were placed in the same =
-cgroup.
->=20
-> Red Hat, Gentoo, Arch Linux and Debian all disable it. systemd also doesn=
-'t
-> support it.[2]
->=20
-> [1]: https://bugzilla.redhat.com/show_bug.cgi?id=3D1229700
-> [2]: https://github.com/systemd/systemd/issues/13781#issuecomment-5491643=
-83
->=20
-> Signed-off-by: Celeste Liu <CoelacanthusHex@gmail.com>
 
-As a distro maintainer who had once been bitten by this option:
+Hi Dan
 
-Reviewed-by: Xi Ruoyao <xry111@xry111.site>
+> > -	while (1) {
+> > +	for_each_endpoint_of_node(np, epn) {
+> >  		struct v4l2_fwnode_endpoint v4l2_epn = { .bus_type = 0 };
+> >  
+> > -		epn = of_graph_get_next_endpoint(np, epn);
+> > -		if (!epn)
+> > -			return 0;
+> > -
+> >  		ret = v4l2_fwnode_endpoint_parse(of_fwnode_handle(epn),
+> >  						 &v4l2_epn);
+> >  		if (ret) {
+> 
+> This introduces a Smatch warning because now "ret" is uninitialized if
+> the for_each_endpoint_of_node() list is empty.  Is that something which
+> is possible?
+> 
+> I've been meaning to make a list of loops which always iterate at least
+> one time.  for_each_cpu() etc.
 
-> ---
-> =C2=A0arch/loongarch/configs/loongson3_defconfig | 1 -
-> =C2=A01 file changed, 1 deletion(-)
->=20
-> diff --git a/arch/loongarch/configs/loongson3_defconfig b/arch/loongarch/=
-configs/loongson3_defconfig
-> index b4252c357c8e..4d93adb3f1a2 100644
-> --- a/arch/loongarch/configs/loongson3_defconfig
-> +++ b/arch/loongarch/configs/loongson3_defconfig
-> @@ -23,7 +23,6 @@ CONFIG_NUMA_BALANCING=3Dy
-> =C2=A0CONFIG_MEMCG=3Dy
-> =C2=A0CONFIG_BLK_CGROUP=3Dy
-> =C2=A0CONFIG_CFS_BANDWIDTH=3Dy
-> -CONFIG_RT_GROUP_SCHED=3Dy
-> =C2=A0CONFIG_CGROUP_PIDS=3Dy
-> =C2=A0CONFIG_CGROUP_RDMA=3Dy
-> =C2=A0CONFIG_CGROUP_FREEZER=3Dy
+Oh, OK thank you for pointing it.
+I will fixup and post it next week
 
---=20
-Xi Ruoyao <xry111@xry111.site>
-School of Aerospace Science and Technology, Xidian University
+Thank you for your help !!
+Best regards
+---
+Kuninori Morimoto
 
