@@ -1,411 +1,215 @@
-Return-Path: <linux-omap+bounces-1468-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1469-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C44EE8FC627
-	for <lists+linux-omap@lfdr.de>; Wed,  5 Jun 2024 10:26:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F69E8FCA26
+	for <lists+linux-omap@lfdr.de>; Wed,  5 Jun 2024 13:17:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34F441F245C7
-	for <lists+linux-omap@lfdr.de>; Wed,  5 Jun 2024 08:26:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B79912839BC
+	for <lists+linux-omap@lfdr.de>; Wed,  5 Jun 2024 11:17:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFC9E1946DF;
-	Wed,  5 Jun 2024 08:19:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45EAA193080;
+	Wed,  5 Jun 2024 11:17:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="w2Ixvx7h"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="cUxjVX9f"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail2.andi.de1.cc (vmd64148.contaboserver.net [161.97.139.27])
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B206C1946BA;
-	Wed,  5 Jun 2024 08:19:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.97.139.27
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0F9C19148B;
+	Wed,  5 Jun 2024 11:17:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717575579; cv=none; b=tbogx/FJK4YevF5OJBYuNvIcVNb8U3gNVn4MsXH0Y9fnHEdevJxXQ8yAqGXZJMCLGYnm3Ljna8XZ49pWGyW33JWhliZ0BDTjwdn7UDnsxYmBrpu4qaoz4UpFNyynmVin4QSJ4ECQVhR0nBpaIyKqyx8yZSihzn7C7wC724z7VTo=
+	t=1717586241; cv=none; b=uqgRjRcgOB8KXtHtP6tKfBBJT6HP+Iyv01IATBTLUexk9KjvFxVgYVwol33Rb0/b5xoJ0SZdr8DNpUYk2ACVnb6wga8g1HRtqQtdD/uFHOEQZEz4y+6ClWYi3L2aS7h6RhrgsaPLK74sJG68u8YwKi65Llh3PWgv+u/d91SIYM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717575579; c=relaxed/simple;
-	bh=awnecWctzKrmH2Q9F9eUI1sO1/cE+Y+MWy1YkQh6Tsk=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version; b=PtkVCKDSwCApTcYv83qaBO2Kxq8SnTs9Y7jPJozMlFIWh1up39z1kAV2Mz8wbHQ0/jZHbgHqkvcP0Crrc3+rH7OT4bWO3PN6Z56beZs8JWjxzi972Fd2RRimQHQhwMNY+mVDAvRyHPAeQpy8J6vZIukMq2ze1ncrSJD5922aqfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=w2Ixvx7h; arc=none smtp.client-ip=161.97.139.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kemnade.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
-Received: from mail.andi.de1.cc ([2a02:c205:3004:2154::1])
-	by mail2.andi.de1.cc with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <andreas@kemnade.info>)
-	id 1sElrk-008sMe-13;
-	Wed, 05 Jun 2024 10:19:29 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=Content-Transfer-Encoding:MIME-Version:
-	Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=RJv1sYTRVMr7FTjeuQa/7/Qu+8HkgnWrXnXH071JoWo=; b=w2Ixvx7hYXXkVD6thSD6tSLEs1
-	rJdMaawDNbgs3OH72we4bzwon+ObclyH4Ay+4yjIuBxtSDjEFymuCZ2KXqbAG6M7MYtZDO6Yf9tC0
-	ncAwIjDbEsv5ZQRby+GLgjsvPNUjxfTMQVrOuJaqDzlIAo6JfV2+WFAotorvwgxjqHb45I2Q4HPu6
-	RCg5/x8fW6611ncgQL9Xa8zoVHBgCQ5NeRZaW1f4ysj/kIMfIoA1RlonD1lnwys2BJpygkbjhn1y6
-	ZFaYUaxv1C2fWtFwHO58mQaXjrtwGLwpfLLGwA4OHcr4mGSmzSlwuCVyL8OINyTr8SAHmur22kyfv
-	uD6YV8nA==;
-Received: from p200300c20737c2001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:c2:737:c200:1a3d:a2ff:febf:d33a] helo=aktux)
-	by mail.andi.de1.cc with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <andreas@kemnade.info>)
-	id 1sElri-002fQU-2Q;
-	Wed, 05 Jun 2024 10:19:28 +0200
-Received: from andi by aktux with local (Exim 4.96)
-	(envelope-from <andreas@kemnade.info>)
-	id 1sElrj-000Ytt-20;
-	Wed, 05 Jun 2024 10:19:27 +0200
-From: Andreas Kemnade <andreas@kemnade.info>
-To: lee@kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	lgirdwood@gmail.com,
-	broonie@kernel.org,
-	andreas@kemnade.info,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-omap@vger.kernel.org
-Subject: [PATCH v3] dt-bindings: regulator: twl-regulator: convert to yaml
-Date: Wed,  5 Jun 2024 10:19:06 +0200
-Message-Id: <20240605081906.134141-1-andreas@kemnade.info>
-X-Mailer: git-send-email 2.39.2
+	s=arc-20240116; t=1717586241; c=relaxed/simple;
+	bh=T4XzM1jF2tUa5BY+kwAb41B69XIQcAAOzlrO4rZOsn8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=upi2Cf3kMtNeFaxJtC7rOV0PLEVLSugdN3Ul+WrltZf4v26ay1/34m6rcubvspRuk+Cx4ihV3eDBsBPpaHzkJLqYT3N/ImOB6gfbayR6iYz0K69uhVfkPDbOojxUHqd2fJ3EGDG2zp4K3nktyAy4aHvBYkrDQN9mtt7QgGJNs4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=cUxjVX9f; arc=none smtp.client-ip=46.235.227.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1717586237;
+	bh=T4XzM1jF2tUa5BY+kwAb41B69XIQcAAOzlrO4rZOsn8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=cUxjVX9fMQqYNnjKD9e5B7uNMwPhZ4PdF1qkbxSLubRlrrDeM6OGh7RmJMY2a2/p8
+	 BhCnTty3gocbWNtt16voyqg800tlnU7LvPGA8GTBD/mHlGTXXpG94ZpQYU5plydRbf
+	 kUD0NUcgn4zhl4g2Y8kvZ6B0usudC/o9dHBpnAee5CuEObix6Tm52paV5wqvGbaYDs
+	 lItSF22xdlcfHZiYU/LJSsYXQ1u7ENQ2sTSPRTp2FUzYtzUimDrYpiBdDu5iAQDRy0
+	 mO/Vy/WsEaBv0kiIZMluJ8IcGcOaFdkh4rOokTQK4fC2YPlB9Uiun1+MdwcWlywEf6
+	 9ek03xOr91Ahg==
+Received: from [100.113.186.2] (cola.collaboradmins.com [195.201.22.229])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: kholk11)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 31E0437804C9;
+	Wed,  5 Jun 2024 11:17:05 +0000 (UTC)
+Message-ID: <b017841b-0e52-4699-af1d-3620f35f79e0@collabora.com>
+Date: Wed, 5 Jun 2024 13:17:03 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 1/1] treewide: Align match_string() with
+ sysfs_match_string()
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Corey Minyard <minyard@acm.org>, Allen Pais <apais@linux.microsoft.com>,
+ Sebastian Reichel <sebastian.reichel@collabora.com>,
+ Perry Yuan <perry.yuan@amd.com>,
+ Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>, Nuno Sa <nuno.sa@analog.com>,
+ Guenter Roeck <linux@roeck-us.net>, Randy Dunlap <rdunlap@infradead.org>,
+ Andi Shyti <andi.shyti@kernel.org>, Heiner Kallweit <hkallweit1@gmail.com>,
+ Lee Jones <lee@kernel.org>, Samuel Holland <samuel@sholland.org>,
+ Elad Nachman <enachman@marvell.com>,
+ Arseniy Krasnov <AVKrasnov@sberdevices.ru>,
+ Johannes Berg <johannes.berg@intel.com>,
+ Gregory Greenman <gregory.greenman@intel.com>,
+ Benjamin Berg <benjamin.berg@intel.com>, Bjorn Helgaas
+ <bhelgaas@google.com>, Robert Richter <rrichter@amd.com>,
+ Vinod Koul <vkoul@kernel.org>, Chunfeng Yun <chunfeng.yun@mediatek.com>,
+ Linus Walleij <linus.walleij@linaro.org>, Hans de Goede
+ <hdegoede@redhat.com>, =?UTF-8?Q?Ilpo_J=C3=A4rvinen?=
+ <ilpo.jarvinen@linux.intel.com>, Nikita Kravets <teackot@gmail.com>,
+ Jiri Slaby <jirislaby@kernel.org>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Stanley Chang <stanley_chang@realtek.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+ Abdel Alkuor <abdelalkuor@geotab.com>,
+ Kent Overstreet <kent.overstreet@linux.dev>,
+ Eric Biggers <ebiggers@google.com>, Kees Cook <keescook@chromium.org>,
+ Ingo Molnar <mingo@kernel.org>, "Steven Rostedt (Google)"
+ <rostedt@goodmis.org>, Daniel Bristot de Oliveira <bristot@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Hugh Dickins <hughd@google.com>,
+ Abel Wu <wuyun.abel@bytedance.com>,
+ John Johansen <john.johansen@canonical.com>, Mimi Zohar
+ <zohar@linux.ibm.com>, Stefan Berger <stefanb@linux.ibm.com>,
+ Roberto Sassu <roberto.sassu@huawei.com>,
+ Eric Snowberg <eric.snowberg@oracle.com>, Takashi Iwai <tiwai@suse.de>,
+ Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+ Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
+ Mark Brown <broonie@kernel.org>,
+ Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-ide@vger.kernel.org,
+ openipmi-developer@lists.sourceforge.net, linux-clk@vger.kernel.org,
+ linux-rpi-kernel@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ linux-rockchip@lists.infradead.org, linux-tegra@vger.kernel.org,
+ linux-pm@vger.kernel.org, qat-linux@intel.com,
+ dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ intel-xe@lists.freedesktop.org, nouveau@lists.freedesktop.org,
+ linux-hwmon@vger.kernel.org, linux-i2c@vger.kernel.org,
+ linux-leds@vger.kernel.org, linux-sunxi@lists.linux.dev,
+ linux-omap@vger.kernel.org, linux-mmc@vger.kernel.org,
+ linux-mtd@lists.infradead.org, netdev@vger.kernel.org,
+ linux-wireless@vger.kernel.org, linux-pci@vger.kernel.org,
+ linux-mediatek@lists.infradead.org, linux-phy@lists.infradead.org,
+ linux-gpio@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+ linux-staging@lists.linux.dev, linux-usb@vger.kernel.org,
+ linux-fbdev@vger.kernel.org, linux-bcachefs@vger.kernel.org,
+ linux-hardening@vger.kernel.org, cgroups@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org,
+ apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org,
+ linux-integrity@vger.kernel.org, alsa-devel@alsa-project.org,
+ linux-sound@vger.kernel.org
+Cc: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin
+ <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>,
+ "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ David Howells <dhowells@redhat.com>, "David S. Miller"
+ <davem@davemloft.net>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Len Brown <lenb@kernel.org>, Sergey Shtylyov <s.shtylyov@omp.ru>,
+ Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>,
+ Daniel Scally <djrscally@gmail.com>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>,
+ Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, Florian Fainelli <florian.fainelli@broadcom.com>,
+ Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, Heiko Stuebner <heiko@sntech.de>,
+ Peter De Schrijver <pdeschrijver@nvidia.com>,
+ Prashant Gaikwad <pgaikwad@nvidia.com>,
+ Thierry Reding <thierry.reding@gmail.com>,
+ Jonathan Hunter <jonathanh@nvidia.com>, Huang Rui <ray.huang@amd.com>,
+ "Gautham R. Shenoy" <gautham.shenoy@amd.com>,
+ Mario Limonciello <mario.limonciello@amd.com>,
+ Viresh Kumar <viresh.kumar@linaro.org>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Tvrtko Ursulin <tursulin@ursulin.net>, Karol Herbst <kherbst@redhat.com>,
+ Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@redhat.com>,
+ Jean Delvare <jdelvare@suse.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Pavel Machek <pavel@ucw.cz>, Chen-Yu Tsai <wens@csie.org>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>, Tony Lindgren <tony@atomide.com>,
+ Adrian Hunter <adrian.hunter@intel.com>, Hu Ziji <huziji@marvell.com>,
+ Ulf Hansson <ulf.hansson@linaro.org>,
+ Miquel Raynal <miquel.raynal@bootlin.com>,
+ Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>,
+ Potnuri Bharat Teja <bharat@chelsio.com>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>,
+ Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+ Kalle Valo <kvalo@kernel.org>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Oliver O'Halloran <oohall@gmail.com>,
+ Kishon Vijay Abraham I <kishon@kernel.org>,
+ Matthias Brugger <matthias.bgg@gmail.com>, JC Kuo <jckuo@nvidia.com>,
+ Andrew Lunn <andrew@lunn.ch>, Gregory Clement <gregory.clement@bootlin.com>,
+ Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+ Sebastian Reichel <sre@kernel.org>,
+ Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>,
+ Lukasz Luba <lukasz.luba@arm.com>, Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+ Helge Deller <deller@gmx.de>, Brian Foster <bfoster@redhat.com>,
+ Zhihao Cheng <chengzhihao1@huawei.com>, Tejun Heo <tj@kernel.org>,
+ Zefan Li <lizefan.x@bytedance.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>, Ben Segall
+ <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+ Daniel Bristot de Oliveira <bristot@redhat.com>,
+ Valentin Schneider <vschneid@redhat.com>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jason Baron <jbaron@akamai.com>, Jim Cromie <jim.cromie@gmail.com>,
+ Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+ "Serge E. Hallyn" <serge@hallyn.com>,
+ Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+ Clemens Ladisch <clemens@ladisch.de>, Jaroslav Kysela <perex@perex.cz>,
+ Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>
+References: <20240603211538.289765-1-andriy.shevchenko@linux.intel.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Content-Language: en-US
+In-Reply-To: <20240603211538.289765-1-andriy.shevchenko@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Convert the regulator bindings to yaml files. To allow only the regulator
-compatible corresponding to the toplevel mfd compatible, split the file
-into one per device.
+Il 02/06/24 17:57, Andy Shevchenko ha scritto:
+> Make two APIs look similar. Hence convert match_string() to be
+> a 2-argument macro. In order to avoid unneeded churn, convert
+> all users as well. There is no functional change intended.
+> 
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-Drop one twl5030 compatible due to no documentation on mfd side and no
-users of the twl5030.
+For MediaTek
 
-Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
----
-Changes in v3:
-- define regulator stuff in toplevel
-- simplified regulator-inital-mode
-- extended example to contain both regulator-initial-mode and
-  retain-on-reset
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-Changes in v2:
-- add regulators directly to ti,twl.yaml
-- less restrictions on regulator node name
-
- .../devicetree/bindings/mfd/ti,twl.yaml       | 167 +++++++++++++++++-
- .../bindings/regulator/twl-regulator.txt      |  80 ---------
- 2 files changed, 165 insertions(+), 82 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/regulator/twl-regulator.txt
-
-diff --git a/Documentation/devicetree/bindings/mfd/ti,twl.yaml b/Documentation/devicetree/bindings/mfd/ti,twl.yaml
-index c2357fecb56c..e4a9bc97e597 100644
---- a/Documentation/devicetree/bindings/mfd/ti,twl.yaml
-+++ b/Documentation/devicetree/bindings/mfd/ti,twl.yaml
-@@ -22,6 +22,32 @@ allOf:
-           contains:
-             const: ti,twl4030
-     then:
-+      patternProperties:
-+        "^regulator-":
-+          properties:
-+            compatible:
-+              enum:
-+                - ti,twl4030-vaux1
-+                - ti,twl4030-vaux2
-+                - ti,twl4030-vaux3
-+                - ti,twl4030-vaux4
-+                - ti,twl4030-vmmc1
-+                - ti,twl4030-vmmc2
-+                - ti,twl4030-vpll1
-+                - ti,twl4030-vpll2
-+                - ti,twl4030-vsim
-+                - ti,twl4030-vdac
-+                - ti,twl4030-vintana2
-+                - ti,twl4030-vio
-+                - ti,twl4030-vdd1
-+                - ti,twl4030-vdd2
-+                - ti,twl4030-vintana1
-+                - ti,twl4030-vintdig
-+                - ti,twl4030-vusb1v5
-+                - ti,twl4030-vusb1v8
-+                - ti,twl4030-vusb3v1
-+            ti,retain-on-reset: false
-+
-       properties:
-         madc:
-           type: object
-@@ -50,13 +76,34 @@ allOf:
-           properties:
-             compatible:
-               const: ti,twl4030-wdt
--
-   - if:
-       properties:
-         compatible:
-           contains:
-             const: ti,twl6030
-     then:
-+      patternProperties:
-+        "^regulator-":
-+          properties:
-+            compatible:
-+              enum:
-+                - ti,twl6030-vaux1
-+                - ti,twl6030-vaux2
-+                - ti,twl6030-vaux3
-+                - ti,twl6030-vmmc
-+                - ti,twl6030-vpp
-+                - ti,twl6030-vusim
-+                - ti,twl6030-vana
-+                - ti,twl6030-vcxio
-+                - ti,twl6030-vdac
-+                - ti,twl6030-vusb
-+                - ti,twl6030-v1v8
-+                - ti,twl6030-v2v1
-+                - ti,twl6030-vdd1
-+                - ti,twl6030-vdd2
-+                - ti,twl6030-vdd3
-+            regulator-initial-mode: false
-+
-       properties:
-         gpadc:
-           type: object
-@@ -69,6 +116,26 @@ allOf:
-           contains:
-             const: ti,twl6032
-     then:
-+      patternProperties:
-+        "^regulator-":
-+          unevaluatedProperties: false
-+          properties:
-+            compatible:
-+              enum:
-+                - ti,twl6032-ldo1
-+                - ti,twl6032-ldo2
-+                - ti,twl6032-ldo3
-+                - ti,twl6032-ldo4
-+                - ti,twl6032-ldo5
-+                - ti,twl6032-ldo6
-+                - ti,twl6032-ldo7
-+                - ti,twl6032-ldoln
-+                - ti,twl6032-ldousb
-+                - ti,twl6032-smps3
-+                - ti,twl6032-smps4
-+                - ti,twl6032-vio
-+            regulator-initial-mode: false
-+
-       properties:
-         gpadc:
-           type: object
-@@ -112,6 +179,27 @@ properties:
-       interrupts:
-         maxItems: 1
- 
-+patternProperties:
-+  "^regulator-":
-+    type: object
-+    unevaluatedProperties: false
-+    $ref: /schemas/regulator/regulator.yaml
-+    properties:
-+      compatible: true
-+      regulator-initial-mode:
-+        enum:
-+          - 0x08 # Sleep mode, the nominal output voltage is maintained
-+                 # with low power consumption with low load current capability
-+          - 0x0e # Active mode, the regulator can deliver its nominal output
-+                 # voltage with full-load current capability
-+      ti,retain-on-reset:
-+        description:
-+          Does not turn off the supplies during warm
-+          reset. Could be needed for VMMC, as TWL6030
-+          reset sequence for this signal does not comply
-+          with the SD specification.
-+        type: boolean
-+
- unevaluatedProperties: false
- 
- required:
-@@ -131,9 +219,84 @@ examples:
-         compatible = "ti,twl6030";
-         reg = <0x48>;
-         interrupts = <39>; /* IRQ_SYS_1N cascaded to gic */
-+        interrupt-parent = <&gic>;
-         interrupt-controller;
-         #interrupt-cells = <1>;
--        interrupt-parent = <&gic>;
-+
-+        gpadc {
-+          compatible = "ti,twl6030-gpadc";
-+          interrupts = <6>;
-+        };
-+
-+        rtc {
-+          compatible = "ti,twl4030-rtc";
-+          interrupts = <8>;
-+        };
-+
-+        regulator-vaux1 {
-+          compatible = "ti,twl6030-vaux1";
-+          regulator-min-microvolt = <1000000>;
-+          regulator-max-microvolt = <3000000>;
-+        };
-+
-+        regulator-vmmc1 {
-+          compatible = "ti,twl6030-vmmc";
-+          ti,retain-on-reset;
-+        };
-       };
-     };
- 
-+  - |
-+    i2c {
-+      #address-cells = <1>;
-+      #size-cells = <0>;
-+
-+      pmic@48 {
-+        compatible = "ti,twl4030";
-+        reg = <0x48>;
-+        interrupts = <7>; /* SYS_NIRQ cascaded to intc */
-+        interrupt-parent = <&intc>;
-+        interrupt-controller;
-+        #interrupt-cells = <1>;
-+
-+        bci {
-+          compatible = "ti,twl4030-bci";
-+          interrupts = <9>, <2>;
-+          bci3v1-supply = <&vusb3v1>;
-+          io-channels = <&twl_madc 11>;
-+          io-channel-names = "vac";
-+        };
-+
-+        twl_madc: madc {
-+          compatible = "ti,twl4030-madc";
-+          interrupts = <3>;
-+          #io-channel-cells = <1>;
-+        };
-+
-+        pwrbutton {
-+          compatible = "ti,twl4030-pwrbutton";
-+          interrupts = <8>;
-+        };
-+
-+        rtc {
-+          compatible = "ti,twl4030-rtc";
-+          interrupts = <11>;
-+        };
-+
-+        regulator-vaux1 {
-+          compatible = "ti,twl4030-vaux1";
-+          regulator-min-microvolt = <1000000>;
-+          regulator-max-microvolt = <3000000>;
-+          regulator-initial-mode = <0xe>;
-+        };
-+
-+        vusb3v1: regulator-vusb3v1 {
-+          compatible = "ti,twl4030-vusb3v1";
-+        };
-+
-+        watchdog {
-+          compatible = "ti,twl4030-wdt";
-+        };
-+      };
-+    };
-+...
-diff --git a/Documentation/devicetree/bindings/regulator/twl-regulator.txt b/Documentation/devicetree/bindings/regulator/twl-regulator.txt
-deleted file mode 100644
-index 549f80436deb..000000000000
---- a/Documentation/devicetree/bindings/regulator/twl-regulator.txt
-+++ /dev/null
-@@ -1,80 +0,0 @@
--TWL family of regulators
--
--Required properties:
--For twl6030 regulators/LDOs
--- compatible:
--  - "ti,twl6030-vaux1" for VAUX1 LDO
--  - "ti,twl6030-vaux2" for VAUX2 LDO
--  - "ti,twl6030-vaux3" for VAUX3 LDO
--  - "ti,twl6030-vmmc" for VMMC LDO
--  - "ti,twl6030-vpp" for VPP LDO
--  - "ti,twl6030-vusim" for VUSIM LDO
--  - "ti,twl6030-vana" for VANA LDO
--  - "ti,twl6030-vcxio" for VCXIO LDO
--  - "ti,twl6030-vdac" for VDAC LDO
--  - "ti,twl6030-vusb" for VUSB LDO
--  - "ti,twl6030-v1v8" for V1V8 LDO
--  - "ti,twl6030-v2v1" for V2V1 LDO
--  - "ti,twl6030-vdd1" for VDD1 SMPS
--  - "ti,twl6030-vdd2" for VDD2 SMPS
--  - "ti,twl6030-vdd3" for VDD3 SMPS
--For twl6032 regulators/LDOs
--- compatible:
--  - "ti,twl6032-ldo1" for LDO1 LDO
--  - "ti,twl6032-ldo2" for LDO2 LDO
--  - "ti,twl6032-ldo3" for LDO3 LDO
--  - "ti,twl6032-ldo4" for LDO4 LDO
--  - "ti,twl6032-ldo5" for LDO5 LDO
--  - "ti,twl6032-ldo6" for LDO6 LDO
--  - "ti,twl6032-ldo7" for LDO7 LDO
--  - "ti,twl6032-ldoln" for LDOLN LDO
--  - "ti,twl6032-ldousb" for LDOUSB LDO
--  - "ti,twl6032-smps3" for SMPS3 SMPS
--  - "ti,twl6032-smps4" for SMPS4 SMPS
--  - "ti,twl6032-vio" for VIO SMPS
--For twl4030 regulators/LDOs
--- compatible:
--  - "ti,twl4030-vaux1" for VAUX1 LDO
--  - "ti,twl4030-vaux2" for VAUX2 LDO
--  - "ti,twl5030-vaux2" for VAUX2 LDO
--  - "ti,twl4030-vaux3" for VAUX3 LDO
--  - "ti,twl4030-vaux4" for VAUX4 LDO
--  - "ti,twl4030-vmmc1" for VMMC1 LDO
--  - "ti,twl4030-vmmc2" for VMMC2 LDO
--  - "ti,twl4030-vpll1" for VPLL1 LDO
--  - "ti,twl4030-vpll2" for VPLL2 LDO
--  - "ti,twl4030-vsim" for VSIM LDO
--  - "ti,twl4030-vdac" for VDAC LDO
--  - "ti,twl4030-vintana2" for VINTANA2 LDO
--  - "ti,twl4030-vio" for VIO LDO
--  - "ti,twl4030-vdd1" for VDD1 SMPS
--  - "ti,twl4030-vdd2" for VDD2 SMPS
--  - "ti,twl4030-vintana1" for VINTANA1 LDO
--  - "ti,twl4030-vintdig" for VINTDIG LDO
--  - "ti,twl4030-vusb1v5" for VUSB1V5 LDO
--  - "ti,twl4030-vusb1v8" for VUSB1V8 LDO
--  - "ti,twl4030-vusb3v1" for VUSB3V1 LDO
--
--Optional properties:
--- Any optional property defined in bindings/regulator/regulator.txt
--For twl4030 regulators/LDOs:
-- - regulator-initial-mode:
--  - 0x08 - Sleep mode, the nominal output voltage is maintained with low power
--           consumption with low load current capability.
--  - 0x0e - Active mode, the regulator can deliver its nominal output voltage
--           with full-load current capability.
--
--Example:
--
--	xyz: regulator@0 {
--		compatible = "ti,twl6030-vaux1";
--		regulator-min-microvolt  = <1000000>;
--		regulator-max-microvolt  = <3000000>;
--	};
--
--For twl6030 regulators/LDOs:
--
-- - ti,retain-on-reset: Does not turn off the supplies during warm
--                       reset. Could be needed for VMMC, as TWL6030
--                       reset sequence for this signal does not comply
--                       with the SD specification.
--- 
-2.39.2
 
 
