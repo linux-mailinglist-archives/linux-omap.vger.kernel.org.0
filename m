@@ -1,106 +1,121 @@
-Return-Path: <linux-omap+bounces-1494-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1495-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79F918FF42E
-	for <lists+linux-omap@lfdr.de>; Thu,  6 Jun 2024 20:02:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 195C98FF54C
+	for <lists+linux-omap@lfdr.de>; Thu,  6 Jun 2024 21:32:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 557DF1C25ECD
-	for <lists+linux-omap@lfdr.de>; Thu,  6 Jun 2024 18:02:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04FDB1C24759
+	for <lists+linux-omap@lfdr.de>; Thu,  6 Jun 2024 19:32:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D62E81991D3;
-	Thu,  6 Jun 2024 18:01:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 442744AECB;
+	Thu,  6 Jun 2024 19:32:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UIpCVqph"
+	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="Kt7dO5PL"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 719952110E;
-	Thu,  6 Jun 2024 18:01:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717696915; cv=none; b=tNITr5Ogr49lrmmkGjeRctutbCj7CTaWq8e8aaGjacITdKydY2srkEXVn/m+qSNiNOJTxSN7GIEXmwuldbBiU6fNVsQf6ODsP8gnP0Hu5AnWP0rGAmVxbY965VQS1Zpe/uZfZGW3GOzZ09XG0AxW0bWjb/NNMiFjDYCRK7QnKkA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717696915; c=relaxed/simple;
-	bh=rLHR1mdRF8Q7kTfSQyHdMtwG40Yu6O42W8bLyqZDcxI=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5F823F9C5;
+	Thu,  6 Jun 2024 19:32:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.185.170.37
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1717702337; cv=pass; b=mhn2W7RZIiRhsUoWEkVL7m0reXgxjQZs4207v0ENzcEw1ju0fBAoygqf2xCbEZR6chGvY0ZvqBSF9qn4pzc7b7khqnmHIbIeDfoP2fjU11oJOnt7wx5Jyr2D1PAkCIGuf1RBjwUUTqmI7l+KDoiJ7yVDIdfjQeHvwO351KTsfno=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1717702337; c=relaxed/simple;
+	bh=mO+1Ftxqq4589VdeFMJmWCGzaDlSTAJ0LpbFsraI4QY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=R2vQzPC3ueP771WEFZNlSeOtAFF6Nm0mffrApzgDZHkhimSBWE5nm6HiNa14GbsAhyTNiVsQn0Zb5SRcEhflpONVJxCXY9av0ZtL5plXAnFVjA3JjmZvTjHdDiebFx9twenrVNtR6GabkSSIoGVXgrZCaUH4mHbr3jysX8nLn4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UIpCVqph; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7F93C2BD10;
-	Thu,  6 Jun 2024 18:01:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717696915;
-	bh=rLHR1mdRF8Q7kTfSQyHdMtwG40Yu6O42W8bLyqZDcxI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UIpCVqphcYjSEj+73lmEvNqoYnS/NNAicw0VJZPiKYDgV82T0Pbn+StfgQkcLIDOf
-	 itAC+fMT6O4Tj8YbFgI65olho7G6t9v0pFikZkNybUhJrznUYAIpNlo5+ghpWHN0Ed
-	 erwy4JHmQb2wY904gfPFd5F//tsoESm5pBhpbZ6tJTsi/jsSHs6uSCsiHQd5gAnuTt
-	 UPu332a1kyODyFB2YiXBR32IjZja5nTHf8SUEsxHDkdwx8SMph64RAkPNdBA3/4JOn
-	 38xYriHsoWTnvViR34Z+5gCm9a4Eeg1B/84EpEl98Vgnx0IcJOSmVzqP3LT+nfM0nB
-	 T1nmu3iQLBSig==
-Date: Thu, 6 Jun 2024 19:01:49 +0100
-From: Mark Brown <broonie@kernel.org>
-To: =?iso-8859-1?Q?P=E9ter?= Ujfalusi <peter.ujfalusi@gmail.com>
-Cc: Primoz Fiser <primoz.fiser@norik.com>,
-	Jarkko Nikula <jarkko.nikula@bitmer.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-	alsa-devel@alsa-project.org, linux-omap@vger.kernel.org,
-	linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
-	upstream@lists.phytec.de
-Subject: Re: [PATCH] ASoC: ti: omap-hdmi: Fix too long driver name
-Message-ID: <71d7754e-f72c-4a04-b03e-a0ee0e24c9e0@sirena.org.uk>
-References: <20240606070645.3519459-1-primoz.fiser@norik.com>
- <dac7fba4-c7e3-4be9-8072-625d723e6cf5@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=CLHCatCXxiFcJzWLj4/LObM6LIjj46CHqqnkL1oMh8/bdqLSBivdD+3gAYB50zTZVcPf3RQUWdgps6dq+7FSvxfJ8iGcCxtYOskzE4CK6WGYDzjH78gvEDhYUM+CLZau8BHBbS8BkCyoeW/eIecDnlh47vlSoSVPaD+hXoTJ/aQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=Kt7dO5PL; arc=pass smtp.client-ip=185.185.170.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
+Received: from darkstar.musicnaut.iki.fi (85-76-74-208-nat.elisa-mobile.fi [85.76.74.208])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: aaro.koskinen)
+	by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4VwDx01NqGz49Pyc;
+	Thu,  6 Jun 2024 22:32:03 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
+	t=1717702325;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fOE5refhVYmgYhGy/7BLh0kzb17xpI98nmAMDjYzLKk=;
+	b=Kt7dO5PL+hAKAO7BMWL4c3Pkg8E06WDDg43ZVGvQKzppz67Ek3f56ft6xc+GDcfiEOSG7i
+	8vNJExCYRzB8vxTvbGpqdTbXe7QFTClAp9+vQvBEoiPJm5Fr25T4vpoMjXGfk+UG6E26bk
+	AEaM0wg4fsJRGvzB+yU6PR14+e8UM6FFXogzh7hxRULPw8tB8E7M4yyiYi66kVI7g3O5jI
+	cwnKEfQy3+Ed39zTE6qw2eqWOOd1dBcpv0MM2Y5Ot/0rG8YwewzcaAyIsH5SJJbqwNPcPo
+	eyEBF2D9IQfYPTsxPTkPyj8rhTFC0DqSXDGQkCJvb55Gev2JuArZn/ZGLJJDSg==
+ARC-Seal: i=1; s=lahtoruutu; d=iki.fi; t=1717702325; a=rsa-sha256;
+	cv=none;
+	b=dzh622iDqYoZExWNbWR9X5ptuh+zwWIpoldjUDA6qx4L8XNllbPeOxlGfVYVli3GwrGheR
+	7Ke9nK6XyU97zMiT6uCWhcCP1TNiC1GSpbX1KePm/Eygw0tjR9Qs+JE0q40JYVdi7M0AT4
+	BIEtSkr7zmxiVwjBMvz4ABg/4WBOt4o+jHHazGpO7i4XZ6U8mrSW9BtvnEtG+D7JLwpE9l
+	f9Y4zP+MFS4WcVXIpHJdzohRv4rKusyAW0DHv4OrmdB9JzTnBekYI+Eq0VEcUYC9oDkPYl
+	DijkOA8mX6kwsSJijXjW4S6jMkBBentwtfh2K5wielvsBW9AI9yJ0RdnrPzo2w==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=aaro.koskinen smtp.mailfrom=aaro.koskinen@iki.fi
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
+	s=lahtoruutu; t=1717702325;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fOE5refhVYmgYhGy/7BLh0kzb17xpI98nmAMDjYzLKk=;
+	b=ouH9XyFr2tNubzCLbPdeafXegjPI/fPROf1AeHoPqgXuB5xG+TsO3D14uYqrDzHxagDHdg
+	RXrLdHu+JcFWZzrBm6KzrKXQvqY+ezUFtxg0f2Imn7qM4Ac8bax207NELbZwBpO8AEryOi
+	mtaBX1j8djKOPaHHeQcw94knySbuS1Wc7Z+Z6PRFhuwh2PVYfcU4xmjqQCyCWR/XSl4Sls
+	Yp69NqOeOe4VebB0qpt4rurhcFwO1QIZQoCDh2nB6nF8K8jx5II7umMRLyCKriz2CJY8rs
+	NRfPbYFGrhMJVweKmD/5JOrQqjyI9w9GN8zwO7cxi7DmfSWLIaN+E05hajYamw==
+Date: Thu, 6 Jun 2024 22:32:02 +0300
+From: Aaro Koskinen <aaro.koskinen@iki.fi>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Tony Lindgren <tony@atomide.com>,
+	Russell King <linux@armlinux.org.uk>
+Subject: Re: [PATCH v1 1/1] ARM: omap2: Switch to use kmemdup_array()
+Message-ID: <20240606193202.GD9487@darkstar.musicnaut.iki.fi>
+References: <20240606165104.3031737-1-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="r1jMZGoX0bjt5dhf"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <dac7fba4-c7e3-4be9-8072-625d723e6cf5@gmail.com>
-X-Cookie: Simulated picture.
+In-Reply-To: <20240606165104.3031737-1-andriy.shevchenko@linux.intel.com>
 
+Hi,
 
---r1jMZGoX0bjt5dhf
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Thu, Jun 06, 2024 at 07:51:04PM +0300, Andy Shevchenko wrote:
+> Let the kememdup_array() take care about multiplication and possible
 
-On Thu, Jun 06, 2024 at 09:00:47PM +0300, P=E9ter Ujfalusi wrote:
-> On 6/6/24 10:06 AM, Primoz Fiser wrote:
+          ^^^^^
+          Typo.
 
-> > -	card->name =3D devm_kasprintf(dev, GFP_KERNEL,
-> > -				    "HDMI %s", dev_name(ad->dssdev));
-> > -	if (!card->name)
-> > -		return -ENOMEM;
-> > -
-> > +	card->name =3D DRV_NAME;
+> overflows.
+> 
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+>  arch/arm/mach-omap2/omap_device.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm/mach-omap2/omap_device.c b/arch/arm/mach-omap2/omap_device.c
+> index fca7869c8075..800980057373 100644
+> --- a/arch/arm/mach-omap2/omap_device.c
+> +++ b/arch/arm/mach-omap2/omap_device.c
+> @@ -315,7 +315,7 @@ static struct omap_device *omap_device_alloc(struct platform_device *pdev,
+>  
+>  	od->hwmods_cnt = oh_cnt;
+>  
+> -	hwmods = kmemdup(ohs, sizeof(struct omap_hwmod *) * oh_cnt, GFP_KERNEL);
+> +	hwmods = kmemdup_array(ohs, oh_cnt, sizeof(*hwmods), GFP_KERNEL);
 
-> I think it would be better to name is simply "HDMI" instead
+Maybe same result, but I guess the 3rd parameter should be count?
 
-That does seem a bit more user friendly.
-
---r1jMZGoX0bjt5dhf
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmZh+YwACgkQJNaLcl1U
-h9DkCAf+JXtwlhN6eFOr73JPv20Yks83kzwet2NPTrWQDbj97XD+8BI81dHoMB9+
-gR3bo5kQMZ3x9SlEzXM20YpMhdZP5YCduTPywx3AHXflTkdxE52dDVpsSy8O9THq
-uZzS/OMFKUmX+0YNa14dc2W9dFAsH52PT8c5G5sejFRVhNzj3/7cZCEj8RoeGlHc
-AeI9toTJD2SqJlICBEibE4//YPE1A0YB92zAznfE4dOJUeuSVcc3aBP0II2u90K3
-xPUY6j6y6fb2rhzjLgDyo7uOjgCiDbzOfypL1tjbuLsX1ekrZSXpnBGuEx8Pi1pn
-Dhg7QZQfMWDw0C8KZScwu6XN//zwWg==
-=OOLJ
------END PGP SIGNATURE-----
-
---r1jMZGoX0bjt5dhf--
+A.
 
