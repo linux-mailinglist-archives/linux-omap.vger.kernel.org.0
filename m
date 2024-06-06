@@ -1,84 +1,77 @@
-Return-Path: <linux-omap+bounces-1495-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1496-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 195C98FF54C
-	for <lists+linux-omap@lfdr.de>; Thu,  6 Jun 2024 21:32:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F8DD8FF567
+	for <lists+linux-omap@lfdr.de>; Thu,  6 Jun 2024 21:43:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04FDB1C24759
-	for <lists+linux-omap@lfdr.de>; Thu,  6 Jun 2024 19:32:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C0692B234AF
+	for <lists+linux-omap@lfdr.de>; Thu,  6 Jun 2024 19:43:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 442744AECB;
-	Thu,  6 Jun 2024 19:32:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6729761FE3;
+	Thu,  6 Jun 2024 19:43:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="Kt7dO5PL"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lLlq5pID"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5F823F9C5;
-	Thu,  6 Jun 2024 19:32:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.185.170.37
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717702337; cv=pass; b=mhn2W7RZIiRhsUoWEkVL7m0reXgxjQZs4207v0ENzcEw1ju0fBAoygqf2xCbEZR6chGvY0ZvqBSF9qn4pzc7b7khqnmHIbIeDfoP2fjU11oJOnt7wx5Jyr2D1PAkCIGuf1RBjwUUTqmI7l+KDoiJ7yVDIdfjQeHvwO351KTsfno=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717702337; c=relaxed/simple;
-	bh=mO+1Ftxqq4589VdeFMJmWCGzaDlSTAJ0LpbFsraI4QY=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B67678821;
+	Thu,  6 Jun 2024 19:43:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1717702994; cv=none; b=egX6VQg+vYo/z/ShjaR74rV/d+uo51JkypPTL4gjJMZ0c3J6Q1AvOt3a4QZ56d6aKyabqzUJ3xjI3jFmp0e5n6i7CbC4ecA30rhi4vqVyrjHQbxCDZ41zsFUTUi0W4KQqCVx7KETReH4FkkruwC3MxfUSTUHQPYvUdkIcifyVLw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1717702994; c=relaxed/simple;
+	bh=iJ3PfJIIVmISWOs3yDhd5uulGCXgxOcN7cbPaPCX9fg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CLHCatCXxiFcJzWLj4/LObM6LIjj46CHqqnkL1oMh8/bdqLSBivdD+3gAYB50zTZVcPf3RQUWdgps6dq+7FSvxfJ8iGcCxtYOskzE4CK6WGYDzjH78gvEDhYUM+CLZau8BHBbS8BkCyoeW/eIecDnlh47vlSoSVPaD+hXoTJ/aQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=Kt7dO5PL; arc=pass smtp.client-ip=185.185.170.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
-Received: from darkstar.musicnaut.iki.fi (85-76-74-208-nat.elisa-mobile.fi [85.76.74.208])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: aaro.koskinen)
-	by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4VwDx01NqGz49Pyc;
-	Thu,  6 Jun 2024 22:32:03 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
-	t=1717702325;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fOE5refhVYmgYhGy/7BLh0kzb17xpI98nmAMDjYzLKk=;
-	b=Kt7dO5PL+hAKAO7BMWL4c3Pkg8E06WDDg43ZVGvQKzppz67Ek3f56ft6xc+GDcfiEOSG7i
-	8vNJExCYRzB8vxTvbGpqdTbXe7QFTClAp9+vQvBEoiPJm5Fr25T4vpoMjXGfk+UG6E26bk
-	AEaM0wg4fsJRGvzB+yU6PR14+e8UM6FFXogzh7hxRULPw8tB8E7M4yyiYi66kVI7g3O5jI
-	cwnKEfQy3+Ed39zTE6qw2eqWOOd1dBcpv0MM2Y5Ot/0rG8YwewzcaAyIsH5SJJbqwNPcPo
-	eyEBF2D9IQfYPTsxPTkPyj8rhTFC0DqSXDGQkCJvb55Gev2JuArZn/ZGLJJDSg==
-ARC-Seal: i=1; s=lahtoruutu; d=iki.fi; t=1717702325; a=rsa-sha256;
-	cv=none;
-	b=dzh622iDqYoZExWNbWR9X5ptuh+zwWIpoldjUDA6qx4L8XNllbPeOxlGfVYVli3GwrGheR
-	7Ke9nK6XyU97zMiT6uCWhcCP1TNiC1GSpbX1KePm/Eygw0tjR9Qs+JE0q40JYVdi7M0AT4
-	BIEtSkr7zmxiVwjBMvz4ABg/4WBOt4o+jHHazGpO7i4XZ6U8mrSW9BtvnEtG+D7JLwpE9l
-	f9Y4zP+MFS4WcVXIpHJdzohRv4rKusyAW0DHv4OrmdB9JzTnBekYI+Eq0VEcUYC9oDkPYl
-	DijkOA8mX6kwsSJijXjW4S6jMkBBentwtfh2K5wielvsBW9AI9yJ0RdnrPzo2w==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=aaro.koskinen smtp.mailfrom=aaro.koskinen@iki.fi
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
-	s=lahtoruutu; t=1717702325;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fOE5refhVYmgYhGy/7BLh0kzb17xpI98nmAMDjYzLKk=;
-	b=ouH9XyFr2tNubzCLbPdeafXegjPI/fPROf1AeHoPqgXuB5xG+TsO3D14uYqrDzHxagDHdg
-	RXrLdHu+JcFWZzrBm6KzrKXQvqY+ezUFtxg0f2Imn7qM4Ac8bax207NELbZwBpO8AEryOi
-	mtaBX1j8djKOPaHHeQcw94knySbuS1Wc7Z+Z6PRFhuwh2PVYfcU4xmjqQCyCWR/XSl4Sls
-	Yp69NqOeOe4VebB0qpt4rurhcFwO1QIZQoCDh2nB6nF8K8jx5II7umMRLyCKriz2CJY8rs
-	NRfPbYFGrhMJVweKmD/5JOrQqjyI9w9GN8zwO7cxi7DmfSWLIaN+E05hajYamw==
-Date: Thu, 6 Jun 2024 22:32:02 +0300
-From: Aaro Koskinen <aaro.koskinen@iki.fi>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=B18rynBsyqYyjZ4JIb9T68X7UspsTSWGP3ReV7tA/e78Xpwd1OzKV1n45qbFnlBruG8H3P7w2BKBmjLmYuT1T6S7+LPWci3pfyLVTUdBQiGQ7z5KpKgc096I5aDdXWOF/XYfqMopNOihvRCJt+17W0PHJFKVEL+hvkkVqCORHFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lLlq5pID; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1717702993; x=1749238993;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=iJ3PfJIIVmISWOs3yDhd5uulGCXgxOcN7cbPaPCX9fg=;
+  b=lLlq5pIDLjuc++Mxa+wn/aLjn4eEFuUb79LiGpPEG0QpSQrKF2EeSGSL
+   xTp/EkASxpGtTe148fXVEAeS+fSvDUGQiSbohWGGc2Y/slUXLG6XefJQR
+   kSI9TUVVJ0YLj3phbj/s8bG94qBDVenjpIcCHXVKWezylseq+4vOqA9fc
+   wMFa1zCgCS9fdaAv926RsaC0ilfXMMCIWq+L4QIxmAuI7clUccBSHMZMw
+   q31171+35C9mG77VG0PVedseL85RxZWgUfjzTJZe5KpZMq9AlBNdGB1JN
+   iuuOU86xpextcEtDyX+nyJZegWvFKQBSdfBWIu39qUJz6fbi1XnmqNpLl
+   w==;
+X-CSE-ConnectionGUID: LNxkU18MRqGbYT+KC5NP6w==
+X-CSE-MsgGUID: 9vaT3FQDQvaLST+GxubIng==
+X-IronPort-AV: E=McAfee;i="6600,9927,11095"; a="18190218"
+X-IronPort-AV: E=Sophos;i="6.08,219,1712646000"; 
+   d="scan'208";a="18190218"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jun 2024 12:43:13 -0700
+X-CSE-ConnectionGUID: UCStVhN/SO2DSJLGK0L4cA==
+X-CSE-MsgGUID: KIifYad2QW+Pi4FxVy2Pyw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,219,1712646000"; 
+   d="scan'208";a="68868902"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jun 2024 12:43:11 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1sFJ0u-0000000EIca-0z55;
+	Thu, 06 Jun 2024 22:43:08 +0300
+Date: Thu, 6 Jun 2024 22:43:07 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Aaro Koskinen <aaro.koskinen@iki.fi>
 Cc: linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
 	linux-kernel@vger.kernel.org, Tony Lindgren <tony@atomide.com>,
 	Russell King <linux@armlinux.org.uk>
 Subject: Re: [PATCH v1 1/1] ARM: omap2: Switch to use kmemdup_array()
-Message-ID: <20240606193202.GD9487@darkstar.musicnaut.iki.fi>
+Message-ID: <ZmIRS8HTar7iKQo7@smile.fi.intel.com>
 References: <20240606165104.3031737-1-andriy.shevchenko@linux.intel.com>
+ <20240606193202.GD9487@darkstar.musicnaut.iki.fi>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -87,35 +80,33 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240606165104.3031737-1-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20240606193202.GD9487@darkstar.musicnaut.iki.fi>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-Hi,
-
-On Thu, Jun 06, 2024 at 07:51:04PM +0300, Andy Shevchenko wrote:
-> Let the kememdup_array() take care about multiplication and possible
-
-          ^^^^^
-          Typo.
-
-> overflows.
+On Thu, Jun 06, 2024 at 10:32:02PM +0300, Aaro Koskinen wrote:
+> On Thu, Jun 06, 2024 at 07:51:04PM +0300, Andy Shevchenko wrote:
+> > Let the kememdup_array() take care about multiplication and possible
 > 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
->  arch/arm/mach-omap2/omap_device.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>           ^^^^^
+>           Typo.
+
+Aha, thanks!
+
+> > overflows.
+
+...
+
+> > -	hwmods = kmemdup(ohs, sizeof(struct omap_hwmod *) * oh_cnt, GFP_KERNEL);
+> > +	hwmods = kmemdup_array(ohs, oh_cnt, sizeof(*hwmods), GFP_KERNEL);
 > 
-> diff --git a/arch/arm/mach-omap2/omap_device.c b/arch/arm/mach-omap2/omap_device.c
-> index fca7869c8075..800980057373 100644
-> --- a/arch/arm/mach-omap2/omap_device.c
-> +++ b/arch/arm/mach-omap2/omap_device.c
-> @@ -315,7 +315,7 @@ static struct omap_device *omap_device_alloc(struct platform_device *pdev,
->  
->  	od->hwmods_cnt = oh_cnt;
->  
-> -	hwmods = kmemdup(ohs, sizeof(struct omap_hwmod *) * oh_cnt, GFP_KERNEL);
-> +	hwmods = kmemdup_array(ohs, oh_cnt, sizeof(*hwmods), GFP_KERNEL);
+> Maybe same result, but I guess the 3rd parameter should be count?
 
-Maybe same result, but I guess the 3rd parameter should be count?
+Actually it is going to be changed to follow kcalloc().
+https://git.kernel.org/pub/scm/linux/kernel/git/kees/linux.git/commit/?id=0ee14725471c
 
-A.
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 
