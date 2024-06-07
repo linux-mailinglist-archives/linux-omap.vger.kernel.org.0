@@ -1,123 +1,102 @@
-Return-Path: <linux-omap+bounces-1502-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1503-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74FC28FFBF3
-	for <lists+linux-omap@lfdr.de>; Fri,  7 Jun 2024 08:14:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14E4B8FFF2B
+	for <lists+linux-omap@lfdr.de>; Fri,  7 Jun 2024 11:21:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73EF31C2107B
-	for <lists+linux-omap@lfdr.de>; Fri,  7 Jun 2024 06:14:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 88C06B210B0
+	for <lists+linux-omap@lfdr.de>; Fri,  7 Jun 2024 09:21:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CAFC14F9C9;
-	Fri,  7 Jun 2024 06:14:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9407615B966;
+	Fri,  7 Jun 2024 09:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=norik.com header.i=@norik.com header.b="E/5+aOH2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CyfHmQ1w"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1C0113F43A;
-	Fri,  7 Jun 2024 06:14:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B1DF2209D;
+	Fri,  7 Jun 2024 09:21:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717740885; cv=none; b=QBgeqKvL/vu/z2m0bVOaVKYFjQiOM1eGJw7/Bt3BU/dsF2q0HxvlCe60HhVJ565J799wmdrortGuX8CekZf7jC3zAFF0uWGYGaWz92kxduGx++a79/hvnbG9OzrhCRmWaFijTn92OsiG274W4AFwcjj5+0MSAwKafe4C9kaXXHA=
+	t=1717752093; cv=none; b=k9yL/IbfhelGTuc5shhEKilR65BtsW2X80xIlaZwmMg+bAKcytzkOVvWcdmDQHslVvJKeCEX+dCvvE342f4WTumRfICUxKfoM2kXPozoAsD6kHBCoO2gk/5+DfUlUOBmLP5VgOUR3r5pD4BzlDN7m0Zd2rlS7Mw1gO8SsCWlOh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717740885; c=relaxed/simple;
-	bh=E44XiueJpOmG0UDbwDwwFtCzJsFzM/AcIjGJQz3r3/g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ha63NUaWPINuXBB1XB7qd9m/UxB/7wLDECmuJGUls7P86+rGEu5iYbxdKD4Vok4RaI+2sQ3qA04c1KZo76D12yfIakokDS2li0diy201uqsAhRP8emYj6v+khBAH9bWdIK4ViV8SfhhuHH2e706HaGITeKYqNvKEnyCH+YOICOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=E/5+aOH2; arc=none smtp.client-ip=46.19.9.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=I/oNhRwc6Wd73jsIJiFBr4U+0PGZF33BeCX5Kedx5c4=; b=E/5+aOH2+kNveqdTwTjoIMEvx1
-	NxWxTnmElm11/qpvW6SlCtvr1f+qCybQLJmaxf6ewL73kGWZgRDnhgwiM2+gcILj2FF8I5HaevMC8
-	D4Nxr2V32VDYRkoU4CDznL7iRSaenyfteuaZnFV1nqgH1qlPUFJZVeBTjkSRT9jJbPo+1he2xnQIP
-	ADvYtifYeltAB3qjzBeiIHCoWCSVGuwUpK/DOfHpLcvhIUj2xXnQXpaIplkoHTyjYDI9emwP5Jkyj
-	GKK4r0KjQ1PuohrrtrEjM9giqFkXcAZO39XD2zq8/eaziiXWFX8v77IscotJn0qyfbvBRKdYBbJPh
-	c3ZlM9qQ==;
-Received: from [89.212.21.243] (port=57710 helo=[192.168.69.116])
-	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <primoz.fiser@norik.com>)
-	id 1sFSs5-00FHTK-2x;
-	Fri, 07 Jun 2024 08:14:41 +0200
-Message-ID: <fe0ec57b-dad3-4666-abe3-75bcb65fa7df@norik.com>
-Date: Fri, 7 Jun 2024 08:14:40 +0200
+	s=arc-20240116; t=1717752093; c=relaxed/simple;
+	bh=PUBYPlYV+0CEGjbaUressY4P2n0tji7Q+2OKwCAMyuw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=H2By4bljJOZRjRfcCypbHIfRAXrwOM3Bkm/EM3iJNu5ZFX1PjJ+Gd9diR3g4AgSupYwVFojcxleAZ9Ep3utP/rLdBAPu3Qw5pLp3eli0WJTDjMqWzWBtcT4uoX51Zbwb1dpJeveKbago52sVw5VvdorpmWubJk+pXExHvTyVaD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CyfHmQ1w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12495C32786;
+	Fri,  7 Jun 2024 09:21:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1717752092;
+	bh=PUBYPlYV+0CEGjbaUressY4P2n0tji7Q+2OKwCAMyuw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CyfHmQ1w3+wQAG6AtCTgiWqJMB9O1sIpPf3pIJtRCrDXSX9T1RydsbJjY8P1zFZtG
+	 LT/PFHmDHGNRqFIXrBOuJ8v9O6HrOpih1xjYoPW2Znw2MmXr8f9IdaSEynhdON2MY1
+	 EHI2RTTuFLW27F8X7An9HqhIAhpeh4AvoX5N1YKluMO1/KzuzrE1UztGokk+7W0i7t
+	 MVP1FN3HfXC3zjAn2UOB50naV1ozvIJDXyQP6y+XZRqOL7D1G1/JBztS8I+uV1SDlf
+	 RKmIwxJnmMTfvIhAeZ7TIXXZ+jb6AY34kaoxtbvFjg1FY3yQlMZrZhbCIjXSBPaSuQ
+	 IsrssWc6AizUg==
+Date: Fri, 7 Jun 2024 11:21:22 +0200
+From: Niklas Cassel <cassel@kernel.org>
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: Vignesh Raghavendra <vigneshr@ti.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Minghuan Lian <minghuan.Lian@nxp.com>,
+	Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>,
+	Jesper Nilsson <jesper.nilsson@axis.com>,
+	Jingoo Han <jingoohan1@gmail.com>,
+	Srikanth Thokala <srikanth.thokala@intel.com>,
+	Marek Vasut <marek.vasut+renesas@gmail.com>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@axis.com, linux-arm-msm@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
+	mhi@lists.linux.dev, Bjorn Helgaas <helgaas@kernel.org>
+Subject: Re: [PATCH 1/5] PCI: dwc: ep: Remove dw_pcie_ep_init_notify() wrapper
+Message-ID: <ZmLREhi8_iCDZTP3@ryzen.lan>
+References: <20240606-pci-deinit-v1-0-4395534520dc@linaro.org>
+ <20240606-pci-deinit-v1-1-4395534520dc@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ASoC: ti: omap-hdmi: Fix too long driver name
-To: Mark Brown <broonie@kernel.org>, =?UTF-8?Q?P=C3=A9ter_Ujfalusi?=
- <peter.ujfalusi@gmail.com>
-Cc: Jarkko Nikula <jarkko.nikula@bitmer.com>,
- Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>,
- Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
- linux-omap@vger.kernel.org, linux-sound@vger.kernel.org,
- linux-kernel@vger.kernel.org, upstream@lists.phytec.de
-References: <20240606070645.3519459-1-primoz.fiser@norik.com>
- <dac7fba4-c7e3-4be9-8072-625d723e6cf5@gmail.com>
- <71d7754e-f72c-4a04-b03e-a0ee0e24c9e0@sirena.org.uk>
-From: Primoz Fiser <primoz.fiser@norik.com>
-Content-Language: en-US
-Organization: Norik systems d.o.o.
-In-Reply-To: <71d7754e-f72c-4a04-b03e-a0ee0e24c9e0@sirena.org.uk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel.siel.si
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - norik.com
-X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: primoz.fiser@norik.com
-X-Authenticated-Sender: cpanel.siel.si: primoz.fiser@norik.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240606-pci-deinit-v1-1-4395534520dc@linaro.org>
 
-Hi,
-
-On 6. 06. 24 20:01, Mark Brown wrote:
-> On Thu, Jun 06, 2024 at 09:00:47PM +0300, Péter Ujfalusi wrote:
->> On 6/6/24 10:06 AM, Primoz Fiser wrote:
+On Thu, Jun 06, 2024 at 12:56:34PM +0530, Manivannan Sadhasivam wrote:
+> Currently dw_pcie_ep_init_notify() wrapper just calls pci_epc_init_notify()
+> directly. So this wrapper provides no benefit to the glue drivers.
 > 
->>> -	card->name = devm_kasprintf(dev, GFP_KERNEL,
->>> -				    "HDMI %s", dev_name(ad->dssdev));
->>> -	if (!card->name)
->>> -		return -ENOMEM;
->>> -
->>> +	card->name = DRV_NAME;
+> So let's remove it and call pci_epc_init_notify() directly from glue
+> drivers.
 > 
->> I think it would be better to name is simply "HDMI" instead
-> 
-> That does seem a bit more user friendly.
+> Suggested-by: Bjorn Helgaas <helgaas@kernel.org>
+> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> ---
 
-So card->name = "HDMI" for v2?
-
-Thanks,
-BR,
-Primoz
-
--- 
-Primoz Fiser                    | phone: +386-41-390-545
-<tel:+386-41-390-545> |
----------------------------------------------------------|
-Norik systems d.o.o.            | https://www.norik.com
-<https://www.norik.com>  |
-Your embedded software partner  | email: info@norik.com
-<mailto:info@norik.com> |
-Slovenia, EU                    | phone: +386-41-540-545
-<tel:+386-41-540-545> |
-
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
 
