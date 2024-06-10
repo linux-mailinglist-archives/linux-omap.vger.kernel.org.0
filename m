@@ -1,118 +1,133 @@
-Return-Path: <linux-omap+bounces-1513-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1514-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B09DA902235
-	for <lists+linux-omap@lfdr.de>; Mon, 10 Jun 2024 14:59:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF9AB902458
+	for <lists+linux-omap@lfdr.de>; Mon, 10 Jun 2024 16:44:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5AFD91F22D54
-	for <lists+linux-omap@lfdr.de>; Mon, 10 Jun 2024 12:59:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26E5328269D
+	for <lists+linux-omap@lfdr.de>; Mon, 10 Jun 2024 14:44:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E260B82495;
-	Mon, 10 Jun 2024 12:58:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45AF5132137;
+	Mon, 10 Jun 2024 14:43:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=norik.com header.i=@norik.com header.b="azl33DBy"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="npg5pXyZ"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F29181737;
-	Mon, 10 Jun 2024 12:58:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B0C623B0;
+	Mon, 10 Jun 2024 14:43:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718024332; cv=none; b=mA/bZfO/jro9L2zhz/pEsRGawjygUb4C78adep/99Udb9laDivaY/O/uQrLhk9w7gE7tOiU7GB0GKXPFp8v8D5cPyfh5ejl23SBTzclfQW732t0P2S5ob/zjzXyjmtbgbRn9acjCANsIfVBVf/YTbJaVT79eghG3m+DPu1+3JxQ=
+	t=1718030590; cv=none; b=ZF2LTSi9xd206VHZJedsI4MQ3rBTgy/j9/bqPEEB7xqnVSm1FStLRd/DZcOXQ5yBwLMvzP0cmdkDDP4NDZezfHYOlYcBCgnqxxT9Kmg7seLHOAiYWnL2rg4ZZhUF3QMB+ZK6RM6rFDHjDd006C+D71HToXcMkTcjRi8TI/n11NA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718024332; c=relaxed/simple;
-	bh=hs5yvBjMe5zbyXlRtFi3yH+jXaDN2jYG6b3IpAmMi7o=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WjF/5slPkMg4uRSzKoPzbunmbQsGDbW2XH/yFtSwNP0VFrsXyPZNtYJ5iFM05QpKVDQ5cBKsC8sWz3X6Bn9eJJKG2oeilY/ix4ATwUicY1oVjdpvmWNFMplcllezVl7Rn3W8LIE9HyOLshX4JTPpvwUQw33lfkh64kTxrogP/Vc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=azl33DBy; arc=none smtp.client-ip=46.19.9.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
-	s=default; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
-	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=lqCp3QFYEQgLNcRwyp3g/NgBK3T6HGS8y29EGKEsL5Y=; b=azl33DByNfd1A9DZ9NIx0IA3mN
-	WURR8bsMqFqZhOEttXkXv+u5vLA6Fg3S6pZ963/hjZUjqHjyuMPqxwrub0keq1vxGqUxkMt1Bw1Ln
-	/ctOmoK0k9zn5no43SUCp7aEY5JpGlF1ECcvD0ZrkTZVAL21aZi71XowGd6Ufa5uFl1rM7HtLF0fa
-	f0CdCsTkg5VkSfrgF4STHqT0TUjb+fRR0dXVftvT+GBIWkGhVZDmulU4p97GqRBUNgL7yDxoA/JGi
-	j+gRdMqJipRG1iMgvCWY+fQejRbeoMwkZcLWr4t3aiPnNk4eDgzNiQ6cliuexnMv8MJs67ukdkUv9
-	+NaI2vnQ==;
-Received: from [89.212.21.243] (port=36862 helo=localhost.localdomain)
-	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <primoz.fiser@norik.com>)
-	id 1sGebo-00CJLR-0O;
-	Mon, 10 Jun 2024 14:58:48 +0200
-From: Primoz Fiser <primoz.fiser@norik.com>
-To: Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-	Jarkko Nikula <jarkko.nikula@bitmer.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	alsa-devel@alsa-project.org,
-	linux-omap@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: upstream@lists.phytec.de
-Subject: [PATCH v2] ASoC: ti: omap-hdmi: Fix too long driver name
-Date: Mon, 10 Jun 2024 14:58:47 +0200
-Message-Id: <20240610125847.773394-1-primoz.fiser@norik.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1718030590; c=relaxed/simple;
+	bh=WfJ9jpzyEaAtpm/A8NCBTJr5h8q7wIHU4XCBvX6wUno=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ebrns7VrHvkw1IL84vUsaXcBvrZgbvylF5lpwsvjXZ1JBETSpLhoRnf01G5cHThmrfAREsm4PgcMmgZ1R4VrYif325X35Asvx7tK89dF20aymMvxm0OTuVQx97amI3MKWKzISV5AhAN349JRs1AugWzQsS6mIsb0aVao/rLy8yU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=npg5pXyZ; arc=none smtp.client-ip=209.85.167.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-52c8342af5eso1573592e87.3;
+        Mon, 10 Jun 2024 07:43:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718030587; x=1718635387; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ARiAbV9duxyFUqNEp29RQ3QZg/sow4QH3/UXrM8Ep8I=;
+        b=npg5pXyZLHTbMLJR1HVeyL7cyNKLayqUh3l1nKAJL/7qoy2cbl1asxwlQOG+e0oiUw
+         Qeg7zG/w2xWXETh3YwJ/vj1x/rYNcn3kuoBk+fG9HU9YmhDezRsCLWsAf+pq0pbwQ3My
+         EgKB0/ZUvflkplgArrqPdkjgYU7YLrZbXgqxjjbaykdC331an+f5KD8iBczmRV7bHuB3
+         abcJjMpWCc6CEZ0OpLsJcfZvPyFUETpD7hPe8kM2k6bwHJ++zaRhtWOjNOerJpcbFZEZ
+         M9ZQRBpM08dMh0ypnJ9yjkycx0vip8EXFbXpMmcfgNk6Q/T8GDHVZI2PyFCZExIxmDUE
+         SoCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718030587; x=1718635387;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ARiAbV9duxyFUqNEp29RQ3QZg/sow4QH3/UXrM8Ep8I=;
+        b=PgbbbdOpBKYiBoOe+e4jGDEs2P1wFQcujw8HYsljSbzS6CKP9qZeMXjgsL2YjUhLvC
+         SRhPEYbhEpYzKMO0XaNYNI4BCuE+ETajOao5kVNHMuyrjsWULGIcb0rV4Y60D9gnqLIB
+         Bo1hFxmOLZAac1h1G48iMYkV9S53Tqmt8xb2OmRkDgfLeuE1Z1dfKqyTJfYZz5CHK9me
+         fM9T8qXo8pUKn4rdvOWb7L3+IQu3gw3gP1q7OlBj8rlSgyZWqDVi7bLGx/kSDVtWYbcm
+         aCv6BUf88Ye4lWqu0TGbMMTjtG0f5e9trEoDKn3I9WOBu/Lpz3F8c4F6Q7c8bUuo072C
+         HnEA==
+X-Forwarded-Encrypted: i=1; AJvYcCXhXuhShFR+4ZYtNDaFWciLuvwzEaNUj4Fy4JyeXEd0Dla5rEHADjnzViuvLgjB9hHlO2NLtylSFHa83LCJ/ReZIz1OqSdZSIe6YTt9nLZeszFmhF6YZFEqzsG6MzstDIHp201em6jgSeA19iS8Ew+/GsZi3HDztgl9invdrj5rIKved39d
+X-Gm-Message-State: AOJu0Yxlp74g28Rhp2SK9oth94HLzWTnnbGTbCuFuYcQ5debs4tLWJ+V
+	RwUUJv87SsF9sw4b9yjrzHaiboIBv+KTT437wotCheQmbPN92Pht
+X-Google-Smtp-Source: AGHT+IHiYOo9667BlphoO7DGPwPfS2rjmuIrjpGhocXL80s7aww/8aocaCFP8lqC989SjleMvbUgRg==
+X-Received: by 2002:a05:6512:3b98:b0:52c:841c:d15a with SMTP id 2adb3069b0e04-52c841cd44fmr3611477e87.7.1718030587281;
+        Mon, 10 Jun 2024 07:43:07 -0700 (PDT)
+Received: from [10.0.0.42] (host-85-29-124-88.kaisa-laajakaista.fi. [85.29.124.88])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52c8857d03asm725070e87.261.2024.06.10.07.43.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 10 Jun 2024 07:43:06 -0700 (PDT)
+Message-ID: <605944ac-6dfa-4620-84b6-392665cdc05d@gmail.com>
+Date: Mon, 10 Jun 2024 17:46:43 +0300
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] ASoC: ti: omap-hdmi: Fix too long driver name
+To: Primoz Fiser <primoz.fiser@norik.com>,
+ Jarkko Nikula <jarkko.nikula@bitmer.com>, Liam Girdwood
+ <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+ alsa-devel@alsa-project.org, linux-omap@vger.kernel.org,
+ linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: upstream@lists.phytec.de
+References: <20240610125847.773394-1-primoz.fiser@norik.com>
+Content-Language: en-US
+From: =?UTF-8?Q?P=C3=A9ter_Ujfalusi?= <peter.ujfalusi@gmail.com>
+In-Reply-To: <20240610125847.773394-1-primoz.fiser@norik.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel.siel.si
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - norik.com
-X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: primoz.fiser@norik.com
-X-Authenticated-Sender: cpanel.siel.si: primoz.fiser@norik.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
 
-Set driver name to "HDMI". This simplifies the code and gets rid of
-the following error messages:
+Hi,
 
-  ASoC: driver name too long 'HDMI 58040000.encoder' -> 'HDMI_58040000_e'
+On 6/10/24 3:58 PM, Primoz Fiser wrote:
+> Set driver name to "HDMI". This simplifies the code and gets rid of
+> the following error messages:
+> 
+>   ASoC: driver name too long 'HDMI 58040000.encoder' -> 'HDMI_58040000_e'
 
-Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
----
-Changes in v2:
-- use "HDMI" instead of DRV_NAME (requested)
+Thank you for the update,
+Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
 
- sound/soc/ti/omap-hdmi.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+> Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+> ---
+> Changes in v2:
+> - use "HDMI" instead of DRV_NAME (requested)
+> 
+>  sound/soc/ti/omap-hdmi.c | 6 +-----
+>  1 file changed, 1 insertion(+), 5 deletions(-)
+> 
+> diff --git a/sound/soc/ti/omap-hdmi.c b/sound/soc/ti/omap-hdmi.c
+> index 639bc83f4263..cf43ac19c4a6 100644
+> --- a/sound/soc/ti/omap-hdmi.c
+> +++ b/sound/soc/ti/omap-hdmi.c
+> @@ -354,11 +354,7 @@ static int omap_hdmi_audio_probe(struct platform_device *pdev)
+>  	if (!card)
+>  		return -ENOMEM;
+>  
+> -	card->name = devm_kasprintf(dev, GFP_KERNEL,
+> -				    "HDMI %s", dev_name(ad->dssdev));
+> -	if (!card->name)
+> -		return -ENOMEM;
+> -
+> +	card->name = "HDMI";
+>  	card->owner = THIS_MODULE;
+>  	card->dai_link =
+>  		devm_kzalloc(dev, sizeof(*(card->dai_link)), GFP_KERNEL);
 
-diff --git a/sound/soc/ti/omap-hdmi.c b/sound/soc/ti/omap-hdmi.c
-index 639bc83f4263..cf43ac19c4a6 100644
---- a/sound/soc/ti/omap-hdmi.c
-+++ b/sound/soc/ti/omap-hdmi.c
-@@ -354,11 +354,7 @@ static int omap_hdmi_audio_probe(struct platform_device *pdev)
- 	if (!card)
- 		return -ENOMEM;
- 
--	card->name = devm_kasprintf(dev, GFP_KERNEL,
--				    "HDMI %s", dev_name(ad->dssdev));
--	if (!card->name)
--		return -ENOMEM;
--
-+	card->name = "HDMI";
- 	card->owner = THIS_MODULE;
- 	card->dai_link =
- 		devm_kzalloc(dev, sizeof(*(card->dai_link)), GFP_KERNEL);
 -- 
-2.25.1
-
+Péter
 
