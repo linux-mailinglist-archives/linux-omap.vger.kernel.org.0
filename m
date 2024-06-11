@@ -1,256 +1,117 @@
-Return-Path: <linux-omap+bounces-1517-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1518-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCAA4903DB1
-	for <lists+linux-omap@lfdr.de>; Tue, 11 Jun 2024 15:40:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57EF4903F2D
+	for <lists+linux-omap@lfdr.de>; Tue, 11 Jun 2024 16:50:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A1341F24F65
-	for <lists+linux-omap@lfdr.de>; Tue, 11 Jun 2024 13:40:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D82302824AA
+	for <lists+linux-omap@lfdr.de>; Tue, 11 Jun 2024 14:50:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 486C317DE0F;
-	Tue, 11 Jun 2024 13:39:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B4B4171A5;
+	Tue, 11 Jun 2024 14:50:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d9V0wJQ0"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="1aqU3CL3"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail2.andi.de1.cc (vmd64148.contaboserver.net [161.97.139.27])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF83417D363;
-	Tue, 11 Jun 2024 13:39:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 989C6171A1;
+	Tue, 11 Jun 2024 14:49:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.97.139.27
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718113180; cv=none; b=jBLneT4BOhUqfD/hm2EY8fuD1pJIn1okD1tuRNx+cMIkq2y3emptk6k6GFNl4xmvcxTYc/Ix7nVzw+tTIbiEbeSD+3zchsVoPKpSs/G9d+836Prpl9v9XXiEVCXRa09cs8tHitkSKlpIavEa0d1HqCBBDXJkowe2JH5IKiq1F08=
+	t=1718117400; cv=none; b=cU3b5188Je7F4DmdDE79/KgnvqGzkWWIP3Pn9MGP+tHiiezyL0kKHr9CxoBU17Mx/74ilKbJWdp6SaB5fcljgg4os8d5rnDtBeOQxsEheUSXvXRI1iH0QhiZWFzmzot+8QsJY6qM2GoE4UsSuGEubIMfTBi7KphVh7fhTLQwD5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718113180; c=relaxed/simple;
-	bh=Tn9aGOOYb+LH+bFDSFJ3gb5u4+83blw2N03mcxJkcPo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tCtdHD9c8EYgRwb+XDB2EPMEXdzuZ1i/iJmycKivwFSUvvHgGkr9Vn6Rm6hiOarznTdvQYJywB17s6r0TmqcWSDGa5DhrYpCyACgVE30CJcz+4/SfyUIWgZxrdqLm2VW+kirZvSjnbj/lC7SkhRLPCA5TZoi5XfohKnT3u1q37A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d9V0wJQ0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61911C32789;
-	Tue, 11 Jun 2024 13:39:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718113180;
-	bh=Tn9aGOOYb+LH+bFDSFJ3gb5u4+83blw2N03mcxJkcPo=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=d9V0wJQ0TR4PWiyRJB7suPif/f/9P8jN1s2raC2Yyt/25BVEXZHt3NFTRbAqyV7Kj
-	 UshYLZNhNX7CfT8hSjiHzqKjEISQSgFlX0lloEC6qxlMI9dL8wZIiGeNzQsK8E2mxp
-	 W4rou+XM6DRmGS9lDZCeid961euyOKV0GBsYu8BA/4areCsiGjtAuj4f7KIQRbpyrt
-	 l8yPAI8t25NqyFkyOllFI6O++CFoI7p3yVmboF7mPaCj6K+21YmRJuzr4zDGiT0K4R
-	 FsS3BQdY3pdT8OuGmhkEoryuxLnY62cyzXv6MsTxNUkzIovaA0MyoSFMzuhd+Rier/
-	 s92BhHAKwuhRA==
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-52c9034860dso2007361e87.2;
-        Tue, 11 Jun 2024 06:39:40 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWKxN8xb9LVp/LCPe5QXcE0CrZCCKh4vZSh/nuKv2PUymb3/qww59I6jPpo36QP4ry7F24vKK5ZpW9uzfPogd3LojowawtRbhhSShPAKcMdLzmiKOcnThKVJhe2dFrWDrU+HTN+RQxpfdEfRMMDGCIHsznkwqDGRYHfHng4iPWzZlHEfO8=
-X-Gm-Message-State: AOJu0YwS2ZdRRTxcC0nKuNbMdzY2ViVOHwrgP71nsQK3HjZd60r+VNsV
-	MXc1CHaopLAt6AZGsOQeKkHqRZQfD9IYZ38mER5xAZVFpUcT6joAVO0vNyyWS8kYcTcJLWN8OBD
-	fEPterh5zVBj8YivsLJF7/QBwhA==
-X-Google-Smtp-Source: AGHT+IGFUiU6exeIzAEFH36DTSIP2uz/FoyVESFoi5eHT5vpw31YK47X/5GhyzpZlDYY7TRlOrRvzOT6Gll+o03Kb2w=
-X-Received: by 2002:a05:6512:3d23:b0:52c:868f:a28d with SMTP id
- 2adb3069b0e04-52c868fa524mr5757868e87.50.1718113178740; Tue, 11 Jun 2024
- 06:39:38 -0700 (PDT)
+	s=arc-20240116; t=1718117400; c=relaxed/simple;
+	bh=mwraJ4rGdDIfQI416mB2JANpZgIZosVzrfC35FrESUw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=qX0BTl9gOq3TDelDsRLEchuVr3jB/FwyMSb12SGGLpSL5RKcW5jB4HBrmEyHtLnuol89Q73U2RMCKj9S/1fwqAV0COACHlvdxhSr0Z/q26qIQF01rWPE5XVBwgjIzxJzQK8Nmf3HGWa+NpYSDLR2lqyWKV/BOncOKlSAWHIgUIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=1aqU3CL3; arc=none smtp.client-ip=161.97.139.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+Received: from mail.andi.de1.cc ([2a02:c205:3004:2154::1])
+	by mail2.andi.de1.cc with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <andreas@kemnade.info>)
+	id 1sH2ot-0008ac-1D;
+	Tue, 11 Jun 2024 16:49:55 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=Content-Transfer-Encoding:Content-Type:
+	MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=gRFPV5bnvyRPifN5Rx8mFlhmhaUoDCNSJVc7gDzwLXw=; b=1aqU3CL39FnXmKZD4gdrFknifI
+	bQGypJx+I4mPeFuFaytbBZggjSIw1BEUjjIk0GN28uw6RRsgWC3CYYmmMX4ui6Yq0oUr9vpJFA8JQ
+	+uKd8/tMcNzGpQ+pghwHNtaF+21KIYQ27kJlSXOjscPA9SZ36F8081A1YmiqrQIzYUr1OxoJAv8F/
+	0rXr5K8kBVysW4n3uwrC8DaqPNzur9TnbM/YgNZMOkVE66b3j49qbwL3byKcIRCIt/8wBvLirfo5f
+	eVHSTk8mV3t3Dz3njl8Qfr6m9FvkeK+L0XErzYCc88ySigBEmBuVe+87BK5TZKGuOZo9Jng7BkGya
+	J3tkboUw==;
+Received: from p200300c20737c2001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:c2:737:c200:1a3d:a2ff:febf:d33a] helo=aktux)
+	by mail.andi.de1.cc with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <andreas@kemnade.info>)
+	id 1sH2op-00325g-2M;
+	Tue, 11 Jun 2024 16:49:53 +0200
+Date: Tue, 11 Jun 2024 16:49:51 +0200
+From: Andreas Kemnade <andreas@kemnade.info>
+To: Mighty <bavishimithil@gmail.com>
+Cc: =?UTF-8?B?QmVub8OudA==?= Cousson <bcousson@baylibre.com>, Tony Lindgren
+ <tony@atomide.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1] ARM: dts: twl6032: Add DTS file for TWL6032 PMIC
+Message-ID: <20240611164951.51754ffc@aktux>
+In-Reply-To: <20240611132134.31269-1-bavishimithil@gmail.com>
+References: <20240611132134.31269-1-bavishimithil@gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240606111611.371463-1-andreas@kemnade.info>
-In-Reply-To: <20240606111611.371463-1-andreas@kemnade.info>
-From: Rob Herring <robh@kernel.org>
-Date: Tue, 11 Jun 2024 07:39:25 -0600
-X-Gmail-Original-Message-ID: <CAL_Jsq+9v0i-6xvPY6cvnJUSLV1d4irqcPv60p+KwC5sx7WDDg@mail.gmail.com>
-Message-ID: <CAL_Jsq+9v0i-6xvPY6cvnJUSLV1d4irqcPv60p+KwC5sx7WDDg@mail.gmail.com>
-Subject: Re: [PATCH v4] dt-bindings: regulator: twl-regulator: convert to yaml
-To: Andreas Kemnade <andreas@kemnade.info>
-Cc: lee@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	lgirdwood@gmail.com, broonie@kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org, 
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jun 6, 2024 at 5:16=E2=80=AFAM Andreas Kemnade <andreas@kemnade.inf=
-o> wrote:
->
-> Convert the regulator bindings to yaml.
->
-> Drop one twl5030 compatible due to no documentation on mfd side and no
-> users of the twl5030.
->
-> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> ---
-> Changes in v4:
-> - remove a sentence in the commit message which only applies
->   to v1 design
-> - add R-by
->
-> Changes in v3:
-> - define regulator stuff in toplevel
-> - simplified regulator-inital-mode
-> - extended example to contain both regulator-initial-mode and
->   retain-on-reset
->
-> Changes in v2:
-> - add regulators directly to ti,twl.yaml
-> - less restrictions on regulator node name
->
->  .../devicetree/bindings/mfd/ti,twl.yaml       | 166 +++++++++++++++++-
->  .../bindings/regulator/twl-regulator.txt      |  80 ---------
->  2 files changed, 164 insertions(+), 82 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/regulator/twl-regul=
-ator.txt
->
-> diff --git a/Documentation/devicetree/bindings/mfd/ti,twl.yaml b/Document=
-ation/devicetree/bindings/mfd/ti,twl.yaml
-> index c2357fecb56c..2cbdd238f48f 100644
-> --- a/Documentation/devicetree/bindings/mfd/ti,twl.yaml
-> +++ b/Documentation/devicetree/bindings/mfd/ti,twl.yaml
-> @@ -22,6 +22,32 @@ allOf:
->            contains:
->              const: ti,twl4030
->      then:
-> +      patternProperties:
-> +        "^regulator-":
-> +          properties:
-> +            compatible:
-> +              enum:
-> +                - ti,twl4030-vaux1
-> +                - ti,twl4030-vaux2
-> +                - ti,twl4030-vaux3
-> +                - ti,twl4030-vaux4
-> +                - ti,twl4030-vmmc1
-> +                - ti,twl4030-vmmc2
-> +                - ti,twl4030-vpll1
-> +                - ti,twl4030-vpll2
-> +                - ti,twl4030-vsim
-> +                - ti,twl4030-vdac
-> +                - ti,twl4030-vintana2
-> +                - ti,twl4030-vio
-> +                - ti,twl4030-vdd1
-> +                - ti,twl4030-vdd2
-> +                - ti,twl4030-vintana1
-> +                - ti,twl4030-vintdig
-> +                - ti,twl4030-vusb1v5
-> +                - ti,twl4030-vusb1v8
-> +                - ti,twl4030-vusb3v1
-> +            ti,retain-on-reset: false
-> +
->        properties:
->          madc:
->            type: object
-> @@ -50,13 +76,34 @@ allOf:
->            properties:
->              compatible:
->                const: ti,twl4030-wdt
-> -
->    - if:
->        properties:
->          compatible:
->            contains:
->              const: ti,twl6030
->      then:
-> +      patternProperties:
-> +        "^regulator-":
-> +          properties:
-> +            compatible:
-> +              enum:
-> +                - ti,twl6030-vaux1
-> +                - ti,twl6030-vaux2
-> +                - ti,twl6030-vaux3
-> +                - ti,twl6030-vmmc
-> +                - ti,twl6030-vpp
-> +                - ti,twl6030-vusim
-> +                - ti,twl6030-vana
-> +                - ti,twl6030-vcxio
-> +                - ti,twl6030-vdac
-> +                - ti,twl6030-vusb
-> +                - ti,twl6030-v1v8
-> +                - ti,twl6030-v2v1
-> +                - ti,twl6030-vdd1
-> +                - ti,twl6030-vdd2
-> +                - ti,twl6030-vdd3
-> +            regulator-initial-mode: false
-> +
->        properties:
->          gpadc:
->            type: object
-> @@ -69,6 +116,25 @@ allOf:
->            contains:
->              const: ti,twl6032
->      then:
-> +      patternProperties:
-> +        "^regulator-":
-> +          properties:
-> +            compatible:
-> +              enum:
-> +                - ti,twl6032-ldo1
-> +                - ti,twl6032-ldo2
-> +                - ti,twl6032-ldo3
-> +                - ti,twl6032-ldo4
-> +                - ti,twl6032-ldo5
-> +                - ti,twl6032-ldo6
-> +                - ti,twl6032-ldo7
-> +                - ti,twl6032-ldoln
-> +                - ti,twl6032-ldousb
-> +                - ti,twl6032-smps3
-> +                - ti,twl6032-smps4
-> +                - ti,twl6032-vio
-> +            regulator-initial-mode: false
-> +
->        properties:
->          gpadc:
->            type: object
-> @@ -112,6 +178,27 @@ properties:
->        interrupts:
->          maxItems: 1
->
-> +patternProperties:
-> +  "^regulator-":
-> +    type: object
-> +    unevaluatedProperties: false
-> +    $ref: /schemas/regulator/regulator.yaml
-> +    properties:
-> +      compatible: true
-> +      regulator-initial-mode:
-> +        enum:
-> +          - 0x08 # Sleep mode, the nominal output voltage is maintained
-> +                 # with low power consumption with low load current capa=
-bility
-> +          - 0x0e # Active mode, the regulator can deliver its nominal ou=
-tput
-> +                 # voltage with full-load current capability
-> +      ti,retain-on-reset:
-> +        description:
-> +          Does not turn off the supplies during warm
-> +          reset. Could be needed for VMMC, as TWL6030
-> +          reset sequence for this signal does not comply
-> +          with the SD specification.
-> +        type: boolean
-> +
->  unevaluatedProperties: false
->
->  required:
-> @@ -131,9 +218,84 @@ examples:
->          compatible =3D "ti,twl6030";
->          reg =3D <0x48>;
->          interrupts =3D <39>; /* IRQ_SYS_1N cascaded to gic */
-> +        interrupt-parent =3D <&gic>;
->          interrupt-controller;
->          #interrupt-cells =3D <1>;
-> -        interrupt-parent =3D <&gic>;
-> +
-> +        gpadc {
-> +          compatible =3D "ti,twl6030-gpadc";
-> +          interrupts =3D <6>;
+Hi,
 
-Now a warning in linux-next:
+On Tue, 11 Jun 2024 18:51:34 +0530
+Mighty <bavishimithil@gmail.com> wrote:
 
-Documentation/devicetree/bindings/mfd/ti,twl.example.dtb: gpadc:
-'#io-channel-cells' is a required property
-        from schema $id:
-http://devicetree.org/schemas/iio/adc/ti,twl6030-gpadc.yaml#
+> From: Mithil Bavishi <bavishimithil@gmail.com>
+> 
+> Add a dedicated DTS file for the TWL6032 PMIC (Phoenix Lite). Already
+> has driver support with TWL6030 (Phoenix) since both of them are so
+> similar, some nodes can be reused from TWL6030 as well.
+> 
+> This can be included in the board files like twl6030.
+> Example:
+> ...
+> &i2c1 {
+>     twl: twl@48 {
+>         reg = <0x48>;
+>         interrupts = <GIC_SPI 7 IRQ_TYPE_LEVEL_HIGH>;
+>         interrupt-controller;
+>         interrupt-parent = <&gic>;
+>     };
+> };
+> 
+> /include/ "twl6032.dtsi"
+> ...
+> 
+> Used in devices like samsung-espresso, amazon-jem, epson-embt2ws etc.
+> 
+> Regulator values are found from downstream kernel for espresso.
+> 
+hmm, that might be board specific stuff, maybe keep them as they are in the
+twl6030.dtsi and override them in board specific dts files if needed.
+And is there any reason why you left out the pwm stuff?
+I think the twl6030.dtsi and twl6032.dtsi should be as similar as possible.
+
+Regards,
+Andreas
 
