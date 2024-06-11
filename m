@@ -1,133 +1,119 @@
-Return-Path: <linux-omap+bounces-1514-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1515-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF9AB902458
-	for <lists+linux-omap@lfdr.de>; Mon, 10 Jun 2024 16:44:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F28C90370B
+	for <lists+linux-omap@lfdr.de>; Tue, 11 Jun 2024 10:50:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26E5328269D
-	for <lists+linux-omap@lfdr.de>; Mon, 10 Jun 2024 14:44:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31C61282442
+	for <lists+linux-omap@lfdr.de>; Tue, 11 Jun 2024 08:50:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45AF5132137;
-	Mon, 10 Jun 2024 14:43:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="npg5pXyZ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB24A17622E;
+	Tue, 11 Jun 2024 08:50:31 +0000 (UTC)
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B0C623B0;
-	Mon, 10 Jun 2024 14:43:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
+Received: from elvis.franken.de (elvis.franken.de [193.175.24.41])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A1FA174EEB;
+	Tue, 11 Jun 2024 08:50:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.175.24.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718030590; cv=none; b=ZF2LTSi9xd206VHZJedsI4MQ3rBTgy/j9/bqPEEB7xqnVSm1FStLRd/DZcOXQ5yBwLMvzP0cmdkDDP4NDZezfHYOlYcBCgnqxxT9Kmg7seLHOAiYWnL2rg4ZZhUF3QMB+ZK6RM6rFDHjDd006C+D71HToXcMkTcjRi8TI/n11NA=
+	t=1718095831; cv=none; b=hftt5o8OoXxG0wRv+b4a2GsF8RMjDSgffuOyscDRNOrUGtLBm30S80K26QiLZjxKcIFTcOCs5+tuRWvRFCmxpMfJlmcmteY0noWb82bpOg05qAMzhGe/VdV2tLS3IyS89CPmOUmsHeS0+yZWNbmevkns0tPIVXlSjYFrhW1osz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718030590; c=relaxed/simple;
-	bh=WfJ9jpzyEaAtpm/A8NCBTJr5h8q7wIHU4XCBvX6wUno=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ebrns7VrHvkw1IL84vUsaXcBvrZgbvylF5lpwsvjXZ1JBETSpLhoRnf01G5cHThmrfAREsm4PgcMmgZ1R4VrYif325X35Asvx7tK89dF20aymMvxm0OTuVQx97amI3MKWKzISV5AhAN349JRs1AugWzQsS6mIsb0aVao/rLy8yU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=npg5pXyZ; arc=none smtp.client-ip=209.85.167.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-52c8342af5eso1573592e87.3;
-        Mon, 10 Jun 2024 07:43:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718030587; x=1718635387; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ARiAbV9duxyFUqNEp29RQ3QZg/sow4QH3/UXrM8Ep8I=;
-        b=npg5pXyZLHTbMLJR1HVeyL7cyNKLayqUh3l1nKAJL/7qoy2cbl1asxwlQOG+e0oiUw
-         Qeg7zG/w2xWXETh3YwJ/vj1x/rYNcn3kuoBk+fG9HU9YmhDezRsCLWsAf+pq0pbwQ3My
-         EgKB0/ZUvflkplgArrqPdkjgYU7YLrZbXgqxjjbaykdC331an+f5KD8iBczmRV7bHuB3
-         abcJjMpWCc6CEZ0OpLsJcfZvPyFUETpD7hPe8kM2k6bwHJ++zaRhtWOjNOerJpcbFZEZ
-         M9ZQRBpM08dMh0ypnJ9yjkycx0vip8EXFbXpMmcfgNk6Q/T8GDHVZI2PyFCZExIxmDUE
-         SoCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718030587; x=1718635387;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ARiAbV9duxyFUqNEp29RQ3QZg/sow4QH3/UXrM8Ep8I=;
-        b=PgbbbdOpBKYiBoOe+e4jGDEs2P1wFQcujw8HYsljSbzS6CKP9qZeMXjgsL2YjUhLvC
-         SRhPEYbhEpYzKMO0XaNYNI4BCuE+ETajOao5kVNHMuyrjsWULGIcb0rV4Y60D9gnqLIB
-         Bo1hFxmOLZAac1h1G48iMYkV9S53Tqmt8xb2OmRkDgfLeuE1Z1dfKqyTJfYZz5CHK9me
-         fM9T8qXo8pUKn4rdvOWb7L3+IQu3gw3gP1q7OlBj8rlSgyZWqDVi7bLGx/kSDVtWYbcm
-         aCv6BUf88Ye4lWqu0TGbMMTjtG0f5e9trEoDKn3I9WOBu/Lpz3F8c4F6Q7c8bUuo072C
-         HnEA==
-X-Forwarded-Encrypted: i=1; AJvYcCXhXuhShFR+4ZYtNDaFWciLuvwzEaNUj4Fy4JyeXEd0Dla5rEHADjnzViuvLgjB9hHlO2NLtylSFHa83LCJ/ReZIz1OqSdZSIe6YTt9nLZeszFmhF6YZFEqzsG6MzstDIHp201em6jgSeA19iS8Ew+/GsZi3HDztgl9invdrj5rIKved39d
-X-Gm-Message-State: AOJu0Yxlp74g28Rhp2SK9oth94HLzWTnnbGTbCuFuYcQ5debs4tLWJ+V
-	RwUUJv87SsF9sw4b9yjrzHaiboIBv+KTT437wotCheQmbPN92Pht
-X-Google-Smtp-Source: AGHT+IHiYOo9667BlphoO7DGPwPfS2rjmuIrjpGhocXL80s7aww/8aocaCFP8lqC989SjleMvbUgRg==
-X-Received: by 2002:a05:6512:3b98:b0:52c:841c:d15a with SMTP id 2adb3069b0e04-52c841cd44fmr3611477e87.7.1718030587281;
-        Mon, 10 Jun 2024 07:43:07 -0700 (PDT)
-Received: from [10.0.0.42] (host-85-29-124-88.kaisa-laajakaista.fi. [85.29.124.88])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52c8857d03asm725070e87.261.2024.06.10.07.43.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 10 Jun 2024 07:43:06 -0700 (PDT)
-Message-ID: <605944ac-6dfa-4620-84b6-392665cdc05d@gmail.com>
-Date: Mon, 10 Jun 2024 17:46:43 +0300
+	s=arc-20240116; t=1718095831; c=relaxed/simple;
+	bh=Tz0c5VcTfHJlV2uX+Q+nERoAMIrZpPDtHjcTjqCCVNo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NQRRWfFz6L6s0kLyXKc9BmOMdc47vbR+qybGa8fJTsQbdvLRzy7RxSXmVwswpODEt94iXHqHqRFdD2IOd+00usbny3R70LO5Gflv8ldR2vzTLN5QMj63v563YOSiO3dlfi8CdqENGjh0e5ir2xN/b8/j24WvDh7M6brRmsT2CLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alpha.franken.de; spf=pass smtp.mailfrom=alpha.franken.de; arc=none smtp.client-ip=193.175.24.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alpha.franken.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alpha.franken.de
+Received: from uucp by elvis.franken.de with local-rmail (Exim 3.36 #1)
+	id 1sGxBT-0000Ne-00; Tue, 11 Jun 2024 10:48:51 +0200
+Received: by alpha.franken.de (Postfix, from userid 1000)
+	id 023C9C0120; Tue, 11 Jun 2024 10:41:16 +0200 (CEST)
+Date: Tue, 11 Jun 2024 10:41:16 +0200
+From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+To: Celeste Liu <coelacanthushex@gmail.com>
+Cc: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
+	Anup Patel <anup@brainfault.org>, Guo Ren <guoren@kernel.org>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>,
+	=?iso-8859-1?Q?Th=E9o?= Lebrun <theo.lebrun@bootlin.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	"Naveen N . Rao" <naveen.n.rao@linux.ibm.com>,
+	Sven Joachim <svenjoac@gmx.de>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Rich Felker <dalias@libc.org>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Russell King <linux@armlinux.org.uk>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Tony Lindgren <tony@atomide.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Arnd Bergmann <arnd@arndb.de>, Mykola Lysenko <mykolal@fb.com>,
+	linux-riscv@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rpi-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+	linux-tegra@vger.kernel.org, loongarch@lists.linux.dev,
+	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-sh@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Lennart Poettering <lennart@poettering.net>,
+	Icenowy Zheng <uwu@icenowy.me>
+Subject: Re: [PATCH 3/6] mips: defconfig: drop RT_GROUP_SCHED=y from
+ generic/db1xxx/eyeq5
+Message-ID: <ZmgNrOr1nalSTeja@alpha.franken.de>
+References: <20240530111947.549474-8-CoelacanthusHex@gmail.com>
+ <20240530111947.549474-11-CoelacanthusHex@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] ASoC: ti: omap-hdmi: Fix too long driver name
-To: Primoz Fiser <primoz.fiser@norik.com>,
- Jarkko Nikula <jarkko.nikula@bitmer.com>, Liam Girdwood
- <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
- alsa-devel@alsa-project.org, linux-omap@vger.kernel.org,
- linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: upstream@lists.phytec.de
-References: <20240610125847.773394-1-primoz.fiser@norik.com>
-Content-Language: en-US
-From: =?UTF-8?Q?P=C3=A9ter_Ujfalusi?= <peter.ujfalusi@gmail.com>
-In-Reply-To: <20240610125847.773394-1-primoz.fiser@norik.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240530111947.549474-11-CoelacanthusHex@gmail.com>
 
-Hi,
-
-On 6/10/24 3:58 PM, Primoz Fiser wrote:
-> Set driver name to "HDMI". This simplifies the code and gets rid of
-> the following error messages:
+On Thu, May 30, 2024 at 07:19:51PM +0800, Celeste Liu wrote:
+> For cgroup v1, if turned on, and there's any cgroup in the "cpu" hierarchy it
+> needs an RT budget assigned, otherwise the processes in it will not be able to
+> get RT at all. The problem with RT group scheduling is that it requires the
+> budget assigned but there's no way we could assign a default budget, since the
+> values to assign are both upper and lower time limits, are absolute, and need to
+> be sum up to < 1 for each individal cgroup. That means we cannot really come up
+> with values that would work by default in the general case.[1]
 > 
->   ASoC: driver name too long 'HDMI 58040000.encoder' -> 'HDMI_58040000_e'
-
-Thank you for the update,
-Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
-
-> Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+> For cgroup v2, it's almost unusable as well. If it turned on, the cpu controller
+> can only be enabled when all RT processes are in the root cgroup. But it will
+> lose the benefits of cgroup v2 if all RT process were placed in the same cgroup.
+> 
+> Red Hat, Gentoo, Arch Linux and Debian all disable it. systemd also doesn't
+> support it.[2]
+> 
+> [1]: https://bugzilla.redhat.com/show_bug.cgi?id=1229700
+> [2]: https://github.com/systemd/systemd/issues/13781#issuecomment-549164383
+> 
+> Signed-off-by: Celeste Liu <CoelacanthusHex@gmail.com>
 > ---
-> Changes in v2:
-> - use "HDMI" instead of DRV_NAME (requested)
-> 
->  sound/soc/ti/omap-hdmi.c | 6 +-----
->  1 file changed, 1 insertion(+), 5 deletions(-)
-> 
-> diff --git a/sound/soc/ti/omap-hdmi.c b/sound/soc/ti/omap-hdmi.c
-> index 639bc83f4263..cf43ac19c4a6 100644
-> --- a/sound/soc/ti/omap-hdmi.c
-> +++ b/sound/soc/ti/omap-hdmi.c
-> @@ -354,11 +354,7 @@ static int omap_hdmi_audio_probe(struct platform_device *pdev)
->  	if (!card)
->  		return -ENOMEM;
->  
-> -	card->name = devm_kasprintf(dev, GFP_KERNEL,
-> -				    "HDMI %s", dev_name(ad->dssdev));
-> -	if (!card->name)
-> -		return -ENOMEM;
-> -
-> +	card->name = "HDMI";
->  	card->owner = THIS_MODULE;
->  	card->dai_link =
->  		devm_kzalloc(dev, sizeof(*(card->dai_link)), GFP_KERNEL);
+>  arch/mips/configs/db1xxx_defconfig  | 1 -
+>  arch/mips/configs/eyeq5_defconfig   | 1 -
+>  arch/mips/configs/generic_defconfig | 1 -
+>  3 files changed, 3 deletions(-)
+
+applied to mips-next.
+
+Thomas.
 
 -- 
-Péter
+Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
+good idea.                                                [ RFC1925, 2.3 ]
 
