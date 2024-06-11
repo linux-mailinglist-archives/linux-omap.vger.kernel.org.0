@@ -1,117 +1,108 @@
-Return-Path: <linux-omap+bounces-1518-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1519-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57EF4903F2D
-	for <lists+linux-omap@lfdr.de>; Tue, 11 Jun 2024 16:50:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84CE09043DE
+	for <lists+linux-omap@lfdr.de>; Tue, 11 Jun 2024 20:43:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D82302824AA
-	for <lists+linux-omap@lfdr.de>; Tue, 11 Jun 2024 14:50:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C24D1C24F30
+	for <lists+linux-omap@lfdr.de>; Tue, 11 Jun 2024 18:43:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B4B4171A5;
-	Tue, 11 Jun 2024 14:50:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC6986F2F0;
+	Tue, 11 Jun 2024 18:43:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="1aqU3CL3"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QjDrUy5t"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail2.andi.de1.cc (vmd64148.contaboserver.net [161.97.139.27])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 989C6171A1;
-	Tue, 11 Jun 2024 14:49:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.97.139.27
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED24A4644C;
+	Tue, 11 Jun 2024 18:43:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718117400; cv=none; b=cU3b5188Je7F4DmdDE79/KgnvqGzkWWIP3Pn9MGP+tHiiezyL0kKHr9CxoBU17Mx/74ilKbJWdp6SaB5fcljgg4os8d5rnDtBeOQxsEheUSXvXRI1iH0QhiZWFzmzot+8QsJY6qM2GoE4UsSuGEubIMfTBi7KphVh7fhTLQwD5A=
+	t=1718131413; cv=none; b=YNZHTWr4punb2RwUmbN1W5IPJJrivWqND3q96WF7z9qT2N84C1AxODcXQ8oNwdtrhQQD4b4dn5FbSS9sLA0SQ0Oglm/V65Zn3RcTa4ywK7N6tth81RIiCPgFgcGSkOJfX81asbYISmA0u87vt/FaYj8RKwknXAfG0bxbh24ADKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718117400; c=relaxed/simple;
-	bh=mwraJ4rGdDIfQI416mB2JANpZgIZosVzrfC35FrESUw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qX0BTl9gOq3TDelDsRLEchuVr3jB/FwyMSb12SGGLpSL5RKcW5jB4HBrmEyHtLnuol89Q73U2RMCKj9S/1fwqAV0COACHlvdxhSr0Z/q26qIQF01rWPE5XVBwgjIzxJzQK8Nmf3HGWa+NpYSDLR2lqyWKV/BOncOKlSAWHIgUIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=1aqU3CL3; arc=none smtp.client-ip=161.97.139.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kemnade.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
-Received: from mail.andi.de1.cc ([2a02:c205:3004:2154::1])
-	by mail2.andi.de1.cc with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <andreas@kemnade.info>)
-	id 1sH2ot-0008ac-1D;
-	Tue, 11 Jun 2024 16:49:55 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=Content-Transfer-Encoding:Content-Type:
-	MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=gRFPV5bnvyRPifN5Rx8mFlhmhaUoDCNSJVc7gDzwLXw=; b=1aqU3CL39FnXmKZD4gdrFknifI
-	bQGypJx+I4mPeFuFaytbBZggjSIw1BEUjjIk0GN28uw6RRsgWC3CYYmmMX4ui6Yq0oUr9vpJFA8JQ
-	+uKd8/tMcNzGpQ+pghwHNtaF+21KIYQ27kJlSXOjscPA9SZ36F8081A1YmiqrQIzYUr1OxoJAv8F/
-	0rXr5K8kBVysW4n3uwrC8DaqPNzur9TnbM/YgNZMOkVE66b3j49qbwL3byKcIRCIt/8wBvLirfo5f
-	eVHSTk8mV3t3Dz3njl8Qfr6m9FvkeK+L0XErzYCc88ySigBEmBuVe+87BK5TZKGuOZo9Jng7BkGya
-	J3tkboUw==;
-Received: from p200300c20737c2001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:c2:737:c200:1a3d:a2ff:febf:d33a] helo=aktux)
-	by mail.andi.de1.cc with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <andreas@kemnade.info>)
-	id 1sH2op-00325g-2M;
-	Tue, 11 Jun 2024 16:49:53 +0200
-Date: Tue, 11 Jun 2024 16:49:51 +0200
-From: Andreas Kemnade <andreas@kemnade.info>
-To: Mighty <bavishimithil@gmail.com>
-Cc: =?UTF-8?B?QmVub8OudA==?= Cousson <bcousson@baylibre.com>, Tony Lindgren
- <tony@atomide.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] ARM: dts: twl6032: Add DTS file for TWL6032 PMIC
-Message-ID: <20240611164951.51754ffc@aktux>
-In-Reply-To: <20240611132134.31269-1-bavishimithil@gmail.com>
-References: <20240611132134.31269-1-bavishimithil@gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1718131413; c=relaxed/simple;
+	bh=HMyc4bT6r/w2n7Js+X6N54BUQhZ/E9ivt4CcJuMZ9qs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uJQZMqRkmuQ5PQzzNNQdAlv4bYwpB5En7Fy4eF5iQkujqNFsKZB9hPcJZFClfAXs0I70Ar0yiEpXYHY9w1X/pi0EZwf46klS6Zsj2049xd2N/sB4HP6gadOrwbBXKakfXv+h9DGIQ6d/f5HIzWiW/QMiOq+O7btjNDpN5b+hN4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QjDrUy5t; arc=none smtp.client-ip=209.85.208.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2ebeefb9a6eso14739731fa.1;
+        Tue, 11 Jun 2024 11:43:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718131410; x=1718736210; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HMyc4bT6r/w2n7Js+X6N54BUQhZ/E9ivt4CcJuMZ9qs=;
+        b=QjDrUy5tVwBRkmvOXv+IC1Zv3EROLz3PbbToIk2Twud34vLPRaqrwGagMjByBc7/e6
+         8k2nFatesYHaMDRJS50PYresPzzNB6qyxw5I7faerv1x6skQ2JKWbGSMD89uVnVTOCTx
+         QYubWa7pg3nI8LpLsVV8dwZT3UzRDdpiuoWqbbrKzCK/bj92htSIPFm+O7lOJWeCd+4b
+         +LH1E1bZr0NH+q6LmFtJoaAq2SbQBWVLMZCk98Y+hu5TF4SnHSHia5gFGW9iEhDc3xCJ
+         GDQL4Ia2/sddI6yUbvRgEgDIGrjIlmpeKmu5RAAyIexTZ+cx2heuuwfpciv3npOI9Cye
+         W1pQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718131410; x=1718736210;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HMyc4bT6r/w2n7Js+X6N54BUQhZ/E9ivt4CcJuMZ9qs=;
+        b=FE67VUkNAxD9QNsjyA8qL17SVVxqef6IizyOIYByF3lF+B1YT+qV3uNJAhVZpXsmvu
+         eH0RupYgAXNuOnIUkDA1EYZ2a29n4cZbi8v9FJqVc51xVBit/na4vb8AdBFYKO44200b
+         pkrMQ1sYTE+rnkBpFQ7cMp0c9G/uIP17Bjizhvp+hQTofQHQiCUuCFBalf4H2evB+B5y
+         BqTGBWZ39jvtBe514aLBM5y73fZ5tj3TJRfckq84mhOQyxUofPTtMZtJzRCKkp7RS/k6
+         93LUAOUFiLeumSm8+88hP/uu3rzLh4nz1wrnKJ8qWsEpvQtcASLfWWwtOHxBjf1pKJ7k
+         p8gQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXwDBKQ6rmzrjlhoLfsGjrqvIOs41av5fsc0WnrufkCqewc2JJQpgBXgefZ8VV//pCJjVPgdYJL43stg/eGCVRpzXFbpb85mrJq96GNQ0vV/58YJVW+7tdpPTX4UlAWGnGYxU+k1ZyvXd6YsNy5ARQh1tauYwpFu8K+jqdIf0NPCSHDT0M=
+X-Gm-Message-State: AOJu0Yyrj4irLytVGmCtgTxVHIGRYLcQBZ+ceKnwZRUfO2iJuP6oE2l4
+	J0oHx7kFut1TaNq79tW+3RlFwWMdINNjAn/5WaQBejvg6GUXH2A5xd79rBonpmxV7mQhUY72K0X
+	6jAELrMTXbQ1QLSDqj73ud1HsiGo=
+X-Google-Smtp-Source: AGHT+IFR0HuBjjtBpGUGnC1n8m5LaRH75CZMOZaWTsBvsZhf+ocdgG8M7BZDoCW1o62xIr7F/2JeXPylHz+px3w6XMw=
+X-Received: by 2002:a2e:7d11:0:b0:2ea:9300:e136 with SMTP id
+ 38308e7fff4ca-2eadce7a513mr76072841fa.42.1718131409773; Tue, 11 Jun 2024
+ 11:43:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20240611132134.31269-1-bavishimithil@gmail.com> <20240611164951.51754ffc@aktux>
+In-Reply-To: <20240611164951.51754ffc@aktux>
+From: Mithil <bavishimithil@gmail.com>
+Date: Wed, 12 Jun 2024 00:13:16 +0530
+Message-ID: <CAGzNGRmoSawz7yHGzHS8PeQwRAsnnORLMPrrNBLupNdaOkUeHw@mail.gmail.com>
+Subject: Re: [PATCH v1] ARM: dts: twl6032: Add DTS file for TWL6032 PMIC
+To: Andreas Kemnade <andreas@kemnade.info>
+Cc: =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>, 
+	Tony Lindgren <tony@atomide.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linux-omap@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Tue, Jun 11, 2024 at 8:19=E2=80=AFPM Andreas Kemnade <andreas@kemnade.in=
+fo> wrote:
+> hmm, that might be board specific stuff, maybe keep them as they are in t=
+he
+> twl6030.dtsi and override them in board specific dts files if needed.
+We could do that, since we have no datasheet publicly available for
+6032, I thought it would be better to stick to values which are known
+to be working hence using downstream values. Anything mentioned in the
+BT200 kernel, we could update it with those values.
 
-On Tue, 11 Jun 2024 18:51:34 +0530
-Mighty <bavishimithil@gmail.com> wrote:
+> And is there any reason why you left out the pwm stuff?
+Didn't need it for espresso, but will add in v2.
 
-> From: Mithil Bavishi <bavishimithil@gmail.com>
-> 
-> Add a dedicated DTS file for the TWL6032 PMIC (Phoenix Lite). Already
-> has driver support with TWL6030 (Phoenix) since both of them are so
-> similar, some nodes can be reused from TWL6030 as well.
-> 
-> This can be included in the board files like twl6030.
-> Example:
-> ...
-> &i2c1 {
->     twl: twl@48 {
->         reg = <0x48>;
->         interrupts = <GIC_SPI 7 IRQ_TYPE_LEVEL_HIGH>;
->         interrupt-controller;
->         interrupt-parent = <&gic>;
->     };
-> };
-> 
-> /include/ "twl6032.dtsi"
-> ...
-> 
-> Used in devices like samsung-espresso, amazon-jem, epson-embt2ws etc.
-> 
-> Regulator values are found from downstream kernel for espresso.
-> 
-hmm, that might be board specific stuff, maybe keep them as they are in the
-twl6030.dtsi and override them in board specific dts files if needed.
-And is there any reason why you left out the pwm stuff?
-I think the twl6030.dtsi and twl6032.dtsi should be as similar as possible.
+> I think the twl6030.dtsi and twl6032.dtsi should be as similar as possibl=
+e.
+Agreed. But same min/max values as well?
 
-Regards,
-Andreas
+--=20
+Best Regards,
+Mithil
 
