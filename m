@@ -1,119 +1,227 @@
-Return-Path: <linux-omap+bounces-1515-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1516-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F28C90370B
-	for <lists+linux-omap@lfdr.de>; Tue, 11 Jun 2024 10:50:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A825903D0A
+	for <lists+linux-omap@lfdr.de>; Tue, 11 Jun 2024 15:22:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31C61282442
-	for <lists+linux-omap@lfdr.de>; Tue, 11 Jun 2024 08:50:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EACCA2861C1
+	for <lists+linux-omap@lfdr.de>; Tue, 11 Jun 2024 13:22:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB24A17622E;
-	Tue, 11 Jun 2024 08:50:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 611ED17D34F;
+	Tue, 11 Jun 2024 13:21:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LOeB5Mmt"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from elvis.franken.de (elvis.franken.de [193.175.24.41])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A1FA174EEB;
-	Tue, 11 Jun 2024 08:50:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.175.24.41
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A95DD17BB35;
+	Tue, 11 Jun 2024 13:21:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718095831; cv=none; b=hftt5o8OoXxG0wRv+b4a2GsF8RMjDSgffuOyscDRNOrUGtLBm30S80K26QiLZjxKcIFTcOCs5+tuRWvRFCmxpMfJlmcmteY0noWb82bpOg05qAMzhGe/VdV2tLS3IyS89CPmOUmsHeS0+yZWNbmevkns0tPIVXlSjYFrhW1osz0=
+	t=1718112114; cv=none; b=YK8xrpfIwW0FeFiCQ7HkCZJRn0Rqqbk/KcD1eBFtcS9NlSBz3adggVj85XRdFzdOxnx8U/x9i6Zh7XYiRABYVSB/01bqeD/34IuODpKBgt8NfJlfAYImj0ig4sdRHlPdmjohViGyxX8re2lPiU3WexND5kaYyLU4NQ4RJWdbm+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718095831; c=relaxed/simple;
-	bh=Tz0c5VcTfHJlV2uX+Q+nERoAMIrZpPDtHjcTjqCCVNo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NQRRWfFz6L6s0kLyXKc9BmOMdc47vbR+qybGa8fJTsQbdvLRzy7RxSXmVwswpODEt94iXHqHqRFdD2IOd+00usbny3R70LO5Gflv8ldR2vzTLN5QMj63v563YOSiO3dlfi8CdqENGjh0e5ir2xN/b8/j24WvDh7M6brRmsT2CLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alpha.franken.de; spf=pass smtp.mailfrom=alpha.franken.de; arc=none smtp.client-ip=193.175.24.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alpha.franken.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alpha.franken.de
-Received: from uucp by elvis.franken.de with local-rmail (Exim 3.36 #1)
-	id 1sGxBT-0000Ne-00; Tue, 11 Jun 2024 10:48:51 +0200
-Received: by alpha.franken.de (Postfix, from userid 1000)
-	id 023C9C0120; Tue, 11 Jun 2024 10:41:16 +0200 (CEST)
-Date: Tue, 11 Jun 2024 10:41:16 +0200
-From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To: Celeste Liu <coelacanthushex@gmail.com>
-Cc: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
-	Anup Patel <anup@brainfault.org>, Guo Ren <guoren@kernel.org>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>,
-	Gregory CLEMENT <gregory.clement@bootlin.com>,
-	=?iso-8859-1?Q?Th=E9o?= Lebrun <theo.lebrun@bootlin.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	"Naveen N . Rao" <naveen.n.rao@linux.ibm.com>,
-	Sven Joachim <svenjoac@gmx.de>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Rich Felker <dalias@libc.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Russell King <linux@armlinux.org.uk>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	s=arc-20240116; t=1718112114; c=relaxed/simple;
+	bh=lPPPhQNOTHe+MdJPKIaXmZK6muGPdkJfgwV7F4eRo50=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=e9MI8GgvCh1NTH69Za1GzFhTr/48PKQTkQkN9shU9z15mtFqaGEbneuHdY+Ux/nAu0xB4z3RHDe9FTQFhYe/S2Etb6Gr/1Qcl550KWUyC/uKdGm1WYOYCqgWQQQRMSWMWo6VHwHKPOZK8HiTDqvRWElgRFZ5D0eF/Iq5RTpj7Eo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LOeB5Mmt; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-1f480624d10so49390105ad.1;
+        Tue, 11 Jun 2024 06:21:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718112112; x=1718716912; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=E1Gm0VRJQ96IVvvubY5I30aDBQIE2W/tuhyQjRyhok8=;
+        b=LOeB5MmtnPZL4GD723WB7Wvw3OnEGTioGsfNWEBqSMFJ4ps4+Kyf2Nh6dmLdjVAAiK
+         h3txgGd4sxpcpGNVwjSSG4epBtQovW+TFCti/QbIp9Xp1uPGdFFwsdCS3UZjOUej/TWG
+         B4Ik7hHtHXm8uniFdO8J1x2W98ytjU95rKVgrKsrbYkMJIKA/Vaxa4exJMwSg+WrscL7
+         dI/qKyJjzKiJ4hYfYZ5NophJf7ml7UHIOKHfWXqpHkVA2oEdF/K6vcqrUVO+PMjwDMsu
+         xyEk917rxf0+EpKLWsy2NZfWzbu+dl0mFTFzHFfS5y74NdAFgQL1V7CzlAWGzKtwtj6w
+         kr0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718112112; x=1718716912;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=E1Gm0VRJQ96IVvvubY5I30aDBQIE2W/tuhyQjRyhok8=;
+        b=qjRwDz4mHeel5RZPqHRhPjOJTrTrPXeJqV+i1zbLhxSmyLBwAacL8mW7aoJZIjtrt0
+         j6zYkySxSZdyd8gCRrFqI1lA2/65zvANVKZ3zyy0dlgqHKPS/G/v9RuCLXHyrqoYjZOe
+         GD+Yb5UCRjgvJVBy5tJYh127ExXMnn0gtFYC5sBtOy1U65an9NBQ8aPzX5YFeUsAIye8
+         BIwqeNTEsla3Su9qpZ3ogk9YluqUmdqhR8AWAKtJIYSVQteh2lpfVfvFJhWEt34XENcN
+         vvBC4DhjFzJwnKjTkWgGkZuWswbBgli7f9eXEBbCd3HZtIT4tXecv3UysNSnubj+a9gU
+         OVuQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXcRGkAb6JMFhDIgQhNRUBNpYTxF+eB1xTSJQ8GUz1wYh7rBjWHSyl10W+UHdGN7YypK5isj1GdoId2xwgOs4VrymEmU3Wn3GooWJ9Btul43v+1+CuimRxGNYCCWoVgsNky4bvVZGfl8/BCB05LFZAnLYV3gI7SWtcSFgc5seI55UoibWI=
+X-Gm-Message-State: AOJu0Yw1u1h5JVraS85uLH4Okt+BpNZswy2KDBsjosChdQR0csIahwIf
+	BAshhSWn6/Xt3UNPzUeJKVCfGptr5L/UXXEbNNt01j/z7fvTyJLu
+X-Google-Smtp-Source: AGHT+IGYnseK3m4sL5xhcLg4FZ+KaLEccEmH9YDJalsGIsk52tQZL7HG1vYD8weeVyCIoLFqCHNNfQ==
+X-Received: by 2002:a17:902:7207:b0:1f4:a392:ac5b with SMTP id d9443c01a7336-1f6d03bc485mr117646565ad.57.1718112111896;
+        Tue, 11 Jun 2024 06:21:51 -0700 (PDT)
+Received: from localhost.localdomain ([103.14.183.254])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f6e787d08csm73415655ad.80.2024.06.11.06.21.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Jun 2024 06:21:51 -0700 (PDT)
+From: Mighty <bavishimithil@gmail.com>
+To: 
+Cc: andreas@kemnade.info,
+	Mithil Bavishi <bavishimithil@gmail.com>,
+	=?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
 	Tony Lindgren <tony@atomide.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Arnd Bergmann <arnd@arndb.de>, Mykola Lysenko <mykolal@fb.com>,
-	linux-riscv@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rpi-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-	linux-tegra@vger.kernel.org, loongarch@lists.linux.dev,
-	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-sh@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Lennart Poettering <lennart@poettering.net>,
-	Icenowy Zheng <uwu@icenowy.me>
-Subject: Re: [PATCH 3/6] mips: defconfig: drop RT_GROUP_SCHED=y from
- generic/db1xxx/eyeq5
-Message-ID: <ZmgNrOr1nalSTeja@alpha.franken.de>
-References: <20240530111947.549474-8-CoelacanthusHex@gmail.com>
- <20240530111947.549474-11-CoelacanthusHex@gmail.com>
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	linux-omap@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v1] ARM: dts: twl6032: Add DTS file for TWL6032 PMIC
+Date: Tue, 11 Jun 2024 18:51:34 +0530
+Message-Id: <20240611132134.31269-1-bavishimithil@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240530111947.549474-11-CoelacanthusHex@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Thu, May 30, 2024 at 07:19:51PM +0800, Celeste Liu wrote:
-> For cgroup v1, if turned on, and there's any cgroup in the "cpu" hierarchy it
-> needs an RT budget assigned, otherwise the processes in it will not be able to
-> get RT at all. The problem with RT group scheduling is that it requires the
-> budget assigned but there's no way we could assign a default budget, since the
-> values to assign are both upper and lower time limits, are absolute, and need to
-> be sum up to < 1 for each individal cgroup. That means we cannot really come up
-> with values that would work by default in the general case.[1]
-> 
-> For cgroup v2, it's almost unusable as well. If it turned on, the cpu controller
-> can only be enabled when all RT processes are in the root cgroup. But it will
-> lose the benefits of cgroup v2 if all RT process were placed in the same cgroup.
-> 
-> Red Hat, Gentoo, Arch Linux and Debian all disable it. systemd also doesn't
-> support it.[2]
-> 
-> [1]: https://bugzilla.redhat.com/show_bug.cgi?id=1229700
-> [2]: https://github.com/systemd/systemd/issues/13781#issuecomment-549164383
-> 
-> Signed-off-by: Celeste Liu <CoelacanthusHex@gmail.com>
-> ---
->  arch/mips/configs/db1xxx_defconfig  | 1 -
->  arch/mips/configs/eyeq5_defconfig   | 1 -
->  arch/mips/configs/generic_defconfig | 1 -
->  3 files changed, 3 deletions(-)
+From: Mithil Bavishi <bavishimithil@gmail.com>
 
-applied to mips-next.
+Add a dedicated DTS file for the TWL6032 PMIC (Phoenix Lite). Already
+has driver support with TWL6030 (Phoenix) since both of them are so
+similar, some nodes can be reused from TWL6030 as well.
 
-Thomas.
+This can be included in the board files like twl6030.
+Example:
+...
+&i2c1 {
+    twl: twl@48 {
+        reg = <0x48>;
+        interrupts = <GIC_SPI 7 IRQ_TYPE_LEVEL_HIGH>;
+        interrupt-controller;
+        interrupt-parent = <&gic>;
+    };
+};
 
+/include/ "twl6032.dtsi"
+...
+
+Used in devices like samsung-espresso, amazon-jem, epson-embt2ws etc.
+
+Regulator values are found from downstream kernel for espresso.
+
+Signed-off-by: Mithil Bavishi <bavishimithil@gmail.com>
+---
+ arch/arm/boot/dts/ti/omap/twl6032.dtsi | 94 ++++++++++++++++++++++++++
+ 1 file changed, 94 insertions(+)
+ create mode 100644 arch/arm/boot/dts/ti/omap/twl6032.dtsi
+
+diff --git a/arch/arm/boot/dts/ti/omap/twl6032.dtsi b/arch/arm/boot/dts/ti/omap/twl6032.dtsi
+new file mode 100644
+index 000000000..a48723a24
+--- /dev/null
++++ b/arch/arm/boot/dts/ti/omap/twl6032.dtsi
+@@ -0,0 +1,95 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Integrated Power Management Chip
++ * https://www.ti.com/lit/ds/symlink/twl6032.pdf
++ */
++
++&twl {
++	compatible = "ti,twl6032";
++	interrupt-controller;
++	#interrupt-cells = <1>;
++
++	rtc {
++		compatible = "ti,twl4030-rtc";
++		interrupts = <11>;
++	};
++
++	vana: regulator-vana {
++		compatible = "ti,twl6030-vana";
++		regulator-min-microvolt = <2100000>;
++		regulator-max-microvolt = <2100000>;
++		regulator-always-on;
++		regulator-state-mem {
++			regulator-off-in-suspend;
++		};
++	};
++
++	ldo1: regulator-ldo1 {
++		compatible = "ti,twl6032-ldo1";
++		regulator-min-microvolt = <2800000>;
++		regulator-max-microvolt = <2800000>;
++		regulator-always-on;
++		regulator-state-mem {
++			regulator-off-in-suspend;
++		};
++	};
++
++	ldo3: regulator-ldo3 {
++		compatible = "ti,twl6032-ldo3";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		regulator-always-on;
++		regulator-state-mem {
++			regulator-off-in-suspend;
++		};
++	};
++
++	ldo4: regulator-ldo4 {
++		compatible = "ti,twl6032-ldo4";
++		regulator-min-microvolt = <2800000>;
++		regulator-max-microvolt = <2800000>;
++		regulator-always-on;
++	};
++
++	ldo5: regulator-ldo5 {
++		compatible = "ti,twl6032-ldo5";
++		regulator-min-microvolt = <1800000>;
++		regulator-max-microvolt = <1800000>;
++		regulator-always-on;
++	};
++
++	ldo6: regulator-ldo6 {
++		compatible = "ti,twl6032-ldo6";
++		regulator-min-microvolt = <1800000>;
++		regulator-max-microvolt = <1800000>;
++		regulator-always-on;
++		regulator-state-mem {
++			regulator-off-in-suspend;
++		};
++	};
++
++	smps4: regulator-smps4 {
++		compatible = "ti,twl6032-smps4";
++		regulator-min-microvolt = <1800000>;
++		regulator-max-microvolt = <1800000>;
++		regulator-always-on;
++	};
++
++	ldousb: regulator-ldousb {
++		compatible = "ti,twl6032-ldousb";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		regulator-always-on;
++	};
++
++	gpadc: gpadc {
++		compatible = "ti,twl6032-gpadc";
++		interrupts = <3>;
++		#io-channel-cells = <1>;
++	};
++
++	twl_usb_comparator: usb-comparator {
++		compatible = "ti,twl6030-usb";
++		interrupts = <4>, <10>;
++	};
++};
 -- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
-good idea.                                                [ RFC1925, 2.3 ]
+2.34.1
+
 
