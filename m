@@ -1,160 +1,103 @@
-Return-Path: <linux-omap+bounces-1523-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1524-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 233DB904E52
-	for <lists+linux-omap@lfdr.de>; Wed, 12 Jun 2024 10:41:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 590689059D7
+	for <lists+linux-omap@lfdr.de>; Wed, 12 Jun 2024 19:25:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCA4C1F219F0
-	for <lists+linux-omap@lfdr.de>; Wed, 12 Jun 2024 08:41:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F368B1F237F4
+	for <lists+linux-omap@lfdr.de>; Wed, 12 Jun 2024 17:25:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41B0F16D4D9;
-	Wed, 12 Jun 2024 08:40:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 103FB1822CA;
+	Wed, 12 Jun 2024 17:25:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="qBqOf6iW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="idsETjRo"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAA1216D31E
-	for <linux-omap@vger.kernel.org>; Wed, 12 Jun 2024 08:40:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1F413209;
+	Wed, 12 Jun 2024 17:25:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718181655; cv=none; b=CJQ8AK4iFyUn2jCqNQSJNS0PZLcU538eiWn5sFQQHHaqVpUuht3aYEcAPevKVZx10QI98EIDrZWkcC1CbIlVgdeXKce1yHzWmaFlwF1/tJRysIyijkQ0IqXO3c8IswH0Mzu3XIyTeU0t42wEZWBrr3brenSrDmS/Mz9ZLIHGbtU=
+	t=1718213142; cv=none; b=rQoSMCbXPFL7J3rp59mlM7Iv4UOZGOfBh53N1PWEorRwYcNIqZIex6my7FLz54UgeQwbDIiPSgjUybsqCIZIdbh8qTO9ENgHrdrpUQzEAoRbba0dgW8OYwJEQnBsRmCwJ9KaHBb8VX9KPlM82LGFKApo+7/i/XvZIit9E7ww79k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718181655; c=relaxed/simple;
-	bh=qEiGeubKfIJ1/Zrhs+Ufn5xyc38Z8AX0c5pM0ZIohaU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qf1wAz4Z4v5vw6dOsi2+wtnCovRtZaweF/ztlOPO3TC7c/XNJT/v6A6RgeXbW3RJZsK9RBmUiF05fqGVSUIAHHO1jNGqkoshdITKDxBI8Fzz9XNxVf7taIHGzahjIV1APH4lR8qjHvKNRDXwhFrTpxQ+uujGhxpitRJbukrWgYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=qBqOf6iW; arc=none smtp.client-ip=209.85.218.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-a6f1da33826so269151466b.0
-        for <linux-omap@vger.kernel.org>; Wed, 12 Jun 2024 01:40:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1718181651; x=1718786451; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5WiwpAVIIzI25M3vt4yA+PqF3qDsIr7sGRJOC2cnv2A=;
-        b=qBqOf6iWgcxm4nXjNM4SNMYOW+uXRLy37yRB7qcV6cnOaWjzp7jdxD6E9RwinMl+tM
-         qpW6stDC2eLYLTHZdJ+TXBTKYXz8WNcQR4VRZXqNc00HYDw8GT6IuCSuLQaYbUNMI3ic
-         Rdiw8wBInfJEQQ2XVSTRcsRYxPLAAm33q/czkXh1fOmF2wgkVDddLPA8DJlvsucxU8Js
-         aPNF1ryKee1c1CSK/oXkveIVCjt7xNN9CnjNnCePn8hC5inSmJQvWEI9nkvUIVsihdvQ
-         KtEwIyabeBY6SCGMFEFVOhNyGyULV/GTFU85UhJfcZ5DrABG9I7YFON33GRSYRmGVyYM
-         Lw9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718181651; x=1718786451;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5WiwpAVIIzI25M3vt4yA+PqF3qDsIr7sGRJOC2cnv2A=;
-        b=soHAk7lOXo3lqXvqUlx3xNSVuv9kI4VwRPx9FBhOMq+rKNDLFlIegU410CAigvY1y+
-         08njuof7yQ2hU8Cljxw3Yr/WOel5PkIU+FSdPmPzCJG6jl+cfrqjOZsbFWxGu+evSyyj
-         okv0F9MQQGMeOkL6cFqyAbA5ncjHbTpunwYJtz4VG1VzEnS5yBTVFitGhkSescOV7Ti0
-         e2TYRduq2Jmky2KfnQXJurbuU7EBsXFNhsWVAPTThfhAke57OFlJjM0Tk9IkSWvCXDyq
-         9SipaXGR6orPveqPMc0GTuzuUk79zkXmnRZFLHbbeknLZFMm12AROqcD8cHF4Kw3xSFH
-         ybCQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWmsFq1+3yyq+3fJX5/uFyfd9qZhxRB84gIHn0IczT/sP7ZRBtU8p4Rm6WFAeF/5FcU831sG7gvmJpcZzmEAavTYv74M94LjWy7Bg==
-X-Gm-Message-State: AOJu0YzP7zYoHpMEXlSkyGGzCHgMYc4KBlPWc5nLo7h9koSTlgt8M/R+
-	NoXguOszNZfLQghMJbWPiGmh+3g18P/dR3H2MjgJMZiIxRUfLJ451iXQNIbjGgM=
-X-Google-Smtp-Source: AGHT+IGAvQiUcW8VL4sfb0qoE6C7is4cXciMhqvZWnwVopNLvFYJ8YfuyjbzeXxY/mf4M9KlfYPkjg==
-X-Received: by 2002:a17:906:190e:b0:a68:ccbd:bcf0 with SMTP id a640c23a62f3a-a6f47f589d8mr87717366b.28.1718181651095;
-        Wed, 12 Jun 2024 01:40:51 -0700 (PDT)
-Received: from krzk-bin.. ([178.197.219.137])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6efbcc252esm604812366b.143.2024.06.12.01.40.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Jun 2024 01:40:50 -0700 (PDT)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To: Antoine Tenart <atenart@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Tony Lindgren <tony@atomide.com>,
-	linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-omap@vger.kernel.org,
-	arm@kernel.org,
-	soc@kernel.org,
-	Arnd Bergmann <arnd@arndb.de>,
-	Olof Johansson <olof@lixom.net>
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Tsahee Zidenberg <tsahee@annapurnalabs.com>
-Subject: [PATCH v2 2/2] amazon: MAINTAINERS: change to odd fixes and Tsahee Zidenberg to CREDITS
-Date: Wed, 12 Jun 2024 10:40:38 +0200
-Message-ID: <20240612084038.18519-2-krzysztof.kozlowski@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240612084038.18519-1-krzysztof.kozlowski@linaro.org>
-References: <20240612084038.18519-1-krzysztof.kozlowski@linaro.org>
+	s=arc-20240116; t=1718213142; c=relaxed/simple;
+	bh=OK6qbZ0vnNzVV/sfoCYgFy2+diPsXnMq6GJhiiEBkqA=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=fKD9x3QuHrjZqjZmnEku14enRo2k1ZyBo8410g9aE20viOZlFSlC7aovtM4pnlfSQhPbhp2jh2X2FtV40HevArIimezQw+2pe9lHSa20TPEYFYPYGR/CgfwzpvYWG+hHk25/bQq4OqHr+wJ+cb2erZxin1XVGyFmku8v0PX7I/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=idsETjRo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6D82C116B1;
+	Wed, 12 Jun 2024 17:25:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718213142;
+	bh=OK6qbZ0vnNzVV/sfoCYgFy2+diPsXnMq6GJhiiEBkqA=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=idsETjRovWK/GS7qYp0LF/BUjTYnBRhnBQk+GH8O/gBjiAFb0r1Prz7f93za8/Rfb
+	 8QRtIEyn0oUx6Rk8rOgwP3sYY6Cm7gfkJMihZmBX55RtTsc6sohzX8xO835Wim14lY
+	 RNIaTiC+Z7iKE3OVCrnrz9t3gjR6ifFds8vNH3R9Ruqalo/nk/MQeDRabSXDDlHiMa
+	 GVe1NA9vLejS+TXVm+yTxBPI+7K6cj2aJg4DPrUHsK6mSqLXzOnpuj/EUTPiyGj8XQ
+	 QzCXCaMJoQYiHc6N/K9VVJb6GD8s4Ft0bfqCwiW5AbzupPvGp3DlrprM5tguPe5nmh
+	 xMDgd9cRlCNPQ==
+From: Mark Brown <broonie@kernel.org>
+To: Peter Ujfalusi <peter.ujfalusi@gmail.com>, 
+ Jarkko Nikula <jarkko.nikula@bitmer.com>, 
+ Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, 
+ Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org, 
+ linux-omap@vger.kernel.org, linux-sound@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Primoz Fiser <primoz.fiser@norik.com>
+Cc: upstream@lists.phytec.de
+In-Reply-To: <20240610125847.773394-1-primoz.fiser@norik.com>
+References: <20240610125847.773394-1-primoz.fiser@norik.com>
+Subject: Re: [PATCH v2] ASoC: ti: omap-hdmi: Fix too long driver name
+Message-Id: <171821313984.235346.8948491995982488309.b4-ty@kernel.org>
+Date: Wed, 12 Jun 2024 18:25:39 +0100
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14-dev-4c370
 
-Last email from Tsahee Zidenberg was in 2016 [1], so move Tsahee from
-Amazon platform maintainers to credits (thank you for your contributions
-and maintenance!).  Stale maintainer entries hide information whether
-subsystem needs help, has a bus-factor or is even orphaned.
+On Mon, 10 Jun 2024 14:58:47 +0200, Primoz Fiser wrote:
+> Set driver name to "HDMI". This simplifies the code and gets rid of
+> the following error messages:
+> 
+>   ASoC: driver name too long 'HDMI 58040000.encoder' -> 'HDMI_58040000_e'
+> 
+> 
 
-The Amazon platform still has active maintainer - Antoine Tenart -
-however there was no maintenance activities coming from Antoine.  All
-my patches from last 4 years related to Amazon remained unanswered - no
-acks, no picks - so document the actual not active status of the
-platform by changing it to Odd Fixes.
+Applied to
 
-[1] https://lore.kernel.org/all/?q=f%3Atsahee%40annapurnalabs.com
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-Cc: Tsahee Zidenberg <tsahee@annapurnalabs.com>
-Cc: Antoine Tenart <atenart@kernel.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Thanks!
 
----
+[1/1] ASoC: ti: omap-hdmi: Fix too long driver name
+      commit: 524d3f126362b6033e92cbe107ae2158d7fbff94
 
-Changes in v2:
-1. None
----
- CREDITS     | 4 ++++
- MAINTAINERS | 3 +--
- 2 files changed, 5 insertions(+), 2 deletions(-)
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-diff --git a/CREDITS b/CREDITS
-index 2721aa9122bb..93c05f1884f8 100644
---- a/CREDITS
-+++ b/CREDITS
-@@ -4369,6 +4369,10 @@ N: Haojian Zhuang
- E: haojian.zhuang@gmail.com
- D: MMP support
- 
-+N: Tsahee Zidenberg
-+E: tsahee@annapurnalabs.com
-+D: Annapurna Labs Alpine Architecture
-+
- N: Richard Zidlicky
- E: rz@linux-m68k.org, rdzidlic@geocities.com
- W: http://www.geocities.com/rdzidlic
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 0a2c9163933a..63d991d95c73 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2001,10 +2001,9 @@ F:	drivers/soc/amlogic/
- N:	meson
- 
- ARM/Annapurna Labs ALPINE ARCHITECTURE
--M:	Tsahee Zidenberg <tsahee@annapurnalabs.com>
- M:	Antoine Tenart <atenart@kernel.org>
- L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
--S:	Maintained
-+S:	Odd Fixes
- F:	arch/arm/boot/dts/amazon/
- F:	arch/arm/mach-alpine/
- F:	arch/arm64/boot/dts/amazon/
--- 
-2.43.0
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 
 
