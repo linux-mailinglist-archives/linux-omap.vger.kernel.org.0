@@ -1,136 +1,137 @@
-Return-Path: <linux-omap+bounces-1531-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1532-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28A0D907343
-	for <lists+linux-omap@lfdr.de>; Thu, 13 Jun 2024 15:14:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3947890776B
+	for <lists+linux-omap@lfdr.de>; Thu, 13 Jun 2024 17:48:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2CB451C230B5
-	for <lists+linux-omap@lfdr.de>; Thu, 13 Jun 2024 13:14:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD91828953D
+	for <lists+linux-omap@lfdr.de>; Thu, 13 Jun 2024 15:48:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98E4E144D2F;
-	Thu, 13 Jun 2024 13:13:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6671812E1C6;
+	Thu, 13 Jun 2024 15:43:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="oXZS6Y03"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="LNJUEzSR"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+Received: from mout.web.de (mout.web.de [217.72.192.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD835143C46;
-	Thu, 13 Jun 2024 13:13:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B455912DDA5;
+	Thu, 13 Jun 2024 15:43:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718284422; cv=none; b=bORedvrdwVY2j7Lz7X8fd0At+ekkPlLBUJ/x+tbRzu9Vwbqe9K/uKmAuFxm9fSJqsWDLsDyycbu7oKd7q9gh/BsefODe7ElGZz4H5NfACSY+S74qiFWEVZ//o0IxDBivM7chzr6FESNTO1IER/MArIAyMj6H4TiRB12pIj76Klo=
+	t=1718293406; cv=none; b=I1kun8vfRtM1dN54STzywkmqJVTLBDXqr5fwL22p+lPYAfD6Nn6BcGkRQNE48FjLkoMSO+NufQ85Gl/M/r+C/cY0mzCWvBu3+LSP3GGR35E/8/U7JiZJhu6koXjPbkA0R77FKCNS2i++C6+3ir+BkPL5XYnr/P94Mvf/v5A76iA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718284422; c=relaxed/simple;
-	bh=Ty2UCqUCB0l7oVWoD5eKOXaiKOi1EakKfeomsmmXcoU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=n8ZJ3WUkLFxHADkOGrmOxE1tRkBGW7aduu9kQzuo5IbqmVZrz/QPhR3ZpJlAUL66DYaf5hFR2w2BYbdTg3PoES3Krkc2mDiDjcV7Ovgym37R3RIZVQkJ4ajMgqpYBPUg8CMw025B89dI3CB/UBiDq+oQVIyyexm+T59OX7IaGcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=oXZS6Y03; arc=none smtp.client-ip=217.70.183.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id A012720003;
-	Thu, 13 Jun 2024 13:13:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1718284418;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NnXBYdyT0gNgWX4/GEGtMkJeHalCuEmPx0jaEIE6hhg=;
-	b=oXZS6Y03Py2abvBDLCedfdQ9y7RgtZWBDeY21qzLJK5MmtDCtpZP9WO0Yeibpug5vd9D9T
-	JhhcFZ0Xj86WrJ9C4OwAXxW1+v/0limydcCxwt5XnGYcAffUjWuGOl0Odc0xHGgpKG+CsM
-	v7vResNn1d6LrTDfTM+DBCPRNP3XyMzlo752JQBEsl3R9h1Q4gIeXJY2hXDQiamAm/aox5
-	QL3ivUvV/hoekJgSxe7BHmhDXcWAeMut8aPJJcCTWh+wDYOCByj2Qp/6yejU3pqaTGGR15
-	7xiTmZ6Vtr7nT8DBNDXcfpbrmprD7NaQh0iuraIMskpaKd39Tr67Nl5rSWfSlQ==
-From: Thomas Richard <thomas.richard@bootlin.com>
-Date: Thu, 13 Jun 2024 15:13:28 +0200
-Subject: [PATCH 2/2] i2c: omap: wakeup the controller during suspend()
- callback
+	s=arc-20240116; t=1718293406; c=relaxed/simple;
+	bh=wuuRkupuSyLIHDwx1qrL9wK/w/CgUGVdFcSsUcJNGkQ=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=Lpet4EW6gdfIFQDk7vDydkS6wG6HfoviHnNEII1htcWrJsMVgytC1+E6eMN78Ha/6a90qglw6ReppMKV70iWRIYcsrxk7w1hKPKyng4ufP+vmYS+tdoi45/aeGhf4jHMlWI63dm4bZ5cC6+Q9VeOp6e4yizfko1yXNpFZ9zWmow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=LNJUEzSR; arc=none smtp.client-ip=217.72.192.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1718293354; x=1718898154; i=markus.elfring@web.de;
+	bh=7fcDu+jAjKTUeYUTcm6nT/VKOpL7/vLs7dIgrQeJffo=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=LNJUEzSRtJ4s9iQHbH54cTGy1ouN6On874yZ2npBiEOFY80pZZFA5tks18EqHG01
+	 wpyeWVebam83eYtPIbbhzsqU4M0oxyPeFJgk3wHCrlejS+gA5I4d2Y1i7sfV5o10V
+	 XlYRG4zqLm9rdcnQK9P2axqomSmoMu+D/zj3o0yfGLp8ILJ+ZbAOdzdwK4C9ZGuL2
+	 AtqncLRaSFxzliD9iTwV3tyZw+nwz6jOO07W//sYkqmT45mSJ+ZMQMIo6a8u5zfrX
+	 GdMOYSuWxiB7YGYH1AFdkvXoTVJwk1dZFNHi3fpgV5CwxEf+O0E1Nvpz/00sChr6y
+	 KvUj8oSD0htlRKLcfQ==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.83.95]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MlbHE-1shnjs0jC6-00gPUD; Thu, 13
+ Jun 2024 17:42:34 +0200
+Message-ID: <531fdbbb-486d-4207-b9a9-3db23935d583@web.de>
+Date: Thu, 13 Jun 2024 17:42:19 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240613-i2c-omap-wakeup-controller-during-suspend-v1-2-aab001eb1ad1@bootlin.com>
-References: <20240613-i2c-omap-wakeup-controller-during-suspend-v1-0-aab001eb1ad1@bootlin.com>
-In-Reply-To: <20240613-i2c-omap-wakeup-controller-during-suspend-v1-0-aab001eb1ad1@bootlin.com>
-To: Vignesh R <vigneshr@ti.com>, Aaro Koskinen <aaro.koskinen@iki.fi>, 
- Janusz Krzysztofik <jmkrzyszt@gmail.com>, Tony Lindgren <tony@atomide.com>, 
- Andi Shyti <andi.shyti@kernel.org>
-Cc: linux-omap@vger.kernel.org, linux-i2c@vger.kernel.org, 
- linux-kernel@vger.kernel.org, gregory.clement@bootlin.com, 
- theo.lebrun@bootlin.com, thomas.petazzoni@bootlin.com, u-kumar1@ti.com, 
- Thomas Richard <thomas.richard@bootlin.com>, 
- Wolfram Sang <wsa+renesas@sang-engineering.com>
-X-Mailer: b4 0.12.0
-X-GND-Sasl: thomas.richard@bootlin.com
+User-Agent: Mozilla Thunderbird
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+ linux-pci@vger.kernel.org, linux-omap@vger.kernel.org,
+ linux-tegra@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@axis.com, linux-arm-kernel@lists.infradead.org,
+ imx@lists.linux.dev, mhi@lists.linux.dev, Bjorn Helgaas
+ <bhelgaas@google.com>, Fabio Estevam <festevam@gmail.com>,
+ Jesper Nilsson <jesper.nilsson@axis.com>, Jingoo Han <jingoohan1@gmail.com>,
+ Jonathan Hunter <jonathanh@nvidia.com>,
+ Kishon Vijay Abraham I <kishon@kernel.org>,
+ =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
+ Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Lucas Stach <l.stach@pengutronix.de>,
+ Marek Vasut <marek.vasut+renesas@gmail.com>,
+ Masami Hiramatsu <mhiramat@kernel.org>, Minghuan Lian
+ <minghuan.Lian@nxp.com>, Mingkai Hu <mingkai.hu@nxp.com>,
+ Niklas Cassel <cassel@kernel.org>, Richard Zhu <hongxing.zhu@nxp.com>,
+ Rob Herring <robh@kernel.org>, Roy Zang <roy.zang@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ Siddharth Vadapalli <s-vadapalli@ti.com>,
+ Srikanth Thokala <srikanth.thokala@intel.com>,
+ Thierry Reding <thierry.reding@gmail.com>,
+ Vignesh Raghavendra <vigneshr@ti.com>,
+ Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Cc: LKML <linux-kernel@vger.kernel.org>, kernel@pengutronix.de
+References: <20240606-pci-deinit-v1-2-4395534520dc@linaro.org>
+Subject: Re: [PATCH 2/5] PCI: endpoint: Introduce 'epc_deinit' event and
+ notify the EPF drivers
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20240606-pci-deinit-v1-2-4395534520dc@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:jXSJJJkAI8hN72kU1CJg3ufojWOHI1sFKaf7Q+GXWoK5SHvixA/
+ yrxpcO7iG26yVIJ6a+gDgi7IQ7X4UOlJm7doH6z6KQ09CoTZ4UXvjGVgP4qYQDw1TnsDnm+
+ QVgctN2V24QtpAjdxg0dM1CAxHvdlatDjFFXPjenuaogsqXyOG9yQTvPPKq9AalAtAN4qQW
+ hD6x4vYrIAaZEEVGxiS5w==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:PH53anvoYOY=;1/zV0cxQ7tZhIjrtlZ44ElZLM8Q
+ i/dBiizYx2JrGEKiG8sYkKHnGA384j5aU9TmG7r2D/cFkSPs/yZ0hmPDsuuelZSGCyHWZiRN/
+ oNO+wiyJAPxbMYILm8U3DhPAYJNZL7tChzi/zsp8B0Ib4ehYO2iwpmrdONugRbU5TIwAWBAtt
+ O9Cd1boR1HzXoKsuicQTXIRq42M0q+eeFrw4gHvF7+yVAWOODfM1RkDrMF04xo8/hIKWasMLk
+ GLOKEfJgm5NxvmR+h5J9rmAG2o7PdDilFFAtM4F5qG6niMNgdlmc8tMSNXWrTs5X7cNbolLND
+ GdfeoqXQhgszfzzgCYEC62hZsCKBPBLGFLk9gcEhQVWbhP/v2X6XcVwAwDTXagzQG1eRcaHvn
+ XWChBhxQIPWZJTDfcqUXc/ReGClUJqfuh9a3fj2HR3cYwKXHsMAM/0++GKDTGB3YK076k1DP0
+ 016ihg2akVY+zAqRjQdKi3POQKULjiiULpUCYLnenqi1xkm9viAf2ME6hMmoNZdCrIW2eUD/L
+ rEUUeKzuOB8gGXnQRywfc80Ounpdk42bjy4Spto3HpGg4b7ifudicAAzYTyfh+SXJQCUvKj2t
+ a7wk5vPHw5S0wj9yOnCqxHesNBoirF69BTsUr66isiVPFDNjClzWomn1oCL303/nqyRZNFdnv
+ UgbgIsRlXrUrB/UeMXpqN7c5K00XBixFRFBL5uLnpnFMlrZhtjCrFqooazZL0Of9zEvxbrkj3
+ vDLGyltl4po3ybGUSKAFLDQ4jpbUG/r51SqZRAar3YCVovQArVWZ6ze02zV+bOiJXSkPd5VUW
+ WMUlYtj68L5PQjuICaBMLKaGnwzPX9n/SgmiEdAohcyH0=
 
-A device may need the controller up during suspend_noirq() or
-resume_noirq().
-But if the controller is autosuspended, there is no way to wakeup it during
-suspend_noirq() or resume_noirq() because runtime pm is disabled at this
-time.
+=E2=80=A6
+> +++ b/drivers/pci/endpoint/pci-epc-core.c
+=E2=80=A6
+> +void pci_epc_deinit_notify(struct pci_epc *epc)
+> +{
+=E2=80=A6
+> +	mutex_lock(&epc->list_lock);
+> +	list_for_each_entry(epf, &epc->pci_epf, list) {
+> +		mutex_lock(&epf->lock);
+> +		if (epf->event_ops && epf->event_ops->epc_deinit)
+> +			epf->event_ops->epc_deinit(epf);
+> +		mutex_unlock(&epf->lock);
+> +	}
+> +	epc->init_complete =3D false;
+> +	mutex_unlock(&epc->list_lock);
+> +}
+=E2=80=A6
 
-The suspend() callback wakes up the controller, so it is available until
-its suspend_noirq() callback (pm_runtime_force_suspend()).
-During the resume, it's restored by resume_noirq() callback
-(pm_runtime_force_resume()). Then resume() callback enables autosuspend.
+Would you become interested to apply lock guards?
+https://elixir.bootlin.com/linux/v6.10-rc3/source/include/linux/mutex.h#L1=
+96
 
-So the controller is up during a little time slot in suspend and resume
-sequences even if it's not used.
-
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Acked-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Thomas Richard <thomas.richard@bootlin.com>
----
- drivers/i2c/busses/i2c-omap.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
-
-diff --git a/drivers/i2c/busses/i2c-omap.c b/drivers/i2c/busses/i2c-omap.c
-index 410c8b37f768..35a3f0a64986 100644
---- a/drivers/i2c/busses/i2c-omap.c
-+++ b/drivers/i2c/busses/i2c-omap.c
-@@ -1574,9 +1574,31 @@ static int omap_i2c_runtime_resume(struct device *dev)
- 	return 0;
- }
- 
-+static int omap_i2c_suspend(struct device *dev)
-+{
-+	/*
-+	 * If the controller is autosuspended, there is no way to wakeup it once
-+	 * runtime pm is disabled (in suspend_late()).
-+	 * But a device may need the controller up during suspend_noirq() or
-+	 * resume_noirq().
-+	 * Wakeup the controller while runtime pm is enabled, so it is available
-+	 * until its suspend_noirq(), and from resume_noirq().
-+	 */
-+	return pm_runtime_resume_and_get(dev);
-+}
-+
-+static int omap_i2c_resume(struct device *dev)
-+{
-+	pm_runtime_mark_last_busy(dev);
-+	pm_runtime_put_autosuspend(dev);
-+
-+	return 0;
-+}
-+
- static const struct dev_pm_ops omap_i2c_pm_ops = {
- 	NOIRQ_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
- 				  pm_runtime_force_resume)
-+	SYSTEM_SLEEP_PM_OPS(omap_i2c_suspend, omap_i2c_resume)
- 	RUNTIME_PM_OPS(omap_i2c_runtime_suspend,
- 		       omap_i2c_runtime_resume, NULL)
- };
-
--- 
-2.39.2
-
+Regards,
+Markus
 
