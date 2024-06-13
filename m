@@ -1,137 +1,164 @@
-Return-Path: <linux-omap+bounces-1532-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1533-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3947890776B
-	for <lists+linux-omap@lfdr.de>; Thu, 13 Jun 2024 17:48:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6E32907DBD
+	for <lists+linux-omap@lfdr.de>; Thu, 13 Jun 2024 22:59:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD91828953D
-	for <lists+linux-omap@lfdr.de>; Thu, 13 Jun 2024 15:48:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 24898B2144C
+	for <lists+linux-omap@lfdr.de>; Thu, 13 Jun 2024 20:59:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6671812E1C6;
-	Thu, 13 Jun 2024 15:43:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0666713B7A1;
+	Thu, 13 Jun 2024 20:59:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="LNJUEzSR"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g+NZO3rk"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mout.web.de (mout.web.de [217.72.192.78])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f43.google.com (mail-ua1-f43.google.com [209.85.222.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B455912DDA5;
-	Thu, 13 Jun 2024 15:43:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 363BF2F50;
+	Thu, 13 Jun 2024 20:59:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718293406; cv=none; b=I1kun8vfRtM1dN54STzywkmqJVTLBDXqr5fwL22p+lPYAfD6Nn6BcGkRQNE48FjLkoMSO+NufQ85Gl/M/r+C/cY0mzCWvBu3+LSP3GGR35E/8/U7JiZJhu6koXjPbkA0R77FKCNS2i++C6+3ir+BkPL5XYnr/P94Mvf/v5A76iA=
+	t=1718312375; cv=none; b=JK/kN/fxmQMNBdgkox8YU25wiY83ge7qHSpZTm7gEADDejqh3LdXso0Rr/LY8DaMED2EINCBNFh2mhmgXq0DWl68cq3PWQZhqsUgNl8puLhzg6lDB+dJYU5eJGG5D51X7tjLf1jzj+iMlUkxlumSGjeLUSH6ReHQ03hkDxTofZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718293406; c=relaxed/simple;
-	bh=wuuRkupuSyLIHDwx1qrL9wK/w/CgUGVdFcSsUcJNGkQ=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=Lpet4EW6gdfIFQDk7vDydkS6wG6HfoviHnNEII1htcWrJsMVgytC1+E6eMN78Ha/6a90qglw6ReppMKV70iWRIYcsrxk7w1hKPKyng4ufP+vmYS+tdoi45/aeGhf4jHMlWI63dm4bZ5cC6+Q9VeOp6e4yizfko1yXNpFZ9zWmow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=LNJUEzSR; arc=none smtp.client-ip=217.72.192.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1718293354; x=1718898154; i=markus.elfring@web.de;
-	bh=7fcDu+jAjKTUeYUTcm6nT/VKOpL7/vLs7dIgrQeJffo=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=LNJUEzSRtJ4s9iQHbH54cTGy1ouN6On874yZ2npBiEOFY80pZZFA5tks18EqHG01
-	 wpyeWVebam83eYtPIbbhzsqU4M0oxyPeFJgk3wHCrlejS+gA5I4d2Y1i7sfV5o10V
-	 XlYRG4zqLm9rdcnQK9P2axqomSmoMu+D/zj3o0yfGLp8ILJ+ZbAOdzdwK4C9ZGuL2
-	 AtqncLRaSFxzliD9iTwV3tyZw+nwz6jOO07W//sYkqmT45mSJ+ZMQMIo6a8u5zfrX
-	 GdMOYSuWxiB7YGYH1AFdkvXoTVJwk1dZFNHi3fpgV5CwxEf+O0E1Nvpz/00sChr6y
-	 KvUj8oSD0htlRKLcfQ==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.83.95]) by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MlbHE-1shnjs0jC6-00gPUD; Thu, 13
- Jun 2024 17:42:34 +0200
-Message-ID: <531fdbbb-486d-4207-b9a9-3db23935d583@web.de>
-Date: Thu, 13 Jun 2024 17:42:19 +0200
+	s=arc-20240116; t=1718312375; c=relaxed/simple;
+	bh=nVm6c8dzPN6w85JqRXEcHGl1cDE6oCtq/cbPfbXWx+Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gSx5gXUq+o/F7hquZtBb+Ms+BvDpHabaICkwqBeI77yQlnmNmL3gQlz6agoELCMVo0BCXjRyBwU/7xZR9t3ZDfdJsHrOBOXgFvuaJLvRRuHzVr/9DTkbhquOptBHTRIefKlLHzaTyEyClVZEW2sUCU+CPrvO5NC9yfYMhX1dMno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g+NZO3rk; arc=none smtp.client-ip=209.85.222.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ua1-f43.google.com with SMTP id a1e0cc1a2514c-80b8fd76e6dso752500241.1;
+        Thu, 13 Jun 2024 13:59:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718312373; x=1718917173; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TGK4HgLF/G5T6sS6MVCIimC13eAz1/g4TH5Np1XTe5Y=;
+        b=g+NZO3rk2/U10AQNTg6EdbyYHp7Kmw/w61tIxOh9tJm5FxgJ/woImgKhINmsXI863b
+         hjuWmkJTUkuMXxzgwpQQnG8dE5kASU7r9u5FGKuTDtiSqxsdBOcIMLJy3PZuFnxCNoYa
+         iFpf/biiQUDB+iELWASvN3fY62GlgK2CuHE8odrKxXPEWEHz59RDOebHh5FUswOjX+rf
+         somkX3dGx7XbujoYfIORod9ehd7t4uZwI/LDUZzq1SNMvEKuDVD7diztgVUlAs9yNnFh
+         PK0DtZMW404K1IpPcLUFjm43RC0Q/y34uHGxRuhJypkqS0eTssAHIWODOgUV7w8OiDAK
+         fAzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718312373; x=1718917173;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TGK4HgLF/G5T6sS6MVCIimC13eAz1/g4TH5Np1XTe5Y=;
+        b=XaZYSkAC+pnfG/3Lit2KBaflzKUq8ulAVmTwxs+5jnujR1O8VOGWdKIfwDgmkxeruF
+         T1Ol2ATWE8XQ7TBA5QdF8h0sEPNf7jEdDM0QF5Nq2UiPma/dwwP4BsPOGlrbB1FElLuf
+         Cmn6WkEY34LXuVF6fzE516YfT3ooDbzoGXzHu+34hz7ZOZAPne3BNUCFNEE53iqGX9GD
+         wmQZp0Pu8T3EkmDrLPmNa4dC0D0XgC8y6P0UbTqiN5Ps8U/bs47tdtvdTgqY5lodC3mn
+         3HZeA+FORWhvQu0w3fZUpdiLGiOFoVljalu08QhEzgjWED31qDwVRgV8MDC11ag/07dj
+         Jhfw==
+X-Forwarded-Encrypted: i=1; AJvYcCWoBjNvF4fj844tD5SQ31qzHqbon0BH7UP5yodCgJVxgpL7OLSrpikzAaDm1RQAN9wsKB1Cow3mSmTXw9Toid0TKumFcjP6VLbRYxa7qZAHxEAlmGcOAeAXWuGiRBvMWYmwFbaf1dphXgNUKd009aR9Yz9nKaDvNvID3a5G2ur3kuimOZb3TR/kjBGww7bX4ShhtE/Xte1AgRMS9ESv5WwF5y5YnsTU
+X-Gm-Message-State: AOJu0Yy72TStiW6Hjbiy9/G6glPyL38WBrPcNzWuqa2T7WWFGZsZ6uLb
+	Z1S177dAC6tgzna1yo8lamTAarYIVg6UzXeEX7U7yUdIvY8+3W15LL0E91GfbuMTt4poKNa4mvn
+	NbLVfWLPOYQPJt8KIUDtIaNpELYI=
+X-Google-Smtp-Source: AGHT+IGuEfez6CK1timgXxVp0xE5gnGcSK4bdjdOKc2Wa+djQb/95R1GNpVB6fXgqVQEpt/AJ+Xe3ejMsNulcikviis=
+X-Received: by 2002:a05:6102:22cf:b0:48d:a0d8:8ac4 with SMTP id
+ ada2fe7eead31-48dad965b79mr1460181137.2.1718312372353; Thu, 13 Jun 2024
+ 13:59:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
- linux-pci@vger.kernel.org, linux-omap@vger.kernel.org,
- linux-tegra@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@axis.com, linux-arm-kernel@lists.infradead.org,
- imx@lists.linux.dev, mhi@lists.linux.dev, Bjorn Helgaas
- <bhelgaas@google.com>, Fabio Estevam <festevam@gmail.com>,
- Jesper Nilsson <jesper.nilsson@axis.com>, Jingoo Han <jingoohan1@gmail.com>,
- Jonathan Hunter <jonathanh@nvidia.com>,
- Kishon Vijay Abraham I <kishon@kernel.org>,
- =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
- Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Lucas Stach <l.stach@pengutronix.de>,
- Marek Vasut <marek.vasut+renesas@gmail.com>,
- Masami Hiramatsu <mhiramat@kernel.org>, Minghuan Lian
- <minghuan.Lian@nxp.com>, Mingkai Hu <mingkai.hu@nxp.com>,
- Niklas Cassel <cassel@kernel.org>, Richard Zhu <hongxing.zhu@nxp.com>,
- Rob Herring <robh@kernel.org>, Roy Zang <roy.zang@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
- Siddharth Vadapalli <s-vadapalli@ti.com>,
- Srikanth Thokala <srikanth.thokala@intel.com>,
- Thierry Reding <thierry.reding@gmail.com>,
- Vignesh Raghavendra <vigneshr@ti.com>,
- Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Cc: LKML <linux-kernel@vger.kernel.org>, kernel@pengutronix.de
-References: <20240606-pci-deinit-v1-2-4395534520dc@linaro.org>
-Subject: Re: [PATCH 2/5] PCI: endpoint: Introduce 'epc_deinit' event and
- notify the EPF drivers
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20240606-pci-deinit-v1-2-4395534520dc@linaro.org>
-Content-Type: text/plain; charset=UTF-8
+References: <20240612234930.211119-1-allen.lkml@gmail.com> <17eadeab-ecd5-4302-94b3-bbcf4f9d8dfc@intel.com>
+In-Reply-To: <17eadeab-ecd5-4302-94b3-bbcf4f9d8dfc@intel.com>
+From: Allen <allen.lkml@gmail.com>
+Date: Thu, 13 Jun 2024 13:59:21 -0700
+Message-ID: <CAOMdWSLRuzrytH_6t2POHeDNLvZ2SDk5z5ahfSE5dYa7fKKs-Q@mail.gmail.com>
+Subject: Re: [PATCH v2] mmc: Convert from tasklet to BH workqueue
+To: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Aubin Constans <aubin.constans@microchip.com>, Ulf Hansson <ulf.hansson@linaro.org>, 
+	Nicolas Ferre <nicolas.ferre@microchip.com>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+	Manuel Lauss <manuel.lauss@gmail.com>, =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>, 
+	Jaehoon Chung <jh80.chung@samsung.com>, Aaro Koskinen <aaro.koskinen@iki.fi>, 
+	Wolfram Sang <wsa+renesas@sang-engineering.com>, 
+	Florian Fainelli <florian.fainelli@broadcom.com>, Ray Jui <rjui@broadcom.com>, 
+	Scott Branden <sbranden@broadcom.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Alex Dubov <oakad@yahoo.com>, 
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Bruce Chang <brucechang@via.com.tw>, Harald Welte <HaraldWelte@viatech.com>, 
+	Pierre Ossman <pierre@ossman.eu>, Christian Loehle <christian.loehle@arm.com>, linux-mmc@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:jXSJJJkAI8hN72kU1CJg3ufojWOHI1sFKaf7Q+GXWoK5SHvixA/
- yrxpcO7iG26yVIJ6a+gDgi7IQ7X4UOlJm7doH6z6KQ09CoTZ4UXvjGVgP4qYQDw1TnsDnm+
- QVgctN2V24QtpAjdxg0dM1CAxHvdlatDjFFXPjenuaogsqXyOG9yQTvPPKq9AalAtAN4qQW
- hD6x4vYrIAaZEEVGxiS5w==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:PH53anvoYOY=;1/zV0cxQ7tZhIjrtlZ44ElZLM8Q
- i/dBiizYx2JrGEKiG8sYkKHnGA384j5aU9TmG7r2D/cFkSPs/yZ0hmPDsuuelZSGCyHWZiRN/
- oNO+wiyJAPxbMYILm8U3DhPAYJNZL7tChzi/zsp8B0Ib4ehYO2iwpmrdONugRbU5TIwAWBAtt
- O9Cd1boR1HzXoKsuicQTXIRq42M0q+eeFrw4gHvF7+yVAWOODfM1RkDrMF04xo8/hIKWasMLk
- GLOKEfJgm5NxvmR+h5J9rmAG2o7PdDilFFAtM4F5qG6niMNgdlmc8tMSNXWrTs5X7cNbolLND
- GdfeoqXQhgszfzzgCYEC62hZsCKBPBLGFLk9gcEhQVWbhP/v2X6XcVwAwDTXagzQG1eRcaHvn
- XWChBhxQIPWZJTDfcqUXc/ReGClUJqfuh9a3fj2HR3cYwKXHsMAM/0++GKDTGB3YK076k1DP0
- 016ihg2akVY+zAqRjQdKi3POQKULjiiULpUCYLnenqi1xkm9viAf2ME6hMmoNZdCrIW2eUD/L
- rEUUeKzuOB8gGXnQRywfc80Ounpdk42bjy4Spto3HpGg4b7ifudicAAzYTyfh+SXJQCUvKj2t
- a7wk5vPHw5S0wj9yOnCqxHesNBoirF69BTsUr66isiVPFDNjClzWomn1oCL303/nqyRZNFdnv
- UgbgIsRlXrUrB/UeMXpqN7c5K00XBixFRFBL5uLnpnFMlrZhtjCrFqooazZL0Of9zEvxbrkj3
- vDLGyltl4po3ybGUSKAFLDQ4jpbUG/r51SqZRAar3YCVovQArVWZ6ze02zV+bOiJXSkPd5VUW
- WMUlYtj68L5PQjuICaBMLKaGnwzPX9n/SgmiEdAohcyH0=
 
-=E2=80=A6
-> +++ b/drivers/pci/endpoint/pci-epc-core.c
-=E2=80=A6
-> +void pci_epc_deinit_notify(struct pci_epc *epc)
-> +{
-=E2=80=A6
-> +	mutex_lock(&epc->list_lock);
-> +	list_for_each_entry(epf, &epc->pci_epf, list) {
-> +		mutex_lock(&epf->lock);
-> +		if (epf->event_ops && epf->event_ops->epc_deinit)
-> +			epf->event_ops->epc_deinit(epf);
-> +		mutex_unlock(&epf->lock);
-> +	}
-> +	epc->init_complete =3D false;
-> +	mutex_unlock(&epc->list_lock);
-> +}
-=E2=80=A6
+> > The only generic interface to execute asynchronously in the BH context =
+is
+> > tasklet; however, it's marked deprecated and has some design flaws. To
+> > replace tasklets, BH workqueue support was recently added. A BH workque=
+ue
+> > behaves similarly to regular workqueues except that the queued work ite=
+ms
+> > are executed in the BH context.
+> >
+> > This patch converts drivers/mmc/* from tasklet to BH workqueue.
+> >
+> > Based on the work done by Tejun Heo <tj@kernel.org>
+> >
+> > Tested-by: Christian Loehle <christian.loehle@arm.com>
+> > Tested-by: Aubin Constans <aubin.constans@microchip.com>
+> > Acked-by: Aubin Constans <aubin.constans@microchip.com>
+> > Acked-by: Micha=C5=82 Miros=C5=82aw <mirq-linux@rere.qmqm.pl>
+> > Reviewed-by: Christian Loehle <christian.loehle@arm.com>
+> > Signed-off-by: Allen Pais <allen.lkml@gmail.com>
+> > ---
+> > v2:
+> >    - fixed patch styling issues
+> >    - rename work to bh_work
+> >
+> > Link to v1:
+> > https://lore.kernel.org/all/20240327160314.9982-10-apais@linux.microsof=
+t.com/
+> >
+>
+> [SNIP]
+>
+> > diff --git a/drivers/mmc/host/sdhci-bcm-kona.c b/drivers/mmc/host/sdhci=
+-bcm-kona.c
+> > index cb9152c6a65d..9c215db81b2b 100644
+> > --- a/drivers/mmc/host/sdhci-bcm-kona.c
+> > +++ b/drivers/mmc/host/sdhci-bcm-kona.c
+> > @@ -107,7 +107,7 @@ static void sdhci_bcm_kona_sd_init(struct sdhci_hos=
+t *host)
+> >   * Software emulation of the SD card insertion/removal. Set insert=3D1=
+ for insert
+> >   * and insert=3D0 for removal. The card detection is done by GPIO. For=
+ Broadcom
+> >   * IP to function properly the bit 0 of CORESTAT register needs to be =
+set/reset
+> > - * to generate the CD IRQ handled in sdhci.c which schedules card_task=
+let.
+> > + * to generate the CD IRQ handled in sdhci.c which schedules card_bh_w=
+ork.
+>
+> The comment was stale because sdhci.c has not had a card_tasklet for
+> a long time.  Just drop the " which schedules card_tasklet"
+>
 
-Would you become interested to apply lock guards?
-https://elixir.bootlin.com/linux/v6.10-rc3/source/include/linux/mutex.h#L1=
-96
+ Will do. Thanks.
 
-Regards,
-Markus
+- Allen
+
+> >   */
+> >  static int sdhci_bcm_kona_sd_card_emulate(struct sdhci_host *host, int=
+ insert)
+> >  {
+>
+
+
+--=20
+       - Allen
 
