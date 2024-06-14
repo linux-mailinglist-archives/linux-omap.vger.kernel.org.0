@@ -1,164 +1,103 @@
-Return-Path: <linux-omap+bounces-1533-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1534-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6E32907DBD
-	for <lists+linux-omap@lfdr.de>; Thu, 13 Jun 2024 22:59:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F144B908A62
+	for <lists+linux-omap@lfdr.de>; Fri, 14 Jun 2024 12:46:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 24898B2144C
-	for <lists+linux-omap@lfdr.de>; Thu, 13 Jun 2024 20:59:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2C3E1C22407
+	for <lists+linux-omap@lfdr.de>; Fri, 14 Jun 2024 10:46:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0666713B7A1;
-	Thu, 13 Jun 2024 20:59:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g+NZO3rk"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 482F1194A72;
+	Fri, 14 Jun 2024 10:46:28 +0000 (UTC)
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-ua1-f43.google.com (mail-ua1-f43.google.com [209.85.222.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from 3.mo561.mail-out.ovh.net (3.mo561.mail-out.ovh.net [46.105.44.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 363BF2F50;
-	Thu, 13 Jun 2024 20:59:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CBB61474C4
+	for <linux-omap@vger.kernel.org>; Fri, 14 Jun 2024 10:46:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.105.44.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718312375; cv=none; b=JK/kN/fxmQMNBdgkox8YU25wiY83ge7qHSpZTm7gEADDejqh3LdXso0Rr/LY8DaMED2EINCBNFh2mhmgXq0DWl68cq3PWQZhqsUgNl8puLhzg6lDB+dJYU5eJGG5D51X7tjLf1jzj+iMlUkxlumSGjeLUSH6ReHQ03hkDxTofZY=
+	t=1718361988; cv=none; b=dsqmaId2hQefkeBnew0KqNb6spHGV5bsS7xZCq/oUaxNTbBa5xDWx41xgXLcPAYvUUp4qQa01xl0zq8vSTz2EUsIA4nv9P0is8CYxSfzGYttBT7HiD0mjFxwFWb/bXqBN0/tSNa6NbMB1UKoE8SrgCMpY2qPVhKmAMhxXeXr2ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718312375; c=relaxed/simple;
-	bh=nVm6c8dzPN6w85JqRXEcHGl1cDE6oCtq/cbPfbXWx+Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gSx5gXUq+o/F7hquZtBb+Ms+BvDpHabaICkwqBeI77yQlnmNmL3gQlz6agoELCMVo0BCXjRyBwU/7xZR9t3ZDfdJsHrOBOXgFvuaJLvRRuHzVr/9DTkbhquOptBHTRIefKlLHzaTyEyClVZEW2sUCU+CPrvO5NC9yfYMhX1dMno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g+NZO3rk; arc=none smtp.client-ip=209.85.222.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f43.google.com with SMTP id a1e0cc1a2514c-80b8fd76e6dso752500241.1;
-        Thu, 13 Jun 2024 13:59:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718312373; x=1718917173; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TGK4HgLF/G5T6sS6MVCIimC13eAz1/g4TH5Np1XTe5Y=;
-        b=g+NZO3rk2/U10AQNTg6EdbyYHp7Kmw/w61tIxOh9tJm5FxgJ/woImgKhINmsXI863b
-         hjuWmkJTUkuMXxzgwpQQnG8dE5kASU7r9u5FGKuTDtiSqxsdBOcIMLJy3PZuFnxCNoYa
-         iFpf/biiQUDB+iELWASvN3fY62GlgK2CuHE8odrKxXPEWEHz59RDOebHh5FUswOjX+rf
-         somkX3dGx7XbujoYfIORod9ehd7t4uZwI/LDUZzq1SNMvEKuDVD7diztgVUlAs9yNnFh
-         PK0DtZMW404K1IpPcLUFjm43RC0Q/y34uHGxRuhJypkqS0eTssAHIWODOgUV7w8OiDAK
-         fAzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718312373; x=1718917173;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TGK4HgLF/G5T6sS6MVCIimC13eAz1/g4TH5Np1XTe5Y=;
-        b=XaZYSkAC+pnfG/3Lit2KBaflzKUq8ulAVmTwxs+5jnujR1O8VOGWdKIfwDgmkxeruF
-         T1Ol2ATWE8XQ7TBA5QdF8h0sEPNf7jEdDM0QF5Nq2UiPma/dwwP4BsPOGlrbB1FElLuf
-         Cmn6WkEY34LXuVF6fzE516YfT3ooDbzoGXzHu+34hz7ZOZAPne3BNUCFNEE53iqGX9GD
-         wmQZp0Pu8T3EkmDrLPmNa4dC0D0XgC8y6P0UbTqiN5Ps8U/bs47tdtvdTgqY5lodC3mn
-         3HZeA+FORWhvQu0w3fZUpdiLGiOFoVljalu08QhEzgjWED31qDwVRgV8MDC11ag/07dj
-         Jhfw==
-X-Forwarded-Encrypted: i=1; AJvYcCWoBjNvF4fj844tD5SQ31qzHqbon0BH7UP5yodCgJVxgpL7OLSrpikzAaDm1RQAN9wsKB1Cow3mSmTXw9Toid0TKumFcjP6VLbRYxa7qZAHxEAlmGcOAeAXWuGiRBvMWYmwFbaf1dphXgNUKd009aR9Yz9nKaDvNvID3a5G2ur3kuimOZb3TR/kjBGww7bX4ShhtE/Xte1AgRMS9ESv5WwF5y5YnsTU
-X-Gm-Message-State: AOJu0Yy72TStiW6Hjbiy9/G6glPyL38WBrPcNzWuqa2T7WWFGZsZ6uLb
-	Z1S177dAC6tgzna1yo8lamTAarYIVg6UzXeEX7U7yUdIvY8+3W15LL0E91GfbuMTt4poKNa4mvn
-	NbLVfWLPOYQPJt8KIUDtIaNpELYI=
-X-Google-Smtp-Source: AGHT+IGuEfez6CK1timgXxVp0xE5gnGcSK4bdjdOKc2Wa+djQb/95R1GNpVB6fXgqVQEpt/AJ+Xe3ejMsNulcikviis=
-X-Received: by 2002:a05:6102:22cf:b0:48d:a0d8:8ac4 with SMTP id
- ada2fe7eead31-48dad965b79mr1460181137.2.1718312372353; Thu, 13 Jun 2024
- 13:59:32 -0700 (PDT)
+	s=arc-20240116; t=1718361988; c=relaxed/simple;
+	bh=2WQlCiqaq3O7GAO7I86Mkd8Y6gJco5eKLlFWHR+F8P8=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=n7+3/dJ81PPRbolvt1eGm5aYPsA4VrtVJ1Sd02I71rmIrIxUjqqUaAiKIphSz8WLtegZ0EgVT1pjI36elHADrIfJcvEhnFYtVJpv+dKFepBYqWwnPsiFb+nPDXXVKUNzmEJCPKgHM/fhHl/f3OeZ6ojYeteq1JKJ9P4AQiDJONI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=etezian.org; arc=none smtp.client-ip=46.105.44.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etezian.org
+Received: from director8.ghost.mail-out.ovh.net (unknown [10.108.25.52])
+	by mo561.mail-out.ovh.net (Postfix) with ESMTP id 4W0w1P6xhlz1Gxk
+	for <linux-omap@vger.kernel.org>; Fri, 14 Jun 2024 10:07:05 +0000 (UTC)
+Received: from ghost-submission-6684bf9d7b-9qg8m (unknown [10.108.42.28])
+	by director8.ghost.mail-out.ovh.net (Postfix) with ESMTPS id 50FEB1FEC2;
+	Fri, 14 Jun 2024 10:07:03 +0000 (UTC)
+Received: from etezian.org ([37.59.142.101])
+	by ghost-submission-6684bf9d7b-9qg8m with ESMTPSA
+	id w4LqDkcWbGbfGwAALME0rQ
+	(envelope-from <andi@etezian.org>); Fri, 14 Jun 2024 10:07:03 +0000
+Authentication-Results:garm.ovh; auth=pass (GARM-101G004c23ccfb9-6d11-4112-99e6-9496b632ab70,
+                    0BE8417D4949A2B9C3DC4A53BA17F3B68AA5397D) smtp.auth=andi@etezian.org
+X-OVh-ClientIp:89.217.109.169
+From: Andi Shyti <andi.shyti@kernel.org>
+To: Vignesh R <vigneshr@ti.com>, Aaro Koskinen <aaro.koskinen@iki.fi>, 
+ Janusz Krzysztofik <jmkrzyszt@gmail.com>, Tony Lindgren <tony@atomide.com>, 
+ Thomas Richard <thomas.richard@bootlin.com>
+Cc: linux-omap@vger.kernel.org, linux-i2c@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, gregory.clement@bootlin.com, 
+ theo.lebrun@bootlin.com, thomas.petazzoni@bootlin.com, u-kumar1@ti.com, 
+ Wolfram Sang <wsa+renesas@sang-engineering.com>
+In-Reply-To: <20240613-i2c-omap-wakeup-controller-during-suspend-v1-0-aab001eb1ad1@bootlin.com>
+References: <20240613-i2c-omap-wakeup-controller-during-suspend-v1-0-aab001eb1ad1@bootlin.com>
+Subject: Re: [PATCH 0/2] Wakeup the i2c-omap controller during suspend
+ stage
+Message-Id: <171835962034.690946.5223670414905950648.b4-ty@kernel.org>
+Date: Fri, 14 Jun 2024 12:07:00 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240612234930.211119-1-allen.lkml@gmail.com> <17eadeab-ecd5-4302-94b3-bbcf4f9d8dfc@intel.com>
-In-Reply-To: <17eadeab-ecd5-4302-94b3-bbcf4f9d8dfc@intel.com>
-From: Allen <allen.lkml@gmail.com>
-Date: Thu, 13 Jun 2024 13:59:21 -0700
-Message-ID: <CAOMdWSLRuzrytH_6t2POHeDNLvZ2SDk5z5ahfSE5dYa7fKKs-Q@mail.gmail.com>
-Subject: Re: [PATCH v2] mmc: Convert from tasklet to BH workqueue
-To: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Aubin Constans <aubin.constans@microchip.com>, Ulf Hansson <ulf.hansson@linaro.org>, 
-	Nicolas Ferre <nicolas.ferre@microchip.com>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
-	Manuel Lauss <manuel.lauss@gmail.com>, =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>, 
-	Jaehoon Chung <jh80.chung@samsung.com>, Aaro Koskinen <aaro.koskinen@iki.fi>, 
-	Wolfram Sang <wsa+renesas@sang-engineering.com>, 
-	Florian Fainelli <florian.fainelli@broadcom.com>, Ray Jui <rjui@broadcom.com>, 
-	Scott Branden <sbranden@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Alex Dubov <oakad@yahoo.com>, 
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Bruce Chang <brucechang@via.com.tw>, Harald Welte <HaraldWelte@viatech.com>, 
-	Pierre Ossman <pierre@ossman.eu>, Christian Loehle <christian.loehle@arm.com>, linux-mmc@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13.0
+X-Ovh-Tracer-Id: 1605814746184223393
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvledrfeduledgvddvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvegjfhfukfffgggtgffosehtjeertdertdejnecuhfhrohhmpeetnhguihcuufhhhihtihcuoegrnhguihdrshhhhihtiheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpeffteehudffvdfhudfgffdugfejjeduheehgeefgeeuhfeiuefghffgueffvdfgfeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppeduvdejrddtrddtrddupdekledrvddujedruddtledrudeiledpfeejrdehledrudegvddruddtudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduvdejrddtrddtrddupdhmrghilhhfrhhomheprghnughisegvthgviihirghnrdhorhhgpdhnsggprhgtphhtthhopedupdhrtghpthhtoheplhhinhhugidqohhmrghpsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdfovfetjfhoshhtpehmohehiedupdhmohguvgepshhmthhpohhuth
 
-> > The only generic interface to execute asynchronously in the BH context =
-is
-> > tasklet; however, it's marked deprecated and has some design flaws. To
-> > replace tasklets, BH workqueue support was recently added. A BH workque=
-ue
-> > behaves similarly to regular workqueues except that the queued work ite=
-ms
-> > are executed in the BH context.
-> >
-> > This patch converts drivers/mmc/* from tasklet to BH workqueue.
-> >
-> > Based on the work done by Tejun Heo <tj@kernel.org>
-> >
-> > Tested-by: Christian Loehle <christian.loehle@arm.com>
-> > Tested-by: Aubin Constans <aubin.constans@microchip.com>
-> > Acked-by: Aubin Constans <aubin.constans@microchip.com>
-> > Acked-by: Micha=C5=82 Miros=C5=82aw <mirq-linux@rere.qmqm.pl>
-> > Reviewed-by: Christian Loehle <christian.loehle@arm.com>
-> > Signed-off-by: Allen Pais <allen.lkml@gmail.com>
-> > ---
-> > v2:
-> >    - fixed patch styling issues
-> >    - rename work to bh_work
-> >
-> > Link to v1:
-> > https://lore.kernel.org/all/20240327160314.9982-10-apais@linux.microsof=
-t.com/
-> >
->
-> [SNIP]
->
-> > diff --git a/drivers/mmc/host/sdhci-bcm-kona.c b/drivers/mmc/host/sdhci=
--bcm-kona.c
-> > index cb9152c6a65d..9c215db81b2b 100644
-> > --- a/drivers/mmc/host/sdhci-bcm-kona.c
-> > +++ b/drivers/mmc/host/sdhci-bcm-kona.c
-> > @@ -107,7 +107,7 @@ static void sdhci_bcm_kona_sd_init(struct sdhci_hos=
-t *host)
-> >   * Software emulation of the SD card insertion/removal. Set insert=3D1=
- for insert
-> >   * and insert=3D0 for removal. The card detection is done by GPIO. For=
- Broadcom
-> >   * IP to function properly the bit 0 of CORESTAT register needs to be =
-set/reset
-> > - * to generate the CD IRQ handled in sdhci.c which schedules card_task=
-let.
-> > + * to generate the CD IRQ handled in sdhci.c which schedules card_bh_w=
-ork.
->
-> The comment was stale because sdhci.c has not had a card_tasklet for
-> a long time.  Just drop the " which schedules card_tasklet"
->
+Hi
 
- Will do. Thanks.
+On Thu, 13 Jun 2024 15:13:26 +0200, Thomas Richard wrote:
+> The patches of this series were originally in the series "Add suspend to
+> ram support for PCIe on J7200" [1].
+> There is no changes compared to the patches in the series [1].
+> 
+> The goal is to wakeup the controller during the suspend stage to be able
+> to use it during suspend_noirq stage.
+> As autosuspend is enabled, the controller can be suspended at suspend_noirq
+> stage. But runtime pm is disabled in suspend_late stage. So it's not
+> possible to wakeup the controller during suspend_noirq.
+> The trick is to force the wakeup of the controller during suspend stage.
+> 
+> [...]
 
-- Allen
+Applied to i2c/i2c-host on
 
-> >   */
-> >  static int sdhci_bcm_kona_sd_card_emulate(struct sdhci_host *host, int=
- insert)
-> >  {
->
+git://git.kernel.org/pub/scm/linux/kernel/git/andi.shyti/linux.git
 
+Thank you,
+Andi
 
---=20
-       - Allen
+Patches applied
+===============
+[1/2] i2c: omap: switch to NOIRQ_SYSTEM_SLEEP_PM_OPS() and RUNTIME_PM_OPS()
+      commit: 659eb16247d04f442a014fe2dd8b7fa936dfccb5
+[2/2] i2c: omap: wakeup the controller during suspend() callback
+      commit: 8a2ebb775a497a95a79a8ac83027a4f159c36f32
+
 
