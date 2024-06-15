@@ -1,103 +1,116 @@
-Return-Path: <linux-omap+bounces-1534-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1535-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F144B908A62
-	for <lists+linux-omap@lfdr.de>; Fri, 14 Jun 2024 12:46:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6583909960
+	for <lists+linux-omap@lfdr.de>; Sat, 15 Jun 2024 19:49:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2C3E1C22407
-	for <lists+linux-omap@lfdr.de>; Fri, 14 Jun 2024 10:46:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 436CF283347
+	for <lists+linux-omap@lfdr.de>; Sat, 15 Jun 2024 17:49:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 482F1194A72;
-	Fri, 14 Jun 2024 10:46:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90EDD4F5FB;
+	Sat, 15 Jun 2024 17:49:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="gQrcO3lP"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from 3.mo561.mail-out.ovh.net (3.mo561.mail-out.ovh.net [46.105.44.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CBB61474C4
-	for <linux-omap@vger.kernel.org>; Fri, 14 Jun 2024 10:46:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.105.44.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C82A481B3
+	for <linux-omap@vger.kernel.org>; Sat, 15 Jun 2024 17:49:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718361988; cv=none; b=dsqmaId2hQefkeBnew0KqNb6spHGV5bsS7xZCq/oUaxNTbBa5xDWx41xgXLcPAYvUUp4qQa01xl0zq8vSTz2EUsIA4nv9P0is8CYxSfzGYttBT7HiD0mjFxwFWb/bXqBN0/tSNa6NbMB1UKoE8SrgCMpY2qPVhKmAMhxXeXr2ps=
+	t=1718473750; cv=none; b=eAXKFmZOkUPB0x23i8ARPG3eHmfcEU0Ta+M7fZb11kNPzVzYMHNgar1FYTmn4c6r+iWbKuC0OCx8gqAstk1rme9zoocP39w6XrCKQr/W0937gelvmZnJONjJqalqfiqniVcrYvGyN5byynSFWQqB7Ls6JmSD9DrwvozG/3ENET8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718361988; c=relaxed/simple;
-	bh=2WQlCiqaq3O7GAO7I86Mkd8Y6gJco5eKLlFWHR+F8P8=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=n7+3/dJ81PPRbolvt1eGm5aYPsA4VrtVJ1Sd02I71rmIrIxUjqqUaAiKIphSz8WLtegZ0EgVT1pjI36elHADrIfJcvEhnFYtVJpv+dKFepBYqWwnPsiFb+nPDXXVKUNzmEJCPKgHM/fhHl/f3OeZ6ojYeteq1JKJ9P4AQiDJONI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=etezian.org; arc=none smtp.client-ip=46.105.44.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etezian.org
-Received: from director8.ghost.mail-out.ovh.net (unknown [10.108.25.52])
-	by mo561.mail-out.ovh.net (Postfix) with ESMTP id 4W0w1P6xhlz1Gxk
-	for <linux-omap@vger.kernel.org>; Fri, 14 Jun 2024 10:07:05 +0000 (UTC)
-Received: from ghost-submission-6684bf9d7b-9qg8m (unknown [10.108.42.28])
-	by director8.ghost.mail-out.ovh.net (Postfix) with ESMTPS id 50FEB1FEC2;
-	Fri, 14 Jun 2024 10:07:03 +0000 (UTC)
-Received: from etezian.org ([37.59.142.101])
-	by ghost-submission-6684bf9d7b-9qg8m with ESMTPSA
-	id w4LqDkcWbGbfGwAALME0rQ
-	(envelope-from <andi@etezian.org>); Fri, 14 Jun 2024 10:07:03 +0000
-Authentication-Results:garm.ovh; auth=pass (GARM-101G004c23ccfb9-6d11-4112-99e6-9496b632ab70,
-                    0BE8417D4949A2B9C3DC4A53BA17F3B68AA5397D) smtp.auth=andi@etezian.org
-X-OVh-ClientIp:89.217.109.169
-From: Andi Shyti <andi.shyti@kernel.org>
-To: Vignesh R <vigneshr@ti.com>, Aaro Koskinen <aaro.koskinen@iki.fi>, 
- Janusz Krzysztofik <jmkrzyszt@gmail.com>, Tony Lindgren <tony@atomide.com>, 
- Thomas Richard <thomas.richard@bootlin.com>
-Cc: linux-omap@vger.kernel.org, linux-i2c@vger.kernel.org, 
- linux-kernel@vger.kernel.org, gregory.clement@bootlin.com, 
- theo.lebrun@bootlin.com, thomas.petazzoni@bootlin.com, u-kumar1@ti.com, 
- Wolfram Sang <wsa+renesas@sang-engineering.com>
-In-Reply-To: <20240613-i2c-omap-wakeup-controller-during-suspend-v1-0-aab001eb1ad1@bootlin.com>
-References: <20240613-i2c-omap-wakeup-controller-during-suspend-v1-0-aab001eb1ad1@bootlin.com>
-Subject: Re: [PATCH 0/2] Wakeup the i2c-omap controller during suspend
- stage
-Message-Id: <171835962034.690946.5223670414905950648.b4-ty@kernel.org>
-Date: Fri, 14 Jun 2024 12:07:00 +0200
+	s=arc-20240116; t=1718473750; c=relaxed/simple;
+	bh=oGBKPT1M0XiRJNpVabQalPfRMu14bYm1uul2tPOLwKc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DWERs45SQ3/27N0k7n1+1SrLEaLRnIazfAeM9/Z+cC/oyKzSXlCzITEY/Xid8qwSitv0trMO0RpotHMUy7Huyqin0+//KQ9L9Vwr1rZWlg9HHsHT6LZy2pbQkBxZK3BZle1iNWyjt3M1cxgNAzVc2DVWgP1D3q+RCCySFUs52fE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=gQrcO3lP; arc=none smtp.client-ip=209.85.208.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-57a44c2ce80so3726677a12.0
+        for <linux-omap@vger.kernel.org>; Sat, 15 Jun 2024 10:49:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1718473747; x=1719078547; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=sQTdAZk+xkTaWcpSjHpauNVsk4RuoZYN9xg1Bzump2k=;
+        b=gQrcO3lPZ1BSKptChDDOMB4LLap3KNy5uchXwU6iJx7aiuThMLthLDA1oJAcn+uTEd
+         XBn26wARdb5U6cnuXTiq28zRGDWpW9B4PAXQOLdyIoWvidy59C0H82RFWk9fT94kJ4nf
+         4DGB4/qE8LJZn0Re+Z8+hxIbJcX1z4q7Idfs/pb9N32RhbBIBdoqZ5Cb9ibo2gqVQioX
+         HPYPkHXIpoRJyUroB4DwaOhNJb7uyGFqiqiQ5E911dte5aIUsiYpTWNDGUFT7SwwFEvO
+         BcARFRcVUQVH+LiWGv8rq01QLYkZR/6OFh9uYieEaLcq5jKnLajrbtO8D4UXUq7dxHIw
+         iBvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718473747; x=1719078547;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=sQTdAZk+xkTaWcpSjHpauNVsk4RuoZYN9xg1Bzump2k=;
+        b=fztUyLoI+mKcqUbWDRiow5rsUMm4AOuV2FWWn66IHIV53NfiAZMM61ewBGzrdLNSBj
+         GpeeI/4B12cjIaRyz4JEQEKrEyiQ3w9B4pjPaWuURgr6Zl6/N75sARTgNWQyAEz1X4JP
+         YfM+he92Vlht6S3HmRK4cWCrd6F226ucr5H+vcYEsL2BVwfSDICFm9G/YNwN/sxUCZiM
+         7a9c8FxFxiXUYRwqMokLCITxt74zsYqCwAlvuTud2v/El2dMIDMn8/JxHStcYVMxBM82
+         w2pjy+OOzomYZNMSNkaD25CRJsoibuVcGJ8IYd9MPCOsgSm4bV5OAI2BFn6bg3OVgqo6
+         1k7w==
+X-Forwarded-Encrypted: i=1; AJvYcCUSLXr5pulQLtC/mtsvM4DcDNTgpfU7mtu/oddZjt2ii/IzrOjVYyoKvY5ZxN0ySovIfUM5tvdA29c2MQzQV6viWBx6Co8Sdm/QEg==
+X-Gm-Message-State: AOJu0Yw543R6uYLxTA6gQCYjtmPvydl2lajSSxr8BnoGVIocjsT/yvBA
+	U16DQ8dJ38emjMDsEmic2cRve5y5AafEXRYmeCfb/7pkRZYOled1rfTBCIo1w+StCP1FUsA7MKU
+	uGlE=
+X-Google-Smtp-Source: AGHT+IHI9wdR5yttuPe5CPAFwyWHcSWXRKDzT5MKecRnY8k+A4gMwRIgI941SC35XAKMmBHxxAe/6A==
+X-Received: by 2002:a50:cd91:0:b0:57c:8c45:74ff with SMTP id 4fb4d7f45d1cf-57cbd8e8182mr2812346a12.41.1718473746710;
+        Sat, 15 Jun 2024 10:49:06 -0700 (PDT)
+Received: from krzk-bin.. ([78.10.207.147])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-57cb72e992dsm3942946a12.48.2024.06.15.10.49.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 15 Jun 2024 10:49:06 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Tony Lindgren <tony@atomide.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	linux-omap@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	kernel test robot <lkp@intel.com>
+Subject: [PATCH] ARM: dts: omap am5729-beagleboneai: drop unneeded ti,enable-id-detection
+Date: Sat, 15 Jun 2024 19:49:04 +0200
+Message-ID: <20240615174904.39012-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13.0
-X-Ovh-Tracer-Id: 1605814746184223393
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvledrfeduledgvddvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvegjfhfukfffgggtgffosehtjeertdertdejnecuhfhrohhmpeetnhguihcuufhhhihtihcuoegrnhguihdrshhhhihtiheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpeffteehudffvdfhudfgffdugfejjeduheehgeefgeeuhfeiuefghffgueffvdfgfeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppeduvdejrddtrddtrddupdekledrvddujedruddtledrudeiledpfeejrdehledrudegvddruddtudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduvdejrddtrddtrddupdhmrghilhhfrhhomheprghnughisegvthgviihirghnrdhorhhgpdhnsggprhgtphhtthhopedupdhrtghpthhtoheplhhinhhugidqohhmrghpsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdfovfetjfhoshhtpehmohehiedupdhmohguvgepshhmthhpohhuth
+Content-Transfer-Encoding: 8bit
 
-Hi
+There is a ti,enable-id-detection property in the Extcon Palmas
+(extcon-palmas), but not in the Extcon USB GPIO binding and driver.
 
-On Thu, 13 Jun 2024 15:13:26 +0200, Thomas Richard wrote:
-> The patches of this series were originally in the series "Add suspend to
-> ram support for PCIe on J7200" [1].
-> There is no changes compared to the patches in the series [1].
-> 
-> The goal is to wakeup the controller during the suspend stage to be able
-> to use it during suspend_noirq stage.
-> As autosuspend is enabled, the controller can be suspended at suspend_noirq
-> stage. But runtime pm is disabled in suspend_late stage. So it's not
-> possible to wakeup the controller during suspend_noirq.
-> The trick is to force the wakeup of the controller during suspend stage.
-> 
-> [...]
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202406152004.F2fNnorG-lkp@intel.com/
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+ arch/arm/boot/dts/ti/omap/am5729-beagleboneai.dts | 1 -
+ 1 file changed, 1 deletion(-)
 
-Applied to i2c/i2c-host on
-
-git://git.kernel.org/pub/scm/linux/kernel/git/andi.shyti/linux.git
-
-Thank you,
-Andi
-
-Patches applied
-===============
-[1/2] i2c: omap: switch to NOIRQ_SYSTEM_SLEEP_PM_OPS() and RUNTIME_PM_OPS()
-      commit: 659eb16247d04f442a014fe2dd8b7fa936dfccb5
-[2/2] i2c: omap: wakeup the controller during suspend() callback
-      commit: 8a2ebb775a497a95a79a8ac83027a4f159c36f32
+diff --git a/arch/arm/boot/dts/ti/omap/am5729-beagleboneai.dts b/arch/arm/boot/dts/ti/omap/am5729-beagleboneai.dts
+index eb1ec85aba28..e6a18954e449 100644
+--- a/arch/arm/boot/dts/ti/omap/am5729-beagleboneai.dts
++++ b/arch/arm/boot/dts/ti/omap/am5729-beagleboneai.dts
+@@ -196,7 +196,6 @@ brcmf_pwrseq: brcmf_pwrseq {
+ 
+ 	extcon_usb1: extcon_usb1 {
+ 		compatible = "linux,extcon-usb-gpio";
+-		ti,enable-id-detection;
+ 		id-gpios = <&gpio3 13 GPIO_ACTIVE_HIGH>;
+ 	};
+ };
+-- 
+2.43.0
 
 
