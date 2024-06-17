@@ -1,116 +1,256 @@
-Return-Path: <linux-omap+bounces-1535-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1536-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6583909960
-	for <lists+linux-omap@lfdr.de>; Sat, 15 Jun 2024 19:49:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1D3290A10A
+	for <lists+linux-omap@lfdr.de>; Mon, 17 Jun 2024 02:59:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 436CF283347
-	for <lists+linux-omap@lfdr.de>; Sat, 15 Jun 2024 17:49:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 29C9C1F21B16
+	for <lists+linux-omap@lfdr.de>; Mon, 17 Jun 2024 00:59:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90EDD4F5FB;
-	Sat, 15 Jun 2024 17:49:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9BBE8F5C;
+	Mon, 17 Jun 2024 00:58:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="gQrcO3lP"
+	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="YdQV5IvO"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from JPN01-OS0-obe.outbound.protection.outlook.com (mail-os0jpn01on2075.outbound.protection.outlook.com [40.107.113.75])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C82A481B3
-	for <linux-omap@vger.kernel.org>; Sat, 15 Jun 2024 17:49:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718473750; cv=none; b=eAXKFmZOkUPB0x23i8ARPG3eHmfcEU0Ta+M7fZb11kNPzVzYMHNgar1FYTmn4c6r+iWbKuC0OCx8gqAstk1rme9zoocP39w6XrCKQr/W0937gelvmZnJONjJqalqfiqniVcrYvGyN5byynSFWQqB7Ls6JmSD9DrwvozG/3ENET8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718473750; c=relaxed/simple;
-	bh=oGBKPT1M0XiRJNpVabQalPfRMu14bYm1uul2tPOLwKc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DWERs45SQ3/27N0k7n1+1SrLEaLRnIazfAeM9/Z+cC/oyKzSXlCzITEY/Xid8qwSitv0trMO0RpotHMUy7Huyqin0+//KQ9L9Vwr1rZWlg9HHsHT6LZy2pbQkBxZK3BZle1iNWyjt3M1cxgNAzVc2DVWgP1D3q+RCCySFUs52fE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=gQrcO3lP; arc=none smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-57a44c2ce80so3726677a12.0
-        for <linux-omap@vger.kernel.org>; Sat, 15 Jun 2024 10:49:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1718473747; x=1719078547; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=sQTdAZk+xkTaWcpSjHpauNVsk4RuoZYN9xg1Bzump2k=;
-        b=gQrcO3lPZ1BSKptChDDOMB4LLap3KNy5uchXwU6iJx7aiuThMLthLDA1oJAcn+uTEd
-         XBn26wARdb5U6cnuXTiq28zRGDWpW9B4PAXQOLdyIoWvidy59C0H82RFWk9fT94kJ4nf
-         4DGB4/qE8LJZn0Re+Z8+hxIbJcX1z4q7Idfs/pb9N32RhbBIBdoqZ5Cb9ibo2gqVQioX
-         HPYPkHXIpoRJyUroB4DwaOhNJb7uyGFqiqiQ5E911dte5aIUsiYpTWNDGUFT7SwwFEvO
-         BcARFRcVUQVH+LiWGv8rq01QLYkZR/6OFh9uYieEaLcq5jKnLajrbtO8D4UXUq7dxHIw
-         iBvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718473747; x=1719078547;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=sQTdAZk+xkTaWcpSjHpauNVsk4RuoZYN9xg1Bzump2k=;
-        b=fztUyLoI+mKcqUbWDRiow5rsUMm4AOuV2FWWn66IHIV53NfiAZMM61ewBGzrdLNSBj
-         GpeeI/4B12cjIaRyz4JEQEKrEyiQ3w9B4pjPaWuURgr6Zl6/N75sARTgNWQyAEz1X4JP
-         YfM+he92Vlht6S3HmRK4cWCrd6F226ucr5H+vcYEsL2BVwfSDICFm9G/YNwN/sxUCZiM
-         7a9c8FxFxiXUYRwqMokLCITxt74zsYqCwAlvuTud2v/El2dMIDMn8/JxHStcYVMxBM82
-         w2pjy+OOzomYZNMSNkaD25CRJsoibuVcGJ8IYd9MPCOsgSm4bV5OAI2BFn6bg3OVgqo6
-         1k7w==
-X-Forwarded-Encrypted: i=1; AJvYcCUSLXr5pulQLtC/mtsvM4DcDNTgpfU7mtu/oddZjt2ii/IzrOjVYyoKvY5ZxN0ySovIfUM5tvdA29c2MQzQV6viWBx6Co8Sdm/QEg==
-X-Gm-Message-State: AOJu0Yw543R6uYLxTA6gQCYjtmPvydl2lajSSxr8BnoGVIocjsT/yvBA
-	U16DQ8dJ38emjMDsEmic2cRve5y5AafEXRYmeCfb/7pkRZYOled1rfTBCIo1w+StCP1FUsA7MKU
-	uGlE=
-X-Google-Smtp-Source: AGHT+IHI9wdR5yttuPe5CPAFwyWHcSWXRKDzT5MKecRnY8k+A4gMwRIgI941SC35XAKMmBHxxAe/6A==
-X-Received: by 2002:a50:cd91:0:b0:57c:8c45:74ff with SMTP id 4fb4d7f45d1cf-57cbd8e8182mr2812346a12.41.1718473746710;
-        Sat, 15 Jun 2024 10:49:06 -0700 (PDT)
-Received: from krzk-bin.. ([78.10.207.147])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-57cb72e992dsm3942946a12.48.2024.06.15.10.49.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 15 Jun 2024 10:49:06 -0700 (PDT)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To: Tony Lindgren <tony@atomide.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 586086125;
+	Mon, 17 Jun 2024 00:58:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.113.75
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1718585931; cv=fail; b=Jk5pxDsUgAUcxA7AWCb1jGFXQoRE2/pZe4ZwkUt9G5KCYzZGu1RK8WpncEfahxzSMvwq7aWmj1IH9zKp4puTFPC3sXMIB4STzQPMBtnljgRRqo+23KryjU31TUPrMINjD4Bc0X/LTNdGO+tkcbXDYJQGcL65uvSzbHnAIIEt03Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1718585931; c=relaxed/simple;
+	bh=S6dJ7xhH+U9pk6RTyvZWqXTNA+HQQ9OemzxUzBuzvD8=;
+	h=Message-ID:From:Subject:To:In-Reply-To:References:Content-Type:
+	 Date:MIME-Version; b=B1PeG1VmOGyyb3B5v6/ihYHuL2FXq4/zHM2OOjvmTcGBsTNpr9nwK07rPWO/83PV+4afR4X9PJZM74UePF+CIOV+I2yICtqYCJYGLsN8T8EwX4adDzmvKBJOzJz5uis5aqW9Jig9K+1I0Mknwd+nZLajBfp/I7wDZqyeiUQ6XY0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=YdQV5IvO; arc=fail smtp.client-ip=40.107.113.75
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=UJuOGIjDWHEKBX/LfTqwDu4CipKtOHz9B7KNv7D0QVIkk0QAlwIwQ7+IGLKigDMvcgeQ2l/5J852H7l/uRXE30uoi/9EoWk2tSwoz6eQi083cmYjEWKUbO8glO+gf/SFp0DMU7BaSE/3tzft1zU5oQ2mVSnwSGGApq74XzlJmYMZkBjwdYZxiXwaYuON7UJ7G3AgWeNQCESqWZE9vQ99XbTiNRg+4pzXSDLOtlOsoiCVrEOAPposKYdzWd3lYYruDF9fnQnlvjMqz5cx96pSfIWMZ5kjn/wjStIRqXX0kaJ/pCm6TVpRaNsz5hu8IEi9yds6+yq02oA/9Vvh2wxUpA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Cbb0dRK+5iDbyv2Y/MVH4j/HgoQMnUdnZRnxe2rrKFw=;
+ b=OR1a1aK1IOR0VybfHH4vItwEIKoAZwqnN8AE3V6u6LYxidaxQufyHxDF+iL3nEcthW49yUa+k6El1FVCiBXBv0k6yI9UWphrY4RenniT3g1xp08uf/3V1DckqGrOO12j95/83LwinBalsJgOaZbeIbcXlPcvKdRzgIKXtwObV3exIfDAc1lj2ng02VzqnVTR7+BcstcaRnWp82ceY7zXC9yotOb52H0/+nc3NgCzqoxEheWnX7kxNsPwQ75uBLkja1rGdj4EtVoNg4Dbe86+Y4zgpseJ5giSRJXXCXHq2yxw1Wat1sQlNLgr7UOuErSdYp3ufH44V0MSTaFg1gS1QA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
+ dkim=pass header.d=renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Cbb0dRK+5iDbyv2Y/MVH4j/HgoQMnUdnZRnxe2rrKFw=;
+ b=YdQV5IvOTvYKMPRV3AdlgBuiYD1mrd0SpPmz+VCjyqxAknbMihFCvwdhsBc7tqqdUfmmV1jM8dkGj/5XITzqzuLxtqmZgZen0KwW9dp1pqz1K+FvQnfFjJiPZx0TUQsmGLQIk4qBDjCi71gRc3QAnQ7/Wc1YfR8KEr9nrDgwrtk=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=renesas.com;
+Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
+ (2603:1096:400:3a9::11) by TYWPR01MB8560.jpnprd01.prod.outlook.com
+ (2603:1096:400:13f::12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7677.30; Mon, 17 Jun
+ 2024 00:58:46 +0000
+Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
+ ([fe80::c568:1028:2fd1:6e11]) by TYCPR01MB10914.jpnprd01.prod.outlook.com
+ ([fe80::c568:1028:2fd1:6e11%4]) with mapi id 15.20.7677.030; Mon, 17 Jun 2024
+ 00:58:46 +0000
+Message-ID: <87tthss7ui.wl-kuninori.morimoto.gx@renesas.com>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Subject: [PATCH v4 resend 1/9] gpu: drm: replace of_graph_get_next_endpoint()
+To: "Lad Prabhakar" <prabhakar.csengg@gmail.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	David Airlie <airlied@gmail.com>,
+	Eugen Hristev <eugen.hristev@collabora.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Helge Deller <deller@gmx.de>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Maxime Ripard <mripard@kernel.org>,
+	Michal Simek <michal.simek@amd.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	coresight@lists.linaro.org,
+	dri-devel@lists.freedesktop.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-fbdev@vger.kernel.org,
+	linux-media@vger.kernel.org,
 	linux-omap@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	kernel test robot <lkp@intel.com>
-Subject: [PATCH] ARM: dts: omap am5729-beagleboneai: drop unneeded ti,enable-id-detection
-Date: Sat, 15 Jun 2024 19:49:04 +0200
-Message-ID: <20240615174904.39012-1-krzysztof.kozlowski@linaro.org>
-X-Mailer: git-send-email 2.43.0
+	linux-staging@lists.linux.dev,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+In-Reply-To: <87v828s7v0.wl-kuninori.morimoto.gx@renesas.com>
+References: <87v828s7v0.wl-kuninori.morimoto.gx@renesas.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 17 Jun 2024 00:58:46 +0000
+X-ClientProxiedBy: TY2PR02CA0002.apcprd02.prod.outlook.com
+ (2603:1096:404:56::14) To TYCPR01MB10914.jpnprd01.prod.outlook.com
+ (2603:1096:400:3a9::11)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TYCPR01MB10914:EE_|TYWPR01MB8560:EE_
+X-MS-Office365-Filtering-Correlation-Id: 21ac385c-b5c7-4787-60af-08dc8e68a469
+X-LD-Processed: 53d82571-da19-47e4-9cb4-625a166a4a2a,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230037|366013|52116011|7416011|376011|1800799021|38350700011|921017;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?q5mlfhINr4msdM+JyyqBfQB3jpag9DPjV7zQ4dQUynAqPPxAG+g8cZUnWqSL?=
+ =?us-ascii?Q?FSkcyLik3iau3KUDwlatNEe6wTrS1dQQy7qlYXJIcSMeD3WCjtDzbHFV2X+c?=
+ =?us-ascii?Q?fHfvXckU27oPr+v4Yh6lbqh0Fu8s9LEI8icw9CTQskT2yxJr001VkoZy4LXM?=
+ =?us-ascii?Q?koUuFlqYikzQJIsLVYSwPlFrnMrw34pvxrTj1uE/2eq6fLQmju61K7sPbkg0?=
+ =?us-ascii?Q?lOweVlJeErklvgS0sCgliwlQ2tc/YnD2GjPXgoWz8uJbkWAmEvwxisP2Kd4+?=
+ =?us-ascii?Q?bhJin46qpQVSHocGPbJ8/Krj+jo602yeS7gCvNkwa+XA24dR67vgoNrD80Ya?=
+ =?us-ascii?Q?yALeXVFTxTyl9r1ahTiQ3sr1Sr97n+IemrX9RLodgEF0eoCTDc7SEmNMRLug?=
+ =?us-ascii?Q?D4Oanly/jKvG9r3SEDUZP6/k6asJnU9/AeUGNtLdhoNpdULgWNLhylGyNB4X?=
+ =?us-ascii?Q?2NIjIBo0eynOcfPyDubcBK9K/7FxtAay/otzvDGmpEwBXngo2PAGVMsUd5I4?=
+ =?us-ascii?Q?+HvPcHb2v0IIOxCaCAY8KSa9iGGObG0eoVPmfn05AlZO/I+//iVyh3bwa1Mr?=
+ =?us-ascii?Q?qJH84q9jC3cA0d7JOj2lalesWG+dysAv5F4TpQsryQ/Ib7hu6gDQrl5KpwJF?=
+ =?us-ascii?Q?11lHyd8Aw1vQhGZ3Fu75KG87Vx2Pz7bcxBI8z7XAO3McFnRXOAMSSY4Sg9qn?=
+ =?us-ascii?Q?4uCAC5TwYQ5yzwG8GiCKslL3cK2g6d0AoMo0Qb0r7QJ25OAcFPipQXcXnd6c?=
+ =?us-ascii?Q?1j2bfboKhhr7yvwr+wp/aEdLi1KAbj4XydSc/fwEGXvnyj3iksA+JHUxvtCm?=
+ =?us-ascii?Q?kFq4+zw3ai3HGLP9pbDuNfjusCTFXpVJDkDWfAxprURdwCNYT80G0g55WSDy?=
+ =?us-ascii?Q?SKpJGA7vAAvbcOqu7RVo7QAfk+zbPLPLwxeEnoVPTS4WaRwbbrq3lQg7ExqK?=
+ =?us-ascii?Q?wAVW8IRrpHrxOOc1aISSk12g9v/PLZ8dVq5fzPnXsZeGa1ifvRHrxW4bIcJz?=
+ =?us-ascii?Q?u7zpSCGRpo2AxEjxpHlv1V9OevMAXmmeyMQuMycrPSNAo7bB0UuGDMm2rN0Y?=
+ =?us-ascii?Q?J2XbpjkARJ+5tkwTCKs+kKTsR6yN2jKm9aG2wyaUbbO5GZB7pCFbTA5p6wuM?=
+ =?us-ascii?Q?3cBhM4T8npe5L6v/nCPr1me3cJt/tgr9/WpndE3iFpOGOy99rYPtlK90jEFj?=
+ =?us-ascii?Q?bv7Vk8CjAc4zTI+bGpU96u++vfCz4yRrtELc8EwAALVUP2RptdHfVhY2qEMQ?=
+ =?us-ascii?Q?dReeke7z5KN9eHdbMG2qe7P0z0CJF6QNttNJn8zkXFYrgYWrUY3/7v5m+TAt?=
+ =?us-ascii?Q?eUvotNn6HsBIvYWUNPip+LrjbJfJtfOzW9nZMoOpkYo6oQ=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYCPR01MB10914.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230037)(366013)(52116011)(7416011)(376011)(1800799021)(38350700011)(921017);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?gHdvkfI6nuVyX0PBcLZyIyqIwlDf6ewQnWKUi4bgCCPfVgMgBSoaI71a5CvY?=
+ =?us-ascii?Q?Wl6hWnvV9370n0gORGc1lbDDam2mpQL2drfMGksiZu59XFdzXNYHn5Nd9Xr7?=
+ =?us-ascii?Q?oSm7CdddiTUy+U1QtEuQkgsDsdxpZSwkGsWRSa/577+9VCQgeepmWsVdKnJT?=
+ =?us-ascii?Q?NDnLUeca4zs2gqFjnVOhUcU6kao3DcWxifQptHMaoOgJqs+YuuEIMwhc+fY2?=
+ =?us-ascii?Q?2cYoqiOqwcLRMlEAH4MBJorvC/mM4yBLRH7qF3BzwKyR/caz64ueEE97IWrC?=
+ =?us-ascii?Q?nmOv4GdHUCkZYiTQ7QRnYtTHbXKj+MOfAjuqPZlMlcqoO3YP1j2NmwQ7HvXY?=
+ =?us-ascii?Q?QotI872hT/4wGUEPqVO4fp3PLOeAcWtY1fLwkpab0cV3EDlqzuBJ+BOh8nhf?=
+ =?us-ascii?Q?NlVRBCErjGym9Q1KKe0bMV5ARBOe5ATk5ph4GrEjwHKsFjnc6aoaYQ2ZQHZp?=
+ =?us-ascii?Q?o40gj/H1WdbHaddJHm+LHbPfv0BkFQvO9Wy1hxwkgFAg4Hsf5MOmDn/2uFTv?=
+ =?us-ascii?Q?3bDE1Xv2CHFMPXhqz3Gk+TGj0ITCsx7PbdN5LJ3fhPexwWuHz+oUUFdNsVsF?=
+ =?us-ascii?Q?yQY/DHB1XwD4pzPqOX4pMa+Vf5kAJ8YhRf1D0ww/RBACrawaxv6g68Bar4VS?=
+ =?us-ascii?Q?sFtLtng++qbm0KGRj+D1SFiMpmzbOp9+4xG+mKTK0AIkJlJqdW5A/kUM7PF+?=
+ =?us-ascii?Q?ETV19TU31wW4+TisjX6izbN9uOxyGsA31ATD9isaC/yVx4AD+8QxZ7NPPKEI?=
+ =?us-ascii?Q?f7nN57KDaWR1cKNMxTCqzbPccnxmJJMFyCkoGfj8B4kX0RhoQTj/XqIFX2LK?=
+ =?us-ascii?Q?RDQvt9tCInB2hsdHMk9oVpwv+jfRPQr1dUHHoBAsusIedCOMhesqo6ttB/At?=
+ =?us-ascii?Q?9tFIvcKom+tCSDqe/OMO/NVjE8YvugXEDzbr8/+n20wfLaph+VJXF1hWJKPU?=
+ =?us-ascii?Q?mA1J7Qye+VR/rv9tovHURE28niI8uBk1OKn2TdXFUx4W1mCwXakQQEfXQQt0?=
+ =?us-ascii?Q?6DEtqR5403AcCmqsvJ58BSnE2OxxdsCLR+7nB40GkkjKPZxrsgCtrzm1oZ6c?=
+ =?us-ascii?Q?CEYfiCeOHyL94AVsddyPSEth3KvPk6o1fP+5tkSQjJGKvZnmILCiBIBWsJ62?=
+ =?us-ascii?Q?OejUEklAfL5JaDS9Sg+DLRny+yfiAmfNmTBnOHbol0k2PJDVJH7/hMOdbUQZ?=
+ =?us-ascii?Q?1kFj9I2AmhVRwM0JKY8LOZdjI345lEpj1mlVcEQMj1pnpiKlJ6Nr3Ltv0HGb?=
+ =?us-ascii?Q?eYRqRiBIYa5DhtSKvkOiX6Om5asoKj397bxSIU0h2ZBhqIgTT13mXIwwzIX+?=
+ =?us-ascii?Q?K92LD625WH9I6/Nvi613KCE9bvR8mc6xOjE+S6gS3UwRoFkcMKynOb5Uf/+r?=
+ =?us-ascii?Q?C/23r3E/U5/aUOfGynbM1QEttDK2SLcY8C1fBRaCRjDzPaHGi0xFIOtXtbfZ?=
+ =?us-ascii?Q?4BI5bJ42jYV20FDaH1yyy2ZE94Ur5DZIPfug+CwXvYi+IisyfN/K6Cjr0ZVx?=
+ =?us-ascii?Q?Xxtxjb67dkuadR/I9G61oIoDTnJ8NBwee2IdwRiFawi/NBWJaauOv6O5NQyD?=
+ =?us-ascii?Q?a7q/l9stZ8L2rY6jI3t1i7p0wzqmqkV9rBPJxrXl1CWuMT54pXqPdVWgMOJE?=
+ =?us-ascii?Q?iWAA4G/LMdZhMli/Fi2yTJs=3D?=
+X-OriginatorOrg: renesas.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 21ac385c-b5c7-4787-60af-08dc8e68a469
+X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB10914.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2024 00:58:46.7357
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: TDMMriImhV8icW+oO3TmaRuEtnA8WQJpDiUZR2sGiFDicJCvCQS/BS9rD6Oh32iX3lYRnO2FDU//1zggnHai1O4aYRiRMsOdQEZUNPy/rDzkzgMtR+WO0LkkYUp5SjDg
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYWPR01MB8560
 
-There is a ti,enable-id-detection property in the Extcon Palmas
-(extcon-palmas), but not in the Extcon USB GPIO binding and driver.
+From DT point of view, in general, drivers should be asking for a
+specific port number because their function is fixed in the binding.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202406152004.F2fNnorG-lkp@intel.com/
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+of_graph_get_next_endpoint() doesn't match to this concept.
+
+Simply replace
+
+	- of_graph_get_next_endpoint(xxx, NULL);
+	+ of_graph_get_endpoint_by_regs(xxx, 0, -1);
+
+Link: https://lore.kernel.org/r/20240202174941.GA310089-robh@kernel.org
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
 ---
- arch/arm/boot/dts/ti/omap/am5729-beagleboneai.dts | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/gpu/drm/drm_of.c                              | 4 +++-
+ drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c | 2 +-
+ drivers/gpu/drm/tiny/arcpgu.c                         | 2 +-
+ 3 files changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/boot/dts/ti/omap/am5729-beagleboneai.dts b/arch/arm/boot/dts/ti/omap/am5729-beagleboneai.dts
-index eb1ec85aba28..e6a18954e449 100644
---- a/arch/arm/boot/dts/ti/omap/am5729-beagleboneai.dts
-+++ b/arch/arm/boot/dts/ti/omap/am5729-beagleboneai.dts
-@@ -196,7 +196,6 @@ brcmf_pwrseq: brcmf_pwrseq {
- 
- 	extcon_usb1: extcon_usb1 {
- 		compatible = "linux,extcon-usb-gpio";
--		ti,enable-id-detection;
- 		id-gpios = <&gpio3 13 GPIO_ACTIVE_HIGH>;
- 	};
- };
--- 
+diff --git a/drivers/gpu/drm/drm_of.c b/drivers/gpu/drm/drm_of.c
+index 177b600895d3c..b6b2cade69aeb 100644
+--- a/drivers/gpu/drm/drm_of.c
++++ b/drivers/gpu/drm/drm_of.c
+@@ -504,6 +504,8 @@ EXPORT_SYMBOL_GPL(drm_of_get_data_lanes_count_ep);
+  * Gets parent DSI bus for a DSI device controlled through a bus other
+  * than MIPI-DCS (SPI, I2C, etc.) using the Device Tree.
+  *
++ * This function assumes that the device's port@0 is the DSI input.
++ *
+  * Returns pointer to mipi_dsi_host if successful, -EINVAL if the
+  * request is unsupported, -EPROBE_DEFER if the DSI host is found but
+  * not available, or -ENODEV otherwise.
+@@ -516,7 +518,7 @@ struct mipi_dsi_host *drm_of_get_dsi_bus(struct device =
+*dev)
+ 	/*
+ 	 * Get first endpoint child from device.
+ 	 */
+-	endpoint =3D of_graph_get_next_endpoint(dev->of_node, NULL);
++	endpoint =3D of_graph_get_endpoint_by_regs(dev->of_node, 0, -1);
+ 	if (!endpoint)
+ 		return ERR_PTR(-ENODEV);
+=20
+diff --git a/drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c b/driver=
+s/gpu/drm/panel/panel-raspberrypi-touchscreen.c
+index 4618c892cdd65..e10e469aa7a6c 100644
+--- a/drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c
++++ b/drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c
+@@ -400,7 +400,7 @@ static int rpi_touchscreen_probe(struct i2c_client *i2c=
+)
+ 	rpi_touchscreen_i2c_write(ts, REG_POWERON, 0);
+=20
+ 	/* Look up the DSI host.  It needs to probe before we do. */
+-	endpoint =3D of_graph_get_next_endpoint(dev->of_node, NULL);
++	endpoint =3D of_graph_get_endpoint_by_regs(dev->of_node, 0, -1);
+ 	if (!endpoint)
+ 		return -ENODEV;
+=20
+diff --git a/drivers/gpu/drm/tiny/arcpgu.c b/drivers/gpu/drm/tiny/arcpgu.c
+index 4f8f3172379e3..8c29b719ea626 100644
+--- a/drivers/gpu/drm/tiny/arcpgu.c
++++ b/drivers/gpu/drm/tiny/arcpgu.c
+@@ -288,7 +288,7 @@ static int arcpgu_load(struct arcpgu_drm_private *arcpg=
+u)
+ 	 * There is only one output port inside each device. It is linked with
+ 	 * encoder endpoint.
+ 	 */
+-	endpoint_node =3D of_graph_get_next_endpoint(pdev->dev.of_node, NULL);
++	endpoint_node =3D of_graph_get_endpoint_by_regs(pdev->dev.of_node, 0, -1)=
+;
+ 	if (endpoint_node) {
+ 		encoder_node =3D of_graph_get_remote_port_parent(endpoint_node);
+ 		of_node_put(endpoint_node);
+--=20
 2.43.0
 
 
