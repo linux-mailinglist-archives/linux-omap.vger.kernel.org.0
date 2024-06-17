@@ -1,56 +1,56 @@
-Return-Path: <linux-omap+bounces-1546-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1547-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 379B290A37F
-	for <lists+linux-omap@lfdr.de>; Mon, 17 Jun 2024 07:54:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D9CA90A387
+	for <lists+linux-omap@lfdr.de>; Mon, 17 Jun 2024 07:59:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A21C8281D1C
-	for <lists+linux-omap@lfdr.de>; Mon, 17 Jun 2024 05:54:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C9EF3B2134E
+	for <lists+linux-omap@lfdr.de>; Mon, 17 Jun 2024 05:59:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E45D7181CFA;
-	Mon, 17 Jun 2024 05:54:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B1541836DF;
+	Mon, 17 Jun 2024 05:59:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="uIOLRH3I"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="moZ+hifb"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 303812F5B;
-	Mon, 17 Jun 2024 05:54:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B2129410;
+	Mon, 17 Jun 2024 05:59:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718603653; cv=none; b=FFrDoYP2zYdEAWmvnYn2YZ9aiP5JJgZyu+38XCTZyH1rFXr1GgGQJC3ey7HY0RR7Q05DUj3RjrZMpfwR9b34dm4gc72TuWki20DAVNpjMF/aZ+NDl6O9wQn4gQXstd25B2dzd+HYbO/UL0zcz/HhZQ1hYVl89Ixk0LkVub8e9Ew=
+	t=1718603952; cv=none; b=CpEvbHXgDjR9//2I8yTtVjZy/LPCTjdyOnmx0i17hQs4jnL3qYkMqqnFShsOF6U0HRkSOeU8Pvs3wPjPMIbiyVK+E95khCswc7Jzep7pm8U+0lrRHDoGKT4RJTmmN7K6HTqUU/6kD3dgSGI5cTRAocvuKufXesMUVAyFUvnTekI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718603653; c=relaxed/simple;
-	bh=4M9bJC2im8EC3ehNn3IdDa7pv05Da0fEOcRlVS566ww=;
+	s=arc-20240116; t=1718603952; c=relaxed/simple;
+	bh=8HWnEAM5qJiSGGnzdr1SHnF5Yk7BBE162aZw1/6Vd5Q=;
 	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=qjBohICdMNL2ZcNewlZkYIl979XJjLW5mSwsvja0z0fnfbdBk8H3swK/xyfOz+H3aCRLkpUUeclByQvpCCHZ0MF/4M/aQCbko7yWBCdl3gyvvGtG3cP89TYcYX8Jxgkx2OAbpaV2x4UQjgLJk07YCKDYSpHrIpZPI510MQEi7L8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=uIOLRH3I; arc=none smtp.client-ip=212.227.17.21
+	 In-Reply-To:Content-Type; b=GYRuF2waYSo5klGxhyjzYOdhloeRDwgmWgfN8Ivco4skr/V6zHrCVFGCFxS8IiR4xQ5GDHJxqpuCE2JMK3SsHRHsbiYjCnmvLDBQttW1xe3qE8s1T+UEqsD+vqBKybW13KgzTWKD6DzdPMrTfimU35XRFIxfZ9IGsOHxMkMErwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=moZ+hifb; arc=none smtp.client-ip=212.227.17.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1718603637; x=1719208437; i=deller@gmx.de;
-	bh=oakIaaFQS9p+3YLmGMVTxIkHRlaGNzy/TtYdT7umKlQ=;
+	s=s31663417; t=1718603935; x=1719208735; i=deller@gmx.de;
+	bh=+HdE+GKlMXl1Tr/7+VvWnOUp6XAauHEgbZXiKGTwqjY=;
 	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:
 	 References:From:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding:cc:content-transfer-encoding:
 	 content-type:date:from:message-id:mime-version:reply-to:subject:
 	 to;
-	b=uIOLRH3II5DZTDVPnydHPhRRk8S2anbfkyE7gXXfsCIjIOc1zuOUpePJ6nwYP5NV
-	 QIXEhfiZPxHH7UV43bqDXvTP69+jmyfQBQTN5Rud3sCnv1cU7ixWiqzwJDs2QTveV
-	 WBciBwE9pK8X+Mpcz+coFI0fCsFXUI3cDhA8G0aSuaOlj6Ha1vn9CEUb4nvWXsbnL
-	 sP8abGc3jpa9cECgbype1tq1ASmXz4QvB/eLfw9tkCTFbRelRFQmQuwRMdqgS/aV/
-	 6LYSIFIbRNJOMPPtPj0/dqIHYbTsGWPHjSj93P3j3q4MvHfTvPabjUSJg0vxRdx7j
-	 FTuywapdDhHKha7afA==
+	b=moZ+hifb7+2byidQb+PospfdMsn1Zgn3Xo3BCmvjHldxseo5W7XbFBPZAvgiqiwf
+	 ExuDsCkWhbE2WjcI06jpa8VtgBqqi3w6F+XSr5hktTPFv9zWDrccRY/R/vFh9ra7F
+	 KIIe/4PTgB8l5Bkc4D4mDemYPVdGtXz+3iBmzy6HiH0s8V6nMCTnGIoc2U0byXWBM
+	 0v96nQvnBrn7iPqSPCwBlrGSwCx5MpoC8I0cD6cH7fRvwpq8wYGQr0FCTa1jQXJmU
+	 KCZL38a8kP7dBcoBh7jJkQOgnNh7fXEY7Bk7Ndb6g7Nwk/7U4SEuLDHhqRF02c5Kp
+	 ZlFzlLpg1jTQW9AakQ==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from [192.168.20.55] ([83.135.217.92]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MAwXh-1s7ppk1TmT-006VoK; Mon, 17
- Jun 2024 07:53:57 +0200
-Message-ID: <84b56892-e172-44d7-9b09-a2eae3a24dd7@gmx.de>
-Date: Mon, 17 Jun 2024 07:53:55 +0200
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MNKlu-1s33u12UrS-00RiwV; Mon, 17
+ Jun 2024 07:58:55 +0200
+Message-ID: <85ef9e82-558b-4a96-9667-acb2038716fe@gmx.de>
+Date: Mon, 17 Jun 2024 07:58:54 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -58,14 +58,13 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 resend 8/9] video: fbdev: use
- for_each_endpoint_of_node()
+Subject: Re: [PATCH v4 resend 0/9] use for_each_endpoint_of_node()
 To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  dri-devel@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org,
  linux-fbdev@vger.kernel.org, linux-media@vger.kernel.org,
  linux-omap@vger.kernel.org, linux-staging@lists.linux.dev
 References: <87v828s7v0.wl-kuninori.morimoto.gx@renesas.com>
- <87jzios7t6.wl-kuninori.morimoto.gx@renesas.com>
 Content-Language: en-US
 From: Helge Deller <deller@gmx.de>
 Autocrypt: addr=deller@gmx.de; keydata=
@@ -111,60 +110,112 @@ Autocrypt: addr=deller@gmx.de; keydata=
  FwRDcGV6nxanxZGKEkSHHOm8jHwvQWvPP73pvuPBEPtKGLzbgd7OOcGZWtq2hNC6cRtsRdDx
  4TAGMCz4j238m+2mdbdhRh3iBnWT5yPFfnv/2IjFAk+sdix1Mrr+LIDF++kiekeq0yUpDdc4
  ExBy2xf6dd+tuFFBp3/VDN4U0UfG4QJ2fg19zE5Z8dS4jGIbLg==
-In-Reply-To: <87jzios7t6.wl-kuninori.morimoto.gx@renesas.com>
+In-Reply-To: <87v828s7v0.wl-kuninori.morimoto.gx@renesas.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:uNCDekLbyvIvaGfLmQqH/70IByajvIZVa+1xbf89g+5YDbKBgLh
- ueiha2kJVHFlaogibjkZSPK2pAfVZaK/aJ/aAEAyjGlWmjuNeyMlFCHAu+vA3TatyhcEJ4R
- vbyBlFA0kbn6S2Lf1VC6O11uWLhC/1I4R87xVy9IDMF5Q0kgT9ilw/6cWS1OEPoSFZZzcFn
- fzO4uXJI2v2QfwGl71Xfg==
+X-Provags-ID: V03:K1:r0x1YfLuiViZYe+gRUIZyYs9KMqwrj7gg4vqYWHQP3jzzu2J2vQ
+ 2tA003nABkGX+yvWQkfU8XfHklcBtSm0Wk4Jib1U1P7v2u/iTTKsefJnNPU7zBsQUvpoWDY
+ Bn97gMMD8ClI4sMqYXlRU2gmkdVHmgiwNe0FWx6oEivrXOZFg0HjHB+pDYAbxel4ny1fI56
+ Vvcf2gdthOWGl1QdLYmtg==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:gw4kfyx0zYg=;daTPmYDdr41yAFCBvxYsLSA3cPd
- W9uxQqMyI/AsQt+vYizn53xKM+vH2kkusXvoLEbDkRCyhSuxPIEPgl6RJnjnT7tnxAMh8Kp3P
- enQsz9kHAL5rgiczu2wNDxvV/nX/xLN1z+nhYw3yNFjOHZPBTYpTFhTZ6ntJSLfyEYZuvhhVO
- rH2UCfypPXjXiiwl259+sBLsrmRLc6cUeY5gzpXnpZuOrgUxcFQOBmVXOp0IbFgNFHVLsQmiG
- KO3RVbj5STaVQIGjJip2X1dvQzx43FTrepO5N4tgzznYAHp49uZLi8mRwis/tpuAy6/+9h3k3
- KBC7X4wmTMxTkokiITf5hlFSDQWzJ9xbMkmBxwxsWeeQL0ve3cLq8FK0usqfvdgFkHhpi7dth
- AApiVsNnN3BthrKq8CDyEC6P/hCaigg/9X8g1PqugMpDpjs+FXKLkzvlGz5aTWwVhmqZNQSHD
- lCyDqy2u15T46yej91klyEEnc5i/xlho/AaTuCjium7/8oW+wY7oXafv9QTUuoMD6EhCllG3C
- x2fOmLI3yninr1o59FYF2ZbTRBTswKbRjRVXMNkvXaGWsRo4Sb+PIxBfrngU6Q4mxNA2Ql2aM
- CNnbKD8dvYrZQh7dm73cUufxiKfNnKcCLCRRcicE+vXOL7WlM4ZNqfL0qGHqI48u19vMdj8xr
- IxA/G2pcM/3Rjca7XptNJsKKgPxS0qvAx0PXRdmoxlVtKnZ7CtwdEGD7vHfCylB55BYif1fde
- J07cX+3jSoZSp4ebDCYV1s8+5pIeiA1UywgNIGFw3gaaixpDFww6bdquQ98T4MwTO2fw1k7/6
- TjnIGgp9rMPNPazobSDEIXoWPOi9zu+Si4DK5z+bFKxqE=
+UI-OutboundReport: notjunk:1;M01:P0:rOPvLsu7E7Q=;zPfU/y0veqh7r5Vxg96s5cXbnKr
+ szn5uukJBNKOnveJzIvo5sofwj0ra7O3U1JtSOTROyDEFaTdcUujIK2DzuQ5aL163PoLlxYbz
+ lRpdoa7b/gTmgFwqk1ZtEgfOkNOHKEJGlTM6wewTjT1gAb82o58Ah5bblijFZVisF7ygu7MBi
+ 7qqz+K2rO5C0bniLuIZpIvpmihi9nUrRQ/SJJCeIILo13rLm8GswW3qP50Zbmz6swsQtslGyB
+ BHkvhlh4ly7NiYRXMYQkCwaHcttbRsyzrAB45hBbfXQngmx+lbKdguE/jWkTKtWWaz2CF/4RV
+ zh5yCzgQCB2MoLZbSg+1oekh2AeBNcDaDISxC4pq0r2hQBgnQYffI+WJM7o4hNaataW1l3bSQ
+ jRLIPbH/MiyRFZMMkvUtYHVBDQlR6HA688uyvx7lIfKFSFtxaOXBylBCMQVTdJB+xjiUjmzO5
+ MllyqMhw6HmjeyNqE0f/iVbiRJAfLvjWJexg2D/1MONQCojodcE5SmdE14dhw2U7zQbsTQVzy
+ cX2+ho69aZrPvQ8sjfXL6dZrnWV9DvOuXDlPhrVavrDCfCNBDfbmyQZ0alXEO5gPlASVhXY4j
+ vaWcDD64r803Bo+r2+41t7qS+higsB1oAWrQYZS6A8m2VuVIzHXyb5QLS0cJERe00eGHneYOW
+ JMs/lBQW6Ed9YwfKn+53pPW4UkdWWmcjN479B4TKG1PXYDKcJPa6rTXGKWPOy9CGIkHVxmtvC
+ jJ08xps8/aDUW5Mw1cZFgUtH9NbS6QTPQMs15+Hi5xhHk3Z4rlEmvn+bSOwjUZClL8cUe8/G8
+ mn1ZLkTeqpIU7AkYt90yIwiS9MNvTAUtD6UFlrtspejxM=
 
-On 6/17/24 02:59, Kuninori Morimoto wrote:
-> We already have for_each_endpoint_of_node(), don't use
-> of_graph_get_next_endpoint() directly. Replace it.
+On 6/17/24 02:58, Kuninori Morimoto wrote:
+> Hi Rob, Helge, +Sakari, +Hans
+
+Hi Kuninori,
+
+> 2 weeks past. This is resend v4 patch-set.
+> I add +Sakari, +Hans on To.
 >
-> Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-> Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com=
+> We already have for_each_endpoint_of_node(), but some drivers are
+> not using it. This patch-set replace it.
 >
+> This patch-set is related to "OF" (=3D Rob), but many driveres are for
+> "MultiMedia" (=3D Helge). I'm not sure who handle these.
 
-applied to fbdev git tree.
+I applied the two fbdev patches (#8 and #9), but I'm not maintainer for "m=
+ultimedia".
+For multimedia I expect people from linux-media@vger.kernel.org to pick yo=
+ur patches.
 
-Thanks!
 Helge
 
-> ---
->   drivers/video/fbdev/omap2/omapfb/dss/omapdss-boot-init.c | 3 +--
->   1 file changed, 1 insertion(+), 2 deletions(-)
 >
-> diff --git a/drivers/video/fbdev/omap2/omapfb/dss/omapdss-boot-init.c b/=
-drivers/video/fbdev/omap2/omapfb/dss/omapdss-boot-init.c
-> index 09f719af0d0c9..d80720c843235 100644
-> --- a/drivers/video/fbdev/omap2/omapfb/dss/omapdss-boot-init.c
-> +++ b/drivers/video/fbdev/omap2/omapfb/dss/omapdss-boot-init.c
-> @@ -149,8 +149,7 @@ static void __init omapdss_walk_device(struct device=
-_node *node, bool root)
+> I noticed that my posted 1 patch on (A) was not yet included on
+> linus/master. I have included it.
 >
->   	of_node_put(n);
+> Dan is indicating it needs _scoped() macro, but it is new new feature.
+> So I think we want to have separate this patch-set and _scoped() patch-s=
+et.
+> I asked it to ML/Maintainer but no responce, so v4 doesn't include it.
+> It will be handled by other patch-set in the future.
 >
-> -	n =3D NULL;
-> -	while ((n =3D of_graph_get_next_endpoint(node, n)) !=3D NULL) {
-> +	for_each_endpoint_of_node(node, n) {
->   		struct device_node *pn;
+> [o] done
+> [*] this patch-set
 >
->   		pn =3D of_graph_get_remote_port_parent(n);
+> 	[o] tidyup of_graph_get_endpoint_count()
+> (A)	[o] replace endpoint func - use endpoint_by_regs()
+> 	[*] replace endpoint func - use for_each()
+> 	[ ] add new port function
+> 	[ ] add new endpoint function
+>
+> v3 -> v4
+> 	- fixup ret handling
+>
+> v2 -> v3
+> 	- don't initialize pointer.
+> 	- add Reviewed-by / Acked-by
+> 	- include not-yet applied missing patch
+>
+> v1 -> v2
+> 	- fixup TI patch
+>
+> Link: https://lore.kernel.org/r/8734sf6mgn.wl-kuninori.morimoto.gx@renes=
+as.com
+> Link: https://lore.kernel.org/r/87cyrauf0x.wl-kuninori.morimoto.gx@renes=
+as.com
+> Link: https://lore.kernel.org/r/87le3soy08.wl-kuninori.morimoto.gx@renes=
+as.com
+>
+> Kuninori Morimoto (9):
+>    gpu: drm: replace of_graph_get_next_endpoint()
+>    gpu: drm: use for_each_endpoint_of_node()
+>    hwtracing: use for_each_endpoint_of_node()
+>    media: platform: microchip: use for_each_endpoint_of_node()
+>    media: platform: ti: use for_each_endpoint_of_node()
+>    media: platform: xilinx: use for_each_endpoint_of_node()
+>    staging: media: atmel: use for_each_endpoint_of_node()
+>    video: fbdev: use for_each_endpoint_of_node()
+>    fbdev: omapfb: use of_graph_get_remote_port()
+>
+>   drivers/gpu/drm/drm_of.c                      |  4 +++-
+>   drivers/gpu/drm/omapdrm/dss/base.c            |  3 +--
+>   .../drm/panel/panel-raspberrypi-touchscreen.c |  2 +-
+>   drivers/gpu/drm/tiny/arcpgu.c                 |  2 +-
+>   .../hwtracing/coresight/coresight-platform.c  |  4 ++--
+>   .../microchip/microchip-sama5d2-isc.c         | 21 +++++++------------
+>   .../microchip/microchip-sama7g5-isc.c         | 21 +++++++------------
+>   .../media/platform/ti/am437x/am437x-vpfe.c    | 12 +++++------
+>   .../media/platform/ti/davinci/vpif_capture.c  | 14 ++++++-------
+>   drivers/media/platform/xilinx/xilinx-vipp.c   |  9 ++------
+>   .../deprecated/atmel/atmel-sama5d2-isc.c      | 10 +++------
+>   .../deprecated/atmel/atmel-sama7g5-isc.c      | 10 +++------
+>   drivers/video/fbdev/omap2/omapfb/dss/dss-of.c | 15 +------------
+>   .../omap2/omapfb/dss/omapdss-boot-init.c      |  3 +--
+>   14 files changed, 46 insertions(+), 84 deletions(-)
+>
 
 
