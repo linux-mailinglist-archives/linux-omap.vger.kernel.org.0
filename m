@@ -1,116 +1,121 @@
-Return-Path: <linux-omap+bounces-1571-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1572-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC52E910B31
-	for <lists+linux-omap@lfdr.de>; Thu, 20 Jun 2024 18:07:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E3FE911460
+	for <lists+linux-omap@lfdr.de>; Thu, 20 Jun 2024 23:23:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCCE31C23CF7
-	for <lists+linux-omap@lfdr.de>; Thu, 20 Jun 2024 16:06:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF5491C21886
+	for <lists+linux-omap@lfdr.de>; Thu, 20 Jun 2024 21:23:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDF071B1510;
-	Thu, 20 Jun 2024 16:06:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0891A80055;
+	Thu, 20 Jun 2024 21:23:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VPz12hTE"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Plwywuxz"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FEBA1B14F6;
-	Thu, 20 Jun 2024 16:06:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1751842AA0;
+	Thu, 20 Jun 2024 21:22:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718899601; cv=none; b=hXkyHnT9H8L5chZd92rn/cwQGMPCn9BJWVIptFU9Oh4bHTBgoYgcRseIfJuDvtsp+AVXMR3rS2FclwhtkH9xhFLLdeIZJ5rv+aDwy+w3/NZfN0XcUy7TdBs5b9lq0yn3Q8CRl5M1euFQfS38HYynBfcpFxjaZ9gY7t4+1K/3VLw=
+	t=1718918579; cv=none; b=VaKc9eZG4ZfzupXKJ2hCKWuwBUPCVCstChD3eaLxQclcYg4wA3LDkB3ltF1hatrhXCA7j/h8OdLhekPFl477sn2v4+MFn0K+CHNxG/MeNI8DZ/xacC/Pe5xUkLv4jq85BdE5J95Kge6bxLpifOtKemoNA32zNm5Fn962shnfzxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718899601; c=relaxed/simple;
-	bh=LGtv35FvlZB5cEXYAShER66SaKuyixPdIhslDnimU3s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ry+sV1YzsRBJ5S5BmqPowfbIlP2dZ3J2S59AD2FLC31eSEhvLFNLlsbEM641grXFmHeFPVXQuOeHcufg40q5XkH40BKp+l/sohs336Th93K9uIIxRIYhg1qMAdCm66Pr75yoRS4Jj1UgzQW037yZlE/57jWxz7tYR8S13H1Q1do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VPz12hTE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BEA2C32786;
-	Thu, 20 Jun 2024 16:06:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718899601;
-	bh=LGtv35FvlZB5cEXYAShER66SaKuyixPdIhslDnimU3s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VPz12hTETnK/PrEGksITL4CZmnHLn1Nn60h6hvQKC6HMzxtbt8pQ398l1iyRpj946
-	 7l8qs1MckalfmTKkaRGyTS4gmPOYa72VFgY5endeozOaSxV/hTV4z2e+49OrI0nmio
-	 JTIAOuKJXI0AdLbLgiuEFYuUu/R/Mf/kVWUq5weg8cHEHj1OmNPKp5qYuO0/8bp5nV
-	 1iAwA/Tqcruvz3CbliVU0gAyN9dAhv9C8kVCearBtImJb3AFTDeN5ZrZXBZT8YjRp3
-	 iudTOQgRgLkqOEt1N5VAbhiec9NtlM5T9ThkgzrYbhwxNjJjrqpqWclf7lJSwp7mbi
-	 CHWpD/VEvHyBQ==
-Date: Thu, 20 Jun 2024 17:06:31 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Andi Shyti <andi.shyti@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Sergiu Moga <sergiu.moga@microchip.com>,
-	Benson Leung <bleung@chromium.org>,
-	Guenter Roeck <groeck@chromium.org>,
-	Doug Anderson <dianders@chromium.org>,
-	Enric Balletbo i Serra <eballetbo@kernel.org>,
-	Ricardo =?iso-8859-1?Q?Ca=F1uelo?= <ricardo.canuelo@collabora.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>, Vignesh R <vigneshr@ti.com>,
-	Kamal Dasu <kamal.dasu@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Chris Brandt <chris.brandt@renesas.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>,
-	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	chrome-platform@lists.linux.dev, linux-tegra@vger.kernel.org,
-	Krzysztof Kozlowski <krzk@kernel.org>, linux-omap@vger.kernel.org,
-	Kamal Dasu <kdasu.kdev@gmail.com>,
-	linux-renesas-soc@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com, stable@vger.kernel.org
-Subject: Re: [PATCH 0/7] dt-bindings: i2c: few fixes and cleanups
-Message-ID: <20240620-recite-deeply-ec4aa7458d45@spud>
-References: <20240620-dt-bindings-i2c-clean-v1-0-3a1016a95f9d@linaro.org>
+	s=arc-20240116; t=1718918579; c=relaxed/simple;
+	bh=GDgGkg0Yj2EE5vJkYyer4j+Q1CG8W74PJRFZHyebJN4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=bklmkLjdpXWZWl23klC+uS6g1lqDnLCqIpkfgot3v1wUCjQvhx2rm9aQZlIXelalY0LLecb9CELId9iSNQkyXGgm0/zBRqK/FIBscNKHUNPgq4eGG77b6nQRdZwbj1RhiCdS20Pwjb8dMM4NjwGl5OvRM8bmTNcYkc5h5j4xLKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Plwywuxz; arc=none smtp.client-ip=209.85.167.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-52c9034860dso1695228e87.2;
+        Thu, 20 Jun 2024 14:22:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718918575; x=1719523375; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=kPwwtH//0wnbpjFYmpeK+hM9/Cx6E9LC6hzzO3I99Z0=;
+        b=PlwywuxzEFri+VUNIVWhrM3srx7y8h9Bc+G2ZGFeY5QouDrVde+gHawBVh0roGGKlO
+         bj0bDOGCXh6Xillo5hGrG4FN1BEjfKog+zlD+RjWP+SdqSjMsq5i9fHdvBweBngByoAX
+         SChkLN7AYNHkiO7rMNRJSV2pjSmfoXr6x/payFxb/md1BsF4zula7x7N7F3LPuel5o6I
+         4Q2I4q4eBgZ98ZKT8EKJyJbdeqivmffYlaKyLdzNsvcm2GSL6A7uFQrwY4UnX1gW2ECf
+         m4Hg3PwLwnsy8LYT6FfRT0wEAVZ3cOtERoPxm1+L8L2g6bvPCbHCI6swMhS0d8mbT3+g
+         yupA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718918575; x=1719523375;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kPwwtH//0wnbpjFYmpeK+hM9/Cx6E9LC6hzzO3I99Z0=;
+        b=SDjEhw2OW319JqsdPwal9fvjcz8MWLVB6aF6lvtWxf+0sWzTj1NzZw6GTZGU+28H2v
+         Az4ZGAc0ULZf8eeCE316DEyDFoitaRLCQpyn78up1/n6JXN/SMomsQ+DFrYH1VsVhLV9
+         ENgh42hAVBc0GT84sms2POL8xlynHA25p1vhbB9XrqHbfJ2YJ5892VWOkFY5n+CGmdEf
+         Bwju30AHXe1KqSuZLdP6Yk+EpTURGfbn9QlVja9juztz5Ko7V4Xz5CKKfSwOjUWbA0yf
+         IDH5hmf6UBe13PimmhaGopnwmpxgMT5PiicrjASx7hzvsNI5MJTwh7L9MQGk1oZiYoQJ
+         +Mkg==
+X-Forwarded-Encrypted: i=1; AJvYcCXtbur6IJ4ZF/qPFKlpQ/yEsq/GRgLehkObi/ZRU3CfOQNPprp7r1YjPkKthUUji9LB/5MSprrBKcNp+HfD8pZRi0lyBKM/AMjTyEqCmAZv4YUph34QWRbRf2cuON7yaeFeTJX7XNJCseKS+hTW
+X-Gm-Message-State: AOJu0YzqKC6TqjeUUVg+U/WpXBEMH2Ipb6um7vsU9HDC/XBODA+y70JR
+	vi5sIeq9CZAhA/ScxQbvhidrh5uIjVTbikVwthH6Tk82oSoWTS69zOcbdMYj
+X-Google-Smtp-Source: AGHT+IEhHE0DBIWuyi2NQmDBurFByj1XamWxMXXorNUJtZVekzIzBKu3wk6+7MK7XBCfrVepsvVdZw==
+X-Received: by 2002:a05:6512:3046:b0:52c:84ac:8fa2 with SMTP id 2adb3069b0e04-52ccaa2a9aamr5773385e87.7.1718918574711;
+        Thu, 20 Jun 2024 14:22:54 -0700 (PDT)
+Received: from [127.0.1.1] (84-115-213-103.cable.dynamic.surfer.at. [84.115.213.103])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6fcf560d82sm10922666b.172.2024.06.20.14.22.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Jun 2024 14:22:54 -0700 (PDT)
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Subject: [PATCH 0/2] mfd: omap-usb-tll: annotate struct usbtll_omap with
+ __counted_by
+Date: Thu, 20 Jun 2024 23:22:32 +0200
+Message-Id: <20240620-omap-usb-tll-counted_by-v1-0-77797834bb9a@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="OWprGERt14zJA7P2"
-Content-Disposition: inline
-In-Reply-To: <20240620-dt-bindings-i2c-clean-v1-0-3a1016a95f9d@linaro.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJiddGYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDMyMD3fzcxALd0uIk3ZKcHN3k/NK8ktSU+KRK3cTEZFPzZENzYwNDCyW
+ g7oKi1LTMCrDJ0bG1tQAPZnBjaQAAAA==
+To: Tony Lindgren <tony@atomide.com>, Lee Jones <lee@kernel.org>, 
+ Kees Cook <kees@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc: linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-hardening@vger.kernel.org, 
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>
+X-Mailer: b4 0.14-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1718918573; l=777;
+ i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
+ bh=GDgGkg0Yj2EE5vJkYyer4j+Q1CG8W74PJRFZHyebJN4=;
+ b=0+KFrVh9sPHFnxp0hq8y/1fersFd19kZUHxlWxvjzxytVBK5u1BfdzAo5dtRopTsKK8PK6G9j
+ bpzAjUOTkkHAaBYZszI57SGQ8wZBEgsZs69ead+2/p/9kJCuIzaFXfN
+X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
+ pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
+The first patch carries out a straightforward annotation, given that the
+number of channels is initialized before any reference to the flexible
+array.
 
---OWprGERt14zJA7P2
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+I might need some feedback on the second patch. I added a comment
+regarding the issue to provide clarification.
 
-On Thu, Jun 20, 2024 at 01:34:48PM +0200, Krzysztof Kozlowski wrote:
-> Few fixes for I2C controller schemas. The third patch (atmel,at91sam)
-> depends on first, so I suggest not splitting this into fixes branch but
-> take as is via next branch.
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+---
+Javier Carrasco (2):
+      mfd: omap-usb-tll: annotate struct usbtll_omap with __counted_by
+      mfd: omap-usb-tll: use struct_size to allocate tll
 
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+ drivers/mfd/omap-usb-tll.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
+---
+base-commit: b992b79ca8bc336fa8e2c80990b5af80ed8f36fd
+change-id: 20240620-omap-usb-tll-counted_by-aac57c173018
 
---OWprGERt14zJA7P2
-Content-Type: application/pgp-signature; name="signature.asc"
+Best regards,
+-- 
+Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZnRThwAKCRB4tDGHoIJi
-0qmFAP4qVsTO5fhoHDH/KxLOQ9oIndV8aFx4pmYEmgmRLGL9OQEArGLygc2tOMFb
-gTTMxW9UouX8OISj6ZTyIyS1QKmpIgI=
-=vTRs
------END PGP SIGNATURE-----
-
---OWprGERt14zJA7P2--
 
