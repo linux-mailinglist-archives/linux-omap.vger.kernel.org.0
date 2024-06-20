@@ -1,75 +1,76 @@
-Return-Path: <linux-omap+bounces-1572-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1573-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E3FE911460
-	for <lists+linux-omap@lfdr.de>; Thu, 20 Jun 2024 23:23:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60342911462
+	for <lists+linux-omap@lfdr.de>; Thu, 20 Jun 2024 23:23:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF5491C21886
-	for <lists+linux-omap@lfdr.de>; Thu, 20 Jun 2024 21:23:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C249281A0C
+	for <lists+linux-omap@lfdr.de>; Thu, 20 Jun 2024 21:23:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0891A80055;
-	Thu, 20 Jun 2024 21:23:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D063823DC;
+	Thu, 20 Jun 2024 21:23:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Plwywuxz"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Yvmc7sq8"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1751842AA0;
-	Thu, 20 Jun 2024 21:22:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28D337E572;
+	Thu, 20 Jun 2024 21:22:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718918579; cv=none; b=VaKc9eZG4ZfzupXKJ2hCKWuwBUPCVCstChD3eaLxQclcYg4wA3LDkB3ltF1hatrhXCA7j/h8OdLhekPFl477sn2v4+MFn0K+CHNxG/MeNI8DZ/xacC/Pe5xUkLv4jq85BdE5J95Kge6bxLpifOtKemoNA32zNm5Fn962shnfzxE=
+	t=1718918580; cv=none; b=IK+vPLIi6ydWSyIj/qpUP068wd0A2fZTi42d1SrB3t32md0Ub0W709QH2V5fHpb7S0PM5IINYYnr9NuMbl48PDv/zMPwViDopRJDpn1XS9VxSrVgWPrLMso7dgT0+uOMNGD1fXvjMy3gUc/NXKFGMsQNIAt4ofxsMq16SAASXWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718918579; c=relaxed/simple;
-	bh=GDgGkg0Yj2EE5vJkYyer4j+Q1CG8W74PJRFZHyebJN4=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=bklmkLjdpXWZWl23klC+uS6g1lqDnLCqIpkfgot3v1wUCjQvhx2rm9aQZlIXelalY0LLecb9CELId9iSNQkyXGgm0/zBRqK/FIBscNKHUNPgq4eGG77b6nQRdZwbj1RhiCdS20Pwjb8dMM4NjwGl5OvRM8bmTNcYkc5h5j4xLKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Plwywuxz; arc=none smtp.client-ip=209.85.167.43
+	s=arc-20240116; t=1718918580; c=relaxed/simple;
+	bh=lIk21poydkHZA9G6tN8B5DcddOq3+4kRdZcXWZ3eiDw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=Kn3kQ2Q3pgT5bgoK+F/rJVRDk/37/BKNU+4BQrF58soeWn8vTS24Iknl4TbO4l45HCPZmDmHeRmwTWcL0G33iIMcapVlJdmrl0XCvWNJDdkR04bNHbH77MDHnv2Qzw9OCF3ekhVSGZr4zbf9hREbyUDc/Xx3R/UUG6cpTsiQwFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Yvmc7sq8; arc=none smtp.client-ip=209.85.218.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-52c9034860dso1695228e87.2;
-        Thu, 20 Jun 2024 14:22:57 -0700 (PDT)
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a6f04afcce1so158304366b.2;
+        Thu, 20 Jun 2024 14:22:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718918575; x=1719523375; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=kPwwtH//0wnbpjFYmpeK+hM9/Cx6E9LC6hzzO3I99Z0=;
-        b=PlwywuxzEFri+VUNIVWhrM3srx7y8h9Bc+G2ZGFeY5QouDrVde+gHawBVh0roGGKlO
-         bj0bDOGCXh6Xillo5hGrG4FN1BEjfKog+zlD+RjWP+SdqSjMsq5i9fHdvBweBngByoAX
-         SChkLN7AYNHkiO7rMNRJSV2pjSmfoXr6x/payFxb/md1BsF4zula7x7N7F3LPuel5o6I
-         4Q2I4q4eBgZ98ZKT8EKJyJbdeqivmffYlaKyLdzNsvcm2GSL6A7uFQrwY4UnX1gW2ECf
-         m4Hg3PwLwnsy8LYT6FfRT0wEAVZ3cOtERoPxm1+L8L2g6bvPCbHCI6swMhS0d8mbT3+g
-         yupA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718918575; x=1719523375;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=gmail.com; s=20230601; t=1718918577; x=1719523377; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=kPwwtH//0wnbpjFYmpeK+hM9/Cx6E9LC6hzzO3I99Z0=;
-        b=SDjEhw2OW319JqsdPwal9fvjcz8MWLVB6aF6lvtWxf+0sWzTj1NzZw6GTZGU+28H2v
-         Az4ZGAc0ULZf8eeCE316DEyDFoitaRLCQpyn78up1/n6JXN/SMomsQ+DFrYH1VsVhLV9
-         ENgh42hAVBc0GT84sms2POL8xlynHA25p1vhbB9XrqHbfJ2YJ5892VWOkFY5n+CGmdEf
-         Bwju30AHXe1KqSuZLdP6Yk+EpTURGfbn9QlVja9juztz5Ko7V4Xz5CKKfSwOjUWbA0yf
-         IDH5hmf6UBe13PimmhaGopnwmpxgMT5PiicrjASx7hzvsNI5MJTwh7L9MQGk1oZiYoQJ
-         +Mkg==
-X-Forwarded-Encrypted: i=1; AJvYcCXtbur6IJ4ZF/qPFKlpQ/yEsq/GRgLehkObi/ZRU3CfOQNPprp7r1YjPkKthUUji9LB/5MSprrBKcNp+HfD8pZRi0lyBKM/AMjTyEqCmAZv4YUph34QWRbRf2cuON7yaeFeTJX7XNJCseKS+hTW
-X-Gm-Message-State: AOJu0YzqKC6TqjeUUVg+U/WpXBEMH2Ipb6um7vsU9HDC/XBODA+y70JR
-	vi5sIeq9CZAhA/ScxQbvhidrh5uIjVTbikVwthH6Tk82oSoWTS69zOcbdMYj
-X-Google-Smtp-Source: AGHT+IEhHE0DBIWuyi2NQmDBurFByj1XamWxMXXorNUJtZVekzIzBKu3wk6+7MK7XBCfrVepsvVdZw==
-X-Received: by 2002:a05:6512:3046:b0:52c:84ac:8fa2 with SMTP id 2adb3069b0e04-52ccaa2a9aamr5773385e87.7.1718918574711;
-        Thu, 20 Jun 2024 14:22:54 -0700 (PDT)
+        bh=neE7INAukEKjE2SAP61WvkGQBYpsrnRiNjBLU4VnvgE=;
+        b=Yvmc7sq83eypaEujZSjM9QXDY6so0uLO5irAyJjxY1bSULvkq5+Cu84HQARvyrUrms
+         60+MgelzI/YyJqT3n1Lh1T7O7xj2KSQTKzp2xuD7m83GYSo7u4kQOSmW/STD9xB4nd4b
+         VzTK+7zD9J45KPxbk0L2QW/ep5Z2diyiEYud0Ax0BrhXnxS9RUcaazfau0OFw6NMdKP/
+         dYt0eBxWbVRpe1tCoUi9P8YeMjqCVMmh3XaX852tEEd9s0A94YWhbu65tZCFGyXF8ywi
+         Euo7wNTOTODC8s8cl0QgDaOkQEDDJewW7Ppq8uBbATrq+PioJFlTt9GlnvGYbeoPMZFX
+         GCsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718918577; x=1719523377;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=neE7INAukEKjE2SAP61WvkGQBYpsrnRiNjBLU4VnvgE=;
+        b=WL8xOAM4h+dZircJMWBaRuuqJvVj+HJoy6CRgr2dw7RRL1c5P5O6nel2WTQUdcUOF/
+         0qfuOcIhYI/cLwNyErWTUb1Gw++9LlgzRNuBiRVJbLHve35Jmm0Zrdwl1XDoiWUuJ4DA
+         4sOeu3AbnKKTgkT+9SgFyFLexrboZygrPtvD0I6beyIvQcLcMSADha5RCshgQVl62YGg
+         5qsI8ux+jtcZJfQglnCPqDi6RIUZBJPIOmVeoylagfRb/UuujKWpOaJp73qmYamJKyUk
+         iQwQ19gXf55CLWmEfYPXjHsbFxDhbtqSIruy05HAp0NP3O/xFieMrzI5niZOGRaDpsdW
+         4nMg==
+X-Forwarded-Encrypted: i=1; AJvYcCVh/6lh0F74kllQTqe1gVeq63fw6YJ28NQICn4653IaSAMbttnxty44D+KJqbX1NNBxnwPKoBc6dWYXxGhNEDbVwYU3X6J4HWFA3tGWj4AadavM4fVVZ7JFs54TjEJ8yIzLLtAlO/TqLc0f3tSV
+X-Gm-Message-State: AOJu0YyS9EtP4iQtLqgx41pJ1eeACGdBMmdBuxlSZ54Nf64O6gJQMZb7
+	2hUIEF/DmcK44QFOtf86pmowJkFnMlUmlDi1/pwQnRxKCNl30XGArgYl2ROP
+X-Google-Smtp-Source: AGHT+IHE8ItVOOXbIoL6tYrHXRW76APqXsARzi48ADeaS42ghc3AmYrzBRdZpOM2u20JmJDU/Qzxgg==
+X-Received: by 2002:a17:906:9c88:b0:a6f:b58f:ae47 with SMTP id a640c23a62f3a-a6fb58fba6emr494986866b.10.1718918576877;
+        Thu, 20 Jun 2024 14:22:56 -0700 (PDT)
 Received: from [127.0.1.1] (84-115-213-103.cable.dynamic.surfer.at. [84.115.213.103])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6fcf560d82sm10922666b.172.2024.06.20.14.22.53
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6fcf560d82sm10922666b.172.2024.06.20.14.22.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Jun 2024 14:22:54 -0700 (PDT)
+        Thu, 20 Jun 2024 14:22:56 -0700 (PDT)
 From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Subject: [PATCH 0/2] mfd: omap-usb-tll: annotate struct usbtll_omap with
+Date: Thu, 20 Jun 2024 23:22:33 +0200
+Subject: [PATCH 1/2] mfd: omap-usb-tll: annotate struct usbtll_omap with
  __counted_by
-Date: Thu, 20 Jun 2024 23:22:32 +0200
-Message-Id: <20240620-omap-usb-tll-counted_by-v1-0-77797834bb9a@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -78,44 +79,51 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAJiddGYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxMDMyMD3fzcxALd0uIk3ZKcHN3k/NK8ktSU+KRK3cTEZFPzZENzYwNDCyW
- g7oKi1LTMCrDJ0bG1tQAPZnBjaQAAAA==
+Message-Id: <20240620-omap-usb-tll-counted_by-v1-1-77797834bb9a@gmail.com>
+References: <20240620-omap-usb-tll-counted_by-v1-0-77797834bb9a@gmail.com>
+In-Reply-To: <20240620-omap-usb-tll-counted_by-v1-0-77797834bb9a@gmail.com>
 To: Tony Lindgren <tony@atomide.com>, Lee Jones <lee@kernel.org>, 
  Kees Cook <kees@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>
 Cc: linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-hardening@vger.kernel.org, 
  Javier Carrasco <javier.carrasco.cruz@gmail.com>
 X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1718918573; l=777;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1718918573; l=894;
  i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
- bh=GDgGkg0Yj2EE5vJkYyer4j+Q1CG8W74PJRFZHyebJN4=;
- b=0+KFrVh9sPHFnxp0hq8y/1fersFd19kZUHxlWxvjzxytVBK5u1BfdzAo5dtRopTsKK8PK6G9j
- bpzAjUOTkkHAaBYZszI57SGQ8wZBEgsZs69ead+2/p/9kJCuIzaFXfN
+ bh=lIk21poydkHZA9G6tN8B5DcddOq3+4kRdZcXWZ3eiDw=;
+ b=OSYqIWUNEtCTr93tYWr99r1gbCF+xJchXhwy2mfzRxuz1aEP4QRMX8dMQ6kZdSzbRg3pQhOY6
+ 8eNfezEiTx4A3X4pljDQBN4SfsYZr+Nk2lsBMFTVndf+JUSeCeOl+0y
 X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
  pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
-The first patch carries out a straightforward annotation, given that the
-number of channels is initialized before any reference to the flexible
-array.
+Use the __counted_by compiler attribute for the "struct clk *ch_clk[]"
+flexible array member to improve the results of array bound sanitizers.
 
-I might need some feedback on the second patch. I added a comment
-regarding the issue to provide clarification.
+The comments for the variables are no longer needed as it is now clear
+what is what.
 
 Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 ---
-Javier Carrasco (2):
-      mfd: omap-usb-tll: annotate struct usbtll_omap with __counted_by
-      mfd: omap-usb-tll: use struct_size to allocate tll
+ drivers/mfd/omap-usb-tll.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
- drivers/mfd/omap-usb-tll.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
----
-base-commit: b992b79ca8bc336fa8e2c80990b5af80ed8f36fd
-change-id: 20240620-omap-usb-tll-counted_by-aac57c173018
+diff --git a/drivers/mfd/omap-usb-tll.c b/drivers/mfd/omap-usb-tll.c
+index b6303ddb013b..a091e5b0f21d 100644
+--- a/drivers/mfd/omap-usb-tll.c
++++ b/drivers/mfd/omap-usb-tll.c
+@@ -98,8 +98,8 @@
+ 
+ struct usbtll_omap {
+ 	void __iomem	*base;
+-	int		nch;		/* num. of channels */
+-	struct clk	*ch_clk[];	/* must be the last member */
++	int		nch;
++	struct clk	*ch_clk[] __counted_by(nch);
+ };
+ 
+ /*-------------------------------------------------------------------------*/
 
-Best regards,
 -- 
-Javier Carrasco <javier.carrasco.cruz@gmail.com>
+2.40.1
 
 
