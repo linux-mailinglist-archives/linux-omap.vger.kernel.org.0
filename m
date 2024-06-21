@@ -1,118 +1,157 @@
-Return-Path: <linux-omap+bounces-1577-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1578-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED85191207E
-	for <lists+linux-omap@lfdr.de>; Fri, 21 Jun 2024 11:27:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42C0D91214E
+	for <lists+linux-omap@lfdr.de>; Fri, 21 Jun 2024 11:53:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8FDA283352
-	for <lists+linux-omap@lfdr.de>; Fri, 21 Jun 2024 09:27:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73C2F1C238BA
+	for <lists+linux-omap@lfdr.de>; Fri, 21 Jun 2024 09:53:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 788FD16E88B;
-	Fri, 21 Jun 2024 09:27:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEE4816F859;
+	Fri, 21 Jun 2024 09:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MvDBwLWb"
+	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="JfJzCQK0"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E377112D1EB;
-	Fri, 21 Jun 2024 09:27:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4991A16F84A
+	for <linux-omap@vger.kernel.org>; Fri, 21 Jun 2024 09:53:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718962048; cv=none; b=M7jtpBGUVhEttzMh+/N4c/HUd8hVN0k6b7fVG2TZCTx6N2i6Tp9DOJu8ZRo1GA7Ujg7nbU9eiTIsPwU6N5IU7n+VFF+ZcoP/H+KSuNd48YFCT5mf4H7CIEr1ipaJSdUatQlBCiAcSqbwM49Kvzot5qPteyVKYbA9k8QIW1oG+dA=
+	t=1718963629; cv=none; b=L1jFvZwK+19F3rRh5dBTyoyhAWDOxl55xSzqr++8+ILNcEgRgy7mimzDUjf4b0Jy70A1j04jBMScV8zoop/RuI7dLY21xmMGsYckhYA46BWXhKBv3k5LP661YZkpMn9JQxnJyQKP39bgYBShWSyHxwSu/tnkPpN5jOnEv3J5gr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718962048; c=relaxed/simple;
-	bh=uhH10vmIJUKkPbdPA4/INQpMI+q9x/UjstbjxvXrdJE=;
+	s=arc-20240116; t=1718963629; c=relaxed/simple;
+	bh=9X27kAi88t13JEAFL9myOVAMxXzM/vgQYLhQyo43drE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Bp+ricdlcQ9eAFMfxPiVCrLdhN4866P4WABO2DOReaRPrfpcm+TDBGsA4mYTDk8Oq+jONWUMEtFbB2p/bb6+AbZv8h6mFnQTR9chTuctP9Yvz6y5NG1qGvFx6m/A57QdTcsCy8PY2TLTG9AFqrLh2iOIEy4GCMPNNGEacdgLdss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MvDBwLWb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAE34C2BBFC;
-	Fri, 21 Jun 2024 09:27:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718962047;
-	bh=uhH10vmIJUKkPbdPA4/INQpMI+q9x/UjstbjxvXrdJE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MvDBwLWb2dv893GPCGGbeTdvIWAMyKlOsPT/1BC5DgW8PlNDKB8sb9QRzT1auO0Q2
-	 lVxKjTcfQUsdJUTUT0vdx9mBmGvm9lGgwEvm6fwUW07u92IkS0lsWDnzoTl/NqoTE6
-	 eSArKee1Bsqtdy3KpGfXRDr1E+ZsnP2Q2JHUhUYmzipoD8sgrmFJg38on8AjE+O8qG
-	 ftviQRYS9VkELyn58VdzALl2sa9TQj5ph9057h7xNzdDMRRSmVuTjfPC1OxsC9Vpxc
-	 oOFLLdUfr1c2w/qRQBlLTGDjMm8YxxDZrrXpxIqahjcSO7wR6GB0oDXFxPfLQ4p776
-	 4H9YFZxq9vsXg==
-Date: Fri, 21 Jun 2024 11:27:23 +0200
-From: Andi Shyti <andi.shyti@kernel.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Nicolas Ferre <nicolas.ferre@microchip.com>, Alexandre Belloni <alexandre.belloni@bootlin.com>, 
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>, Sergiu Moga <sergiu.moga@microchip.com>, 
-	Benson Leung <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>, 
-	Doug Anderson <dianders@chromium.org>, Enric Balletbo i Serra <eballetbo@kernel.org>, 
-	Ricardo =?utf-8?Q?Ca=C3=B1uelo?= <ricardo.canuelo@collabora.com>, Thierry Reding <thierry.reding@gmail.com>, 
-	Jonathan Hunter <jonathanh@nvidia.com>, Vignesh R <vigneshr@ti.com>, 
-	Kamal Dasu <kamal.dasu@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Florian Fainelli <florian.fainelli@broadcom.com>, 
-	Wolfram Sang <wsa+renesas@sang-engineering.com>, Chris Brandt <chris.brandt@renesas.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
-	Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>, linux-i2c@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, chrome-platform@lists.linux.dev, 
-	linux-tegra@vger.kernel.org, Krzysztof Kozlowski <krzk@kernel.org>, 
-	linux-omap@vger.kernel.org, Kamal Dasu <kdasu.kdev@gmail.com>, 
-	linux-renesas-soc@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, stable@vger.kernel.org
-Subject: Re: [PATCH 0/7] dt-bindings: i2c: few fixes and cleanups
-Message-ID: <5vbvx7qnbv7dwugmnp2sitlpvvsor4hn573spbwaklwbwvilfy@evntmrout65x>
-References: <20240620-dt-bindings-i2c-clean-v1-0-3a1016a95f9d@linaro.org>
- <qru4aqjphjnjpo6yjxl2oznhlz774iv77u4u7u4jldnmlanps5@vpzxntuz6arp>
- <6bc864d6-11de-4762-b309-2e2a3bffaa24@linaro.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=ndhRsg+sbdlxWx6ZiTloaGAXvVqvjkQsysVl+nC8IASGJJ5MFfMBKn3hO+VGEBD77JGxHMPCVeWFWUFTZUfURygoC07uk3OsHmPLyooG3AeGjeyoZNGWuEl8Q2ZgXkaSNMqXipzFD9UGQWyZRGUb9Zbf8EElyNFLKWdC65lF/vA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=JfJzCQK0; arc=none smtp.client-ip=194.117.254.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=date:from:to:cc:subject:message-id
+	:references:mime-version:content-type:in-reply-to; s=k1; bh=RPfT
+	8u6a3+40tK3oCZZfl86nwYXzLiH9ajhehJvBjqs=; b=JfJzCQK0ozaPEuqmU/lq
+	8h/+hfxTrqCfF0yKoNf5BY1by4bKOrS3weHMmmqAD2hCgk9zoWs/etD3B3iTVI7j
+	qYLp9HRiCzt0qgaosA1jZz2oYj33/h4EriTTD0c/ziUWCJgIgiL0QqvVsnxxLbbP
+	Kzj0oF0UdKzsCG2ntXXe/AuL6erfPPSJQA0hdgf8MIPulqO6Umd1GPAWb3bV5ZXj
+	zABGh8fc0vEBOKAddFTf8k9tiLeiINDjk7ViMnMRtndwfdHLilDztl4EKlsKUkOQ
+	sSi9Z+2s9e3UGLXgOt3t0SsCJLfr0Up+yFOuq4MD1+EA3fzcCh+JHh2lS8szanCs
+	ww==
+Received: (qmail 1326092 invoked from network); 21 Jun 2024 11:53:44 +0200
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 21 Jun 2024 11:53:44 +0200
+X-UD-Smtp-Session: l3s3148p1@6DcuaGMbKqogAwDPXzjQABqqX1QYyOSW
+Date: Fri, 21 Jun 2024 11:53:43 +0200
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: Allen Pais <allen.lkml@gmail.com>
+Cc: Aubin Constans <aubin.constans@microchip.com>, 
+	Ulf Hansson <ulf.hansson@linaro.org>, Nicolas Ferre <nicolas.ferre@microchip.com>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+	Manuel Lauss <manuel.lauss@gmail.com>, =?utf-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>, 
+	Jaehoon Chung <jh80.chung@samsung.com>, Aaro Koskinen <aaro.koskinen@iki.fi>, 
+	Adrian Hunter <adrian.hunter@intel.com>, Florian Fainelli <florian.fainelli@broadcom.com>, 
+	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Alex Dubov <oakad@yahoo.com>, 
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Bruce Chang <brucechang@via.com.tw>, Harald Welte <HaraldWelte@viatech.com>, 
+	Pierre Ossman <pierre@ossman.eu>, Christian Loehle <christian.loehle@arm.com>, 
+	linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org
+Subject: Re: [PATCH v3] mmc: Convert from tasklet to BH workqueue
+Message-ID: <gw6adkoy3ndjdjufti2gs2gnk3xdgylt6tnia2zha76hsgdwtq@dr3czbxjij66>
+Mail-Followup-To: Wolfram Sang <wsa+renesas@sang-engineering.com>, 
+	Allen Pais <allen.lkml@gmail.com>, Aubin Constans <aubin.constans@microchip.com>, 
+	Ulf Hansson <ulf.hansson@linaro.org>, Nicolas Ferre <nicolas.ferre@microchip.com>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+	Manuel Lauss <manuel.lauss@gmail.com>, =?utf-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>, 
+	Jaehoon Chung <jh80.chung@samsung.com>, Aaro Koskinen <aaro.koskinen@iki.fi>, 
+	Adrian Hunter <adrian.hunter@intel.com>, Florian Fainelli <florian.fainelli@broadcom.com>, 
+	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Alex Dubov <oakad@yahoo.com>, 
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Bruce Chang <brucechang@via.com.tw>, Harald Welte <HaraldWelte@viatech.com>, 
+	Pierre Ossman <pierre@ossman.eu>, Christian Loehle <christian.loehle@arm.com>, 
+	linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org
+References: <20240618225210.825290-1-allen.lkml@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="gq4kufue4w3vtipq"
+Content-Disposition: inline
+In-Reply-To: <20240618225210.825290-1-allen.lkml@gmail.com>
+
+
+--gq4kufue4w3vtipq
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <6bc864d6-11de-4762-b309-2e2a3bffaa24@linaro.org>
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jun 21, 2024 at 08:02:03AM GMT, Krzysztof Kozlowski wrote:
-> On 21/06/2024 01:05, Andi Shyti wrote:
-> > Cześć Krzysztof,
-> > 
-> > On Thu, Jun 20, 2024 at 01:34:48PM GMT, Krzysztof Kozlowski wrote:
-> >> Few fixes for I2C controller schemas. The third patch (atmel,at91sam)
-> >> depends on first, so I suggest not splitting this into fixes branch but
-> >> take as is via next branch.
-> >>
-> >> Best regards,
-> >> Krzysztof
-> >>
-> >> ---
-> >> Krzysztof Kozlowski (7):
-> >>       dt-bindings: i2c: atmel,at91sam: correct path to i2c-controller schema
-> >>       dt-bindings: i2c: google,cros-ec-i2c-tunnel: correct path to i2c-controller schema
-> > 
-> > merged to i2c/i2c-host-fixes
-> > 
-> >>       dt-bindings: i2c: atmel,at91sam: drop unneeded address/size-cells
-> >>       dt-bindings: i2c: nvidia,tegra20: drop unneeded address/size-cells
-> >>       dt-bindings: i2c: samsung,s3c2410: drop unneeded address/size-cells
-> >>       dt-bindings: i2c: ti,omap4: reference i2c-controller.yaml schema
-> >>       dt-bindings: i2c: adjust indentation in DTS example to coding style
-> > 
-> > merged to i2c/i2c-host
-> 
-> So you broke the binding... Why openly ignoring my first sentence?
+Hi,
 
-It's not an issue. We can get the fixes first and apply the rest
-later, I can keep them in my -next branch and reapply next week.
+On Tue, Jun 18, 2024 at 03:52:07PM GMT, Allen Pais wrote:
+> The only generic interface to execute asynchronously in the BH context is
+> tasklet; however, it's marked deprecated and has some design flaws. To
+> replace tasklets, BH workqueue support was recently added. A BH workqueue
+> behaves similarly to regular workqueues except that the queued work items
+> are executed in the BH context.
+>=20
+> This patch converts drivers/mmc/* from tasklet to BH workqueue.
+>=20
+> Based on the work done by Tejun Heo <tj@kernel.org>
 
-Otherwise I would wait for everything at the merge window, but I
-don't want to wait so long.
+Has this been fully build-tested?
 
-Thanks,
-Andi
+=3D=3D=3D
+drivers/mmc/host/renesas_sdhi_internal_dmac.c: In function =E2=80=98renesas=
+_sdhi_internal_dmac_complete_work_fn=E2=80=99:
+=2E/include/linux/container_of.h:20:54: error: =E2=80=98struct tmio_mmc_hos=
+t=E2=80=99 has no member named =E2=80=98dma_complete=E2=80=99
+=3D=3D=3D
+
+In deed, 'dma_complete' is only in 'struct renesas_sdhi_dma'. From
+there, we can get to the parent 'struct renesas_sdhi' using
+container_of. But then, I don't see a way to go to 'struct
+tmio_mmc_host' from there. The other way around is possible because
+there is the pointer 'struct tmio_mmc_data *pdata' in the TMIO struct
+pointing to the data contained in 'struct renesas_sdhi'. 'host_to_priv()'
+does the math. But I don't see a path the other way around.
+
+So, it doesn't look like the workqueue interface can provide a
+generic pointer like tasklets could do? This means we have to add a
+pointer from 'struct renesas_sdhi' to 'struct tmio_mmc_host'?
+
+All the best,
+
+   Wolfram
+
+
+--gq4kufue4w3vtipq
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmZ1TaMACgkQFA3kzBSg
+KbanVQ//dqEZ+e/wVpBJ/SIXoF0cFcPn3VByooLZaUBcc7mmkHJCynUy3IleRLG2
+zyPZXbb4367ZgKpi4MtZ9xFVQB2l1+Vwcag8Si0wn6HT6uJfAZpzICet+yovlam/
+alBGpZQBCQbiRNXakttLhByw9+KHIcQHMQQlsdzW5V8L8w1LZYgr/N2vxnz3Bwqv
+c3XSf1Cpvyc5r2Ztce6d2GXKxPsmWTCcGCAAnj5oPe2FkyMpmZeStL1RZYc/spTa
+YjEDtOMrckbNpCXoLu5OjvZRv4NFicsuRojKCtbFScaj9uSS654P6JJY8rfSWJp4
+rWOuidtkkkKlE6y+rT79fnPikKc4UoMMKsf6D9EWETKBP9jEIsO3Vr1kz0/wME0R
+iolEdaUwvOC6EHmE86tEleFEmYZIK3RF7NpmyVofqy2kMAsNj5dIAuvPyxXN1vOh
+bXM9JLI0Io+YxwYfoW2ycYMZTFVIQXdsWefZmFoTQnPND5aE21UwQYX4bCE2vz+x
+eCcUo0hTOAnz1quoiDuyr7eNLXyGTfyhkQ/VHgE9dez7hFUtNxVcGunp38fd6Zbh
+KFXGX7wtIkVPHLvls7WsellcB6Bz6mckcW0UwThPUYjEkw4G28nm14FRUwGJLj6L
+qXTveQ7e7fp720pxFi7JCuf1dl/rL/uS7ub1hjkEi/8/3UZKEg0=
+=CZvf
+-----END PGP SIGNATURE-----
+
+--gq4kufue4w3vtipq--
 
