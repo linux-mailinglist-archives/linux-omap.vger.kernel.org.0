@@ -1,106 +1,193 @@
-Return-Path: <linux-omap+bounces-1575-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1576-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BA6491164A
-	for <lists+linux-omap@lfdr.de>; Fri, 21 Jun 2024 01:05:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7542D911AD7
+	for <lists+linux-omap@lfdr.de>; Fri, 21 Jun 2024 08:02:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CEBA31C21ED6
-	for <lists+linux-omap@lfdr.de>; Thu, 20 Jun 2024 23:05:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6541A1F23B20
+	for <lists+linux-omap@lfdr.de>; Fri, 21 Jun 2024 06:02:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68C29147C74;
-	Thu, 20 Jun 2024 23:05:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DED0F15664C;
+	Fri, 21 Jun 2024 06:02:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dGsfH1Gp"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="HMI56hph"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0D8782D83;
-	Thu, 20 Jun 2024 23:05:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7F6B12EBCA
+	for <linux-omap@vger.kernel.org>; Fri, 21 Jun 2024 06:02:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718924741; cv=none; b=ejrbX45lgDc7C5JxvicTPnxJMlAUtsLS342p7U7Z+n5acDvFbSNdCLvYHcTjE1eTlioHiXoVm0px/pHlC6cIm6Y6w985Yyi2uCKctFdq8O9CornZKBLNBE8cKS1Q7VDYIdKcfRXS0gXMBkgMqRrcxpcLOE+KeWawcDUj4JPGtRc=
+	t=1718949730; cv=none; b=ZzirvsimpN2Y+UMBLsEO2XJgN32Xvwe9vAMBBkgF8qN64nKawBDjx5dGafv3Pf5E+0WX1xHXKawdDW5+5ww9nV8ATwJ5x+e6rsmLXV6vIX52PD8u2AUxbkwCxFJP7sDwvSaU3rCe4Y2msIHlnESs2EptcG9RYgx8Uuz2S0HVByk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718924741; c=relaxed/simple;
-	bh=SaOaFRr/ohEIO5+x2sHjKUAw9989Q79otM9vhPABR3c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JBdkHgR1PAa7QZZJrG9d22mqZe6ThcwRYtlL8QnqJnYXjEdig8HsVSAzQtZKp0p440mJDOGIjKe+baXDwMLWyFBxCNddz3ZuF17O0BEbI1VTnpnR2BdrG0nfTc3bG3p6STuoAETTNsAcNGYc5IfWYHLVyfeDa55xOwfWoz5aQnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dGsfH1Gp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32575C2BD10;
-	Thu, 20 Jun 2024 23:05:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718924740;
-	bh=SaOaFRr/ohEIO5+x2sHjKUAw9989Q79otM9vhPABR3c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dGsfH1GpHmQGHTfZ1l4tF8Yc8IR5UiRboDTNredObqxtOQx82e5s0tzE5UQ3HRdti
-	 YEn9NRju/HM5BF130UGn7A/JtXSjes40KzIwRc9JuVBmqI+8j7E1dPyQ28nSZcPIyG
-	 TOptG9SYCZtxheOmn5MCrlB4o/pGRyWPoX1UppgceSz8O/DTcsfVNH4ydUcWt+i5IJ
-	 oqlDDSWtyhj2zce34mKlyDG9TYhoG/y5KLT8TEJYWtVuC7gL+IKxBIvHGJphOe3KMf
-	 rP0msnieHjZGex3A1fC77vPMeqWKD0e19wRR09Ly11BI6lTQHNI85BCFts6ZIC+fOW
-	 QUnaqIuN62HjA==
-Date: Fri, 21 Jun 2024 01:05:37 +0200
-From: Andi Shyti <andi.shyti@kernel.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Nicolas Ferre <nicolas.ferre@microchip.com>, Alexandre Belloni <alexandre.belloni@bootlin.com>, 
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>, Sergiu Moga <sergiu.moga@microchip.com>, 
-	Benson Leung <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>, 
-	Doug Anderson <dianders@chromium.org>, Enric Balletbo i Serra <eballetbo@kernel.org>, 
-	Ricardo =?utf-8?Q?Ca=C3=B1uelo?= <ricardo.canuelo@collabora.com>, Thierry Reding <thierry.reding@gmail.com>, 
-	Jonathan Hunter <jonathanh@nvidia.com>, Vignesh R <vigneshr@ti.com>, 
-	Kamal Dasu <kamal.dasu@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Florian Fainelli <florian.fainelli@broadcom.com>, 
-	Wolfram Sang <wsa+renesas@sang-engineering.com>, Chris Brandt <chris.brandt@renesas.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
-	Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>, linux-i2c@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, chrome-platform@lists.linux.dev, 
-	linux-tegra@vger.kernel.org, Krzysztof Kozlowski <krzk@kernel.org>, 
-	linux-omap@vger.kernel.org, Kamal Dasu <kdasu.kdev@gmail.com>, 
-	linux-renesas-soc@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, stable@vger.kernel.org
-Subject: Re: [PATCH 0/7] dt-bindings: i2c: few fixes and cleanups
-Message-ID: <qru4aqjphjnjpo6yjxl2oznhlz774iv77u4u7u4jldnmlanps5@vpzxntuz6arp>
-References: <20240620-dt-bindings-i2c-clean-v1-0-3a1016a95f9d@linaro.org>
+	s=arc-20240116; t=1718949730; c=relaxed/simple;
+	bh=7xxygCZjacIDGyFbaYaTomUD8uB4ADx9SvmMPFcZpxc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WNrwIRXriRcZCHbO0YDfpSAvtc77NcyxXA5UIoZrgY4dVWLUvGpIS2Hy+s/w/F0uepthnYwWAMRRu1BwoYXm6ZkQo5okYc4HqriGySkYcvbIuCwrp9xUt5AniskwKP52OWSIal4U9K0I1B1O/DAKZ0upJa5SyYoRLGRQf3MJW/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=HMI56hph; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4217c7eb6b4so16464795e9.2
+        for <linux-omap@vger.kernel.org>; Thu, 20 Jun 2024 23:02:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1718949727; x=1719554527; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=g0Hfq3q6+Bq2sBAL3y5mfWY6pJX0OWp0a47XCpnciK0=;
+        b=HMI56hphGXXYhzqa2suIfoIcI7B2ywPuduj2xzbTbCwlqBpuf6ighlhBzxooyqMW52
+         FKQsiX5Sc/tjmBtYH0HBwiL+M7iaNlAJ1tch7ZMoy46/sQygu1jDOKzNEhXssCt1NqG0
+         lZ7JetflXA9CnZN8kBDJkD2Dep17S7lhvnF71evAk276tJu3eLPQaBPYox4F7UJsw937
+         TXstFJHqUSyE0lYDISELvpOU2UxMWE+oAsMhhMh97l000gLLCNeulEIYM8ZvyrPLQRTm
+         xGRdiC4tSNRffOE2cNqvpK1GywIedE1i3S0mf+dax4CSeo7zsNp9e77yuLFXbCFX4FRW
+         SHfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718949727; x=1719554527;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=g0Hfq3q6+Bq2sBAL3y5mfWY6pJX0OWp0a47XCpnciK0=;
+        b=RXBMWfcJ4fbjvtP32R8iR/na6OI9eLPx0hS6GOPYUu2Z2FNUbu5ETm9sbKKLGwGSoY
+         Y74+Mu4SIsoswZvKkDj3Gk1v7aMeJk8q9UsMvtEl38wY91GGSrqgfmu/SL5SISzSBeg7
+         ycFd8Hw4zf4HMHb+J9WzVipwv0Kt7UYFRris+6A1/Mb40XRCp5rPXD1sfYT2amQ1VA+b
+         Ry2He09RMSI7D+Jad66nz6yc2vgWOaHsNdoQCU5Pces0Rg63fJeS5koyXuu59gz98YQN
+         ortOoW8dWaOdeJmAakW1+6Xga6uNtq1aXiJP8ep4PyNlJeXcHnxeagiLKhXNuRSRBG3L
+         5Wqw==
+X-Forwarded-Encrypted: i=1; AJvYcCXk0FWMXwOIcyXH9hfkyNEMPv6oqisadqw3PbOsJh5bFLMb3TyzEhECYWS9aTE2ujbuqI9K9qGB6zNL9XHzzw0WGVU5LwEJ0cJabw==
+X-Gm-Message-State: AOJu0YyNF5ZkGQeb54Y4nyG4ArgVoXAVrPJARXf0zAqYDFmCyT0C6PQQ
+	NhaBJ7DTvDSj3b4fOtuD4/GGYyW+mUC3ww+EGI+2FkcLdgqhihbhs+nFxX3d7y8=
+X-Google-Smtp-Source: AGHT+IHuLT4dvAGw8hgAgzMvFAkauYtoD8jvXQ839+22x26JdT6wezqq6/7vvbhnIarTtr6Rq71dLw==
+X-Received: by 2002:a05:600c:4c92:b0:423:2a9:19ce with SMTP id 5b1f17b1804b1-42475296becmr51344535e9.25.1718949727044;
+        Thu, 20 Jun 2024 23:02:07 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.219.137])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3663a2f693fsm760617f8f.69.2024.06.20.23.02.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 20 Jun 2024 23:02:06 -0700 (PDT)
+Message-ID: <6bc864d6-11de-4762-b309-2e2a3bffaa24@linaro.org>
+Date: Fri, 21 Jun 2024 08:02:03 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/7] dt-bindings: i2c: few fixes and cleanups
+To: Andi Shyti <andi.shyti@kernel.org>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Nicolas Ferre <nicolas.ferre@microchip.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+ Sergiu Moga <sergiu.moga@microchip.com>, Benson Leung <bleung@chromium.org>,
+ Guenter Roeck <groeck@chromium.org>, Doug Anderson <dianders@chromium.org>,
+ Enric Balletbo i Serra <eballetbo@kernel.org>,
+ =?UTF-8?Q?Ricardo_Ca=C3=B1uelo?= <ricardo.canuelo@collabora.com>,
+ Thierry Reding <thierry.reding@gmail.com>,
+ Jonathan Hunter <jonathanh@nvidia.com>, Vignesh R <vigneshr@ti.com>,
+ Kamal Dasu <kamal.dasu@broadcom.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>,
+ Florian Fainelli <florian.fainelli@broadcom.com>,
+ Wolfram Sang <wsa+renesas@sang-engineering.com>,
+ Chris Brandt <chris.brandt@renesas.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Magnus Damm <magnus.damm@gmail.com>,
+ Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>,
+ linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ chrome-platform@lists.linux.dev, linux-tegra@vger.kernel.org,
+ Krzysztof Kozlowski <krzk@kernel.org>, linux-omap@vger.kernel.org,
+ Kamal Dasu <kdasu.kdev@gmail.com>, linux-renesas-soc@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com, stable@vger.kernel.org
+References: <20240620-dt-bindings-i2c-clean-v1-0-3a1016a95f9d@linaro.org>
+ <qru4aqjphjnjpo6yjxl2oznhlz774iv77u4u7u4jldnmlanps5@vpzxntuz6arp>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Content-Language: en-US
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <qru4aqjphjnjpo6yjxl2oznhlz774iv77u4u7u4jldnmlanps5@vpzxntuz6arp>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240620-dt-bindings-i2c-clean-v1-0-3a1016a95f9d@linaro.org>
 
-Cześć Krzysztof,
-
-On Thu, Jun 20, 2024 at 01:34:48PM GMT, Krzysztof Kozlowski wrote:
-> Few fixes for I2C controller schemas. The third patch (atmel,at91sam)
-> depends on first, so I suggest not splitting this into fixes branch but
-> take as is via next branch.
+On 21/06/2024 01:05, Andi Shyti wrote:
+> Cześć Krzysztof,
 > 
-> Best regards,
-> Krzysztof
+> On Thu, Jun 20, 2024 at 01:34:48PM GMT, Krzysztof Kozlowski wrote:
+>> Few fixes for I2C controller schemas. The third patch (atmel,at91sam)
+>> depends on first, so I suggest not splitting this into fixes branch but
+>> take as is via next branch.
+>>
+>> Best regards,
+>> Krzysztof
+>>
+>> ---
+>> Krzysztof Kozlowski (7):
+>>       dt-bindings: i2c: atmel,at91sam: correct path to i2c-controller schema
+>>       dt-bindings: i2c: google,cros-ec-i2c-tunnel: correct path to i2c-controller schema
 > 
-> ---
-> Krzysztof Kozlowski (7):
->       dt-bindings: i2c: atmel,at91sam: correct path to i2c-controller schema
->       dt-bindings: i2c: google,cros-ec-i2c-tunnel: correct path to i2c-controller schema
+> merged to i2c/i2c-host-fixes
+> 
+>>       dt-bindings: i2c: atmel,at91sam: drop unneeded address/size-cells
+>>       dt-bindings: i2c: nvidia,tegra20: drop unneeded address/size-cells
+>>       dt-bindings: i2c: samsung,s3c2410: drop unneeded address/size-cells
+>>       dt-bindings: i2c: ti,omap4: reference i2c-controller.yaml schema
+>>       dt-bindings: i2c: adjust indentation in DTS example to coding style
+> 
+> merged to i2c/i2c-host
 
-merged to i2c/i2c-host-fixes
+So you broke the binding... Why openly ignoring my first sentence?
 
->       dt-bindings: i2c: atmel,at91sam: drop unneeded address/size-cells
->       dt-bindings: i2c: nvidia,tegra20: drop unneeded address/size-cells
->       dt-bindings: i2c: samsung,s3c2410: drop unneeded address/size-cells
->       dt-bindings: i2c: ti,omap4: reference i2c-controller.yaml schema
->       dt-bindings: i2c: adjust indentation in DTS example to coding style
+Best regards,
+Krzysztof
 
-merged to i2c/i2c-host
-
-Thanks,
-Andi
 
