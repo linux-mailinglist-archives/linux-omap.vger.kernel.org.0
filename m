@@ -1,115 +1,128 @@
-Return-Path: <linux-omap+bounces-1593-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1594-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F1EC91801E
-	for <lists+linux-omap@lfdr.de>; Wed, 26 Jun 2024 13:48:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BEBD91808F
+	for <lists+linux-omap@lfdr.de>; Wed, 26 Jun 2024 14:08:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFE4428856A
-	for <lists+linux-omap@lfdr.de>; Wed, 26 Jun 2024 11:48:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA661282891
+	for <lists+linux-omap@lfdr.de>; Wed, 26 Jun 2024 12:08:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AD8C17FACE;
-	Wed, 26 Jun 2024 11:47:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A15A180A9F;
+	Wed, 26 Jun 2024 12:07:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="tXTkfa+G"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hYYsN89E"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD5CC139D04
-	for <linux-omap@vger.kernel.org>; Wed, 26 Jun 2024 11:47:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 564F01802C2;
+	Wed, 26 Jun 2024 12:07:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719402478; cv=none; b=ptuoUslw3aFJOKzxap14+6UdT+Ij2vpQwrgVVfZ6+I0Lxm2YW2+XhkjEqiDfUH96lkk760Vz7w69qNjdZ6iwl59G8Mi1/3JL+P9X5oYozLLvtyvbcOOGNydglO7cI3kDhN0v05osucce4EMlbk0PpAWr2QEIbMB/6ElqXJKj0Bw=
+	t=1719403677; cv=none; b=SnMXFfDv4uND2r8eKgswpLQ/Q2U16Ra+jNE+Na/bjaH0KjE91GvDteILcvbU4Rw2qitKMS8G1FWJZ5nJ4WJqRIbAso18UTm5kp19h+5AqqFAepSPPLwIs+BluJJav0Ev6btgZUCxZb/Jq6CXvh1m3pZsXzsl/gDKeR1Mvq3s4lk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719402478; c=relaxed/simple;
-	bh=p87lmOqwo03u1im941WCgzmn7HD168xnuTaHd8fAP3o=;
+	s=arc-20240116; t=1719403677; c=relaxed/simple;
+	bh=8mOhudOXTmEbkqgsYqYigKENLG9E0OWtck7yCITGflo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DAGYOwAfq4lObuqobOAFhB54nvFFS5LM+2P/g43+a1jLn6p+hDdbEtoIK4yqi8Fy/CjBmTpKAV/J+wZwMtYcJkDQrhw40RirTBPy/A+Z8QDRNlKx29tcPkMNtrto6o827gK6osBO+1qelIcsj5bXW4bmOmdOQlQJljDCZDCbku0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=tXTkfa+G; arc=none smtp.client-ip=209.85.208.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2ec5fad1984so47395741fa.0
-        for <linux-omap@vger.kernel.org>; Wed, 26 Jun 2024 04:47:56 -0700 (PDT)
+	 To:Content-Type; b=t89vE4e0WsYbv3JlBO5OS0QexqtvsTvz+7DSvk0PpZCgHQRC/hDdPCC27CcF1ysNo9i/oT8jNWL7hrmNPLbCrsQcjQt1/IXPQMmfkTXjd2RSN2gm5+P0S4MrOWEpWC7qA7c8y9JBY+7pLv9nXAozuYcjVzYhIqm/JUCwtiyVGHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hYYsN89E; arc=none smtp.client-ip=209.85.210.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-700cc97b220so782526a34.0;
+        Wed, 26 Jun 2024 05:07:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1719402475; x=1720007275; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+        d=gmail.com; s=20230601; t=1719403675; x=1720008475; darn=vger.kernel.org;
+        h=content-transfer-encoding:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7553H3j3i6iNa/ZOWQ82kVijQH4mppNZvmZu+TATobA=;
-        b=tXTkfa+GsLf5uwPRGS40xf26P8jNq4TsHw17VPV1e9877jDAKLh9ekbi96DYguxrEi
-         3pv06uo+yImDT/7tPnRUIr2TxVoZ3F/m32g0epRULlbNhB3ZYPDcx1qIfNrRh3C8RcX1
-         wDRc9d0cMr/ceOengn8iJin7dgUqBtUqsI+jskfDssibxou3ymlVrNNjwc/5GNb+lP6V
-         GahIwPVtcIVnBYtrdFqEFja+eICE2lPPAjCTcDOxLxvKuJEv/S0yfoDL4I1P0ymZ+47b
-         VCHPp7X/olh7LJyg9L05mCvw86Q2L1vAG2VVDNJSNRAFcR0YH36lW4FTcPbgKpPjMyKt
-         7vVA==
+        bh=lAronMZ9nXpH4cj2QDMqDD8SJNWWfIBviKFCpnieLuA=;
+        b=hYYsN89EOiTtdFuTAep7Sl1lB7VspehP6MmaqmiZrvG+nmLjxRSpsDAH3My9Jpozz2
+         D1KjP4J9f8oNUD/qgAuimOFQPx7XzcMIQAKSchvwLdPcyLkNRjgGx+mZFnHnCfgheZOa
+         imFhiLj6xLYnWwhdMpzHRvcasX64dNwwi1+8RH5sDbPLQzKFFgTf/D/GgcEVVGlUm7QO
+         b08xenW/xs94iL7Y5BFkIjVvKSXfAAjxYbmA10WaA9MZeH7BkHhiYbfy/LJVgRtHAxQm
+         OQUgW8t12kfYjaRYbIiOcqj+kbzqpbKUhVitLOhgcg8vGdYM/8ZkZM/ADHvoSn5ABr6W
+         F+NA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719402475; x=1720007275;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+        d=1e100.net; s=20230601; t=1719403675; x=1720008475;
+        h=content-transfer-encoding:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=7553H3j3i6iNa/ZOWQ82kVijQH4mppNZvmZu+TATobA=;
-        b=LZUi/NJ+IgN7nacByZwLGWu+WF/e8QHYvUM6g2qWnkHG6Y6wtXO+LMX1ONyzY8gGT4
-         ogmhZtzjJrlefhGpnn/mSdV39aKYm1ryHNx2i8YLsfc/ife8a2XLEZNXShb+pY2J/HXf
-         vAgaHT1OxTiB0jA2ME/B2jLehjCWQTXFt+MorW3ndqESo+RKudRm5nX2lf4AtK9oGwVL
-         JturLpEt7K+WhkJznwn1VBH6draxQ6KFUc1GtFdzyEeylHC+wPCk4W5t4C5jlvILldp8
-         2fva2RvJ2zR3I9nnAtEre9hkgXZOVlLC5q8BUez7MtHDjwOBRKEZfIz5m1CLVs9n3e3P
-         rnUg==
-X-Forwarded-Encrypted: i=1; AJvYcCWifPc0K2i8F+ixBWrmKZaJFfpZvfe6lsQw8ykAN5lUC0XO6iUYw6WBxYr7VWs2Az3FdcKTmuXHcoGCboNq1W2btPhzWqHPSZysdw==
-X-Gm-Message-State: AOJu0YwHBYLDDgczgEPkRMmELMYkIYPeHYbqyAwJjp4lu2lfI/W15OmH
-	8FkwwPXWRRtPsbVYsuBqYL/gsXE8022WwVg3g+UJ1wuayfLgGfgPH1DOhg4nsUERk/EHqf6QZZk
-	aXzBTee2hALZG7LDFSGWjL42+DVuBLpYx4lj5VA==
-X-Google-Smtp-Source: AGHT+IEOW5taPG+ot0MsdHjzA3BA7yJBQcv+B7N4jaZunemGUMn9f/XFU7RdGtrPKaMP09aoDMi92GWx2Q/d4hEw2vQ=
-X-Received: by 2002:a2e:9213:0:b0:2ec:4de9:7334 with SMTP id
- 38308e7fff4ca-2ec5b2fd2bdmr74478051fa.11.1719402474843; Wed, 26 Jun 2024
- 04:47:54 -0700 (PDT)
+        bh=lAronMZ9nXpH4cj2QDMqDD8SJNWWfIBviKFCpnieLuA=;
+        b=fptcvSXZM0IhpNjSxGqa7mS3oS7HfJvoKCc44n9j18XCwhEC+9So/4zyhvWDW5fGMH
+         xVnbwFyAh8Fni+RbZvWYyZQCBdmkp3sDmZ3bX7MIi9iYcIiOaWzm6+fSyGsRqr5jVdFe
+         TivqyemOKbkV9xIL5B8pSEm356gLuDGI0cq2EMVBJVyEbRk3XCLdG9MPDhn3FAolbCpR
+         7zI/n9/1ktSPW6Fdvs36vYnthfKK3EGAxGKuBrg+3+UuPTC0popU1O58hwzp0mBIEXiW
+         iT3GjzluEKauHKtV1lptzdfc2bM0cp4zMVq2a6pPjSn/0okBc+Rnrfr8E4KhBsU07bsY
+         5PHg==
+X-Forwarded-Encrypted: i=1; AJvYcCVZjY6/a6A7KwB7bJr0Ydlp5uCh9QVOHswnPZuswIPGS5RzI6tR6K953j4JCHX10JAuYhRhwoXx+AD2r+8QMzd1GUUSrrMbOd8S3sxnhTs1crVmxDwgOiUZBJwHBlfM2rmp7AJyqmkFfd7xPw8bFMfg5EFWmxvrOujcGPZrKbDKO2q7RomWZG7GxYBqCTo7aOevJ5B2VNlP7kPlxXYG2atoNY+1aYyX
+X-Gm-Message-State: AOJu0YzDmKBaj8CSFAKAPPXTNuhos3ZOLOL6sy3RrRy9OfHyhOoc699I
+	H118K9YdOcm9DuNns/ywdvxCWTGwnpQLHyPMOPCEt+5FtqRjEpRLgCA7ath0wtkfRSnwYz/qcN3
+	YTFQ1cy03StScY+TWoJcYDj+fZTk=
+X-Google-Smtp-Source: AGHT+IFCMAsx9tDIVv13DMuoIpRL3C+UVD1twOEvF1DCf250YptSJiuynlLDnbBYZxJDsZQy5NgaF8VHgyg9gL3Q/kQ=
+X-Received: by 2002:a05:6870:a2c7:b0:258:368e:4b46 with SMTP id
+ 586e51a60fabf-25d06e55e10mr11622922fac.38.1719403675266; Wed, 26 Jun 2024
+ 05:07:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240509104813.216655-1-krzysztof.kozlowski@linaro.org> <171940115812.32431.4234002524799635130.b4-ty@linaro.org>
-In-Reply-To: <171940115812.32431.4234002524799635130.b4-ty@linaro.org>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Wed, 26 Jun 2024 13:47:44 +0200
-Message-ID: <CAMRc=Mc8ET2GneRT_PoGvffe+c5u13zAYsRr3u5P+aRzQv4CAQ@mail.gmail.com>
-Subject: Re: [PATCH] ARM: dts: ti: align panel timings node name with dtschema
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>, 
-	Tony Lindgren <tony@atomide.com>, linux-arm-kernel@lists.infradead.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-omap@vger.kernel.org
+References: <20240625170938.2579372-1-allen.lkml@gmail.com>
+ <racc3a2kmhu5275xcb6bght5j2bbg5ujlowdbfqeiwputmygei@ckscwafglafl> <rddr35qidcxfemy24lcqnz7fo6ogltlffizwbf7evtdoz5qgsu@tva3pf6e2isb>
+In-Reply-To: <rddr35qidcxfemy24lcqnz7fo6ogltlffizwbf7evtdoz5qgsu@tva3pf6e2isb>
+From: Allen <allen.lkml@gmail.com>
+Date: Wed, 26 Jun 2024 05:07:42 -0700
+Message-ID: <CAOMdWS+2t9410vke+xr7fTnWrHq0tfq5PdohpX_G2q+LrZWevA@mail.gmail.com>
+Subject: Re: [PATCH v4] mmc: Convert from tasklet to BH workqueue
+To: Wolfram Sang <wsa+renesas@sang-engineering.com>, Allen Pais <allen.lkml@gmail.com>, 
+	Aubin Constans <aubin.constans@microchip.com>, Ulf Hansson <ulf.hansson@linaro.org>, 
+	Nicolas Ferre <nicolas.ferre@microchip.com>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+	Manuel Lauss <manuel.lauss@gmail.com>, =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>, 
+	Jaehoon Chung <jh80.chung@samsung.com>, Aaro Koskinen <aaro.koskinen@iki.fi>, 
+	Adrian Hunter <adrian.hunter@intel.com>, Florian Fainelli <florian.fainelli@broadcom.com>, 
+	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Alex Dubov <oakad@yahoo.com>, 
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Bruce Chang <brucechang@via.com.tw>, Harald Welte <HaraldWelte@viatech.com>, 
+	Pierre Ossman <pierre@ossman.eu>, Christian Loehle <christian.loehle@arm.com>, linux-mmc@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jun 26, 2024 at 1:26=E2=80=AFPM Krzysztof Kozlowski
-<krzysztof.kozlowski@linaro.org> wrote:
->
->
-> On Thu, 09 May 2024 12:48:13 +0200, Krzysztof Kozlowski wrote:
-> > DT schema expects panel timings node to follow certain pattern,
-> > dtbs_check warnings:
+> > Hi Allen,
 > >
-> >   am335x-pdu001.dtb: display-timings: '240x320p16' does not match any o=
-f the regexes: '^timing', 'pinctrl-[0-9]+'
+> > >    - dropped changes to renasas sdhci(dma_complete)
+> > >    - Wolfram to send a patch for it.
 > >
-> > Linux drivers do not care about node name, so this should not have
-> > effect on Linux.
-> >
-> > [...]
+> > It is still there.
 >
-> 1.5 months on the lists, but maybe I combined too many separate TI mainta=
-iners,
-> so no one feels responsible... then I guess I will take it.
+> With build errors (forgot to say that):
+>
+> drivers/mmc/host/renesas_sdhi_internal_dmac.c: In function =E2=80=98renes=
+as_sdhi_internal_dmac_request_dma=E2=80=99:
+> drivers/mmc/host/renesas_sdhi_internal_dmac.c:551:22: error: =E2=80=98ren=
+esas_sdhi_internal_dmac_issue_bh_work_fn=E2=80=99 undeclared (first use in =
+this function); did you mean =E2=80=98renesas_sdhi_internal_dmac_issue_work=
+_fn=E2=80=99?
+>   551 |                      renesas_sdhi_internal_dmac_issue_bh_work_fn)=
+;
+>       |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>
+> Please let me handle TMIO/SDHI completely. You will get the credit,
+> still.
 >
 
-Yeah next time you should probably at least split omap and davinci
-bits into separate patches. Otherwise I think Tony thought I'd pick it
-up and vice versa.
+ My bad. Will drop that entirely from my changes.
 
-Bart
+Thanks.
+
+
+--=20
+       - Allen
 
