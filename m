@@ -1,120 +1,153 @@
-Return-Path: <linux-omap+bounces-1591-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1592-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 905D4917F97
-	for <lists+linux-omap@lfdr.de>; Wed, 26 Jun 2024 13:27:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25AEC917FC3
+	for <lists+linux-omap@lfdr.de>; Wed, 26 Jun 2024 13:33:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39D641F26928
-	for <lists+linux-omap@lfdr.de>; Wed, 26 Jun 2024 11:27:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48EBF1C2372D
+	for <lists+linux-omap@lfdr.de>; Wed, 26 Jun 2024 11:33:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 978CA17E45B;
-	Wed, 26 Jun 2024 11:27:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C6C117F374;
+	Wed, 26 Jun 2024 11:33:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KEDEQ5oi"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="r4S0bUNZ"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B25BB148FE3
-	for <linux-omap@vger.kernel.org>; Wed, 26 Jun 2024 11:26:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ADE017F383
+	for <linux-omap@vger.kernel.org>; Wed, 26 Jun 2024 11:33:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719401221; cv=none; b=Gwq+Vp+BQaASatfD1SOV00kmJVyDvhOuXgGRBoV0i/kuaqeJv/mTH4mJzK6JE8caPaTm75yMQ0pCUFf8S3s4QbXcEyrSvgp7Ql5jot2EZiSboqS+xedcTl3oAjPfQLBJuObUht5kN8JFj9CbAJOaBjpgmcxV9FTEadeAFn+eytI=
+	t=1719401625; cv=none; b=vBTWMkH5+rR4els/UYnPcYSZm+oSnVRngoxkfDEfn3iPasiNfkCYZlxwKqLvdKnNZY7eULVtiIdLSkNe7iWz53+YLqa9zmf2ffs4KackjiL9q+TRt48KuRgfddcR5et3YoYojlRyVp0h2aNsW1ip6rmPqluIzMUhZCYX5UCfDIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719401221; c=relaxed/simple;
-	bh=MFKbqkFOpx6Os70/OaWlAEs0Uet5ZGV0bU24x8P2a4w=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YfEg7waq52TqhUtEPTnnbTe1OMso8b3uIObj30k5/vyGCtY5LAgVpi/0f+Hv+qTNpT5Mp9092mbowC6Q5Xiwe6QjRp+rT0VFLj2ZE6pJmuUCjhNyZ3m9B5VE8VahEFTnlig3HGh/SyMcrtN0APDJKrobXZSLYXOR5QStgRy9gKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=KEDEQ5oi; arc=none smtp.client-ip=209.85.218.41
+	s=arc-20240116; t=1719401625; c=relaxed/simple;
+	bh=DqnB6sU5Qi4z6Wj9U48mHIJLdjJeLbB8ULLvRMw8ruE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FDYBsdhtqJTiMgFW0Y/1aj5jKFDJiXp6kh4HpAsSxy8mxcuPqgau1Sd5ESFMLC+gi7Kmelr224ZiXCHvci+XgqFtp+j2JDbdPGXxrTfCfO1ksMRxE18+4m6RzFD95Hlb7dOzxC57xOxztzBD4lyga++00DXW2R2B1kIOsoOv64M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=r4S0bUNZ; arc=none smtp.client-ip=209.85.128.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a6fd513f18bso607602466b.3
-        for <linux-omap@vger.kernel.org>; Wed, 26 Jun 2024 04:26:59 -0700 (PDT)
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-424acfff613so8463625e9.0
+        for <linux-omap@vger.kernel.org>; Wed, 26 Jun 2024 04:33:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1719401218; x=1720006018; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=RPzARjyIcu6/3pcxRLmvEVtPX6q/rm/cKl2bf9OSfzw=;
-        b=KEDEQ5oixMwBTjKuIaXhdGz5PZU+CMKOBf5JiiAmBuGYQS4+GVpeudBVBvVelHhxwx
-         7xh4qIQ/pQzjd7VFTklCZJIbBfRAz8t6PAb1hxBqF+MI8b/zHMqOsY7nMqwSLL/tQ0jh
-         2Y0mXnebFPq3Mit1C+vRBgNR2Kyeh7exCUzvIXCE0fo8BU+NlpG3P+BjZQo65aJXB+cV
-         D1N+V4f1QEegSqRz94dw9osiP2eJbEcXsigUspZtknf44/3ZHEJG/YBcaMC1Q3BtdkiD
-         gxiQ7HvN64WRJQNUFsakO4x+auSin20csX4q6SqyvH96/ZFDSjF61QqahXPt5CnhYSm+
-         ReYg==
+        d=linaro.org; s=google; t=1719401621; x=1720006421; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=WfM5vF2q2MR6HvddQqYoHOXV5lpo1oUCoQ3ivJAVNak=;
+        b=r4S0bUNZo+oSPbipjM/eEtHS0Bp5C96WR5Btvfb0Wd11Uok0fRTcgB3AVy3Ujj5NSE
+         zbp6NKKp88PNBptUNRHNun9YRKCJ5di/vigsg+mkJNgFjlXq7oWFrFDDb6RR1xJsIIlC
+         nhq1RAvM7Qgbm7vBzpb43t1eQ08KfyrI144qVPZnwNcR9VozXOEutCZFRMG7wG8CBf2+
+         AqRpMa80Uec7kqTrAN+DNwW/jEv/eY+c7ToXR87RLg4lFcwHtscT/2+XGfcpRmunxFgR
+         oFgKSNqwACNAJVhUNYnE3vsoWkdH1YMjjDzluR+pZcbZLDUYlyxIl2+R3Ok/cB+ygtPA
+         4b6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719401218; x=1720006018;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RPzARjyIcu6/3pcxRLmvEVtPX6q/rm/cKl2bf9OSfzw=;
-        b=pLv01C+vNB3iEXSMEbmNuwCaXWVWDAKpQ5UbOm7at815UMBbWR7xK1sk4MjPIbTtEm
-         0DXZnzvLEYvzFym96wOlhzNgj+nTqLBNHko3sZaavA3t+BD1x0v71lAe5LJvs1E2Xhxe
-         AsLPj1834mJAwi3fa/P9uU/7rk/kVs6ncPpt3E8D8Ja57r2eamWLg2Wx1c84Ik5IIiHe
-         AFJ7uOMJiG3DKBJUfBrS+nk7vIjthV3b4AMWF2fy99cklL3UB50AN8HAWDzqVoDrKsmW
-         biUbGiR9jr+VgxwCApPXbWnT0vVm/GbxrbIwziJhlyFA3GxHGkwhG34P/w6akwtnQn8O
-         WCYA==
-X-Forwarded-Encrypted: i=1; AJvYcCWeX+Zshl09FPwwHNEWc8aKCYdiAbUXJ5KpHPDeuOlGZn9stpXhGzV2u9BGn5WT6fBUS4V1U4Zzo4ZmdWlLOV2YAo5VUsJHdxyt/Q==
-X-Gm-Message-State: AOJu0Yy1kWTQT3urRRHO9mDO1koV+/obTwyr9c6jCxjziETdEz1xCE7T
-	isUvPVzjDdr/IAxMvRP4nHcBXENm/SjBxmG93czLCNup2VCO0YAqez24K6hQOEw=
-X-Google-Smtp-Source: AGHT+IGmX4T5i4aBGXjrLUHWiDG8K2J37IAuWEsZK9yw8ZP4mEBgzndTO13r0qB2PXPWqZ2u0uRdlA==
-X-Received: by 2002:a17:907:d40a:b0:a72:5557:294 with SMTP id a640c23a62f3a-a727f6809c7mr311746766b.6.1719401217829;
-        Wed, 26 Jun 2024 04:26:57 -0700 (PDT)
-Received: from krzk-bin.. ([178.197.219.137])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-57d303d80f7sm7136213a12.8.2024.06.26.04.26.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Jun 2024 04:26:57 -0700 (PDT)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To: Bartosz Golaszewski <brgl@bgdev.pl>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	=?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-	Tony Lindgren <tony@atomide.com>,
-	linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-omap@vger.kernel.org,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH] ARM: dts: ti: align panel timings node name with dtschema
-Date: Wed, 26 Jun 2024 13:26:54 +0200
-Message-ID: <171940115812.32431.4234002524799635130.b4-ty@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240509104813.216655-1-krzysztof.kozlowski@linaro.org>
-References: <20240509104813.216655-1-krzysztof.kozlowski@linaro.org>
+        d=1e100.net; s=20230601; t=1719401621; x=1720006421;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=WfM5vF2q2MR6HvddQqYoHOXV5lpo1oUCoQ3ivJAVNak=;
+        b=B94eZVu8ciKOZNZSexf9Z9LyGiBB4cZHuDmDy9rKAYJg4lUDSvj0g2OQX9ZHM0HQCT
+         diHF4bg0x2n++IjxT/aCDv1KDD/DiHYVRYjnGHmu3fCI7rx1fMl7vUw0Rs53ihjMPfW4
+         HfOkqCtCCyDugp3UDp0MbBdTUrhTKbLRa5KFiS4fCYd8gromqAhO+IfJJVU3qd9FixQr
+         fuHhHbNZjB2QHpSRB02/p71rPVO7tnYw3h8exvWp0WOvpYwC4kdqBB9tX6I/K7b103vq
+         aflJcIFqkoKBYHUdKgPYy7UiRnUpN1PMCwcE3sFJ/6iF1tPGAAp6qJHuShNtz5ZXnwEi
+         PSjA==
+X-Forwarded-Encrypted: i=1; AJvYcCVbhZ1akUdRyJMMBuOs45Y0j72m/gQo62I/aDottcABjFxdd5d/RNvrPvO2xlyihX4vHEH28N9rdFyFMbAg34WX1gQYb439bb0dJg==
+X-Gm-Message-State: AOJu0YxZ69jqfGQ1hueGB5VirDbwvxOuZcgyCKUw/0QpZUyZ7PEmOxiW
+	Mw+pQs6sNhHBVe8r6kYZjzY7BBuOi82P6A5m3/K5SMiDdqUSgt+8L9soY3YsnrE=
+X-Google-Smtp-Source: AGHT+IGU/c4KmvHbmTt+xqBpSMU/a6+QgxBEEFYmrav+vB8M9PjCo0QTSGiOW0vpuLYp1/5LIeoDIQ==
+X-Received: by 2002:a05:600c:2e49:b0:424:a48d:9768 with SMTP id 5b1f17b1804b1-424a48d9843mr31340375e9.39.1719401621593;
+        Wed, 26 Jun 2024 04:33:41 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.219.137])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-424c8246b1dsm23255265e9.6.2024.06.26.04.33.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 26 Jun 2024 04:33:41 -0700 (PDT)
+Message-ID: <dcd6afee-b17d-4633-af7a-4a5dbf68be94@linaro.org>
+Date: Wed, 26 Jun 2024 13:33:39 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ARM: dts: omap am5729-beagleboneai: drop unneeded
+ ti,enable-id-detection
+To: Tony Lindgren <tony@atomide.com>
+Cc: devicetree@vger.kernel.org, linux-omap@vger.kernel.org,
+ Conor Dooley <conor+dt@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, kernel test robot <lkp@intel.com>,
+ linux-kernel@vger.kernel.org, Rob Herring <robh@kernel.org>
+References: <20240615174904.39012-1-krzysztof.kozlowski@linaro.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Content-Language: en-US
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
+ cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
+ JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
+ gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
+ J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
+ NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
+ BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
+ vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
+ Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
+ TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzTRLcnp5c3p0b2Yg
+ S296bG93c2tpIDxrcnp5c3p0b2Yua296bG93c2tpQGxpbmFyby5vcmc+wsGUBBMBCgA+FiEE
+ m9B+DgxR+NWWd7dUG5NDfTtBYpsFAmI+BxMCGwMFCRRfreEFCwkIBwIGFQoJCAsCBBYCAwEC
+ HgECF4AACgkQG5NDfTtBYptgbhAAjAGunRoOTduBeC7V6GGOQMYIT5n3OuDSzG1oZyM4kyvO
+ XeodvvYv49/ng473E8ZFhXfrre+c1olbr1A8pnz9vKVQs9JGVa6wwr/6ddH7/yvcaCQnHRPK
+ mnXyP2BViBlyDWQ71UC3N12YCoHE2cVmfrn4JeyK/gHCvcW3hUW4i5rMd5M5WZAeiJj3rvYh
+ v8WMKDJOtZFXxwaYGbvFJNDdvdTHc2x2fGaWwmXMJn2xs1ZyFAeHQvrp49mS6PBQZzcx0XL5
+ cU9ZjhzOZDn6Apv45/C/lUJvPc3lo/pr5cmlOvPq1AsP6/xRXsEFX/SdvdxJ8w9KtGaxdJuf
+ rpzLQ8Ht+H0lY2On1duYhmro8WglOypHy+TusYrDEry2qDNlc/bApQKtd9uqyDZ+rx8bGxyY
+ qBP6bvsQx5YACI4p8R0J43tSqWwJTP/R5oPRQW2O1Ye1DEcdeyzZfifrQz58aoZrVQq+innR
+ aDwu8qDB5UgmMQ7cjDSeAQABdghq7pqrA4P8lkA7qTG+aw8Z21OoAyZdUNm8NWJoQy8m4nUP
+ gmeeQPRc0vjp5JkYPgTqwf08cluqO6vQuYL2YmwVBIbO7cE7LNGkPDA3RYMu+zPY9UUi/ln5
+ dcKuEStFZ5eqVyqVoZ9eu3RTCGIXAHe1NcfcMT9HT0DPp3+ieTxFx6RjY3kYTGLOwU0EVUNc
+ NAEQAM2StBhJERQvgPcbCzjokShn0cRA4q2SvCOvOXD+0KapXMRFE+/PZeDyfv4dEKuCqeh0
+ hihSHlaxTzg3TcqUu54w2xYskG8Fq5tg3gm4kh1Gvh1LijIXX99ABA8eHxOGmLPRIBkXHqJY
+ oHtCvPc6sYKNM9xbp6I4yF56xVLmHGJ61KaWKf5KKWYgA9kfHufbja7qR0c6H79LIsiYqf92
+ H1HNq1WlQpu/fh4/XAAaV1axHFt/dY/2kU05tLMj8GjeQDz1fHas7augL4argt4e+jum3Nwt
+ yupodQBxncKAUbzwKcDrPqUFmfRbJ7ARw8491xQHZDsP82JRj4cOJX32sBg8nO2N5OsFJOcd
+ 5IE9v6qfllkZDAh1Rb1h6DFYq9dcdPAHl4zOj9EHq99/CpyccOh7SrtWDNFFknCmLpowhct9
+ 5ZnlavBrDbOV0W47gO33WkXMFI4il4y1+Bv89979rVYn8aBohEgET41SpyQz7fMkcaZU+ok/
+ +HYjC/qfDxT7tjKXqBQEscVODaFicsUkjheOD4BfWEcVUqa+XdUEciwG/SgNyxBZepj41oVq
+ FPSVE+Ni2tNrW/e16b8mgXNngHSnbsr6pAIXZH3qFW+4TKPMGZ2rZ6zITrMip+12jgw4mGjy
+ 5y06JZvA02rZT2k9aa7i9dUUFggaanI09jNGbRA/ABEBAAHCwXwEGAEKACYCGwwWIQSb0H4O
+ DFH41ZZ3t1Qbk0N9O0FimwUCYDzvagUJFF+UtgAKCRAbk0N9O0Fim9JzD/0auoGtUu4mgnna
+ oEEpQEOjgT7l9TVuO3Qa/SeH+E0m55y5Fjpp6ZToc481za3xAcxK/BtIX5Wn1mQ6+szfrJQ6
+ 59y2io437BeuWIRjQniSxHz1kgtFECiV30yHRgOoQlzUea7FgsnuWdstgfWi6LxstswEzxLZ
+ Sj1EqpXYZE4uLjh6dW292sO+j4LEqPYr53hyV4I2LPmptPE9Rb9yCTAbSUlzgjiyyjuXhcwM
+ qf3lzsm02y7Ooq+ERVKiJzlvLd9tSe4jRx6Z6LMXhB21fa5DGs/tHAcUF35hSJrvMJzPT/+u
+ /oVmYDFZkbLlqs2XpWaVCo2jv8+iHxZZ9FL7F6AHFzqEFdqGnJQqmEApiRqH6b4jRBOgJ+cY
+ qc+rJggwMQcJL9F+oDm3wX47nr6jIsEB5ZftdybIzpMZ5V9v45lUwmdnMrSzZVgC4jRGXzsU
+ EViBQt2CopXtHtYfPAO5nAkIvKSNp3jmGxZw4aTc5xoAZBLo0OV+Ezo71pg3AYvq0a3/oGRG
+ KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
+ fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <20240615174904.39012-1-krzysztof.kozlowski@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-
-On Thu, 09 May 2024 12:48:13 +0200, Krzysztof Kozlowski wrote:
-> DT schema expects panel timings node to follow certain pattern,
-> dtbs_check warnings:
+On 15/06/2024 19:49, Krzysztof Kozlowski wrote:
+> There is a ti,enable-id-detection property in the Extcon Palmas
+> (extcon-palmas), but not in the Extcon USB GPIO binding and driver.
 > 
->   am335x-pdu001.dtb: display-timings: '240x320p16' does not match any of the regexes: '^timing', 'pinctrl-[0-9]+'
-> 
-> Linux drivers do not care about node name, so this should not have
-> effect on Linux.
-> 
-> [...]
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202406152004.F2fNnorG-lkp@intel.com/
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-1.5 months on the lists, but maybe I combined too many separate TI maintainers,
-so no one feels responsible... then I guess I will take it.
+Tony,
 
-Applied, thanks!
-
-[1/1] ARM: dts: ti: align panel timings node name with dtschema
-      https://git.kernel.org/krzk/linux-dt/c/93ba8817f2ea13593d1c43e02a819cb7d9be048b
+Do you still pick up patches for OMAP? Any comments on this?
 
 Best regards,
--- 
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Krzysztof
+
 
