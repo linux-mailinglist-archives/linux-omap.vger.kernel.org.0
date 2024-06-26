@@ -1,197 +1,165 @@
-Return-Path: <linux-omap+bounces-1606-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1607-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAE8C919494
-	for <lists+linux-omap@lfdr.de>; Wed, 26 Jun 2024 21:03:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F431919853
+	for <lists+linux-omap@lfdr.de>; Wed, 26 Jun 2024 21:37:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BA201F23211
-	for <lists+linux-omap@lfdr.de>; Wed, 26 Jun 2024 19:03:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 729831C21205
+	for <lists+linux-omap@lfdr.de>; Wed, 26 Jun 2024 19:37:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99CFF190691;
-	Wed, 26 Jun 2024 19:03:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BB281922FB;
+	Wed, 26 Jun 2024 19:37:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DcP/paTy"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R/MrA51o"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 894E314F134;
-	Wed, 26 Jun 2024 19:03:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34C961922CB;
+	Wed, 26 Jun 2024 19:37:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719428613; cv=none; b=pK4j0flZchCslA6BTMAl+2d/MCmbrbTykHEo/rHzXi2cJjNxXANC37PyqWFFPqcAEXvh7ZLNcMZEe+/7D1iwKe8KjPYp2nQ5pZPgX18CqFYPk8h4+IS/iBh66cZp86y/ZQIWTaEFB1Pq4cUS3KRs2CQ4HDzxPs0geNEJDz6utbo=
+	t=1719430630; cv=none; b=CUcW1seiSv5/e5pvFE4g1YXokQGoVIg5Zm650vnqSKcUAMrwA9tihWMeK8VFhKoEtzKH9WgnXl7lfMYfVDXlClPLp2tjKKn0A7CL+FIqjoYz0kQ2IyXG7sr7ByNhC6ANsZBqPxAtjm0USCw3iKvbdh83BzKkIk1wmzS6IsBFrss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719428613; c=relaxed/simple;
-	bh=ByLuiOAIAgAxY4F9odgXxDUOOWJjKpC3pkIhw7lLQcs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MuMw+Ph7b6W6PLcWS8G5Jj+viQyFVk8nMhVK5RQo2fBF9odAG9uKP+wSzyMXTIfwLbJXgUatIJyZxgeeSd/CVTe1uYh7wkrXT02r37iwg8CGjHTBw5PYFklMH01L6S937mlIZoHX+CsHTB2hajSAodSMrvgrdGOoA1XwpTtyaa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DcP/paTy; arc=none smtp.client-ip=209.85.221.53
+	s=arc-20240116; t=1719430630; c=relaxed/simple;
+	bh=FWb/8xwgSmkYewGCNK0QCu9voPf3FKtacJJHxV+3mDY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=r7+Jv0Pm8+mOPmco5y/CO+eNKlLGtxDY6SoBbhQUDJXg+tn/bsOI8KGM2Ax/xf9Wyh1A3PtfuXYSFDGplpvr4Q9TgFBT/AmEfftgm85fH4xqxoD6e/ydbD1VYzQzWx8vK5fSCJbB0V+if+8YbtnWcpIfB2iIFaSUEo9JoJQ03nI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R/MrA51o; arc=none smtp.client-ip=209.85.128.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-366f747705dso1768687f8f.2;
-        Wed, 26 Jun 2024 12:03:31 -0700 (PDT)
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4247f36f689so49451605e9.1;
+        Wed, 26 Jun 2024 12:37:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719428610; x=1720033410; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=qV3T6zc76yf/lDtsbOsMSRSVkTqiqk3HNZQgcMN8fks=;
-        b=DcP/paTyoQeY5biaeJYvDPtSR/5zGsU3B/crXIDxmGeyEkUG+5EqQBpnqz3MVkhxua
-         gDod78wZ0yzio6QRPmtnZL0H82x+N4kBtaL2hDyoaHndaBwMPXqyzGFWhia9gZM11AZu
-         I1M77aXs422ETAaMCJvkbi9Sa+9cBP56sQu1mnpZgnGaevvOHb4OqOgyR0imId+rgeZl
-         N4RgTIABMp7lZD2bnDMR+S1AjJRyBTXbUvB/KCotDVKntG6WhhJOY2GKcHFU+s6CxGCZ
-         bsKmlQ0XZQHGk3sGRKh8oEwUt3ri2nNn/YadfE6vZ/7tGQePIgwNEDjcwUItLe77hotu
-         M9FQ==
+        d=gmail.com; s=20230601; t=1719430627; x=1720035427; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=eOjQ/R1GedZK24w3z78seoJ2dMf2SdqwKnQMmA2vypc=;
+        b=R/MrA51oVFsaBGzIi8PDdXri9gp2lHNKHW01DojFWC6Z6H0WZGTPLEP9oAN9htkyth
+         PhS7Dlbfp/rtfSt/Fxt0/Y5L8w9sA7iuPWt1YdwZ2aXvWY5ZXMCPsl/ozqvkG3IU0XuO
+         h2kPhlUWf6hmcMsNuQYgtG28gt1ASzdtk2GOm6L4obxeXm5JOK/KUvHQLZjLtfIQc/jr
+         1nyD4jejliW8qP+t6N5mGdmAHa4fK206Ru8EMsZs6jpBnWhZ5zu1r5bqx2W2ExK+m47J
+         xg0oUDfQW3pPBo1KHnCHwpY6GXbSwAE6IVbuCbS4owIysZSnTLsQ2S9jb5wpzHJzGF+L
+         ciAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719428610; x=1720033410;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qV3T6zc76yf/lDtsbOsMSRSVkTqiqk3HNZQgcMN8fks=;
-        b=Vxq8dDhr+LhPjgSCyuB7O9DS4ivB5yMP4smFnNY6fjZ9IPjlJJK67n6txu7hFvp5oX
-         shFqfw2qsop4xbpS2Y3rJErL4qIt28Xmd4AX/CdIeTR2HmCPaU0blUqELF6H+oKZvqfq
-         ZjlcXFVPBM8ETy8lf9Gggsh7hHajSYKq/AWeaLjoK1TkcaDsFN0DxNCyhZSSYBgTnIjV
-         Yv5iqKswOLyGoqJoQ0T/C8L49+rR5kiGjrdjPpL6jw4TbUQEtzmEnUlFVdiwy5mC4MgJ
-         FD0C+zAhOJPOz7AUfIT+LDR3XD2SqU2OQY1uVAELWmz+t0JfXRNESG4K5yUWFm1/zibc
-         EdKA==
-X-Forwarded-Encrypted: i=1; AJvYcCUZ8qG9Qjkcpa8HxUNbk12PNZQSTf/FG1UD6KTkXkO+oKRdf/7Ae3I5SpG7ZhBKrjsm3+09bbfczqO/XX8T8Wz4vdUbVJyDtpwFBk7DYXX5OodERruoJNbI1a7HMdrNUhs+SGu0mur9HT6i5YeV4B6ewSNAf9/eymjR6YvNu3cRqZl66rxj2/cxWA==
-X-Gm-Message-State: AOJu0YyseCQxUCCZyAiYbcjGlH27Kt/a0pQlC5EU+sbq+0hOUIsRGWXw
-	TrkJw3nudncW1bmfKnGtTqv7LUW5bvFI5hP6QojmZOlDEGNpNFTfx66hlzde
-X-Google-Smtp-Source: AGHT+IFPCN/kCcs+/5Z1jLHsmmdv+FqBJbQmWI6a9mPwBKyrQl4pUWKSODNnjYZ8LnzlPIwkLVTu1Q==
-X-Received: by 2002:adf:ce0c:0:b0:361:d3ec:1031 with SMTP id ffacd0b85a97d-366e94d152emr7243179f8f.31.1719428609545;
-        Wed, 26 Jun 2024 12:03:29 -0700 (PDT)
-Received: from [192.168.0.31] (84-115-213-103.cable.dynamic.surfer.at. [84.115.213.103])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-366383f6da6sm16497673f8f.12.2024.06.26.12.03.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 26 Jun 2024 12:03:29 -0700 (PDT)
-Message-ID: <9e654a02-4a6a-47ef-bef6-263866a4941f@gmail.com>
-Date: Wed, 26 Jun 2024 21:03:27 +0200
+        d=1e100.net; s=20230601; t=1719430627; x=1720035427;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=eOjQ/R1GedZK24w3z78seoJ2dMf2SdqwKnQMmA2vypc=;
+        b=NQbQ36zfn7qG3P1IzBMF6jbZeFIMgUL5FDbb4dwmNdOJQNT5uqrhXEaBkwNRq0cOH0
+         Yy5ei4TFIHniwt0xqgbFDE0WSWP1viPaZ5qLh+2ygRdtC+Qj2NGjYqABP5ympCZ4poP9
+         cVhOdA4mDfjj1lmMcV4EzCPP/0nMZTB/Aegx2Y7BFZjbWF4D3XsAYy/sE8V9e4VcD+jH
+         G44ckEcPqVphSnmyDJqtCtpYGH7q5lUHIWncS+UUDXwfcMQT/QA9+98KIAWGofeyXWMW
+         rtM4uaZFiiTjDNdAbWE6jzTNfWAiUn0uiMoaFUie/4ndvHA8LxGl9/L4HKv+1qr87vsi
+         yMpA==
+X-Forwarded-Encrypted: i=1; AJvYcCWDItr3xLe+9lqN+FVDHU75x6rklFMiqAA3bxYEWu7fFYBCbIuD9FKR3upa9fEtY0g5RkrwiCF79AchNmtCL1OmuixX2B6n+LiiHncddNJU4hSgBI7mO0NKmdYOAVH8Bo0BWIr2XmkB5nZTYpnb
+X-Gm-Message-State: AOJu0Yw5uZuk9647F1Hx/jKOi0OfLVkEgBFqSbRe307Hw3dKteLoNsG+
+	m1HdKQvVVFDcboPTXoUoj9xEJVCnh0V9K44PMYkS5yYG7v6Q71hpFfqHYowh
+X-Google-Smtp-Source: AGHT+IFEeO9IN3qQwaY5ejmvgyRqZUMYeBxB/Up+ILOb0nQGa0nc1/xQG/pPsB0YhldmxZffa5E7/A==
+X-Received: by 2002:a05:600c:5d5:b0:424:a779:b5bf with SMTP id 5b1f17b1804b1-424a779b679mr30728705e9.20.1719430627129;
+        Wed, 26 Jun 2024 12:37:07 -0700 (PDT)
+Received: from [127.0.1.1] (84-115-213-103.cable.dynamic.surfer.at. [84.115.213.103])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-424c8468613sm36476445e9.39.2024.06.26.12.37.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Jun 2024 12:37:06 -0700 (PDT)
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Date: Wed, 26 Jun 2024 21:37:03 +0200
+Subject: [PATCH v2] mfd: omap-usb-tll: use struct_size to allocate tll
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] mfd: omap-usb-tll: use struct_size to allocate tll
-To: Kees Cook <kees@kernel.org>
-Cc: Tony Lindgren <tony@atomide.com>, Lee Jones <lee@kernel.org>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>, linux-omap@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-References: <20240620-omap-usb-tll-counted_by-v1-0-77797834bb9a@gmail.com>
- <20240620-omap-usb-tll-counted_by-v1-2-77797834bb9a@gmail.com>
- <202406261121.2FFD65647@keescook>
-Content-Language: en-US, de-AT
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-In-Reply-To: <202406261121.2FFD65647@keescook>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20240626-omap-usb-tll-counted_by-v2-1-4bedf20d1b51@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAN5tfGYC/4WNQQqDMBBFryKz7pQk2kZd9R5FShJTHdBEEpWKe
+ PemXqDL9+C/v0O0gWyEOtsh2JUieZdAXDIwvXKdRWoTg2CiYHfB0I9qwiVqnIcBjV/cbNuX3lA
+ pc5OGy5zxEtJ6CvZNn7P8bBL3FGcftvNo5T/7v7lyZCilrGSZF1pX6tGNioar8SM0x3F8Ae+iB
+ nG+AAAA
+To: Tony Lindgren <tony@atomide.com>, Lee Jones <lee@kernel.org>, 
+ Kees Cook <kees@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc: linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-hardening@vger.kernel.org, 
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>
+X-Mailer: b4 0.14-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1719430625; l=2401;
+ i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
+ bh=FWb/8xwgSmkYewGCNK0QCu9voPf3FKtacJJHxV+3mDY=;
+ b=eu0R35PRz0mZwtrpzv1RIROon4BFs/WttTciMHNUd/G+DZs6vZu955Q7VERWlf6lgtqK6mc1j
+ ozzoEgAC/jgCNSw7Fkiuse6pHq8/Xh2FVwNW7zxcbstqoGru0pLcMsT
+X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
+ pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
-On 26/06/2024 20:43, Kees Cook wrote:
-> On Thu, Jun 20, 2024 at 11:22:34PM +0200, Javier Carrasco wrote:
->> Use the struct_size macro to calculate the size of the tll, which
->> includes a trailing flexible array.
->>
->> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
->>
->> ---
-> 
-> I would actually include this entire bit below in the main commit log.
-> It's the core of the "why" for this patch.
-> 
->> The memory allocation used to be carried out in two steps:
->>
->> tll = devm_kzalloc(dev, sizeof(struct usbtll_omap), GFP_KERNEL);
->> tll->ch_clk = devm_kzalloc(dev, sizeof(struct clk *) * tll->nch,
->>                            GFP_KERNEL);
->>
->> Until commit 16c2004d9e4d ("mfd: omap-usb-tll: Allocate driver data at once")
->> turned that into the current allocation:
->>
->> tll = devm_kzalloc(dev, sizeof(*tll) + sizeof(tll->ch_clk[nch]),
->>                    GFP_KERNEL);
->>
->> That has surprised me at first glance because I would have expected
->> sizeof(tll->ch_clk[nch]) to return the size of a single pointer, not
->> being equivalent to 'sizeof(struct clk *) * nch'.
->>
->> I might be missing/misunderstanding something here because the commit
->> is not new, and the error should be noticeable. Moreover, I don't have
->> real hardware to test it. Hence why I didn't mark this patch as a fix.
->>
->> I would be pleased to get feedback about this (why it is right as it is,
->> or if that is actually a bug).
-> 
-> Yeah, I would include:
-> 
-> Fixes: commit 16c2004d9e4d ("mfd: omap-usb-tll: Allocate driver data at once")
-> 
-> Because that was a clear mistake. I suspect they were intending to do
-> this, which I've seen as a code pattern from time to time:
-> 
-> 	devm_kzalloc(dev, offsetof(typeof(*tll), ch_clk[nch]));
-> 
-> But as Jann points out, "nch" is so small:
-> 
-> drivers/mfd/omap-usb-tll.c:81:#define OMAP_REV2_TLL_CHANNEL_COUNT	2
-> drivers/mfd/omap-usb-tll.c:82:#define OMAP_TLL_CHANNEL_COUNT		3
-> drivers/mfd/omap-usb-tll.c:220:         nch = OMAP_TLL_CHANNEL_COUNT;
-> drivers/mfd/omap-usb-tll.c:224:         nch = OMAP_REV2_TLL_CHANNEL_COUNT;
-> 
-> struct usbtll_omap {
->         void __iomem    *base;
->         int             nch;            /* num. of channels */
->         struct clk      *ch_clk[];      /* must be the last member */
-> };
-> 
-> That this allocation was asking for 4 + 4 + 4 * 1 (12) instead of:
-> 	4 + 4 + 4 * OMAP_TLL_CHANNEL_COUNT (20)
-> or
-> 	4 + 4 + 4 * OMAP_REV2_TLL_CHANNEL_COUNT (16)
-> 
-> the latter would have ended up in the same kmalloc bucket (12 would be
-> rounded up to 16), but with the ARM alignment issue, the minimum bucket
-> size would effectively be tied to CONFIG_ARM_L1_CACHE_SHIFT, which could
-> be as low as 5: 32 bytes minimum, so no bug to be had in the real
-> world.
-> 
-> Reviewed-by: Kees Cook <kees@kernel.org>
-> 
-> -Kees
-> 
+Commit 16c2004d9e4d ("mfd: omap-usb-tll: Allocate driver data at once")
+changed the memory allocation of 'tll' to consolidate it into a single
+allocation, introducing an incorrect size calculation.
 
-Thanks for the accurate clarification. That explains indeed why the bug
-went unnoticed.
-A few more channels or members in the usbtll_omap structure would have
-triggered some alarms.
+In particular, the allocation for the array of pointers was converted
+into a single-pointer allocation.
 
-I will address your comments for v2.
+The memory allocation used to occur in two steps:
 
->> ---
->>  drivers/mfd/omap-usb-tll.c | 3 +--
->>  1 file changed, 1 insertion(+), 2 deletions(-)
->>
->> diff --git a/drivers/mfd/omap-usb-tll.c b/drivers/mfd/omap-usb-tll.c
->> index a091e5b0f21d..5f25ac514ff2 100644
->> --- a/drivers/mfd/omap-usb-tll.c
->> +++ b/drivers/mfd/omap-usb-tll.c
->> @@ -230,8 +230,7 @@ static int usbtll_omap_probe(struct platform_device *pdev)
->>  		break;
->>  	}
->>  
->> -	tll = devm_kzalloc(dev, sizeof(*tll) + sizeof(tll->ch_clk[nch]),
->> -			   GFP_KERNEL);
->> +	tll = devm_kzalloc(dev, struct_size(tll, ch_clk, nch), GFP_KERNEL);
->>  	if (!tll) {
->>  		pm_runtime_put_sync(dev);
->>  		pm_runtime_disable(dev);
->>
->> -- 
->> 2.40.1
->>
-> 
+tll = devm_kzalloc(dev, sizeof(struct usbtll_omap), GFP_KERNEL);
+tll->ch_clk = devm_kzalloc(dev, sizeof(struct clk *) * tll->nch,
+                           GFP_KERNEL);
+
+And it turned that into the following allocation:
+
+tll = devm_kzalloc(dev, sizeof(*tll) + sizeof(tll->ch_clk[nch]),
+                   GFP_KERNEL);
+
+sizeof(tll->ch_clk[nch]) returns the size of a single pointer instead of
+the expected nch pointers.
+
+This bug went unnoticed because the allocation size was small enough to
+fit within the minimum size of a memory allocation for this particular
+case [1].
+
+The complete allocation can still be done at once with the struct_size
+macro, which comes in handy for structures with a trailing flexible
+array.
+
+Fix the memory allocation to obtain the original size again.
+
+Link: https://lore.kernel.org/all/202406261121.2FFD65647@keescook/ [1]
+Fixes: 16c2004d9e4d ("mfd: omap-usb-tll: Allocate driver data at once")
+Reviewed-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+---
+Changes in v2:
+- Patch 1/2: drop (applied).
+- Patch 2/2: turn into fix.
+- Link to v1: https://lore.kernel.org/r/20240620-omap-usb-tll-counted_by-v1-0-77797834bb9a@gmail.com
+---
+ drivers/mfd/omap-usb-tll.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/drivers/mfd/omap-usb-tll.c b/drivers/mfd/omap-usb-tll.c
+index b6303ddb013b..f68dd0281463 100644
+--- a/drivers/mfd/omap-usb-tll.c
++++ b/drivers/mfd/omap-usb-tll.c
+@@ -230,8 +230,7 @@ static int usbtll_omap_probe(struct platform_device *pdev)
+ 		break;
+ 	}
+ 
+-	tll = devm_kzalloc(dev, sizeof(*tll) + sizeof(tll->ch_clk[nch]),
+-			   GFP_KERNEL);
++	tll = devm_kzalloc(dev, struct_size(tll, ch_clk, nch), GFP_KERNEL);
+ 	if (!tll) {
+ 		pm_runtime_put_sync(dev);
+ 		pm_runtime_disable(dev);
+
+---
+base-commit: b992b79ca8bc336fa8e2c80990b5af80ed8f36fd
+change-id: 20240620-omap-usb-tll-counted_by-aac57c173018
+
+Best regards,
+-- 
+Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
 
