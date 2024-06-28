@@ -1,115 +1,130 @@
-Return-Path: <linux-omap+bounces-1618-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1619-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88F3891BE22
-	for <lists+linux-omap@lfdr.de>; Fri, 28 Jun 2024 14:04:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B357D91C74A
+	for <lists+linux-omap@lfdr.de>; Fri, 28 Jun 2024 22:24:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B46F1F21A85
-	for <lists+linux-omap@lfdr.de>; Fri, 28 Jun 2024 12:04:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E3DB71C24A95
+	for <lists+linux-omap@lfdr.de>; Fri, 28 Jun 2024 20:24:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6C8415B13D;
-	Fri, 28 Jun 2024 12:02:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="olG4b4wF"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1E6F77113;
+	Fri, 28 Jun 2024 20:24:07 +0000 (UTC)
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83926158869;
-	Fri, 28 Jun 2024 12:02:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05ECC74061
+	for <linux-omap@vger.kernel.org>; Fri, 28 Jun 2024 20:24:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719576150; cv=none; b=WhoEYK+4vEoMpx2Cm2quli6UL21nlglrTz4bIyqtv9VEeS6+X1ObsBeN5CjrFA8G/HCgDvxh6AS3FmpJuI4m6HSZ5bEWu6Z3xPk2VTngWgw0bmRLh1sadlQzpRGJJAPq/MtmIMRC/RhO54rwUHEq3WJ92FFdMPYcyTJbnVKj3lM=
+	t=1719606247; cv=none; b=hO13vRRANVsHknqS/zriOWCn+v88N+FvNFXjYlz5pGdKzoLRBO305KJksfop09i38t3YbDxJjC019YVoq2ChZCfEb5pOIPymexwBcIi+EfH3G/TH9nA0/uHDBA4dPaC3rtHxvcGxUYtJ8kVnQ2lCynZRWTvVeX8TZsUV1LPagfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719576150; c=relaxed/simple;
-	bh=FKcirLR/pWoh2OgNGlCJD8YMQ8eyfijmKpfX7z0DNkk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Bu+UQSFdmpfOPph6iPkcLQ1Z/DupvimT5jUKGGcdFBY7bIRsN22mWk1rJlsivLm93Kpb0tuLJF2KxAF8W5Ym3J0fjmAY/Etb5o/H8dx7yehPKR+BU+hUw/N294STpJvSvHUnYKbm0Fa5wGbekJI9TKhqmaB9wOy7p6EF0fzC7j0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=olG4b4wF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35FFCC116B1;
-	Fri, 28 Jun 2024 12:02:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719576150;
-	bh=FKcirLR/pWoh2OgNGlCJD8YMQ8eyfijmKpfX7z0DNkk=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=olG4b4wFfXJfaStDN/4bJiyDG/w5tcYVmMOtiXpEq/KAUVAmT23oQrwE/4vhHAmj8
-	 B5n+IpIHnFdEOUmLqKyStcsM9DaVGRKBVjR5uJp6ixlH/irOy18kb8p3gFLEcVTOSU
-	 LRM1E5cUsSwnpRBvzG+DNLOltvXw/+jUPEQYpiuopdKqR8bkhXBg2STDFV8ICneQ4s
-	 lNly5slGUJb0OimxsxNRvp0p7saXjhb82Gw4Fs9FyXxMqH5h0m9SkpYW+z25dQykiD
-	 tSAIPnnO7K/vyb/BC4hg+rwrwwte4Ovg58NIAMGRbfMCpjVb0I08UcdgFnKXcizzdB
-	 e9c0uTGHSZeZA==
-From: Roger Quadros <rogerq@kernel.org>
-Date: Fri, 28 Jun 2024 15:01:56 +0300
-Subject: [PATCH net-next v2 7/7] net: ethernet: ti: am65-cpsw: setup
- priority to flow mapping
+	s=arc-20240116; t=1719606247; c=relaxed/simple;
+	bh=LrU/vFZBwQrEY3O4d/bDlnG+nvye4/jK5v7HbWF0d/A=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=YSc3He3/qBjPFa+C9SEcYeOapsUzf+vMXAvHnKGtekMCHKGlYpYOWrt0QvZejcr5RmThcisPqX+d6Qxi92DSvL9wNKkwlLH1L/g1xVqO+camN+eHUec6o6/O6ajMSM/UjeloYPIrSWLYZoZ4vPS0JrIE/EHZi3R8BW9BPONjDiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=baylibre.com; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-1fa2782a8ccso6029755ad.2
+        for <linux-omap@vger.kernel.org>; Fri, 28 Jun 2024 13:24:05 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719606245; x=1720211045;
+        h=content-transfer-encoding:mime-version:message-id:date:references
+         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LrU/vFZBwQrEY3O4d/bDlnG+nvye4/jK5v7HbWF0d/A=;
+        b=XKh1ch/brW4xl1J8pzTDI+IdgDu9i6LZQ8VsaO2qXyezmtu4kj/JiwcIorQVKPJR7Q
+         VKw08BuUckPWogDFEwmqtgZs6ZhyB1u34EpLaAU6UrYoStKE1WEagQ7U3FZVTf8de6Dw
+         S7gn0vrzqU4A3yGESL8FuOFANgushqkDo2nPQq/RNyrW5p9L7xYCcZ/7NGjdShC6Ky+D
+         ArWdD0zVEPSwggoiOLznPt7JS5L4wf+GQx0aSQBBhxFVpeaOlBmmxhtYfcp5+RTtPf2F
+         M9mex9ZnF/Z24Z8cgyv/MLHLZv8W07j2CHEes26aph2Fy6kbLGDGn0IHzruUtxGh0Fvj
+         HUgg==
+X-Forwarded-Encrypted: i=1; AJvYcCUpl0rOfM7NfuOOokpZ8+ewD1BCL/oQUDrh5YjjxgssRLHRTQ0B61XQUwsHVnx6m98mIPhM/cQyCxCQh9ky3n8uGm43d8nI+WyLOw==
+X-Gm-Message-State: AOJu0YwBfH6nlSWAWChZl4sGAseKrZqOD6asSV0fNF46wAP2XntUMbAb
+	KWjgFgS6EJVVGSDjaJqdiIVQJ8mE0YDxaO+c5Oosw/Kk78/olRNwImLvWYhFl94=
+X-Google-Smtp-Source: AGHT+IGsgsVYu6rWLpCbmby0pBi1fFO3CA/5IHmqHnu0PlXeWkGkqHi0uDn6hd57XrYtAzALVB/XDA==
+X-Received: by 2002:a17:902:e548:b0:1f7:1aff:679e with SMTP id d9443c01a7336-1fa23f49b40mr164375045ad.66.1719606245335;
+        Fri, 28 Jun 2024 13:24:05 -0700 (PDT)
+Received: from localhost (97-126-77-189.tukw.qwest.net. [97.126.77.189])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fac1535b5fsm19527145ad.174.2024.06.28.13.24.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Jun 2024 13:24:04 -0700 (PDT)
+From: Kevin Hilman <khilman@kernel.org>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Robert Nelson
+ <robertcnelson@gmail.com>, "Andrew F. Davis" <afd@ti.com>, Roger Quadros
+ <rogerq@ti.com>
+Cc: Tony Lindgren <tony@atomide.com>, devicetree@vger.kernel.org,
+ linux-omap@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, kernel test robot <lkp@intel.com>,
+ linux-kernel@vger.kernel.org, Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH] ARM: dts: omap am5729-beagleboneai: drop unneeded
+ ti,enable-id-detection
+In-Reply-To: <2c71aa2e-2039-4941-b8ed-e7b9dd3d6d3a@linaro.org>
+References: <20240615174904.39012-1-krzysztof.kozlowski@linaro.org>
+ <dcd6afee-b17d-4633-af7a-4a5dbf68be94@linaro.org>
+ <CAOCHtYh8YucHNwV6+S-3vfHvygs=5_UGVwPt6R+i+qBTc3eOTA@mail.gmail.com>
+ <2c71aa2e-2039-4941-b8ed-e7b9dd3d6d3a@linaro.org>
+Date: Fri, 28 Jun 2024 13:24:04 -0700
+Message-ID: <7hcyo0eryz.fsf@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240628-am65-cpsw-multi-rx-v2-7-c399cb77db56@kernel.org>
-References: <20240628-am65-cpsw-multi-rx-v2-0-c399cb77db56@kernel.org>
-In-Reply-To: <20240628-am65-cpsw-multi-rx-v2-0-c399cb77db56@kernel.org>
-To: "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Siddharth Vadapalli <s-vadapalli@ti.com>, 
- Julien Panis <jpanis@baylibre.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, srk@ti.com, vigneshr@ti.com, 
- danishanwar@ti.com, pekka Varis <p-varis@ti.com>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org, 
- Roger Quadros <rogerq@kernel.org>
-X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=openpgp-sha256; l=973; i=rogerq@kernel.org;
- h=from:subject:message-id; bh=FKcirLR/pWoh2OgNGlCJD8YMQ8eyfijmKpfX7z0DNkk=;
- b=owEBbQKS/ZANAwAIAdJaa9O+djCTAcsmYgBmfqY4mV0BG4LD3+QOVeLqgS4vNdoucjP24yHt/
- r0sqyzoirOJAjMEAAEIAB0WIQRBIWXUTJ9SeA+rEFjSWmvTvnYwkwUCZn6mOAAKCRDSWmvTvnYw
- k+jvEAC5gkLelvUnn2oekW5QJf/B4N4rJcbVFF4MKJ4JTr8e5+Ck/m0OIhdb5QxzVEqvtbfdIUJ
- VuidoxD+MSvvC3/vOi3+jXLKCDYywovWfl9H8mRNW2M7wFfx+sPkGR+nainGjv7EzlMzr7VnYgp
- G2ktKg2TXgAtDz1M5EAIMYA97Hc8QyKCUOPt/i1Mvgpqha+CNs1oYVyS7J2MNuGtrNkwmjk/NDV
- 8uWXZwYEsgKu8Th4dI88HU9aSML9RntP0I6idU1JI0Uqr8AgUedRrLJdPczQfdgMVLeM+kRuqup
- fVEvNVCWaNy/LynXHogJ+qJYd00ex1v/+q0i1GMBAG9FTQ1K1O2xDd744oYtr9l+/VFjZejxpAh
- RmDg1wR/D1u80tFs2tUpJRW0iUip4dTDD2QVLAuGq0F8EZ8ZTheRIyDXrg5uyv+OXbIMNipZ/zE
- fbYNQ/N6mu4QuNkgyucjRq+BIUszuVzT+7YyVGKp9OEWn7kbHsWpxQyPhw6TRQBuVECe9ilSLC6
- duiW953aKB8zlHB9cu8NkIlm8DP6uJ9GiJaARLd/4uztRA8uRpMOa28FRS/ioCkvlNn7gElulqP
- gGgssrAiuwN1pfxBLMzvH70Y4uL2qjcwzFvqdH4TcrozoszasIcofvlOZCupvpGGNEtfmWUAAHi
- Iydf/6vTqH6pNZQ==
-X-Developer-Key: i=rogerq@kernel.org; a=openpgp;
- fpr=412165D44C9F52780FAB1058D25A6BD3BE763093
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Now that we support multiple RX queues, enable default priority
-to flow mapping so that higher priority packets come on higher
-channels (flows).
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> writes:
 
-The Classifier checks for PCP/DSCP priority in the packet and
-routes them to the appropriate flow.
+> On 26/06/2024 18:48, Robert Nelson wrote:
+>> On Wed, Jun 26, 2024 at 6:34=E2=80=AFAM Krzysztof Kozlowski
+>> <krzysztof.kozlowski@linaro.org> wrote:
+>>>
+>>> On 15/06/2024 19:49, Krzysztof Kozlowski wrote:
+>>>> There is a ti,enable-id-detection property in the Extcon Palmas
+>>>> (extcon-palmas), but not in the Extcon USB GPIO binding and driver.
+>>>>
+>>>> Reported-by: kernel test robot <lkp@intel.com>
+>>>> Closes: https://lore.kernel.org/oe-kbuild-all/202406152004.F2fNnorG-lk=
+p@intel.com/
+>>>> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+>>>
+>>> Tony,
+>>>
+>>> Do you still pick up patches for OMAP? Any comments on this?
+>>=20
+>> Krzysztof,
+>>=20
+>> It looks like Tony didn't send his final MAINTAINERS update:
+>>=20
+>> https://lore.kernel.org/linux-arm-kernel/20240419055249.GE5156@atomide.c=
+om/T/
+>
+> Oh, thanks for letting me know.
+>
+>>=20
+>> @Andrew F. Davis
+>> and @Roger Quadros have you guys set up a git tree for omap patches?
+>
+> I will pick up this patch to my DTS cleanups/fixes, but let me know if
+> anyone prefers to take it instead.
 
-Signed-off-by: Roger Quadros <rogerq@kernel.org>
----
- drivers/net/ethernet/ti/am65-cpsw-nuss.c | 3 +++
- 1 file changed, 3 insertions(+)
+As discussed with Tony, I will be starting to manage patches for these
+platforms next month, but I'm happy for you to take this.
 
-diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-index f6c664dfc1fa..49925ccd6b31 100644
---- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-+++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-@@ -2492,6 +2492,9 @@ static int am65_cpsw_nuss_init_rx_chns(struct am65_cpsw_common *common)
- 		}
- 	}
- 
-+	/* setup classifier to route priorities to flows */
-+	cpsw_ale_classifier_setup_default(common->ale, common->rx_ch_num_flows);
-+
- err:
- 	i = devm_add_action(dev, am65_cpsw_nuss_free_rx_chns, common);
- 	if (i) {
+A bit late, since I see you already applied it, but FWIW:
 
--- 
-2.34.1
+Acked-by: Kevin Hilman <khilman@baylibre.com>
+
+Thank you for picking this up.
+
+Kevin
+
+
 
 
