@@ -1,130 +1,112 @@
-Return-Path: <linux-omap+bounces-1619-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1620-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B357D91C74A
-	for <lists+linux-omap@lfdr.de>; Fri, 28 Jun 2024 22:24:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0949591D361
+	for <lists+linux-omap@lfdr.de>; Sun, 30 Jun 2024 21:19:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E3DB71C24A95
-	for <lists+linux-omap@lfdr.de>; Fri, 28 Jun 2024 20:24:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 378D51C2089B
+	for <lists+linux-omap@lfdr.de>; Sun, 30 Jun 2024 19:19:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1E6F77113;
-	Fri, 28 Jun 2024 20:24:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0702915665B;
+	Sun, 30 Jun 2024 19:18:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MInC2OSd"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-ua1-f49.google.com (mail-ua1-f49.google.com [209.85.222.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05ECC74061
-	for <linux-omap@vger.kernel.org>; Fri, 28 Jun 2024 20:24:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B40710F2;
+	Sun, 30 Jun 2024 19:18:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719606247; cv=none; b=hO13vRRANVsHknqS/zriOWCn+v88N+FvNFXjYlz5pGdKzoLRBO305KJksfop09i38t3YbDxJjC019YVoq2ChZCfEb5pOIPymexwBcIi+EfH3G/TH9nA0/uHDBA4dPaC3rtHxvcGxUYtJ8kVnQ2lCynZRWTvVeX8TZsUV1LPagfo=
+	t=1719775128; cv=none; b=uq9TYY91/F1Wx7/BjCbDRNP/UA9qnmsEdwekuaRX5/4Z14ex5cI9WozhPChT7Ci+SkDgtn9exap73nd+DQQIEjwvlOfcxqJl6zpPJWpx/B41oIu2YtTMJScAFn2yRdYnX5Jo9i0atv07Y1LNIxCOtMc3RpaoOf9Ar6g5ZE5qpmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719606247; c=relaxed/simple;
-	bh=LrU/vFZBwQrEY3O4d/bDlnG+nvye4/jK5v7HbWF0d/A=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=YSc3He3/qBjPFa+C9SEcYeOapsUzf+vMXAvHnKGtekMCHKGlYpYOWrt0QvZejcr5RmThcisPqX+d6Qxi92DSvL9wNKkwlLH1L/g1xVqO+camN+eHUec6o6/O6ajMSM/UjeloYPIrSWLYZoZ4vPS0JrIE/EHZi3R8BW9BPONjDiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=baylibre.com; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-1fa2782a8ccso6029755ad.2
-        for <linux-omap@vger.kernel.org>; Fri, 28 Jun 2024 13:24:05 -0700 (PDT)
+	s=arc-20240116; t=1719775128; c=relaxed/simple;
+	bh=SIyzBUuqYC/Uv6iGqHtSBPjyKkR1Nq7Rna0Dkfcg4vM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Content-Type; b=heKzu/hqGu9O3mbqGJr9KT5hUu+CPIaMA9mpswOvchygzxoem9pwge6nPIxJDE9iIv5YBw/JXetQMyUlkP9N6FdtBBJJNdzEC4HSmvwdhOvuCGRTDEZmVQAJxzAHDqq+9eaRJRajlGzcMHBPcCdnCFI0SD9aHIwChOWHtOgVJb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MInC2OSd; arc=none smtp.client-ip=209.85.222.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ua1-f49.google.com with SMTP id a1e0cc1a2514c-80f81080239so718230241.1;
+        Sun, 30 Jun 2024 12:18:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1719775126; x=1720379926; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=LROBc5Cn3AHvEzFbrvvny5v7Q2aOnPA043oI17JubXU=;
+        b=MInC2OSdhrrz7aiv3uS3EB8fO1o25YbMnz1kApD7za/LB4c023IE4sf4FEtZybWasV
+         VM8USmocQBNS7Q/qxPv6w/3ERRyGsqXC3OfykikvJwJqBQoOq+XMlmDyiX7HAtEcWnOC
+         TxD4yAOucdtDrVK+4FCgwErhEcMZkAJDb7ZDQ6QfLViM2rA3l/We5NCSiypATZBgHFe5
+         R81WT8plgCNxgXgQK7IRPrskWjIiRe6XfMktuf8TGDYjKxMW60XB+BdC/EJh9qioDm6D
+         EQOU3LBBRPQiI5zX1ys7bJUFtRzfzFBcMKpqjDTa8gWzFk+jiTNjyv4azL9DPit4IJU+
+         Jm7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719606245; x=1720211045;
-        h=content-transfer-encoding:mime-version:message-id:date:references
-         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LrU/vFZBwQrEY3O4d/bDlnG+nvye4/jK5v7HbWF0d/A=;
-        b=XKh1ch/brW4xl1J8pzTDI+IdgDu9i6LZQ8VsaO2qXyezmtu4kj/JiwcIorQVKPJR7Q
-         VKw08BuUckPWogDFEwmqtgZs6ZhyB1u34EpLaAU6UrYoStKE1WEagQ7U3FZVTf8de6Dw
-         S7gn0vrzqU4A3yGESL8FuOFANgushqkDo2nPQq/RNyrW5p9L7xYCcZ/7NGjdShC6Ky+D
-         ArWdD0zVEPSwggoiOLznPt7JS5L4wf+GQx0aSQBBhxFVpeaOlBmmxhtYfcp5+RTtPf2F
-         M9mex9ZnF/Z24Z8cgyv/MLHLZv8W07j2CHEes26aph2Fy6kbLGDGn0IHzruUtxGh0Fvj
-         HUgg==
-X-Forwarded-Encrypted: i=1; AJvYcCUpl0rOfM7NfuOOokpZ8+ewD1BCL/oQUDrh5YjjxgssRLHRTQ0B61XQUwsHVnx6m98mIPhM/cQyCxCQh9ky3n8uGm43d8nI+WyLOw==
-X-Gm-Message-State: AOJu0YwBfH6nlSWAWChZl4sGAseKrZqOD6asSV0fNF46wAP2XntUMbAb
-	KWjgFgS6EJVVGSDjaJqdiIVQJ8mE0YDxaO+c5Oosw/Kk78/olRNwImLvWYhFl94=
-X-Google-Smtp-Source: AGHT+IGsgsVYu6rWLpCbmby0pBi1fFO3CA/5IHmqHnu0PlXeWkGkqHi0uDn6hd57XrYtAzALVB/XDA==
-X-Received: by 2002:a17:902:e548:b0:1f7:1aff:679e with SMTP id d9443c01a7336-1fa23f49b40mr164375045ad.66.1719606245335;
-        Fri, 28 Jun 2024 13:24:05 -0700 (PDT)
-Received: from localhost (97-126-77-189.tukw.qwest.net. [97.126.77.189])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fac1535b5fsm19527145ad.174.2024.06.28.13.24.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Jun 2024 13:24:04 -0700 (PDT)
-From: Kevin Hilman <khilman@kernel.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Robert Nelson
- <robertcnelson@gmail.com>, "Andrew F. Davis" <afd@ti.com>, Roger Quadros
- <rogerq@ti.com>
-Cc: Tony Lindgren <tony@atomide.com>, devicetree@vger.kernel.org,
- linux-omap@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, kernel test robot <lkp@intel.com>,
- linux-kernel@vger.kernel.org, Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH] ARM: dts: omap am5729-beagleboneai: drop unneeded
- ti,enable-id-detection
-In-Reply-To: <2c71aa2e-2039-4941-b8ed-e7b9dd3d6d3a@linaro.org>
-References: <20240615174904.39012-1-krzysztof.kozlowski@linaro.org>
- <dcd6afee-b17d-4633-af7a-4a5dbf68be94@linaro.org>
- <CAOCHtYh8YucHNwV6+S-3vfHvygs=5_UGVwPt6R+i+qBTc3eOTA@mail.gmail.com>
- <2c71aa2e-2039-4941-b8ed-e7b9dd3d6d3a@linaro.org>
-Date: Fri, 28 Jun 2024 13:24:04 -0700
-Message-ID: <7hcyo0eryz.fsf@baylibre.com>
+        d=1e100.net; s=20230601; t=1719775126; x=1720379926;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=LROBc5Cn3AHvEzFbrvvny5v7Q2aOnPA043oI17JubXU=;
+        b=jftg2W1GWTCDTkwUVaeaXvJEAXAdYmisKhn3+/5utYk96W6woppGJEJmLmAkCrwQkb
+         7gRYGP+PvXYQqDIJ147/9NZ6uNcZr8TYQzy3JgUN5O1fn9KYUvFRCryMaam4FkTdpOZl
+         nKm7rRrLyUfyoB5C2/9WjLoy6HngrUiARB4vPGfV6P7/6H8uJrSrkbEtWersL8OQmqRf
+         YTY+pA6ekHft7QKwhqtycC9kr/68yFwv0574X9Tfn1EGsUME6xvl5jmtx0q3gY4nXLoi
+         FrEQUJXI/HR1Pbxr5g6+SP4fXr1VdtiqYt1G+Zk3JdDXTJwDFsIvUwb1hkcylmvwS6sR
+         anHQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWpw5tkX04iYE1jzXQvP9Iawui7kraoEKzSlQui1ZDz1uLfAFoi297g+uVlxof6XE4iNx2BZJNnrD5rVJjUIvZBVA+fuA0VAodNhQPjGU5XFFUJLfyQlhdXpR2MwT63fE+V6T6hM7JWPEtz+1hmV4Oa/P7e4AKuN4kJNpJO84Whsz7Ov5m8vy9Y3OCuPQAWgGwrbHkXiiDYxcc33YkF/+nMGD2Q1jIk
+X-Gm-Message-State: AOJu0YxwTAfJ+LQCfFEC2TCfOwFcEnJvffWT4mMEx1kdjEu0lsaoGfY6
+	QHyyJwuM+agLJsuAPYIzxi9yI6lsLNm/pCdVU5PAhsn6JnauJLAUej9XvEF3cbf859bRvFbC2yt
+	BIwxpmEzuHP3/JueP31GOm4YuYiU=
+X-Google-Smtp-Source: AGHT+IHgXhi2h52NtLmNbTtFIUCqAOSczB+xkST86qS4TfxzvyFy0Gcmgp6HzPHOYCP2gE0K0vx6dS/AhjgLGdIaoO8=
+X-Received: by 2002:a05:6102:4c12:b0:48f:461b:c9ac with SMTP id
+ ada2fe7eead31-48faf08f6ccmr4121074137.14.1719775126006; Sun, 30 Jun 2024
+ 12:18:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+References: <20240626121551.3127032-1-allen.lkml@gmail.com> <dc7hnzrxtrtvlnkfxnqfn46ulx4gq3so235tibohb54zwvjbcx@4s5osl4sjrb7>
+In-Reply-To: <dc7hnzrxtrtvlnkfxnqfn46ulx4gq3so235tibohb54zwvjbcx@4s5osl4sjrb7>
+From: Allen <allen.lkml@gmail.com>
+Date: Sun, 30 Jun 2024 12:18:35 -0700
+Message-ID: <CAOMdWSKh3+HXFuYVx-GHC93iqEPskRKLti9KHKLHs5RYy-mcjg@mail.gmail.com>
+Subject: Re: [PATCH v5] mmc: Convert from tasklet to BH workqueue
+To: Wolfram Sang <wsa+renesas@sang-engineering.com>, Allen Pais <allen.lkml@gmail.com>, 
+	Aubin Constans <aubin.constans@microchip.com>, Ulf Hansson <ulf.hansson@linaro.org>, 
+	Nicolas Ferre <nicolas.ferre@microchip.com>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+	Manuel Lauss <manuel.lauss@gmail.com>, =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>, 
+	Jaehoon Chung <jh80.chung@samsung.com>, Aaro Koskinen <aaro.koskinen@iki.fi>, 
+	Adrian Hunter <adrian.hunter@intel.com>, Florian Fainelli <florian.fainelli@broadcom.com>, 
+	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Alex Dubov <oakad@yahoo.com>, 
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Bruce Chang <brucechang@via.com.tw>, Harald Welte <HaraldWelte@viatech.com>, 
+	Pierre Ossman <pierre@ossman.eu>, Christian Loehle <christian.loehle@arm.com>, linux-mmc@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> writes:
-
-> On 26/06/2024 18:48, Robert Nelson wrote:
->> On Wed, Jun 26, 2024 at 6:34=E2=80=AFAM Krzysztof Kozlowski
->> <krzysztof.kozlowski@linaro.org> wrote:
->>>
->>> On 15/06/2024 19:49, Krzysztof Kozlowski wrote:
->>>> There is a ti,enable-id-detection property in the Extcon Palmas
->>>> (extcon-palmas), but not in the Extcon USB GPIO binding and driver.
->>>>
->>>> Reported-by: kernel test robot <lkp@intel.com>
->>>> Closes: https://lore.kernel.org/oe-kbuild-all/202406152004.F2fNnorG-lk=
-p@intel.com/
->>>> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
->>>
->>> Tony,
->>>
->>> Do you still pick up patches for OMAP? Any comments on this?
->>=20
->> Krzysztof,
->>=20
->> It looks like Tony didn't send his final MAINTAINERS update:
->>=20
->> https://lore.kernel.org/linux-arm-kernel/20240419055249.GE5156@atomide.c=
-om/T/
+> > v5:
+> >    - completely dropped renasas changes from this series.
 >
-> Oh, thanks for letting me know.
+> It seems you need to read mails more carefully. In v4 I said that...
 >
->>=20
->> @Andrew F. Davis
->> and @Roger Quadros have you guys set up a git tree for omap patches?
+> >  drivers/mmc/host/tmio_mmc.h       |  3 +-
+> >  drivers/mmc/host/tmio_mmc_core.c  |  4 +-
 >
-> I will pick up this patch to my DTS cleanups/fixes, but let me know if
-> anyone prefers to take it instead.
+> ... these need to go as well.
+>
 
-As discussed with Tony, I will be starting to manage patches for these
-platforms next month, but I'm happy for you to take this.
+My apologies, I have been out sick and wanted to unblock Ulf and
+in the process missed reading your feedback. Will have it fixed and sent out.
 
-A bit late, since I see you already applied it, but FWIW:
+Thanks.
 
-Acked-by: Kevin Hilman <khilman@baylibre.com>
-
-Thank you for picking this up.
-
-Kevin
-
-
-
+-- 
+       - Allen
 
