@@ -1,190 +1,171 @@
-Return-Path: <linux-omap+bounces-1632-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1634-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 104C491DCD4
-	for <lists+linux-omap@lfdr.de>; Mon,  1 Jul 2024 12:36:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C28EC91E175
+	for <lists+linux-omap@lfdr.de>; Mon,  1 Jul 2024 15:57:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 59B35B21F11
-	for <lists+linux-omap@lfdr.de>; Mon,  1 Jul 2024 10:36:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F36501C22502
+	for <lists+linux-omap@lfdr.de>; Mon,  1 Jul 2024 13:57:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C00784A27;
-	Mon,  1 Jul 2024 10:32:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s60K45uw"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE7F616A951;
+	Mon,  1 Jul 2024 13:54:25 +0000 (UTC)
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 280786E619;
-	Mon,  1 Jul 2024 10:32:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F234A169AC6
+	for <linux-omap@vger.kernel.org>; Mon,  1 Jul 2024 13:54:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719829934; cv=none; b=sD6WfKzQZ0F0f6K+vCaGQhwKxvTzeixZFycaRrRObcCfmveu/MjFp5ouP7Xa3YojD9vU3bxG5eBuQwMYW9UA29zzHhPtAVjfxm6NnebjnP5wUeLPapxpaMh/Dxlz8mTDw93nBrzqdl9MUWv4Aq1/gZia4Hs+Kbq4tVIyahFbuYI=
+	t=1719842065; cv=none; b=eLMN6ovlgg6l33ihrNoaQVHroBYITHmK2GXZUM6EIubx/3iRsZ0GjreTzhc7JOOaSEJvc4BJJaYYvWN/r6PdcrxrWBxAeKPXGEvnDFlRwJC07438/w3srjM/5xa7D62EF9TvRPGDPeqIgtguxz/D/uXU2dNj6S3KZD7rM+lBJbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719829934; c=relaxed/simple;
-	bh=R7T8YhpIUp1RKvk1/M4DyWRs4IRJJC5D/TCvUBWV3F0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BP1G4/29Qwk9DYEN2CVRSfRBOBgiC0NW/h6gmEyBBrsRCAwmfqnsXeKAvnEVz9EJcvnvvvT8Hr6spQWNxvbc4oJIvuEskRO/TS+5lBF0Akmc6m7gl+stfBPV06gGzs77nRXFfx+O3xgAhbbuxGP4uW8SzeH/Nlp+sr61gOJYJl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s60K45uw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F61EC116B1;
-	Mon,  1 Jul 2024 10:32:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719829933;
-	bh=R7T8YhpIUp1RKvk1/M4DyWRs4IRJJC5D/TCvUBWV3F0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=s60K45uwntuPFAJ/C/OpPh2FbLXUBRggc7QQcIB/0EaV59AAzy4BDHLRNCwBnXCxv
-	 vLQPrLNuL1HRoJ+cAge9U1xFVrpLb1gcPrF5K9R54PWfziGEf/nebI0paNN+54dOX6
-	 FMmO4eLfnhGgcPEWMMi8u8K48ZbVix9wZ4Hpoov25jxzoOU8qSGGgGm39zS8kM7lR6
-	 6CGC3N1f9WRdLGZyCSB4D85BrS6uzeieuafORPuJr6DdgsX0xhvD0E9+m/+z/lgN+x
-	 2QDcXB4T9vMeUtqYErJ2koLClDfAJlKw8PUGZQ5H8uwkPcDJCFl8tv9ldA1yK6BoJP
-	 00q/72yuPUR3g==
-Message-ID: <4124798a-cda5-47fe-a67b-e84d72f3ecf8@kernel.org>
-Date: Mon, 1 Jul 2024 13:32:08 +0300
+	s=arc-20240116; t=1719842065; c=relaxed/simple;
+	bh=TdcrekuqxkdGfFue0q5KkkRmhv3vqXpjDTGgiciypM8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=tOXv0tNBmvflnnWs6FPmrn3ce9vI+25DhMWR+4gsuxkBq6gOrOSoTS7u9LprdRotuqCO+IJw5dTslsYrC09bLBxBM09838shUoiMEZypaCjUosMlsa+YTdNSOz5pqCD84I3J9qT7cqvKjgjMxvd/mQeR4t0fna4tDzTuVLwzmSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <m.felsch@pengutronix.de>)
+	id 1sOHTW-0001LY-Vb; Mon, 01 Jul 2024 15:53:46 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+Subject: [PATCH 0/9] AT24 EEPROM MTD Support
+Date: Mon, 01 Jul 2024 15:53:39 +0200
+Message-Id: <20240701-b4-v6-10-topic-usbc-tcpci-v1-0-3fd5f4a193cc@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2 6/7] net: ethernet: ti: cpsw_ale: add helper
- to setup classifier defaults
-To: Simon Horman <horms@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Siddharth Vadapalli <s-vadapalli@ti.com>,
- Julien Panis <jpanis@baylibre.com>, Andrew Lunn <andrew@lunn.ch>,
- srk@ti.com, vigneshr@ti.com, danishanwar@ti.com, pekka Varis
- <p-varis@ti.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-omap@vger.kernel.org
-References: <20240628-am65-cpsw-multi-rx-v2-0-c399cb77db56@kernel.org>
- <20240628-am65-cpsw-multi-rx-v2-6-c399cb77db56@kernel.org>
- <20240701073505.GI17134@kernel.org>
-Content-Language: en-US
-From: Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <20240701073505.GI17134@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAOO0gmYC/x3MQQqEMAxG4atI1hNIpTjoVcTF9DeO2WhpVQTx7
+ haX3+K9i7Im00xddVHSw7KtS4H7VIT5t/yVbSymWmovX3EcPB8NO+FtjQbecwBviDCGD2gDoI1
+ 4Kn1MOtn5vvvhvh826v1ZawAAAA==
+To: Miquel Raynal <miquel.raynal@bootlin.com>, 
+ Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, 
+ Arnd Bergmann <arnd@arndb.de>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Bartosz Golaszewski <brgl@bgdev.pl>, Russell King <linux@armlinux.org.uk>, 
+ Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@codeconstruct.com.au>, 
+ Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Vladimir Zapolskiy <vz@mleia.com>, 
+ Andrew Lunn <andrew@lunn.ch>, Gregory Clement <gregory.clement@bootlin.com>, 
+ Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, 
+ Tony Lindgren <tony@atomide.com>, 
+ Geert Uytterhoeven <geert+renesas@glider.be>, 
+ Magnus Damm <magnus.damm@gmail.com>, Dinh Nguyen <dinguyen@kernel.org>, 
+ Thierry Reding <thierry.reding@gmail.com>, 
+ Jonathan Hunter <jonathanh@nvidia.com>, 
+ =?utf-8?q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>, 
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+ Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, 
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+ Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>
+Cc: linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ linux-i2c@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-aspeed@lists.ozlabs.org, imx@lists.linux.dev, 
+ linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+ linux-tegra@vger.kernel.org, openbmc@lists.ozlabs.org, 
+ linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org, 
+ loongarch@lists.linux.dev, Marco Felsch <m.felsch@pengutronix.de>
+X-Mailer: b4 0.15-dev
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:1101:1d::28
+X-SA-Exim-Mail-From: m.felsch@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-omap@vger.kernel.org
 
+This series adds the intial support to handle EEPROMs via the MTD layer
+as well. This allow the user-space to have separate paritions since
+EEPROMs can become quite large nowadays.
 
-On 01/07/2024 10:35, Simon Horman wrote:
-> On Fri, Jun 28, 2024 at 03:01:55PM +0300, Roger Quadros wrote:
->> Default behaviour is to have 8 classifiers to map 8 DSCP/PCP
->> priorities to N receive threads (flows). N depends on number of
->> RX channels enabled for the port.
->>
->> Signed-off-by: Roger Quadros <rogerq@kernel.org>
->> ---
->>  drivers/net/ethernet/ti/cpsw_ale.c | 57 ++++++++++++++++++++++++++++++++++++++
->>  drivers/net/ethernet/ti/cpsw_ale.h |  1 +
->>  2 files changed, 58 insertions(+)
->>
->> diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
->> index 75a17184d34c..51da527388df 100644
->> --- a/drivers/net/ethernet/ti/cpsw_ale.c
->> +++ b/drivers/net/ethernet/ti/cpsw_ale.c
->> @@ -1650,3 +1650,60 @@ static void cpsw_ale_policer_thread_idx_enable(struct cpsw_ale *ale, u32 idx,
->>  	regmap_field_write(ale->fields[ALE_THREAD_VALUE], thread_id);
->>  	regmap_field_write(ale->fields[ALE_THREAD_ENABLE], enable ? 1 : 0);
->>  }
->> +
->> +/* Disable all policer entries and thread mappings */
->> +static void cpsw_ale_policer_reset(struct cpsw_ale *ale)
->> +{
->> +	int i;
->> +
->> +	for (i = 0; i < ale->params.num_policers ; i++) {
->> +		cpsw_ale_policer_read_idx(ale, i);
->> +		regmap_field_write(ale->fields[POL_PORT_MEN], 0);
->> +		regmap_field_write(ale->fields[POL_PRI_MEN], 0);
->> +		regmap_field_write(ale->fields[POL_OUI_MEN], 0);
->> +		regmap_field_write(ale->fields[POL_DST_MEN], 0);
->> +		regmap_field_write(ale->fields[POL_SRC_MEN], 0);
->> +		regmap_field_write(ale->fields[POL_OVLAN_MEN], 0);
->> +		regmap_field_write(ale->fields[POL_IVLAN_MEN], 0);
->> +		regmap_field_write(ale->fields[POL_ETHERTYPE_MEN], 0);
->> +		regmap_field_write(ale->fields[POL_IPSRC_MEN], 0);
->> +		regmap_field_write(ale->fields[POL_IPDST_MEN], 0);
->> +		regmap_field_write(ale->fields[POL_EN], 0);
->> +		regmap_field_write(ale->fields[POL_RED_DROP_EN], 0);
->> +		regmap_field_write(ale->fields[POL_YELLOW_DROP_EN], 0);
->> +		regmap_field_write(ale->fields[POL_PRIORITY_THREAD_EN], 0);
->> +
->> +		cpsw_ale_policer_thread_idx_enable(ale, i, 0, 0);
->> +	}
->> +}
->> +
->> +/* Default classifer is to map 8 user priorities to N receive channels */
->> +void cpsw_ale_classifier_setup_default(struct cpsw_ale *ale, int num_rx_ch)
->> +{
->> +	int pri, idx;
->> +	int pri_thread_map[8][9] = {	{ 0, 0, 0, 0, 0, 0, 0, 0, },
->> +					{ 0, 0, 0, 0, 1, 1, 1, 1, },
->> +					{ 0, 0, 0, 0, 1, 1, 2, 2, },
->> +					{ 1, 0, 0, 1, 2, 2, 3, 3, },
->> +					{ 1, 0, 0, 1, 2, 3, 4, 4, },
->> +					{ 1, 0, 0, 2, 3, 4, 5, 5, },
->> +					{ 1, 0, 0, 2, 3, 4, 5, 6, },
->> +					{ 2, 0, 1, 3, 4, 5, 6, 7, } };
-> 
-> Hi Roger,
-> 
-> Perhaps it is obvious, but I'm wondering if it is appropriate
-> to add a comment explaining the layout of the table, especially
-> the latter rows where the mapping of priority to receive channel
-> seems somewhat non-trivial.
+With this patchset applied EEPROMs can be accessed via:
+  - legacy 'eeprom' device
+  - nvmem device
+  - mtd device(s)
 
-Sure. I took the table straight off from the All new switch book. [1]
+The patchset targets only the AT24 (I2C) EEPROMs since I have no access
+to AT25 (SPI) EEPROMs nor to one of the other misc/eeprom/* devices.
 
-Priorities 3 to 7 are straight forward. Priorities 0 to 2 are listed like so in
-decreasing order of priority
+Note: I'm not familiar with Kconfig symbol migration so I don't know if
+the last patch is required at the moment. Please be notified that the
+list of recipients is quite large due to the defconfig changes.
 
-0 (default)	Best Effort
-2 		Spare (undefined)
-1 (lowest)	Background
+Regards,
+  Marco
 
-[1] Table 13-2 IEEE 802.1p Recommended Priority Mappings to Class of Service.
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+---
+Marco Felsch (9):
+      mtd: core: add nvmem_write support
+      mtd: add mtd_is_master helper
+      mtd: add support to handle EEPROM devices
+      mtd: devices: add AT24 eeprom support
+      ARM: defconfig: convert to MTD_EEPROM_AT24
+      powerpc: convert to MTD_EEPROM_AT24
+      MIPS: configs: convert to MTD_EEPROM_AT24
+      LoongArch: convert to MTD_EEPROM_AT24
+      eeprom: at24: remove deprecated Kconfig symbol
 
-> 
->> +
->> +	cpsw_ale_policer_reset(ale);
->> +
->> +	/* use first 8 classifiers to map 8 (DSCP/PCP) priorities to channels */
->> +	for (pri = 0; pri < 8; pri++) {
->> +		idx = pri;
->> +
->> +		/* Classifier 'idx' match on priority 'pri' */
->> +		cpsw_ale_policer_read_idx(ale, idx);
->> +		regmap_field_write(ale->fields[POL_PRI_VAL], pri);
->> +		regmap_field_write(ale->fields[POL_PRI_MEN], 1);
->> +		cpsw_ale_policer_write_idx(ale, idx);
->> +
->> +		/* Map Classifier 'idx' to thread provided by the map */
->> +		cpsw_ale_policer_thread_idx_enable(ale, idx,
->> +						   pri_thread_map[num_rx_ch - 1][pri], 1);
->> +	}
->> +}
->> diff --git a/drivers/net/ethernet/ti/cpsw_ale.h b/drivers/net/ethernet/ti/cpsw_ale.h
->> index 2cb76acc6d16..1e4e9a3dd234 100644
->> --- a/drivers/net/ethernet/ti/cpsw_ale.h
->> +++ b/drivers/net/ethernet/ti/cpsw_ale.h
->> @@ -193,5 +193,6 @@ int cpsw_ale_vlan_add_modify(struct cpsw_ale *ale, u16 vid, int port_mask,
->>  int cpsw_ale_vlan_del_modify(struct cpsw_ale *ale, u16 vid, int port_mask);
->>  void cpsw_ale_set_unreg_mcast(struct cpsw_ale *ale, int unreg_mcast_mask,
->>  			      bool add);
->> +void cpsw_ale_classifier_setup_default(struct cpsw_ale *ale, int num_rx_ch);
->>  
->>  #endif
->>
->> -- 
->> 2.34.1
->>
->>
+ MAINTAINERS                                 |   2 +-
+ arch/arm/configs/aspeed_g4_defconfig        |   2 +-
+ arch/arm/configs/aspeed_g5_defconfig        |   2 +-
+ arch/arm/configs/at91_dt_defconfig          |   2 +-
+ arch/arm/configs/axm55xx_defconfig          |   2 +-
+ arch/arm/configs/davinci_all_defconfig      |   2 +-
+ arch/arm/configs/imx_v4_v5_defconfig        |   2 +-
+ arch/arm/configs/imx_v6_v7_defconfig        |   2 +-
+ arch/arm/configs/ixp4xx_defconfig           |   2 +-
+ arch/arm/configs/keystone_defconfig         |   2 +-
+ arch/arm/configs/lpc18xx_defconfig          |   2 +-
+ arch/arm/configs/lpc32xx_defconfig          |   2 +-
+ arch/arm/configs/multi_v5_defconfig         |   2 +-
+ arch/arm/configs/multi_v7_defconfig         |   2 +-
+ arch/arm/configs/mvebu_v5_defconfig         |   2 +-
+ arch/arm/configs/mvebu_v7_defconfig         |   2 +-
+ arch/arm/configs/mxs_defconfig              |   2 +-
+ arch/arm/configs/omap2plus_defconfig        |   2 +-
+ arch/arm/configs/pxa_defconfig              |   2 +-
+ arch/arm/configs/s3c6400_defconfig          |   2 +-
+ arch/arm/configs/sama5_defconfig            |   2 +-
+ arch/arm/configs/sama7_defconfig            |   2 +-
+ arch/arm/configs/shmobile_defconfig         |   2 +-
+ arch/arm/configs/socfpga_defconfig          |   2 +-
+ arch/arm/configs/tegra_defconfig            |   2 +-
+ arch/arm/configs/wpcm450_defconfig          |   2 +-
+ arch/loongarch/configs/loongson3_defconfig  |   2 +-
+ arch/mips/configs/cavium_octeon_defconfig   |   2 +-
+ arch/mips/configs/db1xxx_defconfig          |   2 +-
+ arch/powerpc/configs/44x/warp_defconfig     |   2 +-
+ arch/powerpc/configs/mpc512x_defconfig      |   2 +-
+ arch/powerpc/configs/mpc5200_defconfig      |   2 +-
+ arch/powerpc/configs/ppc6xx_defconfig       |   2 +-
+ arch/powerpc/configs/skiroot_defconfig      |   2 +-
+ drivers/misc/eeprom/Kconfig                 |  31 -------
+ drivers/misc/eeprom/Makefile                |   1 -
+ drivers/mtd/devices/Kconfig                 |  31 +++++++
+ drivers/mtd/devices/Makefile                |   1 +
+ drivers/{misc/eeprom => mtd/devices}/at24.c | 122 +++++++++++++++-------------
+ drivers/mtd/mtdcore.c                       |  49 ++++++++++-
+ include/linux/mtd/mtd.h                     |   5 ++
+ include/uapi/mtd/mtd-abi.h                  |   2 +
+ 42 files changed, 187 insertions(+), 123 deletions(-)
+---
+base-commit: 1613e604df0cd359cf2a7fbd9be7a0bcfacfabd0
+change-id: 20240701-b4-v6-10-topic-usbc-tcpci-c4bc9bcce604
 
+Best regards,
 -- 
-cheers,
--roger
+Marco Felsch <m.felsch@pengutronix.de>
+
 
