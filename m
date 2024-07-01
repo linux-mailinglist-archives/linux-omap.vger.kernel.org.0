@@ -1,41 +1,41 @@
-Return-Path: <linux-omap+bounces-1637-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1638-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36FA891E178
-	for <lists+linux-omap@lfdr.de>; Mon,  1 Jul 2024 15:57:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C502C91E17B
+	for <lists+linux-omap@lfdr.de>; Mon,  1 Jul 2024 15:57:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67A1B1C23181
-	for <lists+linux-omap@lfdr.de>; Mon,  1 Jul 2024 13:57:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4CE4DB253F3
+	for <lists+linux-omap@lfdr.de>; Mon,  1 Jul 2024 13:57:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50A1116B394;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD82116B39E;
 	Mon,  1 Jul 2024 13:54:26 +0000 (UTC)
 X-Original-To: linux-omap@vger.kernel.org
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45E9315FA9E
-	for <linux-omap@vger.kernel.org>; Mon,  1 Jul 2024 13:54:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ED40169399
+	for <linux-omap@vger.kernel.org>; Mon,  1 Jul 2024 13:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719842066; cv=none; b=mBvbzA4SmS7suYtq/GREzKgeHcsBedNs6c2/MKeDhUiwynkXp0smFyVbIatXeWjPH4Jd7BoI8C4utjbruxxgMDUv5h6MUj2GNOmpLI/MTDZ22zr+InbhIp0OPVKRl3SB2A4GN4F4LGkBjmcdkYLhrFXnHTSQMT5c04lp7j9ez+s=
+	t=1719842066; cv=none; b=cpbLtKh7K6s8vGBigQ3zb1+zGcUuqMWcwQdPFgRzIsYskXVpdOWX/F9sKA3U7EzQCKwXx7xAn3CaUJbaoF9PMhg6h9Hk+zIgLKJqkpJTD87HUse65ziHvvnLKcCwG8Frz39Rw/vOV91Kas7QkapTvtTPssR2s12P4Tvnglnz97k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1719842066; c=relaxed/simple;
-	bh=1Q1i5wCcFTnkICD2NVgYv4Xlr1IINMwtrYlUZrksTVM=;
+	bh=d1VqLgtNJ7N5InaRsqu3AvJq0Y06PnoD+deMUi+gLeY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=js9OvLjErRveVrPT9CUq+5y5MvvibWH5/0JnHFTqTV17vLfW42AqOvaEIsr1KShAKlrIKTlN4b6ud+MFkVH45QvbndIk0l2K3bFGU3fx76t8Wf92G7pOu0F/Si8e9h6SKlbxngKFHWlj7V7qfATLcwRua4L8N4cx02Zg7hrNOxs=
+	 In-Reply-To:To:Cc; b=o1Wo7+w3kBHngSnnKLejVKOpkoQuJzjpOma24r9M+inmRCXTSm4jVoRDfMYaX66S6UXMktkI6hR5jjLOClESbW76VO8TuYiiT+T58qtHQfHrALwxw2EopVnwBO/TezbEeCE5cDwgs+61DMTbTBslNxwSPI5W/z+jcSpJTHcK+p8=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1sOHTX-0001LY-Qc; Mon, 01 Jul 2024 15:53:47 +0200
+	id 1sOHTX-0001LY-UP; Mon, 01 Jul 2024 15:53:47 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
-Date: Mon, 01 Jul 2024 15:53:46 +0200
-Subject: [PATCH 7/9] MIPS: configs: convert to MTD_EEPROM_AT24
+Date: Mon, 01 Jul 2024 15:53:47 +0200
+Subject: [PATCH 8/9] LoongArch: convert to MTD_EEPROM_AT24
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -44,7 +44,7 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240701-b4-v6-10-topic-usbc-tcpci-v1-7-3fd5f4a193cc@pengutronix.de>
+Message-Id: <20240701-b4-v6-10-topic-usbc-tcpci-v1-8-3fd5f4a193cc@pengutronix.de>
 References: <20240701-b4-v6-10-topic-usbc-tcpci-v1-0-3fd5f4a193cc@pengutronix.de>
 In-Reply-To: <20240701-b4-v6-10-topic-usbc-tcpci-v1-0-3fd5f4a193cc@pengutronix.de>
 To: Miquel Raynal <miquel.raynal@bootlin.com>, 
@@ -90,35 +90,21 @@ new Kconfig symbol to select the I2C EEPROM driver support.
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
- arch/mips/configs/cavium_octeon_defconfig | 2 +-
- arch/mips/configs/db1xxx_defconfig        | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/loongarch/configs/loongson3_defconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/configs/cavium_octeon_defconfig b/arch/mips/configs/cavium_octeon_defconfig
-index f523ee6f25bf..a5bb80a59c6e 100644
---- a/arch/mips/configs/cavium_octeon_defconfig
-+++ b/arch/mips/configs/cavium_octeon_defconfig
-@@ -50,7 +50,7 @@ CONFIG_MTD_CFI=y
- CONFIG_MTD_CFI_AMDSTD=y
- CONFIG_MTD_SLRAM=y
- CONFIG_BLK_DEV_LOOP=y
--CONFIG_EEPROM_AT24=y
-+CONFIG_MTD_EEPROM_AT24=y
- CONFIG_EEPROM_AT25=y
+diff --git a/arch/loongarch/configs/loongson3_defconfig b/arch/loongarch/configs/loongson3_defconfig
+index b4252c357c8e..31daff75a01a 100644
+--- a/arch/loongarch/configs/loongson3_defconfig
++++ b/arch/loongarch/configs/loongson3_defconfig
+@@ -433,7 +433,7 @@ CONFIG_NVME_TARGET_LOOP=m
+ CONFIG_NVME_TARGET_RDMA=m
+ CONFIG_NVME_TARGET_FC=m
+ CONFIG_NVME_TARGET_TCP=m
+-CONFIG_EEPROM_AT24=m
++CONFIG_MTD_EEPROM_AT24=m
  CONFIG_BLK_DEV_SD=y
- CONFIG_ATA=y
-diff --git a/arch/mips/configs/db1xxx_defconfig b/arch/mips/configs/db1xxx_defconfig
-index b2d9253ff786..b1c1777df16c 100644
---- a/arch/mips/configs/db1xxx_defconfig
-+++ b/arch/mips/configs/db1xxx_defconfig
-@@ -95,7 +95,7 @@ CONFIG_MTD_NAND_ECC_SW_BCH=y
- CONFIG_MTD_NAND_AU1550=y
- CONFIG_MTD_NAND_PLATFORM=y
- CONFIG_MTD_SPI_NOR=y
--CONFIG_EEPROM_AT24=y
-+CONFIG_MTD_EEPROM_AT24=y
- CONFIG_EEPROM_AT25=y
- CONFIG_BLK_DEV_SD=y
+ CONFIG_BLK_DEV_SR=y
  CONFIG_CHR_DEV_SG=y
 
 -- 
