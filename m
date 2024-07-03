@@ -1,163 +1,105 @@
-Return-Path: <linux-omap+bounces-1652-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1654-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E104B9240FF
-	for <lists+linux-omap@lfdr.de>; Tue,  2 Jul 2024 16:34:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64D7D9257AA
+	for <lists+linux-omap@lfdr.de>; Wed,  3 Jul 2024 12:01:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88F991F22D9B
-	for <lists+linux-omap@lfdr.de>; Tue,  2 Jul 2024 14:34:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F20EBB225CF
+	for <lists+linux-omap@lfdr.de>; Wed,  3 Jul 2024 10:01:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31DA11BA094;
-	Tue,  2 Jul 2024 14:34:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84DA2143743;
+	Wed,  3 Jul 2024 10:01:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u0rEUcXO"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="wZ2SUwZT"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A459A1E50F;
-	Tue,  2 Jul 2024 14:34:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0469917741;
+	Wed,  3 Jul 2024 10:00:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719930867; cv=none; b=B2DGg+mkBkgfRWtwT/rOfL+23KQbOpma86bOszuAkwmNT5AH8XEW0dsffna5GzbmIg2yN0tZLyrnJZFBhgH0kXFfcwDoHpvcbHuuViLA4gjleiWboNeuSJYWzqCEVQLDUgpR0Q7sqbXheW6Hf5NPwDrT1hHdze1gfldysZvNT8g=
+	t=1720000864; cv=none; b=RZWDReTX1HTzc085k0I3G+OGeUlL6nFkQYykOhi64/3L11WnwFScZkfuKrm+TSHo0IWkJ2698Av2WOc41QdMBWWmIA3tAIfPjL6uNEJdq5FNMVA44VC+6Jiq5Ks7a1tsGK8YE0IU5ATSR8KCqCoFC3+zmeW+zZrWThDdKp4xv6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719930867; c=relaxed/simple;
-	bh=98l+a3pWB42qJAPZ0GCAZ++B7ulUfPolVvoVx0ArV80=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qit8F30uoJg2MF60bi3eSI9lPFVpNP2tHV11eRSOiUCG94fiIs3ZRLW2tmluX5k0yS0Q+eFpEWPjwfmMVkoPxH63YirAIvHAIybeYaAr0ob4G6sLHwaaLf/XK41oOzZjg89D/dXkecZlIK7YsnqSpL/qUfAZURP4Q8QhTrgjIE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u0rEUcXO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB0D1C116B1;
-	Tue,  2 Jul 2024 14:34:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719930867;
-	bh=98l+a3pWB42qJAPZ0GCAZ++B7ulUfPolVvoVx0ArV80=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=u0rEUcXOsmoKrUeeA1jklOR1g18AnF0Flxfk/JNfZrjZqFZs0wqyXic4zXwXwSGdj
-	 aLsOouz97xRzytjtZK2aq10SqTea7EC19f/UFenwnER62QLyQ6Lcj6yWGfHLN2AbNG
-	 Hg+15ZtFlABzxtZ2uNC3Gni4U+sPwMMrT0t0Xb9CTTA8wHTk8+nS5pPm9BMfqNnK8S
-	 BpoxZ8ZYdvrIHqwSMXp+L00o9v1Lps4Wu1Nqgg5yFxjX09CTCMdCgxemgE797kH2/b
-	 eLr0VOBUH/xaIpNk0zQetIDIfIJly0q2Dvnl0sHjtWFEjUn2t5bms0jug9msMi6A7N
-	 lZZiwIZkpMCRw==
-Date: Tue, 2 Jul 2024 16:34:24 +0200
-From: Maxime Ripard <mripard@kernel.org>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Tudor Ambarus <tudor.ambarus@linaro.org>, 
-	Marco Felsch <m.felsch@pengutronix.de>, Miquel Raynal <miquel.raynal@bootlin.com>, 
-	Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Bartosz Golaszewski <brgl@bgdev.pl>, Russell King <linux@armlinux.org.uk>, 
-	Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@codeconstruct.com.au>, 
-	Nicolas Ferre <nicolas.ferre@microchip.com>, Alexandre Belloni <alexandre.belloni@bootlin.com>, 
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Vladimir Zapolskiy <vz@mleia.com>, Andrew Lunn <andrew@lunn.ch>, 
-	Gregory Clement <gregory.clement@bootlin.com>, Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, 
-	Tony Lindgren <tony@atomide.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Magnus Damm <magnus.damm@gmail.com>, Dinh Nguyen <dinguyen@kernel.org>, 
-	Thierry Reding <thierry.reding@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
-	Jonathan =?utf-8?Q?Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, linux-mtd@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-aspeed@lists.ozlabs.org, imx@lists.linux.dev, linux-omap@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org, linux-tegra@vger.kernel.org, openbmc@lists.ozlabs.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org, loongarch@lists.linux.dev
-Subject: Re: [PATCH 4/9] mtd: devices: add AT24 eeprom support
-Message-ID: <20240702-mighty-brilliant-eel-b0d9fa@houat>
-References: <20240701-b4-v6-10-topic-usbc-tcpci-v1-0-3fd5f4a193cc@pengutronix.de>
- <20240701-b4-v6-10-topic-usbc-tcpci-v1-4-3fd5f4a193cc@pengutronix.de>
- <07b701a9-7b52-45b7-8dba-1c25d77cbf15@linaro.org>
- <mafs0ikxnykpr.fsf@kernel.org>
- <20240702-congenial-vigilant-boar-aeae44@houat>
- <mafs0ed8byj5z.fsf@kernel.org>
+	s=arc-20240116; t=1720000864; c=relaxed/simple;
+	bh=ThCcL5mAtdacLqb8bqiSQmLe1aprXGFClfJaW/G0l/Q=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nFRrR5FIqeSdwdVBH6lz0KkINXcZuyJEsoJ3gjcT/RMvFj0c12hYK7WfwzmLCLjPYWPxdX5BFtMxUVdk1tgnh1+rrDyPXT0YbImd6BOXt6RNgH9xyprCHG7so4lIgR9qo2hysBEGit7mRuEiyrgyhLY0vhxQqpzJ5xcAYLBxrxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=wZ2SUwZT; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+Received: from francesco-nb.corp.toradex.com (31-10-206-125.static.upc.ch [31.10.206.125])
+	by mail11.truemail.it (Postfix) with ESMTPA id 917151F9C8;
+	Wed,  3 Jul 2024 12:00:56 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1720000857;
+	bh=UZB7vKNvk9EzHbC+viEOoK/8xOvWR8i2ClJAslwI80w=; h=From:To:Subject;
+	b=wZ2SUwZT23FyFNyJn+aw8MzK0uE/iFWBdtZ8C6JzvSN4a7Vsxftq+12eNs38SYakr
+	 7L1nhY9h656D9EMB/cvC0wpGGhDdrjJ+H1TvMlj5kO1Pq46FIlAHat/qSz4UQD4rGJ
+	 KYY+V01IqOtyUpM11ugPrNEkXt7JRSykK7auWRi/lneWtJZyNH5ye8GOjnmcnBsWsz
+	 vd1JjmnPz8SV212pqCIs932epbgLlfFulR1WQtsVVVnqHDRvuhysQYx27VW1ruzkGW
+	 HjiLrvFe+m/g5355+W2LZts4x7y6abTkhmokCzsDMul7pnIxXdB2TKpV5tqPx+uEfW
+	 qtHFdpesanGAw==
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Nishanth Menon <nm@ti.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Tero Kristo <kristo@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
+	linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-omap@vger.kernel.org,
+	linux-pci@vger.kernel.org
+Subject: [PATCH v1 0/2] PCI: ti: k3: Fix TI J721E PERST# polarity
+Date: Wed,  3 Jul 2024 12:00:34 +0200
+Message-Id: <20240703100036.17896-1-francesco@dolcini.it>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="gypj655hqo5gwvn3"
-Content-Disposition: inline
-In-Reply-To: <mafs0ed8byj5z.fsf@kernel.org>
+Content-Transfer-Encoding: 8bit
 
+From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
---gypj655hqo5gwvn3
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Fix PCIe PERST# signal polarity in TI J721E used on TI K3 machines.
 
-On Tue, Jul 02, 2024 at 04:15:20PM GMT, Pratyush Yadav wrote:
-> On Tue, Jul 02 2024, Maxime Ripard wrote:
->=20
-> > On Tue, Jul 02, 2024 at 03:41:52PM GMT, Pratyush Yadav wrote:
-> >> On Mon, Jul 01 2024, Tudor Ambarus wrote:
-> >>=20
-> >> > On 7/1/24 2:53 PM, Marco Felsch wrote:
-> >> >> EEPROMs can become quite large nowadays (>=3D64K). Exposing such de=
-vices
-> >> >> as single device isn't always sufficient. There may be partitions w=
-hich
-> >> >> require different access permissions. Also write access always need=
- to
-> >> >> to verify the offset.
-> >> >>=20
-> >> >> Port the current misc/eeprom/at24.c driver to the MTD framework sin=
-ce
-> >> >> EEPROMs are memory-technology devices and the framework already sup=
-ports
-> >> >
-> >> > I was under the impression that MTD devices are tightly coupled by e=
-rase
-> >> > blocks. But then we see MTD_NO_ERASE, so what are MTD devices after =
-all?
-> >>=20
-> >> I was curious as well so I did some digging.
-> >>=20
-> [...]
-> >>=20
-> >> I also found a thread from 2013 by Maxime Ripard (+Cc) suggesting addi=
-ng
-> >> EEPROMs to MTD [1]. The main purpose would have been unifying the EEPR=
-OM
-> >> drivers under a single interface. I am not sure what came of it though,
-> >> since I can't find any patches that followed up with the proposal.
-> >
-> > That discussion led to drivers/nvmem after I started to work on
-> > some early prototype, and Srinivas took over that work.
->=20
-> So would you say it is better for EEPROM drivers to use nvmem instead of
-> moving under MTD?
+PCIe PERST# needs to be de-asserted for PCIe to work, however, the driver is
+doing the opposite and the device tree files are defining the signal with the
+wrong polarity to cope with that. Fix both the driver and the affected DT
+files.
 
-I thought so at the time, but that was more than 10y ago, and I have
-followed neither nvmem nor MTD since so I don't really have an opinion
-there.
+Emanuele Ghidoli (2):
+  arm64: dts: ti: Mark PCIe PERST# polarity active low in DT
+  PCI: j721e: Fix PERST# polarity
 
-It looks like drivers/misc/eeprom/at24.c has support for nvmem though,
-and MTD can be used as an nvmem provider too, so it's not clear to me
-why we would want to create yet another variant.
+ arch/arm64/boot/dts/ti/k3-am642-evm.dts                  | 2 +-
+ arch/arm64/boot/dts/ti/k3-am6548-iot2050-advanced-m2.dts | 2 +-
+ arch/arm64/boot/dts/ti/k3-am6548-iot2050-advanced-sm.dts | 2 +-
+ arch/arm64/boot/dts/ti/k3-am68-sk-base-board.dts         | 2 +-
+ arch/arm64/boot/dts/ti/k3-am69-sk.dts                    | 6 +++---
+ arch/arm64/boot/dts/ti/k3-j7200-common-proc-board.dts    | 2 +-
+ arch/arm64/boot/dts/ti/k3-j721e-beagleboneai64.dts       | 2 +-
+ arch/arm64/boot/dts/ti/k3-j721e-common-proc-board.dts    | 6 +++---
+ arch/arm64/boot/dts/ti/k3-j721e-sk.dts                   | 4 ++--
+ arch/arm64/boot/dts/ti/k3-j721s2-common-proc-board.dts   | 2 +-
+ arch/arm64/boot/dts/ti/k3-j722s-evm.dts                  | 2 +-
+ arch/arm64/boot/dts/ti/k3-j784s4-evm.dts                 | 4 ++--
+ drivers/pci/controller/cadence/pci-j721e.c               | 4 ++--
+ 13 files changed, 20 insertions(+), 20 deletions(-)
 
-But again, you shouldn't really ask me in the first place :)
+-- 
+2.39.2
 
-I'm sure Miquel, Srinivas, and surely others, are much more relevant to
-answer that question.
-
-Maxime
-
---gypj655hqo5gwvn3
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCZoQP7wAKCRDj7w1vZxhR
-xelSAQDyHdp3qs5OhZUbyv1sIG+7PHV3rzbQJu5zbjdgtcsnUwD/Vd5FuxDSVZrq
-YEHzmHdDyuPknfgYexiAvC7jtdFIlwk=
-=B/wG
------END PGP SIGNATURE-----
-
---gypj655hqo5gwvn3--
 
