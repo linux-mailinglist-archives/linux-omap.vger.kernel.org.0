@@ -1,50 +1,50 @@
-Return-Path: <linux-omap+bounces-1685-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1686-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2899F926245
-	for <lists+linux-omap@lfdr.de>; Wed,  3 Jul 2024 15:52:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB0E2926248
+	for <lists+linux-omap@lfdr.de>; Wed,  3 Jul 2024 15:53:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D41552823AB
-	for <lists+linux-omap@lfdr.de>; Wed,  3 Jul 2024 13:52:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C9E61F222D8
+	for <lists+linux-omap@lfdr.de>; Wed,  3 Jul 2024 13:53:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDC8A17CA1D;
-	Wed,  3 Jul 2024 13:51:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1386217DE26;
+	Wed,  3 Jul 2024 13:51:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gNBaVU8D"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CSlBgZwi"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6422617CA1B;
-	Wed,  3 Jul 2024 13:51:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5D4E17B4E8;
+	Wed,  3 Jul 2024 13:51:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720014710; cv=none; b=p4X23ix6dhCeMq7Jk3k1QGsZssSxOBusdhcdrIRNt3h83DflBakF/U4ZO+lHTjD5UjNWOB+3xoSdtEH/3jyEbywt1Ga4fQ7WZ6PVPYkykwtnPDxnPcJ2/DpZwbcRrYua9UhyBGmN2TOgzvVf1KfgSrSU9D38Hbb60BRhxSgdCNg=
+	t=1720014714; cv=none; b=DU8+zclThgDQMACQNGzpEc/IQeR1DZP/TqZNSW1UaXIcs0Q+infvUtQwpxoiZgkXu5xosNUHAEg1gV/s7dwSimoU78BdrtMsN3PsKsjbsQF+PnpFFwvWhYaxXaz3rgmRYlTJbVoDDQzBkMvRYXcXRS3vTBgT2CqOzK/PYvDXUbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720014710; c=relaxed/simple;
-	bh=JeOJtLTbcGj6xPCF5ZeTJIWS2mvZBY3kd+RN0BWRcHw=;
+	s=arc-20240116; t=1720014714; c=relaxed/simple;
+	bh=89MKu2GvUohqdOqYrtP/c08hc+UbOCEVHc8lLtk0VUY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Jqs3VOPeqNmMfJbDZWMKbgrUo+dXQ8hfj2cQBOWIISVQpLS6yE7qMxXxVFtq3m5clt66vI5gOOYBWsXoiW7HWDVnWYeE6llvqhrRB+k0yUeT0Hw4c09mKAki31uAIay8tlpQ099bKSrlul8VpztesTFwigexpqSX4Cj7GHKGdCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gNBaVU8D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6238C3277B;
-	Wed,  3 Jul 2024 13:51:46 +0000 (UTC)
+	 In-Reply-To:To:Cc; b=qDtOFxJDwHB1Xuqs2/4JfpAdF0LpuZRdkNlbq3G7KUWEAz+1HfAZqJi1v/9ZrQLPDVIBVEl5xQZK/zhPeSCcLY0Gt0J8efNhhShnjfs6cASWStf35bc3zIPtqbcRdrupkgzAFHcwhyZUw+n7pa88S++sEr00A+xHpaKTXezSGtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CSlBgZwi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDEC4C3277B;
+	Wed,  3 Jul 2024 13:51:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720014710;
-	bh=JeOJtLTbcGj6xPCF5ZeTJIWS2mvZBY3kd+RN0BWRcHw=;
+	s=k20201202; t=1720014714;
+	bh=89MKu2GvUohqdOqYrtP/c08hc+UbOCEVHc8lLtk0VUY=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=gNBaVU8D0mDvFt6w8npig95oTJ2jxtngLd2KOuK7E0kGliU3wQdS0XSI9TvBT2+p1
-	 JruK6CkjAhxfEBK1eV9VJ4Sq4DxIUjenab0EgQK3PGK0A31G+5tRRth8GdWthWLElx
-	 1vo457SGZScAa0TFpOCWmHC4B4eSj/XcLA7XOChbUERDNQ5bDAULabsWK535aZoZng
-	 LrMjN62Z1sTC3ba2oIvQR1oxlPpqs9nEqyoLbaT6Epp65xrsyLzWYrBksqpm8FGQoD
-	 hd3xMVuh0/j+Cwnnvosr8/enB7TN+f2A0JRhLT3NyV2rGEXAMe3d2DDA1P1WNwyKQ0
-	 oYxPsEfDGRDwQ==
+	b=CSlBgZwihwufdSqFGr/HONY6bRS8XPNgGXgoqOzjtE56Y8MEJOixXLrYWF4H/9IgR
+	 QZSg+PycChruRthJD20su23Q0V0WfsfSr3lKF+6VQPpG9+14wGVDYdBAlgAB4++qRO
+	 0FcZMsxKoBMAjkE5Z9HMkpJGC88ZkzNjkbFUa5maUVmdhHOXcS0b/Wb6Bhb5zcrDud
+	 WKzGNKrUe1umowXf6KJENKiM6GooaB6qHxicT2IhE0w+9RYkxkYCaDD6z6ARPTe2et
+	 Pdy3JKb1mJcG4Nx0LRcU7Ukjd5V4lzn/dth2J3kMB2j+ETCpWmlGH4ySYQ8CKalW1T
+	 Td6IX/j9cuuUA==
 From: Roger Quadros <rogerq@kernel.org>
-Date: Wed, 03 Jul 2024 16:51:34 +0300
-Subject: [PATCH net-next v3 3/6] net: ethernet: ti: cpsw_ale: use regfields
- for number of Entries and Policers
+Date: Wed, 03 Jul 2024 16:51:35 +0300
+Subject: [PATCH net-next v3 4/6] net: ethernet: ti: cpsw_ale: add Policer
+ and Thread control register fields
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -53,7 +53,7 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240703-am65-cpsw-multi-rx-v3-3-f11cd860fd72@kernel.org>
+Message-Id: <20240703-am65-cpsw-multi-rx-v3-4-f11cd860fd72@kernel.org>
 References: <20240703-am65-cpsw-multi-rx-v3-0-f11cd860fd72@kernel.org>
 In-Reply-To: <20240703-am65-cpsw-multi-rx-v3-0-f11cd860fd72@kernel.org>
 To: "David S. Miller" <davem@davemloft.net>, 
@@ -66,29 +66,24 @@ Cc: Simon Horman <horms@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
  linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org, 
  Roger Quadros <rogerq@kernel.org>
 X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3806; i=rogerq@kernel.org;
- h=from:subject:message-id; bh=JeOJtLTbcGj6xPCF5ZeTJIWS2mvZBY3kd+RN0BWRcHw=;
- b=owEBbQKS/ZANAwAIAdJaa9O+djCTAcsmYgBmhVdmHFzbCImmd3YtgVwaLH7A3aNwQHJAzOSMN
- iwFvozW3cmJAjMEAAEIAB0WIQRBIWXUTJ9SeA+rEFjSWmvTvnYwkwUCZoVXZgAKCRDSWmvTvnYw
- k9FAD/9+N/+nHYj61/piisJP0F6f0fS28Ou1ha5bVV7Fw823mdKTn9DgBtEsXykRxWF1qPplDXr
- XibWml1N3NxnVGdAzcPQs34A8X+nCqwebHCc6knzBbH+RySxS4XcDq8Rnt6XWACZRx6koFJMbAz
- +/ymcqXNar7EudTPp2cYjv3EKXCOvWjGY3k/Pqch671LlhOr7UlOascyyivlycfHvR8TyXTWvoR
- AnbLKLIVlvYgLhMs/+3ZV1V+njOBCh3SzZgHqsomWDh3W09Hxru4ZTAyVeo4MgiS117MGYwf067
- QTuvfJf1zHDyQUXhmkjX2usFcvHUL70SgiDbNZXYH1cIcIzaDjDysnHslmGldnyPaoyEDW4F62k
- dbWCKpVL3mM+HkDHKgcVNO0VT2ZoUoN7XZdEFRUY6fGG9o5KPaWYgcJyclMiq2C1m/vjSoz+t7D
- iEOmFTgNXDV7qrORFjBIyLWMnXHKKZdwAH42GSfDtO/17WKuIcyPcjWQ9vsau6IBiI3NcWjO2tI
- f8f0JC6GeIKzv5SR9ho0mh6vw34i0daqoloJR9wQ3hOXeBE+De5Ch284I+Cn0hflpGj2Qz8Oife
- E9f/7PHcXM/oRj/RzHOqQFDvnAqYPogtEkbXYS1ZsxJjb0g7CEmCzlY5JDj3XhTIX1nCKscBvBD
- bx+zKwX9PqAPMpA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6034; i=rogerq@kernel.org;
+ h=from:subject:message-id; bh=89MKu2GvUohqdOqYrtP/c08hc+UbOCEVHc8lLtk0VUY=;
+ b=owEBbQKS/ZANAwAIAdJaa9O+djCTAcsmYgBmhVdmWyFr3GPd/iE4fnYocDShrr4s2jVUzTT2m
+ SaPmIbubRWJAjMEAAEIAB0WIQRBIWXUTJ9SeA+rEFjSWmvTvnYwkwUCZoVXZgAKCRDSWmvTvnYw
+ k8HGEACxhD0FRGey9+O6ciW6Aubnc/TiAof/RI93DiAF907gMRfgO6tr47Kim0MXi5MGLGtAvwa
+ uJQn2HOZ5lJcKWT0NV6AiBnUz84OQpgCZt/kzgdZtGqn1xBY/X0tM7s9Zqf7a7NLv+ynHntVLAR
+ 0sgz40j1W6PE7QW74++RWQJr5ldnYzN+oDTmfeI45zJXkoy8kpgqyyRiseI5PKh0yBwfphjK+yD
+ ev3nzPOzQEwrBesE1akrDKcCjd298wvT8oxDgHM2MpAiV8e5CCDPXmd9oM7rMh3pB6JaUWEUWIW
+ nQqKReE4dNsG8gfId9sCNge+n87pCUdKbJ58du7LrBXMjsSyvR0g1DqN54o15MpcUNMO3C4PTmx
+ qHV93E3CHYZXN6qCD2yMcCkgPGWI+zAGgsJ06UOFC9ltc43rtB1Dz4DoTpKf5avOmdKu0DxG6BB
+ oKAsdfKnwIYqwEXmVBrrK0J62jX+HfS0AU/hAf/+Z7nnKea0XmBOnJBwhSI7j4r44Z0cSr8g4UV
+ xhCpnLXqtO0hcpN2WGWVauX6mVT3JrzVPeliRzYOwKFrlp8o6KiS3knBHsvP72LE5yfQNRl12Rb
+ T/NS9fIR6nCUuuZreO8V9LPbJTKpiJdIdO66Mq9Dm9C9StD04DjxUrlqh8O5lLmFx9fZQmstAj2
+ 2zOEQMhL5OE+f7A==
 X-Developer-Key: i=rogerq@kernel.org; a=openpgp;
  fpr=412165D44C9F52780FAB1058D25A6BD3BE763093
 
-Use regfields for number of ALE Entries and Policers.
-
-The variants that support Policers/Classifiers have the number
-of policers encoded in the ALE_STATUS register.
-
-Use that and show the number of Policers in the ALE info message.
+Adds regfileds for Policer registers and Thread mapping/control registers.
 
 Signed-off-by: Roger Quadros <rogerq@kernel.org>
 Reviewed-by: Simon Horman <horms@kernel.org>
@@ -97,93 +92,163 @@ Changelog:
 v3:
 - added Reviewed-by Simon Horman
 ---
- drivers/net/ethernet/ti/cpsw_ale.c | 25 +++++++++++++++++++------
- drivers/net/ethernet/ti/cpsw_ale.h |  3 +++
- 2 files changed, 22 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/ti/cpsw_ale.c | 86 ++++++++++++++++++++++++++++++++++++++
+ drivers/net/ethernet/ti/cpsw_ale.h | 41 ++++++++++++++++++
+ 2 files changed, 127 insertions(+)
 
 diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
-index f638aa63edee..c11326e8fbd4 100644
+index c11326e8fbd4..6b64ec78d1b6 100644
 --- a/drivers/net/ethernet/ti/cpsw_ale.c
 +++ b/drivers/net/ethernet/ti/cpsw_ale.c
-@@ -103,7 +103,7 @@ struct cpsw_ale_dev_id {
- #define ALE_UCAST_TOUCHED		3
+@@ -46,6 +46,24 @@
+ #define ALE_UNKNOWNVLAN_FORCE_UNTAG_EGRESS	0x9C
+ #define ALE_VLAN_MASK_MUX(reg)			(0xc0 + (0x4 * (reg)))
  
- #define ALE_TABLE_SIZE_MULTIPLIER	1024
--#define ALE_STATUS_SIZE_MASK		0x1f
-+#define ALE_POLICER_SIZE_MULTIPLIER	8
++#define ALE_POLICER_PORT_OUI		0x100
++#define ALE_POLICER_DA_SA		0x104
++#define ALE_POLICER_VLAN		0x108
++#define ALE_POLICER_ETHERTYPE_IPSA	0x10c
++#define ALE_POLICER_IPDA		0x110
++#define ALE_POLICER_PIR			0x118
++#define ALE_POLICER_CIR			0x11c
++#define ALE_POLICER_TBL_CTL		0x120
++#define ALE_POLICER_CTL			0x124
++#define ALE_POLICER_TEST_CTL		0x128
++#define ALE_POLICER_HIT_STATUS		0x12c
++#define ALE_THREAD_DEF			0x134
++#define ALE_THREAD_CTL			0x138
++#define ALE_THREAD_VAL			0x13c
++
++#define ALE_POLICER_TBL_WRITE_ENABLE	BIT(31)
++#define ALE_POLICER_TBL_INDEX_MASK	GENMASK(4, 0)
++
+ #define AM65_CPSW_ALE_THREAD_DEF_REG 0x134
  
- static inline int cpsw_ale_get_field(u32 *ale_entry, u32 start, u32 bits)
- {
-@@ -1303,6 +1303,9 @@ static const struct reg_field ale_fields_cpsw_nu[] = {
- 	/* CPSW_ALE_IDVER_REG */
- 	[MINOR_VER]	= REG_FIELD(ALE_IDVER, 0, 7),
- 	[MAJOR_VER]	= REG_FIELD(ALE_IDVER, 8, 10),
-+	/* CPSW_ALE_STATUS_REG */
-+	[ALE_ENTRIES]	= REG_FIELD(ALE_STATUS, 0, 7),
-+	[ALE_POLICERS]	= REG_FIELD(ALE_STATUS, 8, 15),
+ /* ALE_AGING_TIMER */
+@@ -1306,6 +1324,74 @@ static const struct reg_field ale_fields_cpsw_nu[] = {
+ 	/* CPSW_ALE_STATUS_REG */
+ 	[ALE_ENTRIES]	= REG_FIELD(ALE_STATUS, 0, 7),
+ 	[ALE_POLICERS]	= REG_FIELD(ALE_STATUS, 8, 15),
++	/* CPSW_ALE_POLICER_PORT_OUI_REG */
++	[POL_PORT_MEN]	= REG_FIELD(ALE_POLICER_PORT_OUI, 31, 31),
++	[POL_TRUNK_ID]	= REG_FIELD(ALE_POLICER_PORT_OUI, 30, 30),
++	[POL_PORT_NUM]	= REG_FIELD(ALE_POLICER_PORT_OUI, 25, 25),
++	[POL_PRI_MEN]	= REG_FIELD(ALE_POLICER_PORT_OUI, 19, 19),
++	[POL_PRI_VAL]	= REG_FIELD(ALE_POLICER_PORT_OUI, 16, 18),
++	[POL_OUI_MEN]	= REG_FIELD(ALE_POLICER_PORT_OUI, 15, 15),
++	[POL_OUI_INDEX]	= REG_FIELD(ALE_POLICER_PORT_OUI, 0, 5),
++
++	/* CPSW_ALE_POLICER_DA_SA_REG */
++	[POL_DST_MEN]	= REG_FIELD(ALE_POLICER_DA_SA, 31, 31),
++	[POL_DST_INDEX]	= REG_FIELD(ALE_POLICER_DA_SA, 16, 21),
++	[POL_SRC_MEN]	= REG_FIELD(ALE_POLICER_DA_SA, 15, 15),
++	[POL_SRC_INDEX]	= REG_FIELD(ALE_POLICER_DA_SA, 0, 5),
++
++	/* CPSW_ALE_POLICER_VLAN_REG */
++	[POL_OVLAN_MEN]		= REG_FIELD(ALE_POLICER_VLAN, 31, 31),
++	[POL_OVLAN_INDEX]	= REG_FIELD(ALE_POLICER_VLAN, 16, 21),
++	[POL_IVLAN_MEN]		= REG_FIELD(ALE_POLICER_VLAN, 15, 15),
++	[POL_IVLAN_INDEX]	= REG_FIELD(ALE_POLICER_VLAN, 0, 5),
++
++	/* CPSW_ALE_POLICER_ETHERTYPE_IPSA_REG */
++	[POL_ETHERTYPE_MEN]	= REG_FIELD(ALE_POLICER_ETHERTYPE_IPSA, 31, 31),
++	[POL_ETHERTYPE_INDEX]	= REG_FIELD(ALE_POLICER_ETHERTYPE_IPSA, 16, 21),
++	[POL_IPSRC_MEN]		= REG_FIELD(ALE_POLICER_ETHERTYPE_IPSA, 15, 15),
++	[POL_IPSRC_INDEX]	= REG_FIELD(ALE_POLICER_ETHERTYPE_IPSA, 0, 5),
++
++	/* CPSW_ALE_POLICER_IPDA_REG */
++	[POL_IPDST_MEN]		= REG_FIELD(ALE_POLICER_IPDA, 31, 31),
++	[POL_IPDST_INDEX]	= REG_FIELD(ALE_POLICER_IPDA, 16, 21),
++
++	/* CPSW_ALE_POLICER_TBL_CTL_REG */
++	/**
++	 * REG_FIELDS not defined for this as fields cannot be correctly
++	 * used independently
++	 */
++
++	/* CPSW_ALE_POLICER_CTL_REG */
++	[POL_EN]		= REG_FIELD(ALE_POLICER_CTL, 31, 31),
++	[POL_RED_DROP_EN]	= REG_FIELD(ALE_POLICER_CTL, 29, 29),
++	[POL_YELLOW_DROP_EN]	= REG_FIELD(ALE_POLICER_CTL, 28, 28),
++	[POL_YELLOW_THRESH]	= REG_FIELD(ALE_POLICER_CTL, 24, 26),
++	[POL_POL_MATCH_MODE]	= REG_FIELD(ALE_POLICER_CTL, 22, 23),
++	[POL_PRIORITY_THREAD_EN] = REG_FIELD(ALE_POLICER_CTL, 21, 21),
++	[POL_MAC_ONLY_DEF_DIS]	= REG_FIELD(ALE_POLICER_CTL, 20, 20),
++
++	/* CPSW_ALE_POLICER_TEST_CTL_REG */
++	[POL_TEST_CLR]		= REG_FIELD(ALE_POLICER_TEST_CTL, 31, 31),
++	[POL_TEST_CLR_RED]	= REG_FIELD(ALE_POLICER_TEST_CTL, 30, 30),
++	[POL_TEST_CLR_YELLOW]	= REG_FIELD(ALE_POLICER_TEST_CTL, 29, 29),
++	[POL_TEST_CLR_SELECTED]	= REG_FIELD(ALE_POLICER_TEST_CTL, 28, 28),
++	[POL_TEST_ENTRY]	= REG_FIELD(ALE_POLICER_TEST_CTL, 0, 4),
++
++	/* CPSW_ALE_POLICER_HIT_STATUS_REG */
++	[POL_STATUS_HIT]	= REG_FIELD(ALE_POLICER_HIT_STATUS, 31, 31),
++	[POL_STATUS_HIT_RED]	= REG_FIELD(ALE_POLICER_HIT_STATUS, 30, 30),
++	[POL_STATUS_HIT_YELLOW]	= REG_FIELD(ALE_POLICER_HIT_STATUS, 29, 29),
++
++	/* CPSW_ALE_THREAD_DEF_REG */
++	[ALE_DEFAULT_THREAD_EN]		= REG_FIELD(ALE_THREAD_DEF, 15, 15),
++	[ALE_DEFAULT_THREAD_VAL]	= REG_FIELD(ALE_THREAD_DEF, 0, 5),
++
++	/* CPSW_ALE_THREAD_CTL_REG */
++	[ALE_THREAD_CLASS_INDEX] = REG_FIELD(ALE_THREAD_CTL, 0, 4),
++
++	/* CPSW_ALE_THREAD_VAL_REG */
++	[ALE_THREAD_ENABLE]	= REG_FIELD(ALE_THREAD_VAL, 15, 15),
++	[ALE_THREAD_VALUE]	= REG_FIELD(ALE_THREAD_VAL, 0, 5),
  };
  
  static const struct cpsw_ale_dev_id cpsw_ale_id_match[] = {
-@@ -1404,7 +1407,7 @@ struct cpsw_ale *cpsw_ale_create(struct cpsw_ale_params *params)
- {
- 	const struct cpsw_ale_dev_id *ale_dev_id;
- 	struct cpsw_ale *ale;
--	u32 ale_entries, rev_major, rev_minor;
-+	u32 ale_entries, rev_major, rev_minor, policers;
- 	int ret;
- 
- 	ale_dev_id = cpsw_ale_match_id(cpsw_ale_id_match, params->dev_id);
-@@ -1447,9 +1450,7 @@ struct cpsw_ale *cpsw_ale_create(struct cpsw_ale_params *params)
- 
- 	if (ale->features & CPSW_ALE_F_STATUS_REG &&
- 	    !ale->params.ale_entries) {
--		ale_entries =
--			readl_relaxed(ale->params.ale_regs + ALE_STATUS) &
--			ALE_STATUS_SIZE_MASK;
-+		regmap_field_read(ale->fields[ALE_ENTRIES], &ale_entries);
- 		/* ALE available on newer NetCP switches has introduced
- 		 * a register, ALE_STATUS, to indicate the size of ALE
- 		 * table which shows the size as a multiple of 1024 entries.
-@@ -1463,8 +1464,20 @@ struct cpsw_ale *cpsw_ale_create(struct cpsw_ale_params *params)
- 		ale_entries *= ALE_TABLE_SIZE_MULTIPLIER;
- 		ale->params.ale_entries = ale_entries;
- 	}
-+
-+	if (ale->features & CPSW_ALE_F_STATUS_REG &&
-+	    !ale->params.num_policers) {
-+		regmap_field_read(ale->fields[ALE_POLICERS], &policers);
-+		if (!policers)
-+			return ERR_PTR(-EINVAL);
-+
-+		policers *= ALE_POLICER_SIZE_MULTIPLIER;
-+		ale->params.num_policers = policers;
-+	}
-+
- 	dev_info(ale->params.dev,
--		 "ALE Table size %ld\n", ale->params.ale_entries);
-+		 "ALE Table size %ld, Policers %ld\n", ale->params.ale_entries,
-+		 ale->params.num_policers);
- 
- 	/* set default bits for existing h/w */
- 	ale->port_mask_bits = ale->params.ale_ports;
 diff --git a/drivers/net/ethernet/ti/cpsw_ale.h b/drivers/net/ethernet/ti/cpsw_ale.h
-index 58d377dd7496..e12bb2caf016 100644
+index e12bb2caf016..2cb76acc6d16 100644
 --- a/drivers/net/ethernet/ti/cpsw_ale.h
 +++ b/drivers/net/ethernet/ti/cpsw_ale.h
-@@ -15,6 +15,7 @@ struct cpsw_ale_params {
- 	void __iomem		*ale_regs;
- 	unsigned long		ale_ageout;	/* in secs */
- 	unsigned long		ale_entries;
-+	unsigned long		num_policers;
- 	unsigned long		ale_ports;
- 	/* NU Switch has specific handling as number of bits in ALE entries
- 	 * are different than other versions of ALE. Also there are specific
-@@ -33,6 +34,8 @@ struct regmap;
- enum ale_fields {
- 	MINOR_VER,
+@@ -36,6 +36,47 @@ enum ale_fields {
  	MAJOR_VER,
-+	ALE_ENTRIES,
-+	ALE_POLICERS,
+ 	ALE_ENTRIES,
+ 	ALE_POLICERS,
++	POL_PORT_MEN,
++	POL_TRUNK_ID,
++	POL_PORT_NUM,
++	POL_PRI_MEN,
++	POL_PRI_VAL,
++	POL_OUI_MEN,
++	POL_OUI_INDEX,
++	POL_DST_MEN,
++	POL_DST_INDEX,
++	POL_SRC_MEN,
++	POL_SRC_INDEX,
++	POL_OVLAN_MEN,
++	POL_OVLAN_INDEX,
++	POL_IVLAN_MEN,
++	POL_IVLAN_INDEX,
++	POL_ETHERTYPE_MEN,
++	POL_ETHERTYPE_INDEX,
++	POL_IPSRC_MEN,
++	POL_IPSRC_INDEX,
++	POL_IPDST_MEN,
++	POL_IPDST_INDEX,
++	POL_EN,
++	POL_RED_DROP_EN,
++	POL_YELLOW_DROP_EN,
++	POL_YELLOW_THRESH,
++	POL_POL_MATCH_MODE,
++	POL_PRIORITY_THREAD_EN,
++	POL_MAC_ONLY_DEF_DIS,
++	POL_TEST_CLR,
++	POL_TEST_CLR_RED,
++	POL_TEST_CLR_YELLOW,
++	POL_TEST_CLR_SELECTED,
++	POL_TEST_ENTRY,
++	POL_STATUS_HIT,
++	POL_STATUS_HIT_RED,
++	POL_STATUS_HIT_YELLOW,
++	ALE_DEFAULT_THREAD_EN,
++	ALE_DEFAULT_THREAD_VAL,
++	ALE_THREAD_CLASS_INDEX,
++	ALE_THREAD_ENABLE,
++	ALE_THREAD_VALUE,
  	/* terminator */
  	ALE_FIELDS_MAX,
  };
