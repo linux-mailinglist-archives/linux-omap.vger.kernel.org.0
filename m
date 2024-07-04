@@ -1,109 +1,103 @@
-Return-Path: <linux-omap+bounces-1695-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1696-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D583F9271A8
-	for <lists+linux-omap@lfdr.de>; Thu,  4 Jul 2024 10:28:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A83CA927231
+	for <lists+linux-omap@lfdr.de>; Thu,  4 Jul 2024 10:54:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F4EB284EA7
-	for <lists+linux-omap@lfdr.de>; Thu,  4 Jul 2024 08:28:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E89C1F217E0
+	for <lists+linux-omap@lfdr.de>; Thu,  4 Jul 2024 08:54:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC4481A4F02;
-	Thu,  4 Jul 2024 08:28:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 055EF1AAE01;
+	Thu,  4 Jul 2024 08:54:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="I9wSr5qn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JPRgLzY4"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 197A31A3BC5;
-	Thu,  4 Jul 2024 08:28:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 927C018FC7F;
+	Thu,  4 Jul 2024 08:54:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720081685; cv=none; b=twUnbOKImGK2GAmgTOBliVygB6Jw41uD6EbWN3CaWI9mlxk2fgFCOpRu5xWNVO94GrnXZLKyp4IVFt0kFkcZAbq7Cab2Qu6IoLDxx1NVfOjKhgSZ+a3FU5mZwnHChkO8I3vVZQXx2KTsWtcCGfo1U2PXrnaXwsUtZj0ynSzRfUY=
+	t=1720083270; cv=none; b=NMzib0Ds5UP1nwp8Wvw4cr6pWXDBg7JJ06+Ul5+K35h7erp/mdG06YZM/el63nTKO74HZEBjFqebuCqto+/dom4TH/f1JK0XllrkGbfTvHQOHYxqAh5uEfzU4f27uUrxOqcvQo7/StYhZeH6yRhAAbcZ0NZRtCid7NtC3R29fTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720081685; c=relaxed/simple;
-	bh=wVc3mDrD8ZHGcxEpI3RL80GBUfv7tqc7amf82VOOdic=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TFWEI8CUKTSU0nNT8rUPdjkdsPOMGPr8Mbqcbk1oauSOPKIsM6Dq/+74FTV47fednp3bc2zcxklzsBDKTFlOjK1KulNW1gUyRlLdXdw9M6EpJXKlECHBAkW7KlVhEQZj1R3vtdGDsGG+V4HBJfN9/k+dd/yfGODevSbKc1EgAO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=I9wSr5qn; arc=none smtp.client-ip=46.235.227.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1720081682;
-	bh=wVc3mDrD8ZHGcxEpI3RL80GBUfv7tqc7amf82VOOdic=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=I9wSr5qndJJgZNK1GxM3ELWQWxcNRB0+T2ztlEssHpreWLW1x0yx/AW8C8CjFao7q
-	 6tunopOnUy9YaYgE6BhE8LLp/MMeFR9xq5+hu8qRwq2dq2N8b0o1AgcmIv6XOPXExI
-	 SOB6RiEioW7sWw7YaHcV26LEQmTVgkOOV4rxnUhjZgaURn/sxkqmInVgzBi8Nf9xg1
-	 zzQ9MyIkkaBIfpaMD9nANIAFKME2+NH9lhW1iXLwdr6zGpV3HpHBtRCVS2ghQJvc20
-	 P/hQHND/IWN5dEj8pOdBPWdb3hp7Ua4Cb94yo8VbN2Y5tV+kQX5JNm5YDoFQ3+qQZy
-	 DQ1/PpgNHDFeA==
-Received: from [100.113.186.2] (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: kholk11)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id E651C37821A0;
-	Thu,  4 Jul 2024 08:27:59 +0000 (UTC)
-Message-ID: <2a1e25ad-c9d2-44f1-b52e-74f12b437381@collabora.com>
-Date: Thu, 4 Jul 2024 10:27:59 +0200
+	s=arc-20240116; t=1720083270; c=relaxed/simple;
+	bh=B5XkSxtVAaKkyDtfhvxyqYqYJy2njHQjOE1vv5LcTMw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jdumAYqsLUM6+1h31IUDuOayfns39MhJmtxLsXG4QoH4ekVtwQ/NAssdCC/TAFNxdaSYgpFa4aGvNKULFkVsKjqi939IhtzDrUfzdegXTUNM5ThdfueETDKoke+tS81yx+d7fePhpBsPDMkeG+0dv6cdBMP+b+ufu//CygnSoPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JPRgLzY4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AF0EC32786;
+	Thu,  4 Jul 2024 08:54:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720083270;
+	bh=B5XkSxtVAaKkyDtfhvxyqYqYJy2njHQjOE1vv5LcTMw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JPRgLzY4IeGQ6MmoMrZ9jPiBa2UdbzZn4Of9QN8Pi1mWSlB7BX/+9R2Vo4KW9lJ0e
+	 kb3OMzGjwIHvvz8sBeu4Ag84sVP+T0c5dHB+FPZh2HmSu9E+3hLmss9YfjeRri1sOQ
+	 RUl675Rt0ManOm6yZ+zGWIe3K8SCL5kw6oC8e6Fd/5cuu+ELnqyZbhkwBGdR0n0tEy
+	 Yi5ICmZtF+QuSVBngtx7BugEjrmeYvYFzxl0Oa74gFQk8khAFMvL0CYAkmj3IKKxVN
+	 E8cNQi+yFMsjRzSC0NKCK5rXNEpCIo/sG8wFOXQjIE8R9J9CjSbejLTLfO2iNKwIST
+	 UGLqzCD9LMV+g==
+Date: Thu, 4 Jul 2024 09:54:25 +0100
+From: Simon Horman <horms@kernel.org>
+To: Roger Quadros <rogerq@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Julien Panis <jpanis@baylibre.com>, Andrew Lunn <andrew@lunn.ch>,
+	srk@ti.com, vigneshr@ti.com, danishanwar@ti.com,
+	pekka Varis <p-varis@ti.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCH net-next v3 5/6] net: ethernet: ti: cpsw_ale: add
+ policer/classifier helpers and setup defaults
+Message-ID: <20240704085425.GY598357@kernel.org>
+References: <20240703-am65-cpsw-multi-rx-v3-0-f11cd860fd72@kernel.org>
+ <20240703-am65-cpsw-multi-rx-v3-5-f11cd860fd72@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/4] cpufreq: Make cpufreq_driver->exit() return void
-To: Viresh Kumar <viresh.kumar@linaro.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Huang Rui <ray.huang@amd.com>,
- "Gautham R. Shenoy" <gautham.shenoy@amd.com>,
- Mario Limonciello <mario.limonciello@amd.com>,
- Perry Yuan <perry.yuan@amd.com>, Hector Martin <marcan@marcan.st>,
- Sven Peter <sven@svenpeter.dev>, Alyssa Rosenzweig <alyssa@rosenzweig.io>,
- Markus Mayer <mmayer@broadcom.com>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- Len Brown <lenb@kernel.org>, Kevin Hilman <khilman@kernel.org>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
- Sudeep Holla <sudeep.holla@arm.com>,
- Cristian Marussi <cristian.marussi@arm.com>,
- Thierry Reding <thierry.reding@gmail.com>,
- Jonathan Hunter <jonathanh@nvidia.com>,
- Matthias Brugger <matthias.bgg@gmail.com>
-Cc: linux-pm@vger.kernel.org, Vincent Guittot <vincent.guittot@linaro.org>,
- Lizhe <sensor1010@163.com>, linux-kernel@vger.kernel.org,
- asahi@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-omap@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-arm-msm@vger.kernel.org, linux-tegra@vger.kernel.org,
- linux-mediatek@lists.infradead.org
-References: <cover.1720075640.git.viresh.kumar@linaro.org>
- <3f73fda736818128558b61ad5fe2bed5dce3ddc4.1720075640.git.viresh.kumar@linaro.org>
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Content-Language: en-US
-In-Reply-To: <3f73fda736818128558b61ad5fe2bed5dce3ddc4.1720075640.git.viresh.kumar@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240703-am65-cpsw-multi-rx-v3-5-f11cd860fd72@kernel.org>
 
-Il 04/07/24 08:53, Viresh Kumar ha scritto:
-> From: Lizhe <sensor1010@163.com>
+On Wed, Jul 03, 2024 at 04:51:36PM +0300, Roger Quadros wrote:
+> The Policer registers in the ALE register space are just shadow registers
+> and use an index field in the policer table control register to read/write
+> to the actual Polier registers.
+> Add helper functions to Read and Write to Policer registers.
 > 
-> The cpufreq core doesn't check the return type of the exit() callback
-> and there is not much the core can do on failures at that point. Just
-> drop the returned value and make it return void.
+> Also add a helper function to set the thread value to classifier/policer
+> mapping. Any packet that first matches the classifier will be sent to the
+> thread (flow) that is set in the classifier to thread mapping table.
+> If not set then it goes to the default flow.
 > 
-> Signed-off-by: Lizhe <sensor1010@163.com>
-> [ Viresh: Reworked the patches to fix all missing changes together. ]
-> Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+> Default behaviour is to have 8 classifiers to map 8 DSCP/PCP
+> priorities to N receive threads (flows). N depends on number of
+> RX channels enabled for the port.
+> As per the standard [1] User prioritie 1 (Background) and 2 (Spare) have
+> lower priority than the user priority 0 (default). User priority 1 being
+> of the lowest priority.
+> 
+> [1] IEEE802.1D-2004, IEEE Standard for Local and metropolitan area networks
+> Table G-2 - Traffic type acronyms
+> Table G-3 - Defining traffic types
+> 
+> Signed-off-by: Roger Quadros <rogerq@kernel.org>
+> ---
+> Changelog:
+> v3:
+> - squashed 2 patches into 1
+> - added comment explaining the default thread to priority mapping table
+> - typo fix "classifer"->"classifier"
 
-For MediaTek:
+Thanks for the updates,
 
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-
+Reviewed-by: Simon Horman <horms@kernel.org>
 
