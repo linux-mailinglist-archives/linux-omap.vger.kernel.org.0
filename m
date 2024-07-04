@@ -1,75 +1,76 @@
-Return-Path: <linux-omap+bounces-1707-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1708-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DE3C927BEE
-	for <lists+linux-omap@lfdr.de>; Thu,  4 Jul 2024 19:24:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A8D7927BF1
+	for <lists+linux-omap@lfdr.de>; Thu,  4 Jul 2024 19:24:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B0B8286FA2
-	for <lists+linux-omap@lfdr.de>; Thu,  4 Jul 2024 17:24:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26F6D28944C
+	for <lists+linux-omap@lfdr.de>; Thu,  4 Jul 2024 17:24:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC22E12E1C1;
-	Thu,  4 Jul 2024 17:23:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9076C12EBEA;
+	Thu,  4 Jul 2024 17:23:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cFwQMUKw"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EJk+EVr0"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF8E34E1CA;
-	Thu,  4 Jul 2024 17:23:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEF82770F8;
+	Thu,  4 Jul 2024 17:23:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720113818; cv=none; b=kUPrTWrmFYUPd3kDFgxQJag5TE4XVRbfQSYqJzh6Cl2OUnYc6Qai8clcWJl9Kj792aHbrBzToshTpCKiOWFiTVevUj1deIeCdPR2mwT1dLN9uTrs0G6J8yr1HwtOKNUfZ5z7HO9DFmbpa56vQI5wEm8XsOWax75VJlaJBRi0mmU=
+	t=1720113820; cv=none; b=WCY70dYtSzByEixHRhCvFRFz+8rbM9WQTRIXM5HEptzSdoUbNErclz0OlJjbOtdrIMU1DzeTvweITNHK+YGKkiNT8tzq+rQnImaVilj6op7GSsbf4o90+hciYLiim0G1/UePYTbpxmEPMvnStoIi2wH9T1sxVWHG4mNedNq35dw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720113818; c=relaxed/simple;
-	bh=A8h6qBLOlBAO4Nf5Z1u5nWAte8uqhP5kHvTzaAaJZ+g=;
+	s=arc-20240116; t=1720113820; c=relaxed/simple;
+	bh=pfp5RcagdNcIGe1QQNjVuwzMf32RmDK/Hd4QnG6Cv0M=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=AAjF9BhZAokWlj1jw3ecQvjLFiAD2TztgZqtUC2qSc484D75PGrmTpSIl/CBL3lz5LBLTK4b6yNU7NQolwwvM8yMjbpxQcEYdHxMo74YXXkh0NmGdFFskWRg1+1RzyM0cFO5+2dnmDpZHrRYujfB/UbEcUsM7RABl4eywZ39j2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cFwQMUKw; arc=none smtp.client-ip=209.85.128.41
+	 In-Reply-To:To:Cc; b=Y7lzsoJSnRLj9Fw6iWpkk8xd2tjRAhbzps8QLUG4VanEFutHJiy8u4rduvSHf8kGmhzC/1YVXhCvjrgPGf3wF/gDTqBIKcNmOHCqBNW0MI1OCiRXp0mrg+0qMWtxaQ4R5yVKmFZw6BTYnOderFFa87xI29MPW82waVho7gZ3hb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EJk+EVr0; arc=none smtp.client-ip=209.85.128.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-425680b1d3aso5676905e9.2;
-        Thu, 04 Jul 2024 10:23:36 -0700 (PDT)
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4256eec963eso5635935e9.1;
+        Thu, 04 Jul 2024 10:23:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720113815; x=1720718615; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1720113817; x=1720718617; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=1DvuUcSFwNO6KhZ/DbrjWlR0SnoFpdvXYRD32tmG/+Y=;
-        b=cFwQMUKwnsLFBFAiLa84CHpYywuWSeRUMJwUWKej5evRCmPK4+Hq2ZQKVWbL5CQEZg
-         JeeTfEqz4XDxWmcrI5AW1BeRGLi83ZaRT7aUxtZ3hi8x4UZGTtEZ4u0q+RYbhmCO7dBN
-         rhETptTIKK6pM+04yvRSk7HfPO6ddI1Ntp4zbzbsiS+pdly8YaOSzpiSIFKhoeeTjnmo
-         mYDKYollne7pteqELzAKLLlwq44ZQamL7Z7uz81F/o+f10xN02cG8Y8nrhBZBtKXHYuF
-         r6siOvKCXOswiz8d/RPE/fMHi0tCD9rGkFI3pqyp4n0s2m3s2eA3LFlguWuMPVWNoFfa
-         myLw==
+        bh=UV1ltKTKaW4yZCRIt1PBVlpTJKfjEFuyvDZdCLF6YdU=;
+        b=EJk+EVr0RBl0EdgZamEaqFHQPxSMQCcX+awqi1Q82zb+IJ4KtOZv3L/BcPDmBgzUEb
+         pMAZz070TceL4T19IdgJbkiVQWRBLm3MGp/Ap1S9llEDrZ5CsBjLTY2K7H64w5zj8+RJ
+         y6WhXZmGfpDiHhKWEz9wxi//3XcG3LetW/vqebCFspIsorU/l2XFJ6F2o6MAUrg4jr4O
+         yhkh8VFD4XLfjNqBpeSq6DJDObGEfiSh7So1jLEnhLa4Ahw1/ihy6EzY4uOHjS9XmTK5
+         TPXo2SbB+p9WdPNYZfbGBN/eHbu6LjErVTd/JdEjIvJOSEFHf8cV2aBQQ7/RIrpEO1eO
+         azLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720113815; x=1720718615;
+        d=1e100.net; s=20230601; t=1720113817; x=1720718617;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=1DvuUcSFwNO6KhZ/DbrjWlR0SnoFpdvXYRD32tmG/+Y=;
-        b=fBM5AS0iJA1gnL+bt7VN0/DqdC8LFCbSmQszVzxjO0OXXozsSnJJvQm50NKDcJhE7Y
-         lEHa6dTCNForvMkre5xJvevBsGpyBb4/dK3EamAmwD8Uy1BXzTRCHOH4vZcVRUejZIqX
-         16YErptJAv6yiUc/Lzuo2MLEoLzaxgCjPTGyLaC7fxchKdkhiXwC+8ONOwL1qS4zGRXH
-         FiOZC88AY0HPrciYBPM1LYP4WxSHom/y8308kjG4nhVaPUa0PdeUgFgr/ny0Xl1z2WVF
-         v5jwLpcXbgP/6QbsA+BH5gRGDcDL5GuVV9kDUDkRv5qCvwNBNACDkMdp9PBz87MyzPaO
-         UlFw==
-X-Forwarded-Encrypted: i=1; AJvYcCUtBrRHNMY+kZz9E72J4Smj4VquSSrKFtT51sqZyoT8Y9Ajt2SSERLkIq7hwNBTim8sNsZwB3kfiPXnlwOFVYg1PYdRJvRd0p09w5I7TkLngdRHW21ssvJpie7L8letiDMCHZ8OX8WWsFfwZrjd
-X-Gm-Message-State: AOJu0YyAz0fRanjI+rXglDMCww8WWEPDrsoKIxM+f/01lCKpMlx6ruFB
-	jPDNkx0sfk3SAOc+qn2IDOgPWPmqthpS8U/aFDrNK1w1lXyCT6xK
-X-Google-Smtp-Source: AGHT+IEc8Rc1QEIwVEXfc7Rpogc9rQkSUkCFNEJZBG+Iw/peGXh8S4XAZEgN4bTVwF0KQdZg/ByJHA==
-X-Received: by 2002:a05:600c:3b8c:b0:425:d61c:77b1 with SMTP id 5b1f17b1804b1-4264a469699mr16561885e9.35.1720113815196;
-        Thu, 04 Jul 2024 10:23:35 -0700 (PDT)
+        bh=UV1ltKTKaW4yZCRIt1PBVlpTJKfjEFuyvDZdCLF6YdU=;
+        b=BCARXK6bkvY4hJb3PY7up+2ypWII8Jklk4Y6M33k5IcY5sB/Ja7q4JS8BmKSyORvxN
+         1gjp9f9t83npVMu6jLAeM6ZQmkCQ2YLnLYJXSvKTmAvC3Ch+aTevO7o5ojkjb+jSmm6a
+         UyXfVCq4GqJw80duFMPjX/Bg71efGGwFwjTufPdfehgNcOWdHRgIBYGDo6DVOj27iDNS
+         koBoLWNFnVPIcnsiOFCsMZdKmx4rrBX8aSp8UEr86Aaij9e5Q8nRNByOUx5SBAvxVAsJ
+         Ac8OZeR8Wv02jHXEFTp0zmoqKp3eQ0swc0dyRcJCNTHxkdx50gV9a7ay1VeU6CUvOP4j
+         bRHw==
+X-Forwarded-Encrypted: i=1; AJvYcCWQDeIzuk6Sqk9C3BBm7LmSM+pN+v7cwMNMgdTTFBZ4WUREDl1cr/R/NSeMIRffVCBnykMkn/UCrWP/pEIWc5vkhHE8O/rHc+NQ2IyagTW8GydmI+GmIGIaUr0BTYvYROvsI66SpkKPUYbtfSsf
+X-Gm-Message-State: AOJu0YwOOsT8r+4CbXGGCwe7yu5cRp5IFJ42fLPuInAQn9GwV3SO00I3
+	7VZUTMkA4h5Qyw71lk2L7jXUrnhqR/RzoAdPcxMnFMaS8x/0Txq7
+X-Google-Smtp-Source: AGHT+IFayGbOWU2NuV+LVeotJFd37Zf8oQyJqVq2J1/NgNQICLpdvZCrbJvr8r1EBe2/OU/bDuu7Ww==
+X-Received: by 2002:a7b:cd05:0:b0:425:7c29:7480 with SMTP id 5b1f17b1804b1-4264a48cb74mr19709845e9.38.1720113817105;
+        Thu, 04 Jul 2024 10:23:37 -0700 (PDT)
 Received: from [127.0.1.1] (84-115-213-37.cable.dynamic.surfer.at. [84.115.213.37])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4264a1d6133sm32330965e9.13.2024.07.04.10.23.33
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4264a1d6133sm32330965e9.13.2024.07.04.10.23.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Jul 2024 10:23:34 -0700 (PDT)
+        Thu, 04 Jul 2024 10:23:36 -0700 (PDT)
 From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Date: Thu, 04 Jul 2024 19:23:15 +0200
-Subject: [PATCH v2 05/24] mfd: tps6105x: Constify struct regmap_config
+Date: Thu, 04 Jul 2024 19:23:16 +0200
+Subject: [PATCH v2 06/24] mfd: rohm-bd9576: Constify read-only regmap
+ structs
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -78,7 +79,7 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240704-mfd-const-regmap_config-v2-5-0c8785b1331d@gmail.com>
+Message-Id: <20240704-mfd-const-regmap_config-v2-6-0c8785b1331d@gmail.com>
 References: <20240704-mfd-const-regmap_config-v2-0-0c8785b1331d@gmail.com>
 In-Reply-To: <20240704-mfd-const-regmap_config-v2-0-0c8785b1331d@gmail.com>
 To: Support Opensource <support.opensource@diasemi.com>, 
@@ -97,35 +98,53 @@ Cc: linux-kernel@vger.kernel.org, imx@lists.linux.dev,
  linux-omap@vger.kernel.org, 
  Javier Carrasco <javier.carrasco.cruz@gmail.com>
 X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1720113803; l=722;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1720113803; l=1538;
  i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
- bh=A8h6qBLOlBAO4Nf5Z1u5nWAte8uqhP5kHvTzaAaJZ+g=;
- b=ZiS7T6T4IQrp0Q5cFzDm9V7HK3fd//OdoA4bcGAGfdiPsK9NjQwbEsdd/FBGaaLb32Comgql0
- LQcTPmwFMOLA4zRWYd/7xWC357cvLXcrja6ylouWSP+uIMonhxpIKWF
+ bh=pfp5RcagdNcIGe1QQNjVuwzMf32RmDK/Hd4QnG6Cv0M=;
+ b=7Fa3AFgLDuDESYIOxUfDUDhsjrx89iv7ob0w7RkVM53841DbBwwV/uqHvUqzzinL++/HsfgdT
+ gBovMDhBC40Cjpvl23ffJlzByWK0PUy0vzsA7WqG0uxz1GWcaPQA81G
 X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
  pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
-`tps6105x_regmap_config` is not modified and can be declared as const
-to move its data to a read-only section.
+`bd957x_regmap`, `bd9576_irqs` and `bd9576_irq_chip` are not modified
+and can be declared as const to move its data to a read-only section.
 
 Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 ---
- drivers/mfd/tps6105x.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mfd/rohm-bd9576.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/mfd/tps6105x.c b/drivers/mfd/tps6105x.c
-index 0da1cecb5af6..e2f6858d101e 100644
---- a/drivers/mfd/tps6105x.c
-+++ b/drivers/mfd/tps6105x.c
-@@ -23,7 +23,7 @@
- #include <linux/mfd/core.h>
- #include <linux/mfd/tps6105x.h>
+diff --git a/drivers/mfd/rohm-bd9576.c b/drivers/mfd/rohm-bd9576.c
+index 3a9f61961721..17323ae39803 100644
+--- a/drivers/mfd/rohm-bd9576.c
++++ b/drivers/mfd/rohm-bd9576.c
+@@ -57,7 +57,7 @@ static const struct regmap_access_table volatile_regs = {
+ 	.n_yes_ranges = ARRAY_SIZE(volatile_ranges),
+ };
  
--static struct regmap_config tps6105x_regmap_config = {
-+static const struct regmap_config tps6105x_regmap_config = {
+-static struct regmap_config bd957x_regmap = {
++static const struct regmap_config bd957x_regmap = {
  	.reg_bits = 8,
  	.val_bits = 8,
- 	.max_register = TPS6105X_REG_3,
+ 	.volatile_table = &volatile_regs,
+@@ -65,7 +65,7 @@ static struct regmap_config bd957x_regmap = {
+ 	.cache_type = REGCACHE_MAPLE,
+ };
+ 
+-static struct regmap_irq bd9576_irqs[] = {
++static const struct regmap_irq bd9576_irqs[] = {
+ 	REGMAP_IRQ_REG(BD9576_INT_THERM, 0, BD957X_MASK_INT_MAIN_THERM),
+ 	REGMAP_IRQ_REG(BD9576_INT_OVP, 0, BD957X_MASK_INT_MAIN_OVP),
+ 	REGMAP_IRQ_REG(BD9576_INT_SCP, 0, BD957X_MASK_INT_MAIN_SCP),
+@@ -76,7 +76,7 @@ static struct regmap_irq bd9576_irqs[] = {
+ 	REGMAP_IRQ_REG(BD9576_INT_SYS, 0, BD957X_MASK_INT_MAIN_SYS),
+ };
+ 
+-static struct regmap_irq_chip bd9576_irq_chip = {
++static const struct regmap_irq_chip bd9576_irq_chip = {
+ 	.name = "bd9576_irq",
+ 	.irqs = &bd9576_irqs[0],
+ 	.num_irqs = ARRAY_SIZE(bd9576_irqs),
 
 -- 
 2.40.1
