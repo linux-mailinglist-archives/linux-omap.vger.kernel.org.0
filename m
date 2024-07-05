@@ -1,74 +1,74 @@
-Return-Path: <linux-omap+bounces-1731-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1732-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CF4792817C
-	for <lists+linux-omap@lfdr.de>; Fri,  5 Jul 2024 07:47:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9A5A928180
+	for <lists+linux-omap@lfdr.de>; Fri,  5 Jul 2024 07:49:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E8931C22075
-	for <lists+linux-omap@lfdr.de>; Fri,  5 Jul 2024 05:47:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46AE31F23187
+	for <lists+linux-omap@lfdr.de>; Fri,  5 Jul 2024 05:49:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A9DB4CB28;
-	Fri,  5 Jul 2024 05:47:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D56F13A88A;
+	Fri,  5 Jul 2024 05:48:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HCGEe5FQ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cakBE4R3"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59827224F2;
-	Fri,  5 Jul 2024 05:47:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B1F013ADA;
+	Fri,  5 Jul 2024 05:48:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720158431; cv=none; b=k7Z8WdvvXCN/gQEVkGdYwZB5gMt5ch/jGoMmc7K4Uk2p78jR5MKC+vyz9DKS4qT/gUq6Pdp8UD1RRT93pQJONuEva6qT1O1iv05poYx0OaXhpen2shwTJW/ICgA2I7I3nTs8X2AUWH4W22hqvolNjWkhgRmw5IZJ9plubnN+D9E=
+	t=1720158536; cv=none; b=juvcfxKx+YjVFasiyvakFzlF0BxEoTJj0TYNo5qL4dp7qBm+QV7fDrQlqWMD3pAbV8LVwOLjwBbvAx5Cxq7mO6YHiJoCB97SBVyHETEugfSTw5veQ9BenR9UNpiQC99IUiji0++29nNKZDGOv2gl5zxX/gICEx/yEIV4UbWTbys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720158431; c=relaxed/simple;
-	bh=dG6ZMs8GKA1J4eYx/XekQpH1Qlq8VEqAMdF2BpfTFZY=;
+	s=arc-20240116; t=1720158536; c=relaxed/simple;
+	bh=2xXlsoTymeXdtVXdGZypDHiA+INDaREfHMbB8LwbGHA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KGQ7eYtF1I3IE0WWZtY0sj6Sz2U4z/UzKkbK/3F0TPbksY03AtHrmxV8DOS0njRYTPypfszYq2Vm7kLK9svZa58c+dun6H0Utsc2hJSEdBH7z3+7yPH8F6E9LAlcJL02t1qlLyieuSlyZoDsg3LKMld6yHI6d+1SsypMQGk4mNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HCGEe5FQ; arc=none smtp.client-ip=209.85.167.49
+	 In-Reply-To:Content-Type; b=D9wmlIE+Yjz2DOhyL2UO9Fqd0xF/7Uc3PSv6l4MK/nsoqvjp0iEcgLMBE/0y0jcL5MBmQOd4jxiZao6I9JNlkH2WgLgMV66o+ZcB0ZxrFMN5yrp/M9LunPYst0MiWkgrgZBCxSv51NnLjSnr/lX3UwKdEoNKXze+avGclEueqOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cakBE4R3; arc=none smtp.client-ip=209.85.208.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-52ea7bdde68so48408e87.0;
-        Thu, 04 Jul 2024 22:47:09 -0700 (PDT)
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-2ee92f7137bso5899351fa.1;
+        Thu, 04 Jul 2024 22:48:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720158427; x=1720763227; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1720158534; x=1720763334; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=krCoQNWgWkCVZVoxoVGgCyGHNoVnIgHcNNfQdbjzvpY=;
-        b=HCGEe5FQaT2FZAzS/UkUPoM9F/fsUjeFNKhWeTSYvzKxUJfv4mNOWA4XbXNGmQuKtW
-         wItfTzP8sBJa//20nr51Jl8shcucfFtBdkFLzTyZNWv6ZIfPYikq9MMxvb82ut29Pwpv
-         gzDFenb1JlfgZ879f7k9iJDSf2wG8zxqz4zdaytrvzdeDhtV+kepMLDeBr3M4lRPyjxJ
-         F4NO7npyfKbzK5OjQKCBYa5nmrELBULfV84gpbMI9Ki/IiejVI6C+M989iQuaxlu50vT
-         kmSbVolNWPox730EpTQ6heTacNatlczG6P+OXvg9TFch8s7xFi+F8BPwkyZ1FCig2GPt
-         ZW5g==
+        bh=WdzePDvp+BZunFZcEzbg9ryWVygXOO8G3bu/1oy3U1g=;
+        b=cakBE4R38xWQp6pj5zFrJf8Z5pBHUhY2m5+N1e/DywJa+mOD0z2UfRpyCgdLyj9Crz
+         GroO3U8wETPjirnW61XsZnlrE56kKFJTalyN8WDbBBfx24PYTelMdKzSitbizFbO2LE2
+         kkVutpC14lm7VZD7BuMtW3WcLbce7xSq97vNzJM7kD43Od8V4VErI/iphlaGguAnCL9Y
+         hLYxN8nb91rfRlxeVaP+Z42jcHDNHvdTh6hQpgnV4fg/f3a0I6JfGe+lsiPUzyUHw96c
+         AcNLjE3NOemHwuVUd75eXXNDR4DzEfWouGL3UohA+go/wA7aNGDtq19i9J90er9ocNzL
+         x1AQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720158427; x=1720763227;
+        d=1e100.net; s=20230601; t=1720158534; x=1720763334;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=krCoQNWgWkCVZVoxoVGgCyGHNoVnIgHcNNfQdbjzvpY=;
-        b=fFjawCJvcH9k2FpOZyBBs3S8boFbPPIQcvYl+zue78BDISgB9+gNGw0nKSRR6iy5D3
-         E1L8EFnkjVG6ssViskIiWhn0KVATD/nQPxJGngO2EJMQ++oHCAx0XYtgwoPliCe0byaJ
-         wpPRN9QFM072OIHsEWhKqzbxQ6wUMFbTX0EFAm1yRuJ+sI84RfN4f4M2FztTnYQOpwqe
-         azW4fP07kBTEvXhruN700TAk5WrCalDM5UqrxtJGu1Y5R5/jEM7mrkTvOrYLMFaaw7T8
-         Ae0S1wJeKdOBwW8Tffzw202HlhMvYIP23EoRmblx/Lvu/M0QwComB//RHsgqyN5zEX7s
-         oeoQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWH8agXDIixm6PnGDxLXELuBDoGHYcoQ1s+8yg130bDRHJvSaauoe1Ye1ZTHtnMBsIWXyZ8vH20kBfR0BVvbfUuVF+jfowUor3nYWhrlN23Q0E742RVZtVW575oWFxfRjEcLJ/pMblOO7HwbLPV
-X-Gm-Message-State: AOJu0YzLgLGp4sRa7lJnyKwRXb356mr03LnPvQAHu1qSb1ySaTJyFXnj
-	QYSvRcapXvM6yQwqfiyZPzTxTAWaNsVI5AXUJYSxiEfDHCIvqS+M
-X-Google-Smtp-Source: AGHT+IE0GNtMf6UPdNr/wI7vJffg6XXW+NaZoazh2xsk3bgg+N44sIBTRgrRFUK3BkppBbWWLLfcqQ==
-X-Received: by 2002:ac2:4e8c:0:b0:52e:9b9f:9377 with SMTP id 2adb3069b0e04-52ea062a94dmr2196831e87.21.1720158426713;
-        Thu, 04 Jul 2024 22:47:06 -0700 (PDT)
+        bh=WdzePDvp+BZunFZcEzbg9ryWVygXOO8G3bu/1oy3U1g=;
+        b=uDDOeynOL7ukOP9IX3J2yBC531DFpIRJl74IAJTPbjdZIIVF0kaS6FD7ErV+cRbtN7
+         rykNF5tGLM68dUk4lmZDI07HQXXr0s0Hj21dKYDfh9Ls+9kioUBRed0Wx61MVRHm7Lre
+         6fUWHG9q6aYApfvCDVh+qaY0Dnve+MUDt0bw8qgBRjhYvLLAoSmrT9Fl1jT7FZ/qm3jy
+         KWk183MnqBG8XJqebz9ISu2h2+BvZZbKj6JMvID2DvaYiccmqIOGVaSYK97XbQEIE/CZ
+         VQu/YMw1B6lUyIcCs+UzbR9uMVkDl/J0b8OrcdRfsOrKbJUKG00VkgzTRzaaYRR+4qTa
+         rAqQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVURozB12So5kuHZKOq8kjImP5kG0fJcgNQi/nYyd/iJPYGwnHa13JO/EFyS4ZrIM9o+4IvV4llDA4E+kxIYSx5l/6HrCEfnBKXPehVI7wM8UFNVpCvWvvaa9TxrnbJcqA4rT4YtvD84geLbvWH
+X-Gm-Message-State: AOJu0YzYuQtA24cnhOvEI4XICOaJCO6nY5JKIpqHI0CFDbesfh4eSnXv
+	RaRkLD4fg0bW4zWw4z2d7lXGX5FJw9ufnya2gdMPoMDm9CpvEakD
+X-Google-Smtp-Source: AGHT+IHy5HQfUA8D7qIJnq8EpH5PvPiRX2gESm+xurT8dL43q61PTzq7H+k6IGRQkbVSwzLIZRkh4g==
+X-Received: by 2002:a2e:8183:0:b0:2ec:52da:6070 with SMTP id 38308e7fff4ca-2ee8edff093mr26391741fa.42.1720158533029;
+        Thu, 04 Jul 2024 22:48:53 -0700 (PDT)
 Received: from ?IPV6:2a10:a5c0:800d:dd00:8cfe:d6e7:6701:9dfd? ([2a10:a5c0:800d:dd00:8cfe:d6e7:6701:9dfd])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52ea378eaa7sm220262e87.300.2024.07.04.22.47.05
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2ee51695feasm25657891fa.131.2024.07.04.22.48.51
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Jul 2024 22:47:06 -0700 (PDT)
-Message-ID: <3a90ebea-e0b1-47d9-8fff-cf75429b2696@gmail.com>
-Date: Fri, 5 Jul 2024 08:47:04 +0300
+        Thu, 04 Jul 2024 22:48:52 -0700 (PDT)
+Message-ID: <c487772e-08c6-4b30-af27-b32d6f5f176f@gmail.com>
+Date: Fri, 5 Jul 2024 08:48:50 +0300
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -76,8 +76,8 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 13/24] mfd: rohm-bd71828: Constify read-only regmap
- structs
+Subject: Re: [PATCH v2 14/24] mfd: rohm-bd718x7: Constify struct
+ regmap_irq_chip
 To: Javier Carrasco <javier.carrasco.cruz@gmail.com>,
  Support Opensource <support.opensource@diasemi.com>,
  Lee Jones <lee@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
@@ -93,20 +93,39 @@ Cc: linux-kernel@vger.kernel.org, imx@lists.linux.dev,
  linux-arm-kernel@lists.infradead.org, linux-renesas-soc@vger.kernel.org,
  linux-omap@vger.kernel.org
 References: <20240704-mfd-const-regmap_config-v2-0-0c8785b1331d@gmail.com>
- <20240704-mfd-const-regmap_config-v2-13-0c8785b1331d@gmail.com>
+ <20240704-mfd-const-regmap_config-v2-14-0c8785b1331d@gmail.com>
 Content-Language: en-US, en-GB
 From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20240704-mfd-const-regmap_config-v2-13-0c8785b1331d@gmail.com>
+In-Reply-To: <20240704-mfd-const-regmap_config-v2-14-0c8785b1331d@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 7/4/24 20:23, Javier Carrasco wrote:
-> The regmap_irq and regmap_irq_chip structs are not modified and can be
-> declared as const to move their data to a read-only section.
+> `bd718xx_irq_chip` is not modified and can be declared as const to
+> move its data to a read-only section.
 > 
 > Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
 Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
+
+> ---
+>   drivers/mfd/rohm-bd718x7.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/mfd/rohm-bd718x7.c b/drivers/mfd/rohm-bd718x7.c
+> index 7755a4c073bf..25e494a93d48 100644
+> --- a/drivers/mfd/rohm-bd718x7.c
+> +++ b/drivers/mfd/rohm-bd718x7.c
+> @@ -60,7 +60,7 @@ static const struct regmap_irq bd718xx_irqs[] = {
+>   	REGMAP_IRQ_REG(BD718XX_INT_STBY_REQ, 0, BD718XX_INT_STBY_REQ_MASK),
+>   };
+>   
+> -static struct regmap_irq_chip bd718xx_irq_chip = {
+> +static const struct regmap_irq_chip bd718xx_irq_chip = {
+>   	.name = "bd718xx-irq",
+>   	.irqs = bd718xx_irqs,
+>   	.num_irqs = ARRAY_SIZE(bd718xx_irqs),
+> 
 
 -- 
 Matti Vaittinen
