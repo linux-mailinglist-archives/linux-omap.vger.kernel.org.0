@@ -1,117 +1,113 @@
-Return-Path: <linux-omap+bounces-1733-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1734-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B581928185
-	for <lists+linux-omap@lfdr.de>; Fri,  5 Jul 2024 07:51:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F5D5928FEF
+	for <lists+linux-omap@lfdr.de>; Sat,  6 Jul 2024 03:15:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A92DA1F230AD
-	for <lists+linux-omap@lfdr.de>; Fri,  5 Jul 2024 05:51:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4EEEDB22F05
+	for <lists+linux-omap@lfdr.de>; Sat,  6 Jul 2024 01:15:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B99FF13BC3E;
-	Fri,  5 Jul 2024 05:50:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A246A95B;
+	Sat,  6 Jul 2024 01:15:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ihRNNYPO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tdDecK+P"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8BD013A869;
-	Fri,  5 Jul 2024 05:50:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CA426FC2;
+	Sat,  6 Jul 2024 01:15:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720158656; cv=none; b=KCJXDtJC2y3auJrjAoUDEkcsB+RSont9ht/NL+/0pOGY9G2bRm3V+rmTWLzzxQvogCqOEHuJYbQ02OKkDiXlyCDKU7w8VE0VwnOuX1ohX1OwmBhRA5CKqf38iwo5qqoQl8G+XmlOpKauQVT9b5CkJ2ZXrxe8U1kn3+OxrdhslTQ=
+	t=1720228511; cv=none; b=Mm8EyJpd6gjb4tNQ2dEfz5Z5b10UbXtaaMGxzn4/9RxfBb0zSXJD4GeVdlXq9l63RtmslNfpIxGzBWO03Hjt+g8CiKpYpy9XrFaLX6CKvUbhoPpCOXWJ9iA2xcUkue+CrMYykhiWkXdbQucO+0yRJwOqxeChcm/JgMICSkZaD7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720158656; c=relaxed/simple;
-	bh=JrLj91YPVZpy2XkIrYFYm75kBGBGgkOBeCe9zPn1RlU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TyT2TYjoCoFwVLDLqdi90fsKQrZOKpuhm2bjtgq2U30VzuIiGNi062K50vHoOrciGNbE1H1t2A/GCOYRXyT7XTKP6GUNWPSH2c+bIS0A+IGp//v2QQ/Ai0cS0mrlIk8d71cs4oPn3kh2lqNKH+JwgTFiVAZTT0AdUxWdJtVLa/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ihRNNYPO; arc=none smtp.client-ip=209.85.208.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2ec3f875e68so15418781fa.0;
-        Thu, 04 Jul 2024 22:50:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720158652; x=1720763452; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=tbiPVN/BaSDz+daEINbCMF5/eDCLCv2CP3RxKuEyuuY=;
-        b=ihRNNYPOioYPJddJC6O9E4vd9nGqxz4xnMlDUMl+CM0ztiXBazDpELnOrXRQWE3g32
-         F9HVXDN1Be/ACsK21+QnUzjlLP86y4zUqnMwexNtL45ucvfeuCEqaq5KDTmRGBK+Gn3f
-         CtxJozmh9WlSf1PpdENsZfg8bs3pUWdjM48e9WyKufM3C79KEdam2BzfRqOFZ6pJyhpj
-         A5ebDL0HYxv9nKTBJd3Qclb5Krj+ZVqINAO0H1IJVPll4huw4c0CKmpextmeh/N/Uvcr
-         N1DQEHTtkUAZrjm75C8/HPPY1KoilfKTKqDpNayvLh9pHSjxsO2ID3k1X/EN058p8k47
-         Lncw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720158652; x=1720763452;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tbiPVN/BaSDz+daEINbCMF5/eDCLCv2CP3RxKuEyuuY=;
-        b=WcNly0YOECsvf63zHjspLKa8ga6FH3396kiPgU3ReCqE2NEQasY+aXA0e35g2YbgQQ
-         PLIb+Svh5nXN3NrhjfD6Yh1nL3L5ChgsQWtCgqzfNB0lZgo6UpuTByxq1LA3NrUpsBpg
-         fNvsr0ihKQOlny1iQP2PxPOTGgN20NrfcHPLiyGlGD2uAuy3cpuPT6m30j+ikPEeXJ2A
-         5vQwmF1RENA/SKXSNyhC7Nw5wLrb4jqxac4atLM5L/Ob8hRN7cxkQwZPc13h4Jmh6QfW
-         /ngJybz6nPP5wkRcB8OlG72K4SoZYXMrs0Q2+JrcyY0Coui6+FVHlwJBRgpP0xDwhfxD
-         74ZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW3tuCrbj5Fdx1sQssxhHedMVpTdMfFCKze3v5s+bZ2sCtHXc17uEV9aT2o+2TRkOBTNqZdRxlQAcudep9LSctWmfBZFUJA7ym47RhoVYb+LGKbjPd/k5p/+s5xs5SR58nm1D0vTE15M/+7iJr9
-X-Gm-Message-State: AOJu0YxXu6qWpAJ23JpuNOr15lYe8/7ZQanO0KLZxVGit8VL2HvQsweq
-	cGmnDimRm9PG9eAUs0qjBTcGVIQMueKuKkmHKs3NK5GTaKNXfnf0
-X-Google-Smtp-Source: AGHT+IEpL0Mf1EKOoiMjLyxqd9bytkbdSwdDuZnIv53bLozrxliwMa2PYXZdfQHo1c1KgldzxRAFXQ==
-X-Received: by 2002:a05:651c:19a2:b0:2ea:e98e:4399 with SMTP id 38308e7fff4ca-2ee8ee01aa7mr30757671fa.36.1720158651428;
-        Thu, 04 Jul 2024 22:50:51 -0700 (PDT)
-Received: from ?IPV6:2a10:a5c0:800d:dd00:8cfe:d6e7:6701:9dfd? ([2a10:a5c0:800d:dd00:8cfe:d6e7:6701:9dfd])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2ee8cabf202sm5086491fa.99.2024.07.04.22.50.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Jul 2024 22:50:50 -0700 (PDT)
-Message-ID: <20ce567c-d3be-47e1-8e73-749756204b43@gmail.com>
-Date: Fri, 5 Jul 2024 08:50:49 +0300
+	s=arc-20240116; t=1720228511; c=relaxed/simple;
+	bh=PAaZD1M7e9sIxFScmdr1WJTZAFf2RfyaoOLdehXK6i0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=iJqrTLuLl4gtMWuv2ErlAZ5pVSO2ByEuanG8+MIuD2z1driLq05w3ssVS45AP28TO+7SkWmRsMVVBmkabR736QMpbZ2cwk6j8PeCuoiylkEM7cyLcfhi+myi/1cc1qNe1n2UssazeNFWwXYa2oQ5Y+xt1B5sHX8sX+F+ZjS0T9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tdDecK+P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2810C32781;
+	Sat,  6 Jul 2024 01:15:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720228511;
+	bh=PAaZD1M7e9sIxFScmdr1WJTZAFf2RfyaoOLdehXK6i0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=tdDecK+PGicM3lkQueAE/603HJc8tfzepIx69meYL4OctZLn5p/s7y+JbqoVTBVb0
+	 JE4BpWIIpdbCtPdgkzbktMMYCBZD1IumBzVA/6sWsHP2r1UR52i8pDYdsKUcK2Y/+s
+	 JwKYh+vQWblgzis9fg5Q85+ZO8fZ/tMQU0ZKL8+N1TGZKBK/N6qyXoKMBMn6ZmyWpv
+	 xmYoWkt9NMleO5C9IGnWR15U5fzEfACf3Tpupy3FYBp25+80nPJGxmUH0wqVsWMUZv
+	 GO/UnK3PMPAQ2W2+9mE1n79WWc9jkul0X44RRAZnqSt/hRCJGd5p+oH1K8tWUF4xd+
+	 4tASO6btqkSAQ==
+Date: Fri, 5 Jul 2024 18:15:09 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Roger Quadros <rogerq@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Siddharth Vadapalli
+ <s-vadapalli@ti.com>, Julien Panis <jpanis@baylibre.com>, Simon Horman
+ <horms@kernel.org>, Andrew Lunn <andrew@lunn.ch>, srk@ti.com,
+ vigneshr@ti.com, danishanwar@ti.com, pekka Varis <p-varis@ti.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-omap@vger.kernel.org
+Subject: Re: [PATCH net-next v3 1/6] net: ethernet: ti: am65-cpsw: Introduce
+ multi queue Rx
+Message-ID: <20240705181509.1437b12e@kernel.org>
+In-Reply-To: <20240703-am65-cpsw-multi-rx-v3-1-f11cd860fd72@kernel.org>
+References: <20240703-am65-cpsw-multi-rx-v3-0-f11cd860fd72@kernel.org>
+	<20240703-am65-cpsw-multi-rx-v3-1-f11cd860fd72@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 09/24] mfd: bd9571mwv: Constify struct regmap_irq_chip
-To: Javier Carrasco <javier.carrasco.cruz@gmail.com>,
- Support Opensource <support.opensource@diasemi.com>,
- Lee Jones <lee@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Xu Yilun <yilun.xu@intel.com>,
- Tom Rix <trix@redhat.com>, Marek Vasut <marek.vasut+renesas@gmail.com>,
- Andy Shevchenko <andy@kernel.org>, Tony Lindgren <tony@atomide.com>,
- Tim Harvey <tharvey@gateworks.com>, Orson Zhai <orsonzhai@gmail.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Chunyan Zhang <zhang.lyra@gmail.com>
-Cc: linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-renesas-soc@vger.kernel.org,
- linux-omap@vger.kernel.org
-References: <20240704-mfd-const-regmap_config-v2-0-0c8785b1331d@gmail.com>
- <20240704-mfd-const-regmap_config-v2-9-0c8785b1331d@gmail.com>
-Content-Language: en-US, en-GB
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20240704-mfd-const-regmap_config-v2-9-0c8785b1331d@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On 7/4/24 20:23, Javier Carrasco wrote:
-> `bd9571mwv_irq_chip` and `bd9574mwf_irq_chip` are not modified and can
-> be declared as const to move their data to a read-only section.
-> 
-> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+On Wed, 03 Jul 2024 16:51:32 +0300 Roger Quadros wrote:
+>  
+> -	if (queue >= AM65_CPSW_MAX_TX_QUEUES)
+> +	if (queue >= AM65_CPSW_MAX_TX_QUEUES &&
+> +	    queue >= AM65_CPSW_MAX_RX_QUEUES)
+>  		return -EINVAL;
 
-Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
+both MAXes are 8, the else conditions below are dead code
+Same for set
 
--- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
+> -	tx_chn = &common->tx_chns[queue];
+> +	if (queue < AM65_CPSW_MAX_TX_QUEUES) {
+> +		tx_chn = &common->tx_chns[queue];
+> +		coal->tx_coalesce_usecs = tx_chn->tx_pace_timeout / 1000;
+> +	} else {
+> +		coal->tx_coalesce_usecs = ~0;
+> +	}
+>  
+> -	coal->tx_coalesce_usecs = tx_chn->tx_pace_timeout / 1000;
+> +	if (queue < AM65_CPSW_MAX_RX_QUEUES) {
+> +		rx_flow = &common->rx_chns.flows[queue];
+> +		coal->rx_coalesce_usecs = rx_flow->rx_pace_timeout / 1000;
+> +	} else {
+> +		coal->rx_coalesce_usecs = ~0;
+> +	}
 
-~~ When things go utterly wrong vim users can always type :help! ~~
++	for (flow_idx = 0; flow_idx < common->rx_ch_num_flows; flow_idx++) {
++		flow = &rx_chn->flows[flow_idx];
++		for (i = 0; i < AM65_CPSW_MAX_RX_DESC; i++) {
++			page = page_pool_dev_alloc_pages(flow->page_pool);
++			if (!page) {
++				dev_err(common->dev, "cannot allocate page in flow %d\n",
++					flow_idx);
++				ret = -ENOMEM;
++				if (i)
++					goto fail_rx;
+ 
+-			return ret;
+-		}
+-		rx_chn->pages[i] = page;
++				return ret;
 
+the direct returns now that it's a double-nested loop seem questionable,
+don't you have to goto fail_rx?
 
