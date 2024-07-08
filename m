@@ -1,112 +1,159 @@
-Return-Path: <linux-omap+bounces-1735-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1736-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21BF592915D
-	for <lists+linux-omap@lfdr.de>; Sat,  6 Jul 2024 08:44:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77690929C62
+	for <lists+linux-omap@lfdr.de>; Mon,  8 Jul 2024 08:45:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5391C1C217A4
-	for <lists+linux-omap@lfdr.de>; Sat,  6 Jul 2024 06:44:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32697280EE6
+	for <lists+linux-omap@lfdr.de>; Mon,  8 Jul 2024 06:45:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 243E81C2AD;
-	Sat,  6 Jul 2024 06:44:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D016A179A3;
+	Mon,  8 Jul 2024 06:44:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="VUVvQQaE"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="PzOy6Z2W"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAA1117BD3;
-	Sat,  6 Jul 2024 06:44:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.249
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5146B1171D;
+	Mon,  8 Jul 2024 06:44:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720248290; cv=none; b=KvCb08YQjSuI2xgihSi+cySnPlBwQVVrsbYzNOavgyiIDGAxeHIgrVwOuWG/M1kkQamItpXfkBdN5LrZ5abLjVYrci2IxgvxuYCAZpSF7orGLzyarTKYVNj0rDLFaQUmxZEEytr8MA8Ei2EO+JlhPEs3UfX9MvDaWCeLlxtiKLw=
+	t=1720421097; cv=none; b=L8I+/4PV/fc/Xp85ejoSA9P4q4md7O1jmOA6k4B0wRZKoOAFZQMe1z7eA0z/q/zCSqeSLRfFnk2J8EpiEt7wDktMYgLh3D+t2+LD7Mk0pnfikq4AdL9JUZVpah0b6Cm+6XFmLhTiy69v0bpPFHrgGoNHw7Lz9hFxnyy1I6e7kEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720248290; c=relaxed/simple;
-	bh=NH0U8SYMXqcCSrXZ7qu6VT16yVW+2MZ7RLvA2Zodprg=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n6Azp8bgDE60bk4tcr6dCjeIkW+8uVIllkGykaJesjrGz4Ee90DlBtJ3hXZyMahvhyJYy4n4cN9yMzR/PIpArFUd1wxDB7p4YA8vHV6aLaRuwTta+HpVzVN3J2Q8/DlFK0YCRLSuNPa1zQY4SF++M4fJLEezBNWZClwamAs1s0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=VUVvQQaE; arc=none smtp.client-ip=198.47.23.249
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 4666iFk8071877;
-	Sat, 6 Jul 2024 01:44:15 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1720248255;
-	bh=qYoP9culH6ZxGxGoSntIgBVMnx2ZLL7C0Z7bcNlrEfY=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To;
-	b=VUVvQQaEWs2FXOiJayzv62yXOQtE+NILGMyD9icXubuakt6GyqqkCgo7pJBIs+F1Z
-	 /hlfr+pYwhw/HUESI10cWv99ZAkH3L4LtfVS+l+CnxfJHK1exInVmW68F/QY4d+Scl
-	 UweOR31QJP+f0KhUBHdiT/sldL/k22LgKkBoLwek=
-Received: from DFLE100.ent.ti.com (dfle100.ent.ti.com [10.64.6.21])
-	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 4666iFsQ009824
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Sat, 6 Jul 2024 01:44:15 -0500
-Received: from DFLE105.ent.ti.com (10.64.6.26) by DFLE100.ent.ti.com
- (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Sat, 6
- Jul 2024 01:44:14 -0500
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE105.ent.ti.com
- (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Sat, 6 Jul 2024 01:44:14 -0500
-Received: from localhost (uda0492258.dhcp.ti.com [10.24.72.81])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 4666iDda074785;
-	Sat, 6 Jul 2024 01:44:14 -0500
-Date: Sat, 6 Jul 2024 12:14:13 +0530
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
-To: Francesco Dolcini <francesco@dolcini.it>
-CC: Nishanth Menon <nm@ti.com>, Vignesh Raghavendra <vigneshr@ti.com>,
-        Tero
- Kristo <kristo@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof
- Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Siddharth
- Vadapalli <s-vadapalli@ti.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-        Bjorn Helgaas
-	<bhelgaas@google.com>,
-        Francesco Dolcini <francesco.dolcini@toradex.com>,
-        <linux-arm-kernel@lists.infradead.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <linux-pci@vger.kernel.org>
-Subject: Re: [PATCH v1 0/2] PCI: ti: k3: Fix TI J721E PERST# polarity
-Message-ID: <2def13f4-aea3-466c-9f8c-1e44694eeb4a@ti.com>
-References: <20240703100036.17896-1-francesco@dolcini.it>
+	s=arc-20240116; t=1720421097; c=relaxed/simple;
+	bh=EqDlk82dE7XS0/JGyUAUcCtCsFHxwVbAJvsEIiMzMrs=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=lB7ncdu4H92hljLvLomFhCNSXzlRKANIQYx3y0Afv377oux+58S5vdUUB+T8By9yHlAWS2nprSgZRgCgSWdDWamFs2Rw0J03bba2g988CLlPzrArfyJ+WNMWMP1ZJTKM22HRsuIo4AcxeiyfX86j3YRqNd2h3EeCKkdsW028B0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=PzOy6Z2W; arc=none smtp.client-ip=217.70.183.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 817CBE0006;
+	Mon,  8 Jul 2024 06:44:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1720421086;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kN45r2MzRBKAE4raZ17kWauJPTnIek3N3oaVcC2BO/g=;
+	b=PzOy6Z2WDoUDIURvXSdTtpzbHX3JQqR2TwTpbeUTnfB6vX3dNcZ37ATxjxBqYPJmXyybOW
+	/cSvPuilXVhZeR7B2dXURK6eJ39WhH4IRmB3cgvultxkXbdYRWIJAVPOSzfOAYpJjJ6yjj
+	T4otuw7FybtaZrQhYLIzqq3zUvj4Jc9ZhqWNxjCSwxjRvmd7Z4M+rCx4VXtxp9PGAb8E1q
+	oZ1dnF7ScZhNf1MbVD05qQH3qQWLfMAQwFkOz4wVja8KUEs30B2F3BIx4guMRdC+Ulvnk+
+	YXsH623cgVPmDlxftJRPmEBJAk7rpJRwu3UnaQOHOTk3BC9lbm01fchVhlirnQ==
+Date: Mon, 8 Jul 2024 08:44:40 +0200
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Maxime Ripard <mripard@kernel.org>
+Cc: Pratyush Yadav <pratyush@kernel.org>, Tudor Ambarus
+ <tudor.ambarus@linaro.org>, Marco Felsch <m.felsch@pengutronix.de>, Richard
+ Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, Arnd
+ Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Bartosz Golaszewski <brgl@bgdev.pl>, Russell King <linux@armlinux.org.uk>,
+ Joel Stanley <joel@jms.id.au>, Andrew Jeffery
+ <andrew@codeconstruct.com.au>, Nicolas Ferre <nicolas.ferre@microchip.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea
+ <claudiu.beznea@tuxon.dev>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Vladimir Zapolskiy <vz@mleia.com>,
+ Andrew Lunn <andrew@lunn.ch>, Gregory Clement
+ <gregory.clement@bootlin.com>, Sebastian Hesselbarth
+ <sebastian.hesselbarth@gmail.com>, Tony Lindgren <tony@atomide.com>, Geert
+ Uytterhoeven <geert+renesas@glider.be>, Magnus Damm
+ <magnus.damm@gmail.com>, Dinh Nguyen <dinguyen@kernel.org>, Thierry Reding
+ <thierry.reding@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>,
+ Jonathan =?UTF-8?B?TmV1c2Now6RmZXI=?= <j.neuschaefer@gmx.net>, Michael
+ Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>, "Naveen N. Rao"
+ <naveen.n.rao@linux.ibm.com>, Thomas Bogendoerfer
+ <tsbogend@alpha.franken.de>, Huacai Chen <chenhuacai@kernel.org>, WANG
+ Xuerui <kernel@xen0n.name>, linux-mtd@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-aspeed@lists.ozlabs.org,
+ imx@lists.linux.dev, linux-omap@vger.kernel.org,
+ linux-renesas-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
+ openbmc@lists.ozlabs.org, linuxppc-dev@lists.ozlabs.org,
+ linux-mips@vger.kernel.org, loongarch@lists.linux.dev
+Subject: Re: [PATCH 4/9] mtd: devices: add AT24 eeprom support
+Message-ID: <20240708084440.70186564@xps-13>
+In-Reply-To: <20240702-mighty-brilliant-eel-b0d9fa@houat>
+References: <20240701-b4-v6-10-topic-usbc-tcpci-v1-0-3fd5f4a193cc@pengutronix.de>
+	<20240701-b4-v6-10-topic-usbc-tcpci-v1-4-3fd5f4a193cc@pengutronix.de>
+	<07b701a9-7b52-45b7-8dba-1c25d77cbf15@linaro.org>
+	<mafs0ikxnykpr.fsf@kernel.org>
+	<20240702-congenial-vigilant-boar-aeae44@houat>
+	<mafs0ed8byj5z.fsf@kernel.org>
+	<20240702-mighty-brilliant-eel-b0d9fa@houat>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20240703100036.17896-1-francesco@dolcini.it>
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-On Wed, Jul 03, 2024 at 12:00:34PM +0200, Francesco Dolcini wrote:
-> From: Francesco Dolcini <francesco.dolcini@toradex.com>
-> 
-> Fix PCIe PERST# signal polarity in TI J721E used on TI K3 machines.
-> 
-> PCIe PERST# needs to be de-asserted for PCIe to work, however, the driver is
-> doing the opposite and the device tree files are defining the signal with the
-> wrong polarity to cope with that. Fix both the driver and the affected DT
-> files.
+Hi,
 
-For the series,
+> > >> >> Port the current misc/eeprom/at24.c driver to the MTD framework s=
+ince
+> > >> >> EEPROMs are memory-technology devices and the framework already s=
+upports =20
+> > >> >
+> > >> > I was under the impression that MTD devices are tightly coupled by=
+ erase
+> > >> > blocks. But then we see MTD_NO_ERASE, so what are MTD devices afte=
+r all? =20
+> > >>=20
+> > >> I was curious as well so I did some digging.
+> > >>  =20
+> > [...] =20
+> > >>=20
+> > >> I also found a thread from 2013 by Maxime Ripard (+Cc) suggesting ad=
+ding
+> > >> EEPROMs to MTD [1]. The main purpose would have been unifying the EE=
+PROM
+> > >> drivers under a single interface. I am not sure what came of it thou=
+gh,
+> > >> since I can't find any patches that followed up with the proposal. =
+=20
+> > >
+> > > That discussion led to drivers/nvmem after I started to work on
+> > > some early prototype, and Srinivas took over that work. =20
+> >=20
+> > So would you say it is better for EEPROM drivers to use nvmem instead of
+> > moving under MTD? =20
+>=20
+> I thought so at the time, but that was more than 10y ago, and I have
+> followed neither nvmem nor MTD since so I don't really have an opinion
+> there.
+>=20
+> It looks like drivers/misc/eeprom/at24.c has support for nvmem though,
+> and MTD can be used as an nvmem provider too, so it's not clear to me
+> why we would want to create yet another variant.
+>=20
+> But again, you shouldn't really ask me in the first place :)
+>=20
+> I'm sure Miquel, Srinivas, and surely others, are much more relevant to
+> answer that question.
 
-Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+More relevant, I doubt, but just a feeling: EEPROMs have their own
+subsystem now, NVMEM, which, as Maxime said, was initially written for
+that very specific case. EEPROMs don't have the complexity of MTD
+devices, and thus pulling the whole MTD subsystem just for getting
+partitions seems counter intuitive to me. You can definitely "split"
+EEPROM devices with NVMEM as well anyway.
 
-Since DT and driver patches go to different subsystems, both patches need
-to go in simultaneously to avoid making devices non-functional if one of
-the patches gets applied but the other one doesn't.
+Overall I think the idea of getting rid of these misc/ drivers is goes
+into the right direction, but registering directly into NVMEM makes
+more sense IMO.
 
-Regards,
-Siddharth.
+Thanks,
+Miqu=C3=A8l
 
