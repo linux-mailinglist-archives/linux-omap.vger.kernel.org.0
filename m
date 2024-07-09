@@ -1,113 +1,113 @@
-Return-Path: <linux-omap+bounces-1753-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1754-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D25D892BD96
-	for <lists+linux-omap@lfdr.de>; Tue,  9 Jul 2024 16:58:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66AAD92BFBA
+	for <lists+linux-omap@lfdr.de>; Tue,  9 Jul 2024 18:24:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85D7D1F23C94
-	for <lists+linux-omap@lfdr.de>; Tue,  9 Jul 2024 14:58:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C4C21F21749
+	for <lists+linux-omap@lfdr.de>; Tue,  9 Jul 2024 16:24:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B801B19D88E;
-	Tue,  9 Jul 2024 14:57:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC3511A2C08;
+	Tue,  9 Jul 2024 16:20:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="2321WUqY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fbt1WR2I"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 455CF159209
-	for <linux-omap@vger.kernel.org>; Tue,  9 Jul 2024 14:57:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EA191A01D1;
+	Tue,  9 Jul 2024 16:20:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720537045; cv=none; b=rtRZFCAGzb2SZd1W09iq3/Uz/pELZ4mWsz65hDhW8bYCQwShcpwXw0qN/vkih04BH2v0JkcjrCNKBruIM4G69t/UIP3xJs3WJYPWs0DUcW8IUrN6qeozwhIwm7k5ubOTWLzBA5tK/57qz574hwRdnkoGmaYbaxI/OowMAeAJXs8=
+	t=1720542042; cv=none; b=OlXDAJMKnvxEZjJD8GHyYUiGYvakXeSmmvOXqccFI2u+7sjsSCbFti+eWCV726KlDgB6cvlU3/FvfaQcNY1lJbx43sHuSYQ51dvG6e8IZ1AmgFU+0cc4mb84I2HAcMcz44VtFYp/sBpmdBBVhH4LwmYXysF7ledjeN47g6fcuSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720537045; c=relaxed/simple;
-	bh=E+2qgiMcws/zEYhU0U8G79czaXKxNLxakJOXX5DlPbk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=RZVxAF77Ga7HangqeFYF2VwGVLxK5nhwS/buOt5qIE06+jKHvXn8z36XZZlYg+ykGJikMPMuXuPLQl3jp1mxmISM7km1GpuYVSin45Cbzp4R49pqY+jSWeCYZPKlBsiJKmO0KjjwDJ1fbmZkLykN0jfvbApzDdwuTeDXncnIqmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=2321WUqY; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-70b03ffbb3aso4085370b3a.0
-        for <linux-omap@vger.kernel.org>; Tue, 09 Jul 2024 07:57:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1720537041; x=1721141841; darn=vger.kernel.org;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=E+2qgiMcws/zEYhU0U8G79czaXKxNLxakJOXX5DlPbk=;
-        b=2321WUqYryjRpdRnEk0UIDXG+ut8VbTQ49slrM7iCle7F2w77CXs8ZaWN80ZugrI2k
-         qiBN8ePRUbxSYNyddtWRSCubE/x0HRM3+8E3BsALHE4Emdkb7ju8Bt6vAL5HnxSMkWUo
-         Am2oWWD5Ka+2SMdYOaUhKNhPkRrlIaVgkOUE9+WbobJBaJrDcH3OyvTBtLWsnV2kKglx
-         PlzcCKeWG+fF+yfdWljtj38oPkYlefXWG4FbIwARcj4EuLY5vuVKKq5FrEMOtoDscVaT
-         YGvDeDU3oYwAauqi7vY7OcM8oRl8QvyQdknnpgsaVpvhKhlQFvTRMz/f+Pq+MyQrUkgi
-         1CUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720537041; x=1721141841;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=E+2qgiMcws/zEYhU0U8G79czaXKxNLxakJOXX5DlPbk=;
-        b=FDc9WsYekG3tjJ+QdrZOGDu1wNvCDftkWZhQK4w5Rdx3WRgwLmfJQ4IxGf+rbrmIp1
-         mX9llJ9T24dFu1NdM1cMDb38AQYPuHuOqEXkcM5tA2sGk8CJ4GheaK5013x11fvVRKMy
-         EycrZOknCyYycjSoyP7IhC8on2fc6tQUPsk4nsCPHI/hlI6e5NeJK/voMs0AGUjUYnfK
-         ylg7YhStJIAwp5SJ2ArbQQ/LuTs7dNTIjzylWvSeQzyK2raKfuTOOLZZBjSitbxTuA8f
-         RuTekF2HqJs/D0Vd+xwqHv+Iz/6QRkbeM2Sv1wSFLmpBPJd80ELcj49LXWdTxoqNf18X
-         FfIw==
-X-Forwarded-Encrypted: i=1; AJvYcCW8iK3xMxkzSfTtq8YDVwGlNc10LwAiX0uq6cgGPhv2rUzFblSbZui1Fpxr0G5/uGaSPCm/rQZ5u3+GGCMPwrSdNehFeSZOj+QeEQ==
-X-Gm-Message-State: AOJu0Yz5N8a5iqK3mHSoeCQoYqxmtubNix3bnejHFUFgre1Ugtf7YMSi
-	mZNaj87hfNaxwWKS9jhiNturdHqPSVZn+wYTNvF0t/3TwNH9SwAlERGVQAB5j8M=
-X-Google-Smtp-Source: AGHT+IHBxyDTqHot1Bof92flB5B8IF6H+qntDl5XJDuMiMdjy4mEB3IU8Uyghk1nK/AtwiX8ha5uTg==
-X-Received: by 2002:a05:6a20:729f:b0:1c2:8eb7:19d1 with SMTP id adf61e73a8af0-1c29821ad27mr3439447637.16.1720537041377;
-        Tue, 09 Jul 2024 07:57:21 -0700 (PDT)
-Received: from localhost (97-126-77-189.tukw.qwest.net. [97.126.77.189])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fbb6a34f9esm17194815ad.114.2024.07.09.07.57.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Jul 2024 07:57:21 -0700 (PDT)
-From: Kevin Hilman <khilman@baylibre.com>
-To: Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org
-Cc: linux-arm-kernel@lists.infradead.org, Aaro Koskinen
- <aaro.koskinen@iki.fi>, Andreas Kemnade <andreas@kemnade.info>, Roger
- Quadros <rogerq@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Nishanth Menon
- <nm@ti.com>, Olof Johansson <olof@lixom.net>, Russell King
- <linux@armlinux.org.uk>, Vignesh R <vigneshr@ti.com>, Tony Lindgren
- <tony@atomide.com>
-Subject: Re: [PATCH] MAINTAINERS: Add more maintainers for omaps
-In-Reply-To: <20240709135930.3405-1-tony@atomide.com>
-References: <20240709135930.3405-1-tony@atomide.com>
-Date: Tue, 09 Jul 2024 07:57:20 -0700
-Message-ID: <7hmsmq7gvj.fsf@baylibre.com>
+	s=arc-20240116; t=1720542042; c=relaxed/simple;
+	bh=El8iCeDfNXj82T/GEiSAVFqPl9EnHXRVzN8ETpCQwYU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dMK682h2h4thoSi6eX8rVZWG8ndjHHRm8N5oMjQqVTDaIKi3df0JlAEPD2SAVLQGVYUeUPGRbScCUhKPYw389uGCtN8+YLF1XbrZzUU6OIpvgI3Kqw78ncjHiaU1SdBVon3lb9ZTGjnsC1pk5j/CCdiI90IW8U14RlmEtzEzTgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fbt1WR2I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91A68C4AF0A;
+	Tue,  9 Jul 2024 16:20:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720542042;
+	bh=El8iCeDfNXj82T/GEiSAVFqPl9EnHXRVzN8ETpCQwYU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Fbt1WR2IbRazfYiB5isczZRxiPUOuWx6dDqlHxPgrF5OfSAlJLrREa0Kgk7pIbc5H
+	 AZG66PCjBTTtBu7eAZzQ6p82tdxT7Rc0Yhyw3cr3s3l0kNMnsvt19PRX9jEXuZeGm4
+	 yLcffx7oob6lPfuP9XBsYMDtS8X+CDhF6YKJUykTBM3C4wL5e5NUZSZ+5jaQJJ7QHo
+	 wxFw1kNXdbc+A6o85GSfqvoUW5V786YHmGL5Bv8xAIwaDNQQ7tuUr18o6+y2gyYimG
+	 GfWS7zikYXSbCz5GEclMkdOS5rDE2qHDKYVy8cADm5QSqLC9aEvA7yCYODVei7bmx1
+	 CpaKZS9LvWzlg==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Primoz Fiser <primoz.fiser@norik.com>,
+	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	jarkko.nikula@bitmer.com,
+	lgirdwood@gmail.com,
+	perex@perex.cz,
+	tiwai@suse.com,
+	alsa-devel@alsa-project.org,
+	linux-omap@vger.kernel.org,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 14/40] ASoC: ti: omap-hdmi: Fix too long driver name
+Date: Tue,  9 Jul 2024 12:18:54 -0400
+Message-ID: <20240709162007.30160-14-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240709162007.30160-1-sashal@kernel.org>
+References: <20240709162007.30160-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.9.8
+Content-Transfer-Encoding: 8bit
 
-Tony Lindgren <tony@atomide.com> writes:
+From: Primoz Fiser <primoz.fiser@norik.com>
 
-> There are many generations of omaps to maintain, and I will be only active
-> as a hobbyist with time permitting. Let's add more maintainers to ensure
-> continued Linux support.
->
-> TI is interested in maintaining the active SoCs such as am3, am4 and
-> dra7. And the hobbyists are interested in maintaining some of the older
-> devices, mainly based on omap3 and 4 SoCs.
->
-> Kevin and Roger have agreed to maintain the active TI parts. Both Kevin
-> and Roger have been working on the omap variants for a long time, and
-> have a good understanding of the hardware.
->
-> Aaro and Andreas have agreed to maintain the community devices. Both Aaro
-> and Andreas have long experience on working with the earlier TI SoCs.
->
-> While at it, let's also change me to be a reviewer for the omap1, and
-> drop the link to my old omap web page.
->
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
+[ Upstream commit 524d3f126362b6033e92cbe107ae2158d7fbff94 ]
 
-Acked-by: Kevin Hilman <khilman@baylibre.com>
+Set driver name to "HDMI". This simplifies the code and gets rid of
+the following error messages:
+
+  ASoC: driver name too long 'HDMI 58040000.encoder' -> 'HDMI_58040000_e'
+
+Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
+Link: https://lore.kernel.org/r/20240610125847.773394-1-primoz.fiser@norik.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ sound/soc/ti/omap-hdmi.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
+
+diff --git a/sound/soc/ti/omap-hdmi.c b/sound/soc/ti/omap-hdmi.c
+index 4513b527ab970..ad8925b6481ca 100644
+--- a/sound/soc/ti/omap-hdmi.c
++++ b/sound/soc/ti/omap-hdmi.c
+@@ -354,11 +354,7 @@ static int omap_hdmi_audio_probe(struct platform_device *pdev)
+ 	if (!card)
+ 		return -ENOMEM;
+ 
+-	card->name = devm_kasprintf(dev, GFP_KERNEL,
+-				    "HDMI %s", dev_name(ad->dssdev));
+-	if (!card->name)
+-		return -ENOMEM;
+-
++	card->name = "HDMI";
+ 	card->owner = THIS_MODULE;
+ 	card->dai_link =
+ 		devm_kzalloc(dev, sizeof(*(card->dai_link)), GFP_KERNEL);
+-- 
+2.43.0
 
 
