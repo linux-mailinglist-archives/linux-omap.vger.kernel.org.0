@@ -1,46 +1,46 @@
-Return-Path: <linux-omap+bounces-1754-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1755-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66AAD92BFBA
-	for <lists+linux-omap@lfdr.de>; Tue,  9 Jul 2024 18:24:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF25292C0C1
+	for <lists+linux-omap@lfdr.de>; Tue,  9 Jul 2024 18:43:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C4C21F21749
-	for <lists+linux-omap@lfdr.de>; Tue,  9 Jul 2024 16:24:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 607CFB26C8C
+	for <lists+linux-omap@lfdr.de>; Tue,  9 Jul 2024 16:34:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC3511A2C08;
-	Tue,  9 Jul 2024 16:20:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B60161C0926;
+	Tue,  9 Jul 2024 16:22:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fbt1WR2I"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cYW7kALo"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EA191A01D1;
-	Tue,  9 Jul 2024 16:20:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51A4A1C0072;
+	Tue,  9 Jul 2024 16:22:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720542042; cv=none; b=OlXDAJMKnvxEZjJD8GHyYUiGYvakXeSmmvOXqccFI2u+7sjsSCbFti+eWCV726KlDgB6cvlU3/FvfaQcNY1lJbx43sHuSYQ51dvG6e8IZ1AmgFU+0cc4mb84I2HAcMcz44VtFYp/sBpmdBBVhH4LwmYXysF7ledjeN47g6fcuSc=
+	t=1720542170; cv=none; b=PYiSecK9gidrE3yHlXbNj0C4dmFnCfzdfvxIF45UBAKjmNrz8Q/4b+dvUmjn0tBH3meEWZwT7lvWbwG+In8P0aQjSyE1GQrswVDJz/jEZRBEfvMmiD9S7E6iusrV/7Px/5wSOVeqhfvl0+6apAgfVTMFzMzIf2GiE0BBYjG15Jw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720542042; c=relaxed/simple;
-	bh=El8iCeDfNXj82T/GEiSAVFqPl9EnHXRVzN8ETpCQwYU=;
+	s=arc-20240116; t=1720542170; c=relaxed/simple;
+	bh=EkfH03gMd1QxWZGFiDRmkKUiWinBbLFG7E0MUORO4s0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dMK682h2h4thoSi6eX8rVZWG8ndjHHRm8N5oMjQqVTDaIKi3df0JlAEPD2SAVLQGVYUeUPGRbScCUhKPYw389uGCtN8+YLF1XbrZzUU6OIpvgI3Kqw78ncjHiaU1SdBVon3lb9ZTGjnsC1pk5j/CCdiI90IW8U14RlmEtzEzTgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fbt1WR2I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91A68C4AF0A;
-	Tue,  9 Jul 2024 16:20:40 +0000 (UTC)
+	 MIME-Version; b=h/a+f9IxiZsAdyIKovCU4cMjpxZjManEcnOzBgSMlXQ54Qkovgug6j5oSbgZyMLRkzxHze83bi+0raADTJqZAEmfG+UDPyWp+CfePyLpdLJXFDxt4rnjx1xQnH8cYIMqk3s31EO2lY/coeGQmeVFYy8sy+ppEWBfKJKme7PAjOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cYW7kALo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC1BCC4AF07;
+	Tue,  9 Jul 2024 16:22:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720542042;
-	bh=El8iCeDfNXj82T/GEiSAVFqPl9EnHXRVzN8ETpCQwYU=;
+	s=k20201202; t=1720542170;
+	bh=EkfH03gMd1QxWZGFiDRmkKUiWinBbLFG7E0MUORO4s0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fbt1WR2IbRazfYiB5isczZRxiPUOuWx6dDqlHxPgrF5OfSAlJLrREa0Kgk7pIbc5H
-	 AZG66PCjBTTtBu7eAZzQ6p82tdxT7Rc0Yhyw3cr3s3l0kNMnsvt19PRX9jEXuZeGm4
-	 yLcffx7oob6lPfuP9XBsYMDtS8X+CDhF6YKJUykTBM3C4wL5e5NUZSZ+5jaQJJ7QHo
-	 wxFw1kNXdbc+A6o85GSfqvoUW5V786YHmGL5Bv8xAIwaDNQQ7tuUr18o6+y2gyYimG
-	 GfWS7zikYXSbCz5GEclMkdOS5rDE2qHDKYVy8cADm5QSqLC9aEvA7yCYODVei7bmx1
-	 CpaKZS9LvWzlg==
+	b=cYW7kALo8zwJPYuSKzPqaHuioV2O2OdfPf+g087tivaAdkT2mZNR0jcMOwduKhJIA
+	 v3P4qOzDTFu1ZDfE6Te/2l9K6KWqRUehRFt3WEikQHw8nzQX8c4m06dCnGCaiMmWUh
+	 oxM9v6qVTQCmLXiItSL9PrZ7y+vtOL61jOMCtZym0f/07QA/qDmovg1+jrCY+EoseB
+	 aME4NUcQ9aaPC5BFWwPWaFSmUdp/BH+hBd8l69PxD69weaPK4yRBCuGcIqqMD+W5i6
+	 t7tH6xahiXXKnkuNPH7jDrb1QCNjt1H3QSuBqG+RaI754JknGwuMyXFkBTsfBu18lI
+	 Ud8O90ArRMozQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -55,12 +55,12 @@ Cc: Primoz Fiser <primoz.fiser@norik.com>,
 	alsa-devel@alsa-project.org,
 	linux-omap@vger.kernel.org,
 	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 14/40] ASoC: ti: omap-hdmi: Fix too long driver name
-Date: Tue,  9 Jul 2024 12:18:54 -0400
-Message-ID: <20240709162007.30160-14-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 11/33] ASoC: ti: omap-hdmi: Fix too long driver name
+Date: Tue,  9 Jul 2024 12:21:37 -0400
+Message-ID: <20240709162224.31148-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240709162007.30160-1-sashal@kernel.org>
-References: <20240709162007.30160-1-sashal@kernel.org>
+In-Reply-To: <20240709162224.31148-1-sashal@kernel.org>
+References: <20240709162224.31148-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -69,7 +69,7 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.9.8
+X-stable-base: Linux 6.6.38
 Content-Transfer-Encoding: 8bit
 
 From: Primoz Fiser <primoz.fiser@norik.com>
@@ -91,7 +91,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 5 deletions(-)
 
 diff --git a/sound/soc/ti/omap-hdmi.c b/sound/soc/ti/omap-hdmi.c
-index 4513b527ab970..ad8925b6481ca 100644
+index a3663ab065ac2..0a731b21e5a58 100644
 --- a/sound/soc/ti/omap-hdmi.c
 +++ b/sound/soc/ti/omap-hdmi.c
 @@ -354,11 +354,7 @@ static int omap_hdmi_audio_probe(struct platform_device *pdev)
