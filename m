@@ -1,173 +1,127 @@
-Return-Path: <linux-omap+bounces-1764-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1765-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B68C192D3CB
-	for <lists+linux-omap@lfdr.de>; Wed, 10 Jul 2024 16:06:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 156E592E046
+	for <lists+linux-omap@lfdr.de>; Thu, 11 Jul 2024 08:44:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D3DF289689
-	for <lists+linux-omap@lfdr.de>; Wed, 10 Jul 2024 14:06:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C61F5282E30
+	for <lists+linux-omap@lfdr.de>; Thu, 11 Jul 2024 06:44:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E367A19347B;
-	Wed, 10 Jul 2024 14:06:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A104412C482;
+	Thu, 11 Jul 2024 06:44:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="b1QSu0yR";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="l/UJxZbD"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="l1OdgdQR"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from flow2-smtp.messagingengine.com (flow2-smtp.messagingengine.com [103.168.172.137])
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE952193453;
-	Wed, 10 Jul 2024 14:06:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.137
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 787811803D
+	for <linux-omap@vger.kernel.org>; Thu, 11 Jul 2024 06:44:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720620391; cv=none; b=oVkrnHfATG7StPK/uYc4DDM7Bo3V3RmE1CUaUHX3EGMTgJcwKaxOATNokq71n12HkolHaId7ZA3LVCc6f7oGbtdL0P69SB1GmtWhsx6vtfNPbrTXLZQiQF9RKRzDVhGTH2GHa8wUeHa8d7IyfNyv8ae2nGNq6XK1nV7hYUfZwoU=
+	t=1720680267; cv=none; b=lAf11MF1xUTr17uJal8MJHetT2IekfQkwYAH2e7+OTv+yII/dnsmcs6CLxPvqysR+RtZznNcuQU8Bk1rGmeKd9O7y+oHx+hA/JVbsoPJvFwQHtFGXpKGa/HzqM6Q2f0EfWWPffAtYbfucY1qEs3w62iqyqWsdLKyCEYBpmh+cc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720620391; c=relaxed/simple;
-	bh=MLXBuqKlLfNGgq9/cmxPtB7IYgDifqCjYyvR42wX/UQ=;
-	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
-	 Subject:Content-Type; b=oFYEf/GhLqBkYrQTCfUC4wwYyYJobGKSgdk8dBO7Q0s9Z/n8S4rlnms+Qpbo1fb3Z50GhgbZP19+SLpDRm0OEA2BKJ4TyD2xKe9ydMn6DIYlkaeZVJO8ea8FsdTABpU39ES5v7oDCYEoHG6IrFNqnmZvz8WyyO+bX/Th/hrhESQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=b1QSu0yR; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=l/UJxZbD; arc=none smtp.client-ip=103.168.172.137
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailflow.nyi.internal (Postfix) with ESMTP id B9B1820041E;
-	Wed, 10 Jul 2024 10:06:28 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Wed, 10 Jul 2024 10:06:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1720620388;
-	 x=1720627588; bh=FPzIeyUoxgy/zsvmREOhCT66sbHOjXoV3rwrfvjo/oM=; b=
-	b1QSu0yRwxmUk4T9e11CNmCLrSiiiDvCTM+p6gNGgF4NyrNSLVIOHkUZBUOxpgxl
-	d9vXjGnvw1RIRFEnGbndv/NcsmA2GLHmGzS5rJQPxTUIVRHIc5YsWzN3YlDlG8/w
-	vwY2PFDGlan7ERoJa/sElHU/md+4c0p5HPfL6l9s8ZmMuKw48t/vLeQtyNT7xGQA
-	08JzF7ADIoyXkY9zBh7hy27GqOe5iBkl5T6KQBAg4I7sSnV3Bx0wxfh4IffSCDrD
-	EIVAL8hHH2Si9T8S7nGauN4LncCjezn9OQ+3j17vNfQLsEMR2BpYb0oenTLEqeam
-	BkMUq/IWBWnOKLgWug2rTQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1720620388; x=
-	1720627588; bh=FPzIeyUoxgy/zsvmREOhCT66sbHOjXoV3rwrfvjo/oM=; b=l
-	/UJxZbDwRbte/g2yuSkS7yviFUoG8LxQcRmLaiOWFtKAn6XFD9z5i8BhgFiwj0y8
-	29JjOMIc2w4FtrW9IR6h2qT2CtX2uPI+r/FHtrpLoTkSoPbJe3J1cehcgwZANS3t
-	XYMJKq7TPb5u/bjrOem4WITUkAc4LfU2b5bDaz8AwaT3QByZ35D8ZMjHSS1yi35y
-	36/dyXCkN+nwX8HvtBeT3ddkLpikQS8EZ4XXcTy6LBfF5l17hW9zP7dZMzOmMwhD
-	XVJREG2So1zHmWfmY5D9lvTGvCqcKkIECCEfL0l0Epvm0v8FzfUmUtTmU/hw+Ez6
-	qJJNz78tvzr+wlzfmgwog==
-X-ME-Sender: <xms:YZWOZnV51EQeUhqFAlZ7tF76IbGPDn0AZ7wRftLLqANLQ8M0Tit2-g>
-    <xme:YZWOZvnwaOkIlW8JDpVJ4uVPdX-o79KWjlklZpPYf1atbq30ICIdwRgOUhrJ5p-D2
-    Q0py9B8mmaXogLqMVM>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrfedvgdduvdcutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefofgggkfgjfhffhffvvefutgfgsehtqhertderreejnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepgeefjeehvdelvdffieejieejiedvvdfhleeivdelveehjeelteegudektdfg
-    jeevnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:YZWOZjaoGrXUw2M4_1y1ixokbMZsjZ3j3fcIkHhdLxC9KxWjE7s4BQ>
-    <xmx:YZWOZiWPJTo6_33m1wPp7E5VWb0uw6xuIw-rKVLCCKI-iKqUbc-UEw>
-    <xmx:YZWOZhn1-MjLOZ3xu0SsbEEBMly36iOA_myUgrsipjQv0pKFdaMeCQ>
-    <xmx:YZWOZvdtJ2DdefwHMUz8i_IkZzQem-fWQbBtb87UMDnBEk3or4GmNA>
-    <xmx:ZJWOZilNKpqeyxqgV0ZboZyCiXV66jXIKgbBPX_yaK6wioTafD0Okj0c>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 213BBB6008F; Wed, 10 Jul 2024 10:06:25 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.11.0-alpha0-568-g843fbadbe-fm-20240701.003-g843fbadb
+	s=arc-20240116; t=1720680267; c=relaxed/simple;
+	bh=AS3eHkE0Agp6JJ3Pssc1r/7r9CMTHmzs69o6+/nxc3g=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Gtesf7t8eylO7pkXVi+mzbOalhDmQ1t30VXRkhfKSGAKWryqUsr42/tGn2siHAallYRcdtddCOLkkUVlWN/gdhiXVVrxMYvwJjSr6s4yal3XvlMKZxGx30DvNCWu9I5cjRf5JCeQz6e5+1rYs9ey1ljLXrhtKd6fxP9msNuHeTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=l1OdgdQR; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=Content-Transfer-Encoding:Content-Type:
+	MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=KNPh6VXzOTMPr2Zh7/8kS/ysBQisnKxE+COcuf23ZW4=; b=l1OdgdQRCMHUrymcXX6rZI0MwQ
+	+lpffUpphbsDVWQwVCrXJ9kpbBaohQajqBPoCr+C9T1wRGFVGRtC/jEuL4p0QYclR6uFIBfswHejp
+	TRJGoGNTAkoYkul41Luq+zGbF+pcHrIL6GsHTykRef3Tf31+HO3iNXzlUuYmE/TijFohFTJ93XQJ5
+	40D4GNcEcPWGzNtWIKpWVnQboWubWlVOkyEP5q5tdY4uvfQZwtumKGfAbE7kEWsOxoxTKtIdomJxg
+	cP//vciHgPJLY+eD+Y7D+87Sk2z6vzv6KAhVNin1Wf7NHx25akygcwoWm91fFtxUab542weSRA5BN
+	Ae90eWhQ==;
+Date: Thu, 11 Jul 2024 08:44:11 +0200
+From: Andreas Kemnade <andreas@kemnade.info>
+To: Tony Lindgren <tony@atomide.com>
+Cc: linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org, Aaro
+ Koskinen <aaro.koskinen@iki.fi>, Kevin Hilman <khilman@baylibre.com>, Roger
+ Quadros <rogerq@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Nishanth Menon
+ <nm@ti.com>, Olof Johansson <olof@lixom.net>, Russell King
+ <linux@armlinux.org.uk>, Vignesh R <vigneshr@ti.com>
+Subject: Re: [PATCH] MAINTAINERS: Add more maintainers for omaps
+Message-ID: <20240711084411.60bcd32b@akphone>
+In-Reply-To: <20240709135930.3405-1-tony@atomide.com>
+References: <20240709135930.3405-1-tony@atomide.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.37; aarch64-alpine-linux-musl)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <64662665-929e-4d95-a9ac-c8f66bd83168@app.fastmail.com>
-In-Reply-To: 
- <CAMRc=McvRLeCTTXgC_OD5z5OAxQ0pZ46dTKP8XO+T-LkXKgRfQ@mail.gmail.com>
-References: 
- <20240701-b4-v6-10-topic-usbc-tcpci-v1-0-3fd5f4a193cc@pengutronix.de>
- <20240701-b4-v6-10-topic-usbc-tcpci-v1-5-3fd5f4a193cc@pengutronix.de>
- <27cf3056-5c7b-4759-b03a-1fa9b785611e@app.fastmail.com>
- <CAMRc=McvRLeCTTXgC_OD5z5OAxQ0pZ46dTKP8XO+T-LkXKgRfQ@mail.gmail.com>
-Date: Wed, 10 Jul 2024 16:06:03 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Bartosz Golaszewski" <brgl@bgdev.pl>
-Cc: "Andrew Lunn" <andrew@lunn.ch>,
- "Alexandre Belloni" <alexandre.belloni@bootlin.com>,
- "Vignesh Raghavendra" <vigneshr@ti.com>,
- "Geert Uytterhoeven" <geert+renesas@glider.be>, imx@lists.linux.dev,
- "Tony Lindgren" <tony@atomide.com>,
- "Marco Felsch" <m.felsch@pengutronix.de>,
- "Thierry Reding" <thierry.reding@gmail.com>,
- linux-mtd@lists.infradead.org, linux-i2c@vger.kernel.org,
- "Miquel Raynal" <miquel.raynal@bootlin.com>,
- "WANG Xuerui" <kernel@xen0n.name>, "Fabio Estevam" <festevam@gmail.com>,
- linux-aspeed@lists.ozlabs.org, "Richard Weinberger" <richard@nod.at>,
- "Gregory Clement" <gregory.clement@bootlin.com>,
- "Huacai Chen" <chenhuacai@kernel.org>,
- "Magnus Damm" <magnus.damm@gmail.com>,
- "Russell King" <linux@armlinux.org.uk>,
- "Christophe Leroy" <christophe.leroy@csgroup.eu>,
- "Jon Hunter" <jonathanh@nvidia.com>, "Joel Stanley" <joel@jms.id.au>,
- "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
- "Andrew Jeffery" <andrew@codeconstruct.com.au>,
- "Sebastian Hesselbarth" <sebastian.hesselbarth@gmail.com>,
- "Sascha Hauer" <s.hauer@pengutronix.de>,
- =?UTF-8?Q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
- "Nicholas Piggin" <npiggin@gmail.com>,
- "Vladimir Zapolskiy" <vz@mleia.com>, loongarch@lists.linux.dev,
- linux-tegra@vger.kernel.org, Linux-OMAP <linux-omap@vger.kernel.org>,
- linux-arm-kernel@lists.infradead.org,
- "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
- linux-mips@vger.kernel.org,
- "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- linuxppc-dev@lists.ozlabs.org,
- "Claudiu Beznea" <claudiu.beznea@tuxon.dev>,
- linux-kernel@vger.kernel.org,
- Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
- "Dinh Nguyen" <dinguyen@kernel.org>,
- "Pengutronix Kernel Team" <kernel@pengutronix.de>,
- "Michael Ellerman" <mpe@ellerman.id.au>,
- "Shawn Guo" <shawnguo@kernel.org>, openbmc@lists.ozlabs.org
-Subject: Re: [PATCH 5/9] ARM: defconfig: convert to MTD_EEPROM_AT24
-Content-Type: text/plain;charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jul 10, 2024, at 14:59, Bartosz Golaszewski wrote:
-> On Wed, Jul 10, 2024 at 2:49=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> =
-wrote:
->>
->> On Mon, Jul 1, 2024, at 15:53, Marco Felsch wrote:
->> > The EEPROM_AT24 Kconfig symbol is marked as deprecated. Make use of=
- the
->> > new Kconfig symbol to select the I2C EEPROM driver support.
->> >
->> > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
->> > ---
->> >  arch/arm/configs/aspeed_g4_defconfig   | 2 +-
->> >  arch/arm/configs/aspeed_g5_defconfig   | 2 +-
->> >  arch/arm/configs/at91_dt_defconfig     | 2 +-
->> >  arch/arm/configs/axm55xx_defconfig     | 2 +-
->> >  arch/arm/configs/davinci_all_defconfig | 2 +-
->> >  arch/arm/configs/imx_v4_v5_defconfig   | 2 +-
->> >  arch/arm/configs/imx_v6_v7_defconfig   | 2 +-
->> >  arch/arm/configs/ixp4xx_defconfig      | 2 +-
->> >  arch/arm/configs/keystone_defconfig    | 2 +-
->> >  arch/arm/configs/lpc18xx_defconfig     | 2 +-
->>
->> Applied to soc/defconfig, thanks
->
-> No! Why? This is still being discussed and it's not clear it will even
-> make it upstream.
+On Tue,  9 Jul 2024 16:59:29 +0300
+Tony Lindgren <tony@atomide.com> wrote:
 
-Ok, dropped again, thanks for catching this.
+> There are many generations of omaps to maintain, and I will be only
+> active as a hobbyist with time permitting. Let's add more maintainers
+> to ensure continued Linux support.
+> 
+> TI is interested in maintaining the active SoCs such as am3, am4 and
+> dra7. And the hobbyists are interested in maintaining some of the
+> older devices, mainly based on omap3 and 4 SoCs.
+> 
+> Kevin and Roger have agreed to maintain the active TI parts. Both
+> Kevin and Roger have been working on the omap variants for a long
+> time, and have a good understanding of the hardware.
+> 
+> Aaro and Andreas have agreed to maintain the community devices. Both
+> Aaro and Andreas have long experience on working with the earlier TI
+> SoCs.
+> 
+> While at it, let's also change me to be a reviewer for the omap1, and
+> drop the link to my old omap web page.
+> 
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
 
-     Arnd
+Acked-by Andreas Kemnade <andreas@kemnade.info>
+
+> ---
+>  MAINTAINERS | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -16445,7 +16445,7 @@ F:
+> arch/arm/boot/dts/ti/omap/am335x-nano.dts OMAP1 SUPPORT
+>  M:	Aaro Koskinen <aaro.koskinen@iki.fi>
+>  M:	Janusz Krzysztofik <jmkrzyszt@gmail.com>
+> -M:	Tony Lindgren <tony@atomide.com>
+> +R:	Tony Lindgren <tony@atomide.com>
+>  L:	linux-omap@vger.kernel.org
+>  S:	Maintained
+>  Q:	http://patchwork.kernel.org/project/linux-omap/list/
+> @@ -16457,10 +16457,13 @@ F:
+> include/linux/platform_data/ams-delta-fiq.h F:
+> include/linux/platform_data/i2c-omap.h 
+>  OMAP2+ SUPPORT
+> +M:	Aaro Koskinen <aaro.koskinen@iki.fi>
+> +M:	Andreas Kemnade <andreas@kemnade.info>
+> +M:	Kevin Hilman <khilman@baylibre.com>
+> +M:	Roger Quadros <rogerq@kernel.org>
+>  M:	Tony Lindgren <tony@atomide.com>
+>  L:	linux-omap@vger.kernel.org
+>  S:	Maintained
+> -W:	http://www.muru.com/linux/omap/
+>  W:	http://linux.omap.com/
+>  Q:	http://patchwork.kernel.org/project/linux-omap/list/
+>  T:	git
+> git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap.git
+
 
