@@ -1,219 +1,138 @@
-Return-Path: <linux-omap+bounces-1772-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1773-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41B5C932338
-	for <lists+linux-omap@lfdr.de>; Tue, 16 Jul 2024 11:45:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CA259338DA
+	for <lists+linux-omap@lfdr.de>; Wed, 17 Jul 2024 10:20:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9BCEAB244F6
-	for <lists+linux-omap@lfdr.de>; Tue, 16 Jul 2024 09:45:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BCAE81C232C3
+	for <lists+linux-omap@lfdr.de>; Wed, 17 Jul 2024 08:20:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2713198A11;
-	Tue, 16 Jul 2024 09:44:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 197042C87A;
+	Wed, 17 Jul 2024 08:20:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="OL8Tthax"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Q8RMbd3X"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F11D197A6C;
-	Tue, 16 Jul 2024 09:44:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B5A91CAA4;
+	Wed, 17 Jul 2024 08:20:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721123091; cv=none; b=eq4lKIbnWUE7v0YlWhV6GEKQv/IVnmuksWyz2bmdi5vpINy2iwuhzgobyIdoXc9KJyTMjH70ziIWtbCY80r4C5+61ZSN8Kbhla2Hw9Y6Pvwf7eMS6wUfvrOHvz9o9uWoKFmQ4GG1UtHeef+uu3tklMKRzCA1SOCO6TcE/0HG2uE=
+	t=1721204405; cv=none; b=KT0BigP3rZ8uuZ4gx/LQ3UeF+dasWLObD+t33igVRaH7gdUlu7wq0x0Aw+PFyVhRIdvUVdr9NcL7GPhoMe4mwnQiyc8ebwhgNKRXdqVUaIzhMgYWfl1QjMa47je0ubAEZLIDpMXY2u/fkX4IpcuAIMePQ6UsyTk2wJxxnMQhNwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721123091; c=relaxed/simple;
-	bh=MtGlrZPxgs3fghxn7ifSEXSWjlnQg1V5rFVgMxytc1E=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=p0m3RMk7/aebCAZV8tY1eODakgeckEofAi5gsGTZF8ya/r9BKLP4tyRlY9L0f+Xdjh9rQ2luOfgozfjT4cPQN0i+2+tQMK7/kE7mLVl18ccI0V7JhrqqdhzlyixvSttybDUqyZowkYB2GnavfwHAPliDKceRv5FdvQyU5Om9H8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=OL8Tthax; arc=none smtp.client-ip=217.70.183.201
+	s=arc-20240116; t=1721204405; c=relaxed/simple;
+	bh=2CLtcxjWryy+ZrxMy3V6QLAyq9Tcxt0Pcwt6s+Wmc1Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kBcSA844G4wn2Pa3dZeboTJKFdsOBmK0hfbggFabnGmDfv89VkY9rOQdLlnKedbdKJwmRiaWksLg5lHzgAsoAnYRATRpIOlFqjm1YtxUbAfnC+mILlhQMBoA53kGc2502CjVx7H/nn4mu0h25tSgWkB0PkLied8Cj5mD0LQWF94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Q8RMbd3X; arc=none smtp.client-ip=217.70.183.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 1BFF61BF211;
-	Tue, 16 Jul 2024 09:44:39 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 255A8FF803;
+	Wed, 17 Jul 2024 08:19:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1721123081;
+	t=1721204394;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=9yl6nMiA8YdoBSPgX1+Zx077ilmmU2Drf2VLw5jFcKY=;
-	b=OL8TthaxwgE0pXxZQM2UpgeP0Rbg1N5qjaJLWdsAH2I1Jc5taoQ0mID7ODzSo8NAbBriq2
-	GoRo0XuspIUGET9d2oRKyD8aNM6gaGLAvb9TH2cFGyUUDfYyIk8muNDbk7iMwVXCYrEggn
-	DqZXqcpw7QT/JVStX24jh4/aeNX1xRCKUDKF43dQ99h5rUeExg60YqHZvVbuzJuLYdQU7Y
-	mVNp4a1gwjboEVXzimEnlCbchUK2zYWf8TUnn+gPrhkY+8xofvr7T4VBRfuYJpyaU4uouw
-	MT2X1BIv90wkGVW1FlGrVqHoh14A9c2KAZDlM85+mD5xFmltjvuMg4m2tzrR8w==
-From: Gregory CLEMENT <gregory.clement@bootlin.com>
-To: Thomas Richard <thomas.richard@bootlin.com>, Lorenzo Pieralisi
- <lpieralisi@kernel.org>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?=
- <kw@linux.com>, Rob Herring
- <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, Vignesh
- Raghavendra <vigneshr@ti.com>, Siddharth Vadapalli <s-vadapalli@ti.com>
-Cc: theo.lebrun@bootlin.com, thomas.petazzoni@bootlin.com, u-kumar1@ti.com,
- linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org, Thomas
- Richard <thomas.richard@bootlin.com>, Francesco Dolcini
- <francesco.dolcini@toradex.com>, Richard Genoud
- <richard.genoud@bootlin.com>
-Subject: Re: [PATCH v7 0/7] Add suspend to ram support for PCIe on J7200
-In-Reply-To: <20240102-j7200-pcie-s2r-v7-0-a2f9156da6c3@bootlin.com>
-References: <20240102-j7200-pcie-s2r-v7-0-a2f9156da6c3@bootlin.com>
-Date: Tue, 16 Jul 2024 11:44:39 +0200
-Message-ID: <875xt5llh4.fsf@BLaptop.bootlin.com>
+	bh=vYy4jlSppC2pcc6cg+3nF/8GvPZv6nmewlb2L7o9Nw8=;
+	b=Q8RMbd3XCm3mkOoSML4rikXKiJwOmxmdsX2NkXlZwRplYxuKqVu6DdyLJ7G/4YQS4TR3e0
+	tQ9HYyVU0QaJ7mJKdjZ58+NY03/Y4pQSR1nheyy9/gpjRgXyPcN/SYNbnfEvcXYx78cKK1
+	DspBdEnmtUUE2Vh7fB3axwb52s022qgb/fQK8B7JQxuL+DVdX8knHLZC7Oxu4B+r0HSgWa
+	t6AmHSpNSofRHkmWqrwexOh4wFUvNGOiGe2R2Gz1nk0z8FDgM9iuuAszfZbHO/r1L/BknS
+	0yhBDc0k6PoqJGn8/jBTZsc9id1S9XZ4jdCo9jE7HgZr9sw+Ct/c9wyvI/5QfA==
+Date: Wed, 17 Jul 2024 10:19:48 +0200
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: Maxime Ripard <mripard@kernel.org>, Pratyush Yadav
+ <pratyush@kernel.org>, Tudor Ambarus <tudor.ambarus@linaro.org>, Richard
+ Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, Arnd
+ Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Bartosz Golaszewski <brgl@bgdev.pl>, Russell King <linux@armlinux.org.uk>,
+ Joel Stanley <joel@jms.id.au>, Andrew Jeffery
+ <andrew@codeconstruct.com.au>, Nicolas Ferre <nicolas.ferre@microchip.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea
+ <claudiu.beznea@tuxon.dev>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Vladimir Zapolskiy <vz@mleia.com>,
+ Andrew Lunn <andrew@lunn.ch>, Gregory Clement
+ <gregory.clement@bootlin.com>, Sebastian Hesselbarth
+ <sebastian.hesselbarth@gmail.com>, Tony Lindgren <tony@atomide.com>, Geert
+ Uytterhoeven <geert+renesas@glider.be>, Magnus Damm
+ <magnus.damm@gmail.com>, Dinh Nguyen <dinguyen@kernel.org>, Thierry Reding
+ <thierry.reding@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>,
+ Jonathan =?UTF-8?B?TmV1c2Now6RmZXI=?= <j.neuschaefer@gmx.net>, Michael
+ Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>, "Naveen N. Rao"
+ <naveen.n.rao@linux.ibm.com>, Thomas Bogendoerfer
+ <tsbogend@alpha.franken.de>, Huacai Chen <chenhuacai@kernel.org>, WANG
+ Xuerui <kernel@xen0n.name>, linux-mtd@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-aspeed@lists.ozlabs.org,
+ imx@lists.linux.dev, linux-omap@vger.kernel.org,
+ linux-renesas-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
+ openbmc@lists.ozlabs.org, linuxppc-dev@lists.ozlabs.org,
+ linux-mips@vger.kernel.org, loongarch@lists.linux.dev
+Subject: Re: [PATCH 4/9] mtd: devices: add AT24 eeprom support
+Message-ID: <20240717101948.2e99f472@xps-13>
+In-Reply-To: <20240709103841.7x7n4hdtqrunyoc3@pengutronix.de>
+References: <20240701-b4-v6-10-topic-usbc-tcpci-v1-0-3fd5f4a193cc@pengutronix.de>
+	<20240701-b4-v6-10-topic-usbc-tcpci-v1-4-3fd5f4a193cc@pengutronix.de>
+	<07b701a9-7b52-45b7-8dba-1c25d77cbf15@linaro.org>
+	<mafs0ikxnykpr.fsf@kernel.org>
+	<20240702-congenial-vigilant-boar-aeae44@houat>
+	<mafs0ed8byj5z.fsf@kernel.org>
+	<20240702-mighty-brilliant-eel-b0d9fa@houat>
+	<20240708084440.70186564@xps-13>
+	<20240709092214.omr7ccphdzdk7z7j@pengutronix.de>
+	<20240709114302.3c604ef3@xps-13>
+	<20240709103841.7x7n4hdtqrunyoc3@pengutronix.de>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-GND-Sasl: gregory.clement@bootlin.com
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-Hello PCIe maintainers!
+Hi Marco,
 
-> This adds suspend to ram support for the PCIe (RC mode) on J7200 platform.
->
-> In this 7th iteration, the i2c and mux patches were moved to dedicated
-> series ([1] and [2]).
-> The patch for the gpio-pca953x driver was removed. It will be sent
-> separately for further testing and discussion.
->
-> No merge conflict with 6.10-rc4.
->
-> [1]: https://lore.kernel.org/all/20240613-i2c-omap-wakeup-controller-duri=
-ng-suspend-v1-0-aab001eb1ad1@bootlin.com/
-> [2]:
-> https://lore.kernel.org/all/20240613-mux-mmio-resume-support-v1-0-4525bf5=
-6024a@bootlin.com/
+> > > > Overall I think the idea of getting rid of these misc/ drivers is g=
+oes
+> > > > into the right direction, but registering directly into NVMEM makes
+> > > > more sense IMO.   =20
+> > >=20
+> > > So you propose to have two places for the partition handling (one for
+> > > MTD and one for NVMEM) instead of one and moving the code into NVMEM
+> > > directly? =20
+> >=20
+> > Why two places for the partitions handling? Just one, in NVMEM. Also =20
+>=20
+> Without checking the details I think that converting the MTD
+> partitioning code into NVMEM partitioning code is a bigger task. As you
+> said below there are many legacy code paths you need to consider so they
+> still work afterwards as well.
+>=20
+> > usually EEPROMs don't require very advanced partitioning schemes,
+> > unlike flashes (which are the most common MTD devices today). =20
+>=20
+> As said in my cover letter EEPROMs can become quite large and MTD
+> supports partitioning storage devices which is very handy for large
+> EEPROMs as well.
 
-I noticed that this series has not been merged yet, even though it
-seemed that there were no remaining comments to address.
+Did you had a look at nvmem-layouts ? In particular the fixed-layout.
 
-Is there any reason why it has not been applied yet?
+Is there anything you would like to achieve already that is not
+possible with nvmem but is with mtd?
 
 Thanks,
-
-Gregory
-
->
-> Regards,
->
-> Thomas
->
-> Signed-off-by: Thomas Richard <thomas.richard@bootlin.com>
-> ---
-> Changes in v7:
-> - all: series rebased on Linux 6.10-rc4.
-> - i2c: patches moved to a dedicated series.
-> - mux: patches moved to a dedicated series.
-> - gpio-pca953x: patch removed, will be sent separately.
-> - Link to v6: https://lore.kernel.org/r/20240102-j7200-pcie-s2r-v6-0-4656=
-ef6e6d66@bootlin.com
->
-> Changes in v6:
-> - i2c-omap: add a patch to remove __maybe_unused attribute of
->   omap_i2c_runtime_suspend() and omap_i2c_runtime_resume()
-> - i2c-omap: fix compile issue if CONFIG_PM_SLEEP is not set
-> - Link to v5: https://lore.kernel.org/r/20240102-j7200-pcie-s2r-v5-0-4b8c=
-46711ded@bootlin.com
->
-> Changes in v5:
-> - all: series rebased on Linux 6.9-rc1
-> - pinctrl-single: patch removed (already applied to the pinctrl tree)
-> - phy: patches moved to a dedicated series.
-> - pci: add T_PERST_CLK_US macro.
-> - pci-j721e: update the comments about T_PERST_CLK_US.
-> - Link to v4: https://lore.kernel.org/r/20240102-j7200-pcie-s2r-v4-0-6f1f=
-53390c85@bootlin.com
->
-> Changes in v4:
-> - all: use SoB/Co-developed-by for patches initially developed by Th=C3=
-=A9o
->   Lebrun.
-> - pinctrl-single: squash the two commits.
-> - i2c-omap: fix line lenghts of the comment in omap_i2c_suspend().
-> - mux: mux_chip_resume() return 0 or at the first error.
-> - phy-j721e-wiz: clean code around dev_err_probe().
-> - phy-j721e-wiz: use REF_CLK_100MHZ macros.
-> - pci: fix subject line for all PCI patches.
-> - pci-cadence: use fsleep() instead of usleep_range().
-> - pci-cadence: remove cdns_torrent_clk_cleanup() call in
->   cdns_torrent_phy_resume_noirq().
-> - pci-j721e: add a patch to use dev_err_probe() instead of dev_err() in t=
-he probe().
-> - pci-j721e: fix unordered header files.
-> - pci-j721e: remove some log spammers.
-> - pci-j721e: add a missing clock disable in j721e_pcie_resume_noirq().
-> - pci-j721e: simplify the patch "Add reset GPIO to struct j721e_pcie"
-> - Link to v3: https://lore.kernel.org/r/20240102-j7200-pcie-s2r-v3-0-5c2e=
-4a3fac1f@bootlin.com
->
-> Changes in v3:
-> - pinctrl-single: split patch in two parts, a first patch to remove the
->   dead code, a second to move suspend()/resume() callbacks to noirq.
-> - i2c-omap: add a comments above the suspend_noirq() callback.
-> - mux: now mux_chip_resume() try to restores all muxes, then return 0 if
->   all is ok or the first failure.
-> - mmio: fix commit message.
-> - phy-j721e-wiz: add a patch to use dev_err_probe() instead of dev_err() =
-in
->   the wiz_clock_init() function.
-> - phy-j721e-wiz: remove probe boolean for the wiz_clock_init(), rename the
->   function to wiz_clock_probe(), extract hardware configuration part in a
->   new function wiz_clock_init().
-> - phy-cadence-torrent: use dev_err_probe() and fix commit messages
-> - pcie-cadence-host: remove probe boolean for the cdns_pcie_host_setup()
->   function and extract the link setup part in a new function
->   cdns_pcie_host_link_setup().
-> - pcie-cadence-host: make cdns_pcie_host_init() global.
-> - pci-j721e: use the cdns_pcie_host_link_setup() cdns_pcie_host_init()
->   functions in the resume_noirq() callback.
-> - Link to v2: https://lore.kernel.org/r/20240102-j7200-pcie-s2r-v2-0-8e4f=
-7d228ec2@bootlin.com
->
-> Changes in v2:
-> - all: fix commits messages.
-> - all: use DEFINE_NOIRQ_DEV_PM_OPS and pm_sleep_ptr macros.
-> - all: remove useless #ifdef CONFIG_PM.
-> - pinctrl-single: drop dead code
-> - mux: add mux_chip_resume() function in mux core.
-> - mmio: resume sequence is now a call to mux_chip_resume().
-> - phy-cadence-torrent: fix typo in resume sequence (reset_control_assert()
->   instead of reset_control_put()).
-> - phy-cadence-torrent: use PHY instead of phy.
-> - pci-j721e: do not shadow cdns_pcie_host_setup return code in resume
->   sequence.
-> - pci-j721e: drop dead code.
-> - Link to v1: https://lore.kernel.org/r/20240102-j7200-pcie-s2r-v1-0-84e5=
-5da52400@bootlin.com
->
-> ---
-> Thomas Richard (5):
->       PCI: cadence: Extract link setup sequence from cdns_pcie_host_setup=
-()
->       PCI: cadence: Set cdns_pcie_host_init() global
->       PCI: j721e: Use dev_err_probe() in the probe() function
->       PCI: Add T_PERST_CLK_US macro
->       PCI: j721e: Use T_PERST_CLK_US macro
->
-> Th=C3=A9o Lebrun (2):
->       PCI: j721e: Add reset GPIO to struct j721e_pcie
->       PCI: j721e: Add suspend and resume support
->
->  drivers/pci/controller/cadence/pci-j721e.c         | 121 +++++++++++++++=
-+++---
->  drivers/pci/controller/cadence/pcie-cadence-host.c |  44 +++++---
->  drivers/pci/controller/cadence/pcie-cadence.h      |  12 ++
->  drivers/pci/pci.h                                  |   3 +
->  4 files changed, 146 insertions(+), 34 deletions(-)
-> ---
-> base-commit: 7510725e693fb5e4b4cd17086cc5a49a7a065b9c
-> change-id: 20240102-j7200-pcie-s2r-ecb1a979e357
->
-> Best regards,
-> --=20
-> Thomas Richard <thomas.richard@bootlin.com>
+Miqu=C3=A8l
 
