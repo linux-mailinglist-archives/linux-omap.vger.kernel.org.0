@@ -1,124 +1,142 @@
-Return-Path: <linux-omap+bounces-1781-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1782-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9311B93ABB2
-	for <lists+linux-omap@lfdr.de>; Wed, 24 Jul 2024 05:58:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E47D693B212
+	for <lists+linux-omap@lfdr.de>; Wed, 24 Jul 2024 15:54:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 24509B22D43
-	for <lists+linux-omap@lfdr.de>; Wed, 24 Jul 2024 03:58:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13A6C1C22790
+	for <lists+linux-omap@lfdr.de>; Wed, 24 Jul 2024 13:54:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C222F22626;
-	Wed, 24 Jul 2024 03:58:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 516F8158D69;
+	Wed, 24 Jul 2024 13:53:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SEaWmgja"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from utopia.booyaka.com (utopia.booyaka.com [74.50.51.50])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE1D1208A9
-	for <linux-omap@vger.kernel.org>; Wed, 24 Jul 2024 03:58:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.50.51.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B991A158D83;
+	Wed, 24 Jul 2024 13:53:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721793519; cv=none; b=iw4aQ1887gPqoxk80yRmDYqnIOeOQx8lpZStxRRQwUcfcKijfgFhpQOuQb3yjfwxOG9aPm92a1Vcl9KuUFfwX9gxZMfKdExIirZZlNPZoHOBWNZpMt/63W/1DIhmTBXhhwNvlmAydAJ9y+5LoTqBXogCaBjzSLd4X+ipxhDod3A=
+	t=1721829230; cv=none; b=LAfs3o48Sgk0lQARumolfiMgvglTTd9QPesUMzf49+R4CiwxtT0kobXEYxG+S6x/l2At1f6PuQ2S0U/8cPaPWidlhC4abBqHeVRwL4LJB3rvpVRfjL1rI9qZJSay17GFX3n/KA0aAywNjvBihoKWeMzpvmODW3fChqd33h3ZdXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721793519; c=relaxed/simple;
-	bh=79Jh2c+fxWXX/U6oo0VkkZfgcMhV+v6w0FJ2+TfHJx4=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type; b=I2wGAbZxomwQ1+v/+1RhjkzOKTLJgANy1N2TJCdb6TQkpEXiXiBRxkNq4fWGywn5rMTg9IEvFqq5Q+ASaQwDDOWOmmt1JJQ7EXHwqPgCzi43s54+eYStEakTlEcOkgUx1O+ibatlDkxcK+vSew3qrBF0kpURkqPXI5pPlqOaz/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pwsan.com; spf=pass smtp.mailfrom=pwsan.com; arc=none smtp.client-ip=74.50.51.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pwsan.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pwsan.com
-Received: (qmail 13648 invoked by uid 1019); 24 Jul 2024 03:51:14 -0000
-Received: from localhost (sendmail-bs@127.0.0.1)
-  by localhost with SMTP; 24 Jul 2024 03:51:14 -0000
-Date: Wed, 24 Jul 2024 03:51:14 +0000 (UTC)
-From: Paul Walmsley <paul@pwsan.com>
-To: linux-pm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-    linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org, 
-    linux-mips@vger.kernel.org
-Subject: Mourning the loss of Peter De Schrijver
-Message-ID: <alpine.DEB.2.21.999.2407240345480.11116@utopia.booyaka.com>
-User-Agent: Alpine 2.21.999 (DEB 260 2018-02-26)
+	s=arc-20240116; t=1721829230; c=relaxed/simple;
+	bh=JHsErZ1Ymd3xIUMEC7/hpzB8p/mlL/O9e+IDU+AKN8I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=eq/4iZNentZKFWOohpADHzL50lzVZwsxliJ5ZwDmLA0u6CmxP4mQqgSf3sXdyNeWM6+AgpJEBwV0nIfUIzQUVXTX4pSe8bFWtb99uwxhO7kOodmW3EF5n9eI5t0bLhJph/XEXH8KeiEgY/fE1Z0dIlrwNPZw2XD7WiCmx2fmavo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SEaWmgja; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33282C4AF14;
+	Wed, 24 Jul 2024 13:53:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721829229;
+	bh=JHsErZ1Ymd3xIUMEC7/hpzB8p/mlL/O9e+IDU+AKN8I=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=SEaWmgjaMdyUPpB+3WNdnu/Gu9TlKShfVaI3kaPtTDUgi1+yOW7Vw3WRWHs1vW6yC
+	 Y3vEwLQLJbKWWj7Dx4mkYjG+Fx1/bCL3TcivZM6ZsDaDYvp/z9r7LEiiNnP5NYrZkJ
+	 SYAnbs406vjYmOQu2+pBQlU/xloyJFw0x9MXtYErO8Y/t++x+Y1gVMuplBSs0dRN1A
+	 aFLBZLP7F5kEjA3DsPqSbJfUS1DcN6ec3Q2ZQcBVKquPBr0eI+0v6rCG5wVA5SqCn8
+	 HZaFcNq4Nj/FL+NccJEe0+3FebAjkiI31jd7YbrmcZFhm5ZDnSwVEnGW06SIOREjmw
+	 xrF3Btp6K9YPg==
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2ef2c56d9dcso39539251fa.2;
+        Wed, 24 Jul 2024 06:53:49 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVaaZbjJYjhHIqupl8vBGkyCEWx3fIX8DGzS1b+8uLkuMt1KfPyzgZ7dpoxC8rJY2vAKrQxjUQtOuV3GonK1AXgrStSN6+jGRdsRnKTe49MQYZgrB3OQKo+ACd48kxwoU7xqBiwWYU8JdQvTm6ju+TfjkaH7nnI7vqnlLAmtSawpQ3LVrNuqFwID2LxJ86iE1yM9ZktYF6hMtUiV+JYCdGeNq1IcHhF8uFG8BBkVgd3CLqtHWEaIijGe8GZpu2FoXEJbZDpe2DWVodGYY8F0ewSmjTtcMrO6O3TF176dny2Ki+cOQ4QsyUiCxoaxMeVHPcSTGnb4UPptXcgD1BfwG8alrSdnrJPn/9ImVSK6k0LzJOB098nA20sdYZaHOeCmf47INa/LL53KokpOdEs9SSy38S0SFqI70+AB2X0OiQ/NV17DNtLdUw3dwZtmFcqmfWwPp2oRxcT0n8IMbleLunhlxOXP/s90LIJMd9zCqXZgWFaOL9OSafFE+xruPbamieQ4FGoP/lM2uE=
+X-Gm-Message-State: AOJu0YzFHhNsC/LtZP3P1oBEd4uWCHuaVYueEwGIGMi2cujgF/otLn4x
+	0by/UuwcoIcftkZn0Qs9LF3HfQ75uDePSxJnJf3MvBJNb409tNRHQu5zge4YlvQlKBlg2YtJJd5
+	sf9fSpzthkKFWqH9VCMI+lVRv/w==
+X-Google-Smtp-Source: AGHT+IEk3YhHLLuWHQez8La65BtnRIR9t5/9BONqzEk5mOwWdTbwESXZpTYF2WmMXYwp6gfL+EkMMSd8FeS9sIIdSCk=
+X-Received: by 2002:a05:6512:3984:b0:51a:f689:b4df with SMTP id
+ 2adb3069b0e04-52efb7db65bmr9357884e87.44.1721829216849; Wed, 24 Jul 2024
+ 06:53:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+References: <20240717-of_property_for_each_u32-v2-1-4060990f49c9@bootlin.com>
+ <1e36b1ba8af3584128550822a70cb072.sboyd@kernel.org> <20240718085651.63ddfb20@booty>
+In-Reply-To: <20240718085651.63ddfb20@booty>
+From: Rob Herring <robh@kernel.org>
+Date: Wed, 24 Jul 2024 08:53:24 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqKtOTgoDgfwq9Guvt_LbtnHHGJ+PDt-wgVRHU=oVzwhHw@mail.gmail.com>
+Message-ID: <CAL_JsqKtOTgoDgfwq9Guvt_LbtnHHGJ+PDt-wgVRHU=oVzwhHw@mail.gmail.com>
+Subject: Re: [PATCH v2] of: remove internal arguments from of_property_for_each_u32()
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Cc: Stephen Boyd <sboyd@kernel.org>, Aaro Koskinen <aaro.koskinen@iki.fi>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, Alim Akhtar <alim.akhtar@samsung.com>, 
+	Andreas Kemnade <andreas@kemnade.info>, Bartosz Golaszewski <brgl@bgdev.pl>, 
+	Bjorn Andersson <andersson@kernel.org>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Chen-Yu Tsai <wens@csie.org>, 
+	Chester Lin <chester62515@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>, Damien Le Moal <dlemoal@kernel.org>, 
+	Daniel Lezcano <daniel.lezcano@linaro.org>, Dong Aisheng <aisheng.dong@nxp.com>, 
+	Doug Berger <opendmb@gmail.com>, =?UTF-8?Q?Emilio_L=C3=B3pez?= <emilio@elopez.com.ar>, 
+	Fabio Estevam <festevam@gmail.com>, Florian Fainelli <florian.fainelli@broadcom.com>, 
+	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jacky Bai <ping.bai@nxp.com>, 
+	Jaroslav Kysela <perex@perex.cz>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+	Jiri Slaby <jirislaby@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
+	Kevin Hilman <khilman@baylibre.com>, Krzysztof Kozlowski <krzk@kernel.org>, 
+	Lars-Peter Clausen <lars@metafoo.de>, Lee Jones <lee@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, 
+	Linus Walleij <linus.walleij@linaro.org>, Mark Brown <broonie@kernel.org>, 
+	Matthias Brugger <mbrugger@suse.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Michael Turquette <mturquette@baylibre.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, 
+	Nicholas Piggin <npiggin@gmail.com>, Nicolas Ferre <nicolas.ferre@microchip.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Richard Leitner <richard.leitner@linux.dev>, 
+	Roger Quadros <rogerq@kernel.org>, Samuel Holland <samuel@sholland.org>, 
+	Saravana Kannan <saravanak@google.com>, Shawn Guo <shawnguo@kernel.org>, 
+	Takashi Iwai <tiwai@suse.com>, Thomas Gleixner <tglx@linutronix.de>, Tony Lindgren <tony@atomide.com>, 
+	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <ukleinek@kernel.org>, 
+	"Peng Fan (OSS)" <peng.fan@oss.nxp.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+	llvm@lists.linux.dev, linux-clk@vger.kernel.org, linux-omap@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-sunxi@lists.linux.dev, linux-samsung-soc@vger.kernel.org, 
+	linux-gpio@vger.kernel.org, linux-iio@vger.kernel.org, 
+	linux-pwm@vger.kernel.org, linux-serial@vger.kernel.org, 
+	linux-usb@vger.kernel.org, patches@opensource.cirrus.com, 
+	linux-sound@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-riscv@lists.infradead.org, Andre Przywara <andre.przywara@arm.com>, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@baylibre.com>, 
+	Richard Fitzgerald <rf@opensource.cirrus.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA512
+On Thu, Jul 18, 2024 at 1:57=E2=80=AFAM Luca Ceresoli <luca.ceresoli@bootli=
+n.com> wrote:
+>
+> Hello Stephen,
+>
+> On Wed, 17 Jul 2024 16:33:34 -0700
+> Stephen Boyd <sboyd@kernel.org> wrote:
+>
+> > > @@ -1191,20 +1191,24 @@ static int si5351_dt_parse(struct i2c_client =
+*client,
+> > >          * property silabs,pll-source : <num src>, [<..>]
+> > >          * allow to selectively set pll source
+> > >          */
+> > > -       of_property_for_each_u32(np, "silabs,pll-source", prop, p, nu=
+m) {
+> > > +       sz =3D of_property_read_variable_u32_array(np, "silabs,pll-so=
+urce", array, 2, 4);
+> > > +       sz =3D (sz =3D=3D -EINVAL) ? 0 : sz; /* Missing property is O=
+K */
+> > > +       if (sz < 0)
+> > > +               return dev_err_probe(&client->dev, sz, "invalid pll-s=
+ource");
+> >
+> > Needs a newline on the printk message.
+>
+> Ouch! Fix queued for v3.
 
-With an unspeakable sense of loss, I must sadly relate that Peter De
-Schrijver (also known as p2 or p2mate) passed away two weeks ago.
+I need v3 like today if I'm going to send it for rc1.
 
-Peter's overt contributions to the Linux kernel were primarily in
-clock and power management on ARM SoCs.  Software he wrote or
-co-developed set the foundation for modern Linux power management.
-The SoC-specific code he wrote enabled millions of devices, many of
-which are still in use today.  An incomplete list includes the Nokia
-N900 and N9 Linux smartphones; an innumerable collection of OMAP- and
-Tegra-based smartphones, tablets, E-readers, and development boards;
-many Nest smart thermostats; and the Nintendo Switch.
-
-Peter was a member of that rare class of engineer whose competence
-transcends artificial boundaries.  He would regularly troubleshoot and
-solve system-wide engineering problems that spanned the software,
-digital hardware, and analog hardware domains.  I have fond
-recollections of Peter tracking down an intermittent power
-management-related glitch in the OMAP SDRAM controller.  This bug was
-serious enough to halt production of devices containing the SoC.  the
-SoC vendor itself could not find the bug.  Despite not having access
-to the RTL, only being able to observe the problem as a black box,
-Peter found it.
-
-Despite his skill, Peter was never self-aggrandizing.  An ideal
-collaborator, he was always willing to lend his powerful mind to think
-through tricky problems that others, myself included, often struggled
-with.
-
-Peter loved the culture of free software.  He was a Debian Developer,
-a regular presence at FOSDEM, and attended many demo parties and free
-software meetups.  I came to realize that for him, this extended to a
-deep philosophical commitment to the importance of transparent
-engineering practices to the open societies that many of us still
-enjoy.  Engineering system failures in the aerospace and energy fields
-were regular topics of conversation.
-
-Peter also knew how to enjoy life beyond engineering.  A evening with
-friends at the pub with fine Belgian lambics was sacramental.  He
-loved electronic music, loved to dance, and loved nature; and often
-combined the three.  His same transcendence of artificial boundaries
-in engineering extended to an open-minded approach towards life in
-general.  He respected and was grateful for what his ancestors
-bequeathed him.  In turn, he shared that pleasure, gratitude, and
-knowledge with others.
-
-As for me: I, like many others, have just lost a true and loyal
-friend.  Peter was present for me when few others were.  The grief is
-tempered with the joy of having known Peter during this lifetime, and
-also, knowing the depth of the legacy he leaves behind.
-
-A memorial web page is here: https://www.ingedachten.be/overlijdensberichten/overlijden-detail/12-07-2024/peter-de-schrijver
-
-
-- - Paul
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEElRDoIDdEz9/svf2Kx4+xDQu9KksFAmagehUACgkQx4+xDQu9
-KkvyPg/8Drb7gBWg5d//101aORjRsLx1XDMQqdR8E+mo8n00f/NrkEPpdRoW0M/9
-dAWFkpscOtQyQmycgEn3necn08CIp8X9zgvcfJmBwPJmFvdfFd9FluNpaAZeGylE
-JYtS2rKhV4JRy2xaNrusK6c6kPH/azfUKLC62kNFPvNCFGtyoY9etn77pqj81JZu
-PojDkCrL793NDpKW3MG3F8KuiPiCTngKDCboVE+3etwF+PgeDx2BOnEbFg8JNNlZ
-3TbyV1ikMn1dv5gpVJDmhFQcLXFm9zA68y44NZ8Q+HWvTZjDPMmYGb8c8FGpytpx
-Ko5Qo1sf+A+KX5y3sgRIVirJggDW4XA2WlhnM+YzDdK5E5t4RE+kiI4nIqqPXwm6
-i6HNOTvjo00WFWCbqzBmpi245j8yjrPMR7NYFdGZDk1gGJXxRFDBCZNFwSYLOkyC
-ZTvr6gzqe1vrMgC3NvU7A/1z3rGVURdWJGPgHGa/BOwxnH2NO+TmBpeBAntoy5Ly
-NbKYFckdVlUrTZBarvkXd1BFiw8LtUGw7rQ2aoZ06Ib2UZaZmlDI94ch5HsibkJk
-Lu0kACz/l1Ra6NL4+oTo23ElhTXWgS7ah8HDau7WewmuJ26fDUONGNh0maOW5E/3
-vtkVrjYTZf6vRGY/tlhQL0sen1Z7C/IGD5oDKCbbkoL3mezNy20=
-=GHEo
------END PGP SIGNATURE-----
+Rob
 
