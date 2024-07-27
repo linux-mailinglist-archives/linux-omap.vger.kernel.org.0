@@ -1,48 +1,48 @@
-Return-Path: <linux-omap+bounces-1788-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1789-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20EA893DD80
-	for <lists+linux-omap@lfdr.de>; Sat, 27 Jul 2024 08:27:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C444193DD83
+	for <lists+linux-omap@lfdr.de>; Sat, 27 Jul 2024 08:29:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD4781C22A4C
-	for <lists+linux-omap@lfdr.de>; Sat, 27 Jul 2024 06:27:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A1201F223FB
+	for <lists+linux-omap@lfdr.de>; Sat, 27 Jul 2024 06:29:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C5C61F94D;
-	Sat, 27 Jul 2024 06:27:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11FAC208DA;
+	Sat, 27 Jul 2024 06:29:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Oox6H1aF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z9uypvYp"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 191471FC4;
-	Sat, 27 Jul 2024 06:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FA881D6AA;
+	Sat, 27 Jul 2024 06:29:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722061654; cv=none; b=ie6mfORMvkjaP2NfzSfz5ckUdkDrNImyHnRDLT/LkOWVUf67h1R2XlAVj+RddK+mutmSjomDKqiHbO6yZmfBxp3guKzsfR3WZnmulZgvUVOwkr/hFJ/CrS/MLl0sK9C84owkOqC54aPyyrl2XZoTleaj4Opuw7IG40XZgJrNQvo=
+	t=1722061752; cv=none; b=nV/vHJ+szgH73ZJ56q2Kpmx5HytbgWGpFTXI6/y9rafkiVxuNq7sxmiWdZ483IXcjRJyB8Kz6+H1YbMP2w7v8H/Q3a1hbJSph4Msra3ZPrBMftz1NyjyzFtoVtQEhcDpCBnyarKdZoXYhvJwVPF4aqz62N6PKtdJPcMMfqWJhCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722061654; c=relaxed/simple;
-	bh=GmLqznNPm3VKhV6utGRBP2na4b4+UkeqqW08Zg+oKWk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bsLpIGpcH9M6zBj9vDqqZfVdLV493A60brYDlEHU8Hq0DyuQ5pLw5oVAqranzUlZwZMW6X67o6rWE2S3V8A7zTsRvWnD7iReOoyb1GDANpB2juuFgdnCgAlF+OpTKpa+wHkkioObEj4hO20lGYqoJYbIhq2tm/LIhUBNfK2jcSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Oox6H1aF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20166C32781;
-	Sat, 27 Jul 2024 06:27:29 +0000 (UTC)
+	s=arc-20240116; t=1722061752; c=relaxed/simple;
+	bh=dHuNgoc9rCCaFNCfcmeMFW/cFrgGm9rsTMaxS2WMQyI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=sCDv6/DnrSKut9e0WlMHgg22gx70mpHWnSc5WIHe0diaJPcCjFE089IrkGTnHLHj7NqYYmbgdUCX/mSJJuBczrLaU0dL6SjgDJ6XokVWeqUmwCIdLdugySX8R+gXxUWd18Ug8pwJj7Yx2pnGChBIdf85EF69mXJdQghwb30h+lE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z9uypvYp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9072EC32781;
+	Sat, 27 Jul 2024 06:29:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722061653;
-	bh=GmLqznNPm3VKhV6utGRBP2na4b4+UkeqqW08Zg+oKWk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Oox6H1aFktJSX07nUICXKLMU6Cx34Yp7OkUa38/6uJOoEcRpYKFMoS9BxeY1I8Oky
-	 cWu1zzoL5ivhaU0uW4uyFZe2uiTLZdPySlylAMqUoH0f9HZXfi1IdmAXWkTyGSDwMd
-	 uPjZPckv0eNaA9tkaLdo4TSa2x9f5Gtctcn4SFQFNVsAgCnI+KuGWQL3mDmw5C49OA
-	 zwo/x/CzodgOHRMChRUuMxCQAbkPwIcoaT+4ni6l46Ql8Mv/9OTheyq9arJwU4KgAx
-	 xmsuWAJgl5QBdkJUmVqmdphnWSTBUHuweQFQDRV1GPO3130mj7xIocGU+TQX2A9pQQ
-	 vjWXnBf6sXqeA==
-Message-ID: <026318a3-9406-4988-9bed-66186a2713f9@kernel.org>
-Date: Sat, 27 Jul 2024 09:27:27 +0300
+	s=k20201202; t=1722061752;
+	bh=dHuNgoc9rCCaFNCfcmeMFW/cFrgGm9rsTMaxS2WMQyI=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=Z9uypvYph7phvnG/SQAz1zgQ9+mgbTA5QKrKiqB54p1eg/JFX0q2x83d75MttmJdN
+	 EFdrAVSXqzgsD3iwLJqD0agpznsckxJZlVQBB07pIEABc25NJMESVyB6ucCkrPIs4w
+	 WjAlPXArC+ilv9R6tqv8m1ZIXgX+yXl6ykw/DZlICGybuogeiMYKW9JYU0JkkbE8lk
+	 b+pmQgobLGl1zz7yjiEEOngASg0BDxEBlZkpbNpqb6pv2ISrmxkA2t6ZGLf06QiRiq
+	 JG928TrXKix16bXEu/Wn9d8MqmdXmOOFRbpn2d+uXef79d8SCimlPzXRkjGt6Fm2F7
+	 YgXAglTok3S1A==
+Message-ID: <78ba8419-8d4c-4bc0-9d76-77b1fa00be84@kernel.org>
+Date: Sat, 27 Jul 2024 09:29:05 +0300
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -52,244 +52,146 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH net-next v3 1/6] net: ethernet: ti: am65-cpsw: Introduce
  multi queue Rx
-To: Brett Creeley <bcreeley@amd.com>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Siddharth Vadapalli <s-vadapalli@ti.com>, Julien Panis <jpanis@baylibre.com>
-Cc: Simon Horman <horms@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
- srk@ti.com, vigneshr@ti.com, danishanwar@ti.com, pekka Varis
- <p-varis@ti.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-omap@vger.kernel.org
+To: Joe Damato <jdamato@fastly.com>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Siddharth Vadapalli <s-vadapalli@ti.com>,
+ Julien Panis <jpanis@baylibre.com>, Simon Horman <horms@kernel.org>,
+ Andrew Lunn <andrew@lunn.ch>, srk@ti.com, vigneshr@ti.com,
+ danishanwar@ti.com, pekka Varis <p-varis@ti.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
 References: <20240703-am65-cpsw-multi-rx-v3-0-f11cd860fd72@kernel.org>
  <20240703-am65-cpsw-multi-rx-v3-1-f11cd860fd72@kernel.org>
- <2a1b2099-e1c4-4d04-bc97-9ff7e0621275@amd.com>
+ <Zp_kQX3dj3J1_u6o@LQ3V64L9R2>
 Content-Language: en-US
 From: Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <2a1b2099-e1c4-4d04-bc97-9ff7e0621275@amd.com>
+In-Reply-To: <Zp_kQX3dj3J1_u6o@LQ3V64L9R2>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
 
 
-On 24/07/2024 00:10, Brett Creeley wrote:
+On 23/07/2024 20:11, Joe Damato wrote:
+> On Wed, Jul 03, 2024 at 04:51:32PM +0300, Roger Quadros wrote:
 > 
+> [...]
 > 
-> On 7/3/2024 6:51 AM, Roger Quadros wrote:
->> Caution: This message originated from an External Source. Use proper caution when opening attachments, clicking links, or responding.
->>
->>
->> am65-cpsw can support up to 8 queues at Rx.
->> Use a macro AM65_CPSW_MAX_RX_QUEUES to indicate that.
->> As there is only one DMA channel for RX traffic, the
->> 8 queues come as 8 flows in that channel.
->>
->> By default, we will start with 1 flow as defined by the
->> macro AM65_CPSW_DEFAULT_RX_CHN_FLOWS.
->>
->> User can change the number of flows by ethtool like so
->> 'ethtool -L ethx rx <N>'
->>
->> All traffic will still come on flow 0. To get traffic on
->> different flows the Classifiers will need to be set up.
->>
->> Signed-off-by: Roger Quadros <rogerq@kernel.org>
->> Reviewed-by: Simon Horman <horms@kernel.org>
->> ---
->> Changelog:
->> v3:
->> - style fixes: reverse xmas tree and checkpatch.pl --max-line-length=80
->> - typo fix: Classifer -> Classifier
->> - added Reviewed-by Simon Horman
->> ---
->>   drivers/net/ethernet/ti/am65-cpsw-ethtool.c |  62 +++--
->>   drivers/net/ethernet/ti/am65-cpsw-nuss.c    | 367 ++++++++++++++++------------
->>   drivers/net/ethernet/ti/am65-cpsw-nuss.h    |  36 +--
->>   3 files changed, 284 insertions(+), 181 deletions(-)
->>
->> diff --git a/drivers/net/ethernet/ti/am65-cpsw-ethtool.c b/drivers/net/ethernet/ti/am65-cpsw-ethtool.c
->> index a1d0935d1ebe..01e3967852e0 100644
->> --- a/drivers/net/ethernet/ti/am65-cpsw-ethtool.c
->> +++ b/drivers/net/ethernet/ti/am65-cpsw-ethtool.c
->> @@ -429,7 +429,7 @@ static void am65_cpsw_get_channels(struct net_device *ndev,
->>
->>          ch->max_rx = AM65_CPSW_MAX_RX_QUEUES;
->>          ch->max_tx = AM65_CPSW_MAX_TX_QUEUES;
->> -       ch->rx_count = AM65_CPSW_MAX_RX_QUEUES;
->> +       ch->rx_count = common->rx_ch_num_flows;
->>          ch->tx_count = common->tx_ch_num;
->>   }
->>
->> @@ -448,8 +448,10 @@ static int am65_cpsw_set_channels(struct net_device *ndev,
->>                  return -EBUSY;
->>
->>          am65_cpsw_nuss_remove_tx_chns(common);
->> +       am65_cpsw_nuss_remove_rx_chns(common);
->>
->> -       return am65_cpsw_nuss_update_tx_chns(common, chs->tx_count);
->> +       return am65_cpsw_nuss_update_tx_rx_chns(common, chs->tx_count,
->> +                                               chs->rx_count);
->>   }
->>
->>   static void
->> @@ -920,11 +922,13 @@ static int am65_cpsw_get_coalesce(struct net_device *ndev, struct ethtool_coales
->>                                    struct netlink_ext_ack *extack)
->>   {
->>          struct am65_cpsw_common *common = am65_ndev_to_common(ndev);
->> +       struct am65_cpsw_rx_flow *rx_flow;
->>          struct am65_cpsw_tx_chn *tx_chn;
->>
->>          tx_chn = &common->tx_chns[0];
->> +       rx_flow = &common->rx_chns.flows[0];
->>
->> -       coal->rx_coalesce_usecs = common->rx_pace_timeout / 1000;
->> +       coal->rx_coalesce_usecs = rx_flow->rx_pace_timeout / 1000;
->>          coal->tx_coalesce_usecs = tx_chn->tx_pace_timeout / 1000;
->>
->>          return 0;
->> @@ -934,14 +938,26 @@ static int am65_cpsw_get_per_queue_coalesce(struct net_device *ndev, u32 queue,
->>                                              struct ethtool_coalesce *coal)
->>   {
->>          struct am65_cpsw_common *common = am65_ndev_to_common(ndev);
->> +       struct am65_cpsw_rx_flow *rx_flow;
->>          struct am65_cpsw_tx_chn *tx_chn;
->>
->> -       if (queue >= AM65_CPSW_MAX_TX_QUEUES)
->> +       if (queue >= AM65_CPSW_MAX_TX_QUEUES &&
->> +           queue >= AM65_CPSW_MAX_RX_QUEUES)
->>                  return -EINVAL;
->>
->> -       tx_chn = &common->tx_chns[queue];
->> +       if (queue < AM65_CPSW_MAX_TX_QUEUES) {
->> +               tx_chn = &common->tx_chns[queue];
->> +               coal->tx_coalesce_usecs = tx_chn->tx_pace_timeout / 1000;
->> +       } else {
->> +               coal->tx_coalesce_usecs = ~0;
->> +       }
->>
->> -       coal->tx_coalesce_usecs = tx_chn->tx_pace_timeout / 1000;
->> +       if (queue < AM65_CPSW_MAX_RX_QUEUES) {
->> +               rx_flow = &common->rx_chns.flows[queue];
->> +               coal->rx_coalesce_usecs = rx_flow->rx_pace_timeout / 1000;
->> +       } else {
->> +               coal->rx_coalesce_usecs = ~0;
->> +       }
+>> @@ -699,6 +727,14 @@ static int am65_cpsw_nuss_common_open(struct am65_cpsw_common *common)
+>>  		goto fail_rx;
+>>  	}
+>>  
+>> +	for (i = 0; i < common->rx_ch_num_flows ; i++) {
+>> +		napi_enable(&common->rx_chns.flows[i].napi_rx);
+>> +		if (common->rx_chns.flows[i].irq_disabled) {
+>> +			common->rx_chns.flows[i].irq_disabled = false;
 > 
-> Minor nit, but after removing the dead code below the check for queue being greater than max values, I think am65_cpsw_get_coalesce() and am65_get_per_queue_coalesce() are identical except the "u32 queue" argument.
+> Just a minor nit (not a reason to hold this back): I've been
+> encouraging folks to use the new netdev-genl APIs in their drivers
+> to map NAPIs to queues and IRQs if possible because it allows for
+> more expressive and interesting userland applications.
 > 
-> I think you could do something like the following:
+> You may consider in the future using something vaguely like (this is
+> untested psuedo-code I just typed out):
 > 
-> static int am65_cpsw_get_per_queue_coalesce(struct net_device *ndev,
->                   struct ethtool_coalesce *coal,
->                   struct netlink_ext_ack *extack)
-> {
->     return __am65_cpsw_get_coalesce(ndev, coal, 0);
-> }
+>    netif_napi_set_irq(&common->rx_chns.flows[i].napi_rx,
+>                       common->rx_chns.flows[i].irq);
 > 
-> static int am65_cpsw_get_coalesce(struct net_device *ndev, u32 queue,
->                   struct ethtool_coalesce *coal,
->                   struct netlink_ext_ack *extack,
->                   u32 )
-> {
->     return __am65_cpsw_get_coalesce(ndev, coal, queue);
-> }
+> and 
+> 
+>    netif_queue_set_napi(common->dev, i, NETDEV_QUEUE_TYPE_RX,
+>                         &common->rx_chns.flows[i].napi_rx);
+> 
+> To link everything together (note that RTNL must be held while doing
+> this -- I haven't checked your code path to see if that is true here).
+> 
+> For an example, see 64b62146ba9e ("net/mlx4: link NAPI instances to
+> queues and IRQs). 
+> 
+> Doing this would allow userland to get data via netlink, which you
+> can examine yourself by using cli.py like this:
+> 
+> python3 tools/net/ynl/cli.py \
+>   --spec Documentation/netlink/specs/netdev.yaml \
+>   --dump queue-get
+> 
+> python3 tools/net/ynl/cli.py \
+>   --spec Documentation/netlink/specs/netdev.yaml \
+>   --dump napi-get
 > 
 
-Sure, this is much nicer.
+Thanks for the pionters. I will check and see if I can incorportate
+this in the next spin.
 
->>
->>          return 0;
->>   }
->> @@ -951,9 +967,11 @@ static int am65_cpsw_set_coalesce(struct net_device *ndev, struct ethtool_coales
->>                                    struct netlink_ext_ack *extack)
->>   {
->>          struct am65_cpsw_common *common = am65_ndev_to_common(ndev);
->> +       struct am65_cpsw_rx_flow *rx_flow;
->>          struct am65_cpsw_tx_chn *tx_chn;
->>
->>          tx_chn = &common->tx_chns[0];
->> +       rx_flow = &common->rx_chns.flows[0];
->>
->>          if (coal->rx_coalesce_usecs && coal->rx_coalesce_usecs < 20)
->>                  return -EINVAL;
->> @@ -961,7 +979,7 @@ static int am65_cpsw_set_coalesce(struct net_device *ndev, struct ethtool_coales
->>          if (coal->tx_coalesce_usecs && coal->tx_coalesce_usecs < 20)
->>                  return -EINVAL;
-> 
-> Why does this return -EINVAL here, but am65_cpsw_set_per_queue_coalesce() prints a dev_info() and then set the value to 20?
-> 
-> Would it better to have consistent behavior? Maybe I'm missing some context or reasoning here?
-
-Consistent behaviour is better.
-
-> 
->>
->> -       common->rx_pace_timeout = coal->rx_coalesce_usecs * 1000;
->> +       rx_flow->rx_pace_timeout = coal->rx_coalesce_usecs * 1000;
->>          tx_chn->tx_pace_timeout = coal->tx_coalesce_usecs * 1000;
->>
->>          return 0;
->> @@ -971,20 +989,36 @@ static int am65_cpsw_set_per_queue_coalesce(struct net_device *ndev, u32 queue,
->>                                              struct ethtool_coalesce *coal)
->>   {
->>          struct am65_cpsw_common *common = am65_ndev_to_common(ndev);
->> +       struct am65_cpsw_rx_flow *rx_flow;
->>          struct am65_cpsw_tx_chn *tx_chn;
->>
->> -       if (queue >= AM65_CPSW_MAX_TX_QUEUES)
->> +       if (queue >= AM65_CPSW_MAX_TX_QUEUES &&
->> +           queue >= AM65_CPSW_MAX_RX_QUEUES)
->>                  return -EINVAL;
->>
->> -       tx_chn = &common->tx_chns[queue];
->> +       if (queue < AM65_CPSW_MAX_TX_QUEUES) {
->> +               tx_chn = &common->tx_chns[queue];
+>> +			enable_irq(common->rx_chns.flows[i].irq);
+>> +		}
+>> +	}
 >> +
->> +               if (coal->tx_coalesce_usecs && coal->tx_coalesce_usecs < 20) {
->> +                       dev_info(common->dev, "defaulting to min value of 20us for tx-usecs for tx-%u\n",
->> +                                queue);
->> +                       coal->tx_coalesce_usecs = 20;
->> +               }
->>
->> -       if (coal->tx_coalesce_usecs && coal->tx_coalesce_usecs < 20) {
->> -               dev_info(common->dev, "defaulting to min value of 20us for tx-usecs for tx-%u\n",
->> -                        queue);
->> -               coal->tx_coalesce_usecs = 20;
->> +               tx_chn->tx_pace_timeout = coal->tx_coalesce_usecs * 1000;
->>          }
->>
->> -       tx_chn->tx_pace_timeout = coal->tx_coalesce_usecs * 1000;
->> +       if (queue < AM65_CPSW_MAX_RX_QUEUES) {
->> +               rx_flow = &common->rx_chns.flows[queue];
+>>  	for (tx = 0; tx < common->tx_ch_num; tx++) {
+>>  		ret = k3_udma_glue_enable_tx_chn(tx_chn[tx].tx_chn);
+>>  		if (ret) {
+>> @@ -710,12 +746,6 @@ static int am65_cpsw_nuss_common_open(struct am65_cpsw_common *common)
+>>  		napi_enable(&tx_chn[tx].napi_tx);
+>>  	}
+>>  
+>> -	napi_enable(&common->napi_rx);
+>> -	if (common->rx_irq_disabled) {
+>> -		common->rx_irq_disabled = false;
+>> -		enable_irq(rx_chn->irq);
+>> -	}
+>> -
+>>  	dev_dbg(common->dev, "cpsw_nuss started\n");
+>>  	return 0;
+>>  
+>> @@ -726,11 +756,24 @@ static int am65_cpsw_nuss_common_open(struct am65_cpsw_common *common)
+>>  		tx--;
+>>  	}
+>>  
+>> +	for (flow_idx = 0; i < common->rx_ch_num_flows; flow_idx++) {
+>> +		flow = &rx_chn->flows[flow_idx];
+>> +		if (!flow->irq_disabled) {
+>> +			disable_irq(flow->irq);
+>> +			flow->irq_disabled = true;
+>> +		}
+>> +		napi_disable(&flow->napi_rx);
+>> +	}
 >> +
->> +               if (coal->rx_coalesce_usecs && coal->rx_coalesce_usecs < 20) {
->> +                       dev_info(common->dev, "defaulting to min value of 20us for rx-usecs for rx-%u\n",
->> +                                queue);
-> 
-> Would it make more sense to just return -EINVAL here similar to the standard "set_coalesce"?
-
-Yes, I'll do that in next spin.
-
-> 
->> +                       coal->rx_coalesce_usecs = 20;
->> +               }
+>>  	k3_udma_glue_disable_rx_chn(rx_chn->rx_chn);
+>>  
+>>  fail_rx:
+>> -	k3_udma_glue_reset_rx_chn(rx_chn->rx_chn, 0, rx_chn,
+>> -				  am65_cpsw_nuss_rx_cleanup, 0);
+>> +	for (i = 0; i < common->rx_ch_num_flows; i--)
+>> +		k3_udma_glue_reset_rx_chn(rx_chn->rx_chn, i, &rx_chn->flows[i],
+>> +					  am65_cpsw_nuss_rx_cleanup, !!i);
 >> +
->> +               rx_flow->rx_pace_timeout = coal->rx_coalesce_usecs * 1000;
->> +       }
->>
->>          return 0;
->>   }
+>> +	am65_cpsw_destroy_xdp_rxqs(common);
+>> +
+>>  	return ret;
+>>  }
+>>  
+>> @@ -779,12 +822,12 @@ static int am65_cpsw_nuss_common_stop(struct am65_cpsw_common *common)
+>>  			dev_err(common->dev, "rx teardown timeout\n");
+>>  	}
+>>  
+>> -	napi_disable(&common->napi_rx);
+>> -	hrtimer_cancel(&common->rx_hrtimer);
+>> -
+>> -	for (i = 0; i < AM65_CPSW_MAX_RX_FLOWS; i++)
+>> -		k3_udma_glue_reset_rx_chn(rx_chn->rx_chn, i, rx_chn,
+>> +	for (i = 0; i < common->rx_ch_num_flows; i++) {
+>> +		napi_disable(&common->rx_chns.flows[i].napi_rx);
 > 
-> I think my comment to the "get" and "get_per_queue" versions of these functions also applies here, but only if the behavior of returning -EINVAL or setting a value for the user is the same between the "set" and "set_per_queue".
-
-Thanks for the review!
-
+> The inverse of the above is probably true somewhere around here;
+> again a small piece of psuedo code for illustrative purposes:
 > 
-> Thanks,
+>    netif_queue_set_napi(common->dev, i, NETDEV_QUEUE_TYPE_RX, NULL);
 > 
-> Brett
-> 
-> <snip>
-> 
+>> +		hrtimer_cancel(&common->rx_chns.flows[i].rx_hrtimer);
+>> +		k3_udma_glue_reset_rx_chn(rx_chn->rx_chn, i, &rx_chn->flows[i],
+>>  					  am65_cpsw_nuss_rx_cleanup, !!i);
+>> +	}
+>>  
+>>  	k3_udma_glue_disable_rx_chn(rx_chn->rx_chn);
+>>  
 
 -- 
 cheers,
