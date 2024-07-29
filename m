@@ -1,234 +1,103 @@
-Return-Path: <linux-omap+bounces-1796-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1797-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E13C93F3D6
-	for <lists+linux-omap@lfdr.de>; Mon, 29 Jul 2024 13:21:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35AD793FEE8
+	for <lists+linux-omap@lfdr.de>; Mon, 29 Jul 2024 22:14:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 116E41F2287A
-	for <lists+linux-omap@lfdr.de>; Mon, 29 Jul 2024 11:21:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66B751C21456
+	for <lists+linux-omap@lfdr.de>; Mon, 29 Jul 2024 20:14:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AED121465BC;
-	Mon, 29 Jul 2024 11:20:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 785D61891C3;
+	Mon, 29 Jul 2024 20:14:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ec/kvGuD"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2ED814659A;
-	Mon, 29 Jul 2024 11:20:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 539CA188CAD
+	for <linux-omap@vger.kernel.org>; Mon, 29 Jul 2024 20:14:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722252030; cv=none; b=OH8bUSu5+Hw5SZ6eqE65kc49mKeF1N0ELxzOkZDuKMX3DiOIhXbwcgoKhN1WM5bUPfxWls5TDxbZx3MmAy/GPWAlya6fy/bj10xp5Z9ZL4DbNUqzX3yiMZz6BCoNe1IkRYaObAUgs7x47LqS0l3F82+y1JELCqpx7HJOtsvW3/o=
+	t=1722284082; cv=none; b=opMhJW+3U8jRem4jV1eRQEXbr1osMhcYbZ8RhDB68Z7HZWaxuQd7DiaTt2Izz59pg2c+PCmG8LV4YDvnsWmZ7fFOsgZA2aaomqcd96bYXmU+Ws86mVW8xtH1AnA8Hcqj/DbnCNvD70Z5qgpZC5DVVFnjS2FlJHCfU8Zv9i3WHWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722252030; c=relaxed/simple;
-	bh=LVJpEFw+iTXNq6RjhQO9aCqTH9U6N15FlPcyD1XU/ZE=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=iziMnn9Ax+6E2i++Uu4nhCE8iYdxiXRsa7Os8vBszDMmzE/H/FY+2ZliRiJ9xopOjRMnENIkMGOSpSIJuxz+Erxol1272Dzrwr+IwLubY/pTi8vu7I63VDkfOw9qvcfqE7kmN1hugj7ZemOXdsKmzj/gc3P5SOXykXDaX2JPK1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.163])
-	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4WXbTD6fzyz1xtrs;
-	Mon, 29 Jul 2024 19:18:40 +0800 (CST)
-Received: from kwepemi100008.china.huawei.com (unknown [7.221.188.57])
-	by mail.maildlp.com (Postfix) with ESMTPS id 3145618001B;
-	Mon, 29 Jul 2024 19:20:25 +0800 (CST)
-Received: from huawei.com (10.90.53.73) by kwepemi100008.china.huawei.com
- (7.221.188.57) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Mon, 29 Jul
- 2024 19:20:24 +0800
-From: Jinjie Ruan <ruanjinjie@huawei.com>
-To: <tglx@linutronix.de>, <maz@kernel.org>, <nicolas.ferre@microchip.com>,
-	<alexandre.belloni@bootlin.com>, <claudiu.beznea@tuxon.dev>,
-	<shc_work@mail.ru>, <linusw@kernel.org>, <kaloz@openwrt.org>,
-	<aaro.koskinen@iki.fi>, <andreas@kemnade.info>, <khilman@baylibre.com>,
-	<rogerq@kernel.org>, <tony@atomide.com>, <joey.gouly@arm.com>,
-	<catalin.marinas@arm.com>, <mark.rutland@arm.com>, <will@kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-omap@vger.kernel.org>
-CC: <ruanjinjie@huawei.com>
-Subject: [PATCH v3] irqchip: Remove asmlinkage for handlers registered with set_handle_irq()
-Date: Mon, 29 Jul 2024 19:26:06 +0800
-Message-ID: <20240729112606.1581732-1-ruanjinjie@huawei.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1722284082; c=relaxed/simple;
+	bh=dJ28NjyFB37oj+Vsmv6ytIr7UsvU2srB/xlfAVWjfUk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=n8ljq3v3tXcCx/8LyAJ6/omhemuDiYo9xtbPyil2p7IXdd0VPUe2R0VVocnQB+0r8GMgdDqkc0ydRh0uM84YJGOEu96fFvb0CIcfsHDhmXb9IPNTVzwXA6DwmH2RN81kRcVxPy71jwzCDiCU90TKIt7GzkIAWHnBXp4yeyM6XPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ec/kvGuD; arc=none smtp.client-ip=209.85.215.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-7a115c427f1so2203292a12.0
+        for <linux-omap@vger.kernel.org>; Mon, 29 Jul 2024 13:14:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1722284078; x=1722888878; darn=vger.kernel.org;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=zHaXs9IaJwVlX7b7czEyrMn4y+6Jb7XfSHnsQq41kc8=;
+        b=ec/kvGuDAVs4O63TG7NuyzSXx9ohULfsmdFtxR3cAn72KsErJ7+hn19cdI0AGjQBqi
+         HomDs6ND7B9TnxLpCDV+rdo0z8N+tF4cY0j3YRszJGs+R/m249VyTLAf7CksW1hutrXp
+         I/NNX4Ezgh1fc5oJ7kGxK6y2THXiVZ+ADa3RCX62S9TWahvt1EnmG7vKwZyYTvo/cRgd
+         1fBK1q1jJlY14Z/w/K4rtZb/rDfwxt7HNC3fvs7Q5qP3nJZZNq3J4wkQ5nGMS41h1uoQ
+         XyYKpbIEDhtXXxbRPNkxbI70wptOo96o9yViXjspfBof/gmk9F2BadzWRnqUmRoA0sxC
+         QCZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722284078; x=1722888878;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zHaXs9IaJwVlX7b7czEyrMn4y+6Jb7XfSHnsQq41kc8=;
+        b=nsUb/xpBHt8GupDPoPY4GF1UpUna/dWTDqCUpyXtdbJeSEwJfQDtlRfy2ni53d8vOW
+         EjI00OeX3DAGHNRQpW1uupPvw7/FO0o+3guhWGF9XuqcngiTY6NApFSJ5hPzdgPtA0Ez
+         0aWZVadm2v53A5SswydDwtMQKF1wzf4QkPGEa9GtMtDcmtMjTqQ0OMQ6J9R/UqUdpHuy
+         scBG9smRy/uARAy1QFUg4wlImqyn+8s+12NuHqzeCK/B6VN4t+TcHYQgzzxtDFvRLDiV
+         pZ1wqB+m2qa8VQv+MURibe342Qukwc16QV5rx8/eGCUIAdrQzzOc1mVyej2fn5Cw5MwK
+         olMw==
+X-Forwarded-Encrypted: i=1; AJvYcCXrXqClX4v/eUsPeUYYjTzRWdzEmDYHU5x++ICJNVjwJ8smPhTA7QXhGAWTwhT96hi0P6SuQ7Y0LOKbE0MJGX5jQL+ZrjA9Wd8Ngw==
+X-Gm-Message-State: AOJu0YxkAyITYt++I4sz7dH5su4sD2ZmdRn/J52HUDk9JMfZBFTQdV+c
+	Qt319pa9e7LQtiSFN/9OkwNyN18RO5AWoPYDVxeiskjv/8GbbDJVcQRrRQj20C8UsOCeU1U7NKu
+	s
+X-Google-Smtp-Source: AGHT+IGZu1RsYz5WQuQOkchkfyHIBK1SwHFr3a42HXBfHfg8h9eXck010LKLIx5OsjR2POqu9E+8LQ==
+X-Received: by 2002:a05:6a20:6f8e:b0:1c4:2134:dd52 with SMTP id adf61e73a8af0-1c4a11803e9mr7999162637.3.1722284078392;
+        Mon, 29 Jul 2024 13:14:38 -0700 (PDT)
+Received: from localhost (75-172-120-197.tukw.qwest.net. [75.172.120.197])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70ead8a3318sm7201362b3a.201.2024.07.29.13.14.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Jul 2024 13:14:37 -0700 (PDT)
+From: Kevin Hilman <khilman@baylibre.com>
+To: Dominik Haller <d.haller@phytec.de>, tony@atomide.com,
+ s.hemer@phytec.de, linux-omap@vger.kernel.org
+Cc: upstream@phytec.de, d.haller@phytec.de
+Subject: Re: [PATCH 1/2] ARM: dts: ti: omap: am335x-regor: Fix RS485 settings
+In-Reply-To: <20240725141952.81213-1-d.haller@phytec.de>
+References: <20240725141952.81213-1-d.haller@phytec.de>
+Date: Mon, 29 Jul 2024 13:14:37 -0700
+Message-ID: <7hbk2g3qhe.fsf@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- kwepemi100008.china.huawei.com (7.221.188.57)
 
-Currently, all architectures with set_handle_irq() call the root irqchip
-handler from C code, so there's no need for these to be asmlinkage.
+Dominik Haller <d.haller@phytec.de> writes:
 
-Remove asmlinkage for all handlers registered with set_handle_irq().
+> From: Steffen Hemer <s.hemer@phytec.de>
+>
+> RTS pin seems to have inverted behavior on am335x, other than expected
+> with default "rs485-rts-active-high" (instead of low on idle, high on send,
+> it is the opposite). Transceiver datasheet also suggests a pulldown.
+> Add includes to pin definitions that are used.
+>
+> Signed-off-by: Steffen Hemer <s.hemer@phytec.de>
 
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
----
-v3:
-- Remove the wrong fix tag.
-- Update the commit message.
-- Add Acked-by.
-v2:
-- Also fix for arm32 irqchip as Thomas suggested.
-- Add Suggested-by.
----
- drivers/irqchip/irq-atmel-aic.c       | 3 +--
- drivers/irqchip/irq-atmel-aic5.c      | 3 +--
- drivers/irqchip/irq-clps711x.c        | 2 +-
- drivers/irqchip/irq-davinci-cp-intc.c | 3 +--
- drivers/irqchip/irq-ftintc010.c       | 2 +-
- drivers/irqchip/irq-gic-v3.c          | 2 +-
- drivers/irqchip/irq-ixp4xx.c          | 3 +--
- drivers/irqchip/irq-omap-intc.c       | 3 +--
- drivers/irqchip/irq-sa11x0.c          | 3 +--
- drivers/irqchip/irq-versatile-fpga.c  | 2 +-
- 10 files changed, 10 insertions(+), 16 deletions(-)
+Series LGTM, but as the sender, we need your Signed-off-by here too.
+See the docs on submitting patches for all the details[1].
 
-diff --git a/drivers/irqchip/irq-atmel-aic.c b/drivers/irqchip/irq-atmel-aic.c
-index 4631f6847953..3839ad79ad31 100644
---- a/drivers/irqchip/irq-atmel-aic.c
-+++ b/drivers/irqchip/irq-atmel-aic.c
-@@ -57,8 +57,7 @@
- 
- static struct irq_domain *aic_domain;
- 
--static asmlinkage void __exception_irq_entry
--aic_handle(struct pt_regs *regs)
-+static void __exception_irq_entry aic_handle(struct pt_regs *regs)
- {
- 	struct irq_domain_chip_generic *dgc = aic_domain->gc;
- 	struct irq_chip_generic *gc = dgc->gc[0];
-diff --git a/drivers/irqchip/irq-atmel-aic5.c b/drivers/irqchip/irq-atmel-aic5.c
-index 145535bd7560..c0f55dc7b050 100644
---- a/drivers/irqchip/irq-atmel-aic5.c
-+++ b/drivers/irqchip/irq-atmel-aic5.c
-@@ -67,8 +67,7 @@
- 
- static struct irq_domain *aic5_domain;
- 
--static asmlinkage void __exception_irq_entry
--aic5_handle(struct pt_regs *regs)
-+static void __exception_irq_entry aic5_handle(struct pt_regs *regs)
- {
- 	struct irq_chip_generic *bgc = irq_get_domain_generic_chip(aic5_domain, 0);
- 	u32 irqnr;
-diff --git a/drivers/irqchip/irq-clps711x.c b/drivers/irqchip/irq-clps711x.c
-index e731e0784f7e..806ebb1de201 100644
---- a/drivers/irqchip/irq-clps711x.c
-+++ b/drivers/irqchip/irq-clps711x.c
-@@ -69,7 +69,7 @@ static struct {
- 	struct irq_domain_ops	ops;
- } *clps711x_intc;
- 
--static asmlinkage void __exception_irq_entry clps711x_irqh(struct pt_regs *regs)
-+static void __exception_irq_entry clps711x_irqh(struct pt_regs *regs)
- {
- 	u32 irqstat;
- 
-diff --git a/drivers/irqchip/irq-davinci-cp-intc.c b/drivers/irqchip/irq-davinci-cp-intc.c
-index 7482c8ed34b2..f4f8e9fadbbf 100644
---- a/drivers/irqchip/irq-davinci-cp-intc.c
-+++ b/drivers/irqchip/irq-davinci-cp-intc.c
-@@ -116,8 +116,7 @@ static struct irq_chip davinci_cp_intc_irq_chip = {
- 	.flags		= IRQCHIP_SKIP_SET_WAKE,
- };
- 
--static asmlinkage void __exception_irq_entry
--davinci_cp_intc_handle_irq(struct pt_regs *regs)
-+static void __exception_irq_entry davinci_cp_intc_handle_irq(struct pt_regs *regs)
- {
- 	int gpir, irqnr, none;
- 
-diff --git a/drivers/irqchip/irq-ftintc010.c b/drivers/irqchip/irq-ftintc010.c
-index 359efc1d1be7..b91c358ea6db 100644
---- a/drivers/irqchip/irq-ftintc010.c
-+++ b/drivers/irqchip/irq-ftintc010.c
-@@ -125,7 +125,7 @@ static struct irq_chip ft010_irq_chip = {
- /* Local static for the IRQ entry call */
- static struct ft010_irq_data firq;
- 
--static asmlinkage void __exception_irq_entry ft010_irqchip_handle_irq(struct pt_regs *regs)
-+static void __exception_irq_entry ft010_irqchip_handle_irq(struct pt_regs *regs)
- {
- 	struct ft010_irq_data *f = &firq;
- 	int irq;
-diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
-index c19083bfb943..0efa3443c323 100644
---- a/drivers/irqchip/irq-gic-v3.c
-+++ b/drivers/irqchip/irq-gic-v3.c
-@@ -930,7 +930,7 @@ static void __gic_handle_irq_from_irqsoff(struct pt_regs *regs)
- 	__gic_handle_nmi(irqnr, regs);
- }
- 
--static asmlinkage void __exception_irq_entry gic_handle_irq(struct pt_regs *regs)
-+static void __exception_irq_entry gic_handle_irq(struct pt_regs *regs)
- {
- 	if (unlikely(gic_supports_nmi() && !interrupts_enabled(regs)))
- 		__gic_handle_irq_from_irqsoff(regs);
-diff --git a/drivers/irqchip/irq-ixp4xx.c b/drivers/irqchip/irq-ixp4xx.c
-index 5fba907b9052..f23b02f62a5c 100644
---- a/drivers/irqchip/irq-ixp4xx.c
-+++ b/drivers/irqchip/irq-ixp4xx.c
-@@ -105,8 +105,7 @@ static void ixp4xx_irq_unmask(struct irq_data *d)
- 	}
- }
- 
--static asmlinkage void __exception_irq_entry
--ixp4xx_handle_irq(struct pt_regs *regs)
-+static void __exception_irq_entry ixp4xx_handle_irq(struct pt_regs *regs)
- {
- 	struct ixp4xx_irq *ixi = &ixirq;
- 	unsigned long status;
-diff --git a/drivers/irqchip/irq-omap-intc.c b/drivers/irqchip/irq-omap-intc.c
-index dc82162ba763..ad84a2f03368 100644
---- a/drivers/irqchip/irq-omap-intc.c
-+++ b/drivers/irqchip/irq-omap-intc.c
-@@ -325,8 +325,7 @@ static int __init omap_init_irq(u32 base, struct device_node *node)
- 	return ret;
- }
- 
--static asmlinkage void __exception_irq_entry
--omap_intc_handle_irq(struct pt_regs *regs)
-+static void __exception_irq_entry omap_intc_handle_irq(struct pt_regs *regs)
- {
- 	extern unsigned long irq_err_count;
- 	u32 irqnr;
-diff --git a/drivers/irqchip/irq-sa11x0.c b/drivers/irqchip/irq-sa11x0.c
-index 31c202a1ae62..9d0b80271949 100644
---- a/drivers/irqchip/irq-sa11x0.c
-+++ b/drivers/irqchip/irq-sa11x0.c
-@@ -127,8 +127,7 @@ static int __init sa1100irq_init_devicefs(void)
- 
- device_initcall(sa1100irq_init_devicefs);
- 
--static asmlinkage void __exception_irq_entry
--sa1100_handle_irq(struct pt_regs *regs)
-+static void __exception_irq_entry sa1100_handle_irq(struct pt_regs *regs)
- {
- 	uint32_t icip, icmr, mask;
- 
-diff --git a/drivers/irqchip/irq-versatile-fpga.c b/drivers/irqchip/irq-versatile-fpga.c
-index 5018a06060e6..ca471c6fee99 100644
---- a/drivers/irqchip/irq-versatile-fpga.c
-+++ b/drivers/irqchip/irq-versatile-fpga.c
-@@ -128,7 +128,7 @@ static int handle_one_fpga(struct fpga_irq_data *f, struct pt_regs *regs)
-  * Keep iterating over all registered FPGA IRQ controllers until there are
-  * no pending interrupts.
-  */
--static asmlinkage void __exception_irq_entry fpga_handle_irq(struct pt_regs *regs)
-+static void __exception_irq_entry fpga_handle_irq(struct pt_regs *regs)
- {
- 	int i, handled;
- 
--- 
-2.34.1
+Kevin
 
+[1]  https://www.kernel.org/doc/html/latest/process/submitting-patches.html#sign-your-work-the-developer-s-certificate-of-origin
 
