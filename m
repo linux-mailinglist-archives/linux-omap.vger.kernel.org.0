@@ -1,154 +1,111 @@
-Return-Path: <linux-omap+bounces-1799-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1800-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7B4993FF9D
-	for <lists+linux-omap@lfdr.de>; Mon, 29 Jul 2024 22:40:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3397940CFA
+	for <lists+linux-omap@lfdr.de>; Tue, 30 Jul 2024 11:08:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94A13283A47
-	for <lists+linux-omap@lfdr.de>; Mon, 29 Jul 2024 20:40:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F0411F237CA
+	for <lists+linux-omap@lfdr.de>; Tue, 30 Jul 2024 09:08:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBBE4189F27;
-	Mon, 29 Jul 2024 20:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 875941940A9;
+	Tue, 30 Jul 2024 09:07:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="idoXaJ/V"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b="Gb0tI+6s"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mickerik.phytec.de (mickerik.phytec.de [91.26.50.163])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D03AE14601E;
-	Mon, 29 Jul 2024 20:40:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1428F189F53
+	for <linux-omap@vger.kernel.org>; Tue, 30 Jul 2024 09:07:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.26.50.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722285639; cv=none; b=pIo4xBv7BiEDglCMYeundHUaKnPylUhzFFnrpf+xPTetCoJLsprgchSGWAJ0iQ7AkbWELM1krooXIwoelxzr6amjBo7LstsxX48biaiz+umrZ+xDQSswQZSnMGaPdpRMwX+8EToH1hQO5EfHI6V6JXtESUBwqXUMbBEBJsyHK/w=
+	t=1722330462; cv=none; b=rgUJe3H+FURDfH5I1wQEeRsDnaQdUZt45pOmTJZsz4cup0ChIUMTm8B90VIHgPrQM3vx0Pcv2WpccxHmcOkKbb5l4mI0LHGJeO/ElSyErEZVxK9bD2SI25xSIUBi7e7iX5EiqOMDpwQPKIO4tLcUeTiX3psxnISerGMzaB9GgWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722285639; c=relaxed/simple;
-	bh=Vy8JdXDw1XfAmLV6Z9SHmUhGP36VprPtP1X5qnDehj8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oICBhpBhXdsEYgvedVFKgSdESnTSY4f0P98YdTHBFTNpEno7zH9MshrfsMZ1Pulc6dh7lzU7+fv0n1gA6i3ocRd5bVXMELoxFXv+dMbUwUPPTUcfpluFWWkO1+mXhAPBmQHnEUjjLMQwksZlpvB8HgvPgXX5AJn+dzpGcP9yhyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=idoXaJ/V; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-428141be2ddso20386195e9.2;
-        Mon, 29 Jul 2024 13:40:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722285636; x=1722890436; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rq+JYssKdPU95PWekAjV2U0WcUbJ7MXMWsw4i+/X8iw=;
-        b=idoXaJ/VSoTyLlFFXaLvAa3E9sVICSGh1Og0+F0ADKBCVNEwgcI5uvMDEocfFTLmrF
-         ZcvdyxZVKOcnVAleG+ueG7UZ86QkMWaY7xO+0pMVwuiKsTaCXoL/DOSTYrHWF9ztbD7r
-         nqTtkxUZQOUfjmtQlAGgoKqE3LUTyclkL0rnAif+N9tcCKwF5x4RySPh7/0xpTAs4XH0
-         z5olmH9Er19cWTM6fR6Vc4C94UtLfJ0jyDFsoWBZ/RL5RtcpkLrRkRmZO87ME5u7Kbnz
-         VJjwVTqDhLHQvVXCt6fKK1CXeOgk/yhXv8qt8iQx65RelWxvvT78tNklJeqmTLdj0CSg
-         tufg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722285636; x=1722890436;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rq+JYssKdPU95PWekAjV2U0WcUbJ7MXMWsw4i+/X8iw=;
-        b=ZzZykdRexPkSEZiK88IlgGTtwhkKzp7yGIDgfxRKgZSTEEwEMfqZMocrGf5TeDO+1L
-         CdMNjza3g2DLVh2EHoUhbNmqNbuzuEJBJ0pob+alUfHsmjSlWe4hSYkJpjFh5amhVge8
-         scLNaI0O9Xi3wAmUxd0V6OW9Je9D5vg9aTRI0+sVIZWKg0vjylu1ctVQYkllbbv4LUUA
-         d8glyDlUxQWJKUSzIQC3pXx1dMFSJ1cyM3vcxcuAOc87q9YWp7Empt5/fM2Ds2sko+Do
-         ostiCZKPuM6Vp3NCuZYjIbw7OukVU20yEIIu91I8XZahsSQq2YPj+oLG9bElpEGlHjkc
-         5FEg==
-X-Forwarded-Encrypted: i=1; AJvYcCV0eyS6q6G1teqUlyqrqF00AKMO0vSTL6gGf+PwD43CJztVvbgs4zF/fPwd+KbFtE9uPKTg05N5tutrW3y0FYPEAx9QMnKShpZIPbN0sBF8q58IkI0XNFLJLhYTAey3kI5judMSue0=
-X-Gm-Message-State: AOJu0YzaLe55rf3jJM0vQ57yKG3VAvsF9d3ao1BMTnHgWl9QuRHaJwG6
-	DcIYSIwp0ebqrqGo+qCKRpntQR0fncbKsnDy75ZbZeBbXN7uJBK+
-X-Google-Smtp-Source: AGHT+IG05AWEMxKvjbxKVaqKlVeGt7iQUkLNmXQumGlS7RLzyBBtfq1yAkpuBU87nLFq0iKWcyyosQ==
-X-Received: by 2002:a05:600c:444d:b0:426:6e95:78d6 with SMTP id 5b1f17b1804b1-42811d71018mr56853145e9.4.1722285635677;
-        Mon, 29 Jul 2024 13:40:35 -0700 (PDT)
-Received: from tp440p.steeds.sam ([2602:fbf6:10:a::2])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-428175e60b7sm84572055e9.42.2024.07.29.13.40.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Jul 2024 13:40:35 -0700 (PDT)
-Date: Mon, 29 Jul 2024 22:40:22 +0200
-From: Sicelo <absicsz@gmail.com>
-To: Andreas Kemnade <andreas@kemnade.info>
-Cc: tony@atomide.com, linux-omap@vger.kernel.org,
-	maemo-leste@lists.dyne.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, devicetree@vger.kernel.org,
-	Aaro Koskinen <aaro.koskinen@iki.fi>
-Subject: Re: [PATCH] ARM: dts: omap3-n900: correct the accelerometer
- orientation
-Message-ID: <Zqf-NosCToA_czCQ@tp440p.steeds.sam>
-References: <20240722113137.3240847-1-absicsz@gmail.com>
- <ZqU_UPQHCJ37qZfa@tp440p.steeds.sam>
- <20240728100658.0001864d@akphone>
+	s=arc-20240116; t=1722330462; c=relaxed/simple;
+	bh=PLhk1EpwlzHmkHgyj2Bqc9fWXJkejbFREOWukE5rPx0=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=MSoderlSs25UAYSXO5s+5GGzDnJKBxTJPX12EJn+C+FTZhFkom2MA3qqQXkl4hnV/4cebJ7C3nMlqb+Svpv7rT4qcJUBH3oo/UXkooUKQLLdMRKZ6mrJAfJkYy0ORtwaMII2z+GJkk/fAMpuNgPx0m6m5qurOQiSBEPicGxFebk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytec.de; spf=pass smtp.mailfrom=phytec.de; dkim=pass (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b=Gb0tI+6s; arc=none smtp.client-ip=91.26.50.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytec.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phytec.de
+DKIM-Signature: v=1; a=rsa-sha256; d=phytec.de; s=a4; c=relaxed/simple;
+	q=dns/txt; i=@phytec.de; t=1722330449; x=1724922449;
+	h=From:Sender:Reply-To:Subject:Date:Message-ID:To:CC:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=PLhk1EpwlzHmkHgyj2Bqc9fWXJkejbFREOWukE5rPx0=;
+	b=Gb0tI+6skL5UucebokqR/SAXVA6wP5qTOmEOhfHZTH7LNA9bY80lBsC+o6sipnTs
+	MchKNPO9eedDvW4Opp7NBCIQr4hJZu1IvIZ9p9iHXHH7GjC7cmazmUQxOnK+lglK
+	3c4woc1Wjnbh8FbEdsr85p24geq1rOH0eTu7weRGw2M=;
+X-AuditID: ac14000a-03e52700000021bc-3d-66a8ad50f08d
+Received: from florix.phytec.de (Unknown_Domain [172.25.0.13])
+	(using TLS with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(Client did not present a certificate)
+	by mickerik.phytec.de (PHYTEC Mail Gateway) with SMTP id 3F.ED.08636.05DA8A66; Tue, 30 Jul 2024 11:07:28 +0200 (CEST)
+Received: from Berlix.phytec.de (172.25.0.12) by Florix.phytec.de
+ (172.25.0.13) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.6; Tue, 30 Jul
+ 2024 11:07:28 +0200
+Received: from Berlix.phytec.de ([fe80::197e:d26b:2ca:c7b4]) by
+ berlix.phytec.de ([fe80::197e:d26b:2ca:c7b4%4]) with mapi id 15.01.2507.006;
+ Tue, 30 Jul 2024 11:07:28 +0200
+From: Dominik Haller <D.Haller@phytec.de>
+To: "tony@atomide.com" <tony@atomide.com>, Steffen Hemer <S.Hemer@phytec.de>,
+	"khilman@baylibre.com" <khilman@baylibre.com>, "linux-omap@vger.kernel.org"
+	<linux-omap@vger.kernel.org>
+CC: PHYTEC Upstream <upstream@lists.phytec.de>
+Subject: Re: [PATCH 1/2] ARM: dts: ti: omap: am335x-regor: Fix RS485 settings
+Thread-Topic: [PATCH 1/2] ARM: dts: ti: omap: am335x-regor: Fix RS485 settings
+Thread-Index: AQHa3p29V27MaJC/SkyWgc1E0QcNdLIOCRyAgADX7gA=
+Date: Tue, 30 Jul 2024 09:07:28 +0000
+Message-ID: <25ebcbe75bc395c53d4756f3b8eff2c0c7ee3d3e.camel@phytec.de>
+References: <20240725141952.81213-1-d.haller@phytec.de>
+	 <7hbk2g3qhe.fsf@baylibre.com>
+In-Reply-To: <7hbk2g3qhe.fsf@baylibre.com>
+Accept-Language: en-DE, de-DE, en-US
+Content-Language: de-DE
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <A8E8850EBBE85F42BD0BBBFF2A78CEAF@phytec.de>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240728100658.0001864d@akphone>
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprHIsWRmVeSWpSXmKPExsWyRpKBVzdw7Yo0g5XzmS1+tm9hspi9pJ/F
+	Yv8VL4vud+oOLB7fvk5i8Xh/o5Xdo7+7hdXj8ya5AJYoLpuU1JzMstQifbsErozDDQoFMzgr
+	7rUeZWxg/MHRxcjJISFgIvHr2g7mLkYuDiGBJUwSRycvYoRw7jNKzD3/ghXC2cAosWH+ZiaQ
+	FjYBTYmXU2+zgtgiArsYJe5f9e9i5OBgFtCTuH7QGCQsLOArsXDVRSaIEj+Jvfdvs0PYVhIb
+	Wh4wg9gsAqoSlz9/ZgOxeQXcJG4sucsIYgsJREg8ObMYLM4poCWx/O82sDmMAioSt1/+Aqth
+	FhCX2PTsOyvEBwISS/acZ4awRSVePv4HFZeXOHFrGhPEaZoS63fpQ7RaSExZeZcFwlaUmNL9
+	kB3iBEGJkzOfsExgFJ+FZMMshO5ZSLpnIemehaR7ASPrKkah3Mzk7NSizGy9gozKktRkvZTU
+	TYygOBRh4NrB2DfH4xAjEwfjIUYJDmYlEd74K0vThHhTEiurUovy44tKc1KLDzFKc7AoifOu
+	7ghOFRJITyxJzU5NLUgtgskycXBKNTDODlnroNa098LSWbwfVry+vGKJhzTblK8/y3Sj5S7v
+	ZerIkvgces1t3my/5bOtJHdcTo9ad4VP/cTKY0v8mN6uEVB4bTlpZl7b8Ve7/8+Ie8r+S8ex
+	XXr3cbETotcslN6qda6b7/t751ph9fikHeKN5/mZP1o/mnVV7cLCd6w7XxmlGC5dmMvcp8RS
+	nJFoqMVcVJwIANuJGYGxAgAA
 
-Hello Andreas
-
-On Sun, Jul 28, 2024 at 10:06:58AM +0200, Andreas Kemnade wrote:
-> > On Mon, Jul 22, 2024 at 01:31:11PM +0200, Sicelo A. Mhlongo wrote:
-> > > Negate the values reported for the accelerometer z-axis in order to
-> > > match Documentation/devicetree/bindings/iio/mount-matrix.txt.
-> > > 
-> > > Fixes: 14a213dcb004 ("ARM: dts: n900: use iio driver for
-> > > accelerometer")
-> > > 
-> > > Signed-off-by: Sicelo A. Mhlongo <absicsz@gmail.com>
-> > > ---
-> > >  arch/arm/boot/dts/ti/omap/omap3-n900.dts | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > 
-> > > diff --git a/arch/arm/boot/dts/ti/omap/omap3-n900.dts
-> > > b/arch/arm/boot/dts/ti/omap/omap3-n900.dts index
-> > > 07c5b963af78..4bde3342bb95 100644 ---
-> > > a/arch/arm/boot/dts/ti/omap/omap3-n900.dts +++
-> > > b/arch/arm/boot/dts/ti/omap/omap3-n900.dts @@ -781,7 +781,7 @@
-> > > accelerometer@1d { 
-> > >  		mount-matrix =	 "-1",  "0",  "0",
-> > >  				  "0",  "1",  "0",
-> > > -				  "0",  "0",  "1";
-> > > +				  "0",  "0",  "-1";
-> > >  	};
-> > >  
-> > >  	cam1: camera@3e {
-> > > -- 
-> > > 2.45.2
-> > >   
-> > 
-> > CC: Aaro Koskinen <aaro.koskinen@iki.fi>, Andreas Kemnade
-> > <andreas@kemnade.info>
-> > 
-> I would expect it to be a rotation matrix but it is not. So maybe this
-> should be fixed in,the driver?
-
-The mount matrix is documented in the kernel docs [1], and this patch
-implements the suggestion that the z-axis should "be negative under the
-screen and positive in front of it, toward the face of the user."
-
-On the N900, the accelerometer is mounted such that the raw z-values are
-opposite to the specification in the kernel docs. The driver itself
-seems to be correct, and is used on a number of other boards (such as
-Motorola Droid 4), reporting expected values when used in conjuction with
-mount matrices.
-
-There is not a lot of userspace that uses accelerometer z-axis
-information, hence I could not perform thorough testing for the z-values
-when I submitted 14a213dcb004 ("ARM: dts: n900: use iio driver for
-accelerometer"). The error became evident when Maemo Leste gained
-support for face up and face down device states [2]. With the patch in
-this thread, userspace reports correct face up/down information.
-
-I hope I have not misunderstood your reply, and please let me know if I
-am missing something.
-
-Sicelo A. Mhlongo
-
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/devicetree/bindings/iio/mount-matrix.txt#n31
-[2] https://github.com/maemo-leste/mce/commit/0dac5a7e4286b5e9a4dafc627c49cef8cc92f092
+T24gTW9uLCAyMDI0LTA3LTI5IGF0IDEzOjE0IC0wNzAwLCBLZXZpbiBIaWxtYW4gd3JvdGU6DQo+
+IERvbWluaWsgSGFsbGVyIDxkLmhhbGxlckBwaHl0ZWMuZGU+IHdyaXRlczoNCj4gDQo+ID4gRnJv
+bTogU3RlZmZlbiBIZW1lciA8cy5oZW1lckBwaHl0ZWMuZGU+DQo+ID4gDQo+ID4gUlRTIHBpbiBz
+ZWVtcyB0byBoYXZlIGludmVydGVkIGJlaGF2aW9yIG9uIGFtMzM1eCwgb3RoZXIgdGhhbg0KPiA+
+IGV4cGVjdGVkDQo+ID4gd2l0aCBkZWZhdWx0ICJyczQ4NS1ydHMtYWN0aXZlLWhpZ2giIChpbnN0
+ZWFkIG9mIGxvdyBvbiBpZGxlLCBoaWdoDQo+ID4gb24gc2VuZCwNCj4gPiBpdCBpcyB0aGUgb3Bw
+b3NpdGUpLiBUcmFuc2NlaXZlciBkYXRhc2hlZXQgYWxzbyBzdWdnZXN0cyBhDQo+ID4gcHVsbGRv
+d24uDQo+ID4gQWRkIGluY2x1ZGVzIHRvIHBpbiBkZWZpbml0aW9ucyB0aGF0IGFyZSB1c2VkLg0K
+PiA+IA0KPiA+IFNpZ25lZC1vZmYtYnk6IFN0ZWZmZW4gSGVtZXIgPHMuaGVtZXJAcGh5dGVjLmRl
+Pg0KPiANCj4gU2VyaWVzIExHVE0sIGJ1dCBhcyB0aGUgc2VuZGVyLCB3ZSBuZWVkIHlvdXIgU2ln
+bmVkLW9mZi1ieSBoZXJlIHRvby4NCj4gU2VlIHRoZSBkb2NzIG9uIHN1Ym1pdHRpbmcgcGF0Y2hl
+cyBmb3IgYWxsIHRoZSBkZXRhaWxzWzFdLg0KPiANCj4gS2V2aW4NCg0KU3VyZSwgSSdsbCBhZGQg
+aXQgaW4gYSB2Mi4NCg0KVGhhbmtzDQoNCkRvbWluaWsNCj4gDQo+IFsxXSAgDQo+IGh0dHBzOi8v
+d3d3Lmtlcm5lbC5vcmcvZG9jL2h0bWwvbGF0ZXN0L3Byb2Nlc3Mvc3VibWl0dGluZy1wYXRjaGVz
+Lmh0bWwjc2lnbi15b3VyLXdvcmstdGhlLWRldmVsb3Blci1zLWNlcnRpZmljYXRlLW9mLW9yaWdp
+bg0K
 
