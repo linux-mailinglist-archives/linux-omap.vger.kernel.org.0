@@ -1,87 +1,82 @@
-Return-Path: <linux-omap+bounces-1803-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1804-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3100694207C
-	for <lists+linux-omap@lfdr.de>; Tue, 30 Jul 2024 21:22:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85CF094207F
+	for <lists+linux-omap@lfdr.de>; Tue, 30 Jul 2024 21:23:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CFADF1F21C5D
-	for <lists+linux-omap@lfdr.de>; Tue, 30 Jul 2024 19:22:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E3A1285AAB
+	for <lists+linux-omap@lfdr.de>; Tue, 30 Jul 2024 19:23:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D2AC18C90C;
-	Tue, 30 Jul 2024 19:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1B38189B94;
+	Tue, 30 Jul 2024 19:23:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="IysQTljJ"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="m1QRnDFg"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E27D91AA3FA
-	for <linux-omap@vger.kernel.org>; Tue, 30 Jul 2024 19:22:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13B701AA3C5
+	for <linux-omap@vger.kernel.org>; Tue, 30 Jul 2024 19:23:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722367347; cv=none; b=KyjdPFMhhD8EiVJ5PjYCcS/amGholb23W6b638iMDPaIYsqJWGPrGdfbUr6nEwEXgkVjKOBatIoLdlzmcaL5wD65kitf9rHMv2lFDP3aO03nJ0N3gohldr+4+7z42VZJcB1G0JdCrX+83MIhf/atH7YZ1kjqimysd1Cc+JPRaAU=
+	t=1722367427; cv=none; b=pEo0MAl26PjFy0dMyrWoWVV25ROnCqoEuAihEce7L0Y9Z/hubBOVB5sFHOFVPJ3a7xUbWes++rdPZoWhBNQU872QeXJRHPkRyHwk7RMILGJp9AuGIVPpCGsrbZxF81Ry8RzBac/XnzlTyqtfqKMIpMRnbiqCMdOVvwCPMBulUsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722367347; c=relaxed/simple;
-	bh=Gii+wpRpwvBV79w0JpC0AfUAbmfnP0nh/hhYh6g6VV0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eTROSveTgf2nALIkwcCda+JoYfqdmP9hrNvDopFwWqqreWmFQhiL/aXzrqFEFIoe5pzwfplVrl8rbUP4pOUU+bYRAqlOAvcl7mtJ1h4cd3NCSuRlS8F1RlQUfoOwajOkNqqJhBKZCSLwYuQfFfdL1WgPOJblPlqTO3jW5zP+VxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=IysQTljJ; arc=none smtp.client-ip=209.85.210.179
+	s=arc-20240116; t=1722367427; c=relaxed/simple;
+	bh=ywD7NAh6KztdqBTXp+joB8iFT7cg+Tr6qVvfRePjkpo=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=HUD3A1gnD4JRgEd2pQ2GGY5n3konHPAarQY8v/XHVPQDHgB+PET7U8wXFt0Z6kiVkF8iFLPxCAFRmMdTM/8jApv4euQUvNGZOlayJTzptsfJ5plyfkP0YBxXDGhJR9O5MFUUOE79t3bFud+dne91HifmRN1qyUZQ90dNf/yL/Tw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=m1QRnDFg; arc=none smtp.client-ip=209.85.210.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-70d19c525b5so3300999b3a.2
-        for <linux-omap@vger.kernel.org>; Tue, 30 Jul 2024 12:22:24 -0700 (PDT)
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-70ef732ff95so1572562b3a.0
+        for <linux-omap@vger.kernel.org>; Tue, 30 Jul 2024 12:23:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1722367344; x=1722972144; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1722367425; x=1722972225; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=u5Mbo7f/0r7FhjXKubpQaTwbLv4cdtUfsKj1TECykL4=;
-        b=IysQTljJeA5Tfos5VQucWJPTOenZ6KLqsoeVLIaIP7vedRCoIfYpxvCrpSkZYhbzxw
-         QFnXkNbovXjeAsvWOs37hByr2UZhZiipUO1A5T+82WeEniz056ULVdfu07xPvCg+fLaK
-         eWQ9fCFtEBofIBYP8A71RvS7Lsc/4ha4NZs0mq7QiRatUP/PCcfIfizPkSfh6RiTZ9xG
-         oBSL3xfjP4Q+I05Hba3GGApFQ+lA5RbIKm+gRZt1c7+rUGUz96WV+unRjlv2UXFwhG5w
-         8r0pDz5xOHDIbHkKK+/pNsBhIQDo3ARuYVA3VNddyL3QGhagXo8ClAfnNOeaPnZmxlN/
-         Zh3w==
+        bh=e71klws5Yps0dVVf1IgYLiVR9KRW2buzAYZBLwWi2Wo=;
+        b=m1QRnDFgUVYNYZXTMyMQdvKdijT5VNXm6gWVSKNlWigpPHQ6n0sO80DhlcQE9FDO4g
+         0/Dhh3YtgW/vzDzYm4T5LVVSGz/78adq43OTVVrFvt4W7AZ2y4pm3ETg6jtT2K7LvrpN
+         kiPXyb3XSXruSO3yJvMqDOZa51duPEiIt9TxUCTT8PMe47K7Ve6ALOE+brVwspXHKwHR
+         XhoowUiyvQUqJ5EM3pq8AeX/1Ok4gsKLy87I323JoRnPU/Ro601WFp8m2P0ZA4Szzv9j
+         gJRgOB1zgJtfpxf0mQqU+lvWHgTgRvLEFcspdrtVk1OMw32nQ/m8ZCsqmGiTbZPYR/XS
+         O1uA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722367344; x=1722972144;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1722367425; x=1722972225;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=u5Mbo7f/0r7FhjXKubpQaTwbLv4cdtUfsKj1TECykL4=;
-        b=YKeeGUWIDFtRxdLY1ImBTEKEmU9+cD6d6RoSmDDzgY8R2RODVQIrAO4PyNpXShsxsK
-         7/lrRZwX/F6E23Cjg6RVk3XD23QAyGzhnIkYWSex5UezlCn25Oa91CHj6uuyUmnmQ4my
-         forutA5mYkbYVL0Jd468//wHtALDZdKwnclmw+IHAsc1gA59baj0pQMag5sGzod85gyE
-         So+yawJaz2vEO9nu2Y0ftEm3hGlZ8zmGgPVV0zxQRhtuMejUfiXflOMqWIKso7KrT8fh
-         zLH1THCroDKNGey9pEmxNrUH0GddGEI0iWma1EKcam3p1zuo5rpUP1FRdRHFMHMFIzMV
-         CK9Q==
-X-Gm-Message-State: AOJu0Yy+RRJRx3HmaEqE4wEb70b84Xjpo8Ii0k1tq/RSTaNE01QzfAXP
-	xHGsC+0bSG7SiL8PLcQHldjI9iW21Sq9lIBrHJap5LJ4xyvnW2nIOo0ahfvW+K8=
-X-Google-Smtp-Source: AGHT+IHjJy5D9afJWCeHuNtfQRJmpcnz1EesxrPh3ouVuLJUp/4bnMSQG5+i6ItxbqVTfDLzd4D1fw==
-X-Received: by 2002:a05:6a00:3cd2:b0:70d:278e:4e92 with SMTP id d2e1a72fcca58-70ecea12f40mr10581424b3a.12.1722367344154;
-        Tue, 30 Jul 2024 12:22:24 -0700 (PDT)
+        bh=e71klws5Yps0dVVf1IgYLiVR9KRW2buzAYZBLwWi2Wo=;
+        b=qd03gwgbyVDl6kePOuQNAD6UC4pEJEkbhbfteOKwRYqVbEu6tSZT+/UjBgsiHixb21
+         4lGijgHrlBXOwVMwZqY6N0xu1axUQ9Auqvx7jRBZEQYXs8xoGYoi4pSNtrJuvYbrHjhS
+         2mjAITC9WpjlGbdDeTlLsppMQ4dY6S8n8r6U2M8Pf82bUp+RrCupfUgzhxDS1zw/MOz2
+         1ay189LxqpbvqEThn/VkXoa6F5weX5T39rD4otD44/JMfXO6wUmTT4XN5J1niHEE6/Br
+         LQIr2j9w7NVVzCRcabkInNaZrmQxn6gKlRo3RwJyykYbvqFItuv77c47RJQeXxn0WRSS
+         8F/g==
+X-Forwarded-Encrypted: i=1; AJvYcCW9vl3YeSIdR5cK46wF0y6c8S4NxyQcAaDK54yDyQSv0QTieFYPzBUtBFXf31WfIQWzZbODuqfAjDG1kNzSQUWPl/CKosbGZfd7Fg==
+X-Gm-Message-State: AOJu0YyAX1oP0vu5Qnyhuakr2K8Ul5eWDfMbuHjjW28Vdq0CnXPGsFDL
+	AuRXNJvg1ULcV6LEav+34VNny/v2yo1RKD/eJ7YdEcmTd1y95do5/NKS7fN25xQ=
+X-Google-Smtp-Source: AGHT+IFDoPfNE4Op1+lZqfCz2C8U5W5aaYCRcvMWF8wQdUf9Vs9MSi0qpIEMVczXxDdpiIG7Mv1Uig==
+X-Received: by 2002:a05:6a21:6d8e:b0:1c4:9f31:ac9e with SMTP id adf61e73a8af0-1c4a13afbffmr12065123637.42.1722367425412;
+        Tue, 30 Jul 2024 12:23:45 -0700 (PDT)
 Received: from localhost (75-172-120-197.tukw.qwest.net. [75.172.120.197])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70ead8af1c3sm8749224b3a.208.2024.07.30.12.22.23
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70ead81270bsm8740908b3a.107.2024.07.30.12.23.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jul 2024 12:22:23 -0700 (PDT)
+        Tue, 30 Jul 2024 12:23:45 -0700 (PDT)
 From: Kevin Hilman <khilman@baylibre.com>
-To: =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-	Tony Lindgren <tony@atomide.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-Cc: linux-omap@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>
-Subject: Re: [PATCH] ARM: dts: omap: convert NVMEM content to layout syntax
-Date: Tue, 30 Jul 2024 12:22:08 -0700
-Message-ID: <172236731467.2210764.16397085645843049493.b4-ty@baylibre.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240523042750.26238-1-zajec5@gmail.com>
-References: <20240523042750.26238-1-zajec5@gmail.com>
+To: tony@atomide.com, s.hemer@phytec.de, linux-omap@vger.kernel.org, 
+ Dominik Haller <d.haller@phytec.de>
+Cc: upstream@phytec.de
+In-Reply-To: <20240730092353.10209-1-d.haller@phytec.de>
+References: <20240730092353.10209-1-d.haller@phytec.de>
+Subject: Re: [PATCH v2 1/2] ARM: dts: ti: omap: am335x-regor: Fix RS485
+ settings
+Message-Id: <172236742474.2211098.1838214226300693563.b4-ty@baylibre.com>
+Date: Tue, 30 Jul 2024 12:23:44 -0700
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -89,22 +84,27 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.0
 
 
-On Thu, 23 May 2024 06:27:50 +0200, Rafał Miłecki wrote:
-> Use cleaner (and non-deprecated) bindings syntax. See commit
-> bd912c991d2e ("dt-bindings: nvmem: layouts: add fixed-layout") for
-> details.
+On Tue, 30 Jul 2024 11:23:52 +0200, Dominik Haller wrote:
+> RTS pin seems to have inverted behavior on am335x, other than expected
+> with default "rs485-rts-active-high" (instead of low on idle, high on send,
+> it is the opposite). Transceiver datasheet also suggests a pulldown.
+> Add includes to pin definitions that are used.
 > 
 > 
 
 Applied, thanks!
 
-[1/1] ARM: dts: omap: convert NVMEM content to layout syntax
-      commit: 0f7d5b53a0fe94a890f1854c978d2a5b43efede3
+[1/2] ARM: dts: ti: omap: am335x-regor: Fix RS485 settings
+      commit: e589ec9847e5fc78a219a85b740599ae115b6431
+[2/2] ARM: dts: ti: omap: am335x-wega: Fix audio clock provider
+      commit: 6a410ff5359610779908cf94f18f9f39281ecabd
 
 Best regards,
 -- 
 Kevin Hilman <khilman@baylibre.com>
+
 
