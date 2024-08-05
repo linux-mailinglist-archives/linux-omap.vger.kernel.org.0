@@ -1,112 +1,111 @@
-Return-Path: <linux-omap+bounces-1838-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1839-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48DF6948061
-	for <lists+linux-omap@lfdr.de>; Mon,  5 Aug 2024 19:37:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DE4D948063
+	for <lists+linux-omap@lfdr.de>; Mon,  5 Aug 2024 19:37:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 79F411C21EBD
-	for <lists+linux-omap@lfdr.de>; Mon,  5 Aug 2024 17:37:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5860280F84
+	for <lists+linux-omap@lfdr.de>; Mon,  5 Aug 2024 17:37:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85A4A15EFB9;
-	Mon,  5 Aug 2024 17:36:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E95715EFA6;
+	Mon,  5 Aug 2024 17:37:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="hoNPu7KV"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="yZkBFDLA"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D2BC481B9
-	for <linux-omap@vger.kernel.org>; Mon,  5 Aug 2024 17:36:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DAAC481B9
+	for <linux-omap@vger.kernel.org>; Mon,  5 Aug 2024 17:37:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722879419; cv=none; b=t/ufupjIAZSHvvh/pgIpta78wuyg1Qo6yrrtGykjQYOExbrdBDn2PZfvOAxmK3ej8eskgz6XW8j2X0ckefu6DavrOplhMRs+cv1QE2P3QAslQ/5NQXHvzMcp98z5A1fzuxyRc7bk9bCXQuqC8D892RRpwP+voo8rKCLTUYj38WA=
+	t=1722879455; cv=none; b=PjjB+YPIe1ZuRgl+lGOPkKqKuM2VbLJFw68NoPfSDJ7bLQigukeCRdt6HQkeG7fjNJi8DSaR3SK9k6weejkP6eFJfPMrnKDP3y1baqZGBJCIspmCMhQKbJdsUgSlZjxr+Gn6byBhghj08tlowCqv9NW11eiBYYYkzXtz08lr1LM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722879419; c=relaxed/simple;
-	bh=DA4369ep4aRCQk372N75Nbh4WuAp1GA6UZSDUFqv2dw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=W2V6ri+5WxBOOWzGMxmWCxcCtTayxvLYfDv7ZZx8JU5oVI7CyFN8xWLbwuSmW7ZmX9VxQsc0yPOIBv+Um/7UkQyuHbVSlbfszI+m0+g3z9/liwhzz9uX4NHyGBteosah1w3ZSdDtIZ3UdBynMoPjd53Uz8CqCTje5x4UsWeP0CM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=hoNPu7KV; arc=none smtp.client-ip=209.85.210.181
+	s=arc-20240116; t=1722879455; c=relaxed/simple;
+	bh=dM8sp0husClYi+h0ZGKuVSqRa7NAM23OUR7RjW40VYI=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=lzt7Wae9uCBnbECbkw/ia/6kjYyQyXGd1baMADY8gxXT4AQ1zJfISBFLoPwWQtGQycUlnelZaLhsxssj2A7Jtgs4R3Vka/BlGAZoF54Xh4TqQaiP/dXGkNJ+YqMMazsuYNZYA19y46ZEVMUxLv9ZC4JmudY1UlAZAOxAj6Mm4kY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=yZkBFDLA; arc=none smtp.client-ip=209.85.160.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-70d19d768c2so8050322b3a.3
-        for <linux-omap@vger.kernel.org>; Mon, 05 Aug 2024 10:36:57 -0700 (PDT)
+Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-26106ec9336so5201863fac.2
+        for <linux-omap@vger.kernel.org>; Mon, 05 Aug 2024 10:37:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1722879416; x=1723484216; darn=vger.kernel.org;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=goLTI1Me9QFdEbbxVvS9O2vJ+EscEBdu5wB58pG03Vg=;
-        b=hoNPu7KVe16tyK3HBS81ej5DinAgGit+Kh8aCXz+Keu/Rhzg3R9cKFO2+78BTZfPm0
-         Ka82pTZOA89HEH8lXkEDlh3T0jn+YMXIvFfvYq7idyo8BXWwknaouZopTd0WNmSv+xEF
-         PJqQifvgnFSaKRz5R/+7qcQn2R5aDn0Rru7Rc6/jqKO3frQKSv9Q3moG6mdYy3fAqKEb
-         KSj6ynx3EnpqmRSgkGd7guqdknnjP9GdnvhJxyrNahdyWvNP+NV8ZrtOr/O85VtQ3N3C
-         zpXSqx+wR6kHSUkc2PfS00kmW/HRh/j0nqWUg8vgC/zSlythBW86GO7tp4ve6uv0bo96
-         Jbcw==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1722879453; x=1723484253; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7pHVbhEoVEMjlU46Y+rdQzQBJK3R4JaIn8qB/k8iiR0=;
+        b=yZkBFDLA0kwE4TFbrGdE4el5dCq5+I5XSfv6Yzo1PnJ3wa9AX8cPrJE/yf20rkLR5A
+         Qq20H32SeClGolOu5+EHNREcj8ao0XmfprlkCqyZyRyalsf+Xg6clg4pl3jboBDKI36b
+         G5aEGz49UaMWEcVCTr3H+cKgvf2a2/qxi0Auz0cIjmgv7gm0kY34ZA8cvVK9TXoYf3Tz
+         b4+jQ7TWvmxchjJK/jhwftUymM4Pkjn+ReUQ0SpvciOHiG7TGlLsjWYSHAMDbhBUDR/c
+         LQ7Mympyi0RGBpQHy0RE6/3JthtVLhhpyV7vT9CnDj39xlEfUWxGz7Ch4jmtASD7Xdpf
+         gxjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722879416; x=1723484216;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=goLTI1Me9QFdEbbxVvS9O2vJ+EscEBdu5wB58pG03Vg=;
-        b=sNZVWs0YbzxNYNzVgRyhVuap6GHWYwXCuZOTwhBQo75KxyRweTQqDb4NU8IkH9ZoNR
-         8HXXw6jUKyQ2zIE2Amg2Hq8gr2hJaoydEMu/Ac7m5X98gkPwdRmz8JwPTF9oF0iGAta1
-         LdE2OBN9YE9tluRSsBcXy7LqjQ5qfmb7OdWdYsT0UCmKeAxNdem32cFQyTK+H/aQ1DiS
-         s2EOw3kiWjHPkCJ2ZSFJUTd7blgB5LSwdhIgJov6izEFXjJiPvnW8EURTMKJ0HNYGmFl
-         hAE0WomqY9p0N2ZLj87rZgLRFA1k6v5pvXt1e5+tng2fvGSmQT9M7GaAA2E2yWet02+L
-         BFew==
-X-Gm-Message-State: AOJu0YwAjhLcTnpadaNqxEfmIfngMRqcvAnc1oLffudd9upBSBHFJlhZ
-	KcoD9xP/LsIY6DDvo9RFq8Z2T3ooOkq/Jqr6oC9VrNkk0WA+IHQ3iNekTyWEm6OLQM8RPk3BkMP
-	yT7s=
-X-Google-Smtp-Source: AGHT+IEPsJOZd0kXjvfZc+Q2Cp9lgQmjHsAvWtcR1BuMvVvN70ionSp87ecT9lwzcXMvoxWe9CNzPA==
-X-Received: by 2002:a05:6a21:3383:b0:1c3:ff33:2472 with SMTP id adf61e73a8af0-1c6996a5f4emr11522868637.51.1722879416615;
-        Mon, 05 Aug 2024 10:36:56 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1722879453; x=1723484253;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7pHVbhEoVEMjlU46Y+rdQzQBJK3R4JaIn8qB/k8iiR0=;
+        b=UVAOvk0dbTUcPeAl7/7CNmxiwhVuRgBkbAngk2LOo6uIKwrvajyAQznbPR3WzG3hdg
+         Z1LNIl1iWQDUjNig5ziAy+2hVhqdpRhuAN+eWb4JT0+TxPsMBLvm9llsOYeD34OEuAsH
+         VV9ounATIVTT6hOYYva9Z/8epdakq9uHY9ns/kY9An3MQ5pAdVg0xO3ncCtZkl035UxN
+         xjoilNbqhObD6b+sc6TsjO4hiL9YuQ7EAuFNArtpB2GktglyiupRqDUCiYAvLnIS6uJR
+         Sfdsx4DmaX89gtEXhQ3Z2iDfGFmIkUvbILTdga6IkEFtbCcE9p+Zl4Ni9zfO9J4WsLOK
+         zNrA==
+X-Gm-Message-State: AOJu0Yy+QYNma14rRqoBpBZSqHP5Q/LZUA9I9PykAZZq/N2Yt58x5hOZ
+	995ldEWnx75Lkw8UYoQzpzBeeub7yPL6sj5ANGUYD9CrJoAkl1DayslXsimbN5s=
+X-Google-Smtp-Source: AGHT+IHJRUtzcnsDnqI75o6X2Ap9E2ZssvYvQ/dHPTU1gm3UkNElVw+QddAP+HpNI1vqdUkkHvtRXw==
+X-Received: by 2002:a05:6870:1699:b0:264:9484:a292 with SMTP id 586e51a60fabf-26891e92feemr12640386fac.38.1722879453369;
+        Mon, 05 Aug 2024 10:37:33 -0700 (PDT)
 Received: from localhost ([71.212.170.185])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7106ecfd196sm5665573b3a.161.2024.08.05.10.36.56
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7b762e9f5cdsm5708307a12.2.2024.08.05.10.37.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Aug 2024 10:36:56 -0700 (PDT)
+        Mon, 05 Aug 2024 10:37:33 -0700 (PDT)
 From: Kevin Hilman <khilman@baylibre.com>
-To: Roger Quadros <rogerq@kernel.org>, "Rob Herring (Arm)"
- <robh@kernel.org>, Aaro Koskinen <aaro.koskinen@iki.fi>, Andreas Kemnade
- <andreas@kemnade.info>, Tony Lindgren <tony@atomide.com>
+To: Aaro Koskinen <aaro.koskinen@iki.fi>, 
+ Andreas Kemnade <andreas@kemnade.info>, Roger Quadros <rogerq@kernel.org>, 
+ Tony Lindgren <tony@atomide.com>, "Rob Herring (Arm)" <robh@kernel.org>
 Cc: linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] bus: ti-sysc: Use of_property_present()
-In-Reply-To: <2ff177ed-a5e8-46ad-9902-14f377033da2@kernel.org>
+In-Reply-To: <20240731191312.1710417-1-robh@kernel.org>
 References: <20240731191312.1710417-1-robh@kernel.org>
- <2ff177ed-a5e8-46ad-9902-14f377033da2@kernel.org>
-Date: Mon, 05 Aug 2024 10:36:55 -0700
-Message-ID: <7hy15a3m88.fsf@baylibre.com>
+Subject: Re: [PATCH] bus: ti-sysc: Use of_property_present()
+Message-Id: <172287945269.306491.8860968743342697729.b4-ty@baylibre.com>
+Date: Mon, 05 Aug 2024 10:37:32 -0700
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.1
 
-Hi Roger,
 
-Roger Quadros <rogerq@kernel.org> writes:
+On Wed, 31 Jul 2024 13:12:39 -0600, Rob Herring (Arm) wrote:
+> Use of_property_present() to test for property presence rather than
+> of_get_property(). This is part of a larger effort to remove callers
+> of of_get_property() and similar functions. of_get_property() leaks
+> the DT property data pointer which is a problem for dynamically
+> allocated nodes which may be freed.
+> 
+> The code was also incorrectly assigning the return value to a 'struct
+> property' pointer. It didn't matter as "prop" was never dereferenced.
+> 
+> [...]
 
-> On 31/07/2024 22:12, Rob Herring (Arm) wrote:
->> Use of_property_present() to test for property presence rather than
->> of_get_property(). This is part of a larger effort to remove callers
->> of of_get_property() and similar functions. of_get_property() leaks
->> the DT property data pointer which is a problem for dynamically
->> allocated nodes which may be freed.
->> 
->> The code was also incorrectly assigning the return value to a 'struct
->> property' pointer. It didn't matter as "prop" was never dereferenced.
->> 
->> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
->
-> Reviewed by: Roger Quadros <rogerq@kernel.org>
+Applied, thanks!
 
-just FYI, missing a '-' in your Reviewed-by, which means tools like b4
-will not spot it.  I added it manually this time cuz I happened to
-notice it was missing.
+[1/1] bus: ti-sysc: Use of_property_present()
+      commit: 0070dc29c85f0859a6071844b88fca6bce2974e4
 
-Kevin
-
+Best regards,
+-- 
+Kevin Hilman <khilman@baylibre.com>
 
 
