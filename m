@@ -1,49 +1,49 @@
-Return-Path: <linux-omap+bounces-1853-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1855-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C37F949252
-	for <lists+linux-omap@lfdr.de>; Tue,  6 Aug 2024 15:58:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24FB694925B
+	for <lists+linux-omap@lfdr.de>; Tue,  6 Aug 2024 15:59:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D9CF1C214AA
-	for <lists+linux-omap@lfdr.de>; Tue,  6 Aug 2024 13:58:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 561571C2150E
+	for <lists+linux-omap@lfdr.de>; Tue,  6 Aug 2024 13:59:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC6551D47D7;
-	Tue,  6 Aug 2024 13:58:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAEE81EA0C9;
+	Tue,  6 Aug 2024 13:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Od5noi1n"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="av06cCPX"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FEB016B741;
-	Tue,  6 Aug 2024 13:58:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FC6D1EA0CD;
+	Tue,  6 Aug 2024 13:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722952713; cv=none; b=Sx0ZEz3yor5R45jMWxzDeeA62BU3ge1NTFr1UTEmPBQQ6SVJv4Ejtx1AbHCEQEjcFnM6PIq798yhCHuFX+8tIUP1QWSbq0A/mtc5B4FHlX1FPKL4kHf4xm1h81PiRYnVGEsKRxsr0GtIavvwxsJAtbHLvDlRA26Boc2rE1tozpQ=
+	t=1722952716; cv=none; b=pvHOE+sik5nHhDF5c9JyhsMnUKIbku3Am2UP1aztD/i84NJOzaEC2Odf7gonFxXEkJbEs5nGYpm2h3ahdRBhummEGcVR5iLkAmcr+0oVL7PWufkVzVSzpm6cLwCWJtqbVSv0RKpUx+a0gpiQiHenKHGN2Jq4w9ZPAWkHOf3//iU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722952713; c=relaxed/simple;
-	bh=FDPuG2fv6Xq0Fg2WDMvyb/wONCwU5IRwYfqCsKckIVk=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=BQt/5Zvijih5Hz3xQ/+QTjuIXgPkXliI2lU2j1VMWh0uA30S1ia2ljJqczL8/Ou5ojjlly/sWzY7nrwNMYgbPolYo6YDtQr+U/JIOd6tuO2S29iILfmthOVXYEX52CKD0CnN06Rnyla5WaTgT+DHxF4qwEMFB/JGQAT/Lbjd9MI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Od5noi1n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5F89C4AF09;
-	Tue,  6 Aug 2024 13:58:32 +0000 (UTC)
+	s=arc-20240116; t=1722952716; c=relaxed/simple;
+	bh=O6glnD5wiXE98gLVRHUvmVB4RVvcHr0FDiaVdLjF2KY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=XLXFsdwhLl48mBvFaigVZfi3r5g98tCkJlTn4+gfZD8f2XrOku4sW/WcJNbWWf9hyix3ZTSgg3hWHvcqbEP+oeI16qQTG2IHHrUoTKtjsjTGkzduQgX4S7HxQ3NnYn4sqm+pSESw2B/3zcRBqSGzKeOAW8IdNfaXIn4GkVnbTXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=av06cCPX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0705C4AF11;
+	Tue,  6 Aug 2024 13:58:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722952713;
-	bh=FDPuG2fv6Xq0Fg2WDMvyb/wONCwU5IRwYfqCsKckIVk=;
-	h=From:Subject:Date:To:Cc:From;
-	b=Od5noi1nlh/IN50c8KsqWutvIm/aZ3IDehou3CK6tIZsxV+dYAnXoJoHOPHzFBc3o
-	 fiLZM0Jm3TE7/iY1MvsKk+LPFt8gA3FIlBoD1EYoUgscPRZwAICh3WQl9iTCm3yy32
-	 UQLdldikBWgXn2LGH83dhSrKl8pfmRovJJg4q3lYloeYt8U23lgn2RiEoyIIa40t0u
-	 8ehDxee087Jd010/6qnRJ5mr/fvJqSLfj0EhQkpcPiU4wztR6jc7QW8yID8u4dYX6j
-	 t3sfdlBQN/73UVZSrDQWJ4+k7VbDVamifv5V5l9hM3Lwqca/9c7Ezc2vopH8dplleJ
-	 WguIHv1ih1XBQ==
+	s=k20201202; t=1722952716;
+	bh=O6glnD5wiXE98gLVRHUvmVB4RVvcHr0FDiaVdLjF2KY=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=av06cCPXNd155wv3Dvm0kSw7gTCjsITJkQX/nsGcdomek8+59kQHT7GpPHxxpiaDQ
+	 JqoOTWzROUPqSw5DkvvjiNiC4wEZf5h2zzIbUyALL63Us5ll5RBU/GykKsDgKOpgvD
+	 9sUW88m2daFuDyiz+ltZ4oCgbd/CmpAAiVxpIIHzdy3xdJ7GGzfg+jJfAODou/hGiI
+	 2XdQ9G7sS89kPK4Ygy0CnrOQAjdzI1MxM7qAc7eGzbKyNh5qDk0gyYN7lmq/JbFf09
+	 oqsCuCIv5I2fRFoLMjvJaMC8JevL5TSPyEBpymz8EMB/TRRb3MTsxc0hzRzJlOnBlr
+	 IKcIZ2qAKCuoQ==
 From: "Rob Herring (Arm)" <robh@kernel.org>
-Subject: [PATCH 0/6] cpufreq: Enable COMPILE_TEST on Arm drivers
-Date: Tue, 06 Aug 2024 07:58:21 -0600
-Message-Id: <20240806-dt-api-cleanups-v1-0-459e2c840e7d@kernel.org>
+Date: Tue, 06 Aug 2024 07:58:23 -0600
+Subject: [PATCH 2/6] cpufreq: omap: Drop asm includes
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -52,9 +52,9 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAP0rsmYC/x3MTQqAIBBA4avErBswfyK6SrSwnGogTLQikO6et
- PwW72VIFJkS9FWGSDcnPnxBU1cwb9avhOyKQQqpRScMuhNtYJx3sv4KCV2raNKLUVoqKFWItPD
- zH4fxfT+Hm0qdYQAAAA==
+Message-Id: <20240806-dt-api-cleanups-v1-2-459e2c840e7d@kernel.org>
+References: <20240806-dt-api-cleanups-v1-0-459e2c840e7d@kernel.org>
+In-Reply-To: <20240806-dt-api-cleanups-v1-0-459e2c840e7d@kernel.org>
 To: "Rafael J. Wysocki" <rafael@kernel.org>, 
  Viresh Kumar <viresh.kumar@linaro.org>, Kevin Hilman <khilman@kernel.org>, 
  Andrew Lunn <andrew@lunn.ch>, Gregory Clement <gregory.clement@bootlin.com>, 
@@ -65,40 +65,30 @@ Cc: linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org
 X-Mailer: b4 0.15-dev
 
-This series enables building CPUFreq Arm based drivers on multiple 
-architectures when COMPILE_TEST is enabled.
-
-The drivers for x86 and powerpc appear to be dependent on the 
-respective arch code, so those can't be similarly enabled for 
-COMPILE_TEST.
-
-I've built this on arm32, arm64, powerpc, and x86 allmodconfig. It's 
-been built by 0-day and I fixed a couple of issues from that. I imagine 
-a few more might crop up when this is added to linux-next.
+The omap driver doesn't actually need asm/smp_plat.h, so drop it.
+asm/cpu.h is not needed either as linux/cpu.h is already included.
 
 Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 ---
-Rob Herring (Arm) (6):
-      cpufreq: qcom: Add explicit io.h include for readl/writel_relaxed
-      cpufreq: omap: Drop asm includes
-      cpufreq: armada-8k: Avoid excessive stack usage
-      opp: ti: Drop unnecessary of_match_ptr()
-      cpufreq: Enable COMPILE_TEST on Arm drivers
-      cpufreq: Drop CONFIG_ARM and CONFIG_ARM64 dependency on Arm drivers
+ drivers/cpufreq/omap-cpufreq.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
- drivers/cpufreq/Kconfig             |  2 --
- drivers/cpufreq/Kconfig.arm         | 50 ++++++++++++++++++++++---------------
- drivers/cpufreq/armada-8k-cpufreq.c |  2 +-
- drivers/cpufreq/omap-cpufreq.c      |  3 ---
- drivers/cpufreq/qcom-cpufreq-hw.c   |  1 +
- drivers/opp/ti-opp-supply.c         |  2 +-
- 6 files changed, 33 insertions(+), 27 deletions(-)
----
-base-commit: 8400291e289ee6b2bf9779ff1c83a291501f017b
-change-id: 20240805-dt-api-cleanups-d63eb4f53423
+diff --git a/drivers/cpufreq/omap-cpufreq.c b/drivers/cpufreq/omap-cpufreq.c
+index 3458d5cc9b7f..de8be0a8932d 100644
+--- a/drivers/cpufreq/omap-cpufreq.c
++++ b/drivers/cpufreq/omap-cpufreq.c
+@@ -28,9 +28,6 @@
+ #include <linux/platform_device.h>
+ #include <linux/regulator/consumer.h>
+ 
+-#include <asm/smp_plat.h>
+-#include <asm/cpu.h>
+-
+ /* OPP tolerance in percentage */
+ #define	OPP_TOLERANCE	4
+ 
 
-Best regards,
 -- 
-Rob Herring (Arm) <robh@kernel.org>
+2.43.0
 
 
