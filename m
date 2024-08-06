@@ -1,105 +1,98 @@
-Return-Path: <linux-omap+bounces-1862-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1863-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39E0194931A
-	for <lists+linux-omap@lfdr.de>; Tue,  6 Aug 2024 16:31:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18C2A949334
+	for <lists+linux-omap@lfdr.de>; Tue,  6 Aug 2024 16:36:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4F011F21C2C
-	for <lists+linux-omap@lfdr.de>; Tue,  6 Aug 2024 14:31:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C00881F2512B
+	for <lists+linux-omap@lfdr.de>; Tue,  6 Aug 2024 14:36:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA7331D27A3;
-	Tue,  6 Aug 2024 14:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18D9E1D47A2;
+	Tue,  6 Aug 2024 14:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="obsp8+xN"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="cE+AUJ4q"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D7111C3F0A;
-	Tue,  6 Aug 2024 14:31:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A43B1D1F4E;
+	Tue,  6 Aug 2024 14:35:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722954668; cv=none; b=LTqtlryt2tAHyJyouZsSMnCT1r19Ozim0U0RjvvvnC508HNgcWVhsui/O0dGxqskEheYvO1e13JnriWfHQ2Fynd+E/MOkyq9SAUmSjuYkelSHyaLqjnEVfvPKrpW4I+SWstJjTRVoeYXK505wH71y5AvHCagGnH+/8va8UN4paE=
+	t=1722954937; cv=none; b=KVpU8ja0bi3yyQ7etp+4N1j6F15mq3vqzoU9KcLUEb7jMSs/3YgUqxfXO3AoEszHJGo8RSbGfg/TLkHv5W9FJa9VO8CL2dox+CklAa/ORY7q/b5U7h/fBVKbrmiKmpjYoEeI+iRPhukSmb2Dgq07PvI+SzdlT06SD7H35yrsjdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722954668; c=relaxed/simple;
-	bh=z9Z+g2feDnkuhfvIGe/3YA3l9cpUOQrggJcUaFTCHSI=;
+	s=arc-20240116; t=1722954937; c=relaxed/simple;
+	bh=Uw6HRtpZl8EfaERoyXUbtABtnWbIWcooNpV9YaxkyjI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Qcmajm2dX1jyudhuWBM/MqBOsfM76Sf2EfFc9Zfg2rhM6WeXnIh4HHmjGm7dyE9aRALkKqCy77ellgwMBiWWBw38ip3t01rWMIjyprgdXOGmjFrwgNUbRmTyrCJzq87Uh/ZAfQCdGYKr71auqCH2wsI+URdFOFxf2dXDRhVzh1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=obsp8+xN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C6F5C4AF09;
-	Tue,  6 Aug 2024 14:31:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722954668;
-	bh=z9Z+g2feDnkuhfvIGe/3YA3l9cpUOQrggJcUaFTCHSI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=obsp8+xN5zt6o407KwVLtuBGkJRaQ3lleXX2XMVXdE07H+7189ETnUKv6mzJ3A11o
-	 VUA8uSWUd3JB+4867dYWg+RrRDvOsoml2MoxFSv9nxcHH7wZ+pw8xpCuWOlUlgy5pD
-	 4zGa42yEl5YJqrRp+gwujnbwrK4kzKT4zkCmkMoxjy3XxOE1BRFKejfwsndwC7us6u
-	 ap7pBThfUCYKm/+gnamciSriQx/WZONvyftc+RXw/ah4Kk/6DGwTyZ0pr3Y4Px9kMv
-	 wSZdkZAtanHy7tbK5j+PdsGh0OxXm50W1qNgI6JhRGzy7D9Vz9kZ2WcIwDKaqfA4li
-	 tHYJvK/GAPrbQ==
-Date: Tue, 6 Aug 2024 15:30:59 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Cc: Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>,
-	Helge Deller <deller@gmx.de>, Jaroslav Kysela <perex@perex.cz>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Maxime Ripard <mripard@kernel.org>,
-	Michal Simek <michal.simek@amd.com>, Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Takashi Iwai <tiwai@suse.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linux-arm-kernel@lists.infradead.org, linux-fbdev@vger.kernel.org,
-	linux-media@vger.kernel.org, linux-omap@vger.kernel.org,
-	linux-sound@vger.kernel.org
-Subject: Re: [PATCH 6/9] ASoC: audio-graph-card2: use new of_graph functions
-Message-ID: <69dddb47-d213-4bab-9254-3e106c6f4901@sirena.org.uk>
-References: <87mslqw8mj.wl-kuninori.morimoto.gx@renesas.com>
- <87ed72w8l5.wl-kuninori.morimoto.gx@renesas.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=u6bK28Dqnly2IagcoCMLP+dSgKIqCwnV1YvVSQwBX7InuL8Saec/Z/Iv5Ewscl8Kt2BH+b2S7efFD898XcNK39XwGuS9Rfgzdw8v0KRrFrNz+hPO/dNYFPwHbusyYEtt2JoWrxF0Wreddqk9jdpgK76rGcMlXXVnuc+E4DLOZhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=cE+AUJ4q; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 98A3220284;
+	Tue,  6 Aug 2024 16:35:23 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1722954924;
+	bh=fGtGysqRw2M+SB4BHIAeHaD7D+DJXET7byhHYZ12njk=; h=From:To:Subject;
+	b=cE+AUJ4qwRpoqscFcQYUl597p/+2xAYsBs0yS78ta+rfpc83a74oRDlV1dp0+C83m
+	 dphzyJryQhUYJJRO6jufn6x8Glz9z244tud7rZUnVy9f8WmjMNpUZulOBvWbzm6J5I
+	 MywqLZ1LhltSIoK5m/addWAtXzZYDeKkDjuYJH3WBiuBaqdVsVllmiz7QmY3UxX6vK
+	 g40oXQfHt29ufPMte6s4UJkLWfN43sNWzL7gd18mgAV2V02Fh82aw8nhNnBKxHHo5x
+	 LMTIG6NT2QZocJ3ora97d7bdjngueLyRv1ccY+c83wmwiR1L/p3l0IgOGct5jHOG5p
+	 kCM4a2JV4zZtA==
+Date: Tue, 6 Aug 2024 16:35:19 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Francesco Dolcini <francesco@dolcini.it>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Cc: Nishanth Menon <nm@ti.com>, Vignesh Raghavendra <vigneshr@ti.com>,
+	Tero Kristo <kristo@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+	linux-pci@vger.kernel.org
+Subject: Re: [PATCH v1 0/2] PCI: ti: k3: Fix TI J721E PERST# polarity
+Message-ID: <20240806143519.GA176293@francesco-nb>
+References: <20240703100036.17896-1-francesco@dolcini.it>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="rB+6M9oEMqdlod6b"
-Content-Disposition: inline
-In-Reply-To: <87ed72w8l5.wl-kuninori.morimoto.gx@renesas.com>
-X-Cookie: One picture is worth 128K words.
-
-
---rB+6M9oEMqdlod6b
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20240703100036.17896-1-francesco@dolcini.it>
 
-On Tue, Aug 06, 2024 at 04:58:46AM +0000, Kuninori Morimoto wrote:
-> Now we can use new port related functions for port parsing. Use it.
+Hello Bjorn, Krzysztof W., Lorenzo
 
-Acked-by: Mark Brown <broonie@kernel.org>
+On Wed, Jul 03, 2024 at 12:00:34PM +0200, Francesco Dolcini wrote:
+> From: Francesco Dolcini <francesco.dolcini@toradex.com>
+> 
+> Fix PCIe PERST# signal polarity in TI J721E used on TI K3 machines.
+> 
+> PCIe PERST# needs to be de-asserted for PCIe to work, however, the driver is
+> doing the opposite and the device tree files are defining the signal with the
+> wrong polarity to cope with that. Fix both the driver and the affected DT
+> files.
 
---rB+6M9oEMqdlod6b
-Content-Type: application/pgp-signature; name="signature.asc"
+I just had a chat in IRC about this series with Nishanth. He agrees that
+this should be merged, even considering that this implies breaking the
+compatibility with old device tree blobs.
 
------BEGIN PGP SIGNATURE-----
+However we should be sure that both patches get merged in a coordinated
+way, to avoid breaking stuff within the same kernel release.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmayM6IACgkQJNaLcl1U
-h9CTwAf/Rp21kyj9Xxk/Pgim3nZw/IcEQiQrO6hVmgLckzIHLowfAKfMHUqbxAgj
-VXm75UKaVh8XHua24r5snBRJPfW+enIHuUEQ6AJ78zPT+Pbu34QC0fmTzbpc/8RJ
-sNBDx96xPxdHab9mqWpxwIzzIBpTpUUQN+5nuUxwB8lcVLsxWQ+uYdkYPcSd+kXL
-BPn01TohuSAzI8zjLX5P/+9jW0f3VPpk1shUnoKAXbQt6aYoDfoKfcj/YUaS0VLX
-rM257+kSHiWLGxkcuc4b5pd7hY70ZnWF5n1jgE3fNv85ro3THq5RLzLryrYy+KCm
-nq4Vz1m2Hlp2gQ8MuykKVTjJ9JheRA==
-=ySqz
------END PGP SIGNATURE-----
+What would be your advise to move forward? Are you ok with the change?
+Should I split this series in 2 separated patch?
 
---rB+6M9oEMqdlod6b--
+Francesco
+
 
