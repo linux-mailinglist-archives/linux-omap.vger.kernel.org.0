@@ -1,161 +1,98 @@
-Return-Path: <linux-omap+bounces-1876-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1877-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07E2A94BD2F
-	for <lists+linux-omap@lfdr.de>; Thu,  8 Aug 2024 14:15:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FE0394BE50
+	for <lists+linux-omap@lfdr.de>; Thu,  8 Aug 2024 15:16:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AAA7A1F20631
-	for <lists+linux-omap@lfdr.de>; Thu,  8 Aug 2024 12:15:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E04E828D3A9
+	for <lists+linux-omap@lfdr.de>; Thu,  8 Aug 2024 13:16:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D4CC154C17;
-	Thu,  8 Aug 2024 12:15:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA09118DF69;
+	Thu,  8 Aug 2024 13:16:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="hD+Csibd"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lXiLTl6L"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from msa.smtpout.orange.fr (smtp-68.smtpout.orange.fr [80.12.242.68])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A19AC1487C1;
-	Thu,  8 Aug 2024 12:15:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20BF018A6DD;
+	Thu,  8 Aug 2024 13:15:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723119348; cv=none; b=e68/bgkiAG3/ZDg98P+vgjIMrQctGo+ebDrSO/Y7KOUHAcsqIKa+xiK0td+yc/ltSLjNfR5WMepbcxe5lPXuL9ShPsEYPvA5vykdAe2hjU8ZRc5GeIoz/bVe7JNwlNekM6Zq4VKwVXrMi9uT4SEDZO8GLf3t+9dz/VVsCVvf6bU=
+	t=1723122961; cv=none; b=OJbDC0eKV913dk1G6vJrGBgp1AFWv7IshJb0FTO2FFTIUUndVmO2U8Zma9d3qFjiLCUVyc93FRl05nPIAxd8bV24lC3JZjBqmvSN2J+BEY9K1KaeBonpuGYX3oJWeO81yWR0jkP5RlM9HC/MGqa9PhT8oJP3QTqHXY9k+4oOy08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723119348; c=relaxed/simple;
-	bh=Zs9GV/PpP2+HT8ueJvw8gaqWxgXPaZn9fnfCTlh3r60=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Jr6aAJYWzfRC8MIioi5j9pHWPgdlEXblrsp+cbaFQSVwxt+ivRbaZO34HsagjDQDsgq10opvjMcEjOv+O91K3yx5ZufjK0beH7c2uvyAkvwV4u3+WqByNzyOIGjax1lzy0eNobzQbGFj98zpmXTwpakNDodlX+Wmh0K282iYOuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=hD+Csibd; arc=none smtp.client-ip=80.12.242.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from fedora.home ([90.11.132.44])
-	by smtp.orange.fr with ESMTPA
-	id c22FsjXg34i5oc22Fso0uS; Thu, 08 Aug 2024 14:14:28 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1723119268;
-	bh=TbFcLFR+Ykm8NP38Tp75wjsIr7BQ5vw52Zbiz2qPNlU=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=hD+CsibdhzHAo/JWY6/xhOGcKWFp4t1OqiinJJdJzzFWH8y6Jj68TkqUqU0MkjQid
-	 cSW9gMb9MxcyxX7PkDNh3hUIhEJwINUAdnIhMAI9jckcidhnZ5dRwMxrmkSkmTomrx
-	 tXw4lRt2hvormIgNEf7c/xqzBD5GPpbaTPHM3giGfiUCdIfp2AtZa0NhGoARpsVIb0
-	 /vbtQ1VJWGc9jxWVFpuq/cPq5scIvrkGbgf5culmP0qc9Z6NIlupfgFiR8H2Y8Gf5n
-	 /08GZ1Aye7xF0XOEWDB0f1/YjZhCBKPJTEVGK1NdMULEwQlFzWNesieeoQo1y7jZmC
-	 KPoPygM+NBp6A==
-X-ME-Helo: fedora.home
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Thu, 08 Aug 2024 14:14:28 +0200
-X-ME-IP: 90.11.132.44
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To: Helge Deller <deller@gmx.de>
-Cc: linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	linux-fbdev@vger.kernel.org,
-	linux-omap@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH] fbdev: omapfb: Use sysfs_emit_at() to simplify code
-Date: Thu,  8 Aug 2024 14:14:22 +0200
-Message-ID: <fa1c03aded0c36585d29991d85d083853c3ca871.1723119220.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.46.0
+	s=arc-20240116; t=1723122961; c=relaxed/simple;
+	bh=LDwvaXSQU6mgwf6BXtOXY9FsaYa+mYPA6eepzvwf6lk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sF4kVx+ManBMOWRGNk/wkMpnIKhDqoDENjUIOr/yXEBoGwFg1Cy7QCwYLlDzh4tDfXgz5ZO/ZF0zAQIXcC62Aqqrsn5Ueu/V6oF1HkwY/+hs6HUX/YPRst7U1SvZul9eMYyetuzQrVXNnV5NQfokNGMm6W3VVNtC86ok3pvSnWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lXiLTl6L; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1723122961; x=1754658961;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=LDwvaXSQU6mgwf6BXtOXY9FsaYa+mYPA6eepzvwf6lk=;
+  b=lXiLTl6L4h3z3pdPdr8j/1DrhubkO6jx0VVdBhAUNAKHBRcHZlJyv1xQ
+   CveeYsDAww0Oo42mU1bHlu/MOZ1tAhyymikhYvb01lM//98sDAYh7ic1i
+   74D5H4x5wyDH6GST1BLqRExY3gwmdTr9JLw6egMdZOk2jsKVo41TZKaGT
+   TzRmXNLHoNqPzzf4IZ6d9KxmfVtnwpGBlrMIt+XckS+NQRoSrlPbpdUn7
+   LWSwucIAn1Cy+bH6o9tYOpsfUrJJR4mp23pndoLi/yb019BYRKb9JAcJ3
+   smO0bS7Ghh8HPpufcgsI4fEtwjA6b7sS7/bsVlsmtv/b451AjNEWcBjh3
+   A==;
+X-CSE-ConnectionGUID: 0RxPXsw6SDyxDcv2Eoicww==
+X-CSE-MsgGUID: aztUXvBASueXBCgADK47Aw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11158"; a="21388393"
+X-IronPort-AV: E=Sophos;i="6.09,273,1716274800"; 
+   d="scan'208";a="21388393"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2024 06:15:59 -0700
+X-CSE-ConnectionGUID: YW7BaXndT9SqanKjBLaFsA==
+X-CSE-MsgGUID: PR3hQc8tTxqLm6ocscYWzA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,273,1716274800"; 
+   d="scan'208";a="57924489"
+Received: from fpallare-mobl3.ger.corp.intel.com (HELO intel.com) ([10.245.245.81])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2024 06:15:52 -0700
+Date: Thu, 8 Aug 2024 14:15:46 +0100
+From: Andi Shyti <andi.shyti@linux.intel.com>
+To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: Helge Deller <deller@gmx.de>, linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org, linux-fbdev@vger.kernel.org,
+	linux-omap@vger.kernel.org, dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH] fbdev: omapfb: Use sysfs_emit_at() to simplify code
+Message-ID: <ZrTFAk5DCmYAKR8F@ashyti-mobl2.lan>
+References: <fa1c03aded0c36585d29991d85d083853c3ca871.1723119220.git.christophe.jaillet@wanadoo.fr>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <fa1c03aded0c36585d29991d85d083853c3ca871.1723119220.git.christophe.jaillet@wanadoo.fr>
 
-This file already uses sysfs_emit(). So be consistent and also use
-sysfs_emit_at().
+Hi Christophe,
 
-Moreover, size is always < PAGE_SIZE because scnprintf() (and now
-sysfs_emit_at()) returns the number of characters written not including the
-trailing '\0'. So some tests can be removed.
+On Thu, Aug 08, 2024 at 02:14:22PM +0200, Christophe JAILLET wrote:
+> This file already uses sysfs_emit(). So be consistent and also use
+> sysfs_emit_at().
+> 
+> Moreover, size is always < PAGE_SIZE because scnprintf() (and now
+> sysfs_emit_at()) returns the number of characters written not including the
+> trailing '\0'. So some tests can be removed.
+> 
+> This slightly simplifies the code and makes it more readable.
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-This slightly simplifies the code and makes it more readable.
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-Compile tested only.
-
-2 spaces are added before color_caps[i].name and color_caps[i].name, but
-not ctrl_caps[i].name.
-I wonder if it is done on purpose or if it could be removed as well.
----
- drivers/video/fbdev/omap/omapfb_main.c | 36 ++++++++++----------------
- 1 file changed, 14 insertions(+), 22 deletions(-)
-
-diff --git a/drivers/video/fbdev/omap/omapfb_main.c b/drivers/video/fbdev/omap/omapfb_main.c
-index aa31c0d26e92..e12c6019a4d6 100644
---- a/drivers/video/fbdev/omap/omapfb_main.c
-+++ b/drivers/video/fbdev/omap/omapfb_main.c
-@@ -1241,14 +1241,13 @@ static ssize_t omapfb_show_caps_num(struct device *dev,
- {
- 	struct omapfb_device *fbdev = dev_get_drvdata(dev);
- 	int plane;
--	size_t size;
-+	size_t size = 0;
- 	struct omapfb_caps caps;
- 
- 	plane = 0;
--	size = 0;
--	while (size < PAGE_SIZE && plane < OMAPFB_PLANE_NUM) {
-+	while (plane < OMAPFB_PLANE_NUM) {
- 		omapfb_get_caps(fbdev, plane, &caps);
--		size += scnprintf(&buf[size], PAGE_SIZE - size,
-+		size += sysfs_emit_at(buf, size,
- 			"plane#%d %#010x %#010x %#010x\n",
- 			plane, caps.ctrl, caps.plane_color, caps.wnd_color);
- 		plane++;
-@@ -1263,34 +1262,27 @@ static ssize_t omapfb_show_caps_text(struct device *dev,
- 	int i;
- 	struct omapfb_caps caps;
- 	int plane;
--	size_t size;
-+	size_t size = 0;
- 
- 	plane = 0;
--	size = 0;
--	while (size < PAGE_SIZE && plane < OMAPFB_PLANE_NUM) {
-+	while (plane < OMAPFB_PLANE_NUM) {
- 		omapfb_get_caps(fbdev, plane, &caps);
--		size += scnprintf(&buf[size], PAGE_SIZE - size,
--				 "plane#%d:\n", plane);
--		for (i = 0; i < ARRAY_SIZE(ctrl_caps) &&
--		     size < PAGE_SIZE; i++) {
-+		size += sysfs_emit_at(buf, size, "plane#%d:\n", plane);
-+		for (i = 0; i < ARRAY_SIZE(ctrl_caps); i++) {
- 			if (ctrl_caps[i].flag & caps.ctrl)
--				size += scnprintf(&buf[size], PAGE_SIZE - size,
-+				size += sysfs_emit_at(buf, size,
- 					" %s\n", ctrl_caps[i].name);
- 		}
--		size += scnprintf(&buf[size], PAGE_SIZE - size,
--				 " plane colors:\n");
--		for (i = 0; i < ARRAY_SIZE(color_caps) &&
--		     size < PAGE_SIZE; i++) {
-+		size += sysfs_emit_at(buf, size, " plane colors:\n");
-+		for (i = 0; i < ARRAY_SIZE(color_caps); i++) {
- 			if (color_caps[i].flag & caps.plane_color)
--				size += scnprintf(&buf[size], PAGE_SIZE - size,
-+				size += sysfs_emit_at(buf, size,
- 					"  %s\n", color_caps[i].name);
- 		}
--		size += scnprintf(&buf[size], PAGE_SIZE - size,
--				 " window colors:\n");
--		for (i = 0; i < ARRAY_SIZE(color_caps) &&
--		     size < PAGE_SIZE; i++) {
-+		size += sysfs_emit_at(buf, size, " window colors:\n");
-+		for (i = 0; i < ARRAY_SIZE(color_caps); i++) {
- 			if (color_caps[i].flag & caps.wnd_color)
--				size += scnprintf(&buf[size], PAGE_SIZE - size,
-+				size += sysfs_emit_at(buf, size,
- 					"  %s\n", color_caps[i].name);
- 		}
- 
--- 
-2.46.0
-
+Thanks,
+Andi
 
