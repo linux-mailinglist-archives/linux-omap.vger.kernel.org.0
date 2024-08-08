@@ -1,48 +1,48 @@
-Return-Path: <linux-omap+bounces-1871-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1872-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B83894BA72
-	for <lists+linux-omap@lfdr.de>; Thu,  8 Aug 2024 12:05:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C674394BA7A
+	for <lists+linux-omap@lfdr.de>; Thu,  8 Aug 2024 12:05:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5CE6280D4C
-	for <lists+linux-omap@lfdr.de>; Thu,  8 Aug 2024 10:05:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20BB72825CF
+	for <lists+linux-omap@lfdr.de>; Thu,  8 Aug 2024 10:05:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CE6C189BBE;
-	Thu,  8 Aug 2024 10:04:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FB7D189F48;
+	Thu,  8 Aug 2024 10:05:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="g3pWo0DM"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="WTd2e0PH"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4538F33E8;
-	Thu,  8 Aug 2024 10:04:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E8C41482E9;
+	Thu,  8 Aug 2024 10:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723111491; cv=none; b=KZC6jxdHgmVdtf00KSq4KEOdHsaZnPNGcX2jXDVRdhG6jwL4hqUvxLQ6YIVOZDltebQtu8V68zgDlZ7Tu/ENzFNETz9VWUjl0qQa7XdmBPFS/TxJ4VN6dPlLOQoKc7qYDI9jamuknDABl+QayAihITJpUcBC4+eOTz1en5SGGqk=
+	t=1723111545; cv=none; b=IDgjX/CNU6s/5s7pzY5Dw8PdBJCqqzZizu+kDMwrdST2VfY710CRUqKxLL/XObkCK3/SOHNsJdrtDMyAVjO4RRTgWglzUxDqPWhTKthFe9DLRcEo+xEmZ4CcXm0c0x/WAnPyl1re3lMi53IraO1bSxT43RN+2eGXi/ajbFBsN9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723111491; c=relaxed/simple;
-	bh=37p0M0TLlm+TT63fiy+xRY316v479tmW3lWup3+5e00=;
+	s=arc-20240116; t=1723111545; c=relaxed/simple;
+	bh=Uvx2tBlG6/IiUm8k1WuVBUWE5IPhdyIVCMverGA7nuQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:References:Cc:From:
-	 In-Reply-To:Content-Type; b=QwMG3Ybh2SnPWfkZ1NbOGadP7afUhYEiksgXIuuUkqGGJ8IYgLg2PI5vh6qR2B0IonGO28ay/+U2P7q9wT5COIPk0ysnD8Je4PVK+Rs8N/Rp2QZOazF70K2eW+VujRzCGNpjo7XMwgPxQ5SGBs0b4dXZIpSmNxYvn3grE9rTV4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=g3pWo0DM; arc=none smtp.client-ip=213.167.242.64
+	 In-Reply-To:Content-Type; b=inhQ4I/aDidlTb3NXrmLlpv1f7IK7QlHyKBjy4g9nXAeEJAzBhUqu5bVGenzfTP7AepLvn4aXMumE1RbOsWDYIaWuuEH9P/PjAap6oK1c3vr3fV+lPpBHKdhzZ6EsqqievDijNFyTq21mvA6IFlOfWSueNlqGrIyod603Yb8O90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=WTd2e0PH; arc=none smtp.client-ip=213.167.242.64
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Received: from [192.168.88.20] (91-156-87-48.elisa-laajakaista.fi [91.156.87.48])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 2AA6C581;
-	Thu,  8 Aug 2024 12:03:53 +0200 (CEST)
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 770098D0;
+	Thu,  8 Aug 2024 12:04:47 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1723111434;
-	bh=37p0M0TLlm+TT63fiy+xRY316v479tmW3lWup3+5e00=;
+	s=mail; t=1723111488;
+	bh=Uvx2tBlG6/IiUm8k1WuVBUWE5IPhdyIVCMverGA7nuQ=;
 	h=Date:Subject:To:References:Cc:From:In-Reply-To:From;
-	b=g3pWo0DM8CffEzGthyfhto+TuYP665VNsQ7Cu5mKBf203MNyQtmZsA8qT8a4Ai7bq
-	 lvyvBP8xDEXLMAY7A1k3VV0ugjgwhCNfNIW6tiwMRUrUeVAfw2QftcBwILrwdX0sx+
-	 /JMDIw9LlWA6GB1O9LFR4/4U2D3kDROhD3W4EG5E=
-Message-ID: <b825a95f-1f1d-419b-983d-e70b693f6520@ideasonboard.com>
-Date: Thu, 8 Aug 2024 13:04:43 +0300
+	b=WTd2e0PHXCubNC4snwhlTGEpQP5u8sWQxWKWfuOnoo/0gHFSh4xVBcok7XDWH0K0m
+	 K2WAIe7dbHeQs0cIS6jrktmataQGZ1IhD4UWRJbLUlecAMp9QgS7qIiI3Dunj2lFy8
+	 VLQZFQBTQjxwwpjZolIsEJ3jLonF7+5Wv+lRxYRY=
+Message-ID: <c447b11f-bd68-4449-b182-e3f699619493@ideasonboard.com>
+Date: Thu, 8 Aug 2024 13:05:37 +0300
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -50,10 +50,10 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7/9] gpu: drm: omapdrm: use new of_graph functions
+Subject: Re: [PATCH 9/9] media: xilinx-tpg: use new of_graph functions
 To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 References: <87mslqw8mj.wl-kuninori.morimoto.gx@renesas.com>
- <87cymmw8l1.wl-kuninori.morimoto.gx@renesas.com>
+ <87a5hqw8kt.wl-kuninori.morimoto.gx@renesas.com>
 Content-Language: en-US
 Cc: Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>,
  Helge Deller <deller@gmx.de>, Jaroslav Kysela <perex@perex.cz>,
@@ -112,7 +112,7 @@ Autocrypt: addr=tomi.valkeinen@ideasonboard.com; keydata=
  ueeIlwJl5CpT5l8RpoZXEOVtXYn8zzOJ7oGZYINRV9Pf8qKGLf3Dft7zKBP832I3PQjeok7F
  yjt+9S+KgSFSHP3Pa4E7lsSdWhSlHYNdG/czhoUkSCN09C0rEK93wxACx3vtxPLjXu6RptBw
  3dRq7n+mQChEB1am0BueV1JZaBboIL0AGlSJkm23kw==
-In-Reply-To: <87cymmw8l1.wl-kuninori.morimoto.gx@renesas.com>
+In-Reply-To: <87a5hqw8kt.wl-kuninori.morimoto.gx@renesas.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
@@ -121,52 +121,30 @@ On 06/08/2024 07:58, Kuninori Morimoto wrote:
 > 
 > Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 > ---
->   drivers/gpu/drm/omapdrm/dss/dpi.c | 3 ++-
->   drivers/gpu/drm/omapdrm/dss/sdi.c | 3 ++-
->   2 files changed, 4 insertions(+), 2 deletions(-)
+>   drivers/media/platform/xilinx/xilinx-tpg.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/gpu/drm/omapdrm/dss/dpi.c b/drivers/gpu/drm/omapdrm/dss/dpi.c
-> index 030f997eccd0..b17e77f700dd 100644
-> --- a/drivers/gpu/drm/omapdrm/dss/dpi.c
-> +++ b/drivers/gpu/drm/omapdrm/dss/dpi.c
-> @@ -16,6 +16,7 @@
->   #include <linux/export.h>
->   #include <linux/kernel.h>
+> diff --git a/drivers/media/platform/xilinx/xilinx-tpg.c b/drivers/media/platform/xilinx/xilinx-tpg.c
+> index e05e528ffc6f..a25f216b2513 100644
+> --- a/drivers/media/platform/xilinx/xilinx-tpg.c
+> +++ b/drivers/media/platform/xilinx/xilinx-tpg.c
+> @@ -13,6 +13,7 @@
+>   #include <linux/gpio/consumer.h>
+>   #include <linux/module.h>
 >   #include <linux/of.h>
 > +#include <linux/of_graph.h>
 >   #include <linux/platform_device.h>
->   #include <linux/regulator/consumer.h>
->   #include <linux/string.h>
-> @@ -709,7 +710,7 @@ int dpi_init_port(struct dss_device *dss, struct platform_device *pdev,
->   	if (!dpi)
->   		return -ENOMEM;
+>   #include <linux/xilinx-v4l2-controls.h>
 >   
-> -	ep = of_get_next_child(port, NULL);
-> +	ep = of_graph_get_next_port_endpoint(port, NULL);
->   	if (!ep)
->   		return 0;
+> @@ -744,7 +745,7 @@ static int xtpg_parse_of(struct xtpg_device *xtpg)
+>   		}
 >   
-> diff --git a/drivers/gpu/drm/omapdrm/dss/sdi.c b/drivers/gpu/drm/omapdrm/dss/sdi.c
-> index 91eaae3b9481..f9ae358e8e52 100644
-> --- a/drivers/gpu/drm/omapdrm/dss/sdi.c
-> +++ b/drivers/gpu/drm/omapdrm/dss/sdi.c
-> @@ -11,6 +11,7 @@
->   #include <linux/export.h>
->   #include <linux/kernel.h>
->   #include <linux/of.h>
-> +#include <linux/of_graph.h>
->   #include <linux/platform_device.h>
->   #include <linux/regulator/consumer.h>
->   #include <linux/string.h>
-> @@ -346,7 +347,7 @@ int sdi_init_port(struct dss_device *dss, struct platform_device *pdev,
->   	if (!sdi)
->   		return -ENOMEM;
->   
-> -	ep = of_get_next_child(port, NULL);
-> +	ep = of_graph_get_next_port_endpoint(port, NULL);
->   	if (!ep) {
->   		r = 0;
->   		goto err_free;
+>   		if (nports == 0) {
+> -			endpoint = of_get_next_child(port, NULL);
+> +			endpoint = of_graph_get_next_port_endpoint(port, NULL);
+>   			if (endpoint)
+>   				has_endpoint = true;
+>   			of_node_put(endpoint);
 
 Reviewed-by: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
 
