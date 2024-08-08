@@ -1,108 +1,119 @@
-Return-Path: <linux-omap+bounces-1864-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1865-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 061C6949516
-	for <lists+linux-omap@lfdr.de>; Tue,  6 Aug 2024 18:02:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2374594B576
+	for <lists+linux-omap@lfdr.de>; Thu,  8 Aug 2024 05:30:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A597A1F2A313
-	for <lists+linux-omap@lfdr.de>; Tue,  6 Aug 2024 16:02:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 03C1CB22354
+	for <lists+linux-omap@lfdr.de>; Thu,  8 Aug 2024 03:30:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AC07381AA;
-	Tue,  6 Aug 2024 16:00:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24BA97F484;
+	Thu,  8 Aug 2024 03:30:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="LhiwFq10"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-oo1-f47.google.com (mail-oo1-f47.google.com [209.85.161.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7FE6EAD2
-	for <linux-omap@vger.kernel.org>; Tue,  6 Aug 2024 16:00:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D10626AF7
+	for <linux-omap@vger.kernel.org>; Thu,  8 Aug 2024 03:29:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722960015; cv=none; b=JR1rgRWrOd+N2F7kDhwfvkXIZX77cAIL+jvk7CKp+3JW4tmPv9pqtQxZxNjup2zU80r5o3XCw+M5E+qyDEP+MZEGx9erXKNXPzcn/b+nAR0Qf45fRW9TfoaRSNl7iSzTmJI3saRByWK63vGWWc79x9RWRVRP9oq2sfXHZRhoRyI=
+	t=1723087801; cv=none; b=CF/i0ySak89xOeQsGT7q1E7iOLRpHCLXdF1vzHzzrDS7V6yTQcLlx8qLVg338R0b17tGd1hqcL4T6VpGVDWD4Q7ZW/MQUrwU1t+FInq4f+P0NKWZ40IYSXrdI8EdhRfo8qyVOVePvM0LVht784sHGJU0gAiQogR96MNUGldfWic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722960015; c=relaxed/simple;
-	bh=AJHk99JRG5OpJoSoQueFp2kEW1qBz/ld8n7MnXvLs9E=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=cLDs4tovEJ4yKtlWkj7d+ktLmIawdNeNHdw+a3teEIELENnEZgNdXzZPvU8vLT2iWMzdEEQUpt3TZBQpSAEZqJnI8LUeuDaKTKe0dDS5Blm/L7n8LMWwPxszbit1GyycEQTE2Kl5vLNjRMIh0F2yHuZCl6fozTbc724yrbl5x8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=baylibre.com; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-1fc5549788eso6835275ad.1
-        for <linux-omap@vger.kernel.org>; Tue, 06 Aug 2024 09:00:13 -0700 (PDT)
+	s=arc-20240116; t=1723087801; c=relaxed/simple;
+	bh=NNTuC94XhuZhDhrQS3QsAXSIBagRUogg9FNt4uigfZk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sRI15SvtTryo4lP6brDFmqK5DyUgJjpcNszpZ6M6I4ttDGdVKzoc1OWV/VkHgC6joHfjjN9HXehAKidhdR0nPMfioKzVcAej5yQ5OdpOkH8qYIz/itjG+wudyj3bZXcgg+ZMcQTUQ91L3Go+9fzi8uMGlwHA3MHHwXCzKydV/YA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=LhiwFq10; arc=none smtp.client-ip=209.85.161.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-5c661e75ff6so339847eaf.2
+        for <linux-omap@vger.kernel.org>; Wed, 07 Aug 2024 20:29:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1723087798; x=1723692598; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=01aWtP1xPWHBVXs5lQjLNJmhvUCclZ42tYEJQkcTgC8=;
+        b=LhiwFq10F+aD1sdLKd8aTx4ODEy+oJkKHRhnYqtG0MMlPLaABIlDbSt7ztHOoiJLXt
+         P8zK8JSo4xSSHSKIZ5v7WRCKXr28Y1OMmxVTrJMsGX4Fb87V7naTD+S2EGbHbvxAjjkR
+         B62Af5UrSQD7Bg1BOFqT0gYVUreDN+WzG5Fj/y6jOWhnTEhJvW6qLg6c0f79yVbIUvB8
+         oZig5YIrBcDFiNAXiYB/Cm508MEadmvBzxHemLwco5eZ2KL4NYQJge15OyyF7vlANRlx
+         Pfj1njtRZZ+v8FRQQhtuNU1VpwAa8Vb0XS22cIFd43GmJbnlI3Z109UIFGanIsAk1xi9
+         0yCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722960013; x=1723564813;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=N0OH1lK0iyrEFjZ+sxfEDU/w6C/qIfjEuNJOJDkGoH0=;
-        b=buThCOtWIZFfcGxc7AurF4Fva/SVVu0H2n4N41es9GPaBkKDK+KykBDwfAWIczRvh/
-         YwIjRVh9OcQg/3E9so8KybeoWCTdZiVS3TYX2cuZnCEgNeOyy8ua11h5swqz+uVt+KJ9
-         DeU0Y/9czlwwWmbXs7/90sZoMyp/XlqLfkweu/FETesb1KGhPFI1WQjaY/9JIzwu8F9Y
-         4QhM/B/iu0yOrhZmsqSIFxX4CT8kAtjmxvMeyCU+dTIGYmzTxZrDqJ2xP1mCRdf5dH3a
-         UI2sM/8HOvfdBNmxzZ7g9x6v2lUOyuxgOf8kv0tezIHNSDCNsaHkhrJLPLOAX/8My4/2
-         mihQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWRtmaxErt57cGJ0PLZZJR1ndRrK3xB+Icp9JhDtIvxtTHw+FHNeCdUrCX/F2kaiZOGQGLF4eQu9w5PsmSrCUZESqgkFJIPtQieMg==
-X-Gm-Message-State: AOJu0YzLElwYjgybNhTlKPoD2HavBauJg5Ow8ISdTiqdE4V3npIrEQaA
-	tBiirjpj4WTvzMFIyvuQPXJyp4DBPQQprCTYohPAnL3UjsgGbqMdwqhQIv9pZxM=
-X-Google-Smtp-Source: AGHT+IHwXaMUruJCX9M/RHqtmhUbj4EyviX70/VCd+gvNCZm8JC044UbL01+TgvDOTnUpG7G2lRLZQ==
-X-Received: by 2002:a17:902:e54f:b0:1fb:9627:b348 with SMTP id d9443c01a7336-1ff57495ca7mr237971045ad.58.1722960012898;
-        Tue, 06 Aug 2024 09:00:12 -0700 (PDT)
-Received: from localhost ([71.212.170.185])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1ff5905fec0sm89249425ad.149.2024.08.06.09.00.12
+        d=1e100.net; s=20230601; t=1723087798; x=1723692598;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=01aWtP1xPWHBVXs5lQjLNJmhvUCclZ42tYEJQkcTgC8=;
+        b=FNUTvv2dHW8/Ltf+yk2Z9d2fcImW7lHa21cpXlDLQil8sfsN7MwGFg75Jt/PlmL9TO
+         KrR1UW3MGVNqrIaXZelJW0ruxKqJuvbY3mS7tUaaleqW8y+by16X9AeHtUphz7GH9NWg
+         dR09ZuD/li1CxRy/lSELrcJjfqpierpKBq5ypnJ8R0Ver+QmzslIvTU9aGSq/aOHCDcV
+         wKYlJVBZX7so6m7ICAMQP7CIiWiXIc/CP21XTVoz4+9gfaGp98jRQMtm08a9usaapGAl
+         kuyFgHoJ6PKjS+5EIB6TbCoIf6OxwzCRB3sqRAMIqS84u2pke+5Lb/jrMJZX9xQv80kN
+         4gFA==
+X-Forwarded-Encrypted: i=1; AJvYcCUwm7NyJdInN1U3/qMHxDbQLfC7aSB65MjisvKQ+Zjv2FGaIC/2juoh8FLE46yLynPsTjvan3hC8y+T@vger.kernel.org
+X-Gm-Message-State: AOJu0YzC7cuH0//qRoCxZE5TTUwyaKdlYeZEqTKWDe/HcpYEv/iTdw3t
+	w4lGd2MO8U1JeR7CsEkve1ApUkgx9ynC5YQzIGLLJtpu+vw6jtK/MZBa/1hJB70=
+X-Google-Smtp-Source: AGHT+IEpSWEleoN6z68EahBVUey4dWAXs0UACNyEwvkfecwreve69icdPVyIekFeZZlLj8kCtH2Cbg==
+X-Received: by 2002:a05:6358:61c9:b0:1ac:ef39:fd6 with SMTP id e5c5f4694b2df-1b15cfee7a7mr96947355d.28.1723087798113;
+        Wed, 07 Aug 2024 20:29:58 -0700 (PDT)
+Received: from localhost ([122.172.84.129])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1ff590608casm113256985ad.159.2024.08.07.20.29.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Aug 2024 09:00:12 -0700 (PDT)
-From: Kevin Hilman <khilman@kernel.org>
-To: "Rob Herring (Arm)" <robh@kernel.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, Andrew Lunn
- <andrew@lunn.ch>, Gregory Clement <gregory.clement@bootlin.com>, Sebastian
- Hesselbarth <sebastian.hesselbarth@gmail.com>, Nishanth Menon <nm@ti.com>,
- Stephen Boyd <sboyd@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 2/6] cpufreq: omap: Drop asm includes
-In-Reply-To: <20240806-dt-api-cleanups-v1-2-459e2c840e7d@kernel.org>
+        Wed, 07 Aug 2024 20:29:57 -0700 (PDT)
+Date: Thu, 8 Aug 2024 08:59:53 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Kevin Hilman <khilman@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
+	Gregory Clement <gregory.clement@bootlin.com>,
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+	Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>,
+	linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 0/6] cpufreq: Enable COMPILE_TEST on Arm drivers
+Message-ID: <20240808032953.uzyn4ou5bxm2uood@vireshk-i7>
 References: <20240806-dt-api-cleanups-v1-0-459e2c840e7d@kernel.org>
- <20240806-dt-api-cleanups-v1-2-459e2c840e7d@kernel.org>
-Date: Tue, 06 Aug 2024 09:00:12 -0700
-Message-ID: <7h1q313alv.fsf@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240806-dt-api-cleanups-v1-0-459e2c840e7d@kernel.org>
 
-"Rob Herring (Arm)" <robh@kernel.org> writes:
-
-> The omap driver doesn't actually need asm/smp_plat.h, so drop it.
-> asm/cpu.h is not needed either as linux/cpu.h is already included.
->
+On 06-08-24, 07:58, Rob Herring (Arm) wrote:
+> This series enables building CPUFreq Arm based drivers on multiple 
+> architectures when COMPILE_TEST is enabled.
+> 
+> The drivers for x86 and powerpc appear to be dependent on the 
+> respective arch code, so those can't be similarly enabled for 
+> COMPILE_TEST.
+> 
+> I've built this on arm32, arm64, powerpc, and x86 allmodconfig. It's 
+> been built by 0-day and I fixed a couple of issues from that. I imagine 
+> a few more might crop up when this is added to linux-next.
+> 
 > Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-
-Acked-by: Kevin Hilman <khilman@baylibre.com>
-
 > ---
->  drivers/cpufreq/omap-cpufreq.c | 3 ---
->  1 file changed, 3 deletions(-)
->
-> diff --git a/drivers/cpufreq/omap-cpufreq.c b/drivers/cpufreq/omap-cpufreq.c
-> index 3458d5cc9b7f..de8be0a8932d 100644
-> --- a/drivers/cpufreq/omap-cpufreq.c
-> +++ b/drivers/cpufreq/omap-cpufreq.c
-> @@ -28,9 +28,6 @@
->  #include <linux/platform_device.h>
->  #include <linux/regulator/consumer.h>
->  
-> -#include <asm/smp_plat.h>
-> -#include <asm/cpu.h>
-> -
->  /* OPP tolerance in percentage */
->  #define	OPP_TOLERANCE	4
->  
->
-> -- 
-> 2.43.0
+> Rob Herring (Arm) (6):
+>       cpufreq: qcom: Add explicit io.h include for readl/writel_relaxed
+>       cpufreq: omap: Drop asm includes
+>       cpufreq: armada-8k: Avoid excessive stack usage
+>       opp: ti: Drop unnecessary of_match_ptr()
+>       cpufreq: Enable COMPILE_TEST on Arm drivers
+>       cpufreq: Drop CONFIG_ARM and CONFIG_ARM64 dependency on Arm drivers
+
+Applied. Thanks.
+
+-- 
+viresh
 
