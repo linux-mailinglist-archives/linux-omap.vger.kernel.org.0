@@ -1,209 +1,444 @@
-Return-Path: <linux-omap+bounces-1892-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1893-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D534094C951
-	for <lists+linux-omap@lfdr.de>; Fri,  9 Aug 2024 06:23:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABC8794CB58
+	for <lists+linux-omap@lfdr.de>; Fri,  9 Aug 2024 09:29:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 064FE1C21C1C
-	for <lists+linux-omap@lfdr.de>; Fri,  9 Aug 2024 04:23:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62765281B9A
+	for <lists+linux-omap@lfdr.de>; Fri,  9 Aug 2024 07:29:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 347B9166F21;
-	Fri,  9 Aug 2024 04:23:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FF8F175D3D;
+	Fri,  9 Aug 2024 07:29:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="OcESi0Wx"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="FzUf6ozN"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from OS0P286CU011.outbound.protection.outlook.com (mail-japanwestazon11010042.outbound.protection.outlook.com [52.101.228.42])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E34FB1649CC;
-	Fri,  9 Aug 2024 04:23:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.228.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723177414; cv=fail; b=qVY3veA1IO8hedWsAD6yNjs0VuFl43GCNMLGV1DFIVEWx5swW1zUi5t5/UIGuj6+XPp9+WcWRp8BXzXav49JVXyof/VDfHl9Bob28dLORjWY7aWimp3kFgeSVBUsGGg53CACczA0KOH3Yf04p08tNixRq89RxNQFo2KIM+Jkx3I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723177414; c=relaxed/simple;
-	bh=F7FWRqwOyXN4mcODiD+bX4p/mC0QH1LIcYbk5AhFGlg=;
-	h=Message-ID:From:Subject:To:In-Reply-To:References:Content-Type:
-	 Date:MIME-Version; b=dksciubMiAQvcVNDiy7pvlEHRCp+ZQDKWpkrZh41GFxqkZGjVpM2KWJPeTJvJI3jUEeVcJ3bR4Ra3/E1nn9Nz3sLDZHb+2PhwzKSCgv1wVSotC65P55wUniK3himZUpc9nTwFpTZTVdj9ydpUEZR5LT+46HUH2BX0TeDth5Rv14=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=OcESi0Wx; arc=fail smtp.client-ip=52.101.228.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=isiONdOzon1+uqxZZUQnpOa5AsRfG99MFjlfFMStHCxNnuyLEMNEd4BsfGoy0r10ZrDgnC3nrmFYUQFkbblAoap3ORzL+XkzAwXK+oUiSAFCWBiyqCha7NMheN35AXcmjdX+d6DqvYsrVt0r/AFanIJOUQMNUbYg3WuB6+0XExpYjc0RdjaNwp4TaRjOjShasRQQcJB72lKwGL/5/SXEd6cVEwwIyIleQlhmlC1mAKBzSVKIFIpeHbn8bFk2WA03bzGWO89RYcc8wNaRSIyD7/sx3LstV663SxjmnOMKP8EJKtCavCWYzExzOsCyK91XPr+rmm+PDHkyP0kKg34kqg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DMa4X8LLtupPXMyZE5+0ksQmm2ZitVH6UX9JA+8F9BE=;
- b=fXTAMLxfr2Cz2oWMQAgZfr0AnyC4wWU/N9yiBOH15qAo4mTwS6NXNHOnrTSW/x/+1XxuAAkBoApZPOJIL418nwLphcA4DVqr2ziC3eCj9h53v0Lxf1mQsXIszOaJ+3Wyq3NW4q0GJK3qcX0gSBAMD+XY/EXQK8xXstyTyZju6pfma8V2zZUXPRL1EzZKzYJXJiY+TJ/+gAuqcvEAUHiJclbR5dF0L8x1nOi90GyGx25qiPgw9Bqj5WH5HwZR7YoEr6vcCSTE5G/5gsLWKgD3YbaMkBrvaIpkHPmal/xx50dJsVZi8zvoxKhP/BKXS4Qalw4OoePSmyPIrLI6MNeRkg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
- dkim=pass header.d=renesas.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DMa4X8LLtupPXMyZE5+0ksQmm2ZitVH6UX9JA+8F9BE=;
- b=OcESi0Wx87FFQNOXmkFJWRJPPN5Bh11tI/MuoAENnPJO/SAnA/TD0Rbg/3MUJYWSCy1sH7PFmWUAADBwBbdDXRWwD5qjcng/bHz8TGnukVj1kdr7stcXsXeAc1NOSKvlDRFH6OUKNtX0j5GQOeSX0EgqFzjtDilhnekjZc5E0dY=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=renesas.com;
-Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
- (2603:1096:400:3a9::11) by OS3PR01MB9639.jpnprd01.prod.outlook.com
- (2603:1096:604:1cf::9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.15; Fri, 9 Aug
- 2024 04:23:30 +0000
-Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
- ([fe80::c568:1028:2fd1:6e11]) by TYCPR01MB10914.jpnprd01.prod.outlook.com
- ([fe80::c568:1028:2fd1:6e11%5]) with mapi id 15.20.7849.014; Fri, 9 Aug 2024
- 04:23:30 +0000
-Message-ID: <87seve729q.wl-kuninori.morimoto.gx@renesas.com>
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Subject: [PATCH v2 9/9] media: xilinx-tpg: use new of_graph functions
-User-Agent: Wanderlust/2.15.9 Emacs/29.3 Mule/6.0
-To: Daniel Vetter <daniel@ffwll.ch>,
-	David Airlie <airlied@gmail.com>,
-	Helge Deller <deller@gmx.de>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Maxime Ripard <mripard@kernel.org>,
-	Michal Simek <michal.simek@amd.com>,
-	Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Takashi Iwai <tiwai@suse.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	devicetree@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-fbdev@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	linux-omap@vger.kernel.org,
-	linux-sound@vger.kernel.org
-In-Reply-To: <875xsa8gws.wl-kuninori.morimoto.gx@renesas.com>
-References: <875xsa8gws.wl-kuninori.morimoto.gx@renesas.com>
-Content-Type: text/plain; charset=US-ASCII
-Date: Fri, 9 Aug 2024 04:23:30 +0000
-X-ClientProxiedBy: TYCP286CA0101.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:2b4::14) To TYCPR01MB10914.jpnprd01.prod.outlook.com
- (2603:1096:400:3a9::11)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F3E542A80;
+	Fri,  9 Aug 2024 07:29:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1723188584; cv=none; b=aPqrNDpx6RvjMAtHr/o5cY3Rcy8aLuNRRfWDDszebHyltbzrJsXWQK+rCUClMd3J5ibINV/DisF0w5KsUnDJm7h8Xp5nSEaUmDEz4q3cOiis+PkziU2S54cD1L9MYH/KMRxWBKfJeZwmeZED1E0FIOcpmgw7LIVX6bklhPokzBY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1723188584; c=relaxed/simple;
+	bh=pJExY8JuoT2UlHfNzoCGEXQt2m/C5XWNhIXgTbXX84E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GLsLle3CXeGWmKwmvYYqXVdEusXZOcSbiTM6Q5ztWP4971OyvWqYjOIaTuojM0/Phdz7+RDZ5px7P+FCiftTMvOoExMoGGOEr/sFpvi7q4u5f7A9mp17xZR3RPT76/j7J1LdpJW7qDXo6pj25ZZzUAPeHjhCWrZOrvUs7qoNTco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=FzUf6ozN; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from [192.168.88.20] (91-156-87-48.elisa-laajakaista.fi [91.156.87.48])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 16441581;
+	Fri,  9 Aug 2024 09:28:44 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1723188525;
+	bh=pJExY8JuoT2UlHfNzoCGEXQt2m/C5XWNhIXgTbXX84E=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=FzUf6ozNJ6rkt7GYGRjfom5in496Fc29tRe3ohxxhstp3/71xDwRJfATxou5nFmAr
+	 0Y+iwfYw5ndHgx/xgSm2tpEkXZBhpCySI2UtM5M291lpyNnwnkgUFoViujhsRtWew6
+	 mPp4BhNiU68KLHD5r6Av72NtT/X3e7/AoqgMuXJo=
+Message-ID: <7b5db9c1-5cba-48c8-ae77-f224b7b4834f@ideasonboard.com>
+Date: Fri, 9 Aug 2024 10:29:34 +0300
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TYCPR01MB10914:EE_|OS3PR01MB9639:EE_
-X-MS-Office365-Filtering-Correlation-Id: 635ddbc5-d810-4299-c446-08dcb82b05f5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|7416014|1800799024|376014|366016|921020|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?3ihpowYTgzKx1LLjr7b0punFRynYA6RbEgEg02adb5TSN7o+exg20g5Q3hJo?=
- =?us-ascii?Q?FU9cxsyhcP5Pn0Dt7vI+DHxRGJky6k9A8k+R60aBNvnlGiYurIUVw2IKLJzD?=
- =?us-ascii?Q?/gUub00Gpv8Wex8MVcss50hXJGhwpndElLGt5M4R2Ek1c9uj8hF8GEwujKfc?=
- =?us-ascii?Q?Z/QWTj7kll/7bL+BYKdguSuXQvTwqjvSuER0E3bKRTpIKif5aT3rV2nZc4cZ?=
- =?us-ascii?Q?nKnm6GXi/jVMtPZVwYeg+BJa4G1eEvj0ZalMDy72nI3PzIl5fFo0FQAEj6by?=
- =?us-ascii?Q?a4PyV1rt4K5vIElBKR57CxEeH9AQaf8HItCBDA+Z9dw5bLtCxiiDCr/hQJhj?=
- =?us-ascii?Q?9mtPfviJHx72fsXunAJx3/je2LQwf6rKyHUi4J/EtOUdlJQAP25bVCG55IM/?=
- =?us-ascii?Q?vB3NuTGvlbOYK/zm01zdiXRWK8Hw0Xqn9EcMPQBqL4Nm11W0sPa/S1BSkji0?=
- =?us-ascii?Q?vy0p5Y8wJWduhFHw4kArlzJhTTECWtIr7MWXGFb2gzWenCBmiFDkDBXPL4bH?=
- =?us-ascii?Q?pG5p3TX534wFMuDRPkHZUppZRBqh6DzjW6KPsRAFGVZYR3daiSq+ejNjyXcR?=
- =?us-ascii?Q?OxIsKfC8AooYrOrsea3r2NUZiuveXo3Bgw/FtwY5oFtRyEKDRAqjkL/UZCkq?=
- =?us-ascii?Q?B0LNZcpLs/ZbonZWIrspm+3FKwn3DVbqqofUWVUwyKlu6jxVaXOBRfGW3h6g?=
- =?us-ascii?Q?gKL1PBQZYTMc4VGFwuI8HZ5V1/KSEzMyZyPkQA9lD2AVw+GK1DHa+x9u6XQk?=
- =?us-ascii?Q?5FDvL3XSjsVdgo3wyMTtcBSlxARq5eNXNfDaKTOoxt8Q6Cj5OtM/RmueogG+?=
- =?us-ascii?Q?v+L/1DTzRWU06MgDbiZ5UxEyPRbtFt6zz6HTD3VdR3VfN5y3JyRi0FKUBBi4?=
- =?us-ascii?Q?yHasi3hFOhbp67+7Ic3Rv7Kk9oDGq1quDR0mXQGwWOPxV6ouYmUXiuAfAImX?=
- =?us-ascii?Q?OUqOait3RYTiUMmaSJb5ZvXfsXC0vFN2yoMONFC2hUQXR21KUbemfOQAqwkO?=
- =?us-ascii?Q?r6U8HagliVkB0kfNJervIBQWEr/mxFQ1PQ/R2dzoFvHSHedvYEDavb61RNKp?=
- =?us-ascii?Q?HGrn7Ekn8gRoyPgnfGrNc9u2SZYCKDRHXiAMrTqTKJnMpIuJvQNKhg6d13sE?=
- =?us-ascii?Q?OpK08sHovxKrIbB5lkKQiWWCKt/114Jktgal7Ix/cILrN7sXeIaRHtlgM9vv?=
- =?us-ascii?Q?Vk4VRQcVMXIx+CULwn7ZE3jKqMFCbV+qPDPEYUng/GNb9Po/sRuX1OzMPh/u?=
- =?us-ascii?Q?vN97J3TdaLhltKS5KtIXXxzFwg/cVnQZ9q6DgwSVPAt5tvRepqMfEEB8Dagw?=
- =?us-ascii?Q?czKYu8kbj3rbO63vcUs7yZfCySCWLmfBE8Inh9dNvaT/epk7l9LIsoewq8rb?=
- =?us-ascii?Q?EWebIZtPtiN56+TGv1KbU2WDiSIfjveB/beDI+PWygh6pUyy9UfWu3RUpc9y?=
- =?us-ascii?Q?71YhpqanQZA=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYCPR01MB10914.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(7416014)(1800799024)(376014)(366016)(921020)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?cQ1HX9PVBr9Egez1yZ0DRdRvmmwyFmn62DyWdSjHnpSI+P/eN+5T9hc8uUHN?=
- =?us-ascii?Q?rtY54rybZd7Le3hkwAcBBCGkPqoU2HC1mdUG/Zrv4j6leWCO22W4Zsk+h49L?=
- =?us-ascii?Q?nyFEyqiZJyENZUEm0lX7lPDkY6qWyPp0nYgkWnDywPvSnPxB8E0BY9gTMT+g?=
- =?us-ascii?Q?VObQWrqJj4in+rUoqq5lC7oWseTnLQ0XZbJ9x9Ewxz1YE8hSE/wNULNPpFgr?=
- =?us-ascii?Q?raCxknTJyCVC2Oxwq2wmS8Tz2FviHBcBwtDvuNBEnRgUG6uB9lsyKpEprTWD?=
- =?us-ascii?Q?KdItBEw3I9SQo8XYnkTJwkQA7RvuAIfWIVgWbQwCw3LCqdJUOmcW8RcN+PNs?=
- =?us-ascii?Q?AnFSNdvqdT5+zr10hTE35e496fWY7UHWURa00ZFm5uVaIYUnFRlZ/cGNFzLt?=
- =?us-ascii?Q?LAmsu1wfq0C5nKennNpPjG+E0z17GAwZiDa1HUZAmYuvtts+4qwPKUregZas?=
- =?us-ascii?Q?A8LhtTQ7YBqsnvgOecWdDBtQuUViaOvn40mGm1cKus3UeJzrAPYC+/z3I5A1?=
- =?us-ascii?Q?PReWACQWtAYIo/r3D27gYyuEZ94taK1QeOeSkTk2kyzZLRTdirOtD7x/GI0h?=
- =?us-ascii?Q?sj/b8YnBQivnd7xN6wSH4NboBgLo9pR9fR+wBeSf5UnlZw+77XS1eEhRxNNo?=
- =?us-ascii?Q?Q6kn44rJtPr9gTOXj/x7wDs7oC0JkZRXgcTOUVpgeP8PHt+mLv5iM548DfCv?=
- =?us-ascii?Q?h+KetAp8sdbfI/n8yeWoLH8Tjwu6/prMvhCFuZtg/SNXskDZ+uN2hTjtXYEX?=
- =?us-ascii?Q?lIaJJCvnDoD04RVTzPh7zZybEZpE57TCMkPDRPhNImwXVFmhhcolZbjna3qk?=
- =?us-ascii?Q?JqatybjVCeC0UXjB4IBi4tyA3XjRfYhYTBoIUOlZxTmXrfNYSlP5wAh3AiWn?=
- =?us-ascii?Q?sUZHdn9azqvZA/10QLfWZNJwhn0dZbMPHSC3d8Nfl3YsGytx9g1P9QVNlnn5?=
- =?us-ascii?Q?VAGyik83mtPk7twBFqEJ+1xeTaYpvLy6f1EWhuY7e4MbAErIEz73Jgj2TrS/?=
- =?us-ascii?Q?pLwRVa71xsBUT9g5xZ8H1Z2RPAIvlHRpq3vtZXwYgkWOZ4N6lix1xjRDGGaC?=
- =?us-ascii?Q?pCjxmJq6uhIrc7OFctmMtc/i/KQZ93WMQpiJ9H6MmlQK75o1jCYwK0D67FLI?=
- =?us-ascii?Q?bLNfVhIg0ZEeAlZmn3FJRUNVaohlrb9BuAy/keBCXqBIYI2GTMjiuwIgxrDp?=
- =?us-ascii?Q?W9bCheNgNlaORZlXDT4IdgznYEfywssJuOTkfYJy2ArTnsY5uLS4ubzIGt2j?=
- =?us-ascii?Q?EQfru17CnEWnFTDlfMLqjm6HErbuQ8A4/99jpzzvmbzCCXL8gg9ezr1qs02p?=
- =?us-ascii?Q?qgkPe54iKvItgA7kaUASN816MTr/ONm3FaUDI+jPwboMmEaT653FMFfuVR3h?=
- =?us-ascii?Q?IxXrMVzDCbetIr6D65IXsEvBj7QUamk+LRDWJxxL2abG9wdUWi8z7Qw5fDgQ?=
- =?us-ascii?Q?+Y4ZcIKMHUUwvSGYKBgVlyBmcfGsy11Jh6nELVu62aoTK1q8DNWlO5vA2A+R?=
- =?us-ascii?Q?J41C9ttgBej7XY7HLTcEj2LhH4wScY6b1Vq6wpqsUASkSDLLntWvjrD7WGfT?=
- =?us-ascii?Q?QQadl5t8r480D5atWP2lALZxALQkDdLD/C6WfQu0apgaEJNbClNpAtNl+ESr?=
- =?us-ascii?Q?xs5UkzpcAJUNyJSH/6Xmz0Q=3D?=
-X-OriginatorOrg: renesas.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 635ddbc5-d810-4299-c446-08dcb82b05f5
-X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB10914.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Aug 2024 04:23:30.3644
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gscUlf3+vFCqKyzNeQBuvMi3bXKDHwXTJG1hd6vV7LdW7cfFgjYsBI4kNiCippFf35L5rMrgaKDp/fo6gEbtJUCMYP9cUduGoaCiOh0FmkAYWPco6xBXqUqRpbPO3+Jv
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS3PR01MB9639
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/9] of: property: add of_graph_get_next_port()
+To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>,
+ Helge Deller <deller@gmx.de>, Jaroslav Kysela <perex@perex.cz>,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ Liam Girdwood <lgirdwood@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Mark Brown <broonie@kernel.org>, Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Maxime Ripard <mripard@kernel.org>, Michal Simek <michal.simek@amd.com>,
+ Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
+ Takashi Iwai <tiwai@suse.com>, Thomas Zimmermann <tzimmermann@suse.de>,
+ devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-arm-kernel@lists.infradead.org, linux-fbdev@vger.kernel.org,
+ linux-media@vger.kernel.org, linux-omap@vger.kernel.org,
+ linux-sound@vger.kernel.org
+References: <87mslqw8mj.wl-kuninori.morimoto.gx@renesas.com>
+ <87le1aw8lw.wl-kuninori.morimoto.gx@renesas.com>
+ <ca216286-b09a-4faf-8221-c88c21f4de0c@ideasonboard.com>
+ <87a5hm8n0k.wl-kuninori.morimoto.gx@renesas.com>
+Content-Language: en-US
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Autocrypt: addr=tomi.valkeinen@ideasonboard.com; keydata=
+ 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
+In-Reply-To: <87a5hm8n0k.wl-kuninori.morimoto.gx@renesas.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Now we can use new port related functions for port parsing. Use it.
+Hi,
 
-Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
----
- drivers/media/platform/xilinx/xilinx-tpg.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+On 09/08/2024 05:10, Kuninori Morimoto wrote:
+> 
+> Hi Tomi
+> 
+> Thank you for your review
+> 
+> 
+>>> +/**
+>>> + * of_graph_get_next_ports() - get next ports node.
+>>> + * @parent: pointer to the parent device node
+>>> + * @ports: current ports node, or NULL to get first
+>>> + *
+>>> + * Return: A 'ports' node pointer with refcount incremented. Refcount
+>>> + * of the passed @prev node is decremented.
+>>
+>> No "prev" argument in the code.
+>>
+>> The of_graph_get_next_endpoint() function uses "previous" as the
+>> argument name (well, the function declaration uses "previous", the
+>> implementation uses "prev"...), and I would use the same naming here.
+>>
+>> Also of_graph_get_next_endpoint() talks about "previous endpoint node",
+>> whereas here it's "current ports node". I'd use the same style here, so
+>> "previous ports node".
+>>
+>> The same comments for the of_graph_get_next_port().
+> 
+> OK, thanks. Will fix in v2
+> 
+>>> +struct device_node *of_graph_get_next_ports(struct device_node *parent,
+>>> +					    struct device_node *ports)
+>>> +{
+>>> +	if (!parent)
+>>> +		return NULL;
+>>> +
+>>> +	if (!ports) {
+>>> +		ports = of_get_child_by_name(parent, "ports");
+>>> +
+>>> +		/* use parent as its ports of this device if it not exist */
+>>
+>> I think this needs to be described in the kernel doc. I understand the
+>> need for this, but it's somewhat counter-intuitive that this returns the
+>> parent node if there are no ports nodes, so it must be highlighted in
+>> the documentation.
+>>
+>> I wonder if a bit more complexity here would be good... I think here we
+>> could:
+>>
+>> - If there are no 'ports' nodes in the parent, but there is a 'port'
+>> node in the parent, return the parent node
+>> - If there are no 'ports' nor 'port' nodes in the parent, return NULL
+> 
+> Thanks, but unfortunately, get_next_ports() checks only "ports" and
+> doesn't check whether it has "port" node or not.
 
-diff --git a/drivers/media/platform/xilinx/xilinx-tpg.c b/drivers/media/platform/xilinx/xilinx-tpg.c
-index e05e528ffc6f..a25f216b2513 100644
---- a/drivers/media/platform/xilinx/xilinx-tpg.c
-+++ b/drivers/media/platform/xilinx/xilinx-tpg.c
-@@ -13,6 +13,7 @@
- #include <linux/gpio/consumer.h>
- #include <linux/module.h>
- #include <linux/of.h>
-+#include <linux/of_graph.h>
- #include <linux/platform_device.h>
- #include <linux/xilinx-v4l2-controls.h>
- 
-@@ -744,7 +745,7 @@ static int xtpg_parse_of(struct xtpg_device *xtpg)
- 		}
- 
- 		if (nports == 0) {
--			endpoint = of_get_next_child(port, NULL);
-+			endpoint = of_graph_get_next_port_endpoint(port, NULL);
- 			if (endpoint)
- 				has_endpoint = true;
- 			of_node_put(endpoint);
--- 
-2.43.0
+Yes, my point was if the check should be added. My reasoning is:
+
+If we have this, of_graph_get_next_ports() returns the ports@0, and that 
+makes sense:
+
+parent {
+	ports@0 {
+		port@0 { };
+	};
+};
+
+If we have this, of_graph_get_next_ports() returns the parent, and 
+that's a bit surprising, but I can see the need, and it just needs to be 
+documented:
+
+parent {
+	port { };
+};
+
+But if we have this, does it make sense that of_graph_get_next_ports() 
+returns the parent, or should it return NULL:
+
+parent {
+	/* No ports or port */
+};
+
+> So correct comment here is maybe...
+> 
+> 	If "parent" doesn't have "ports", it returns "parent" itself as "ports"
+> 
+> I will add it on v2
+> 
+>>> +/**
+>>> + * of_graph_get_next_port() - get next port node.
+>>> + * @parent: pointer to the parent device node
+>>> + * @port: current port node, or NULL to get first
+>>> + *
+>>> + * Return: A 'port' node pointer with refcount incremented. Refcount
+>>> + * of the passed @prev node is decremented.
+>>> + */
+>>> +struct device_node *of_graph_get_next_port(struct device_node *parent,
+>>> +					   struct device_node *port)
+>>> +{
+>>> +	if (!parent)
+>>> +		return NULL;
+>>> +
+>>> +	if (!port) {
+>>> +		struct device_node *ports __free(device_node) =
+>>> +			of_graph_get_next_ports(parent, NULL);
+>>> +
+>>> +		return of_get_child_by_name(ports, "port");
+>>> +	}
+>>> +
+>>> +	do {
+>>> +		port = of_get_next_child(parent, port);
+>>> +		if (!port)
+>>> +			break;
+>>> +	} while (!of_node_name_eq(port, "port"));
+>>> +
+>>> +	return port;
+>>> +}
+>>
+>> Hmm... So if I call this with of_graph_get_next_port(dev_node, NULL)
+>> (dev_node being the device node of the device), it'll give me the first
+>> port in the first ports node, or the first port in the dev_node if there
+>> are no ports nodes?
+> 
+> Yes
+> 
+>> And if I then continue iterating with of_graph_get_next_port(dev_node,
+>> prev_port)... The call will return NULL if the dev_node contains "ports"
+>> node (because the dev_node does not contain any "port" nodes)?
+>>
+>> So if I understand right, of_graph_get_next_port() must always be called
+>> with a parent that contains port nodes. Sometimes that's the device's
+>> node (if there's just one port) and sometimes that's ports node. If it's
+>> called with a parent that contains ports node, it will not work correctly.
+>>
+>> If the above is right, then should this just return
+>> "of_get_child_by_name(parent, "port")" if !port, instead of calling
+>> of_graph_get_next_ports()?
+> 
+> Hmm ?  Do you mean you want access to ports@1 memeber port after ports@0 ?
+> I have tested below in my test environment
+> 
+> 	parent {
+> (X)		ports@0 {
+> (A)			port@0 { };
+> (B)			port@1 { };
+> 		};
+> (Y)		ports@1 {
+> (C)			port@0 { };
+> 		};
+> 	};
+> 
+> In this case, if you call get_next_port() with parent,
+> you can get ports@0 member port.
+> 
+> 	/* use "paramet" and use "ports@0" are same result */
+> 
+> 	// use parent
+> 	port = of_graph_get_next_port(parent, NULL); // (A)
+> 	port = of_graph_get_next_port(parent, port); // (B)
+> 	port = of_graph_get_next_port(parent, port); // NULl
+> 
+> 	// use ports@0
+> 	ports = of_graph_get_next_ports(parent, NULL); // (X)
+> 	port  = of_graph_get_next_port(ports, NULL);   // (A)
+> 	port  = of_graph_get_next_port(ports, port);   // (B)
+> 	port  = of_graph_get_next_port(ports, port);   // NULl
+> 
+> If you want to get ports@1 member port, you need to use ports@1.
+> 
+> 	// use ports@1
+> 	ports = of_graph_get_next_ports(parent, NULL);  // (X)
+> 	ports = of_graph_get_next_ports(parent, ports); // (Y)
+> 	port  = of_graph_get_next_port(ports, NULL);    // (C)
+> 
+> I have confirmed in my test environment.
+> But please double check it. Is this clear for you ?
+
+Ah, I see now. I was expecting of_get_next_child() to return children of 
+'parent', but that's actually not the case.
+
+So when you call:
+
+	port = of_graph_get_next_port(parent, NULL); // (A)
+
+the function will call 'ports = of_graph_get_next_ports(parent, NULL)' 
+(ports is (X)) and then return of_get_child_by_name(ports, "port") 
+(which is (A)). This is fine.
+
+	port = of_graph_get_next_port(parent, port); // (B)
+
+Here the function will call 'port = of_get_next_child(parent, port)', 
+where parent is the parent node, and port is (A). The problem is, (A) is 
+not a child of the parent. This seems to work, as of_get_next_child() 
+does not use the 'parent' for anything if 'port' is given, instead if 
+just gives the next sibling of 'port'.
+
+	port = of_graph_get_next_port(parent, port); // NULl
+
+And now when the function calls of_get_next_child(parent, port), it does 
+not give the next child of parent, but instead NULL because 'port' has 
+no more siblings.
+
+The documentation for of_get_next_child() doesn't mention if calling 
+of_get_next_child(parent, child) is valid when the given child is 
+actually not a child of the parent. The doc says that 'prev' parameter 
+should be "previous child of the parent node", which is not the case 
+here. So using it like this does not sound right to me.
+
+And just looking at the behavior of:
+
+ > 	port = of_graph_get_next_port(parent, NULL); // (A)
+ > 	port = of_graph_get_next_port(parent, port); // (B)
+ > 	port = of_graph_get_next_port(parent, port); // NULl
+
+it does not feel right. Why does of_graph_get_next_port() return only 
+the ports of ports@0? I think it should either return nothing, as there 
+are no 'port' nodes in the parent, or it should return all the port 
+nodes from all the ports nodes.
+
+Can we just drop the use of of_graph_get_next_ports() from 
+of_graph_get_next_port()? In other words, make of_graph_get_next_port() 
+iterate the 'port' nodes strictly only in the given parent node.
+
+I think we have the same problem in of_graph_get_next_ports(). If we have:
+
+parent {
+	port { };
+};
+
+And we do:
+
+ports = of_graph_get_next_ports(parent, NULL)
+
+The returned 'ports' is actually the 'parent'. If we then call:
+
+ports = of_graph_get_next_ports(parent, ports)
+
+we are effectively calling of_graph_get_next_ports(parent, parent). This 
+results in of_get_next_child(parent, parent). of_get_next_child() will 
+return the next sibling of parent (so, perhaps, a node for some 
+unrelated device). It then checks if the name of that node is 'ports'. 
+So, while unlikely, if we have:
+
+bus {
+	/* our display device */
+	display {
+		port { };
+	};
+
+	/* some odd ports device */
+	ports {
+	};
+};
+
+and you use of_graph_get_next_ports() for display, you'll end up getting 
+the 'ports' node.
+
+I have to say, I feel that making the 'ports' node optional in the graph 
+DT bindings was a mistake, but nothing we can do about that...
+
+Can you try adding "WARN_ON(node && prev && node != prev->parent)" to 
+of_get_next_child()?
+
+>> Or maybe I'm just getting confused here. But in any case, I think it
+>> would be very good to describe the behavior on the kernel doc for the
+>> different ports/port structure cases (also for
+>> of_graph_get_next_ports()), and be clear on what the parameters can be,
+>> i.e. what kind of device nodes can be given as parent, and how the
+>> function iterates over the ports.
+> 
+> OK, will do in v2
+> 
+>>> + * @np: pointer to the parent device node
+>>> + *
+>>> + * Return: count of port of this device node
+>>> + */
+>>> +unsigned int of_graph_get_port_count(struct device_node *np)
+>>> +{
+>>> +	struct device_node *port = NULL;
+>>> +	int num = 0;
+>>> +
+>>> +	for_each_of_graph_port(np, port)
+>>> +		num++;
+>>> +
+>>> +	return num;
+>>> +}
+>>
+>> I my analysis above is right, calling of_graph_get_port_count(dev_node)
+>> will return 1, if the dev_node contains "ports" node which contains one
+>> or more "port" nodes.
+> 
+> In my test, it will be..
+> 
+> 	parent {
+> 		ports@0 {
+> 			port@0 { };
+> 			port@1 { };
+> 		};
+> 		ports@1 {
+> 			port@0 { };
+> 		};
+> 	};
+> 
+> 	of_graph_get_port_count(parent); // 2 = number of ports@0
+
+I think the above is a bit surprising, and in my opinion points that 
+there is a problem. Why does using 'parent' equate to only using 
+'ports@0'? Again, I would expect either to get 0 (as there are no 'port' 
+nodes in parent, or 3.
+
+> 	of_graph_get_port_count(ports0); // 2 = number of ports@0
+> 	of_graph_get_port_count(ports1); // 1 = number of ports@1
+> 
+> 
+> Thank you for your help !!
+> 
+> Best regards
+> ---
+> Kuninori Morimoto
+
+  Tomi
 
 
