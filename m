@@ -1,50 +1,50 @@
-Return-Path: <linux-omap+bounces-1902-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1903-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14B6594FE24
-	for <lists+linux-omap@lfdr.de>; Tue, 13 Aug 2024 08:57:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69DFA94FE32
+	for <lists+linux-omap@lfdr.de>; Tue, 13 Aug 2024 09:01:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9D0428496B
-	for <lists+linux-omap@lfdr.de>; Tue, 13 Aug 2024 06:57:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C7C51C22838
+	for <lists+linux-omap@lfdr.de>; Tue, 13 Aug 2024 07:01:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 168A744393;
-	Tue, 13 Aug 2024 06:56:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A4C73DBB7;
+	Tue, 13 Aug 2024 07:01:37 +0000 (UTC)
 X-Original-To: linux-omap@vger.kernel.org
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73B7D42A93
-	for <linux-omap@vger.kernel.org>; Tue, 13 Aug 2024 06:56:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA5EE4C81
+	for <linux-omap@vger.kernel.org>; Tue, 13 Aug 2024 07:01:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723532217; cv=none; b=MCkg/QcOeE/93ECV9exXvkPGwRb9HYKzOw/D32oQ7QIzeOmxVmsIpGVrlIsYgrLkTM4D2+PhYjaIKg9HPGmQ9sNylQMXqIS/6KDn5ZTF0XAfQU8LiPzL067QiDFtNRwTGftZqvaOIfUW3oG7/OBfZnRivvPeOsVQSg04PHct/uo=
+	t=1723532497; cv=none; b=JJadNw539VPhF47qmm8q4RbjdHRKW+L+Nt3pwKeA/Pu8uA1mufaGumEQpD1HXu66dVU8ED0HFi/bsVoQ4nOQvBQZWKofhwxMAj/nQ3amqNmuPTnxqN4MlsJlXPFqdM/Nuna279uH/48enN+OTmwjoaMhPgXJhQPy7Pdcp9MryDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723532217; c=relaxed/simple;
-	bh=Cd/fOl0a5KGV2VLC/88jBttTw8pCfwMtRlXMahDIdRE=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=tnfd4V8nrZeJdI3nzsX9P2cW/ZnN0la3B2ws8F7GX7yKsg+Yhb/CPIwSDwNmR7MoC7MawnCv9qfL+RZmQQy5hKSXQ/Ep7L492NjL5V6FLgW2dj1iKsf64AakEIGYlqRy/xCBAMVC2/6A+vZ5wApcvKxz3pZ/OOZMGca7lVcgzLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
+	s=arc-20240116; t=1723532497; c=relaxed/simple;
+	bh=MdS9zr5GtZeKJEuVggJxe95IO5hNWbRtiqJCtdcI+3M=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=gVY52AS4VoghZCXH6OSgvYvdBKhP8pMloAnRi6S8ILth8583J1pYPMZtSqxNxbQL5A3+ni1at6HU1iOyhe9scQKxN84alYzFtR29TTV8h859uwEMJ6e49wPyM/xprwntn1fqmWwU808NDRxtfghpAE1rNq15vcZ8meWWyiJ/Tgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.48])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4WjhwZ6mhJzpTVZ;
-	Tue, 13 Aug 2024 14:55:26 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4Wjj045Jvwz1HGN6;
+	Tue, 13 Aug 2024 14:58:28 +0800 (CST)
 Received: from kwepemd200011.china.huawei.com (unknown [7.221.188.251])
-	by mail.maildlp.com (Postfix) with ESMTPS id E590118006C;
-	Tue, 13 Aug 2024 14:56:45 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id CDDF51402DE;
+	Tue, 13 Aug 2024 15:01:31 +0800 (CST)
 Received: from cgs.huawei.com (10.244.148.83) by
  kwepemd200011.china.huawei.com (7.221.188.251) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.34; Tue, 13 Aug 2024 14:56:45 +0800
+ 15.2.1258.34; Tue, 13 Aug 2024 15:01:31 +0800
 From: Gaosheng Cui <cuigaosheng1@huawei.com>
 To: <aaro.koskinen@iki.fi>, <jmkrzyszt@gmail.com>, <tony@atomide.com>,
 	<linux@armlinux.org.uk>, <cuigaosheng1@huawei.com>
-CC: <linux-omap@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>
-Subject: [PATCH -next] omap: mux: Remove unused omap2_mux_init() declaration
-Date: Tue, 13 Aug 2024 14:56:44 +0800
-Message-ID: <20240813065644.1037593-1-cuigaosheng1@huawei.com>
+CC: <linux-arm-kernel@lists.infradead.org>, <linux-omap@vger.kernel.org>
+Subject: [PATCH -next] omap mmc: Remove unused sx1_mmc_slot_cover_handler() declaration
+Date: Tue, 13 Aug 2024 15:01:30 +0800
+Message-ID: <20240813070130.1039873-1-cuigaosheng1@huawei.com>
 X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
@@ -54,28 +54,29 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
  kwepemd200011.china.huawei.com (7.221.188.251)
 
-The omap2_mux_init() has been removed since
-commit c9d8230e316a ("omap: mux: Remove old mux code"), so remove it.
+The sx1_mmc_slot_cover_handler() has been removed since
+commit 652bcd8f72cc ("omap mmc: Remove broken MMC init code"),
+so remove it.
 
 Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
 ---
- arch/arm/mach-omap1/mux.h | 2 --
- 1 file changed, 2 deletions(-)
+ arch/arm/mach-omap1/board-sx1.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/arm/mach-omap1/mux.h b/arch/arm/mach-omap1/mux.h
-index 3e7ed3348a55..3f040e0cece2 100644
---- a/arch/arm/mach-omap1/mux.h
-+++ b/arch/arm/mach-omap1/mux.h
-@@ -139,6 +139,4 @@ extern int omap_mux_register(struct omap_mux_cfg *);
- static inline int omap1_mux_init(void) { return 0; }
- #endif
+diff --git a/arch/arm/mach-omap1/board-sx1.h b/arch/arm/mach-omap1/board-sx1.h
+index fafe54a2e444..112826a73adc 100644
+--- a/arch/arm/mach-omap1/board-sx1.h
++++ b/arch/arm/mach-omap1/board-sx1.h
+@@ -40,6 +40,5 @@ int sx1_i2c_write_byte(u8 devaddr, u8 regoffset, u8 value);
+ /* MMC prototypes */
  
--extern int omap2_mux_init(void);
--
- #endif
+ extern void sx1_mmc_init(void);
+-extern void sx1_mmc_slot_cover_handler(void *arg, int state);
+ 
+ #endif /* __ASM_ARCH_SX1_I2C_CHIPS_H */
 -- 
 2.25.1
 
