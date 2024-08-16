@@ -1,203 +1,133 @@
-Return-Path: <linux-omap+bounces-1915-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1916-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 290D3954336
-	for <lists+linux-omap@lfdr.de>; Fri, 16 Aug 2024 09:48:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78A3195437F
+	for <lists+linux-omap@lfdr.de>; Fri, 16 Aug 2024 09:55:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7EBB71F22760
-	for <lists+linux-omap@lfdr.de>; Fri, 16 Aug 2024 07:48:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB2771C21942
+	for <lists+linux-omap@lfdr.de>; Fri, 16 Aug 2024 07:55:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8B198563E;
-	Fri, 16 Aug 2024 07:43:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5C747BAF4;
+	Fri, 16 Aug 2024 07:54:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="aJkfZZ3a";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="dtHzzhLR";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="aJkfZZ3a";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="dtHzzhLR"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="XS8p9N88"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 520AD53373;
-	Fri, 16 Aug 2024 07:43:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F99F770FB
+	for <linux-omap@vger.kernel.org>; Fri, 16 Aug 2024 07:54:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723794201; cv=none; b=jwu2cN58Pk3enZ661PERY9bvSl9QZC+waPItWiEDk/PRjfLwb2MFICmRszo5I+nnmlyLo+6oLCp2ltyLdbWMKHwZI/IorbyjBQNTVnwJqymTQRPTdKKNVJYKBEmpWhw0mx3Mq0AMOzFufzQLSWBfYA61EgDkUUx8FnBUehGOkso=
+	t=1723794858; cv=none; b=u07aDlEgbzhsgCW7QtwcJfnDcQ9YFFI3Qxjme4MyBcuWLSTlRuJOrZUvobYD3uORGAkjzI3pRoYFWIHA7l1hvlKAq6TOONENgU2aoacQ9czPlpkHu14+7ROY5cWn+j94lPqXIxEIUVSbuVwfXwpDsFZJU9LeN1mlQY4mnIRdaJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723794201; c=relaxed/simple;
-	bh=IbwbaW4tu5AO/7AqNTMgV3CIZ66KxNDb8HgDGPPIiW0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AV5KIYG66ZaPRbo4TQtFg1FHGwuer9BpvPp5hdEp1DDSYis/No8GyAgZfADcU75OrYj4KuvZ01QbMvmMuznoR4d+YgsccfHeAwUsc2WBVHba1AXAxGnZ/toQZ76LgxMHG5gLE/iaFGER6KqZHAE3Tqd0R/u9vH8KFe/M6Ar7pGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=aJkfZZ3a; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=dtHzzhLR; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=aJkfZZ3a; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=dtHzzhLR; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id C636F22219;
-	Fri, 16 Aug 2024 07:43:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1723794196; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=K8Ww4yZw2t0bph4PrC263dbCHVho1KaY81EbSoUVpTs=;
-	b=aJkfZZ3aMONzKXdVVR57bTaNdmhVcuxvMaqGkhtJT17fSESSJ9rriEyN35/9vH514HgZnP
-	OLRARv2XzvxD//cFyjWNz8ZmDtW+UXdtj/5R4WhG2/nOvyUCSpTWu4d5toHVxihiri92Er
-	TWWmRq+2q7lppEcDY1qRvxuUMgghoRU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1723794196;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=K8Ww4yZw2t0bph4PrC263dbCHVho1KaY81EbSoUVpTs=;
-	b=dtHzzhLRsq3eMV/MlTcGOa49XRAzkV3PdxPD2jZIulcEQhJAD7SP5G5hHBQzItCCk85rjf
-	HRTOjbbcEzqpt/Bg==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1723794196; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=K8Ww4yZw2t0bph4PrC263dbCHVho1KaY81EbSoUVpTs=;
-	b=aJkfZZ3aMONzKXdVVR57bTaNdmhVcuxvMaqGkhtJT17fSESSJ9rriEyN35/9vH514HgZnP
-	OLRARv2XzvxD//cFyjWNz8ZmDtW+UXdtj/5R4WhG2/nOvyUCSpTWu4d5toHVxihiri92Er
-	TWWmRq+2q7lppEcDY1qRvxuUMgghoRU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1723794196;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=K8Ww4yZw2t0bph4PrC263dbCHVho1KaY81EbSoUVpTs=;
-	b=dtHzzhLRsq3eMV/MlTcGOa49XRAzkV3PdxPD2jZIulcEQhJAD7SP5G5hHBQzItCCk85rjf
-	HRTOjbbcEzqpt/Bg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 97A3E13A2F;
-	Fri, 16 Aug 2024 07:43:16 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id nSnYIhQDv2ZODwAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Fri, 16 Aug 2024 07:43:16 +0000
-Message-ID: <dfa6d633-1825-4bc3-bca2-326ed18e34b9@suse.de>
-Date: Fri, 16 Aug 2024 09:43:16 +0200
+	s=arc-20240116; t=1723794858; c=relaxed/simple;
+	bh=29i/Me7OBdCQHNsyp4wD7LL65eIiAwGoh7GQQszBp8U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Fmjrt3g/Y5mkPtiW7Ziditb83BcncJQsp7auL6fJcYV6i4WZCMUQC8UsIsPwZXklqbuTjCUx7J5kgvw0cwRaYYElKFgAcFCP7HRRpGdLc2nP/LpDzUsR08h7JYtWedZ2YZEYT1DElgkG8rUn/2drtlj7eYwYtmCwLsaKjc7CSz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=XS8p9N88; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-37182eee02dso819848f8f.1
+        for <linux-omap@vger.kernel.org>; Fri, 16 Aug 2024 00:54:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1723794854; x=1724399654; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=tU3SngOTRZWMK6BN/xX+yu9LBZ/E3yGuMgZAtpkguzo=;
+        b=XS8p9N88nYpSpafKR5VNkJ0KlCs6bRKE/hBOKuOLVyQjFvNJlgzaWjmswgblf6g9Mn
+         JEiVtG9E3Z2qDEHodkiikVQEsp95q91FY5mynueEeiGKnJPlJrOsUL2Vo8x8mf+KCD5+
+         2rpQ/i+kw9f/67tynsFEt9KCP2GVBpRWsFxFO6yh1HfwZXq+FtR+72VPIrTKrO7sKx05
+         b2wDBnDgKyuLPy/Ry2C9WesGAQD/JLjjOzXVi7iwq4bOITnm6joGDv+iZp2BdQrQ/u1V
+         QsjZPD48A7zz5RPYkPMYmbgbxKS+dgz7HogGOmDQH+IoiMGC132iacY15t5to+VMBK9S
+         0DIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723794854; x=1724399654;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=tU3SngOTRZWMK6BN/xX+yu9LBZ/E3yGuMgZAtpkguzo=;
+        b=HfGrN/X+M9w+WW4aYOljSnyghJPMw0j4TAiQKVfiub52W4mv3SjGFyn38q5FxnsNUV
+         5gdSRKEZk3zAadDy/x+F8fQanCSrKyhyaWdOTYdMoAtuUz/+isaiVgwK2e5BCkRw7RTE
+         wXSCD0718p+gjCPvEDPMEmLt2W2CGp1VnOQuqfmeaB1SY634k1Oc8bqGSh/+akvTl+/C
+         cGgS8aUCDZVg6BipUbMWllVNaDP8KyGHTO5zX6oqP4juWA9NuziwrrdWRWwN4CDg8iH9
+         l2tWYmQHmnKCs31g0gq6RtqXZmTadAqak395UUvYciTouzVRZw8wXtVvvpLPONySnKEW
+         M8xA==
+X-Forwarded-Encrypted: i=1; AJvYcCVND24qOEcWVTAVyF7oiNwHJ6tDX0ySPGbBQrKBSmYtdDHs0vREz2zAyLqeat2sUH3B/Lqd1nTYTJIr@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyoby4nmT4Fsk0jXzxR8j3+gw4XZEm1H5IM5sWn41uQEa+evBWg
+	q5R6RqF0JvZZFzGAIsYUNHuUmb4sBokGvg7zj4tvEAOeN9xiJKCxPj315U2OfF0=
+X-Google-Smtp-Source: AGHT+IEqEG4Bzu7IHX7pi9rFGKS2JnZDvCN4JyxP3fZbBWB8dkTAP9Pd/d8ezaB2qKeYO7fLJBnoqg==
+X-Received: by 2002:adf:f9ce:0:b0:371:939e:9855 with SMTP id ffacd0b85a97d-37194bf6970mr1133066f8f.21.1723794853685;
+        Fri, 16 Aug 2024 00:54:13 -0700 (PDT)
+Received: from krzk-bin.. ([178.197.215.209])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37189863109sm3049587f8f.65.2024.08.16.00.54.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Aug 2024 00:54:13 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Michal Simek <michal.simek@amd.com>,
+	Vignesh R <vigneshr@ti.com>,
+	Felipe Balbi <felipe.balbi@linux.intel.com>,
+	Grygorii Strashko <grygorii.strashko@ti.com>,
+	Piyush Mehta <piyush.mehta@amd.com>,
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+	linux-usb@vger.kernel.org,
+	linux-omap@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/2] usb: dwc3: omap: add missing depopulate in probe error path
+Date: Fri, 16 Aug 2024 09:54:08 +0200
+Message-ID: <20240816075409.23080-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/9] fbdev: Use backlight power constants
-To: deller@gmx.de
-Cc: linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org
-References: <20240731123502.1145082-1-tzimmermann@suse.de>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <20240731123502.1145082-1-tzimmermann@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Flag: NO
-X-Spam-Score: -4.30
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	FREEMAIL_TO(0.00)[gmx.de];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_ENVRCPT(0.00)[gmx.de];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_TLS_ALL(0.00)[];
-	TO_DN_NONE(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid]
+Content-Transfer-Encoding: 8bit
 
-Ping for review
+Depopulate device in probe error paths to fix leak of children
+resources.
 
-Am 31.07.24 um 14:33 schrieb Thomas Zimmermann:
-> Commit a1cacb8a8e70 ("backlight: Add BACKLIGHT_POWER_ constants for
-> power states") introduced dedicated constants for backlight power states.
-> Convert fbdev drivers to the new constants.
->
-> The new constants replace the fbdev constants. This is part of a larger
-> effort to make kernel subsystems more independent from fbdev code and
-> headers.
->
-> Thomas Zimmermann (9):
->    fbdev: atmel_lcdfb: Use backlight power constants
->    fbdev: aty128fb: Use backlight power constants
->    fbdev: atyfb: Use backlight power constants
->    fbdev: chipsfb: Use backlight power constants
->    fbdev: nvidiafb: Use backlight power constants
->    fbdev: omapfb: Use backlight power constants
->    fbdev: radeonfb: Use backlight power constants
->    fbdev: rivafb: Use backlight power constants
->    fbdev: sh_mobile_lcdc_fb: Use backlight power constants
->
->   drivers/video/fbdev/atmel_lcdfb.c                           | 4 ++--
->   drivers/video/fbdev/aty/aty128fb.c                          | 6 +++---
->   drivers/video/fbdev/aty/atyfb_base.c                        | 2 +-
->   drivers/video/fbdev/aty/radeon_backlight.c                  | 2 +-
->   drivers/video/fbdev/chipsfb.c                               | 2 +-
->   drivers/video/fbdev/nvidia/nv_backlight.c                   | 2 +-
->   drivers/video/fbdev/omap2/omapfb/displays/panel-dsi-cm.c    | 4 ++--
->   .../fbdev/omap2/omapfb/displays/panel-sony-acx565akm.c      | 2 +-
->   drivers/video/fbdev/riva/fbdev.c                            | 2 +-
->   drivers/video/fbdev/sh_mobile_lcdcfb.c                      | 6 +++---
->   10 files changed, 16 insertions(+), 16 deletions(-)
->
+Fixes: ee249b455494 ("usb: dwc3: omap: remove IRQ_NOAUTOEN used with shared irq")
+Cc: stable@vger.kernel.org
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
+---
+
+Changes in v2:
+1. Add Ack
+---
+ drivers/usb/dwc3/dwc3-omap.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/usb/dwc3/dwc3-omap.c b/drivers/usb/dwc3/dwc3-omap.c
+index d5c77db4daa9..2a11fc0ee84f 100644
+--- a/drivers/usb/dwc3/dwc3-omap.c
++++ b/drivers/usb/dwc3/dwc3-omap.c
+@@ -522,11 +522,13 @@ static int dwc3_omap_probe(struct platform_device *pdev)
+ 	if (ret) {
+ 		dev_err(dev, "failed to request IRQ #%d --> %d\n",
+ 			omap->irq, ret);
+-		goto err1;
++		goto err2;
+ 	}
+ 	dwc3_omap_enable_irqs(omap);
+ 	return 0;
+ 
++err2:
++	of_platform_depopulate(dev);
+ err1:
+ 	pm_runtime_put_sync(dev);
+ 	pm_runtime_disable(dev);
 -- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstrasse 146, 90461 Nuernberg, Germany
-GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-HRB 36809 (AG Nuernberg)
+2.43.0
 
 
