@@ -1,95 +1,94 @@
-Return-Path: <linux-omap+bounces-1921-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1922-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C86C59564D2
-	for <lists+linux-omap@lfdr.de>; Mon, 19 Aug 2024 09:40:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 670199566A8
+	for <lists+linux-omap@lfdr.de>; Mon, 19 Aug 2024 11:18:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EBEA2813CB
-	for <lists+linux-omap@lfdr.de>; Mon, 19 Aug 2024 07:40:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85F791C215E4
+	for <lists+linux-omap@lfdr.de>; Mon, 19 Aug 2024 09:18:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13CC7157E9F;
-	Mon, 19 Aug 2024 07:40:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09BA615E5BD;
+	Mon, 19 Aug 2024 09:17:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="RWFaWCVd";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="XuAcUDpE"
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="Ud6JcAod";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="dpx3IjKI"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from fhigh5-smtp.messagingengine.com (fhigh5-smtp.messagingengine.com [103.168.172.156])
+Received: from fhigh6-smtp.messagingengine.com (fhigh6-smtp.messagingengine.com [103.168.172.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C627B14A605;
-	Mon, 19 Aug 2024 07:40:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 689A615B992;
+	Mon, 19 Aug 2024 09:17:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724053246; cv=none; b=Ta9z6mf65zreyvjC12H87+uWtecp/yyk0Q2DYZJ96DvPWVgUQbZjwCbvplXtkCRBhgBX6c4ZzX0UFxR7QO7/iB7V0sqKMUbhr05l4zhWZLK/uXCCYp2+KwxCd2Lr/cr/VTrE+Qupp4riSVwyNbS5pBX5eqGnL0d99bxTNChVzAE=
+	t=1724059054; cv=none; b=dBt+2bnTLdHntmiYsUPCS7tuEUbcqIM2MplOVzETnlElXAjYRz/4Fp2u7Pt9drL+kNX0kSA+cbWTZ04W9An7RMlalHdcdxmLpvmkvpGJLGczUzt5YHUhI9KKNqHqDRdS3CrAI3cAYFiKr/fwm8urG7tBBANCmGPZOLfM0etM8X0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724053246; c=relaxed/simple;
-	bh=5C6hi9jVni636FVTIqqwW0CM1paMDr5oiHPxcLE6rcY=;
+	s=arc-20240116; t=1724059054; c=relaxed/simple;
+	bh=IqniPhbCmZxI9RtQPRoTeIcqNs7wU34N4HJzmRdKoLc=;
 	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=E610XT72w5QxtFygsjnQMCLxGUfgoitAoqtg+4PPa3tl+usrAUDLEPFmeLJkbI5h7X5R0nQloljQZzlDpIjpKN8KQNmUSgEx9fo60rrl12la8RGSavg+HooZXu15EyGkkogeMECaVXi98Hoo5j8KYQK8y3Xq8sPpax76Zn4kPlQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=RWFaWCVd; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=XuAcUDpE; arc=none smtp.client-ip=103.168.172.156
+	 Subject:Content-Type; b=XnSs4y+OLx6Lh9x4VytrK8HLsM/YUMBDtuSLMAxeerfzc2oQGBsWXykUKNnQoZfytqopgNZ7vbNE8qTQv/mjM1gySGe2k+gJrmqOzR03xq/jf6oSqKC12kMMiQ13xvcywhskrapWNn2JXCM4tBhtcFXVPjMzvX4hZQRwDTFcnBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=Ud6JcAod; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=dpx3IjKI; arc=none smtp.client-ip=103.168.172.157
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Received: from phl-compute-04.internal (phl-compute-04.nyi.internal [10.202.2.44])
-	by mailfhigh.nyi.internal (Postfix) with ESMTP id C84B7114EA2A;
-	Mon, 19 Aug 2024 03:40:43 -0400 (EDT)
+	by mailfhigh.nyi.internal (Postfix) with ESMTP id 7209B1150836;
+	Mon, 19 Aug 2024 05:17:31 -0400 (EDT)
 Received: from phl-imap-11 ([10.202.2.101])
-  by phl-compute-04.internal (MEProxy); Mon, 19 Aug 2024 03:40:43 -0400
+  by phl-compute-04.internal (MEProxy); Mon, 19 Aug 2024 05:17:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
 	:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1724053243;
-	 x=1724139643; bh=5rOgtNXqnl/XTtdpDxQ7vxXNP5y5q63LBK60m42hBYA=; b=
-	RWFaWCVdotq7usC8JKB5/ooUKrFWEMHvhs9+ek41MUU/PZnvHgSJwI5iYtSKRvf+
-	SRijzroUudyCNiGFU0eO0Ehc4P82tb32uiMk2xd3v08qd1PjeXa30aFH5uEpgsyz
-	8f52fDI6XvjOn7rwMlAi+j16lOvSikYCXfH2vVqOmmxJvb6Vh8rSsQyVUzBq/5ld
-	0QRKk4he/k3swJoIqA/kZ1eeIV5nV0CNq2T7XuIMgd/eFHNirQi6bpgGQwJcinIm
-	KR5dtZnm5XbudgEeGnGZ6E9F4lsnm0vJM8L38c39xM5FTRU+ZXlw+K1IKsWFFQWR
-	5TYH7T1n+gKcV69Jw1NeWA==
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1724059051;
+	 x=1724145451; bh=oVEsI+flW84gQwRAmwbOjMNDy4XUMPgz5I0zP431mCw=; b=
+	Ud6JcAodEHQ43uv1js/tvbMDGmKlleBjvQ6u3go/ut4c3Lye59mh73AB9ZURu+QP
+	nX4ddZM8RS0/XZPugidUx/gmJ50LF8P1aTv8l8yhMBW1VYazgP7/W5KQdakOoY32
+	YgC/1e8V81u8v2n/oC9CfsYGLotiHSQf8rHrYrvKHi0Pov+ZHBhhhVdQx5WibfmF
+	xLY54sj+u6RXlfPNhrLF7tgtqVC2PjqFio2TKqlCCJEOIGGiDHVhlVTFvUMkvKpr
+	PwC8ZDADO1x8AZyLLjOCRp0cHwoWpDrYghFRLOwSNHCB80MIR0uumX59MuRj+hDO
+	lQr4UN9klr8j1zgvNgpqLw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1724053243; x=
-	1724139643; bh=5rOgtNXqnl/XTtdpDxQ7vxXNP5y5q63LBK60m42hBYA=; b=X
-	uAcUDpENxX3JeOBw3ghu3j2zTTh8HI3ttsk312poqBYDZVgB5JIreUdXj0LpCL9n
-	TQQvuRhAApUxltOolJuK2U0eekO9X2fE4ntnUbyyOSG38vNLew3wT/Jgt/qZwSTO
-	/rSZM9Q6+dessLRYdJrGgXAleCTYK3ZbIXXMuBSMIkIEAysW/kOpTUiZFhCrOGK1
-	FqiFpSPhI090DIaLw+os9Gw728TlbkYIwc/PobrSMSiQSfo9D+GDiZt/d7Ksg79Z
-	1+evdzrmTMUyu53tpWDR9U92mAC4ALfZDMsY33oPHxIwdSgjUfUGPlNZDpX8c0Pt
-	m4pbEJFRA7JhL6abaMRuA==
-X-ME-Sender: <xms:-vbCZknn1GfGbKx7_1df5aEvDlDW_s9xkUhyQlddmArQn-l_8zzwwg>
-    <xme:-vbCZj0stErkO9lplvqUoCmG9FNY90ez3JPxbY4k9oeVqQH1pDI1srlhK5arzsTx2
-    hGuUGjCk8N02CORtbk>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddruddufedguddvgecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpefoggffhffvvefkjghfufgtgfesthejredtredt
-    tdenucfhrhhomhepfdetrhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusg
-    druggvqeenucggtffrrghtthgvrhhnpeevfeelhfelheekleeggefgjeeljeehiefgteev
-    feetueeihfekgedvieelhfdugeenucffohhmrghinhepuggvsghirghnrdhnvghtpdhlrg
-    hihhhurgdrtghomhenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhl
-    fhhrohhmpegrrhhnugesrghrnhgusgdruggvpdhnsggprhgtphhtthhopedvjedpmhhoug
-    gvpehsmhhtphhouhhtpdhrtghpthhtoheprhhitghhrghrugdrvggrrhhnshhhrgifsegr
-    rhhmrdgtohhmpdhrtghpthhtoheprhhitghhrghrugdrshgrnhguihhfohhrugesrghrmh
-    drtghomhdprhgtphhtthhopehlihhnuhigsegrrhhmlhhinhhugidrohhrghdruhhkpdhr
-    tghpthhtohepthhonhihsegrthhomhhiuggvrdgtohhmpdhrtghpthhtohepghhrvghgoh
-    hrhidrtghlvghmvghnthessghoohhtlhhinhdrtghomhdprhgtphhtthhopehnihgtohes
-    fhhluhignhhitgdrnhgvthdprhgtphhtthhopegrlhgvgigrnhgurhgvrdhtohhrghhuvg
-    esfhhoshhsrdhsthdrtghomhdprhgtphhtthhopehrohgsvghrthdrjhgrrhiimhhikhes
-    fhhrvggvrdhfrhdprhgtphhtthhopegumhhithhrhidrthhorhhokhhhohhvsehgmhgrih
-    hlrdgtohhm
-X-ME-Proxy: <xmx:-vbCZir8EVT-NEhPrM456o9YtVwjX4tVHQvn3BqnzDtH3fenZUO8FQ>
-    <xmx:-vbCZgmG0Rt_S4U8j7zMWNJrcFjCeuE4g7Hd3A0D_wwyVGwU8LeHGg>
-    <xmx:-vbCZi3sMbGBlcxtde0P8ut_c_sbypjpeBWtOFNuvg7iTCAl6COtZg>
-    <xmx:-vbCZnuZ1IyXddqtZznd53gK8LP7yOT5cH439SNqBSHzM8w7LdR_eQ>
-    <xmx:-_bCZmLqs-nTReoqfIKEPTaXlq3iafuMGqEncmxBUIjssGNEViHiBUrl>
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1724059051; x=
+	1724145451; bh=oVEsI+flW84gQwRAmwbOjMNDy4XUMPgz5I0zP431mCw=; b=d
+	px3IjKIcF4HxkvSSk5sCZglQnDctnDggwja+d6Kh4CHa00U07cyAijWSfsVxfH4r
+	S4JJ19trSBargI08bB3TqB9sOwpSfdssjIfjO7x9Gxa+F+NF4NvGSDEAtuzwexT+
+	LXdQ9XhzCR4cXg+rc19x1QImDCk+xSf2GPGUdqybPhvVi07bGX6GbpBKHUhbou1/
+	nFmP/GQQPDJHHujeVieUKOAHD8l0cdGkxc3UeT2zkyr8yHTT7aYi3WEWrnQoO9Zi
+	kKJwU+8s5gEAVyyLWOiLW9rUdXDjMKeFvns/yzV631d8mVhk4tVvLZ1OcvARvtt2
+	F43Lem5NomunH/xhHFLSg==
+X-ME-Sender: <xms:qg3DZqJ_-mqNyRF3xoP8OYz9XE-yiNJ6gfN5K7kI4WT0UxpAcbcMUQ>
+    <xme:qg3DZiIAogjVOCE-Y3pdBEksPOxiGKEwrOqxlVZ6LS4lA8veYrrAU-8s-IVpihotw
+    VgX9ENxCYv-YZtrBAo>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddruddugedgudegucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddt
+    necuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrd
+    guvgeqnecuggftrfgrthhtvghrnhephfdthfdvtdefhedukeetgefggffhjeeggeetfefg
+    gfevudegudevledvkefhvdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
+    hmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepvdeh
+    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehrihgthhgrrhgurdgvrghrnhhshh
+    grfiesrghrmhdrtghomhdprhgtphhtthhopehrihgthhgrrhgurdhsrghnughifhhorhgu
+    segrrhhmrdgtohhmpdhrtghpthhtoheplhhinhhugiesrghrmhhlihhnuhigrdhorhhgrd
+    hukhdprhgtphhtthhopehtohhnhiesrghtohhmihguvgdrtghomhdprhgtphhtthhopehg
+    rhgvghhorhihrdgtlhgvmhgvnhhtsegsohhothhlihhnrdgtohhmpdhrtghpthhtohepnh
+    hitghosehflhhugihnihgtrdhnvghtpdhrtghpthhtoheprghlvgigrghnughrvgdrthho
+    rhhguhgvsehfohhsshdrshhtrdgtohhmpdhrtghpthhtoheprhhosggvrhhtrdhjrghrii
+    hmihhksehfrhgvvgdrfhhrpdhrtghpthhtohepughmihhtrhihrdhtohhrohhkhhhovhes
+    ghhmrghilhdrtghomh
+X-ME-Proxy: <xmx:qg3DZqvy0Ms2WN7rlf3dz4MxENrFR6kIkTgACjD-LxGv2-K2cXEOhg>
+    <xmx:qg3DZvZghMZgwu5eS-WPU40pW-W7a00Uxahb0RKVH2NXaPEdmSetTA>
+    <xmx:qg3DZhYRhmgPElU9UfovaioVay8uZpslc0qtf-aCpofExIB2V2qx6w>
+    <xmx:qg3DZrCmnUkR7NK99ddqCqeg4JqU15x0_EhEwfAPXeLya6Gxh1uLgA>
+    <xmx:qw3DZlKGdeVByaaXHPLKuFZ-JosMCVLnz0C0L16UR87QpTmN63jer7r1>
 Feedback-ID: i56a14606:Fastmail
 Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 5F01A16005E; Mon, 19 Aug 2024 03:40:42 -0400 (EDT)
+	id 54ECE16005F; Mon, 19 Aug 2024 05:17:30 -0400 (EDT)
 X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
@@ -97,11 +96,11 @@ List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Mon, 19 Aug 2024 09:37:47 +0200
+Date: Mon, 19 Aug 2024 11:17:08 +0200
 From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Matt Turner" <mattst88@gmail.com>, "Ard Biesheuvel" <ardb@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- "Russell King" <linux@armlinux.org.uk>,
+To: "Jeremy J. Peper" <jeremy@jeremypeper.com>,
+ linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org, "Russell King" <linux@armlinux.org.uk>,
  "Linus Walleij" <linus.walleij@linaro.org>,
  "Richard Earnshaw" <richard.earnshaw@arm.com>,
  "Richard Sandiford" <richard.sandiford@arm.com>,
@@ -119,60 +118,57 @@ Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
  linux-samsung-soc@vger.kernel.org, "Andrew Lunn" <andrew@lunn.ch>,
  "Sebastian Hesselbarth" <sebastian.hesselbarth@gmail.com>,
  "Gregory Clement" <gregory.clement@bootlin.com>,
- "Jeremy J. Peper" <jeremy@jeremypeper.com>, debian-arm@lists.debian.org,
+ debian-arm@lists.debian.org,
  "Dmitry Torokhov" <dmitry.torokhov@gmail.com>,
  "Alexandre Torgue" <alexandre.torgue@foss.st.com>
-Message-Id: <edb61f55-da54-4015-8f09-178a6644c2b0@app.fastmail.com>
-In-Reply-To: 
- <upt52224svue5ozyacrzm3qcavkcz7kojyi2yajoqb4y2pgffo@cy437r5ipdbm>
+Message-Id: <790bf2c4-2ecf-429c-8e28-ad5807ffed7a@app.fastmail.com>
+In-Reply-To: <3413899.e9J7NaK4W3@earth>
 References: <2831c5a6-cfbf-4fe0-b51c-0396e5b0aeb7@app.fastmail.com>
- <upt52224svue5ozyacrzm3qcavkcz7kojyi2yajoqb4y2pgffo@cy437r5ipdbm>
+ <3413899.e9J7NaK4W3@earth>
 Subject: Re: [RFC} arm architecture board/feature deprecation timeline
 Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
 
-On Thu, Aug 15, 2024, at 20:24, Matt Turner wrote:
-> On 07/31, Arnd Bergmann wrote:
->>=== iWMMXt ===
->>
->>I'm not aware of any remaining users for iWMMXt, and we dropped
->>support for ARMv7 PJ4 CPUs (MMP2, Berlin) already, so the
->>only supported hardware that even has this is Intel/Marvell
->>PXA and MMP1.
+On Thu, Aug 15, 2024, at 21:53, jeremy@jeremypeper.com wrote:
+> For the Buffalo devices we still have a lot of folks using Marvell Kirkwood, 
+> Orion5x and MV78100 NAS devices. In a world where SATA provides the cheapest $ 
+> per TB storage and Gigabit Ethernet is still standard they end up being 
+> surprisingly relevant for hobbyists.  
 >
-> pixman had [1][2] iwMMXt paths that I optimized for the XO 1.75 and
-> would occasionally test on a CuBox over the years.
+> The two pre-DTB device files that we're still using are:
+> mach-mv78xx0/buffalo-wxl-setup.c
+> mach-orion5x/terastation_pro2-setup.c
 >
-> I'm surprised to see that commit b9920fdd5a75 ("ARM: 9352/1: iwmmxt:
-> Remove support for PJ4/PJ4B cores") landed with the claim that "there is
-> no v6/v7 user space that actually makes use of this". A quick Google
-> search reveals evidence of usage [3]. It doesn't seem like this should
-> have been backported to the stable branches in any case.
+> If those can stick around for the next LTS kernel that should give me 
+> sufficient 
+> time to try converting them to DTS like the other Orion5x/Kirkwood 
+> devices.
 
-Sorry for missing this one, I'm sure I spend more than a quick
-google search trying to find instances of this, but clearly didn't
-see this, and I now see that pixman is the only package listed in
-https://codesearch.debian.net that uses the compiler flags.
+Right, the plan was always to keep them for this year's LTS kernel,
+which is almost certainly going to be 6.12. This should be enough
+for Debian Trixie.
 
-I'm still not sure how your version worked on ARMv7, was this before
-or after the move to the hardfloat ABI? What I see on modern armhf
-gcc targets is that they reject -march=iwmmxt{,2} because those
-imply armv5 without vfp, while armhf toolchains require vfpv3d16
-as the minimum fpu.
+I expect that the terastation pro2 is going to be fairly easy to
+convert to DT as there is already support for similar Orion5x
+machines. In this case I would just remove all the Orion5x board
+files and you can add a dts file later on. The bit I'm unsure
+about here is legacy PCI support. I see that the board file enables
+both PCI and PCIe, but I don't know if both are actually used,
+or if everything is on PCIe.
 
-My guess is that the pixman code still works correctly for softfloat
-toolchains, but the meson.build check would fall back to the vfpv3
-version for armv7/hardfloat builds.
+I have some old patches for separating orion legacy PCI from
+PCIe support, as only the latter has a modern driver (shared
+with kirkwood and armadaxp). If you can confirm that the machine
+actually uses PCI, I can dig those out from my backups.
 
-gcc also rejects "-march=iwmmxt2+vfpv3-d16". While it accepts
-"-march=iwmmxt2 -mfpu=vfpv3-d16", I suspect that this combination
-has not been tested well.
+The WXL machine is going to be more work since there is currently
+no DT support for mv78xx0, but everything except the pin controller
+should at least have a driver since this SoC is somewhere between
+Kirkwood and Dove. Having a hack for the pin controller similar
+to what orion5x has is probably fine, especially if you only
+need to support one machine.
 
-> I know that ffmpeg used to have iwMMXt paths as well, but I believe they
-> were removed a few years ago.
+Let me know if you need any help during the conversion.
 
-Right, apparently this was in 2012:
-https://gitlab.laihua.com/linshizhi/ffmpeg.wasm-core/commit/363bd1c62c1bcbac2dcb56f3dc47824f075888d2
-
-   Arnd
+    Arnd
 
