@@ -1,129 +1,165 @@
-Return-Path: <linux-omap+bounces-1925-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1926-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16A9E956D20
-	for <lists+linux-omap@lfdr.de>; Mon, 19 Aug 2024 16:23:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95BB5956D68
+	for <lists+linux-omap@lfdr.de>; Mon, 19 Aug 2024 16:34:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49A841C2258D
-	for <lists+linux-omap@lfdr.de>; Mon, 19 Aug 2024 14:23:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 136BB1F24A09
+	for <lists+linux-omap@lfdr.de>; Mon, 19 Aug 2024 14:34:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCE2C16DC0D;
-	Mon, 19 Aug 2024 14:23:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52E71171E5F;
+	Mon, 19 Aug 2024 14:34:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Oo3CeQMm"
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="kYMAYaaK";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="JCkvDd9l"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from fout7-smtp.messagingengine.com (fout7-smtp.messagingengine.com [103.168.172.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85EB816D4F0;
-	Mon, 19 Aug 2024 14:23:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31DBF16BE23;
+	Mon, 19 Aug 2024 14:34:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724077421; cv=none; b=HkHxwOHHvfRV3Il8XsPqGzeSU5WlLp203ouPtfjTC8R/G7KPTAkhG8YNxABCbpxI2mAjOiUMMIet5E6GjhvvpFxjDsVr3zNeYKXhAkjWx+oR2sf/0ya4wpPPLai4wuzetfhF1x7KWSr0x0Zj9Zr4lpFxVL5S2F4HDNfwaBkPRpo=
+	t=1724078075; cv=none; b=t4phKlwfFbZ0dLE0i5emyTPnlMJ56yRRr+TLFaf3Veen0c67xy+dKkyq5wElqaeU4GHdyJH9qCXzESmW7CH3eYcac34ECv624MPNMCVtcxKCqT2cUB1bOF6Y0LUDYWRlMniI93prFpX8YKTJNNfokvfdY3ux1fnCTiNwN4Zg5rY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724077421; c=relaxed/simple;
-	bh=gGZDsocDzpaQYqhsw+0xgjR/qwItyD0Y75zesYVV/68=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gmBtBJHTqdKx7JWyGmqatzZq0/wufBWbgBc99U/qPWLWuVxZi7O/d3BWuCwYwXy2dbyfNJatXoAZgVgEXe2vD60kuhfTlUb2n1rZ5KB9mC4l3z4hJOZsG3tuea7WNWBWgzeNHO2IZWdbh+XkINWdPg60p+z8dq2QtO4VY+VHg54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Oo3CeQMm; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=56aeBW2Nwfu08Vcfzw6WZhyzwb5I2iH2wgj1pLyfRu4=; b=Oo3CeQMmpXZ3kwqxSxbbqRYoOr
-	FT8VWPR3SfAwrzzPh7oT7BTmZwvIRT9trlO2wNHLsTstFOiz8Qti4z2EL0BIHSlUcWBBf/GuxgfUp
-	382v+5iOguTD4va99SN50C3W+urD9B1oWgo/XLUblufBBdoBC7dwMrS2KLLYqyDNd8LI=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1sg3Hw-0057SI-5q; Mon, 19 Aug 2024 16:23:16 +0200
-Date: Mon, 19 Aug 2024 16:23:16 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: "Jeremy J. Peper" <jeremy@jeremypeper.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Russell King <linux@armlinux.org.uk>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Richard Earnshaw <richard.earnshaw@arm.com>,
-	Richard Sandiford <richard.sandiford@arm.com>,
-	Ramana Radhakrishnan <ramanara@nvidia.com>,
-	Nicolas Pitre <nico@fluxnic.net>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Kristoffer Ericson <kristoffer.ericson@gmail.com>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-	Tony Lindgren <tony@atomide.com>,
-	Linux-OMAP <linux-omap@vger.kernel.org>,
-	Nikita Shubin <nikita.shubin@maquefel.me>,
-	linux-samsung-soc@vger.kernel.org,
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-	Gregory Clement <gregory.clement@bootlin.com>,
-	debian-arm@lists.debian.org,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>
-Subject: Re: [RFC} arm architecture board/feature deprecation timeline
-Message-ID: <a6316f7c-4064-4145-aa6a-d34197a3981a@lunn.ch>
-References: <2831c5a6-cfbf-4fe0-b51c-0396e5b0aeb7@app.fastmail.com>
- <3413899.e9J7NaK4W3@earth>
- <790bf2c4-2ecf-429c-8e28-ad5807ffed7a@app.fastmail.com>
- <a8c009b5-ada0-4f78-92f7-7a6c5075ccf1@app.fastmail.com>
+	s=arc-20240116; t=1724078075; c=relaxed/simple;
+	bh=dg9PHiIHHyncj1FUrSsiVVbktAaF5R95cmLQsROQGhQ=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=FdR9f5xN7PmdzkC2Hb+VALapbwrCvzLN6tSkJxtjCJLs8N9A5I1xX4qA/gFRjAX/cvHyx2oHUJIxDyHsa9dVdmQSW9heqTYN1tfwSIjLO6EgxyN2oKoXaE8oZssiPl/odpbeLv/r5bKt8i79vGg7U4OtZHPEdVVUmzJ5Os7ypaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=kYMAYaaK; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=JCkvDd9l; arc=none smtp.client-ip=103.168.172.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+Received: from phl-compute-04.internal (phl-compute-04.nyi.internal [10.202.2.44])
+	by mailfout.nyi.internal (Postfix) with ESMTP id 33081138FD36;
+	Mon, 19 Aug 2024 10:34:33 -0400 (EDT)
+Received: from phl-imap-11 ([10.202.2.101])
+  by phl-compute-04.internal (MEProxy); Mon, 19 Aug 2024 10:34:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1724078073;
+	 x=1724164473; bh=Cplj/5Hfvrx9mPB6KI5mnvTdVq2LqbBokqZy1h0BfXk=; b=
+	kYMAYaaKojb6fGpgnXuMzkNoSxwsdCs0LxOUZxfOOzOa6l8mJvsto2qOWvKDe99w
+	O3Kog/eyVXd+256u2o2kPdwQ3YpdMsBgviTdsB3xmYsuu2GtP/atJ1VSeqVPKnVc
+	GoDk75Ke3in7UV36T09C7alZrVzRSKmpuliwqq8XbHrNBZcjDhkmaQTUZCbF+AIJ
+	rB4UEu6M7k/itpJcrjfTpZvwTThfMiXtK/CVKY7o4AkAd0skdhuiE+jOzVHbtYl0
+	jj8l4tXSHFRywaPTpU2mjtpawXTZMWyRS/nkhQ2jg9CHZ+dQ5S5vSbFK9aA/vRPO
+	Z5HaFnk0YgKhGeMO8O6kwQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1724078073; x=
+	1724164473; bh=Cplj/5Hfvrx9mPB6KI5mnvTdVq2LqbBokqZy1h0BfXk=; b=J
+	CkvDd9l31/OQqQw1lpW4KEnwJ8P7Nr7aKLzhFBUVshxxg3bqee9p7y09ATguGVW2
+	QtRvUejpY2RWR8FtKk4VacCE6u3+sH1df+anfzGcCZf+RwhqQ/v1Kr7o/V4PZS/G
+	111fR1KlmJ6PPCCMy2IgIxTIIFIiMF1lTcZ3FsRkHPmnOGkBVAovqVdxczD8iUYw
+	OvqetryOhjHInR0MiSktY3jlZ27XTIJ3C4QGFGhRa+unxz6yKKJhW/AFP/+PmCxa
+	63A2d+pMeIMpKnWmp3Dj/cvMv47y10l1WdT8PM12dgwsY+5bAzgOAfnsyKURr9cd
+	GKHEv8zSkC0uN6fhrJO+A==
+X-ME-Sender: <xms:-FfDZqu7s1tsN0B7slXYxeRDXVGIQDXsSaevAsPMDqBZBX9S_Ssjjw>
+    <xme:-FfDZvelvBkRUNFtAVS_DmlU80HLnH51Wvr8CgOVDAx8pvRimBjXGT6uRt7anLFD9
+    xGRM0Gkx6FYkZNmnBs>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddruddugedgjeekucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddt
+    necuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrd
+    guvgeqnecuggftrfgrthhtvghrnhephfdthfdvtdefhedukeetgefggffhjeeggeetfefg
+    gfevudegudevledvkefhvdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
+    hmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepvdeh
+    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehrihgthhgrrhgurdgvrghrnhhshh
+    grfiesrghrmhdrtghomhdprhgtphhtthhopehrihgthhgrrhgurdhsrghnughifhhorhgu
+    segrrhhmrdgtohhmpdhrtghpthhtoheplhhinhhugiesrghrmhhlihhnuhigrdhorhhgrd
+    hukhdprhgtphhtthhopehtohhnhiesrghtohhmihguvgdrtghomhdprhgtphhtthhopehg
+    rhgvghhorhihrdgtlhgvmhgvnhhtsegsohhothhlihhnrdgtohhmpdhrtghpthhtohepnh
+    hitghosehflhhugihnihgtrdhnvghtpdhrtghpthhtoheprghlvgigrghnughrvgdrthho
+    rhhguhgvsehfohhsshdrshhtrdgtohhmpdhrtghpthhtoheprhhosggvrhhtrdhjrghrii
+    hmihhksehfrhgvvgdrfhhrpdhrtghpthhtohepughmihhtrhihrdhtohhrohhkhhhovhes
+    ghhmrghilhdrtghomh
+X-ME-Proxy: <xmx:-FfDZlzsgpt03jojW3yQcRME6tNfJK75hzi7RgV-ucZw5_G6MKuo2g>
+    <xmx:-FfDZlO3zMheNL8FfsxzSMjAHSHde4IMCp7SwXpQKWGtq5GSigwlWw>
+    <xmx:-FfDZq9kpqKTM4mjyh4WXTittGT3XqQpeXV2EFjNhyj9jhIRB0MxPA>
+    <xmx:-FfDZtW0iNO3POcp2g2N7lQE_HQTiDEaS6ozNc7rcAuNPFbY8rQR2Q>
+    <xmx:-VfDZoMsg0jqnAeDmEoIZoSKAU9HMfoouEsaTUrbOi6ZWq2D5FR6Mhbb>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 1939B16005E; Mon, 19 Aug 2024 10:34:31 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a8c009b5-ada0-4f78-92f7-7a6c5075ccf1@app.fastmail.com>
+Date: Mon, 19 Aug 2024 16:34:10 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Andrew Lunn" <andrew@lunn.ch>
+Cc: "Jeremy J. Peper" <jeremy@jeremypeper.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ "Russell King" <linux@armlinux.org.uk>,
+ "Linus Walleij" <linus.walleij@linaro.org>,
+ "Richard Earnshaw" <richard.earnshaw@arm.com>,
+ "Richard Sandiford" <richard.sandiford@arm.com>,
+ "Ramana Radhakrishnan" <ramanara@nvidia.com>,
+ "Nicolas Pitre" <nico@fluxnic.net>,
+ "Krzysztof Kozlowski" <krzk@kernel.org>,
+ "Mark Brown" <broonie@kernel.org>,
+ "Kristoffer Ericson" <kristoffer.ericson@gmail.com>,
+ "Robert Jarzmik" <robert.jarzmik@free.fr>,
+ "Aaro Koskinen" <aaro.koskinen@iki.fi>,
+ "Janusz Krzysztofik" <jmkrzyszt@gmail.com>,
+ "Tony Lindgren" <tony@atomide.com>,
+ Linux-OMAP <linux-omap@vger.kernel.org>,
+ "Nikita Shubin" <nikita.shubin@maquefel.me>,
+ linux-samsung-soc@vger.kernel.org,
+ "Sebastian Hesselbarth" <sebastian.hesselbarth@gmail.com>,
+ "Gregory Clement" <gregory.clement@bootlin.com>,
+ debian-arm@lists.debian.org,
+ "Dmitry Torokhov" <dmitry.torokhov@gmail.com>,
+ "Alexandre Torgue" <alexandre.torgue@foss.st.com>
+Message-Id: <a0ecae5c-e72f-4d19-98df-1ab848f36d4b@app.fastmail.com>
+In-Reply-To: <a6316f7c-4064-4145-aa6a-d34197a3981a@lunn.ch>
+References: <2831c5a6-cfbf-4fe0-b51c-0396e5b0aeb7@app.fastmail.com>
+ <3413899.e9J7NaK4W3@earth>
+ <790bf2c4-2ecf-429c-8e28-ad5807ffed7a@app.fastmail.com>
+ <a8c009b5-ada0-4f78-92f7-7a6c5075ccf1@app.fastmail.com>
+ <a6316f7c-4064-4145-aa6a-d34197a3981a@lunn.ch>
+Subject: Re: [RFC} arm architecture board/feature deprecation timeline
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-On Mon, Aug 19, 2024 at 04:12:10PM +0200, Arnd Bergmann wrote:
-> Two small additions:
-> 
-> On Mon, Aug 19, 2024, at 11:17, Arnd Bergmann wrote:
-> > On Thu, Aug 15, 2024, at 21:53, jeremy@jeremypeper.com wrote:
-> > I expect that the terastation pro2 is going to be fairly easy to
-> > convert to DT as there is already support for similar Orion5x
-> > machines. In this case I would just remove all the Orion5x board
-> > files and you can add a dts file later on. The bit I'm unsure
-> > about here is legacy PCI support. I see that the board file enables
-> > both PCI and PCIe, but I don't know if both are actually used,
-> > or if everything is on PCIe.
-> >
-> > I have some old patches for separating orion legacy PCI from
-> > PCIe support, as only the latter has a modern driver (shared
-> > with kirkwood and armadaxp). If you can confirm that the machine
-> > actually uses PCI, I can dig those out from my backups.
-> 
-> I did find this myself later, the machine does use an on-board
-> PCI connected SATA controller, which is obviously required to
-> make the machine useful.
-> 
-> Doing a PCI host bridge driver with DT support correctly is
-> a lot of work, especially if there is only a single machine
-> using it. Since this uses the same drivers/ata/sata-mv.c
-> driver as the other orion/kirkwood machines, I wonder if we
-> can just pretend that this is a platform device and skip
-> all of the PCI probing. I think this only needs a few
-> small changes to the sata-mv.c driver, but it does require
-> that the PCI bus is left in a known state by the boot loader.
+On Mon, Aug 19, 2024, at 16:23, Andrew Lunn wrote:
+> On Mon, Aug 19, 2024 at 04:12:10PM +0200, Arnd Bergmann wrote:
+>
+> It is a long time since i looked at Orion, so i could be wrong....
+>
+> As far as i remember, it has a PCI controller and a PCIe
+> controller. They are slightly different. The PCIe part is i think
+> simpler to support, it follows the standards better. I _think_ the PCI
+> controller uses a GPIO for interrupt support, which causes a mess.
+>
+> If only PCIe is needed, it should not be too hard to make work. I
+> would try to avoid the PCI controller is possible.
 
-It is a long time since i looked at Orion, so i could be wrong....
+This machine uses both PCIe (for ethernet) and PCI (for SATA).
 
-As far as i remember, it has a PCI controller and a PCIe
-controller. They are slightly different. The PCIe part is i think
-simpler to support, it follows the standards better. I _think_ the PCI
-controller uses a GPIO for interrupt support, which causes a mess.
+The PCIe driver is arch/arm/plat-orion/pcie.c and is shared
+with mach-dove and mach-mv78xx0, previously also with kirkwood
+and presumably armadaxp, which now use the more modern
+drivers/pci/controller/pci-mvebu.c.
 
-If only PCIe is needed, it should not be too hard to make work. I
-would try to avoid the PCI controller is possible.
+I just looked at the other dts files for orion5x and see
+that they still use the old pci/pcie driver without an
+entry in the dts files.
 
-      Andrew
+This is clearly not where we want to be in the long run,
+but doing the same thing for the terastation_pro2
+is at least not going to make it worse.
+
+       Arnd
 
