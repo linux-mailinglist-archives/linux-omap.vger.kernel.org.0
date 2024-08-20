@@ -1,193 +1,277 @@
-Return-Path: <linux-omap+bounces-1927-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1928-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C859D957194
-	for <lists+linux-omap@lfdr.de>; Mon, 19 Aug 2024 19:09:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5CC8957B0D
+	for <lists+linux-omap@lfdr.de>; Tue, 20 Aug 2024 03:36:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17B761F23C1C
-	for <lists+linux-omap@lfdr.de>; Mon, 19 Aug 2024 17:09:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D5A12838E5
+	for <lists+linux-omap@lfdr.de>; Tue, 20 Aug 2024 01:36:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F0B6179202;
-	Mon, 19 Aug 2024 17:08:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 248461BC58;
+	Tue, 20 Aug 2024 01:36:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KuguUdG9"
+	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="ACPQEUOl"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-il1-f181.google.com (mail-il1-f181.google.com [209.85.166.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from TYVP286CU001.outbound.protection.outlook.com (mail-japaneastazon11011021.outbound.protection.outlook.com [52.101.125.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DAAF44C86;
-	Mon, 19 Aug 2024 17:08:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.181
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724087330; cv=none; b=VVxtSoMX63DZHOSH+6+gxpQu/FtTJu0ez/fESFzgQNrk1yYvTiAxQBBI7dP/okPnii8fT/5xjuTJBfsFzj8aKNJV4JTbRan4PXaTIFGm32Z+cAhj7Ajo6FWaaljfMdrPB3zdm6gN+CYBjonfxGeMiN2OcplHU/mcyrr2RKQP5Bk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724087330; c=relaxed/simple;
-	bh=B+WSAhARzIa8RfsuUPbOfLap4NV0ys36VRA1BvkoZuo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Xq0tGAWk4OrD5qcXIfGBTdtDdzZwa/8GDTGOCxe6r2Nc49O3Qf8XIvkfs2Mqkljxr5iF9PM4faNh7ikQT2BtqWg+IEA3I/s4BRmMstdXnSE7rUhO9si1QItHid9cRNCKnW8hxqCdMsIHC86Lqg+KVlMyeacQTf+LspUBwr95ehg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jeremypeper.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KuguUdG9; arc=none smtp.client-ip=209.85.166.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jeremypeper.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-il1-f181.google.com with SMTP id e9e14a558f8ab-39d3cd4fa49so5384805ab.1;
-        Mon, 19 Aug 2024 10:08:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724087327; x=1724692127; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NtlTKJbHiAYCUCklHDfN5OAWyNL6/u/SANPFYo6wU2s=;
-        b=KuguUdG9MP8L6lP9KBO/BOs9uRR1nW9oP9JhIqoCyfYpCD1/B2C8MWpbL+MPZ9bkx5
-         Rt1HvdVCw0X/LMn8rLJJaQFQI9nLMmlc29DV/jbbdhFkpgPxwGENRPapVlwcqFLXX1jb
-         zZvYjS3qXrBZx0gwrUojDz5BPGRcmlfr8h14ZGxX7p30hoWFt+mocP+h+cV0mq4hakuv
-         eZkZ6Pmz9drObPvkYSRZu4peYkGxfI4mxJmbScfUoPjuiHgTw+Dh8oG9xIWcCx3nj39I
-         l3bmDMrrEtC75DN3zpXDEDIOXzL5xeE9Qu4a7FUWmXv23rTrJyAEvvjlTmrMdkXqfKt+
-         tIuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724087327; x=1724692127;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:sender:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=NtlTKJbHiAYCUCklHDfN5OAWyNL6/u/SANPFYo6wU2s=;
-        b=nZYPn278plcM8BeluHGRqEdem7fRoMYJxszMWYqfbTolSNMJO+LdvPyZ4ZwfSOkRO/
-         9aWlRUSkYXlVeuzXJcTPFEYWd9N5rGskB9Nirip1MZ2mYOR4xlx8sESes93tDtw4KIRV
-         h6YUUTf59Wyx7AbAufRyLDmFtTNzHXb5lcJIsOiSdHxkMvG4Jvwc7u0cwHYTZFXWbMuA
-         eLNNL5kocbPG4ItXDZ6jMJ98selenB7tdstPq6FkI2qogpMa2/LECR6d78nGAhfO3HFV
-         XFkuESMzLLzqpjARZq/Wj0jmRKJ1cNmDsONE1MX3S9YZqHyBB/DEm1zB4J6v3mcs5+Dh
-         nFCA==
-X-Forwarded-Encrypted: i=1; AJvYcCXUY5m/8HhVonUOwWl+tOXHwhiqVfmr2NB3jp1a0GFK0IK0K8S7MeOYgFta1I0wzWyWlBGPYsbIsT89sSmbQueBQ3XYfY0hWQMUUXjF3Ly+B6pdPZcddYvXbr56zcaxYVFuGHcmb7TM7gpXcWSwq6gm23wNVo8Llsa3v6TCgGVmPoWVE5WildnkcuBy
-X-Gm-Message-State: AOJu0Yx5q2NgYzfWJm9kNo3tANejo8foh4E+1uxdWXo7oitAjTgLJvoM
-	hgOTUlU4U3c4Fp0FpgVCneVQHKiMClEVu+cSezn9pO6yKsw51IL0
-X-Google-Smtp-Source: AGHT+IF+l6vi5FOKP4VXOxBu7lde1hnkECw+FYl/OVHJiwNF1JWFfYs64lSRDMynZsfZ1XvndqKSNA==
-X-Received: by 2002:a05:6e02:20cb:b0:39d:4d2d:d0de with SMTP id e9e14a558f8ab-39d56dd773emr2796445ab.3.1724087326948;
-        Mon, 19 Aug 2024 10:08:46 -0700 (PDT)
-Received: from earth.localnet (97-127-48-199.mpls.qwest.net. [97.127.48.199])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4ccd6e97f0esm3234711173.65.2024.08.19.10.08.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Aug 2024 10:08:46 -0700 (PDT)
-Sender: Jeremy <jeremypeper@gmail.com>
-From: jeremy@jeremypeper.com
-To: Arnd Bergmann <arnd@arndb.de>, Andrew Lunn <andrew@lunn.ch>
-Cc: "Jeremy J. Peper" <jeremy@jeremypeper.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Russell King <linux@armlinux.org.uk>,
- Linus Walleij <linus.walleij@linaro.org>,
- Richard Earnshaw <richard.earnshaw@arm.com>,
- Richard Sandiford <richard.sandiford@arm.com>,
- Ramana Radhakrishnan <ramanara@nvidia.com>, Nicolas Pitre <nico@fluxnic.net>,
- Krzysztof Kozlowski <krzk@kernel.org>, Mark Brown <broonie@kernel.org>,
- Kristoffer Ericson <kristoffer.ericson@gmail.com>,
- Robert Jarzmik <robert.jarzmik@free.fr>,
- Aaro Koskinen <aaro.koskinen@iki.fi>,
- Janusz Krzysztofik <jmkrzyszt@gmail.com>, Tony Lindgren <tony@atomide.com>,
- Linux-OMAP <linux-omap@vger.kernel.org>,
- Nikita Shubin <nikita.shubin@maquefel.me>, linux-samsung-soc@vger.kernel.org,
- Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
- Gregory Clement <gregory.clement@bootlin.com>, debian-arm@lists.debian.org,
- Dmitry Torokhov <dmitry.torokhov@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>
-Subject: Re: [RFC} arm architecture board/feature deprecation timeline
-Date: Mon, 19 Aug 2024 12:08:43 -0500
-Message-ID: <2668591.ElGaqSPkdT@earth>
-In-Reply-To: <a6316f7c-4064-4145-aa6a-d34197a3981a@lunn.ch>
-References:
- <2831c5a6-cfbf-4fe0-b51c-0396e5b0aeb7@app.fastmail.com>
- <a8c009b5-ada0-4f78-92f7-7a6c5075ccf1@app.fastmail.com>
- <a6316f7c-4064-4145-aa6a-d34197a3981a@lunn.ch>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 621351798F;
+	Tue, 20 Aug 2024 01:36:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.125.21
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724117809; cv=fail; b=X408cX79hHGIkjmj/VafVvyyhhj+X8LtWkd3sZD71pxCdbukN15HD84u4RpQLZuo3g6KnnhHqxOG9lgf1hyHB19fXnygv4jh60ULU3PNUVcOmICuPibtkrQc9dgjFzjQyLb9/LCfqehbRVST1xxbFDryZ/MPeLKjbw61jFCl18I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724117809; c=relaxed/simple;
+	bh=1mgCJ0QNDPHVgNh+qsumvMj45XJuXjgWi5G/dRvQaEI=;
+	h=Message-ID:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
+	 Date:MIME-Version; b=Lav+w+MmSb/XzZStjAQU+96aUFgBJWAqMbAxI0kFMYCzkFYYMFQe9BhfvurPWp+9NzAXTG92RQ2VnlxpgkJjN6qv++wd4CprJ65af6WKCx7rci9w0jy1bGetuL5YgeYRi68zuHDFFX9r2tae1A8ldMXvHqjITL5znadg2SvzDbg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=ACPQEUOl; arc=fail smtp.client-ip=52.101.125.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=FUqddecPG83EOwb6f5j7HjFAxcv7x63siGwZSmYnZlSpnyQ0IGzwd9kya8ODTLLGSC598RI9BtUfE2h1F7AYHoSDqfoUeQEyCo1JfT1Wb06RtmxPAf38UJprgiRDak1EbohxatTX09XaWUuDcpzSUVsmVHakFiP8e03gSenIUd6rSIu03YLQsYBeMC4Ec5hnD5Hu6YwzQGp6Xho++DdMcyiK0PI7UDCsCmq0jGEz0SqLp5tTNUC0/Nt+nE7TJkKwfoWRGhSXcTsr6vmr0KVPw7zrdEFoRYfTV5lJcdJIJYj0jzCzveUPHjxQrYHUNF0jZRiglFuz3JQRp0snpsLcuw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dA18vKKY8K9JbTVtVIkFGRw5M8O06+NHVtNAyhjGHec=;
+ b=PY58vIn/sb36yEj4NZAlo+jzdjPKPNYf8pptnAe4K0juDzR523/jarJLBG4EjfdLI33qDQVofEx4te+mQZUbOy9PJwqxmsElNWhLUzMQD1Q0N3N4UvyjXQrymu3UoN5gp56PLBdQ9aKcoXKqNiAEMLDtiqTI6ysvMzJLZ1vggA3XkCTmVj3ATEIn7iYi8P/Ak6EEJzmmSJpZDu922l2zkLPDZF4+xmxaWW5Btsxkw6nfu3wt85gzR+t4d9Ek57htZ5rJbzq3jVwqkLcnbyp01z1q2uoM0Uzw8HRHhFLfyHn9Jipg5Le52yAXFKqfoah/dT61HZkEwxxfaxnHRfZmXg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
+ dkim=pass header.d=renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dA18vKKY8K9JbTVtVIkFGRw5M8O06+NHVtNAyhjGHec=;
+ b=ACPQEUOln5TbGo/xnwyczqJM21yxYYcC7N9mlHmtOZz8ntocx/ieuGo6A02TotKiELGeMBneHtWi19TSHVKua6nMpYty4O8rzlVOeL83XfDPZg4/OgcqJaeh2rBxWL1W+Zj2F83I8c8h2eKWwCgp3rx7ANvywAguAell0Dc44N8=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=renesas.com;
+Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
+ (2603:1096:400:3a9::11) by TYWPR01MB11234.jpnprd01.prod.outlook.com
+ (2603:1096:400:3f2::6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7875.25; Tue, 20 Aug
+ 2024 01:36:42 +0000
+Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
+ ([fe80::c568:1028:2fd1:6e11]) by TYCPR01MB10914.jpnprd01.prod.outlook.com
+ ([fe80::c568:1028:2fd1:6e11%5]) with mapi id 15.20.7875.016; Tue, 20 Aug 2024
+ 01:36:42 +0000
+Message-ID: <87zfp8561i.wl-kuninori.morimoto.gx@renesas.com>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>,
+	David Airlie <airlied@gmail.com>,
+	Helge Deller <deller@gmx.de>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Maxime Ripard <mripard@kernel.org>,
+	Michal Simek <michal.simek@amd.com>,
+	Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Takashi Iwai <tiwai@suse.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	devicetree@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-fbdev@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	linux-omap@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	Sakari Ailus <sakari.ailus@iki.fi>
+Subject: Re: [PATCH v2 1/9] of: property: add of_graph_get_next_port()
+In-Reply-To: <20240811170316.GL2270@pendragon.ideasonboard.com>
+References: <875xsa8gws.wl-kuninori.morimoto.gx@renesas.com>
+	<874j7u8gw2.wl-kuninori.morimoto.gx@renesas.com>
+	<20240811170316.GL2270@pendragon.ideasonboard.com>
+User-Agent: Wanderlust/2.15.9 Emacs/29.3 Mule/6.0
+Content-Type: text/plain; charset=US-ASCII
+Date: Tue, 20 Aug 2024 01:36:41 +0000
+X-ClientProxiedBy: TYCP286CA0118.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:29c::11) To TYCPR01MB10914.jpnprd01.prod.outlook.com
+ (2603:1096:400:3a9::11)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TYCPR01MB10914:EE_|TYWPR01MB11234:EE_
+X-MS-Office365-Filtering-Correlation-Id: bddc8a73-bb94-4fbb-aaa3-08dcc0b88b14
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|52116014|376014|7416014|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?zGNTRb2d4sGq0l8B36S5czE3AjyL3a1Ro87T18qpk/o1VYSPakJAyIBTY4mg?=
+ =?us-ascii?Q?9UyzKJjbMz1eAVwoyCZ93tNCXExUrrv8ceMuRdElCuBk7ao/4APMAbUqSJDS?=
+ =?us-ascii?Q?wEpl4LKFL5lV/NdniZzx9sIevZ4CVcnkMdgiDjnFUHFSRtPaByGK2Gpy3SaB?=
+ =?us-ascii?Q?DkhGEA48N9dZDG339QQCdy+2CHXCS8hE133OPhHsf1X0xtmzf8s00Vu2KGw/?=
+ =?us-ascii?Q?wQHO0Wnbzfb+BTtOXLzzC8xeMuAkFpZxvACvzq3+YsvEbDSyawguuUL8TJAW?=
+ =?us-ascii?Q?SQ57sVKlCYyemuy5HvtqeRcFFJoY+td8sReQmW/GtCWVgJDCUysGc9tuk+3p?=
+ =?us-ascii?Q?aVyBAsA5UpPIhrZ5PsKIzwDr4a+1uECkA4nTNUJAdiEEEBF2rZ7h1p9nNNQq?=
+ =?us-ascii?Q?mOHFH7W5kx7JNfKJWhz9a3gORaEJLIA9GnS+53uNz0JynesHCKRS2gI/9q+Y?=
+ =?us-ascii?Q?NppsLa8oe2yOQxSM3vDir2eUHaV6NlA/kZeF+zpy3VmH2M54qCQS3rmChku9?=
+ =?us-ascii?Q?AuUMD1u0lWO+qzEWGhOqgrwg0bDFCx5gMtjj3Nbo1+MaOS3BVVPtfKOkZPwy?=
+ =?us-ascii?Q?PHLdCJEabybJzO6/r4JD4bjQD0sPG+sp2xDp3gshpPJ8PYItUYYmj9YIZ1nh?=
+ =?us-ascii?Q?BFzlaNlPXRqDnE7aM4Vvhr8zBMTOV/jAR6mFLIavl6BuCi6Su+pPRR81MTCC?=
+ =?us-ascii?Q?0ZAVAFyaMWS0oMbqRIM15/BLMy7JiZYm3MnyE+MQL3X1bQ/Z3VVMs18iRnmv?=
+ =?us-ascii?Q?bWaxFqAnaqxqrZKjFrmuzL2CGcBfAzfIlMweXv0au1otVj0cm8Av34YO9+UQ?=
+ =?us-ascii?Q?ZFtfrziGAfq3ac9nSS9VlMOc4X/lWhDlOSi3xesiwafIEvztwnAtDIWSQkeg?=
+ =?us-ascii?Q?SG5D6FZlOc9keqY0xXgUzV552ZbZsd6H7sGSjADko6e+cAmRpru1uQVbDnnO?=
+ =?us-ascii?Q?Qst10cCl4K9eORzoWxoE5c5wiy7lA0EMM8T43IU42ZtaCwSWT67W9UH8WtD1?=
+ =?us-ascii?Q?ynZ8Aq5/hIJSYaGGOgncCH07ZJDDO1AjYQ+iHNztMB2bgDb/aERyNNlCZ+7Y?=
+ =?us-ascii?Q?ADg/+ZZHk6Cixcktqkb1e3Z9N1SnYwqVJ1dK30NTrTakF/wK89BGoGi+i7LM?=
+ =?us-ascii?Q?4M5IunBDYeL9/s/hc+xDHo3dl31uUVCY4OkM6ez6nsmGC0hJ1dgjV2KAY+DV?=
+ =?us-ascii?Q?5g6TqE3SHnksn7KDLcDLcFnGv2OZBJMHRFLnwbhMU1qR1/kZs+1j6P+6+sfd?=
+ =?us-ascii?Q?5x0DkeYULpvQeF/qPT0rOmIUWPwlQp4/GUXCqDoycTAZY2KtTj4XFj8YW0ye?=
+ =?us-ascii?Q?soIoz5U1iwTySj9mi9/4H/ykoxG93MDFyT4aciBosgrXA6iORsGkFC1BTyTI?=
+ =?us-ascii?Q?i4mEEQzHK86iNGrr8ZGBu4en0m0fw1P/s/2+rqdTrrc0Qm8EJg=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYCPR01MB10914.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(376014)(7416014)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?/3D7JrrKmxsu2Wpgy/hHtkhQjXpu/1OHkUAn2+3ArV8ACdXbIv0p1Ra/l+f/?=
+ =?us-ascii?Q?UyWtKFZ8WxN9LdYAOjpGfkBK60bPRYIt59OxEJK+EwZk9+yV/204r1uPFEQK?=
+ =?us-ascii?Q?3XzejZOLyhF9vCic2D2LAp2utdwUR8yd2EW4argEfsUFnzqn7eqIMwr4AnhI?=
+ =?us-ascii?Q?mUgeRluNdud2OHOgVjdZKj5LkhRRMTnA2dCYKi8sqvIX6s2o29eAz1klROlX?=
+ =?us-ascii?Q?QLQW/iFiRfdSKsOCI2pKELEV1JfaByqwL7JXPkJJInKifw8SmwoH55QRLAtg?=
+ =?us-ascii?Q?rlfTLpXNSFT+zlceB1BjGN4EMCYrbD9jTDqc6ilE+hOhGZB5kG9mFyVN/BX7?=
+ =?us-ascii?Q?m3ezwSIUQw2RGZ6T+CXGmwRtHbu79Nb8bBy8h6s1XOYED8Fn+lXf5DrWXIOM?=
+ =?us-ascii?Q?hzyQU5a+nVjNz8Vfn723YkxBWFjTyS8JLqm6fjn+962L91VY8CqMrL5m7hhZ?=
+ =?us-ascii?Q?VOgOtzAb+royyz24NFg+hFyGb7GcBvhAZCAplm+a/MLO5OP6zlZy0B6yrVVy?=
+ =?us-ascii?Q?o7yUtDDZgDrOx1zXlyosc8JDSZZMo2k3Iy/tJxmzAxZW9s5BtE6qBD9Bs6u5?=
+ =?us-ascii?Q?i+lblLD4/smDw2Y7dRIUuKE/1n+mxrb5GcSPQNaWUSWJB6n/RYGM+Op0MOCl?=
+ =?us-ascii?Q?04QxptBQQ/wBy5xRmQgK/xEaRbK7Ms3bzEbJ/nCMTkVLSVf1ecZicGnEekKP?=
+ =?us-ascii?Q?DMNPlWuYI7YM0QsDXBDq8f6VXQq+IoVXpBEDAmtgdkOrbu0O3UA6JZH4wOU6?=
+ =?us-ascii?Q?YIflwDCmC/iVRPM+wZ9r2wFp7iWGy5UzZDUh06GlZizlEfVdLdU4dxPiJHtY?=
+ =?us-ascii?Q?hnn80KwfG0axIpobT93WKNsan7vFIviDvkkgLHz8t1PMPv7QyDm6ZLQt/pnN?=
+ =?us-ascii?Q?2N8rX/gsjAdgzrlWDPnYiugnVckPOZiU0yV273rqVVAnmUv3ohQaJuvNfEnM?=
+ =?us-ascii?Q?OqRig9uw2Tdc+B+bvYoVjvxwhS8Emez2hrnhiuviP8i628jp1Ho0LNqQ7qOK?=
+ =?us-ascii?Q?nsfdAzEPJCWxyGwWynx3BRjFiL/YJwAf7wPR55/GT1v+wctSMotZsiVQHwrb?=
+ =?us-ascii?Q?UhQg0THAKJZ4Tu0dTde0cxX/SfEhVYv2AGUc+BshlExApTDDS6CcpifCaHZH?=
+ =?us-ascii?Q?z3sYkwFdlS3K7AWqaXAVEeqEF/VqTK0Ha5Vi+hTc4YrRdsYZ6N7a1KR4uQRn?=
+ =?us-ascii?Q?Hnh92iD+ckKYFg5N4N4Pv8SE8I9P26/V2bDRDsrXBAdoqWlfHd4fGdcWZiKo?=
+ =?us-ascii?Q?TffQHk3t9XA4iZCe878SkjzAVfgXv0BWkMa1BtpK0FDMibJtv04lDdx46u1C?=
+ =?us-ascii?Q?drUa/nEOp2NPtejIfV2146cYgOE93vAdAcMon5kSzlLTQiTVymfilcEiKhAZ?=
+ =?us-ascii?Q?t17M5T6SdDrPxZOoYDe8MgAbeQSC8RQnqgC152aM43zCqnVPU3cjZoV3Tuqq?=
+ =?us-ascii?Q?XWAmb8wRXqFDeup/+ihpoDCXi+59+BDsaBAJVy2aUBtJFgE9Z4IREDGv9v9a?=
+ =?us-ascii?Q?i5Tj9DjKniaZAAAKKQlKCcOyuQt4ISrVBHujFoQPu062WtIeatc0c07qx/d1?=
+ =?us-ascii?Q?wJHW3GjND3LtmFBXctCofiHs5T5FNpXcqowfOEVwJ3XiVqZIGgC7eKvIZcMT?=
+ =?us-ascii?Q?ipCV9yAek6zUenZSOdyI/N8=3D?=
+X-OriginatorOrg: renesas.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bddc8a73-bb94-4fbb-aaa3-08dcc0b88b14
+X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB10914.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Aug 2024 01:36:42.0662
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ivTU8AHtKuKYP6WB+uOZe230uGXTs8eebjYycfQdyV9J4TCUsWcOh6hC4WTwLpvJa5Xf0/G2Fh+kFB2Hpg1FC6flBXAHIbQFoq7/zlk+06TwTxMSN3DyPCJvxaxzt51j
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYWPR01MB11234
 
-On Monday, August 19, 2024 9:23:16 AM CDT Andrew Lunn wrote:
-> On Mon, Aug 19, 2024 at 04:12:10PM +0200, Arnd Bergmann wrote:
-> > Two small additions:
-> > 
-> > On Mon, Aug 19, 2024, at 11:17, Arnd Bergmann wrote:
-> > > On Thu, Aug 15, 2024, at 21:53, jeremy@jeremypeper.com wrote:
-> > > I expect that the terastation pro2 is going to be fairly easy to
-> > > convert to DT as there is already support for similar Orion5x
-> > > machines. In this case I would just remove all the Orion5x board
-> > > files and you can add a dts file later on. The bit I'm unsure
-> > > about here is legacy PCI support. I see that the board file enables
-> > > both PCI and PCIe, but I don't know if both are actually used,
-> > > or if everything is on PCIe.
-> > > 
-> > > I have some old patches for separating orion legacy PCI from
-> > > PCIe support, as only the latter has a modern driver (shared
-> > > with kirkwood and armadaxp). If you can confirm that the machine
-> > > actually uses PCI, I can dig those out from my backups.
-> > 
-> > I did find this myself later, the machine does use an on-board
-> > PCI connected SATA controller, which is obviously required to
-> > make the machine useful.
-> > 
-> > Doing a PCI host bridge driver with DT support correctly is
-> > a lot of work, especially if there is only a single machine
-> > using it. Since this uses the same drivers/ata/sata-mv.c
-> > driver as the other orion/kirkwood machines, I wonder if we
-> > can just pretend that this is a platform device and skip
-> > all of the PCI probing. I think this only needs a few
-> > small changes to the sata-mv.c driver, but it does require
-> > that the PCI bus is left in a known state by the boot loader.
+
+Hi Laurent
+
+Thank you for the review
+
+> Having multiple "ports" nodes in a device node is not something I've
+> ever seen before. There may be use cases, but how widespread are they ?
+> I would prefer handling this in driver code instead of creating a helper
+> function if the use case is rare.
+
+In Sound, basically 1 CPU device will be 1 Sound Card, but sometimes we
+want to handle 1 CPU device for 2 Sound Cards.
+In such case, it needs multiple "ports".
+
+1 example is
+	(A) arch/arm64/boot/dts/renesas/ulcb-audio-graph-card.dtsi
+	(B) arch/arm64/boot/dts/renesas/ulcb-kf-audio-graph-card.dtsi
+
+We have ULCB board and its expand board (= KingFisher), and both have
+Sound interface. In this case, we want to handle ULCB-Sound as 1st Sound
+Card, and ULCB-KF-Sound as 2nd Sound Card. Before, it was handled as
+1 big Sound Card, but it was not intuitive for user.
+
+Our SoC's ports@0 is used for ULCB-Sound (= A), and ports@1 is used for
+ULCB-KF-Sound (= B) now.
+
+
+> > +struct device_node *of_graph_get_next_port(struct device_node *parent,
+> > +					   struct device_node *prev)
+> > +{
+> > +	if (!parent)
+> > +		return NULL;
+> > +
+> > +	if (!prev) {
+> > +		struct device_node *ports __free(device_node) =
+> > +			of_graph_get_next_ports(parent, NULL);
 > 
-> It is a long time since i looked at Orion, so i could be wrong....
+> This also makes me quite uncomfortable. Iterating over all ports of a
+> device node that contains multiple "ports" children seems an ill-defined
+> use case.
+
+This is because having "ports" node is optional. The driver code will be
+pointlessly complicated without above.
+
+Below 2 cases are indicating same things. So driver want to handle these
+by same code.
+
+	/* CASE1 */
+	device {
+		ports {
+			port { ... };
+		};
+	};
+
+	/* CASE2 */
+	device {
+		port { ... };
+	};
+
+	port = of_graph_get_next_port(device, NULL);
+
+
+> > +#define for_each_of_graph_port(parent, child)			\
+> > +	for (child = of_graph_get_next_port(parent, NULL); child != NULL; \
+> > +	     child = of_graph_get_next_port(parent, child))
 > 
-> As far as i remember, it has a PCI controller and a PCIe
-> controller. They are slightly different. The PCIe part is i think
-> simpler to support, it follows the standards better. I _think_ the PCI
-> controller uses a GPIO for interrupt support, which causes a mess.
-> 
-> If only PCIe is needed, it should not be too hard to make work. I
-> would try to avoid the PCI controller is possible.
-> 
->       Andrew
+> I think I've proposed something similar a looooong time ago, and was
+> told that iterating over ports is not something that drivers should do.
+> The situation may have changed since though.
 
-Looking at the ts2pro I think it's PCI rather than PCIe but I'm not certain:
+I guess you mean checking "endpoint" is enough ?
+But unfortunately, it is not for us.
 
-0001:01:07.0 SCSI storage controller: Marvell Technology Group Ltd. 88SX6042 
-PCI-X 4-Port SATA-II (rev 02)
-        Subsystem: Marvell Technology Group Ltd. 88SX6042 PCI-X 4-Port SATA-II
-        Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV+ VGASnoop- ParErr+ 
-Stepping- SERR+ FastB2B+ DisINTx-
-        Status: Cap+ 66MHz+ UDF- FastB2B+ ParErr- DEVSEL=medium >TAbort- 
-<TAbort- <MAbort- >SERR- <PERR- INTx-
-        Latency: 128, Cache Line Size: 32 bytes
-        Interrupt: pin A routed to IRQ 44
-        Region 0: Memory at e8000000 (64-bit, non-prefetchable) [size=1M]
-        Region 2: I/O ports at 10000 [size=256]
-        Capabilities: [40] Power Management version 2
-                Flags: PMEClk- DSI- D1- D2- AuxCurrent=0mA 
-PME(D0-,D1-,D2-,D3hot-,D3cold-)
-                Status: D0 NoSoftRst- PME-Enable- DSel=0 DScale=0 PME-
-        Capabilities: [50] MSI: Enable- Count=1/1 Maskable- 64bit+
-                Address: 0000000000000000  Data: 0000
-        Capabilities: [60] PCI-X non-bridge device
-                Command: DPERE- ERO- RBC=512 OST=4
-                Status: Dev=01:07.0 64bit+ 133MHz+ SCD- USC- DC=simple 
-DMMRBC=512 DMOST=4 DMCRS=8 RSCEM- 266MHz- 533MHz-
-        Kernel driver in use: sata_mv
+I guess this is mentioned in git-log, but we have *Generic* Sound Card
+driver which supports many type of Sound connection.
 
-root@ts2pro:~# dmesg | grep -i pcie
-root@ts2pro:~# dmesg | grep -i pci | head
-[   25.598898] PCI host bridge to bus 0000:00
-[   25.598924] pci_bus 0000:00: root bus resource [mem 0xe0000000-0xe7ffffff]
-[   25.598963] pci_bus 0000:00: root bus resource [io  0x1000-0xffff]
-[   25.598993] pci_bus 0000:00: No busn resource found for root bus, will use 
-[bus 00-ff]
-[   25.599019] pci_bus 0000:00: scanning bus
-[   25.599082] pci 0000:00:00.0: [11ab:5281] type 00 class 0x058000
-[   25.599127] pci 0000:00:00.0: reg 0x10: [mem 0xf1000000-0xf10fffff 64bit 
-pref]
-[   25.599166] pci 0000:00:00.0: reg 0x18: [mem 0x00000000-0x07ffffff]
-[   25.599687] pci_bus 0000:00: fixups for bus
-[   25.599711] PCI: bus0: Fast back to back transfers disabled
+	device {
+		ports {
+			port@0 {
+				endpoint@0 { ... };
+				endpoint@1 { ... };
+			};
+			port@1 {
+				endpoint { ... };
+			};
+		};
+	};
+
+Because it is *Generic* Sound Card driver, it need to know how many
+"port" are used. In this case, using "endpoint" loop is not useful.
+It want to use "port" base loop.
 
 
+Thank you for your help !!
+
+Best regards
+---
+Kuninori Morimoto
 
