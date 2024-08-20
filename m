@@ -1,93 +1,93 @@
-Return-Path: <linux-omap+bounces-1933-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1935-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4188C95827C
-	for <lists+linux-omap@lfdr.de>; Tue, 20 Aug 2024 11:35:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 707F5958282
+	for <lists+linux-omap@lfdr.de>; Tue, 20 Aug 2024 11:35:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B50781F24857
-	for <lists+linux-omap@lfdr.de>; Tue, 20 Aug 2024 09:35:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CABC282239
+	for <lists+linux-omap@lfdr.de>; Tue, 20 Aug 2024 09:35:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A360318C33B;
-	Tue, 20 Aug 2024 09:35:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 751AF18C34D;
+	Tue, 20 Aug 2024 09:35:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ttrkV99W";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="IdhlVyWN";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ttrkV99W";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="IdhlVyWN"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="aoDWDqjR";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="UkFUG//u";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="aoDWDqjR";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="UkFUG//u"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A185C18C018;
-	Tue, 20 Aug 2024 09:35:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D0B318C03A;
+	Tue, 20 Aug 2024 09:35:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724146504; cv=none; b=ts6LJOQzjKQqqN0b5+Q/jpPJhqV46Ot6Gh42cCVu0KXYUgJd9XxpUk1AqWEbzRsKeeoKY/36lZ/CwSe9h0Rl/y0dVcTTm708w4mwuHmR9ehCpFSz/gBb/mFlqhwWPYbjVzHj2JObrDVnqX6g8GW+R2FEI84+n+K6S3gdkNA3TQ8=
+	t=1724146505; cv=none; b=RdrL+GmK/zG27uaK9OuYmgjPnlr8/Mdv7Bw9YyXEh2djNmE4BoRKYlRqa0mRPIXTCiX9AEm4wdZjXSmsNZaf1XK3DhxlExAKDNlSbUbxZUVMUqqG58zbhkGAatL2Lq0K0EQW0Uoi0SjiW5wwym/fgNvjD6NuEc9G3SjPjfcsMa0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724146504; c=relaxed/simple;
-	bh=hO+9/peRBRSOdRKYxz3cRAB9PYRVvZF1O3GdneUrT1Y=;
+	s=arc-20240116; t=1724146505; c=relaxed/simple;
+	bh=zwTqRzqpTVRe+7T2EeH4gb/ECL5IzfVFuQtaj2mE3u8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VP8ypwwrNiEyZ4mhSwvzXvU6plnfBUkgKnP8Qs6MRPt5P0wfRX4u2q2pAVGj/AMrUxstcwsBjNSz1ZjTddss4NWor6nirYJXM+Nl+0UecxmnhSSSgn6aNi5+M4pKe65EkKAQZZ2sVANbYLCxM/nw40WY93YWSPqLSvKLeubP3+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ttrkV99W; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=IdhlVyWN; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ttrkV99W; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=IdhlVyWN; arc=none smtp.client-ip=195.135.223.131
+	 MIME-Version; b=biBfLcVFr2k4H+W73h1eswJ/gwNDKANzhyTq56WD+pAw20n1pYnuYiAj7C+Vtb/fd5gKz+7wg/GX8M1JBv120hRnkopwVVhWE3YQayiR4FyRo1lfq/R4b/9tuyZDewjvwRElzREV4T0Pmj5+QJ24Xy4/oUNlZXb9n3PGz1Ag+20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=aoDWDqjR; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=UkFUG//u; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=aoDWDqjR; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=UkFUG//u; arc=none smtp.client-ip=195.135.223.130
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id DEC611FFC7;
-	Tue, 20 Aug 2024 09:35:00 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 51497224AC;
+	Tue, 20 Aug 2024 09:35:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1724146500; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1724146501; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=12WOr2Ic7YY7MSE30hYZeg06cAskBzKrUPGQ1N0jNZ0=;
-	b=ttrkV99WAkowS1AsPbapvlTuUEEKyTKMNk6mZmDEEI1C5LsqVM5U8Ixfd892DU6sIo77ZX
-	s5FEMIEAaLDpUs1tKE3KLsuF31rEatNvLOXufuwDPOCpvixno2enIv74Jv+xEMbheB7Pyx
-	pfbIPQv5Dy9I6cKmKNqmKMXRQYIUDdM=
+	bh=eGZ+ViguUmUpMrae3BhjsSznkdXVFzEDIrQ+3tfdhD0=;
+	b=aoDWDqjRWIeUII8IfE9ROjhSVnf7FQJHUeLpL31lJFacEzlmnXVbpOQ8Qe3dTx3j+Wl2lo
+	HjeDLL6rzNHJQjj4sS4mtWigkwdsWTp21oKIfuUQotTDmZaPuRlNuFMbMNbkCQ9xQVYxri
+	N4V9fVbPbR8pN2Kn62IRtfuDsot0ZMY=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1724146500;
+	s=susede2_ed25519; t=1724146501;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=12WOr2Ic7YY7MSE30hYZeg06cAskBzKrUPGQ1N0jNZ0=;
-	b=IdhlVyWNn4Bwt9UqkZ++PX9SML1oiwTb477Bb5K/W0subaHSv1P5rq6kSOkENgfu1EPC7f
-	mbTUCZS2MpxOTmBg==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ttrkV99W;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=IdhlVyWN
+	bh=eGZ+ViguUmUpMrae3BhjsSznkdXVFzEDIrQ+3tfdhD0=;
+	b=UkFUG//ub26wG9UlNLN50ue3G5FM0BeNeQkuP1rI34pDvQsfiUC0Hbx2bmko2Z+IOURScW
+	P33pIwmYNGlRVZCg==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=aoDWDqjR;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="UkFUG//u"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1724146500; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1724146501; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=12WOr2Ic7YY7MSE30hYZeg06cAskBzKrUPGQ1N0jNZ0=;
-	b=ttrkV99WAkowS1AsPbapvlTuUEEKyTKMNk6mZmDEEI1C5LsqVM5U8Ixfd892DU6sIo77ZX
-	s5FEMIEAaLDpUs1tKE3KLsuF31rEatNvLOXufuwDPOCpvixno2enIv74Jv+xEMbheB7Pyx
-	pfbIPQv5Dy9I6cKmKNqmKMXRQYIUDdM=
+	bh=eGZ+ViguUmUpMrae3BhjsSznkdXVFzEDIrQ+3tfdhD0=;
+	b=aoDWDqjRWIeUII8IfE9ROjhSVnf7FQJHUeLpL31lJFacEzlmnXVbpOQ8Qe3dTx3j+Wl2lo
+	HjeDLL6rzNHJQjj4sS4mtWigkwdsWTp21oKIfuUQotTDmZaPuRlNuFMbMNbkCQ9xQVYxri
+	N4V9fVbPbR8pN2Kn62IRtfuDsot0ZMY=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1724146500;
+	s=susede2_ed25519; t=1724146501;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=12WOr2Ic7YY7MSE30hYZeg06cAskBzKrUPGQ1N0jNZ0=;
-	b=IdhlVyWNn4Bwt9UqkZ++PX9SML1oiwTb477Bb5K/W0subaHSv1P5rq6kSOkENgfu1EPC7f
-	mbTUCZS2MpxOTmBg==
+	bh=eGZ+ViguUmUpMrae3BhjsSznkdXVFzEDIrQ+3tfdhD0=;
+	b=UkFUG//ub26wG9UlNLN50ue3G5FM0BeNeQkuP1rI34pDvQsfiUC0Hbx2bmko2Z+IOURScW
+	P33pIwmYNGlRVZCg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 81C6013AFE;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E418413770;
 	Tue, 20 Aug 2024 09:35:00 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 0MN6HkRjxGa3RAAAD6G6ig
+	id 4Nd/NkRjxGa3RAAAD6G6ig
 	(envelope-from <tzimmermann@suse.de>); Tue, 20 Aug 2024 09:35:00 +0000
 From: Thomas Zimmermann <tzimmermann@suse.de>
 To: lee@kernel.org,
@@ -106,9 +106,9 @@ Cc: dri-devel@lists.freedesktop.org,
 	linux-fbdev@vger.kernel.org,
 	linux-omap@vger.kernel.org,
 	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH 03/28] backlight: lcd: Add LCD_POWER_ constants for power states
-Date: Tue, 20 Aug 2024 11:22:41 +0200
-Message-ID: <20240820093452.68270-4-tzimmermann@suse.de>
+Subject: [PATCH 04/28] backlight: corgi_lcd: Use lcd power constants
+Date: Tue, 20 Aug 2024 11:22:42 +0200
+Message-ID: <20240820093452.68270-5-tzimmermann@suse.de>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240820093452.68270-1-tzimmermann@suse.de>
 References: <20240820093452.68270-1-tzimmermann@suse.de>
@@ -119,9 +119,8 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: DEC611FFC7
-X-Spam-Score: -3.01
-X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 51497224AC
+X-Spam-Level: 
 X-Spamd-Result: default: False [-3.01 / 50.00];
 	BAYES_HAM(-3.00)[100.00%];
 	MID_CONTAINS_FROM(1.00)[];
@@ -144,99 +143,85 @@ X-Spamd-Result: default: False [-3.01 / 50.00];
 	FROM_HAS_DN(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.de:dkim,suse.de:mid,suse.de:email];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:email,suse.de:dkim,suse.de:mid];
 	FROM_EQ_ENVFROM(0.00)[];
 	R_RATELIMIT(0.00)[to_ip_from(RLk469idygq4891mojaqehp6ty)];
 	RCVD_TLS_ALL(0.00)[];
 	DKIM_TRACE(0.00)[suse.de:+];
 	TO_DN_SOME(0.00)[];
 	FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de,mail.ru]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -3.01
 X-Spam-Flag: NO
-X-Spam-Level: 
 
-Duplicate FB_BLANK_ constants as LCD_POWER_ constants in the lcd
-header file. Allows lcd drivers to avoid including the fbdev header
-file and removes a compile-time dependency between the two subsystems.
-
-The new LCD_POWER_ constants have the same values as their
-FB_BLANK_ counterparts. Hence semantics does not change and the lcd
-drivers can be converted one by one. Each instance of FB_BLANK_UNBLANK
-becomes LCD_POWER_ON, each of FB_BLANK_POWERDOWN becomes LCD_POWER_OFF,
-FB_BLANK_NORMAL becomes LCD_POWER_REDUCED and FB_BLANK_VSYNC_SUSPEND
-becomes LCD_POWER_REDUCED_VSYNC_SUSPEND.
-
-Lcd code or drivers do not use FB_BLANK_HSYNC_SUSPEND, so no
-new constants for this is being added. The tokens LCD_POWER_REDUCED
-and LCD_POWER_REDUCED_VSYNC_SUSPEND are deprecated and drivers should
-replace them with LCD_POWER_ON and LCD_POWER_OFF.
-
-See also commit a1cacb8a8e70 ("backlight: Add BACKLIGHT_POWER_ constants
-for power states"), which added similar constants fro backlight drivers.
+Replace FB_BLANK_ constants with their counterparts from the
+lcd subsystem. The values are identical, so there's no change
+in functionality.
 
 Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 ---
- drivers/video/backlight/lcd.c | 22 +++++++++++++++++++++-
- include/linux/lcd.h           |  5 +++++
- 2 files changed, 26 insertions(+), 1 deletion(-)
+ drivers/video/backlight/corgi_lcd.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/video/backlight/lcd.c b/drivers/video/backlight/lcd.c
-index 43a6752ec27f..edd5ccb7a43a 100644
---- a/drivers/video/backlight/lcd.c
-+++ b/drivers/video/backlight/lcd.c
-@@ -20,6 +20,24 @@
+diff --git a/drivers/video/backlight/corgi_lcd.c b/drivers/video/backlight/corgi_lcd.c
+index e4fcfbe38dc6..35c3fd3281ca 100644
+--- a/drivers/video/backlight/corgi_lcd.c
++++ b/drivers/video/backlight/corgi_lcd.c
+@@ -24,7 +24,7 @@
+ #include <linux/slab.h>
+ #include <asm/mach/sharpsl_param.h>
  
- #if defined(CONFIG_FB) || (defined(CONFIG_FB_MODULE) && \
- 			   defined(CONFIG_LCD_CLASS_DEVICE_MODULE))
-+static int to_lcd_power(int fb_blank)
-+{
-+	switch (fb_blank) {
-+	case FB_BLANK_UNBLANK:
-+		return LCD_POWER_ON;
-+	/* deprecated; TODO: should become 'off' */
-+	case FB_BLANK_NORMAL:
-+		return LCD_POWER_REDUCED;
-+	case FB_BLANK_VSYNC_SUSPEND:
-+		return LCD_POWER_REDUCED_VSYNC_SUSPEND;
-+	/* 'off' */
-+	case FB_BLANK_HSYNC_SUSPEND:
-+	case FB_BLANK_POWERDOWN:
-+	default:
-+		return LCD_POWER_OFF;
-+	}
-+}
-+
- /* This callback gets called when something important happens inside a
-  * framebuffer driver. We're looking if that important event is blanking,
-  * and if it is, we're switching lcd power as well ...
-@@ -43,8 +61,10 @@ static int fb_notifier_callback(struct notifier_block *self,
- 		goto out;
+-#define POWER_IS_ON(pwr)	((pwr) <= FB_BLANK_NORMAL)
++#define POWER_IS_ON(pwr)	((pwr) <= LCD_POWER_REDUCED)
  
- 	if (event == FB_EVENT_BLANK) {
-+		int power = to_lcd_power(*(int *)evdata->data);
-+
- 		if (ld->ops->set_power)
--			ld->ops->set_power(ld, *(int *)evdata->data);
-+			ld->ops->set_power(ld, power);
- 	} else {
- 		if (ld->ops->set_mode)
- 			ld->ops->set_mode(ld, evdata->data);
-diff --git a/include/linux/lcd.h b/include/linux/lcd.h
-index 68703a51dc53..dfcc54d327f5 100644
---- a/include/linux/lcd.h
-+++ b/include/linux/lcd.h
-@@ -14,6 +14,11 @@
- #include <linux/notifier.h>
- #include <linux/fb.h>
+ /* Register Addresses */
+ #define RESCTL_ADRS     0x00
+@@ -455,7 +455,7 @@ static int corgi_lcd_suspend(struct device *dev)
  
-+#define LCD_POWER_ON			(0)
-+#define LCD_POWER_REDUCED		(1) // deprecated; don't use in new code
-+#define LCD_POWER_REDUCED_VSYNC_SUSPEND	(2) // deprecated; don't use in new code
-+#define LCD_POWER_OFF			(4)
-+
- /* Notes on locking:
-  *
-  * lcd_device->ops_lock is an internal backlight lock protecting the ops
+ 	corgibl_flags |= CORGIBL_SUSPENDED;
+ 	corgi_bl_set_intensity(lcd, 0);
+-	corgi_lcd_set_power(lcd->lcd_dev, FB_BLANK_POWERDOWN);
++	corgi_lcd_set_power(lcd->lcd_dev, LCD_POWER_OFF);
+ 	return 0;
+ }
+ 
+@@ -464,7 +464,7 @@ static int corgi_lcd_resume(struct device *dev)
+ 	struct corgi_lcd *lcd = dev_get_drvdata(dev);
+ 
+ 	corgibl_flags &= ~CORGIBL_SUSPENDED;
+-	corgi_lcd_set_power(lcd->lcd_dev, FB_BLANK_UNBLANK);
++	corgi_lcd_set_power(lcd->lcd_dev, LCD_POWER_ON);
+ 	backlight_update_status(lcd->bl_dev);
+ 	return 0;
+ }
+@@ -513,7 +513,7 @@ static int corgi_lcd_probe(struct spi_device *spi)
+ 	if (IS_ERR(lcd->lcd_dev))
+ 		return PTR_ERR(lcd->lcd_dev);
+ 
+-	lcd->power = FB_BLANK_POWERDOWN;
++	lcd->power = LCD_POWER_OFF;
+ 	lcd->mode = (pdata) ? pdata->init_mode : CORGI_LCD_MODE_VGA;
+ 
+ 	memset(&props, 0, sizeof(struct backlight_properties));
+@@ -535,7 +535,7 @@ static int corgi_lcd_probe(struct spi_device *spi)
+ 	lcd->kick_battery = pdata->kick_battery;
+ 
+ 	spi_set_drvdata(spi, lcd);
+-	corgi_lcd_set_power(lcd->lcd_dev, FB_BLANK_UNBLANK);
++	corgi_lcd_set_power(lcd->lcd_dev, LCD_POWER_ON);
+ 	backlight_update_status(lcd->bl_dev);
+ 
+ 	lcd->limit_mask = pdata->limit_mask;
+@@ -550,7 +550,7 @@ static void corgi_lcd_remove(struct spi_device *spi)
+ 	lcd->bl_dev->props.power = BACKLIGHT_POWER_ON;
+ 	lcd->bl_dev->props.brightness = 0;
+ 	backlight_update_status(lcd->bl_dev);
+-	corgi_lcd_set_power(lcd->lcd_dev, FB_BLANK_POWERDOWN);
++	corgi_lcd_set_power(lcd->lcd_dev, LCD_POWER_OFF);
+ }
+ 
+ static struct spi_driver corgi_lcd_driver = {
 -- 
 2.46.0
 
