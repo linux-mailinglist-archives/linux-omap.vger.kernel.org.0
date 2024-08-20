@@ -1,92 +1,92 @@
-Return-Path: <linux-omap+bounces-1952-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1956-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92B039582A5
-	for <lists+linux-omap@lfdr.de>; Tue, 20 Aug 2024 11:36:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71C689582AF
+	for <lists+linux-omap@lfdr.de>; Tue, 20 Aug 2024 11:36:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FE0A1F2475B
-	for <lists+linux-omap@lfdr.de>; Tue, 20 Aug 2024 09:36:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2AA1F28597A
+	for <lists+linux-omap@lfdr.de>; Tue, 20 Aug 2024 09:36:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A38218CC1F;
-	Tue, 20 Aug 2024 09:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6F7418DF7D;
+	Tue, 20 Aug 2024 09:35:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="0EpemxFd";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="yGNJ8GmU";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="0EpemxFd";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="yGNJ8GmU"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="SfevEho4";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="HqJVtlhl";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="D50kxF66";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="7OReGM9g"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B5AE18D620;
-	Tue, 20 Aug 2024 09:35:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 357F618DF64;
+	Tue, 20 Aug 2024 09:35:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724146512; cv=none; b=l3TQ3kXvf1CQhTD41keyt7UkyZI4R5BT9usguVCJQBetwCVrm37MAsFdfRzuoSqbBQE0JrE4oe4rQZx+SjnxLaO1Q3FYgemVQS9OGTG+Wix1E517qSIvz8569NH+IFUXRIvsUWbmRj+haQ9/FHQYWuQlNyyZI6uaWXAlffXfXXA=
+	t=1724146514; cv=none; b=UxQ1cMB/PhNcrQShUuL5fvDUwDyVecUhXGmtnAeJgzUVB/StUk6mpeigy7uZi5riSTLh9uPzdcwiWNK9EfpJTYJkapqzV4Ow6CVU2E9iTyER1ElEynXlis9cmn+vaJAupU3ayYTbmRcZ6BuErpTN7RbhU18MdbqEZ0jYgzWpeRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724146512; c=relaxed/simple;
-	bh=hQ76s/23Eor36MdlHRyXfblL3cMoXQq24LaJvIaVy7s=;
+	s=arc-20240116; t=1724146514; c=relaxed/simple;
+	bh=txu9/PSJ5v9C4p8JHaR5jD0e7aO0Nbnj5iopHPsaW5k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pt2R8ihcUvZqfIfFffASF6q7//mgcQ8LfK7yxX9q6gEvBhYLrj1pykjFZ26Hg8vnkBrAmsWMdWF2UpRzxXLTn6KgfGbO/90Yztk0toUMEofAW4U2/09g9RogHLP/pjy67dMMG1e9ovDBe73ZAJ1bSrobXYE/SCVBeeQk+22NMBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=0EpemxFd; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=yGNJ8GmU; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=0EpemxFd; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=yGNJ8GmU; arc=none smtp.client-ip=195.135.223.130
+	 MIME-Version; b=Owr7o+vh1INNg89++/8M3hX4WkPv/wn4AWDa6kmqrhvVZL7PmhJLcsv7z4TH4ds88WuV+TJRgAFxm4n6uqEq+9vzW44/JqtUjNvHCEwXqhP25bDuXAYG/zmyI0RnUrVwwzFvfP95is0wipm3x6bzR9giDWa6kOl2ukI2bXkCqAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=SfevEho4; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=HqJVtlhl; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=D50kxF66; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=7OReGM9g; arc=none smtp.client-ip=195.135.223.130
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id DBCFB225AD;
-	Tue, 20 Aug 2024 09:35:08 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 49AAB225B1;
+	Tue, 20 Aug 2024 09:35:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1724146508; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1724146510; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=YTNANsIODSyg5pivT1qonEIrZsrgaPRMfEohzsWB42g=;
-	b=0EpemxFdlGKUUk39hAGITZGYhIt75m4RD6j1l95olajrZ93Lp8GEvEFN0kTCahfqG7A4Y0
-	P0K4bgM8Jx+CgjWYqhO5EveJ4Wb06SclH0S+QExL/YLd0JA8q0E1BjBi52eIwWBsSzq5rd
-	qaw9u8WlGuj34M3I60aJUb28J+x8LqE=
+	bh=VpG2TZF6xnwmW4yKSVKM8wu//ThgCXdqU0N3OrIkZjs=;
+	b=SfevEho4RhY30Ogb/UxdpHUfufeUG/zooxyS2kgYx4TB5QRBCez3DalNCCjiiHcG/Z21WI
+	f/mYu3ZXvdq+qZZswST4XXunBtwFI1DBBkf0rVFKqLBWDPfZCOn2ofNexXZ39KiJcg0/dP
+	8savuj5uRl6XZEpAaAXNgyH3NK8i6aI=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1724146508;
+	s=susede2_ed25519; t=1724146510;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=YTNANsIODSyg5pivT1qonEIrZsrgaPRMfEohzsWB42g=;
-	b=yGNJ8GmUjbEqx+hooWQN1hsWQcNczKU4A2iV4Ef1aO7/6ZPSWpgHvD9I3OGeo+t5H9nS5H
-	AYqw9p8EV+nW9jDA==
+	bh=VpG2TZF6xnwmW4yKSVKM8wu//ThgCXdqU0N3OrIkZjs=;
+	b=HqJVtlhllsrOzMxYMHtMwM633QSGnvHgTZ78E8rRTlr/JOQKXVuk+D+H3UnXTs1N8yzDT4
+	7y3MH2xPfBZI7uCA==
 Authentication-Results: smtp-out1.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1724146508; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1724146509; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=YTNANsIODSyg5pivT1qonEIrZsrgaPRMfEohzsWB42g=;
-	b=0EpemxFdlGKUUk39hAGITZGYhIt75m4RD6j1l95olajrZ93Lp8GEvEFN0kTCahfqG7A4Y0
-	P0K4bgM8Jx+CgjWYqhO5EveJ4Wb06SclH0S+QExL/YLd0JA8q0E1BjBi52eIwWBsSzq5rd
-	qaw9u8WlGuj34M3I60aJUb28J+x8LqE=
+	bh=VpG2TZF6xnwmW4yKSVKM8wu//ThgCXdqU0N3OrIkZjs=;
+	b=D50kxF66cthK0W/9Vao+RiQPZLq/rcXF1UkbqVZo65Ml0hJgMyARZ6m/Rl2fQkU2CG7L+/
+	EvcqrXkNXUcInF0IazgQJ/N3jXoitRR0LCGljN62Werq0ndQxM2aXYZGkMMW3eh7gLuOmJ
+	jOfbToProX4nKh+bArwFdHyBT7IYAYg=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1724146508;
+	s=susede2_ed25519; t=1724146509;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=YTNANsIODSyg5pivT1qonEIrZsrgaPRMfEohzsWB42g=;
-	b=yGNJ8GmUjbEqx+hooWQN1hsWQcNczKU4A2iV4Ef1aO7/6ZPSWpgHvD9I3OGeo+t5H9nS5H
-	AYqw9p8EV+nW9jDA==
+	bh=VpG2TZF6xnwmW4yKSVKM8wu//ThgCXdqU0N3OrIkZjs=;
+	b=7OReGM9gLvrmYTmjH5DRAtHXYBb0o3/Q8/z7Xa40fRvhLo1ZjQ5aiLQp+z1NgtU/Ufx8so
+	Z4a3f8YzJtCVr3BA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7D10513770;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E1C4C13AFE;
 	Tue, 20 Aug 2024 09:35:08 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id uEZXHUxjxGa3RAAAD6G6ig
+	id YJrtNUxjxGa3RAAAD6G6ig
 	(envelope-from <tzimmermann@suse.de>); Tue, 20 Aug 2024 09:35:08 +0000
 From: Thomas Zimmermann <tzimmermann@suse.de>
 To: lee@kernel.org,
@@ -105,9 +105,9 @@ Cc: dri-devel@lists.freedesktop.org,
 	linux-fbdev@vger.kernel.org,
 	linux-omap@vger.kernel.org,
 	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH 22/28] fbdev: imxfb: Replace check_fb in favor of struct fb_info.lcd_dev
-Date: Tue, 20 Aug 2024 11:23:00 +0200
-Message-ID: <20240820093452.68270-23-tzimmermann@suse.de>
+Subject: [PATCH 23/28] fbdev: imxfb: Use lcd power constants
+Date: Tue, 20 Aug 2024 11:23:01 +0200
+Message-ID: <20240820093452.68270-24-tzimmermann@suse.de>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240820093452.68270-1-tzimmermann@suse.de>
 References: <20240820093452.68270-1-tzimmermann@suse.de>
@@ -118,7 +118,7 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -2.80
+X-Spam-Level: 
 X-Spamd-Result: default: False [-2.80 / 50.00];
 	BAYES_HAM(-3.00)[99.99%];
 	MID_CONTAINS_FROM(1.00)[];
@@ -133,92 +133,52 @@ X-Spamd-Result: default: False [-2.80 / 50.00];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[16];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email,imap1.dmz-prg2.suse.org:helo];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:email,suse.de:mid];
 	FREEMAIL_TO(0.00)[kernel.org,linaro.org,gmail.com,gmx.de,linux-vserver.org,mail.ru,pengutronix.de];
 	RCVD_TLS_ALL(0.00)[];
 	RCVD_COUNT_TWO(0.00)[2];
 	FROM_EQ_ENVFROM(0.00)[];
 	FUZZY_BLOCKED(0.00)[rspamd.com];
-	R_RATELIMIT(0.00)[to(RLr3u6jgwj9sedc854c38mga),to_ip_from(RL7eb4yoy35resap1sns3bbybe)];
+	R_RATELIMIT(0.00)[to_ip_from(RL7eb4yoy35resap1sns3bbybe),to(RLr3u6jgwj9sedc854c38mga)];
 	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
 	FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de,mail.ru]
+X-Spam-Score: -2.80
 X-Spam-Flag: NO
-X-Spam-Level: 
 
-Store the lcd device in struct fb_info.lcd_dev. The lcd subsystem can
-now detect the lcd's fbdev device from this field.
-
-This makes the implementation of check_fb in imxfb_lcd_ops obsolete.
-Remove it.
+Replace FB_BLANK_ constants with their counterparts from the
+lcd subsystem. The values are identical, so there's no change
+in functionality.
 
 Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 ---
- drivers/video/fbdev/imxfb.c | 26 ++++++++------------------
- 1 file changed, 8 insertions(+), 18 deletions(-)
+ drivers/video/fbdev/imxfb.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/video/fbdev/imxfb.c b/drivers/video/fbdev/imxfb.c
-index 4ebfe9b9df60..88c117f29f7f 100644
+index 88c117f29f7f..97466e0c5877 100644
 --- a/drivers/video/fbdev/imxfb.c
 +++ b/drivers/video/fbdev/imxfb.c
-@@ -782,16 +782,6 @@ static int imxfb_of_read_mode(struct device *dev, struct device_node *np,
- 	return 0;
+@@ -814,9 +814,9 @@ static int imxfb_lcd_get_power(struct lcd_device *lcddev)
+ 
+ 	if (!IS_ERR(fbi->lcd_pwr) &&
+ 	    !regulator_is_enabled(fbi->lcd_pwr))
+-		return FB_BLANK_POWERDOWN;
++		return LCD_POWER_OFF;
+ 
+-	return FB_BLANK_UNBLANK;
++	return LCD_POWER_ON;
  }
  
--static int imxfb_lcd_check_fb(struct lcd_device *lcddev, struct fb_info *fi)
--{
--	struct imxfb_info *fbi = dev_get_drvdata(&lcddev->dev);
--
--	if (!fi || fi->par == fbi)
--		return 1;
--
--	return 0;
--}
--
- static int imxfb_lcd_get_contrast(struct lcd_device *lcddev)
- {
+ static int imxfb_regulator_set(struct imxfb_info *fbi, int enable)
+@@ -842,7 +842,7 @@ static int imxfb_lcd_set_power(struct lcd_device *lcddev, int power)
  	struct imxfb_info *fbi = dev_get_drvdata(&lcddev->dev);
-@@ -858,7 +848,6 @@ static int imxfb_lcd_set_power(struct lcd_device *lcddev, int power)
- }
  
- static const struct lcd_ops imxfb_lcd_ops = {
--	.check_fb	= imxfb_lcd_check_fb,
- 	.get_contrast	= imxfb_lcd_get_contrast,
- 	.set_contrast	= imxfb_lcd_set_contrast,
- 	.get_power	= imxfb_lcd_get_power,
-@@ -1025,11 +1014,6 @@ static int imxfb_probe(struct platform_device *pdev)
- 		goto failed_cmap;
- 
- 	imxfb_set_par(info);
--	ret = register_framebuffer(info);
--	if (ret < 0) {
--		dev_err(&pdev->dev, "failed to register framebuffer\n");
--		goto failed_register;
--	}
- 
- 	fbi->lcd_pwr = devm_regulator_get(&pdev->dev, "lcd");
- 	if (PTR_ERR(fbi->lcd_pwr) == -EPROBE_DEFER) {
-@@ -1046,13 +1030,19 @@ static int imxfb_probe(struct platform_device *pdev)
- 
- 	lcd->props.max_contrast = 0xff;
- 
-+	info->lcd_dev = lcd;
-+
-+	ret = register_framebuffer(info);
-+	if (ret < 0) {
-+		dev_err(&pdev->dev, "failed to register framebuffer\n");
-+		goto failed_lcd;
-+	}
-+
- 	imxfb_enable_controller(fbi);
+ 	if (!IS_ERR(fbi->lcd_pwr))
+-		return imxfb_regulator_set(fbi, power == FB_BLANK_UNBLANK);
++		return imxfb_regulator_set(fbi, power == LCD_POWER_ON);
  
  	return 0;
- 
- failed_lcd:
--	unregister_framebuffer(info);
--failed_register:
- 	fb_dealloc_cmap(&info->cmap);
- failed_cmap:
- 	dma_free_wc(&pdev->dev, fbi->map_size, info->screen_buffer,
+ }
 -- 
 2.46.0
 
