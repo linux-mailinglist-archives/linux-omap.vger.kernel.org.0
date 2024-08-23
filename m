@@ -1,75 +1,75 @@
-Return-Path: <linux-omap+bounces-1975-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1976-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F7D395CA3D
-	for <lists+linux-omap@lfdr.de>; Fri, 23 Aug 2024 12:17:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7D2E95CA3F
+	for <lists+linux-omap@lfdr.de>; Fri, 23 Aug 2024 12:17:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2B231C210F6
-	for <lists+linux-omap@lfdr.de>; Fri, 23 Aug 2024 10:17:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3FAD62875E6
+	for <lists+linux-omap@lfdr.de>; Fri, 23 Aug 2024 10:17:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50DBC18733B;
-	Fri, 23 Aug 2024 10:16:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7418A187853;
+	Fri, 23 Aug 2024 10:16:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="K/a0jPm1"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="b6E4pCgQ"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A47537144
-	for <linux-omap@vger.kernel.org>; Fri, 23 Aug 2024 10:16:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36E89187338
+	for <linux-omap@vger.kernel.org>; Fri, 23 Aug 2024 10:16:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724408170; cv=none; b=ZHmYJURokEyNfVa6zy29Wb66VSeF3EusEosqViOVkjJEJVvTdpU/vW9QyHJyLM8HW0zS68oPFkCOnlYryKNHMCqjN4QoPO+uDOQphQCW+mVexMBeyJb27vrmFBWWGW+nqC6afvT8q4bfEYXtP1mFT1tgHn7lF40JrG5d9i3djX4=
+	t=1724408173; cv=none; b=AsfeB8fosWaVwjH5BRHz3dB2oxgN2TEXmU1ChJYPC6SNkEBPd2ASDoybhP/UsOtNKlprFlvJ9o+Wld3BJKJRfJSR8/AZrxz4hBU6bHS1+Bgu4agD9IKO81p1JiUg+oRl2T2RvBO+xDDO3ocdakFKOWWSitDigvYXjGEF0ioYFSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724408170; c=relaxed/simple;
-	bh=LtVfsUrkXvrpIrQ9RY7ofd8SPZNPe5l+WNIEpOclJW8=;
+	s=arc-20240116; t=1724408173; c=relaxed/simple;
+	bh=dKvvXGp0G4rwTm+4rjJKl33390X+DCmUn8vg4x43GxU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=e+EkYVb5IhIsdcbsk/JS2zCSXv6jO895UPRiF6kJgHz4w4JLfWN2gupzqmbFnvngs0OZKNU/F1sqjwgbBBtX2IAeXleuHUiqlrILOlpB0YEdaoueEa1HOdbGeO8NWVy/i5ovACoNF6uVAWR/7/N3SKNX3Nhy9UOrMHq9V1RdSGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=K/a0jPm1; arc=none smtp.client-ip=209.85.218.50
+	 In-Reply-To:To:Cc; b=X3sgnrO30jos0s3wfFzbPTND06hwzj0jzuHJyR0t6ugVavm5TzLSjf9feGka1UwN7n/H6EYtBmXoGwsRsr0SDZEdTUadY6XCilbslbJ8qCjtlVKZaJ3lvypMtJJ+urf5EUxbqz8rT3hShnqG41fha5yG1rgkIP/DFmsCO9QzM04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=b6E4pCgQ; arc=none smtp.client-ip=209.85.167.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-a868ec0d239so12964766b.2
-        for <linux-omap@vger.kernel.org>; Fri, 23 Aug 2024 03:16:09 -0700 (PDT)
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-53347a8a28eso307094e87.3
+        for <linux-omap@vger.kernel.org>; Fri, 23 Aug 2024 03:16:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1724408168; x=1725012968; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1724408169; x=1725012969; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=LL8lrH4m1zu8jQzjHDxCkVbmtMdz/cav5HroEZBlyVs=;
-        b=K/a0jPm1lAb2W92lShBuUHweqnu55ZjNYvEK7poxfGEugLMAGScMWNMO5/AvYVOFVS
-         ZDbBiVL9ltenX++J+zE8KjWmwLCfOrUy/uYSV79FsryUJMtFY2jq5pJbmZjtdag68ZHs
-         8otUyoWxMnJoG2lGMhlhg4CVjwYwEv4Ih+7hbAmfoQG0QKN20Jz/Y19JiZA1YeB1xGgc
-         gafWQXC1zeVIiofXrF6HLPeXRqcq6sJFoLETrkIjRXzHk2tmGSEd5lVbHx6uDMZRVHr8
-         rAie5TTK6v4h48OsxZV1dqKdvsqLwntCYmzdGvMu9sVvyteBZhp8v0MG0n6on1/vzqd6
-         W5XQ==
+        bh=bIb+FksMIOJ64Q0IsP/5G/5OpyiFmNxQ3nT5nVYnW8k=;
+        b=b6E4pCgQpIryJ+uRWTMkOAIm655dAoW04uLx7Y2bkTxbzXrint952fwn24JCd7jCs4
+         csDdBbitklCbR3nqKSS1+hUV4LE79UygNj0/XOsyRKrKFAf4gHRzXM81fX91mIrGzOUu
+         9dl8CQZUtYd8YgegCOGewll9MIdB2NpC3fa24tPFeotKmTVyN+ebq3y2NnVY5c65HF8+
+         Vfdam1XhAQBqnxsJ1qBMsWXbGRKksO2btXpNe9vW1SqV5lXE0FVLE7m0hOyLsBt3q2VO
+         NtzYIKEGfp6+wxR0x9VAuVFO1MSue9qFeMQ0dlyWNRpG+E+Uw3I8jz9feZ7uhBNOjL5q
+         Ctlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724408168; x=1725012968;
+        d=1e100.net; s=20230601; t=1724408169; x=1725012969;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=LL8lrH4m1zu8jQzjHDxCkVbmtMdz/cav5HroEZBlyVs=;
-        b=aPTPAipbUXvWgmYZ7tah6lQsTs69yIBoHBAitcp07rSpazl+66UrFVYlTxV0KQ39XV
-         o92zHmXyRSoYaikckDpgo6IXCSCVX4K4px71IERWFKIDGXXOi8vbD9bhY8uQI6uccQaS
-         YcVNfmbCGfHa7j5TN1X4lzMCIr9aMqAx+bcWFN6dRviSkhu83bV6zBDCADHa/UankDP+
-         3K3BQXcb96jqehZptvN2Tof/5OsaEZ7K5TON6RbLoX7K+i576TDTbuvn8IYLkuxCvmvm
-         ZNysm6ZP4CJpyohXWGufejZuCTamTN+Fak7/L1/kOC8JHoL0jeGUotq99nxZ0CqfkgjS
-         plgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX+z4qEeDb1vRi+/Bwb3wF9LbPh/kanIv/tfNf4g0oI95u05YjhPYW+Xa8QCNL1fyQfC/xtSZ3CVx9g@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw1asMzk16bI8Hn1KerGceUEcR0a4hQM0xjxEYhBb7cXuFH0m2Z
-	b7Wl4w1l/eEpVqwYryUNDtCGXir3XndkZivJMHNbGX05uVJJQXGNaty+67Hfyks=
-X-Google-Smtp-Source: AGHT+IGpZrdXtuPVCcQwhIvIg5Gw3qd8+DVV59c115ma/5r72tOpjy+Z8GPBzffzBb1Nt11PqlAWTg==
-X-Received: by 2002:a17:907:7e95:b0:a80:a294:f8a with SMTP id a640c23a62f3a-a86a516134dmr78367066b.1.1724408167575;
-        Fri, 23 Aug 2024 03:16:07 -0700 (PDT)
+        bh=bIb+FksMIOJ64Q0IsP/5G/5OpyiFmNxQ3nT5nVYnW8k=;
+        b=FEEx1D8pSxmWdPg3F2g3iRqs/xlju1Cc7xNO74jiGJ2roVwhC6cLCj06c/sH419woU
+         SH8N2f56JYBjeo6UKHvYMlbW9X4OFYpaaRQDuWcE20XieyLHANZSvlDrNmW5FXDCT0jz
+         PHxrADCLCkrD+74myAtt0DoxvT60CJivrYJZgZ1YlRdGoZ4tecYZ2P6cmdwBPCsOGnEn
+         9/6GvNjWzWa4rFPX5r6M/fGfVpvChuNbSlThMsM7EDBxwV34ioLAOCswtiN5+JmnCvti
+         0J6sVfoFVVBA14jAgQ3vFyUjSu1yBDxD6UgcX9hQx0/9/0MgD2CnQETJiwBDp1qsm2VL
+         NjTw==
+X-Forwarded-Encrypted: i=1; AJvYcCXz5GGsD6rx8miGAFtM7WYoy+wPzRMCnZs64I9qGI6PkclidQd++RzLHsagK2irQiP68ogNrwicKXU1@vger.kernel.org
+X-Gm-Message-State: AOJu0YyZwGqXNlIuA1uLZ5W/0dNZIPf8g49jgVRtDGoNPtVSfuHTj/yc
+	U8BBZNgC7FAYgnOp27tYNztowwh27HzI0s4sY2GQIi46CQPv3Q/cIRhY3lGA9ww=
+X-Google-Smtp-Source: AGHT+IH2YdNwdbaIsW8x6JwUanSC2De/vmujuXIf/3MDm8QVZfLk7aokO3B6+oX3QzZfH0fhdLKHPg==
+X-Received: by 2002:a05:6512:23aa:b0:52f:c438:883c with SMTP id 2adb3069b0e04-5343876c643mr720470e87.1.1724408169146;
+        Fri, 23 Aug 2024 03:16:09 -0700 (PDT)
 Received: from [127.0.1.1] ([178.197.222.82])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a868f2a1df5sm237912166b.68.2024.08.23.03.16.06
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a868f2a1df5sm237912166b.68.2024.08.23.03.16.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Aug 2024 03:16:07 -0700 (PDT)
+        Fri, 23 Aug 2024 03:16:08 -0700 (PDT)
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Date: Fri, 23 Aug 2024 12:15:56 +0200
-Subject: [PATCH 1/7] memory: emif: drop unused 'irq_state' member
+Date: Fri, 23 Aug 2024 12:15:57 +0200
+Subject: [PATCH 2/7] memory: emif: simplify locking with guard()
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -78,7 +78,7 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240823-b4-cleanup-h-guard-v1-1-01668915bd55@linaro.org>
+Message-Id: <20240823-b4-cleanup-h-guard-v1-2-01668915bd55@linaro.org>
 References: <20240823-b4-cleanup-h-guard-v1-0-01668915bd55@linaro.org>
 In-Reply-To: <20240823-b4-cleanup-h-guard-v1-0-01668915bd55@linaro.org>
 To: Santosh Shilimkar <ssantosh@kernel.org>, 
@@ -90,43 +90,113 @@ Cc: linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, 
  Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=608;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3034;
  i=krzysztof.kozlowski@linaro.org; h=from:subject:message-id;
- bh=LtVfsUrkXvrpIrQ9RY7ofd8SPZNPe5l+WNIEpOclJW8=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBmyGFeW1M44IyaAdN7DLEIjIFH+IOVjqjv+CZGH
- CteVueXlu+JAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZshhXgAKCRDBN2bmhouD
- 1yNmD/0baNim+hSwFmuf5i67uJCDBqNTmfRLqjw3IiXAtxprRD9OIHTOUNWewIxpDKOW2T0fUkF
- BI70RMp8aE61rnmDenkEnr0rs++uDEmfbAc57plGITtw8W1vkscwjMpkPNbRyJCZDIdZZTCuQLJ
- gTDsSuI0psahI86kXZov1XJf+BCjnY5bFLoiGqzgnx/+hnM66gEBroFbZ6TCCQ0LS+73Y8t9S7X
- 52NeItgsVFGuFGKozMb4xBPk79pFerDotzNhQrtHKePgxKPJLsRLEZt+VOt21egL4sTxL2jv6Nv
- aN6qoIQI2V1uXC+IPVjn3BlXEkCi5G1/fDzq6/hiKEC6Jb7youNNcMhA/8gNCD+O6zVCOabX+Ab
- QBz6cb6Fb1CysHtTGZ7RNISe+uu9B4OmxQde1sW1gjB5Fq+QtuWEPJfMsH0ZcmpQIGvyPBO7NL2
- kgUo+qPxlfM9rRtqHeNxV6tT00CNQjx/Ju73fVontHAEufbDCYycooO5HLpyCFhG3Cnx3cJdz4M
- OJpxz3kUxIMmGEFw4nzyYq0imW7Vi05VIdscaw9diXPkyjzjY+C/xKbQ3q+c4wb4uUrWv0/k38v
- pXxFFjwg6xdKx1PbWm4Sd15uz198MDoxjFvtsYZ9WUXOOQ71/GFcW7+CjqI+aNeKIoo6DOQ5kTy
- RbwH5RnPsLmRMHg==
+ bh=dKvvXGp0G4rwTm+4rjJKl33390X+DCmUn8vg4x43GxU=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBmyGFfrOD+/wW6Zo3iZXagedAsbyR4cF12jI3eS
+ JPVjmdbm1uJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZshhXwAKCRDBN2bmhouD
+ 11m6D/9n+H35P6ofeRJrA+nm522gpFEX5Eu7CMZi6f2sqzh+NqNhlZtFnclpnvwRGqagON9oSuR
+ Y96OyUBnFBxMSfCmZRcrIfLch4iAFvRylrfFRV76JV5PDmUZSYKzKB0qfhFYjHrgN2buG9pC/bi
+ 8i1N3h0X3QC0FBQ6YH3F7QHUgw7bN4/yylZkg0RIzz73pE4laH/Ue9yqBz7TqycgCamg+3NVfzB
+ /R0x4qx8lnVE7kim5XODG+opwaJEqEFz7BP9Qv3PnrEIliml5EbBy7UbjgQGyZczd4RJgcoyNfw
+ Eb345jjdaUPW4kAsN7Wkr+Fycxk2GWyOVJOhWU9Nm9YZlq1Xfgb3CxLymwYUIxcZbHZ3wupzjJT
+ 0u4TgWe8y5dqx9ckkyWQdscun3CpXJ9IFn+aQidrHrX8j7lTwMBkzBAILGSM0U+KCCr7Yr2qQRJ
+ iHo2kNPB93ds0C77lDSseIV5tcSs8wOzf4yTO1z1UFVK069j/2paS/n8YNX9fKt1qnPD9SfLpfY
+ QlToLO+SLJGVGFsQYAhGuzqsDeuUX4TaqFvRgtyyZ1eYRUL6K2ADzBZRVPJmSzV8fiNjUrIcJZC
+ O/iAkNEmtjQlYT7uuioAbBNleCl95X4GFK+alDrlRvo8YaIskbUU2a+YEk1sQMEkdsw2ohC+eqW
+ m8iSd0+g4exq3eg==
 X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp;
  fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
 
-Driver does not use 'emif_data.irq_state'.
+Simplify error handling (less gotos) over locks with guard().
+
+The driver used file-scope variable 'irq_state' for storing IRQ state
+with spin_lock_irqsave, so move it into respective local scopes.  This
+should be equivalent, but more readable (less global variables).
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
 ---
- drivers/memory/emif.c | 1 -
- 1 file changed, 1 deletion(-)
+
+Not tested on hardware, although I don't think that moving 'irq_state'
+scope would affect anything.
+---
+ drivers/memory/emif.c | 17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
 
 diff --git a/drivers/memory/emif.c b/drivers/memory/emif.c
-index 974ed641473e..b32f3a8f9d71 100644
+index b32f3a8f9d71..99eb7d1baa5f 100644
 --- a/drivers/memory/emif.c
 +++ b/drivers/memory/emif.c
-@@ -57,7 +57,6 @@ struct emif_data {
- 	u8				temperature_level;
- 	u8				lpmode;
- 	struct list_head		node;
--	unsigned long			irq_state;
- 	void __iomem			*base;
- 	struct device			*dev;
- 	struct emif_regs		*regs_cache[EMIF_MAX_NUM_FREQUENCIES];
+@@ -7,6 +7,7 @@
+  * Aneesh V <aneesh@ti.com>
+  * Santosh Shilimkar <santosh.shilimkar@ti.com>
+  */
++#include <linux/cleanup.h>
+ #include <linux/err.h>
+ #include <linux/kernel.h>
+ #include <linux/reboot.h>
+@@ -68,7 +69,6 @@ struct emif_data {
+ 
+ static struct emif_data *emif1;
+ static DEFINE_SPINLOCK(emif_lock);
+-static unsigned long	irq_state;
+ static LIST_HEAD(device_list);
+ 
+ static void do_emif_regdump_show(struct seq_file *s, struct emif_data *emif,
+@@ -522,18 +522,18 @@ static void setup_temperature_sensitive_regs(struct emif_data *emif,
+ static irqreturn_t handle_temp_alert(void __iomem *base, struct emif_data *emif)
+ {
+ 	u32		old_temp_level;
+-	irqreturn_t	ret = IRQ_HANDLED;
++	irqreturn_t	ret;
+ 	struct emif_custom_configs *custom_configs;
+ 
+-	spin_lock_irqsave(&emif_lock, irq_state);
++	guard(spinlock_irqsave)(&emif_lock);
+ 	old_temp_level = emif->temperature_level;
+ 	get_temperature_level(emif);
+ 
+ 	if (unlikely(emif->temperature_level == old_temp_level)) {
+-		goto out;
++		return IRQ_HANDLED;
+ 	} else if (!emif->curr_regs) {
+ 		dev_err(emif->dev, "temperature alert before registers are calculated, not de-rating timings\n");
+-		goto out;
++		return IRQ_HANDLED;
+ 	}
+ 
+ 	custom_configs = emif->plat_data->custom_configs;
+@@ -553,8 +553,7 @@ static irqreturn_t handle_temp_alert(void __iomem *base, struct emif_data *emif)
+ 			 * from thread context
+ 			 */
+ 			emif->temperature_level = SDRAM_TEMP_VERY_HIGH_SHUTDOWN;
+-			ret = IRQ_WAKE_THREAD;
+-			goto out;
++			return IRQ_WAKE_THREAD;
+ 		}
+ 	}
+ 
+@@ -570,10 +569,9 @@ static irqreturn_t handle_temp_alert(void __iomem *base, struct emif_data *emif)
+ 		/* Temperature is going up - handle immediately */
+ 		setup_temperature_sensitive_regs(emif, emif->curr_regs);
+ 		do_freq_update();
++		ret = IRQ_HANDLED;
+ 	}
+ 
+-out:
+-	spin_unlock_irqrestore(&emif_lock, irq_state);
+ 	return ret;
+ }
+ 
+@@ -616,6 +614,7 @@ static irqreturn_t emif_interrupt_handler(int irq, void *dev_id)
+ static irqreturn_t emif_threaded_isr(int irq, void *dev_id)
+ {
+ 	struct emif_data	*emif = dev_id;
++	unsigned long		irq_state;
+ 
+ 	if (emif->temperature_level == SDRAM_TEMP_VERY_HIGH_SHUTDOWN) {
+ 		dev_emerg(emif->dev, "SDRAM temperature exceeds operating limit.. Needs shut down!!!\n");
 
 -- 
 2.43.0
