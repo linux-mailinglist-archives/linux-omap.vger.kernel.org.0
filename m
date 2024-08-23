@@ -1,75 +1,75 @@
-Return-Path: <linux-omap+bounces-1979-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1980-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0239795CA46
-	for <lists+linux-omap@lfdr.de>; Fri, 23 Aug 2024 12:18:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CAA995CA48
+	for <lists+linux-omap@lfdr.de>; Fri, 23 Aug 2024 12:18:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 277661C2099E
-	for <lists+linux-omap@lfdr.de>; Fri, 23 Aug 2024 10:18:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4C851F26C2D
+	for <lists+linux-omap@lfdr.de>; Fri, 23 Aug 2024 10:18:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB594188926;
-	Fri, 23 Aug 2024 10:16:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7550418859D;
+	Fri, 23 Aug 2024 10:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="HN8Um5lz"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rrFLilM6"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C23D14B084
-	for <linux-omap@vger.kernel.org>; Fri, 23 Aug 2024 10:16:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C45618890D
+	for <linux-omap@vger.kernel.org>; Fri, 23 Aug 2024 10:16:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724408177; cv=none; b=CH2aQQeJvUAdoXIHhDWj+M2+u52LOGhwSUeVTQFWPXxPQxUJMZWkPDoOdT1rVvgSi9Pv8mlfiJxqNOQKzDgYFwoSl2JPNXLp7oRBTTLOsvEnb+e9cMTRxBYpODqYT2+EXyHsnxr2vcmqA9sYhnq+p+YyBgSj8M7oHCEL46s3fxk=
+	t=1724408179; cv=none; b=vBon2j8LOVBZwd9eJm5zXf+vH4gT4VYh3wdBXZYGNIhZ/4HRqu/EXua+61ADaapoMDGvS1ao+DJbtZuFDFLEW7H5IZfaFn8b6bHegR95ZTDQCVX0hJww1TYPK63K10OrtV4xpcrv8NrC13WdmaIvOajDdA3TikGC/N2bE3wmEVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724408177; c=relaxed/simple;
-	bh=ZwCto+Ttph4EufVXEro/gEKUqJQirV37As8vR+9RWpU=;
+	s=arc-20240116; t=1724408179; c=relaxed/simple;
+	bh=Hq4cb2PCysHDymYKqh8l8D8U4p6NzM2SO2TX8TxhsYs=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=hwWOqlhyLr8M/n6ByxYehRGgQP5YEIg2HepxCz+CBE2lMMs6g01FMI5G1RAHUVf4eyXVxfrGViN0ycASPa2LY+Il4jeGn8oJ9WXRHRw1fILqpQjdpmwfdLMOX4tPI4WHNEOBnhTo5x2luWCxaePEFHA1HQCkHoABfS+1/TXGKJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=HN8Um5lz; arc=none smtp.client-ip=209.85.208.53
+	 In-Reply-To:To:Cc; b=BoLHUHzxgBlZGGjW5WKXGIZHQAq1/6V93sZZutYgbu/Udaqxdvwp+JpnmIxnYpvAQf5QfIA8pLG5uSUDrbClxWN9fwchBiEoPWKGIX2l7lADvHV0+81qIJtn1AiQPfVlYwWLVdR7DURrB9TN3xMdu+2BmeKqqyzkRXmR9s+r95Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=rrFLilM6; arc=none smtp.client-ip=209.85.218.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5bef259a71fso249681a12.1
-        for <linux-omap@vger.kernel.org>; Fri, 23 Aug 2024 03:16:15 -0700 (PDT)
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a86939e9d7cso13569366b.2
+        for <linux-omap@vger.kernel.org>; Fri, 23 Aug 2024 03:16:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1724408174; x=1725012974; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1724408175; x=1725012975; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=G7t3y5+/zYw1uRCizz7bvbUmiS1vcdmMCZnETRzZwr0=;
-        b=HN8Um5lz5NFy/2ogaturIBc7T5AP2lo0uJxdQLThIY6dRpwdws6GINXvcPFYaSBjNV
-         BksXRaR2pT92cN29J2ihDsW8crQIFnByk3Q9WBG4izAqA+2Cqbn2BSNecT/Cx9UTy659
-         1j+zefbd08fuqDGZe7n9jyvknl4WoWvfJ+Vux8dZ4IZe3uRAIQiMrNicneCD0M9wPRBV
-         E/g8Fw8ytkUqIyccEcDCXNBYBr0+kp6rsEboX0NWccmJmhMpFNOyK0bt/Cpj1+laID3D
-         h6Agmk/W7DD1UJuU6NiFUf2+0iyFPTXiVrSzJqyTq/6ZfirjLvmRT9bwWIVxBfSBtA33
-         vRbA==
+        bh=6ocnpO172IW4JkslgO+O3WIS3ymQVVnJA1Ye00Cp2Ow=;
+        b=rrFLilM6dhovfNOSkW4k3uJp4luyF4hZ96Sgn9ZMHsL+Mj9PrOCwLUjEDnj1Gr2bzu
+         olZ2mOkZlWlZXAguzBMemaVkpZPscuTVr5onT7Jamfl+1MVxrPv58QCD3Zc66pUwNby8
+         FzK47kG6+Qhs0M2SaGGQhQQkx2I1zaTKWRxeuXnfOVLPVWgCvd9kv4xr48ZX9L7srJNK
+         Ty3LuQ2/Hd4g01iGKfpXLoxwq39lFm8LspFYj0trQBU9u8eDZdesut3Aj72lanQpdftG
+         HrCFeC8JX9iDFouFQ1vwEEGFAep/pIyFm0wYpqdsarFFbga+cc4p7AZFf+vd6Jghmfq0
+         OmbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724408174; x=1725012974;
+        d=1e100.net; s=20230601; t=1724408175; x=1725012975;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=G7t3y5+/zYw1uRCizz7bvbUmiS1vcdmMCZnETRzZwr0=;
-        b=OxeXl4Dg2LN4W9PVhXnESx08S9Xtx0bYdadzwGQPRJPsHiNJt49B/RQv0KsLEV5eF9
-         6InNlF+v5XoSN5fwzpAGI1092htuO4/2adYPlFmCZLGvTAQY9D9FLAcJ6TQy7TesSvjn
-         aecDNhYX0faq/HpXkBhVmkdEbQ9aUNJQ2r2orFGIkDPZYqStasJibEl0ylQ4bNn5sWMa
-         GzJGDE9gdtMwpr9mjpnmJeq6e9RVjm1JK4z2m7fF2WCbWvaXIALP5TI5d24VIag2vjAQ
-         c23dHYAxP7xVBvqrulBHUUNJgOSR49LVxyF/jw4TC/BFkCIuPPBGRFvkdECjfwBEY5IW
-         J21A==
-X-Forwarded-Encrypted: i=1; AJvYcCUJnMURFGtnmU5UZAGbnCSposVMSvgLDFDf9zDkhm29hqF8GWN1nFldjdHTXKxBVDXv88nZxBSWrHKz@vger.kernel.org
-X-Gm-Message-State: AOJu0YyzemGMKnq+gfurylTL/TCQsXPsW+gGAyrc0Iuxh3YAaAElq9CF
-	FiSFrrpQgSReIgp25qqSGVX0jwXBktqKsZoFOuAGVFSHPwB0qDugful6WEx3KmE=
-X-Google-Smtp-Source: AGHT+IFfy+OGNSeG7SJwkUpL7Mu8EF/PyhzdcUVTDpOXbF/eS35DAJqbkG6gabVNuzT1c5TAzBjNFg==
-X-Received: by 2002:a17:907:7f2a:b0:a83:a86a:549a with SMTP id a640c23a62f3a-a86a5185ae4mr70199966b.1.1724408173829;
-        Fri, 23 Aug 2024 03:16:13 -0700 (PDT)
+        bh=6ocnpO172IW4JkslgO+O3WIS3ymQVVnJA1Ye00Cp2Ow=;
+        b=pBhHCRyKF9mwIXPu66HUQ/ns1YclcdEHb6Tj+0j7xtlCgyJV/9GPd9KSFuaWeUQRaR
+         NIIgbCvPyfxDtGTnwyvgJloacbd7fkmZt1k8syjAfY949KFjo8BcS45J3oJQHOTFCLL6
+         nE46jwQn6ljy5TJ5yF5dZq5Ae7+tyzXDwUrQsuwYEvFjXNgUeeH2SeKSzfdgZkWjZLcU
+         oCTXWw/SxSwGymg3oAT7JJuNwodm+cJcqer2WFovJQDfmXcvm6cg/utFJtpHl25InmnM
+         1BwHsUK8ZOFYGR+diFG4V6/PaIXUEgzsJX4PqSmI/LfVFj8Ksz4irAR3vrr4QmPJrvXk
+         48NA==
+X-Forwarded-Encrypted: i=1; AJvYcCUcd6BZTy3Kp+RRxXo1bda9fxcjfr+6c4OjLz6AGrmG+fhPOF5QzpXeOvRKxLuMntEzJ03DEVNmI5RM@vger.kernel.org
+X-Gm-Message-State: AOJu0YxSDtIBuL6D8BGdLpw6Zul3KyuHBv0igPfy9Evy8v9d+hxZBBF1
+	u8Bh2zucvqmArrHW76SmW/ojiSCUyqbE88BRRL1it6P3rKnVF88ix6+jjReH/10=
+X-Google-Smtp-Source: AGHT+IGhkuSvyXebvL/B71M5+A63nJsMJdmc8ImauUTYMsBp/MtDZmt5w/H9Ro753NCVBIDUlhKVLQ==
+X-Received: by 2002:a17:907:7d91:b0:a86:7179:849e with SMTP id a640c23a62f3a-a86a4eb104dmr69259766b.0.1724408175415;
+        Fri, 23 Aug 2024 03:16:15 -0700 (PDT)
 Received: from [127.0.1.1] ([178.197.222.82])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a868f2a1df5sm237912166b.68.2024.08.23.03.16.12
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a868f2a1df5sm237912166b.68.2024.08.23.03.16.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Aug 2024 03:16:12 -0700 (PDT)
+        Fri, 23 Aug 2024 03:16:14 -0700 (PDT)
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Date: Fri, 23 Aug 2024 12:16:00 +0200
-Subject: [PATCH 5/7] memory: pl172: simplify with devm_clk_get_enabled()
+Date: Fri, 23 Aug 2024 12:16:01 +0200
+Subject: [PATCH 6/7] memory: pl353-smc: simplify with dev_err_probe()
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -78,7 +78,7 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240823-b4-cleanup-h-guard-v1-5-01668915bd55@linaro.org>
+Message-Id: <20240823-b4-cleanup-h-guard-v1-6-01668915bd55@linaro.org>
 References: <20240823-b4-cleanup-h-guard-v1-0-01668915bd55@linaro.org>
 In-Reply-To: <20240823-b4-cleanup-h-guard-v1-0-01668915bd55@linaro.org>
 To: Santosh Shilimkar <ssantosh@kernel.org>, 
@@ -90,88 +90,59 @@ Cc: linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, 
  Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1959;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1309;
  i=krzysztof.kozlowski@linaro.org; h=from:subject:message-id;
- bh=ZwCto+Ttph4EufVXEro/gEKUqJQirV37As8vR+9RWpU=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBmyGFiSXY1vA0zswAcRg937hXMqwpJ4t2399ap6
- Zc17P/RQWiJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZshhYgAKCRDBN2bmhouD
- 17p1EACCnXOOL7qiPpF1BVtDZJyarNwyghSByLJr+OShMsFmzfL5fqK3GScCm0Bj5tf5tFbpbQ5
- 4DJJ1trhs+rjYKho1Euf2qMyByMQviKQz7374W4xt5N/ovZJ+Fg9sOhE1mO+En6Hvna0dmajS/c
- oiu4h3guIuqxSo6dpFkaHPOhgpZbEb3Dtfd3iAx9PuxXu4mijxyh/YGo0Y2A1YKcvyE6DUOvk9M
- jJa54LPKp7VRceGAFUBCGQj1cm9CQrQaMW4nO+kb99NfInXzV14s3UOvQwucjesIiDJUpSVMkO/
- Psn2QKZBU9tWM8MLWMm8C9u293iSX+xawdxcNKFbI/OQjBpq8H+DfVviF8tK5MYL3SPgYyEMEE9
- 86s2CghofhJi17lfZOairekgkW5n0bAEY3Zmg3EjZhaNeev73dDZVaWuKZfEwuH3BFppKfdjuOu
- nETH6p8zg3F/8eCvi1KLZNVcb3dhzw2AfFmlbhmkpKAFE5nwO8opG2o8k7gjNAgxUq/HDW9wbb7
- h2aPwn5RP7JFlkphz5esizu/oNSCTe7oK41p5khXYS9v1azXwXO+DgGQYYsIBuGn2gnjAWvsos9
- x4EDWmHau7gceYlm6H87WjiER4YPR9KTS+u84BmTDWnYnRgCnMR9dJcbzYSt/BY9Oj3Z26zNX6a
- IbxrCHk2x5zf8AQ==
+ bh=Hq4cb2PCysHDymYKqh8l8D8U4p6NzM2SO2TX8TxhsYs=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBmyGFiWcy8eseMGER1brKDO7pSSLOJFVrVR1xx9
+ NnAdZE/YlSJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZshhYgAKCRDBN2bmhouD
+ 1wMAD/sGNlt5XqYNkHukE/5wRvv6uvT6Yob8h69eYgWUlllNP8Rr2rkissabZKtE5pxvqSJcDFK
+ Jhs71OE9WYilg1k3JcV+fw5eayzmMK5WhS3bqL6hALGB1E9I2VPvxSulJQltKJSfhwNj8IdHX0n
+ n1tUx4nz2wmT1Rq0j4kuS2AxiaytBfsSND1OAnGGnVEX4gwswxexllh+G0OWdwq/jKCTlNoj3HN
+ eYmJSwq6cKnHRPQcdsffDw+6XvlCoJQLbBIS68phq+fxjUc8rgohmKMw8pjuXTFjzA5ayy0lR0W
+ Y64DtnGHAYFHIXiaVFyUkFe6WzY4o1BXNuBRFUeIhSnLFXBVHYj0iqiIG48d8mQ9Cdvc9hVTio6
+ IBLXlzdodYtquWpmD4QI6pW9MSU+s4snGTIBcyfMg+uyPCSzYDW+yvyaLu3MpqJG0dvWRp2JcBY
+ Qnli8Q4PhCMnSjf00zbqFc9Ej2S6plMQEjjrRpZmaP3WLPZ9pEXumSUkYZxS6SHICj13GffWMLc
+ mO+SpPGLNf96jDf5UYkExVGrv2sBd7QvvXjpVZn/zxLjomdS1wiKJwtzSw2PmyBBW020JPeUHFG
+ SjjV/B6zCmS6doppXqv4r0QI/zCChezl9j+0c4rOUnptlaCdoQf+J7qh0lE/R4oAMZzzjIzp52N
+ pLa9e925jT+tHyg==
 X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp;
  fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
 
-Use devm_clk_get_enabled() to drop clock prepare/unprepare parts and
-make code simpler.  Change to dev_err_probe() in handling clk_get_rate()
-error to make it even simpler.
+Use dev_err_probe() to avoid dmesg flood on actual defer.  This makes
+the code also simpler.
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- drivers/memory/pl172.c | 23 +++++------------------
- 1 file changed, 5 insertions(+), 18 deletions(-)
+ drivers/memory/pl353-smc.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/memory/pl172.c b/drivers/memory/pl172.c
-index 390012401f64..db5fbee34077 100644
---- a/drivers/memory/pl172.c
-+++ b/drivers/memory/pl172.c
-@@ -216,28 +216,20 @@ static int pl172_probe(struct amba_device *adev, const struct amba_id *id)
- 	if (!pl172)
+diff --git a/drivers/memory/pl353-smc.c b/drivers/memory/pl353-smc.c
+index 56e51737c81f..c75b99e49970 100644
+--- a/drivers/memory/pl353-smc.c
++++ b/drivers/memory/pl353-smc.c
+@@ -82,16 +82,14 @@ static int pl353_smc_probe(struct amba_device *adev, const struct amba_id *id)
  		return -ENOMEM;
  
--	pl172->clk = devm_clk_get(dev, "mpmcclk");
-+	pl172->clk = devm_clk_get_enabled(dev, "mpmcclk");
- 	if (IS_ERR(pl172->clk))
- 		return dev_err_probe(dev, PTR_ERR(pl172->clk),
- 				     "no mpmcclk provided clock\n");
- 
--	ret = clk_prepare_enable(pl172->clk);
--	if (ret) {
--		dev_err(dev, "unable to mpmcclk enable clock\n");
--		return ret;
+ 	pl353_smc->aclk = devm_clk_get(&adev->dev, "apb_pclk");
+-	if (IS_ERR(pl353_smc->aclk)) {
+-		dev_err(&adev->dev, "aclk clock not found.\n");
+-		return PTR_ERR(pl353_smc->aclk);
 -	}
--
- 	pl172->rate = clk_get_rate(pl172->clk) / MSEC_PER_SEC;
--	if (!pl172->rate) {
--		dev_err(dev, "unable to get mpmcclk clock rate\n");
--		ret = -EINVAL;
--		goto err_clk_enable;
++	if (IS_ERR(pl353_smc->aclk))
++		return dev_err_probe(&adev->dev, PTR_ERR(pl353_smc->aclk),
++				     "aclk clock not found.\n");
+ 
+ 	pl353_smc->memclk = devm_clk_get(&adev->dev, "memclk");
+-	if (IS_ERR(pl353_smc->memclk)) {
+-		dev_err(&adev->dev, "memclk clock not found.\n");
+-		return PTR_ERR(pl353_smc->memclk);
 -	}
-+	if (!pl172->rate)
-+		return dev_err_probe(dev, -EINVAL,
-+				     "unable to get mpmcclk clock rate\n");
++	if (IS_ERR(pl353_smc->memclk))
++		return dev_err_probe(&adev->dev, PTR_ERR(pl353_smc->memclk),
++				     "memclk clock not found.\n");
  
- 	ret = amba_request_regions(adev, NULL);
- 	if (ret) {
- 		dev_err(dev, "unable to request AMBA regions\n");
--		goto err_clk_enable;
-+		return ret;
- 	}
- 
- 	pl172->base = devm_ioremap(dev, adev->res.start,
-@@ -267,16 +259,11 @@ static int pl172_probe(struct amba_device *adev, const struct amba_id *id)
- 
- err_no_ioremap:
- 	amba_release_regions(adev);
--err_clk_enable:
--	clk_disable_unprepare(pl172->clk);
- 	return ret;
- }
- 
- static void pl172_remove(struct amba_device *adev)
- {
--	struct pl172_data *pl172 = amba_get_drvdata(adev);
--
--	clk_disable_unprepare(pl172->clk);
- 	amba_release_regions(adev);
- }
- 
+ 	err = clk_prepare_enable(pl353_smc->aclk);
+ 	if (err) {
 
 -- 
 2.43.0
