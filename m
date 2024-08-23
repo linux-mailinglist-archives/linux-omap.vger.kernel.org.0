@@ -1,75 +1,75 @@
-Return-Path: <linux-omap+bounces-1977-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1978-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48C8B95CA41
-	for <lists+linux-omap@lfdr.de>; Fri, 23 Aug 2024 12:17:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A149195CA43
+	for <lists+linux-omap@lfdr.de>; Fri, 23 Aug 2024 12:17:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C97A41F26C7C
-	for <lists+linux-omap@lfdr.de>; Fri, 23 Aug 2024 10:17:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5722B1F26C1F
+	for <lists+linux-omap@lfdr.de>; Fri, 23 Aug 2024 10:17:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79FA0188594;
-	Fri, 23 Aug 2024 10:16:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8F591885AB;
+	Fri, 23 Aug 2024 10:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="YRjikzsL"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="lmvqonSO"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41FD4187543
-	for <linux-omap@vger.kernel.org>; Fri, 23 Aug 2024 10:16:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF211188584
+	for <linux-omap@vger.kernel.org>; Fri, 23 Aug 2024 10:16:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724408174; cv=none; b=QtPj6Nm6M2EQVmt7UxYpvoTwgP/f1LXCPJCLb5oaPk0nDpSsWXengM5PZBOgPxXwt0EqbPhEbk/bFWmKQ2JrNam+kv/NPyrSRif3PbkYycFdchlPEgR9IHC8yx26cMVzufBs6DvHdZzMCVrp+IY2jX1o8WmJhSM536anh0yUTMY=
+	t=1724408175; cv=none; b=LcPnRWLwWdr4CAwmo1mFeRssLSk+ynpTDlD80zrBathiZuU2oU6wcvC5IrsoELCeiEmNz288BsSvKbvdADmmRF9jcb0TJM7mJ1YwLoVBAYjavLrueIxg52mTWPi0TLHVnklYSozprGQbfyt0kB/4t2bSLgQqMVHNGjS1kU2R+VM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724408174; c=relaxed/simple;
-	bh=c3EBYma5kTUA/zOkUfd/wHDJYd2x1OE5BHWso7TEYUU=;
+	s=arc-20240116; t=1724408175; c=relaxed/simple;
+	bh=IlZEpsC5zLoI1hcyp/Rq4r/SZxK68xgrN7mWoEs36F4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=SOiC6xa3aduaZieCYE7lDrryOtqHGsDE2vjvTcD91z/LCJnVK+ZetLNgJ0ivENdaz8DuqOg+IgdaZpQcOalkUlREGVGARCF7XO4Rp0mEkCAx6MujleBsFQa6P+BTxRMCdbUU6L2HhRFFVziZm7hh75baqd+BJbiMd0fMmEmswJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=YRjikzsL; arc=none smtp.client-ip=209.85.128.50
+	 In-Reply-To:To:Cc; b=c0WVITrtlHolxM/ELTwKOm784vMVmmqjD+MPBLnJrQHXo2mRnVytNWUuFVeEuGZJxCpSkOIzUca/31msqDWB9KtT2LUq4FxYV0Llnz7QHDhdD7fAKdaF5HBZE7CrwDW+9zsTq7zAIY9mP4PfgQbVTdHdOx/MKrBx22xLelDj9eY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=lmvqonSO; arc=none smtp.client-ip=209.85.218.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4290075c7e1so2214915e9.0
-        for <linux-omap@vger.kernel.org>; Fri, 23 Aug 2024 03:16:11 -0700 (PDT)
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a868b4d67c6so12240666b.1
+        for <linux-omap@vger.kernel.org>; Fri, 23 Aug 2024 03:16:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1724408170; x=1725012970; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1724408172; x=1725012972; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=st6dBA4B9Nv1zPtX9T/2rfu/snV3K8fE/9qGZsxtuyY=;
-        b=YRjikzsL4dgJBjyLeXnpVRcsiMRRrAdVUd4EcATsv6dKan5ELzRSPk44kYbDQa6y5o
-         nO3NbdWYn/stJqtkN82AnVFApEWXy+iebgZJB2Xm0CTbvBqFDyW6xNxX5kGgmySgFs4J
-         zzDqCibWqyhfMOwAQ5N4lyDT1/m886sIVQledSuNY4ppZqHAEvoGItIjBoqk+KJQWYUM
-         4hQYnZLyhiwq8SjMnE0R/GOWRCwoS016JRAtzi2IdiA0MPIV1EcqJ6/sqbD/X3Unm9vR
-         hT4kFEaqRJ29b8heSZAK9IvXr5Otxu1GONM7zuDNEOEtwxO9RZJLaf1IL7CmHPsNYZOJ
-         tngw==
+        bh=N7t5hccTkDQZVo5vU52s+pXfo+StB90U/RzqpPMyIi8=;
+        b=lmvqonSOzJiLZ0xeswHBSr4v8vSVhBf+5IfrvBkew0ziCFeewkR6An/6rR8pAnLQPu
+         4pBtwgUCFQOa8Y4gryQHj1qjfTG4UcMhRV+F5LQ9oCaMECYudOuzcLlNV/G/LbhKPDX8
+         d8pXyjZEsIAwWcLvtcTJ65Yt/mNsi/oAyicWuk5BYrd1mp52IyxKgc4wsA3MzSf8VvHt
+         uqejoBtmxijuF6EmcGkFQMNr2t5of1PPrYTZ2fA4MSDFMsW+ef4zPI/JeU+bmkgPQiAL
+         QaJldRzm/qPpk02Fa7+BaGDX1Mfb79rlz2hHU+mPIYYqClsyN6kCF1X0+7eRWj5bIXNp
+         81tw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724408170; x=1725012970;
+        d=1e100.net; s=20230601; t=1724408172; x=1725012972;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=st6dBA4B9Nv1zPtX9T/2rfu/snV3K8fE/9qGZsxtuyY=;
-        b=rKeGWkp2pPEFk6N0hSCTQKRNhnC0GZQEas1zcp5meNhxvtw4kaF3hbwy3X+pTQ0RHS
-         0tI+bdXYyjPrOZPOKbq/Y16bSan6zHiM989Dd+qKZP8P0YOSNv4+Wlqdmlx874ydpUNS
-         Femb1aw32IAqkJTTgnx7Hy7Niytnq5zegky6jBI2wNkn8/QfelZcPfZj/Q3HK4BhGDaM
-         tzUdk3Pu47CljW1mXiR+tNSqXaoZlMCtMZOp0s1S2DwxVmmKjeGsXV7EkemLvUDQPIbw
-         Dg+K+lr639VcifDE1dyspZtQjgxkTVDUgQYGaXdc0Qk7ZmAgwkX8df2GehnQ5Z1AZMNw
-         KQCQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVH2o7fISDnP1O0WIdmmTC3SvpC2QUxsMLEPVKWJiada19mE5Fk19tf7raQRCG/vzr3I6s4U0E1khC4@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx2aNtcAjT7rw2y8aWvVDItk9RLILW8Pib/NVQkkAriZ7LbU6kQ
-	c6lqNoD/P6VE9SxABL/x5iYLWCjd+MKGGVM6WcMcAUOeEgzz7M8d8NBsQ01eOU0=
-X-Google-Smtp-Source: AGHT+IHh+J5equdBgJ4usKEKsDj7Qu7AiwgUQ/PKWo7hs5cHZCzKxrqsYJ8/hj1kRnLZzBypj0LIRA==
-X-Received: by 2002:a5d:64cc:0:b0:366:eb60:bcf2 with SMTP id ffacd0b85a97d-3731185bd1cmr541652f8f.4.1724408170571;
-        Fri, 23 Aug 2024 03:16:10 -0700 (PDT)
+        bh=N7t5hccTkDQZVo5vU52s+pXfo+StB90U/RzqpPMyIi8=;
+        b=tr0S65ZJqFi3CbWwCn7ts/kAMT0K4Bo9LNBJXQ652ZoOgD9+IP18BFxHEc7WN1pIb9
+         N4MpN3kPw1sjdVtddwxuP0fJTgE3gKydEwjcjfV/P97DaOLclD++oMI9QSbUMm8nEpin
+         Lk6E1XPmzxcgkT1tfvyob+kHmjHUNEe/Gqb5nC7nSAzHwBz6oJ7gVy5yvJIKz4hNHtYS
+         DWI47q0xL/DAS8s+1yWSZ2C0yDL1VUSkajfBPEAwWOuw5R2HAoAU/7MCEZptPCX3qnMx
+         EZU4/ezp6vCHfykKW4x0y0RkccobcgdNrESmYHDTXi4fY/6uZTLdFadibh0zgXykvcYz
+         /K6w==
+X-Forwarded-Encrypted: i=1; AJvYcCU2j02MrAxykHKMD00tlvKrdQlZg7YHv3ba2Y1H0LZolAP55WUUydTPf3LOThrUt5AZfqQD+75bAXIp@vger.kernel.org
+X-Gm-Message-State: AOJu0YywARHlWfg2g6HUtmjvKcLccFqwFwCVcOMwflU48vhMxzLXF1XF
+	KSKlAwJ0+G7LP1TKzHNtkHfSxy1uIeCeXaPNDwcizzF8yItSdYg1sko6nDw4oYE=
+X-Google-Smtp-Source: AGHT+IFlkL5s7rmHHgYZMRB1BLvikyDv99I8y83akU4jvf5DqV38Aa2gkHT1IB1hClppKtMqNTmTRA==
+X-Received: by 2002:a17:907:2d07:b0:a7a:ab8a:38b with SMTP id a640c23a62f3a-a86a54b66aemr78280566b.7.1724408172034;
+        Fri, 23 Aug 2024 03:16:12 -0700 (PDT)
 Received: from [127.0.1.1] ([178.197.222.82])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a868f2a1df5sm237912166b.68.2024.08.23.03.16.09
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a868f2a1df5sm237912166b.68.2024.08.23.03.16.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Aug 2024 03:16:10 -0700 (PDT)
+        Fri, 23 Aug 2024 03:16:11 -0700 (PDT)
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Date: Fri, 23 Aug 2024 12:15:58 +0200
-Subject: [PATCH 3/7] memory: omap-gpmc: simplify locking with guard()
+Date: Fri, 23 Aug 2024 12:15:59 +0200
+Subject: [PATCH 4/7] memory: pl172: simplify with dev_err_probe()
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -78,7 +78,7 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240823-b4-cleanup-h-guard-v1-3-01668915bd55@linaro.org>
+Message-Id: <20240823-b4-cleanup-h-guard-v1-4-01668915bd55@linaro.org>
 References: <20240823-b4-cleanup-h-guard-v1-0-01668915bd55@linaro.org>
 In-Reply-To: <20240823-b4-cleanup-h-guard-v1-0-01668915bd55@linaro.org>
 To: Santosh Shilimkar <ssantosh@kernel.org>, 
@@ -90,108 +90,50 @@ Cc: linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, 
  Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2384;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=898;
  i=krzysztof.kozlowski@linaro.org; h=from:subject:message-id;
- bh=c3EBYma5kTUA/zOkUfd/wHDJYd2x1OE5BHWso7TEYUU=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBmyGFgGrbj7x0yA560ueSSqqbWUdMCZ0SabmhuE
- ym90ud3QVCJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZshhYAAKCRDBN2bmhouD
- 12IOD/9vL/BYpE4yYF+b/K4kXxcWaYRXgrsbhNWRg8XaVfPIallsAQsvyKUqWN6t518a1OLo3b4
- sn+hB2hXu7k9fg9FpOuCZehdoyMlkh2YuTIEXXIaxkenyb0u+pRzSaEcYgMJPGz72RkYlvK2I2v
- gERCuH1mD0G8KfBVSw1rCNMMtcpv5pOzbS1lFBIFLKCLssCwGCze2vpMhQlsSLKyvWEEroUqqv7
- oz1hkNFujKVJEroViUTY3wnR0QAoR4Td2Uw0Pqc1sSvW6xLBFqp254JVqa9/cdTyEH4tTgQtanz
- T1jYRgOK3LuLs11JAveVcE4eaYM6M/hyoKgjj4YlFoaa7wdHpjYkCXhmLUiz+Q/fOb9ccZ16W02
- ZZMUPeD/w+wqYHRFAabYbiHztb3l6CYiM3S5KkDR4+XpgzoxSAMxFG8Ps99oqasdJd2rohlJxA/
- iPYIzJauth0VYLZzeNX6vTL5njvNWh37M++OXEv6bby67HJlhAGw4x2ZVNQyO5KsNq8TuBImT9o
- eijwwReaEd/XELR2g//Ai5o7jd/Cdfe4PEQc3DrdzIU3anUzRmIE3gE2kQsTn0RjeQ8BCLYWwVy
- VW6KvoTVgVf9msP1Zv8rL4XEu2NpYSICA5MFQXps7GgewmpcUxeWw7kgbfMpC+7NtuinXO1beS/
- MyWW70f2i9MKLEg==
+ bh=IlZEpsC5zLoI1hcyp/Rq4r/SZxK68xgrN7mWoEs36F4=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBmyGFh/t4Skn3nDrz6/5TT4P0rYPwiS3a/epBSf
+ tzcKzaA2ZGJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZshhYQAKCRDBN2bmhouD
+ 1+xjD/4ruvUAwsgXVGQc0suOEQkGhBJDCb2yPwHptmIN2/Cz6v83MTq62MWytE7rdN2phWy9O3f
+ 56yiu1nANYWS2NWDWO0kosm/uUjEqkMGqtyWK/pnQejkUhHMa4rQ/myL9xx+HZW2K3Bh2SBDgZ4
+ 6ZLwIlHfAB+fzB0X83HHUe2/aotZPqNrnysD9mIh1EM+nHlTPLNoJoNKc/uo29G6m8kTrPLKxb3
+ 4ToplKvocyNwTPLYUwT02C0KUtbB4+d67+xx4nnPm2ubzPHbPKnZnS+jbuwKER2b9fIS8ZbeUoj
+ WX+UYhccc7ySZNT482TECCo2+TluRj3/4f5ICmM5nxGQURDdJzq1x9lD198O2PaLdE/FiARsnAr
+ wNC7qaAzZAhAoVmnNPRgCwEjVKu5yIgB5OzGNR7vlx9DNUoF/IlGWo5jMIGFFj3yUaxhIogBX0J
+ A3nJPQTAKEtc+2u15w3TROpLzcw3tVqexUTmSFeR91i0uFz0P2KJUpNFRWWBAkCp3AxGjbK/zXd
+ 4FmSICD+VMNMNlwqhQzeBvd03X74EDItoXYvmul61L5I7l0xuE+toFTcEqCRosdTG3A252FL2h2
+ ZY84cfqj/xdyvUssSD/4su/wROzfVx5QHgVWPUclmNz+/5zVaNC0wF3+DUE0HOQsmv0NQf0lX5/
+ 7CE8apeWgpQcD2Q==
 X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp;
  fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
 
-Simplify error handling (less gotos) over locks with guard().
+Use dev_err_probe() to avoid dmesg flood on actual defer.  This makes
+the code also simpler.
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- drivers/memory/omap-gpmc.c | 24 +++++++++++-------------
- 1 file changed, 11 insertions(+), 13 deletions(-)
+ drivers/memory/pl172.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/memory/omap-gpmc.c b/drivers/memory/omap-gpmc.c
-index 80d038884207..c8a0d82f9c27 100644
---- a/drivers/memory/omap-gpmc.c
-+++ b/drivers/memory/omap-gpmc.c
-@@ -9,6 +9,7 @@
-  * Copyright (C) 2009 Texas Instruments
-  * Added OMAP4 support - Santosh Shilimkar <santosh.shilimkar@ti.com>
-  */
-+#include <linux/cleanup.h>
- #include <linux/cpu_pm.h>
- #include <linux/irq.h>
- #include <linux/kernel.h>
-@@ -989,18 +990,18 @@ int gpmc_cs_request(int cs, unsigned long size, unsigned long *base)
- 	if (size > (1 << GPMC_SECTION_SHIFT))
+diff --git a/drivers/memory/pl172.c b/drivers/memory/pl172.c
+index 9eb8cc7de494..390012401f64 100644
+--- a/drivers/memory/pl172.c
++++ b/drivers/memory/pl172.c
+@@ -217,10 +217,9 @@ static int pl172_probe(struct amba_device *adev, const struct amba_id *id)
  		return -ENOMEM;
  
--	spin_lock(&gpmc_mem_lock);
--	if (gpmc_cs_reserved(cs)) {
--		r = -EBUSY;
--		goto out;
+ 	pl172->clk = devm_clk_get(dev, "mpmcclk");
+-	if (IS_ERR(pl172->clk)) {
+-		dev_err(dev, "no mpmcclk provided clock\n");
+-		return PTR_ERR(pl172->clk);
 -	}
-+	guard(spinlock)(&gpmc_mem_lock);
-+
-+	if (gpmc_cs_reserved(cs))
-+		return -EBUSY;
-+
- 	if (gpmc_cs_mem_enabled(cs))
- 		r = adjust_resource(res, res->start & ~(size - 1), size);
- 	if (r < 0)
- 		r = allocate_resource(&gpmc_mem_root, res, size, 0, ~0,
- 				      size, NULL, NULL);
- 	if (r < 0)
--		goto out;
-+		return r;
++	if (IS_ERR(pl172->clk))
++		return dev_err_probe(dev, PTR_ERR(pl172->clk),
++				     "no mpmcclk provided clock\n");
  
- 	/* Disable CS while changing base address and size mask */
- 	gpmc_cs_disable_mem(cs);
-@@ -1008,16 +1009,15 @@ int gpmc_cs_request(int cs, unsigned long size, unsigned long *base)
- 	r = gpmc_cs_set_memconf(cs, res->start, resource_size(res));
- 	if (r < 0) {
- 		release_resource(res);
--		goto out;
-+		return r;
- 	}
- 
- 	/* Enable CS */
- 	gpmc_cs_enable_mem(cs);
- 	*base = res->start;
- 	gpmc_cs_set_reserved(cs, 1);
--out:
--	spin_unlock(&gpmc_mem_lock);
--	return r;
-+
-+	return 0;
- }
- EXPORT_SYMBOL(gpmc_cs_request);
- 
-@@ -1026,10 +1026,9 @@ void gpmc_cs_free(int cs)
- 	struct gpmc_cs_data *gpmc;
- 	struct resource *res;
- 
--	spin_lock(&gpmc_mem_lock);
-+	guard(spinlock)(&gpmc_mem_lock);
- 	if (cs >= gpmc_cs_num || cs < 0 || !gpmc_cs_reserved(cs)) {
- 		WARN(1, "Trying to free non-reserved GPMC CS%d\n", cs);
--		spin_unlock(&gpmc_mem_lock);
- 		return;
- 	}
- 	gpmc = &gpmc_cs[cs];
-@@ -1039,7 +1038,6 @@ void gpmc_cs_free(int cs)
- 	if (res->flags)
- 		release_resource(res);
- 	gpmc_cs_set_reserved(cs, 0);
--	spin_unlock(&gpmc_mem_lock);
- }
- EXPORT_SYMBOL(gpmc_cs_free);
- 
+ 	ret = clk_prepare_enable(pl172->clk);
+ 	if (ret) {
 
 -- 
 2.43.0
