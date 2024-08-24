@@ -1,60 +1,62 @@
-Return-Path: <linux-omap+bounces-1995-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1996-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5AFF95DC69
-	for <lists+linux-omap@lfdr.de>; Sat, 24 Aug 2024 09:22:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0446C95DCDA
+	for <lists+linux-omap@lfdr.de>; Sat, 24 Aug 2024 10:03:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD941B21B1B
-	for <lists+linux-omap@lfdr.de>; Sat, 24 Aug 2024 07:22:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 318431C2167D
+	for <lists+linux-omap@lfdr.de>; Sat, 24 Aug 2024 08:03:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A43B015442D;
-	Sat, 24 Aug 2024 07:22:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03E421552EE;
+	Sat, 24 Aug 2024 08:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="qg1YFWNA"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="XrxHxbwd"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
+Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8319A1EA73;
-	Sat, 24 Aug 2024 07:21:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.249
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8559717C64;
+	Sat, 24 Aug 2024 08:03:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.142
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724484120; cv=none; b=BcSsqS85mCP2Hl7duVJhyBv6mi/6CH8EtAY2Q8r5Eu0Hdh8GD/rQEaUKR7/R0spneYkH2KELu9x1maGicmJRmlUjJzXS12f8xNRfn+Vxq7k7+K32+GP7+ZJMd95qm1JPHZVnY/WJqcW4d7lFlv+1F8tWCGYx7WKC1zM+Em44kgk=
+	t=1724486601; cv=none; b=mliGkhdBIUI1GzASeK1etW2LOZ5NZsWDHGWczro6gKERiN81W8tAmGTZgjSqmqpHpuew5nOFOV7P4re6EhxZyDo1P5ywJy6mgqKShmoTkmSku9KeKwh/2rqOKxr7DQ3HpKQx9CNdKnSbhsVADCDCmsoc11x1kB1isGdmysPFfdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724484120; c=relaxed/simple;
-	bh=tXyryG63dPBdeemA6SlMHRobqdlPhVPxegQQarntW6Q=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ppOFcboBOtj6yhzUswG5zXWkgIjpZBPTfnf91jI60nWIedvMTnJ1BZOC8pyQdmD01knuIZKpSEkiYXpDdPwMb7076su66W1TsMUOJjfwgmf26iczHt0uLu4tgED6IB6LVBUi3bkShD6PMIoSn4APT4wPzu862gUbePp9rQttr0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=qg1YFWNA; arc=none smtp.client-ip=198.47.23.249
+	s=arc-20240116; t=1724486601; c=relaxed/simple;
+	bh=Oonr6zAF6H9aEQKo/F4fPRZWoC89oZI3itd6rXfNKy8=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Dbo6vVQOJWPAX2nQBHsbuSGF3mSIrsrr1hDm2t/KeGxg/t93QgtVYoVfr4RSCiaECFW2KuCimiqPQt1Ti4elTuC01Z/n5C98ftsm7VdRrZw12w309S1roq0xBuub0USlvAXKtAZmm4+YzR8clXEWclpA34NUaK+Y54gPWNOr3DQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=XrxHxbwd; arc=none smtp.client-ip=198.47.19.142
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 47O7Lf0K065162;
-	Sat, 24 Aug 2024 02:21:41 -0500
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+	by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 47O834rj007492;
+	Sat, 24 Aug 2024 03:03:04 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1724484101;
-	bh=ODPIDf4BAemrhSs5Esn8hvNfqijRS+PSG4hA/zWEYHM=;
-	h=From:To:CC:Subject:Date;
-	b=qg1YFWNAN/K2+CrCpnjMlOm1buTP7WWXHJ17jTwCTSHqtoUeratPgrwrBhmSwaFls
-	 ZRBsT3AtdexdyeTcGd1L1MjR1FURLTIwkv/T3QTaIoxUs+7bjuikVpeEAVnOLWhAjg
-	 ilRqpFQ4bRdb21C2D5yIo02OQ+yolo7je+m4MG94=
-Received: from DFLE111.ent.ti.com (dfle111.ent.ti.com [10.64.6.32])
-	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 47O7LfGQ026118
+	s=ti-com-17Q1; t=1724486584;
+	bh=JjIU+fG3i8/0ImnUk4UN7EPAzC6Ypf67afrlG+gIa8k=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To;
+	b=XrxHxbwdCKCphGT9RLb2r3JYIA71L59IGC0TgvyFhe0e8g2QT4WWHXYsGs9DOG45v
+	 xowY/FcG1XotawIWCz8EaeqBU9ztrkSjaALnkx9zWNT4T1zlZRxdLj7Fdl2V4f6QN3
+	 oSXe2j+BcbgiBhenW+E1hACrV5g9q2NQhiI0YRig=
+Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
+	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 47O834VC055259
 	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Sat, 24 Aug 2024 02:21:41 -0500
-Received: from DFLE104.ent.ti.com (10.64.6.25) by DFLE111.ent.ti.com
- (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+	Sat, 24 Aug 2024 03:03:04 -0500
+Received: from DFLE106.ent.ti.com (10.64.6.27) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Sat, 24
- Aug 2024 02:21:40 -0500
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE104.ent.ti.com
- (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
+ Aug 2024 03:03:04 -0500
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE106.ent.ti.com
+ (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Sat, 24 Aug 2024 02:21:40 -0500
-Received: from uda0492258.dhcp.ti.com (uda0492258.dhcp.ti.com [10.24.72.81])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 47O7LaJQ114055;
-	Sat, 24 Aug 2024 02:21:36 -0500
+ Frontend Transport; Sat, 24 Aug 2024 03:03:03 -0500
+Received: from localhost (uda0492258.dhcp.ti.com [10.24.72.81])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 47O832rQ022960;
+	Sat, 24 Aug 2024 03:03:03 -0500
+Date: Sat, 24 Aug 2024 13:33:02 +0530
 From: Siddharth Vadapalli <s-vadapalli@ti.com>
 To: <bhelgaas@google.com>, <lpieralisi@kernel.org>, <kw@linux.com>,
         <robh@kernel.org>, <vigneshr@ti.com>, <kishon@kernel.org>,
@@ -63,65 +65,74 @@ CC: <linux-omap@vger.kernel.org>, <linux-pci@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
         <stable@vger.kernel.org>, <u-kumar1@ti.com>, <srk@ti.com>,
         <s-vadapalli@ti.com>
-Subject: [PATCH] PCI: dra7xx: Fix threaded IRQ handler registration
-Date: Sat, 24 Aug 2024 12:51:35 +0530
-Message-ID: <20240824072135.9691-1-s-vadapalli@ti.com>
-X-Mailer: git-send-email 2.40.1
+Subject: Re: [PATCH] PCI: dra7xx: Fix threaded IRQ handler registration
+Message-ID: <d4789281-7eb3-4cde-aa1f-35f979484575@ti.com>
+References: <20240824072135.9691-1-s-vadapalli@ti.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20240824072135.9691-1-s-vadapalli@ti.com>
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 
-Commit da87d35a6e51 ("PCI: dra7xx: Use threaded IRQ handler for
-"dra7xx-pcie-main" IRQ") switched from devm_request_irq() to
-devm_request_threaded_irq(). In this process, the "handler" and the
-"thread_fn" parameters were erroneously interchanged, with "NULL" being
-passed as the "handler" and "dra7xx_pcie_irq_handler()" being registered
-as the function to be called in a threaded interrupt context.
+On Sat, Aug 24, 2024 at 12:51:35PM +0530, Siddharth Vadapalli wrote:
 
-Fix this by interchanging the "handler" and "thread_fn" parameters.
-While at it, correct the indentation.
-
-Fixes: da87d35a6e51 ("PCI: dra7xx: Use threaded IRQ handler for "dra7xx-pcie-main" IRQ")
-Cc: <stable@vger.kernel.org>
-Reported-by: Udit Kumar <u-kumar1@ti.com>
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
----
-
-Hello,
-
-This patch is based on commit
-d2bafcf224f3 Merge tag 'cgroup-for-6.11-rc4-fixes' of git://git.kernel.org/pub/scm/linux/kernel/git/tj/cgroup
-of Mainline Linux.
+Kindly ignore this patch. Sorry for the noise. I was debugging an issue
+and this patch fixed it. But the cause of the issue is probably a race
+condition.
 
 Regards,
 Siddharth.
 
- drivers/pci/controller/dwc/pci-dra7xx.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
-index 4fe3b0cb72ec..4c64ac27af40 100644
---- a/drivers/pci/controller/dwc/pci-dra7xx.c
-+++ b/drivers/pci/controller/dwc/pci-dra7xx.c
-@@ -849,8 +849,9 @@ static int dra7xx_pcie_probe(struct platform_device *pdev)
- 	}
- 	dra7xx->mode = mode;
- 
--	ret = devm_request_threaded_irq(dev, irq, NULL, dra7xx_pcie_irq_handler,
--			       IRQF_SHARED, "dra7xx-pcie-main", dra7xx);
-+	ret = devm_request_threaded_irq(dev, irq, dra7xx_pcie_irq_handler, NULL,
-+					IRQF_SHARED, "dra7xx-pcie-main",
-+					dra7xx);
- 	if (ret) {
- 		dev_err(dev, "failed to request irq\n");
- 		goto err_gpio;
--- 
-2.40.1
-
+> Commit da87d35a6e51 ("PCI: dra7xx: Use threaded IRQ handler for
+> "dra7xx-pcie-main" IRQ") switched from devm_request_irq() to
+> devm_request_threaded_irq(). In this process, the "handler" and the
+> "thread_fn" parameters were erroneously interchanged, with "NULL" being
+> passed as the "handler" and "dra7xx_pcie_irq_handler()" being registered
+> as the function to be called in a threaded interrupt context.
+> 
+> Fix this by interchanging the "handler" and "thread_fn" parameters.
+> While at it, correct the indentation.
+> 
+> Fixes: da87d35a6e51 ("PCI: dra7xx: Use threaded IRQ handler for "dra7xx-pcie-main" IRQ")
+> Cc: <stable@vger.kernel.org>
+> Reported-by: Udit Kumar <u-kumar1@ti.com>
+> Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+> ---
+> 
+> Hello,
+> 
+> This patch is based on commit
+> d2bafcf224f3 Merge tag 'cgroup-for-6.11-rc4-fixes' of git://git.kernel.org/pub/scm/linux/kernel/git/tj/cgroup
+> of Mainline Linux.
+> 
+> Regards,
+> Siddharth.
+> 
+>  drivers/pci/controller/dwc/pci-dra7xx.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
+> index 4fe3b0cb72ec..4c64ac27af40 100644
+> --- a/drivers/pci/controller/dwc/pci-dra7xx.c
+> +++ b/drivers/pci/controller/dwc/pci-dra7xx.c
+> @@ -849,8 +849,9 @@ static int dra7xx_pcie_probe(struct platform_device *pdev)
+>  	}
+>  	dra7xx->mode = mode;
+>  
+> -	ret = devm_request_threaded_irq(dev, irq, NULL, dra7xx_pcie_irq_handler,
+> -			       IRQF_SHARED, "dra7xx-pcie-main", dra7xx);
+> +	ret = devm_request_threaded_irq(dev, irq, dra7xx_pcie_irq_handler, NULL,
+> +					IRQF_SHARED, "dra7xx-pcie-main",
+> +					dra7xx);
+>  	if (ret) {
+>  		dev_err(dev, "failed to request irq\n");
+>  		goto err_gpio;
+> -- 
+> 2.40.1
+> 
 
