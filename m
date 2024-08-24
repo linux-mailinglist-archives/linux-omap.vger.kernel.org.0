@@ -1,152 +1,127 @@
-Return-Path: <linux-omap+bounces-1994-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-1995-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68A8295D337
-	for <lists+linux-omap@lfdr.de>; Fri, 23 Aug 2024 18:25:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5AFF95DC69
+	for <lists+linux-omap@lfdr.de>; Sat, 24 Aug 2024 09:22:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2579A2827EE
-	for <lists+linux-omap@lfdr.de>; Fri, 23 Aug 2024 16:25:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD941B21B1B
+	for <lists+linux-omap@lfdr.de>; Sat, 24 Aug 2024 07:22:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 762AB18BB80;
-	Fri, 23 Aug 2024 16:25:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A43B015442D;
+	Sat, 24 Aug 2024 07:22:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TEdeqrfc"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="qg1YFWNA"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D9E518893B;
-	Fri, 23 Aug 2024 16:25:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8319A1EA73;
+	Sat, 24 Aug 2024 07:21:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.249
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724430339; cv=none; b=RCxikXk1Lh1cPMacAs1EPCXoAv5LuiapNrQAm0s0VuU0V49xJMoIWcKFsf1aC41lhr7ArKglV1qNZesVCswE6mH5BlnR8kOrifNSeIA4gkb2ckP+xKkOfgIGS+FHVIH6XqQxL9oxIS/f2sPCCGAOXXZTevnOY/RHgqSscX8RWI0=
+	t=1724484120; cv=none; b=BcSsqS85mCP2Hl7duVJhyBv6mi/6CH8EtAY2Q8r5Eu0Hdh8GD/rQEaUKR7/R0spneYkH2KELu9x1maGicmJRmlUjJzXS12f8xNRfn+Vxq7k7+K32+GP7+ZJMd95qm1JPHZVnY/WJqcW4d7lFlv+1F8tWCGYx7WKC1zM+Em44kgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724430339; c=relaxed/simple;
-	bh=3XMbUYBDHmzNIbQnFO5jFhgJPAAWpbvUV37uWE91XYY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QEHFTFhi/IzQIcu+mjVhUbOAx2quy7QIorhicO1D1K4JEt7aHyBfxsbvQMcX7fMQMceKJQBNc3QfH+0f0Jwlyqbiv/tfLjgEYkXDLbn8uI4UeoAwNRxiZZGOhGXgpLWaqZnABCy2LB2WBQ/egdi0a0tNkUvIBuG8PTZmiZq6CjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TEdeqrfc; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1724430337; x=1755966337;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=3XMbUYBDHmzNIbQnFO5jFhgJPAAWpbvUV37uWE91XYY=;
-  b=TEdeqrfcbxLx99L9+0cq0VBP1FYsYkQCqyGgpEXXB7NgjLpHZmGEZM1o
-   NQx9TreuB4uzCjjmgwPmZd4TZ4zYq1JJJPbtCS5UWIAgG4VmaQp80lwTX
-   UDzzfk3z7DoOLXf17bp1gbFtAz7ALyzMi4oenXbDOjNewuDt53YSbDZ/5
-   4UFEQqQ+4RWJSm+o6hc4Rl+j1HvjrGFwfdj7wqu2RbK/LNo/o3iTeK4jz
-   ZMGCGPBnYcSyUWhURFT+PZt683e2Pv2B48DjJsthobbO70wbeYaEPWx2Y
-   rBIcRHHhvf0+OXYffMtR54DlUuEWXdoL821XPp1c553YjUVva109/sXfB
-   Q==;
-X-CSE-ConnectionGUID: FycDOadURlWiMUKGNasRwQ==
-X-CSE-MsgGUID: vMUjcWdUSKKm9UBG/bpKOw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11172"; a="22504147"
-X-IronPort-AV: E=Sophos;i="6.10,170,1719903600"; 
-   d="scan'208";a="22504147"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Aug 2024 09:25:35 -0700
-X-CSE-ConnectionGUID: TyAhmqenSA+fGrOHJsVz6g==
-X-CSE-MsgGUID: lexLTyUnSgSoAmUAGKiMPQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,170,1719903600"; 
-   d="scan'208";a="61694525"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Aug 2024 09:25:24 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1shX5I-00000000r8v-11Le;
-	Fri, 23 Aug 2024 19:24:20 +0300
-Date: Fri, 23 Aug 2024 19:24:19 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Russell King <linux@armlinux.org.uk>, Joel Stanley <joel@jms.id.au>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Vladimir Zapolskiy <vz@mleia.com>, Andrew Lunn <andrew@lunn.ch>,
-	Gregory Clement <gregory.clement@bootlin.com>,
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-	Tony Lindgren <tony@atomide.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Jonathan =?iso-8859-1?Q?Neusch=E4fer?= <j.neuschaefer@gmx.net>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>, linux-mtd@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-aspeed@lists.ozlabs.org,
-	imx@lists.linux.dev, linux-omap@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
-	openbmc@lists.ozlabs.org, linuxppc-dev@lists.ozlabs.org,
-	linux-mips@vger.kernel.org, loongarch@lists.linux.dev
-Subject: Re: [PATCH 0/9] AT24 EEPROM MTD Support
-Message-ID: <Zsi3s9XithGEROwX@smile.fi.intel.com>
-References: <20240701-b4-v6-10-topic-usbc-tcpci-v1-0-3fd5f4a193cc@pengutronix.de>
+	s=arc-20240116; t=1724484120; c=relaxed/simple;
+	bh=tXyryG63dPBdeemA6SlMHRobqdlPhVPxegQQarntW6Q=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ppOFcboBOtj6yhzUswG5zXWkgIjpZBPTfnf91jI60nWIedvMTnJ1BZOC8pyQdmD01knuIZKpSEkiYXpDdPwMb7076su66W1TsMUOJjfwgmf26iczHt0uLu4tgED6IB6LVBUi3bkShD6PMIoSn4APT4wPzu862gUbePp9rQttr0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=qg1YFWNA; arc=none smtp.client-ip=198.47.23.249
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 47O7Lf0K065162;
+	Sat, 24 Aug 2024 02:21:41 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1724484101;
+	bh=ODPIDf4BAemrhSs5Esn8hvNfqijRS+PSG4hA/zWEYHM=;
+	h=From:To:CC:Subject:Date;
+	b=qg1YFWNAN/K2+CrCpnjMlOm1buTP7WWXHJ17jTwCTSHqtoUeratPgrwrBhmSwaFls
+	 ZRBsT3AtdexdyeTcGd1L1MjR1FURLTIwkv/T3QTaIoxUs+7bjuikVpeEAVnOLWhAjg
+	 ilRqpFQ4bRdb21C2D5yIo02OQ+yolo7je+m4MG94=
+Received: from DFLE111.ent.ti.com (dfle111.ent.ti.com [10.64.6.32])
+	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 47O7LfGQ026118
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Sat, 24 Aug 2024 02:21:41 -0500
+Received: from DFLE104.ent.ti.com (10.64.6.25) by DFLE111.ent.ti.com
+ (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Sat, 24
+ Aug 2024 02:21:40 -0500
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE104.ent.ti.com
+ (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Sat, 24 Aug 2024 02:21:40 -0500
+Received: from uda0492258.dhcp.ti.com (uda0492258.dhcp.ti.com [10.24.72.81])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 47O7LaJQ114055;
+	Sat, 24 Aug 2024 02:21:36 -0500
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
+To: <bhelgaas@google.com>, <lpieralisi@kernel.org>, <kw@linux.com>,
+        <robh@kernel.org>, <vigneshr@ti.com>, <kishon@kernel.org>,
+        <manivannan.sadhasivam@linaro.org>
+CC: <linux-omap@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+        <stable@vger.kernel.org>, <u-kumar1@ti.com>, <srk@ti.com>,
+        <s-vadapalli@ti.com>
+Subject: [PATCH] PCI: dra7xx: Fix threaded IRQ handler registration
+Date: Sat, 24 Aug 2024 12:51:35 +0530
+Message-ID: <20240824072135.9691-1-s-vadapalli@ti.com>
+X-Mailer: git-send-email 2.40.1
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240701-b4-v6-10-topic-usbc-tcpci-v1-0-3fd5f4a193cc@pengutronix.de>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 
-On Mon, Jul 01, 2024 at 03:53:39PM +0200, Marco Felsch wrote:
-> This series adds the intial support to handle EEPROMs via the MTD layer
-> as well. This allow the user-space to have separate paritions since
-> EEPROMs can become quite large nowadays.
-> 
-> With this patchset applied EEPROMs can be accessed via:
->   - legacy 'eeprom' device
->   - nvmem device
->   - mtd device(s)
-> 
-> The patchset targets only the AT24 (I2C) EEPROMs since I have no access
-> to AT25 (SPI) EEPROMs nor to one of the other misc/eeprom/* devices.
-> 
-> Note: I'm not familiar with Kconfig symbol migration so I don't know if
-> the last patch is required at the moment. Please be notified that the
-> list of recipients is quite large due to the defconfig changes.
+Commit da87d35a6e51 ("PCI: dra7xx: Use threaded IRQ handler for
+"dra7xx-pcie-main" IRQ") switched from devm_request_irq() to
+devm_request_threaded_irq(). In this process, the "handler" and the
+"thread_fn" parameters were erroneously interchanged, with "NULL" being
+passed as the "handler" and "dra7xx_pcie_irq_handler()" being registered
+as the function to be called in a threaded interrupt context.
 
-FWIW, I think that MTD is *not* the place for EEPROMs.
+Fix this by interchanging the "handler" and "thread_fn" parameters.
+While at it, correct the indentation.
 
-Yeah, we have the driver spread over the kernel for EEPROMs (mostly due to
-historical reasons and absence an umbrella subsystem for them), but it's not
-the reason to hack them into something which is not quite suitable.
+Fixes: da87d35a6e51 ("PCI: dra7xx: Use threaded IRQ handler for "dra7xx-pcie-main" IRQ")
+Cc: <stable@vger.kernel.org>
+Reported-by: Udit Kumar <u-kumar1@ti.com>
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+---
 
-If NVMEM needs to be updated and may cover these cases after all (and do not
-forget about *small* size EEPROMs that most likely appear on the devices with
-limited amount of resources!) in a reasonable size and performance, why not?
+Hello,
 
+This patch is based on commit
+d2bafcf224f3 Merge tag 'cgroup-for-6.11-rc4-fixes' of git://git.kernel.org/pub/scm/linux/kernel/git/tj/cgroup
+of Mainline Linux.
+
+Regards,
+Siddharth.
+
+ drivers/pci/controller/dwc/pci-dra7xx.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
+index 4fe3b0cb72ec..4c64ac27af40 100644
+--- a/drivers/pci/controller/dwc/pci-dra7xx.c
++++ b/drivers/pci/controller/dwc/pci-dra7xx.c
+@@ -849,8 +849,9 @@ static int dra7xx_pcie_probe(struct platform_device *pdev)
+ 	}
+ 	dra7xx->mode = mode;
+ 
+-	ret = devm_request_threaded_irq(dev, irq, NULL, dra7xx_pcie_irq_handler,
+-			       IRQF_SHARED, "dra7xx-pcie-main", dra7xx);
++	ret = devm_request_threaded_irq(dev, irq, dra7xx_pcie_irq_handler, NULL,
++					IRQF_SHARED, "dra7xx-pcie-main",
++					dra7xx);
+ 	if (ret) {
+ 		dev_err(dev, "failed to request irq\n");
+ 		goto err_gpio;
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.40.1
 
 
