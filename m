@@ -1,51 +1,70 @@
-Return-Path: <linux-omap+bounces-2014-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2015-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1302695EB33
-	for <lists+linux-omap@lfdr.de>; Mon, 26 Aug 2024 10:02:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E87695EE83
+	for <lists+linux-omap@lfdr.de>; Mon, 26 Aug 2024 12:33:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3F831B23BBC
-	for <lists+linux-omap@lfdr.de>; Mon, 26 Aug 2024 08:01:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45359281EB5
+	for <lists+linux-omap@lfdr.de>; Mon, 26 Aug 2024 10:33:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 447D313C9A7;
-	Mon, 26 Aug 2024 07:53:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68E6214A4D9;
+	Mon, 26 Aug 2024 10:33:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OyHu+hNH"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ECFD13E41D
-	for <linux-omap@vger.kernel.org>; Mon, 26 Aug 2024 07:53:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37654148308;
+	Mon, 26 Aug 2024 10:33:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724658806; cv=none; b=qs4xscexU5iNi6aKOjkiavlGctSXiPCiLMFGkFuCV5w9uYOQ3H9aiJQxTR8YsMlgCVKOOjApqDmF91/fN2q2oRmVp4biIWw2B347yk1r5ptr5zGimHhvgBmKScurmtaTzq3tQ3A5CIjfDgrmERMamHGVuWge5PfDcTrKo7IuHFQ=
+	t=1724668396; cv=none; b=M97zUe9efpUNmSSksoLLtOGw64ZXR7sLvD4NklnFBtpzkvTks9MpZnHW2VZy4+Ayed5AZ9NIvgcW3OGhh8Bcj4g+1aHFZUlzPS36djEYnVJkA+6zVPsdS3FOwT/pahs8RaS98M5KPVFj/x3U8PSghmP7m7XQLMC0HAV0ELS0jR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724658806; c=relaxed/simple;
-	bh=Pzeast/KuQTsUx/8UNRiLKWBfOfCRK1vLZpSERoh2pU=;
+	s=arc-20240116; t=1724668396; c=relaxed/simple;
+	bh=8gNhFuofD5zWGUNIriljHUVsJipVG7nNNSIviq4tVXY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Fsl3QDxNtrToFXSfIcLcuPIPDpfp57OqE0y2XgMlfgU/SS6yK7SMmFrGSEk7XERdokHttMtuPdC/JXSzfQzNUvwsxTJWnSTCaaQC632A1x3F03ZQFAlu5X6WxT7dYOEFIoIbfL85FGa7DmRehJFeZHkVXv0Rih50KYFtTMqTNnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1siUVR-0006mO-Jk; Mon, 26 Aug 2024 09:51:17 +0200
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1siUVK-0038Ph-Cg; Mon, 26 Aug 2024 09:51:10 +0200
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1siUVK-006xmZ-0b;
-	Mon, 26 Aug 2024 09:51:10 +0200
-Date: Mon, 26 Aug 2024 09:51:10 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=bu9BAjxqv+ucokLeQhN3G6o+AmiFfk3Qk3N22R7c0KEL1XtqjIg8H4sI95x9N8EsrE/1nK08rvOK0Bh9I7ep+0f6w/pAgam3MXZPfWFzOLzTtIMdAvCg6B0/qKFtG6xE5Sy11+iXxJoQ0gPI8zoSPpYDeYGu+R/JgVCOKmzUyEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OyHu+hNH; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1724668394; x=1756204394;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=8gNhFuofD5zWGUNIriljHUVsJipVG7nNNSIviq4tVXY=;
+  b=OyHu+hNHw9+5OV1xZjLPFfAb6+6Yd0xZhsMKR/kFf61vletunwMrq98F
+   Fiepbfs94mc2Py9gV38ovWk3X1i+uW+ic68WfHp+mYPkuN8aI/zFalgkD
+   MGfzj02wiSEF+IPgOm9VrJjc6a3KMLaQLun1yUVCwpqvwEchpSOwNOOxR
+   MyBz8TTB/5Y93fmDc8Ca4nsBOntQFoMEp6d+1om1iqZoQFlwK39PR//nv
+   g81MlQka/NbyDgueFQ9Jz4do+zMpVLG1nRAciKXXWmBtKbt7zhjOzTKPV
+   IbExW+j+n/BcNrny3fDVjKb77kYkw2TXv0HMzHJFFsk/ykFMEiB5lHhY/
+   Q==;
+X-CSE-ConnectionGUID: 4eDuZXdBQtesVwREn+chNg==
+X-CSE-MsgGUID: qLTIKzznSEa5mGHifYTwmA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11175"; a="13208710"
+X-IronPort-AV: E=Sophos;i="6.10,177,1719903600"; 
+   d="scan'208";a="13208710"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2024 03:33:13 -0700
+X-CSE-ConnectionGUID: i7pAAaNJSrSUyr5xtjco/A==
+X-CSE-MsgGUID: cTuMYcAhT2+25aitr3/fAg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,177,1719903600"; 
+   d="scan'208";a="62517541"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2024 03:33:01 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1siX1d-00000001pi8-1NQC;
+	Mon, 26 Aug 2024 13:32:41 +0300
+Date: Mon, 26 Aug 2024 13:32:26 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Marco Felsch <m.felsch@pengutronix.de>
 Cc: Miquel Raynal <miquel.raynal@bootlin.com>,
 	Richard Weinberger <richard@nod.at>,
 	Vignesh Raghavendra <vigneshr@ti.com>,
@@ -70,7 +89,7 @@ Cc: Miquel Raynal <miquel.raynal@bootlin.com>,
 	Dinh Nguyen <dinguyen@kernel.org>,
 	Thierry Reding <thierry.reding@gmail.com>,
 	Jonathan Hunter <jonathanh@nvidia.com>,
-	Jonathan =?utf-8?Q?Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
+	Jonathan =?iso-8859-1?Q?Neusch=E4fer?= <j.neuschaefer@gmx.net>,
 	Michael Ellerman <mpe@ellerman.id.au>,
 	Nicholas Piggin <npiggin@gmail.com>,
 	Christophe Leroy <christophe.leroy@csgroup.eu>,
@@ -85,9 +104,10 @@ Cc: Miquel Raynal <miquel.raynal@bootlin.com>,
 	openbmc@lists.ozlabs.org, linuxppc-dev@lists.ozlabs.org,
 	linux-mips@vger.kernel.org, loongarch@lists.linux.dev
 Subject: Re: [PATCH 0/9] AT24 EEPROM MTD Support
-Message-ID: <20240826075110.u3cxc6dootou72eq@pengutronix.de>
+Message-ID: <ZsxZuvY9MLyjog-y@smile.fi.intel.com>
 References: <20240701-b4-v6-10-topic-usbc-tcpci-v1-0-3fd5f4a193cc@pengutronix.de>
  <Zsi3s9XithGEROwX@smile.fi.intel.com>
+ <20240826075110.u3cxc6dootou72eq@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -96,60 +116,63 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Zsi3s9XithGEROwX@smile.fi.intel.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-omap@vger.kernel.org
+In-Reply-To: <20240826075110.u3cxc6dootou72eq@pengutronix.de>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-Hi Andy,
-
-On 24-08-23, Andy Shevchenko wrote:
-> On Mon, Jul 01, 2024 at 03:53:39PM +0200, Marco Felsch wrote:
-> > This series adds the intial support to handle EEPROMs via the MTD layer
-> > as well. This allow the user-space to have separate paritions since
-> > EEPROMs can become quite large nowadays.
+On Mon, Aug 26, 2024 at 09:51:10AM +0200, Marco Felsch wrote:
+> On 24-08-23, Andy Shevchenko wrote:
+> > On Mon, Jul 01, 2024 at 03:53:39PM +0200, Marco Felsch wrote:
+> > > This series adds the intial support to handle EEPROMs via the MTD layer
+> > > as well. This allow the user-space to have separate paritions since
+> > > EEPROMs can become quite large nowadays.
+> > > 
+> > > With this patchset applied EEPROMs can be accessed via:
+> > >   - legacy 'eeprom' device
+> > >   - nvmem device
+> > >   - mtd device(s)
+> > > 
+> > > The patchset targets only the AT24 (I2C) EEPROMs since I have no access
+> > > to AT25 (SPI) EEPROMs nor to one of the other misc/eeprom/* devices.
+> > > 
+> > > Note: I'm not familiar with Kconfig symbol migration so I don't know if
+> > > the last patch is required at the moment. Please be notified that the
+> > > list of recipients is quite large due to the defconfig changes.
 > > 
-> > With this patchset applied EEPROMs can be accessed via:
-> >   - legacy 'eeprom' device
-> >   - nvmem device
-> >   - mtd device(s)
+> > FWIW, I think that MTD is *not* the place for EEPROMs.
 > > 
-> > The patchset targets only the AT24 (I2C) EEPROMs since I have no access
-> > to AT25 (SPI) EEPROMs nor to one of the other misc/eeprom/* devices.
-> > 
-> > Note: I'm not familiar with Kconfig symbol migration so I don't know if
-> > the last patch is required at the moment. Please be notified that the
-> > list of recipients is quite large due to the defconfig changes.
+> > Yeah, we have the driver spread over the kernel for EEPROMs (mostly due to
+> > historical reasons and absence an umbrella subsystem for them), but it's not
+> > the reason to hack them into something which is not quite suitable.
 > 
-> FWIW, I think that MTD is *not* the place for EEPROMs.
-> 
-> Yeah, we have the driver spread over the kernel for EEPROMs (mostly due to
-> historical reasons and absence an umbrella subsystem for them), but it's not
-> the reason to hack them into something which is not quite suitable.
+> Thank you for you input. There are two things to mention:
+>  1st) I send a RFC patch and asked for feedback and all I got was: looks
+>       okay, please send a proper patch [1] which I did.
 
-Thank you for you input. There are two things to mention:
- 1st) I send a RFC patch and asked for feedback and all I got was: looks
-      okay, please send a proper patch [1] which I did.
- 2nd) I don't see the hacky part in this patchset.
+I was on a long vacation, I haven't had time or even wishes to look at the
+patches or patch series. Sorry for that.
 
-Anyway the customer doesn't need the nvmem-partitions anymore and
-therefore this patchset can be seen as obsolote.
+Second point, RFC means "request for comments", here is mine. It's up to the
+maintainers and you on how to proceed it.
 
-Regards,
-  Marco
+>  2nd) I don't see the hacky part in this patchset.
 
-[1] https://lore.kernel.org/lkml/20231201144441.imk7rrjnv2dugo7p@pengutronix.de/T/#m1e0e5778448971b50a883f62bd95622f6422b9a2
+I haven't talked about patchset, I have talked about architectural / design
+point of view. I read the discussion and to me it seems like it solves the
+issue with a quite big hammer. If you can prove that on embedded systems with
+limited resources it is not a problem, just mention that in the cover letter.
 
+> Anyway the customer doesn't need the nvmem-partitions anymore and
+> therefore this patchset can be seen as obsolote.
 > 
-> If NVMEM needs to be updated and may cover these cases after all (and do not
-> forget about *small* size EEPROMs that most likely appear on the devices with
-> limited amount of resources!) in a reasonable size and performance, why not?
+> [1] https://lore.kernel.org/lkml/20231201144441.imk7rrjnv2dugo7p@pengutronix.de/T/#m1e0e5778448971b50a883f62bd95622f6422b9a2
 > 
-> -- 
-> With Best Regards,
-> Andy Shevchenko
-> 
-> 
-> 
+> > If NVMEM needs to be updated and may cover these cases after all (and do not
+> > forget about *small* size EEPROMs that most likely appear on the devices with
+> > limited amount of resources!) in a reasonable size and performance, why not?
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 
