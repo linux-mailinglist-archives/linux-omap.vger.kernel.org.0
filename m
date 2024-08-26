@@ -1,117 +1,203 @@
-Return-Path: <linux-omap+bounces-2012-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2013-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 907B795E826
-	for <lists+linux-omap@lfdr.de>; Mon, 26 Aug 2024 07:58:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A7D195E840
+	for <lists+linux-omap@lfdr.de>; Mon, 26 Aug 2024 08:06:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C5B2281554
-	for <lists+linux-omap@lfdr.de>; Mon, 26 Aug 2024 05:58:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B29B1F211C0
+	for <lists+linux-omap@lfdr.de>; Mon, 26 Aug 2024 06:06:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0512980043;
-	Mon, 26 Aug 2024 05:57:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98652811F1;
+	Mon, 26 Aug 2024 06:06:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c3UIcaK2"
+	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="o9NQq++/"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from TY3P286CU002.outbound.protection.outlook.com (mail-japaneastazon11010050.outbound.protection.outlook.com [52.101.229.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 811FE7DA95;
-	Mon, 26 Aug 2024 05:57:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724651874; cv=none; b=nnRKbmbLfZDQ3D0JnRiOYjvUVhwWi44MlqnrR9uSi9gCXfsNHgUIoUwimqbRtws0iXb/AlW4uLs7iUnOFN5k/JD5Ky/KsLkkFzbEFBo4JOv0u/HKSPUX4M3CpfnXit1hPzo7ReoNbtmHynFO/R5eWdlCzn7oHFHXfOXBM9JZLWc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724651874; c=relaxed/simple;
-	bh=wyRlaGNpg7WUxry9pFdgw984ZNawvpL6nElCg7i5/OM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YeHjwW0ZZ5eQn3nb84KUJwgnnWmlpdziQYAHbHt+GQ7xztSAdHzM+dX14Pu6RwZe/gF5HA3FYjCSppnu0dcDcmuuCJVA6MEBg8z/uA4d2Szz/4nNa9TMqpdKFwSR52ReyG/Uy6z9bjCknW7hrwfGSFSfmuxS4Ia8HhVfOFm0cvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c3UIcaK2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52EDFC4AF11;
-	Mon, 26 Aug 2024 05:57:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724651874;
-	bh=wyRlaGNpg7WUxry9pFdgw984ZNawvpL6nElCg7i5/OM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=c3UIcaK2jh/Zk1IFnUTnAXv5IMQBJ7tyIjK3F62xYaY5k6gK+aN3yXUl2WRH28kF6
-	 3/gLudS9ZU4R/uCMw7Vsz9U2PZUMZ5CtUzp/z9O77SmlzDhcA/qpJUhIrbaKVK5/Pe
-	 hWksA2nN3Mwd1HSK3/zVHu4Xtk4TOeKY1ahEnxcvWHdw6kv7bBMV6PAhksrtr9pEBu
-	 jSgiBIArl1+OFjk7G1MCeOCNYu1LcQw3mXxsgu9sJBtGGgPIAsOJbGmiaZo2aYs588
-	 ajb2ma9kiZ2dNcoI+VNhn5gKgeHy668dpSjCAaV0cLCUs7Re5Sk3tWr00gRhfGAKVu
-	 YU7NHRHGLZZ5A==
-Date: Mon, 26 Aug 2024 07:57:51 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Cc: Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>, 
-	Helge Deller <deller@gmx.de>, Jaroslav Kysela <perex@perex.cz>, 
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Liam Girdwood <lgirdwood@gmail.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Mark Brown <broonie@kernel.org>, 
-	Mauro Carvalho Chehab <mchehab@kernel.org>, Maxime Ripard <mripard@kernel.org>, 
-	Michal Simek <michal.simek@amd.com>, Rob Herring <robh@kernel.org>, 
-	Saravana Kannan <saravanak@google.com>, Takashi Iwai <tiwai@suse.com>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
-	devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	linux-arm-kernel@lists.infradead.org, linux-fbdev@vger.kernel.org, linux-media@vger.kernel.org, 
-	linux-omap@vger.kernel.org, linux-sound@vger.kernel.org, Sakari Ailus <sakari.ailus@iki.fi>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20A9C320C;
+	Mon, 26 Aug 2024 06:06:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.229.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724652392; cv=fail; b=Q3/QytgDDTsJ2VfCk+uc8SeHLRwmwMg18Lr+mWs9i+gDWsdl0kz1UrN1hgK+hNHYxF896NHV+NbUFR7rU5uqZvBDrBmifU+8JaOfHfzWVKot6FQ8ykHse+iBjO2Ik/QPVBPuKC0KV/QhymnxTu8yPgj1TJLp1pK+UukEjhqd94A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724652392; c=relaxed/simple;
+	bh=KJTfUM/XwABpSlyItYh5O9y46sQNU/Y+KrnQcc5nsCQ=;
+	h=Message-ID:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
+	 Date:MIME-Version; b=UCy5YuHoOHATJXTWcfxAS0ZDkDiI7V1DEVJq7ZdEifcI4bZjmzVPwA9dx1kff+BIP+zU1GtC8xVRbeNOBQXG7raMcRPCDhrY9MdVTqMlAH0XDTjiDIFKa1HobK3bGwNTDZhi3ZU6EKW01z8fn21nICRnSijuWeSuz3u0ZWhZaDs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=o9NQq++/; arc=fail smtp.client-ip=52.101.229.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xedqvGwz+3jf4B3IX0Fo2MTahAWQmuqbZKPb/s9jEzRRFqmLLKDLyhbogs+0L/VDi2Ls2NKrKkZopHZE2ov4400DjPUDFfULQCx2Zu9SMb/1FJV6YJI3sGd3RIenLexHon/6oiPNhyYqZUjmqpuQGwrkjVnFKErotgGF2q4NDSRSUB2A/gUtnawHO1GD6wB9XajPvEJk/aDgziDmxlSheKg6RHfFYC+3VwkHod+6aNYRvCdJb+rcDUp+jdGCaoveG41Wdqg1Z1gjeFpqcbq+7oaJ01Udu/rMrUlTrUucGKYqGg7eLdW+SZdMxtKtX/lOdwVnJ5EbFfoA6RAQuKF0Lg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=os7iz3v3PeBD6YnX4f8jIbubQgo4D0hf8fIpvtcVVmE=;
+ b=KtmbKWZNE8kN6uwNiRyTX0OtVoKeWgNsY9o81inHoOB2/Vi8M92tJMhO3ZKd55YWYMlpgVXdMG428hyqESTIdzmh87D68zsiHigjhrLDizHHEvF8hq68bHR1yEZD2CSddM2k/y5u5mocCA5lZwE/Q2QfSMMM//YbFKOj87ZLAULTpwldflJJWHwWNdaQUupkZjiuKy0c3EzThahN/01xXVIH2GpfdtLmIvDWzjh/GK2q82xJf8+22gVwVrOK6zoRZWtAKP4QDYlyq4juFyOSglqqhmJ6NfG8bkWJAc8VVJIEHAsODq/A79kw+xdLQaGnTceceXNBgpLC+53mNQqOMw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
+ dkim=pass header.d=renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=os7iz3v3PeBD6YnX4f8jIbubQgo4D0hf8fIpvtcVVmE=;
+ b=o9NQq++/CZXbAsPfIb242a5Sar8MQmdR+qqpSEunIezPEaFGcmMRWRZxtVcn2v9sbLOpXUnjakVAV+Wktx4kCFdkLsEdqScjFkWJ1wKsn8qkMCRUnFMhaqr4y4WShzVG23f1cYzp08VzkTGYvYTlhH0zC+03SJs1gfx2qymLvzI=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=renesas.com;
+Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
+ (2603:1096:400:3a9::11) by OS3PR01MB5606.jpnprd01.prod.outlook.com
+ (2603:1096:604:c5::11) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.24; Mon, 26 Aug
+ 2024 06:06:26 +0000
+Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
+ ([fe80::c568:1028:2fd1:6e11]) by TYCPR01MB10914.jpnprd01.prod.outlook.com
+ ([fe80::c568:1028:2fd1:6e11%5]) with mapi id 15.20.7875.016; Mon, 26 Aug 2024
+ 06:06:26 +0000
+Message-ID: <87ikvnq0m6.wl-kuninori.morimoto.gx@renesas.com>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Daniel Vetter <daniel@ffwll.ch>,
+	David Airlie <airlied@gmail.com>,
+	Helge Deller <deller@gmx.de>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Maxime Ripard <mripard@kernel.org>,
+	Michal Simek <michal.simek@amd.com>,
+	Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Takashi Iwai <tiwai@suse.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	devicetree@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-fbdev@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	linux-omap@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	Sakari Ailus <sakari.ailus@iki.fi>
 Subject: Re: [PATCH v3 1/9] of: property: add of_graph_get_next_port()
-Message-ID: <rlfczbgxjhnqeqskbg7q7rsvhyzznbqdjbtajl44pokpsdtdzx@ecirg7ytm6az>
+In-Reply-To: <rlfczbgxjhnqeqskbg7q7rsvhyzznbqdjbtajl44pokpsdtdzx@ecirg7ytm6az>
 References: <87cylwqa12.wl-kuninori.morimoto.gx@renesas.com>
- <87bk1gqa0k.wl-kuninori.morimoto.gx@renesas.com>
+	<87bk1gqa0k.wl-kuninori.morimoto.gx@renesas.com>
+	<rlfczbgxjhnqeqskbg7q7rsvhyzznbqdjbtajl44pokpsdtdzx@ecirg7ytm6az>
+User-Agent: Wanderlust/2.15.9 Emacs/29.3 Mule/6.0
+Content-Type: text/plain; charset=US-ASCII
+Date: Mon, 26 Aug 2024 06:06:25 +0000
+X-ClientProxiedBy: TYCP301CA0053.JPNP301.PROD.OUTLOOK.COM
+ (2603:1096:400:384::20) To TYCPR01MB10914.jpnprd01.prod.outlook.com
+ (2603:1096:400:3a9::11)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <87bk1gqa0k.wl-kuninori.morimoto.gx@renesas.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TYCPR01MB10914:EE_|OS3PR01MB5606:EE_
+X-MS-Office365-Filtering-Correlation-Id: 90319596-f9ed-45cf-2080-08dcc595382e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|52116014|366016|376014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?9H0AY/Xr1ijhZ0MITKOTjIACQ7bbTCpBsv43pe8TIKf6XMIH+kUlG756sbjH?=
+ =?us-ascii?Q?YvvKfXhpWM4UUenvHg5Xo0RJtzw9jdFMKD1WviUU+9deT3AYXXdZACduLWJp?=
+ =?us-ascii?Q?LZdmn5qA8Fx142ZoitNFjV2ldG9LWcMOWjod0DeYTVaXGqN10Gve2/ICNrWm?=
+ =?us-ascii?Q?2045teShNbKgxPyHsJGUq4QpslC/Dx0evDAE7hovNXqrF4+7gV5+BxvDgd/C?=
+ =?us-ascii?Q?EBoFEuNjEskKJWYrMxMhVoHIQN3mU0Scz16XNc/iwRgcLua3hQF1SSpPHxBD?=
+ =?us-ascii?Q?qyVvSREPLO5WAlNlEjhDhmgyTs+/B7Wv/knDq3jI/7U3f7hX4TyExH9I3TBg?=
+ =?us-ascii?Q?PZucY6n0HChRGR2eMGHV0hcFbPPQ3ZQPTj0RXlxVstppkAMGa2bm8yh6wnpV?=
+ =?us-ascii?Q?6wR8mGw5Hj/VPd3xxOs/IP4SX6ONDTKkC1vI48OG2rivLKjev5jV53YjNkr2?=
+ =?us-ascii?Q?xYKEtVXFJYmLTOd5jbpLEhBiFo2yzm9tYvD0BtpNxLNjF4QBM0yOd43p/gie?=
+ =?us-ascii?Q?OjUU8bb4YdzReoxzoHjq8vWWBDEUiugD8EUewrJ+uWOMBA8U9NPqjHMUskef?=
+ =?us-ascii?Q?hVXLy/jKM5Da6184t8PaZMgAWwIkN0Bk/nNjuVXpQWP6fYwPfYLp+XsqPuvv?=
+ =?us-ascii?Q?BUVtBlsyrBE1ppu3pvU/v7T1iedEI/7g25++GewhU/NpXrPY0pKGuFKk/R2M?=
+ =?us-ascii?Q?E9UvZE7ZtskvOhX1O+9cB7aObZwCAbt7FNCd/FY9w7n7hnfF2yODA81ZLIgM?=
+ =?us-ascii?Q?WwE6Q07x1rbxCp82S1i5kwIO9vxhmcXArrZE5Hdoo/omfSR4gsBYDO0DvGPR?=
+ =?us-ascii?Q?QkXkvkJQkrf8QLAf8gMp0+qV7JjFTDthnKudLBXTBeveBKNBA+vdVK1ljiDD?=
+ =?us-ascii?Q?pw5FfkBmOpnuMhTbLquJMwYYQMcjoqFfBj8sVkDrNVoC7WkjYViMcRyCcsL7?=
+ =?us-ascii?Q?burW5EZ8x5s6O7cwARnC0FmFFxAafaO84lwvvofo0+A3Ir5TXqJT3PJCAe7T?=
+ =?us-ascii?Q?loFVZOl9NxhJSc4Br7agIPr2aVLJtdLGqSxRrvNjCEFqCPVYK2cvdpaF4H0g?=
+ =?us-ascii?Q?ixysDh1MpYkiXZHTesdiGDY2KTluBaIE6xqyVzyNA3W0+yu8UJZoudvLbyXh?=
+ =?us-ascii?Q?uDpk0ZbmyGrAq2ftvII7OSX6GvuTmBXCddHMjOUeTs4oFWocQVcieViqE6nx?=
+ =?us-ascii?Q?jePUcCxAXSDBib4siH+v/shxqbQqbBesJ/AOU5a+2/aPYhOoZTdC+OEI94ry?=
+ =?us-ascii?Q?DigSYSaoIOjFbz/IgubbfzDaudpqEoxzh43lwWcVHdIZIJnUVUM6hJ7lGKdO?=
+ =?us-ascii?Q?yaQPjmnIFz9QHdGwUp0K89q8vLy13VyKvud8gnSdPUoAaSSacgyEwcVhDNsv?=
+ =?us-ascii?Q?J5qmQDfKmIF6Wl3yQvxuUgyrRADc/tOFlObsMX7Dv7z0N8LjgA=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYCPR01MB10914.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(52116014)(366016)(376014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?4SSMEcXoyLaNtXae5WB8i7pUI62U4wfQaEAZVwtXQzbeFNyn2++owiMLP7Ri?=
+ =?us-ascii?Q?StvcqOVaN/pZDZbRyJ7iTWOAC8cDgC8ihX4LJ9Lb8IOt0f5xhBU0ikZaHj1J?=
+ =?us-ascii?Q?c6Zlzd++jKE1leFww4ngGXEb9lscmQra1qZkdWhmc2vcp01rvSm517aErELY?=
+ =?us-ascii?Q?FRVXXvBtS0GR2mJZUega/RCyQgVkvgQecRXPeIz2p4hgbFLTOmFB7C8x3IS6?=
+ =?us-ascii?Q?3oQONiFdyaG+hnX1RbltL1q9Lx0aBaI7/xysiqdt6KLBxm/ek53LFNbcB2vn?=
+ =?us-ascii?Q?SUVHhEcGlzL7IJcnkqbSou7+ZGDhVKOGbDOUqbWgDtZGLsr+SbpDY2IExQ79?=
+ =?us-ascii?Q?uSeiF0SBcdBJOHK6O/KdrMYcrGxIxTdkDAcLZ7MpS6hvhHPPxgD5cSG3o926?=
+ =?us-ascii?Q?SWy+c6rIQZliqswxc4QPf8mDCX+ZZEmoLVgKStlqp6J843R4eVKczfW8IGhW?=
+ =?us-ascii?Q?0G5mHD9sgJAareL+rDZthqfETjSXXkZ+52aVwHsAsO9l1vV5TOeVTegGHG4E?=
+ =?us-ascii?Q?mBsp0OQ1shhre9E3yoH1zdQBpQRtbet6/uJG0qjPijIIttQFlP0IeMLQV5MP?=
+ =?us-ascii?Q?WeVPG49Muoo9ntLJ4j99jYxYU3QNm+8KAXrwPmNx3Fc9gjH6IMflrY8PMBL+?=
+ =?us-ascii?Q?7Zqg2QkkHmFxdhTUgYyHReIIrb1y8dWgLjTWKI7A69kgQHprJ7LASyq7vsFv?=
+ =?us-ascii?Q?hcZiK13P2gxMhB6AGaNBmpynbmP+OSVFdakgp/+0MEVO6vK5/WYSN52JKmYh?=
+ =?us-ascii?Q?mTtlnY2OsVYIm7a175hcfqj+jXhiSoDp/pnasLs4UULN8s6wYsRwoFZ/xAvu?=
+ =?us-ascii?Q?ym3o4XGDU6vjIoYyqzOe22H9Q+JBJz2qQnwqZ5sr3S5PZ1mcKqVHGhX/Jysg?=
+ =?us-ascii?Q?X9QWlTuwdMQUY+SjTf41I2sVRElFGuV34MQNT+H6sEONd6yViMltF8MbgfGj?=
+ =?us-ascii?Q?tMQZKvMFS5qC/I4RolbdMZU8eEYMhiUnOKhMmc3Saz3EdQeClpxhtTY9/+kq?=
+ =?us-ascii?Q?COVZRrEHAuksnPf0n9orn40ScY/TbN/lvy91sOywXQHt+fc7OfOE5N05Hd+p?=
+ =?us-ascii?Q?FgXlH6LuLpDzVKFUiusNaJQlJo9GnBPRx7P+pcREYEldcWSTDzRqij8Pcqsd?=
+ =?us-ascii?Q?tlfeDpKv8FTNSPjup2yA0MA4bJ40Di8ja1luLL2mxzlZxnwSF405ES0DLlsS?=
+ =?us-ascii?Q?MFiu85yjvuHAY/G1mtlefpbwVySh70rxMj0CfUVgcQyhsRLpErv2R2H9yR6x?=
+ =?us-ascii?Q?W+iDUoufymXRLknU9AY4NcoqL9ycz+TwGPKpxuYJO/amzOEwpWGXs+p/fB03?=
+ =?us-ascii?Q?BGKdQDxOxKfuTyEfStudxjUkv6Q6EVAwQq/PHOpbmL48hZF0MBw5CubhvRcU?=
+ =?us-ascii?Q?BJOdXL7lnwDZBfayYSgECl1tlJ9UHMhM4YbeizsQ+699e94TXvDLI1Y86xsq?=
+ =?us-ascii?Q?tvpCTRRybeT64rHPxyEB27yPytxJxfGJ5c9LrdXLek06TyxiQ0EZaSDgDf9d?=
+ =?us-ascii?Q?vBu5NPOwXXKgPGqmEkmIrZjMUkwbrLyiMLJ0iide8ZW18sxFr4bKjbNMUf1I?=
+ =?us-ascii?Q?KyVDEz5fKtX6dy4P9yHNjauaa/AJAGFtySLjk0UrGnkve5KXOoig2lHAi9GN?=
+ =?us-ascii?Q?KzCTTDELRQGigaKqQTXeClk=3D?=
+X-OriginatorOrg: renesas.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 90319596-f9ed-45cf-2080-08dcc595382e
+X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB10914.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2024 06:06:26.4123
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ZC3ix95YaWgfFfMBsdzLOus/9j5QSsBJsCm1bmCOOWdZa0JJLpvwRg5V42P41EN8rX574jKG3OL6NifVgrNOr/M8jBCRoZCfVH50wtbseoBQOjNO/Mr1G+p4QEe8zCpi
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS3PR01MB5606
 
-On Mon, Aug 26, 2024 at 02:43:23AM +0000, Kuninori Morimoto wrote:
-> We have endpoint base functions
-> 	- of_graph_get_next_device_endpoint()
-> 	- of_graph_get_device_endpoint_count()
-> 	- for_each_of_graph_device_endpoint()
 
-> +	if (!prev) {
-> +		/*
-> +		 * Find "ports" node from parent
-> +		 *
-> +		 *	parent {
-> +		 * =>		ports {
-> +		 *			port {...};
-> +		 *		};
-> +		 *	};
-> +		 */
-> +		prev = of_get_child_by_name(parent, "ports");
-> +
-> +		/*
-> +		 * Use parent as its ports if it not exist
-> +		 *
-> +		 * =>	parent {
-> +		 *		port {...};
-> +		 *	};
-> +		 */
-> +		if (!prev) {
-> +			prev = of_node_get(parent);
-> +
-> +			/* check wether it has port node */
-> +			struct device_node *port __free(device_node) =
-> +				of_get_child_by_name(prev, "port");
-> +
-> +			if (!port)
-> +				prev = NULL;
+Hi Krzysztof
 
-It looks like you leak here "prev".
+> > +		prev = of_get_child_by_name(parent, "ports");
+(snip)
+> > +		if (!prev) {
+> > +			prev = of_node_get(parent);
+> > +
+> > +			/* check wether it has port node */
+> > +			struct device_node *port __free(device_node) =
+> > +				of_get_child_by_name(prev, "port");
+> > +
+> > +			if (!port)
+> > +				prev = NULL;
+> 
+> It looks like you leak here "prev".
 
-> +		}
-> +
-> +		return prev;
-> +	}
+Oops, yes ineed.
+Thank you for pointing it, will fix it in v4
 
-Best regards,
-Krzysztof
-
+Best regards
+---
+Kuninori Morimoto
 
