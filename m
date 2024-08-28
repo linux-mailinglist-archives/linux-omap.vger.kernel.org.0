@@ -1,210 +1,369 @@
-Return-Path: <linux-omap+bounces-2038-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2039-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13297961E18
-	for <lists+linux-omap@lfdr.de>; Wed, 28 Aug 2024 07:13:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBF3696225C
+	for <lists+linux-omap@lfdr.de>; Wed, 28 Aug 2024 10:36:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 66ED6B23049
-	for <lists+linux-omap@lfdr.de>; Wed, 28 Aug 2024 05:13:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E05401C20ADA
+	for <lists+linux-omap@lfdr.de>; Wed, 28 Aug 2024 08:36:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9A43155345;
-	Wed, 28 Aug 2024 05:12:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D63B15821D;
+	Wed, 28 Aug 2024 08:36:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="apRZVRdb"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="FzUI8QiL"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from TYVP286CU001.outbound.protection.outlook.com (mail-japaneastazon11011061.outbound.protection.outlook.com [52.101.125.61])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8CA414AD24;
-	Wed, 28 Aug 2024 05:12:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.125.61
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724821953; cv=fail; b=lj8vFmftZbJ1iheQfCHdGrnPNO5BB/2sJ6Lh/uULVkqJhAMmWC6U5anwoKfl+EiBzYybUz0RAEdU2OyX9U9Moo3q5opFfqaShupV30NKxB/VPavnpxIgqWJGcXRH2qryQX1WZXJrj6qQYVrCfelyW8DJsfPwF1dTJcKVTkp+q2A=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724821953; c=relaxed/simple;
-	bh=2cjcVZYxvLuvd2a4aNRw8Q8tOsacDkaZ3tEOo4bkYwc=;
-	h=Message-ID:From:Subject:To:In-Reply-To:References:Content-Type:
-	 Date:MIME-Version; b=H9MGWZmLw3tSSqkktSinuw2gPSUNH5HJHd9+ACJMgWDCX1xi6oJaH1uiCXJyGUulZh5KbRt5PsJatGQnxKqugNMcyzAMk8aWWtuxF5pI85/OHR+2cZlpxVwMnlsdkSF08+2b4ahQ/hiXzCAQmbX13TCRelCuEJ6km1BFDm4vwpI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=apRZVRdb; arc=fail smtp.client-ip=52.101.125.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dM9wkfHWO6wkPiVVpr3C+T4p8GHHaj+oMLvjqT13M7CIdmdAn9t7qhu9coofjjA2VC5kCNWjXOsO16cwKhBFwc0qlNYL2pQHEZjf1obGLcZSZ4u0Vmj9yxi7oAQhcTDJdEKyApGGupdhmepqrrvm3PRzP5Xz+sewuK4zamjLl0UgGaXywetepFEd5Z3fK70Bm5cjlCWzCiAy0tz8XEwxpf7Dm62lgh9Scv01YgThX4LvykuRIUSRxExsCuMEmPlrEVTUSTNfYNFFFanxVxhqTX140+uXF2YmMfotb6JvgTm2jZ3oAqXzG7kzN+A6su0sLqYA2qIzL5ht/R7KBFJVsA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GqzIohYp5afmfF86fzJ9cHhouXOQhdLWAIzB1UwkvGw=;
- b=nwmaO1eMCgzPOlCNCJsamDmGCvWvnJV7BVL5n3SDOISoWVRke8Q5DXDkPpaJmoZZnLn80YRvnCfuUXYO+I7ZMBLnEsSaMoHuYJMls3t7egkMV93A6OJQYPie4DjCS7sdaWdf6FPgexWxt1+vHcAT5g0MDHeIUv53s0uwMuZuL/s5lsiPueIG9dHS7h9l4QPVdcizLyfhczSALNyyPSgH5FjBdnGhiRinmzSDzWqknLJRm0ZJEu220usBX1uG19MSdBGESEOn2NKpa62ZdDzHQ72xzkAbODuVT2+WJCOKucC6kdeY2MEWNDytOV482ZtnAQ7or0kZgCEQdr0N7kUtmw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
- dkim=pass header.d=renesas.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GqzIohYp5afmfF86fzJ9cHhouXOQhdLWAIzB1UwkvGw=;
- b=apRZVRdbajfPAHwulnMMf/UIh/N5Iq3jQFo5kpymcgPjglXuOr3v8WwZ/sGQ1JdGQdlFqyGB5FLRdYu4V/clwRSPplz7XffF9PtsEiiB7pZ8h9/3qBDEXVRmv4sRpxoXHt5dAsMx1PphIsWJPXgcHKiQD8S1hF5OPVjZdVpx0Ks=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=renesas.com;
-Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
- (2603:1096:400:3a9::11) by OS7PR01MB11955.jpnprd01.prod.outlook.com
- (2603:1096:604:23e::7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.26; Wed, 28 Aug
- 2024 05:12:28 +0000
-Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
- ([fe80::c568:1028:2fd1:6e11]) by TYCPR01MB10914.jpnprd01.prod.outlook.com
- ([fe80::c568:1028:2fd1:6e11%5]) with mapi id 15.20.7897.027; Wed, 28 Aug 2024
- 05:12:28 +0000
-Message-ID: <87y14h1b9f.wl-kuninori.morimoto.gx@renesas.com>
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Subject: [PATCH v4 9/9] media: xilinx-tpg: use new of_graph functions
-User-Agent: Wanderlust/2.15.9 Emacs/29.3 Mule/6.0
-To: Daniel Vetter <daniel@ffwll.ch>,
-	David Airlie <airlied@gmail.com>,
-	Helge Deller <deller@gmx.de>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Maxime Ripard <mripard@kernel.org>,
-	Michal Simek <michal.simek@amd.com>,
-	Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Takashi Iwai <tiwai@suse.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	devicetree@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-fbdev@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	linux-omap@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	Sakari Ailus <sakari.ailus@iki.fi>
-In-Reply-To: <87bk1d2pvt.wl-kuninori.morimoto.gx@renesas.com>
-References: <87bk1d2pvt.wl-kuninori.morimoto.gx@renesas.com>
-Content-Type: text/plain; charset=US-ASCII
-Date: Wed, 28 Aug 2024 05:12:28 +0000
-X-ClientProxiedBy: TYAPR01CA0149.jpnprd01.prod.outlook.com
- (2603:1096:404:7e::17) To TYCPR01MB10914.jpnprd01.prod.outlook.com
- (2603:1096:400:3a9::11)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99901142E6F;
+	Wed, 28 Aug 2024 08:36:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724834204; cv=none; b=ODYybxVxn+HlOfBa/PwT8XsQhFJsjQT8BdZgs6SLzQSLiWySiXwgqpB/YygSgbUjCnxseAppWIFhmoS9vSXYPZlCCgxkYz7TDNGl+zvAAzHt4ORU4PCfN+9n/CXeBdzDqsV1xe1utzBTu16sP714P5/SXkCBYAna8An/sXgQMIA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724834204; c=relaxed/simple;
+	bh=uSmvSJeNFmeyFfY8BGu6VB4JiXjq3KkKYAvR2TQtleU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Lpn5jPyUTyhuCvZA8/L7kIdcBT2Q1fUCwXc6kCLU1IoTAgLaXqWYT80FcomA60XcI+4JkSuZoP6ebnpn8VXcw6cCvz2oEdOmgvzxE9vsqWnjnCxkDjS5JEXHRULyVopesU/EohMgCuKdfVXZKr7UcuyDILytknZPqoOIdLkxumg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=FzUI8QiL; arc=none smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47S7twWb001449;
+	Wed, 28 Aug 2024 08:36:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
+	from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding; s=corp-2023-11-20; bh=erGN/lqsjy+1F1
+	v45hgnTn7sAAhyNEqUCYCfrD4e66w=; b=FzUI8QiLz8N8Q9/kg9sBihxj/oY8ZC
+	kaVESOG/UcGONLSec3hC635Mh29O7hxOpDUdTjjabT3xm9XzA5ilWRxKcqdYvxlk
+	bJPD+0O7qe2cpHrmLeHjcXBmnOm3HomNqgoQUnpWsusEOse+YFnLWo2i8bitu41a
+	wpWcjTxX7t/CG1DkypMhFZnk/N8yFry+PdYMVivyXQSRWUnWU1X7MS50tTzYljgN
+	1NidAHdw9C3NtFRWkM+o+ijq4zuEh7OGv8S0iXLNeUpTdvS2xtqUG3AJ8+xM2URU
+	gOoVexbOghjd/moFl666q1VSZmGpCOPEZ8n3Yv+ArqN+8Hr/67+PS9sg==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 419pugrs44-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 28 Aug 2024 08:36:18 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 47S72I0x016639;
+	Wed, 28 Aug 2024 08:36:17 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 418a5ten6d-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 28 Aug 2024 08:36:17 +0000
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 47S8KiB0017099;
+	Wed, 28 Aug 2024 08:36:17 GMT
+Received: from localhost.localdomain (dhcp-10-175-47-71.vpn.oracle.com [10.175.47.71])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 418a5ten64-1;
+	Wed, 28 Aug 2024 08:36:16 +0000
+From: Vegard Nossum <vegard.nossum@oracle.com>
+To: Masahiro Yamada <masahiroy@kernel.org>
+Cc: linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        kvmarm@lists.linux.dev, kvm@vger.kernel.org,
+        linux-um@lists.infradead.org, bpf@vger.kernel.org,
+        llvm@lists.linux.dev, Vegard Nossum <vegard.nossum@oracle.com>
+Subject: [PATCH] kbuild: use objcopy to generate asm-offsets
+Date: Wed, 28 Aug 2024 10:36:04 +0200
+Message-Id: <20240828083605.3093701-1-vegard.nossum@oracle.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TYCPR01MB10914:EE_|OS7PR01MB11955:EE_
-X-MS-Office365-Filtering-Correlation-Id: 872a83ab-d9ce-4c6e-48c6-08dcc7200319
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|52116014|366016|921020|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?7kGZXN2J3BobJdaKpfK4b8usn1verxmB88wl12Xu3ZxqXvRVwq7lWbTIGiIP?=
- =?us-ascii?Q?wIRQwjzOuJ0clxgXK9FiupshfkzNJGjEaZK9yi3eUOeLUrreDZUo4H2CMx+d?=
- =?us-ascii?Q?zMSvMPZTMWgSunsJ9bYD2cUd6N2YInygOvSvf749EYXMKeGtuTOpndn7LLAO?=
- =?us-ascii?Q?MuiUwjZpfFqogEKMJYxqla+TS5tMrXsgaVrlLTkgt2hnnH/esQJAxBhcO599?=
- =?us-ascii?Q?Y/NtE3HoPNR2PYLLEv7DqGQA1IBQ25OX0hSUatZHfFRojEWH/DDYAxJoWatt?=
- =?us-ascii?Q?sp3rdd2l9Omip52EsVWxihfF3yC9spB8w2Z6ya6LlGC8glrLnmQOIAvtdJOO?=
- =?us-ascii?Q?9bnDk9TXPhDneRg424L54Z1x9O4Hyv8zplhLLEPeKzSyITIxIOK/bP1MPVhQ?=
- =?us-ascii?Q?akrtHETpBWY9S9sI68kK6jl8P1vv2FOaWxii4CuYqB3xN19Avd6Ef3PqR2a/?=
- =?us-ascii?Q?XISfGCzAOYqI5/mZAa1hNhMp193IzUUu/1JA/aixv6dqcvuTKYFRGPQ0zJE1?=
- =?us-ascii?Q?WTnLjHFPCCimD+BHKlwexd6jpTn2FAk8yW7aI9LMJae1Iy0qvXHl3HWR9EV2?=
- =?us-ascii?Q?W/8C3uj1/8O5AbkpyIRNj/t9hyCJj/izQuRtk3hT+lfxW7pShuyFXCNT1LW+?=
- =?us-ascii?Q?Xw3PfouJrqamf1TP1QilEdP4A0IAMdUUfCQug2GiY6eaCflLFP9VXNwgZX+R?=
- =?us-ascii?Q?E6vUK+cSBQoAakwRie5d2OiiiSJMqBMM5184PmkCXDSm7OAsvegGCToqW+3F?=
- =?us-ascii?Q?PQ063ah2dbKfYqtJcjsBpmn2GiTuI5b8n7M2EIgJ7Orhkef/GBW2OjzlZMaP?=
- =?us-ascii?Q?OneF9SIrUdnOHvs6EMSJ8eu47Ad2PBFa9O12yF1P3JsbB5OohLhhOmw+A4Uk?=
- =?us-ascii?Q?vg/anpe0THd0017804JtaLevjtQcUw7XVX91Jjck+loyDiSd2h2Tr50/f+Q0?=
- =?us-ascii?Q?tW7bDHnW1oYqLiMrnYc/A7hAS8wp3Lu5zuirGbldJSuzCw/Arc3JadfUeAg1?=
- =?us-ascii?Q?t2WvNwpw3sg0hVMuJgftu4h8uLM6tAcqwSfbE4ht7kAZDhAL8g5l78jTquh6?=
- =?us-ascii?Q?OQFTB2LMM22zR0hO1z50RTaziq/qWsJbapBGs2mGXgOTUQrlCr7HK81+UKD6?=
- =?us-ascii?Q?As/8Q5bk0SkAj9OI2iZYQFd6IQOAMOfNMn40TwzXXKhmCqz5ZaDjD82nPmWa?=
- =?us-ascii?Q?Xk69P2TlUMHAIII4ShTJRgG7DOWnBtfuXTZPKqpZu7MZAl1FOmkq60T7CYo4?=
- =?us-ascii?Q?9moGYd7ZJZi8Do+JL399vB7WAbLjHJABH0gTDdSDFzQ2E7vuLYDo8k8Dq628?=
- =?us-ascii?Q?tC03ojg7y6uPfQ1yZtuxoI/QzGrHSgb1qO0KMy0wVMM3/uc9hnkLpiAghPdi?=
- =?us-ascii?Q?jWED97bsogPvzU9bGyAT4hU9VxPpVuK3V9n1ItN1E0nj28cFz04UJrHvU8Wy?=
- =?us-ascii?Q?VmWVml/drBI=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYCPR01MB10914.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(52116014)(366016)(921020)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?hjR5UTc965aNUbc3dHkj3/6UP6zuEJJdMzLFKianVVkwNh9rBVK/2zMIcsCD?=
- =?us-ascii?Q?ZR6ID+JvrPDi7CshmmeiAdzMNsbk/RUomr44AOMxnRiXXEkxDr1i7H+qdCmJ?=
- =?us-ascii?Q?AceL5dxAJh1E2b7O5h5OoMczYFsqN/2M8qqNG/h6cxtXwuoVfSCnCZuqhn8A?=
- =?us-ascii?Q?9nXPVDNzMcYa8hPWOCktnMgU2xQgfKTgRWGWs+UD9GMAY+PYexO4ncqaXOiP?=
- =?us-ascii?Q?6L1TmV9/yl4w2smVZ113e2GkwE7A+0ftb83/UY5ctdIsSd3uBjrSSNorkOdn?=
- =?us-ascii?Q?ktmxxUI68Tq7nc6vfY6RGQL89+0o2OhswJnWNH8Mf6mUWk6gMJ5bih0OFv0o?=
- =?us-ascii?Q?6mIpg0q5Iag2Vfgc/AV3gAaT/YwXFaF1VlAYY7itEF/rj8Y5AhfWWm1xY4hC?=
- =?us-ascii?Q?F8DDCgKUAVpJyZ+j3PQaFOYr/zYAG2VuyiW5l3rGQ8wZxZIe3cUksJ/K7iCh?=
- =?us-ascii?Q?Dmbgce3f0u2GNY+04b7vpWlZ94B0SfELreXuCDqHXFr6ZoyvtlR/nmPxhLFP?=
- =?us-ascii?Q?wctlw61kKWWVr6GtHci5D5LP4E7xit0GKrAb2r8uvBhHTnIzxKD741JCS0bk?=
- =?us-ascii?Q?Iqq2LVxbcOo62qjYR2M+qHdiyqfvffjuLjIdbZnJTJEjuJ+MCay8fdmntDsc?=
- =?us-ascii?Q?MgLWBZvWWHhi7Az/K+JAVDvvD5rF8BXBBgm1EDu9udZAZ9nuCi/sbL7VAvYz?=
- =?us-ascii?Q?W3q3sJtXlj/bLCwvcbQCPCTjN3KEsiaZauIfHjV8fE661FYKhhsPTmNgOtpW?=
- =?us-ascii?Q?fUl8B80Sf+A23VMAsx4WFxuM9Qcntl8lLlmNSra0iGeY/AJjgyvhKDdSvMNe?=
- =?us-ascii?Q?FZsS+3864RwyUhqCcQQDs1re2ka8bHhxD6sG9ZAz9OQMPGO2IhqA2kEBO4Wx?=
- =?us-ascii?Q?C2twtNYGHeQmPwBYE9wNAxE710ML1/SLlf4vUVZUe19jq5b23+L6cayM8jS0?=
- =?us-ascii?Q?oZItHOm0Z6wRVQMENsDEbXdgW2K0iVng02fdyb09yYvANQoqmKM+VHdirl9x?=
- =?us-ascii?Q?Be2EwfauZqOYPMxrOGepNT3+70wx/k3YIeh920zZpFRSC5VRicR48FKSQxfl?=
- =?us-ascii?Q?AZmi2X7XYoh4vdjjo4FVLKbTxC8EB9flHaDDYpugq+PLcQQqp6twnkDrZjQL?=
- =?us-ascii?Q?GHZWdSomBXk10PAaGMcF1hSFkE3X5JP0bxPt2ozLBl5kR2ZVWPRKqgUaGkiJ?=
- =?us-ascii?Q?/2QmtXIWPmrHntdK8KJ7G3K9GXaCwZPJx8Q+ITvvfTl+d+tBbFJOnrmLBbOw?=
- =?us-ascii?Q?X9wsWMCi/G5/sdfSYqxJB876ude4uQQH7ULQXJC6wDVqWMPj421O6ganpU79?=
- =?us-ascii?Q?pZR9+cxcxsqD+cbJCy8wADM66w3z8QB3kmUfBLcKbEX66AE7otrA/kYm9H3l?=
- =?us-ascii?Q?AyprOv+grHC7L7zG9s7nBqjS4kIA5eqhp9Nf9DCKSHni4Ds44iOJnQSAkkhf?=
- =?us-ascii?Q?fIZqK3nAWNlziPzjq5V0lCJDmgv9AJmTNL9OVDw9sFJYC1WO6Phg0Rb0oVl/?=
- =?us-ascii?Q?jPwNrsohVPcGAOXNvLTsX4wFxH0J3aHPprk9bhY/b0Z+KsntyFrTI6BJPHe8?=
- =?us-ascii?Q?OKIr+GYH3S86Fm3VRLv3h5cwVRMlzze5ImEl4RpxUxpTBpoVWte93kBnb+3F?=
- =?us-ascii?Q?U234rh3ERJz0R5svPN1pqXI=3D?=
-X-OriginatorOrg: renesas.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 872a83ab-d9ce-4c6e-48c6-08dcc7200319
-X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB10914.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Aug 2024 05:12:28.5315
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: sNKm5/Q5DGZ3qsmVX8Y4AajYuc82znhtyuQw8L/xtD7G1Uy+Tdhx0fnw/STfVyfdLzlrwaubhwPcJ0nK9U2SIx3BTJbS+ikN78qzBSFuUVL2M27pgBOQ5ltDWoEFNIG3
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS7PR01MB11955
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-28_03,2024-08-27_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxscore=0 mlxlogscore=999
+ phishscore=0 bulkscore=0 malwarescore=0 suspectscore=0 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2407110000
+ definitions=main-2408280060
+X-Proofpoint-GUID: RCp8Tn4L9XlNZemaT9NkL3670WSRULoV
+X-Proofpoint-ORIG-GUID: RCp8Tn4L9XlNZemaT9NkL3670WSRULoV
 
-Now we can use new port related functions for port parsing. Use it.
+In order to give assembly code access to C structs without having to
+hardcore member offsets, the kernel compiles a C source file listing all
+the structs and offsets that are needed in assembly code. Using some
+C preprocessor trickery and a sed script, the compiled assembly code is
+turned back into C preprocessor code that in turn can be used by the
+asssembly code.
 
-Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
+This sed script is very hard to read and understand.
+
+Remove the sed script and compile the C source listing structs and
+offsets to an object file (instead of assembly code) that embeds C source
+directly. Then extract the C source using objcopy.
+
+The resulting code is more readable, less fragile, and sligthly shorter.
+
+Note to reviewers: The 'objcopy ... /dev/stdout | cat' bit is needed to
+force the correct ordering of the objcopy lines vs. the surrounding echo
+commands; without it, objcopy will open /dev/stdout (which refers to a
+temporary file created by kbuild) and reset the file offset to 0. In
+other words, the pipe ensures that objcopy doesn't overwrite the lines
+that already exist in /dev/stdout.
+
+Signed-off-by: Vegard Nossum <vegard.nossum@oracle.com>
 ---
- drivers/media/platform/xilinx/xilinx-tpg.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ Kbuild                       | 10 +++++-----
+ arch/arm/mach-at91/Makefile  |  4 ++--
+ arch/arm/mach-omap2/Makefile |  4 ++--
+ arch/arm64/kvm/Makefile      |  9 +++++----
+ arch/x86/kvm/Makefile        |  4 ++--
+ arch/x86/um/Makefile         |  6 +++---
+ drivers/memory/Makefile      |  4 ++--
+ include/linux/kbuild.h       | 15 +++++++++++----
+ samples/bpf/Makefile         |  4 ++--
+ scripts/Makefile.lib         | 13 +------------
+ scripts/mod/Makefile         |  4 ++--
+ 11 files changed, 37 insertions(+), 40 deletions(-)
 
-diff --git a/drivers/media/platform/xilinx/xilinx-tpg.c b/drivers/media/platform/xilinx/xilinx-tpg.c
-index e05e528ffc6f7..a25f216b2513c 100644
---- a/drivers/media/platform/xilinx/xilinx-tpg.c
-+++ b/drivers/media/platform/xilinx/xilinx-tpg.c
-@@ -13,6 +13,7 @@
- #include <linux/gpio/consumer.h>
- #include <linux/module.h>
- #include <linux/of.h>
-+#include <linux/of_graph.h>
- #include <linux/platform_device.h>
- #include <linux/xilinx-v4l2-controls.h>
+diff --git a/Kbuild b/Kbuild
+index 464b34a08f51e..412b77007deb1 100644
+--- a/Kbuild
++++ b/Kbuild
+@@ -9,9 +9,9 @@
  
-@@ -744,7 +745,7 @@ static int xtpg_parse_of(struct xtpg_device *xtpg)
- 		}
+ bounds-file := include/generated/bounds.h
  
- 		if (nports == 0) {
--			endpoint = of_get_next_child(port, NULL);
-+			endpoint = of_graph_get_next_port_endpoint(port, NULL);
- 			if (endpoint)
- 				has_endpoint = true;
- 			of_node_put(endpoint);
+-targets := kernel/bounds.s
++targets := kernel/bounds.o
+ 
+-$(bounds-file): kernel/bounds.s FORCE
++$(bounds-file): kernel/bounds.o FORCE
+ 	$(call filechk,offsets,__LINUX_BOUNDS_H__)
+ 
+ # Generate timeconst.h
+@@ -27,11 +27,11 @@ $(timeconst-file): kernel/time/timeconst.bc FORCE
+ 
+ offsets-file := include/generated/asm-offsets.h
+ 
+-targets += arch/$(SRCARCH)/kernel/asm-offsets.s
++targets += arch/$(SRCARCH)/kernel/asm-offsets.o
+ 
+-arch/$(SRCARCH)/kernel/asm-offsets.s: $(timeconst-file) $(bounds-file)
++arch/$(SRCARCH)/kernel/asm-offsets.o: $(timeconst-file) $(bounds-file)
+ 
+-$(offsets-file): arch/$(SRCARCH)/kernel/asm-offsets.s FORCE
++$(offsets-file): arch/$(SRCARCH)/kernel/asm-offsets.o FORCE
+ 	$(call filechk,offsets,__ASM_OFFSETS_H__)
+ 
+ # Check for missing system calls
+diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
+index 794bd12ab0a8e..4d4be0000fd98 100644
+--- a/arch/arm/mach-at91/Makefile
++++ b/arch/arm/mach-at91/Makefile
+@@ -18,10 +18,10 @@ ifeq ($(CONFIG_PM_DEBUG),y)
+ CFLAGS_pm.o += -DDEBUG
+ endif
+ 
+-$(obj)/pm_data-offsets.h: $(obj)/pm_data-offsets.s FORCE
++$(obj)/pm_data-offsets.h: $(obj)/pm_data-offsets.o FORCE
+ 	$(call filechk,offsets,__PM_DATA_OFFSETS_H__)
+ 
+ $(obj)/pm_suspend.o: $(obj)/pm_data-offsets.h
+ 
+-targets += pm_data-offsets.s
++targets += pm_data-offsets.o
+ clean-files += pm_data-offsets.h
+diff --git a/arch/arm/mach-omap2/Makefile b/arch/arm/mach-omap2/Makefile
+index daf21127c82f1..991ffe6871d1d 100644
+--- a/arch/arm/mach-omap2/Makefile
++++ b/arch/arm/mach-omap2/Makefile
+@@ -217,12 +217,12 @@ obj-y					+= omap_phy_internal.o
+ 
+ obj-$(CONFIG_MACH_OMAP2_TUSB6010)	+= usb-tusb6010.o
+ 
+-$(obj)/pm-asm-offsets.h: $(obj)/pm-asm-offsets.s FORCE
++$(obj)/pm-asm-offsets.h: $(obj)/pm-asm-offsets.o FORCE
+ 	$(call filechk,offsets,__TI_PM_ASM_OFFSETS_H__)
+ 
+ $(obj)/sleep33xx.o $(obj)/sleep43xx.o: $(obj)/pm-asm-offsets.h
+ 
+-targets += pm-asm-offsets.s
++targets += pm-asm-offsets.o
+ clean-files += pm-asm-offsets.h
+ 
+ obj-$(CONFIG_OMAP_IOMMU)		+= omap-iommu.o
+diff --git a/arch/arm64/kvm/Makefile b/arch/arm64/kvm/Makefile
+index 86a629aaf0a13..ee699a683d82c 100644
+--- a/arch/arm64/kvm/Makefile
++++ b/arch/arm64/kvm/Makefile
+@@ -28,17 +28,18 @@ kvm-y += arm.o mmu.o mmio.o psci.o hypercalls.o pvtime.o \
+ kvm-$(CONFIG_HW_PERF_EVENTS)  += pmu-emul.o pmu.o
+ kvm-$(CONFIG_ARM64_PTR_AUTH)  += pauth.o
+ 
+-always-y := hyp_constants.h hyp-constants.s
++always-y := hyp_constants.h hyp-constants.o
+ 
+ define rule_gen_hyp_constants
+ 	$(call filechk,offsets,__HYP_CONSTANTS_H__)
+ endef
+ 
+ CFLAGS_hyp-constants.o = -I $(src)/hyp/include
+-$(obj)/hyp-constants.s: $(src)/hyp/hyp-constants.c FORCE
+-	$(call if_changed_dep,cc_s_c)
+ 
+-$(obj)/hyp_constants.h: $(obj)/hyp-constants.s FORCE
++$(obj)/hyp-constants.o: $(src)/hyp/hyp-constants.c FORCE
++	$(call if_changed_dep,cc_o_c)
++
++$(obj)/hyp_constants.h: $(obj)/hyp-constants.o FORCE
+ 	$(call if_changed_rule,gen_hyp_constants)
+ 
+ obj-kvm := $(addprefix $(obj)/, $(kvm-y))
+diff --git a/arch/x86/kvm/Makefile b/arch/x86/kvm/Makefile
+index 5494669a055a6..3b561c7e7c4f9 100644
+--- a/arch/x86/kvm/Makefile
++++ b/arch/x86/kvm/Makefile
+@@ -42,8 +42,8 @@ $(obj)/svm/vmenter.o: $(obj)/kvm-asm-offsets.h
+ AFLAGS_vmx/vmenter.o    := -iquote $(obj)
+ $(obj)/vmx/vmenter.o: $(obj)/kvm-asm-offsets.h
+ 
+-$(obj)/kvm-asm-offsets.h: $(obj)/kvm-asm-offsets.s FORCE
++$(obj)/kvm-asm-offsets.h: $(obj)/kvm-asm-offsets.o FORCE
+ 	$(call filechk,offsets,__KVM_ASM_OFFSETS_H__)
+ 
+-targets += kvm-asm-offsets.s
++targets += kvm-asm-offsets.o
+ clean-files += kvm-asm-offsets.h
+diff --git a/arch/x86/um/Makefile b/arch/x86/um/Makefile
+index 36e67fc97c22f..6563503d4b25d 100644
+--- a/arch/x86/um/Makefile
++++ b/arch/x86/um/Makefile
+@@ -38,11 +38,11 @@ subarch-$(CONFIG_MODULES) += ../kernel/module.o
+ 
+ USER_OBJS := bugs_$(BITS).o ptrace_user.o fault.o
+ 
+-$(obj)/user-offsets.s: c_flags = -Wp,-MD,$(depfile) $(USER_CFLAGS) \
++$(obj)/user-offsets.o: c_flags = -Wp,-MD,$(depfile) $(USER_CFLAGS) \
+ 	-Iarch/x86/include/generated
+-targets += user-offsets.s
++targets += user-offsets.o
+ 
+-include/generated/user_constants.h: $(obj)/user-offsets.s FORCE
++include/generated/user_constants.h: $(obj)/user-offsets.o FORCE
+ 	$(call filechk,offsets,__USER_CONSTANT_H__)
+ 
+ UNPROFILE_OBJS := stub_segv.o
+diff --git a/drivers/memory/Makefile b/drivers/memory/Makefile
+index d2e6ca9abbe02..efae95f315a12 100644
+--- a/drivers/memory/Makefile
++++ b/drivers/memory/Makefile
+@@ -34,8 +34,8 @@ ti-emif-sram-objs		:= ti-emif-pm.o ti-emif-sram-pm.o
+ 
+ $(obj)/ti-emif-sram-pm.o: $(obj)/ti-emif-asm-offsets.h
+ 
+-$(obj)/ti-emif-asm-offsets.h: $(obj)/emif-asm-offsets.s FORCE
++$(obj)/ti-emif-asm-offsets.h: $(obj)/emif-asm-offsets.o FORCE
+ 	$(call filechk,offsets,__TI_EMIF_ASM_OFFSETS_H__)
+ 
+-targets += emif-asm-offsets.s
++targets += emif-asm-offsets.o
+ clean-files += ti-emif-asm-offsets.h
+diff --git a/include/linux/kbuild.h b/include/linux/kbuild.h
+index e7be517aaaf68..d253ae4dfd1c1 100644
+--- a/include/linux/kbuild.h
++++ b/include/linux/kbuild.h
+@@ -2,15 +2,22 @@
+ #ifndef __LINUX_KBUILD_H
+ #define __LINUX_KBUILD_H
+ 
+-#define DEFINE(sym, val) \
+-	asm volatile("\n.ascii \"->" #sym " %0 " #val "\"" : : "i" (val))
++#define _LINE(x, ...) \
++	asm volatile( \
++		".pushsection \".data.kbuild\"; "\
++		".ascii \"" x "\\n\"; "\
++		".popsection" : : __VA_ARGS__)
+ 
+-#define BLANK() asm volatile("\n.ascii \"->\"" : : )
++#define DEFINE(sym, val) \
++	_LINE("#define " #sym " %c0 /* " #val " */", "i" (val))
+ 
+ #define OFFSET(sym, str, mem) \
+ 	DEFINE(sym, offsetof(struct str, mem))
+ 
++#define BLANK() \
++	_LINE("")
++
+ #define COMMENT(x) \
+-	asm volatile("\n.ascii \"->#" x "\"")
++	_LINE("/* " #x " */")
+ 
+ #endif
+diff --git a/samples/bpf/Makefile b/samples/bpf/Makefile
+index 3e003dd6bea09..a5d86ac8f5f57 100644
+--- a/samples/bpf/Makefile
++++ b/samples/bpf/Makefile
+@@ -270,10 +270,10 @@ $(LIBBPF_OUTPUT) $(BPFTOOL_OUTPUT):
+ 	$(call msg,MKDIR,$@)
+ 	$(Q)mkdir -p $@
+ 
+-$(obj)/syscall_nrs.h:	$(obj)/syscall_nrs.s FORCE
++$(obj)/syscall_nrs.h:	$(obj)/syscall_nrs.o FORCE
+ 	$(call filechk,offsets,__SYSCALL_NRS_H__)
+ 
+-targets += syscall_nrs.s
++targets += syscall_nrs.o
+ clean-files += syscall_nrs.h
+ 
+ FORCE:
+diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+index 207325eaf1d1c..f78b0b12ace26 100644
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -583,17 +583,6 @@ quiet_cmd_zstd22_with_size = ZSTD22  $@
+ # ASM offsets
+ # ---------------------------------------------------------------------------
+ 
+-# Default sed regexp - multiline due to syntax constraints
+-#
+-# Use [:space:] because LLVM's integrated assembler inserts <tab> around
+-# the .ascii directive whereas GCC keeps the <space> as-is.
+-define sed-offsets
+-	's:^[[:space:]]*\.ascii[[:space:]]*"\(.*\)".*:\1:; \
+-	/^->/{s:->#\(.*\):/* \1 */:; \
+-	s:^->\([^ ]*\) [\$$#]*\([^ ]*\) \(.*\):#define \1 \2 /* \3 */:; \
+-	s:->::; p;}'
+-endef
+-
+ # Use filechk to avoid rebuilds when a header changes, but the resulting file
+ # does not
+ define filechk_offsets
+@@ -605,7 +594,7 @@ define filechk_offsets
+ 	 echo " * This file was generated by Kbuild"; \
+ 	 echo " */"; \
+ 	 echo ""; \
+-	 sed -ne $(sed-offsets) < $<; \
++	 $(OBJCOPY) -j .data.kbuild -O binary $< /dev/stdout | cat; \
+ 	 echo ""; \
+ 	 echo "#endif"
+ endef
+diff --git a/scripts/mod/Makefile b/scripts/mod/Makefile
+index c729bc936bae1..3c3f5e16a30a2 100644
+--- a/scripts/mod/Makefile
++++ b/scripts/mod/Makefile
+@@ -8,10 +8,10 @@ modpost-objs	:= modpost.o file2alias.o sumversion.o symsearch.o
+ 
+ devicetable-offsets-file := devicetable-offsets.h
+ 
+-$(obj)/$(devicetable-offsets-file): $(obj)/devicetable-offsets.s FORCE
++$(obj)/$(devicetable-offsets-file): $(obj)/devicetable-offsets.o FORCE
+ 	$(call filechk,offsets,__DEVICETABLE_OFFSETS_H__)
+ 
+-targets += $(devicetable-offsets-file) devicetable-offsets.s
++targets += $(devicetable-offsets-file) devicetable-offsets.o
+ 
+ # dependencies on generated files need to be listed explicitly
+ 
 -- 
-2.43.0
+2.34.1
 
 
