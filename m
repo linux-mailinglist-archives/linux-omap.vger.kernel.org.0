@@ -1,56 +1,56 @@
-Return-Path: <linux-omap+bounces-2044-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2045-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3065C962F58
-	for <lists+linux-omap@lfdr.de>; Wed, 28 Aug 2024 20:08:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAA96962F60
+	for <lists+linux-omap@lfdr.de>; Wed, 28 Aug 2024 20:09:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD463284A4A
-	for <lists+linux-omap@lfdr.de>; Wed, 28 Aug 2024 18:08:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E8121F211C2
+	for <lists+linux-omap@lfdr.de>; Wed, 28 Aug 2024 18:09:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BD5C1AAE0C;
-	Wed, 28 Aug 2024 18:08:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A8C71A7AF3;
+	Wed, 28 Aug 2024 18:09:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="FuSf36dM"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="Pb5ORQCf"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73AA11A4F33;
-	Wed, 28 Aug 2024 18:08:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C4B71A7067;
+	Wed, 28 Aug 2024 18:09:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724868520; cv=none; b=OA6qssjuP+vLgwT2IACtLsRmfgLN0C+9jjbpHpqWZqwSpHBuxiXREt5Y98tuxsjhsw7To/hTBraXdgFpvtH1vHAfiyexF+KVNW6ZvjwZ91aa9gFzKFOc+5tNKSpCLrrK2YD/moghQvD1/HzgyCd6hEHmEymqBBGg60EWeShluy8=
+	t=1724868543; cv=none; b=itZRt5U4Bj0PtQ0t7kXJKD4UU/yWk1ovnCfllyRjVe582sOccFqLYRxRrNHSUrunH6MIP6WsDBPB691jYmxQVIYcea+i9fKj0dIAH35Fle8VGgsqlVg74/HbqunrfB5w55jG1eUgcj7YbdDoOJ+vAlyCWVUU2twQTVWGIxM5inM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724868520; c=relaxed/simple;
-	bh=hQpnFMo+laQY9oMla/2RFq3qRhnKHxoflRCzLAn2eB4=;
+	s=arc-20240116; t=1724868543; c=relaxed/simple;
+	bh=yB6uZukIwE+X4offf/wIBMkWmN7C3qjKU4UzOvr7GJo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=C7N9P87XhCLmzLPL8Yv+2FOd6G5/MIeC1krRhje1bX0UoBM+aK+8A0T0s08UPiMDjf5I43VtBqUepGlhO38NgSl3LTGhv1pr1DdlNe6TRpS+cZBRzgc6dqNrHUsLhfVMBxXddsfpEW+3rieTSeFSCKf2szCNkGk4/jh67GB+6oI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=FuSf36dM; arc=none smtp.client-ip=212.227.15.18
+	 In-Reply-To:Content-Type; b=HNaghOeoLwuZb3fQtL8J31cJarfdQpn3kcTcos9CcxHPdgDmRqr0lEYjflpc4isMZ5iHEj2/0duunqzw5LqHjYliVGXNDUvDAaVR6V4VQT9gjWt0KK4QDF+fVZ1jmXTZLediYeU4Xp/zg7vLpVJFomwQ/5UgKJZX9orQcfZKdmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=Pb5ORQCf; arc=none smtp.client-ip=212.227.15.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1724868513; x=1725473313; i=deller@gmx.de;
-	bh=Hud0DI9YV21RAJ2KGzjy/vBH5kORqs//+22MFMlye5w=;
+	s=s31663417; t=1724868536; x=1725473336; i=deller@gmx.de;
+	bh=Xix/dBO1oukhRqWBWYAXqCl/z3ryffHxBzJU1L/ZpLw=;
 	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
 	 References:From:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding:cc:content-transfer-encoding:
 	 content-type:date:from:message-id:mime-version:reply-to:subject:
 	 to;
-	b=FuSf36dMwtmvwicmeUBj/MX3dL4poZiO/leZJhPk33B8aguDpaPVIvKOnMXiV3hu
-	 MbUyPWFslP9V7nDDQhMEFF7hBkvS0IwbDyReALZhjuL8w5lIE5dKO2yWIXNslBFqc
-	 9nmpuTOs54viXOPlidbWkInWreA/5jQZnUNzibX3UhTp2Fo6WPLSFodUb/UTjG77m
-	 rbke9rdB3Bh8e4dEPY6gbi73ISUdfX9KuMCZmybezklSYGo3Z7Z4veJysFktMFMNL
-	 UkHJRloinR9f4P1jUGe7FyKzYGLN22YTQ9LY7bKiCj6srB2U1X3/uG3TzBsGXA3+1
-	 IfvMXvUFocxvAI9bCw==
+	b=Pb5ORQCfpoHGjwETSjKy3kBzhxaaHfpwubFjgV03f8rq2IWWCDw22QLMIlnPQbEa
+	 HUL6TqoGESdvXGR0JwBozMWK7fjdKxUBNkqTag+KjqWbGeS+7g6LJ60nZ9mg1XHpi
+	 WTqQrqnxZ53vY0eXDHcgFxIsVO8LFoN6JQlmAioSm5VPrNEd3LeZwaYmnZT6K1ybF
+	 ouIUPrvUIULgBQKGUhKM7voU8Bs4XNMefLuOPltpP9SghpZpLiHsxrDmw38QsfMeQ
+	 g/lQ9ruvhytla/X48cl4eJOCn6lb3au+KuPNpS+6PasqyShhj370rzmD0EShDrGm2
+	 ZNza+qMvHjSNuuB6UA==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.55] ([109.250.63.126]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MYNNo-1seKlW3K0w-00TK58; Wed, 28
- Aug 2024 20:08:32 +0200
-Message-ID: <d60d6c37-3726-477c-8d69-5b49be8c921c@gmx.de>
-Date: Wed, 28 Aug 2024 20:08:32 +0200
+Received: from [192.168.20.55] ([109.250.63.126]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MIMbO-1svRuO2Qei-00DlMr; Wed, 28
+ Aug 2024 20:08:56 +0200
+Message-ID: <4ce943f8-9557-4563-a107-acb78a0b33f5@gmx.de>
+Date: Wed, 28 Aug 2024 20:08:55 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -58,12 +58,13 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] fbdev: omapfb: Use sysfs_emit_at() to simplify code
+Subject: Re: [PATCH] fbdev: omapfb: panel-sony-acx565akm: Simplify
+ show_cabc_available_modes()
 To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 Cc: linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
- linux-fbdev@vger.kernel.org, linux-omap@vger.kernel.org,
+ linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org,
  dri-devel@lists.freedesktop.org
-References: <fa1c03aded0c36585d29991d85d083853c3ca871.1723119220.git.christophe.jaillet@wanadoo.fr>
+References: <91fc9049558a4865d441930c8f4732461f478eca.1723110340.git.christophe.jaillet@wanadoo.fr>
 Content-Language: en-US
 From: Helge Deller <deller@gmx.de>
 Autocrypt: addr=deller@gmx.de; keydata=
@@ -109,53 +110,47 @@ Autocrypt: addr=deller@gmx.de; keydata=
  FwRDcGV6nxanxZGKEkSHHOm8jHwvQWvPP73pvuPBEPtKGLzbgd7OOcGZWtq2hNC6cRtsRdDx
  4TAGMCz4j238m+2mdbdhRh3iBnWT5yPFfnv/2IjFAk+sdix1Mrr+LIDF++kiekeq0yUpDdc4
  ExBy2xf6dd+tuFFBp3/VDN4U0UfG4QJ2fg19zE5Z8dS4jGIbLg==
-In-Reply-To: <fa1c03aded0c36585d29991d85d083853c3ca871.1723119220.git.christophe.jaillet@wanadoo.fr>
+In-Reply-To: <91fc9049558a4865d441930c8f4732461f478eca.1723110340.git.christophe.jaillet@wanadoo.fr>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:kpndym5g7jHBuKWmmsmXtKTqJZHimbfDpYO2hL9Z0usUf4ZgN9D
- ziEtYiOKxiHCwJT2SmgeqTfSlXw1sm4w6WvyBzXq6Yu3pWX3gAvoDuncyybDpwSDzy8jU1L
- dHjWF7mlvWR94lZLhlD6Wglo7quMGzf4nTTLf7X4Dr422NKupukR85Mv50NgK0PwYMhHKYa
- j60RNK64+Oz+Qr9mpxNRw==
+X-Provags-ID: V03:K1:awWueHYvHTlFQIUT4Nu+e4FKf89XTtu5qyRcGOdQ0wYYywk5ejL
+ 0d3fBMft/5HXbGHpwVImbA8ZZZfLRcp5GN+bn+P96Y6yYJUWih6R/8/d5hyJnQI0QCrdwQh
+ Lez8+WlDT/iZsKq5RkYl8ngIR7SOzrCKcXs5SI47wDxVtP3NVnBDYjpT7THm0udIcx6urQh
+ MtdfQJsarn2cElrR6fZog==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:MV9b1EM5y0E=;oa5b73fgnWG2aVd+RnZcqp17m06
- 1foU/NMg4F2hKCmtvPp5c6Vegom7w0o09Bgsi/1/KKvdpkRcm5oYSHGas1iO2WquBeJIBqVtI
- eBVWk28ZDzcLK0+js+RYDDIlD7G46qbSp7aQ1bP99+UdgSNACBQ2MQm1/HTAWfu+bOmxo368X
- ro60Fl1HNgKRMv79FxnYNJ/6MOko/TqxoZE6g+rZ/isntVktakf0SZlHRvcU7PUddhvd6ukSo
- 3aYwVyMMg+Rz30zrReQzOKUZfsVaNfmyo7Mq/cUHRulLiRaCb72wTUdIL+wUfG5R98nKIIG8+
- i0HbsmY9EbdbJmql5saBKqTc0B5XK8Fw5lXHdvPLgSLFUltGluOU0ZDblv4V+/ULgMyRICAvV
- T2vegnPDOOp1Px/m0XIJtjQq6ooBJSXASffmbjPSj/jzRrFN4Dd8GIsM3KZ3oq8yRIESzpUro
- 3fKfTiCSOQ1OndOhorb/ONjo1Gt/ZlKvEBi/Lg4RYCQ0PHyVj7eMrz4bYb1deKVTyQTZnAXSv
- Q3GWy2ylDx2GPnEXNdOtztWUKg12f1wDW1USwMHMVKytyAmr+FSIbPraWe3O3fKYXlwyZvexr
- eYPXzDAE9tCb0vetKj19zXQxb2s806dLVpGD0lC7mBZW+0ilHShopcsYmoZhrfe7f5oByp6Mz
- b5Sktn60XUhSEdXBpadSrUrAvhMOJKd+uGRrSTHiQ0k964E7LpZb/T0NHp3TKoX9maOjqAcVR
- +fjFx4sC7v8r3kv9EP17oPGaLQoC608aflc8QJE7lqH1T/rlg1ixaM+/zQDGNotUb+p+IAy6Q
- 4D51eGeoQE2he+iLISnPWXeA==
+UI-OutboundReport: notjunk:1;M01:P0:hbaTjg7ikic=;KYDk9hSyEvA1QJEeWfGb+BbKS3a
+ CS1zDHqMALNKRd5mVzrlyPR7D4wc6+H1LQjbswfZyy2P5q8YRQtIfp8HZF6+UuQgdRCSyFZLm
+ 7cnZHOSNHoC/EVdpwJPfaopfdtqKX/odsaGWl1Z3thC9KQ0W6NZ3mT5xSinyDEncpUXZDhVry
+ AfVEDE5IO/bBI9nCa1qvIheXJWQq+PKXymCK2symhJ3/71i6sbv2sw1gPLSC6GHySuCsEbxzW
+ Aa5l4JsVR3PKjN/vstWwYvGNLpFAJ3TTwDVyMksUyTndwALXSKhEAwrMC8k4jLsDbfaCv5sMo
+ BRxmibncUZI0IAXIbhSaysFh5bHWxo94cA2aLyfmRtKKV6RN65bH8ol0G0ETMZn77bM/MUPJG
+ WhqZ6r5j+gkpbTv7P0jfk7OUveSjt1kM85BXbxYR8xFDdg+0bwMp6RlqypzFrPpo8s5dj9mVJ
+ pffZBnoNlixrKljrzE0pFhIb9TDMHoj+xgxMFFuSuDOGx0dNyo+OjHu0YBdj9YeQv/y8WS5V7
+ TM95214z+T5eq25EbvZjUn7TSWHRQTntue+svX6JPu4H138/IKNMOhGmejo6qgaEXN7wuECAG
+ 2Hc2yLRRGrEwfgQG/du9G0RGkDt2EzyyRacAK6xR1fbEHxlEJqHNjGpJe8qdr7wmRZjoULKgj
+ nq4kWxeqXPeGzU7UUzvpm17kdpuZtlIgwe7Qxiq3M7EWFSNHxxp4lJecddD5KwJpEYmmPOrUF
+ 4uQeOKZBiuZoPTPUxkeUeoDaJkk5MJQmaKHnQ6AMbDWVA9N+NY1awC1biPrVHugnWwl1oeKQv
+ J4QnWT6R6PVF6Kvevpkr55Nw==
 
-On 8/8/24 14:14, Christophe JAILLET wrote:
-> This file already uses sysfs_emit(). So be consistent and also use
-> sysfs_emit_at().
+On 8/8/24 11:46, Christophe JAILLET wrote:
+> Use sysfs_emit_at() instead of snprintf() + custom logic.
+> Using sysfs_emit_at() is much more simple.
 >
-> Moreover, size is always < PAGE_SIZE because scnprintf() (and now
-> sysfs_emit_at()) returns the number of characters written not including =
-the
-> trailing '\0'. So some tests can be removed.
+> Also, sysfs_emit() is already used in this function, so using
+> sysfs_emit_at() is more consistent.
 >
-> This slightly simplifies the code and makes it more readable.
+> Also simplify the logic:
+>    - always add a space after an entry
+>    - change the last space into a '\n'
+>
+> Finally it is easy to see that, given the size of cabc_modes, PAGE_SIZE
+> can not be reached.
+> So better keep everything simple (and correct).
 >
 > Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> ---
-> Compile tested only.
->
-> 2 spaces are added before color_caps[i].name and color_caps[i].name, but
-> not ctrl_caps[i].name.
-> I wonder if it is done on purpose or if it could be removed as well.
-> ---
->   drivers/video/fbdev/omap/omapfb_main.c | 36 ++++++++++----------------
->   1 file changed, 14 insertions(+), 22 deletions(-)
 
 applied.
 
 Thanks!
 Helge
-
 
