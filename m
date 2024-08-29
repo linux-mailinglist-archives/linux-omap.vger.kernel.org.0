@@ -1,70 +1,80 @@
-Return-Path: <linux-omap+bounces-2055-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2057-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 546ED964A8D
-	for <lists+linux-omap@lfdr.de>; Thu, 29 Aug 2024 17:50:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AD269650D1
+	for <lists+linux-omap@lfdr.de>; Thu, 29 Aug 2024 22:38:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4A581F2158D
-	for <lists+linux-omap@lfdr.de>; Thu, 29 Aug 2024 15:50:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DDB71C2343B
+	for <lists+linux-omap@lfdr.de>; Thu, 29 Aug 2024 20:38:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0BCE1B3B28;
-	Thu, 29 Aug 2024 15:50:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC64E1BAED8;
+	Thu, 29 Aug 2024 20:38:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WIDYYNtx"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="anW59re8"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FB981922E6;
-	Thu, 29 Aug 2024 15:50:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 836E9189F5A;
+	Thu, 29 Aug 2024 20:38:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724946616; cv=none; b=g/l4RYu6441GtQ9E/zOvsuY+EIF0P6WjSQgi0pHWh7g3PoAOy0bsWSCEoQ7vHPKuvJPqyGuUbpt2VvqhtxC5EiydgbpxoogsD0ILlSp/tjz8d/GLNZMzPeqDk1r97mrbmxg5iVb8BPAilYfFGYyXlXSGRtgeKHv+OfmyW+KgBwo=
+	t=1724963898; cv=none; b=BjlzDdA/WKx+LXldThH8q4blG3tZX3TGZ5+V1DdIsFozNrKtcHev/PlEn09x+bWf9BPncjjA7XjhXJLmAn1PZKMiSMval2trr7FS6hURZxfNbtXyBYDSqWjUcG7abGzEDgWyYz3zSwFjazqHrfdSyGIdveFaqFqgYTyjV4waMq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724946616; c=relaxed/simple;
-	bh=KccHSL6fnfRyNdZ90h1lu3IkO6/vw/VRe94K7w5iAy4=;
+	s=arc-20240116; t=1724963898; c=relaxed/simple;
+	bh=tscwRgI2saPDR7x1unDsFBI0xOp0fMmY1QDhyt+9PHk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OLRj3L+klEIlWpWZgxcoqZR+QLCfH03cNYfZg5lrLENcW6/jDxmsrUbd04XA3lXLWEGBQYJDnNDtLPeZFltUh4CZp/Ru6raI4y+O5/TIYq0LcaQAhjsByhroEgezhrOCpotto7D/9zMj938AXZHknu2VLVTd5m34MTVzjwdWWj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WIDYYNtx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CADD2C4CEC1;
-	Thu, 29 Aug 2024 15:50:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724946616;
-	bh=KccHSL6fnfRyNdZ90h1lu3IkO6/vw/VRe94K7w5iAy4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WIDYYNtxl0pvt7YlIt1csogI9T2a15xk1/T4FECWLIFS9jXTqScuicaXrxQ/2b8Gh
-	 qsK2yQRiErDgH9jEeSwnKvx2fWa5S10GuWUcyUaPJmocSQUu3N8UH/zXmZqsikYedH
-	 WfwZMoOpUe/kVao3rxXw3KbmgVpfef7CVVDCXh47RDPsrAmZy5S4UunyrPI+PFdhQc
-	 iaEtzw6QhCrqPYWA7OescM0zVcH1JNLwEfI6os+SWN9JskUmguFMTOpmVVHIEREJ27
-	 et59OKxRrNSj+Hq3jrAB3UIhDPnWiW2bKaXH4JtpRN2qet+nJCRlKIReqetlLGq/uQ
-	 niInKANx9CERA==
-Date: Thu, 29 Aug 2024 10:50:14 -0500
-From: Rob Herring <robh@kernel.org>
-To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Cc: Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>,
-	Helge Deller <deller@gmx.de>, Jaroslav Kysela <perex@perex.cz>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Maxime Ripard <mripard@kernel.org>,
-	Michal Simek <michal.simek@amd.com>,
-	Saravana Kannan <saravanak@google.com>,
-	Takashi Iwai <tiwai@suse.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linux-arm-kernel@lists.infradead.org, linux-fbdev@vger.kernel.org,
-	linux-media@vger.kernel.org, linux-omap@vger.kernel.org,
-	linux-sound@vger.kernel.org, Sakari Ailus <sakari.ailus@iki.fi>
-Subject: Re: [PATCH v4 1/9] of: property: add of_graph_get_next_port()
-Message-ID: <20240829155014.GE465065-robh@kernel.org>
-References: <87bk1d2pvt.wl-kuninori.morimoto.gx@renesas.com>
- <87a5gx2pva.wl-kuninori.morimoto.gx@renesas.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ss3sJVP4SYqLwK/aO06zGgpYIXDBCRWJUcU3tts3v05dtuccu3W6lTIpsrch2enAl6mrU9UtMpENgGxBD6dV8OKwCI9J1K4Li6P1ejHAk6A2FqmyCrkjXlPJkRi8wCSod51A5CUO7i2d4ChCx7uet/5Cf+TAP4lvEAe7OJqstHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=anW59re8; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1724963897; x=1756499897;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=tscwRgI2saPDR7x1unDsFBI0xOp0fMmY1QDhyt+9PHk=;
+  b=anW59re8g7E9kAelpNk+BBP1JV1PEOrPDKd7lZU3vM+SOIaCuXobj0e7
+   uP8jDX1W910+zN1waibuYTbWL94NJXYfhUx2AC9ZLDFiUSrgdhMxcwleh
+   OUEOtML7MWvmxWzN/kTUyo65swMO2bpGzo61/drgiQ/kPWsVZjOSyz2jV
+   RIylGzGYX7dHLL5pkZqeCHM9cIzq4NMLT1Lq1EiwtFMExxfQwx/P2Bse4
+   i3a5xxZANsNKbKJtTLaOEFDOOKEf1GGNI6f/lyXCoFIQCUAf4iwRPCoW8
+   GfNpg9+UU3sctCg7zK6YcjZCv0EM+Dipba01RU1n3VXzfgtzA+iajeMPQ
+   w==;
+X-CSE-ConnectionGUID: uMfpJ0muT5O3mIJDIuxDYw==
+X-CSE-MsgGUID: lbXaaTgCQVukWM3SIXoUVQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11179"; a="34200571"
+X-IronPort-AV: E=Sophos;i="6.10,186,1719903600"; 
+   d="scan'208";a="34200571"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Aug 2024 13:37:41 -0700
+X-CSE-ConnectionGUID: +2I+PKpfTEWO7ZhOV/mdjw==
+X-CSE-MsgGUID: 9jFLsk+2R9icUo/uf7t0Ig==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,186,1719903600"; 
+   d="scan'208";a="63325399"
+Received: from lkp-server01.sh.intel.com (HELO 9c6b1c7d3b50) ([10.239.97.150])
+  by fmviesa006.fm.intel.com with ESMTP; 29 Aug 2024 13:37:38 -0700
+Received: from kbuild by 9c6b1c7d3b50 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sjltg-0000iM-02;
+	Thu, 29 Aug 2024 20:37:36 +0000
+Date: Fri, 30 Aug 2024 04:37:35 +0800
+From: kernel test robot <lkp@intel.com>
+To: Vegard Nossum <vegard.nossum@oracle.com>,
+	Masahiro Yamada <masahiroy@kernel.org>
+Cc: oe-kbuild-all@lists.linux.dev, linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-omap@vger.kernel.org, kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org, linux-um@lists.infradead.org,
+	bpf@vger.kernel.org, llvm@lists.linux.dev,
+	Vegard Nossum <vegard.nossum@oracle.com>
+Subject: Re: [PATCH] kbuild: use objcopy to generate asm-offsets
+Message-ID: <202408300438.xObK98m5-lkp@intel.com>
+References: <20240828083605.3093701-1-vegard.nossum@oracle.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -73,179 +83,120 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <87a5gx2pva.wl-kuninori.morimoto.gx@renesas.com>
+In-Reply-To: <20240828083605.3093701-1-vegard.nossum@oracle.com>
 
-On Wed, Aug 28, 2024 at 05:11:37AM +0000, Kuninori Morimoto wrote:
-> We have endpoint base functions
-> 	- of_graph_get_next_device_endpoint()
-> 	- of_graph_get_device_endpoint_count()
-> 	- for_each_of_graph_device_endpoint()
-> 
-> Here, for_each_of_graph_device_endpoint() loop finds each endpoints
-> 
-> 	ports {
-> 		port@0 {
-> (1)			endpoint {...};
-> 		};
-> 		port@1 {
-> (2)			endpoint {...};
-> 		};
-> 		...
-> 	};
-> 
-> In above case, it finds endpoint as (1) -> (2) -> ...
-> 
-> Basically, user/driver knows which port is used for what, but not in
-> all cases. For example on flexible/generic driver case, how many ports
-> are used is not fixed.
-> 
-> For example Sound Generic Card driver which is used from many venders
-> can't know how many ports are used. Because the driver is very
-> flexible/generic, it is impossible to know how many ports are used,
-> it depends on each vender SoC and/or its used board.
-> 
-> And more, the port can have multi endpoints. For example Generic Sound
-> Card case, it supports many type of connection between CPU / Codec, and
-> some of them uses multi endpoint in one port.
-> Then, Generic Sound Card want to handle each connection via "port"
-> instead of "endpoint".
-> But, it is very difficult to handle each "port" via existing
-> for_each_of_graph_device_endpoint(). Getting "port" via of_get_parent()
-> from "endpoint" doesn't work. see below.
-> 
-> 	ports {
-> 		port@0 {
-> (1)			endpoint@0 {...};
-> (2)			endpoint@1 {...};
-> 		};
-> 		port@1 {
-> (3)			endpoint {...};
-> 		};
-> 		...
-> 	};
-> 
-> In other case, we want to handle "ports" same as "port" for some reasons.
-> 
-> 	node {
-> =>		ports@0 {
-> 			port@0 { ... };
-> 			port@1 { ... };
-> 			...
-> 		};
-> =>		ports@1 {
-> 			...
-> 		};
-> 	};
-> 
-> Add "ports" / "port" base functions.
-> 
-> Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-> ---
->  drivers/of/property.c    | 108 +++++++++++++++++++++++++++++++++++++++
->  include/linux/of_graph.h |  49 ++++++++++++++++++
->  2 files changed, 157 insertions(+)
-> 
-> diff --git a/drivers/of/property.c b/drivers/of/property.c
-> index 164d77cb94458..d99b34dd2d5b4 100644
-> --- a/drivers/of/property.c
-> +++ b/drivers/of/property.c
-> @@ -625,6 +625,97 @@ struct device_node *of_graph_get_port_by_id(struct device_node *parent, u32 id)
->  }
->  EXPORT_SYMBOL(of_graph_get_port_by_id);
->  
-> +/**
-> + * of_graph_get_next_ports() - get next ports node.
-> + * @parent: pointer to the parent device node
-> + * @prev: previous ports node, or NULL to get first
-> + *
-> + * If "parent" node doesn't have "ports" node, it returns "parent" node itself as "ports" node.
-> + *
-> + * Return: A 'ports' node pointer with refcount incremented. Refcount
-> + * of the passed @prev node is decremented.
-> + */
-> +struct device_node *of_graph_get_next_ports(struct device_node *parent,
-> +					    struct device_node *prev)
-> +{
-> +	if (!parent)
-> +		return NULL;
-> +
-> +	if (!prev) {
-> +		/*
-> +		 * Find "ports" node from parent
-> +		 *
-> +		 *	parent {
-> +		 * =>		ports {
-> +		 *			port {...};
-> +		 *		};
-> +		 *	};
-> +		 */
-> +		prev = of_get_child_by_name(parent, "ports");
-> +
-> +		/*
-> +		 * Use parent as its ports if it not exist
-> +		 *
-> +		 * =>	parent {
-> +		 *		port {...};
-> +		 *	};
-> +		 */
-> +		if (!prev) {
-> +			/* check whether "parent" has "port" node */
-> +			struct device_node *port __free(device_node) = of_get_child_by_name(parent, "port");
-> +
-> +			if (port)
-> +				prev = of_node_get(parent);
-> +		}
-> +
-> +		return prev;
-> +	}
-> +
-> +	/* Find next ports */
-> +	do {
-> +		prev = of_get_next_child(parent, prev);
-> +		if (!prev)
-> +			break;
-> +	} while (!of_node_name_eq(prev, "ports"));
-> +
-> +	return prev;
-> +}
-> +EXPORT_SYMBOL(of_graph_get_next_ports);
-> +
-> +/**
-> + * of_graph_get_next_port() - get next port node.
-> + * @parent: pointer to the parent device node, or parent ports node
-> + * @prev: previous port node, or NULL to get first
-> + *
-> + * Parent device node can be used as @parent whether device node has ports node or not.
-> + * It will work same as ports@0 node.
-> + *
-> + * Return: A 'port' node pointer with refcount incremented. Refcount
-> + * of the passed @prev node is decremented.
-> + */
-> +struct device_node *of_graph_get_next_port(struct device_node *parent,
-> +					   struct device_node *prev)
-> +{
-> +	if (!parent)
-> +		return NULL;
-> +
-> +	if (!prev) {
-> +		struct device_node *ports __free(device_node) =
-> +			of_graph_get_next_ports(parent, NULL);
-> +
-> +		return of_get_child_by_name(ports, "port");
-> +	}
-> +
-> +	do {
-> +		prev = of_get_next_child(parent, prev);
-> +		if (!prev)
-> +			break;
-> +	} while (!of_node_name_eq(prev, "port"));
-> +
-> +	return prev;
-> +}
-> +EXPORT_SYMBOL(of_graph_get_next_port);
+Hi Vegard,
 
-of_graph_is_present should be reimplemented using this function. So 
-should part of of_graph_get_next_endpoint().
+kernel test robot noticed the following build warnings:
 
-Rob
+[auto build test WARNING on masahiroy-kbuild/for-next]
+[also build test WARNING on masahiroy-kbuild/fixes soc/for-next kvmarm/next kvm/queue uml/next krzk-mem-ctrl/for-next bpf-next/master bpf/master linus/master v6.11-rc5 next-20240829]
+[cannot apply to tmlind-omap/for-next kvm/linux-next uml/fixes]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Vegard-Nossum/kbuild-use-objcopy-to-generate-asm-offsets/20240828-163854
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/masahiroy/linux-kbuild.git for-next
+patch link:    https://lore.kernel.org/r/20240828083605.3093701-1-vegard.nossum%40oracle.com
+patch subject: [PATCH] kbuild: use objcopy to generate asm-offsets
+config: mips-loongson3_defconfig (https://download.01.org/0day-ci/archive/20240830/202408300438.xObK98m5-lkp@intel.com/config)
+compiler: mips64el-linux-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240830/202408300438.xObK98m5-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202408300438.xObK98m5-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   mips64el-linux-objcopy: /dev/stdout[.data.kbuild]: Illegal seek
+   In file included from include/linux/mm_types.h:18,
+                    from include/linux/uio.h:10,
+                    from include/linux/socket.h:8,
+                    from include/linux/compat.h:15,
+                    from arch/mips/kernel/asm-offsets.c:12:
+   include/linux/page-flags-layout.h:15:5: warning: "MAX_NR_ZONES" is not defined, evaluates to 0 [-Wundef]
+      15 | #if MAX_NR_ZONES < 2
+         |     ^~~~~~~~~~~~
+   include/linux/page-flags-layout.h:58:19: warning: "LRU_GEN_WIDTH" is not defined, evaluates to 0 [-Wundef]
+      58 | #if ZONES_WIDTH + LRU_GEN_WIDTH + SECTIONS_WIDTH + NODES_SHIFT \
+         |                   ^~~~~~~~~~~~~
+   include/linux/page-flags-layout.h:59:28: warning: "NR_PAGEFLAGS" is not defined, evaluates to 0 [-Wundef]
+      59 |         <= BITS_PER_LONG - NR_PAGEFLAGS
+         |                            ^~~~~~~~~~~~
+   include/linux/page-flags-layout.h:93:19: warning: "LRU_GEN_WIDTH" is not defined, evaluates to 0 [-Wundef]
+      93 | #if ZONES_WIDTH + LRU_GEN_WIDTH + SECTIONS_WIDTH + NODES_WIDTH + \
+         |                   ^~~~~~~~~~~~~
+   include/linux/page-flags-layout.h:94:64: warning: "NR_PAGEFLAGS" is not defined, evaluates to 0 [-Wundef]
+      94 |         KASAN_TAG_WIDTH + LAST_CPUPID_SHIFT <= BITS_PER_LONG - NR_PAGEFLAGS
+         |                                                                ^~~~~~~~~~~~
+   include/linux/page-flags-layout.h:104:19: warning: "LRU_GEN_WIDTH" is not defined, evaluates to 0 [-Wundef]
+     104 | #if ZONES_WIDTH + LRU_GEN_WIDTH + SECTIONS_WIDTH + NODES_WIDTH + \
+         |                   ^~~~~~~~~~~~~
+   include/linux/page-flags-layout.h:105:63: warning: "NR_PAGEFLAGS" is not defined, evaluates to 0 [-Wundef]
+     105 |         KASAN_TAG_WIDTH + LAST_CPUPID_WIDTH > BITS_PER_LONG - NR_PAGEFLAGS
+         |                                                               ^~~~~~~~~~~~
+   In file included from include/linux/mm_types.h:5:
+   include/linux/mm_types_task.h:22:34: warning: "SPINLOCK_SIZE" is not defined, evaluates to 0 [-Wundef]
+      22 | #define ALLOC_SPLIT_PTLOCKS     (SPINLOCK_SIZE > BITS_PER_LONG/8)
+         |                                  ^~~~~~~~~~~~~
+   include/linux/mm_types.h:478:5: note: in expansion of macro 'ALLOC_SPLIT_PTLOCKS'
+     478 | #if ALLOC_SPLIT_PTLOCKS
+         |     ^~~~~~~~~~~~~~~~~~~
+   In file included from include/linux/dcache.h:14,
+                    from include/linux/fs.h:8,
+                    from include/linux/compat.h:17:
+>> include/linux/lockref.h:23:36: warning: "SPINLOCK_SIZE" is not defined, evaluates to 0 [-Wundef]
+      23 |          IS_ENABLED(CONFIG_SMP) && SPINLOCK_SIZE <= 4)
+         |                                    ^~~~~~~~~~~~~
+   include/linux/lockref.h:27:5: note: in expansion of macro 'USE_CMPXCHG_LOCKREF'
+      27 | #if USE_CMPXCHG_LOCKREF
+         |     ^~~~~~~~~~~~~~~~~~~
+   In file included from include/linux/gfp.h:7,
+                    from include/linux/xarray.h:16,
+                    from include/linux/list_lru.h:14,
+                    from include/linux/fs.h:13:
+   include/linux/mmzone.h:842:29: error: 'MAX_NR_ZONES' undeclared here (not in a function); did you mean 'MAX_NR_GENS'?
+     842 |         long lowmem_reserve[MAX_NR_ZONES];
+         |                             ^~~~~~~~~~~~
+         |                             MAX_NR_GENS
+   include/linux/mm_types_task.h:22:34: warning: "SPINLOCK_SIZE" is not defined, evaluates to 0 [-Wundef]
+      22 | #define ALLOC_SPLIT_PTLOCKS     (SPINLOCK_SIZE > BITS_PER_LONG/8)
+         |                                  ^~~~~~~~~~~~~
+   include/linux/mm.h:2889:5: note: in expansion of macro 'ALLOC_SPLIT_PTLOCKS'
+    2889 | #if ALLOC_SPLIT_PTLOCKS
+         |     ^~~~~~~~~~~~~~~~~~~
+   In file included from include/linux/swap.h:9,
+                    from include/linux/suspend.h:5,
+                    from arch/mips/kernel/asm-offsets.c:17:
+   include/linux/memcontrol.h: In function 'mem_cgroup_get_zone_lru_size':
+>> include/linux/memcontrol.h:914:31: warning: parameter 'lru' set but not used [-Wunused-but-set-parameter]
+     914 |                 enum lru_list lru, int zone_idx)
+         |                 ~~~~~~~~~~~~~~^~~
+>> include/linux/memcontrol.h:914:40: warning: parameter 'zone_idx' set but not used [-Wunused-but-set-parameter]
+     914 |                 enum lru_list lru, int zone_idx)
+         |                                    ~~~~^~~~~~~~
+   make[3]: *** [scripts/Makefile.build:244: arch/mips/kernel/asm-offsets.o] Error 1
+   make[3]: Target 'missing-syscalls' not remade because of errors.
+   make[2]: *** [arch/mips/Makefile:432: archprepare] Error 2
+   make[2]: Target 'prepare' not remade because of errors.
+   make[1]: *** [Makefile:224: __sub-make] Error 2
+   make[1]: Target 'prepare' not remade because of errors.
+   make: *** [Makefile:224: __sub-make] Error 2
+   make: Target 'prepare' not remade because of errors.
+
+
+vim +/SPINLOCK_SIZE +23 include/linux/lockref.h
+
+57f4257eae33e0 Peter Zijlstra     2013-11-14  20  
+57f4257eae33e0 Peter Zijlstra     2013-11-14  21  #define USE_CMPXCHG_LOCKREF \
+57f4257eae33e0 Peter Zijlstra     2013-11-14  22  	(IS_ENABLED(CONFIG_ARCH_USE_CMPXCHG_LOCKREF) && \
+597d795a2a786d Kirill A. Shutemov 2013-12-20 @23  	 IS_ENABLED(CONFIG_SMP) && SPINLOCK_SIZE <= 4)
+0f8f2aaaab0b0f Waiman Long        2013-08-28  24  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
