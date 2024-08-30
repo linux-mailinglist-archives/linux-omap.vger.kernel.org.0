@@ -1,119 +1,107 @@
-Return-Path: <linux-omap+bounces-2067-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2068-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A833A966A15
-	for <lists+linux-omap@lfdr.de>; Fri, 30 Aug 2024 21:50:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAC9E966CA8
+	for <lists+linux-omap@lfdr.de>; Sat, 31 Aug 2024 00:47:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 506661F23691
-	for <lists+linux-omap@lfdr.de>; Fri, 30 Aug 2024 19:50:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 672301F23B89
+	for <lists+linux-omap@lfdr.de>; Fri, 30 Aug 2024 22:47:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EE641BE251;
-	Fri, 30 Aug 2024 19:50:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 210B018890C;
+	Fri, 30 Aug 2024 22:47:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="XekhFN/e"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="iRSRONkE"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0FAC1BD50E
-	for <linux-omap@vger.kernel.org>; Fri, 30 Aug 2024 19:50:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EF37165F0B
+	for <linux-omap@vger.kernel.org>; Fri, 30 Aug 2024 22:47:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725047434; cv=none; b=Jz8FKe58GVl6cMrxmL6a2vwxpfXg0XNsmZkf0vNvBGGQ3vPzQaGV1eoyRlX+QaqbRagNzot/nszfLphgeZVrgpt7RnJ4Ac9gq1g1NRy68saFQbjy/c+nu11j9lEpZUtJmiibT+v03pZFHO1/OGYvSyq3JUPfYySnIfg4WG8oxuo=
+	t=1725058030; cv=none; b=mloVk9y1lCWwO6qdCidZgoXCA9OjaC/NxmaAcdWNj5cmcEOA+GdVHywhDhkTpNZIJNbxWimSk3u1PLCQLfmYefnfQLVcLFSoLfL4iXxT9sgzLqigDt8GYbyxCfQ2TnVhHZU0UMg1AOp78A8A0YkZnnXh3HOA+ty59w1lVJZ2dxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725047434; c=relaxed/simple;
-	bh=yXNmqAtLWS5NlIPRIhOiDrjJJPBlvX+h51JTFVleZsY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nBMnng1CGv4lQd4fU6mwFbNzXP5yGlBCV6gI0+39g1t7ALOHkv+5GtV0USdA5I9lleTbjuRDUAhayhJw160fC05dxfbtzvJKjljTJOMUyA9lUNwcZDZRbeWKuWOw+6ugDtcwXSkMNS8FF6R6uuQ2qmQOgdQkIwxuxgtFzkRlRD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=XekhFN/e; arc=none smtp.client-ip=209.85.210.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-7141b04e7b5so1407140b3a.2
-        for <linux-omap@vger.kernel.org>; Fri, 30 Aug 2024 12:50:31 -0700 (PDT)
+	s=arc-20240116; t=1725058030; c=relaxed/simple;
+	bh=FcERWZl1wa1DugmkSLGflqWj3fp23asXRiIxBMGAnUM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qYuIhTqSeQK6ek3O917FmCdBBBzHGjfWfO56dTilEZYnaVsu71/bU4rIU9fFxZJUCfadLOTkOyS8lbSY8NjFgt0kB5gTkRz5Bjqhu5Rb6pHLx8j6imamliYqRrWXvXRDazOgcXO58b1ilgqeEv+chCE5yNfKAhQA+HsoFVmsbXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=iRSRONkE; arc=none smtp.client-ip=209.85.208.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-2f4f2868621so25426251fa.0
+        for <linux-omap@vger.kernel.org>; Fri, 30 Aug 2024 15:47:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1725047431; x=1725652231; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=linaro.org; s=google; t=1725058027; x=1725662827; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=I6QlsYvzYMyoJ1Ksug9tyv8g6XTQnvNg8jtnf6sK7fQ=;
-        b=XekhFN/eDLLhULgj+9yt+QR+Z8hd5PxKNrD99xDYp/sxEGJSYOG3IQlu3T0pogDAWs
-         /xQDJJeggNAdXJ1XA+rv9d7JtE6SIiob89+FJ2LGDNwmtuu/kQys5sPtub6TPiFPS5Lh
-         N8q5V7fZZQ/aCUnmpwRi7umO7NARDQaDHKXaoh5DP8ycTuy5IPhEz2VFbCOyF4umuO+8
-         Gvemy0goURud/zXa9fWQ6ly/rEYt4OZWFd5fOb0LCL1ekwVv7A8YRd5uwGj2wv+VqbNc
-         +AaoppnfB531dAEpzMSeLTfSXHXyvr9eCpTJt8lnHONJPSEC1lqH+GInCAVnofjVoCpt
-         W0Uw==
+        bh=FcERWZl1wa1DugmkSLGflqWj3fp23asXRiIxBMGAnUM=;
+        b=iRSRONkEwds+0Z2B3BS/qBG/xWaD4a2ZBX0GqOUsh2h3gHOq4+rGtuJxF2vWURl9TR
+         ihi2Hb/iGyPVYYd4suql36XcT6aUz3x9DDmlEzQ/GVpfKEdgsqkpgtneMP6a1CP0Ps1/
+         tp5zpo0kUCtFbvSsygvskeT9+DKj4PiltYXZrdmr09xx1JaY/ptv1pSx9hlEBiZqOZW4
+         +R0mLhThJJYvtE+/yHmx29mnh9HRIjeFfJA1hrai2jbc7PK6aYIh/rwI3YSeuJGvKDZf
+         1Zvgh2lvZHf7Uze+RtVVgVr6F7od7QBVLnlqgZXJFtGgq2ASvaMPmo85nCOPS8lvlL+f
+         pVvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725047431; x=1725652231;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1725058027; x=1725662827;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=I6QlsYvzYMyoJ1Ksug9tyv8g6XTQnvNg8jtnf6sK7fQ=;
-        b=NhJlGt1O8jK0SRP5Yu49Dko3YnPuBspL+coJxi1R6zxtVtKBFKMN2dBpcScUNSvtJw
-         DoHNyIBiYmyJnPJDd2ux2WfGzcviXortg0hrKjmpqtzSV/3Fr7TJ4rF9PLTZLxyDwOxx
-         WVz2W9ciNqIgQ/F6BbwhyJV0fg5xpTMExjgg6UKz/KVIshufJkKGL7XopEDJb7/PCtSZ
-         ny1lnjsNjuItCMuvr8XgGLx8AmqIyBxvT2VOquu6fykOpP0aiR5WhyYYzSiQOVtSVchP
-         RwcD0CB+kWxlMaJo6w7jOH/mQk4bu2aVNBqyAx39zpw7u7WcW35n1Y3j7twkm50Z4iDU
-         QuqA==
-X-Forwarded-Encrypted: i=1; AJvYcCVbnC2lZ97gT1tKH3Bwhm6zrUL9ydnckgZiEV3AbXC+HLgxeuX9CkuLh1J9kSXIT5X3miL43achtyWn@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx0Zesu1cych1P0AHFfKOOltnEMSWdDPN46eJbbbLXWnyxG0bH2
-	7Iwo7KgHBaMXlTx2XQlIAfRI3P9hB6N0g8SDk4mx5rhwq9vIoTLYAFvYHSDlgBg=
-X-Google-Smtp-Source: AGHT+IEcm7YmlJtxqZsF4YzOMKYXwtY0ArLtbfsQjCm0ebmHvrq6+/sfSJC7izruBGlFJ/auiUixHg==
-X-Received: by 2002:a05:6a20:9c9b:b0:1cd:f065:4eec with SMTP id adf61e73a8af0-1cdf06555a8mr2551415637.41.1725047431173;
-        Fri, 30 Aug 2024 12:50:31 -0700 (PDT)
-Received: from localhost ([71.212.170.185])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7d22e7423c2sm3296998a12.17.2024.08.30.12.50.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Aug 2024 12:50:30 -0700 (PDT)
-From: Kevin Hilman <khilman@baylibre.com>
-To: s-vadapalli@ti.com
-Cc: bhelgaas@google.com,
-	j-keerthy@ti.com,
-	kishon@kernel.org,
-	kw@linux.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-omap@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	lpieralisi@kernel.org,
-	manivannan.sadhasivam@linaro.org,
-	robh@kernel.org,
-	srk@ti.com,
-	stable@vger.kernel.org,
-	u-kumar1@ti.com,
-	vigneshr@ti.com
-Subject: Re: [PATCH 0/2] Fixes for the PCI dra7xx driver
-Date: Fri, 30 Aug 2024 12:50:30 -0700
-Message-ID: <20240830195030.3586919-1-khilman@baylibre.com>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827122422.985547-1-s-vadapalli@ti.com>
-References: <20240827122422.985547-1-s-vadapalli@ti.com>
+        bh=FcERWZl1wa1DugmkSLGflqWj3fp23asXRiIxBMGAnUM=;
+        b=Y9+VYAOgWQ8C4sNGP9NUY+Q8qTFLFrGS9E+6Pf0vlk+93K4bMYKy3VcD7GTYXgvsti
+         VazscNQwhjDGuvOQKViPiYL5Als2udzr/rqkkLKDtw6ERslWaDA9Jf6vYRZX40sR1XwE
+         /5Qykz5/spoJq1pdBRqZ6Xfk5yT44+j0En9saO71MtUMs20Ztou+8MuHo7KIwm3MQoGW
+         zo+Nb4lNxbyeHjqgrQ9E2t000wBnT55PEe5h9eh7Qb/dSOqTBMDcWzPMV3Br44kp5fkg
+         JIV8wo0KpGJfXKk0eq2GlPj3X015z2JbZShIx5xlURszXLKwqJ857Q0k4Eyrq2kwpGWv
+         Kydg==
+X-Forwarded-Encrypted: i=1; AJvYcCUgGsVOzMTFBPOZMJE8gcBZ+dy66SUhT9p/tOuU6cAdei4oc6lr2GscJx0n+gNJcw/MHR8WJoaBMYR3@vger.kernel.org
+X-Gm-Message-State: AOJu0YxmcU9kahQeBtWOWCo4vo36U0QJSG3NdBPTNx87vmAzMqUo8zHL
+	Ep0RFP8UU5bZ+nRJNDwPO9teSkQZ21pSqs67qi3fow0gm6kVZXdjc08aB0V83gfJeB1eX1JwlKZ
+	MZXil8YwOX3mFfLzfry1VzjMDnClE5m3720IICQ==
+X-Google-Smtp-Source: AGHT+IE6Pux6xBCNKx6NzrDxkiMvpKkwNksEL+SETGgBL6cWj2r/5BXlHPx1T6w7EQGMUKy947gNiEBsSCvPbrCisNU=
+X-Received: by 2002:a05:6512:2346:b0:52d:582e:410f with SMTP id
+ 2adb3069b0e04-53546ba061fmr2649566e87.46.1725058026553; Fri, 30 Aug 2024
+ 15:47:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20230113205922.2312951-1-andreas@kemnade.info>
+ <CAMRc=Mf4-8AfTHLrvaF14tc2TJatxZJWnMOF-1G8HmDhPKSFAw@mail.gmail.com> <CAFLxGvyX1Q8qGXkWW+JiyQSfP=1dFzeZ7C4OCJHk2pFGX7zygw@mail.gmail.com>
+In-Reply-To: <CAFLxGvyX1Q8qGXkWW+JiyQSfP=1dFzeZ7C4OCJHk2pFGX7zygw@mail.gmail.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Sat, 31 Aug 2024 00:46:55 +0200
+Message-ID: <CACRpkdZY5CROs9EeRSYnOzFvr_Xgnw66ziKqYH2LE=MQe4OWLg@mail.gmail.com>
+Subject: Re: [PATCH] gpio: omap: use dynamic allocation of base
+To: Richard Weinberger <richard.weinberger@gmail.com>
+Cc: Bartosz Golaszewski <brgl@bgdev.pl>, Andreas Kemnade <andreas@kemnade.info>, grygorii.strashko@ti.com, 
+	ssantosh@kernel.org, khilman@kernel.org, linux-omap@vger.kernel.org, 
+	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> This series is based on commit
-> 3e9bff3bbe13 Merge tag 'vfs-6.11-rc6.fixes' of gitolite.kernel.org:pub/scm/linux/kernel/git/vfs/vfs
-> of Mainline Linux.
-> 
-> The first patch fixes conversion to "devm_request_threaded_irq()" where
-> the IRQF_ONESHOT flag should have been added since the handler is NULL.
-> 
-> The second patch fixes the error handling when IRQ request fails in the
-> probe function. The existing error handling doesn't cleanup the changes
-> performed prior to the IRQ request invocation.
+On Thu, Aug 29, 2024 at 10:52=E2=80=AFAM Richard Weinberger
+<richard.weinberger@gmail.com> wrote:
 
-I tested this patch on v6.11-rc5 using a am57xx-beagle-x15 with a SATA
-drive connected to the eSATA port, and confirm that this allows
-booting again.
+> > This could potentially break some legacy user-space programs using
+> > sysfs but whatever, let's apply it and see if anyone complains.
+>
+> FWIW, this broke users pace on my side.
+> Not a super big deal, I'll just revert this patch for now.
+> Maybe the application in question can get rewritten to find the gpio by l=
+abel.
 
-Reviewed-by: Kevin Hilman <khilman@baylibre.com>
+Ugh we might need to back this out if the userspace is critical
+and you need it.
 
-Kevin
+Ideally userspace should use libgpiod for GPIO access, but I understand
+if it's a higher bar.
+
+Yours,
+Linus Walleij
 
