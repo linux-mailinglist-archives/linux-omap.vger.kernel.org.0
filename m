@@ -1,124 +1,262 @@
-Return-Path: <linux-omap+bounces-2074-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2075-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1252968930
-	for <lists+linux-omap@lfdr.de>; Mon,  2 Sep 2024 15:53:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFAB096895A
+	for <lists+linux-omap@lfdr.de>; Mon,  2 Sep 2024 16:04:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E20D71C224AA
-	for <lists+linux-omap@lfdr.de>; Mon,  2 Sep 2024 13:53:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E8991F22973
+	for <lists+linux-omap@lfdr.de>; Mon,  2 Sep 2024 14:04:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D405205E3E;
-	Mon,  2 Sep 2024 13:53:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE0B020FAB0;
+	Mon,  2 Sep 2024 14:03:57 +0000 (UTC)
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B494D19C556;
-	Mon,  2 Sep 2024 13:53:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5575F19C57E;
+	Mon,  2 Sep 2024 14:03:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725285202; cv=none; b=N6wLu0wNOQdrO079WxNWgqikyk+md4NamcQmGk7SBs18Uk0xSjRrVQAb/um4jxlXeklfCrt3QJnbs1v+wCLBoJA6qgMNeH3QKs0Q+QGiLIyIapGAp5hZi6cuneyIxvuERE5aGdji8bLubsBUCqV2Wp2CA75G7ODLT2EbAyP2NeU=
+	t=1725285837; cv=none; b=Irg1w8JbaNI6WVVDE+Vf/uiYocmC90zlwo2sxlxcYwS9JInbmR+UhSb7vmzg/iOE4+8xwTWAd2O6WJ22qcPlr1E04raYqu40ECbTp0K7SLpL4tQuq1lEfATkysoXoobdAY2YVCGEacMJZF6x/Qj6RfyJtT0Kt/hFUOwVAFFEk9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725285202; c=relaxed/simple;
-	bh=eoC7Vo0Z8zGYb7p6xxvVkvrh1N8gQvobck3gC48jZxk=;
+	s=arc-20240116; t=1725285837; c=relaxed/simple;
+	bh=FLEGEeqb7/NGeQ/JuWcr1oQrp15Fof0Mxb+7lG9qJR8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Z+eki2PjGCspqK2FFDwThQdI9/FffmiOlRsCg3OkTjEtjjlZuEuW7N3He9yGhSzkC1H8eludTlD03Hlbe99JlIBxurr2ajWbpFrCEuV1wQNVuKfiHgZwnpefLJ3xB9XoT+mYJSoJ+2RcePbK7AlDUd7isDmTIvrMM70YcS1oOgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.176
+	 To:Cc:Content-Type; b=ushCEnDtt4cJvWC7LvVRlbuR8bYip3CVVl2+DOI9PvZybvaw+HrCAnsWFDBNRjCRsczetPVNEefym1QbO6cSlNWyLr4aGvdZUd31m1u9yZBDuLHrY/VUMW24sO3ZqDZVBpKxVknJo5D8I+y4KOQok9ZBCePdFIpSs6CCG1LOvoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-6c3f1939d12so35897897b3.2;
-        Mon, 02 Sep 2024 06:53:20 -0700 (PDT)
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-6d3f017f80eso26194277b3.1;
+        Mon, 02 Sep 2024 07:03:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725285199; x=1725889999;
+        d=1e100.net; s=20230601; t=1725285834; x=1725890634;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=eIVZ4SCF9RhVKGpVGbpDiZIJZpiVYxTpgIR0F0Tjc0g=;
-        b=Gq3lhEgV2gHv5x3UsaQGP3LCiOCIgC5FX7PAN/ey9W8SuTROykQbL7U2Hd46gOZrCM
-         rihVvQomhkr/mmjMPT2i3RYDn3iY/zYxaCVcu2PAYpd/6JMnGgfI4wcTHwUCD9OkvAoD
-         n3PyqsB25Oms0Cd4c/NI2UNl7hk1tL1MhLs2ZzC3bu3uSi9LSD0cqPCNOh1Sy0v3P3Iq
-         0krGd2FI0fuqED3EYBGk7HhyoombRY/06HbPbxS0VrZlX3WM2S+bfT6yYuLpLolzD2TW
-         5SOuDGPLoj1ThtX/qjQBi2XleuoeFdx10eBB30vSZuLKEte7yTdWzhCNngKfh9MeKWUU
-         XuZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUd8UM3urYyUSCfDQju3J2xDd2ong0FSwLW66tkR3Wj3mIcUMfY9dl6FwW3QMQgjT00OPVEvpuI9+c=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxqhSA0pPpVbmzONn6QpkphZPpLCoRbvQZrKAq/hGMfBpotHqxv
-	CTy0FtUpPkeOC9vXC/9Dg0InhAEYb71fPrWfbUXrbrKqnIVzZx4XxPZ3oy7V
-X-Google-Smtp-Source: AGHT+IF+zgsXPww+le7nFQbuDLh2YNFcpLI6l/qgnzpfIiNrJZCkUAks9LVy+c0RytQm86QEDScdmg==
-X-Received: by 2002:a05:690c:610c:b0:664:8646:4d02 with SMTP id 00721157ae682-6d40dd720bdmr116457217b3.12.1725285199355;
-        Mon, 02 Sep 2024 06:53:19 -0700 (PDT)
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com. [209.85.128.169])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-6d7938268dbsm3586647b3.126.2024.09.02.06.53.19
+        bh=CJmsA4p+7X25wuc98vjYvA3KiaiUMQubZl6vQ8Uo72Y=;
+        b=QfwFqinoqsOKLqbn0MoOZzsFsWx3Z2KRFRlGar722bgOmgJ4HLy18fMckQixJukzjK
+         8+141DEWiKfUHdulRUwFNgK+aqoiP4FsSKQtY9jsIAplFbzn0mj6r63ccD0ag8vLY4Pz
+         rNoy2IiPOvaCnNc98mBmTUzbGhY3W71L+jAVPzYW8OXOso0Ds1whbabfGMQssvf9WaQQ
+         YsfnMfrMwU2mrH4xQ4SgfX6UFTmFXOb1LRIwmcYJf0GdeM/OmaYBfxr4ub287pZEMFhr
+         yxqOXHCZKYrA19+4KrVl7zNF8XGres+9bjrCo9RqTwR7DCSrPnkXvgWjTlGVAMWLG7LM
+         egXg==
+X-Forwarded-Encrypted: i=1; AJvYcCUyEzCblorIzuceCXJmLKxcC35iaFQWLT7mNzLLjM9fWoEjB4x7Iowt3wRFkxRsIZsCY5V8pD/74Mep@vger.kernel.org, AJvYcCVFVRbMyHrzx7cKXkOva56gzHYT8iFQU66/2YUwEHujfTuUJkL/lQ/w/h5WEV5DkO655TwruwnWr19u@vger.kernel.org, AJvYcCXI82aVY65wj9Ls5LV0FY1PL9tO5MID+RdBTDaBuRqN4XanxMmU3IE7Qi1St8kQ6H4uspQ7r24tb8OVJg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwaEclEwbwtcyWyhf/ifj7InpBI8XnhEGWxdUwyLBlSIClXG/ii
+	xG17k4vfiOhtNKkR5g7/XZAlWIa1B21qJBrLsfoem5WsJ8FBf2Z4H4VCx31S
+X-Google-Smtp-Source: AGHT+IEr/YRUDXu98Zd+KrHAmGF/sJNe59z7sf8t2cAxPKcvS25AvgrZ2ZA6BnslfTnCzhHn/R++xw==
+X-Received: by 2002:a05:690c:dca:b0:62c:e939:2ffe with SMTP id 00721157ae682-6d40ee57cdcmr129873977b3.7.1725285833530;
+        Mon, 02 Sep 2024 07:03:53 -0700 (PDT)
+Received: from mail-yb1-f181.google.com (mail-yb1-f181.google.com. [209.85.219.181])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-6d998ac7702sm2509077b3.46.2024.09.02.07.03.53
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 02 Sep 2024 06:53:19 -0700 (PDT)
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-6d6e2b2fbc4so10436877b3.0;
-        Mon, 02 Sep 2024 06:53:19 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWLbogqu6wYRxD9xChVi08O722KYRRUuT+hznosy7FU4hwMF03e+QFrDYKLcC3WNKMUbwi+dkCvx1E=@vger.kernel.org
-X-Received: by 2002:a05:690c:fca:b0:6d3:f51b:38c3 with SMTP id
- 00721157ae682-6d40d88d522mr133229097b3.7.1725285198923; Mon, 02 Sep 2024
- 06:53:18 -0700 (PDT)
+        Mon, 02 Sep 2024 07:03:53 -0700 (PDT)
+Received: by mail-yb1-f181.google.com with SMTP id 3f1490d57ef6-e1a8ae00f5eso2372591276.0;
+        Mon, 02 Sep 2024 07:03:53 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWSxm5TYnYYPsVRvL0PrHITrjhIf5ebEk+J7vo06Fjlov9BjziTeMVQ8ixuQuDjKIUnnpfsC+WaVak7@vger.kernel.org, AJvYcCXHaOqrSycTcOsECRS/EoTW884xj5jrRcEmYmbq+Pf7/bmrEXrkL81nXEnzvrNgcWivWHDOvKFGTbkPzw==@vger.kernel.org, AJvYcCXm39G0ojdV2K3QzIcerzGwVCiJ3qvDxWA1n3uMO0KYUJAbwdPRL0zidQB2R4t8xOolTjV91A+GSzNZ@vger.kernel.org
+X-Received: by 2002:a05:690c:d89:b0:6cf:8d6f:2c17 with SMTP id
+ 00721157ae682-6d40ee583b0mr103322017b3.8.1725285833043; Mon, 02 Sep 2024
+ 07:03:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240603234139.280629b2@aktux>
-In-Reply-To: <20240603234139.280629b2@aktux>
+References: <20240213105730.5287-1-tony@atomide.com> <20240213105730.5287-2-tony@atomide.com>
+In-Reply-To: <20240213105730.5287-2-tony@atomide.com>
 From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 2 Sep 2024 15:53:07 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdWU74DsWEZtZQJctQQog=9UCG_1LZu5yWvyxx0Zw4LQow@mail.gmail.com>
-Message-ID: <CAMuHMdWU74DsWEZtZQJctQQog=9UCG_1LZu5yWvyxx0Zw4LQow@mail.gmail.com>
-Subject: Re: clk mess on omap4460 with mpu clock
-To: Andreas Kemnade <andreas@kemnade.info>
-Cc: linux-omap@vger.kernel.org, linux-clk@vger.kernel.org, 
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>, Paul Walmsley <paul@pwsan.com>, 
-	Tony Lindgren <tony@atomide.com>
+Date: Mon, 2 Sep 2024 16:03:41 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdXZTmn7R8GQWAMFL_9C+VGu4SDfFuMN-8MJmi0AbPMx-g@mail.gmail.com>
+Message-ID: <CAMuHMdXZTmn7R8GQWAMFL_9C+VGu4SDfFuMN-8MJmi0AbPMx-g@mail.gmail.com>
+Subject: Re: [PATCH 1/4] clk: ti: Handle possible address in the node name
+To: Tony Lindgren <tony@atomide.com>
+Cc: =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>, 
+	Rob Herring <robh+dt@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Tero Kristo <kristo@kernel.org>, Michael Turquette <mturquette@baylibre.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Andreas Kemnade <andreas@kemnade.info>, linux-omap@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-clk@vger.kernel.org, 
+	Paul Walmsley <paul@pwsan.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Andreas,
+Hi Tony,
 
-On Mon, Jun 3, 2024 at 11:41=E2=80=AFPM Andreas Kemnade <andreas@kemnade.in=
-fo> wrote:
-> just stumbled across this on 6.10-rc1:
+On Tue, Feb 13, 2024 at 11:59=E2=80=AFAM Tony Lindgren <tony@atomide.com> w=
+rote:
+> In order to use #address-cells =3D <1> and start making use of the
+> standard reg property, let's prepare things to ignore the possible
+> address in the clock node name.
 >
-> [    1.475830] ocp:target-module@48210000:mpu:fck: device ID is greater t=
-han 24
-> [    1.483154] ti-sysc ocp:target-module@48210000: could not add child cl=
-ock fck: -12
-
-And on boneblack:
-
-48000000.interconnect:segment@200000:target-module@0:mpu@0:fck: device
-ID is greater than 24
-target-module@4b000000:target-module@140000:pmu@0:fck: device ID is
-greater than 24
-
-> Maybe
->         /*
->          * Use clkdev_add() instead of clkdev_alloc() to avoid the MAX_DE=
-V_ID
->          * limit for clk_get(). If cl ever needs to be freed, it should b=
-e done
->          * with clkdev_drop().
->          */
-> in ti-sysc.c does not work anymore?
+> Unless the clock-output-names property is used, the legacy clocks still
+> fall back to matching the clock data based on the node name.
 >
-> The offending clock definition is in omap4.dtsi
+> We use cleanup.h to simplify the return path for freeing tmp.
 >
-> clocks =3D <&mpuss_clkctrl OMAP4_MPU_CLKCTRL 0>;
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
+
+Thanks for your patch, which is now commit 3516338543cafb65 ("clk: ti:
+Handle possible address in the node name") in v6.9-rc1.
+This causes an early boot crash on BeagleBone Black:
+
+    ti_dt_clocks_register: failed to lookup clock node
+clk-24mhz-clkctrl:0000:0, ret=3D-517
+    ti_dt_clocks_register: failed to lookup clock node
+clk-24mhz-clkctrl:0000:0, ret=3D-517
+    ti_dt_clocks_register: failed to lookup clock node
+l3-aon-clkctrl:0000:30, ret=3D-517
+    ti_dt_clocks_register: failed to lookup clock node
+l3-aon-clkctrl:0000:19, ret=3D-517
+    ti_dt_clocks_register: failed to lookup clock node
+l4-wkup-clkctrl:0008:18, ret=3D-517
+    ti_dt_clocks_register: failed to lookup clock node
+l4ls-clkctrl:0074:18, ret=3D-517
+    ti_dt_clocks_register: failed to lookup clock node
+l4ls-clkctrl:0078:18, ret=3D-517
+    ti_dt_clocks_register: failed to lookup clock node
+l4ls-clkctrl:007c:18, ret=3D-517
+    ti_dt_clocks_register: failed to lookup clock node
+l3-aon-clkctrl:0000:27, ret=3D-517
+    ti_dt_clocks_register: failed to lookup clock node
+l3-aon-clkctrl:0000:22, ret=3D-517
+    ti_dt_clocks_register: failed to lookup clock node
+l3-aon-clkctrl:0000:24, ret=3D-517
+    ti_dt_clocks_register: failed to lookup clock node
+l3-aon-clkctrl:0000:20, ret=3D-517
+    8<--- cut here ---
+    Unable to handle kernel paging request at virtual address fffffffe when=
+ read
+    [fffffffe] *pgd=3D9fdf6841, *pte=3D00000000, *ppte=3D00000000
+    Internal error: Oops: 27 [#1] SMP ARM
+    CPU: 0 PID: 0 Comm: swapper/0 Not tainted
+6.8.0-rc1-boneblack-00001-g3516338543ca #119
+    Hardware name: Generic AM33XX (Flattened Device Tree)
+    PC is at clk_set_parent+0x2c/0x6c
+    LR is at __lock_acquire+0x3f8/0x29d4
+    pc : [<c06ecd4c>]    lr : [<c01b2b14>]    psr: a0000093
+    sp : c1001fb0  ip : 00000000  fp : 00000000
+    r10: c0f5da88  r9 : 00000000  r8 : 00000078
+    r7 : ffffffff  r6 : c11ba000  r5 : fffffffe  r4 : c20a0700
+    r3 : 00000000  r2 : c100c580  r1 : 00000001  r0 : c209ac00
+    Flags: NzCv  IRQs off  FIQs on  Mode SVC_32  ISA ARM  Segment none
+    Control: 10c5387d  Table: 80004019  DAC: 00000051
+    Register r0 information: slab kmalloc-192 start c209ac00 pointer
+offset 0 size 192
+    Register r1 information: non-paged memory
+    Register r2 information: non-slab/vmalloc memory
+    Register r3 information: NULL pointer
+    Register r4 information: slab kmalloc-64 start c20a0700 pointer
+offset 0 size 64
+    Register r5 information: non-paged memory
+    Register r6 information: non-slab/vmalloc memory
+    Register r7 information: non-paged memory
+    Register r8 information: non-paged memory
+    Register r9 information: NULL pointer
+    Register r10 information: non-slab/vmalloc memory
+    Register r11 information: NULL pointer
+    Register r12 information: NULL pointer
+    Process swapper/0 (pid: 0, stack limit =3D 0x(ptrval))
+    Stack: (0xc1001fb0 to 0xc1002000)
+    1fa0:                                     c20a0700 c10093c0
+c11ba000 c0f2ebdc
+    1fc0: dfdffc40 c0f11380 dfdffc40 c0f01074 ffffffff ffffffff
+00000000 c0f006f0
+    1fe0: 00000000 c0f5da88 00000000 00000e05 00000000 00000000
+00000000 00000000
+     clk_set_parent from am33xx_dt_clk_init+0x84/0xa4
+     am33xx_dt_clk_init from omap_init_time_of+0x8/0x10
+     omap_init_time_of from start_kernel+0x430/0x638
+     start_kernel from 0x0
+    Code: e3530000 1a00000e e3550000 e5940000 (15955000)
+    ---[ end trace 0000000000000000 ]---
+    Kernel panic - not syncing: Attempted to kill the idle task!
+    ---[ end Kernel panic - not syncing: Attempted to kill the idle task! ]=
+---
+
+Reverting the commit on top of a recent v6.11-rcX-based tree fixes
+the issue.
+
+BTW, bisecting this took a while as:
+  1. The OMAP serial driver locks up when booted with "earlycon
+     keep_bootcon",
+  2. The TI SYSC sometimes crashes during early boot, too:
+
+    Unhandled fault: external abort on non-linefetch (0x1008) at 0xe036d010
+    [e036d010] *pgd=3D8276e811, *pte=3D47400653, *ppte=3D47400453
+    Internal error: : 1008 [#1] SMP ARM
+    Modules linked in:
+    CPU: 0 PID: 33 Comm: kworker/u4:3 Not tainted
+6.8.0-boneblack-05567-gaa7d6513d68b #78
+    Hardware name: Generic AM33XX (Flattened Device Tree)
+    Workqueue: events_unbound deferred_probe_work_func
+    PC is at sysc_reset+0x118/0x210
+    LR is at sysc_probe+0xe08/0x1440
+    pc : [<c06d0ba8>]    lr : [<c06d1cd8>]    psr: 60000013
+
+> --- a/drivers/clk/ti/clk.c
+> +++ b/drivers/clk/ti/clk.c
+> @@ -7,6 +7,7 @@
+>   * Tero Kristo <t-kristo@ti.com>
+>   */
 >
-> Did not bisect that yet.
-
-Commit 8d532528ff6a6b1b ("clkdev: report over-sized strings when
-creating clkdev entries") in v6.10-rc1, with follow-up commit
-616501eccb58615f ("clkdev: don't fail clkdev_alloc() if over-sized")
-in v6.10-rc4.
-
-I have no idea if these clkdev registrations are still necessary/used.
+> +#include <linux/cleanup.h>
+>  #include <linux/clk.h>
+>  #include <linux/clk-provider.h>
+>  #include <linux/clkdev.h>
+> @@ -114,20 +115,26 @@ int ti_clk_setup_ll_ops(struct ti_clk_ll_ops *ops)
+>
+>  /*
+>   * Eventually we could standardize to using '_' for clk-*.c files to fol=
+low the
+> - * TRM naming and leave out the tmp name here.
+> + * TRM naming.
+>   */
+>  static struct device_node *ti_find_clock_provider(struct device_node *fr=
+om,
+>                                                   const char *name)
+>  {
+> +       char *tmp __free(kfree) =3D NULL;
+>         struct device_node *np;
+>         bool found =3D false;
+>         const char *n;
+> -       char *tmp;
+> +       char *p;
+>
+>         tmp =3D kstrdup_and_replace(name, '-', '_', GFP_KERNEL);
+>         if (!tmp)
+>                 return NULL;
+>
+> +       /* Ignore a possible address for the node name */
+> +       p =3D strchr(tmp, '@');
+> +       if (p)
+> +               *p =3D '\0';
+> +
+>         /* Node named "clock" with "clock-output-names" */
+>         for_each_of_allnodes_from(from, np) {
+>                 if (of_property_read_string_index(np, "clock-output-names=
+",
+> @@ -140,7 +147,6 @@ static struct device_node *ti_find_clock_provider(str=
+uct device_node *from,
+>                         break;
+>                 }
+>         }
+> -       kfree(tmp);
+>
+>         if (found) {
+>                 of_node_put(from);
+> @@ -148,7 +154,7 @@ static struct device_node *ti_find_clock_provider(str=
+uct device_node *from,
+>         }
+>
+>         /* Fall back to using old node name base provider name */
+> -       return of_find_node_by_name(from, name);
+> +       return of_find_node_by_name(from, tmp);
+>  }
+>
+>  /**
 
 Gr{oetje,eeting}s,
 
