@@ -1,262 +1,172 @@
-Return-Path: <linux-omap+bounces-2075-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2076-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFAB096895A
-	for <lists+linux-omap@lfdr.de>; Mon,  2 Sep 2024 16:04:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EB57968A34
+	for <lists+linux-omap@lfdr.de>; Mon,  2 Sep 2024 16:43:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E8991F22973
-	for <lists+linux-omap@lfdr.de>; Mon,  2 Sep 2024 14:04:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B98FF283060
+	for <lists+linux-omap@lfdr.de>; Mon,  2 Sep 2024 14:43:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE0B020FAB0;
-	Mon,  2 Sep 2024 14:03:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D8FC1A264F;
+	Mon,  2 Sep 2024 14:43:18 +0000 (UTC)
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5575F19C57E;
-	Mon,  2 Sep 2024 14:03:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 669E31A263E;
+	Mon,  2 Sep 2024 14:43:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725285837; cv=none; b=Irg1w8JbaNI6WVVDE+Vf/uiYocmC90zlwo2sxlxcYwS9JInbmR+UhSb7vmzg/iOE4+8xwTWAd2O6WJ22qcPlr1E04raYqu40ECbTp0K7SLpL4tQuq1lEfATkysoXoobdAY2YVCGEacMJZF6x/Qj6RfyJtT0Kt/hFUOwVAFFEk9I=
+	t=1725288197; cv=none; b=MlIzI3pIHVe14nEwrw7RmhmeUj4CNLIy2wMF7tz+xRDHnW+1G8tkIurRZdUW1uXC76jJGuwk3bMaAd727wadJAomO30VaEYdPehXAD0jIWXqmbHicecY/kNNrwHzfTD9poHPAgDKrxkCWMQIBt4hgEfUUbGedMKxEUlzMwh3PVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725285837; c=relaxed/simple;
-	bh=FLEGEeqb7/NGeQ/JuWcr1oQrp15Fof0Mxb+7lG9qJR8=;
+	s=arc-20240116; t=1725288197; c=relaxed/simple;
+	bh=1QsvRZPsbUtInZWprJeCMReKLKwUDzy1CVFK+e51Ehw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ushCEnDtt4cJvWC7LvVRlbuR8bYip3CVVl2+DOI9PvZybvaw+HrCAnsWFDBNRjCRsczetPVNEefym1QbO6cSlNWyLr4aGvdZUd31m1u9yZBDuLHrY/VUMW24sO3ZqDZVBpKxVknJo5D8I+y4KOQok9ZBCePdFIpSs6CCG1LOvoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.170
+	 To:Cc:Content-Type; b=daa63iTcVywbdTxzFeyiDrlyMnIpd3pJLz99uNXbzzSGYav7IcWVTTro6Cp+PnaweOjVhnPipBioWIpWn8Zno4iNKMGq7oLVu7OjvrVcd22bdJHHQJt9ecYmqBo61+eXMd8SD7DAU9FJ8BwiU84FdbKsNjjwBqnbAM+xOeXRabQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-6d3f017f80eso26194277b3.1;
-        Mon, 02 Sep 2024 07:03:54 -0700 (PDT)
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-690aabe2600so35055387b3.0;
+        Mon, 02 Sep 2024 07:43:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725285834; x=1725890634;
+        d=1e100.net; s=20230601; t=1725288193; x=1725892993;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=CJmsA4p+7X25wuc98vjYvA3KiaiUMQubZl6vQ8Uo72Y=;
-        b=QfwFqinoqsOKLqbn0MoOZzsFsWx3Z2KRFRlGar722bgOmgJ4HLy18fMckQixJukzjK
-         8+141DEWiKfUHdulRUwFNgK+aqoiP4FsSKQtY9jsIAplFbzn0mj6r63ccD0ag8vLY4Pz
-         rNoy2IiPOvaCnNc98mBmTUzbGhY3W71L+jAVPzYW8OXOso0Ds1whbabfGMQssvf9WaQQ
-         YsfnMfrMwU2mrH4xQ4SgfX6UFTmFXOb1LRIwmcYJf0GdeM/OmaYBfxr4ub287pZEMFhr
-         yxqOXHCZKYrA19+4KrVl7zNF8XGres+9bjrCo9RqTwR7DCSrPnkXvgWjTlGVAMWLG7LM
-         egXg==
-X-Forwarded-Encrypted: i=1; AJvYcCUyEzCblorIzuceCXJmLKxcC35iaFQWLT7mNzLLjM9fWoEjB4x7Iowt3wRFkxRsIZsCY5V8pD/74Mep@vger.kernel.org, AJvYcCVFVRbMyHrzx7cKXkOva56gzHYT8iFQU66/2YUwEHujfTuUJkL/lQ/w/h5WEV5DkO655TwruwnWr19u@vger.kernel.org, AJvYcCXI82aVY65wj9Ls5LV0FY1PL9tO5MID+RdBTDaBuRqN4XanxMmU3IE7Qi1St8kQ6H4uspQ7r24tb8OVJg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwaEclEwbwtcyWyhf/ifj7InpBI8XnhEGWxdUwyLBlSIClXG/ii
-	xG17k4vfiOhtNKkR5g7/XZAlWIa1B21qJBrLsfoem5WsJ8FBf2Z4H4VCx31S
-X-Google-Smtp-Source: AGHT+IEr/YRUDXu98Zd+KrHAmGF/sJNe59z7sf8t2cAxPKcvS25AvgrZ2ZA6BnslfTnCzhHn/R++xw==
-X-Received: by 2002:a05:690c:dca:b0:62c:e939:2ffe with SMTP id 00721157ae682-6d40ee57cdcmr129873977b3.7.1725285833530;
-        Mon, 02 Sep 2024 07:03:53 -0700 (PDT)
-Received: from mail-yb1-f181.google.com (mail-yb1-f181.google.com. [209.85.219.181])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-6d998ac7702sm2509077b3.46.2024.09.02.07.03.53
+        bh=dv4mKq/aci7xE5SWjH3tcrLRVVBdtWwRIP4tHhTb83s=;
+        b=MSoxpQMDtByPWiXRIfllVn1MbOKnCl6AbPYap9UuqGgZ+kX9vUBq2JFPnaALtlKvJq
+         WcHLdLqN97e5/yDZtxd5etCUQdYz6dbleUpQw8B6RcwwGGqtI6dx+aTalxJRNO4m8A2S
+         JWp/aIXdIrpvZyiVLlDkdPeUCKyWp89+hnWZI2Y2apD0Y0toYEb69dS9XRgJB38BOk62
+         E4gdPH1PFVIHJsYt10/RwrCQ3bGXPcF7atQN/GlPvpqG3rld7DZDF7gcExrsf5FDU5vQ
+         j6+9hi8ny0xXiDhE0ib3vs6GWRnnkalNMBAP9IOQ4cZKhoiaD9EQag3V4SpqIbvkfj9u
+         Z4yg==
+X-Forwarded-Encrypted: i=1; AJvYcCUvs6F1l8X/Q7xmokoY4W5dniE8ARrDpnbbjmktlKi4ISrkOWNwKQxvcmjOkZJb4ZN0aLNkrRZFKF0d6ZQ=@vger.kernel.org, AJvYcCV/vIEiwKGayFxga6WHS/hBcIHvLLWB15KFQBJdN+gAIIloA4OhYas7GjTCUZzPvhKONOhcUHSs8/251k6Rjhs=@vger.kernel.org, AJvYcCXCIHAJ92s7VXZko/crhnax2tLS8hSthuOKtAqY9ZfgEL1oMtx1fXaZKDndvcTkWVEDAhpg6G6zaF8=@vger.kernel.org, AJvYcCXuJAdCezQYvBWI4Jm2QrvR6Mv719wPLA9NAtt8IXlUkgFFFDVwcxBsqCL241YyLUK4+Hi1/c6NcAN36g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyDvatIyThrxGGnxB99rTK4Wb3N+n3TZuWQPqxltFbNwieckpPA
+	dYmhobYjT/7aXLQV6r9G8xg7HcC0enrYR5YXMz2jOH7BMpNKLX1VKNTpaoCK
+X-Google-Smtp-Source: AGHT+IHE7KMq2vuwYqHIzsubXSUphR2zdCVZm0cwpCl19BOSXbZ7mfcj6+OkqFaQlK6/BdPWmlBK8w==
+X-Received: by 2002:a05:690c:428c:b0:63b:df6e:3f6d with SMTP id 00721157ae682-6d411193e4fmr96372977b3.37.1725288193139;
+        Mon, 02 Sep 2024 07:43:13 -0700 (PDT)
+Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com. [209.85.219.179])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-6d2d3abf883sm16086877b3.13.2024.09.02.07.43.10
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 02 Sep 2024 07:03:53 -0700 (PDT)
-Received: by mail-yb1-f181.google.com with SMTP id 3f1490d57ef6-e1a8ae00f5eso2372591276.0;
-        Mon, 02 Sep 2024 07:03:53 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWSxm5TYnYYPsVRvL0PrHITrjhIf5ebEk+J7vo06Fjlov9BjziTeMVQ8ixuQuDjKIUnnpfsC+WaVak7@vger.kernel.org, AJvYcCXHaOqrSycTcOsECRS/EoTW884xj5jrRcEmYmbq+Pf7/bmrEXrkL81nXEnzvrNgcWivWHDOvKFGTbkPzw==@vger.kernel.org, AJvYcCXm39G0ojdV2K3QzIcerzGwVCiJ3qvDxWA1n3uMO0KYUJAbwdPRL0zidQB2R4t8xOolTjV91A+GSzNZ@vger.kernel.org
-X-Received: by 2002:a05:690c:d89:b0:6cf:8d6f:2c17 with SMTP id
- 00721157ae682-6d40ee583b0mr103322017b3.8.1725285833043; Mon, 02 Sep 2024
- 07:03:53 -0700 (PDT)
+        Mon, 02 Sep 2024 07:43:11 -0700 (PDT)
+Received: by mail-yb1-f179.google.com with SMTP id 3f1490d57ef6-e1a7d43a226so2779063276.3;
+        Mon, 02 Sep 2024 07:43:10 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU3se31yG47oOPqxlhR/ucK8Y+UUt0V1jfH1Wwrdp5WnILffyg4EkCkhbzaBX5S5S+kfITwY0HewEN2bQ==@vger.kernel.org, AJvYcCUcK6JchS0/g7TIOiz0zhGRCan8qEF3d4pKrcPJsicUlgj870Z5scfqnuRwvFpmO+f/4PCrHH5eZkAYVYU=@vger.kernel.org, AJvYcCWMEQ/++mtJpyR848Axg1T2b2GfvqLgiqyWYIXTH6KCXBXorOIhJtinEG5DTxk1BvETIicJBbt1mdY=@vger.kernel.org, AJvYcCWVyPniYFu9tKsgz6gTZInxpJZRnHqaoLe4KEnvjbqG25bNpfGYZIsPI+P4QvuJIykg8Fjlqtfsu+f9nIIKkzE=@vger.kernel.org
+X-Received: by 2002:a05:690c:64c8:b0:6d5:1b7:ab81 with SMTP id
+ 00721157ae682-6d501b7af55mr99049107b3.22.1725288190742; Mon, 02 Sep 2024
+ 07:43:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240213105730.5287-1-tony@atomide.com> <20240213105730.5287-2-tony@atomide.com>
-In-Reply-To: <20240213105730.5287-2-tony@atomide.com>
+References: <20240527142557.321610-1-ulf.hansson@linaro.org>
+ <20240527142557.321610-4-ulf.hansson@linaro.org> <CAMuHMdUoZBJewA6nQZLhnbebZuoZo85UCCfwuOv8or_N_e-0qg@mail.gmail.com>
+ <CAPDyKFqcpxUJWL7FoRSXLXVhS5B9PjcTY5ryG8HAY_E1Btgwag@mail.gmail.com> <CAMuHMdWB2zjF1jajkQzFpt2=4oj25myG1CJ5i6450gkUVX19+g@mail.gmail.com>
+In-Reply-To: <CAMuHMdWB2zjF1jajkQzFpt2=4oj25myG1CJ5i6450gkUVX19+g@mail.gmail.com>
 From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 2 Sep 2024 16:03:41 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdXZTmn7R8GQWAMFL_9C+VGu4SDfFuMN-8MJmi0AbPMx-g@mail.gmail.com>
-Message-ID: <CAMuHMdXZTmn7R8GQWAMFL_9C+VGu4SDfFuMN-8MJmi0AbPMx-g@mail.gmail.com>
-Subject: Re: [PATCH 1/4] clk: ti: Handle possible address in the node name
-To: Tony Lindgren <tony@atomide.com>
-Cc: =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>, 
-	Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Tero Kristo <kristo@kernel.org>, Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Andreas Kemnade <andreas@kemnade.info>, linux-omap@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-clk@vger.kernel.org, 
-	Paul Walmsley <paul@pwsan.com>
+Date: Mon, 2 Sep 2024 16:42:58 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdXM2qHGzcLDfZQNC1Zqj_vh72S9+rV6-xuM+p=w7-oHyQ@mail.gmail.com>
+Message-ID: <CAMuHMdXM2qHGzcLDfZQNC1Zqj_vh72S9+rV6-xuM+p=w7-oHyQ@mail.gmail.com>
+Subject: Re: [PATCH v2 3/7] pmdomain: core: Use dev_name() instead of
+ kobject_get_path() in debugfs
+To: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Sudeep Holla <sudeep.holla@arm.com>, linux-pm@vger.kernel.org, 
+	Lorenzo Pieralisi <Lorenzo.Pieralisi@arm.com>, Nikunj Kela <nkela@quicinc.com>, 
+	Prasad Sodagudi <psodagud@quicinc.com>, Maulik Shah <quic_mkshah@quicinc.com>, 
+	Daniel Lezcano <daniel.lezcano@linaro.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, linux-rt-users@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	"open list:TI ETHERNET SWITCH DRIVER (CPSW)" <linux-omap@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Tony,
+Hi Ulf,
 
-On Tue, Feb 13, 2024 at 11:59=E2=80=AFAM Tony Lindgren <tony@atomide.com> w=
-rote:
-> In order to use #address-cells =3D <1> and start making use of the
-> standard reg property, let's prepare things to ignore the possible
-> address in the clock node name.
+On Fri, Aug 30, 2024 at 5:50=E2=80=AFPM Geert Uytterhoeven <geert@linux-m68=
+k.org> wrote:
+> On Tue, Aug 20, 2024 at 10:58=E2=80=AFAM Ulf Hansson <ulf.hansson@linaro.=
+org> wrote:
+> > On Tue, 20 Aug 2024 at 10:55, Geert Uytterhoeven <geert@linux-m68k.org>=
+ wrote:
+> > > On Mon, May 27, 2024 at 4:27=E2=80=AFPM Ulf Hansson <ulf.hansson@lina=
+ro.org> wrote:
+> > > > Using kobject_get_path() means a dynamic memory allocation gets don=
+e, which
+> > > > doesn't work on a PREEMPT_RT based configuration while holding genp=
+d's raw
+> > > > spinlock.
+> > > >
+> > > > To fix the problem, let's convert into using the simpler dev_name()=
+. This
+> > > > means the information about the path doesn't get presented in debug=
+fs, but
+> > > > hopefully this shouldn't be an issue.
+> > > >
+> > > > Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+> > > > ---
+> > > > Changes in v2:
+> > > >         - New patch.
+> > >
+> > > Thanks for your patch, which is now commit 9094e53ff5c86ebe ("pmdomai=
+n:
+> > > core: Use dev_name() instead of kobject_get_path() in debugfs")
+> > > in pmdomain/next.
+> > >
+> > > > --- a/drivers/pmdomain/core.c
+> > > > +++ b/drivers/pmdomain/core.c
+> > > > @@ -3215,16 +3214,9 @@ static int genpd_summary_one(struct seq_file=
+ *s,
+> > > >         }
+> > > >
+> > > >         list_for_each_entry(pm_data, &genpd->dev_list, list_node) {
+> > > > -               kobj_path =3D kobject_get_path(&pm_data->dev->kobj,
+> > > > -                               genpd_is_irq_safe(genpd) ?
+> > > > -                               GFP_ATOMIC : GFP_KERNEL);
+> > > > -               if (kobj_path =3D=3D NULL)
+> > > > -                       continue;
+> > > > -
+> > > > -               seq_printf(s, "\n    %-50s  ", kobj_path);
+> > > > +               seq_printf(s, "\n    %-50s  ", dev_name(pm_data->de=
+v));
+> > >
+> > > While some of the old names didn't even fit in 50 characters, the new
+> > > names need much less space, so perhaps this is a good opportunity to
+> > > decrease the table width?
+> >
+> > Sure, it seems reasonable! Do you want to send a patch?
 >
-> Unless the clock-output-names property is used, the legacy clocks still
-> fall back to matching the clock data based on the node name.
+> I started looking into it.  Then I noticed that on some systems
+> (e.g. TI am335x) the device names may have a longer format than
+> the typical <unit-address>.<nodename>. So I wanted to verify on
+> BeagleBone Black, but recent kernels crash during early boot.
+> Apparently that platform was broken between v6.8 and v6.9-rc1.
+> And during bisection, I encountered 3 different failure modes...
 >
-> We use cleanup.h to simplify the return path for freeing tmp.
->
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> To be continued...
 
-Thanks for your patch, which is now commit 3516338543cafb65 ("clk: ti:
-Handle possible address in the node name") in v6.9-rc1.
-This causes an early boot crash on BeagleBone Black:
+The longest generic node names documented in the Devicetree
+Specification are "air-pollution-sensor" and "interrupt-controller"
+(both counting 20 characters), so a typical device name needs 8
+(32-bit unit address) + 1 (dot) + 20 =3D 29 characters.
+However, I assume some devices lie outside the 32-bit address space,
+and thus need more space?
 
-    ti_dt_clocks_register: failed to lookup clock node
-clk-24mhz-clkctrl:0000:0, ret=3D-517
-    ti_dt_clocks_register: failed to lookup clock node
-clk-24mhz-clkctrl:0000:0, ret=3D-517
-    ti_dt_clocks_register: failed to lookup clock node
-l3-aon-clkctrl:0000:30, ret=3D-517
-    ti_dt_clocks_register: failed to lookup clock node
-l3-aon-clkctrl:0000:19, ret=3D-517
-    ti_dt_clocks_register: failed to lookup clock node
-l4-wkup-clkctrl:0008:18, ret=3D-517
-    ti_dt_clocks_register: failed to lookup clock node
-l4ls-clkctrl:0074:18, ret=3D-517
-    ti_dt_clocks_register: failed to lookup clock node
-l4ls-clkctrl:0078:18, ret=3D-517
-    ti_dt_clocks_register: failed to lookup clock node
-l4ls-clkctrl:007c:18, ret=3D-517
-    ti_dt_clocks_register: failed to lookup clock node
-l3-aon-clkctrl:0000:27, ret=3D-517
-    ti_dt_clocks_register: failed to lookup clock node
-l3-aon-clkctrl:0000:22, ret=3D-517
-    ti_dt_clocks_register: failed to lookup clock node
-l3-aon-clkctrl:0000:24, ret=3D-517
-    ti_dt_clocks_register: failed to lookup clock node
-l3-aon-clkctrl:0000:20, ret=3D-517
-    8<--- cut here ---
-    Unable to handle kernel paging request at virtual address fffffffe when=
- read
-    [fffffffe] *pgd=3D9fdf6841, *pte=3D00000000, *ppte=3D00000000
-    Internal error: Oops: 27 [#1] SMP ARM
-    CPU: 0 PID: 0 Comm: swapper/0 Not tainted
-6.8.0-rc1-boneblack-00001-g3516338543ca #119
-    Hardware name: Generic AM33XX (Flattened Device Tree)
-    PC is at clk_set_parent+0x2c/0x6c
-    LR is at __lock_acquire+0x3f8/0x29d4
-    pc : [<c06ecd4c>]    lr : [<c01b2b14>]    psr: a0000093
-    sp : c1001fb0  ip : 00000000  fp : 00000000
-    r10: c0f5da88  r9 : 00000000  r8 : 00000078
-    r7 : ffffffff  r6 : c11ba000  r5 : fffffffe  r4 : c20a0700
-    r3 : 00000000  r2 : c100c580  r1 : 00000001  r0 : c209ac00
-    Flags: NzCv  IRQs off  FIQs on  Mode SVC_32  ISA ARM  Segment none
-    Control: 10c5387d  Table: 80004019  DAC: 00000051
-    Register r0 information: slab kmalloc-192 start c209ac00 pointer
-offset 0 size 192
-    Register r1 information: non-paged memory
-    Register r2 information: non-slab/vmalloc memory
-    Register r3 information: NULL pointer
-    Register r4 information: slab kmalloc-64 start c20a0700 pointer
-offset 0 size 64
-    Register r5 information: non-paged memory
-    Register r6 information: non-slab/vmalloc memory
-    Register r7 information: non-paged memory
-    Register r8 information: non-paged memory
-    Register r9 information: NULL pointer
-    Register r10 information: non-slab/vmalloc memory
-    Register r11 information: NULL pointer
-    Register r12 information: NULL pointer
-    Process swapper/0 (pid: 0, stack limit =3D 0x(ptrval))
-    Stack: (0xc1001fb0 to 0xc1002000)
-    1fa0:                                     c20a0700 c10093c0
-c11ba000 c0f2ebdc
-    1fc0: dfdffc40 c0f11380 dfdffc40 c0f01074 ffffffff ffffffff
-00000000 c0f006f0
-    1fe0: 00000000 c0f5da88 00000000 00000e05 00000000 00000000
-00000000 00000000
-     clk_set_parent from am33xx_dt_clk_init+0x84/0xa4
-     am33xx_dt_clk_init from omap_init_time_of+0x8/0x10
-     omap_init_time_of from start_kernel+0x430/0x638
-     start_kernel from 0x0
-    Code: e3530000 1a00000e e3550000 e5940000 (15955000)
-    ---[ end trace 0000000000000000 ]---
-    Kernel panic - not syncing: Attempted to kill the idle task!
-    ---[ end Kernel panic - not syncing: Attempted to kill the idle task! ]=
----
-
-Reverting the commit on top of a recent v6.11-rcX-based tree fixes
-the issue.
-
-BTW, bisecting this took a while as:
-  1. The OMAP serial driver locks up when booted with "earlycon
-     keep_bootcon",
-  2. The TI SYSC sometimes crashes during early boot, too:
-
-    Unhandled fault: external abort on non-linefetch (0x1008) at 0xe036d010
-    [e036d010] *pgd=3D8276e811, *pte=3D47400653, *ppte=3D47400453
-    Internal error: : 1008 [#1] SMP ARM
-    Modules linked in:
-    CPU: 0 PID: 33 Comm: kworker/u4:3 Not tainted
-6.8.0-boneblack-05567-gaa7d6513d68b #78
-    Hardware name: Generic AM33XX (Flattened Device Tree)
-    Workqueue: events_unbound deferred_probe_work_func
-    PC is at sysc_reset+0x118/0x210
-    LR is at sysc_probe+0xe08/0x1440
-    pc : [<c06d0ba8>]    lr : [<c06d1cd8>]    psr: 60000013
-
-> --- a/drivers/clk/ti/clk.c
-> +++ b/drivers/clk/ti/clk.c
-> @@ -7,6 +7,7 @@
->   * Tero Kristo <t-kristo@ti.com>
->   */
->
-> +#include <linux/cleanup.h>
->  #include <linux/clk.h>
->  #include <linux/clk-provider.h>
->  #include <linux/clkdev.h>
-> @@ -114,20 +115,26 @@ int ti_clk_setup_ll_ops(struct ti_clk_ll_ops *ops)
->
->  /*
->   * Eventually we could standardize to using '_' for clk-*.c files to fol=
-low the
-> - * TRM naming and leave out the tmp name here.
-> + * TRM naming.
->   */
->  static struct device_node *ti_find_clock_provider(struct device_node *fr=
-om,
->                                                   const char *name)
->  {
-> +       char *tmp __free(kfree) =3D NULL;
->         struct device_node *np;
->         bool found =3D false;
->         const char *n;
-> -       char *tmp;
-> +       char *p;
->
->         tmp =3D kstrdup_and_replace(name, '-', '_', GFP_KERNEL);
->         if (!tmp)
->                 return NULL;
->
-> +       /* Ignore a possible address for the node name */
-> +       p =3D strchr(tmp, '@');
-> +       if (p)
-> +               *p =3D '\0';
-> +
->         /* Node named "clock" with "clock-output-names" */
->         for_each_of_allnodes_from(from, np) {
->                 if (of_property_read_string_index(np, "clock-output-names=
-",
-> @@ -140,7 +147,6 @@ static struct device_node *ti_find_clock_provider(str=
-uct device_node *from,
->                         break;
->                 }
->         }
-> -       kfree(tmp);
->
->         if (found) {
->                 of_node_put(from);
-> @@ -148,7 +154,7 @@ static struct device_node *ti_find_clock_provider(str=
-uct device_node *from,
->         }
->
->         /* Fall back to using old node name base provider name */
-> -       return of_find_node_by_name(from, name);
-> +       return of_find_node_by_name(from, tmp);
->  }
->
->  /**
+With the BeagleBone Black boot issue fixed:
+"/devices/platform/ocp/5600fe00.target-module"
+resp. "/devices/platform/ocp/44c00000.interconnect/44c00000.interconnect:se=
+gment@200000/44e3e074.target-module"
+are now shortened to "5600fe00.target-module" resp. "44e3e074.target-module=
+".
+However, "/devices/platform/ocp/48000000.interconnect/48000000.interconnect=
+:segment@200000/48000000.interconnect:segment@200000:target-module@0"
+is shortened to "48000000.interconnect:segment@200000:target-module@0",
+which is still longer than the old column width...
 
 Gr{oetje,eeting}s,
 
