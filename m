@@ -1,112 +1,122 @@
-Return-Path: <linux-omap+bounces-2079-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2080-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ED2E96982B
-	for <lists+linux-omap@lfdr.de>; Tue,  3 Sep 2024 11:02:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B247696990B
+	for <lists+linux-omap@lfdr.de>; Tue,  3 Sep 2024 11:33:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D455284DCD
-	for <lists+linux-omap@lfdr.de>; Tue,  3 Sep 2024 09:02:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7019D287EB1
+	for <lists+linux-omap@lfdr.de>; Tue,  3 Sep 2024 09:33:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E05719CC28;
-	Tue,  3 Sep 2024 09:02:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A3001A0BFF;
+	Tue,  3 Sep 2024 09:29:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RadgnbUx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B2+DIvPM"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F34F1C7690
-	for <linux-omap@vger.kernel.org>; Tue,  3 Sep 2024 09:02:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF2171A0BC9;
+	Tue,  3 Sep 2024 09:29:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725354146; cv=none; b=HEMBca5EP+2JC4sK4pN01Iwadlpopa0t7tZWehJtd93Oee5X/zoyh3tm6MXgq6P7ZQsNcVQPc1cSzQ1Ay9fTYyoyBlvXan1U1emOyGSiDJsDXUHnkzezgd9QebcF10aYW8/vgm94fwTtXbHK1dSWmhkU8EWMStIqQLRZoWaqxZo=
+	t=1725355776; cv=none; b=YmMrn3B89npQS3P6ZylJ0v6ufzgxucSaiffm7R7BjFIadOOX27cKn8on/F6gm97nWgymLQvsUyP1kvdsfPAwkPwEHYn2QX+GCisEN6gcDA5+VxQfrD0CalyjTzDLlkl1RhY/Iw5gSNhMZGzWkxqlbfssE4TDfStGZkO7tfpZ5lA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725354146; c=relaxed/simple;
-	bh=IQb53KgzsuBBGNZqztOohZUksn7yecYeum0vMBoGK3g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L99Y6aJc2SACIVzS0Gq/AsFfvl66n+aPoZ6o5AFzh7G2DFxlWmaw93jzj45jFM3KE6Fw4GCXblGhOu4wh+48VdeWkYGYQSqtZkjVykNRjukf9jJ5pa8YpmOoZDeevWW0PEe0xfQYrF369KKnfuJIkzx1DLcownXKX6kgPRdXC8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RadgnbUx; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-71431524f33so4052549b3a.1
-        for <linux-omap@vger.kernel.org>; Tue, 03 Sep 2024 02:02:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1725354144; x=1725958944; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=28J7btq0UkSAA2HYJWvtZYvalFZ69/IJwEZuaIkLzn8=;
-        b=RadgnbUxZg+w42X/5CP79U0mAlJ2wNshhU2Tp7MbCZJtytE7VsZG0WVBDapN8KRbp4
-         +nEESZJvJXp9Jb0bLtkDS1g60jOfNT76KLF3SL4k76d10xP+ISLxVaZTxbTN3wVNjwSS
-         Q/0GRctLZXwsbE0YyqK/CrJPD3VA/i/cfoSthO3PKyQn9nuufpK0ngQBYzei0lC7+iTx
-         2cJA5i4kLE3VYAYl6UZzBELY8OmtTvBIMSYUYSmmJTZ+T5aJcmkOfTzrwOgVA0DIdPPw
-         b/ogdC/i0N3PmtHP6DmR1s6jVkEGfoOLpoKkK5kVMRuQD/PVMaQmWfa5FmFNHMnIHvcF
-         uwdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725354144; x=1725958944;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=28J7btq0UkSAA2HYJWvtZYvalFZ69/IJwEZuaIkLzn8=;
-        b=lv7icWLvROXDnJ5avLA51vOiVpJUSrhE/ELWABUXxVkD5rUPq0lQqrpVIA38+38cPH
-         R1R8gbHvWoFJ2m2FRn9vh1YcGuQraFXmZad51gv9RSAz6+uwR+EmTOXJ5wlG4FTG6SVg
-         8PosIc2NAG7Y4kNmaYCbyCQ5eRR3H29Z75Lz+DUW3FGAKBExNHO3e5P6IwL6QKzgVCTH
-         37XLOLCsgcwS63e9EVO5d4thki8PXUFupBhf/HJG1SsR+pzJS+rx8rco+51rX2IF8iRH
-         S/vbb863MMm8pM4YOXwISPFjb2x1W/Pf/Z3AkQiFGVt7FdE9qtR/scPS2rwgYn6ROGpN
-         VXhA==
-X-Forwarded-Encrypted: i=1; AJvYcCWvPmpPEEN+hIgyEBHak8lpiNMEfKwXlEA2LdYppshS5HA54qjqmo0M78/dGfvIuDpqhjU+tkMuNcMJ@vger.kernel.org
-X-Gm-Message-State: AOJu0YwpXoz9hjRERzSwLcz7NWPXnn/0gJBIm2bUDOyoPGAEseXTuWFO
-	tAwuWogQ0p+QoqFvLGo9HqQ+Rjc1fR345X1syhMLIpxf7/IwwKFAo9feNMP1xXI=
-X-Google-Smtp-Source: AGHT+IHEB6NjKvozQK25VQbnAiQGuXSrow5+OHBblwLeDF2SxTC7aWBa3T+1AoJ1phXALsBFx5kKIg==
-X-Received: by 2002:a05:6a21:2d8d:b0:1c6:ac08:8ee0 with SMTP id adf61e73a8af0-1cecf4dd69cmr13350841637.19.1725354144618;
-        Tue, 03 Sep 2024 02:02:24 -0700 (PDT)
-Received: from localhost ([122.172.83.237])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7d22e77554fsm8845343a12.33.2024.09.03.02.02.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Sep 2024 02:02:24 -0700 (PDT)
-Date: Tue, 3 Sep 2024 14:32:22 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Nishanth Menon <nm@ti.com>
-Cc: "H. Nikolaus Schaller" <hns@goldelico.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Kevin Hilman <khilman@kernel.org>, Tony Lindgren <tony@atomide.com>,
-	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-	linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	bb@ti.com, d-gole@ti.com
-Subject: Re: [PATCH] cpufreq: ti-cpufreq: Introduce quirks to handle syscon
- fails appropriately
-Message-ID: <20240903090222.y4cnnt2o6t5tr3n5@vireshk-i7>
-References: <20240828131915.3198081-1-nm@ti.com>
+	s=arc-20240116; t=1725355776; c=relaxed/simple;
+	bh=V6Ts8UeyZzyhtsfr4GKAWGTzPe6MoHhPae1lOHa7ehM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Wd3MxDaD5NUEtZDyWZ/5ZVuX+ly24+1oYAlSbhyKjJOx1OFU2SwrjjljBS3M8vCfCbzaliXvOaq00xOy+Yz7S5iNHIiiesN5EKK2c11+OHo4tDJ+A/ZcLrDa16KKZ4e5BnvyRIy1OqIfIng0hnpb+x6YP2Et/2Rcj+a3ahCVzSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B2+DIvPM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78215C4CECA;
+	Tue,  3 Sep 2024 09:29:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725355775;
+	bh=V6Ts8UeyZzyhtsfr4GKAWGTzPe6MoHhPae1lOHa7ehM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=B2+DIvPMxoKjhFD7wiF+7h0l/cf/7MYT3BR0Zhx9vp7HBRO4mfIxwB9KqYB/sTeeC
+	 1G81qhU92qnFCiE/jliReBCBu6b2qHvBBHBVRrSMDGFA+JwuXas7widUz6aFtvxdkF
+	 4tjHzOkHd6/ex/78UYqR6cDfYnFj/Pq5XqY4K3a0iXYisf626Hp7/acc1DOSY/a6cg
+	 a2POT1sITjmIyfszLS/XUbkntiO3MqghfOGuiOpgHz9jatyaXxIOGO9cYBAqqbwA/B
+	 15wIL94JzUdR+NZ65E3bnzn2/+w0/WyZpdfxs3YRDoguIILWF4YT/rse1cCgfc4OyQ
+	 fg09k/DSfw2nw==
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-533521cd1c3so5884505e87.1;
+        Tue, 03 Sep 2024 02:29:35 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCURPe1GiCI1KlAHjuWacnN2AggN9fD1gyk1bD+ZwUYG64AxnGRywNGWag5Cn9StVlXS9OnTwbyRVOZAm4jm@vger.kernel.org, AJvYcCUe+kbF+z39BXoQTd00/AVIRb0G9WWgtpHnW+pYMXSePI7rTTfxGkh2z4JVLEKF5AXFYbA=@vger.kernel.org, AJvYcCVJtQsPA9bxFAJhxs7Wqu97RRR1Jd3NMzZhyeH2aMYTYXKFQQSrChZsfPIg0X+2myz/O95kimIAIDVhKrBU@vger.kernel.org, AJvYcCWm8dH+2mGgU1m28iGBHLiPuEDNIMKFLrowQBrxLQDyZpXS89eNlJr39QfhHIua/3u9tXIsOnbovCOfpQ==@vger.kernel.org, AJvYcCXoGibKNA6WBO2Uwc1lWZn0mYCDzk4JoZ/Mq7SW5TZJXyTrJkJq+/jhE3YWkQfhL6WSLXZB@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzs1XRcEroX/5U8GXO/VojN2TXwmV2w5zlTNAnY+4OzOIRMtVHJ
+	nKotLfvTGm9eLVMTAI+hKwNk0vRQ1SlzpXwAK5klZc51/krXyQqiEtKPF6iYICPoNLPyeZwFdwM
+	swD73640W5AAvul2H5uC7GILBnM0=
+X-Google-Smtp-Source: AGHT+IHCtdlG38E/0l7FYyhNp/Eh+agXUP/x4m9X1sDISAuGOfE6COrF1RVXR4n+XrSU6Tf+eKwYmtlidm1SXvGzdlM=
+X-Received: by 2002:a05:6512:108f:b0:533:4785:82ab with SMTP id
+ 2adb3069b0e04-53546b223d3mr10683476e87.1.1725355774159; Tue, 03 Sep 2024
+ 02:29:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240828131915.3198081-1-nm@ti.com>
+References: <20240828083605.3093701-1-vegard.nossum@oracle.com>
+ <875xrd7h88.fsf@mail.lhotse> <d1bb2638-2e0e-44ef-b8da-9746ed532ed1@oracle.com>
+In-Reply-To: <d1bb2638-2e0e-44ef-b8da-9746ed532ed1@oracle.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Tue, 3 Sep 2024 18:28:57 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAT84K0RgDfLoOOLjtyCqsS19bASXRv43HF8P=C9obJPVA@mail.gmail.com>
+Message-ID: <CAK7LNAT84K0RgDfLoOOLjtyCqsS19bASXRv43HF8P=C9obJPVA@mail.gmail.com>
+Subject: Re: [PATCH] kbuild: use objcopy to generate asm-offsets
+To: Vegard Nossum <vegard.nossum@oracle.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-omap@vger.kernel.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, 
+	linux-um@lists.infradead.org, bpf@vger.kernel.org, llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 28-08-24, 08:19, Nishanth Menon wrote:
-> Commit b4bc9f9e27ed ("cpufreq: ti-cpufreq: add support for omap34xx
-> and omap36xx") introduced special handling for OMAP3 class devices
-> where syscon node may not be present. However, this also creates a bug
-> where the syscon node is present, however the offset used to read
-> is beyond the syscon defined range.
-> 
-> Fix this by providing a quirk option that is populated when such
-> special handling is required. This allows proper failure for all other
-> platforms when the syscon node and efuse offsets are mismatched.
-> 
-> Fixes: b4bc9f9e27ed ("cpufreq: ti-cpufreq: add support for omap34xx and omap36xx")
-> Signed-off-by: Nishanth Menon <nm@ti.com>
-> ---
-> 
+On Tue, Sep 3, 2024 at 4:21=E2=80=AFPM Vegard Nossum <vegard.nossum@oracle.=
+com> wrote:
+>
+>
+> On 03/09/2024 01:45, Michael Ellerman wrote:
+> > Vegard Nossum <vegard.nossum@oracle.com> writes:
+> >> Remove the sed script and compile the C source listing structs and
+> >> offsets to an object file (instead of assembly code) that embeds C sou=
+rce
+> >> directly. Then extract the C source using objcopy.
+> >>
+> >
+> > I threw some builders at this and hit a few errors:
+>
+> Thanks, I also got the ones from kernel test robot and figured something
+> was going a bit wrong.
+>
+> There are several issues: clang wants - instead of /dev/stdout as an
+> argument to objcopy, and then gcc has some bugs that prevent the numbers
+> from appearing correctly on some architectures, also I had an extra # in
+> the COMMENT() macro which only resulted in an error on some
+> architectures. I've attached a tentative v2 that fixes these issues, but
+> I'm still trying to figure out why m68k is giving me slightly different
+> output for include/generated/asm-offsets.h and why the arc assembler
+> fails.
+>
+> In the end I'm wondering if this patch is really worth it, given all the
+> failures and little workarounds :-| If I can sort out the last few
+> failures I'll submit it as an RFC.
 
-Applied. Thanks.
+This patch has zero benefit.
 
--- 
-viresh
+The current way (preprocess + sed) is faster than
+your way (preprocess + compile + objcopy) and works
+independently of tool quirks.
+
+
+
+
+
+
+
+
+--
+Best Regards
+Masahiro Yamada
 
