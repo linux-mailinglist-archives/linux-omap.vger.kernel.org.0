@@ -1,169 +1,95 @@
-Return-Path: <linux-omap+bounces-2097-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2098-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECD2596A637
-	for <lists+linux-omap@lfdr.de>; Tue,  3 Sep 2024 20:10:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4278296A69D
+	for <lists+linux-omap@lfdr.de>; Tue,  3 Sep 2024 20:32:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA523284BB8
-	for <lists+linux-omap@lfdr.de>; Tue,  3 Sep 2024 18:10:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A20FFB21E3C
+	for <lists+linux-omap@lfdr.de>; Tue,  3 Sep 2024 18:32:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9062319005E;
-	Tue,  3 Sep 2024 18:10:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="kA3mvLLq"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A36FE192598;
+	Tue,  3 Sep 2024 18:32:15 +0000 (UTC)
 X-Original-To: linux-omap@vger.kernel.org
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68A30F9DF;
-	Tue,  3 Sep 2024 18:10:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06A02192582;
+	Tue,  3 Sep 2024 18:32:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725387018; cv=none; b=YLwQIMT/uF1XFULa0meaKqgQUtk9hpr5GQgAzFOPJI534DXf1A6dJBfQeZa6ai5SzsKhZsBi+yTXRYqM/KooQ0w40NE564S5MVMik6UyGzaEcJFVQ76HbHO54ncHj76bdi7vl3xxwz1AR/hYOnC/f4YU2n9v8f5brHEUQ/UTvKA=
+	t=1725388335; cv=none; b=s2A724UnrtTPtEFFluSXbDoBoXP/MycVfr541UfGlVSi/LS8I4K4gQ6bY9rKaQQ0Ls9fv08s7XaBvtb0J36BFruYQwBNicg4AlFC7vCIh3q3V93mrHVKPuzBLUvO9xoVgnV0BxtHzy8ouaAnMSegQ+bAGShCb7LTHUSfsBz3M4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725387018; c=relaxed/simple;
-	bh=zVAUhXRHGgf2Ifhv4b5o/0Gn9PNneUNRm6sBJpLkmec=;
+	s=arc-20240116; t=1725388335; c=relaxed/simple;
+	bh=Y1fRnzB290jA91OvNqAJhDBKnrTAgbR42jL7Xd9rRvo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XdqdanMiv5NmgvbqAvMX6DZRMFOCgiJYf/0ekKEmH9yvAXM0xQ4bxXbV4Z2bppTowGHWELpyK62fiBjJzR1dh4lvtFiZ14BAtnCcbdTcL5eoQ0gUnEdIcTxG/Yg06VeNkxvEbyEeM0HcjYJ6ZdI7rhCVRU64AVxUdXImaNSRhWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=kA3mvLLq; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=gRkEDbrL97a7XWyV1vQZFD5kTUiM/mZOT/r7ZhvOvyk=; b=kA3mvLLqv6Efq84zwZ11En9y50
-	kwKh1AougOvAhA6RWsLL+PYXuu6Q7UkoP4gjmqGI08SU6Li0WcGfAbD5gSGneBncCsu0h1YeNGKOF
-	jElUo78bPWG5TgLK89eRcyJ1HmDwGIf+o6X6FOq0czmSEMGZrAitVYr0FRrLtLSg7pHkTfoDB3IN0
-	H8abBmjd/3AvhUUwrpO4RkCS8feXywkofa+aUiMh6bm34Q/g0IhLvfBDfpPOQhVjHmDJ8dP7oAgG8
-	i2tFc2mgoGPfUeMirGwc0K5Dr1Qc6gmOVIGEQECFBx0nge7GxNkTFOF5VU7XUrz2lJM2wYuhIFoYO
-	9Sfn39yQ==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:52434)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1slXyd-0007vM-2x;
-	Tue, 03 Sep 2024 19:10:03 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1slXya-0002uf-1L;
-	Tue, 03 Sep 2024 19:10:00 +0100
-Date: Tue, 3 Sep 2024 19:10:00 +0100
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Andreas Kemnade <andreas@kemnade.info>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>, linux-omap@vger.kernel.org,
-	linux-clk@vger.kernel.org, Paul Walmsley <paul@pwsan.com>,
-	Tony Lindgren <tony@atomide.com>
-Subject: Re: clk mess on omap4460 with mpu clock
-Message-ID: <ZtdQ+Ay9DKAooahN@shell.armlinux.org.uk>
-References: <20240603234139.280629b2@aktux>
- <CAMuHMdWU74DsWEZtZQJctQQog=9UCG_1LZu5yWvyxx0Zw4LQow@mail.gmail.com>
- <20240903143357.2532258b@akair>
- <CAMuHMdWF4G5Uon1=6TMzBogN2CX8EuiVBMuCPtAAMPNa-DtiOw@mail.gmail.com>
- <20240903192203.1dddbf0d@akair>
+	 Content-Type:Content-Disposition:In-Reply-To; b=IuyWQROzF/kc2wqUTlDTu1FVMI3gZ5NFUvgmecCymBQW6RXCsvu5PrFX5SH3XpU2cejOsynrkP5JbMrmmT5X5T3wRqazQX/VFGmELRhsqpH0eUPuUjGtle7ucUtZJCJyR0pfc0EIP0E0UaFdgMw6OM0rO+q6X0cgZ2sdNxcNG38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-70cec4aa1e4so4077082b3a.1;
+        Tue, 03 Sep 2024 11:32:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725388333; x=1725993133;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/dda/AAk1MExKHoXad6EwhYDQNLYDjU0OVlZdSY5EX0=;
+        b=adgh3xlwGiO+RMYxzcqLUV+JlEqD7XC4h7qiWy7qDP6zbCa0CZYQRqW22W2KJjm2Yg
+         KiSUQfYObpJ78hO7RZSMXhWBbA2hwdjBviG5xoQulzx2nr57QD5kjQZzlGWfFZG8xF2T
+         Z1eQJv4SiXd22wHzv5GXahdiJwjeg125znY6/WxFnTEqqKIoWjbwyhhyK5Rt8p++RaI1
+         8cGQ+a3FkFoRILayKLTxD+jK/CO4WR9pJcpyYNrFVk/ChjTBFrBtlooYwwBsriGjx3JA
+         fpfGLLBdVmArFZPmWepHlGCwfz4xijFlNnOp6ofGYtqfXSAsxr7rWvpkNuBnmosw6GOA
+         KK6Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVN0cdpi60C0L2/NwIFN7padDhZp2rXX49y0gI5SeOfUBcQmk1mImW/HZTGk/9IxLKY/dKte9wdn7epZQ==@vger.kernel.org, AJvYcCVtKnU1pRnbuSZ+zsuIceI+GI+ilbAb/bRXtFOEyiQ8Q/As43zmffax2MD3kCBqSIBHdG0fabhauE+Q@vger.kernel.org, AJvYcCWw2KVHxLM7Y5I/yGRlbZMxCTFFIl5rpGYersO7qRgvUtligfuy80nzQNEuJ0nhnwfL3lz9DP1+g4lUJ+s=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywm9z7GPpBxh90Awml/XyzUA55e0Bo8UY08Xtep6c3ig8/JS8Rt
+	1kPzRsi5I+9Edvs10yQR2QEW6cF0xeUIEvgsHGeWn8zU3yGwuyM6
+X-Google-Smtp-Source: AGHT+IGjyCoRatHCREo1h+pUKVDNv6QamtDZwsbofr5tMz5hVf7mO7IBuO9bchZxv9lQTZz8bYEQHw==
+X-Received: by 2002:a05:6a21:6b0a:b0:1ce:d1b0:bc5e with SMTP id adf61e73a8af0-1ced1b0bcb6mr13918729637.27.1725388333108;
+        Tue, 03 Sep 2024 11:32:13 -0700 (PDT)
+Received: from localhost (fpd11144dd.ap.nuro.jp. [209.17.68.221])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7177852108esm187751b3a.33.2024.09.03.11.32.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Sep 2024 11:32:12 -0700 (PDT)
+Date: Wed, 4 Sep 2024 03:32:11 +0900
+From: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
+To: Thomas Richard <thomas.richard@bootlin.com>
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	gregory.clement@bootlin.com, theo.lebrun@bootlin.com,
+	thomas.petazzoni@bootlin.com, u-kumar1@ti.com,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	Francesco Dolcini <francesco.dolcini@toradex.com>
+Subject: Re: [PATCH v7 0/7] Add suspend to ram support for PCIe on J7200
+Message-ID: <20240903183211.GB3272142@rocinante>
+References: <20240102-j7200-pcie-s2r-v7-0-a2f9156da6c3@bootlin.com>
+ <78be1cb2-a6c6-44e3-8974-06731dd055f2@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240903192203.1dddbf0d@akair>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+In-Reply-To: <78be1cb2-a6c6-44e3-8974-06731dd055f2@bootlin.com>
 
-On Tue, Sep 03, 2024 at 07:22:03PM +0200, Andreas Kemnade wrote:
-> Am Tue, 3 Sep 2024 14:36:05 +0200
-> schrieb Geert Uytterhoeven <geert@linux-m68k.org>:
-> 
-> > Hi Andreas,
-> > 
-> > On Tue, Sep 3, 2024 at 2:34 PM Andreas Kemnade <andreas@kemnade.info>
-> > wrote:
-> > > Am Mon, 2 Sep 2024 15:53:07 +0200
-> > > schrieb Geert Uytterhoeven <geert@linux-m68k.org>:  
-> > > > On Mon, Jun 3, 2024 at 11:41 PM Andreas Kemnade
-> > > > <andreas@kemnade.info> wrote:  
-> > > > > just stumbled across this on 6.10-rc1:
-> > > > >
-> > > > > [    1.475830] ocp:target-module@48210000:mpu:fck: device ID is
-> > > > > greater than 24 [    1.483154] ti-sysc
-> > > > > ocp:target-module@48210000: could not add child clock fck: -12  
-> > > >
-> > > > And on boneblack:
-> > > >
-> > > > 48000000.interconnect:segment@200000:target-module@0:mpu@0:fck:
-> > > > device ID is greater than 24
-> > > > target-module@4b000000:target-module@140000:pmu@0:fck: device ID
-> > > > is greater than 24
-> > > >  
-> > > > > Maybe
-> > > > >         /*
-> > > > >          * Use clkdev_add() instead of clkdev_alloc() to avoid
-> > > > > the MAX_DEV_ID
-> > > > >          * limit for clk_get(). If cl ever needs to be freed, it
-> > > > > should be done
-> > > > >          * with clkdev_drop().
-> > > > >          */
-> > > > > in ti-sysc.c does not work anymore?
-> > > > >
-> > > > > The offending clock definition is in omap4.dtsi
-> > > > >
-> > > > > clocks = <&mpuss_clkctrl OMAP4_MPU_CLKCTRL 0>;
-> > > > >
-> > > > > Did not bisect that yet.  
-> > > >
-> > > > Commit 8d532528ff6a6b1b ("clkdev: report over-sized strings when
-> > > > creating clkdev entries") in v6.10-rc1, with follow-up commit
-> > > > 616501eccb58615f ("clkdev: don't fail clkdev_alloc() if
-> > > > over-sized") in v6.10-rc4.
-> > > >
-> > > > I have no idea if these clkdev registrations are still
-> > > > necessary/used. 
-> > > well, it might explain some mystery behavior in the past. Lets
-> > > see where it comes from. As the comment says, there should be a
-> > > workaround against that limitation. So the problem should not be
-> > > there in the first place. I have some strange problems with
-> > > clk_disable_unused.
-> > >
-> > > I first thought it is a id < 24 issue and not a strlen(something) <
-> > > 24.  
-> > 
-> > Me too :-(
-> > 
-> Ok, setting
-> MAX_DEV_ID to 64 in clkdev.c lets the warnings disappear. ti-sys.c
-> has at one place precautions for overlong dev_ids, but on another place
-> it happily calls clkdev_create() running into this issue. 
-> 
-> The follow-up commit then again at least does not cause a failure for
-> dev registration. I am still unsure what the consequences are. Between
-> 6.10 and 6.11 something interesting happened which makes the bt200
-> reliably boot with near-mainline u-boot+spl even without
-> clk_ignore_unused. So no frankenstein-boot (vendor X-Loader + new
-> U-boot) anymore.
+Hello,
 
-The bottom line: if you are getting warnings that the strings exceed the
-existing sizes, then _any_ lookups using clkdev will have been failing.
-Nothing has changed with that. The only thing that changed recently was
-to print a warning for this case, and initially to fail the attempt to
-register with clkdev. However, that broke stuff, so it was made not to
-fail, but still report the problem.
+> This series has no remaining comment to address.
 
-Essentially, if you see the warning, the registration with clkdev is
-both pointless and useless.
+No, nothing.  Everything looks good.
 
--- 
-*** please note that I probably will only be occasionally responsive
-*** for an unknown period of time due to recent eye surgery making
-*** reading quite difficult.
+> Is there any chance to get this series merged ?
 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+Yes.  Apologies for the delay.
+
+Bjorn, should be able to pull it for 6.12, hopefully.
+
+	Krzysztof
 
