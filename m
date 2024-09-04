@@ -1,200 +1,94 @@
-Return-Path: <linux-omap+bounces-2110-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2111-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A3F596B3B6
-	for <lists+linux-omap@lfdr.de>; Wed,  4 Sep 2024 09:57:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E484796C1A7
+	for <lists+linux-omap@lfdr.de>; Wed,  4 Sep 2024 17:03:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4EE361C213A8
-	for <lists+linux-omap@lfdr.de>; Wed,  4 Sep 2024 07:57:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7ED37B2A789
+	for <lists+linux-omap@lfdr.de>; Wed,  4 Sep 2024 14:59:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C211D16F826;
-	Wed,  4 Sep 2024 07:56:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27A241DC19C;
+	Wed,  4 Sep 2024 14:58:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="k02JmGhQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QgcM3t41"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from OS0P286CU011.outbound.protection.outlook.com (mail-japanwestazon11010035.outbound.protection.outlook.com [52.101.228.35])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 500A615099D;
-	Wed,  4 Sep 2024 07:56:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.228.35
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725436597; cv=fail; b=DdywDZySaKBsK3LUHnPbQRWNuzxTggs7PRxfsr/xifrwL2+8FXAPqGQ+dq4TO0PXCoVSAC9XjWFw1eep64SQfk7auyfEg71OVamCPusNC/d33xGw41vw2LnOYYKeNuM68WVkUYVS2A5NXSXlJG3vH0JSamsMVkJPhAMkxldiemg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725436597; c=relaxed/simple;
-	bh=9M6wUmOuggdgQg8fAKCohrqexT+PO40YTBBtCTzVzJk=;
-	h=Message-ID:From:To:Subject:In-Reply-To:References:Content-Type:
-	 Date:MIME-Version; b=VAKBVxznwzcQfcelo4aTHpXYpcS99LTAjxIvX7JNbDx4QMjUccUN7FbX3rhEN3OvJHaBA2DYRomtyjbBrQ+VG6u/srK2b2Ro8YkKDZopJlSgRx9DD3fbiAel6UVODD0hYTO6SLtZkX+SbUjnmJF9H/9QwttSSbfM6Z1Lr8CoMDg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=k02JmGhQ; arc=fail smtp.client-ip=52.101.228.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vpBNg53XIGI7yyxscfwyn/t0HCbwSM0NLwYGvrDQzga3ieSkV0C6XOvUaxaTZYK86HJKHmoWF40vrpHWIWZICsug0CIEHGlxTS9j+AjIM20o5ZAoC1TnVAofJ3IV8D9j9mn5eaJQafoZThU2lJ6PIEzUTUw2O68PDlyOZ7RA0MJd9CSuoRfTKd5FWDReLAHla6VI1TbK8OqI3sUQKbm565O351fIWu8IdfmXqqempPfx/UvPDRp1vg1NWQ9gUzTD7ikGsRw5yYvZWEJYW1Y49p1eC0v/qZkrpwj9Jc1fgFHX2ZmyHtGQARVLubiV4eph4v1Nk+dR9LYPYQ9pEBBYBw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nslbi92JKKycB48b/45jHVi+nurh2rJJ7nCi7nhcMDg=;
- b=Y7rTfviT91sLTGai6+h+Qm/2sBzqlikxTx5BiEtqdSweDp6ITIfpU1CPa9WWnY9BIDEOYx7rc0DAfW+0p942wcA7g/Q7lUAcH73fLjnvPtFMSJKLTnHWmIBWdZTv6TLIyR1J5lFylBJ6SV0TWH84SqelKe4wwLmZ/23dW3b63GagBSPafnQris11xXDqHCzGowpw99Ba9fJFIySWQGXFAo8R7BX19JD6F1QkttpcihIffCf4WFm3YIq8xbgQbeW4R+RP7CuCn1RqHRNvis3zJp7jvqW4m6ppW4cWhV1zG36nUlSvlS9U7bMX86Rp8EAug6Q/5SCUpf5tnznQTQKjgA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
- dkim=pass header.d=renesas.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nslbi92JKKycB48b/45jHVi+nurh2rJJ7nCi7nhcMDg=;
- b=k02JmGhQZWP8GkKWNslwAYH+u09BaNM6H0MKUemOWGi3Pot50y2kKWGIclX9FC/eldrqsQGl2Nhoo/6Es4Ktn3zUS86OJGTLp02KvIa5DQHM4WYiFyLn4ozzTAjQ6WUfLRFE6nZk7XY33ElNwDOdyX0epRI2UL8E3zE4Sa5avoE=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=renesas.com;
-Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
- (2603:1096:400:3a9::11) by OS7PR01MB11759.jpnprd01.prod.outlook.com
- (2603:1096:604:23d::7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7918.27; Wed, 4 Sep
- 2024 07:56:30 +0000
-Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
- ([fe80::c568:1028:2fd1:6e11]) by TYCPR01MB10914.jpnprd01.prod.outlook.com
- ([fe80::c568:1028:2fd1:6e11%5]) with mapi id 15.20.7918.024; Wed, 4 Sep 2024
- 07:56:30 +0000
-Message-ID: <878qw77sya.wl-kuninori.morimoto.gx@renesas.com>
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-To: Daniel Vetter <daniel@ffwll.ch>,
-	David Airlie <airlied@gmail.com>,
-	Helge Deller <deller@gmx.de>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Maxime Ripard <mripard@kernel.org>,
-	Michal Simek <michal.simek@amd.com>,
-	Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Takashi Iwai <tiwai@suse.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	devicetree@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-fbdev@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	linux-omap@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	Sakari Ailus <sakari.ailus@iki.fi>
-Subject: Re: [PATCH v5 9/9] media: xilinx-tpg: use new of_graph functions
-In-Reply-To: <87ed606j88.wl-kuninori.morimoto.gx@renesas.com>
-References: <87r0a06ja1.wl-kuninori.morimoto.gx@renesas.com>
-	<87ed606j88.wl-kuninori.morimoto.gx@renesas.com>
-User-Agent: Wanderlust/2.15.9 Emacs/29.3 Mule/6.0
-Content-Type: text/plain; charset=US-ASCII
-Date: Wed, 4 Sep 2024 07:56:30 +0000
-X-ClientProxiedBy: TYWPR01CA0044.jpnprd01.prod.outlook.com
- (2603:1096:400:17f::11) To TYCPR01MB10914.jpnprd01.prod.outlook.com
- (2603:1096:400:3a9::11)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABEBB1DC05F;
+	Wed,  4 Sep 2024 14:58:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1725461907; cv=none; b=A/P7yayBtXwClwDrxc/nOGWmbhF/xIkudvi2E2X3KRRklRNV57s6aVTbIO05XElMOkYRqsu20XX1tTVIhjqn2pHJ/nfgIzPrYUUww7LpmxcX5gen6k7DA4cG5bSQIL17AI/mG9M7GezMOYNbZfT1PHfyYZ4Fk9zhdHikkG3tdHo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1725461907; c=relaxed/simple;
+	bh=UQnaAY6AWhM20C0iIDyykUuqjm6xEAysthXGZe2Wos4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=r+mDvcg6qpIC5OJcB9oanofwlREb16/P1LKwNu1RU1w+IsSiFZ1gmBHkf2rTQeUs3cgaFHfMdhrErhJX00bTADF2VpEiyQyL6ht12Gzy0+3yNOd/rH1coWVid4Qb8lhyY5Lagto/GUQLwVpoBfwvhzqdY69fS2lDOHUW2mYMnnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QgcM3t41; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69F71C4CEC2;
+	Wed,  4 Sep 2024 14:58:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725461907;
+	bh=UQnaAY6AWhM20C0iIDyykUuqjm6xEAysthXGZe2Wos4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QgcM3t41c0e2L97gdbL3uR6WCSplPsdOCaVX2IOGW0VTzUTMQmcogvAfF0xnP9t/j
+	 qGRPURbXva4htrayPRZU5b9gms2oVZctYwCSJRB0PMOPIBrpnmiOSrq22tC4/z78C3
+	 JqpJkSkR4rQZv8yOGv98P2DvB/xAeprr7/agV8DDjr9ggQQVJ9qWSe/bjPSCrYtZwV
+	 Jl0l1kOLkkHTw/OaHnfi2YHrLSTwWDD/FUlOy/VZ3eCzJZqaWpHL6kOqEJLjbK9Igp
+	 Z+K2GVtUyQpzVhMC5lnEQuD1HEbbQY/Y1RfZmS5jWMpkNuoq1bnhGQf3i1EONhqo7w
+	 WzRLxvCui0gcw==
+Date: Wed, 4 Sep 2024 09:58:26 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Roger Quadros <rogerq@kernel.org>
+Cc: linux-mtd@lists.infradead.org, Conor Dooley <conor+dt@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Nishanth Menon <nm@ti.com>,
+	Javier Martinez Canillas <javier@dowhile0.org>,
+	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Tony Lindgren <tony@atomide.com>, devicetree@vger.kernel.org,
+	Enric Balletbo i Serra <eballetbo@gmail.com>, srk@ti.com,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Richard Weinberger <richard@nod.at>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2] dt-bindings: mtd: ti, gpmc-nand: support partitions
+ node
+Message-ID: <172546190582.2558699.15930679272303980998.robh@kernel.org>
+References: <20240903-gpmc-dtb-v2-1-8046c1915b96@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TYCPR01MB10914:EE_|OS7PR01MB11759:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5a071dae-5385-40fe-b17a-08dcccb71669
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|52116014|921020|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?21FyEdtMuOiKVjv8eWgBiziWmGto/bT9P5NAWKtcCu8DfCbTmbWyojexukk7?=
- =?us-ascii?Q?esaSR+cLQF7ms2aUyjy/qT1KiAnfpjtTJEo+tx2bYhazIeZsba9BIpuakuzR?=
- =?us-ascii?Q?De2Db5mrZqBOtfeO34b0NwnyIu5yrK8w8LZUxK8MHUfxhpGBKRoBEkj0Kn+M?=
- =?us-ascii?Q?r0smqCUzNkur2GR55fOTFc+7APFV0rlIfn1z/O93tZmGVdUQaJF/dQ3RPVN8?=
- =?us-ascii?Q?RxJ/WHo2g7gLg94wNZJoYq9ouKKDG6fyGP4+UoUWTflJLlF+4rRn1F56cDwP?=
- =?us-ascii?Q?B74ugBnYi9lzqj3dc8Gfk1lpOzC2HR/jLdCAb1qeSTDmcgoElXYs5xw0rpYe?=
- =?us-ascii?Q?9jRY0rWGDr/mom8/x7R7v5tXCH6HVN/o7UdvHuMdLcQ7g4VaoLeE6Y//XPdG?=
- =?us-ascii?Q?gMe2nu1OwscE9eulPaJg4wqIy0u/GtsKLhslZVPC11bsIu/PpYQ+VnRFL4h5?=
- =?us-ascii?Q?oCiWIhvodIIWyG6hOSaAKcx09yn/AWxwFDm8UFPqT07KvHcj9lN8UCLu8vZT?=
- =?us-ascii?Q?qc+yxq0jokfGBdwOU3flcXdExrR8QkgIft5Koub67CNLYjoE9FwZzVWtwIBx?=
- =?us-ascii?Q?vbsWH5a1CxRBRROX0SGHDELjsIxSulZT44BN3CdcLB9PS6RP7XMSMdY+VCyO?=
- =?us-ascii?Q?BOzQestgtbQAfmLE38lAgh6uRWyMNo40208LKxXHpwg82AJ94HUCEVDPHs/9?=
- =?us-ascii?Q?3SjoDPDtbAwuVHMnMnFkI9wyB6+H5LCOUiC2W86cUZzVScBwb0wg4Z8XWVvQ?=
- =?us-ascii?Q?CQMzRWTVIYHyNuVOT0rjXYcTkUSieU99ReI/PCKP7PJmkFrj8KQ4srpPrOT9?=
- =?us-ascii?Q?ZBqUAn+H9NiUAs+PJpQhk9DExYn02UrAjhUhtdLuFrM59dLcVQcChyuaLJkx?=
- =?us-ascii?Q?gv6t+KhWaQXAAC+UNaLeqRO3Jr+81HdDbemgpVoEgkq5CyUbaC5/YScR86zK?=
- =?us-ascii?Q?2b4bWi3dF3rLwCTMxAJ5w5Wgcw3/VcE9Q8ttBtWLskl9kcFmJLM5hUKg7NSZ?=
- =?us-ascii?Q?0kkLl8Deww+ZAezIEc/KuQPFd4Qc/+XQr3pQS53o3KBymtbgmH+A7/pnHDNz?=
- =?us-ascii?Q?Gtz5gqCtECEoGGSqlIvJpgNa29Q61UoCfRIquDaBDJHh03l1wGse+92JEfkO?=
- =?us-ascii?Q?ri2xmHgUS6K3omGfLJIO/WQCGRaqscaTBrBUVP3hcM5xKvoajyVGvRd1ykPl?=
- =?us-ascii?Q?iTSyR7HAbTrnGw9H0q0Gcp1LbMZFekgM6a+X8x3Uw1yRbYG7km3UQQMqA+hp?=
- =?us-ascii?Q?XE0bpLTkkrARLcruX6VP1PohGcR5wRy+y4JKkA3+BU/oS4p+cpQGgCsF1Tgd?=
- =?us-ascii?Q?pbde8pvLBxQqkYVFqCubfmyj2dhWAdbBkj17w4tP45jKTx95WgQn7jOU2vWs?=
- =?us-ascii?Q?4OL71sjqiuCaYgwiiEsCwkA2vUEI+bGkTk7Yrlb5TXypv/4+fQwcrCBJIao0?=
- =?us-ascii?Q?KA5QSv7dm+E=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYCPR01MB10914.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(52116014)(921020)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?HmxVQWItBEPmDkffc2HLhK3AZkvi1vyG30nZfxeeuFNAai7kkez5wujepvIt?=
- =?us-ascii?Q?UAJMbwVhWdpXs5jlJuIc5cbQoOcydw5rClrg7hHcrnJEpZohTOw8fMZLAUvT?=
- =?us-ascii?Q?j7DxWJXf08En9YqLvadlFTRLoSSll1MT+8CL4gsnWGRJEq1AJy8mKMjhcJo6?=
- =?us-ascii?Q?FUKJNhzszyF50tIfhc25B0hfRsVQXBX0NCE83JXz4chJPETu2bTFs4zLrYL+?=
- =?us-ascii?Q?NnyyuMHstFZEKcYAFNchswz3KgxxXve5dS+ZnYxwOsggUOVrERHATFZpDB1Y?=
- =?us-ascii?Q?0NbENFfHpxjEUeIDa2OCXQdiebNr058H2J4UB+EJL9ACr1N7dvw/YYgtwJrT?=
- =?us-ascii?Q?iMuLcyqLAlKnnPsM44FcDATl8WCr+MN+zvFQLtbogVGX/Cf6Hp+R88TlVQlu?=
- =?us-ascii?Q?49D7Hji/4YkeRbvXk6Oiw1Led3lD2OCXETGXVglpPe94cEw9f0o6UiV6OTOg?=
- =?us-ascii?Q?wW3Vm/55XW8NpIbNueqi0xnpHFFR40KFPPRmD7iHZKWo16YlgnLG9aI8oWiZ?=
- =?us-ascii?Q?XymG9uE0R9Ffnd6PsUMhUmrkRRdIb/c1OnNEkJ656lxITCZDaWGO18fQCTc6?=
- =?us-ascii?Q?ZfXXuvg+0L3pYf4J0XMiap1R3FIAu0b6eLNqajPNZIeSMvsZCo6PeBmC05Fv?=
- =?us-ascii?Q?fYBhhLVijxqfVauU3AFYVSoYMXISFwfeCH/bret46Nf4yxmrpz9FU0tuDw23?=
- =?us-ascii?Q?UOJYiEsU4duh8DC5mLjPhOsbuj0YNsAwUmjjiqYM78x2yzbRTlbKcZhH9J5Z?=
- =?us-ascii?Q?F+cMbd/+avC2OAlROgGCxbuOIEBmxti/B55SGCSym1DVjUlMUbyCvtTDHpmB?=
- =?us-ascii?Q?sFLpY3mV2sdbq2H6Fgji+uE2ISalSecKrgunu3/ejyTr7e4aVBFjfhgFAALA?=
- =?us-ascii?Q?mf6imvvTCF1vmUlrW70BBfFEtkLDmZhYp8HP2YetINBYif4PbRJBOfGqO6GC?=
- =?us-ascii?Q?1V88i+Xw31bYEE3qpw4x+MyRUigu8a8vGCoULRnLq8w9JzHP5xUDHZOjXfIg?=
- =?us-ascii?Q?r1JqPjqpYWhhuuJ0Nxuk+pLu9vUhu1LyRQkhUmSUq2GD+ZWJTgK0aBPM4F7s?=
- =?us-ascii?Q?nwjb2aQEpWbAk/8ykqVZngAowzWua8rvu5sQ4Jb0QhVN1bj9u4nfQmJpbVFx?=
- =?us-ascii?Q?87rv2MMaFu6s7ksoUnxK/AYmxWEFmnMsWaWLDD0nACu55/Wlrs+2LfZflKYv?=
- =?us-ascii?Q?BMLbbagD/qey75eTQ+sTXklCMoTSw4rqpyUhKn4Py+fZ0sgKfB5KmB4iGS6z?=
- =?us-ascii?Q?oggmEVBRaYJc4s7Q1yeIDr4m+5qK8LOGk8jPyBsxmzDKYShTHBSPTy/SNRsQ?=
- =?us-ascii?Q?DPa1APp8EYzyaYWn+XTCTgdJhaeGneNbeV3tsUBkpzUKv5/ZCkI3ostw8ycV?=
- =?us-ascii?Q?e2tjX2DA0/Pu/gFJfsTUz8THtwiLtMu820M/cR0L63b7TY1S2SE+2b6pwHRd?=
- =?us-ascii?Q?aUxpukIQFqPc3GaAB5TpOLnBqwFVFcDaG8MoMJ8130C0Jae8R2fmvPBWilyh?=
- =?us-ascii?Q?4c8mUt/6ewg3h5+U4xKW1M6uFYgDAIW4S7Igxt2MRJWjxi/K8YfYNHp6+mX+?=
- =?us-ascii?Q?5vG4RBBJdVxpjP2xGrd2/Hioqmm14yK8Ud/99w91wR8ehwh7z3SmpMXHJF4G?=
- =?us-ascii?Q?MhGg+jjeL1MLnJUdKto8Nxw=3D?=
-X-OriginatorOrg: renesas.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5a071dae-5385-40fe-b17a-08dcccb71669
-X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB10914.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Sep 2024 07:56:30.8028
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: yR78lnPVRXpd2K3+GWceYQFq1sL5En284tZEHkz49OaTXU3eHsBV3dD/4J2SPWZc6qZNDQhm+oEox7VkdAQEkg32iKEfVjTiqDiYof3og2Cw9YkpwPNm3s9fxdfBb1gE
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS7PR01MB11759
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240903-gpmc-dtb-v2-1-8046c1915b96@kernel.org>
 
 
-Hi
-
-> Now we can use new port related functions for port parsing. Use it.
+On Tue, 03 Sep 2024 19:29:57 +0300, Roger Quadros wrote:
+> Allow fixed-partitions to be specified through a partitions
+> node.
 > 
-> Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-> Reviewed-by: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
+> Fixes the below dtbs_check warning:
+> 
+> arch/arm64/boot/dts/ti/k3-am642-evm-nand.dtb: nand@0,0: Unevaluated properties are not allowed ('partitions' was unexpected)
+> 
+> Signed-off-by: Roger Quadros <rogerq@kernel.org>
 > ---
+> Changes in v2:
+> - reference mtd.yaml for standard mtd properties like partition as
+>   suggested by Rob Herring.
+> - Link to v1: https://lore.kernel.org/r/20240830-gpmc-dtb-v1-1-792cac1ef3cc@kernel.org
+> ---
+>  Documentation/devicetree/bindings/mtd/ti,gpmc-nand.yaml | 5 +----
+>  1 file changed, 1 insertion(+), 4 deletions(-)
+> 
 
-I'm sorry, but this patch will get below warning
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
-   drivers/media/platform/xilinx/xilinx-tpg.c: In function 'xtpg_parse_of':
->> drivers/media/platform/xilinx/xilinx-tpg.c:715:29: warning: unused variable 'port' [-Wunused-variable]
-
-I will post v6 after review
-
-Thank you for your help !!
-
-Best regards
----
-Kuninori Morimoto
 
