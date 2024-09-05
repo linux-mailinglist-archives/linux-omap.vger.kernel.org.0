@@ -1,84 +1,82 @@
-Return-Path: <linux-omap+bounces-2112-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2113-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7747E96CB90
-	for <lists+linux-omap@lfdr.de>; Thu,  5 Sep 2024 02:10:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD03E96CB91
+	for <lists+linux-omap@lfdr.de>; Thu,  5 Sep 2024 02:11:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 367222824F4
-	for <lists+linux-omap@lfdr.de>; Thu,  5 Sep 2024 00:10:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71F8B1F23FF0
+	for <lists+linux-omap@lfdr.de>; Thu,  5 Sep 2024 00:11:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94D6D621;
-	Thu,  5 Sep 2024 00:10:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88635621;
+	Thu,  5 Sep 2024 00:11:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="v7+sQM/3"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="DGg5OnGJ"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E12B423AD
-	for <linux-omap@vger.kernel.org>; Thu,  5 Sep 2024 00:10:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6CFD184
+	for <linux-omap@vger.kernel.org>; Thu,  5 Sep 2024 00:11:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725495043; cv=none; b=PznjObTjHIR9Ws/+1mYLr4C52Is1ifax93W0AnEgpdOVKCQPBByxBzNKWbY/XRZq4qvQ+SB8J4XPChXE7VESVwEyiZcKR4/PqOtOisFmZkWStYv4WoNFBgDY2uzg+6FqAA7/eYhmsyBR17eYEkAok7HCjlhvapJJ/bypdfxNbsU=
+	t=1725495086; cv=none; b=WtlsqqKQ2ilZKY/wwa4+IbH0J/HKuonFsAhsvVsSjbFxds+ua6MGx20xnDrrK4xBZpZeBMel/3DeHJjfizcT3K+PV3JzJ+46t7l0VMa4Fc1YudBPvGOS/Llnog9fna/PwYX4RSogqY5PKugEb6DnITWhi8GzF4NqMe+ZwK2l6Xk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725495043; c=relaxed/simple;
-	bh=8Vmg9RN5VOBvnglKmUcfGhCZHlroD/vCNrAXbdg7Ebc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=AMomCOucs79T9RbU6q8R/W4l4RIJ2HkRtyH4T/BCf8eaX2Zf93BvfG0qZuiJbdUSVctZO9AjnlWGmeJCq/Xw1k2sB8qjJHSWTt5nr6GwLRRLbZ8RiKuiuTL8v50WTsjhvmV5irIEATWag9fGdnA5hopl+B6q5yETAFFASR3jEhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=v7+sQM/3; arc=none smtp.client-ip=209.85.210.169
+	s=arc-20240116; t=1725495086; c=relaxed/simple;
+	bh=hpcoRJ+wdOzTUkcem0Ha0pFW29Ze+Oz80RqZAh/XHKw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Gt7yL5AiLq7kq446oux9Sg1mCa11wtdK6fsn3Ze2GyDxWSX2BiLJtB/eZRqhmhXI1z97XheKGbLy6iuc1khHwXlXSiUHkwev+vWzWD08QDv23k7ztYXHD33Mtt6PVnCqr2eB1ilZ8P+ItEwKxGIj4YtVRCytCShtydQ0hGjjzU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=DGg5OnGJ; arc=none smtp.client-ip=209.85.210.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-715cc93694fso177165b3a.2
-        for <linux-omap@vger.kernel.org>; Wed, 04 Sep 2024 17:10:39 -0700 (PDT)
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-714226888dfso158466b3a.1
+        for <linux-omap@vger.kernel.org>; Wed, 04 Sep 2024 17:11:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1725495039; x=1726099839; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=L/J+m7xtAiLQbYPxO7KC9XqOGseWC15fR3u3v8pH/Qo=;
-        b=v7+sQM/37WcmA6z2h5XNcRA4dAz9kesf1TSvynAue8wEbUNGLA1Y5COAxqaM+ujuZd
-         g50TxaIpU6XN16Rj92TZcKI/Hs7rVZSjQxGs2HBi8UdoQqhYrQB9KCvZsa6rkuxZch9E
-         +EzawykrFuShTBX5NNOkoPuPQjf4V5rxmf+VIAaaoKFVPsjJJblIoxfc8HUTtOWo2MvX
-         vn96nwTMuJvYeXVorgk2k4QmgDGuA1U1/6sYCTPnasogziDfeEiWWPAOyaXp9IUKH2LG
-         Ug1ud75rRIat0DuMp2j7sWFCZ/WyCtOjM3vFp+7GCxDw9KfHur88rOV+ZPVS6N2kQ0m5
-         yGGw==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1725495083; x=1726099883; darn=vger.kernel.org;
+        h=mime-version:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=WBb2m4LRqIVhYecRL8ia2k0mOHcNoJOjR2lFU/Vhyqs=;
+        b=DGg5OnGJ2ivDylei6MhJxwybig9XKg7mzp7xNgtNGy6SaYPadGq1fBkEgjAUj626pF
+         gj2kpfWISF5iP6dh1Z8H8no3JbTX56rptOZqLoQ8speJQuSToxRD4nB6T8lP9Yzc3LjI
+         nCI8ECdyT+pSXLmxA5suU2CQdnfeT13d7VRBZPJwd+Odcu52kyAXcr60faHRZSAn/G2b
+         YOF50eKrKZHP6w6ts/u4i8WVZLcUq314AVsUS0mf8/TMgH+mQdwmIACwxYKy7Z1FLTCP
+         bBkLXsU9qi7saG7gUpZOUIyqbf8mp6vAt8toQcA/hUtlUGxNP9KPlhfga+QA/PhGmZqh
+         KCLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725495039; x=1726099839;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=L/J+m7xtAiLQbYPxO7KC9XqOGseWC15fR3u3v8pH/Qo=;
-        b=YKD6tC5muIOosLCs4bkvIxz+rWuhEN1x8BG5semN4GYeILUkXglXZMasZGs51CpiOv
-         W88/FFm/dDVYcAwPIqgBKOztHRBDY8ui85viSExcp5YpncLCps9RhPNreqBGaUPwjImc
-         hVJES39QdhUACRIU1Kcqn731zynLyWYkIZEzDKyoiL7zUADKwJn4j7qOxNKEP1Y5U+th
-         PkLo84uS74by0O684pUbEDDep6oksIuqfip6ICkCuTRZeReffCwvE1mYkvFmTd3YGZxe
-         IryIZNh61sGpWdV9HV/CHbSZaj+y5ZBt0G8L91f0ekTdpdi9nC973855DrgPVLF0U21T
-         1lgg==
-X-Gm-Message-State: AOJu0YxVKQN/iSkVwex8YQ9fmW3iGWgwqS1Iqf8mQouY5SjugWLLXuKh
-	vRH3EvskcEoq6/BafSK/q9EHtP/BnS11uNMFS9LFACqL5mMSkdtbuHWLgl8I41dLCyXtt1CJMqb
-	1
-X-Google-Smtp-Source: AGHT+IFr8ZgCjKP12FAginmMBgyBrcf86BKu8ZxaYyiTyrv9SpdDyLEWBNbAAE5ds/o79vsyYkzA3g==
-X-Received: by 2002:a05:6a00:cd6:b0:710:6f54:bcac with SMTP id d2e1a72fcca58-7173c1e0fa1mr15844982b3a.1.1725495038993;
-        Wed, 04 Sep 2024 17:10:38 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1725495083; x=1726099883;
+        h=mime-version:message-id:date:subject:cc:to:from:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=WBb2m4LRqIVhYecRL8ia2k0mOHcNoJOjR2lFU/Vhyqs=;
+        b=CuNVKSbdY0o/JUJ+m0BM08q1Qw/1nt1W8WejHbZ7k7/c7EYZWAwxFADrCCzrx70+Gn
+         lU7POHM67KHviuXV/7/1yuAbldQKMGx2834GalTzZ42gSIAKtPOMr5QUuhhfYoJUYq/q
+         EUEo3uNHWhMif+gqCVqKwEol2z6HzNYPq1CrLU/56Fdt2FdL1dab77LZb3MZFS9F/mF+
+         aK2W00RnZPlcPeg7S+XV9MUP1qDVVDZY3iki03W1MtdO8i0LEy36Os+DGWX8Q99FRwLq
+         yZe4zi7CCE/Wn+e2i5pLvvRtPB/wkO8L5ep16uM8v6+AryyNEOyGFk2VVPwJq3OLJb50
+         VIHg==
+X-Gm-Message-State: AOJu0YzrWAKUFN6dX5+dy39U3aX7RUD3YJo8AeeYUp1cukhyah6tilQs
+	Ldq2j6X1L20a/kn3tZ/pWi1X6YN1XP83Xkoy/FFKl34ST0sZQfyxy7PzBEJJBd7FDi5fsurEY9W
+	c
+X-Google-Smtp-Source: AGHT+IEispmsRDT/jVl+Mi6E0JuyUc+QsYEaQ8/O5NzZYXN3oQwk+xP3FkJL7y6A7+ov8gEQTBNBJg==
+X-Received: by 2002:a05:6a00:2e8f:b0:705:c0a1:61c9 with SMTP id d2e1a72fcca58-715dfb127c2mr26216960b3a.9.1725495082771;
+        Wed, 04 Sep 2024 17:11:22 -0700 (PDT)
 Received: from localhost ([71.212.170.185])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7d501dde269sm1170670a12.88.2024.09.04.17.10.38
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7d4fbdadd48sm1903769a12.79.2024.09.04.17.11.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Sep 2024 17:10:38 -0700 (PDT)
+        Wed, 04 Sep 2024 17:11:22 -0700 (PDT)
 From: Kevin Hilman <khilman@baylibre.com>
 To: soc@kernel.org
 Cc: linux-omap@vger.kernel.org
-Subject: [GIT PULL] ARM: dts: ti: mix am335x cleanups for v6.12
-Date: Wed, 04 Sep 2024 17:10:38 -0700
-Message-ID: <7hh6avark1.fsf@baylibre.com>
+Subject: [GIT PULL] ARM: OMAP2+: misc driver updates for v6.12
+Date: Wed, 04 Sep 2024 17:11:22 -0700
+Message-ID: <7hcyljarit.fsf@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
 The following changes since commit 8400291e289ee6b2bf9779ff1c83a291501f017b:
 
@@ -86,34 +84,26 @@ The following changes since commit 8400291e289ee6b2bf9779ff1c83a291501f017b:
 
 are available in the Git repository at:
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/khilman/linux-omap.git tags=
-/omap-for-v6.12/dt-signed
+  git://git.kernel.org/pub/scm/linux/kernel/git/khilman/linux-omap.git tags/omap-for-v6.12/drivers-signed
 
-for you to fetch changes up to 22644cc0443550258f8710bd1613d483f82e8196:
+for you to fetch changes up to 9aee8262445d185960431e972e2d997e6aba3de0:
 
-  ARM: dts: ti: omap: am335x-wega: Fix audio clock provider (2024-07-30 15:=
-19:13 -0700)
+  ARM: OMAP2+: Remove obsoleted declaration for gpmc_onenand_init (2024-08-30 10:57:24 -0700)
 
 ----------------------------------------------------------------
-ARM: dts: ti: mix am335x cleanups for v6.12
+ARM: OMAP2+: misc driver updates for v6.12
 
 ----------------------------------------------------------------
-Colin Foster (1):
-      ARM: dts: am335x-bone-common: Increase MDIO reset deassert time
+Dhruva Gole (1):
+      bus: ti-sysc: Remove excess struct member 'disable_on_idle' description
 
-Dominik Haller (1):
-      ARM: dts: ti: omap: am335x-wega: Fix audio clock provider
+Gaosheng Cui (1):
+      ARM: OMAP2+: Remove obsoleted declaration for gpmc_onenand_init
 
-Rafa=C5=82 Mi=C5=82ecki (1):
-      ARM: dts: omap: am335x-bone: convert NVMEM content to layout syntax
+Rob Herring (Arm) (1):
+      bus: ti-sysc: Use of_property_present()
 
-Steffen Hemer (1):
-      ARM: dts: ti: omap: am335x-regor: Fix RS485 settings
-
- arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi | 66 +++++++++++++++++++=
-++++++++++++++++++++++++++---------------------
- arch/arm/boot/dts/ti/omap/am335x-boneblue.dts     | 12 ++++++++----
- arch/arm/boot/dts/ti/omap/am335x-regor.dtsi       | 10 +++++++++-
- arch/arm/boot/dts/ti/omap/am335x-wega.dtsi        |  7 +++----
- 4 files changed, 65 insertions(+), 30 deletions(-)
+ drivers/bus/ti-sysc.c     |  7 ++-----
+ include/linux/omap-gpmc.h | 10 ----------
+ 2 files changed, 2 insertions(+), 15 deletions(-)
 
