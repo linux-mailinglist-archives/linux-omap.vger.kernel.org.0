@@ -1,93 +1,93 @@
-Return-Path: <linux-omap+bounces-2120-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2121-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1892C96ECA3
-	for <lists+linux-omap@lfdr.de>; Fri,  6 Sep 2024 09:54:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8602396ECA9
+	for <lists+linux-omap@lfdr.de>; Fri,  6 Sep 2024 09:54:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 372D51C2294C
-	for <lists+linux-omap@lfdr.de>; Fri,  6 Sep 2024 07:54:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F10D91F27CBD
+	for <lists+linux-omap@lfdr.de>; Fri,  6 Sep 2024 07:54:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC6C014F9E7;
-	Fri,  6 Sep 2024 07:54:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 665FB14F9EA;
+	Fri,  6 Sep 2024 07:54:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="h2b86UdC";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="mmJzGQv8";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="h2b86UdC";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="mmJzGQv8"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="jVbItLEt";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="DQxfLG/m";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="jVbItLEt";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="DQxfLG/m"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02B7814264A;
-	Fri,  6 Sep 2024 07:54:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 597B614A4E2;
+	Fri,  6 Sep 2024 07:54:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725609285; cv=none; b=LQKkjGBjcHk5IzLlqAA6kDi95dbjctTsCUw3rvVS1nzcv0W1qz4Pv2g1+0p1teG+MIDVverBbYT6Tw67kKYAGVUXfIEv72TbCm6X6mV7GxyBXe/+WHA61kI3ZNOk+CcIt10CF5JlHKm+FGp9tcHIRzMt5L1FKaEz7wKkCD8A6YM=
+	t=1725609286; cv=none; b=QKnhBgAYB6ftNwrOXbn/dT/g89SbAF1Fem9bR61CTJpV3FTIIVjRqDTKHkW/t3j+W6h5JJwpx0JTAa8rvJqFF7HOyZbGDqoNty+6sHc5HqI8YFCYZuIBQsspLBNlYsnUIx/2GT1ewZ8of5DzwPog9NKDL+5TtAOoADPPQ+o9AwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725609285; c=relaxed/simple;
-	bh=0UWN+wlG05SL4E3UMCbC1c6BBROkQTV0/CR3sZtNtYg=;
+	s=arc-20240116; t=1725609286; c=relaxed/simple;
+	bh=4htfgud9qjzDuRew3rHmo3MTmJVDV6Vavlipa0djvQg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nEGupdY1sG0oHDLs2OtVV3lmUn/gobENeFYrVdJfpgo9QtD4klQk9fZCPN/wJBMPr+5TxJttBt/D4zMhVT4KdGnbTUt+ArFTYrJXJRZa0VG+6uDRbBNW0w9gk/9o06u/UQYQNkCKjxfCU61t3zJBV0Pk5qJh6Wv35kwiY3cbVLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=h2b86UdC; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=mmJzGQv8; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=h2b86UdC; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=mmJzGQv8; arc=none smtp.client-ip=195.135.223.131
+	 MIME-Version; b=pljwF3cWUypVzFad9sf4f4F6Xv85CECBeRkGczdBu8ZpS8wqYd3u6Z4a3/xHR8gsltsTYrPP11uL7/UqoLo2uVMDGfPEizC1PvLI+s+bLzfhZaj3gzg26wbTaWMvvJfpQN7jFzUcxzWtzrxhTtpt4FUQAER35cPaLo+nCOqKlDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=jVbItLEt; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=DQxfLG/m; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=jVbItLEt; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=DQxfLG/m; arc=none smtp.client-ip=195.135.223.130
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 354AA1F897;
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 9C36021AAC;
 	Fri,  6 Sep 2024 07:54:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
 	t=1725609282; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/5hFfKM54JOQ1P0mNCga3j3GfvB8G75ey7d8hLrAjXc=;
-	b=h2b86UdCjZ/J5Ubhmuicp6WzaxNxfOSuElqmr42oCUBSUcK79DHhzoOxqg/voV8epWrjxG
-	FpPM4PPG17y92wt3if/x3l/fbjO6kGdQfzIbBJUwF5YUWNlAkkdnYOXxd+ymIOtjrXda6E
-	yuHS/SOQFTJDkGbPDInBFpcrmc4PDOA=
+	bh=m0OL/1DGIzFI3eeSHil7+LVlCkFCWkI3H7K0ymxchyc=;
+	b=jVbItLEtc/USktcGH/NqUQXcOB+bobtd7iyZzNThC2q6M6UeP9EjzMlelcX8LPjU5m8/Mq
+	fAQOonickQzBWHEwvR0T1PllZg4IJPauVHSCYsanCLtJEnOyiI8Lu2S9shTijDBmfTfmjF
+	GcyWAS4Zjhj6mzoi15KZ/TkzbPRIJ9I=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
 	s=susede2_ed25519; t=1725609282;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/5hFfKM54JOQ1P0mNCga3j3GfvB8G75ey7d8hLrAjXc=;
-	b=mmJzGQv8igMouypk0nVDMp6fJKXCp8s0uS8FeJ2l4WWlLaDoNH2gS02GnbSIjZ8ro2NRLz
-	LcRMphk1L7ZsgYAw==
-Authentication-Results: smtp-out2.suse.de;
+	bh=m0OL/1DGIzFI3eeSHil7+LVlCkFCWkI3H7K0ymxchyc=;
+	b=DQxfLG/m9JuyI4xJw3m2SKBCDdEYy1T6EURH4T3Yi8mRnGUjU9zMRk44JP/sXRzdxF4uD2
+	qsV/d2Yx5LysixBg==
+Authentication-Results: smtp-out1.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
 	t=1725609282; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/5hFfKM54JOQ1P0mNCga3j3GfvB8G75ey7d8hLrAjXc=;
-	b=h2b86UdCjZ/J5Ubhmuicp6WzaxNxfOSuElqmr42oCUBSUcK79DHhzoOxqg/voV8epWrjxG
-	FpPM4PPG17y92wt3if/x3l/fbjO6kGdQfzIbBJUwF5YUWNlAkkdnYOXxd+ymIOtjrXda6E
-	yuHS/SOQFTJDkGbPDInBFpcrmc4PDOA=
+	bh=m0OL/1DGIzFI3eeSHil7+LVlCkFCWkI3H7K0ymxchyc=;
+	b=jVbItLEtc/USktcGH/NqUQXcOB+bobtd7iyZzNThC2q6M6UeP9EjzMlelcX8LPjU5m8/Mq
+	fAQOonickQzBWHEwvR0T1PllZg4IJPauVHSCYsanCLtJEnOyiI8Lu2S9shTijDBmfTfmjF
+	GcyWAS4Zjhj6mzoi15KZ/TkzbPRIJ9I=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
 	s=susede2_ed25519; t=1725609282;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/5hFfKM54JOQ1P0mNCga3j3GfvB8G75ey7d8hLrAjXc=;
-	b=mmJzGQv8igMouypk0nVDMp6fJKXCp8s0uS8FeJ2l4WWlLaDoNH2gS02GnbSIjZ8ro2NRLz
-	LcRMphk1L7ZsgYAw==
+	bh=m0OL/1DGIzFI3eeSHil7+LVlCkFCWkI3H7K0ymxchyc=;
+	b=DQxfLG/m9JuyI4xJw3m2SKBCDdEYy1T6EURH4T3Yi8mRnGUjU9zMRk44JP/sXRzdxF4uD2
+	qsV/d2Yx5LysixBg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C99BA13A7A;
-	Fri,  6 Sep 2024 07:54:41 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3BD44136A8;
+	Fri,  6 Sep 2024 07:54:42 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id cGP3L0G12mbGPAAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Fri, 06 Sep 2024 07:54:41 +0000
+	id +ExTDUK12mbGPAAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Fri, 06 Sep 2024 07:54:42 +0000
 From: Thomas Zimmermann <tzimmermann@suse.de>
 To: lee@kernel.org,
 	daniel.thompson@linaro.org,
@@ -104,9 +104,9 @@ Cc: dri-devel@lists.freedesktop.org,
 	linux-fbdev@vger.kernel.org,
 	linux-omap@vger.kernel.org,
 	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH v2 01/28] backlight: lcd: Rearrange code in fb_notifier_callback()
-Date: Fri,  6 Sep 2024 09:52:15 +0200
-Message-ID: <20240906075439.98476-2-tzimmermann@suse.de>
+Subject: [PATCH v2 02/28] backlight: lcd: Test against struct fb_info.lcd_dev
+Date: Fri,  6 Sep 2024 09:52:16 +0200
+Message-ID: <20240906075439.98476-3-tzimmermann@suse.de>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240906075439.98476-1-tzimmermann@suse.de>
 References: <20240906075439.98476-1-tzimmermann@suse.de>
@@ -117,7 +117,7 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
+X-Spam-Score: -6.80
 X-Spamd-Result: default: False [-6.80 / 50.00];
 	REPLY(-4.00)[];
 	BAYES_HAM(-3.00)[100.00%];
@@ -128,7 +128,7 @@ X-Spamd-Result: default: False [-6.80 / 50.00];
 	MIME_GOOD(-0.10)[text/plain];
 	ARC_NA(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid,imap1.dmz-prg2.suse.org:helo];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email,imap1.dmz-prg2.suse.org:helo];
 	RCPT_COUNT_TWELVE(0.00)[15];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
@@ -142,65 +142,84 @@ X-Spamd-Result: default: False [-6.80 / 50.00];
 	R_RATELIMIT(0.00)[to_ip_from(RL7eb4yoy35resap1sns3bbybe)];
 	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
 	FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de]
-X-Spam-Score: -6.80
 X-Spam-Flag: NO
+X-Spam-Level: 
 
-First acquire the ops_lock and do all tests while holding it. Rearranges
-the code in lcd's fb_notifier_callback() to resemble the callback in
-the backlight module. This will simplify later changes to these tests.
+Add struct fb_info.lcd_dev for fbdev drivers to store a reference to
+their lcd device. Update the lcd's fb_notifier_callback() to test for
+this field. The lcd module can now detect if an lcd device belongs to
+an fbdev device.
 
-v2:
-- avoid gotos by using guard(mutex) (Daniel)
-- fix typos in commit description (Daniel)
+This works similar to the bl_dev for backlights and will allow for
+the removal of the check_fb callback from several fbdev driver's lcd
+devices.
 
 Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
 ---
- drivers/video/backlight/lcd.c | 25 +++++++++++++------------
- 1 file changed, 13 insertions(+), 12 deletions(-)
+ drivers/video/backlight/lcd.c |  3 +++
+ include/linux/fb.h            | 13 +++++++++++++
+ 2 files changed, 16 insertions(+)
 
 diff --git a/drivers/video/backlight/lcd.c b/drivers/video/backlight/lcd.c
-index ceec90ca758b..2f57d6867d42 100644
+index 2f57d6867d42..c69407aed296 100644
 --- a/drivers/video/backlight/lcd.c
 +++ b/drivers/video/backlight/lcd.c
-@@ -27,24 +27,25 @@
- static int fb_notifier_callback(struct notifier_block *self,
- 				 unsigned long event, void *data)
- {
--	struct lcd_device *ld;
-+	struct lcd_device *ld = container_of(self, struct lcd_device, fb_notif);
+@@ -30,6 +30,7 @@ static int fb_notifier_callback(struct notifier_block *self,
+ 	struct lcd_device *ld = container_of(self, struct lcd_device, fb_notif);
  	struct fb_event *evdata = data;
-+	struct fb_info *info = evdata->info;
-+
-+	guard(mutex)(&ld->ops_lock);
+ 	struct fb_info *info = evdata->info;
++	struct lcd_device *fb_lcd = fb_lcd_device(info);
  
--	ld = container_of(self, struct lcd_device, fb_notif);
- 	if (!ld->ops)
+ 	guard(mutex)(&ld->ops_lock);
+ 
+@@ -37,6 +38,8 @@ static int fb_notifier_callback(struct notifier_block *self,
  		return 0;
-+	if (ld->ops->check_fb && !ld->ops->check_fb(ld, info))
+ 	if (ld->ops->check_fb && !ld->ops->check_fb(ld, info))
+ 		return 0;
++	if (fb_lcd && fb_lcd != ld)
 +		return 0;
  
--	mutex_lock(&ld->ops_lock);
--	if (!ld->ops->check_fb || ld->ops->check_fb(ld, evdata->info)) {
--		if (event == FB_EVENT_BLANK) {
--			if (ld->ops->set_power)
--				ld->ops->set_power(ld, *(int *)evdata->data);
--		} else {
--			if (ld->ops->set_mode)
--				ld->ops->set_mode(ld, evdata->data);
--		}
-+	if (event == FB_EVENT_BLANK) {
-+		if (ld->ops->set_power)
-+			ld->ops->set_power(ld, *(int *)evdata->data);
-+	} else {
-+		if (ld->ops->set_mode)
-+			ld->ops->set_mode(ld, evdata->data);
- 	}
--	mutex_unlock(&ld->ops_lock);
+ 	if (event == FB_EVENT_BLANK) {
+ 		if (ld->ops->set_power)
+diff --git a/include/linux/fb.h b/include/linux/fb.h
+index 865dad03e73e..bf1893616e9c 100644
+--- a/include/linux/fb.h
++++ b/include/linux/fb.h
+@@ -21,6 +21,7 @@ struct fb_info;
+ struct file;
+ struct i2c_adapter;
+ struct inode;
++struct lcd_device;
+ struct module;
+ struct notifier_block;
+ struct page;
+@@ -480,6 +481,13 @@ struct fb_info {
+ 	struct mutex bl_curve_mutex;
+ 	u8 bl_curve[FB_BACKLIGHT_LEVELS];
+ #endif
 +
- 	return 0;
++	/*
++	 * Assigned LCD device; set before framebuffer
++	 * registration, remove after unregister
++	 */
++	struct lcd_device *lcd_dev;
++
+ #ifdef CONFIG_FB_DEFERRED_IO
+ 	struct delayed_work deferred_work;
+ 	unsigned long npagerefs;
+@@ -753,6 +761,11 @@ static inline struct backlight_device *fb_bl_device(struct fb_info *info)
  }
+ #endif
  
++static inline struct lcd_device *fb_lcd_device(struct fb_info *info)
++{
++	return info->lcd_dev;
++}
++
+ /* fbmon.c */
+ #define FB_MAXTIMINGS		0
+ #define FB_VSYNCTIMINGS		1
 -- 
 2.46.0
 
