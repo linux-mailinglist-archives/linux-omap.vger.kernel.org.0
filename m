@@ -1,139 +1,108 @@
-Return-Path: <linux-omap+bounces-2149-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2150-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAC7C9702F5
-	for <lists+linux-omap@lfdr.de>; Sat,  7 Sep 2024 17:33:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAFE79711DD
+	for <lists+linux-omap@lfdr.de>; Mon,  9 Sep 2024 10:26:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66C12282DD7
-	for <lists+linux-omap@lfdr.de>; Sat,  7 Sep 2024 15:33:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78DC7B24253
+	for <lists+linux-omap@lfdr.de>; Mon,  9 Sep 2024 08:26:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5578515F40B;
-	Sat,  7 Sep 2024 15:33:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02D991B1502;
+	Mon,  9 Sep 2024 08:25:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="GGFUtIn/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hvJtwu3V"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mout.web.de (mout.web.de [217.72.192.78])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D8741B85DC;
-	Sat,  7 Sep 2024 15:33:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 856CA1AF4FA;
+	Mon,  9 Sep 2024 08:25:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725723187; cv=none; b=uWTz9Ha1A+uePxD1S3i35O/SunBs5oMtjglaaaRnrevdKm+4p4o4nAXZmqgyl8nLLVRv1QC5u8Zm2o2AmS9BctlfFZTuTQeIb/pGHFJBoxdYfn+y7Qd5H68FX/zU9r6fgX8XSsQmFE7EIAf0XD1nic6ZJjMwYJE9Jk+9O9Q7T+E=
+	t=1725870340; cv=none; b=MlA6QnIpiAeh+LLpOs1trf/kCMGxFCZ/vUhrQgARQrRHO7T0txECpFcrrAyfpov9jeWCARlN5LTgWmnGucNijNlCutfeIzkzvmixib7pvulHu27j7iciSTxYxLSFKJvTympfFv+GE9n/CjAUGxcXrLk8y/hYymfOxTK7qeHeZ6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725723187; c=relaxed/simple;
-	bh=oHjQ7HgK8Yd87EvRVT1orABFAc/Um0D/a3v5RRH/Ioc=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=CWQcxWqLtu3vHnQldC9a1DkB/e0kOFp1mdNXumrNPKzGc8Tftoa+tNw2ixWVxhp94frLhTith0YRdEKjARYESUrJmuUE0DK5j/0rIIEl+JoutnL9iB52VSUgf9BT18fRMn6fXflq2Z0qV17hg8CjqQO7/ChBSWcqFZidpArFmB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=GGFUtIn/; arc=none smtp.client-ip=217.72.192.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1725723061; x=1726327861; i=markus.elfring@web.de;
-	bh=wihuS6INkOIDRJLvPODF0HceZ7BB6DFVMS4BkKX4s0g=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=GGFUtIn/x0Yjib7Y4e1yOKaA3LawIgwXzX4+GKFSTGPYUjXGu1bEp5Pk15O2AS4D
-	 hNSt0ZBKybXpdcw4wOc1oylU1eZEYWVRDBoAegl7RGmW3WZNvuAKsV1KB3RndXKlX
-	 UiTOOINChJQsj7EvLQaMrUjc1Iyg44nOWH7anByQrt2UEKJhZPXTwaS5GOs9d81Ft
-	 Ga9LCGrNGegL9Aow2/iieXG6w1UpTyiIMVC6vNMzt1kc4gupOROPPTggssKDBJnJz
-	 FMTROAglkrijureZi1maPvQedQtpa/n++HccI1BChPGuoKZvHxfHG/fPUBpOS7Mu6
-	 tmBfowHsaRnK4RshEQ==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.84.95]) by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1Mkmzl-1sKCU60TDL-00kWWt; Sat, 07
- Sep 2024 17:31:01 +0200
-Message-ID: <f60b0884-a7fa-4260-b9bb-ae680ff21150@web.de>
-Date: Sat, 7 Sep 2024 17:30:17 +0200
+	s=arc-20240116; t=1725870340; c=relaxed/simple;
+	bh=1szx3rDrihU/g78VbWFWrrfGN2EhKZVvB/Q6ftesECU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RJ+inZgJDzRaQ3dSOn7lw/rgytrlNDwOPDGbAiNWpIZT+ugZSEnDEdhIqwlIqX+YFo7gOShvXWV8Oy7yMM7CEPCjVI9No78nfPkH/7BSvIwEqIlI2ZoVzn68peR2bR76yDiGM4t4cHP5a4iFny7poE8nxwZAXDMjyHw3meXorHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hvJtwu3V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29791C4CEC5;
+	Mon,  9 Sep 2024 08:25:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725870340;
+	bh=1szx3rDrihU/g78VbWFWrrfGN2EhKZVvB/Q6ftesECU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hvJtwu3VXxWnfl1uC2CBj5Bc6igmypIPu1NCqq9LGulBMR9/IjNnpO0E6kwOVvNTV
+	 ZOCLRF7Ntno5j7MTGr5AAfkXnHxd5aEvlZgX0Hjqi15yrO4D2LIi2bnREFlCGB6YQq
+	 HllUUeID8ecs2cUBpyAeFpz2EYuQgD5woS5rb6ObNwTDYZS6DGaHzQgX+zlxb6glLN
+	 sSDF4JjRu5OVGF/wViQLbfx0RrbF5qbwM+CV3OcLNkw2zEblDnLvYJF1GeqMziMOMX
+	 yXUtQr6D60zCck1ljzpNwnpYZ5Rzphe5e26FCin+ircfax0TqMbRSuWEZARJ1yQnh+
+	 HqILLZIfPCP8Q==
+Date: Mon, 9 Sep 2024 09:25:34 +0100
+From: Lee Jones <lee@kernel.org>
+To: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Daniel Thompson <daniel.thompson@linaro.org>, jingoohan1@gmail.com,
+	deller@gmx.de, bonbons@linux-vserver.org, jikos@kernel.org,
+	bentiss@kernel.org, shc_work@mail.ru, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, shawnguo@kernel.org, festevam@gmail.com,
+	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+	linux-omap@vger.kernel.org
+Subject: Re: [PATCH 00/28] backlight: lcd: Remove fbdev dependencies
+Message-ID: <20240909082534.GA24460@google.com>
+References: <20240820093452.68270-1-tzimmermann@suse.de>
+ <20240903145809.GE12939@aspen.lan>
+ <292616c8-2532-43e7-a373-dae34e7b5334@suse.de>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: WangYuli <wangyuli@uniontech.com>, linux-input@vger.kernel.org,
- linux-omap@vger.kernel.org, linux-rdma@vger.kernel.org,
- linux-scsi@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mtd@lists.infradead.org,
- dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
- Aaro Koskinen <aaro.koskinen@iki.fi>, Abhinav Kumar
- <abhinavk@codeaurora.org>, Abhinav Kumar <quic_abhinavk@quicinc.com>,
- Andreas Kemnade <andreas@kemnade.info>,
- Andrew Morton <akpm@linux-foundation.org>,
- Anil Gurumurthy <anil.gurumurthy@qlogic.com>,
- Anil Ravindranath <anil_ravindranath@pmc-sierra.com>,
- Archit Taneja <architt@codeaurora.org>,
- Chandan Uddaraju <chandanu@codeaurora.org>, Daniel Vetter <daniel@ffwll.ch>,
- Dasaratharaman Chandramouli <dasaratharaman.chandramouli@intel.com>,
- David Airlie <airlied@gmail.com>, David Woodhouse <dwmw2@infradead.org>,
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
- Dmitry Torokhov <dmitry.torokhov@gmail.com>, Dmitry Torokhov <dtor@mail.ru>,
- Don Hiatt <don.hiatt@intel.com>, Doug Ledford <dledford@redhat.com>,
- Eric Piel <eric.piel@tremplin-utc.net>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- Ira Weiny <ira.weiny@intel.com>, James Bottomley <James.Bottomley@suse.de>,
- James Bottomley <James.Bottomley@HansenPartnership.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, Jiri Kosina <jkosina@suse.cz>,
- Jeykumar Sankaran <jsanka@codeaurora.org>,
- Jordan Crouse <jcrouse@codeaurora.org>, Kevin Hilman <khilman@baylibre.com>,
- Krishna Gudipati <kgudipat@brocade.com>, Leon Romanovsky <leon@kernel.org>,
- Marijn Suijten <marijn.suijten@somainline.org>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- Masanari Iida <standby24x7@gmail.com>,
- Miquel Raynal <miquel.raynal@bootlin.com>, Miloslav Trmac <mitr@volny.cz>,
- Richard Weinberger <richard@nod.at>, Rob Clark <robdclark@gmail.com>,
- Roger Quadros <rogerq@kernel.org>, Russell King <linux@armlinux.org.uk>,
- Rajesh Yadav <ryadav@codeaurora.org>, Sean Paul <sean@poorly.run>,
- Sean Paul <seanpaul@chromium.org>,
- Sravanthi Kollukuduru <skolluku@codeaurora.org>,
- Sudarsana Kalluru <sudarsana.kalluru@qlogic.com>,
- Tony Lindgren <tony@atomide.com>, Vignesh Raghavendra <vigneshr@ti.com>,
- "Vijay Kumar B." <vijaykumar@bravegnu.org>,
- Wentao Guan <guanwentao@uniontech.com>, zhanjun@uniontech.com
-Cc: LKML <linux-kernel@vger.kernel.org>
-References: <63D0F870EE8E87A0+20240906054008.390188-1-wangyuli@uniontech.com>
-Subject: Re: [PATCH] treewide: Correct the typo 'retun'
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <63D0F870EE8E87A0+20240906054008.390188-1-wangyuli@uniontech.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:0V/kSbOfOSES5ZSUPdgCZTIcGmmRZMm0Domxm/Q8KX7EnOO1CAN
- 00nVkeHP/BEhc1uiKtEI0+LLwINCEV1nSlgo1pINWJyZ22WHQIdvHMPhXX9Dibh9lp2E6i0
- v1vwafHYbTjBcj52zpJPNskLr5AxrCpCr2mgG1bc7EuYHcZ6DtYMYuIgT/B6+Q7EQLT5mR/
- k9m3SXUYG/qEkZWV6kXvg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:eJQeW9UGGk0=;BIskQXK25THsuKgfSEMHNrqzAWD
- Y//x4rspd7L6DZ58YgNNTXjYwoWbQTnTYp1kc1vMll0u7cPyuTLy3xEP/ReuRFGA77lqQAibK
- /6uOnBeNuRrYH6ZgTxfXm3636B2h8/1HnqFUp73R/R1+Ao69JPmTyHFLi2sr4ElRqoF2AjIKu
- a1GCqrIr85L4vXpL0fSmKckM347JgzuW4ti8xbzaxVA7BtM6zATY3AkH+V/K0cwEf4Iu6Nc7Z
- Z+/81Xl/ApcMmB3mtmIzo0h4W8KrDqvOpWvQ2Dkm+/35DGoZb/Gg7tTi2nNrUxnh7UWb44rIc
- dltxjmgSXtVPHyFjzB2A9I1ucJA5Ouly8qh9iPQKkax/VcYVN2IRH7UUfFfp9hR2V6oMsYlrF
- 6UHnxTjH4RpjyLjc7g63Dvh423vvN5KPDOeQf/w8wE/v5jJVBkm64wwCUL01y86qFtZoC/70c
- k8AkUqYGI08xMCJPT5v/QG7r1nYmjvvDTuIOP6aGw/0/LCNwFw3pp8uJk8FHiSiISgyl1C05C
- IK48cI9L+YLFJurUPze13oKlNambZVI0leiIyEdP0IstQTq4bAZkQBXv+U+SOV/IjOYe4kw/D
- q3fprWkvsM+xfSlOdzc/9vwKNZwkRQuaapTrX+xDzD1iRouYTIq7CW37H8CmkPpbUXMLmtvlz
- lTi2cYFS9sXE4yvAPx4OEnqrFEZOCiuLHwEPYGUlooyixxKr7l5kNU3Fttn6NlWU9zNxVdZDJ
- CTYRNkCsFkoz33K1beAdoI45/v6GjCAD1+D1Ov+hll037p+F42neH8RIJPbxRlzudy6O6UO2z
- MGr//iuh+hhfAAdwERNY/svA==
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <292616c8-2532-43e7-a373-dae34e7b5334@suse.de>
 
-=E2=80=A6
-> should be instead of 'return'.
+On Thu, 05 Sep 2024, Thomas Zimmermann wrote:
 
-            =E2=80=9Creturn=E2=80=9D instead?
+> Hi
+> 
+> Am 03.09.24 um 16:58 schrieb Daniel Thompson:
+> > On Tue, Aug 20, 2024 at 11:22:38AM +0200, Thomas Zimmermann wrote:
+> > > This series removes most dependencies on fbdev from the lcd subsystem
+> > > and its drivers.
+> > > 
+> > > Patches 1 to 3 rework the fbdev notifier, the fbdev's fb_info can
+> > > now refer to a dedicated lcd device, and lcd defines constants for
+> > > power states. These changes resemble similar changes to the backlight
+> > > code.
+> > > 
+> > > Patches 4 to 19 update lcd drivers to the new interfaces and perform
+> > > minor cleanups during the process. Patches 20 to 24 update fbdev
+> > > drivers and patch 25 updates the picolcd driver from the hid subsystem.
+> > > 
+> > > Patches 25 to 28 finally clean up various lcd interfaces and files.
+> > > 
+> > > This patchset is part of a larger effort to implement the lcd code
+> > > without depending on fbdev. Similar patches have been sent out for
+> > > the backlight subsystem, such as in [1] and [2].
+> > > 
+> > > Hopefully this series can be merged at once through the lcd tree.
+> > > 
+> > > [1] https://patchwork.freedesktop.org/series/129782/
+> > > [2] https://patchwork.freedesktop.org/series/134718/
+> > I shared a could of nitpicks. You can do what you like with them since
+> > none are major enough to stop me also sharing a:
+> > Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+> 
+> Thanks for reviewing. I'll send out an update. Why tree do these patches go
+> into? Backlight?
 
+Yes, that's expected.
 
-Can a corresponding imperative wording be preferred for a better change de=
-scription?
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
-cumentation/process/submitting-patches.rst?h=3Dv6.11-rc6#n94
-
-Regards,
-Markus
+-- 
+Lee Jones [李琼斯]
 
